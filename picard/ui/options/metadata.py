@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2008, 2011 Lukáš Lalinský
-# Copyright (C) 2008-2009, 2018-2019 Philipp Wolfer
+# Copyright (C) 2008-2009, 2018-2021 Philipp Wolfer
 # Copyright (C) 2011 Johannes Weißl
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2013, 2018 Laurent Monin
@@ -75,6 +75,7 @@ class MetadataOptionsPage(OptionsPage):
         BoolOption("setting", "convert_punctuation", True),
         BoolOption("setting", "standardize_artists", False),
         BoolOption("setting", "standardize_instruments", True),
+        BoolOption("setting", "originaldate_use_recording", True),
     ]
 
     def __init__(self, parent=None):
@@ -103,6 +104,10 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.nat_name.setText(config.setting["nat_name"])
         self.ui.standardize_artists.setChecked(config.setting["standardize_artists"])
         self.ui.standardize_instruments.setChecked(config.setting["standardize_instruments"])
+        if config.setting["originaldate_use_recording"]:
+            self.ui.originaldate_use_recording.setChecked(True)
+        else:
+            self.ui.originaldate_use_releasegroup.setChecked(True)
 
     def save(self):
         config = get_config()
@@ -119,6 +124,7 @@ class MetadataOptionsPage(OptionsPage):
                 self.tagger.nats.update()
         config.setting["standardize_artists"] = self.ui.standardize_artists.isChecked()
         config.setting["standardize_instruments"] = self.ui.standardize_instruments.isChecked()
+        config.setting["originaldate_use_recording"] = self.ui.originaldate_use_recording.isChecked()
 
     def set_va_name_default(self):
         self.ui.va_name.setText(self.options[0].default)

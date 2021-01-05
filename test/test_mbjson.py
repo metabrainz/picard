@@ -54,7 +54,8 @@ settings = {
     "standardize_instruments": True,
     "release_ars": True,
     "preferred_release_countries": [],
-    "artist_locale": 'en'
+    "artist_locale": 'en',
+    "originaldate_use_recording": True
 }
 
 
@@ -149,7 +150,36 @@ class ReleaseTest(MBJSONTest):
         formats = media_formats_from_node(self.json_doc['media'])
         self.assertEqual(formats, '12" Vinyl')
 
-    def test_originaldate(self):
+    def test_originaldate_recording(self):
+        config.setting["originaldate_use_recording"] = True
+        metadata = Metadata()
+        release_group_to_metadata(self.json_doc['release-group'], metadata)
+        release_to_metadata(self.json_doc, metadata)
+        self.assertEqual('1973-03-24', metadata['originaldate'])
+
+        # Track 1 has a custom first release date
+        track1 = self.json_doc['media'][0]['tracks'][0]
+        recording_metadata = Metadata(metadata)
+        recording_to_metadata(track1['recording'], recording_metadata)
+        self.assertEqual('1972-02-23', recording_metadata['originaldate'])
+        self.assertEqual('1972', recording_metadata['originalyear'])
+
+        # Track 2 has the same first release date set as the release
+        track2 = self.json_doc['media'][0]['tracks'][1]
+        recording_metadata = Metadata(metadata)
+        recording_to_metadata(track2['recording'], recording_metadata)
+        self.assertEqual('1973-03-24', recording_metadata['originaldate'])
+        self.assertEqual('1973', recording_metadata['originalyear'])
+
+        # Track 3 has no first release date set
+        track2 = self.json_doc['media'][0]['tracks'][2]
+        recording_metadata = Metadata(metadata)
+        recording_to_metadata(track2['recording'], recording_metadata)
+        self.assertEqual('1973-03-24', recording_metadata['originaldate'])
+        self.assertEqual('1973', recording_metadata['originalyear'])
+
+    def test_originaldate_release_group(self):
+        config.setting["originaldate_use_recording"] = False
         metadata = Metadata()
         release_group_to_metadata(self.json_doc['release-group'], metadata)
         release_to_metadata(self.json_doc, metadata)
@@ -158,20 +188,17 @@ class ReleaseTest(MBJSONTest):
         track1 = self.json_doc['media'][0]['tracks'][0]
         recording_metadata = Metadata(metadata)
         recording_to_metadata(track1['recording'], recording_metadata)
+        self.assertEqual('1973-03-24', recording_metadata['originaldate'])
+        self.assertEqual('1973', recording_metadata['originalyear'])
+
+    def test_originaldate_release_group_fallback_to_recording(self):
+        config.setting["originaldate_use_recording"] = False
+        # Track 1 has a custom first release date and not date is set already in the metadata
+        track1 = self.json_doc['media'][0]['tracks'][0]
+        recording_metadata = Metadata()
+        recording_to_metadata(track1['recording'], recording_metadata)
         self.assertEqual('1972-02-23', recording_metadata['originaldate'])
         self.assertEqual('1972', recording_metadata['originalyear'])
-        # Track 2 has the same first release date set as the release
-        track2 = self.json_doc['media'][0]['tracks'][1]
-        recording_metadata = Metadata(metadata)
-        recording_to_metadata(track2['recording'], recording_metadata)
-        self.assertEqual('1973-03-24', recording_metadata['originaldate'])
-        self.assertEqual('1973', recording_metadata['originalyear'])
-        # Track 3 has no first release date set
-        track2 = self.json_doc['media'][0]['tracks'][2]
-        recording_metadata = Metadata(metadata)
-        recording_to_metadata(track2['recording'], recording_metadata)
-        self.assertEqual('1973-03-24', recording_metadata['originaldate'])
-        self.assertEqual('1973', recording_metadata['originalyear'])
 
 
 class NullReleaseTest(MBJSONTest):

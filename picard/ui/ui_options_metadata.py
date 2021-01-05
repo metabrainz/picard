@@ -3,12 +3,14 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MetadataOptionsPage(object):
     def setupUi(self, MetadataOptionsPage):
         MetadataOptionsPage.setObjectName("MetadataOptionsPage")
-        MetadataOptionsPage.resize(423, 553)
+        MetadataOptionsPage.resize(547, 553)
         self.verticalLayout = QtWidgets.QVBoxLayout(MetadataOptionsPage)
         self.verticalLayout.setObjectName("verticalLayout")
         self.metadata_groupbox = QtWidgets.QGroupBox(MetadataOptionsPage)
@@ -43,6 +45,15 @@ class Ui_MetadataOptionsPage(object):
         self.track_ars = QtWidgets.QCheckBox(self.metadata_groupbox)
         self.track_ars.setObjectName("track_ars")
         self.verticalLayout_3.addWidget(self.track_ars)
+        self.originaldate_label = QtWidgets.QLabel(self.metadata_groupbox)
+        self.originaldate_label.setObjectName("originaldate_label")
+        self.verticalLayout_3.addWidget(self.originaldate_label)
+        self.originaldate_use_recording = QtWidgets.QRadioButton(self.metadata_groupbox)
+        self.originaldate_use_recording.setObjectName("originaldate_use_recording")
+        self.verticalLayout_3.addWidget(self.originaldate_use_recording)
+        self.originaldate_use_releasegroup = QtWidgets.QRadioButton(self.metadata_groupbox)
+        self.originaldate_use_releasegroup.setObjectName("originaldate_use_releasegroup")
+        self.verticalLayout_3.addWidget(self.originaldate_use_releasegroup)
         self.verticalLayout.addWidget(self.metadata_groupbox)
         self.custom_fields_groupbox = QtWidgets.QGroupBox(MetadataOptionsPage)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
@@ -100,9 +111,11 @@ class Ui_MetadataOptionsPage(object):
         self.convert_punctuation.setText(_("Convert Unicode punctuation characters to ASCII"))
         self.release_ars.setText(_("Use release relationships"))
         self.track_ars.setText(_("Use track relationships"))
+        self.originaldate_label.setText(_("Original release date:"))
+        self.originaldate_use_recording.setText(_("Use the first release date of the recording"))
+        self.originaldate_use_releasegroup.setText(_("Use the first release date of the release group"))
         self.custom_fields_groupbox.setTitle(_("Custom Fields"))
         self.label_6.setText(_("Various artists:"))
         self.label_7.setText(_("Non-album tracks:"))
         self.nat_name_default.setText(_("Default"))
         self.va_name_default.setText(_("Default"))
-

@@ -384,9 +384,11 @@ def recording_to_metadata(node, m, track=None):
             add_isrcs_to_metadata(value, m)
         elif key == 'video' and value:
             m['~video'] = '1'
+    config = get_config()
     if m['title']:
         m['~recordingtitle'] = m['title']
-    if m['~recordingoriginaldate']:
+    if m['~recordingoriginaldate'] and (
+        config.setting["originaldate_use_recording"] or not m['originaldate']):
         m['originaldate'] = m['~recordingoriginaldate']
         m['originalyear'] = m['originaldate'][:4]
     if m.length:

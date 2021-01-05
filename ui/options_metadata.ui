@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>423</width>
+    <width>547</width>
     <height>553</height>
    </rect>
   </property>
@@ -74,6 +74,27 @@
        <widget class="QCheckBox" name="track_ars">
         <property name="text">
          <string>Use track relationships</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="originaldate_label">
+        <property name="text">
+         <string>Original release date:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="originaldate_use_recording">
+        <property name="text">
+         <string>Use the first release date of the recording</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="originaldate_use_releasegroup">
+        <property name="text">
+         <string>Use the first release date of the release group</string>
         </property>
        </widget>
       </item>
