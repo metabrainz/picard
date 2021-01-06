@@ -211,8 +211,8 @@ class ReleaseTest(MBJSONTest):
         config.setting["originaldate_use_recording"] = False
         recording_to_metadata(track1['recording'], metadata)
         self.assertEqual('1972-02-23', metadata['~recordingoriginaldate'])
-        self.assertEqual('1972-02-23', metadata['originaldate'])
-        self.assertEqual('1972', metadata['originalyear'])
+        self.assertNotIn('originaldate', metadata)
+        self.assertNotIn('originalyear', metadata)
 
 
 class NullReleaseTest(MBJSONTest):

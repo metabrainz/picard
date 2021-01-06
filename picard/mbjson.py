@@ -387,8 +387,7 @@ def recording_to_metadata(node, m, track=None):
     config = get_config()
     if m['title']:
         m['~recordingtitle'] = m['title']
-    if m['~recordingoriginaldate'] and (
-        config.setting["originaldate_use_recording"] or not m['originaldate']):
+    if m['~recordingoriginaldate'] and config.setting["originaldate_use_recording"]:
         m['originaldate'] = m['~recordingoriginaldate']
         m['originalyear'] = m['originaldate'][:4]
     if m.length:
