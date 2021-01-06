@@ -75,7 +75,7 @@ class MetadataOptionsPage(OptionsPage):
         BoolOption("setting", "convert_punctuation", True),
         BoolOption("setting", "standardize_artists", False),
         BoolOption("setting", "standardize_instruments", True),
-        BoolOption("setting", "originaldate_use_recording", True),
+        BoolOption("setting", "originaldate_use_recording", False),
     ]
 
     def __init__(self, parent=None):

@@ -52,7 +52,6 @@ from picard.config_upgrade import (
     upgrade_to_v2_5_0_dev_1,
     upgrade_to_v2_5_0_dev_2,
     upgrade_to_v2_6_0_dev_1,
-    upgrade_to_v2_6_0_dev_2,
 )
 from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -318,9 +317,3 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         upgrade_to_v2_6_0_dev_1(self.config)
         picard.config_upgrade.IS_FROZEN = False
         self.assertEqual("", self.config.setting["acoustid_fpcalc"])
-
-    def test_upgrade_to_v2_6_0_dev_2(self):
-        BoolOption("setting", "originaldate_use_recording", True)
-        self.assertTrue(self.config.setting["originaldate_use_recording"])
-        upgrade_to_v2_6_0_dev_2(self.config)
-        self.assertFalse(self.config.setting["originaldate_use_recording"])

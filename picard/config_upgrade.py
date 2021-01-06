@@ -325,11 +325,6 @@ def upgrade_to_v2_6_0_dev_1(config):
         config.setting['acoustid_fpcalc'] = ''
 
 
-def upgrade_to_v2_6_0_dev_2(config):
-    """For upgrades keep using the release group's originaldate as default."""
-    config.setting['originaldate_use_recording'] = False
-
-
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
@@ -357,5 +352,4 @@ def upgrade_config(config):
     cfg.register_upgrade_hook(upgrade_to_v2_5_0_dev_1)
     cfg.register_upgrade_hook(upgrade_to_v2_5_0_dev_2)
     cfg.register_upgrade_hook(upgrade_to_v2_6_0_dev_1)
-    cfg.register_upgrade_hook(upgrade_to_v2_6_0_dev_2)
     cfg.run_upgrade_hooks(log.debug)
