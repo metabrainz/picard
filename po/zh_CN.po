@@ -1,7 +1,7 @@
 # Translations template for picard.
 # Copyright (C) 2020 ORGANIZATION
 # This file is distributed under the same license as the picard project.
-# 
+#
 # Translators:
 #  <>, 2002, 2001, Inc, 2003, 2007, 2008, 2009, 2010, 2011, 2000,�s�, 2012
 #   Alastair McKinstry <mckinstry@computer.org>, 2002
@@ -59,12 +59,12 @@ msgstr "[无法载入专辑 %s]"
 #: picard/album.py:412
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
-msgstr "已载入专辑 %（id）s: %（artist）s - %（album）s"
+msgstr "已载入专辑 %(id)s: %(artist)s - %(album)s"
 
 #: picard/album.py:463
 #, python-format
 msgid "Loading album %(id)s ..."
-msgstr "正在载入专辑 %（id）s..."
+msgstr "正在载入专辑 %(id)s..."
 
 #: picard/album.py:467
 msgid "[loading album information]"
@@ -85,17 +85,17 @@ msgstr[0] "; 音轨中共 %i 张不一致图像"
 #: picard/cluster.py:267
 #, python-format
 msgid "No matching releases for cluster %(album)s"
-msgstr "未找到与簇「%（album）s」相匹配的专辑"
+msgstr "未找到与簇「%(album)s」相匹配的专辑"
 
 #: picard/cluster.py:269
 #, python-format
 msgid "Cluster %(album)s identified!"
-msgstr "簇「%（album）s」已识别!"
+msgstr "簇「%(album)s」已识别!"
 
 #: picard/cluster.py:291
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s..."
-msgstr "正在查询簇「%（album）s」的元数据..."
+msgstr "正在查询簇「%(album)s」的元数据..."
 
 #: picard/cluster.py:330 picard/cluster.py:571
 #, python-format
@@ -125,23 +125,23 @@ msgstr "专辑"
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
-msgstr[0] "已将 %（count）i 张专辑加入收藏集「%（name）s」"
+msgstr[0] "已将 %(count)i 张专辑加入收藏集「%(name)s」"
 
 #: picard/collection.py:88
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
-msgstr[0] "已将 %（count）i 张专辑从收藏集「%（name）s」中移除"
+msgstr[0] "已将 %(count)i 张专辑从收藏集「%(name)s」中移除"
 
 #: picard/collection.py:99
 #, python-format
 msgid "Error while modifying collections: %(error)s"
-msgstr "修改收藏集时出错: %（error）s"
+msgstr "修改收藏集时出错: %(error)s"
 
 #: picard/collection.py:121
 #, python-format
 msgid "Error loading collections: %(error)s"
-msgstr "载入收藏集时出错: %（error）s"
+msgstr "载入收藏集时出错: %(error)s"
 
 #: picard/config_upgrade.py:76 picard/config_upgrade.py:89
 msgid "Various Artists file naming scheme removal"
@@ -172,22 +172,22 @@ msgstr "移除"
 #: picard/file.py:755
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
-msgstr "文件「%（filename）s」没有符合相似度要求的匹配音轨"
+msgstr "文件「%(filename)s」没有符合相似度要求的匹配音轨"
 
 #: picard/file.py:757
 #, python-format
 msgid "File '%(filename)s' identified!"
-msgstr "文件「%（filename）s」已识别!"
+msgstr "文件「%(filename)s」已识别!"
 
 #: picard/file.py:769
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
-msgstr "没有与文件「%（filename）s」相匹配的音轨"
+msgstr "没有与文件「%(filename)s」相匹配的音轨"
 
 #: picard/file.py:801
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
-msgstr "正在查询文件「%（filename）s」的元数据..."
+msgstr "正在查询文件「%(filename)s」的元数据..."
 
 #: picard/pluginmanager.py:226
 #, python-format
@@ -222,7 +222,7 @@ msgstr "插件「%r」"
 #: picard/pluginmanager.py:431
 #, python-format
 msgid "Error loading plugins list: %(error)s"
-msgstr "载入插件列表错误: %（error）s"
+msgstr "载入插件列表错误: %(error)s"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:156
 msgid "Tracks"
@@ -268,7 +268,7 @@ msgstr "授权码:"
 #: picard/tagger.py:753
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
-msgstr "正在移除专辑 %（id）s: %（artist）s - %（album）s"
+msgstr "正在移除专辑 %(id)s: %(artist)s - %(album)s"
 
 #: picard/tagger.py:771
 msgid "CD Lookup Error"
@@ -294,22 +294,22 @@ msgstr "[无法载入录音 %s]"
 #: picard/acoustid/__init__.py:84
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
-msgstr "为「%（filename）s」查询 AcoustID 时出现网络错误!"
+msgstr "为「%(filename)s」查询 AcoustID 时出现网络错误!"
 
 #: picard/acoustid/__init__.py:117
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
-msgstr "为「%（filename）s」查询 AcoustID 失败!"
+msgstr "为「%(filename)s」查询 AcoustID 失败!"
 
 #: picard/acoustid/__init__.py:142
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
-msgstr "为文件「%（filename）s」查询 AcoustID 无任何结果"
+msgstr "为文件「%(filename)s」查询 AcoustID 无任何结果"
 
 #: picard/acoustid/__init__.py:153
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
-msgstr "正在查询文件「%（filename）s」的指纹..."
+msgstr "正在查询文件「%(filename)s」的指纹..."
 
 #: picard/acoustid/manager.py:137
 msgid ""
@@ -336,7 +336,7 @@ msgstr "正在提交 AcoustID..."
 #: picard/acoustid/manager.py:192
 #, python-format
 msgid "AcoustID submission failed with error '%(error)s': %(message)s"
-msgstr "AcoustID 提交失败，错误「%（error）s」: %（message）s"
+msgstr "AcoustID 提交失败，错误「%(error)s」: %(message)s"
 
 #: picard/const/__init__.py:156
 msgid "Stable releases only"
@@ -2211,13 +2211,13 @@ msgstr "祖鲁语（南非）"
 #: picard/coverart/__init__.py:108
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
-msgstr "%（albumid）s 的「%（type）s」类型的专辑封面已从 %（host）s 下载"
+msgstr "%(albumid)s 的「%(type)s」类型的专辑封面已从 %(host)s 下载"
 
 #: picard/coverart/__init__.py:196
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
-msgstr "正从 %（host）s 下载 %（albumid）s 的「%（type）s」类型专辑封面..."
+msgstr "正从 %(host)s 下载 %(albumid)s 的「%(type)s」类型专辑封面..."
 
 #: picard/coverart/utils.py:36
 msgid "Unknown"
@@ -2984,7 +2984,7 @@ msgstr "图标创作者: Sambhav Kothari <sambhavs.email@gmail.com> 以及来自
 #: picard/ui/aboutdialog.py:101
 #, python-format
 msgid "Version %(version)s"
-msgstr "版本 %（version）s"
+msgstr "版本 %(version)s"
 
 #: picard/ui/aboutdialog.py:103
 msgid "Supported formats"
@@ -3013,7 +3013,7 @@ msgstr "贡献名单"
 #: picard/ui/aboutdialog.py:111
 #, python-format
 msgid "Copyright © %(copyright_years)s %(authors_credits)s and others"
-msgstr "版权所有 © %（copyright_years）s %（authors_credits）s 以及其他"
+msgstr "版权所有 © %(copyright_years)s %(authors_credits)s 以及其他"
 
 #: picard/ui/aboutdialog.py:113
 msgid "Official website"
@@ -3574,7 +3574,7 @@ msgstr "Picard 通过监听该端口实现与浏览器的交互。当您在 Pica
 #: picard/ui/mainwindow.py:386
 #, python-format
 msgid " Listening on port %(port)d "
-msgstr " 正在监听端口 %（port）d "
+msgstr " 正在监听端口 %(port)d "
 
 #: picard/ui/mainwindow.py:444
 msgid "AcoustID submission not configured"
@@ -3938,12 +3938,12 @@ msgstr "全部受支持格式"
 #: picard/ui/mainwindow.py:995
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
-msgstr "正在从「%（directory）s」添加多个目录..."
+msgstr "正在从「%(directory)s」添加多个目录..."
 
 #: picard/ui/mainwindow.py:1000
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
-msgstr "正在添加目录: 「%（directory）s'」..."
+msgstr "正在添加目录: 「%(directory)s'」..."
 
 #: picard/ui/mainwindow.py:1086
 msgid "Configuration Required"
@@ -3958,22 +3958,22 @@ msgstr "尚未配置音频指纹参数。是否希望立即配置?"
 #: picard/ui/mainwindow.py:1198
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
-msgstr "%（filename）s（错误: %（error）s）"
+msgstr "%(filename)s（错误: %(error)s）"
 
 #: picard/ui/mainwindow.py:1204
 #, python-format
 msgid "%(filename)s"
-msgstr "%（filename）s"
+msgstr "%(filename)s"
 
 #: picard/ui/mainwindow.py:1213
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
-msgstr "%（filename）s（%（similarity）d%%）（错误: %（error）s）"
+msgstr "%(filename)s（%(similarity)d%%）（错误: %(error)s）"
 
 #: picard/ui/mainwindow.py:1220
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
-msgstr "%（filename）s（%（similarity）d%%）"
+msgstr "%(filename)s（%(similarity)d%%）"
 
 #: picard/ui/mainwindow.py:1270
 msgid "Authentication Required"
@@ -4142,7 +4142,7 @@ msgstr "音量"
 #: picard/ui/scriptsmenu.py:62
 #, python-format
 msgid "Script error in \"%(script)s\": %(message)s"
-msgstr "「%（script）s」中出现脚本错误: %（message）s"
+msgstr "「%(script)s」中出现脚本错误: %(message)s"
 
 #: picard/ui/tagsfromfilenames.py:132 picard/ui/tagsfromfilenames.py:143
 msgid "File Name"
@@ -5364,7 +5364,7 @@ msgstr "正在重命名文件"
 msgid ""
 "<a href=\"%(picard-doc-scripting-url)s\">Open Scripting Documentation in "
 "your browser</a>"
-msgstr "<a href=\"%（picard-doc-scripting-url）s\">在浏览器中打开脚本编写文档</a>"
+msgstr "<a href=\"%(picard-doc-scripting-url)s\">在浏览器中打开脚本编写文档</a>"
 
 #: picard/ui/options/renaming.py:210
 msgid "Error"
