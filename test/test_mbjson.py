@@ -190,7 +190,7 @@ class RecordingTest(MBJSONTest):
         self.assertEqual(m['~artists_sort'], 'Sheeran, Ed')
         self.assertEqual(m['~length'], '4:41')
         self.assertEqual(m['~recordingtitle'], 'Thinking Out Loud')
-        self.assertEqual(m['~recordingoriginaldate'], '2014-06-20')
+        self.assertEqual(m['~recording_firstreleasedate'], '2014-06-20')
         self.assertNotIn('originaldate', m)
         self.assertNotIn('originalyear', m)
         self.assertEqual(t.genres, {
@@ -360,7 +360,7 @@ class ReleaseGroupTest(MBJSONTest):
         r = ReleaseGroup("1")
         release_group_to_metadata(self.json_doc, m, r)
         self.assertEqual(m['musicbrainz_releasegroupid'], 'f5093c06-23e3-404f-aeaa-40f72885ee3a')
-        self.assertEqual(m['~releaseoriginaldate'], '1973-03-24')
+        self.assertEqual(m['~releasegroup_firstreleasedate'], '1973-03-24')
         self.assertEqual(m['originaldate'], '1973-03-24')
         self.assertEqual(m['originalyear'], '1973')
         self.assertEqual(m['releasetype'], 'album')
