@@ -73,7 +73,7 @@ _MEDIUM_TO_METADATA = {
 
 _RECORDING_TO_METADATA = {
     'disambiguation': '~recordingcomment',
-    'first-release-date': '~recordingoriginaldate',
+    'first-release-date': '~recording_firstreleasedate',
     'title': 'title',
 }
 
@@ -94,7 +94,7 @@ _ARTIST_TO_METADATA = {
 
 _RELEASE_GROUP_TO_METADATA = {
     'disambiguation': '~releasegroupcomment',
-    'first-release-date': '~releaseoriginaldate',
+    'first-release-date': '~releasegroup_firstreleasedate',
     'title': '~releasegroup',
 }
 
@@ -495,8 +495,8 @@ def release_group_to_metadata(node, m, release_group=None):
         elif key == 'secondary-types':
             add_secondary_release_types(value, m)
     add_genres_from_node(node, release_group)
-    if m['~releaseoriginaldate']:
-        m['originaldate'] = m['~releaseoriginaldate']
+    if m['~releasegroup_firstreleasedate']:
+        m['originaldate'] = m['~releasegroup_firstreleasedate']
         m['originalyear'] = m['originaldate'][:4]
     m['releasetype'] = m.getall('~primaryreleasetype') + m.getall('~secondaryreleasetype')
 
