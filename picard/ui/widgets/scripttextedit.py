@@ -120,7 +120,7 @@ class ScriptCompleter(QCompleter):
         choices = list(['$' + name for name in script_function_names()])
         choices += ['%' + name.replace('~', '_') + '%' for name in TAG_NAMES.keys()]
         super().__init__(choices, parent)
-        self.setCompletionMode(QCompleter.PopupCompletion)
+        self.setCompletionMode(QCompleter.UnfilteredPopupCompletion)
         self.highlighted.connect(self.set_highlighted)
         self.last_selected = ''
 
