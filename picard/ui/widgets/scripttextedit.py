@@ -5,7 +5,7 @@
 # Copyright (C) 2006-2007, 2009 Lukáš Lalinský
 # Copyright (C) 2014 m42i
 # Copyright (C) 2020 Laurent Monin
-# Copyright (C) 2020 Philipp Wolfer
+# Copyright (C) 2020-2021 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -173,14 +173,17 @@ class ScriptTextEdit(QTextEdit):
         return tc
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Tab and self.completer.popup().isVisible():
-            self.completer.activated.emit(self.completer.get_selected())
-            return
+        if self.completer.popup().isVisible():
+            if event.key() in (Qt.Key_Tab, Qt.Key_Return, Qt.Key_Enter):
+                self.completer.activated.emit(self.completer.get_selected())
+                return
 
         super().keyPressEvent(event)
+        self.handle_autocomplete(event)
 
-        # Do not trigger autocomplete on cursor keys to allow for easier navigation
-        if event.key() in (Qt.Key_Left, Qt.Key_Right, Qt.Key_Up, Qt.Key_Down):
+    def handle_autocomplete(self, event):
+        # Only trigger autocomplete on actual text input
+        if not event.text():
             return
 
         tc = self.cursor_select_word()
