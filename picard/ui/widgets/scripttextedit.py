@@ -35,10 +35,42 @@ from PyQt5.QtWidgets import (
 )
 
 from picard.script import script_function_names
-from picard.util.tags import TAG_NAMES
+from picard.util.tags import (
+    PRESERVED_TAGS,
+    TAG_NAMES,
+)
 
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.theme import theme
+
+
+EXTRA_VARIABLES = [
+    '~absolutetracknumber',
+    '~albumartists_sort',
+    '~albumartists',
+    '~artists_sort',
+    '~datatrack',
+    '~discpregap',
+    '~multiartist',
+    '~musicbrainz_discids',
+    '~performance_attributes',
+    '~pregap',
+    '~primaryreleasetype',
+    '~rating',
+    '~recording_firstreleasedate',
+    '~recordingcomment',
+    '~recordingtitle',
+    '~releasecomment',
+    '~releasecountries',
+    '~releasegroup_firstreleasedate',
+    '~releasegroup',
+    '~releasegroupcomment',
+    '~releaselanguage',
+    '~secondaryreleasetype',
+    '~silence',
+    '~totalalbumtracks',
+    '~video',
+]
 
 
 class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
@@ -119,12 +151,17 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
 class ScriptCompleter(QCompleter):
     def __init__(self, parent=None):
-        choices = list(['$' + name for name in script_function_names()])
-        choices += ['%' + name.replace('~', '_') + '%' for name in TAG_NAMES.keys()]
+        choices = ['$' + name for name in script_function_names()]
+        choices += self.all_tags
         super().__init__(choices, parent)
         self.setCompletionMode(QCompleter.UnfilteredPopupCompletion)
         self.highlighted.connect(self.set_highlighted)
         self.last_selected = ''
+
+    @property
+    def all_tags(self):
+        tags = list(TAG_NAMES.keys()) + list(PRESERVED_TAGS) + EXTRA_VARIABLES
+        return ['%' + name.replace('~', '_') + '%' for name in tags]
 
     def set_highlighted(self, text):
         self.last_selected = text
