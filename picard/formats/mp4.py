@@ -80,6 +80,7 @@ class MP4File(File):
         "\xa9lyr": "lyrics",
         "\xa9cmt": "comment",
         "\xa9too": "encodedby",
+        "\xa9dir": "director",
         "cprt": "copyright",
         "soal": "albumsort",
         "soaa": "albumartistsort",

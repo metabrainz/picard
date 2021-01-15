@@ -191,6 +191,7 @@ class RecordingTest(MBJSONTest):
         self.assertEqual(m['~length'], '4:41')
         self.assertEqual(m['~recordingtitle'], 'Thinking Out Loud')
         self.assertEqual(m['~recording_firstreleasedate'], '2014-06-20')
+        self.assertEqual(m['~video'], '')
         self.assertNotIn('originaldate', m)
         self.assertNotIn('originalyear', m)
         self.assertEqual(t.genres, {
@@ -221,6 +222,19 @@ class RecordingInstrumentalTest(MBJSONTest):
         self.assertIn('instrumental', m.getall('~performance_attributes'))
         self.assertEqual(m['language'], 'zxx')
         self.assertNotIn('lyricist', m)
+
+
+class RecordingVideoTest(MBJSONTest):
+
+    filename = 'recording_video.json'
+
+    def test_recording(self):
+        m = Metadata()
+        t = Track('1')
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['director'], 'Edward 209')
+        self.assertEqual(m['producer'], 'Edward 209')
+        self.assertEqual(m['~video'], '1')
 
 
 class NullRecordingTest(MBJSONTest):

@@ -115,6 +115,7 @@ TAGS = {
     'conductor': 'Foo',
     'copyright': 'Foo',
     'date': '2004',
+    'director': 'Foo',
     'discnumber': '1',
     'discsubtitle': 'Foo',
     'djmixer': 'Foo',

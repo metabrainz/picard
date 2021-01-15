@@ -184,6 +184,7 @@ class ASFFile(File):
         'djmixer': 'WM/DJMixer',
         'mixer': 'WM/Mixer',
         'artists': 'WM/ARTISTS',
+        'director': 'WM/Director',
         'work': 'WM/Work',
         'website': 'WM/AuthorURL',
     }
