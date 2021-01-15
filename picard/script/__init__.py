@@ -77,8 +77,7 @@ def script_function_documentation(name, fmt, functions=None, postprocessor=None)
 def script_function_names(functions=None):
     if functions is None:
         functions = dict(ScriptParser._function_registry)
-    for name in sorted(functions):
-        yield name
+    yield from sorted(functions)
 
 
 def script_function_documentation_all(fmt='markdown', pre='',

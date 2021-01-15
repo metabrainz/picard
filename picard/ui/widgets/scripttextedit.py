@@ -44,7 +44,7 @@ from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.theme import theme
 
 
-EXTRA_VARIABLES = [
+EXTRA_VARIABLES = (
     '~absolutetracknumber',
     '~albumartists_sort',
     '~albumartists',
@@ -70,7 +70,7 @@ EXTRA_VARIABLES = [
     '~silence',
     '~totalalbumtracks',
     '~video',
-]
+)
 
 
 class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
@@ -151,17 +151,21 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
 class ScriptCompleter(QCompleter):
     def __init__(self, parent=None):
-        choices = ['$' + name for name in script_function_names()]
-        choices += self.all_tags
-        super().__init__(choices, parent)
+        super().__init__(self.choices, parent)
         self.setCompletionMode(QCompleter.UnfilteredPopupCompletion)
         self.highlighted.connect(self.set_highlighted)
         self.last_selected = ''
 
     @property
+    def choices(self):
+        yield from {'$' + name for name in script_function_names()}
+        yield from {'%' + name.replace('~', '_') + '%' for name in self.all_tags}
+
+    @property
     def all_tags(self):
-        tags = list(TAG_NAMES.keys()) + list(PRESERVED_TAGS) + EXTRA_VARIABLES
-        return ['%' + name.replace('~', '_') + '%' for name in tags]
+        yield from TAG_NAMES.keys()
+        yield from PRESERVED_TAGS
+        yield from EXTRA_VARIABLES
 
     def set_highlighted(self, text):
         self.last_selected = text
