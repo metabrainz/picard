@@ -5,7 +5,7 @@
 # Copyright (C) 2006-2007, 2009 Lukáš Lalinský
 # Copyright (C) 2014 m42i
 # Copyright (C) 2020 Laurent Monin
-# Copyright (C) 2020 Philipp Wolfer
+# Copyright (C) 2020-2021 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -21,6 +21,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import re
+
 from PyQt5 import (
     QtCore,
     QtGui,
@@ -33,10 +35,42 @@ from PyQt5.QtWidgets import (
 )
 
 from picard.script import script_function_names
-from picard.util.tags import TAG_NAMES
+from picard.util.tags import (
+    PRESERVED_TAGS,
+    TAG_NAMES,
+)
 
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.theme import theme
+
+
+EXTRA_VARIABLES = (
+    '~absolutetracknumber',
+    '~albumartists_sort',
+    '~albumartists',
+    '~artists_sort',
+    '~datatrack',
+    '~discpregap',
+    '~multiartist',
+    '~musicbrainz_discids',
+    '~performance_attributes',
+    '~pregap',
+    '~primaryreleasetype',
+    '~rating',
+    '~recording_firstreleasedate',
+    '~recordingcomment',
+    '~recordingtitle',
+    '~releasecomment',
+    '~releasecountries',
+    '~releasegroup_firstreleasedate',
+    '~releasegroup',
+    '~releasegroupcomment',
+    '~releaselanguage',
+    '~secondaryreleasetype',
+    '~silence',
+    '~totalalbumtracks',
+    '~video',
+)
 
 
 class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
@@ -117,12 +151,21 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
 class ScriptCompleter(QCompleter):
     def __init__(self, parent=None):
-        choices = list(['$' + name for name in script_function_names()])
-        choices += ['%' + name.replace('~', '_') + '%' for name in TAG_NAMES.keys()]
-        super().__init__(choices, parent)
-        self.setCompletionMode(QCompleter.PopupCompletion)
+        super().__init__(self.choices, parent)
+        self.setCompletionMode(QCompleter.UnfilteredPopupCompletion)
         self.highlighted.connect(self.set_highlighted)
         self.last_selected = ''
+
+    @property
+    def choices(self):
+        yield from {'$' + name for name in script_function_names()}
+        yield from {'%' + name.replace('~', '_') + '%' for name in self.all_tags}
+
+    @property
+    def all_tags(self):
+        yield from TAG_NAMES.keys()
+        yield from PRESERVED_TAGS
+        yield from EXTRA_VARIABLES
 
     def set_highlighted(self, text):
         self.last_selected = text
@@ -132,6 +175,8 @@ class ScriptCompleter(QCompleter):
 
 
 class ScriptTextEdit(QTextEdit):
+    autocomplete_trigger_chars = re.compile('[$%A-Za-z0-9_]')
+
     def __init__(self, parent):
         super().__init__(parent)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.document())
@@ -145,19 +190,42 @@ class ScriptTextEdit(QTextEdit):
         self.popup_shown = False
 
     def insert_completion(self, completion):
+        if not completion:
+            return
         tc = self.cursor_select_word()
+        if completion.startswith('$'):
+            completion += '('
         tc.insertText(completion)
+        # Peek at the next character to include it in the replacement
+        if not tc.atEnd():
+            pos = tc.position()
+            tc = self.textCursor()
+            tc.setPosition(pos + 1, QTextCursor.KeepAnchor)
+            first_char = completion[0]
+            next_char = tc.selectedText()
+            if (first_char == '$' and next_char == '(') or (first_char == '%' and next_char == '%'):
+                tc.removeSelectedText()
+            else:
+                tc.setPosition(pos)  # Reset position
         self.setTextCursor(tc)
         self.popup_hide()
 
     def popup_hide(self):
         self.completer.popup().hide()
 
-    def cursor_select_word(self):
+    def cursor_select_word(self, full_word=True):
         tc = self.textCursor()
         current_position = tc.position()
         tc.select(QTextCursor.WordUnderCursor)
+        if not full_word:
+            tc.setPosition(current_position, QTextCursor.KeepAnchor)
         selected_text = tc.selectedText()
+        # Check for start of function or end of variable
+        if current_position > 0 and selected_text and selected_text[0] in ('(', '%'):
+            current_position -= 1
+            tc.setPosition(current_position)
+            tc.select(QTextCursor.WordUnderCursor)
+            selected_text = tc.selectedText()
         start = tc.selectionStart()
         end = tc.selectionEnd()
         if current_position < start or current_position > end:
@@ -165,30 +233,44 @@ class ScriptTextEdit(QTextEdit):
             # previous word. Reset the selection if the new selection is
             # outside the old cursor position.
             tc.setPosition(current_position)
-        elif not selected_text.startswith('$') and not selected_text.startswith('%'):
+            selected_text = tc.selectedText()
+        if not selected_text.startswith('$') and not selected_text.startswith('%'):
             # Update selection to include the character before the
             # selected word to include the $ or %.
             tc.setPosition(start - 1 if start > 0 else 0)
             tc.setPosition(end, QTextCursor.KeepAnchor)
+            selected_text = tc.selectedText()
+            # No match, reset position (otherwise we could replace an additional character)
+            if not selected_text.startswith('$') and not selected_text.startswith('%'):
+                tc.setPosition(start)
+                tc.setPosition(end, QTextCursor.KeepAnchor)
         return tc
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Tab and self.completer.popup().isVisible():
-            self.completer.activated.emit(self.completer.get_selected())
-            return
+        if self.completer.popup().isVisible():
+            if event.key() in (Qt.Key_Tab, Qt.Key_Return, Qt.Key_Enter):
+                self.completer.activated.emit(self.completer.get_selected())
+                return
 
         super().keyPressEvent(event)
+        self.handle_autocomplete(event)
 
-        # Do not trigger autocomplete on cursor keys to allow for easier navigation
-        if event.key() in (Qt.Key_Left, Qt.Key_Right, Qt.Key_Up, Qt.Key_Down):
+    def handle_autocomplete(self, event):
+        # Only trigger autocomplete on actual text input or if the user explicitly
+        # requested auto completion with Ctrl+Space
+        force_completion_popup = event.key() == QtCore.Qt.Key_Space and event.modifiers() & QtCore.Qt.ControlModifier
+        if not (force_completion_popup
+                or event.key() in (Qt.Key_Backspace, Qt.Key_Delete)
+                or self.autocomplete_trigger_chars.match(event.text())):
+            self.popup_hide()
             return
 
-        tc = self.cursor_select_word()
+        tc = self.cursor_select_word(full_word=True)
         selected_text = tc.selectedText()
-        if selected_text:
+        if force_completion_popup or (selected_text and selected_text[0] in ('$', '%')):
             self.completer.setCompletionPrefix(selected_text)
             popup = self.completer.popup()
-            popup.setCurrentIndex(self.completer.completionModel().index(0, 0))
+            popup.setCurrentIndex(self.completer.currentIndex())
 
             cr = self.cursorRect()
             cr.setWidth(
