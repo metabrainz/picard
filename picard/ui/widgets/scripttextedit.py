@@ -151,7 +151,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
 class ScriptCompleter(QCompleter):
     def __init__(self, parent=None):
-        super().__init__(self.choices, parent)
+        super().__init__(sorted(self.choices), parent)
         self.setCompletionMode(QCompleter.UnfilteredPopupCompletion)
         self.highlighted.connect(self.set_highlighted)
         self.last_selected = ''
@@ -217,8 +217,6 @@ class ScriptTextEdit(QTextEdit):
         tc = self.textCursor()
         current_position = tc.position()
         tc.select(QTextCursor.WordUnderCursor)
-        if not full_word:
-            tc.setPosition(current_position, QTextCursor.KeepAnchor)
         selected_text = tc.selectedText()
         # Check for start of function or end of variable
         if current_position > 0 and selected_text and selected_text[0] in ('(', '%'):
@@ -244,6 +242,8 @@ class ScriptTextEdit(QTextEdit):
             if not selected_text.startswith('$') and not selected_text.startswith('%'):
                 tc.setPosition(start)
                 tc.setPosition(end, QTextCursor.KeepAnchor)
+        if not full_word:
+            tc.setPosition(current_position, QTextCursor.KeepAnchor)
         return tc
 
     def keyPressEvent(self, event):
@@ -265,7 +265,7 @@ class ScriptTextEdit(QTextEdit):
             self.popup_hide()
             return
 
-        tc = self.cursor_select_word(full_word=True)
+        tc = self.cursor_select_word(full_word=False)
         selected_text = tc.selectedText()
         if force_completion_popup or (selected_text and selected_text[0] in ('$', '%')):
             self.completer.setCompletionPrefix(selected_text)
