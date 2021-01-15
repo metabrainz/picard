@@ -95,8 +95,7 @@ class ExtensionPoint(object):
         enabled_plugins = config.setting["enabled_plugins"] if config else []
         for name in self.__dict:
             if name is None or name in enabled_plugins:
-                for item in self.__dict[name]:
-                    yield item
+                yield from self.__dict[name]
 
 
 class PluginShared(object):

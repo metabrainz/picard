@@ -89,8 +89,7 @@ class FileList(QtCore.QObject, FileListItem):
             update_metadata_images(self)
 
     def iterfiles(self, save=False):
-        for file in self.files:
-            yield file
+        yield from self.files
 
     def update(self):
         pass
