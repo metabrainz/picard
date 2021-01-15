@@ -338,8 +338,7 @@ class SortBySimilarity(PicardTestCase):
         ]
 
     def candidates(self):
-        for value in self.test_values:
-            yield value
+        yield from self.test_values
 
     def test_sort_by_similarity(self):
         results = [result.name for result in sort_by_similarity(self.candidates)]
