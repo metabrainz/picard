@@ -192,16 +192,17 @@ class ScriptTextEdit(QTextEdit):
         if completion.startswith('$'):
             completion += '('
         tc.insertText(completion)
-        pos = tc.position()
         # Peek at the next character to include it in the replacement
-        tc = self.textCursor()
-        tc.setPosition(pos + 1, QTextCursor.KeepAnchor)
-        first_char = completion[0]
-        next_char = tc.selectedText()
-        if (first_char == '$' and next_char == '(') or (first_char == '%' and next_char == '%'):
-            tc.removeSelectedText()
-        else:
-            tc.setPosition(pos)  # Reset position
+        if not tc.atEnd():
+            pos = tc.position()
+            tc = self.textCursor()
+            tc.setPosition(pos + 1, QTextCursor.KeepAnchor)
+            first_char = completion[0]
+            next_char = tc.selectedText()
+            if (first_char == '$' and next_char == '(') or (first_char == '%' and next_char == '%'):
+                tc.removeSelectedText()
+            else:
+                tc.setPosition(pos)  # Reset position
         self.setTextCursor(tc)
         self.popup_hide()
 
@@ -216,7 +217,7 @@ class ScriptTextEdit(QTextEdit):
             tc.setPosition(current_position, QTextCursor.KeepAnchor)
         selected_text = tc.selectedText()
         # Check for start of function or end of variable
-        if selected_text and selected_text[0] in ('(', '%'):
+        if current_position > 0 and selected_text and selected_text[0] in ('(', '%'):
             current_position -= 1
             tc.setPosition(current_position)
             tc.select(QTextCursor.WordUnderCursor)
