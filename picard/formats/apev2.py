@@ -92,6 +92,7 @@ class APEv2File(File):
     __translate = {
         "albumartist": "Album Artist",
         "remixer": "MixArtist",
+        "director": "Director",
         "website": "Weblink",
         "discsubtitle": "DiscSubtitle",
         "bpm": "BPM",
