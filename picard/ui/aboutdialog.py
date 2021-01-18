@@ -61,7 +61,7 @@ class AboutDialog(PicardDialog, SingletonDialog):
             if name != 'version'])
 
         args['formats'] = ", ".join(map(lambda x: x[1:], supported_extensions()))
-        args['copyright_years'] = '2004-2020'
+        args['copyright_years'] = '2004-2021'
         args['authors_credits'] = ", ".join([
             'Robert Kaye',
             'Lukáš Lalinský',
