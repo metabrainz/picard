@@ -7,7 +7,7 @@
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008 Robert Kaye
 # Copyright (C) 2008 Will
-# Copyright (C) 2008-2010, 2015, 2018-2020 Philipp Wolfer
+# Copyright (C) 2008-2010, 2015, 2018-2021 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2009 David Hilton
 # Copyright (C) 2011-2012 Chad Wilson
@@ -1146,6 +1146,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def cluster(self):
         self.tagger.cluster(self.selected_objects)
+        self.panel.update_current_view()
+        # Select clusters if no other item or only empty unclustered files item is selected
+        if not self.selected_objects or (len(self.selected_objects) == 1
+                and self.tagger.unclustered_files in self.selected_objects
+                and not self.tagger.unclustered_files.files):
+            self.panel.select_object(self.tagger.clusters)
         self.update_actions()
 
     def refresh(self):
