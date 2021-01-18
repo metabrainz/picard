@@ -6,7 +6,7 @@
 # Copyright (C) 2007 Robert Kaye
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008 Hendrik van Antwerpen
-# Copyright (C) 2008-2011, 2014-2015, 2018-2020 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014-2015, 2018-2021 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2009 Nikolai Prokoschenko
 # Copyright (C) 2011 Tim Blechmann
@@ -323,6 +323,14 @@ class MainPanel(QtWidgets.QSplitter):
             self._views[0].collapseAll()
         else:
             self._views[0].expandAll()
+
+    def select_object(self, obj):
+        item = obj.item
+        for view in self._views:
+            if view.indexFromItem(item).isValid():
+                view.setCurrentItem(item)
+                self._update_selection(view)
+                break
 
 
 def paint_fingerprint_icon(painter, rect, icon):
