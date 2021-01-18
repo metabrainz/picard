@@ -367,8 +367,8 @@ def func_num(parser, text, length):
     """`$unset(name)`
 
 Unsets the variable `name`.
-Allows for wildcards to unset certain tags (works with 'performer:*', 'comment:*', and 'lyrics:*').
-i.e. `$unset(performer:*)` would unset all performer tags."""
+Allows for wildcards to unset certain tags (works with "performer:\\*", "comment:\\*", and "lyrics:\\*").
+For example `$unset(performer:*)` would unset all performer tags."""
 ))
 def func_unset(parser, name):
     name = normalize_tagname(name)
