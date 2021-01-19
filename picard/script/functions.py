@@ -191,7 +191,7 @@ def func_if(parser, _if, _then, _else=None):
 
 
 @script_function(eval_args=False, documentation=N_(
-    """`$if2(a1,a2,a3,...)`
+    """`$if2(a1,a2,a3...)`
 
 Returns first non empty argument."""
 ))
@@ -492,7 +492,7 @@ def func_trim(parser, text, char=None):
 
 
 @script_function(documentation=N_(
-    """`$add(x,y,*args)`
+    """`$add(x,y...)`
 
 Add `y` to `x`.
 Can be used with an arbitrary number of arguments.
@@ -510,7 +510,7 @@ def func_add(parser, x, y, *args):
 
 
 @script_function(documentation=N_(
-    """`$sub(x,y,*args)`
+    """`$sub(x,y...)`
 
 Subtracts `y` from `x`.
 Can be used with an arbitrary number of arguments.
@@ -528,7 +528,7 @@ def func_sub(parser, x, y, *args):
 
 
 @script_function(documentation=N_(
-    """`$div(x,y,*args)`
+    """`$div(x,y...)`
 
 Divides `x` by `y`.
 Can be used with an arbitrary number of arguments.
@@ -548,7 +548,7 @@ def func_div(parser, x, y, *args):
 
 
 @script_function(documentation=N_(
-    """`$mod(x,y,*args)`
+    """`$mod(x,y...)`
 
 Returns the remainder of `x` divided by `y`.
 Can be used with an arbitrary number of arguments.
@@ -566,7 +566,7 @@ def func_mod(parser, x, y, *args):
 
 
 @script_function(documentation=N_(
-    """`$mul(x,y,*args)`
+    """`$mul(x,y...)`
 
 Multiplies `x` by `y`.
 Can be used with an arbitrary number of arguments.
@@ -584,7 +584,7 @@ def func_mul(parser, x, y, *args):
 
 
 @script_function(documentation=N_(
-    """`$or(x,y,*args)`
+    """`$or(x,y...)`
 
 Returns true if either `x` or `y` not empty.
     Can be used with an arbitrary number of arguments.
@@ -598,7 +598,7 @@ def func_or(parser, x, y, *args):
 
 
 @script_function(documentation=N_(
-    """`$and(x,y,*args)`
+    """`$and(x,y...)`
 
 Returns true if both `x` and `y` are not empty.
     Can be used with an arbitrary number of arguments.
@@ -870,14 +870,14 @@ def func_truncate(parser, text, length):
 
 
 @script_function(check_argcount=False, documentation=N_(
-    """`$swapprefix(text,*prefixes="a","the")`
+    """`$swapprefix(text,prefix...)`
 
 Moves the specified `prefixes` from the beginning to the end of `text`.
 If no prefix is specified 'A' and 'The' are used by default.
 
 Example:
 
-    $swapprefix(%albumartist%,A,An,The,Le)
+    $swapprefix(%albumartist%,A,An,The,La,Le,Les,Un,Une)
 
 _Since Picard 1.3, previously as a plugin since Picard 0.13_"""
 ))
@@ -891,10 +891,14 @@ def func_swapprefix(parser, text, *prefixes):
 
 
 @script_function(check_argcount=False, documentation=N_(
-    """`$delprefix(text,*prefixes="a","the")`
+    """`$delprefix(text,prefix...)`
 
 Deletes the specified `prefixes` from the beginning of `text`.
 If no prefix is specified 'A' and 'The' are used by default.
+
+Example:
+
+    $delprefix(%albumartist%,A,An,The,La,Le,Les,Un,Une)
 
 _Since Picard 1.3_"""
 ))
@@ -1164,7 +1168,11 @@ Iterates over each element found in the multi-value tag `name` and updates the
     value of the element to the value returned by `code`, returning the updated
     multi-value tag. For each loop, the element value is first stored in the tag
     `_loop_value` and the count is stored in the tag `_loop_count`. This allows
-    the element or count value to be accessed within the `code` script."""
+    the element or count value to be accessed within the `code` script.
+
+Example:
+    $map(First:A; Second:B,$upper(%_loop_count%=%_loop_value%)) results in "1=FIRST:A; 2=SECOND:B"
+"""
 ))
 def func_map(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
     multi_value = MultiValue(parser, multi, separator)
@@ -1252,7 +1260,12 @@ def func_datetime(parser, format=None):
 @script_function(eval_args=False, documentation=N_(
     """`$sortmulti(name,separator="; ")`
 
-Returns a copy of the multi-value tag `name` with the elements sorted in ascending order."""
+Returns a copy of the multi-value tag `name` with the elements sorted in ascending order.
+
+Example:
+
+    $sortmulti(B; A; C) results in "A; B; C"
+"""
 ))
 def func_sortmulti(parser, multi, separator=MULTI_VALUED_JOINER):
     multi_value = MultiValue(parser, multi, separator)
@@ -1264,7 +1277,12 @@ def func_sortmulti(parser, multi, separator=MULTI_VALUED_JOINER):
 
 Returns a copy of the multi-value tag `name` with the elements in reverse order.
     This can be used in conjunction with the `$sortmulti` function to sort in
-    descending order."""
+    descending order.
+
+Example:
+
+    $reversemulti($sortmulti(B; A; C)) results in "C; B; A"
+"""
 ))
 def func_reversemulti(parser, multi, separator=MULTI_VALUED_JOINER):
     multi_value = MultiValue(parser, multi, separator)
