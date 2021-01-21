@@ -492,6 +492,7 @@ class WebService(QtCore.QObject):
                 elif request.response_parser:
                     try:
                         document = request.response_parser(reply)
+                        log.debug("Response received: %s",document)
                     except Exception as e:
                         log.error("Unable to parse the response for %s: %s", url, e)
                         document = reply.readAll()
