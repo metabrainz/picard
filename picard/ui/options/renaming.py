@@ -253,6 +253,7 @@ class RenamingOptionsPage(OptionsPage):
         file.state = File.NORMAL
         file.metadata['album'] = 'Help!'
         file.metadata['title'] = 'Ticket to Ride'
+        file.metadata['~releasecomment'] = '2014 mono remaster'
         file.metadata['artist'] = 'The Beatles'
         file.metadata['artistsort'] = 'Beatles, The'
         file.metadata['albumartist'] = 'The Beatles'
@@ -261,18 +262,20 @@ class RenamingOptionsPage(OptionsPage):
         file.metadata['totaltracks'] = '14'
         file.metadata['discnumber'] = '1'
         file.metadata['totaldiscs'] = '1'
-        file.metadata['date'] = '1965-08-06'
+        file.metadata['originaldate'] = '1965-08-06'
+        file.metadata['originalyear'] = '1965'
+        file.metadata['date'] = '2014-09-08'
         file.metadata['releasetype'] = ['album', 'soundtrack']
         file.metadata['~primaryreleasetype'] = ['album']
         file.metadata['~secondaryreleasetype'] = ['soundtrack']
         file.metadata['releasestatus'] = 'official'
         file.metadata['releasecountry'] = 'US'
         file.metadata['~extension'] = 'mp3'
-        file.metadata['musicbrainz_albumid'] = '2c053984-4645-4699-9474-d2c35c227028'
+        file.metadata['musicbrainz_albumid'] = 'd7fbbb0a-1348-40ad-8eef-cd438d4cd203'
         file.metadata['musicbrainz_albumartistid'] = 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d'
         file.metadata['musicbrainz_artistid'] = 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d'
         file.metadata['musicbrainz_recordingid'] = 'ed052ae1-c950-47f2-8d2b-46e1b58ab76c'
-        file.metadata['musicbrainz_releasetrackid'] = '7668a62a-2fac-3151-a744-5707ac8c883c'
+        file.metadata['musicbrainz_releasetrackid'] = '392639f5-5629-477e-b04b-93bffa703405'
         return file
 
     def example_2(self):
@@ -290,6 +293,8 @@ class RenamingOptionsPage(OptionsPage):
         file.metadata['discnumber'] = '2'
         file.metadata['totaldiscs'] = '2'
         file.metadata['discsubtitle'] = "Beat Up"
+        file.metadata['originaldate'] = '2005-07-04'
+        file.metadata['originalyear'] = '2005'
         file.metadata['date'] = '2005-07-04'
         file.metadata['releasetype'] = ['album', 'compilation']
         file.metadata['~primaryreleasetype'] = 'album'
