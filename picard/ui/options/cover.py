@@ -58,9 +58,9 @@ class CoverOptionsPage(OptionsPage):
         TextOption("setting", "cover_image_filename", "cover"),
         BoolOption("setting", "save_images_overwrite", False),
         ListOption("setting", "ca_providers", [
+            ('CaaReleaseGroup', True),
             ('Cover Art Archive', True),
             ('UrlRelationships', True),
-            ('CaaReleaseGroup', False),
             ('Local', False),
         ]),
     ]
