@@ -376,7 +376,7 @@ class Cluster(FileList):
 
 class UnclusteredFiles(Cluster):
 
-    """Special cluster for 'Unmatched Files' which have no PUID and have not been clustered."""
+    """Special cluster for 'Unmatched Files' which have not been clustered."""
 
     def __init__(self):
         super().__init__(_("Unclustered Files"), special=True)
