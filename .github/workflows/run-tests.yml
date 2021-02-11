@@ -33,7 +33,7 @@ jobs:
         pip install pytest pytest-randomly pytest-cov
         pytest --verbose --cov=picard --cov-report xml:coverage.xml test
     - name: Test python-libdiscid (Linux)
-      if: runner.os == 'Linux'
+      if: runner.os == 'Linux' && matrix.python-version != '3.5'
       run: |
         sudo apt-get update
         sudo apt-get install libdiscid-dev
