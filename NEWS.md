@@ -877,6 +877,7 @@
 - [PICARD-922](https://tickets.metabrainz.org/browse/PICARD-922) - Make multi-value script functions work correctly
 - [PICARD-976](https://tickets.metabrainz.org/browse/PICARD-976) - Reimplement the picard WS code to accommodate future versions of MBWS
 - [PICARD-978](https://tickets.metabrainz.org/browse/PICARD-978) - Distinguish in UI between unclustered and release unmatched files
+- [PICARD-994](https://tickets.metabrainz.org/browse/PICARD-994) - Show all release countries in CD lookup
 - [PICARD-1075](https://tickets.metabrainz.org/browse/PICARD-1075) - Add unit tests for Metadata object variables
 - [PICARD-1087](https://tickets.metabrainz.org/browse/PICARD-1087) - Improvements to UI for Lookup CD
 - [PICARD-1100](https://tickets.metabrainz.org/browse/PICARD-1100) - Error when running confined in a snap because of gconf
