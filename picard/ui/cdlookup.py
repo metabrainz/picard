@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
-# Copyright (C) 2009, 2018-2019 Philipp Wolfer
+# Copyright (C) 2009, 2018-2019, 2021 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2013-2014, 2018 Laurent Monin
@@ -71,7 +71,8 @@ class CDLookupDialog(PicardDialog):
         release_list.setSortingEnabled(True)
         release_list.setAlternatingRowColors(True)
         release_list.setHeaderLabels([_("Album"), _("Artist"), _("Date"), _("Country"),
-                                      _("Labels"), _("Catalog #s"), _("Barcode")])
+                                      _("Labels"), _("Catalog #s"), _("Barcode"),
+                                      _("Disambiguation")])
         self.ui.submit_button.setIcon(QtGui.QIcon(":/images/cdrom.png"))
         if self.releases:
             def myjoin(values):
@@ -82,7 +83,7 @@ class CDLookupDialog(PicardDialog):
             for release in self.releases:
                 labels, catalog_numbers = label_info_from_node(release['label-info'])
                 dates, countries = release_dates_and_countries_from_node(release)
-                barcode = release['barcode'] if "barcode" in release else ""
+                barcode = release.get('barcode', '')
                 item = QtWidgets.QTreeWidgetItem(release_list)
                 if disc.mcn and compare_barcodes(barcode, disc.mcn):
                     selected = item
@@ -93,6 +94,7 @@ class CDLookupDialog(PicardDialog):
                 item.setText(4, myjoin(labels))
                 item.setText(5, myjoin(catalog_numbers))
                 item.setText(6, barcode)
+                item.setText(7, release.get('disambiguation', ''))
                 item.setData(0, QtCore.Qt.UserRole, release['id'])
             release_list.setCurrentItem(selected or release_list.topLevelItem(0))
             self.ui.ok_button.setEnabled(True)
