@@ -772,7 +772,7 @@ args = {
         'patch_version': picard_patch_version,
     },
     'scripts': ['scripts/' + PACKAGE_NAME],
-    'install_requires': ['PyQt5', 'mutagen', 'python-dateutil'],
+    'install_requires': ['PyQt5', 'mutagen', 'python-dateutil', 'fasteners'],
     'python_requires': '~=3.5',
     'classifiers': [
         'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
