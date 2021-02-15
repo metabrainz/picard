@@ -5,5 +5,5 @@ markdown
 mutagen>=1.37
 pyobjc-core<7.0; sys_platform == 'darwin'
 pyobjc-framework-Cocoa<7.0; sys_platform == 'darwin'
-PyQt5>=5.7.1
+PyQt5>=5.10
 pywin32; sys_platform == 'win32'
