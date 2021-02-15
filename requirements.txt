@@ -1,5 +1,6 @@
 python-dateutil>=2.7.3
 discid
+fasteners
 markdown
 mutagen>=1.37
 pyobjc-core<7.0; sys_platform == 'darwin'

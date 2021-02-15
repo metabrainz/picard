@@ -1,5 +1,6 @@
 python-dateutil==2.8.1
 discid==1.2.0
+fasteners==0.16
 markdown==3.2.2
 mutagen==1.45.1
 PyQt5==5.15.2
