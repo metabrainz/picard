@@ -32,6 +32,8 @@ import os
 import shutil
 import threading
 
+import fasteners
+
 from PyQt5 import QtCore
 
 from picard import (
@@ -129,6 +131,7 @@ class Config(QtCore.QSettings):
         """Common initializer method for :meth:`from_app` and
         :meth:`from_file`."""
 
+        self.setAtomicSyncRequired(False)  # See comment in event()
         self.application = ConfigSection(self, "application")
         self.setting = ConfigSection(self, "setting")
         self.persist = ConfigSection(self, "persist")
@@ -138,6 +141,24 @@ class Config(QtCore.QSettings):
         TextOption("application", "version", '0.0.0dev0')
         self._version = Version.from_string(self.application["version"])
         self._upgrade_hooks = dict()
+
+    def event(self, event):
+        if event.type() == QtCore.QEvent.UpdateRequest:
+            # Syncing the config file can trigger a deadlock between QSettings internal mutex and
+            # the Python GIL in PyQt up to 5.15.2. Workaround this by handling this ourselves
+            # with custom file locking.
+            # See also https: // tickets.metabrainz.org/browse/PICARD-2088
+            log.debug('Config file update requested on thread %r', threading.get_ident())
+            self.sync()
+            return True
+        else:
+            return super().event(event)
+
+    def sync(self):
+        # Custom file locking for save multi process syncing of the config file. This is needed
+        # as we have atomicSyncRequired disabled.
+        with fasteners.InterProcessLock(self.fileName()):
+            super().sync()
 
     @classmethod
     def from_app(cls, parent):
