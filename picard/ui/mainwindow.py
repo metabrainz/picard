@@ -1114,16 +1114,28 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             QtWidgets.QMessageBox.Yes)
         return ret == QtWidgets.QMessageBox.Yes
 
+    def get_first_obj_with_type(self, type):
+        for obj in self.selected_objects:
+            if isinstance(obj, type):
+                return obj
+        return None
+
     def show_more_tracks(self):
         obj = self.selected_objects[0]
-        if isinstance(obj, Track):
+        if isinstance(obj, Track) and obj.files:
             obj = obj.files[0]
+        if not isinstance(obj, File):
+            log.debug('show_more_tracks expected a File, got %r' % obj)
+            return
         dialog = TrackSearchDialog(self)
         dialog.load_similar_tracks(obj)
         dialog.exec_()
 
     def show_more_albums(self):
-        obj = self.selected_objects[0]
+        obj = self.get_first_obj_with_type(Cluster)
+        if not obj:
+            log.debug('show_more_albums expected a Cluster, got %r' % obj)
+            return
         dialog = AlbumSearchDialog(self)
         dialog.show_similar_albums(obj)
         dialog.exec_()
