@@ -479,7 +479,7 @@ class Album(DataObject, Item):
         config = get_config()
         require_authentication = False
         inc = ['release-groups', 'media', 'discids', 'recordings', 'artist-credits',
-               'artists', 'aliases', 'labels', 'isrcs', 'collections']
+               'artists', 'aliases', 'labels', 'isrcs', 'collections', 'annotation']
         if self.tagger.webservice.oauth_manager.is_authorized():
             require_authentication = True
             inc += ['user-collections']

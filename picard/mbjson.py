@@ -79,6 +79,7 @@ _RECORDING_TO_METADATA = {
 }
 
 _RELEASE_TO_METADATA = {
+    'annotation': '~releaseannotation',
     'asin': 'asin',
     'barcode': 'barcode',
     'country': 'releasecountry',
