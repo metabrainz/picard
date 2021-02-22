@@ -92,6 +92,8 @@ class ReleaseTest(MBJSONTest):
         self.assertEqual(m['script'], 'Latn')
         self.assertEqual(m['~albumartists'], 'Pink Floyd')
         self.assertEqual(m['~albumartists_sort'], 'Pink Floyd')
+        self.assertEqual(m['~releasecomment'], 'stereo')
+        self.assertEqual(m['~releaseannotation'], 'Original Vinyl release')
         self.assertEqual(m['~releaselanguage'], 'eng')
         self.assertEqual(m.getall('~releasecountries'), ['GB', 'NZ'])
         self.assertEqual(a.genres, {
