@@ -60,7 +60,7 @@ class CoverOptionsPage(OptionsPage):
         ListOption("setting", "ca_providers", [
             ('Cover Art Archive', True),
             ('UrlRelationships', True),
-            ('CaaReleaseGroup', False),
+            ('CaaReleaseGroup', True),
             ('Local', False),
         ]),
     ]
