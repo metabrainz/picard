@@ -5,7 +5,7 @@
 # Copyright (C) 2006-2007, 2011 Lukáš Lalinský
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
-# Copyright (C) 2012-2013, 2018 Philipp Wolfer
+# Copyright (C) 2012-2013, 2018, 2021 Philipp Wolfer
 # Copyright (C) 2013, 2018 Laurent Monin
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2017 Sambhav Kothari
@@ -26,6 +26,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+import re
 from urllib.parse import (
     parse_qs,
     urlparse,
@@ -38,18 +39,52 @@ from picard.config import get_config
 from picard.util import mbid_validate
 
 
-def response(code):
+def response(code, origin=None):
     if code == 200:
         resp = '200 OK'
     elif code == 400:
         resp = '400 Bad Request'
     else:
         resp = '500 Internal Server Error'
+    if origin:
+        allowOrigin = 'Access-Control-Allow-Origin: {}\r\n'.format(origin)
+    else:
+        allowOrigin = ''
     return bytearray(
         'HTTP/1.1 {}\r\n'
         'Cache-Control: max-age=0\r\n'
+        '{}'
         '\r\n'
-        'Nothing to see here.\r\n'.format(resp), 'ascii')
+        'Nothing to see here.\r\n'.format(resp, allowOrigin), 'ascii')
+
+
+def _read_origin(conn):
+    while True:
+        line = conn.readLine().data()
+        if not line or line == b'\r\n':
+            break
+        if line.startswith(b'Origin:'):
+            header, origin = line.decode().split()
+            log.debug('Browser sent origin %s', origin)
+            if _is_valid_origin(origin):
+                return origin
+            else:
+                return None
+    return None
+
+
+RE_VALID_ORIGINS = re.compile(r'(.*\.)?musicbrainz.org')
+
+
+def _is_valid_origin(origin):
+    url = urlparse(origin)
+    hostname = url.hostname
+    if not hostname:
+        return False
+    if RE_VALID_ORIGINS.match(hostname):
+        return True
+    config = get_config()
+    return config.setting['server_host'] == hostname
 
 
 class BrowserIntegration(QtNetwork.QTcpServer):
@@ -123,10 +158,11 @@ class BrowserIntegration(QtNetwork.QTcpServer):
 
         try:
             line = rawline.decode()
+            origin = _read_origin(conn)
             if parse_line(line):
-                conn.write(response(200))
+                conn.write(response(200, origin))
             else:
-                conn.write(response(400))
+                conn.write(response(400, origin))
         except UnicodeDecodeError as e:
             conn.write(response(500))
             log.error(e)
