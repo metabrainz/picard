@@ -272,6 +272,7 @@ class Tagger(QtWidgets.QApplication):
             self.pluginmanager.load_plugins_from_directory(USER_PLUGIN_DIR)
 
         self.browser_integration = BrowserIntegration()
+        self.browser_integration.listen_port_changed.connect(self.listen_port_changed)
 
         self._pending_files_count = 0
         self.files = {}
@@ -661,6 +662,15 @@ class Tagger(QtWidgets.QApplication):
         """Save the specified objects."""
         for file in iter_files_from_objects(objects, save=True):
             file.save()
+
+    def load_mbid(self, type, mbid):
+        self.bring_tagger_front()
+        if type == 'album':
+            self.load_album(mbid)
+        elif type == 'nat':
+            self.load_nat(mbid)
+        else:
+            log.warning('Unknown type to load: %s', type)
 
     def load_album(self, album_id, discid=None):
         album_id = self.mbid_redirects.get(album_id, album_id)
