@@ -123,6 +123,21 @@ class BrowserIntegration(QtCore.QObject):
 
 class RequestHandler(BaseHTTPRequestHandler):
 
+    def do_OPTIONS(self):
+        origin = self.headers['origin']
+        if _is_valid_origin(origin):
+            self.send_response(204)
+            self.send_header('Access-Control-Allow-Origin', origin)
+            self.send_header('Access-Control-Allow-Methods', 'GET')
+            self.send_header('Access-Control-Allow-Credentials', 'false')
+            self.send_header('Access-Control-Allow-Private-Network', 'true')
+            self.send_header('Access-Control-Max-Age', 3600)
+            self.send_header('Vary', 'Origin')
+            self.end_headers()
+        else:
+            self.send_response(401)
+            self.end_headers()
+
     def do_GET(self):
         try:
             self._handle_get()
