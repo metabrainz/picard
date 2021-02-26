@@ -157,8 +157,14 @@ class Config(QtCore.QSettings):
     def sync(self):
         # Custom file locking for save multi process syncing of the config file. This is needed
         # as we have atomicSyncRequired disabled.
-        with fasteners.InterProcessLock(self.fileName()):
+        with fasteners.InterProcessLock(self.get_lockfile_name()):
             super().sync()
+
+    def get_lockfile_name(self):
+        filename = self.fileName()
+        directory = os.path.dirname(filename)
+        filename = '.' + os.path.basename(filename) + '.synclock'
+        return os.path.join(directory, filename)
 
     @classmethod
     def from_app(cls, parent):
