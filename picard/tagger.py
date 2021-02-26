@@ -272,6 +272,7 @@ class Tagger(QtWidgets.QApplication):
             self.pluginmanager.load_plugins_from_directory(USER_PLUGIN_DIR)
 
         self.browser_integration = BrowserIntegration()
+        self.browser_integration.listen_port_changed.connect(self.listen_port_changed)
 
         self._pending_files_count = 0
         self.files = {}

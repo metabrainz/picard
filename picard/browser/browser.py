@@ -5,7 +5,7 @@
 # Copyright (C) 2006-2007, 2011 Lukáš Lalinský
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
-# Copyright (C) 2012-2013, 2018 Philipp Wolfer
+# Copyright (C) 2012-2013, 2018, 2021 Philipp Wolfer
 # Copyright (C) 2013, 2018 Laurent Monin
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2017 Sambhav Kothari
@@ -25,115 +25,131 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+from http.server import (
+    BaseHTTPRequestHandler,
+    HTTPServer,
+)
+import threading
 from urllib.parse import (
     parse_qs,
     urlparse,
 )
 
-from PyQt5 import QtNetwork
+from PyQt5 import QtCore
 
-from picard import log
+from picard import (
+    PICARD_APP_NAME,
+    PICARD_ORG_NAME,
+    PICARD_VERSION_STR,
+    log,
+)
 from picard.config import get_config
 from picard.util import mbid_validate
+from picard.util.thread import to_main
 
 
-def response(code):
-    if code == 200:
-        resp = '200 OK'
-    elif code == 400:
-        resp = '400 Bad Request'
-    else:
-        resp = '500 Internal Server Error'
-    return bytearray(
-        'HTTP/1.1 {}\r\n'
-        'Cache-Control: max-age=0\r\n'
-        '\r\n'
-        'Nothing to see here.\r\n'.format(resp), 'ascii')
+SERVER_VERSION = '%s-%s/%s' % (PICARD_ORG_NAME, PICARD_APP_NAME, PICARD_VERSION_STR)
 
 
-class BrowserIntegration(QtNetwork.QTcpServer):
+class BrowserIntegration(QtCore.QObject):
 
-    """Simple HTTP server for web browser integration."""
+    listen_port_changed = QtCore.pyqtSignal(int)
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.newConnection.connect(self._accept_connection)
-        self.port = 0
-        self.host_address = None
+        self.server = None
+
+    @property
+    def host_address(self):
+        if not self.server:
+            return ''
+        return self.server.server_address[0]
+
+    @property
+    def port(self):
+        if not self.server:
+            return 0
+        return self.server.server_address[1]
 
     def start(self):
-        if self.port:
+        if self.server:
             self.stop()
 
         config = get_config()
         if config.setting["browser_integration_localhost_only"]:
-            self.host_address = QtNetwork.QHostAddress(QtNetwork.QHostAddress.LocalHost)
+            host_address = '127.0.0.1'
         else:
-            self.host_address = QtNetwork.QHostAddress(QtNetwork.QHostAddress.Any)
+            host_address = '0.0.0.0'  # nosec
 
         for port in range(config.setting["browser_integration_port"], 65535):
-            if self.listen(self.host_address, port):
-                log.debug("Starting the browser integration (%s:%d)", self.host_address.toString(), port)
-                self.port = port
-                self.tagger.listen_port_changed.emit(self.port)
-                break
+            try:
+                self.server = HTTPServer((host_address, port), RequestHandler)
+            except OSError:
+                continue
+            log.info("Starting the browser integration (%s:%d)", host_address, port)
+            self.listen_port_changed.emit(port)
+            threading.Thread(target=self.server.serve_forever).start()
+            break
+        else:
+            log.error("Failed finding an available port for the browser integration.")
+            self.stop()
 
     def stop(self):
-        if self.port > 0:
-            log.debug("Stopping the browser integration")
-            self.port = 0
-            self.tagger.listen_port_changed.emit(self.port)
-            self.close()
+        if self.server:
+            log.info("Stopping the browser integration")
+            self.server.shutdown()
+            self.server.server_close()
+            self.server = None
+            self.listen_port_changed.emit(self.port)
         else:
             log.debug("Browser integration inactive, no need to stop")
 
-    def _process_request(self):
-        conn = self.sender()
-        rawline = conn.readLine().data()
-        log.debug("Browser integration request: %r", rawline)
 
-        def parse_line(line):
-            orig_line = line
-            try:
-                line = line.split()
-                if line[0] == "GET" and "?" in line[1]:
-                    parsed = urlparse(line[1])
-                    args = parse_qs(parsed.query)
-                    if 'id' in args and args['id']:
-                        mbid = args['id'][0]
-                        if not mbid_validate(mbid):
-                            log.error("Browser integration failed: bad mbid %r", mbid)
-                            return False
+class RequestHandler(BaseHTTPRequestHandler):
 
-                        def load_it(loader):
-                            self.tagger.bring_tagger_front()
-                            loader(mbid)
-                            return True
-                        action = parsed.path
-                        if action == '/openalbum':
-                            return load_it(self.tagger.load_album)
-                        elif action == '/opennat':
-                            return load_it(self.tagger.load_nat)
-            except Exception as e:
-                log.error("Browser integration failed with %r on line %r", e, orig_line)
-                return False
-            log.error("Browser integration failed: cannot parse %r", orig_line)
+    def do_GET(self):
+        try:
+            self._handle_get()
+        except Exception as e:
+            self._response(500, str(e))
+
+    def _handle_get(self):
+        parsed = urlparse(self.path)
+        args = parse_qs(parsed.query)
+
+        if 'id' in args and args['id']:
+            mbid = args['id'][0]
+            if self._load_mbid(parsed.path, mbid):
+                self._response(200, _('MBID "%s" loaded') % mbid)
+            else:
+                self._response(400, _('Could not load MBID "%s"') % mbid)
+        else:
+            self._response(400, _('Missing parameter "id".'))
+
+    @staticmethod
+    def _load_mbid(action, mbid):
+        if not mbid_validate(mbid):
+            log.error("Browser integration failed: bad mbid %r", mbid)
             return False
 
-        try:
-            line = rawline.decode()
-            if parse_line(line):
-                conn.write(response(200))
-            else:
-                conn.write(response(400))
-        except UnicodeDecodeError as e:
-            conn.write(response(500))
-            log.error(e)
-            return
-        finally:
-            conn.disconnectFromHost()
+        tagger = QtCore.QCoreApplication.instance()
 
-    def _accept_connection(self):
-        conn = self.nextPendingConnection()
-        conn.readyRead.connect(self._process_request)
+        def load_it(loader):
+            tagger.bring_tagger_front()
+            loader(mbid)
+
+        if action == '/openalbum':
+            to_main(load_it, tagger.load_album)
+            return True
+        elif action == '/opennat':
+            to_main(load_it, tagger.load_nat)
+            return True
+        return False
+
+    def _response(self, code, content=''):
+        self.server_version = SERVER_VERSION
+        self.send_response(code)
+        self.send_header('Content-Type', 'text/plain')
+        self.send_header('Cache-Control', 'max-age=0')
+        self.end_headers()
+        self.wfile.write(content.encode())
