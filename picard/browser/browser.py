@@ -133,16 +133,16 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.send_header('Access-Control-Allow-Private-Network', 'true')
             self.send_header('Access-Control-Max-Age', 3600)
             self.send_header('Vary', 'Origin')
-            self.end_headers()
         else:
             self.send_response(401)
-            self.end_headers()
+        self.end_headers()
 
     def do_GET(self):
         try:
             self._handle_get()
-        except Exception as e:
-            self._response(500, str(e))
+        except Exception:
+            log.error('Browser integration failed handling request', exc_info=True)
+            self._response(500, 'Unexpected request error')
 
     def _handle_get(self):
         parsed = urlparse(self.path)
@@ -154,16 +154,16 @@ class RequestHandler(BaseHTTPRequestHandler):
         elif 'id' in args and args['id']:
             mbid = args['id'][0]
             if self._load_mbid(action, mbid):
-                self._response(200, _('MBID "%s" loaded') % mbid)
+                self._response(200, 'MBID "%s" loaded' % mbid)
             else:
-                self._response(400, _('Could not load MBID "%s"') % mbid)
+                self._response(400, 'Unknown action or "id" is not a valid MBID.')
         else:
-            self._response(400, _('Missing parameter "id".'))
+            self._response(400, 'Missing parameter "id".')
 
     @staticmethod
     def _load_mbid(action, mbid):
         if not mbid_validate(mbid):
-            log.error("Browser integration failed: bad mbid %r", mbid)
+            log.error('Browser integration failed: bad mbid')
             return False
 
         tagger = QtCore.QCoreApplication.instance()
