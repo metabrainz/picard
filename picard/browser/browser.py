@@ -151,34 +151,24 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         if action == '/':
             self._response(200, SERVER_VERSION)
-        elif 'id' in args and args['id']:
+        elif action == '/openalbum':
+            self._load_mbid('album', args)
+        elif action == '/opennat':
+            self._load_mbid('nat', args)
+        else:
+            self._response(404, 'Unknown action.')
+
+    def _load_mbid(self, type, args):
+        if 'id' in args and args['id']:
             mbid = args['id'][0]
-            if self._load_mbid(action, mbid):
-                self._response(200, 'MBID "%s" loaded' % mbid)
+            if not mbid_validate(mbid):
+                self._response(400, '"id" is not a valid MBID.')
             else:
-                self._response(400, 'Unknown action or "id" is not a valid MBID.')
+                tagger = QtCore.QCoreApplication.instance()
+                to_main(tagger.load_mbid, type, mbid)
+                self._response(200, 'MBID "%s" loaded' % mbid)
         else:
             self._response(400, 'Missing parameter "id".')
-
-    @staticmethod
-    def _load_mbid(action, mbid):
-        if not mbid_validate(mbid):
-            log.error('Browser integration failed: bad mbid')
-            return False
-
-        tagger = QtCore.QCoreApplication.instance()
-
-        def load_it(loader):
-            tagger.bring_tagger_front()
-            loader(mbid)
-
-        if action == '/openalbum':
-            to_main(load_it, tagger.load_album)
-            return True
-        elif action == '/opennat':
-            to_main(load_it, tagger.load_nat)
-            return True
-        return False
 
     def _response(self, code, content=''):
         self.server_version = SERVER_VERSION

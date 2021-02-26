@@ -663,6 +663,15 @@ class Tagger(QtWidgets.QApplication):
         for file in iter_files_from_objects(objects, save=True):
             file.save()
 
+    def load_mbid(self, type, mbid):
+        self.bring_tagger_front()
+        if type == 'album':
+            self.load_album(mbid)
+        elif type == 'nat':
+            self.load_nat(mbid)
+        else:
+            log.warning('Unknown type to load: %s', type)
+
     def load_album(self, album_id, discid=None):
         album_id = self.mbid_redirects.get(album_id, album_id)
         album = self.albums.get(album_id)
