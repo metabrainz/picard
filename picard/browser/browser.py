@@ -116,10 +116,13 @@ class RequestHandler(BaseHTTPRequestHandler):
     def _handle_get(self):
         parsed = urlparse(self.path)
         args = parse_qs(parsed.query)
+        action = parsed.path
 
-        if 'id' in args and args['id']:
+        if action == '/':
+            self._response(200, SERVER_VERSION)
+        elif 'id' in args and args['id']:
             mbid = args['id'][0]
-            if self._load_mbid(parsed.path, mbid):
+            if self._load_mbid(action, mbid):
                 self._response(200, _('MBID "%s" loaded') % mbid)
             else:
                 self._response(400, _('Could not load MBID "%s"') % mbid)
