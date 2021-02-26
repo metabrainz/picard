@@ -29,6 +29,7 @@ from http.server import (
     BaseHTTPRequestHandler,
     HTTPServer,
 )
+import re
 import threading
 from urllib.parse import (
     parse_qs,
@@ -49,6 +50,21 @@ from picard.util.thread import to_main
 
 
 SERVER_VERSION = '%s-%s/%s' % (PICARD_ORG_NAME, PICARD_APP_NAME, PICARD_VERSION_STR)
+RE_VALID_ORIGINS = re.compile(r'^(?:[^\.]+\.)*musicbrainz\.org$')
+
+
+def _is_valid_origin(origin):
+    try:
+        url = urlparse(origin)
+    except ValueError:
+        return False
+    hostname = url.hostname
+    if not hostname:
+        return False
+    if RE_VALID_ORIGINS.match(hostname):
+        return True
+    config = get_config()
+    return config.setting['server_host'] == hostname
 
 
 class BrowserIntegration(QtCore.QObject):
@@ -154,5 +170,9 @@ class RequestHandler(BaseHTTPRequestHandler):
         self.send_response(code)
         self.send_header('Content-Type', 'text/plain')
         self.send_header('Cache-Control', 'max-age=0')
+        origin = self.headers['origin']
+        if _is_valid_origin(origin):
+            self.send_header('Access-Control-Allow-Origin', origin)
+            self.send_header('Vary', 'Origin')
         self.end_headers()
         self.wfile.write(content.encode())
