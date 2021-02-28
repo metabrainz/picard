@@ -870,10 +870,11 @@ def func_truncate(parser, text, length):
 
 
 @script_function(check_argcount=False, documentation=N_(
-    """`$swapprefix(text,prefix,...)`
+    """`$swapprefix(text,prefix1,prefix2,...)`
 
-Moves the specified `prefixes` from the beginning to the end of `text`.
-If no prefix is specified 'A' and 'The' are used by default.
+Moves the specified prefixes from the beginning to the end of `text`. Multiple
+prefixes can be specified as separate parameters. If no prefix is specified 'A'
+and 'The' are used by default.
 
 Example:
 
@@ -891,10 +892,11 @@ def func_swapprefix(parser, text, *prefixes):
 
 
 @script_function(check_argcount=False, documentation=N_(
-    """`$delprefix(text,prefix,...)`
+    """`$delprefix(text,prefix1,prefix2,...)`
 
-Deletes the specified `prefixes` from the beginning of `text`.
-If no prefix is specified 'A' and 'The' are used by default.
+Deletes the specified prefixes`from the beginning of `text`. Multiple
+prefixes can be specified as separate parameters.  If no prefix is specified 'A'
+and 'The' are used by default.
 
 Example:
 
