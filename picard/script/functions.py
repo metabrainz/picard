@@ -894,7 +894,7 @@ def func_swapprefix(parser, text, *prefixes):
 @script_function(check_argcount=False, documentation=N_(
     """`$delprefix(text,prefix1,prefix2,...)`
 
-Deletes the specified prefixes`from the beginning of `text`. Multiple
+Deletes the specified prefixes from the beginning of `text`. Multiple
 prefixes can be specified as separate parameters.  If no prefix is specified 'A'
 and 'The' are used by default.
 
