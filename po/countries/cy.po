@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 msgid ""
 msgstr ""

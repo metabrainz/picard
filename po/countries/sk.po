@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Lukáš Lalinský <lalinsky@gmail.com>, 2012
 # Pavol Babinčák <scroolik@gmail.com>, 2012

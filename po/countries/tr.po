@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Kerem Kuralay, 2015
 # ym syserror <cilek.kocak@gmail.com>, 2012

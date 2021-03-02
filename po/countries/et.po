@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Mihkel Tõnnov <mihhkel@gmail.com>, 2008-2009,2011-2013
 # Mihkel Tõnnov <mihhkel@gmail.com>, 2015

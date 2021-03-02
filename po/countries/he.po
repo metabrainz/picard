@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Avi Markovitz <avi.markovitz@gmail.com>, 2018
 msgid ""

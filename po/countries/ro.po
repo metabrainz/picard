@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # viper666 <bruceradu@gmail.com>, 2013,2019
 msgid ""

@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Gurmeet Kochar <gomikochar@gmail.com>, 2015
 msgid ""

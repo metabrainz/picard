@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Adolfo Jayme-Barrientos, 2016
 # Alexander Dupuy <alex.dupuy@mac.com>, 2012

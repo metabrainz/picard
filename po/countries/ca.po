@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Aniol, 2015
 msgid ""

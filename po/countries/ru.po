@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Anton Karpuzikov <karpuzikovanton@gmail.com>, 2020
 # derr84 <derr84@mail.ru>, 2013

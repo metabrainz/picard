@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # André Aparecido Caniato <andre_caniato@yahoo.com.br>, 2015
 # Eduardo Bastos <eduardorochacg@gmail.com>, 2012

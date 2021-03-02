@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Xosé, 2015
 msgid ""

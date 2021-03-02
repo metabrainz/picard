@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Никола Крстевски <nikola.krstevski@gmail.com>, 2015
 msgid ""

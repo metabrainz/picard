@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Gioele <gioele@svario.it>, 2012
 # leofiore <leofiore@libero.it>, 2012

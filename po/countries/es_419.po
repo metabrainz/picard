@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Guillermo Montenegro <gmontenegropintos@gmail.com>, 2019
 msgid ""

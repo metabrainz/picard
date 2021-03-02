@@ -4,6 +4,7 @@
 # Dmitr Y, 2017
 # Ekaterina <nawsikaya@bk.ru>, 2020
 # greycat <greycat.na.kor@gmail.com>, 2012
+# Konstantin Artemev <konst.artemev@gmail.com>, 2021
 # MrClon . <MrClon2007@yandex.ru>, 2019
 # Nikita P <nik-p13@yandex.ru>, 2018
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
@@ -22,8 +23,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-12-20 21:34+0000\n"
-"Last-Translator: Ekaterina <nawsikaya@bk.ru>\n"
+"PO-Revision-Date: 2021-03-01 17:25+0000\n"
+"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/musicbrainz/musicbrainz/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -169,7 +170,7 @@ msgctxt "artist_type"
 msgid ""
 "A grouping of multiple musicians who perform together (in some cases, some "
 "or all of the members might differ in different performances or recordings)."
-msgstr ""
+msgstr "Группа из нескольких музыкантов, которые часто выступают вместе (в некоторых случаях, состав участников может отличаться в некоторых или всех выступлениях или записях)."
 
 #: DB:instrument_type/description:7
 msgctxt "instrument_type"
@@ -329,6 +330,11 @@ msgctxt "series_type"
 msgid "A series of related concerts by an artist in different locations."
 msgstr "Серия связанных концертов артиста в разных местах."
 
+#: DB:series_type/description:12
+msgctxt "series_type"
+msgid "A series of related concerts by an artist in the same location."
+msgstr ""
+
 #: DB:series_type/description:1
 msgctxt "series_type"
 msgid "A series of release groups."
@@ -436,6 +442,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp minor"
 msgstr "Ля диез минор"
 
+#: DB:work_attribute_type/name:57
+msgctxt "work_attribute_type"
+msgid "AACIMH ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:44
 msgctxt "work_attribute_type"
 msgid "ACAM ID"
@@ -446,9 +457,19 @@ msgctxt "work_attribute_type"
 msgid "ACDAM ID"
 msgstr ""
 
+#: DB:work_attribute_type/name:58
+msgctxt "work_attribute_type"
+msgid "AEI ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:43
 msgctxt "work_attribute_type"
 msgid "AGADU ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:63
+msgctxt "work_attribute_type"
+msgid "AKKA/LAA ID"
 msgstr ""
 
 #: DB:work_attribute_type/name:23
@@ -2787,6 +2808,11 @@ msgctxt "medium_format"
 msgid "HDCD"
 msgstr "HDCD"
 
+#: DB:work_attribute_type/name:64
+msgctxt "work_attribute_type"
+msgid "HFA ID"
+msgstr ""
+
 #: DB:medium_format/name:37
 msgctxt "medium_format"
 msgid "HQCD"
@@ -3172,6 +3198,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Belgian rights society SABAM"
 msgstr "ID Бельгийского правозащитного общества SABAM"
 
+#: DB:work_attribute_type/description:61
+msgctxt "work_attribute_type"
+msgid "ID for the Bolivian rights society SOBODAYCOM"
+msgstr ""
+
 #: DB:work_attribute_type/description:37
 msgctxt "work_attribute_type"
 msgid "ID for the Brazilian rights society ECAD"
@@ -3217,6 +3248,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Danish rights society KODA"
 msgstr ""
 
+#: DB:work_attribute_type/description:60
+msgctxt "work_attribute_type"
+msgid "ID for the Dominican rights society SGACEDOM"
+msgstr ""
+
 #: DB:work_attribute_type/description:26
 msgctxt "work_attribute_type"
 msgid "ID for the Dutch rights society BUMA/STEMRA"
@@ -3237,6 +3273,16 @@ msgctxt "work_attribute_type"
 msgid "ID for the German rights society GEMA"
 msgstr ""
 
+#: DB:work_attribute_type/description:58
+msgctxt "work_attribute_type"
+msgid "ID for the Guatemalan rights society AEI"
+msgstr ""
+
+#: DB:work_attribute_type/description:57
+msgctxt "work_attribute_type"
+msgid "ID for the Honduran rights society AACIMH"
+msgstr ""
+
 #: DB:work_attribute_type/description:19
 msgctxt "work_attribute_type"
 msgid "ID for the Hong Kong rights society CASH"
@@ -3245,6 +3291,11 @@ msgstr ""
 #: DB:work_attribute_type/description:48
 msgctxt "work_attribute_type"
 msgid "ID for the Hungarian rights society ARTISJUS"
+msgstr ""
+
+#: DB:work_attribute_type/description:54
+msgctxt "work_attribute_type"
+msgid "ID for the Icelandic rights society STEF"
 msgstr ""
 
 #: DB:work_attribute_type/description:29
@@ -3277,6 +3328,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Korean rights society KOMCA"
 msgstr ""
 
+#: DB:work_attribute_type/description:63
+msgctxt "work_attribute_type"
+msgid "ID for the Latvian rights society AKKA/LAA"
+msgstr ""
+
 #: DB:work_attribute_type/description:49
 msgctxt "work_attribute_type"
 msgid "ID for the Malaysian rights society MACP"
@@ -3286,6 +3342,16 @@ msgstr ""
 msgctxt "work_attribute_type"
 msgid "ID for the Mexican rights society SACM"
 msgstr "ID Мексиканского правового общества SACM"
+
+#: DB:work_attribute_type/description:59
+msgctxt "work_attribute_type"
+msgid "ID for the Nicaraguan rights society NICAUTOR"
+msgstr ""
+
+#: DB:work_attribute_type/description:62
+msgctxt "work_attribute_type"
+msgid "ID for the Panamanian rights society SPAC"
+msgstr ""
 
 #: DB:work_attribute_type/description:46
 msgctxt "work_attribute_type"
@@ -3305,6 +3371,11 @@ msgstr "ID Польского правозащитного общества ZAiK
 #: DB:work_attribute_type/description:35
 msgctxt "work_attribute_type"
 msgid "ID for the Portuguese rights society SPA"
+msgstr ""
+
+#: DB:work_attribute_type/description:56
+msgctxt "work_attribute_type"
+msgid "ID for the Salvadoran rights society SACIM"
 msgstr ""
 
 #: DB:work_attribute_type/description:45
@@ -3362,9 +3433,19 @@ msgctxt "work_attribute_type"
 msgid "ID for the international (formerly US) rights society AMRA"
 msgstr ""
 
+#: DB:work_attribute_type/description:55
+msgctxt "work_attribute_type"
+msgid "ID for the international rights society consortium LatinNet"
+msgstr ""
+
 #: DB:work_attribute_type/description:22
 msgctxt "work_attribute_type"
 msgid "ID for the private licensing company CCLI"
+msgstr ""
+
+#: DB:work_attribute_type/description:64
+msgctxt "work_attribute_type"
+msgid "ID for the private licensing company HFA (Harry Fox Agency)"
 msgstr ""
 
 #: DB:work_attribute_type/name:52
@@ -4081,6 +4162,11 @@ msgctxt "medium_format"
 msgid "LaserDisc"
 msgstr "Лазерный диск"
 
+#: DB:work_attribute_type/name:55
+msgctxt "work_attribute_type"
+msgid "LatinNet ID"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:159
 msgctxt "work_attribute_type_allowed_value"
 msgid "Latāngi"
@@ -4694,6 +4780,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:182
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mōhanaṁ"
+msgstr ""
+
+#: DB:work_attribute_type/name:59
+msgctxt "work_attribute_type"
+msgid "NICAUTOR ID"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:647
@@ -5598,6 +5689,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Reng-i Dil"
 msgstr ""
 
+#: DB:series_type/name:12
+msgctxt "series_type"
+msgid "Residency"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:517
 msgctxt "work_attribute_type_allowed_value"
 msgid "Revnaknüma"
@@ -5754,6 +5850,11 @@ msgctxt "work_attribute_type"
 msgid "SACEM ID"
 msgstr "SACEM ID"
 
+#: DB:work_attribute_type/name:56
+msgctxt "work_attribute_type"
+msgid "SACIM ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:27
 msgctxt "work_attribute_type"
 msgid "SACM ID"
@@ -5789,6 +5890,11 @@ msgctxt "work_attribute_type"
 msgid "SESAC ID"
 msgstr "SESAC ID"
 
+#: DB:work_attribute_type/name:60
+msgctxt "work_attribute_type"
+msgid "SGACEDOM ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:20
 msgctxt "work_attribute_type"
 msgid "SGAE ID"
@@ -5819,6 +5925,11 @@ msgctxt "work_attribute_type"
 msgid "SIAE ID"
 msgstr ""
 
+#: DB:work_attribute_type/name:61
+msgctxt "work_attribute_type"
+msgid "SOBODAYCOM ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:10
 msgctxt "work_attribute_type"
 msgid "SOCAN ID"
@@ -5832,6 +5943,16 @@ msgstr ""
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:62
+msgctxt "work_attribute_type"
+msgid "SPAC ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:54
+msgctxt "work_attribute_type"
+msgid "STEF ID"
 msgstr ""
 
 #: DB:work_attribute_type/name:50

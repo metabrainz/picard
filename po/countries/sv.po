@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Kebabpizza <alex_elle@hotmail.com>, 2017
 # A. Regnander <anton_r_3@hotmail.com>, 2017

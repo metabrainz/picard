@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # CatQuest, The Endeavouring Cat, 2015
 # Kurt-Håkon Eilertsen <kurt@kheds.com>, 2014

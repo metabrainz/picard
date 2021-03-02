@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2006
 # Michael Albertsen <culex@culex.dk>, 2019

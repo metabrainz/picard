@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Arto Astala, 2016
 # Arto Astala, 2016

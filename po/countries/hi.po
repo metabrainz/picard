@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Antara B <antara.raaghavi@gmail.com>, 2020
 # Rishabh Jain <rishabh26jain5@gmail.com>, 2016

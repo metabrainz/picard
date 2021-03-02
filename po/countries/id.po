@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Ian Perdiansah <ianperdiansah05@gmail.com>, 2020
 msgid ""

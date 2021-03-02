@@ -1,12 +1,12 @@
 # 
 # Translators:
-# Avi Markovitz <avi.markovitz@gmail.com>, 2018-2020
+# Avi Markovitz <avi.markovitz@gmail.com>, 2018-2021
 # Avi Markovitz <avi.markovitz@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-12-19 09:47+0000\n"
-"Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
+"PO-Revision-Date: 2021-03-01 17:25+0000\n"
+"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +27,7 @@ msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr "\"סונטה\" הוא מונח כללי המשמש לתיאור יצירות אינסטרומנטלית בקנה מידה קטן (לעתים קרובות סולן או סולן + קלידן) , תחילתו במוסיקת הבארוק."
+msgstr "\"סונטה\" היא מונח כללי המשמש לתיאור יצירות אינסטרומנטלית בקנה מידה קטן (לעתים קרובות סולן או סולן + קלידן) , תחילתו במוזיקת הברוק."
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
@@ -227,14 +227,14 @@ msgid ""
 "A place consisting of a large enclosed area with a central event space "
 "surrounded by tiered seating for spectators, which can be used for indoor "
 "sports, concerts and other entertainment events."
-msgstr "מקום בעל אזור סגור גדול ושטח לאירוע מרכזי, מוקף מושבים מדורגים לצופים, אשר יכול לשמש לארוע ספורט מקורה, קונצרטים ואירועי בילוי אחרים."
+msgstr "מקום הוא אזור גדול וסגור עם שטח שמוקצה לנהול אירוע מרכזי, מוקף מושבים מדורגים עבור הקהל והצופים, מקום יכול לשמש לארוע ספורט מקורה, קונצרטים ואירועי בילוי אחרים."
 
 #: DB:place_type/description:1
 msgctxt "place_type"
 msgid ""
 "A place designed for non-live production of music, typically a recording "
 "studio."
-msgstr "מקום המיועד להפקה של מוזיקה מוקלטת מראש, בדרך כלל אולפן הקלטות."
+msgstr "מקום המיועד להפקת מוזיקה מוקלטת מראש, בדרך כלל אולפן הקלטות."
 
 #: DB:place_type/description:2
 msgctxt "place_type"
@@ -249,7 +249,7 @@ msgid ""
 "A place that has worship or religious studies as its main function. "
 "Religious buildings often host concerts and serve as recording locations, "
 "especially for classical music."
-msgstr "מקום שמטרתו העיקרית לשמש לפולחן או ללימודי דת. בתי תפילה, לעיתם מארחים קונצרטים ומשמשים גם להקלטות, במיוחד של מוזיקה קלאסית."
+msgstr "מקום שמטרתו העיקרית לשמש לפולחן או ללימודי דת. בתי תפילה, לעיתם מארחים קונצרטים ומשמשים גם  כאתר הקלטות, במיוחד של מוזיקה קלאסית."
 
 #: DB:place_type/description:4
 msgctxt "place_type"
@@ -283,7 +283,7 @@ msgstr "רביעייה היא קבוצת מוסיקלי מורכב ארבעה ק
 #: DB:series_type/description:8
 msgctxt "series_type"
 msgid "A recurring festival, usually happening annually in the same location."
-msgstr "פסטיבל מחזורי, בדרך כלל קורה מדי שנה באותו מקום."
+msgstr "פסטיבל מחזורי, בדרך כלל קורה מדי שנה באותו אתר."
 
 #: DB:place_type/description:7
 msgctxt "place_type"
@@ -310,7 +310,12 @@ msgstr "סדרת הקלטות."
 #: DB:series_type/description:7
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in different locations."
-msgstr "סדרה של קונצרטים קשורים לאמן במקומות שונים."
+msgstr "סדרה של קונצרטים קשורים לאמן באתרים שונים."
+
+#: DB:series_type/description:12
+msgctxt "series_type"
+msgid "A series of related concerts by an artist in the same location."
+msgstr ""
 
 #: DB:series_type/description:1
 msgctxt "series_type"
@@ -338,7 +343,7 @@ msgid ""
 "A song cycle is a group of songs designed to be performed in a sequence as a"
 " single entity. In most cases, all of the songs are by the same composer, "
 "and often use words from the same poet or lyricist."
-msgstr "מחזור שירים הוא קבוצה של שירים שנועדו להתבצע ברצף כישות אחת. ברוב המקרים, כל השירים הם פרי יצירתו של אותו מלחין, ולעתים קרובות גם המילים הם של משורר אחד."
+msgstr "מחזור שירים הוא קבוצה של שירים שנועדו להתבצע ברצף כישות אחת. ברוב המקרים, כל השירים הם פרי יצירתו של אותו מלחין, ולעתים קרובות גם תַּמְלִיל של משורר אחד."
 
 #: DB:work_type/description:17
 msgctxt "work_type"
@@ -347,7 +352,7 @@ msgid ""
 "with or without instruments, performed by singing. This is the most common "
 "form by far in folk and popular music, but also fairly common in a classical"
 " context (\"art songs\")."
-msgstr "שיר במקורו (ועדיין ברוב המקרים) הוא יצירה קולית, עם או בלי כלי נגינה, המבוצעת בשירה. זהו הצורה הנפוצה ביותר במוזיקה עממית ופופולרית, אך גם שכיחה למדי בהקשר קלאסי (\"שירי אמנות\")."
+msgstr "שיר במקורו (ועדיין ברוב המקרים) הוא יצירה קולית, עם או בלי כלי נגינה, המבוצעת בשירה. זהו הצורה הנפוצה ביותר במוזיקה עממית, אך גם שכיחה למדי בהקשר קלאסי (\"שירי אמנות\")."
 
 #: DB:work_type/description:22
 msgctxt "work_type"
@@ -389,7 +394,7 @@ msgstr "סימפוניה היא קומפוזיציה מורחבת, כמעט תמ
 #: DB:release_packaging/description:2
 msgctxt "release_packaging"
 msgid "A thinner jewel case, commonly used for CD singles."
-msgstr "קופסת תקליטור דקה, משמשת לרוב לאחסון תקליטורי סינגל."
+msgstr "קופסת תקליטור דקה, משמשת לרוב לאחסון תקליטורי חַדְשִׁיר."
 
 #: DB:work_type/description:19
 msgctxt "work_type"
@@ -397,7 +402,7 @@ msgid ""
 "A zarzuela is a Spanish lyric-dramatic work that alternates between spoken "
 "and sung scenes, the latter incorporating operatic and popular song, as well"
 " as dance."
-msgstr "זארזואלה היא יצירה לירית-דרמטית ספרדית אשר בה מתחלפות סצנות מדוברות וסצנות מושרות, האחרונה אף משלבת שיר אופראי ופופולארי, כמו גם ריקוד."
+msgstr "זארזואלה היא יצירה לירית-דרמטית ספרדית אשר בה מתחלפות סצנות מדוברות וסצנות מושרות, האחרונה אף משלבת שיר אופראי עממי, כמו גם ריקוד."
 
 #: DB:work_attribute_type_allowed_value/value:26
 msgctxt "work_attribute_type_allowed_value"
@@ -419,6 +424,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp minor"
 msgstr "לה דיאז מינור"
 
+#: DB:work_attribute_type/name:57
+msgctxt "work_attribute_type"
+msgid "AACIMH ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:44
 msgctxt "work_attribute_type"
 msgid "ACAM ID"
@@ -429,10 +439,20 @@ msgctxt "work_attribute_type"
 msgid "ACDAM ID"
 msgstr "מזהה ACDAM"
 
+#: DB:work_attribute_type/name:58
+msgctxt "work_attribute_type"
+msgid "AEI ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:43
 msgctxt "work_attribute_type"
 msgid "AGADU ID"
 msgstr "מזהה AGADU"
+
+#: DB:work_attribute_type/name:63
+msgctxt "work_attribute_type"
+msgid "AKKA/LAA ID"
+msgstr ""
 
 #: DB:work_attribute_type/name:23
 msgctxt "work_attribute_type"
@@ -1431,7 +1451,7 @@ msgstr "CED"
 #: DB:work_attribute_type/name:45
 msgctxt "work_attribute_type"
 msgid "COMPASS ID"
-msgstr ""
+msgstr "מזהה COMPASS"
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"
@@ -1568,7 +1588,7 @@ msgstr "העיר משמשת להתישבות בכל גודל, כולל עייר�
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
 msgid "Compilation"
-msgstr "קוֹמְפִּילַצְיָה"
+msgstr "ליקוט"
 
 #: DB:event_type/name:1
 msgctxt "event_type"
@@ -1719,7 +1739,7 @@ msgstr "DCC"
 #: DB:release_group_secondary_type/name:8
 msgctxt "release_group_secondary_type"
 msgid "DJ-mix"
-msgstr "תמהיל-די.ג'י"
+msgstr "ערבול-די.ג'י"
 
 #: DB:medium_format/name:44
 msgctxt "medium_format"
@@ -1930,12 +1950,12 @@ msgstr ""
 #: DB:release_packaging/name:3
 msgctxt "release_packaging"
 msgid "Digipak"
-msgstr ""
+msgstr "דיג'יפאק"
 
 #: DB:medium_format/name:12
 msgctxt "medium_format"
 msgid "Digital Media"
-msgstr ""
+msgstr "מדיה דיגיטלית"
 
 #: DB:work_attribute_type_allowed_value/value:345
 msgctxt "work_attribute_type_allowed_value"
@@ -2015,7 +2035,7 @@ msgstr "דולאפ"
 #: DB:medium_format/name:4
 msgctxt "medium_format"
 msgid "DualDisc"
-msgstr ""
+msgstr "דואלדיסק"
 
 #: DB:medium_format/name:67
 msgctxt "medium_format"
@@ -2201,7 +2221,7 @@ msgstr "מי דיאז מינור"
 #: DB:work_attribute_type/name:37
 msgctxt "work_attribute_type"
 msgid "ECAD ID"
-msgstr ""
+msgstr "מזהה ECAD"
 
 #: DB:release_group_primary_type/name:3
 msgctxt "release_group_primary_type"
@@ -2221,7 +2241,7 @@ msgstr ""
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
 msgid "Electronic instrument"
-msgstr ""
+msgstr "כלי נגינה חשמלי"
 
 #: DB:medium_format/name:42
 msgctxt "medium_format"
@@ -2351,7 +2371,7 @@ msgstr "פה במול מז'ור"
 #: DB:work_attribute_type_allowed_value/value:815
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-flat minor"
-msgstr ""
+msgstr "פה במול מינור"
 
 #: DB:work_attribute_type_allowed_value/value:19
 msgctxt "work_attribute_type_allowed_value"
@@ -2770,6 +2790,11 @@ msgctxt "medium_format"
 msgid "HDCD"
 msgstr "HDCD"
 
+#: DB:work_attribute_type/name:64
+msgctxt "work_attribute_type"
+msgid "HFA ID"
+msgstr ""
+
 #: DB:medium_format/name:37
 msgctxt "medium_format"
 msgid "HQCD"
@@ -2998,7 +3023,7 @@ msgstr "היסארבוסליק"
 #: DB:label_type/name:2
 msgctxt "label_type"
 msgid "Holding"
-msgstr ""
+msgstr "אחזקה"
 
 #: DB:work_attribute_type_allowed_value/value:414
 msgctxt "work_attribute_type_allowed_value"
@@ -3038,22 +3063,22 @@ msgstr ""
 #: DB:medium_format/name:38
 msgctxt "medium_format"
 msgid "Hybrid SACD"
-msgstr "Hybrid SACD"
+msgstr "SACD כלאיים"
 
 #: DB:medium_format/name:63
 msgctxt "medium_format"
 msgid "Hybrid SACD (CD layer)"
-msgstr ""
+msgstr "SACD כלאיים (שכבת תקליטור)"
 
 #: DB:medium_format/name:64
 msgctxt "medium_format"
 msgid "Hybrid SACD (SACD layer)"
-msgstr ""
+msgstr "SACD כלאיים (שכבת SACD)"
 
 #: DB:medium_format/name:87
 msgctxt "medium_format"
 msgid "Hybrid SACD (SACD layer, 2 channels)"
-msgstr ""
+msgstr "SACD כלאיים (שכבת SACD) (2 ערוצים)"
 
 #: DB:medium_format/name:86
 msgctxt "medium_format"
@@ -3155,6 +3180,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Belgian rights society SABAM"
 msgstr "מזהה עבור אגודת הזכויות הבלגית SABAM"
 
+#: DB:work_attribute_type/description:61
+msgctxt "work_attribute_type"
+msgid "ID for the Bolivian rights society SOBODAYCOM"
+msgstr ""
+
 #: DB:work_attribute_type/description:37
 msgctxt "work_attribute_type"
 msgid "ID for the Brazilian rights society ECAD"
@@ -3200,6 +3230,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Danish rights society KODA"
 msgstr ""
 
+#: DB:work_attribute_type/description:60
+msgctxt "work_attribute_type"
+msgid "ID for the Dominican rights society SGACEDOM"
+msgstr ""
+
 #: DB:work_attribute_type/description:26
 msgctxt "work_attribute_type"
 msgid "ID for the Dutch rights society BUMA/STEMRA"
@@ -3220,6 +3255,16 @@ msgctxt "work_attribute_type"
 msgid "ID for the German rights society GEMA"
 msgstr ""
 
+#: DB:work_attribute_type/description:58
+msgctxt "work_attribute_type"
+msgid "ID for the Guatemalan rights society AEI"
+msgstr ""
+
+#: DB:work_attribute_type/description:57
+msgctxt "work_attribute_type"
+msgid "ID for the Honduran rights society AACIMH"
+msgstr ""
+
 #: DB:work_attribute_type/description:19
 msgctxt "work_attribute_type"
 msgid "ID for the Hong Kong rights society CASH"
@@ -3228,6 +3273,11 @@ msgstr ""
 #: DB:work_attribute_type/description:48
 msgctxt "work_attribute_type"
 msgid "ID for the Hungarian rights society ARTISJUS"
+msgstr ""
+
+#: DB:work_attribute_type/description:54
+msgctxt "work_attribute_type"
+msgid "ID for the Icelandic rights society STEF"
 msgstr ""
 
 #: DB:work_attribute_type/description:29
@@ -3260,6 +3310,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Korean rights society KOMCA"
 msgstr ""
 
+#: DB:work_attribute_type/description:63
+msgctxt "work_attribute_type"
+msgid "ID for the Latvian rights society AKKA/LAA"
+msgstr ""
+
 #: DB:work_attribute_type/description:49
 msgctxt "work_attribute_type"
 msgid "ID for the Malaysian rights society MACP"
@@ -3269,6 +3324,16 @@ msgstr ""
 msgctxt "work_attribute_type"
 msgid "ID for the Mexican rights society SACM"
 msgstr "מזהה עבור אגודת הזכויות המקסיקני SACM"
+
+#: DB:work_attribute_type/description:59
+msgctxt "work_attribute_type"
+msgid "ID for the Nicaraguan rights society NICAUTOR"
+msgstr ""
+
+#: DB:work_attribute_type/description:62
+msgctxt "work_attribute_type"
+msgid "ID for the Panamanian rights society SPAC"
+msgstr ""
 
 #: DB:work_attribute_type/description:46
 msgctxt "work_attribute_type"
@@ -3288,6 +3353,11 @@ msgstr "מזהה עבור אגודת הזכויות הפולני ZAiKS"
 #: DB:work_attribute_type/description:35
 msgctxt "work_attribute_type"
 msgid "ID for the Portuguese rights society SPA"
+msgstr ""
+
+#: DB:work_attribute_type/description:56
+msgctxt "work_attribute_type"
+msgid "ID for the Salvadoran rights society SACIM"
 msgstr ""
 
 #: DB:work_attribute_type/description:45
@@ -3345,9 +3415,19 @@ msgctxt "work_attribute_type"
 msgid "ID for the international (formerly US) rights society AMRA"
 msgstr ""
 
+#: DB:work_attribute_type/description:55
+msgctxt "work_attribute_type"
+msgid "ID for the international rights society consortium LatinNet"
+msgstr ""
+
 #: DB:work_attribute_type/description:22
 msgctxt "work_attribute_type"
 msgid "ID for the private licensing company CCLI"
+msgstr ""
+
+#: DB:work_attribute_type/description:64
+msgctxt "work_attribute_type"
+msgid "ID for the private licensing company HFA (Harry Fox Agency)"
 msgstr ""
 
 #: DB:work_attribute_type/name:52
@@ -3368,7 +3448,7 @@ msgstr ""
 #: DB:label_type/name:9
 msgctxt "label_type"
 msgid "Imprint"
-msgstr "חרות"
+msgstr "סימן מסחרי"
 
 #: DB:work_type/name:30
 msgctxt "work_type"
@@ -3594,7 +3674,7 @@ msgstr ""
 #: DB:work_attribute_type/name:51
 msgctxt "work_attribute_type"
 msgid "KODA ID"
-msgstr ""
+msgstr " מזהה KODA"
 
 #: DB:work_attribute_type/name:11
 msgctxt "work_attribute_type"
@@ -4062,6 +4142,11 @@ msgstr ""
 #: DB:medium_format/name:5
 msgctxt "medium_format"
 msgid "LaserDisc"
+msgstr "לייזר־דיסק"
+
+#: DB:work_attribute_type/name:55
+msgctxt "work_attribute_type"
+msgid "LatinNet ID"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:159
@@ -4097,7 +4182,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:12
 msgctxt "cover_art_type"
 msgid "Liner"
-msgstr ""
+msgstr "הערת אלבום"
 
 #: DB:release_group_secondary_type/name:6
 msgctxt "release_group_secondary_type"
@@ -4112,7 +4197,7 @@ msgstr "לאנגו"
 #: DB:work_attribute_type/name:49
 msgctxt "work_attribute_type"
 msgid "MACP ID"
-msgstr ""
+msgstr "מזהה MACP"
 
 #: DB:work_attribute_type_allowed_value/value:963
 msgctxt "work_attribute_type_allowed_value"
@@ -4147,7 +4232,7 @@ msgstr ""
 #: DB:work_type/name:7
 msgctxt "work_type"
 msgid "Madrigal"
-msgstr ""
+msgstr "מדריגל"
 
 #: DB:work_attribute_type_allowed_value/value:163
 msgctxt "work_attribute_type_allowed_value"
@@ -4197,7 +4282,7 @@ msgstr ""
 #: DB:gender/name:1
 msgctxt "gender"
 msgid "Male"
-msgstr ""
+msgstr "זכר"
 
 #: DB:work_attribute_type_allowed_value/value:638
 msgctxt "work_attribute_type_allowed_value"
@@ -4347,7 +4432,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:9
 msgctxt "release_group_secondary_type"
 msgid "Mixtape/Street"
-msgstr ""
+msgstr "מיקסטייפ/רחוב"
 
 #: DB:work_attribute_type_allowed_value/value:981
 msgctxt "work_attribute_type_allowed_value"
@@ -4417,7 +4502,7 @@ msgstr ""
 #: DB:work_type/name:9
 msgctxt "work_type"
 msgid "Motet"
-msgstr ""
+msgstr "מוטט"
 
 #: DB:work_attribute_type_allowed_value/value:746
 msgctxt "work_attribute_type_allowed_value"
@@ -4487,7 +4572,7 @@ msgstr ""
 #: DB:area_type/name:4
 msgctxt "area_type"
 msgid "Municipality"
-msgstr ""
+msgstr "רשות מקומית"
 
 #: DB:area_type/description:4
 msgctxt "area_type"
@@ -4677,6 +4762,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:182
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mōhanaṁ"
+msgstr ""
+
+#: DB:work_attribute_type/name:59
+msgctxt "work_attribute_type"
+msgid "NICAUTOR ID"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:647
@@ -5112,7 +5202,7 @@ msgstr ""
 #: DB:work_type/name:12
 msgctxt "work_type"
 msgid "Overture"
-msgstr ""
+msgstr "אוּבֶרְטוּרָה"
 
 #: DB:editor_collection_type/name:2
 msgctxt "collection_type"
@@ -5132,7 +5222,7 @@ msgstr ""
 #: DB:work_attribute_type/name:34
 msgctxt "work_attribute_type"
 msgid "PRS tune code"
-msgstr ""
+msgstr "קוד צליל PRS"
 
 #: DB:work_attribute_type_allowed_value/value:993
 msgctxt "work_attribute_type_allowed_value"
@@ -5243,7 +5333,7 @@ msgstr ""
 #: DB:medium_format/name:15
 msgctxt "medium_format"
 msgid "Piano Roll"
-msgstr ""
+msgstr "גליל פסנתר"
 
 #: DB:editor_collection_type/name:11
 msgctxt "collection_type"
@@ -5313,12 +5403,12 @@ msgstr "הפקה"
 #: DB:release_status/name:2
 msgctxt "release_status"
 msgid "Promotion"
-msgstr ""
+msgstr "קידום"
 
 #: DB:work_type/name:23
 msgctxt "work_type"
 msgid "Prose"
-msgstr ""
+msgstr "פרוזה"
 
 #: DB:release_status/name:4
 msgctxt "release_status"
@@ -5384,7 +5474,7 @@ msgstr ""
 #: DB:work_type/name:14
 msgctxt "work_type"
 msgid "Quartet"
-msgstr ""
+msgstr "רביעיה"
 
 #: DB:work_attribute_type_allowed_value/value:500
 msgctxt "work_attribute_type_allowed_value"
@@ -5514,7 +5604,7 @@ msgstr ""
 #: DB:medium_format/name:10
 msgctxt "medium_format"
 msgid "Reel-to-reel"
-msgstr ""
+msgstr "טייפ סלילים"
 
 #: DB:work_attribute_type_allowed_value/value:514
 msgctxt "work_attribute_type_allowed_value"
@@ -5524,7 +5614,7 @@ msgstr ""
 #: DB:label_type/name:6
 msgctxt "label_type"
 msgid "Reissue Production"
-msgstr ""
+msgstr "הפקה חוזרת"
 
 #: DB:work_attribute_type_allowed_value/value:515
 msgctxt "work_attribute_type_allowed_value"
@@ -5574,12 +5664,17 @@ msgstr ""
 #: DB:release_group_secondary_type/name:7
 msgctxt "release_group_secondary_type"
 msgid "Remix"
-msgstr "עריכה מחדש"
+msgstr "ערבול-מחודש"
 
 #: DB:work_attribute_type_allowed_value/value:516
 msgctxt "work_attribute_type_allowed_value"
 msgid "Reng-i Dil"
 msgstr ""
+
+#: DB:series_type/name:12
+msgctxt "series_type"
+msgid "Residency"
+msgstr "רצף הופעות"
 
 #: DB:work_attribute_type_allowed_value/value:517
 msgctxt "work_attribute_type_allowed_value"
@@ -5725,16 +5820,21 @@ msgstr "SACD"
 #: DB:medium_format/name:84
 msgctxt "medium_format"
 msgid "SACD (2 channels)"
-msgstr ""
+msgstr "SACD (2 ערוצים)"
 
 #: DB:medium_format/name:85
 msgctxt "medium_format"
 msgid "SACD (multichannel)"
-msgstr ""
+msgstr "SACD (רב ערוצים)"
 
 #: DB:work_attribute_type/name:21
 msgctxt "work_attribute_type"
 msgid "SACEM ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:56
+msgctxt "work_attribute_type"
+msgid "SACIM ID"
 msgstr ""
 
 #: DB:work_attribute_type/name:27
@@ -5745,7 +5845,7 @@ msgstr ""
 #: DB:work_attribute_type/name:42
 msgctxt "work_attribute_type"
 msgid "SACVEN ID"
-msgstr ""
+msgstr "מזהה SACVEN"
 
 #: DB:work_attribute_type/name:24
 msgctxt "work_attribute_type"
@@ -5755,12 +5855,12 @@ msgstr ""
 #: DB:work_attribute_type/name:40
 msgctxt "work_attribute_type"
 msgid "SAYCE ID"
-msgstr ""
+msgstr "מזהה SAYCE"
 
 #: DB:work_attribute_type/name:39
 msgctxt "work_attribute_type"
 msgid "SAYCO ID"
-msgstr ""
+msgstr "מזהה SAYCO"
 
 #: DB:medium_format/name:62
 msgctxt "medium_format"
@@ -5772,6 +5872,11 @@ msgctxt "work_attribute_type"
 msgid "SESAC ID"
 msgstr ""
 
+#: DB:work_attribute_type/name:60
+msgctxt "work_attribute_type"
+msgid "SGACEDOM ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:20
 msgctxt "work_attribute_type"
 msgid "SGAE ID"
@@ -5780,26 +5885,31 @@ msgstr ""
 #: DB:medium_format/name:36
 msgctxt "medium_format"
 msgid "SHM-CD"
-msgstr ""
+msgstr "תקליטור-SHM"
 
 #: DB:medium_format/name:57
 msgctxt "medium_format"
 msgid "SHM-SACD"
-msgstr ""
+msgstr "SHM-SACD"
 
 #: DB:medium_format/name:89
 msgctxt "medium_format"
 msgid "SHM-SACD (2 channels)"
-msgstr ""
+msgstr "SHM-SACD (2 ערוצים)"
 
 #: DB:medium_format/name:88
 msgctxt "medium_format"
 msgid "SHM-SACD (multichannel)"
-msgstr ""
+msgstr "SHM-SACD (רב ערוצים)"
 
 #: DB:work_attribute_type/name:36
 msgctxt "work_attribute_type"
 msgid "SIAE ID"
+msgstr "מזהה SIAE"
+
+#: DB:work_attribute_type/name:61
+msgctxt "work_attribute_type"
+msgid "SOBODAYCOM ID"
 msgstr ""
 
 #: DB:work_attribute_type/name:10
@@ -5810,17 +5920,27 @@ msgstr ""
 #: DB:work_attribute_type/name:53
 msgctxt "work_attribute_type"
 msgid "SODRAC ID"
-msgstr ""
+msgstr " מזהה SODRAC"
 
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
+msgstr "מזהה SPA"
+
+#: DB:work_attribute_type/name:62
+msgctxt "work_attribute_type"
+msgid "SPAC ID"
 msgstr ""
+
+#: DB:work_attribute_type/name:54
+msgctxt "work_attribute_type"
+msgid "STEF ID"
+msgstr "מזהה STEF"
 
 #: DB:work_attribute_type/name:50
 msgctxt "work_attribute_type"
 msgid "STIM ID"
-msgstr ""
+msgstr "מזהה STIM"
 
 #: DB:work_attribute_type/name:18
 msgctxt "work_attribute_type"
@@ -6069,7 +6189,7 @@ msgstr ""
 #: DB:release_group_primary_type/name:2
 msgctxt "release_group_primary_type"
 msgid "Single"
-msgstr ""
+msgstr "חַדְשִׁיר"
 
 #: DB:work_attribute_type_allowed_value/value:533
 msgctxt "work_attribute_type_allowed_value"
@@ -6109,24 +6229,24 @@ msgstr ""
 #: DB:work_type/name:5
 msgctxt "work_type"
 msgid "Sonata"
-msgstr ""
+msgstr "סונטה"
 
 #: DB:work_type/name:17
 msgctxt "work_type"
 msgid "Song"
-msgstr ""
+msgstr "שיר"
 
 #: DB:work_type/name:15
 msgctxt "work_type"
 msgid "Song-cycle"
-msgstr ""
+msgstr "מחזור שירים"
 
 #: DB:series_ordering_type/description:1
 msgctxt "series_ordering_type"
 msgid ""
 "Sorts the items in the series automatically by their number attributes, "
 "using a natural sort order."
-msgstr ""
+msgstr "מיון הפריטים בסדרה באופן אוטומטי לפי תכונות המספר שלהם, לפי סדר מיון טבעי."
 
 #: DB:release_group_secondary_type/name:2
 msgctxt "release_group_secondary_type"
@@ -6146,7 +6266,7 @@ msgstr "שדרה"
 #: DB:release_group_secondary_type/name:3
 msgctxt "release_group_secondary_type"
 msgid "Spokenword"
-msgstr ""
+msgstr "מילה מדוברת"
 
 #: DB:place_type/name:4
 msgctxt "place_type"
@@ -6204,7 +6324,7 @@ msgstr ""
 #: DB:work_type/name:6
 msgctxt "work_type"
 msgid "Suite"
-msgstr ""
+msgstr "מערכת"
 
 #: DB:work_attribute_type_allowed_value/value:534
 msgctxt "work_attribute_type_allowed_value"
@@ -6309,12 +6429,12 @@ msgstr ""
 #: DB:work_type/name:18
 msgctxt "work_type"
 msgid "Symphonic poem"
-msgstr ""
+msgstr "פואמה סינפונית"
 
 #: DB:work_type/name:16
 msgctxt "work_type"
 msgid "Symphony"
-msgstr ""
+msgstr "סימפוניה"
 
 #: DB:work_attribute_type_allowed_value/value:547
 msgctxt "work_attribute_type_allowed_value"
@@ -6496,21 +6616,21 @@ msgctxt "medium_format"
 msgid ""
 "The CD layer of a DVDplus. The DVD layer should be added as a separate "
 "medium."
-msgstr "שכבת תקליטורים של DVD פלוס. יש להוסיף שכבה זו כתווך נפרד."
+msgstr "שכבת תקליטורים של DVD פלוס. יש להוסיף שכבת DVD כמדיה נפרדת."
 
 #: DB:medium_format/description:67
 msgctxt "medium_format"
 msgid ""
 "The CD layer of a DualDisc. The DVD layer should be added as a separate "
 "medium."
-msgstr "שכבת תקליטורים של תקליטור כפול. יש להוסיף שכבה זו כתווך נפרד."
+msgstr "שכבת תקליטורים של תקליטור כפול. יש להוסיף שכבת DVD כמדיה נפרדת."
 
 #: DB:medium_format/description:63
 msgctxt "medium_format"
 msgid ""
 "The CD layer of a hybrid SACD. The SACD layer should be added as a separate "
 "medium."
-msgstr ""
+msgstr "שכבת תקליטור של SACD כלאיים. יש להוסיף שכבה SACD מדיה נפרדת."
 
 #: DB:medium_format/description:82
 msgctxt "medium_format"
@@ -6533,21 +6653,21 @@ msgctxt "medium_format"
 msgid ""
 "The DVD (audio) layer of a DVDplus. The CD layer should be added as a "
 "separate medium."
-msgstr "שכבת DVD (שמע). יש להוסיף שכבה זו כתווך נפרד."
+msgstr "שכבת DVD (שמע). יש להוסיף שכבת תקליטור כמדיה נפרדת."
 
 #: DB:medium_format/description:65
 msgctxt "medium_format"
 msgid ""
 "The DVD (audio) layer of a DualDisc. The CD layer should be added as a "
 "separate medium."
-msgstr "שכבת DVD (שמע) של תקליטור כפול. יש להוסיף שכבה זו כתווך נפרד."
+msgstr "שכבת DVD (שמע) של תקליטור כפול. יש להוסיף שכבת תקליטור כמדיה נפרדת."
 
 #: DB:medium_format/description:66
 msgctxt "medium_format"
 msgid ""
 "The DVD (video) layer of a DualDisc. The CD layer should be added as a "
 "separate medium."
-msgstr "שכבת DVD (וידאו) של תקליטור כפול. יש להוסיף שכבה זו כתווך נפרד."
+msgstr "שכבת DVD (וידאו) של תקליטור כפול. יש להוסיף שכבת תקליטור כמדיה נפרדת."
 
 #: DB:medium_format/description:80
 msgctxt "medium_format"
@@ -6561,7 +6681,7 @@ msgctxt "medium_format"
 msgid ""
 "The SACD layer of a hybrid SACD. The CD layer should be added as a separate "
 "medium."
-msgstr ""
+msgstr "שכבת SACD של SACD כלאיים. יש להוסיף שכבת תקליטור כמדיה נפרדת."
 
 #: DB:work_type/description:7
 msgctxt "work_type"
@@ -6596,21 +6716,21 @@ msgid ""
 "This indicates a choir/chorus (an organized, usually large group of "
 "singers). Smaller vocal ensembles and groupings that do not generally call "
 "themselves choirs are better entered as “Group”."
-msgstr ""
+msgstr "ציון מקהלה (קבוצה מאורגנת, בדרך כלל קבוצת זמרים גדולה). הרכבים קוליים קטנים יותר (כמו שלישיות ורביעיות) והרכבים שלרוב לא מכנים עצמם מקהלה עדיף שיוזנו כ\"הרכב\"."
 
 #: DB:artist_type/description:4
 msgctxt "artist_type"
 msgid ""
 "This indicates an individual fictional character (whether a fictional "
 "person, animal or any other kind of character)."
-msgstr ""
+msgstr "ציון דמות פרטנית בדיונית (בין אם אדם בדיוני, בעל חיים או כל סוג אחר של דמות). "
 
 #: DB:artist_type/description:1
 msgctxt "artist_type"
 msgid ""
 "This indicates an individual person, be it under its legal name (“John "
 "Lennon”), or a performance name (“Sting”)."
-msgstr ""
+msgstr "ציון אדם פרטני, אם בשמו החוקי (\"ג'ון לנון\"), או שם במה (\"סטינג\")."
 
 #: DB:artist_type/description:5
 msgctxt "artist_type"
@@ -6619,7 +6739,7 @@ msgid ""
 "instrumentalists). Smaller ensembles (such as trios and quartets) and "
 "groupings that do not generally call themselves orchestras are better "
 "entered as “Group”."
-msgstr ""
+msgstr "ציון תזמורת (קבוצה מאורגנת, בדרך כלל קבוצת נגנים כליים גדולה). הרכבים קטנים יותר (כמו שלישיות ורביעיות) והרכבים שלרוב לא מכנים עצמם תזמורות עדיף שיוזנו כ\"הרכב\"."
 
 #: DB:work_type/description:23
 msgctxt "work_type"
@@ -6627,7 +6747,7 @@ msgid ""
 "This represents literary works written in prose, that is, written in "
 "relatively ordinary language without metrical structure (e.g. novels, short "
 "stories, essays...)."
-msgstr ""
+msgstr "ייצוג יצירות ספרותיות שנכתבו בפרוזה, כלומר כתובות בשפה רגילה יחסית ללא מבנה מטרי (למשל רומנים, סיפורים קצרים, מאמרים ...)."
 
 #: DB:medium_format/description:84
 msgctxt "medium_format"
@@ -7008,7 +7128,7 @@ msgstr "סימן מים"
 #: DB:medium_format/name:14
 msgctxt "medium_format"
 msgid "Wax Cylinder"
-msgstr ""
+msgstr "גליל שאווה"
 
 #: DB:instrument_type/name:1
 msgctxt "instrument_type"
@@ -7226,7 +7346,7 @@ msgstr ""
 #: DB:work_type/name:20
 msgctxt "work_type"
 msgid "Étude"
-msgstr ""
+msgstr "אטיוד"
 
 #: DB:work_attribute_type_allowed_value/value:653
 msgctxt "work_attribute_type_allowed_value"

@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # DJ Sweder <djsweder@gmail.com>, 2020
 # Jiří Hofman <jyrki.hofman@gmail.com>, 2019

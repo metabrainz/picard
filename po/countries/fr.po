@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # AO <ao@localizationlab.org>, 2013
 # Benjamin Sonntag <benjamin@octopuce.fr>, 2011-2012

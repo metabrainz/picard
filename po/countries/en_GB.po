@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # RedHotHeat <gbonner@iol.ie>, 2012
 # Jonathan Jonathan <hk0@live.hk>, 2020

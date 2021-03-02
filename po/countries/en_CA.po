@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # kepstin <calvin.walton@kepstin.ca>, 2012
 # Luke Hollins <luke@farcry.ca>, 2015

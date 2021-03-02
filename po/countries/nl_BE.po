@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Tim Van Holder <tim.vanholder@gmail.com>, 2020
 msgid ""
