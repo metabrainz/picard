@@ -1173,7 +1173,10 @@ Iterates over each element found in the multi-value tag `name` and updates the
     the element or count value to be accessed within the `code` script.
 
 Example:
-    $map(First:A; Second:B,$upper(%_loop_count%=%_loop_value%)) results in "1=FIRST:A; 2=SECOND:B"
+
+    $map(First:A; Second:B,$upper(%_loop_count%=%_loop_value%))
+
+Result: 1=FIRST:A; 2=SECOND:B
 """
 ))
 def func_map(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
@@ -1266,7 +1269,9 @@ Returns a copy of the multi-value tag `name` with the elements sorted in ascendi
 
 Example:
 
-    $sortmulti(B; A; C) results in "A; B; C"
+    $sortmulti(B; A; C)
+
+Result: A; B; C
 """
 ))
 def func_sortmulti(parser, multi, separator=MULTI_VALUED_JOINER):
@@ -1283,7 +1288,9 @@ Returns a copy of the multi-value tag `name` with the elements in reverse order.
 
 Example:
 
-    $reversemulti($sortmulti(B; A; C)) results in "C; B; A"
+    $reversemulti($sortmulti(B; A; C))
+
+Result: C; B; A
 """
 ))
 def func_reversemulti(parser, multi, separator=MULTI_VALUED_JOINER):

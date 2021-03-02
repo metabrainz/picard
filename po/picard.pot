@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.6.0.dev1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-03-02 07:54+0100\n"
+"POT-Creation-Date: 2021-03-02 08:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2932,11 +2932,13 @@ msgid ""
 "    the element or count value to be accessed within the `code` script.\n"
 "\n"
 "Example:\n"
-"    $map(First:A; Second:B,$upper(%_loop_count%=%_loop_value%)) results "
-"in \"1=FIRST:A; 2=SECOND:B\"\n"
+"\n"
+"    $map(First:A; Second:B,$upper(%_loop_count%=%_loop_value%))\n"
+"\n"
+"Result: 1=FIRST:A; 2=SECOND:B\n"
 msgstr ""
 
-#: picard/script/functions.py:1190
+#: picard/script/functions.py:1193
 msgid ""
 "`$join(name,text,separator=\"; \")`\n"
 "\n"
@@ -2944,7 +2946,7 @@ msgid ""
 "returns the result as a string."
 msgstr ""
 
-#: picard/script/functions.py:1201
+#: picard/script/functions.py:1204
 msgid ""
 "`$slice(name,start,end,separator=\"; \")`\n"
 "\n"
@@ -2972,7 +2974,7 @@ msgid ""
 "    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
 msgstr ""
 
-#: picard/script/functions.py:1233
+#: picard/script/functions.py:1236
 #, python-format
 msgid ""
 "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
@@ -2994,7 +2996,7 @@ msgid ""
 "    `%3Y`); and hanging '%' at the end of the format string."
 msgstr ""
 
-#: picard/script/functions.py:1262
+#: picard/script/functions.py:1265
 msgid ""
 "`$sortmulti(name,separator=\"; \")`\n"
 "\n"
@@ -3003,10 +3005,12 @@ msgid ""
 "\n"
 "Example:\n"
 "\n"
-"    $sortmulti(B; A; C) results in \"A; B; C\"\n"
+"    $sortmulti(B; A; C)\n"
+"\n"
+"Result: A; B; C\n"
 msgstr ""
 
-#: picard/script/functions.py:1277
+#: picard/script/functions.py:1282
 msgid ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
@@ -3018,7 +3022,9 @@ msgid ""
 "\n"
 "Example:\n"
 "\n"
-"    $reversemulti($sortmulti(B; A; C)) results in \"C; B; A\"\n"
+"    $reversemulti($sortmulti(B; A; C))\n"
+"\n"
+"Result: C; B; A\n"
 msgstr ""
 
 #: picard/ui/aboutdialog.py:74
