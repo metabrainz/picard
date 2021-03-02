@@ -9,9 +9,13 @@
 - [PICARD-2091](https://tickets.metabrainz.org/browse/PICARD-2091) - Loading images from cover art via drag and drop from browser only loads PNG and JPEG images
 - [PICARD-2097](https://tickets.metabrainz.org/browse/PICARD-2097) - Crash with zh_CN locale
 - [PICARD-2113](https://tickets.metabrainz.org/browse/PICARD-2113) - Script can change title of "Unclustered files" special cluster
+- [PICARD-2127](https://tickets.metabrainz.org/browse/PICARD-2127) - "Lookup in browser" in metadata box does not pass tagger port
 
 ## New Features
 
+- [PICARD-204](https://tickets.metabrainz.org/browse/PICARD-204) - Support for track-level original release date
+- [PICARD-1998](https://tickets.metabrainz.org/browse/PICARD-1998) - Add "director" (for videos) tag
+- [PICARD-2089](https://tickets.metabrainz.org/browse/PICARD-2089) - Support WebP images for cover art
 - [PICARD-2124](https://tickets.metabrainz.org/browse/PICARD-2124) - Add MB release annotation field as `%_releaseannotation%` variable
 
 ## Tasks
@@ -21,10 +25,7 @@
 
 ## Improvements
 
-- [PICARD-204](https://tickets.metabrainz.org/browse/PICARD-204) - Support for track-level original release date
-- [PICARD-1998](https://tickets.metabrainz.org/browse/PICARD-1998) - Add "director" (for videos) tag
 - [PICARD-2084](https://tickets.metabrainz.org/browse/PICARD-2084) - Use TLS for AcoustID web service requests
-- [PICARD-2089](https://tickets.metabrainz.org/browse/PICARD-2089) - Support WebP images for cover art
 - [PICARD-2090](https://tickets.metabrainz.org/browse/PICARD-2090) - Reenable TIFF support for cover art images
 - [PICARD-2092](https://tickets.metabrainz.org/browse/PICARD-2092) - Improve script editor function/variable auto completion
 - [PICARD-2105](https://tickets.metabrainz.org/browse/PICARD-2105) - Improve script function popup descriptions
@@ -32,7 +33,6 @@
 - [PICARD-2114](https://tickets.metabrainz.org/browse/PICARD-2114) - Show disambiguation comment in CD Lookup popup window
 - [PICARD-2125](https://tickets.metabrainz.org/browse/PICARD-2125) - Enable CAA Release Group cover art provider by default
 - [PICARD-2126](https://tickets.metabrainz.org/browse/PICARD-2126) - Allow cross origin access to browser integration
-- [PICARD-2127](https://tickets.metabrainz.org/browse/PICARD-2127) - "Lookup in browser" in metadata box does not pass tagger port
 
 
 # Version 2.5.6 - 2021-01-05
