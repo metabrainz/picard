@@ -211,7 +211,11 @@ jobs:
         python-version: 3.8
     - uses: actions/download-artifact@v1
       with:
-        name: macos-app
+        name: macos-app-10.12
+        path: artifacts/
+    - uses: actions/download-artifact@v1
+      with:
+        name: macos-app-10.14
         path: artifacts/
     - uses: actions/download-artifact@v1
       with:
