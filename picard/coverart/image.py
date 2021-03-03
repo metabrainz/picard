@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2007 Oliver Charles
 # Copyright (C) 2007, 2010-2011 Lukáš Lalinský
-# Copyright (C) 2007-2011, 2014, 2018-2020 Philipp Wolfer
+# Copyright (C) 2007-2011, 2014, 2018-2021 Philipp Wolfer
 # Copyright (C) 2011 Michael Wiencek
 # Copyright (C) 2011-2012, 2015 Wieland Hoffmann
 # Copyright (C) 2013-2015, 2018-2019 Laurent Monin
@@ -41,7 +41,10 @@ from PyQt5.QtCore import (
 )
 
 from picard import log
-from picard.config import get_config
+from picard.config import (
+    Option,
+    get_config,
+)
 from picard.coverart.utils import translate_caa_type
 from picard.metadata import Metadata
 from picard.util import (
@@ -289,7 +292,7 @@ class CoverArtImage:
             metadata.add_unique("coverart_types", cover_type)
         filename = script_to_filename(filename, metadata)
         if not filename:
-            filename = "cover"
+            filename = Option.get('setting', 'cover_image_filename').default
         if not is_absolute_path(filename):
             filename = os.path.join(dirname, filename)
         return encode_filename(filename)
@@ -305,8 +308,7 @@ class CoverArtImage:
         if not self.can_be_saved_to_disk:
             return
         config = get_config()
-        if (config.setting["caa_image_type_as_filename"]
-            and not self.is_front_image()):
+        if config.setting["image_type_as_filename"] and not self.is_front_image():
             filename = self.maintype
             log.debug("Make cover filename from types: %r -> %r",
                       self.types, filename)
