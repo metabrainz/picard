@@ -73,8 +73,8 @@ class CoverOptionsPage(OptionsPage):
         self.ui = Ui_CoverOptionsPage()
         self.ui.setupUi(self)
         self.ui.cover_image_filename.setPlaceholderText(Option.get('setting', 'cover_image_filename').default)
-        self.ui.save_images_to_files.clicked.connect(self.update_filename)
-        self.ui.save_images_to_tags.clicked.connect(self.update_save_images_to_tags)
+        self.ui.save_images_to_files.clicked.connect(self.update_ca_providers_groupbox_state)
+        self.ui.save_images_to_tags.clicked.connect(self.update_ca_providers_groupbox_state)
         self.ui.save_only_one_front_image.toggled.connect(self.ui.image_type_as_filename.setDisabled)
         self.move_view = MoveableListView(self.ui.ca_providers_list, self.ui.up_button,
                                           self.ui.down_button)
@@ -108,7 +108,7 @@ class CoverOptionsPage(OptionsPage):
         self.ui.image_type_as_filename.setChecked(config.setting["image_type_as_filename"])
         self.load_cover_art_providers()
         self.ui.ca_providers_list.setCurrentRow(0)
-        self.update_all()
+        self.update_ca_providers_groupbox_state()
 
     def save(self):
         config = get_config()
@@ -121,25 +121,10 @@ class CoverOptionsPage(OptionsPage):
         config.setting["image_type_as_filename"] = self.ui.image_type_as_filename.isChecked()
         config.setting["ca_providers"] = self.ca_providers()
 
-    def update_all(self):
-        self.update_filename()
-        self.update_save_images_to_tags()
-
     def update_ca_providers_groupbox_state(self):
         files_enabled = self.ui.save_images_to_files.isChecked()
         tags_enabled = self.ui.save_images_to_tags.isChecked()
         self.ui.ca_providers_groupbox.setEnabled(files_enabled or tags_enabled)
-
-    def update_filename(self):
-        enabled = self.ui.save_images_to_files.isChecked()
-        self.ui.cover_image_filename.setEnabled(enabled)
-        self.ui.save_images_overwrite.setEnabled(enabled)
-        self.update_ca_providers_groupbox_state()
-
-    def update_save_images_to_tags(self):
-        enabled = self.ui.save_images_to_tags.isChecked()
-        self.ui.cb_embed_front_only.setEnabled(enabled)
-        self.update_ca_providers_groupbox_state()
 
 
 register_options_page(CoverOptionsPage)
