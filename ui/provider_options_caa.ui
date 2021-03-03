@@ -112,19 +112,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="cb_type_as_filename">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text">
-      <string>Use the first image type as the filename. This will not change the filename of front images.</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -145,7 +132,6 @@
   <tabstop>cb_image_size</tabstop>
   <tabstop>cb_save_single_front_image</tabstop>
   <tabstop>cb_approved_only</tabstop>
-  <tabstop>cb_type_as_filename</tabstop>
  </tabstops>
  <resources/>
  <connections/>

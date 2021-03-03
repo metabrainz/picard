@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2019 Laurent Monin
-# Copyright (C) 2019-2020 Philipp Wolfer
+# Copyright (C) 2019-2021 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -51,6 +51,7 @@ from picard.config_upgrade import (
     upgrade_to_v2_4_0_beta_3,
     upgrade_to_v2_5_0_dev_1,
     upgrade_to_v2_5_0_dev_2,
+    upgrade_to_v2_6_0_beta_2,
     upgrade_to_v2_6_0_dev_1,
 )
 from picard.const import (
@@ -317,3 +318,11 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         upgrade_to_v2_6_0_dev_1(self.config)
         picard.config_upgrade.IS_FROZEN = False
         self.assertEqual("", self.config.setting["acoustid_fpcalc"])
+
+    def test_upgrade_to_v2_6_0_beta_2(self):
+        BoolOption('setting', 'image_type_as_filename', False)
+
+        self.config.setting['caa_image_type_as_filename'] = True
+        upgrade_to_v2_6_0_beta_2(self.config)
+        self.assertNotIn('caa_image_type_as_filename', self.config.setting)
+        self.assertTrue(self.config.setting['image_type_as_filename'])

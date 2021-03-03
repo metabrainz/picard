@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
-# Copyright (C) 2010, 2018-2019 Philipp Wolfer
+# Copyright (C) 2010, 2018-2019, 2021 Philipp Wolfer
 # Copyright (C) 2012, 2014 Wieland Hoffmann
 # Copyright (C) 2012-2014 Michael Wiencek
 # Copyright (C) 2013-2015, 2018-2019 Laurent Monin
@@ -57,6 +57,7 @@ class CoverOptionsPage(OptionsPage):
         BoolOption("setting", "save_images_to_files", False),
         TextOption("setting", "cover_image_filename", "cover"),
         BoolOption("setting", "save_images_overwrite", False),
+        BoolOption("setting", "image_type_as_filename", False),
         ListOption("setting", "ca_providers", [
             ('Cover Art Archive', True),
             ('UrlRelationships', True),
@@ -99,6 +100,7 @@ class CoverOptionsPage(OptionsPage):
         self.ui.save_images_to_files.setChecked(config.setting["save_images_to_files"])
         self.ui.cover_image_filename.setText(config.setting["cover_image_filename"])
         self.ui.save_images_overwrite.setChecked(config.setting["save_images_overwrite"])
+        self.ui.image_type_as_filename.setChecked(config.setting["image_type_as_filename"])
         self.load_cover_art_providers()
         self.ui.ca_providers_list.setCurrentRow(0)
         self.update_all()
@@ -110,6 +112,7 @@ class CoverOptionsPage(OptionsPage):
         config.setting["save_images_to_files"] = self.ui.save_images_to_files.isChecked()
         config.setting["cover_image_filename"] = self.ui.cover_image_filename.text()
         config.setting["save_images_overwrite"] = self.ui.save_images_overwrite.isChecked()
+        config.setting["image_type_as_filename"] = self.ui.image_type_as_filename.isChecked()
         config.setting["ca_providers"] = self.ca_providers()
 
     def update_all(self):

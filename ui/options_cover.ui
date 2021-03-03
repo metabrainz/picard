@@ -12,9 +12,15 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="location">
+    <widget class="QGroupBox" name="save_images_to_tags">
      <property name="title">
-      <string>Location</string>
+      <string>Embed cover images into tags</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
      </property>
      <layout class="QVBoxLayout">
       <property name="spacing">
@@ -33,26 +39,27 @@
        <number>9</number>
       </property>
       <item>
-       <widget class="QCheckBox" name="save_images_to_tags">
-        <property name="text">
-         <string>Embed cover images into tags</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QCheckBox" name="cb_embed_front_only">
         <property name="text">
          <string>Only embed a front image</string>
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QCheckBox" name="save_images_to_files">
-        <property name="text">
-         <string>Save cover images as separate files</string>
-        </property>
-       </widget>
-      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="save_images_to_files">
+     <property name="title">
+      <string>Save cover images as separate files</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QLabel" name="label_use_filename">
         <property name="text">
@@ -67,6 +74,13 @@
        <widget class="QCheckBox" name="save_images_overwrite">
         <property name="text">
          <string>Overwrite the file if it already exists</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="image_type_as_filename">
+        <property name="text">
+         <string>Always use the primary image type as the file name for non-front images</string>
         </property>
        </widget>
       </item>
@@ -109,7 +123,8 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset theme=":/images/16x16/go-up.png"/>
+           <iconset theme=":/images/16x16/go-up.png">
+            <normaloff>.</normaloff>.</iconset>
           </property>
           <property name="toolButtonStyle">
            <enum>Qt::ToolButtonIconOnly</enum>
@@ -128,7 +143,8 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset theme=":/images/16x16/go-down.png"/>
+           <iconset theme=":/images/16x16/go-down.png">
+            <normaloff>.</normaloff>.</iconset>
           </property>
           <property name="toolButtonStyle">
            <enum>Qt::ToolButtonIconOnly</enum>
@@ -169,11 +185,7 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>save_images_to_tags</tabstop>
   <tabstop>cb_embed_front_only</tabstop>
-  <tabstop>save_images_to_files</tabstop>
-  <tabstop>cover_image_filename</tabstop>
-  <tabstop>save_images_overwrite</tabstop>
  </tabstops>
  <resources/>
  <connections/>

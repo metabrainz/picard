@@ -438,7 +438,6 @@ class ProviderOptionsCaa(ProviderOptions):
     options = [
         BoolOption("setting", "caa_save_single_front_image", False),
         BoolOption("setting", "caa_approved_only", False),
-        BoolOption("setting", "caa_image_type_as_filename", False),
         IntOption("setting", "caa_image_size", _CAA_IMAGE_SIZE_DEFAULT),
         ListOption("setting", "caa_image_types", _CAA_IMAGE_TYPE_DEFAULT_INCLUDE),
         BoolOption("setting", "caa_restrict_image_types", True),
@@ -471,7 +470,6 @@ class ProviderOptionsCaa(ProviderOptions):
 
         self.ui.cb_save_single_front_image.setChecked(config.setting["caa_save_single_front_image"])
         self.ui.cb_approved_only.setChecked(config.setting["caa_approved_only"])
-        self.ui.cb_type_as_filename.setChecked(config.setting["caa_image_type_as_filename"])
         self.ui.restrict_images_types.setChecked(
             config.setting["caa_restrict_image_types"])
         self.caa_image_types = config.setting["caa_image_types"]
@@ -486,8 +484,6 @@ class ProviderOptionsCaa(ProviderOptions):
             self.ui.cb_save_single_front_image.isChecked()
         config.setting["caa_approved_only"] = \
             self.ui.cb_approved_only.isChecked()
-        config.setting["caa_image_type_as_filename"] = \
-            self.ui.cb_type_as_filename.isChecked()
         config.setting["caa_restrict_image_types"] = \
             self.ui.restrict_images_types.isChecked()
         config.setting["caa_image_types"] = self.caa_image_types
