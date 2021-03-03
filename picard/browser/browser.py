@@ -6,7 +6,7 @@
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2012-2013, 2018, 2021 Philipp Wolfer
-# Copyright (C) 2013, 2018 Laurent Monin
+# Copyright (C) 2013, 2018, 2021 Laurent Monin
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
@@ -47,6 +47,15 @@ from picard import (
 from picard.config import get_config
 from picard.util import mbid_validate
 from picard.util.thread import to_main
+
+
+try:
+    from http.server import ThreadingHTTPServer
+except ImportError:
+    from socketserver import ThreadingMixIn
+
+    class ThreadingHTTPServer(ThreadingMixIn, HTTPServer):
+        daemon_threads = True
 
 
 SERVER_VERSION = '%s-%s/%s' % (PICARD_ORG_NAME, PICARD_APP_NAME, PICARD_VERSION_STR)
@@ -99,7 +108,7 @@ class BrowserIntegration(QtCore.QObject):
 
         for port in range(config.setting["browser_integration_port"], 65535):
             try:
-                self.server = HTTPServer((host_address, port), RequestHandler)
+                self.server = ThreadingHTTPServer((host_address, port), RequestHandler)
             except OSError:
                 continue
             log.info("Starting the browser integration (%s:%d)", host_address, port)
