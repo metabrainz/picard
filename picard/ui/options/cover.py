@@ -28,6 +28,7 @@
 from picard.config import (
     BoolOption,
     ListOption,
+    Option,
     TextOption,
     get_config,
 )
@@ -71,6 +72,7 @@ class CoverOptionsPage(OptionsPage):
         super().__init__(parent)
         self.ui = Ui_CoverOptionsPage()
         self.ui.setupUi(self)
+        self.ui.cover_image_filename.setPlaceholderText(Option.get('setting', 'cover_image_filename').default)
         self.ui.save_images_to_files.clicked.connect(self.update_filename)
         self.ui.save_images_to_tags.clicked.connect(self.update_save_images_to_tags)
         self.ui.save_only_one_front_image.toggled.connect(self.ui.image_type_as_filename.setDisabled)
