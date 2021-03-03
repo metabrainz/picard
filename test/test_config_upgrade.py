@@ -321,8 +321,12 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
 
     def test_upgrade_to_v2_6_0_beta_2(self):
         BoolOption('setting', 'image_type_as_filename', False)
+        BoolOption('setting', 'save_only_one_front_image', False)
 
         self.config.setting['caa_image_type_as_filename'] = True
+        self.config.setting['caa_save_single_front_image'] = True
         upgrade_to_v2_6_0_beta_2(self.config)
         self.assertNotIn('caa_image_type_as_filename', self.config.setting)
         self.assertTrue(self.config.setting['image_type_as_filename'])
+        self.assertNotIn('caa_save_single_front_image', self.config.setting)
+        self.assertTrue(self.config.setting['save_only_one_front_image'])

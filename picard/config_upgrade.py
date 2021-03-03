@@ -326,10 +326,9 @@ def upgrade_to_v2_6_0_dev_1(config):
 
 
 def upgrade_to_v2_6_0_beta_2(config):
-    """Rename caa_image_type_as_filename to image_type_as_filename"""
-    old_opt = "caa_image_type_as_filename"
-    new_opt = "image_type_as_filename"
-    rename_option(config, old_opt, new_opt, BoolOption, False)
+    """Rename caa_image_type_as_filename and caa_save_single_front_image options"""
+    rename_option(config, "caa_image_type_as_filename", "image_type_as_filename", BoolOption, False)
+    rename_option(config, "caa_save_single_front_image", "save_only_one_front_image", BoolOption, False)
 
 
 def rename_option(config, old_opt, new_opt, option_type, default):

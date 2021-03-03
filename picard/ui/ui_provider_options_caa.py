@@ -51,9 +51,6 @@ class Ui_CaaOptions(object):
         self.cb_image_size.setObjectName("cb_image_size")
         self.horizontalLayout.addWidget(self.cb_image_size)
         self.verticalLayout.addLayout(self.horizontalLayout)
-        self.cb_save_single_front_image = QtWidgets.QCheckBox(CaaOptions)
-        self.cb_save_single_front_image.setObjectName("cb_save_single_front_image")
-        self.verticalLayout.addWidget(self.cb_save_single_front_image)
         self.cb_approved_only = QtWidgets.QCheckBox(CaaOptions)
         self.cb_approved_only.setObjectName("cb_approved_only")
         self.verticalLayout.addWidget(self.cb_approved_only)
@@ -64,8 +61,7 @@ class Ui_CaaOptions(object):
         QtCore.QMetaObject.connectSlotsByName(CaaOptions)
         CaaOptions.setTabOrder(self.restrict_images_types, self.select_caa_types)
         CaaOptions.setTabOrder(self.select_caa_types, self.cb_image_size)
-        CaaOptions.setTabOrder(self.cb_image_size, self.cb_save_single_front_image)
-        CaaOptions.setTabOrder(self.cb_save_single_front_image, self.cb_approved_only)
+        CaaOptions.setTabOrder(self.cb_image_size, self.cb_approved_only)
 
     def retranslateUi(self, CaaOptions):
         _translate = QtCore.QCoreApplication.translate
@@ -73,5 +69,4 @@ class Ui_CaaOptions(object):
         self.restrict_images_types.setText(_("Download only cover art images matching selected types"))
         self.select_caa_types.setText(_("Select types..."))
         self.label.setText(_("Only use images of the following size:"))
-        self.cb_save_single_front_image.setText(_("Save only one front image as separate file"))
         self.cb_approved_only.setText(_("Download only approved images"))

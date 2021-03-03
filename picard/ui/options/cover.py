@@ -57,6 +57,7 @@ class CoverOptionsPage(OptionsPage):
         BoolOption("setting", "save_images_to_files", False),
         TextOption("setting", "cover_image_filename", "cover"),
         BoolOption("setting", "save_images_overwrite", False),
+        BoolOption("setting", "save_only_one_front_image", False),
         BoolOption("setting", "image_type_as_filename", False),
         ListOption("setting", "ca_providers", [
             ('Cover Art Archive', True),
@@ -72,6 +73,7 @@ class CoverOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.save_images_to_files.clicked.connect(self.update_filename)
         self.ui.save_images_to_tags.clicked.connect(self.update_save_images_to_tags)
+        self.ui.save_only_one_front_image.toggled.connect(self.ui.image_type_as_filename.setDisabled)
         self.move_view = MoveableListView(self.ui.ca_providers_list, self.ui.up_button,
                                           self.ui.down_button)
 
@@ -100,6 +102,7 @@ class CoverOptionsPage(OptionsPage):
         self.ui.save_images_to_files.setChecked(config.setting["save_images_to_files"])
         self.ui.cover_image_filename.setText(config.setting["cover_image_filename"])
         self.ui.save_images_overwrite.setChecked(config.setting["save_images_overwrite"])
+        self.ui.save_only_one_front_image.setChecked(config.setting["save_only_one_front_image"])
         self.ui.image_type_as_filename.setChecked(config.setting["image_type_as_filename"])
         self.load_cover_art_providers()
         self.ui.ca_providers_list.setCurrentRow(0)
@@ -112,6 +115,7 @@ class CoverOptionsPage(OptionsPage):
         config.setting["save_images_to_files"] = self.ui.save_images_to_files.isChecked()
         config.setting["cover_image_filename"] = self.ui.cover_image_filename.text()
         config.setting["save_images_overwrite"] = self.ui.save_images_overwrite.isChecked()
+        config.setting["save_only_one_front_image"] = self.ui.save_only_one_front_image.isChecked()
         config.setting["image_type_as_filename"] = self.ui.image_type_as_filename.isChecked()
         config.setting["ca_providers"] = self.ca_providers()
 

@@ -436,7 +436,6 @@ class ProviderOptionsCaa(ProviderOptions):
     HELP_URL = '/config/options_cover_art_archive.html'
 
     options = [
-        BoolOption("setting", "caa_save_single_front_image", False),
         BoolOption("setting", "caa_approved_only", False),
         IntOption("setting", "caa_image_size", _CAA_IMAGE_SIZE_DEFAULT),
         ListOption("setting", "caa_image_types", _CAA_IMAGE_TYPE_DEFAULT_INCLUDE),
@@ -468,7 +467,6 @@ class ProviderOptionsCaa(ProviderOptions):
             index = self.ui.cb_image_size.findData(_CAA_IMAGE_SIZE_DEFAULT)
         self.ui.cb_image_size.setCurrentIndex(index)
 
-        self.ui.cb_save_single_front_image.setChecked(config.setting["caa_save_single_front_image"])
         self.ui.cb_approved_only.setChecked(config.setting["caa_approved_only"])
         self.ui.restrict_images_types.setChecked(
             config.setting["caa_restrict_image_types"])
@@ -480,8 +478,6 @@ class ProviderOptionsCaa(ProviderOptions):
         config = get_config()
         size = self.ui.cb_image_size.currentData()
         config.setting["caa_image_size"] = size
-        config.setting["caa_save_single_front_image"] = \
-            self.ui.cb_save_single_front_image.isChecked()
         config.setting["caa_approved_only"] = \
             self.ui.cb_approved_only.isChecked()
         config.setting["caa_restrict_image_types"] = \
@@ -661,7 +657,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                             # PDFs cannot be saved to tags (as 2014/05/29)
                             coverartimage.can_be_saved_to_tags = False
                         self.queue_put(coverartimage)
-                        if config.setting["caa_save_single_front_image"] and \
+                        if config.setting["save_only_one_front_image"] and \
                                 config.setting["save_images_to_files"] and \
                                 image["front"]:
                             break

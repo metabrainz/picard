@@ -40,6 +40,9 @@ class Ui_CoverOptionsPage(object):
         self.save_images_overwrite = QtWidgets.QCheckBox(self.save_images_to_files)
         self.save_images_overwrite.setObjectName("save_images_overwrite")
         self.verticalLayout_2.addWidget(self.save_images_overwrite)
+        self.save_only_one_front_image = QtWidgets.QCheckBox(self.save_images_to_files)
+        self.save_only_one_front_image.setObjectName("save_only_one_front_image")
+        self.verticalLayout_2.addWidget(self.save_only_one_front_image)
         self.image_type_as_filename = QtWidgets.QCheckBox(self.save_images_to_files)
         self.image_type_as_filename.setObjectName("image_type_as_filename")
         self.verticalLayout_2.addWidget(self.image_type_as_filename)
@@ -90,10 +93,11 @@ class Ui_CoverOptionsPage(object):
     def retranslateUi(self, CoverOptionsPage):
         _translate = QtCore.QCoreApplication.translate
         self.save_images_to_tags.setTitle(_("Embed cover images into tags"))
-        self.cb_embed_front_only.setText(_("Only embed a front image"))
+        self.cb_embed_front_only.setText(_("Embed only a single front image"))
         self.save_images_to_files.setTitle(_("Save cover images as separate files"))
         self.label_use_filename.setText(_("Use the following file name for images:"))
         self.save_images_overwrite.setText(_("Overwrite the file if it already exists"))
+        self.save_only_one_front_image.setText(_("Save only a single front image as separate file"))
         self.image_type_as_filename.setText(_("Always use the primary image type as the file name for non-front images"))
         self.ca_providers_groupbox.setTitle(_("Cover Art Providers"))
         self.move_label.setText(_("Reorder Priority: "))

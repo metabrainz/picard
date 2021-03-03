@@ -516,7 +516,7 @@ class File(QtCore.QObject, Item):
         counters = defaultdict(lambda: 0)
         images = []
         config = get_config()
-        if config.setting["caa_save_single_front_image"]:
+        if config.setting["save_only_one_front_image"]:
             front = metadata.images.get_front_image()
             if front:
                 images.append(front)
