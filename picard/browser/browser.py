@@ -153,6 +153,12 @@ class RequestHandler(BaseHTTPRequestHandler):
             log.error('Browser integration failed handling request', exc_info=True)
             self._response(500, 'Unexpected request error')
 
+    def log_error(self, format, *args):
+        log.error(format, *args)
+
+    def log_message(self, format, *args):
+        log.info(format, *args)
+
     def _handle_get(self):
         parsed = urlparse(self.path)
         args = parse_qs(parsed.query)
