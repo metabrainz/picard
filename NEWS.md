@@ -1,3 +1,14 @@
+# Version 2.6.0b2 - 2021-03-06
+
+## Bugfixes
+
+- [PICARD-2131](https://tickets.metabrainz.org/browse/PICARD-2131) - Tagger button reacts slow in Firefox
+
+## Improvements
+
+- [PICARD-2130](https://tickets.metabrainz.org/browse/PICARD-2130) - Restructure cover art options to make them easier to understand
+
+
 # Version 2.6.0b1 - 2021-03-02
 
 ## Bugfixes
