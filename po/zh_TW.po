@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-03-02 08:06+0100\n"
-"PO-Revision-Date: 2021-03-02 09:15+0000\n"
+"POT-Creation-Date: 2021-03-03 14:28+0100\n"
+"PO-Revision-Date: 2021-03-03 15:15+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -2258,7 +2258,7 @@ msgstr "清除全部 (&L)"
 msgid "Restore &Defaults"
 msgstr "恢復預設值 (&D)"
 
-#: picard/coverart/providers/caa.py:513
+#: picard/coverart/providers/caa.py:505
 msgid "Cover Art Archive"
 msgstr "Cover Art Archive"
 
@@ -4218,7 +4218,7 @@ msgstr ""
 msgid "A&rtwork"
 msgstr "圖片(&R)"
 
-#: picard/ui/ui_infostatus.py:91 picard/ui/ui_provider_options_caa.py:79
+#: picard/ui/ui_infostatus.py:91 picard/ui/ui_provider_options_caa.py:68
 #: picard/ui/ui_provider_options_local.py:50
 #: picard/ui/ui_widget_taglisteditor.py:68
 msgid "Form"
@@ -4281,43 +4281,48 @@ msgstr "要查找的 CD-ROM 裝置:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "要查找的預設 CD-ROM 裝置:"
 
-#: picard/ui/ui_options_cover.py:90
-msgid "Location"
-msgstr "位置"
-
-#: picard/ui/ui_options_cover.py:91
+#: picard/ui/ui_options_cover.py:95
 msgid "Embed cover images into tags"
 msgstr "嵌入封面圖片至標籤"
 
-#: picard/ui/ui_options_cover.py:92
-msgid "Only embed a front image"
-msgstr "只嵌入正面的封面圖片"
+#: picard/ui/ui_options_cover.py:96
+msgid "Embed only a single front image"
+msgstr ""
 
-#: picard/ui/ui_options_cover.py:93
+#: picard/ui/ui_options_cover.py:97
 msgid "Save cover images as separate files"
 msgstr "儲存封面圖片於別的檔案"
 
-#: picard/ui/ui_options_cover.py:94
+#: picard/ui/ui_options_cover.py:98
 msgid "Use the following file name for images:"
 msgstr "對圖片使用以下檔名:"
 
-#: picard/ui/ui_options_cover.py:95
+#: picard/ui/ui_options_cover.py:99
 msgid "Overwrite the file if it already exists"
 msgstr "檔案存在時取代"
 
-#: picard/ui/ui_options_cover.py:96
+#: picard/ui/ui_options_cover.py:100
+msgid "Save only a single front image as separate file"
+msgstr ""
+
+#: picard/ui/ui_options_cover.py:101
+msgid ""
+"Always use the primary image type as the file name for non-front images"
+msgstr ""
+
+#: picard/ui/ui_options_cover.py:102
 msgid "Cover Art Providers"
 msgstr "封面圖片提供者"
 
-#: picard/ui/ui_options_cover.py:97
+#: picard/ui/ui_options_cover.py:103
 msgid "Reorder Priority: "
 msgstr "調整優先度:"
 
-#: picard/ui/ui_options_cover.py:98 picard/ui/ui_options_interface.py:149
+#: picard/ui/ui_options_cover.py:104 picard/ui/ui_options_interface.py:149
 msgid "Move selected item up"
 msgstr "向上移動已選擇的項目"
 
-#: picard/ui/ui_options_cover.py:99 picard/ui/ui_options_interface.py:150
+#: picard/ui/ui_options_cover.py:105 picard/ui/ui_options_interface.py:150
 msgid "Move selected item down"
 msgstr "向下移動已選擇的項目"
 
@@ -4959,31 +4964,21 @@ msgstr "Picard 將會使用 ID3v2 標籤於 WAVE 檔案。這不被所有播放�
 msgid "Authentication required"
 msgstr "需要認證"
 
-#: picard/ui/ui_provider_options_caa.py:80
+#: picard/ui/ui_provider_options_caa.py:69
 msgid "Download only cover art images matching selected types"
 msgstr "僅下載符合以選類型的封面圖片"
 
-#: picard/ui/ui_provider_options_caa.py:81
+#: picard/ui/ui_provider_options_caa.py:70
 msgid "Select types..."
 msgstr "選擇類型…"
 
-#: picard/ui/ui_provider_options_caa.py:82
+#: picard/ui/ui_provider_options_caa.py:71
 msgid "Only use images of the following size:"
 msgstr "只使用以下大小的圖片:"
 
-#: picard/ui/ui_provider_options_caa.py:83
-msgid "Save only one front image as separate file"
-msgstr "只儲存一張正面圖片為單一檔案"
-
-#: picard/ui/ui_provider_options_caa.py:84
+#: picard/ui/ui_provider_options_caa.py:72
 msgid "Download only approved images"
 msgstr "只下載受認可的圖片"
-
-#: picard/ui/ui_provider_options_caa.py:85
-msgid ""
-"Use the first image type as the filename. This will not change the filename "
-"of front images."
-msgstr "使用圖片的第一個類型之名稱為檔名。這不會修改正面圖片的檔名。"
 
 #: picard/ui/ui_provider_options_local.py:51
 msgid "Local cover art files match the following regular expression:"
@@ -5051,7 +5046,7 @@ msgstr "正規表式錯誤"
 msgid "Advanced"
 msgstr "進階"
 
-#: picard/ui/options/cover.py:48
+#: picard/ui/options/cover.py:49
 msgid "Cover Art"
 msgstr "封面圖片"
 

@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-03-02 08:06+0100\n"
-"PO-Revision-Date: 2021-03-02 09:15+0000\n"
+"POT-Creation-Date: 2021-03-03 14:28+0100\n"
+"PO-Revision-Date: 2021-03-03 15:15+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Greek (http://www.transifex.com/musicbrainz/musicbrainz/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -2264,7 +2264,7 @@ msgstr ""
 msgid "Restore &Defaults"
 msgstr ""
 
-#: picard/coverart/providers/caa.py:513
+#: picard/coverart/providers/caa.py:505
 msgid "Cover Art Archive"
 msgstr "Cover Art Archive"
 
@@ -4230,7 +4230,7 @@ msgstr ""
 msgid "A&rtwork"
 msgstr ""
 
-#: picard/ui/ui_infostatus.py:91 picard/ui/ui_provider_options_caa.py:79
+#: picard/ui/ui_infostatus.py:91 picard/ui/ui_provider_options_caa.py:68
 #: picard/ui/ui_provider_options_local.py:50
 #: picard/ui/ui_widget_taglisteditor.py:68
 msgid "Form"
@@ -4293,43 +4293,48 @@ msgstr "Συσκευή CD-ROM που θα χρησιμοποιηθεί για τ
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Προκαθορισμένη συσκευή CD-ROM που χρησιμοποιείται για τις αναζητήσεις:"
 
-#: picard/ui/ui_options_cover.py:90
-msgid "Location"
-msgstr "Τοποθεσία"
-
-#: picard/ui/ui_options_cover.py:91
+#: picard/ui/ui_options_cover.py:95
 msgid "Embed cover images into tags"
 msgstr "Ενσωμάτωση εξωφύλλου στις ετικέτες"
 
-#: picard/ui/ui_options_cover.py:92
-msgid "Only embed a front image"
-msgstr "Ενσωμάτωση μόνο του εξωφύλλου"
-
-#: picard/ui/ui_options_cover.py:93
-msgid "Save cover images as separate files"
-msgstr "Αποθήκευση εξωφύλλων ως ξεχωριστά αρχεία"
-
-#: picard/ui/ui_options_cover.py:94
-msgid "Use the following file name for images:"
-msgstr "Χρήση του παρακάτω ονόματος αρχείου για εικόνες:"
-
-#: picard/ui/ui_options_cover.py:95
-msgid "Overwrite the file if it already exists"
-msgstr "Αντικατάσταση του αρχείου αν υπάρχει ήδη"
-
 #: picard/ui/ui_options_cover.py:96
-msgid "Cover Art Providers"
+msgid "Embed only a single front image"
 msgstr ""
 
 #: picard/ui/ui_options_cover.py:97
+msgid "Save cover images as separate files"
+msgstr "Αποθήκευση εξωφύλλων ως ξεχωριστά αρχεία"
+
+#: picard/ui/ui_options_cover.py:98
+msgid "Use the following file name for images:"
+msgstr "Χρήση του παρακάτω ονόματος αρχείου για εικόνες:"
+
+#: picard/ui/ui_options_cover.py:99
+msgid "Overwrite the file if it already exists"
+msgstr "Αντικατάσταση του αρχείου αν υπάρχει ήδη"
+
+#: picard/ui/ui_options_cover.py:100
+msgid "Save only a single front image as separate file"
+msgstr ""
+
+#: picard/ui/ui_options_cover.py:101
+msgid ""
+"Always use the primary image type as the file name for non-front images"
+msgstr ""
+
+#: picard/ui/ui_options_cover.py:102
+msgid "Cover Art Providers"
+msgstr ""
+
+#: picard/ui/ui_options_cover.py:103
 msgid "Reorder Priority: "
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:98 picard/ui/ui_options_interface.py:149
+#: picard/ui/ui_options_cover.py:104 picard/ui/ui_options_interface.py:149
 msgid "Move selected item up"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:99 picard/ui/ui_options_interface.py:150
+#: picard/ui/ui_options_cover.py:105 picard/ui/ui_options_interface.py:150
 msgid "Move selected item down"
 msgstr ""
 
@@ -4971,31 +4976,21 @@ msgstr ""
 msgid "Authentication required"
 msgstr "Απαιτείται έλεγχος ταυτότητας"
 
-#: picard/ui/ui_provider_options_caa.py:80
+#: picard/ui/ui_provider_options_caa.py:69
 msgid "Download only cover art images matching selected types"
 msgstr ""
 
-#: picard/ui/ui_provider_options_caa.py:81
+#: picard/ui/ui_provider_options_caa.py:70
 msgid "Select types..."
 msgstr "Επιλογή τύπων..."
 
-#: picard/ui/ui_provider_options_caa.py:82
+#: picard/ui/ui_provider_options_caa.py:71
 msgid "Only use images of the following size:"
 msgstr "Χρήση εικόνων μόνο των παρακάτω διαστάσεων:"
 
-#: picard/ui/ui_provider_options_caa.py:83
-msgid "Save only one front image as separate file"
-msgstr ""
-
-#: picard/ui/ui_provider_options_caa.py:84
+#: picard/ui/ui_provider_options_caa.py:72
 msgid "Download only approved images"
 msgstr "Κατέβασμα μόνο εγκεκριμένων εικόνων"
-
-#: picard/ui/ui_provider_options_caa.py:85
-msgid ""
-"Use the first image type as the filename. This will not change the filename "
-"of front images."
-msgstr "Χρήση του πρώτου τύπου εικόνας ως το όνομα αρχεία. Αυτό δεν θα αλλάξει το όνομα αρχείου των εξωφύλλων."
 
 #: picard/ui/ui_provider_options_local.py:51
 msgid "Local cover art files match the following regular expression:"
@@ -5063,7 +5058,7 @@ msgstr "Σφάλμα στο Regex"
 msgid "Advanced"
 msgstr "Για προχωρημένους"
 
-#: picard/ui/options/cover.py:48
+#: picard/ui/options/cover.py:49
 msgid "Cover Art"
 msgstr "Εξώφυλλο"
 

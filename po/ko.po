@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-03-02 08:06+0100\n"
-"PO-Revision-Date: 2021-03-02 09:15+0000\n"
+"POT-Creation-Date: 2021-03-03 14:28+0100\n"
+"PO-Revision-Date: 2021-03-03 15:15+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Korean (http://www.transifex.com/musicbrainz/musicbrainz/language/ko/)\n"
 "MIME-Version: 1.0\n"
@@ -2256,7 +2256,7 @@ msgstr ""
 msgid "Restore &Defaults"
 msgstr "기본값 복원(&D)"
 
-#: picard/coverart/providers/caa.py:513
+#: picard/coverart/providers/caa.py:505
 msgid "Cover Art Archive"
 msgstr "커버 아트 보관함"
 
@@ -4216,7 +4216,7 @@ msgstr ""
 msgid "A&rtwork"
 msgstr "아트워크(&R)"
 
-#: picard/ui/ui_infostatus.py:91 picard/ui/ui_provider_options_caa.py:79
+#: picard/ui/ui_infostatus.py:91 picard/ui/ui_provider_options_caa.py:68
 #: picard/ui/ui_provider_options_local.py:50
 #: picard/ui/ui_widget_taglisteditor.py:68
 msgid "Form"
@@ -4279,43 +4279,48 @@ msgstr "조회에 사용할 CD-ROM 장치:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "조회에 사용할 기본 CD-ROM 드라이브:"
 
-#: picard/ui/ui_options_cover.py:90
-msgid "Location"
-msgstr "위치"
-
-#: picard/ui/ui_options_cover.py:91
+#: picard/ui/ui_options_cover.py:95
 msgid "Embed cover images into tags"
 msgstr "태그에 커버 이미지 첨부"
 
-#: picard/ui/ui_options_cover.py:92
-msgid "Only embed a front image"
-msgstr "프론트 이미지만 첨부"
+#: picard/ui/ui_options_cover.py:96
+msgid "Embed only a single front image"
+msgstr ""
 
-#: picard/ui/ui_options_cover.py:93
+#: picard/ui/ui_options_cover.py:97
 msgid "Save cover images as separate files"
 msgstr "커버 이미지를 별도 파일로 저장"
 
-#: picard/ui/ui_options_cover.py:94
+#: picard/ui/ui_options_cover.py:98
 msgid "Use the following file name for images:"
 msgstr "이미지에 다음 파일명을 사용:"
 
-#: picard/ui/ui_options_cover.py:95
+#: picard/ui/ui_options_cover.py:99
 msgid "Overwrite the file if it already exists"
 msgstr "이미 파일이 존재할 경우 덮어쓰기"
 
-#: picard/ui/ui_options_cover.py:96
+#: picard/ui/ui_options_cover.py:100
+msgid "Save only a single front image as separate file"
+msgstr ""
+
+#: picard/ui/ui_options_cover.py:101
+msgid ""
+"Always use the primary image type as the file name for non-front images"
+msgstr ""
+
+#: picard/ui/ui_options_cover.py:102
 msgid "Cover Art Providers"
 msgstr "커버 아트 제공자"
 
-#: picard/ui/ui_options_cover.py:97
+#: picard/ui/ui_options_cover.py:103
 msgid "Reorder Priority: "
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:98 picard/ui/ui_options_interface.py:149
+#: picard/ui/ui_options_cover.py:104 picard/ui/ui_options_interface.py:149
 msgid "Move selected item up"
 msgstr "선택한 항목 위로 이동"
 
-#: picard/ui/ui_options_cover.py:99 picard/ui/ui_options_interface.py:150
+#: picard/ui/ui_options_cover.py:105 picard/ui/ui_options_interface.py:150
 msgid "Move selected item down"
 msgstr "선택한 항목 아래로 이동"
 
@@ -4957,31 +4962,21 @@ msgstr ""
 msgid "Authentication required"
 msgstr "인증 필요"
 
-#: picard/ui/ui_provider_options_caa.py:80
+#: picard/ui/ui_provider_options_caa.py:69
 msgid "Download only cover art images matching selected types"
 msgstr "선택한 유형과 일치하는 커버 아트 이미지만 다운로드"
 
-#: picard/ui/ui_provider_options_caa.py:81
+#: picard/ui/ui_provider_options_caa.py:70
 msgid "Select types..."
 msgstr "유형 선택..."
 
-#: picard/ui/ui_provider_options_caa.py:82
+#: picard/ui/ui_provider_options_caa.py:71
 msgid "Only use images of the following size:"
 msgstr "다음과 같은 사이즈에 대한 이미지만 사용합니다:"
 
-#: picard/ui/ui_provider_options_caa.py:83
-msgid "Save only one front image as separate file"
-msgstr "하나의 프론트 이미지만 별도 파일로 저장합니다"
-
-#: picard/ui/ui_provider_options_caa.py:84
+#: picard/ui/ui_provider_options_caa.py:72
 msgid "Download only approved images"
 msgstr "검증된 이미지만 다운로드"
-
-#: picard/ui/ui_provider_options_caa.py:85
-msgid ""
-"Use the first image type as the filename. This will not change the filename "
-"of front images."
-msgstr "첫번째 이미지 유형을 파일명으로 사용합니다. 이 옵션은 프론트 이미지의 파일명을 변경하지 않습니다."
 
 #: picard/ui/ui_provider_options_local.py:51
 msgid "Local cover art files match the following regular expression:"
@@ -5049,7 +5044,7 @@ msgstr "정규식 오류"
 msgid "Advanced"
 msgstr "고급"
 
-#: picard/ui/options/cover.py:48
+#: picard/ui/options/cover.py:49
 msgid "Cover Art"
 msgstr "커버 아트"
 

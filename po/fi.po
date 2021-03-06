@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-03-02 08:06+0100\n"
-"PO-Revision-Date: 2021-03-02 09:15+0000\n"
+"POT-Creation-Date: 2021-03-03 14:28+0100\n"
+"PO-Revision-Date: 2021-03-03 15:15+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Finnish (http://www.transifex.com/musicbrainz/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
@@ -2268,7 +2268,7 @@ msgstr "&Tyhjennä kaikki"
 msgid "Restore &Defaults"
 msgstr "Palauta oletus&asetuksiin"
 
-#: picard/coverart/providers/caa.py:513
+#: picard/coverart/providers/caa.py:505
 msgid "Cover Art Archive"
 msgstr "Cover Art Archive"
 
@@ -2494,7 +2494,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $add(x,y,z) = ((x + y) + z)\n"
-msgstr ""
+msgstr "`$add(x,y,*...)`\n\nLaske yhteen `y` ja `x`.\nArgumentteja voi olla useampiakin.\n\nEsimerkki:\n\n    $add(x,y,z) = ((x + y) + z)\n"
 
 #: picard/script/functions.py:512
 msgid ""
@@ -2506,7 +2506,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $sub(x,y,z) = ((x - y) - z)\n"
-msgstr ""
+msgstr "`$sub(x,y,...)`\n\nVähennä `x`:stä `y`.\nArgumentteja voi olla useampiakin.\n\nEsimerkki:\n\n    $sub(x,y,z) = ((x - y) - z)\n"
 
 #: picard/script/functions.py:530
 msgid ""
@@ -2518,7 +2518,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $div(x,y,z) = ((x / y) / z)\n"
-msgstr ""
+msgstr "`$div(x,y,...)`\n\nJaa `x` `y`:llä.\nArgumentteja voi olla useampiakin.\n\nEsimerkki:\n\n    $div(x,y,z) = ((x / y) / z)\n"
 
 #: picard/script/functions.py:550
 msgid ""
@@ -2530,7 +2530,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $mod(x,y,z) = ((x % y) % z)\n"
-msgstr ""
+msgstr "`$mod(x,y,...)`\n\nPalauttaa jakojäännöksen `x` jaettuna `y`:llä.\nArgumentteja voi olla useampiakin.\n\nEsimerkki:\n\n    $mod(x,y,z) = ((x % y) % z)\n"
 
 #: picard/script/functions.py:568
 msgid ""
@@ -2542,7 +2542,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $mul(x,y,z) = ((x * y) * z)\n"
-msgstr ""
+msgstr "`$mul(x,y,...)`\n\nKerro `x` `y`:llä.\nArgumentteja voi olla useampiakin.\n\nEsimerkki:\n\n    $mul(x,y,z) = ((x * y) * z)\n"
 
 #: picard/script/functions.py:586
 msgid ""
@@ -2551,7 +2551,7 @@ msgid ""
 "Returns true if either `x` or `y` not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
 "    The result is true if ANY of the arguments is not empty."
-msgstr ""
+msgstr "`$or(x,y,...)`\n\nPalauta tosi jos `x` tai `y` ei ole tyhjä.\n    Argumentteja voi olla useampiakin.\n    Palauta tosi jos JOKIN argumenteista ei ole tyhjä."
 
 #: picard/script/functions.py:600
 msgid ""
@@ -2560,7 +2560,7 @@ msgid ""
 "Returns true if both `x` and `y` are not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
 "    The result is true if ALL of the arguments are not empty."
-msgstr ""
+msgstr "`$and(x,y,...)`\n\nPalauta tosi jos `x` ja `y` eivät ole tyhjiä.\n    Argumentteja voi olla useampiakin.\n    Palauta tosi jos YKSIKÄÄN argumenteista ei ole tyhjä."
 
 #: picard/script/functions.py:614
 msgid ""
@@ -2728,7 +2728,7 @@ msgid ""
 "    $swapprefix(%albumartist%,A,An,The,La,Le,Les,Un,Une)\n"
 "\n"
 "_Since Picard 1.3, previously as a plugin since Picard 0.13_"
-msgstr ""
+msgstr "`$swapprefix(teksti,etuliite1,etuliite2,...)`\n\nSiirrä määritetyt etuliitteet `teksti`n alusta loppuun. Useita etuliitteitä\nvoidaan antaa samalla. Mikäli etuliitteitä ei anneta, käytetään etuliitteinä\n'A' ja 'The'.\n\nEsimerkki:\n\n    $swapprefix(%albumartist%,A,An,The,La,Le,Les,Un,Une)\n\n_Picardin versiosta 1.3, sitä ennen liitännäisenä Picardin versiosta 0.13_"
 
 #: picard/script/functions.py:894
 msgid ""
@@ -2743,7 +2743,7 @@ msgid ""
 "    $delprefix(%albumartist%,A,An,The,La,Le,Les,Un,Une)\n"
 "\n"
 "_Since Picard 1.3_"
-msgstr ""
+msgstr "`$delprefix(teksti,etuliite1,etuliite2,...)`\n\nPoista määritetyt etuliitteet `teksti`n alusta. Useita etuliitteitä\nvoidaan antaa samalla. Mikäli etuliitteitä ei anneta, käytetään etuliitteinä\n'A' ja 'The'.\n\nEsimerkki:\n\n    $delprefix(albumartist%,A,An,The,La,Le,Les,Un,Une)\n\n_Picardin versiosta 1.3_"
 
 #: picard/script/functions.py:932
 msgid ""
@@ -2752,7 +2752,7 @@ msgid ""
 "Returns true if `x` equals `a1` or `a2` or ...\n"
 "Functionally equivalent to `$or($eq(x,a1),$eq(x,a2),...)`.\n"
 "Functionally equivalent to the eq2 plugin."
-msgstr ""
+msgstr "`$eq_any(x,a1,a2,...)`\n\nPalauta tosi jos `x` on yhtä suuri kuin `a1` tai `a2` tai ...\nToiminnallisesti sama kuin `$or($eq(x,a1),$eq(x,a2) ...)`.\nToiminnallisesti sama kuin eq2-liitännäinen."
 
 #: picard/script/functions.py:944
 msgid ""
@@ -2761,7 +2761,7 @@ msgid ""
 "Returns true if `x` does not equal `a1` and `a2` and ...\n"
 "Functionally equivalent to `$and($ne(x,a1),$ne(x,a2),...)`.\n"
 "Functionally equivalent to the ne2 plugin."
-msgstr ""
+msgstr "`$ne_all(x,a1,a2,...)`\n\nPalauta tosi jos `x` ei ole yhtä suuri kuin `a1` ja `a2` ja ...\nToiminnallisesti sama kuin `$and($ne(x,a1),$ne(x,a2) ...)`.\nToiminnallisesti sama kuin ne2-liitännäinen."
 
 #: picard/script/functions.py:956
 msgid ""
@@ -2773,7 +2773,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat Loaf))\n"
-msgstr ""
+msgstr "`$eq_all(x,a1,a2,...)`\n\nPalauta tosi jos `x` on yhtä suuri kuin `a1` ja `a2` ja ...\nToiminnallisesti sama kuin `$and($eq(x,a1),$eq(x,a2) ...)`.\n\nEsimerkki:\n\n    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat Loaf))\n"
 
 #: picard/script/functions.py:974
 #, python-format
@@ -2786,7 +2786,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
-msgstr ""
+msgstr "`$ne_any(x,a1,a2,...)`\n\nPalauta tosi jos `x` ei ole yhtä suuri kuin `a1` tai `a2` tai ...\nToiminnallisesti sama kuin `$or($ne(x,a1),$ne(x,a2) ...)`.\n\nEsimerkki:\n\n    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
 
 #: picard/script/functions.py:989
 msgid ""
@@ -2897,7 +2897,7 @@ msgid ""
 "    $map(First:A; Second:B,$upper(%_loop_count%=%_loop_value%))\n"
 "\n"
 "Result: 1=FIRST:A; 2=SECOND:B\n"
-msgstr ""
+msgstr "`$map(nimi,code,separator=\"; \")`\n\nIteroi moniarvoisen tunnisteen `nimi` kaikki alkiot ja päivittää niiden arvot\n    `code`-komentosarjan palauttamiksi arvoiksi. Palauttaa päivitetyn moniarvoisen tunnisteen.\n    Jokaisella kierroksella alkion arvo tallennetaan ensin `_loop_value` muuttujaan ja\n    lukumäärä muuttujaan `_loop_count`. Tämä mahdollistaa alkion arvon tai lukumäärän\n    hyödyntämisen `code`-komentosarjassa.\n\nEsimerkki:\n\n    $map(First:A; Second:B,$upper(%_loop_count%=%_loop_value%))\n\nTulos: 1=FIRST:A; 2=SECOND:B\n"
 
 #: picard/script/functions.py:1193
 msgid ""
@@ -2953,7 +2953,7 @@ msgid ""
 "    $sortmulti(B; A; C)\n"
 "\n"
 "Result: A; B; C\n"
-msgstr ""
+msgstr "`$sortmulti(nimi,separator=\"; \")`\n\nPalauta kopio moniarvoisesta muuttujasta `nimi`, jossa alkiot on järjestetty nousevasti.\n\nEsimerkki:\n\n    $sortmulti(B; A; C)\n\nTulos: A; B; C\n"
 
 #: picard/script/functions.py:1282
 msgid ""
@@ -2968,7 +2968,7 @@ msgid ""
 "    $reversemulti($sortmulti(B; A; C))\n"
 "\n"
 "Result: C; B; A\n"
-msgstr ""
+msgstr "`$reversemulti(nimi,separator=\"; \")`\n\nPalauta kopio moniarvoisesta muuttujasta `nimi`, jossa alkiot on järjestetty käänteisesti.\n    Tätä voidaan hyödyntää `$sortmulti`-funktion kanssa järjestääkseen laskevasti.\n\nEsimerkki:\n\n    $reversemulti($sortmulti(B; A; C))\n\nTulos: C; B; A\n"
 
 #: picard/ui/aboutdialog.py:74
 msgid "translator-credits"
@@ -4234,7 +4234,7 @@ msgstr "&Virhe"
 msgid "A&rtwork"
 msgstr "&Kansikuva"
 
-#: picard/ui/ui_infostatus.py:91 picard/ui/ui_provider_options_caa.py:79
+#: picard/ui/ui_infostatus.py:91 picard/ui/ui_provider_options_caa.py:68
 #: picard/ui/ui_provider_options_local.py:50
 #: picard/ui/ui_widget_taglisteditor.py:68
 msgid "Form"
@@ -4297,43 +4297,48 @@ msgstr "Hakuihin käytettävä CD-ROM-asema:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Oletuksena hakuihin käytettävä CD-ROM-asema:"
 
-#: picard/ui/ui_options_cover.py:90
-msgid "Location"
-msgstr "Sijainti"
-
-#: picard/ui/ui_options_cover.py:91
+#: picard/ui/ui_options_cover.py:95
 msgid "Embed cover images into tags"
 msgstr "Sisällytä kansikuvat tunnisteisiin"
 
-#: picard/ui/ui_options_cover.py:92
-msgid "Only embed a front image"
-msgstr "Sisällytä vain etukannen kuva"
+#: picard/ui/ui_options_cover.py:96
+msgid "Embed only a single front image"
+msgstr ""
 
-#: picard/ui/ui_options_cover.py:93
+#: picard/ui/ui_options_cover.py:97
 msgid "Save cover images as separate files"
 msgstr "Tallenna kansikuvat erillisinä tiedostoina"
 
-#: picard/ui/ui_options_cover.py:94
+#: picard/ui/ui_options_cover.py:98
 msgid "Use the following file name for images:"
 msgstr "Käytä seuraavaa tiedostonimeä kuville:"
 
-#: picard/ui/ui_options_cover.py:95
+#: picard/ui/ui_options_cover.py:99
 msgid "Overwrite the file if it already exists"
 msgstr "Korvaa jo olemassa oleva tiedosto"
 
-#: picard/ui/ui_options_cover.py:96
+#: picard/ui/ui_options_cover.py:100
+msgid "Save only a single front image as separate file"
+msgstr ""
+
+#: picard/ui/ui_options_cover.py:101
+msgid ""
+"Always use the primary image type as the file name for non-front images"
+msgstr ""
+
+#: picard/ui/ui_options_cover.py:102
 msgid "Cover Art Providers"
 msgstr "Kansitaidepalvelut"
 
-#: picard/ui/ui_options_cover.py:97
+#: picard/ui/ui_options_cover.py:103
 msgid "Reorder Priority: "
 msgstr "Muuta tärkeysjärjestystä: "
 
-#: picard/ui/ui_options_cover.py:98 picard/ui/ui_options_interface.py:149
+#: picard/ui/ui_options_cover.py:104 picard/ui/ui_options_interface.py:149
 msgid "Move selected item up"
 msgstr "Siirrä valittua kohdetta ylöspäin"
 
-#: picard/ui/ui_options_cover.py:99 picard/ui/ui_options_interface.py:150
+#: picard/ui/ui_options_cover.py:105 picard/ui/ui_options_interface.py:150
 msgid "Move selected item down"
 msgstr "Siirrä valittua kohdetta alaspäin"
 
@@ -4975,31 +4980,21 @@ msgstr "Picard käyttää WAVE-tiedostojen kanssa ID3v2-tunnisteita. Kaikki ohje
 msgid "Authentication required"
 msgstr "Tunnistautuminen vaaditaan"
 
-#: picard/ui/ui_provider_options_caa.py:80
+#: picard/ui/ui_provider_options_caa.py:69
 msgid "Download only cover art images matching selected types"
 msgstr "Lataa vain valintojen mukaisia kansitaidekuvia"
 
-#: picard/ui/ui_provider_options_caa.py:81
+#: picard/ui/ui_provider_options_caa.py:70
 msgid "Select types..."
 msgstr "Valitse kansitaidelajit..."
 
-#: picard/ui/ui_provider_options_caa.py:82
+#: picard/ui/ui_provider_options_caa.py:71
 msgid "Only use images of the following size:"
 msgstr "Käytä vain seuraavan kokoisia kuvia:"
 
-#: picard/ui/ui_provider_options_caa.py:83
-msgid "Save only one front image as separate file"
-msgstr "Tallenna vain yksi etukuva erillisenä tiedostona"
-
-#: picard/ui/ui_provider_options_caa.py:84
+#: picard/ui/ui_provider_options_caa.py:72
 msgid "Download only approved images"
 msgstr "Lataa vain hyväksyttyjä kuvia"
-
-#: picard/ui/ui_provider_options_caa.py:85
-msgid ""
-"Use the first image type as the filename. This will not change the filename "
-"of front images."
-msgstr "Käytä ensimmäistä kuvatyyppiä tiedostonimenä. Tämä ei vaihda kansikuvien tiedostonimeä."
 
 #: picard/ui/ui_provider_options_local.py:51
 msgid "Local cover art files match the following regular expression:"
@@ -5067,7 +5062,7 @@ msgstr "Regex virhe"
 msgid "Advanced"
 msgstr "Lisäasetukset"
 
-#: picard/ui/options/cover.py:48
+#: picard/ui/options/cover.py:49
 msgid "Cover Art"
 msgstr "Kansitaide"
 

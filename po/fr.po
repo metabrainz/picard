@@ -38,9 +38,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-03-02 08:06+0100\n"
-"PO-Revision-Date: 2021-03-02 10:12+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"POT-Creation-Date: 2021-03-03 14:28+0100\n"
+"PO-Revision-Date: 2021-03-05 17:01+0000\n"
+"Last-Translator: Laurent Monin <i18n@norz.org>\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2288,7 +2288,7 @@ msgstr "Tout e&ffacer"
 msgid "Restore &Defaults"
 msgstr "Restaurer par &défaut"
 
-#: picard/coverart/providers/caa.py:513
+#: picard/coverart/providers/caa.py:505
 msgid "Cover Art Archive"
 msgstr "Cover Art Archive (archive d’illustrations)"
 
@@ -4254,7 +4254,7 @@ msgstr "&Erreur"
 msgid "A&rtwork"
 msgstr "&Illustration"
 
-#: picard/ui/ui_infostatus.py:91 picard/ui/ui_provider_options_caa.py:79
+#: picard/ui/ui_infostatus.py:91 picard/ui/ui_provider_options_caa.py:68
 #: picard/ui/ui_provider_options_local.py:50
 #: picard/ui/ui_widget_taglisteditor.py:68
 msgid "Form"
@@ -4317,43 +4317,48 @@ msgstr "Lecteur de CD-ROM à utiliser pour les consultations :"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Lecteur de CD-ROM par défaut à utiliser pour les consultations :"
 
-#: picard/ui/ui_options_cover.py:90
-msgid "Location"
-msgstr "Emplacement"
-
-#: picard/ui/ui_options_cover.py:91
+#: picard/ui/ui_options_cover.py:95
 msgid "Embed cover images into tags"
 msgstr "Intégrer les images de couverture dans les balises"
 
-#: picard/ui/ui_options_cover.py:92
-msgid "Only embed a front image"
-msgstr "Intégrer seulement l’image du devant"
+#: picard/ui/ui_options_cover.py:96
+msgid "Embed only a single front image"
+msgstr "Intégrer seulement une image de type devant"
 
-#: picard/ui/ui_options_cover.py:93
+#: picard/ui/ui_options_cover.py:97
 msgid "Save cover images as separate files"
 msgstr "Enregistrer les images de couverture dans des fichiers séparés"
 
-#: picard/ui/ui_options_cover.py:94
+#: picard/ui/ui_options_cover.py:98
 msgid "Use the following file name for images:"
 msgstr "Utiliser le nom de fichier suivant pour les images :"
 
-#: picard/ui/ui_options_cover.py:95
+#: picard/ui/ui_options_cover.py:99
 msgid "Overwrite the file if it already exists"
 msgstr "Écraser le fichier s’il existe déjà"
 
-#: picard/ui/ui_options_cover.py:96
+#: picard/ui/ui_options_cover.py:100
+msgid "Save only a single front image as separate file"
+msgstr "Enregistrer seulement une image de type devant comme fichier séparé"
+
+#: picard/ui/ui_options_cover.py:101
+msgid ""
+"Always use the primary image type as the file name for non-front images"
+msgstr "Toujours utiliser le type primaire de l'image comme nom de fichier pour les images qui n'ont pas le type devant"
+
+#: picard/ui/ui_options_cover.py:102
 msgid "Cover Art Providers"
 msgstr "Fournisseurs d’illustrations"
 
-#: picard/ui/ui_options_cover.py:97
+#: picard/ui/ui_options_cover.py:103
 msgid "Reorder Priority: "
 msgstr "Ordonner par priorité :"
 
-#: picard/ui/ui_options_cover.py:98 picard/ui/ui_options_interface.py:149
+#: picard/ui/ui_options_cover.py:104 picard/ui/ui_options_interface.py:149
 msgid "Move selected item up"
 msgstr "Monter l’élément sélectionné"
 
-#: picard/ui/ui_options_cover.py:99 picard/ui/ui_options_interface.py:150
+#: picard/ui/ui_options_cover.py:105 picard/ui/ui_options_interface.py:150
 msgid "Move selected item down"
 msgstr "Descendre l’élément sélectionné"
 
@@ -4995,31 +5000,21 @@ msgstr "Picard balisera les fichiers WAVE en utilisant des balises ID3v2. Ceci n
 msgid "Authentication required"
 msgstr "Authentification requise"
 
-#: picard/ui/ui_provider_options_caa.py:80
+#: picard/ui/ui_provider_options_caa.py:69
 msgid "Download only cover art images matching selected types"
 msgstr "Télécharger seulement les illustrations correspondant aux types sélectionnés"
 
-#: picard/ui/ui_provider_options_caa.py:81
+#: picard/ui/ui_provider_options_caa.py:70
 msgid "Select types..."
 msgstr "Sélectionner les types..."
 
-#: picard/ui/ui_provider_options_caa.py:82
+#: picard/ui/ui_provider_options_caa.py:71
 msgid "Only use images of the following size:"
 msgstr "Utiliser seulement les images de la taille suivante :"
 
-#: picard/ui/ui_provider_options_caa.py:83
-msgid "Save only one front image as separate file"
-msgstr "Enregistrer seulement une image de type Devant comme fichier séparé"
-
-#: picard/ui/ui_provider_options_caa.py:84
+#: picard/ui/ui_provider_options_caa.py:72
 msgid "Download only approved images"
 msgstr "Ne télécharger que des images approuvées"
-
-#: picard/ui/ui_provider_options_caa.py:85
-msgid ""
-"Use the first image type as the filename. This will not change the filename "
-"of front images."
-msgstr "Utiliser le premier type de l’image comme nom de fichier. Cela ne changera pas le nom de fichier des images de type Devant."
 
 #: picard/ui/ui_provider_options_local.py:51
 msgid "Local cover art files match the following regular expression:"
@@ -5087,7 +5082,7 @@ msgstr "Erreur dans l’expression régulière"
 msgid "Advanced"
 msgstr "Avancé"
 
-#: picard/ui/options/cover.py:48
+#: picard/ui/options/cover.py:49
 msgid "Cover Art"
 msgstr "Illustrations"
 
