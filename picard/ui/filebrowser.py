@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008 Lukáš Lalinský
 # Copyright (C) 2008 Hendrik van Antwerpen
-# Copyright (C) 2008-2009, 2019-2020 Philipp Wolfer
+# Copyright (C) 2008-2009, 2019-2021 Philipp Wolfer
 # Copyright (C) 2011 Andrew Barnert
 # Copyright (C) 2012-2013 Michael Wiencek
 # Copyright (C) 2013 Wieland Hoffmann
@@ -37,6 +37,7 @@ from PyQt5 import (
 )
 from PyQt5.QtCore import QStandardPaths
 
+from picard import log
 from picard.config import (
     BoolOption,
     TextOption,
@@ -47,7 +48,30 @@ from picard.formats import supported_formats
 from picard.util import find_existing_path
 
 
+def _macos_find_root_volume():
+    try:
+        for entry in os.scandir('/Volumes/'):
+            if entry.is_symlink() and os.path.realpath(entry.path) == '/':
+                return entry.path
+    except OSError:
+        log.warning('Could not detect macOS boot volume', exc_info=True)
+    return None
+
+
+def _macos_extend_root_volume_path(path):
+    if not path.startswith('/Volumes/'):
+        root_volume = _macos_find_root_volume()
+        if root_volume:
+            if path.startswith('/'):
+                path = path[1:]
+            path = os.path.join(root_volume, path)
+    return path
+
+
 _default_current_browser_path = QStandardPaths.writableLocation(QStandardPaths.HomeLocation)
+
+if IS_MACOS:
+    _default_current_browser_path = _macos_extend_root_volume_path(_default_current_browser_path)
 
 
 class FileBrowser(QtWidgets.QTreeView):
