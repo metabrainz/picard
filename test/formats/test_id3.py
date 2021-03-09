@@ -454,6 +454,68 @@ class CommonId3Tests:
             self.assertIn('http://example.com/1', loaded_licenses)
             self.assertIn('http://example.com/2', loaded_licenses)
 
+        @skipUnlessTestfile
+        def test_license_upgrade_wcop(self):
+            tags = mutagen.id3.ID3Tags()
+            tags.add(mutagen.id3.WCOP(url='http://example.com/1'))
+            save_raw(self.filename, tags)
+            metadata = load_metadata(self.filename)
+            self.assertEqual('http://example.com/1', metadata['license'])
+            metadata.add('license', 'http://example.com/2')
+            save_metadata(self.filename, metadata)
+            raw_metadata = load_raw(self.filename)
+            self.assertNotIn('WCOP', raw_metadata)
+            loaded_licenses = [url for url in raw_metadata['TXXX:LICENSE']]
+            self.assertEqual(['http://example.com/1', 'http://example.com/2'], loaded_licenses)
+
+        @skipUnlessTestfile
+        def test_license_downgrade_wcop(self):
+            tags = mutagen.id3.ID3Tags()
+            licenses = ['http://example.com/1', 'http://example.com/2']
+            tags.add(mutagen.id3.TXXX(desc='LICENSE', text=licenses))
+            save_raw(self.filename, tags)
+            raw_metadata = load_raw(self.filename)
+            metadata = load_metadata(self.filename)
+            self.assertEqual(licenses, metadata.getall('license'))
+            metadata['license'] = 'http://example.com/1'
+            save_metadata(self.filename, metadata)
+            raw_metadata = load_raw(self.filename)
+            self.assertEqual('http://example.com/1', raw_metadata['WCOP'])
+            self.assertNotIn('TXXX:LICENSE', raw_metadata)
+
+        @skipUnlessTestfile
+        def test_license_delete(self):
+            tags = mutagen.id3.ID3Tags()
+            tags.add(mutagen.id3.WCOP(url='http://example.com/1'))
+            tags.add(mutagen.id3.TXXX(desc='LICENSE', text='http://example.com/2'))
+            save_raw(self.filename, tags)
+            metadata = load_metadata(self.filename)
+            del metadata['license']
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertNotIn('license', loaded_metadata)
+
+        @skipUnlessTestfile
+        def test_woar_not_duplicated(self):
+            metadata = Metadata({
+                'website': 'http://example.com/1'
+            })
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(metadata['website'], loaded_metadata['website'])
+            metadata['website'] = 'http://example.com/2'
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(metadata['website'], loaded_metadata['website'])
+
+        @skipUnlessTestfile
+        def test_woar_delete(self):
+            metadata = Metadata({
+                'website': 'http://example.com/1'
+            })
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(metadata['website'], loaded_metadata['website'])
+            del metadata['website']
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertNotIn('website', loaded_metadata)
+
 
 class MP3Test(CommonId3Tests.Id3TestCase):
     testfile = 'test.mp3'

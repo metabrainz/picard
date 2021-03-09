@@ -485,10 +485,13 @@ class ID3File(File):
                     if frameid == 'WCOP':
                         # Only add WCOP if there is only one license URL, otherwise use TXXX:LICENSE
                         if len(values) > 1 or not valid_urls:
+                            tags.delall('WCOP')
                             tags.add(self.build_TXXX(encoding, self.__rtranslate_freetext[name], values))
                         else:
+                            tags.delall('TXXX:' + self.__rtranslate_freetext[name])
                             tags.add(id3.WCOP(url=values[0]))
                     elif frameid == 'WOAR' and valid_urls:
+                        tags.delall('WOAR')
                         for url in values:
                             tags.add(id3.WOAR(url=url))
                 elif frameid.startswith('T') or frameid == 'MVNM':
@@ -574,13 +577,16 @@ class ID3File(File):
                     for key, frame in list(tags.items()):
                         if frame.FrameID == 'UFID' and frame.owner == 'http://musicbrainz.org':
                             del tags[key]
+                elif name == 'license':
+                    tags.delall(real_name)
+                    tags.delall('TXXX:' + self.__rtranslate_freetext[name])
                 elif real_name == 'POPM':
                     user_email = config.setting['rating_user_email']
                     for key, frame in list(tags.items()):
                         if frame.FrameID == 'POPM' and frame.email == user_email:
                             del tags[key]
                 elif real_name in self.__translate:
-                    del tags[real_name]
+                    tags.delall(real_name)
                 elif name.lower() in self.__rtranslate_freetext_ci:
                     delall_ci(tags, 'TXXX:' + self.__rtranslate_freetext_ci[name.lower()])
                 elif real_name in self.__translate_freetext:
