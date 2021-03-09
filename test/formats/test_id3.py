@@ -454,6 +454,28 @@ class CommonId3Tests:
             self.assertIn('http://example.com/1', loaded_licenses)
             self.assertIn('http://example.com/2', loaded_licenses)
 
+        @skipUnlessTestfile
+        def test_woar_not_duplicated(self):
+            metadata = Metadata({
+                'website': 'http://example.com/1'
+            })
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(metadata['website'], loaded_metadata['website'])
+            metadata['website'] = 'http://example.com/2'
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(metadata['website'], loaded_metadata['website'])
+
+        @skipUnlessTestfile
+        def test_woar_delete(self):
+            metadata = Metadata({
+                'website': 'http://example.com/1'
+            })
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(metadata['website'], loaded_metadata['website'])
+            del metadata['website']
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertNotIn('website', loaded_metadata)
+
 
 class MP3Test(CommonId3Tests.Id3TestCase):
     testfile = 'test.mp3'
