@@ -216,8 +216,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         if IS_MACOS:
             self.setUnifiedTitleAndToolBarOnMac(True)
-            self.toolbar.setMovable(False)
-            self.search_toolbar.setMovable(False)
 
         mainLayout = QtWidgets.QSplitter(QtCore.Qt.Vertical)
         mainLayout.setChildrenCollapsible(False)
@@ -832,6 +830,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.insertToolBar(self.search_toolbar, self.toolbar)
         self.update_toolbar_style()
         toolbar.setObjectName("main_toolbar")
+        if IS_MACOS:
+            self.toolbar.setMovable(False)
 
         def add_toolbar_action(action):
             toolbar.addAction(action)
@@ -865,6 +865,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.search_toolbar = toolbar = self.addToolBar(_("Search"))
         self.search_toolbar_toggle_action = self.search_toolbar.toggleViewAction()
         toolbar.setObjectName("search_toolbar")
+        if IS_MACOS:
+            self.search_toolbar.setMovable(False)
+
         search_panel = QtWidgets.QWidget(toolbar)
         hbox = QtWidgets.QHBoxLayout(search_panel)
         self.search_combo = QtWidgets.QComboBox(search_panel)
