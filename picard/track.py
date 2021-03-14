@@ -6,7 +6,7 @@
 # Copyright (C) 2006-2007, 2011 Lukáš Lalinský
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2009 Carlin Mangar
-# Copyright (C) 2010, 2014-2015, 2018-2020 Philipp Wolfer
+# Copyright (C) 2010, 2014-2015, 2018-2021 Philipp Wolfer
 # Copyright (C) 2011 Chad Wilson
 # Copyright (C) 2011 Wieland Hoffmann
 # Copyright (C) 2011-2013 Michael Wiencek
@@ -37,7 +37,6 @@
 
 
 from collections import defaultdict
-from functools import partial
 from itertools import filterfalse
 import re
 import traceback
@@ -386,7 +385,7 @@ class NonAlbumTrack(Track):
             mblogin = True
             inc += ["user-ratings"]
         self.tagger.mb_api.get_track_by_id(self.id,
-                                           partial(self._recording_request_finished),
+                                           self._recording_request_finished,
                                            inc, mblogin=mblogin,
                                            priority=priority,
                                            refresh=refresh)
