@@ -12,6 +12,7 @@
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017 Antonio Larrosa
 # Copyright (C) 2018 Bob Swift
+# Copyright (C) 2021 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -45,11 +46,6 @@ from picard.config import (
     get_config,
 )
 from picard.const import UI_LANGUAGES
-from picard.const.sys import (
-    IS_HAIKU,
-    IS_MACOS,
-    IS_WIN,
-)
 from picard.util import icontheme
 
 from picard.ui import PicardDialog
@@ -57,6 +53,12 @@ from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import (
     OptionsPage,
     register_options_page,
+)
+from picard.ui.theme import (
+    AVAILABLE_UI_THEMES,
+    OS_SUPPORTS_THEMES,
+    UiTheme,
+    theme_enum_to_label,
 )
 from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.util import enabledSlot
@@ -140,7 +142,7 @@ class InterfaceOptionsPage(OptionsPage):
         BoolOption("setting", "use_adv_search_syntax", False),
         BoolOption("setting", "quit_confirmation", True),
         TextOption("setting", "ui_language", ""),
-        BoolOption("setting", "use_system_theme", False),
+        TextOption("setting", "ui_theme", str(UiTheme.DEFAULT)),
         BoolOption("setting", "filebrowser_horizontal_autoscroll", True),
         BoolOption("setting", "starting_directory", False),
         TextOption("setting", "starting_directory_path", _default_starting_dir),
@@ -169,6 +171,12 @@ class InterfaceOptionsPage(OptionsPage):
         super().__init__(parent)
         self.ui = Ui_InterfaceOptionsPage()
         self.ui.setupUi(self)
+
+        self.ui.ui_theme.clear()
+        for theme in AVAILABLE_UI_THEMES:
+            self.ui.ui_theme.addItem(_(theme_enum_to_label(theme)), theme)
+        self.ui.ui_theme.setCurrentIndex(0)
+
         self.ui.ui_language.addItem(_('System default'), '')
         language_list = [(lang[0], lang[1], _(lang[2])) for lang in UI_LANGUAGES]
 
@@ -199,8 +207,10 @@ class InterfaceOptionsPage(OptionsPage):
         self.move_view = MoveableListView(self.ui.toolbar_layout_list, self.ui.up_button,
                                           self.ui.down_button, self.update_action_buttons)
         self.update_buttons = self.move_view.update_buttons
-        if IS_MACOS or IS_WIN or IS_HAIKU:
-            self.ui.use_system_theme.hide()
+
+        if not OS_SUPPORTS_THEMES:
+            self.ui.ui_theme.hide()
+            self.ui.label_theme.hide()
 
     def load(self):
         config = get_config()
@@ -209,7 +219,6 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.builtin_search.setChecked(config.setting["builtin_search"])
         self.ui.use_adv_search_syntax.setChecked(config.setting["use_adv_search_syntax"])
         self.ui.quit_confirmation.setChecked(config.setting["quit_confirmation"])
-        self.ui.use_system_theme.setChecked(config.setting["use_system_theme"])
         current_ui_language = config.setting["ui_language"]
         self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
         self.ui.filebrowser_horizontal_autoscroll.setChecked(config.setting["filebrowser_horizontal_autoscroll"])
@@ -217,6 +226,8 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.starting_directory_path.setText(config.setting["starting_directory_path"])
         self.populate_action_list()
         self.ui.toolbar_layout_list.setCurrentRow(0)
+        current_theme = UiTheme(config.setting["ui_theme"])
+        self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(current_theme))
         self.update_buttons()
 
     def save(self):
@@ -227,16 +238,16 @@ class InterfaceOptionsPage(OptionsPage):
         config.setting["use_adv_search_syntax"] = self.ui.use_adv_search_syntax.isChecked()
         config.setting["quit_confirmation"] = self.ui.quit_confirmation.isChecked()
         self.tagger.window.update_toolbar_style()
-        new_theme_setting = self.ui.use_system_theme.isChecked()
+        new_theme_setting = str(self.ui.ui_theme.itemData(self.ui.ui_theme.currentIndex()))
         new_language = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
         restart_warning = None
-        if new_theme_setting != config.setting["use_system_theme"]:
+        if new_theme_setting != config.setting["ui_theme"]:
             restart_warning_title = _('Theme changed')
             restart_warning = _('You have changed the application theme. You have to restart Picard in order for the change to take effect.')
-            if new_theme_setting:
+            if new_theme_setting == str(UiTheme.SYSTEM):
                 restart_warning += '\n\n' + _(
                     'Please note that using the system theme might cause the user interface to be not shown correctly. '
-                    'If this is the case disable the "Use system theme" option to use Picard\'s default theme again.'
+                    'If this is the case select the "Default" theme option to use Picard\'s default theme again.'
                 )
         elif new_language != config.setting["ui_language"]:
             restart_warning_title = _('Language changed')
@@ -249,7 +260,7 @@ class InterfaceOptionsPage(OptionsPage):
                 QtWidgets.QMessageBox.Ok,
                 self)
             dialog.exec_()
-        config.setting["use_system_theme"] = self.ui.use_system_theme.isChecked()
+        config.setting["ui_theme"] = new_theme_setting
         config.setting["ui_language"] = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
         config.setting["filebrowser_horizontal_autoscroll"] = self.ui.filebrowser_horizontal_autoscroll.isChecked()
         config.setting["starting_directory"] = self.ui.starting_directory.isChecked()
