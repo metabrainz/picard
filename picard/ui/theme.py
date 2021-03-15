@@ -31,7 +31,6 @@ from picard import log
 from picard.config import get_config
 from picard.const.sys import (
     IS_HAIKU,
-    IS_LINUX,
     IS_MACOS,
     IS_WIN,
 )
@@ -51,6 +50,9 @@ if IS_MACOS:
         return current_version >= mojave_version
     OS_SUPPORTS_THEMES = is_dark_theme_supported()
     del is_dark_theme_supported
+
+elif IS_HAIKU:
+    OS_SUPPORTS_THEMES = False
 
 
 # Those are values stored in config file:
@@ -82,7 +84,7 @@ def theme_enum_to_label(theme):
 AVAILABLE_UI_THEMES = [UiTheme.DEFAULT]
 if IS_WIN or IS_MACOS:
     AVAILABLE_UI_THEMES.extend([UiTheme.LIGHT, UiTheme.DARK])
-if IS_HAIKU or IS_LINUX:
+elif not IS_HAIKU:
     AVAILABLE_UI_THEMES.extend([UiTheme.SYSTEM])
 
 SyntaxTheme = namedtuple('SyntaxTheme', 'func var escape special noop')
