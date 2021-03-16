@@ -49,7 +49,6 @@ if IS_MACOS:
         mojave_version = (10, 14)  # Dark theme support was introduced in Mojave
         return current_version >= mojave_version
     OS_SUPPORTS_THEMES = is_dark_theme_supported()
-    del is_dark_theme_supported
 
 elif IS_HAIKU:
     OS_SUPPORTS_THEMES = False
@@ -64,6 +63,10 @@ class UiTheme(Enum):
 
     def __str__(self):
         return self.value
+
+    @classmethod
+    def __missing__(cls, value):
+        return cls.DEFAULT
 
 
 # Those are labels for display

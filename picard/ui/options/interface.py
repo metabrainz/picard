@@ -209,8 +209,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.update_buttons = self.move_view.update_buttons
 
         if not OS_SUPPORTS_THEMES:
-            self.ui.ui_theme.hide()
-            self.ui.label_theme.hide()
+            self.ui.ui_theme_container.hide()
 
     def load(self):
         config = get_config()
