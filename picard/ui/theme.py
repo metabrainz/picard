@@ -65,7 +65,7 @@ class UiTheme(Enum):
         return self.value
 
     @classmethod
-    def __missing__(cls, value):
+    def _missing_(cls, value):
         return cls.DEFAULT
 
 
