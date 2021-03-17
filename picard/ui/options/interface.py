@@ -175,7 +175,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.ui_theme.clear()
         for theme in AVAILABLE_UI_THEMES:
             self.ui.ui_theme.addItem(_(theme_enum_to_label(theme)), theme)
-        self.ui.ui_theme.setCurrentIndex(0)
+        self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(UiTheme.DEFAULT))
 
         self.ui.ui_language.addItem(_('System default'), '')
         language_list = [(lang[0], lang[1], _(lang[2])) for lang in UI_LANGUAGES]
