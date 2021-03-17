@@ -2,6 +2,8 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (C) 2020 Philipp Wolfer
+# Copyright (C) 2021 Gabriel Ferreira
+# Copyright (C) 2021 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,6 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import namedtuple
+from enum import Enum
 
 from PyQt5 import (
     QtCore,
@@ -32,6 +35,60 @@ from picard.const.sys import (
     IS_WIN,
 )
 
+
+OS_SUPPORTS_THEMES = True
+if IS_MACOS:
+    def is_dark_theme_supported():
+        import platform
+        try:
+            current_version = tuple(map(int, platform.mac_ver()[0].split(".")))[:2]
+        except ValueError:
+            log.warning("Error while converting the MacOS version string into a tuple: %s" % platform.mac_ver()[0])
+            return False
+
+        mojave_version = (10, 14)  # Dark theme support was introduced in Mojave
+        return current_version >= mojave_version
+    OS_SUPPORTS_THEMES = is_dark_theme_supported()
+
+elif IS_HAIKU:
+    OS_SUPPORTS_THEMES = False
+
+
+# Those are values stored in config file:
+class UiTheme(Enum):
+    DEFAULT = 'default'
+    DARK = 'dark'
+    LIGHT = 'light'
+    SYSTEM = 'system'
+
+    def __str__(self):
+        return self.value
+
+    @classmethod
+    def _missing_(cls, value):
+        return cls.DEFAULT
+
+
+# Those are labels for display
+# example to display translated "System" theme name: _(UI_THEMES[UiTheme.DEFAULT])
+# here strings are just marked for translation
+_UI_THEME_LABELS = {
+    UiTheme.DEFAULT: N_('Default'),
+    UiTheme.DARK: N_('Dark'),
+    UiTheme.LIGHT: N_('Light'),
+    UiTheme.SYSTEM: N_('System'),
+}
+
+
+def theme_enum_to_label(theme):
+    return _UI_THEME_LABELS[theme]
+
+
+AVAILABLE_UI_THEMES = [UiTheme.DEFAULT]
+if IS_WIN or IS_MACOS:
+    AVAILABLE_UI_THEMES.extend([UiTheme.LIGHT, UiTheme.DARK])
+elif not IS_HAIKU:
+    AVAILABLE_UI_THEMES.extend([UiTheme.SYSTEM])
 
 SyntaxTheme = namedtuple('SyntaxTheme', 'func var escape special noop')
 
@@ -55,12 +112,15 @@ dark_syntax_theme = SyntaxTheme(
 class BaseTheme:
     def __init__(self):
         self._dark_theme = False
+        self._loaded_config_theme = UiTheme.DEFAULT
 
     def setup(self, app):
         config = get_config()
+        self._loaded_config_theme = UiTheme(config.setting['ui_theme'])
+
         # Use the new fusion style from PyQt5 for a modern and consistent look
         # across all OSes.
-        if not IS_MACOS and not IS_HAIKU and not config.setting['use_system_theme']:
+        if not IS_MACOS and not IS_HAIKU and self._loaded_config_theme != UiTheme.SYSTEM:
             app.setStyle('Fusion')
 
         app.setStyleSheet(
@@ -75,7 +135,12 @@ class BaseTheme:
 
     @property
     def is_dark_theme(self):
-        return self._dark_theme
+        if self._loaded_config_theme == UiTheme.DARK:
+            return True
+        elif self._loaded_config_theme == UiTheme.LIGHT:
+            return False
+        else:
+            return self._dark_theme
 
     @property
     def accent_color(self):  # pylint: disable=no-self-use
@@ -107,9 +172,12 @@ if IS_WIN:
 
         @property
         def is_dark_theme(self):
+            if self._loaded_config_theme != UiTheme.DEFAULT:
+                return self._loaded_config_theme == UiTheme.DARK
             dark_theme = False
             try:
-                with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize") as key:
+                with winreg.OpenKey(winreg.HKEY_CURRENT_USER,
+                                    r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize") as key:
                     dark_theme = winreg.QueryValueEx(key, "AppsUseLightTheme")[0] == 0
             except OSError:
                 log.warning('Failed reading AppsUseLightTheme from registry')
@@ -159,18 +227,29 @@ elif IS_MACOS:
     class MacTheme(BaseTheme):
         @property
         def is_dark_theme(self):
+            dark_theme = False
             if not AppKit:
-                return False
-
-            appearance = AppKit.NSAppearance.currentAppearance()
-            try:
-                basic_appearance = appearance.bestMatchFromAppearancesWithNames_([
-                    AppKit.NSAppearanceNameAqua,
-                    AppKit.NSAppearanceNameDarkAqua
-                ])
-                return basic_appearance == AppKit.NSAppearanceNameDarkAqua
-            except AttributeError:
-                return False
+                return dark_theme
+            if self._loaded_config_theme is not None and self._loaded_config_theme != UiTheme.DEFAULT:
+                dark_theme = self._loaded_config_theme == UiTheme.DARK
+                # MacOS uses a NSAppearance object to change the current application appearance
+                if dark_theme:
+                    appearance = AppKit.NSAppearance._darkAquaAppearance()
+                else:
+                    appearance = AppKit.NSAppearance._aquaAppearance()
+                AppKit.NSApplication.sharedApplication().setAppearance_(appearance)
+            else:
+                # Default procedure to identify the current appearance (theme)
+                appearance = AppKit.NSAppearance.currentAppearance()
+                try:
+                    basic_appearance = appearance.bestMatchFromAppearancesWithNames_([
+                        AppKit.NSAppearanceNameAqua,
+                        AppKit.NSAppearanceNameDarkAqua
+                    ])
+                    dark_theme = basic_appearance == AppKit.NSAppearanceNameDarkAqua
+                except AttributeError:
+                    pass
+            return dark_theme
 
         # pylint: disable=no-self-use
         def update_palette(self, palette, dark_theme, accent_color):

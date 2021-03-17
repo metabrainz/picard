@@ -331,6 +331,16 @@ def upgrade_to_v2_6_0_beta_2(config):
     rename_option(config, "caa_save_single_front_image", "save_only_one_front_image", BoolOption, False)
 
 
+def upgrade_to_v2_6_0_beta_3(config):
+    """Replace use_system_theme with ui_theme options"""
+    from picard.ui.theme import UiTheme
+    _s = config.setting
+    TextOption("setting", "ui_theme", str(UiTheme.DEFAULT))
+    if _s["use_system_theme"]:
+        _s["ui_theme"] = str(UiTheme.SYSTEM)
+    _s.remove("use_system_theme")
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
@@ -359,4 +369,5 @@ def upgrade_config(config):
     cfg.register_upgrade_hook(upgrade_to_v2_5_0_dev_2)
     cfg.register_upgrade_hook(upgrade_to_v2_6_0_dev_1)
     cfg.register_upgrade_hook(upgrade_to_v2_6_0_beta_2)
+    cfg.register_upgrade_hook(upgrade_to_v2_6_0_beta_3)
     cfg.run_upgrade_hooks(log.debug)
