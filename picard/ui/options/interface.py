@@ -58,6 +58,7 @@ from picard.ui.theme import (
     AVAILABLE_UI_THEMES,
     OS_SUPPORTS_THEMES,
     UiTheme,
+    theme_enum_to_desc,
     theme_enum_to_label,
 )
 from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
@@ -175,6 +176,8 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.ui_theme.clear()
         for theme in AVAILABLE_UI_THEMES:
             self.ui.ui_theme.addItem(_(theme_enum_to_label(theme)), theme)
+            idx = self.ui.ui_theme.findData(theme)
+            self.ui.ui_theme.setItemData(idx, _(theme_enum_to_desc(theme)), QtCore.Qt.ToolTipRole)
         self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(UiTheme.DEFAULT))
 
         self.ui.ui_language.addItem(_('System default'), '')

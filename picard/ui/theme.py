@@ -73,15 +73,31 @@ class UiTheme(Enum):
 # example to display translated "System" theme name: _(UI_THEMES[UiTheme.DEFAULT])
 # here strings are just marked for translation
 _UI_THEME_LABELS = {
-    UiTheme.DEFAULT: N_('Default'),
-    UiTheme.DARK: N_('Dark'),
-    UiTheme.LIGHT: N_('Light'),
-    UiTheme.SYSTEM: N_('System'),
+    UiTheme.DEFAULT: {
+        'label': N_('Default'),
+        'desc': N_('The default color scheme based on the operating system display settings'),
+    },
+    UiTheme.DARK: {
+        'label': N_('Dark'),
+        'desc': N_('A dark display theme'),
+    },
+    UiTheme.LIGHT: {
+        'label': N_('Light'),
+        'desc': N_('A light display theme'),
+    },
+    UiTheme.SYSTEM: {
+        'label': N_('System'),
+        'desc': N_('The Qt5 theme configured in the desktop environment'),
+    },
 }
 
 
 def theme_enum_to_label(theme):
-    return _UI_THEME_LABELS[theme]
+    return _UI_THEME_LABELS[theme]['label']
+
+
+def theme_enum_to_desc(theme):
+    return _UI_THEME_LABELS[theme]['desc']
 
 
 AVAILABLE_UI_THEMES = [UiTheme.DEFAULT]
