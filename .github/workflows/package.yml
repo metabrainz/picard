@@ -52,13 +52,27 @@ jobs:
         BUILD_NUMBER=$(git rev-list --count $RELEASE_TAG..HEAD)
         echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
         mkdir artifacts
+        python3 -m pip install --upgrade pip setuptools wheel
     - name: Patch build version
       if: startsWith(github.ref, 'refs/tags/') != true
       run: |
         python3 setup.py patch_version --platform=$BUILD_NUMBER.$(git rev-parse --short HEAD)
+    - name: Compile and install PyInstaller
+      if: matrix.macos-deployment-version == '10.14'
+      run: |
+        git clone --depth 1 --branch "$PYINSTALLER_VERSION" https://github.com/pyinstaller/pyinstaller.git pyinstaller
+        cd pyinstaller/bootloader
+        python3 ./waf all
+        cd ..
+        pip3 install .
+      env:
+        PYINSTALLER_VERSION: v4.2
+        CFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}
+        CPPFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}
+        LDFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}
+        LINKFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}
     - name: Install dependencies
       run: |
-        python3 -m pip install --upgrade pip setuptools wheel
         pip3 install -r requirements-build.txt
         pip3 install -r requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt
     - name: Run tests
