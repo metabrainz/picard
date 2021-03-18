@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.6.0b3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-03-18 01:39+0100\n"
+"POT-Creation-Date: 2021-03-18 11:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.6.0\n"
+"Generated-By: Babel 2.8.0\n"
 
 #: picard/album.py:132
 msgid "Unmatched Files"
@@ -144,7 +144,7 @@ msgid "Merge"
 msgstr ""
 
 #: picard/config_upgrade.py:99 picard/ui/metadatabox.py:420
-#: picard/ui/options/interface.py:113 picard/ui/ui_options_interface.py:174
+#: picard/ui/options/interface.py:112 picard/ui/ui_options_interface.py:174
 msgid "Remove"
 msgstr ""
 
@@ -3255,7 +3255,7 @@ msgid "Cover"
 msgstr ""
 
 #: picard/ui/infodialog.py:155 picard/ui/infodialog.py:361
-#: picard/ui/options/interface.py:109
+#: picard/ui/options/interface.py:108
 msgid "Info"
 msgstr ""
 
@@ -3837,7 +3837,7 @@ msgstr ""
 msgid "&Generate AcoustID Fingerprints"
 msgstr ""
 
-#: picard/ui/mainwindow.py:600 picard/ui/options/interface.py:121
+#: picard/ui/mainwindow.py:600 picard/ui/options/interface.py:120
 msgid "Generate Fingerprints"
 msgstr ""
 
@@ -3911,7 +3911,7 @@ msgstr ""
 msgid "Tags From &File Names..."
 msgstr ""
 
-#: picard/ui/mainwindow.py:649 picard/ui/options/interface.py:133
+#: picard/ui/mainwindow.py:649 picard/ui/options/interface.py:132
 msgid "Parse File Names..."
 msgstr ""
 
@@ -4221,24 +4221,6 @@ msgstr ""
 
 #: picard/ui/tagsfromfilenames.py:136 picard/ui/tagsfromfilenames.py:147
 msgid "File Name"
-msgstr ""
-
-#: picard/ui/theme.py:76 picard/ui/ui_options_metadata.py:106
-#: picard/ui/ui_options_metadata.py:107 picard/ui/ui_options_renaming.py:153
-#: picard/ui/ui_provider_options_local.py:52
-msgid "Default"
-msgstr ""
-
-#: picard/ui/theme.py:77
-msgid "Dark"
-msgstr ""
-
-#: picard/ui/theme.py:78
-msgid "Light"
-msgstr ""
-
-#: picard/ui/theme.py:79
-msgid "System"
 msgstr ""
 
 #: picard/ui/ui_aboutdialog.py:83
@@ -4680,6 +4662,12 @@ msgstr ""
 
 #: picard/ui/ui_options_metadata.py:105
 msgid "Non-album tracks:"
+msgstr ""
+
+#: picard/ui/options/interface.py:172 picard/ui/ui_options_metadata.py:106
+#: picard/ui/ui_options_metadata.py:107 picard/ui/ui_options_renaming.py:153
+#: picard/ui/ui_provider_options_local.py:52
+msgid "Default"
 msgstr ""
 
 #: picard/ui/ui_options_network.py:137
@@ -5238,82 +5226,110 @@ msgstr ""
 msgid "Error line %d: %s"
 msgstr ""
 
-#: picard/ui/options/interface.py:73
+#: picard/ui/options/interface.py:72
 msgid "User Interface"
 msgstr ""
 
-#: picard/ui/options/interface.py:81
+#: picard/ui/options/interface.py:80
 msgid "Add Folder"
 msgstr ""
 
-#: picard/ui/options/interface.py:85
+#: picard/ui/options/interface.py:84
 msgid "Add Files"
 msgstr ""
 
-#: picard/ui/options/interface.py:89
+#: picard/ui/options/interface.py:88
 msgid "Cluster"
 msgstr ""
 
-#: picard/ui/options/interface.py:93
+#: picard/ui/options/interface.py:92
 msgid "Lookup"
 msgstr ""
 
-#: picard/ui/options/interface.py:97
+#: picard/ui/options/interface.py:96
 msgid "Scan"
 msgstr ""
 
-#: picard/ui/options/interface.py:101
+#: picard/ui/options/interface.py:100
 msgid "Lookup in Browser"
 msgstr ""
 
-#: picard/ui/options/interface.py:105
+#: picard/ui/options/interface.py:104
 msgid "Save"
 msgstr ""
 
-#: picard/ui/options/interface.py:117
+#: picard/ui/options/interface.py:116
 msgid "Submit AcoustIDs"
 msgstr ""
 
-#: picard/ui/options/interface.py:125
+#: picard/ui/options/interface.py:124
 msgid "Open in Player"
 msgstr ""
 
-#: picard/ui/options/interface.py:129
+#: picard/ui/options/interface.py:128
 msgid "Lookup CD..."
 msgstr ""
 
+#: picard/ui/options/interface.py:173
+msgid "The default color scheme based on the operating system display settings"
+msgstr ""
+
+#: picard/ui/options/interface.py:176
+msgid "Dark"
+msgstr ""
+
+#: picard/ui/options/interface.py:177
+msgid "A dark display theme"
+msgstr ""
+
 #: picard/ui/options/interface.py:180
+msgid "Light"
+msgstr ""
+
+#: picard/ui/options/interface.py:181
+msgid "A light display theme"
+msgstr ""
+
+#: picard/ui/options/interface.py:184
+msgid "System"
+msgstr ""
+
+#: picard/ui/options/interface.py:185
+msgid "The Qt5 theme configured in the desktop environment"
+msgstr ""
+
+#: picard/ui/options/interface.py:203
 msgid "System default"
 msgstr ""
 
-#: picard/ui/options/interface.py:244
+#: picard/ui/options/interface.py:267
 msgid "Theme changed"
 msgstr ""
 
-#: picard/ui/options/interface.py:245
+#: picard/ui/options/interface.py:268
 msgid ""
 "You have changed the application theme. You have to restart Picard in "
 "order for the change to take effect."
 msgstr ""
 
-#: picard/ui/options/interface.py:247
+#: picard/ui/options/interface.py:270
 msgid ""
 "Please note that using the system theme might cause the user interface to"
 " be not shown correctly. If this is the case select the \"Default\" theme"
 " option to use Picard's default theme again."
 msgstr ""
 
-#: picard/ui/options/interface.py:252
+#: picard/ui/options/interface.py:275
 msgid "Language changed"
 msgstr ""
 
-#: picard/ui/options/interface.py:253
+#: picard/ui/options/interface.py:276
 msgid ""
 "You have changed the interface language. You have to restart Picard in "
 "order for the change to take effect."
 msgstr ""
 
-#: picard/ui/options/interface.py:285
+#: picard/ui/options/interface.py:308
 msgid "Drag and Drop to re-order"
 msgstr ""
 
