@@ -58,8 +58,6 @@ from picard.ui.theme import (
     AVAILABLE_UI_THEMES,
     OS_SUPPORTS_THEMES,
     UiTheme,
-    theme_enum_to_desc,
-    theme_enum_to_label,
 )
 from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.util import enabledSlot
@@ -168,6 +166,26 @@ class InterfaceOptionsPage(OptionsPage):
         ]),
     ]
 
+    # Those are labels for theme display
+    _UI_THEME_LABELS = {
+        UiTheme.DEFAULT: {
+            'label': N_('Default'),
+            'desc': N_('The default color scheme based on the operating system display settings'),
+        },
+        UiTheme.DARK: {
+            'label': N_('Dark'),
+            'desc': N_('A dark display theme'),
+        },
+        UiTheme.LIGHT: {
+            'label': N_('Light'),
+            'desc': N_('A light display theme'),
+        },
+        UiTheme.SYSTEM: {
+            'label': N_('System'),
+            'desc': N_('The Qt5 theme configured in the desktop environment'),
+        },
+    }
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_InterfaceOptionsPage()
@@ -175,9 +193,11 @@ class InterfaceOptionsPage(OptionsPage):
 
         self.ui.ui_theme.clear()
         for theme in AVAILABLE_UI_THEMES:
-            self.ui.ui_theme.addItem(_(theme_enum_to_label(theme)), theme)
+            label = self._UI_THEME_LABELS[theme]['label']
+            desc = self._UI_THEME_LABELS[theme]['desc']
+            self.ui.ui_theme.addItem(_(label), theme)
             idx = self.ui.ui_theme.findData(theme)
-            self.ui.ui_theme.setItemData(idx, _(theme_enum_to_desc(theme)), QtCore.Qt.ToolTipRole)
+            self.ui.ui_theme.setItemData(idx, _(desc), QtCore.Qt.ToolTipRole)
         self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(UiTheme.DEFAULT))
 
         self.ui.ui_language.addItem(_('System default'), '')
