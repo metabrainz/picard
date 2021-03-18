@@ -69,21 +69,6 @@ class UiTheme(Enum):
         return cls.DEFAULT
 
 
-# Those are labels for display
-# example to display translated "System" theme name: _(UI_THEMES[UiTheme.DEFAULT])
-# here strings are just marked for translation
-_UI_THEME_LABELS = {
-    UiTheme.DEFAULT: N_('Default'),
-    UiTheme.DARK: N_('Dark'),
-    UiTheme.LIGHT: N_('Light'),
-    UiTheme.SYSTEM: N_('System'),
-}
-
-
-def theme_enum_to_label(theme):
-    return _UI_THEME_LABELS[theme]
-
-
 AVAILABLE_UI_THEMES = [UiTheme.DEFAULT]
 if IS_WIN or IS_MACOS:
     AVAILABLE_UI_THEMES.extend([UiTheme.LIGHT, UiTheme.DARK])
