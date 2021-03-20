@@ -1,3 +1,17 @@
+# Version 2.6.0b3 - 2021-03-20
+
+## Bugfixes
+
+- [PICARD-2135](https://tickets.metabrainz.org/browse/PICARD-2135) - Tags `license` and `website` cannot be deleted and get duplicated on update for ID3
+- [PICARD-2136](https://tickets.metabrainz.org/browse/PICARD-2136) - macOS: File browser does not use user's home folder by default
+- [PICARD-2138](https://tickets.metabrainz.org/browse/PICARD-2138) - macOS: After saving options the toolbar style changes
+
+## Improvements
+
+- [PICARD-1357](https://tickets.metabrainz.org/browse/PICARD-1357) - Support dark mode on macOS Mojave 10.14 and later
+- [PICARD-2095](https://tickets.metabrainz.org/browse/PICARD-2095) - Allow the user to choose between light or dark theme on Windows and macOS
+
+
 # Version 2.6.0b2 - 2021-03-06
 
 ## Bugfixes
