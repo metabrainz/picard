@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-03-02 07:34+0000\n"
+"PO-Revision-Date: 2021-03-15 13:50+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -433,7 +433,7 @@ msgstr "aïs kleine terts"
 #: DB:work_attribute_type/name:57
 msgctxt "work_attribute_type"
 msgid "AACIMH ID"
-msgstr ""
+msgstr "AACIMH-ID"
 
 #: DB:work_attribute_type/name:44
 msgctxt "work_attribute_type"
@@ -448,7 +448,7 @@ msgstr "ACDAM-ID"
 #: DB:work_attribute_type/name:58
 msgctxt "work_attribute_type"
 msgid "AEI ID"
-msgstr ""
+msgstr "AEI-ID"
 
 #: DB:work_attribute_type/name:43
 msgctxt "work_attribute_type"
@@ -458,7 +458,7 @@ msgstr "AGADU-ID"
 #: DB:work_attribute_type/name:63
 msgctxt "work_attribute_type"
 msgid "AKKA/LAA ID"
-msgstr ""
+msgstr "AKKA-/LAA-ID"
 
 #: DB:work_attribute_type/name:23
 msgctxt "work_attribute_type"
@@ -2799,7 +2799,7 @@ msgstr "hdcd"
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
 msgid "HFA ID"
-msgstr ""
+msgstr "HFA-ID"
 
 #: DB:medium_format/name:37
 msgctxt "medium_format"
@@ -3184,12 +3184,12 @@ msgstr "Een ID van de Oostenrijkse auteursrechtenorganisatie AKM"
 #: DB:work_attribute_type/description:28
 msgctxt "work_attribute_type"
 msgid "ID for the Belgian rights society SABAM"
-msgstr "Identificatiecode van de Belgische auteursrechtenorganisatie SABAM"
+msgstr "Een ID van de Belgische auteursrechtenorganisatie SABAM"
 
 #: DB:work_attribute_type/description:61
 msgctxt "work_attribute_type"
 msgid "ID for the Bolivian rights society SOBODAYCOM"
-msgstr ""
+msgstr "Een ID van de Boliviaanse auteursrechtenorganisatie SOBODAYCOM"
 
 #: DB:work_attribute_type/description:37
 msgctxt "work_attribute_type"
@@ -3239,7 +3239,7 @@ msgstr "Een ID van de Deense auteursrechtenorganisatie KODA"
 #: DB:work_attribute_type/description:60
 msgctxt "work_attribute_type"
 msgid "ID for the Dominican rights society SGACEDOM"
-msgstr ""
+msgstr "Een ID van de Dominicaanse auteursrechtenorganisatie SGACEDOM"
 
 #: DB:work_attribute_type/description:26
 msgctxt "work_attribute_type"
@@ -3264,12 +3264,12 @@ msgstr "Een ID van de Duitse auteursrechtenorganisatie GEMA"
 #: DB:work_attribute_type/description:58
 msgctxt "work_attribute_type"
 msgid "ID for the Guatemalan rights society AEI"
-msgstr ""
+msgstr "Een ID van de Guatemalaanse auteursrechtenorganisatie AEI"
 
 #: DB:work_attribute_type/description:57
 msgctxt "work_attribute_type"
 msgid "ID for the Honduran rights society AACIMH"
-msgstr ""
+msgstr "Een ID van de Hondurese auteursrechtenorganisatie AACIMH"
 
 #: DB:work_attribute_type/description:19
 msgctxt "work_attribute_type"
@@ -3289,7 +3289,7 @@ msgstr "Een ID van de IJslandse auteursrechtenorganisatie STEF"
 #: DB:work_attribute_type/description:29
 msgctxt "work_attribute_type"
 msgid "ID for the International Copyright Enterprise"
-msgstr "Identificatiecode van de International Copyright Enterprise"
+msgstr "Een ID van de International Copyright Enterprise"
 
 #: DB:work_attribute_type/description:52
 msgctxt "work_attribute_type"
@@ -3304,12 +3304,12 @@ msgstr "Een ID van de Italiaanse auteursrechtenorganisatie SIAE"
 #: DB:work_attribute_type/description:3
 msgctxt "work_attribute_type"
 msgid "ID for the Japanese rights society JASRAC"
-msgstr "Identificatiecode van de Japanse auteursrechtenorganisatie JASRAC"
+msgstr "Een ID van de Japanse auteursrechtenorganisatie JASRAC"
 
 #: DB:work_attribute_type/description:33
 msgctxt "work_attribute_type"
 msgid "ID for the Japanese rights society NexTone"
-msgstr "Identificatiecode van de Japanse auteursrechtenorganisatie NexTone"
+msgstr "Een ID van de Japanse auteursrechtenorganisatie NexTone"
 
 #: DB:work_attribute_type/description:11
 msgctxt "work_attribute_type"
@@ -3319,7 +3319,7 @@ msgstr "Een ID van de Koreaanse auteursrechtenorganisatie KOMCA"
 #: DB:work_attribute_type/description:63
 msgctxt "work_attribute_type"
 msgid "ID for the Latvian rights society AKKA/LAA"
-msgstr ""
+msgstr "Een ID van de Letse auteursrechtenorganisatie AKKA/LAA"
 
 #: DB:work_attribute_type/description:49
 msgctxt "work_attribute_type"
@@ -3329,17 +3329,17 @@ msgstr "Een ID van de Maleisische auteursrechtenorganisatie MACP"
 #: DB:work_attribute_type/description:27
 msgctxt "work_attribute_type"
 msgid "ID for the Mexican rights society SACM"
-msgstr "Identificatiecode van de Mexicaanse auteursrechtenorganisatie SACM"
+msgstr "Een ID van de Mexicaanse auteursrechtenorganisatie SACM"
 
 #: DB:work_attribute_type/description:59
 msgctxt "work_attribute_type"
 msgid "ID for the Nicaraguan rights society NICAUTOR"
-msgstr ""
+msgstr "Een ID van de Nicaraguaanse auteursrechtenorganisatie NICAUTOR"
 
 #: DB:work_attribute_type/description:62
 msgctxt "work_attribute_type"
 msgid "ID for the Panamanian rights society SPAC"
-msgstr ""
+msgstr "Een ID van de Panamese auteursrechtenorganisatie SPAC"
 
 #: DB:work_attribute_type/description:46
 msgctxt "work_attribute_type"
@@ -3354,7 +3354,7 @@ msgstr "Een ID van de Peruviaanse auteursrechtenorganisatie APDAYC"
 #: DB:work_attribute_type/description:30
 msgctxt "work_attribute_type"
 msgid "ID for the Polish rights society ZAiKS"
-msgstr "Identificatiecode van de Poolse auteursrechtenorganisatie ZAiKS"
+msgstr "Een ID van de Poolse auteursrechtenorganisatie ZAiKS"
 
 #: DB:work_attribute_type/description:35
 msgctxt "work_attribute_type"
@@ -3364,7 +3364,7 @@ msgstr "Een ID van de Portugese auteursrechtenorganisatie SPA"
 #: DB:work_attribute_type/description:56
 msgctxt "work_attribute_type"
 msgid "ID for the Salvadoran rights society SACIM"
-msgstr ""
+msgstr "Een ID van de Salvadoraanse auteursrechtenorganisatie SACIM"
 
 #: DB:work_attribute_type/description:45
 msgctxt "work_attribute_type"
@@ -3434,7 +3434,7 @@ msgstr "Een ID van het particuliere licentiebedrijf CCLI"
 #: DB:work_attribute_type/description:64
 msgctxt "work_attribute_type"
 msgid "ID for the private licensing company HFA (Harry Fox Agency)"
-msgstr ""
+msgstr "Een ID van het particuliere licentiebedrijf HFA (Harry Fox Agency)"
 
 #: DB:work_attribute_type/name:52
 msgctxt "work_attribute_type"
@@ -4773,7 +4773,7 @@ msgstr "Mōhanaṁ"
 #: DB:work_attribute_type/name:59
 msgctxt "work_attribute_type"
 msgid "NICAUTOR ID"
-msgstr ""
+msgstr "NICAUTOR-ID"
 
 #: DB:work_attribute_type_allowed_value/value:647
 msgctxt "work_attribute_type_allowed_value"
@@ -5715,7 +5715,7 @@ msgstr "Rumeli Türküsü"
 #: DB:series_type/name:9
 msgctxt "series_type"
 msgid "Run"
-msgstr "Voorstellingenreeks"
+msgstr "Reeks optredens"
 
 #: DB:work_attribute_type_allowed_value/value:521
 msgctxt "work_attribute_type_allowed_value"
@@ -5841,7 +5841,7 @@ msgstr "SACEM-ID"
 #: DB:work_attribute_type/name:56
 msgctxt "work_attribute_type"
 msgid "SACIM ID"
-msgstr ""
+msgstr "SACIM-ID"
 
 #: DB:work_attribute_type/name:27
 msgctxt "work_attribute_type"
@@ -5881,7 +5881,7 @@ msgstr "SESAC-ID"
 #: DB:work_attribute_type/name:60
 msgctxt "work_attribute_type"
 msgid "SGACEDOM ID"
-msgstr ""
+msgstr "SGACEDOM-ID"
 
 #: DB:work_attribute_type/name:20
 msgctxt "work_attribute_type"
@@ -5916,7 +5916,7 @@ msgstr "SIAE-ID"
 #: DB:work_attribute_type/name:61
 msgctxt "work_attribute_type"
 msgid "SOBODAYCOM ID"
-msgstr ""
+msgstr "SOBODAYCOM-ID"
 
 #: DB:work_attribute_type/name:10
 msgctxt "work_attribute_type"
@@ -5936,7 +5936,7 @@ msgstr "SPA-ID"
 #: DB:work_attribute_type/name:62
 msgctxt "work_attribute_type"
 msgid "SPAC ID"
-msgstr ""
+msgstr "SPAC-ID"
 
 #: DB:work_attribute_type/name:54
 msgctxt "work_attribute_type"

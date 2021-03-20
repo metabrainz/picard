@@ -10,14 +10,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-03-03 14:28+0100\n"
-"PO-Revision-Date: 2021-03-03 15:15+0000\n"
+"POT-Creation-Date: 2021-03-18 11:05+0100\n"
+"PO-Revision-Date: 2021-03-18 12:28+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Korean (http://www.transifex.com/musicbrainz/musicbrainz/language/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.6.0\n"
+"Generated-By: Babel 2.8.0\n"
 "Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
@@ -85,13 +85,13 @@ msgid "Metadata Extraction"
 msgstr ""
 
 #: picard/cluster.py:508 picard/ui/cdlookup.py:73 picard/ui/itemviews.py:156
-#: picard/ui/mainwindow.py:872 picard/ui/searchdialog/album.py:152
+#: picard/ui/mainwindow.py:875 picard/ui/searchdialog/album.py:152
 #: picard/ui/searchdialog/track.py:65 picard/util/tags.py:41
 msgid "Artist"
 msgstr "아티스트"
 
 #: picard/cluster.py:509 picard/ui/cdlookup.py:73 picard/ui/itemviews.py:159
-#: picard/ui/mainwindow.py:871 picard/util/tags.py:38
+#: picard/ui/mainwindow.py:874 picard/util/tags.py:38
 msgid "Album"
 msgstr "앨범"
 
@@ -139,7 +139,7 @@ msgid "Merge"
 msgstr "병합"
 
 #: picard/config_upgrade.py:99 picard/ui/metadatabox.py:420
-#: picard/ui/options/interface.py:111 picard/ui/ui_options_interface.py:152
+#: picard/ui/options/interface.py:112 picard/ui/ui_options_interface.py:174
 msgid "Remove"
 msgstr "제거"
 
@@ -256,11 +256,11 @@ msgid ""
 "%s"
 msgstr "CD 읽기 실패:\n\n%s"
 
-#: picard/track.py:374
+#: picard/track.py:373
 msgid "[loading recording information]"
 msgstr ""
 
-#: picard/track.py:410
+#: picard/track.py:409
 #, python-format
 msgid "[could not load recording %s]"
 msgstr ""
@@ -3118,7 +3118,7 @@ msgstr "오리지널 커버 아트"
 msgid "All supported image formats"
 msgstr ""
 
-#: picard/ui/coverartbox.py:551 picard/ui/mainwindow.py:990
+#: picard/ui/coverartbox.py:551 picard/ui/mainwindow.py:993
 msgid "All files"
 msgstr ""
 
@@ -3150,19 +3150,19 @@ msgstr ""
 msgid "YYYY"
 msgstr ""
 
-#: picard/ui/filebrowser.py:64
+#: picard/ui/filebrowser.py:88
 msgid "&Load selected files"
 msgstr ""
 
-#: picard/ui/filebrowser.py:67
+#: picard/ui/filebrowser.py:91
 msgid "&Move tagged files here"
 msgstr "태그된 파일을 여기로 이동(&M)"
 
-#: picard/ui/filebrowser.py:70
+#: picard/ui/filebrowser.py:94
 msgid "Show &hidden files"
 msgstr "숨김 파일 표시(&H)"
 
-#: picard/ui/filebrowser.py:76
+#: picard/ui/filebrowser.py:100
 msgid "&Set as starting directory"
 msgstr "시작 디렉토리로 지정(&S)"
 
@@ -3185,7 +3185,7 @@ msgid "Cover"
 msgstr "커버"
 
 #: picard/ui/infodialog.py:155 picard/ui/infodialog.py:361
-#: picard/ui/options/interface.py:107
+#: picard/ui/options/interface.py:108
 msgid "Info"
 msgstr "정보"
 
@@ -3542,15 +3542,15 @@ msgstr "활동 이력"
 msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
-#: picard/ui/mainwindow.py:316
+#: picard/ui/mainwindow.py:314
 msgid "Unsaved Changes"
 msgstr "저장되지 않은 변경사항"
 
-#: picard/ui/mainwindow.py:317
+#: picard/ui/mainwindow.py:315
 msgid "Are you sure you want to quit Picard?"
 msgstr "정말로 Picard를 종료하시겠습니까?"
 
-#: picard/ui/mainwindow.py:318
+#: picard/ui/mainwindow.py:316
 #, python-format
 msgid ""
 "There is %d unsaved file. Closing Picard will lose all unsaved changes."
@@ -3558,430 +3558,430 @@ msgid_plural ""
 "There are %d unsaved files. Closing Picard will lose all unsaved changes."
 msgstr[0] "저장되지 않은 파일이 %d개 있습니다. Picard를 종료하면 저장되지 않은 모든 변경사항이 손실됩니다."
 
-#: picard/ui/mainwindow.py:325
+#: picard/ui/mainwindow.py:323
 msgid "&Quit Picard"
 msgstr "Picard 종료(&Q)"
 
-#: picard/ui/mainwindow.py:365
+#: picard/ui/mainwindow.py:363
 msgid "Ready"
 msgstr "준비됨"
 
-#: picard/ui/mainwindow.py:369
+#: picard/ui/mainwindow.py:367
 msgid ""
 "Picard listens on this port to integrate with your browser. When you "
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
 "button on the web page loads the release into Picard."
 msgstr "Picard는 이 포트를 수신하여 브라우저와 통합합니다. Picard에서 \"검색\" 또는 \"브라우저에서 열기\" 시 웹페이지의 \"Tagger\" 버튼을 클릭하면 Picard에 릴리즈가 로드됩니다."
 
-#: picard/ui/mainwindow.py:396
+#: picard/ui/mainwindow.py:394
 #, python-format
 msgid " Listening on port %(port)d "
 msgstr " %(port)d 포트 수신 중 "
 
-#: picard/ui/mainwindow.py:455
+#: picard/ui/mainwindow.py:453
 msgid "AcoustID submission not configured"
 msgstr ""
 
-#: picard/ui/mainwindow.py:456
+#: picard/ui/mainwindow.py:454
 msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
 msgstr "지문을 등록하기전에 AcoustID API 키를 등록하여야 합니다."
 
-#: picard/ui/mainwindow.py:459
+#: picard/ui/mainwindow.py:457
 msgid "Open AcoustID options"
 msgstr ""
 
-#: picard/ui/mainwindow.py:470
+#: picard/ui/mainwindow.py:468
 msgid "&Options..."
 msgstr "옵션... (&O)"
 
-#: picard/ui/mainwindow.py:474
+#: picard/ui/mainwindow.py:472
 msgid "&Cut"
 msgstr "잘라내기(&C)"
 
-#: picard/ui/mainwindow.py:479 picard/ui/metadatabox.py:437
+#: picard/ui/mainwindow.py:477 picard/ui/metadatabox.py:437
 msgid "&Paste"
 msgstr "붙이기(&P)"
 
-#: picard/ui/mainwindow.py:484
+#: picard/ui/mainwindow.py:482
 msgid "&Help..."
 msgstr "도움말(&H)"
 
-#: picard/ui/mainwindow.py:488
+#: picard/ui/mainwindow.py:486
 msgid "&About..."
 msgstr "정보 (&A)..."
 
-#: picard/ui/mainwindow.py:492
+#: picard/ui/mainwindow.py:490
 msgid "&Donate..."
 msgstr "기부(&D)"
 
-#: picard/ui/mainwindow.py:495
+#: picard/ui/mainwindow.py:493
 msgid "&Report a Bug..."
 msgstr "오류보고(&R)"
 
-#: picard/ui/mainwindow.py:498
+#: picard/ui/mainwindow.py:496
 msgid "&Support Forum..."
 msgstr "기술지원(&S)"
 
-#: picard/ui/mainwindow.py:501
+#: picard/ui/mainwindow.py:499
 msgid "&Add Files..."
 msgstr "파일추가(&A)"
 
-#: picard/ui/mainwindow.py:502
+#: picard/ui/mainwindow.py:500
 msgid "Add files to the tagger"
 msgstr "파일을 태그 편집기에 추가"
 
-#: picard/ui/mainwindow.py:507
+#: picard/ui/mainwindow.py:505
 msgid "Add Fold&er..."
 msgstr "폴더 추가(&d)"
 
-#: picard/ui/mainwindow.py:508
+#: picard/ui/mainwindow.py:506
 msgid "Add a folder to the tagger"
 msgstr "폴더를 태그 편집기에 추가"
 
-#: picard/ui/mainwindow.py:510
+#: picard/ui/mainwindow.py:508
 msgid "Ctrl+E"
 msgstr "Ctrl+E"
 
-#: picard/ui/mainwindow.py:514
+#: picard/ui/mainwindow.py:512
 msgid "Close Window"
 msgstr ""
 
-#: picard/ui/mainwindow.py:515
+#: picard/ui/mainwindow.py:513
 msgid "Ctrl+W"
 msgstr "Ctrl+W"
 
-#: picard/ui/mainwindow.py:518
+#: picard/ui/mainwindow.py:516
 msgid "&Save"
 msgstr "저장(&S)"
 
-#: picard/ui/mainwindow.py:519
+#: picard/ui/mainwindow.py:517
 msgid "Save selected files"
 msgstr "선택된 파일 저장"
 
-#: picard/ui/mainwindow.py:525
+#: picard/ui/mainwindow.py:523
 msgid "S&ubmit AcoustIDs"
 msgstr "AcoustID 등록(&U)"
 
-#: picard/ui/mainwindow.py:526
+#: picard/ui/mainwindow.py:524
 msgid "Submit acoustic fingerprints"
 msgstr "음향 지문 등록"
 
-#: picard/ui/mainwindow.py:530
+#: picard/ui/mainwindow.py:528
 msgid "E&xit"
 msgstr "끝내기(&X)"
 
-#: picard/ui/mainwindow.py:533
+#: picard/ui/mainwindow.py:531
 msgid "Ctrl+Q"
 msgstr "Ctrl+Q"
 
-#: picard/ui/mainwindow.py:536
+#: picard/ui/mainwindow.py:534
 msgid "&Remove"
 msgstr "제거(&R)"
 
-#: picard/ui/mainwindow.py:537
+#: picard/ui/mainwindow.py:535
 msgid "Remove selected files/albums"
 msgstr "선택한 파일/앨범 제거"
 
-#: picard/ui/mainwindow.py:541 picard/ui/metadatabox.py:394
+#: picard/ui/mainwindow.py:539 picard/ui/metadatabox.py:394
 msgid "Lookup in &Browser"
 msgstr "브라우저로 찾기(&B)"
 
-#: picard/ui/mainwindow.py:542
+#: picard/ui/mainwindow.py:540
 msgid "Lookup selected item on MusicBrainz website"
 msgstr "선택된 항목을 MusicBrainz 웹사이트에서 찾기"
 
-#: picard/ui/mainwindow.py:545
+#: picard/ui/mainwindow.py:543
 msgid "Ctrl+Shift+L"
 msgstr "Ctrl+Shift+L"
 
-#: picard/ui/mainwindow.py:548
+#: picard/ui/mainwindow.py:546
 msgid "Search for similar albums..."
 msgstr "유사한 앨범 검색..."
 
-#: picard/ui/mainwindow.py:549
+#: picard/ui/mainwindow.py:547
 msgid "View similar releases and optionally choose a different release"
 msgstr "유사한 릴리즈와 선택가능한 다른 릴리즈 보기"
 
-#: picard/ui/mainwindow.py:552
+#: picard/ui/mainwindow.py:550
 msgid "Search for similar tracks..."
 msgstr "유사한 트랙 검색..."
 
-#: picard/ui/mainwindow.py:553
+#: picard/ui/mainwindow.py:551
 msgid "View similar tracks and optionally choose a different release"
 msgstr "유사한 트랙과 선택가능한 다른 릴리즈 보기"
 
-#: picard/ui/mainwindow.py:556
+#: picard/ui/mainwindow.py:554
 msgid "File &Browser"
 msgstr "파일 브라우저(&B)"
 
-#: picard/ui/mainwindow.py:560
+#: picard/ui/mainwindow.py:558
 msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
-#: picard/ui/mainwindow.py:563
+#: picard/ui/mainwindow.py:561
 msgid "&Cover Art"
 msgstr "커버 아트(&C)"
 
-#: picard/ui/mainwindow.py:569
+#: picard/ui/mainwindow.py:567
 msgid "&Actions"
 msgstr "액션(&A)"
 
-#: picard/ui/mainwindow.py:575 picard/ui/mainwindow.py:865
+#: picard/ui/mainwindow.py:573 picard/ui/mainwindow.py:865
 #: picard/ui/searchdialog/__init__.py:47
 msgid "Search"
 msgstr "찾기"
 
-#: picard/ui/mainwindow.py:579 picard/ui/mainwindow.py:585
+#: picard/ui/mainwindow.py:577 picard/ui/mainwindow.py:583
 msgid "Lookup &CD..."
 msgstr "CD 조회(&C)..."
 
-#: picard/ui/mainwindow.py:580
+#: picard/ui/mainwindow.py:578
 msgid "Lookup the details of the CD in your drive"
 msgstr "드라이브에 삽입된 CD의 상세정보 조회"
 
-#: picard/ui/mainwindow.py:582 picard/ui/mainwindow.py:710
+#: picard/ui/mainwindow.py:580 picard/ui/mainwindow.py:708
 msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
-#: picard/ui/mainwindow.py:593
+#: picard/ui/mainwindow.py:591
 msgid "&Scan"
 msgstr "검사(&S)"
 
-#: picard/ui/mainwindow.py:594
+#: picard/ui/mainwindow.py:592
 msgid ""
 "Use AcoustID audio fingerprint to identify the files by the actual music, "
 "even if they have no metadata"
 msgstr "AcoustID 오디오 지문을 사용하면 파일에 메타데이터가 없더라도, 음악으로 파일을 식별 합니다"
 
-#: picard/ui/mainwindow.py:596
+#: picard/ui/mainwindow.py:594
 msgid "Identify the file using its AcoustID audio fingerprint"
 msgstr "AcoustID 오디오 지문으로 파일 식별"
 
-#: picard/ui/mainwindow.py:598
+#: picard/ui/mainwindow.py:596
 msgid "Ctrl+Y"
 msgstr "Ctrl+Y"
 
-#: picard/ui/mainwindow.py:601
+#: picard/ui/mainwindow.py:599
 msgid "&Generate AcoustID Fingerprints"
 msgstr ""
 
-#: picard/ui/mainwindow.py:602 picard/ui/options/interface.py:119
+#: picard/ui/mainwindow.py:600 picard/ui/options/interface.py:120
 msgid "Generate Fingerprints"
 msgstr ""
 
-#: picard/ui/mainwindow.py:603
+#: picard/ui/mainwindow.py:601
 msgid ""
 "Generate the AcoustID audio fingerprints for the selected files without "
 "doing a lookup"
 msgstr ""
 
-#: picard/ui/mainwindow.py:605
+#: picard/ui/mainwindow.py:603
 msgid "Generate the AcoustID audio fingerprints for the selected files"
 msgstr ""
 
-#: picard/ui/mainwindow.py:606
+#: picard/ui/mainwindow.py:604
 msgid "Ctrl+Shift+Y"
 msgstr "Ctrl+Shift+Y"
 
-#: picard/ui/mainwindow.py:609
+#: picard/ui/mainwindow.py:607
 msgid "Cl&uster"
 msgstr "클러스터(&U)"
 
-#: picard/ui/mainwindow.py:610
+#: picard/ui/mainwindow.py:608
 msgid "Cluster files into album clusters"
 msgstr "앨범 클러스터로 파일분할"
 
-#: picard/ui/mainwindow.py:613
+#: picard/ui/mainwindow.py:611
 msgid "Ctrl+U"
 msgstr "Ctrl+U"
 
-#: picard/ui/mainwindow.py:616
+#: picard/ui/mainwindow.py:614
 msgid "&Lookup"
 msgstr "조회(&L)"
 
-#: picard/ui/mainwindow.py:617
+#: picard/ui/mainwindow.py:615
 msgid "Lookup selected items in MusicBrainz"
 msgstr "MusicBrainz에서 선택항목 조회"
 
-#: picard/ui/mainwindow.py:622
+#: picard/ui/mainwindow.py:620
 msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
-#: picard/ui/mainwindow.py:625
+#: picard/ui/mainwindow.py:623
 msgid "&Info..."
 msgstr "정보(&I)..."
 
-#: picard/ui/mainwindow.py:628
+#: picard/ui/mainwindow.py:626
 msgid "Ctrl+I"
 msgstr "Ctrl+I"
 
-#: picard/ui/mainwindow.py:631
+#: picard/ui/mainwindow.py:629
 msgid "&Refresh"
 msgstr "새로고침(&R)"
 
-#: picard/ui/mainwindow.py:632
+#: picard/ui/mainwindow.py:630
 msgid "Ctrl+R"
 msgstr "Ctrl+R"
 
-#: picard/ui/mainwindow.py:635
+#: picard/ui/mainwindow.py:633
 msgid "&Rename Files"
 msgstr "이름 변경(&R)"
 
-#: picard/ui/mainwindow.py:640
+#: picard/ui/mainwindow.py:638
 msgid "&Move Files"
 msgstr "파일 이동(&M)"
 
-#: picard/ui/mainwindow.py:645
+#: picard/ui/mainwindow.py:643
 msgid "Save &Tags"
 msgstr "태그 저장(&T)"
 
-#: picard/ui/mainwindow.py:650
+#: picard/ui/mainwindow.py:648
 msgid "Tags From &File Names..."
 msgstr "파일 이름으로 태그 작성하기(&F)..."
 
-#: picard/ui/mainwindow.py:651 picard/ui/options/interface.py:131
+#: picard/ui/mainwindow.py:649 picard/ui/options/interface.py:132
 msgid "Parse File Names..."
 msgstr ""
 
-#: picard/ui/mainwindow.py:652
+#: picard/ui/mainwindow.py:650
 msgid "Set tags based on the file names"
 msgstr ""
 
-#: picard/ui/mainwindow.py:653
+#: picard/ui/mainwindow.py:651
 msgid "Ctrl+Shift+T"
 msgstr "Ctrl+Shift+T"
 
-#: picard/ui/mainwindow.py:657
+#: picard/ui/mainwindow.py:655
 msgid "&Open My Collections in Browser"
 msgstr "브라우저로 내 컬렉션 열기(&O)"
 
-#: picard/ui/mainwindow.py:661
+#: picard/ui/mainwindow.py:659
 msgid "View &Error/Debug Log"
 msgstr ""
 
-#: picard/ui/mainwindow.py:664
+#: picard/ui/mainwindow.py:662
 msgid "Ctrl+G"
 msgstr "Ctrl+G"
 
-#: picard/ui/mainwindow.py:666
+#: picard/ui/mainwindow.py:664
 msgid "View Activity &History"
 msgstr "활동이력 보기(&H)"
 
-#: picard/ui/mainwindow.py:669
+#: picard/ui/mainwindow.py:667
 msgid "Ctrl+H"
 msgstr "Ctrl+H"
 
-#: picard/ui/mainwindow.py:675
+#: picard/ui/mainwindow.py:673
 msgid "Open in &Player"
 msgstr "플레이어로 열기(&P)"
 
-#: picard/ui/mainwindow.py:676
+#: picard/ui/mainwindow.py:674
 msgid "Play the file in your default media player"
 msgstr "기본 미디어 플레이어로 파일 재생"
 
-#: picard/ui/mainwindow.py:680
+#: picard/ui/mainwindow.py:678
 msgid "Open Containing &Folder"
 msgstr "대상폴더 열기(&F)"
 
-#: picard/ui/mainwindow.py:681
+#: picard/ui/mainwindow.py:679
 msgid "Open the containing folder in your file explorer"
 msgstr "파일탐색기로 대상폴더 열기"
 
-#: picard/ui/mainwindow.py:686
+#: picard/ui/mainwindow.py:684
 msgid "&Check for Update…"
 msgstr ""
 
-#: picard/ui/mainwindow.py:750
+#: picard/ui/mainwindow.py:748
 msgid "&File"
 msgstr "파일(&F)"
 
-#: picard/ui/mainwindow.py:763
+#: picard/ui/mainwindow.py:761
 msgid "&Edit"
 msgstr "편집(&E)"
 
-#: picard/ui/mainwindow.py:769
+#: picard/ui/mainwindow.py:767
 msgid "&View"
 msgstr "보기(&V)"
 
-#: picard/ui/mainwindow.py:777
+#: picard/ui/mainwindow.py:775
 msgid "&Options"
 msgstr "옵션(&O)"
 
-#: picard/ui/mainwindow.py:783
+#: picard/ui/mainwindow.py:781
 msgid "&Tools"
 msgstr "도구(&T)"
 
-#: picard/ui/mainwindow.py:795 picard/ui/util.py:51
+#: picard/ui/mainwindow.py:793 picard/ui/util.py:51
 msgid "&Help"
 msgstr "도움말(&H)"
 
-#: picard/ui/mainwindow.py:831 picard/ui/ui_options_plugins.py:132
+#: picard/ui/mainwindow.py:829 picard/ui/ui_options_plugins.py:132
 msgid "Actions"
 msgstr "액션"
 
-#: picard/ui/mainwindow.py:873
+#: picard/ui/mainwindow.py:876
 msgid "Track"
 msgstr "트랙"
 
-#: picard/ui/mainwindow.py:890
+#: picard/ui/mainwindow.py:893
 msgid "&Advanced search"
 msgstr ""
 
-#: picard/ui/mainwindow.py:891
+#: picard/ui/mainwindow.py:894
 msgid "&Builtin search"
 msgstr ""
 
-#: picard/ui/mainwindow.py:989
+#: picard/ui/mainwindow.py:992
 msgid "All supported formats"
 msgstr "지원되는 모든 형식"
 
-#: picard/ui/mainwindow.py:1018
+#: picard/ui/mainwindow.py:1021
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
 msgstr "'%(directory)s' 에서 여러개의 디렉토리 추가 중 ..."
 
-#: picard/ui/mainwindow.py:1023
+#: picard/ui/mainwindow.py:1026
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
 msgstr "디렉토리 추가 중: '%(directory)s' ..."
 
-#: picard/ui/mainwindow.py:1111
+#: picard/ui/mainwindow.py:1114
 msgid "Configuration Required"
 msgstr "설정 필요"
 
-#: picard/ui/mainwindow.py:1112
+#: picard/ui/mainwindow.py:1115
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
 msgstr "오디오 지문이 아직 설정되지 않았습니다. 지금 설정하시겠습니까?"
 
-#: picard/ui/mainwindow.py:1241
+#: picard/ui/mainwindow.py:1244
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
 msgstr "%(filename)s (오류: %(error)s)"
 
-#: picard/ui/mainwindow.py:1247
+#: picard/ui/mainwindow.py:1250
 #, python-format
 msgid "%(filename)s"
 msgstr "%(filename)s"
 
-#: picard/ui/mainwindow.py:1256
+#: picard/ui/mainwindow.py:1259
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
 msgstr "%(filename)s (%(similarity)d%%) (오류: %(error)s)"
 
-#: picard/ui/mainwindow.py:1263
+#: picard/ui/mainwindow.py:1266
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
-#: picard/ui/mainwindow.py:1314
+#: picard/ui/mainwindow.py:1317
 msgid "Authentication Required"
 msgstr "인증 필요"
 
-#: picard/ui/mainwindow.py:1315
+#: picard/ui/mainwindow.py:1318
 msgid ""
 "Picard needs authorization to access your personal data on the MusicBrainz "
 "server. Would you like to log in now?"
@@ -4316,11 +4316,11 @@ msgstr "커버 아트 제공자"
 msgid "Reorder Priority: "
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:104 picard/ui/ui_options_interface.py:149
+#: picard/ui/ui_options_cover.py:104 picard/ui/ui_options_interface.py:171
 msgid "Move selected item up"
 msgstr "선택한 항목 위로 이동"
 
-#: picard/ui/ui_options_cover.py:105 picard/ui/ui_options_interface.py:150
+#: picard/ui/ui_options_cover.py:105 picard/ui/ui_options_interface.py:172
 msgid "Move selected item down"
 msgstr "선택한 항목 아래로 이동"
 
@@ -4349,7 +4349,7 @@ msgid "Fingerprint calculator:"
 msgstr "지문 계산기:"
 
 #: picard/ui/ui_options_fingerprinting.py:79
-#: picard/ui/ui_options_interface.py:142 picard/ui/ui_options_renaming.py:146
+#: picard/ui/ui_options_interface.py:164 picard/ui/ui_options_renaming.py:146
 msgid "Browse..."
 msgstr "찾아보기..."
 
@@ -4464,67 +4464,67 @@ msgstr ""
 msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
 msgstr ""
 
-#: picard/ui/ui_options_interface.py:133
-msgid "Miscellaneous"
-msgstr "기타"
-
-#: picard/ui/ui_options_interface.py:134
-msgid "Show text labels under icons"
-msgstr "아이콘 아래에 텍스트 레이블 보이기"
-
-#: picard/ui/ui_options_interface.py:135
-msgid "Use system theme"
-msgstr ""
-
-#: picard/ui/ui_options_interface.py:136
-msgid "Allow selection of multiple directories"
-msgstr "여러 디렉토리 선택 허용"
-
-#: picard/ui/ui_options_interface.py:137
-msgid "Use builtin search rather than looking in browser"
-msgstr "브라우저로 찾기 대신 내장 검색 사용"
-
-#: picard/ui/searchdialog/__init__.py:94 picard/ui/ui_options_interface.py:138
-msgid "Use advanced query syntax"
-msgstr "고급 쿼리 구문 사용"
-
-#: picard/ui/ui_options_interface.py:139
-msgid "Show a quit confirmation dialog for unsaved changes"
-msgstr "저장되지 않은 변경 사항에 대한 종료확인 대화상자 표시"
-
-#: picard/ui/ui_options_interface.py:140
-msgid "Adjust horizontal position in file browser automatically"
-msgstr ""
-
-#: picard/ui/ui_options_interface.py:141
-msgid "Begin browsing in the following directory:"
-msgstr "다음 디렉토리에서 찾기 시작:"
-
-#: picard/ui/ui_options_interface.py:143
-msgid "User interface language:"
-msgstr "사용자 인터페이스 언어:"
-
-#: picard/ui/ui_options_interface.py:144
+#: picard/ui/ui_options_interface.py:155
 msgid "Customize Action Toolbar"
 msgstr "작업 도구모음 사용자지정"
 
-#: picard/ui/ui_options_interface.py:145
+#: picard/ui/ui_options_interface.py:156
+msgid "Miscellaneous"
+msgstr "기타"
+
+#: picard/ui/ui_options_interface.py:157
+msgid "Show text labels under icons"
+msgstr "아이콘 아래에 텍스트 레이블 보이기"
+
+#: picard/ui/ui_options_interface.py:158
+msgid "Allow selection of multiple directories"
+msgstr "여러 디렉토리 선택 허용"
+
+#: picard/ui/ui_options_interface.py:159
+msgid "Use builtin search rather than looking in browser"
+msgstr "브라우저로 찾기 대신 내장 검색 사용"
+
+#: picard/ui/searchdialog/__init__.py:94 picard/ui/ui_options_interface.py:160
+msgid "Use advanced query syntax"
+msgstr "고급 쿼리 구문 사용"
+
+#: picard/ui/ui_options_interface.py:161
+msgid "Show a quit confirmation dialog for unsaved changes"
+msgstr "저장되지 않은 변경 사항에 대한 종료확인 대화상자 표시"
+
+#: picard/ui/ui_options_interface.py:162
+msgid "Adjust horizontal position in file browser automatically"
+msgstr ""
+
+#: picard/ui/ui_options_interface.py:163
+msgid "Begin browsing in the following directory:"
+msgstr "다음 디렉토리에서 찾기 시작:"
+
+#: picard/ui/ui_options_interface.py:165
+msgid "User interface language:"
+msgstr "사용자 인터페이스 언어:"
+
+#: picard/ui/ui_options_interface.py:166
+msgid "User interface color theme:"
+msgstr ""
+
+#: picard/ui/ui_options_interface.py:167
 msgid "Add a new button to Toolbar"
 msgstr "툴바에 새 버튼 추가"
 
-#: picard/ui/ui_options_interface.py:146
+#: picard/ui/ui_options_interface.py:168
 msgid "Add Action"
 msgstr "액션 추가"
 
-#: picard/ui/ui_options_interface.py:147
+#: picard/ui/ui_options_interface.py:169
 msgid "Insert a separator"
 msgstr "구분자 삽입"
 
-#: picard/ui/ui_options_interface.py:148
+#: picard/ui/ui_options_interface.py:170
 msgid "Add Separator"
 msgstr "구분자 추가"
 
-#: picard/ui/ui_options_interface.py:151
+#: picard/ui/ui_options_interface.py:173
 msgid "Remove button from toolbar"
 msgstr "툴바에서 버튼 제거"
 
@@ -4593,8 +4593,8 @@ msgstr "알 수 없는 아티스트:"
 msgid "Non-album tracks:"
 msgstr "앨범이 없는 트랙:"
 
-#: picard/ui/ui_options_metadata.py:106 picard/ui/ui_options_metadata.py:107
-#: picard/ui/ui_options_renaming.py:153
+#: picard/ui/options/interface.py:172 picard/ui/ui_options_metadata.py:106
+#: picard/ui/ui_options_metadata.py:107 picard/ui/ui_options_renaming.py:153
 #: picard/ui/ui_provider_options_local.py:52
 msgid "Default"
 msgstr "초기화"
@@ -5152,82 +5152,111 @@ msgstr ""
 msgid "Error line %d: %s"
 msgstr ""
 
-#: picard/ui/options/interface.py:71
+#: picard/ui/options/interface.py:72
 msgid "User Interface"
 msgstr "사용자 인터페이스"
 
-#: picard/ui/options/interface.py:79
+#: picard/ui/options/interface.py:80
 msgid "Add Folder"
 msgstr "폴더 추가"
 
-#: picard/ui/options/interface.py:83
+#: picard/ui/options/interface.py:84
 msgid "Add Files"
 msgstr "파일 추가"
 
-#: picard/ui/options/interface.py:87
+#: picard/ui/options/interface.py:88
 msgid "Cluster"
 msgstr "클러스터"
 
-#: picard/ui/options/interface.py:91
+#: picard/ui/options/interface.py:92
 msgid "Lookup"
 msgstr "조회"
 
-#: picard/ui/options/interface.py:95
+#: picard/ui/options/interface.py:96
 msgid "Scan"
 msgstr "검사"
 
-#: picard/ui/options/interface.py:99
+#: picard/ui/options/interface.py:100
 msgid "Lookup in Browser"
 msgstr "브라우저로 조회"
 
-#: picard/ui/options/interface.py:103
+#: picard/ui/options/interface.py:104
 msgid "Save"
 msgstr "저장"
 
-#: picard/ui/options/interface.py:115
+#: picard/ui/options/interface.py:116
 msgid "Submit AcoustIDs"
 msgstr "AcoustID 등록"
 
-#: picard/ui/options/interface.py:123
+#: picard/ui/options/interface.py:124
 msgid "Open in Player"
 msgstr "플레이어로 열기"
 
-#: picard/ui/options/interface.py:127
+#: picard/ui/options/interface.py:128
 msgid "Lookup CD..."
 msgstr "CD 조회..."
 
-#: picard/ui/options/interface.py:172
+#: picard/ui/options/interface.py:173
+msgid ""
+"The default color scheme based on the operating system display settings"
+msgstr ""
+
+#: picard/ui/options/interface.py:176
+msgid "Dark"
+msgstr ""
+
+#: picard/ui/options/interface.py:177
+msgid "A dark display theme"
+msgstr ""
+
+#: picard/ui/options/interface.py:180
+msgid "Light"
+msgstr ""
+
+#: picard/ui/options/interface.py:181
+msgid "A light display theme"
+msgstr ""
+
+#: picard/ui/options/interface.py:184
+msgid "System"
+msgstr ""
+
+#: picard/ui/options/interface.py:185
+msgid "The Qt5 theme configured in the desktop environment"
+msgstr ""
+
+#: picard/ui/options/interface.py:203
 msgid "System default"
 msgstr "시스템 기본값"
 
-#: picard/ui/options/interface.py:234
+#: picard/ui/options/interface.py:267
 msgid "Theme changed"
 msgstr ""
 
-#: picard/ui/options/interface.py:235
+#: picard/ui/options/interface.py:268
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
 msgstr ""
 
-#: picard/ui/options/interface.py:237
+#: picard/ui/options/interface.py:270
 msgid ""
 "Please note that using the system theme might cause the user interface to be"
-" not shown correctly. If this is the case disable the \"Use system theme\" "
+" not shown correctly. If this is the case select the \"Default\" theme "
 "option to use Picard's default theme again."
 msgstr ""
 
-#: picard/ui/options/interface.py:242
+#: picard/ui/options/interface.py:275
 msgid "Language changed"
 msgstr "언어가 변경되었습니다"
 
-#: picard/ui/options/interface.py:243
+#: picard/ui/options/interface.py:276
 msgid ""
 "You have changed the interface language. You have to restart Picard in order"
 " for the change to take effect."
 msgstr "인터페이스 언어가 변경되었습니다. 변경사항을 적용하려면 Picard를 재시작하십시오."
 
-#: picard/ui/options/interface.py:275
+#: picard/ui/options/interface.py:308
 msgid "Drag and Drop to re-order"
 msgstr "드래그 앤 드롭으로 순서를 바꿀 수 있습니다"
 
