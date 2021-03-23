@@ -3,12 +3,13 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2007, 2011 Lukáš Lalinský
-# Copyright (C) 2008-2010, 2019 Philipp Wolfer
+# Copyright (C) 2008-2010, 2019, 2021 Philipp Wolfer
 # Copyright (C) 2012-2013 Michael Wiencek
 # Copyright (C) 2013, 2015, 2018-2019 Laurent Monin
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017 Sophist-UK
 # Copyright (C) 2018 Wieland Hoffmann
+# Copyright (C) 2021 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -89,6 +90,26 @@ class TailLogHandler(logging.Handler):
         self.tail_logger.updated.emit()
 
 
+def _calculate_bounds(previous_position, first_position, last_position, queue_length):
+    # If first item of the queue is bigger than prev, use first item position - 1 as prev
+    # e.g. queue = [8, 9, 10] , prev = 6, new_prev = 8-1 = 7
+    if previous_position < first_position:
+        previous_position = first_position-1
+
+    # The offset of the first item in the queue is
+    # equal to the length of the queue, minus the length to be printed
+    offset = queue_length - (last_position - previous_position)
+
+    # If prev > last_position, offset will be bigger than queue length offset > queue_length
+    # This will force an empty list
+    if offset > queue_length:
+        offset = queue_length
+
+    # If offset < 1, there is a discontinuity in the queue positions
+    # Setting queue_length to 0 informs the caller that something is wrong and the slow path should be taken
+    return offset, queue_length
+
+
 class TailLogger(QtCore.QObject):
     updated = QtCore.pyqtSignal()
 
@@ -100,8 +121,17 @@ class TailLogger(QtCore.QObject):
 
     def contents(self, prev=-1):
         with self._queue_lock:
-            contents = [x for x in self._log_queue if x.pos > prev]
-        return contents
+            # If log queue is empty, return
+            if not self._log_queue:
+                return []
+            offset, length = _calculate_bounds(prev, self._log_queue[0].pos, self._log_queue[-1].pos, len(self._log_queue))
+
+            if offset >= 0:
+                return (self._log_queue[i] for i in range(offset, length))
+                # If offset < 0, there is a discontinuity in the queue positions
+                # Use a slower approach to get the new content.
+            else:
+                return (x for x in self._log_queue if x.pos > prev)
 
     def clear(self):
         with self._queue_lock:
