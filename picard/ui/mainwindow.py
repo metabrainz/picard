@@ -664,7 +664,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.view_history_action = QtWidgets.QAction(_("View Activity &History"), self)
         self.view_history_action.triggered.connect(self.show_history)
         # TR: Keyboard shortcut for "View Activity History"
-        self.view_history_action.setShortcut(QtGui.QKeySequence(_("Ctrl+H")))
+        # On macOS ⌘+H is a system shortcut to hide the window. Use ⌘+Shift+H instead.
+        self.view_history_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+H") if IS_MACOS else _("Ctrl+H")))
 
         webservice_manager = self.tagger.webservice.manager
         webservice_manager.authenticationRequired.connect(self.show_password_dialog)
