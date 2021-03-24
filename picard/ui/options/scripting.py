@@ -36,6 +36,7 @@ from picard.config import (
     get_config,
 )
 from picard.const import PICARD_URLS
+from picard.const.sys import IS_MACOS
 from picard.script import (
     ScriptParser,
     script_function_documentation_all,
@@ -96,10 +97,12 @@ class ScriptingDocumentationDialog(PicardDialog, SingletonDialog):
 
     def __init__(self, parent):
         super().__init__(parent)
-        self.setWindowFlags(QtCore.Qt.Window)
+        # on macOS having this not a dialog causes the window to be placed
+        # behind the options dialog.
+        if not IS_MACOS:
+            self.setWindowFlags(QtCore.Qt.Window)
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         self.parent = parent
-        self.setWindowFlags(QtCore.Qt.Window)
         self.ui = Ui_ScriptingDocumentationDialog()
         self.ui.setupUi(self)
         self.restore_geometry()
