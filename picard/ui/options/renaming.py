@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008, 2011 Lukáš Lalinský
 # Copyright (C) 2008-2009 Nikolai Prokoschenko
-# Copyright (C) 2009-2010, 2014-2015, 2018-2020 Philipp Wolfer
+# Copyright (C) 2009-2010, 2014-2015, 2018-2021 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2011-2013 Wieland Hoffmann
 # Copyright (C) 2013 Calvin Walton
@@ -43,10 +43,7 @@ from picard.config import (
     TextOption,
     get_config,
 )
-from picard.const import (
-    DEFAULT_FILE_NAMING_FORMAT,
-    PICARD_URLS,
-)
+from picard.const import DEFAULT_FILE_NAMING_FORMAT
 from picard.const.sys import IS_WIN
 from picard.file import File
 from picard.script import (
@@ -60,7 +57,10 @@ from picard.ui.options import (
     OptionsPage,
     register_options_page,
 )
-from picard.ui.options.scripting import ScriptCheckError
+from picard.ui.options.scripting import (
+    ScriptCheckError,
+    ScriptingDocumentationDialog,
+)
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.util import enabledSlot
 
@@ -125,6 +125,10 @@ class RenamingOptionsPage(OptionsPage):
         self.script_palette_readonly = QPalette(self.script_palette_normal)
         disabled_color = self.script_palette_normal.color(QPalette.Inactive, QPalette.Window)
         self.script_palette_readonly.setColor(QPalette.Disabled, QPalette.Base, disabled_color)
+        self.ui.scripting_documentation_button.clicked.connect(self.show_scripting_documentation)
+
+    def show_scripting_documentation(self):
+        ScriptingDocumentationDialog.show_instance(parent=self)
 
     def toggle_file_moving(self, state):
         self.toggle_file_naming_format()
@@ -197,12 +201,6 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_files.setChecked(config.setting["move_files"])
         self.ui.ascii_filenames.setChecked(config.setting["ascii_filenames"])
         self.ui.file_naming_format.setPlainText(config.setting["file_naming_format"])
-        args = {
-            "picard-doc-scripting-url": PICARD_URLS['doc_scripting'],
-        }
-        text = _('<a href="%(picard-doc-scripting-url)s">Open Scripting'
-                 ' Documentation in your browser</a>') % args
-        self.ui.file_naming_format_documentation.setText(text)
         self.ui.move_files_to.setText(config.setting["move_files_to"])
         self.ui.move_files_to.setCursorPosition(0)
         self.ui.move_additional_files.setChecked(config.setting["move_additional_files"])
