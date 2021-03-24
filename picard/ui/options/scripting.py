@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2007, 2009 Lukáš Lalinský
 # Copyright (C) 2009 Nikolai Prokoschenko
-# Copyright (C) 2009-2010, 2019-2020 Philipp Wolfer
+# Copyright (C) 2009-2010, 2019-2021 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2013-2015, 2017-2020 Laurent Monin
 # Copyright (C) 2016-2017 Sambhav Kothari
@@ -45,6 +45,7 @@ from picard.util import restore_method
 from picard.ui import (
     FONT_FAMILY_MONOSPACE,
     PicardDialog,
+    SingletonDialog,
 )
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import (
@@ -89,7 +90,7 @@ code {
 '''
 
 
-class ScriptingDocumentationDialog(PicardDialog):
+class ScriptingDocumentationDialog(PicardDialog, SingletonDialog):
     defaultsize = QtCore.QSize(570, 400)
     autorestore = False
 
@@ -98,7 +99,6 @@ class ScriptingDocumentationDialog(PicardDialog):
         self.setWindowFlags(QtCore.Qt.Window)
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         self.parent = parent
-        self.parent.scripting_documentation_shown = True
         self.setWindowFlags(QtCore.Qt.Window)
         self.ui = Ui_ScriptingDocumentationDialog()
         self.ui.setupUi(self)
@@ -148,7 +148,6 @@ class ScriptingDocumentationDialog(PicardDialog):
         self.ui.buttonBox.rejected.connect(self.close)
 
     def closeEvent(self, event):
-        self.parent.scripting_documentation_shown = False
         super().closeEvent(event)
 
 
@@ -178,15 +177,9 @@ class ScriptingOptionsPage(OptionsPage):
         self.move_view = MoveableListView(self.ui.script_list, self.ui.move_up_button,
                                           self.ui.move_down_button)
         self.ui.scripting_documentation_button.clicked.connect(self.show_scripting_documentation)
-        self.scripting_documentation_shown = None
 
     def show_scripting_documentation(self):
-        if not self.scripting_documentation_shown:
-            self.scriptdoc_dialog = ScriptingDocumentationDialog(parent=self)
-            self.scriptdoc_dialog.show()
-        else:
-            self.scriptdoc_dialog.raise_()
-            self.scriptdoc_dialog.activateWindow()
+        ScriptingDocumentationDialog.show_instance(parent=self)
 
     def enable_tagger_scripts_toggled(self, on):
         if on and self.ui.script_list.count() == 0:
