@@ -173,6 +173,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         Option("persist", "window_state", QtCore.QByteArray()),
         Option("persist", "bottom_splitter_state", QtCore.QByteArray()),
         BoolOption("persist", "window_maximized", False),
+        BoolOption("persist", "view_metadata_view", True),
         BoolOption("persist", "view_cover_art", True),
         BoolOption("persist", "view_toolbar", True),
         BoolOption("persist", "view_file_browser", False),
@@ -217,11 +218,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if IS_MACOS:
             self.setUnifiedTitleAndToolBarOnMac(True)
 
-        mainLayout = QtWidgets.QSplitter(QtCore.Qt.Vertical)
-        mainLayout.setChildrenCollapsible(False)
-        mainLayout.setContentsMargins(0, 0, 0, 0)
+        main_layout = QtWidgets.QSplitter(QtCore.Qt.Vertical)
+        main_layout.setChildrenCollapsible(False)
+        main_layout.setContentsMargins(0, 0, 0, 0)
 
-        self.panel = MainPanel(self, mainLayout)
+        self.panel = MainPanel(self, main_layout)
         self.file_browser = FileBrowser(self.panel)
         if not self.show_file_browser_action.isChecked():
             self.file_browser.hide()
@@ -230,23 +231,23 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.metadata_box = MetadataBox(self)
         self.cover_art_box = CoverArtBox(self)
-        if not self.show_cover_art_action.isChecked():
-            self.cover_art_box.hide()
+        self.show_cover_art()
 
         self.log_dialog = LogView(self)
         self.history_dialog = HistoryView(self)
 
-        bottomLayout = QtWidgets.QHBoxLayout()
-        bottomLayout.setContentsMargins(0, 0, 0, 0)
-        bottomLayout.setSpacing(0)
-        bottomLayout.addWidget(self.metadata_box, 1)
-        bottomLayout.addWidget(self.cover_art_box, 0)
-        bottom = QtWidgets.QWidget()
-        bottom.setLayout(bottomLayout)
+        metadata_view_layout = QtWidgets.QHBoxLayout()
+        metadata_view_layout.setContentsMargins(0, 0, 0, 0)
+        metadata_view_layout.setSpacing(0)
+        metadata_view_layout.addWidget(self.metadata_box, 1)
+        metadata_view_layout.addWidget(self.cover_art_box, 0)
+        self.metadata_view = QtWidgets.QWidget()
+        self.metadata_view.setLayout(metadata_view_layout)
+        self.show_metadata_view()
 
-        mainLayout.addWidget(self.panel)
-        mainLayout.addWidget(bottom)
-        self.setCentralWidget(mainLayout)
+        main_layout.addWidget(self.panel)
+        main_layout.addWidget(self.metadata_view)
+        self.setCentralWidget(main_layout)
 
         # accessibility
         self.set_tab_order()
@@ -336,6 +337,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.log_dialog.save_geometry()
         self.history_dialog.save_geometry()
         config.persist["window_maximized"] = isMaximized
+        config.persist["view_metadata_view"] = self.show_metadata_view_action.isChecked()
         config.persist["view_cover_art"] = self.show_cover_art_action.isChecked()
         config.persist["view_toolbar"] = self.show_toolbar_action.isChecked()
         config.persist["view_file_browser"] = self.show_file_browser_action.isChecked()
@@ -560,10 +562,18 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.show_file_browser_action.setShortcut(QtGui.QKeySequence(_("Ctrl+B")))
         self.show_file_browser_action.triggered.connect(self.show_file_browser)
 
+        self.show_metadata_view_action = QtWidgets.QAction(_("&Metadata"), self)
+        self.show_metadata_view_action.setCheckable(True)
+        if config.persist["view_metadata_view"]:
+            self.show_metadata_view_action.setChecked(True)
+        self.show_metadata_view_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+M")))
+        self.show_metadata_view_action.triggered.connect(self.show_metadata_view)
+
         self.show_cover_art_action = QtWidgets.QAction(_("&Cover Art"), self)
         self.show_cover_art_action.setCheckable(True)
         if config.persist["view_cover_art"]:
             self.show_cover_art_action.setChecked(True)
+        self.show_cover_art_action.setEnabled(self.show_metadata_view_action.isChecked())
         self.show_cover_art_action.triggered.connect(self.show_cover_art)
 
         self.show_toolbar_action = QtWidgets.QAction(_("&Actions"), self)
@@ -769,6 +779,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addAction(self.remove_action)
         menu = self.menuBar().addMenu(_("&View"))
         menu.addAction(self.show_file_browser_action)
+        menu.addAction(self.show_metadata_view_action)
         menu.addAction(self.show_cover_art_action)
         menu.addSeparator()
         menu.addAction(self.show_toolbar_action)
@@ -1295,6 +1306,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def refresh_metadatabox(self):
         self.tagger.window.metadata_box.selection_dirty = True
         self.tagger.window.metadata_box.update()
+
+    def show_metadata_view(self):
+        """Show/hide the metadata view (including the cover art box)."""
+        show = self.show_metadata_view_action.isChecked()
+        self.metadata_view.setVisible(show)
+        self.show_cover_art_action.setEnabled(show)
 
     def show_cover_art(self):
         """Show/hide the cover art box."""
