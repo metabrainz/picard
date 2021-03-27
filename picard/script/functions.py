@@ -1308,13 +1308,13 @@ Example 1:
 
     $uniquemulti(a; A; B; b; cd; Cd; cD; CD; a; A; b)
 
-Result: A; b; CD
+Result: A; CD; b
 
 Example 2:
 
     $uniquemulti(a; A; B; b; a; b; A; B, cd,True)
 
-Result: a; A; B; b; cd
+Result: A; B; a; b; cd
 """
 ))
 def func_uniquemulti(parser, multi, case_sensitive="", separator=MULTI_VALUED_JOINER):
