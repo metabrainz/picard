@@ -35,9 +35,6 @@ from picard.const.sys import (
 )
 
 
-builtins.__dict__['N_'] = lambda a: a
-
-
 def setup_gettext(localedir, ui_language=None, logger=None):
     """Setup locales, load translations, install gettext functions."""
     if not logger:

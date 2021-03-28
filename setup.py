@@ -125,8 +125,11 @@ try:
                 pass
         return files_use_translation, files_dont_use_translation
     files_use_translation, files_dont_use_translation = _scan_picard_sources_recursive(["./picard"])
+    files_use_translation.remove("./picard/i18n.py")  # pgettext_attributes
+    files_use_translation.remove("./picard/ui/options/releases.py")  # gettext_countries
+    files_use_translation.remove("./picard/coverart/utils.py")  # pgettext_attributes
 
-    extensions = [Extension(source_file[2:].replace(os.sep, '.'), [source_file, ]) for source_file in files_dont_use_translation]
+    extensions = [Extension(source_file[2:].replace(os.sep, '.'), [source_file, ]) for source_file in files_dont_use_translation+files_use_translation]
     cython_modules = cythonize(extensions, language_level=3, nthreads=os.cpu_count()-1)
     ext_modules.extend(cython_modules)
 except ImportError:

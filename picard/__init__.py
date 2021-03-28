@@ -29,6 +29,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import builtins
+from gettext import ngettext
 
 from picard.version import (
     Version,
@@ -48,6 +50,9 @@ PICARD_VERSION = Version(2, 6, 0, 'beta', 3)
 # it should be in the form '<platform>_<YYMMDDHHMMSS>'
 # ie. win32_20140415091256
 PICARD_BUILD_VERSION_STR = ""
+
+builtins.__dict__['N_'] = lambda a: a
+builtins.__dict__['ngettext'] = ngettext
 
 
 def version_to_string(version, short=False):
