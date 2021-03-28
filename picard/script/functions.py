@@ -1299,26 +1299,26 @@ def func_reversemulti(parser, multi, separator=MULTI_VALUED_JOINER):
 
 
 @script_function(eval_args=False, documentation=N_(
-    """`$uniquemulti(name,case_sensitive="",separator="; ")`
+    """`$unique(name,case_sensitive="",separator="; ")`
 
 Returns a copy of the multi-value tag `name` with no duplicate elements.
     By default, a case-insensitive comparison of the elements is performed.
 
 Example 1:
 
-    $uniquemulti(a; A; B; b; cd; Cd; cD; CD; a; A; b)
+    $unique(a; A; B; b; cd; Cd; cD; CD; a; A; b)
 
 Result: A; CD; b
 
 Example 2:
 
-    $uniquemulti(a; A; B; b; a; b; A; B, cd,True)
+    $unique(a; A; B; b; a; b; A; B, cd,True)
 
 Result: A; B; a; b; cd
 """
 ))
-def func_uniquemulti(parser, multi, case_sensitive="", separator=MULTI_VALUED_JOINER):
+def func_unique(parser, multi, case_sensitive="", separator=MULTI_VALUED_JOINER):
     multi_value = MultiValue(parser, multi, separator)
     if not case_sensitive:
         multi_value._multi = list({v.lower(): v for v in multi_value}.values())
-    return multi_value.separator.join(sorted(list(set(multi_value))))
+    return multi_value.separator.join(sorted(set(multi_value)))
