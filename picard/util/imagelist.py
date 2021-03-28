@@ -117,9 +117,7 @@ class ImageListState:
         self.update_orig_metadata = False
 
 
-def _process_images(state, src_obj):
-    from picard.track import Track
-
+def _process_images(state, src_obj, Track):
     # Check new images
     if state.update_new_metadata:
         src_dict = src_obj.metadata.images.hash_dict()
@@ -144,9 +142,11 @@ def _process_images(state, src_obj):
 
 
 def _update_state(obj, state):
+    from picard.track import Track
+
     changed = False
     for src_obj in state.sources:
-        _process_images(state, src_obj)
+        _process_images(state, src_obj, Track)
 
     if state.update_new_metadata:
         updated_images = ImageList(state.new_images.values())
