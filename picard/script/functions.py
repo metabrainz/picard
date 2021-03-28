@@ -1306,13 +1306,15 @@ Returns a copy of the multi-value tag `name` with no duplicate elements.
 
 Example 1:
 
-    $unique(a; A; B; b; cd; Cd; cD; CD; a; A; b)
+    $setmulti(foo,a; A; B; b; cd; Cd; cD; CD; a; A; b)
+    $unique(%foo%)
 
 Result: A; CD; b
 
 Example 2:
 
-    $unique(a; A; B; b; a; b; A; B, cd,True)
+    $setmulti(foo,a; A; B; b; a; b; A; B, cd)
+    $unique(%foo%,True)
 
 Result: A; B; a; b; cd
 """
