@@ -209,31 +209,43 @@ elif IS_MACOS:
     except ImportError:
         AppKit = None
 
+    dark_appearance = False
+    if AppKit:
+        # Default procedure to identify the current appearance (theme)
+        appearance = AppKit.NSAppearance.currentAppearance()
+        try:
+            basic_appearance = appearance.bestMatchFromAppearancesWithNames_([
+                AppKit.NSAppearanceNameAqua,
+                AppKit.NSAppearanceNameDarkAqua
+            ])
+            dark_appearance = basic_appearance == AppKit.NSAppearanceNameDarkAqua
+        except AttributeError:
+            pass
+
     class MacTheme(BaseTheme):
+        def setup(self, app):
+            super().setup(app)
+
+            if self._loaded_config_theme != UiTheme.DEFAULT:
+                dark_theme = self._loaded_config_theme == UiTheme.DARK
+            else:
+                dark_theme = dark_appearance
+
+            # MacOS uses a NSAppearance object to change the current application appearance
+            # We call this even if UiTheme is the default, preventing MacOS from switching on-the-fly
+            if dark_theme:
+                appearance = AppKit.NSAppearance._darkAquaAppearance()
+            else:
+                appearance = AppKit.NSAppearance._aquaAppearance()
+            AppKit.NSApplication.sharedApplication().setAppearance_(appearance)
+
         @property
         def is_dark_theme(self):
             dark_theme = False
-            if not AppKit:
-                return dark_theme
-            if self._loaded_config_theme is not None and self._loaded_config_theme != UiTheme.DEFAULT:
-                dark_theme = self._loaded_config_theme == UiTheme.DARK
-                # MacOS uses a NSAppearance object to change the current application appearance
-                if dark_theme:
-                    appearance = AppKit.NSAppearance._darkAquaAppearance()
-                else:
-                    appearance = AppKit.NSAppearance._aquaAppearance()
-                AppKit.NSApplication.sharedApplication().setAppearance_(appearance)
-            else:
-                # Default procedure to identify the current appearance (theme)
-                appearance = AppKit.NSAppearance.currentAppearance()
-                try:
-                    basic_appearance = appearance.bestMatchFromAppearancesWithNames_([
-                        AppKit.NSAppearanceNameAqua,
-                        AppKit.NSAppearanceNameDarkAqua
-                    ])
-                    dark_theme = basic_appearance == AppKit.NSAppearanceNameDarkAqua
-                except AttributeError:
-                    pass
+            if self._loaded_config_theme == UiTheme.DEFAULT:
+                dark_theme = dark_appearance
+            elif self._loaded_config_theme == UiTheme.DARK:
+                dark_theme = True
             return dark_theme
 
         # pylint: disable=no-self-use
