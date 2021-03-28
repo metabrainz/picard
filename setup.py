@@ -21,6 +21,7 @@
 # Copyright (C) 2018 Kartik Ohri
 # Copyright (C) 2018 virusMac
 # Copyright (C) 2019 Kurt Mosiejczuk
+# Copyright (C) 2021 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -78,6 +79,58 @@ APPDATA_FILE_TEMPLATE = APPDATA_FILE + '.in'
 ext_modules = [
     Extension('picard.util._astrcmp', sources=['picard/util/_astrcmp.c']),
 ]
+
+try:
+    # use "setup.py build with -j number_of_threads" to speed up compilation
+    from Cython.Build import cythonize
+
+    def _is_python_file(file_path):
+        if file_path[-3:] == '.py' and '__init__' not in file_path:
+            return True
+        return False
+
+    _file_has_translation_regex = re.compile("(N_\(|gettext|\(_\(\"|_\(\")")
+
+    def _file_has_translation(file_path):
+        with open(file_path, "r") as file:
+            contents = file.read()
+
+            matches = _file_has_translation_regex.search(contents)
+            return matches is not None
+
+
+    def _scan_picard_sources_recursive(paths):
+        local_paths = list(paths)
+        files_use_translation = []
+        files_dont_use_translation = []
+        while local_paths:
+            current_path = local_paths.pop(0)
+            try:
+                if os.path.isdir(current_path):
+                    local_files = []
+                    for entry in os.scandir(current_path):
+                        if entry.is_dir():
+                            local_paths.append(entry.path)
+                        else:
+                            local_files.append(entry.path)
+                else:
+                    local_files = [current_path]
+                for path in local_files:
+                    if _is_python_file(path):
+                        if _file_has_translation(path):
+                            files_use_translation.append(path)
+                        else:
+                            files_dont_use_translation.append(path)
+            except OSError:
+                pass
+        return files_use_translation, files_dont_use_translation
+    files_use_translation, files_dont_use_translation = _scan_picard_sources_recursive(["./picard"])
+
+    extensions = [Extension(source_file[2:].replace(os.sep, '.'), [source_file, ]) for source_file in files_dont_use_translation]
+    cython_modules = cythonize(extensions, language_level=3, nthreads=os.cpu_count()-1)
+    ext_modules.extend(cython_modules)
+except ImportError:
+    pass
 
 tx_executable = find_executable('tx')
 
