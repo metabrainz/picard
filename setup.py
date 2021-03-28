@@ -80,60 +80,6 @@ ext_modules = [
     Extension('picard.util._astrcmp', sources=['picard/util/_astrcmp.c']),
 ]
 
-try:
-    # use "setup.py build with -j number_of_threads" to speed up compilation
-    from Cython.Build import cythonize
-
-    def _is_python_file(file_path):
-        if file_path[-3:] == '.py' and '__init__' not in file_path:
-            return True
-        return False
-
-    _file_has_translation_regex = re.compile("(N_\(|gettext|\(_\(\"|_\(\")")
-
-    def _file_has_translation(file_path):
-        with open(file_path, "r") as file:
-            contents = file.read()
-
-            matches = _file_has_translation_regex.search(contents)
-            return matches is not None
-
-
-    def _scan_picard_sources_recursive(paths):
-        local_paths = list(paths)
-        files_use_translation = []
-        files_dont_use_translation = []
-        while local_paths:
-            current_path = local_paths.pop(0)
-            try:
-                if os.path.isdir(current_path):
-                    local_files = []
-                    for entry in os.scandir(current_path):
-                        if entry.is_dir():
-                            local_paths.append(entry.path)
-                        else:
-                            local_files.append(entry.path)
-                else:
-                    local_files = [current_path]
-                for path in local_files:
-                    if _is_python_file(path):
-                        if _file_has_translation(path):
-                            files_use_translation.append(path)
-                        else:
-                            files_dont_use_translation.append(path)
-            except OSError:
-                pass
-        return files_use_translation, files_dont_use_translation
-    files_use_translation, files_dont_use_translation = _scan_picard_sources_recursive(["./picard"])
-    files_use_translation.remove("./picard/i18n.py")  # pgettext_attributes
-    files_use_translation.remove("./picard/ui/options/releases.py")  # gettext_countries
-    files_use_translation.remove("./picard/coverart/utils.py")  # pgettext_attributes
-
-    extensions = [Extension(source_file[2:].replace(os.sep, '.'), [source_file, ]) for source_file in files_dont_use_translation+files_use_translation]
-    cython_modules = cythonize(extensions, language_level=3, nthreads=os.cpu_count()-1)
-    ext_modules.extend(cython_modules)
-except ImportError:
-    pass
 
 tx_executable = find_executable('tx')
 
@@ -280,6 +226,64 @@ class picard_install(install):
         install.run(self)
 
 
+def picard_build_cython():
+    global ext_modules
+    try:
+        # use "setup.py build with -j number_of_threads" to speed up compilation
+        from Cython.Build import cythonize
+
+        def _is_python_file(file_path):
+            if file_path[-3:] == '.py' and '__init__' not in file_path:
+                return True
+            return False
+
+        _file_has_translation_regex = re.compile("(N_\(|gettext|\(_\(\"|_\(\")")
+
+        def _file_has_translation(file_path):
+            with open(file_path, "r") as file:
+                contents = file.read()
+
+                matches = _file_has_translation_regex.search(contents)
+                return matches is not None
+
+
+        def _scan_picard_sources_recursive(paths):
+            local_paths = list(paths)
+            files_use_translation = []
+            files_dont_use_translation = []
+            while local_paths:
+                current_path = local_paths.pop(0)
+                try:
+                    if os.path.isdir(current_path):
+                        local_files = []
+                        for entry in os.scandir(current_path):
+                            if entry.is_dir():
+                                local_paths.append(entry.path)
+                            else:
+                                local_files.append(entry.path)
+                    else:
+                        local_files = [current_path]
+                    for path in local_files:
+                        if _is_python_file(path):
+                            if _file_has_translation(path):
+                                files_use_translation.append(path)
+                            else:
+                                files_dont_use_translation.append(path)
+                except OSError:
+                    pass
+            return files_use_translation, files_dont_use_translation
+        files_use_translation, files_dont_use_translation = _scan_picard_sources_recursive(["./picard"])
+        files_use_translation.remove("./picard/i18n.py")  # pgettext_attributes
+        files_use_translation.remove("./picard/ui/options/releases.py")  # gettext_countries
+        files_use_translation.remove("./picard/coverart/utils.py")  # pgettext_attributes
+
+        extensions = [Extension(source_file[2:].replace(os.sep, '.'), [source_file, ]) for source_file in files_dont_use_translation+files_use_translation]
+        cython_modules = cythonize(extensions, language_level=3, nthreads=os.cpu_count()-1)
+        ext_modules.extend(cython_modules)
+    except ImportError:
+        pass
+
+
 class picard_build(build):
 
     user_options = build.user_options + [
@@ -288,6 +292,7 @@ class picard_build(build):
         ('disable-autoupdate', None, 'disable update checking and hide settings for it'),
         ('disable-locales', None, ''),
         ('build-number=', None, 'build number (integer)'),
+        ('cythonize', None, 'compile Picard with cython'),
     ]
 
     sub_commands = build.sub_commands
@@ -299,6 +304,7 @@ class picard_build(build):
         self.localedir = None
         self.disable_autoupdate = None
         self.disable_locales = None
+        self.cythonize = False
 
     def finalize_options(self):
         build.finalize_options(self)
@@ -318,6 +324,8 @@ class picard_build(build):
     def run(self):
         params = {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate}
         generate_file('tagger.py.in', 'tagger.py', params)
+        if self.cythonize:
+            picard_build_cython()
         make_executable('tagger.py')
         generate_file('scripts/picard.in', 'scripts/' + PACKAGE_NAME, params)
         if sys.platform == 'win32':
