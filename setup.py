@@ -233,7 +233,7 @@ def picard_build_cython():
         from Cython.Build import cythonize
 
         def _is_python_file(file_path):
-            if file_path[-3:] == '.py' and '__init__' not in file_path:
+            if file_path[-3:] == '.py':
                 return True
             return False
 
