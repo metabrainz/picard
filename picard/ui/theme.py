@@ -38,7 +38,15 @@ from picard.const.sys import (
 
 OS_SUPPORTS_THEMES = True
 if IS_MACOS:
+    try:
+        import AppKit
+    except ImportError:
+        AppKit = None
+
     def is_dark_theme_supported():
+        if not AppKit:
+            return False
+
         import platform
         try:
             current_version = tuple(map(int, platform.mac_ver()[0].split(".")))[:2]
@@ -204,11 +212,6 @@ if IS_WIN:
     theme = WindowsTheme()
 
 elif IS_MACOS:
-    try:
-        import AppKit
-    except ImportError:
-        AppKit = None
-
     dark_appearance = False
     if AppKit:
         # Default procedure to identify the current appearance (theme)
@@ -233,20 +236,22 @@ elif IS_MACOS:
 
             # MacOS uses a NSAppearance object to change the current application appearance
             # We call this even if UiTheme is the default, preventing MacOS from switching on-the-fly
-            if dark_theme:
-                appearance = AppKit.NSAppearance._darkAquaAppearance()
-            else:
-                appearance = AppKit.NSAppearance._aquaAppearance()
-            AppKit.NSApplication.sharedApplication().setAppearance_(appearance)
+            if AppKit:
+                if dark_theme:
+                    appearance = AppKit.NSAppearance._darkAquaAppearance()
+                else:
+                    appearance = AppKit.NSAppearance._aquaAppearance()
+                AppKit.NSApplication.sharedApplication().setAppearance_(appearance)
 
         @property
         def is_dark_theme(self):
-            dark_theme = False
-            if self._loaded_config_theme == UiTheme.DEFAULT:
-                dark_theme = dark_appearance
-            elif self._loaded_config_theme == UiTheme.DARK:
-                dark_theme = True
-            return dark_theme
+            if not AppKit:
+                # Fall back to generic dark color palette detection
+                return super().is_dark_theme
+            elif self._loaded_config_theme == UiTheme.DEFAULT:
+                return dark_appearance
+            else:
+                return self._loaded_config_theme == UiTheme.DARK
 
         # pylint: disable=no-self-use
         def update_palette(self, palette, dark_theme, accent_color):
