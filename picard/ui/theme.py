@@ -43,20 +43,7 @@ if IS_MACOS:
     except ImportError:
         AppKit = None
 
-    def is_dark_theme_supported():
-        if not AppKit:
-            return False
-
-        import platform
-        try:
-            current_version = tuple(map(int, platform.mac_ver()[0].split(".")))[:2]
-        except ValueError:
-            log.warning("Error while converting the MacOS version string into a tuple: %s" % platform.mac_ver()[0])
-            return False
-
-        mojave_version = (10, 14)  # Dark theme support was introduced in Mojave
-        return current_version >= mojave_version
-    OS_SUPPORTS_THEMES = is_dark_theme_supported()
+    OS_SUPPORTS_THEMES = bool(AppKit) and hasattr(AppKit.NSAppearance, '_darkAquaAppearance')
 
 elif IS_HAIKU:
     OS_SUPPORTS_THEMES = False
@@ -213,7 +200,7 @@ if IS_WIN:
 
 elif IS_MACOS:
     dark_appearance = False
-    if AppKit:
+    if OS_SUPPORTS_THEMES and AppKit:
         # Default procedure to identify the current appearance (theme)
         appearance = AppKit.NSAppearance.currentAppearance()
         try:
@@ -236,16 +223,19 @@ elif IS_MACOS:
 
             # MacOS uses a NSAppearance object to change the current application appearance
             # We call this even if UiTheme is the default, preventing MacOS from switching on-the-fly
-            if AppKit:
-                if dark_theme:
-                    appearance = AppKit.NSAppearance._darkAquaAppearance()
-                else:
-                    appearance = AppKit.NSAppearance._aquaAppearance()
-                AppKit.NSApplication.sharedApplication().setAppearance_(appearance)
+            if OS_SUPPORTS_THEMES and AppKit:
+                try:
+                    if dark_theme:
+                        appearance = AppKit.NSAppearance._darkAquaAppearance()
+                    else:
+                        appearance = AppKit.NSAppearance._aquaAppearance()
+                    AppKit.NSApplication.sharedApplication().setAppearance_(appearance)
+                except AttributeError:
+                    pass
 
         @property
         def is_dark_theme(self):
-            if not AppKit:
+            if not OS_SUPPORTS_THEMES:
                 # Fall back to generic dark color palette detection
                 return super().is_dark_theme
             elif self._loaded_config_theme == UiTheme.DEFAULT:
