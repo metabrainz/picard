@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-03-15 13:50+0000\n"
+"PO-Revision-Date: 2021-03-25 13:31+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -1458,6 +1458,11 @@ msgstr "CED"
 msgctxt "work_attribute_type"
 msgid "COMPASS ID"
 msgstr "COMPASS-ID"
+
+#: DB:work_attribute_type/name:65
+msgctxt "work_attribute_type"
+msgid "COTT ID"
+msgstr "COTT-ID"
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"
@@ -3251,6 +3256,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Ecuadorian rights society SAYCE"
 msgstr "Een ID van de Ecuadoraanse auteursrechtenorganisatie SAYCE"
 
+#: DB:work_attribute_type/description:66
+msgctxt "work_attribute_type"
+msgid "ID for the Finnish rights society TEOSTO"
+msgstr "Een ID van de Finse auteursrechtenorganisatie TEOSTO"
+
 #: DB:work_attribute_type/description:21
 msgctxt "work_attribute_type"
 msgid "ID for the French rights society Sacem"
@@ -3390,6 +3400,11 @@ msgstr "Een ID van de Zwitserse auteursrechtenorganisatie SUISA"
 msgctxt "work_attribute_type"
 msgid "ID for the Taiwanese rights society MÜST"
 msgstr "Een ID van de Taiwanese auteursrechtenorganisatie MÜST"
+
+#: DB:work_attribute_type/description:65
+msgctxt "work_attribute_type"
+msgid "ID for the Trinidadian and Tobagonian rights society COTT"
+msgstr "Een ID van de Trinidadaanse auteursrechtenorganisatie COTT"
 
 #: DB:work_attribute_type/description:6
 msgctxt "work_attribute_type"
@@ -6521,6 +6536,11 @@ msgstr "Sōrath"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sūltāl"
 msgstr "Sūltāl"
+
+#: DB:work_attribute_type/name:66
+msgctxt "work_attribute_type"
+msgid "TEOSTO ID"
+msgstr "TEOSTO-ID"
 
 #: DB:work_attribute_type_allowed_value/value:573
 msgctxt "work_attribute_type_allowed_value"
