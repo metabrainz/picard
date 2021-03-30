@@ -448,8 +448,9 @@ class MetadataBox(QtWidgets.QTableWidget):
         event.accept()
 
     def _apply_update_funcs(self, funcs):
-        for f in funcs:
-            f()
+        with self.parent.ignore_selection_changes:
+            for f in funcs:
+                f()
         self.parent.update_selection(new_selection=False, drop_album_caches=True)
 
     def edit_tag(self, tag):
