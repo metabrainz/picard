@@ -34,6 +34,7 @@ from PyQt5.QtWidgets import (
     QTextEdit,
 )
 
+from picard.const.sys import IS_MACOS
 from picard.script import script_function_names
 from picard.util.tags import (
     PRESERVED_TAGS,
@@ -257,8 +258,9 @@ class ScriptTextEdit(QTextEdit):
 
     def handle_autocomplete(self, event):
         # Only trigger autocomplete on actual text input or if the user explicitly
-        # requested auto completion with Ctrl+Space
-        force_completion_popup = event.key() == QtCore.Qt.Key_Space and event.modifiers() & QtCore.Qt.ControlModifier
+        # requested auto completion with Ctrl+Space (Control+Space on macOS)
+        modifier = QtCore.Qt.MetaModifier if IS_MACOS else QtCore.Qt.ControlModifier
+        force_completion_popup = event.key() == QtCore.Qt.Key_Space and event.modifiers() & modifier
         if not (force_completion_popup
                 or event.key() in (Qt.Key_Backspace, Qt.Key_Delete)
                 or self.autocomplete_trigger_chars.match(event.text())):
