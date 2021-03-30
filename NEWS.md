@@ -1,3 +1,16 @@
+# Version 2.6 - 2021-03-30
+
+## Bugfixes
+
+- [PICARD-2156](https://tickets.metabrainz.org/browse/PICARD-2156) - macOS: Use Cmd+Shift+H instead of Cmd+H for opening history view to avoid conflicts with system keyboard shortcut to hide window
+- [PICARD-2159](https://tickets.metabrainz.org/browse/PICARD-2159) - macOS: Scripting Documentation dialog opens behind options dialog
+
+## Improvements
+
+- [PICARD-2158](https://tickets.metabrainz.org/browse/PICARD-2158) - Make Scripting Documentation dialog available in renaming script
+- [PICARD-2164](https://tickets.metabrainz.org/browse/PICARD-2164) - Add shortcut Ctrl+T for "Search for similar tracks"
+
+
 # Version 2.6.0b3 - 2021-03-20
 
 ## Bugfixes
