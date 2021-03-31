@@ -549,8 +549,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.track_search_action = QtWidgets.QAction(icontheme.lookup('system-search'), _("Search for similar tracks..."), self)
         self.track_search_action.setStatusTip(_("View similar tracks and optionally choose a different release"))
-        self.track_search_action.triggered.connect(self.show_more_tracks)
+        self.track_search_action.setEnabled(False)
         self.track_search_action.setShortcut(QtGui.QKeySequence(_("Ctrl+T")))
+        self.track_search_action.triggered.connect(self.show_more_tracks)
 
         self.show_file_browser_action = QtWidgets.QAction(_("File &Browser"), self)
         self.show_file_browser_action.setCheckable(True)
