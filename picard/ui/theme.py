@@ -38,17 +38,12 @@ from picard.const.sys import (
 
 OS_SUPPORTS_THEMES = True
 if IS_MACOS:
-    def is_dark_theme_supported():
-        import platform
-        try:
-            current_version = tuple(map(int, platform.mac_ver()[0].split(".")))[:2]
-        except ValueError:
-            log.warning("Error while converting the MacOS version string into a tuple: %s" % platform.mac_ver()[0])
-            return False
+    try:
+        import AppKit
+    except ImportError:
+        AppKit = None
 
-        mojave_version = (10, 14)  # Dark theme support was introduced in Mojave
-        return current_version >= mojave_version
-    OS_SUPPORTS_THEMES = is_dark_theme_supported()
+    OS_SUPPORTS_THEMES = bool(AppKit) and hasattr(AppKit.NSAppearance, '_darkAquaAppearance')
 
 elif IS_HAIKU:
     OS_SUPPORTS_THEMES = False
@@ -204,37 +199,49 @@ if IS_WIN:
     theme = WindowsTheme()
 
 elif IS_MACOS:
-    try:
-        import AppKit
-    except ImportError:
-        AppKit = None
+    dark_appearance = False
+    if OS_SUPPORTS_THEMES and AppKit:
+        # Default procedure to identify the current appearance (theme)
+        appearance = AppKit.NSAppearance.currentAppearance()
+        try:
+            basic_appearance = appearance.bestMatchFromAppearancesWithNames_([
+                AppKit.NSAppearanceNameAqua,
+                AppKit.NSAppearanceNameDarkAqua
+            ])
+            dark_appearance = basic_appearance == AppKit.NSAppearanceNameDarkAqua
+        except AttributeError:
+            pass
 
     class MacTheme(BaseTheme):
-        @property
-        def is_dark_theme(self):
-            dark_theme = False
-            if not AppKit:
-                return dark_theme
-            if self._loaded_config_theme is not None and self._loaded_config_theme != UiTheme.DEFAULT:
+        def setup(self, app):
+            super().setup(app)
+
+            if self._loaded_config_theme != UiTheme.DEFAULT:
                 dark_theme = self._loaded_config_theme == UiTheme.DARK
-                # MacOS uses a NSAppearance object to change the current application appearance
-                if dark_theme:
-                    appearance = AppKit.NSAppearance._darkAquaAppearance()
-                else:
-                    appearance = AppKit.NSAppearance._aquaAppearance()
-                AppKit.NSApplication.sharedApplication().setAppearance_(appearance)
             else:
-                # Default procedure to identify the current appearance (theme)
-                appearance = AppKit.NSAppearance.currentAppearance()
+                dark_theme = dark_appearance
+
+            # MacOS uses a NSAppearance object to change the current application appearance
+            # We call this even if UiTheme is the default, preventing MacOS from switching on-the-fly
+            if OS_SUPPORTS_THEMES and AppKit:
                 try:
-                    basic_appearance = appearance.bestMatchFromAppearancesWithNames_([
-                        AppKit.NSAppearanceNameAqua,
-                        AppKit.NSAppearanceNameDarkAqua
-                    ])
-                    dark_theme = basic_appearance == AppKit.NSAppearanceNameDarkAqua
+                    if dark_theme:
+                        appearance = AppKit.NSAppearance._darkAquaAppearance()
+                    else:
+                        appearance = AppKit.NSAppearance._aquaAppearance()
+                    AppKit.NSApplication.sharedApplication().setAppearance_(appearance)
                 except AttributeError:
                     pass
-            return dark_theme
+
+        @property
+        def is_dark_theme(self):
+            if not OS_SUPPORTS_THEMES:
+                # Fall back to generic dark color palette detection
+                return super().is_dark_theme
+            elif self._loaded_config_theme == UiTheme.DEFAULT:
+                return dark_appearance
+            else:
+                return self._loaded_config_theme == UiTheme.DARK
 
         # pylint: disable=no-self-use
         def update_palette(self, palette, dark_theme, accent_color):
