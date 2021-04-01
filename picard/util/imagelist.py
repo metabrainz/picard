@@ -6,6 +6,7 @@
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2018, 2020 Philipp Wolfer
 # Copyright (C) 2019 Laurent Monin
+# Copyright (C) 2021 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,6 +31,8 @@ from picard.config import get_config
 class ImageList(MutableSequence):
     def __init__(self, iterable=()):
         self._images = list(iterable)
+        self._hash_dict = {}
+        self._changed = True
 
     def __len__(self):
         return len(self._images)
@@ -39,11 +42,14 @@ class ImageList(MutableSequence):
 
     def __setitem__(self, index, value):
         self._images[index] = value
+        self._changed = True
 
     def __delitem__(self, index):
         del self._images[index]
+        self._changed = True
 
     def insert(self, index, value):
+        self._changed = True
         return self._images.insert(index, value)
 
     def __repr__(self):
@@ -88,12 +94,19 @@ class ImageList(MutableSequence):
 
     def strip_front_images(self):
         self._images = [image for image in self._images if not image.is_front_image()]
+        self._changed = True
+
+    def hash_dict(self):
+        if self._changed:
+            self._hash_dict = {img.datahash.hash(): img for img in self._images}
+            self._changed = False
+        return self._hash_dict
 
 
 class ImageListState:
     def __init__(self):
-        self.new_images = set()
-        self.orig_images = set()
+        self.new_images = {}
+        self.orig_images = {}
         self.sources = []
         self.has_common_new_images = True
         self.has_common_orig_images = True
@@ -104,42 +117,46 @@ class ImageListState:
         self.update_orig_metadata = False
 
 
-def _process_images(state, src_obj):
-    from picard.track import Track
-
+def _process_images(state, src_obj, Track):
     # Check new images
     if state.update_new_metadata:
-        if state.new_images != set(src_obj.metadata.images):
+        src_dict = src_obj.metadata.images.hash_dict()
+        prev_len = len(state.new_images)
+        state.new_images.update(src_dict)
+        if len(state.new_images) != prev_len:
             if not state.first_new_obj:
                 state.has_common_new_images = False
-            state.new_images = state.new_images.union(src_obj.metadata.images)
         if state.first_new_obj:
             state.first_new_obj = False
 
     if state.update_orig_metadata and not isinstance(src_obj, Track):
         # Check orig images, but not for Tracks (which don't have a useful orig_metadata)
-        if state.orig_images != set(src_obj.orig_metadata.images):
+        src_dict = src_obj.orig_metadata.images.hash_dict()
+        prev_len = len(state.orig_images)
+        state.orig_images.update(src_dict)
+        if len(state.orig_images) != prev_len:
             if not state.first_orig_obj:
                 state.has_common_orig_images = False
-            state.orig_images = state.orig_images.union(src_obj.orig_metadata.images)
         if state.first_orig_obj:
             state.first_orig_obj = False
 
 
 def _update_state(obj, state):
+    from picard.track import Track
+
     changed = False
     for src_obj in state.sources:
-        _process_images(state, src_obj)
+        _process_images(state, src_obj, Track)
 
     if state.update_new_metadata:
-        updated_images = ImageList(state.new_images)
-        changed |= updated_images != obj.metadata.images
+        updated_images = ImageList(state.new_images.values())
+        changed |= updated_images.hash_dict().keys() != obj.metadata.images.hash_dict().keys()
         obj.metadata.images = updated_images
         obj.metadata.has_common_images = state.has_common_new_images
 
     if state.update_orig_metadata:
-        updated_images = ImageList(state.orig_images)
-        changed |= updated_images != obj.orig_metadata.images
+        updated_images = ImageList(state.orig_images.values())
+        changed |= updated_images.hash_dict().keys() != obj.orig_metadata.images.hash_dict().keys()
         obj.orig_metadata.images = updated_images
         obj.orig_metadata.has_common_images = state.has_common_orig_images
 
