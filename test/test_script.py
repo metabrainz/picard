@@ -1494,3 +1494,27 @@ class ScriptParserTest(PicardTestCase):
             self.parser.eval("$reversemulti()")
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$reversemulti(B:AB; D:C; E:D; A:A; C:X,:,extra)")
+
+    def test_cmd_unique(self):
+        context = Metadata()
+        context["foo"] = ['a', 'A', 'B', 'b', 'cd', 'Cd', 'cD', 'CD', 'a', 'A', 'b']
+        context["bar"] = "a; A; B; b; cd; Cd; cD; CD; a; A; b"
+        # Tests with context
+        self.assertScriptResultEquals("$unique(%foo%)", "A; CD; b", context)
+        self.assertScriptResultEquals("$unique(%bar%)", "a; A; B; b; cd; Cd; cD; CD; a; A; b", context)
+        # Tests with static inputs
+        self.assertScriptResultEquals("$unique(a; A; B; b; cd; Cd; cD; CD; a; A; b)", "A; CD; b", context)
+        # Tests with separator override
+        self.assertScriptResultEquals("$unique(a: A: B: b: cd: Cd: cD: CD: a: A: b,,: )", "A: CD: b", context)
+        # Tests with case-sensitive comparison
+        self.assertScriptResultEquals("$unique(%foo%,1)", "A; B; CD; Cd; a; b; cD; cd", context)
+        # Tests with missing inputs
+        self.assertScriptResultEquals("$unique(,)", "", context)
+        self.assertScriptResultEquals("$unique(,,)", "", context)
+        self.assertScriptResultEquals("$unique(,:)", "", context)
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$unique: Wrong number of arguments for \$unique: Expected between 1 and 3, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$unique()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$unique(B:AB; D:C; E:D; A:A; C:X,1,:,extra)")
