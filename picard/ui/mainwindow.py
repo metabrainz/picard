@@ -1128,6 +1128,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         return None
 
     def show_more_tracks(self):
+        if not self.selected_objects:
+            return
         obj = self.selected_objects[0]
         if isinstance(obj, Track) and obj.files:
             obj = obj.files[0]
@@ -1148,7 +1150,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         dialog.exec_()
 
     def view_info(self, default_tab=0):
-        if isinstance(self.selected_objects[0], Album):
+        if not self.selected_objects:
+            return
+        elif isinstance(self.selected_objects[0], Album):
             album = self.selected_objects[0]
             dialog = AlbumInfoDialog(album, self)
         elif isinstance(self.selected_objects[0], Cluster):
@@ -1177,6 +1181,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.tagger.refresh(self.selected_objects)
 
     def browser_lookup(self):
+        if not self.selected_objects:
+            return
         self.tagger.browser_lookup(self.selected_objects[0])
 
     @throttle(100)
