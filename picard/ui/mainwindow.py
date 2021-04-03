@@ -229,13 +229,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.panel.insertWidget(0, self.file_browser)
         self.panel.restore_state()
 
-        self.metadata_box = MetadataBox(self)
-        self.cover_art_box = CoverArtBox(self)
-        self.show_cover_art()
-
         self.log_dialog = LogView(self)
         self.history_dialog = HistoryView(self)
 
+        self.metadata_box = MetadataBox(self)
+        self.cover_art_box = CoverArtBox(self)
         metadata_view_layout = QtWidgets.QHBoxLayout()
         metadata_view_layout.setContentsMargins(0, 0, 0, 0)
         metadata_view_layout.setSpacing(0)
@@ -243,7 +241,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         metadata_view_layout.addWidget(self.cover_art_box, 0)
         self.metadata_view = QtWidgets.QWidget()
         self.metadata_view.setLayout(metadata_view_layout)
+
         self.show_metadata_view()
+        self.show_cover_art()
 
         main_layout.addWidget(self.panel)
         main_layout.addWidget(self.metadata_view)
@@ -1259,6 +1259,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if self.player:
             self.player.set_objects(self.selected_objects)
 
+        metadata_visible = self.metadata_view.isVisible()
+        coverart_visible = metadata_visible and self.cover_art_box.isVisible()
+
         if len(objects) == 1:
             obj = list(objects)[0]
             if isinstance(obj, File):
@@ -1292,15 +1295,18 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                         }
                     self.set_statusbar_message(msg, mparms, echo=None,
                                                history=None)
-        elif new_selection:
+        elif coverart_visible and new_selection:
             # Create a temporary file list which allows changing cover art for all selected files
             files = self.tagger.get_files_from_objects(objects)
             obj = FileList(files)
 
-        if new_selection:
-            self.metadata_box.selection_dirty = True
+        if coverart_visible and new_selection:
             self.cover_art_box.set_item(obj)
-        self.metadata_box.update(drop_album_caches=drop_album_caches)
+
+        if metadata_visible:
+            if new_selection:
+                self.metadata_box.selection_dirty = True
+            self.metadata_box.update(drop_album_caches=drop_album_caches)
         self.selection_updated.emit(objects)
 
     def refresh_metadatabox(self):
@@ -1312,13 +1318,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         show = self.show_metadata_view_action.isChecked()
         self.metadata_view.setVisible(show)
         self.show_cover_art_action.setEnabled(show)
+        if show:
+            self.update_selection()
 
     def show_cover_art(self):
         """Show/hide the cover art box."""
-        if self.show_cover_art_action.isChecked():
-            self.cover_art_box.show()
-        else:
-            self.cover_art_box.hide()
+        show = self.show_cover_art_action.isChecked()
+        self.cover_art_box.setVisible(show)
+        if show:
+            self.update_selection()
 
     def show_toolbar(self):
         """Show/hide the Action toolbar."""
