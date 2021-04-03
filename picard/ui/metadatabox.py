@@ -6,7 +6,7 @@
 # Copyright (C) 2006-2007, 2012 Lukáš Lalinský
 # Copyright (C) 2011-2014 Michael Wiencek
 # Copyright (C) 2012 Nikolai Prokoschenko
-# Copyright (C) 2013-2014 Sophist-UK
+# Copyright (C) 2013-2014, 2021 Sophist-UK
 # Copyright (C) 2013-2014, 2017-2019 Laurent Monin
 # Copyright (C) 2015 Ohm Patel
 # Copyright (C) 2015 Wieland Hoffmann
@@ -586,13 +586,13 @@ class MetadataBox(QtWidgets.QTableWidget):
         top_tags_set = set(top_tags)
 
         for file in files:
-            new_metadata = file.new_metadata
+            new_metadata = file.metadata
             orig_metadata = file.orig_metadata
             tags = set(list(new_metadata.keys()) + list(orig_metadata.keys()))
 
             for name in filter(lambda x: not x.startswith("~") and file.supports_tag(x), tags):
-                new_values = new_metadata.getall(name)
-                orig_values = orig_metadata.getall(name)
+                new_values = file.format_specific_metadata(new_metadata, name)
+                orig_values = file.format_specific_metadata(orig_metadata, name)
 
                 if not clear_existing_tags and not new_values:
                     new_values = list(orig_values or [""])
