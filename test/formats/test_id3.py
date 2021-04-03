@@ -668,3 +668,11 @@ class ID3FileTest(PicardTestCase):
         metadata = self.file.metadata
         metadata['date'] = '2021-04'
         self.assertEqual(['2021'], self.file.format_specific_metadata(metadata, 'date'))
+
+    def test_format_specific_metadata_override_settings(self):
+        settings = {
+            'write_id3v23': True,
+            'id3v23_join_with': '; ',
+        }
+        metadata = self.file.metadata
+        self.assertEqual(['foo; bar'], self.file.format_specific_metadata(metadata, 'artist', settings))

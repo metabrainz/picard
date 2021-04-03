@@ -585,14 +585,19 @@ class MetadataBox(QtWidgets.QTableWidget):
         top_tags = config.setting['metadatabox_top_tags']
         top_tags_set = set(top_tags)
 
+        format_settings = {
+            "write_id3v23": config.setting["write_id3v23"],
+            "id3v23_join_with": config.setting["id3v23_join_with"],
+        }
+
         for file in files:
             new_metadata = file.metadata
             orig_metadata = file.orig_metadata
             tags = set(list(new_metadata.keys()) + list(orig_metadata.keys()))
 
             for name in filter(lambda x: not x.startswith("~") and file.supports_tag(x), tags):
-                new_values = file.format_specific_metadata(new_metadata, name)
-                orig_values = file.format_specific_metadata(orig_metadata, name)
+                new_values = file.format_specific_metadata(new_metadata, name, format_settings)
+                orig_values = file.format_specific_metadata(orig_metadata, name, format_settings)
 
                 if not clear_existing_tags and not new_values:
                     new_values = list(orig_values or [""])

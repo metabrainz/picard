@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2009, 2011-2012 Lukáš Lalinský
-# Copyright (C) 2008-2011, 2014, 2018-2020 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014, 2018-2021 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2011-2012 Johannes Weißl
 # Copyright (C) 2011-2014 Michael Wiencek
@@ -650,12 +650,16 @@ class ID3File(File):
             tags.update_to_v24()
             tags.save(filename, v2_version=4, v1=v1)
 
-    def format_specific_metadata(self, metadata, tag):
-        config = get_config()
-        if not config.setting["write_id3v23"]:
-            return super().format_specific_metadata(metadata, tag)
+    def format_specific_metadata(self, metadata, tag, settings=None):
+        if not settings:
+            config = get_config()
+            settings = {
+                "write_id3v23": config.setting["write_id3v23"],
+                "id3v23_join_with": config.setting["id3v23_join_with"],
+            }
 
-        join_with = config.setting["id3v23_join_with"]
+        if not settings["write_id3v23"]:
+            return super().format_specific_metadata(metadata, tag, settings)
 
         values = metadata.getall(tag)
         if not values:
@@ -670,6 +674,7 @@ class ID3File(File):
         # unless it's TIPL or TMCL which can still be multi-valued.
         if (len(values) > 1 and tag not in ID3File._rtipl_roles
                 and not tag.startswith("performer:")):
+            join_with = settings["id3v23_join_with"]
             values = [join_with.join(values)]
 
         return values
