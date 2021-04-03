@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2004 Robert Kaye
 # Copyright (C) 2006-2009, 2011-2013, 2017 Lukáš Lalinský
-# Copyright (C) 2007-2011, 2015, 2018-2020 Philipp Wolfer
+# Copyright (C) 2007-2011, 2015, 2018-2021 Philipp Wolfer
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008-2009 Nikolai Prokoschenko
 # Copyright (C) 2009 Carlin Mangar
@@ -157,7 +157,20 @@ class File(QtCore.QObject, Item):
         return '<%s %r>' % (type(self).__name__, self.base_filename)
 
     # pylint: disable=no-self-use
-    def format_specific_metadata(self, metadata, tag):
+    def format_specific_metadata(self, metadata, tag, settings=None):
+        """Can be overridden to customize how a tag is displayed in the UI.
+        This is useful if a tag saved to the underlying format will differ from
+        the internal representation in a way that would cause data loss. This is e.g.
+        the case for some ID3v2.3 tags.
+
+        Args:
+            metadata: The metadata object to read the tag from
+            tag: Name of the tag
+            settings: Dictionary of settings. If not set, config.setting should be used
+
+        Returns:
+            An array of values for the tag
+        """
         return metadata.getall(tag)
 
     def load(self, callback):
