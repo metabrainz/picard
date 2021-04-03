@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2019 Laurent Monin
-# Copyright (C) 2019-2020 Philipp Wolfer
+# Copyright (C) 2019-2021 Philipp Wolfer
 # Copyright (C) 2019 Zenara Daley
 #
 # This program is free software; you can redistribute it and/or
@@ -638,3 +638,33 @@ class Id3UtilTest(PicardTestCase):
 
 class Mp3CoverArtTest(CommonCoverArtTests.CoverArtTestCase):
     testfile = 'test.mp3'
+
+
+class ID3FileTest(PicardTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.file = id3.ID3File('somepath/somefile.mp3')
+        config.setting['write_id3v23'] = False
+        config.setting['id3v23_join_with'] = ' / '
+        self.file.metadata['artist'] = ['foo', 'bar']
+        self.file.metadata['originaldate'] = '2020-04-01'
+        self.file.metadata['date'] = '2021-04-01'
+
+    def test_format_specific_metadata_v24(self):
+        metadata = self.file.metadata
+        for name, values in metadata.rawitems():
+            self.assertEqual(values, self.file.format_specific_metadata(metadata, name))
+
+    def test_format_specific_metadata_v23(self):
+        config.setting['write_id3v23'] = True
+        metadata = self.file.metadata
+        self.assertEqual(['foo / bar'], self.file.format_specific_metadata(metadata, 'artist'))
+        self.assertEqual(['2020'], self.file.format_specific_metadata(metadata, 'originaldate'))
+        self.assertEqual(['2021-04-01'], self.file.format_specific_metadata(metadata, 'date'))
+
+    def test_format_specific_metadata_v23_incomplete_date(self):
+        config.setting['write_id3v23'] = True
+        metadata = self.file.metadata
+        metadata['date'] = '2021-04'
+        self.assertEqual(['2021'], self.file.format_specific_metadata(metadata, 'date'))

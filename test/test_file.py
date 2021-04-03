@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2018-2020 Philipp Wolfer
+# Copyright (C) 2018-2021 Philipp Wolfer
 # Copyright (C) 2019-2020 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -86,6 +86,11 @@ class DataObjectTest(PicardTestCase):
         self.tagger.acoustidmanager.remove.assert_called_with(self.file)
         self.assertEqual(None, self.file.acoustid_fingerprint)
         self.assertEqual(0, self.file.acoustid_length)
+
+    def format_specific_metadata(self):
+        values = ['foo', 'bar']
+        self.file.metadata['test'] = values
+        self.assertEqual(values, self.file.format_specific_metadata(self.file.metadata, 'test'))
 
 
 class TestPreserveTimes(PicardTestCase):

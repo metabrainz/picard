@@ -16,7 +16,7 @@
 # Copyright (C) 2012-2014 Wieland Hoffmann
 # Copyright (C) 2013 Calvin Walton
 # Copyright (C) 2013-2014 Ionuț Ciocîrlan
-# Copyright (C) 2013-2014, 2017 Sophist-UK
+# Copyright (C) 2013-2014, 2017, 2021 Sophist-UK
 # Copyright (C) 2013-2014, 2017-2019 Laurent Monin
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2016 Ville Skyttä
@@ -156,9 +156,9 @@ class File(QtCore.QObject, Item):
     def __repr__(self):
         return '<%s %r>' % (type(self).__name__, self.base_filename)
 
-    @property
-    def new_metadata(self):
-        return self.metadata
+    # pylint: disable=no-self-use
+    def format_specific_metadata(self, metadata, tag):
+        return metadata.getall(tag)
 
     def load(self, callback):
         thread.run_task(
@@ -370,14 +370,14 @@ class File(QtCore.QObject, Item):
             temp_info = {}
             for info in FILE_INFO_TAGS:
                 temp_info[info] = self.orig_metadata[info]
-            images_changed = self.orig_metadata.images != self.new_metadata.images
+            images_changed = self.orig_metadata.images != self.metadata.images
             # Data is copied from New to Original because New may be
             # a subclass to handle id3v23
             config = get_config()
             if config.setting["clear_existing_tags"]:
-                self.orig_metadata.copy(self.new_metadata)
+                self.orig_metadata.copy(self.metadata)
             else:
-                self.orig_metadata.update(self.new_metadata)
+                self.orig_metadata.update(self.metadata)
             # After saving deleted tags should no longer be marked deleted
             self.metadata.clear_deleted()
             self.orig_metadata.clear_deleted()
@@ -630,22 +630,21 @@ class File(QtCore.QObject, Item):
         return self.similarity == 1.0 and self.state == File.NORMAL
 
     def update(self, signal=True):
-        new_metadata = self.new_metadata
-        names = set(new_metadata.keys())
-        names.update(self.orig_metadata.keys())
+        metadata = self.metadata
+        names = set(metadata) | set(self.orig_metadata)
         config = get_config()
         clear_existing_tags = config.setting["clear_existing_tags"]
         ignored_tags = config.setting["compare_ignore_tags"]
         for name in names:
             if (not name.startswith('~') and self.supports_tag(name)
                 and name not in ignored_tags):
-                new_values = new_metadata.getall(name)
+                new_values = metadata.getall(name)
                 if not (new_values or clear_existing_tags
-                        or name in new_metadata.deleted_tags):
+                        or name in metadata.deleted_tags):
                     continue
                 orig_values = self.orig_metadata.getall(name)
                 if orig_values != new_values:
-                    self.similarity = self.orig_metadata.compare(new_metadata, ignored_tags)
+                    self.similarity = self.orig_metadata.compare(metadata, ignored_tags)
                     if self.state == File.NORMAL:
                         self.state = File.CHANGED
                     break
