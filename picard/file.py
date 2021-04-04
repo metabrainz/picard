@@ -157,7 +157,7 @@ class File(QtCore.QObject, Item):
         return '<%s %r>' % (type(self).__name__, self.base_filename)
 
     # pylint: disable=no-self-use
-    def format_specific_metadata(self, metadata, tag, settings=None):
+    def format_specific_metadata(self, metadata, tag, settings_cache=None):
         """Can be overridden to customize how a tag is displayed in the UI.
         This is useful if a tag saved to the underlying format will differ from
         the internal representation in a way that would cause data loss. This is e.g.

@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
 # Copyright (C) 2010 fatih
-# Copyright (C) 2010-2011, 2014, 2018-2020 Philipp Wolfer
+# Copyright (C) 2010-2011, 2014, 2018-2021 Philipp Wolfer
 # Copyright (C) 2012, 2014, 2018 Wieland Hoffmann
 # Copyright (C) 2013 Ionuț Ciocîrlan
 # Copyright (C) 2013-2014, 2018-2020 Laurent Monin
@@ -32,13 +32,18 @@ import builtins
 from collections import namedtuple
 from collections.abc import Iterator
 import unittest
-from unittest.mock import Mock
+from unittest.mock import (
+    MagicMock,
+    Mock,
+)
 
 from test.picardtestcase import PicardTestCase
 
 from picard import util
+from picard.config import get_config
 from picard.const.sys import IS_WIN
 from picard.util import (
+    cached_settings,
     extract_year_from_date,
     find_best_match,
     is_absolute_path,
@@ -429,3 +434,28 @@ class IterUniqueTest(PicardTestCase):
         result = iter_unique(items)
         self.assertTrue(isinstance(result, Iterator))
         self.assertEqual([1, 2, 3, 4], list(result))
+
+
+class CachedSettingsTest(PicardTestCase):
+    def setUp(self):
+        config = get_config()
+        config.setting['foo'] = 'abc'
+        config.setting['bar'] = 42
+        self.config = config
+
+    def test_returns_new_settings(self):
+        self.assertEqual({'foo': 'abc', 'bar': 42}, cached_settings(['foo', 'bar']))
+
+    def test_reuse_settings(self):
+        settings = {'existing': 'xyz'}
+        returned_settings = cached_settings(['foo'], settings=settings)
+        self.assertEqual({'foo': 'abc', 'existing': 'xyz'}, settings)
+        self.assertTrue(settings is returned_settings, 'must return instance of passed settings')
+
+    def test_use_provided_config(self):
+        mock_config = MagicMock()
+        mock_config.setting = {
+            'foo': 'xyz',
+            'bar': 1
+        }
+        self.assertEqual({'foo': 'xyz', 'bar': 1}, cached_settings(['foo', 'bar'], config=mock_config))
