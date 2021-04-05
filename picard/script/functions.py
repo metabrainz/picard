@@ -286,6 +286,30 @@ def func_replace(parser, text, old, new):
     return text.replace(old, new)
 
 
+@script_function(eval_args=False, documentation=N_(
+    """`$replacemulti(name,search,replace,separator="; ")`
+
+Replaces occurrences of `search` with `replace` in the multi-value variable `name`.
+
+Example:
+
+    $replacemulti(%genre%,Idm,IDM)
+"""
+))
+def func_replacemulti(parser, multi, search, replace, separator=MULTI_VALUED_JOINER):
+    if not multi or not search or replace is None or not separator:
+        return multi
+
+    search = search.eval(parser)
+    replace = replace.eval(parser)
+    multi_value = MultiValue(parser, multi, separator)
+    for n, value in enumerate(multi_value):
+        if value == search:
+            multi_value[n] = replace
+
+    return str(multi_value)
+
+
 @script_function(documentation=N_(
     """`$in(x,y)`
 
