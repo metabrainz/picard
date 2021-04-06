@@ -8,6 +8,7 @@
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2013 Laurent Monin
 # Copyright (C) 2014 Sophist-UK
+# Copyright (C) 2021 Petit Minion
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -98,6 +99,19 @@ class Item(object):
 
     def clear_errors(self):
         self._errors = []
+
+    def _cover_art_description(self, images, detailed=True):
+        # Return the number of cover image found in metadata.images. Used I the cover column of the UI.
+        number_of_images = len(self.images)
+        if detailed:
+            if getattr(self, 'has_common_images', True):
+                return ngettext("; %i image)", "; %i images)",
+                                number_of_images) % number_of_images
+            else:
+                return ngettext("; %i image not in all tracks)", "; %i different images among tracks)",
+                                number_of_images) % number_of_images
+        else:
+            return str(number_of_images)
 
 
 class FileListItem(Item):
