@@ -18,6 +18,7 @@
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2020 Ray Bouchard
 # Copyright (C) 2020 Gabriel Ferreira
+# Copyright (C) 2021 Petit Minion
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -240,6 +241,8 @@ class Cluster(FileList):
             return self.metadata['totaltracks']
         elif column == 'discnumber':
             return self.metadata['totaldiscs']
+        elif column == 'covercount':
+            return self._cover_art_description(self.metadata.images, False)
         return self.metadata[column]
 
     def _lookup_finished(self, document, http, error):

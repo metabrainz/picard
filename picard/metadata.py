@@ -533,7 +533,6 @@ class MultiMetadataProxy:
     metadata to use file specific metadata, without making it actually part
     of the track.
     """
-
     WRITE_METHODS = [
         'add_unique',
         'add',

@@ -8,6 +8,7 @@
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2013 Laurent Monin
 # Copyright (C) 2014 Sophist-UK
+# Copyright (C) 2021 Petit Minion
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -98,6 +99,28 @@ class Item(object):
 
     def clear_errors(self):
         self._errors = []
+
+    def _cover_art_description(self, images, detailed=True):
+        """Return the number of cover art images in `images` for display in the UI
+
+        Args:
+            images: An instance of picard.util.imagelist.ImageList
+            detailed: If True, return a detailed text about the images and whether they are the same across all tracks.
+                    If False only return the number as a string.
+
+        Returns:
+            A string explaining the cover art image count.
+        """
+        number_of_images = len(images)
+        if detailed:
+            if getattr(self, 'has_common_images', True):
+                return ngettext("; %i image)", "; %i images)",
+                                number_of_images) % number_of_images
+            else:
+                return ngettext("; %i image not in all tracks)", "; %i different images among tracks)",
+                                number_of_images) % number_of_images
+        else:
+            return str(number_of_images)
 
 
 class FileListItem(Item):
