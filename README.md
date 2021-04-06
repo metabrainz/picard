@@ -1,6 +1,7 @@
 MusicBrainz Picard
 ==================
 ![Github Actions Status](https://github.com/metabrainz/picard/workflows/Run%20tests/badge.svg)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2f20cb1c56464bf5a82de190d1b135bb)](https://app.codacy.com/gh/metabrainz/picard?utm_source=github.com&utm_medium=referral&utm_content=metabrainz/picard&utm_campaign=Badge_Grade_Settings)
 [![Codacy Grade](https://img.shields.io/codacy/grade/53a33607234a4c18a11a6207d1173c0c/master.svg?style=flat-square&label=Codacy)](https://www.codacy.com/app/MetaBrainz/picard)
 
 [MusicBrainz Picard](http://picard.musicbrainz.org) is a cross-platform (Linux/Mac OS X/Windows) application written in Python and is the official [MusicBrainz](http://musicbrainz.org) tagger.
