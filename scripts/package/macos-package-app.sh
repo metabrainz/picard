@@ -28,15 +28,15 @@ CERTIFICATE_FILE=scripts/package/appledev.p12
 
 if [ -f $CERTIFICATE_FILE ] && [ -n "$CODESIGN_MACOS_P12_PASSWORD" ]; then
     echo "Preparing code signing certificate..."
-    security create-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
-    security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
-    security set-keychain-settings $KEYCHAIN_PATH  # Ensure keychain stays unlocked
-    security list-keychains -d user -s $KEYCHAIN_PATH
-    security default-keychain -s $KEYCHAIN_PATH
-    security import $CERTIFICATE_FILE -k $KEYCHAIN_PATH -P "$CODESIGN_MACOS_P12_PASSWORD" -T /usr/bin/codesign
+    security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+    security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+    security set-keychain-settings "$KEYCHAIN_PATH"  # Ensure keychain stays unlocked
+    security list-keychains -d user -s "$KEYCHAIN_PATH"
+    security default-keychain -s "$KEYCHAIN_PATH"
+    security import "$CERTIFICATE_FILE" -k "$KEYCHAIN_PATH" -P "$CODESIGN_MACOS_P12_PASSWORD" -T /usr/bin/codesign
     # The line below is necessary when building on Sierra.
     # See https://stackoverflow.com/q/39868578
-    security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
+    security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
     security find-identity -p codesigning # For debugging
     CODESIGN=1
 fi
