@@ -21,6 +21,7 @@
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2019 Joel Lintunen
 # Copyright (C) 2020 Gabriel Ferreira
+# Copyright (C) 2021 Petit Minion
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -666,22 +667,8 @@ class Album(DataObject, Item):
                 unsaved = self.get_num_unsaved_files()
                 if unsaved:
                     text += '; %d*' % (unsaved,)
-                # CoverArt.set_metadata uses the orig_metadata.images if metadata.images is empty
-                # in order to show existing cover art if there's no cover art for a release. So
-                # we do the same here in order to show the number of images consistently.
-                if self.metadata.images:
-                    metadata = self.metadata
-                else:
-                    metadata = self.orig_metadata
-
-                number_of_images = len(metadata.images)
-                if getattr(metadata, 'has_common_images', True):
-                    text += ngettext("; %i image", "; %i images",
-                                     number_of_images) % number_of_images
-                else:
-                    text += ngettext("; %i image not in all tracks", "; %i different images among tracks",
-                                     number_of_images) % number_of_images
-                return text + ')'
+                text += self._cover_art_description(self.metadata.images, True)
+                return text
             else:
                 return title
         elif column == '~length':
@@ -696,6 +683,8 @@ class Album(DataObject, Item):
             return self.metadata['~totalalbumtracks']
         elif column == 'discnumber':
             return self.metadata['totaldiscs']
+        elif column == 'covercount':
+            return self._cover_art_description(self.metadata.images, False)
         else:
             return self.metadata[column]
 
