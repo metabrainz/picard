@@ -10,11 +10,12 @@
 # Copyright (C) 2013 Calvin Walton
 # Copyright (C) 2013 Ionuț Ciocîrlan
 # Copyright (C) 2013-2014 Sophist-UK
-# Copyright (C) 2013-2015, 2018-2019 Laurent Monin
+# Copyright (C) 2013-2015, 2018-2019, 2021 Laurent Monin
 # Copyright (C) 2015 Alex Berman
 # Copyright (C) 2015 Ohm Patel
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2017 Sambhav Kothari
+# Copyright (C) 2021 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -126,6 +127,25 @@ class RenamingOptionsPage(OptionsPage):
         disabled_color = self.script_palette_normal.color(QPalette.Inactive, QPalette.Window)
         self.script_palette_readonly.setColor(QPalette.Disabled, QPalette.Base, disabled_color)
         self.ui.scripting_documentation_button.clicked.connect(self.show_scripting_documentation)
+        self.ui.example_filename_sample_files_button.clicked.connect(self._sample_example_files)
+        self._sampled_example_files = []
+
+        # Sync example lists vertical scrolling
+        def sync_vertical_scrollbars(widgets):
+            """Sync position of vertical scrollbars for listed widgets"""
+            def _sync_scrollbar_vert(widget, value):
+                widget.blockSignals(True)
+                widget.verticalScrollBar().setValue(value)
+                widget.blockSignals(False)
+
+            widgets = set(widgets)
+            for widget in widgets:
+                for other in widgets - {widget}:
+                    widget.verticalScrollBar().valueChanged.connect(
+                        partial(_sync_scrollbar_vert, other))
+
+        # Sync example lists vertical scrolling
+        sync_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
 
     def show_scripting_documentation(self):
         ScriptingDocumentationDialog.show_instance(parent=self)
@@ -173,22 +193,49 @@ class RenamingOptionsPage(OptionsPage):
                     if s_enabled and s_text:
                         parser = ScriptParser()
                         parser.eval(s_text, file.metadata)
-            filename = file.make_filename(file.filename, file.metadata, settings)
+            filename_before = file.filename
+            filename_after = file.make_filename(filename_before, file.metadata, settings)
             if not settings["move_files"]:
-                return os.path.basename(filename)
-            return filename
+                return os.path.basename(filename_before), os.path.basename(filename_after)
+            return filename_before, filename_after
         except ScriptError:
-            return ""
+            return "", ""
         except TypeError:
-            return ""
+            return "", ""
+
+    def _sample_example_files(self):
+        # Get a new sample of randomly selected /loaded files to use as renaming examples
+        import random
+        max_samples = 10  # pick up to 10 samples
+        if self.tagger.window.selected_objects:
+            # If files/albums/tracks are selected, sample example files from them
+            files = self.tagger.get_files_from_objects(self.tagger.window.selected_objects)
+            length = min(max_samples, len(files))
+            files = [file for file in random.sample(files, k=length)]
+        else:
+            # If files/albums/tracks are not selected, sample example files from the pool of loaded files
+            files = self.tagger.files
+            length = min(max_samples, len(files))
+            files = [files[key] for key in random.sample(files.keys(), k=length)]
+
+        if not files:
+            # If no file has been loaded, use generic examples
+            files = [self.example_1(), self.example_2()]
+        self._sampled_example_files = files
+        self.update_examples()
 
     def update_examples(self):
-        # TODO: Here should be more examples etc.
-        # TODO: Would be nice to show diffs too....
-        example1 = self._example_to_filename(self.example_1())
-        example2 = self._example_to_filename(self.example_2())
-        self.ui.example_filename.setText(example1)
-        self.ui.example_filename_va.setText(example2)
+        self.ui.example_filename_before.clear()
+        self.ui.example_filename_after.clear()
+
+        if not self._sampled_example_files:
+            self._sample_example_files()
+        example_files = self._sampled_example_files
+
+        examples = [self._example_to_filename(example) for example in example_files]
+        for before, after in sorted(examples, key=lambda x: x[1]):
+            self.ui.example_filename_before.addItem(before)
+            self.ui.example_filename_after.addItem(after)
 
     def load(self):
         config = get_config()
