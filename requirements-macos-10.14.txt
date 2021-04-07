@@ -5,4 +5,4 @@ markdown==3.2.2
 mutagen==1.45.1
 pyobjc-core==6.2.2
 pyobjc-framework-Cocoa==6.2.2
-PyQt5==5.15.3
+PyQt5==5.15.4
