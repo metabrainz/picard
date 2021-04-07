@@ -651,12 +651,12 @@ class ID3File(File):
             tags.update_to_v24()
             tags.save(filename, v2_version=4, v1=v1)
 
-    def format_specific_metadata(self, metadata, tag, settings_cache=None):
-        if 'write_id3v23' not in settings_cache or 'id3v23_join_with' not in settings_cache:
-            cached_settings(('write_id3v23', 'id3v23_join_with'), settings_cache)
+    def format_specific_metadata(self, metadata, tag, settings=None):
+        if not settings:
+            settings = cached_settings(('write_id3v23', 'id3v23_join_with'))
 
-        if not settings_cache["write_id3v23"]:
-            return super().format_specific_metadata(metadata, tag, settings_cache)
+        if not settings["write_id3v23"]:
+            return super().format_specific_metadata(metadata, tag, settings)
 
         values = metadata.getall(tag)
         if not values:
@@ -671,7 +671,7 @@ class ID3File(File):
         # unless it's TIPL or TMCL which can still be multi-valued.
         if (len(values) > 1 and tag not in ID3File._rtipl_roles
                 and not tag.startswith("performer:")):
-            join_with = settings_cache["id3v23_join_with"]
+            join_with = settings["id3v23_join_with"]
             values = [join_with.join(values)]
 
         return values
