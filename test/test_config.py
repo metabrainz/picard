@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019-2020 Philipp Wolfer
+# Copyright (C) 2019-2021 Philipp Wolfer
 # Copyright (C) 2019-2020 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -74,6 +74,24 @@ class TestPicardConfig(TestPicardConfigCommon):
 
         self.config.setting.remove("text_option")
         self.assertEqual(self.config.setting["text_option"], "abc")
+
+
+class TestPicardConfigSection(TestPicardConfigCommon):
+
+    def test_as_dict(self):
+        TextOption("setting", "text_option", "abc")
+        BoolOption("setting", "bool_option", True)
+        IntOption("setting", "int_option", 42)
+
+        self.config.setting["int_option"] = 123
+
+        expected = {
+            "text_option": "abc",
+            "bool_option": True,
+            "int_option": 123,
+        }
+
+        self.assertEqual(expected, self.config.setting.as_dict())
 
 
 class TestPicardConfigTextOption(TestPicardConfigCommon):

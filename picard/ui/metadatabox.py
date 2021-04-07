@@ -585,7 +585,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         top_tags = config.setting['metadatabox_top_tags']
         top_tags_set = set(top_tags)
 
-        cached_format_settings = {}
+        settings = config.setting.as_dict()
 
         for file in files:
             new_metadata = file.metadata
@@ -593,8 +593,8 @@ class MetadataBox(QtWidgets.QTableWidget):
             tags = set(list(new_metadata.keys()) + list(orig_metadata.keys()))
 
             for name in filter(lambda x: not x.startswith("~") and file.supports_tag(x), tags):
-                new_values = file.format_specific_metadata(new_metadata, name, cached_format_settings)
-                orig_values = file.format_specific_metadata(orig_metadata, name, cached_format_settings)
+                new_values = file.format_specific_metadata(new_metadata, name, settings)
+                orig_values = file.format_specific_metadata(orig_metadata, name, settings)
 
                 if not clear_existing_tags and not new_values:
                     new_values = list(orig_values or [""])
