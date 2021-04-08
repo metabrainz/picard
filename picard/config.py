@@ -59,6 +59,7 @@ class ConfigSection(QtCore.QObject):
         self.__name = name
         self.__prefix = self.__name + '/'
         self.__prefix_len = len(self.__prefix)
+        self._memoization = {}
 
     def key(self, name):
         return self.__prefix + name
@@ -77,6 +78,8 @@ class ConfigSection(QtCore.QObject):
     def __setitem__(self, name, value):
         key = self.key(name)
         self.__qt_config.setValue(key, value)
+        if key in self._memoization:
+            self._memoization[key][0] = False
 
     def __contains__(self, name):
         return self.__qt_config.contains(self.key(name))
@@ -86,6 +89,8 @@ class ConfigSection(QtCore.QObject):
         config = self.__qt_config
         if config.contains(key):
             config.remove(key)
+        if key in self._memoization:
+            del self._memoization[key]
 
     def raw_value(self, name, qtype=None):
         """Return an option value without any type conversion."""
@@ -99,12 +104,20 @@ class ConfigSection(QtCore.QObject):
     def value(self, name, option_type, default=None):
         """Return an option value converted to the given Option type."""
         if name in self:
+            key = self.key(name)
             try:
-                value = self.raw_value(name, qtype=option_type.qtype)
-                value = option_type.convert(value)
-            except Exception as why:
-                log.error('Cannot read %s value: %s', self.key(name), why, exc_info=True)
-                value = default
+                valid, value = self._memoization[key]
+            except KeyError:
+                valid = False
+
+            if not valid:
+                try:
+                    value = self.raw_value(name, qtype=option_type.qtype)
+                    value = option_type.convert(value)
+                    self._memoization[key] = [True, value]
+                except Exception as why:
+                    log.error('Cannot read %s value: %s', self.key(name), why, exc_info=True)
+                    value = default
             return value
         return default
 
