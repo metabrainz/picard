@@ -590,7 +590,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         for file in files:
             new_metadata = file.metadata
             orig_metadata = file.orig_metadata
-            tags = set(list(new_metadata.keys()) + list(orig_metadata.keys()))
+            tags = set(new_metadata) | set(orig_metadata)
 
             for name in filter(lambda x: not x.startswith("~") and file.supports_tag(x), tags):
                 new_values = file.format_specific_metadata(new_metadata, name, settings)
