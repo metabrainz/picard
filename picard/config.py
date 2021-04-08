@@ -64,11 +64,6 @@ class ConfigSection(QtCore.QObject):
     def key(self, name):
         return self.__prefix + name
 
-    def _subkeys(self):
-        for key in self.__qt_config.allKeys():
-            if key[:self.__prefix_len] == self.__prefix:
-                yield key[self.__prefix_len:]
-
     def __getitem__(self, name):
         opt = Option.get(self.__name, name)
         if opt is None:
