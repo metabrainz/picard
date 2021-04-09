@@ -1532,3 +1532,26 @@ class ScriptParserTest(PicardTestCase):
             self.parser.eval("$unique()")
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$unique(B:AB; D:C; E:D; A:A; C:X,1,:,extra)")
+
+    def test_cmd_cleanmulti(self):
+        context = Metadata()
+        context["foo"] = ['a', 'b', 'c', '', 'd']
+        context["bar"] = ['a', 'b', 'c', None, 'd']
+        context["baz"] = ['a', 'b', 'c', 'd']
+        context['empty'] = []
+        result = "a; b; c; d"
+        # Tests with context
+        self.assertScriptResultEquals("$cleanmulti(%foo%)", result, context)
+        self.assertScriptResultEquals("$cleanmulti(%bar%)", result, context)
+        self.assertScriptResultEquals("$cleanmulti(%baz%)", result, context)
+        self.assertScriptResultEquals("$cleanmulti(%empty%)", "", context)
+        # Tests with missing inputs
+        self.assertScriptResultEquals("$cleanmulti(,)", "", context)
+        self.assertScriptResultEquals("$cleanmulti(,; )", "", context)
+        self.assertScriptResultEquals("$cleanmulti(%foo%,)", "", context)
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$cleanmulti: Wrong number of arguments for \$cleanmulti: Expected between 1 and 2, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$cleanmulti()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$cleanmulti(%foo%,; ,)")

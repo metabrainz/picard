@@ -1348,3 +1348,22 @@ def func_unique(parser, multi, case_sensitive="", separator=MULTI_VALUED_JOINER)
     if not case_sensitive:
         multi_value._multi = list({v.lower(): v for v in multi_value}.values())
     return multi_value.separator.join(sorted(set(multi_value)))
+
+
+@script_function(eval_args=False, documentation=N_(
+    """`$cleanmulti(name,separator="; ")`
+
+Removes empty elements from the multi-value variable `name`.
+
+Example:
+
+    $cleanmulti(%foo%)
+"""
+))
+def func_cleanmulti(parser, multi, separator=MULTI_VALUED_JOINER):
+    if not multi or not separator:
+        return ''
+
+    multi_value = MultiValue(parser, multi, separator)
+    temp = [x for x in multi_value if x]
+    return multi_value.separator.join(temp)
