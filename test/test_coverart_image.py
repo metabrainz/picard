@@ -176,7 +176,7 @@ class CoverArtImageTest(PicardTestCase):
 
     def test_coverartimage_url_with_query(self):
         image = CoverArtImage(url='http://example.com/image.jpg?size=1024')
-        self.assertEqual(image.path, '/image.jpg?size=1024')
+        self.assertEqual(image.path, '/image.jpg')
 
     def test_coverartimage_source(self):
         class CAImage(CoverArtImage):
