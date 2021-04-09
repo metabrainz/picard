@@ -12,6 +12,7 @@
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017 Antonio Larrosa
 # Copyright (C) 2018 Bob Swift
+# Copyright (C) 2021 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -38,7 +39,12 @@ from PyQt5 import (
 )
 from PyQt5.QtCore import QStandardPaths
 
-from picard import config
+from picard.config import (
+    BoolOption,
+    ListOption,
+    TextOption,
+    get_config,
+)
 from picard.const import UI_LANGUAGES
 from picard.util import icontheme
 
@@ -47,6 +53,11 @@ from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import (
     OptionsPage,
     register_options_page,
+)
+from picard.ui.theme import (
+    AVAILABLE_UI_THEMES,
+    OS_SUPPORTS_THEMES,
+    UiTheme,
 )
 from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.util import enabledSlot
@@ -62,6 +73,7 @@ class InterfaceOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 80
     ACTIVE = True
+    HELP_URL = '/config/options_interface.html'
     SEPARATOR = '—' * 5
     TOOLBAR_BUTTONS = {
         'add_directory_action': {
@@ -116,19 +128,25 @@ class InterfaceOptionsPage(OptionsPage):
             'label': N_('Lookup CD...'),
             'icon': 'media-optical'
         },
+        'tags_from_filenames_action': {
+            'label': N_('Parse File Names...'),
+            'icon': 'picard-tags-from-filename'
+        },
     }
     ACTION_NAMES = set(TOOLBAR_BUTTONS.keys())
     options = [
-        config.BoolOption("setting", "toolbar_show_labels", True),
-        config.BoolOption("setting", "toolbar_multiselect", False),
-        config.BoolOption("setting", "builtin_search", False),
-        config.BoolOption("setting", "use_adv_search_syntax", False),
-        config.BoolOption("setting", "quit_confirmation", True),
-        config.TextOption("setting", "ui_language", ""),
-        config.BoolOption("setting", "starting_directory", False),
-        config.TextOption("setting", "starting_directory_path", _default_starting_dir),
-        config.TextOption("setting", "load_image_behavior", "append"),
-        config.ListOption("setting", "toolbar_layout", [
+        BoolOption("setting", "toolbar_show_labels", True),
+        BoolOption("setting", "toolbar_multiselect", False),
+        BoolOption("setting", "builtin_search", True),
+        BoolOption("setting", "use_adv_search_syntax", False),
+        BoolOption("setting", "quit_confirmation", True),
+        TextOption("setting", "ui_language", ""),
+        TextOption("setting", "ui_theme", str(UiTheme.DEFAULT)),
+        BoolOption("setting", "filebrowser_horizontal_autoscroll", True),
+        BoolOption("setting", "starting_directory", False),
+        TextOption("setting", "starting_directory_path", _default_starting_dir),
+        TextOption("setting", "load_image_behavior", "append"),
+        ListOption("setting", "toolbar_layout", [
             'add_directory_action',
             'add_files_action',
             'separator',
@@ -148,12 +166,42 @@ class InterfaceOptionsPage(OptionsPage):
         ]),
     ]
 
+    # Those are labels for theme display
+    _UI_THEME_LABELS = {
+        UiTheme.DEFAULT: {
+            'label': N_('Default'),
+            'desc': N_('The default color scheme based on the operating system display settings'),
+        },
+        UiTheme.DARK: {
+            'label': N_('Dark'),
+            'desc': N_('A dark display theme'),
+        },
+        UiTheme.LIGHT: {
+            'label': N_('Light'),
+            'desc': N_('A light display theme'),
+        },
+        UiTheme.SYSTEM: {
+            'label': N_('System'),
+            'desc': N_('The Qt5 theme configured in the desktop environment'),
+        },
+    }
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_InterfaceOptionsPage()
         self.ui.setupUi(self)
+
+        self.ui.ui_theme.clear()
+        for theme in AVAILABLE_UI_THEMES:
+            label = self._UI_THEME_LABELS[theme]['label']
+            desc = self._UI_THEME_LABELS[theme]['desc']
+            self.ui.ui_theme.addItem(_(label), theme)
+            idx = self.ui.ui_theme.findData(theme)
+            self.ui.ui_theme.setItemData(idx, _(desc), QtCore.Qt.ToolTipRole)
+        self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(UiTheme.DEFAULT))
+
         self.ui.ui_language.addItem(_('System default'), '')
-        language_list = [(l[0], l[1], _(l[2])) for l in UI_LANGUAGES]
+        language_list = [(lang[0], lang[1], _(lang[2])) for lang in UI_LANGUAGES]
 
         def fcmp(x):
             return locale.strxfrm(x[2])
@@ -183,7 +231,11 @@ class InterfaceOptionsPage(OptionsPage):
                                           self.ui.down_button, self.update_action_buttons)
         self.update_buttons = self.move_view.update_buttons
 
+        if not OS_SUPPORTS_THEMES:
+            self.ui.ui_theme_container.hide()
+
     def load(self):
+        config = get_config()
         self.ui.toolbar_show_labels.setChecked(config.setting["toolbar_show_labels"])
         self.ui.toolbar_multiselect.setChecked(config.setting["toolbar_multiselect"])
         self.ui.builtin_search.setChecked(config.setting["builtin_search"])
@@ -191,29 +243,48 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.quit_confirmation.setChecked(config.setting["quit_confirmation"])
         current_ui_language = config.setting["ui_language"]
         self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
+        self.ui.filebrowser_horizontal_autoscroll.setChecked(config.setting["filebrowser_horizontal_autoscroll"])
         self.ui.starting_directory.setChecked(config.setting["starting_directory"])
         self.ui.starting_directory_path.setText(config.setting["starting_directory_path"])
         self.populate_action_list()
         self.ui.toolbar_layout_list.setCurrentRow(0)
+        current_theme = UiTheme(config.setting["ui_theme"])
+        self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(current_theme))
         self.update_buttons()
 
     def save(self):
+        config = get_config()
         config.setting["toolbar_show_labels"] = self.ui.toolbar_show_labels.isChecked()
         config.setting["toolbar_multiselect"] = self.ui.toolbar_multiselect.isChecked()
         config.setting["builtin_search"] = self.ui.builtin_search.isChecked()
         config.setting["use_adv_search_syntax"] = self.ui.use_adv_search_syntax.isChecked()
         config.setting["quit_confirmation"] = self.ui.quit_confirmation.isChecked()
         self.tagger.window.update_toolbar_style()
+        new_theme_setting = str(self.ui.ui_theme.itemData(self.ui.ui_theme.currentIndex()))
         new_language = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
-        if new_language != config.setting["ui_language"]:
-            config.setting["ui_language"] = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
+        restart_warning = None
+        if new_theme_setting != config.setting["ui_theme"]:
+            restart_warning_title = _('Theme changed')
+            restart_warning = _('You have changed the application theme. You have to restart Picard in order for the change to take effect.')
+            if new_theme_setting == str(UiTheme.SYSTEM):
+                restart_warning += '\n\n' + _(
+                    'Please note that using the system theme might cause the user interface to be not shown correctly. '
+                    'If this is the case select the "Default" theme option to use Picard\'s default theme again.'
+                )
+        elif new_language != config.setting["ui_language"]:
+            restart_warning_title = _('Language changed')
+            restart_warning = _('You have changed the interface language. You have to restart Picard in order for the change to take effect.')
+        if restart_warning:
             dialog = QtWidgets.QMessageBox(
                 QtWidgets.QMessageBox.Information,
-                _('Language changed'),
-                _('You have changed the interface language. You have to restart Picard in order for the change to take effect.'),
+                restart_warning_title,
+                restart_warning,
                 QtWidgets.QMessageBox.Ok,
                 self)
             dialog.exec_()
+        config.setting["ui_theme"] = new_theme_setting
+        config.setting["ui_language"] = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
+        config.setting["filebrowser_horizontal_autoscroll"] = self.ui.filebrowser_horizontal_autoscroll.isChecked()
         config.setting["starting_directory"] = self.ui.starting_directory.isChecked()
         config.setting["starting_directory_path"] = os.path.normpath(self.ui.starting_directory_path.text())
         self.update_layout_config()
@@ -258,6 +329,7 @@ class InterfaceOptionsPage(OptionsPage):
 
     def populate_action_list(self):
         self.ui.toolbar_layout_list.clear()
+        config = get_config()
         for name in config.setting['toolbar_layout']:
             if name in self.ACTION_NAMES or name == 'separator':
                 self._insert_item(name)
@@ -283,6 +355,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.update_buttons()
 
     def update_layout_config(self):
+        config = get_config()
         config.setting['toolbar_layout'] = self._all_list_items()
         self._update_toolbar()
 

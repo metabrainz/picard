@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Muhammad Adli Ibrahim <adli98@yahoo.com>, 2020
 msgid ""

@@ -102,6 +102,7 @@ class Ui_EditTagDialog(object):
         self.remove_value.clicked.connect(EditTagDialog.remove_value)
         self.value_list.itemSelectionChanged.connect(EditTagDialog.value_selection_changed)
         self.tag_names.editTextChanged['QString'].connect(EditTagDialog.tag_changed)
+        self.tag_names.activated['QString'].connect(EditTagDialog.tag_selected)
         QtCore.QMetaObject.connectSlotsByName(EditTagDialog)
         EditTagDialog.setTabOrder(self.tag_names, self.value_list)
         EditTagDialog.setTabOrder(self.value_list, self.edit_value)

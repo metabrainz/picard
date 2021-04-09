@@ -1,5 +1,6 @@
+# 
 # Translators:
-# Translators:
+# Anton Karpuzikov <karpuzikovanton@gmail.com>, 2020
 # derr84 <derr84@mail.ru>, 2013
 # greycat <greycat.na.kor@gmail.com>, 2012
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
@@ -9,8 +10,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-05-30 11:38+0000\n"
-"Last-Translator: Александр Жибарь <santer1986@gmail.com>\n"
+"PO-Revision-Date: 2020-07-18 21:18+0000\n"
+"Last-Translator: Anton Karpuzikov <karpuzikovanton@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/musicbrainz/musicbrainz/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -116,7 +117,7 @@ msgstr "Барбадос"
 #. iso.code:BY
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:20
 msgid "Belarus"
-msgstr "Белоруссия"
+msgstr "Беларусь"
 
 #. iso.code:BE
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:21

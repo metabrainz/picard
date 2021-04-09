@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2018-2019 Laurent Monin
-# Copyright (C) 2018-2019 Philipp Wolfer
+# Copyright (C) 2018-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,10 +30,8 @@ from PyQt5 import (
 )
 from PyQt5.QtCore import pyqtSignal
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import Option
 from picard.const import (
     CAA_HOST,
     CAA_PORT,
@@ -138,14 +136,15 @@ class AlbumSearchDialog(SearchDialog):
     dialog_header_state = "albumsearchdialog_header_state"
 
     options = [
-        config.Option("persist", dialog_header_state, QtCore.QByteArray())
+        Option("persist", dialog_header_state, QtCore.QByteArray())
     ]
 
-    def __init__(self, parent):
+    def __init__(self, parent, force_advanced_search=None):
         super().__init__(
             parent,
             accept_button_title=_("Load into Picard"),
-            search_type="album")
+            search_type="album",
+            force_advanced_search=force_advanced_search)
         self.cluster = None
         self.setWindowTitle(_("Album Search Results"))
         self.columns = [
@@ -176,6 +175,7 @@ class AlbumSearchDialog(SearchDialog):
         self.tagger.mb_api.find_releases(self.handle_reply,
                                          query=text,
                                          search=True,
+                                         advanced_search=self.use_advanced_search,
                                          limit=QUERY_LIMIT)
 
     def show_similar_albums(self, cluster):
@@ -193,7 +193,7 @@ class AlbumSearchDialog(SearchDialog):
         # Generate query to be displayed to the user (in search box).
         # If advanced query syntax setting is enabled by user, display query in
         # advanced syntax style. Otherwise display only album title.
-        if config.setting["use_adv_search_syntax"]:
+        if self.use_advanced_search:
             query_str = ' '.join(['%s:(%s)' % (item, escape_lucene_query(value))
                                   for item, value in query.items() if value])
         else:
@@ -365,6 +365,6 @@ class AlbumSearchDialog(SearchDialog):
                 release["musicbrainz_albumid"])
         album = self.tagger.load_album(release["musicbrainz_albumid"])
         if self.cluster:
-            files = self.tagger.get_files_from_objects([self.cluster])
+            files = self.cluster.iterfiles()
             self.tagger.move_files_to_album(files, release["musicbrainz_albumid"],
                                             album)

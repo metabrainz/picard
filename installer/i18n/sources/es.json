@@ -1,0 +1,16 @@
+{
+    "MsgAlreadyInstalled": "${PRODUCT_NAME} ya está instalado y debe ser desinstalado antes de instalar esta actualización a la versión ${PRODUCT_VERSION}. \n\nHaga clic en \"Aceptar\" para proceder o en \"Cancelar\" para cancelar esta actualización.",
+    "MsgApplicationRunning": "La aplicación ${PRODUCT_NAME} está en marcha. Por favor cierrelo e inténtelo de nuevo.",
+    "MsgRequires64Bit": "La versión de ${PRODUCT_NAME} requiere un Windows de 64-bits.",
+    "MuiDescriptionRequired": "Instalar ${PRODUCT_NAME} junto con los archivos necesarios para que funcione.",
+    "MuiDescriptionLang": "Instalar traducciones de ${PRODUCT_NAME} en diferentes lenguajes.",
+    "MuiDescriptionShortcuts": "Instalar atajos para iniciar ${PRODUCT_NAME}.",
+    "MuiDescriptionDesktop": "Instalar un atajo en el escritorio",
+    "MuiDescriptionStartMenu": "Instalar un atajo en el Menú de Inicio",
+    "OptionRemoveSettings": "Remover ajustes e información personal",
+    "SectionDesktop": "Escritorio",
+    "SectionLanguages": "Idiomas",
+    "SectionRequired": "Archivos de programa (requerido)",
+    "SectionShortcuts": "Atajos",
+    "SectionStartMenu": "Menú de inicio"
+}

@@ -11,7 +11,7 @@
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017-2019 Antonio Larrosa
 # Copyright (C) 2018 Vishal Choudhary
-# Copyright (C) 2018-2019 Philipp Wolfer
+# Copyright (C) 2018-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -28,7 +28,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import namedtuple
+from collections import (
+    defaultdict,
+    namedtuple,
+)
 import os.path
 import re
 import traceback
@@ -53,6 +56,7 @@ from picard.util import (
 )
 
 from picard.ui import PicardDialog
+from picard.ui.colors import interface_colors
 from picard.ui.ui_infodialog import Ui_InfoDialog
 from picard.ui.util import StandardButton
 
@@ -144,7 +148,7 @@ class InfoDialog(PicardDialog):
         # Add the ArtworkTable to the ui
         self.ui.artwork_table = ArtworkTable(self.display_existing_artwork)
         self.ui.artwork_table.setObjectName("artwork_table")
-        self.ui.vboxlayout1.addWidget(self.ui.artwork_table)
+        self.ui.artwork_tab.layout().addWidget(self.ui.artwork_table)
         self.setTabOrder(self.ui.tabWidget, self.ui.artwork_table)
         self.setTabOrder(self.ui.artwork_table, self.ui.buttonBox)
 
@@ -155,7 +159,21 @@ class InfoDialog(PicardDialog):
 
     def _display_tabs(self):
         self._display_info_tab()
+        self._display_error_tab()
         self._display_artwork_tab()
+
+    def _display_error_tab(self):
+        if hasattr(self.obj, 'errors') and self.obj.errors:
+            self._show_errors(self.obj.errors)
+        else:
+            self.tab_hide(self.ui.error_tab)
+
+    def _show_errors(self, errors):
+        if errors:
+            color = interface_colors.get_color("log_error")
+            text = '<br />'.join(map(
+                lambda s: '<font color="%s">%s</font>' % (color, text_as_html(s)), errors))
+            self.ui.error.setText(text + '<hr />')
 
     def _display_artwork(self, images, col):
         """Draw artwork in corresponding cell if image type matches type in Type column.
@@ -287,6 +305,55 @@ def format_file_info(file_):
                              htmlescape(i[1])), info))
 
 
+def format_tracklist(cluster):
+    info = []
+    info.append("<b>%s</b> %s" % (_('Album:'),
+                                  htmlescape(cluster.metadata["album"])))
+    info.append("<b>%s</b> %s" % (_('Artist:'),
+                                  htmlescape(cluster.metadata["albumartist"])))
+    info.append("")
+    TrackListItem = namedtuple('TrackListItem', 'number, title, artist, length')
+    tracklists = defaultdict(list)
+    if isinstance(cluster, Album):
+        objlist = cluster.tracks
+    else:
+        objlist = cluster.iterfiles(False)
+    for obj_ in objlist:
+        m = obj_.metadata
+        artist = m["artist"] or m["albumartist"] or cluster.metadata["albumartist"]
+        track = TrackListItem(m["tracknumber"], m["title"], artist,
+                              m["~length"])
+        tracklists[obj_.discnumber].append(track)
+
+    def sorttracknum(track):
+        try:
+            return int(track.number)
+        except ValueError:
+            try:
+                # This allows to parse values like '3' but also '3/10'
+                m = re.search(r'^\d+', track.number)
+                return int(m.group(0))
+            except AttributeError:
+                return 0
+
+    ndiscs = len(tracklists)
+    for discnumber in sorted(tracklists):
+        tracklist = tracklists[discnumber]
+        if ndiscs > 1:
+            info.append("<b>%s</b>" % (_('Disc %d') % discnumber))
+        lines = ["%s %s - %s (%s)" % item for item in sorted(tracklist, key=sorttracknum)]
+        info.append("<b>%s</b><br />%s<br />" % (_('Tracklist:'),
+                    '<br />'.join([htmlescape(s).replace(' ', '&nbsp;') for s in lines])))
+    return '<br/>'.join(info)
+
+
+def text_as_html(text):
+    return '<br />'.join(htmlescape(str(text))
+        .replace('\t', ' ')
+        .replace(' ', '&nbsp;')
+        .splitlines())
+
+
 class FileInfoDialog(InfoDialog):
 
     def __init__(self, file_, parent=None):
@@ -306,23 +373,11 @@ class AlbumInfoDialog(InfoDialog):
         self.setWindowTitle(_("Album Info"))
 
     def _display_info_tab(self):
-        tab = self.ui.info_tab
         album = self.obj
-        tabWidget = self.ui.tabWidget
-        tab_index = tabWidget.indexOf(tab)
-        if album.errors:
-            tabWidget.setTabText(tab_index, _("&Errors"))
-            text = '<br />'.join(map(lambda s: '<font color="darkred">%s</font>' %
-                                     '<br />'.join(htmlescape(str(s))
-                                                   .replace('\t', ' ')
-                                                   .replace(' ', '&nbsp;')
-                                                   .splitlines()
-                                                   ), album.errors)
-                                 )
-            self.ui.info.setText(text + '<hr />')
+        if album._tracks_loaded:
+            self.ui.info.setText(format_tracklist(album))
         else:
-            tabWidget.setTabText(tab_index, _("&Info"))
-            self.tab_hide(tab)
+            self.tab_hide(self.ui.info_tab)
 
 
 class TrackInfoDialog(InfoDialog):
@@ -344,7 +399,7 @@ class TrackInfoDialog(InfoDialog):
         tabWidget.setTabText(tab_index, _("&Info"))
         text = ngettext("%i file in this track", "%i files in this track",
                         track.num_linked_files) % track.num_linked_files
-        info_files = [format_file_info(file_) for file_ in track.linked_files]
+        info_files = [format_file_info(file_) for file_ in track.files]
         text += '<hr />' + '<hr />'.join(info_files)
         self.ui.info.setText(text)
 
@@ -357,36 +412,7 @@ class ClusterInfoDialog(InfoDialog):
 
     def _display_info_tab(self):
         tab = self.ui.info_tab
-        cluster = self.obj
         tabWidget = self.ui.tabWidget
         tab_index = tabWidget.indexOf(tab)
         tabWidget.setTabText(tab_index, _("&Info"))
-        info = []
-        info.append("<b>%s</b> %s" % (_('Album:'),
-                                      htmlescape(cluster.metadata["album"])))
-        info.append("<b>%s</b> %s" % (_('Artist:'),
-                                      htmlescape(cluster.metadata["albumartist"])))
-        info.append("")
-        TrackListItem = namedtuple('TrackListItem', 'tracknumber, title, artist, length')
-        tracklist = []
-        for file_ in cluster.iterfiles(False):
-            m = file_.metadata
-            artist = m["artist"] or m["albumartist"] or cluster.metadata["albumartist"]
-            tracklist.append(TrackListItem(m["tracknumber"], m["title"], artist,
-                                           m["~length"]))
-
-        def sorttracknum(item):
-            try:
-                return int(item.tracknumber)
-            except ValueError:
-                try:
-                    # This allows to parse values like '3' but also '3/10'
-                    m = re.search(r'^\d+', item.tracknumber)
-                    return int(m.group(0))
-                except AttributeError:
-                    return 0
-
-        lines = ["%s %s - %s (%s)" % item for item in sorted(tracklist, key=sorttracknum)]
-        info.append("<b>%s</b><br />%s" % (_('Tracklist:'),
-                    '<br />'.join([htmlescape(s).replace(' ', '&nbsp;') for s in lines])))
-        self.ui.info.setText('<br/>'.join(info))
+        self.ui.info.setText(format_tracklist(self.obj))

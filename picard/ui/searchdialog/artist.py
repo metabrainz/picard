@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2018 Laurent Monin
-# Copyright (C) 2018-2019 Philipp Wolfer
+# Copyright (C) 2018-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -23,7 +23,7 @@
 
 from PyQt5 import QtCore
 
-from picard import config
+from picard.config import Option
 from picard.const import QUERY_LIMIT
 from picard.mbjson import artist_to_metadata
 from picard.metadata import Metadata
@@ -39,7 +39,7 @@ class ArtistSearchDialog(SearchDialog):
     dialog_header_state = "artistsearchdialog_header_state"
 
     options = [
-        config.Option("persist", dialog_header_state, QtCore.QByteArray())
+        Option("persist", dialog_header_state, QtCore.QByteArray())
     ]
 
     def __init__(self, parent):
@@ -67,6 +67,7 @@ class ArtistSearchDialog(SearchDialog):
         self.tagger.mb_api.find_artists(self.handle_reply,
                                         query=text,
                                         search=True,
+                                        advanced_search=self.use_advanced_search,
                                         limit=QUERY_LIMIT)
 
     def retry(self):

@@ -31,7 +31,6 @@ from test.picardtestcase import (
     load_test_json,
 )
 
-from picard import config
 from picard.i18n import setup_gettext
 from picard.releasegroup import ReleaseGroup
 
@@ -54,7 +53,7 @@ class ReleaseTest(PicardTestCase):
         setup_gettext(self.localedir, 'C')
 
     def test_1(self):
-        config.setting = settings.copy()
+        self.set_config_values(settings)
         rlist = load_test_json('release_group_2.json')
         r = ReleaseGroup(1)
         r._parse_versions(rlist)
@@ -66,7 +65,7 @@ class ReleaseTest(PicardTestCase):
                          '5 / 2009 / GB / CD / label A / cat 123 / Digipak / specialx')
 
     def test_2(self):
-        config.setting = settings.copy()
+        self.set_config_values(settings)
         rlist = load_test_json('release_group_3.json')
         r = ReleaseGroup(1)
         r._parse_versions(rlist)
@@ -76,7 +75,7 @@ class ReleaseTest(PicardTestCase):
                          '5 / 2011 / FR / CD / label A / cat 123')
 
     def test_3(self):
-        config.setting = settings.copy()
+        self.set_config_values(settings)
         rlist = load_test_json('release_group_4.json')
         r = ReleaseGroup(1)
         r._parse_versions(rlist)

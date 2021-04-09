@@ -176,23 +176,22 @@ _simplify_punctuation = {
     "\u226B": ">>",  # MUCH GREATER-THAN
     "\u2985": "((",  # LEFT WHITE PARENTHESIS
     "\u2986": "))",  # RIGHT WHITE PARENTHESIS
+    "\u2022": "-",  # BULLET
     "\u200B": "",  # Zero Width Space
 }
 
 
-def _replace_unicode_simplify_punctuation(char, pathsave, win_compat):
-    result = _simplify_punctuation.get(char)
-    if result is None:
-        return char
-    elif not pathsave:
-        return result
-    else:
-        return sanitize_filename(result, win_compat=win_compat)
-
-
 def unicode_simplify_punctuation(string, pathsave=False, win_compat=False):
-    return ''.join(
-        _replace_unicode_simplify_punctuation(c, pathsave, win_compat) for c in string)
+    temp = []
+    for c in string:
+        try:
+            result = _simplify_punctuation[c]
+            if c != result and pathsave:
+                result = sanitize_filename(result, win_compat=win_compat)
+        except KeyError:
+            result = c
+        temp.append(result)
+    return ''.join(temp)
 
 
 _simplify_combinations = {

@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008, 2012 Lukáš Lalinský
 # Copyright (C) 2008 Hendrik van Antwerpen
-# Copyright (C) 2008-2010, 2014-2015, 2018-2019 Philipp Wolfer
+# Copyright (C) 2008-2010, 2014-2015, 2018-2020 Philipp Wolfer
 # Copyright (C) 2012-2013 Michael Wiencek
 # Copyright (C) 2012-2014 Wieland Hoffmann
 # Copyright (C) 2013 Calvin Walton
@@ -38,20 +38,18 @@ import mutagen.oggspeex
 import mutagen.oggtheora
 import mutagen.oggvorbis
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.coverart.image import (
     CoverArtImageError,
     TagCoverArtImage,
 )
 from picard.file import File
-from picard.formats import guess_format
 from picard.formats.id3 import (
     image_type_as_id3_num,
     types_from_id3,
 )
+from picard.formats.util import guess_format
 from picard.metadata import Metadata
 from picard.util import (
     encode_filename,
@@ -122,6 +120,7 @@ class VCommentFile(File):
 
     def _load(self, filename):
         log.debug("Loading file %r", filename)
+        config = get_config()
         file = self._File(encode_filename(filename))
         file.tags = file.tags or {}
         metadata = Metadata()
@@ -226,6 +225,7 @@ class VCommentFile(File):
     def _save(self, filename, metadata):
         """Save metadata to the file."""
         log.debug("Saving file %r", filename)
+        config = get_config()
         is_flac = self._File == mutagen.flac.FLAC
         file = self._File(encode_filename(filename))
         if file.tags is None:
@@ -316,18 +316,25 @@ class VCommentFile(File):
             real_name = self._get_tag_name(tag)
             if real_name and real_name in tags:
                 if real_name in ('performer', 'comment'):
-                    tag_type = r"\(%s\)" % tag.split(':', 1)[1]
-                    for item in tags.get(real_name):
-                        if re.search(tag_type, item):
-                            tags.get(real_name).remove(item)
+                    parts = tag.split(':', 1)
+                    if len(parts) == 2:
+                        tag_type_regex = re.compile(r"\(%s\)$" % re.escape(parts[1]))
+                    else:
+                        tag_type_regex = re.compile(r"[^)]$")
+                    existing_tags = tags.get(real_name)
+                    for item in existing_tags:
+                        if re.search(tag_type_regex, item):
+                            existing_tags.remove(item)
+                    tags[real_name] = existing_tags
                 else:
-                    if tag in ('totaldiscs', 'totaltracks'):
+                    if tag in ('totaldiscs', 'totaltracks') and tag in tags:
                         # both tag and real_name are to be deleted in this case
                         del tags[tag]
                     del tags[real_name]
 
     def _get_tag_name(self, name):
         if name == '~rating':
+            config = get_config()
             if config.setting['rating_user_email']:
                 return 'rating:%s' % config.setting['rating_user_email']
             else:
@@ -398,7 +405,7 @@ class OggTheoraFile(VCommentFile):
 class OggVorbisFile(VCommentFile):
 
     """Ogg Vorbis file."""
-    EXTENSIONS = [".ogg"]
+    EXTENSIONS = []
     NAME = "Ogg Vorbis"
     _File = mutagen.oggvorbis.OggVorbis
 
@@ -419,7 +426,7 @@ class OggOpusFile(VCommentFile):
 
 def OggAudioFile(filename):
     """Generic Ogg audio file."""
-    options = [OggFLACFile, OggSpeexFile, OggVorbisFile]
+    options = [OggFLACFile, OggOpusFile, OggSpeexFile, OggVorbisFile]
     return guess_format(filename, options)
 
 
@@ -437,3 +444,20 @@ def OggVideoFile(filename):
 OggVideoFile.EXTENSIONS = [".ogv"]
 OggVideoFile.NAME = "Ogg Video"
 OggVideoFile.supports_tag = VCommentFile.supports_tag
+
+
+def OggContainerFile(filename):
+    """Generic Ogg file."""
+    options = [
+        OggFLACFile,
+        OggOpusFile,
+        OggSpeexFile,
+        OggTheoraFile,
+        OggVorbisFile
+    ]
+    return guess_format(filename, options)
+
+
+OggContainerFile.EXTENSIONS = [".ogg"]
+OggContainerFile.NAME = "Ogg"
+OggContainerFile.supports_tag = VCommentFile.supports_tag

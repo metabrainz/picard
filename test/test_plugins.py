@@ -124,7 +124,7 @@ class TestPicardPluginManager(TestPicardPluginsCommon):
         result = _compatible_api_versions(api_versions)
         self.assertEqual(result, expected)
 
-        # pretty sure 0.0 isn't compatible
+        # pretty sure 0.0 isn't compatible
         api_versions = ["0.0"]
         expected = set()
         result = _compatible_api_versions(api_versions)

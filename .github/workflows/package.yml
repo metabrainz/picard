@@ -23,12 +23,15 @@ on:
 
 jobs:
   package-macos:
-    runs-on: macos-latest
+    runs-on: macos-10.15
+    strategy:
+      matrix:
+        macos-deployment-version: [10.12, 10.14]
     env:
       DISCID_VERSION: 0.6.2
-      FPCALC_VERSION: 1.4.4-9
-      PYTHON_VERSION: 3.7.6
-      MACOSX_DEPLOYMENT_TARGET: 10.12
+      FPCALC_VERSION: 1.5.0
+      PYTHON_VERSION: 3.9.1
+      MACOSX_DEPLOYMENT_TARGET: ${{ matrix.macos-deployment-version }}
     steps:
     - uses: actions/checkout@v2
       with:
@@ -42,41 +45,69 @@ jobs:
     - name: Setup macOS build environment
       run: |
         ./scripts/package/macos-setup.sh
-        echo "::add-path::/Library/Frameworks/Python.framework/Versions/3.7/bin"
+        PYTHON_BASE_VERSION=$(echo $PYTHON_VERSION | sed -e "s/\.[0-9]\{1,\}$//")
+        echo "/Library/Frameworks/Python.framework/Versions/$PYTHON_BASE_VERSION/bin" >> $GITHUB_PATH
+        echo "/usr/local/opt/gettext/bin" >> $GITHUB_PATH
         RELEASE_TAG=$(git describe --match "release-*" --abbrev=0 --always HEAD)
         BUILD_NUMBER=$(git rev-list --count $RELEASE_TAG..HEAD)
-        echo "::set-env name=BUILD_NUMBER::$BUILD_NUMBER"
+        echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
         mkdir artifacts
+        python3 -m pip install --upgrade pip setuptools wheel
     - name: Patch build version
       if: startsWith(github.ref, 'refs/tags/') != true
       run: |
         python3 setup.py patch_version --platform=$BUILD_NUMBER.$(git rev-parse --short HEAD)
+    - name: Compile and install PyInstaller
+      if: matrix.macos-deployment-version == '10.14'
+      run: |
+        git clone --depth 1 --branch "$PYINSTALLER_VERSION" https://github.com/pyinstaller/pyinstaller.git pyinstaller
+        cd pyinstaller/bootloader
+        python3 ./waf all
+        cd ..
+        pip3 install .
+      env:
+        PYINSTALLER_VERSION: v4.2
+        CFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}
+        CPPFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}
+        LDFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}
+        LINKFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}
     - name: Install dependencies
       run: |
-        python3 -m pip install --upgrade pip setuptools wheel
         pip3 install -r requirements-build.txt
-        pip3 install -r requirements-macos.txt
+        pip3 install -r requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt
     - name: Run tests
       run: |
         python3 setup.py test
+    - name: Prepare code signing certificate
+      run: |
+        if [ -n "$CODESIGN_MACOS_PFX_URL" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
+          pip3 install awscli
+          aws s3 cp "$CODESIGN_MACOS_PFX_URL" ./scripts/package/appledev.p12
+        else
+          echo "::warning::No code signing certificate available, skipping code signing."
+        fi
+      env:
+        AWS_DEFAULT_REGION: eu-central-1
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        CODESIGN_MACOS_PFX_URL: ${{ secrets.CODESIGN_MACOS_PFX_URL }}
     - name: Build macOS app
       run: |
         ./scripts/package/macos-package-app.sh
+        rm -f ./scripts/package/appledev.p12
         mv dist/*.dmg artifacts/
       env:
-        APPLE_ID_USER: ${{ secrets. APPLE_ID_USER }}
-        APPLE_ID_PASSWORD: ${{ secrets. APPLE_ID_PASSWORD }}
-        encrypted_be5fb2212036_key: ${{ secrets.CODESIGN_MACOS_ENCRYPTED_KEY }}
-        encrypted_be5fb2212036_iv: ${{ secrets.CODESIGN_MACOS_ENCRYPTED_IV }}
-        appledev_p12_password: ${{ secrets.CODESIGN_MACOS_P12_PASSWORD }}
+        APPLE_ID_USER: ${{ secrets.APPLE_ID_USER }}
+        APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+        CODESIGN_MACOS_P12_PASSWORD: ${{ secrets.CODESIGN_MACOS_P12_PASSWORD }}
     - name: Archive production artifacts
       uses: actions/upload-artifact@v1
       with:
-        name: macos-app
+        name: macos-app-${{ matrix.macos-deployment-version }}
         path: artifacts/
 
   package-windows:
-    runs-on: windows-latest
+    runs-on: windows-2019
     strategy:
       matrix:
         type:
@@ -97,14 +128,14 @@ jobs:
     - name: Setup Windows build environment
       run: |
         & .\scripts\package\win-setup.ps1 -DiscidVersion $Env:DISCID_VERSION -FpcalVersion $Env:FPCALC_VERSION
-        Write-Output "::add-path::C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64"
+        Write-Output "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
         $ReleaseTag = $(git describe --match "release-*" --abbrev=0 --always HEAD)
         $BuildNumber = $(git rev-list --count "$ReleaseTag..HEAD")
-        Write-Output "::set-env name=BUILD_NUMBER::$BuildNumber"
+        Write-Output "BUILD_NUMBER=$BuildNumber" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8
         New-Item -Name .\artifacts -ItemType Directory
       env:
         DISCID_VERSION: 0.6.2
-        FPCALC_VERSION: 1.4.4-9
+        FPCALC_VERSION: 1.5.0
     - name: Patch build version
       if: startsWith(github.ref, 'refs/tags/') != true
       run: |
@@ -122,7 +153,7 @@ jobs:
         If ($Env:CODESIGN_PFX_URL -And $Env:AWS_ACCESS_KEY_ID) {
           pip install awscli
           aws s3 cp "$Env:CODESIGN_PFX_URL" .\codesign.pfx
-          Write-Output "::set-env name=CODESIGN::1"
+          Write-Output "CODESIGN=1" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8
         } Else {
           Write-Output "::warning::No code signing certificate available, skipping code signing."
         }
@@ -167,6 +198,7 @@ jobs:
           $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_PFX_PASSWORD -Force -AsPlainText
           $Certificate = Get-PfxCertificate -FilePath .\codesign.pfx -Password $CertPassword
           & .\scripts\package\win-package-portable.ps1 -BuildNumber $Env:BUILD_NUMBER -Certificate $Certificate
+          Remove-Item .\codesign.pfx
         } Else {
           & .\scripts\package\win-package-portable.ps1 -BuildNumber $Env:BUILD_NUMBER
         }
@@ -193,7 +225,11 @@ jobs:
         python-version: 3.8
     - uses: actions/download-artifact@v1
       with:
-        name: macos-app
+        name: macos-app-10.12
+        path: artifacts/
+    - uses: actions/download-artifact@v1
+      with:
+        name: macos-app-10.14
         path: artifacts/
     - uses: actions/download-artifact@v1
       with:

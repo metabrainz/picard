@@ -1,0 +1,178 @@
+{
+    "id": "fe206927-dd73-49e5-8d60-a5fba2d331a6",
+    "title": "Lady",
+    "number": "0",
+    "artist-credit": [
+        {
+            "artist": {
+                "type": "Group",
+                "sort-name": "Ärzte, Die",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "aliases": [
+                    {
+                        "ended": false,
+                        "end": null,
+                        "type-id": null,
+                        "begin": null,
+                        "name": "Die Aerzte",
+                        "primary": null,
+                        "locale": null,
+                        "type": null,
+                        "sort-name": "Aerzte, Die"
+                    },
+                    {
+                        "ended": false,
+                        "end": null,
+                        "type-id": null,
+                        "name": "Die Geilen Greise",
+                        "primary": null,
+                        "begin": null,
+                        "sort-name": "Geilen Greise, Die",
+                        "locale": null,
+                        "type": null
+                    },
+                    {
+                        "type-id": null,
+                        "end": null,
+                        "ended": false,
+                        "type": null,
+                        "locale": null,
+                        "sort-name": "Ulkigen Pulkigen, Die",
+                        "name": "Die Ulkigen Pulkigen",
+                        "primary": null,
+                        "begin": null
+                    },
+                    {
+                        "ended": false,
+                        "end": null,
+                        "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                        "begin": null,
+                        "primary": null,
+                        "name": "Die Ãrzte",
+                        "sort-name": "Die Ãrzte",
+                        "type": "Search hint",
+                        "locale": null
+                    },
+                    {
+                        "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                        "ended": false,
+                        "end": null,
+                        "locale": null,
+                        "type": "Search hint",
+                        "sort-name": "Die Ärtze",
+                        "primary": null,
+                        "name": "Die Ärtze",
+                        "begin": null
+                    },
+                    {
+                        "ended": false,
+                        "end": null,
+                        "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                        "begin": null,
+                        "primary": null,
+                        "name": "Die Ärtzte",
+                        "sort-name": "Die Ärtzte",
+                        "type": "Search hint",
+                        "locale": null
+                    },
+                    {
+                        "primary": true,
+                        "name": "Die Ärzte",
+                        "begin": null,
+                        "sort-name": "Ärzte, Die",
+                        "locale": "de",
+                        "type": "Artist name",
+                        "ended": false,
+                        "end": null,
+                        "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc"
+                    },
+                    {
+                        "begin": null,
+                        "name": "DÄ",
+                        "primary": null,
+                        "type": null,
+                        "locale": null,
+                        "sort-name": "Ä, D",
+                        "end": null,
+                        "ended": false,
+                        "type-id": null
+                    },
+                    {
+                        "sort-name": "Laternen Joe",
+                        "type": null,
+                        "locale": null,
+                        "begin": null,
+                        "primary": null,
+                        "name": "Laternen Joe",
+                        "type-id": null,
+                        "ended": false,
+                        "end": null
+                    },
+                    {
+                        "end": null,
+                        "ended": false,
+                        "type-id": null,
+                        "begin": null,
+                        "name": "The Physicians",
+                        "primary": false,
+                        "sort-name": "The Physicians",
+                        "locale": "en",
+                        "type": null
+                    },
+                    {
+                        "ended": false,
+                        "end": null,
+                        "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                        "name": "Ärzte",
+                        "primary": null,
+                        "begin": null,
+                        "sort-name": "Ärzte",
+                        "locale": null,
+                        "type": "Search hint"
+                    }
+                ],
+                "id": "f2fb0ff0-5679-42ec-a55c-15109ce6e320",
+                "name": "Die Ärzte",
+                "disambiguation": ""
+            },
+            "name": "Die Ärzte",
+            "joinphrase": ""
+        }
+    ],
+    "position": 0,
+    "length": 228000,
+    "recording": {
+        "id": "e8484ab3-9274-411d-a72c-e570fa5e02de",
+        "aliases": [
+            {
+                "begin": null,
+                "primary": null,
+                "name": "Lady (Hidden Track)",
+                "sort-name": "Lady (Hidden Track)",
+                "locale": null,
+                "type": null,
+                "ended": false,
+                "end": null,
+                "type-id": null
+            }
+        ],
+        "title": "Lady",
+        "video": false,
+        "disambiguation": "",
+        "artist-credit": [
+            {
+                "name": "Die Ärzte",
+                "joinphrase": "",
+                "artist": {
+                    "disambiguation": "",
+                    "name": "Die Ärzte",
+                    "id": "f2fb0ff0-5679-42ec-a55c-15109ce6e320",
+                    "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                    "type": "Group",
+                    "sort-name": "Ärzte, Die"
+                }
+            }
+        ],
+        "length": 231000
+    }
+}

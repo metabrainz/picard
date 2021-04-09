@@ -1,0 +1,16 @@
+{
+    "MsgAlreadyInstalled": "${PRODUCT_NAME} është i instaluar tashmë dhe duhet të çinstalohet, përpara se të instalohet ky përmirësim te versioni ${PRODUCT_VERSION}. \n\nKlikoni “OK” që të vazhdohet, ose “Anuloje”, që të anulohet ky përmirësim.",
+    "MsgApplicationRunning": "Aplikacioni ${PRODUCT_NAME} është duke xhiruar. Ju lutemi, mbylleni dhe riprovoni.",
+    "MsgRequires64Bit": "Ky version i ${PRODUCT_NAME} lyp një sistem Windows 64-bitësh.",
+    "MuiDescriptionRequired": "Instalon ${PRODUCT_NAME} tok me kartelat e nevojshme për xhirimin e tij.",
+    "MuiDescriptionLang": "Instalon përkthime të ${PRODUCT_NAME} në gjuhë të ndryshme.",
+    "MuiDescriptionShortcuts": "Instalon kode të shkurtër për nisjen e ${PRODUCT_NAME}.",
+    "MuiDescriptionDesktop": "Instalon një shkurtore te desktopi.",
+    "MuiDescriptionStartMenu": "Instalon një shkurtore te Menuja e Nisjeve.",
+    "OptionRemoveSettings": "Hiqni rregullimet dhe të dhëna personale",
+    "SectionDesktop": "Desktop",
+    "SectionLanguages": "Gjuhë",
+    "SectionRequired": "Kartela programi (të domosdoshme)",
+    "SectionShortcuts": "Shkurtore",
+    "SectionStartMenu": "Menu nisjesh"
+}

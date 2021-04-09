@@ -1,0 +1,238 @@
+{
+    "video": true,
+    "id": "370889ee-7a70-4d0a-8f4d-e514e0494d7e",
+    "first-release-date": "2008-05-23",
+    "aliases": [],
+    "length": 218000,
+    "artist-credit": [
+        {
+            "artist": {
+                "disambiguation": "British metal / hard rock band",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "type": "Group",
+                "sort-name": "Paradise Lost",
+                "aliases": [],
+                "id": "10bf95b6-30e3-44f1-817f-45762cdc0de0",
+                "name": "Paradise Lost"
+            },
+            "joinphrase": "",
+            "name": "Paradise Lost"
+        }
+    ],
+    "disambiguation": "official music video",
+    "title": "The Enemy",
+    "relations": [
+        {
+            "source-credit": "",
+            "target-type": "artist",
+            "begin": null,
+            "direction": "backward",
+            "attribute-values": {},
+            "target-credit": "Edward 209",
+            "end": null,
+            "type-id": "5c0ceac3-feb4-41f0-868d-dc06f6e27fc0",
+            "artist": {
+                "disambiguation": "",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "type": "Person",
+                "sort-name": "Mavskegg, Edward",
+                "name": "Edward Mavskegg",
+                "id": "9e26b912-16c1-4dac-991e-87f7aa184fed"
+            },
+            "attribute-ids": {},
+            "attributes": [],
+            "type": "producer",
+            "ended": false
+        },
+        {
+            "direction": "backward",
+            "begin": null,
+            "target-type": "artist",
+            "source-credit": "",
+            "artist": {
+                "name": "Edward Mavskegg",
+                "id": "9e26b912-16c1-4dac-991e-87f7aa184fed",
+                "sort-name": "Mavskegg, Edward",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "disambiguation": ""
+            },
+            "type-id": "578ee04d-3227-4335-ba2c-11e8ba420e0b",
+            "end": null,
+            "target-credit": "Edward 209",
+            "attribute-values": {},
+            "attribute-ids": {},
+            "ended": false,
+            "attributes": [],
+            "type": "video director"
+        },
+        {
+            "target-type": "recording",
+            "source-credit": "",
+            "begin": null,
+            "direction": "backward",
+            "attribute-values": {},
+            "target-credit": "",
+            "end": null,
+            "recording": {
+                "title": "The Enemy",
+                "disambiguation": "",
+                "artist-credit": [
+                    {
+                        "artist": {
+                            "type": null,
+                            "type-id": null,
+                            "disambiguation": "British metal / hard rock band",
+                            "id": "10bf95b6-30e3-44f1-817f-45762cdc0de0",
+                            "name": "Paradise Lost",
+                            "sort-name": "Paradise Lost"
+                        },
+                        "joinphrase": "",
+                        "name": "Paradise Lost"
+                    }
+                ],
+                "id": "20ac46d2-aa41-45e0-b3f4-8b660560c696",
+                "length": 219066,
+                "video": false
+            },
+            "type-id": "ce3de655-7451-44d1-9224-87eb948c205d",
+            "attribute-ids": {},
+            "type": "music video",
+            "attributes": [],
+            "ended": false
+        },
+        {
+            "direction": "forward",
+            "begin": null,
+            "target-type": "url",
+            "source-credit": "",
+            "type-id": "7e41ef12-a124-4324-afdb-fdbae687a89c",
+            "end": null,
+            "target-credit": "",
+            "attribute-values": {},
+            "attribute-ids": {
+                "video": "112054d5-e706-4dd8-99ea-09aabee36cd6"
+            },
+            "url": {
+                "id": "96ebef7d-b7e5-4c58-b9d3-163715bc44bc",
+                "resource": "https://www.youtube.com/watch?v=O_HwMrrJ4M4"
+            },
+            "ended": false,
+            "attributes": [
+                "video"
+            ],
+            "type": "free streaming"
+        },
+        {
+            "ended": false,
+            "url": {
+                "resource": "http://imvdb.com/video/paradise-lost/the-enemy",
+                "id": "6a0bcc4f-f290-4328-8ee1-c63fe45a7a46"
+            },
+            "attributes": [],
+            "type": "other databases",
+            "attribute-ids": {},
+            "type-id": "bc21877b-e993-42ed-a7ce-9187ec9b638f",
+            "end": null,
+            "target-credit": "",
+            "attribute-values": {},
+            "direction": "forward",
+            "begin": null,
+            "target-type": "url",
+            "source-credit": ""
+        },
+        {
+            "direction": "forward",
+            "source-credit": "",
+            "target-type": "work",
+            "begin": null,
+            "end": null,
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "attribute-values": {},
+            "target-credit": "",
+            "attribute-ids": {},
+            "work": {
+                "disambiguation": "",
+                "type": "Song",
+                "attributes": [],
+                "title": "The Enemy",
+                "relations": [
+                    {
+                        "type": "composer",
+                        "attributes": [],
+                        "ended": false,
+                        "attribute-ids": {},
+                        "attribute-values": {},
+                        "target-credit": "",
+                        "end": null,
+                        "artist": {
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person",
+                            "disambiguation": "",
+                            "sort-name": "Mackintosh, Gregor",
+                            "name": "Gregor Mackintosh",
+                            "id": "1d82791c-f3b0-4695-985a-35a3f6c7a014"
+                        },
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "target-type": "artist",
+                        "source-credit": "",
+                        "begin": null,
+                        "direction": "backward"
+                    },
+                    {
+                        "attribute-ids": {},
+                        "ended": false,
+                        "type": "lyricist",
+                        "attributes": [],
+                        "begin": null,
+                        "target-type": "artist",
+                        "source-credit": "",
+                        "direction": "backward",
+                        "target-credit": "",
+                        "attribute-values": {},
+                        "artist": {
+                            "id": "c77bf917-f24d-4e91-a140-12d1707f4428",
+                            "name": "Nick Holmes",
+                            "sort-name": "Holmes, Nick",
+                            "disambiguation": "British metal vocalist",
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                        },
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "end": null
+                    },
+                    {
+                        "attribute-ids": {},
+                        "ended": false,
+                        "url": {
+                            "resource": "http://lyrics.wikia.com/Paradise_Lost:The_Enemy",
+                            "id": "ae13d5e0-075b-4d61-8102-9f66127c726f"
+                        },
+                        "attributes": [],
+                        "type": "lyrics",
+                        "direction": "backward",
+                        "begin": null,
+                        "target-type": "url",
+                        "source-credit": "",
+                        "type-id": "e38e65aa-75e0-42ba-ace0-072aeb91a538",
+                        "end": null,
+                        "target-credit": "",
+                        "attribute-values": {}
+                    }
+                ],
+                "language": "eng",
+                "id": "9a186e42-bf73-3e91-9359-cc7b6579eeb8",
+                "iswcs": [
+                    "T-900.213.450-1"
+                ],
+                "languages": [
+                    "eng"
+                ],
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6"
+            },
+            "attributes": [],
+            "type": "performance",
+            "ended": false
+        }
+    ]
+}

@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008, 2011 Lukáš Lalinský
 # Copyright (C) 2008-2009 Nikolai Prokoschenko
-# Copyright (C) 2009-2010, 2014-2015, 2018-2019 Philipp Wolfer
+# Copyright (C) 2009-2010, 2014-2015, 2018-2021 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2011-2013 Wieland Hoffmann
 # Copyright (C) 2013 Calvin Walton
@@ -36,16 +36,14 @@ import os.path
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QStandardPaths
-from PyQt5.QtGui import (
-    QFont,
-    QPalette,
-)
+from PyQt5.QtGui import QPalette
 
-from picard import config
-from picard.const import (
-    DEFAULT_FILE_NAMING_FORMAT,
-    PICARD_URLS,
+from picard.config import (
+    BoolOption,
+    TextOption,
+    get_config,
 )
+from picard.const import DEFAULT_FILE_NAMING_FORMAT
 from picard.const.sys import IS_WIN
 from picard.file import File
 from picard.script import (
@@ -61,7 +59,7 @@ from picard.ui.options import (
 )
 from picard.ui.options.scripting import (
     ScriptCheckError,
-    TaggerScriptSyntaxHighlighter,
+    ScriptingDocumentationDialog,
 )
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.util import enabledSlot
@@ -77,21 +75,22 @@ class RenamingOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 40
     ACTIVE = True
+    HELP_URL = '/config/options_filerenaming.html'
 
     options = [
-        config.BoolOption("setting", "windows_compatibility", True),
-        config.BoolOption("setting", "ascii_filenames", False),
-        config.BoolOption("setting", "rename_files", False),
-        config.TextOption(
+        BoolOption("setting", "windows_compatibility", True),
+        BoolOption("setting", "ascii_filenames", False),
+        BoolOption("setting", "rename_files", False),
+        TextOption(
             "setting",
             "file_naming_format",
             DEFAULT_FILE_NAMING_FORMAT,
         ),
-        config.BoolOption("setting", "move_files", False),
-        config.TextOption("setting", "move_files_to", _default_music_dir),
-        config.BoolOption("setting", "move_additional_files", False),
-        config.TextOption("setting", "move_additional_files_pattern", "*.jpg *.png"),
-        config.BoolOption("setting", "delete_empty_dirs", True),
+        BoolOption("setting", "move_files", False),
+        TextOption("setting", "move_files_to", _default_music_dir),
+        BoolOption("setting", "move_additional_files", False),
+        TextOption("setting", "move_additional_files_pattern", "*.jpg *.png"),
+        BoolOption("setting", "delete_empty_dirs", True),
     ]
 
     def __init__(self, parent=None):
@@ -119,17 +118,17 @@ class RenamingOptionsPage(OptionsPage):
         )
         self.ui.file_naming_format.textChanged.connect(self.check_formats)
         self.ui.file_naming_format_default.clicked.connect(self.set_file_naming_format_default)
-        self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.file_naming_format.document())
         self.ui.move_files_to_browse.clicked.connect(self.move_files_to_browse)
 
         script_edit = self.ui.file_naming_format
-        font = QFont('Monospace')
-        font.setStyleHint(QFont.TypeWriter)
-        script_edit.setFont(font)
         self.script_palette_normal = script_edit.palette()
         self.script_palette_readonly = QPalette(self.script_palette_normal)
         disabled_color = self.script_palette_normal.color(QPalette.Inactive, QPalette.Window)
         self.script_palette_readonly.setColor(QPalette.Disabled, QPalette.Base, disabled_color)
+        self.ui.scripting_documentation_button.clicked.connect(self.show_scripting_documentation)
+
+    def show_scripting_documentation(self):
+        ScriptingDocumentationDialog.show_instance(parent=self)
 
     def toggle_file_moving(self, state):
         self.toggle_file_naming_format()
@@ -158,6 +157,7 @@ class RenamingOptionsPage(OptionsPage):
         self.update_examples()
 
     def _example_to_filename(self, file):
+        config = get_config()
         settings = SettingsOverride(config.setting, {
             'ascii_filenames': self.ui.ascii_filenames.isChecked(),
             'file_naming_format': self.ui.file_naming_format.toPlainText(),
@@ -191,6 +191,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.example_filename_va.setText(example2)
 
     def load(self):
+        config = get_config()
         if IS_WIN:
             self.ui.windows_compatibility.setChecked(True)
             self.ui.windows_compatibility.setEnabled(False)
@@ -200,12 +201,6 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_files.setChecked(config.setting["move_files"])
         self.ui.ascii_filenames.setChecked(config.setting["ascii_filenames"])
         self.ui.file_naming_format.setPlainText(config.setting["file_naming_format"])
-        args = {
-            "picard-doc-scripting-url": PICARD_URLS['doc_scripting'],
-        }
-        text = _('<a href="%(picard-doc-scripting-url)s">Open Scripting'
-                 ' Documentation in your browser</a>') % args
-        self.ui.file_naming_format_documentation.setText(text)
         self.ui.move_files_to.setText(config.setting["move_files_to"])
         self.ui.move_files_to.setCursorPosition(0)
         self.ui.move_additional_files.setChecked(config.setting["move_additional_files"])
@@ -229,6 +224,7 @@ class RenamingOptionsPage(OptionsPage):
                 raise ScriptCheckError("", _("The file naming format must not be empty."))
 
     def save(self):
+        config = get_config()
         config.setting["windows_compatibility"] = self.ui.windows_compatibility.isChecked()
         config.setting["ascii_filenames"] = self.ui.ascii_filenames.isChecked()
         config.setting["rename_files"] = self.ui.rename_files.isChecked()
@@ -255,6 +251,7 @@ class RenamingOptionsPage(OptionsPage):
         file.state = File.NORMAL
         file.metadata['album'] = 'Help!'
         file.metadata['title'] = 'Ticket to Ride'
+        file.metadata['~releasecomment'] = '2014 mono remaster'
         file.metadata['artist'] = 'The Beatles'
         file.metadata['artistsort'] = 'Beatles, The'
         file.metadata['albumartist'] = 'The Beatles'
@@ -263,21 +260,24 @@ class RenamingOptionsPage(OptionsPage):
         file.metadata['totaltracks'] = '14'
         file.metadata['discnumber'] = '1'
         file.metadata['totaldiscs'] = '1'
-        file.metadata['date'] = '1965-08-06'
+        file.metadata['originaldate'] = '1965-08-06'
+        file.metadata['originalyear'] = '1965'
+        file.metadata['date'] = '2014-09-08'
         file.metadata['releasetype'] = ['album', 'soundtrack']
         file.metadata['~primaryreleasetype'] = ['album']
         file.metadata['~secondaryreleasetype'] = ['soundtrack']
         file.metadata['releasestatus'] = 'official'
         file.metadata['releasecountry'] = 'US'
         file.metadata['~extension'] = 'mp3'
-        file.metadata['musicbrainz_albumid'] = '2c053984-4645-4699-9474-d2c35c227028'
+        file.metadata['musicbrainz_albumid'] = 'd7fbbb0a-1348-40ad-8eef-cd438d4cd203'
         file.metadata['musicbrainz_albumartistid'] = 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d'
         file.metadata['musicbrainz_artistid'] = 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d'
         file.metadata['musicbrainz_recordingid'] = 'ed052ae1-c950-47f2-8d2b-46e1b58ab76c'
-        file.metadata['musicbrainz_releasetrackid'] = '7668a62a-2fac-3151-a744-5707ac8c883c'
+        file.metadata['musicbrainz_releasetrackid'] = '392639f5-5629-477e-b04b-93bffa703405'
         return file
 
     def example_2(self):
+        config = get_config()
         file = File("track05.mp3")
         file.state = File.NORMAL
         file.metadata['album'] = "Coup d'État, Volume 1: Ku De Ta / Prologue"
@@ -291,6 +291,8 @@ class RenamingOptionsPage(OptionsPage):
         file.metadata['discnumber'] = '2'
         file.metadata['totaldiscs'] = '2'
         file.metadata['discsubtitle'] = "Beat Up"
+        file.metadata['originaldate'] = '2005-07-04'
+        file.metadata['originalyear'] = '2005'
         file.metadata['date'] = '2005-07-04'
         file.metadata['releasetype'] = ['album', 'compilation']
         file.metadata['~primaryreleasetype'] = 'album'

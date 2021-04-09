@@ -1,9 +1,9 @@
-# Translators:
+# 
 # Translators:
 #  <>, 2002, 2001, Inc, 2003, 2007, 2008, 2009, 2010, 2011, 2000,�s�, 2012
 #   Alastair McKinstry <mckinstry@computer.org>, 2002
 # Alastair McKinstry <mckinstry@computer.org>, 2001
-# Clay Cheng <clay1994@mail.hfut.edu.cn>, 2016-2017
+# Clay Cheng <569735195@qq.com>, 2016-2017
 # Dian Li <xslidian@gmail.com>, 2009-2019
 #   Free Software Foundation, Inc., 2002, 2003, 2007, 2008
 # RedHotHeat <gbonner@iol.ie>, 2012
@@ -15,11 +15,12 @@
 #   Tobias Toedter <t.toedter@gmx.net>, 2007
 #   - Wang Jian <lark@linux.net.cn>, 2000
 # YunQiang Su <wzssyqa@gmail.com>, 2011
+# 刘岩 <xuanqidongjim@gmail.com>, 2020
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2019-10-04 01:23+0000\n"
-"Last-Translator: Dian Li <xslidian@gmail.com>\n"
+"PO-Revision-Date: 2020-12-20 14:29+0000\n"
+"Last-Translator: 刘岩 <xuanqidongjim@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -540,7 +541,7 @@ msgstr "洪都拉斯"
 #. iso.code:HK
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:96
 msgid "Hong Kong"
-msgstr "香港特区"
+msgstr "中国香港"
 
 #. iso.code:HU
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:97
@@ -1145,7 +1146,7 @@ msgstr "叙利亚"
 #. iso.code:TW
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:205
 msgid "Taiwan"
-msgstr "台湾地区"
+msgstr "中国台湾"
 
 #. iso.code:TJ
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:206

@@ -2,6 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
+# Copyright (C) 2006 Lukáš Lalinský
 # Copyright (C) 2019 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
@@ -53,6 +54,27 @@ class ElidedLabel(QtWidgets.QLabel):
             self.setToolTip(self._full_label)
         else:
             self.setToolTip("")
+
+
+class ActiveLabel(QtWidgets.QLabel):
+    """Clickable QLabel."""
+
+    clicked = QtCore.pyqtSignal()
+
+    def __init__(self, active=True, drops=False, *args):
+        super().__init__(*args)
+        self.setActive(active)
+
+    def setActive(self, active):
+        self.active = active
+        if self.active:
+            self.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        else:
+            self.setCursor(QtGui.QCursor())
+
+    def mouseReleaseEvent(self, event):
+        if self.active and event.button() == QtCore.Qt.LeftButton:
+            self.clicked.emit()
 
 
 class ClickableSlider(QtWidgets.QSlider):

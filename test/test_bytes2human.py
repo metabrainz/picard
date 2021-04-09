@@ -81,7 +81,6 @@ class Testbytes2human(PicardTestCase):
         if create_test_data:
             self._save_expected_to(filename, testlist)
         expected = self._read_expected_from(filename)
-        #self.maxDiff = None
         self.assertEqual(testlist, expected)
         if create_test_data:
             # be sure it is disabled
@@ -106,13 +105,13 @@ class Testbytes2human(PicardTestCase):
     @staticmethod
     def _save_expected_to(path, a_list):
         with open(path, 'wb') as f:
-            f.writelines([l + "\n" for l in a_list])
+            f.writelines([line + "\n" for line in a_list])
             f.close()
 
     @staticmethod
     def _read_expected_from(path):
         with open(path, 'r') as f:
-            lines = [l.rstrip("\n") for l in f.readlines()]
+            lines = [line.rstrip("\n") for line in f.readlines()]
             f.close()
             return lines
 

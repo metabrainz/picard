@@ -34,6 +34,7 @@ from picard.formats import ext_to_format
 from picard.formats.mutagenext.aac import AACAPEv2
 from picard.formats.mutagenext.ac3 import AC3APEv2
 from picard.formats.mutagenext.tak import TAK
+from picard.formats.util import guess_format
 from picard.metadata import Metadata
 
 
@@ -54,6 +55,9 @@ settings = {
     'itunes_compatible_grouping': False,
     'aac_save_ape': True,
     'ac3_save_ape': True,
+    'write_wave_riff_info': True,
+    'remove_wave_riff_info': False,
+    'wave_riff_info_encoding': 'iso-8859-1',
 }
 
 
@@ -71,10 +75,7 @@ def load_metadata(filename):
 
 def save_and_load_metadata(filename, metadata):
     """Save new metadata to a file and load it again."""
-    f = picard.formats.open_(filename)
-    loaded_metadata = f._load(filename)
-    f._copy_loaded_metadata(loaded_metadata)
-    f._save(filename, metadata)
+    save_metadata(filename, metadata)
     return load_metadata(filename)
 
 
@@ -114,6 +115,7 @@ TAGS = {
     'conductor': 'Foo',
     'copyright': 'Foo',
     'date': '2004',
+    'director': 'Foo',
     'discnumber': '1',
     'discsubtitle': 'Foo',
     'djmixer': 'Foo',
@@ -149,6 +151,7 @@ TAGS = {
     'originaldate': '1980-01-20',
     'originalyear': '1980',
     'originalfilename': 'Foo',
+    'performer': 'Foo',
     'performer:guest vocal': 'Foo',
     'podcast': '1',
     'podcasturl': 'Foo',
@@ -199,7 +202,7 @@ class CommonTests:
 
         def setUp(self):
             super().setUp()
-            config.setting = settings.copy()
+            self.set_config_values(settings)
             if self.testfile:
                 _name, self.testfile_ext = os.path.splitext(self.testfile)
                 self.testfile_path = os.path.join('test', 'data', self.testfile)
@@ -223,7 +226,7 @@ class CommonTests:
         @skipUnlessTestfile
         def test_info(self):
             if not self.expected_info:
-                raise unittest.SkipTest("Ratings not supported")
+                raise unittest.SkipTest("Ratings not supported for %s" % self.format.NAME)
             metadata = save_and_load_metadata(self.filename, Metadata())
             for key, expected_value in self.expected_info.items():
                 value = metadata.length if key == 'length' else metadata[key]
@@ -320,35 +323,69 @@ class CommonTests:
                 metadata['~rating'] = 1
             original_metadata = save_and_load_metadata(self.filename, metadata)
             del metadata['albumartist']
+            del metadata['musicbrainz_artistid']
             if self.supports_ratings:
                 del metadata['~rating']
             new_metadata = save_and_load_metadata(self.filename, metadata)
-            self.assertIn('albumartist', original_metadata.keys())
-            self.assertNotIn('albumartist', new_metadata.keys())
+            self.assertIn('albumartist', original_metadata)
+            self.assertNotIn('albumartist', new_metadata)
+            self.assertIn('musicbrainz_artistid', original_metadata)
+            self.assertNotIn('musicbrainz_artistid', new_metadata)
             if self.supports_ratings:
-                self.assertIn('~rating', original_metadata.keys())
-                self.assertNotIn('~rating', new_metadata.keys())
+                self.assertIn('~rating', original_metadata)
+                self.assertNotIn('~rating', new_metadata)
 
         @skipUnlessTestfile
-        def test_delete_lyrics_tags(self):
-            for key in ('lyrics', 'lyrics:'):
-                metadata = Metadata(self.tags)
+        def test_delete_tags_with_empty_description(self):
+            for key in ('lyrics', 'lyrics:', 'comment', 'comment:', 'performer', 'performer:'):
+                name = key.rstrip(':')
+                name_with_description = name + ':foo'
+                if not self.format.supports_tag(name):
+                    continue
+                metadata = Metadata()
+                metadata[name] = 'bar'
+                metadata[name_with_description] = 'other'
                 original_metadata = save_and_load_metadata(self.filename, metadata)
-                self.assertIn('lyrics', original_metadata)
+                self.assertIn(name, original_metadata)
                 del metadata[key]
                 new_metadata = save_and_load_metadata(self.filename, metadata)
-                self.assertNotIn('lyrics', new_metadata)
+                self.assertNotIn(name, new_metadata)
+                # Ensure the names with description did not get deleted
+                if name_with_description in original_metadata:
+                    self.assertIn(name_with_description, new_metadata)
 
         @skipUnlessTestfile
-        def test_delete_non_existant_tags(self):
-            metadata = Metadata()
-            del metadata['albumartist']
-            del metadata['performer:drums']
-            del metadata['totaltracks']
-            new_metadata = save_and_load_metadata(self.filename, metadata)
-            self.assertNotIn('albumartist', new_metadata.keys())
-            self.assertNotIn('performer:drums', new_metadata.keys())
-            self.assertNotIn('totaltracks', new_metadata.keys())
+        def test_delete_tags_with_description(self):
+            for key in (
+                'comment:foo', 'comment:de:foo', 'performer:foo', 'lyrics:foo',
+                'comment:a*', 'comment:a[', 'performer:(x)', 'performer: Ä é '
+            ):
+                if not self.format.supports_tag(key):
+                    continue
+                prefix = key.split(':')[0]
+                metadata = Metadata()
+                metadata[key] = 'bar'
+                original_metadata = save_and_load_metadata(self.filename, metadata)
+                if key not in original_metadata and prefix in original_metadata:
+                    continue  # Skip if the type did not support saving this kind of tag
+                self.assertEqual('bar', original_metadata[key], original_metadata)
+                metadata[prefix] = '(foo) bar'
+                del metadata[key]
+                new_metadata = save_and_load_metadata(self.filename, metadata)
+                self.assertNotIn(key, new_metadata)
+                self.assertEqual('(foo) bar', new_metadata[prefix])
+
+        @skipUnlessTestfile
+        def test_delete_nonexistant_tags(self):
+            for key in ('title', 'foo', 'comment:foo', 'comment:de:foo',
+                        'performer:foo', 'lyrics:foo', 'totaltracks'):
+                if not self.format.supports_tag(key):
+                    continue
+                metadata = Metadata()
+                save_metadata(self.filename, metadata)
+                del metadata[key]
+                new_metadata = save_and_load_metadata(self.filename, metadata)
+                self.assertNotIn(key, new_metadata)
 
         @skipUnlessTestfile
         def test_delete_complex_tags(self):
@@ -365,23 +402,27 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_delete_performer(self):
-            if 'performer:guest vocal' in self.tags:
-                metadata = Metadata(self.tags)
-                metadata['performer:piano'] = 'Foo'
+            if not self.format.supports_tag('performer:'):
+                raise unittest.SkipTest('Tag "performer:" not supported for %s' % self.format.NAME)
+            metadata = Metadata({
+                'performer:piano': ['Piano1', 'Piano2'],
+                'performer:guitar': ['Guitar1'],
+            })
+            original_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertIn('Piano1', original_metadata.getall('performer:piano'))
+            self.assertIn('Piano2', original_metadata.getall('performer:piano'))
+            self.assertEqual(2, len(original_metadata.getall('performer:piano')))
+            self.assertEqual('Guitar1', original_metadata['performer:guitar'])
 
-                original_metadata = save_and_load_metadata(self.filename, metadata)
-                del metadata['performer:piano']
-                new_metadata = save_and_load_metadata(self.filename, metadata)
-
-                self.assertIn('performer:guest vocal', original_metadata)
-                self.assertIn('performer:guest vocal', new_metadata)
-                self.assertIn('performer:piano', original_metadata)
-                self.assertNotIn('performer:piano', new_metadata)
+            del metadata['performer:piano']
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertNotIn('performer:piano', new_metadata)
+            self.assertEqual('Guitar1', metadata['performer:guitar'])
 
         @skipUnlessTestfile
         def test_save_performer(self):
             if not self.format.supports_tag('performer:'):
-                return
+                raise unittest.SkipTest('Tag "performer:" not supported for %s' % self.format.NAME)
             instrument = "accordéon clavier « boutons »"
             artist = "桑山哲也"
             tag = "performer:" + instrument
@@ -414,7 +455,7 @@ class CommonTests:
         @skipUnlessTestfile
         def test_guess_format(self):
             temp_file = self.copy_of_original_testfile()
-            audio = picard.formats.guess_format(temp_file)
+            audio = guess_format(temp_file)
             audio_original = picard.formats.open_(self.filename)
             self.assertEqual(type(audio), type(audio_original))
 
@@ -422,9 +463,10 @@ class CommonTests:
         def test_split_ext(self):
             f = picard.formats.open_(self.filename)
             self.assertEqual(f._fixed_splitext(f.filename), os.path.splitext(f.filename))
-            self.assertEqual(f._fixed_splitext(f.EXTENSIONS[0]), ('', f.EXTENSIONS[0]))
             self.assertEqual(f._fixed_splitext('.test'), os.path.splitext('.test'))
-            self.assertNotEqual(f._fixed_splitext(f.EXTENSIONS[0]), os.path.splitext(f.EXTENSIONS[0]))
+            if f.EXTENSIONS:
+                self.assertEqual(f._fixed_splitext(f.EXTENSIONS[0]), ('', f.EXTENSIONS[0]))
+                self.assertNotEqual(f._fixed_splitext(f.EXTENSIONS[0]), os.path.splitext(f.EXTENSIONS[0]))
 
         @skipUnlessTestfile
         def test_clear_existing_tags_off(self):
@@ -459,3 +501,26 @@ class CommonTests:
             metadata = Metadata({'comment:foó': 'bar'})
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertEqual(metadata['comment:foó'], loaded_metadata['comment:foó'])
+
+        @skipUnlessTestfile
+        def test_invalid_track_and_discnumber(self):
+            # This test assumes a non-numeric test number can be written. For
+            # formats not supporting this it needs to be overridden.
+            metadata = Metadata({
+                'discnumber': 'notanumber',
+                'tracknumber': 'notanumber',
+            })
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(loaded_metadata['discnumber'], metadata['discnumber'])
+            self.assertEqual(loaded_metadata['totaldiscs'], metadata['totaldiscs'])
+            self.assertEqual(loaded_metadata['tracknumber'], metadata['tracknumber'])
+            self.assertEqual(loaded_metadata['totaltracks'], metadata['totaltracks'])
+
+        @skipUnlessTestfile
+        def test_save_movementnumber_without_movementtotal(self):
+            if not self.format.supports_tag('movementnumber'):
+                raise unittest.SkipTest('Tag "movementnumber" not supported for %s' % self.format.NAME)
+            metadata = Metadata({'movementnumber': 7})
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(loaded_metadata['movementnumber'], metadata['movementnumber'])
+            self.assertNotIn('movementtotal', loaded_metadata)

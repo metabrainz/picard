@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
 # Copyright (C) 2010 fatih
-# Copyright (C) 2010-2011, 2014, 2018-2019 Philipp Wolfer
+# Copyright (C) 2010-2011, 2014, 2018-2020 Philipp Wolfer
 # Copyright (C) 2012, 2014, 2018 Wieland Hoffmann
 # Copyright (C) 2013 Ionuț Ciocîrlan
 # Copyright (C) 2013-2014, 2018-2020 Laurent Monin
@@ -30,18 +30,23 @@
 
 import builtins
 from collections import namedtuple
-import os.path
+from collections.abc import Iterator
 import unittest
+from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
 
 from picard import util
 from picard.const.sys import IS_WIN
 from picard.util import (
+    extract_year_from_date,
     find_best_match,
-    imageinfo,
+    is_absolute_path,
+    iter_files_from_objects,
+    iter_unique,
     limited_join,
     sort_by_similarity,
+    uniqify,
 )
 
 
@@ -75,6 +80,25 @@ class ReplaceWin32IncompatTest(PicardTestCase):
     def test_incorrect(self):
         self.assertNotEqual(util.replace_win32_incompat("c:\\test\\te\"st2"),
                              "c:\\test\\te\"st2")
+
+
+class ExtractYearTest(PicardTestCase):
+    def test_string(self):
+        self.assertEqual(extract_year_from_date(""), None)
+        self.assertEqual(extract_year_from_date(2020), None)
+        self.assertEqual(extract_year_from_date("2020"), 2020)
+        self.assertEqual(extract_year_from_date('2020-02-28'), 2020)
+        self.assertEqual(extract_year_from_date('2015.02'), 2015)
+        self.assertEqual(extract_year_from_date('2015; 2015'), None)
+        # test for the format as supported by ID3 (https://id3.org/id3v2.4.0-structure): yyyy-MM-ddTHH:mm:ss
+        self.assertEqual(extract_year_from_date('2020-07-21T13:00:00'), 2020)
+
+    def test_mapping(self):
+        self.assertEqual(extract_year_from_date({}), None)
+        self.assertEqual(extract_year_from_date({'year': 'abc'}), None)
+        self.assertEqual(extract_year_from_date({'year': '2020'}), 2020)
+        self.assertEqual(extract_year_from_date({'year': 2020}), 2020)
+        self.assertEqual(extract_year_from_date({'year': '2020-02-28'}), None)
 
 
 class SanitizeDateTest(PicardTestCase):
@@ -245,61 +269,23 @@ class AlbumArtistFromPathTest(PicardTestCase):
         self.assertNotEqual(aafp(r'/artistx/albumy/disc/file.flac', '', ''), ('albumy', 'artistx'))
 
 
-class ImageInfoTest(PicardTestCase):
+class IsAbsolutePathTest(PicardTestCase):
 
-    def test_gif(self):
-        file = os.path.join('test', 'data', 'mb.gif')
+    def test_is_absolute(self):
+        self.assertTrue(is_absolute_path('/foo/bar'))
+        self.assertFalse(is_absolute_path('foo/bar'))
+        self.assertFalse(is_absolute_path('./foo/bar'))
+        self.assertFalse(is_absolute_path('../foo/bar'))
 
-        with open(file, 'rb') as f:
-            self.assertEqual(
-                imageinfo.identify(f.read()),
-                (140, 96, 'image/gif', '.gif', 5806)
-            )
-
-    def test_png(self):
-        file = os.path.join('test', 'data', 'mb.png')
-
-        with open(file, 'rb') as f:
-            self.assertEqual(
-                imageinfo.identify(f.read()),
-                (140, 96, 'image/png', '.png', 11137)
-            )
-
-    def test_jpeg(self):
-        file = os.path.join('test', 'data', 'mb.jpg')
-
-        with open(file, 'rb') as f:
-            self.assertEqual(
-                imageinfo.identify(f.read()),
-                (140, 96, 'image/jpeg', '.jpg', 8550)
-            )
-
-    def test_pdf(self):
-        file = os.path.join('test', 'data', 'mb.pdf')
-
-        with open(file, 'rb') as f:
-            self.assertEqual(
-                imageinfo.identify(f.read()),
-                (0, 0, 'application/pdf', '.pdf', 10362)
-            )
-
-    def test_not_enough_data(self):
-        self.assertRaises(imageinfo.IdentificationError,
-                          imageinfo.identify, "x")
-        self.assertRaises(imageinfo.NotEnoughData, imageinfo.identify, "x")
-
-    def test_invalid_data(self):
-        self.assertRaises(imageinfo.IdentificationError,
-                          imageinfo.identify, "x" * 20)
-        self.assertRaises(imageinfo.UnrecognizedFormat,
-                          imageinfo.identify, "x" * 20)
-
-    def test_invalid_png_data(self):
-        data = '\x89PNG\x0D\x0A\x1A\x0A' + "x" * 20
-        self.assertRaises(imageinfo.IdentificationError,
-                          imageinfo.identify, data)
-        self.assertRaises(imageinfo.UnrecognizedFormat,
-                          imageinfo.identify, data)
+    @unittest.skipUnless(IS_WIN, "windows test")
+    def test_is_absolute_windows(self):
+        self.assertTrue(is_absolute_path('D:/foo/bar'))
+        self.assertTrue(is_absolute_path('D:\\foo\\bar'))
+        self.assertTrue(is_absolute_path('\\foo\\bar'))
+        # Paths to Windows shares
+        self.assertTrue(is_absolute_path('\\\\foo\\bar'))
+        self.assertTrue(is_absolute_path('\\\\foo\\bar\\'))
+        self.assertTrue(is_absolute_path('\\\\foo\\bar\\baz'))
 
 
 class CompareBarcodesTest(PicardTestCase):
@@ -343,6 +329,7 @@ SimMatchTest = namedtuple('SimMatchTest', 'similarity name')
 class SortBySimilarity(PicardTestCase):
 
     def setUp(self):
+        super().setUp()
         self.test_values = [
             SimMatchTest(similarity=0.74, name='d'),
             SimMatchTest(similarity=0.61, name='a'),
@@ -351,8 +338,7 @@ class SortBySimilarity(PicardTestCase):
         ]
 
     def candidates(self):
-        for value in self.test_values:
-            yield value
+        yield from self.test_values
 
     def test_sort_by_similarity(self):
         results = [result.name for result in sort_by_similarity(self.candidates)]
@@ -390,6 +376,7 @@ class GetQtEnum(PicardTestCase):
 class LimitedJoin(PicardTestCase):
 
     def setUp(self):
+        super().setUp()
         self.list = [str(x) for x in range(0, 10)]
 
     def test_1(self):
@@ -410,3 +397,35 @@ class LimitedJoin(PicardTestCase):
         expected = '0,1,2,3,…,6,7,8,9'
         result = limited_join(self.list, len(self.list) - 1, ',')
         self.assertEqual(result, expected)
+
+
+class IterFilesFromObjectsTest(PicardTestCase):
+
+    def test_iterate_only_unique(self):
+        f1 = Mock()
+        f2 = Mock()
+        f3 = Mock()
+        obj1 = Mock()
+        obj1.iterfiles = Mock(return_value=[f1, f2])
+        obj2 = Mock()
+        obj2.iterfiles = Mock(return_value=[f2, f3])
+        result = iter_files_from_objects([obj1, obj2])
+        self.assertTrue(isinstance(result, Iterator))
+        self.assertEqual([f1, f2, f3], list(result))
+
+
+class IterUniqifyTest(PicardTestCase):
+
+    def test_unique(self):
+        items = [1, 2, 3, 2, 3, 4]
+        result = uniqify(items)
+        self.assertEqual([1, 2, 3, 4], result)
+
+
+class IterUniqueTest(PicardTestCase):
+
+    def test_unique(self):
+        items = [1, 2, 3, 2, 3, 4]
+        result = iter_unique(items)
+        self.assertTrue(isinstance(result, Iterator))
+        self.assertEqual([1, 2, 3, 4], list(result))

@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,11 +24,13 @@ import unittest
 import mutagen
 
 from picard.formats import ext_to_format
+from picard.metadata import Metadata
 
 from .common import (
     CommonTests,
     load_metadata,
     load_raw,
+    save_and_load_metadata,
     save_metadata,
     save_raw,
     skipUnlessTestfile,
@@ -92,6 +94,47 @@ class CommonMP4Tests:
                     loaded_metadata[name.lower()])
                 self.assertEqual(1, len(raw_metadata['----:com.apple.iTunes:' + name]))
                 self.assertNotIn('----:com.apple.iTunes:' + name.upper(), raw_metadata)
+
+        @skipUnlessTestfile
+        def test_delete_freeform_tags(self):
+            metadata = Metadata()
+            metadata['foo'] = 'bar'
+            original_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual('bar', original_metadata['foo'])
+            del metadata['foo']
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertNotIn('foo', new_metadata)
+
+        @skipUnlessTestfile
+        def test_invalid_track_and_discnumber(self):
+            metadata = Metadata({
+                'discnumber': 'notanumber',
+                'tracknumber': 'notanumber',
+            })
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertNotIn('discnumber', loaded_metadata)
+            self.assertNotIn('tracknumber', loaded_metadata)
+
+        @skipUnlessTestfile
+        def test_invalid_total_tracks_and_discs(self):
+            metadata = Metadata({
+                'discnumber': '1',
+                'totaldiscs': 'notanumber',
+                'tracknumber': '2',
+                'totaltracks': 'notanumber',
+            })
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(metadata['discnumber'], loaded_metadata['discnumber'])
+            self.assertEqual('0', loaded_metadata['totaldiscs'])
+            self.assertEqual(metadata['tracknumber'], loaded_metadata['tracknumber'])
+            self.assertEqual('0', loaded_metadata['totaltracks'])
+
+        @skipUnlessTestfile
+        def test_invalid_int_tag(self):
+            for tag in ['bpm', 'movementnumber', 'movementtotal', 'showmovement']:
+                metadata = Metadata({tag: 'notanumber'})
+                loaded_metadata = save_and_load_metadata(self.filename, metadata)
+                self.assertNotIn(tag, loaded_metadata)
 
 
 class M4ATest(CommonMP4Tests.MP4TestCase):

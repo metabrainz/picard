@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2018 Laurent Monin
-# Copyright (C) 2018 Philipp Wolfer
+# Copyright (C) 2018, 2020-2021 Philipp Wolfer
 # Copyright (C) 2018 Yvan Rivière
 #
 # This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ from picard.script import (
     ScriptParser,
 )
 from picard.track import Track
-from picard.util import uniqify
+from picard.util import iter_unique
 
 
 class ScriptsMenu(QtWidgets.QMenu):
@@ -53,7 +53,7 @@ class ScriptsMenu(QtWidgets.QMenu):
         s_text = script[3]
         parser = ScriptParser()
 
-        for obj in self._get_unique_metadata_objects():
+        for obj in self._iter_unique_metadata_objects():
             try:
                 parser.eval(s_text, obj.metadata)
                 obj.update()
@@ -66,20 +66,17 @@ class ScriptsMenu(QtWidgets.QMenu):
                 }
                 self.tagger.window.set_statusbar_message(msg, mparms)
 
-    def _get_unique_metadata_objects(self):
-        objs = self._get_metadata_objects(self.tagger.window.selected_objects)
-        return uniqify(objs)
+    def _iter_unique_metadata_objects(self):
+        return iter_unique(self._iter_metadata_objects(self.tagger.window.selected_objects))
 
-    def _get_metadata_objects(self, objs):
+    def _iter_metadata_objects(self, objs):
         for obj in objs:
-            if hasattr(obj, 'metadata'):
+            if hasattr(obj, 'metadata') and not getattr(obj, 'special', False):
                 yield obj
-            if isinstance(obj, Cluster):
-                yield from self._get_metadata_objects(obj.files)
-            if isinstance(obj, ClusterList):
-                yield from self._get_metadata_objects(obj)
-            if isinstance(obj, Album):
-                yield from self._get_metadata_objects(obj.tracks)
-                yield from self._get_metadata_objects(obj.unmatched_files.iterfiles())
-            if isinstance(obj, Track):
-                yield from self._get_metadata_objects(obj.linked_files)
+            if isinstance(obj, Cluster) or isinstance(obj, Track):
+                yield from self._iter_metadata_objects(obj.iterfiles())
+            elif isinstance(obj, ClusterList):
+                yield from self._iter_metadata_objects(obj)
+            elif isinstance(obj, Album):
+                yield from self._iter_metadata_objects(obj.tracks)
+                yield from self._iter_metadata_objects(obj.unmatched_files.iterfiles())

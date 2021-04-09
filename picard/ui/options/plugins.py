@@ -41,9 +41,11 @@ from PyQt5 import (
 )
 from PyQt5.QtWidgets import QTreeWidgetItemIterator
 
-from picard import (
-    config,
-    log,
+from picard import log
+from picard.config import (
+    ListOption,
+    Option,
+    get_config,
 )
 from picard.const import (
     PLUGINS_API,
@@ -217,13 +219,13 @@ class PluginsOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 70
     ACTIVE = True
+    HELP_URL = '/config/options_plugins.html'
 
     options = [
-        config.ListOption("setting", "enabled_plugins", []),
-        config.Option("persist", "plugins_list_state", QtCore.QByteArray()),
-        config.Option("persist", "plugins_list_sort_section", 0),
-        config.Option("persist", "plugins_list_sort_order",
-                      QtCore.Qt.AscendingOrder),
+        ListOption("setting", "enabled_plugins", []),
+        Option("persist", "plugins_list_state", QtCore.QByteArray()),
+        Option("persist", "plugins_list_sort_section", 0),
+        Option("persist", "plugins_list_sort_order", QtCore.Qt.AscendingOrder),
     ]
 
     def __init__(self, parent=None):
@@ -274,6 +276,7 @@ class PluginsOptionsPage(OptionsPage):
 
     def save_state(self):
         header = self.ui.plugins.header()
+        config = get_config()
         config.persist["plugins_list_state"] = header.saveState()
         config.persist["plugins_list_sort_section"] = header.sortIndicatorSection()
         config.persist["plugins_list_sort_order"] = header.sortIndicatorOrder()
@@ -286,6 +289,7 @@ class PluginsOptionsPage(OptionsPage):
 
     def restore_state(self):
         header = self.ui.plugins.header()
+        config = get_config()
         header.restoreState(config.persist["plugins_list_state"])
         idx = config.persist["plugins_list_sort_section"]
         order = config.persist["plugins_list_sort_order"]
@@ -294,6 +298,7 @@ class PluginsOptionsPage(OptionsPage):
 
     @staticmethod
     def is_plugin_enabled(plugin):
+        config = get_config()
         return bool(plugin.module_name in config.setting["enabled_plugins"])
 
     def available_plugins_name_version(self):
@@ -433,7 +438,7 @@ class PluginsOptionsPage(OptionsPage):
                 self,
                 _("Plugin '%s'") % plugin_name,
                 _("The plugin '%s' will be upgraded to version %s on next run of Picard.")
-                % (plugin.name, item.new_version)
+                % (plugin.name, item.new_version.to_string(short=True))
             )
 
             item.upgrade_to_version = item.new_version
@@ -577,6 +582,7 @@ class PluginsOptionsPage(OptionsPage):
         return item
 
     def save(self):
+        config = get_config()
         config.setting["enabled_plugins"] = self.enabled_plugins()
         self.save_state()
 
@@ -588,17 +594,20 @@ class PluginsOptionsPage(OptionsPage):
                 label = _("Restart Picard to upgrade to new version")
             else:
                 label = _("New version available")
-            text.append("<b>" + label + ": " + item.new_version + "</b>")
+            version_str = item.new_version.to_string(short=True)
+            text.append("<b>{0}: {1}</b>".format(label, version_str))
         if plugin.description:
             text.append(plugin.description + "<hr width='90%'/>")
-        if plugin.name:
-            text.append("<b>" + _("Name") + "</b>: " + plugin.name)
-        if plugin.author:
-            text.append("<b>" + _("Authors") + "</b>: " + plugin.author)
-        if plugin.license:
-            text.append("<b>" + _("License") + "</b>: " + plugin.license)
-        text.append("<b>" + _("Files") + "</b>: " + plugin.files_list)
-        self.ui.details.setText("<p>%s</p>" % "<br/>\n".join(text))
+        infos = [
+            (_("Name"), plugin.name),
+            (_("Authors"), plugin.author),
+            (_("License"), plugin.license),
+            (_("Files"), plugin.files_list),
+        ]
+        for label, value in infos:
+            if value:
+                text.append("<b>{0}:</b> {1}".format(label, value))
+        self.ui.details.setText("<p>{0}</p>".format("<br/>\n".join(text)))
 
     def change_details(self):
         item = self.selected_item()

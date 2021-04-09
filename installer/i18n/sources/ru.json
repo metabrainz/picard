@@ -1,0 +1,16 @@
+{
+    "MsgAlreadyInstalled": "${PRODUCT_NAME} уже установлен, и должен быть удалён перед обновлением до версии ${PRODUCT_VERSION}. \n\nНажмите \"OK\" для того, чтобы подтвердить удаление, или \"Отмена\" для того, чтобы отменить установку данного обновления.",
+    "MsgApplicationRunning": "Приложение ${PRODUCT_NAME} запущено в данный момент. Пожалуйста, закройте его и попробуйте снова.",
+    "MsgRequires64Bit": "Для установки этой версии ${PRODUCT_NAME} требуется 64-разрядная версия операционной системы Windows.",
+    "MuiDescriptionRequired": "Установить ${PRODUCT_NAME}.",
+    "MuiDescriptionLang": "Установить дополнительные языки для ${PRODUCT_NAME}.",
+    "MuiDescriptionShortcuts": "Создать ярлыки для запуска ${PRODUCT_NAME}.",
+    "MuiDescriptionDesktop": "Создать ярлык на рабочем столе.",
+    "MuiDescriptionStartMenu": "Создать ярлык в меню Пуск.",
+    "OptionRemoveSettings": "Очистить сохранённые настройки и личные данные",
+    "SectionDesktop": "Рабочий стол",
+    "SectionLanguages": "Языки",
+    "SectionRequired": "Системные файлы (обязательно)",
+    "SectionShortcuts": "Ярлыки",
+    "SectionStartMenu": "Меню Пуск"
+}

@@ -45,9 +45,12 @@ from PyQt5.QtNetwork import (
     QNetworkRequest,
 )
 
-from picard import (
-    config,
-    log,
+from picard import log
+from picard.config import (
+    BoolOption,
+    IntOption,
+    ListOption,
+    get_config,
 )
 from picard.const import (
     CAA_HOST,
@@ -57,7 +60,7 @@ from picard.coverart.image import (
     CaaCoverArtImage,
     CaaThumbnailCoverArtImage,
 )
-from picard.coverart.providers import (
+from picard.coverart.providers.provider import (
     CoverArtProvider,
     ProviderOptions,
 )
@@ -75,12 +78,15 @@ from picard.ui.util import StandardButton
 CaaSizeItem = namedtuple('CaaSizeItem', ['thumbnail', 'label'])
 
 _CAA_THUMBNAIL_SIZE_MAP = OrderedDict([
-    (250, CaaSizeItem('small', N_('250 px'))),
-    (500, CaaSizeItem('large', N_('500 px'))),
+    (250, CaaSizeItem('250', N_('250 px'))),
+    (500, CaaSizeItem('500', N_('500 px'))),
     (1200, CaaSizeItem('1200', N_('1200 px'))),
     (-1, CaaSizeItem(None, N_('Full size'))),
 ])
-
+_CAA_THUMBNAIL_SIZE_ALIASES = {
+    '500': 'large',
+    '250': 'small',
+}
 _CAA_IMAGE_SIZE_DEFAULT = 500
 
 _CAA_IMAGE_TYPE_DEFAULT_INCLUDE = ['front']
@@ -103,8 +109,13 @@ def caa_url_fallback_list(desired_size, thumbnails):
     for item_id, item in reversed_map.items():
         if item_id == -1 or item_id > desired_size:
             continue
-        if item.thumbnail in thumbnails:
-            urls.append(thumbnails[item.thumbnail])
+        url = thumbnails.get(item.thumbnail, None)
+        if url is None:
+            size_alias = _CAA_THUMBNAIL_SIZE_ALIASES.get(item.thumbnail, None)
+            if size_alias is not None:
+                url = thumbnails.get(size_alias, None)
+        if url is not None:
+            urls.append(url)
     return urls
 
 
@@ -357,7 +368,7 @@ class CAATypesSelectorDialog(PicardDialog):
         self.list_ignore.clear()
         for caa_type in CAA_TYPES:
             name = caa_type['name']
-            title = translate_caa_type(caa_type['title'])
+            title = translate_caa_type(name)
             item = QtWidgets.QListWidgetItem(title)
             item.setData(QtCore.Qt.UserRole, name)
             if name in includes:
@@ -422,14 +433,14 @@ class ProviderOptionsCaa(ProviderOptions):
         Options for Cover Art Archive cover art provider
     """
 
+    HELP_URL = '/config/options_cover_art_archive.html'
+
     options = [
-        config.BoolOption("setting", "caa_save_single_front_image", False),
-        config.BoolOption("setting", "caa_approved_only", False),
-        config.BoolOption("setting", "caa_image_type_as_filename", False),
-        config.IntOption("setting", "caa_image_size", _CAA_IMAGE_SIZE_DEFAULT),
-        config.ListOption("setting", "caa_image_types", _CAA_IMAGE_TYPE_DEFAULT_INCLUDE),
-        config.BoolOption("setting", "caa_restrict_image_types", True),
-        config.ListOption("setting", "caa_image_types_to_omit", _CAA_IMAGE_TYPE_DEFAULT_EXCLUDE),
+        BoolOption("setting", "caa_approved_only", False),
+        IntOption("setting", "caa_image_size", _CAA_IMAGE_SIZE_DEFAULT),
+        ListOption("setting", "caa_image_types", _CAA_IMAGE_TYPE_DEFAULT_INCLUDE),
+        BoolOption("setting", "caa_restrict_image_types", True),
+        ListOption("setting", "caa_image_types_to_omit", _CAA_IMAGE_TYPE_DEFAULT_EXCLUDE),
     ]
 
     _options_ui = Ui_CaaOptions
@@ -449,15 +460,14 @@ class ProviderOptionsCaa(ProviderOptions):
         for item_id, item in _CAA_THUMBNAIL_SIZE_MAP.items():
             self.ui.cb_image_size.addItem(_(item.label), userData=item_id)
 
+        config = get_config()
         size = config.setting["caa_image_size"]
         index = self.ui.cb_image_size.findData(size)
         if index < 0:
             index = self.ui.cb_image_size.findData(_CAA_IMAGE_SIZE_DEFAULT)
         self.ui.cb_image_size.setCurrentIndex(index)
 
-        self.ui.cb_save_single_front_image.setChecked(config.setting["caa_save_single_front_image"])
         self.ui.cb_approved_only.setChecked(config.setting["caa_approved_only"])
-        self.ui.cb_type_as_filename.setChecked(config.setting["caa_image_type_as_filename"])
         self.ui.restrict_images_types.setChecked(
             config.setting["caa_restrict_image_types"])
         self.caa_image_types = config.setting["caa_image_types"]
@@ -465,14 +475,11 @@ class ProviderOptionsCaa(ProviderOptions):
         self.update_caa_types()
 
     def save(self):
+        config = get_config()
         size = self.ui.cb_image_size.currentData()
         config.setting["caa_image_size"] = size
-        config.setting["caa_save_single_front_image"] = \
-            self.ui.cb_save_single_front_image.isChecked()
         config.setting["caa_approved_only"] = \
             self.ui.cb_approved_only.isChecked()
-        config.setting["caa_image_type_as_filename"] = \
-            self.ui.cb_type_as_filename.isChecked()
         config.setting["caa_restrict_image_types"] = \
             self.ui.restrict_images_types.isChecked()
         config.setting["caa_image_types"] = self.caa_image_types
@@ -504,6 +511,7 @@ class CoverArtProviderCaa(CoverArtProvider):
 
     def __init__(self, coverart):
         super().__init__(coverart)
+        config = get_config()
         self.caa_types = list(map(str.lower, config.setting["caa_image_types"]))
         self.caa_types_to_omit = list(map(str.lower, config.setting["caa_image_types_to_omit"]))
         self.len_caa_types = len(self.caa_types)
@@ -593,6 +601,7 @@ class CoverArtProviderCaa(CoverArtProvider):
             if self.restrict_types:
                 log.debug('CAA types: included: %s, excluded: %s' % (self.caa_types, self.caa_types_to_omit,))
             try:
+                config = get_config()
                 for image in data["images"]:
                     if config.setting["caa_approved_only"] and not image["approved"]:
                         continue
@@ -602,7 +611,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                                   image["image"])
                         continue
                     # if image has no type set, we still want it to match
-                    # pseudo type 'unknown'
+                    # pseudo type 'unknown'
                     if not image["types"]:
                         image["types"] = ["unknown"]
                     else:
@@ -638,7 +647,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                             # thumbnail will be used to "display" PDF in info
                             # dialog
                             thumbnail = self.coverartimage_thumbnail_class(
-                                url=url[0],
+                                url=urls[0],
                                 types=image["types"],
                                 is_front=image['front'],
                                 comment=image["comment"],
@@ -648,7 +657,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                             # PDFs cannot be saved to tags (as 2014/05/29)
                             coverartimage.can_be_saved_to_tags = False
                         self.queue_put(coverartimage)
-                        if config.setting["caa_save_single_front_image"] and \
+                        if config.setting["save_only_one_front_image"] and \
                                 config.setting["save_images_to_files"] and \
                                 image["front"]:
                             break

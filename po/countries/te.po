@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # tuxnani <nani1only@gmail.com>, 2012
 msgid ""

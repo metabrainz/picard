@@ -59,7 +59,152 @@
             "format-id": "3e9080b0-5e6c-34ab-bd15-f526b6306a64",
             "title": "",
             "format": "12\" Vinyl",
-            "track-offset": 0
+            "track-offset": 0,
+            "tracks": [
+                {
+                    "recording": {
+                        "title": "Speak to Me",
+                        "id": "bef3fddb-5aca-49f5-b2fd-d56a23268d63",
+                        "first-release-date": "1972-02-23",
+                        "length": 68346,
+                        "video": false,
+                        "disambiguation": "original stereo mix"
+                    },
+                    "length": 68346,
+                    "number": "A1",
+                    "position": 1,
+                    "title": "Speak to Me",
+                    "id": "d4156411-b884-368f-a4cb-7c0101a557a2"
+                },
+                {
+                    "recording": {
+                        "video": false,
+                        "disambiguation": "original studio stereo mix",
+                        "title": "Breathe",
+                        "id": "ecbc7c9b-e79d-4ec8-ac77-44e4a7f7f1b8",
+                        "first-release-date": "1973-03-24",
+                        "length": 168720
+                    },
+                    "length": 168720,
+                    "number": "A2",
+                    "position": 2,
+                    "title": "Breathe",
+                    "id": "7d5f0207-489b-3c93-9837-d8b754d5a821"
+                },
+                {
+                    "number": "A3",
+                    "length": 230600,
+                    "id": "ffb7f6b2-b20d-3cb4-bc1b-5b6f4c3c4054",
+                    "title": "On the Run",
+                    "position": 3,
+                    "recording": {
+                        "length": 230000,
+                        "id": "747a79a7-644e-42d4-be86-9adaf44393d8",
+                        "title": "On the Run",
+                        "disambiguation": "original studio stereo mix",
+                        "video": false
+                    }
+                },
+                {
+                    "title": "Time",
+                    "position": 4,
+                    "id": "39478197-6ea3-33ec-af39-dc7ae75c9799",
+                    "number": "A4",
+                    "length": 409600,
+                    "recording": {
+                        "disambiguation": "original studio stereo mix",
+                        "video": false,
+                        "id": "41959321-f2bb-4580-aa19-16248fe665d3",
+                        "title": "Time",
+                        "length": 412000
+                    }
+                },
+                {
+                    "id": "47d38542-2382-3a4b-af05-a8f7e5dcaa5c",
+                    "title": "The Great Gig in the Sky",
+                    "position": 5,
+                    "length": 284133,
+                    "number": "A5",
+                    "recording": {
+                        "video": false,
+                        "disambiguation": "original studio stereo mix",
+                        "title": "The Great Gig in the Sky",
+                        "id": "73b01cea-2dad-4fc2-9e61-02a31477c1b1",
+                        "length": 284133
+                    }
+                },
+                {
+                    "id": "e04126c2-457c-36b1-a6b3-9191002607bf",
+                    "position": 6,
+                    "title": "Money",
+                    "number": "B1",
+                    "length": 382746,
+                    "recording": {
+                        "length": 382746,
+                        "title": "Money",
+                        "id": "7fef22bd-76aa-4803-b56b-93a5d6e70662",
+                        "video": false,
+                        "disambiguation": "original studio stereo mix"
+                    }
+                },
+                {
+                    "recording": {
+                        "video": false,
+                        "disambiguation": "original studio stereo mix",
+                        "length": 469853,
+                        "title": "Us and Them",
+                        "id": "2d1201cf-59bb-4ffa-9f52-f5b3afa13346",
+                        "first-release-date": "1973-03-24"
+                    },
+                    "title": "Us and Them",
+                    "position": 7,
+                    "id": "25ede3e7-6233-36fb-971b-9465454f247b",
+                    "length": 469853,
+                    "number": "B2"
+                },
+                {
+                    "position": 8,
+                    "title": "Any Colour You Like",
+                    "id": "98f679d1-87ff-33df-b815-e585349719ea",
+                    "number": "B3",
+                    "length": 206213,
+                    "recording": {
+                        "title": "Any Colour You Like",
+                        "id": "7c278a16-ae04-460c-88ea-39155cadcd09",
+                        "length": 206000,
+                        "video": false,
+                        "disambiguation": "original studio stereo mix"
+                    }
+                },
+                {
+                    "recording": {
+                        "disambiguation": "original studio stereo mix",
+                        "video": false,
+                        "id": "71c0e054-b700-4fd2-a35b-95c7afc566cb",
+                        "title": "Brain Damage",
+                        "length": 227000
+                    },
+                    "position": 9,
+                    "title": "Brain Damage",
+                    "id": "c8a75ec4-0f9a-35e7-b5b5-92ea929526db",
+                    "length": 226933,
+                    "number": "B4"
+                },
+                {
+                    "recording": {
+                        "id": "76341a6e-bac9-4ab3-9d9a-3cf1c9ceac80",
+                        "title": "Eclipse",
+                        "length": 131546,
+                        "disambiguation": "original studio stereo mix",
+                        "video": false
+                    },
+                    "position": 10,
+                    "title": "Eclipse",
+                    "id": "0c7961e2-1156-34ed-beff-58d400421635",
+                    "number": "B5",
+                    "length": 131546
+                }
+            ]
         }
     ],
     "title": "The Dark Side of the Moon",
@@ -285,11 +430,38 @@
             "end": null,
             "direction": "backward",
             "type-id": "0b58dc9b-9c49-4b19-bb58-9c06d41c8fbf"
+        },
+        {
+            "attribute-values": {
+
+            },
+            "begin": null,
+            "type": "producer",
+            "target-type": "artist",
+            "target-credit": "",
+            "source-credit": "",
+            "attributes": [
+
+            ],
+            "ended": false,
+            "artist": {
+                "id": "fd1a4572-59ca-40f2-8f55-b82be28bb0ff",
+                "sort-name": "Hipgnosis",
+                "aliases": [
+
+                ],
+                "disambiguation": "UK art design group",
+                "name": "Hipgnosis"
+            },
+            "end": null,
+            "direction": "backward",
+            "type-id": "8bf377ba-8d71-4ecc-97f2-7bb2d8a2a75f"
         }
     ],
     "id": "b84ee12a-09ef-421b-82de-0441a926375b",
     "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
-    "disambiguation": "",
+    "disambiguation": "stereo",
+    "annotation": "Original Vinyl release",
     "label-info": [
         {
             "catalog-number": "SHVL 804",

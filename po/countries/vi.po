@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Anh Phan <vietnamesel10n@gmail.com>, 2013
 msgid ""

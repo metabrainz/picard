@@ -67,72 +67,72 @@ class UpdateMetadataImagesTest(PicardTestCase):
     def test_update_cluster_images(self):
         cluster = Cluster('Test')
         cluster.files = list(self.test_files)
-        update_metadata_images(cluster)
+        self.assertTrue(update_metadata_images(cluster))
         self.assertEqual(set(self.test_images), set(cluster.metadata.images))
         self.assertFalse(cluster.metadata.has_common_images)
 
         cluster.files.remove(self.test_files[2])
-        update_metadata_images(cluster)
+        self.assertFalse(update_metadata_images(cluster))
         self.assertEqual(set(self.test_images), set(cluster.metadata.images))
         self.assertFalse(cluster.metadata.has_common_images)
 
         cluster.files.remove(self.test_files[0])
-        update_metadata_images(cluster)
+        self.assertTrue(update_metadata_images(cluster))
         self.assertEqual(set(self.test_images[1:]), set(cluster.metadata.images))
         self.assertTrue(cluster.metadata.has_common_images)
 
         cluster.files.append(self.test_files[2])
-        update_metadata_images(cluster)
+        self.assertFalse(update_metadata_images(cluster))
         self.assertEqual(set(self.test_images[1:]), set(cluster.metadata.images))
         self.assertTrue(cluster.metadata.has_common_images)
 
     def test_update_track_images(self):
         track = Track('00000000-0000-0000-0000-000000000000')
-        track.linked_files = list(self.test_files)
-        update_metadata_images(track)
+        track.files = list(self.test_files)
+        self.assertTrue(update_metadata_images(track))
         self.assertEqual(set(self.test_images), set(track.orig_metadata.images))
         self.assertFalse(track.orig_metadata.has_common_images)
 
-        track.linked_files.remove(self.test_files[2])
-        update_metadata_images(track)
+        track.files.remove(self.test_files[2])
+        self.assertFalse(update_metadata_images(track))
         self.assertEqual(set(self.test_images), set(track.orig_metadata.images))
         self.assertFalse(track.orig_metadata.has_common_images)
 
-        track.linked_files.remove(self.test_files[0])
-        update_metadata_images(track)
+        track.files.remove(self.test_files[0])
+        self.assertTrue(update_metadata_images(track))
         self.assertEqual(set(self.test_images[1:]), set(track.orig_metadata.images))
         self.assertTrue(track.orig_metadata.has_common_images)
 
-        track.linked_files.append(self.test_files[2])
-        update_metadata_images(track)
+        track.files.append(self.test_files[2])
+        self.assertFalse(update_metadata_images(track))
         self.assertEqual(set(self.test_images[1:]), set(track.orig_metadata.images))
         self.assertTrue(track.orig_metadata.has_common_images)
 
     def test_update_album_images(self):
         album = Album('00000000-0000-0000-0000-000000000000')
         track1 = Track('00000000-0000-0000-0000-000000000001')
-        track1.linked_files.append(self.test_files[0])
+        track1.files.append(self.test_files[0])
         track2 = Track('00000000-0000-0000-0000-000000000002')
-        track2.linked_files.append(self.test_files[1])
+        track2.files.append(self.test_files[1])
         album.tracks = [track1, track2]
         album.unmatched_files.files.append(self.test_files[2])
-        update_metadata_images(album)
+        self.assertTrue(update_metadata_images(album))
         self.assertEqual(set(self.test_images), set(album.orig_metadata.images))
         self.assertFalse(album.orig_metadata.has_common_images)
 
         album.tracks.remove(track2)
-        update_metadata_images(album)
+        self.assertFalse(update_metadata_images(album))
         self.assertEqual(set(self.test_images), set(album.orig_metadata.images))
         self.assertFalse(album.orig_metadata.has_common_images)
 
         # album.unmatched_files.files.remove(self.test_files[2])
         album.tracks.remove(track1)
-        update_metadata_images(album)
+        self.assertTrue(update_metadata_images(album))
         self.assertEqual(set(self.test_images[1:]), set(album.orig_metadata.images))
         self.assertTrue(album.orig_metadata.has_common_images)
 
         album.tracks.append(track2)
-        update_metadata_images(album)
+        self.assertFalse(update_metadata_images(album))
         self.assertEqual(set(self.test_images[1:]), set(album.orig_metadata.images))
         self.assertTrue(album.orig_metadata.has_common_images)
 
@@ -171,27 +171,27 @@ class RemoveMetadataImagesTest(PicardTestCase):
 
     def test_remove_from_track(self):
         track = Track('00000000-0000-0000-0000-000000000000')
-        track.linked_files = list(self.test_files)
+        track.files = list(self.test_files)
         update_metadata_images(track)
-        track.linked_files.remove(self.test_files[0])
+        track.files.remove(self.test_files[0])
         remove_metadata_images(track, [self.test_files[0]])
         self.assertEqual(set(self.test_images[1:]), set(track.orig_metadata.images))
         self.assertTrue(track.orig_metadata.has_common_images)
 
     def test_remove_from_track_with_common_images(self):
         track = Track('00000000-0000-0000-0000-000000000000')
-        track.linked_files = list(self.test_files[1:])
+        track.files = list(self.test_files[1:])
         update_metadata_images(track)
-        track.linked_files.remove(self.test_files[1])
+        track.files.remove(self.test_files[1])
         remove_metadata_images(track, [self.test_files[1]])
         self.assertEqual(set(self.test_images[1:]), set(track.orig_metadata.images))
         self.assertTrue(track.orig_metadata.has_common_images)
 
     def test_remove_from_empty_track(self):
         track = Track('00000000-0000-0000-0000-000000000000')
-        track.linked_files.append(File('test1.flac'))
+        track.files.append(File('test1.flac'))
         update_metadata_images(track)
-        remove_metadata_images(track, [track.linked_files[0]])
+        remove_metadata_images(track, [track.files[0]])
         self.assertEqual(set(), set(track.orig_metadata.images))
         self.assertTrue(track.orig_metadata.has_common_images)
 
@@ -300,10 +300,10 @@ class ImageListTest(PicardTestCase):
             "save_images_to_tags": True,
             "embed_only_one_front_image": False,
         }
-        # save all but no images
+        # save all but no images
         self.assertEqual(list(to_be_saved(settings)), [])
 
-        # save all, only one non-front image in the list
+        # save all, only one non-front image in the list
         self.imagelist.append(self.images['a'])
         self.assertEqual(list(to_be_saved(settings)), [self.images['a']])
 
@@ -311,11 +311,11 @@ class ImageListTest(PicardTestCase):
         self.imagelist.append(self.images['b'])
         self.assertEqual(list(to_be_saved(settings)), [self.images['a'], self.images['b']])
 
-        # save only one front, 2 images, one of them is a front image (b)
+        # save only one front, 2 images, one of them is a front image (b)
         settings["embed_only_one_front_image"] = True
         self.assertEqual(list(to_be_saved(settings)), [self.images['b']])
 
-        # save only one front, 3 images, two of them have front type (b & c)
+        # save only one front, 3 images, two of them have front type (b & c)
         self.imagelist.append(self.images['c'])
         self.assertEqual(list(to_be_saved(settings)), [self.images['b']])
 
@@ -323,17 +323,17 @@ class ImageListTest(PicardTestCase):
         settings["save_images_to_tags"] = False
         self.assertEqual(list(to_be_saved(settings)), [])
 
-        # settings is missing a setting
+        # settings is missing a setting
         del settings["save_images_to_tags"]
         with self.assertRaises(KeyError):
-            image = next(to_be_saved(settings))
+            next(to_be_saved(settings))
 
     def test_strip_front_images(self):
         self.imagelist.append(self.images['a'])
         self.imagelist.append(self.images['b'])
         self.imagelist.append(self.images['c'])
 
-        # strip front images from list, only a isn't
+        # strip front images from list, only a isn't
         self.assertEqual(len(self.imagelist), 3)
         self.imagelist.strip_front_images()
         self.assertNotIn(self.images['b'], self.imagelist)

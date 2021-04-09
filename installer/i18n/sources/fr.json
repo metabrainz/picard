@@ -1,0 +1,16 @@
+{
+    "MsgAlreadyInstalled": "${PRODUCT_NAME} est déjà installé et doit être désinstallé avant de mettre à jour vers la version ${PRODUCT_VERSION}. \n\nPressez \"OK\" pour continuer ou \"Annuler\" pour annuler cette mise à jour.",
+    "MsgApplicationRunning": "L’application ${PRODUCT_NAME} est en cours d’exécution. Veuillez la stopper et essayer à nouveau.",
+    "MsgRequires64Bit": "Cette version de ${PRODUCT_NAME} requiert un système Windows 64 bits.",
+    "MuiDescriptionRequired": "Installe ${PRODUCT_NAME} ainsi que les fichiers nécessaires à son exécution.",
+    "MuiDescriptionLang": "Installe les traductions de ${PRODUCT_NAME} dans différentes langues.",
+    "MuiDescriptionShortcuts": "Installe les raccourcis pour lancer ${PRODUCT_NAME}.",
+    "MuiDescriptionDesktop": "Installe un raccourci sur le bureau.",
+    "MuiDescriptionStartMenu": "Installe un raccourci dans le menu Démarrer.",
+    "OptionRemoveSettings": "Supprimer les préférences et les données personnelles",
+    "SectionDesktop": "Bureau",
+    "SectionLanguages": "Langues",
+    "SectionRequired": "Fichiers du programme (requis)",
+    "SectionShortcuts": "Raccourcis",
+    "SectionStartMenu": "Menu Démarrer"
+}

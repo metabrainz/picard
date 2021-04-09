@@ -1,12 +1,13 @@
-# Translators:
+# 
 # Translators:
 # kepstin <calvin.walton@kepstin.ca>, 2012
 # Luke Hollins <luke@farcry.ca>, 2015
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2020
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-09-19 12:54+0000\n"
-"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
+"PO-Revision-Date: 2020-06-26 10:03+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: English (Canada) (http://www.transifex.com/musicbrainz/musicbrainz/language/en_CA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1252,7 +1253,7 @@ msgstr "Vanuatu"
 #. iso.code:VA
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:227
 msgid "Vatican City"
-msgstr ""
+msgstr "Vatican City"
 
 #. iso.code:VE
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:228

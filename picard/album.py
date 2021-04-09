@@ -7,7 +7,7 @@
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008 Hendrik van Antwerpen
 # Copyright (C) 2008 ojnkpjg
-# Copyright (C) 2008-2011, 2014, 2018-2019 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014, 2018-2020 Philipp Wolfer
 # Copyright (C) 2009 Nikolai Prokoschenko
 # Copyright (C) 2011-2012 Chad Wilson
 # Copyright (C) 2011-2013, 2019 Michael Wiencek
@@ -20,6 +20,7 @@
 # Copyright (C) 2017 Antonio Larrosa
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2019 Joel Lintunen
+# Copyright (C) 2020 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -48,12 +49,10 @@ from PyQt5 import (
     QtNetwork,
 )
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
 from picard.cluster import Cluster
 from picard.collection import add_release_to_user_collections
+from picard.config import get_config
 from picard.const import VARIOUS_ARTISTS_ID
 from picard.dataobj import DataObject
 from picard.file import File
@@ -82,6 +81,7 @@ from picard.util import (
     find_best_match,
     format_time,
     mbid_validate,
+    process_events_iter,
 )
 from picard.util.imagelist import (
     add_metadata_images,
@@ -111,6 +111,7 @@ class AlbumArtist(DataObject):
 
 class Album(DataObject, Item):
 
+    metadata_images_changed = QtCore.pyqtSignal()
     release_group_loaded = QtCore.pyqtSignal()
 
     def __init__(self, album_id, discid=None):
@@ -129,7 +130,7 @@ class Album(DataObject, Item):
             self._discids.add(discid)
         self._after_load_callbacks = []
         self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
-        self.errors = []
+        self.unmatched_files.metadata_images_changed.connect(self.update_metadata_images)
         self.status = None
         self._album_artists = []
         self.update_metadata_images_enabled = True
@@ -139,11 +140,9 @@ class Album(DataObject, Item):
 
     def iterfiles(self, save=False):
         for track in self.tracks:
-            for file in track.iterfiles():
-                yield file
+            yield from track.iterfiles()
         if not save:
-            for file in self.unmatched_files.iterfiles():
-                yield file
+            yield from self.unmatched_files.iterfiles()
 
     def enable_update_metadata_images(self, enabled):
         self.update_metadata_images_enabled = enabled
@@ -165,9 +164,16 @@ class Album(DataObject, Item):
             if track_discids:
                 track.metadata['musicbrainz_discid'] = track_discids
                 track.update()
-                for file in track.linked_files:
+                for file in track.files:
                     file.metadata['musicbrainz_discid'] = track_discids
                     file.update()
+
+    def get_next_track(self, track):
+        try:
+            index = self.tracks.index(track)
+            return self.tracks[index + 1]
+        except (IndexError, ValueError):
+            return None
 
     def get_album_artists(self):
         """Returns the list of album artists (as AlbumArtist objects)"""
@@ -213,6 +219,8 @@ class Album(DataObject, Item):
         m.copy(rg.metadata)
         release_to_metadata(release_node, m, album=self)
 
+        config = get_config()
+
         # Custom VA name
         if m['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
             m['albumartistsort'] = m['albumartist'] = config.setting['va_name']
@@ -245,6 +253,7 @@ class Album(DataObject, Item):
                 self.error_append(http.errorString())
                 # Fix for broken NAT releases
                 if error == QtNetwork.QNetworkReply.ContentNotFoundError:
+                    config = get_config()
                     nats = False
                     nat_name = config.setting["nat_name"]
                     files = list(self.unmatched_files.files)
@@ -274,10 +283,6 @@ class Album(DataObject, Item):
         #     Do not directly delete it inside the slot connected to finished().
         #     You can use the deleteLater() function.
 
-    def error_append(self, msg):
-        log.error(msg)
-        self.errors.append(msg)
-
     def _finalize_loading(self, error):
         if error:
             self.metadata.clear()
@@ -285,6 +290,11 @@ class Album(DataObject, Item):
             del self._new_metadata
             del self._new_tracks
             self.update()
+            if not self._requests:
+                self.loaded = True
+                for func, always in self._after_load_callbacks:
+                    if always:
+                        func()
             return
 
         if self._requests > 0:
@@ -305,7 +315,6 @@ class Album(DataObject, Item):
                 mm = Metadata()
                 mm.copy(self._new_metadata)
                 medium_to_metadata(medium_node, mm)
-                discpregap = False
                 format = medium_node.get('format')
                 if format:
                     all_media.append(format)
@@ -313,29 +322,43 @@ class Album(DataObject, Item):
                 for dj in djmix_ars.get(mm["discnumber"], []):
                     mm.add("djmixer", dj)
 
+                if va:
+                    mm["compilation"] = "1"
+                else:
+                    del mm["compilation"]
+
                 if 'discs' in medium_node:
                     discids = [disc.get('id') for disc in medium_node['discs']]
                     mm['~musicbrainz_discids'] = discids
                     mm['musicbrainz_discid'] = list(self._discids.intersection(discids))
 
                 if "pregap" in medium_node:
-                    discpregap = True
                     absolutetracknumber += 1
-                    track = self._finalize_loading_track(medium_node['pregap'], mm, artists, va, absolutetracknumber, discpregap)
-                    track.metadata['~pregap'] = "1"
+                    mm['~discpregap'] = '1'
+                    extra_metadata = {
+                        '~pregap': '1',
+                        '~absolutetracknumber': absolutetracknumber,
+                    }
+                    self._finalize_loading_track(medium_node['pregap'], mm, artists, extra_metadata)
 
                 track_count = medium_node['track-count']
                 if track_count:
                     tracklist_node = medium_node['tracks']
                     for track_node in tracklist_node:
                         absolutetracknumber += 1
-                        track = self._finalize_loading_track(track_node, mm, artists, va, absolutetracknumber, discpregap)
+                        extra_metadata = {
+                            '~absolutetracknumber': absolutetracknumber,
+                        }
+                        self._finalize_loading_track(track_node, mm, artists, extra_metadata)
 
                 if "data-tracks" in medium_node:
                     for track_node in medium_node['data-tracks']:
                         absolutetracknumber += 1
-                        track = self._finalize_loading_track(track_node, mm, artists, va, absolutetracknumber, discpregap)
-                        track.metadata['~datatrack'] = "1"
+                        extra_metadata = {
+                            '~datatrack': '1',
+                            '~absolutetracknumber': absolutetracknumber,
+                        }
+                        self._finalize_loading_track(track_node, mm, artists, extra_metadata)
 
             totalalbumtracks = absolutetracknumber
             self._new_metadata['~totalalbumtracks'] = totalalbumtracks
@@ -352,6 +375,10 @@ class Album(DataObject, Item):
 
         if not self._requests:
             self.enable_update_metadata_images(False)
+            for track in self._new_tracks:
+                track.orig_metadata.copy(track.metadata)
+                track.metadata_images_changed.connect(self.update_metadata_images)
+
             # Prepare parser for user's script
             for s_name, s_text in enabled_tagger_scripts_texts():
                 parser = ScriptParser()
@@ -362,6 +389,7 @@ class Album(DataObject, Item):
                     except ScriptError:
                         log.exception("Failed to run tagger script %s on track", s_name)
                     track.metadata.strip_whitespace()
+                    track.scripted_metadata.update(track.metadata)
                 # Run tagger script for the album itself
                 try:
                     parser.eval(s_text, self._new_metadata)
@@ -369,17 +397,16 @@ class Album(DataObject, Item):
                     log.exception("Failed to run tagger script %s on album", s_name)
                 self._new_metadata.strip_whitespace()
 
-            for track in self.tracks:
-                track.metadata_images_changed.connect(self.update_metadata_images)
-                for file in list(track.linked_files):
-                    file.move(self.unmatched_files)
+            unmatched_files = [file for track in self.tracks for file in track.files]
             self.metadata = self._new_metadata
+            self.orig_metadata.copy(self.metadata)
+            self.orig_metadata.images.clear()
             self.tracks = self._new_tracks
             del self._new_metadata
             del self._new_tracks
             self.loaded = True
             self.status = None
-            self.match_files(self.unmatched_files.files)
+            self.match_files(unmatched_files + self.unmatched_files.files)
             self.enable_update_metadata_images(True)
             self.update()
             self.tagger.window.set_statusbar_message(
@@ -391,11 +418,13 @@ class Album(DataObject, Item):
                 },
                 timeout=3000
             )
-            for func in self._after_load_callbacks:
+            for func, always in self._after_load_callbacks:
                 func()
             self._after_load_callbacks = []
+            if self.item.isSelected():
+                self.tagger.window.refresh_metadatabox()
 
-    def _finalize_loading_track(self, track_node, metadata, artists, va, absolutetracknumber, discpregap):
+    def _finalize_loading_track(self, track_node, metadata, artists, extra_metadata=None):
         # As noted in `_parse_release` above, the release artist nodes
         # may contain supplementary data that isn't present in track
         # artist nodes. Similarly, the track artists may contain
@@ -412,18 +441,12 @@ class Album(DataObject, Item):
         tm = track.metadata
         tm.copy(metadata)
         track_to_metadata(track_node, track)
-        tm["~absolutetracknumber"] = absolutetracknumber
-        track.orig_metadata.copy(tm)
         track._customize_metadata()
 
         self._new_metadata.length += tm.length
         artists.add(tm["artist"])
-        if va:
-            tm["compilation"] = "1"
-        else:
-            del tm["compilation"]
-        if discpregap:
-            tm["~discpregap"] = "1"
+        if extra_metadata:
+            tm.update(extra_metadata)
 
         # Run track metadata plugins
         try:
@@ -448,14 +471,15 @@ class Album(DataObject, Item):
             self.release_group.genres.clear()
         self.metadata.clear()
         self.genres.clear()
-        self.update()
+        self.update(update_selection=False)
         self._new_metadata = Metadata()
         self._new_tracks = []
         self._requests = 1
-        self.errors = []
+        self.clear_errors()
+        config = get_config()
         require_authentication = False
         inc = ['release-groups', 'media', 'discids', 'recordings', 'artist-credits',
-               'artists', 'aliases', 'labels', 'isrcs', 'collections']
+               'artists', 'aliases', 'labels', 'isrcs', 'collections', 'annotation']
         if self.tagger.webservice.oauth_manager.is_authorized():
             require_authentication = True
             inc += ['user-collections']
@@ -471,34 +495,34 @@ class Album(DataObject, Item):
             self.id, self._release_request_finished, inc=inc,
             mblogin=require_authentication, priority=priority, refresh=refresh)
 
-    def run_when_loaded(self, func):
+    def run_when_loaded(self, func, always=False):
         if self.loaded:
             func()
         else:
-            self._after_load_callbacks.append(func)
+            self._after_load_callbacks.append((func, always))
 
     def stop_loading(self):
         if self.load_task:
             self.tagger.webservice.remove_task(self.load_task)
             self.load_task = None
 
-    def update(self, update_tracks=True):
+    def update(self, update_tracks=True, update_selection=True):
         if self.item:
-            self.item.update(update_tracks)
+            self.item.update(update_tracks, update_selection=update_selection)
 
-    def _add_file(self, track, file):
+    def _add_file(self, track, file, new_album=True):
         self._files += 1
-        self.update(update_tracks=False)
-        add_metadata_images(self, [file])
-        file.metadata_images_changed.connect(self.update_metadata_images)
+        if new_album:
+            self.update(update_tracks=False)
+            add_metadata_images(self, [file])
 
-    def _remove_file(self, track, file):
+    def _remove_file(self, track, file, new_album=True):
         self._files -= 1
-        self.update(update_tracks=False)
-        file.metadata_images_changed.disconnect(self.update_metadata_images)
-        remove_metadata_images(self, [file])
+        if new_album:
+            self.update(update_tracks=False)
+            remove_metadata_images(self, [file])
 
-    def _match_files(self, files, recordingid=None, threshold=0):
+    def _match_files(self, files, threshold=0):
         """Match files to tracks on this album, based on metadata similarity or recordingid."""
         tracks_cache = defaultdict(lambda: None)
 
@@ -518,8 +542,8 @@ class Album(DataObject, Item):
         for file in list(files):
             if file.state == File.REMOVED:
                 continue
-            # if we have a recordingid to match against, use that in priority
-            recid = recordingid or file.metadata['musicbrainz_recordingid']
+            # if we have a recordingid to match against, use that in priority
+            recid = file.match_recordingid or file.metadata['musicbrainz_recordingid']
             if recid and mbid_validate(recid):
                 if not tracks_cache:
                     build_tracks_cache()
@@ -534,12 +558,11 @@ class Album(DataObject, Item):
 
             # try to match by similarity
             def candidates():
-                for track in self.tracks:
+                for track in process_events_iter(self.tracks):
                     yield SimMatchAlbum(
                         similarity=track.metadata.compare(file.orig_metadata),
                         track=track
                     )
-                    QtCore.QCoreApplication.processEvents()
 
             no_match = SimMatchAlbum(similarity=-1, track=self.unmatched_files)
             best_match = find_best_match(candidates, no_match)
@@ -549,13 +572,16 @@ class Album(DataObject, Item):
             else:
                 yield (file, best_match.result.track)
 
-    def match_files(self, files, recordingid=None):
+    def match_files(self, files):
         """Match and move files to tracks on this album, based on metadata similarity or recordingid."""
-        moves = self._match_files(files,
-                                  recordingid=recordingid,
-                                  threshold=config.setting['track_matching_threshold'])
-        for file, target in moves:
-            file.move(target)
+        if self.loaded:
+            config = get_config()
+            moves = self._match_files(files, threshold=config.setting['track_matching_threshold'])
+            for file, target in moves:
+                file.move(target)
+        else:
+            for file in list(files):
+                file.move(self.unmatched_files)
 
     def can_save(self):
         return self._files > 0
@@ -576,7 +602,7 @@ class Album(DataObject, Item):
         return True
 
     def can_view_info(self):
-        return (self.loaded and (self.metadata.images or self.orig_metadata.images)) or self.errors
+        return self.loaded or self.errors
 
     def is_album_like(self):
         return True
@@ -608,7 +634,7 @@ class Album(DataObject, Item):
     def is_modified(self):
         if self.tracks:
             for track in self.tracks:
-                for file in track.linked_files:
+                for file in track.files:
                     if not file.is_saved():
                         return True
         return False
@@ -616,7 +642,7 @@ class Album(DataObject, Item):
     def get_num_unsaved_files(self):
         count = 0
         for track in self.tracks:
-            for file in track.linked_files:
+            for file in track.files:
                 if not file.is_saved():
                     count += 1
         return count
@@ -694,9 +720,9 @@ class Album(DataObject, Item):
         if not self.update_metadata_images_enabled:
             return
 
-        update_metadata_images(self)
-
-        self.update(False)
+        if update_metadata_images(self):
+            self.update(False)
+            self.metadata_images_changed.emit()
 
     def keep_original_images(self):
         self.enable_update_metadata_images(False)
@@ -716,13 +742,14 @@ class NatAlbum(Album):
         self.update()
 
     def update(self, update_tracks=True):
+        config = get_config()
         self.enable_update_metadata_images(False)
         old_album_title = self.metadata["album"]
         self.metadata["album"] = config.setting["nat_name"]
         for track in self.tracks:
             if old_album_title == track.metadata["album"]:
                 track.metadata["album"] = self.metadata["album"]
-            for file in track.linked_files:
+            for file in track.files:
                 track.update_file_metadata(file)
         self.enable_update_metadata_images(True)
         super().update(update_tracks)

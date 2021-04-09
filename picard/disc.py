@@ -5,7 +5,7 @@
 # Copyright (C) 2006 Matthias Friedrich
 # Copyright (C) 2007-2008 Lukáš Lalinský
 # Copyright (C) 2008 Robert Kaye
-# Copyright (C) 2009, 2013, 2018-2019 Philipp Wolfer
+# Copyright (C) 2009, 2013, 2018-2020 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2013 Johannes Dewender
 # Copyright (C) 2013 Sebastian Ramacher
@@ -39,11 +39,11 @@ from picard.ui.cdlookup import CDLookupDialog
 
 
 try:
-    # use python-libdiscid (http://pythonhosted.org/python-libdiscid/)
+    # use python-libdiscid (http://pythonhosted.org/python-libdiscid/)
     from libdiscid.compat import discid
 except ImportError:
     try:
-        # use python-discid (http://python-discid.readthedocs.org/en/latest/)
+        # use python-discid (http://python-discid.readthedocs.org/en/latest/)
         import discid
     except (ImportError, OSError):
         discid = None
@@ -67,7 +67,7 @@ class Disc(QtCore.QObject):
             self.mcn = disc.mcn
             self.submission_url = disc.submission_url
             log.debug("Read disc ID %s with MCN %s", self.id, self.mcn)
-        except discid.disc.DiscError as e:
+        except discid.DiscError as e:
             log.error("Error while reading %r: %s" % (device, str(e)))
             raise
 

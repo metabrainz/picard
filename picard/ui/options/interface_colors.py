@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2019 Laurent Monin
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -28,9 +28,12 @@ from PyQt5 import (
     QtWidgets,
 )
 
-from picard import config
+from picard.config import Option
 
-from picard.ui.colors import interface_colors
+from picard.ui.colors import (
+    InterfaceColors,
+    interface_colors,
+)
 from picard.ui.options import (
     OptionsPage,
     register_options_page,
@@ -67,7 +70,7 @@ class ColorButton(QtWidgets.QPushButton):
 
 def delete_items_of_layout(layout):
     # Credits:
-    # https://stackoverflow.com/a/45790404
+    # https://stackoverflow.com/a/45790404
     # https://riverbankcomputing.com/pipermail/pyqt/2009-November/025214.html
     if layout is not None:
         while layout.count():
@@ -86,9 +89,11 @@ class InterfaceColorsOptionsPage(OptionsPage):
     PARENT = "interface"
     SORT_ORDER = 30
     ACTIVE = True
+    HELP_URL = '/config/options_interface_colors.html'
 
     options = [
-        config.Option("setting", "interface_colors", interface_colors.get_colors()),
+        Option("setting", "interface_colors", InterfaceColors(dark_theme=False).get_colors()),
+        Option("setting", "interface_colors_dark", InterfaceColors(dark_theme=True).get_colors()),
     ]
 
     def __init__(self, parent=None):
@@ -131,9 +136,7 @@ class InterfaceColorsOptionsPage(OptionsPage):
         self.update_color_selectors()
 
     def save(self):
-        new_colors = interface_colors.get_colors()
-        if new_colors != config.setting['interface_colors']:
-            config.setting['interface_colors'] = new_colors
+        if interface_colors.save_to_config():
             dialog = QtWidgets.QMessageBox(
                 QtWidgets.QMessageBox.Information,
                 _('Colors changed'),
@@ -143,7 +146,7 @@ class InterfaceColorsOptionsPage(OptionsPage):
             dialog.exec_()
 
     def restore_defaults(self):
-        interface_colors.default_colors()
+        interface_colors.set_default_colors()
         self.update_color_selectors()
 
 

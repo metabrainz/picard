@@ -1,0 +1,16 @@
+{
+    "MsgAlreadyInstalled": "${PRODUCT_NAME} já está instalado e deve ser desinstalado antes de continuar a atualização para a versão ${PRODUCT_VERSION}. \n\nClique \"OK\" para continuar ou \"Cancelar\" para cancelar a atualização.",
+    "MsgApplicationRunning": "A aplicação ${PRODUCT_NAME} está rodando. Por favor feche e tente novamente.",
+    "MsgRequires64Bit": "Esta versão do ${PRODUCT_NAME} requer uma versão de 64-bits do Windows.",
+    "MuiDescriptionRequired": "Instala ${PRODUCT_NAME} junto com arquivos necessários para executá-lo.",
+    "MuiDescriptionLang": "Instala traduções do ${PRODUCT_NAME} para diferentes línguas.",
+    "MuiDescriptionShortcuts": "Instala atalhos para executar o ${PRODUCT_NAME}.",
+    "MuiDescriptionDesktop": "Instala um atalho na área de trabalho.",
+    "MuiDescriptionStartMenu": "Instala um atalho no Menu Iniciar.",
+    "OptionRemoveSettings": "Remover configurações e dados pessoais",
+    "SectionDesktop": "Área de Trabalho",
+    "SectionLanguages": "Linguagens",
+    "SectionRequired": "Arquivos do programa (requerido)",
+    "SectionShortcuts": "Atalhos",
+    "SectionStartMenu": "Menu iniciar"
+}

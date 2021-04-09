@@ -1,7 +1,7 @@
 autopep8
 Babel>=2.6.0
-isort==4.3.10
 flake8
+isort>=4.3.10,<5
 pycodestyle
-pylint
+pylint>=2.6.0
 transifex-client

@@ -23,6 +23,7 @@ build/
 coverage.xml
 dist/
 installer/picard-setup.nsi
+installer/i18n/out/*.nsh
 locale/
 org.musicbrainz.Picard.appdata.xml
 picard.egg-info

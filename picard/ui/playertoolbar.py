@@ -29,14 +29,13 @@ from PyQt5 import (
     QtWidgets,
 )
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.const.sys import IS_MACOS
 from picard.util import (
     format_time,
     icontheme,
+    iter_files_from_objects,
 )
 
 from picard.ui.widgets import (
@@ -133,7 +132,7 @@ class Player(QtCore.QObject):
         playlist = QtMultimedia.QMediaPlaylist(self)
         playlist.setPlaybackMode(QtMultimedia.QMediaPlaylist.Sequential)
         playlist.addMedia([QtMultimedia.QMediaContent(QtCore.QUrl.fromLocalFile(file.filename))
-                          for file in self.tagger.get_files_from_objects(self._selected_objects)])
+                          for file in iter_files_from_objects(self._selected_objects)])
         self._player.setPlaylist(playlist)
         self._player.play()
 
@@ -214,6 +213,7 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.progress_widget = PlaybackProgressSlider(self, self.player)
         self.addWidget(self.progress_widget)
 
+        config = get_config()
         volume = config.persist["mediaplayer_volume"]
         self.player.set_volume(volume)
         self.volume_button = VolumeControlButton(self, volume)

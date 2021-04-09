@@ -30,7 +30,12 @@
 
 from PyQt5 import QtCore
 
-from picard import config
+from picard.config import (
+    BoolOption,
+    IntOption,
+    TextOption,
+    get_config,
+)
 from picard.const import (
     MUSICBRAINZ_SERVERS,
     PROGRAM_UPDATE_LEVELS,
@@ -50,22 +55,23 @@ class GeneralOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 1
     ACTIVE = True
+    HELP_URL = '/config/options_general.html'
 
     options = [
-        config.TextOption("setting", "server_host", MUSICBRAINZ_SERVERS[0]),
-        config.IntOption("setting", "server_port", 443),
-        config.TextOption("persist", "oauth_refresh_token", ""),
-        config.BoolOption("setting", "analyze_new_files", False),
-        config.BoolOption("setting", "ignore_file_mbids", False),
-        config.TextOption("persist", "oauth_refresh_token", ""),
-        config.TextOption("persist", "oauth_refresh_token_scopes", ""),
-        config.TextOption("persist", "oauth_access_token", ""),
-        config.IntOption("persist", "oauth_access_token_expires", 0),
-        config.TextOption("persist", "oauth_username", ""),
-        config.BoolOption("setting", "check_for_updates", True),
-        config.IntOption("setting", "update_check_days", 7),
-        config.IntOption("setting", "update_level", 0),
-        config.IntOption("persist", "last_update_check", 0),
+        TextOption("setting", "server_host", MUSICBRAINZ_SERVERS[0]),
+        IntOption("setting", "server_port", 443),
+        TextOption("persist", "oauth_refresh_token", ""),
+        BoolOption("setting", "analyze_new_files", False),
+        BoolOption("setting", "ignore_file_mbids", False),
+        TextOption("persist", "oauth_refresh_token", ""),
+        TextOption("persist", "oauth_refresh_token_scopes", ""),
+        TextOption("persist", "oauth_access_token", ""),
+        IntOption("persist", "oauth_access_token_expires", 0),
+        TextOption("persist", "oauth_username", ""),
+        BoolOption("setting", "check_for_updates", True),
+        IntOption("setting", "update_check_days", 7),
+        IntOption("setting", "update_level", 0),
+        IntOption("persist", "last_update_check", 0),
     ]
 
     def __init__(self, parent=None):
@@ -78,6 +84,7 @@ class GeneralOptionsPage(OptionsPage):
         self.update_login_logout()
 
     def load(self):
+        config = get_config()
         self.ui.server_host.setEditText(config.setting["server_host"])
         self.ui.server_port.setValue(config.setting["server_port"])
         self.ui.analyze_new_files.setChecked(config.setting["analyze_new_files"])
@@ -95,6 +102,7 @@ class GeneralOptionsPage(OptionsPage):
             self.ui.update_check_groupbox.hide()
 
     def save(self):
+        config = get_config()
         config.setting["server_host"] = self.ui.server_host.currentText().strip()
         config.setting["server_port"] = self.ui.server_port.value()
         config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
@@ -106,6 +114,7 @@ class GeneralOptionsPage(OptionsPage):
 
     def update_login_logout(self):
         if self.tagger.webservice.oauth_manager.is_logged_in():
+            config = get_config()
             self.ui.logged_in.setText(_("Logged in as <b>%s</b>.") % config.persist["oauth_username"])
             self.ui.logged_in.show()
             self.ui.login.hide()

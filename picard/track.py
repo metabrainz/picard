@@ -6,7 +6,7 @@
 # Copyright (C) 2006-2007, 2011 Lukáš Lalinský
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2009 Carlin Mangar
-# Copyright (C) 2010, 2014-2015, 2018-2020 Philipp Wolfer
+# Copyright (C) 2010, 2014-2015, 2018-2021 Philipp Wolfer
 # Copyright (C) 2011 Chad Wilson
 # Copyright (C) 2011 Wieland Hoffmann
 # Copyright (C) 2011-2013 Michael Wiencek
@@ -37,17 +37,14 @@
 
 
 from collections import defaultdict
-from functools import partial
 from itertools import filterfalse
 import re
 import traceback
 
 from PyQt5 import QtCore
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.const import (
     DATA_TRACK_TITLE,
     SILENCE_TRACK_TITLE,
@@ -61,6 +58,7 @@ from picard.file import (
 from picard.mbjson import recording_to_metadata
 from picard.metadata import (
     Metadata,
+    MultiMetadataProxy,
     run_track_metadata_processors,
 )
 from picard.script import (
@@ -69,14 +67,12 @@ from picard.script import (
     enabled_tagger_scripts_texts,
 )
 from picard.util.imagelist import (
-    ImageList,
     add_metadata_images,
     remove_metadata_images,
-    update_metadata_images,
 )
 from picard.util.textencoding import asciipunct
 
-from picard.ui.item import Item
+from picard.ui.item import FileListItem
 
 
 _TRANSLATE_TAGS = {
@@ -136,78 +132,106 @@ class TrackArtist(DataObject):
         super().__init__(ta_id)
 
 
-class Track(DataObject, Item):
+class Track(DataObject, FileListItem):
 
     metadata_images_changed = QtCore.pyqtSignal()
 
     def __init__(self, track_id, album=None):
         DataObject.__init__(self, track_id)
-        self.album = album
-        self.linked_files = []
-        self.num_linked_files = 0
+        FileListItem.__init__(self)
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
-        self.error = None
+        self.album = album
+        self.num_linked_files = 0
+        self.scripted_metadata = Metadata()
         self._track_artists = []
 
     def __repr__(self):
         return '<Track %s %r>' % (self.id, self.metadata["title"])
 
-    def add_file(self, file):
-        if file not in self.linked_files:
+    @property
+    def linked_files(self):
+        """For backward compatibility with old code in plugins"""
+        return self.files
+
+    def add_file(self, file, new_album=True):
+        if file not in self.files:
             track_will_expand = self.num_linked_files == 1
-            self.linked_files.append(file)
+            self.files.append(file)
             self.num_linked_files += 1
         self.update_file_metadata(file)
         add_metadata_images(self, [file])
-        self.album._add_file(self, file)
-        file.metadata_images_changed.connect(self.update_orig_metadata_images)
+        self.album._add_file(self, file, new_album=new_album)
+        file.metadata_images_changed.connect(self.update_metadata_images)
         run_file_post_addition_to_track_processors(self, file)
         if track_will_expand:
             # Files get expanded, ensure the existing item renders correctly
-            self.linked_files[0].update_item()
+            self.files[0].update_item()
 
     def update_file_metadata(self, file):
-        if file not in self.linked_files:
+        if file not in self.files:
             return
-        file.copy_metadata(self.metadata)
-        file.metadata['~extension'] = file.orig_metadata['~extension']
+        # Run the scripts for the file to allow usage of
+        # file specific metadata and variables
+        config = get_config()
+        if config.setting["clear_existing_tags"]:
+            metadata = Metadata(self.orig_metadata)
+            metadata_proxy = MultiMetadataProxy(metadata, file.metadata)
+            self.run_scripts(metadata_proxy)
+        else:
+            metadata = Metadata(file.metadata)
+            metadata.update(self.orig_metadata)
+            self.run_scripts(metadata)
+        # Apply changes to the track's metadata done manually after the scripts ran
+        meta_diff = self.metadata.diff(self.scripted_metadata)
+        metadata.update(meta_diff)
+        # Images are not affected by scripting, always use the tracks current images
+        metadata.images = self.metadata.images
+        file.copy_metadata(metadata)
         file.update(signal=False)
         self.update()
 
-    def remove_file(self, file):
-        if file not in self.linked_files:
+    def remove_file(self, file, new_album=True):
+        if file not in self.files:
             return
-        self.linked_files.remove(file)
+        self.files.remove(file)
         self.num_linked_files -= 1
+        file.metadata_images_changed.disconnect(self.update_metadata_images)
         file.copy_metadata(file.orig_metadata, preserve_deleted=False)
-        file.metadata_images_changed.disconnect(self.update_orig_metadata_images)
-        self.album._remove_file(self, file)
+        self.album._remove_file(self, file, new_album=new_album)
         remove_metadata_images(self, [file])
         run_file_post_removal_from_track_processors(self, file)
         self.update()
+        if self.item.isSelected():
+            self.tagger.window.refresh_metadatabox()
+
+    @staticmethod
+    def run_scripts(metadata):
+        for s_name, s_text in enabled_tagger_scripts_texts():
+            parser = ScriptParser()
+            try:
+                parser.eval(s_text, metadata)
+            except ScriptError:
+                log.exception("Failed to run tagger script %s on track", s_name)
+            metadata.strip_whitespace()
 
     def update(self):
         if self.item:
             self.item.update()
-
-    def iterfiles(self, save=False):
-        for file in self.linked_files:
-            yield file
 
     def is_linked(self):
         return self.num_linked_files > 0
 
     def can_save(self):
         """Return if this object can be saved."""
-        for file in self.linked_files:
+        for file in self.files:
             if file.can_save():
                 return True
         return False
 
     def can_remove(self):
         """Return if this object can be removed."""
-        for file in self.linked_files:
+        for file in self.files:
             if file.can_remove():
                 return True
         return False
@@ -227,7 +251,7 @@ class Track(DataObject, Item):
         elif column in m:
             return m[column]
         elif self.num_linked_files == 1:
-            return self.linked_files[0].column(column)
+            return self.files[0].column(column)
 
     def is_video(self):
         return self.metadata['~video'] == '1'
@@ -245,6 +269,7 @@ class Track(DataObject, Item):
         return self.ignored_for_completeness() or self.num_linked_files == 1
 
     def ignored_for_completeness(self):
+        config = get_config()
         if (config.setting['completeness_ignore_videos'] and self.is_video()) \
                 or (config.setting['completeness_ignore_pregap'] and self.is_pregap()) \
                 or (config.setting['completeness_ignore_data'] and self.is_data()) \
@@ -260,6 +285,7 @@ class Track(DataObject, Item):
         return track_artist
 
     def _customize_metadata(self):
+        config = get_config()
         tm = self.metadata
 
         # Custom VA name
@@ -280,6 +306,7 @@ class Track(DataObject, Item):
             tm.apply_func(asciipunct)
 
     def _convert_folksonomy_tags_to_genre(self):
+        config = get_config()
         # Combine release and track tags
         tags = dict(self.genres)
         self.merge_genres(tags, self.album.genres)
@@ -315,23 +342,11 @@ class Track(DataObject, Item):
                 break
             name = _TRANSLATE_TAGS.get(name, name.title())
             genre.append(name)
+        genre.sort()
         join_genres = config.setting['join_genres']
         if join_genres:
             genre = [join_genres.join(genre)]
         self.metadata['genre'] = genre
-
-    def update_orig_metadata_images(self):
-        update_metadata_images(self)
-
-    def keep_original_images(self):
-        for file in self.linked_files:
-            file.keep_original_images()
-        self.update_orig_metadata_images()
-        if self.linked_files:
-            self.metadata.images = self.orig_metadata.images.copy()
-        else:
-            self.metadata.images = ImageList()
-        self.update()
 
 
 class NonAlbumTrack(Track):
@@ -356,9 +371,10 @@ class NonAlbumTrack(Track):
     def load(self, priority=False, refresh=False):
         self.metadata.copy(self.album.metadata, copy_images=False)
         self.status = _("[loading recording information]")
-        self.error = None
+        self.clear_errors()
         self.loaded = False
         self.album.update(True)
+        config = get_config()
         mblogin = False
         inc = ["artist-credits", "artists", "aliases"]
         if config.setting["track_ars"]:
@@ -369,7 +385,7 @@ class NonAlbumTrack(Track):
             mblogin = True
             inc += ["user-ratings"]
         self.tagger.mb_api.get_track_by_id(self.id,
-                                           partial(self._recording_request_finished),
+                                           self._recording_request_finished,
                                            inc, mblogin=mblogin,
                                            priority=priority,
                                            refresh=refresh)
@@ -383,31 +399,23 @@ class NonAlbumTrack(Track):
             return
         try:
             self._parse_recording(recording)
-            for file in self.linked_files:
+            for file in self.files:
                 self.update_file_metadata(file)
         except Exception:
             self._set_error(traceback.format_exc())
 
     def _set_error(self, error):
-        log.error("%r", error)
+        self.error_append(error)
         self.status = _("[could not load recording %s]") % self.id
-        self.error = error
         self.album.update(True)
 
     def _parse_recording(self, recording):
         m = self.metadata
         recording_to_metadata(recording, m, self)
-        self.orig_metadata.copy(m)
         self._customize_metadata()
         run_track_metadata_processors(self.album, m, recording)
-        for s_name, s_text in enabled_tagger_scripts_texts():
-            parser = ScriptParser()
-            try:
-                parser.eval(s_text, m)
-            except ScriptError:
-                log.exception("Failed to run tagger script %s on track", s_name)
-            m.strip_whitespace()
-
+        self.orig_metadata.copy(m)
+        self.run_scripts(m)
         self.loaded = True
         self.status = None
         if self.callback:
@@ -418,6 +426,9 @@ class NonAlbumTrack(Track):
     def _customize_metadata(self):
         super()._customize_metadata()
         self.metadata['album'] = self.album.metadata['album']
+        if self.metadata['~recording_firstreleasedate']:
+            self.metadata['originaldate'] = self.metadata['~recording_firstreleasedate']
+            self.metadata['originalyear'] = self.metadata['originaldate'][:4]
 
     def run_when_loaded(self, func):
         if self.loaded:

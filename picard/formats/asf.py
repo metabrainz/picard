@@ -33,10 +33,8 @@ from mutagen.asf import (
     ASFByteArrayAttribute,
 )
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.coverart.image import (
     CoverArtImageError,
     TagCoverArtImage,
@@ -186,6 +184,7 @@ class ASFFile(File):
         'djmixer': 'WM/DJMixer',
         'mixer': 'WM/Mixer',
         'artists': 'WM/ARTISTS',
+        'director': 'WM/Director',
         'work': 'WM/Work',
         'website': 'WM/AuthorURL',
     }
@@ -209,6 +208,7 @@ class ASFFile(File):
 
     def _load(self, filename):
         log.debug("Loading file %r", filename)
+        config = get_config()
         self.__casemap = {}
         file = ASF(encode_filename(filename))
         metadata = Metadata()
@@ -262,6 +262,7 @@ class ASFFile(File):
 
     def _save(self, filename, metadata):
         log.debug("Saving file %r", filename)
+        config = get_config()
         file = ASF(encode_filename(filename))
         tags = file.tags
 

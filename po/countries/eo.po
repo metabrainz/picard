@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Alex Mauer <hawke@hawkesnest.net>, 2016
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009

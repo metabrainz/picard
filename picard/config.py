@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2007, 2014, 2017 Lukáš Lalinský
-# Copyright (C) 2008, 2014, 2019-2020 Philipp Wolfer
+# Copyright (C) 2008, 2014, 2019-2021 Philipp Wolfer
 # Copyright (C) 2012, 2017 Wieland Hoffmann
 # Copyright (C) 2012-2014 Michael Wiencek
 # Copyright (C) 2013-2016, 2018-2019 Laurent Monin
@@ -27,9 +27,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import defaultdict
 from operator import itemgetter
 import os
 import shutil
+import threading
+
+import fasteners
 
 from PyQt5 import QtCore
 
@@ -39,15 +43,20 @@ from picard import (
     PICARD_VERSION,
     log,
 )
-from picard.util import LockableObject
 from picard.version import Version
+
+
+class Memovar:
+    def __init__(self):
+        self.dirty = True
+        self.value = None
 
 
 class ConfigUpgradeError(Exception):
     pass
 
 
-class ConfigSection(LockableObject):
+class ConfigSection(QtCore.QObject):
 
     """Configuration section."""
 
@@ -57,14 +66,10 @@ class ConfigSection(LockableObject):
         self.__name = name
         self.__prefix = self.__name + '/'
         self.__prefix_len = len(self.__prefix)
+        self._memoization = defaultdict(Memovar)
 
     def key(self, name):
         return self.__prefix + name
-
-    def _subkeys(self):
-        for key in self.__qt_config.allKeys():
-            if key[:self.__prefix_len] == self.__prefix:
-                yield key[self.__prefix_len:]
 
     def __getitem__(self, name):
         opt = Option.get(self.__name, name)
@@ -73,57 +78,76 @@ class ConfigSection(LockableObject):
         return self.value(name, opt, opt.default)
 
     def __setitem__(self, name, value):
-        self.lock_for_write()
-        try:
-            self.__qt_config.setValue(self.key(name), value)
-        finally:
-            self.unlock()
+        key = self.key(name)
+        self.__qt_config.setValue(key, value)
+        self._memoization[key].dirty = True
 
     def __contains__(self, name):
         return self.__qt_config.contains(self.key(name))
 
     def remove(self, name):
-        self.lock_for_write()
+        key = self.key(name)
+        config = self.__qt_config
+        if config.contains(key):
+            config.remove(key)
         try:
-            if name in self:
-                self.__qt_config.remove(self.key(name))
-        finally:
-            self.unlock()
+            del self._memoization[key]
+        except KeyError:
+            pass
 
     def raw_value(self, name, qtype=None):
         """Return an option value without any type conversion."""
         key = self.key(name)
         if qtype is not None:
-            return self.__qt_config.value(key, type=qtype)
+            value = self.__qt_config.value(key, type=qtype)
         else:
-            return self.__qt_config.value(key)
+            value = self.__qt_config.value(key)
+        return value
 
     def value(self, name, option_type, default=None):
         """Return an option value converted to the given Option type."""
-        self.lock_for_read()
-        try:
-            if name in self:
-                value = self.raw_value(name, qtype=option_type.qtype)
-                return option_type.convert(value)
-            return default
-        except Exception as why:
-            log.error('Cannot read %s value: %s', self.key(name), why, exc_info=True)
-            return default
-        finally:
-            self.unlock()
+        if name in self:
+            key = self.key(name)
+            memovar = self._memoization[key]
+
+            if memovar.dirty:
+                try:
+                    value = self.raw_value(name, qtype=option_type.qtype)
+                    value = option_type.convert(value)
+                    memovar.dirty = False
+                    memovar.value = value
+                except Exception as why:
+                    log.error('Cannot read %s value: %s', self.key(name), why, exc_info=True)
+                    value = default
+                return value
+            else:
+                return memovar.value
+        return default
 
 
 class Config(QtCore.QSettings):
 
-    """Configuration."""
+    """Configuration.
+    QSettings is not thread safe, each thread must use its own instance of this class.
+    Use `get_config()` to obtain a Config instance for the current thread.
+    Changes to one Config instances are automatically available to all other instances.
+
+    Use `Config.from_app` or `Config.from_file` to obtain a new `Config` instance.
+
+    See: https://doc.qt.io/qt-5/qsettings.html#accessing-settings-from-multiple-threads-or-processes-simultaneously
+    """
 
     def __init__(self):
-        self.__known_keys = set()
+        # Do not call `QSettings.__init__` here. The proper overloaded `QSettings.__init__`
+        # gets called in `from_app` or `from_config`. Only those class methods must be used
+        # to create a new instance of `Config`.
+        pass
 
     def __initialize(self):
         """Common initializer method for :meth:`from_app` and
         :meth:`from_file`."""
 
+        self.setAtomicSyncRequired(False)  # See comment in event()
         self.application = ConfigSection(self, "application")
         self.setting = ConfigSection(self, "setting")
         self.persist = ConfigSection(self, "persist")
@@ -133,12 +157,30 @@ class Config(QtCore.QSettings):
         TextOption("application", "version", '0.0.0dev0')
         self._version = Version.from_string(self.application["version"])
         self._upgrade_hooks = dict()
-        # Save known config names for faster access and to prevent
-        # strange cases of Qt locking up when accessing QSettings.allKeys()
-        # or QSettings.contains() shortly after having written settings
-        # inside threads.
-        # See https://tickets.metabrainz.org/browse/PICARD-1590
-        self.__known_keys = set(self.allKeys())
+
+    def event(self, event):
+        if event.type() == QtCore.QEvent.UpdateRequest:
+            # Syncing the config file can trigger a deadlock between QSettings internal mutex and
+            # the Python GIL in PyQt up to 5.15.2. Workaround this by handling this ourselves
+            # with custom file locking.
+            # See also https: // tickets.metabrainz.org/browse/PICARD-2088
+            log.debug('Config file update requested on thread %r', threading.get_ident())
+            self.sync()
+            return True
+        else:
+            return super().event(event)
+
+    def sync(self):
+        # Custom file locking for save multi process syncing of the config file. This is needed
+        # as we have atomicSyncRequired disabled.
+        with fasteners.InterProcessLock(self.get_lockfile_name()):
+            super().sync()
+
+    def get_lockfile_name(self):
+        filename = self.fileName()
+        directory = os.path.dirname(filename)
+        filename = '.' + os.path.basename(filename) + '.synclock'
+        return os.path.join(directory, filename)
 
     @classmethod
     def from_app(cls, parent):
@@ -176,19 +218,6 @@ class Config(QtCore.QSettings):
         this.__initialize()
         return this
 
-    def setValue(self, key, value):
-        super().setValue(key, value)
-        self.__known_keys.add(key)
-
-    def remove(self, key):
-        super().remove(key)
-        self.__known_keys.discard(key)
-
-    def contains(self, key):
-        # Overwritten due to https://tickets.metabrainz.org/browse/PICARD-1590
-        # See comment above in __initialize
-        return key in self.__known_keys or super().contains(key)
-
     def switchProfile(self, profilename):
         """Sets the current profile."""
         key = "profile/%s" % (profilename,)
@@ -209,6 +238,11 @@ class Config(QtCore.QSettings):
 
     def run_upgrade_hooks(self, outputfunc=None):
         """Executes registered functions to upgrade config version to the latest"""
+        if self._version == Version(0, 0, 0, 'dev', 0):
+            # This is a freshly created config
+            self._version = PICARD_VERSION
+            self._write_version()
+            return
         if not self._upgrade_hooks:
             return
         if self._version >= PICARD_VERSION:
@@ -325,12 +359,62 @@ config = None
 setting = None
 persist = None
 
+_thread_configs = {}
+_thread_config_lock = threading.RLock()
 
-def _setup(app, filename=None):
+
+def setup_config(app, filename=None):
     global config, setting, persist
     if filename is None:
         config = Config.from_app(app)
     else:
         config = Config.from_file(app, filename)
+    _thread_configs[threading.get_ident()] = config
     setting = config.setting
     persist = config.persist
+    _init_purge_config_timer()
+
+
+def get_config():
+    """Returns a config object for the current thread.
+
+    Config objects for threads are created on demand and cached for later use.
+    """
+    thread_id = threading.get_ident()
+    thread_config = _thread_configs.get(thread_id)
+    if not thread_config:
+        if not config:
+            return None  # Not yet initialized
+        _thread_config_lock.acquire()
+        try:
+            config_file = config.fileName()
+            log.debug('Instantiating Config for thread %s using %s.', thread_id, config_file)
+            thread_config = Config.from_file(None, config_file)
+            _thread_configs[thread_id] = thread_config
+        finally:
+            _thread_config_lock.release()
+    return thread_config
+
+
+def _init_purge_config_timer(purge_interval_milliseconds=60000):
+    def run_purge_config_timer():
+        purge_config_instances()
+        start_purge_config_timer()
+
+    def start_purge_config_timer():
+        QtCore.QTimer.singleShot(purge_interval_milliseconds, run_purge_config_timer)
+
+    start_purge_config_timer()
+
+
+def purge_config_instances():
+    """Removes cached config instances for no longer active threads."""
+    _thread_config_lock.acquire()
+    try:
+        all_threads = set([thread.ident for thread in threading.enumerate()])
+        threads_config = set(_thread_configs)
+        for thread_id in threads_config.difference(all_threads):
+            log.debug('Purging config instance for thread %s.', thread_id)
+            del _thread_configs[thread_id]
+    finally:
+        _thread_config_lock.release()

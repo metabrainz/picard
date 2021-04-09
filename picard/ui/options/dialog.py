@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008, 2011 Lukáš Lalinský
 # Copyright (C) 2008-2009 Nikolai Prokoschenko
-# Copyright (C) 2008-2009, 2018-2019 Philipp Wolfer
+# Copyright (C) 2008-2009, 2018-2020 Philipp Wolfer
 # Copyright (C) 2011 Pavan Chander
 # Copyright (C) 2011-2012, 2019 Wieland Hoffmann
 # Copyright (C) 2011-2013 Michael Wiencek
@@ -31,14 +31,18 @@
 
 from PyQt5 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
-from picard import (
-    config,
-    log,
+from picard import log
+from picard.config import (
+    ListOption,
+    Option,
+    TextOption,
+    get_config,
 )
-from picard.const import PICARD_URLS
+from picard.const import DOCS_BASE_URL
 from picard.util import (
     restore_method,
     webbrowser2,
@@ -52,7 +56,6 @@ from picard.ui import (
 from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     OptionsCheckError,
     _pages as page_classes,
-    about,
     advanced,
     cdlookup,
     cover,
@@ -71,7 +74,10 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     renaming,
     scripting,
     tags,
-    tags_compatibility,
+    tags_compatibility_aac,
+    tags_compatibility_ac3,
+    tags_compatibility_id3,
+    tags_compatibility_wave,
 )
 from picard.ui.util import StandardButton
 
@@ -81,7 +87,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     autorestore = False
 
     options = [
-        config.Option("persist", "options_splitter", QtCore.QByteArray()),
+        TextOption("persist", "options_last_active_page", ""),
+        ListOption("persist", "options_pages_tree_state", []),
+        Option("persist", "options_splitter", QtCore.QByteArray()),
     ]
 
     def add_pages(self, parent, default_page, parent_item):
@@ -141,12 +149,14 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.item_to_page = {}
         self.page_to_item = {}
         self.default_item = None
+        if not default_page:
+            config = get_config()
+            default_page = config.persist["options_last_active_page"]
         self.add_pages(None, default_page, self.ui.pages_tree)
 
         # work-around to set optimal option pane width
         self.ui.pages_tree.expandAll()
         max_page_name = self.ui.pages_tree.sizeHintForColumn(0) + 2*self.ui.pages_tree.frameWidth()
-        self.ui.pages_tree.collapseAll()
         self.ui.splitter.setSizes([max_page_name,
                                    self.geometry().width() - max_page_name])
 
@@ -165,10 +175,18 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 self.disable_page(page.NAME)
         self.ui.pages_tree.setCurrentItem(self.default_item)
 
+    def keyPressEvent(self, event):
+        if event.matches(QtGui.QKeySequence.HelpContents):
+            self.help()
+        else:
+            super().keyPressEvent(event)
+
     def switch_page(self):
         items = self.ui.pages_tree.selectedItems()
         if items:
+            config = get_config()
             page = self.item_to_page[items[0]]
+            config.persist["options_last_active_page"] = page.NAME
             self.ui.pages_stack.setCurrentWidget(page)
 
     def disable_page(self, name):
@@ -177,7 +195,15 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def help(self):
         current_page = self.ui.pages_stack.currentWidget()
-        url = "{}#{}".format(PICARD_URLS['doc_options'], current_page.NAME)
+        url = current_page.HELP_URL
+        # If URL is empty, use the first non empty parent help URL.
+        while current_page.PARENT and not url:
+            current_page = self.item_to_page[self.page_to_item[current_page.PARENT]]
+            url = current_page.HELP_URL
+        if not url:
+            url = DOCS_BASE_URL
+        elif url.startswith('/'):
+            url = DOCS_BASE_URL + url
         webbrowser2.open(url)
 
     def accept(self):
@@ -207,10 +233,29 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         page.display_error(error)
 
     def saveWindowState(self):
+        expanded_pages = []
+        for page, item in self.page_to_item.items():
+            index = self.ui.pages_tree.indexFromItem(item)
+            is_expanded = self.ui.pages_tree.isExpanded(index)
+            expanded_pages.append((page, is_expanded))
+        config = get_config()
+        config.persist["options_pages_tree_state"] = expanded_pages
         config.persist["options_splitter"] = self.ui.splitter.saveState()
 
     @restore_method
     def restoreWindowState(self):
+        config = get_config()
+        pages_tree_state = config.persist["options_pages_tree_state"]
+        if not pages_tree_state:
+            self.ui.pages_tree.expandAll()
+        else:
+            for page, is_expanded in pages_tree_state:
+                try:
+                    item = self.page_to_item[page]
+                except KeyError:
+                    continue
+                item.setExpanded(is_expanded)
+
         self.restore_geometry()
         self.ui.splitter.restoreState(config.persist["options_splitter"])
 

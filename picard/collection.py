@@ -28,10 +28,8 @@ from functools import partial
 
 from PyQt5 import QtCore
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 
 
 user_collections = {}
@@ -156,6 +154,7 @@ def add_release_to_user_collections(release_node):
     # Check for empy collection list
     if "collections" in release_node:
         release_id = release_node['id']
+        config = get_config()
         username = config.persist["oauth_username"].lower()
         for node in release_node['collections']:
             if node['editor'].lower() == username:

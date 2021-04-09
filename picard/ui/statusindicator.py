@@ -38,7 +38,8 @@ class AbstractProgressStatusIndicator:
         if not self.is_available:
             return
 
-        total_pending = pending_files + pending_requests
+        # Weight pending network requests higher as they are slower then file loads
+        total_pending = pending_files + 10 * pending_requests
 
         if total_pending == self._last_pending:
             return  # No changes, avoid update
@@ -90,94 +91,102 @@ if IS_WIN:
     DesktopStatusIndicator = WindowsTaskbarStatusIndicator
 
 elif not (IS_MACOS or IS_HAIKU):
-    from PyQt5.QtCore import (
-        Q_CLASSINFO,
-        QObject,
-        pyqtSlot,
-    )
-    from PyQt5.QtDBus import (
-        QDBusAbstractAdaptor,
-        QDBusConnection,
-        QDBusMessage,
-    )
+    QDBusConnection = None
 
-    from picard import PICARD_DESKTOP_NAME
+    try:
+        from PyQt5.QtCore import (
+            Q_CLASSINFO,
+            QObject,
+            pyqtSlot,
+        )
+        from PyQt5.QtDBus import (
+            QDBusAbstractAdaptor,
+            QDBusConnection,
+            QDBusMessage,
+        )
 
-    DBUS_INTERFACE = 'com.canonical.Unity.LauncherEntry'
+    except ImportError:
+        pass
 
-    class UnityLauncherEntryService(QObject):
+    else:
 
-        def __init__(self, bus, app_id):
-            QObject.__init__(self)
-            self._bus = bus
-            self._app_id = app_id
-            self._path = '/'
-            self._progress = 0
-            self._visible = False
-            self._dbus_adaptor = UnityLauncherEntryAdaptor(self)
-            self._available = bus.registerObject(self._path, self)
+        from picard import PICARD_DESKTOP_NAME
 
-        @property
-        def current_progress(self):
-            return {
-                "progress": self._progress,
-                "progress-visible": self._visible,
-            }
+        DBUS_INTERFACE = 'com.canonical.Unity.LauncherEntry'
 
-        @property
-        def is_available(self):
-            return self._available
+        class UnityLauncherEntryService(QObject):
 
-        def update(self, progress, visible=True):
-            self._progress = progress
-            self._visible = visible
-            # Automatic forwarding of Qt signals does not work in this case
-            # since Qt cannot handle the complex "a{sv}" type.
-            # Create the signal message manually.
-            message = QDBusMessage.createSignal(self._path, DBUS_INTERFACE, 'Update')
-            message.setArguments([self._app_id, self.current_progress])
-            self._bus.send(message)
+            def __init__(self, bus, app_id):
+                QObject.__init__(self)
+                self._bus = bus
+                self._app_uri = 'application://' + app_id
+                self._path = '/com/canonical/unity/launcherentry/1'
+                self._progress = 0
+                self._visible = False
+                self._dbus_adaptor = UnityLauncherEntryAdaptor(self)
+                self._available = bus.registerObject(self._path, self)
 
-        def query(self):
-            return [self._app_id, self.current_progress]
+            @property
+            def current_progress(self):
+                return {
+                    "progress": self._progress,
+                    "progress-visible": self._visible,
+                }
 
-    class UnityLauncherEntryAdaptor(QDBusAbstractAdaptor):
-        """ This provides the DBus adaptor to the outside world"""
+            @property
+            def is_available(self):
+                return self._available
 
-        Q_CLASSINFO("D-Bus Interface", DBUS_INTERFACE)
-        Q_CLASSINFO("D-Bus Introspection",
-            '<interface name="%s">\n'
-            '  <signal name="Update">\n'
-            '    <arg direction="out" type="s" name="app_uri"/>\n'
-            '    <arg direction="out" type="a{sv}" name="properties"/>\n'
-            '  </signal>\n'
-            '  <method name="Query">\n'
-            '    <arg direction="out" type="s" name="app_uri"/>\n'
-            '    <arg direction="out" type="a{sv}" name="properties"/>\n'
-            '  </method>\n'
-            '</interface>' % DBUS_INTERFACE)
+            def update(self, progress, visible=True):
+                self._progress = progress
+                self._visible = visible
+                # Automatic forwarding of Qt signals does not work in this case
+                # since Qt cannot handle the complex "a{sv}" type.
+                # Create the signal message manually.
+                message = QDBusMessage.createSignal(self._path, DBUS_INTERFACE, 'Update')
+                message.setArguments([self._app_uri, self.current_progress])
+                self._bus.send(message)
 
-        def __init__(self, parent):
-            super().__init__(parent)
+            def query(self):
+                return [self._app_uri, self.current_progress]
 
-        @pyqtSlot(name="Query", result=list)
-        def query(self):
-            return self.parent().query()
+        class UnityLauncherEntryAdaptor(QDBusAbstractAdaptor):
+            """ This provides the DBus adaptor to the outside world"""
 
-    class UnityLauncherEntryStatusIndicator(AbstractProgressStatusIndicator):
-        def __init__(self, window):
-            super().__init__()
-            bus = QDBusConnection.sessionBus()
-            self._service = UnityLauncherEntryService(bus, PICARD_DESKTOP_NAME)
+            Q_CLASSINFO("D-Bus Interface", DBUS_INTERFACE)
+            Q_CLASSINFO("D-Bus Introspection",
+                '<interface name="%s">\n'
+                '  <signal name="Update">\n'
+                '    <arg direction="out" type="s" name="app_uri"/>\n'
+                '    <arg direction="out" type="a{sv}" name="properties"/>\n'
+                '  </signal>\n'
+                '  <method name="Query">\n'
+                '    <arg direction="out" type="s" name="app_uri"/>\n'
+                '    <arg direction="out" type="a{sv}" name="properties"/>\n'
+                '  </method>\n'
+                '</interface>' % DBUS_INTERFACE)
 
-        @property
-        def is_available(self):
-            return self._service.is_available
+            def __init__(self, parent):
+                super().__init__(parent)
 
-        def hide_progress(self):
-            self._service.update(0, False)
+            @pyqtSlot(name="Query", result=list)
+            def query(self):
+                return self.parent().query()
 
-        def set_progress(self, progress):
-            self._service.update(progress)
+        class UnityLauncherEntryStatusIndicator(AbstractProgressStatusIndicator):
+            def __init__(self, window):
+                super().__init__()
+                bus = QDBusConnection.sessionBus()
+                self._service = UnityLauncherEntryService(bus, PICARD_DESKTOP_NAME)
 
-    DesktopStatusIndicator = UnityLauncherEntryStatusIndicator
+            @property
+            def is_available(self):
+                return self._service.is_available
+
+            def hide_progress(self):
+                self._service.update(0, False)
+
+            def set_progress(self, progress):
+                self._service.update(progress)
+
+        DesktopStatusIndicator = UnityLauncherEntryStatusIndicator

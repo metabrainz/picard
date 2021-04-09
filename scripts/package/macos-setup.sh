@@ -24,6 +24,6 @@ fi
 cp "$HOME/libdiscid/lib/libdiscid.0.dylib" .
 
 # Install fpcalc
-wget "https://github.com/phw/chromaprint/releases/download/v$FPCALC_VERSION/chromaprint-fpcalc-$FPCALC_VERSION-macos-x86_64.tar.gz"
+wget "https://github.com/acoustid/chromaprint/releases/download/v$FPCALC_VERSION/chromaprint-fpcalc-$FPCALC_VERSION-macos-x86_64.tar.gz"
 tar -xf "chromaprint-fpcalc-$FPCALC_VERSION-macos-x86_64.tar.gz"
 cp "chromaprint-fpcalc-$FPCALC_VERSION-macos-x86_64/fpcalc" .

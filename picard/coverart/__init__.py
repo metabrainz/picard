@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2007 Oliver Charles
 # Copyright (C) 2007, 2010-2011 Lukáš Lalinský
-# Copyright (C) 2007-2011, 2019 Philipp Wolfer
+# Copyright (C) 2007-2011, 2019-2020 Philipp Wolfer
 # Copyright (C) 2011 Michael Wiencek
 # Copyright (C) 2011-2012 Wieland Hoffmann
 # Copyright (C) 2013-2015, 2018-2019 Laurent Monin
@@ -30,10 +30,8 @@ import traceback
 
 from PyQt5.QtCore import QObject
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.coverart.image import (
     CoverArtImageIdentificationError,
     CoverArtImageIOError,
@@ -59,6 +57,7 @@ class CoverArt:
 
     def retrieve(self):
         """Retrieve available cover art images for the release"""
+        config = get_config()
         if (not config.setting["save_images_to_tags"] and not
                 config.setting["save_images_to_files"]):
             log.debug("Cover art disabled by user options.")
@@ -79,8 +78,8 @@ class CoverArt:
                 for track in self.album._new_tracks:
                     track.metadata.images.append(coverartimage)
                 # If the image already was a front image,
-                # there might still be some other non-CAA front
-                # images in the queue - ignore them.
+                # there might still be some other non-CAA front
+                # images in the queue - ignore them.
                 if not self.front_image_found:
                     self.front_image_found = coverartimage.is_front_image()
             else:
@@ -130,6 +129,7 @@ class CoverArt:
             # album removed
             return
 
+        config = get_config()
         if (self.front_image_found
             and config.setting["save_images_to_tags"]
             and not config.setting["save_images_to_files"]
@@ -180,8 +180,8 @@ class CoverArt:
                 path = coverartimage.url.toLocalFile()
                 with open(path, 'rb') as file:
                     self._set_metadata(coverartimage, file.read())
-            except IOError as ioexcept:
-                (errnum, errmsg) = ioexcept.args
+            except OSError as exc:
+                (errnum, errmsg) = exc.args
                 log.error("Failed to read %r: %s (%d)" %
                           (path, errmsg, errnum))
             except CoverArtImageIOError:
@@ -207,6 +207,7 @@ class CoverArt:
             coverartimage.port,
             coverartimage.path,
             partial(self._coverart_downloaded, coverartimage),
+            queryargs=coverartimage.queryargs,
             priority=True,
             important=False
         )

@@ -5,7 +5,7 @@
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2018 Antonio Larrosa
 # Copyright (C) 2018-2019 Laurent Monin
-# Copyright (C) 2018-2019 Philipp Wolfer
+# Copyright (C) 2018-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,7 +24,7 @@
 
 from PyQt5 import QtCore
 
-from picard import config
+from picard.config import Option
 from picard.const import QUERY_LIMIT
 from picard.file import File
 from picard.mbjson import (
@@ -49,7 +49,7 @@ class TrackSearchDialog(SearchDialog):
     dialog_header_state = "tracksearchdialog_header_state"
 
     options = [
-        config.Option("persist", dialog_header_state, QtCore.QByteArray())
+        Option("persist", dialog_header_state, QtCore.QByteArray())
     ]
 
     def __init__(self, parent):
@@ -78,6 +78,7 @@ class TrackSearchDialog(SearchDialog):
         self.tagger.mb_api.find_tracks(self.handle_reply,
                                        query=text,
                                        search=True,
+                                       advanced_search=self.use_advanced_search,
                                        limit=QUERY_LIMIT)
 
     def load_similar_tracks(self, file_):
@@ -99,7 +100,7 @@ class TrackSearchDialog(SearchDialog):
         # Generate query to be displayed to the user (in search box).
         # If advanced query syntax setting is enabled by user, display query in
         # advanced syntax style. Otherwise display only track title.
-        if config.setting["use_adv_search_syntax"]:
+        if self.use_advanced_search:
             query_str = ' '.join(['%s:(%s)' % (item, escape_lucene_query(value))
                                   for item, value in query.items() if value])
         else:
@@ -198,7 +199,7 @@ class TrackSearchDialog(SearchDialog):
                 if isinstance(self.file_.parent, Track):
                     album = self.file_.parent.album
                     self.tagger.move_file_to_track(self.file_, track["musicbrainz_albumid"], track["musicbrainz_recordingid"])
-                    if album._files == 0:
+                    if album.get_num_total_files() == 0:
                         # Remove album if it has no more files associated
                         self.tagger.remove_album(album)
                 else:
@@ -210,7 +211,7 @@ class TrackSearchDialog(SearchDialog):
             if self.file_ and getattr(self.file_.parent, 'album', None):
                 album = self.file_.parent.album
                 self.tagger.move_file_to_nat(self.file_, track["musicbrainz_recordingid"], node)
-                if album._files == 0:
+                if album.get_num_total_files() == 0:
                     self.tagger.remove_album(album)
             else:
                 self.tagger.load_nat(track["musicbrainz_recordingid"], node)

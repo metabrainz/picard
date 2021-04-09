@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2019 Laurent Monin
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2021 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from PyQt5.QtCore import QByteArray
 
 from test.test_config import TestPicardConfigCommon
 
@@ -26,8 +27,10 @@ from picard.config import (
     BoolOption,
     IntOption,
     ListOption,
+    Option,
     TextOption,
 )
+import picard.config_upgrade
 from picard.config_upgrade import (
     OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3,
     OLD_DEFAULT_FILE_NAMING_FORMAT_v2_1,
@@ -45,6 +48,12 @@ from picard.config_upgrade import (
     upgrade_to_v2_1_0_dev_1,
     upgrade_to_v2_2_0_dev_3,
     upgrade_to_v2_2_0_dev_4,
+    upgrade_to_v2_4_0_beta_3,
+    upgrade_to_v2_5_0_dev_1,
+    upgrade_to_v2_5_0_dev_2,
+    upgrade_to_v2_6_0_beta_2,
+    upgrade_to_v2_6_0_beta_3,
+    upgrade_to_v2_6_0_dev_1,
 )
 from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -92,10 +101,15 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
 
     def test_upgrade_to_v1_3_0_dev_2(self):
         TextOption('setting', 'preserved_tags', '')
-
         self.config.setting['preserved_tags'] = "a b  c  "
         upgrade_to_v1_3_0_dev_2(self.config)
         self.assertEqual("a,b,c", self.config.setting['preserved_tags'])
+
+    def test_upgrade_to_v1_3_0_dev_2_skip_list(self):
+        ListOption('setting', 'preserved_tags', [])
+        self.config.setting['preserved_tags'] = ['foo']
+        upgrade_to_v1_3_0_dev_2(self.config)
+        self.assertEqual(['foo'], self.config.setting['preserved_tags'])
 
     def test_upgrade_to_v1_3_0_dev_3(self):
         ListOption("setting", "preferred_release_countries", [])
@@ -248,3 +262,81 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.config.setting['file_naming_format'] = OLD_DEFAULT_FILE_NAMING_FORMAT_v2_1
         upgrade_to_v2_2_0_dev_4(self.config)
         self.assertEqual(DEFAULT_FILE_NAMING_FORMAT, self.config.setting['file_naming_format'])
+
+    def test_upgrade_to_v2_4_0_beta_3(self):
+        ListOption("setting", "preserved_tags", [])
+        self.config.setting['preserved_tags'] = 'foo,bar'
+        upgrade_to_v2_4_0_beta_3(self.config)
+        self.assertEqual(['foo', 'bar'], self.config.setting['preserved_tags'])
+
+    def test_upgrade_to_v2_5_0_dev_1(self):
+        ListOption("setting", "ca_providers", [])
+
+        self.config.setting['ca_providers'] = [
+            ('Cover Art Archive', True),
+            ('Whitelist', True),
+            ('Local', False),
+        ]
+        expected = [
+            ('Cover Art Archive', True),
+            ('UrlRelationships', True),
+            ('Local', False),
+        ]
+        upgrade_to_v2_5_0_dev_1(self.config)
+        self.assertEqual(expected, self.config.setting['ca_providers'])
+
+    def test_upgrade_to_v2_5_0_dev_2(self):
+        Option("persist", "splitter_state", QByteArray())
+        Option("persist", "bottom_splitter_state", QByteArray())
+        self.config.persist["splitter_state"] = b'foo'
+        self.config.persist["bottom_splitter_state"] = b'bar'
+        upgrade_to_v2_5_0_dev_2(self.config)
+        self.assertEqual(b'', self.config.persist['splitter_state'])
+        self.assertEqual(b'', self.config.persist['bottom_splitter_state'])
+
+    def test_upgrade_to_v2_6_0_dev_1(self):
+        TextOption("setting", "acoustid_fpcalc", "")
+        self.config.setting["acoustid_fpcalc"] = "/usr/bin/fpcalc"
+        upgrade_to_v2_6_0_dev_1(self.config)
+        self.assertEqual("/usr/bin/fpcalc", self.config.setting["acoustid_fpcalc"])
+
+    def test_upgrade_to_v2_6_0_dev_1_empty(self):
+        TextOption("setting", "acoustid_fpcalc", "")
+        self.config.setting["acoustid_fpcalc"] = None
+        upgrade_to_v2_6_0_dev_1(self.config)
+        self.assertEqual("", self.config.setting["acoustid_fpcalc"])
+
+    def test_upgrade_to_v2_6_0_dev_1_snap(self):
+        TextOption("setting", "acoustid_fpcalc", "")
+        self.config.setting["acoustid_fpcalc"] = "/snap/picard/221/usr/bin/fpcalc"
+        upgrade_to_v2_6_0_dev_1(self.config)
+        self.assertEqual("", self.config.setting["acoustid_fpcalc"])
+
+    def test_upgrade_to_v2_6_0_dev_1_frozen(self):
+        TextOption("setting", "acoustid_fpcalc", "")
+        self.config.setting["acoustid_fpcalc"] = r"C:\Program Files\MusicBrainz Picard\fpcalc.exe"
+        picard.config_upgrade.IS_FROZEN = True
+        upgrade_to_v2_6_0_dev_1(self.config)
+        picard.config_upgrade.IS_FROZEN = False
+        self.assertEqual("", self.config.setting["acoustid_fpcalc"])
+
+    def test_upgrade_to_v2_6_0_beta_2(self):
+        BoolOption('setting', 'image_type_as_filename', False)
+        BoolOption('setting', 'save_only_one_front_image', False)
+
+        self.config.setting['caa_image_type_as_filename'] = True
+        self.config.setting['caa_save_single_front_image'] = True
+        upgrade_to_v2_6_0_beta_2(self.config)
+        self.assertNotIn('caa_image_type_as_filename', self.config.setting)
+        self.assertTrue(self.config.setting['image_type_as_filename'])
+        self.assertNotIn('caa_save_single_front_image', self.config.setting)
+        self.assertTrue(self.config.setting['save_only_one_front_image'])
+
+    def test_upgrade_to_v2_6_0_beta_3(self):
+        from picard.ui.theme import UiTheme
+        BoolOption('setting', 'use_system_theme', False)
+        self.config.setting['use_system_theme'] = True
+        upgrade_to_v2_6_0_beta_3(self.config)
+        self.assertNotIn('use_system_theme', self.config.setting)
+        self.assertIn('ui_theme', self.config.setting)
+        self.assertEqual(str(UiTheme.SYSTEM), self.config.setting['ui_theme'])

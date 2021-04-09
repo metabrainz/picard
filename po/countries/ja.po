@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # nikki, 2014
 # mai inoue, 2015

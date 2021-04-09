@@ -1,11 +1,11 @@
-# Translators:
+# 
 # Translators:
 # André Aparecido Caniato <andre_caniato@yahoo.com.br>, 2015
 # Eduardo Bastos <eduardorochacg@gmail.com>, 2012
 # lampih <lampih@gmail.com>, 2012
 # Lucas Lira Gomes <x8lucas8x@gmail.com>, 2012
 # Marco Costa <mmarcottulio@gmail.com>, 2012
-# Marcus Vinícius Marques, 2014
+# 65f2af3cfa184c075942a0418b98d2de_d688669, 2014
 # Marco Costa <mmarcottulio@gmail.com>, 2012
 # rafaelbrandao <rblcin@gmail.com>, 2012
 # davitf <transifex@davitf.com>, 2012
@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2018-05-30 11:38+0000\n"
-"Last-Translator: Daniel Biasotto <biasotto@tuta.io>\n"
+"Last-Translator: 7c76de773fa2a98a476093903a6a2526\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/musicbrainz/musicbrainz/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

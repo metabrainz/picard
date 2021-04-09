@@ -88,7 +88,7 @@ def setup_gettext(localedir, ui_language=None, logger=None):
         trans_countries = gettext.translation("picard-countries", localedir)
         logger("Loading gettext translation (picard-attributes), localedir=%r", localedir)
         trans_attributes = gettext.translation("picard-attributes", localedir)
-    except IOError as e:
+    except OSError as e:
         logger(e)
         trans = gettext.NullTranslations()
         trans_countries = gettext.NullTranslations()
@@ -98,14 +98,22 @@ def setup_gettext(localedir, ui_language=None, logger=None):
     builtins.__dict__['gettext_countries'] = trans_countries.gettext
     builtins.__dict__['gettext_attributes'] = trans_attributes.gettext
 
+    if hasattr(trans_attributes, 'pgettext'):
+        builtins.__dict__['pgettext_attributes'] = trans_attributes.pgettext
+    else:
+        def pgettext(context, message):
+            return gettext_ctxt(trans_attributes.gettext, message, context)
+        builtins.__dict__['pgettext_attributes'] = pgettext
+
     logger("_ = %r", _)
     logger("N_ = %r", N_)
     logger("ngettext = %r", ngettext)
     logger("gettext_countries = %r", gettext_countries)
     logger("gettext_attributes = %r", gettext_attributes)
+    logger("pgettext_attributes = %r", pgettext_attributes)
 
 
-# Workaround for po files with msgctxt which isn't supported by current python
+# Workaround for po files with msgctxt which isn't supported by Python < 3.8
 # gettext
 # msgctxt are used within attributes.po, and gettext is failing to translate
 # strings due to that
@@ -123,8 +131,3 @@ def gettext_ctxt(gettext_, message, context=None):
         # no translation found, return original message
         return message
     return translated
-
-
-def gettext_attr(message, context=None):
-    """Translate MB attributes, depending on context"""
-    return gettext_ctxt(gettext_attributes, message, context)

@@ -16,6 +16,8 @@
     <file>images/16x16/document-save@2x.png</file>
     <file>images/16x16/edit-clear.png</file>
     <file>images/16x16/edit-clear@2x.png</file>
+    <file>images/16x16/edit-copy.png</file>
+    <file>images/16x16/edit-copy@2x.png</file>
     <file>images/16x16/edit-cut.png</file>
     <file>images/16x16/edit-cut@2x.png</file>
     <file>images/16x16/edit-paste.png</file>
@@ -63,6 +65,8 @@
     <file>images/16x16/picard-cluster@2x.png</file>
     <file>images/16x16/picard-edit-tags.png</file>
     <file>images/16x16/picard-edit-tags@2x.png</file>
+    <file>images/16x16/picard-tags-from-filename.png</file>
+    <file>images/16x16/picard-tags-from-filename@2x.png</file>
     <file>images/16x16/play-music.png</file>
     <file>images/16x16/play-music@2x.png</file>
     <file>images/16x16/play.png</file>
@@ -117,6 +121,8 @@
     <file>images/22x22/picard-cluster@2x.png</file>
     <file>images/22x22/picard-edit-tags.png</file>
     <file>images/22x22/picard-edit-tags@2x.png</file>
+    <file>images/22x22/picard-tags-from-filename.png</file>
+    <file>images/22x22/picard-tags-from-filename@2x.png</file>
     <file>images/22x22/play-music.png</file>
     <file>images/22x22/play-music@2x.png</file>
     <file>images/22x22/play.png</file>

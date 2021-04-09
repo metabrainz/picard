@@ -7,7 +7,7 @@
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008 Robert Kaye
 # Copyright (C) 2008 Will
-# Copyright (C) 2008-2010, 2015, 2018-2020 Philipp Wolfer
+# Copyright (C) 2008-2010, 2015, 2018-2021 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2009 David Hilton
 # Copyright (C) 2011-2012 Chad Wilson
@@ -27,6 +27,7 @@
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2018 virusMac
 # Copyright (C) 2019 Timur Enikeev
+# Copyright (C) 2020 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -56,19 +57,34 @@ from PyQt5 import (
 
 from picard import (
     PICARD_APP_ID,
-    config,
     log,
 )
 from picard.album import Album
-from picard.cluster import Cluster
+from picard.cluster import (
+    Cluster,
+    FileList,
+)
+from picard.config import (
+    BoolOption,
+    FloatOption,
+    IntOption,
+    Option,
+    TextOption,
+    get_config,
+)
 from picard.const import PROGRAM_UPDATE_LEVELS
-from picard.const.sys import IS_MACOS
+from picard.const.sys import (
+    IS_MACOS,
+    IS_WIN,
+)
 from picard.file import File
 from picard.formats import supported_formats
 from picard.plugin import ExtensionPoint
 from picard.track import Track
 from picard.util import (
     icontheme,
+    iter_files_from_objects,
+    iter_unique,
     restore_method,
     thread,
     throttle,
@@ -80,6 +96,7 @@ from picard.util.cdrom import (
 )
 
 from picard.ui import PreserveGeometry
+from picard.ui.aboutdialog import AboutDialog
 from picard.ui.coverartbox import CoverArtBox
 from picard.ui.filebrowser import FileBrowser
 from picard.ui.infodialog import (
@@ -100,7 +117,6 @@ from picard.ui.passworddialog import (
     PasswordDialog,
     ProxyDialog,
 )
-from picard.ui.playertoolbar import Player
 from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
 from picard.ui.statusindicator import DesktopStatusIndicator
@@ -118,6 +134,35 @@ def register_ui_init(function):
     ui_init.register(function.__module__, function)
 
 
+class IgnoreSelectionContext:
+    """Context manager for holding a boolean value, indicating whether selection changes are performed or not.
+    By default the context resolves to False. If entered it is True. This allows
+    to temporarily set a state on a block of code like:
+
+        ignore_changes = IgnoreSelectionContext()
+        # Initially ignore_changes is True
+        with ignore_changes:
+            # Perform some tasks with ignore_changes now being True
+            ...
+        # ignore_changes is False again
+    """
+
+    def __init__(self, onexit=None):
+        self._entered = 0
+        self._onexit = onexit
+
+    def __enter__(self):
+        self._entered += 1
+
+    def __exit__(self, type, value, tb):
+        self._entered -= 1
+        if self._onexit:
+            self._onexit()
+
+    def __bool__(self):
+        return self._entered > 0
+
+
 class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     defaultsize = QtCore.QSize(780, 560)
@@ -125,28 +170,30 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     selection_updated = QtCore.pyqtSignal(object)
 
     options = [
-        config.Option("persist", "window_state", QtCore.QByteArray()),
-        config.Option("persist", "bottom_splitter_state", QtCore.QByteArray()),
-        config.BoolOption("persist", "window_maximized", False),
-        config.BoolOption("persist", "view_cover_art", True),
-        config.BoolOption("persist", "view_toolbar", True),
-        config.BoolOption("persist", "view_file_browser", False),
-        config.TextOption("persist", "current_directory", ""),
-        config.FloatOption("persist", "mediaplayer_playback_rate", 1.0),
-        config.IntOption("persist", "mediaplayer_volume", 50),
+        Option("persist", "window_state", QtCore.QByteArray()),
+        Option("persist", "bottom_splitter_state", QtCore.QByteArray()),
+        BoolOption("persist", "window_maximized", False),
+        BoolOption("persist", "view_cover_art", True),
+        BoolOption("persist", "view_toolbar", True),
+        BoolOption("persist", "view_file_browser", False),
+        TextOption("persist", "current_directory", ""),
+        FloatOption("persist", "mediaplayer_playback_rate", 1.0),
+        IntOption("persist", "mediaplayer_volume", 50),
     ]
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, disable_player=False):
         super().__init__(parent)
         self.selected_objects = []
-        self.ignore_selection_changes = False
+        self.ignore_selection_changes = IgnoreSelectionContext(self.update_selection)
         self.toolbar = None
         self.player = None
         self.status_indicators = []
-        player = Player(self)
-        if player.available:
-            self.player = player
-            self.player.error.connect(self._on_player_error)
+        if not disable_player:
+            from picard.ui.playertoolbar import Player
+            player = Player(self)
+            if player.available:
+                self.player = player
+                self.player.error.connect(self._on_player_error)
         self.setupUi()
 
     def setupUi(self):
@@ -169,12 +216,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         if IS_MACOS:
             self.setUnifiedTitleAndToolBarOnMac(True)
-            self.toolbar.setMovable(False)
-            self.search_toolbar.setMovable(False)
 
         mainLayout = QtWidgets.QSplitter(QtCore.Qt.Vertical)
+        mainLayout.setChildrenCollapsible(False)
         mainLayout.setContentsMargins(0, 0, 0, 0)
-        mainLayout.setHandleWidth(1)
 
         self.panel = MainPanel(self, mainLayout)
         self.file_browser = FileBrowser(self.panel)
@@ -209,6 +254,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         for function in ui_init:
             function(self)
 
+    def set_processing(self, processing=True):
+        self.panel.set_processing(processing)
+
+    def set_sorting(self, sorting=True):
+        self.panel.set_sorting(sorting)
+        # self.panel.collapse_clusters(not sorting)
+
     def keyPressEvent(self, event):
         # On macOS Command+Backspace triggers the so called "Forward Delete".
         # It should be treated the same as the Delete button.
@@ -238,6 +290,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.register_status_indicator(DesktopStatusIndicator(self.windowHandle()))
 
     def closeEvent(self, event):
+        config = get_config()
         if config.setting["quit_confirmation"] and not self.show_quit_confirmation():
             event.ignore()
             return
@@ -276,6 +329,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         return True
 
     def saveWindowState(self):
+        config = get_config()
         config.persist["window_state"] = self.saveState()
         isMaximized = int(self.windowState()) & QtCore.Qt.WindowMaximized != 0
         self.save_geometry()
@@ -292,6 +346,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     @restore_method
     def restoreWindowState(self):
+        config = get_config()
         self.restoreState(config.persist["window_state"])
         self.restore_geometry()
         if config.persist["window_maximized"]:
@@ -367,7 +422,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             return hasattr(obj, 'keys') and hasattr(obj, '__getitem__')
 
         echo = kwargs.get('echo', log.debug)
-        # _ is defined using builtins.__dict__, so setting it as default named argument
+        # _ is defined using builtins.__dict__, so setting it as default named argument
         # value doesn't work as expected
         translate = kwargs.get('translate', _)
         timeout = kwargs.get('timeout', 0)
@@ -390,14 +445,26 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _on_submit_acoustid(self):
         if self.tagger.use_acoustid:
+            config = get_config()
             if not config.setting["acoustid_apikey"]:
-                QtWidgets.QMessageBox.warning(self,
-                    _("Submission Error"),
-                    _("You need to configure your AcoustID API key before you can submit fingerprints."))
+                msg = QtWidgets.QMessageBox(self)
+                msg.setIcon(QtWidgets.QMessageBox.Information)
+                msg.setWindowModality(QtCore.Qt.WindowModal)
+                msg.setWindowTitle(_("AcoustID submission not configured"))
+                msg.setText(_(
+                    "You need to configure your AcoustID API key before you can submit fingerprints."))
+                open_options = QtWidgets.QPushButton(
+                    icontheme.lookup('preferences-desktop'), _("Open AcoustID options"))
+                msg.addButton(QtWidgets.QMessageBox.Cancel)
+                msg.addButton(open_options, QtWidgets.QMessageBox.YesRole)
+                msg.exec_()
+                if msg.clickedButton() == open_options:
+                    self.show_options("fingerprinting")
             else:
                 self.tagger.acoustidmanager.submit()
 
     def create_actions(self):
+        config = get_config()
         self.options_action = QtWidgets.QAction(icontheme.lookup('preferences-desktop'), _("&Options..."), self)
         self.options_action.setMenuRole(QtWidgets.QAction.PreferencesRole)
         self.options_action.triggered.connect(self.show_options)
@@ -482,6 +549,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.track_search_action = QtWidgets.QAction(icontheme.lookup('system-search'), _("Search for similar tracks..."), self)
         self.track_search_action.setStatusTip(_("View similar tracks and optionally choose a different release"))
+        self.track_search_action.setEnabled(False)
+        self.track_search_action.setShortcut(QtGui.QKeySequence(_("Ctrl+T")))
         self.track_search_action.triggered.connect(self.show_more_tracks)
 
         self.show_file_browser_action = QtWidgets.QAction(_("File &Browser"), self)
@@ -578,7 +647,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.enable_tag_saving_action.setChecked(not config.setting["dont_write_tags"])
         self.enable_tag_saving_action.triggered.connect(self.toggle_tag_saving)
 
-        self.tags_from_filenames_action = QtWidgets.QAction(_("Tags From &File Names..."), self)
+        self.tags_from_filenames_action = QtWidgets.QAction(icontheme.lookup('picard-tags-from-filename'), _("Tags From &File Names..."), self)
+        self.tags_from_filenames_action.setIconText(_("Parse File Names..."))
+        self.tags_from_filenames_action.setToolTip(_('Set tags based on the file names'))
+        self.tags_from_filenames_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+T")))
         self.tags_from_filenames_action.triggered.connect(self.open_tags_from_filenames)
         self.tags_from_filenames_action.setEnabled(False)
 
@@ -594,7 +666,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.view_history_action = QtWidgets.QAction(_("View Activity &History"), self)
         self.view_history_action.triggered.connect(self.show_history)
         # TR: Keyboard shortcut for "View Activity History"
-        self.view_history_action.setShortcut(QtGui.QKeySequence(_("Ctrl+H")))
+        # On macOS ⌘+H is a system shortcut to hide the window. Use ⌘+Shift+H instead.
+        self.view_history_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+H") if IS_MACOS else _("Ctrl+H")))
 
         webservice_manager = self.tagger.webservice.manager
         webservice_manager.authenticationRequired.connect(self.show_password_dialog)
@@ -625,6 +698,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if not drives:
             log.warning("CDROM: No CD-ROM drives found - Lookup CD functionality disabled")
         else:
+            config = get_config()
             shortcut_drive = config.setting["cd_lookup_device"].split(",")[0] if len(drives) > 1 else ""
             self.cd_lookup_action.setEnabled(discid is not None)
             self.cd_lookup_menu.clear()
@@ -647,12 +721,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.cd_lookup_action.setMenu(None)
 
     def toggle_rename_files(self, checked):
+        config = get_config()
         config.setting["rename_files"] = checked
 
     def toggle_move_files(self, checked):
+        config = get_config()
         config.setting["move_files"] = checked
 
     def toggle_tag_saving(self, checked):
+        config = get_config()
         config.setting["dont_write_tags"] = not checked
 
     def get_selected_or_unmatched_files(self):
@@ -711,6 +788,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addAction(self.analyze_action)
         menu.addAction(self.cluster_action)
         menu.addAction(self.browser_lookup_action)
+        menu.addAction(self.track_search_action)
         menu.addSeparator()
         menu.addAction(self.generate_fingerprints_action)
         menu.addAction(self.tags_from_filenames_action)
@@ -732,6 +810,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addAction(self.about_action)
 
     def update_toolbar_style(self):
+        config = get_config()
         if config.setting["toolbar_show_labels"]:
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
             if self.player:
@@ -755,6 +834,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.insertToolBar(self.search_toolbar, self.toolbar)
         self.update_toolbar_style()
         toolbar.setObjectName("main_toolbar")
+        if IS_MACOS:
+            self.toolbar.setMovable(False)
 
         def add_toolbar_action(action):
             toolbar.addAction(action)
@@ -762,6 +843,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             widget.setFocusPolicy(QtCore.Qt.TabFocus)
             widget.setAttribute(QtCore.Qt.WA_MacShowFocusRect)
 
+        config = get_config()
         for action in config.setting['toolbar_layout']:
             if action == 'cd_lookup_action':
                 add_toolbar_action(self.cd_lookup_action)
@@ -783,9 +865,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         toolbar.hide()  # Hide by default
 
     def create_search_toolbar(self):
+        config = get_config()
         self.search_toolbar = toolbar = self.addToolBar(_("Search"))
         self.search_toolbar_toggle_action = self.search_toolbar.toggleViewAction()
         toolbar.setObjectName("search_toolbar")
+        if IS_MACOS:
+            self.search_toolbar.setMovable(False)
+
         search_panel = QtWidgets.QWidget(toolbar)
         hbox = QtWidgets.QHBoxLayout(search_panel)
         self.search_combo = QtWidgets.QComboBox(search_panel)
@@ -834,6 +920,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         prev_action = None
         current_action = None
         # Setting toolbar widget tab-orders for accessibility
+        config = get_config()
         for action in config.setting['toolbar_layout']:
             if action != 'separator':
                 try:
@@ -853,9 +940,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         tab_order(self.search_edit, self.search_button)
         # Panels
         tab_order(self.search_button, self.file_browser)
-        tab_order(self.file_browser, self.panel.views[0])
-        tab_order(self.panel.views[0], self.panel.views[1])
-        tab_order(self.panel.views[1], self.metadata_box)
+        self.panel.tab_order(tab_order, self.file_browser, self.metadata_box)
 
     def enable_submit(self, enabled):
         """Enable/disable the 'Submit fingerprints' action."""
@@ -883,6 +968,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """Search for album, artist or track on the MusicBrainz website."""
         text = self.search_edit.text()
         entity = self.search_combo.itemData(self.search_combo.currentIndex())
+        config = get_config()
         self.tagger.search(text, entity,
                            config.setting["use_adv_search_syntax"],
                            mbid_matched_callback=self.search_mbid_found)
@@ -893,14 +979,25 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         formats = []
         extensions = []
         for exts, name in supported_formats():
-            exts = ["*" + e for e in exts]
+            exts = ["*" + e.lower() for e in exts]
+            if not exts:
+                continue
+            if not IS_MACOS and not IS_WIN:
+                # Also consider upper case extensions
+                # macOS and Windows usually support case sensitive file names. Furthermore on both systems
+                # the file dialog filters list all extensions we provide, which becomes a bit long when we give the
+                # full list twice. Hence only do this trick on other operating systems.
+                exts.extend([e.upper() for e in exts])
+            exts.sort()
             formats.append("%s (%s)" % (name, " ".join(exts)))
             extensions.extend(exts)
         formats.sort()
         extensions.sort()
-        formats.insert(0, _("All Supported Formats") + " (%s)" % " ".join(extensions))
+        formats.insert(0, _("All supported formats") + " (%s)" % " ".join(extensions))
+        formats.insert(1, _("All files") + " (*)")
         files, _filter = QtWidgets.QFileDialog.getOpenFileNames(self, "", current_directory, ";;".join(formats))
         if files:
+            config = get_config()
             config.persist["current_directory"] = os.path.dirname(files[0])
             self.tagger.add_files(files)
 
@@ -909,6 +1006,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         current_directory = find_starting_directory()
 
         dir_list = []
+        config = get_config()
         if not config.setting["toolbar_multiselect"]:
             directory = QtWidgets.QFileDialog.getExistingDirectory(self, "", current_directory)
             if directory:
@@ -933,14 +1031,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                     {'directory': dir_list[0]}
                 )
 
-            for directory in dir_list:
-                self.tagger.add_directory(directory)
+            self.tagger.add_paths(dir_list)
 
     def close_active_window(self):
         self.tagger.activeWindow().close()
 
     def show_about(self):
-        return self.show_options("about")
+        return AboutDialog.show_instance(self)
 
     def show_options(self, page=None):
         return OptionsDialog.show_instance(page, self)
@@ -991,20 +1088,22 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         return QtCore.QUrl.fromLocalFile(url)
 
     def play_file(self):
-        files = self.tagger.get_files_from_objects(self.selected_objects)
-        for file in files:
+        for file in iter_files_from_objects(self.selected_objects):
             QtGui.QDesktopServices.openUrl(self._openUrl(file.filename))
 
     def _on_player_error(self, error, msg):
         self.set_statusbar_message(msg, echo=log.warning, translate=None)
 
     def open_folder(self):
-        files = self.tagger.get_files_from_objects(self.selected_objects)
-        folders = set([os.path.dirname(f.filename) for f in files])
+        folders = iter_unique(
+            os.path.dirname(f.filename) for f
+            in iter_files_from_objects(self.selected_objects))
         for folder in folders:
             QtGui.QDesktopServices.openUrl(self._openUrl(folder))
 
     def _ensure_fingerprinting_configured(self, callback):
+        config = get_config()
+
         def on_finished(result):
             callback(config.setting['fingerprinting_system'])
         if not config.setting['fingerprinting_system']:
@@ -1022,22 +1121,38 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             QtWidgets.QMessageBox.Yes)
         return ret == QtWidgets.QMessageBox.Yes
 
+    def get_first_obj_with_type(self, type):
+        for obj in self.selected_objects:
+            if isinstance(obj, type):
+                return obj
+        return None
+
     def show_more_tracks(self):
+        if not self.selected_objects:
+            return
         obj = self.selected_objects[0]
-        if isinstance(obj, Track):
-            obj = obj.linked_files[0]
+        if isinstance(obj, Track) and obj.files:
+            obj = obj.files[0]
+        if not isinstance(obj, File):
+            log.debug('show_more_tracks expected a File, got %r' % obj)
+            return
         dialog = TrackSearchDialog(self)
         dialog.load_similar_tracks(obj)
         dialog.exec_()
 
     def show_more_albums(self):
-        obj = self.selected_objects[0]
+        obj = self.get_first_obj_with_type(Cluster)
+        if not obj:
+            log.debug('show_more_albums expected a Cluster, got %r' % obj)
+            return
         dialog = AlbumSearchDialog(self)
         dialog.show_similar_albums(obj)
         dialog.exec_()
 
     def view_info(self, default_tab=0):
-        if isinstance(self.selected_objects[0], Album):
+        if not self.selected_objects:
+            return
+        elif isinstance(self.selected_objects[0], Album):
             album = self.selected_objects[0]
             dialog = AlbumInfoDialog(album, self)
         elif isinstance(self.selected_objects[0], Cluster):
@@ -1054,12 +1169,20 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def cluster(self):
         self.tagger.cluster(self.selected_objects)
+        self.panel.update_current_view()
+        # Select clusters if no other item or only empty unclustered files item is selected
+        if not self.selected_objects or (len(self.selected_objects) == 1
+                and self.tagger.unclustered_files in self.selected_objects
+                and not self.tagger.unclustered_files.files):
+            self.panel.select_object(self.tagger.clusters)
         self.update_actions()
 
     def refresh(self):
         self.tagger.refresh(self.selected_objects)
 
     def browser_lookup(self):
+        if not self.selected_objects:
+            return
         self.tagger.browser_lookup(self.selected_objects[0])
 
     @throttle(100)
@@ -1072,6 +1195,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         single = self.selected_objects[0] if len(self.selected_objects) == 1 else None
         can_view_info = bool(single and single.can_view_info())
         can_browser_lookup = bool(single and single.can_browser_lookup())
+        is_file = bool(single and isinstance(single, (File, Track)))
         have_files = bool(self.tagger.get_files_from_objects(self.selected_objects))
         have_objects = bool(self.selected_objects)
         for obj in self.selected_objects:
@@ -1103,9 +1227,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.cut_action.setEnabled(have_objects)
         files = self.get_selected_or_unmatched_files()
         self.tags_from_filenames_action.setEnabled(bool(files))
-        self.track_search_action.setEnabled(have_objects)
+        self.track_search_action.setEnabled(is_file)
 
-    def update_selection(self, objects=None):
+    def update_selection(self, objects=None, new_selection=True, drop_album_caches=False):
         if self.ignore_selection_changes:
             return
 
@@ -1116,8 +1240,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.update_actions()
 
-        metadata = None
-        orig_metadata = None
         obj = None
 
         # Clear any existing status bar messages
@@ -1129,13 +1251,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if len(objects) == 1:
             obj = list(objects)[0]
             if isinstance(obj, File):
-                metadata = obj.metadata
-                orig_metadata = obj.orig_metadata
                 if obj.state == obj.ERROR:
                     msg = N_("%(filename)s (error: %(error)s)")
                     mparms = {
                         'filename': obj.filename,
-                        'error': obj.error
+                        'error': obj.errors[0] if obj.errors else ''
                     }
                 else:
                     msg = N_("%(filename)s")
@@ -1144,16 +1264,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                     }
                 self.set_statusbar_message(msg, mparms, echo=None, history=None)
             elif isinstance(obj, Track):
-                metadata = obj.metadata
                 if obj.num_linked_files == 1:
-                    file = obj.linked_files[0]
-                    orig_metadata = file.orig_metadata
-                    if file.state == File.ERROR:
+                    file = obj.files[0]
+                    if file.has_error():
                         msg = N_("%(filename)s (%(similarity)d%%) (error: %(error)s)")
                         mparms = {
                             'filename': file.filename,
                             'similarity': file.similarity * 100,
-                            'error': file.error
+                            'error': file.errors[0] if file.errors else ''
                         }
                     else:
                         msg = N_("%(filename)s (%(similarity)d%%)")
@@ -1163,16 +1281,20 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                         }
                     self.set_statusbar_message(msg, mparms, echo=None,
                                                history=None)
-            elif isinstance(obj, Album):
-                metadata = obj.metadata
-                orig_metadata = obj.orig_metadata
-            elif obj.can_show_coverart:
-                metadata = obj.metadata
+        elif new_selection:
+            # Create a temporary file list which allows changing cover art for all selected files
+            files = self.tagger.get_files_from_objects(objects)
+            obj = FileList(files)
 
-        self.metadata_box.selection_dirty = True
-        self.metadata_box.update()
-        self.cover_art_box.set_metadata(metadata, orig_metadata, obj)
+        if new_selection:
+            self.metadata_box.selection_dirty = True
+            self.cover_art_box.set_item(obj)
+        self.metadata_box.update(drop_album_caches=drop_album_caches)
         self.selection_updated.emit(objects)
+
+    def refresh_metadatabox(self):
+        self.tagger.window.metadata_box.selection_dirty = True
+        self.tagger.window.metadata_box.update()
 
     def show_cover_art(self):
         """Show/hide the cover art box."""
@@ -1200,6 +1322,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.file_browser.hide()
 
     def show_password_dialog(self, reply, authenticator):
+        config = get_config()
         if reply.url().host() == config.setting['server_host']:
             ret = QtWidgets.QMessageBox.question(self,
                 _("Authentication Required"),
@@ -1240,6 +1363,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.check_for_update(True)
 
     def auto_update_check(self):
+        config = get_config()
         check_for_updates = config.setting['check_for_updates']
         update_check_days = config.setting['update_check_days']
         last_update_check = config.persist['last_update_check']
@@ -1258,6 +1382,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.check_for_update(False)
 
     def check_for_update(self, show_always):
+        config = get_config()
         self.tagger.updatecheckmanager.check_update(
             show_always=show_always,
             update_level=config.setting['update_level'],
@@ -1267,6 +1392,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
 def update_last_check_date(is_success):
     if is_success:
+        config = get_config()
         config.persist['last_update_check'] = datetime.date.today().toordinal()
     else:
         log.debug('The update check was unsuccessful. The last update date will not be changed.')

@@ -78,9 +78,12 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QTextEdit" name="tagger_script">
+           <widget class="ScriptTextEdit" name="tagger_script">
             <property name="acceptRichText">
              <bool>false</bool>
+            </property>
+            <property name="placeholderText">
+             <string>Enter your tagger script here.</string>
             </property>
            </widget>
           </item>
@@ -97,6 +100,32 @@
           </property>
           <property name="text">
            <string>Add new script</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="scripting_documentation_button">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Scripting Documentation</string>
           </property>
          </widget>
         </item>
@@ -155,17 +184,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="scripting_doc_link">
-        <property name="text">
-         <string/>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-        <property name="openExternalLinks">
-         <bool>true</bool>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="hlayout_doc"/>
       </item>
      </layout>
     </widget>
@@ -181,6 +200,11 @@
     <slot>remove_selected_script()</slot>
     <slot>add_script()</slot>
    </slots>
+  </customwidget>
+  <customwidget>
+   <class>ScriptTextEdit</class>
+   <extends>QTextEdit</extends>
+   <header location="global">picard.ui.widgets.scripttextedit</header>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -255,11 +279,28 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>enable_tagger_scripts</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>ScriptingOptionsPage</receiver>
+   <slot>enable_tagger_scripts_toggled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>302</x>
+     <y>275</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>302</x>
+     <y>275</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>live_update_and_check()</slot>
   <slot>script_selected()</slot>
   <slot>move_selected_script_up()</slot>
   <slot>move_selected_script_down()</slot>
+  <slot>enable_tagger_scripts_toggled(bool)</slot>
  </slots>
 </ui>

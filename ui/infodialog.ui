@@ -34,13 +34,55 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>493</width>
-            <height>358</height>
+            <width>623</width>
+            <height>361</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayoutLabel">
            <item>
             <widget class="QLabel" name="info">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+             <property name="textInteractionFlags">
+              <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="error_tab">
+      <attribute name="title">
+       <string>&amp;Error</string>
+      </attribute>
+      <layout class="QVBoxLayout">
+       <item>
+        <widget class="QScrollArea" name="scrollArea">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents_3">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>623</width>
+            <height>361</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QLabel" name="error">
              <property name="text">
               <string/>
              </property>

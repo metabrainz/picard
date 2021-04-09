@@ -25,9 +25,12 @@
 import os
 import re
 
-from picard import config
+from picard.config import (
+    TextOption,
+    get_config,
+)
 from picard.coverart.image import LocalFileCoverArtImage
-from picard.coverart.providers import (
+from picard.coverart.providers.provider import (
     CoverArtProvider,
     ProviderOptions,
 )
@@ -41,11 +44,11 @@ class ProviderOptionsLocal(ProviderOptions):
         Options for Local Files cover art provider
     """
 
-    _DEFAULT_LOCAL_COVER_ART_REGEX = r'^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|gif|tiff?)$'
+    HELP_URL = '/config/options_local_files.html'
+    _DEFAULT_LOCAL_COVER_ART_REGEX = r'^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|gif|tiff?|webp)$'
 
     options = [
-        config.TextOption("setting", "local_cover_regex",
-                          _DEFAULT_LOCAL_COVER_ART_REGEX),
+        TextOption("setting", "local_cover_regex", _DEFAULT_LOCAL_COVER_ART_REGEX),
     ]
 
     _options_ui = Ui_LocalOptions
@@ -59,9 +62,11 @@ class ProviderOptionsLocal(ProviderOptions):
         self.ui.local_cover_regex_edit.setText(self._DEFAULT_LOCAL_COVER_ART_REGEX)
 
     def load(self):
+        config = get_config()
         self.ui.local_cover_regex_edit.setText(config.setting["local_cover_regex"])
 
     def save(self):
+        config = get_config()
         config.setting["local_cover_regex"] = self.ui.local_cover_regex_edit.text()
 
 
@@ -77,6 +82,7 @@ class CoverArtProviderLocal(CoverArtProvider):
     _known_types = set([t['name'] for t in CAA_TYPES])
 
     def queue_images(self):
+        config = get_config()
         _match_re = re.compile(config.setting['local_cover_regex'], re.IGNORECASE)
         dirs_done = set()
 

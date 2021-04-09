@@ -15,7 +15,7 @@
 # Copyright (C) 2017-2018 Antonio Larrosa
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2018 Xincognito10
-# Copyright (C) 2020 Ray
+# Copyright (C) 2020 Ray Bouchard
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -37,10 +37,11 @@ from collections.abc import (
     Iterable,
     MutableMapping,
 )
+from functools import partial
 
 from PyQt5.QtCore import QObject
 
-from picard import config
+from picard.config import get_config
 from picard.mbjson import (
     artist_credit_from_node,
     get_score,
@@ -50,7 +51,10 @@ from picard.plugin import (
     PluginPriority,
 )
 from picard.similarity import similarity2
-from picard.util import linear_combination_of_weights
+from picard.util import (
+    extract_year_from_date,
+    linear_combination_of_weights,
+)
 from picard.util.imagelist import ImageList
 from picard.util.tags import PRESERVED_TAGS
 
@@ -153,6 +157,15 @@ class Metadata(MutableMapping):
         ('totaldiscs', 4),
     ]
 
+    __date_match_factors = {
+        'exact': 1.00,
+        'year': 0.95,
+        'close_year': 0.85,
+        'exists_vs_null': 0.65,
+        'no_release_date': 0.25,
+        'differed': 0.0
+    }
+
     multi_valued_joiner = MULTI_VALUED_JOINER
 
     def __init__(self, *args, deleted_tags=None, images=None, length=None, **kwargs):
@@ -162,9 +175,8 @@ class Metadata(MutableMapping):
         self.images = ImageList()
         self.has_common_images = True
 
-        d = dict(*args, **kwargs)
-        for k, v in d.items():
-            self[k] = v
+        if args or kwargs:
+            self.update(*args, **kwargs)
         if images is not None:
             for image in images:
                 self.images.append(image)
@@ -244,6 +256,43 @@ class Metadata(MutableMapping):
         except (ValueError, KeyError):
             pass
 
+        # Date Logic
+        date_match_factor = 0.0
+        if "date" in release and release['date'] != '':
+            release_date = release['date']
+            if "date" in self:
+                metadata_date = self['date']
+                if release_date == metadata_date:
+                    # release has a date and it matches what our metadata had exactly.
+                    date_match_factor = self.__date_match_factors['exact']
+                else:
+                    release_year = extract_year_from_date(release_date)
+                    if release_year is not None:
+                        metadata_year = extract_year_from_date(metadata_date)
+                        if metadata_year is not None:
+                            if release_year == metadata_year:
+                                # release has a date and it matches what our metadata had for year exactly.
+                                date_match_factor = self.__date_match_factors['year']
+                            elif abs(release_year - metadata_year) <= 2:
+                                # release has a date and it matches what our metadata had closely (year +/- 2).
+                                date_match_factor = self.__date_match_factors['close_year']
+                            else:
+                                # release has a date but it does not match ours (all else equal,
+                                # its better to have an unknown date than a wrong date, since
+                                # the unknown could actually be correct)
+                                date_match_factor = self.__date_match_factors['differed']
+            else:
+                # release has a date but we don't have one (all else equal, we prefer
+                # tracks that have non-blank date values)
+                date_match_factor = self.__date_match_factors['exists_vs_null']
+        else:
+            # release has a no date (all else equal, we don't prefer this
+            # release since its date is missing)
+            date_match_factor = self.__date_match_factors['no_release_date']
+
+        parts.append((date_match_factor, weights['date']))
+
+        config = get_config()
         weights_from_preferred_countries(parts, release,
                                          config.setting["preferred_release_countries"],
                                          weights["releasecountry"])
@@ -313,7 +362,7 @@ class Metadata(MutableMapping):
 
     def update(self, *args, **kwargs):
         one_arg = len(args) == 1
-        if one_arg and isinstance(args[0], self.__class__):
+        if one_arg and (isinstance(args[0], self.__class__) or isinstance(args[0], MultiMetadataProxy)):
             self._update_from_metadata(args[0])
         elif one_arg and isinstance(args[0], MutableMapping):
             # update from MutableMapping (ie. dict)
@@ -326,6 +375,16 @@ class Metadata(MutableMapping):
         else:
             # no argument, raise TypeError to mimic dict.update()
             raise TypeError("descriptor 'update' of '%s' object needs an argument" % self.__class__.__name__)
+
+    def diff(self, other):
+        """Returns a new Metadata object with only the tags that changed in self compared to other"""
+        m = Metadata()
+        for tag, values in self.rawitems():
+            other_values = other.getall(tag)
+            if other_values != values:
+                m[tag] = values
+        m.deleted_tags = self.deleted_tags - other.deleted_tags
+        return m
 
     def _update_from_metadata(self, other, copy_images=True):
         for k, v in other.rawitems():
@@ -366,7 +425,7 @@ class Metadata(MutableMapping):
             return default
 
     def __getitem__(self, name):
-        return self.get(self.normalize_tag(name), '')
+        return self.get(name, '')
 
     def set(self, name, values):
         name = self.normalize_tag(name)
@@ -380,7 +439,7 @@ class Metadata(MutableMapping):
             del self[name]
 
     def __setitem__(self, name, values):
-        self.set(self.normalize_tag(name), values)
+        self.set(name, values)
 
     def __contains__(self, name):
         return self._store.__contains__(self.normalize_tag(name))
@@ -414,12 +473,12 @@ class Metadata(MutableMapping):
 
         Args:
             name: name of the tag to unset
-
-        Raises:
-            KeyError: name not set
         """
         name = self.normalize_tag(name)
-        del self._store[name]
+        try:
+            del self._store[name]
+        except KeyError:
+            pass
 
     def __iter__(self):
         return iter(self._store)
@@ -460,6 +519,90 @@ class Metadata(MutableMapping):
 
     def __str__(self):
         return ("store: %r\ndeleted: %r\nimages: %r\nlength: %r" % (self._store, self.deleted_tags, [str(img) for img in self.images], self.length))
+
+
+class MultiMetadataProxy:
+    """
+    Wraps a writable Metadata object together with another
+    readonly Metadata object.
+
+    Changes are written to the writable object, while values are
+    read from both the writable and the readonly object (with the writable
+    object taking precedence). The use case is to provide access to Metadata
+    values without making them part of the actual Metadata. E.g. allow track
+    metadata to use file specific metadata, without making it actually part
+    of the track.
+    """
+
+    WRITE_METHODS = [
+        'add_unique',
+        'add',
+        'apply_func',
+        'clear_deleted',
+        'clear',
+        'copy',
+        'delete',
+        'pop',
+        'set',
+        'strip_whitespace',
+        'unset',
+        'update',
+    ]
+
+    def __init__(self, metadata, *readonly_metadata):
+        self.metadata = metadata
+        self.combined_metadata = Metadata()
+        for m in reversed(readonly_metadata):
+            self.combined_metadata.update(m)
+        self.combined_metadata.update(metadata)
+
+    def __getattr__(self, name):
+        if name in self.WRITE_METHODS:
+            return partial(self.__write, name)
+        else:
+            attribute = self.combined_metadata.__getattribute__(name)
+            if callable(attribute):
+                return partial(self.__read, name)
+            else:
+                return attribute
+
+    def __setattr__(self, name, value):
+        if name in ('metadata', 'combined_metadata'):
+            super().__setattr__(name, value)
+        else:
+            self.metadata.__setattr__(name, value)
+            self.combined_metadata.__setattr__(name, value)
+
+    def __write(self, name, *args, **kwargs):
+        func1 = self.metadata.__getattribute__(name)
+        func2 = self.combined_metadata.__getattribute__(name)
+        func1(*args, **kwargs)
+        return func2(*args, **kwargs)
+
+    def __read(self, name, *args, **kwargs):
+        func = self.combined_metadata.__getattribute__(name)
+        return func(*args, **kwargs)
+
+    def __getitem__(self, name):
+        return self.__read('__getitem__', name)
+
+    def __setitem__(self, name, values):
+        return self.__write('__setitem__', name, values)
+
+    def __delitem__(self, name):
+        return self.__write('__delitem__', name)
+
+    def __iter__(self):
+        return self.__read('__iter__')
+
+    def __len__(self):
+        return self.__read('__len__')
+
+    def __contains__(self, name):
+        return self.__read('__contains__', name)
+
+    def __repr__(self):
+        return self.__read('__repr__')
 
 
 _album_metadata_processors = PluginFunctions(label='album_metadata_processors')

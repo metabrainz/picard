@@ -87,5 +87,5 @@ class Ui_Dialog(object):
         self.no_results_label.setText(_("No matching releases found for this disc."))
         self.submit_button.setText(_("Submit disc ID"))
         self.ok_button.setText(_("&Load into Picard"))
-        self.lookup_button.setText(_("Lookup in &Browser"))
+        self.lookup_button.setText(_("&Submit disc ID"))
         self.cancel_button.setText(_("&Cancel"))

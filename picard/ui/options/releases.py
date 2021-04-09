@@ -33,7 +33,10 @@ from PyQt5 import (
     QtWidgets,
 )
 
-from picard import config
+from picard.config import (
+    ListOption,
+    get_config,
+)
 from picard.const import (
     RELEASE_COUNTRIES,
     RELEASE_FORMATS,
@@ -41,7 +44,6 @@ from picard.const import (
     RELEASE_SECONDARY_GROUPS,
 )
 from picard.const.sys import IS_WIN
-from picard.i18n import gettext_attr
 
 from picard.ui.options import (
     OptionsPage,
@@ -156,11 +158,12 @@ class ReleasesOptionsPage(OptionsPage):
     PARENT = "metadata"
     SORT_ORDER = 10
     ACTIVE = True
+    HELP_URL = '/config/options_releases.html'
 
     options = [
-        config.ListOption("setting", "release_type_scores", _release_type_scores),
-        config.ListOption("setting", "preferred_release_countries", []),
-        config.ListOption("setting", "preferred_release_formats", []),
+        ListOption("setting", "release_type_scores", _release_type_scores),
+        ListOption("setting", "preferred_release_countries", []),
+        ListOption("setting", "preferred_release_formats", []),
     ]
 
     def __init__(self, parent=None):
@@ -171,7 +174,7 @@ class ReleasesOptionsPage(OptionsPage):
         self._release_type_sliders = {}
 
         def add_slider(name, griditer, context):
-            label = gettext_attr(name, context)
+            label = pgettext_attributes(context, name)
             self._release_type_sliders[name] = \
                 ReleaseTypeScore(self.ui.type_group,
                                  self.ui.gridLayout,
@@ -184,7 +187,7 @@ class ReleasesOptionsPage(OptionsPage):
         for name in RELEASE_PRIMARY_GROUPS:
             add_slider(name, griditer, context='release_group_primary_type')
         for name in sorted(RELEASE_SECONDARY_GROUPS,
-                           key=lambda v: gettext_attr(v, 'release_group_secondary_type')):
+                           key=lambda v: pgettext_attributes('release_group_secondary_type', v)):
             add_slider(name, griditer, context='release_group_secondary_type')
 
         self.reset_preferred_types_btn = QtWidgets.QPushButton(self.ui.type_group)
@@ -216,6 +219,7 @@ class ReleasesOptionsPage(OptionsPage):
         super().restore_defaults()
 
     def load(self):
+        config = get_config()
         scores = dict(config.setting["release_type_scores"])
         for (release_type, release_type_slider) in self._release_type_sliders.items():
             release_type_slider.setValue(scores.get(release_type,
@@ -227,6 +231,7 @@ class ReleasesOptionsPage(OptionsPage):
                               self.ui.format_list, self.ui.preferred_format_list)
 
     def save(self):
+        config = get_config()
         scores = []
         for (release_type, release_type_slider) in self._release_type_sliders.items():
             scores.append((release_type, release_type_slider.value()))
@@ -264,7 +269,7 @@ class ReleasesOptionsPage(OptionsPage):
             source_list = [(c[0], gettext_countries(c[1])) for c in
                            source.items()]
         elif setting == "preferred_release_formats":
-            source_list = [(c[0], gettext_attr(c[1], "medium_format")) for c
+            source_list = [(c[0], pgettext_attributes("medium_format", c[1])) for c
                            in source.items()]
         else:
             source_list = [(c[0], _(c[1])) for c in source.items()]
@@ -272,6 +277,7 @@ class ReleasesOptionsPage(OptionsPage):
         def fcmp(x):
             return strxfrm(x[1])
         source_list.sort(key=fcmp)
+        config = get_config()
         saved_data = config.setting[setting]
         move = []
         for data, name in source_list:
@@ -291,6 +297,7 @@ class ReleasesOptionsPage(OptionsPage):
         for i in range(list1.count()):
             item = list1.item(i)
             data.append(item.data(QtCore.Qt.UserRole))
+        config = get_config()
         config.setting[setting] = data
 
 

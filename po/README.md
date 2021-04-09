@@ -45,13 +45,13 @@ To fetch latest translations from Transifex
 Use the following command:
 
 ```bash
-$ python setup.py get_po_files
+$ python setup.py pull_translations
 ```
 
 It will fetch all po files from Transifex, but the most incomplete ones.
 
 The minimum acceptable percentage of a translation in order to download it can be seen using:
 ```bash
-$ python setup.py get_po_files --help
+$ python setup.py pull_translations --help
 ```
 The percentage value is passed to the `tx pull` command.

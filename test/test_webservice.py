@@ -5,7 +5,7 @@
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2017-2018 Wieland Hoffmann
 # Copyright (C) 2018 Laurent Monin
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -27,6 +27,8 @@ from unittest.mock import (
     patch,
 )
 
+from PyQt5.QtNetwork import QNetworkProxy
+
 from test.picardtestcase import PicardTestCase
 
 from picard import config
@@ -40,10 +42,12 @@ from picard.webservice import (
 
 PROXY_SETTINGS = {
     "use_proxy": True,
+    "proxy_type": 'http',
     "proxy_server_host": '127.0.0.1',
     "proxy_server_port": 3128,
     "proxy_username": 'user',
     "proxy_password": 'password',
+    "network_transfer_timeout_seconds": 30,
 }
 
 
@@ -51,12 +55,12 @@ class WebServiceTest(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        config.setting = {'use_proxy': False, 'server_host': ''}
+        self.set_config_values({
+            'use_proxy': False,
+            'server_host': '',
+            'network_transfer_timeout_seconds': 30,
+        })
         self.ws = WebService()
-
-    def tearDown(self):
-        del self.ws
-        config.setting = {}
 
     @patch.object(WebService, 'add_task')
     def test_webservice_method_calls(self, mock_add_task):
@@ -89,16 +93,15 @@ class WebServiceTaskTest(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        config.setting = {'use_proxy': False}
+        self.set_config_values({
+            'use_proxy': False,
+            'network_transfer_timeout_seconds': 30,
+        })
         self.ws = WebService()
 
         # Patching the QTimers since they can only be started in a QThread
         self.ws._timer_run_next_task = MagicMock()
         self.ws._timer_count_pending_requests = MagicMock()
-
-    def tearDown(self):
-        del self.ws
-        config.setting = {}
 
     def test_add_task(self):
 
@@ -204,20 +207,22 @@ class WebServiceProxyTest(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        config.setting = PROXY_SETTINGS.copy()
-        self.ws = WebService()
-        self.proxy = self.ws.manager.proxy()
-
-    def tearDown(self):
-        del self.ws
-        del self.proxy
-        config.setting = {}
+        self.set_config_values(PROXY_SETTINGS)
 
     def test_proxy_setup(self):
-        self.assertEqual(self.proxy.user(), PROXY_SETTINGS['proxy_username'])
-        self.assertEqual(self.proxy.password(), PROXY_SETTINGS['proxy_password'])
-        self.assertEqual(self.proxy.hostName(), PROXY_SETTINGS['proxy_server_host'])
-        self.assertEqual(self.proxy.port(), PROXY_SETTINGS['proxy_server_port'])
+        proxy_types = [
+            ('http', QNetworkProxy.HttpProxy),
+            ('socks', QNetworkProxy.Socks5Proxy),
+        ]
+        for proxy_type, expected_qt_type in proxy_types:
+            config.setting['proxy_type'] = proxy_type
+            ws = WebService()
+            proxy = ws.manager.proxy()
+            self.assertEqual(proxy.type(), expected_qt_type)
+            self.assertEqual(proxy.user(), PROXY_SETTINGS['proxy_username'])
+            self.assertEqual(proxy.password(), PROXY_SETTINGS['proxy_password'])
+            self.assertEqual(proxy.hostName(), PROXY_SETTINGS['proxy_server_host'])
+            self.assertEqual(proxy.port(), PROXY_SETTINGS['proxy_server_port'])
 
 
 class ParserHookTest(PicardTestCase):

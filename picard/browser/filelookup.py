@@ -44,6 +44,8 @@ from picard.util import (
     webbrowser2,
 )
 
+from picard.ui.searchdialog.album import AlbumSearchDialog
+
 
 class FileLookup(object):
 
@@ -96,10 +98,13 @@ class FileLookup(object):
     def release_group_lookup(self, release_group_id):
         return self._lookup('release-group', release_group_id)
 
+    def discid_lookup(self, discid):
+        return self._lookup('cdtoc', discid)
+
     def acoust_lookup(self, acoust_id):
         return self.launch(PICARD_URLS['acoustid_track'] + acoust_id)
 
-    def mbid_lookup(self, string, type_, mbid_matched_callback=None):
+    def mbid_lookup(self, string, type_=None, mbid_matched_callback=None, browser_fallback=True):
         """Parses string for known entity type and mbid, open browser for it
         If entity type is 'release', it will load corresponding release if
         possible.
@@ -111,6 +116,8 @@ class FileLookup(object):
         if m is None:
             return False
         if m.group(1) is None:
+            if type_ is None:
+                return False
             entity = type_
         else:
             entity = m.group(1).lower()
@@ -123,7 +130,14 @@ class FileLookup(object):
         elif entity == 'recording':
             QtCore.QObject.tagger.load_nat(mbid)
             return True
-        return self._lookup(entity, mbid)
+        elif entity == 'release-group':
+            dialog = AlbumSearchDialog(QtCore.QObject.tagger.window, force_advanced_search=True)
+            dialog.search("rgid:{0}".format(mbid))
+            dialog.exec_()
+            return True
+        if browser_fallback:
+            return self._lookup(entity, mbid)
+        return False
 
     def tag_lookup(self, artist, release, track, trackNum, duration, filename):
         params = {

@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -40,6 +40,7 @@ class TristateSortHeaderView(QtWidgets.QHeaderView):
 
         # Remember if resize / move event just happened
         self._section_moved_or_resized = False
+        self.lock(False)
 
         def update_state(i, o, n):
             self._section_moved_or_resized = True
@@ -48,6 +49,13 @@ class TristateSortHeaderView(QtWidgets.QHeaderView):
         self.sectionMoved.connect(update_state)
 
     def mouseReleaseEvent(self, event):
+        if self.is_locked:
+            tooltip = _(
+                "The table is locked. To enable sorting and column resizing\n"
+                "unlock the table in the table header's context menu.")
+            QtWidgets.QToolTip.showText(event.globalPos(), tooltip, self)
+            return
+
         if event.button() == QtCore.Qt.LeftButton:
             index = self.logicalIndexAt(event.pos())
             if (index != -1 and index == self.sortIndicatorSection()
@@ -69,3 +77,13 @@ class TristateSortHeaderView(QtWidgets.QHeaderView):
                 return
         # Normal handling of events
         super().mouseReleaseEvent(event)
+
+    def lock(self, is_locked):
+        self.is_locked = is_locked
+        self.setSectionsClickable(not is_locked)
+        self.setSectionsMovable(not is_locked)
+        if is_locked:
+            resize_mode = QtWidgets.QHeaderView.Fixed
+        else:
+            resize_mode = QtWidgets.QHeaderView.Interactive
+        self.setSectionResizeMode(resize_mode)

@@ -20,6 +20,7 @@
 # Copyright (C) 2017 Frederik “Freso” S. Olesen
 # Copyright (C) 2018 Bob Swift
 # Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2020 Ray Bouchard
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -38,19 +39,23 @@
 
 import builtins
 from collections import namedtuple
+from collections.abc import Mapping
 import html
+from itertools import chain
 import json
 import ntpath
 from operator import attrgetter
 import os
 import re
 import sys
-from time import time
+from time import monotonic
 import unicodedata
+
+from dateutil.parser import parse
 
 from PyQt5 import QtCore
 
-# Required for compatibility with lastfmplus which imports this from here rather than loading it direct.
+from picard import log
 from picard.const import MUSICBRAINZ_SERVERS
 from picard.const.sys import (
     FROZEN_TEMP_PATH,
@@ -84,16 +89,44 @@ class LockableObject(QtCore.QObject):
         self.__lock.unlock()
 
 
+def process_events_iter(iterable, interval=0.1):
+    """
+    Creates an iterator over iterable that calls QCoreApplication.processEvents()
+    after certain time intervals.
+
+    This must only be used in the main thread.
+
+    Args:
+        iterable: iterable object to iterate over
+        interval: interval in seconds to call QCoreApplication.processEvents()
+    """
+    if interval:
+        start = monotonic()
+    for item in iterable:
+        if interval:
+            now = monotonic()
+            delta = now - start
+            if delta > interval:
+                start = now
+                QtCore.QCoreApplication.processEvents()
+        yield item
+    QtCore.QCoreApplication.processEvents()
+
+
+def iter_files_from_objects(objects, save=False):
+    """Creates an iterator over all unique files from list of albums, clusters, tracks or files."""
+    return iter_unique(chain(*(obj.iterfiles(save) for obj in objects)))
+
+
 _io_encoding = sys.getfilesystemencoding()
 
 
 # The following was adapted from k3b's source code:
-#// On a glibc system the system locale defaults to ANSI_X3.4-1968
-#// It is very unlikely that one would set the locale to ANSI_X3.4-1968
-#// intentionally
+# On a glibc system the system locale defaults to ANSI_X3.4-1968
+# It is very unlikely that one would set the locale to ANSI_X3.4-1968
+# intentionally
 def check_io_encoding():
     if _io_encoding == "ANSI_X3.4-1968":
-        from picard import log
         log.warning("""
 System locale charset is ANSI_X3.4-1968
 Your system's locale charset (i.e. the charset used to encode filenames)
@@ -127,8 +160,35 @@ def decode_filename(filename):
         return filename.decode(_io_encoding)
 
 
-def pathcmp(a, b):
-    return os.path.normcase(a) == os.path.normcase(b)
+def normpath(path):
+    try:
+        path = os.path.realpath(path)
+    except OSError as why:
+        # realpath can fail if path does not exist or is not accessible
+        log.warning('Failed getting realpath for "%s": %s', path, why)
+    return os.path.normpath(path)
+
+
+def is_absolute_path(path):
+    """Similar to os.path.isabs, but properly detects Windows shares as absolute paths
+    See https://bugs.python.org/issue22302
+    """
+    return os.path.isabs(path) or (IS_WIN and os.path.normpath(path).startswith("\\\\"))
+
+
+def samepath(path1, path2):
+    return os.path.normcase(os.path.normpath(path1)) == os.path.normcase(os.path.normpath(path2))
+
+
+def samefile(path1, path2):
+    """Returns True, if both `path1` and `path2` refer to the same file.
+
+    Behaves similar to os.path.samefile, but first checks identical paths including
+    case insensitive comparison on Windows using os.path.normcase. This fixes issues on
+    some network drives (e.g. VirtualBox mounts) where two paths different only in case
+    are considered separate files by os.path.samefile.
+    """
+    return samepath(path1, path2) or os.path.samefile(path1, path2)
 
 
 def format_time(ms, display_zero=False):
@@ -275,7 +335,7 @@ def throttle(interval):
         def later():
             mutex.lock()
             func(*decorator.args, **decorator.kwargs)
-            decorator.prev = time()
+            decorator.prev = monotonic()
             decorator.is_ticking = False
             mutex.unlock()
 
@@ -287,7 +347,7 @@ def throttle(interval):
                 mutex.unlock()
                 return
             mutex.lock()
-            now = time()
+            now = monotonic()
             r = interval - (now-decorator.prev)*1000.0
             if r <= 0:
                 func(*args, **kwargs)
@@ -308,27 +368,29 @@ def throttle(interval):
 
 def uniqify(seq):
     """Uniqify a list, preserving order"""
-    # Courtesy of Dave Kirby
-    # See http://www.peterbe.com/plog/uniqifiers-benchmark
+    return list(iter_unique(seq))
+
+
+def iter_unique(seq):
+    """Creates an iterator only returning unique values from seq"""
     seen = set()
-    add_seen = seen.add
-    return [x for x in seq if x not in seen and not add_seen(x)]
+    return (x for x in seq if x not in seen and not seen.add(x))
 
 
 # order is important
 _tracknum_regexps = (
     # search for explicit track number (prefix "track")
     r"track[\s_-]*(?:no|nr)?[\s_-]*(\d+)",
-    # search for 2-digit number at start of string
-    r"^(\d{2})\D?",
-    # search for 2-digit number at end of string
-    r"\D?(\d{2})$",
+    # search for 2-digit number at start of string
+    r"^(\d{2})\D",
+    # search for 2-digit number at end of string
+    r"\D(\d{2})$",
 )
 
 
 def tracknum_from_filename(base_filename):
     """Guess and extract track number from filename
-    Returns -1 if none found, the number as integer else
+    Returns `None` if none found, the number as integer else
     """
     filename, _ = os.path.splitext(base_filename)
     for r in _tracknum_regexps:
@@ -344,17 +406,7 @@ def tracknum_from_filename(base_filename):
                       0 < int(n) <= 99])
     if numbers:
         return numbers[0]
-    return -1
-
-
-# Provide os.path.samefile equivalent which is missing in Python under Windows
-if IS_WIN:
-    def os_path_samefile(p1, p2):
-        ap1 = os.path.abspath(p1)
-        ap2 = os.path.abspath(p2)
-        return ap1 == ap2
-else:
-    os_path_samefile = os.path.samefile
+    return None
 
 
 def is_hidden(filepath):
@@ -501,7 +553,6 @@ def __convert_to_string(obj):
 
 
 def convert_to_string(obj):
-    from picard import log
     log.warning("string_() and convert_to_string() are deprecated, do not use")
     return __convert_to_string(obj)
 
@@ -645,3 +696,15 @@ def limited_join(a_list, limit, join_string='+', middle_string='…'):
     start = a_list[:half]
     end = a_list[-half:]
     return join_string.join(start + [middle_string] + end)
+
+
+def extract_year_from_date(dt):
+    """ Extracts year from  passed in date either dict or string """
+
+    try:
+        if isinstance(dt, Mapping):
+            return int(dt.get('year'))
+        else:
+            return parse(dt).year
+    except (TypeError, ValueError):
+        return None

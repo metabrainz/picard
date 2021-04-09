@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2007 Oliver Charles
 # Copyright (C) 2007, 2010-2011 Lukáš Lalinský
-# Copyright (C) 2007-2011, 2014, 2018-2019 Philipp Wolfer
+# Copyright (C) 2007-2011, 2014, 2018-2021 Philipp Wolfer
 # Copyright (C) 2011 Michael Wiencek
 # Copyright (C) 2011-2012, 2015 Wieland Hoffmann
 # Copyright (C) 2013-2015, 2018-2019 Laurent Monin
@@ -38,11 +38,13 @@ from PyQt5.QtCore import (
     QMutex,
     QObject,
     QUrl,
+    QUrlQuery,
 )
 
-from picard import (
-    config,
-    log,
+from picard import log
+from picard.config import (
+    Option,
+    get_config,
 )
 from picard.coverart.utils import translate_caa_type
 from picard.metadata import Metadata
@@ -50,6 +52,7 @@ from picard.util import (
     decode_filename,
     encode_filename,
     imageinfo,
+    is_absolute_path,
 )
 from picard.util.scripttofilename import script_to_filename
 
@@ -167,7 +170,10 @@ class CoverArtImage:
         self.port = self.url.port(443 if self.url.scheme() == 'https' else 80)
         self.path = self.url.path(QUrl.FullyEncoded)
         if self.url.hasQuery():
-            self.path += '?' + self.url.query(QUrl.FullyEncoded)
+            query = QUrlQuery(self.url.query())
+            self.queryargs = dict(query.queryItems())
+        else:
+            self.queryargs = None
 
     @property
     def source(self):
@@ -262,7 +268,7 @@ class CoverArtImage:
 
         try:
             self.datahash = DataHash(data, suffix=self.extension)
-        except (OSError, IOError) as e:
+        except OSError as e:
             raise CoverArtImageIOError(e)
 
     @property
@@ -274,7 +280,7 @@ class CoverArtImage:
         """
         if self.is_front_image() or not self.types or 'front' in self.types:
             return 'front'
-        # TODO: do something better than randomly using the first in the list
+        # TODO: do something better than randomly using the first in the list
         return self.types[0]
 
     def _make_image_filename(self, filename, dirname, _metadata):
@@ -288,8 +294,8 @@ class CoverArtImage:
             metadata.add_unique("coverart_types", cover_type)
         filename = script_to_filename(filename, metadata)
         if not filename:
-            filename = "cover"
-        if not os.path.isabs(filename):
+            filename = Option.get('setting', 'cover_image_filename').default
+        if not is_absolute_path(filename):
             filename = os.path.join(dirname, filename)
         return encode_filename(filename)
 
@@ -301,8 +307,8 @@ class CoverArtImage:
         """
         if not self.can_be_saved_to_disk:
             return
-        if (config.setting["caa_image_type_as_filename"]
-            and not self.is_front_image()):
+        config = get_config()
+        if config.setting["image_type_as_filename"] and not self.is_front_image():
             filename = self.maintype
             log.debug("Make cover filename from types: %r -> %r",
                       self.types, filename)
@@ -333,20 +339,12 @@ class CoverArtImage:
         def copy_tmp_to_target(target):
             if not os.path.exists(target):
                 _mkdir_and_copy(self.tempfile_filename, target)
-                #print("copy (do not exist)")
             else:
-                #import time
-                #start = time.perf_counter()
-                # FIXME
                 filecmp.clear_cache()
                 files_differ = not filecmp.cmp(self.tempfile_filename, target,
                                                shallow=False)
-                #delta = time.perf_counter() - start
-                #print("Compared %r to %r in %f seconds" %
-                #          (self.tempfile_filename, target, delta))
                 if files_differ:
                     _mkdir_and_copy(self.tempfile_filename, target)
-                #print("copy (differs)")
 
         target = clean_path(filename, ext)
         if overwrite or not os.path.exists(target):

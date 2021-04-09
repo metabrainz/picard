@@ -1,0 +1,16 @@
+{
+    "MsgAlreadyInstalled": "${PRODUCT_NAME} è già installato e deve essere disinstallato prima di poter aggiornare il programma alla versione ${PRODUCT_VERSION}. \n\nSeleziona \"OK\" per proseguire o \"Annulla\" per annullare questo aggiornamento. ",
+    "MsgApplicationRunning": "L'applicazione ${PRODUCT_NAME} è in esecuzione.\nChiudi l'applicazione e riprova.",
+    "MsgRequires64Bit": "Questa versione di ${PRODUCT_NAME} richiede un sistema Windows a 64bit.",
+    "MuiDescriptionRequired": "Installa ${PRODUCT_NAME} e i relativi file necessari alla sua esecuzione.",
+    "MuiDescriptionLang": "Installa le traduzioni di ${PRODUCT_NAME} per le differenti lingue.",
+    "MuiDescriptionShortcuts": "Installa collegamenti per eseguire ${PRODUCT_NAME}.",
+    "MuiDescriptionDesktop": "Installa collegamento sul desktop.",
+    "MuiDescriptionStartMenu": "Installa collegamento nel menu Start.",
+    "OptionRemoveSettings": "Elimina impostazioni e dati personali",
+    "SectionDesktop": "Desktop",
+    "SectionLanguages": "Lingue",
+    "SectionRequired": "File programma (richiesti)",
+    "SectionShortcuts": "Collegamenti",
+    "SectionStartMenu": "Menu Start"
+}

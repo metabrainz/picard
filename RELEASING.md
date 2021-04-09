@@ -52,7 +52,7 @@ git ls-tree --full-tree -r HEAD --name-only |while read f; do sed -i '1s/^\xEF\x
 ## Get latest translations from Transifex
 
 ```bash
-python setup.py get_po_files && git diff --quiet || git commit -m 'Update .po files' -- po/
+python setup.py pull_translations && git diff --quiet || git commit -m 'Update .po files' -- po/
 ```
 
 ## Synchronize generated consts

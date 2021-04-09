@@ -5,11 +5,11 @@
 # run arbitrary code.
 extension-pkg-whitelist=
 
-# Add files or directories to the blacklist. They should be base names, not
+# Add files or directories to the ignore list. They should be base names, not
 # paths.
 ignore=CVS
 
-# Add files or directories matching the regex patterns to the blacklist. The
+# Add files or directories matching the regex patterns to the ignore list. The
 # regex matches against base names, not paths.
 ignore-patterns=ui_.*\.py
 
@@ -19,7 +19,7 @@ ignore-patterns=ui_.*\.py
 
 # Use multiple processes to speed up Pylint. Specifying 0 will auto-detect the
 # number of processors available to use.
-jobs=1
+jobs=0
 
 # Control the amount of potential inferred values when inferring a single
 # object. This can help the performance when dealing with large functions or
@@ -283,7 +283,8 @@ min-similarity-lines=4
 
 # List of additional names supposed to be defined in builtins. Remember that
 # you should avoid defining new builtins when possible.
-additional-builtins=_, N_, ngettext, gettext_countries, gettext_attributes
+additional-builtins=_, N_, ngettext, gettext_countries,
+                    gettext_attributes, pgettext_attributes
 
 # Tells whether unused global variables should be treated as a violation.
 allow-global-unused-variables=yes

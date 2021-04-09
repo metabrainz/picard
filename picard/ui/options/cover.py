@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
-# Copyright (C) 2010, 2018-2019 Philipp Wolfer
+# Copyright (C) 2010, 2018-2019, 2021 Philipp Wolfer
 # Copyright (C) 2012, 2014 Wieland Hoffmann
 # Copyright (C) 2012-2014 Michael Wiencek
 # Copyright (C) 2013-2015, 2018-2019 Laurent Monin
@@ -25,7 +25,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard import config
+from picard.config import (
+    BoolOption,
+    ListOption,
+    Option,
+    TextOption,
+    get_config,
+)
 from picard.coverart.providers import cover_art_providers
 
 from picard.ui.checkbox_list_item import CheckboxListItem
@@ -44,18 +50,20 @@ class CoverOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 35
     ACTIVE = True
+    HELP_URL = '/config/options_cover.html'
 
     options = [
-        config.BoolOption("setting", "save_images_to_tags", True),
-        config.BoolOption("setting", "embed_only_one_front_image", True),
-        config.BoolOption("setting", "save_images_to_files", False),
-        config.TextOption("setting", "cover_image_filename", "cover"),
-        config.BoolOption("setting", "save_images_overwrite", False),
-        config.ListOption("setting", "ca_providers", [
+        BoolOption("setting", "save_images_to_tags", True),
+        BoolOption("setting", "embed_only_one_front_image", True),
+        BoolOption("setting", "save_images_to_files", False),
+        TextOption("setting", "cover_image_filename", "cover"),
+        BoolOption("setting", "save_images_overwrite", False),
+        BoolOption("setting", "save_only_one_front_image", False),
+        BoolOption("setting", "image_type_as_filename", False),
+        ListOption("setting", "ca_providers", [
             ('Cover Art Archive', True),
-            ('Amazon', True),
-            ('Whitelist', True),
-            ('CaaReleaseGroup', False),
+            ('UrlRelationships', True),
+            ('CaaReleaseGroup', True),
             ('Local', False),
         ]),
     ]
@@ -64,8 +72,10 @@ class CoverOptionsPage(OptionsPage):
         super().__init__(parent)
         self.ui = Ui_CoverOptionsPage()
         self.ui.setupUi(self)
-        self.ui.save_images_to_files.clicked.connect(self.update_filename)
-        self.ui.save_images_to_tags.clicked.connect(self.update_save_images_to_tags)
+        self.ui.cover_image_filename.setPlaceholderText(Option.get('setting', 'cover_image_filename').default)
+        self.ui.save_images_to_files.clicked.connect(self.update_ca_providers_groupbox_state)
+        self.ui.save_images_to_tags.clicked.connect(self.update_ca_providers_groupbox_state)
+        self.ui.save_only_one_front_image.toggled.connect(self.ui.image_type_as_filename.setDisabled)
         self.move_view = MoveableListView(self.ui.ca_providers_list, self.ui.up_button,
                                           self.ui.down_button)
 
@@ -88,42 +98,33 @@ class CoverOptionsPage(OptionsPage):
         return items
 
     def load(self):
+        config = get_config()
         self.ui.save_images_to_tags.setChecked(config.setting["save_images_to_tags"])
         self.ui.cb_embed_front_only.setChecked(config.setting["embed_only_one_front_image"])
         self.ui.save_images_to_files.setChecked(config.setting["save_images_to_files"])
         self.ui.cover_image_filename.setText(config.setting["cover_image_filename"])
         self.ui.save_images_overwrite.setChecked(config.setting["save_images_overwrite"])
+        self.ui.save_only_one_front_image.setChecked(config.setting["save_only_one_front_image"])
+        self.ui.image_type_as_filename.setChecked(config.setting["image_type_as_filename"])
         self.load_cover_art_providers()
         self.ui.ca_providers_list.setCurrentRow(0)
-        self.update_all()
+        self.update_ca_providers_groupbox_state()
 
     def save(self):
+        config = get_config()
         config.setting["save_images_to_tags"] = self.ui.save_images_to_tags.isChecked()
         config.setting["embed_only_one_front_image"] = self.ui.cb_embed_front_only.isChecked()
         config.setting["save_images_to_files"] = self.ui.save_images_to_files.isChecked()
         config.setting["cover_image_filename"] = self.ui.cover_image_filename.text()
         config.setting["save_images_overwrite"] = self.ui.save_images_overwrite.isChecked()
+        config.setting["save_only_one_front_image"] = self.ui.save_only_one_front_image.isChecked()
+        config.setting["image_type_as_filename"] = self.ui.image_type_as_filename.isChecked()
         config.setting["ca_providers"] = self.ca_providers()
-
-    def update_all(self):
-        self.update_filename()
-        self.update_save_images_to_tags()
 
     def update_ca_providers_groupbox_state(self):
         files_enabled = self.ui.save_images_to_files.isChecked()
         tags_enabled = self.ui.save_images_to_tags.isChecked()
         self.ui.ca_providers_groupbox.setEnabled(files_enabled or tags_enabled)
-
-    def update_filename(self):
-        enabled = self.ui.save_images_to_files.isChecked()
-        self.ui.cover_image_filename.setEnabled(enabled)
-        self.ui.save_images_overwrite.setEnabled(enabled)
-        self.update_ca_providers_groupbox_state()
-
-    def update_save_images_to_tags(self):
-        enabled = self.ui.save_images_to_tags.isChecked()
-        self.ui.cb_embed_front_only.setEnabled(enabled)
-        self.update_ca_providers_groupbox_state()
 
 
 register_options_page(CoverOptionsPage)

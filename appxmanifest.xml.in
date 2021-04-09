@@ -16,6 +16,7 @@
   </Properties>
   <Resources>
     <Resource Language="en-us"/>
+    <Resource Language="cs"/>
     <Resource Language="de"/>
     <Resource Language="es"/>
     <Resource Language="fi"/>
@@ -24,10 +25,13 @@
     <Resource Language="it"/>
     <Resource Language="ms-my"/>
     <Resource Language="nl"/>
+    <Resource Language="pt-br"/>
+    <Resource Language="ru"/>
+    <Resource Language="zh-cn"/>
     <Resource Language="zh-tw"/>
   </Resources>
   <Dependencies>
-    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17135.0" MaxVersionTested="10.0.18363.0"/>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17135.0" MaxVersionTested="10.0.19042.0"/>
   </Dependencies>
   <Capabilities>
     <rescap:Capability Name="runFullTrust"/>

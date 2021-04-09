@@ -5,7 +5,7 @@
 # Copyright (C) 2007 Lukáš Lalinský
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2017 Sambhav Kothari
-# Copyright (C) 2018-2019 Philipp Wolfer
+# Copyright (C) 2018-2020 Philipp Wolfer
 # Copyright (C) 2018-2020 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -51,9 +51,9 @@ from picard import (
     PICARD_APP_NAME,
     PICARD_ORG_NAME,
     PICARD_VERSION_STR,
-    config,
     log,
 )
+from picard.config import get_config
 from picard.const import (
     CACHE_DIR,
     CACHE_SIZE_IN_BYTES,
@@ -266,9 +266,13 @@ class WebService(QtCore.QObject):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.manager = QtNetwork.QNetworkAccessManager()
+        self._network_accessible_changed(self.manager.networkAccessible())
+        self.manager.networkAccessibleChanged.connect(self._network_accessible_changed)
         self.oauth_manager = OAuthManager(self)
         self.set_cache()
         self.setup_proxy()
+        config = get_config()
+        self.set_transfer_timeout(config.setting['network_transfer_timeout_seconds'])
         self.manager.finished.connect(self._process_reply)
         self._request_methods = {
             "GET": self.manager.get,
@@ -278,6 +282,28 @@ class WebService(QtCore.QObject):
         }
         self._init_queues()
         self._init_timers()
+
+    @staticmethod
+    def http_response_code(reply):
+        response_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        return int(response_code) if response_code else 0
+
+    @staticmethod
+    def http_response_phrase(reply):
+        return reply.attribute(QNetworkRequest.HttpReasonPhraseAttribute)
+
+    @staticmethod
+    def http_response_safe_url(reply):
+        return reply.request().url().toString(QUrl.RemoveUserInfo)
+
+    def _network_accessible_changed(self, accessible):
+        # Qt's network accessibility check sometimes fails, e.g. with VPNs on Windows.
+        # If the accessibility is reported to be not accessible, set it to
+        # unknown instead. Let's just try any request and handle the error.
+        # See https://tickets.metabrainz.org/browse/PICARD-1791
+        if accessible == QtNetwork.QNetworkAccessManager.NotAccessible:
+            self.manager.setNetworkAccessible(QtNetwork.QNetworkAccessManager.UnknownAccessibility)
+        log.debug("Network accessible requested: %s, actual: %s", accessible, self.manager.networkAccessible())
 
     def _init_queues(self):
         self._active_requests = {}
@@ -307,13 +333,27 @@ class WebService(QtCore.QObject):
 
     def setup_proxy(self):
         proxy = QtNetwork.QNetworkProxy()
+        config = get_config()
         if config.setting["use_proxy"]:
-            proxy.setType(QtNetwork.QNetworkProxy.HttpProxy)
+            if config.setting["proxy_type"] == 'socks':
+                proxy.setType(QtNetwork.QNetworkProxy.Socks5Proxy)
+            else:
+                proxy.setType(QtNetwork.QNetworkProxy.HttpProxy)
             proxy.setHostName(config.setting["proxy_server_host"])
             proxy.setPort(config.setting["proxy_server_port"])
-            proxy.setUser(config.setting["proxy_username"])
-            proxy.setPassword(config.setting["proxy_password"])
+            if config.setting["proxy_username"]:
+                proxy.setUser(config.setting["proxy_username"])
+            if config.setting["proxy_password"]:
+                proxy.setPassword(config.setting["proxy_password"])
         self.manager.setProxy(proxy)
+
+    def set_transfer_timeout(self, timeout):
+        timeout_ms = timeout * 1000
+        if hasattr(self.manager, 'setTransferTimeout'):  # Available since Qt 5.15
+            self.manager.setTransferTimeout(timeout_ms)
+            self._transfer_timeout = 0
+        else:  # Use fallback implementation
+            self._transfer_timeout = timeout_ms
 
     def _send_request(self, request, access_token=None):
         hostkey = request.get_host_key()
@@ -323,7 +363,31 @@ class WebService(QtCore.QObject):
         send = self._request_methods[request.method]
         data = request.data
         reply = send(request, data.encode('utf-8')) if data is not None else send(request)
+        self._start_transfer_timeout(reply)
         self._active_requests[reply] = request
+
+    def _start_transfer_timeout(self, reply):
+        if not self._transfer_timeout:
+            return
+        # Fallback implementation of a transfer timeout for Qt < 5.15.
+        # Aborts a request if no data gets transferred for TRANSFER_TIMEOUT milliseconds.
+        timer = QtCore.QTimer(self)
+        timer.setSingleShot(True)
+        timer.setTimerType(QtCore.Qt.PreciseTimer)
+        timer.timeout.connect(partial(self._timeout_request, reply))
+        reply.finished.connect(timer.stop)
+        reset_callback = partial(self._reset_transfer_timeout, timer)
+        reply.uploadProgress.connect(reset_callback)
+        reply.downloadProgress.connect(reset_callback)
+        timer.start(self._transfer_timeout)
+
+    def _reset_transfer_timeout(self, timer, bytesTransferred, bytesTotal):
+        timer.start(self._transfer_timeout)
+
+    @staticmethod
+    def _timeout_request(reply):
+        if reply.isRunning():
+            reply.abort()
 
     def _start_request(self, request):
         if request.mblogin and request.path != "/oauth2/token":
@@ -373,7 +437,7 @@ class WebService(QtCore.QObject):
                      cacheloadcontrol=request.attribute(QNetworkRequest.CacheLoadControlAttribute))
         else:
             log.error("Redirect loop: %s",
-                      reply.request().url().toString(QUrl.RemoveUserInfo)
+                      self.http_response_safe_url(reply)
                       )
             request.handler(reply.readAll(), reply, error)
 
@@ -387,16 +451,15 @@ class WebService(QtCore.QObject):
 
         error = int(reply.error())
         handler = request.handler
+        response_code = self.http_response_code(reply)
+        url = self.http_response_safe_url(reply)
         if error:
-            code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
-            code = int(code) if code else 0
             errstr = reply.errorString()
-            url = reply.request().url().toString(QUrl.RemoveUserInfo)
             log.error("Network request error for %s: %s (QT code %d, HTTP code %d)",
-                      url, errstr, error, code)
+                      url, errstr, error, response_code)
             if (not request.max_retries_reached()
-                and (code == 503
-                     or code == 429
+                and (response_code == 503
+                     or response_code == 429
                      # Sometimes QT returns a http status code of 200 even when there
                      # is a service unavailable error. But it returns a QT error code
                      # of 403 when this happens
@@ -410,16 +473,16 @@ class WebService(QtCore.QObject):
             elif handler is not None:
                 handler(reply.readAll(), reply, error)
 
-            slow_down = (slow_down or code >= 500)
+            slow_down = (slow_down or response_code >= 500)
 
         else:
             redirect = reply.attribute(QNetworkRequest.RedirectionTargetAttribute)
             fromCache = reply.attribute(QNetworkRequest.SourceIsFromCacheAttribute)
             cached = ' (CACHED)' if fromCache else ''
             log.debug("Received reply for %s: HTTP %d (%s) %s",
-                      reply.request().url().toString(QUrl.RemoveUserInfo),
-                      reply.attribute(QNetworkRequest.HttpStatusCodeAttribute),
-                      reply.attribute(QNetworkRequest.HttpReasonPhraseAttribute),
+                      url,
+                      response_code,
+                      self.http_response_phrase(reply),
                       cached
                       )
             if handler is not None:
@@ -429,8 +492,8 @@ class WebService(QtCore.QObject):
                 elif request.response_parser:
                     try:
                         document = request.response_parser(reply)
+                        log.debug("Response received: %s", document)
                     except Exception as e:
-                        url = reply.request().url().toString(QUrl.RemoveUserInfo)
                         log.error("Unable to parse the response for %s: %s", url, e)
                         document = reply.readAll()
                         error = e
@@ -445,7 +508,7 @@ class WebService(QtCore.QObject):
         try:
             request = self._active_requests.pop(reply)
         except KeyError:
-            log.error("Request not found for %s", reply.request().url().toString(QUrl.RemoveUserInfo))
+            log.error("Request not found for %s", self.http_response_safe_url(reply))
             return
         try:
             self._handle_reply(reply, request)

@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 # Copyright (C) 2019-2020 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -23,9 +23,11 @@
 import logging
 import os
 import shutil
+import threading
 
 from test.picardtestcase import PicardTestCase
 
+import picard.config
 from picard.config import (
     BoolOption,
     Config,
@@ -113,7 +115,7 @@ class TestPicardConfigTextOption(TestPicardConfigCommon):
     def test_text_opt_invalid_value(self):
         TextOption("setting", "text_option", "abc")
 
-        # store invalid value in config file directly
+        # store invalid value in config file directly
         self.config.setValue('setting/text_option', object)
         self.assertEqual(self.config.setting["text_option"], 'abc')
 
@@ -164,14 +166,14 @@ class TestPicardConfigBoolOption(TestPicardConfigCommon):
     def test_bool_opt_set_direct_str(self):
         BoolOption("setting", "bool_option", False)
 
-        # store invalid bool value in config file directly
+        # store invalid bool value in config file directly
         self.config.setValue('setting/bool_option', 'yes')
         self.assertEqual(self.config.setting["bool_option"], True)
 
     def test_bool_opt_set_direct_str_true(self):
         BoolOption("setting", "bool_option", False)
 
-        # store 'true' directly, it should be ok, due to conversion
+        # store 'true' directly, it should be ok, due to conversion
         self.config.setValue('setting/bool_option', 'true')
         self.assertEqual(self.config.setting["bool_option"], True)
 
@@ -215,14 +217,14 @@ class TestPicardConfigIntOption(TestPicardConfigCommon):
     def test_int_opt_direct_invalid(self):
         IntOption("setting", "int_option", 666)
 
-        # store invalid int value in config file directly
+        # store invalid int value in config file directly
         self.config.setValue('setting/int_option', 'x333')
         self.assertEqual(self.config.setting["int_option"], 666)
 
     def test_int_opt_direct_validstr(self):
         IntOption("setting", "int_option", 666)
 
-        # store int as string directly, it should be ok, due to conversion
+        # store int as string directly, it should be ok, due to conversion
         self.config.setValue('setting/int_option', '333')
         self.assertEqual(self.config.setting["int_option"], 333)
 
@@ -266,14 +268,14 @@ class TestPicardConfigFloatOption(TestPicardConfigCommon):
     def test_float_opt_direct_invalid(self):
         FloatOption("setting", "float_option", 666.6)
 
-        # store invalid float value in config file directly
+        # store invalid float value in config file directly
         self.config.setValue('setting/float_option', '333.3x')
         self.assertEqual(self.config.setting["float_option"], 666.6)
 
     def test_float_opt_direct_validstr(self):
         FloatOption("setting", "float_option", 666.6)
 
-        # store float as string directly, it should be ok, due to conversion
+        # store float as string directly, it should be ok, due to conversion
         self.config.setValue('setting/float_option', '333.3')
         self.assertEqual(self.config.setting["float_option"], 333.3)
 
@@ -324,7 +326,7 @@ class TestPicardConfigListOption(TestPicardConfigCommon):
     def test_list_opt_direct_invalid(self):
         ListOption("setting", "list_option", ["a", "b"])
 
-        # store invalid list value in config file directly
+        # store invalid list value in config file directly
         self.config.setValue('setting/list_option', 'efg')
         self.assertEqual(self.config.setting["list_option"], ["a", "b"])
 
@@ -368,6 +370,17 @@ class TestPicardConfigVarOption(TestPicardConfigCommon):
     def test_var_opt_invalid_value(self):
         Option("setting", "var_option", set(["a", "b"]))
 
-        # store invalid value in config file directly
+        # store invalid value in config file directly
         self.config.setValue('setting/var_option', object)
         self.assertEqual(self.config.setting["var_option"], set(["a", "b"]))
+
+
+class TestPurgeConfigInstancesTimer(TestPicardConfigCommon):
+
+    def test_purge_inactive_config_instances(self):
+        thread_id = threading.get_ident()
+        self.assertIn(thread_id, picard.config._thread_configs)
+        picard.config._thread_configs['foo'] = {}
+        picard.config.purge_config_instances()
+        self.assertIn(thread_id, picard.config._thread_configs)
+        self.assertNotIn('foo', picard.config._thread_configs)

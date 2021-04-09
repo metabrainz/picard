@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>539</width>
-    <height>525</height>
+    <height>705</height>
    </rect>
   </property>
   <layout class="QVBoxLayout">
@@ -281,6 +281,68 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="wave_files">
+     <property name="title">
+      <string>WAVE files</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QCheckBox" name="write_wave_riff_info">
+        <property name="text">
+         <string>Also include RIFF INFO tags in the files</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="remove_wave_riff_info">
+        <property name="text">
+         <string>Remove existing RIFF INFO tags from WAVE files</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="wave_riff_info_encoding">
+        <property name="title">
+         <string>RIFF INFO Text Encoding</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QRadioButton" name="wave_riff_info_enc_cp1252">
+           <property name="text">
+            <string>Windows-1252</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="wave_riff_info_enc_utf8">
+           <property name="text">
+            <string>UTF-8</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer name="spacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -305,5 +367,22 @@
   <tabstop>write_id3v1</tabstop>
  </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>write_wave_riff_info</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>remove_wave_riff_info</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>269</x>
+     <y>551</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>269</x>
+     <y>580</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

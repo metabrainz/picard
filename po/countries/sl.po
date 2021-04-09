@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Alan Rener, 2012
 # Alan Rener, 2016

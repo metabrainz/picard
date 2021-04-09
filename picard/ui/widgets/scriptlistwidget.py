@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-#
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -37,12 +36,6 @@ from picard.ui import HashableListWidgetItem
 
 class ScriptListWidget(QtWidgets.QListWidget):
 
-    def __init__(self, parent):
-        super().__init__(parent=parent)
-        self.delete_shortcut = QtWidgets.QShortcut(self)
-        self.delete_shortcut.setKey(QtGui.QKeySequence.Delete)
-        self.delete_shortcut.activated.connect(self.remove_selected_script)
-
     def contextMenuEvent(self, event):
         item = self.itemAt(event.x(), event.y())
         if item:
@@ -54,6 +47,14 @@ class ScriptListWidget(QtWidgets.QListWidget):
             remove_action.triggered.connect(partial(self.remove_script, item))
             menu.addAction(remove_action)
             menu.exec_(event.globalPos())
+
+    def keyPressEvent(self, event):
+        if event.matches(QtGui.QKeySequence.Delete):
+            self.remove_selected_script()
+        elif event.key() == QtCore.Qt.Key_Insert:
+            self.add_script()
+        else:
+            super().keyPressEvent(event)
 
     def add_script(self):
         count = self.count()

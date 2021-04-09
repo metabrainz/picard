@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -31,6 +31,8 @@ from picard.metadata import Metadata
 
 from .common import (
     CommonTests,
+    load_metadata,
+    save_and_load_metadata,
     skipUnlessTestfile,
 )
 
@@ -44,6 +46,24 @@ def file_save_image(filename, image):
 def load_coverart_file(filename):
     with open(os.path.join('test', 'data', filename), 'rb') as f:
         return f.read()
+
+
+class DummyUnsupportedCoverArt(CoverArtImage):
+    def __init__(self, data=b'', mimetype='image/unknown'):
+        super().__init__()
+        self.mimetype = mimetype
+        self.width = 100
+        self.height = 100
+        self.extension = '.cvr'
+        self.set_data(data)
+
+    def set_data(self, data):
+        self._data = data
+        self.datalength = len(data)
+
+    @property
+    def data(self):
+        return self._data
 
 
 # prevent unittest to run tests in those classes
@@ -70,32 +90,33 @@ class CommonCoverArtTests:
             ]
             for test in tests:
                 file_save_image(self.filename, test)
-                f = picard.formats.open_(self.filename)
-                loaded_metadata = f._load(self.filename)
+                loaded_metadata = load_metadata(self.filename)
                 image = loaded_metadata.images[0]
                 self.assertEqual(test.mimetype, image.mimetype)
                 self.assertEqual(test, image)
 
         def test_cover_art_with_types(self):
             expected = set('abcdefg'[:]) if self.supports_types else set('a')
-            f = picard.formats.open_(self.filename)
-            f._save(self.filename, self._cover_metadata())
-
-            f = picard.formats.open_(self.filename)
-            loaded_metadata = f._load(self.filename)
+            loaded_metadata = save_and_load_metadata(self.filename, self._cover_metadata())
             found = set([chr(img.data[-1]) for img in loaded_metadata.images])
             self.assertEqual(expected, found)
 
         @skipUnlessTestfile
         def test_cover_art_types_only_one_front(self):
             config.setting['embed_only_one_front_image'] = True
-            f = picard.formats.open_(self.filename)
-            f._save(self.filename, self._cover_metadata())
-
-            f = picard.formats.open_(self.filename)
-            loaded_metadata = f._load(self.filename)
+            loaded_metadata = save_and_load_metadata(self.filename, self._cover_metadata())
             self.assertEqual(1, len(loaded_metadata.images))
             self.assertEqual(ord('a'), loaded_metadata.images[0].data[-1])
+
+        @skipUnlessTestfile
+        def test_unsupported_image_format(self):
+            metadata = Metadata()
+            # Save an image with unsupported mimetype
+            metadata.images.append(DummyUnsupportedCoverArt(b'unsupported', 'image/unknown'))
+            # Save an image with supported mimetype, but invalid data
+            metadata.images.append(DummyUnsupportedCoverArt(b'unsupported', 'image/png'))
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(0, len(loaded_metadata.images))
 
         def _cover_metadata(self):
             imgdata = self.jpegdata

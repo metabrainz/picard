@@ -5,7 +5,7 @@
 # Copyright (C) 2013-2014 Michael Wiencek
 # Copyright (C) 2013-2016, 2018-2019 Laurent Monin
 # Copyright (C) 2014, 2017 Lukáš Lalinský
-# Copyright (C) 2014, 2018-2019 Philipp Wolfer
+# Copyright (C) 2014, 2018-2021 Philipp Wolfer
 # Copyright (C) 2015 Ohm Patel
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2017 Sambhav Kothari
@@ -39,6 +39,7 @@ from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
     DEFAULT_NUMBERED_SCRIPT_NAME,
 )
+from picard.const.sys import IS_FROZEN
 
 
 # TO ADD AN UPGRADE HOOK:
@@ -117,7 +118,7 @@ def upgrade_to_v1_3_0_dev_2(config):
     """
     _s = config.setting
     opt = "preserved_tags"
-    if opt in _s:
+    if opt in _s and isinstance(_s[opt], str):
         _s[opt] = re.sub(r"\s+", ",", _s[opt].strip())
 
 
@@ -296,6 +297,50 @@ def upgrade_to_v2_2_0_dev_4(config):
         _s["file_naming_format"] = DEFAULT_FILE_NAMING_FORMAT
 
 
+def upgrade_to_v2_4_0_beta_3(config):
+    """Convert preserved tags to list"""
+    _s = config.setting
+    opt = 'preserved_tags'
+    _s[opt] = [t.strip() for t in _s.raw_value(opt, qtype='QString').split(',')]
+
+
+def upgrade_to_v2_5_0_dev_1(config):
+    """Rename whitelist cover art provider"""
+    _s = config.setting
+    _s['ca_providers'] = [
+        ('UrlRelationships' if n == 'Whitelist' else n, s)
+        for n, s in _s['ca_providers']
+    ]
+
+
+def upgrade_to_v2_5_0_dev_2(config):
+    """Reset main view splitter states"""
+    config.persist["splitter_state"] = b''
+    config.persist["bottom_splitter_state"] = b''
+
+
+def upgrade_to_v2_6_0_dev_1(config):
+    """Unset fpcalc path in environments where auto detection is preferred."""
+    if IS_FROZEN or config.setting['acoustid_fpcalc'].startswith('/snap/picard/'):
+        config.setting['acoustid_fpcalc'] = ''
+
+
+def upgrade_to_v2_6_0_beta_2(config):
+    """Rename caa_image_type_as_filename and caa_save_single_front_image options"""
+    rename_option(config, "caa_image_type_as_filename", "image_type_as_filename", BoolOption, False)
+    rename_option(config, "caa_save_single_front_image", "save_only_one_front_image", BoolOption, False)
+
+
+def upgrade_to_v2_6_0_beta_3(config):
+    """Replace use_system_theme with ui_theme options"""
+    from picard.ui.theme import UiTheme
+    _s = config.setting
+    TextOption("setting", "ui_theme", str(UiTheme.DEFAULT))
+    if _s["use_system_theme"]:
+        _s["ui_theme"] = str(UiTheme.SYSTEM)
+    _s.remove("use_system_theme")
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
@@ -319,4 +364,10 @@ def upgrade_config(config):
     cfg.register_upgrade_hook(upgrade_to_v2_0_0_dev_3)
     cfg.register_upgrade_hook(upgrade_to_v2_1_0_dev_1)
     cfg.register_upgrade_hook(upgrade_to_v2_2_0_dev_3)
+    cfg.register_upgrade_hook(upgrade_to_v2_4_0_beta_3)
+    cfg.register_upgrade_hook(upgrade_to_v2_5_0_dev_1)
+    cfg.register_upgrade_hook(upgrade_to_v2_5_0_dev_2)
+    cfg.register_upgrade_hook(upgrade_to_v2_6_0_dev_1)
+    cfg.register_upgrade_hook(upgrade_to_v2_6_0_beta_2)
+    cfg.register_upgrade_hook(upgrade_to_v2_6_0_beta_3)
     cfg.run_upgrade_hooks(log.debug)

@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Hyeon-ho Shin <crossxp64@gmail.com>, 2017
 # SGR Cloud <radiomaniamk@gmail.com>, 2017

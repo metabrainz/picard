@@ -6,7 +6,7 @@
 # Copyright (C) 2016 Sambhav Kothari
 # Copyright (C) 2018 Wieland Hoffmann
 # Copyright (C) 2018-2019 Laurent Monin
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,6 +26,10 @@
 import os
 import os.path
 import sys
+from tempfile import (
+    NamedTemporaryFile,
+    TemporaryDirectory,
+)
 import unittest
 
 from test.picardtestcase import PicardTestCase
@@ -34,7 +38,12 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
-from picard.util.filenaming import make_short_filename
+from picard.util.filenaming import (
+    WinPathTooLong,
+    make_short_filename,
+    move_ensure_casing,
+    samefile_different_casing,
+)
 
 
 class ShortFilenameTest(PicardTestCase):
@@ -132,7 +141,7 @@ class ShortFilenameTest(PicardTestCase):
 
     def test_windows_path_too_long(self):
         root = self.root + "x" * 230
-        self.assertRaises(IOError, make_short_filename,
+        self.assertRaises(WinPathTooLong, make_short_filename,
                           root, os.path.join("a", "b", "c", "d"), win_compat=True)
 
     def test_windows_path_not_too_long(self):
@@ -143,3 +152,33 @@ class ShortFilenameTest(PicardTestCase):
     def test_whitespace(self):
         fn = make_short_filename(self.root, os.path.join("a1234567890   ", "  b1234567890  "))
         self.assertEqual(fn, os.path.join("a1234567890", "b1234567890"))
+
+
+class SamefileDifferentCasingTest(PicardTestCase):
+
+    @unittest.skipUnless(IS_WIN, "windows test")
+    def test_samefile_different_casing(self):
+        with NamedTemporaryFile(prefix='Foo') as f:
+            real_name = f.name
+            lower_name = real_name.lower()
+            self.assertFalse(samefile_different_casing(real_name, real_name))
+            self.assertFalse(samefile_different_casing(lower_name, lower_name))
+            self.assertTrue(samefile_different_casing(real_name, lower_name))
+
+    def test_samefile_different_casing_non_existant_file(self):
+        self.assertFalse(samefile_different_casing("/foo/bar", "/foo/BAR"))
+
+    def test_samefile_different_casing_identical_path(self):
+        self.assertFalse(samefile_different_casing("/foo/BAR", "/foo/BAR"))
+
+
+class MoveEnsureCasingTest(PicardTestCase):
+
+    def test_move_ensure_casing(self):
+        with TemporaryDirectory() as d:
+            file_path = os.path.join(d, 'foo')
+            target_path = os.path.join(d, 'FOO')
+            open(file_path, 'a').close()
+            move_ensure_casing(file_path, target_path)
+            files = os.listdir(d)
+            self.assertIn('FOO', files)

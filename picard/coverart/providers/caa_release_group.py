@@ -41,7 +41,7 @@ class CoverArtProviderCaaReleaseGroup(CoverArtProviderCaa):
 
     NAME = "CaaReleaseGroup"
     TITLE = N_("CAA Release Group")
-    # FIXME: caa release group uses the same options than caa
+    # FIXME: caa release group uses the same options than caa
     OPTIONS = None
 
     ignore_json_not_found_error = True

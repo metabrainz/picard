@@ -53,7 +53,7 @@ class ScriptToFilenameTest(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        config.setting = settings.copy()
+        self.set_config_values(settings)
 
     def test_plain_filename(self):
         metadata = Metadata()

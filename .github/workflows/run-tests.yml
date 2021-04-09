@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-        python-version: [3.5, 3.6, 3.7, 3.8]
+        python-version: [3.6, 3.7, 3.8, 3.9]
     env:
       CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
@@ -24,14 +24,24 @@ jobs:
         pip install -r requirements.txt
     - name: Check coding style
       run: |
-        pip install flake8 isort
-        flake8 picard --count --show-source --statistics
+        pip install flake8 "isort<5"
+        flake8 picard test --count --show-source --statistics
         isort --check-only --diff --recursive picard test
     - name: Test with pytest
       if: always()
       run: |
         pip install pytest pytest-randomly pytest-cov
         pytest --verbose --cov=picard --cov-report xml:coverage.xml test
+    - name: Test python-libdiscid (Linux)
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install libdiscid-dev
+        python -c "from picard.disc import discid_version; print(discid_version)"
+        pytest --verbose test/test_disc.py
+        pip install python-libdiscid
+        python -c "from picard.disc import discid_version; print(discid_version)"
+        pytest --verbose test/test_disc.py
     - name: Submit code coverage to Codacy
       if: env.CODACY_PROJECT_TOKEN
       run: |
@@ -45,12 +55,11 @@ jobs:
         os: [ubuntu-latest]
         python-version: [3.7]
         dependencies: [
+          "PyQt5==5.14.2",
           "PyQt5==5.13.2",
           "PyQt5==5.12.3",
           "PyQt5==5.11.3",
-          "PyQt5==5.10.1 sip==4.19.8",
-          "PyQt5==5.9.2 sip==4.19.8",
-          "PyQt5==5.8.2 sip==4.19.8 mutagen==1.37"
+          "PyQt5==5.10.1 sip==4.19.8 mutagen==1.37",
         ]
 
     steps:
@@ -94,6 +103,7 @@ jobs:
       run: |
         brew install gettext
         brew link gettext --force
+        echo "/usr/local/opt/gettext/bin" >> $GITHUB_PATH
     - name: Run pip install .
       run: |
         python -m pip install --upgrade pip
@@ -101,3 +111,8 @@ jobs:
     - name: Test running installed package
       if: runner.os != 'Windows'
       run: picard --long-version
+    - name: Verify sdist package
+      if: runner.os != 'Windows'
+      run: |
+        pip install pytest
+        scripts/package/run-sdist-test.sh

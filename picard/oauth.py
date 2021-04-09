@@ -32,12 +32,9 @@ from PyQt5.QtCore import (
     QUrl,
     QUrlQuery,
 )
-from PyQt5.QtNetwork import QNetworkRequest
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.const import (
     MUSICBRAINZ_OAUTH_CLIENT_ID,
     MUSICBRAINZ_OAUTH_CLIENT_SECRET,
@@ -52,8 +49,16 @@ class OAuthManager(object):
 
     def __init__(self, webservice):
         self.webservice = webservice
-        self.setting = config.setting
-        self.persist = config.persist
+
+    @property
+    def setting(self):
+        config = get_config()
+        return config.setting
+
+    @property
+    def persist(self):
+        config = get_config()
+        return config.persist
 
     @property
     def host(self):
@@ -187,7 +192,7 @@ class OAuthManager(object):
         try:
             if error:
                 log.error("OAuth: access_token refresh failed: %s", data)
-                if http.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 400:
+                if self.webservice.http_response_code(http) == 400:
                     response = load_json(data)
                     if response["error"] == "invalid_grant":
                         self.forget_refresh_token()

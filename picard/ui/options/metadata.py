@@ -25,7 +25,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard import config
+from picard.config import (
+    BoolOption,
+    TextOption,
+    get_config,
+)
 from picard.const import ALIAS_LOCALES
 
 from picard.ui.options import (
@@ -59,17 +63,18 @@ class MetadataOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 20
     ACTIVE = True
+    HELP_URL = '/config/options_metadata.html'
 
     options = [
-        config.TextOption("setting", "va_name", "Various Artists"),
-        config.TextOption("setting", "nat_name", "[non-album tracks]"),
-        config.TextOption("setting", "artist_locale", "en"),
-        config.BoolOption("setting", "translate_artist_names", False),
-        config.BoolOption("setting", "release_ars", True),
-        config.BoolOption("setting", "track_ars", False),
-        config.BoolOption("setting", "convert_punctuation", True),
-        config.BoolOption("setting", "standardize_artists", False),
-        config.BoolOption("setting", "standardize_instruments", True),
+        TextOption("setting", "va_name", "Various Artists"),
+        TextOption("setting", "nat_name", "[non-album tracks]"),
+        TextOption("setting", "artist_locale", "en"),
+        BoolOption("setting", "translate_artist_names", False),
+        BoolOption("setting", "release_ars", True),
+        BoolOption("setting", "track_ars", False),
+        BoolOption("setting", "convert_punctuation", True),
+        BoolOption("setting", "standardize_artists", False),
+        BoolOption("setting", "standardize_instruments", True),
     ]
 
     def __init__(self, parent=None):
@@ -80,6 +85,7 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.nat_name_default.clicked.connect(self.set_nat_name_default)
 
     def load(self):
+        config = get_config()
         self.ui.translate_artist_names.setChecked(config.setting["translate_artist_names"])
 
         combo_box = self.ui.artist_locale
@@ -99,6 +105,7 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.standardize_instruments.setChecked(config.setting["standardize_instruments"])
 
     def save(self):
+        config = get_config()
         config.setting["translate_artist_names"] = self.ui.translate_artist_names.isChecked()
         config.setting["artist_locale"] = self.ui.artist_locale.itemData(self.ui.artist_locale.currentIndex())
         config.setting["convert_punctuation"] = self.ui.convert_punctuation.isChecked()

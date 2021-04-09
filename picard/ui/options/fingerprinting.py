@@ -5,7 +5,7 @@
 # Copyright (C) 2011-2012 Lukáš Lalinský
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2013, 2018 Laurent Monin
-# Copyright (C) 2015 Philipp Wolfer
+# Copyright (C) 2015, 2020 Philipp Wolfer
 # Copyright (C) 2016-2017 Sambhav Kothari
 #
 # This program is free software; you can redistribute it and/or
@@ -27,15 +27,17 @@ import os
 
 from PyQt5 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
-from picard import config
-from picard.const import FPCALC_NAMES
-from picard.util import (
-    find_executable,
-    webbrowser2,
+from picard.acoustid import find_fpcalc
+from picard.config import (
+    BoolOption,
+    TextOption,
+    get_config,
 )
+from picard.util import webbrowser2
 
 from picard.ui.options import (
     OptionsCheckError,
@@ -45,6 +47,13 @@ from picard.ui.options import (
 from picard.ui.ui_options_fingerprinting import Ui_FingerprintingOptionsPage
 
 
+class ApiKeyValidator(QtGui.QValidator):
+
+    def validate(self, input, pos):
+        # Strip whitespace to avoid typical copy and paste user errors
+        return (QtGui.QValidator.Acceptable, input.strip(), pos)
+
+
 class FingerprintingOptionsPage(OptionsPage):
 
     NAME = "fingerprinting"
@@ -52,12 +61,13 @@ class FingerprintingOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 45
     ACTIVE = True
+    HELP_URL = '/config/options_fingerprinting.html'
 
     options = [
-        config.BoolOption("setting", "ignore_existing_acoustid_fingerprints", False),
-        config.TextOption("setting", "fingerprinting_system", "acoustid"),
-        config.TextOption("setting", "acoustid_fpcalc", ""),
-        config.TextOption("setting", "acoustid_apikey", ""),
+        BoolOption("setting", "ignore_existing_acoustid_fingerprints", False),
+        TextOption("setting", "fingerprinting_system", "acoustid"),
+        TextOption("setting", "acoustid_fpcalc", ""),
+        TextOption("setting", "acoustid_apikey", ""),
     ]
 
     def __init__(self, parent=None):
@@ -71,18 +81,22 @@ class FingerprintingOptionsPage(OptionsPage):
         self.ui.acoustid_fpcalc_browse.clicked.connect(self.acoustid_fpcalc_browse)
         self.ui.acoustid_fpcalc_download.clicked.connect(self.acoustid_fpcalc_download)
         self.ui.acoustid_apikey_get.clicked.connect(self.acoustid_apikey_get)
+        self.ui.acoustid_apikey.setValidator(ApiKeyValidator())
 
     def load(self):
+        config = get_config()
         if config.setting["fingerprinting_system"] == "acoustid":
             self.ui.use_acoustid.setChecked(True)
         else:
             self.ui.disable_fingerprinting.setChecked(True)
+        self.ui.acoustid_fpcalc.setPlaceholderText(find_fpcalc())
         self.ui.acoustid_fpcalc.setText(config.setting["acoustid_fpcalc"])
         self.ui.acoustid_apikey.setText(config.setting["acoustid_apikey"])
         self.ui.ignore_existing_acoustid_fingerprints.setChecked(config.setting["ignore_existing_acoustid_fingerprints"])
         self.update_groupboxes()
 
     def save(self):
+        config = get_config()
         if self.ui.use_acoustid.isChecked():
             config.setting["fingerprinting_system"] = "acoustid"
         else:
@@ -94,10 +108,6 @@ class FingerprintingOptionsPage(OptionsPage):
     def update_groupboxes(self):
         if self.ui.use_acoustid.isChecked():
             self.ui.acoustid_settings.setEnabled(True)
-            if not self.ui.acoustid_fpcalc.text():
-                fpcalc_path = find_executable(*FPCALC_NAMES)
-                if fpcalc_path:
-                    self.ui.acoustid_fpcalc.setText(fpcalc_path)
         else:
             self.ui.acoustid_settings.setEnabled(False)
         self._acoustid_fpcalc_check()
@@ -120,9 +130,7 @@ class FingerprintingOptionsPage(OptionsPage):
             return
         fpcalc = self.ui.acoustid_fpcalc.text()
         if not fpcalc:
-            self._acoustid_fpcalc_set_success("")
-            return
-
+            fpcalc = find_fpcalc()
         self._fpcalc_valid = False
         process = QtCore.QProcess(self)
         process.finished.connect(self._on_acoustid_fpcalc_check_finished)

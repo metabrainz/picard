@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,13 +18,22 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from picard.formats import midi
 
-from .common import CommonTests
+from .common import (
+    TAGS,
+    CommonTests,
+)
 
 
 class MIDITest(CommonTests.SimpleFormatsTestCase):
     testfile = 'test.mid'
     expected_info = {
         'length': 127997,
+        '~format': 'Standard MIDI File'
     }
     unexpected_info = ['~video']
+
+    def test_supports_tag(self):
+        for tag in TAGS.keys():
+            self.assertFalse(midi.MIDIFile.supports_tag(tag))

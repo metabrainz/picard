@@ -68,8 +68,8 @@ from picard import (
 )
 
 
-if sys.version_info < (3, 5):
-    sys.exit("ERROR: You need Python 3.5 or higher to use Picard.")
+if sys.version_info < (3, 6):
+    sys.exit("ERROR: You need Python 3.6 or higher to use Picard.")
 
 PACKAGE_NAME = "picard"
 APPDATA_FILE = PICARD_APP_ID + '.appdata.xml'
@@ -274,6 +274,9 @@ class picard_build(build):
             }
             if os.path.isfile('installer/picard-setup.nsi.in'):
                 generate_file('installer/picard-setup.nsi.in', 'installer/picard-setup.nsi', {**args, **installer_args})
+                log.info('generating NSIS translation files')
+                self.spawn(['python', 'installer/i18n/json2nsh.py'])
+
             version_args = {
                 'filevers': str(file_version),
                 'prodvers': str(file_version),
@@ -289,7 +292,7 @@ class picard_build(build):
                 'publisher': os.environ.get('PICARD_APPX_PUBLISHER', default_publisher),
                 'version': '.'.join([str(v) for v in store_version]),
             })
-        elif sys.platform == 'linux':
+        elif sys.platform not in ['darwin', 'haiku1', 'win32']:
             self.run_command('build_appdata')
         build.run(self)
 
@@ -469,7 +472,7 @@ class picard_regen_appdata_pot_file(Command):
             ])
 
 
-class picard_get_po_files(Command):
+class picard_pull_translations(Command):
     description = "Retrieve po files from transifex"
     minimum_perc_default = 5
     user_options = [
@@ -635,7 +638,7 @@ class picard_update_constants(Command):
         line = "    '{code}': '{name}',\n"
         footer = "}}\n"
         filename = os.path.join('picard', 'const', 'countries.py')
-        with open(filename, 'w') as countries_py:
+        with open(filename, 'w', encoding='utf-8') as countries_py:
             def write(s, **kwargs):
                 countries_py.write(s.format(**kwargs))
 
@@ -655,7 +658,7 @@ class picard_update_constants(Command):
         line = "    '{key}': '{value}',\n"
         footer = "}}\n"
         filename = os.path.join('picard', 'const', 'attributes.py')
-        with open(filename, 'w') as attributes_py:
+        with open(filename, 'w', encoding='utf-8') as attributes_py:
             def write(s, **kwargs):
                 attributes_py.write(s.format(**kwargs))
 
@@ -764,24 +767,31 @@ args = {
         'install': picard_install,
         'install_locales': picard_install_locales,
         'update_constants': picard_update_constants,
-        'get_po_files': picard_get_po_files,
+        'pull_translations': picard_pull_translations,
         'regen_pot_file': picard_regen_pot_file,
         'patch_version': picard_patch_version,
     },
     'scripts': ['scripts/' + PACKAGE_NAME],
-    'install_requires': ['PyQt5', 'mutagen'],
+    'install_requires': ['PyQt5', 'mutagen', 'python-dateutil', 'fasteners'],
+    'python_requires': '~=3.6',
     'classifiers': [
         'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
         'Development Status :: 5 - Production/Stable',
+        'Environment :: MacOS X',
+        'Environment :: Win32 (MS Windows)',
+        'Environment :: X11 Applications :: Qt',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
-        'Operating System :: Microsoft :: Windows',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Operating System :: MacOS',
+        'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX :: Linux',
         'Topic :: Multimedia :: Sound/Audio',
-        'Topic :: Multimedia :: Sound/Audio :: Analysis'
+        'Topic :: Multimedia :: Sound/Audio :: Analysis',
+        'Intended Audience :: End Users/Desktop',
     ]
 }
 
@@ -804,18 +814,21 @@ def find_file_in_path(filename):
             return file_path
 
 
-args['data_files'] = [
-    (
-        'share/icons/hicolor/{size}x{size}/apps'.format(size=size),
-        ['resources/images/{size}x{size}/{app_id}.png'.format(size=size, app_id=PICARD_APP_ID)]
-    )
-    for size in (16, 24, 32, 48, 128, 256)
-]
-
-args['data_files'].append(('share/icons/hicolor/scalable/apps', ['resources/%s.svg' % PICARD_APP_ID]))
-args['data_files'].append(('share/applications', [PICARD_DESKTOP_NAME]))
-
-if sys.platform == 'linux':
+if sys.platform not in ['darwin', 'haiku1', 'win32']:
+    args['data_files'].append(('share/applications', [PICARD_DESKTOP_NAME]))
+    args['data_files'].append(('share/icons/hicolor/scalable/apps', ['resources/%s.svg' % PICARD_APP_ID]))
+    for size in (16, 24, 32, 48, 128, 256):
+        args['data_files'].append((
+            'share/icons/hicolor/{size}x{size}/apps'.format(size=size),
+            ['resources/images/{size}x{size}/{app_id}.png'.format(size=size, app_id=PICARD_APP_ID)]
+        ))
     args['data_files'].append(('share/metainfo', [APPDATA_FILE]))
+
+if sys.platform == 'win32':
+    args['entry_points'] = {
+        'gui_scripts': [
+            'picard = picard.tagger:main'
+        ]
+    }
 
 setup(**args)

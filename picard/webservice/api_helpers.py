@@ -25,10 +25,8 @@ import re
 
 from PyQt5.QtCore import QUrl
 
-from picard import (
-    PICARD_VERSION_STR,
-    config,
-)
+from picard import PICARD_VERSION_STR
+from picard.config import get_config
 from picard.const import (
     ACOUSTID_HOST,
     ACOUSTID_KEY,
@@ -64,6 +62,10 @@ class APIHelper(object):
         self._port = port
         self.api_path = api_path
         self._webservice = webservice
+
+    @property
+    def webservice(self):
+        return self._webservice
 
     @property
     def host(self):
@@ -111,10 +113,12 @@ class MBAPIHelper(APIHelper):
 
     @property
     def host(self):
+        config = get_config()
         return config.setting['server_host']
 
     @property
     def port(self):
+        config = get_config()
         return config.setting['server_port']
 
     def _get_by_id(self, entitytype, entityid, handler, inc=None, queryargs=None,
@@ -156,7 +160,9 @@ class MBAPIHelper(APIHelper):
 
         is_search = kwargs.pop("search", False)
         if is_search:
-            if config.setting["use_adv_search_syntax"]:
+            config = get_config()
+            use_advanced_search = kwargs.pop("advanced_search", config.setting["use_adv_search_syntax"])
+            if use_advanced_search:
                 query = kwargs["query"]
             else:
                 query = escape_lucene_query(kwargs["query"]).strip().lower()
@@ -229,13 +235,15 @@ class MBAPIHelper(APIHelper):
     def get_collection_list(self, handler):
         return self.get_collection(None, handler)
 
-    def _collection_request(self, collection_id, releases):
+    @staticmethod
+    def _collection_request(collection_id, releases):
         while releases:
             ids = ";".join(releases if len(releases) <= 400 else releases[:400])
             releases = releases[400:]
             yield ["collection", collection_id, "releases", ids]
 
-    def _get_client_queryarg(self):
+    @staticmethod
+    def _get_client_queryarg():
         return {"client": CLIENT_STRING}
 
     def put_to_collection(self, collection_id, releases, handler):
@@ -255,7 +263,8 @@ class AcoustIdAPIHelper(APIHelper):
         super().__init__(ACOUSTID_HOST, ACOUSTID_PORT,
                          '/v2/', webservice)
 
-    def _encode_acoustid_args(self, args, format_='json'):
+    @staticmethod
+    def _encode_acoustid_args(args, format_='json'):
         filters = []
         args['client'] = ACOUSTID_KEY
         args['clientversion'] = PICARD_VERSION_STR
@@ -273,6 +282,7 @@ class AcoustIdAPIHelper(APIHelper):
 
     def submit_acoustid_fingerprints(self, submissions, handler):
         path_list = ['submit']
+        config = get_config()
         args = {'user': config.setting["acoustid_apikey"]}
         for i, submission in enumerate(submissions):
             args['fingerprint.%d' % i] = submission.fingerprint

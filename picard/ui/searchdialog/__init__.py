@@ -4,7 +4,8 @@
 #
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2018-2019 Laurent Monin
-# Copyright (C) 2018-2019 Philipp Wolfer
+# Copyright (C) 2018-2020 Philipp Wolfer
+# Copyright (C) 2020 Ray Bouchard
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,11 +21,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
-from collections import (
-    OrderedDict,
-    namedtuple,
-)
+from collections import namedtuple
 
 from PyQt5 import (
     QtCore,
@@ -32,62 +29,31 @@ from PyQt5 import (
     QtNetwork,
     QtWidgets,
 )
-from PyQt5.QtCore import pyqtSignal
 
-from picard import (
-    config,
-    log,
-)
+from picard.config import get_config
 from picard.util import (
     icontheme,
-    natsort,
     restore_method,
-    throttle,
 )
 
-from picard.ui import PicardDialog
+from picard.ui.tablebaseddialog import TableBasedDialog
 from picard.ui.util import StandardButton
-
-
-class ResultTable(QtWidgets.QTableWidget):
-
-    def __init__(self, parent):
-        super().__init__(parent)
-        self.setSelectionMode(
-            QtWidgets.QAbstractItemView.ExtendedSelection)
-        self.setSelectionBehavior(
-            QtWidgets.QAbstractItemView.SelectRows)
-        self.setEditTriggers(
-            QtWidgets.QAbstractItemView.NoEditTriggers)
-        self.horizontalHeader().setStretchLastSection(True)
-        self.horizontalHeader().setSectionResizeMode(
-            QtWidgets.QHeaderView.Stretch)
-        self.horizontalHeader().setSectionResizeMode(
-            QtWidgets.QHeaderView.Interactive)
-
-        @throttle(1000)  # only emit scrolled signal once per second
-        def emit_scrolled(x):
-            parent.scrolled.emit()
-        self.horizontalScrollBar().valueChanged.connect(emit_scrolled)
-        self.verticalScrollBar().valueChanged.connect(emit_scrolled)
-        self.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
-
-    def prepare(self, headers):
-        self.clear()
-        self.setColumnCount(len(headers))
-        self.setHorizontalHeaderLabels(headers)
-        self.setRowCount(0)
-        self.setSortingEnabled(False)
 
 
 class SearchBox(QtWidgets.QWidget):
 
-    def __init__(self, parent):
+    def __init__(self, parent, force_advanced_search=None):
         super().__init__(parent)
-        self.search_action = QtWidgets.QAction(icontheme.lookup('system-search'),
-                                               _("Search"), self)
+        self.search_action = QtWidgets.QAction(icontheme.lookup('system-search'), _("Search"), self)
         self.search_action.setEnabled(False)
         self.search_action.triggered.connect(self.search)
+        if force_advanced_search is None:
+            config = get_config()
+            self.force_advanced_search = False
+            self.use_advanced_search = config.setting["use_adv_search_syntax"]
+        else:
+            self.force_advanced_search = True
+            self.use_advanced_search = force_advanced_search
         self.setupUi()
 
     def focus_in_event(self, event):
@@ -144,10 +110,13 @@ class SearchBox(QtWidgets.QWidget):
         self.parent().search(self.query)
 
     def restore_checkbox_state(self):
-        self.use_adv_search_syntax.setChecked(config.setting["use_adv_search_syntax"])
+        self.use_adv_search_syntax.setChecked(self.use_advanced_search)
 
     def update_advanced_syntax_setting(self):
-        config.setting["use_adv_search_syntax"] = self.use_adv_search_syntax.isChecked()
+        self.use_advanced_search = self.use_adv_search_syntax.isChecked()
+        if not self.force_advanced_search:
+            config = get_config()
+            config.setting["use_adv_search_syntax"] = self.use_advanced_search
 
     def enable_search(self):
         if self.query:
@@ -171,74 +140,36 @@ class SearchBox(QtWidgets.QWidget):
 Retry = namedtuple("Retry", ["function", "query"])
 
 
-class SortableTableWidgetItem(QtWidgets.QTableWidgetItem):
+class SearchDialog(TableBasedDialog):
+    accept_button_title = ""
 
-    def __init__(self, sort_key):
-        super().__init__()
-        self.sort_key = sort_key
-
-    def __lt__(self, other):
-        return self.sort_key < other.sort_key
-
-
-class SearchDialog(PicardDialog):
-
-    defaultsize = QtCore.QSize(720, 360)
-    autorestore = False
-    scrolled = pyqtSignal()
-
-    def __init__(self, parent, accept_button_title, show_search=True, search_type=None):
-        super().__init__(parent)
+    def __init__(self, parent, accept_button_title, show_search=True, search_type=None, force_advanced_search=None):
+        self.accept_button_title = accept_button_title
         self.search_results = []
         self.show_search = show_search
         self.search_type = search_type
+        self.force_advanced_search = force_advanced_search
         self.search_box = None
-        self.setupUi(accept_button_title)
-        self.restore_state()
-        # self.columns has to be an ordered dict, with column name as keys, and
-        # matching label as values
-        self.columns = None
-        self.sorting_enabled = True
-        self.create_table()
-        self.finished.connect(self.save_state)
+        super().__init__(parent)
 
     @property
-    def columns(self):
-        return self.__columns
+    def use_advanced_search(self):
+        if self.show_search:
+            return self.search_box.use_advanced_search
+        elif self.force_advanced_search is not None:
+            return self.force_advanced_search
+        else:
+            config = get_config()
+            return config.setting["use_adv_search_syntax"]
 
-    @columns.setter
-    def columns(self, list_of_tuples):
-        if not list_of_tuples:
-            list_of_tuples = []
-        self.__columns = OrderedDict(list_of_tuples)
-        self.__colkeys = list(self.columns.keys())
+    def get_value_for_row_id(self, row, value):
+        return row
 
-    @property
-    def table_headers(self):
-        return list(self.columns.values())
-
-    def colpos(self, colname):
-        return self.__colkeys.index(colname)
-
-    def set_table_item(self, row, colname, obj, key, default="", sortkey=None):
-        # QVariant remembers the original type of the data
-        # matching comparison operator will be used when sorting
-        # get() will return a string, force conversion if asked to
-        value = obj.get(key, default)
-        if sortkey is None:
-            sortkey = natsort.natkey(value)
-        item = SortableTableWidgetItem(sortkey)
-        item.setData(QtCore.Qt.DisplayRole, value)
-        pos = self.colpos(colname)
-        if pos == 0:
-            item.setData(QtCore.Qt.UserRole, row)
-        self.table.setItem(row, pos, item)
-
-    def setupUi(self, accept_button_title):
+    def setupUi(self):
         self.verticalLayout = QtWidgets.QVBoxLayout(self)
         self.verticalLayout.setObjectName("vertical_layout")
         if self.show_search:
-            self.search_box = SearchBox(self)
+            self.search_box = SearchBox(self, force_advanced_search=self.force_advanced_search)
             self.search_box.setObjectName("search_box")
             self.verticalLayout.addWidget(self.search_box)
         self.center_widget = QtWidgets.QWidget(self)
@@ -257,7 +188,7 @@ class SearchDialog(PicardDialog):
                 QtWidgets.QDialogButtonBox.ActionRole)
             self.search_browser_button.clicked.connect(self.search_browser)
         self.accept_button = QtWidgets.QPushButton(
-            accept_button_title,
+            self.accept_button_title,
             self.buttonBox)
         self.accept_button.setEnabled(False)
         self.buttonBox.addButton(
@@ -269,19 +200,6 @@ class SearchDialog(PicardDialog):
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
         self.verticalLayout.addWidget(self.buttonBox)
-
-    def add_widget_to_center_layout(self, widget):
-        """Update center widget with new child. If child widget exists,
-        schedule it for deletion."""
-        widget_item = self.center_layout.takeAt(0)
-        if widget_item:
-            current_widget = widget_item.widget()
-            current_widget.hide()
-            self.center_layout.removeWidget(current_widget)
-            if current_widget != self.table:
-                current_widget.deleteLater()
-        self.center_layout.addWidget(widget)
-        widget.show()
 
     def show_progress(self):
         progress_widget = QtWidgets.QWidget(self)
@@ -328,33 +246,6 @@ class SearchDialog(PicardDialog):
         error_widget.setLayout(layout)
         self.add_widget_to_center_layout(error_widget)
 
-    def create_table(self):
-        self.table = ResultTable(self)
-        self.table.verticalHeader().setDefaultSectionSize(100)
-        self.table.setSortingEnabled(False)
-        self.table.cellDoubleClicked.connect(self.accept)
-        self.table.hide()
-
-        def enable_accept_button():
-            self.accept_button.setEnabled(True)
-        self.table.itemSelectionChanged.connect(
-            enable_accept_button)
-
-    def prepare_table(self):
-        self.table.prepare(self.table_headers)
-        self.restore_table_header_state()
-
-    def show_table(self, sort_column=None, sort_order=QtCore.Qt.DescendingOrder):
-        self.add_widget_to_center_layout(self.table)
-        self.table.horizontalHeader().setSortIndicatorShown(self.sorting_enabled)
-        self.table.setSortingEnabled(self.sorting_enabled)
-        if self.sorting_enabled and sort_column:
-            self.table.sortItems(self.colpos(sort_column), sort_order)
-
-        self.table.resizeColumnsToContents()
-        self.table.resizeRowsToContents()
-        self.table.setAlternatingRowColors(True)
-
     def network_error(self, reply, error):
         error_msg = _("<strong>Following error occurred while fetching results:<br><br></strong>"
                       "Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>") % (
@@ -372,40 +263,13 @@ class SearchDialog(PicardDialog):
 
     def search_browser(self):
         self.tagger.search(self.search_box.query, self.search_type,
-                           adv=config.setting["use_adv_search_syntax"], force_browser=True)
-
-    def accept(self):
-        if self.table:
-            selected_rows = []
-            for idx in self.table.selectionModel().selectedRows():
-                row = self.table.itemFromIndex(idx).data(QtCore.Qt.UserRole)
-                selected_rows.append(row)
-            self.accept_event(selected_rows)
-        super().accept()
+                           adv=self.use_advanced_search, force_browser=True)
 
     @restore_method
     def restore_state(self):
-        self.restore_geometry()
+        super().restore_state()
         if self.show_search:
             self.search_box.restore_checkbox_state()
-
-    @restore_method
-    def restore_table_header_state(self):
-        header = self.table.horizontalHeader()
-        state = config.persist[self.dialog_header_state]
-        if state:
-            header.restoreState(state)
-        header.setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
-        log.debug("restore_state: %s" % self.dialog_header_state)
-
-    def save_state(self):
-        if self.table:
-            self.save_table_header_state()
-
-    def save_table_header_state(self):
-        state = self.table.horizontalHeader().saveState()
-        config.persist[self.dialog_header_state] = state
-        log.debug("save_state: %s" % self.dialog_header_state)
 
     def search_box_text(self, text):
         if self.search_box:

@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # nikki, 2014
 # Daniel Schury <Daniel.Schury@physik.uni-giessen.de>, 2011

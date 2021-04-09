@@ -120,9 +120,9 @@ class TestPreserveTimes(PicardTestCase):
         # test if times are preserved
         (before_atime_ns, before_mtime_ns) = self.file._preserve_times(self.file.filename, self._modify_testfile)
 
-        # HERE an external access to the file is possible, modifying its access time
+        # HERE an external access to the file is possible, modifying its access time
 
-        # read times again and compare with original
+        # read times again and compare with original
         st = os.stat(self.file.filename)
         (after_atime_ns, after_mtime_ns) = (st.st_atime_ns, st.st_mtime_ns)
 
@@ -135,11 +135,11 @@ class TestPreserveTimes(PicardTestCase):
             after_atime_ns //= 1000
             after_mtime_ns //= 1000
 
-        # modification times should be equal
+        # modification times should be equal
         self.assertEqual(before_mtime_ns, after_mtime_ns)
 
         # access times may not be equal
-        # time difference should be positive and reasonably low (if no access in between, it should be 0)
+        # time difference should be positive and reasonably low (if no access in between, it should be 0)
         delta = after_atime_ns - before_atime_ns
         tolerance = 10**7  #  0.01 seconds
         self.assertTrue(0 <= delta < tolerance, "0 <= %s < %s" % (delta, tolerance))
@@ -171,7 +171,7 @@ class FileNamingTest(PicardTestCase):
     def setUp(self):
         super().setUp()
         self.file = File('/somepath/somefile.mp3')
-        config.setting = {
+        self.set_config_values({
             'ascii_filenames': False,
             'clear_existing_tags': False,
             'enabled_plugins': [],
@@ -180,7 +180,7 @@ class FileNamingTest(PicardTestCase):
             'move_files': False,
             'rename_files': False,
             'windows_compatibility': True,
-        }
+        })
         self.metadata = Metadata({
             'album': 'somealbum',
             'title': 'sometitle',

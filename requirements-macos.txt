@@ -1,5 +1,0 @@
-discid==1.2.0
-mutagen==1.44.0
-pyobjc-core==5.2
-pyobjc-framework-Cocoa==5.2
-PyQt5==5.13.2

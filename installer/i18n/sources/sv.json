@@ -1,0 +1,16 @@
+{
+    "MsgAlreadyInstalled": "${PRODUCT_NAME} is already installed and must be uninstalled before installing this upgrade to version ${PRODUCT_VERSION}. \n\nClick \"OK\" to proceed or \"Cancel\" to cancel this upgrade.",
+    "MsgApplicationRunning": "The application ${PRODUCT_NAME} is running. Please close it and try again.",
+    "MsgRequires64Bit": "Den här versionen av ${PRODUCT_NAME} kräver en 64-bitars version av Windows-systemet.",
+    "MuiDescriptionRequired": "Installs ${PRODUCT_NAME} along with the necessary files for it run.",
+    "MuiDescriptionLang": "Installerar översättningar av ${PRODUCT_NAME} till olika språk.",
+    "MuiDescriptionShortcuts": "Installerar en genväg för att starta ${PRODUCT_NAME}.",
+    "MuiDescriptionDesktop": "Installerar en genväg på skrivbordet.",
+    "MuiDescriptionStartMenu": "Installerar en genväg i startmenyn.",
+    "OptionRemoveSettings": "Ta bort inställningar och personlig data",
+    "SectionDesktop": "Skrivbord",
+    "SectionLanguages": "Språk",
+    "SectionRequired": "Program-filer (krävs)",
+    "SectionShortcuts": "Genvägar",
+    "SectionStartMenu": "Startmeny"
+}

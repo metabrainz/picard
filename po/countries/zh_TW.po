@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2014
 # Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2014,2016

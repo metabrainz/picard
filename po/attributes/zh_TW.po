@@ -1,10 +1,12 @@
 # 
 # Translators:
+# alvn Lin <alvn@gmx.com>, 2020
 # Bai yun-xi <email address hidden>, 2016
 # byx <myhouse472@gmail.com>, 2016
+# Fei Kuan <fei_fei_0316@hotmail.com>, 2020
 # Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2014,2016
 # Koala Bear <email address hidden>, 2016
-# Koala Bear <koalaleaves@openmailbox.org>, 2016
+# 86b513c9fcd360370d0ce0bce007e7ff, 2016
 # riotism, 2017
 # Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2016
 # Shen-Ta Hsieh(BestSteve) <email address hidden>, 2014,2016,2018
@@ -13,8 +15,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-02-14 09:38+0000\n"
-"Last-Translator: Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>\n"
+"PO-Revision-Date: 2021-03-25 07:22+0000\n"
+"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -90,7 +92,7 @@ msgstr "8英吋雷射影碟"
 #: DB:medium_format/name:78
 msgctxt "medium_format"
 msgid "8-Track Cartridge"
-msgstr "8-軌磁帶"
+msgstr "8軌磁帶"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -112,12 +114,12 @@ msgstr "每分鐘90轉，垂直切割的蟲膠唱片，於1906年至1932年間�
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
-msgstr "A多里安"
+msgstr "A Dorian調式"
 
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
-msgstr "A米索利地安"
+msgstr "A Mixolydian調式"
 
 #: DB:work_type/description:2
 msgctxt "work_type"
@@ -155,12 +157,19 @@ msgid ""
 "versions supplied to radio DJs for air-play)."
 msgstr "一個免費的發行品，或為了宣傳將近上市的官方發行品而製作的發行品（如非上市版、雜誌贈送的發行品、為電台 DJ 在節目上播放的版本等）。"
 
+#: DB:artist_type/description:2
+msgctxt "artist_type"
+msgid ""
+"A grouping of multiple musicians who perform together (in some cases, some "
+"or all of the members might differ in different performances or recordings)."
+msgstr ""
+
 #: DB:instrument_type/description:7
 msgctxt "instrument_type"
 msgid ""
 "A grouping of related but different instruments, like the different violin-"
 "like instruments"
-msgstr ""
+msgstr "一組相關但不同的樂器，如各種提琴類樂器。"
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -207,11 +216,20 @@ msgctxt "release_packaging"
 msgid "A perfect bound book with a sleeve at the end to hold a CD"
 msgstr "書尾附有 CD 袋的書"
 
+#: DB:event_type/description:6
+msgctxt "event_type"
+msgid ""
+"A performance of one or more plays, musicals, operas, ballets or other "
+"similar works for the stage in their staged form (as opposed to a <a "
+"href=\"https://en.wikipedia.org/wiki/Concert_performance\">concert "
+"performance</a> without staging)."
+msgstr ""
+
 #: DB:place_type/description:8
 msgctxt "place_type"
 msgid ""
 "A place (generally a factory) at which physical media are manufactured."
-msgstr ""
+msgstr "一個生產實體媒體的地點（通常是生產工廠）。"
 
 #: DB:place_type/description:5
 msgctxt "place_type"
@@ -303,6 +321,11 @@ msgstr "一系列錄音。"
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in different locations."
 msgstr "一系列互相關聯的演奏會，由同一創作者在不同地方舉行。"
+
+#: DB:series_type/description:12
+msgctxt "series_type"
+msgid "A series of related concerts by an artist in the same location."
+msgstr ""
 
 #: DB:series_type/description:1
 msgctxt "series_type"
@@ -411,15 +434,65 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp minor"
 msgstr "升A小調"
 
+#: DB:work_attribute_type/name:57
+msgctxt "work_attribute_type"
+msgid "AACIMH ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:44
+msgctxt "work_attribute_type"
+msgid "ACAM ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:47
+msgctxt "work_attribute_type"
+msgid "ACDAM ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:58
+msgctxt "work_attribute_type"
+msgid "AEI ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:43
+msgctxt "work_attribute_type"
+msgid "AGADU ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:63
+msgctxt "work_attribute_type"
+msgid "AKKA/LAA ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:23
 msgctxt "work_attribute_type"
 msgid "AKM ID"
 msgstr "AKM ID"
 
+#: DB:work_attribute_type/name:38
+msgctxt "work_attribute_type"
+msgid "AMRA ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:46
+msgctxt "work_attribute_type"
+msgid "APA ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:41
+msgctxt "work_attribute_type"
+msgid "APDAYC ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:13
 msgctxt "work_attribute_type"
 msgid "APRA ID"
 msgstr "APRA ID"
+
+#: DB:work_attribute_type/name:48
+msgctxt "work_attribute_type"
+msgid "ARTISJUS ID"
+msgstr ""
 
 #: DB:work_attribute_type/name:6
 msgctxt "work_attribute_type"
@@ -1385,6 +1458,16 @@ msgctxt "medium_format"
 msgid "CED"
 msgstr "CED"
 
+#: DB:work_attribute_type/name:45
+msgctxt "work_attribute_type"
+msgid "COMPASS ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:65
+msgctxt "work_attribute_type"
+msgid "COTT ID"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"
 msgid "Cakravākaṁ"
@@ -2136,7 +2219,6 @@ msgid "E-flat major"
 msgstr "降E大調"
 
 #: DB:work_attribute_type_allowed_value/value:12
-#: DB:work_attribute_type_allowed_value/value:815
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat minor"
 msgstr "降E小調"
@@ -2150,6 +2232,11 @@ msgstr "升E大調"
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
 msgstr "升E小調"
+
+#: DB:work_attribute_type/name:37
+msgctxt "work_attribute_type"
+msgid "ECAD ID"
+msgstr ""
 
 #: DB:release_group_primary_type/name:3
 msgctxt "release_group_primary_type"
@@ -2209,7 +2296,7 @@ msgstr "活動名稱"
 #: DB:series_type/name:6
 msgctxt "series_type"
 msgid "Event series"
-msgstr ""
+msgstr "活動系列"
 
 #: DB:work_attribute_type_allowed_value/value:729
 msgctxt "work_attribute_type_allowed_value"
@@ -2295,6 +2382,11 @@ msgstr "F小調"
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-flat major"
 msgstr "降F大調"
+
+#: DB:work_attribute_type_allowed_value/value:815
+msgctxt "work_attribute_type_allowed_value"
+msgid "F-flat minor"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:19
 msgctxt "work_attribute_type_allowed_value"
@@ -2713,6 +2805,11 @@ msgctxt "medium_format"
 msgid "HDCD"
 msgstr "HDCD"
 
+#: DB:work_attribute_type/name:64
+msgctxt "work_attribute_type"
+msgid "HFA ID"
+msgstr ""
+
 #: DB:medium_format/name:37
 msgctxt "medium_format"
 msgid "HQCD"
@@ -2993,6 +3090,16 @@ msgctxt "medium_format"
 msgid "Hybrid SACD (SACD layer)"
 msgstr "Hybrid SACD (SACD層)"
 
+#: DB:medium_format/name:87
+msgctxt "medium_format"
+msgid "Hybrid SACD (SACD layer, 2 channels)"
+msgstr ""
+
+#: DB:medium_format/name:86
+msgctxt "medium_format"
+msgid "Hybrid SACD (SACD layer, multichannel)"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:418
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hüdavendigar"
@@ -3068,15 +3175,145 @@ msgctxt "work_attribute_type"
 msgid "ICE ID"
 msgstr ""
 
+#: DB:work_attribute_type/description:24
+msgctxt "work_attribute_type"
+msgid "ID for the Argentinean rights society SADAIC"
+msgstr ""
+
+#: DB:work_attribute_type/description:13
+msgctxt "work_attribute_type"
+msgid "ID for the Australasian rights society APRA"
+msgstr ""
+
+#: DB:work_attribute_type/description:23
+msgctxt "work_attribute_type"
+msgid "ID for the Austrian rights society AKM"
+msgstr ""
+
 #: DB:work_attribute_type/description:28
 msgctxt "work_attribute_type"
 msgid "ID for the Belgian rights society SABAM"
 msgstr "比利時著作權機構 SABAM 的 ID"
 
+#: DB:work_attribute_type/description:61
+msgctxt "work_attribute_type"
+msgid "ID for the Bolivian rights society SOBODAYCOM"
+msgstr ""
+
+#: DB:work_attribute_type/description:37
+msgctxt "work_attribute_type"
+msgid "ID for the Brazilian rights society ECAD"
+msgstr ""
+
+#: DB:work_attribute_type/description:34
+msgctxt "work_attribute_type"
+msgid "ID for the British rights society PRS for Music"
+msgstr ""
+
+#: DB:work_attribute_type/description:10
+msgctxt "work_attribute_type"
+msgid "ID for the Canadian rights society SOCAN"
+msgstr ""
+
+#: DB:work_attribute_type/description:53
+msgctxt "work_attribute_type"
+msgid "ID for the Canadian rights society SODRAC"
+msgstr ""
+
+#: DB:work_attribute_type/description:39
+msgctxt "work_attribute_type"
+msgid "ID for the Colombian rights society SAYCO"
+msgstr ""
+
+#: DB:work_attribute_type/description:44
+msgctxt "work_attribute_type"
+msgid "ID for the Costa Rican rights society ACAM"
+msgstr ""
+
+#: DB:work_attribute_type/description:47
+msgctxt "work_attribute_type"
+msgid "ID for the Cuban rights society ACDAM"
+msgstr ""
+
+#: DB:work_attribute_type/description:25
+msgctxt "work_attribute_type"
+msgid "ID for the Czech rights society OSA"
+msgstr ""
+
+#: DB:work_attribute_type/description:51
+msgctxt "work_attribute_type"
+msgid "ID for the Danish rights society KODA"
+msgstr ""
+
+#: DB:work_attribute_type/description:60
+msgctxt "work_attribute_type"
+msgid "ID for the Dominican rights society SGACEDOM"
+msgstr ""
+
+#: DB:work_attribute_type/description:26
+msgctxt "work_attribute_type"
+msgid "ID for the Dutch rights society BUMA/STEMRA"
+msgstr ""
+
+#: DB:work_attribute_type/description:40
+msgctxt "work_attribute_type"
+msgid "ID for the Ecuadorian rights society SAYCE"
+msgstr ""
+
+#: DB:work_attribute_type/description:66
+msgctxt "work_attribute_type"
+msgid "ID for the Finnish rights society TEOSTO"
+msgstr ""
+
+#: DB:work_attribute_type/description:21
+msgctxt "work_attribute_type"
+msgid "ID for the French rights society Sacem"
+msgstr ""
+
+#: DB:work_attribute_type/description:9
+msgctxt "work_attribute_type"
+msgid "ID for the German rights society GEMA"
+msgstr ""
+
+#: DB:work_attribute_type/description:58
+msgctxt "work_attribute_type"
+msgid "ID for the Guatemalan rights society AEI"
+msgstr ""
+
+#: DB:work_attribute_type/description:57
+msgctxt "work_attribute_type"
+msgid "ID for the Honduran rights society AACIMH"
+msgstr ""
+
+#: DB:work_attribute_type/description:19
+msgctxt "work_attribute_type"
+msgid "ID for the Hong Kong rights society CASH"
+msgstr ""
+
+#: DB:work_attribute_type/description:48
+msgctxt "work_attribute_type"
+msgid "ID for the Hungarian rights society ARTISJUS"
+msgstr ""
+
+#: DB:work_attribute_type/description:54
+msgctxt "work_attribute_type"
+msgid "ID for the Icelandic rights society STEF"
+msgstr ""
+
 #: DB:work_attribute_type/description:29
 msgctxt "work_attribute_type"
 msgid "ID for the International Copyright Enterprise"
 msgstr "International Copyright Enterprise 的 ID"
+
+#: DB:work_attribute_type/description:52
+msgctxt "work_attribute_type"
+msgid "ID for the Irish rights society IMRO"
+msgstr ""
+
+#: DB:work_attribute_type/description:36
+msgctxt "work_attribute_type"
+msgid "ID for the Italian rights society SIAE"
+msgstr ""
 
 #: DB:work_attribute_type/description:3
 msgctxt "work_attribute_type"
@@ -3088,15 +3325,140 @@ msgctxt "work_attribute_type"
 msgid "ID for the Japanese rights society NexTone"
 msgstr "日本著作權機構 NexTone 的 ID"
 
+#: DB:work_attribute_type/description:11
+msgctxt "work_attribute_type"
+msgid "ID for the Korean rights society KOMCA"
+msgstr ""
+
+#: DB:work_attribute_type/description:63
+msgctxt "work_attribute_type"
+msgid "ID for the Latvian rights society AKKA/LAA"
+msgstr ""
+
+#: DB:work_attribute_type/description:49
+msgctxt "work_attribute_type"
+msgid "ID for the Malaysian rights society MACP"
+msgstr ""
+
 #: DB:work_attribute_type/description:27
 msgctxt "work_attribute_type"
 msgid "ID for the Mexican rights society SACM"
 msgstr "墨西哥著作權機構 SACM 的 ID"
 
+#: DB:work_attribute_type/description:59
+msgctxt "work_attribute_type"
+msgid "ID for the Nicaraguan rights society NICAUTOR"
+msgstr ""
+
+#: DB:work_attribute_type/description:62
+msgctxt "work_attribute_type"
+msgid "ID for the Panamanian rights society SPAC"
+msgstr ""
+
+#: DB:work_attribute_type/description:46
+msgctxt "work_attribute_type"
+msgid "ID for the Paraguayan rights society APA"
+msgstr ""
+
+#: DB:work_attribute_type/description:41
+msgctxt "work_attribute_type"
+msgid "ID for the Peruvian rights society APDAYC"
+msgstr ""
+
 #: DB:work_attribute_type/description:30
 msgctxt "work_attribute_type"
 msgid "ID for the Polish rights society ZAiKS"
 msgstr "波蘭著作權機構 ZAiKS 的 ID"
+
+#: DB:work_attribute_type/description:35
+msgctxt "work_attribute_type"
+msgid "ID for the Portuguese rights society SPA"
+msgstr ""
+
+#: DB:work_attribute_type/description:56
+msgctxt "work_attribute_type"
+msgid "ID for the Salvadoran rights society SACIM"
+msgstr ""
+
+#: DB:work_attribute_type/description:45
+msgctxt "work_attribute_type"
+msgid "ID for the Singaporean rights society COMPASS"
+msgstr ""
+
+#: DB:work_attribute_type/description:20
+msgctxt "work_attribute_type"
+msgid "ID for the Spanish rights society SGAE"
+msgstr ""
+
+#: DB:work_attribute_type/description:50
+msgctxt "work_attribute_type"
+msgid "ID for the Swedish rights society STIM"
+msgstr ""
+
+#: DB:work_attribute_type/description:18
+msgctxt "work_attribute_type"
+msgid "ID for the Swiss rights society SUISA"
+msgstr ""
+
+#: DB:work_attribute_type/description:12
+msgctxt "work_attribute_type"
+msgid "ID for the Taiwanese rights society MÜST"
+msgstr ""
+
+#: DB:work_attribute_type/description:65
+msgctxt "work_attribute_type"
+msgid "ID for the Trinidadian and Tobagonian rights society COTT"
+msgstr ""
+
+#: DB:work_attribute_type/description:6
+msgctxt "work_attribute_type"
+msgid "ID for the US rights society ASCAP"
+msgstr ""
+
+#: DB:work_attribute_type/description:7
+msgctxt "work_attribute_type"
+msgid "ID for the US rights society BMI"
+msgstr ""
+
+#: DB:work_attribute_type/description:8
+msgctxt "work_attribute_type"
+msgid "ID for the US rights society SESAC"
+msgstr ""
+
+#: DB:work_attribute_type/description:43
+msgctxt "work_attribute_type"
+msgid "ID for the Uruguayan rights society AGADU"
+msgstr ""
+
+#: DB:work_attribute_type/description:42
+msgctxt "work_attribute_type"
+msgid "ID for the Venezuelan rights society SACVEN"
+msgstr ""
+
+#: DB:work_attribute_type/description:38
+msgctxt "work_attribute_type"
+msgid "ID for the international (formerly US) rights society AMRA"
+msgstr ""
+
+#: DB:work_attribute_type/description:55
+msgctxt "work_attribute_type"
+msgid "ID for the international rights society consortium LatinNet"
+msgstr ""
+
+#: DB:work_attribute_type/description:22
+msgctxt "work_attribute_type"
+msgid "ID for the private licensing company CCLI"
+msgstr ""
+
+#: DB:work_attribute_type/description:64
+msgctxt "work_attribute_type"
+msgid "ID for the private licensing company HFA (Harry Fox Agency)"
+msgstr ""
+
+#: DB:work_attribute_type/name:52
+msgctxt "work_attribute_type"
+msgid "IMRO ID"
+msgstr ""
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
@@ -3332,6 +3694,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:123
 msgctxt "work_attribute_type_allowed_value"
 msgid "Jōnpuri"
+msgstr ""
+
+#: DB:work_attribute_type/name:51
+msgctxt "work_attribute_type"
+msgid "KODA ID"
 msgstr ""
 
 #: DB:work_attribute_type/name:11
@@ -3802,6 +4169,11 @@ msgctxt "medium_format"
 msgid "LaserDisc"
 msgstr "LaserDisc"
 
+#: DB:work_attribute_type/name:55
+msgctxt "work_attribute_type"
+msgid "LatinNet ID"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:159
 msgctxt "work_attribute_type_allowed_value"
 msgid "Latāngi"
@@ -3845,6 +4217,11 @@ msgstr "現場"
 #: DB:work_attribute_type_allowed_value/value:636
 msgctxt "work_attribute_type_allowed_value"
 msgid "Longa"
+msgstr ""
+
+#: DB:work_attribute_type/name:49
+msgctxt "work_attribute_type"
+msgid "MACP ID"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:963
@@ -4412,6 +4789,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Mōhanaṁ"
 msgstr ""
 
+#: DB:work_attribute_type/name:59
+msgctxt "work_attribute_type"
+msgid "NICAUTOR ID"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:647
 msgctxt "work_attribute_type_allowed_value"
 msgid "Naat"
@@ -4862,6 +5244,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Oyunhavası"
 msgstr ""
 
+#: DB:work_attribute_type/name:34
+msgctxt "work_attribute_type"
+msgid "PRS tune code"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:993
 msgctxt "work_attribute_type_allowed_value"
 msgid "Pahāḍi"
@@ -5237,7 +5624,7 @@ msgstr "錄音名稱"
 #: DB:series_type/name:3
 msgctxt "series_type"
 msgid "Recording series"
-msgstr ""
+msgstr "錄音系列"
 
 #: DB:medium_format/name:10
 msgctxt "medium_format"
@@ -5277,7 +5664,7 @@ msgstr "發行組名稱"
 #: DB:series_type/name:1
 msgctxt "series_type"
 msgid "Release group series"
-msgstr ""
+msgstr "發行組系列"
 
 #: DB:release_alias_type/name:1
 msgctxt "alias_type"
@@ -5287,7 +5674,7 @@ msgstr "發行品名稱"
 #: DB:series_type/name:2
 msgctxt "series_type"
 msgid "Release series"
-msgstr ""
+msgstr "發行品系列"
 
 #: DB:place_type/name:6
 msgctxt "place_type"
@@ -5307,6 +5694,11 @@ msgstr "混音"
 #: DB:work_attribute_type_allowed_value/value:516
 msgctxt "work_attribute_type_allowed_value"
 msgid "Reng-i Dil"
+msgstr ""
+
+#: DB:series_type/name:12
+msgctxt "series_type"
+msgid "Residency"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:517
@@ -5450,20 +5842,50 @@ msgctxt "medium_format"
 msgid "SACD"
 msgstr "SACD"
 
+#: DB:medium_format/name:84
+msgctxt "medium_format"
+msgid "SACD (2 channels)"
+msgstr ""
+
+#: DB:medium_format/name:85
+msgctxt "medium_format"
+msgid "SACD (multichannel)"
+msgstr ""
+
 #: DB:work_attribute_type/name:21
 msgctxt "work_attribute_type"
 msgid "SACEM ID"
 msgstr "SACEM ID"
+
+#: DB:work_attribute_type/name:56
+msgctxt "work_attribute_type"
+msgid "SACIM ID"
+msgstr ""
 
 #: DB:work_attribute_type/name:27
 msgctxt "work_attribute_type"
 msgid "SACM ID"
 msgstr "SACM ID"
 
+#: DB:work_attribute_type/name:42
+msgctxt "work_attribute_type"
+msgid "SACVEN ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:24
 msgctxt "work_attribute_type"
 msgid "SADAIC ID"
 msgstr "SADAIC ID"
+
+#: DB:work_attribute_type/name:40
+msgctxt "work_attribute_type"
+msgid "SAYCE ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:39
+msgctxt "work_attribute_type"
+msgid "SAYCO ID"
+msgstr ""
 
 #: DB:medium_format/name:62
 msgctxt "medium_format"
@@ -5474,6 +5896,11 @@ msgstr "SD卡"
 msgctxt "work_attribute_type"
 msgid "SESAC ID"
 msgstr "SESAC ID"
+
+#: DB:work_attribute_type/name:60
+msgctxt "work_attribute_type"
+msgid "SGACEDOM ID"
+msgstr ""
 
 #: DB:work_attribute_type/name:20
 msgctxt "work_attribute_type"
@@ -5490,10 +5917,55 @@ msgctxt "medium_format"
 msgid "SHM-SACD"
 msgstr "SHM-SACD"
 
+#: DB:medium_format/name:89
+msgctxt "medium_format"
+msgid "SHM-SACD (2 channels)"
+msgstr ""
+
+#: DB:medium_format/name:88
+msgctxt "medium_format"
+msgid "SHM-SACD (multichannel)"
+msgstr ""
+
+#: DB:work_attribute_type/name:36
+msgctxt "work_attribute_type"
+msgid "SIAE ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:61
+msgctxt "work_attribute_type"
+msgid "SOBODAYCOM ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:10
 msgctxt "work_attribute_type"
 msgid "SOCAN ID"
 msgstr "SOCAN ID"
+
+#: DB:work_attribute_type/name:53
+msgctxt "work_attribute_type"
+msgid "SODRAC ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:35
+msgctxt "work_attribute_type"
+msgid "SPA ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:62
+msgctxt "work_attribute_type"
+msgid "SPAC ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:54
+msgctxt "work_attribute_type"
+msgid "STEF ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:50
+msgctxt "work_attribute_type"
+msgid "STIM ID"
+msgstr ""
 
 #: DB:work_attribute_type/name:18
 msgctxt "work_attribute_type"
@@ -5826,6 +6298,11 @@ msgctxt "place_type"
 msgid "Stadium"
 msgstr "大型運動場"
 
+#: DB:event_type/name:6
+msgctxt "event_type"
+msgid "Stage performance"
+msgstr ""
+
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"
 msgid "Sticker"
@@ -6064,6 +6541,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Sūltāl"
 msgstr ""
 
+#: DB:work_attribute_type/name:66
+msgctxt "work_attribute_type"
+msgid "TEOSTO ID"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:573
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tahir"
@@ -6258,6 +6740,37 @@ msgid ""
 "separate medium."
 msgstr ""
 
+#: DB:artist_type/description:6
+msgctxt "artist_type"
+msgid ""
+"This indicates a choir/chorus (an organized, usually large group of "
+"singers). Smaller vocal ensembles and groupings that do not generally call "
+"themselves choirs are better entered as “Group”."
+msgstr ""
+
+#: DB:artist_type/description:4
+msgctxt "artist_type"
+msgid ""
+"This indicates an individual fictional character (whether a fictional "
+"person, animal or any other kind of character)."
+msgstr ""
+
+#: DB:artist_type/description:1
+msgctxt "artist_type"
+msgid ""
+"This indicates an individual person, be it under its legal name (“John "
+"Lennon”), or a performance name (“Sting”)."
+msgstr ""
+
+#: DB:artist_type/description:5
+msgctxt "artist_type"
+msgid ""
+"This indicates an orchestra (an organized, usually large group of "
+"instrumentalists). Smaller ensembles (such as trios and quartets) and "
+"groupings that do not generally call themselves orchestras are better "
+"entered as “Group”."
+msgstr ""
+
 #: DB:work_type/description:23
 msgctxt "work_type"
 msgid ""
@@ -6265,6 +6778,42 @@ msgid ""
 "relatively ordinary language without metrical structure (e.g. novels, short "
 "stories, essays...)."
 msgstr "這代表以散文形式寫的文學作品，即以相對普通的語言書寫而沒有韻律結構(例如小說，短篇小說，短文…等)。"
+
+#: DB:medium_format/description:84
+msgctxt "medium_format"
+msgid ""
+"This represents the 2 channel (stereo/mono) table of contents on a SACD."
+msgstr ""
+
+#: DB:medium_format/description:89
+msgctxt "medium_format"
+msgid ""
+"This represents the 2 channel (stereo/mono) table of contents on a SHM-SACD."
+msgstr ""
+
+#: DB:medium_format/description:87
+msgctxt "medium_format"
+msgid ""
+"This represents the 2 channel (stereo/mono) table of contents on a hybrid "
+"SACD's SACD layer."
+msgstr ""
+
+#: DB:medium_format/description:85
+msgctxt "medium_format"
+msgid "This represents the multichannel table of contents on a SACD."
+msgstr ""
+
+#: DB:medium_format/description:88
+msgctxt "medium_format"
+msgid "This represents the multichannel table of contents on a SHM-SACD."
+msgstr ""
+
+#: DB:medium_format/description:86
+msgctxt "medium_format"
+msgid ""
+"This represents the multichannel table of contents on a hybrid SACD's SACD "
+"layer."
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:1041
 msgctxt "work_attribute_type_allowed_value"
@@ -6634,7 +7183,7 @@ msgstr "作品名稱"
 #: DB:series_type/name:4
 msgctxt "series_type"
 msgid "Work series"
-msgstr ""
+msgstr "作品系列"
 
 #: DB:work_attribute_type_allowed_value/value:277
 msgctxt "work_attribute_type_allowed_value"

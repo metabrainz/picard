@@ -8,7 +8,7 @@
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2017 Ville Skyttä
 # Copyright (C) 2018 Antonio Larrosa
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -28,13 +28,16 @@
 import math
 import os
 import re
+import shutil
 import struct
 import sys
 import unicodedata
 
 from PyQt5.QtCore import QStandardPaths
 
+from picard import log
 from picard.const.sys import (
+    IS_LINUX,
     IS_MACOS,
     IS_WIN,
 )
@@ -42,7 +45,17 @@ from picard.util import (
     _io_encoding,
     decode_filename,
     encode_filename,
+    samefile,
 )
+
+
+win32api = None
+if IS_WIN:
+    try:
+        import win32api  # isort:skip
+        import pywintypes
+    except ImportError as e:
+        log.warning('pywin32 not available: %s', e)
 
 
 def _get_utf16_length(text):
@@ -155,8 +168,8 @@ def shorten_path(path, length, mode):
     length: Maximum number of code points / bytes allowed in a node.
     mode: One of SHORTEN_BYTES, SHORTEN_UTF16, SHORTEN_UTF16_NFD.
     """
-    def shorten(n, l):
-        return n and shorten_filename(n, l, mode).strip() or ""
+    def shorten(name, length):
+        return name and shorten_filename(name, length, mode).strip() or ""
     dirpath, filename = os.path.split(path)
     fileroot, ext = os.path.splitext(filename)
     return os.path.join(
@@ -174,6 +187,10 @@ def _shorten_to_utf16_ratio(text, ratio):
         return text[:limit].strip()
     else:
         return _shorten_to_utf16_length(text, limit).strip()
+
+
+class WinPathTooLong(OSError):
+    pass
 
 
 def _make_win_short_filename(relpath, reserved=0):
@@ -203,8 +220,8 @@ def _make_win_short_filename(relpath, reserved=0):
     remaining = MAX_DIRPATH_LEN - reserved
 
     # to make things more readable...
-    def shorten(p, l):
-        return shorten_path(p, l, mode=SHORTEN_UTF16)
+    def shorten(path, length):
+        return shorten_path(path, length, mode=SHORTEN_UTF16)
     xlength = _get_utf16_length
 
     # shorten to MAX_NODE_LEN from the beginning
@@ -233,9 +250,10 @@ def _make_win_short_filename(relpath, reserved=0):
         # make sure we can have at least single-character dirnames
         average = float(remaining) / len(dirnames)
         if average < 1:
-            # TODO: a nice exception
-            raise IOError("Path too long. You need to move renamed files \
-                       to a different directory.")
+            raise WinPathTooLong(
+                "Path too long. "
+                "You need to move renamed files to a different directory."
+            )
 
         # try to reduce directories exceeding average with a ratio proportional
         # to how much they exceed with; if not possible, reduce all dirs
@@ -372,3 +390,83 @@ def make_short_filename(basedir, relpath, win_compat=False, relative_to=""):
         limit = _get_filename_limit(basedir)
         relpath = shorten_path(relpath, limit, mode=SHORTEN_BYTES)
     return relpath
+
+
+def samefile_different_casing(path1, path2):
+    """Returns True if path1 and path2 refer to the same file, but differ in casing of the filename.
+    Returns False if path1 and path2 refer to different files or there case is identical.
+    """
+    path1 = os.path.normpath(path1)
+    path2 = os.path.normpath(path2)
+    if path1 == path2 or not os.path.exists(path1) or not os.path.exists(path2):
+        return False
+    dir1 = os.path.realpath(os.path.normcase(os.path.dirname(path1)))
+    dir2 = os.path.realpath(os.path.normcase(os.path.dirname(path2)))
+    if dir1 != dir2 or not samefile(path1, path2):
+        return False
+    file1 = os.path.basename(path1)
+    file2 = os.path.basename(path2)
+    return file1 != file2 and file1.lower() == file2.lower()
+
+
+def _make_unique_temp_name(target_path):
+    i = 0
+    target_dir = os.path.dirname(target_path)
+    target_filename = os.path.basename(target_path)
+    while True:
+        # Attempt to get a non-existant temporary name for the file
+        # without changing path length.
+        temp_filename = '.%s%02d' % (target_filename[:-3], i)
+        temp_path = os.path.join(target_dir, temp_filename)
+        if not os.path.exists(temp_path):
+            return temp_path
+        i += 1
+
+
+def _move_force_rename(source_path, target_path):
+    """Moves a file by renaming it first to a temporary name.
+    Ensure file casing changes on system's not natively supporting this.
+    """
+    temp_path = _make_unique_temp_name(target_path)
+    shutil.move(source_path, temp_path)
+    os.rename(temp_path, target_path)
+
+
+def move_ensure_casing(source_path, target_path):
+    """Moves a file from source_path to target_path.
+    If the move would result just in the name changing the case apply workarounds
+    for Linux and Windows to ensure the case change is applied on case-insensitive
+    file systems. Otherwise use shutil.move to move the file.
+    """
+    source_path = os.path.normpath(source_path)
+    target_path = os.path.normpath(target_path)
+    if source_path == target_path:
+        return
+    # Special handling is only required if both paths refer to the same file
+    # but the file name differs in casing.
+    # Also macOS does allow renaming only the casing and does not need special
+    # handling.
+    if not IS_MACOS and samefile_different_casing(source_path, target_path):
+        if IS_LINUX:
+            # On Linux always force a double move
+            _move_force_rename(source_path, target_path)
+            return
+        elif IS_WIN and win32api:
+            # Windows supports case renaming for NTFS and SMB shares, but not
+            # on FAT32 or exFAT file systems. Perform a normal move first,
+            # then check the result.
+            shutil.move(source_path, target_path)
+            try:
+                # Get the path in the actual casing as stored on disk
+                actual_path = win32api.GetLongPathNameW(win32api.GetShortPathName(target_path))
+                if samefile_different_casing(target_path, actual_path):
+                    _move_force_rename(source_path, target_path)
+            except pywintypes.error:
+                pass
+            return
+    # Just perform a normal move
+    try:
+        shutil.move(source_path, target_path)
+    except shutil.SameFileError:
+        # Sometimes different paths refer to the same file (e.g. network path / local path on Windows)
+        pass

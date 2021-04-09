@@ -22,7 +22,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard import config
+from picard.config import (
+    FloatOption,
+    get_config,
+)
 
 from picard.ui.options import (
     OptionsPage,
@@ -38,11 +41,12 @@ class MatchingOptionsPage(OptionsPage):
     PARENT = "advanced"
     SORT_ORDER = 30
     ACTIVE = True
+    HELP_URL = '/config/options_matching.html'
 
     options = [
-        config.FloatOption("setting", "file_lookup_threshold", 0.7),
-        config.FloatOption("setting", "cluster_lookup_threshold", 0.7),
-        config.FloatOption("setting", "track_matching_threshold", 0.4),
+        FloatOption("setting", "file_lookup_threshold", 0.7),
+        FloatOption("setting", "cluster_lookup_threshold", 0.7),
+        FloatOption("setting", "track_matching_threshold", 0.4),
     ]
 
     _release_type_sliders = {}
@@ -53,11 +57,13 @@ class MatchingOptionsPage(OptionsPage):
         self.ui.setupUi(self)
 
     def load(self):
+        config = get_config()
         self.ui.file_lookup_threshold.setValue(int(config.setting["file_lookup_threshold"] * 100))
         self.ui.cluster_lookup_threshold.setValue(int(config.setting["cluster_lookup_threshold"] * 100))
         self.ui.track_matching_threshold.setValue(int(config.setting["track_matching_threshold"] * 100))
 
     def save(self):
+        config = get_config()
         config.setting["file_lookup_threshold"] = float(self.ui.file_lookup_threshold.value()) / 100.0
         config.setting["cluster_lookup_threshold"] = float(self.ui.cluster_lookup_threshold.value()) / 100.0
         config.setting["track_matching_threshold"] = float(self.ui.track_matching_threshold.value()) / 100.0

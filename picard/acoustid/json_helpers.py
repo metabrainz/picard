@@ -4,6 +4,7 @@
 #
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2018-2020 Philipp Wolfer
+# Copyright (C) 2020 Ray Bouchard
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,6 +19,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+"""
+The idea here is to bring the data returned by the AcoustID service into the
+same format as the JSON result from the MB web service. Below methods help us
+to do that conversion process.
+"""
 
 
 def _make_releases_node(recording):
@@ -36,16 +43,51 @@ def _make_releases_node(recording):
                 release_mb['title'] = release['title']
             else:
                 release_mb['title'] = release_group['title']
+
             if 'country' in release:
                 release_mb['country'] = release['country']
+
+            if 'date' in release:
+                release_mb['date'] = release['date']
+
+            if 'medium_count' in release:
+                release_mb['medium-count'] = release['medium_count']
+
+            if 'track_count' in release:
+                release_mb['track-count'] = release['track_count']
+
             release_mb['media'] = []
             for medium in release['mediums']:
-                medium_mb = {}
+                media_mb = {}
                 if 'format' in medium:
-                    medium_mb['format'] = medium['format']
-                medium_mb['track-count'] = medium['track_count']
-                release_mb['media'].append(medium_mb)
-            release_list.append(release_mb)
+                    media_mb['format'] = medium['format']
+
+                if 'track_count' in medium:
+                    media_mb['track-count'] = medium['track_count']
+
+                if 'position' in medium:
+                    media_mb['position'] = medium['position']
+
+                if 'tracks' in medium:
+                    media_mb['track'] = medium['tracks']
+                    for track_mb in media_mb['track']:
+                        track_mb['number'] = track_mb['position']
+
+                release_mb['media'].append(media_mb)
+
+            # AcoustId service is returning country/date as attrib of the release, but really, according to MusicBrainz database schema definition,
+            # https://musicbrainz.org/doc/MusicBrainz_Database/Schema
+            # Its a one-to-many sub attribute in release events.
+            # They do return the releaseevents, but seem to be copying the first one on to the release.
+            # So if we have releaseevents, then use them to create multiple records, and ignore what is coming on the release
+            if 'releaseevents' in release:
+                for releaseevent in release['releaseevents']:
+                    release_mb['country'] = releaseevent.get('country', '')
+                    release_mb['date'] = releaseevent.get('date', '')
+                    release_list.append(release_mb)
+            else:
+                release_list.append(release_mb)
+
     return release_list
 
 
@@ -93,4 +135,8 @@ def parse_recording(recording):
             recording_mb['length'] = int(recording['duration']) * 1000
         except TypeError:
             pass
+
+    if 'sources' in recording:
+        recording_mb['sources'] = recording['sources']
+
     return recording_mb

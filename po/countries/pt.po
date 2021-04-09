@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # pingo.mister <joao.lnsa@netcabo.pt>, 2013
 msgid ""

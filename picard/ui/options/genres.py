@@ -28,7 +28,12 @@ from PyQt5.QtGui import (
     QTextCursor,
 )
 
-from picard import config
+from picard.config import (
+    BoolOption,
+    IntOption,
+    TextOption,
+    get_config,
+)
 from picard.track import TagGenreFilter
 
 from picard.ui.options import (
@@ -81,16 +86,17 @@ class GenresOptionsPage(OptionsPage):
     PARENT = "metadata"
     SORT_ORDER = 20
     ACTIVE = True
+    HELP_URL = '/config/options_genres.html'
 
     options = [
-        config.BoolOption("setting", "use_genres", False),
-        config.IntOption("setting", "max_genres", 5),
-        config.IntOption("setting", "min_genre_usage", 90),
-        config.TextOption("setting", "genres_filter", "-seen live\n-favorites\n-fixme\n-owned"),
-        config.TextOption("setting", "join_genres", ""),
-        config.BoolOption("setting", "only_my_genres", False),
-        config.BoolOption("setting", "artists_genres", False),
-        config.BoolOption("setting", "folksonomy_tags", False),
+        BoolOption("setting", "use_genres", False),
+        IntOption("setting", "max_genres", 5),
+        IntOption("setting", "min_genre_usage", 90),
+        TextOption("setting", "genres_filter", "-seen live\n-favorites\n-fixme\n-owned"),
+        TextOption("setting", "join_genres", ""),
+        BoolOption("setting", "only_my_genres", False),
+        BoolOption("setting", "artists_genres", False),
+        BoolOption("setting", "folksonomy_tags", False),
     ]
 
     def __init__(self, parent=None):
@@ -104,7 +110,7 @@ class GenresOptionsPage(OptionsPage):
         self.ui.test_genres_filter.setToolTip(_(TOOLTIP_TEST_GENRES_FILTER))
         self.ui.test_genres_filter.textChanged.connect(self.update_test_genres_filter)
 
-        #FIXME: colors aren't great from accessibility POV
+        # FIXME: colors aren't great from accessibility POV
         self.fmt_keep = QTextBlockFormat()
         self.fmt_keep.setBackground(Qt.green)
 
@@ -115,6 +121,7 @@ class GenresOptionsPage(OptionsPage):
         self.fmt_clear.clearBackground()
 
     def load(self):
+        config = get_config()
         self.ui.use_genres.setChecked(config.setting["use_genres"])
         self.ui.max_genres.setValue(config.setting["max_genres"])
         self.ui.min_genre_usage.setValue(config.setting["min_genre_usage"])
@@ -125,6 +132,7 @@ class GenresOptionsPage(OptionsPage):
         self.ui.folksonomy_tags.setChecked(config.setting["folksonomy_tags"])
 
     def save(self):
+        config = get_config()
         config.setting["use_genres"] = self.ui.use_genres.isChecked()
         config.setting["max_genres"] = self.ui.max_genres.value()
         config.setting["min_genre_usage"] = self.ui.min_genre_usage.value()
@@ -140,7 +148,7 @@ class GenresOptionsPage(OptionsPage):
         filters = self.ui.genres_filter.toPlainText()
         tagfilter = TagGenreFilter(filters)
 
-        #FIXME: very simple error reporting, improve
+        # FIXME: very simple error reporting, improve
         self.ui.label_test_genres_filter_error.setText(
             "\n".join(
                 [_("Error line %d: %s") % (lineno + 1, error) for lineno, error in tagfilter.errors.items()]
@@ -150,7 +158,7 @@ class GenresOptionsPage(OptionsPage):
         def set_line_fmt(lineno, textformat):
             obj = self.ui.test_genres_filter
             if lineno < 0:
-                #use current cursor position
+                # use current cursor position
                 cursor = obj.textCursor()
             else:
                 cursor = QTextCursor(obj.document().findBlockByNumber(lineno))

@@ -6,7 +6,7 @@
 # Copyright (C) 2006-2008, 2011 Lukáš Lalinský
 # Copyright (C) 2008 Hendrik van Antwerpen
 # Copyright (C) 2008 Will
-# Copyright (C) 2010-2011, 2014, 2018-2019 Philipp Wolfer
+# Copyright (C) 2010-2011, 2014, 2018-2020 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2012 Wieland Hoffmann
@@ -16,6 +16,8 @@
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017 Antonio Larrosa
 # Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2020 Ray Bouchard
+# Copyright (C) 2020 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -33,16 +35,18 @@
 
 
 from collections import defaultdict
+from enum import IntEnum
 from heapq import (
     heappop,
     heappush,
 )
 import ntpath
+from operator import attrgetter
 import re
 
 from PyQt5 import QtCore
 
-from picard import config
+from picard.config import get_config
 from picard.const import QUERY_LIMIT
 from picard.const.sys import IS_WIN
 from picard.metadata import (
@@ -54,17 +58,48 @@ from picard.util import (
     album_artist_from_path,
     find_best_match,
     format_time,
+    process_events_iter,
 )
 from picard.util.imagelist import (
     add_metadata_images,
     remove_metadata_images,
     update_metadata_images,
 )
+from picard.util.progresscheckpoints import ProgressCheckpoints
 
-from picard.ui.item import Item
+from picard.ui.item import (
+    FileListItem,
+    Item,
+)
 
 
-class Cluster(QtCore.QObject, Item):
+class FileList(QtCore.QObject, FileListItem):
+
+    metadata_images_changed = QtCore.pyqtSignal()
+
+    def __init__(self, files=None):
+        QtCore.QObject.__init__(self)
+        FileListItem.__init__(self, files)
+        self.metadata = Metadata()
+        self.orig_metadata = Metadata()
+        for file in self.files:
+            if self.can_show_coverart:
+                file.metadata_images_changed.connect(self.update_metadata_images)
+        if self.files:
+            update_metadata_images(self)
+
+    def iterfiles(self, save=False):
+        yield from self.files
+
+    def update(self):
+        pass
+
+    @property
+    def can_show_coverart(self):
+        return True
+
+
+class Cluster(FileList):
 
     # Weights for different elements when comparing a cluster to a release
     comparison_weights = {
@@ -74,21 +109,19 @@ class Cluster(QtCore.QObject, Item):
         'releasetype': 10,
         'releasecountry': 2,
         'format': 2,
+        'date': 4,
     }
 
     def __init__(self, name, artist="", special=False, related_album=None, hide_if_empty=False):
-        QtCore.QObject.__init__(self)
+        super().__init__()
         self.item = None
-        self.metadata = Metadata()
         self.metadata['album'] = name
         self.metadata['albumartist'] = artist
         self.metadata['totaltracks'] = 0
         self.special = special
         self.hide_if_empty = hide_if_empty
         self.related_album = related_album
-        self.files = []
         self.lookup_task = None
-        self.update_metadata_images_enabled = True
 
     def __repr__(self):
         if self.related_album:
@@ -101,6 +134,10 @@ class Cluster(QtCore.QObject, Item):
     def __len__(self):
         return len(self.files)
 
+    @property
+    def album(self):
+        return self.related_album
+
     def _update_related_album(self, added_files=None, removed_files=None):
         if self.related_album:
             if added_files:
@@ -109,34 +146,42 @@ class Cluster(QtCore.QObject, Item):
                 remove_metadata_images(self.related_album, removed_files)
             self.related_album.update()
 
-    def add_files(self, files):
-        for file in files:
+    def add_files(self, files, new_album=True):
+        added_files = set(files) - set(self.files)
+        if not added_files:
+            return
+        for file in added_files:
             self.metadata.length += file.metadata.length
             file._move(self)
             file.update(signal=False)
             if self.can_show_coverart:
                 file.metadata_images_changed.connect(self.update_metadata_images)
-        self.files.extend(files)
+        added_files = sorted(added_files, key=attrgetter('discnumber', 'tracknumber', 'base_filename'))
+        self.files.extend(added_files)
         self.metadata['totaltracks'] = len(self.files)
-        self.item.add_files(files)
+        self.item.add_files(added_files)
         if self.can_show_coverart:
-            add_metadata_images(self, files)
-        self._update_related_album(added_files=files)
+            add_metadata_images(self, added_files)
+        if new_album:
+            self._update_related_album(added_files=added_files)
 
-    def add_file(self, file):
-        self.add_files([file])
+    def add_file(self, file, new_album=True):
+        self.add_files([file], new_album=new_album)
 
-    def remove_file(self, file):
+    def remove_file(self, file, new_album=True):
+        self.tagger.window.set_processing(True)
         self.metadata.length -= file.metadata.length
         self.files.remove(file)
         self.metadata['totaltracks'] = len(self.files)
         self.item.remove_file(file)
-        if not self.special and self.get_num_files() == 0:
-            self.tagger.remove_cluster(self)
         if self.can_show_coverart:
             file.metadata_images_changed.disconnect(self.update_metadata_images)
             remove_metadata_images(self, [file])
-        self._update_related_album(removed_files=[file])
+        if new_album:
+            self._update_related_album(removed_files=[file])
+        self.tagger.window.set_processing(False)
+        if not self.special and self.get_num_files() == 0:
+            self.tagger.remove_cluster(self)
 
     def update(self):
         if self.item:
@@ -144,10 +189,6 @@ class Cluster(QtCore.QObject, Item):
 
     def get_num_files(self):
         return len(self.files)
-
-    def iterfiles(self, save=False):
-        for file in self.files:
-            yield file
 
     def can_save(self):
         """Return if this object can be saved."""
@@ -189,7 +230,7 @@ class Cluster(QtCore.QObject, Item):
     def column(self, column):
         if column == 'title':
             return '%s (%d)' % (self.metadata['album'], len(self.files))
-        elif (column == '~length' and self.special) or column == 'album':
+        elif self.special and (column in ['~length', 'album']):
             return ''
         elif column == '~length':
             return format_time(self.metadata.length)
@@ -217,6 +258,7 @@ class Cluster(QtCore.QObject, Item):
             )
 
         if releases:
+            config = get_config()
             albumid = self._match_to_album(releases, threshold=config.setting['cluster_lookup_threshold'])
         else:
             albumid = None
@@ -261,12 +303,18 @@ class Cluster(QtCore.QObject, Item):
             self.lookup_task = None
 
     @staticmethod
-    def cluster(files, threshold):
+    def cluster(files, threshold, tagger=None):
+        config = get_config()
         win_compat = config.setting["windows_compatibility"] or IS_WIN
         artist_dict = ClusterDict()
         album_dict = ClusterDict()
         tracks = []
-        for file in files:
+        num_files = len(files)
+
+        # 10 evenly spaced indexes of files being clustered, used as checkpoints for every 10% progress
+        status_update_steps = ProgressCheckpoints(num_files, 10)
+
+        for i, file in process_events_iter(enumerate(files)):
             artist = file.metadata["albumartist"] or file.metadata["artist"]
             album = file.metadata["album"]
             # Improve clustering from directory structure if no existing tags
@@ -279,11 +327,20 @@ class Cluster(QtCore.QObject, Item):
             # For each track, record the index of the artist and album within the clusters
             tracks.append((artist_dict.add(artist), album_dict.add(album)))
 
-        artist_cluster_engine = ClusterEngine(artist_dict)
-        artist_cluster_engine.cluster(threshold)
+            if tagger and status_update_steps.is_checkpoint(i):
+                statusmsg = N_("Clustering - step %(step)d/3: %(cluster_type)s (%(update)d%%)")
+                mparams = {
+                    'step': ClusterType.METADATA.value,
+                    'cluster_type': _(ClusterEngine.cluster_type_label(ClusterType.METADATA)),
+                    'update': status_update_steps.progress(i),
+                }
+                tagger.window.set_statusbar_message(statusmsg, mparams)
 
-        album_cluster_engine = ClusterEngine(album_dict)
-        album_cluster_engine.cluster(threshold)
+        artist_cluster_engine = ClusterEngine(artist_dict, ClusterType.ARTIST)
+        artist_cluster_engine.cluster(threshold, tagger)
+
+        album_cluster_engine = ClusterEngine(album_dict, ClusterType.ALBUM)
+        album_cluster_engine.cluster(threshold, tagger)
 
         # Arrange tracks into albums
         albums = {}
@@ -316,31 +373,20 @@ class Cluster(QtCore.QObject, Item):
 
             yield album_name, artist_name, (files[i] for i in album)
 
-    def enable_update_metadata_images(self, enabled):
-        self.update_metadata_images_enabled = enabled
-
-    def update_metadata_images(self):
-        if self.update_metadata_images_enabled and self.can_show_coverart:
-            update_metadata_images(self)
-
 
 class UnclusteredFiles(Cluster):
 
-    """Special cluster for 'Unmatched Files' which have no PUID and have not been clustered."""
+    """Special cluster for 'Unmatched Files' which have not been clustered."""
 
     def __init__(self):
         super().__init__(_("Unclustered Files"), special=True)
 
-    def add_files(self, files):
-        super().add_files(files)
+    def add_files(self, files, new_album=True):
+        super().add_files(files, new_album=new_album)
         self.tagger.window.enable_cluster(self.get_num_files() > 0)
 
-    def add_file(self, file):
-        super().add_file(file)
-        self.tagger.window.enable_cluster(self.get_num_files() > 0)
-
-    def remove_file(self, file):
-        super().remove_file(file)
+    def remove_file(self, file, new_album=True):
+        super().remove_file(file, new_album=new_album)
         self.tagger.window.enable_cluster(self.get_num_files() > 0)
 
     def lookup_metadata(self):
@@ -375,8 +421,7 @@ class ClusterList(list, Item):
 
     def iterfiles(self, save=False):
         for cluster in self:
-            for file in cluster.iterfiles(save):
-                yield file
+            yield from cluster.iterfiles(save)
 
     def can_save(self):
         return len(self) > 0
@@ -451,9 +496,20 @@ class ClusterDict(object):
         return word, count
 
 
-class ClusterEngine(object):
+class ClusterType(IntEnum):
+    METADATA = 1
+    ARTIST = 2
+    ALBUM = 3
 
-    def __init__(self, cluster_dict):
+
+class ClusterEngine(object):
+    CLUSTER_TYPE_LABELS = {
+        ClusterType.METADATA: N_('Metadata Extraction'),
+        ClusterType.ARTIST: N_('Artist'),
+        ClusterType.ALBUM: N_('Album'),
+    }
+
+    def __init__(self, cluster_dict, cluster_type):
         # the cluster dictionary we're using
         self.cluster_dict = cluster_dict
         # keeps track of unique cluster index
@@ -462,6 +518,14 @@ class ClusterEngine(object):
         self.cluster_bins = {}
         # Index the word ids -> clusters
         self.index_id_cluster = {}
+        self.cluster_type = cluster_type
+
+    @staticmethod
+    def cluster_type_label(cluster_type):
+        return ClusterEngine.CLUSTER_TYPE_LABELS[cluster_type]
+
+    def _cluster_type_label(self):
+        return ClusterEngine.cluster_type_label(self.cluster_type)
 
     def get_cluster_from_id(self, clusterid):
         return self.index_id_cluster.get(clusterid)
@@ -481,12 +545,15 @@ class ClusterEngine(object):
 
         return maxWord
 
-    def cluster(self, threshold):
-
+    def cluster(self, threshold, tagger=None):
         # Keep the matches sorted in a heap
         heap = []
+        num_files = self.cluster_dict.get_size()
 
-        for y in range(self.cluster_dict.get_size()):
+        # 20 evenly spaced indexes of files being clustered, used as checkpoints for every 5% progress
+        status_update_steps = ProgressCheckpoints(num_files, 20)
+
+        for y in process_events_iter(range(num_files)):
             token_y = self.cluster_dict.get_token(y).lower()
             for x in range(y):
                 if x != y:
@@ -494,14 +561,21 @@ class ClusterEngine(object):
                     c = similarity(token_x, token_y)
                     if c >= threshold:
                         heappush(heap, ((1.0 - c), [x, y]))
-            QtCore.QCoreApplication.processEvents()
 
-        for i in range(self.cluster_dict.get_size()):
-            word, count = self.cluster_dict.get_word_and_count(i)
+            word, count = self.cluster_dict.get_word_and_count(y)
             if word and count > 1:
-                self.cluster_bins[self.cluster_count] = [i]
-                self.index_id_cluster[i] = self.cluster_count
+                self.cluster_bins[self.cluster_count] = [y]
+                self.index_id_cluster[y] = self.cluster_count
                 self.cluster_count = self.cluster_count + 1
+
+            if tagger and status_update_steps.is_checkpoint(y):
+                statusmsg = N_("Clustering - step %(step)d/3: %(cluster_type)s (%(update)d%%)")
+                mparams = {
+                    'step': self.cluster_type.value,
+                    'cluster_type': _(self._cluster_type_label()),
+                    'update': status_update_steps.progress(y),
+                }
+                tagger.window.set_statusbar_message(statusmsg, mparams)
 
         for i in range(len(heap)):
             c, pair = heappop(heap)

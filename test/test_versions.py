@@ -88,6 +88,11 @@ class VersionsTest(PicardTestCase):
         l, s = (1, 1, 0, 'dev', 0), 'anything_28_1_1_0_dev_0'
         self.assertEqual(l, version_from_string(s))
 
+    def test_version_single_digit(self):
+        l, s = (2, 0, 0, 'final', 0), '2'
+        self.assertEqual(l, version_from_string(s))
+        self.assertEqual(l, Version(2))
+
     def test_version_from_string_invalid(self):
         invalid = 'anything_28x_1_0_dev_0'
         self.assertRaises(VersionError, version_to_string, (invalid))
@@ -101,7 +106,8 @@ class VersionsTest(PicardTestCase):
         self.assertRaises(VersionError, version_from_string, '1.1.0devx')
 
     def test_version_from_string_invalid_partial(self):
-        self.assertRaises(VersionError, version_from_string, '123')
+        self.assertRaises(VersionError, version_from_string, '1dev')
+        self.assertRaises(VersionError, version_from_string, '1.0dev')
         self.assertRaises(VersionError, version_from_string, '123.')
 
     @unittest.skipUnless(len(api_versions) > 1, "api_versions do not have enough elements")

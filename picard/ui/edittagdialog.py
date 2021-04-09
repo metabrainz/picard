@@ -27,6 +27,7 @@
 
 from PyQt5 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
@@ -121,16 +122,44 @@ class EditTagDialog(PicardDialog):
         self.value_selection_changed()
         self.restore_geometry()
 
+    def keyPressEvent(self, event):
+        if event.modifiers() == QtCore.Qt.NoModifier and event.key() in (QtCore.Qt.Key_Enter, QtCore.Qt.Key_Return):
+            self.add_or_edit_value()
+            event.accept()
+        elif event.matches(QtGui.QKeySequence.Delete):
+            self.remove_value()
+        elif event.key() == QtCore.Qt.Key_Insert:
+            self.add_value()
+        else:
+            super().keyPressEvent(event)
+
+    def tag_selected(self, index):
+        self.add_or_edit_value()
+
     def edit_value(self):
         item = self.value_list.currentItem()
         if item:
+            # Do not initialize editing if editor is already active. Avoids flickering of the edit field
+            # when already in edit mode. `isPersistentEditorOpen` is only supported in Qt 5.10 and later.
+            if hasattr(self.value_list, 'isPersistentEditorOpen') and self.value_list.isPersistentEditorOpen(item):
+                return
             self.value_list.editItem(item)
 
     def add_value(self):
         item = QtWidgets.QListWidgetItem()
         item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
         self.value_list.addItem(item)
+        self.value_list.setCurrentItem(item)
         self.value_list.editItem(item)
+
+    def add_or_edit_value(self):
+        last_item = self.value_list.item(self.value_list.count() - 1)
+        # Edit the last item, if it is empty, or add a new empty item
+        if last_item and not last_item.text():
+            self.value_list.setCurrentItem(last_item)
+            self.edit_value()
+        else:
+            self.add_value()
 
     def remove_value(self):
         value_list = self.value_list
@@ -261,14 +290,12 @@ class EditTagDialog(PicardDialog):
                                              list(self.metadata_box.tag_diff.new[self.tag]) or [""])
 
     def accept(self):
-        self.window.ignore_selection_changes = True
-        for tag, values in self.modified_tags.items():
-            self.modified_tags[tag] = [v for v in values if v]
-        modified_tags = self.modified_tags.items()
-        for obj in self.metadata_box.objects:
-            for tag, values in modified_tags:
-                obj.metadata[tag] = list(values)
-            obj.update()
-        self.window.ignore_selection_changes = False
-        self.window.update_selection()
+        with self.window.ignore_selection_changes:
+            for tag, values in self.modified_tags.items():
+                self.modified_tags[tag] = [v for v in values if v]
+            modified_tags = self.modified_tags.items()
+            for obj in self.metadata_box.objects:
+                for tag, values in modified_tags:
+                    obj.metadata[tag] = list(values)
+                obj.update()
         super().accept()

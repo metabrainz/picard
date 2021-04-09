@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # Suraj Kawade, 2013-2014
 msgid ""

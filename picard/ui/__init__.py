@@ -32,8 +32,23 @@ from PyQt5 import (
     QtWidgets,
 )
 
-from picard import config
+from picard.config import (
+    Option,
+    get_config,
+)
+from picard.const.sys import (
+    IS_MACOS,
+    IS_WIN,
+)
 from picard.util import restore_method
+
+
+if IS_MACOS:
+    FONT_FAMILY_MONOSPACE = 'Menlo'
+elif IS_WIN:
+    FONT_FAMILY_MONOSPACE = 'Consolas'
+else:
+    FONT_FAMILY_MONOSPACE = 'Monospace'
 
 
 class PreserveGeometry:
@@ -42,7 +57,7 @@ class PreserveGeometry:
     autorestore = True
 
     def __init__(self):
-        config.Option("persist", self.opt_name(), QtCore.QByteArray())
+        Option("persist", self.opt_name(), QtCore.QByteArray())
         if self.autorestore:
             self.restore_geometry()
         if getattr(self, 'finished', None):
@@ -53,6 +68,7 @@ class PreserveGeometry:
 
     @restore_method
     def restore_geometry(self):
+        config = get_config()
         geometry = config.persist[self.opt_name()]
         if not geometry.isNull():
             self.restoreGeometry(geometry)
@@ -60,6 +76,7 @@ class PreserveGeometry:
             self.resize(self.defaultsize)
 
     def save_geometry(self):
+        config = get_config()
         config.persist[self.opt_name()] = self.saveGeometry()
 
 

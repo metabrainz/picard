@@ -29,7 +29,7 @@ from PyQt5 import (
     QtWidgets,
 )
 
-from picard import config
+from picard.config import get_config
 
 
 class RatingWidget(QtWidgets.QWidget):
@@ -37,6 +37,7 @@ class RatingWidget(QtWidgets.QWidget):
     def __init__(self, parent, track):
         super().__init__(parent)
         self._track = track
+        config = get_config()
         self._maximum = config.setting["rating_steps"] - 1
         try:
             self._rating = int(track.metadata["~rating"] or 0)
@@ -95,8 +96,9 @@ class RatingWidget(QtWidgets.QWidget):
         track = self._track
         rating = str(self._rating)
         track.metadata["~rating"] = rating
-        for file in track.linked_files:
+        for file in track.files:
             file.metadata["~rating"] = rating
+        config = get_config()
         if config.setting["submit_ratings"]:
             ratings = {("recording", track.id): self._rating}
             self.tagger.mb_api.submit_ratings(ratings, None)

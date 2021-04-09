@@ -36,10 +36,8 @@ from mutagen.mp4 import (
     MP4Cover,
 )
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.coverart.image import (
     CoverArtImageError,
     TagCoverArtImage,
@@ -80,8 +78,9 @@ class MP4File(File):
         "\xa9day": "date",
         "\xa9gen": "genre",
         "\xa9lyr": "lyrics",
-        "\xa9cmt": "comment:",
+        "\xa9cmt": "comment",
         "\xa9too": "encodedby",
+        "\xa9dir": "director",
         "cprt": "copyright",
         "soal": "albumsort",
         "soaa": "albumartistsort",
@@ -247,6 +246,7 @@ class MP4File(File):
 
     def _save(self, filename, metadata):
         log.debug("Saving file %r", filename)
+        config = get_config()
         file = MP4(encode_filename(self.filename))
         if file.tags is None:
             file.add_tags()
@@ -258,6 +258,8 @@ class MP4File(File):
         for name, values in metadata.rawitems():
             if name.startswith('lyrics:'):
                 name = 'lyrics'
+            if name == 'comment:':
+                name = 'comment'
             if name in self.__r_text_tags:
                 tags[self.__r_text_tags[name]] = values
             elif name in self.__r_bool_tags:
@@ -280,25 +282,38 @@ class MP4File(File):
                 tags[name] = values
             elif name == "musicip_fingerprint":
                 tags["----:com.apple.iTunes:fingerprint"] = [b"MusicMagic Fingerprint%s" % v.encode('ascii') for v in values]
-            elif self.supports_tag(name) and name not in ('tracknumber',
-                    'totaltracks', 'discnumber', 'totaldiscs'):
+            elif self.supports_tag(name) and name not in self.__other_supported_tags:
                 values = [v.encode("utf-8") for v in values]
                 name = self.__casemap.get(name, name)
                 tags['----:com.apple.iTunes:' + name] = values
 
         if "tracknumber" in metadata:
-            if "totaltracks" in metadata:
-                tags["trkn"] = [(int(metadata["tracknumber"]),
-                                 int(metadata["totaltracks"]))]
+            try:
+                tracknumber = int(metadata["tracknumber"])
+            except ValueError:
+                pass
             else:
-                tags["trkn"] = [(int(metadata["tracknumber"]), 0)]
+                totaltracks = 0
+                if "totaltracks" in metadata:
+                    try:
+                        totaltracks = int(metadata["totaltracks"])
+                    except ValueError:
+                        pass
+                tags["trkn"] = [(tracknumber, totaltracks)]
 
         if "discnumber" in metadata:
-            if "totaldiscs" in metadata:
-                tags["disk"] = [(int(metadata["discnumber"]),
-                                 int(metadata["totaldiscs"]))]
+            try:
+                discnumber = int(metadata["discnumber"])
+            except ValueError:
+                pass
             else:
-                tags["disk"] = [(int(metadata["discnumber"]), 0)]
+                totaldiscs = 0
+                if "totaldiscs" in metadata:
+                    try:
+                        totaldiscs = int(metadata["totaldiscs"])
+                    except ValueError:
+                        pass
+                tags["disk"] = [(discnumber, totaldiscs)]
 
         covr = []
         for image in metadata.images.to_be_saved_to_tags():
@@ -351,8 +366,9 @@ class MP4File(File):
             return "trkn"
         elif name in ("discnumber", "totaldiscs"):
             return "disk"
-        else:
-            return None
+        elif self.supports_tag(name) and name not in self.__other_supported_tags:
+            name = self.__casemap.get(name, name)
+            return '----:com.apple.iTunes:' + name
 
     def _info(self, metadata, file):
         super()._info(metadata, file)

@@ -27,7 +27,7 @@ import re
 
 from PyQt5 import QtWidgets
 
-from picard import config
+from picard.config import get_config
 from picard.plugin import ExtensionPoint
 
 
@@ -43,6 +43,7 @@ class OptionsPage(QtWidgets.QWidget):
     PARENT = None
     SORT_ORDER = 1000
     ACTIVE = True
+    HELP_URL = None
     STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold }"
     STYLESHEET = "QLabel { qproperty-wordWrap: true; }"
 
@@ -74,6 +75,7 @@ class OptionsPage(QtWidgets.QWidget):
             options = self.options
         except AttributeError:
             return
+        config = get_config()
         old_options = {}
         for option in options:
             if option.section == 'setting':
