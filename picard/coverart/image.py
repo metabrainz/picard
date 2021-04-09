@@ -42,10 +42,8 @@ from PyQt5.QtCore import (
 )
 
 from picard import log
-from picard.config import (
-    Option,
-    get_config,
-)
+from picard.config import get_config
+from picard.const import DEFAULT_COVER_IMAGE_FILENAME
 from picard.coverart.utils import translate_caa_type
 from picard.metadata import Metadata
 from picard.util import (
@@ -294,7 +292,7 @@ class CoverArtImage:
             metadata.add_unique("coverart_types", cover_type)
         filename = script_to_filename(filename, metadata)
         if not filename:
-            filename = Option.get('setting', 'cover_image_filename').default
+            filename = DEFAULT_COVER_IMAGE_FILENAME
         if not is_absolute_path(filename):
             filename = os.path.join(dirname, filename)
         return encode_filename(filename)
