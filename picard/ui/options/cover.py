@@ -32,6 +32,7 @@ from picard.config import (
     TextOption,
     get_config,
 )
+from picard.const import DEFAULT_COVER_IMAGE_FILENAME
 from picard.coverart.providers import cover_art_providers
 
 from picard.ui.checkbox_list_item import CheckboxListItem
@@ -56,7 +57,7 @@ class CoverOptionsPage(OptionsPage):
         BoolOption("setting", "save_images_to_tags", True),
         BoolOption("setting", "embed_only_one_front_image", True),
         BoolOption("setting", "save_images_to_files", False),
-        TextOption("setting", "cover_image_filename", "cover"),
+        TextOption("setting", "cover_image_filename", DEFAULT_COVER_IMAGE_FILENAME),
         BoolOption("setting", "save_images_overwrite", False),
         BoolOption("setting", "save_only_one_front_image", False),
         BoolOption("setting", "image_type_as_filename", False),
