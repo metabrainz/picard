@@ -63,8 +63,7 @@ class CoverArtImageTest(PicardTestCase):
             'save_images_overwrite': True,
             'windows_compatibility': False,
         }
-
-        config.setting = settings.copy()
+        self.set_config_values(settings)
 
     def test_is_front_image_no_types(self):
         image = create_image(b'a')
