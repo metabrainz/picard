@@ -57,7 +57,7 @@ class CoverArtImageTest(PicardTestCase):
         super().setUp()
         settings = {
             'ascii_filenames': False,
-            'caa_image_type_as_filename': False,
+            'image_type_as_filename': False,
             'cover_image_filename': 'cover',
             'enabled_plugins': [],
             'save_images_overwrite': True,
@@ -278,7 +278,7 @@ class CoverArtImageTest(PicardTestCase):
     def test_save_notype_1(self):
         cases = {
             'options': {
-                'caa_image_type_as_filename': False,
+                'image_type_as_filename': False,
                 'cover_image_filename': 'cover',
                 'save_images_overwrite': False,
             },
@@ -293,7 +293,7 @@ class CoverArtImageTest(PicardTestCase):
     def test_save_notype_2(self):
         cases = {
             'options': {
-                'caa_image_type_as_filename': False,
+                'image_type_as_filename': False,
                 'cover_image_filename': 'folder',
                 'save_images_overwrite': False,
             },
@@ -308,7 +308,7 @@ class CoverArtImageTest(PicardTestCase):
     def test_save_notype_3(self):
         cases = {
             'options': {
-                'caa_image_type_as_filename': True,
+                'image_type_as_filename': True,
                 'cover_image_filename': 'folder',
                 'save_images_overwrite': False,
             },
@@ -323,7 +323,7 @@ class CoverArtImageTest(PicardTestCase):
     def test_save_notype_4(self):
         cases = {
             'options': {
-                'caa_image_type_as_filename': False,
+                'image_type_as_filename': False,
                 'cover_image_filename': 'folder',
                 'save_images_overwrite': True,
             },
@@ -338,7 +338,7 @@ class CoverArtImageTest(PicardTestCase):
     def test_save_notype_5(self):
         cases = {
             'options': {
-                'caa_image_type_as_filename': True,
+                'image_type_as_filename': True,
                 'cover_image_filename': 'x%foo%',
                 'save_images_overwrite': False,
             },
@@ -353,7 +353,7 @@ class CoverArtImageTest(PicardTestCase):
     def test_save_notype_6(self):
         cases = {
             'options': {
-                'caa_image_type_as_filename': True,
+                'image_type_as_filename': True,
                 'cover_image_filename': '%nada%',
                 'save_images_overwrite': False,
             },
@@ -368,7 +368,7 @@ class CoverArtImageTest(PicardTestCase):
     def test_save_notype_7(self):
         cases = {
             'options': {
-                'caa_image_type_as_filename': True,
+                'image_type_as_filename': True,
                 'cover_image_filename': 'subdir/%foo%',
                 'save_images_overwrite': False,
             },
@@ -383,7 +383,7 @@ class CoverArtImageTest(PicardTestCase):
     def test_save_notype_8(self):
         cases = {
             'options': {
-                'caa_image_type_as_filename': True,
+                'image_type_as_filename': True,
                 'cover_image_filename': 'subdir/%foo%/%nada%/%foo%/../%foo%',
                 'save_images_overwrite': False,
             },
@@ -398,7 +398,7 @@ class CoverArtImageTest(PicardTestCase):
     def test_save_notype_9(self):
         cases = {
             'options': {
-                'caa_image_type_as_filename': True,
+                'image_type_as_filename': True,
                 'cover_image_filename': 'subdir/folder',
                 'save_images_overwrite': False,
             },
@@ -424,7 +424,7 @@ class CoverArtImageTest(PicardTestCase):
     def test_save_types_1(self):
         cases = {
             'options': {
-                'caa_image_type_as_filename': False,
+                'image_type_as_filename': False,
                 'cover_image_filename': 'cover',
                 'save_images_overwrite': False,
             },
@@ -443,7 +443,7 @@ class CoverArtImageTest(PicardTestCase):
     def test_save_types_overwrite_1(self):
         cases = {
             'options': {
-                'caa_image_type_as_filename': False,
+                'image_type_as_filename': False,
                 'cover_image_filename': 'cover',
                 'save_images_overwrite': True,
             },
@@ -462,7 +462,7 @@ class CoverArtImageTest(PicardTestCase):
     def test_save_types_2(self):
         cases = {
             'options': {
-                'caa_image_type_as_filename': True,
+                'image_type_as_filename': True,
                 'cover_image_filename': 'cover',
                 'save_images_overwrite': False,
             },
@@ -481,7 +481,7 @@ class CoverArtImageTest(PicardTestCase):
     def test_save_types_overwrite_2(self):
         cases = {
             'options': {
-                'caa_image_type_as_filename': True,
+                'image_type_as_filename': True,
                 'cover_image_filename': 'cover',
                 'save_images_overwrite': True,
             },
@@ -500,7 +500,7 @@ class CoverArtImageTest(PicardTestCase):
     def test_save_types_3(self):
         cases = {
             'options': {
-                'caa_image_type_as_filename': True,
+                'image_type_as_filename': True,
                 'cover_image_filename': 'cover',
                 'save_images_overwrite': False,
             },
@@ -519,7 +519,7 @@ class CoverArtImageTest(PicardTestCase):
     def test_save_types_overwrite_3(self):
         cases = {
             'options': {
-                'caa_image_type_as_filename': True,
+                'image_type_as_filename': True,
                 'cover_image_filename': 'cover',
                 'save_images_overwrite': True,
             },
@@ -538,7 +538,7 @@ class CoverArtImageTest(PicardTestCase):
     def test_save_types_4(self):
         cases = {
             'options': {
-                'caa_image_type_as_filename': True,
+                'image_type_as_filename': True,
                 'cover_image_filename': 'cover',
                 'save_images_overwrite': False,
             },
@@ -561,7 +561,7 @@ class CoverArtImageTest(PicardTestCase):
     def test_save_types_overwrite_4(self):
         cases = {
             'options': {
-                'caa_image_type_as_filename': True,
+                'image_type_as_filename': True,
                 'cover_image_filename': 'cover',
                 'save_images_overwrite': True,
             },
@@ -584,7 +584,7 @@ class CoverArtImageTest(PicardTestCase):
     def test_save_types_overwrite_5(self):
         cases = {
             'options': {
-                'caa_image_type_as_filename': False,
+                'image_type_as_filename': False,
                 'cover_image_filename': '$if($eq(%coverart_maintype%,{{cover}}),cover,%coverart_maintype%)',
                 'save_images_overwrite': True,
             },
