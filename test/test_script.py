@@ -1538,13 +1538,16 @@ class ScriptParserTest(PicardTestCase):
         context["foo"] = ['a', 'b', 'c', '', 'd']
         context["bar"] = ['a', 'b', 'c', None, 'd']
         context["baz"] = ['a', 'b', 'c', 'd']
-        context['empty'] = []
+        context["empty"] = []
+        context["string"] = "a; b; c; ; d"
         result = "a; b; c; d"
         # Tests with context
         self.assertScriptResultEquals("$cleanmulti(%foo%)", result, context)
         self.assertScriptResultEquals("$cleanmulti(%bar%)", result, context)
         self.assertScriptResultEquals("$cleanmulti(%baz%)", result, context)
         self.assertScriptResultEquals("$cleanmulti(%empty%)", "", context)
+        # Tests with separator override
+        self.assertScriptResultEquals("$cleanmulti(%string%,:)", "a; b; c; ; d", context)
         # Tests with missing inputs
         self.assertScriptResultEquals("$cleanmulti(,)", "", context)
         self.assertScriptResultEquals("$cleanmulti(,; )", "", context)
