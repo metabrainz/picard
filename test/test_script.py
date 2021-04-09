@@ -1546,8 +1546,12 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$cleanmulti(%bar%)", result, context)
         self.assertScriptResultEquals("$cleanmulti(%baz%)", result, context)
         self.assertScriptResultEquals("$cleanmulti(%empty%)", "", context)
+        self.assertScriptResultEquals("$cleanmulti(%string%)", "a; b; c; ; d", context)
+        # Tests with literal value
+        self.assertScriptResultEquals("$cleanmulti(a; b; c; ; d)", "a; b; c; d", context)
         # Tests with separator override
-        self.assertScriptResultEquals("$cleanmulti(%string%,:)", "a; b; c; ; d", context)
+        self.assertScriptResultEquals("$cleanmulti(a; b; c; ; d,; )", "a; b; c; d", context)
+        self.assertScriptResultEquals("$cleanmulti(a; b; c; ; d,:)", "a; b; c; ; d", context)
         # Tests with missing inputs
         self.assertScriptResultEquals("$cleanmulti(,)", "", context)
         self.assertScriptResultEquals("$cleanmulti(,; )", "", context)
