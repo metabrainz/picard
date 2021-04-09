@@ -163,7 +163,7 @@ class CoverArtImageTest(PicardTestCase):
         self.assertIsNone(image2.datahash._filename)
         self.assertIsNone(image2.datahash.data)
         with self.assertRaises(CoverArtImageIOError):
-            _unused = image1.data
+            unused = image1.data  # noqa: F841
 
     def test_coverartimage_image_as_string(self):
         image = CoverArtImage(data=None)
@@ -171,8 +171,8 @@ class CoverArtImageTest(PicardTestCase):
         image = create_image(b'a')
         self.assertEqual(
             image.imageinfo_as_string(),
-            'w=100 h=100 mime=image/png ext=.png datalen=25 file=' +
-            image.tempfile_filename
+            ('w=100 h=100 mime=image/png ext=.png datalen=25 file=%s' %
+             image.tempfile_filename)
         )
 
     def test_coverartimage_url_with_query(self):
