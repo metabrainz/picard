@@ -45,6 +45,15 @@ from picard.version import (
 )
 
 
+try:
+    from markdown import markdown
+except ImportError:
+    def markdown(text):
+        # Simple fallback, just make sure line breaks are applied
+        if not text:
+            return ''
+        return text.strip().replace('\n', '<br>\n')
+
 _PLUGIN_MODULE_PREFIX = "picard.plugins."
 _PLUGIN_MODULE_PREFIX_LEN = len(_PLUGIN_MODULE_PREFIX)
 
@@ -138,7 +147,7 @@ class PluginWrapper(PluginShared):
     @property
     def description(self):
         try:
-            return self.data['PLUGIN_DESCRIPTION']
+            return markdown(self.data['PLUGIN_DESCRIPTION'])
         except KeyError:
             return ""
 
