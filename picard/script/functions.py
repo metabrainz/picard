@@ -1353,7 +1353,9 @@ def func_unique(parser, multi, case_sensitive="", separator=MULTI_VALUED_JOINER)
 @script_function(eval_args=False, documentation=N_(
     """`$cleanmulti(name,separator="; ")`
 
-Removes empty elements from the multi-value variable `name`.
+Removes empty elements from the multi-value variable `name`. A literal value
+representing a multi-value can be substituted for `name`, using the separator
+(or "; " if not passed) to coerce the value into a proper multi-valued tag.
 
 Example:
 
@@ -1365,5 +1367,4 @@ def func_cleanmulti(parser, multi, separator=MULTI_VALUED_JOINER):
         return ''
 
     multi_value = MultiValue(parser, multi, separator)
-    temp = [x for x in multi_value if x]
-    return multi_value.separator.join(temp)
+    return multi_value.separator.join([x for x in multi_value if x])
