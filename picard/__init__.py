@@ -83,6 +83,7 @@ api_versions = [
     "2.4",
     "2.5",
     "2.6",
+    "2.7",
 ]
 
 api_versions_tuple = [Version.from_string(v) for v in api_versions]
