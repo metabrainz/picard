@@ -1217,8 +1217,7 @@ class ScriptParserTest(PicardTestCase):
         # Tests for removing empty elements
         context["baz"] = ["First:A", "Second:B", "", "Third:C"]
         self.assertScriptResultEquals("$map(%baz%,$upper(%_loop_count%=%_loop_value%))", loop_output, context)
-        context["baz"] = ["First:A", "Second:B", "", "Third:C"]
-        self.assertScriptResultEquals("$map(%baz%,$upper(%_loop_count%=%_loop_value%)) / %baz%", loop_output + " / " + loop_output, context)
+        self.assertScriptResultEquals("%baz%", loop_output, context)
         # Tests with missing inputs
         self.assertScriptResultEquals("$map(,$upper(%_loop_count%=%_loop_value%))", "", context)
         self.assertScriptResultEquals("$map(First:A; Second:B; Third:C,)", "", context)
