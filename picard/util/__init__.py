@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2004 Robert Kaye
 # Copyright (C) 2006-2009, 2011-2012, 2014 Lukáš Lalinský
-# Copyright (C) 2008-2011, 2014, 2018-2021 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014, 2018-2020 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2009 david
 # Copyright (C) 2010 fatih
@@ -56,7 +56,6 @@ from dateutil.parser import parse
 from PyQt5 import QtCore
 
 from picard import log
-from picard.config import get_config
 from picard.const import MUSICBRAINZ_SERVERS
 from picard.const.sys import (
     FROZEN_TEMP_PATH,
@@ -709,24 +708,3 @@ def extract_year_from_date(dt):
             return parse(dt).year
     except (TypeError, ValueError):
         return None
-
-
-def cached_settings(keys, settings=None, config=None):
-    """Returns a dictionary with the given keys from config.setting.
-    Can be used to create a partial cache / copy of specific settings.
-
-    Args:
-        keys: Array of setting keys to return
-        settings: Dict to store the settings in. If None is given a new dict will be created.
-        config: Optional instance of picard.config.Config to use
-
-    Returns:
-        Returns the settings dict with the given keys set
-    """
-    if settings is None:
-        settings = {}
-    if config is None:
-        config = get_config()
-    for key in keys:
-        settings[key] = config.setting[key]
-    return settings
