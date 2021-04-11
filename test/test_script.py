@@ -543,6 +543,9 @@ class ScriptParserTest(PicardTestCase):
         context["test"] = ["Four", "Five", "Six"]
         self.assertScriptResultEquals("$replacemulti(%test%,Five,)", "Four; ; Six", context)
 
+        self.assertScriptResultEquals("$replacemulti(a; b,,,)", "a; b")
+        self.assertScriptResultEquals("$setmulti(foo,a; b)$replacemulti(%foo%,,,)", "a; b")
+
     def test_cmd_strip(self):
         self.assertScriptResultEquals("$strip(  \t abc  de \n f  )", "abc de f")
 

@@ -298,7 +298,7 @@ Example:
 ))
 def func_replacemulti(parser, multi, search, replace, separator=MULTI_VALUED_JOINER):
     if not multi or not search or replace is None or not separator:
-        return multi
+        return multi.eval(parser)
 
     search = search.eval(parser)
     replace = replace.eval(parser)
