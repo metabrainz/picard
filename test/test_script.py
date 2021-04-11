@@ -1204,19 +1204,24 @@ class ScriptParserTest(PicardTestCase):
 
     def test_cmd_map(self):
         context = Metadata()
-        context["foo"] = "First:A; Second:B; Third:C"
-        context["bar"] = ["First:A", "Second:B", "Third:C"]
         foo_output = "1=FIRST:A; SECOND:B; THIRD:C"
         loop_output = "1=FIRST:A; 2=SECOND:B; 3=THIRD:C"
         alternate_output = "1=FIRST:2=A; SECOND:3=B; THIRD:4=C"
         # Tests with context
+        context["foo"] = "First:A; Second:B; Third:C"
         self.assertScriptResultEquals("$map(%foo%,$upper(%_loop_count%=%_loop_value%))", foo_output, context)
+        context["bar"] = ["First:A", "Second:B", "Third:C"]
         self.assertScriptResultEquals("$map(%bar%,$upper(%_loop_count%=%_loop_value%))", loop_output, context)
         # Tests with static inputs
         self.assertScriptResultEquals("$map(First:A; Second:B; Third:C,$upper(%_loop_count%=%_loop_value%))", loop_output, context)
+        # Tests for removing empty elements
+        context["baz"] = ["First:A", "Second:B", "", "Third:C"]
+        self.assertScriptResultEquals("$map(%baz%,$upper(%_loop_count%=%_loop_value%))", loop_output, context)
+        context["baz"] = ["First:A", "Second:B", "", "Third:C"]
+        self.assertScriptResultEquals("$map(%baz%,$upper(%_loop_count%=%_loop_value%)) / %baz%", loop_output + " / " + loop_output, context)
         # Tests with missing inputs
         self.assertScriptResultEquals("$map(,$upper(%_loop_count%=%_loop_value%))", "", context)
-        self.assertScriptResultEquals("$map(First:A; Second:B; Third:C,)", "; ; ", context)
+        self.assertScriptResultEquals("$map(First:A; Second:B; Third:C,)", "", context)
         # Tests with separator override
         self.assertScriptResultEquals("$map(First:A; Second:B; Third:C,$upper(%_loop_count%=%_loop_value%),:)", alternate_output, context)
         # Tests with invalid number of arguments

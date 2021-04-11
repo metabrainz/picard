@@ -1196,6 +1196,8 @@ Iterates over each element found in the multi-value tag `name` and updates the
     `_loop_value` and the count is stored in the tag `_loop_count`. This allows
     the element or count value to be accessed within the `code` script.
 
+Empty elements are automatically removed.
+
 Example:
 
     $map(First:A; Second:B,$upper(%_loop_count%=%_loop_value%))
@@ -1208,10 +1210,13 @@ def func_map(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
     for loop_count, value in enumerate(multi_value, 1):
         func_set(parser, '_loop_count', str(loop_count))
         func_set(parser, '_loop_value', str(value))
+        # Make changes in-place
         multi_value[loop_count - 1] = str(loop_code.eval(parser))
     func_unset(parser, '_loop_count')
     func_unset(parser, '_loop_value')
-    return str(multi_value)
+    # Remove empty elements from existing multi-value variable
+    multi_value._multi = [x for x in multi_value if x]
+    return multi_value.separator.join(multi_value)
 
 
 @script_function(eval_args=False, documentation=N_(
