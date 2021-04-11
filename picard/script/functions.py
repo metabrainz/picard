@@ -1214,9 +1214,7 @@ def func_map(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
         multi_value[loop_count - 1] = str(loop_code.eval(parser))
     func_unset(parser, '_loop_count')
     func_unset(parser, '_loop_value')
-    # Remove empty elements from existing multi-value variable
-    multi_value._multi = [x for x in multi_value if x]
-    return multi_value.separator.join(multi_value)
+    return multi_value.separator.join([x for x in multi_value if x])
 
 
 @script_function(eval_args=False, documentation=N_(
