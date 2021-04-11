@@ -1218,6 +1218,8 @@ class ScriptParserTest(PicardTestCase):
         context["baz"] = ["First:A", "Second:B", "Remove", "Third:C"]
         test_output = "1=FIRST:A; 2=SECOND:B; 4=THIRD:C"
         self.assertScriptResultEquals("$lenmulti(%baz%)", "4", context)
+        self.assertScriptResultEquals("$map(%baz%,$if($eq(%_loop_count%,3),,$upper(%_loop_count%=%_loop_value%)))", test_output, context)
+        context["baz"] = ["First:A", "Second:B", "Remove", "Third:C"]
         self.assertScriptResultEquals("$setmulti(baz,$map(%baz%,$if($eq(%_loop_count%,3),,$upper(%_loop_count%=%_loop_value%))))%baz%", test_output, context)
         self.assertScriptResultEquals("$lenmulti(%baz%)", "3", context)
         self.assertScriptResultEquals("%baz%", test_output, context)
