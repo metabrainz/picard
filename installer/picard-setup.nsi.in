@@ -207,7 +207,7 @@ SectionEnd
 Function un.onInit
   FindWindow $0 "${WNDCLASS}" "${WNDTITLE}"
   StrCmp $0 0 continueInstall
-    MessageBox MB_ICONSTOP|MB_OK "$(MsgApplicationRunning)"
+    MessageBox MB_ICONSTOP|MB_OK "$(MsgApplicationRunning)" /SD IDOK
     Abort
   continueInstall:
   !insertmacro INSTALLOPTIONS_EXTRACT "removeSettings.ini"
@@ -217,14 +217,14 @@ FunctionEnd
 Function .onInit
   ; Abort installation if this is not a 64 bit system
   ${IfNot} ${RunningX64}
-    MessageBox MB_ICONSTOP|MB_OK "$(MsgRequires64Bit)"
+    MessageBox MB_ICONSTOP|MB_OK "$(MsgRequires64Bit)" /SD IDOK
     Abort
   ${EndIf}
 
   ; Abort installation if Picard is currently running
   FindWindow $0 "${WNDCLASS}" "${WNDTITLE}"
   StrCmp $0 0 continueInstall
-    MessageBox MB_ICONSTOP|MB_OK "$(MsgApplicationRunning)"
+    MessageBox MB_ICONSTOP|MB_OK "$(MsgApplicationRunning)" /SD IDOK
     Abort
   continueInstall:
 
@@ -232,12 +232,17 @@ Function .onInit
   ReadRegStr $R0 HKLM "${PRODUCT_UNINST_KEY}" "UninstallString"
   StrCmp $R0 "" skipUninstall
 
-  MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION "$(MsgAlreadyInstalled)" IDOK uninstall
+  MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION "$(MsgAlreadyInstalled)" /SD IDOK IDOK uninstall
   Abort
 
   uninstall:
   ClearErrors
-  Exec $R0
+  IfSilent silentUninstall
+  ExecWait "$R0"
+  Goto finishUninstall
+  silentUninstall:
+  ExecWait "$R0 /S"
+  finishUninstall:
 
   ; Check if previous install location was inside $PROGRAMFILES32
   ReadRegStr $R0 HKLM "Software\MusicBrainz\${PRODUCT_NAME}" "InstallDir"
