@@ -3,14 +3,14 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2009, 2011-2012 Lukáš Lalinský
-# Copyright (C) 2008-2011, 2014, 2018-2020 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014, 2018-2021 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2011-2012 Johannes Weißl
 # Copyright (C) 2011-2014 Michael Wiencek
 # Copyright (C) 2011-2014 Wieland Hoffmann
 # Copyright (C) 2013 Calvin Walton
 # Copyright (C) 2013-2014, 2017-2019 Laurent Monin
-# Copyright (C) 2013-2015, 2017 Sophist-UK
+# Copyright (C) 2013-2015, 2017, 2021 Sophist-UK
 # Copyright (C) 2015 Frederik “Freso” S. Olesen
 # Copyright (C) 2016 Christoph Reiter
 # Copyright (C) 2016-2018 Sambhav Kothari
@@ -650,36 +650,30 @@ class ID3File(File):
             tags.update_to_v24()
             tags.save(filename, v2_version=4, v1=v1)
 
-    @property
-    def new_metadata(self):
-        config = get_config()
-        if not config.setting["write_id3v23"]:
-            return self.metadata
+    def format_specific_metadata(self, metadata, tag, settings=None):
+        if not settings:
+            settings = get_config().setting
 
-        copy = Metadata()
-        copy.copy(self.metadata)
+        if not settings["write_id3v23"]:
+            return super().format_specific_metadata(metadata, tag, settings)
 
-        join_with = config.setting["id3v23_join_with"]
-        copy.multi_valued_joiner = join_with
+        values = metadata.getall(tag)
+        if not values:
+            return values
 
-        for name, values in copy.rawitems():
-            # ID3v23 can only save TDOR dates in YYYY format. Mutagen cannot
-            # handle ID3v23 dates which are YYYY-MM rather than YYYY or
-            # YYYY-MM-DD.
-            if name == "originaldate":
-                values = [v[:4] for v in values]
-            elif name == "date":
-                values = [(v[:4] if len(v) < 10 else v) for v in values]
+        if tag == "originaldate":
+            values = [v[:4] for v in values]
+        elif tag == "date":
+            values = [(v[:4] if len(v) < 10 else v) for v in values]
 
-            # If this is a multi-valued field, then it needs to be flattened,
-            # unless it's TIPL or TMCL which can still be multi-valued.
-            if (len(values) > 1 and name not in ID3File._rtipl_roles
-                    and not name.startswith("performer:")):
-                values = [join_with.join(values)]
+        # If this is a multi-valued field, then it needs to be flattened,
+        # unless it's TIPL or TMCL which can still be multi-valued.
+        if (len(values) > 1 and tag not in ID3File._rtipl_roles
+                and not tag.startswith("performer:")):
+            join_with = settings["id3v23_join_with"]
+            values = [join_with.join(values)]
 
-            copy[name] = values
-
-        return copy
+        return values
 
 
 class MP3File(ID3File):
