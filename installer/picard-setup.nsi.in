@@ -229,25 +229,35 @@ Function .onInit
   continueInstall:
 
   ; Uninstall previous installation
-  ReadRegStr $R0 HKLM "${PRODUCT_UNINST_KEY}" "UninstallString"
-  StrCmp $R0 "" skipUninstall
-
-  MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION "$(MsgAlreadyInstalled)" /SD IDOK IDOK uninstall
-  Abort
+  ; $0 = Path to uninstaller
+  ; $1 = Previous installation directory
+  ReadRegStr $0 HKLM "${PRODUCT_UNINST_KEY}" "UninstallString"
+  StrCmp $0 "" skipUninstall
+    MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION "$(MsgAlreadyInstalled)" /SD IDOK IDOK uninstall
+    Abort
 
   uninstall:
-  ClearErrors
-  IfSilent silentUninstall
-  ExecWait "$R0"
-  Goto finishUninstall
-  silentUninstall:
-  ExecWait "$R0 /S"
-  finishUninstall:
+    ClearErrors
+    ReadRegStr $1 HKLM "Software\MusicBrainz\${PRODUCT_NAME}" "InstallDir"
+    ; The _? must be set to the install directory, it also ensures ExecWait
+    ; actually waits for the installer to finish. We need to remove the
+    ; installer itself manually afterwards.
+    IfSilent silentUninstall
+    ExecWait '"$0" _?=$1' $2
+    Goto finalizeUninstall
+    silentUninstall:
+    ExecWait '"$0" /S _?=$1' $2
+  finalizeUninstall:
+    ; Delete the uninstaller if it finished with success (exit code 0)
+    IntCmp $2 0 "" endUninstall endUninstall
+    Delete "$0"
+    RMDir "$1"  ; Try to delete installation dir
+  endUninstall:
 
   ; Check if previous install location was inside $PROGRAMFILES32
-  ReadRegStr $R0 HKLM "Software\MusicBrainz\${PRODUCT_NAME}" "InstallDir"
+  ; If so, rewrite $INSTDIR to $PROGRAMFILES64
   StrLen $R1 $PROGRAMFILES32
-  StrCpy $R2 $R0 $R1
+  StrCpy $R2 $1 $R1
   StrCmp $R2 $PROGRAMFILES32 0 skipUninstall
     StrCpy $INSTDIR "$PROGRAMFILES64\${PRODUCT_NAME}"
 
