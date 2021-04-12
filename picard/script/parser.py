@@ -397,4 +397,4 @@ class MultiValue(MutableSequence):
         return '%s(%r, %r, %r)' % (self.__class__.__name__, self.parser, self._multi, self.separator)
 
     def __str__(self):
-        return self.separator.join(self)
+        return self.separator.join([x for x in self if x])

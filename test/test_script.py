@@ -541,7 +541,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$replacemulti(%test%,Four,Five)", "One; Two; Three", context)
 
         context["test"] = ["Four", "Five", "Six"]
-        self.assertScriptResultEquals("$replacemulti(%test%,Five,)", "Four; ; Six", context)
+        self.assertScriptResultEquals("$replacemulti(%test%,Five,)", "Four; Six", context)
 
         self.assertScriptResultEquals("$replacemulti(a; b,,,)", "a; b")
         self.assertScriptResultEquals("$setmulti(foo,a; b)$replacemulti(%foo%,,,)", "a; b")

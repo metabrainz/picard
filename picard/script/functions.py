@@ -290,6 +290,7 @@ def func_replace(parser, text, old, new):
     """`$replacemulti(name,search,replace,separator="; ")`
 
 Replaces occurrences of `search` with `replace` in the multi-value variable `name`.
+Empty elements are automatically removed.
 
 Example:
 
@@ -1214,7 +1215,7 @@ def func_map(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
         multi_value[loop_count - 1] = str(loop_code.eval(parser))
     func_unset(parser, '_loop_count')
     func_unset(parser, '_loop_value')
-    return multi_value.separator.join([x for x in multi_value if x])
+    return str(multi_value)
 
 
 @script_function(eval_args=False, documentation=N_(
