@@ -41,7 +41,6 @@ from picard.config import (
     get_config,
 )
 from picard.const import DEFAULT_FILE_NAMING_FORMAT
-from picard.file import File
 from picard.script import (
     ScriptError,
     ScriptParser,
