@@ -120,7 +120,7 @@ class ScriptEditorPage(PicardDialog):
         self.load()
 
     def eventFilter(self, object, event):
-        if event.type() == QtCore.QEvent.WindowActivate or event.type()== QtCore.QEvent.FocusIn:
+        if event.type() == QtCore.QEvent.WindowActivate or event.type() == QtCore.QEvent.FocusIn:
             self._sample_example_files()
             self.load()
         return False
