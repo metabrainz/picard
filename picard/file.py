@@ -743,8 +743,8 @@ class File(QtCore.QObject, Item):
         m = self.metadata
         if column == "title" and not m["title"]:
             return self.base_filename
-        if column == "covercount":
-            return self._cover_art_description(self.metadata.images, False)
+        elif column == "covercount":
+            return self.cover_art_description()
         return m[column]
 
     def _lookup_finished(self, lookuptype, document, http, error):

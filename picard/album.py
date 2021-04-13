@@ -667,7 +667,7 @@ class Album(DataObject, Item):
                 unsaved = self.get_num_unsaved_files()
                 if unsaved:
                     text += '; %d*' % (unsaved,)
-                text += self._cover_art_description(self.metadata.images, True)
+                text += self.cover_art_description_detailed()
                 return text
             else:
                 return title
@@ -684,7 +684,7 @@ class Album(DataObject, Item):
         elif column == 'discnumber':
             return self.metadata['totaldiscs']
         elif column == 'covercount':
-            return self._cover_art_description(self.metadata.images, False)
+            return self.cover_art_description()
         else:
             return self.metadata[column]
 

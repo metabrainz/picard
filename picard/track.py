@@ -248,8 +248,8 @@ class Track(DataObject, FileListItem):
         if column == 'title':
             prefix = "%s-" % m['discnumber'] if m['discnumber'] and m['totaldiscs'] != "1" else ""
             return "%s%s  %s" % (prefix, m['tracknumber'].zfill(2), m['title'])
-        if column == 'covercount':
-            return self._cover_art_description(self.metadata.images, False)
+        elif column == 'covercount':
+            return self.cover_art_description()
         elif column in m:
             return m[column]
         elif self.num_linked_files == 1:

@@ -231,7 +231,7 @@ class Cluster(FileList):
     def column(self, column):
         if column == 'title':
             return '%s (%d)' % (self.metadata['album'], len(self.files))
-        elif self.special and (column in ['~length', 'album']):
+        elif self.special and (column in ['~length', 'album', 'covercount']):
             return ''
         elif column == '~length':
             return format_time(self.metadata.length)
@@ -242,7 +242,7 @@ class Cluster(FileList):
         elif column == 'discnumber':
             return self.metadata['totaldiscs']
         elif column == 'covercount':
-            return self._cover_art_description(self.metadata.images, False)
+            return self.cover_art_description()
         return self.metadata[column]
 
     def _lookup_finished(self, document, http, error):
