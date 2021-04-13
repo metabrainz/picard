@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.6.1.dev1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-04-09 08:53+0200\n"
+"POT-Creation-Date: 2021-04-13 13:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2358,20 +2358,21 @@ msgid ""
 "\n"
 "Replaces occurrences of `search` with `replace` in the multi-value "
 "variable `name`.\n"
+"Empty elements are automatically removed.\n"
 "\n"
 "Example:\n"
 "\n"
 "    $replacemulti(%genre%,Idm,IDM)\n"
 msgstr ""
 
-#: picard/script/functions.py:313
+#: picard/script/functions.py:314
 msgid ""
 "`$in(x,y)`\n"
 "\n"
 "Returns true, if `x` contains `y`."
 msgstr ""
 
-#: picard/script/functions.py:325
+#: picard/script/functions.py:326
 #, python-format
 msgid ""
 "`$inmulti(%x%,y)`\n"
@@ -2382,7 +2383,7 @@ msgid ""
 "_Since Picard 1.0_"
 msgstr ""
 
-#: picard/script/functions.py:342
+#: picard/script/functions.py:343
 msgid ""
 "`$rreplace(text,pattern,replace)`\n"
 "\n"
@@ -2390,7 +2391,7 @@ msgid ""
 "expression-syntax) replace."
 msgstr ""
 
-#: picard/script/functions.py:354
+#: picard/script/functions.py:355
 msgid ""
 "`$rsearch(text,pattern)`\n"
 "\n"
@@ -2399,14 +2400,14 @@ msgid ""
 "    This function will return the first matching group."
 msgstr ""
 
-#: picard/script/functions.py:373
+#: picard/script/functions.py:374
 msgid ""
 "`$num(number,length)`\n"
 "\n"
 "Returns `number` formatted to `length` digits (maximum 20)."
 msgstr ""
 
-#: picard/script/functions.py:390
+#: picard/script/functions.py:391
 msgid ""
 "`$unset(name)`\n"
 "\n"
@@ -2416,7 +2417,7 @@ msgid ""
 "For example `$unset(performer:*)` would unset all performer tags."
 msgstr ""
 
-#: picard/script/functions.py:410
+#: picard/script/functions.py:411
 msgid ""
 "`$delete(name)`\n"
 "\n"
@@ -2430,7 +2431,7 @@ msgid ""
 "_Since Picard 2.1_"
 msgstr ""
 
-#: picard/script/functions.py:425
+#: picard/script/functions.py:426
 #, python-format
 msgid ""
 "`$set(name,value)`\n"
@@ -2445,7 +2446,7 @@ msgid ""
 "    `%_something%` will not."
 msgstr ""
 
-#: picard/script/functions.py:443
+#: picard/script/functions.py:444
 #, python-format
 msgid ""
 "`$setmulti(name,value,separator=\"; \")`\n"
@@ -2465,14 +2466,14 @@ msgid ""
 "_Since Picard 1.0_"
 msgstr ""
 
-#: picard/script/functions.py:461
+#: picard/script/functions.py:462
 msgid ""
 "`$get(name)`\n"
 "\n"
 "Returns the variable `name` (equivalent to `%name%`)."
 msgstr ""
 
-#: picard/script/functions.py:471
+#: picard/script/functions.py:472
 #, python-format
 msgid ""
 "`$copy(new,old)`\n"
@@ -2484,7 +2485,7 @@ msgid ""
 "_Since Picard 0.9_"
 msgstr ""
 
-#: picard/script/functions.py:487
+#: picard/script/functions.py:488
 msgid ""
 "`$copymerge(new,old)`\n"
 "\n"
@@ -2496,7 +2497,7 @@ msgid ""
 "_Since Picard 1.0_"
 msgstr ""
 
-#: picard/script/functions.py:505
+#: picard/script/functions.py:506
 msgid ""
 "`$trim(text[,char])`\n"
 "\n"
@@ -2504,7 +2505,7 @@ msgid ""
 "    The optional second parameter `char` specifies the character to trim."
 msgstr ""
 
-#: picard/script/functions.py:518
+#: picard/script/functions.py:519
 msgid ""
 "`$add(x,y,...)`\n"
 "\n"
@@ -2516,7 +2517,7 @@ msgid ""
 "    $add(x,y,z) = ((x + y) + z)\n"
 msgstr ""
 
-#: picard/script/functions.py:536
+#: picard/script/functions.py:537
 msgid ""
 "`$sub(x,y,...)`\n"
 "\n"
@@ -2528,7 +2529,7 @@ msgid ""
 "    $sub(x,y,z) = ((x - y) - z)\n"
 msgstr ""
 
-#: picard/script/functions.py:554
+#: picard/script/functions.py:555
 msgid ""
 "`$div(x,y,...)`\n"
 "\n"
@@ -2540,7 +2541,7 @@ msgid ""
 "    $div(x,y,z) = ((x / y) / z)\n"
 msgstr ""
 
-#: picard/script/functions.py:574
+#: picard/script/functions.py:575
 msgid ""
 "`$mod(x,y,...)`\n"
 "\n"
@@ -2552,7 +2553,7 @@ msgid ""
 "    $mod(x,y,z) = ((x % y) % z)\n"
 msgstr ""
 
-#: picard/script/functions.py:592
+#: picard/script/functions.py:593
 msgid ""
 "`$mul(x,y,...)`\n"
 "\n"
@@ -2564,7 +2565,7 @@ msgid ""
 "    $mul(x,y,z) = ((x * y) * z)\n"
 msgstr ""
 
-#: picard/script/functions.py:610
+#: picard/script/functions.py:611
 msgid ""
 "`$or(x,y,...)`\n"
 "\n"
@@ -2573,7 +2574,7 @@ msgid ""
 "    The result is true if ANY of the arguments is not empty."
 msgstr ""
 
-#: picard/script/functions.py:624
+#: picard/script/functions.py:625
 msgid ""
 "`$and(x,y,...)`\n"
 "\n"
@@ -2582,63 +2583,63 @@ msgid ""
 "    The result is true if ALL of the arguments are not empty."
 msgstr ""
 
-#: picard/script/functions.py:638
+#: picard/script/functions.py:639
 msgid ""
 "`$not(x)`\n"
 "\n"
 "Returns true if `x` is empty."
 msgstr ""
 
-#: picard/script/functions.py:650
+#: picard/script/functions.py:651
 msgid ""
 "`$eq(x,y)`\n"
 "\n"
 "Returns true if `x` equals `y`."
 msgstr ""
 
-#: picard/script/functions.py:662
+#: picard/script/functions.py:663
 msgid ""
 "`$ne(x,y)`\n"
 "\n"
 "Returns true if `x` does not equal `y`."
 msgstr ""
 
-#: picard/script/functions.py:674
+#: picard/script/functions.py:675
 msgid ""
 "`$lt(x,y)`\n"
 "\n"
 "Returns true if `x` is less than `y`."
 msgstr ""
 
-#: picard/script/functions.py:688
+#: picard/script/functions.py:689
 msgid ""
 "`$lte(x,y)`\n"
 "\n"
 "Returns true if `x` is less than or equal to `y`."
 msgstr ""
 
-#: picard/script/functions.py:702
+#: picard/script/functions.py:703
 msgid ""
 "`$gt(x,y)`\n"
 "\n"
 "Returns true if `x` is greater than `y`."
 msgstr ""
 
-#: picard/script/functions.py:716
+#: picard/script/functions.py:717
 msgid ""
 "`$gte(x,y)`\n"
 "\n"
 "Returns true if `x` is greater than or equal to `y`."
 msgstr ""
 
-#: picard/script/functions.py:730
+#: picard/script/functions.py:731
 msgid ""
 "`$len(text)`\n"
 "\n"
 "Returns the number of characters in `text`."
 msgstr ""
 
-#: picard/script/functions.py:739
+#: picard/script/functions.py:740
 msgid ""
 "`$lenmulti(name,separator=\"; \")`\n"
 "\n"
@@ -2654,7 +2655,7 @@ msgid ""
 "    $lenmulti(One; Two; Three) = 3\n"
 msgstr ""
 
-#: picard/script/functions.py:756
+#: picard/script/functions.py:757
 msgid ""
 "`$performer(pattern=\"\",join=\", \")`\n"
 "\n"
@@ -2664,7 +2665,7 @@ msgid ""
 "_Since Picard 0.10_"
 msgstr ""
 
-#: picard/script/functions.py:771
+#: picard/script/functions.py:772
 msgid ""
 "`$matchedtracks()`\n"
 "\n"
@@ -2674,7 +2675,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script/functions.py:787
+#: picard/script/functions.py:788
 msgid ""
 "`$is_complete()`\n"
 "\n"
@@ -2682,7 +2683,7 @@ msgid ""
 "**Only works in File Naming scripts.**"
 msgstr ""
 
-#: picard/script/functions.py:802
+#: picard/script/functions.py:803
 msgid ""
 "`$firstalphachar(text,nonalpha=\"#\")`\n"
 "\n"
@@ -2694,7 +2695,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script/functions.py:821
+#: picard/script/functions.py:822
 msgid ""
 "`$initials(text)`\n"
 "\n"
@@ -2704,7 +2705,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script/functions.py:832
+#: picard/script/functions.py:833
 msgid ""
 "`$firstwords(text,length)`\n"
 "\n"
@@ -2714,7 +2715,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script/functions.py:855
+#: picard/script/functions.py:856
 msgid ""
 "`$startswith(text,prefix)`\n"
 "\n"
@@ -2723,7 +2724,7 @@ msgid ""
 "_Since Picard 1.4_"
 msgstr ""
 
-#: picard/script/functions.py:868
+#: picard/script/functions.py:869
 msgid ""
 "`$endswith(text,suffix)`\n"
 "\n"
@@ -2732,7 +2733,7 @@ msgid ""
 "_Since Picard 1.4_"
 msgstr ""
 
-#: picard/script/functions.py:881
+#: picard/script/functions.py:882
 msgid ""
 "`$truncate(text,length)`\n"
 "\n"
@@ -2741,7 +2742,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script/functions.py:896
+#: picard/script/functions.py:897
 msgid ""
 "`$swapprefix(text,prefix1,prefix2,...)`\n"
 "\n"
@@ -2758,7 +2759,7 @@ msgid ""
 "_Since Picard 1.3, previously as a plugin since Picard 0.13_"
 msgstr ""
 
-#: picard/script/functions.py:918
+#: picard/script/functions.py:919
 msgid ""
 "`$delprefix(text,prefix1,prefix2,...)`\n"
 "\n"
@@ -2774,7 +2775,7 @@ msgid ""
 "_Since Picard 1.3_"
 msgstr ""
 
-#: picard/script/functions.py:956
+#: picard/script/functions.py:957
 msgid ""
 "`$eq_any(x,a1,a2,...)`\n"
 "\n"
@@ -2783,7 +2784,7 @@ msgid ""
 "Functionally equivalent to the eq2 plugin."
 msgstr ""
 
-#: picard/script/functions.py:968
+#: picard/script/functions.py:969
 msgid ""
 "`$ne_all(x,a1,a2,...)`\n"
 "\n"
@@ -2792,7 +2793,7 @@ msgid ""
 "Functionally equivalent to the ne2 plugin."
 msgstr ""
 
-#: picard/script/functions.py:980
+#: picard/script/functions.py:981
 msgid ""
 "`$eq_all(x,a1,a2,...)`\n"
 "\n"
@@ -2805,7 +2806,7 @@ msgid ""
 "Loaf))\n"
 msgstr ""
 
-#: picard/script/functions.py:998
+#: picard/script/functions.py:999
 #, python-format
 msgid ""
 "`$ne_any(x,a1,a2,...)`\n"
@@ -2820,7 +2821,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: picard/script/functions.py:1013
+#: picard/script/functions.py:1014
 msgid ""
 "`$title(text)`\n"
 "\n"
@@ -2833,7 +2834,7 @@ msgid ""
 "_Since Picard 2.1_"
 msgstr ""
 
-#: picard/script/functions.py:1053
+#: picard/script/functions.py:1054
 msgid ""
 "`$is_audio()`\n"
 "\n"
@@ -2842,7 +2843,7 @@ msgid ""
 "_Since Picard 2.2_"
 msgstr ""
 
-#: picard/script/functions.py:1067
+#: picard/script/functions.py:1068
 msgid ""
 "`$is_video()`\n"
 "\n"
@@ -2851,7 +2852,7 @@ msgid ""
 "_Since Picard 2.2_"
 msgstr ""
 
-#: picard/script/functions.py:1081
+#: picard/script/functions.py:1082
 msgid ""
 "`$find(haystack,needle)`\n"
 "\n"
@@ -2865,14 +2866,14 @@ msgid ""
 "not found."
 msgstr ""
 
-#: picard/script/functions.py:1098
+#: picard/script/functions.py:1099
 msgid ""
 "`$reverse(text)`\n"
 "\n"
 "Returns `text` in reverse order."
 msgstr ""
 
-#: picard/script/functions.py:1107
+#: picard/script/functions.py:1108
 msgid ""
 "`$substr(text,start,end)`\n"
 "\n"
@@ -2886,7 +2887,7 @@ msgid ""
 "    the start and end of the string respectively."
 msgstr ""
 
-#: picard/script/functions.py:1128
+#: picard/script/functions.py:1129
 msgid ""
 "`$getmulti(name,index,separator=\"; \")`\n"
 "\n"
@@ -2898,7 +2899,7 @@ msgid ""
 "    multi-valued tag."
 msgstr ""
 
-#: picard/script/functions.py:1147
+#: picard/script/functions.py:1148
 msgid ""
 "`$foreach(name,code,separator=\"; \")`\n"
 "\n"
@@ -2916,7 +2917,7 @@ msgid ""
 "    proper multi-valued tag."
 msgstr ""
 
-#: picard/script/functions.py:1169
+#: picard/script/functions.py:1170
 msgid ""
 "`$while(condition,code)`\n"
 "\n"
@@ -2930,7 +2931,7 @@ msgid ""
 "    safeguard against accidentally creating an infinite loop."
 msgstr ""
 
-#: picard/script/functions.py:1190
+#: picard/script/functions.py:1191
 msgid ""
 "`$map(name,code,separator=\"; \")`\n"
 "\n"
@@ -2944,6 +2945,8 @@ msgid ""
 "allows\n"
 "    the element or count value to be accessed within the `code` script.\n"
 "\n"
+"Empty elements are automatically removed.\n"
+"\n"
 "Example:\n"
 "\n"
 "    $map(First:A; Second:B,$upper(%_loop_count%=%_loop_value%))\n"
@@ -2951,7 +2954,7 @@ msgid ""
 "Result: 1=FIRST:A; 2=SECOND:B\n"
 msgstr ""
 
-#: picard/script/functions.py:1217
+#: picard/script/functions.py:1221
 msgid ""
 "`$join(name,text,separator=\"; \")`\n"
 "\n"
@@ -2959,7 +2962,7 @@ msgid ""
 "returns the result as a string."
 msgstr ""
 
-#: picard/script/functions.py:1228
+#: picard/script/functions.py:1232
 msgid ""
 "`$slice(name,start,end,separator=\"; \")`\n"
 "\n"
@@ -2987,7 +2990,7 @@ msgid ""
 "    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
 msgstr ""
 
-#: picard/script/functions.py:1260
+#: picard/script/functions.py:1264
 #, python-format
 msgid ""
 "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
@@ -3009,7 +3012,7 @@ msgid ""
 "    `%3Y`); and hanging '%' at the end of the format string."
 msgstr ""
 
-#: picard/script/functions.py:1289
+#: picard/script/functions.py:1293
 msgid ""
 "`$sortmulti(name,separator=\"; \")`\n"
 "\n"
@@ -3023,7 +3026,7 @@ msgid ""
 "Result: A; B; C\n"
 msgstr ""
 
-#: picard/script/functions.py:1306
+#: picard/script/functions.py:1310
 msgid ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
@@ -3040,7 +3043,7 @@ msgid ""
 "Result: C; B; A\n"
 msgstr ""
 
-#: picard/script/functions.py:1325
+#: picard/script/functions.py:1329
 #, python-format
 msgid ""
 "`$unique(name,case_sensitive=\"\",separator=\"; \")`\n"
@@ -5161,7 +5164,7 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: picard/ui/options/cover.py:49
+#: picard/ui/options/cover.py:50
 msgid "Cover Art"
 msgstr ""
 
