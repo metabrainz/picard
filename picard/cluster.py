@@ -83,10 +83,9 @@ class FileList(QtCore.QObject, FileListItem):
         FileListItem.__init__(self, files)
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
-        for file in self.files:
-            if self.can_show_coverart:
+        if self.files and self.can_show_coverart:
+            for file in self.files:
                 file.metadata_images_changed.connect(self.update_metadata_images)
-        if self.files:
             update_metadata_images(self)
 
     def iterfiles(self, save=False):
