@@ -100,27 +100,38 @@ class Item(object):
     def clear_errors(self):
         self._errors = []
 
-    def _cover_art_description(self, images, detailed=True):
-        """Return the number of cover art images in `images` for display in the UI
+    @property
+    def _images(self):
+        return self.metadata.images
 
-        Args:
-            images: An instance of picard.util.imagelist.ImageList
-            detailed: If True, return a detailed text about the images and whether they are the same across all tracks.
-                    If False only return the number as a string.
+    def cover_art_description(self):
+        """Return the number of cover art images for display in the UI
+
+        Returns:
+            A string with the cover art image count, or empty string if not applicable
+        """
+        if not self.can_show_coverart:
+            return ''
+
+        return str(len(self._images))
+
+    def cover_art_description_detailed(self):
+        """Return  a detailed text about the images and whether they are the same across
+           all tracks for images in `images` for display in the UI
 
         Returns:
             A string explaining the cover art image count.
         """
-        number_of_images = len(images)
-        if detailed:
-            if getattr(self, 'has_common_images', True):
-                return ngettext("; %i image)", "; %i images)",
-                                number_of_images) % number_of_images
-            else:
-                return ngettext("; %i image not in all tracks)", "; %i different images among tracks)",
-                                number_of_images) % number_of_images
+        if not self.can_show_coverart:
+            return ''
+
+        number_of_images = len(self._images)
+        if getattr(self, 'has_common_images', True):
+            return ngettext("; %i image)", "; %i images)",
+                            number_of_images) % number_of_images
         else:
-            return str(number_of_images)
+            return ngettext("; %i image not in all tracks)", "; %i different images among tracks)",
+                            number_of_images) % number_of_images
 
 
 class FileListItem(Item):
