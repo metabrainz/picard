@@ -59,7 +59,6 @@ from picard.ui.options import (
     OptionsPage,
     register_options_page,
 )
-from picard.ui.options.renaming_editor import RenamingEditorOptionsPage
 from picard.ui.options.scripting import (
     ScriptCheckError,
     ScriptingDocumentationDialog,
@@ -152,7 +151,7 @@ class RenamingOptionsPage(OptionsPage):
         sync_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
 
     def show_script_editing_page(self):
-        RenamingEditorOptionsPage.show_instance(parent=self)
+        self.tagger.window.show_script_editor()
 
     def show_scripting_documentation(self):
         ScriptingDocumentationDialog.show_instance(parent=self)

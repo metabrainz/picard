@@ -117,6 +117,7 @@ from picard.ui.passworddialog import (
     PasswordDialog,
     ProxyDialog,
 )
+from picard.ui.scripteditor import ScriptEditorPage
 from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
 from picard.ui.statusindicator import DesktopStatusIndicator
@@ -231,6 +232,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.log_dialog = LogView(self)
         self.history_dialog = HistoryView(self)
+        self.script_editor_dialog = ScriptEditorPage(self)
 
         self.metadata_box = MetadataBox(self)
         self.cover_art_box = CoverArtBox(self)
@@ -693,6 +695,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.open_folder_action.setEnabled(False)
         self.open_folder_action.triggered.connect(self.open_folder)
 
+        self.script_editor_action = QtWidgets.QAction(_("Script &Editor"), self)
+        self.script_editor_action.setStatusTip(_("Open the file naming script editor"))
+        self.script_editor_action.triggered.connect(self.show_script_editor)
+        self.script_editor_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+E")))
+
         if self.tagger.autoupdate_enabled:
             self.check_update_action = QtWidgets.QAction(_("&Check for Update…"), self)
             self.check_update_action.setMenuRole(QtWidgets.QAction.ApplicationSpecificRole)
@@ -800,6 +807,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addAction(self.cluster_action)
         menu.addAction(self.browser_lookup_action)
         menu.addAction(self.track_search_action)
+        menu.addSeparator()
+        menu.addAction(self.script_editor_action)
         menu.addSeparator()
         menu.addAction(self.generate_fingerprints_action)
         menu.addAction(self.tags_from_filenames_action)
@@ -1065,6 +1074,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.history_dialog.show()
         self.history_dialog.raise_()
         self.history_dialog.activateWindow()
+
+    def show_script_editor(self):
+        self.script_editor_dialog.show()
+        self.script_editor_dialog.raise_()
+        # self.script_editor_dialog._sample_example_files()
+        # self.script_editor_dialog.load()
+        self.script_editor_dialog.activateWindow()
 
     def open_bug_report(self):
         webbrowser2.goto('troubleshooting')
