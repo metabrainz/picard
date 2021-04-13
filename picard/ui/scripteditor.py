@@ -36,39 +36,34 @@
 from functools import partial
 import os.path
 
+from PyQt5 import QtCore
+
 from picard.config import (
     TextOption,
     get_config,
 )
 from picard.const import DEFAULT_FILE_NAMING_FORMAT
+from picard.file import File
 from picard.script import (
     ScriptError,
     ScriptParser,
 )
 from picard.util.settingsoverride import SettingsOverride
 
-from picard.ui import (
-    PicardDialog,
-    SingletonDialog,
-)
-from picard.ui.options import (
-    OptionsCheckError,
-    OptionsPage,
-)
+from picard.ui import PicardDialog
+from picard.ui.options import OptionsPage
 from picard.ui.options.scripting import (
     ScriptCheckError,
     ScriptingDocumentationDialog,
 )
-from picard.ui.ui_options_renaming_editor import Ui_RenamingEditorOptionsPage
+from picard.ui.ui_scripteditor import Ui_ScriptEditor
 
 
-class RenamingEditorOptionsPage(PicardDialog, SingletonDialog):
+class ScriptEditorPage(PicardDialog):
 
-    NAME = "filerenamingeditor"
-    TITLE = N_("File Naming Editor")
+    NAME = "scripteditor"
+    TITLE = N_("Script Editor")
     PARENT = None
-    SORT_ORDER = 40
-    ACTIVE = True
     HELP_URL = '/config/options_filerenaming.html'
     STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
 
@@ -82,19 +77,24 @@ class RenamingEditorOptionsPage(PicardDialog, SingletonDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.ui = Ui_RenamingEditorOptionsPage()
+        self.PARENT = parent
+        self.setWindowFlags(QtCore.Qt.Window)
+        self.setWindowTitle(self.TITLE)
+        self.displaying = False
+        self.ui = Ui_ScriptEditor()
         self.ui.setupUi(self)
 
-        self.PARENT = parent
+        self.installEventFilter(self)
 
         self.ui.file_naming_editor_save.clicked.connect(self.save_script)
-        self.ui.file_naming_editor_cancel.clicked.connect(self.reject)
 
         self.ui.file_naming_format.setEnabled(True)
         self.ui.file_naming_format_default.setEnabled(True)
+        self.ui.file_naming_format_reload.setEnabled(True)
 
         self.ui.file_naming_format.textChanged.connect(self.check_formats)
         self.ui.file_naming_format_default.clicked.connect(self.set_file_naming_format_default)
+        self.ui.file_naming_format_reload.clicked.connect(self.load)
 
         self.ui.scripting_documentation_button.clicked.connect(self.show_scripting_documentation)
         self.ui.example_filename_sample_files_button.clicked.connect(self._sample_example_files)
@@ -119,9 +119,15 @@ class RenamingEditorOptionsPage(PicardDialog, SingletonDialog):
 
         self.load()
 
+    def eventFilter(self, object, event):
+        if event.type() == QtCore.QEvent.WindowActivate or event.type()== QtCore.QEvent.FocusIn:
+            self._sample_example_files()
+            self.load()
+        return False
+
     def save_script(self):
-        self.PARENT.ui.file_naming_format.setPlainText(self.ui.file_naming_format.toPlainText())
-        self.accept()
+        config = get_config()
+        config.setting["file_naming_format"] = self.ui.file_naming_format.toPlainText()
 
     def show_scripting_documentation(self):
         ScriptingDocumentationDialog.show_instance(parent=self)
@@ -133,12 +139,7 @@ class RenamingEditorOptionsPage(PicardDialog, SingletonDialog):
     def _example_to_filename(self, file):
         config = get_config()
         settings = SettingsOverride(config.setting, {
-            'ascii_filenames': self.PARENT.ui.ascii_filenames.isChecked(),
             'file_naming_format': self.ui.file_naming_format.toPlainText(),
-            'move_files': self.PARENT.ui.move_files.isChecked(),
-            'move_files_to': os.path.normpath(self.PARENT.ui.move_files_to.text()),
-            'rename_files': self.PARENT.ui.rename_files.isChecked(),
-            'windows_compatibility': self.PARENT.ui.windows_compatibility.isChecked(),
         })
 
         try:
@@ -161,52 +162,58 @@ class RenamingEditorOptionsPage(PicardDialog, SingletonDialog):
         # Get a new sample of randomly selected /loaded files to use as renaming examples
         import random
         max_samples = 10  # pick up to 10 samples
-        if self.tagger.window.selected_objects:
+        if self.PARENT.selected_objects:
             # If files/albums/tracks are selected, sample example files from them
-            files = self.tagger.get_files_from_objects(self.tagger.window.selected_objects)
+            files = self.PARENT.tagger.get_files_from_objects(self.PARENT.selected_objects)
             length = min(max_samples, len(files))
             files = [file for file in random.sample(files, k=length)]
         else:
             # If files/albums/tracks are not selected, sample example files from the pool of loaded files
-            files = self.tagger.files
+            files = self.PARENT.tagger.files
             length = min(max_samples, len(files))
             files = [files[key] for key in random.sample(files.keys(), k=length)]
 
         if not files:
             # If no file has been loaded, use generic examples
-            files = self.PARENT.default_examples
+            files = [self.example_1(), self.example_2()]
         self._sampled_example_files = files
         self.update_examples()
 
     def update_examples(self):
+        config = get_config()
         self.ui.example_filename_before.clear()
         self.ui.example_filename_after.clear()
 
-        if not self._sampled_example_files:
-            self._sample_example_files()
-        example_files = self._sampled_example_files
+        if config.setting["move_files"] or config.setting["rename_files"]:
+            if not self._sampled_example_files:
+                self._sample_example_files()
+            example_files = self._sampled_example_files
 
-        examples = [self._example_to_filename(example) for example in example_files]
-        for before, after in sorted(examples, key=lambda x: x[1]):
-            self.ui.example_filename_before.addItem(before)
-            self.ui.example_filename_after.addItem(after)
+            examples = [self._example_to_filename(example) for example in example_files]
+            for before, after in sorted(examples, key=lambda x: x[1]):
+                self.ui.example_filename_before.addItem(before)
+                self.ui.example_filename_after.addItem(after)
+        else:
+            err_text = N_("Renaming options are disabled")
+            self.ui.example_filename_before.addItem(err_text)
+            self.ui.example_filename_after.addItem(err_text)
 
     def load(self):
-        self.ui.file_naming_format.setPlainText(self.PARENT.ui.file_naming_format.toPlainText())
+        config = get_config()
+        self.ui.file_naming_format.setPlainText(config.setting["file_naming_format"])
         self.update_examples()
 
     def check(self):
         self.check_format()
-        if self.PARENT.ui.move_files.isChecked() and not self.PARENT.ui.move_files_to.text().strip():
-            raise OptionsCheckError(_("Error"), _("The location to move files to must not be empty."))
 
     def check_format(self):
+        config = get_config()
         parser = ScriptParser()
         try:
             parser.eval(self.ui.file_naming_format.toPlainText())
         except Exception as e:
             raise ScriptCheckError("", str(e))
-        if self.PARENT.ui.rename_files.isChecked():
+        if config.setting["rename_files"]:
             if not self.ui.file_naming_format.toPlainText().strip():
                 raise ScriptCheckError("", _("The file naming format must not be empty."))
 
@@ -227,3 +234,69 @@ class RenamingEditorOptionsPage(PicardDialog, SingletonDialog):
             self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR)
             self.ui.renaming_error.setText(e.info)
             return
+
+    @staticmethod
+    def example_1():
+        file = File("ticket_to_ride.mp3")
+        file.state = File.NORMAL
+        file.metadata['album'] = 'Help!'
+        file.metadata['title'] = 'Ticket to Ride'
+        file.metadata['~releasecomment'] = '2014 mono remaster'
+        file.metadata['artist'] = 'The Beatles'
+        file.metadata['artistsort'] = 'Beatles, The'
+        file.metadata['albumartist'] = 'The Beatles'
+        file.metadata['albumartistsort'] = 'Beatles, The'
+        file.metadata['tracknumber'] = '7'
+        file.metadata['totaltracks'] = '14'
+        file.metadata['discnumber'] = '1'
+        file.metadata['totaldiscs'] = '1'
+        file.metadata['originaldate'] = '1965-08-06'
+        file.metadata['originalyear'] = '1965'
+        file.metadata['date'] = '2014-09-08'
+        file.metadata['releasetype'] = ['album', 'soundtrack']
+        file.metadata['~primaryreleasetype'] = ['album']
+        file.metadata['~secondaryreleasetype'] = ['soundtrack']
+        file.metadata['releasestatus'] = 'official'
+        file.metadata['releasecountry'] = 'US'
+        file.metadata['~extension'] = 'mp3'
+        file.metadata['musicbrainz_albumid'] = 'd7fbbb0a-1348-40ad-8eef-cd438d4cd203'
+        file.metadata['musicbrainz_albumartistid'] = 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d'
+        file.metadata['musicbrainz_artistid'] = 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d'
+        file.metadata['musicbrainz_recordingid'] = 'ed052ae1-c950-47f2-8d2b-46e1b58ab76c'
+        file.metadata['musicbrainz_releasetrackid'] = '392639f5-5629-477e-b04b-93bffa703405'
+        return file
+
+    @staticmethod
+    def example_2():
+        config = get_config()
+        file = File("track05.mp3")
+        file.state = File.NORMAL
+        file.metadata['album'] = "Coup d'État, Volume 1: Ku De Ta / Prologue"
+        file.metadata['title'] = "I've Got to Learn the Mambo"
+        file.metadata['artist'] = "Snowboy feat. James Hunter"
+        file.metadata['artistsort'] = "Snowboy feat. Hunter, James"
+        file.metadata['albumartist'] = config.setting['va_name']
+        file.metadata['albumartistsort'] = config.setting['va_name']
+        file.metadata['tracknumber'] = '5'
+        file.metadata['totaltracks'] = '13'
+        file.metadata['discnumber'] = '2'
+        file.metadata['totaldiscs'] = '2'
+        file.metadata['discsubtitle'] = "Beat Up"
+        file.metadata['originaldate'] = '2005-07-04'
+        file.metadata['originalyear'] = '2005'
+        file.metadata['date'] = '2005-07-04'
+        file.metadata['releasetype'] = ['album', 'compilation']
+        file.metadata['~primaryreleasetype'] = 'album'
+        file.metadata['~secondaryreleasetype'] = 'compilation'
+        file.metadata['releasestatus'] = 'official'
+        file.metadata['releasecountry'] = 'AU'
+        file.metadata['compilation'] = '1'
+        file.metadata['~multiartist'] = '1'
+        file.metadata['~extension'] = 'mp3'
+        file.metadata['musicbrainz_albumid'] = '4b50c71e-0a07-46ac-82e4-cb85dc0c9bdd'
+        file.metadata['musicbrainz_recordingid'] = 'b3c487cb-0e55-477d-8df3-01ec6590f099'
+        file.metadata['musicbrainz_releasetrackid'] = 'f8649a05-da39-39ba-957c-7abf8f9012be'
+        file.metadata['musicbrainz_albumartistid'] = '89ad4ac3-39f7-470e-963a-56509c546377'
+        file.metadata['musicbrainz_artistid'] = ['7b593455-d207-482c-8c6f-19ce22c94679',
+                                                    '9e082466-2390-40d1-891e-4803531f43fd']
+        return file
