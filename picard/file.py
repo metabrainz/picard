@@ -25,6 +25,7 @@
 # Copyright (C) 2019 Joel Lintunen
 # Copyright (C) 2020 Ray Bouchard
 # Copyright (C) 2020 Gabriel Ferreira
+# Copyright (C) 2021 Petit Minion
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -742,6 +743,8 @@ class File(QtCore.QObject, Item):
         m = self.metadata
         if column == "title" and not m["title"]:
             return self.base_filename
+        if column == "covercount":
+            return self._cover_art_description(self.metadata.images, False)
         return m[column]
 
     def _lookup_finished(self, lookuptype, document, http, error):
