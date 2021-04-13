@@ -132,6 +132,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.scripting_documentation_button.clicked.connect(self.show_scripting_documentation)
         self.ui.example_filename_sample_files_button.clicked.connect(self._sample_example_files)
         self._sampled_example_files = []
+        self.default_examples = [self.example_1(), self.example_2()]
 
         # Sync example lists vertical scrolling
         def sync_vertical_scrollbars(widgets):
@@ -227,7 +228,7 @@ class RenamingOptionsPage(OptionsPage):
 
         if not files:
             # If no file has been loaded, use generic examples
-            files = [self.example_1(), self.example_2()]
+            files = self.default_examples
         self._sampled_example_files = files
         self.update_examples()
 

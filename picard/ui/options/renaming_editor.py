@@ -175,7 +175,7 @@ class RenamingEditorOptionsPage(PicardDialog, SingletonDialog):
 
         if not files:
             # If no file has been loaded, use generic examples
-            files = [self.example_1(), self.example_2()]
+            files = self.PARENT.default_examples
         self._sampled_example_files = files
         self.update_examples()
 
@@ -211,9 +211,6 @@ class RenamingEditorOptionsPage(PicardDialog, SingletonDialog):
             if not self.ui.file_naming_format.toPlainText().strip():
                 raise ScriptCheckError("", _("The file naming format must not be empty."))
 
-    # def save(self):
-    #     self.PARENT.ui.file_naming_format.setPlainText(self.ui.file_naming_format.toPlainText())
-
     def display_error(self, error):
         # Ignore scripting errors, those are handled inline
         if not isinstance(error, ScriptCheckError):
@@ -221,71 +218,6 @@ class RenamingEditorOptionsPage(PicardDialog, SingletonDialog):
 
     def set_file_naming_format_default(self):
         self.ui.file_naming_format.setText(self.options[0].default)
-#        self.ui.file_naming_format.setCursorPosition(0)
-
-    def example_1(self):
-        file = File("ticket_to_ride.mp3")
-        file.state = File.NORMAL
-        file.metadata['album'] = 'Help!'
-        file.metadata['title'] = 'Ticket to Ride'
-        file.metadata['~releasecomment'] = '2014 mono remaster'
-        file.metadata['artist'] = 'The Beatles'
-        file.metadata['artistsort'] = 'Beatles, The'
-        file.metadata['albumartist'] = 'The Beatles'
-        file.metadata['albumartistsort'] = 'Beatles, The'
-        file.metadata['tracknumber'] = '7'
-        file.metadata['totaltracks'] = '14'
-        file.metadata['discnumber'] = '1'
-        file.metadata['totaldiscs'] = '1'
-        file.metadata['originaldate'] = '1965-08-06'
-        file.metadata['originalyear'] = '1965'
-        file.metadata['date'] = '2014-09-08'
-        file.metadata['releasetype'] = ['album', 'soundtrack']
-        file.metadata['~primaryreleasetype'] = ['album']
-        file.metadata['~secondaryreleasetype'] = ['soundtrack']
-        file.metadata['releasestatus'] = 'official'
-        file.metadata['releasecountry'] = 'US'
-        file.metadata['~extension'] = 'mp3'
-        file.metadata['musicbrainz_albumid'] = 'd7fbbb0a-1348-40ad-8eef-cd438d4cd203'
-        file.metadata['musicbrainz_albumartistid'] = 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d'
-        file.metadata['musicbrainz_artistid'] = 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d'
-        file.metadata['musicbrainz_recordingid'] = 'ed052ae1-c950-47f2-8d2b-46e1b58ab76c'
-        file.metadata['musicbrainz_releasetrackid'] = '392639f5-5629-477e-b04b-93bffa703405'
-        return file
-
-    def example_2(self):
-        config = get_config()
-        file = File("track05.mp3")
-        file.state = File.NORMAL
-        file.metadata['album'] = "Coup d'État, Volume 1: Ku De Ta / Prologue"
-        file.metadata['title'] = "I've Got to Learn the Mambo"
-        file.metadata['artist'] = "Snowboy feat. James Hunter"
-        file.metadata['artistsort'] = "Snowboy feat. Hunter, James"
-        file.metadata['albumartist'] = config.setting['va_name']
-        file.metadata['albumartistsort'] = config.setting['va_name']
-        file.metadata['tracknumber'] = '5'
-        file.metadata['totaltracks'] = '13'
-        file.metadata['discnumber'] = '2'
-        file.metadata['totaldiscs'] = '2'
-        file.metadata['discsubtitle'] = "Beat Up"
-        file.metadata['originaldate'] = '2005-07-04'
-        file.metadata['originalyear'] = '2005'
-        file.metadata['date'] = '2005-07-04'
-        file.metadata['releasetype'] = ['album', 'compilation']
-        file.metadata['~primaryreleasetype'] = 'album'
-        file.metadata['~secondaryreleasetype'] = 'compilation'
-        file.metadata['releasestatus'] = 'official'
-        file.metadata['releasecountry'] = 'AU'
-        file.metadata['compilation'] = '1'
-        file.metadata['~multiartist'] = '1'
-        file.metadata['~extension'] = 'mp3'
-        file.metadata['musicbrainz_albumid'] = '4b50c71e-0a07-46ac-82e4-cb85dc0c9bdd'
-        file.metadata['musicbrainz_recordingid'] = 'b3c487cb-0e55-477d-8df3-01ec6590f099'
-        file.metadata['musicbrainz_releasetrackid'] = 'f8649a05-da39-39ba-957c-7abf8f9012be'
-        file.metadata['musicbrainz_albumartistid'] = '89ad4ac3-39f7-470e-963a-56509c546377'
-        file.metadata['musicbrainz_artistid'] = ['7b593455-d207-482c-8c6f-19ce22c94679',
-                                                 '9e082466-2390-40d1-891e-4803531f43fd']
-        return file
 
     def test(self):
         self.ui.renaming_error.setStyleSheet("")
