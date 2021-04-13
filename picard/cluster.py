@@ -160,9 +160,9 @@ class Cluster(FileList):
         added_files = sorted(added_files, key=attrgetter('discnumber', 'tracknumber', 'base_filename'))
         self.files.extend(added_files)
         self.metadata['totaltracks'] = len(self.files)
-        self.item.add_files(added_files)
         if self.can_show_coverart:
             add_metadata_images(self, added_files)
+        self.item.add_files(added_files)
         if new_album:
             self._update_related_album(added_files=added_files)
 
