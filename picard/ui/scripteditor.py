@@ -40,6 +40,7 @@ from PyQt5 import (
     QtCore,
     QtWidgets,
 )
+
 from picard.config import (
     TextOption,
     get_config,
