@@ -86,6 +86,7 @@ $if(%_multiartist%,%artist% - ,)
     },
 ]
 
+
 class ScriptEditorPage(PicardDialog):
 
     NAME = "scripteditor"
