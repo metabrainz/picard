@@ -36,7 +36,10 @@
 from functools import partial
 import os.path
 
-from PyQt5 import QtCore
+from PyQt5 import (
+    QtCore,
+    QtWidgets,
+)
 
 from picard.config import (
     TextOption,
@@ -59,10 +62,34 @@ from picard.ui.options.scripting import (
 from picard.ui.ui_scripteditor import Ui_ScriptEditor
 
 
+PRESET_SCRIPTS = [
+    {
+        "title": N_("- please select an item -"),
+        "script": ""
+    },
+    {
+        "title": N_("album artist / album / track #. title"),
+        "script": """\
+%albumartist%/
+%album%/
+%tracknumber%. %title%"""
+    },
+    {
+        "title": N_("album / track #. artist - title"),
+        "script": """\
+$if2(%albumartist%,%artist%)/
+$if(%albumartist%,%album%/,)
+$if($gt(%totaldiscs%,1),%discnumber%-,)
+$if($and(%albumartist%,%tracknumber%),$num(%tracknumber%,2) ,)
+$if(%_multiartist%,%artist% - ,)
+%title%"""
+    },
+]
+
 class ScriptEditorPage(PicardDialog):
 
     NAME = "scripteditor"
-    TITLE = N_("Script Editor")
+    TITLE = N_("File naming script editor")
     PARENT = None
     HELP_URL = '/config/options_filerenaming.html'
     STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
@@ -89,16 +116,23 @@ class ScriptEditorPage(PicardDialog):
         self.ui.file_naming_editor_save.clicked.connect(self.save_script)
 
         self.ui.file_naming_format.setEnabled(True)
-        self.ui.file_naming_format_default.setEnabled(True)
         self.ui.file_naming_format_reload.setEnabled(True)
 
         self.ui.file_naming_format.textChanged.connect(self.check_formats)
-        self.ui.file_naming_format_default.clicked.connect(self.set_file_naming_format_default)
         self.ui.file_naming_format_reload.clicked.connect(self.load)
+        self.ui.file_naming_word_wrap.stateChanged.connect(self.toggle_wordwrap)
 
         self.ui.scripting_documentation_button.clicked.connect(self.show_scripting_documentation)
         self.ui.example_filename_sample_files_button.clicked.connect(self._sample_example_files)
         self._sampled_example_files = []
+
+        self.ui.example_filename_after.itemSelectionChanged.connect(self.match_before_to_after)
+        self.ui.example_filename_before.itemSelectionChanged.connect(self.match_after_to_before)
+
+        self.ui.preset_naming_scripts.clear()
+        for item in PRESET_SCRIPTS:
+            self.ui.preset_naming_scripts.addItem(item["title"])
+        self.ui.preset_naming_script_select.clicked.connect(self.select_preset_script)
 
         # Sync example lists vertical scrolling
         def sync_vertical_scrollbars(widgets):
@@ -117,6 +151,9 @@ class ScriptEditorPage(PicardDialog):
         # Sync example lists vertical scrolling
         sync_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
 
+        self.wordwrap = QtWidgets.QTextEdit.NoWrap
+        self.current_row = -1
+
         self.load()
 
     def eventFilter(self, object, event):
@@ -124,6 +161,22 @@ class ScriptEditorPage(PicardDialog):
             self._sample_example_files()
             self.load()
         return False
+
+    def select_preset_script(self):
+        selected_script = self.ui.preset_naming_scripts.currentIndex()
+        if selected_script > 0:
+            self.ui.file_naming_format.setPlainText(PRESET_SCRIPTS[selected_script]['script'])
+            self.update_examples()
+
+    def match_after_to_before(self):
+        if self.ui.example_filename_before.currentRow() != self.current_row:
+            self.current_row = self.ui.example_filename_before.currentRow()
+            self.ui.example_filename_after.setCurrentRow(self.current_row)
+
+    def match_before_to_after(self):
+        if self.ui.example_filename_after.currentRow() != self.current_row:
+            self.current_row = self.ui.example_filename_after.currentRow()
+            self.ui.example_filename_before.setCurrentRow(self.current_row)
 
     def save_script(self):
         config = get_config()
@@ -183,6 +236,7 @@ class ScriptEditorPage(PicardDialog):
         config = get_config()
         self.ui.example_filename_before.clear()
         self.ui.example_filename_after.clear()
+        self.current_row = -1
 
         if config.setting["move_files"] or config.setting["rename_files"]:
             if not self._sampled_example_files:
@@ -198,8 +252,16 @@ class ScriptEditorPage(PicardDialog):
             self.ui.example_filename_before.addItem(err_text)
             self.ui.example_filename_after.addItem(err_text)
 
+    def toggle_wordwrap(self):
+        if self.ui.file_naming_word_wrap.isChecked():
+            self.wordwrap = QtWidgets.QTextEdit.WidgetWidth
+        else:
+            self.wordwrap = QtWidgets.QTextEdit.NoWrap
+        self.ui.file_naming_format.setLineWrapMode(self.wordwrap)
+
     def load(self):
         config = get_config()
+        self.toggle_wordwrap()
         self.ui.file_naming_format.setPlainText(config.setting["file_naming_format"])
         self.update_examples()
 
@@ -221,9 +283,6 @@ class ScriptEditorPage(PicardDialog):
         # Ignore scripting errors, those are handled inline
         if not isinstance(error, ScriptCheckError):
             super().display_error(error)
-
-    def set_file_naming_format_default(self):
-        self.ui.file_naming_format.setText(self.options[0].default)
 
     def test(self):
         self.ui.renaming_error.setStyleSheet("")
