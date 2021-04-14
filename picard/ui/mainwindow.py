@@ -695,7 +695,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.open_folder_action.setEnabled(False)
         self.open_folder_action.triggered.connect(self.open_folder)
 
-        self.script_editor_action = QtWidgets.QAction(_("Script &Editor"), self)
+        self.script_editor_action = QtWidgets.QAction(_("SFile naming sript &editor"), self)
         self.script_editor_action.setStatusTip(_("Open the file naming script editor"))
         self.script_editor_action.triggered.connect(self.show_script_editor)
         self.script_editor_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+E")))
@@ -1080,6 +1080,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.script_editor_dialog.raise_()
         # self.script_editor_dialog._sample_example_files()
         # self.script_editor_dialog.load()
+        # self.script_editor_dialog.setWindowModality(QtCore.Qt.ApplicationModal)
         self.script_editor_dialog.activateWindow()
 
     def open_bug_report(self):
@@ -1262,6 +1263,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         if objects is not None:
             self.selected_objects = objects
+            self.script_editor_dialog._sample_example_files()
         else:
             objects = self.selected_objects
 
