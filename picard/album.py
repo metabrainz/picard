@@ -660,15 +660,18 @@ class Album(DataObject, Item):
                     if track.is_linked():
                         linked_tracks += 1
 
-                text = '%s\u200E (%d/%d' % (title, linked_tracks, len(self.tracks))
+                elems = ['%d/%d' % (linked_tracks, len(self.tracks))]
                 unmatched = self.get_num_unmatched_files()
                 if unmatched:
-                    text += '; %d?' % (unmatched,)
+                    elems.append('%d?' % (unmatched,))
                 unsaved = self.get_num_unsaved_files()
                 if unsaved:
-                    text += '; %d*' % (unsaved,)
-                text += self.cover_art_description_detailed()
-                return text
+                    elems.append('%d*' % (unsaved,))
+                ca_detailed = self.cover_art_description_detailed()
+                if ca_detailed:
+                    elems.append(ca_detailed)
+
+                return '%s\u200E (%s)' % (title, '; '.join(elems))
             else:
                 return title
         elif column == '~length':

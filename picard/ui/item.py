@@ -127,10 +127,10 @@ class Item(object):
 
         number_of_images = len(self._images)
         if getattr(self, 'has_common_images', True):
-            return ngettext("; %i image)", "; %i images)",
+            return ngettext("%i image", "%i images",
                             number_of_images) % number_of_images
         else:
-            return ngettext("; %i image not in all tracks)", "; %i different images among tracks)",
+            return ngettext("%i image not in all tracks", "%i different images among tracks",
                             number_of_images) % number_of_images
 
 
