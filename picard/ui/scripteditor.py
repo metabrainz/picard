@@ -40,7 +40,6 @@ from PyQt5 import (
     QtCore,
     QtWidgets,
 )
-
 from picard.config import (
     TextOption,
     get_config,
@@ -152,6 +151,11 @@ class ScriptEditorPage(PicardDialog):
         # Sync example lists vertical scrolling
         sync_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
 
+        # Set highlight colors for selected list items
+        # stylesheet = "QListView::item:selected { color: white; background-color: blue; }"
+        stylesheet = "QListView::item:selected { color: black; background-color: lightblue; }"
+        self.ui.example_filename_after.setStyleSheet(stylesheet)
+        self.ui.example_filename_before.setStyleSheet(stylesheet)
         self.wordwrap = QtWidgets.QTextEdit.NoWrap
         self.current_row = -1
 
@@ -234,6 +238,7 @@ class ScriptEditorPage(PicardDialog):
         self.update_examples()
 
     def update_examples(self):
+        # log.debug("QListWidget Style: %s" % self.ui.example_filename_before.styleSheet())
         config = get_config()
         self.ui.example_filename_before.clear()
         self.ui.example_filename_after.clear()
