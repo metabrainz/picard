@@ -12,8 +12,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-03-25 08:25+0000\n"
-"Last-Translator: Luca Salini\n"
+"PO-Revision-Date: 2021-04-14 20:05+0000\n"
+"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3484,6 +3484,11 @@ msgid ""
 "play."
 msgstr "La musica di scena è musica composta, in genere, per fare da sfondo a una rappresentazione teatrale."
 
+#: DB:area_type/name:9
+msgctxt "area_type"
+msgid "Indigenous territory / reserve"
+msgstr ""
+
 #: DB:place_type/name:5
 msgctxt "place_type"
 msgid "Indoor arena"
@@ -4440,6 +4445,11 @@ msgstr "Mevlidişerif"
 msgctxt "medium_format"
 msgid "Microcassette"
 msgstr "Microcassetta"
+
+#: DB:area_type/name:8
+msgctxt "area_type"
+msgid "Military base"
+msgstr ""
 
 #: DB:medium_format/name:6
 msgctxt "medium_format"
@@ -6953,6 +6963,21 @@ msgid ""
 "Use for images that need work to be used for tagging (but can possibly "
 "already be used for reference)"
 msgstr "Usalo per immagini che richiedono lavorazione per essere utilizzabili per il tagging (ma che possono già essere usate come riferimento)"
+
+#: DB:area_type/description:8
+msgctxt "area_type"
+msgid ""
+"Used for any military bases that are large enough to be considered an area, "
+"not just a place."
+msgstr ""
+
+#: DB:area_type/description:9
+msgctxt "area_type"
+msgid ""
+"Used for semi-autonomous territories governed by indigenous peoples, such as"
+" Indian reserves/reservations in North America and indigenous territories in"
+" Central and South America."
+msgstr ""
 
 #: DB:work_attribute_type/name:17
 msgctxt "work_attribute_type"

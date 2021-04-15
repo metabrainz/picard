@@ -47,7 +47,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-03-25 07:22+0000\n"
+"PO-Revision-Date: 2021-04-14 20:05+0000\n"
 "Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -3519,6 +3519,11 @@ msgid ""
 "play."
 msgstr "Bühnenmusik/Begleitmusik ist Musik, die (meist) als Hintergrund für ein Theaterstück geschrieben wird."
 
+#: DB:area_type/name:9
+msgctxt "area_type"
+msgid "Indigenous territory / reserve"
+msgstr ""
+
 #: DB:place_type/name:5
 msgctxt "place_type"
 msgid "Indoor arena"
@@ -4475,6 +4480,11 @@ msgstr "Mevlidişerif"
 msgctxt "medium_format"
 msgid "Microcassette"
 msgstr "Mikrokassette"
+
+#: DB:area_type/name:8
+msgctxt "area_type"
+msgid "Military base"
+msgstr ""
 
 #: DB:medium_format/name:6
 msgctxt "medium_format"
@@ -6988,6 +6998,21 @@ msgid ""
 "Use for images that need work to be used for tagging (but can possibly "
 "already be used for reference)"
 msgstr "Für Bilder, die vor der Verwendung fürs Tagging überarbeitet werden müssen (aber möglicherweise bereits als Referenz verwendet werden können)"
+
+#: DB:area_type/description:8
+msgctxt "area_type"
+msgid ""
+"Used for any military bases that are large enough to be considered an area, "
+"not just a place."
+msgstr ""
+
+#: DB:area_type/description:9
+msgctxt "area_type"
+msgid ""
+"Used for semi-autonomous territories governed by indigenous peoples, such as"
+" Indian reserves/reservations in North America and indigenous territories in"
+" Central and South America."
+msgstr ""
 
 #: DB:work_attribute_type/name:17
 msgctxt "work_attribute_type"

@@ -10,6 +10,7 @@
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # dubwai <o0wd8jx@lavabit.com>, 2012
 # odinvolk <odinwolk@gmail.com>, 2018
+# Rashid R <rashidrama200@gmail.com>, 2021
 # Serg Green <serg.green@gmail.com>, 2016
 # Александр Жибарь <santer1986@gmail.com>, 2016
 # Алексеев Денис <happy.den89@gmail.com>, 2015
@@ -23,7 +24,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-03-25 07:22+0000\n"
+"PO-Revision-Date: 2021-04-14 20:05+0000\n"
 "Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/musicbrainz/musicbrainz/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -45,47 +46,47 @@ msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr "Соната – общий термин, используемый для описания небольших инструментальных работ (очень часто соло или соло + клавишные), изначально в музыке эпохи барокко."
+msgstr "Соната – общий термин, используемый для описания небольших (очень часто соло или соло + клавишные) инструментальных работ, изначально в музыке эпохи барокко."
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
-msgstr "10\" винил (78 об/мин)"
+msgstr "10-дюймовая грампластинка"
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr "10\" винил"
+msgstr "10-дюймовый Винил"
 
 #: DB:medium_format/name:72
 msgctxt "medium_format"
 msgid "12\" LaserDisc"
-msgstr "12\" LaserDisc"
+msgstr "12-дюймовый LaserDisc"
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
-msgstr "12\" винил (78 об/мин)"
+msgstr "12-дюймовая грампластинка"
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
 msgid "12\" Vinyl"
-msgstr "12\" винил"
+msgstr "12-дюймовый Винил"
 
 #: DB:medium_format/name:49
 msgctxt "medium_format"
 msgid "3.5\" Floppy Disk"
-msgstr "3.5\" дискета"
+msgstr "3.5-дюймовая Дискета"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
 msgid "7\" Flexi-disc"
-msgstr "7\" гибкая пластинка"
+msgstr "7-дюймовая Flexi-пластинка"
 
 #: DB:medium_format/name:56
 msgctxt "medium_format"
 msgid "7\" Shellac"
-msgstr "7\" винил (78 об/мин)"
+msgstr "7-дюймовая грампластинка"
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
@@ -3495,6 +3496,11 @@ msgid ""
 "play."
 msgstr "Музыкальное сопровождение - это музыка, написанная в качестве фона для (как правило) театральной игры."
 
+#: DB:area_type/name:9
+msgctxt "area_type"
+msgid "Indigenous territory / reserve"
+msgstr ""
+
 #: DB:place_type/name:5
 msgctxt "place_type"
 msgid "Indoor arena"
@@ -4450,6 +4456,11 @@ msgstr ""
 #: DB:medium_format/name:83
 msgctxt "medium_format"
 msgid "Microcassette"
+msgstr ""
+
+#: DB:area_type/name:8
+msgctxt "area_type"
+msgid "Military base"
 msgstr ""
 
 #: DB:medium_format/name:6
@@ -6963,6 +6974,21 @@ msgctxt "cover_art_type"
 msgid ""
 "Use for images that need work to be used for tagging (but can possibly "
 "already be used for reference)"
+msgstr ""
+
+#: DB:area_type/description:8
+msgctxt "area_type"
+msgid ""
+"Used for any military bases that are large enough to be considered an area, "
+"not just a place."
+msgstr ""
+
+#: DB:area_type/description:9
+msgctxt "area_type"
+msgid ""
+"Used for semi-autonomous territories governed by indigenous peoples, such as"
+" Indian reserves/reservations in North America and indigenous territories in"
+" Central and South America."
 msgstr ""
 
 #: DB:work_attribute_type/name:17

@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-03-29 09:40+0200\n"
-"PO-Revision-Date: 2021-03-29 12:57+0000\n"
+"POT-Creation-Date: 2021-04-13 13:24+0200\n"
+"PO-Revision-Date: 2021-04-14 15:54+0000\n"
 "Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
 "Language-Team: Finnish (http://www.transifex.com/musicbrainz/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
@@ -95,13 +95,13 @@ msgid "Metadata Extraction"
 msgstr "Metatietojen poiminen"
 
 #: picard/cluster.py:508 picard/ui/cdlookup.py:73 picard/ui/itemviews.py:156
-#: picard/ui/mainwindow.py:878 picard/ui/searchdialog/album.py:152
+#: picard/ui/mainwindow.py:879 picard/ui/searchdialog/album.py:152
 #: picard/ui/searchdialog/track.py:65 picard/util/tags.py:41
 msgid "Artist"
 msgstr "Artisti"
 
 #: picard/cluster.py:509 picard/ui/cdlookup.py:73 picard/ui/itemviews.py:159
-#: picard/ui/mainwindow.py:877 picard/util/tags.py:38
+#: picard/ui/mainwindow.py:878 picard/util/tags.py:38
 msgid "Album"
 msgstr "Julkaisu"
 
@@ -2357,13 +2357,26 @@ msgid ""
 msgstr "`$replace(teksti,etsi,korvaa)`\n\nKorvaa merkkijonon `etsi` esiintymät `teksti`ssä arvolla `korvaa` ja palauta lopputulos."
 
 #: picard/script/functions.py:289
+#, python-format
+msgid ""
+"`$replacemulti(name,search,replace,separator=\"; \")`\n"
+"\n"
+"Replaces occurrences of `search` with `replace` in the multi-value variable `name`.\n"
+"Empty elements are automatically removed.\n"
+"\n"
+"Example:\n"
+"\n"
+"    $replacemulti(%genre%,Idm,IDM)\n"
+msgstr "`$replacemulti(nimi,etsi,korvaa,separator=\"; \")`\n\nKorvaa merkkijonon `etsi` esiintymät tekstillä `korvaa` moniarvoisessa muuttujassa `nimi`.\nTyhjät alkiot poistetaan automaattisesti.\n\nEsimerkki:\n\n    $replacemulti(%genre%,Idm,IDM)\n"
+
+#: picard/script/functions.py:314
 msgid ""
 "`$in(x,y)`\n"
 "\n"
 "Returns true, if `x` contains `y`."
 msgstr "`$in(x,y)`\n\nPalauta tosi, jos `x` sisältää `y`."
 
-#: picard/script/functions.py:301
+#: picard/script/functions.py:326
 #, python-format
 msgid ""
 "`$inmulti(%x%,y)`\n"
@@ -2373,14 +2386,14 @@ msgid ""
 "_Since Picard 1.0_"
 msgstr "`$inmulti(%x%,y)`\n\nPalauta tosi jos moniarvoinen muuttuja `x` sisältää `y`:n yhtenä arvoistaan.\n\n_Picardin versiosta 1.0_"
 
-#: picard/script/functions.py:318
+#: picard/script/functions.py:343
 msgid ""
 "`$rreplace(text,pattern,replace)`\n"
 "\n"
 "[Regular expression](https://docs.python.org/3/library/re.html#regular-expression-syntax) replace."
 msgstr "`$rreplace(teksti,lauseke,korvaa)`\n\nKorvaa [epäsäännöllisellä lausekkeella](https://docs.python.org/3/library/re.html#regular-expression-syntax)."
 
-#: picard/script/functions.py:330
+#: picard/script/functions.py:355
 msgid ""
 "`$rsearch(text,pattern)`\n"
 "\n"
@@ -2388,14 +2401,14 @@ msgid ""
 "    This function will return the first matching group."
 msgstr "`$rsearch(teksti,lauseke)`\n\nEtsi [epäsäännöllisellä lausekkeella](https://docs.python.org/3/library/re.html#regular-expression-syntax).\n    Palauttaa ensimmäisen täsmäävän ryhmän."
 
-#: picard/script/functions.py:349
+#: picard/script/functions.py:374
 msgid ""
 "`$num(number,length)`\n"
 "\n"
 "Returns `number` formatted to `length` digits (maximum 20)."
 msgstr "`$num(luku,pituus)`\n\nPalauta `luku` täydennettynä muotoon `pituus` numeroa (`Pituus` ei voi olla suurempi kuin 20)."
 
-#: picard/script/functions.py:366
+#: picard/script/functions.py:391
 msgid ""
 "`$unset(name)`\n"
 "\n"
@@ -2404,7 +2417,7 @@ msgid ""
 "For example `$unset(performer:*)` would unset all performer tags."
 msgstr "`$unset(nimi)`\n\nTyhjennä muuttuja `nimi`.\nSallii jokerimerkkien tyhjentää tiettyjä tunnisteita (toimii \"performer:\\*\", \"comment:\\*\", ja \"lyrics:\\*\" kanssa).\nEsimerkiksi `$unset(performer:*)` tyhjentäisi kaikki esiintyjä-tunnisteet."
 
-#: picard/script/functions.py:386
+#: picard/script/functions.py:411
 msgid ""
 "`$delete(name)`\n"
 "\n"
@@ -2416,7 +2429,7 @@ msgid ""
 "_Since Picard 2.1_"
 msgstr "`$delete(nimi)`\n\nPoista muuttuja `nimi` ja merkitse tunniste poistettavaksi.\nTämä on samanlainen `$unset(nimi)`-funktion kanssa, mutta asettaa tunnisteen poistettavaksi.\nEsimerkiksi `$delete(genre)` tulee poistamaan myös tyylilaji-tunnisteen tiedostosta tallennettaessa.\n\n_Picardin versiosta 2.1_"
 
-#: picard/script/functions.py:401
+#: picard/script/functions.py:426
 #, python-format
 msgid ""
 "`$set(name,value)`\n"
@@ -2429,7 +2442,7 @@ msgid ""
 "    `%_something%` will not."
 msgstr "`$set(nimi,arvo)`\n\nAseta muuttujan `nimi` arvoksi `arvo`.\n\nHuomio: Luodaksesi muuttujan, jota voidaan käyttää tiedoston nimeämiseen,\n    mutta josta ei luoda tunnistetta tiedostoon, aloita muuttujan nimi alaviivalla.\n    Esimerkiksi `%jotakin%` luo tunnisteen \"jotakin\", kun `%_jotakin%` ei."
 
-#: picard/script/functions.py:419
+#: picard/script/functions.py:444
 #, python-format
 msgid ""
 "`$setmulti(name,value,separator=\"; \")`\n"
@@ -2444,16 +2457,16 @@ msgid ""
 "    $setmulti(genre,$lower(%genre%))\n"
 "\n"
 "_Since Picard 1.0_"
-msgstr "`$setmulti(nimi,arvo,separator=\"; \")`\n\nAseta muuttuja `nimi` arvoon `arvo`, käyttäen annettua erotinta (`separator`, vakiona \"; \"),\n    pakottaaksesi arvon takaisin kunnolliseksi moniarvoiseksi tunnisteeksi\n    Tätä voi hyödyntää moniarvoisen tunnisteen muokkaamiseen tekstinä, ja\n    sen jälkeen tallentamaan takaisin moniarvoiseksi tunnisteeksi.\n\n    Esimerkiksi:\n\n $setmulti(genre,$lower(%genre%))\n\n_Picardin versiosta 1.0_"
+msgstr "`$setmulti(nimi,arvo,separator=\"; \")`\n\nAseta muuttuja `nimi` arvoon `arvo`, käyttäen annettua erotinta (`separator`, vakiona \"; \"),\n    pakottaaksesi arvon takaisin kunnolliseksi moniarvoiseksi tunnisteeksi\n    Tätä voi hyödyntää moniarvoisen tunnisteen muokkaamiseen tekstinä, ja\n    sen jälkeen tallentamaan takaisin moniarvoiseksi tunnisteeksi.\n\n    Esimerkki:\n\n $setmulti(genre,$lower(%genre%))\n\n_Picardin versiosta 1.0_"
 
-#: picard/script/functions.py:437
+#: picard/script/functions.py:462
 msgid ""
 "`$get(name)`\n"
 "\n"
 "Returns the variable `name` (equivalent to `%name%`)."
 msgstr "`$get(nimi)`\n\nPalauta muuttuja `nimi` (sama kuin `%nimi%`)."
 
-#: picard/script/functions.py:447
+#: picard/script/functions.py:472
 #, python-format
 msgid ""
 "`$copy(new,old)`\n"
@@ -2465,7 +2478,7 @@ msgid ""
 "_Since Picard 0.9_"
 msgstr "`$copy(uusi,vanha)`\n\nKopioi metatiedot muuttujasta `vanha` muuttujaan `uusi`.\nErotuksena funktioon `$set(uusi,%vanha%)` on se, että `$copy(uusi,vanha)`\n    kopioi moniarvoiset muuttujat ilman niiden yhdistämistä merkkijonoksi.\n\n_Picardin versiosta 0.9_"
 
-#: picard/script/functions.py:463
+#: picard/script/functions.py:488
 msgid ""
 "`$copymerge(new,old)`\n"
 "\n"
@@ -2476,7 +2489,7 @@ msgid ""
 "_Since Picard 1.0_"
 msgstr "`$copymerge(uusi,vanha)`\n\nSulauttaa metatiedot muuttujasta `vanha` muuttujaan `uusi`, poistaen\n    päällekkäisyydet ja lisäten perään, pitäen alkuperäisen järjestyksen.\n    Kuten `$copy`, säilyttää moniarvoiset muuttujat yhdistämättä merkkijonoksi.\n\n_Picardin versiosta 1.0_"
 
-#: picard/script/functions.py:481
+#: picard/script/functions.py:506
 msgid ""
 "`$trim(text[,char])`\n"
 "\n"
@@ -2484,7 +2497,7 @@ msgid ""
 "    The optional second parameter `char` specifies the character to trim."
 msgstr "`$trim(teksti[,merkki])`\n\nPoistaa kaikki alussa ja lopussa olevat tyhjät merkit `teksti`stä.\n    `merkki`-argumentti määrittää vaihtoehtoisen merkin poistettavaksi."
 
-#: picard/script/functions.py:494
+#: picard/script/functions.py:519
 msgid ""
 "`$add(x,y,...)`\n"
 "\n"
@@ -2496,7 +2509,7 @@ msgid ""
 "    $add(x,y,z) = ((x + y) + z)\n"
 msgstr "`$add(x,y,*...)`\n\nLaske yhteen `y` ja `x`.\nArgumentteja voi olla useampiakin.\n\nEsimerkki:\n\n    $add(x,y,z) = ((x + y) + z)\n"
 
-#: picard/script/functions.py:512
+#: picard/script/functions.py:537
 msgid ""
 "`$sub(x,y,...)`\n"
 "\n"
@@ -2508,7 +2521,7 @@ msgid ""
 "    $sub(x,y,z) = ((x - y) - z)\n"
 msgstr "`$sub(x,y,...)`\n\nVähennä `x`:stä `y`.\nArgumentteja voi olla useampiakin.\n\nEsimerkki:\n\n    $sub(x,y,z) = ((x - y) - z)\n"
 
-#: picard/script/functions.py:530
+#: picard/script/functions.py:555
 msgid ""
 "`$div(x,y,...)`\n"
 "\n"
@@ -2520,7 +2533,7 @@ msgid ""
 "    $div(x,y,z) = ((x / y) / z)\n"
 msgstr "`$div(x,y,...)`\n\nJaa `x` `y`:llä.\nArgumentteja voi olla useampiakin.\n\nEsimerkki:\n\n    $div(x,y,z) = ((x / y) / z)\n"
 
-#: picard/script/functions.py:550
+#: picard/script/functions.py:575
 msgid ""
 "`$mod(x,y,...)`\n"
 "\n"
@@ -2532,7 +2545,7 @@ msgid ""
 "    $mod(x,y,z) = ((x % y) % z)\n"
 msgstr "`$mod(x,y,...)`\n\nPalauttaa jakojäännöksen `x` jaettuna `y`:llä.\nArgumentteja voi olla useampiakin.\n\nEsimerkki:\n\n    $mod(x,y,z) = ((x % y) % z)\n"
 
-#: picard/script/functions.py:568
+#: picard/script/functions.py:593
 msgid ""
 "`$mul(x,y,...)`\n"
 "\n"
@@ -2544,7 +2557,7 @@ msgid ""
 "    $mul(x,y,z) = ((x * y) * z)\n"
 msgstr "`$mul(x,y,...)`\n\nKerro `x` `y`:llä.\nArgumentteja voi olla useampiakin.\n\nEsimerkki:\n\n    $mul(x,y,z) = ((x * y) * z)\n"
 
-#: picard/script/functions.py:586
+#: picard/script/functions.py:611
 msgid ""
 "`$or(x,y,...)`\n"
 "\n"
@@ -2553,7 +2566,7 @@ msgid ""
 "    The result is true if ANY of the arguments is not empty."
 msgstr "`$or(x,y,...)`\n\nPalauta tosi jos `x` tai `y` ei ole tyhjä.\n    Argumentteja voi olla useampiakin.\n    Palauta tosi jos JOKIN argumenteista ei ole tyhjä."
 
-#: picard/script/functions.py:600
+#: picard/script/functions.py:625
 msgid ""
 "`$and(x,y,...)`\n"
 "\n"
@@ -2562,63 +2575,63 @@ msgid ""
 "    The result is true if ALL of the arguments are not empty."
 msgstr "`$and(x,y,...)`\n\nPalauta tosi jos `x` ja `y` eivät ole tyhjiä.\n    Argumentteja voi olla useampiakin.\n    Palauta tosi jos YKSIKÄÄN argumenteista ei ole tyhjä."
 
-#: picard/script/functions.py:614
+#: picard/script/functions.py:639
 msgid ""
 "`$not(x)`\n"
 "\n"
 "Returns true if `x` is empty."
 msgstr "`$not(x)`\n\nPalauta tosi jos `x` ei ole tyhjä."
 
-#: picard/script/functions.py:626
+#: picard/script/functions.py:651
 msgid ""
 "`$eq(x,y)`\n"
 "\n"
 "Returns true if `x` equals `y`."
 msgstr "`$eq(x,y)`\n\nPalauta tosi jos `x` on yhtä kuin `y`."
 
-#: picard/script/functions.py:638
+#: picard/script/functions.py:663
 msgid ""
 "`$ne(x,y)`\n"
 "\n"
 "Returns true if `x` does not equal `y`."
 msgstr "`$ne(x,y)`\n\nPalauta tosi jos `x` ei ole yhtä kuin `y`."
 
-#: picard/script/functions.py:650
+#: picard/script/functions.py:675
 msgid ""
 "`$lt(x,y)`\n"
 "\n"
 "Returns true if `x` is less than `y`."
 msgstr "`$lt(x,y)`\n\nPalauta tosi jos `x` on pienempi kuin `y`."
 
-#: picard/script/functions.py:664
+#: picard/script/functions.py:689
 msgid ""
 "`$lte(x,y)`\n"
 "\n"
 "Returns true if `x` is less than or equal to `y`."
 msgstr "`$lte(x,y)`\n\nPalauta tosi jos `x` on pienempi tai yhtä suuri kuin `y`."
 
-#: picard/script/functions.py:678
+#: picard/script/functions.py:703
 msgid ""
 "`$gt(x,y)`\n"
 "\n"
 "Returns true if `x` is greater than `y`."
 msgstr "`$gt(x,y)`\n\nPalauta tosi jos `x` on suurempi kuin `y`."
 
-#: picard/script/functions.py:692
+#: picard/script/functions.py:717
 msgid ""
 "`$gte(x,y)`\n"
 "\n"
 "Returns true if `x` is greater than or equal to `y`."
 msgstr "`$gte(x,y)`\n\nPalauta tosi jos `x` on suurempi tai yhtä suuri kuin `y`."
 
-#: picard/script/functions.py:706
+#: picard/script/functions.py:731
 msgid ""
 "`$len(text)`\n"
 "\n"
 "Returns the number of characters in `text`."
 msgstr "`$len(teksti)`\n\nPalauta merkkien määrä `teksti`ssä."
 
-#: picard/script/functions.py:715
+#: picard/script/functions.py:740
 msgid ""
 "`$lenmulti(name,separator=\"; \")`\n"
 "\n"
@@ -2632,7 +2645,7 @@ msgid ""
 "    $lenmulti(One; Two; Three) = 3\n"
 msgstr "`$lenmulti(nimi,separator=\"; \")`\n\nPalauta moniarvoisen muuttujan `nimi` osien määrä. Muuttujan sijaan\n    voidaan käyttää merkkijonoa, josta saadaan osien määrä erotinmerkin (`separator`)\n    avulla, joka on vakiona \"; \".\n\nEsimerkki:\n\n    $lenmulti(Yksi; Kaksi; Kolme) = 3\n"
 
-#: picard/script/functions.py:732
+#: picard/script/functions.py:757
 msgid ""
 "`$performer(pattern=\"\",join=\", \")`\n"
 "\n"
@@ -2641,7 +2654,7 @@ msgid ""
 "_Since Picard 0.10_"
 msgstr "`$performer(pattern=\"\",join=\", \")`\n\nPalauta esiintyjät joiden esiintyjämuoto täsmää muotoon `pattern`,\nyhdistettynä argumentilla `join`.\n\n_Picardin versiosta 0.10_"
 
-#: picard/script/functions.py:747
+#: picard/script/functions.py:772
 msgid ""
 "`$matchedtracks()`\n"
 "\n"
@@ -2651,7 +2664,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr "`$matchedtracks()`\n\nPalauta täsmäävien kappaleiden määrä julkaisussa.\n    **Toimii ainoastaan tiedoston nimeämisen komentosarjassa.**\n\n_Picardin versiosta 0.12_"
 
-#: picard/script/functions.py:763
+#: picard/script/functions.py:788
 msgid ""
 "`$is_complete()`\n"
 "\n"
@@ -2659,7 +2672,7 @@ msgid ""
 "**Only works in File Naming scripts.**"
 msgstr "`$is_complete()`\n\nPalauta tosi jos jokainen julkaisun kappale on määritetty yhteen tiedostoon.\n**Toimii ainoastaan tiedoston nimeämisen komentosarjassa.**"
 
-#: picard/script/functions.py:778
+#: picard/script/functions.py:803
 msgid ""
 "`$firstalphachar(text,nonalpha=\"#\")`\n"
 "\n"
@@ -2670,7 +2683,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr "`$firstalphachar(teksti,nonalpha=\"#\")`\n\nPalauttaa `teksti`n ensimmäisen merkin.\nMikäli `teksti` ei ala aakkosten merkillä, palauttaa `nonalpha`n. Jos `nonalpha`a ei ole määritetty, palautetaan vakioarvo \"#\".\n\n_Picardin versiosta 0.12_"
 
-#: picard/script/functions.py:797
+#: picard/script/functions.py:822
 msgid ""
 "`$initials(text)`\n"
 "\n"
@@ -2679,7 +2692,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr "`$initials(teksti)`\n\nPalauttaa `teksti`n jokaisen sanan ensimmäisen alkukirjaimen, mikäli se on aakkosten merkki.\n\n_Picardin versiosta 0.12_"
 
-#: picard/script/functions.py:808
+#: picard/script/functions.py:833
 msgid ""
 "`$firstwords(text,length)`\n"
 "\n"
@@ -2688,7 +2701,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr "`$firstwords(teksti,pituus)`\n\nAivan kuten`$truncate()`, paitsi palauttaa kokonaiset sanat `teksti`stä, jotka mahtuvat merkkimäärään `pituus`.\n\n_Picardin versiosta 0.12_"
 
-#: picard/script/functions.py:831
+#: picard/script/functions.py:856
 msgid ""
 "`$startswith(text,prefix)`\n"
 "\n"
@@ -2697,7 +2710,7 @@ msgid ""
 "_Since Picard 1.4_"
 msgstr "`$startswith(teksti,etu)`\n\nPalauta tosi jos `teksti` alkaa `etu`.\n\n_Picardin versiosta 1.4_"
 
-#: picard/script/functions.py:844
+#: picard/script/functions.py:869
 msgid ""
 "`$endswith(text,suffix)`\n"
 "\n"
@@ -2706,7 +2719,7 @@ msgid ""
 "_Since Picard 1.4_"
 msgstr "`$endswith(teksti,loppu)`\n\nPalauta tosi jos `teksti` loppuu `loppu`.\n\n_Picardin versiosta 1.4_"
 
-#: picard/script/functions.py:857
+#: picard/script/functions.py:882
 msgid ""
 "`$truncate(text,length)`\n"
 "\n"
@@ -2715,7 +2728,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr "`$truncate(teksti,pituus)`\n\nLyhennä `teksti` pituuteen `pituus`.\n\n_Picardin versiosta 0.12_"
 
-#: picard/script/functions.py:872
+#: picard/script/functions.py:897
 msgid ""
 "`$swapprefix(text,prefix1,prefix2,...)`\n"
 "\n"
@@ -2730,7 +2743,7 @@ msgid ""
 "_Since Picard 1.3, previously as a plugin since Picard 0.13_"
 msgstr "`$swapprefix(teksti,etuliite1,etuliite2,...)`\n\nSiirrä määritetyt etuliitteet `teksti`n alusta loppuun. Useita etuliitteitä\nvoidaan antaa samalla. Mikäli etuliitteitä ei anneta, käytetään etuliitteinä\n'A' ja 'The'.\n\nEsimerkki:\n\n    $swapprefix(%albumartist%,A,An,The,La,Le,Les,Un,Une)\n\n_Picardin versiosta 1.3, sitä ennen liitännäisenä Picardin versiosta 0.13_"
 
-#: picard/script/functions.py:894
+#: picard/script/functions.py:919
 msgid ""
 "`$delprefix(text,prefix1,prefix2,...)`\n"
 "\n"
@@ -2745,7 +2758,7 @@ msgid ""
 "_Since Picard 1.3_"
 msgstr "`$delprefix(teksti,etuliite1,etuliite2,...)`\n\nPoista määritetyt etuliitteet `teksti`n alusta. Useita etuliitteitä\nvoidaan antaa samalla. Mikäli etuliitteitä ei anneta, käytetään etuliitteinä\n'A' ja 'The'.\n\nEsimerkki:\n\n    $delprefix(albumartist%,A,An,The,La,Le,Les,Un,Une)\n\n_Picardin versiosta 1.3_"
 
-#: picard/script/functions.py:932
+#: picard/script/functions.py:957
 msgid ""
 "`$eq_any(x,a1,a2,...)`\n"
 "\n"
@@ -2754,7 +2767,7 @@ msgid ""
 "Functionally equivalent to the eq2 plugin."
 msgstr "`$eq_any(x,a1,a2,...)`\n\nPalauta tosi jos `x` on yhtä suuri kuin `a1` tai `a2` tai ...\nToiminnallisesti sama kuin `$or($eq(x,a1),$eq(x,a2) ...)`.\nToiminnallisesti sama kuin eq2-liitännäinen."
 
-#: picard/script/functions.py:944
+#: picard/script/functions.py:969
 msgid ""
 "`$ne_all(x,a1,a2,...)`\n"
 "\n"
@@ -2763,7 +2776,7 @@ msgid ""
 "Functionally equivalent to the ne2 plugin."
 msgstr "`$ne_all(x,a1,a2,...)`\n\nPalauta tosi jos `x` ei ole yhtä suuri kuin `a1` ja `a2` ja ...\nToiminnallisesti sama kuin `$and($ne(x,a1),$ne(x,a2) ...)`.\nToiminnallisesti sama kuin ne2-liitännäinen."
 
-#: picard/script/functions.py:956
+#: picard/script/functions.py:981
 msgid ""
 "`$eq_all(x,a1,a2,...)`\n"
 "\n"
@@ -2775,7 +2788,7 @@ msgid ""
 "    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat Loaf))\n"
 msgstr "`$eq_all(x,a1,a2,...)`\n\nPalauta tosi jos `x` on yhtä suuri kuin `a1` ja `a2` ja ...\nToiminnallisesti sama kuin `$and($eq(x,a1),$eq(x,a2) ...)`.\n\nEsimerkki:\n\n    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat Loaf))\n"
 
-#: picard/script/functions.py:974
+#: picard/script/functions.py:999
 #, python-format
 msgid ""
 "`$ne_any(x,a1,a2,...)`\n"
@@ -2788,7 +2801,7 @@ msgid ""
 "    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
 msgstr "`$ne_any(x,a1,a2,...)`\n\nPalauta tosi jos `x` ei ole yhtä suuri kuin `a1` tai `a2` tai ...\nToiminnallisesti sama kuin `$or($ne(x,a1),$ne(x,a2) ...)`.\n\nEsimerkki:\n\n    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
 
-#: picard/script/functions.py:989
+#: picard/script/functions.py:1014
 msgid ""
 "`$title(text)`\n"
 "\n"
@@ -2800,7 +2813,7 @@ msgid ""
 "_Since Picard 2.1_"
 msgstr "`$title(teksti)`\n\nPalauta `teksti` isoin alkukirjaimin (jokaisen sanan ensimmäinen kirjain isolla).\n\nEsimerkki:\n\n    $set(album,$title(%album%))\n\n_Picardin versiosta 2.1_"
 
-#: picard/script/functions.py:1029
+#: picard/script/functions.py:1054
 msgid ""
 "`$is_audio()`\n"
 "\n"
@@ -2809,7 +2822,7 @@ msgid ""
 "_Since Picard 2.2_"
 msgstr "`$is_audio()`\n\nPalauta tosi jos kyseinen tiedosto on äänitiedosto.\n\n_Picardin versiosta 2.2_"
 
-#: picard/script/functions.py:1043
+#: picard/script/functions.py:1068
 msgid ""
 "`$is_video()`\n"
 "\n"
@@ -2818,7 +2831,7 @@ msgid ""
 "_Since Picard 2.2_"
 msgstr "`$is_video()`\n\nPalauta tosi jos kyseinen tiedosto on videotiedosto.\n\n_Picardin versiosta 2.2_"
 
-#: picard/script/functions.py:1057
+#: picard/script/functions.py:1082
 msgid ""
 "`$find(haystack,needle)`\n"
 "\n"
@@ -2830,14 +2843,14 @@ msgid ""
 "Note that prior to Picard 2.3.2 `$find` returned \"-1\" if `needle` was not found."
 msgstr "`$find(haystack,needle)`\n\nEtsi merkkijonon sijainti toisessa merkkijonossa.\n    Palauta indeksinumero ensimmäiselle osumalle `needle` merkkijonossa `haystack`,\ntai \"\" mikäli merkkijonoa `needle` ei löytynyt.\n\n_Picardin versiosta 2.3_\n\nEnnen Picardin versiota 2.3.2 `$find` palautti \"-1\" mikäli merkkijonoa `needle` ei löytynyt."
 
-#: picard/script/functions.py:1074
+#: picard/script/functions.py:1099
 msgid ""
 "`$reverse(text)`\n"
 "\n"
 "Returns `text` in reverse order."
 msgstr "`$reverse(teksti)`\n\nPalauta `teksti` käännetyssä järjestyksessä."
 
-#: picard/script/functions.py:1083
+#: picard/script/functions.py:1108
 msgid ""
 "`$substr(text,start,end)`\n"
 "\n"
@@ -2848,7 +2861,7 @@ msgid ""
 "    the start and end of the string respectively."
 msgstr "`$substr(teksi,alku,loppu)`\n\nPalauta merkkijono alkaen merkistä indeksissä `alku` aina merkkiin `loppu`\n    asti, ja sitä mukaan ottamatta. Indeksinumerot aloitetaan luvusta nolla.\n    Negatiiviset luvut lasketaan merkkijonon lopusta päin. Jos `alku`- tai `loppu`-\n    indeksi on tyhjä, käytetään arvona merkkijonon alkua tai loppua sen sijaan."
 
-#: picard/script/functions.py:1104
+#: picard/script/functions.py:1129
 msgid ""
 "`$getmulti(name,index,separator=\"; \")`\n"
 "\n"
@@ -2858,7 +2871,7 @@ msgid ""
 "    multi-valued tag."
 msgstr "`$getmulti(nimi,index,separator=\"; \")`\n\nPalauta moniarvoisen muuttujan `nimi` alkio indeksistä `index`. Muuttujan sijaan\n    voidaan käyttää merkkijonoa, josta saadaan osien määrä erotinmerkin (`separator`)\n    avulla, joka on vakiona \"; \"."
 
-#: picard/script/functions.py:1123
+#: picard/script/functions.py:1148
 msgid ""
 "`$foreach(name,code,separator=\"; \")`\n"
 "\n"
@@ -2871,7 +2884,7 @@ msgid ""
 "    proper multi-valued tag."
 msgstr "`$foreach(nimi,code,separator=\"; \")`\n\nIteroi moniarvoisen tunnisteen `nimi` kaikki alkiot suorittaen `code`-komentosarjan.\n    Jokaisella kierroksella alkion arvo tallennetaan ensin `_loop_value` muuttujaan ja\n    lukumäärä muuttujaan `_loop_count`. Tämä mahdollistaa alkion arvon tai lukumäärän\n    hyödyntämisen `code`-komentosarjassa. Muuttujan sijaan voidaan käyttää merkkijonoa,\n    josta saadaan osien määrä erotinmerkin (`separator`) avulla, joka on vakiona \"; \"."
 
-#: picard/script/functions.py:1145
+#: picard/script/functions.py:1170
 msgid ""
 "`$while(condition,code)`\n"
 "\n"
@@ -2882,7 +2895,7 @@ msgid ""
 "    safeguard against accidentally creating an infinite loop."
 msgstr "`$while(condition,code)`\n\nStandardi 'while'-silmukka. Suorita `code` toistuvasti kunnes `condition` ei enää päde.\n    Jokaisella kierroksella lukumäärä tallennetaan muuttujaan `_loop_count`. Tämä \n    mahdollistaa lukumäärän hyödyntämisen `code`-komentosarjassa. Funktio rajoittaa\n    toistojen määrän 1000:een estääkseen ikisilmukan muodostamisen."
 
-#: picard/script/functions.py:1166
+#: picard/script/functions.py:1191
 msgid ""
 "`$map(name,code,separator=\"; \")`\n"
 "\n"
@@ -2892,21 +2905,23 @@ msgid ""
 "    `_loop_value` and the count is stored in the tag `_loop_count`. This allows\n"
 "    the element or count value to be accessed within the `code` script.\n"
 "\n"
+"Empty elements are automatically removed.\n"
+"\n"
 "Example:\n"
 "\n"
 "    $map(First:A; Second:B,$upper(%_loop_count%=%_loop_value%))\n"
 "\n"
 "Result: 1=FIRST:A; 2=SECOND:B\n"
-msgstr "`$map(nimi,code,separator=\"; \")`\n\nIteroi moniarvoisen tunnisteen `nimi` kaikki alkiot ja päivittää niiden arvot\n    `code`-komentosarjan palauttamiksi arvoiksi. Palauttaa päivitetyn moniarvoisen tunnisteen.\n    Jokaisella kierroksella alkion arvo tallennetaan ensin `_loop_value` muuttujaan ja\n    lukumäärä muuttujaan `_loop_count`. Tämä mahdollistaa alkion arvon tai lukumäärän\n    hyödyntämisen `code`-komentosarjassa.\n\nEsimerkki:\n\n    $map(First:A; Second:B,$upper(%_loop_count%=%_loop_value%))\n\nTulos: 1=FIRST:A; 2=SECOND:B\n"
+msgstr "`$map(nimi,code,separator=\"; \")`\n\nIteroi moniarvoisen tunnisteen `nimi` kaikki alkiot ja päivittää niiden arvot\n    `code`-komentosarjan palauttamiksi arvoiksi. Palauttaa päivitetyn moniarvoisen tunnisteen.\n    Jokaisella kierroksella alkion arvo tallennetaan ensin `_loop_value` muuttujaan ja\n    lukumäärä muuttujaan `_loop_count`. Tämä mahdollistaa alkion arvon tai lukumäärän\n    hyödyntämisen `code`-komentosarjassa.\n\nTyhjät alkiot poistetaan automaattisesti.\n\nEsimerkki:\n\n    $map(First:A; Second:B,$upper(%_loop_count%=%_loop_value%))\n\nTulos: 1=FIRST:A; 2=SECOND:B\n"
 
-#: picard/script/functions.py:1193
+#: picard/script/functions.py:1221
 msgid ""
 "`$join(name,text,separator=\"; \")`\n"
 "\n"
 "Joins all elements in `name`, placing `text` between each element, and returns the result as a string."
 msgstr "`$join(nimi,teksti,separator=\"; \")`\n\nPalauta merkkijonona muuttujan `nimi` kaikki alkiot liittäen `teksti` alkioiden väliin."
 
-#: picard/script/functions.py:1204
+#: picard/script/functions.py:1232
 msgid ""
 "`$slice(name,start,end,separator=\"; \")`\n"
 "\n"
@@ -2926,7 +2941,7 @@ msgid ""
 "    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
 msgstr "`$slice(nimi,alku,loppu,separator=\"; \")`\n\nPalauta moniarvoinen muuttuja aloittaen muuttujan `nimi` alkiosta indeksissä `alku` aina\n    indeksiin `loppu` asti. Muuttujan sijaan voidaan käyttää merkkijonoa, josta saadaan\n    osien määrä erotinmerkin (`separator`) avulla, joka on vakiona \"; \". Indeksinumerot \n    aloitetaan luvusta nolla. Negatiiviset luvut lasketaan merkkijonon lopusta päin. Jos `alku`-\n    tai `loppu`-indeksi on tyhjä, käytetään arvona merkkijonon alkua tai loppua sen sijaan.\n Seuraava esimerkki luo moniarvoisen muuttujan, joka sisältää kaikki artistit lukuun ottamatta\n    ensimmäistä, millä voidaan luoda vierailevien artistin lista.\n\nEsimerkki:\n\n    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
 
-#: picard/script/functions.py:1236
+#: picard/script/functions.py:1264
 #, python-format
 msgid ""
 "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
@@ -2942,7 +2957,7 @@ msgid ""
 "    `%3Y`); and hanging '%' at the end of the format string."
 msgstr "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n\nPalauta nykyinen päiväys ja aika halutussa muodossa `format`, joka pohjautuu\n    Pythonin standardeihin `strftime`-[koodimuotoihin](https://strftime.org/).\n    Mikäli muotoa ei ole määritetty, palautetaan aika muodossa\n    `2020-02-05 14:26:32`.\nHuomio: Käyttöympäristöön rajoittuneita koodimuotoja ei tulisi käyttää, jotta\n    komentosarjat toimisivat erilaisissa ympäristöissäkin. Niihin lukeutuvat:\n    poista nolla-merkein täydentäminen (esim. `%-d` and `%-m` Linux tai macOS, ja\n    vastaavissa `%#d` ja `%#m` Windowsissa); alkion pituuden määritteet (esim.\n    `%3Y`); ja avoin-'%' muotomerkkijonon lopussa."
 
-#: picard/script/functions.py:1265
+#: picard/script/functions.py:1293
 msgid ""
 "`$sortmulti(name,separator=\"; \")`\n"
 "\n"
@@ -2955,7 +2970,7 @@ msgid ""
 "Result: A; B; C\n"
 msgstr "`$sortmulti(nimi,separator=\"; \")`\n\nPalauta kopio moniarvoisesta muuttujasta `nimi`, jossa alkiot on järjestetty nousevasti.\n\nEsimerkki:\n\n    $sortmulti(B; A; C)\n\nTulos: A; B; C\n"
 
-#: picard/script/functions.py:1282
+#: picard/script/functions.py:1310
 msgid ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
@@ -2969,6 +2984,29 @@ msgid ""
 "\n"
 "Result: C; B; A\n"
 msgstr "`$reversemulti(nimi,separator=\"; \")`\n\nPalauta kopio moniarvoisesta muuttujasta `nimi`, jossa alkiot on järjestetty käänteisesti.\n    Tätä voidaan hyödyntää `$sortmulti`-funktion kanssa järjestääkseen laskevasti.\n\nEsimerkki:\n\n    $reversemulti($sortmulti(B; A; C))\n\nTulos: C; B; A\n"
+
+#: picard/script/functions.py:1329
+#, python-format
+msgid ""
+"`$unique(name,case_sensitive=\"\",separator=\"; \")`\n"
+"\n"
+"Returns a copy of the multi-value tag `name` with no duplicate elements.\n"
+"    By default, a case-insensitive comparison of the elements is performed.\n"
+"\n"
+"Example 1:\n"
+"\n"
+"    $setmulti(foo,a; A; B; b; cd; Cd; cD; CD; a; A; b)\n"
+"    $unique(%foo%)\n"
+"\n"
+"Result: A; CD; b\n"
+"\n"
+"Example 2:\n"
+"\n"
+"    $setmulti(foo,a; A; B; b; a; b; A; B, cd)\n"
+"    $unique(%foo%,True)\n"
+"\n"
+"Result: A; B; a; b; cd\n"
+msgstr "`$unique(nimi,case_sensitive=\"\",separator=\"; \")`\n\nPalauttaa kopion moniarvoisesta tunnisteesta `nimi` ilman kaksoiskappaleita.\n    Oletuksena kirjainkoolla ei ole merkitystä vertailussa.\n\nEsimerkki 1:\n\n    $setmulti(foo,a; A; B; b; cd; Cd; cD; CD; a; A; b)\n    $unique(%foo%)\n\nTulos: A; CD; b\n\nEsimerkki 2:\n\n    $setmulti(foo,a; A; B; b; a; b; A; B, cd)\n    $unique(%foo%,True)\n\nTulos: A; B; a; b; cd\n"
 
 #: picard/ui/aboutdialog.py:74
 msgid "translator-credits"
@@ -3131,7 +3169,7 @@ msgstr "Alkuperäinen kansitaide"
 msgid "All supported image formats"
 msgstr "Kaikki tuetut kuvien tiedostomuodot"
 
-#: picard/ui/coverartbox.py:551 picard/ui/mainwindow.py:996
+#: picard/ui/coverartbox.py:551 picard/ui/mainwindow.py:997
 msgid "All files"
 msgstr "Kaikki tiedostot"
 
@@ -3499,56 +3537,56 @@ msgid ""
 "AcoustID Fingerprints\" to calculate the fingerprint."
 msgstr "Tälle tiedostolle ei ole laskettu äänitunnistetta. Valitse \"Analysoi\" tai \"Luo AcoustID äänitunnisteet\" tunnisteen laskemiseksi."
 
-#: picard/ui/logview.py:163
+#: picard/ui/logview.py:164
 msgid "Log"
 msgstr "Loki"
 
-#: picard/ui/logview.py:173
+#: picard/ui/logview.py:174
 msgid "Verbosity"
 msgstr "Monisanaisuus"
 
-#: picard/ui/logview.py:183
+#: picard/ui/logview.py:184
 msgid "String to highlight"
 msgstr "Korostettava teksti"
 
-#: picard/ui/logview.py:188
+#: picard/ui/logview.py:189
 msgid "Highlight"
 msgstr "Korosta"
 
-#: picard/ui/logview.py:197
+#: picard/ui/logview.py:198
 msgid "Clear Highlight"
 msgstr "Poista korostus"
 
-#: picard/ui/logview.py:203 picard/ui/logview.py:282
+#: picard/ui/logview.py:204 picard/ui/logview.py:285
 msgid "Clear Log"
 msgstr "Tyhjennä loki"
 
-#: picard/ui/logview.py:208
+#: picard/ui/logview.py:209
 msgid "Save As..."
 msgstr "Tallenna nimellä..."
 
-#: picard/ui/logview.py:251 picard/ui/logview.py:258
+#: picard/ui/logview.py:254 picard/ui/logview.py:261
 msgid "Save Log View to File"
 msgstr "Tallenna loki tiedostoon"
 
-#: picard/ui/logview.py:259
+#: picard/ui/logview.py:262
 msgid "File already exists, do you really want to save to this file?"
 msgstr "Tiedosto on jo olemassa, haluatko kirjoittaa sen päälle?"
 
-#: picard/ui/logview.py:271
+#: picard/ui/logview.py:274
 msgid "Failed to save Log View to file"
 msgstr "Lokitiedoston tallentaminen epäonnistui"
 
-#: picard/ui/logview.py:272
+#: picard/ui/logview.py:275
 #, python-format
 msgid "Something prevented data to be written to '%s'"
 msgstr "Tiedostoon '%s' ei pystytty kirjoittamaan"
 
-#: picard/ui/logview.py:283
+#: picard/ui/logview.py:286
 msgid "Are you sure you want to clear the log?"
 msgstr "Haluatko varmasti tyhjentää lokin?"
 
-#: picard/ui/logview.py:318
+#: picard/ui/logview.py:321
 msgid "Activity History"
 msgstr "Aktiviteettihistoria"
 
@@ -3731,280 +3769,280 @@ msgstr "Näytä samankaltaisia kappaleita ja mahdollisesti valitse toinen julkai
 msgid "Ctrl+T"
 msgstr "Ctrl+T"
 
-#: picard/ui/mainwindow.py:555
+#: picard/ui/mainwindow.py:556
 msgid "File &Browser"
 msgstr "Tiedosto&selain"
 
-#: picard/ui/mainwindow.py:559
+#: picard/ui/mainwindow.py:560
 msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
-#: picard/ui/mainwindow.py:562
+#: picard/ui/mainwindow.py:563
 msgid "&Cover Art"
 msgstr "&Kansitaide"
 
-#: picard/ui/mainwindow.py:568
+#: picard/ui/mainwindow.py:569
 msgid "&Actions"
 msgstr "&Toiminnot"
 
-#: picard/ui/mainwindow.py:574 picard/ui/mainwindow.py:868
+#: picard/ui/mainwindow.py:575 picard/ui/mainwindow.py:869
 #: picard/ui/searchdialog/__init__.py:47
 msgid "Search"
 msgstr "Hae"
 
-#: picard/ui/mainwindow.py:578 picard/ui/mainwindow.py:584
+#: picard/ui/mainwindow.py:579 picard/ui/mainwindow.py:585
 msgid "Lookup &CD..."
 msgstr "&CD-haku"
 
-#: picard/ui/mainwindow.py:579
+#: picard/ui/mainwindow.py:580
 msgid "Lookup the details of the CD in your drive"
 msgstr "Hae tietoja CD-levystäsi"
 
-#: picard/ui/mainwindow.py:581 picard/ui/mainwindow.py:710
+#: picard/ui/mainwindow.py:582 picard/ui/mainwindow.py:711
 msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
-#: picard/ui/mainwindow.py:592
+#: picard/ui/mainwindow.py:593
 msgid "&Scan"
 msgstr "&Analysoi"
 
-#: picard/ui/mainwindow.py:593
+#: picard/ui/mainwindow.py:594
 msgid ""
 "Use AcoustID audio fingerprint to identify the files by the actual music, "
 "even if they have no metadata"
 msgstr "Käytä AcoustID-tunnistusta tunnistamaan tiedostot niiden sisältämän musiikin mukaan, vaikka tiedostoissa ei olisi metatietoja"
 
-#: picard/ui/mainwindow.py:595
+#: picard/ui/mainwindow.py:596
 msgid "Identify the file using its AcoustID audio fingerprint"
 msgstr "Tunnista tiedosto sen AcoustID-tunnisteella"
 
-#: picard/ui/mainwindow.py:597
+#: picard/ui/mainwindow.py:598
 msgid "Ctrl+Y"
 msgstr "Ctrl+Y"
 
-#: picard/ui/mainwindow.py:600
+#: picard/ui/mainwindow.py:601
 msgid "&Generate AcoustID Fingerprints"
 msgstr "&Luo AcoustID äänitunnisteet"
 
-#: picard/ui/mainwindow.py:601 picard/ui/options/interface.py:120
+#: picard/ui/mainwindow.py:602 picard/ui/options/interface.py:120
 msgid "Generate Fingerprints"
 msgstr "Luo äänitunnisteita"
 
-#: picard/ui/mainwindow.py:602
+#: picard/ui/mainwindow.py:603
 msgid ""
 "Generate the AcoustID audio fingerprints for the selected files without "
 "doing a lookup"
 msgstr "Luo AcoustID äänitunnisteet valituille tiedostoille hakematta vastaavuuksia"
 
-#: picard/ui/mainwindow.py:604
+#: picard/ui/mainwindow.py:605
 msgid "Generate the AcoustID audio fingerprints for the selected files"
 msgstr "Luo AcoustID äänitunnisteet valituille tiedostoille"
 
-#: picard/ui/mainwindow.py:605
+#: picard/ui/mainwindow.py:606
 msgid "Ctrl+Shift+Y"
 msgstr "Ctrl+Shift+Y"
 
-#: picard/ui/mainwindow.py:608
+#: picard/ui/mainwindow.py:609
 msgid "Cl&uster"
 msgstr "&Ryhmitä"
 
-#: picard/ui/mainwindow.py:609
+#: picard/ui/mainwindow.py:610
 msgid "Cluster files into album clusters"
 msgstr "Ryhmitä tiedostot julkaisuihin"
 
-#: picard/ui/mainwindow.py:612
+#: picard/ui/mainwindow.py:613
 msgid "Ctrl+U"
 msgstr "Ctrl+U"
 
-#: picard/ui/mainwindow.py:615
+#: picard/ui/mainwindow.py:616
 msgid "&Lookup"
 msgstr "&Hae"
 
-#: picard/ui/mainwindow.py:616
+#: picard/ui/mainwindow.py:617
 msgid "Lookup selected items in MusicBrainz"
 msgstr "Etsi valittua kohdetta MusicBrainzista"
 
-#: picard/ui/mainwindow.py:621
+#: picard/ui/mainwindow.py:622
 msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
-#: picard/ui/mainwindow.py:624
+#: picard/ui/mainwindow.py:625
 msgid "&Info..."
 msgstr "T&iedot..."
 
-#: picard/ui/mainwindow.py:627
+#: picard/ui/mainwindow.py:628
 msgid "Ctrl+I"
 msgstr "Ctrl+I"
 
-#: picard/ui/mainwindow.py:630
+#: picard/ui/mainwindow.py:631
 msgid "&Refresh"
 msgstr "P&äivitä"
 
-#: picard/ui/mainwindow.py:631
+#: picard/ui/mainwindow.py:632
 msgid "Ctrl+R"
 msgstr "Ctrl+R"
 
-#: picard/ui/mainwindow.py:634
+#: picard/ui/mainwindow.py:635
 msgid "&Rename Files"
 msgstr "&Nimeä tiedostot"
 
-#: picard/ui/mainwindow.py:639
+#: picard/ui/mainwindow.py:640
 msgid "&Move Files"
 msgstr "&Siirrä tiedostot"
 
-#: picard/ui/mainwindow.py:644
+#: picard/ui/mainwindow.py:645
 msgid "Save &Tags"
 msgstr "&Tallenna tunnisteet"
 
-#: picard/ui/mainwindow.py:649
+#: picard/ui/mainwindow.py:650
 msgid "Tags From &File Names..."
 msgstr "&Luo tunnisteet tiedostonimistä..."
 
-#: picard/ui/mainwindow.py:650 picard/ui/options/interface.py:132
+#: picard/ui/mainwindow.py:651 picard/ui/options/interface.py:132
 msgid "Parse File Names..."
 msgstr "Jäsentele tiedostonimistä..."
 
-#: picard/ui/mainwindow.py:651
+#: picard/ui/mainwindow.py:652
 msgid "Set tags based on the file names"
 msgstr "Luo tunnisteet tiedostonimistä"
 
-#: picard/ui/mainwindow.py:652
+#: picard/ui/mainwindow.py:653
 msgid "Ctrl+Shift+T"
 msgstr "Ctrl+Shift+T"
 
-#: picard/ui/mainwindow.py:656
+#: picard/ui/mainwindow.py:657
 msgid "&Open My Collections in Browser"
 msgstr "Avaa &kokoelmani selaimeen"
 
-#: picard/ui/mainwindow.py:660
+#: picard/ui/mainwindow.py:661
 msgid "View &Error/Debug Log"
 msgstr "Tarkastele virh&e/debug-lokia"
 
-#: picard/ui/mainwindow.py:663
+#: picard/ui/mainwindow.py:664
 msgid "Ctrl+G"
 msgstr "Ctrl+G"
 
-#: picard/ui/mainwindow.py:665
+#: picard/ui/mainwindow.py:666
 msgid "View Activity &History"
 msgstr "Näytä toiminta&historia"
 
-#: picard/ui/mainwindow.py:669
+#: picard/ui/mainwindow.py:670
 msgid "Ctrl+Shift+H"
 msgstr "Ctrl+Shift+H"
 
-#: picard/ui/mainwindow.py:669
+#: picard/ui/mainwindow.py:670
 msgid "Ctrl+H"
 msgstr "Ctrl+H"
 
-#: picard/ui/mainwindow.py:675
+#: picard/ui/mainwindow.py:676
 msgid "Open in &Player"
 msgstr "Avaa t&oistimessa"
 
-#: picard/ui/mainwindow.py:676
+#: picard/ui/mainwindow.py:677
 msgid "Play the file in your default media player"
 msgstr "Toista tiedosto oletussoittimellasi"
 
-#: picard/ui/mainwindow.py:680
+#: picard/ui/mainwindow.py:681
 msgid "Open Containing &Folder"
 msgstr "Avaa tie&doston kansio"
 
-#: picard/ui/mainwindow.py:681
+#: picard/ui/mainwindow.py:682
 msgid "Open the containing folder in your file explorer"
 msgstr "Avaa tiedoston kansio tiedostojen selaimessa"
 
-#: picard/ui/mainwindow.py:686
+#: picard/ui/mainwindow.py:687
 msgid "&Check for Update…"
 msgstr "&Etsi päivitystä…"
 
-#: picard/ui/mainwindow.py:750
+#: picard/ui/mainwindow.py:751
 msgid "&File"
 msgstr "&Tiedosto"
 
-#: picard/ui/mainwindow.py:763
+#: picard/ui/mainwindow.py:764
 msgid "&Edit"
 msgstr "&Muokkaa"
 
-#: picard/ui/mainwindow.py:769
+#: picard/ui/mainwindow.py:770
 msgid "&View"
 msgstr "&Näytä"
 
-#: picard/ui/mainwindow.py:777
+#: picard/ui/mainwindow.py:778
 msgid "&Options"
 msgstr "&Asetukset"
 
-#: picard/ui/mainwindow.py:783
+#: picard/ui/mainwindow.py:784
 msgid "&Tools"
 msgstr "Ty&ökalut"
 
-#: picard/ui/mainwindow.py:796 picard/ui/util.py:51
+#: picard/ui/mainwindow.py:797 picard/ui/util.py:51
 msgid "&Help"
 msgstr "&Ohje"
 
-#: picard/ui/mainwindow.py:832 picard/ui/ui_options_plugins.py:132
+#: picard/ui/mainwindow.py:833 picard/ui/ui_options_plugins.py:132
 msgid "Actions"
 msgstr "Toiminnot"
 
-#: picard/ui/mainwindow.py:879
+#: picard/ui/mainwindow.py:880
 msgid "Track"
 msgstr "Kappale"
 
-#: picard/ui/mainwindow.py:896
+#: picard/ui/mainwindow.py:897
 msgid "&Advanced search"
 msgstr "&Edistynyt haku"
 
-#: picard/ui/mainwindow.py:897
+#: picard/ui/mainwindow.py:898
 msgid "&Builtin search"
 msgstr "Sisäänrakennettu &haku"
 
-#: picard/ui/mainwindow.py:995
+#: picard/ui/mainwindow.py:996
 msgid "All supported formats"
 msgstr "Kaikki tuetut tiedostomuodot"
 
-#: picard/ui/mainwindow.py:1024
+#: picard/ui/mainwindow.py:1025
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
 msgstr "Lisätään useita hakemistoja hakemistosta '%(directory)s' ..."
 
-#: picard/ui/mainwindow.py:1029
+#: picard/ui/mainwindow.py:1030
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
 msgstr "Lisätään hakemisto: '%(directory)s' ..."
 
-#: picard/ui/mainwindow.py:1117
+#: picard/ui/mainwindow.py:1118
 msgid "Configuration Required"
 msgstr "Asetukset puuttuvat"
 
-#: picard/ui/mainwindow.py:1118
+#: picard/ui/mainwindow.py:1119
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
 msgstr "Äänitunnistamisen asetuksia ei ole vielä määritetty. Määritetäänkö asetukset nyt?"
 
-#: picard/ui/mainwindow.py:1248
+#: picard/ui/mainwindow.py:1255
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
 msgstr "%(filename)s (virhe: %(error)s)"
 
-#: picard/ui/mainwindow.py:1254
+#: picard/ui/mainwindow.py:1261
 #, python-format
 msgid "%(filename)s"
 msgstr "%(filename)s"
 
-#: picard/ui/mainwindow.py:1263
+#: picard/ui/mainwindow.py:1270
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
 msgstr "%(filename)s (%(similarity)d%%) (virhe: %(error)s)"
 
-#: picard/ui/mainwindow.py:1270
+#: picard/ui/mainwindow.py:1277
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
-#: picard/ui/mainwindow.py:1321
+#: picard/ui/mainwindow.py:1328
 msgid "Authentication Required"
 msgstr "Tunnistautuminen vaaditaan"
 
-#: picard/ui/mainwindow.py:1322
+#: picard/ui/mainwindow.py:1329
 msgid ""
 "Picard needs authorization to access your personal data on the MusicBrainz "
 "server. Would you like to log in now?"
@@ -5070,7 +5108,7 @@ msgstr "Regex virhe"
 msgid "Advanced"
 msgstr "Lisäasetukset"
 
-#: picard/ui/options/cover.py:49
+#: picard/ui/options/cover.py:50
 msgid "Cover Art"
 msgstr "Kansitaide"
 
