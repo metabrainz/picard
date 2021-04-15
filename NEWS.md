@@ -1,3 +1,26 @@
+# Version 2.6.1 - 2021-04-15
+
+## Bugfixes
+
+- [PICARD-2160](https://tickets.metabrainz.org/browse/PICARD-2160) - Switching dark mode in macOS preferences does not change list elements leading to mix of light and dark mode
+- [PICARD-2166](https://tickets.metabrainz.org/browse/PICARD-2166) - "Use original values" for a tag on a large selection takes very long with a high CPU usage
+- [PICARD-2168](https://tickets.metabrainz.org/browse/PICARD-2168) - Keyboard shortcut to trigger script editor auto completion does not work on macOS
+- [PICARD-2170](https://tickets.metabrainz.org/browse/PICARD-2170) - Title and track number guessed from filename should show up as changed metadata
+- [PICARD-2173](https://tickets.metabrainz.org/browse/PICARD-2173) - "Search for similar tracks" is enabled by default, causes crash if used without selection
+- [PICARD-2187](https://tickets.metabrainz.org/browse/PICARD-2187) - Scripting error in file naming options is not displayed properly
+
+## New Features
+
+- [PICARD-2161](https://tickets.metabrainz.org/browse/PICARD-2161) - Add script function `$unique` to remove duplicate values from multi-value variables
+- [PICARD-2177](https://tickets.metabrainz.org/browse/PICARD-2177) - Add script function `$replacemulti` to replace entries in multi-value variables
+
+## Improvements
+
+- [PICARD-2157](https://tickets.metabrainz.org/browse/PICARD-2157) - Reduce comparison overhead of logging window
+- [PICARD-2162](https://tickets.metabrainz.org/browse/PICARD-2162) - Coverart box is slow to update when many files are selected
+- [PICARD-2185](https://tickets.metabrainz.org/browse/PICARD-2185) - Remove empty elements from `$map()` output
+
+
 # Version 2.6 - 2021-03-30
 
 ## Bugfixes
