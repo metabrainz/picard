@@ -636,7 +636,7 @@ class PluginsOptionsPage(OptionsPage):
             parse_response_type=None,
             priority=True,
             important=True,
-            queryargs={"id": plugin.module_name}
+            queryargs={"id": plugin.module_name, "version": plugin.version.to_string(short=True)}
         )
 
     def download_handler(self, update, response, reply, error, plugin):
