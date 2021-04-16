@@ -2,20 +2,6 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2006-2008, 2011 Lukáš Lalinský
-# Copyright (C) 2008-2009 Nikolai Prokoschenko
-# Copyright (C) 2009-2010, 2014-2015, 2018-2021 Philipp Wolfer
-# Copyright (C) 2011-2013 Michael Wiencek
-# Copyright (C) 2011-2013 Wieland Hoffmann
-# Copyright (C) 2013 Calvin Walton
-# Copyright (C) 2013 Ionuț Ciocîrlan
-# Copyright (C) 2013-2014 Sophist-UK
-# Copyright (C) 2013-2015, 2018-2019, 2021 Laurent Monin
-# Copyright (C) 2015 Alex Berman
-# Copyright (C) 2015 Ohm Patel
-# Copyright (C) 2016 Suhas
-# Copyright (C) 2016-2017 Sambhav Kothari
-# Copyright (C) 2021 Gabriel Ferreira
 # Copyright (C) 2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
@@ -53,7 +39,10 @@ from picard.script import (
 )
 from picard.util.settingsoverride import SettingsOverride
 
-from picard.ui import PicardDialog
+from picard.ui import (
+    PicardDialog,
+    SingletonDialog,
+)
 from picard.ui.options import OptionsPage
 from picard.ui.options.scripting import (
     ScriptCheckError,
@@ -87,123 +76,40 @@ $if(%_multiartist%,%artist% - ,)
 ]
 
 
-class ScriptEditorPage(PicardDialog):
-
-    NAME = "scripteditor"
-    TITLE = N_("File naming script editor")
-    PARENT = None
-    HELP_URL = '/config/options_filerenaming.html'
-    STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
-
-    options = [
-        TextOption(
-            "setting",
-            "file_naming_format",
-            DEFAULT_FILE_NAMING_FORMAT,
-        ),
-    ]
-
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.PARENT = parent
-        self.setWindowFlags(QtCore.Qt.Window)
-        self.setWindowTitle(self.TITLE)
-        self.displaying = False
-        self.ui = Ui_ScriptEditor()
-        self.ui.setupUi(self)
-
-        self.installEventFilter(self)
-
-        self.ui.file_naming_editor_save.clicked.connect(self.save_script)
-
-        self.ui.file_naming_format.setEnabled(True)
-        self.ui.file_naming_format_reload.setEnabled(True)
-
-        self.ui.file_naming_format.textChanged.connect(self.check_formats)
-        self.ui.file_naming_format_reload.clicked.connect(self.load)
-        self.ui.file_naming_word_wrap.stateChanged.connect(self.toggle_wordwrap)
-
-        self.ui.scripting_documentation_button.clicked.connect(self.show_scripting_documentation)
-        self.ui.example_filename_sample_files_button.clicked.connect(self._sample_example_files)
+class ScriptEditorExamples():
+    def __init__(self, parent=None, tagger=None):
+        self.parent = parent
+        self.tagger = tagger
         self._sampled_example_files = []
 
-        self.ui.example_filename_after.itemSelectionChanged.connect(self.match_before_to_after)
-        self.ui.example_filename_before.itemSelectionChanged.connect(self.match_after_to_before)
+    def update_sample_example_files(self):
+        # Get a new sample of randomly selected /loaded files to use as renaming examples
+        import random
+        max_samples = 10  # pick up to 10 samples
+        if self.tagger.tagger.window.selected_objects:
+            # If files/albums/tracks are selected, sample example files from them
+            files = self.tagger.tagger.get_files_from_objects(self.tagger.tagger.window.selected_objects)
+            length = min(max_samples, len(files))
+            files = [file for file in random.sample(files, k=length)]
+        else:
+            # If files/albums/tracks are not selected, sample example files from the pool of loaded files
+            files = self.tagger.tagger.files
+            length = min(max_samples, len(files))
+            files = [files[key] for key in random.sample(files.keys(), k=length)]
 
-        self.ui.preset_naming_scripts.clear()
-        for item in PRESET_SCRIPTS:
-            self.ui.preset_naming_scripts.addItem(item["title"])
-        self.ui.preset_naming_script_select.clicked.connect(self.select_preset_script)
+        if not files:
+            # If no file has been loaded, use generic examples
+            files = [self.example_1(), self.example_2()]
+        self._sampled_example_files = files
 
-        # Sync example lists vertical scrolling
-        def sync_vertical_scrollbars(widgets):
-            """Sync position of vertical scrollbars for listed widgets"""
-            def _sync_scrollbar_vert(widget, value):
-                widget.blockSignals(True)
-                widget.verticalScrollBar().setValue(value)
-                widget.blockSignals(False)
-
-            widgets = set(widgets)
-            for widget in widgets:
-                for other in widgets - {widget}:
-                    widget.verticalScrollBar().valueChanged.connect(
-                        partial(_sync_scrollbar_vert, other))
-
-        # Sync example lists vertical scrolling
-        sync_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
-
-        # Set highlight colors for selected list items
-        # stylesheet = "QListView::item:selected { color: white; background-color: blue; }"
-        stylesheet = "QListView::item:selected { color: black; background-color: lightblue; }"
-        self.ui.example_filename_after.setStyleSheet(stylesheet)
-        self.ui.example_filename_before.setStyleSheet(stylesheet)
-        self.wordwrap = QtWidgets.QTextEdit.NoWrap
-        self.current_row = -1
-
-        self.load()
-
-    def eventFilter(self, object, event):
-        if event.type() == QtCore.QEvent.WindowActivate or event.type() == QtCore.QEvent.FocusIn:
-            self._sample_example_files()
-            self.load()
-        return False
-
-    def select_preset_script(self):
-        selected_script = self.ui.preset_naming_scripts.currentIndex()
-        if selected_script > 0:
-            self.ui.file_naming_format.setPlainText(PRESET_SCRIPTS[selected_script]['script'])
-            self.update_examples()
-
-    def match_after_to_before(self):
-        if self.ui.example_filename_before.currentRow() != self.current_row:
-            self.current_row = self.ui.example_filename_before.currentRow()
-            self.ui.example_filename_after.setCurrentRow(self.current_row)
-
-    def match_before_to_after(self):
-        if self.ui.example_filename_after.currentRow() != self.current_row:
-            self.current_row = self.ui.example_filename_after.currentRow()
-            self.ui.example_filename_before.setCurrentRow(self.current_row)
-
-    def save_script(self):
-        config = get_config()
-        config.setting["file_naming_format"] = self.ui.file_naming_format.toPlainText()
-
-    def show_scripting_documentation(self):
-        ScriptingDocumentationDialog.show_instance(parent=self)
-
-    def check_formats(self):
-        self.test()
-        self.update_examples()
-
-    def _example_to_filename(self, file):
-        config = get_config()
-        settings = SettingsOverride(config.setting, {
-            'file_naming_format': self.ui.file_naming_format.toPlainText(),
-        })
-
+    @staticmethod
+    def _example_to_filename(file, settings=None):
+        if not settings:
+            config = get_config()
+            settings = config.setting
         try:
-            if config.setting["enable_tagger_scripts"]:
-                for s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"]:
+            if settings["enable_tagger_scripts"]:
+                for s_pos, s_name, s_enabled, s_text in settings["list_of_scripts"]:
                     if s_enabled and s_text:
                         parser = ScriptParser()
                         parser.eval(s_text, file.metadata)
@@ -217,89 +123,19 @@ class ScriptEditorPage(PicardDialog):
         except TypeError:
             return "", ""
 
-    def _sample_example_files(self):
-        # Get a new sample of randomly selected /loaded files to use as renaming examples
-        import random
-        max_samples = 10  # pick up to 10 samples
-        if self.PARENT.selected_objects:
-            # If files/albums/tracks are selected, sample example files from them
-            files = self.PARENT.tagger.get_files_from_objects(self.PARENT.selected_objects)
-            length = min(max_samples, len(files))
-            files = [file for file in random.sample(files, k=length)]
-        else:
-            # If files/albums/tracks are not selected, sample example files from the pool of loaded files
-            files = self.PARENT.tagger.files
-            length = min(max_samples, len(files))
-            files = [files[key] for key in random.sample(files.keys(), k=length)]
-
-        if not files:
-            # If no file has been loaded, use generic examples
-            files = [self.example_1(), self.example_2()]
-        self._sampled_example_files = files
-        self.update_examples()
-
-    def update_examples(self):
-        # log.debug("QListWidget Style: %s" % self.ui.example_filename_before.styleSheet())
+    def get_examples(self, override=None):
         config = get_config()
-        self.ui.example_filename_before.clear()
-        self.ui.example_filename_after.clear()
-        self.current_row = -1
-
-        if config.setting["move_files"] or config.setting["rename_files"]:
+        if override and isinstance(override, dict):
+            settings = SettingsOverride(config.setting, override)
+        else:
+            settings = config.setting
+        if settings["move_files"] or settings["rename_files"]:
             if not self._sampled_example_files:
-                self._sample_example_files()
-            example_files = self._sampled_example_files
-
-            examples = [self._example_to_filename(example) for example in example_files]
-            for before, after in sorted(examples, key=lambda x: x[1]):
-                self.ui.example_filename_before.addItem(before)
-                self.ui.example_filename_after.addItem(after)
+                self.update_sample_example_files()
+            return [self._example_to_filename(example, settings=settings) for example in self._sampled_example_files]
         else:
             err_text = N_("Renaming options are disabled")
-            self.ui.example_filename_before.addItem(err_text)
-            self.ui.example_filename_after.addItem(err_text)
-
-    def toggle_wordwrap(self):
-        if self.ui.file_naming_word_wrap.isChecked():
-            self.wordwrap = QtWidgets.QTextEdit.WidgetWidth
-        else:
-            self.wordwrap = QtWidgets.QTextEdit.NoWrap
-        self.ui.file_naming_format.setLineWrapMode(self.wordwrap)
-
-    def load(self):
-        config = get_config()
-        self.toggle_wordwrap()
-        self.ui.file_naming_format.setPlainText(config.setting["file_naming_format"])
-        self.update_examples()
-
-    def check(self):
-        self.check_format()
-
-    def check_format(self):
-        config = get_config()
-        parser = ScriptParser()
-        try:
-            parser.eval(self.ui.file_naming_format.toPlainText())
-        except Exception as e:
-            raise ScriptCheckError("", str(e))
-        if config.setting["rename_files"]:
-            if not self.ui.file_naming_format.toPlainText().strip():
-                raise ScriptCheckError("", _("The file naming format must not be empty."))
-
-    def display_error(self, error):
-        # Ignore scripting errors, those are handled inline
-        if not isinstance(error, ScriptCheckError):
-            super().display_error(error)
-
-    def test(self):
-        self.ui.renaming_error.setStyleSheet("")
-        self.ui.renaming_error.setText("")
-        try:
-            self.check_format()
-        except ScriptCheckError as e:
-            self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR)
-            self.ui.renaming_error.setText(e.info)
-            return
+            return [[err_text, err_text]]
 
     @staticmethod
     def example_1():
@@ -366,3 +202,176 @@ class ScriptEditorPage(PicardDialog):
         file.metadata['musicbrainz_artistid'] = ['7b593455-d207-482c-8c6f-19ce22c94679',
                                                     '9e082466-2390-40d1-891e-4803531f43fd']
         return file
+
+
+class ScriptEditorPage(PicardDialog, SingletonDialog):
+
+    NAME = "scripteditor"
+    TITLE = N_("File naming script editor")
+    PARENT = None
+    HELP_URL = '/config/options_filerenaming.html'
+    STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
+
+    options = [
+        TextOption(
+            "setting",
+            "file_naming_format",
+            DEFAULT_FILE_NAMING_FORMAT,
+        ),
+    ]
+
+    def __init__(self, parent=None, examples=None):
+        super().__init__(parent)
+        self.PARENT = parent
+        self.examples = examples
+        self.setWindowFlags(QtCore.Qt.Window)
+        self.setWindowTitle(self.TITLE)
+        self.displaying = False
+        self.ui = Ui_ScriptEditor()
+        self.ui.setupUi(self)
+
+        self.installEventFilter(self)
+
+        self.ui.file_naming_editor_save.clicked.connect(self.save_script)
+
+        self.ui.file_naming_format.setEnabled(True)
+        self.ui.file_naming_format_reload.setEnabled(True)
+
+        self.ui.file_naming_format.textChanged.connect(self.check_formats)
+        self.ui.file_naming_format_reload.clicked.connect(self.load)
+        self.ui.file_naming_word_wrap.stateChanged.connect(self.toggle_wordwrap)
+
+        self.ui.scripting_documentation_button.clicked.connect(self.show_scripting_documentation)
+        self.ui.example_filename_sample_files_button.clicked.connect(self.update_example_files)
+        self._sampled_example_files = []
+
+        self.ui.example_filename_after.itemSelectionChanged.connect(self.match_before_to_after)
+        self.ui.example_filename_before.itemSelectionChanged.connect(self.match_after_to_before)
+
+        self.ui.preset_naming_scripts.clear()
+        for item in PRESET_SCRIPTS:
+            self.ui.preset_naming_scripts.addItem(item["title"])
+        self.ui.preset_naming_script_select.clicked.connect(self.select_preset_script)
+
+        # Sync example lists vertical scrolling
+        def sync_vertical_scrollbars(widgets):
+            """Sync position of vertical scrollbars for listed widgets"""
+            def _sync_scrollbar_vert(widget, value):
+                widget.blockSignals(True)
+                widget.verticalScrollBar().setValue(value)
+                widget.blockSignals(False)
+
+            widgets = set(widgets)
+            for widget in widgets:
+                for other in widgets - {widget}:
+                    widget.verticalScrollBar().valueChanged.connect(
+                        partial(_sync_scrollbar_vert, other))
+
+        # Sync example lists vertical scrolling
+        sync_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
+
+        # Set highlight colors for selected list items
+        # stylesheet = "QListView::item:selected { color: white; background-color: blue; }"
+        stylesheet = "QListView::item:selected { color: black; background-color: lightblue; }"
+        self.ui.example_filename_after.setStyleSheet(stylesheet)
+        self.ui.example_filename_before.setStyleSheet(stylesheet)
+        self.wordwrap = QtWidgets.QTextEdit.NoWrap
+        self.override = {}
+        self.current_row = -1
+
+        self.load()
+
+    def eventFilter(self, object, event):
+        if event.type() == QtCore.QEvent.WindowActivate or event.type() == QtCore.QEvent.FocusIn:
+            # self.load()
+            self.update_examples()
+        return False
+
+    def select_preset_script(self):
+        selected_script = self.ui.preset_naming_scripts.currentIndex()
+        if selected_script > 0:
+            self.ui.file_naming_format.setPlainText(PRESET_SCRIPTS[selected_script]['script'])
+            self.update_examples()
+
+    def match_after_to_before(self):
+        if self.ui.example_filename_before.currentRow() != self.current_row:
+            self.current_row = self.ui.example_filename_before.currentRow()
+            self.ui.example_filename_after.setCurrentRow(self.current_row)
+
+    def match_before_to_after(self):
+        if self.ui.example_filename_after.currentRow() != self.current_row:
+            self.current_row = self.ui.example_filename_after.currentRow()
+            self.ui.example_filename_before.setCurrentRow(self.current_row)
+
+    def save_script(self):
+        config = get_config()
+        config.setting["file_naming_format"] = self.ui.file_naming_format.toPlainText()
+
+    def show_scripting_documentation(self):
+        ScriptingDocumentationDialog.show_instance(parent=self)
+
+    def check_formats(self):
+        self.test()
+        self.update_examples()
+
+    def update_example_files(self):
+        self.examples.update_sample_example_files()
+        self.PARENT.update_examples()
+
+    def update_examples(self, override=None):
+        if not override or not isinstance(override, dict):
+            override = self.override
+        else:
+            self.override = override
+        override['file_naming_format'] = self.ui.file_naming_format.toPlainText()
+
+        self.ui.example_filename_before.clear()
+        self.ui.example_filename_after.clear()
+        self.current_row = -1
+
+        examples = self.examples.get_examples(override)
+        for before, after in sorted(examples, key=lambda x: x[1]):
+            self.ui.example_filename_before.addItem(before)
+            self.ui.example_filename_after.addItem(after)
+
+    def toggle_wordwrap(self):
+        if self.ui.file_naming_word_wrap.isChecked():
+            self.wordwrap = QtWidgets.QTextEdit.WidgetWidth
+        else:
+            self.wordwrap = QtWidgets.QTextEdit.NoWrap
+        self.ui.file_naming_format.setLineWrapMode(self.wordwrap)
+
+    def load(self):
+        config = get_config()
+        self.toggle_wordwrap()
+        self.ui.file_naming_format.setPlainText(config.setting["file_naming_format"])
+        self.update_examples()
+
+    def check(self):
+        self.check_format()
+
+    def check_format(self):
+        config = get_config()
+        parser = ScriptParser()
+        try:
+            parser.eval(self.ui.file_naming_format.toPlainText())
+        except Exception as e:
+            raise ScriptCheckError("", str(e))
+        if config.setting["rename_files"]:
+            if not self.ui.file_naming_format.toPlainText().strip():
+                raise ScriptCheckError("", _("The file naming format must not be empty."))
+
+    def display_error(self, error):
+        # Ignore scripting errors, those are handled inline
+        if not isinstance(error, ScriptCheckError):
+            super().display_error(error)
+
+    def test(self):
+        self.ui.renaming_error.setStyleSheet("")
+        self.ui.renaming_error.setText("")
+        try:
+            self.check_format()
+        except ScriptCheckError as e:
+            self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR)
+            self.ui.renaming_error.setText(e.info)
+            return
