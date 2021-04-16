@@ -220,6 +220,9 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
         ),
     ]
 
+    signal_save = QtCore.pyqtSignal()
+    signal_update = QtCore.pyqtSignal()
+
     def __init__(self, parent=None, examples=None):
         super().__init__(parent)
         self.PARENT = parent
@@ -304,8 +307,16 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
             self.ui.example_filename_before.setCurrentRow(self.current_row)
 
     def save_script(self):
-        config = get_config()
-        config.setting["file_naming_format"] = self.ui.file_naming_format.toPlainText()
+        # config = get_config()
+        # config.setting["file_naming_format"] = self.ui.file_naming_format.toPlainText()
+        self.signal_save.emit()
+
+    def get_script(self):
+        return str(self.ui.file_naming_format.toPlainText()).strip()
+
+    def set_script(self, script_text=None):
+        if script_text is not None:
+            self.ui.file_naming_format.setPlainText(str(script_text).strip())
 
     def show_scripting_documentation(self):
         ScriptingDocumentationDialog.show_instance(parent=self)
@@ -316,9 +327,10 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
 
     def update_example_files(self):
         self.examples.update_sample_example_files()
-        self.PARENT.update_examples()
+        # self.PARENT.update_examples()
+        self.update_examples()
 
-    def update_examples(self, override=None):
+    def update_examples(self, override=None, send_signal=True):
         if not override or not isinstance(override, dict):
             override = self.override
         else:
@@ -333,6 +345,9 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
         for before, after in sorted(examples, key=lambda x: x[1]):
             self.ui.example_filename_before.addItem(before)
             self.ui.example_filename_after.addItem(after)
+
+        if send_signal:
+            self.signal_update.emit()
 
     def toggle_wordwrap(self):
         if self.ui.file_naming_word_wrap.isChecked():

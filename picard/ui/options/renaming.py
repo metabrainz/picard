@@ -96,14 +96,15 @@ class RenamingOptionsPage(OptionsPage):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.script_text = ""
         self.ui = Ui_RenamingOptionsPage()
         self.ui.setupUi(self)
 
-        self.ui.ascii_filenames.clicked.connect(self.update_examples)
-        self.ui.windows_compatibility.clicked.connect(self.update_examples)
-        self.ui.rename_files.clicked.connect(self.update_examples)
-        self.ui.move_files.clicked.connect(self.update_examples)
-        self.ui.move_files_to.editingFinished.connect(self.update_examples)
+        self.ui.ascii_filenames.clicked.connect(self.update_examples_from_local)
+        self.ui.windows_compatibility.clicked.connect(self.update_examples_from_local)
+        self.ui.rename_files.clicked.connect(self.update_examples_from_local)
+        self.ui.move_files.clicked.connect(self.update_examples_from_local)
+        self.ui.move_files_to.editingFinished.connect(self.update_examples_from_local)
 
         self.ui.move_files.toggled.connect(
             partial(
@@ -117,7 +118,7 @@ class RenamingOptionsPage(OptionsPage):
                 self.toggle_file_renaming
             )
         )
-        self.ui.file_naming_format.textChanged.connect(self.check_formats)
+        # self.ui.file_naming_format.textChanged.connect(self.check_formats)
         self.ui.file_naming_format_default.clicked.connect(self.set_file_naming_format_default)
         self.ui.open_script_editor.clicked.connect(self.show_script_editing_page)
         self.ui.move_files_to_browse.clicked.connect(self.move_files_to_browse)
@@ -134,6 +135,8 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.example_filename_sample_files_button.clicked.connect(self.update_example_files)
         self.examples = ScriptEditorExamples(self, self)
         self.script_editor_page = ScriptEditorPage(parent=self, examples=self.examples)
+        self.script_editor_page.signal_save.connect(self.save_from_editor)
+        self.script_editor_page.signal_update.connect(self.update_from_editor)
 
         # Sync example lists vertical scrolling
         def sync_vertical_scrollbars(widgets):
@@ -201,6 +204,14 @@ class RenamingOptionsPage(OptionsPage):
         if not IS_WIN:
             self.ui.windows_compatibility.setEnabled(active)
 
+    def save_from_editor(self):
+        # self.ui.file_naming_format.setPlainText(self.script_editor_page.get_script())
+        self.script_text = self.script_editor_page.get_script()
+
+    def update_from_editor(self):
+        self.script_text = self.script_editor_page.get_script()
+        self.update_examples()
+
     def check_formats(self):
         self.test()
         self.update_examples()
@@ -209,14 +220,17 @@ class RenamingOptionsPage(OptionsPage):
         self.examples.update_sample_example_files()
         self.update_examples()
 
-    def update_examples(self):
+    def update_examples_from_local(self):
+        self.update_examples(send_to_editor=True)
+
+    def update_examples(self, send_to_editor=False):
         self.ui.example_filename_before.clear()
         self.ui.example_filename_after.clear()
         self.current_row = -1
 
         override = {
             'ascii_filenames': self.ui.ascii_filenames.isChecked(),
-            'file_naming_format': self.ui.file_naming_format.toPlainText(),
+            'file_naming_format': self.script_text,
             'move_files': self.ui.move_files.isChecked(),
             'move_files_to': os.path.normpath(self.ui.move_files_to.text()),
             'rename_files': self.ui.rename_files.isChecked(),
@@ -228,7 +242,8 @@ class RenamingOptionsPage(OptionsPage):
             self.ui.example_filename_before.addItem(before)
             self.ui.example_filename_after.addItem(after)
 
-        self.script_editor_page.update_examples(override=override)
+        if send_to_editor:
+            self.script_editor_page.update_examples(override=override)
 
     def load(self):
         config = get_config()
@@ -241,6 +256,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_files.setChecked(config.setting["move_files"])
         self.ui.ascii_filenames.setChecked(config.setting["ascii_filenames"])
         self.ui.file_naming_format.setPlainText(config.setting["file_naming_format"])
+        self.script_text = config.setting["file_naming_format"]
         self.ui.move_files_to.setText(config.setting["move_files_to"])
         self.ui.move_files_to.setCursorPosition(0)
         self.ui.move_additional_files.setChecked(config.setting["move_additional_files"])
@@ -268,7 +284,8 @@ class RenamingOptionsPage(OptionsPage):
         config.setting["windows_compatibility"] = self.ui.windows_compatibility.isChecked()
         config.setting["ascii_filenames"] = self.ui.ascii_filenames.isChecked()
         config.setting["rename_files"] = self.ui.rename_files.isChecked()
-        config.setting["file_naming_format"] = self.ui.file_naming_format.toPlainText()
+        # config.setting["file_naming_format"] = self.ui.file_naming_format.toPlainText()
+        config.setting["file_naming_format"] = self.script_text.strip()
         self.tagger.window.enable_renaming_action.setChecked(config.setting["rename_files"])
         config.setting["move_files"] = self.ui.move_files.isChecked()
         config.setting["move_files_to"] = os.path.normpath(self.ui.move_files_to.text())
