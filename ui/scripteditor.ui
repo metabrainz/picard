@@ -76,49 +76,24 @@
         <number>0</number>
        </property>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="file_naming_format_label">
-           <property name="text">
-            <string>Name files like this</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_4">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="file_naming_word_wrap">
-           <property name="toolTip">
-            <string>Word wrap long lines in the editor</string>
-           </property>
-           <property name="text">
-            <string>Word wrap text</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <property name="bottomMargin">
           <number>0</number>
          </property>
          <item>
           <widget class="QLabel" name="label">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>130</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Preset file naming scripts:</string>
            </property>
@@ -146,7 +121,17 @@
             <string>Load the selected preset script into the editor</string>
            </property>
            <property name="text">
-            <string>Select</string>
+            <string>Select Preset</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="file_naming_word_wrap">
+           <property name="toolTip">
+            <string>Word wrap long lines in the editor</string>
+           </property>
+           <property name="text">
+            <string>Word wrap text</string>
            </property>
           </widget>
          </item>
@@ -210,7 +195,7 @@
             <string>Up to 10 items chosen at random from files selected in the main window</string>
            </property>
            <property name="text">
-            <string>Renew examples</string>
+            <string>Reload Examples</string>
            </property>
           </widget>
          </item>
@@ -313,7 +298,7 @@
        </size>
       </property>
       <property name="title">
-       <string>Examples</string>
+       <string>Files will be named like this</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <property name="leftMargin">
@@ -344,11 +329,14 @@
            <enum>QFrame::Raised</enum>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
+           <property name="spacing">
+            <number>4</number>
+           </property>
            <property name="leftMargin">
             <number>0</number>
            </property>
            <property name="topMargin">
-            <number>10</number>
+            <number>4</number>
            </property>
            <property name="rightMargin">
             <number>0</number>
@@ -383,11 +371,14 @@
            <enum>QFrame::Raised</enum>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_6">
+           <property name="spacing">
+            <number>4</number>
+           </property>
            <property name="leftMargin">
             <number>0</number>
            </property>
            <property name="topMargin">
-            <number>10</number>
+            <number>4</number>
            </property>
            <property name="rightMargin">
             <number>0</number>

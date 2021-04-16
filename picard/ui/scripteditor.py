@@ -26,6 +26,7 @@ from PyQt5 import (
     QtCore,
     QtWidgets,
 )
+from PyQt5.QtGui import QPalette
 
 from picard.config import (
     TextOption,
@@ -274,10 +275,13 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
         sync_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
 
         # Set highlight colors for selected list items
-        # stylesheet = "QListView::item:selected { color: white; background-color: blue; }"
-        stylesheet = "QListView::item:selected { color: black; background-color: lightblue; }"
+        example_style = self.ui.example_filename_before.palette()
+        highlight_bg = example_style.color(QPalette.Active, QPalette.Highlight)
+        highlight_fg = example_style.color(QPalette.Active, QPalette.HighlightedText)
+        stylesheet = "QListView::item:selected { color: " + highlight_fg.name() + "; background-color: " + highlight_bg.name() + "; }"
         self.ui.example_filename_after.setStyleSheet(stylesheet)
         self.ui.example_filename_before.setStyleSheet(stylesheet)
+
         self.wordwrap = QtWidgets.QTextEdit.NoWrap
         self.override = {}
         self.current_row = -1
@@ -286,7 +290,6 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
 
     def eventFilter(self, object, event):
         if event.type() == QtCore.QEvent.WindowActivate or event.type() == QtCore.QEvent.FocusIn:
-            # self.load()
             self.update_examples()
         return False
 
@@ -307,8 +310,6 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
             self.ui.example_filename_before.setCurrentRow(self.current_row)
 
     def save_script(self):
-        # config = get_config()
-        # config.setting["file_naming_format"] = self.ui.file_naming_format.toPlainText()
         self.signal_save.emit()
 
     def get_script(self):
@@ -327,7 +328,6 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
 
     def update_example_files(self):
         self.examples.update_sample_example_files()
-        # self.PARENT.update_examples()
         self.update_examples()
 
     def update_examples(self, override=None, send_signal=True):

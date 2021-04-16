@@ -118,22 +118,22 @@ class RenamingOptionsPage(OptionsPage):
                 self.toggle_file_renaming
             )
         )
-        # self.ui.file_naming_format.textChanged.connect(self.check_formats)
-        self.ui.file_naming_format_default.clicked.connect(self.set_file_naming_format_default)
         self.ui.open_script_editor.clicked.connect(self.show_script_editing_page)
         self.ui.move_files_to_browse.clicked.connect(self.move_files_to_browse)
 
         self.ui.example_filename_after.itemSelectionChanged.connect(self.match_before_to_after)
         self.ui.example_filename_before.itemSelectionChanged.connect(self.match_after_to_before)
 
-        script_edit = self.ui.file_naming_format
+        script_edit = self.ui.move_additional_files_pattern
         self.script_palette_normal = script_edit.palette()
         self.script_palette_readonly = QPalette(self.script_palette_normal)
         disabled_color = self.script_palette_normal.color(QPalette.Inactive, QPalette.Window)
         self.script_palette_readonly.setColor(QPalette.Disabled, QPalette.Base, disabled_color)
-        self.ui.scripting_documentation_button.clicked.connect(self.show_scripting_documentation)
+
         self.ui.example_filename_sample_files_button.clicked.connect(self.update_example_files)
+
         self.examples = ScriptEditorExamples(self, self)
+
         self.script_editor_page = ScriptEditorPage(parent=self, examples=self.examples)
         self.script_editor_page.signal_save.connect(self.save_from_editor)
         self.script_editor_page.signal_update.connect(self.update_from_editor)
@@ -156,10 +156,13 @@ class RenamingOptionsPage(OptionsPage):
         sync_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
 
         # Set highlight colors for selected list items
-        # stylesheet = "QListView::item:selected { color: white; background-color: blue; }"
-        stylesheet = "QListView::item:selected { color: black; background-color: lightblue; }"
+        example_style = self.ui.example_filename_before.palette()
+        highlight_bg = example_style.color(QPalette.Active, QPalette.Highlight)
+        highlight_fg = example_style.color(QPalette.Active, QPalette.HighlightedText)
+        stylesheet = "QListView::item:selected { color: " + highlight_fg.name() + "; background-color: " + highlight_bg.name() + "; }"
         self.ui.example_filename_after.setStyleSheet(stylesheet)
         self.ui.example_filename_before.setStyleSheet(stylesheet)
+
         self.current_row = -1
 
     def match_after_to_before(self):
@@ -194,18 +197,12 @@ class RenamingOptionsPage(OptionsPage):
 
     def toggle_file_naming_format(self):
         active = self.ui.move_files.isChecked() or self.ui.rename_files.isChecked()
-        self.ui.file_naming_format.setEnabled(active)
-        self.ui.file_naming_format_default.setEnabled(active)
         self.ui.open_script_editor.setEnabled(active)
-        palette = self.script_palette_normal if active else self.script_palette_readonly
-        self.ui.file_naming_format.setPalette(palette)
-
         self.ui.ascii_filenames.setEnabled(active)
         if not IS_WIN:
             self.ui.windows_compatibility.setEnabled(active)
 
     def save_from_editor(self):
-        # self.ui.file_naming_format.setPlainText(self.script_editor_page.get_script())
         self.script_text = self.script_editor_page.get_script()
 
     def update_from_editor(self):
@@ -221,9 +218,9 @@ class RenamingOptionsPage(OptionsPage):
         self.update_examples()
 
     def update_examples_from_local(self):
-        self.update_examples(send_to_editor=True)
+        self.update_examples(update_editor=True)
 
-    def update_examples(self, send_to_editor=False):
+    def update_examples(self, update_editor=False):
         self.ui.example_filename_before.clear()
         self.ui.example_filename_after.clear()
         self.current_row = -1
@@ -242,7 +239,7 @@ class RenamingOptionsPage(OptionsPage):
             self.ui.example_filename_before.addItem(before)
             self.ui.example_filename_after.addItem(after)
 
-        if send_to_editor:
+        if update_editor:
             self.script_editor_page.update_examples(override=override)
 
     def load(self):
@@ -255,7 +252,6 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.rename_files.setChecked(config.setting["rename_files"])
         self.ui.move_files.setChecked(config.setting["move_files"])
         self.ui.ascii_filenames.setChecked(config.setting["ascii_filenames"])
-        self.ui.file_naming_format.setPlainText(config.setting["file_naming_format"])
         self.script_text = config.setting["file_naming_format"]
         self.ui.move_files_to.setText(config.setting["move_files_to"])
         self.ui.move_files_to.setCursorPosition(0)
@@ -272,11 +268,11 @@ class RenamingOptionsPage(OptionsPage):
     def check_format(self):
         parser = ScriptParser()
         try:
-            parser.eval(self.ui.file_naming_format.toPlainText())
+            parser.eval(self.script_text)
         except Exception as e:
             raise ScriptCheckError("", str(e))
         if self.ui.rename_files.isChecked():
-            if not self.ui.file_naming_format.toPlainText().strip():
+            if not self.script_text.strip():
                 raise ScriptCheckError("", _("The file naming format must not be empty."))
 
     def save(self):
@@ -284,7 +280,6 @@ class RenamingOptionsPage(OptionsPage):
         config.setting["windows_compatibility"] = self.ui.windows_compatibility.isChecked()
         config.setting["ascii_filenames"] = self.ui.ascii_filenames.isChecked()
         config.setting["rename_files"] = self.ui.rename_files.isChecked()
-        # config.setting["file_naming_format"] = self.ui.file_naming_format.toPlainText()
         config.setting["file_naming_format"] = self.script_text.strip()
         self.tagger.window.enable_renaming_action.setChecked(config.setting["rename_files"])
         config.setting["move_files"] = self.ui.move_files.isChecked()
@@ -298,10 +293,6 @@ class RenamingOptionsPage(OptionsPage):
         # Ignore scripting errors, those are handled inline
         if not isinstance(error, ScriptCheckError):
             super().display_error(error)
-
-    def set_file_naming_format_default(self):
-        self.ui.file_naming_format.setText(self.options[3].default)
-#        self.ui.file_naming_format.setCursorPosition(0)
 
     def move_files_to_browse(self):
         path = QtWidgets.QFileDialog.getExistingDirectory(self, "", self.ui.move_files_to.text())
