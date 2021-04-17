@@ -28,6 +28,7 @@ from PyQt5 import (
 )
 from PyQt5.QtGui import QPalette
 
+from picard import log
 from picard.config import (
     TextOption,
     get_config,
@@ -244,6 +245,8 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
         self.ui.file_naming_format.textChanged.connect(self.check_formats)
         self.ui.file_naming_format_reload.clicked.connect(self.load)
         self.ui.file_naming_word_wrap.stateChanged.connect(self.toggle_wordwrap)
+        self.ui.import_script.clicked.connect(self.import_script)
+        self.ui.export_script.clicked.connect(self.export_script)
 
         self.ui.scripting_documentation_button.clicked.connect(self.show_scripting_documentation)
         self.ui.example_filename_sample_files_button.clicked.connect(self.update_example_files)
@@ -355,6 +358,39 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
         else:
             self.wordwrap = QtWidgets.QTextEdit.NoWrap
         self.ui.file_naming_format.setLineWrapMode(self.wordwrap)
+
+    def import_script(self):
+        options = QtWidgets.QFileDialog.Options()
+        options |= QtWidgets.QFileDialog.DontUseNativeDialog
+        filename, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Import Script File", "", "All Files (*);;Picard Script Files (*.pts)", options=options)
+        if filename:
+            log.debug('Importing naming script file: %s' % filename)
+            file_text = ""
+            try:
+                with open(filename, 'r', encoding='utf8') as i_file:
+                    file_text = i_file.read()
+            except OSError as error:
+                self.display_error(error)
+                return
+            if file_text.strip():
+                self.ui.file_naming_format.setPlainText(file_text.strip())
+            else:
+                self.ui.file_naming_format.setPlainText("$noop( The import file was empty. )")
+
+    def export_script(self):
+        script_text = self.get_script()
+        if script_text:
+            options = QtWidgets.QFileDialog.Options()
+            options |= QtWidgets.QFileDialog.DontUseNativeDialog
+            filename, _ = QtWidgets.QFileDialog.getSaveFileName(self, "Export Script File", "picard_naming_script.pts", "All Files (*);;Picard Script Files (*.pts)", options=options)
+            if filename:
+                log.debug('Exporting naming script file: %s' % filename)
+                try:
+                    with open(filename, 'w', encoding='utf8') as o_file:
+                        o_file.write(self.get_script() + '\n')
+                except OSError as error:
+                    self.display_error(error)
+                    return
 
     def load(self):
         config = get_config()

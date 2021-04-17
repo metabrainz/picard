@@ -259,6 +259,26 @@
           </spacer>
          </item>
          <item>
+          <widget class="QPushButton" name="import_script">
+           <property name="toolTip">
+            <string>Import a file to replace the current script</string>
+           </property>
+           <property name="text">
+            <string>Import</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="export_script">
+           <property name="toolTip">
+            <string>Export the current script to a file</string>
+           </property>
+           <property name="text">
+            <string>Export</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="file_naming_editor_save">
            <property name="toolTip">
             <string>Save the current script to the configuration option settings</string>
