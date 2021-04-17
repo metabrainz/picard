@@ -238,7 +238,7 @@
          <item>
           <widget class="QPushButton" name="file_naming_format_reload">
            <property name="toolTip">
-            <string>Reload the script currently saved in the configuartion option settings</string>
+            <string>Reload the script currently saved in the configuration option settings</string>
            </property>
            <property name="text">
             <string>Reload Script</string>
