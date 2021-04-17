@@ -186,7 +186,7 @@ class Ui_ScriptEditor(object):
         self.example_filename_sample_files_button.setText(_("Reload Examples"))
         self.scripting_documentation_button.setToolTip(_("Display the scripting documentation in a new window"))
         self.scripting_documentation_button.setText(_("Scripting Documentation"))
-        self.file_naming_format_reload.setToolTip(_("Reload the script currently saved in the configuartion option settings"))
+        self.file_naming_format_reload.setToolTip(_("Reload the script currently saved in the configuration option settings"))
         self.file_naming_format_reload.setText(_("Reload Script"))
         self.import_script.setToolTip(_("Import a file to replace the current script"))
         self.import_script.setText(_("Import"))
