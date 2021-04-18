@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2004 Robert Kaye
 # Copyright (C) 2006-2009, 2011-2013, 2017 Lukáš Lalinský
-# Copyright (C) 2007-2011, 2015, 2018-2020 Philipp Wolfer
+# Copyright (C) 2007-2011, 2015, 2018-2021 Philipp Wolfer
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008-2009 Nikolai Prokoschenko
 # Copyright (C) 2009 Carlin Mangar
@@ -184,6 +184,7 @@ class File(QtCore.QObject, Item):
     def _loading_finished(self, callback, result=None, error=None):
         if self.state != File.PENDING or self.tagger.stopping:
             return
+        config = get_config()
         if error is not None:
             self.state = self.ERROR
             self.error_append(str(error))
@@ -214,9 +215,8 @@ class File(QtCore.QObject, Item):
         else:
             self.clear_errors()
             self.state = self.NORMAL
-            self._copy_loaded_metadata(result)
+            self._copy_loaded_metadata(result, config.setting["guess_tracknumber_and_title"])
         # use cached fingerprint from file metadata
-        config = get_config()
         if not config.setting["ignore_existing_acoustid_fingerprints"]:
             fingerprints = self.metadata.getall('acoustid_fingerprint')
             if fingerprints:
@@ -225,9 +225,15 @@ class File(QtCore.QObject, Item):
         self.update()
         callback(self)
 
-    def _copy_loaded_metadata(self, metadata):
-        filename, _ = os.path.splitext(self.base_filename)
+    def _copy_loaded_metadata(self, metadata, guess_tracknumber_and_title=True):
         metadata['~length'] = format_time(metadata.length)
+        if guess_tracknumber_and_title:
+            self._guess_tracknumber_and_title(metadata)
+        self.orig_metadata = metadata
+        self.metadata.copy(metadata)
+
+    def _guess_tracknumber_and_title(self, metadata):
+        filename, _ext = os.path.splitext(self.base_filename)
         if 'tracknumber' not in metadata:
             tracknumber = tracknum_from_filename(self.base_filename)
             if tracknumber is not None:
@@ -240,8 +246,6 @@ class File(QtCore.QObject, Item):
                         metadata['title'] = stripped_filename[tnlen:].lstrip()
         if 'title' not in metadata:
             metadata['title'] = filename
-        self.orig_metadata = metadata
-        self.metadata.copy(metadata)
 
     def copy_metadata(self, metadata, preserve_deleted=True):
         acoustid = self.metadata["acoustid_id"]
