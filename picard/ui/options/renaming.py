@@ -179,7 +179,7 @@ class RenamingOptionsPage(OptionsPage):
         self.script_editor_page.show()
         self.script_editor_page.raise_()
         self.script_editor_page.activateWindow()
-        self.update_examples()
+        self.update_examples_from_local()
 
     def show_scripting_documentation(self):
         ScriptingDocumentationDialog.show_instance(parent=self)
@@ -207,40 +207,37 @@ class RenamingOptionsPage(OptionsPage):
 
     def update_from_editor(self):
         self.script_text = self.script_editor_page.get_script()
-        self.update_examples()
+        self.display_examples()
 
     def check_formats(self):
         self.test()
-        self.update_examples()
+        self.update_examples_from_local()
 
     def update_example_files(self):
         self.examples.update_sample_example_files()
-        self.update_examples()
+        self.script_editor_page.display_examples()
 
     def update_examples_from_local(self):
-        self.update_examples(update_editor=True)
-
-    def update_examples(self, update_editor=False):
-        self.ui.example_filename_before.clear()
-        self.ui.example_filename_after.clear()
-        self.current_row = -1
-
         override = {
             'ascii_filenames': self.ui.ascii_filenames.isChecked(),
-            'file_naming_format': self.script_text,
+            # 'file_naming_format': self.script_text,
             'move_files': self.ui.move_files.isChecked(),
             'move_files_to': os.path.normpath(self.ui.move_files_to.text()),
             'rename_files': self.ui.rename_files.isChecked(),
             'windows_compatibility': self.ui.windows_compatibility.isChecked(),
         }
+        self.examples.update_examples(override=override)
+        self.script_editor_page.display_examples()
 
-        examples = self.examples.get_examples(override=override)
+    def display_examples(self):
+        self.ui.example_filename_before.clear()
+        self.ui.example_filename_after.clear()
+        self.current_row = -1
+
+        examples = self.examples.get_examples()
         for before, after in sorted(examples, key=lambda x: x[1]):
             self.ui.example_filename_before.addItem(before)
             self.ui.example_filename_after.addItem(after)
-
-        if update_editor:
-            self.script_editor_page.update_examples(override=override)
 
     def load(self):
         config = get_config()
@@ -258,7 +255,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_additional_files.setChecked(config.setting["move_additional_files"])
         self.ui.move_additional_files_pattern.setText(config.setting["move_additional_files_pattern"])
         self.ui.delete_empty_dirs.setChecked(config.setting["delete_empty_dirs"])
-        self.update_examples()
+        self.update_examples_from_local()
 
     def check(self):
         self.check_format()

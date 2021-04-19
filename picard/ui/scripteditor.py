@@ -79,13 +79,25 @@ $if(%_multiartist%,%artist% - ,)
 
 
 class ScriptEditorExamples():
+    """File naming script examples.
+    """
     def __init__(self, parent=None, tagger=None):
+        """File naming script examples.
+
+        Args:
+            parent (QMainWindow or OptionsPage, optional): Parent object. Defaults to None.
+            tagger (object, optional): Object containing the main window tagger object. Defaults to None.
+        """
         self.parent = parent
         self.tagger = tagger
         self._sampled_example_files = []
+        config = get_config()
+        self.settings = config.setting
+        self.example_list = []
 
     def update_sample_example_files(self):
-        # Get a new sample of randomly selected /loaded files to use as renaming examples
+        """Get a new sample of randomly selected / loaded files to use as renaming examples.
+        """
         import random
         max_samples = 10  # pick up to 10 samples
         if self.tagger.tagger.window.selected_objects:
@@ -103,21 +115,43 @@ class ScriptEditorExamples():
             # If no file has been loaded, use generic examples
             files = [self.example_1(), self.example_2()]
         self._sampled_example_files = files
+        self.update_examples()
 
-    @staticmethod
-    def _example_to_filename(file, settings=None):
-        if not settings:
-            config = get_config()
-            settings = config.setting
+    def update_examples(self, override=None):
+        """Update the before and after file naming examples list.
+
+        Args:
+            override (dict, optional): Dictionary of settings overrides to apply. Defaults to None.
+        """
+        if override and isinstance(override, dict):
+            self.settings = SettingsOverride(self.settings, override)
+
+        if self.settings["move_files"] or self.settings["rename_files"]:
+            if not self._sampled_example_files:
+                self.update_sample_example_files()
+            self.example_list = [self._example_to_filename(example) for example in self._sampled_example_files]
+        else:
+            err_text = N_("Renaming options are disabled")
+            self.example_list = [[err_text, err_text]]
+
+    def _example_to_filename(self, file):
+        """Produce the before and after file naming example tuple for the specified file.
+
+        Args:
+            file (File): File to produce example before and after names
+
+        Returns:
+            tuple: Example before and after names for the specified file
+        """
         try:
-            if settings["enable_tagger_scripts"]:
-                for s_pos, s_name, s_enabled, s_text in settings["list_of_scripts"]:
+            if self.settings["enable_tagger_scripts"]:
+                for s_pos, s_name, s_enabled, s_text in self.settings["list_of_scripts"]:
                     if s_enabled and s_text:
                         parser = ScriptParser()
                         parser.eval(s_text, file.metadata)
             filename_before = file.filename
-            filename_after = file.make_filename(filename_before, file.metadata, settings)
-            if not settings["move_files"]:
+            filename_after = file.make_filename(filename_before, file.metadata, self.settings)
+            if not self.settings["move_files"]:
                 return os.path.basename(filename_before), os.path.basename(filename_after)
             return filename_before, filename_after
         except ScriptError:
@@ -125,22 +159,21 @@ class ScriptEditorExamples():
         except TypeError:
             return "", ""
 
-    def get_examples(self, override=None):
-        config = get_config()
-        if override and isinstance(override, dict):
-            settings = SettingsOverride(config.setting, override)
-        else:
-            settings = config.setting
-        if settings["move_files"] or settings["rename_files"]:
-            if not self._sampled_example_files:
-                self.update_sample_example_files()
-            return [self._example_to_filename(example, settings=settings) for example in self._sampled_example_files]
-        else:
-            err_text = N_("Renaming options are disabled")
-            return [[err_text, err_text]]
+    def get_examples(self):
+        """Get the list of examples.
+
+        Returns:
+            [list]: List of the before and after file name example tuples
+        """
+        return self.example_list
 
     @staticmethod
     def example_1():
+        """First default example file.
+
+        Returns:
+            File: Default example file.
+        """
         file = File("ticket_to_ride.mp3")
         file.state = File.NORMAL
         file.metadata['album'] = 'Help!'
@@ -172,6 +205,11 @@ class ScriptEditorExamples():
 
     @staticmethod
     def example_2():
+        """Second default example file.
+
+        Returns:
+            File: Default example file.
+        """
         config = get_config()
         file = File("track05.mp3")
         file.state = File.NORMAL
@@ -207,7 +245,8 @@ class ScriptEditorExamples():
 
 
 class ScriptEditorPage(PicardDialog, SingletonDialog):
-
+    """File Naming Script Editor Page
+    """
     NAME = "scripteditor"
     TITLE = N_("File naming script editor")
     PARENT = None
@@ -228,6 +267,12 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
     EMPTY_SCRIPT = '$noop( ' + N_('The scrip text is empty.') + ' )'
 
     def __init__(self, parent=None, examples=None):
+        """Stand-alone file naming script editor.
+
+        Args:
+            parent (QMainWindow or OptionsPage, optional): Parent object. Defaults to None.
+            examples (ScriptEditorExamples, required): Object containing examples to display. Defaults to None.
+        """
         super().__init__(parent)
         self.PARENT = parent
         self.examples = examples
@@ -264,7 +309,8 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
 
         # Sync example lists vertical scrolling
         def sync_vertical_scrollbars(widgets):
-            """Sync position of vertical scrollbars for listed widgets"""
+            """Sync position of vertical scrollbars for listed widgets.
+            """
             def _sync_scrollbar_vert(widget, value):
                 widget.blockSignals(True)
                 widget.verticalScrollBar().setValue(value)
@@ -294,58 +340,84 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
         self.load()
 
     def eventFilter(self, object, event):
+        """Process selected events.
+        """
         if event.type() == QtCore.QEvent.WindowActivate or event.type() == QtCore.QEvent.FocusIn:
             self.update_examples()
         return False
 
     def select_preset_script(self):
+        """Set the current script to one of the preset example scripts.
+        """
         selected_script = self.ui.preset_naming_scripts.currentIndex()
         if selected_script > 0:
             self.set_script(PRESET_SCRIPTS[selected_script]['script'])
             self.update_examples()
 
     def match_after_to_before(self):
+        """Sets the selected item in the 'after' list to the corresponding item in the 'before' list.
+        """
         if self.ui.example_filename_before.currentRow() != self.current_row:
             self.current_row = self.ui.example_filename_before.currentRow()
             self.ui.example_filename_after.setCurrentRow(self.current_row)
 
     def match_before_to_after(self):
+        """Sets the selected item in the 'before' list to the corresponding item in the 'after' list.
+        """
         if self.ui.example_filename_after.currentRow() != self.current_row:
             self.current_row = self.ui.example_filename_after.currentRow()
             self.ui.example_filename_before.setCurrentRow(self.current_row)
 
     def save_script(self):
+        """Emits a `save` signal to trigger appropriate save action in the parent object.
+        """
         self.signal_save.emit()
 
     def get_script(self):
+        """Provides the text of the file naming script currently loaded into the editor.
+
+        Returns:
+            str: File naming script
+        """
         return str(self.ui.file_naming_format.toPlainText()).strip()
 
     def set_script(self, script_text=None):
+        """Sets the text of the file naming script into the editor.  Sets default text if `script_text` is empty or missing.
+
+        Args:
+            script_text (str, optional): File naming script text to set in the editor. Defaults to None.
+        """
         self.ui.file_naming_format.setPlainText(self.EMPTY_SCRIPT if not script_text else str(script_text).strip())
 
     def show_scripting_documentation(self):
+        """Show the scripting documentation in a new window.
+        """
         ScriptingDocumentationDialog.show_instance(parent=self)
 
-    def check_formats(self):
-        self.test()
-        self.update_examples()
-
     def update_example_files(self):
+        """Update the before and after file naming examples list.
+        """
         self.examples.update_sample_example_files()
-        self.update_examples()
+        self.display_examples()
 
-    def update_examples(self, override=None, send_signal=True):
-        if not override or not isinstance(override, dict):
-            override = self.override
-        else:
-            self.override = override
-        override['file_naming_format'] = self.get_script()
+    def update_examples(self):
+        """Update the before and after file naming examples using the current file naming script in the editor.
+        """
+        override = {'file_naming_format': self.get_script()}
+        self.examples.update_examples(override)
+        self.display_examples()
 
+    def display_examples(self, send_signal=True):
+        """Update the display of the before and after file naming examples.  Optionally emits an `update` signal.
+
+        Args:
+            send_signal (bool, optional): Determines if an `update` signal is emitted. Defaults to True.
+        """
         self.ui.example_filename_before.clear()
         self.ui.example_filename_after.clear()
         self.current_row = -1
 
-        examples = self.examples.get_examples(override)
+        examples = self.examples.get_examples()
         for before, after in sorted(examples, key=lambda x: x[1]):
             self.ui.example_filename_before.addItem(before)
             self.ui.example_filename_after.addItem(after)
@@ -354,6 +426,8 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
             self.signal_update.emit()
 
     def toggle_wordwrap(self):
+        """Toggles wordwrap in the script editing textbox.
+        """
         if self.ui.file_naming_word_wrap.isChecked():
             self.wordwrap = QtWidgets.QTextEdit.WidgetWidth
         else:
@@ -361,6 +435,8 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
         self.ui.file_naming_format.setLineWrapMode(self.wordwrap)
 
     def import_script(self):
+        """Import the current script from an external text file.
+        """
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
         filename, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Import Script File", "", "All Files (*);;Picard Script Files (*.pts)", options=options)
@@ -378,6 +454,8 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
             self.set_script(file_text)
 
     def export_script(self):
+        """Export the current script to an external text file.
+        """
         script_text = self.get_script()
         if script_text:
             options = QtWidgets.QFileDialog.Options()
@@ -393,15 +471,22 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
                     return
 
     def load(self):
+        """Loads the file naming script from the configuration settings.
+        """
         config = get_config()
         self.toggle_wordwrap()
         self.set_script(config.setting["file_naming_format"])
         self.update_examples()
 
-    def check(self):
-        self.check_format()
+    def check_formats(self):
+        """Checks for valid file naming script and settings, and updates the examples.
+        """
+        self.test()
+        self.update_examples()
 
     def check_format(self):
+        """Parse the file naming script and check for errors.
+        """
         config = get_config()
         parser = ScriptParser()
         script_text = self.get_script()
@@ -414,11 +499,18 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
                 raise ScriptCheckError("", _("The file naming format must not be empty."))
 
     def display_error(self, error):
+        """Display an error message for the specified error.
+
+        Args:
+            error (Exception): The exception to display.
+        """
         # Ignore scripting errors, those are handled inline
         if not isinstance(error, ScriptCheckError):
             super().display_error(error)
 
     def test(self):
+        """Parse the script and display any errors.
+        """
         self.ui.renaming_error.setStyleSheet("")
         self.ui.renaming_error.setText("")
         try:
