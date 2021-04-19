@@ -38,18 +38,21 @@ from picard.file import File
 from picard.script import (
     ScriptError,
     ScriptParser,
+    script_function_documentation_all,
 )
 from picard.util.settingsoverride import SettingsOverride
 
 from picard.ui import (
+    FONT_FAMILY_MONOSPACE,
     PicardDialog,
     SingletonDialog,
 )
 from picard.ui.options import OptionsPage
 from picard.ui.options.scripting import (
+    DOCUMENTATION_HTML_TEMPLATE,
     ScriptCheckError,
-    ScriptingDocumentationDialog,
 )
+from picard.ui.theme import theme
 from picard.ui.ui_scripteditor import Ui_ScriptEditor
 
 
@@ -289,13 +292,51 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
         self.ui.file_naming_format.setEnabled(True)
         self.ui.file_naming_format_reload.setEnabled(True)
 
+        def process_html(html, function):
+            if not html:
+                html = ''
+            template = '<dt>%s%s</dt><dd>%s</dd>'
+            if function.module is not None and function.module != 'picard.script.functions':
+                module = ' [' + function.module + ']'
+            else:
+                module = ''
+            try:
+                firstline, remaining = html.split("\n", 1)
+                return template % (firstline, module, remaining)
+            except ValueError:
+                return template % ("<code>$%s()</code>" % function.name, module, html)
+
+        funcdoc = script_function_documentation_all(
+            fmt='html',
+            postprocessor=process_html,
+        )
+
+        if self.ui.textBrowser.layoutDirection() == QtCore.Qt.RightToLeft:
+            text_direction = 'rtl'
+        else:
+            text_direction = 'ltr'
+
+        html = DOCUMENTATION_HTML_TEMPLATE % {
+            'html': "<dl>%s</dl>" % funcdoc,
+            'script_function_fg': theme.syntax_theme.func.name(),
+            'monospace_font': FONT_FAMILY_MONOSPACE,
+            'dir': text_direction,
+            'inline_start': 'right' if text_direction == 'rtl' else 'left'
+        }
+        # Scripting code is always left-to-right. Qt does not support the dir
+        # attribute on inline tags, insert explicit left-right-marks instead.
+        html = html.replace('<code>', '<code>&#8206;')
+        self.ui.textBrowser.setHtml(html)
+
+        self.ui.textBrowser.hide()
+        self.ui.show_documentation.stateChanged.connect(self.toggle_documentation)
+
         self.ui.file_naming_format.textChanged.connect(self.check_formats)
         self.ui.file_naming_format_reload.clicked.connect(self.load)
         self.ui.file_naming_word_wrap.stateChanged.connect(self.toggle_wordwrap)
         self.ui.import_script.clicked.connect(self.import_script)
         self.ui.export_script.clicked.connect(self.export_script)
 
-        self.ui.scripting_documentation_button.clicked.connect(self.show_scripting_documentation)
         self.ui.example_filename_sample_files_button.clicked.connect(self.update_example_files)
         self._sampled_example_files = []
 
@@ -346,6 +387,12 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
             self.update_examples()
         return False
 
+    def toggle_documentation(self):
+        if self.ui.show_documentation.isChecked():
+            self.ui.textBrowser.show()
+        else:
+            self.ui.textBrowser.hide()
+
     def select_preset_script(self):
         """Set the current script to one of the preset example scripts.
         """
@@ -388,11 +435,6 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
             script_text (str, optional): File naming script text to set in the editor. Defaults to None.
         """
         self.ui.file_naming_format.setPlainText(self.EMPTY_SCRIPT if not script_text else str(script_text).strip())
-
-    def show_scripting_documentation(self):
-        """Show the scripting documentation in a new window.
-        """
-        ScriptingDocumentationDialog.show_instance(parent=self)
 
     def update_example_files(self):
         """Update the before and after file naming examples list.
