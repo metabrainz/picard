@@ -380,11 +380,12 @@ def iter_unique(seq):
 # order is important
 _tracknum_regexps = (
     # search for explicit track number (prefix "track")
-    r"track[\s_-]*(?:no|nr)?[\s_-]*(\d+)",
-    # search for 2-digit number at start of string
-    r"^(\d{2})\D",
+    r"track[\s_-]*(?:(?:no|nr)\.?)?[\s_-]*(?P<number>\d+)",
+    # search for 2-digit number at start of string (additional leading zeroes are allowed)
+    r"^(?P<number>0*\d{2})(?:\.)[^0-9,]",  # "99. ", but not "99.02"
+    r"^(?P<number>0*\d{2})[^0-9,.]",
     # search for 2-digit number at end of string
-    r"\D(\d{2})$",
+    r"[^0-9,.](?P<number>0*\d{2})$",
 )
 
 
@@ -396,16 +397,9 @@ def tracknum_from_filename(base_filename):
     for r in _tracknum_regexps:
         match = re.search(r, filename, re.I)
         if match:
-            n = int(match.group(1))
+            n = int(match.group('number'))
             if n > 0:
                 return n
-    # find all numbers between 1 and 99
-    # 4-digit or more numbers are very unlikely to be a track number
-    # smaller number is preferred in any case
-    numbers = sorted([int(n) for n in re.findall(r'\d+', filename) if
-                      0 < int(n) <= 99])
-    if numbers:
-        return numbers[0]
     return None
 
 
