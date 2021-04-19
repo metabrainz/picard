@@ -225,6 +225,8 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
     signal_save = QtCore.pyqtSignal()
     signal_update = QtCore.pyqtSignal()
 
+    EMPTY_SCRIPT = '$noop( ' + N_('The scrip text is empty.') + ' )'
+
     def __init__(self, parent=None, examples=None):
         super().__init__(parent)
         self.PARENT = parent
@@ -299,7 +301,7 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
     def select_preset_script(self):
         selected_script = self.ui.preset_naming_scripts.currentIndex()
         if selected_script > 0:
-            self.ui.file_naming_format.setPlainText(PRESET_SCRIPTS[selected_script]['script'])
+            self.set_script(PRESET_SCRIPTS[selected_script]['script'])
             self.update_examples()
 
     def match_after_to_before(self):
@@ -319,8 +321,7 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
         return str(self.ui.file_naming_format.toPlainText()).strip()
 
     def set_script(self, script_text=None):
-        if script_text is not None:
-            self.ui.file_naming_format.setPlainText(str(script_text).strip())
+        self.ui.file_naming_format.setPlainText(self.EMPTY_SCRIPT if not script_text else str(script_text).strip())
 
     def show_scripting_documentation(self):
         ScriptingDocumentationDialog.show_instance(parent=self)
@@ -338,7 +339,7 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
             override = self.override
         else:
             self.override = override
-        override['file_naming_format'] = self.ui.file_naming_format.toPlainText()
+        override['file_naming_format'] = self.get_script()
 
         self.ui.example_filename_before.clear()
         self.ui.example_filename_after.clear()
@@ -368,14 +369,13 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
             file_text = ""
             try:
                 with open(filename, 'r', encoding='utf8') as i_file:
-                    file_text = i_file.read()
+                    file_text = i_file.read().strip()
             except OSError as error:
                 self.display_error(error)
                 return
-            if file_text.strip():
-                self.ui.file_naming_format.setPlainText(file_text.strip())
-            else:
-                self.ui.file_naming_format.setPlainText("$noop( The import file was empty. )")
+            if not file_text:
+                file_text = None
+            self.set_script(file_text)
 
     def export_script(self):
         script_text = self.get_script()
@@ -395,7 +395,7 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
     def load(self):
         config = get_config()
         self.toggle_wordwrap()
-        self.ui.file_naming_format.setPlainText(config.setting["file_naming_format"])
+        self.set_script(config.setting["file_naming_format"])
         self.update_examples()
 
     def check(self):
@@ -404,12 +404,13 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
     def check_format(self):
         config = get_config()
         parser = ScriptParser()
+        script_text = self.get_script()
         try:
-            parser.eval(self.ui.file_naming_format.toPlainText())
+            parser.eval(script_text)
         except Exception as e:
             raise ScriptCheckError("", str(e))
         if config.setting["rename_files"]:
-            if not self.ui.file_naming_format.toPlainText().strip():
+            if not self.get_script():
                 raise ScriptCheckError("", _("The file naming format must not be empty."))
 
     def display_error(self, error):
