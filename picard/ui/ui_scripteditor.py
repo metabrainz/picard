@@ -204,6 +204,7 @@ class Ui_ScriptEditor(object):
         self.preset_naming_script_select.setText(_("Select Preset"))
         self.file_naming_word_wrap.setToolTip(_("Word wrap long lines in the editor"))
         self.file_naming_word_wrap.setText(_("Word wrap text"))
+        self.show_documentation.setToolTip(_("Open the scripting documentation in a sidebar"))
         self.show_documentation.setText(_("Show Documentation"))
         self.example_filename_sample_files_button.setToolTip(_("Up to 10 items chosen at random from files selected in the main window"))
         self.example_filename_sample_files_button.setText(_("Reload Examples"))
