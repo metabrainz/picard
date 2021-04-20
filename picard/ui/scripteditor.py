@@ -33,7 +33,10 @@ from picard.config import (
     TextOption,
     get_config,
 )
-from picard.const import DEFAULT_FILE_NAMING_FORMAT
+from picard.const import (
+    DEFAULT_FILE_NAMING_FORMAT,
+    PICARD_URLS,
+)
 from picard.file import File
 from picard.script import (
     ScriptError,
@@ -58,18 +61,19 @@ from picard.ui.ui_scripteditor import Ui_ScriptEditor
 
 PRESET_SCRIPTS = [
     {
-        "title": N_("- please select an item -"),
-        "script": ""
+        "title": N_("Current file naming script saved in configuration"),
+        # Setting the script to None will force the current naming script from the configuration settings to be loaded.
+        "script": None
     },
     {
-        "title": N_("album artist / album / track #. title"),
+        "title": N_("[Album artist]/[album]/[Track #]. [Title]"),
         "script": """\
 %albumartist%/
 %album%/
 %tracknumber%. %title%"""
     },
     {
-        "title": N_("album / track #. artist - title"),
+        "title": N_("[Album]/[Disc and track #] [Artist] - [Title]"),
         "script": """\
 $if2(%albumartist%,%artist%)/
 $if(%albumartist%,%album%/,)
@@ -267,7 +271,7 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
     signal_save = QtCore.pyqtSignal()
     signal_update = QtCore.pyqtSignal()
 
-    EMPTY_SCRIPT = '$noop( ' + N_('The scrip text is empty.') + ' )'
+    EMPTY_SCRIPT = '$noop( ' + N_('The script text is empty.') + ' )'
 
     def __init__(self, parent=None, examples=None):
         """Stand-alone file naming script editor.
@@ -290,7 +294,9 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
         self.ui.file_naming_editor_save.clicked.connect(self.save_script)
 
         self.ui.file_naming_format.setEnabled(True)
-        self.ui.file_naming_format_reload.setEnabled(True)
+
+        text = '<a href="' + PICARD_URLS['doc_scripting'] + '">' + N_('Open Scripting Documentation in your browser') + '</a>'
+        self.ui.scripting_doc_link.setText(text)
 
         def process_html(html, function):
             if not html:
@@ -328,11 +334,11 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
         html = html.replace('<code>', '<code>&#8206;')
         self.ui.textBrowser.setHtml(html)
 
-        self.ui.textBrowser.hide()
+        self.ui.textBrowser.show()
+        self.ui.scripting_doc_link.show()
         self.ui.show_documentation.stateChanged.connect(self.toggle_documentation)
 
         self.ui.file_naming_format.textChanged.connect(self.check_formats)
-        self.ui.file_naming_format_reload.clicked.connect(self.load)
         self.ui.file_naming_word_wrap.stateChanged.connect(self.toggle_wordwrap)
         self.ui.import_script.clicked.connect(self.import_script)
         self.ui.export_script.clicked.connect(self.export_script)
@@ -346,9 +352,9 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
         self.ui.preset_naming_scripts.clear()
         for item in PRESET_SCRIPTS:
             self.ui.preset_naming_scripts.addItem(item["title"])
-        self.ui.preset_naming_script_select.clicked.connect(self.select_preset_script)
+        self.ui.preset_naming_scripts.setCurrentIndex(0)
+        self.ui.preset_naming_scripts.currentIndexChanged.connect(self.select_script)
 
-        # Sync example lists vertical scrolling
         def sync_vertical_scrollbars(widgets):
             """Sync position of vertical scrollbars for listed widgets.
             """
@@ -388,32 +394,41 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
         return False
 
     def toggle_documentation(self):
+        """Toggle the display of the scripting documentation sidebar.
+        """
         if self.ui.show_documentation.isChecked():
-            self.ui.textBrowser.show()
+            self.ui.documentation_frame.show()
         else:
-            self.ui.textBrowser.hide()
+            self.ui.documentation_frame.hide()
 
-    def select_preset_script(self):
-        """Set the current script to one of the preset example scripts.
+    def select_script(self):
+        """Set the current script from the combo box.
         """
         selected_script = self.ui.preset_naming_scripts.currentIndex()
-        if selected_script > 0:
+        if PRESET_SCRIPTS[selected_script]['script'] is None:
+            config = get_config()
+            self.set_script(config.setting['file_naming_format'])
+        else:
             self.set_script(PRESET_SCRIPTS[selected_script]['script'])
-            self.update_examples()
+        self.update_examples()
+
+    def synchronize_selected_example_lines(self, source, target):
+        """Matches selected item in target to source"""
+        if source.currentRow() != self.current_row:
+            self.current_row = source.currentRow()
+            target.blockSignals(True)
+            target.setCurrentRow(self.current_row)
+            target.blockSignals(False)
 
     def match_after_to_before(self):
         """Sets the selected item in the 'after' list to the corresponding item in the 'before' list.
         """
-        if self.ui.example_filename_before.currentRow() != self.current_row:
-            self.current_row = self.ui.example_filename_before.currentRow()
-            self.ui.example_filename_after.setCurrentRow(self.current_row)
+        self.synchronize_selected_example_lines(self.ui.example_filename_before, self.ui.example_filename_after)
 
     def match_before_to_after(self):
         """Sets the selected item in the 'before' list to the corresponding item in the 'after' list.
         """
-        if self.ui.example_filename_after.currentRow() != self.current_row:
-            self.current_row = self.ui.example_filename_after.currentRow()
-            self.ui.example_filename_before.setCurrentRow(self.current_row)
+        self.synchronize_selected_example_lines(self.ui.example_filename_after, self.ui.example_filename_before)
 
     def save_script(self):
         """Emits a `save` signal to trigger appropriate save action in the parent object.
@@ -515,10 +530,12 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
     def load(self):
         """Loads the file naming script from the configuration settings.
         """
-        config = get_config()
         self.toggle_wordwrap()
-        self.set_script(config.setting["file_naming_format"])
-        self.update_examples()
+        self.toggle_documentation()
+        self.ui.preset_naming_scripts.blockSignals(True)
+        self.ui.preset_naming_scripts.setCurrentIndex(0)
+        self.ui.preset_naming_scripts.blockSignals(False)
+        self.select_script()
 
     def check_formats(self):
         """Checks for valid file naming script and settings, and updates the examples.

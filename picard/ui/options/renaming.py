@@ -165,15 +165,23 @@ class RenamingOptionsPage(OptionsPage):
 
         self.current_row = -1
 
+    def synchronize_selected_example_lines(self, source, target):
+        """Matches selected item in target to source"""
+        if source.currentRow() != self.current_row:
+            self.current_row = source.currentRow()
+            target.blockSignals(True)
+            target.setCurrentRow(self.current_row)
+            target.blockSignals(False)
+
     def match_after_to_before(self):
-        if self.ui.example_filename_before.currentRow() != self.current_row:
-            self.current_row = self.ui.example_filename_before.currentRow()
-            self.ui.example_filename_after.setCurrentRow(self.current_row)
+        """Sets the selected item in the 'after' list to the corresponding item in the 'before' list.
+        """
+        self.synchronize_selected_example_lines(self.ui.example_filename_before, self.ui.example_filename_after)
 
     def match_before_to_after(self):
-        if self.ui.example_filename_after.currentRow() != self.current_row:
-            self.current_row = self.ui.example_filename_after.currentRow()
-            self.ui.example_filename_before.setCurrentRow(self.current_row)
+        """Sets the selected item in the 'before' list to the corresponding item in the 'after' list.
+        """
+        self.synchronize_selected_example_lines(self.ui.example_filename_after, self.ui.example_filename_before)
 
     def show_script_editing_page(self):
         self.script_editor_page.show()
@@ -206,7 +214,6 @@ class RenamingOptionsPage(OptionsPage):
         self.script_text = self.script_editor_page.get_script()
 
     def update_from_editor(self):
-        self.script_text = self.script_editor_page.get_script()
         self.display_examples()
 
     def check_formats(self):
@@ -220,7 +227,6 @@ class RenamingOptionsPage(OptionsPage):
     def update_examples_from_local(self):
         override = {
             'ascii_filenames': self.ui.ascii_filenames.isChecked(),
-            # 'file_naming_format': self.script_text,
             'move_files': self.ui.move_files.isChecked(),
             'move_files_to': os.path.normpath(self.ui.move_files_to.text()),
             'rename_files': self.ui.rename_files.isChecked(),
