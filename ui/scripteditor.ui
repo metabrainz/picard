@@ -24,7 +24,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
-    <widget class="QSplitter" name="splitter_2">
+    <widget class="QSplitter" name="splitter_between_editor_and_examples">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
        <horstretch>0</horstretch>
@@ -142,9 +142,15 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QSplitter" name="splitter_4">
+           <widget class="QSplitter" name="splitter_between_editor_and_documentation">
+            <property name="frameShape">
+             <enum>QFrame::NoFrame</enum>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="opaqueResize">
+             <bool>true</bool>
             </property>
             <widget class="QFrame" name="frame_5">
              <property name="frameShape">
@@ -202,43 +208,6 @@
                  <set>Qt::TextEditorInteraction</set>
                 </property>
                </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout">
-                <item>
-                 <widget class="QCheckBox" name="file_naming_word_wrap">
-                  <property name="toolTip">
-                   <string>Word wrap long lines in the editor</string>
-                  </property>
-                  <property name="text">
-                   <string>Word wrap script</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_2">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="QCheckBox" name="show_documentation">
-                  <property name="toolTip">
-                   <string>Open the scripting documentation in a sidebar</string>
-                  </property>
-                  <property name="text">
-                   <string>Show Documentation</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
               </item>
              </layout>
             </widget>
@@ -318,14 +287,47 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="renaming_error">
-         <property name="text">
-          <string/>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <property name="topMargin">
+          <number>0</number>
          </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
+         <item>
+          <widget class="QCheckBox" name="file_naming_word_wrap">
+           <property name="toolTip">
+            <string>Word wrap long lines in the editor</string>
+           </property>
+           <property name="text">
+            <string>Word wrap script</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="renaming_error">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="show_documentation">
+           <property name="toolTip">
+            <string>Open the scripting documentation in a sidebar</string>
+           </property>
+           <property name="text">
+            <string>Show Documentation</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -431,7 +433,7 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QSplitter" name="splitter">
+        <widget class="QSplitter" name="splitter_between_before_and_after">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -529,19 +531,6 @@
     </widget>
    </item>
   </layout>
-  <widget class="QSplitter" name="splitter_3">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>100</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-  </widget>
  </widget>
  <customwidgets>
   <customwidget>
