@@ -380,6 +380,12 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
         self.ui.example_filename_after.setStyleSheet(stylesheet)
         self.ui.example_filename_before.setStyleSheet(stylesheet)
 
+        # Set splitter background color to highlight background color to make splitters more visible (disabled because it looks ugly)
+        # stylesheet = "QSplitter::handle { background: " + highlight_bg.name() + "; }"
+        # self.ui.splitter_between_editor_and_examples.setStyleSheet(stylesheet)
+        # self.ui.splitter_between_editor_and_documentation.setStyleSheet(stylesheet)
+        # self.ui.splitter_between_before_and_after.setStyleSheet(stylesheet)
+
         self.wordwrap = QtWidgets.QTextEdit.NoWrap
         self.override = {}
         self.current_row = -1
