@@ -408,12 +408,13 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
     def select_script(self):
         """Set the current script from the combo box.
         """
-        selected_script = self.ui.preset_naming_scripts.currentIndex()
-        if PRESET_SCRIPTS[selected_script]['script'] is None:
+        selected = self.ui.preset_naming_scripts.currentIndex()
+        selected_script = PRESET_SCRIPTS[selected]['script']
+        if selected_script is None:
             config = get_config()
             self.set_script(config.setting['file_naming_format'])
         else:
-            self.set_script(PRESET_SCRIPTS[selected_script]['script'])
+            self.set_script(selected_script)
         self.update_examples()
 
     def synchronize_selected_example_lines(self, source, target):
