@@ -3,6 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -452,7 +453,7 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
         """Sets the text of the file naming script into the editor.  Sets default text if `script_text` is empty or missing.
 
         Args:
-            script_text (str, optional): File naming script text to set in the editor. Defaults to None.
+            script_text (str): File naming script text to set in the editor.
         """
         self.ui.file_naming_format.setPlainText(str(script_text).strip())
 
