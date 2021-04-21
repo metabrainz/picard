@@ -573,9 +573,12 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
         """
         self.ui.renaming_error.setStyleSheet("")
         self.ui.renaming_error.setText("")
+        save_enabled = True
         try:
             self.check_format()
         except ScriptCheckError as e:
             self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR)
             self.ui.renaming_error.setText(e.info)
-            return
+            save_enabled = False
+        self.ui.file_naming_editor_save.setEnabled(save_enabled)
+        self.ui.export_script.setEnabled(save_enabled)
