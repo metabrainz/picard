@@ -271,8 +271,6 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
     signal_save = QtCore.pyqtSignal()
     signal_update = QtCore.pyqtSignal()
 
-    EMPTY_SCRIPT = '$noop( ' + N_('The script text is empty.') + ' )'
-
     def __init__(self, parent=None, examples=None):
         """Stand-alone file naming script editor.
 
@@ -449,13 +447,13 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
         """
         return str(self.ui.file_naming_format.toPlainText()).strip()
 
-    def set_script(self, script_text=None):
+    def set_script(self, script_text):
         """Sets the text of the file naming script into the editor.  Sets default text if `script_text` is empty or missing.
 
         Args:
             script_text (str, optional): File naming script text to set in the editor. Defaults to None.
         """
-        self.ui.file_naming_format.setPlainText(self.EMPTY_SCRIPT if not script_text else str(script_text).strip())
+        self.ui.file_naming_format.setPlainText(str(script_text).strip())
 
     def update_example_files(self):
         """Update the before and after file naming examples list.
@@ -505,16 +503,12 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
         filename, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Import Script File", "", "All Files (*);;Picard Script Files (*.pts)", options=options)
         if filename:
             log.debug('Importing naming script file: %s' % filename)
-            file_text = ""
             try:
                 with open(filename, 'r', encoding='utf8') as i_file:
-                    file_text = i_file.read().strip()
+                    self.set_script(i_file.read())
             except OSError as error:
                 self.display_error(error)
                 return
-            if not file_text:
-                file_text = None
-            self.set_script(file_text)
 
     def export_script(self):
         """Export the current script to an external text file.
