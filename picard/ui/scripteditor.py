@@ -49,7 +49,6 @@ from picard.util.settingsoverride import SettingsOverride
 from picard.ui import (
     FONT_FAMILY_MONOSPACE,
     PicardDialog,
-    SingletonDialog,
 )
 from picard.ui.options import OptionsPage
 from picard.ui.options.scripting import (
@@ -96,7 +95,6 @@ class ScriptEditorExamples():
             parent (QMainWindow or OptionsPage, optional): Parent object. Defaults to None.
             tagger (object, optional): Object containing the main window tagger object. Defaults to None.
         """
-        self.parent = parent
         self.tagger = tagger
         self._sampled_example_files = []
         config = get_config()
@@ -252,7 +250,7 @@ class ScriptEditorExamples():
         return file
 
 
-class ScriptEditorPage(PicardDialog, SingletonDialog):
+class ScriptEditorPage(PicardDialog):
     """File Naming Script Editor Page
     """
     NAME = "scripteditor"
@@ -280,9 +278,10 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
             examples (ScriptEditorExamples, required): Object containing examples to display. Defaults to None.
         """
         super().__init__(parent)
-        self.PARENT = parent
         self.examples = examples
-        self.setWindowFlags(QtCore.Qt.Window)
+        # TODO: Work on making this work properly so that it can be accessed from both the main window and the options window.
+        # self.setWindowFlags(QtCore.Qt.Window)
+        self.setWindowModality(QtCore.Qt.WindowModal)
         self.setWindowTitle(self.TITLE)
         self.displaying = False
         self.ui = Ui_ScriptEditor()
@@ -294,47 +293,8 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
 
         self.ui.file_naming_format.setEnabled(True)
 
-        text = '<a href="' + PICARD_URLS['doc_scripting'] + '">' + N_('Open Scripting Documentation in your browser') + '</a>'
-        self.ui.scripting_doc_link.setText(text)
-
-        def process_html(html, function):
-            if not html:
-                html = ''
-            template = '<dt>%s%s</dt><dd>%s</dd>'
-            if function.module is not None and function.module != 'picard.script.functions':
-                module = ' [' + function.module + ']'
-            else:
-                module = ''
-            try:
-                firstline, remaining = html.split("\n", 1)
-                return template % (firstline, module, remaining)
-            except ValueError:
-                return template % ("<code>$%s()</code>" % function.name, module, html)
-
-        funcdoc = script_function_documentation_all(
-            fmt='html',
-            postprocessor=process_html,
-        )
-
-        if self.ui.textBrowser.layoutDirection() == QtCore.Qt.RightToLeft:
-            text_direction = 'rtl'
-        else:
-            text_direction = 'ltr'
-
-        html = DOCUMENTATION_HTML_TEMPLATE % {
-            'html': "<dl>%s</dl>" % funcdoc,
-            'script_function_fg': theme.syntax_theme.func.name(),
-            'monospace_font': FONT_FAMILY_MONOSPACE,
-            'dir': text_direction,
-            'inline_start': 'right' if text_direction == 'rtl' else 'left'
-        }
-        # Scripting code is always left-to-right. Qt does not support the dir
-        # attribute on inline tags, insert explicit left-right-marks instead.
-        html = html.replace('<code>', '<code>&#8206;')
-        self.ui.textBrowser.setHtml(html)
-
-        self.ui.textBrowser.show()
-        self.ui.scripting_doc_link.show()
+        # Add scripting documentation to parent frame.
+        ScriptingDocumentationWidget(parent=self.ui.documentation_frame)
         self.ui.show_documentation.stateChanged.connect(self.toggle_documentation)
 
         self.ui.file_naming_format.textChanged.connect(self.check_formats)
@@ -386,7 +346,6 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
         # self.ui.splitter_between_before_and_after.setStyleSheet(stylesheet)
 
         self.wordwrap = QtWidgets.QTextEdit.NoWrap
-        self.override = {}
         self.current_row = -1
 
         self.load()
@@ -583,3 +542,89 @@ class ScriptEditorPage(PicardDialog, SingletonDialog):
             save_enabled = False
         self.ui.file_naming_editor_save.setEnabled(save_enabled)
         self.ui.export_script.setEnabled(save_enabled)
+
+
+class ScriptingDocumentationWidget(QtWidgets.QWidget):
+    """Custom widget to display the scripting documentation.
+    """
+    def __init__(self, parent, *args, **kwargs):
+        """Custom widget to display the scripting documentation.
+
+        Args:
+            parent (QWidget): Frame widget in which the documentation is displayed.
+        """
+        super(ScriptingDocumentationWidget, self).__init__(*args, **kwargs)
+        self.parent = parent
+        self.remove_parent_layout()
+
+        def process_html(html, function):
+            if not html:
+                html = ''
+            template = '<dt>%s%s</dt><dd>%s</dd>'
+            if function.module is not None and function.module != 'picard.script.functions':
+                module = ' [' + function.module + ']'
+            else:
+                module = ''
+            try:
+                firstline, remaining = html.split("\n", 1)
+                return template % (firstline, module, remaining)
+            except ValueError:
+                return template % ("<code>$%s()</code>" % function.name, module, html)
+
+        funcdoc = script_function_documentation_all(
+            fmt='html',
+            postprocessor=process_html,
+        )
+
+        if self.parent.layoutDirection() == QtCore.Qt.RightToLeft:
+            text_direction = 'rtl'
+        else:
+            text_direction = 'ltr'
+
+        html = DOCUMENTATION_HTML_TEMPLATE % {
+            'html': "<dl>%s</dl>" % funcdoc,
+            'script_function_fg': theme.syntax_theme.func.name(),
+            'monospace_font': FONT_FAMILY_MONOSPACE,
+            'dir': text_direction,
+            'inline_start': 'right' if text_direction == 'rtl' else 'left'
+        }
+        # Scripting code is always left-to-right. Qt does not support the dir
+        # attribute on inline tags, insert explicit left-right-marks instead.
+        html = html.replace('<code>', '<code>&#8206;')
+
+        link = '<a href="' + PICARD_URLS['doc_scripting'] + '">' + N_('Open Scripting Documentation in your browser') + '</a>'
+
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.parent)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setObjectName("docs_verticalLayout")
+        self.textBrowser = QtWidgets.QTextBrowser(self.parent)
+        self.textBrowser.setEnabled(True)
+        self.textBrowser.setMinimumSize(QtCore.QSize(0, 0))
+        self.textBrowser.setObjectName("docs_textBrowser")
+        self.textBrowser.setHtml(html)
+        self.textBrowser.show()
+        self.verticalLayout.addWidget(self.textBrowser)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setContentsMargins(-1, 0, -1, -1)
+        self.horizontalLayout.setObjectName("docs_horizontalLayout")
+        self.scripting_doc_link = QtWidgets.QLabel(self.parent)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.scripting_doc_link.sizePolicy().hasHeightForWidth())
+        self.scripting_doc_link.setSizePolicy(sizePolicy)
+        self.scripting_doc_link.setMinimumSize(QtCore.QSize(0, 20))
+        self.scripting_doc_link.setAlignment(QtCore.Qt.AlignCenter)
+        self.scripting_doc_link.setWordWrap(True)
+        self.scripting_doc_link.setOpenExternalLinks(True)
+        self.scripting_doc_link.setObjectName("docs_scripting_doc_link")
+        self.scripting_doc_link.setText(link)
+        self.scripting_doc_link.show()
+        self.horizontalLayout.addWidget(self.scripting_doc_link)
+        self.verticalLayout.addLayout(self.horizontalLayout)
+
+    def remove_parent_layout(self):
+        """Remove any existing layout in the parent to allow attaching the new layout.
+        """
+        if self.parent.layout() is not None:
+            QtWidgets.QWidget().setLayout(self.parent.layout())
