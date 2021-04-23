@@ -35,16 +35,11 @@ from picard.config import (
     Option,
     get_config,
 )
-from picard.const import PICARD_URLS
 from picard.const.sys import IS_MACOS
-from picard.script import (
-    ScriptParser,
-    script_function_documentation_all,
-)
+from picard.script import ScriptParser
 from picard.util import restore_method
 
 from picard.ui import (
-    FONT_FAMILY_MONOSPACE,
     PicardDialog,
     SingletonDialog,
 )
@@ -54,41 +49,16 @@ from picard.ui.options import (
     OptionsPage,
     register_options_page,
 )
-from picard.ui.theme import theme
 from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
 from picard.ui.ui_scripting_documentation_dialog import (
     Ui_ScriptingDocumentationDialog,
 )
+from picard.ui.widgets.scriptdocumentation import ScriptingDocumentationWidget
 from picard.ui.widgets.scriptlistwidget import ScriptListWidgetItem
 
 
 class ScriptCheckError(OptionsCheckError):
     pass
-
-
-DOCUMENTATION_HTML_TEMPLATE = '''
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-dt {
-    color: %(script_function_fg)s
-}
-dd {
-    /* Qt does not support margin-inline-start, use margin-left/margin-right instead */
-    margin-%(inline_start)s: 50px;
-    margin-bottom: 50px;
-}
-code {
-    font-family: %(monospace_font)s;
-}
-</style>
-</head>
-<body dir="%(dir)s">
-    %(html)s
-</body>
-</html>
-'''
 
 
 class ScriptingDocumentationDialog(PicardDialog, SingletonDialog):
@@ -105,49 +75,9 @@ class ScriptingDocumentationDialog(PicardDialog, SingletonDialog):
         self.parent = parent
         self.ui = Ui_ScriptingDocumentationDialog()
         self.ui.setupUi(self)
+        doc_widget = ScriptingDocumentationWidget(self)
+        self.ui.documentation_layout.addWidget(doc_widget)
         self.restore_geometry()
-        args = {
-            "picard-doc-scripting-url": PICARD_URLS['doc_scripting'],
-        }
-        text = _('<a href="%(picard-doc-scripting-url)s">Open Scripting'
-                 ' Documentation in your browser</a>') % args
-        self.ui.scripting_doc_link.setText(text)
-
-        def process_html(html, function):
-            if not html:
-                html = ''
-            template = '<dt>%s%s</dt><dd>%s</dd>'
-            if function.module is not None and function.module != 'picard.script.functions':
-                module = ' [' + function.module + ']'
-            else:
-                module = ''
-            try:
-                firstline, remaining = html.split("\n", 1)
-                return template % (firstline, module, remaining)
-            except ValueError:
-                return template % ("<code>$%s()</code>" % function.name, module, html)
-
-        funcdoc = script_function_documentation_all(
-            fmt='html',
-            postprocessor=process_html,
-        )
-
-        if self.ui.textBrowser.layoutDirection() == QtCore.Qt.RightToLeft:
-            text_direction = 'rtl'
-        else:
-            text_direction = 'ltr'
-
-        html = DOCUMENTATION_HTML_TEMPLATE % {
-            'html': "<dl>%s</dl>" % funcdoc,
-            'script_function_fg': theme.syntax_theme.func.name(),
-            'monospace_font': FONT_FAMILY_MONOSPACE,
-            'dir': text_direction,
-            'inline_start': 'right' if text_direction == 'rtl' else 'left'
-        }
-        # Scripting code is always left-to-right. Qt does not support the dir
-        # attribute on inline tags, insert explicit left-right-marks instead.
-        html = html.replace('<code>', '<code>&#8206;')
-        self.ui.textBrowser.setHtml(html)
         self.ui.buttonBox.rejected.connect(self.close)
 
     def closeEvent(self, event):
