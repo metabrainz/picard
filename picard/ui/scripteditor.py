@@ -368,23 +368,24 @@ class ScriptEditorPage(PicardDialog):
             self.set_script(selected_script)
         self.update_examples()
 
-    def synchronize_selected_example_lines(self, source, target):
+    @staticmethod
+    def synchronize_selected_example_lines(current_row, source, target):
         """Matches selected item in target to source"""
-        if source.currentRow() != self.current_row:
-            self.current_row = source.currentRow()
+        if source.currentRow() != current_row:
+            current_row = source.currentRow()
             target.blockSignals(True)
-            target.setCurrentRow(self.current_row)
+            target.setCurrentRow(current_row)
             target.blockSignals(False)
 
     def match_after_to_before(self):
         """Sets the selected item in the 'after' list to the corresponding item in the 'before' list.
         """
-        self.synchronize_selected_example_lines(self.ui.example_filename_before, self.ui.example_filename_after)
+        self.synchronize_selected_example_lines(self.current_row, self.ui.example_filename_before, self.ui.example_filename_after)
 
     def match_before_to_after(self):
         """Sets the selected item in the 'before' list to the corresponding item in the 'after' list.
         """
-        self.synchronize_selected_example_lines(self.ui.example_filename_after, self.ui.example_filename_before)
+        self.synchronize_selected_example_lines(self.current_row, self.ui.example_filename_after, self.ui.example_filename_before)
 
     def save_script(self):
         """Emits a `save` signal to trigger appropriate save action in the parent object.
@@ -420,20 +421,23 @@ class ScriptEditorPage(PicardDialog):
         self.examples.update_examples(override)
         self.display_examples()
 
+    @staticmethod
+    def update_example_listboxes(before_listbox, after_listbox, examples):
+        before_listbox.clear()
+        after_listbox.clear()
+        for before, after in sorted(examples, key=lambda x: x[1]):
+            before_listbox.addItem(before)
+            after_listbox.addItem(after)
+
     def display_examples(self, send_signal=True):
         """Update the display of the before and after file naming examples.  Optionally emits an `update` signal.
 
         Args:
             send_signal (bool, optional): Determines if an `update` signal is emitted. Defaults to True.
         """
-        self.ui.example_filename_before.clear()
-        self.ui.example_filename_after.clear()
         self.current_row = -1
-
         examples = self.examples.get_examples()
-        for before, after in sorted(examples, key=lambda x: x[1]):
-            self.ui.example_filename_before.addItem(before)
-            self.ui.example_filename_after.addItem(after)
+        self.update_example_listboxes(self.ui.example_filename_before, self.ui.example_filename_after, examples)
 
         if send_signal:
             self.signal_update.emit()
