@@ -237,9 +237,6 @@
               <property name="bottomMargin">
                <number>0</number>
               </property>
-              <item>
-               <layout class="QVBoxLayout" name="documentation_layout"/>
-              </item>
              </layout>
             </widget>
            </widget>
