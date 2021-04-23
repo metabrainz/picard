@@ -275,7 +275,7 @@ class ScriptEditorPage(PicardDialog):
         """
         super().__init__(parent)
         self.examples = examples
-        # TODO: Work on making this work properly so that it can be accessed from both the main window and the options window.
+        # TODO: Make this work properly so that it can be accessed from both the main window and the options window.
         # self.setWindowFlags(QtCore.Qt.Window)
         self.setWindowModality(QtCore.Qt.WindowModal)
         self.setWindowTitle(self.TITLE)
