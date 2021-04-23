@@ -311,35 +311,35 @@ class ScriptEditorPage(PicardDialog):
         self.ui.preset_naming_scripts.setCurrentIndex(0)
         self.ui.preset_naming_scripts.currentIndexChanged.connect(self.select_script)
 
-        def sync_vertical_scrollbars(widgets):
-            """Sync position of vertical scrollbars for listed widgets.
-            """
-            def _sync_scrollbar_vert(widget, value):
-                widget.blockSignals(True)
-                widget.verticalScrollBar().setValue(value)
-                widget.blockSignals(False)
-
-            widgets = set(widgets)
-            for widget in widgets:
-                for other in widgets - {widget}:
-                    widget.verticalScrollBar().valueChanged.connect(
-                        partial(_sync_scrollbar_vert, other))
-
-        # Sync example lists vertical scrolling
-        sync_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
-
-        # Set highlight colors for selected list items
-        example_style = self.ui.example_filename_before.palette()
-        highlight_bg = example_style.color(QPalette.Active, QPalette.Highlight)
-        highlight_fg = example_style.color(QPalette.Active, QPalette.HighlightedText)
-        stylesheet = "QListView::item:selected { color: " + highlight_fg.name() + "; background-color: " + highlight_bg.name() + "; }"
-        self.ui.example_filename_after.setStyleSheet(stylesheet)
-        self.ui.example_filename_before.setStyleSheet(stylesheet)
+        self.synchronize_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
 
         self.wordwrap = QtWidgets.QTextEdit.NoWrap
         self.current_row = -1
 
         self.load()
+
+    @staticmethod
+    def synchronize_vertical_scrollbars(widgets):
+        """Synchronize position of vertical scrollbars and selections for listed widgets.
+        """
+        # Set highlight colors for selected list items
+        example_style = widgets[0].palette()
+        highlight_bg = example_style.color(QPalette.Active, QPalette.Highlight)
+        highlight_fg = example_style.color(QPalette.Active, QPalette.HighlightedText)
+        stylesheet = "QListView::item:selected { color: " + highlight_fg.name() + "; background-color: " + highlight_bg.name() + "; }"
+
+        def _sync_scrollbar_vert(widget, value):
+            widget.blockSignals(True)
+            widget.verticalScrollBar().setValue(value)
+            widget.blockSignals(False)
+
+        widgets = set(widgets)
+        for widget in widgets:
+            for other in widgets - {widget}:
+                widget.verticalScrollBar().valueChanged.connect(
+                    partial(_sync_scrollbar_vert, other))
+
+            widget.setStyleSheet(stylesheet)
 
     def eventFilter(self, object, event):
         """Process selected events.
