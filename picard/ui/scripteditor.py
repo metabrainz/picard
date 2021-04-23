@@ -34,30 +34,22 @@ from picard.config import (
     TextOption,
     get_config,
 )
-from picard.const import (
-    DEFAULT_FILE_NAMING_FORMAT,
-    PICARD_URLS,
-)
+from picard.const import DEFAULT_FILE_NAMING_FORMAT
 from picard.file import File
 from picard.script import (
     ScriptError,
     ScriptParser,
-    script_function_documentation_all,
 )
 from picard.util.settingsoverride import SettingsOverride
 
-from picard.ui import (
-    FONT_FAMILY_MONOSPACE,
-    PicardDialog,
-)
+from picard.ui import PicardDialog
 from picard.ui.options import OptionsPage
 from picard.ui.options.scripting import (
-    DOCUMENTATION_HTML_TEMPLATE,
     OptionsCheckError,
     ScriptCheckError,
 )
-from picard.ui.theme import theme
 from picard.ui.ui_scripteditor import Ui_ScriptEditor
+from picard.ui.widgets.scriptdocumentation import ScriptingDocumentationWidget
 
 
 PRESET_SCRIPTS = [
@@ -555,81 +547,3 @@ class ScriptEditorPage(PicardDialog):
             save_enabled = False
         self.ui.file_naming_editor_save.setEnabled(save_enabled)
         self.ui.export_script.setEnabled(save_enabled)
-
-
-class ScriptingDocumentationWidget(QtWidgets.QWidget):
-    """Custom widget to display the scripting documentation.
-    """
-    def __init__(self, parent, *args, **kwargs):
-        """Custom widget to display the scripting documentation.
-
-        Args:
-            parent (QWidget): Parent screen to check layoutDirection().
-        """
-        super().__init__(*args, **kwargs)
-
-        def process_html(html, function):
-            if not html:
-                html = ''
-            template = '<dt>%s%s</dt><dd>%s</dd>'
-            if function.module is not None and function.module != 'picard.script.functions':
-                module = ' [' + function.module + ']'
-            else:
-                module = ''
-            try:
-                firstline, remaining = html.split("\n", 1)
-                return template % (firstline, module, remaining)
-            except ValueError:
-                return template % ("<code>$%s()</code>" % function.name, module, html)
-
-        funcdoc = script_function_documentation_all(
-            fmt='html',
-            postprocessor=process_html,
-        )
-
-        if parent.layoutDirection() == QtCore.Qt.RightToLeft:
-            text_direction = 'rtl'
-        else:
-            text_direction = 'ltr'
-
-        html = DOCUMENTATION_HTML_TEMPLATE % {
-            'html': "<dl>%s</dl>" % funcdoc,
-            'script_function_fg': theme.syntax_theme.func.name(),
-            'monospace_font': FONT_FAMILY_MONOSPACE,
-            'dir': text_direction,
-            'inline_start': 'right' if text_direction == 'rtl' else 'left'
-        }
-        # Scripting code is always left-to-right. Qt does not support the dir
-        # attribute on inline tags, insert explicit left-right-marks instead.
-        html = html.replace('<code>', '<code>&#8206;')
-
-        link = '<a href="' + PICARD_URLS['doc_scripting'] + '">' + N_('Open Scripting Documentation in your browser') + '</a>'
-
-        self.verticalLayout = QtWidgets.QVBoxLayout(self)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout.setObjectName("docs_verticalLayout")
-        self.textBrowser = QtWidgets.QTextBrowser(self)
-        self.textBrowser.setEnabled(True)
-        self.textBrowser.setMinimumSize(QtCore.QSize(0, 0))
-        self.textBrowser.setObjectName("docs_textBrowser")
-        self.textBrowser.setHtml(html)
-        self.textBrowser.show()
-        self.verticalLayout.addWidget(self.textBrowser)
-        self.horizontalLayout = QtWidgets.QHBoxLayout()
-        self.horizontalLayout.setContentsMargins(-1, 0, -1, -1)
-        self.horizontalLayout.setObjectName("docs_horizontalLayout")
-        self.scripting_doc_link = QtWidgets.QLabel(self)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.scripting_doc_link.sizePolicy().hasHeightForWidth())
-        self.scripting_doc_link.setSizePolicy(sizePolicy)
-        self.scripting_doc_link.setMinimumSize(QtCore.QSize(0, 20))
-        self.scripting_doc_link.setAlignment(QtCore.Qt.AlignCenter)
-        self.scripting_doc_link.setWordWrap(True)
-        self.scripting_doc_link.setOpenExternalLinks(True)
-        self.scripting_doc_link.setObjectName("docs_scripting_doc_link")
-        self.scripting_doc_link.setText(link)
-        self.scripting_doc_link.show()
-        self.horizontalLayout.addWidget(self.scripting_doc_link)
-        self.verticalLayout.addLayout(self.horizontalLayout)
