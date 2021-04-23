@@ -467,7 +467,7 @@ class ScriptEditorPage(PicardDialog):
         dialog_file_types = N_("All Files") + " (*);;" + N_("Picard Script Files") + " (*.pts)"
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
-        filename, _ = QtWidgets.QFileDialog.getOpenFileName(self, dialog_title, self.default_script_directory, dialog_file_types, options=options)
+        filename, file_type = QtWidgets.QFileDialog.getOpenFileName(self, dialog_title, self.default_script_directory, dialog_file_types, options=options)
         if filename:
             log.debug('Importing naming script file: %s' % filename)
             try:
@@ -488,7 +488,7 @@ class ScriptEditorPage(PicardDialog):
             dialog_file_types = N_("All Files") + " (*);;" + N_("Picard Script Files") + " (*.pts)"
             options = QtWidgets.QFileDialog.Options()
             options |= QtWidgets.QFileDialog.DontUseNativeDialog
-            filename, _ = QtWidgets.QFileDialog.getSaveFileName(self, dialog_title, default_path, dialog_file_types, options=options)
+            filename, file_type = QtWidgets.QFileDialog.getSaveFileName(self, dialog_title, default_path, dialog_file_types, options=options)
             if filename:
                 log.debug('Exporting naming script file: %s' % filename)
                 try:
