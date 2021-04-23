@@ -212,13 +212,19 @@
              </layout>
             </widget>
             <widget class="QFrame" name="documentation_frame">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="frameShape">
               <enum>QFrame::NoFrame</enum>
              </property>
              <property name="frameShadow">
               <enum>QFrame::Raised</enum>
              </property>
-             <layout class="QVBoxLayout" name="verticalLayout_7">
+             <layout class="QVBoxLayout" name="documentation_frame_layout">
               <property name="leftMargin">
                <number>0</number>
               </property>
@@ -231,6 +237,9 @@
               <property name="bottomMargin">
                <number>0</number>
               </property>
+              <item>
+               <layout class="QVBoxLayout" name="documentation_layout"/>
+              </item>
              </layout>
             </widget>
            </widget>
