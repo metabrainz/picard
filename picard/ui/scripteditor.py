@@ -298,7 +298,8 @@ class ScriptEditorPage(PicardDialog):
         self.ui.file_naming_format.setEnabled(True)
 
         # Add scripting documentation to parent frame.
-        ScriptingDocumentationWidget(parent=self.ui.documentation_frame)
+        doc_widget = ScriptingDocumentationWidget(self)
+        self.ui.documentation_frame_layout.addWidget(doc_widget)
         self.ui.show_documentation.stateChanged.connect(self.toggle_documentation)
 
         self.ui.file_naming_format.textChanged.connect(self.check_formats)
@@ -563,11 +564,9 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         """Custom widget to display the scripting documentation.
 
         Args:
-            parent (QWidget): Frame widget in which the documentation is displayed.
+            parent (QWidget): Parent screen to check layoutDirection().
         """
         super().__init__(*args, **kwargs)
-        self.parent = parent
-        self.remove_parent_layout()
 
         def process_html(html, function):
             if not html:
@@ -588,7 +587,7 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
             postprocessor=process_html,
         )
 
-        if self.parent.layoutDirection() == QtCore.Qt.RightToLeft:
+        if parent.layoutDirection() == QtCore.Qt.RightToLeft:
             text_direction = 'rtl'
         else:
             text_direction = 'ltr'
@@ -606,10 +605,10 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
 
         link = '<a href="' + PICARD_URLS['doc_scripting'] + '">' + N_('Open Scripting Documentation in your browser') + '</a>'
 
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.parent)
+        self.verticalLayout = QtWidgets.QVBoxLayout(self)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("docs_verticalLayout")
-        self.textBrowser = QtWidgets.QTextBrowser(self.parent)
+        self.textBrowser = QtWidgets.QTextBrowser(self)
         self.textBrowser.setEnabled(True)
         self.textBrowser.setMinimumSize(QtCore.QSize(0, 0))
         self.textBrowser.setObjectName("docs_textBrowser")
@@ -619,7 +618,7 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setContentsMargins(-1, 0, -1, -1)
         self.horizontalLayout.setObjectName("docs_horizontalLayout")
-        self.scripting_doc_link = QtWidgets.QLabel(self.parent)
+        self.scripting_doc_link = QtWidgets.QLabel(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -634,9 +633,3 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         self.scripting_doc_link.show()
         self.horizontalLayout.addWidget(self.scripting_doc_link)
         self.verticalLayout.addLayout(self.horizontalLayout)
-
-    def remove_parent_layout(self):
-        """Remove any existing layout in the parent to allow attaching the new layout.
-        """
-        if self.parent.layout() is not None:
-            QtWidgets.QWidget().setLayout(self.parent.layout())
