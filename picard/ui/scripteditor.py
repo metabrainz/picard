@@ -53,6 +53,7 @@ from picard.ui import (
 from picard.ui.options import OptionsPage
 from picard.ui.options.scripting import (
     DOCUMENTATION_HTML_TEMPLATE,
+    OptionsCheckError,
     ScriptCheckError,
 )
 from picard.ui.theme import theme
@@ -468,8 +469,9 @@ class ScriptEditorPage(PicardDialog):
                 with open(filename, 'r', encoding='utf8') as i_file:
                     self.set_script(i_file.read())
             except OSError as error:
-                self.display_error(error)
-                return
+                error_message = 'Error importing file "{0}": {1}'.format(filename, error.strerror)
+                log.error(error_message)
+                self.display_error(OptionsCheckError(N_("File Error"), error_message))
 
     def export_script(self):
         """Export the current script to an external text file.
@@ -485,8 +487,9 @@ class ScriptEditorPage(PicardDialog):
                     with open(filename, 'w', encoding='utf8') as o_file:
                         o_file.write(self.get_script() + '\n')
                 except OSError as error:
-                    self.display_error(error)
-                    return
+                    error_message = 'Error exporting file "{0}": {1}'.format(filename, error.strerror)
+                    log.error(error_message)
+                    self.display_error(OptionsCheckError(N_("File Error"), error_message))
 
     def load(self):
         """Loads the file naming script from the configuration settings.
@@ -526,7 +529,8 @@ class ScriptEditorPage(PicardDialog):
         """
         # Ignore scripting errors, those are handled inline
         if not isinstance(error, ScriptCheckError):
-            super().display_error(error)
+            dialog = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Warning, error.title, error.info, QtWidgets.QMessageBox.Ok, self)
+            dialog.exec_()
 
     def test(self):
         """Parse the script and display any errors.
