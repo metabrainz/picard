@@ -27,8 +27,32 @@ from picard.const import PICARD_URLS
 from picard.script import script_function_documentation_all
 
 from picard.ui import FONT_FAMILY_MONOSPACE
-from picard.ui.options.scripting import DOCUMENTATION_HTML_TEMPLATE
 from picard.ui.theme import theme
+
+
+DOCUMENTATION_HTML_TEMPLATE = '''
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+dt {
+    color: %(script_function_fg)s
+}
+dd {
+    /* Qt does not support margin-inline-start, use margin-left/margin-right instead */
+    margin-%(inline_start)s: 50px;
+    margin-bottom: 50px;
+}
+code {
+    font-family: %(monospace_font)s;
+}
+</style>
+</head>
+<body dir="%(dir)s">
+    %(html)s
+</body>
+</html>
+'''
 
 
 class ScriptingDocumentationWidget(QtWidgets.QWidget):
