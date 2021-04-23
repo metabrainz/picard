@@ -143,23 +143,15 @@ class RenamingOptionsPage(OptionsPage):
 
         self.current_row = -1
 
-    def synchronize_selected_example_lines(self, source, target):
-        """Matches selected item in target to source"""
-        if source.currentRow() != self.current_row:
-            self.current_row = source.currentRow()
-            target.blockSignals(True)
-            target.setCurrentRow(self.current_row)
-            target.blockSignals(False)
-
     def match_after_to_before(self):
         """Sets the selected item in the 'after' list to the corresponding item in the 'before' list.
         """
-        self.synchronize_selected_example_lines(self.ui.example_filename_before, self.ui.example_filename_after)
+        self.script_editor_page.synchronize_selected_example_lines(self.current_row, self.ui.example_filename_before, self.ui.example_filename_after)
 
     def match_before_to_after(self):
         """Sets the selected item in the 'before' list to the corresponding item in the 'after' list.
         """
-        self.synchronize_selected_example_lines(self.ui.example_filename_after, self.ui.example_filename_before)
+        self.script_editor_page.synchronize_selected_example_lines(self.current_row, self.ui.example_filename_after, self.ui.example_filename_before)
 
     def show_script_editing_page(self):
         self.script_editor_page.show()
@@ -214,14 +206,9 @@ class RenamingOptionsPage(OptionsPage):
         self.script_editor_page.display_examples()
 
     def display_examples(self):
-        self.ui.example_filename_before.clear()
-        self.ui.example_filename_after.clear()
         self.current_row = -1
-
         examples = self.examples.get_examples()
-        for before, after in sorted(examples, key=lambda x: x[1]):
-            self.ui.example_filename_before.addItem(before)
-            self.ui.example_filename_after.addItem(after)
+        self.script_editor_page.update_example_listboxes(self.ui.example_filename_before, self.ui.example_filename_after, examples)
 
     def load(self):
         config = get_config()
