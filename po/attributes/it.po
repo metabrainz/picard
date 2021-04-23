@@ -12,8 +12,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-04-14 20:05+0000\n"
-"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
+"PO-Revision-Date: 2021-04-15 11:33+0000\n"
+"Last-Translator: Luca Salini\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3487,7 +3487,7 @@ msgstr "La musica di scena è musica composta, in genere, per fare da sfondo a u
 #: DB:area_type/name:9
 msgctxt "area_type"
 msgid "Indigenous territory / reserve"
-msgstr ""
+msgstr "Territorio/Riserva indigena"
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -4449,7 +4449,7 @@ msgstr "Microcassetta"
 #: DB:area_type/name:8
 msgctxt "area_type"
 msgid "Military base"
-msgstr ""
+msgstr "Base militare"
 
 #: DB:medium_format/name:6
 msgctxt "medium_format"
@@ -6962,14 +6962,14 @@ msgctxt "cover_art_type"
 msgid ""
 "Use for images that need work to be used for tagging (but can possibly "
 "already be used for reference)"
-msgstr "Usalo per immagini che richiedono lavorazione per essere utilizzabili per il tagging (ma che possono già essere usate come riferimento)"
+msgstr "Da usare per immagini che richiedono lavorazione per essere utilizzabili per il tagging (ma che possono già essere usate come riferimento)"
 
 #: DB:area_type/description:8
 msgctxt "area_type"
 msgid ""
 "Used for any military bases that are large enough to be considered an area, "
 "not just a place."
-msgstr ""
+msgstr "Utilizzato per basi militari sufficientemente grandi da essere considerate un'area e non solo un luogo."
 
 #: DB:area_type/description:9
 msgctxt "area_type"
@@ -6977,7 +6977,7 @@ msgid ""
 "Used for semi-autonomous territories governed by indigenous peoples, such as"
 " Indian reserves/reservations in North America and indigenous territories in"
 " Central and South America."
-msgstr ""
+msgstr "Utilizzato per territori semi-autonomi amministrati da popolazioni indigene, come per es. le riserve indiane in Nord America e i territori indigeni in Centro e Sud America."
 
 #: DB:work_attribute_type/name:17
 msgctxt "work_attribute_type"

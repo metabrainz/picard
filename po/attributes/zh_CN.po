@@ -32,8 +32,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-04-14 20:05+0000\n"
-"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
+"PO-Revision-Date: 2021-04-16 16:20+0000\n"
+"Last-Translator: York Young\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4469,7 +4469,7 @@ msgstr "微型卡式录音带"
 #: DB:area_type/name:8
 msgctxt "area_type"
 msgid "Military base"
-msgstr ""
+msgstr "军事基地"
 
 #: DB:medium_format/name:6
 msgctxt "medium_format"

@@ -29,8 +29,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-04-14 20:05+0000\n"
-"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
+"PO-Revision-Date: 2021-04-19 15:12+0000\n"
+"Last-Translator: yvanz\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1480,7 +1480,7 @@ msgstr "ID COMPASS"
 #: DB:work_attribute_type/name:65
 msgctxt "work_attribute_type"
 msgid "COTT ID"
-msgstr ""
+msgstr "ID COTT"
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"
@@ -3277,7 +3277,7 @@ msgstr "ID pour la SAYCE, société équatorienne de gestion des droits"
 #: DB:work_attribute_type/description:66
 msgctxt "work_attribute_type"
 msgid "ID for the Finnish rights society TEOSTO"
-msgstr ""
+msgstr "ID pour la TEOSTO, société finlandaise de gestion des droits"
 
 #: DB:work_attribute_type/description:21
 msgctxt "work_attribute_type"
@@ -3422,7 +3422,7 @@ msgstr "ID pour la MÜST, société taïwanaise de gestion des droits"
 #: DB:work_attribute_type/description:65
 msgctxt "work_attribute_type"
 msgid "ID for the Trinidadian and Tobagonian rights society COTT"
-msgstr ""
+msgstr "ID pour la COTT, société trinidadienne de gestion des droits"
 
 #: DB:work_attribute_type/description:6
 msgctxt "work_attribute_type"
@@ -3504,7 +3504,7 @@ msgstr "La musique de scène est un genre musical habituellement utilisé pour l
 #: DB:area_type/name:9
 msgctxt "area_type"
 msgid "Indigenous territory / reserve"
-msgstr ""
+msgstr "Réserve/territoire indigène"
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -4466,7 +4466,7 @@ msgstr "Microcassette"
 #: DB:area_type/name:8
 msgctxt "area_type"
 msgid "Military base"
-msgstr ""
+msgstr "Base militaire"
 
 #: DB:medium_format/name:6
 msgctxt "medium_format"
@@ -6568,7 +6568,7 @@ msgstr "Sûltâl"
 #: DB:work_attribute_type/name:66
 msgctxt "work_attribute_type"
 msgid "TEOSTO ID"
-msgstr ""
+msgstr "ID TEOSTO"
 
 #: DB:work_attribute_type_allowed_value/value:573
 msgctxt "work_attribute_type_allowed_value"
@@ -6986,7 +6986,7 @@ msgctxt "area_type"
 msgid ""
 "Used for any military bases that are large enough to be considered an area, "
 "not just a place."
-msgstr ""
+msgstr "Utilisé pour toute base militaire suffisament grande pour être considérée comme une région plutôt qu’un simple lieu."
 
 #: DB:area_type/description:9
 msgctxt "area_type"
@@ -6994,7 +6994,7 @@ msgid ""
 "Used for semi-autonomous territories governed by indigenous peoples, such as"
 " Indian reserves/reservations in North America and indigenous territories in"
 " Central and South America."
-msgstr ""
+msgstr "Utilisé pour les territoires semi-autonomes gouvernés par des peuples autochtones, tels que les réserves indiennes en Amérique du Nord et les territoires indigènes en Amérique latine."
 
 #: DB:work_attribute_type/name:17
 msgctxt "work_attribute_type"
