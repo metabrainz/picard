@@ -553,7 +553,7 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         Args:
             parent (QWidget): Frame widget in which the documentation is displayed.
         """
-        super(ScriptingDocumentationWidget, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.parent = parent
         self.remove_parent_layout()
 
