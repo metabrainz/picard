@@ -134,6 +134,9 @@ class RenamingOptionsPage(OptionsPage):
 
         self.examples = ScriptEditorExamples(self, self)
 
+        self.ui.example_selection_note.setText(self.examples.notes_text)
+        self.ui.example_filename_sample_files_button.setToolTip(self.examples.tooltip_text)
+
         self.script_editor_page = ScriptEditorPage(parent=self, examples=self.examples)
         self.script_editor_page.signal_save.connect(self.save_from_editor)
         self.script_editor_page.signal_update.connect(self.update_from_editor)
