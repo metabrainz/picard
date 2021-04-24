@@ -167,9 +167,9 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="example_selection_note">
      <property name="text">
-      <string>If you select files from the Cluster pane or Album pane prior to opening the Options screen, up to 10 files will be randomly chosen from your selection as file naming examples.  If you have not selected any files, then some default examples will be provided.</string>
+      <string/>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

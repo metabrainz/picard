@@ -81,6 +81,13 @@ $if(%_multiartist%,%artist% - ,)
 class ScriptEditorExamples():
     """File naming script examples.
     """
+    max_samples = 10  # pick up to 10 samples
+    notes_text = N_(
+        "If you select files from the Cluster pane or Album pane prior to opening the Options screen, "
+        "up to %u files will be randomly chosen from your selection as file naming examples.  If you "
+        "have not selected any files, then some default examples will be provided.") % max_samples
+    tooltip_text = N_("Reload up to %u items chosen at random from files selected in the main window") % max_samples
+
     def __init__(self, parent=None, tagger=None):
         """File naming script examples.
 
@@ -98,16 +105,15 @@ class ScriptEditorExamples():
         """Get a new sample of randomly selected / loaded files to use as renaming examples.
         """
         import random
-        max_samples = 10  # pick up to 10 samples
         if self.tagger.tagger.window.selected_objects:
             # If files/albums/tracks are selected, sample example files from them
             files = self.tagger.tagger.get_files_from_objects(self.tagger.tagger.window.selected_objects)
-            length = min(max_samples, len(files))
+            length = min(self.max_samples, len(files))
             files = [file for file in random.sample(files, k=length)]
         else:
             # If files/albums/tracks are not selected, sample example files from the pool of loaded files
             files = self.tagger.tagger.files
-            length = min(max_samples, len(files))
+            length = min(self.max_samples, len(files))
             files = [files[key] for key in random.sample(files.keys(), k=length)]
 
         if not files:
@@ -282,6 +288,8 @@ class ScriptEditorPage(PicardDialog):
         self.displaying = False
         self.ui = Ui_ScriptEditor()
         self.ui.setupUi(self)
+
+        self.ui.example_filename_sample_files_button.setToolTip(self.examples.tooltip_text)
 
         self.installEventFilter(self)
 
