@@ -321,7 +321,6 @@ class ScriptEditorPage(PicardDialog):
 
         self.synchronize_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
 
-        self.wordwrap = QtWidgets.QTextEdit.NoWrap
         self.current_row = -1
 
         self.load()
@@ -454,10 +453,9 @@ class ScriptEditorPage(PicardDialog):
         """Toggles wordwrap in the script editing textbox.
         """
         if self.ui.file_naming_word_wrap.isChecked():
-            self.wordwrap = QtWidgets.QTextEdit.WidgetWidth
+            self.ui.file_naming_format.setLineWrapMode(QtWidgets.QTextEdit.WidgetWidth)
         else:
-            self.wordwrap = QtWidgets.QTextEdit.NoWrap
-        self.ui.file_naming_format.setLineWrapMode(self.wordwrap)
+            self.ui.file_naming_format.setLineWrapMode(QtWidgets.QTextEdit.NoWrap)
 
     def import_script(self):
         """Import the current script from an external text file.
