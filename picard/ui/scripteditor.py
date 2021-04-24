@@ -269,6 +269,9 @@ class ScriptEditorPage(PicardDialog):
     signal_save = QtCore.pyqtSignal()
     signal_update = QtCore.pyqtSignal()
 
+    FILE_TYPE_ALL = N_("All Files") + " (*)"
+    FILE_TYPE_SCRIPT = N_("Picard Script Files") + " (*.pts)"
+
     default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DocumentsLocation))
     default_script_filename = "picard_naming_script.pts"
 
@@ -461,7 +464,7 @@ class ScriptEditorPage(PicardDialog):
         """Import the current script from an external text file.
         """
         dialog_title = N_("Import Script File")
-        dialog_file_types = N_("All Files") + " (*);;" + N_("Picard Script Files") + " (*.pts)"
+        dialog_file_types = self.FILE_TYPE_SCRIPT + ";;" + self.FILE_TYPE_ALL
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
         filename, file_type = QtWidgets.QFileDialog.getOpenFileName(self, dialog_title, self.default_script_directory, dialog_file_types, options=options)
@@ -482,7 +485,7 @@ class ScriptEditorPage(PicardDialog):
         if script_text:
             default_path = os.path.normpath(os.path.join(self.default_script_directory, self.default_script_filename))
             dialog_title = N_("Export Script File")
-            dialog_file_types = N_("All Files") + " (*);;" + N_("Picard Script Files") + " (*.pts)"
+            dialog_file_types = self.FILE_TYPE_SCRIPT + ";;" + self.FILE_TYPE_ALL
             options = QtWidgets.QFileDialog.Options()
             options |= QtWidgets.QFileDialog.DontUseNativeDialog
             filename, file_type = QtWidgets.QFileDialog.getSaveFileName(self, dialog_title, default_path, dialog_file_types, options=options)
