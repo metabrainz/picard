@@ -118,7 +118,7 @@ class ScriptEditorExamples():
 
         if not files:
             # If no file has been loaded, use generic examples
-            files = self.default_examples()
+            files = list(self.default_examples())
         self._sampled_example_files = files
         self.update_examples()
 
@@ -174,14 +174,11 @@ class ScriptEditorExamples():
 
     @staticmethod
     def default_examples():
-        """List default example files.
+        """Generator for default example files.
 
-        Returns:
-            [list]: List of example File objects.
+        Yields:
+            File: the next example File object
         """
-
-        examples = []
-
         # example 1
         efile = File("ticket_to_ride.mp3")
         efile.state = File.NORMAL
@@ -212,7 +209,7 @@ class ScriptEditorExamples():
             'musicbrainz_recordingid': 'ed052ae1-c950-47f2-8d2b-46e1b58ab76c',
             'musicbrainz_releasetrackid': '392639f5-5629-477e-b04b-93bffa703405',
         })
-        examples.append(efile)
+        yield efile
 
         # example 2
         config = get_config()
@@ -247,9 +244,7 @@ class ScriptEditorExamples():
             'musicbrainz_albumartistid': '89ad4ac3-39f7-470e-963a-56509c546377',
             'musicbrainz_artistid': ['7b593455-d207-482c-8c6f-19ce22c94679', '9e082466-2390-40d1-891e-4803531f43fd'],
         })
-        examples.append(efile)
-
-        return examples
+        yield efile
 
 
 class ScriptEditorPage(PicardDialog):
