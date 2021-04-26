@@ -438,10 +438,7 @@ class ScriptEditorPage(PicardDialog):
             after_listbox.addItem(after)
 
     def display_examples(self):
-        """Update the display of the before and after file naming examples.  Optionally emits an `update` signal.
-
-        Args:
-            send_signal (bool, optional): Determines if an `update` signal is emitted. Defaults to True.
+        """Update the display of the before and after file naming examples.
         """
         self.current_row = -1
         examples = self.examples.get_examples()
