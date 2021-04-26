@@ -437,7 +437,7 @@ class ScriptEditorPage(PicardDialog):
             before_listbox.addItem(before)
             after_listbox.addItem(after)
 
-    def display_examples(self, send_signal=True):
+    def display_examples(self):
         """Update the display of the before and after file naming examples.  Optionally emits an `update` signal.
 
         Args:
@@ -446,9 +446,7 @@ class ScriptEditorPage(PicardDialog):
         self.current_row = -1
         examples = self.examples.get_examples()
         self.update_example_listboxes(self.ui.example_filename_before, self.ui.example_filename_after, examples)
-
-        if send_signal:
-            self.signal_update.emit()
+        self.signal_update.emit()
 
     def toggle_wordwrap(self):
         """Toggles wordwrap in the script editing textbox.
