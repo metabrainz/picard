@@ -88,11 +88,11 @@ class ScriptEditorExamples():
         "have not selected any files, then some default examples will be provided.") % max_samples
     tooltip_text = N_("Reload up to %u items chosen at random from files selected in the main window") % max_samples
 
-    def __init__(self, tagger=None):
+    def __init__(self, tagger):
         """File naming script examples.
 
         Args:
-            tagger (object): The main window tagger object. Defaults to None.
+            tagger (object): The main window tagger object.
         """
         self.tagger = tagger
         self._sampled_example_files = []
@@ -104,7 +104,7 @@ class ScriptEditorExamples():
         """Get a new sample of randomly selected / loaded files to use as renaming examples.
         """
         import random
-        if self.tagger.tagger.window.selected_objects:
+        if self.tagger.window.selected_objects:
             # If files/albums/tracks are selected, sample example files from them
             files = self.tagger.get_files_from_objects(self.tagger.window.selected_objects)
             length = min(self.max_samples, len(files))
