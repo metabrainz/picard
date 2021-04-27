@@ -1,3 +1,11 @@
+# Version 2.6.2 - 2021-04-27
+
+## Bugfixes
+
+- [PICARD-2188](https://tickets.metabrainz.org/browse/PICARD-2188) - Plugin update can fetch old version from network cache
+- [PICARD-2191](https://tickets.metabrainz.org/browse/PICARD-2191) - Revert title and track number guessed from filename should show up as changed metadata
+
+
 # Version 2.6.1 - 2021-04-15
 
 ## Bugfixes
