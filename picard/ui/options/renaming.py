@@ -132,7 +132,7 @@ class RenamingOptionsPage(OptionsPage):
 
         self.ui.example_filename_sample_files_button.clicked.connect(self.update_example_files)
 
-        self.examples = ScriptEditorExamples(self, self)
+        self.examples = ScriptEditorExamples(tagger=self.tagger)
 
         self.ui.example_selection_note.setText(self.examples.notes_text)
         self.ui.example_filename_sample_files_button.setToolTip(self.examples.tooltip_text)

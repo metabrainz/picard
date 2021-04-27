@@ -88,12 +88,11 @@ class ScriptEditorExamples():
         "have not selected any files, then some default examples will be provided.") % max_samples
     tooltip_text = N_("Reload up to %u items chosen at random from files selected in the main window") % max_samples
 
-    def __init__(self, parent=None, tagger=None):
+    def __init__(self, tagger=None):
         """File naming script examples.
 
         Args:
-            parent (QMainWindow or OptionsPage, optional): Parent object. Defaults to None.
-            tagger (object, optional): Object containing the main window tagger object. Defaults to None.
+            tagger (object): The main window tagger object. Defaults to None.
         """
         self.tagger = tagger
         self._sampled_example_files = []
@@ -107,12 +106,12 @@ class ScriptEditorExamples():
         import random
         if self.tagger.tagger.window.selected_objects:
             # If files/albums/tracks are selected, sample example files from them
-            files = self.tagger.tagger.get_files_from_objects(self.tagger.tagger.window.selected_objects)
+            files = self.tagger.get_files_from_objects(self.tagger.window.selected_objects)
             length = min(self.max_samples, len(files))
             files = [file for file in random.sample(files, k=length)]
         else:
             # If files/albums/tracks are not selected, sample example files from the pool of loaded files
-            files = self.tagger.tagger.files
+            files = self.tagger.files
             length = min(self.max_samples, len(files))
             files = [files[key] for key in random.sample(files.keys(), k=length)]
 
