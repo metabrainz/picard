@@ -351,17 +351,15 @@ class ScriptEditorPage(PicardDialog):
     def eventFilter(self, object, event):
         """Process selected events.
         """
-        if event.type() == QtCore.QEvent.WindowActivate or event.type() == QtCore.QEvent.FocusIn:
+        evtype = event.type()
+        if evtype in {QtCore.QEvent.WindowActivate, QtCore.QEvent.FocusIn}:
             self.update_examples()
         return False
 
     def toggle_documentation(self):
         """Toggle the display of the scripting documentation sidebar.
         """
-        if self.ui.show_documentation.isChecked():
-            self.ui.documentation_frame.show()
-        else:
-            self.ui.documentation_frame.hide()
+        self.ui.documentation_frame.setVisible(self.ui.show_documentation.isChecked())
 
     def select_script(self):
         """Set the current script from the combo box.
