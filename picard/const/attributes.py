@@ -105,6 +105,8 @@ MB_ATTRIBUTES = {
     'DB:medium_format/name:087': 'Hybrid SACD (SACD layer, 2 channels)',
     'DB:medium_format/name:088': 'SHM-SACD (multichannel)',
     'DB:medium_format/name:089': 'SHM-SACD (2 channels)',
+    'DB:medium_format/name:090': 'Tefifon',
+    'DB:medium_format/name:091': '5.25" Floppy Disk',
     'DB:release_group_primary_type/name:001': 'Album',
     'DB:release_group_primary_type/name:002': 'Single',
     'DB:release_group_primary_type/name:003': 'EP',

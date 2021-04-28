@@ -27,13 +27,14 @@
 #   - Wang Jian <lark@linux.net.cn>, 2000
 # York Young, 2021
 # YunQiang Su <wzssyqa@gmail.com>, 2011
+# Zhenzhong Yin <cnrocke@gmail.com>, 2021
 # Maureen <mry_33@163.com>, 2014,2019
 # 刘岩 <xuanqidongjim@gmail.com>, 2020
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-04-16 16:20+0000\n"
-"Last-Translator: York Young\n"
+"PO-Revision-Date: 2021-04-27 20:20+0000\n"
+"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -85,6 +86,11 @@ msgstr "12\" 黑胶唱片"
 msgctxt "medium_format"
 msgid "3.5\" Floppy Disk"
 msgstr "3.5\" 软盘"
+
+#: DB:medium_format/name:91
+msgctxt "medium_format"
+msgid "5.25\" Floppy Disk"
+msgstr ""
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
@@ -2702,6 +2708,12 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Gerdaniyekürdi"
 msgstr "Gerdaniyekürdi"
 
+#: DB:medium_format/description:90
+msgctxt "medium_format"
+msgid ""
+"German tape cartridge format, using grooved tape rather than magnetic tape."
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:380
 msgctxt "work_attribute_type_allowed_value"
 msgid "Geveşt"
@@ -3367,6 +3379,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Nicaraguan rights society NICAUTOR"
 msgstr "尼加拉瓜著作权协会NICAUTOR ID"
 
+#: DB:work_attribute_type/description:67
+msgctxt "work_attribute_type"
+msgid "ID for the Norwegian rights society TONO"
+msgstr ""
+
 #: DB:work_attribute_type/description:62
 msgctxt "work_attribute_type"
 msgid "ID for the Panamanian rights society SPAC"
@@ -3507,7 +3524,7 @@ msgstr "配乐指（通常）为戏剧演出伴奏创作的音乐。"
 #: DB:area_type/name:9
 msgctxt "area_type"
 msgid "Indigenous territory / reserve"
-msgstr ""
+msgstr "土著领地/保护区"
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -6573,6 +6590,11 @@ msgctxt "work_attribute_type"
 msgid "TEOSTO ID"
 msgstr "TEOSTO ID"
 
+#: DB:work_attribute_type/name:67
+msgctxt "work_attribute_type"
+msgid "TONO ID"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:573
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tahir"
@@ -6627,6 +6649,11 @@ msgstr "Tavşanca"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tebriz"
 msgstr "Tebriz"
+
+#: DB:medium_format/name:90
+msgctxt "medium_format"
+msgid "Tefifon"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:774
 msgctxt "work_attribute_type_allowed_value"
@@ -6989,7 +7016,7 @@ msgctxt "area_type"
 msgid ""
 "Used for any military bases that are large enough to be considered an area, "
 "not just a place."
-msgstr ""
+msgstr "用于任何足够大的军事基地，可以被视为一个地区，而不仅仅是一个地方。"
 
 #: DB:area_type/description:9
 msgctxt "area_type"
@@ -6997,7 +7024,7 @@ msgid ""
 "Used for semi-autonomous territories governed by indigenous peoples, such as"
 " Indian reserves/reservations in North America and indigenous territories in"
 " Central and South America."
-msgstr ""
+msgstr "用于原住民统治的半自治领土，如北美洲的印第安人保留地/保护区以及中美洲和南美洲的土著领地。"
 
 #: DB:work_attribute_type/name:17
 msgctxt "work_attribute_type"

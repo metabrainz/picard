@@ -31,7 +31,7 @@
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # nikki, 2013
 # Patrick <patrick.rein@gmail.com>, 2015
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2012,2018-2020
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2012,2018-2021
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2012
 # S.Brandt <s.brandt@mixxx.org>, 2014-2016
 # Shepard, 2011
@@ -47,8 +47,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-04-14 20:05+0000\n"
-"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
+"PO-Revision-Date: 2021-04-28 08:22+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -100,6 +100,11 @@ msgstr "12\"-Vinyl"
 msgctxt "medium_format"
 msgid "3.5\" Floppy Disk"
 msgstr "3,5″-Diskette"
+
+#: DB:medium_format/name:91
+msgctxt "medium_format"
+msgid "5.25\" Floppy Disk"
+msgstr "5,25″-Diskette"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
@@ -352,12 +357,12 @@ msgstr "Eine Reihe von Aufnahmen"
 #: DB:series_type/description:7
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in different locations."
-msgstr "Eine Reihe von zusammengehörigen Konzerten des gleichen Künstlers an verschiedenen Orten"
+msgstr "Eine Reihe von zusammengehörigen Konzerten des selben Künstlers an verschiedenen Orten"
 
 #: DB:series_type/description:12
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in the same location."
-msgstr ""
+msgstr "Eine Reihe von zusammengehörigen Konzerten des selben Künstlers am selben Ort."
 
 #: DB:series_type/description:1
 msgctxt "series_type"
@@ -469,7 +474,7 @@ msgstr "ais-Moll"
 #: DB:work_attribute_type/name:57
 msgctxt "work_attribute_type"
 msgid "AACIMH ID"
-msgstr ""
+msgstr "AACIMH-ID"
 
 #: DB:work_attribute_type/name:44
 msgctxt "work_attribute_type"
@@ -484,7 +489,7 @@ msgstr "ACDAM-ID"
 #: DB:work_attribute_type/name:58
 msgctxt "work_attribute_type"
 msgid "AEI ID"
-msgstr ""
+msgstr "AEI-ID"
 
 #: DB:work_attribute_type/name:43
 msgctxt "work_attribute_type"
@@ -2717,6 +2722,12 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Gerdaniyekürdi"
 msgstr "Gerdaniyekürdi"
 
+#: DB:medium_format/description:90
+msgctxt "medium_format"
+msgid ""
+"German tape cartridge format, using grooved tape rather than magnetic tape."
+msgstr "Deutsches Kassettenformat, das ein Band mit Rillen statt eines magnetischen Bands verwendet."
+
 #: DB:work_attribute_type_allowed_value/value:380
 msgctxt "work_attribute_type_allowed_value"
 msgid "Geveşt"
@@ -3250,7 +3261,7 @@ msgstr "ID für die kanadische Verwertungsgesellschaft SOCAN"
 #: DB:work_attribute_type/description:53
 msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SODRAC"
-msgstr ""
+msgstr "ID für die kanadische Verwertungsgesellschaft SODRAC"
 
 #: DB:work_attribute_type/description:39
 msgctxt "work_attribute_type"
@@ -3330,7 +3341,7 @@ msgstr "ID für die ungarische Verwertungsgesellschaft ARTISJUS"
 #: DB:work_attribute_type/description:54
 msgctxt "work_attribute_type"
 msgid "ID for the Icelandic rights society STEF"
-msgstr ""
+msgstr "ID für die isländische Verwertungsgesellschaft STEF"
 
 #: DB:work_attribute_type/description:29
 msgctxt "work_attribute_type"
@@ -3381,6 +3392,11 @@ msgstr "ID für die mexikanische Verwertungsgesellschaft SACM"
 msgctxt "work_attribute_type"
 msgid "ID for the Nicaraguan rights society NICAUTOR"
 msgstr ""
+
+#: DB:work_attribute_type/description:67
+msgctxt "work_attribute_type"
+msgid "ID for the Norwegian rights society TONO"
+msgstr "ID für die norwegische Verwertungsgesellschaft TONO"
 
 #: DB:work_attribute_type/description:62
 msgctxt "work_attribute_type"
@@ -6588,6 +6604,11 @@ msgctxt "work_attribute_type"
 msgid "TEOSTO ID"
 msgstr ""
 
+#: DB:work_attribute_type/name:67
+msgctxt "work_attribute_type"
+msgid "TONO ID"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:573
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tahir"
@@ -6642,6 +6663,11 @@ msgstr "Tavşanca"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tebriz"
 msgstr ""
+
+#: DB:medium_format/name:90
+msgctxt "medium_format"
+msgid "Tefifon"
+msgstr "Tefifon"
 
 #: DB:work_attribute_type_allowed_value/value:774
 msgctxt "work_attribute_type_allowed_value"

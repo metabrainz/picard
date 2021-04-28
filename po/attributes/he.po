@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-04-14 20:05+0000\n"
-"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
+"PO-Revision-Date: 2021-04-28 07:20+0000\n"
+"Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -58,6 +58,11 @@ msgstr "תקליט ויניל \"12"
 msgctxt "medium_format"
 msgid "3.5\" Floppy Disk"
 msgstr "דיסקט \"3.5"
+
+#: DB:medium_format/name:91
+msgctxt "medium_format"
+msgid "5.25\" Floppy Disk"
+msgstr ""
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
@@ -300,7 +305,7 @@ msgstr "סדרת ארועים."
 #: DB:series_type/description:9
 msgctxt "series_type"
 msgid "A series of performances of the same show at the same venue."
-msgstr "סדרת הופעות מאותה תוכנית באותו מקום."
+msgstr "סדרת הופעות מאותה תוכנית באותה האַכְסַנְיָה."
 
 #: DB:series_type/description:3
 msgctxt "series_type"
@@ -2675,6 +2680,12 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Gerdaniyekürdi"
 msgstr ""
 
+#: DB:medium_format/description:90
+msgctxt "medium_format"
+msgid ""
+"German tape cartridge format, using grooved tape rather than magnetic tape."
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:380
 msgctxt "work_attribute_type_allowed_value"
 msgid "Geveşt"
@@ -3340,6 +3351,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Nicaraguan rights society NICAUTOR"
 msgstr ""
 
+#: DB:work_attribute_type/description:67
+msgctxt "work_attribute_type"
+msgid "ID for the Norwegian rights society TONO"
+msgstr ""
+
 #: DB:work_attribute_type/description:62
 msgctxt "work_attribute_type"
 msgid "ID for the Panamanian rights society SPAC"
@@ -3664,12 +3680,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:933
 msgctxt "work_attribute_type_allowed_value"
 msgid "Jōg"
-msgstr ""
+msgstr "יוג"
 
 #: DB:work_attribute_type_allowed_value/value:122
 msgctxt "work_attribute_type_allowed_value"
 msgid "Jōgiya"
-msgstr ""
+msgstr "יוגייה"
 
 #: DB:work_attribute_type_allowed_value/value:934
 msgctxt "work_attribute_type_allowed_value"
@@ -3709,7 +3725,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:128
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kalgaḍa"
-msgstr ""
+msgstr "קלגדה"
 
 #: DB:work_attribute_type_allowed_value/value:939
 msgctxt "work_attribute_type_allowed_value"
@@ -4312,7 +4328,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:168
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mandāri"
-msgstr ""
+msgstr "מנדארי"
 
 #: DB:series_ordering_type/name:2
 msgctxt "series_ordering_type"
@@ -5122,7 +5138,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:190
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nāṭa"
-msgstr ""
+msgstr "נאטה"
 
 #: DB:work_attribute_type_allowed_value/value:192
 msgctxt "work_attribute_type_allowed_value"
@@ -5222,7 +5238,7 @@ msgstr "אחר"
 #: DB:instrument_type/name:5
 msgctxt "instrument_type"
 msgid "Other instrument"
-msgstr ""
+msgstr "כלי נגינה אחרים"
 
 #: DB:work_type/name:12
 msgctxt "work_type"
@@ -5478,7 +5494,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:201
 msgctxt "work_attribute_type_allowed_value"
 msgid "Pāḍi"
-msgstr ""
+msgstr "פדי"
 
 #: DB:work_attribute_type_allowed_value/value:208
 #: DB:work_attribute_type_allowed_value/value:1002
@@ -6296,7 +6312,7 @@ msgstr "מילה מדוברת"
 #: DB:place_type/name:4
 msgctxt "place_type"
 msgid "Stadium"
-msgstr ""
+msgstr "איצטדיון"
 
 #: DB:event_type/name:6
 msgctxt "event_type"
@@ -6316,7 +6332,7 @@ msgstr ""
 #: DB:place_type/name:1
 msgctxt "place_type"
 msgid "Studio"
-msgstr ""
+msgstr "סטוגיו"
 
 #: DB:area_type/name:2
 msgctxt "area_type"
@@ -6484,7 +6500,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:225
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sāma"
-msgstr ""
+msgstr "סאמה"
 
 #: DB:work_attribute_type_allowed_value/value:229
 msgctxt "work_attribute_type_allowed_value"
@@ -6546,6 +6562,11 @@ msgctxt "work_attribute_type"
 msgid "TEOSTO ID"
 msgstr ""
 
+#: DB:work_attribute_type/name:67
+msgctxt "work_attribute_type"
+msgid "TONO ID"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:573
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tahir"
@@ -6600,6 +6621,11 @@ msgstr ""
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tebriz"
 msgstr "טבריז"
+
+#: DB:medium_format/name:90
+msgctxt "medium_format"
+msgid "Tefifon"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:774
 msgctxt "work_attribute_type_allowed_value"
@@ -7035,7 +7061,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:265
 msgctxt "work_attribute_type_allowed_value"
 msgid "Varamu"
-msgstr ""
+msgstr "וראמו"
 
 #: DB:work_attribute_type_allowed_value/value:264
 msgctxt "work_attribute_type_allowed_value"
@@ -7085,7 +7111,7 @@ msgstr ""
 #: DB:place_type/name:2
 msgctxt "place_type"
 msgid "Venue"
-msgstr ""
+msgstr "אַכְסַנְיָה"
 
 #: DB:medium_format/description:59
 msgctxt "medium_format"
@@ -7478,7 +7504,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:283
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ēka"
-msgstr ""
+msgstr "אקה"
 
 #: DB:work_attribute_type_allowed_value/value:831
 msgctxt "work_attribute_type_allowed_value"
