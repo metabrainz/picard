@@ -64,7 +64,7 @@ class DataHash:
         self._filename = None
         _datafile_mutex.lock()
         try:
-            m = md5()
+            m = md5()  # nosec
             m.update(data)
             self._hash = m.hexdigest()
             if self._hash not in _datafiles:
@@ -337,7 +337,8 @@ class CoverArtImage:
             except OSError as e:
                 raise CoverArtImageIOError(e)
 
-    def _next_filename(self, filename, counters):
+    @staticmethod
+    def _next_filename(filename, counters):
         if counters[filename]:
             new_filename = "%s (%d)" % (decode_filename(filename), counters[filename])
         else:

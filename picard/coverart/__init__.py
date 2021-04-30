@@ -158,7 +158,7 @@ class CoverArt:
                 finally:
                     if ret != CoverArtProvider.WAIT:
                         self.next_in_queue()
-                    return
+                return
             except StopIteration:
                 # nothing more to do
                 self.album._finalize_loading(None)
