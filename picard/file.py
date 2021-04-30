@@ -215,7 +215,10 @@ class File(QtCore.QObject, Item):
         else:
             self.clear_errors()
             self.state = self.NORMAL
-            self._copy_loaded_metadata(result, config.setting["guess_tracknumber_and_title"])
+            postprocessors = []
+            if config.setting["guess_tracknumber_and_title"]:
+                postprocessors.append(self._guess_tracknumber_and_title)
+            self._copy_loaded_metadata(result, postprocessors)
         # use cached fingerprint from file metadata
         if not config.setting["ignore_existing_acoustid_fingerprints"]:
             fingerprints = self.metadata.getall('acoustid_fingerprint')
@@ -225,10 +228,11 @@ class File(QtCore.QObject, Item):
         self.update()
         callback(self)
 
-    def _copy_loaded_metadata(self, metadata, guess_tracknumber_and_title=True):
+    def _copy_loaded_metadata(self, metadata, postprocessors=None):
         metadata['~length'] = format_time(metadata.length)
-        if guess_tracknumber_and_title:
-            self._guess_tracknumber_and_title(metadata)
+        if postprocessors:
+            for processor in postprocessors:
+                processor(metadata)
         self.orig_metadata = metadata
         self.metadata.copy(metadata)
 
