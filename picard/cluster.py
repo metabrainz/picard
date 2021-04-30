@@ -475,7 +475,7 @@ class ClusterDict(object):
         index, count = self.words[word]
         if index == -1:
             token = self.tokenize(word)
-            if token == '':
+            if token == '':  # nosec
                 return -1
             index = self.id
             self.ids[index] = (word, token)

@@ -23,6 +23,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+"""Build a Qt resources file with all png images found under images/
+It will update qrc file only if images newer than it are found
+"""
 
 from distutils import log
 from distutils.dep_util import newer
@@ -31,20 +34,15 @@ import os
 import re
 
 
-"""Build a Qt resources file with all png images found under images/
-It will update qrc file only if images newer than it are found
-"""
-
-
 def tryint(s):
     try:
         return int(s)
-    except:
+    except BaseException:
         return s
 
 
 def natsort_key(s):
-    return [ tryint(c) for c in re.split(r'(\d+)', s) ]
+    return [tryint(c) for c in re.split(r'(\d+)', s)]
 
 
 def find_files(topdir, directory, patterns):
