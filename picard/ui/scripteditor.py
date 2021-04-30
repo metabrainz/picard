@@ -249,10 +249,7 @@ class ScriptEditorExamples():
 class ScriptEditorPage(PicardDialog):
     """File Naming Script Editor Page
     """
-    NAME = "scripteditor"
     TITLE = N_("File naming script editor")
-    PARENT = None
-    HELP_URL = '/config/options_filerenaming.html'
     STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
 
     options = [
