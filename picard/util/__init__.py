@@ -378,7 +378,7 @@ def iter_unique(seq):
 
 
 # order is important
-_tracknum_regexps = (
+_tracknum_regexps = [re.compile(r, re.I) for r in (
     # search for explicit track number (prefix "track")
     r"track[\s_-]*(?:(?:no|nr)\.?)?[\s_-]*(?P<number>\d+)",
     # search for 1- or 2-digit number at start of string (additional leading zeroes are allowed)
@@ -391,7 +391,7 @@ _tracknum_regexps = (
     r"[^0-9,.]\((?P<number>0*\d{2})\)$",
     # File names which consist of only a number
     r"^(?P<number>\d+)$",
-)
+)]
 
 
 def tracknum_from_filename(base_filename):
@@ -399,8 +399,8 @@ def tracknum_from_filename(base_filename):
     Returns `None` if none found, the number as integer else
     """
     filename, _ext = os.path.splitext(base_filename)
-    for r in _tracknum_regexps:
-        match = re.search(r, filename, re.I)
+    for pattern in _tracknum_regexps:
+        match = pattern.search(filename)
         if match:
             n = int(match.group('number'))
             # Numbers above 1900 are often years, track numbers should be much
