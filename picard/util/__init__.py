@@ -381,11 +381,16 @@ def iter_unique(seq):
 _tracknum_regexps = (
     # search for explicit track number (prefix "track")
     r"track[\s_-]*(?:(?:no|nr)\.?)?[\s_-]*(?P<number>\d+)",
-    # search for 2-digit number at start of string (additional leading zeroes are allowed)
-    r"^(?P<number>0*\d{2})(?:\.)[^0-9,]",  # "99. ", but not "99.02"
-    r"^(?P<number>0*\d{2})[^0-9,.]",
-    # search for 2-digit number at end of string
+    # search for 1- or 2-digit number at start of string (additional leading zeroes are allowed)
+    # An optional disc number preceeding the track number is ignored.
+    r"^(?:\d+[\s_-])?(?P<number>0*\d{1,2})(?:\.)[^0-9,]",  # "99. ", but not "99.02"
+    r"^(?:\d+[\s_-])?(?P<number>0*\d{1,2})[^0-9,.s]",
+    # search for 2-digit number at end of string (additional leading zeroes are allowed)
     r"[^0-9,.](?P<number>0*\d{2})$",
+    r"[^0-9,.]\[(?P<number>0*\d{1,2})\]$",
+    r"[^0-9,.]\((?P<number>0*\d{2})\)$",
+    # File names which consist of only a number
+    r"^(?P<number>\d+)$",
 )
 
 
@@ -398,7 +403,9 @@ def tracknum_from_filename(base_filename):
         match = re.search(r, filename, re.I)
         if match:
             n = int(match.group('number'))
-            if n > 0:
+            # Numbers above 1900 are often years, track numbers should be much
+            # smaller even for extensive collections
+            if n > 0 and n < 1900:
                 return n
     return None
 
