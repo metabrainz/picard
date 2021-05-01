@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
 # Copyright (C) 2010 fatih
-# Copyright (C) 2010-2011, 2014, 2018-2020 Philipp Wolfer
+# Copyright (C) 2010-2011, 2014, 2018-2021 Philipp Wolfer
 # Copyright (C) 2012, 2014, 2018 Wieland Hoffmann
 # Copyright (C) 2013 Ionuț Ciocîrlan
 # Copyright (C) 2013-2014, 2018-2020 Laurent Monin
@@ -46,6 +46,8 @@ from picard.util import (
     iter_unique,
     limited_join,
     sort_by_similarity,
+    tracknum_and_title_from_filename,
+    tracknum_from_filename,
     uniqify,
 )
 
@@ -429,3 +431,43 @@ class IterUniqueTest(PicardTestCase):
         result = iter_unique(items)
         self.assertTrue(isinstance(result, Iterator))
         self.assertEqual([1, 2, 3, 4], list(result))
+
+
+class TracknumFromFilenameTest(PicardTestCase):
+
+    def test_returns_expected_tracknumber(self):
+        tests = (
+            (None, 'Foo.mp3'),
+            (1, 'Foo 0001.mp3'),
+            (99, '99 Foo.mp3'),
+            (42, '42. Foo.mp3'),
+            (None, '20000 Feet.mp3'),
+            (242, 'track no 242.mp3'),
+            (242, 'track-242.mp3'),
+            (242, 'track nr 242.mp3'),
+            (242, 'track_242.mp3'),
+            # (None, '30,000 Pounds of Bananas.mp3'),
+            # (None, 'Dalas 1 PM.mp3'),
+            # (None, "Don't Stop the 80's.mp3"),
+            # (None, '99 Luftballons.mp3'),
+            # (None, 'Symphony no. 5 in D minor.mp3'),
+        )
+        for expected, filename in tests:
+            tracknumber = tracknum_from_filename(filename)
+            self.assertEqual(expected, tracknumber)
+
+
+class TracknumAndTitleFromFilenameTest(PicardTestCase):
+
+    def test_returns_expected_tracknumber(self):
+        tests = (
+            ((None, 'Foo'), 'Foo.mp3'),
+            (('1', 'Track 0001'), 'Track 0001.mp3'),
+            (('99', 'Foo'), '99 Foo.mp3'),
+            (('42', 'Foo'), '0000042 Foo.mp3'),
+            ((None, '20000 Feet'), '20000 Feet.mp3'),
+            # ((None, '20,000 Feet'), '20,000 Feet.mp3'),
+        )
+        for expected, filename in tests:
+            result = tracknum_and_title_from_filename(filename)
+            self.assertEqual(expected, result)

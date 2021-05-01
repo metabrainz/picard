@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2004 Robert Kaye
 # Copyright (C) 2006-2009, 2011-2012, 2014 Lukáš Lalinský
-# Copyright (C) 2008-2011, 2014, 2018-2020 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014, 2018-2021 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2009 david
 # Copyright (C) 2010 fatih
@@ -392,7 +392,7 @@ def tracknum_from_filename(base_filename):
     """Guess and extract track number from filename
     Returns `None` if none found, the number as integer else
     """
-    filename, _ = os.path.splitext(base_filename)
+    filename, _ext = os.path.splitext(base_filename)
     for r in _tracknum_regexps:
         match = re.search(r, filename, re.I)
         if match:
@@ -407,6 +407,26 @@ def tracknum_from_filename(base_filename):
     if numbers:
         return numbers[0]
     return None
+
+
+def tracknum_and_title_from_filename(base_filename):
+    """Guess tracknumber and title from filename.
+    Uses `tracknum_from_filename` to guess the tracknumber. The filename is used
+    as the title. If the tracknumber is at the beginning of the title it gets stripped.
+
+    Returns a tuple `(tracknumber, title)`.
+    """
+    filename, _ext = os.path.splitext(base_filename)
+    title = filename
+    tracknumber = tracknum_from_filename(base_filename)
+    if tracknumber is not None:
+        tracknumber = str(tracknumber)
+        stripped_filename = filename.lstrip('0')
+        tnlen = len(tracknumber)
+        if stripped_filename[:tnlen] == tracknumber:
+            title = stripped_filename[tnlen:].lstrip()
+
+    return (tracknumber, title)
 
 
 def is_hidden(filepath):

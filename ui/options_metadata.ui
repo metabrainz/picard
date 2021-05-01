@@ -77,6 +77,13 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QCheckBox" name="guess_tracknumber_and_title">
+        <property name="text">
+         <string>Guess track number and title from filename if empty</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
