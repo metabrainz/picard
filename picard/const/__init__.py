@@ -79,18 +79,19 @@ DOCS_BASE_URL = "https://picard-docs.musicbrainz.org/" + DOCS_VERSION + DOCS_LAN
 
 # URLs
 PICARD_URLS = {
-    'home':                "https://picard.musicbrainz.org/",
-    'documentation':       DOCS_BASE_URL + '/',
-    'troubleshooting':     DOCS_BASE_URL + '/troubleshooting/troubleshooting.html',
-    'doc_options':         DOCS_BASE_URL + '/config/configuration.html',
-    'doc_scripting':       DOCS_BASE_URL + '/extending/scripting.html',
-    'doc_cover_art_types': "https://musicbrainz.org/doc/Cover_Art/Types",
-    'plugins':             "https://picard.musicbrainz.org/plugins/",
-    'forum':               "https://community.metabrainz.org/c/picard",
-    'donate':              "https://metabrainz.org/donate",
-    'chromaprint':         "https://acoustid.org/chromaprint#download",
-    'acoustid_apikey':     "https://acoustid.org/api-key",
-    'acoustid_track':      "https://acoustid.org/track/",
+    'home':                    "https://picard.musicbrainz.org/",
+    'documentation':           DOCS_BASE_URL + '/',
+    'troubleshooting':         DOCS_BASE_URL + '/troubleshooting/troubleshooting.html',
+    'doc_options':             DOCS_BASE_URL + '/config/configuration.html',
+    'doc_scripting':           DOCS_BASE_URL + '/extending/scripting.html',
+    'doc_tags_from_filenames': DOCS_BASE_URL + '/usage/tags_from_file_names.html',
+    'doc_cover_art_types':     "https://musicbrainz.org/doc/Cover_Art/Types",
+    'plugins':                 "https://picard.musicbrainz.org/plugins/",
+    'forum':                   "https://community.metabrainz.org/c/picard",
+    'donate':                  "https://metabrainz.org/donate",
+    'chromaprint':             "https://acoustid.org/chromaprint#download",
+    'acoustid_apikey':         "https://acoustid.org/api-key",
+    'acoustid_track':          "https://acoustid.org/track/",
 }
 
 # Various Artists MBID
