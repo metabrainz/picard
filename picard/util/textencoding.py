@@ -5,9 +5,11 @@
 # Copyright (C) 2004 Robert Kaye
 # Copyright (C) 2006 Lukáš Lalinský
 # Copyright (C) 2014 Sophist-UK
-# Copyright (C) 2014, 2018 Laurent Monin
+# Copyright (C) 2014, 2018, 2020 Laurent Monin
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2018-2019 Philipp Wolfer
+# Copyright (C) 2020 Gabriel Ferreira
+# Copyright (C) 2020 Undearius
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

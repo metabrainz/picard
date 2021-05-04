@@ -22,12 +22,13 @@
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017 Antonio Larrosa
 # Copyright (C) 2017 Frederik “Freso” S. Olesen
-# Copyright (C) 2018 Bob Swift
 # Copyright (C) 2018 Kartik Ohri
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2018 virusMac
+# Copyright (C) 2018, 2021 Bob Swift
 # Copyright (C) 2019 Timur Enikeev
 # Copyright (C) 2020 Gabriel Ferreira
+# Copyright (C) 2021 Petit Minion
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

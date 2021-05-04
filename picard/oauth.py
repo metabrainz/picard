@@ -5,10 +5,10 @@
 # Copyright (C) 2014 Lukáš Lalinský
 # Copyright (C) 2015 Sophist-UK
 # Copyright (C) 2015 Wieland Hoffmann
-# Copyright (C) 2015, 2018 Philipp Wolfer
+# Copyright (C) 2015, 2018, 2021 Philipp Wolfer
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017 Frederik “Freso” S. Olesen
-# Copyright (C) 2018-2019 Laurent Monin
+# Copyright (C) 2018-2020 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

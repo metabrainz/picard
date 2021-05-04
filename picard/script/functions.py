@@ -4,21 +4,22 @@
 #
 # Copyright (C) 2006-2009, 2012 Lukáš Lalinský
 # Copyright (C) 2007 Javier Kohen
-# Copyright (C) 2008-2011, 2014-2015, 2018-2020 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014-2015, 2018-2021 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2009 Nikolai Prokoschenko
 # Copyright (C) 2011-2012 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2012 stephen
-# Copyright (C) 2012, 2014, 2017 Wieland Hoffmann
-# Copyright (C) 2013-2014, 2017-2020 Laurent Monin
-# Copyright (C) 2014, 2017 Sophist-UK
+# Copyright (C) 2012, 2014, 2017, 2021 Wieland Hoffmann
+# Copyright (C) 2013-2014, 2017-2021 Laurent Monin
+# Copyright (C) 2014, 2017, 2021 Sophist-UK
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2016-2017 Ville Skyttä
 # Copyright (C) 2017-2018 Antonio Larrosa
 # Copyright (C) 2018 Calvin Walton
 # Copyright (C) 2018 virusMac
-# Copyright (C) 2020 Bob Swift
+# Copyright (C) 2020-2021 Bob Swift
+# Copyright (C) 2021 Adam James
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -33,6 +34,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 
 from collections import namedtuple
 import datetime

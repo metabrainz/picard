@@ -6,7 +6,7 @@
 # Copyright (C) 2010, 2018, 2020 Philipp Wolfer
 # Copyright (C) 2011-2012 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
-# Copyright (C) 2013 Laurent Monin
+# Copyright (C) 2013, 2020-2021 Laurent Monin
 # Copyright (C) 2014 Sophist-UK
 # Copyright (C) 2021 Petit Minion
 #
@@ -23,6 +23,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 
 from picard import log
 from picard.util.imagelist import update_metadata_images

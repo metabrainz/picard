@@ -6,7 +6,7 @@
 # Copyright (C) 2012-2013, 2017 Wieland Hoffmann
 # Copyright (C) 2013 Michael Wiencek
 # Copyright (C) 2016-2017 Sambhav Kothari
-# Copyright (C) 2018 Laurent Monin
+# Copyright (C) 2018, 2020 Laurent Monin
 # Copyright (C) 2018-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
@@ -22,6 +22,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 
 from collections.abc import MutableMapping
 

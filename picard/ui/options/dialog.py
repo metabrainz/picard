@@ -8,7 +8,7 @@
 # Copyright (C) 2011 Pavan Chander
 # Copyright (C) 2011-2012, 2019 Wieland Hoffmann
 # Copyright (C) 2011-2013 Michael Wiencek
-# Copyright (C) 2013, 2017-2020 Laurent Monin
+# Copyright (C) 2013, 2017-2021 Laurent Monin
 # Copyright (C) 2014 Sophist-UK
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017 Suhas

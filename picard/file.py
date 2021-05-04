@@ -17,14 +17,14 @@
 # Copyright (C) 2013 Calvin Walton
 # Copyright (C) 2013-2014 Ionuț Ciocîrlan
 # Copyright (C) 2013-2014, 2017, 2021 Sophist-UK
-# Copyright (C) 2013-2014, 2017-2019 Laurent Monin
+# Copyright (C) 2013-2014, 2017-2021 Laurent Monin
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2016 Ville Skyttä
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017-2018 Antonio Larrosa
 # Copyright (C) 2019 Joel Lintunen
-# Copyright (C) 2020 Ray Bouchard
 # Copyright (C) 2020 Gabriel Ferreira
+# Copyright (C) 2020 Ray Bouchard
 # Copyright (C) 2021 Petit Minion
 #
 # This program is free software; you can redistribute it and/or

@@ -5,7 +5,7 @@
 # Copyright (C) 2006-2007 Lukáš Lalinský
 # Copyright (C) 2008 Will
 # Copyright (C) 2011-2012 Michael Wiencek
-# Copyright (C) 2013, 2018-2019 Laurent Monin
+# Copyright (C) 2013, 2018-2020 Laurent Monin
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2017 Ville Skyttä
 #

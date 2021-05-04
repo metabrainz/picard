@@ -10,13 +10,13 @@
 # Copyright (C) 2013 Calvin Walton
 # Copyright (C) 2013 Ionuț Ciocîrlan
 # Copyright (C) 2013-2014 Sophist-UK
-# Copyright (C) 2013-2015, 2018-2019, 2021 Laurent Monin
+# Copyright (C) 2013-2015, 2018-2021 Laurent Monin
 # Copyright (C) 2015 Alex Berman
 # Copyright (C) 2015 Ohm Patel
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2017 Sambhav Kothari
-# Copyright (C) 2021 Gabriel Ferreira
 # Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

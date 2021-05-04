@@ -6,11 +6,12 @@
 # Copyright (C) 2008, 2014, 2019-2021 Philipp Wolfer
 # Copyright (C) 2012, 2017 Wieland Hoffmann
 # Copyright (C) 2012-2014 Michael Wiencek
-# Copyright (C) 2013-2016, 2018-2019 Laurent Monin
+# Copyright (C) 2013-2016, 2018-2021 Laurent Monin
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017 Sophist-UK
 # Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2020-2021 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
