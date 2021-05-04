@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008 Lukáš Lalinský
 # Copyright (C) 2014 Sophist-UK
-# Copyright (C) 2014, 2018 Laurent Monin
+# Copyright (C) 2014, 2018, 2020-2021 Laurent Monin
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2019-2021 Philipp Wolfer
@@ -128,10 +128,7 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
             url = self.help_url
             if url.startswith('/'):
                 url = DOCS_BASE_URL + url
-            if url.startswith('goto://'):
-                webbrowser2.goto(url[7:])
-            else:
-                webbrowser2.open(url)
+            webbrowser2.open(url)
 
 
 # With py3, QObjects are no longer hashable unless they have

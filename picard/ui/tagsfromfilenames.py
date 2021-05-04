@@ -8,8 +8,8 @@
 # Copyright (C) 2014, 2017 Sophist-UK
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017 Ville Skyttä
-# Copyright (C) 2018 Laurent Monin
 # Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2018, 2020-2021 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -99,7 +99,7 @@ class TagMatchExpression:
 class TagsFromFileNamesDialog(PicardDialog):
 
     autorestore = False
-    help_url = 'goto://doc_tags_from_filenames'
+    help_url = 'doc_tags_from_filenames'
 
     options = [
         TextOption("persist", "tags_from_filenames_format", ""),
