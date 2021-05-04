@@ -19,6 +19,12 @@ pyflakes:
     # to specify additional builtins for pyflakes with prospector.
     # We also test for this with flake8 in a saner way.
     - F821
-    # Ignore syntax errors as reported by PyFlages since on Codacy this does
+    # F401: Module imported but unused
+    # F841: Unused variables
+    # We have some valid cases for both, but PyFlakes does not allow to ignore
+    # them case by case. flake8 also checks this, so this is redundant.
+    - F401
+    - F841
+    # Ignore syntax errors as reported by PyFlakes since on Codacy this does
     # not support Python 3 syntax.
-    - F999
+    # - F999
