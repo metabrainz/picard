@@ -7,7 +7,7 @@
 # Copyright (C) 2014, 2018 Laurent Monin
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
-# Copyright (C) 2019-2020 Philipp Wolfer
+# Copyright (C) 2019-2021 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -36,11 +36,15 @@ from picard.config import (
     Option,
     get_config,
 )
+from picard.const import DOCS_BASE_URL
 from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
-from picard.util import restore_method
+from picard.util import (
+    restore_method,
+    webbrowser2,
+)
 
 
 if IS_MACOS:
@@ -105,6 +109,7 @@ class SingletonDialog:
 
 class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
 
+    help_url = None
     flags = QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint
 
     def __init__(self, parent=None):
@@ -113,8 +118,20 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
     def keyPressEvent(self, event):
         if event.matches(QtGui.QKeySequence.Close):
             self.close()
+        elif event.matches(QtGui.QKeySequence.HelpContents) and self.help_url:
+            self.show_help()
         else:
             super().keyPressEvent(event)
+
+    def show_help(self):
+        if self.help_url:
+            url = self.help_url
+            if url.startswith('/'):
+                url = DOCS_BASE_URL + url
+            if url.startswith('goto://'):
+                webbrowser2.goto(url[7:])
+            else:
+                webbrowser2.open(url)
 
 
 # With py3, QObjects are no longer hashable unless they have

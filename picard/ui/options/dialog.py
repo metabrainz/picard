@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008, 2011 Lukáš Lalinský
 # Copyright (C) 2008-2009 Nikolai Prokoschenko
-# Copyright (C) 2008-2009, 2018-2020 Philipp Wolfer
+# Copyright (C) 2008-2009, 2018-2021 Philipp Wolfer
 # Copyright (C) 2011 Pavan Chander
 # Copyright (C) 2011-2012, 2019 Wieland Hoffmann
 # Copyright (C) 2011-2013 Michael Wiencek
@@ -31,7 +31,6 @@
 
 from PyQt5 import (
     QtCore,
-    QtGui,
     QtWidgets,
 )
 
@@ -42,11 +41,7 @@ from picard.config import (
     TextOption,
     get_config,
 )
-from picard.const import DOCS_BASE_URL
-from picard.util import (
-    restore_method,
-    webbrowser2,
-)
+from picard.util import restore_method
 
 from picard.ui import (
     HashableTreeWidgetItem,
@@ -137,7 +132,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.ui.buttonbox.rejected.connect(self.reject)
         self.ui.reset_all_button.clicked.connect(self.confirm_reset_all)
         self.ui.reset_button.clicked.connect(self.confirm_reset)
-        self.ui.buttonbox.helpRequested.connect(self.help)
+        self.ui.buttonbox.helpRequested.connect(self.show_help)
 
         self.pages = []
         for Page in page_classes:
@@ -175,12 +170,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 self.disable_page(page.NAME)
         self.ui.pages_tree.setCurrentItem(self.default_item)
 
-    def keyPressEvent(self, event):
-        if event.matches(QtGui.QKeySequence.HelpContents):
-            self.help()
-        else:
-            super().keyPressEvent(event)
-
     def switch_page(self):
         items = self.ui.pages_tree.selectedItems()
         if items:
@@ -193,7 +182,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         item = self.page_to_item[name]
         item.setDisabled(True)
 
-    def help(self):
+    @property
+    def help_url(self):
         current_page = self.ui.pages_stack.currentWidget()
         url = current_page.HELP_URL
         # If URL is empty, use the first non empty parent help URL.
@@ -201,10 +191,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             current_page = self.item_to_page[self.page_to_item[current_page.PARENT]]
             url = current_page.HELP_URL
         if not url:
-            url = DOCS_BASE_URL
-        elif url.startswith('/'):
-            url = DOCS_BASE_URL + url
-        webbrowser2.open(url)
+            url = '/config/configuration.html'
+        return url
 
     def accept(self):
         for page in self.pages:

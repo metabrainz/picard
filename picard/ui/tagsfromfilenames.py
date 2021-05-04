@@ -37,7 +37,6 @@ from picard.config import (
     get_config,
 )
 from picard.script.parser import normalize_tagname
-from picard.util import webbrowser2
 from picard.util.tags import display_tag_name
 
 from picard.ui import PicardDialog
@@ -100,6 +99,7 @@ class TagMatchExpression:
 class TagsFromFileNamesDialog(PicardDialog):
 
     autorestore = False
+    help_url = 'goto://doc_tags_from_filenames'
 
     options = [
         TextOption("persist", "tags_from_filenames_format", ""),
@@ -134,7 +134,7 @@ class TagsFromFileNamesDialog(PicardDialog):
         self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.RejectRole)
         self.ui.buttonbox.accepted.connect(self.accept)
         self.ui.buttonbox.rejected.connect(self.reject)
-        self.ui.buttonbox.helpRequested.connect(self.help)
+        self.ui.buttonbox.helpRequested.connect(self.show_help)
         self.ui.preview.clicked.connect(self.preview)
         self.ui.files.setHeaderLabels([_("File Name")])
         self.files = files
@@ -168,6 +168,3 @@ class TagsFromFileNamesDialog(PicardDialog):
         config = get_config()
         config.persist["tags_from_filenames_format"] = self.ui.format.currentText()
         super().accept()
-
-    def help(self):
-        webbrowser2.goto('doc_tags_from_filenames')
