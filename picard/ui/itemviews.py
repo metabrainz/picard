@@ -482,6 +482,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             if can_view_info:
                 menu.addAction(self.window.view_info_action)
             menu.addAction(self.window.browser_lookup_action)
+            menu.addAction(self.window.submit_cluster_action)
             menu.addSeparator()
             menu.addAction(self.window.autotag_action)
             menu.addAction(self.window.analyze_action)

@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
-# Copyright (C) 2010, 2018, 2020 Philipp Wolfer
+# Copyright (C) 2010, 2018, 2020-2021 Philipp Wolfer
 # Copyright (C) 2011-2012 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2013, 2020-2021 Laurent Monin
@@ -56,6 +56,10 @@ class Item(object):
         return False
 
     def can_view_info(self):
+        return False
+
+    def can_submit(self):
+        """Return True if this object can be submitted to MusicBrainz.org."""
         return False
 
     @property
