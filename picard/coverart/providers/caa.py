@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2007 Oliver Charles
 # Copyright (C) 2007, 2010-2011 Lukáš Lalinský
-# Copyright (C) 2007-2011, 2015, 2018-2019 Philipp Wolfer
+# Copyright (C) 2007-2011, 2015, 2018-2021 Philipp Wolfer
 # Copyright (C) 2011 Michael Wiencek
 # Copyright (C) 2011-2012 Wieland Hoffmann
 # Copyright (C) 2013-2015, 2018-2021 Laurent Monin
@@ -68,7 +68,6 @@ from picard.coverart.utils import (
     CAA_TYPES,
     translate_caa_type,
 )
-from picard.util import webbrowser2
 
 from picard.ui import PicardDialog
 from picard.ui.ui_provider_options_caa import Ui_CaaOptions
@@ -228,6 +227,8 @@ class CAATypesSelectorDialog(PicardDialog):
         types_exclude {[string]} -- List of CAA image types to exclude (default: {None})
     """
 
+    help_url = 'doc_cover_art_types'
+
     def __init__(self, parent=None, types_include=None, types_exclude=None):
         super().__init__(parent)
         if types_include is None:
@@ -333,7 +334,7 @@ class CAATypesSelectorDialog(PicardDialog):
 
         self.buttonbox.accepted.connect(self.accept)
         self.buttonbox.rejected.connect(self.reject)
-        self.buttonbox.helpRequested.connect(self.help)
+        self.buttonbox.helpRequested.connect(self.show_help)
 
         self.set_buttons_enabled_state()
 
@@ -377,9 +378,6 @@ class CAATypesSelectorDialog(PicardDialog):
                 self.list_exclude.addItem(item)
             else:
                 self.list_ignore.addItem(item)
-
-    def help(self):
-        webbrowser2.open('doc_cover_art_types')
 
     def get_selected_types_include(self):
         return list(self.list_include.all_items_data()) or ['front']
