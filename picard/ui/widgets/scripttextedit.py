@@ -23,6 +23,7 @@
 
 
 import re
+import unicodedata
 
 from PyQt5 import (
     QtCore,
@@ -180,6 +181,19 @@ class ScriptCompleter(QCompleter):
         return self.last_selected
 
 
+def _clean_text(text):
+    return "".join(_replace_control_chars(text))
+
+
+def _replace_control_chars(text):
+    simple_ctrl_chars = {'\n', '\r', '\t'}
+    for ch in text:
+        if ch not in simple_ctrl_chars and unicodedata.category(ch)[0] == "C":
+            yield '\\u' + hex(ord(ch))[2:]
+        else:
+            yield ch
+
+
 class ScriptTextEdit(QTextEdit):
     autocomplete_trigger_chars = re.compile('[$%A-Za-z0-9_]')
 
@@ -188,6 +202,10 @@ class ScriptTextEdit(QTextEdit):
         self.highlighter = TaggerScriptSyntaxHighlighter(self.document())
         self.enable_completer()
         self.setFontFamily(FONT_FAMILY_MONOSPACE)
+
+    def insertFromMimeData(self, source):
+        source.setText(_clean_text(source.text()))
+        return super().insertFromMimeData(source)
 
     def enable_completer(self):
         self.completer = ScriptCompleter()
