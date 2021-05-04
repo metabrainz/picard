@@ -4,9 +4,11 @@
 #
 # Copyright (C) 2017 David Mandelberg
 # Copyright (C) 2017-2018 Sambhav Kothari
-# Copyright (C) 2017-2019 Laurent Monin
+# Copyright (C) 2017-2020 Laurent Monin
 # Copyright (C) 2018-2021 Philipp Wolfer
 # Copyright (C) 2019 Michael Wiencek
+# Copyright (C) 2020 David Kellner
+# Copyright (C) 2020 dukeyin
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

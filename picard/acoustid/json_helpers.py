@@ -4,6 +4,7 @@
 #
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2018-2020 Philipp Wolfer
+# Copyright (C) 2020 Laurent Monin
 # Copyright (C) 2020 Ray Bouchard
 #
 # This program is free software; you can redistribute it and/or
@@ -19,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 
 """
 The idea here is to bring the data returned by the AcoustID service into the

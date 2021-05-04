@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2007-2008 Lukáš Lalinský
 # Copyright (C) 2009 Carlin Mangar
-# Copyright (C) 2009, 2014, 2017-2020 Philipp Wolfer
+# Copyright (C) 2009, 2014, 2017-2021 Philipp Wolfer
 # Copyright (C) 2011 johnny64
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2013 Sebastian Ramacher
@@ -13,7 +13,7 @@
 # Copyright (C) 2013-2014 Sophist-UK
 # Copyright (C) 2014 Johannes Dewender
 # Copyright (C) 2014 Shadab Zafar
-# Copyright (C) 2014-2015, 2018-2019 Laurent Monin
+# Copyright (C) 2014-2015, 2018-2020 Laurent Monin
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017 Frederik “Freso” S. Olesen
 # Copyright (C) 2018 Vishal Choudhary

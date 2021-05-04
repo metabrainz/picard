@@ -11,7 +11,7 @@
 # Copyright (C) 2011 Wieland Hoffmann
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2014, 2017 Sophist-UK
-# Copyright (C) 2014-2015, 2018-2019 Laurent Monin
+# Copyright (C) 2014-2015, 2018-2021 Laurent Monin
 # Copyright (C) 2016 Mark Trolley
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2016 Suhas
@@ -20,6 +20,8 @@
 # Copyright (C) 2018 Calvin Walton
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2019 Joel Lintunen
+# Copyright (C) 2020 Adam James
+# Copyright (C) 2021 Petit Minion
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

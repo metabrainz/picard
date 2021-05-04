@@ -19,6 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+
 # This implementation is taken from mutagen, see
 # https://github.com/quodlibet/mutagen/blob/master/mutagen/_util.py
 # https://github.com/quodlibet/mutagen/blob/master/mutagen/tak.py

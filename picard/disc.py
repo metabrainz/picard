@@ -10,7 +10,7 @@
 # Copyright (C) 2013 Johannes Dewender
 # Copyright (C) 2013 Sebastian Ramacher
 # Copyright (C) 2013 Wieland Hoffmann
-# Copyright (C) 2013, 2018-2019 Laurent Monin
+# Copyright (C) 2013, 2018-2020 Laurent Monin
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
 #

@@ -9,7 +9,7 @@
 # Copyright (C) 2011-2014 Michael Wiencek
 # Copyright (C) 2011-2014 Wieland Hoffmann
 # Copyright (C) 2013 Calvin Walton
-# Copyright (C) 2013-2014, 2017-2019 Laurent Monin
+# Copyright (C) 2013-2014, 2017-2020 Laurent Monin
 # Copyright (C) 2013-2015, 2017, 2021 Sophist-UK
 # Copyright (C) 2015 Frederik “Freso” S. Olesen
 # Copyright (C) 2016 Christoph Reiter

@@ -7,9 +7,11 @@
 # Copyright (C) 2009-2010, 2019-2021 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2013-2015, 2017-2020 Laurent Monin
+# Copyright (C) 2014 m42i
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2016-2017 Suhas
 # Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

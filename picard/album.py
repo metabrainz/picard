@@ -7,14 +7,14 @@
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008 Hendrik van Antwerpen
 # Copyright (C) 2008 ojnkpjg
-# Copyright (C) 2008-2011, 2014, 2018-2020 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014, 2018-2021 Philipp Wolfer
 # Copyright (C) 2009 Nikolai Prokoschenko
 # Copyright (C) 2011-2012 Chad Wilson
 # Copyright (C) 2011-2013, 2019 Michael Wiencek
 # Copyright (C) 2012-2013, 2016-2017 Wieland Hoffmann
 # Copyright (C) 2013, 2018 Calvin Walton
 # Copyright (C) 2013-2015, 2017 Sophist-UK
-# Copyright (C) 2013-2015, 2017-2019 Laurent Monin
+# Copyright (C) 2013-2015, 2017-2021 Laurent Monin
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017 Antonio Larrosa

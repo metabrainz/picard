@@ -2,9 +2,9 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019 Laurent Monin
-# Copyright (C) 2019 Philipp Wolfer
 # Copyright (C) 2019 Timur Enikeev
+# Copyright (C) 2019-2020 Laurent Monin
+# Copyright (C) 2019-2021 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

@@ -18,7 +18,7 @@
 # Copyright (C) 2017-2018 Antonio Larrosa
 # Copyright (C) 2018 Calvin Walton
 # Copyright (C) 2018 virusMac
-# Copyright (C) 2020 Bob Swift
+# Copyright (C) 2020-2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -33,6 +33,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 
 from collections.abc import MutableSequence
 from queue import LifoQueue
