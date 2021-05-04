@@ -161,7 +161,9 @@ class ScriptParserTest(PicardTestCase):
     def test_script_unicode_char_eof(self):
         areg = r"^\d+:\d+: Unexpected end of script"
         with self.assertRaisesRegex(ScriptEndOfFile, areg):
-            self.parser.eval("\\uaf")
+            self.parser.eval("\\u")
+        with self.assertRaisesRegex(ScriptEndOfFile, areg):
+            self.parser.eval("\\uaff")
 
     def test_script_unicode_char_err(self):
         areg = r"^\d+:\d+: Invalid unicode character '\\ufffg'"

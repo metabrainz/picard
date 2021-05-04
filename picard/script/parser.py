@@ -249,6 +249,8 @@ Grammar:
 
     def read_multi(self, count):
         text = ch = self.read()
+        if not ch:
+            self.__raise_eof()
         count -= 1
         while ch and count:
             ch = self.read()
@@ -313,11 +315,11 @@ Grammar:
                 elif ch == 't':
                     text.append('\t')
                 elif ch == 'u':
-                    hex = self.read_multi(4)
+                    codepoint = self.read_multi(4)
                     try:
-                        text.append(chr(int(hex, 16)))
-                    except ValueError:
-                        self.__raise_unicode(hex)
+                        text.append(chr(int(codepoint, 16)))
+                    except (TypeError, ValueError):
+                        self.__raise_unicode(codepoint)
                 elif ch not in "$%(),\\":
                     self.__raise_char(ch)
                 else:
