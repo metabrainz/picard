@@ -275,6 +275,12 @@ class FileNamingScript(PicardScript):
         self.license = license
         self.version = version
 
+    def copy(self):
+        new_object = super().copy()
+        new_object.readonly = False
+        new_object.deletable = True
+        return new_object
+
 
 def get_file_naming_script_presets():
     """Generator of preset example file naming script objects.
@@ -284,34 +290,35 @@ def get_file_naming_script_presets():
     """
     AUTHOR = N_("Picard Development Team")
     DESCRIPTION = N_("This preset example file naming script does not require any special settings, tagging scripts or plugins.")
+    LICENSE = "GNU Public License version 2"
 
     yield FileNamingScript(
-        title=N_("[album artist]/[album]/[track #]. [title]"),
-        script="""\
-%albumartist%/
-%album%/
-%tracknumber%. %title%""",
+        title=N_("Preset 1: [album artist]/[album]/[track #]. [title]"),
+        script="%albumartist%/\n"
+               "%album%/\n"
+               "%tracknumber%. %title%",
         readonly=True,
         deletable=False,
         author=AUTHOR,
         description=DESCRIPTION,
         version="1.0",
-        last_updated="",
+        license=LICENSE,
+        last_updated="2021-04-12",
     )
 
     yield FileNamingScript(
-        title=N_("[album artist]/[album]/[disc and track #] [artist] - [title]"),
-        script="""\
-$if2(%albumartist%,%artist%)/
-$if(%albumartist%,%album%/,)
-$if($gt(%totaldiscs%,1),%discnumber%-,)
-$if($and(%albumartist%,%tracknumber%),$num(%tracknumber%,2) ,)
-$if(%_multiartist%,%artist% - ,)
-%title%""",
+        title=N_("Preset 2: [album artist]/[album]/[disc and track #] [artist] - [title]"),
+        script="$if2(%albumartist%,%artist%)/\n"
+               "$if(%albumartist%,%album%/,)\n"
+               "$if($gt(%totaldiscs%,1),%discnumber%-,)\n"
+               "$if($and(%albumartist%,%tracknumber%),$num(%tracknumber%,2) ,)\n"
+               "$if(%_multiartist%,%artist% - ,)\n"
+               "%title%",
         readonly=True,
         deletable=False,
         author=AUTHOR,
         description=DESCRIPTION,
         version="1.0",
-        last_updated="",
+        license=LICENSE,
+        last_updated="2021-04-12",
     )
