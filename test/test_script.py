@@ -54,6 +54,7 @@ from picard.script import (
     ScriptParser,
     ScriptRuntimeError,
     ScriptSyntaxError,
+    ScriptUnicodeError,
     ScriptUnknownFunction,
     register_script_function,
     script_function,
@@ -151,6 +152,21 @@ class ScriptParserTest(PicardTestCase):
                 + r'$'
 
         self.assertRegex(repr(item), regex)
+
+    def test_script_unicode_char(self):
+        self.assertScriptResultEquals("\\u6e56", "湖")
+        self.assertScriptResultEquals("foo\\u6e56bar", "foo湖bar")
+        self.assertScriptResultEquals("\\uFFFF", "\uffff")
+
+    def test_script_unicode_char_eof(self):
+        areg = r"^\d+:\d+: Unexpected end of script"
+        with self.assertRaisesRegex(ScriptEndOfFile, areg):
+            self.parser.eval("\\uaf")
+
+    def test_script_unicode_char_err(self):
+        areg = r"^\d+:\d+: Invalid unicode character '\\ufffg'"
+        with self.assertRaisesRegex(ScriptUnicodeError, areg):
+            self.parser.eval("\\ufffg")
 
     def test_script_function_decorator_default(self):
         # test default decorator and default prefix

@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2009, 2012 Lukáš Lalinský
 # Copyright (C) 2007 Javier Kohen
-# Copyright (C) 2008-2011, 2014-2015, 2018-2020 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014-2015, 2018-2021 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2009 Nikolai Prokoschenko
 # Copyright (C) 2011-2012 Michael Wiencek
@@ -67,6 +67,10 @@ class ScriptEndOfFile(ScriptParseError):
 
 
 class ScriptSyntaxError(ScriptParseError):
+    pass
+
+
+class ScriptUnicodeError(ScriptSyntaxError):
     pass
 
 
@@ -201,13 +205,14 @@ class ScriptParser(object):
     r"""Tagger script parser.
 
 Grammar:
-  text       ::= [^$%] | '\$' | '\%' | '\(' | '\)' | '\,'
-  argtext    ::= [^$%(),] | '\$' | '\%' | '\(' | '\)' | '\,'
-  identifier ::= [a-zA-Z0-9_]
-  variable   ::= '%' identifier '%'
-  function   ::= '$' identifier '(' (argument (',' argument)*)? ')'
-  expression ::= (variable | function | text)*
-  argument   ::= (variable | function | argtext)*
+  unicodechar ::= '\u' [a-fA-F0-9]{4}
+  text        ::= [^$%] | '\$' | '\%' | '\(' | '\)' | '\,' | unicodechar
+  argtext     ::= [^$%(),] | '\$' | '\%' | '\(' | '\)' | '\,' | unicodechar
+  identifier  ::= [a-zA-Z0-9_]
+  variable    ::= '%' identifier '%'
+  function    ::= '$' identifier '(' (argument (',' argument)*)? ')'
+  expression  ::= (variable | function | text)*
+  argument    ::= (variable | function | argtext)*
 """
 
     _function_registry = ExtensionPoint(label='function_registry')
@@ -221,6 +226,9 @@ Grammar:
 
     def __raise_char(self, ch):
         raise ScriptSyntaxError(StackItem(line=self._y, column=self._x), "Unexpected character '%s'" % ch)
+
+    def __raise_unicode(self, ch):
+        raise ScriptUnicodeError(StackItem(line=self._y, column=self._x), "Invalid unicode character '\\u%s'" % ch)
 
     def read(self):
         try:
@@ -238,6 +246,17 @@ Grammar:
             else:
                 self._x += 1
         return ch
+
+    def read_multi(self, count):
+        text = ch = self.read()
+        count -= 1
+        while ch and count:
+            ch = self.read()
+            if not ch:
+                self.__raise_eof()
+            text += ch
+            count -= 1
+        return text
 
     def unread(self):
         self._pos -= 1
@@ -293,6 +312,12 @@ Grammar:
                     text.append('\n')
                 elif ch == 't':
                     text.append('\t')
+                elif ch == 'u':
+                    hex = self.read_multi(4)
+                    try:
+                        text.append(chr(int(hex, 16)))
+                    except ValueError:
+                        self.__raise_unicode(hex)
                 elif ch not in "$%(),\\":
                     self.__raise_char(ch)
                 else:
