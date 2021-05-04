@@ -25,9 +25,13 @@ import jwt.exceptions
 
 from PyQt5.QtCore import QCoreApplication
 
+from picard import log
 from picard.config import get_config
 from picard.const import MUSICBRAINZ_SERVERS
-from picard.util import htmlescape
+from picard.util import (
+    format_time,
+    htmlescape,
+)
 from picard.util.webbrowser2 import open
 
 
@@ -61,24 +65,35 @@ class NotFoundError(Exception):
 
 
 def submit_cluster(cluster):
-    token = jwt.encode({'cluster': hash(cluster)}, __key, algorithm=__algorithm)
-    _open_token_url(token)
+    _open_url_with_token({'cluster': hash(cluster)})
+
+
+def submit_file(file):
+    _open_url_with_token({'file': file.filename})
 
 
 def serve_form(token):
     try:
         payload = jwt.decode(token, __key, algorithms=__algorithm)
-        cluster = _find_cluster(payload['cluster'])
-        if not cluster:
-            raise NotFoundError('Cluster not found')
-
-        data = _get_form(cluster)
-        return _form_template.format(**data)
+        log.debug('received JWT token %r', payload)
+        if 'cluster' in payload:
+            cluster = _find_cluster(payload['cluster'])
+            if not cluster:
+                raise NotFoundError('Cluster not found')
+            return _get_cluster_form(cluster)
+        elif 'file' in payload:
+            file = _find_file(payload['file'])
+            if not file:
+                raise NotFoundError('File not found')
+            return _get_file_form(file)
+        else:
+            raise InvalidTokenError
     except jwt.exceptions.InvalidTokenError:
         raise InvalidTokenError
 
 
-def _open_token_url(token):
+def _open_url_with_token(payload):
+    token = jwt.encode(payload, __key, algorithm=__algorithm)
     browser_integration = QCoreApplication.instance().browser_integration
     url = 'http://%s:%s/add?token=%s' % (
         browser_integration.host_address, browser_integration.port, token)
@@ -93,6 +108,11 @@ def _find_cluster(cluster_hash):
     return None
 
 
+def _find_file(path):
+    tagger = QCoreApplication.instance()
+    return tagger.files.get(path, None)
+
+
 def _mbserver_url(path):
     config = get_config()
     host = config.setting["server_host"]
@@ -101,24 +121,25 @@ def _mbserver_url(path):
     return "https://%s%s" % (host, path)
 
 
-def _get_form(cluster):
-    form_data = _get_form_data(cluster)
-    return {
-        'title': htmlescape(_('Add cluster as release...')),
-        'action': htmlescape(_mbserver_url('/release/add')),
-        'form_data': form_data,
-        'submit_label': htmlescape(_('Add cluster as release...')),
-    }
+def _get_cluster_form(cluster):
+    return _get_form(
+        _('Add cluster as release'),
+        '/release/add',
+        _('Add cluster as release...'),
+        _get_cluster_data(cluster)
+    )
 
 
-def _get_form_data(cluster):
-    return ''.join((
-        _form_input_template.format(name=htmlescape(name), value=htmlescape(value))
-        for name, value in _get_cluster_metadata(cluster).items()
-    ))
+def _get_file_form(cluster):
+    return _get_form(
+        _('Add file as recording'),
+        '/recording/create',
+        _('Add file as recording...'),
+        _get_file_data(cluster)
+    )
 
 
-def _get_cluster_metadata(cluster):
+def _get_cluster_data(cluster):
     # See https://musicbrainz.org/doc/Development/Release_Editor_Seeding
     metadata = cluster.metadata
     data = {
@@ -135,3 +156,29 @@ def _get_cluster_metadata(cluster):
         data[mkey(0, i, 'length')] = str(file.metadata.length)
 
     return data
+
+
+def _get_file_data(file):
+    metadata = file.metadata
+    data = {
+        'edit-recording.name': metadata['title'],
+        'edit-recording.artist_credit.names.0.artist.name': metadata['artist'],
+        'edit-recording.length': format_time(file.metadata.length),
+    }
+    return data
+
+
+def _get_form(title, action, label, form_data):
+    return _form_template.format(
+        title=htmlescape(title),
+        submit_label=htmlescape(label),
+        action=htmlescape(_mbserver_url(action)),
+        form_data=_format_form_data(form_data),
+    )
+
+
+def _format_form_data(data):
+    return ''.join((
+        _form_input_template.format(name=htmlescape(name), value=htmlescape(value))
+        for name, value in data.items()
+    ))

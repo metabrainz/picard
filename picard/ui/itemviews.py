@@ -503,6 +503,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             menu.addAction(self.window.play_file_action)
             menu.addAction(self.window.open_folder_action)
             menu.addAction(self.window.browser_lookup_action)
+            menu.addAction(self.window.submit_file_action)
             menu.addSeparator()
             menu.addAction(self.window.autotag_action)
             menu.addAction(self.window.analyze_action)
