@@ -4,8 +4,8 @@
 #
 # Copyright (C) 2011-2012 Lukáš Lalinský
 # Copyright (C) 2011-2013 Michael Wiencek
-# Copyright (C) 2013, 2018 Laurent Monin
 # Copyright (C) 2015, 2020 Philipp Wolfer
+# Copyright (C) 2013, 2018, 2020-2021 Laurent Monin
 # Copyright (C) 2016-2017 Sambhav Kothari
 #
 # This program is free software; you can redistribute it and/or
@@ -119,10 +119,10 @@ class FingerprintingOptionsPage(OptionsPage):
             self.ui.acoustid_fpcalc.setText(path)
 
     def acoustid_fpcalc_download(self):
-        webbrowser2.goto('chromaprint')
+        webbrowser2.open('chromaprint')
 
     def acoustid_apikey_get(self):
-        webbrowser2.goto('acoustid_apikey')
+        webbrowser2.open('acoustid_apikey')
 
     def _acoustid_fpcalc_check(self):
         if not self.ui.use_acoustid.isChecked():

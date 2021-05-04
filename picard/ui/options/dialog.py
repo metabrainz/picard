@@ -8,7 +8,7 @@
 # Copyright (C) 2011 Pavan Chander
 # Copyright (C) 2011-2012, 2019 Wieland Hoffmann
 # Copyright (C) 2011-2013 Michael Wiencek
-# Copyright (C) 2013, 2017-2019 Laurent Monin
+# Copyright (C) 2013, 2017-2020 Laurent Monin
 # Copyright (C) 2014 Sophist-UK
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017 Suhas
@@ -191,7 +191,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             current_page = self.item_to_page[self.page_to_item[current_page.PARENT]]
             url = current_page.HELP_URL
         if not url:
-            url = '/config/configuration.html'
+            url = 'doc_options'  # key in PICARD_URLS
         return url
 
     def accept(self):

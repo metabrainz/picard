@@ -14,7 +14,7 @@
 # Copyright (C) 2011-2013, 2015-2017 Wieland Hoffmann
 # Copyright (C) 2011-2014 Michael Wiencek
 # Copyright (C) 2013-2014, 2017 Sophist-UK
-# Copyright (C) 2013-2020 Laurent Monin
+# Copyright (C) 2013-2021 Laurent Monin
 # Copyright (C) 2015 Ohm Patel
 # Copyright (C) 2015 samithaj
 # Copyright (C) 2016 Rahul Raturi
@@ -1054,7 +1054,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         return OptionsDialog.show_instance(page, self)
 
     def show_help(self):
-        webbrowser2.goto('documentation')
+        webbrowser2.open('documentation')
 
     def show_log(self):
         self.log_dialog.show()
@@ -1067,13 +1067,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.history_dialog.activateWindow()
 
     def open_bug_report(self):
-        webbrowser2.goto('troubleshooting')
+        webbrowser2.open('troubleshooting')
 
     def open_support_forum(self):
-        webbrowser2.goto('forum')
+        webbrowser2.open('forum')
 
     def open_donation_page(self):
-        webbrowser2.goto('donate')
+        webbrowser2.open('donate')
 
     def save(self):
         """Tell the tagger to save the selected objects."""

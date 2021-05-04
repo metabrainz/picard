@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
 # Copyright (C) 2011 Calvin Walton
-# Copyright (C) 2013, 2018-2019 Laurent Monin
+# Copyright (C) 2013, 2018-2021 Laurent Monin
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2018 Wieland Hoffmann
 # Copyright (C) 2019 Philipp Wolfer
@@ -39,6 +39,8 @@ from picard.const import PICARD_URLS
 
 
 def open(url):
+    if url in PICARD_URLS:
+        url = PICARD_URLS[url]
     try:
         webbrowser.open(url)
     except webbrowser.Error as e:
@@ -52,7 +54,3 @@ def open(url):
             # preferred browser.
             log.info("Working around https://bugs.python.org/issue31014 - URLs might not be opened in the correct browser")
             webbrowser.open(url)
-
-
-def goto(url_id):
-    open(PICARD_URLS[url_id])
