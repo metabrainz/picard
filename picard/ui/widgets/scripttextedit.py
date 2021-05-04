@@ -87,7 +87,10 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         self.var_re = QtCore.QRegExp(r"%[_a-zA-Z0-9:]*%")
         self.var_fmt = QtGui.QTextCharFormat()
         self.var_fmt.setForeground(syntax_theme.var)
-        self.escape_re = QtCore.QRegExp(r"\\.")
+        self.unicode_re = QtCore.QRegExp(r"\\u[a-fA-F0-9]{4}")
+        self.unicode_fmt = QtGui.QTextCharFormat()
+        self.unicode_fmt.setForeground(syntax_theme.escape)
+        self.escape_re = QtCore.QRegExp(r"\\[^u]")
         self.escape_fmt = QtGui.QTextCharFormat()
         self.escape_fmt.setForeground(syntax_theme.escape)
         self.special_re = QtCore.QRegExp(r"[^\\][(),]")
@@ -102,6 +105,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         self.rules = [
             (self.func_re, self.func_fmt, 0, -1),
             (self.var_re, self.var_fmt, 0, 0),
+            (self.unicode_re, self.unicode_fmt, 0, 0),
             (self.escape_re, self.escape_fmt, 0, 0),
             (self.special_re, self.special_fmt, 1, -1),
         ]

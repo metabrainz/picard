@@ -51,6 +51,7 @@ from picard.script.parser import (  # noqa: F401 # pylint: disable=unused-import
     ScriptRuntimeError,
     ScriptSyntaxError,
     ScriptText,
+    ScriptUnicodeError,
     ScriptUnknownFunction,
     ScriptVariable,
 )
