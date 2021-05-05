@@ -204,8 +204,8 @@ Grammar:
   text       ::= [^$%] | '\$' | '\%' | '\(' | '\)' | '\,'
   argtext    ::= [^$%(),] | '\$' | '\%' | '\(' | '\)' | '\,'
   identifier ::= [a-zA-Z0-9_]
-  variable   ::= '%' identifier '%'
-  function   ::= '$' identifier '(' (argument (',' argument)*)? ')'
+  variable   ::= '%' (identifier | ':')+ '%'
+  function   ::= '$' (identifier)+ '(' (argument (',' argument)*)? ')'
   expression ::= (variable | function | text)*
   argument   ::= (variable | function | argtext)*
 """
