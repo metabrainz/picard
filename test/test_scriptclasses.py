@@ -144,13 +144,13 @@ class ScriptClassesTest(PicardTestCase):
         self.assertEqual(test_script.author, 'Script author')
         self.assertEqual(test_script.get_value('author'), 'Script author')
         self.assertEqual(test_script.to_json(),
-            '{'
-            '"author": "Script author", '
-            '"description": "Script description", '
-            '"last_updated": "2021-04-26", '
-            '"license": "", '
-            '"script": "Script text", '
-            '"title": "Script 1", '
-            '"version": ""'
-            '}'
-        )
+                         '{'
+                         '"author": "Script author", '
+                         '"description": "Script description", '
+                         '"last_updated": "2021-04-26", '
+                         '"license": "", '
+                         '"script": "Script text", '
+                         '"title": "Script 1", '
+                         '"version": ""'
+                         '}'
+                         )
