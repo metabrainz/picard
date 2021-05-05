@@ -81,7 +81,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
     def __init__(self, document):
         super().__init__(document)
         syntax_theme = theme.syntax_theme
-        self.func_re = QtCore.QRegExp(r"\$(?!noop)[a-zA-Z][_a-zA-Z0-9]*\(")
+        self.func_re = QtCore.QRegExp(r"\$(?!noop)[_a-zA-Z0-9]*\(")
         self.func_fmt = QtGui.QTextCharFormat()
         self.func_fmt.setFontWeight(QtGui.QFont.Bold)
         self.func_fmt.setForeground(syntax_theme.func)
