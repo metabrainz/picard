@@ -66,7 +66,6 @@ class ConfigSection(QtCore.QObject):
         self.__qt_config = config
         self.__name = name
         self.__prefix = self.__name + '/'
-        self.__prefix_len = len(self.__prefix)
         self._memoization = defaultdict(Memovar)
 
     def key(self, name):
