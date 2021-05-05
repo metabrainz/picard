@@ -115,7 +115,7 @@ def crash_handler():
     from PyQt5.QtCore import Qt, QUrl
     from PyQt5.QtWidgets import QApplication, QMessageBox
     # assigning QApplication to a variable is required to keep the object alive
-    _unused = QApplication(sys.argv)  # noqa: F841
+    app = QApplication(sys.argv)
     msgbox = QMessageBox()
     msgbox.setIcon(QMessageBox.Critical)
     msgbox.setWindowTitle("Picard terminated unexpectedly")
@@ -132,3 +132,4 @@ def crash_handler():
     msgbox.setStandardButtons(QMessageBox.Close)
     msgbox.setDefaultButton(QMessageBox.Close)
     msgbox.exec_()
+    app.quit()
