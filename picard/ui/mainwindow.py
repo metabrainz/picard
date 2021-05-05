@@ -261,7 +261,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def set_sorting(self, sorting=True):
         self.panel.set_sorting(sorting)
-        # self.panel.collapse_clusters(not sorting)
 
     def keyPressEvent(self, event):
         # On macOS Command+Backspace triggers the so called "Forward Delete".

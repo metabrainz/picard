@@ -320,12 +320,6 @@ class MainPanel(QtWidgets.QSplitter):
         for view in self._views:
             view.setSortingEnabled(sort)
 
-    def collapse_clusters(self, collapse=True):
-        if collapse:
-            self._views[0].collapseAll()
-        else:
-            self._views[0].expandAll()
-
     def select_object(self, obj):
         item = obj.item
         for view in self._views:
