@@ -113,7 +113,6 @@ class AlbumArtist(DataObject):
 class Album(DataObject, Item):
 
     metadata_images_changed = QtCore.pyqtSignal()
-    release_group_loaded = QtCore.pyqtSignal()
 
     def __init__(self, album_id, discid=None):
         DataObject.__init__(self, album_id)
