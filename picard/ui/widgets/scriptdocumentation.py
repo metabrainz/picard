@@ -100,7 +100,8 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         }
         # Scripting code is always left-to-right. Qt does not support the dir
         # attribute on inline tags, insert explicit left-right-marks instead.
-        html = html.replace('<code>', '<code>&#8206;')
+        if text_direction == 'rtl':
+            html = html.replace('<code>', '<code>&#8206;')
 
         link = '<a href="' + PICARD_URLS['doc_scripting'] + '">' + N_('Open Scripting Documentation in your browser') + '</a>'
 
