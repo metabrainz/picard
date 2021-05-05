@@ -379,10 +379,6 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         for i, column in enumerate(MainPanel.columns):
             self.show_column(i, i in columns)
 
-    @property
-    def visible_columns(self):
-        return self._visible_columns
-
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         parent = self.parent()
