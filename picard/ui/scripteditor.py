@@ -474,12 +474,12 @@ class ScriptEditorPage(PicardDialog):
         if selected < 0:
             return
         script_item = self.get_selected_item()
-        self.ui.script_title.setReadOnly(bool(script_item.readonly or selected < 1))
+        self.ui.script_title.setReadOnly(script_item.readonly or selected < 1)
         self.ui.file_naming_format.setReadOnly(script_item.readonly)
-        self.ui.file_naming_editor_save.setEnabled(bool(save_enabled and not script_item.readonly))
+        self.ui.file_naming_editor_save.setEnabled(save_enabled and not script_item.readonly)
         self.ui.file_naming_editor_copy.setEnabled(save_enabled)
         self.ui.file_naming_editor_select.setEnabled(save_enabled)
-        self.ui.file_naming_editor_delete.setEnabled(bool(script_item.deletable and save_enabled))
+        self.ui.file_naming_editor_delete.setEnabled(script_item.deletable and save_enabled)
         self.ui.import_script.setEnabled(save_enabled)
         self.ui.export_script.setEnabled(save_enabled)
 
@@ -791,9 +791,9 @@ class ScriptDetailsEditor(PicardDialog):
         self.ui.script_version.setReadOnly(self.readonly)
         self.ui.script_license.setReadOnly(self.readonly)
         self.ui.script_description.setReadOnly(self.readonly)
-        self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.Close).setVisible(bool(self.readonly))
-        self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel).setVisible(bool(not self.readonly))
-        self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.Save).setVisible(bool(not self.readonly))
+        self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.Close).setVisible(self.readonly)
+        self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel).setVisible(not self.readonly)
+        self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.Save).setVisible(not self.readonly)
         self.ui.buttonBox.setFocus()
 
         self.setModal(True)
