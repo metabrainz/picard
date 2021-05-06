@@ -97,6 +97,13 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QPushButton" name="last_updated_now">
+         <property name="text">
+          <string>Now</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
      <item row="1" column="0">
@@ -110,16 +117,6 @@
       <widget class="QLabel" name="label_3">
        <property name="text">
         <string>Version:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QLineEdit" name="script_title">
-       <property name="toolTip">
-        <string>The title of the script.</string>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -165,6 +162,20 @@
       <widget class="QLineEdit" name="script_author">
        <property name="toolTip">
         <string>The author of the script.</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="script_title">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </item>

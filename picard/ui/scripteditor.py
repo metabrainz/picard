@@ -795,6 +795,7 @@ class ScriptDetailsEditor(PicardDialog):
 
         self.ui.buttonBox.accepted.connect(self.save_changes)
         self.ui.buttonBox.rejected.connect(self.close_window)
+        self.ui.last_updated_now.clicked.connect(self.set_last_updated)
 
         self.ui.script_title.setText(self.script_item.get_value('title'))
         self.ui.script_author.setText(self.script_item.get_value('author'))
@@ -803,8 +804,7 @@ class ScriptDetailsEditor(PicardDialog):
         self.ui.script_license.setText(self.script_item.get_value('license'))
         self.ui.script_description.setPlainText(self.script_item.get_value('description'))
 
-        self.ui.script_title.setReadOnly(True)
-        self.ui.script_last_updated.setReadOnly(True)
+        self.ui.script_last_updated.setReadOnly(self.readonly)
         self.ui.script_author.setReadOnly(self.readonly)
         self.ui.script_version.setReadOnly(self.readonly)
         self.ui.script_license.setReadOnly(self.readonly)
@@ -816,14 +816,21 @@ class ScriptDetailsEditor(PicardDialog):
 
         self.setModal(True)
 
+    def set_last_updated(self):
+        self.ui.script_last_updated.setText(self.script_item.make_last_updated())
+        self.ui.script_last_updated.setModified(True)
+
     def save_changes(self):
         """Update the script object with any changes to the metadata.
         """
+        if not self.ui.script_last_updated.isModified() or not self.ui.script_last_updated.text().strip():
+            self.set_last_updated()
         self.script_item.update_script_setting(
             author=self.ui.script_author.text(),
             version=self.ui.script_version.text(),
             license=self.ui.script_license.text(),
-            description=self.ui.script_description.toPlainText()
+            description=self.ui.script_description.toPlainText(),
+            last_updated=self.ui.script_last_updated.text()
         )
         self.close_window()
 
