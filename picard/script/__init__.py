@@ -37,7 +37,10 @@
 
 from copy import deepcopy
 import datetime
-import enum
+from enum import (
+    Enum,
+    unique,
+)
 import json
 import uuid
 
@@ -113,10 +116,13 @@ def enabled_tagger_scripts_texts():
     return [(s_name, s_text) for _s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"] if s_enabled and s_text]
 
 
-class PicardScriptType(enum.Enum):
+@unique
+class PicardScriptType(Enum):
     """Picard Script object types
     """
-    BaseScript, TaggerScript, FileNamingScript = 0, 1, 2
+    BASE = 0
+    TAGGER = 1
+    FILENAMING = 2
 
 
 class PicardScript():
@@ -124,7 +130,7 @@ class PicardScript():
     """
     # Base class developed to support future tagging script class as possible replacement for currently used tuples in config.setting["list_of_scripts"].
 
-    TYPE = PicardScriptType.BaseScript
+    TYPE = PicardScriptType.BASE
     JSON_OUTPUT = ['title', 'script']
 
     # Don't automatically trigger changing the `script_last_updated` property when updating these properties.
@@ -252,7 +258,7 @@ class PicardScript():
 class FileNamingScript(PicardScript):
     """Picard file naming script class
     """
-    TYPE = PicardScriptType.FileNamingScript
+    TYPE = PicardScriptType.FILENAMING
     JSON_OUTPUT = ['title', 'script', 'author', 'description', 'license', 'version', 'last_updated']
 
     def __init__(self, script='', title='', id=None, readonly=False, deletable=True, author='', description='', license='', version='', last_updated=None):
