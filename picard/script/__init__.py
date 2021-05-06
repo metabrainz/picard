@@ -42,7 +42,10 @@ import json
 import uuid
 
 from picard.config import get_config
-from picard.const import DEFAULT_SCRIPT_NAME
+from picard.const import (
+    DEFAULT_FILE_NAMING_FORMAT,
+    DEFAULT_SCRIPT_NAME,
+)
 from picard.script.functions import (  # noqa: F401 # pylint: disable=unused-import
     register_script_function,
     script_function,
@@ -293,7 +296,19 @@ def get_file_naming_script_presets():
     LICENSE = "GNU Public License version 2"
 
     yield FileNamingScript(
-        title=N_("Preset 1: [album artist]/[album]/[track #]. [title]"),
+        title=N_("Preset 1: Default file naming script"),
+        script=DEFAULT_FILE_NAMING_FORMAT,
+        readonly=True,
+        deletable=False,
+        author=AUTHOR,
+        description=DESCRIPTION,
+        version="n/a",
+        license=LICENSE,
+        last_updated="2019-08-05",
+    )
+
+    yield FileNamingScript(
+        title=N_("Preset 2: [album artist]/[album]/[track #]. [title]"),
         script="%albumartist%/\n"
                "%album%/\n"
                "%tracknumber%. %title%",
@@ -307,7 +322,7 @@ def get_file_naming_script_presets():
     )
 
     yield FileNamingScript(
-        title=N_("Preset 2: [album artist]/[album]/[disc and track #] [artist] - [title]"),
+        title=N_("Preset 3: [album artist]/[album]/[disc and track #] [artist] - [title]"),
         script="$if2(%albumartist%,%artist%)/\n"
                "$if(%albumartist%,%album%/,)\n"
                "$if($gt(%totaldiscs%,1),%discnumber%-,)\n"
