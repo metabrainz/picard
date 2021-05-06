@@ -154,3 +154,14 @@ class ScriptClassesTest(PicardTestCase):
                          '"version": ""'
                          '}'
                          )
+        self.assertEqual(test_script.to_json(indented=True),
+                         '{\n'
+                         '    "author": "Script author",\n'
+                         '    "description": "Script description",\n'
+                         '    "last_updated": "2021-04-26",\n'
+                         '    "license": "",\n'
+                         '    "script": "Script text",\n'
+                         '    "title": "Script 1",\n'
+                         '    "version": ""\n'
+                         '}'
+                         )

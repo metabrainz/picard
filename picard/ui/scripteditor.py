@@ -667,7 +667,7 @@ class ScriptEditorPage(PicardDialog):
                     filename = name
                 log.debug('Exporting naming script file: %s' % filename)
                 if file_type == self.FILE_TYPE_PACKAGE:
-                    script_text = script_item.to_json()
+                    script_text = script_item.to_json(indented=True)
                 try:
                     with open(filename, 'w', encoding='utf8') as o_file:
                         o_file.write(script_text + '\n')

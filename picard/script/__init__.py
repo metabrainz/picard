@@ -219,15 +219,20 @@ class PicardScript():
         new_object._set_new_id()
         return new_object
 
-    def to_json(self):
+    def to_json(self, indented=False):
         """Converts the properties of the script object to a JSON formatted string.  Note that only property
         names listed in `JSON_PROPERTIES` will be included in the output.
+
+        Args:
+            indented (bool): Indent the output.
 
         Returns:
             str: The properties of the script object formatted as a JSON string.
         """
         items = {key: getattr(self, key) for key in dir(self) if key in self.JSON_OUTPUT}
-        return json.dumps(items)
+        if indented:
+            return json.dumps(items, indent=4, sort_keys=True)
+        return json.dumps(items, sort_keys=True)
 
     @classmethod
     def create_from_json(cls, json_string):
