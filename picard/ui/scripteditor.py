@@ -277,6 +277,9 @@ class ScriptEditorPage(PicardDialog):
         self.FILE_TYPE_SCRIPT = _("Picard Script Files") + " (*.pts *.txt)"
         self.FILE_TYPE_PACKAGE = _("Picard Naming Script Package") + " (*.pnsp *.json)"
 
+        self.SCRIPT_TITLE_SYSTEM = _("System: %s")
+        self.SCRIPT_TITLE_USER = _("User: %s")
+
         # TODO: Make this work properly so that it can be accessed from both the main window and the options window.
         # self.setWindowFlags(QtCore.Qt.Window)
         self.setWindowModality(QtCore.Qt.WindowModal)
@@ -372,12 +375,12 @@ class ScriptEditorPage(PicardDialog):
             id="current"
         )
         self.set_script(script_item.script)
-        self.ui.preset_naming_scripts.addItem(script_item.title, script_item)
+        self.ui.preset_naming_scripts.addItem(self.SCRIPT_TITLE_SYSTEM % script_item.title, script_item)
 
         for script_json in self.naming_scripts:
             script_item = FileNamingScript().create_from_json(script_json)
             if script_item.get_value('title'):
-                self.ui.preset_naming_scripts.addItem(script_item.title, script_item)
+                self.ui.preset_naming_scripts.addItem(self.SCRIPT_TITLE_USER % script_item.title, script_item)
 
         for script_item in get_file_naming_script_presets():
             title = script_item.title
@@ -414,7 +417,7 @@ class ScriptEditorPage(PicardDialog):
             script_item (FileNamingScript): File naming scrip to insert.
         """
         self.ui.preset_naming_scripts.blockSignals(True)
-        self.ui.preset_naming_scripts.insertItem(1, script_item.title, script_item)
+        self.ui.preset_naming_scripts.insertItem(1, self.SCRIPT_TITLE_USER % script_item.title, script_item)
         self.ui.preset_naming_scripts.setCurrentIndex(1)
         self.ui.preset_naming_scripts.blockSignals(False)
         self.update_scripts_list()
@@ -472,7 +475,7 @@ class ScriptEditorPage(PicardDialog):
             script_item (FileNamingScript): Updated script information
         """
         self.ui.preset_naming_scripts.setItemData(idx, script_item)
-        self.ui.preset_naming_scripts.setItemText(idx, script_item.get_value('title'))
+        self.ui.preset_naming_scripts.setItemText(idx, self.SCRIPT_TITLE_USER % script_item.get_value('title'))
 
     def set_button_states(self, save_enabled=True):
         """Set the button states based on the readonly and deletable attributes of the currently selected
