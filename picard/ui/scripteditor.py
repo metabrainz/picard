@@ -73,8 +73,8 @@ class ScriptEditorExamples():
     notes_text = N_(
         "If you select files from the Cluster pane or Album pane prior to opening the Options screen, "
         "up to %u files will be randomly chosen from your selection as file naming examples.  If you "
-        "have not selected any files, then some default examples will be provided.") % max_samples
-    tooltip_text = N_("Reload up to %u items chosen at random from files selected in the main window") % max_samples
+        "have not selected any files, then some default examples will be provided.")
+    tooltip_text = N_("Reload up to %u items chosen at random from files selected in the main window")
 
     def __init__(self, tagger):
         """File naming script examples.
@@ -123,7 +123,7 @@ class ScriptEditorExamples():
                 self.update_sample_example_files()
             self.example_list = [self._example_to_filename(example) for example in self._sampled_example_files]
         else:
-            err_text = N_("Renaming options are disabled")
+            err_text = _("Renaming options are disabled")
             self.example_list = [[err_text, err_text]]
 
     def _example_to_filename(self, file):
@@ -253,12 +253,13 @@ class ScriptEditorPage(PicardDialog):
         ),
     ]
 
+    FILE_ERROR_TITLE = N_("File Error")
+    FILE_ERROR_IMPORT = N_('Error importing "%s". %s.')
+    FILE_ERROR_DECODE = N_('Error decoding "%s". %s.')
+    FILE_ERROR_EXPORT = N_('Error exporting file "%s". %s.')
+
     signal_save = QtCore.pyqtSignal()
     signal_update = QtCore.pyqtSignal()
-
-    FILE_TYPE_ALL = N_("All Files") + " (*)"
-    FILE_TYPE_SCRIPT = N_("Picard Script Files") + " (*.pts *.txt)"
-    FILE_TYPE_PACKAGE = N_("Picard Naming Script Package") + " (*.pnsp *.json)"
 
     default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DocumentsLocation))
     default_script_filename = "picard_naming_script.pnsp"
@@ -272,6 +273,11 @@ class ScriptEditorPage(PicardDialog):
         """
         super().__init__(parent)
         self.examples = examples
+
+        self.FILE_TYPE_ALL = _("All Files") + " (*)"
+        self.FILE_TYPE_SCRIPT = _("Picard Script Files") + " (*.pts *.txt)"
+        self.FILE_TYPE_PACKAGE = _("Picard Naming Script Package") + " (*.pnsp *.json)"
+
         # TODO: Make this work properly so that it can be accessed from both the main window and the options window.
         # self.setWindowFlags(QtCore.Qt.Window)
         self.setWindowModality(QtCore.Qt.WindowModal)
@@ -280,7 +286,7 @@ class ScriptEditorPage(PicardDialog):
         self.ui = Ui_ScriptEditor()
         self.ui.setupUi(self)
 
-        self.ui.example_filename_sample_files_button.setToolTip(self.examples.tooltip_text)
+        self.ui.example_filename_sample_files_button.setToolTip(_(self.examples.tooltip_text) % self.examples.max_samples)
 
         self.installEventFilter(self)
 
@@ -320,7 +326,6 @@ class ScriptEditorPage(PicardDialog):
 
         self.wordwrap = QtWidgets.QTextEdit.NoWrap
         self.examples_current_row = -1
-        self.file_error_title = N_("File Error")
 
         self.load()
 
@@ -362,7 +367,7 @@ class ScriptEditorPage(PicardDialog):
         self.ui.preset_naming_scripts.clear()
         script_item = FileNamingScript(
             script=get_config().setting["file_naming_format"],
-            title=N_("Current file naming script saved in configuration"),
+            title=_("Current file naming script saved in configuration"),
             readonly=False,
             deletable=False,
             id="current"
@@ -597,16 +602,25 @@ class ScriptEditorPage(PicardDialog):
         else:
             self.ui.file_naming_format.setLineWrapMode(QtWidgets.QTextEdit.NoWrap)
 
+    def output_error(self, title, fmt, filename, msg):
+        """Log error and display error message dialog.
+
+        Args:
+            title (str): Title to display on the error dialog box
+            fmt (str): Format for the error type being displayed
+            filename (str): Name of the file being imported or exported
+            msg (str): Error message to display
+        """
+        log.error(fmt, filename, msg)
+        error_message = _(fmt) % (filename, _(msg))
+        self.display_error(ScriptImportError(_(title), error_message))
+
     def import_script(self):
         """Import from an external text file to a new script. Import can be either a plain text script or
         a naming script package.
         """
-        error_import = 'Error importing "%s". %s.'
-        error_import_tx = N_('Error importing "%s". %s.')
-        error_decode = 'Error decoding "%s". %s.'
-        error_decode_tx = N_('Error decoding "%s". %s.')
 
-        dialog_title = N_("Import Script File")
+        dialog_title = _("Import Script File")
         dialog_file_types = self.FILE_TYPE_PACKAGE + ";;" + self.FILE_TYPE_SCRIPT + ";;" + self.FILE_TYPE_ALL
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
@@ -617,31 +631,23 @@ class ScriptEditorPage(PicardDialog):
                 with open(filename, 'r', encoding='utf8') as i_file:
                     file_content = i_file.read()
             except OSError as error:
-                log.error(error_import % (filename, error.strerror))
-                error_message = error_import_tx % (filename, error.strerror)
-                self.display_error(ScriptImportError(self.file_error_title, error_message))
+                self.output_error(self.FILE_ERROR_TITLE, self.FILE_ERROR_IMPORT, filename, error.strerror)
                 return
             if not file_content.strip():
-                log.error(error_import % (filename, 'The file was empty'))
-                error_message = error_import_tx % (filename, _('The file was empty'))
-                self.display_error(ScriptImportError(self.file_error_title, error_message))
+                self.output_error(self.FILE_ERROR_TITLE, self.FILE_ERROR_IMPORT, filename, N_('The file was empty'))
                 return
             if file_type == self.FILE_TYPE_PACKAGE:
                 try:
                     script_item = FileNamingScript().create_from_json(file_content)
                 except JSONDecodeError as error:
-                    log.error(error_decode % (filename, error.msg))
-                    error_message = error_decode_tx % (filename, error.msg)
-                    self.display_error(ScriptImportError(self.file_error_title, error_message))
+                    self.output_error(self.FILE_ERROR_TITLE, self.FILE_ERROR_DECODE, filename, error.msg)
                     return
                 if not (script_item.get_value('title') and script_item.get_value('script')):
-                    log.error(error_decode % (filename, 'Invalid script package'))
-                    error_message = error_decode_tx % (filename, _('Invalid script package'))
-                    self.display_error(ScriptImportError(self.file_error_title, error_message))
+                    self.output_error(self.FILE_ERROR_TITLE, self.FILE_ERROR_DECODE, filename, N_('Invalid script package'))
                     return
             else:
                 script_item = FileNamingScript(
-                    title=N_("Imported from ") + filename,
+                    title=_("Imported from ") + filename,
                     script=file_content.strip()
                 )
             self._insert_item(script_item)
@@ -655,7 +661,7 @@ class ScriptEditorPage(PicardDialog):
 
         if script_text:
             default_path = os.path.normpath(os.path.join(self.default_script_directory, self.default_script_filename))
-            dialog_title = N_("Export Script File")
+            dialog_title = _("Export Script File")
             dialog_file_types = self.FILE_TYPE_PACKAGE + ";;" + self.FILE_TYPE_SCRIPT + ";;" + self.FILE_TYPE_ALL
             options = QtWidgets.QFileDialog.Options()
             options |= QtWidgets.QFileDialog.DontUseNativeDialog
@@ -672,9 +678,7 @@ class ScriptEditorPage(PicardDialog):
                     with open(filename, 'w', encoding='utf8') as o_file:
                         o_file.write(script_text + '\n')
                 except OSError as error:
-                    log.error('Error exporting file "%s". %s' % (filename, error.strerror))
-                    error_message = N_('Error exporting file "%s". %s.') % (filename, error.strerror)
-                    self.display_error(ScriptExportError(self.file_error_title, error_message))
+                    self.output_error(self.FILE_ERROR_TITLE, self.FILE_ERROR_EXPORT, filename, error.strerror)
                 else:
                     dialog = QtWidgets.QMessageBox(
                         QtWidgets.QMessageBox.Information,
@@ -725,7 +729,7 @@ class ScriptEditorPage(PicardDialog):
             bool: True if Ok, otherwise False
         """
         dialog = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Warning,
-                                       N_('Confirm'),
+                                       _('Confirm'),
                                        message_text,
                                        QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel,
                                        self
