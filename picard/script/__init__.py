@@ -301,24 +301,24 @@ def get_file_naming_script_presets():
     Yields:
         FileNamingScript: the next example FileNamingScript object
     """
-    AUTHOR = N_("Picard Development Team")
-    DESCRIPTION = N_("This preset example file naming script does not require any special settings, tagging scripts or plugins.")
+    AUTHOR = "MusicBrainz Picard Development Team"
+    DESCRIPTION = _("This preset example file naming script does not require any special settings, tagging scripts or plugins.")
     LICENSE = "GNU Public License version 2"
 
     yield FileNamingScript(
-        title=N_("Preset 1: Default file naming script"),
+        title=_("Preset 1: Default file naming script"),
         script=DEFAULT_FILE_NAMING_FORMAT,
         readonly=True,
         deletable=False,
         author=AUTHOR,
         description=DESCRIPTION,
-        version="n/a",
+        version="1.0",
         license=LICENSE,
         last_updated="2019-08-05",
     )
 
     yield FileNamingScript(
-        title=N_("Preset 2: [album artist]/[album]/[track #]. [title]"),
+        title=_("Preset 2: [album artist]/[album]/[track #]. [title]"),
         script="%albumartist%/\n"
                "%album%/\n"
                "%tracknumber%. %title%",
@@ -332,7 +332,7 @@ def get_file_naming_script_presets():
     )
 
     yield FileNamingScript(
-        title=N_("Preset 3: [album artist]/[album]/[disc and track #] [artist] - [title]"),
+        title=_("Preset 3: [album artist]/[album]/[disc and track #] [artist] - [title]"),
         script="$if2(%albumartist%,%artist%)/\n"
                "$if(%albumartist%,%album%/,)\n"
                "$if($gt(%totaldiscs%,1),%discnumber%-,)\n"
