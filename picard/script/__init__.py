@@ -178,10 +178,19 @@ class PicardScript():
             return value
         return None
 
+    @staticmethod
+    def make_last_updated():
+        """Provide consistently formatted last updated string.
+
+        Returns:
+            str: Last updated string from current date and time
+        """
+        return datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')
+
     def update_last_updated(self):
         """Update the last updated attribute to the current UTC date and time.
         """
-        self.last_updated = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')
+        self.last_updated = self.make_last_updated()
 
     def update_script_setting(self, **kwargs):
         """Updates the value of the specified properties.
