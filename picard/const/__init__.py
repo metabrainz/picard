@@ -14,6 +14,7 @@
 # Copyright (C) 2018 Bob Swift
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2020 RomFouq
+# Copyright (C) 2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -176,7 +177,7 @@ PROGRAM_UPDATE_LEVELS = OrderedDict(
 
 DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/\n" \
     "$if(%albumartist%,%album%/,)\n" \
-    "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
+    "$if($gt(%totaldiscs%,1),$if($gt(%totaldiscs%,9),$num(%discnumber%,2),%discnumber%)-,)" \
     "$if($and(%albumartist%,%tracknumber%),$num(%tracknumber%,2) ,)" \
     "$if(%_multiartist%,%artist% - ,)" \
     "%title%"
