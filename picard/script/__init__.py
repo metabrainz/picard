@@ -263,18 +263,18 @@ class FileNamingScript(PicardScript):
     JSON_OUTPUT = {'title', 'script', 'author', 'description', 'license', 'version', 'last_updated'}
 
     def __init__(
-                 self,
-                 script='',
-                 title='',
-                 id=None,
-                 readonly=False,
-                 deletable=True,
-                 author='',
-                 description='',
-                 license='',
-                 version='',
-                 last_updated=None
-                 ):
+        self,
+        script='',
+        title='',
+        id=None,
+        readonly=False,
+        deletable=True,
+        author='',
+        description='',
+        license='',
+        version='',
+        last_updated=None
+    ):
         """Creates a Picard file naming script object.
 
         Args:
