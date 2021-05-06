@@ -200,13 +200,12 @@ class PicardScript():
         """
         updated = False
         for key, value in settings.items():
-            if value is not None:
-                if hasattr(self, key):
-                    if isinstance(value, str):
-                        value = value.strip()
-                    setattr(self, key, value)
-                    if key not in self._last_updated_ignore_list:
-                        updated = True
+            if value is not None and hasattr(self, key):
+                if isinstance(value, str):
+                    value = value.strip()
+                setattr(self, key, value)
+                if key not in self._last_updated_ignore_list:
+                    updated = True
         # Don't overwrite `last_updated` with a generated value if a last_updated value has been provided.
         if updated and 'last_updated' not in settings:
             self.update_last_updated()
