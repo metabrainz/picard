@@ -166,18 +166,7 @@
       </widget>
      </item>
      <item row="0" column="2">
-      <widget class="QLabel" name="script_title">
-       <property name="font">
-        <font>
-         <pointsize>9</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="script_title"/>
      </item>
     </layout>
    </item>

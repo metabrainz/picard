@@ -395,10 +395,17 @@ class ScriptEditorPage(PicardDialog):
         """
         selected_item = self.get_selected_item()
         details_page = ScriptDetailsEditor(self, selected_item)
+        details_page.signal_save.connect(self.update_from_details)
         details_page.show()
         details_page.raise_()
         details_page.activateWindow()
+
+    def update_from_details(self):
+        """Update the script selection combo box and script list after updates from the script details dialog.
+        """
+        selected_item = self.get_selected_item()
         self.update_combo_box_item(self.ui.preset_naming_scripts.currentIndex(), selected_item)
+        self.ui.script_title.setText(selected_item.get_value('title'))
 
     def _insert_item(self, script_item):
         """Insert a new item into the script selection combo box and update the script list in the settings.
@@ -777,6 +784,8 @@ class ScriptDetailsEditor(PicardDialog):
     NAME = 'scriptdetails'
     TITLE = N_('Script Details')
 
+    signal_save = QtCore.pyqtSignal()
+
     def __init__(self, parent, script_item):
         """Script metadata viewer / editor.
 
@@ -823,15 +832,27 @@ class ScriptDetailsEditor(PicardDialog):
     def save_changes(self):
         """Update the script object with any changes to the metadata.
         """
+        title = self.ui.script_title.text().strip()
+        if not title:
+            QtWidgets.QMessageBox(
+                QtWidgets.QMessageBox.Critical,
+                _("Error"),
+                _("The script title must not be empty."),
+                QtWidgets.QMessageBox.Ok,
+                self
+            ).exec_()
+            return
         if not self.ui.script_last_updated.isModified() or not self.ui.script_last_updated.text().strip():
             self.set_last_updated()
         self.script_item.update_script_setting(
+            title=title,
             author=self.ui.script_author.text(),
             version=self.ui.script_version.text(),
             license=self.ui.script_license.text(),
             description=self.ui.script_description.toPlainText(),
             last_updated=self.ui.script_last_updated.text()
         )
+        self.signal_save.emit()
         self.close_window()
 
     def close_window(self):
