@@ -724,7 +724,12 @@ class ScriptEditorPage(PicardDialog):
         Returns:
             bool: True if Ok, otherwise False
         """
-        dialog = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Warning, N_('Confirm'), message_text, QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel, self)
+        dialog = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Warning,
+                                       N_('Confirm'),
+                                       message_text,
+                                       QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel,
+                                       self
+                                       )
         return dialog.exec_() == QtWidgets.QMessageBox.Ok
 
     def display_error(self, error):
