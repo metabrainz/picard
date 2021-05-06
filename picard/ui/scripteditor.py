@@ -671,6 +671,11 @@ class ScriptEditorPage(PicardDialog):
                 try:
                     with open(filename, 'w', encoding='utf8') as o_file:
                         o_file.write(script_text + '\n')
+                except OSError as error:
+                    log.error('Error exporting file "%s". %s' % (filename, error.strerror))
+                    error_message = N_('Error exporting file "%s". %s.') % (filename, error.strerror)
+                    self.display_error(ScriptExportError(self.file_error_title, error_message))
+                else:
                     dialog = QtWidgets.QMessageBox(
                         QtWidgets.QMessageBox.Information,
                         _("Export Script"),
@@ -679,10 +684,6 @@ class ScriptEditorPage(PicardDialog):
                         self
                     )
                     dialog.exec_()
-                except OSError as error:
-                    log.error('Error exporting file "%s". %s' % (filename, error.strerror))
-                    error_message = N_('Error exporting file "%s". %s.') % (filename, error.strerror)
-                    self.display_error(ScriptExportError(self.file_error_title, error_message))
 
     def load(self):
         """Loads the file naming script from the configuration settings.
