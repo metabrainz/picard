@@ -253,7 +253,6 @@ class ScriptEditorPage(PicardDialog):
         ),
     ]
 
-    FILE_ERROR_TITLE = N_("File Error")
     FILE_ERROR_IMPORT = N_('Error importing "%s". %s.')
     FILE_ERROR_DECODE = N_('Error decoding "%s". %s.')
     FILE_ERROR_EXPORT = N_('Error exporting file "%s". %s.')
@@ -615,6 +614,16 @@ class ScriptEditorPage(PicardDialog):
         error_message = _(fmt) % (filename, _(msg))
         self.display_error(ScriptImportError(_(title), error_message))
 
+    def output_file_error(self, fmt, filename, msg):
+        """Log file error and display error message dialog.
+
+        Args:
+            fmt (str): Format for the error type being displayed
+            filename (str): Name of the file being imported or exported
+            msg (str): Error message to display
+        """
+        self.output_error(_("File Error"), fmt, filename, msg)
+
     def import_script(self):
         """Import from an external text file to a new script. Import can be either a plain text script or
         a naming script package.
@@ -631,19 +640,19 @@ class ScriptEditorPage(PicardDialog):
                 with open(filename, 'r', encoding='utf8') as i_file:
                     file_content = i_file.read()
             except OSError as error:
-                self.output_error(self.FILE_ERROR_TITLE, self.FILE_ERROR_IMPORT, filename, error.strerror)
+                self.output_file_error(self.FILE_ERROR_IMPORT, filename, error.strerror)
                 return
             if not file_content.strip():
-                self.output_error(self.FILE_ERROR_TITLE, self.FILE_ERROR_IMPORT, filename, N_('The file was empty'))
+                self.output_file_error(self.FILE_ERROR_IMPORT, filename, N_('The file was empty'))
                 return
             if file_type == self.FILE_TYPE_PACKAGE:
                 try:
                     script_item = FileNamingScript().create_from_json(file_content)
                 except JSONDecodeError as error:
-                    self.output_error(self.FILE_ERROR_TITLE, self.FILE_ERROR_DECODE, filename, error.msg)
+                    self.output_file_error(self.FILE_ERROR_DECODE, filename, error.msg)
                     return
                 if not (script_item.get_value('title') and script_item.get_value('script')):
-                    self.output_error(self.FILE_ERROR_TITLE, self.FILE_ERROR_DECODE, filename, N_('Invalid script package'))
+                    self.output_file_error(self.FILE_ERROR_DECODE, filename, N_('Invalid script package'))
                     return
             else:
                 script_item = FileNamingScript(
@@ -673,12 +682,12 @@ class ScriptEditorPage(PicardDialog):
                     filename = name
                 log.debug('Exporting naming script file: %s' % filename)
                 if file_type == self.FILE_TYPE_PACKAGE:
-                    script_text = script_item.to_json(indented=True)
+                    script_text = script_item.to_json(indent=4)
                 try:
                     with open(filename, 'w', encoding='utf8') as o_file:
                         o_file.write(script_text + '\n')
                 except OSError as error:
-                    self.output_error(self.FILE_ERROR_TITLE, self.FILE_ERROR_EXPORT, filename, error.strerror)
+                    self.output_file_error(self.FILE_ERROR_EXPORT, filename, error.strerror)
                 else:
                     dialog = QtWidgets.QMessageBox(
                         QtWidgets.QMessageBox.Information,

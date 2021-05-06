@@ -38,7 +38,7 @@
 from copy import deepcopy
 import datetime
 from enum import (
-    Enum,
+    IntEnum,
     unique,
 )
 import json
@@ -117,7 +117,7 @@ def enabled_tagger_scripts_texts():
 
 
 @unique
-class PicardScriptType(Enum):
+class PicardScriptType(IntEnum):
     """Picard Script object types
     """
     BASE = 0
@@ -131,10 +131,10 @@ class PicardScript():
     # Base class developed to support future tagging script class as possible replacement for currently used tuples in config.setting["list_of_scripts"].
 
     TYPE = PicardScriptType.BASE
-    JSON_OUTPUT = ['title', 'script']
+    JSON_OUTPUT = {'title', 'script'}
 
     # Don't automatically trigger changing the `script_last_updated` property when updating these properties.
-    _last_updated_ignore_list = ['last_updated', 'readonly', 'deletable', 'id']
+    _last_updated_ignore_list = {'last_updated', 'readonly', 'deletable', 'id'}
 
     def __init__(self, script='', title='', id=None, last_updated=None):
         """Base class for Picard script objects
@@ -214,24 +214,22 @@ class PicardScript():
         """Create a copy of the current script object with updated title and last updated attributes.
         """
         new_object = deepcopy(self)
-        new_object.update_script_setting(title=self.title + N_(" (Copy)"))
+        new_object.update_script_setting(title=_("%s (Copy)") % self.title)
         new_object._set_new_id()
         return new_object
 
-    def to_json(self, indented=False):
+    def to_json(self, indent=None):
         """Converts the properties of the script object to a JSON formatted string.  Note that only property
         names listed in `JSON_PROPERTIES` will be included in the output.
 
         Args:
-            indented (bool): Indent the output.
+            indent (int): Amount to indent the output. Defaults to None.
 
         Returns:
             str: The properties of the script object formatted as a JSON string.
         """
         items = {key: getattr(self, key) for key in dir(self) if key in self.JSON_OUTPUT}
-        if indented:
-            return json.dumps(items, indent=4, sort_keys=True)
-        return json.dumps(items, sort_keys=True)
+        return json.dumps(items, indent=indent, sort_keys=True)
 
     @classmethod
     def create_from_json(cls, json_string):
@@ -255,17 +253,28 @@ class PicardScript():
         Args:
             json_string (str): JSON string containing the property settings.
         """
-        settings = json.loads(json_string)
-        self._update_from_dict(settings)
+        self._update_from_dict(json.loads(json_string))
 
 
 class FileNamingScript(PicardScript):
     """Picard file naming script class
     """
     TYPE = PicardScriptType.FILENAMING
-    JSON_OUTPUT = ['title', 'script', 'author', 'description', 'license', 'version', 'last_updated']
+    JSON_OUTPUT = {'title', 'script', 'author', 'description', 'license', 'version', 'last_updated'}
 
-    def __init__(self, script='', title='', id=None, readonly=False, deletable=True, author='', description='', license='', version='', last_updated=None):
+    def __init__(
+                 self,
+                 script='',
+                 title='',
+                 id=None,
+                 readonly=False,
+                 deletable=True,
+                 author='',
+                 description='',
+                 license='',
+                 version='',
+                 last_updated=None
+                 ):
         """Creates a Picard file naming script object.
 
         Args:
@@ -305,8 +314,11 @@ def get_file_naming_script_presets():
     DESCRIPTION = _("This preset example file naming script does not require any special settings, tagging scripts or plugins.")
     LICENSE = "GNU Public License version 2"
 
+    def preset_title(number, title):
+        return _("Preset %d: %s") % (number, _(title))
+
     yield FileNamingScript(
-        title=_("Preset 1: Default file naming script"),
+        title=preset_title(1, N_("Default file naming script")),
         script=DEFAULT_FILE_NAMING_FORMAT,
         readonly=True,
         deletable=False,
@@ -314,11 +326,11 @@ def get_file_naming_script_presets():
         description=DESCRIPTION,
         version="1.0",
         license=LICENSE,
-        last_updated="2019-08-05",
+        last_updated="2019-08-05 13:40:00 UTC",
     )
 
     yield FileNamingScript(
-        title=_("Preset 2: [album artist]/[album]/[track #]. [title]"),
+        title=preset_title(2, N_("[album artist]/[album]/[track #]. [title]")),
         script="%albumartist%/\n"
                "%album%/\n"
                "%tracknumber%. %title%",
@@ -328,11 +340,11 @@ def get_file_naming_script_presets():
         description=DESCRIPTION,
         version="1.0",
         license=LICENSE,
-        last_updated="2021-04-12",
+        last_updated="2021-04-12 21:30:00 UTC",
     )
 
     yield FileNamingScript(
-        title=_("Preset 3: [album artist]/[album]/[disc and track #] [artist] - [title]"),
+        title=preset_title(3, N_("[album artist]/[album]/[disc and track #] [artist] - [title]")),
         script="$if2(%albumartist%,%artist%)/\n"
                "$if(%albumartist%,%album%/,)\n"
                "$if($gt(%totaldiscs%,1),%discnumber%-,)\n"
@@ -345,5 +357,5 @@ def get_file_naming_script_presets():
         description=DESCRIPTION,
         version="1.0",
         license=LICENSE,
-        last_updated="2021-04-12",
+        last_updated="2021-04-12 21:30:00 UTC",
     )
