@@ -48,7 +48,7 @@ from picard.config import get_config
 from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
     DEFAULT_SCRIPT_NAME,
-    SCRIPT_VERSION,
+    SCRIPT_LANGUAGE_VERSION,
 )
 from picard.script.functions import (  # noqa: F401 # pylint: disable=unused-import
     register_script_function,
@@ -132,12 +132,12 @@ class PicardScript():
     # Base class developed to support future tagging script class as possible replacement for currently used tuples in config.setting["list_of_scripts"].
 
     TYPE = PicardScriptType.BASE
-    JSON_OUTPUT = {'title', 'script', 'script_version'}
+    JSON_OUTPUT = {'title', 'script', 'script_language_version'}
 
     # Don't automatically trigger changing the `script_last_updated` property when updating these properties.
     _last_updated_ignore_list = {'last_updated', 'readonly', 'deletable', 'id'}
 
-    def __init__(self, script='', title='', id=None, last_updated=None, script_version=None):
+    def __init__(self, script='', title='', id=None, last_updated=None, script_language_version=None):
         """Base class for Picard script objects
 
         Args:
@@ -156,10 +156,10 @@ class PicardScript():
             self.update_last_updated()
         else:
             self.last_updated = last_updated
-        if script_version is None or not script_version:
-            self.script_version = SCRIPT_VERSION
+        if script_language_version is None or not script_language_version:
+            self.script_language_version = SCRIPT_LANGUAGE_VERSION
         else:
-            self.script_version = script_version
+            self.script_language_version = script_language_version
 
     def _set_new_id(self):
         """Sets the ID of the script to a new system generated uuid.
@@ -230,7 +230,7 @@ class PicardScript():
         new_object = deepcopy(self)
         new_object.update_script_setting(
             title=_("%s (Copy)") % self.title,
-            script_version=SCRIPT_VERSION,
+            script_language_version=SCRIPT_LANGUAGE_VERSION,
             readonly=False,
             deletable=True
         )
@@ -279,7 +279,7 @@ class FileNamingScript(PicardScript):
     """Picard file naming script class
     """
     TYPE = PicardScriptType.FILENAMING
-    JSON_OUTPUT = {'title', 'script', 'author', 'description', 'license', 'version', 'last_updated', 'script_version'}
+    JSON_OUTPUT = {'title', 'script', 'author', 'description', 'license', 'version', 'last_updated', 'script_language_version'}
 
     def __init__(
         self,
@@ -293,7 +293,7 @@ class FileNamingScript(PicardScript):
         license='',
         version='',
         last_updated=None,
-        script_version=None
+        script_language_version=None
     ):
         """Creates a Picard file naming script object.
 
@@ -308,8 +308,9 @@ class FileNamingScript(PicardScript):
             license (str): The license under which the script is being distributed. Defaults to ''.
             version (str): Identifies the version of the script. Defaults to ''.
             last_updated (str): The UTC date and time when the script was last updated. Defaults to current date/time.
+            script_language_version (str): The version of the script language supported by the script.
         """
-        super().__init__(script=script, title=title, id=id, last_updated=last_updated, script_version=script_version)
+        super().__init__(script=script, title=title, id=id, last_updated=last_updated, script_language_version=script_language_version)
         self.readonly = readonly    # for presets
         self.deletable = deletable  # Allow removal from list of scripts
         self.author = author
@@ -341,7 +342,7 @@ def get_file_naming_script_presets():
         version="1.0",
         license=LICENSE,
         last_updated="2019-08-05 13:40:00 UTC",
-        script_version="1.0",
+        script_language_version="1.0",
     )
 
     yield FileNamingScript(
@@ -356,7 +357,7 @@ def get_file_naming_script_presets():
         version="1.0",
         license=LICENSE,
         last_updated="2021-04-12 21:30:00 UTC",
-        script_version="1.0",
+        script_language_version="1.0",
     )
 
     yield FileNamingScript(
@@ -374,5 +375,5 @@ def get_file_naming_script_presets():
         version="1.0",
         license=LICENSE,
         last_updated="2021-04-12 21:30:00 UTC",
-        script_version="1.0",
+        script_language_version="1.0",
     )

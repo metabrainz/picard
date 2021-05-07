@@ -52,12 +52,12 @@ class ScriptClassesTest(PicardTestCase):
 
     def test_script_object_1(self):
         # Check initial loaded values.
-        test_script = PicardScript(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_version='1.0')
+        test_script = PicardScript(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0')
         self.assertEqual(test_script.id, '12345')
         self.assertEqual(test_script['id'], '12345')
         self.assertEqual(test_script.last_updated, '2021-04-26')
         self.assertEqual(test_script['last_updated'], '2021-04-26')
-        self.assertEqual(test_script.to_json(), '{"script": "Script text", "script_version": "1.0", "title": "Script 1"}')
+        self.assertEqual(test_script.to_json(), '{"script": "Script text", "script_language_version": "1.0", "title": "Script 1"}')
 
     def test_script_object_2(self):
         # Check updating values directly so as not to modify `last_updated`.
@@ -102,19 +102,19 @@ class ScriptClassesTest(PicardTestCase):
 
     def test_script_object_6(self):
         # Test that extra (unknown) settings are ignored during updating
-        test_script = PicardScript(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_version='1.0')
+        test_script = PicardScript(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0')
         test_script.update_script_setting(description='Updated description')
         self.assertEqual(test_script['last_updated'], '2021-04-26')
-        self.assertEqual(test_script.to_json(), '{"script": "Script text", "script_version": "1.0", "title": "Script 1"}')
+        self.assertEqual(test_script.to_json(), '{"script": "Script text", "script_language_version": "1.0", "title": "Script 1"}')
         with self.assertRaises(AttributeError):
             print(test_script.description)
 
     def test_script_object_7(self):
         # Test that extra (unknown) settings are ignored during updating from JSON string
-        test_script = PicardScript(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_version='1.0')
+        test_script = PicardScript(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0')
         test_script.update_from_json('{"description": "Updated description"}')
         self.assertEqual(test_script['last_updated'], '2021-04-26')
-        self.assertEqual(test_script.to_json(), '{"script": "Script text", "script_version": "1.0", "title": "Script 1"}')
+        self.assertEqual(test_script.to_json(), '{"script": "Script text", "script_language_version": "1.0", "title": "Script 1"}')
         with self.assertRaises(AttributeError):
             print(test_script.description)
 
@@ -127,7 +127,7 @@ class ScriptClassesTest(PicardTestCase):
         # Test that an exception is raised when creating or updating using an invalid JSON string
         with self.assertRaises(JSONDecodeError):
             test_script = PicardScript().create_from_json('Not a JSON string')
-        test_script = PicardScript(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_version='1.0')
+        test_script = PicardScript(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0')
         with self.assertRaises(JSONDecodeError):
             test_script.update_from_json('Not a JSON string')
 
@@ -135,7 +135,7 @@ class ScriptClassesTest(PicardTestCase):
         # Check initial loaded values.
         test_script = FileNamingScript(
             title='Script 1', script='Script text', id='12345', last_updated='2021-04-26',
-            description='Script description', author='Script author', script_version='1.0'
+            description='Script description', author='Script author', script_language_version='1.0'
         )
         self.assertEqual(test_script.id, '12345')
         self.assertEqual(test_script['id'], '12345')
@@ -152,7 +152,7 @@ class ScriptClassesTest(PicardTestCase):
                          '"last_updated": "2021-04-26", '
                          '"license": "", '
                          '"script": "Script text", '
-                         '"script_version": "1.0", '
+                         '"script_language_version": "1.0", '
                          '"title": "Script 1", '
                          '"version": ""'
                          '}'
@@ -164,7 +164,7 @@ class ScriptClassesTest(PicardTestCase):
                          '    "last_updated": "2021-04-26",\n'
                          '    "license": "",\n'
                          '    "script": "Script text",\n'
-                         '    "script_version": "1.0",\n'
+                         '    "script_language_version": "1.0",\n'
                          '    "title": "Script 1",\n'
                          '    "version": ""\n'
                          '}'
