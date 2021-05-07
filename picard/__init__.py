@@ -112,10 +112,11 @@ def crash_handler():
 
     # Display the crash information to the user as a dialog. This requires
     # importing Qt5 and has some potential to fail if things are broken.
-    from PyQt5.QtCore import Qt, QUrl
+    from PyQt5.QtCore import QCoreApplication, Qt, QUrl
     from PyQt5.QtWidgets import QApplication, QMessageBox
-    # assigning QApplication to a variable is required to keep the object alive
-    app = QApplication(sys.argv)
+    app = QCoreApplication.instance()
+    if not app:
+        app = QApplication(sys.argv)
     msgbox = QMessageBox()
     msgbox.setIcon(QMessageBox.Critical)
     msgbox.setWindowTitle("Picard terminated unexpectedly")
