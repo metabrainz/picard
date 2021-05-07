@@ -540,8 +540,7 @@ class ScriptEditorPage(PicardDialog):
                 script_item = self.ui.preset_naming_scripts.itemData(selected)
                 script_item.title = title
                 script_item.script = self.get_script()
-                self.ui.preset_naming_scripts.setItemData(selected, script_item)
-                self.ui.preset_naming_scripts.setItemText(selected, title)
+                self.update_combo_box_item(selected, script_item)
                 self.update_scripts_list()
             else:
                 self.display_error(OptionsCheckError(_("Error"), _("The script title must not be empty.")))
