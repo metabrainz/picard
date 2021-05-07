@@ -88,3 +88,50 @@ api_versions = [
 ]
 
 api_versions_tuple = [Version.from_string(v) for v in api_versions]
+
+
+def crash_handler():
+    """Implements minimal handling of an exception crashing the application.
+    This function tries to log the exception to a log file and display
+    a minimal crash dialog to the user.
+    This function is supposed to be called from inside an except blog.
+    """
+    # First try to get traceback information and write it to a log file
+    # with minimum chance to fail.
+    import sys
+    from tempfile import NamedTemporaryFile
+    import traceback
+    trace = traceback.format_exc()
+    logfile = None
+    try:
+        with NamedTemporaryFile(suffix='.log', prefix='picard-crash-', delete=False) as f:
+            f.write(trace.encode(errors="replace"))
+            logfile = f.name
+    except:  # noqa: E722,F722 # pylint: disable=bare-except
+        print("Failed writing log file {0}".format(logfile), file=sys.stderr)
+        logfile = None
+
+    # Display the crash information to the user as a dialog. This requires
+    # importing Qt5 and has some potential to fail if things are broken.
+    from PyQt5.QtCore import QCoreApplication, Qt, QUrl
+    from PyQt5.QtWidgets import QApplication, QMessageBox
+    app = QCoreApplication.instance()
+    if not app:
+        app = QApplication(sys.argv)
+    msgbox = QMessageBox()
+    msgbox.setIcon(QMessageBox.Critical)
+    msgbox.setWindowTitle("Picard terminated unexpectedly")
+    msgbox.setTextFormat(Qt.RichText)
+    msgbox.setText(
+        'An unexpected error has caused Picard to crash. '
+        'Please report this issue on the <a href="https://tickets.metabrainz.org/projects/PICARD">MusicBrainz bug tracker</a>.')
+    if logfile:
+        logfile_url = QUrl.fromLocalFile(logfile)
+        msgbox.setInformativeText(
+            'A logfile has been written to <a href="{0}">{1}</a>.'
+            .format(logfile_url.url(), logfile))
+    msgbox.setDetailedText(trace)
+    msgbox.setStandardButtons(QMessageBox.Close)
+    msgbox.setDefaultButton(QMessageBox.Close)
+    msgbox.exec_()
+    app.quit()

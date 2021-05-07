@@ -15,5 +15,12 @@ else:
 if sys.platform == 'win32':
     os.environ['PATH'] = basedir + ';' + os.environ['PATH']
 
-from picard.tagger import main
-main(os.path.join(basedir, 'locale'), %(autoupdate)s)
+try:
+    from picard.tagger import main
+    main(os.path.join(basedir, 'locale'), %(autoupdate)s)
+except SystemExit:
+    raise  # Just continue with a normal application exit
+except:  # noqa: E722,F722 # pylint: disable=bare-except
+    from picard import crash_handler
+    crash_handler()
+    raise
