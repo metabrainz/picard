@@ -375,7 +375,7 @@ class ScriptEditorPage(PicardDialog):
 
         for script_json in self.naming_scripts:
             script_item = FileNamingScript().create_from_json(script_json)
-            if script_item.get_value('title'):
+            if script_item['title']:
                 self.ui.preset_naming_scripts.addItem(self.SCRIPT_TITLE_USER % script_item.title, script_item)
 
         for script_item in get_file_naming_script_presets():
@@ -404,7 +404,7 @@ class ScriptEditorPage(PicardDialog):
         """
         selected_item = self.get_selected_item()
         self.update_combo_box_item(self.ui.preset_naming_scripts.currentIndex(), selected_item)
-        self.ui.script_title.setText(selected_item.get_value('title'))
+        self.ui.script_title.setText(selected_item['title'])
 
     def _insert_item(self, script_item):
         """Insert a new item into the script selection combo box and update the script list in the settings.
@@ -471,7 +471,7 @@ class ScriptEditorPage(PicardDialog):
             script_item (FileNamingScript): Updated script information
         """
         self.ui.preset_naming_scripts.setItemData(idx, script_item)
-        self.ui.preset_naming_scripts.setItemText(idx, self.SCRIPT_TITLE_USER % script_item.get_value('title'))
+        self.ui.preset_naming_scripts.setItemText(idx, self.SCRIPT_TITLE_USER % script_item['title'])
 
     def set_button_states(self, save_enabled=True):
         """Set the button states based on the readonly and deletable attributes of the currently selected
@@ -660,7 +660,7 @@ class ScriptEditorPage(PicardDialog):
                 except JSONDecodeError as error:
                     self.output_file_error(FILE_ERROR_DECODE, filename, error.msg)
                     return
-                if not (script_item.get_value('title') and script_item.get_value('script')):
+                if not (script_item['title'] and script_item['script']):
                     self.output_file_error(FILE_ERROR_DECODE, filename, _('Invalid script package'))
                     return
             else:
@@ -811,12 +811,12 @@ class ScriptDetailsEditor(PicardDialog):
         self.ui.buttonBox.rejected.connect(self.close_window)
         self.ui.last_updated_now.clicked.connect(self.set_last_updated)
 
-        self.ui.script_title.setText(self.script_item.get_value('title'))
-        self.ui.script_author.setText(self.script_item.get_value('author'))
-        self.ui.script_version.setText(self.script_item.get_value('version'))
-        self.ui.script_last_updated.setText(self.script_item.get_value('last_updated'))
-        self.ui.script_license.setText(self.script_item.get_value('license'))
-        self.ui.script_description.setPlainText(self.script_item.get_value('description'))
+        self.ui.script_title.setText(self.script_item['title'])
+        self.ui.script_author.setText(self.script_item['author'])
+        self.ui.script_version.setText(self.script_item['version'])
+        self.ui.script_last_updated.setText(self.script_item['last_updated'])
+        self.ui.script_license.setText(self.script_item['license'])
+        self.ui.script_description.setPlainText(self.script_item['description'])
 
         self.ui.script_last_updated.setReadOnly(self.readonly)
         self.ui.script_author.setReadOnly(self.readonly)
