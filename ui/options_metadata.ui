@@ -173,9 +173,11 @@
   <tabstop>translate_artist_names</tabstop>
   <tabstop>artist_locale</tabstop>
   <tabstop>standardize_artists</tabstop>
+  <tabstop>standardize_instruments</tabstop>
   <tabstop>convert_punctuation</tabstop>
   <tabstop>release_ars</tabstop>
   <tabstop>track_ars</tabstop>
+  <tabstop>guess_tracknumber_and_title</tabstop>
   <tabstop>va_name</tabstop>
   <tabstop>va_name_default</tabstop>
   <tabstop>nat_name</tabstop>

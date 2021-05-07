@@ -95,9 +95,13 @@ class Ui_ScriptingOptionsPage(object):
         self.remove_button.clicked.connect(self.script_list.remove_selected_script)
         self.enable_tagger_scripts.toggled['bool'].connect(ScriptingOptionsPage.enable_tagger_scripts_toggled)
         QtCore.QMetaObject.connectSlotsByName(ScriptingOptionsPage)
-        ScriptingOptionsPage.setTabOrder(self.enable_tagger_scripts, self.add_button)
-        ScriptingOptionsPage.setTabOrder(self.add_button, self.script_list)
+        ScriptingOptionsPage.setTabOrder(self.enable_tagger_scripts, self.script_list)
         ScriptingOptionsPage.setTabOrder(self.script_list, self.tagger_script)
+        ScriptingOptionsPage.setTabOrder(self.tagger_script, self.add_button)
+        ScriptingOptionsPage.setTabOrder(self.add_button, self.scripting_documentation_button)
+        ScriptingOptionsPage.setTabOrder(self.scripting_documentation_button, self.move_up_button)
+        ScriptingOptionsPage.setTabOrder(self.move_up_button, self.move_down_button)
+        ScriptingOptionsPage.setTabOrder(self.move_down_button, self.remove_button)
 
     def retranslateUi(self, ScriptingOptionsPage):
         _translate = QtCore.QCoreApplication.translate

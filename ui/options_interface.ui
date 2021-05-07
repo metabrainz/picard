@@ -305,10 +305,12 @@
   <tabstop>builtin_search</tabstop>
   <tabstop>use_adv_search_syntax</tabstop>
   <tabstop>quit_confirmation</tabstop>
+  <tabstop>filebrowser_horizontal_autoscroll</tabstop>
   <tabstop>starting_directory</tabstop>
   <tabstop>starting_directory_path</tabstop>
   <tabstop>starting_directory_browse</tabstop>
   <tabstop>ui_language</tabstop>
+  <tabstop>ui_theme</tabstop>
   <tabstop>toolbar_layout_list</tabstop>
   <tabstop>add_button</tabstop>
   <tabstop>insert_separator_button</tabstop>

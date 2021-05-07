@@ -124,11 +124,14 @@ class Ui_NetworkOptionsPage(object):
 
         self.retranslateUi(NetworkOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(NetworkOptionsPage)
-        NetworkOptionsPage.setTabOrder(self.web_proxy, self.server_host)
+        NetworkOptionsPage.setTabOrder(self.web_proxy, self.proxy_type_http)
+        NetworkOptionsPage.setTabOrder(self.proxy_type_http, self.proxy_type_socks)
+        NetworkOptionsPage.setTabOrder(self.proxy_type_socks, self.server_host)
         NetworkOptionsPage.setTabOrder(self.server_host, self.server_port)
         NetworkOptionsPage.setTabOrder(self.server_port, self.username)
         NetworkOptionsPage.setTabOrder(self.username, self.password)
-        NetworkOptionsPage.setTabOrder(self.password, self.browser_integration)
+        NetworkOptionsPage.setTabOrder(self.password, self.transfer_timeout)
+        NetworkOptionsPage.setTabOrder(self.transfer_timeout, self.browser_integration)
         NetworkOptionsPage.setTabOrder(self.browser_integration, self.browser_integration_port)
         NetworkOptionsPage.setTabOrder(self.browser_integration_port, self.browser_integration_localhost_only)
 
