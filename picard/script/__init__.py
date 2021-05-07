@@ -44,6 +44,8 @@ from enum import (
 import json
 import uuid
 
+import yaml
+
 from picard.config import get_config
 from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -126,13 +128,18 @@ class PicardScriptType(IntEnum):
     FILENAMING = 2
 
 
+class ScriptYamlImportError(Exception):
+    def __init__(self, *args):
+        super().__init__(*args)
+
+
 class PicardScript():
     """Base class for Picard script objects.
     """
     # Base class developed to support future tagging script class as possible replacement for currently used tuples in config.setting["list_of_scripts"].
 
     TYPE = PicardScriptType.BASE
-    JSON_OUTPUT = {'title', 'script', 'script_language_version'}
+    OUTPUT_FIELDS = {'title', 'script', 'script_language_version'}
 
     # Don't automatically trigger changing the `script_last_updated` property when updating these properties.
     _last_updated_ignore_list = {'last_updated', 'readonly', 'deletable', 'id'}
@@ -237,9 +244,19 @@ class PicardScript():
         new_object._set_new_id()
         return new_object
 
+    def to_yaml(self):
+        """Converts the properties of the script object to a YAML formatted string.  Note that only property
+        names listed in `OUTPUT_FIELDS` will be included in the output.
+
+        Returns:
+            str: The properties of the script object formatted as a YAML string.
+        """
+        items = {key: getattr(self, key) for key in dir(self) if key in self.OUTPUT_FIELDS}
+        return yaml.dump(items)
+
     def to_json(self, indent=None):
         """Converts the properties of the script object to a JSON formatted string.  Note that only property
-        names listed in `JSON_PROPERTIES` will be included in the output.
+        names listed in `OUTPUT_FIELDS` will be included in the output.
 
         Args:
             indent (int): Amount to indent the output. Defaults to None.
@@ -247,8 +264,28 @@ class PicardScript():
         Returns:
             str: The properties of the script object formatted as a JSON string.
         """
-        items = {key: getattr(self, key) for key in dir(self) if key in self.JSON_OUTPUT}
+        items = {key: getattr(self, key) for key in dir(self) if key in self.OUTPUT_FIELDS}
         return json.dumps(items, indent=indent, sort_keys=True)
+
+    @classmethod
+    def create_from_yaml(cls, yaml_string):
+        """Creates an instance based on the contents of the YAML string provided.
+        Properties in the YAML string that are not found in the script object are ignored.
+
+        Args:
+            yaml_string (str): YAML string containing the property settings.
+
+        Returns:
+            object: An instance of the class, populated from the property settings in the YAML string.
+        """
+        new_object = cls()
+        yaml_dict = yaml.safe_load(yaml_string)
+        if not isinstance(yaml_dict, dict):
+            raise ScriptYamlImportError(N_("File content not a dictionary"))
+        if 'title' not in yaml_dict or 'script' not in yaml_dict:
+            raise ScriptYamlImportError(N_('Invalid script package'))
+        new_object._update_from_dict(yaml_dict)
+        return new_object
 
     @classmethod
     def create_from_json(cls, json_string):
@@ -279,7 +316,7 @@ class FileNamingScript(PicardScript):
     """Picard file naming script class
     """
     TYPE = PicardScriptType.FILENAMING
-    JSON_OUTPUT = {'title', 'script', 'author', 'description', 'license', 'version', 'last_updated', 'script_language_version'}
+    OUTPUT_FIELDS = {'title', 'script', 'author', 'description', 'license', 'version', 'last_updated', 'script_language_version'}
 
     def __init__(
         self,
