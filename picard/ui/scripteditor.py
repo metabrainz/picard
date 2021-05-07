@@ -519,7 +519,9 @@ class ScriptEditorPage(PicardDialog):
             idx = self.ui.preset_naming_scripts.currentIndex()
             self.ui.preset_naming_scripts.blockSignals(True)
             self.ui.preset_naming_scripts.removeItem(idx)
-            self.ui.preset_naming_scripts.setCurrentIndex(0)
+            if idx >= self.ui.preset_naming_scripts.count():
+                idx = self.ui.preset_naming_scripts.count() - 1
+            self.ui.preset_naming_scripts.setCurrentIndex(idx)
             self.ui.preset_naming_scripts.blockSignals(False)
             self.update_scripts_list()
             self.select_script()
