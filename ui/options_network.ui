@@ -272,10 +272,13 @@
  </widget>
  <tabstops>
   <tabstop>web_proxy</tabstop>
+  <tabstop>proxy_type_http</tabstop>
+  <tabstop>proxy_type_socks</tabstop>
   <tabstop>server_host</tabstop>
   <tabstop>server_port</tabstop>
   <tabstop>username</tabstop>
   <tabstop>password</tabstop>
+  <tabstop>transfer_timeout</tabstop>
   <tabstop>browser_integration</tabstop>
   <tabstop>browser_integration_port</tabstop>
   <tabstop>browser_integration_localhost_only</tabstop>

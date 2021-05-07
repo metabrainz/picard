@@ -175,11 +175,11 @@ class ReleasesOptionsPage(OptionsPage):
 
         def add_slider(name, griditer, context):
             label = pgettext_attributes(context, name)
-            self._release_type_sliders[name] = \
-                ReleaseTypeScore(self.ui.type_group,
-                                 self.ui.gridLayout,
-                                 label,
-                                 next(griditer))
+            self._release_type_sliders[name] = ReleaseTypeScore(
+                self.ui.type_group,
+                self.ui.gridLayout,
+                label,
+                next(griditer))
 
         griditer = RowColIter(len(RELEASE_PRIMARY_GROUPS)
                               + len(RELEASE_SECONDARY_GROUPS)
@@ -190,16 +190,25 @@ class ReleasesOptionsPage(OptionsPage):
                            key=lambda v: pgettext_attributes('release_group_secondary_type', v)):
             add_slider(name, griditer, context='release_group_secondary_type')
 
-        self.reset_preferred_types_btn = QtWidgets.QPushButton(self.ui.type_group)
-        self.reset_preferred_types_btn.setText(_("Reset all"))
+        reset_types_btn = QtWidgets.QPushButton(self.ui.type_group)
+        reset_types_btn.setText(_("Reset all"))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.reset_preferred_types_btn.sizePolicy().hasHeightForWidth())
-        self.reset_preferred_types_btn.setSizePolicy(sizePolicy)
+        sizePolicy.setHeightForWidth(reset_types_btn.sizePolicy().hasHeightForWidth())
+        reset_types_btn.setSizePolicy(sizePolicy)
         r, c = next(griditer)
-        self.ui.gridLayout.addWidget(self.reset_preferred_types_btn, r, c, 1, 2)
-        self.reset_preferred_types_btn.clicked.connect(self.reset_preferred_types)
+        self.ui.gridLayout.addWidget(reset_types_btn, r, c, 1, 2)
+        reset_types_btn.clicked.connect(self.reset_preferred_types)
+
+        self.setTabOrder(reset_types_btn, self.ui.country_list)
+        self.setTabOrder(self.ui.country_list, self.ui.preferred_country_list)
+        self.setTabOrder(self.ui.preferred_country_list, self.ui.add_countries)
+        self.setTabOrder(self.ui.add_countries, self.ui.remove_countries)
+        self.setTabOrder(self.ui.remove_countries, self.ui.format_list)
+        self.setTabOrder(self.ui.format_list, self.ui.preferred_format_list)
+        self.setTabOrder(self.ui.preferred_format_list, self.ui.add_formats)
+        self.setTabOrder(self.ui.add_formats, self.ui.remove_formats)
 
         self.ui.add_countries.clicked.connect(self.add_preferred_countries)
         self.ui.remove_countries.clicked.connect(self.remove_preferred_countries)

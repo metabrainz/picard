@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MetadataOptionsPage(object):
     def setupUi(self, MetadataOptionsPage):
@@ -83,7 +85,8 @@ class Ui_MetadataOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(MetadataOptionsPage)
         MetadataOptionsPage.setTabOrder(self.translate_artist_names, self.artist_locale)
         MetadataOptionsPage.setTabOrder(self.artist_locale, self.standardize_artists)
-        MetadataOptionsPage.setTabOrder(self.standardize_artists, self.convert_punctuation)
+        MetadataOptionsPage.setTabOrder(self.standardize_artists, self.standardize_instruments)
+        MetadataOptionsPage.setTabOrder(self.standardize_instruments, self.convert_punctuation)
         MetadataOptionsPage.setTabOrder(self.convert_punctuation, self.release_ars)
         MetadataOptionsPage.setTabOrder(self.release_ars, self.track_ars)
         MetadataOptionsPage.setTabOrder(self.track_ars, self.va_name)
@@ -105,4 +108,3 @@ class Ui_MetadataOptionsPage(object):
         self.label_7.setText(_("Non-album tracks:"))
         self.nat_name_default.setText(_("Default"))
         self.va_name_default.setText(_("Default"))
-

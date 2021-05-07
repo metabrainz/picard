@@ -236,6 +236,7 @@
   <tabstop>enc_utf16</tabstop>
   <tabstop>enc_iso88591</tabstop>
   <tabstop>id3v23_join_with</tabstop>
+  <tabstop>itunes_compatible_grouping</tabstop>
   <tabstop>write_id3v1</tabstop>
  </tabstops>
  <resources/>
