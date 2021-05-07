@@ -253,10 +253,6 @@ class ScriptEditorPage(PicardDialog):
         ),
     ]
 
-    FILE_ERROR_IMPORT = N_('Error importing "%s". %s.')
-    FILE_ERROR_DECODE = N_('Error decoding "%s". %s.')
-    FILE_ERROR_EXPORT = N_('Error exporting file "%s". %s.')
-
     signal_save = QtCore.pyqtSignal()
     signal_update = QtCore.pyqtSignal()
 
@@ -637,6 +633,8 @@ class ScriptEditorPage(PicardDialog):
         """Import from an external text file to a new script. Import can be either a plain text script or
         a naming script package.
         """
+        FILE_ERROR_IMPORT = N_('Error importing "%s". %s.')
+        FILE_ERROR_DECODE = N_('Error decoding "%s". %s.')
 
         dialog_title = _("Import Script File")
         dialog_file_types = self.FILE_TYPE_PACKAGE + ";;" + self.FILE_TYPE_SCRIPT + ";;" + self.FILE_TYPE_ALL
@@ -649,23 +647,23 @@ class ScriptEditorPage(PicardDialog):
                 with open(filename, 'r', encoding='utf8') as i_file:
                     file_content = i_file.read()
             except OSError as error:
-                self.output_file_error(self.FILE_ERROR_IMPORT, filename, error.strerror)
+                self.output_file_error(FILE_ERROR_IMPORT, filename, error.strerror)
                 return
             if not file_content.strip():
-                self.output_file_error(self.FILE_ERROR_IMPORT, filename, N_('The file was empty'))
+                self.output_file_error(FILE_ERROR_IMPORT, filename, _('The file was empty'))
                 return
             if file_type == self.FILE_TYPE_PACKAGE:
                 try:
                     script_item = FileNamingScript().create_from_json(file_content)
                 except JSONDecodeError as error:
-                    self.output_file_error(self.FILE_ERROR_DECODE, filename, error.msg)
+                    self.output_file_error(FILE_ERROR_DECODE, filename, error.msg)
                     return
                 if not (script_item.get_value('title') and script_item.get_value('script')):
-                    self.output_file_error(self.FILE_ERROR_DECODE, filename, N_('Invalid script package'))
+                    self.output_file_error(FILE_ERROR_DECODE, filename, _('Invalid script package'))
                     return
             else:
                 script_item = FileNamingScript(
-                    title=_("Imported from ") + filename,
+                    title=_("Imported from %s") % filename,
                     script=file_content.strip()
                 )
             self._insert_item(script_item)
@@ -674,6 +672,8 @@ class ScriptEditorPage(PicardDialog):
         """Export the current script to an external file. Export can be either as a plain text
         script or a naming script package.
         """
+        FILE_ERROR_EXPORT = N_('Error exporting file "%s". %s.')
+
         script_item = self.get_selected_item()
         script_text = self.get_script()
 
@@ -696,12 +696,12 @@ class ScriptEditorPage(PicardDialog):
                     with open(filename, 'w', encoding='utf8') as o_file:
                         o_file.write(script_text + '\n')
                 except OSError as error:
-                    self.output_file_error(self.FILE_ERROR_EXPORT, filename, error.strerror)
+                    self.output_file_error(FILE_ERROR_EXPORT, filename, error.strerror)
                 else:
                     dialog = QtWidgets.QMessageBox(
                         QtWidgets.QMessageBox.Information,
                         _("Export Script"),
-                        _("Script successfully exported to ") + filename,
+                        _("Script successfully exported to %s") % filename,
                         QtWidgets.QMessageBox.Ok,
                         self
                     )
