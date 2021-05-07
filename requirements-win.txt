@@ -5,3 +5,4 @@ markdown==3.3.4
 mutagen==1.45.1
 PyQt5==5.15.4
 pywin32==300
+PyYAML==5.4.1
