@@ -209,9 +209,13 @@
  </customwidgets>
  <tabstops>
   <tabstop>enable_tagger_scripts</tabstop>
-  <tabstop>add_button</tabstop>
   <tabstop>script_list</tabstop>
   <tabstop>tagger_script</tabstop>
+  <tabstop>add_button</tabstop>
+  <tabstop>scripting_documentation_button</tabstop>
+  <tabstop>move_up_button</tabstop>
+  <tabstop>move_down_button</tabstop>
+  <tabstop>remove_button</tabstop>
  </tabstops>
  <resources/>
  <connections>
