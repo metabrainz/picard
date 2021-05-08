@@ -296,6 +296,7 @@ class ScriptEditorPage(PicardDialog):
         self.ui.file_naming_editor_copy.clicked.connect(self.copy_script)
         self.ui.file_naming_editor_close.clicked.connect(self.close_window)
         self.ui.file_naming_editor_delete.clicked.connect(self.delete_script)
+        self.ui.file_naming_editor_reset.clicked.connect(self.reset_script)
         self.ui.script_details.clicked.connect(self.view_script_details)
 
         self.ui.file_naming_format.setEnabled(True)
@@ -779,6 +780,22 @@ class ScriptEditorPage(PicardDialog):
                         self
                     )
                     dialog.exec_()
+
+    def reset_script(self):
+        """Reset the script to the last saved value.
+        """
+        if self.has_changed():
+            if self.confirmation_dialog(_("Are you sure that you want to reset the script to its last saved value?")):
+                self.select_script(skip_check=True)
+        else:
+            dialog = QtWidgets.QMessageBox(
+                QtWidgets.QMessageBox.Information,
+                _("Reset Script"),
+                _("There have been no changes made since the last time the script was saved."),
+                QtWidgets.QMessageBox.Ok,
+                self
+            )
+            dialog.exec_()
 
     def load(self):
         """Loads the file naming script from the selected combo box item.
