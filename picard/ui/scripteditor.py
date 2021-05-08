@@ -393,10 +393,18 @@ class ScriptEditorPage(PicardDialog):
             self.naming_scripts.insert(0, script_item.to_json())
             self.selected_script_id = script_item['id']
 
-        idx = 0
         self.ui.preset_naming_scripts.blockSignals(True)
         self.ui.preset_naming_scripts.clear()
 
+        def _add_and_check(idx, count, title, item):
+            self.ui.preset_naming_scripts.addItem(title, item)
+            if item['id'] == self.selected_script_id:
+                idx = count
+            count += 1
+            return idx, count
+
+        idx = 0
+        count = 0   # Use separate counter rather than `i` in case ScriptImportError triggers, resulting in an incorrect index count.
         for i in range(len(self.naming_scripts)):
             try:
                 script_item = FileNamingScript().create_from_json(self.naming_scripts[i], create_new_id=False)
@@ -404,15 +412,10 @@ class ScriptEditorPage(PicardDialog):
                 pass
             else:
                 self.naming_scripts[i] = script_item.to_json()  # Ensure scripts are stored with id codes
-                self.ui.preset_naming_scripts.addItem(self.SCRIPT_TITLE_USER % script_item.title, script_item)
-                if script_item['id'] == self.selected_script_id:
-                    idx = i
+                idx, count = _add_and_check(idx, count, self.SCRIPT_TITLE_USER % script_item["title"], script_item)
 
         for script_item in get_file_naming_script_presets():
-            title = script_item.title
-            self.ui.preset_naming_scripts.addItem(title, script_item)
-            if script_item['id'] == self.selected_script_id:
-                idx = self.ui.preset_naming_scripts.count() - 1
+            idx, count = _add_and_check(idx, count, script_item['title'], script_item)
 
         self.ui.preset_naming_scripts.blockSignals(False)
         self.update_scripts_list()
@@ -457,11 +460,11 @@ class ScriptEditorPage(PicardDialog):
         """
         self.ui.preset_naming_scripts.blockSignals(True)
         idx = len(self.naming_scripts)
-        self.ui.preset_naming_scripts.insertItem(idx, self.SCRIPT_TITLE_USER % script_item.title, script_item)
+        self.ui.preset_naming_scripts.insertItem(idx, self.SCRIPT_TITLE_USER % script_item['title'], script_item)
         self.ui.preset_naming_scripts.setCurrentIndex(idx)
         self.ui.preset_naming_scripts.blockSignals(False)
         self.update_scripts_list()
-        self.select_script()
+        self.select_script(skip_check=True)
 
     def new_script(self):
         """Add a new (empty) script to the script selection combo box and script list.
@@ -521,13 +524,16 @@ class ScriptEditorPage(PicardDialog):
             return False
         return True
 
-    def select_script(self):
+    def select_script(self, skip_check=False):
         """Load the current script from the combo box into the editor.
+
+        Args:
+            skip_check (bool): Skip the check for unsaved edits.  Defaults to False.
         """
-        if self.unsaved_changes_confirmation():
+        if skip_check or self.unsaved_changes_confirmation():
             script_item = self.get_selected_item()
-            self.ui.script_title.setText(str(script_item.title).strip())
-            self.set_script(script_item.script)
+            self.ui.script_title.setText(script_item['title'])
+            self.set_script(script_item['script'])
             self.selected_script_id = script_item['id']
             self.selected_script_index = self.ui.preset_naming_scripts.currentIndex()
             self.update_script_in_settings(script_item)
@@ -557,11 +563,12 @@ class ScriptEditorPage(PicardDialog):
         if selected < 0:
             return
         script_item = self.get_selected_item()
-        self.ui.script_title.setReadOnly(script_item.readonly or selected < 1)
-        self.ui.file_naming_format.setReadOnly(script_item.readonly)
-        self.ui.file_naming_editor_save.setEnabled(save_enabled and not script_item.readonly)
+        readonly = script_item['readonly']
+        self.ui.script_title.setReadOnly(readonly or selected < 1)
+        self.ui.file_naming_format.setReadOnly(readonly)
+        self.ui.file_naming_editor_save.setEnabled(save_enabled and not readonly)
         self.ui.file_naming_editor_copy.setEnabled(save_enabled)
-        self.ui.file_naming_editor_delete.setEnabled(script_item.deletable and save_enabled)
+        self.ui.file_naming_editor_delete.setEnabled(script_item['deletable'] and save_enabled)
         self.ui.import_script.setEnabled(save_enabled)
         self.ui.export_script.setEnabled(save_enabled)
 
@@ -596,7 +603,7 @@ class ScriptEditorPage(PicardDialog):
             self.ui.preset_naming_scripts.setCurrentIndex(idx)
             self.ui.preset_naming_scripts.blockSignals(False)
             self.update_scripts_list()
-            self.select_script()
+            self.select_script(skip_check=True)
 
     def save_script(self):
         """Saves changes to the current script to the script list and combo box item.
