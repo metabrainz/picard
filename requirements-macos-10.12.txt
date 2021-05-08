@@ -6,4 +6,3 @@ mutagen==1.45.1
 pyobjc-core==6.2.2
 pyobjc-framework-Cocoa==6.2.2
 PyQt5==5.13.1
-PyYAML==5.4.1

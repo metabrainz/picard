@@ -27,6 +27,7 @@ from test.picardtestcase import PicardTestCase
 from picard.script import (
     FileNamingScript,
     PicardScript,
+    ScriptImportError,
 )
 
 
@@ -125,10 +126,10 @@ class ScriptClassesTest(PicardTestCase):
 
     def test_script_object_9(self):
         # Test that an exception is raised when creating or updating using an invalid JSON string
-        with self.assertRaises(JSONDecodeError):
+        with self.assertRaises(ScriptImportError):
             test_script = PicardScript().create_from_json('Not a JSON string')
         test_script = PicardScript(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0')
-        with self.assertRaises(JSONDecodeError):
+        with self.assertRaises(ScriptImportError):
             test_script.update_from_json('Not a JSON string')
 
     def test_naming_script_object_1(self):
