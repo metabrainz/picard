@@ -12,7 +12,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>858</width>
+    <width>902</width>
     <height>729</height>
    </rect>
   </property>
@@ -23,6 +23,19 @@
    </sizepolicy>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
+   <property name="spacing">
+    <number>1</number>
+   </property>
+   <property name="topMargin">
+    <number>3</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="layout_for_menubar">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+    </layout>
+   </item>
    <item>
     <widget class="QSplitter" name="splitter_between_editor_and_examples">
      <property name="sizePolicy">
@@ -63,6 +76,18 @@
        <enum>QFrame::Raised</enum>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_5">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>3</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <property name="bottomMargin">
@@ -271,20 +296,10 @@
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item>
-          <widget class="QCheckBox" name="file_naming_word_wrap">
-           <property name="toolTip">
-            <string>Word wrap long lines in the editor</string>
-           </property>
-           <property name="text">
-            <string>Word wrap script</string>
-           </property>
-          </widget>
-         </item>
          <item>
           <widget class="QLabel" name="renaming_error">
            <property name="sizePolicy">
@@ -302,112 +317,19 @@
           </widget>
          </item>
          <item>
-          <widget class="QCheckBox" name="show_documentation">
+          <widget class="QPushButton" name="file_naming_editor_reset">
            <property name="toolTip">
-            <string>Open the scripting documentation in a sidebar</string>
-           </property>
-           <property name="text">
-            <string>Show Documentation</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QPushButton" name="example_filename_sample_files_button">
-           <property name="toolTip">
-            <string>Up to 10 items chosen at random from files selected in the main window</string>
-           </property>
-           <property name="text">
-            <string>Reload Examples</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QPushButton" name="script_details">
-           <property name="toolTip">
-            <string>Display the details for the script</string>
-           </property>
-           <property name="statusTip">
             <string/>
            </property>
            <property name="text">
-            <string>Details</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="import_script">
-           <property name="toolTip">
-            <string>Import a file as a new script</string>
-           </property>
-           <property name="text">
-            <string>Import</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="export_script">
-           <property name="toolTip">
-            <string>Export the script to a file</string>
-           </property>
-           <property name="text">
-            <string>Export</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="file_naming_editor_new">
-           <property name="toolTip">
-            <string>Create a new file naming script</string>
-           </property>
-           <property name="text">
-            <string>New</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="file_naming_editor_copy">
-           <property name="toolTip">
-            <string>Save a copy of the script as a new script</string>
-           </property>
-           <property name="text">
-            <string>Copy</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="file_naming_editor_delete">
-           <property name="toolTip">
-            <string>Delete the script</string>
-           </property>
-           <property name="text">
-            <string>Delete</string>
+            <string>Revert</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="file_naming_editor_save">
            <property name="toolTip">
-            <string>Save changes to the script</string>
+            <string/>
            </property>
            <property name="text">
             <string>Save</string>
@@ -417,7 +339,7 @@
          <item>
           <widget class="QPushButton" name="file_naming_editor_close">
            <property name="toolTip">
-            <string>Close the script editor</string>
+            <string/>
            </property>
            <property name="text">
             <string>Close</string>

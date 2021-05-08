@@ -26,6 +26,7 @@ import os.path
 
 from PyQt5 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 from PyQt5.QtGui import QPalette
@@ -44,6 +45,10 @@ from picard.script import (
     ScriptImportError,
     ScriptParser,
     get_file_naming_script_presets,
+)
+from picard.util import (
+    icontheme,
+    webbrowser2,
 )
 from picard.util.settingsoverride import SettingsOverride
 
@@ -285,33 +290,24 @@ class ScriptEditorPage(PicardDialog):
         self.loading = True
         self.ui = Ui_ScriptEditor()
         self.ui.setupUi(self)
-
-        self.ui.example_filename_sample_files_button.setToolTip(_(self.examples.tooltip_text) % self.examples.max_samples)
+        self.make_menu()
+        self.add_tooltips()
         self.ui.label.setWordWrap(False)
 
         self.installEventFilter(self)
 
-        self.ui.file_naming_editor_new.clicked.connect(self.new_script)
         self.ui.file_naming_editor_save.clicked.connect(self.save_script)
-        self.ui.file_naming_editor_copy.clicked.connect(self.copy_script)
         self.ui.file_naming_editor_close.clicked.connect(self.close_window)
-        self.ui.file_naming_editor_delete.clicked.connect(self.delete_script)
         self.ui.file_naming_editor_reset.clicked.connect(self.reset_script)
-        self.ui.script_details.clicked.connect(self.view_script_details)
 
         self.ui.file_naming_format.setEnabled(True)
 
         # Add scripting documentation to parent frame.
-        doc_widget = ScriptingDocumentationWidget(self)
+        doc_widget = ScriptingDocumentationWidget(self, include_link=False)
         self.ui.documentation_frame_layout.addWidget(doc_widget)
-        self.ui.show_documentation.stateChanged.connect(self.toggle_documentation)
 
         self.ui.file_naming_format.textChanged.connect(self.check_formats)
-        self.ui.file_naming_word_wrap.stateChanged.connect(self.toggle_wordwrap)
-        self.ui.import_script.clicked.connect(self.import_script)
-        self.ui.export_script.clicked.connect(self.export_script)
 
-        self.ui.example_filename_sample_files_button.clicked.connect(self.update_example_files)
         self._sampled_example_files = []
 
         self.ui.example_filename_after.itemSelectionChanged.connect(self.match_before_to_after)
@@ -328,11 +324,135 @@ class ScriptEditorPage(PicardDialog):
 
         self.synchronize_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
 
-        self.wordwrap = QtWidgets.QTextEdit.NoWrap
+        self.wordwrap = True
+        self.toggle_wordwrap()  # Force update to display
+        self.sidebar = True
+        self.toggle_documentation()  # Force update to display
         self.examples_current_row = -1
+        self.select_script()
 
-        self.load()
         self.loading = False
+
+    def make_menu(self):
+        """Build the menu bar.
+        """
+        main_menu = QtWidgets.QMenuBar()
+        base_font = self.ui.file_naming_editor_close.font()
+        main_menu.setStyleSheet(
+            "QMenuBar { font-family: %s; font-size: %upt; }" %
+            (base_font.family(), base_font.pointSize())
+        )
+
+        # File menu settings
+        file_menu = main_menu.addMenu(_('&File'))
+        file_menu.setToolTipsVisible(True)
+
+        self.import_action = QtWidgets.QAction(_("&Import a script file"), self)
+        self.import_action.setIcon(icontheme.lookup('document-open'))
+        self.import_action.triggered.connect(self.import_script)
+        file_menu.addAction(self.import_action)
+
+        self.export_action = QtWidgets.QAction(_("&Export a script file"), self)
+        self.export_action.setIcon(icontheme.lookup('document-save'))
+        self.export_action.triggered.connect(self.export_script)
+        file_menu.addAction(self.export_action)
+
+        self.close_action = QtWidgets.QAction(_("E&xit / Close editor"), self)
+        self.close_action.triggered.connect(self.close_window)
+        file_menu.addAction(self.close_action)
+
+        # Script menu settings
+        script_menu = main_menu.addMenu(_('&Script'))
+        script_menu.setToolTipsVisible(True)
+
+        self.details_action = QtWidgets.QAction(_("&View/Edit Script Metadata"), self)
+        self.details_action.triggered.connect(self.view_script_details)
+        script_menu.addAction(self.details_action)
+
+        self.add_action = QtWidgets.QAction(_("Add a &new script"), self)
+        self.add_action.setIcon(icontheme.lookup('add-item'))
+        self.add_action.triggered.connect(self.new_script)
+        script_menu.addAction(self.add_action)
+
+        self.copy_action = QtWidgets.QAction(_("&Copy the current script"), self)
+        self.copy_action.setIcon(icontheme.lookup('edit-copy'))
+        self.copy_action.triggered.connect(self.view_script_details)
+        script_menu.addAction(self.copy_action)
+
+        self.delete_action = QtWidgets.QAction(_("&Delete the current script"), self)
+        self.delete_action.setIcon(icontheme.lookup('list-remove'))
+        self.delete_action.triggered.connect(self.delete_script)
+        script_menu.addAction(self.delete_action)
+
+        self.reset_action = QtWidgets.QAction(_("&Revert the current script"), self)
+        self.reset_action.setIcon(icontheme.lookup('view-refresh'))
+        self.reset_action.triggered.connect(self.reset_script)
+        script_menu.addAction(self.reset_action)
+
+        self.save_action = QtWidgets.QAction(_("&Save the current script"), self)
+        self.save_action.setIcon(icontheme.lookup('document-save'))
+        self.save_action.triggered.connect(self.save_script)
+        script_menu.addAction(self.save_action)
+
+        # Miscellaneous menu settings
+        tools_menu = main_menu.addMenu(_('&Tools'))
+        tools_menu.setToolTipsVisible(True)
+
+        self.examples_action = QtWidgets.QAction(_("&Reload random example files"), self)
+        self.examples_action.setIcon(icontheme.lookup('view-refresh'))
+        self.examples_action.triggered.connect(self.update_example_files)
+        tools_menu.addAction(self.examples_action)
+
+        self.wrap_action = QtWidgets.QAction(_("&Toggle word wrap"), self)
+        self.wrap_action.triggered.connect(self.toggle_wordwrap)
+        self.wrap_action.setShortcut(QtGui.QKeySequence(_("Ctrl+W")))
+        tools_menu.addAction(self.wrap_action)
+
+        # Help menu settings
+        help_menu = main_menu.addMenu(_('&Help'))
+        help_menu.setToolTipsVisible(True)
+
+        self.docs_action = QtWidgets.QAction(_("&Show/hide sidebar"), self)
+        self.docs_action.triggered.connect(self.toggle_documentation)
+        self.docs_action.setShortcut(QtGui.QKeySequence(_("Ctrl+H")))
+        help_menu.addAction(self.docs_action)
+
+        self.docs_browse_action = QtWidgets.QAction(_("&Open in browser"), self)
+        self.docs_browse_action.setIcon(icontheme.lookup('lookup-musicbrainz'))
+        self.docs_browse_action.triggered.connect(self.docs_browser)
+        help_menu.addAction(self.docs_browse_action)
+
+        self.ui.layout_for_menubar.addWidget(main_menu)
+
+    def add_tooltips(self):
+        """Add tooltips to the widgets.
+        """
+        # Done here to avoid duplication and allow changes/corrections without having to recompile the UI file.
+
+        # Menu items
+        self.import_action.setToolTip(_("Import a file as a new script"))
+        self.export_action.setToolTip(_("Export the script to a file"))
+        self.close_action.setToolTip(_("Close the script editor"))
+        self.details_action.setToolTip(_("Display the details for the script"))
+        self.add_action.setToolTip(_("Create a new file naming script"))
+        self.copy_action.setToolTip(_("Save a copy of the script as a new script"))
+        self.delete_action.setToolTip(_("Delete the script"))
+        self.reset_action.setToolTip(_("Revert the script to the last saved value"))
+        self.save_action.setToolTip(_("Save changes to the script"))
+        self.examples_action.setToolTip(_(self.examples.tooltip_text) % self.examples.max_samples)
+        self.wrap_action.setToolTip(_("Word wrap long lines in the editor"))
+        self.docs_action.setToolTip(_("View the scripting documentation in a sidebar"))
+        self.docs_browse_action.setToolTip(_("Open the scripting documentation in your browser"))
+
+        # Buttons
+        self.ui.file_naming_editor_close.setToolTip(self.close_action.toolTip())
+        self.ui.file_naming_editor_save.setToolTip(self.save_action.toolTip())
+        self.ui.file_naming_editor_reset.setToolTip(self.reset_action.toolTip())
+
+    def docs_browser(self):
+        """Open the scriping documentation in a browser.
+        """
+        webbrowser2.open('doc_scripting')
 
     @staticmethod
     def synchronize_vertical_scrollbars(widgets):
@@ -425,7 +545,8 @@ class ScriptEditorPage(PicardDialog):
     def toggle_documentation(self):
         """Toggle the display of the scripting documentation sidebar.
         """
-        self.ui.documentation_frame.setVisible(self.ui.show_documentation.isChecked())
+        self.sidebar = not self.sidebar
+        self.ui.documentation_frame.setVisible(self.sidebar)
 
     def view_script_details(self):
         """View and edit (if not readonly) the metadata associated with the script.
@@ -566,12 +687,20 @@ class ScriptEditorPage(PicardDialog):
         script_item = self.get_selected_item()
         readonly = script_item['readonly']
         self.ui.script_title.setReadOnly(readonly or selected < 1)
+
+        # Buttons
         self.ui.file_naming_format.setReadOnly(readonly)
         self.ui.file_naming_editor_save.setEnabled(save_enabled and not readonly)
-        self.ui.file_naming_editor_copy.setEnabled(save_enabled)
-        self.ui.file_naming_editor_delete.setEnabled(script_item['deletable'] and save_enabled)
-        self.ui.import_script.setEnabled(save_enabled)
-        self.ui.export_script.setEnabled(save_enabled)
+        self.ui.file_naming_editor_reset.setEnabled(not readonly)
+
+        # Menu items
+        self.save_action.setEnabled(save_enabled and not readonly)
+        self.reset_action.setEnabled(not readonly)
+        self.add_action.setEnabled(save_enabled)
+        self.copy_action.setEnabled(save_enabled)
+        self.delete_action.setEnabled(script_item['deletable'] and save_enabled)
+        self.import_action.setEnabled(save_enabled)
+        self.export_action.setEnabled(save_enabled)
 
     @staticmethod
     def synchronize_selected_example_lines(current_row, source, target):
@@ -675,7 +804,8 @@ class ScriptEditorPage(PicardDialog):
     def toggle_wordwrap(self):
         """Toggles wordwrap in the script editing textbox.
         """
-        if self.ui.file_naming_word_wrap.isChecked():
+        self.wordwrap = not self.wordwrap
+        if self.wordwrap:
             self.ui.file_naming_format.setLineWrapMode(QtWidgets.QTextEdit.WidgetWidth)
         else:
             self.ui.file_naming_format.setLineWrapMode(QtWidgets.QTextEdit.NoWrap)
@@ -796,13 +926,6 @@ class ScriptEditorPage(PicardDialog):
                 self
             )
             dialog.exec_()
-
-    def load(self):
-        """Loads the file naming script from the selected combo box item.
-        """
-        self.toggle_wordwrap()
-        self.toggle_documentation()
-        self.select_script()
 
     def check_formats(self):
         """Checks for valid file naming script and settings, and updates the examples.
