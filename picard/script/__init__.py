@@ -137,7 +137,7 @@ class PicardScript():
     # Base class developed to support future tagging script class as possible replacement for currently used tuples in config.setting["list_of_scripts"].
 
     TYPE = PicardScriptType.BASE
-    OUTPUT_FIELDS = {'title', 'script', 'script_language_version'}
+    OUTPUT_FIELDS = {'title', 'script', 'script_language_version', 'id'}
 
     # Don't automatically trigger changing the `script_last_updated` property when updating these properties.
     _last_updated_ignore_list = {'last_updated', 'readonly', 'deletable', 'id'}
@@ -153,7 +153,7 @@ class PicardScript():
         """
         self.title = title if title else DEFAULT_SCRIPT_NAME
         self.script = script
-        if id is None:
+        if not id:
             self._set_new_id()
         else:
             self.id = id
@@ -270,7 +270,7 @@ class PicardScript():
     # TODO: Enable once PyYAML requirement resolved with Python 3.8
     #
     # @classmethod
-    # def create_from_yaml(cls, yaml_string):
+    # def create_from_yaml(cls, yaml_string, create_new_id=True):
     #     """Creates an instance based on the contents of the YAML string provided.
     #     Properties in the YAML string that are not found in the script object are ignored.
 
@@ -287,15 +287,18 @@ class PicardScript():
     #     if 'title' not in yaml_dict or 'script' not in yaml_dict:
     #         raise ScriptImportError(N_('Invalid script package'))
     #     new_object._update_from_dict(yaml_dict)
+    #     if create_new_id or not new_object['id']:
+    #         new_object._set_new_id()
     #     return new_object
 
     @classmethod
-    def create_from_json(cls, json_string):
+    def create_from_json(cls, json_string, create_new_id=True):
         """Creates an instance based on the contents of the JSON string provided.
         Properties in the JSON string that are not found in the script object are ignored.
 
         Args:
             json_string (str): JSON string containing the property settings.
+            create_new_id (bool): Do not use the existing id.  Defaults to True.
 
         Returns:
             object: An instance of the class, populated from the property settings in the JSON string.
@@ -305,6 +308,8 @@ class PicardScript():
         new_object.update_from_json(json_string)
         if not (new_object['title'] and new_object['script']):
             raise ScriptImportError(N_('Invalid script package'))
+        if create_new_id or not new_object['id']:
+            new_object._set_new_id()
         return new_object
 
     def update_from_json(self, json_string):
@@ -325,7 +330,7 @@ class FileNamingScript(PicardScript):
     """Picard file naming script class
     """
     TYPE = PicardScriptType.FILENAMING
-    OUTPUT_FIELDS = {'title', 'script', 'author', 'description', 'license', 'version', 'last_updated', 'script_language_version'}
+    OUTPUT_FIELDS = {'title', 'script', 'author', 'description', 'license', 'version', 'last_updated', 'script_language_version', 'id'}
 
     def __init__(
         self,
@@ -379,6 +384,7 @@ def get_file_naming_script_presets():
         return _("Preset %d: %s") % (number, _(title))
 
     yield FileNamingScript(
+        id="Preset 1",
         title=preset_title(1, N_("Default file naming script")),
         script=DEFAULT_FILE_NAMING_FORMAT,
         readonly=True,
@@ -392,6 +398,7 @@ def get_file_naming_script_presets():
     )
 
     yield FileNamingScript(
+        id="Preset 2",
         title=preset_title(2, N_("[album artist]/[album]/[track #]. [title]")),
         script="%albumartist%/\n"
                "%album%/\n"
@@ -407,6 +414,7 @@ def get_file_naming_script_presets():
     )
 
     yield FileNamingScript(
+        id="Preset 3",
         title=preset_title(3, N_("[album artist]/[album]/[disc and track #] [artist] - [title]")),
         script="$if2(%albumartist%,%artist%)/\n"
                "$if(%albumartist%,%album%/,)\n"

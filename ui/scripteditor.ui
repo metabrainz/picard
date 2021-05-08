@@ -71,7 +71,7 @@
          <item>
           <widget class="QLabel" name="label">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -83,7 +83,10 @@
             </size>
            </property>
            <property name="text">
-            <string>File naming scripts:</string>
+            <string>Select the file naming script to use:</string>
+           </property>
+           <property name="indent">
+            <number>0</number>
            </property>
           </widget>
          </item>
@@ -340,8 +343,11 @@
          </item>
          <item>
           <widget class="QPushButton" name="script_details">
+           <property name="toolTip">
+            <string>Display the details for the script</string>
+           </property>
            <property name="statusTip">
-            <string>Display the details for the currently selected script</string>
+            <string/>
            </property>
            <property name="text">
             <string>Details</string>
@@ -351,7 +357,7 @@
          <item>
           <widget class="QPushButton" name="import_script">
            <property name="toolTip">
-            <string>Import a file to replace the current script</string>
+            <string>Import a file as a new script</string>
            </property>
            <property name="text">
             <string>Import</string>
@@ -361,30 +367,10 @@
          <item>
           <widget class="QPushButton" name="export_script">
            <property name="toolTip">
-            <string>Export the current script to a file</string>
+            <string>Export the script to a file</string>
            </property>
            <property name="text">
             <string>Export</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="file_naming_editor_delete">
-           <property name="toolTip">
-            <string>Delete the currently selected script</string>
-           </property>
-           <property name="text">
-            <string>Delete</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="file_naming_editor_save">
-           <property name="toolTip">
-            <string>Save changes to the current script</string>
-           </property>
-           <property name="text">
-            <string>Save</string>
            </property>
           </widget>
          </item>
@@ -409,12 +395,32 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="file_naming_editor_select">
+          <widget class="QPushButton" name="file_naming_editor_delete">
            <property name="toolTip">
-            <string>Select the current script to use as the file naming script</string>
+            <string>Delete the script</string>
            </property>
            <property name="text">
-            <string>Select</string>
+            <string>Delete</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="file_naming_editor_save">
+           <property name="toolTip">
+            <string>Save changes to the script</string>
+           </property>
+           <property name="text">
+            <string>Save</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="file_naming_editor_close">
+           <property name="toolTip">
+            <string>Close the script editor</string>
+           </property>
+           <property name="text">
+            <string>Close</string>
            </property>
           </widget>
          </item>

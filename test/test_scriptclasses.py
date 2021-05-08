@@ -57,7 +57,7 @@ class ScriptClassesTest(PicardTestCase):
         self.assertEqual(test_script['id'], '12345')
         self.assertEqual(test_script.last_updated, '2021-04-26')
         self.assertEqual(test_script['last_updated'], '2021-04-26')
-        self.assertEqual(test_script.to_json(), '{"script": "Script text", "script_language_version": "1.0", "title": "Script 1"}')
+        self.assertEqual(test_script.to_json(), '{"id": "12345", "script": "Script text", "script_language_version": "1.0", "title": "Script 1"}')
 
     def test_script_object_2(self):
         # Check updating values directly so as not to modify `last_updated`.
@@ -105,7 +105,7 @@ class ScriptClassesTest(PicardTestCase):
         test_script = PicardScript(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0')
         test_script.update_script_setting(description='Updated description')
         self.assertEqual(test_script['last_updated'], '2021-04-26')
-        self.assertEqual(test_script.to_json(), '{"script": "Script text", "script_language_version": "1.0", "title": "Script 1"}')
+        self.assertEqual(test_script.to_json(), '{"id": "12345", "script": "Script text", "script_language_version": "1.0", "title": "Script 1"}')
         with self.assertRaises(AttributeError):
             print(test_script.description)
 
@@ -114,7 +114,7 @@ class ScriptClassesTest(PicardTestCase):
         test_script = PicardScript(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0')
         test_script.update_from_json('{"description": "Updated description"}')
         self.assertEqual(test_script['last_updated'], '2021-04-26')
-        self.assertEqual(test_script.to_json(), '{"script": "Script text", "script_language_version": "1.0", "title": "Script 1"}')
+        self.assertEqual(test_script.to_json(), '{"id": "12345", "script": "Script text", "script_language_version": "1.0", "title": "Script 1"}')
         with self.assertRaises(AttributeError):
             print(test_script.description)
 
@@ -145,27 +145,31 @@ class ScriptClassesTest(PicardTestCase):
         self.assertEqual(test_script['script'], 'Script text')
         self.assertEqual(test_script.author, 'Script author')
         self.assertEqual(test_script['author'], 'Script author')
-        self.assertEqual(test_script.to_json(),
-                         '{'
-                         '"author": "Script author", '
-                         '"description": "Script description", '
-                         '"last_updated": "2021-04-26", '
-                         '"license": "", '
-                         '"script": "Script text", '
-                         '"script_language_version": "1.0", '
-                         '"title": "Script 1", '
-                         '"version": ""'
-                         '}'
-                         )
-        self.assertEqual(test_script.to_json(indent=4),
-                         '{\n'
-                         '    "author": "Script author",\n'
-                         '    "description": "Script description",\n'
-                         '    "last_updated": "2021-04-26",\n'
-                         '    "license": "",\n'
-                         '    "script": "Script text",\n'
-                         '    "script_language_version": "1.0",\n'
-                         '    "title": "Script 1",\n'
-                         '    "version": ""\n'
-                         '}'
-                         )
+        self.assertEqual(
+            test_script.to_json(),
+            '{'
+            '"author": "Script author", '
+            '"description": "Script description", '
+            '"id": "12345", '
+            '"last_updated": "2021-04-26", '
+            '"license": "", '
+            '"script": "Script text", '
+            '"script_language_version": "1.0", '
+            '"title": "Script 1", '
+            '"version": ""'
+            '}'
+        )
+        self.assertEqual(
+            test_script.to_json(indent=4),
+            '{\n'
+            '    "author": "Script author",\n'
+            '    "description": "Script description",\n'
+            '    "id": "12345",\n'
+            '    "last_updated": "2021-04-26",\n'
+            '    "license": "",\n'
+            '    "script": "Script text",\n'
+            '    "script_language_version": "1.0",\n'
+            '    "title": "Script 1",\n'
+            '    "version": ""\n'
+            '}'
+        )
