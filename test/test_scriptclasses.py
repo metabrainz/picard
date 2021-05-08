@@ -20,7 +20,6 @@
 
 
 import datetime
-from json import JSONDecodeError
 
 from test.picardtestcase import PicardTestCase
 
