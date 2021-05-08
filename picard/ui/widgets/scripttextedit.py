@@ -34,10 +34,15 @@ from PyQt5.QtGui import QTextCursor
 from PyQt5.QtWidgets import (
     QCompleter,
     QTextEdit,
+    QToolTip,
 )
 
 from picard.const.sys import IS_MACOS
-from picard.script import script_function_names
+from picard.script import (
+    ScriptFunctionDocError,
+    script_function_documentation,
+    script_function_names,
+)
 from picard.util.tags import (
     PRESERVED_TAGS,
     TAG_NAMES,
@@ -196,12 +201,78 @@ def _replace_control_chars(text):
 
 class ScriptTextEdit(QTextEdit):
     autocomplete_trigger_chars = re.compile('[$%A-Za-z0-9_]')
+    unicode_escape_sequence = re.compile('^\\\\u[a-fA-F0-9]{4}$')
 
     def __init__(self, parent):
         super().__init__(parent)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.document())
         self.enable_completer()
         self.setFontFamily(FONT_FAMILY_MONOSPACE)
+        self.setMouseTracking(True)
+
+    def mouseMoveEvent(self, e):
+        position = self.get_document_position(e.pos())
+        tooltip = self.get_tooltip_at_position(position)
+        if not tooltip:
+            QToolTip.hideText()
+        self.setToolTip(tooltip)
+        return super().mouseMoveEvent(e)
+
+    def get_document_position(self, position):
+        cursor = self.cursorForPosition(position)
+        return cursor.position()
+
+    def get_tooltip_at_position(self, position):
+        doc = self.document()
+        allowed_chars = re.compile('[A-Za-z0-9_]')
+        while True:
+            char = doc.characterAt(position)
+            if char == '\\':
+                return self.tooltip_for_unicode_escape(position)
+            elif char == '$':
+                return self.tooltip_for_function(position)
+            elif not allowed_chars.match(char):
+                return None
+            position -= 1
+        return None
+
+    def tooltip_for_unicode_escape(self, position):
+        text = self._read_text(position, 6)
+        if self.unicode_escape_sequence.match(text):
+            codepoint = int(text[2:], 16)
+            char = chr(codepoint)
+            tooltip = unicodedata.name(char)
+            if unicodedata.category(char)[0] != "C":
+                tooltip += ': "%s"' % char
+            return tooltip
+        return None
+
+    def tooltip_for_function(self, position):
+        allowed_chars = re.compile('[A-Za-z0-9_]')
+        doc = self.document()
+        char = doc.characterAt(position)
+        if char != '$':
+            return None
+        function = ''
+        while True:
+            position += 1
+            char = doc.characterAt(position)
+            if not allowed_chars.match(char):
+                break
+            function += char
+        try:
+            return script_function_documentation(function, 'html')
+        except ScriptFunctionDocError:
+            return None
+
+    def _read_text(self, position, count):
+        doc = self.document()
+        text = ''
+        while count:
+            text += doc.characterAt(position)
+            count -= 1
+            position += 1
+        return text
 
     def insertFromMimeData(self, source):
         source.setText(_clean_text(source.text()))
