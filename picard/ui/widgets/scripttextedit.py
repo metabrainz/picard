@@ -46,6 +46,7 @@ from picard.script import (
 from picard.util.tags import (
     PRESERVED_TAGS,
     TAG_NAMES,
+    display_tag_name,
 )
 
 from picard.ui import FONT_FAMILY_MONOSPACE
@@ -214,6 +215,17 @@ class DocumentedScriptToken:
             position += 1
         return text
 
+    def _read_allowed_chars(self, position):
+        doc = self._doc
+        text = ''
+        while True:
+            char = doc.characterAt(position)
+            if not self.allowed_chars.match(char):
+                break
+            text += char
+            position += 1
+        return text
+
 
 class FunctionScriptToken(DocumentedScriptToken):
 
@@ -221,21 +233,27 @@ class FunctionScriptToken(DocumentedScriptToken):
         return char == '$'
 
     def get_tooltip(self, position):
-        doc = self._doc
-        char = doc.characterAt(position)
-        if char != '$':
+        if self._doc.characterAt(position) != '$':
             return None
-        function = ''
-        while True:
-            position += 1
-            char = doc.characterAt(position)
-            if not self.allowed_chars.match(char):
-                break
-            function += char
+        function = self._read_allowed_chars(position + 1)
         try:
             return script_function_documentation(function, 'html')
         except ScriptFunctionDocError:
             return None
+
+
+class VariableScriptToken(DocumentedScriptToken):
+
+    allowed_chars = re.compile('[A-Za-z0-9_:]')
+
+    def is_start_char(self, char):
+        return char == '%'
+
+    def get_tooltip(self, position):
+        if self._doc.characterAt(position) != '%':
+            return None
+        tag = self._read_allowed_chars(position + 1)
+        return display_tag_name(tag)
 
 
 class UnicodeEscapeScriptToken(DocumentedScriptToken):
@@ -297,6 +315,7 @@ class ScriptTextEdit(QTextEdit):
         doc = self.document()
         documented_tokens = {
             FunctionScriptToken(doc, position),
+            VariableScriptToken(doc, position),
             UnicodeEscapeScriptToken(doc, position)
         }
         while position and documented_tokens:
