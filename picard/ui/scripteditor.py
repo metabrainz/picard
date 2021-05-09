@@ -322,7 +322,7 @@ class ScriptEditorPage(PicardDialog):
         self.selected_script_id = config.setting["selected_file_naming_script_id"]
         self.selected_script_index = 0
         idx = self.populate_script_selector()
-        self.ui.preset_naming_scripts.currentIndexChanged.connect(self.select_script)
+        self.ui.preset_naming_scripts.currentIndexChanged.connect(partial(self.select_script, skip_check=False))
         self.ui.preset_naming_scripts.setCurrentIndex(idx)
         self.select_script()
 
