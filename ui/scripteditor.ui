@@ -376,7 +376,7 @@
        </size>
       </property>
       <property name="title">
-       <string>Files will be named like this</string>
+       <string>Files will be named like this:</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <property name="leftMargin">

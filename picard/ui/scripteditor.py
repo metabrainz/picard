@@ -261,6 +261,7 @@ class ScriptEditorPage(PicardDialog):
 
     signal_save = QtCore.pyqtSignal()
     signal_update = QtCore.pyqtSignal()
+    signal_selection_changed = QtCore.pyqtSignal()
 
     default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DocumentsLocation))
     default_script_filename = "picard_naming_script.pnsp"
@@ -663,6 +664,7 @@ class ScriptEditorPage(PicardDialog):
             self.update_script_in_settings(script_item)
             self.set_button_states()
             self.update_examples()
+            self.signal_selection_changed.emit()
 
     def update_combo_box_item(self, idx, script_item):
         """Update the title and item data for the specified script selection combo box item.

@@ -223,7 +223,7 @@ class Ui_ScriptEditor(object):
         self.file_naming_editor_reset.setText(_("Revert"))
         self.file_naming_editor_save.setText(_("Save"))
         self.file_naming_editor_close.setText(_("Close"))
-        self.groupBox.setTitle(_("Files will be named like this"))
+        self.groupBox.setTitle(_("Files will be named like this:"))
         self.example_filename_before_label.setText(_("Before"))
         self.example_filename_after_label.setText(_("After"))
 from picard.ui.widgets.scripttextedit import ScriptTextEdit

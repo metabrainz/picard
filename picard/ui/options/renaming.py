@@ -132,6 +132,8 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.open_script_editor.clicked.connect(self.show_script_editing_page)
         self.ui.move_files_to_browse.clicked.connect(self.move_files_to_browse)
 
+        self.ui.naming_script_selector.currentIndexChanged.connect(self.update_selector_in_editor)
+
         self.ui.example_filename_after.itemSelectionChanged.connect(self.match_before_to_after)
         self.ui.example_filename_before.itemSelectionChanged.connect(self.match_after_to_before)
 
@@ -151,11 +153,31 @@ class RenamingOptionsPage(OptionsPage):
         self.script_editor_page = ScriptEditorPage(parent=self, examples=self.examples)
         self.script_editor_page.signal_save.connect(self.save_from_editor)
         self.script_editor_page.signal_update.connect(self.update_from_editor)
+        self.script_editor_page.signal_selection_changed.connect(self.update_selector_from_editor)
+
+        self.update_selector_from_editor()
 
         # Sync example lists vertical scrolling and selection colors
         self.script_editor_page.synchronize_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
 
         self.current_row = -1
+
+    def update_selector_from_editor(self):
+        """Update the script selector combo box from the script editor page.
+        """
+        self.ui.naming_script_selector.blockSignals(True)
+        self.ui.naming_script_selector.clear()
+        for i in range(self.script_editor_page.ui.preset_naming_scripts.count()):
+            title = self.script_editor_page.ui.preset_naming_scripts.itemText(i)
+            script = self.script_editor_page.ui.preset_naming_scripts.itemData(i)
+            self.ui.naming_script_selector.addItem(title, script)
+        self.ui.naming_script_selector.setCurrentIndex(self.script_editor_page.ui.preset_naming_scripts.currentIndex())
+        self.ui.naming_script_selector.blockSignals(False)
+
+    def update_selector_in_editor(self):
+        """Update the selection in the script editor page to match local selection.
+        """
+        self.script_editor_page.ui.preset_naming_scripts.setCurrentIndex(self.ui.naming_script_selector.currentIndex())
 
     def match_after_to_before(self):
         """Sets the selected item in the 'after' list to the corresponding item in the 'before' list.
