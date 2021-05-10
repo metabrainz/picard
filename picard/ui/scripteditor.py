@@ -494,6 +494,8 @@ class ScriptEditorPage(PicardDialog):
         """Custom close event handler to check for unsaved changes.
         """
         if self.unsaved_changes_confirmation():
+            if self.has_changed():
+                self.select_script(skip_check=True)
             event.accept()
         else:
             event.ignore()
@@ -606,9 +608,9 @@ class ScriptEditorPage(PicardDialog):
 
     def update_script_in_settings(self, script_item):
         self.signal_save.emit()
-        config = get_config()
-        config.setting["file_naming_format"] = script_item['script']
-        config.setting["selected_file_naming_script_id"] = self.selected_script_id
+        # config = get_config()
+        # config.setting["file_naming_format"] = script_item['script']
+        # config.setting["selected_file_naming_script_id"] = self.selected_script_id
 
     def update_scripts_list(self):
         """Refresh the script list in the settings based on the contents of the script selection combo box.
@@ -619,8 +621,8 @@ class ScriptEditorPage(PicardDialog):
             # Only add items that can be removed -- no presets
             if script_item.deletable:
                 self.naming_scripts.append(script_item.to_json())
-        config = get_config()
-        config.setting["file_naming_scripts"] = self.naming_scripts
+        # config = get_config()
+        # config.setting["file_naming_scripts"] = self.naming_scripts
 
     def get_selected_item(self):
         """Get the selected item from the script selection combo box.
@@ -920,7 +922,7 @@ class ScriptEditorPage(PicardDialog):
         else:
             dialog = QtWidgets.QMessageBox(
                 QtWidgets.QMessageBox.Information,
-                _("Reset Script"),
+                _("Revert Script"),
                 _("There have been no changes made since the last time the script was saved."),
                 QtWidgets.QMessageBox.Ok,
                 self

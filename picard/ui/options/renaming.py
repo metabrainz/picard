@@ -42,6 +42,7 @@ from PyQt5.QtGui import QPalette
 
 from picard.config import (
     BoolOption,
+    ListOption,
     TextOption,
     get_config,
 )
@@ -92,6 +93,16 @@ class RenamingOptionsPage(OptionsPage):
         BoolOption("setting", "move_additional_files", False),
         TextOption("setting", "move_additional_files_pattern", "*.jpg *.png"),
         BoolOption("setting", "delete_empty_dirs", True),
+        ListOption(
+            "setting",
+            "file_naming_scripts",
+            [],
+        ),
+        TextOption(
+            "setting",
+            "selected_file_naming_script_id",
+            "",
+        ),
     ]
 
     def __init__(self, parent=None):
@@ -258,6 +269,8 @@ class RenamingOptionsPage(OptionsPage):
         config.setting["move_additional_files"] = self.ui.move_additional_files.isChecked()
         config.setting["move_additional_files_pattern"] = self.ui.move_additional_files_pattern.text()
         config.setting["delete_empty_dirs"] = self.ui.delete_empty_dirs.isChecked()
+        config.setting["file_naming_scripts"] = self.script_editor_page.naming_scripts
+        config.setting["selected_file_naming_script_id"] = self.script_editor_page.selected_script_id
         self.tagger.window.enable_moving_action.setChecked(config.setting["move_files"])
 
     def display_error(self, error):
