@@ -386,6 +386,7 @@ class ScriptEditorPage(PicardDialog):
 
         self.save_action = QtWidgets.QAction(_("&Save the current script"), self)
         self.save_action.setIcon(icontheme.lookup('document-save'))
+        self.save_action.setShortcut(QtGui.QKeySequence(_("Ctrl+S")))
         self.save_action.triggered.connect(self.save_script)
         script_menu.addAction(self.save_action)
 
@@ -758,6 +759,14 @@ class ScriptEditorPage(PicardDialog):
             script_item.title = title
             script_item.script = self.get_script()
             self.update_combo_box_item(selected, script_item)
+            dialog = QtWidgets.QMessageBox(
+                QtWidgets.QMessageBox.Information,
+                _("Save Script"),
+                _("Changes to the script have been saved."),
+                QtWidgets.QMessageBox.Ok,
+                self
+            )
+            dialog.exec_()
         else:
             self.display_error(OptionsCheckError(_("Error"), _("The script title must not be empty.")))
 
