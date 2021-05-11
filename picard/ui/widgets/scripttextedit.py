@@ -30,7 +30,10 @@ from PyQt5 import (
     QtGui,
 )
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QTextCursor
+from PyQt5.QtGui import (
+    QCursor,
+    QTextCursor,
+)
 from PyQt5.QtWidgets import (
     QCompleter,
     QTextEdit,
@@ -301,17 +304,31 @@ class ScriptTextEdit(QTextEdit):
         self.enable_completer()
         self.setFontFamily(FONT_FAMILY_MONOSPACE)
         self.setMouseTracking(True)
+        self.textChanged.connect(self.update_tooltip)
 
     def mouseMoveEvent(self, e):
-        cursor = self.cursorForPosition(e.pos())
-        position = cursor.position()
-        tooltip = self.get_tooltip_at_position(position)
+        tooltip = self.get_tooltip_at_mouse_position(e.pos())
         if not tooltip:
             QToolTip.hideText()
         self.setToolTip(tooltip)
         return super().mouseMoveEvent(e)
 
-    def get_tooltip_at_position(self, position):
+    def update_tooltip(self):
+        if self.underMouse() and self.toolTip():
+            position = self.mapFromGlobal(QCursor.pos())
+            tooltip = self.get_tooltip_at_mouse_position(position)
+            if tooltip != self.toolTip():
+                # Hide tooltip if the entity causing this tooltip
+                # was moved away from the mouse position
+                QToolTip.hideText()
+                self.setToolTip(tooltip)
+
+    def get_tooltip_at_mouse_position(self, position):
+        cursor = self.cursorForPosition(position)
+        return self.get_tooltip_at_cursor(cursor)
+
+    def get_tooltip_at_cursor(self, cursor):
+        position = cursor.position()
         doc = self.document()
         documented_tokens = {
             FunctionScriptToken(doc, position),
