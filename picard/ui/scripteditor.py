@@ -308,7 +308,12 @@ class ScriptEditorPage(PicardDialog):
         self.ui = Ui_ScriptEditor()
         self.ui.setupUi(self)
         self.make_menu()
-        self.add_tooltips()
+
+        # Button tooltips
+        self.ui.file_naming_editor_close.setToolTip(self.close_action.toolTip())
+        self.ui.file_naming_editor_save.setToolTip(self.save_action.toolTip())
+        self.ui.file_naming_editor_reset.setToolTip(self.reset_action.toolTip())
+
         self.ui.label.setWordWrap(False)
 
         self.installEventFilter(self)
@@ -361,16 +366,19 @@ class ScriptEditorPage(PicardDialog):
         file_menu.setToolTipsVisible(True)
 
         self.import_action = QtWidgets.QAction(_("&Import a script file"), self)
+        self.import_action.setToolTip(_("Import a file as a new script"))
         self.import_action.setIcon(icontheme.lookup('document-open'))
         self.import_action.triggered.connect(self.import_script)
         file_menu.addAction(self.import_action)
 
         self.export_action = QtWidgets.QAction(_("&Export a script file"), self)
+        self.export_action.setToolTip(_("Export the script to a file"))
         self.export_action.setIcon(icontheme.lookup('document-save'))
         self.export_action.triggered.connect(self.export_script)
         file_menu.addAction(self.export_action)
 
         self.close_action = QtWidgets.QAction(_("E&xit / Close editor"), self)
+        self.close_action.setToolTip(_("Close the script editor"))
         self.close_action.triggered.connect(self.close_window)
         file_menu.addAction(self.close_action)
 
@@ -378,91 +386,78 @@ class ScriptEditorPage(PicardDialog):
         script_menu = main_menu.addMenu(_('&Script'))
         script_menu.setToolTipsVisible(True)
 
-        self.details_action = QtWidgets.QAction(_("View/Edit Script &Metadata"), self)
+        self.details_action = QtWidgets.QAction(_("Edit Script &Metadata"), self)
+        self.details_action.setToolTip(_("Display the details for the script"))
         self.details_action.triggered.connect(self.view_script_details)
         self.details_action.setShortcut(QtGui.QKeySequence(_("Ctrl+M")))
         script_menu.addAction(self.details_action)
 
         self.add_action = QtWidgets.QAction(_("Add a &new script"), self)
+        self.add_action.setToolTip(_("Create a new file naming script"))
         self.add_action.setIcon(icontheme.lookup('add-item'))
         self.add_action.triggered.connect(self.new_script)
         script_menu.addAction(self.add_action)
 
         self.copy_action = QtWidgets.QAction(_("&Copy the current script"), self)
+        self.copy_action.setToolTip(_("Save a copy of the script as a new script"))
         self.copy_action.setIcon(icontheme.lookup('edit-copy'))
         self.copy_action.triggered.connect(self.copy_script)
         script_menu.addAction(self.copy_action)
 
         self.delete_action = QtWidgets.QAction(_("&Delete the current script"), self)
+        self.delete_action.setToolTip(_("Delete the script"))
         self.delete_action.setIcon(icontheme.lookup('list-remove'))
         self.delete_action.triggered.connect(self.delete_script)
         script_menu.addAction(self.delete_action)
 
         self.reset_action = QtWidgets.QAction(_("&Revert the current script"), self)
+        self.reset_action.setToolTip(_("Revert the script to the last saved value"))
         self.reset_action.setIcon(icontheme.lookup('view-refresh'))
         self.reset_action.triggered.connect(self.reset_script)
         script_menu.addAction(self.reset_action)
 
         self.save_action = QtWidgets.QAction(_("&Save the current script"), self)
+        self.save_action.setToolTip(_("Save changes to the script"))
         self.save_action.setIcon(icontheme.lookup('document-save'))
         self.save_action.setShortcut(QtGui.QKeySequence(_("Ctrl+S")))
         self.save_action.triggered.connect(self.save_script)
         script_menu.addAction(self.save_action)
 
-        # Miscellaneous menu settings
-        tools_menu = main_menu.addMenu(_('&Tools'))
-        tools_menu.setToolTipsVisible(True)
+        # Display menu settings
+        display_menu = main_menu.addMenu(_('&Display'))
+        display_menu.setToolTipsVisible(True)
 
         self.examples_action = QtWidgets.QAction(_("&Reload random example files"), self)
+        self.examples_action.setToolTip(_(self.examples.tooltip_text) % self.examples.max_samples)
         self.examples_action.setIcon(icontheme.lookup('view-refresh'))
         self.examples_action.triggered.connect(self.update_example_files)
-        tools_menu.addAction(self.examples_action)
+        display_menu.addAction(self.examples_action)
 
-        self.wrap_action = QtWidgets.QAction(_("&Toggle word wrap"), self)
+        self.wrap_action = QtWidgets.QAction(_("&Word wrap script"), self)
+        self.wrap_action.setToolTip(_("Word wrap long lines in the editor"))
         self.wrap_action.triggered.connect(self.toggle_wordwrap)
         self.wrap_action.setShortcut(QtGui.QKeySequence(_("Ctrl+W")))
-        tools_menu.addAction(self.wrap_action)
+        self.wrap_action.setCheckable(True)
+        display_menu.addAction(self.wrap_action)
+
+        self.docs_action = QtWidgets.QAction(_("&Show documentation"), self)
+        self.docs_action.setToolTip(_("View the scripting documentation in a sidebar"))
+        self.docs_action.triggered.connect(self.toggle_documentation)
+        self.docs_action.setShortcut(QtGui.QKeySequence(_("Ctrl+H")))
+        self.docs_action.setCheckable(True)
+        display_menu.addAction(self.docs_action)
 
         # Help menu settings
         help_menu = main_menu.addMenu(_('&Help'))
         help_menu.setToolTipsVisible(True)
 
-        self.docs_action = QtWidgets.QAction(_("&Show/hide sidebar"), self)
-        self.docs_action.triggered.connect(self.toggle_documentation)
-        self.docs_action.setShortcut(QtGui.QKeySequence(_("Ctrl+H")))
-        help_menu.addAction(self.docs_action)
-
         self.docs_browse_action = QtWidgets.QAction(_("&Open in browser"), self)
+        self.docs_browse_action.setToolTip(_("Open the scripting documentation in your browser"))
         self.docs_browse_action.setIcon(icontheme.lookup('lookup-musicbrainz'))
         self.docs_browse_action.triggered.connect(self.docs_browser)
         help_menu.addAction(self.docs_browse_action)
 
         self.ui.layout_for_menubar.addWidget(main_menu)
-
-    def add_tooltips(self):
-        """Add tooltips to the widgets.
-        """
-        # Done here to avoid duplication and allow changes/corrections without having to recompile the UI file.
-
-        # Menu items
-        self.import_action.setToolTip(_("Import a file as a new script"))
-        self.export_action.setToolTip(_("Export the script to a file"))
-        self.close_action.setToolTip(_("Close the script editor"))
-        self.details_action.setToolTip(_("Display the details for the script"))
-        self.add_action.setToolTip(_("Create a new file naming script"))
-        self.copy_action.setToolTip(_("Save a copy of the script as a new script"))
-        self.delete_action.setToolTip(_("Delete the script"))
-        self.reset_action.setToolTip(_("Revert the script to the last saved value"))
-        self.save_action.setToolTip(_("Save changes to the script"))
-        self.examples_action.setToolTip(_(self.examples.tooltip_text) % self.examples.max_samples)
-        self.wrap_action.setToolTip(_("Word wrap long lines in the editor"))
-        self.docs_action.setToolTip(_("View the scripting documentation in a sidebar"))
-        self.docs_browse_action.setToolTip(_("Open the scripting documentation in your browser"))
-
-        # Buttons
-        self.ui.file_naming_editor_close.setToolTip(self.close_action.toolTip())
-        self.ui.file_naming_editor_save.setToolTip(self.save_action.toolTip())
-        self.ui.file_naming_editor_reset.setToolTip(self.reset_action.toolTip())
 
     def load(self):
         """Load initial configuration.
