@@ -262,6 +262,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_additional_files.setChecked(config.setting["move_additional_files"])
         self.ui.move_additional_files_pattern.setText(config.setting["move_additional_files_pattern"])
         self.ui.delete_empty_dirs.setChecked(config.setting["delete_empty_dirs"])
+        self.script_editor_page.load()
         self.update_examples_from_local()
 
     def check(self):

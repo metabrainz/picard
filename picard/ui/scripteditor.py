@@ -314,14 +314,7 @@ class ScriptEditorPage(PicardDialog):
         self.ui.example_filename_after.itemSelectionChanged.connect(self.match_before_to_after)
         self.ui.example_filename_before.itemSelectionChanged.connect(self.match_after_to_before)
 
-        config = get_config()
-        self.naming_scripts = config.setting["file_naming_scripts"]
-        self.selected_script_id = config.setting["selected_file_naming_script_id"]
-        self.selected_script_index = 0
-        idx = self.populate_script_selector()
         self.ui.preset_naming_scripts.currentIndexChanged.connect(partial(self.select_script, skip_check=False))
-        self.ui.preset_naming_scripts.setCurrentIndex(idx)
-        self.select_script()
 
         self.synchronize_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
 
@@ -330,8 +323,9 @@ class ScriptEditorPage(PicardDialog):
         self.sidebar = True
         self.toggle_documentation()  # Force update to display
         self.examples_current_row = -1
-        self.select_script()
 
+        # self.select_script()
+        self.load()
         self.loading = False
 
     def make_menu(self):
@@ -449,6 +443,20 @@ class ScriptEditorPage(PicardDialog):
         self.ui.file_naming_editor_close.setToolTip(self.close_action.toolTip())
         self.ui.file_naming_editor_save.setToolTip(self.save_action.toolTip())
         self.ui.file_naming_editor_reset.setToolTip(self.reset_action.toolTip())
+
+    def load(self):
+        """Load initial configuration.
+        """
+        config = get_config()
+        self.examples.settings = config.setting
+        self.naming_scripts = config.setting["file_naming_scripts"]
+        self.selected_script_id = config.setting["selected_file_naming_script_id"]
+        self.selected_script_index = 0
+        idx = self.populate_script_selector()
+        self.ui.preset_naming_scripts.blockSignals(True)
+        self.ui.preset_naming_scripts.setCurrentIndex(idx)
+        self.ui.preset_naming_scripts.blockSignals(False)
+        self.select_script(skip_check=True)
 
     def docs_browser(self):
         """Open the scriping documentation in a browser.
