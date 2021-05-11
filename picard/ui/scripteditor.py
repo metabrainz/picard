@@ -235,6 +235,22 @@ class ScriptEditorExamples():
         yield efile
 
 
+def confirmation_dialog(parent, message):
+    """Displays a confirmation dialog.
+
+    Returns:
+        bool: True if accepted, otherwise False.
+    """
+    dialog = QtWidgets.QMessageBox(
+        QtWidgets.QMessageBox.Warning,
+        _('Confirm'),
+        message,
+        QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel,
+        parent
+    )
+    return dialog.exec_() == QtWidgets.QMessageBox.Ok
+
+
 class ScriptEditorPage(PicardDialog):
     """File Naming Script Editor Page
     """
@@ -324,6 +340,8 @@ class ScriptEditorPage(PicardDialog):
         self.toggle_documentation()  # Force update to display
         self.examples_current_row = -1
 
+        self.script_metadata_changed = False
+
         # self.select_script()
         self.load()
         self.loading = False
@@ -360,8 +378,9 @@ class ScriptEditorPage(PicardDialog):
         script_menu = main_menu.addMenu(_('&Script'))
         script_menu.setToolTipsVisible(True)
 
-        self.details_action = QtWidgets.QAction(_("&View/Edit Script Metadata"), self)
+        self.details_action = QtWidgets.QAction(_("View/Edit Script &Metadata"), self)
         self.details_action.triggered.connect(self.view_script_details)
+        self.details_action.setShortcut(QtGui.QKeySequence(_("Ctrl+M")))
         script_menu.addAction(self.details_action)
 
         self.add_action = QtWidgets.QAction(_("Add a &new script"), self)
@@ -371,7 +390,7 @@ class ScriptEditorPage(PicardDialog):
 
         self.copy_action = QtWidgets.QAction(_("&Copy the current script"), self)
         self.copy_action.setIcon(icontheme.lookup('edit-copy'))
-        self.copy_action.triggered.connect(self.view_script_details)
+        self.copy_action.triggered.connect(self.copy_script)
         script_menu.addAction(self.copy_action)
 
         self.delete_action = QtWidgets.QAction(_("&Delete the current script"), self)
@@ -577,7 +596,9 @@ class ScriptEditorPage(PicardDialog):
             bool: True if there are unsaved changes, otherwise false.
         """
         script_item = self.ui.preset_naming_scripts.itemData(self.selected_script_index)
-        return self.ui.script_title.text().strip() != script_item['title'] or self.get_script() != script_item['script']
+        return self.ui.script_title.text().strip() != script_item['title'] or \
+            self.get_script() != script_item['script'] or \
+            self.script_metadata_changed
 
     def update_from_details(self):
         """Update the script selection combo box and script list after updates from the script details dialog.
@@ -585,6 +606,7 @@ class ScriptEditorPage(PicardDialog):
         selected_item = self.get_selected_item()
         self.update_combo_box_item(self.ui.preset_naming_scripts.currentIndex(), selected_item)
         self.ui.script_title.setText(selected_item['title'])
+        self.script_metadata_changed = True
 
     def _insert_item(self, script_item):
         """Insert a new item into the script selection combo box and update the script list in the settings.
@@ -649,7 +671,7 @@ class ScriptEditorPage(PicardDialog):
         Returns:
             bool: True if no unsaved changes or user confirms the action, otherwise False.
         """
-        if not self.loading and self.has_changed() and not self.confirmation_dialog(
+        if not self.loading and self.has_changed() and not confirmation_dialog(self,
             _("There are unsaved changes to the current script.  Do you want to continue and lose these changes?")
         ):
             self.ui.preset_naming_scripts.blockSignals(True)
@@ -670,6 +692,7 @@ class ScriptEditorPage(PicardDialog):
             self.set_script(script_item['script'])
             self.selected_script_id = script_item['id']
             self.selected_script_index = self.ui.preset_naming_scripts.currentIndex()
+            self.script_metadata_changed = False
             self.update_script_in_settings(script_item)
             self.set_button_states()
             self.update_examples()
@@ -737,7 +760,7 @@ class ScriptEditorPage(PicardDialog):
     def delete_script(self):
         """Removes the currently selected script from the script selection combo box and script list.
         """
-        if self.confirmation_dialog(_('Are you sure that you want to delete the script?')):
+        if confirmation_dialog(self, _('Are you sure that you want to delete the script?')):
             idx = self.ui.preset_naming_scripts.currentIndex()
             self.ui.preset_naming_scripts.blockSignals(True)
             self.ui.preset_naming_scripts.removeItem(idx)
@@ -936,7 +959,7 @@ class ScriptEditorPage(PicardDialog):
         """Reset the script to the last saved value.
         """
         if self.has_changed():
-            if self.confirmation_dialog(_("Are you sure that you want to reset the script to its last saved value?")):
+            if confirmation_dialog(self, _("Are you sure that you want to reset the script to its last saved value?")):
                 self.select_script(skip_check=True)
         else:
             dialog = QtWidgets.QMessageBox(
@@ -967,24 +990,6 @@ class ScriptEditorPage(PicardDialog):
         if config.setting["rename_files"]:
             if not self.get_script():
                 raise ScriptCheckError("", _("The file naming format must not be empty."))
-
-    def confirmation_dialog(self, message_text):
-        """Display a confirmation dialog with Ok and Cancel buttons.
-
-        Args:
-            message_text (str): Message to display
-
-        Returns:
-            bool: True if Ok, otherwise False
-        """
-        dialog = QtWidgets.QMessageBox(
-            QtWidgets.QMessageBox.Warning,
-            _('Confirm'),
-            message_text,
-            QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel,
-            self
-        )
-        return dialog.exec_() == QtWidgets.QMessageBox.Ok
 
     def display_error(self, error):
         """Display an error message for the specified error.
@@ -1058,8 +1063,34 @@ class ScriptDetailsEditor(PicardDialog):
         self.ui.buttonBox.setFocus()
 
         self.setModal(True)
+        self.skip_change_check = False
+
+    def has_changed(self):
+        """Check if the current script metadata has pending edits that have not been saved.
+
+        Returns:
+            bool: True if there are unsaved changes, otherwise false.
+        """
+        return self.script_item['title'] != self.ui.script_title.text().strip() or \
+            self.script_item['author'] != self.ui.script_author.text().strip() or \
+            self.script_item['version'] != self.ui.script_version.text().strip() or \
+            self.script_item['license'] != self.ui.script_license.text().strip() or \
+            self.script_item['description'] != self.ui.script_description.toPlainText().strip()
+
+    def change_check(self):
+        """Confirm whether the unsaved changes should be lost.
+
+        Returns:
+            bool: True if changes can be lost, otherwise False.
+        """
+        return confirmation_dialog(
+            self,
+            _("There are unsaved changes to the current metadata.  Do you want to continue and lose these changes?"),
+        )
 
     def set_last_updated(self):
+        """Set the last updated value to the current timestamp.
+        """
         self.ui.script_last_updated.setText(self.script_item.make_last_updated())
         self.ui.script_last_updated.setModified(True)
 
@@ -1076,20 +1107,33 @@ class ScriptDetailsEditor(PicardDialog):
                 self
             ).exec_()
             return
-        if not self.ui.script_last_updated.isModified() or not self.ui.script_last_updated.text().strip():
-            self.set_last_updated()
-        self.script_item.update_script_setting(
-            title=title,
-            author=self.ui.script_author.text(),
-            version=self.ui.script_version.text(),
-            license=self.ui.script_license.text(),
-            description=self.ui.script_description.toPlainText(),
-            last_updated=self.ui.script_last_updated.text()
-        )
-        self.signal_save.emit()
+        if self.has_changed():
+            if self.change_check():
+                if not self.ui.script_last_updated.isModified() or not self.ui.script_last_updated.text().strip():
+                    self.set_last_updated()
+                self.script_item.update_script_setting(
+                    title=self.ui.script_title.text().strip(),
+                    author=self.ui.script_author.text().strip(),
+                    version=self.ui.script_version.text().strip(),
+                    license=self.ui.script_license.text().strip(),
+                    description=self.ui.script_description.toPlainText().strip(),
+                    last_updated=self.ui.script_last_updated.text().strip()
+                )
+                self.signal_save.emit()
+            else:
+                return
+        self.skip_change_check = True
         self.close_window()
 
     def close_window(self):
         """Close the script metadata editor window.
         """
         self.close()
+
+    def closeEvent(self, event):
+        """Custom close event handler to check for unsaved changes.
+        """
+        if self.skip_change_check or not self.has_changed() or (self.has_changed() and self.change_check()):
+            event.accept()
+        else:
+            event.ignore()
