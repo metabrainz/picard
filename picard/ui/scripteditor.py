@@ -432,6 +432,7 @@ class ScriptEditorPage(PicardDialog):
         display_menu.addAction(self.examples_action)
 
         display_menu.addAction(self.ui.file_naming_format.wordwrap_action)
+        display_menu.addAction(self.ui.file_naming_format.show_tooltips_action)
 
         self.docs_action = QtWidgets.QAction(_("&Show documentation"), self)
         self.docs_action.setToolTip(_("View the scripting documentation in a sidebar"))

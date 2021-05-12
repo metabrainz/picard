@@ -306,6 +306,7 @@ class ScriptTextEdit(QTextEdit):
 
     options = [
         BoolOption('persist', 'script_editor_wordwrap', False),
+        BoolOption('persist', 'script_editor_tooltips', True),
     ]
 
     def __init__(self, parent):
@@ -323,19 +324,29 @@ class ScriptTextEdit(QTextEdit):
         self.wordwrap_action.setChecked(config.persist['script_editor_wordwrap'])
         self.update_wordwrap()
         self.addAction(self.wordwrap_action)
+        self._show_tooltips = config.persist['script_editor_tooltips']
+        self.show_tooltips_action = QAction(_("Show help &tooltips"), self)
+        self.show_tooltips_action.setToolTip(_("Show tooltips for script elements"))
+        self.show_tooltips_action.triggered.connect(self.update_show_tooltips)
+        self.show_tooltips_action.setShortcut(QKeySequence(_("Ctrl+Shift+T")))
+        self.show_tooltips_action.setCheckable(True)
+        self.show_tooltips_action.setChecked(self._show_tooltips)
+        self.addAction(self.show_tooltips_action)
         self.textChanged.connect(self.update_tooltip)
 
     def contextMenuEvent(self, event):
         menu = self.createStandardContextMenu()
         menu.addSeparator()
         menu.addAction(self.wordwrap_action)
+        menu.addAction(self.show_tooltips_action)
         menu.exec_(event.globalPos())
 
     def mouseMoveEvent(self, event):
-        tooltip = self.get_tooltip_at_mouse_position(event.pos())
-        if not tooltip:
-            QToolTip.hideText()
-        self.setToolTip(tooltip)
+        if self._show_tooltips:
+            tooltip = self.get_tooltip_at_mouse_position(event.pos())
+            if not tooltip:
+                QToolTip.hideText()
+            self.setToolTip(tooltip)
         return super().mouseMoveEvent(event)
 
     def update_tooltip(self):
@@ -388,6 +399,16 @@ class ScriptTextEdit(QTextEdit):
             self.setLineWrapMode(QTextEdit.WidgetWidth)
         else:
             self.setLineWrapMode(QTextEdit.NoWrap)
+
+    def update_show_tooltips(self):
+        """Toggles wordwrap in the script editor
+        """
+        self._show_tooltips = self.show_tooltips_action.isChecked()
+        config = get_config()
+        config.persist['script_editor_tooltips'] = self._show_tooltips
+        if not self._show_tooltips:
+            QToolTip.hideText()
+            self.setToolTip('')
 
     def enable_completer(self):
         self.completer = ScriptCompleter()
