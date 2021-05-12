@@ -42,6 +42,7 @@ from PyQt5.QtGui import QPalette
 
 from picard.config import (
     BoolOption,
+    ListOption,
     TextOption,
     get_config,
 )
@@ -92,6 +93,16 @@ class RenamingOptionsPage(OptionsPage):
         BoolOption("setting", "move_additional_files", False),
         TextOption("setting", "move_additional_files_pattern", "*.jpg *.png"),
         BoolOption("setting", "delete_empty_dirs", True),
+        ListOption(
+            "setting",
+            "file_naming_scripts",
+            [],
+        ),
+        TextOption(
+            "setting",
+            "selected_file_naming_script_id",
+            "",
+        ),
     ]
 
     def __init__(self, parent=None):
@@ -121,6 +132,8 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.open_script_editor.clicked.connect(self.show_script_editing_page)
         self.ui.move_files_to_browse.clicked.connect(self.move_files_to_browse)
 
+        self.ui.naming_script_selector.currentIndexChanged.connect(self.update_selector_in_editor)
+
         self.ui.example_filename_after.itemSelectionChanged.connect(self.match_before_to_after)
         self.ui.example_filename_before.itemSelectionChanged.connect(self.match_after_to_before)
 
@@ -134,17 +147,37 @@ class RenamingOptionsPage(OptionsPage):
 
         self.examples = ScriptEditorExamples(tagger=self.tagger)
 
-        self.ui.example_selection_note.setText(self.examples.notes_text)
-        self.ui.example_filename_sample_files_button.setToolTip(self.examples.tooltip_text)
+        self.ui.example_selection_note.setText(_(self.examples.notes_text) % self.examples.max_samples)
+        self.ui.example_filename_sample_files_button.setToolTip(_(self.examples.tooltip_text) % self.examples.max_samples)
 
         self.script_editor_page = ScriptEditorPage(parent=self, examples=self.examples)
         self.script_editor_page.signal_save.connect(self.save_from_editor)
         self.script_editor_page.signal_update.connect(self.update_from_editor)
+        self.script_editor_page.signal_selection_changed.connect(self.update_selector_from_editor)
+
+        self.update_selector_from_editor()
 
         # Sync example lists vertical scrolling and selection colors
         self.script_editor_page.synchronize_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
 
         self.current_row = -1
+
+    def update_selector_from_editor(self):
+        """Update the script selector combo box from the script editor page.
+        """
+        self.ui.naming_script_selector.blockSignals(True)
+        self.ui.naming_script_selector.clear()
+        for i in range(self.script_editor_page.ui.preset_naming_scripts.count()):
+            title = self.script_editor_page.ui.preset_naming_scripts.itemText(i)
+            script = self.script_editor_page.ui.preset_naming_scripts.itemData(i)
+            self.ui.naming_script_selector.addItem(title, script)
+        self.ui.naming_script_selector.setCurrentIndex(self.script_editor_page.ui.preset_naming_scripts.currentIndex())
+        self.ui.naming_script_selector.blockSignals(False)
+
+    def update_selector_in_editor(self):
+        """Update the selection in the script editor page to match local selection.
+        """
+        self.script_editor_page.ui.preset_naming_scripts.setCurrentIndex(self.ui.naming_script_selector.currentIndex())
 
     def match_after_to_before(self):
         """Sets the selected item in the 'after' list to the corresponding item in the 'before' list.
@@ -229,6 +262,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_additional_files.setChecked(config.setting["move_additional_files"])
         self.ui.move_additional_files_pattern.setText(config.setting["move_additional_files_pattern"])
         self.ui.delete_empty_dirs.setChecked(config.setting["delete_empty_dirs"])
+        self.script_editor_page.load()
         self.update_examples_from_local()
 
     def check(self):
@@ -258,6 +292,8 @@ class RenamingOptionsPage(OptionsPage):
         config.setting["move_additional_files"] = self.ui.move_additional_files.isChecked()
         config.setting["move_additional_files_pattern"] = self.ui.move_additional_files_pattern.text()
         config.setting["delete_empty_dirs"] = self.ui.delete_empty_dirs.isChecked()
+        config.setting["file_naming_scripts"] = self.script_editor_page.naming_scripts
+        config.setting["selected_file_naming_script_id"] = self.script_editor_page.selected_script_id
         self.tagger.window.enable_moving_action.setChecked(config.setting["move_files"])
 
     def display_error(self, error):
