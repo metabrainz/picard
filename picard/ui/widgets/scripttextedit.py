@@ -32,14 +32,20 @@ from PyQt5 import (
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import (
     QCursor,
+    QKeySequence,
     QTextCursor,
 )
 from PyQt5.QtWidgets import (
+    QAction,
     QCompleter,
     QTextEdit,
     QToolTip,
 )
 
+from picard.config import (
+    BoolOption,
+    get_config,
+)
 from picard.const.sys import IS_MACOS
 from picard.script import (
     ScriptFunctionDocError,
@@ -298,20 +304,39 @@ def _replace_control_chars(text):
 class ScriptTextEdit(QTextEdit):
     autocomplete_trigger_chars = re.compile('[$%A-Za-z0-9_]')
 
+    options = [
+        BoolOption('persist', 'script_editor_wordwrap', False),
+    ]
+
     def __init__(self, parent):
         super().__init__(parent)
+        config = get_config()
         self.highlighter = TaggerScriptSyntaxHighlighter(self.document())
         self.enable_completer()
         self.setFontFamily(FONT_FAMILY_MONOSPACE)
         self.setMouseTracking(True)
+        self.wordwrap_action = QAction(_("&Word wrap script"), self)
+        self.wordwrap_action.setToolTip(_("Word wrap long lines in the editor"))
+        self.wordwrap_action.triggered.connect(self.update_wordwrap)
+        self.wordwrap_action.setShortcut(QKeySequence(_("Ctrl+W")))
+        self.wordwrap_action.setCheckable(True)
+        self.wordwrap_action.setChecked(config.persist['script_editor_wordwrap'])
+        self.update_wordwrap()
+        self.addAction(self.wordwrap_action)
         self.textChanged.connect(self.update_tooltip)
 
-    def mouseMoveEvent(self, e):
-        tooltip = self.get_tooltip_at_mouse_position(e.pos())
+    def contextMenuEvent(self, event):
+        menu = self.createStandardContextMenu()
+        menu.addSeparator()
+        menu.addAction(self.wordwrap_action)
+        menu.exec_(event.globalPos())
+
+    def mouseMoveEvent(self, event):
+        tooltip = self.get_tooltip_at_mouse_position(event.pos())
         if not tooltip:
             QToolTip.hideText()
         self.setToolTip(tooltip)
-        return super().mouseMoveEvent(e)
+        return super().mouseMoveEvent(event)
 
     def update_tooltip(self):
         if self.underMouse() and self.toolTip():
@@ -348,6 +373,21 @@ class ScriptTextEdit(QTextEdit):
     def insertFromMimeData(self, source):
         source.setText(_clean_text(source.text()))
         return super().insertFromMimeData(source)
+
+    def setPlainText(self, text):
+        super().setPlainText(text)
+        self.update_wordwrap()
+
+    def update_wordwrap(self):
+        """Toggles wordwrap in the script editor
+        """
+        wordwrap = self.wordwrap_action.isChecked()
+        config = get_config()
+        config.persist['script_editor_wordwrap'] = wordwrap
+        if wordwrap:
+            self.setLineWrapMode(QTextEdit.WidgetWidth)
+        else:
+            self.setLineWrapMode(QTextEdit.NoWrap)
 
     def enable_completer(self):
         self.completer = ScriptCompleter()
