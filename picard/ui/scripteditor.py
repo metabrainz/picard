@@ -339,8 +339,6 @@ class ScriptEditorPage(PicardDialog):
 
         self.synchronize_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
 
-        self.wordwrap = True
-        self.toggle_wordwrap()  # Force update to display
         self.sidebar = True
         self.toggle_documentation()  # Force update to display
         self.examples_current_row = -1
@@ -433,12 +431,7 @@ class ScriptEditorPage(PicardDialog):
         self.examples_action.triggered.connect(self.update_example_files)
         display_menu.addAction(self.examples_action)
 
-        self.wrap_action = QtWidgets.QAction(_("&Word wrap script"), self)
-        self.wrap_action.setToolTip(_("Word wrap long lines in the editor"))
-        self.wrap_action.triggered.connect(self.toggle_wordwrap)
-        self.wrap_action.setShortcut(QtGui.QKeySequence(_("Ctrl+W")))
-        self.wrap_action.setCheckable(True)
-        display_menu.addAction(self.wrap_action)
+        display_menu.addAction(self.ui.file_naming_format.wordwrap_action)
 
         self.docs_action = QtWidgets.QAction(_("&Show documentation"), self)
         self.docs_action.setToolTip(_("View the scripting documentation in a sidebar"))
@@ -839,15 +832,6 @@ class ScriptEditorPage(PicardDialog):
         examples = self.examples.get_examples()
         self.update_example_listboxes(self.ui.example_filename_before, self.ui.example_filename_after, examples)
         self.signal_update.emit()
-
-    def toggle_wordwrap(self):
-        """Toggles wordwrap in the script editing textbox.
-        """
-        self.wordwrap = not self.wordwrap
-        if self.wordwrap:
-            self.ui.file_naming_format.setLineWrapMode(QtWidgets.QTextEdit.WidgetWidth)
-        else:
-            self.ui.file_naming_format.setLineWrapMode(QtWidgets.QTextEdit.NoWrap)
 
     def output_error(self, title, fmt, filename, msg):
         """Log error and display error message dialog.
