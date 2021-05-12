@@ -318,7 +318,7 @@ class ScriptTextEdit(QTextEdit):
         self.wordwrap_action = QAction(_("&Word wrap script"), self)
         self.wordwrap_action.setToolTip(_("Word wrap long lines in the editor"))
         self.wordwrap_action.triggered.connect(self.update_wordwrap)
-        self.wordwrap_action.setShortcut(QKeySequence(_("Ctrl+W")))
+        self.wordwrap_action.setShortcut(QKeySequence(_("Ctrl+Shift+W")))
         self.wordwrap_action.setCheckable(True)
         self.wordwrap_action.setChecked(config.persist['script_editor_wordwrap'])
         self.update_wordwrap()
