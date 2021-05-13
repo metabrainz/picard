@@ -33,6 +33,7 @@ from PyQt5.QtGui import QPalette
 
 from picard import log
 from picard.config import (
+    BoolOption,
     ListOption,
     TextOption,
     get_config,
@@ -258,21 +259,10 @@ class ScriptEditorPage(PicardDialog):
     STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
 
     options = [
-        TextOption(
-            "setting",
-            "file_naming_format",
-            DEFAULT_FILE_NAMING_FORMAT,
-        ),
-        ListOption(
-            "setting",
-            "file_naming_scripts",
-            [],
-        ),
-        TextOption(
-            "setting",
-            "selected_file_naming_script_id",
-            "",
-        ),
+        TextOption("setting", "file_naming_format", DEFAULT_FILE_NAMING_FORMAT),
+        ListOption("setting", "file_naming_scripts", []),
+        TextOption("setting", "selected_file_naming_script_id", ""),
+        BoolOption('persist', 'script_editor_show_documentation', False),
     ]
 
     signal_save = QtCore.pyqtSignal()
@@ -339,7 +329,6 @@ class ScriptEditorPage(PicardDialog):
 
         self.synchronize_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
 
-        self.sidebar = True
         self.toggle_documentation()  # Force update to display
         self.examples_current_row = -1
 
@@ -352,6 +341,7 @@ class ScriptEditorPage(PicardDialog):
     def make_menu(self):
         """Build the menu bar.
         """
+        config = get_config()
         main_menu = QtWidgets.QMenuBar()
         base_font = self.ui.file_naming_editor_close.font()
         main_menu.setStyleSheet(
@@ -439,6 +429,7 @@ class ScriptEditorPage(PicardDialog):
         self.docs_action.triggered.connect(self.toggle_documentation)
         self.docs_action.setShortcut(QtGui.QKeySequence(_("Ctrl+H")))
         self.docs_action.setCheckable(True)
+        self.docs_action.setChecked(config.persist["script_editor_show_documentation"])
         display_menu.addAction(self.docs_action)
 
         # Help menu settings
@@ -565,8 +556,10 @@ class ScriptEditorPage(PicardDialog):
     def toggle_documentation(self):
         """Toggle the display of the scripting documentation sidebar.
         """
-        self.sidebar = not self.sidebar
-        self.ui.documentation_frame.setVisible(self.sidebar)
+        checked = self.docs_action.isChecked()
+        config = get_config()
+        config.persist["script_editor_show_documentation"] = checked
+        self.ui.documentation_frame.setVisible(checked)
 
     def view_script_details(self):
         """View and edit (if not readonly) the metadata associated with the script.
