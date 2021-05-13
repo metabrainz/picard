@@ -298,6 +298,7 @@ class ScriptEditorPage(PicardDialog):
         self.ui = Ui_ScriptEditor()
         self.ui.setupUi(self)
         self.make_menu()
+        self.restore_geometry()
 
         # Button tooltips
         self.ui.file_naming_editor_close.setToolTip(self.close_action.toolTip())
@@ -505,9 +506,12 @@ class ScriptEditorPage(PicardDialog):
         if self.unsaved_changes_confirmation():
             if self.has_changed():
                 self.select_script(skip_check=True)
-            event.accept()
+            super().closeEvent(event)
         else:
             event.ignore()
+
+    def save_geometry(self):
+        super().save_geometry()
 
     def populate_script_selector(self):
         """Populate the script selection combo box.
