@@ -35,6 +35,7 @@ from picard import log
 from picard.config import (
     BoolOption,
     ListOption,
+    Option,
     TextOption,
     get_config,
 )
@@ -263,6 +264,9 @@ class ScriptEditorPage(PicardDialog):
         ListOption("setting", "file_naming_scripts", []),
         TextOption("setting", "selected_file_naming_script_id", ""),
         BoolOption('persist', 'script_editor_show_documentation', False),
+        Option("persist", "script_editor_splitter_documentation", QtCore.QByteArray()),
+        Option("persist", "script_editor_splitter_samples", QtCore.QByteArray()),
+        Option("persist", "script_editor_splitter_samples_before_after", QtCore.QByteArray()),
     ]
 
     signal_save = QtCore.pyqtSignal()
@@ -271,6 +275,8 @@ class ScriptEditorPage(PicardDialog):
 
     default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DocumentsLocation))
     default_script_filename = "picard_naming_script.pnsp"
+
+    autorestore = False
 
     def __init__(self, parent=None, examples=None):
         """Stand-alone file naming script editor.
@@ -510,8 +516,19 @@ class ScriptEditorPage(PicardDialog):
         else:
             event.ignore()
 
+    def restore_geometry(self):
+        super().restore_geometry()
+        config = get_config()
+        self.ui.splitter_between_editor_and_documentation.restoreState(config.persist['script_editor_splitter_documentation'])
+        self.ui.splitter_between_editor_and_examples.restoreState(config.persist['script_editor_splitter_samples'])
+        self.ui.splitter_between_before_and_after.restoreState(config.persist['script_editor_splitter_samples_before_after'])
+
     def save_geometry(self):
         super().save_geometry()
+        config = get_config()
+        config.persist['script_editor_splitter_documentation'] = self.ui.splitter_between_editor_and_documentation.saveState()
+        config.persist['script_editor_splitter_samples'] = self.ui.splitter_between_editor_and_examples.saveState()
+        config.persist['script_editor_splitter_samples_before_after'] = self.ui.splitter_between_before_and_after.saveState()
 
     def populate_script_selector(self):
         """Populate the script selection combo box.
