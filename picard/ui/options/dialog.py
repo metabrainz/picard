@@ -79,8 +79,6 @@ from picard.ui.util import StandardButton
 
 class OptionsDialog(PicardDialog, SingletonDialog):
 
-    autorestore = False
-
     options = [
         TextOption("persist", "options_last_active_page", ""),
         ListOption("persist", "options_pages_tree_state", []),
@@ -244,7 +242,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                     continue
                 item.setExpanded(is_expanded)
 
-        self.restore_geometry()
         self.ui.splitter.restoreState(config.persist["options_splitter"])
 
     def restore_all_defaults(self):

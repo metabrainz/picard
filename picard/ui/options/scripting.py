@@ -65,7 +65,6 @@ class ScriptCheckError(OptionsCheckError):
 
 class ScriptingDocumentationDialog(PicardDialog, SingletonDialog):
     defaultsize = QtCore.QSize(570, 400)
-    autorestore = False
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -79,7 +78,6 @@ class ScriptingDocumentationDialog(PicardDialog, SingletonDialog):
         self.ui.setupUi(self)
         doc_widget = ScriptingDocumentationWidget(self)
         self.ui.documentation_layout.addWidget(doc_widget)
-        self.restore_geometry()
         self.ui.buttonBox.rejected.connect(self.close)
 
     def closeEvent(self, event):

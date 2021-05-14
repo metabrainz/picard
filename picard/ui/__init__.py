@@ -58,12 +58,9 @@ else:
 class PreserveGeometry:
 
     defaultsize = None
-    autorestore = True
 
     def __init__(self):
         Option("persist", self.opt_name(), QtCore.QByteArray())
-        if self.autorestore:
-            self.restore_geometry()
         if getattr(self, 'finished', None):
             self.finished.connect(self.save_geometry)
 
@@ -111,9 +108,12 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
 
     help_url = None
     flags = QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint
+    ready_for_display = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):
         super().__init__(parent, self.flags)
+        self.__shown = False
+        self.ready_for_display.connect(self.restore_geometry)
 
     def keyPressEvent(self, event):
         if event.matches(QtGui.QKeySequence.Close):
@@ -122,6 +122,12 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
             self.show_help()
         else:
             super().keyPressEvent(event)
+
+    def showEvent(self, event):
+        if not self.__shown:
+            self.ready_for_display.emit()
+            self.__shown = True
+        return super().showEvent(event)
 
     def show_help(self):
         if self.help_url:

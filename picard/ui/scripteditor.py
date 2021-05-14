@@ -276,8 +276,6 @@ class ScriptEditorDialog(PicardDialog):
     default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DocumentsLocation))
     default_script_filename = "picard_naming_script.pnsp"
 
-    autorestore = False
-
     def __init__(self, parent=None, examples=None):
         """Stand-alone file naming script editor.
 
@@ -304,7 +302,6 @@ class ScriptEditorDialog(PicardDialog):
         self.ui = Ui_ScriptEditor()
         self.ui.setupUi(self)
         self.make_menu()
-        self.restore_geometry()
 
         # Button tooltips
         self.ui.file_naming_editor_close.setToolTip(self.close_action.toolTip())

@@ -167,7 +167,6 @@ class IgnoreSelectionContext:
 class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     defaultsize = QtCore.QSize(780, 560)
-    autorestore = False
     selection_updated = QtCore.pyqtSignal(object)
 
     options = [

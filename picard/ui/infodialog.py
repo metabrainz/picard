@@ -112,8 +112,6 @@ class ArtworkTable(QtWidgets.QTableWidget):
 
 class InfoDialog(PicardDialog):
 
-    autorestore = False
-
     def __init__(self, obj, parent=None):
         super().__init__(parent)
         self.obj = obj
@@ -155,7 +153,6 @@ class InfoDialog(PicardDialog):
         self.setWindowTitle(_("Info"))
         self.artwork_table = self.ui.artwork_table
         self._display_tabs()
-        self.restore_geometry()
 
     def _display_tabs(self):
         self._display_info_tab()
