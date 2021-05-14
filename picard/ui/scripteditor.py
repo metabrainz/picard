@@ -284,7 +284,7 @@ class ScriptEditorDialog(PicardDialog):
 
         self.FILE_TYPE_ALL = _("All Files") + " (*)"
         self.FILE_TYPE_SCRIPT = _("Picard Script Files") + " (*.pts *.txt)"
-        self.FILE_TYPE_PACKAGE = _("Picard Naming Script Package") + " (*.pnsp *.json)"
+        self.FILE_TYPE_PACKAGE = _("Picard Naming Script Package") + " (*.pnsp *.yaml)"
 
         self.SCRIPT_TITLE_SYSTEM = _("System: %s")
         self.SCRIPT_TITLE_USER = _("User: %s")
@@ -873,7 +873,7 @@ class ScriptEditorDialog(PicardDialog):
                 return
             if file_type == self.FILE_TYPE_PACKAGE:
                 try:
-                    script_item = FileNamingScript().create_from_json(file_content)
+                    script_item = FileNamingScript().create_from_yaml(file_content)
                 except ScriptImportError as error:
                     self.output_file_error(FILE_ERROR_DECODE, filename, error)
                     return
@@ -907,7 +907,7 @@ class ScriptEditorDialog(PicardDialog):
                     filename = name
                 log.debug('Exporting naming script file: %s' % filename)
                 if file_type == self.FILE_TYPE_PACKAGE:
-                    script_text = script_item.to_json(indent=4)
+                    script_text = script_item.to_yaml()
                 try:
                     with open(filename, 'w', encoding='utf8') as o_file:
                         o_file.write(script_text)

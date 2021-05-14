@@ -44,6 +44,8 @@ from enum import (
 import json
 import uuid
 
+import yaml
+
 from picard.config import get_config
 from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -131,6 +133,17 @@ class ScriptImportError(Exception):
         super().__init__(*args)
 
 
+class ScriptLiteral(str):
+    @staticmethod
+    def yaml_presenter(dumper, data):
+        if data:
+            data = data.rstrip() + '\n'
+        return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
+
+
+yaml.add_representer(ScriptLiteral, ScriptLiteral.yaml_presenter)
+
+
 class PicardScript():
     """Base class for Picard script objects.
     """
@@ -188,6 +201,14 @@ class PicardScript():
             return value
         return None
 
+    @property
+    def script(self):
+        return self._script
+
+    @script.setter
+    def script(self, value):
+        self._script = ScriptLiteral(value)
+
     @staticmethod
     def make_last_updated():
         """Provide consistently formatted last updated string.
@@ -242,17 +263,15 @@ class PicardScript():
         new_object._set_new_id()
         return new_object
 
-    # TODO: Enable once PyYAML requirement resolved with Python 3.8
-    #
-    # def to_yaml(self):
-    #     """Converts the properties of the script object to a YAML formatted string.  Note that only property
-    #     names listed in `OUTPUT_FIELDS` will be included in the output.
+    def to_yaml(self):
+        """Converts the properties of the script object to a YAML formatted string.  Note that only property
+        names listed in `OUTPUT_FIELDS` will be included in the output.
 
-    #     Returns:
-    #         str: The properties of the script object formatted as a YAML string.
-    #     """
-    #     items = {key: getattr(self, key) for key in dir(self) if key in self.OUTPUT_FIELDS}
-    #     return yaml.dump(items)
+        Returns:
+            str: The properties of the script object formatted as a YAML string.
+        """
+        items = {key: getattr(self, key) for key in dir(self) if key in self.OUTPUT_FIELDS}
+        return yaml.dump(items)
 
     def to_json(self, indent=None):
         """Converts the properties of the script object to a JSON formatted string.  Note that only property
@@ -267,29 +286,27 @@ class PicardScript():
         items = {key: getattr(self, key) for key in dir(self) if key in self.OUTPUT_FIELDS}
         return json.dumps(items, indent=indent, sort_keys=True)
 
-    # TODO: Enable once PyYAML requirement resolved with Python 3.8
-    #
-    # @classmethod
-    # def create_from_yaml(cls, yaml_string, create_new_id=True):
-    #     """Creates an instance based on the contents of the YAML string provided.
-    #     Properties in the YAML string that are not found in the script object are ignored.
+    @classmethod
+    def create_from_yaml(cls, yaml_string, create_new_id=True):
+        """Creates an instance based on the contents of the YAML string provided.
+        Properties in the YAML string that are not found in the script object are ignored.
 
-    #     Args:
-    #         yaml_string (str): YAML string containing the property settings.
+        Args:
+            yaml_string (str): YAML string containing the property settings.
 
-    #     Returns:
-    #         object: An instance of the class, populated from the property settings in the YAML string.
-    #     """
-    #     new_object = cls()
-    #     yaml_dict = yaml.safe_load(yaml_string)
-    #     if not isinstance(yaml_dict, dict):
-    #         raise ScriptImportError(N_("File content not a dictionary"))
-    #     if 'title' not in yaml_dict or 'script' not in yaml_dict:
-    #         raise ScriptImportError(N_('Invalid script package'))
-    #     new_object._update_from_dict(yaml_dict)
-    #     if create_new_id or not new_object['id']:
-    #         new_object._set_new_id()
-    #     return new_object
+        Returns:
+            object: An instance of the class, populated from the property settings in the YAML string.
+        """
+        new_object = cls()
+        yaml_dict = yaml.safe_load(yaml_string)
+        if not isinstance(yaml_dict, dict):
+            raise ScriptImportError(N_("File content not a dictionary"))
+        if 'title' not in yaml_dict or 'script' not in yaml_dict:
+            raise ScriptImportError(N_('Invalid script package'))
+        new_object._update_from_dict(yaml_dict)
+        if create_new_id or not new_object['id']:
+            new_object._set_new_id()
+        return new_object
 
     @classmethod
     def create_from_json(cls, json_string, create_new_id=True):
