@@ -60,8 +60,8 @@ from picard.ui.options.scripting import (
     ScriptingDocumentationDialog,
 )
 from picard.ui.scripteditor import (
+    ScriptEditorDialog,
     ScriptEditorExamples,
-    ScriptEditorPage,
 )
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.util import enabledSlot
@@ -150,7 +150,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.example_selection_note.setText(_(self.examples.notes_text) % self.examples.max_samples)
         self.ui.example_filename_sample_files_button.setToolTip(_(self.examples.tooltip_text) % self.examples.max_samples)
 
-        self.script_editor_page = ScriptEditorPage(parent=self, examples=self.examples)
+        self.script_editor_page = ScriptEditorDialog(parent=self, examples=self.examples)
         self.script_editor_page.signal_save.connect(self.save_from_editor)
         self.script_editor_page.signal_update.connect(self.update_from_editor)
         self.script_editor_page.signal_selection_changed.connect(self.update_selector_from_editor)

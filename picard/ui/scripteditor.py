@@ -253,7 +253,7 @@ def confirmation_dialog(parent, message):
     return dialog.exec_() == QtWidgets.QMessageBox.Ok
 
 
-class ScriptEditorPage(PicardDialog):
+class ScriptEditorDialog(PicardDialog):
     """File Naming Script Editor Page
     """
     TITLE = N_("File naming script editor")
@@ -1023,7 +1023,7 @@ class ScriptDetailsEditor(PicardDialog):
         """Script metadata viewer / editor.
 
         Args:
-            parent (ScriptEditorPage): The page used for editing the scripts
+            parent (ScriptEditorDialog): The page used for editing the scripts
             script_item (FileNamingScript): The script whose metadata is displayed
         """
         super().__init__(parent=parent)
