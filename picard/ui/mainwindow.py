@@ -168,6 +168,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     defaultsize = QtCore.QSize(780, 560)
     selection_updated = QtCore.pyqtSignal(object)
+    ready_for_display = QtCore.pyqtSignal()
 
     options = [
         Option("persist", "window_state", QtCore.QByteArray()),
@@ -184,11 +185,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def __init__(self, parent=None, disable_player=False):
         super().__init__(parent)
+        self.__shown = False
         self.selected_objects = []
         self.ignore_selection_changes = IgnoreSelectionContext(self.update_selection)
         self.toolbar = None
         self.player = None
         self.status_indicators = []
+        if DesktopStatusIndicator:
+            self.ready_for_display.connect(self._setup_desktop_status_indicator)
         if not disable_player:
             from picard.ui.playertoolbar import Player
             player = Player(self)
@@ -285,9 +289,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.metadata_box.restore_state()
 
     def showEvent(self, event):
+        if not self.__shown:
+            self.ready_for_display.emit()
+            self.__shown = True
         super().showEvent(event)
-        if DesktopStatusIndicator:
-            self.register_status_indicator(DesktopStatusIndicator(self.windowHandle()))
 
     def closeEvent(self, event):
         config = get_config()
@@ -299,6 +304,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             config.persist['mediaplayer_volume'] = self.player.volume()
         self.saveWindowState()
         event.accept()
+
+    def _setup_desktop_status_indicator(self):
+        if DesktopStatusIndicator:
+            self.register_status_indicator(DesktopStatusIndicator(self.windowHandle()))
 
     def register_status_indicator(self, indicator):
         self.status_indicators.append(indicator)
