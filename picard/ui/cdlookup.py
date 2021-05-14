@@ -53,7 +53,6 @@ from picard.ui.ui_cdlookup import Ui_Dialog
 
 class CDLookupDialog(PicardDialog):
 
-    autorestore = False
     dialog_header_state = "cdlookupdialog_header_state"
 
     options = [
@@ -107,7 +106,6 @@ class CDLookupDialog(PicardDialog):
             self.ui.results_view.setCurrentIndex(1)
         self.ui.lookup_button.clicked.connect(self.lookup)
         self.ui.submit_button.clicked.connect(self.lookup)
-        self.restore_geometry()
         self.restore_header_state()
         self.finished.connect(self.save_header_state)
 

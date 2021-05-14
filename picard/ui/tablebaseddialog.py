@@ -85,13 +85,11 @@ class SortableTableWidgetItem(QtWidgets.QTableWidgetItem):
 class TableBasedDialog(PicardDialog):
 
     defaultsize = QtCore.QSize(720, 360)
-    autorestore = False
     scrolled = pyqtSignal()
 
     def __init__(self, parent):
         super().__init__(parent)
         self.setupUi()
-        self.restore_state()
         self.columns = None  # self.columns has to be an ordered dict, with column name as keys, and matching label as values
         self.sorting_enabled = True
         self.create_table()
@@ -191,10 +189,6 @@ class TableBasedDialog(PicardDialog):
                 selected_rows_user_values .append(row)
             self.accept_event(selected_rows_user_values)
         super().accept()
-
-    @restore_method
-    def restore_state(self):
-        self.restore_geometry()
 
     @restore_method
     def restore_table_header_state(self):

@@ -91,8 +91,6 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
 
 class EditTagDialog(PicardDialog):
 
-    autorestore = False
-
     def __init__(self, window, tag):
         super().__init__(window)
         self.ui = Ui_EditTagDialog()
@@ -120,7 +118,6 @@ class EditTagDialog(PicardDialog):
         self.value_list.setItemDelegate(TagEditorDelegate(self))
         self.tag_changed(tag)
         self.value_selection_changed()
-        self.restore_geometry()
 
     def keyPressEvent(self, event):
         if event.modifiers() == QtCore.Qt.NoModifier and event.key() in (QtCore.Qt.Key_Enter, QtCore.Qt.Key_Return):

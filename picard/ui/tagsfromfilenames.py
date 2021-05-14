@@ -98,7 +98,6 @@ class TagMatchExpression:
 
 class TagsFromFileNamesDialog(PicardDialog):
 
-    autorestore = False
     help_url = 'doc_tags_from_filenames'
 
     options = [
@@ -109,7 +108,6 @@ class TagsFromFileNamesDialog(PicardDialog):
         super().__init__(parent)
         self.ui = Ui_TagsFromFileNamesDialog()
         self.ui.setupUi(self)
-        self.restore_geometry()
         items = [
             "%artist%/%album%/%title%",
             "%artist%/%album%/%tracknumber% %title%",

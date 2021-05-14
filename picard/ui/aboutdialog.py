@@ -41,8 +41,6 @@ from picard.ui.ui_aboutdialog import Ui_AboutDialog
 
 class AboutDialog(PicardDialog, SingletonDialog):
 
-    autorestore = False
-
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
