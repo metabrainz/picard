@@ -183,6 +183,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def __init__(self, parent=None, disable_player=False):
         super().__init__(parent)
+        self._shown = False
         self.selected_objects = []
         self.ignore_selection_changes = IgnoreSelectionContext(self.update_selection)
         self.toolbar = None
@@ -286,8 +287,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def showEvent(self, event):
         super().showEvent(event)
-        if DesktopStatusIndicator:
+        if not self._shown and DesktopStatusIndicator:
             self.register_status_indicator(DesktopStatusIndicator(self.windowHandle()))
+        self._shown = True
 
     def closeEvent(self, event):
         config = get_config()
