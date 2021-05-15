@@ -61,11 +61,37 @@ class PreserveGeometry:
 
     def __init__(self):
         Option("persist", self.opt_name(), QtCore.QByteArray())
+        Option("persist", self.splitters_name(), {})
         if getattr(self, 'finished', None):
             self.finished.connect(self.save_geometry)
 
     def opt_name(self):
         return 'geometry_' + self.__class__.__name__
+
+    def splitters_name(self):
+        return 'splitters_' + self.__class__.__name__
+
+    def _get_lineage(self, widget, lineage=''):
+        """Try to develop a unique lineage / ancestry string for the specified widget.
+
+        Args:
+            widget (QtWidget): Widget to process.
+            lineage (str, optional): Starting string. Defaults to ''. This is used during recursion and should not be specified in the initial call.
+
+        Returns:
+            str: Lineage / ancestry string for the specified widget.
+        """
+        if widget is not None:
+            # If widget doesn't have an assigned objectName() use the widget class name to help create a unique lineage string.
+            name = widget.objectName() if widget.objectName() else widget.__class__.__name__
+            lineage = '.' + name + lineage + self._get_lineage(widget.parent(), lineage)
+        return lineage
+
+    def _get_splitter_items(self):
+        try:
+            return self.findChildren(QtWidgets.QSplitter)
+        except AttributeError:
+            return []
 
     @restore_method
     def restore_geometry(self):
@@ -75,10 +101,19 @@ class PreserveGeometry:
             self.restoreGeometry(geometry)
         elif self.defaultsize:
             self.resize(self.defaultsize)
+        splitters = config.persist[self.splitters_name()]
+        if splitters:
+            splitter_items = self._get_splitter_items()
+            for splitter in splitter_items:
+                lineage = self._get_lineage(splitter)
+                if lineage in splitters:
+                    splitter.restoreState(splitters[lineage])
 
     def save_geometry(self):
         config = get_config()
         config.persist[self.opt_name()] = self.saveGeometry()
+        splitters = self._get_splitter_items()
+        config.persist[self.splitters_name()] = {self._get_lineage(splitter): bytearray(splitter.saveState()) for splitter in splitters}
 
 
 class SingletonDialog:
