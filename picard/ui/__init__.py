@@ -32,6 +32,7 @@ from PyQt5 import (
     QtWidgets,
 )
 
+from picard import log
 from picard.config import (
     Option,
     get_config,
@@ -106,6 +107,8 @@ class PreserveGeometry:
             splitter_items = self._get_splitter_items()
             for splitter in splitter_items:
                 lineage = self._get_lineage(splitter)
+                if not splitter.objectName():
+                    log.debug("Splitter does not have objectName(): %s" % lineage)
                 if lineage in splitters:
                     splitter.restoreState(splitters[lineage])
 
