@@ -147,9 +147,7 @@ def get_match_color(similarity, basecolor):
 
 class MainPanel(QtWidgets.QSplitter):
 
-    options = [
-        Option("persist", "splitter_state", QtCore.QByteArray()),
-    ]
+    options = []
 
     columns = [
         (N_('Title'), 'title'),
@@ -235,15 +233,12 @@ class MainPanel(QtWidgets.QSplitter):
         tab_order(prev, after)
 
     def save_state(self):
-        config = get_config()
-        config.persist["splitter_state"] = self.saveState()
         for view in self._views:
             view.save_state()
 
     @restore_method
     def restore_state(self):
-        config = get_config()
-        self.restoreState(config.persist["splitter_state"])
+        pass
 
     def create_icons(self):
         if hasattr(QtWidgets.QStyle, 'SP_DirIcon'):

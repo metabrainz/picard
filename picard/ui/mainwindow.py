@@ -172,7 +172,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     options = [
         Option("persist", "window_state", QtCore.QByteArray()),
-        Option("persist", "bottom_splitter_state", QtCore.QByteArray()),
         BoolOption("persist", "window_maximized", False),
         BoolOption("persist", "view_metadata_view", True),
         BoolOption("persist", "view_cover_art", True),
@@ -349,7 +348,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config.persist["view_cover_art"] = self.show_cover_art_action.isChecked()
         config.persist["view_toolbar"] = self.show_toolbar_action.isChecked()
         config.persist["view_file_browser"] = self.show_file_browser_action.isChecked()
-        config.persist["bottom_splitter_state"] = self.centralWidget().saveState()
         self.file_browser.save_state()
         self.panel.save_state()
         self.metadata_box.save_state()
@@ -361,11 +359,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.restore_geometry()
         if config.persist["window_maximized"]:
             self.setWindowState(QtCore.Qt.WindowMaximized)
-        bottom_splitter_state = config.persist["bottom_splitter_state"]
-        if bottom_splitter_state.isEmpty():
+        splitters = config.persist["splitters_MainWindow"]
+        if splitters is None or ".QSplitter.MainWindow" not in splitters:
             self.centralWidget().setSizes([366, 194])
-        else:
-            self.centralWidget().restoreState(bottom_splitter_state)
         self.file_browser.restore_state()
 
     def create_statusbar(self):

@@ -37,7 +37,6 @@ from PyQt5 import (
 from picard import log
 from picard.config import (
     ListOption,
-    Option,
     TextOption,
     get_config,
 )
@@ -82,7 +81,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     options = [
         TextOption("persist", "options_last_active_page", ""),
         ListOption("persist", "options_pages_tree_state", []),
-        Option("persist", "options_splitter", QtCore.QByteArray()),
     ]
 
     def add_pages(self, parent, default_page, parent_item):
@@ -226,7 +224,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             expanded_pages.append((page, is_expanded))
         config = get_config()
         config.persist["options_pages_tree_state"] = expanded_pages
-        config.persist["options_splitter"] = self.ui.splitter.saveState()
 
     @restore_method
     def restoreWindowState(self):
@@ -241,8 +238,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 except KeyError:
                     continue
                 item.setExpanded(is_expanded)
-
-        self.ui.splitter.restoreState(config.persist["options_splitter"])
 
     def restore_all_defaults(self):
         for page in self.pages:
