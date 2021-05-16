@@ -34,6 +34,7 @@ from picard import log
 from picard.config import (
     BoolOption,
     IntOption,
+    Option,
     TextOption,
 )
 from picard.const import (
@@ -342,6 +343,49 @@ def upgrade_to_v2_6_0_beta_3(config):
     _s.remove("use_system_theme")
 
 
+def upgrade_to_v2_7_0_dev_1(config):
+    """Replace manually set persistent splitter settings with automated system.
+    """
+    def _check_and_add(new_key, key_map):
+        _p = config.persist
+        splitter_dict = {}
+        for (oldkey, newkey) in key_map:
+            if _p.__contains__(oldkey):
+                if _p[oldkey] is not None:
+                    splitter_dict[newkey] = bytearray(_p[oldkey])
+                _p.remove(oldkey)
+        Option("persist", new_key, {})
+        _p[new_key] = splitter_dict
+
+    # MainWindow splitters
+    _check_and_add(
+        new_key="splitters_MainWindow",
+        key_map=[
+            ('bottom_splitter_state', '.QSplitter.MainWindow'),
+            ('splitter_state', 'MainPanel.QSplitter.MainWindow'),
+        ]
+    )
+
+    # ScriptEditorDialog splitters
+    _check_and_add(
+        new_key="splitters_ScriptEditorDialog",
+        key_map=[
+            ('script_editor_splitter_samples', '.splitter_between_editor_and_examples.ScriptEditor.RenamingOptionsPage.pages_stack.splitter.Dialog.MainWindow'),
+            ('script_editor_splitter_samples_before_after', '.splitter_between_before_and_after.groupBox.splitter_between_editor_and_examples.ScriptEditor.RenamingOptionsPage.pages_stack.splitter.Dialog.MainWindow'),
+            ('script_editor_splitter_documentation', '.splitter_between_editor_and_documentation.frame.frame_4.splitter_between_editor_and_examples.ScriptEditor.RenamingOptionsPage.pages_stack.splitter.Dialog.MainWindow'),
+        ]
+    )
+
+    # OptionsDialog splitters
+    _check_and_add(
+        new_key="splitters_OptionsDialog",
+        key_map=[
+            ('options_splitter', '.splitter.Dialog.MainWindow'),
+            ('scripting_splitter', '.splitter.enable_tagger_scripts.ScriptingOptionsPage.pages_stack.splitter.Dialog.MainWindow'),
+        ]
+    )
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
@@ -371,4 +415,5 @@ def upgrade_config(config):
     cfg.register_upgrade_hook(upgrade_to_v2_6_0_dev_1)
     cfg.register_upgrade_hook(upgrade_to_v2_6_0_beta_2)
     cfg.register_upgrade_hook(upgrade_to_v2_6_0_beta_3)
+    cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_1)
     cfg.run_upgrade_hooks(log.debug)
