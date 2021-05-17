@@ -120,9 +120,14 @@ class PreserveGeometry:
         elif self.defaultsize:
             self.resize(self.defaultsize)
         splitters = config.persist[self.splitters_name()]
+        seen = set()
         for name, splitter in self._get_splitters.items():
             if name in splitters:
                 splitter.restoreState(splitters[name])
+                seen.add(name)
+        # remove unused saved states that don't match any existing splitter names
+        for name in set(splitters) - seen:
+            del config.persist[self.splitters_name()][name]
 
     def save_geometry(self):
         config = get_config()
