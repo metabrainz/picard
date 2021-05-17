@@ -342,8 +342,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config.persist["window_state"] = self.saveState()
         isMaximized = int(self.windowState()) & QtCore.Qt.WindowMaximized != 0
         self.save_geometry()
-        self.log_dialog.save_geometry()
-        self.history_dialog.save_geometry()
         config.persist["window_maximized"] = isMaximized
         config.persist["view_metadata_view"] = self.show_metadata_view_action.isChecked()
         config.persist["view_cover_art"] = self.show_cover_art_action.isChecked()

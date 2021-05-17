@@ -79,6 +79,7 @@ class LogViewCommon(LogViewDialog):
         self.textCursor.movePosition(QtGui.QTextCursor.Start)
 
     def closeEvent(self, event):
+        self.save_geometry()
         event.ignore()
         self.hide()
 
