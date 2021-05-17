@@ -96,9 +96,14 @@ def crash_handler():
     a minimal crash dialog to the user.
     This function is supposed to be called from inside an except blog.
     """
+    import sys
+
+    # Allow disabling the graphical crash handler for debugging and CI purposes.
+    if '--no-crash-dialog' in sys.argv:
+        return
+
     # First try to get traceback information and write it to a log file
     # with minimum chance to fail.
-    import sys
     from tempfile import NamedTemporaryFile
     import traceback
     trace = traceback.format_exc()
