@@ -29,6 +29,7 @@
 # Copyright (C) 2019 Timur Enikeev
 # Copyright (C) 2020 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion
+# Copyright (C) 2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -222,6 +223,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.setUnifiedTitleAndToolBarOnMac(True)
 
         main_layout = QtWidgets.QSplitter(QtCore.Qt.Vertical)
+        main_layout.setObjectName('main_window_bottom_splitter')
         main_layout.setChildrenCollapsible(False)
         main_layout.setContentsMargins(0, 0, 0, 0)
 
@@ -360,7 +362,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if config.persist["window_maximized"]:
             self.setWindowState(QtCore.Qt.WindowMaximized)
         splitters = config.persist["splitters_MainWindow"]
-        if splitters is None or ".QSplitter.MainWindow" not in splitters:
+        if splitters is None or 'main_window_bottom_splitter' not in splitters:
             self.centralWidget().setSizes([366, 194])
         self.file_browser.restore_state()
 

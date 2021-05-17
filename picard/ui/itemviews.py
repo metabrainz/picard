@@ -23,6 +23,7 @@
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2020 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion
+# Copyright (C) 2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -189,6 +190,7 @@ class MainPanel(QtWidgets.QSplitter):
     def __init__(self, window, parent=None):
         super().__init__(parent)
         self.setChildrenCollapsible(False)
+        self.setObjectName('main_panel_splitter')
         self.window = window
         self.create_icons()
         self._views = [FileTreeView(window, self), AlbumTreeView(window, self)]

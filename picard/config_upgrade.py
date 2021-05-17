@@ -361,8 +361,8 @@ def upgrade_to_v2_7_0_dev_1(config):
     _check_and_add(
         new_key="splitters_MainWindow",
         key_map=[
-            ('bottom_splitter_state', '.QSplitter.MainWindow'),
-            ('splitter_state', 'MainPanel.QSplitter.MainWindow'),
+            ('bottom_splitter_state', 'main_window_bottom_splitter'),
+            ('splitter_state', 'main_panel_splitter'),
         ]
     )
 
@@ -370,9 +370,9 @@ def upgrade_to_v2_7_0_dev_1(config):
     _check_and_add(
         new_key="splitters_ScriptEditorDialog",
         key_map=[
-            ('script_editor_splitter_samples', '.splitter_between_editor_and_examples.ScriptEditor.RenamingOptionsPage.pages_stack.splitter.Dialog.MainWindow'),
-            ('script_editor_splitter_samples_before_after', '.splitter_between_before_and_after.groupBox.splitter_between_editor_and_examples.ScriptEditor.RenamingOptionsPage.pages_stack.splitter.Dialog.MainWindow'),
-            ('script_editor_splitter_documentation', '.splitter_between_editor_and_documentation.frame.frame_4.splitter_between_editor_and_examples.ScriptEditor.RenamingOptionsPage.pages_stack.splitter.Dialog.MainWindow'),
+            ('script_editor_splitter_samples', 'splitter_between_editor_and_examples'),
+            ('script_editor_splitter_samples_before_after', 'splitter_between_before_and_after'),
+            ('script_editor_splitter_documentation', 'splitter_between_editor_and_documentation'),
         ]
     )
 
@@ -380,8 +380,8 @@ def upgrade_to_v2_7_0_dev_1(config):
     _check_and_add(
         new_key="splitters_OptionsDialog",
         key_map=[
-            ('options_splitter', '.splitter.Dialog.MainWindow'),
-            ('scripting_splitter', '.splitter.enable_tagger_scripts.ScriptingOptionsPage.pages_stack.splitter.Dialog.MainWindow'),
+            ('options_splitter', 'dialog_splitter'),
+            ('scripting_splitter', 'scripting_options_splitter'),
         ]
     )
 

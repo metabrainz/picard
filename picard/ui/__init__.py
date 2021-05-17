@@ -8,6 +8,7 @@
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2019-2021 Philipp Wolfer
+# Copyright (C) 2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -73,12 +74,10 @@ class PreserveGeometry:
         return 'splitters_' + self.__class__.__name__
 
     def _get_lineage(self, widget, lineage=''):
-        """Try to develop a unique lineage / ancestry string for the specified widget.
-
+        """Try to develop a unique lineage / ancestry string to identify the specified widget.
         Args:
             widget (QtWidget): Widget to process.
             lineage (str, optional): Starting string. Defaults to ''. This is used during recursion and should not be specified in the initial call.
-
         Returns:
             str: Lineage / ancestry string for the specified widget.
         """
@@ -87,6 +86,21 @@ class PreserveGeometry:
             name = widget.objectName() if widget.objectName() else widget.__class__.__name__
             lineage = '.' + name + lineage + self._get_lineage(widget.parent(), lineage)
         return lineage
+
+    def _get_name(self, widget):
+        """Return the name of the widget.
+
+        Args:
+            widget (QtWidget): Widget to process.
+
+        Returns:
+            str: The name of the widget or the lineage if there is no name assigned.
+        """
+        name = widget.objectName()
+        if not name:
+            name = self._get_lineage(widget).strip('.')
+            log.debug("Splitter does not have objectName(): %s" % name)
+        return name
 
     def _get_splitter_items(self):
         try:
@@ -106,17 +120,15 @@ class PreserveGeometry:
         if splitters:
             splitter_items = self._get_splitter_items()
             for splitter in splitter_items:
-                lineage = self._get_lineage(splitter)
-                if not splitter.objectName():
-                    log.debug("Splitter does not have objectName(): %s" % lineage)
-                if lineage in splitters:
-                    splitter.restoreState(splitters[lineage])
+                name = self._get_name(splitter)
+                if name in splitters:
+                    splitter.restoreState(splitters[name])
 
     def save_geometry(self):
         config = get_config()
         config.persist[self.opt_name()] = self.saveGeometry()
         splitters = self._get_splitter_items()
-        config.persist[self.splitters_name()] = {self._get_lineage(splitter): bytearray(splitter.saveState()) for splitter in splitters}
+        config.persist[self.splitters_name()] = {self._get_name(splitter): bytearray(splitter.saveState()) for splitter in splitters}
 
 
 class SingletonDialog:

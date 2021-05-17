@@ -13,6 +13,7 @@
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017 Suhas
 # Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -148,7 +149,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         # work-around to set optimal option pane width
         self.ui.pages_tree.expandAll()
         max_page_name = self.ui.pages_tree.sizeHintForColumn(0) + 2*self.ui.pages_tree.frameWidth()
-        self.ui.splitter.setSizes([max_page_name,
+        self.ui.dialog_splitter.setSizes([max_page_name,
                                    self.geometry().width() - max_page_name])
 
         self.ui.pages_tree.setHeaderLabels([""])
