@@ -237,10 +237,6 @@ class MainPanel(QtWidgets.QSplitter):
         for view in self._views:
             view.save_state()
 
-    @restore_method
-    def restore_state(self):
-        pass
-
     def create_icons(self):
         if hasattr(QtWidgets.QStyle, 'SP_DirIcon'):
             ClusterItem.icon_dir = self.style().standardIcon(QtWidgets.QStyle.SP_DirIcon)

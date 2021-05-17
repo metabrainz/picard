@@ -233,7 +233,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if not self.show_file_browser_action.isChecked():
             self.file_browser.hide()
         self.panel.insertWidget(0, self.file_browser)
-        self.panel.restore_state()
 
         self.log_dialog = LogView(self)
         self.history_dialog = HistoryView(self)
