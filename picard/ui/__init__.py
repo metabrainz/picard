@@ -73,19 +73,18 @@ class PreserveGeometry:
     def splitters_name(self):
         return 'splitters_' + self.__class__.__name__
 
-    def _get_lineage(self, widget, lineage=''):
-        """Try to develop a unique lineage / ancestry string to identify the specified widget.
+    def _get_lineage(self, widget):
+        """Try to develop a unique lineage / ancestry to identify the specified widget.
         Args:
             widget (QtWidget): Widget to process.
-            lineage (str, optional): Starting string. Defaults to ''. This is used during recursion and should not be specified in the initial call.
         Returns:
-            str: Lineage / ancestry string for the specified widget.
+            generator: full ancestry for the specified widget.
         """
-        if widget is not None:
-            # If widget doesn't have an assigned objectName() use the widget class name to help create a unique lineage string.
-            name = widget.objectName() if widget.objectName() else widget.__class__.__name__
-            lineage = '.' + name + lineage + self._get_lineage(widget.parent(), lineage)
-        return lineage
+        parent = widget.parent()
+        if parent:
+            yield from self._get_lineage(parent)
+
+        yield widget.objectName() if widget.objectName() else widget.__class__.__name__
 
     def _get_name(self, widget):
         """Return the name of the widget.
@@ -98,7 +97,7 @@ class PreserveGeometry:
         """
         name = widget.objectName()
         if not name:
-            name = self._get_lineage(widget).strip('.')
+            name = '.'.join(self._get_lineage(widget))
             log.debug("Splitter does not have objectName(): %s" % name)
         return name
 
