@@ -228,6 +228,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         main_layout.setContentsMargins(0, 0, 0, 0)
 
         self.panel = MainPanel(self, main_layout)
+        self.panel.setObjectName('main_panel_splitter')
         self.file_browser = FileBrowser(self.panel)
         if not self.show_file_browser_action.isChecked():
             self.file_browser.hide()
