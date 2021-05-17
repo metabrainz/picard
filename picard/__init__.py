@@ -99,7 +99,7 @@ def crash_handler():
     import sys
 
     # Allow disabling the graphical crash handler for debugging and CI purposes.
-    if '--no-crash-dialog' in sys.argv:
+    if set(sys.argv) & {'--no-crash-dialog', '-v', '--version', '-V', '--long-version', '-h', '--help'}:
         return
 
     # First try to get traceback information and write it to a log file
