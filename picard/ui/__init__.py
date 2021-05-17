@@ -73,19 +73,18 @@ class PreserveGeometry:
     def splitters_name(self):
         return 'splitters_' + self.__class__.__name__
 
-    def _get_lineage(self, widget, lineage=''):
-        """Try to develop a unique lineage / ancestry string to identify the specified widget.
+    def _get_lineage(self, widget):
+        """Try to develop a unique lineage / ancestry to identify the specified widget.
         Args:
             widget (QtWidget): Widget to process.
-            lineage (str, optional): Starting string. Defaults to ''. This is used during recursion and should not be specified in the initial call.
         Returns:
-            str: Lineage / ancestry string for the specified widget.
+            generator: full ancestry for the specified widget.
         """
-        if widget is not None:
-            # If widget doesn't have an assigned objectName() use the widget class name to help create a unique lineage string.
-            name = widget.objectName() if widget.objectName() else widget.__class__.__name__
-            lineage = '.' + name + lineage + self._get_lineage(widget.parent(), lineage)
-        return lineage
+        parent = widget.parent()
+        if parent:
+            yield from self._get_lineage(parent)
+
+        yield widget.objectName() if widget.objectName() else widget.__class__.__name__
 
     def _get_name(self, widget):
         """Return the name of the widget.
@@ -98,15 +97,19 @@ class PreserveGeometry:
         """
         name = widget.objectName()
         if not name:
-            name = self._get_lineage(widget).strip('.')
+            name = '.'.join(self._get_lineage(widget))
             log.debug("Splitter does not have objectName(): %s" % name)
         return name
 
-    def _get_splitter_items(self):
+    @property
+    def _get_splitters(self):
         try:
-            return self.findChildren(QtWidgets.QSplitter)
+            return {
+                self._get_name(splitter): splitter
+                for splitter in self.findChildren(QtWidgets.QSplitter)
+            }
         except AttributeError:
-            return []
+            return {}
 
     @restore_method
     def restore_geometry(self):
@@ -117,18 +120,22 @@ class PreserveGeometry:
         elif self.defaultsize:
             self.resize(self.defaultsize)
         splitters = config.persist[self.splitters_name()]
-        if splitters:
-            splitter_items = self._get_splitter_items()
-            for splitter in splitter_items:
-                name = self._get_name(splitter)
-                if name in splitters:
-                    splitter.restoreState(splitters[name])
+        seen = set()
+        for name, splitter in self._get_splitters.items():
+            if name in splitters:
+                splitter.restoreState(splitters[name])
+                seen.add(name)
+        # remove unused saved states that don't match any existing splitter names
+        for name in set(splitters) - seen:
+            del config.persist[self.splitters_name()][name]
 
     def save_geometry(self):
         config = get_config()
         config.persist[self.opt_name()] = self.saveGeometry()
-        splitters = self._get_splitter_items()
-        config.persist[self.splitters_name()] = {self._get_name(splitter): bytearray(splitter.saveState()) for splitter in splitters}
+        config.persist[self.splitters_name()] = {
+            name: bytearray(splitter.saveState())
+            for name, splitter in self._get_splitters.items()
+        }
 
 
 class SingletonDialog:
