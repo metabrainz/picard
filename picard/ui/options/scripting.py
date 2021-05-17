@@ -38,7 +38,6 @@ from picard.config import (
 )
 from picard.const.sys import IS_MACOS
 from picard.script import ScriptParser
-from picard.util import restore_method
 
 from picard.ui import (
     PicardDialog,
