@@ -44,8 +44,6 @@ from enum import (
 import json
 import uuid
 
-import yaml
-
 from picard.config import get_config
 from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -71,6 +69,14 @@ from picard.script.parser import (  # noqa: F401 # pylint: disable=unused-import
     ScriptUnknownFunction,
     ScriptVariable,
 )
+
+
+try:
+    import yaml
+    supports_script_package = True
+except ImportError:
+    yaml = None
+    supports_script_package = False
 
 
 class ScriptFunctionDocError(Exception):
@@ -141,7 +147,8 @@ class ScriptLiteral(str):
         return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
 
 
-yaml.add_representer(ScriptLiteral, ScriptLiteral.yaml_presenter)
+if yaml:
+    yaml.add_representer(ScriptLiteral, ScriptLiteral.yaml_presenter)
 
 
 class PicardScript():
