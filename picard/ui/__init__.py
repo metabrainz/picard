@@ -101,11 +101,15 @@ class PreserveGeometry:
             log.debug("Splitter does not have objectName(): %s" % name)
         return name
 
-    def _get_splitter_items(self):
+    @property
+    def _get_splitters(self):
         try:
-            return self.findChildren(QtWidgets.QSplitter)
+            return {
+                self._get_name(splitter): splitter
+                for splitter in self.findChildren(QtWidgets.QSplitter)
+            }
         except AttributeError:
-            return []
+            return {}
 
     @restore_method
     def restore_geometry(self):
@@ -116,18 +120,17 @@ class PreserveGeometry:
         elif self.defaultsize:
             self.resize(self.defaultsize)
         splitters = config.persist[self.splitters_name()]
-        if splitters:
-            splitter_items = self._get_splitter_items()
-            for splitter in splitter_items:
-                name = self._get_name(splitter)
-                if name in splitters:
-                    splitter.restoreState(splitters[name])
+        for name, splitter in self._get_splitters.items():
+            if name in splitters:
+                splitter.restoreState(splitters[name])
 
     def save_geometry(self):
         config = get_config()
         config.persist[self.opt_name()] = self.saveGeometry()
-        splitters = self._get_splitter_items()
-        config.persist[self.splitters_name()] = {self._get_name(splitter): bytearray(splitter.saveState()) for splitter in splitters}
+        config.persist[self.splitters_name()] = {
+            name: bytearray(splitter.saveState())
+            for name, splitter in self._get_splitters.items()
+        }
 
 
 class SingletonDialog:
