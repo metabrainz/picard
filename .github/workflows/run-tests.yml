@@ -110,7 +110,7 @@ jobs:
         pip install .
     - name: Test running installed package
       if: runner.os != 'Windows'
-      run: picard --long-version
+      run: picard --long-version --no-crash-dialog
     - name: Verify sdist package
       if: runner.os != 'Windows'
       run: |

@@ -949,6 +949,8 @@ def process_picard_args():
                         help="do not restore positions and/or sizes")
     parser.add_argument("-P", "--no-plugins", action='store_true',
                         help="do not load any plugins")
+    parser.add_argument("--no-crash-dialog", action='store_true',
+                        help="disable the crash dialog")
     parser.add_argument('-v', '--version', action='store_true',
                         help="display version information and exit")
     parser.add_argument("-V", "--long-version", action='store_true',
