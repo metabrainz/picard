@@ -3,6 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -23,7 +24,7 @@ import datetime
 
 from test.picardtestcase import PicardTestCase
 
-from picard.script import (
+from picard.script.serializer import (
     FileNamingScript,
     PicardScript,
     ScriptImportError,
@@ -36,7 +37,7 @@ class _DateTime(datetime.datetime):
         return cls(year=2020, month=1, day=2, hour=12, minute=34, second=56, microsecond=789, tzinfo=None)
 
 
-class ScriptClassesTest(PicardTestCase):
+class PicardScriptTest(PicardTestCase):
 
     original_datetime = datetime.datetime
 
@@ -145,6 +146,20 @@ class ScriptClassesTest(PicardTestCase):
         self.assertEqual(test_script['script'], 'Script text')
         self.assertEqual(test_script.author, 'Script author')
         self.assertEqual(test_script['author'], 'Script author')
+        self.assertEqual(
+            test_script.to_yaml(),
+            "title: Script 1\n"
+            "description: |\n"
+            "  Script description\n"
+            "author: Script author\n"
+            "license: ''\n"
+            "version: ''\n"
+            "last_updated: '2021-04-26'\n"
+            "script_language_version: '1.0'\n"
+            "script: |\n"
+            "  Script text\n"
+            "id: '12345'\n"
+        )
         self.assertEqual(
             test_script.to_json(),
             '{'

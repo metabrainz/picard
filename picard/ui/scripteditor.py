@@ -41,11 +41,13 @@ from picard.config import (
 from picard.const import DEFAULT_FILE_NAMING_FORMAT
 from picard.file import File
 from picard.script import (
-    FileNamingScript,
     ScriptError,
-    ScriptImportError,
     ScriptParser,
     get_file_naming_script_presets,
+)
+from picard.script.serializer import (
+    FileNamingScript,
+    ScriptImportError,
 )
 from picard.util import (
     icontheme,
