@@ -34,12 +34,10 @@ from picard.config import (
     BoolOption,
     IntOption,
     ListOption,
-    Option,
     get_config,
 )
 from picard.const.sys import IS_MACOS
 from picard.script import ScriptParser
-from picard.util import restore_method
 
 from picard.ui import (
     PicardDialog,
@@ -97,7 +95,6 @@ class ScriptingOptionsPage(OptionsPage):
         BoolOption("setting", "enable_tagger_scripts", False),
         ListOption("setting", "list_of_scripts", []),
         IntOption("persist", "last_selected_script_pos", 0),
-        Option("persist", "scripting_splitter", QtCore.QByteArray()),
     ]
 
     def __init__(self, parent=None):
@@ -105,8 +102,7 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui = Ui_ScriptingOptionsPage()
         self.ui.setupUi(self)
         self.ui.tagger_script.setEnabled(False)
-        self.ui.splitter.setStretchFactor(0, 1)
-        self.ui.splitter.setStretchFactor(1, 2)
+        self.ui.scripting_options_splitter.setStretchFactor(1, 2)
         self.move_view = MoveableListView(self.ui.script_list, self.ui.move_up_button,
                                           self.ui.move_down_button)
         self.ui.scripting_documentation_button.clicked.connect(self.show_scripting_documentation)
@@ -170,25 +166,16 @@ class ScriptingOptionsPage(OptionsPage):
             self.ui.script_list.setCurrentItem(last_selected_script)
             last_selected_script.setSelected(True)
 
-        self.restore_state()
-
     def _all_scripts(self):
         for row in range(0, self.ui.script_list.count()):
             item = self.ui.script_list.item(row)
             yield item.get_all()
-
-    @restore_method
-    def restore_state(self):
-        # Preserve previous splitter position
-        config = get_config()
-        self.ui.splitter.restoreState(config.persist["scripting_splitter"])
 
     def save(self):
         config = get_config()
         config.setting["enable_tagger_scripts"] = self.ui.enable_tagger_scripts.isChecked()
         config.setting["list_of_scripts"] = list(self._all_scripts())
         config.persist["last_selected_script_pos"] = self.ui.script_list.currentRow()
-        config.persist["scripting_splitter"] = self.ui.splitter.saveState()
 
     def display_error(self, error):
         # Ignore scripting errors, those are handled inline

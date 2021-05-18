@@ -29,6 +29,7 @@
 # Copyright (C) 2019 Timur Enikeev
 # Copyright (C) 2020 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion
+# Copyright (C) 2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -172,7 +173,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     options = [
         Option("persist", "window_state", QtCore.QByteArray()),
-        Option("persist", "bottom_splitter_state", QtCore.QByteArray()),
         BoolOption("persist", "window_maximized", False),
         BoolOption("persist", "view_metadata_view", True),
         BoolOption("persist", "view_cover_art", True),
@@ -223,15 +223,16 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.setUnifiedTitleAndToolBarOnMac(True)
 
         main_layout = QtWidgets.QSplitter(QtCore.Qt.Vertical)
+        main_layout.setObjectName('main_window_bottom_splitter')
         main_layout.setChildrenCollapsible(False)
         main_layout.setContentsMargins(0, 0, 0, 0)
 
         self.panel = MainPanel(self, main_layout)
+        self.panel.setObjectName('main_panel_splitter')
         self.file_browser = FileBrowser(self.panel)
         if not self.show_file_browser_action.isChecked():
             self.file_browser.hide()
         self.panel.insertWidget(0, self.file_browser)
-        self.panel.restore_state()
 
         self.log_dialog = LogView(self)
         self.history_dialog = HistoryView(self)
@@ -347,7 +348,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config.persist["view_cover_art"] = self.show_cover_art_action.isChecked()
         config.persist["view_toolbar"] = self.show_toolbar_action.isChecked()
         config.persist["view_file_browser"] = self.show_file_browser_action.isChecked()
-        config.persist["bottom_splitter_state"] = self.centralWidget().saveState()
         self.file_browser.save_state()
         self.panel.save_state()
         self.metadata_box.save_state()
@@ -359,11 +359,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.restore_geometry()
         if config.persist["window_maximized"]:
             self.setWindowState(QtCore.Qt.WindowMaximized)
-        bottom_splitter_state = config.persist["bottom_splitter_state"]
-        if bottom_splitter_state.isEmpty():
+        splitters = config.persist["splitters_MainWindow"]
+        if splitters is None or 'main_window_bottom_splitter' not in splitters:
             self.centralWidget().setSizes([366, 194])
-        else:
-            self.centralWidget().restoreState(bottom_splitter_state)
         self.file_browser.restore_state()
 
     def create_statusbar(self):

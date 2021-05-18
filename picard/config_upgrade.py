@@ -34,6 +34,7 @@ from picard import log
 from picard.config import (
     BoolOption,
     IntOption,
+    Option,
     TextOption,
 )
 from picard.const import (
@@ -342,6 +343,49 @@ def upgrade_to_v2_6_0_beta_3(config):
     _s.remove("use_system_theme")
 
 
+def upgrade_to_v2_7_0_dev_2(config):
+    """Replace manually set persistent splitter settings with automated system.
+    """
+    def upgrade_persisted_splitter(new_persist_key, key_map):
+        _p = config.persist
+        splitter_dict = {}
+        for (old_splitter_key, new_splitter_key) in key_map:
+            if _p.__contains__(old_splitter_key):
+                if _p[old_splitter_key] is not None:
+                    splitter_dict[new_splitter_key] = bytearray(_p[old_splitter_key])
+                _p.remove(old_splitter_key)
+        Option("persist", new_persist_key, {})
+        _p[new_persist_key] = splitter_dict
+
+    # MainWindow splitters
+    upgrade_persisted_splitter(
+        new_persist_key="splitters_MainWindow",
+        key_map=[
+            ('bottom_splitter_state', 'main_window_bottom_splitter'),
+            ('splitter_state', 'main_panel_splitter'),
+        ]
+    )
+
+    # ScriptEditorDialog splitters
+    upgrade_persisted_splitter(
+        new_persist_key="splitters_ScriptEditorDialog",
+        key_map=[
+            ('script_editor_splitter_samples', 'splitter_between_editor_and_examples'),
+            ('script_editor_splitter_samples_before_after', 'splitter_between_before_and_after'),
+            ('script_editor_splitter_documentation', 'splitter_between_editor_and_documentation'),
+        ]
+    )
+
+    # OptionsDialog splitters
+    upgrade_persisted_splitter(
+        new_persist_key="splitters_OptionsDialog",
+        key_map=[
+            ('options_splitter', 'dialog_splitter'),
+            ('scripting_splitter', 'scripting_options_splitter'),
+        ]
+    )
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
@@ -371,4 +415,5 @@ def upgrade_config(config):
     cfg.register_upgrade_hook(upgrade_to_v2_6_0_dev_1)
     cfg.register_upgrade_hook(upgrade_to_v2_6_0_beta_2)
     cfg.register_upgrade_hook(upgrade_to_v2_6_0_beta_3)
+    cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_2)
     cfg.run_upgrade_hooks(log.debug)

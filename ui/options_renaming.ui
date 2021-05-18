@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>453</width>
-    <height>552</height>
+    <height>566</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -152,7 +152,7 @@
        <number>3</number>
       </property>
       <item>
-       <widget class="QSplitter" name="splitter">
+       <widget class="QSplitter" name="renaming_options_examples_splitter">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -196,8 +196,6 @@
            <widget class="QListWidget" name="example_filename_before"/>
           </item>
          </layout>
-         <zorder>example_filename_before_label</zorder>
-         <zorder>example_filename_before</zorder>
         </widget>
         <widget class="QFrame" name="frame_2">
          <property name="minimumSize">
@@ -243,8 +241,6 @@
        </widget>
       </item>
      </layout>
-     <zorder>frame_2</zorder>
-     <zorder>frame</zorder>
     </widget>
    </item>
    <item>

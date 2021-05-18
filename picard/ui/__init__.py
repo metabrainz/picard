@@ -8,6 +8,7 @@
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2019-2021 Philipp Wolfer
+# Copyright (C) 2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -32,6 +33,7 @@ from PyQt5 import (
     QtWidgets,
 )
 
+from picard import log
 from picard.config import (
     Option,
     get_config,
@@ -61,11 +63,53 @@ class PreserveGeometry:
 
     def __init__(self):
         Option("persist", self.opt_name(), QtCore.QByteArray())
+        Option("persist", self.splitters_name(), {})
         if getattr(self, 'finished', None):
             self.finished.connect(self.save_geometry)
 
     def opt_name(self):
         return 'geometry_' + self.__class__.__name__
+
+    def splitters_name(self):
+        return 'splitters_' + self.__class__.__name__
+
+    def _get_lineage(self, widget):
+        """Try to develop a unique lineage / ancestry to identify the specified widget.
+        Args:
+            widget (QtWidget): Widget to process.
+        Returns:
+            generator: full ancestry for the specified widget.
+        """
+        parent = widget.parent()
+        if parent:
+            yield from self._get_lineage(parent)
+
+        yield widget.objectName() if widget.objectName() else widget.__class__.__name__
+
+    def _get_name(self, widget):
+        """Return the name of the widget.
+
+        Args:
+            widget (QtWidget): Widget to process.
+
+        Returns:
+            str: The name of the widget or the lineage if there is no name assigned.
+        """
+        name = widget.objectName()
+        if not name:
+            name = '.'.join(self._get_lineage(widget))
+            log.debug("Splitter does not have objectName(): %s" % name)
+        return name
+
+    @property
+    def _get_splitters(self):
+        try:
+            return {
+                self._get_name(splitter): splitter
+                for splitter in self.findChildren(QtWidgets.QSplitter)
+            }
+        except AttributeError:
+            return {}
 
     @restore_method
     def restore_geometry(self):
@@ -75,10 +119,23 @@ class PreserveGeometry:
             self.restoreGeometry(geometry)
         elif self.defaultsize:
             self.resize(self.defaultsize)
+        splitters = config.persist[self.splitters_name()]
+        seen = set()
+        for name, splitter in self._get_splitters.items():
+            if name in splitters:
+                splitter.restoreState(splitters[name])
+                seen.add(name)
+        # remove unused saved states that don't match any existing splitter names
+        for name in set(splitters) - seen:
+            del config.persist[self.splitters_name()][name]
 
     def save_geometry(self):
         config = get_config()
         config.persist[self.opt_name()] = self.saveGeometry()
+        config.persist[self.splitters_name()] = {
+            name: bytearray(splitter.saveState())
+            for name, splitter in self._get_splitters.items()
+        }
 
 
 class SingletonDialog:

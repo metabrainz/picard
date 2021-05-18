@@ -13,6 +13,7 @@
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017 Suhas
 # Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -37,7 +38,6 @@ from PyQt5 import (
 from picard import log
 from picard.config import (
     ListOption,
-    Option,
     TextOption,
     get_config,
 )
@@ -82,7 +82,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     options = [
         TextOption("persist", "options_last_active_page", ""),
         ListOption("persist", "options_pages_tree_state", []),
-        Option("persist", "options_splitter", QtCore.QByteArray()),
     ]
 
     def add_pages(self, parent, default_page, parent_item):
@@ -150,8 +149,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         # work-around to set optimal option pane width
         self.ui.pages_tree.expandAll()
         max_page_name = self.ui.pages_tree.sizeHintForColumn(0) + 2*self.ui.pages_tree.frameWidth()
-        self.ui.splitter.setSizes([max_page_name,
-                                   self.geometry().width() - max_page_name])
+        self.ui.dialog_splitter.setSizes([max_page_name, self.geometry().width() - max_page_name])
 
         self.ui.pages_tree.setHeaderLabels([""])
         self.ui.pages_tree.header().hide()
@@ -226,7 +224,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             expanded_pages.append((page, is_expanded))
         config = get_config()
         config.persist["options_pages_tree_state"] = expanded_pages
-        config.persist["options_splitter"] = self.ui.splitter.saveState()
 
     @restore_method
     def restoreWindowState(self):
@@ -241,8 +238,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 except KeyError:
                     continue
                 item.setExpanded(is_expanded)
-
-        self.ui.splitter.restoreState(config.persist["options_splitter"])
 
     def restore_all_defaults(self):
         for page in self.pages:
