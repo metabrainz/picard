@@ -11,6 +11,7 @@ Required:
 * [Python 3.6 or newer](http://python.org/download)
 * [PyQt 5.10 or newer](http://www.riverbankcomputing.co.uk/software/pyqt/download)
 * [Mutagen 1.37 or newer](https://mutagen.readthedocs.io/)
+* [PyYAML 5.1 or newer](https://pyyaml.org/)
 * [python-dateutil](https://dateutil.readthedocs.io/en/stable/)
 * gettext:
   * [Windows](https://mlocati.github.io/articles/gettext-iconv-windows.html)

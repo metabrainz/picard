@@ -44,6 +44,8 @@ from enum import (
 import json
 import uuid
 
+import yaml
+
 from picard.config import get_config
 from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -69,14 +71,6 @@ from picard.script.parser import (  # noqa: F401 # pylint: disable=unused-import
     ScriptUnknownFunction,
     ScriptVariable,
 )
-
-
-try:
-    import yaml
-    supports_script_package = True
-except ImportError:
-    yaml = None
-    supports_script_package = False
 
 
 class ScriptFunctionDocError(Exception):
@@ -139,7 +133,7 @@ class ScriptImportError(Exception):
         super().__init__(*args)
 
 
-class ScriptLiteral(str):
+class MultilineLiteral(str):
     @staticmethod
     def yaml_presenter(dumper, data):
         if data:
@@ -147,8 +141,7 @@ class ScriptLiteral(str):
         return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
 
 
-if yaml:
-    yaml.add_representer(ScriptLiteral, ScriptLiteral.yaml_presenter)
+yaml.add_representer(MultilineLiteral, MultilineLiteral.yaml_presenter)
 
 
 class PicardScript():
@@ -214,7 +207,7 @@ class PicardScript():
 
     @script.setter
     def script(self, value):
-        self._script = ScriptLiteral(value)
+        self._script = MultilineLiteral(value)
 
     @staticmethod
     def make_last_updated():
@@ -392,6 +385,14 @@ class FileNamingScript(PicardScript):
         self.description = description
         self.license = license
         self.version = version
+
+    @property
+    def description(self):
+        return self._description
+
+    @description.setter
+    def description(self, value):
+        self._description = MultilineLiteral(value)
 
 
 def get_file_naming_script_presets():

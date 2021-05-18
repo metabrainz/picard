@@ -46,7 +46,6 @@ from picard.script import (
     ScriptImportError,
     ScriptParser,
     get_file_naming_script_presets,
-    supports_script_package,
 )
 from picard.util import (
     icontheme,
@@ -872,7 +871,7 @@ class ScriptEditorDialog(PicardDialog):
             if not file_content.strip():
                 self.output_file_error(FILE_ERROR_IMPORT, filename, _('The file was empty'))
                 return
-            if supports_script_package and file_type == self.FILE_TYPE_PACKAGE:
+            if file_type == self.FILE_TYPE_PACKAGE:
                 try:
                     script_item = FileNamingScript().create_from_yaml(file_content)
                 except ScriptImportError as error:
@@ -907,7 +906,7 @@ class ScriptEditorDialog(PicardDialog):
                 if ext and str(name).endswith('.' + ext):
                     filename = name
                 log.debug('Exporting naming script file: %s' % filename)
-                if supports_script_package and file_type == self.FILE_TYPE_PACKAGE:
+                if file_type == self.FILE_TYPE_PACKAGE:
                     script_text = script_item.to_yaml()
                 try:
                     with open(filename, 'w', encoding='utf8') as o_file:
@@ -925,12 +924,11 @@ class ScriptEditorDialog(PicardDialog):
                     dialog.exec_()
 
     def _get_dialog_filetypes(self):
-        file_types = []
-        if supports_script_package:
-            file_types.append(self.FILE_TYPE_PACKAGE)
-        file_types.append(self.FILE_TYPE_SCRIPT)
-        file_types.append(self.FILE_TYPE_ALL)
-        return ";;".join(file_types)
+        return ";;".join((
+            self.FILE_TYPE_PACKAGE,
+            self.FILE_TYPE_SCRIPT,
+            self.FILE_TYPE_ALL,
+        ))
 
     def reset_script(self):
         """Reset the script to the last saved value.
