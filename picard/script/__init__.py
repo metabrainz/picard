@@ -157,7 +157,7 @@ class PicardScript():
     # Base class developed to support future tagging script class as possible replacement for currently used tuples in config.setting["list_of_scripts"].
 
     TYPE = PicardScriptType.BASE
-    OUTPUT_FIELDS = {'title', 'script', 'script_language_version', 'id'}
+    OUTPUT_FIELDS = ('title', 'script_language_version', 'script', 'id')
 
     # Don't automatically trigger changing the `script_last_updated` property when updating these properties.
     _last_updated_ignore_list = {'last_updated', 'readonly', 'deletable', 'id'}
@@ -277,8 +277,8 @@ class PicardScript():
         Returns:
             str: The properties of the script object formatted as a YAML string.
         """
-        items = {key: getattr(self, key) for key in dir(self) if key in self.OUTPUT_FIELDS}
-        return yaml.dump(items)
+        items = {key: getattr(self, key) for key in self.OUTPUT_FIELDS}
+        return yaml.dump(items, sort_keys=False)
 
     def to_json(self, indent=None):
         """Converts the properties of the script object to a JSON formatted string.  Note that only property
@@ -290,7 +290,7 @@ class PicardScript():
         Returns:
             str: The properties of the script object formatted as a JSON string.
         """
-        items = {key: getattr(self, key) for key in dir(self) if key in self.OUTPUT_FIELDS}
+        items = {key: getattr(self, key) for key in self.OUTPUT_FIELDS}
         return json.dumps(items, indent=indent, sort_keys=True)
 
     @classmethod
@@ -354,7 +354,7 @@ class FileNamingScript(PicardScript):
     """Picard file naming script class
     """
     TYPE = PicardScriptType.FILENAMING
-    OUTPUT_FIELDS = {'title', 'script', 'author', 'description', 'license', 'version', 'last_updated', 'script_language_version', 'id'}
+    OUTPUT_FIELDS = ('title', 'description', 'author', 'license', 'version', 'last_updated', 'script_language_version', 'script', 'id')
 
     def __init__(
         self,
