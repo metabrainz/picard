@@ -1,9 +1,9 @@
-python-dateutil>=2.7.3
-discid
-fasteners
-markdown
-mutagen>=1.37
-pyobjc-core<7.0; sys_platform == 'darwin'
-pyobjc-framework-Cocoa<7.0; sys_platform == 'darwin'
-PyQt5>=5.10
+python-dateutil~=2.7
+discid~=1.0
+fasteners~=0.14
+markdown~=3.2
+mutagen~=1.37
+pyobjc-core~=6.2; sys_platform == 'darwin'
+pyobjc-framework-Cocoa~=6.2; sys_platform == 'darwin'
+PyQt5~=5.10
 pywin32; sys_platform == 'win32'
