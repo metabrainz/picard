@@ -1,0 +1,16 @@
+{
+    "MsgAlreadyInstalled": "${PRODUCT_NAME} telah pun terpasang serta harus dirombak sekiranya mahu memasang naik taraf ini ke edaran ${PRODUCT_VERSION}. \n\nMaju dengan menekan \"OK\" atau batal dengan menekan \"Batal\".",
+    "MsgApplicationRunning": "Perisian ${PRODUCT_NAME} sedang berjalan. Sila tutup lalu cuba lagi.",
+    "MsgRequires64Bit": "Edaran ${PRODUCT_NAME} ini memerlukan sistem Windows 64 bit.",
+    "MuiDescriptionRequired": "Pasang ${PRODUCT_NAME} bersama fail perlu untuk dijalankan.",
+    "MuiDescriptionLang": "Pasang terjemahan ${PRODUCT_NAME} dalam pelbagai bahasa.",
+    "MuiDescriptionShortcuts": "Pasang pintasan bagi melancarkan ${PRODUCT_NAME}.",
+    "MuiDescriptionDesktop": "Pasang pintasan di paparan utama",
+    "MuiDescriptionStartMenu": "Pasang pintasan di Menu Mula",
+    "OptionRemoveSettings": "Alih keluar tetapan dan data peribadi",
+    "SectionDesktop": "Atas meja",
+    "SectionLanguages": "Bahasa",
+    "SectionRequired": "Fail atur cara (wajib)",
+    "SectionShortcuts": "Pintasan",
+    "SectionStartMenu": "Menu mula"
+}
