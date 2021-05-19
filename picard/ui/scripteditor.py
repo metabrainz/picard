@@ -272,7 +272,7 @@ class ScriptEditorDialog(PicardDialog):
     signal_selection_changed = QtCore.pyqtSignal()
 
     default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DocumentsLocation))
-    default_script_filename = "picard_naming_script.pnsp"
+    default_script_filename = "picard_naming_script.ptsp"
 
     def __init__(self, parent=None, examples=None):
         """Stand-alone file naming script editor.
@@ -286,7 +286,7 @@ class ScriptEditorDialog(PicardDialog):
 
         self.FILE_TYPE_ALL = _("All Files") + " (*)"
         self.FILE_TYPE_SCRIPT = _("Picard Script Files") + " (*.pts *.txt)"
-        self.FILE_TYPE_PACKAGE = _("Picard Naming Script Package") + " (*.pnsp *.yaml)"
+        self.FILE_TYPE_PACKAGE = _("Picard Naming Script Package") + " (*.ptsp *.yaml)"
 
         self.SCRIPT_TITLE_SYSTEM = _("System: %s")
         self.SCRIPT_TITLE_USER = _("User: %s")
