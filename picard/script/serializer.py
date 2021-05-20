@@ -25,7 +25,6 @@ from enum import (
     IntEnum,
     unique,
 )
-import json
 import uuid
 
 import yaml
@@ -146,9 +145,9 @@ class PicardScript():
         Args:
             **kwargs: Properties to update in the form `property=value`.
         """
-        self._update_from_dict(kwargs)
+        self.update_from_dict(kwargs)
 
-    def _update_from_dict(self, settings):
+    def update_from_dict(self, settings):
         """Updates the values of the properties based on the contents of the dictionary provided.
         Properties in the `settings` dictionary that are not found in the script object are ignored.
 
@@ -190,19 +189,6 @@ class PicardScript():
         items = {key: getattr(self, key) for key in self.OUTPUT_FIELDS}
         return yaml.dump(items, sort_keys=False)
 
-    def to_json(self, indent=None):
-        """Converts the properties of the script object to a JSON formatted string.  Note that only property
-        names listed in `OUTPUT_FIELDS` will be included in the output.
-
-        Args:
-            indent (int): Amount to indent the output. Defaults to None.
-
-        Returns:
-            str: The properties of the script object formatted as a JSON string.
-        """
-        items = {key: getattr(self, key) for key in self.OUTPUT_FIELDS}
-        return json.dumps(items, indent=indent, sort_keys=True)
-
     @classmethod
     def create_from_yaml(cls, yaml_string, create_new_id=True):
         """Creates an instance based on the contents of the YAML string provided.
@@ -220,44 +206,10 @@ class PicardScript():
             raise ScriptImportError(N_("File content not a dictionary"))
         if 'title' not in yaml_dict or 'script' not in yaml_dict:
             raise ScriptImportError(N_('Invalid script package'))
-        new_object._update_from_dict(yaml_dict)
+        new_object.update_from_dict(yaml_dict)
         if create_new_id or not new_object['id']:
             new_object._set_new_id()
         return new_object
-
-    @classmethod
-    def create_from_json(cls, json_string, create_new_id=True):
-        """Creates an instance based on the contents of the JSON string provided.
-        Properties in the JSON string that are not found in the script object are ignored.
-
-        Args:
-            json_string (str): JSON string containing the property settings.
-            create_new_id (bool): Do not use the existing id.  Defaults to True.
-
-        Returns:
-            object: An instance of the class, populated from the property settings in the JSON string.
-        """
-        new_object = cls()
-        new_object.title = ''
-        new_object.update_from_json(json_string)
-        if not (new_object['title'] and new_object['script']):
-            raise ScriptImportError(N_('Invalid script package'))
-        if create_new_id or not new_object['id']:
-            new_object._set_new_id()
-        return new_object
-
-    def update_from_json(self, json_string):
-        """Updates the values of the properties based on the contents of the JSON string provided.
-        Properties in the JSON string that are not found in the script object are ignored.
-
-        Args:
-            json_string (str): JSON string containing the property settings.
-        """
-        try:
-            decoded_string = json.loads(json_string)
-        except json.decoder.JSONDecodeError:
-            raise ScriptImportError(N_("Unable to decode JSON string"))
-        self._update_from_dict(decoded_string)
 
 
 class FileNamingScript(PicardScript):

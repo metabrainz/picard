@@ -22,6 +22,8 @@
 
 import datetime
 
+import yaml
+
 from test.picardtestcase import PicardTestCase
 
 from picard.script.serializer import (
@@ -51,6 +53,9 @@ class PicardScriptTest(PicardTestCase):
         # Restore original datetime object
         datetime.datetime = self.original_datetime
 
+    def assertYamlEquals(self, yaml_str, obj, msg=None):
+        self.assertEqual(obj, yaml.safe_load(yaml_str), msg)
+
     def test_script_object_1(self):
         # Check initial loaded values.
         test_script = PicardScript(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0')
@@ -58,7 +63,7 @@ class PicardScriptTest(PicardTestCase):
         self.assertEqual(test_script['id'], '12345')
         self.assertEqual(test_script.last_updated, '2021-04-26')
         self.assertEqual(test_script['last_updated'], '2021-04-26')
-        self.assertEqual(test_script.to_json(), '{"id": "12345", "script": "Script text", "script_language_version": "1.0", "title": "Script 1"}')
+        self.assertYamlEquals(test_script.to_yaml(), {"id": "12345", "script": "Script text\n", "script_language_version": "1.0", "title": "Script 1"})
 
     def test_script_object_2(self):
         # Check updating values directly so as not to modify `last_updated`.
@@ -93,9 +98,9 @@ class PicardScriptTest(PicardTestCase):
         self.assertEqual(test_script['last_updated'], '2020-01-02 12:34:56 UTC')
 
     def test_script_object_5(self):
-        # Check updating values from JSON that modify `last_updated`.
+        # Check updating values from dict that modify `last_updated`.
         test_script = PicardScript(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26')
-        test_script.update_from_json('{"script": "Updated script"}')
+        test_script.update_from_dict({"script": "Updated script"})
         self.assertEqual(test_script.script, 'Updated script')
         self.assertEqual(test_script['script'], 'Updated script')
         self.assertEqual(test_script.last_updated, '2020-01-02 12:34:56 UTC')
@@ -106,16 +111,16 @@ class PicardScriptTest(PicardTestCase):
         test_script = PicardScript(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0')
         test_script.update_script_setting(description='Updated description')
         self.assertEqual(test_script['last_updated'], '2021-04-26')
-        self.assertEqual(test_script.to_json(), '{"id": "12345", "script": "Script text", "script_language_version": "1.0", "title": "Script 1"}')
+        self.assertYamlEquals(test_script.to_yaml(), {"id": "12345", "script": "Script text\n", "script_language_version": "1.0", "title": "Script 1"})
         with self.assertRaises(AttributeError):
             print(test_script.description)
 
     def test_script_object_7(self):
-        # Test that extra (unknown) settings are ignored during updating from JSON string
+        # Test that extra (unknown) settings are ignored during updating from dict
         test_script = PicardScript(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0')
-        test_script.update_from_json('{"description": "Updated description"}')
+        test_script.update_from_dict({"description": "Updated description"})
         self.assertEqual(test_script['last_updated'], '2021-04-26')
-        self.assertEqual(test_script.to_json(), '{"id": "12345", "script": "Script text", "script_language_version": "1.0", "title": "Script 1"}')
+        self.assertYamlEquals(test_script.to_yaml(), {"id": "12345", "script": "Script text\n", "script_language_version": "1.0", "title": "Script 1"})
         with self.assertRaises(AttributeError):
             print(test_script.description)
 
@@ -125,12 +130,10 @@ class PicardScriptTest(PicardTestCase):
         self.assertEqual(test_script['unknown_setting'], None)
 
     def test_script_object_9(self):
-        # Test that an exception is raised when creating or updating using an invalid JSON string
+        # Test that an exception is raised when creating or updating using an invalid YAML string
         with self.assertRaises(ScriptImportError):
-            test_script = PicardScript().create_from_json('Not a JSON string')
-        test_script = PicardScript(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0')
-        with self.assertRaises(ScriptImportError):
-            test_script.update_from_json('Not a JSON string')
+            PicardScript().create_from_yaml('Not a YAML string')
+        PicardScript(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0')
 
     def test_naming_script_object_1(self):
         # Check initial loaded values.
@@ -159,32 +162,4 @@ class PicardScriptTest(PicardTestCase):
             "script: |\n"
             "  Script text\n"
             "id: '12345'\n"
-        )
-        self.assertEqual(
-            test_script.to_json(),
-            '{'
-            '"author": "Script author", '
-            '"description": "Script description", '
-            '"id": "12345", '
-            '"last_updated": "2021-04-26", '
-            '"license": "", '
-            '"script": "Script text", '
-            '"script_language_version": "1.0", '
-            '"title": "Script 1", '
-            '"version": ""'
-            '}'
-        )
-        self.assertEqual(
-            test_script.to_json(indent=4),
-            '{\n'
-            '    "author": "Script author",\n'
-            '    "description": "Script description",\n'
-            '    "id": "12345",\n'
-            '    "last_updated": "2021-04-26",\n'
-            '    "license": "",\n'
-            '    "script": "Script text",\n'
-            '    "script_language_version": "1.0",\n'
-            '    "title": "Script 1",\n'
-            '    "version": ""\n'
-            '}'
         )

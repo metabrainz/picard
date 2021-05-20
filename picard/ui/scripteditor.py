@@ -524,7 +524,7 @@ class ScriptEditorDialog(PicardDialog):
                 readonly=False,
                 deletable=True,
             )
-            self.naming_scripts.insert(0, script_item.to_json())
+            self.naming_scripts.insert(0, script_item.to_yaml())
             self.selected_script_id = script_item['id']
 
         self.ui.preset_naming_scripts.blockSignals(True)
@@ -541,11 +541,11 @@ class ScriptEditorDialog(PicardDialog):
         count = 0   # Use separate counter rather than `i` in case ScriptImportError triggers, resulting in an incorrect index count.
         for i in range(len(self.naming_scripts)):
             try:
-                script_item = FileNamingScript().create_from_json(self.naming_scripts[i], create_new_id=False)
+                script_item = FileNamingScript().create_from_yaml(self.naming_scripts[i], create_new_id=False)
             except ScriptImportError:
                 pass
             else:
-                self.naming_scripts[i] = script_item.to_json()  # Ensure scripts are stored with id codes
+                self.naming_scripts[i] = script_item.to_yaml()  # Ensure scripts are stored with id codes
                 idx, count = _add_and_check(idx, count, self.SCRIPT_TITLE_USER % script_item["title"], script_item)
 
         for script_item in get_file_naming_script_presets():
@@ -633,7 +633,7 @@ class ScriptEditorDialog(PicardDialog):
             script_item = self.ui.preset_naming_scripts.itemData(idx)
             # Only add items that can be removed -- no presets
             if script_item.deletable:
-                self.naming_scripts.append(script_item.to_json())
+                self.naming_scripts.append(script_item.to_yaml())
 
     def get_selected_item(self):
         """Get the selected item from the script selection combo box.
