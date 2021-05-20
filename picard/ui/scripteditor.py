@@ -41,11 +41,13 @@ from picard.config import (
 from picard.const import DEFAULT_FILE_NAMING_FORMAT
 from picard.file import File
 from picard.script import (
-    FileNamingScript,
     ScriptError,
-    ScriptImportError,
     ScriptParser,
     get_file_naming_script_presets,
+)
+from picard.script.serializer import (
+    FileNamingScript,
+    ScriptImportError,
 )
 from picard.util import (
     icontheme,
@@ -270,7 +272,7 @@ class ScriptEditorDialog(PicardDialog):
     signal_selection_changed = QtCore.pyqtSignal()
 
     default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DocumentsLocation))
-    default_script_filename = "picard_naming_script.pnsp"
+    default_script_filename = "picard_naming_script.ptsp"
 
     def __init__(self, parent=None, examples=None):
         """Stand-alone file naming script editor.
@@ -284,7 +286,7 @@ class ScriptEditorDialog(PicardDialog):
 
         self.FILE_TYPE_ALL = _("All Files") + " (*)"
         self.FILE_TYPE_SCRIPT = _("Picard Script Files") + " (*.pts *.txt)"
-        self.FILE_TYPE_PACKAGE = _("Picard Naming Script Package") + " (*.pnsp *.json)"
+        self.FILE_TYPE_PACKAGE = _("Picard Naming Script Package") + " (*.ptsp *.yaml)"
 
         self.SCRIPT_TITLE_SYSTEM = _("System: %s")
         self.SCRIPT_TITLE_USER = _("User: %s")
@@ -522,7 +524,7 @@ class ScriptEditorDialog(PicardDialog):
                 readonly=False,
                 deletable=True,
             )
-            self.naming_scripts.insert(0, script_item.to_json())
+            self.naming_scripts.insert(0, script_item.to_yaml())
             self.selected_script_id = script_item['id']
 
         self.ui.preset_naming_scripts.blockSignals(True)
@@ -539,11 +541,11 @@ class ScriptEditorDialog(PicardDialog):
         count = 0   # Use separate counter rather than `i` in case ScriptImportError triggers, resulting in an incorrect index count.
         for i in range(len(self.naming_scripts)):
             try:
-                script_item = FileNamingScript().create_from_json(self.naming_scripts[i], create_new_id=False)
+                script_item = FileNamingScript().create_from_yaml(self.naming_scripts[i], create_new_id=False)
             except ScriptImportError:
                 pass
             else:
-                self.naming_scripts[i] = script_item.to_json()  # Ensure scripts are stored with id codes
+                self.naming_scripts[i] = script_item.to_yaml()  # Ensure scripts are stored with id codes
                 idx, count = _add_and_check(idx, count, self.SCRIPT_TITLE_USER % script_item["title"], script_item)
 
         for script_item in get_file_naming_script_presets():
@@ -631,7 +633,7 @@ class ScriptEditorDialog(PicardDialog):
             script_item = self.ui.preset_naming_scripts.itemData(idx)
             # Only add items that can be removed -- no presets
             if script_item.deletable:
-                self.naming_scripts.append(script_item.to_json())
+                self.naming_scripts.append(script_item.to_yaml())
 
     def get_selected_item(self):
         """Get the selected item from the script selection combo box.
@@ -856,7 +858,7 @@ class ScriptEditorDialog(PicardDialog):
             return
 
         dialog_title = _("Import Script File")
-        dialog_file_types = self.FILE_TYPE_PACKAGE + ";;" + self.FILE_TYPE_SCRIPT + ";;" + self.FILE_TYPE_ALL
+        dialog_file_types = self._get_dialog_filetypes()
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
         filename, file_type = QtWidgets.QFileDialog.getOpenFileName(self, dialog_title, self.default_script_directory, dialog_file_types, options=options)
@@ -873,7 +875,7 @@ class ScriptEditorDialog(PicardDialog):
                 return
             if file_type == self.FILE_TYPE_PACKAGE:
                 try:
-                    script_item = FileNamingScript().create_from_json(file_content)
+                    script_item = FileNamingScript().create_from_yaml(file_content)
                 except ScriptImportError as error:
                     self.output_file_error(FILE_ERROR_DECODE, filename, error)
                     return
@@ -896,7 +898,7 @@ class ScriptEditorDialog(PicardDialog):
         if script_text:
             default_path = os.path.normpath(os.path.join(self.default_script_directory, self.default_script_filename))
             dialog_title = _("Export Script File")
-            dialog_file_types = self.FILE_TYPE_PACKAGE + ";;" + self.FILE_TYPE_SCRIPT + ";;" + self.FILE_TYPE_ALL
+            dialog_file_types = self._get_dialog_filetypes()
             options = QtWidgets.QFileDialog.Options()
             options |= QtWidgets.QFileDialog.DontUseNativeDialog
             filename, file_type = QtWidgets.QFileDialog.getSaveFileName(self, dialog_title, default_path, dialog_file_types, options=options)
@@ -907,7 +909,7 @@ class ScriptEditorDialog(PicardDialog):
                     filename = name
                 log.debug('Exporting naming script file: %s' % filename)
                 if file_type == self.FILE_TYPE_PACKAGE:
-                    script_text = script_item.to_json(indent=4)
+                    script_text = script_item.to_yaml()
                 try:
                     with open(filename, 'w', encoding='utf8') as o_file:
                         o_file.write(script_text)
@@ -922,6 +924,13 @@ class ScriptEditorDialog(PicardDialog):
                         self
                     )
                     dialog.exec_()
+
+    def _get_dialog_filetypes(self):
+        return ";;".join((
+            self.FILE_TYPE_PACKAGE,
+            self.FILE_TYPE_SCRIPT,
+            self.FILE_TYPE_ALL,
+        ))
 
     def reset_script(self):
         """Reset the script to the last saved value.

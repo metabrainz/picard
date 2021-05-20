@@ -7,3 +7,4 @@ pyobjc-core~=6.2; sys_platform == 'darwin'
 pyobjc-framework-Cocoa~=6.2; sys_platform == 'darwin'
 PyQt5~=5.10
 pywin32; sys_platform == 'win32'
+pyyaml~=5.1
