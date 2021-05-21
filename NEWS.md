@@ -526,7 +526,7 @@
 - [PICARD-1680](https://tickets.metabrainz.org/browse/PICARD-1680) - Select / load multiple items from CD lookup results
 - [PICARD-1682](https://tickets.metabrainz.org/browse/PICARD-1682) - Multiline editing for lyrics and comments
 - [PICARD-1683](https://tickets.metabrainz.org/browse/PICARD-1683) - Autocompletion when editing media, releasetype, releasecountry and releasestatus tags
-- [PICARD-1686](https://tickets.metabrainz.org/browse/PICARD-1686) - Always keep [non-album tracks] entry on top
+- [PICARD-1686](https://tickets.metabrainz.org/browse/PICARD-1686) - Always keep \[non-album tracks\] entry on top
 - [PICARD-1692](https://tickets.metabrainz.org/browse/PICARD-1692) - Change sliders to jump to clicked position
 - [PICARD-1695](https://tickets.metabrainz.org/browse/PICARD-1695) - Make script editor UI consistent with other option pages
 - [PICARD-1712](https://tickets.metabrainz.org/browse/PICARD-1712) - Use Ctrl+D as keyboard shortcut to remove albums or files
@@ -586,7 +586,7 @@
 - [PICARD-1603](https://tickets.metabrainz.org/browse/PICARD-1603) - Translations from picard/ui/colors.py don’t show up in Picard
 - [PICARD-1604](https://tickets.metabrainz.org/browse/PICARD-1604) - Windows install is not using Qt default translations
 - [PICARD-1607](https://tickets.metabrainz.org/browse/PICARD-1607) - Upgrading a plugin displays the dialog box multiple times
-- [PICARD-1608](https://tickets.metabrainz.org/browse/PICARD-1608) - "[non-album tracks]" can not directly be removed
+- [PICARD-1608](https://tickets.metabrainz.org/browse/PICARD-1608) - "\[non-album tracks\]" can not directly be removed
 - [PICARD-1609](https://tickets.metabrainz.org/browse/PICARD-1609) - Picard About shows Qt version PyQt was build against, not actually used Qt
 
 ## Improvements
@@ -687,7 +687,7 @@
 ## Bugfixes
 - [PICARD-323](https://tickets.metabrainz.org/browse/PICARD-323) - Only the discid of the first disc in a release is written to tags
 - [PICARD-455](https://tickets.metabrainz.org/browse/PICARD-455) - Picard setting cover art height, width and depth to 0 for FLAC files --> breaks libFLAC
-- [PICARD-729](https://tickets.metabrainz.org/browse/PICARD-729) - Tracks get stuck at "[loading track information]" on Bad Gateway errors
+- [PICARD-729](https://tickets.metabrainz.org/browse/PICARD-729) - Tracks get stuck at "\[loading track information\]" on Bad Gateway errors
 - [PICARD-938](https://tickets.metabrainz.org/browse/PICARD-938) - Need two left-arrow key presses to go from track with file to album
 - [PICARD-1178](https://tickets.metabrainz.org/browse/PICARD-1178) - Images tagged with extra types that the user has chosen to ignore should not be shown as 'modified'
 - [PICARD-1288](https://tickets.metabrainz.org/browse/PICARD-1288) - Folskonomy tags / genre fallback on album artists tags not working
@@ -1210,7 +1210,7 @@
 
 
 # Version 1.3.2 - 2015-01-07
-  - Bugfix: Fixed tags from filename dialog not opening on new installations
+- Bugfix: Fixed tags from filename dialog not opening on new installations
 
 
 # Version 1.3.1 - 2014-12-20
@@ -1287,8 +1287,8 @@
   Default priority is `PluginPriority.NORMAL`, plugins registered with
   `PluginPriority.HIGH` will be run first, plugins registered with
   `PluginPriority.LOW` will run last
-- Add Standardise Performers plugin to convert e.g. Performer [piano and guitar] into
-  Performer [piano] and Performer [guitar].
+- Add Standardise Performers plugin to convert e.g. Performer \[piano and guitar\] into
+  Performer \[piano\] and Performer \[guitar\].
 - [PICARD-418](https://tickets.metabrainz.org/browse/PICARD-418), [PICARD-53](https://tickets.metabrainz.org/browse/PICARD-53) - Add support for release group cover art fallback
 - Add a clear button to search box
 - [PICARD-631](https://tickets.metabrainz.org/browse/PICARD-631) - Honour preferred release formats when matching AcoustIds
