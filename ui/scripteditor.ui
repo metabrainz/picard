@@ -23,9 +23,6 @@
    </sizepolicy>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
-   <property name="spacing">
-    <number>1</number>
-   </property>
    <property name="topMargin">
     <number>3</number>
    </property>
@@ -296,57 +293,20 @@
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
-         <property name="topMargin">
-          <number>0</number>
+        <widget class="QLabel" name="renaming_error">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <item>
-          <widget class="QLabel" name="renaming_error">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="file_naming_editor_reset">
-           <property name="toolTip">
-            <string/>
-           </property>
-           <property name="text">
-            <string>Revert</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="file_naming_editor_save">
-           <property name="toolTip">
-            <string/>
-           </property>
-           <property name="text">
-            <string>Save</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="file_naming_editor_close">
-           <property name="toolTip">
-            <string/>
-           </property>
-           <property name="text">
-            <string>Close</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -380,16 +340,16 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <property name="leftMargin">
-        <number>0</number>
+        <number>3</number>
        </property>
        <property name="topMargin">
-        <number>0</number>
+        <number>3</number>
        </property>
        <property name="rightMargin">
-        <number>0</number>
+        <number>3</number>
        </property>
        <property name="bottomMargin">
-        <number>0</number>
+        <number>3</number>
        </property>
        <item>
         <widget class="QSplitter" name="splitter_between_before_and_after">
@@ -408,13 +368,13 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
            <property name="spacing">
-            <number>4</number>
+            <number>3</number>
            </property>
            <property name="leftMargin">
             <number>0</number>
            </property>
            <property name="topMargin">
-            <number>4</number>
+            <number>0</number>
            </property>
            <property name="rightMargin">
             <number>0</number>
@@ -450,13 +410,13 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_6">
            <property name="spacing">
-            <number>4</number>
+            <number>3</number>
            </property>
            <property name="leftMargin">
             <number>0</number>
            </property>
            <property name="topMargin">
-            <number>4</number>
+            <number>0</number>
            </property>
            <property name="rightMargin">
             <number>0</number>
@@ -488,6 +448,9 @@
       </layout>
      </widget>
     </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonbox"/>
    </item>
   </layout>
  </widget>
