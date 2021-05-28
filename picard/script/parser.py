@@ -293,6 +293,8 @@ Grammar:
                     text.append('\n')
                 elif ch == 't':
                     text.append('\t')
+                elif ch is None:
+                    self.__raise_eof()
                 elif ch not in "$%(),\\":
                     self.__raise_char(ch)
                 else:
