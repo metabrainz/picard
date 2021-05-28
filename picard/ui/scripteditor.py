@@ -260,6 +260,8 @@ class ScriptEditorDialog(PicardDialog):
     TITLE = N_("File naming script editor")
     STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
 
+    help_url = '/config/options_filerenaming_editor.html'
+
     options = [
         TextOption("setting", "file_naming_format", DEFAULT_FILE_NAMING_FORMAT),
         ListOption("setting", "file_naming_scripts", []),
@@ -316,6 +318,8 @@ class ScriptEditorDialog(PicardDialog):
         self.close_button = self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.Close)
         self.close_button.setToolTip(self.close_action.toolTip())
         self.ui.buttonbox.rejected.connect(self.close_window)
+        self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.Help)
+        self.ui.buttonbox.helpRequested.connect(self.show_help)
 
         self.ui.file_naming_format.setEnabled(True)
 
@@ -436,11 +440,15 @@ class ScriptEditorDialog(PicardDialog):
         help_menu = main_menu.addMenu(_('&Help'))
         help_menu.setToolTipsVisible(True)
 
-        self.docs_browse_action = QtWidgets.QAction(_("&Open in browser"), self)
-        self.docs_browse_action.setToolTip(_("Open the scripting documentation in your browser"))
-        self.docs_browse_action.setIcon(icontheme.lookup('lookup-musicbrainz'))
-        self.docs_browse_action.triggered.connect(self.docs_browser)
-        help_menu.addAction(self.docs_browse_action)
+        self.help_action = QtWidgets.QAction(_("&Help..."), self)
+        self.help_action.setShortcut(QtGui.QKeySequence.HelpContents)
+        self.help_action.triggered.connect(self.show_help)
+        help_menu.addAction(self.help_action)
+
+        self.scripting_docs_action = QtWidgets.QAction(_("&Scripting documentation..."), self)
+        self.scripting_docs_action.setToolTip(_("Open the scripting documentation in your browser"))
+        self.scripting_docs_action.triggered.connect(self.docs_browser)
+        help_menu.addAction(self.scripting_docs_action)
 
         self.ui.layout_for_menubar.addWidget(main_menu)
 
