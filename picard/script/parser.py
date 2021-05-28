@@ -321,6 +321,8 @@ Grammar:
                         text.append(chr(int(codepoint, 16)))
                     except (TypeError, ValueError):
                         self.__raise_unicode(codepoint)
+                elif ch is None:
+                    self.__raise_eof()
                 elif ch not in "$%(),\\":
                     self.__raise_char(ch)
                 else:

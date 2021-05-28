@@ -1010,6 +1010,12 @@ class ScriptParserTest(PicardTestCase):
     def test_char_escape(self):
         self.assertScriptResultEquals(r"\n\t\$\%\(\)\,\\", "\n\t$%(),\\")
 
+    def test_char_escape_unexpected_char(self):
+        self.assertRaises(ScriptSyntaxError, self.parser.eval, r'\x')
+
+    def test_char_escape_end_of_file(self):
+        self.assertRaises(ScriptEndOfFile, self.parser.eval, 'foo\\')
+
     def test_raise_unknown_function(self):
         self.assertRaises(ScriptUnknownFunction, self.parser.eval, '$unknownfn()')
 
