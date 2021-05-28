@@ -310,23 +310,7 @@ Grammar:
         while True:
             ch = self.read()
             if ch == "\\":
-                ch = self.read()
-                if ch == 'n':
-                    text.append('\n')
-                elif ch == 't':
-                    text.append('\t')
-                elif ch == 'u':
-                    codepoint = self.read_multi(4)
-                    try:
-                        text.append(chr(int(codepoint, 16)))
-                    except (TypeError, ValueError):
-                        self.__raise_unicode(codepoint)
-                elif ch is None:
-                    self.__raise_eof()
-                elif ch not in "$%(),\\":
-                    self.__raise_char(ch)
-                else:
-                    text.append(ch)
+                text.append(self.parse_escape_sequence())
             elif ch is None:
                 break
             elif not top and ch == '(':
@@ -337,6 +321,25 @@ Grammar:
             else:
                 text.append(ch)
         return ScriptText("".join(text))
+
+    def parse_escape_sequence(self):
+        ch = self.read()
+        if ch == 'n':
+            return '\n'
+        elif ch == 't':
+            return '\t'
+        elif ch == 'u':
+            codepoint = self.read_multi(4)
+            try:
+                return chr(int(codepoint, 16))
+            except (TypeError, ValueError):
+                self.__raise_unicode(codepoint)
+        elif ch is None:
+            self.__raise_eof()
+        elif ch not in "$%(),\\":
+            self.__raise_char(ch)
+        else:
+            return ch
 
     def parse_expression(self, top):
         tokens = ScriptExpression()
