@@ -1018,7 +1018,6 @@ class ScriptDetailsEditor(PicardDialog):
         super().__init__(parent=parent)
         self.script_item = script_item
         self.readonly = script_item.readonly
-        self.setWindowModality(QtCore.Qt.WindowModal)
         self.setWindowTitle(self.TITLE)
         self.displaying = False
         self.ui = Ui_ScriptDetails()

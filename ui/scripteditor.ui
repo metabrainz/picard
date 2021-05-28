@@ -2,12 +2,6 @@
 <ui version="4.0">
  <class>ScriptEditor</class>
  <widget class="QWidget" name="ScriptEditor">
-  <property name="windowModality">
-   <enum>Qt::NonModal</enum>
-  </property>
-  <property name="enabled">
-   <bool>true</bool>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>

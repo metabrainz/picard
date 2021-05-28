@@ -10,8 +10,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_ScriptEditor(object):
     def setupUi(self, ScriptEditor):
         ScriptEditor.setObjectName("ScriptEditor")
-        ScriptEditor.setWindowModality(QtCore.Qt.NonModal)
-        ScriptEditor.setEnabled(True)
         ScriptEditor.resize(902, 729)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)

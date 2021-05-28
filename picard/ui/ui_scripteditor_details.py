@@ -10,13 +10,13 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_ScriptDetails(object):
     def setupUi(self, ScriptDetails):
         ScriptDetails.setObjectName("ScriptDetails")
+        ScriptDetails.setWindowModality(QtCore.Qt.WindowModal)
         ScriptDetails.resize(700, 284)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(1)
         sizePolicy.setHeightForWidth(ScriptDetails.sizePolicy().hasHeightForWidth())
         ScriptDetails.setSizePolicy(sizePolicy)
-        ScriptDetails.setModal(False)
         self.verticalLayout = QtWidgets.QVBoxLayout(ScriptDetails)
         self.verticalLayout.setObjectName("verticalLayout")
         self.gridLayout = QtWidgets.QGridLayout()

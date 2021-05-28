@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>ScriptDetails</class>
  <widget class="QDialog" name="ScriptDetails">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -18,9 +21,6 @@
   </property>
   <property name="windowTitle">
    <string>Scripting Documentation</string>
-  </property>
-  <property name="modal">
-   <bool>false</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
