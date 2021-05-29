@@ -12,7 +12,7 @@
 # Copyright (C) 2017 Antonio Larrosa
 # Copyright (C) 2017-2018 Wieland Hoffmann
 # Copyright (C) 2018 virusMac
-# Copyright (C) 2020 Bob Swift
+# Copyright (C) 2020-2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -1568,3 +1568,21 @@ class ScriptParserTest(PicardTestCase):
             self.parser.eval("$unique()")
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$unique(B:AB; D:C; E:D; A:A; C:X,1,:,extra)")
+
+    def test_cmd_countryname(self):
+        context = Metadata()
+        context["foo"] = "ca"
+        context["bar"] = ""
+        context["baz"] = "INVALID"
+        self.assertScriptResultEquals("$countryname(ca)", "Canada", context)
+        self.assertScriptResultEquals("$countryname(CA)", "Canada", context)
+        self.assertScriptResultEquals("$countryname(%foo%)", "Canada", context)
+        self.assertScriptResultEquals("$countryname(%bar%)", "", context)
+        self.assertScriptResultEquals("$countryname(%baz%)", "", context)
+        self.assertScriptResultEquals("$countryname(INVALID)", "", context)
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$countryname: Wrong number of arguments for \$countryname: Expected exactly 1, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$countryname()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$countryname(CA, UK)")
