@@ -1571,11 +1571,15 @@ class ScriptParserTest(PicardTestCase):
 
     def test_cmd_countryname(self):
         from picard import i18n
-        i18n.setup_gettext('build/locale', ui_language='en')
         context = Metadata()
         context["foo"] = "ca"
         context["bar"] = ""
         context["baz"] = "INVALID"
+        # Test with Russian locale
+        i18n.setup_gettext('build/locale', ui_language='ru')
+        self.assertScriptResultEquals("$countryname(ca)", "Канада", context)
+        # Reset locale to English for remaining tests
+        i18n.setup_gettext('build/locale', ui_language='en')
         self.assertScriptResultEquals("$countryname(ca)", "Canada", context)
         self.assertScriptResultEquals("$countryname(CA)", "Canada", context)
         self.assertScriptResultEquals("$countryname(%foo%)", "Canada", context)
