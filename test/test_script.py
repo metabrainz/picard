@@ -1570,6 +1570,8 @@ class ScriptParserTest(PicardTestCase):
             self.parser.eval("$unique(B:AB; D:C; E:D; A:A; C:X,1,:,extra)")
 
     def test_cmd_countryname(self):
+        from picard import i18n
+        i18n.setup_gettext('build/locale', ui_language='en')
         context = Metadata()
         context["foo"] = "ca"
         context["bar"] = ""

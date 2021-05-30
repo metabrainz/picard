@@ -1364,4 +1364,4 @@ Returns the name of the country for the specified country code.  If the country 
 """
 ))
 def func_countryname(parser, country_code):
-    return RELEASE_COUNTRIES.get(country_code.strip().upper(), "")
+    return gettext_countries(RELEASE_COUNTRIES.get(country_code.strip().upper(), ""))
