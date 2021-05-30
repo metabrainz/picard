@@ -1578,10 +1578,15 @@ class ScriptParserTest(PicardTestCase):
 
         # Test with Russian locale (Disabled because test fails on GitHub actions. Perhaps locale information is not available?)
         # i18n.setup_gettext('build/locale', ui_language='ru')
-        # self.assertScriptResultEquals("$countryname(ca)", "Канада", context)
+        # self.assertScriptResultEquals("$countryname(ca)", "Canada", context)
+        # self.assertScriptResultEquals("$countryname(ca,)", "Canada", context)
+        # self.assertScriptResultEquals("$countryname(ca, )", "Канада", context)
+        # self.assertScriptResultEquals("$countryname(ca,yes)", "Канада", context)
 
         # Reset locale to English for remaining tests
         i18n.setup_gettext('build/locale', ui_language='en')
+        self.assertScriptResultEquals("$countryname(ca,)", "Canada", context)
+        self.assertScriptResultEquals("$countryname(ca,yes)", "Canada", context)
         self.assertScriptResultEquals("$countryname(ca)", "Canada", context)
         self.assertScriptResultEquals("$countryname(CA)", "Canada", context)
         self.assertScriptResultEquals("$countryname(%foo%)", "Canada", context)
@@ -1590,8 +1595,8 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$countryname(INVALID)", "", context)
 
         # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$countryname: Wrong number of arguments for \$countryname: Expected exactly 1, "
+        areg = r"^\d+:\d+:\$countryname: Wrong number of arguments for \$countryname: Expected between 1 and 2, "
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$countryname()")
         with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$countryname(CA, UK)")
+            self.parser.eval("$countryname(CA,,Extra)")
