@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.7.0.dev2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-05-31 10:40+0200\n"
+"POT-Creation-Date: 2021-05-31 15:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4064,7 +4064,7 @@ msgstr ""
 msgid "&Edit"
 msgstr ""
 
-#: picard/ui/mainwindow.py:784
+#: picard/ui/mainwindow.py:784 picard/ui/scripteditor.py:419
 msgid "&View"
 msgstr ""
 
@@ -4444,10 +4444,6 @@ msgstr ""
 
 #: picard/ui/scripteditor.py:414
 msgid "Ctrl+S"
-msgstr ""
-
-#: picard/ui/scripteditor.py:419
-msgid "&Display"
 msgstr ""
 
 #: picard/ui/scripteditor.py:422

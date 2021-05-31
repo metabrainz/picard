@@ -416,7 +416,7 @@ class ScriptEditorDialog(PicardDialog):
         script_menu.addAction(self.save_action)
 
         # Display menu settings
-        display_menu = main_menu.addMenu(_('&Display'))
+        display_menu = main_menu.addMenu(_('&View'))
         display_menu.setToolTipsVisible(True)
 
         self.examples_action = QtWidgets.QAction(_("&Reload random example files"), self)
