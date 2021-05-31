@@ -33,6 +33,7 @@ import copy
 import datetime
 import re
 import unittest
+from unittest import mock
 from unittest.mock import MagicMock
 
 from test.picardtestcase import PicardTestCase
@@ -1576,12 +1577,18 @@ class ScriptParserTest(PicardTestCase):
         context["bar"] = ""
         context["baz"] = "INVALID"
 
-        # Test with Russian locale (Disabled because test fails on GitHub actions. Perhaps locale information is not available?)
-        # i18n.setup_gettext('build/locale', ui_language='ru')
-        # self.assertScriptResultEquals("$countryname(ca)", "Canada", context)
-        # self.assertScriptResultEquals("$countryname(ca,)", "Canada", context)
-        # self.assertScriptResultEquals("$countryname(ca, )", "Канада", context)
-        # self.assertScriptResultEquals("$countryname(ca,yes)", "Канада", context)
+        # Test with Russian locale
+        i18n.setup_gettext('build/locale', ui_language='ru')
+
+        def mock_gettext_countries(arg):
+            return "Канада"
+
+        # from unittest import mock
+        with mock.patch('builtins.gettext_countries', mock_gettext_countries):
+            self.assertScriptResultEquals("$countryname(ca)", "Canada", context)
+            self.assertScriptResultEquals("$countryname(ca,)", "Canada", context)
+            self.assertScriptResultEquals("$countryname(ca, )", "Канада", context)
+            self.assertScriptResultEquals("$countryname(ca,yes)", "Канада", context)
 
         # Reset locale to English for remaining tests
         i18n.setup_gettext('build/locale', ui_language='en')
