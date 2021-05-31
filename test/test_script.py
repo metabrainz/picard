@@ -29,6 +29,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+import builtins
 import copy
 import datetime
 import re
@@ -1571,18 +1572,20 @@ class ScriptParserTest(PicardTestCase):
             self.parser.eval("$unique(B:AB; D:C; E:D; A:A; C:X,1,:,extra)")
 
     def test_cmd_countryname(self):
-        from picard import i18n
+        if not hasattr(builtins, 'gettext_countries'):
+            builtins.__dict__['gettext_countries'] = None
         context = Metadata()
         context["foo"] = "ca"
         context["bar"] = ""
         context["baz"] = "INVALID"
 
-        # Test with Russian locale
-        i18n.setup_gettext('build/locale', ui_language='ru')
+        def mock_gettext_countries_en(arg):
+            return "Canada"
 
         def mock_gettext_countries_ru(arg):
             return "Канада"
 
+        # Test with Russian locale
         with mock.patch('builtins.gettext_countries', mock_gettext_countries_ru):
             self.assertScriptResultEquals("$countryname(ca)", "Canada", context)
             self.assertScriptResultEquals("$countryname(ca,)", "Canada", context)
@@ -1590,11 +1593,6 @@ class ScriptParserTest(PicardTestCase):
             self.assertScriptResultEquals("$countryname(ca,yes)", "Канада", context)
 
         # Reset locale to English for remaining tests
-        i18n.setup_gettext('build/locale', ui_language='en')
-
-        def mock_gettext_countries_en(arg):
-            return "Canada"
-
         with mock.patch('builtins.gettext_countries', mock_gettext_countries_en):
             self.assertScriptResultEquals("$countryname(ca,)", "Canada", context)
             self.assertScriptResultEquals("$countryname(ca,yes)", "Canada", context)
