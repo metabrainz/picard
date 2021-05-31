@@ -932,13 +932,15 @@ class ScriptParserTest(PicardTestCase):
     def test_cmd_performer(self):
         context = Metadata()
         context['performer:guitar'] = 'Foo1'
-        context['performer:rhythm-guitar'] = 'Foo2'
+        context['performer:rhythm-guitar'] = ['Foo2', 'Foo3']
         context['performer:drums'] = 'Drummer'
+        # Matches pattern
         result = self.parser.eval("$performer(guitar)", context=context)
-        performers = result.split(', ')
-        self.assertIn('Foo1', performers)
-        self.assertIn('Foo2', performers)
-        self.assertEqual(2, len(performers))
+        self.assertEqual({'Foo1', 'Foo2', 'Foo3'}, set(result.split(', ')))
+        # Empty pattern returns all performers
+        result = self.parser.eval("$performer()", context=context)
+        self.assertEqual({'Foo1', 'Foo2', 'Foo3', 'Drummer'}, set(result.split(', ')))
+        self.assertScriptResultEquals("$performer(perf)", "", context)
 
     def test_cmd_performer_custom_join(self):
         context = Metadata()
@@ -946,10 +948,7 @@ class ScriptParserTest(PicardTestCase):
         context['performer:rhythm-guitar'] = 'Foo2'
         context['performer:drums'] = 'Drummer'
         result = self.parser.eval("$performer(guitar, / )", context=context)
-        performers = result.split(' / ')
-        self.assertIn('Foo1', performers)
-        self.assertIn('Foo2', performers)
-        self.assertEqual(2, len(performers))
+        self.assertEqual({'Foo1', 'Foo2'}, set(result.split(' / ')))
 
     def test_cmd_matchedtracks(self):
         file = MagicMock()

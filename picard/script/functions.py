@@ -767,8 +767,10 @@ _Since Picard 0.10_"""
 def func_performer(parser, pattern="", join=", "):
     values = []
     for name, value in parser.context.items():
-        if name.startswith("performer:") and pattern in name:
-            values.append(value)
+        if name.startswith("performer:"):
+            name, performance = name.split(':', 2)
+            if pattern in performance:
+                values.append(value)
     return join.join(values)
 
 
