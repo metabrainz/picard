@@ -260,6 +260,8 @@ class ScriptEditorDialog(PicardDialog):
     TITLE = N_("File naming script editor")
     STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
 
+    help_url = '/config/options_filerenaming_editor.html'
+
     options = [
         TextOption("setting", "file_naming_format", DEFAULT_FILE_NAMING_FORMAT),
         ListOption("setting", "file_naming_scripts", []),
@@ -301,18 +303,23 @@ class ScriptEditorDialog(PicardDialog):
         self.ui.setupUi(self)
         self.make_menu()
 
-        # Button tooltips
-        self.ui.file_naming_editor_close.setToolTip(self.close_action.toolTip())
-        self.ui.file_naming_editor_save.setToolTip(self.save_action.toolTip())
-        self.ui.file_naming_editor_reset.setToolTip(self.reset_action.toolTip())
-
         self.ui.label.setWordWrap(False)
 
         self.installEventFilter(self)
 
-        self.ui.file_naming_editor_save.clicked.connect(self.save_script)
-        self.ui.file_naming_editor_close.clicked.connect(self.close_window)
-        self.ui.file_naming_editor_reset.clicked.connect(self.reset_script)
+        # Dialog buttons
+        self.reset_button = QtWidgets.QPushButton(_('Revert'))
+        self.reset_button.setToolTip(self.reset_action.toolTip())
+        self.reset_button.clicked.connect(self.reset_script)
+        self.ui.buttonbox.addButton(self.reset_button, QtWidgets.QDialogButtonBox.ActionRole)
+        self.save_button = self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.Save)
+        self.save_button.setToolTip(self.save_action.toolTip())
+        self.ui.buttonbox.accepted.connect(self.save_script)
+        self.close_button = self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.Close)
+        self.close_button.setToolTip(self.close_action.toolTip())
+        self.ui.buttonbox.rejected.connect(self.close_window)
+        self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.Help)
+        self.ui.buttonbox.helpRequested.connect(self.show_help)
 
         self.ui.file_naming_format.setEnabled(True)
 
@@ -345,11 +352,6 @@ class ScriptEditorDialog(PicardDialog):
         """
         config = get_config()
         main_menu = QtWidgets.QMenuBar()
-        base_font = self.ui.file_naming_editor_close.font()
-        main_menu.setStyleSheet(
-            "QMenuBar { font-family: %s; font-size: %upt; }" %
-            (base_font.family(), base_font.pointSize())
-        )
 
         # File menu settings
         file_menu = main_menu.addMenu(_('&File'))
@@ -438,11 +440,15 @@ class ScriptEditorDialog(PicardDialog):
         help_menu = main_menu.addMenu(_('&Help'))
         help_menu.setToolTipsVisible(True)
 
-        self.docs_browse_action = QtWidgets.QAction(_("&Open in browser"), self)
-        self.docs_browse_action.setToolTip(_("Open the scripting documentation in your browser"))
-        self.docs_browse_action.setIcon(icontheme.lookup('lookup-musicbrainz'))
-        self.docs_browse_action.triggered.connect(self.docs_browser)
-        help_menu.addAction(self.docs_browse_action)
+        self.help_action = QtWidgets.QAction(_("&Help..."), self)
+        self.help_action.setShortcut(QtGui.QKeySequence.HelpContents)
+        self.help_action.triggered.connect(self.show_help)
+        help_menu.addAction(self.help_action)
+
+        self.scripting_docs_action = QtWidgets.QAction(_("&Scripting documentation..."), self)
+        self.scripting_docs_action.setToolTip(_("Open the scripting documentation in your browser"))
+        self.scripting_docs_action.triggered.connect(self.docs_browser)
+        help_menu.addAction(self.scripting_docs_action)
 
         self.ui.layout_for_menubar.addWidget(main_menu)
 
@@ -705,8 +711,8 @@ class ScriptEditorDialog(PicardDialog):
 
         # Buttons
         self.ui.file_naming_format.setReadOnly(readonly)
-        self.ui.file_naming_editor_save.setEnabled(save_enabled and not readonly)
-        self.ui.file_naming_editor_reset.setEnabled(not readonly)
+        self.save_button.setEnabled(save_enabled and not readonly)
+        self.reset_button.setEnabled(not readonly)
 
         # Menu items
         self.save_action.setEnabled(save_enabled and not readonly)
@@ -1012,7 +1018,6 @@ class ScriptDetailsEditor(PicardDialog):
         super().__init__(parent=parent)
         self.script_item = script_item
         self.readonly = script_item.readonly
-        self.setWindowModality(QtCore.Qt.WindowModal)
         self.setWindowTitle(self.TITLE)
         self.displaying = False
         self.ui = Ui_ScriptDetails()

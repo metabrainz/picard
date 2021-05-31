@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>453</width>
-    <height>566</height>
+    <height>650</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -125,7 +125,28 @@
     </widget>
    </item>
    <item>
-    <widget class="QComboBox" name="naming_script_selector"/>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="spacing">
+      <number>2</number>
+     </property>
+     <item>
+      <widget class="QComboBox" name="naming_script_selector">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="open_script_editor">
+       <property name="text">
+        <string>Edit script...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox">
@@ -277,13 +298,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="open_script_editor">
-       <property name="text">
-        <string>Open the file naming script editor</string>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>
