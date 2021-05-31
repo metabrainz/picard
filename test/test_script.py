@@ -1580,11 +1580,10 @@ class ScriptParserTest(PicardTestCase):
         # Test with Russian locale
         i18n.setup_gettext('build/locale', ui_language='ru')
 
-        def mock_gettext_countries(arg):
+        def mock_gettext_countries_ru(arg):
             return "Канада"
 
-        # from unittest import mock
-        with mock.patch('builtins.gettext_countries', mock_gettext_countries):
+        with mock.patch('builtins.gettext_countries', mock_gettext_countries_ru):
             self.assertScriptResultEquals("$countryname(ca)", "Canada", context)
             self.assertScriptResultEquals("$countryname(ca,)", "Canada", context)
             self.assertScriptResultEquals("$countryname(ca, )", "Канада", context)
@@ -1592,14 +1591,19 @@ class ScriptParserTest(PicardTestCase):
 
         # Reset locale to English for remaining tests
         i18n.setup_gettext('build/locale', ui_language='en')
-        self.assertScriptResultEquals("$countryname(ca,)", "Canada", context)
-        self.assertScriptResultEquals("$countryname(ca,yes)", "Canada", context)
-        self.assertScriptResultEquals("$countryname(ca)", "Canada", context)
-        self.assertScriptResultEquals("$countryname(CA)", "Canada", context)
-        self.assertScriptResultEquals("$countryname(%foo%)", "Canada", context)
-        self.assertScriptResultEquals("$countryname(%bar%)", "", context)
-        self.assertScriptResultEquals("$countryname(%baz%)", "", context)
-        self.assertScriptResultEquals("$countryname(INVALID)", "", context)
+
+        def mock_gettext_countries_en(arg):
+            return "Canada"
+
+        with mock.patch('builtins.gettext_countries', mock_gettext_countries_en):
+            self.assertScriptResultEquals("$countryname(ca,)", "Canada", context)
+            self.assertScriptResultEquals("$countryname(ca,yes)", "Canada", context)
+            self.assertScriptResultEquals("$countryname(ca)", "Canada", context)
+            self.assertScriptResultEquals("$countryname(CA)", "Canada", context)
+            self.assertScriptResultEquals("$countryname(%foo%)", "Canada", context)
+            self.assertScriptResultEquals("$countryname(%bar%)", "", context)
+            self.assertScriptResultEquals("$countryname(%baz%)", "", context)
+            self.assertScriptResultEquals("$countryname(INVALID)", "", context)
 
         # Tests with invalid number of arguments
         areg = r"^\d+:\d+:\$countryname: Wrong number of arguments for \$countryname: Expected between 1 and 2, "
