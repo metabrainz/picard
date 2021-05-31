@@ -1175,7 +1175,7 @@ def func_foreach(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
 Standard 'while' loop. Executes `code` repeatedly until `condition` no longer
     evaluates to `True`. For each loop, the count is stored in the tag
     `_loop_count`. This allows the count value to be accessed within the `code`
-    script. The function limites the maximum number of iterations to 1000 as a
+    script. The function limits the maximum number of iterations to 1000 as a
     safeguard against accidentally creating an infinite loop."""
 ))
 def func_while(parser, condition, loop_code):
