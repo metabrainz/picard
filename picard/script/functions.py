@@ -761,6 +761,7 @@ def func_lenmulti(parser, multi, separator=MULTI_VALUED_JOINER):
     """`$performer(pattern="",join=", ")`
 
 Returns the performers where the performance type (e.g. "vocal") matches `pattern`, joined by `join`.
+`pattern` can be a regular expression.
 
 _Since Picard 0.10_"""
 ))
@@ -769,7 +770,12 @@ def func_performer(parser, pattern="", join=", "):
     for name, value in parser.context.items():
         if name.startswith("performer:"):
             name, performance = name.split(':', 2)
-            if pattern in performance:
+            try:
+                match = bool(re.search(pattern, performance))
+            except re.error:
+                # fall back to simple string matching if regex is invalid
+                match = pattern in performance
+            if match:
                 values.append(value)
     return join.join(values)
 
