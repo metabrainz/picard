@@ -44,6 +44,7 @@ import operator
 import re
 import unicodedata
 
+from picard.const.countries import RELEASE_COUNTRIES
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.script.parser import (
     MultiValue,
@@ -1354,3 +1355,17 @@ def func_unique(parser, multi, case_sensitive="", separator=MULTI_VALUED_JOINER)
     if not case_sensitive:
         multi_value._multi = list({v.lower(): v for v in multi_value}.values())
     return multi_value.separator.join(sorted(set(multi_value)))
+
+
+@script_function(documentation=N_(
+    """`$countryname(country_code, translate="")`
+
+Returns the name of the country for the specified country code.  If the country code is invalid an empty string will be returned.
+If translate is not blank, the output will be translated into the current locale language.
+"""
+))
+def func_countryname(parser, country_code, translate=""):
+    name = RELEASE_COUNTRIES.get(country_code.strip().upper(), "")
+    if translate:
+        return gettext_countries(name)
+    return name

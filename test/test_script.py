@@ -12,7 +12,7 @@
 # Copyright (C) 2017 Antonio Larrosa
 # Copyright (C) 2017-2018 Wieland Hoffmann
 # Copyright (C) 2018 virusMac
-# Copyright (C) 2020 Bob Swift
+# Copyright (C) 2020-2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -29,10 +29,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+import builtins
 import copy
 import datetime
 import re
 import unittest
+from unittest import mock
 from unittest.mock import MagicMock
 
 from test.picardtestcase import PicardTestCase
@@ -1568,3 +1570,51 @@ class ScriptParserTest(PicardTestCase):
             self.parser.eval("$unique()")
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$unique(B:AB; D:C; E:D; A:A; C:X,1,:,extra)")
+
+    def test_cmd_countryname(self):
+        context = Metadata()
+        context["foo"] = "ca"
+        context["bar"] = ""
+        context["baz"] = "INVALID"
+
+        # Ensure that `builtins` contains a `gettext_countries` attribute to avoid an `AttributeError`
+        # exception when mocking the function, in case the `picard.i18n` module has not been loaded.
+        # This is required by the $countryname() function in order to translate the country names.
+        if not hasattr(builtins, 'gettext_countries'):
+            builtins.__dict__['gettext_countries'] = None
+
+        # Mock function to simulate English locale.
+        def mock_gettext_countries_en(arg):
+            return arg
+
+        # Mock function to simulate Russian locale.
+        def mock_gettext_countries_ru(arg):
+            return "Канада" if arg == 'Canada' else arg
+
+        # Test with Russian locale
+        with mock.patch('builtins.gettext_countries', mock_gettext_countries_ru):
+            self.assertScriptResultEquals("$countryname(ca)", "Canada", context)
+            self.assertScriptResultEquals("$countryname(ca,)", "Canada", context)
+            self.assertScriptResultEquals("$countryname(ca, )", "Канада", context)
+            self.assertScriptResultEquals("$countryname(ca,yes)", "Канада", context)
+            self.assertScriptResultEquals("$countryname(INVALID,yes)", "", context)
+            # Test for unknown translation of correct code
+            self.assertScriptResultEquals("$countryname(fr,yes)", "France", context)
+
+        # Reset locale to English for remaining tests
+        with mock.patch('builtins.gettext_countries', mock_gettext_countries_en):
+            self.assertScriptResultEquals("$countryname(ca,)", "Canada", context)
+            self.assertScriptResultEquals("$countryname(ca,yes)", "Canada", context)
+            self.assertScriptResultEquals("$countryname(ca)", "Canada", context)
+            self.assertScriptResultEquals("$countryname(CA)", "Canada", context)
+            self.assertScriptResultEquals("$countryname(%foo%)", "Canada", context)
+            self.assertScriptResultEquals("$countryname(%bar%)", "", context)
+            self.assertScriptResultEquals("$countryname(%baz%)", "", context)
+            self.assertScriptResultEquals("$countryname(INVALID)", "", context)
+
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$countryname: Wrong number of arguments for \$countryname: Expected between 1 and 2, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$countryname()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$countryname(CA,,Extra)")
