@@ -1572,18 +1572,24 @@ class ScriptParserTest(PicardTestCase):
             self.parser.eval("$unique(B:AB; D:C; E:D; A:A; C:X,1,:,extra)")
 
     def test_cmd_countryname(self):
-        if not hasattr(builtins, 'gettext_countries'):
-            builtins.__dict__['gettext_countries'] = None
         context = Metadata()
         context["foo"] = "ca"
         context["bar"] = ""
         context["baz"] = "INVALID"
 
-        def mock_gettext_countries_en(arg):
-            return "Canada"
+        # Ensure that `builtins` contains a `gettext_countries` attribute to avoid an `AttributeError`
+        # exception when mocking the function, in case the `picard.i18n` module has not been loaded.
+        # This is required by the $countryname() function in order to translate the country names.
+        if not hasattr(builtins, 'gettext_countries'):
+            builtins.__dict__['gettext_countries'] = None
 
+        # Mock function to simulate English locale.
+        def mock_gettext_countries_en(arg):
+            return arg
+
+        # Mock function to simulate Russian locale.
         def mock_gettext_countries_ru(arg):
-            return "Канада"
+            return "Канада" if arg == 'Canada' else arg
 
         # Test with Russian locale
         with mock.patch('builtins.gettext_countries', mock_gettext_countries_ru):
@@ -1591,6 +1597,9 @@ class ScriptParserTest(PicardTestCase):
             self.assertScriptResultEquals("$countryname(ca,)", "Canada", context)
             self.assertScriptResultEquals("$countryname(ca, )", "Канада", context)
             self.assertScriptResultEquals("$countryname(ca,yes)", "Канада", context)
+            self.assertScriptResultEquals("$countryname(INVALID,yes)", "", context)
+            # Test for unknown translation of correct code
+            self.assertScriptResultEquals("$countryname(fr,yes)", "France", context)
 
         # Reset locale to English for remaining tests
         with mock.patch('builtins.gettext_countries', mock_gettext_countries_en):
