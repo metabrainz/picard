@@ -171,6 +171,10 @@ class TestPreserveTimes(PicardTestCase):
             self.file._preserve_times(self.file.filename, save)
 
 
+class FakeMp3File(File):
+    EXTENSIONS = ['.mp3']
+
+
 class FileNamingTest(PicardTestCase):
 
     def setUp(self):
@@ -228,6 +232,24 @@ class FileNamingTest(PicardTestCase):
         config.setting['file_naming_format'] = '$noop()'
         filename = self.file.make_filename(self.file.filename, self.metadata)
         self.assertEqual(os.path.realpath('/somepath/somefile.mp3'), filename)
+
+    def test_make_filename_no_extension(self):
+        config.setting['rename_files'] = True
+        file_ = FakeMp3File('/somepath/_')
+        filename = file_.make_filename(file_.filename, self.metadata)
+        self.assertEqual(os.path.realpath('/somepath/sometitle.mp3'), filename)
+
+    def test_make_filename_lowercase_extension(self):
+        config.setting['rename_files'] = True
+        file_ = FakeMp3File('/somepath/somefile.MP3')
+        filename = file_.make_filename(file_.filename, self.metadata)
+        self.assertEqual(os.path.realpath('/somepath/sometitle.mp3'), filename)
+
+    def test_make_filename_scripted_extension(self):
+        config.setting['rename_files'] = True
+        config.setting['file_naming_format'] = '$set(_extension,.foo)%title%'
+        filename = self.file.make_filename(self.file.filename, self.metadata)
+        self.assertEqual(os.path.realpath('/somepath/sometitle.foo'), filename)
 
     def test_make_filename_replace_trailing_dots(self):
         config.setting['rename_files'] = True
