@@ -959,6 +959,14 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals(r"$performer(/drums \(/)", "", context)
         self.assertScriptResultEquals(r"$performer(drums \()", "Drummer", context)
 
+    def test_cmd_performer_regex_ignore_case(self):
+        context = Metadata()
+        context['performer:guitar'] = 'Foo1'
+        context['performer:GUITARS'] = 'Foo2'
+        context['performer:rhythm-guitar'] = 'Foo3'
+        result = self.parser.eval(r"$performer(/^guitars?/i)", context=context)
+        self.assertEqual({'Foo1', 'Foo2'}, set(result.split(', ')))
+
     def test_cmd_performer_custom_join(self):
         context = Metadata()
         context['performer:guitar'] = 'Foo1'

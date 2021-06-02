@@ -734,7 +734,9 @@ def extract_year_from_date(dt):
 def pattern_as_regex(pattern, allow_wildcards=False, flags=0):
     """Parses a string and interprets it as a matching pattern.
 
-    - If pattern starts and ends with / it is interpreted as a regular expression (e.g. `/foo.*/`)
+    - If pattern is of the form /pattern/flags it is interpreted as a regular expression (e.g. `/foo.*/`).
+      The flags are optional and in addition to the flags passed in the `flags` function parameter. Supported
+      flags in the expression are "i" (ignore case) and "m" (multiline)
     - Otherwise if `allow_wildcards` is True, it is interpreted as a pattern that allows wildcard matching (see below)
     - If `allow_wildcards` is False a regex matching the literal string is returned
 
@@ -750,9 +752,14 @@ def pattern_as_regex(pattern, allow_wildcards=False, flags=0):
 
     Raises: `re.error` if the regular expression could not be parsed
     """
-    if len(pattern) > 2 and pattern[0] == '/' and pattern[-1] == '/':
-        pattern = pattern[1:-1]
-        return re.compile(pattern, flags)
+    plain_pattern = pattern.rstrip('im')
+    if len(plain_pattern) > 2 and plain_pattern[0] == '/' and plain_pattern[-1] == '/':
+        extra_flags = pattern[len(plain_pattern):]
+        if 'i' in extra_flags:
+            flags |= re.IGNORECASE
+        if 'm' in extra_flags:
+            flags |= re.MULTILINE
+        return re.compile(plain_pattern[1:-1], flags)
     elif allow_wildcards:
         # FIXME?: only support '*' (not '?' or '[abc]')
         # replace multiple '*' by one

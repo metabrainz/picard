@@ -531,6 +531,13 @@ class PatternAsRegexTest(PicardTestCase):
         self.assertTrue(regex.flags & re.IGNORECASE)
         self.assertTrue(regex.flags & re.MULTILINE)
 
+    def test_regex_extra_flags(self):
+        regex = pattern_as_regex(r'/^foo.*/im', flags=re.VERBOSE)
+        self.assertEqual(r'^foo.*', regex.pattern)
+        self.assertTrue(regex.flags & re.VERBOSE)
+        self.assertTrue(regex.flags & re.IGNORECASE)
+        self.assertTrue(regex.flags & re.MULTILINE)
+
     def test_regex_raises(self):
         with self.assertRaises(re.error):
             pattern_as_regex(r'/^foo(.*/')
