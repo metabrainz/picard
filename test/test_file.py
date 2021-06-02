@@ -223,6 +223,12 @@ class FileNamingTest(PicardTestCase):
             os.path.realpath('/somepath/subdir/somealbum/somefile.mp3'),
             filename)
 
+    def test_make_filename_empty_script(self):
+        config.setting['rename_files'] = True
+        config.setting['file_naming_format'] = '$noop()'
+        filename = self.file.make_filename(self.file.filename, self.metadata)
+        self.assertEqual(os.path.realpath('/somepath/somefile.mp3'), filename)
+
     def test_make_filename_replace_trailing_dots(self):
         config.setting['rename_files'] = True
         config.setting['move_files'] = True
