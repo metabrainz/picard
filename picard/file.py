@@ -431,7 +431,8 @@ class File(QtCore.QObject, Item):
             settings = config.setting
         metadata = Metadata()
         if settings["clear_existing_tags"]:
-            metadata.copy(file_metadata)
+            # script_to_filename_with_metadata guarantees this is not modified
+            metadata = file_metadata
         else:
             metadata.copy(self.orig_metadata)
             metadata.update(file_metadata)
