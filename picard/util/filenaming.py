@@ -8,7 +8,7 @@
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2017 Ville Skyttä
 # Copyright (C) 2018 Antonio Larrosa
-# Copyright (C) 2019-2020 Philipp Wolfer
+# Copyright (C) 2019-2021 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -470,3 +470,58 @@ def move_ensure_casing(source_path, target_path):
     except shutil.SameFileError:
         # Sometimes different paths refer to the same file (e.g. network path / local path on Windows)
         pass
+
+
+def make_save_path(path, win_compat=False, mac_compat=False):
+    """Performs a couple of cleanups on a path to avoid side effects and incompatibilities.
+
+    - If win_compat is True, trailing dots in file and directory names will
+      be removed, as they are unsupported on Windows (dot is a delimiter for the file extension)
+    - Leading dots in file and directory names will be removed. These files cannot be properly
+      handled by Windows Explorer and on Unix like systems they count as hidden
+    - If mac_compat is True, normalize precomposed Unicode characters on macOS
+
+    Args:
+        path: filename or path to clean
+        win_compat: Set to True, if Windows compatibility is required
+        mac_compat: Set to True, if macOS compatibility is required
+
+    Returns: sanitized path
+    """
+    if win_compat:
+        path = path.replace('./', '_/').replace('.\\', '_\\')
+        if path.endswith('.'):
+            path = path[:-1] + '_'
+    # replace . at the beginning of file and directory names
+    path = path.replace('/.', '/_').replace('\\.', '\\_')
+    if path.startswith('.'):
+        path = '_' + path[1:]
+    # Fix for precomposed characters on macOS.
+    if mac_compat:
+        path = unicodedata.normalize("NFD", path)
+    return path
+
+
+def get_available_filename(new_path, old_path=None):
+    """Returns an available file name.
+
+    If new_path does already exist it appends " (N)" to the file name, where
+    N is an integer counted upwards.
+
+    If `old_path` is given the `new_path` is only changed if it does not point
+    to the same file location.
+
+    Args:
+      new_path: The requested file name for the file
+      old_path: The previous name of the file
+
+    Returns: A unique available file name.
+    """
+    tmp_filename, ext = os.path.splitext(new_path)
+    i = 1
+    compare_old_path = old_path and os.path.exists(old_path)
+    while (os.path.exists(new_path)
+               and (not compare_old_path or not samefile(old_path, new_path))):
+        new_path = "%s (%d)%s" % (tmp_filename, i, ext)
+        i += 1
+    return new_path
