@@ -510,22 +510,19 @@ class File(QtCore.QObject, Item):
         return new_path
 
     def _rename(self, old_filename, metadata):
-        new_filename, ext = os.path.splitext(
-            self.make_filename(old_filename, metadata))
-
-        if old_filename == new_filename + ext:
+        new_filename = self.make_filename(old_filename, metadata)
+        if old_filename == new_filename:
             return old_filename
 
         new_dirname = os.path.dirname(new_filename)
         if not os.path.isdir(new_dirname):
             os.makedirs(new_dirname)
-        tmp_filename = new_filename
+        tmp_filename, ext = os.path.splitext(new_filename)
         i = 1
-        while (os.path.exists(new_filename + ext)
-               and not samefile(old_filename, new_filename + ext)):
-            new_filename = "%s (%d)" % (tmp_filename, i)
+        while (os.path.exists(new_filename)
+               and not samefile(old_filename, new_filename)):
+            new_filename = "%s (%d)%s" % (tmp_filename, i, ext)
             i += 1
-        new_filename = new_filename + ext
         log.debug("Moving file %r => %r", old_filename, new_filename)
         move_ensure_casing(old_filename, new_filename)
         return new_filename
