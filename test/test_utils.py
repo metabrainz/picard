@@ -31,6 +31,7 @@
 import builtins
 from collections import namedtuple
 from collections.abc import Iterator
+import re
 import unittest
 from unittest.mock import Mock
 
@@ -45,6 +46,7 @@ from picard.util import (
     iter_files_from_objects,
     iter_unique,
     limited_join,
+    pattern_as_regex,
     sort_by_similarity,
     tracknum_and_title_from_filename,
     tracknum_from_filename,
@@ -513,3 +515,46 @@ class TracknumAndTitleFromFilenameTest(PicardTestCase):
         for expected, filename in tests:
             result = tracknum_and_title_from_filename(filename)
             self.assertEqual(expected, result)
+
+
+class PatternAsRegexTest(PicardTestCase):
+
+    def test_regex(self):
+        regex = pattern_as_regex(r'/^foo.*/')
+        self.assertEqual(r'^foo.*', regex.pattern)
+        self.assertFalse(regex.flags & re.IGNORECASE)
+        self.assertFalse(regex.flags & re.MULTILINE)
+
+    def test_regex_flags(self):
+        regex = pattern_as_regex(r'/^foo.*/', flags=re.MULTILINE | re.IGNORECASE)
+        self.assertEqual(r'^foo.*', regex.pattern)
+        self.assertTrue(regex.flags & re.IGNORECASE)
+        self.assertTrue(regex.flags & re.MULTILINE)
+
+    def test_regex_raises(self):
+        with self.assertRaises(re.error):
+            pattern_as_regex(r'/^foo(.*/')
+
+    def test_wildcard(self):
+        regex = pattern_as_regex(r'(foo)*', allow_wildcards=True)
+        self.assertEqual(r'^\(foo\).*$', regex.pattern)
+        self.assertFalse(regex.flags & re.IGNORECASE)
+        self.assertFalse(regex.flags & re.MULTILINE)
+
+    def test_wildcard_flags(self):
+        regex = pattern_as_regex(r'(foo)*', allow_wildcards=True, flags=re.MULTILINE | re.IGNORECASE)
+        self.assertEqual(r'^\(foo\).*$', regex.pattern)
+        self.assertTrue(regex.flags & re.IGNORECASE)
+        self.assertTrue(regex.flags & re.MULTILINE)
+
+    def test_string_match(self):
+        regex = pattern_as_regex(r'(foo)*', allow_wildcards=False)
+        self.assertEqual(r'\(foo\)\*', regex.pattern)
+        self.assertFalse(regex.flags & re.IGNORECASE)
+        self.assertFalse(regex.flags & re.MULTILINE)
+
+    def test_string_match_flags(self):
+        regex = pattern_as_regex(r'(foo)*', allow_wildcards=False, flags=re.MULTILINE | re.IGNORECASE)
+        self.assertEqual(r'\(foo\)\*', regex.pattern)
+        self.assertTrue(regex.flags & re.IGNORECASE)
+        self.assertTrue(regex.flags & re.MULTILINE)

@@ -729,3 +729,35 @@ def extract_year_from_date(dt):
             return parse(dt).year
     except (TypeError, ValueError):
         return None
+
+
+def pattern_as_regex(pattern, allow_wildcards=False, flags=0):
+    """Parses a string and interprets it as a matching pattern.
+
+    - If pattern starts and ends with / it is interpreted as a regular expression (e.g. `/foo.*/`)
+    - Otherwise if `allow_wildcards` is True, it is interpreted as a pattern that allows wildcard matching (see below)
+    - If `allow_wildcards` is False a regex matching the literal string is returned
+
+    Wildcard matching currently supports these characters:
+    - `*`: Matches an arbitrary number of characters or none, e.g. `foo*`
+
+    Args:
+        pattern: The pattern as a string
+        allow_wildcards: If true and if the the pattern is not interpreted as a regex wildard matching is allowed.
+        flags: Additional regex flags to set (e.g. `re.I`)
+
+    Returns: An re.Pattern instance
+
+    Raises: `re.error` if the regular expression could not be parsed
+    """
+    if len(pattern) > 2 and pattern[0] == '/' and pattern[-1] == '/':
+        pattern = pattern[1:-1]
+        return re.compile(pattern, flags)
+    elif allow_wildcards:
+        # FIXME?: only support '*' (not '?' or '[abc]')
+        # replace multiple '*' by one
+        pattern = re.sub(r'\*+', '*', pattern)
+        regex = '.*'.join([re.escape(x) for x in pattern.split('*')])
+        return re.compile('^' + regex + '$', flags)
+    else:
+        return re.compile(re.escape(pattern), flags)
