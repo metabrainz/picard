@@ -40,6 +40,7 @@ from picard.const.sys import (
 )
 from picard.util.filenaming import (
     WinPathTooLong,
+    get_available_filename,
     make_save_path,
     make_short_filename,
     move_ensure_casing,
@@ -200,3 +201,48 @@ class MakeSavePathTest(PicardTestCase):
     def test_decompose_precomposed_chars(self):
         path = 'foo/\u00E9bar'  # é
         self.assertEqual('foo/\u0065\u0301bar', make_save_path(path))
+
+
+class GetAvailableFilenameTest(PicardTestCase):
+
+    def _add_number(self, filename, number):
+        name, ext = os.path.splitext(filename)
+        return '%s (%i)%s' % (name, number, ext)
+
+    def test_append_number(self):
+        with NamedTemporaryFile(prefix='foo', suffix='.mp3') as f:
+            new_filename = get_available_filename(f.name)
+            self.assertEqual(self._add_number(f.name, 1), new_filename)
+
+    def test_do_not_append_number_on_same_file(self):
+        with NamedTemporaryFile(prefix='foo', suffix='.mp3') as f:
+            new_filename = get_available_filename(f.name, f.name)
+            self.assertEqual(f.name, new_filename)
+
+    def test_handle_non_existant_old_path(self):
+        with NamedTemporaryFile(prefix='foo', suffix='.mp3') as f:
+            new_filename = get_available_filename(f.name, '/foo/old.mp3')
+            self.assertEqual(self._add_number(f.name, 1), new_filename)
+
+    def test_append_additional_numbers(self):
+        with TemporaryDirectory() as d:
+            expected_number = 3
+            oldname = os.path.join(d, 'bar.mp3')
+            open(oldname, 'a').close()
+            filename = os.path.join(d, 'foo.mp3')
+            open(filename, 'a').close()
+            for i in range(1, expected_number):
+                open(self._add_number(filename, i), 'a').close()
+            new_filename = get_available_filename(filename, oldname)
+            self.assertEqual(self._add_number(filename, expected_number), new_filename)
+
+    def test_reuse_existing_number(self):
+        with TemporaryDirectory() as d:
+            expected_number = 2
+            filename = os.path.join(d, 'foo.mp3')
+            open(filename, 'a').close()
+            for i in range(1, 3):
+                open(self._add_number(filename, i), 'a').close()
+            oldname = self._add_number(filename, expected_number)
+            new_filename = get_available_filename(filename, oldname)
+            self.assertEqual(self._add_number(filename, expected_number), new_filename)

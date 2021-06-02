@@ -73,11 +73,11 @@ from picard.util import (
     find_best_match,
     format_time,
     is_absolute_path,
-    samefile,
     thread,
     tracknum_and_title_from_filename,
 )
 from picard.util.filenaming import (
+    get_available_filename,
     make_save_path,
     make_short_filename,
     move_ensure_casing,
@@ -517,12 +517,7 @@ class File(QtCore.QObject, Item):
         new_dirname = os.path.dirname(new_filename)
         if not os.path.isdir(new_dirname):
             os.makedirs(new_dirname)
-        tmp_filename, ext = os.path.splitext(new_filename)
-        i = 1
-        while (os.path.exists(new_filename)
-               and not samefile(old_filename, new_filename)):
-            new_filename = "%s (%d)%s" % (tmp_filename, i, ext)
-            i += 1
+        new_filename = get_available_filename(new_filename, old_filename)
         log.debug("Moving file %r => %r", old_filename, new_filename)
         move_ensure_casing(old_filename, new_filename)
         return new_filename

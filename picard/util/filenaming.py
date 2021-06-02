@@ -499,3 +499,28 @@ def make_save_path(path, win_compat=False):
     if IS_MACOS:
         path = unicodedata.normalize("NFD", path)
     return path
+
+
+def get_available_filename(new_path, old_path=None):
+    """Returns an available file name.
+
+    If new_path does already exist it appends " (N)" to the file name, where
+    N is an integer counted upwards.
+
+    If `old_path` is given the `new_path` is only changed if it does not point
+    to the same file location.
+
+    Args:
+      new_path: The requested file name for the file
+      old_path: The previous name of the file
+
+    Returns: A unique available file name.
+    """
+    tmp_filename, ext = os.path.splitext(new_path)
+    i = 1
+    compare_old_path = old_path and os.path.exists(old_path)
+    while (os.path.exists(new_path)
+               and (not compare_old_path or not samefile(old_path, new_path))):
+        new_path = "%s (%d)%s" % (tmp_filename, i, ext)
+        i += 1
+    return new_path
