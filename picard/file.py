@@ -343,7 +343,7 @@ class File(QtCore.QObject, Item):
                 save()
         # Rename files
         if config.setting["rename_files"] or config.setting["move_files"]:
-            new_filename = self._rename(old_filename, metadata)
+            new_filename = self._rename(old_filename, metadata, config.setting)
         # Move extra files (images, playlists, etc.)
         if config.setting["move_files"] and config.setting["move_additional_files"]:
             self._move_additional_files(old_filename, new_filename)
@@ -509,8 +509,8 @@ class File(QtCore.QObject, Item):
         new_path = os.path.join(new_dirname, new_filename)
         return new_path
 
-    def _rename(self, old_filename, metadata):
-        new_filename = self.make_filename(old_filename, metadata)
+    def _rename(self, old_filename, metadata, settings=None):
+        new_filename = self.make_filename(old_filename, metadata, settings)
         if old_filename == new_filename:
             return old_filename
 

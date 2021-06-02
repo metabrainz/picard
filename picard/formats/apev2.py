@@ -307,7 +307,7 @@ class WavPackFile(APEv2File):
         if isfile(wvc_filename):
             config = get_config()
             if config.setting["rename_files"] or config.setting["move_files"]:
-                self._rename(wvc_filename, metadata)
+                self._rename(wvc_filename, metadata, config.setting)
         return File._save_and_rename(self, old_filename, metadata)
 
 
