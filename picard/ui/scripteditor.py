@@ -1135,20 +1135,17 @@ class ScriptDetailsEditor(PicardDialog):
             ).exec_()
             return
         if self.has_changed():
-            if self.change_check():
-                if not self.ui.script_last_updated.isModified() or not self.ui.script_last_updated.text().strip():
-                    self.set_last_updated()
-                self.script_item.update_script_setting(
-                    title=self.ui.script_title.text().strip(),
-                    author=self.ui.script_author.text().strip(),
-                    version=self.ui.script_version.text().strip(),
-                    license=self.ui.script_license.text().strip(),
-                    description=self.ui.script_description.toPlainText().strip(),
-                    last_updated=self.ui.script_last_updated.text().strip()
-                )
-                self.signal_save.emit()
-            else:
-                return
+            if not self.ui.script_last_updated.isModified() or not self.ui.script_last_updated.text().strip():
+                self.set_last_updated()
+            self.script_item.update_script_setting(
+                title=self.ui.script_title.text().strip(),
+                author=self.ui.script_author.text().strip(),
+                version=self.ui.script_version.text().strip(),
+                license=self.ui.script_license.text().strip(),
+                description=self.ui.script_description.toPlainText().strip(),
+                last_updated=self.ui.script_last_updated.text().strip()
+            )
+            self.signal_save.emit()
         self.skip_change_check = True
         self.close_window()
 
