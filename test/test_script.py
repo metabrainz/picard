@@ -948,12 +948,16 @@ class ScriptParserTest(PicardTestCase):
         context['performer:guitars'] = 'Foo2'
         context['performer:rhythm-guitar'] = 'Foo3'
         context['performer:drums (drum kit)'] = 'Drummer'
-        result = self.parser.eval(r"$performer(^guitar)", context=context)
+        result = self.parser.eval(r"$performer(/^guitar/)", context=context)
         self.assertEqual({'Foo1', 'Foo2'}, set(result.split(', ')))
-        result = self.parser.eval(r"$performer(^guitar\$)", context=context)
+        result = self.parser.eval(r"$performer(/^guitar\$/)", context=context)
         self.assertEqual({'Foo1'}, set(result.split(', ')))
-        result = self.parser.eval(r"$performer(drums \()", context=context)
-        self.assertEqual({'Drummer'}, set(result.split(', ')))
+
+    def test_cmd_performer_regex_invalid(self):
+        context = Metadata()
+        context['performer:drums (drum kit)'] = 'Drummer'
+        self.assertScriptResultEquals(r"$performer(/drums \(/)", "", context)
+        self.assertScriptResultEquals(r"$performer(drums \()", "Drummer", context)
 
     def test_cmd_performer_custom_join(self):
         context = Metadata()
