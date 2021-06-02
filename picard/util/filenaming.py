@@ -472,18 +472,19 @@ def move_ensure_casing(source_path, target_path):
         pass
 
 
-def make_save_path(path, win_compat=False):
+def make_save_path(path, win_compat=False, mac_compat=False):
     """Performs a couple of cleanups on a path to avoid side effects and incompatibilities.
 
     - If win_compat is True, trailing dots in file and directory names will
       be removed, as they are unsupported on Windows (dot is a delimiter for the file extension)
     - Leading dots in file and directory names will be removed. These files cannot be properly
       handled by Windows Explorer and on Unix like systems they count as hidden
-    - Normalize precomposed Unicode characters on macOS
+    - If mac_compat is True, normalize precomposed Unicode characters on macOS
 
     Args:
         path: filename or path to clean
         win_compat: Set to True, if Windows compatibility is required
+        mac_compat: Set to True, if macOS compatibility is required
 
     Returns: sanitized path
     """
@@ -496,7 +497,7 @@ def make_save_path(path, win_compat=False):
     if path.startswith('.'):
         path = '_' + path[1:]
     # Fix for precomposed characters on macOS.
-    if IS_MACOS:
+    if mac_compat:
         path = unicodedata.normalize("NFD", path)
     return path
 

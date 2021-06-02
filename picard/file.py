@@ -58,7 +58,10 @@ from picard import (
 )
 from picard.config import get_config
 from picard.const import QUERY_LIMIT
-from picard.const.sys import IS_WIN
+from picard.const.sys import (
+    IS_MACOS,
+    IS_WIN,
+)
 from picard.metadata import (
     Metadata,
     SimMatchTrack,
@@ -482,7 +485,7 @@ class File(QtCore.QObject, Item):
                 new_filename = os.path.basename(new_filename)
             win_compat = IS_WIN or settings['windows_compatibility']
             new_filename = make_short_filename(new_dirname, new_filename, win_compat)
-            new_filename = make_save_path(new_filename, win_compat)
+            new_filename = make_save_path(new_filename, win_compat=win_compat, mac_compat=IS_MACOS)
         return new_filename
 
     def make_filename(self, filename, metadata, settings=None):

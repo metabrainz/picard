@@ -197,10 +197,9 @@ class MakeSavePathTest(PicardTestCase):
         path = '.foo/.bar'
         self.assertEqual('_foo/_bar', make_save_path(path))
 
-    @unittest.skipUnless(IS_MACOS, "macOS test")
     def test_decompose_precomposed_chars(self):
         path = 'foo/\u00E9bar'  # é
-        self.assertEqual('foo/\u0065\u0301bar', make_save_path(path))
+        self.assertEqual('foo/\u0065\u0301bar', make_save_path(path, mac_compat=True))
 
 
 class GetAvailableFilenameTest(PicardTestCase):
