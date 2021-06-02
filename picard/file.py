@@ -420,6 +420,8 @@ class File(QtCore.QObject, Item):
             metadata.update(file_metadata)
         (filename, new_metadata) = script_to_filename_with_metadata(
             naming_format, metadata, file=self, settings=settings)
+        if not filename:
+            return None
         # NOTE: the script_to_filename strips the extension away
         ext = new_metadata.get('~extension', file_extension)
         return filename + '.' + ext.lstrip('.')
@@ -443,6 +445,8 @@ class File(QtCore.QObject, Item):
         naming_format = settings['file_naming_format']
         if naming_format:
             new_filename = self._script_to_filename(naming_format, metadata, ext, settings)
+            if not new_filename:
+                new_filename = old_filename
             if not settings['rename_files']:
                 new_filename = os.path.join(os.path.dirname(new_filename), old_filename)
             if not settings['move_files']:
