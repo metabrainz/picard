@@ -49,7 +49,6 @@ import os
 import os.path
 import re
 import shutil
-import unicodedata
 
 from PyQt5 import QtCore
 
@@ -59,10 +58,7 @@ from picard import (
 )
 from picard.config import get_config
 from picard.const import QUERY_LIMIT
-from picard.const.sys import (
-    IS_MACOS,
-    IS_WIN,
-)
+from picard.const.sys import IS_WIN
 from picard.metadata import (
     Metadata,
     SimMatchTrack,
@@ -82,6 +78,7 @@ from picard.util import (
     tracknum_and_title_from_filename,
 )
 from picard.util.filenaming import (
+    make_save_path,
     make_short_filename,
     move_ensure_casing,
 )
@@ -484,20 +481,8 @@ class File(QtCore.QObject, Item):
             if not settings['move_files']:
                 new_filename = os.path.basename(new_filename)
             win_compat = IS_WIN or settings['windows_compatibility']
-            new_filename = make_short_filename(new_dirname, new_filename,
-                                               win_compat)
-            # TODO: move following logic under util.filenaming
-            # (and reconsider its necessity)
-            # win32 compatibility fixes
-            if win_compat:
-                new_filename = new_filename.replace('./', '_/').replace('.\\', '_\\')
-            # replace . at the beginning of file and directory names
-            new_filename = new_filename.replace('/.', '/_').replace('\\.', '\\_')
-            if new_filename.startswith('.'):
-                new_filename = '_' + new_filename[1:]
-            # Fix for precomposed characters on OSX
-            if IS_MACOS:
-                new_filename = unicodedata.normalize("NFD", new_filename)
+            new_filename = make_short_filename(new_dirname, new_filename, win_compat)
+            new_filename = make_save_path(new_filename, win_compat)
         return new_filename
 
     def make_filename(self, filename, metadata, settings=None):

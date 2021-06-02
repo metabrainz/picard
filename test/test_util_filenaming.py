@@ -6,7 +6,7 @@
 # Copyright (C) 2016 Sambhav Kothari
 # Copyright (C) 2018 Wieland Hoffmann
 # Copyright (C) 2018-2019 Laurent Monin
-# Copyright (C) 2019-2020 Philipp Wolfer
+# Copyright (C) 2019-2021 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -40,6 +40,7 @@ from picard.const.sys import (
 )
 from picard.util.filenaming import (
     WinPathTooLong,
+    make_save_path,
     make_short_filename,
     move_ensure_casing,
     samefile_different_casing,
@@ -57,7 +58,7 @@ class ShortFilenameTest(PicardTestCase):
             self.max_len = os.statvfs("/").f_namemax
         super().__init__(*args, **kwargs)
 
-    @unittest.skipUnless(IS_WIN or IS_MACOS, "windows / os x test")
+    @unittest.skipUnless(IS_WIN or IS_MACOS, "windows / macOS test")
     def test_bmp_unicode_on_unicode_fs(self):
         char = u"\N{LATIN SMALL LETTER SHARP S}"
         fn = make_short_filename(self.root, os.path.join(*[char * 120] * 2))
@@ -71,7 +72,7 @@ class ShortFilenameTest(PicardTestCase):
         fn = make_short_filename(self.root, os.path.join(*[char * 200] * 2))
         self.assertEqual(fn, os.path.join(*[char * (max_len // divisor)] * 2))
 
-    @unittest.skipUnless(IS_MACOS, "os x test")
+    @unittest.skipUnless(IS_MACOS, "macOS test")
     def test_precomposed_unicode_on_osx(self):
         char = u"\N{LATIN SMALL LETTER A WITH BREVE}"
         max_len = self.max_len
@@ -85,7 +86,7 @@ class ShortFilenameTest(PicardTestCase):
         fn = make_short_filename(self.root, os.path.join(*[char * 100] * 2))
         self.assertEqual(fn, os.path.join(char * 100, char * (remaining // 2)))
 
-    @unittest.skipUnless(IS_MACOS, "os x test")
+    @unittest.skipUnless(IS_MACOS, "macOS test")
     def test_nonbmp_unicode_on_osx(self):
         char = u"\N{MUSICAL SYMBOL G CLEF}"
         max_len = self.max_len
@@ -182,3 +183,20 @@ class MoveEnsureCasingTest(PicardTestCase):
             move_ensure_casing(file_path, target_path)
             files = os.listdir(d)
             self.assertIn('FOO', files)
+
+
+class MakeSavePathTest(PicardTestCase):
+
+    def test_replace_trailing_dots(self):
+        path = 'foo./bar.'
+        self.assertEqual(path, make_save_path(path))
+        self.assertEqual('foo_/bar_', make_save_path(path, win_compat=True))
+
+    def test_replace_leading_dots(self):
+        path = '.foo/.bar'
+        self.assertEqual('_foo/_bar', make_save_path(path))
+
+    @unittest.skipUnless(IS_MACOS, "macOS test")
+    def test_decompose_precomposed_chars(self):
+        path = 'foo/\u00E9bar'  # é
+        self.assertEqual('foo/\u0065\u0301bar', make_save_path(path))
