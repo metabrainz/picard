@@ -290,3 +290,50 @@ class FileNamingTest(PicardTestCase):
         self.assertEqual(
             os.path.realpath('/media/music/_somealbum/_sometitle.mp3'),
             filename)
+
+
+class FileGuessTracknumberAndTitleTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.set_config_values({
+            'guess_tracknumber_and_title': True,
+        })
+
+    def test_no_guess(self):
+        f = File('/somepath/01 somefile.mp3')
+        metadata = Metadata({
+            'album': 'somealbum',
+            'title': 'sometitle',
+            'tracknumber': '2',
+        })
+        f._guess_tracknumber_and_title(metadata)
+        self.assertEqual(metadata['tracknumber'], '2')
+        self.assertEqual(metadata['title'], 'sometitle')
+
+    def test_guess_title(self):
+        f = File('/somepath/01 somefile.mp3')
+        metadata = Metadata({
+            'album': 'somealbum',
+            'tracknumber': '2',
+        })
+        f._guess_tracknumber_and_title(metadata)
+        self.assertEqual(metadata['tracknumber'], '2')
+        self.assertEqual(metadata['title'], 'somefile')
+
+    def test_guess_tracknumber(self):
+        f = File('/somepath/01 somefile.mp3')
+        metadata = Metadata({
+            'album': 'somealbum',
+            'title': 'sometitle',
+        })
+        f._guess_tracknumber_and_title(metadata)
+        self.assertEqual(metadata['tracknumber'], '1')
+
+    def test_guess_title_tracknumber(self):
+        f = File('/somepath/01 somefile.mp3')
+        metadata = Metadata({
+            'album': 'somealbum',
+        })
+        f._guess_tracknumber_and_title(metadata)
+        self.assertEqual(metadata['tracknumber'], '1')
+        self.assertEqual(metadata['title'], 'somefile')
