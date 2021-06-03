@@ -87,6 +87,7 @@ PICARD_URLS = {
     'doc_options':             DOCS_BASE_URL + '/config/configuration.html',
     'doc_scripting':           DOCS_BASE_URL + '/extending/scripting.html',
     'doc_tags_from_filenames': DOCS_BASE_URL + '/usage/tags_from_file_names.html',
+    'doc_user_profiles':       DOCS_BASE_URL + '/config/configuration.html#user-profiles',
     'doc_cover_art_types':     "https://musicbrainz.org/doc/Cover_Art/Types",
     'plugins':                 "https://picard.musicbrainz.org/plugins/",
     'forum':                   "https://community.metabrainz.org/c/picard",

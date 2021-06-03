@@ -91,7 +91,7 @@ class RenamingOptionsPage(OptionsPage):
         BoolOption("setting", "move_additional_files", False),
         TextOption("setting", "move_additional_files_pattern", "*.jpg *.png"),
         BoolOption("setting", "delete_empty_dirs", True),
-        ListOption("setting", "file_naming_scripts", []),
+        ListOption("persist", "file_naming_scripts", []),
         TextOption("setting", "selected_file_naming_script_id", ""),
     ]
 
@@ -265,7 +265,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_additional_files.setChecked(config.setting["move_additional_files"])
         self.ui.move_additional_files_pattern.setText(config.setting["move_additional_files_pattern"])
         self.ui.delete_empty_dirs.setChecked(config.setting["delete_empty_dirs"])
-        self.naming_scripts = config.setting["file_naming_scripts"]
+        self.naming_scripts = config.persist["file_naming_scripts"]
         self.selected_naming_script_id = config.setting["selected_file_naming_script_id"]
         if self.script_editor_dialog:
             self.script_editor_dialog.load()
@@ -300,7 +300,7 @@ class RenamingOptionsPage(OptionsPage):
         config.setting["move_additional_files_pattern"] = self.ui.move_additional_files_pattern.text()
         config.setting["delete_empty_dirs"] = self.ui.delete_empty_dirs.isChecked()
         if self.script_editor_dialog:
-            config.setting["file_naming_scripts"] = self.script_editor_dialog.naming_scripts
+            config.persist["file_naming_scripts"] = self.script_editor_dialog.naming_scripts
             config.setting["selected_file_naming_script_id"] = self.script_editor_dialog.selected_script_id
         else:
             config.setting["file_naming_scripts"] = self.get_scripts_list()

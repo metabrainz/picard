@@ -34,6 +34,7 @@ from picard import log
 from picard.config import (
     BoolOption,
     IntOption,
+    ListOption,
     Option,
     TextOption,
 )
@@ -386,6 +387,23 @@ def upgrade_to_v2_7_0_dev_2(config):
     )
 
 
+def upgrade_to_v2_7_0_dev_3(config):
+    from picard.profile import UserProfile
+    _s = config.setting
+    _p = config.persist
+    ListOption("setting", "file_naming_scripts", [])
+    ListOption("persist", "file_naming_scripts", [])
+    Option("persist", "user_profiles", {})
+    TextOption("persist", "selected_user_profile", "")
+    # Migrate naming scripts to new persist key
+    _p["file_naming_scripts"] = _s["file_naming_scripts"]
+    _s.remove("file_naming_scripts")
+    # Create initial user profile
+    profile = UserProfile(title=_("Initial User Profile"))
+    _p["selected_user_profile"] = profile["id"]
+    _p["user_profiles"] = {profile["id"]: profile.to_dict()}
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
@@ -416,4 +434,5 @@ def upgrade_config(config):
     cfg.register_upgrade_hook(upgrade_to_v2_6_0_beta_2)
     cfg.register_upgrade_hook(upgrade_to_v2_6_0_beta_3)
     cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_2)
+    cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_3)
     cfg.run_upgrade_hooks(log.debug)

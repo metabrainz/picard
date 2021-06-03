@@ -115,6 +115,7 @@ from picard.ui.logview import (
 )
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.options.dialog import OptionsDialog
+from picard.ui.options.user_profile import UserProfilesDialog
 from picard.ui.passworddialog import (
     PasswordDialog,
     ProxyDialog,
@@ -475,6 +476,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.options_action.setMenuRole(QtWidgets.QAction.PreferencesRole)
         self.options_action.triggered.connect(self.show_options)
 
+        self.user_profiles_action = QtWidgets.QAction(_("User &Profiles..."), self)
+        # self.user_profiles_action.setMenuRole(QtWidgets.QAction.PreferencesRole)
+        self.user_profiles_action.triggered.connect(self.show_profiles)
+
         self.cut_action = QtWidgets.QAction(icontheme.lookup('edit-cut', icontheme.ICON_SIZE_MENU), _("&Cut"), self)
         self.cut_action.setShortcut(QtGui.QKeySequence.Cut)
         self.cut_action.setEnabled(False)
@@ -737,14 +742,30 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def toggle_rename_files(self, checked):
         config = get_config()
         config.setting["rename_files"] = checked
+        self.update_settings_in_profile()
 
     def toggle_move_files(self, checked):
         config = get_config()
         config.setting["move_files"] = checked
+        self.update_settings_in_profile()
 
     def toggle_tag_saving(self, checked):
         config = get_config()
         config.setting["dont_write_tags"] = not checked
+        self.update_settings_in_profile()
+
+    def update_settings_in_profile(self):
+        config = get_config()
+        selected_profile = ''
+        try:
+            selected_profile = config.persist["selected_user_profile"]
+            profiles = config.persist["user_profiles"]
+            current_profile = profiles[selected_profile]
+        except AttributeError:
+            log.error("Unable to update settings for profile '%s'" % selected_profile)
+        current_profile['settings'] = config.setting.as_dict()
+        profiles[selected_profile] = current_profile
+        config.persist["user_profiles"] = profiles
 
     def get_selected_or_unmatched_files(self):
         files = self.tagger.get_files_from_objects(self.selected_objects)
@@ -796,6 +817,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addAction(self.enable_tag_saving_action)
         menu.addSeparator()
         menu.addAction(self.options_action)
+        menu.addSeparator()
+        menu.addAction(self.user_profiles_action)
         menu = self.menuBar().addMenu(_("&Tools"))
         menu.addAction(self.refresh_action)
         menu.addAction(self.cd_lookup_action)
@@ -1056,6 +1079,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def show_options(self, page=None):
         return OptionsDialog.show_instance(page, self)
+
+    def show_profiles(self):
+        return UserProfilesDialog.show_instance(self)
 
     def show_help(self):
         webbrowser2.open('documentation')

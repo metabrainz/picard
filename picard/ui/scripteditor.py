@@ -55,7 +55,10 @@ from picard.util import (
 )
 from picard.util.settingsoverride import SettingsOverride
 
-from picard.ui import PicardDialog
+from picard.ui import (
+    PicardDialog,
+    confirmation_dialog,
+)
 from picard.ui.options import OptionsPage
 from picard.ui.options.scripting import (
     OptionsCheckError,
@@ -282,22 +285,6 @@ class ScriptEditorExamples():
         yield efile
 
 
-def confirmation_dialog(parent, message):
-    """Displays a confirmation dialog.
-
-    Returns:
-        bool: True if accepted, otherwise False.
-    """
-    dialog = QtWidgets.QMessageBox(
-        QtWidgets.QMessageBox.Warning,
-        _('Confirm'),
-        message,
-        QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel,
-        parent
-    )
-    return dialog.exec_() == QtWidgets.QMessageBox.Ok
-
-
 def synchronize_vertical_scrollbars(widgets):
     """Synchronize position of vertical scrollbars and selections for listed widgets.
 
@@ -345,7 +332,7 @@ def populate_script_selection_combo_box(naming_scripts, selected_script_id, comb
     Returns:
         int: The index of the currently selected script
     """
-    if not selected_script_id:
+    if not selected_script_id or not naming_scripts:
         script_item = FileNamingScript(
             script=get_config().setting["file_naming_format"],
             title=_("Primary file naming script"),
@@ -395,7 +382,7 @@ class ScriptEditorDialog(PicardDialog):
 
     options = [
         TextOption("setting", "file_naming_format", DEFAULT_FILE_NAMING_FORMAT),
-        ListOption("setting", "file_naming_scripts", []),
+        ListOption("persist", "file_naming_scripts", []),
         TextOption("setting", "selected_file_naming_script_id", ""),
         BoolOption('persist', 'script_editor_show_documentation', False),
     ]
@@ -583,7 +570,7 @@ class ScriptEditorDialog(PicardDialog):
         """
         config = get_config()
         self.examples.settings = config.setting
-        self.naming_scripts = config.setting["file_naming_scripts"]
+        self.naming_scripts = config.persist["file_naming_scripts"]
         self.selected_script_id = config.setting["selected_file_naming_script_id"]
         self.selected_script_index = 0
         self.populate_script_selector()
@@ -733,8 +720,9 @@ class ScriptEditorDialog(PicardDialog):
         Returns:
             bool: True if no unsaved changes or user confirms the action, otherwise False.
         """
-        if not self.loading and self.has_changed() and not confirmation_dialog(self,
-            _("There are unsaved changes to the current script.  Do you want to continue and lose these changes?")
+        if not self.loading and self.has_changed() and not confirmation_dialog(
+            _("There are unsaved changes to the current script.  Do you want to continue and lose these changes?"),
+            self
         ):
             self._set_combobox_index(self.selected_script_index)
             return False
@@ -796,6 +784,15 @@ class ScriptEditorDialog(PicardDialog):
         readonly = script_item['readonly']
         self.ui.script_title.setReadOnly(readonly or selected < 1)
 
+        # Block deletion if script is selected in other profiles.
+        used = False
+        config = get_config()
+        for key in config.persist["user_profiles"]:
+            if key != config.persist["selected_user_profile"] and \
+                    config.persist["user_profiles"][key]["settings"]["selected_file_naming_script_id"] == self.selected_script_id:
+                used = True
+                break
+
         # Buttons
         self.ui.file_naming_format.setReadOnly(readonly)
         self.save_button.setEnabled(save_enabled and not readonly)
@@ -806,7 +803,7 @@ class ScriptEditorDialog(PicardDialog):
         self.reset_action.setEnabled(not readonly)
         self.add_action.setEnabled(save_enabled)
         self.copy_action.setEnabled(save_enabled)
-        self.delete_action.setEnabled(script_item['deletable'] and save_enabled)
+        self.delete_action.setEnabled(script_item['deletable'] and save_enabled and not used)
         self.import_action.setEnabled(save_enabled)
         self.export_action.setEnabled(save_enabled)
 
@@ -823,7 +820,7 @@ class ScriptEditorDialog(PicardDialog):
     def delete_script(self):
         """Removes the currently selected script from the script selection combo box and script list.
         """
-        if confirmation_dialog(self, _('Are you sure that you want to delete the script?')):
+        if confirmation_dialog(_('Are you sure that you want to delete the script?'), self):
             idx = self.ui.preset_naming_scripts.currentIndex()
             self.ui.preset_naming_scripts.blockSignals(True)
             self.ui.preset_naming_scripts.removeItem(idx)
@@ -1013,7 +1010,7 @@ class ScriptEditorDialog(PicardDialog):
         """Reset the script to the last saved value.
         """
         if self.has_changed():
-            if confirmation_dialog(self, _("Are you sure that you want to reset the script to its last saved value?")):
+            if confirmation_dialog(_("Are you sure that you want to reset the script to its last saved value?"), self):
                 self.select_script(skip_check=True)
         else:
             dialog = QtWidgets.QMessageBox(
@@ -1137,8 +1134,8 @@ class ScriptDetailsEditor(PicardDialog):
             bool: True if changes can be lost, otherwise False.
         """
         return confirmation_dialog(
-            self,
             _("There are unsaved changes to the current metadata.  Do you want to continue and lose these changes?"),
+            self,
         )
 
     def set_last_updated(self):

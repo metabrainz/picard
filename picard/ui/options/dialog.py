@@ -208,6 +208,14 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 log.exception('Failed saving options page %r', page)
                 self._show_page_error(page, e)
                 return
+        config = get_config()
+        selected_user_profile = config.persist["selected_user_profile"]
+        profiles = config.persist["user_profiles"]
+        if selected_user_profile in profiles:
+            profiles[selected_user_profile]['settings'] = config.setting.as_dict()
+            config.persist["user_profiles"] = profiles
+        else:
+            log.error('Unable to update user profile "%s"', selected_user_profile)
         super().accept()
 
     def _show_page_error(self, page, error):

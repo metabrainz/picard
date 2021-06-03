@@ -221,3 +221,23 @@ class HashableListWidgetItem(QtWidgets.QListWidgetItem):
 
     def __hash__(self):
         return hash(str(self.id))
+
+
+def confirmation_dialog(message, parent=None):
+    """Displays a confirmation dialog with the supplied message, allowing the user to respond with either Ok or Cancel.
+
+    Args:
+        message (str): Message to display
+        parent (object): Parent object
+
+    Returns:
+        bool: True if the user clicks Ok, otherwise False
+    """
+    dialog = QtWidgets.QMessageBox(
+        QtWidgets.QMessageBox.Warning,
+        _('Confirm'),
+        message,
+        QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel,
+        parent
+    )
+    return dialog.exec_() == QtWidgets.QMessageBox.Ok
