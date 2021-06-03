@@ -52,7 +52,10 @@ from picard.script.parser import (
     ScriptRuntimeError,
     normalize_tagname,
 )
-from picard.util import uniqify
+from picard.util import (
+    pattern_as_regex,
+    uniqify,
+)
 
 
 try:
@@ -761,14 +764,23 @@ def func_lenmulti(parser, multi, separator=MULTI_VALUED_JOINER):
     """`$performer(pattern="",join=", ")`
 
 Returns the performers where the performance type (e.g. "vocal") matches `pattern`, joined by `join`.
+You can specify a regular expression in the format `/pattern/flags`. `flags` are optional. Currently
+the only supported flag is "i" (ignore case). For example `$performer(/^guitars?$/i)` matches the
+performance type "guitar" or "Guitars", but not e.g. "bass guitar".
 
 _Since Picard 0.10_"""
 ))
 def func_performer(parser, pattern="", join=", "):
     values = []
+    try:
+        regex = pattern_as_regex(pattern, allow_wildcards=False)
+    except re.error:
+        return ''
     for name, value in parser.context.items():
-        if name.startswith("performer:") and pattern in name:
-            values.append(value)
+        if name.startswith("performer:"):
+            name, performance = name.split(':', 2)
+            if regex.search(performance):
+                values.append(value)
     return join.join(values)
 
 

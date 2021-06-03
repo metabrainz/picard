@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2007 Lukáš Lalinský
-# Copyright (C) 2010, 2014, 2018-2020 Philipp Wolfer
+# Copyright (C) 2010, 2014, 2018-2021 Philipp Wolfer
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2013 Michael Wiencek
 # Copyright (C) 2013, 2017-2020 Laurent Monin
@@ -932,13 +932,40 @@ class ScriptParserTest(PicardTestCase):
     def test_cmd_performer(self):
         context = Metadata()
         context['performer:guitar'] = 'Foo1'
-        context['performer:rhythm-guitar'] = 'Foo2'
+        context['performer:rhythm-guitar'] = ['Foo2', 'Foo3']
         context['performer:drums'] = 'Drummer'
+        # Matches pattern
         result = self.parser.eval("$performer(guitar)", context=context)
-        performers = result.split(', ')
-        self.assertIn('Foo1', performers)
-        self.assertIn('Foo2', performers)
-        self.assertEqual(2, len(performers))
+        self.assertEqual({'Foo1', 'Foo2', 'Foo3'}, set(result.split(', ')))
+        # Empty pattern returns all performers
+        result = self.parser.eval("$performer()", context=context)
+        self.assertEqual({'Foo1', 'Foo2', 'Foo3', 'Drummer'}, set(result.split(', ')))
+        self.assertScriptResultEquals("$performer(perf)", "", context)
+
+    def test_cmd_performer_regex(self):
+        context = Metadata()
+        context['performer:guitar'] = 'Foo1'
+        context['performer:guitars'] = 'Foo2'
+        context['performer:rhythm-guitar'] = 'Foo3'
+        context['performer:drums (drum kit)'] = 'Drummer'
+        result = self.parser.eval(r"$performer(/^guitar/)", context=context)
+        self.assertEqual({'Foo1', 'Foo2'}, set(result.split(', ')))
+        result = self.parser.eval(r"$performer(/^guitar\$/)", context=context)
+        self.assertEqual({'Foo1'}, set(result.split(', ')))
+
+    def test_cmd_performer_regex_invalid(self):
+        context = Metadata()
+        context['performer:drums (drum kit)'] = 'Drummer'
+        self.assertScriptResultEquals(r"$performer(/drums \(/)", "", context)
+        self.assertScriptResultEquals(r"$performer(drums \()", "Drummer", context)
+
+    def test_cmd_performer_regex_ignore_case(self):
+        context = Metadata()
+        context['performer:guitar'] = 'Foo1'
+        context['performer:GUITARS'] = 'Foo2'
+        context['performer:rhythm-guitar'] = 'Foo3'
+        result = self.parser.eval(r"$performer(/^guitars?/i)", context=context)
+        self.assertEqual({'Foo1', 'Foo2'}, set(result.split(', ')))
 
     def test_cmd_performer_custom_join(self):
         context = Metadata()
@@ -946,10 +973,7 @@ class ScriptParserTest(PicardTestCase):
         context['performer:rhythm-guitar'] = 'Foo2'
         context['performer:drums'] = 'Drummer'
         result = self.parser.eval("$performer(guitar, / )", context=context)
-        performers = result.split(' / ')
-        self.assertIn('Foo1', performers)
-        self.assertIn('Foo2', performers)
-        self.assertEqual(2, len(performers))
+        self.assertEqual({'Foo1', 'Foo2'}, set(result.split(' / ')))
 
     def test_cmd_matchedtracks(self):
         file = MagicMock()
