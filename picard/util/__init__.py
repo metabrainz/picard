@@ -12,7 +12,7 @@
 # Copyright (C) 2012, 2014-2015 Wieland Hoffmann
 # Copyright (C) 2013 Ionuț Ciocîrlan
 # Copyright (C) 2013-2014 Sophist-UK
-# Copyright (C) 2013-2014, 2018-2020 Laurent Monin
+# Copyright (C) 2013-2014, 2018-2021 Laurent Monin
 # Copyright (C) 2014 Johannes Dewender
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2016 barami
