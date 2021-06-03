@@ -156,7 +156,6 @@ class ScriptEditorExamples():
         Args:
             before_listbox (QListBox): The before listbox
             after_listbox (QListBox): The after listbox
-            examples (ScriptEditorExamples): The object to use for the examples
         """
         before_listbox.clear()
         after_listbox.clear()
@@ -174,7 +173,13 @@ class ScriptEditorExamples():
 
     @staticmethod
     def synchronize_selected_example_lines(current_row, source, target):
-        """Matches selected item in target to source"""
+        """Sets the current row in the target to match the current row in the source.
+
+        Args:
+            current_row (int): Currently selected row
+            source (QListView): Source list
+            target (QListView): Target list
+        """
         if source.currentRow() != current_row:
             current_row = source.currentRow()
             target.blockSignals(True)
@@ -183,6 +188,11 @@ class ScriptEditorExamples():
 
     @classmethod
     def get_notes_text(cls):
+        """Provides usage notes text suitable for display on the dialog.
+
+        Returns:
+            str: Notes text
+        """
         return _(
             "If you select files from the Cluster pane or Album pane prior to opening the Options screen, "
             "up to %u files will be randomly chosen from your selection as file naming examples.  If you "
@@ -190,6 +200,11 @@ class ScriptEditorExamples():
 
     @classmethod
     def get_tooltip_text(cls):
+        """Provides tooltip text suitable for display on the dialog.
+
+        Returns:
+            str: Tooltip text
+        """
         return _("Reload up to %u items chosen at random from files selected in the main window") % cls.max_samples
 
     @staticmethod
@@ -679,7 +694,9 @@ class ScriptEditorDialog(PicardDialog):
             new_item = script_item.copy()
             self._insert_item(new_item)
 
-    def update_script_in_settings(self, script_item):
+    def update_script_in_settings(self):
+        """Sends a save signal to trigger processing in the parent.
+        """
         self.signal_save.emit()
 
     def update_scripts_list(self):
@@ -738,7 +755,7 @@ class ScriptEditorDialog(PicardDialog):
             self.selected_script_id = script_item['id']
             self.selected_script_index = self.ui.preset_naming_scripts.currentIndex()
             self.script_metadata_changed = False
-            self.update_script_in_settings(script_item)
+            self.update_script_in_settings()
             self.set_button_states()
             self.update_examples()
             if send_signal:
@@ -753,7 +770,7 @@ class ScriptEditorDialog(PicardDialog):
         """
         self.ui.preset_naming_scripts.setItemData(idx, script_item)
         self.ui.preset_naming_scripts.setItemText(idx, self.SCRIPT_TITLE_USER % script_item['title'])
-        self.update_script_in_settings(script_item)
+        self.update_script_in_settings()
         self.update_scripts_list()
 
     def set_button_states(self, save_enabled=True):
