@@ -341,9 +341,9 @@ def populate_script_selection_combo_box(naming_scripts, selected_script_id, comb
 
     idx = 0
     count = 0   # Use separate counter rather than `i` in case ScriptImportError triggers, resulting in an incorrect index count.
-    for i in range(len(naming_scripts)):
+    for i, naming_script in enumerate(naming_scripts):
         try:
-            script_item = FileNamingScript().create_from_yaml(naming_scripts[i], create_new_id=False)
+            script_item = FileNamingScript().create_from_yaml(naming_script, create_new_id=False)
         except ScriptImportError:
             pass
         else:
