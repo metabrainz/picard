@@ -410,6 +410,9 @@ def tracknum_from_filename(base_filename):
     return None
 
 
+GuessedFromFilename = namedtuple('GuessedFromFilename', ('tracknumber', 'title'))
+
+
 def tracknum_and_title_from_filename(base_filename):
     """Guess tracknumber and title from filename.
     Uses `tracknum_from_filename` to guess the tracknumber. The filename is used
@@ -426,7 +429,7 @@ def tracknum_and_title_from_filename(base_filename):
         tnlen = len(tracknumber)
         if stripped_filename[:tnlen] == tracknumber:
             title = stripped_filename[tnlen:].lstrip()
-    GuessedFromFilename = namedtuple('GuessedFromFilename', ('tracknumber', 'title'))
+
     return GuessedFromFilename(tracknumber, title)
 
 
