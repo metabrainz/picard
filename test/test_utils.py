@@ -7,7 +7,7 @@
 # Copyright (C) 2010-2011, 2014, 2018-2021 Philipp Wolfer
 # Copyright (C) 2012, 2014, 2018 Wieland Hoffmann
 # Copyright (C) 2013 Ionuț Ciocîrlan
-# Copyright (C) 2013-2014, 2018-2020 Laurent Monin
+# Copyright (C) 2013-2014, 2018-2021 Laurent Monin
 # Copyright (C) 2014, 2017 Sophist-UK
 # Copyright (C) 2016 Frederik “Freso” S. Olesen
 # Copyright (C) 2017 Sambhav Kothari
@@ -515,6 +515,11 @@ class TracknumAndTitleFromFilenameTest(PicardTestCase):
         for expected, filename in tests:
             result = tracknum_and_title_from_filename(filename)
             self.assertEqual(expected, result)
+
+    def test_namedtuple(self):
+        result = tracknum_and_title_from_filename('0000002 Foo.mp3')
+        self.assertEqual(result.tracknumber, '2')
+        self.assertEqual(result.title, 'Foo')
 
 
 class PatternAsRegexTest(PicardTestCase):

@@ -12,7 +12,7 @@
 # Copyright (C) 2012, 2014-2015 Wieland Hoffmann
 # Copyright (C) 2013 Ionuț Ciocîrlan
 # Copyright (C) 2013-2014 Sophist-UK
-# Copyright (C) 2013-2014, 2018-2020 Laurent Monin
+# Copyright (C) 2013-2014, 2018-2021 Laurent Monin
 # Copyright (C) 2014 Johannes Dewender
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2016 barami
@@ -410,6 +410,9 @@ def tracknum_from_filename(base_filename):
     return None
 
 
+GuessedFromFilename = namedtuple('GuessedFromFilename', ('tracknumber', 'title'))
+
+
 def tracknum_and_title_from_filename(base_filename):
     """Guess tracknumber and title from filename.
     Uses `tracknum_from_filename` to guess the tracknumber. The filename is used
@@ -427,7 +430,7 @@ def tracknum_and_title_from_filename(base_filename):
         if stripped_filename[:tnlen] == tracknumber:
             title = stripped_filename[tnlen:].lstrip()
 
-    return (tracknumber, title)
+    return GuessedFromFilename(tracknumber, title)
 
 
 def is_hidden(filepath):

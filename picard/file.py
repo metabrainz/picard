@@ -253,12 +253,11 @@ class File(QtCore.QObject, Item):
         self.metadata.copy(metadata)
 
     def _guess_tracknumber_and_title(self, metadata):
-        if 'tracknumber' not in metadata or 'title' not in metadata:
-            tracknumber, title = tracknum_and_title_from_filename(self.base_filename)
-            if 'tracknumber' not in metadata:
-                metadata['tracknumber'] = tracknumber
-            if 'title' not in metadata:
-                metadata['title'] = title
+        missing = {'tracknumber', 'title'} - set(metadata)
+        if missing:
+            guessed = tracknum_and_title_from_filename(self.base_filename)
+            for m in missing:
+                metadata[m] = getattr(guessed, m)
 
     def copy_metadata(self, metadata, preserve_deleted=True):
         acoustid = self.metadata["acoustid_id"]
