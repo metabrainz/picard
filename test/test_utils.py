@@ -516,6 +516,11 @@ class TracknumAndTitleFromFilenameTest(PicardTestCase):
             result = tracknum_and_title_from_filename(filename)
             self.assertEqual(expected, result)
 
+    def test_namedtuple(self):
+        result = tracknum_and_title_from_filename('0000002 Foo.mp3')
+        self.assertEqual(result.tracknumber, '2')
+        self.assertEqual(result.title, 'Foo')
+
 
 class PatternAsRegexTest(PicardTestCase):
 

@@ -426,8 +426,8 @@ def tracknum_and_title_from_filename(base_filename):
         tnlen = len(tracknumber)
         if stripped_filename[:tnlen] == tracknumber:
             title = stripped_filename[tnlen:].lstrip()
-
-    return (tracknumber, title)
+    GuessedFromFilename = namedtuple('GuessedFromFilename', ('tracknumber', 'title'))
+    return GuessedFromFilename(tracknumber, title)
 
 
 def is_hidden(filepath):
