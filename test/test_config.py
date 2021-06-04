@@ -23,11 +23,9 @@
 import logging
 import os
 import shutil
-import threading
 
 from test.picardtestcase import PicardTestCase
 
-import picard.config
 from picard.config import (
     BoolOption,
     Config,
@@ -391,14 +389,3 @@ class TestPicardConfigVarOption(TestPicardConfigCommon):
         # store invalid value in config file directly
         self.config.setValue('setting/var_option', object)
         self.assertEqual(self.config.setting["var_option"], set(["a", "b"]))
-
-
-class TestPurgeConfigInstancesTimer(TestPicardConfigCommon):
-
-    def test_purge_inactive_config_instances(self):
-        thread_id = threading.get_ident()
-        self.assertIn(thread_id, picard.config._thread_configs)
-        picard.config._thread_configs['foo'] = {}
-        picard.config.purge_config_instances()
-        self.assertIn(thread_id, picard.config._thread_configs)
-        self.assertNotIn('foo', picard.config._thread_configs)

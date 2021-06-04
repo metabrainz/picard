@@ -362,9 +362,6 @@ config = None
 setting = None
 persist = None
 
-_thread_configs = {}
-_thread_config_lock = threading.RLock()
-
 
 def setup_config(app, filename=None):
     global config, setting, persist
@@ -372,10 +369,8 @@ def setup_config(app, filename=None):
         config = Config.from_app(app)
     else:
         config = Config.from_file(app, filename)
-    _thread_configs[threading.get_ident()] = config
     setting = config.setting
     persist = config.persist
-    _init_purge_config_timer()
 
 
 def get_config():
@@ -383,41 +378,4 @@ def get_config():
 
     Config objects for threads are created on demand and cached for later use.
     """
-    thread_id = threading.get_ident()
-    thread_config = _thread_configs.get(thread_id)
-    if not thread_config:
-        if not config:
-            return None  # Not yet initialized
-        _thread_config_lock.acquire()
-        try:
-            config_file = config.fileName()
-            log.debug('Instantiating Config for thread %s using %s.', thread_id, config_file)
-            thread_config = Config.from_file(None, config_file)
-            _thread_configs[thread_id] = thread_config
-        finally:
-            _thread_config_lock.release()
-    return thread_config
-
-
-def _init_purge_config_timer(purge_interval_milliseconds=60000):
-    def run_purge_config_timer():
-        purge_config_instances()
-        start_purge_config_timer()
-
-    def start_purge_config_timer():
-        QtCore.QTimer.singleShot(purge_interval_milliseconds, run_purge_config_timer)
-
-    start_purge_config_timer()
-
-
-def purge_config_instances():
-    """Removes cached config instances for no longer active threads."""
-    _thread_config_lock.acquire()
-    try:
-        all_threads = set([thread.ident for thread in threading.enumerate()])
-        threads_config = set(_thread_configs)
-        for thread_id in threads_config.difference(all_threads):
-            log.debug('Purging config instance for thread %s.', thread_id)
-            del _thread_configs[thread_id]
-    finally:
-        _thread_config_lock.release()
+    return config
