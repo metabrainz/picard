@@ -29,7 +29,6 @@ from tempfile import (
     mkdtemp,
     mkstemp,
 )
-import threading
 import unittest
 from unittest.mock import Mock
 
@@ -81,8 +80,6 @@ class PicardTestCase(unittest.TestCase):
         fake_config = Mock()
         fake_config.setting = {}
         fake_config.persist = {}
-        # Make config object available to current thread
-        config._thread_configs[threading.get_ident()] = fake_config
         # Make config object available for legacy use
         config.config = fake_config
         config.setting = fake_config.setting
