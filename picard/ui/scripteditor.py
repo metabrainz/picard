@@ -322,6 +322,18 @@ def synchronize_vertical_scrollbars(widgets):
         widget.setStyleSheet(stylesheet)
 
 
+def user_script_title(title):
+    """Make a user script title for the combo box identifying the script as a user-defined script.
+
+    Args:
+        title (str): Base script title
+
+    Returns:
+        str: Base script title with "User:" identification added
+    """
+    return _("User: %s") % title
+
+
 def populate_script_selection_combo_box(naming_scripts, selected_script_id, combo_box):
     """Populate the specified script selection combo box and identify the selected script.
 
@@ -333,7 +345,6 @@ def populate_script_selection_combo_box(naming_scripts, selected_script_id, comb
     Returns:
         int: The index of the currently selected script
     """
-    SCRIPT_TITLE_USER = _("User: %s")
     if not selected_script_id:
         script_item = FileNamingScript(
             script=get_config().setting["file_naming_format"],
@@ -363,7 +374,7 @@ def populate_script_selection_combo_box(naming_scripts, selected_script_id, comb
             pass
         else:
             naming_scripts[i] = script_item.to_yaml()  # Ensure scripts are stored with id codes
-            idx, count = _add_and_check(idx, count, SCRIPT_TITLE_USER % script_item["title"], script_item)
+            idx, count = _add_and_check(idx, count, user_script_title(script_item['title']), script_item)
 
     # Add preset scripts not provided in the user-defined scripts list.
     for script_item in get_file_naming_script_presets():
@@ -409,8 +420,6 @@ class ScriptEditorDialog(PicardDialog):
         self.FILE_TYPE_ALL = _("All Files") + " (*)"
         self.FILE_TYPE_SCRIPT = _("Picard Script Files") + " (*.pts *.txt)"
         self.FILE_TYPE_PACKAGE = _("Picard Naming Script Package") + " (*.ptsp *.yaml)"
-
-        self.SCRIPT_TITLE_USER = _("User: %s")
 
         # TODO: Make this work properly so that it can be accessed from both the main window and the options window.
         # self.setWindowFlags(QtCore.Qt.Window)
@@ -672,7 +681,7 @@ class ScriptEditorDialog(PicardDialog):
         """
         idx = len(self.naming_scripts)
         self.ui.preset_naming_scripts.blockSignals(True)
-        self.ui.preset_naming_scripts.insertItem(idx, self.SCRIPT_TITLE_USER % script_item['title'], script_item)
+        self.ui.preset_naming_scripts.insertItem(idx, user_script_title(script_item['title']), script_item)
         self.ui.preset_naming_scripts.blockSignals(False)
         self._set_combobox_index(idx)
         self.update_scripts_list()
@@ -769,7 +778,7 @@ class ScriptEditorDialog(PicardDialog):
             script_item (FileNamingScript): Updated script information
         """
         self.ui.preset_naming_scripts.setItemData(idx, script_item)
-        self.ui.preset_naming_scripts.setItemText(idx, self.SCRIPT_TITLE_USER % script_item['title'])
+        self.ui.preset_naming_scripts.setItemText(idx, user_script_title(script_item['title']))
         self.update_script_in_settings()
         self.update_scripts_list()
 
