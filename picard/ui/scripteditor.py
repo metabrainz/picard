@@ -838,7 +838,6 @@ class ScriptEditorDialog(PicardDialog):
         """Saves changes to the current script to the script list and combo box item.
         """
         selected = self.ui.preset_naming_scripts.currentIndex()
-        self.signal_save.emit()
         title = str(self.ui.script_title.text()).strip()
         if title:
             script_item = self.ui.preset_naming_scripts.itemData(selected)
@@ -852,6 +851,7 @@ class ScriptEditorDialog(PicardDialog):
                 QtWidgets.QMessageBox.Ok,
                 self
             )
+            self.signal_save.emit()
             dialog.exec_()
         else:
             self.display_error(OptionsCheckError(_("Error"), _("The script title must not be empty.")))

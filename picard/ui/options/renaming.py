@@ -219,6 +219,7 @@ class RenamingOptionsPage(OptionsPage):
 
     def save_from_editor(self):
         self.script_text = self.script_editor_dialog.get_script()
+        self.update_selector_from_editor()
 
     def update_from_editor(self):
         self.display_examples()
