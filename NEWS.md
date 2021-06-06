@@ -1,3 +1,15 @@
+# Version 2.6.3 - 2021-06-07
+
+## Bugfixes
+
+- [PICARD-2205](https://tickets.metabrainz.org/browse/PICARD-2205) - Syntax highlighting ignores functions starting with underscore or numbers
+- [PICARD-2206](https://tickets.metabrainz.org/browse/PICARD-2206) - Fix tab order in option pages
+- [PICARD-2209](https://tickets.metabrainz.org/browse/PICARD-2209) - Minimizing / maximizing Picard window registers desktop status indicator multiple times
+- [PICARD-2214](https://tickets.metabrainz.org/browse/PICARD-2214) - Backslash at end of script raises TypeError
+- [PICARD-2219](https://tickets.metabrainz.org/browse/PICARD-2219) - Empty file naming script causes files to be renamed to _ext
+- [PICARD-2226](https://tickets.metabrainz.org/browse/PICARD-2226) - Some config changes are not applied until restart
+
+
 # Version 2.6.2 - 2021-04-27
 
 ## Bugfixes
