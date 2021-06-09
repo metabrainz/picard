@@ -166,6 +166,38 @@ class PicardScript():
         if updated and 'last_updated' not in settings:
             self.update_last_updated()
 
+    def to_dict(self):
+        """Generate a dictionary containing the object's OUTPUT_FIELDS.
+
+        Returns:
+            dict: Dictionary of the object's OUTPUT_FIELDS
+        """
+        items = {key: getattr(self, key) for key in self.OUTPUT_FIELDS}
+        items["script"] = str(items["script"])
+        return items
+
+    @classmethod
+    def create_from_dict(cls, script_dict, create_new_id=True):
+        """Creates an instance based on the contents of the dictionary provided.
+        Properties in the dictionary that are not found in the script object are ignored.
+
+        Args:
+            script_dict (dict): Dictionary containing the property settings.
+            create_new_id (bool, optional): Determines whether a new ID is generated. Defaults to True.
+
+        Returns:
+            object: An instance of the class, populated from the property settings in the dictionary provided.
+        """
+        new_object = cls()
+        if not isinstance(script_dict, dict):
+            raise ScriptImportError(N_("Argument is not a dictionary"))
+        if 'title' not in script_dict or 'script' not in script_dict:
+            raise ScriptImportError(N_('Invalid script package'))
+        new_object.update_from_dict(script_dict)
+        if create_new_id or not new_object['id']:
+            new_object._set_new_id()
+        return new_object
+
     def copy(self):
         """Create a copy of the current script object with updated title and last updated attributes.
         """
@@ -196,6 +228,7 @@ class PicardScript():
 
         Args:
             yaml_string (str): YAML string containing the property settings.
+            create_new_id (bool, optional): Determines whether a new ID is generated. Defaults to True.
 
         Returns:
             object: An instance of the class, populated from the property settings in the YAML string.
