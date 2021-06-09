@@ -757,7 +757,7 @@ class ScriptEditorDialog(PicardDialog):
             skip_check (bool): Skip the check for unsaved edits.  Defaults to False.
             send_signal (bool, optional): Determines whether the update signal should be emitted. Defaults to True.
         """
-        if not self.loading or skip_check or self.unsaved_changes_confirmation():
+        if self.loading or skip_check or self.unsaved_changes_confirmation():
             script_item = self.get_selected_item()
             self.ui.script_title.setText(script_item['title'])
             self.set_script(script_item['script'])
