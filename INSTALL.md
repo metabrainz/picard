@@ -12,6 +12,7 @@ Required:
 * [PyQt 5.10 or newer](http://www.riverbankcomputing.co.uk/software/pyqt/download)
 * [Mutagen 1.37 or newer](https://mutagen.readthedocs.io/)
 * [PyYAML 5.1 or newer](https://pyyaml.org/)
+* [PyJWT 1.7 or newer](https://pyjwt.readthedocs.io/)
 * [python-dateutil](https://dateutil.readthedocs.io/en/stable/)
 * gettext:
   * [Windows](https://mlocati.github.io/articles/gettext-iconv-windows.html)

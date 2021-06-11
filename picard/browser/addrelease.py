@@ -94,6 +94,8 @@ def serve_form(token):
 
 def _open_url_with_token(payload):
     token = jwt.encode(payload, __key, algorithm=__algorithm)
+    if isinstance(token, bytes):  # For compatibility with PyJWT 1.x
+        token = token.decode()
     browser_integration = QCoreApplication.instance().browser_integration
     url = 'http://%s:%s/add?token=%s' % (
         browser_integration.host_address, browser_integration.port, token)
