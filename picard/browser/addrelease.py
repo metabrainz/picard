@@ -64,6 +64,11 @@ class NotFoundError(Exception):
     pass
 
 
+def is_enabled():
+    tagger = QCoreApplication.instance()
+    return tagger.browser_integration.is_running
+
+
 def submit_cluster(cluster):
     _open_url_with_token({'cluster': hash(cluster)})
 

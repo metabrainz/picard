@@ -1212,17 +1212,36 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.tagger.browser_lookup(self.selected_objects[0])
 
     def submit_cluster(self):
-        if not self.selected_objects:
-            return
-        for obj in self.selected_objects:
-            if isinstance(obj, Cluster):
-                addrelease.submit_cluster(obj)
+        if self.selected_objects and self._check_add_release():
+            for obj in self.selected_objects:
+                if isinstance(obj, Cluster):
+                    addrelease.submit_cluster(obj)
 
     def submit_file(self):
-        if not self.selected_objects:
-            return
-        for file in iter_files_from_objects(self.selected_objects):
-            addrelease.submit_file(file)
+        if self.selected_objects and self._check_add_release():
+            for file in iter_files_from_objects(self.selected_objects):
+                addrelease.submit_file(file)
+
+    def _check_add_release(self):
+        if addrelease.is_enabled():
+            return True
+        ret = QtWidgets.QMessageBox.question(self,
+            _("Browser integration not enabled"),
+            _("Submitting releases to MusicBrainz requires the browser integration to be enabled. Do you want to enable the browser integration now?"),
+            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+            QtWidgets.QMessageBox.Yes)
+        if ret == QtWidgets.QMessageBox.Yes:
+            config = get_config()
+            config.setting["browser_integration"] = True
+            self.tagger.update_browser_integration()
+            if addrelease.is_enabled():
+                return True
+            else:
+                # Something went wrong, let the user configure browser integration manually
+                self.show_options("network")
+                return False
+        else:
+            return False
 
     @throttle(100)
     def update_actions(self):

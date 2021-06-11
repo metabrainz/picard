@@ -98,6 +98,10 @@ class BrowserIntegration(QtCore.QObject):
             return 0
         return self.server.server_address[1]
 
+    @property
+    def is_running(self):
+        return self.server is not None
+
     def start(self):
         if self.server:
             self.stop()
