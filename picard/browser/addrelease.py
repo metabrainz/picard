@@ -97,6 +97,14 @@ def serve_form(token):
         raise InvalidTokenError
 
 
+def extract_discnumber(metadata):
+    try:
+        discnumber = metadata.get('discnumber', '1').split('/')[0]
+        return int(discnumber)
+    except ValueError:
+        return 1
+
+
 def _open_url_with_token(payload):
     token = jwt.encode(payload, __key, algorithm=__algorithm)
     if isinstance(token, bytes):  # For compatibility with PyJWT 1.x
@@ -157,10 +165,20 @@ def _get_cluster_data(cluster):
     def mkey(disc, track, name):
         return 'mediums.%i.track.%i.%s' % (disc, track, name)
 
-    for i, file in enumerate(cluster.files):
-        data[mkey(0, i, 'name')] = file.metadata['title']
-        data[mkey(0, i, 'number')] = file.metadata['tracknumber'] or str(i + 1)
-        data[mkey(0, i, 'length')] = str(file.metadata.length)
+    disc_counter = 0
+    track_counter = 0
+    last_discnumber = None
+    for f in cluster.files:
+        m = f.metadata
+        discnumber = extract_discnumber(m)
+        if last_discnumber is not None and discnumber != last_discnumber:
+            disc_counter += 1
+            track_counter = 0
+        last_discnumber = discnumber
+        data[mkey(disc_counter, track_counter, 'name')] = m['title']
+        data[mkey(disc_counter, track_counter, 'number')] = m['tracknumber'] or str(track_counter + 1)
+        data[mkey(disc_counter, track_counter, 'length')] = str(m.length)
+        track_counter += 1
 
     return data
 
