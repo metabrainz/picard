@@ -165,6 +165,9 @@ def _get_cluster_data(cluster):
     def mkey(disc, track, name):
         return 'mediums.%i.track.%i.%s' % (disc, track, name)
 
+    labels = set()
+    barcode = None
+
     disc_counter = 0
     track_counter = 0
     last_discnumber = None
@@ -175,10 +178,24 @@ def _get_cluster_data(cluster):
             disc_counter += 1
             track_counter = 0
         last_discnumber = discnumber
+        if m['label']:
+            labels.add((m['label'], m['catalognumber']))
+        if m['barcode']:
+            barcode = m['barcode']
         data[mkey(disc_counter, track_counter, 'name')] = m['title']
         data[mkey(disc_counter, track_counter, 'number')] = m['tracknumber'] or str(track_counter + 1)
         data[mkey(disc_counter, track_counter, 'length')] = str(m.length)
+        if m['musicbrainz_recordingid']:
+            data[mkey(disc_counter, track_counter, 'recording')] = m['musicbrainz_recordingid']
         track_counter += 1
+
+    for i, label in enumerate(labels):
+        (label, catalog_number) = label
+        data['labels.%i.name' % i] = label
+        data['labels.%i.catalog_number' % i] = catalog_number
+
+    if barcode:
+        data['barcode'] = barcode
 
     return data
 
