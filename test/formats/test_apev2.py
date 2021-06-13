@@ -173,7 +173,8 @@ class WavPackTest(CommonApeTests.ApeTestCase):
         config.setting['preserve_timestamps'] = False
         config.setting['delete_empty_dirs'] = False
         config.setting['save_images_to_files'] = False
-        config.setting['file_naming_format'] = '%title%'
+        config.setting['file_renaming_scripts'] = {'test_id': {'script': '%title%'}}
+        config.setting['selected_file_naming_script_id'] = 'test_id'
         # Create dummy WavPack correction file
         source_file_wvc = self.filename + 'c'
         open(source_file_wvc, 'a').close()
