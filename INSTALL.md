@@ -12,7 +12,6 @@ Required:
 * [PyQt 5.10 or newer](http://www.riverbankcomputing.co.uk/software/pyqt/download)
 * [Mutagen 1.37 or newer](https://mutagen.readthedocs.io/)
 * [PyYAML 5.1 or newer](https://pyyaml.org/)
-* [PyJWT 1.7 or newer](https://pyjwt.readthedocs.io/)
 * [python-dateutil](https://dateutil.readthedocs.io/en/stable/)
 * gettext:
   * [Windows](https://mlocati.github.io/articles/gettext-iconv-windows.html)
@@ -30,6 +29,8 @@ Optional but recommended:
    0.3.0 - 0.4.1 is not recommended.
 * [python-markdown](https://python-markdown.github.io/install/)
   * Required for the complete scripting documentation
+* [PyJWT 1.7 or newer](https://pyjwt.readthedocs.io/)
+  * Required for the add cluster as release / add file as recording functionality
 
 We recommend you use [pip](https://pip.pypa.io/en/stable/) to install the Python
 dependencies:

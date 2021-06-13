@@ -176,7 +176,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             self._load_mbid('album', args)
         elif action == '/opennat':
             self._load_mbid('nat', args)
-        elif action == '/add':
+        elif action == '/add' and addrelease.is_available():
             self._add_release(args)
         else:
             self._response(404, 'Unknown action.')

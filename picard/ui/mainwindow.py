@@ -550,15 +550,19 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.browser_lookup_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+L")))
         self.browser_lookup_action.triggered.connect(self.browser_lookup)
 
-        self.submit_cluster_action = QtWidgets.QAction(_("Submit cluster as release..."), self)
-        self.submit_cluster_action.setStatusTip(_("Submit cluster as a new release to MusicBrainz"))
-        self.submit_cluster_action.setEnabled(False)
-        self.submit_cluster_action.triggered.connect(self.submit_cluster)
+        if addrelease.is_available():
+            self.submit_cluster_action = QtWidgets.QAction(_("Submit cluster as release..."), self)
+            self.submit_cluster_action.setStatusTip(_("Submit cluster as a new release to MusicBrainz"))
+            self.submit_cluster_action.setEnabled(False)
+            self.submit_cluster_action.triggered.connect(self.submit_cluster)
 
-        self.submit_file_action = QtWidgets.QAction(_("Submit file as recording..."), self)
-        self.submit_file_action.setStatusTip(_("Submit file as a new recording to MusicBrainz"))
-        self.submit_file_action.setEnabled(False)
-        self.submit_file_action.triggered.connect(self.submit_file)
+            self.submit_file_action = QtWidgets.QAction(_("Submit file as recording..."), self)
+            self.submit_file_action.setStatusTip(_("Submit file as a new recording to MusicBrainz"))
+            self.submit_file_action.setEnabled(False)
+            self.submit_file_action.triggered.connect(self.submit_file)
+        else:
+            self.submit_cluster_action = None
+            self.submit_file_action = None
 
         self.album_search_action = QtWidgets.QAction(icontheme.lookup('system-search'), _("Search for similar albums..."), self)
         self.album_search_action.setStatusTip(_("View similar releases and optionally choose a different release"))
@@ -1286,8 +1290,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.play_file_action.setEnabled(have_files)
         self.open_folder_action.setEnabled(have_files)
         self.cut_action.setEnabled(have_objects)
-        self.submit_cluster_action.setEnabled(can_submit)
-        self.submit_file_action.setEnabled(have_files)
+        if self.submit_cluster_action:
+            self.submit_cluster_action.setEnabled(can_submit)
+        if self.submit_file_action:
+            self.submit_file_action.setEnabled(have_files)
         files = self.get_selected_or_unmatched_files()
         self.tags_from_filenames_action.setEnabled(bool(files))
         self.track_search_action.setEnabled(is_file)

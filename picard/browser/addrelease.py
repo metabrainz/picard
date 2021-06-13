@@ -20,9 +20,6 @@
 
 from secrets import token_bytes
 
-import jwt
-import jwt.exceptions
-
 from PyQt5.QtCore import QCoreApplication
 
 from picard import log
@@ -34,6 +31,13 @@ from picard.util import (
 )
 from picard.util.webbrowser2 import open
 
+
+try:
+    import jwt
+    import jwt.exceptions
+except ImportError:
+    log.debug('PyJWT not available, addrelease functionality disabled')
+    jwt = None
 
 __key = token_bytes()  # Generating a new secret on each startup
 __algorithm = 'HS256'
@@ -62,6 +66,10 @@ class InvalidTokenError(Exception):
 
 class NotFoundError(Exception):
     pass
+
+
+def is_available():
+    return jwt is not None
 
 
 def is_enabled():
