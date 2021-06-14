@@ -185,11 +185,12 @@ class FileNamingTest(PicardTestCase):
             'ascii_filenames': False,
             'clear_existing_tags': False,
             'enabled_plugins': [],
-            'file_naming_format': '%album%/%title%',
             'move_files_to': '/media/music',
             'move_files': False,
             'rename_files': False,
             'windows_compatibility': True,
+            'file_renaming_scripts': {'test_id': {'script': '%album%/%title%'}},
+            'selected_file_naming_script_id': 'test_id',
         })
         self.metadata = Metadata({
             'album': 'somealbum',
@@ -230,7 +231,7 @@ class FileNamingTest(PicardTestCase):
 
     def test_make_filename_empty_script(self):
         config.setting['rename_files'] = True
-        config.setting['file_naming_format'] = '$noop()'
+        config.setting['file_renaming_scripts'] = {'test_id': {'script': '$noop()'}}
         filename = self.file.make_filename(self.file.filename, self.metadata)
         self.assertEqual(os.path.realpath('/somepath/somefile.mp3'), filename)
 
@@ -248,7 +249,7 @@ class FileNamingTest(PicardTestCase):
 
     def test_make_filename_scripted_extension(self):
         config.setting['rename_files'] = True
-        config.setting['file_naming_format'] = '$set(_extension,.foo)%title%'
+        config.setting['file_renaming_scripts'] = {'test_id': {'script': '$set(_extension,.foo)%title%'}}
         filename = self.file.make_filename(self.file.filename, self.metadata)
         self.assertEqual(os.path.realpath('/somepath/sometitle.foo'), filename)
 

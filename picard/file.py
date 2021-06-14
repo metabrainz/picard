@@ -26,6 +26,7 @@
 # Copyright (C) 2020 Gabriel Ferreira
 # Copyright (C) 2020 Ray Bouchard
 # Copyright (C) 2021 Petit Minion
+# Copyright (C) 2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -70,6 +71,7 @@ from picard.plugin import (
     PluginFunctions,
     PluginPriority,
 )
+from picard.script import get_file_naming_script
 from picard.util import (
     decode_filename,
     emptydir,
@@ -468,12 +470,10 @@ class File(QtCore.QObject, Item):
         ext = ext.lower()
         return (filename + ext, ext)
 
-    def _format_filename(self, new_dirname, new_filename, metadata, settings):
+    def _format_filename(self, new_dirname, new_filename, metadata, settings, naming_format):
         old_filename = new_filename
         new_filename, ext = self._clean_file_extension(new_filename)
 
-        # expand the naming format
-        naming_format = settings['file_naming_format']
         if naming_format:
             new_filename = self._script_to_filename(naming_format, metadata, ext, settings)
             if not new_filename:
@@ -487,11 +487,13 @@ class File(QtCore.QObject, Item):
             new_filename = make_save_path(new_filename, win_compat=win_compat, mac_compat=IS_MACOS)
         return new_filename
 
-    def make_filename(self, filename, metadata, settings=None):
+    def make_filename(self, filename, metadata, settings=None, naming_format=None):
         """Constructs file name based on metadata and file naming formats."""
         if settings is None:
             config = get_config()
             settings = config.setting
+        if naming_format is None:
+            naming_format = get_file_naming_script(settings)
         if settings["move_files"]:
             new_dirname = settings["move_files_to"]
             if not is_absolute_path(new_dirname):
@@ -506,7 +508,7 @@ class File(QtCore.QObject, Item):
         new_filename = os.path.basename(filename)
 
         if settings["rename_files"] or settings["move_files"]:
-            new_filename = self._format_filename(new_dirname, new_filename, metadata, settings)
+            new_filename = self._format_filename(new_dirname, new_filename, metadata, settings, naming_format)
 
         new_path = os.path.join(new_dirname, new_filename)
         return new_path

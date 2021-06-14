@@ -42,11 +42,10 @@ from PyQt5.QtGui import QPalette
 
 from picard.config import (
     BoolOption,
-    ListOption,
+    Option,
     TextOption,
     get_config,
 )
-from picard.const import DEFAULT_FILE_NAMING_FORMAT
 from picard.const.sys import IS_WIN
 from picard.script import ScriptParser
 
@@ -85,13 +84,12 @@ class RenamingOptionsPage(OptionsPage):
         BoolOption("setting", "windows_compatibility", True),
         BoolOption("setting", "ascii_filenames", False),
         BoolOption("setting", "rename_files", False),
-        TextOption("setting", "file_naming_format", DEFAULT_FILE_NAMING_FORMAT),
         BoolOption("setting", "move_files", False),
         TextOption("setting", "move_files_to", _default_music_dir),
         BoolOption("setting", "move_additional_files", False),
         TextOption("setting", "move_additional_files_pattern", "*.jpg *.png"),
         BoolOption("setting", "delete_empty_dirs", True),
-        ListOption("setting", "file_naming_scripts", []),
+        Option("setting", "file_renaming_scripts", {}),
         TextOption("setting", "selected_file_naming_script_id", ""),
     ]
 
@@ -122,7 +120,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.open_script_editor.clicked.connect(self.show_script_editing_page)
         self.ui.move_files_to_browse.clicked.connect(self.move_files_to_browse)
 
-        self.ui.naming_script_selector.currentIndexChanged.connect(self.update_selector_in_editor)
+        self.ui.naming_script_selector.currentIndexChanged.connect(partial(self.update_selector_in_editor, skip_check=False))
 
         self.ui.example_filename_after.itemSelectionChanged.connect(self.match_before_to_after)
         self.ui.example_filename_before.itemSelectionChanged.connect(self.match_after_to_before)
@@ -152,24 +150,29 @@ class RenamingOptionsPage(OptionsPage):
         """
         self.naming_scripts = self.script_editor_dialog.naming_scripts
         self.selected_naming_script_id = self.script_editor_dialog.selected_script_id
-        self.update_selector_from_settings()
+        populate_script_selection_combo_box(self.naming_scripts, self.selected_naming_script_id, self.ui.naming_script_selector)
+        self.display_examples()
 
     def update_selector_from_settings(self):
         """Update the script selector combo box from the settings.
         """
         populate_script_selection_combo_box(self.naming_scripts, self.selected_naming_script_id, self.ui.naming_script_selector)
+        self.update_selector_in_editor()
 
-    def update_selector_in_editor(self):
+    def update_selector_in_editor(self, skip_check=False):
         """Update the selection in the script editor page to match local selection.
+
+        Args:
+            skip_check (bool): Skip the check for unsaved edits.  Defaults to False.
         """
-        script_item = self.ui.naming_script_selector.itemData(self.ui.naming_script_selector.currentIndex())
         if self.script_editor_dialog:
-            self.script_editor_dialog.set_selected_script_index(self.ui.naming_script_selector.currentIndex(), send_signal=False)
-        self.script_text = script_item["script"]
-        self.selected_naming_script_id = script_item["id"]
-        override = {'file_naming_format': self.script_text}
-        self.examples.update_examples(override)
-        self.update_examples_from_local()
+            self.script_editor_dialog.set_selected_script_index(self.ui.naming_script_selector.currentIndex(), skip_check=skip_check)
+        else:
+            script_item = self.ui.naming_script_selector.itemData(self.ui.naming_script_selector.currentIndex())
+            self.script_text = script_item["script"]
+            self.selected_naming_script_id = script_item["id"]
+            self.examples.update_examples(script_text=self.script_text)
+            self.update_examples_from_local()
 
     def match_after_to_before(self):
         """Sets the selected item in the 'after' list to the corresponding item in the 'before' list.
@@ -187,14 +190,16 @@ class RenamingOptionsPage(OptionsPage):
         self.script_editor_dialog.show()
         self.script_editor_dialog.raise_()
         self.script_editor_dialog.activateWindow()
-        self.update_examples_from_local()
+        self.script_editor_dialog.loading = True
+        self.update_selector_in_editor(skip_check=True)
+        self.script_editor_dialog.loading = False
 
     def create_script_editor_dialog(self):
         self.script_editor_dialog = ScriptEditorDialog(parent=self, examples=self.examples)
         self.script_editor_dialog.signal_save.connect(self.save_from_editor)
-        self.script_editor_dialog.signal_update.connect(self.update_from_editor)
+        self.script_editor_dialog.signal_update.connect(self.display_examples)
         self.script_editor_dialog.signal_selection_changed.connect(self.update_selector_from_editor)
-        self.update_selector_in_editor()
+        self.script_editor_dialog.signal_update_scripts_list.connect(self.update_scripts_list_from_editor)
 
     def show_scripting_documentation(self):
         ScriptingDocumentationDialog.show_instance(parent=self)
@@ -217,12 +222,12 @@ class RenamingOptionsPage(OptionsPage):
         if not IS_WIN:
             self.ui.windows_compatibility.setEnabled(active)
 
+    def update_scripts_list_from_editor(self):
+        self.naming_scripts = self.script_editor_dialog.naming_scripts
+
     def save_from_editor(self):
         self.script_text = self.script_editor_dialog.get_script()
         self.update_selector_from_editor()
-
-    def update_from_editor(self):
-        self.display_examples()
 
     def check_formats(self):
         self.test()
@@ -230,7 +235,7 @@ class RenamingOptionsPage(OptionsPage):
 
     def update_example_files(self):
         self.examples.update_sample_example_files()
-        self.display_examples()
+        self.update_displayed_examples()
 
     def update_examples_from_local(self):
         override = {
@@ -241,13 +246,18 @@ class RenamingOptionsPage(OptionsPage):
             'windows_compatibility': self.ui.windows_compatibility.isChecked(),
         }
         self.examples.update_examples(override=override)
-        self.display_examples()
+        self.update_displayed_examples()
+
+    def update_displayed_examples(self):
+        if self.script_editor_dialog is not None:
+            # Update examples in script editor which will trigger update locally
+            self.script_editor_dialog.display_examples()
+        else:
+            self.display_examples()
 
     def display_examples(self):
         self.current_row = -1
         self.examples.update_example_listboxes(self.ui.example_filename_before, self.ui.example_filename_after)
-        if self.script_editor_dialog:
-            self.script_editor_dialog.display_examples(send_signal=False)
 
     def load(self):
         config = get_config()
@@ -259,13 +269,12 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.rename_files.setChecked(config.setting["rename_files"])
         self.ui.move_files.setChecked(config.setting["move_files"])
         self.ui.ascii_filenames.setChecked(config.setting["ascii_filenames"])
-        self.script_text = config.setting["file_naming_format"]
         self.ui.move_files_to.setText(config.setting["move_files_to"])
         self.ui.move_files_to.setCursorPosition(0)
         self.ui.move_additional_files.setChecked(config.setting["move_additional_files"])
         self.ui.move_additional_files_pattern.setText(config.setting["move_additional_files_pattern"])
         self.ui.delete_empty_dirs.setChecked(config.setting["delete_empty_dirs"])
-        self.naming_scripts = config.setting["file_naming_scripts"]
+        self.naming_scripts = config.setting["file_renaming_scripts"]
         self.selected_naming_script_id = config.setting["selected_file_naming_script_id"]
         if self.script_editor_dialog:
             self.script_editor_dialog.load()
@@ -293,29 +302,15 @@ class RenamingOptionsPage(OptionsPage):
         config.setting["windows_compatibility"] = self.ui.windows_compatibility.isChecked()
         config.setting["ascii_filenames"] = self.ui.ascii_filenames.isChecked()
         config.setting["rename_files"] = self.ui.rename_files.isChecked()
-        config.setting["file_naming_format"] = self.script_text.strip()
         config.setting["move_files"] = self.ui.move_files.isChecked()
         config.setting["move_files_to"] = os.path.normpath(self.ui.move_files_to.text())
         config.setting["move_additional_files"] = self.ui.move_additional_files.isChecked()
         config.setting["move_additional_files_pattern"] = self.ui.move_additional_files_pattern.text()
         config.setting["delete_empty_dirs"] = self.ui.delete_empty_dirs.isChecked()
-        if self.script_editor_dialog:
-            config.setting["file_naming_scripts"] = self.script_editor_dialog.naming_scripts
-            config.setting["selected_file_naming_script_id"] = self.script_editor_dialog.selected_script_id
-        else:
-            config.setting["file_naming_scripts"] = self.get_scripts_list()
-            config.setting["selected_file_naming_script_id"] = self.selected_naming_script_id
+        config.setting["file_renaming_scripts"] = self.naming_scripts
+        config.setting["selected_file_naming_script_id"] = self.selected_naming_script_id
         self.tagger.window.enable_renaming_action.setChecked(config.setting["rename_files"])
         self.tagger.window.enable_moving_action.setChecked(config.setting["move_files"])
-
-    def get_scripts_list(self):
-        naming_scripts = []
-        for idx in range(self.ui.naming_script_selector.count()):
-            script_item = self.ui.naming_script_selector.itemData(idx)
-            # Only add items that can be removed -- no presets
-            if script_item.deletable:
-                naming_scripts.append(script_item.to_yaml())
-        return naming_scripts
 
     def display_error(self, error):
         # Ignore scripting errors, those are handled inline

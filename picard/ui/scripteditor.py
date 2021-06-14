@@ -34,15 +34,19 @@ from PyQt5.QtGui import QPalette
 from picard import log
 from picard.config import (
     BoolOption,
-    ListOption,
+    Option,
     TextOption,
     get_config,
 )
-from picard.const import DEFAULT_FILE_NAMING_FORMAT
+from picard.const import (
+    DEFAULT_FILE_NAMING_FORMAT,
+    PICARD_URLS,
+)
 from picard.file import File
 from picard.script import (
     ScriptError,
     ScriptParser,
+    get_file_naming_script,
     get_file_naming_script_presets,
 )
 from picard.script.serializer import (
@@ -86,6 +90,7 @@ class ScriptEditorExamples():
         config = get_config()
         self.settings = config.setting
         self.example_list = []
+        self.script_text = get_file_naming_script(self.settings)
 
     def update_sample_example_files(self):
         """Get a new sample of randomly selected / loaded files to use as renaming examples.
@@ -108,14 +113,17 @@ class ScriptEditorExamples():
         self._sampled_example_files = files
         self.update_examples()
 
-    def update_examples(self, override=None):
+    def update_examples(self, override=None, script_text=None):
         """Update the before and after file naming examples list.
 
         Args:
             override (dict, optional): Dictionary of settings overrides to apply. Defaults to None.
+            script_text (str, optional): Text of the file naming script to use. Defaults to None.
         """
         if override and isinstance(override, dict):
             self.settings = SettingsOverride(self.settings, override)
+        if script_text and isinstance(script_text, str):
+            self.script_text = script_text
 
         if self.settings["move_files"] or self.settings["rename_files"]:
             if not self._sampled_example_files:
@@ -141,7 +149,7 @@ class ScriptEditorExamples():
                         parser = ScriptParser()
                         parser.eval(s_text, file.metadata)
             filename_before = file.filename
-            filename_after = file.make_filename(filename_before, file.metadata, self.settings)
+            filename_after = file.make_filename(filename_before, file.metadata, self.settings, self.script_text)
             if not self.settings["move_files"]:
                 return os.path.basename(filename_before), os.path.basename(filename_after)
             return filename_before, filename_after
@@ -285,6 +293,10 @@ class ScriptEditorExamples():
 def confirmation_dialog(parent, message):
     """Displays a confirmation dialog.
 
+    Args:
+        parent (object): Parent object / window making the call to set modality
+        message (str): Message to be displayed
+
     Returns:
         bool: True if accepted, otherwise False.
     """
@@ -338,23 +350,13 @@ def populate_script_selection_combo_box(naming_scripts, selected_script_id, comb
     """Populate the specified script selection combo box and identify the selected script.
 
     Args:
-        naming_scripts (list): List of available user-defined naming scripts in YAML format
+        naming_scripts (dict): Dictionary of available user-defined naming scripts as script dictionaries as produced by FileNamingScript().to_dict()
         selected_script_id (str): ID code for the currently selected script
         combo_box (QComboBox): Combo box object to populate
 
     Returns:
         int: The index of the currently selected script
     """
-    if not selected_script_id:
-        script_item = FileNamingScript(
-            script=get_config().setting["file_naming_format"],
-            title=_("Primary file naming script"),
-            readonly=False,
-            deletable=True,
-        )
-        naming_scripts.insert(0, script_item.to_yaml())
-        selected_script_id = script_item['id']
-
     combo_box.blockSignals(True)
     combo_box.clear()
 
@@ -362,23 +364,20 @@ def populate_script_selection_combo_box(naming_scripts, selected_script_id, comb
         combo_box.addItem(title, item)
         if item['id'] == selected_script_id:
             idx = count
-        count += 1
-        return idx, count
+        return idx
 
     idx = 0
-    count = 0   # Use separate counter rather than `i` in case ScriptImportError triggers, resulting in an incorrect index count.
-    for i, naming_script in enumerate(naming_scripts):
-        try:
-            script_item = FileNamingScript().create_from_yaml(naming_script, create_new_id=False)
-        except ScriptImportError:
-            pass
-        else:
-            naming_scripts[i] = script_item.to_yaml()  # Ensure scripts are stored with id codes
-            idx, count = _add_and_check(idx, count, user_script_title(script_item['title']), script_item)
+    for count, (id, naming_script) in enumerate(sorted(naming_scripts.items(), key=lambda item: item[1]['title'])):
+        naming_script["deletable"] = True
+        naming_script["readonly"] = False
+        idx = _add_and_check(idx, count, user_script_title(naming_script['title']), naming_script)
 
     # Add preset scripts not provided in the user-defined scripts list.
-    for script_item in get_file_naming_script_presets():
-        idx, count = _add_and_check(idx, count, script_item['title'], script_item)
+    for count, script_item in enumerate(get_file_naming_script_presets(), start=count+1):
+        naming_script = script_item.to_dict()
+        naming_script["deletable"] = False
+        naming_script["readonly"] = True
+        idx = _add_and_check(idx, count, naming_script['title'], naming_script)
 
     combo_box.setCurrentIndex(idx)
     combo_box.blockSignals(False)
@@ -391,18 +390,18 @@ class ScriptEditorDialog(PicardDialog):
     TITLE = N_("File naming script editor")
     STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
 
-    help_url = '/config/options_filerenaming_editor.html'
+    help_url = PICARD_URLS["doc_naming_script_edit"]
 
     options = [
-        TextOption("setting", "file_naming_format", DEFAULT_FILE_NAMING_FORMAT),
-        ListOption("setting", "file_naming_scripts", []),
-        TextOption("setting", "selected_file_naming_script_id", ""),
         BoolOption('persist', 'script_editor_show_documentation', False),
+        Option("setting", "file_renaming_scripts", {}),
+        TextOption("setting", "selected_file_naming_script_id", ""),
     ]
 
     signal_save = QtCore.pyqtSignal()
     signal_update = QtCore.pyqtSignal()
     signal_selection_changed = QtCore.pyqtSignal()
+    signal_update_scripts_list = QtCore.pyqtSignal()
 
     default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DocumentsLocation))
     default_script_filename = "picard_naming_script.ptsp"
@@ -444,7 +443,7 @@ class ScriptEditorDialog(PicardDialog):
         self.ui.buttonbox.accepted.connect(self.save_script)
         self.close_button = self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.Close)
         self.close_button.setToolTip(self.close_action.toolTip())
-        self.ui.buttonbox.rejected.connect(self.close_window)
+        self.ui.buttonbox.rejected.connect(self.close)
         self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.Help)
         self.ui.buttonbox.helpRequested.connect(self.show_help)
 
@@ -469,6 +468,8 @@ class ScriptEditorDialog(PicardDialog):
         self.examples_current_row = -1
 
         self.script_metadata_changed = False
+        self.selected_script_index = 0
+        self.restore_selected_script_index = 0
 
         self.load()
         self.loading = False
@@ -497,7 +498,7 @@ class ScriptEditorDialog(PicardDialog):
 
         self.close_action = QtWidgets.QAction(_("E&xit / Close editor"), self)
         self.close_action.setToolTip(_("Close the script editor"))
-        self.close_action.triggered.connect(self.close_window)
+        self.close_action.triggered.connect(self.close)
         file_menu.addAction(self.close_action)
 
         # Script menu settings
@@ -583,9 +584,10 @@ class ScriptEditorDialog(PicardDialog):
         """
         config = get_config()
         self.examples.settings = config.setting
-        self.naming_scripts = config.setting["file_naming_scripts"]
+        self.naming_scripts = config.setting["file_renaming_scripts"]
         self.selected_script_id = config.setting["selected_file_naming_script_id"]
         self.selected_script_index = 0
+        self.restore_selected_script_index = 0
         self.populate_script_selector()
         if not self.loading:
             self.select_script(skip_check=True)
@@ -603,11 +605,6 @@ class ScriptEditorDialog(PicardDialog):
             self.update_examples()
         return False
 
-    def close_window(self):
-        """Close the window.
-        """
-        self.close()
-
     def closeEvent(self, event):
         """Custom close event handler to check for unsaved changes.
         """
@@ -624,6 +621,7 @@ class ScriptEditorDialog(PicardDialog):
         idx = populate_script_selection_combo_box(self.naming_scripts, self.selected_script_id, self.ui.preset_naming_scripts)
         self.update_scripts_list()
         self.set_selected_script_index(idx)
+        self.restore_selected_script_index = idx
 
     def toggle_documentation(self):
         """Toggle the display of the scripting documentation sidebar.
@@ -644,12 +642,12 @@ class ScriptEditorDialog(PicardDialog):
         details_page.activateWindow()
 
     def has_changed(self):
-        """Check if the current script has pending edits to the title or script that have not been saved.
+        """Check if the current script has pending edits to the title, script or metadata that have not been saved.
 
         Returns:
             bool: True if there are unsaved changes, otherwise false.
         """
-        script_item = self.ui.preset_naming_scripts.itemData(self.selected_script_index)
+        script_item = self.ui.preset_naming_scripts.itemData(self.restore_selected_script_index)
         return self.ui.script_title.text().strip() != script_item['title'] or \
             self.get_script() != script_item['script'] or \
             self.script_metadata_changed
@@ -668,6 +666,7 @@ class ScriptEditorDialog(PicardDialog):
         Args:
             idx (int): New index position
         """
+        self.restore_selected_script_index = self.selected_script_index
         self.ui.preset_naming_scripts.blockSignals(True)
         self.ui.preset_naming_scripts.setCurrentIndex(idx)
         self.ui.preset_naming_scripts.blockSignals(False)
@@ -677,21 +676,23 @@ class ScriptEditorDialog(PicardDialog):
         """Insert a new item into the script selection combo box and update the script list in the settings.
 
         Args:
-            script_item (FileNamingScript): File naming script to insert.
+            script_item (dict): File naming script to insert as produced by FileNamingScript().to_dict()
         """
-        idx = len(self.naming_scripts)
-        self.ui.preset_naming_scripts.blockSignals(True)
-        self.ui.preset_naming_scripts.insertItem(idx, user_script_title(script_item['title']), script_item)
-        self.ui.preset_naming_scripts.blockSignals(False)
+        script_item["readonly"] = False
+        script_item["deletable"] = True
+        self.selected_script_id = script_item["id"]
+        self.naming_scripts[self.selected_script_id] = script_item
+        idx = populate_script_selection_combo_box(self.naming_scripts, self.selected_script_id, self.ui.preset_naming_scripts)
         self._set_combobox_index(idx)
         self.update_scripts_list()
         self.select_script(skip_check=True)
+        self.restore_selected_script_index = idx
 
     def new_script(self):
         """Add a new (empty) script to the script selection combo box and script list.
         """
         if self.unsaved_changes_confirmation():
-            script_item = FileNamingScript(script='$noop()')
+            script_item = FileNamingScript(script=DEFAULT_FILE_NAMING_FORMAT).to_dict()
             self._insert_item(script_item)
 
     def copy_script(self):
@@ -700,32 +701,38 @@ class ScriptEditorDialog(PicardDialog):
         if self.unsaved_changes_confirmation():
             selected = self.ui.preset_naming_scripts.currentIndex()
             script_item = self.ui.preset_naming_scripts.itemData(selected)
-            new_item = script_item.copy()
+            new_item = FileNamingScript.create_from_dict(script_dict=script_item).copy().to_dict()
             self._insert_item(new_item)
 
     def update_script_in_settings(self):
         """Sends a save signal to trigger processing in the parent.
         """
-        self.signal_save.emit()
+        if not self.loading:
+            self.signal_save.emit()
 
     def update_scripts_list(self):
         """Refresh the script list in the settings based on the contents of the script selection combo box.
         """
-        self.naming_scripts = []
+        self.naming_scripts = {}
         for idx in range(self.ui.preset_naming_scripts.count()):
             script_item = self.ui.preset_naming_scripts.itemData(idx)
             # Only add items that can be removed -- no presets
-            if script_item.deletable:
-                self.naming_scripts.append(script_item.to_yaml())
+            if script_item["deletable"]:
+                self.naming_scripts[script_item["id"]] = script_item
+        self.signal_update_scripts_list.emit()
 
-    def get_selected_item(self):
-        """Get the selected item from the script selection combo box.
+    def get_selected_item(self, idx=None):
+        """Get the specified item from the script selection combo box.
+
+        Args:
+            idx (int, optional): Index of the combo box item to retrieve. Defaults to None.
 
         Returns:
-            FileNamingScript: The selected script.
+            dict: File naming script dictionary as produced by FileNamingScript().to_dict()
         """
-        selected = self.ui.preset_naming_scripts.currentIndex()
-        return self.ui.preset_naming_scripts.itemData(selected)
+        if idx is None:
+            idx = self.ui.preset_naming_scripts.currentIndex()
+        return self.ui.preset_naming_scripts.itemData(idx)
 
     def unsaved_changes_confirmation(self):
         """Check if there are unsaved changes and ask the user to confirm the action resulting in their loss.
@@ -736,51 +743,53 @@ class ScriptEditorDialog(PicardDialog):
         if not self.loading and self.has_changed() and not confirmation_dialog(self,
             _("There are unsaved changes to the current script.  Do you want to continue and lose these changes?")
         ):
-            self._set_combobox_index(self.selected_script_index)
+            self.selected_script_index = self.restore_selected_script_index
+            self._set_combobox_index(self.restore_selected_script_index)
             return False
         return True
 
-    def set_selected_script_index(self, idx, send_signal=True):
+    def set_selected_script_index(self, idx, skip_check=True):
         """Select the script at the specified combo box index.
 
         Args:
             idx (int): Index of the script to select
-            send_signal (bool, optional): Determines whether the update signal should be emitted. Defaults to True.
+            skip_check (bool, optional): Skip the check for unsaved edits. Defaults to True.
         """
         self._set_combobox_index(idx)
-        self.select_script(skip_check=True, send_signal=send_signal)
+        self.select_script(skip_check=skip_check)
 
-    def select_script(self, skip_check=False, send_signal=True):
+    def select_script(self, skip_check=False):
         """Load the current script from the combo box into the editor.
 
         Args:
             skip_check (bool): Skip the check for unsaved edits.  Defaults to False.
-            send_signal (bool, optional): Determines whether the update signal should be emitted. Defaults to True.
         """
+        self.selected_script_index = self.ui.preset_naming_scripts.currentIndex()
         if self.loading or skip_check or self.unsaved_changes_confirmation():
             script_item = self.get_selected_item()
             self.ui.script_title.setText(script_item['title'])
             self.set_script(script_item['script'])
             self.selected_script_id = script_item['id']
-            self.selected_script_index = self.ui.preset_naming_scripts.currentIndex()
+            self.restore_selected_script_index = self.selected_script_index
             self.script_metadata_changed = False
-            self.update_script_in_settings()
+            if not self.loading:
+                self.update_script_in_settings()
             self.set_button_states()
             self.update_examples()
-            if send_signal:
-                self.signal_selection_changed.emit()
+        if not self.loading:
+            self.signal_selection_changed.emit()
 
     def update_combo_box_item(self, idx, script_item):
         """Update the title and item data for the specified script selection combo box item.
 
         Args:
             idx (int): Index of the item to update
-            script_item (FileNamingScript): Updated script information
+            script_item (dict): Updated file naming script information as produced by FileNamingScript().to_dict()
         """
         self.ui.preset_naming_scripts.setItemData(idx, script_item)
         self.ui.preset_naming_scripts.setItemText(idx, user_script_title(script_item['title']))
-        self.update_script_in_settings()
         self.update_scripts_list()
+        self.update_script_in_settings()
 
     def set_button_states(self, save_enabled=True):
         """Set the button states based on the readonly and deletable attributes of the currently selected
@@ -831,6 +840,7 @@ class ScriptEditorDialog(PicardDialog):
             if idx >= self.ui.preset_naming_scripts.count():
                 idx = self.ui.preset_naming_scripts.count() - 1
             self._set_combobox_index(idx)
+            self.selected_script_index = idx
             self.update_scripts_list()
             self.select_script(skip_check=True)
 
@@ -841,8 +851,8 @@ class ScriptEditorDialog(PicardDialog):
         title = str(self.ui.script_title.text()).strip()
         if title:
             script_item = self.ui.preset_naming_scripts.itemData(selected)
-            script_item.title = title
-            script_item.script = self.get_script()
+            script_item["title"] = title
+            script_item["script"] = self.get_script()
             self.update_combo_box_item(selected, script_item)
             dialog = QtWidgets.QMessageBox(
                 QtWidgets.QMessageBox.Information,
@@ -851,7 +861,6 @@ class ScriptEditorDialog(PicardDialog):
                 QtWidgets.QMessageBox.Ok,
                 self
             )
-            self.signal_save.emit()
             dialog.exec_()
         else:
             self.display_error(OptionsCheckError(_("Error"), _("The script title must not be empty.")))
@@ -865,7 +874,7 @@ class ScriptEditorDialog(PicardDialog):
         return str(self.ui.file_naming_format.toPlainText()).strip()
 
     def set_script(self, script_text):
-        """Sets the text of the file naming script into the editor and settings.
+        """Sets the text of the file naming script into the editor.
 
         Args:
             script_text (str): File naming script text to set in the editor.
@@ -881,11 +890,10 @@ class ScriptEditorDialog(PicardDialog):
     def update_examples(self):
         """Update the before and after file naming examples using the current file naming script in the editor.
         """
-        override = {'file_naming_format': self.get_script()}
-        self.examples.update_examples(override)
+        self.examples.update_examples(script_text=self.get_script())
         self.display_examples()
 
-    def display_examples(self, send_signal=True):
+    def display_examples(self):
         """Update the display of the before and after file naming examples.
 
         Args:
@@ -893,7 +901,7 @@ class ScriptEditorDialog(PicardDialog):
         """
         self.examples_current_row = -1
         self.examples.update_example_listboxes(self.ui.example_filename_before, self.ui.example_filename_after)
-        if send_signal:
+        if not self.loading:
             self.signal_update.emit()
 
     def output_error(self, title, fmt, filename, msg):
@@ -956,7 +964,7 @@ class ScriptEditorDialog(PicardDialog):
                     title=_("Imported from %s") % filename,
                     script=file_content.strip()
                 )
-            self._insert_item(script_item)
+            self._insert_item(script_item.to_dict())
 
     def export_script(self):
         """Export the current script to an external file. Export can be either as a plain text
@@ -964,7 +972,7 @@ class ScriptEditorDialog(PicardDialog):
         """
         FILE_ERROR_EXPORT = N_('Error exporting file "%s". %s.')
 
-        script_item = self.get_selected_item()
+        script_item = FileNamingScript.create_from_dict(script_dict=self.get_selected_item(), create_new_id=False)
         script_text = self.get_script()
 
         if script_text:

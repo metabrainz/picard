@@ -34,6 +34,7 @@ from picard import log
 from picard.config import (
     BoolOption,
     IntOption,
+    ListOption,
     Option,
     TextOption,
 )
@@ -386,6 +387,40 @@ def upgrade_to_v2_7_0_dev_2(config):
     )
 
 
+def upgrade_to_v2_7_0_dev_3(config):
+    """Save file naming scripts to dictionary.
+    """
+    from picard.script import get_file_naming_script_presets
+    from picard.script.serializer import (
+        FileNamingScript,
+        ScriptImportError,
+    )
+    Option("setting", "file_renaming_scripts", {})
+    ListOption("setting", "file_naming_scripts", [])
+    TextOption("setting", "file_naming_format", DEFAULT_FILE_NAMING_FORMAT)
+    TextOption("setting", "selected_file_naming_script_id", "")
+    scripts = {}
+    for item in config.setting["file_naming_scripts"]:
+        try:
+            script_item = FileNamingScript().create_from_yaml(item, create_new_id=False)
+            scripts[script_item["id"]] = script_item.to_dict()
+        except ScriptImportError:
+            log.error("Error converting file naming script")
+    script_list = set(scripts.keys()) | set(map(lambda item: item["id"], get_file_naming_script_presets()))
+    if config.setting["selected_file_naming_script_id"] not in script_list:
+        script_item = FileNamingScript(
+            script=config.setting["file_naming_format"],
+            title=_("Primary file naming script"),
+            readonly=False,
+            deletable=True,
+        )
+        scripts[script_item["id"]] = script_item.to_dict()
+        config.setting["selected_file_naming_script_id"] = script_item["id"]
+    config.setting["file_renaming_scripts"] = scripts
+    config.setting.remove("file_naming_scripts")
+    config.setting.remove("file_naming_format")
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
@@ -416,4 +451,5 @@ def upgrade_config(config):
     cfg.register_upgrade_hook(upgrade_to_v2_6_0_beta_2)
     cfg.register_upgrade_hook(upgrade_to_v2_6_0_beta_3)
     cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_2)
+    cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_3)
     cfg.run_upgrade_hooks(log.debug)

@@ -35,6 +35,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from picard import log
 from picard.config import get_config
 from picard.const import DEFAULT_FILE_NAMING_FORMAT
 from picard.script.functions import (  # noqa: F401 # pylint: disable=unused-import
@@ -103,6 +104,28 @@ def enabled_tagger_scripts_texts():
     if not config.setting["enable_tagger_scripts"]:
         return []
     return [(s_name, s_text) for _s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"] if s_enabled and s_text]
+
+
+def get_file_naming_script(settings):
+    """Retrieve the file naming script.
+
+    Args:
+        settings (ConfigSection): Object containing the user settings
+
+    Returns:
+        str: The text of the file naming script if available, otherwise None
+    """
+    from picard.script import get_file_naming_script_presets
+    scripts = settings["file_renaming_scripts"]
+    selected_id = settings["selected_file_naming_script_id"]
+    if scripts and selected_id:
+        if selected_id in scripts:
+            return scripts[selected_id]["script"]
+        for item in get_file_naming_script_presets():
+            if item["id"] == selected_id:
+                return str(item["script"])
+    log.error("Unable to retrieve the file naming script '%s'", selected_id)
+    return None
 
 
 def get_file_naming_script_presets():
