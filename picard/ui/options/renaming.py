@@ -165,10 +165,11 @@ class RenamingOptionsPage(OptionsPage):
         Args:
             skip_check (bool): Skip the check for unsaved edits.  Defaults to False.
         """
+        idx = self.ui.naming_script_selector.currentIndex()
         if self.script_editor_dialog:
-            self.script_editor_dialog.set_selected_script_index(self.ui.naming_script_selector.currentIndex(), skip_check=skip_check)
+            self.script_editor_dialog.set_selected_script_index(idx, skip_check=skip_check)
         else:
-            script_item = self.ui.naming_script_selector.itemData(self.ui.naming_script_selector.currentIndex())
+            script_item = self.ui.naming_script_selector.itemData(idx)
             self.script_text = script_item["script"]
             self.selected_naming_script_id = script_item["id"]
             self.examples.update_examples(script_text=self.script_text)
