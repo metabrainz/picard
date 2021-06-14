@@ -20,6 +20,7 @@
 
 from picard.config import get_config
 from picard.const import MUSICBRAINZ_SERVERS
+from picard.util import build_qurl
 
 
 def is_official_server(host):
@@ -46,5 +47,22 @@ def get_submission_host():
     host = config.setting['server_host']
     if is_official_server(host):
         return (host, 443)
+    elif host and config.setting['use_server_for_submission']:
+        port = config.setting['server_port']
+        return (host, port)
     else:
         return (MUSICBRAINZ_SERVERS[0], 443)
+
+
+def build_submission_url(path=None, query_args=None):
+    """Builds a submission URL with path and query parameters.
+
+    Args:
+        path: The path for the URL
+        query_args: A dict of query parameters
+
+    Returns: The submission URL as a string
+    """
+    host, port = get_submission_host()
+    url = build_qurl(host, port, path, query_args)
+    return url.toString()

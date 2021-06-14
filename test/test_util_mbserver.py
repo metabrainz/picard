@@ -23,6 +23,7 @@ from test.picardtestcase import PicardTestCase
 
 from picard.const import MUSICBRAINZ_SERVERS
 from picard.util.mbserver import (
+    build_submission_url,
     get_submission_host,
     is_official_server,
 )
@@ -41,13 +42,66 @@ class IsOfficialServerTest(PicardTestCase):
         self.assertFalse(is_official_server('localhost'))
 
 
-class test_get_submission_host(PicardTestCase):
+class GetSubmissionHostTest(PicardTestCase):
 
     def test_official(self):
         for host in MUSICBRAINZ_SERVERS:
-            self.set_config_values(setting={'server_host': host, 'server_port': 80})
+            self.set_config_values(setting={
+                'server_host': host,
+                'server_port': 80,
+                'use_server_for_submission': False,
+            })
             self.assertEqual((host, 443), get_submission_host())
 
-    def test_unofficial(self):
-        self.set_config_values(setting={'server_host': 'test.musicbrainz.org', 'server_port': 80})
+    def test_use_unofficial(self):
+        self.set_config_values(setting={
+            'server_host': 'example.com',
+            'server_port': 8042,
+            'use_server_for_submission': True,
+        })
+        self.assertEqual(('example.com', 8042), get_submission_host())
+
+    def test_unofficial_fallback(self):
+        self.set_config_values(setting={
+            'server_host': 'test.musicbrainz.org',
+            'server_port': 80,
+            'use_server_for_submission': False,
+        })
         self.assertEqual((MUSICBRAINZ_SERVERS[0], 443), get_submission_host())
+
+
+class BuildSubmissionUrlTest(PicardTestCase):
+
+    def test_official(self):
+        for host in MUSICBRAINZ_SERVERS:
+            self.set_config_values(setting={
+                'server_host': host,
+                'server_port': 80,
+                'use_server_for_submission': False,
+            })
+            self.assertEqual('https://%s:443' % host, build_submission_url())
+            self.assertEqual('https://%s:443/' % host, build_submission_url('/'))
+            self.assertEqual('https://%s:443/some/path?foo=1&bar=baz' % host,
+                build_submission_url('/some/path', {'foo': 1, 'bar': 'baz'}))
+
+    def test_use_unofficial(self):
+        self.set_config_values(setting={
+            'server_host': 'example.com',
+            'server_port': 8042,
+            'use_server_for_submission': True,
+        })
+        self.assertEqual('http://example.com:8042', build_submission_url())
+        self.assertEqual('http://example.com:8042/', build_submission_url('/'))
+        self.assertEqual('http://example.com:8042/some/path?foo=1&bar=baz',
+                build_submission_url('/some/path', {'foo': 1, 'bar': 'baz'}))
+
+    def test_unofficial_fallback(self):
+        self.set_config_values(setting={
+            'server_host': 'test.musicbrainz.org',
+            'server_port': 80,
+            'use_server_for_submission': False,
+        })
+        self.assertEqual('https://musicbrainz.org:443', build_submission_url())
+        self.assertEqual('https://musicbrainz.org:443/', build_submission_url('/'))
+        self.assertEqual('https://musicbrainz.org:443/some/path?foo=1&bar=baz',
+                build_submission_url('/some/path', {'foo': 1, 'bar': 'baz'}))

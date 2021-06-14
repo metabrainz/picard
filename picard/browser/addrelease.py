@@ -27,7 +27,7 @@ from picard.util import (
     format_time,
     htmlescape,
 )
-from picard.util.mbserver import get_submission_host
+from picard.util.mbserver import build_submission_url
 from picard.util.webbrowser2 import open
 
 
@@ -138,12 +138,6 @@ def _find_file(path):
     return tagger.files.get(path, None)
 
 
-def _mbserver_url(path):
-    host, port = get_submission_host()
-    protocol = 'https' if port == 443 else 'http'
-    return "%s://%s:%i%s" % (protocol, host, port, path)
-
-
 def _get_cluster_form(cluster):
     return _get_form(
         _('Add cluster as release'),
@@ -246,7 +240,7 @@ def _get_form(title, action, label, form_data):
     return _form_template.format(
         title=htmlescape(title),
         submit_label=htmlescape(label),
-        action=htmlescape(_mbserver_url(action)),
+        action=htmlescape(build_submission_url(action)),
         form_data=_format_form_data(form_data),
     )
 

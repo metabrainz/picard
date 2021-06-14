@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>283</width>
-    <height>435</height>
+    <width>403</width>
+    <height>584</height>
    </rect>
   </property>
   <layout class="QVBoxLayout">
@@ -20,6 +20,52 @@
       <property name="spacing">
        <number>2</number>
       </property>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="server_port">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>65535</number>
+        </property>
+        <property name="value">
+         <number>80</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QFrame" name="server_host_primary_warning">
+        <property name="styleSheet">
+         <string notr="true">QFrame { background-color: #ffc107; color: black }
+QCheckBox { color: black }</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>You have configured an unofficial database server. By default all data submission will go to the primary server on musicbrainz.org.</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="use_server_for_submission">
+           <property name="text">
+            <string>Submit data to the configured server</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
       <item row="1" column="0">
        <widget class="QComboBox" name="server_host">
         <property name="sizePolicy">
@@ -40,25 +86,28 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="server_port">
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>65535</number>
-        </property>
-        <property name="value">
-         <number>80</number>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
          <string>Server address:</string>
         </property>
        </widget>
+      </item>
+      <item row="2" column="0">
+       <spacer name="spacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>1</width>
+          <height>4</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>

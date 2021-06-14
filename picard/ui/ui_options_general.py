@@ -3,12 +3,14 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_GeneralOptionsPage(object):
     def setupUi(self, GeneralOptionsPage):
         GeneralOptionsPage.setObjectName("GeneralOptionsPage")
-        GeneralOptionsPage.resize(283, 435)
+        GeneralOptionsPage.resize(403, 584)
         self.vboxlayout = QtWidgets.QVBoxLayout(GeneralOptionsPage)
         self.vboxlayout.setObjectName("vboxlayout")
         self.groupBox = QtWidgets.QGroupBox(GeneralOptionsPage)
@@ -16,6 +18,28 @@ class Ui_GeneralOptionsPage(object):
         self.gridlayout = QtWidgets.QGridLayout(self.groupBox)
         self.gridlayout.setSpacing(2)
         self.gridlayout.setObjectName("gridlayout")
+        self.server_port = QtWidgets.QSpinBox(self.groupBox)
+        self.server_port.setMinimum(1)
+        self.server_port.setMaximum(65535)
+        self.server_port.setProperty("value", 80)
+        self.server_port.setObjectName("server_port")
+        self.gridlayout.addWidget(self.server_port, 1, 1, 1, 1)
+        self.server_host_primary_warning = QtWidgets.QFrame(self.groupBox)
+        self.server_host_primary_warning.setStyleSheet("QFrame { background-color: #ffc107; color: black }\n"
+"QCheckBox { color: black }")
+        self.server_host_primary_warning.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.server_host_primary_warning.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.server_host_primary_warning.setObjectName("server_host_primary_warning")
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.server_host_primary_warning)
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.label_4 = QtWidgets.QLabel(self.server_host_primary_warning)
+        self.label_4.setWordWrap(True)
+        self.label_4.setObjectName("label_4")
+        self.verticalLayout_4.addWidget(self.label_4)
+        self.use_server_for_submission = QtWidgets.QCheckBox(self.server_host_primary_warning)
+        self.use_server_for_submission.setObjectName("use_server_for_submission")
+        self.verticalLayout_4.addWidget(self.use_server_for_submission)
+        self.gridlayout.addWidget(self.server_host_primary_warning, 3, 0, 1, 2)
         self.server_host = QtWidgets.QComboBox(self.groupBox)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -28,15 +52,11 @@ class Ui_GeneralOptionsPage(object):
         self.label_7 = QtWidgets.QLabel(self.groupBox)
         self.label_7.setObjectName("label_7")
         self.gridlayout.addWidget(self.label_7, 0, 1, 1, 1)
-        self.server_port = QtWidgets.QSpinBox(self.groupBox)
-        self.server_port.setMinimum(1)
-        self.server_port.setMaximum(65535)
-        self.server_port.setProperty("value", 80)
-        self.server_port.setObjectName("server_port")
-        self.gridlayout.addWidget(self.server_port, 1, 1, 1, 1)
         self.label = QtWidgets.QLabel(self.groupBox)
         self.label.setObjectName("label")
         self.gridlayout.addWidget(self.label, 0, 0, 1, 1)
+        spacerItem = QtWidgets.QSpacerItem(1, 4, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        self.gridlayout.addItem(spacerItem, 2, 0, 1, 1)
         self.vboxlayout.addWidget(self.groupBox)
         self.rename_files_2 = QtWidgets.QGroupBox(GeneralOptionsPage)
         self.rename_files_2.setObjectName("rename_files_2")
@@ -46,8 +66,8 @@ class Ui_GeneralOptionsPage(object):
         self.login = QtWidgets.QPushButton(self.rename_files_2)
         self.login.setObjectName("login")
         self.gridlayout1.addWidget(self.login, 1, 0, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.gridlayout1.addItem(spacerItem, 1, 2, 1, 1)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridlayout1.addItem(spacerItem1, 1, 2, 1, 1)
         self.logout = QtWidgets.QPushButton(self.rename_files_2)
         self.logout.setObjectName("logout")
         self.gridlayout1.addWidget(self.logout, 1, 1, 1, 1)
@@ -119,9 +139,8 @@ class Ui_GeneralOptionsPage(object):
         self.gridLayout_2.addWidget(self.update_level, 0, 1, 1, 1)
         self.verticalLayout_2.addLayout(self.gridLayout_2)
         self.vboxlayout.addWidget(self.update_check_groupbox)
-
-        spacerItem1 = QtWidgets.QSpacerItem(181, 21, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.vboxlayout.addItem(spacerItem1)
+        spacerItem2 = QtWidgets.QSpacerItem(181, 21, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.vboxlayout.addItem(spacerItem2)
 
         self.retranslateUi(GeneralOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(GeneralOptionsPage)
@@ -130,6 +149,8 @@ class Ui_GeneralOptionsPage(object):
     def retranslateUi(self, GeneralOptionsPage):
         _translate = QtCore.QCoreApplication.translate
         self.groupBox.setTitle(_("MusicBrainz Server"))
+        self.label_4.setText(_("You have configured an unofficial database server. By default all data submission will go to the primary server on musicbrainz.org."))
+        self.use_server_for_submission.setText(_("Submit data to the configured server"))
         self.label_7.setText(_("Port:"))
         self.label.setText(_("Server address:"))
         self.rename_files_2.setTitle(_("MusicBrainz Account"))
@@ -142,4 +163,3 @@ class Ui_GeneralOptionsPage(object):
         self.check_for_updates.setText(_("Check for updates during start-up"))
         self.label_2.setText(_("Days between checks:"))
         self.label_3.setText(_("Updates to check:"))
-
