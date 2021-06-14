@@ -470,6 +470,7 @@ class ScriptEditorDialog(PicardDialog):
         self.script_metadata_changed = False
         self.selected_script_index = 0
         self.restore_selected_script_index = 0
+        self.current_item_dict = None
 
         self.load()
         self.loading = False
@@ -634,8 +635,8 @@ class ScriptEditorDialog(PicardDialog):
     def view_script_details(self):
         """View and edit (if not readonly) the metadata associated with the script.
         """
-        selected_item = self.get_selected_item()
-        details_page = ScriptDetailsEditor(self, selected_item)
+        self.current_item_dict = self.get_selected_item()
+        details_page = ScriptDetailsEditor(self, self.current_item_dict)
         details_page.signal_save.connect(self.update_from_details)
         details_page.show()
         details_page.raise_()
@@ -655,9 +656,8 @@ class ScriptEditorDialog(PicardDialog):
     def update_from_details(self):
         """Update the script selection combo box and script list after updates from the script details dialog.
         """
-        selected_item = self.get_selected_item()
-        self.update_combo_box_item(self.ui.preset_naming_scripts.currentIndex(), selected_item)
-        self.ui.script_title.setText(selected_item['title'])
+        self.update_combo_box_item(self.ui.preset_naming_scripts.currentIndex(), self.current_item_dict)
+        self.ui.script_title.setText(self.current_item_dict['title'])
         self.script_metadata_changed = True
 
     def _set_combobox_index(self, idx):
@@ -1092,11 +1092,11 @@ class ScriptDetailsEditor(PicardDialog):
 
         Args:
             parent (ScriptEditorDialog): The page used for editing the scripts
-            script_item (FileNamingScript): The script whose metadata is displayed
+            script_item (dict): The script whose metadata is displayed
         """
         super().__init__(parent=parent)
         self.script_item = script_item
-        self.readonly = script_item.readonly
+        self.readonly = script_item["readonly"]
         self.setWindowTitle(self.TITLE)
         self.displaying = False
         self.ui = Ui_ScriptDetails()
@@ -1152,7 +1152,7 @@ class ScriptDetailsEditor(PicardDialog):
     def set_last_updated(self):
         """Set the last updated value to the current timestamp.
         """
-        self.ui.script_last_updated.setText(self.script_item.make_last_updated())
+        self.ui.script_last_updated.setText(FileNamingScript.make_last_updated())
         self.ui.script_last_updated.setModified(True)
 
     def save_changes(self):
@@ -1171,14 +1171,12 @@ class ScriptDetailsEditor(PicardDialog):
         if self.has_changed():
             if not self.ui.script_last_updated.isModified() or not self.ui.script_last_updated.text().strip():
                 self.set_last_updated()
-            self.script_item.update_script_setting(
-                title=self.ui.script_title.text().strip(),
-                author=self.ui.script_author.text().strip(),
-                version=self.ui.script_version.text().strip(),
-                license=self.ui.script_license.text().strip(),
-                description=self.ui.script_description.toPlainText().strip(),
-                last_updated=self.ui.script_last_updated.text().strip()
-            )
+            self.script_item["title"] = self.ui.script_title.text().strip()
+            self.script_item["author"] = self.ui.script_author.text().strip()
+            self.script_item["version"] = self.ui.script_version.text().strip()
+            self.script_item["license"] = self.ui.script_license.text().strip()
+            self.script_item["description"] = self.ui.script_description.toPlainText().strip()
+            self.script_item["last_updated"] = self.ui.script_last_updated.text().strip()
             self.signal_save.emit()
         self.skip_change_check = True
         self.close_window()
