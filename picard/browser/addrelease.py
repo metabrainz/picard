@@ -23,12 +23,11 @@ from secrets import token_bytes
 from PyQt5.QtCore import QCoreApplication
 
 from picard import log
-from picard.config import get_config
-from picard.const import MUSICBRAINZ_SERVERS
 from picard.util import (
     format_time,
     htmlescape,
 )
+from picard.util.mbserver import get_submission_host
 from picard.util.webbrowser2 import open
 
 
@@ -140,11 +139,9 @@ def _find_file(path):
 
 
 def _mbserver_url(path):
-    config = get_config()
-    host = config.setting["server_host"]
-    if host not in MUSICBRAINZ_SERVERS:
-        host = MUSICBRAINZ_SERVERS[0]  # Submission only works to official servers
-    return "https://%s%s" % (host, path)
+    host, port = get_submission_host()
+    protocol = 'https' if port == 443 else 'http'
+    return "%s://%s:%i%s" % (protocol, host, port, path)
 
 
 def _get_cluster_form(cluster):
