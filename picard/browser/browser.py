@@ -106,26 +106,32 @@ class BrowserIntegration(QtCore.QObject):
         else:
             host_address = '0.0.0.0'  # nosec
 
-        for port in range(config.setting["browser_integration_port"], 65535):
-            try:
-                self.server = ThreadingHTTPServer((host_address, port), RequestHandler)
-            except OSError:
-                continue
-            log.info("Starting the browser integration (%s:%d)", host_address, port)
-            self.listen_port_changed.emit(port)
-            threading.Thread(target=self.server.serve_forever).start()
-            break
-        else:
-            log.error("Failed finding an available port for the browser integration.")
-            self.stop()
+        try:
+            for port in range(config.setting["browser_integration_port"], 65535):
+                try:
+                    self.server = ThreadingHTTPServer((host_address, port), RequestHandler)
+                except OSError:
+                    continue
+                log.info("Starting the browser integration (%s:%d)", host_address, port)
+                self.listen_port_changed.emit(port)
+                threading.Thread(target=self.server.serve_forever).start()
+                break
+            else:
+                log.error("Failed finding an available port for the browser integration.")
+                self.stop()
+        except Exception:
+            log.error("Failed starting the browser integration on %s", host_address, exc_info=True)
 
     def stop(self):
         if self.server:
-            log.info("Stopping the browser integration")
-            self.server.shutdown()
-            self.server.server_close()
-            self.server = None
-            self.listen_port_changed.emit(self.port)
+            try:
+                log.info("Stopping the browser integration")
+                self.server.shutdown()
+                self.server.server_close()
+                self.server = None
+                self.listen_port_changed.emit(self.port)
+            except Exception:
+                log.error("Failed stopping the browser integration", exc_info=True)
         else:
             log.debug("Browser integration inactive, no need to stop")
 
