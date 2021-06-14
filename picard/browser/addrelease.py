@@ -81,8 +81,8 @@ def submit_cluster(cluster):
     _open_url_with_token({'cluster': hash(cluster)})
 
 
-def submit_file(file):
-    _open_url_with_token({'file': file.filename})
+def submit_file(file, as_release=False):
+    _open_url_with_token({'file': file.filename, 'as_release': as_release})
 
 
 def serve_form(token):
@@ -98,7 +98,10 @@ def serve_form(token):
             file = _find_file(payload['file'])
             if not file:
                 raise NotFoundError('File not found')
-            return _get_file_form(file)
+            if payload.get('as_release', False):
+                return _get_file_as_release_form(file)
+            else:
+                return _get_file_as_recording_form(file)
         else:
             raise InvalidTokenError
     except jwt.exceptions.InvalidTokenError:
@@ -153,12 +156,21 @@ def _get_cluster_form(cluster):
     )
 
 
-def _get_file_form(cluster):
+def _get_file_as_release_form(cluster):
+    return _get_form(
+        _('Add file as release'),
+        '/release/add',
+        _('Add file as release...'),
+        _get_file_as_release_data(cluster)
+    )
+
+
+def _get_file_as_recording_form(cluster):
     return _get_form(
         _('Add file as recording'),
         '/recording/create',
         _('Add file as recording...'),
-        _get_file_data(cluster)
+        _get_file_as_recording_data(cluster)
     )
 
 
@@ -170,6 +182,33 @@ def _get_cluster_data(cluster):
         'artist_credit.names.0.artist.name': metadata['albumartist'],
     }
 
+    _add_track_data(data, cluster.files)
+    return data
+
+
+def _get_file_as_release_data(file):
+    # See https://musicbrainz.org/doc/Development/Release_Editor_Seeding
+    metadata = file.metadata
+    data = {
+        'name': metadata['album'] or metadata['title'],
+        'artist_credit.names.0.artist.name': metadata['albumartist'] or metadata['artist'],
+    }
+
+    _add_track_data(data, [file])
+    return data
+
+
+def _get_file_as_recording_data(file):
+    metadata = file.metadata
+    data = {
+        'edit-recording.name': metadata['title'],
+        'edit-recording.artist_credit.names.0.artist.name': metadata['artist'],
+        'edit-recording.length': format_time(file.metadata.length),
+    }
+    return data
+
+
+def _add_track_data(data, files):
     def mkey(disc, track, name):
         return 'mediums.%i.track.%i.%s' % (disc, track, name)
 
@@ -179,7 +218,7 @@ def _get_cluster_data(cluster):
     disc_counter = 0
     track_counter = 0
     last_discnumber = None
-    for f in cluster.files:
+    for f in files:
         m = f.metadata
         discnumber = extract_discnumber(m)
         if last_discnumber is not None and discnumber != last_discnumber:
@@ -204,18 +243,6 @@ def _get_cluster_data(cluster):
 
     if barcode:
         data['barcode'] = barcode
-
-    return data
-
-
-def _get_file_data(file):
-    metadata = file.metadata
-    data = {
-        'edit-recording.name': metadata['title'],
-        'edit-recording.artist_credit.names.0.artist.name': metadata['artist'],
-        'edit-recording.length': format_time(file.metadata.length),
-    }
-    return data
 
 
 def _get_form(title, action, label, form_data):

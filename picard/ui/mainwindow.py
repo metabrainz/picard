@@ -556,13 +556,19 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.submit_cluster_action.setEnabled(False)
             self.submit_cluster_action.triggered.connect(self.submit_cluster)
 
-            self.submit_file_action = QtWidgets.QAction(_("Submit file as recording..."), self)
-            self.submit_file_action.setStatusTip(_("Submit file as a new recording to MusicBrainz"))
-            self.submit_file_action.setEnabled(False)
-            self.submit_file_action.triggered.connect(self.submit_file)
+            self.submit_file_as_recording_action = QtWidgets.QAction(_("Submit file as standalone recording..."), self)
+            self.submit_file_as_recording_action.setStatusTip(_("Submit file as a new recording to MusicBrainz"))
+            self.submit_file_as_recording_action.setEnabled(False)
+            self.submit_file_as_recording_action.triggered.connect(self.submit_file)
+
+            self.submit_file_as_release_action = QtWidgets.QAction(_("Submit file as release..."), self)
+            self.submit_file_as_release_action.setStatusTip(_("Submit file as a new release to MusicBrainz"))
+            self.submit_file_as_release_action.setEnabled(False)
+            self.submit_file_as_release_action.triggered.connect(partial(self.submit_file, as_release=True))
         else:
             self.submit_cluster_action = None
-            self.submit_file_action = None
+            self.submit_file_as_recording_action = None
+            self.submit_file_as_release_action = None
 
         self.album_search_action = QtWidgets.QAction(icontheme.lookup('system-search'), _("Search for similar albums..."), self)
         self.album_search_action.setStatusTip(_("View similar releases and optionally choose a different release"))
@@ -1221,10 +1227,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 if isinstance(obj, Cluster):
                     addrelease.submit_cluster(obj)
 
-    def submit_file(self):
+    def submit_file(self, as_release=False):
         if self.selected_objects and self._check_add_release():
             for file in iter_files_from_objects(self.selected_objects):
-                addrelease.submit_file(file)
+                addrelease.submit_file(file, as_release=as_release)
 
     def _check_add_release(self):
         if addrelease.is_enabled():
@@ -1292,8 +1298,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.cut_action.setEnabled(have_objects)
         if self.submit_cluster_action:
             self.submit_cluster_action.setEnabled(can_submit)
-        if self.submit_file_action:
-            self.submit_file_action.setEnabled(have_files)
+        if self.submit_file_as_recording_action:
+            self.submit_file_as_recording_action.setEnabled(have_files)
+        if self.submit_file_as_release_action:
+            self.submit_file_as_release_action.setEnabled(have_files)
         files = self.get_selected_or_unmatched_files()
         self.tags_from_filenames_action.setEnabled(bool(files))
         self.track_search_action.setEnabled(is_file)
