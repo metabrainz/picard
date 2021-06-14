@@ -62,6 +62,7 @@ from picard import (
     log,
 )
 from picard.album import Album
+from picard.browser import addrelease
 from picard.cluster import (
     Cluster,
     FileList,
@@ -548,6 +549,26 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         # TR: Keyboard shortcut for "Lookup in Browser"
         self.browser_lookup_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+L")))
         self.browser_lookup_action.triggered.connect(self.browser_lookup)
+
+        if addrelease.is_available():
+            self.submit_cluster_action = QtWidgets.QAction(_("Submit cluster as release..."), self)
+            self.submit_cluster_action.setStatusTip(_("Submit cluster as a new release to MusicBrainz"))
+            self.submit_cluster_action.setEnabled(False)
+            self.submit_cluster_action.triggered.connect(self.submit_cluster)
+
+            self.submit_file_as_recording_action = QtWidgets.QAction(_("Submit file as standalone recording..."), self)
+            self.submit_file_as_recording_action.setStatusTip(_("Submit file as a new recording to MusicBrainz"))
+            self.submit_file_as_recording_action.setEnabled(False)
+            self.submit_file_as_recording_action.triggered.connect(self.submit_file)
+
+            self.submit_file_as_release_action = QtWidgets.QAction(_("Submit file as release..."), self)
+            self.submit_file_as_release_action.setStatusTip(_("Submit file as a new release to MusicBrainz"))
+            self.submit_file_as_release_action.setEnabled(False)
+            self.submit_file_as_release_action.triggered.connect(partial(self.submit_file, as_release=True))
+        else:
+            self.submit_cluster_action = None
+            self.submit_file_as_recording_action = None
+            self.submit_file_as_release_action = None
 
         self.album_search_action = QtWidgets.QAction(icontheme.lookup('system-search'), _("Search for similar albums..."), self)
         self.album_search_action.setStatusTip(_("View similar releases and optionally choose a different release"))
@@ -1200,6 +1221,38 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             return
         self.tagger.browser_lookup(self.selected_objects[0])
 
+    def submit_cluster(self):
+        if self.selected_objects and self._check_add_release():
+            for obj in self.selected_objects:
+                if isinstance(obj, Cluster):
+                    addrelease.submit_cluster(obj)
+
+    def submit_file(self, as_release=False):
+        if self.selected_objects and self._check_add_release():
+            for file in iter_files_from_objects(self.selected_objects):
+                addrelease.submit_file(file, as_release=as_release)
+
+    def _check_add_release(self):
+        if addrelease.is_enabled():
+            return True
+        ret = QtWidgets.QMessageBox.question(self,
+            _("Browser integration not enabled"),
+            _("Submitting releases to MusicBrainz requires the browser integration to be enabled. Do you want to enable the browser integration now?"),
+            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+            QtWidgets.QMessageBox.Yes)
+        if ret == QtWidgets.QMessageBox.Yes:
+            config = get_config()
+            config.setting["browser_integration"] = True
+            self.tagger.update_browser_integration()
+            if addrelease.is_enabled():
+                return True
+            else:
+                # Something went wrong, let the user configure browser integration manually
+                self.show_options("network")
+                return False
+        else:
+            return False
+
     @throttle(100)
     def update_actions(self):
         can_remove = False
@@ -1207,6 +1260,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         can_analyze = False
         can_refresh = False
         can_autotag = False
+        can_submit = False
         single = self.selected_objects[0] if len(self.selected_objects) == 1 else None
         can_view_info = bool(single and single.can_view_info())
         can_browser_lookup = bool(single and single.can_browser_lookup())
@@ -1226,8 +1280,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 can_refresh = True
             if obj.can_autotag():
                 can_autotag = True
+            if obj.can_submit():
+                can_submit = True
             # Skip further loops if all values now True.
-            if can_analyze and can_save and can_remove and can_refresh and can_autotag:
+            if can_analyze and can_save and can_remove and can_refresh and can_autotag and can_submit:
                 break
         self.remove_action.setEnabled(can_remove)
         self.save_action.setEnabled(can_save)
@@ -1240,6 +1296,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.play_file_action.setEnabled(have_files)
         self.open_folder_action.setEnabled(have_files)
         self.cut_action.setEnabled(have_objects)
+        if self.submit_cluster_action:
+            self.submit_cluster_action.setEnabled(can_submit)
+        if self.submit_file_as_recording_action:
+            self.submit_file_as_recording_action.setEnabled(have_files)
+        if self.submit_file_as_release_action:
+            self.submit_file_as_release_action.setEnabled(have_files)
         files = self.get_selected_or_unmatched_files()
         self.tags_from_filenames_action.setEnabled(bool(files))
         self.track_search_action.setEnabled(is_file)

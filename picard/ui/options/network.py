@@ -99,13 +99,7 @@ class NetworkOptionsPage(OptionsPage):
         config.setting["browser_integration_port"] = self.ui.browser_integration_port.value()
         config.setting["browser_integration_localhost_only"] = \
             self.ui.browser_integration_localhost_only.isChecked()
-        self.update_browser_integration()
-
-    def update_browser_integration(self):
-        if self.ui.browser_integration.isChecked():
-            self.tagger.browser_integration.start()
-        else:
-            self.tagger.browser_integration.stop()
+        self.tagger.update_browser_integration()
 
 
 register_options_page(NetworkOptionsPage)

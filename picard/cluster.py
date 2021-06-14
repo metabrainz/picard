@@ -224,6 +224,9 @@ class Cluster(FileList):
         else:
             return False
 
+    def can_submit(self):
+        return not self.special and self.files
+
     def is_album_like(self):
         return True
 

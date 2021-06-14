@@ -29,6 +29,8 @@ Optional but recommended:
    0.3.0 - 0.4.1 is not recommended.
 * [python-markdown](https://python-markdown.github.io/install/)
   * Required for the complete scripting documentation
+* [PyJWT 1.7 or newer](https://pyjwt.readthedocs.io/)
+  * Required for the add cluster as release / add file as recording functionality
 
 We recommend you use [pip](https://pip.pypa.io/en/stable/) to install the Python
 dependencies:

@@ -3,6 +3,7 @@ discid~=1.0
 fasteners~=0.14
 markdown~=3.2
 mutagen~=1.37
+PyJWT~=2.0
 pyobjc-core~=6.2; sys_platform == 'darwin'
 pyobjc-framework-Cocoa~=6.2; sys_platform == 'darwin'
 PyQt5~=5.10
