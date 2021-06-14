@@ -116,14 +116,15 @@ def get_file_naming_script(settings):
         str: The text of the file naming script if available, otherwise None
     """
     from picard.script import get_file_naming_script_presets
-    if settings["file_renaming_scripts"] and settings["selected_file_naming_script_id"]:
-        selected_id = settings["selected_file_naming_script_id"]
-        if selected_id in settings["file_renaming_scripts"]:
-            return settings["file_renaming_scripts"][selected_id]["script"]
+    scripts = settings["file_renaming_scripts"]
+    selected_id = settings["selected_file_naming_script_id"]
+    if scripts and selected_id:
+        if selected_id in scripts:
+            return scripts[selected_id]["script"]
         for item in get_file_naming_script_presets():
             if item["id"] == selected_id:
                 return str(item["script"])
-    log.error("Unable to retrieve the file naming script '%s'", settings["selected_file_naming_script_id"])
+    log.error("Unable to retrieve the file naming script '%s'", selected_id)
     return None
 
 

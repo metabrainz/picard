@@ -25,6 +25,7 @@ from enum import (
     IntEnum,
     unique,
 )
+from typing import Mapping
 import uuid
 
 import yaml
@@ -189,7 +190,7 @@ class PicardScript():
             object: An instance of the class, populated from the property settings in the dictionary provided.
         """
         new_object = cls()
-        if not isinstance(script_dict, dict):
+        if not isinstance(script_dict, Mapping):
             raise ScriptImportError(N_("Argument is not a dictionary"))
         if 'title' not in script_dict or 'script' not in script_dict:
             raise ScriptImportError(N_('Invalid script package'))
