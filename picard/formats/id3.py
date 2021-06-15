@@ -374,7 +374,10 @@ class ID3File(File):
         tags = self._get_tags(filename)
         config = get_config()
         if config.setting['clear_existing_tags']:
+            cover = tags.getall('APIC') if config.setting["preserve_images"] else None
             tags.clear()
+            if cover:
+                tags.setall('APIC', cover)
         images_to_save = list(metadata.images.to_be_saved_to_tags())
         if images_to_save:
             tags.delall('APIC')

@@ -253,7 +253,10 @@ class MP4File(File):
         tags = file.tags
 
         if config.setting["clear_existing_tags"]:
+            cover = tags['covr'] if config.setting['preserve_images'] else None
             tags.clear()
+            if cover:
+                tags['covr'] = cover
 
         for name, values in metadata.rawitems():
             if name.startswith('lyrics:'):

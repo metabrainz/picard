@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008, 2012 Lukáš Lalinský
 # Copyright (C) 2008 Hendrik van Antwerpen
-# Copyright (C) 2008-2010, 2014-2015, 2018-2020 Philipp Wolfer
+# Copyright (C) 2008-2010, 2014-2015, 2018-2021 Philipp Wolfer
 # Copyright (C) 2012-2013 Michael Wiencek
 # Copyright (C) 2012-2014 Wieland Hoffmann
 # Copyright (C) 2013 Calvin Walton
@@ -231,12 +231,22 @@ class VCommentFile(File):
         if file.tags is None:
             file.add_tags()
         if config.setting["clear_existing_tags"]:
-            channel_mask = file.tags.get('waveformatextensible_channel_mask', None)
+            preserve_tags = ['waveformatextensible_channel_mask']
+            if not is_flac and config.setting["preserve_images"]:
+                preserve_tags.append('METADATA_BLOCK_PICTURE')
+                preserve_tags.append('COVERART')
+            preserved_values = {}
+            for name in preserve_tags:
+                if name in file.tags:
+                    preserved_values[name] = file.tags[name]
             file.tags.clear()
-            if channel_mask:
-                file.tags['waveformatextensible_channel_mask'] = channel_mask
+            for name, value in preserved_values.items():
+                if value:
+                    file.tags[name] = value
         images_to_save = list(metadata.images.to_be_saved_to_tags())
-        if is_flac and (config.setting["clear_existing_tags"] or images_to_save):
+        if is_flac and (
+                (config.setting["clear_existing_tags"] and not config.setting["preserve_images"])
+                or images_to_save):
             file.clear_pictures()
         tags = {}
         for name, value in metadata.items():
