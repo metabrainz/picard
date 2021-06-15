@@ -18,9 +18,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import namedtuple
+
 from picard.config import get_config
 from picard.const import MUSICBRAINZ_SERVERS
 from picard.util import build_qurl
+
+
+ServerTuple = namedtuple('ServerTuple', ('host', 'port'))
 
 
 def is_official_server(host):
@@ -46,12 +51,12 @@ def get_submission_server():
     config = get_config()
     host = config.setting['server_host']
     if is_official_server(host):
-        return (host, 443)
+        return ServerTuple(host, 443)
     elif host and config.setting['use_server_for_submission']:
         port = config.setting['server_port']
-        return (host, port)
+        return ServerTuple(host, port)
     else:
-        return (MUSICBRAINZ_SERVERS[0], 443)
+        return ServerTuple(MUSICBRAINZ_SERVERS[0], 443)
 
 
 def build_submission_url(path=None, query_args=None):
@@ -63,6 +68,6 @@ def build_submission_url(path=None, query_args=None):
 
     Returns: The submission URL as a string
     """
-    host, port = get_submission_server()
-    url = build_qurl(host, port, path, query_args)
+    server = get_submission_server()
+    url = build_qurl(server.host, server.port, path, query_args)
     return url.toString()

@@ -69,6 +69,16 @@ class GetSubmissionServerTest(PicardTestCase):
         })
         self.assertEqual((MUSICBRAINZ_SERVERS[0], 443), get_submission_server())
 
+    def test_named_tuple(self):
+        self.set_config_values(setting={
+            'server_host': 'example.com',
+            'server_port': 8042,
+            'use_server_for_submission': True,
+        })
+        server = get_submission_server()
+        self.assertEqual('example.com', server.host)
+        self.assertEqual(8042, server.port)
+
 
 class BuildSubmissionUrlTest(PicardTestCase):
 
