@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>403</width>
-    <height>584</height>
+    <height>599</height>
    </rect>
   </property>
   <layout class="QVBoxLayout">
@@ -49,7 +49,7 @@ QCheckBox { color: black }</string>
          <item>
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>You have configured an unofficial database server. By default all data submission will go to the primary server on musicbrainz.org.</string>
+            <string>You have configured an unofficial MusicBrainz server. By default submissions of releases, recordings and disc IDs will go to the primary database on musicbrainz.org.</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>

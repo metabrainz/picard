@@ -10,7 +10,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_GeneralOptionsPage(object):
     def setupUi(self, GeneralOptionsPage):
         GeneralOptionsPage.setObjectName("GeneralOptionsPage")
-        GeneralOptionsPage.resize(403, 584)
+        GeneralOptionsPage.resize(403, 599)
         self.vboxlayout = QtWidgets.QVBoxLayout(GeneralOptionsPage)
         self.vboxlayout.setObjectName("vboxlayout")
         self.groupBox = QtWidgets.QGroupBox(GeneralOptionsPage)
@@ -157,7 +157,7 @@ class Ui_GeneralOptionsPage(object):
     def retranslateUi(self, GeneralOptionsPage):
         _translate = QtCore.QCoreApplication.translate
         self.groupBox.setTitle(_("MusicBrainz Server"))
-        self.label_4.setText(_("You have configured an unofficial database server. By default all data submission will go to the primary server on musicbrainz.org."))
+        self.label_4.setText(_("You have configured an unofficial MusicBrainz server. By default submissions of releases, recordings and disc IDs will go to the primary database on musicbrainz.org."))
         self.use_server_for_submission.setText(_("Submit data to the configured server"))
         self.label_7.setText(_("Port:"))
         self.label.setText(_("Server address:"))
