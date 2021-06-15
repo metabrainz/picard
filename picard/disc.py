@@ -5,7 +5,7 @@
 # Copyright (C) 2006 Matthias Friedrich
 # Copyright (C) 2007-2008 Lukáš Lalinský
 # Copyright (C) 2008 Robert Kaye
-# Copyright (C) 2009, 2013, 2018-2020 Philipp Wolfer
+# Copyright (C) 2009, 2013, 2018-2021 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2013 Johannes Dewender
 # Copyright (C) 2013 Sebastian Ramacher
@@ -34,6 +34,7 @@ import traceback
 from PyQt5 import QtCore
 
 from picard import log
+from picard.util.mbserver import build_submission_url
 
 from picard.ui.cdlookup import CDLookupDialog
 
@@ -55,7 +56,8 @@ class Disc(QtCore.QObject):
         super().__init__()
         self.id = None
         self.mcn = None
-        self.submission_url = None
+        self.tracks = 0
+        self.toc_string = None
 
     def read(self, device=None):
         if device is None:
@@ -65,11 +67,23 @@ class Disc(QtCore.QObject):
             disc = discid.read(device, features=['mcn'])
             self.id = disc.id
             self.mcn = disc.mcn
-            self.submission_url = disc.submission_url
+            self.tracks = len(disc.tracks)
+            self.toc_string = disc.toc_string
             log.debug("Read disc ID %s with MCN %s", self.id, self.mcn)
         except discid.DiscError as e:
             log.error("Error while reading %r: %s" % (device, str(e)))
             raise
+
+    @property
+    def submission_url(self):
+        if self.id:
+            return build_submission_url('/cdtoc/attach', query_args={
+                'id': self.id,
+                'tracks': self.tracks,
+                'toc': self.toc_string.replace(' ', '+'),
+            })
+        else:
+            return None
 
     def lookup(self):
         self.tagger.mb_api.lookup_discid(self.id, self._lookup_finished)

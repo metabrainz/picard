@@ -40,6 +40,7 @@ from picard.const import (
     MUSICBRAINZ_SERVERS,
     PROGRAM_UPDATE_LEVELS,
 )
+from picard.util.mbserver import is_official_server
 
 from picard.ui.options import (
     OptionsPage,
@@ -60,6 +61,7 @@ class GeneralOptionsPage(OptionsPage):
     options = [
         TextOption("setting", "server_host", MUSICBRAINZ_SERVERS[0]),
         IntOption("setting", "server_port", 443),
+        BoolOption("setting", "use_server_for_submission", False),
         TextOption("persist", "oauth_refresh_token", ""),
         BoolOption("setting", "analyze_new_files", False),
         BoolOption("setting", "ignore_file_mbids", False),
@@ -79,6 +81,7 @@ class GeneralOptionsPage(OptionsPage):
         self.ui = Ui_GeneralOptionsPage()
         self.ui.setupUi(self)
         self.ui.server_host.addItems(MUSICBRAINZ_SERVERS)
+        self.ui.server_host.currentTextChanged.connect(self.update_server_host)
         self.ui.login.clicked.connect(self.login)
         self.ui.logout.clicked.connect(self.logout)
         self.update_login_logout()
@@ -87,6 +90,8 @@ class GeneralOptionsPage(OptionsPage):
         config = get_config()
         self.ui.server_host.setEditText(config.setting["server_host"])
         self.ui.server_port.setValue(config.setting["server_port"])
+        self.ui.use_server_for_submission.setChecked(config.setting["use_server_for_submission"])
+        self.update_server_host()
         self.ui.analyze_new_files.setChecked(config.setting["analyze_new_files"])
         self.ui.ignore_file_mbids.setChecked(config.setting["ignore_file_mbids"])
         if self.tagger.autoupdate_enabled:
@@ -105,12 +110,20 @@ class GeneralOptionsPage(OptionsPage):
         config = get_config()
         config.setting["server_host"] = self.ui.server_host.currentText().strip()
         config.setting["server_port"] = self.ui.server_port.value()
+        config.setting["use_server_for_submission"] = self.ui.use_server_for_submission.isChecked()
         config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
         config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
         if self.tagger.autoupdate_enabled:
             config.setting["check_for_updates"] = self.ui.check_for_updates.isChecked()
             config.setting["update_level"] = self.ui.update_level.currentData(QtCore.Qt.UserRole)
             config.setting["update_check_days"] = self.ui.update_check_days.value()
+
+    def update_server_host(self):
+        host = self.ui.server_host.currentText().strip()
+        if host and is_official_server(host):
+            self.ui.server_host_primary_warning.hide()
+        else:
+            self.ui.server_host_primary_warning.show()
 
     def update_login_logout(self):
         if self.tagger.webservice.oauth_manager.is_logged_in():
