@@ -24,7 +24,7 @@ from test.picardtestcase import PicardTestCase
 from picard.const import MUSICBRAINZ_SERVERS
 from picard.util.mbserver import (
     build_submission_url,
-    get_submission_host,
+    get_submission_server,
     is_official_server,
 )
 
@@ -42,7 +42,7 @@ class IsOfficialServerTest(PicardTestCase):
         self.assertFalse(is_official_server('localhost'))
 
 
-class GetSubmissionHostTest(PicardTestCase):
+class GetSubmissionServerTest(PicardTestCase):
 
     def test_official(self):
         for host in MUSICBRAINZ_SERVERS:
@@ -51,7 +51,7 @@ class GetSubmissionHostTest(PicardTestCase):
                 'server_port': 80,
                 'use_server_for_submission': False,
             })
-            self.assertEqual((host, 443), get_submission_host())
+            self.assertEqual((host, 443), get_submission_server())
 
     def test_use_unofficial(self):
         self.set_config_values(setting={
@@ -59,7 +59,7 @@ class GetSubmissionHostTest(PicardTestCase):
             'server_port': 8042,
             'use_server_for_submission': True,
         })
-        self.assertEqual(('example.com', 8042), get_submission_host())
+        self.assertEqual(('example.com', 8042), get_submission_server())
 
     def test_unofficial_fallback(self):
         self.set_config_values(setting={
@@ -67,7 +67,7 @@ class GetSubmissionHostTest(PicardTestCase):
             'server_port': 80,
             'use_server_for_submission': False,
         })
-        self.assertEqual((MUSICBRAINZ_SERVERS[0], 443), get_submission_host())
+        self.assertEqual((MUSICBRAINZ_SERVERS[0], 443), get_submission_server())
 
 
 class BuildSubmissionUrlTest(PicardTestCase):

@@ -34,7 +34,7 @@ def is_official_server(host):
     return host in MUSICBRAINZ_SERVERS
 
 
-def get_submission_host():
+def get_submission_server():
     """Returns the host and port used for data submission.
 
     Data submission usually should be done against the primary database. This function
@@ -63,6 +63,6 @@ def build_submission_url(path=None, query_args=None):
 
     Returns: The submission URL as a string
     """
-    host, port = get_submission_host()
+    host, port = get_submission_server()
     url = build_qurl(host, port, path, query_args)
     return url.toString()
