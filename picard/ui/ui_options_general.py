@@ -145,6 +145,14 @@ class Ui_GeneralOptionsPage(object):
         self.retranslateUi(GeneralOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(GeneralOptionsPage)
         GeneralOptionsPage.setTabOrder(self.server_host, self.server_port)
+        GeneralOptionsPage.setTabOrder(self.server_port, self.use_server_for_submission)
+        GeneralOptionsPage.setTabOrder(self.use_server_for_submission, self.login)
+        GeneralOptionsPage.setTabOrder(self.login, self.logout)
+        GeneralOptionsPage.setTabOrder(self.logout, self.analyze_new_files)
+        GeneralOptionsPage.setTabOrder(self.analyze_new_files, self.ignore_file_mbids)
+        GeneralOptionsPage.setTabOrder(self.ignore_file_mbids, self.check_for_updates)
+        GeneralOptionsPage.setTabOrder(self.check_for_updates, self.update_check_days)
+        GeneralOptionsPage.setTabOrder(self.update_check_days, self.update_level)
 
     def retranslateUi(self, GeneralOptionsPage):
         _translate = QtCore.QCoreApplication.translate
