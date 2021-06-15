@@ -10,7 +10,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_TagsOptionsPage(object):
     def setupUi(self, TagsOptionsPage):
         TagsOptionsPage.setObjectName("TagsOptionsPage")
-        TagsOptionsPage.resize(539, 525)
+        TagsOptionsPage.resize(567, 525)
         self.vboxlayout = QtWidgets.QVBoxLayout(TagsOptionsPage)
         self.vboxlayout.setObjectName("vboxlayout")
         self.write_tags = QtWidgets.QCheckBox(TagsOptionsPage)
@@ -28,6 +28,10 @@ class Ui_TagsOptionsPage(object):
         self.clear_existing_tags = QtWidgets.QCheckBox(self.before_tagging)
         self.clear_existing_tags.setObjectName("clear_existing_tags")
         self.vboxlayout1.addWidget(self.clear_existing_tags)
+        self.preserve_images = QtWidgets.QCheckBox(self.before_tagging)
+        self.preserve_images.setEnabled(False)
+        self.preserve_images.setObjectName("preserve_images")
+        self.vboxlayout1.addWidget(self.preserve_images)
         self.remove_id3_from_flac = QtWidgets.QCheckBox(self.before_tagging)
         self.remove_id3_from_flac.setObjectName("remove_id3_from_flac")
         self.vboxlayout1.addWidget(self.remove_id3_from_flac)
@@ -50,12 +54,13 @@ class Ui_TagsOptionsPage(object):
         self.vboxlayout.addWidget(self.before_tagging)
 
         self.retranslateUi(TagsOptionsPage)
+        self.clear_existing_tags.toggled['bool'].connect(self.preserve_images.setEnabled)
         QtCore.QMetaObject.connectSlotsByName(TagsOptionsPage)
         TagsOptionsPage.setTabOrder(self.write_tags, self.preserve_timestamps)
         TagsOptionsPage.setTabOrder(self.preserve_timestamps, self.clear_existing_tags)
-        TagsOptionsPage.setTabOrder(self.clear_existing_tags, self.remove_id3_from_flac)
+        TagsOptionsPage.setTabOrder(self.clear_existing_tags, self.preserve_images)
+        TagsOptionsPage.setTabOrder(self.preserve_images, self.remove_id3_from_flac)
         TagsOptionsPage.setTabOrder(self.remove_id3_from_flac, self.remove_ape_from_mp3)
-        TagsOptionsPage.setTabOrder(self.remove_ape_from_mp3, self.preserved_tags)
 
     def retranslateUi(self, TagsOptionsPage):
         _translate = QtCore.QCoreApplication.translate
@@ -63,6 +68,7 @@ class Ui_TagsOptionsPage(object):
         self.preserve_timestamps.setText(_("Preserve timestamps of tagged files"))
         self.before_tagging.setTitle(_("Before Tagging"))
         self.clear_existing_tags.setText(_("Clear existing tags"))
+        self.preserve_images.setText(_("Keep embedded images when clearing tags"))
         self.remove_id3_from_flac.setText(_("Remove ID3 tags from FLAC files"))
         self.remove_ape_from_mp3.setText(_("Remove APEv2 tags from MP3 files"))
         self.preserved_tags_label.setText(_("Preserve these tags from being cleared or overwritten with MusicBrainz data:"))

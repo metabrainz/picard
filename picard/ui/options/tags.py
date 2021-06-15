@@ -53,6 +53,7 @@ class TagsOptionsPage(OptionsPage):
         BoolOption("setting", "dont_write_tags", False),
         BoolOption("setting", "preserve_timestamps", False),
         BoolOption("setting", "clear_existing_tags", False),
+        BoolOption("setting", "preserve_images", False),
         BoolOption("setting", "remove_id3_from_flac", False),
         BoolOption("setting", "remove_ape_from_mp3", False),
         ListOption("setting", "preserved_tags", []),
@@ -68,6 +69,7 @@ class TagsOptionsPage(OptionsPage):
         self.ui.write_tags.setChecked(not config.setting["dont_write_tags"])
         self.ui.preserve_timestamps.setChecked(config.setting["preserve_timestamps"])
         self.ui.clear_existing_tags.setChecked(config.setting["clear_existing_tags"])
+        self.ui.preserve_images.setChecked(config.setting["preserve_images"])
         self.ui.remove_ape_from_mp3.setChecked(config.setting["remove_ape_from_mp3"])
         self.ui.remove_id3_from_flac.setChecked(config.setting["remove_id3_from_flac"])
         self.ui.preserved_tags.update(config.setting["preserved_tags"])
@@ -81,6 +83,7 @@ class TagsOptionsPage(OptionsPage):
         if clear_existing_tags != config.setting["clear_existing_tags"]:
             config.setting["clear_existing_tags"] = clear_existing_tags
             self.tagger.window.metadata_box.update()
+        config.setting["preserve_images"] = self.ui.preserve_images.isChecked()
         config.setting["remove_ape_from_mp3"] = self.ui.remove_ape_from_mp3.isChecked()
         config.setting["remove_id3_from_flac"] = self.ui.remove_id3_from_flac.isChecked()
         config.setting["preserved_tags"] = list(self.ui.preserved_tags.tags)

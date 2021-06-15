@@ -191,12 +191,15 @@ class APEv2File(File):
             tags = mutagen.apev2.APEv2()
         images_to_save = list(metadata.images.to_be_saved_to_tags())
         if config.setting["clear_existing_tags"]:
+            preserved = []
+            if config.setting['preserve_images']:
+                preserved = list(self._iter_cover_art_tags(tags))
             tags.clear()
+            for name, value in preserved:
+                tags[name] = value
         elif images_to_save:
-            for name, value in tags.items():
-                if (value.kind == mutagen.apev2.BINARY
-                    and name.lower().startswith('cover art')):
-                    del tags[name]
+            for name, value in self._iter_cover_art_tags(tags):
+                del tags[name]
         temp = {}
         for name, value in metadata.items():
             if name.startswith("~") or not self.supports_tag(name):
@@ -272,6 +275,12 @@ class APEv2File(File):
             return self.__translate[name]
         else:
             return name.title()
+
+    @staticmethod
+    def _iter_cover_art_tags(tags):
+        for name, value in tags.items():
+            if value.kind == mutagen.apev2.BINARY and name.lower().startswith('cover art'):
+                yield (name, value)
 
     @classmethod
     def supports_tag(cls, name):

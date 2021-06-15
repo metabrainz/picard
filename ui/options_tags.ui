@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>539</width>
+    <width>567</width>
     <height>525</height>
    </rect>
   </property>
@@ -44,6 +44,16 @@
        <widget class="QCheckBox" name="clear_existing_tags">
         <property name="text">
          <string>Clear existing tags</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="preserve_images">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Keep embedded images when clearing tags</string>
         </property>
        </widget>
       </item>
@@ -111,10 +121,27 @@
   <tabstop>write_tags</tabstop>
   <tabstop>preserve_timestamps</tabstop>
   <tabstop>clear_existing_tags</tabstop>
+  <tabstop>preserve_images</tabstop>
   <tabstop>remove_id3_from_flac</tabstop>
   <tabstop>remove_ape_from_mp3</tabstop>
-  <tabstop>preserved_tags</tabstop>
  </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>clear_existing_tags</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>preserve_images</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>283</x>
+     <y>107</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>283</x>
+     <y>132</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

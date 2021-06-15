@@ -267,7 +267,10 @@ class ASFFile(File):
         tags = file.tags
 
         if config.setting['clear_existing_tags']:
+            cover = tags['WM/Picture'] if config.setting['preserve_images'] else None
             tags.clear()
+            if cover:
+                tags['WM/Picture'] = cover
         cover = []
         for image in metadata.images.to_be_saved_to_tags():
             tag_data = pack_image(image.mimetype, image.data,

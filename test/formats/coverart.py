@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019-2020 Philipp Wolfer
+# Copyright (C) 2019-2021 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -75,6 +75,10 @@ class CommonCoverArtTests:
 
         def setUp(self):
             super().setUp()
+            self.set_config_values({
+                'clear_existing_tags': False,
+                'preserve_images': False,
+            })
             self.jpegdata = load_coverart_file('mb.jpg')
             self.pngdata = load_coverart_file('mb.png')
 
@@ -117,6 +121,20 @@ class CommonCoverArtTests:
             metadata.images.append(DummyUnsupportedCoverArt(b'unsupported', 'image/png'))
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertEqual(0, len(loaded_metadata.images))
+
+        @skipUnlessTestfile
+        def test_cover_art_clear_tags(self):
+            image = CoverArtImage(data=self.pngdata, types=['front'])
+            file_save_image(self.filename, image)
+            metadata = load_metadata(self.filename)
+            self.assertEqual(image, metadata.images[0])
+            config.setting['clear_existing_tags'] = True
+            config.setting['preserve_images'] = True
+            metadata = save_and_load_metadata(self.filename, Metadata())
+            self.assertEqual(image, metadata.images[0])
+            config.setting['preserve_images'] = False
+            metadata = save_and_load_metadata(self.filename, Metadata())
+            self.assertEqual(0, len(metadata.images))
 
         def _cover_metadata(self):
             imgdata = self.jpegdata
