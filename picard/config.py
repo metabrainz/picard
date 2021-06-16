@@ -344,6 +344,11 @@ class Option(QtCore.QObject):
         return cls.registry.get((section, name))
 
     @classmethod
+    def add_if_missing(cls, section, name, default):
+        if not cls.exists(section, name):
+            cls(section, name, default)
+
+    @classmethod
     def exists(cls, section, name):
         return (section, name) in cls.registry
 
