@@ -320,10 +320,17 @@ class Option(QtCore.QObject):
     def __init__(self, section, name, default):
         key = (section, name)
         if key in self.registry:
-            f = inspect.stack()[1]
-            log.error("Option %s/%s already declared\nat %s:%d: in %s\n%s"
-                      % (section, name, f.filename, f.lineno, f.function,
-                         "\n".join(f.code_context).rstrip()))
+            stack = inspect.stack()
+            fmt = "Option %s/%s already declared"
+            args = [section, name]
+            if len(stack) > 1:
+                f = stack[1]
+                fmt += "\nat %s:%d: in %s"
+                args.extend((f.filename, f.lineno, f.function))
+                if f.code_context:
+                    fmt += "\n%s"
+                    args.append("\n".join(f.code_context).rstrip())
+            log.error(fmt, *args)
         super().__init__()
         self.section = section
         self.name = name
