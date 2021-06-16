@@ -1506,7 +1506,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         # Add preset scripts not provided in the user-defined scripts list.
         for script_item in get_file_naming_script_presets():
-            _add_menu_item(user_script_title(script_item['title']), script_item['id'])
+            _add_menu_item(script_item['title'], script_item['id'])
 
     def select_new_naming_script(self, id):
         config = get_config()
