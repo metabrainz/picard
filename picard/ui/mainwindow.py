@@ -184,8 +184,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         TextOption("persist", "current_directory", ""),
         FloatOption("persist", "mediaplayer_playback_rate", 1.0),
         IntOption("persist", "mediaplayer_volume", 50),
-        Option("setting", "file_renaming_scripts", {}),
-        TextOption("setting", "selected_file_naming_script_id", ""),
     ]
 
     def __init__(self, parent=None, disable_player=False):
