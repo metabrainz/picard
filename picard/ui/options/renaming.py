@@ -42,7 +42,6 @@ from PyQt5.QtGui import QPalette
 
 from picard.config import (
     BoolOption,
-    Option,
     TextOption,
     get_config,
 )
@@ -89,7 +88,6 @@ class RenamingOptionsPage(OptionsPage):
         BoolOption("setting", "move_additional_files", False),
         TextOption("setting", "move_additional_files_pattern", "*.jpg *.png"),
         BoolOption("setting", "delete_empty_dirs", True),
-        Option("setting", "file_renaming_scripts", {}),
         TextOption("setting", "selected_file_naming_script_id", ""),
     ]
 
