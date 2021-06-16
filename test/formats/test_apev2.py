@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019, 2021 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,7 +26,10 @@ from mutagen.apev2 import (
     APEValue,
 )
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    create_fake_png,
+)
 
 from picard import config
 from picard.formats import (
@@ -41,6 +44,7 @@ from .common import (
     CommonTests,
     load_metadata,
     load_raw,
+    save_and_load_metadata,
     save_metadata,
     save_raw,
     skipUnlessTestfile,
@@ -94,6 +98,23 @@ class CommonApeTests:
             save_raw(self.filename, metadata)
             loaded_metadata = load_metadata(self.filename)
             self.assertEqual(0, len(loaded_metadata.images))
+
+        @skipUnlessTestfile
+        def test_clear_tags_preserve_images_all(self):
+            imagedata = APEValue(b'filename.png\0' + create_fake_png(b'a'), BINARY)
+            save_raw(self.filename, {
+                'Cover Art (Front)': imagedata,
+                'Cover Art': imagedata,
+                'Cover Art (foo)': imagedata,
+                'cover art (bar)': imagedata,
+            })
+            config.setting['clear_existing_tags'] = True
+            config.setting['preserve_images'] = True
+            metadata = save_and_load_metadata(self.filename, Metadata())
+            self.assertEqual(4, len(metadata.images))
+            config.setting['preserve_images'] = False
+            metadata = save_and_load_metadata(self.filename, Metadata())
+            self.assertEqual(0, len(metadata.images))
 
         def test_supports_extended_tags(self):
             performer_tag = "performer:accordéon clavier « boutons »"

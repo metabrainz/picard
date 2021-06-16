@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019-2020 Philipp Wolfer
+# Copyright (C) 2019-2021 Philipp Wolfer
 # Copyright (C) 2020 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -66,12 +66,13 @@ VALID_KEYS = [
     '{ $ome tag}',
 ]
 
-
 INVALID_KEYS = [
     'invalid=key',
     'invalid\x19key',
     'invalid~key',
 ]
+
+PNG_BASE64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVQI12P4//8/AAX+Av7czFnnAAAAAElFTkSuQmCC'
 
 
 # prevent unittest to run tests in those classes
@@ -122,15 +123,23 @@ class CommonVorbisTests:
 
         @skipUnlessTestfile
         def test_legacy_coverart(self):
-            metadata = {
-                'coverart': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVQI12P4//8/AAX+Av7czFnnAAAAAElFTkSuQmCC'
-            }
-            save_raw(self.filename, metadata)
+            save_raw(self.filename, {'coverart': PNG_BASE64})
             loaded_metadata = load_metadata(self.filename)
             self.assertEqual(1, len(loaded_metadata.images))
             first_image = loaded_metadata.images[0]
             self.assertEqual('image/png', first_image.mimetype)
             self.assertEqual(69, first_image.datalength)
+
+        @skipUnlessTestfile
+        def test_clear_tags_preserve_legacy_coverart(self):
+            save_raw(self.filename, {'coverart': PNG_BASE64})
+            config.setting['clear_existing_tags'] = True
+            config.setting['preserve_images'] = True
+            metadata = save_and_load_metadata(self.filename, Metadata())
+            self.assertEqual(1, len(metadata.images))
+            config.setting['preserve_images'] = False
+            metadata = save_and_load_metadata(self.filename, Metadata())
+            self.assertEqual(0, len(metadata.images))
 
         @skipUnlessTestfile
         def test_invalid_legacy_coverart_nobase64(self):
@@ -193,6 +202,20 @@ class FLACTest(CommonVorbisTests.VorbisTestCase):
         self.assertEqual(original_metadata['~waveformatextensible_channel_mask'], '0x3')
         new_metadata = save_and_load_metadata(self.filename, original_metadata)
         self.assertEqual(new_metadata['~waveformatextensible_channel_mask'], '0x3')
+
+    @skipUnlessTestfile
+    def test_clear_tags_preserve_legacy_coverart(self):
+        # FLAC does not use the cover art tags but has its separate image implementation
+        pic = Picture()
+        pic.data = load_coverart_file('mb.png')
+        save_raw(self.filename, {
+            'coverart': PNG_BASE64,
+            'metadata_block_picture': base64.b64encode(pic.write()).decode('ascii')
+        })
+        config.setting['clear_existing_tags'] = True
+        config.setting['preserve_images'] = True
+        metadata = save_and_load_metadata(self.filename, Metadata())
+        self.assertEqual(0, len(metadata.images))
 
     @skipUnlessTestfile
     def test_sort_pics_after_tags(self):
