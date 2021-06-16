@@ -309,6 +309,7 @@ class RenamingOptionsPage(OptionsPage):
         config.setting["selected_file_naming_script_id"] = self.selected_naming_script_id
         self.tagger.window.enable_renaming_action.setChecked(config.setting["rename_files"])
         self.tagger.window.enable_moving_action.setChecked(config.setting["move_files"])
+        self.tagger.window.make_script_selector_menu()
 
     def display_error(self, error):
         # Ignore scripting errors, those are handled inline

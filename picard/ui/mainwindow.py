@@ -83,6 +83,7 @@ from picard.const.sys import (
 from picard.file import File
 from picard.formats import supported_formats
 from picard.plugin import ExtensionPoint
+from picard.script import get_file_naming_script_presets
 from picard.track import Track
 from picard.util import (
     icontheme,
@@ -120,6 +121,7 @@ from picard.ui.passworddialog import (
     PasswordDialog,
     ProxyDialog,
 )
+from picard.ui.scripteditor import user_script_title
 from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
 from picard.ui.statusindicator import DesktopStatusIndicator
@@ -815,6 +817,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addAction(self.enable_renaming_action)
         menu.addAction(self.enable_moving_action)
         menu.addAction(self.enable_tag_saving_action)
+
+        self.script_quick_selector_menu = QtWidgets.QMenu(_("&Select file naming script"))
+        self.script_quick_selector_menu.setIcon(icontheme.lookup('document-open'))
+        self.make_script_selector_menu()
+
+        menu.addMenu(self.script_quick_selector_menu)
         menu.addSeparator()
         menu.addAction(self.options_action)
         menu = self.menuBar().addMenu(_("&Tools"))
@@ -1479,6 +1487,36 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             update_level=config.setting['update_level'],
             callback=update_last_check_date
         )
+
+    def make_script_selector_menu(self):
+        config = get_config()
+        naming_scripts = config.setting["file_renaming_scripts"]
+        selected_script_id = config.setting["selected_file_naming_script_id"]
+        self.script_quick_selector_menu.clear()
+
+        group = QtWidgets.QActionGroup(self.script_quick_selector_menu)
+        group.setExclusive(True)
+
+        def _add_menu_item(title, id):
+            script_action = QtWidgets.QAction(title, self.script_quick_selector_menu)
+            script_action.triggered.connect(partial(self.select_new_naming_script, id))
+            script_action.setCheckable(True)
+            script_action.setChecked(id == selected_script_id)
+            self.script_quick_selector_menu.addAction(script_action)
+            group.addAction(script_action)
+
+        for (id, naming_script) in sorted(naming_scripts.items(), key=lambda item: item[1]['title']):
+            _add_menu_item(user_script_title(naming_script['title']), id)
+
+        # Add preset scripts not provided in the user-defined scripts list.
+        for script_item in get_file_naming_script_presets():
+            _add_menu_item(script_item['title'], script_item['id'])
+
+    def select_new_naming_script(self, id):
+        config = get_config()
+        log.debug("Setting naming script to: %s", id)
+        config.setting["selected_file_naming_script_id"] = id
+        self.make_script_selector_menu()
 
 
 def update_last_check_date(is_success):
