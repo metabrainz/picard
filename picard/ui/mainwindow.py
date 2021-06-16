@@ -1494,12 +1494,16 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         selected_script_id = config.setting["selected_file_naming_script_id"]
         self.script_quick_selector_menu.clear()
 
+        group = QtWidgets.QActionGroup(self.script_quick_selector_menu)
+        group.setExclusive(True)
+
         def _add_menu_item(title, id):
             script_action = QtWidgets.QAction(title, self.script_quick_selector_menu)
             script_action.triggered.connect(partial(self.select_new_naming_script, id))
             script_action.setCheckable(True)
             script_action.setChecked(id == selected_script_id)
             self.script_quick_selector_menu.addAction(script_action)
+            group.addAction(script_action)
 
         for (id, naming_script) in sorted(naming_scripts.items(), key=lambda item: item[1]['title']):
             _add_menu_item(user_script_title(naming_script['title']), id)
