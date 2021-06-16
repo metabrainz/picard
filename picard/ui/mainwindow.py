@@ -1497,8 +1497,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         def _add_menu_item(title, id):
             script_action = QtWidgets.QAction(title, self.script_quick_selector_menu)
             script_action.triggered.connect(partial(self.select_new_naming_script, id))
-            if id == selected_script_id:
-                script_action.setIcon(self.style().standardIcon(QtWidgets.QStyle.SP_DialogApplyButton))
+            script_action.setCheckable(True)
+            script_action.setChecked(id == selected_script_id)
             self.script_quick_selector_menu.addAction(script_action)
 
         for (id, naming_script) in sorted(naming_scripts.items(), key=lambda item: item[1]['title']):
