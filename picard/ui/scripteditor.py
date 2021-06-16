@@ -402,6 +402,7 @@ class ScriptEditorDialog(PicardDialog):
     signal_update = QtCore.pyqtSignal()
     signal_selection_changed = QtCore.pyqtSignal()
     signal_update_scripts_list = QtCore.pyqtSignal()
+    signal_index_changed = QtCore.pyqtSignal()
 
     default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DocumentsLocation))
     default_script_filename = "picard_naming_script.ptsp"
@@ -420,8 +421,6 @@ class ScriptEditorDialog(PicardDialog):
         self.FILE_TYPE_SCRIPT = _("Picard Script Files") + " (*.pts *.txt)"
         self.FILE_TYPE_PACKAGE = _("Picard Naming Script Package") + " (*.ptsp *.yaml)"
 
-        # TODO: Make this work properly so that it can be accessed from both the main window and the options window.
-        # self.setWindowFlags(QtCore.Qt.Window)
         self.setWindowTitle(self.TITLE)
         self.displaying = False
         self.loading = True
@@ -671,6 +670,7 @@ class ScriptEditorDialog(PicardDialog):
         self.ui.preset_naming_scripts.setCurrentIndex(idx)
         self.ui.preset_naming_scripts.blockSignals(False)
         self.selected_script_index = idx
+        self.signal_index_changed.emit()
 
     def _insert_item(self, script_item):
         """Insert a new item into the script selection combo box and update the script list in the settings.
@@ -747,6 +747,21 @@ class ScriptEditorDialog(PicardDialog):
             self._set_combobox_index(self.restore_selected_script_index)
             return False
         return True
+
+    def set_selected_script_id(self, id, skip_check=True):
+        """Select the script with the specified ID.
+
+        Args:
+            id (str): ID of the script to select
+            skip_check (bool, optional): Skip the check for unsaved edits. Defaults to True.
+        """
+        idx = 0
+        for i in range(self.ui.preset_naming_scripts.count()):
+            script_item = self.ui.preset_naming_scripts.itemData(i)
+            if script_item["id"] == id:
+                idx = i
+                break
+        self.set_selected_script_index(idx, skip_check=skip_check)
 
     def set_selected_script_index(self, idx, skip_check=True):
         """Select the script at the specified combo box index.

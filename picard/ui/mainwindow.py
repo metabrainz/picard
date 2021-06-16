@@ -29,7 +29,6 @@
 # Copyright (C) 2019 Timur Enikeev
 # Copyright (C) 2020 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion
-# Copyright (C) 2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -121,7 +120,11 @@ from picard.ui.passworddialog import (
     PasswordDialog,
     ProxyDialog,
 )
-from picard.ui.scripteditor import user_script_title
+from picard.ui.scripteditor import (
+    ScriptEditorDialog,
+    ScriptEditorExamples,
+    user_script_title,
+)
 from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
 from picard.ui.statusindicator import DesktopStatusIndicator
@@ -202,6 +205,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             if player.available:
                 self.player = player
                 self.player.error.connect(self._on_player_error)
+
+        self.script_editor_dialog = None
+        self.examples = None
+
         self.setupUi()
 
     def setupUi(self):
@@ -477,6 +484,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.options_action = QtWidgets.QAction(icontheme.lookup('preferences-desktop'), _("&Options..."), self)
         self.options_action.setMenuRole(QtWidgets.QAction.PreferencesRole)
         self.options_action.triggered.connect(self.show_options)
+
+        self.show_script_editor_action = QtWidgets.QAction(_("Open script &editor..."))
+        self.show_script_editor_action.triggered.connect(self.open_file_naming_script_editor)
 
         self.cut_action = QtWidgets.QAction(icontheme.lookup('edit-cut', icontheme.ICON_SIZE_MENU), _("&Cut"), self)
         self.cut_action.setShortcut(QtGui.QKeySequence.Cut)
@@ -760,10 +770,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def toggle_rename_files(self, checked):
         config = get_config()
         config.setting["rename_files"] = checked
+        self.update_script_editor_examples()
 
     def toggle_move_files(self, checked):
         config = get_config()
         config.setting["move_files"] = checked
+        self.update_script_editor_examples()
 
     def toggle_tag_saving(self, checked):
         config = get_config()
@@ -823,6 +835,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.make_script_selector_menu()
 
         menu.addMenu(self.script_quick_selector_menu)
+        menu.addSeparator()
+        menu.addAction(self.show_script_editor_action)
         menu.addSeparator()
         menu.addAction(self.options_action)
         menu = self.menuBar().addMenu(_("&Tools"))
@@ -1382,6 +1396,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 self.metadata_box.selection_dirty = True
             self.metadata_box.update(drop_album_caches=drop_album_caches)
         self.selection_updated.emit(objects)
+        self.update_script_editor_example_files()
 
     def refresh_metadatabox(self):
         self.tagger.window.metadata_box.selection_dirty = True
@@ -1488,8 +1503,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             callback=update_last_check_date
         )
 
-    def make_script_selector_menu(self):
-        config = get_config()
+    def make_script_selector_menu(self, config=None):
+        """Update the sub-menu of available file naming scripts.
+        """
+        if config is None:
+            config = get_config()
         naming_scripts = config.setting["file_renaming_scripts"]
         selected_script_id = config.setting["selected_file_naming_script_id"]
         self.script_quick_selector_menu.clear()
@@ -1513,10 +1531,92 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             _add_menu_item(script_item['title'], script_item['id'])
 
     def select_new_naming_script(self, id):
+        """Update the currently selected naming script ID in the settings.
+
+        Args:
+            id (str): ID of the selected file naming script
+        """
         config = get_config()
         log.debug("Setting naming script to: %s", id)
         config.setting["selected_file_naming_script_id"] = id
-        self.make_script_selector_menu()
+        self.make_script_selector_menu(config=config)
+        if self.script_editor_dialog:
+            self.script_editor_dialog.set_selected_script_id(id, skip_check=False)
+
+    def open_file_naming_script_editor(self):
+        """Open the file naming script editor / manager in a new window.
+        """
+        if self.script_editor_dialog:
+            self.script_editor_dialog.load()
+        else:
+            self.examples = ScriptEditorExamples(tagger=self.tagger)
+            self.create_script_editor_dialog()
+        self.script_editor_dialog.show()
+        self.script_editor_dialog.raise_()
+        self.script_editor_dialog.activateWindow()
+        self.examples.update_sample_example_files()
+        self.show_script_editor_action.setEnabled(False)
+        self.options_action.setEnabled(False)
+
+    def create_script_editor_dialog(self):
+        """Create the file naming script editor manager window.
+        """
+        self.script_editor_dialog = ScriptEditorDialog(parent=self, examples=self.examples)
+        self.script_editor_dialog.signal_save.connect(self.script_editor_save)
+        self.script_editor_dialog.signal_selection_changed.connect(self.update_selector_from_script_editor)
+        self.script_editor_dialog.signal_update_scripts_list.connect(self.update_scripts_list_from_editor)
+        self.script_editor_dialog.signal_index_changed.connect(self.script_editor_index_changed)
+        self.script_editor_dialog.finished.connect(self.script_editor_closed)
+
+    def script_editor_save(self):
+        """Process "signal_save" signal from the script editor.
+        """
+        config = get_config()
+        config.setting["file_renaming_scripts"] = self.script_editor_dialog.naming_scripts
+        script_item = self.script_editor_dialog.get_selected_item()
+        config.setting["selected_file_naming_script_id"] = script_item["id"]
+        self.make_script_selector_menu(config=config)
+
+    def script_editor_closed(self):
+        """Process "finished" signal from the script editor.
+        """
+        self.show_script_editor_action.setEnabled(True)
+        self.options_action.setEnabled(True)
+
+    def update_script_editor_example_files(self):
+        """Update the list of example files for the file naming script editor.
+        """
+        if self.examples:
+            self.examples.update_sample_example_files()
+            self.update_script_editor_examples()
+
+    def update_script_editor_examples(self):
+        """Update the examples for the file naming script editor, using current settings.
+        """
+        if self.examples:
+            config = get_config()
+            override = {
+                "rename_files": config.setting["rename_files"],
+                "move_files": config.setting["move_files"],
+            }
+            self.examples.update_examples(override=override)
+            if self.script_editor_dialog:
+                self.script_editor_dialog.display_examples()
+
+    def script_editor_index_changed(self):
+        """Process "signal_index_changed" signal from the script editor.
+        """
+        self.script_editor_save()
+
+    def update_selector_from_script_editor(self):
+        """Process "signal_selection_changed" signal from the script editor.
+        """
+        self.script_editor_save()
+
+    def update_scripts_list_from_editor(self):
+        """Process "signal_update_scripts_list" signal from the script editor.
+        """
+        self.script_editor_save()
 
 
 def update_last_check_date(is_success):
