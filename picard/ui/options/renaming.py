@@ -88,7 +88,6 @@ class RenamingOptionsPage(OptionsPage):
         BoolOption("setting", "move_additional_files", False),
         TextOption("setting", "move_additional_files_pattern", "*.jpg *.png"),
         BoolOption("setting", "delete_empty_dirs", True),
-        TextOption("setting", "selected_file_naming_script_id", ""),
     ]
 
     def __init__(self, parent=None):
