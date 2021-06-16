@@ -62,7 +62,6 @@ class GeneralOptionsPage(OptionsPage):
         TextOption("setting", "server_host", MUSICBRAINZ_SERVERS[0]),
         IntOption("setting", "server_port", 443),
         BoolOption("setting", "use_server_for_submission", False),
-        TextOption("persist", "oauth_refresh_token", ""),
         BoolOption("setting", "analyze_new_files", False),
         BoolOption("setting", "ignore_file_mbids", False),
         TextOption("persist", "oauth_refresh_token", ""),
