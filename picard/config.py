@@ -29,6 +29,7 @@
 
 
 from collections import defaultdict
+import inspect
 from operator import itemgetter
 import os
 import shutil
@@ -317,13 +318,19 @@ class Option(QtCore.QObject):
     qtype = None
 
     def __init__(self, section, name, default):
+        key = (section, name)
+        if key in self.registry:
+            f = inspect.stack()[1]
+            log.error("Option %s/%s already declared\nat %s:%d: in %s\n%s"
+                      % (section, name, f.filename, f.lineno, f.function,
+                         "\n".join(f.code_context).rstrip()))
         super().__init__()
         self.section = section
         self.name = name
         self.default = default
         if not hasattr(self, "convert"):
             self.convert = type(default)
-        self.registry[(self.section, self.name)] = self
+        self.registry[key] = self
 
     @classmethod
     def get(cls, section, name):
