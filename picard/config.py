@@ -343,6 +343,10 @@ class Option(QtCore.QObject):
     def get(cls, section, name):
         return cls.registry.get((section, name))
 
+    @classmethod
+    def exists(cls, section, name):
+        return (section, name) in cls.registry
+
 
 class TextOption(Option):
 
