@@ -62,10 +62,8 @@ class PreserveGeometry:
     defaultsize = None
 
     def __init__(self):
-        if not Option.exists("persist", self.opt_name()):
-            Option("persist", self.opt_name(), QtCore.QByteArray())
-        if not Option.exists("persist", self.splitters_name()):
-            Option("persist", self.splitters_name(), {})
+        Option.add_if_missing("persist", self.opt_name(), QtCore.QByteArray())
+        Option.add_if_missing("persist", self.splitters_name(), {})
         if getattr(self, 'finished', None):
             self.finished.connect(self.save_geometry)
 
