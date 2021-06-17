@@ -27,8 +27,7 @@ class Ui_GeneralOptionsPage(object):
         self.server_host_primary_warning = QtWidgets.QFrame(self.groupBox)
         self.server_host_primary_warning.setStyleSheet("QFrame { background-color: #ffc107; color: black }\n"
 "QCheckBox { color: black }")
-        self.server_host_primary_warning.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.server_host_primary_warning.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.server_host_primary_warning.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.server_host_primary_warning.setObjectName("server_host_primary_warning")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.server_host_primary_warning)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
