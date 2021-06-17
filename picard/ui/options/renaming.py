@@ -142,6 +142,14 @@ class RenamingOptionsPage(OptionsPage):
 
         self.current_row = -1
 
+        # Get pointer to main window to enable updating menu items
+        test_parent = self
+        while test_parent is not None:
+            if getattr(test_parent.__class__, '__name__', '') == 'MainWindow':
+                self.main_window = test_parent
+                break
+            test_parent = test_parent.parent()
+
     def update_selector_from_editor(self):
         """Update the script selector combo box from the script editor page.
         """
@@ -183,21 +191,26 @@ class RenamingOptionsPage(OptionsPage):
         self.examples.synchronize_selected_example_lines(self.current_row, self.ui.example_filename_after, self.ui.example_filename_before)
 
     def show_script_editing_page(self):
-        if not self.script_editor_dialog:
-            self.create_script_editor_dialog()
+        self.script_editor_dialog = ScriptEditorDialog.show_instance(parent=self, examples=self.examples)
+
+        self.script_editor_dialog.signal_save.connect(self.save_from_editor)
+        self.script_editor_dialog.signal_update.connect(self.display_examples)
+        self.script_editor_dialog.signal_selection_changed.connect(self.update_selector_from_editor)
+        self.script_editor_dialog.signal_update_scripts_list.connect(self.update_scripts_list_from_editor)
+        self.script_editor_dialog.finished.connect(self.script_editor_dialog_close)
+
         self.script_editor_dialog.show()
         self.script_editor_dialog.raise_()
         self.script_editor_dialog.activateWindow()
         self.script_editor_dialog.loading = True
         self.update_selector_in_editor(skip_check=True)
         self.script_editor_dialog.loading = False
+        self.main_window.script_editor_is_open = True
 
-    def create_script_editor_dialog(self):
-        self.script_editor_dialog = ScriptEditorDialog(parent=self, examples=self.examples)
-        self.script_editor_dialog.signal_save.connect(self.save_from_editor)
-        self.script_editor_dialog.signal_update.connect(self.display_examples)
-        self.script_editor_dialog.signal_selection_changed.connect(self.update_selector_from_editor)
-        self.script_editor_dialog.signal_update_scripts_list.connect(self.update_scripts_list_from_editor)
+    def script_editor_dialog_close(self):
+        if not self.script_editor_dialog.loading:
+            self.main_window.script_editor_is_open = False
+        self.script_editor_dialog = None
 
     def show_scripting_documentation(self):
         ScriptingDocumentationDialog.show_instance(parent=self)

@@ -60,7 +60,10 @@ from picard.util import (
 )
 from picard.util.settingsoverride import SettingsOverride
 
-from picard.ui import PicardDialog
+from picard.ui import (
+    PicardDialog,
+    SingletonDialog,
+)
 from picard.ui.options import OptionsPage
 from picard.ui.options.scripting import (
     OptionsCheckError,
@@ -386,7 +389,7 @@ def populate_script_selection_combo_box(naming_scripts, selected_script_id, comb
     return idx
 
 
-class ScriptEditorDialog(PicardDialog):
+class ScriptEditorDialog(PicardDialog, SingletonDialog):
     """File Naming Script Editor Page
     """
     TITLE = N_("File naming script editor")
@@ -413,6 +416,26 @@ class ScriptEditorDialog(PicardDialog):
 
     default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DocumentsLocation))
     default_script_filename = "picard_naming_script.ptsp"
+
+    @classmethod
+    def show_instance(cls, *args, **kwargs):
+        if cls._instance:
+            # Accommodate condition where OptionsPage closing may have destroyed the
+            # ScriptEditorDialog instance without resetting the cls._instance property
+            cls._instance.show()
+            if not cls._instance.isVisible():
+                cls._instance = None
+        instance = super().show_instance(*args, **kwargs)
+
+        # Manually set parent and examples in case of re-using an existing instance of the dialog
+        instance.setParent(kwargs['parent'])
+        instance.examples = kwargs['examples']
+        instance.load()
+
+        # Reset formatting lost when changing parent.
+        instance.ui.label.setWordWrap(False)
+
+        return instance
 
     def __init__(self, parent=None, examples=None):
         """Stand-alone file naming script editor.
@@ -480,6 +503,16 @@ class ScriptEditorDialog(PicardDialog):
 
         self.load()
         self.loading = False
+
+    def setParent(self, parent):
+        """Custom setParent() method to check that parent is different to avoid display problems.
+
+        Args:
+            parent (object): Parent to set for the instance
+        """
+        if self.parent() != parent:
+            flags = self.windowFlags() | QtCore.Qt.Window
+            super().setParent(parent, flags)
 
     def make_menu(self):
         """Build the menu bar.
@@ -625,6 +658,7 @@ class ScriptEditorDialog(PicardDialog):
         if self.unsaved_changes_confirmation():
             if self.has_changed():
                 self.select_script(skip_check=True)
+            event.ignore()
             super().closeEvent(event)
         else:
             event.ignore()
