@@ -34,10 +34,10 @@ from picard.formats.mutagenext import compatid3
 class UpdateToV23Test(PicardTestCase):
 
     def test_id3text(self):
-        self.assertEqual(id3text(u"\u1234", 0), u"?")
-        self.assertEqual(id3text(u"\u1234", 1), u"\u1234")
-        self.assertEqual(id3text(u"\u1234", 2), u"\u1234")
-        self.assertEqual(id3text(u"\u1234", 3), u"\u1234")
+        self.assertEqual(id3text("\u1234", 0), "?")
+        self.assertEqual(id3text("\u1234", 1), "\u1234")
+        self.assertEqual(id3text("\u1234", 2), "\u1234")
+        self.assertEqual(id3text("\u1234", 3), "\u1234")
 
     def test_keep_some_v24_tag(self):
         tags = compatid3.CompatID3()
