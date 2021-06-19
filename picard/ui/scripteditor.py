@@ -367,6 +367,7 @@ def populate_script_selection_combo_box(naming_scripts, selected_script_id, comb
         return idx
 
     idx = 0
+    count = -1
     for count, (id, naming_script) in enumerate(sorted(naming_scripts.items(), key=lambda item: item[1]['title'])):
         naming_script["deletable"] = True
         naming_script["readonly"] = False

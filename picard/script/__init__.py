@@ -118,8 +118,8 @@ def get_file_naming_script(settings):
     from picard.script import get_file_naming_script_presets
     scripts = settings["file_renaming_scripts"]
     selected_id = settings["selected_file_naming_script_id"]
-    if scripts and selected_id:
-        if selected_id in scripts:
+    if selected_id:
+        if scripts and selected_id in scripts:
             return scripts[selected_id]["script"]
         for item in get_file_naming_script_presets():
             if item["id"] == selected_id:
