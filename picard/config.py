@@ -12,6 +12,7 @@
 # Copyright (C) 2017 Sophist-UK
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2020-2021 Gabriel Ferreira
+# Copyright (C) 2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -45,6 +46,7 @@ from picard import (
     PICARD_VERSION,
     log,
 )
+from picard.profile import UserProfileGroups
 from picard.version import Version
 
 
@@ -129,6 +131,51 @@ class ConfigSection(QtCore.QObject):
         return default
 
 
+class SettingConfigSection(ConfigSection):
+    """Custom subclass to automatically accommodate saving and retrieving values based on user profile settings.
+    """
+    def __init__(self, config, name):
+        super().__init__(config, name)
+        self.__qt_config = config
+        self.__name = name
+        self.__prefix = self.__name + '/'
+        self._memoization = defaultdict(Memovar)
+        Option.add_if_missing(name, 'user_profiles', [])
+
+    def _get_profiles(self):
+        profiles = self['user_profiles']
+        return profiles if profiles is not None else []
+
+    def __getitem__(self, name):
+        # Don't process settings that are not profile-specific
+        if name in UserProfileGroups.get_profile_settings_list():
+            profiles = self._get_profiles()
+            for profile in profiles:
+                if profile['active']:
+                    value = getattr(profile['settings'], name, None)
+                    if value is not None:
+                        return value
+        opt = Option.get(self.__name, name)
+        if opt is None:
+            return None
+        return self.value(name, opt, opt.default)
+
+    def __setitem__(self, name, value):
+        # Don't process settings that are not profile-specific
+        if name in UserProfileGroups.get_profile_settings_list():
+            profiles = self._get_profiles()
+            for idx in range(len(profiles)):  # pylint: disable=consider-using-enumerate
+                profile = profiles[idx]
+                if profile['active'] and name in profile['settings']:
+                    profile['settings'][name] = value
+                    name = 'user_profiles'
+                    value = profiles
+                    break
+        key = self.key(name)
+        self.__qt_config.setValue(key, value)
+        self._memoization[key].dirty = True
+
+
 class Config(QtCore.QSettings):
 
     """Configuration.
@@ -153,9 +200,9 @@ class Config(QtCore.QSettings):
 
         self.setAtomicSyncRequired(False)  # See comment in event()
         self.application = ConfigSection(self, "application")
-        self.setting = ConfigSection(self, "setting")
+        self.setting = SettingConfigSection(self, "setting")
         self.persist = ConfigSection(self, "persist")
-        self.profile = ConfigSection(self, "profile/default")
+        # self.profile = ConfigSection(self, "profile/default")
         self.current_preset = "default"
 
         TextOption("application", "version", '0.0.0dev0')
