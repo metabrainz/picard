@@ -120,6 +120,7 @@ from picard.ui.passworddialog import (
     PasswordDialog,
     ProxyDialog,
 )
+from picard.ui.profileeditor import ProfileEditorDialog
 from picard.ui.scripteditor import (
     ScriptEditorDialog,
     ScriptEditorExamples,
@@ -488,6 +489,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.show_script_editor_action = QtWidgets.QAction(_("Open &file naming script editor..."))
         self.show_script_editor_action.triggered.connect(self.open_file_naming_script_editor)
 
+        self.show_profile_editor_action = QtWidgets.QAction(_("Open &user profile editor..."))
+        self.show_profile_editor_action.triggered.connect(self.open_profile_editor)
+
         self.cut_action = QtWidgets.QAction(icontheme.lookup('edit-cut', icontheme.ICON_SIZE_MENU), _("&Cut"), self)
         self.cut_action.setShortcut(QtGui.QKeySequence.Cut)
         self.cut_action.setEnabled(False)
@@ -837,6 +841,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addMenu(self.script_quick_selector_menu)
         menu.addSeparator()
         menu.addAction(self.show_script_editor_action)
+        menu.addSeparator()
+        menu.addAction(self.show_profile_editor_action)
         menu.addSeparator()
         menu.addAction(self.options_action)
         menu = self.menuBar().addMenu(_("&Tools"))
@@ -1617,6 +1623,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """Process "signal_update_scripts_list" signal from the script editor.
         """
         self.script_editor_save()
+
+    def open_profile_editor(self):
+        return ProfileEditorDialog.show_instance(self)
 
 
 def update_last_check_date(is_success):

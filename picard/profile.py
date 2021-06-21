@@ -30,81 +30,81 @@ class UserProfileGroups():
     """
     SETTINGS_GROUPS = OrderedDict()  # Add groups in the order they should be displayed
 
+    # Each item in "settings" is a tuple of the setting key and the display title
     SETTINGS_GROUPS["metadata"] = {
         "title": N_("Metadata"),
         "settings": [
-            "va_name",
-            "nat_name",
-            "artist_locale",
-            "translate_artist_names",
-            "release_ars",
-            "track_ars",
-            "convert_punctuation",
-            "standardize_artists",
-            "standardize_instruments",
-            "guess_tracknumber_and_title",
+            ("va_name", N_("Various Artists name")),
+            ("nat_name", N_("Non-album tracks name")),
+            ("translate_artist_names", N_("Translate artist names")),
+            ("artist_locale", N_("Translation locale")),
+            ("release_ars", N_("Use release relationships")),
+            ("track_ars", N_("Use track relationships")),
+            ("convert_punctuation", N_("Convert Unicode to ASCII")),
+            ("standardize_artists", N_("Standardize artist names")),
+            ("standardize_instruments", N_("Standardize instrument names")),
+            ("guess_tracknumber_and_title", N_("Guess track number and title")),
         ],
     }
 
     SETTINGS_GROUPS["tags"] = {
         "title": N_("Tags"),
         "settings": [
-            "dont_write_tags",
-            "preserve_timestamps",
-            "clear_existing_tags",
-            "preserve_images",
-            "remove_id3_from_flac",
-            "remove_ape_from_mp3",
-            "preserved_tags",
-            "aac_save_ape",
-            "remove_ape_from_aac",
-            "ac3_save_ape",
-            "remove_ape_from_ac3",
-            "write_id3v1",
-            "write_id3v23",
-            "id3v2_encoding",
-            "id3v23_join_with",
-            "itunes_compatible_grouping",
-            "write_wave_riff_info",
-            "remove_wave_riff_info",
-            "wave_riff_info_encoding",
+            ("dont_write_tags", N_("Don't write tags")),
+            ("preserve_timestamps", N_("Preserve timestamps")),
+            ("clear_existing_tags", N_("Clear existing tags")),
+            ("preserve_images", N_("Preserve images")),
+            ("remove_id3_from_flac", N_("Remove ID3 from FLAC")),
+            ("remove_ape_from_mp3", N_("Remove APE from MP3")),
+            ("preserved_tags", N_("Preserved tags list")),
+            ("aac_save_ape", N_("Save APEv2 to AAC")),
+            ("remove_ape_from_aac", N_("Remove APE from AAC")),
+            ("ac3_save_ape", N_("Save APEv2 to AC3")),
+            ("remove_ape_from_ac3", N_("Remove APE from AC3")),
+            ("write_id3v1", N_("Write ID3v1 tags")),
+            ("write_id3v23", N_("Write ID3v2.3 tags")),
+            ("id3v2_encoding", N_("ID3v2.3 Text Encoding")),
+            ("id3v23_join_with", N_("ID3v2.3 join character")),
+            ("itunes_compatible_grouping", N_("iTunes compatible grouping")),
+            ("write_wave_riff_info", N_("Write WAVE RIFF info")),
+            ("remove_wave_riff_info", N_("Remove WAVE RIFF info")),
+            ("wave_riff_info_encoding", N_("RIFF text encoding")),
         ],
     }
 
     SETTINGS_GROUPS["coverart"] = {
         "title": N_("Cover Art"),
         "settings": [
-            "save_images_to_tags",
-            "embed_only_one_front_image",
-            "save_images_to_files",
-            "cover_image_filename",
-            "save_images_overwrite",
-            "save_only_one_front_image",
-            "image_type_as_filename",
-            "ca_providers",
+            ("save_images_to_tags", N_("Save images to tags")),
+            ("embed_only_one_front_image", N_("Embed only one front image")),
+            ("save_images_to_files", N_("Save images to files")),
+            ("cover_image_filename", N_("File name for images")),
+            ("save_images_overwrite", N_("Overwrite existing image files")),
+            ("save_only_one_front_image", N_("Save only one front image")),
+            ("image_type_as_filename", N_("Image type as file name")),
+            ("ca_providers", N_("Cover art providers")),
         ],
     }
 
     SETTINGS_GROUPS["filenaming"] = {
         "title": N_("File Naming"),
         "settings": [
-            "windows_compatibility",
-            "ascii_filenames",
-            "rename_files",
-            "move_files",
-            "move_files_to",
-            "move_additional_files",
-            "move_additional_files_pattern",
-            "delete_empty_dirs",
+            ("windows_compatibility", N_("Windows compatibility")),
+            ("ascii_filenames", N_("Replace non-ASCII characters")),
+            ("rename_files", N_("Rename files")),
+            ("move_files", N_("Move files")),
+            ("move_files_to", N_("Destination directory")),
+            ("move_additional_files", N_("Move additional files")),
+            ("move_additional_files_pattern", N_("Additional file patterns")),
+            ("delete_empty_dirs", N_("Delete empty directories")),
         ],
     }
 
     SETTINGS_GROUPS["scripting"] = {
         "title": N_("Scripting"),
         "settings": [
-            "enable_tagger_scripts",
-            "list_of_scripts",
-            "last_selected_script_position",
+            ("enable_tagger_scripts", N_("Enable tagger scripts")),
+            ("list_of_scripts", N_("Tagger scripts")),
         ],
     }
 
@@ -117,7 +117,7 @@ class UserProfileGroups():
         """
         settings = set()
         for settings_group in cls.SETTINGS_GROUPS.values():
-            settings |= set(settings_group["settings"])
+            settings |= set(x[0] for x in settings_group["settings"])
         return settings
 
     @classmethod
