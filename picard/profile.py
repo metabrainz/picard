@@ -115,9 +115,10 @@ class UserProfileGroups():
         Yields:
             str: Setting name
         """
-        for key, settings_group in cls.SETTINGS_GROUPS.items():
-            for setting in settings_group["settings"]:
-                yield setting
+        settings = set()
+        for settings_group in cls.SETTINGS_GROUPS.values():
+            settings |= set(settings_group["settings"])
+        return settings
 
     @classmethod
     def get_setting_groups_list(cls):
@@ -126,5 +127,4 @@ class UserProfileGroups():
         Yields:
             str: Key
         """
-        for key in cls.SETTINGS_GROUPS:
-            yield key
+        yield from cls.SETTINGS_GROUPS
