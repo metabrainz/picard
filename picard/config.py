@@ -142,6 +142,12 @@ class SettingConfigSection(ConfigSection):
         self._memoization = defaultdict(Memovar)
         Option.add_if_missing(name, 'user_profiles', [])
 
+    def _get_active_profiles(self):
+        profiles = self._get_profiles()
+        for profile in profiles:
+            if profile['active']:
+                yield profile
+
     def _get_profiles(self):
         profiles = self['user_profiles']
         return profiles if profiles is not None else []
@@ -149,12 +155,9 @@ class SettingConfigSection(ConfigSection):
     def __getitem__(self, name):
         # Don't process settings that are not profile-specific
         if name in UserProfileGroups.get_profile_settings_list():
-            profiles = self._get_profiles()
-            for profile in profiles:
-                if profile['active']:
-                    value = getattr(profile['settings'], name, None)
-                    if value is not None:
-                        return value
+            for profile in self._get_active_profiles():
+                if name in profile['settings'] and profile['settings'][name] is not None:
+                    return profile['settings'][name]
         opt = Option.get(self.__name, name)
         if opt is None:
             return None
@@ -164,8 +167,7 @@ class SettingConfigSection(ConfigSection):
         # Don't process settings that are not profile-specific
         if name in UserProfileGroups.get_profile_settings_list():
             profiles = self._get_profiles()
-            for idx in range(len(profiles)):  # pylint: disable=consider-using-enumerate
-                profile = profiles[idx]
+            for profile in profiles:
                 if profile['active'] and name in profile['settings']:
                     profile['settings'][name] = value
                     name = 'user_profiles'
