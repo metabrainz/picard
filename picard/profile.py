@@ -28,9 +28,9 @@ class UserProfileGroups():
     """Provides information about the profile groups available for selecting in a user profile,
     and the title and settings that apply to each profile group.
     """
-    PROFILE_GROUPS = OrderedDict()  # Add groups in the order they should be displayed
+    SETTINGS_GROUPS = OrderedDict()  # Add groups in the order they should be displayed
 
-    PROFILE_GROUPS["metadata"] = {
+    SETTINGS_GROUPS["metadata"] = {
         "title": N_("Metadata"),
         "settings": [
             "va_name",
@@ -46,7 +46,7 @@ class UserProfileGroups():
         ],
     }
 
-    PROFILE_GROUPS["tags"] = {
+    SETTINGS_GROUPS["tags"] = {
         "title": N_("Tags"),
         "settings": [
             "dont_write_tags",
@@ -71,7 +71,7 @@ class UserProfileGroups():
         ],
     }
 
-    PROFILE_GROUPS["coverart"] = {
+    SETTINGS_GROUPS["coverart"] = {
         "title": N_("Cover Art"),
         "settings": [
             "save_images_to_tags",
@@ -85,7 +85,7 @@ class UserProfileGroups():
         ],
     }
 
-    PROFILE_GROUPS["filenaming"] = {
+    SETTINGS_GROUPS["filenaming"] = {
         "title": N_("File Naming"),
         "settings": [
             "windows_compatibility",
@@ -99,7 +99,7 @@ class UserProfileGroups():
         ],
     }
 
-    PROFILE_GROUPS["scripting"] = {
+    SETTINGS_GROUPS["scripting"] = {
         "title": N_("Scripting"),
         "settings": [
             "enable_tagger_scripts",
@@ -109,17 +109,22 @@ class UserProfileGroups():
     }
 
     @classmethod
-    def get_profile_settings_list(cls):
-        """Iterable of all settings names in all profile groups.
+    def get_all_settings_list(cls):
+        """Iterable of all settings names in all setting groups.
 
         Yields:
             str: Setting name
         """
-        for key, profile_group in cls.PROFILE_GROUPS.items():
-            for setting in profile_group["settings"]:
+        for key, settings_group in cls.SETTINGS_GROUPS.items():
+            for setting in settings_group["settings"]:
                 yield setting
 
     @classmethod
-    def get_profile_list(cls):
-        for key in cls.PROFILE_GROUPS:
+    def get_setting_groups_list(cls):
+        """Iterable of all setting groups keys.
+
+        Yields:
+            str: Key
+        """
+        for key in cls.SETTINGS_GROUPS:
             yield key

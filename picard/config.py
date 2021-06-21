@@ -154,7 +154,7 @@ class SettingConfigSection(ConfigSection):
 
     def __getitem__(self, name):
         # Don't process settings that are not profile-specific
-        if name in UserProfileGroups.get_profile_settings_list():
+        if name in UserProfileGroups.get_all_settings_list():
             for profile in self._get_active_profiles():
                 if name in profile['settings'] and profile['settings'][name] is not None:
                     return profile['settings'][name]
@@ -165,7 +165,7 @@ class SettingConfigSection(ConfigSection):
 
     def __setitem__(self, name, value):
         # Don't process settings that are not profile-specific
-        if name in UserProfileGroups.get_profile_settings_list():
+        if name in UserProfileGroups.get_all_settings_list():
             profiles = self._get_profiles()
             for profile in profiles:
                 if profile['active'] and name in profile['settings']:
