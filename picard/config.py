@@ -140,24 +140,31 @@ class SettingConfigSection(ConfigSection):
         self.__name = name
         self.__prefix = self.__name + '/'
         self._memoization = defaultdict(Memovar)
-        Option.add_if_missing(name, 'user_profiles', [])
+        ListOption.add_if_missing(name, 'user_profiles', [])
+        Option.add_if_missing(name, 'user_profile_settings', {})
 
-    def _get_active_profiles(self):
-        profiles = self._get_profiles()
+    def _get_active_profile_ids(self):
+        profiles = self['user_profiles']
+        if profiles is None:
+            profiles = []
         for profile in profiles:
             if profile['active']:
-                yield profile
+                yield profile["id"]
 
-    def _get_profiles(self):
-        profiles = self['user_profiles']
-        return profiles if profiles is not None else []
+    def _get_profile_settings(self, id):
+        profile_settings = self["user_profile_settings"][id]
+        if profile_settings is None:
+            log.error("Unable to find settings for user profile '%s'", id)
+            return {}
+        return profile_settings
 
     def __getitem__(self, name):
         # Don't process settings that are not profile-specific
         if name in UserProfileGroups.get_all_settings_list():
-            for profile in self._get_active_profiles():
-                if name in profile['settings'] and profile['settings'][name] is not None:
-                    return profile['settings'][name]
+            for id in self._get_active_profile_ids():
+                profile_settings = self._get_profile_settings(id)
+                if name in profile_settings and profile_settings[name] is not None:
+                    return profile_settings[name]
         opt = Option.get(self.__name, name)
         if opt is None:
             return None
@@ -166,12 +173,14 @@ class SettingConfigSection(ConfigSection):
     def __setitem__(self, name, value):
         # Don't process settings that are not profile-specific
         if name in UserProfileGroups.get_all_settings_list():
-            profiles = self._get_profiles()
-            for profile in profiles:
-                if profile['active'] and name in profile['settings']:
-                    profile['settings'][name] = value
-                    name = 'user_profiles'
-                    value = profiles
+            for id in self._get_active_profile_ids():
+                settings = self._get_profile_settings(id)
+                if name in settings:
+                    settings[name] = value
+                    profile_settings = self["user_profile_settings"]
+                    profile_settings[id] = settings
+                    name = 'user_profile_settings'
+                    value = profile_settings
                     break
         key = self.key(name)
         self.__qt_config.setValue(key, value)
