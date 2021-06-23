@@ -139,20 +139,26 @@ class SettingConfigSection(ConfigSection):
         self.__qt_config = config
         self.__name = name
         self.__prefix = self.__name + '/'
+        self.profiles_key = 'user_profiles'
+        self.settings_key = 'user_profile_settings'
         self._memoization = defaultdict(Memovar)
-        ListOption.add_if_missing(name, 'user_profiles', [])
-        Option.add_if_missing(name, 'user_profile_settings', {})
+        ListOption.add_if_missing(name, self.profiles_key, [])
+        Option.add_if_missing(name, self.settings_key, {})
 
     def _get_active_profile_ids(self):
-        profiles = self['user_profiles']
+        profiles = self[self.profiles_key]
         if profiles is None:
-            profiles = []
+            return
         for profile in profiles:
             if profile['active']:
                 yield profile["id"]
 
+    def _get_active_profile_settings(self):
+        for id in self._get_active_profile_ids():
+            yield id, self._get_profile_settings(id)
+
     def _get_profile_settings(self, id):
-        profile_settings = self["user_profile_settings"][id]
+        profile_settings = self[self.settings_key][id]
         if profile_settings is None:
             log.error("Unable to find settings for user profile '%s'", id)
             return {}
@@ -161,10 +167,9 @@ class SettingConfigSection(ConfigSection):
     def __getitem__(self, name):
         # Don't process settings that are not profile-specific
         if name in UserProfileGroups.get_all_settings_list():
-            for id in self._get_active_profile_ids():
-                profile_settings = self._get_profile_settings(id)
-                if name in profile_settings and profile_settings[name] is not None:
-                    return profile_settings[name]
+            for id, settings in self._get_active_profile_settings():
+                if name in settings and settings[name] is not None:
+                    return settings[name]
         opt = Option.get(self.__name, name)
         if opt is None:
             return None
@@ -173,15 +178,12 @@ class SettingConfigSection(ConfigSection):
     def __setitem__(self, name, value):
         # Don't process settings that are not profile-specific
         if name in UserProfileGroups.get_all_settings_list():
-            for id in self._get_active_profile_ids():
-                settings = self._get_profile_settings(id)
+            for id, settings in self._get_active_profile_settings():
                 if name in settings:
                     settings[name] = value
-                    profile_settings = self["user_profile_settings"]
-                    profile_settings[id] = settings
-                    name = 'user_profile_settings'
-                    value = profile_settings
-                    break
+                    self[self.settings_key][id] = settings
+                    self._memoization[self.key(self.settings_key)].dirty = True
+                    return
         key = self.key(name)
         self.__qt_config.setValue(key, value)
         self._memoization[key].dirty = True
