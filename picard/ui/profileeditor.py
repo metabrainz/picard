@@ -97,9 +97,12 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         self.ui.profile_list.currentItemChanged.connect(self.current_item_changed)
         self.ui.profile_list.itemSelectionChanged.connect(self.item_selection_changed)
         self.ui.settings_tree.itemChanged.connect(self.update_profile_changed_message)
+        self.ui.settings_tree.expanded.connect(self.update_current_expanded_items_list)
 
         self.current_profile_id = None
         self.profiles_changed = False
+        self.expanded_sections = []
+        self.building_tree = False
 
         self.load()
         self.loading = False
@@ -185,6 +188,16 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
             return items[0]
         return None
 
+    def update_current_expanded_items_list(self):
+        if self.building_tree:
+            return
+        self.expanded_sections = []
+        for i in range(self.ui.settings_tree.topLevelItemCount()):
+            tl_item = self.ui.settings_tree.topLevelItem(i)
+            if tl_item.isExpanded():
+                self.expanded_sections.append(tl_item.text(0))
+        print("Expansion List: {0}".format(self.expanded_sections,))
+
     def profile_selected(self, update_settings=True):
         """Update working profile information for the selected item in the profiles list.
 
@@ -215,6 +228,7 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         self.ui.settings_tree.setHeaderLabels([_("Settings to include in profile")])
         if settings is None:
             return
+        self.building_tree = True
         for id, group in UserProfileGroups.SETTINGS_GROUPS.items():
             title = group["title"]
             group_settings = group["settings"]
@@ -229,6 +243,10 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
                 child_item.setCheckState(0, state)
                 widget_item.addChild(child_item)
             self.ui.settings_tree.addTopLevelItem(widget_item)
+            print("Added: {0}".format(title,))
+            if title in self.expanded_sections:
+                widget_item.setExpanded(True)
+        self.building_tree = False
 
     def current_item_changed(self, new_item, old_item):
         """Update the display when a new item is selected in the profile list.
@@ -239,6 +257,7 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         """
         if self.loading:
             return
+        self.update_current_expanded_items_list()
         if self.unsaved_changes_confirmation():
             self.set_current_item(new_item)
             self.profile_selected()
