@@ -134,23 +134,24 @@ class ConfigSection(QtCore.QObject):
 class SettingConfigSection(ConfigSection):
     """Custom subclass to automatically accommodate saving and retrieving values based on user profile settings.
     """
+    PROFILES_KEY = 'user_profiles'
+    SETTINGS_KEY = 'user_profile_settings'
+
     def __init__(self, config, name):
         super().__init__(config, name)
         self.__qt_config = config
         self.__name = name
         self.__prefix = self.__name + '/'
-        self.profiles_key = 'user_profiles'
-        self.settings_key = 'user_profile_settings'
         self._memoization = defaultdict(Memovar)
-        ListOption.add_if_missing(name, self.profiles_key, [])
-        Option.add_if_missing(name, self.settings_key, {})
+        ListOption.add_if_missing(name, self.PROFILES_KEY, [])
+        Option.add_if_missing(name, self.SETTINGS_KEY, {})
 
     def _get_active_profile_ids(self):
-        profiles = self[self.profiles_key]
+        profiles = self[self.PROFILES_KEY]
         if profiles is None:
             return
         for profile in profiles:
-            if profile['active']:
+            if profile['enabled']:
                 yield profile["id"]
 
     def _get_active_profile_settings(self):
@@ -158,7 +159,7 @@ class SettingConfigSection(ConfigSection):
             yield id, self._get_profile_settings(id)
 
     def _get_profile_settings(self, id):
-        profile_settings = self[self.settings_key][id]
+        profile_settings = self[self.SETTINGS_KEY][id]
         if profile_settings is None:
             log.error("Unable to find settings for user profile '%s'", id)
             return {}
@@ -181,8 +182,9 @@ class SettingConfigSection(ConfigSection):
             for id, settings in self._get_active_profile_settings():
                 if name in settings:
                     settings[name] = value
-                    self[self.settings_key][id] = settings
-                    self._memoization[self.key(self.settings_key)].dirty = True
+                    all_settings = self[self.SETTINGS_KEY]
+                    all_settings[id] = settings
+                    self[self.SETTINGS_KEY] = all_settings
                     return
         key = self.key(name)
         self.__qt_config.setValue(key, value)
