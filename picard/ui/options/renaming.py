@@ -142,14 +142,6 @@ class RenamingOptionsPage(OptionsPage):
 
         self.current_row = -1
 
-        # Get pointer to main window to enable updating menu items
-        test_parent = self
-        while test_parent is not None:
-            if getattr(test_parent.__class__, '__name__', '') == 'MainWindow':
-                self.main_window = test_parent
-                break
-            test_parent = test_parent.parent()
-
     def update_selector_from_editor(self):
         """Update the script selector combo box from the script editor page.
         """
