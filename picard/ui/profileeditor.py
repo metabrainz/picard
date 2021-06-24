@@ -59,8 +59,8 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
     POSITION_KEY = "last_selected_profile_pos"
 
     options = [
-        ListOption.add_if_missing("setting", PROFILES_KEY, []),
-        Option.add_if_missing("setting", SETTINGS_KEY, {}),
+        ListOption.add_if_missing("profiles", PROFILES_KEY, []),
+        Option.add_if_missing("profiles", SETTINGS_KEY, {}),
         IntOption("persist", POSITION_KEY, 0),
     ]
 
@@ -145,9 +145,9 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         """Load initial configuration.
         """
         config = get_config()
-        self.profile_settings = config.setting[self.SETTINGS_KEY]
+        self.profile_settings = config.profiles[self.SETTINGS_KEY]
 
-        for profile in config.setting[self.PROFILES_KEY]:
+        for profile in config.profiles[self.PROFILES_KEY]:
             list_item = ProfileListWidgetItem(profile['title'], profile['enabled'], profile['id'])
             self.ui.profile_list.addItem(list_item)
 
@@ -196,7 +196,6 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
             tl_item = self.ui.settings_tree.topLevelItem(i)
             if tl_item.isExpanded():
                 self.expanded_sections.append(tl_item.text(0))
-        print("Expansion List: {0}".format(self.expanded_sections,))
 
     def profile_selected(self, update_settings=True):
         """Update working profile information for the selected item in the profiles list.
@@ -243,7 +242,6 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
                 child_item.setCheckState(0, state)
                 widget_item.addChild(child_item)
             self.ui.settings_tree.addTopLevelItem(widget_item)
-            print("Added: {0}".format(title,))
             if title in self.expanded_sections:
                 widget_item.setExpanded(True)
         self.building_tree = False
@@ -384,8 +382,8 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
                 del self.profile_settings[id]
 
         config = get_config()
-        config.setting["user_profiles"] = all_profiles
-        config.setting["user_profile_settings"] = self.profile_settings
+        config.profiles["user_profiles"] = all_profiles
+        config.profiles["user_profile_settings"] = self.profile_settings
         config.persist["last_selected_profile_pos"] = self.ui.profile_list.currentRow()
 
         self.main_window.enable_renaming_action.setChecked(config.setting["rename_files"])

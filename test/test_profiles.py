@@ -57,8 +57,8 @@ class TestPicardProfilesCommon(PicardTestCase):
         logging.disable(logging.ERROR)
         Option.registry = {}
 
-        ListOption('setting', self.PROFILES_KEY, [])
-        Option('setting', self.SETTINGS_KEY, {})
+        ListOption('profiles', self.PROFILES_KEY, [])
+        Option('profiles', self.SETTINGS_KEY, {})
 
         # Get valid profile option settings for testing
         option_settings = list(UserProfileGroups.get_all_settings_list())
@@ -134,8 +134,8 @@ class TestUserProfiles(TestPicardProfilesCommon):
             "test_key_1": {self.test_setting_1: None},
             "test_key_2": {self.test_setting_2: None},
         }
-        self.config.setting[self.SETTINGS_KEY] = settings
-        self.config.setting[self.PROFILES_KEY] = self.get_profiles(enabled=True)
+        self.config.profiles[self.SETTINGS_KEY] = settings
+        self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=True)
 
         # Test retrieval with overrides at None
         self.assertEqual(self.config.setting[self.test_setting_0], "abc")
@@ -151,7 +151,7 @@ class TestUserProfiles(TestPicardProfilesCommon):
         self.assertEqual(self.config.setting[self.test_setting_2], 99)
 
         # Test retrieval with profiles disabled
-        self.config.setting[self.PROFILES_KEY] = self.get_profiles(enabled=False)
+        self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=False)
         self.assertEqual(self.config.setting[self.test_setting_0], "abc")
         self.assertEqual(self.config.setting[self.test_setting_1], True)
         self.assertEqual(self.config.setting[self.test_setting_2], 42)
@@ -165,7 +165,7 @@ class TestUserProfiles(TestPicardProfilesCommon):
         self.assertEqual(self.config.setting[self.test_setting_2], 86)
 
         # Re-enable profiles and check that the saved settings still exist
-        self.config.setting[self.PROFILES_KEY] = self.get_profiles(enabled=True)
+        self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=True)
         self.assertEqual(self.config.setting[self.test_setting_0], "def")
         self.assertEqual(self.config.setting[self.test_setting_1], False)
         self.assertEqual(self.config.setting[self.test_setting_2], 99)

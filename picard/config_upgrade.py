@@ -427,6 +427,8 @@ def rename_option(config, old_opt, new_opt, option_type, default):
         _s[new_opt] = _s.value(old_opt, option_type, default)
         _s.remove(old_opt)
 
+    # TODO: Update profile settings to new option name
+
 
 def upgrade_config(config):
     cfg = config
