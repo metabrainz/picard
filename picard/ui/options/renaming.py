@@ -191,17 +191,17 @@ class RenamingOptionsPage(OptionsPage):
         self.script_editor_dialog.signal_update_scripts_list.connect(self.update_scripts_list_from_editor)
         self.script_editor_dialog.finished.connect(self.script_editor_dialog_close)
 
-        self.script_editor_dialog.show()
-        self.script_editor_dialog.raise_()
-        self.script_editor_dialog.activateWindow()
-        self.script_editor_dialog.loading = True
-        self.update_selector_in_editor(skip_check=True)
-        self.script_editor_dialog.loading = False
-        self.main_window.script_editor_is_open = True
+        if self.tagger.window.script_editor_is_open:
+            self.update_selector_from_editor()
+        else:
+            self.script_editor_dialog.loading = True
+            self.update_selector_in_editor(skip_check=True)
+            self.script_editor_dialog.loading = False
+            self.tagger.window.script_editor_is_open = True
 
     def script_editor_dialog_close(self):
         if not self.script_editor_dialog.loading:
-            self.main_window.script_editor_is_open = False
+            self.tagger.window.script_editor_is_open = False
         self.script_editor_dialog = None
 
     def show_scripting_documentation(self):

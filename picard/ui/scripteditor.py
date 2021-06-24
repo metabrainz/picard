@@ -427,10 +427,9 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
                 cls._instance = None
         instance = super().show_instance(*args, **kwargs)
 
-        # Manually set parent and examples in case of re-using an existing instance of the dialog
-        instance.setParent(kwargs['parent'])
+        # Manually set examples in case of re-using an existing instance of the dialog
         instance.examples = kwargs['examples']
-        instance.load()
+        instance.update_examples()
 
         # Reset formatting lost when changing parent.
         instance.ui.label.setWordWrap(False)
