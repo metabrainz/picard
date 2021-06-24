@@ -151,6 +151,9 @@ class SingletonDialog:
     @classmethod
     def show_instance(cls, *args, **kwargs):
         instance = cls.get_instance(*args, **kwargs)
+        # Update parent if changed
+        if 'parent' in kwargs and instance.parent() != kwargs['parent']:
+            instance.setParent(kwargs['parent'])
         instance.show()
         instance.raise_()
         instance.activateWindow()
