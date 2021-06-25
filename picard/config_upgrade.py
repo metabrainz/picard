@@ -424,10 +424,20 @@ def upgrade_to_v2_7_0_dev_3(config):
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
-        _s[new_opt] = _s.value(old_opt, option_type, default)
+        new_value = _s.value(old_opt, option_type, default)
+        _s[new_opt] = new_value
         _s.remove(old_opt)
 
-    # TODO: Update profile settings to new option name
+        _p = config.profiles
+        ListOption.add_if_missing("profiles", "user_profiles", [])
+        Option.add_if_missing("profiles", "user_profile_settings", {})
+        all_settings = _p["user_profile_settings"]
+        for profile in _p["user_profiles"]:
+            id = profile["id"]
+            if id in all_settings and old_opt in all_settings[id]["settings"]:
+                all_settings[id]["settings"][new_opt] = new_value
+                del all_settings[id]["settings"][old_opt]
+        _p["user_profile_settings"] = all_settings
 
 
 def upgrade_config(config):
