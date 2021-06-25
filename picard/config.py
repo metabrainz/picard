@@ -147,7 +147,7 @@ class SettingConfigSection(ConfigSection):
         Option.add_if_missing("profiles", self.SETTINGS_KEY, {})
 
     def _get_active_profile_ids(self):
-        profiles = config.profiles[self.PROFILES_KEY]
+        profiles = self.__qt_config.profiles[self.PROFILES_KEY]
         if profiles is None:
             return
         for profile in profiles:
@@ -159,7 +159,7 @@ class SettingConfigSection(ConfigSection):
             yield id, self._get_profile_settings(id)
 
     def _get_profile_settings(self, id):
-        profile_settings = config.profiles[self.SETTINGS_KEY][id]
+        profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY][id]
         if profile_settings is None:
             log.error("Unable to find settings for user profile '%s'", id)
             return {}
@@ -182,9 +182,9 @@ class SettingConfigSection(ConfigSection):
             for id, settings in self._get_active_profile_settings():
                 if name in settings:
                     settings[name] = value
-                    all_settings = config.profiles[self.SETTINGS_KEY]
+                    all_settings = self.__qt_config.profiles[self.SETTINGS_KEY]
                     all_settings[id] = settings
-                    config.profiles[self.SETTINGS_KEY] = all_settings
+                    self.__qt_config.profiles[self.SETTINGS_KEY] = all_settings
                     return
         key = self.key(name)
         self.__qt_config.setValue(key, value)
