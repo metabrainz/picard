@@ -29,6 +29,7 @@ from PyQt5 import (
 
 from picard.config import (
     IntOption,
+    ListOption,
     SettingConfigSection,
     get_config,
 )
@@ -56,9 +57,11 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
     PROFILES_KEY = SettingConfigSection.PROFILES_KEY
     SETTINGS_KEY = SettingConfigSection.SETTINGS_KEY
     POSITION_KEY = "last_selected_profile_pos"
+    EXPANDED_KEY = "profile_settings_tree_expanded_list"
 
     options = [
         IntOption("persist", POSITION_KEY, 0),
+        ListOption("persist", EXPANDED_KEY, [])
     ]
 
     signal_save = QtCore.pyqtSignal()
@@ -142,6 +145,7 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
 
         # Select the last selected profile item
         last_selected_profile_pos = config.persist[self.POSITION_KEY]
+        self.expanded_sections = config.persist[self.EXPANDED_KEY]
         last_selected_profile = self.ui.profile_list.item(last_selected_profile_pos)
         settings = None
         if last_selected_profile:
@@ -371,15 +375,22 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
                 del self.profile_settings[id]
 
         config = get_config()
-        config.profiles["user_profiles"] = all_profiles
-        config.profiles["user_profile_settings"] = self.profile_settings
-        config.persist["last_selected_profile_pos"] = self.ui.profile_list.currentRow()
+        config.profiles[self.PROFILES_KEY] = all_profiles
+        config.profiles[self.SETTINGS_KEY] = self.profile_settings
 
         self.main_window.enable_renaming_action.setChecked(config.setting["rename_files"])
         self.main_window.enable_moving_action.setChecked(config.setting["move_files"])
         self.main_window.enable_tag_saving_action.setChecked(not config.setting["dont_write_tags"])
 
         self.close()
+
+    def closeEvent(self, event):
+        """Custom close event handler to save editor settings.
+        """
+        config = get_config()
+        config.persist[self.POSITION_KEY] = self.ui.profile_list.currentRow()
+        config.persist[self.EXPANDED_KEY] = self.expanded_sections
+        super().closeEvent(event)
 
     def _all_profiles(self):
         """Get all profiles from the profiles list in order from top to bottom.
