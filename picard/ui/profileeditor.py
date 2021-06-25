@@ -69,14 +69,6 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         super().__init__(parent)
 
         self.main_window = parent
-        # # Get pointer to the main window regardless of where this dialog was called.
-        # temp = self
-        # while temp:
-        #     name = temp.objectName() if temp.objectName() else temp.__class__.__name__
-        #     if name == 'MainWindow':
-        #         self.main_window = temp
-        #         break
-        #     temp = temp.parent()
 
         self.setWindowTitle(_(self.TITLE))
         self.displaying = False
