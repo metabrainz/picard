@@ -137,14 +137,18 @@ class SettingConfigSection(ConfigSection):
     PROFILES_KEY = 'user_profiles'
     SETTINGS_KEY = 'user_profile_settings'
 
+    @classmethod
+    def init_profile_options(cls):
+        ListOption.add_if_missing("profiles", cls.PROFILES_KEY, [])
+        Option.add_if_missing("profiles", cls.SETTINGS_KEY, {})
+
     def __init__(self, config, name):
         super().__init__(config, name)
         self.__qt_config = config
         self.__name = name
         self.__prefix = self.__name + '/'
         self._memoization = defaultdict(Memovar)
-        ListOption.add_if_missing("profiles", self.PROFILES_KEY, [])
-        Option.add_if_missing("profiles", self.SETTINGS_KEY, {})
+        self.init_profile_options()
 
     def _get_active_profile_ids(self):
         profiles = self.__qt_config.profiles[self.PROFILES_KEY]

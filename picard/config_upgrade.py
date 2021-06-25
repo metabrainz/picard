@@ -428,8 +428,7 @@ def rename_option(config, old_opt, new_opt, option_type, default):
         _s.remove(old_opt)
 
         _p = config.profiles
-        ListOption.add_if_missing("profiles", "user_profiles", [])
-        Option.add_if_missing("profiles", "user_profile_settings", {})
+        _s.init_profile_options()
         all_settings = _p["user_profile_settings"]
         for profile in _p["user_profiles"]:
             id = profile["id"]
