@@ -230,6 +230,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         config.setting.set_profile(profile_id)
         for page in self.pages:
             page.load()
+        if parent and parent.script_editor_is_open:
+            self.get_page('filerenaming').show_script_editing_page()
+
     def get_page(self, name):
         return self.item_to_page[self.page_to_item[name]]
 
