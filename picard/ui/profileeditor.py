@@ -29,8 +29,7 @@ from PyQt5 import (
 
 from picard.config import (
     IntOption,
-    ListOption,
-    Option,
+    SettingConfigSection,
     get_config,
 )
 from picard.const import PICARD_URLS
@@ -54,13 +53,11 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
 
     help_url = PICARD_URLS["doc_profile_edit"]
 
-    PROFILES_KEY = "user_profiles"
-    SETTINGS_KEY = "user_profile_settings"
+    PROFILES_KEY = SettingConfigSection.PROFILES_KEY
+    SETTINGS_KEY = SettingConfigSection.SETTINGS_KEY
     POSITION_KEY = "last_selected_profile_pos"
 
     options = [
-        ListOption.add_if_missing("profiles", PROFILES_KEY, []),
-        Option.add_if_missing("profiles", SETTINGS_KEY, {}),
         IntOption("persist", POSITION_KEY, 0),
     ]
 
