@@ -261,7 +261,8 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         """Set tree list highlight bar to proper line if selection change canceled.
         """
         item = self.ui.profile_list.currentItem()
-        item.setSelected(True)
+        if item:
+            item.setSelected(True)
         self.update_profile_changed_message()
 
     def set_current_item(self, item):
