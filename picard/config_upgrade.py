@@ -424,8 +424,7 @@ def upgrade_to_v2_7_0_dev_3(config):
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
-        new_value = _s.value(old_opt, option_type, default)
-        _s[new_opt] = new_value
+        _s[new_opt] = _s.value(old_opt, option_type, default)
         _s.remove(old_opt)
 
         _p = config.profiles
@@ -434,9 +433,9 @@ def rename_option(config, old_opt, new_opt, option_type, default):
         all_settings = _p["user_profile_settings"]
         for profile in _p["user_profiles"]:
             id = profile["id"]
-            if id in all_settings and old_opt in all_settings[id]["settings"]:
-                all_settings[id]["settings"][new_opt] = new_value
-                del all_settings[id]["settings"][old_opt]
+            if id in all_settings and old_opt in all_settings[id]:
+                all_settings[id][new_opt] = all_settings[id][old_opt]
+                all_settings[id].pop(old_opt)
         _p["user_profile_settings"] = all_settings
 
 

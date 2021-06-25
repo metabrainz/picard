@@ -65,10 +65,12 @@ class TestPicardProfilesCommon(PicardTestCase):
         self.test_setting_0 = option_settings[0]
         self.test_setting_1 = option_settings[1]
         self.test_setting_2 = option_settings[2]
+        self.test_setting_3 = option_settings[3]
 
         TextOption("setting", self.test_setting_0, "abc")
         BoolOption("setting", self.test_setting_1, True)
         IntOption("setting", self.test_setting_2, 42)
+        TextOption("setting", self.test_setting_3, "xyz")
 
     def cleanup_config_obj(self):
         # Ensure QSettings do not recreate the file on exit
@@ -169,3 +171,21 @@ class TestUserProfiles(TestPicardProfilesCommon):
         self.assertEqual(self.config.setting[self.test_setting_0], "def")
         self.assertEqual(self.config.setting[self.test_setting_1], False)
         self.assertEqual(self.config.setting[self.test_setting_2], 99)
+
+    def test_config_option_rename(self):
+        from picard.config_upgrade import rename_option
+        self.config.setting[self.test_setting_0] = "abc"
+        self.config.setting[self.test_setting_1] = True
+        self.config.setting[self.test_setting_2] = 42
+        settings = {
+            "test_key_0": {self.test_setting_0: None},
+            "test_key_1": {self.test_setting_1: None},
+            "test_key_2": {self.test_setting_2: None},
+        }
+        self.config.profiles[self.SETTINGS_KEY] = settings
+        self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=True)
+        self.config.setting[self.test_setting_0] = "def"
+        rename_option(self.config, self.test_setting_0, self.test_setting_3, TextOption, "")
+        self.assertEqual(self.config.setting[self.test_setting_3], "def")
+        self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=False)
+        self.assertEqual(self.config.setting[self.test_setting_3], "abc")
