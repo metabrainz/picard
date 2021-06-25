@@ -230,6 +230,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         config.setting.set_profile(profile_id)
         for page in self.pages:
             page.load()
+    def get_page(self, name):
+        return self.item_to_page[self.page_to_item[name]]
 
     def switch_page(self):
         items = self.ui.pages_tree.selectedItems()
