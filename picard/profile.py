@@ -97,6 +97,7 @@ class UserProfileGroups():
             ("move_additional_files", N_("Move additional files")),
             ("move_additional_files_pattern", N_("Additional file patterns")),
             ("delete_empty_dirs", N_("Delete empty directories")),
+            ("selected_file_naming_script_id", N_("Selected file naming script")),
         ],
     }
 
