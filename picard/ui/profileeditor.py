@@ -59,6 +59,8 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
     POSITION_KEY = "last_selected_profile_pos"
     EXPANDED_KEY = "profile_settings_tree_expanded_list"
 
+    TREEWIDGETITEM_COLUMN = 0
+
     options = [
         IntOption("persist", POSITION_KEY, 0),
         ListOption("persist", EXPANDED_KEY, [])
@@ -157,7 +159,8 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         self.make_setting_tree(settings=settings)
 
     def get_settings_for_profile(self, id):
-        """Get the settings for the specified profile ID.
+        """Get the settings for the specified profile ID.  Automatically adds an empty
+        settings dictionary if there is no settings dictionary found for the ID.
 
         Args:
             id (str): ID of the profile
@@ -166,6 +169,7 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
             dict: Profile settings
         """
         # Add empty settings dictionary if no dictionary found for the profile.
+        # This happens when a new profile is created.
         if id not in self.profile_settings:
             self.profile_settings[id] = {}
         return self.profile_settings[id]
@@ -188,7 +192,7 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         for i in range(self.ui.settings_tree.topLevelItemCount()):
             tl_item = self.ui.settings_tree.topLevelItem(i)
             if tl_item.isExpanded():
-                self.expanded_sections.append(tl_item.text(0))
+                self.expanded_sections.append(tl_item.text(self.TREEWIDGETITEM_COLUMN))
 
     def profile_selected(self, update_settings=True):
         """Update working profile information for the selected item in the profiles list.
@@ -200,8 +204,8 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         if item:
             id = item.profile_id
             self.current_profile_id = id
-            settings = self.get_settings_for_profile(id)
             if update_settings:
+                settings = self.get_settings_for_profile(id)
                 self.make_setting_tree(settings=settings)
         else:
             self.current_profile_id = None
@@ -226,13 +230,13 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
             group_settings = group["settings"]
             widget_item = QtWidgets.QTreeWidgetItem([title])
             widget_item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsAutoTristate)
-            widget_item.setCheckState(0, QtCore.Qt.Unchecked)
+            widget_item.setCheckState(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.Unchecked)
             for setting in group_settings:
                 child_item = QtWidgets.QTreeWidgetItem([_(setting.title)])
                 child_item.setData(0, QtCore.Qt.UserRole, setting.name)
                 child_item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsUserCheckable)
                 state = QtCore.Qt.Checked if settings and setting.name in settings else QtCore.Qt.Unchecked
-                child_item.setCheckState(0, state)
+                child_item.setCheckState(self.TREEWIDGETITEM_COLUMN, state)
                 widget_item.addChild(child_item)
             self.ui.settings_tree.addTopLevelItem(widget_item)
             if title in self.expanded_sections:
@@ -290,7 +294,7 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
             bool: True if settings have changed, otherwise False
         """
         checked_items = set(self.get_checked_items_from_tree())
-        settings = set(self.profile_settings[self.current_profile_id].keys())
+        settings = set(self.profile_settings[self.current_profile_id])
         return checked_items != settings
 
     def save_profile(self, silent=False):
@@ -315,14 +319,12 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         settings = set(self.profile_settings[self.current_profile_id].keys())
 
         # Add new items to settings
-        for item in checked_items:
-            if item not in settings:
-                self.profile_settings[self.current_profile_id][item] = None
+        for item in checked_items.difference(settings):
+            self.profile_settings[self.current_profile_id][item] = None
 
         # Remove unchecked items from settings
-        for item in settings:
-            if item not in checked_items:
-                del self.profile_settings[self.current_profile_id][item]
+        for item in settings.difference(checked_items):
+            del self.profile_settings[self.current_profile_id][item]
 
         self.profiles_changed = True
         self.update_profile_changed_message()
@@ -370,10 +372,9 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
 
         all_profiles = list(self._all_profiles())
         all_profile_ids = set(x['id'] for x in all_profiles)
-        keys = set(deepcopy(self.profile_settings).keys())
-        for id in keys:
-            if id not in all_profile_ids:
-                del self.profile_settings[id]
+        keys = set(self.profile_settings.keys())
+        for id in keys.difference(all_profile_ids):
+            del self.profile_settings[id]
 
         config = get_config()
         config.profiles[self.PROFILES_KEY] = all_profiles
@@ -421,8 +422,8 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
             tl_item = self.ui.settings_tree.topLevelItem(i)
             for j in range(tl_item.childCount()):
                 item = tl_item.child(j)
-                if item.checkState(0) == QtCore.Qt.Checked:
-                    yield item.data(0, QtCore.Qt.UserRole)
+                if item.checkState(self.TREEWIDGETITEM_COLUMN) == QtCore.Qt.Checked:
+                    yield item.data(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.UserRole)
 
     def unsaved_changes_confirmation(self):
         """Check if there are unsaved changes and ask the user to confirm the action resulting in their loss.
@@ -430,7 +431,7 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         Returns:
             bool: True if no unsaved changes or user confirms the action, otherwise False.
         """
-        if not self.loading and self.current_profile_id and self.profile_settings_changed() and not self.confirmation_dialog(
+        if self.current_profile_id and self.profile_settings_changed() and not self.confirmation_dialog(
             _("There are unsaved changes to the current profile settings.  Do you want to continue and lose these changes?")
         ):
             return False

@@ -31,6 +31,7 @@ from picard.config import (
     IntOption,
     ListOption,
     Option,
+    SettingConfigSection,
     TextOption,
 )
 from picard.profile import UserProfileGroups
@@ -38,8 +39,8 @@ from picard.profile import UserProfileGroups
 
 class TestPicardProfilesCommon(PicardTestCase):
 
-    PROFILES_KEY = 'user_profiles'
-    SETTINGS_KEY = 'user_profile_settings'
+    PROFILES_KEY = SettingConfigSection.PROFILES_KEY
+    SETTINGS_KEY = SettingConfigSection.SETTINGS_KEY
 
     def setUp(self):
         super().setUp()
