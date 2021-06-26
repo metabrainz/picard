@@ -228,10 +228,10 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
             widget_item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsAutoTristate)
             widget_item.setCheckState(0, QtCore.Qt.Unchecked)
             for setting in group_settings:
-                child_item = QtWidgets.QTreeWidgetItem([_(setting[1])])
-                child_item.setData(0, QtCore.Qt.UserRole, setting[0])
+                child_item = QtWidgets.QTreeWidgetItem([_(setting.title)])
+                child_item.setData(0, QtCore.Qt.UserRole, setting.name)
                 child_item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsUserCheckable)
-                state = QtCore.Qt.Checked if settings and setting[0] in settings else QtCore.Qt.Unchecked
+                state = QtCore.Qt.Checked if settings and setting.name in settings else QtCore.Qt.Unchecked
                 child_item.setCheckState(0, state)
                 widget_item.addChild(child_item)
             self.ui.settings_tree.addTopLevelItem(widget_item)
