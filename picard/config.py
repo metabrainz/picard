@@ -186,9 +186,7 @@ class SettingConfigSection(ConfigSection):
             for id, settings in self._get_active_profile_settings():
                 if name in settings:
                     settings[name] = value
-                    all_settings = self.__qt_config.profiles[self.SETTINGS_KEY]
-                    all_settings[id] = settings
-                    self.__qt_config.profiles[self.SETTINGS_KEY] = all_settings
+                    self.__qt_config.profiles[self.SETTINGS_KEY][id] = settings
                     return
         key = self.key(name)
         self.__qt_config.setValue(key, value)
