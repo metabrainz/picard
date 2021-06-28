@@ -487,9 +487,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.options_action.triggered.connect(self.show_options)
 
         self.show_script_editor_action = QtWidgets.QAction(_("Open &file naming script editor..."))
+        self.show_script_editor_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+S")))
         self.show_script_editor_action.triggered.connect(self.open_file_naming_script_editor)
 
         self.show_profile_editor_action = QtWidgets.QAction(_("Open &user profile editor..."))
+        self.show_profile_editor_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+P")))
         self.show_profile_editor_action.triggered.connect(self.open_profile_editor)
 
         self.cut_action = QtWidgets.QAction(icontheme.lookup('edit-cut', icontheme.ICON_SIZE_MENU), _("&Cut"), self)
