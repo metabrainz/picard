@@ -12,6 +12,7 @@
 # Copyright (C) 2017 Sophist-UK
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2020-2021 Gabriel Ferreira
+# Copyright (C) 2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -45,6 +46,7 @@ from picard import (
     PICARD_VERSION,
     log,
 )
+from picard.profile import UserProfileGroups
 from picard.version import Version
 
 
@@ -129,6 +131,68 @@ class ConfigSection(QtCore.QObject):
         return default
 
 
+class SettingConfigSection(ConfigSection):
+    """Custom subclass to automatically accommodate saving and retrieving values based on user profile settings.
+    """
+    PROFILES_KEY = 'user_profiles'
+    SETTINGS_KEY = 'user_profile_settings'
+
+    @classmethod
+    def init_profile_options(cls):
+        ListOption.add_if_missing("profiles", cls.PROFILES_KEY, [])
+        Option.add_if_missing("profiles", cls.SETTINGS_KEY, {})
+
+    def __init__(self, config, name):
+        super().__init__(config, name)
+        self.__qt_config = config
+        self.__name = name
+        self.__prefix = self.__name + '/'
+        self._memoization = defaultdict(Memovar)
+        self.init_profile_options()
+
+    def _get_active_profile_ids(self):
+        profiles = self.__qt_config.profiles[self.PROFILES_KEY]
+        if profiles is None:
+            return
+        for profile in profiles:
+            if profile['enabled']:
+                yield profile["id"]
+
+    def _get_active_profile_settings(self):
+        for id in self._get_active_profile_ids():
+            yield id, self._get_profile_settings(id)
+
+    def _get_profile_settings(self, id):
+        profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY][id]
+        if profile_settings is None:
+            log.error("Unable to find settings for user profile '%s'", id)
+            return {}
+        return profile_settings
+
+    def __getitem__(self, name):
+        # Don't process settings that are not profile-specific
+        if name in UserProfileGroups.get_all_settings_list():
+            for id, settings in self._get_active_profile_settings():
+                if name in settings and settings[name] is not None:
+                    return settings[name]
+        opt = Option.get(self.__name, name)
+        if opt is None:
+            return None
+        return self.value(name, opt, opt.default)
+
+    def __setitem__(self, name, value):
+        # Don't process settings that are not profile-specific
+        if name in UserProfileGroups.get_all_settings_list():
+            for id, settings in self._get_active_profile_settings():
+                if name in settings:
+                    settings[name] = value
+                    self.__qt_config.profiles[self.SETTINGS_KEY][id] = settings
+                    return
+        key = self.key(name)
+        self.__qt_config.setValue(key, value)
+        self._memoization[key].dirty = True
+
+
 class Config(QtCore.QSettings):
 
     """Configuration.
@@ -153,10 +217,9 @@ class Config(QtCore.QSettings):
 
         self.setAtomicSyncRequired(False)  # See comment in event()
         self.application = ConfigSection(self, "application")
-        self.setting = ConfigSection(self, "setting")
+        self.profiles = ConfigSection(self, "profiles")
+        self.setting = SettingConfigSection(self, "setting")
         self.persist = ConfigSection(self, "persist")
-        self.profile = ConfigSection(self, "profile/default")
-        self.current_preset = "default"
 
         TextOption("application", "version", '0.0.0dev0')
         self._version = Version.from_string(self.application["version"])
@@ -221,14 +284,6 @@ class Config(QtCore.QSettings):
                                   parent)
         this.__initialize()
         return this
-
-    def switchProfile(self, profilename):
-        """Sets the current profile."""
-        key = "profile/%s" % (profilename,)
-        if self.contains(key):
-            self.profile.name = key
-        else:
-            raise KeyError("Unknown profile '%s'" % (profilename,))
 
     def register_upgrade_hook(self, func, *args):
         """Register a function to upgrade from one config version to another"""
@@ -384,16 +439,18 @@ class ListOption(Option):
 config = None
 setting = None
 persist = None
+profiles = None
 
 
 def setup_config(app, filename=None):
-    global config, setting, persist
+    global config, setting, persist, profiles
     if filename is None:
         config = Config.from_app(app)
     else:
         config = Config.from_file(app, filename)
     setting = config.setting
     persist = config.persist
+    profiles = config.profiles
 
 
 def get_config():

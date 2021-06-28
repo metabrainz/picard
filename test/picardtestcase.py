@@ -80,19 +80,24 @@ class PicardTestCase(unittest.TestCase):
         fake_config = Mock()
         fake_config.setting = {}
         fake_config.persist = {}
+        fake_config.profiles = {}
         # Make config object available for legacy use
         config.config = fake_config
         config.setting = fake_config.setting
         config.persist = fake_config.persist
+        config.profiles = fake_config.profiles
 
     @staticmethod
-    def set_config_values(setting=None, persist=None):
+    def set_config_values(setting=None, persist=None, profiles=None):
         if setting:
             for key, value in setting.items():
                 config.config.setting[key] = value
         if persist:
             for key, value in persist.items():
                 config.config.persist[key] = value
+        if profiles:
+            for key, value in profiles.items():
+                config.config.profiles[key] = value
 
     def mktmpdir(self, ignore_errors=False):
         tmpdir = mkdtemp(suffix=self.__class__.__name__)

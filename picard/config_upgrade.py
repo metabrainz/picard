@@ -427,6 +427,16 @@ def rename_option(config, old_opt, new_opt, option_type, default):
         _s[new_opt] = _s.value(old_opt, option_type, default)
         _s.remove(old_opt)
 
+        _p = config.profiles
+        _s.init_profile_options()
+        all_settings = _p["user_profile_settings"]
+        for profile in _p["user_profiles"]:
+            id = profile["id"]
+            if id in all_settings and old_opt in all_settings[id]:
+                all_settings[id][new_opt] = all_settings[id][old_opt]
+                all_settings[id].pop(old_opt)
+        _p["user_profile_settings"] = all_settings
+
 
 def upgrade_config(config):
     cfg = config

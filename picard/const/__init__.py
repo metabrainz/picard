@@ -88,6 +88,7 @@ PICARD_URLS = {
     'doc_scripting':           DOCS_BASE_URL + '/extending/scripting.html',
     'doc_tags_from_filenames': DOCS_BASE_URL + '/usage/tags_from_file_names.html',
     'doc_naming_script_edit':  DOCS_BASE_URL + '/config/options_filerenaming_editor.html',
+    'doc_profile_edit':        DOCS_BASE_URL + '/config/usage/user_profiles.html',
     'doc_cover_art_types':     "https://musicbrainz.org/doc/Cover_Art/Types",
     'plugins':                 "https://picard.musicbrainz.org/plugins/",
     'forum':                   "https://community.metabrainz.org/c/picard",
@@ -187,5 +188,7 @@ DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/\n" \
 DEFAULT_NUMBERED_SCRIPT_NAME = N_("My script %d")
 DEFAULT_SCRIPT_NAME = N_("My script")
 DEFAULT_COVER_IMAGE_FILENAME = "cover"
+DEFAULT_NUMBERED_PROFILE_NAME = N_("My profile %d")
+DEFAULT_PROFILE_NAME = N_("My profile")
 
 SCRIPT_LANGUAGE_VERSION = '1.1'
