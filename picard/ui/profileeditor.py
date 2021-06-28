@@ -135,6 +135,8 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         """Load initial configuration.
         """
         config = get_config()
+        # Use deepcopy() to avoid changes made locally from being cascaded into `config.profiles`
+        # before the user clicks "Make It So!"
         self.profile_settings = deepcopy(config.profiles[self.SETTINGS_KEY])
 
         for profile in config.profiles[self.PROFILES_KEY]:
