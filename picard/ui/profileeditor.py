@@ -275,6 +275,8 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
     def save_profile(self):
         """Save changes to the currently selected profile.
         """
+        if not self.current_profile_id:
+            return
         checked_items = set(self.get_checked_items_from_tree())
         settings = set(self.profile_settings[self.current_profile_id].keys())
 
