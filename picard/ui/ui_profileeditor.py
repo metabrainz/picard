@@ -7,15 +7,15 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_ProfileEditorPage(object):
-    def setupUi(self, ProfileEditorPage):
-        ProfileEditorPage.setObjectName("ProfileEditorPage")
-        ProfileEditorPage.resize(605, 551)
-        self.vboxlayout = QtWidgets.QVBoxLayout(ProfileEditorPage)
+class Ui_ProfileEditorDialog(object):
+    def setupUi(self, ProfileEditorDialog):
+        ProfileEditorDialog.setObjectName("ProfileEditorDialog")
+        ProfileEditorDialog.resize(605, 551)
+        self.vboxlayout = QtWidgets.QVBoxLayout(ProfileEditorDialog)
         self.vboxlayout.setContentsMargins(9, 9, 9, 9)
         self.vboxlayout.setSpacing(6)
         self.vboxlayout.setObjectName("vboxlayout")
-        self.user_profiles_groupbox = QtWidgets.QGroupBox(ProfileEditorPage)
+        self.user_profiles_groupbox = QtWidgets.QGroupBox(ProfileEditorDialog)
         self.user_profiles_groupbox.setCheckable(False)
         self.user_profiles_groupbox.setObjectName("user_profiles_groupbox")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.user_profiles_groupbox)
@@ -69,16 +69,16 @@ class Ui_ProfileEditorPage(object):
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setContentsMargins(-1, 0, -1, -1)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.buttonbox = QtWidgets.QDialogButtonBox(ProfileEditorPage)
+        self.buttonbox = QtWidgets.QDialogButtonBox(ProfileEditorDialog)
         self.buttonbox.setStandardButtons(QtWidgets.QDialogButtonBox.NoButton)
         self.buttonbox.setObjectName("buttonbox")
         self.horizontalLayout_2.addWidget(self.buttonbox)
         self.vboxlayout.addLayout(self.horizontalLayout_2)
 
-        self.retranslateUi(ProfileEditorPage)
-        QtCore.QMetaObject.connectSlotsByName(ProfileEditorPage)
+        self.retranslateUi(ProfileEditorDialog)
+        QtCore.QMetaObject.connectSlotsByName(ProfileEditorDialog)
 
-    def retranslateUi(self, ProfileEditorPage):
+    def retranslateUi(self, ProfileEditorDialog):
         _translate = QtCore.QCoreApplication.translate
         self.user_profiles_groupbox.setTitle(_("User Profile(s)"))
         self.move_up_button.setToolTip(_("Move script up"))

@@ -42,7 +42,7 @@ from picard.ui import (
 )
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import OptionsPage
-from picard.ui.ui_profileeditor import Ui_ProfileEditorPage
+from picard.ui.ui_profileeditor import Ui_ProfileEditorDialog
 from picard.ui.widgets.profilelistwidget import ProfileListWidgetItem
 
 
@@ -78,7 +78,7 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         self.setWindowTitle(_(self.TITLE))
         self.displaying = False
         self.loading = True
-        self.ui = Ui_ProfileEditorPage()
+        self.ui = Ui_ProfileEditorDialog()
         self.ui.setupUi(self)
         self.setModal(True)
 
