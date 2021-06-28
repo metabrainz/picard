@@ -90,11 +90,10 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
 
         self.ui.profile_list.currentItemChanged.connect(self.current_item_changed)
         self.ui.profile_list.itemSelectionChanged.connect(self.item_selection_changed)
-        self.ui.settings_tree.itemChanged.connect(self.update_profile_changed_message)
+        self.ui.settings_tree.itemChanged.connect(self.save_profile)
         self.ui.settings_tree.expanded.connect(self.update_current_expanded_items_list)
 
         self.current_profile_id = None
-        self.profiles_changed = False
         self.expanded_sections = []
         self.building_tree = False
 
@@ -102,30 +101,27 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         self.loading = False
 
     def make_buttons(self):
-        """Make buttons and add them to the button bar.
+        """Make buttons and add them to the button bars.
         """
-        self.ui.make_it_so.setToolTip(_("Save all profile information to the user settings"))
-        self.ui.make_it_so.clicked.connect(self.make_it_so)
+        self.make_it_so_button = QtWidgets.QPushButton(_("Make It So!"))
+        self.make_it_so_button.setToolTip(_("Save all profile information to the user settings"))
+        self.ui.buttonbox.addButton(self.make_it_so_button, QtWidgets.QDialogButtonBox.AcceptRole)
+        self.ui.buttonbox.accepted.connect(self.make_it_so)
 
         self.new_profile_button = QtWidgets.QPushButton(_('New'))
         self.new_profile_button.setToolTip(_("Create a new profile"))
         self.new_profile_button.clicked.connect(self.new_profile)
-        self.ui.buttonbox.addButton(self.new_profile_button, QtWidgets.QDialogButtonBox.ActionRole)
+        self.ui.profile_list_buttonbox.addButton(self.new_profile_button, QtWidgets.QDialogButtonBox.ActionRole)
 
         self.copy_profile_button = QtWidgets.QPushButton(_('Copy'))
         self.copy_profile_button.setToolTip(_("Copy to a new profile"))
         self.copy_profile_button.clicked.connect(self.copy_profile)
-        self.ui.buttonbox.addButton(self.copy_profile_button, QtWidgets.QDialogButtonBox.ActionRole)
+        self.ui.profile_list_buttonbox.addButton(self.copy_profile_button, QtWidgets.QDialogButtonBox.ActionRole)
 
         self.delete_profile_button = QtWidgets.QPushButton(_('Delete'))
         self.delete_profile_button.setToolTip(_("Delete the profile"))
         self.delete_profile_button.clicked.connect(self.delete_profile)
-        self.ui.buttonbox.addButton(self.delete_profile_button, QtWidgets.QDialogButtonBox.ActionRole)
-
-        self.save_profile_button = QtWidgets.QPushButton(_('Save'))
-        self.save_profile_button.setToolTip(_("Save changes to the profile"))
-        self.save_profile_button.clicked.connect(self.save_profile)
-        self.ui.buttonbox.addButton(self.save_profile_button, QtWidgets.QDialogButtonBox.ActionRole)
+        self.ui.profile_list_buttonbox.addButton(self.delete_profile_button, QtWidgets.QDialogButtonBox.ActionRole)
 
         self.cancel_button = QtWidgets.QPushButton(_('Cancel'))
         self.cancel_button.setToolTip(_("Close the profile editor without saving changes to the profiles"))
@@ -139,7 +135,7 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         """Load initial configuration.
         """
         config = get_config()
-        self.profile_settings = config.profiles[self.SETTINGS_KEY]
+        self.profile_settings = deepcopy(config.profiles[self.SETTINGS_KEY])
 
         for profile in config.profiles[self.PROFILES_KEY]:
             list_item = ProfileListWidgetItem(profile['title'], profile['enabled'], profile['id'])
@@ -252,14 +248,10 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         """
         if self.loading:
             return
-        self.update_current_expanded_items_list()
-        if self.unsaved_changes_confirmation():
-            self.set_current_item(new_item)
-            self.profile_selected()
-        else:
-            self.set_current_item(old_item)
-            self.profile_selected(update_settings=False)
-        self.update_profile_changed_message()
+
+        self.save_profile()
+        self.set_current_item(new_item)
+        self.profile_selected()
 
     def item_selection_changed(self):
         """Set tree list highlight bar to proper line if selection change canceled.
@@ -267,7 +259,6 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         item = self.ui.profile_list.currentItem()
         if item:
             item.setSelected(True)
-        self.update_profile_changed_message()
 
     def set_current_item(self, item):
         """Sets the specified item as the current selection in the profiles list.
@@ -279,42 +270,9 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         self.ui.profile_list.setCurrentItem(item)
         self.loading = False
 
-    def update_profile_changed_message(self):
-        """Update the unsaved changes message displayed to the user.
-        """
-        if self.current_profile_id and self.profile_settings_changed():
-            self.ui.settings_status.setText(_("Unsaved changes to profile settings."))
-        else:
-            self.ui.settings_status.setText("")
-
-    def profile_settings_changed(self):
-        """Check if the settings selected in the settings tree have changed from the last saved settings.
-
-        Returns:
-            bool: True if settings have changed, otherwise False
-        """
-        checked_items = set(self.get_checked_items_from_tree())
-        settings = set(self.profile_settings[self.current_profile_id])
-        return checked_items != settings
-
-    def save_profile(self, silent=False):
+    def save_profile(self):
         """Save changes to the currently selected profile.
-
-        Args:
-            silent (bool, optional): Do not display any response dialog. Defaults to False.
         """
-        if not self.profile_settings_changed():
-            if not silent:
-                dialog = QtWidgets.QMessageBox(
-                    QtWidgets.QMessageBox.Information,
-                    _("Save Settings"),
-                    _("There are no profile settings changes to save."),
-                    QtWidgets.QMessageBox.Ok,
-                    self
-                )
-                dialog.exec_()
-            return
-
         checked_items = set(self.get_checked_items_from_tree())
         settings = set(self.profile_settings[self.current_profile_id].keys())
 
@@ -326,50 +284,31 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         for item in settings.difference(checked_items):
             del self.profile_settings[self.current_profile_id][item]
 
-        self.profiles_changed = True
-        self.update_profile_changed_message()
-
     def copy_profile(self):
         """Make a copy of the currently selected profile.
         """
-        if not self.unsaved_changes_confirmation():
-            return
         item = self.get_current_selected_item()
         id = str(uuid.uuid4())
         settings = deepcopy(self.profile_settings[self.current_profile_id])
         self.profile_settings[id] = settings
         name = _("%s (copy)") % item.name
         self.ui.profile_list.add_profile(name=name, profile_id=id)
-        self.profiles_changed = True
-        self.update_profile_changed_message()
 
     def new_profile(self):
         """Add a new profile with no settings selected.
         """
-        if not self.unsaved_changes_confirmation():
-            return
         self.ui.profile_list.add_profile()
-        self.profiles_changed = True
-        self.update_profile_changed_message()
 
     def delete_profile(self):
         """Delete the current profile.
         """
-        old_id = self.current_profile_id
         self.ui.profile_list.remove_selected_profile()
         self.profile_selected()
-        if self.current_profile_id != old_id:
-            self.profiles_changed = True
-        self.update_profile_changed_message()
 
     def make_it_so(self):
         """Save any changes to the current profile's settings, save all updated profile
         information to the user settings, and close the profile editor dialog.
         """
-        # Save any unsaved changes
-        if self.ui.profile_list.count():
-            self.save_profile(silent=True)
-
         all_profiles = list(self._all_profiles())
         all_profile_ids = set(x['id'] for x in all_profiles)
         keys = set(self.profile_settings.keys())
@@ -408,7 +347,6 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         """Set the enabled / disabled states of the buttons.
         """
         state = self.current_profile_id is not None
-        self.save_profile_button.setEnabled(state)
         self.copy_profile_button.setEnabled(state)
         self.delete_profile_button.setEnabled(state)
 
@@ -424,33 +362,3 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
                 item = tl_item.child(j)
                 if item.checkState(self.TREEWIDGETITEM_COLUMN) == QtCore.Qt.Checked:
                     yield item.data(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.UserRole)
-
-    def unsaved_changes_confirmation(self):
-        """Check if there are unsaved changes and ask the user to confirm the action resulting in their loss.
-
-        Returns:
-            bool: True if no unsaved changes or user confirms the action, otherwise False.
-        """
-        if self.current_profile_id and self.profile_settings_changed() and not self.confirmation_dialog(
-            _("There are unsaved changes to the current profile settings.  Do you want to continue and lose these changes?")
-        ):
-            return False
-        return True
-
-    def confirmation_dialog(self, message):
-        """Displays a confirmation dialog.
-
-        Args:
-            message (str): Message to be displayed
-
-        Returns:
-            bool: True if accepted, otherwise False.
-        """
-        dialog = QtWidgets.QMessageBox(
-            QtWidgets.QMessageBox.Warning,
-            _('Confirm'),
-            message,
-            QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel,
-            # self
-        )
-        return dialog.exec_() == QtWidgets.QMessageBox.Ok
