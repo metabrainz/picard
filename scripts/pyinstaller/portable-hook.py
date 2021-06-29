@@ -28,6 +28,7 @@ from picard import (
     PICARD_ORG_NAME,
 )
 import picard.const
+import picard.const.appdirs
 
 
 # The portable version stores all data in a folder beside the executable
@@ -41,9 +42,13 @@ if '--config-file' not in sys.argv and '-c' not in sys.argv:
     sys.argv.append(os.path.join(basedir, 'Config.ini'))
 
 # Setup plugin folder
-picard.const.USER_PLUGIN_DIR = os.path.normpath(os.path.join(basedir, 'Plugins'))
+plugindir = os.path.normpath(os.path.join(basedir, 'Plugins'))
+picard.const.USER_PLUGIN_DIR = plugindir
 
 # Set standard cache location
 cachedir = os.path.normpath(os.path.join(basedir, 'Cache'))
 os.makedirs(cachedir, exist_ok=True)
-picard.const.CACHE_DIR = cachedir
+
+picard.const.appdirs.config_folder = lambda: basedir
+picard.const.appdirs.cache_folder = lambda: cachedir
+picard.const.appdirs.plugin_folder = lambda: plugindir

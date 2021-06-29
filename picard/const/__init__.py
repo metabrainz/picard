@@ -34,28 +34,20 @@
 
 import builtins
 from collections import OrderedDict
-import os
 
-from PyQt5.QtCore import QStandardPaths
-
-from picard import (
-    PICARD_APP_NAME,
-    PICARD_ORG_NAME,
-    PICARD_VERSION,
-)
+from picard import PICARD_VERSION
 from picard.const.attributes import MB_ATTRIBUTES
+from picard.const import appdirs
 
 # Install gettext "noop" function in case const.py gets imported directly.
 builtins.__dict__['N_'] = lambda a: a
 
 
 # Config directory
-_appconfiglocation = QStandardPaths.writableLocation(QStandardPaths.AppConfigLocation)
-USER_DIR = os.path.normpath(os.path.join(_appconfiglocation, PICARD_ORG_NAME, PICARD_APP_NAME))
-USER_PLUGIN_DIR = os.path.normpath(os.path.join(USER_DIR, "plugins"))
+USER_DIR = appdirs.config_folder()
+USER_PLUGIN_DIR = appdirs.plugin_folder()
 
 # Network Cache default settings
-CACHE_DIR = os.path.normpath(QStandardPaths.writableLocation(QStandardPaths.CacheLocation))
 CACHE_SIZE_IN_BYTES = 100*1000*1000
 
 # AcousticBrainz
