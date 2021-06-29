@@ -1114,10 +1114,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         options_dialog.finished.connect(self.options_closed)
         if self.script_editor_dialog is not None:
             # Disable signal processing to avoid saving changes not processed with "Make It So!"
-            self.script_editor_dialog.signal_save.disconnect()
-            self.script_editor_dialog.signal_selection_changed.disconnect()
-            self.script_editor_dialog.signal_update_scripts_list.disconnect()
-            self.script_editor_dialog.signal_index_changed.disconnect()
+            for signal in self.script_editor_signals:
+                signal.disconnect()
 
         return options_dialog
 
@@ -1614,6 +1612,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.script_editor_dialog.signal_update_scripts_list.connect(self.update_scripts_list_from_editor)
         self.script_editor_dialog.signal_index_changed.connect(self.script_editor_index_changed)
         self.script_editor_dialog.finished.connect(self.script_editor_closed)
+        # Create list of signals to disconnect when opening Options dialog.
+        # Do not include `finished` because that is still used to clean up
+        # locally when the editor is closed from the Options dialog.
+        self.script_editor_signals = [
+            self.script_editor_dialog.signal_save,
+            self.script_editor_dialog.signal_selection_changed,
+            self.script_editor_dialog.signal_update_scripts_list,
+            self.script_editor_dialog.signal_index_changed,
+        ]
         self.show_script_editor_action.setEnabled(False)
 
     def script_editor_save(self):
