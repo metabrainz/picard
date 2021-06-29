@@ -200,8 +200,7 @@ class RenamingOptionsPage(OptionsPage):
             self.tagger.window.script_editor_is_open = True
 
     def script_editor_dialog_close(self):
-        if not self.script_editor_dialog.loading:
-            self.tagger.window.script_editor_is_open = False
+        self.tagger.window.script_editor_is_open = False
         self.script_editor_dialog = None
 
     def show_scripting_documentation(self):
