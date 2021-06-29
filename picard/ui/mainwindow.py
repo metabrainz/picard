@@ -210,7 +210,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 self.player.error.connect(self._on_player_error)
 
         self.script_editor_dialog = None
-        self.script_editor_is_open = False
         self.examples = None
 
         self.check_and_repair_profiles()
@@ -1113,7 +1112,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show_options(self, page=None):
         options_dialog = OptionsDialog.show_instance(page, self)
         options_dialog.finished.connect(self.options_closed)
-        if self.script_editor_is_open:
+        if self.script_editor_dialog is not None:
             # Disable signal processing to avoid saving changes not processed with "Make It So!"
             self.script_editor_dialog.signal_save.disconnect()
             self.script_editor_dialog.signal_selection_changed.disconnect()
@@ -1123,7 +1122,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         return options_dialog
 
     def options_closed(self):
-        if self.script_editor_is_open:
+        if self.script_editor_dialog is not None:
             self.open_file_naming_script_editor()
             self.script_editor_dialog.show()
         else:
@@ -1616,7 +1615,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.script_editor_dialog.signal_index_changed.connect(self.script_editor_index_changed)
         self.script_editor_dialog.finished.connect(self.script_editor_closed)
         self.show_script_editor_action.setEnabled(False)
-        self.script_editor_is_open = True
 
     def script_editor_save(self):
         """Process "signal_save" signal from the script editor.
@@ -1631,7 +1629,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """Process "finished" signal from the script editor.
         """
         self.show_script_editor_action.setEnabled(True)
-        self.script_editor_is_open = False
         self.script_editor_dialog = None
 
     def update_script_editor_example_files(self):

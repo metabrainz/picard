@@ -231,6 +231,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         for page in self.pages:
             page.load()
         if parent and parent.script_editor_is_open:
+        if parent and parent.script_editor_dialog is not None:
             self.get_page('filerenaming').show_script_editing_page()
 
     def get_page(self, name):
