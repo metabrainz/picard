@@ -56,8 +56,8 @@ from picard import (
 )
 from picard.config import get_config
 from picard.const import (
-    CACHE_DIR,
     CACHE_SIZE_IN_BYTES,
+    appdirs,
 )
 from picard.oauth import OAuthManager
 from picard.util import (
@@ -324,7 +324,7 @@ class WebService(QtCore.QObject):
         if cache_size_in_bytes is None:
             cache_size_in_bytes = CACHE_SIZE_IN_BYTES
         cache = QtNetwork.QNetworkDiskCache()
-        cache.setCacheDirectory(os.path.join(CACHE_DIR, 'network'))
+        cache.setCacheDirectory(os.path.join(appdirs.cache_folder(), 'network'))
         cache.setMaximumCacheSize(cache_size_in_bytes)
         self.manager.setCache(cache)
         log.debug("NetworkDiskCache dir: %r current size: %s max size: %s",
