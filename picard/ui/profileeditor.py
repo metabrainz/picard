@@ -250,39 +250,14 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
     def make_setting_value_text(self, key, value):
         ITEMS_TEMPLATE = "\n  - %s"
         NONE_TEXT = _("None")
-        config = get_config()
-        flag = False
         if value is None:
             value_text = "None"
         elif key == "selected_file_naming_script_id":
-            presets = {x["id"]: x["title"] for x in get_file_naming_script_presets()}
-            if value in config.setting["file_renaming_scripts"]:
-                value_text = config.setting["file_renaming_scripts"][value]["title"]
-            elif value in presets:
-                value_text = presets[value]
-            else:
-                value_text = _("Unknown script")
+            value_text = self.get_file_naming_script_name(value)
         elif key == "list_of_scripts":
-            if config.setting[key]:
-                scripts = config.setting[key]
-                value_text = _("Enabled tagging scripts of %i found:") % len(scripts)
-                for (pos, name, enabled, script) in scripts:
-                    if enabled:
-                        flag = True
-                        value_text += ITEMS_TEMPLATE % name
-                if not flag:
-                    value_text += " %s" % NONE_TEXT
-            else:
-                value_text = _("No scripts in list")
+            value_text = self.get_list_of_enabled_scripts(key, ITEMS_TEMPLATE, NONE_TEXT)
         elif key == "ca_providers":
-            providers = config.setting[key]
-            value_text = _("Enabled providers of %i listed:") % len(providers)
-            for (name, enabled) in providers:
-                if enabled:
-                    flag = True
-                    value_text += ITEMS_TEMPLATE % name
-            if not flag:
-                value_text += " %s" % NONE_TEXT
+            value_text = self.get_list_of_enabled_ca_providers(key, ITEMS_TEMPLATE, NONE_TEXT)
         elif isinstance(value, str):
             value_text = '"%s"' % value
         elif type(value) in {bool, int, float}:
@@ -291,6 +266,44 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
             value_text = _("List of %i items") % len(value)
         else:
             value_text = _("Unknown value format")
+        return value_text
+
+    def get_file_naming_script_name(self, script_id):
+        config = get_config()
+        if script_id in config.setting["file_renaming_scripts"]:
+            return config.setting["file_renaming_scripts"][script_id]["title"]
+        presets = {x["id"]: x["title"] for x in get_file_naming_script_presets()}
+        if script_id in presets:
+            return presets[script_id]
+        return _("Unknown script")
+
+    def get_list_of_enabled_scripts(self, key, ITEMS_TEMPLATE, NONE_TEXT):
+        config = get_config()
+        flag = False
+        if config.setting[key]:
+            scripts = config.setting[key]
+            value_text = _("Enabled tagging scripts of %i found:") % len(scripts)
+            for (pos, name, enabled, script) in scripts:
+                if enabled:
+                    flag = True
+                    value_text += ITEMS_TEMPLATE % name
+            if not flag:
+                value_text += " %s" % NONE_TEXT
+        else:
+            value_text = _("No scripts in list")
+        return value_text
+
+    def get_list_of_enabled_ca_providers(self, key, ITEMS_TEMPLATE, NONE_TEXT):
+        config = get_config()
+        flag = False
+        providers = config.setting[key]
+        value_text = _("Enabled providers of %i listed:") % len(providers)
+        for (name, enabled) in providers:
+            if enabled:
+                flag = True
+                value_text += ITEMS_TEMPLATE % name
+        if not flag:
+            value_text += " %s" % NONE_TEXT
         return value_text
 
     def current_item_changed(self, new_item, old_item):
