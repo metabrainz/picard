@@ -251,22 +251,20 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         ITEMS_TEMPLATE = "\n  - %s"
         NONE_TEXT = _("None")
         if value is None:
-            value_text = "None"
-        elif key == "selected_file_naming_script_id":
-            value_text = self.get_file_naming_script_name(value)
-        elif key == "list_of_scripts":
-            value_text = self.get_list_of_enabled_scripts(key, ITEMS_TEMPLATE, NONE_TEXT)
-        elif key == "ca_providers":
-            value_text = self.get_list_of_enabled_ca_providers(key, ITEMS_TEMPLATE, NONE_TEXT)
-        elif isinstance(value, str):
-            value_text = '"%s"' % value
-        elif type(value) in {bool, int, float}:
-            value_text = str(value)
-        elif type(value) in {set, tuple, list, dict}:
-            value_text = _("List of %i items") % len(value)
-        else:
-            value_text = _("Unknown value format")
-        return value_text
+            return _("Value not set")
+        if key == "selected_file_naming_script_id":
+            return self.get_file_naming_script_name(value)
+        if key == "list_of_scripts":
+            return self.get_list_of_enabled_scripts(key, ITEMS_TEMPLATE, NONE_TEXT)
+        if key == "ca_providers":
+            return self.get_list_of_enabled_ca_providers(key, ITEMS_TEMPLATE, NONE_TEXT)
+        if isinstance(value, str):
+            return '"%s"' % value
+        if type(value) in {bool, int, float}:
+            return str(value)
+        if type(value) in {set, tuple, list, dict}:
+            return _("List of %i items") % len(value)
+        return _("Unknown value format")
 
     def get_file_naming_script_name(self, script_id):
         config = get_config()
