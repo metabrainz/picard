@@ -35,6 +35,7 @@ from picard.config import (
 )
 from picard.const import PICARD_URLS
 from picard.profile import UserProfileGroups
+from picard.script import get_file_naming_script_presets
 
 from picard.ui import (
     PicardDialog,
@@ -235,11 +236,62 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
                 child_item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsUserCheckable)
                 state = QtCore.Qt.Checked if settings and setting.name in settings else QtCore.Qt.Unchecked
                 child_item.setCheckState(self.TREEWIDGETITEM_COLUMN, state)
+                if settings and setting.name in settings and settings[setting.name] is not None:
+                    value = settings[setting.name]
+                else:
+                    value = None
+                child_item.setToolTip(self.TREEWIDGETITEM_COLUMN, self.make_setting_value_text(setting.name, value))
                 widget_item.addChild(child_item)
             self.ui.settings_tree.addTopLevelItem(widget_item)
             if title in self.expanded_sections:
                 widget_item.setExpanded(True)
         self.building_tree = False
+
+    def make_setting_value_text(self, key, value):
+        ITEMS_TEMPLATE = "\n  - %s"
+        NONE_TEXT = _("None")
+        config = get_config()
+        flag = False
+        if value is None:
+            value_text = "None"
+        elif key == "selected_file_naming_script_id":
+            presets = {x["id"]: x["title"] for x in get_file_naming_script_presets()}
+            if value in config.setting["file_renaming_scripts"]:
+                value_text = config.setting["file_renaming_scripts"][value]["title"]
+            elif value in presets:
+                value_text = presets[value]
+            else:
+                value_text = _("Unknown script")
+        elif key == "list_of_scripts":
+            if config.setting[key]:
+                scripts = config.setting[key]
+                value_text = _("Enabled tagging scripts of %i found:") % len(scripts)
+                for (pos, name, enabled, script) in scripts:
+                    if enabled:
+                        flag = True
+                        value_text += ITEMS_TEMPLATE % name
+                if not flag:
+                    value_text += " %s" % NONE_TEXT
+            else:
+                value_text = _("No scripts in list")
+        elif key == "ca_providers":
+            providers = config.setting[key]
+            value_text = _("Enabled providers of %i listed:") % len(providers)
+            for (name, enabled) in providers:
+                if enabled:
+                    flag = True
+                    value_text += ITEMS_TEMPLATE % name
+            if not flag:
+                value_text += " %s" % NONE_TEXT
+        elif isinstance(value, str):
+            value_text = '"%s"' % value
+        elif type(value) in {bool, int, float}:
+            value_text = str(value)
+        elif type(value) in {set, tuple, list, dict}:
+            value_text = _("List of %i items") % len(value)
+        else:
+            value_text = _("Unknown value format")
+        return value_text
 
     def current_item_changed(self, new_item, old_item):
         """Update the display when a new item is selected in the profile list.
