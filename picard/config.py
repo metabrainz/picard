@@ -185,8 +185,11 @@ class SettingConfigSection(ConfigSection):
         if name in UserProfileGroups.get_all_settings_list():
             for id, settings in self._get_active_profile_settings():
                 if name in settings:
-                    settings[name] = value
-                    self.__qt_config.profiles[self.SETTINGS_KEY][id] = settings
+                    profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY]
+                    profile_settings[id][name] = value
+                    key = self.__qt_config.profiles.key(self.SETTINGS_KEY)
+                    self.__qt_config.setValue(key, profile_settings)
+                    self._memoization[key].dirty = True
                     return
         key = self.key(name)
         self.__qt_config.setValue(key, value)
