@@ -60,6 +60,9 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
     POSITION_KEY = "last_selected_profile_pos"
     EXPANDED_KEY = "profile_settings_tree_expanded_list"
 
+    ITEMS_TEMPLATE = "\n  - %s"
+    NONE_TEXT = N_("None")
+
     TREEWIDGETITEM_COLUMN = 0
 
     options = [
@@ -248,16 +251,14 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         self.building_tree = False
 
     def make_setting_value_text(self, key, value):
-        ITEMS_TEMPLATE = "\n  - %s"
-        NONE_TEXT = _("None")
         if value is None:
             return _("Value not set")
         if key == "selected_file_naming_script_id":
             return self.get_file_naming_script_name(value)
         if key == "list_of_scripts":
-            return self.get_list_of_enabled_scripts(key, ITEMS_TEMPLATE, NONE_TEXT)
+            return self.get_list_of_enabled_scripts()
         if key == "ca_providers":
-            return self.get_list_of_enabled_ca_providers(key, ITEMS_TEMPLATE, NONE_TEXT)
+            return self.get_list_of_enabled_ca_providers()
         if isinstance(value, str):
             return '"%s"' % value
         if type(value) in {bool, int, float}:
@@ -275,33 +276,33 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
             return presets[script_id]
         return _("Unknown script")
 
-    def get_list_of_enabled_scripts(self, key, ITEMS_TEMPLATE, NONE_TEXT):
+    def get_list_of_enabled_scripts(self):
         config = get_config()
-        flag = False
-        if config.setting[key]:
-            scripts = config.setting[key]
+        scripts = config.setting["list_of_scripts"]
+        if scripts:
+            flag = False
             value_text = _("Enabled tagging scripts of %i found:") % len(scripts)
             for (pos, name, enabled, script) in scripts:
                 if enabled:
                     flag = True
-                    value_text += ITEMS_TEMPLATE % name
+                    value_text += self.ITEMS_TEMPLATE % name
             if not flag:
-                value_text += " %s" % NONE_TEXT
+                value_text += " %s" % _(self.NONE_TEXT)
         else:
             value_text = _("No scripts in list")
         return value_text
 
-    def get_list_of_enabled_ca_providers(self, key, ITEMS_TEMPLATE, NONE_TEXT):
+    def get_list_of_enabled_ca_providers(self):
         config = get_config()
-        flag = False
-        providers = config.setting[key]
+        providers = config.setting["ca_providers"]
         value_text = _("Enabled providers of %i listed:") % len(providers)
+        flag = False
         for (name, enabled) in providers:
             if enabled:
                 flag = True
-                value_text += ITEMS_TEMPLATE % name
+                value_text += self.ITEMS_TEMPLATE % name
         if not flag:
-            value_text += " %s" % NONE_TEXT
+            value_text += " %s" % _(self.NONE_TEXT)
         return value_text
 
     def current_item_changed(self, new_item, old_item):
