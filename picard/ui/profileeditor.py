@@ -60,8 +60,8 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
     POSITION_KEY = "last_selected_profile_pos"
     EXPANDED_KEY = "profile_settings_tree_expanded_list"
 
-    ITEMS_TEMPLATE = "\n  - %s"
-    NONE_TEXT = N_("None")
+    ITEMS_TEMPLATE_CHECKED = "\n  ■ %s"
+    ITEMS_TEMPLATE_UNCHECKED = "\n  □ %s"
 
     TREEWIDGETITEM_COLUMN = 0
 
@@ -256,9 +256,9 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         if key == "selected_file_naming_script_id":
             return self.get_file_naming_script_name(value)
         if key == "list_of_scripts":
-            return self.get_list_of_enabled_scripts()
+            return self.get_list_of_scripts()
         if key == "ca_providers":
-            return self.get_list_of_enabled_ca_providers()
+            return self.get_list_of_ca_providers()
         if isinstance(value, str):
             return '"%s"' % value
         if type(value) in {bool, int, float}:
@@ -276,33 +276,29 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
             return presets[script_id]
         return _("Unknown script")
 
-    def get_list_of_enabled_scripts(self):
+    def get_list_of_scripts(self):
         config = get_config()
         scripts = config.setting["list_of_scripts"]
         if scripts:
-            flag = False
-            value_text = _("Enabled tagging scripts of %i found:") % len(scripts)
+            value_text = _("Tagging scripts (%i found):") % len(scripts)
             for (pos, name, enabled, script) in scripts:
                 if enabled:
-                    flag = True
-                    value_text += self.ITEMS_TEMPLATE % name
-            if not flag:
-                value_text += " %s" % _(self.NONE_TEXT)
+                    value_text += self.ITEMS_TEMPLATE_CHECKED % name
+                else:
+                    value_text += self.ITEMS_TEMPLATE_UNCHECKED % name
         else:
             value_text = _("No scripts in list")
         return value_text
 
-    def get_list_of_enabled_ca_providers(self):
+    def get_list_of_ca_providers(self):
         config = get_config()
         providers = config.setting["ca_providers"]
-        value_text = _("Enabled providers of %i listed:") % len(providers)
-        flag = False
+        value_text = _("CA providers (%i found):") % len(providers)
         for (name, enabled) in providers:
             if enabled:
-                flag = True
-                value_text += self.ITEMS_TEMPLATE % name
-        if not flag:
-            value_text += " %s" % _(self.NONE_TEXT)
+                value_text += self.ITEMS_TEMPLATE_CHECKED % name
+            else:
+                value_text += self.ITEMS_TEMPLATE_UNCHECKED % name
         return value_text
 
     def current_item_changed(self, new_item, old_item):
