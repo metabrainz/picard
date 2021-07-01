@@ -94,6 +94,7 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
 
         self.ui.profile_list.currentItemChanged.connect(self.current_item_changed)
         self.ui.profile_list.itemSelectionChanged.connect(self.item_selection_changed)
+        self.ui.profile_list.itemChanged.connect(self.profile_data_changed)
         self.ui.settings_tree.itemChanged.connect(self.save_profile)
         self.ui.settings_tree.expanded.connect(self.update_current_expanded_items_list)
 
@@ -146,6 +147,7 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         for profile in config.profiles[self.PROFILES_KEY]:
             list_item = ProfileListWidgetItem(profile['title'], profile['enabled'], profile['id'])
             self.ui.profile_list.addItem(list_item)
+        self.all_profiles = list(self._all_profiles())
 
         # Select the last selected profile item
         last_selected_profile_pos = config.persist[self.POSITION_KEY]
@@ -252,7 +254,8 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
 
     def make_setting_value_text(self, key, value):
         if value is None:
-            return _("Value not set")
+            profile = self.get_controlling_profile(key)
+            return _("Value not set (set in \"%s\" profile)") % profile
         if key == "selected_file_naming_script_id":
             return self.get_file_naming_script_name(value)
         if key == "list_of_scripts":
@@ -301,6 +304,34 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
                 value_text += self.ITEMS_TEMPLATE_UNCHECKED % name
         return value_text
 
+    def get_controlling_profile(self, key):
+        below_current_profile_flag = False
+        for profile in self.all_profiles:
+            if below_current_profile_flag:
+                if profile["enabled"]:
+                    settings = self.profile_settings[profile["id"]]
+                    if key in settings and settings[key] is not None:
+                        return profile["title"]
+            elif profile["id"] == self.current_profile_id:
+                below_current_profile_flag = True
+        return _("Default")
+
+    def profile_data_changed(self):
+        """Update the profile settings values displayed.
+        """
+        self.all_profiles = list(self._all_profiles())
+        settings = self.get_settings_for_profile(id)
+        for i in range(self.ui.settings_tree.topLevelItemCount()):
+            group = self.ui.settings_tree.topLevelItem(i)
+            for j in range(group.childCount()):
+                child = group.child(j)
+                key = child.data(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.UserRole)
+                if key in settings:
+                    value = settings[key]
+                else:
+                    value = None
+                child.setToolTip(self.TREEWIDGETITEM_COLUMN, self.make_setting_value_text(key, value))
+
     def current_item_changed(self, new_item, old_item):
         """Update the display when a new item is selected in the profile list.
 
@@ -310,8 +341,8 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         """
         if self.loading:
             return
-
         self.save_profile()
+        self.all_profiles = list(self._all_profiles())
         self.set_current_item(new_item)
         self.profile_selected()
 
