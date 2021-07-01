@@ -593,6 +593,13 @@ class ScriptEditorDialog(PicardDialog):
         if not self.loading:
             self.select_script(skip_check=True)
 
+    def reload_after_profile(self):
+        """Update after changes to profile settings.
+        """
+        config = get_config()
+        id = config.setting["selected_file_naming_script_id"]
+        self.set_selected_script_id(id, skip_check=False)
+
     def docs_browser(self):
         """Open the scriping documentation in a browser.
         """
