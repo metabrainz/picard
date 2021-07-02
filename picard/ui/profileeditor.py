@@ -60,9 +60,6 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
     POSITION_KEY = "last_selected_profile_pos"
     EXPANDED_KEY = "profile_settings_tree_expanded_list"
 
-    ITEMS_TEMPLATE_CHECKED = "\n  ■ %s"
-    ITEMS_TEMPLATE_UNCHECKED = "\n  □ %s"
-
     TREEWIDGETITEM_COLUMN = 0
 
     options = [
@@ -78,6 +75,11 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         super().__init__(parent)
 
         self.main_window = parent
+
+        self.ITEMS_TEMPLATES = {
+            True: "\n  ■ %s",
+            False:  "\n  □ %s",
+        }
 
         self.setWindowTitle(_(self.TITLE))
         self.displaying = False
@@ -264,16 +266,17 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
             return self.get_list_of_ca_providers()
         if isinstance(value, str):
             return '"%s"' % value
-        if type(value) in {bool, int, float}:
+        if isinstance(value, bool) or isinstance(value, int) or isinstance(value, float):
             return str(value)
-        if type(value) in {set, tuple, list, dict}:
+        if isinstance(value, set) or isinstance(value, tuple) or isinstance(value, list) or isinstance(value, dict):
             return _("List of %i items") % len(value)
         return _("Unknown value format")
 
     def get_file_naming_script_name(self, script_id):
         config = get_config()
-        if script_id in config.setting["file_renaming_scripts"]:
-            return config.setting["file_renaming_scripts"][script_id]["title"]
+        scripts = config.setting["file_renaming_scripts"]
+        if script_id in scripts:
+            return scripts[script_id]["title"]
         presets = {x["id"]: x["title"] for x in get_file_naming_script_presets()}
         if script_id in presets:
             return presets[script_id]
@@ -285,10 +288,7 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         if scripts:
             value_text = _("Tagging scripts (%i found):") % len(scripts)
             for (pos, name, enabled, script) in scripts:
-                if enabled:
-                    value_text += self.ITEMS_TEMPLATE_CHECKED % name
-                else:
-                    value_text += self.ITEMS_TEMPLATE_UNCHECKED % name
+                value_text += self.ITEMS_TEMPLATES[enabled] % name
         else:
             value_text = _("No scripts in list")
         return value_text
@@ -298,10 +298,7 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         providers = config.setting["ca_providers"]
         value_text = _("CA providers (%i found):") % len(providers)
         for (name, enabled) in providers:
-            if enabled:
-                value_text += self.ITEMS_TEMPLATE_CHECKED % name
-            else:
-                value_text += self.ITEMS_TEMPLATE_UNCHECKED % name
+            value_text += self.ITEMS_TEMPLATES[enabled] % name
         return value_text
 
     def get_controlling_profile(self, key):
