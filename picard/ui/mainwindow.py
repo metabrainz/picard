@@ -1627,7 +1627,21 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.script_editor_save()
 
     def open_profile_editor(self):
-        return ProfileEditorDialog.show_instance(self)
+        self.profile_editor_dialog = ProfileEditorDialog.show_instance(self)
+        self.profile_editor_dialog.finished.connect(self.profile_editor_dialog_finished)
+
+    def profile_editor_dialog_finished(self):
+        """Update menu bar entries to reflect any changes in profile selection.
+        """
+        config = get_config()
+        self.profile_editor_dialog.finished.disconnect()
+        self.profile_editor_dialog = None
+        self.enable_renaming_action.setChecked(config.setting["rename_files"])
+        self.enable_moving_action.setChecked(config.setting["move_files"])
+        self.enable_tag_saving_action.setChecked(not config.setting["dont_write_tags"])
+        self.make_script_selector_menu()
+        if self.script_editor_dialog:
+            self.script_editor_dialog.reload_after_profile()
 
 
 def update_last_check_date(is_success):
