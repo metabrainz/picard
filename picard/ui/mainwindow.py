@@ -46,6 +46,7 @@
 
 
 from collections import OrderedDict
+from copy import deepcopy
 import datetime
 from functools import partial
 import os.path
@@ -71,6 +72,7 @@ from picard.config import (
     FloatOption,
     IntOption,
     Option,
+    SettingConfigSection,
     TextOption,
     get_config,
 )
@@ -1511,13 +1513,47 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             callback=update_last_check_date
         )
 
-    def make_script_selector_menu(self, config=None):
+    def check_and_repair_profiles(self):
+        """Check the profiles and profile settings and repair the values if required.
+        Checks that there is a settings dictionary for each profile, and that no profiles
+        reference a non-existant file naming script.
+        """
+        script_id_key = "selected_file_naming_script_id"
+        config = get_config()
+        naming_scripts = config.setting["file_renaming_scripts"]
+        naming_script_ids = set(naming_scripts.keys()) | set(item["id"] for item in get_file_naming_script_presets())
+        profile_settings = deepcopy(config.profiles[SettingConfigSection.SETTINGS_KEY])
+        for profile in config.profiles[SettingConfigSection.PROFILES_KEY]:
+            p_id = profile["id"]
+            # Add empty settings if none found for a profile
+            if p_id not in profile_settings:
+                log.warning(
+                    "No settings dict found for profile '%s' (\"%s\").  Adding empty dict.",
+                    p_id,
+                    profile["title"],
+                )
+                profile_settings[p_id] = {}
+            # Remove any invalid naming script ids from profiles
+            if script_id_key in profile_settings[p_id]:
+                if profile_settings[p_id][script_id_key] not in naming_script_ids:
+                    log.warning(
+                        "Removing invalid naming script id '%s' from profile '%s' (\"%s\")",
+                        profile_settings[p_id][script_id_key],
+                        p_id,
+                        profile["title"],
+                    )
+                    profile_settings[p_id][script_id_key] = None
+        config.profiles[SettingConfigSection.SETTINGS_KEY] = profile_settings
+
+    def make_script_selector_menu(self):
         """Update the sub-menu of available file naming scripts.
         """
-        if config is None:
-            config = get_config()
+        self.check_and_repair_profiles()
+
+        config = get_config()
         naming_scripts = config.setting["file_renaming_scripts"]
         selected_script_id = config.setting["selected_file_naming_script_id"]
+
         self.script_quick_selector_menu.clear()
 
         group = QtWidgets.QActionGroup(self.script_quick_selector_menu)
@@ -1547,7 +1583,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         log.debug("Setting naming script to: %s", id)
         config.setting["selected_file_naming_script_id"] = id
-        self.make_script_selector_menu(config=config)
+        self.make_script_selector_menu()
         if self.script_editor_dialog:
             self.script_editor_dialog.set_selected_script_id(id, skip_check=False)
 
@@ -1583,7 +1619,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config.setting["file_renaming_scripts"] = self.script_editor_dialog.naming_scripts
         script_item = self.script_editor_dialog.get_selected_item()
         config.setting["selected_file_naming_script_id"] = script_item["id"]
-        self.make_script_selector_menu(config=config)
+        self.make_script_selector_menu()
 
     def script_editor_closed(self):
         """Process "finished" signal from the script editor.
