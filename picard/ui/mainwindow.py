@@ -212,6 +212,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.script_editor_dialog = None
         self.examples = None
 
+        self.check_and_repair_profiles()
+
         self.setupUi()
 
     def setupUi(self):
@@ -1548,8 +1550,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def make_script_selector_menu(self):
         """Update the sub-menu of available file naming scripts.
         """
-        self.check_and_repair_profiles()
-
         config = get_config()
         naming_scripts = config.setting["file_renaming_scripts"]
         selected_script_id = config.setting["selected_file_naming_script_id"]
