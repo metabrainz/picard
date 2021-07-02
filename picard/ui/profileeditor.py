@@ -94,6 +94,7 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         self.move_view = MoveableListView(self.ui.profile_list, self.ui.move_up_button,
                                           self.ui.move_down_button)
 
+        self.ui.profile_list.itemChanged.connect(self.profile_item_changed)
         self.ui.profile_list.currentItemChanged.connect(self.current_item_changed)
         self.ui.profile_list.itemSelectionChanged.connect(self.item_selection_changed)
         self.ui.profile_list.itemChanged.connect(self.profile_data_changed)
@@ -328,6 +329,27 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
                 else:
                     value = None
                 child.setToolTip(self.TREEWIDGETITEM_COLUMN, self.make_setting_value_text(key, value))
+
+    def profile_item_changed(self, item):
+        """Check title is not blank and remove leading and trailing spaces.
+
+        Args:
+            item (ProfileListWidgetItem): Item that changed
+        """
+        if not self.loading:
+            text = item.text().strip()
+            if not text:
+                QtWidgets.QMessageBox(
+                    QtWidgets.QMessageBox.Warning,
+                    _("Invalid Title"),
+                    _("The profile title cannot be blank."),
+                    QtWidgets.QMessageBox.Ok,
+                    self
+                ).exec_()
+                item.setText(_("Unnamed profile"))
+            elif text != item.text():
+                # Remove leading and trailing spaces from new title.
+                item.setText(text)
 
     def current_item_changed(self, new_item, old_item):
         """Update the display when a new item is selected in the profile list.
