@@ -35,6 +35,7 @@ from picard import log
 from picard.config import (
     BoolOption,
     Option,
+    SettingConfigSection,
     TextOption,
     get_config,
 )
@@ -391,12 +392,17 @@ class ScriptEditorDialog(PicardDialog):
     TITLE = N_("File naming script editor")
     STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
 
+    PROFILES_KEY = SettingConfigSection.PROFILES_KEY
+    SETTINGS_KEY = SettingConfigSection.SETTINGS_KEY
+    SELECTED_SCRIPT_KEY = "selected_file_naming_script_id"
+    SCRIPTS_LIST_KEY = "file_renaming_scripts"
+
     help_url = PICARD_URLS["doc_naming_script_edit"]
 
     options = [
         BoolOption('persist', 'script_editor_show_documentation', False),
-        Option("setting", "file_renaming_scripts", {}),
-        TextOption("setting", "selected_file_naming_script_id", ""),
+        Option("setting", SCRIPTS_LIST_KEY, {}),
+        TextOption("setting", SELECTED_SCRIPT_KEY, ""),
     ]
 
     signal_save = QtCore.pyqtSignal()
@@ -585,8 +591,8 @@ class ScriptEditorDialog(PicardDialog):
         """
         config = get_config()
         self.examples.settings = config.setting
-        self.naming_scripts = config.setting["file_renaming_scripts"]
-        self.selected_script_id = config.setting["selected_file_naming_script_id"]
+        self.naming_scripts = config.setting[self.SCRIPTS_LIST_KEY]
+        self.selected_script_id = config.setting[self.SELECTED_SCRIPT_KEY]
         self.selected_script_index = 0
         self.restore_selected_script_index = 0
         self.populate_script_selector()
@@ -855,6 +861,16 @@ class ScriptEditorDialog(PicardDialog):
     def delete_script(self):
         """Removes the currently selected script from the script selection combo box and script list.
         """
+        profile = self.is_used_in_profile()
+        if profile is not None:
+            QtWidgets.QMessageBox(
+                QtWidgets.QMessageBox.Warning,
+                _("Error Deleting Script"),
+                _("The script could not be deleted because it is used in one of the user profiles.\n\nProfile: %s") % profile,
+                QtWidgets.QMessageBox.Ok,
+                self
+            ).exec_()
+            return
         if confirmation_dialog(self, _('Are you sure that you want to delete the script?')):
             idx = self.ui.preset_naming_scripts.currentIndex()
             self.ui.preset_naming_scripts.blockSignals(True)
@@ -866,6 +882,21 @@ class ScriptEditorDialog(PicardDialog):
             self.selected_script_index = idx
             self.update_scripts_list()
             self.select_script(skip_check=True)
+
+    def is_used_in_profile(self):
+        """Check if the currently selected script is included in any profile settings.
+
+        Returns:
+            str: Profile name if the script is used in a profile otherwise None
+        """
+        config = get_config()
+        profiles = config.profiles[self.PROFILES_KEY]
+        profile_settings = config.profiles[self.SETTINGS_KEY]
+        for profile in profiles:
+            settings = profile_settings[profile["id"]]
+            if self.SELECTED_SCRIPT_KEY in settings and settings[self.SELECTED_SCRIPT_KEY] == self.selected_script_id:
+                return profile["title"]
+        return None
 
     def save_script(self):
         """Saves changes to the current script to the script list and combo box item.
