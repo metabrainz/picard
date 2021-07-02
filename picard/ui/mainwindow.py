@@ -1523,7 +1523,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         script_id_key = "selected_file_naming_script_id"
         config = get_config()
         naming_scripts = config.setting["file_renaming_scripts"]
-        naming_script_ids = set(naming_scripts.keys()) | set(item["id"] for item in get_file_naming_script_presets())
+        naming_script_ids = set(naming_scripts.keys())
+        naming_script_ids |= set(item["id"] for item in get_file_naming_script_presets())
         profile_settings = deepcopy(config.profiles[SettingConfigSection.SETTINGS_KEY])
         for profile in config.profiles[SettingConfigSection.PROFILES_KEY]:
             p_id = profile["id"]
