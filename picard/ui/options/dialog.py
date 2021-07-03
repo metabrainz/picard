@@ -197,7 +197,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 self.disable_page(page.NAME)
         self.ui.pages_tree.setCurrentItem(self.default_item)
 
-        self.first_paint = True
+        self.first_enter = True
         self.installEventFilter(self)
 
     def show_profile_help(self):
@@ -238,9 +238,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         """Process selected events.
         """
         evtype = event.type()
-        if evtype == QtCore.QEvent.Paint:
-            if self.first_paint:
-                self.first_paint = False
+        if evtype == QtCore.QEvent.Enter:
+            if self.first_enter:
+                self.first_enter = False
                 if self.tagger and self.tagger.window.script_editor_dialog is not None:
                     self.get_page('filerenaming').show_script_editing_page()
                     self.activateWindow()
