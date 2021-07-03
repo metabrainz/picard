@@ -197,6 +197,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 self.disable_page(page.NAME)
         self.ui.pages_tree.setCurrentItem(self.default_item)
 
+        self.first_paint = True
+        self.installEventFilter(self)
+
     def show_profile_help(self):
         """Open the profile documentation in a browser.
         """
@@ -231,12 +234,17 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         for page in self.pages:
             page.load()
 
-    def activateWindow(self):
-        super().activateWindow()
-        if self.first_activation:
-            self.first_activation = False
-            if self.tagger and self.tagger.window.script_editor_dialog is not None:
-                self.get_page('filerenaming').show_script_editing_page()
+    def eventFilter(self, object, event):
+        """Process selected events.
+        """
+        evtype = event.type()
+        if evtype == QtCore.QEvent.Paint:
+            if self.first_paint:
+                self.first_paint = False
+                if self.tagger and self.tagger.window.script_editor_dialog is not None:
+                    self.get_page('filerenaming').show_script_editing_page()
+                    self.activateWindow()
+        return False
 
     def get_page(self, name):
         return self.item_to_page[self.page_to_item[name]]
