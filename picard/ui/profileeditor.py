@@ -99,7 +99,8 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         self.ui.profile_list.itemSelectionChanged.connect(self.item_selection_changed)
         self.ui.profile_list.itemChanged.connect(self.profile_data_changed)
         self.ui.settings_tree.itemChanged.connect(self.save_profile)
-        self.ui.settings_tree.expanded.connect(self.update_current_expanded_items_list)
+        self.ui.settings_tree.itemExpanded.connect(self.update_current_expanded_items_list)
+        self.ui.settings_tree.itemCollapsed.connect(self.update_current_expanded_items_list)
 
         self.current_profile_id = None
         self.expanded_sections = []
