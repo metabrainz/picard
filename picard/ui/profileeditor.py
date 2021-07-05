@@ -50,7 +50,7 @@ from picard.ui.widgets.profilelistwidget import ProfileListWidgetItem
 class ProfileEditorDialog(SingletonDialog, PicardDialog):
     """User Profile Editor Page
     """
-    TITLE = N_("User profile editor")
+    TITLE = N_("Option profile editor")
     STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
 
     help_url = PICARD_URLS["doc_profile_edit"]
@@ -70,7 +70,7 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
     signal_save = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):
-        """User profile editor.
+        """Option profile editor.
         """
         super().__init__(parent)
 
