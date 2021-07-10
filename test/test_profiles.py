@@ -173,6 +173,31 @@ class TestUserProfiles(TestPicardProfilesCommon):
         self.assertEqual(self.config.setting[self.test_setting_1], False)
         self.assertEqual(self.config.setting[self.test_setting_2], 99)
 
+        # Test retrieval with profiles disabled and specific profile set
+        self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=False)
+        self.config.setting.set_profile("test_key_0")
+        self.assertEqual(self.config.setting[self.test_setting_0], "def")
+        self.assertEqual(self.config.setting[self.test_setting_1], True)
+        self.assertEqual(self.config.setting[self.test_setting_2], 86)
+
+        # Test setting with profiles disabled and specific profile set
+        self.config.setting[self.test_setting_0] = "jkl"
+        self.assertEqual(self.config.setting[self.test_setting_0], "jkl")
+        self.assertEqual(self.config.setting[self.test_setting_1], True)
+        self.assertEqual(self.config.setting[self.test_setting_2], 86)
+
+        # Test retrieval with profiles disabled and no specific profile set
+        self.config.setting.set_profile()
+        self.assertEqual(self.config.setting[self.test_setting_0], "ghi")
+        self.assertEqual(self.config.setting[self.test_setting_1], True)
+        self.assertEqual(self.config.setting[self.test_setting_2], 86)
+
+        # Test retrieval with profiles enabled and no specific profile set
+        self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=True)
+        self.assertEqual(self.config.setting[self.test_setting_0], "jkl")
+        self.assertEqual(self.config.setting[self.test_setting_1], False)
+        self.assertEqual(self.config.setting[self.test_setting_2], 99)
+
     def test_config_option_rename(self):
         from picard.config_upgrade import rename_option
         self.config.setting[self.test_setting_0] = "abc"
