@@ -98,6 +98,19 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QDialogButtonBox" name="profiles_buttonbox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="standardButtons">
+        <set>QDialogButtonBox::NoButton</set>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>

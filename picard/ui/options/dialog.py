@@ -42,7 +42,10 @@ from picard.config import (
     TextOption,
     get_config,
 )
-from picard.util import restore_method
+from picard.util import (
+    restore_method,
+    webbrowser2,
+)
 
 from picard.ui import (
     HashableTreeWidgetItem,
@@ -132,6 +135,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.ui.reset_button.clicked.connect(self.confirm_reset)
         self.ui.buttonbox.helpRequested.connect(self.show_help)
 
+        profile_help = StandardButton(StandardButton.HELP)
+        profile_help.setText(_("Profile Help"))
+        self.ui.profiles_buttonbox.addButton(profile_help, QtWidgets.QDialogButtonBox.HelpRole)
+        self.ui.profiles_buttonbox.helpRequested.connect(self.show_profile_help)
+
         self.pages = []
         for Page in page_classes:
             try:
@@ -174,6 +182,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             self.ui.save_to_profile.addItem(item["title"], item["id"],)
         self.ui.save_to_profile.setCurrentIndex(0)
         self.ui.save_to_profile.currentIndexChanged.connect(self.switch_profile)
+
+    def show_profile_help(self):
+        """Open the profile documentation in a browser.
+        """
+        webbrowser2.open('doc_profile_edit')
 
     def switch_profile(self, index):
         profile_id = self.ui.save_to_profile.currentData()
