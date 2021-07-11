@@ -209,7 +209,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             message_box.setIcon(QtWidgets.QMessageBox.Information)
             message_box.setWindowModality(QtCore.Qt.WindowModal)
             message_box.setWindowTitle(window_title)
-            message_box.setText(_("This page does not have any options that can be managed using profiles."))
+            message_box.setText(_("The options on this page are not currently available to be managed using profiles."))
             message_box.setStandardButtons(QtWidgets.QMessageBox.Ok)
             return message_box.exec_()
 
