@@ -183,13 +183,17 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 self.disable_page(page.NAME)
         self.ui.pages_tree.setCurrentItem(self.default_item)
 
-        self.ui.save_to_profile.clear()
-        self.ui.save_to_profile.addItem(_("Automatically select profile"), None)
         config = get_config()
-        for item in config.profiles[SettingConfigSection.PROFILES_KEY]:
-            self.ui.save_to_profile.addItem(item["title"], item["id"],)
-        self.ui.save_to_profile.setCurrentIndex(0)
-        self.ui.save_to_profile.currentIndexChanged.connect(self.switch_profile)
+        if config.profiles[SettingConfigSection.PROFILES_KEY]:
+            self.ui.profile_frame.show()
+            self.ui.save_to_profile.clear()
+            self.ui.save_to_profile.addItem(_("Automatically select profile"), None)
+            for item in config.profiles[SettingConfigSection.PROFILES_KEY]:
+                self.ui.save_to_profile.addItem(item["title"], item["id"],)
+            self.ui.save_to_profile.setCurrentIndex(0)
+            self.ui.save_to_profile.currentIndexChanged.connect(self.switch_profile)
+        else:
+            self.ui.profile_frame.hide()
 
     def show_profile_help(self):
         """Open the profile documentation in a browser.
