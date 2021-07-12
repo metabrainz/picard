@@ -93,7 +93,7 @@
       <item>
        <widget class="QGroupBox" name="id3v2_text_encoding">
         <property name="title">
-         <string>ID3v2 Text Encoding</string>
+         <string>ID3v2 text encoding</string>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <property name="topMargin">

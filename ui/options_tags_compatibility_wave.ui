@@ -60,7 +60,7 @@
       <item>
        <widget class="QGroupBox" name="wave_riff_info_encoding">
         <property name="title">
-         <string>RIFF INFO Text Encoding</string>
+         <string>RIFF INFO text encoding</string>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>

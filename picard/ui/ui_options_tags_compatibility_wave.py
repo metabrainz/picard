@@ -57,6 +57,6 @@ class Ui_TagsCompatibilityOptionsPage(object):
         self.label.setText(_("Picard will tag WAVE files using ID3v2 tags. This is not supported by all software. For compatibility with software which does not support ID3v2 tags in WAVE files additional RIFF INFO tags can be written to the files. RIFF INFO has only limited support for tags and character encodings."))
         self.write_wave_riff_info.setText(_("Also include RIFF INFO tags in the files"))
         self.remove_wave_riff_info.setText(_("Remove existing RIFF INFO tags from WAVE files"))
-        self.wave_riff_info_encoding.setTitle(_("RIFF INFO Text Encoding"))
+        self.wave_riff_info_encoding.setTitle(_("RIFF INFO text encoding"))
         self.wave_riff_info_enc_cp1252.setText(_("Windows-1252"))
         self.wave_riff_info_enc_utf8.setText(_("UTF-8"))
