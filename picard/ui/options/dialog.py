@@ -273,47 +273,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 log.exception('Failed saving options page %r', page)
                 self._show_page_error(page, e)
                 return
-        if self.ui.save_to_profile.currentIndex():
-            # Display a notification and don't close the dialog if saving to a selected profile.
-            profile_name = self.ui.save_to_profile.currentText()
-            messagebox = self.SettingsSavedMessageBox(timeout=5, parent=self, profile_name=profile_name)
-            messagebox.exec_()
-            return
         self.reset_profile()
         super().accept()
 
     def reject(self):
         self.reset_profile()
         super().reject()
-
-    class SettingsSavedMessageBox(QtWidgets.QMessageBox):
-        def __init__(self, timeout=3, parent=None, profile_name=None):
-            super().__init__(parent)
-            self.setWindowTitle(_("Settings Saved"))
-            self.time_to_wait = timeout
-            self.profile_name = profile_name if profile_name else _("Unknown profile name")
-            # self.main_text = _("Settings saved to the selected profile: {0}\n\n(Automatically close in {1} seconds.)".format(profile_name,))
-            # self.setText(_("Settings saved to the selected profile: {0}".format(profile_name,)))
-            self.make_text()
-            self.setIcon(QtWidgets.QMessageBox.Information)
-            self.setStandardButtons(QtWidgets.QMessageBox.Ok)
-            self.timer = QtCore.QTimer(self)
-            self.timer.setInterval(1000)
-            self.timer.timeout.connect(self.check_timer)
-            self.timer.start()
-
-        def make_text(self):
-            self.setText(_("Settings saved to the selected profile: {0}\n\n(Automatically close in {1} seconds.)".format(self.profile_name, self.time_to_wait)))
-
-        def check_timer(self):
-            self.time_to_wait -= 1
-            self.make_text()
-            if self.time_to_wait <= 0:
-                self.close()
-
-        def closeEvent(self, event):
-            self.timer.stop()
-            event.accept()
 
     @staticmethod
     def reset_profile():
