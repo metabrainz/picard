@@ -148,6 +148,21 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.ui.profiles_buttonbox.addButton(self.ui.attached_profiles_button, QtWidgets.QDialogButtonBox.ActionRole)
         self.ui.attached_profiles_button.clicked.connect(self.show_attached_profiles_dialog)
 
+        config = get_config()
+        # Set initially displayed values to the user's base settings (with no profiles enabled)
+        config.setting.set_profile("user_settings")
+
+        if config.profiles[SettingConfigSection.PROFILES_KEY]:
+            self.ui.profile_frame.show()
+            self.ui.save_to_profile.clear()
+            self.ui.save_to_profile.addItem(_("User base settings"), "user_settings")
+            for item in config.profiles[SettingConfigSection.PROFILES_KEY]:
+                self.ui.save_to_profile.addItem(item["title"], item["id"],)
+            self.ui.save_to_profile.setCurrentIndex(0)
+            self.ui.save_to_profile.currentIndexChanged.connect(self.switch_profile)
+        else:
+            self.ui.profile_frame.hide()
+
         self.pages = []
         for Page in page_classes:
             try:
@@ -159,7 +174,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.page_to_item = {}
         self.default_item = None
         if not default_page:
-            config = get_config()
             default_page = config.persist["options_last_active_page"]
         self.add_pages(None, default_page, self.ui.pages_tree)
 
@@ -182,18 +196,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 log.exception('Failed loading options page %r', page)
                 self.disable_page(page.NAME)
         self.ui.pages_tree.setCurrentItem(self.default_item)
-
-        config = get_config()
-        if config.profiles[SettingConfigSection.PROFILES_KEY]:
-            self.ui.profile_frame.show()
-            self.ui.save_to_profile.clear()
-            self.ui.save_to_profile.addItem(_("Automatically select profile"), None)
-            for item in config.profiles[SettingConfigSection.PROFILES_KEY]:
-                self.ui.save_to_profile.addItem(item["title"], item["id"],)
-            self.ui.save_to_profile.setCurrentIndex(0)
-            self.ui.save_to_profile.currentIndexChanged.connect(self.switch_profile)
-        else:
-            self.ui.profile_frame.hide()
 
     def show_profile_help(self):
         """Open the profile documentation in a browser.

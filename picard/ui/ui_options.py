@@ -80,4 +80,4 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_("Options"))
-        self.label.setText(_("Save to profile:"))
+        self.label.setText(_("Save settings to:"))

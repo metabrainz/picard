@@ -153,6 +153,8 @@ class SettingConfigSection(ConfigSection):
 
     def _get_active_profile_ids(self):
         if self._selected_profile is not None:
+            if self._selected_profile == "user_settings":
+                return
             # Act as if the selected profile is the only active profile.
             yield self._selected_profile
         else:
@@ -192,7 +194,7 @@ class SettingConfigSection(ConfigSection):
                 if name in settings:
                     self._save_profile_setting(id, name, value)
                     return
-        if self._selected_profile is None:
+        if self._selected_profile is None or self._selected_profile == "user_settings":
             key = self.key(name)
             self.__qt_config.setValue(key, value)
             self._memoization[key].dirty = True

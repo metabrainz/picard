@@ -91,7 +91,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Save to profile:</string>
+         <string>Save settings to:</string>
         </property>
        </widget>
       </item>
