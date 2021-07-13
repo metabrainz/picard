@@ -408,17 +408,17 @@ class AttachedProfilesDialog(PicardDialog):
         self.setWindowTitle(window_title)
 
         for name, title in group_options:
-            item = QtGui.QStandardItem(_(title))
-            item.setEditable(False)
-            row = [item]
+            option_item = QtGui.QStandardItem(_(title))
+            option_item.setEditable(False)
+            row = [option_item]
             attached = []
             for profile in profiles:
                 if name in settings[profile["id"]]:
                     attached.append("{0}{1}".format(profile["title"], _(" [Enabled]") if profile["enabled"] else "",))
             attached_profiles = "\n".join(attached) if attached else _("None")
-            item = QtGui.QStandardItem(attached_profiles)
-            item.setEditable(False)
-            row.append(item)
+            profile_item = QtGui.QStandardItem(attached_profiles)
+            profile_item.setEditable(False)
+            row.append(profile_item)
             model.appendRow(row)
 
         self.ui.options_list.setModel(model)
