@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.7.0.dev3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-07-13 08:02+0200\n"
+"POT-Creation-Date: 2021-07-13 10:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -282,8 +282,8 @@ msgstr ""
 msgid "Save APEv2 tags to AC3"
 msgstr ""
 
-#: picard/profile.py:69
-msgid "Remove APEv2tags from AC3 files"
+#: picard/profile.py:69 picard/ui/ui_options_tags_compatibility_ac3.py:49
+msgid "Remove APEv2 tags from AC3 files"
 msgstr ""
 
 #: picard/profile.py:70
@@ -302,8 +302,8 @@ msgstr ""
 msgid "ID3v2.3 join character"
 msgstr ""
 
-#: picard/profile.py:74
-msgid "iTunes compatible grouping and work"
+#: picard/profile.py:74 picard/ui/ui_options_tags_compatibility_id3.py:125
+msgid "Save iTunes compatible grouping and work"
 msgstr ""
 
 #: picard/profile.py:75
@@ -5649,10 +5649,6 @@ msgid ""
 " tags to those files."
 msgstr ""
 
-#: picard/ui/ui_options_tags_compatibility_ac3.py:49
-msgid "Remove APEv2 tags from AC3 files"
-msgstr ""
-
 #: picard/ui/options/tags_compatibility_id3.py:43
 #: picard/ui/ui_options_tags_compatibility_id3.py:115
 msgid "ID3"
@@ -5692,10 +5688,6 @@ msgid ""
 "<html><head/><body><p>Default is '/' to maintain compatibility with "
 "previous Picard releases.</p><p>New alternatives are ';_' or '_/_' or "
 "type your own. </p></body></html>"
-msgstr ""
-
-#: picard/ui/ui_options_tags_compatibility_id3.py:125
-msgid "Save iTunes compatible grouping and work"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility_id3.py:126
