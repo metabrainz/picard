@@ -140,6 +140,14 @@ class TestUserProfiles(TestPicardProfilesCommon):
         self.config.profiles[self.SETTINGS_KEY] = settings
         self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=True)
 
+        # Stack:
+        #                   setting_0   setting_1   setting_2
+        #                   ---------   ---------   ---------
+        # test_key_0:       None        n/a         n/a
+        # test_key_1:       n/a         None        n/a
+        # test_key_2:       n/a         n/a         None
+        # user_settings:    abc         True        42
+
         # Test retrieval with overrides at None
         self.assertEqual(self.config.setting[self.test_setting_0], "abc")
         self.assertEqual(self.config.setting[self.test_setting_1], True)
@@ -149,6 +157,15 @@ class TestUserProfiles(TestPicardProfilesCommon):
         self.config.setting[self.test_setting_0] = "def"
         self.config.setting[self.test_setting_1] = False
         self.config.setting[self.test_setting_2] = 99
+
+        # Stack:
+        #                   setting_0   setting_1   setting_2
+        #                   ---------   ---------   ---------
+        # test_key_0:       def         n/a         n/a
+        # test_key_1:       n/a         False       n/a
+        # test_key_2:       n/a         n/a         99
+        # user_settings:    abc         True        42
+
         self.assertEqual(self.config.setting[self.test_setting_0], "def")
         self.assertEqual(self.config.setting[self.test_setting_1], False)
         self.assertEqual(self.config.setting[self.test_setting_2], 99)
@@ -163,6 +180,15 @@ class TestUserProfiles(TestPicardProfilesCommon):
         self.config.setting[self.test_setting_0] = "ghi"
         self.config.setting[self.test_setting_1] = True
         self.config.setting[self.test_setting_2] = 86
+
+        # Stack:
+        #                   setting_0   setting_1   setting_2
+        #                   ---------   ---------   ---------
+        # test_key_0:       def         n/a         n/a
+        # test_key_1:       n/a         False       n/a
+        # test_key_2:       n/a         n/a         99
+        # user_settings:    ghi         True        86
+
         self.assertEqual(self.config.setting[self.test_setting_0], "ghi")
         self.assertEqual(self.config.setting[self.test_setting_1], True)
         self.assertEqual(self.config.setting[self.test_setting_2], 86)
@@ -182,11 +208,21 @@ class TestUserProfiles(TestPicardProfilesCommon):
 
         # Test setting with profiles disabled and specific profile set
         self.config.setting[self.test_setting_0] = "jkl"
+
+        # Stack:
+        #                   setting_0   setting_1   setting_2
+        #                   ---------   ---------   ---------
+        # test_key_0:       jkl         n/a         n/a
+        # test_key_1:       n/a         False       n/a
+        # test_key_2:       n/a         n/a         99
+        # user_settings:    ghi         True        86
+
         self.assertEqual(self.config.setting[self.test_setting_0], "jkl")
         self.assertEqual(self.config.setting[self.test_setting_1], True)
         self.assertEqual(self.config.setting[self.test_setting_2], 86)
 
         # Test retrieval with profiles disabled and no specific profile set
+        self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=False)
         self.config.setting.set_profile()
         self.assertEqual(self.config.setting[self.test_setting_0], "ghi")
         self.assertEqual(self.config.setting[self.test_setting_1], True)
@@ -194,9 +230,76 @@ class TestUserProfiles(TestPicardProfilesCommon):
 
         # Test retrieval with profiles enabled and no specific profile set
         self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=True)
+        self.config.setting.set_profile()
         self.assertEqual(self.config.setting[self.test_setting_0], "jkl")
         self.assertEqual(self.config.setting[self.test_setting_1], False)
         self.assertEqual(self.config.setting[self.test_setting_2], 99)
+
+        # Test save with profiles disabled and specific profile set
+        self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=False)
+        self.config.setting.set_profile("test_key_2")
+        self.config.setting[self.test_setting_0] = "xyz"
+        self.config.setting[self.test_setting_2] = 1
+
+        # Stack:
+        #                   setting_0   setting_1   setting_2
+        #                   ---------   ---------   ---------
+        # test_key_0:       jkl         n/a         n/a
+        # test_key_1:       n/a         False       n/a
+        # test_key_2:       n/a         n/a         1
+        # user_settings:    ghi         True        86
+
+        self.assertEqual(self.config.setting[self.test_setting_0], "ghi")
+        self.assertEqual(self.config.setting[self.test_setting_1], True)
+        self.assertEqual(self.config.setting[self.test_setting_2], 1)
+        self.config.setting.set_profile()
+        self.assertEqual(self.config.setting[self.test_setting_0], "ghi")
+        self.assertEqual(self.config.setting[self.test_setting_1], True)
+        self.assertEqual(self.config.setting[self.test_setting_2], 86)
+
+        # Test save with profiles enabled and specific profile set
+        self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=True)
+        self.config.setting.set_profile("test_key_2")
+        self.config.setting[self.test_setting_0] = "xyz"
+        self.config.setting[self.test_setting_2] = 2
+
+        # Stack:
+        #                   setting_0   setting_1   setting_2
+        #                   ---------   ---------   ---------
+        # test_key_0:       jkl         n/a         n/a
+        # test_key_1:       n/a         False       n/a
+        # test_key_2:       n/a         n/a         2
+        # user_settings:    ghi         True        86
+
+        self.assertEqual(self.config.setting[self.test_setting_0], "ghi")
+        self.assertEqual(self.config.setting[self.test_setting_1], True)
+        self.assertEqual(self.config.setting[self.test_setting_2], 2)
+        self.config.setting.set_profile()
+        self.assertEqual(self.config.setting[self.test_setting_0], "jkl")
+        self.assertEqual(self.config.setting[self.test_setting_1], False)
+        self.assertEqual(self.config.setting[self.test_setting_2], 2)
+
+        # Test save with profiles enabled and "user_settings" profile set
+        self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=True)
+        self.config.setting.set_profile("user_settings")
+        self.config.setting[self.test_setting_0] = "xyz"
+        self.config.setting[self.test_setting_2] = 3
+
+        # Stack:
+        #                   setting_0   setting_1   setting_2
+        #                   ---------   ---------   ---------
+        # test_key_0:       jkl         n/a         n/a
+        # test_key_1:       n/a         False       n/a
+        # test_key_2:       n/a         n/a         2
+        # user_settings:    xyz         True        3
+
+        self.assertEqual(self.config.setting[self.test_setting_0], "xyz")
+        self.assertEqual(self.config.setting[self.test_setting_1], True)
+        self.assertEqual(self.config.setting[self.test_setting_2], 3)
+        self.config.setting.set_profile()
+        self.assertEqual(self.config.setting[self.test_setting_0], "jkl")
+        self.assertEqual(self.config.setting[self.test_setting_1], False)
+        self.assertEqual(self.config.setting[self.test_setting_2], 2)
 
     def test_config_option_rename(self):
         from picard.config_upgrade import rename_option
