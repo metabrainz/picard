@@ -1408,7 +1408,7 @@ def _split_date(date_to_parse, date_order="ymd", separator="-"):
 
 
 @script_function(documentation=N_(
-    """`$year(date, date_order="ymd", separator="-")`
+    """`$year(date,date_order="ymd",separator="-")`
 
 Returns the year portion of the specified date.  The default order is "ymd" and the default separator is a hyphen.
 The default date order can be changed by specifying either "dmy" or "mdy".  The default separator can be changed by
@@ -1420,7 +1420,7 @@ def func_year(parser, date_to_parse, date_order='ymd', separator="-"):
 
 
 @script_function(documentation=N_(
-    """`$month(date, date_order="ymd", separator="-")`
+    """`$month(date,date_order="ymd",separator="-")`
 
 Returns the month portion of the specified date.  The default order is "ymd" and the default separator is a hyphen.
 The default date order can be changed by specifying either "dmy" or "mdy".  The default separator can be changed by
@@ -1432,7 +1432,7 @@ def func_month(parser, date_to_parse, date_order='ymd', separator="-"):
 
 
 @script_function(documentation=N_(
-    """`$day(date, date_order="ymd", separator="-")`
+    """`$day(date,date_order="ymd",separator="-")`
 
 Returns the day portion of the specified date.  The default order is "ymd" and the default separator is a hyphen.
 The default date order can be changed by specifying either "dmy" or "mdy".  The default separator can be changed by
@@ -1441,3 +1441,37 @@ specifying a different character if required. If the date is invalid an empty st
 ))
 def func_day(parser, date_to_parse, date_order='ymd', separator="-"):
     return _split_date(date_to_parse, date_order, separator)[2]
+
+
+@script_function(documentation=N_(
+    """`$dateformat(date,format="%Y-%m-%d",date_order="ymd",separator="-")`
+
+Returns the input date in the specified `format`, which is based on the standard
+    Python `strftime` [format codes](https://strftime.org/). If no `format` is
+    specified the date will be returned in the form `2020-02-05`.
+
+    The default order for the input date is "ymd" and the default separator is a
+    hyphen.  The default date order can be changed by specifying either "dmy" or
+    "mdy".  The default separator can be changed by specifying a different character
+    if required.
+Note: Platform-specific formatting codes should be avoided to help ensure the
+    portability of scripts across the different platforms.  These codes include:
+    remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and their
+    equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.
+    `%3Y`); and hanging '%' at the end of the format string."""
+))
+def func_dateformat(parser, date_to_parse, date_format=None, date_order='ymd', separator="-"):
+    # Handle case where format evaluates to ''
+    if not date_format:
+        date_format = '%Y-%m-%d'
+    yr, mo, da = _split_date(date_to_parse, date_order, separator)
+    try:
+        date_object = datetime.date(int(yr), int(mo), int(da))
+    except ValueError:
+        stackitem = parser._function_stack.get()
+        raise ScriptRuntimeError(stackitem, "Invalid date")
+    try:
+        return date_object.strftime(date_format)
+    except ValueError:
+        stackitem = parser._function_stack.get()
+        raise ScriptRuntimeError(stackitem, "Unsupported format code")
