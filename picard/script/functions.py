@@ -1381,3 +1381,63 @@ def func_countryname(parser, country_code, translate=""):
     if translate:
         return gettext_countries(name)
     return name
+
+
+def _split_date(date_to_parse, date_order="ymd", separator="-"):
+    """Split the specified date into parts.
+
+    Args:
+        date_to_parse (str): Date string to parse
+        date_order (str, optional): Order of date elements. Can be "ymd", "mdy" or "dmy". Defaults to "ymd".
+        separator (str, optional): Separator between date parts. Defaults to "-".
+
+    Returns:
+        tuple: Tuple of the date parts as (year, month, day)
+    """
+    if separator == '':
+        separator = None
+    parts = date_to_parse.strip().split(separator)
+    parts.extend(['', '', ''])
+    date_order = date_order.lower()
+    if date_order == 'dmy':
+        return parts[2], parts[1], parts[0]
+    elif date_order == 'mdy':
+        return parts[2], parts[0], parts[1]
+    else:
+        return parts[0], parts[1], parts[2]
+
+
+@script_function(documentation=N_(
+    """`$year(date, date_order="ymd", separator="-")`
+
+Returns the year portion of the specified date.  The default order is "ymd" and the default separator is a hyphen.
+The default date order can be changed by specifying either "dmy" or "mdy".  The default separator can be changed by
+specifying a different character if required. If the date is invalid an empty string will be returned.
+"""
+))
+def func_year(parser, date_to_parse, date_order='ymd', separator="-"):
+    return _split_date(date_to_parse, date_order, separator)[0]
+
+
+@script_function(documentation=N_(
+    """`$month(date, date_order="ymd", separator="-")`
+
+Returns the month portion of the specified date.  The default order is "ymd" and the default separator is a hyphen.
+The default date order can be changed by specifying either "dmy" or "mdy".  The default separator can be changed by
+specifying a different character if required. If the date is invalid an empty string will be returned.
+"""
+))
+def func_month(parser, date_to_parse, date_order='ymd', separator="-"):
+    return _split_date(date_to_parse, date_order, separator)[1]
+
+
+@script_function(documentation=N_(
+    """`$day(date, date_order="ymd", separator="-")`
+
+Returns the day portion of the specified date.  The default order is "ymd" and the default separator is a hyphen.
+The default date order can be changed by specifying either "dmy" or "mdy".  The default separator can be changed by
+specifying a different character if required. If the date is invalid an empty string will be returned.
+"""
+))
+def func_day(parser, date_to_parse, date_order='ymd', separator="-"):
+    return _split_date(date_to_parse, date_order, separator)[2]
