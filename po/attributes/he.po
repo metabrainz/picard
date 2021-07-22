@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-04-28 07:20+0000\n"
+"PO-Revision-Date: 2021-07-19 07:43+0000\n"
 "Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -62,7 +62,7 @@ msgstr "דיסקט \"3.5"
 #: DB:medium_format/name:91
 msgctxt "medium_format"
 msgid "5.25\" Floppy Disk"
-msgstr ""
+msgstr "דיסקט 5.25\""
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
@@ -104,7 +104,7 @@ msgctxt "medium_format"
 msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
-msgstr "90 rpm, חיתוך אנכי של תקליטורי שלאק, שיוצרו על ידי המותג Pathé החל מ 1906 עד 1932."
+msgstr "90 rpm, חיתוך אנכי של תקליטורי שלאק, שיוצרו על־ידי המותג Pathé החל מ 1906 עד 1932."
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
@@ -157,7 +157,7 @@ msgctxt "artist_type"
 msgid ""
 "A grouping of multiple musicians who perform together (in some cases, some "
 "or all of the members might differ in different performances or recordings)."
-msgstr ""
+msgstr "קבוצה של מספר מוזיקאים המופיעים יחד (במקרים מסוימים, חלק מהחברים או כולם עשויים להתחלף בהופעות או בהקלטות שונות)."
 
 #: DB:instrument_type/description:7
 msgctxt "instrument_type"
@@ -177,7 +177,7 @@ msgid ""
 "A mass is a choral composition that sets the invariable portions of the "
 "Christian Eucharistic liturgy (Kyrie - Gloria - Credo - Sanctus - Benedictus"
 " - Agnus Dei, with other portions sometimes added) to music."
-msgstr "מסה היא קומפוזיציה מקהלתית המכילה את היסודות הבלתי-נמנעים מהליטורגיה הנוצרית (קירי - גלוריה - קרדו - סנקטוס - בנדיקטוס - אגנוס דיי, עם רכיבים אחרים שנוספות לפעמים) למוזיקה."
+msgstr "מסה היא קומפוזיציה מקהלתית המכילה את היסודות הבלתי־נמנעים מהליטורגיה הנוצרית (קירי - גלוריה - קרדו - סנקטוס - בנדיקטוס - אגנוס דיי, עם רכיבים אחרים שנוספות לפעמים) למוזיקה."
 
 #: DB:event_type/description:5
 msgctxt "event_type"
@@ -297,6 +297,16 @@ msgid ""
 "but not only, one where music is taught)"
 msgstr "בית ספר, אוניברסיטה או מוסד חינוכי דומה אחר (במיוחד, אך לא רק, שבו מלמדים מוזיקה)"
 
+#: DB:series_type/description:14
+msgctxt "series_type"
+msgid "A series of artists honoured by the same award."
+msgstr "סידרת אמנים שכובדו באותו הפרס."
+
+#: DB:series_type/description:13
+msgctxt "series_type"
+msgid "A series of artists."
+msgstr "סדרת אמנים."
+
 #: DB:series_type/description:6
 msgctxt "series_type"
 msgid "A series of events."
@@ -320,7 +330,7 @@ msgstr "סדרה של קונצרטים קשורים לאמן באתרים שונ
 #: DB:series_type/description:12
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in the same location."
-msgstr ""
+msgstr "סדרה של קונצרטים קשורים לאמן באותו אתר."
 
 #: DB:series_type/description:1
 msgctxt "series_type"
@@ -364,7 +374,7 @@ msgctxt "work_type"
 msgid ""
 "A soundtrack is the music that accompanies a film, TV program, videogame, or"
 " even book."
-msgstr "פסקול הוא המוזיקה המלווה סרט, תוכנית טלוויזיה, משחק וידאו, או אפילו ספר."
+msgstr "פסקול הוא המוזיקה המלווה סרט, תוכנית טלוויזיה, משחק חוזי, או אפילו ספר."
 
 #: DB:instrument_type/description:6
 msgctxt "instrument_type"
@@ -432,7 +442,7 @@ msgstr "לה דיאז מינור"
 #: DB:work_attribute_type/name:57
 msgctxt "work_attribute_type"
 msgid "AACIMH ID"
-msgstr ""
+msgstr "מזהה AACIMH"
 
 #: DB:work_attribute_type/name:44
 msgctxt "work_attribute_type"
@@ -447,7 +457,7 @@ msgstr "מזהה ACDAM"
 #: DB:work_attribute_type/name:58
 msgctxt "work_attribute_type"
 msgid "AEI ID"
-msgstr ""
+msgstr "מזהה AEI"
 
 #: DB:work_attribute_type/name:43
 msgctxt "work_attribute_type"
@@ -457,7 +467,7 @@ msgstr "מזהה AGADU"
 #: DB:work_attribute_type/name:63
 msgctxt "work_attribute_type"
 msgid "AKKA/LAA ID"
-msgstr ""
+msgstr "מזהה AKKA/LAA"
 
 #: DB:work_attribute_type/name:23
 msgctxt "work_attribute_type"
@@ -542,12 +552,12 @@ msgstr "אסים טאראב"
 #: DB:work_attribute_type_allowed_value/value:848
 msgctxt "work_attribute_type_allowed_value"
 msgid "Adānā"
-msgstr ""
+msgstr "אדנה"
 
 #: DB:work_attribute_type_allowed_value/value:849
 msgctxt "work_attribute_type_allowed_value"
 msgid "Adānā malhār"
-msgstr ""
+msgstr "אדנה מלהר"
 
 #: DB:work_attribute_type_allowed_value/value:308
 msgctxt "work_attribute_type_allowed_value"
@@ -557,17 +567,17 @@ msgstr "אהנג אי טאראב"
 #: DB:work_attribute_type_allowed_value/value:850
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ahir lalit"
-msgstr ""
+msgstr "אהיר ללית"
 
 #: DB:work_attribute_type_allowed_value/value:851
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ahira bhairav"
-msgstr ""
+msgstr "אהירה בירב"
 
 #: DB:work_attribute_type_allowed_value/value:852
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ahiri tōḍī"
-msgstr ""
+msgstr "אהירי טודי"
 
 #: DB:work_attribute_type_allowed_value/value:309
 msgctxt "work_attribute_type_allowed_value"
@@ -592,7 +602,7 @@ msgstr "אקשאק סמאי אבפרי"
 #: DB:work_attribute_type_allowed_value/value:853
 msgctxt "work_attribute_type_allowed_value"
 msgid "Alahaiyā bilāval"
-msgstr ""
+msgstr "אלהייאה בליאבל"
 
 #: DB:release_group_primary_type/name:1
 msgctxt "release_group_primary_type"
@@ -607,7 +617,7 @@ msgstr "אפשור הגדרה ידנית את המיקום של כל פריט ב
 #: DB:work_attribute_type_allowed_value/value:854
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ambikā"
-msgstr ""
+msgstr "אמביקה"
 
 #: DB:work_attribute_type_allowed_value/value:855
 msgctxt "work_attribute_type_allowed_value"
@@ -617,12 +627,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:40
 msgctxt "work_attribute_type_allowed_value"
 msgid "Amṛtavarṣiṇi"
-msgstr ""
+msgstr "אמרטאבארסיני"
 
 #: DB:work_attribute_type_allowed_value/value:39
 msgctxt "work_attribute_type_allowed_value"
 msgid "Amṛtavāhiṇi"
-msgstr ""
+msgstr "אמרטאואיני"
 
 #: DB:release_status/description:4
 msgctxt "release_status"
@@ -659,7 +669,7 @@ msgctxt "event_type"
 msgid ""
 "An individual concert by a single artist or collaboration, often with "
 "supporting artists who perform before the main act."
-msgstr "קונצרט יחידני, המבוצע על ידי אמן יחיד, או להקה, לעתים קרובות עם אמנים נילווים המופיעים לפני המופע הראשי."
+msgstr "קונצרט יחידני, המבוצע על־ידי אמן יחיד, או להקה, לעתים קרובות עם אמנים נילווים המופיעים לפני המופע הראשי."
 
 #: DB:work_type/description:10
 msgctxt "work_type"
@@ -692,7 +702,7 @@ msgid ""
 "An unofficial/underground release that was not sanctioned by the artist "
 "and/or the record company. This includes unofficial live recordings and "
 "pirated releases."
-msgstr "הוצאה לא רשמית/מחתרתית, שלא אושרה על ידי האמן ו/או חברת התקליטים. בכלל זה הקלטה חיה לא רשמית והוצאות פיראטיות."
+msgstr "הוצאה לא רשמית/מחתרתית, שלא אושרה על־ידי האמן ו/או חברת התקליטים. בכלל זה הקלטה חיה לא רשמית והוצאות פיראטיות."
 
 #: DB:work_type/description:20
 msgctxt "work_type"
@@ -712,7 +722,7 @@ msgctxt "release_status"
 msgid ""
 "Any release officially sanctioned by the artist and/or their record company."
 " Most releases will fit into this category."
-msgstr "כל הוצאה שאושרה רשמית על ידי האמן ו/או חברת התקליטים. רוב ההוצאות יתאימו לאב-סוג זה."
+msgstr "כל הוצאה שאושרה רשמית על־ידי האמן ו/או חברת התקליטים. רוב ההוצאות יתאימו לאב־סוג זה."
 
 #: DB:work_attribute_type_allowed_value/value:311
 msgctxt "work_attribute_type_allowed_value"
@@ -784,10 +794,20 @@ msgctxt "collection_type"
 msgid "Artist"
 msgstr "אמן"
 
+#: DB:series_type/name:14
+msgctxt "series_type"
+msgid "Artist award"
+msgstr "פרסי האמן"
+
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
 msgid "Artist name"
 msgstr "שם אמן"
+
+#: DB:series_type/name:13
+msgctxt "series_type"
+msgid "Artist series"
+msgstr "סדרת אמן"
 
 #: DB:work_attribute_type_allowed_value/value:693
 msgctxt "work_attribute_type_allowed_value"
@@ -987,7 +1007,7 @@ msgstr "באהר אי נזיק"
 #: DB:work_attribute_type_allowed_value/value:47
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bahudāri"
-msgstr ""
+msgstr "בהודרי"
 
 #: DB:work_attribute_type_allowed_value/value:862
 msgctxt "work_attribute_type_allowed_value"
@@ -997,7 +1017,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:863
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bahār"
-msgstr ""
+msgstr "באהאר"
 
 #: DB:work_attribute_type_allowed_value/value:864
 msgctxt "work_attribute_type_allowed_value"
@@ -1007,7 +1027,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:48
 msgctxt "work_attribute_type_allowed_value"
 msgid "Balahaṁsa"
-msgstr ""
+msgstr "באלהאמסה"
 
 #: DB:work_type/name:2
 msgctxt "work_type"
@@ -1017,17 +1037,17 @@ msgstr "בלט"
 #: DB:work_attribute_type_allowed_value/value:866
 msgctxt "work_attribute_type_allowed_value"
 msgid "Basant"
-msgstr ""
+msgstr "בסנט"
 
 #: DB:work_attribute_type_allowed_value/value:867
 msgctxt "work_attribute_type_allowed_value"
 msgid "Basant bahār"
-msgstr ""
+msgstr "בסנט באהאר"
 
 #: DB:work_attribute_type_allowed_value/value:868
 msgctxt "work_attribute_type_allowed_value"
 msgid "Basant mukhāri"
-msgstr ""
+msgstr "בסנט מוקהרי"
 
 #: DB:work_attribute_type_allowed_value/value:869
 msgctxt "work_attribute_type_allowed_value"
@@ -1159,7 +1179,7 @@ msgstr "בזם-אי-טאראב"
 #: DB:work_attribute_type_allowed_value/value:870
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhairav"
-msgstr ""
+msgstr "באירב"
 
 #: DB:work_attribute_type_allowed_value/value:871
 msgctxt "work_attribute_type_allowed_value"
@@ -1170,7 +1190,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:872
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhairavi"
-msgstr ""
+msgstr "בהירבי"
 
 #: DB:work_attribute_type_allowed_value/value:874
 msgctxt "work_attribute_type_allowed_value"
@@ -1180,7 +1200,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:53
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhavāni"
-msgstr ""
+msgstr "בהבני"
 
 #: DB:work_attribute_type_allowed_value/value:876
 msgctxt "work_attribute_type_allowed_value"
@@ -1195,7 +1215,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:54
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhāvapriya"
-msgstr ""
+msgstr "באואפרייה"
 
 #: DB:work_attribute_type_allowed_value/value:873
 msgctxt "work_attribute_type_allowed_value"
@@ -1205,7 +1225,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:875
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhīm"
-msgstr ""
+msgstr "בים"
 
 #: DB:work_attribute_type_allowed_value/value:55
 msgctxt "work_attribute_type_allowed_value"
@@ -1215,7 +1235,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:56
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhōga sāvēri"
-msgstr ""
+msgstr "בוגא סברי"
 
 #: DB:work_attribute_type_allowed_value/value:878
 msgctxt "work_attribute_type_allowed_value"
@@ -1230,7 +1250,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:57
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhūpāḷaṁ"
-msgstr ""
+msgstr "בופאלאם"
 
 #: DB:work_attribute_type_allowed_value/value:58
 msgctxt "work_attribute_type_allowed_value"
@@ -1270,12 +1290,12 @@ msgstr "בלו ריי"
 #: DB:medium_format/name:79
 msgctxt "medium_format"
 msgid "Blu-ray-R"
-msgstr ""
+msgstr "בלו ריי R"
 
 #: DB:medium_format/name:35
 msgctxt "medium_format"
 msgid "Blu-spec CD"
-msgstr "תקליטור בלו-ספק"
+msgstr "תקליטור בלו־ספק"
 
 #: DB:release_packaging/name:9
 msgctxt "release_packaging"
@@ -1300,7 +1320,7 @@ msgstr "הפקת בוטלג"
 #: DB:release_packaging/name:19
 msgctxt "release_packaging"
 msgid "Box"
-msgstr ""
+msgstr "קופסה"
 
 #: DB:work_attribute_type_allowed_value/value:607
 msgctxt "work_attribute_type_allowed_value"
@@ -1356,7 +1376,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:865
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bārvā"
-msgstr ""
+msgstr "בארוה"
 
 #: DB:work_attribute_type_allowed_value/value:50
 msgctxt "work_attribute_type_allowed_value"
@@ -1461,7 +1481,7 @@ msgstr "מזהה COMPASS"
 #: DB:work_attribute_type/name:65
 msgctxt "work_attribute_type"
 msgid "COTT ID"
-msgstr ""
+msgstr "מזהה COTT"
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"
@@ -1471,12 +1491,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:886
 msgctxt "work_attribute_type_allowed_value"
 msgid "Campak"
-msgstr ""
+msgstr "קמפאק"
 
 #: DB:work_attribute_type_allowed_value/value:887
 msgctxt "work_attribute_type_allowed_value"
 msgid "Campākali"
-msgstr ""
+msgstr "קמפאקאלי"
 
 #: DB:work_attribute_type_allowed_value/value:64
 msgctxt "work_attribute_type_allowed_value"
@@ -1527,12 +1547,12 @@ msgstr "קסטה"
 #: DB:release_packaging/name:8
 msgctxt "release_packaging"
 msgid "Cassette Case"
-msgstr ""
+msgstr "מארז קלטת"
 
 #: DB:series_type/name:5
 msgctxt "series_type"
 msgid "Catalogue"
-msgstr ""
+msgstr "קוטלג"
 
 #: DB:work_attribute_type_allowed_value/value:291
 msgctxt "work_attribute_type_allowed_value"
@@ -1577,7 +1597,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:71
 msgctxt "work_attribute_type_allowed_value"
 msgid "Cintāmaṇi"
-msgstr ""
+msgstr "סינטמני"
 
 #: DB:work_attribute_type_allowed_value/value:72
 msgctxt "work_attribute_type_allowed_value"
@@ -1639,7 +1659,7 @@ msgctxt "area_type"
 msgid ""
 "Country is used for areas included (or previously included) in ISO 3166-1, "
 "e.g. United States."
-msgstr "מדינה משמשת עבור אזורים שנכללו (או נכללו קודם לכן) ב- ISO 3166-1, למשל ארצות הברית."
+msgstr "מדינה משמשת עבור אזורים שנכללו (או נכללו קודם לכן) ב־ ISO 3166-1, למשל ארצות הברית."
 
 #: DB:area_type/name:7
 msgctxt "area_type"
@@ -1673,7 +1693,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:825
 msgctxt "work_attribute_type_allowed_value"
 msgid "Cār tāl"
-msgstr ""
+msgstr "קאר טאל"
 
 #: DB:work_attribute_type_allowed_value/value:826
 msgctxt "work_attribute_type_allowed_value"
@@ -1729,7 +1749,7 @@ msgstr "רה במול מינור"
 #: DB:work_attribute_type_allowed_value/value:813
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-sharp major"
-msgstr "רה-דיאז-מז'ור"
+msgstr "רה־דיאז-מז'ור"
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
@@ -1749,7 +1769,7 @@ msgstr "DCC"
 #: DB:release_group_secondary_type/name:8
 msgctxt "release_group_secondary_type"
 msgid "DJ-mix"
-msgstr "ערבול-די.ג'י"
+msgstr "ערבול די־ג'י"
 
 #: DB:medium_format/name:44
 msgctxt "medium_format"
@@ -1769,7 +1789,7 @@ msgstr "DVD-שמע"
 #: DB:medium_format/name:19
 msgctxt "medium_format"
 msgid "DVD-Video"
-msgstr "וידאו-DVD"
+msgstr "חוזי־DVD"
 
 #: DB:medium_format/name:47
 msgctxt "medium_format"
@@ -1789,7 +1809,7 @@ msgstr "DVD פלוס (שמע)"
 #: DB:medium_format/name:69
 msgctxt "medium_format"
 msgid "DVDplus (DVD-Video side)"
-msgstr "DVD פלוס (וידאו)"
+msgstr "DVD פלוס (חוזי)"
 
 #: DB:work_attribute_type_allowed_value/value:343
 msgctxt "work_attribute_type_allowed_value"
@@ -1919,7 +1939,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:829
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dhamar"
-msgstr ""
+msgstr "דאמאר"
 
 #: DB:work_attribute_type_allowed_value/value:80
 #: DB:work_attribute_type_allowed_value/value:902
@@ -1935,7 +1955,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:903
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dhanī"
-msgstr ""
+msgstr "דהאני"
 
 #: DB:work_attribute_type_allowed_value/value:82
 msgctxt "work_attribute_type_allowed_value"
@@ -1945,7 +1965,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:285
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dhr̥va"
-msgstr ""
+msgstr "דהרוה"
 
 #: DB:work_attribute_type_allowed_value/value:83
 msgctxt "work_attribute_type_allowed_value"
@@ -2060,7 +2080,7 @@ msgstr "תקליטור כפול (DVD שמע)"
 #: DB:medium_format/name:66
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Video side)"
-msgstr "תקליטור כפול (DVD וידאו)"
+msgstr "תקליטור כפול (DVD חוזי)"
 
 #: DB:work_attribute_type_allowed_value/value:612
 msgctxt "work_attribute_type_allowed_value"
@@ -2080,7 +2100,7 @@ msgstr "דורגא"
 #: DB:work_attribute_type_allowed_value/value:906
 msgctxt "work_attribute_type_allowed_value"
 msgid "Durgā"
-msgstr ""
+msgstr "דורגה"
 
 #: DB:work_attribute_type_allowed_value/value:87
 msgctxt "work_attribute_type_allowed_value"
@@ -2186,7 +2206,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:85
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dīpāḷi"
-msgstr ""
+msgstr "דיפלי"
 
 #: DB:work_attribute_type_allowed_value/value:791
 msgctxt "work_attribute_type_allowed_value"
@@ -2266,7 +2286,7 @@ msgstr "להקה"
 #: DB:work_attribute_type_allowed_value/value:356
 msgctxt "work_attribute_type_allowed_value"
 msgid "Eski Sipihr"
-msgstr ""
+msgstr "אסקי שיפיהר"
 
 #: DB:work_attribute_type_allowed_value/value:613
 msgctxt "work_attribute_type_allowed_value"
@@ -2291,7 +2311,7 @@ msgstr ""
 #: DB:series_type/name:6
 msgctxt "series_type"
 msgid "Event series"
-msgstr ""
+msgstr "סדרת ארוע"
 
 #: DB:work_attribute_type_allowed_value/value:729
 msgctxt "work_attribute_type_allowed_value"
@@ -2568,7 +2588,7 @@ msgstr "סול במול מז'ור"
 #: DB:work_attribute_type_allowed_value/value:816
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat minor"
-msgstr "סול-במול מינור"
+msgstr "סול־במול מינור"
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
@@ -2603,7 +2623,7 @@ msgstr ""
 #: DB:release_packaging/name:12
 msgctxt "release_packaging"
 msgid "Gatefold Cover"
-msgstr ""
+msgstr "עטיפת תקליט"
 
 #: DB:work_attribute_type_allowed_value/value:911
 msgctxt "work_attribute_type_allowed_value"
@@ -2648,7 +2668,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:913
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gavti"
-msgstr ""
+msgstr "גבטי"
 
 #: DB:work_attribute_type_allowed_value/value:616
 msgctxt "work_attribute_type_allowed_value"
@@ -2699,7 +2719,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:100
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ghanṭa"
-msgstr ""
+msgstr "גהנטה"
 
 #: DB:work_attribute_type_allowed_value/value:381
 msgctxt "work_attribute_type_allowed_value"
@@ -2719,7 +2739,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:102
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gurjāri"
-msgstr ""
+msgstr "גורג'רי"
 
 #: DB:work_attribute_type_allowed_value/value:915
 msgctxt "work_attribute_type_allowed_value"
@@ -2734,7 +2754,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:384
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gülizar"
-msgstr ""
+msgstr "גוליזר"
 
 #: DB:work_attribute_type_allowed_value/value:385
 msgctxt "work_attribute_type_allowed_value"
@@ -2744,12 +2764,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:386
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gülnari"
-msgstr ""
+msgstr "גולנארי"
 
 #: DB:work_attribute_type_allowed_value/value:387
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gülruh"
-msgstr ""
+msgstr "גולרו"
 
 #: DB:work_attribute_type_allowed_value/value:383
 msgctxt "work_attribute_type_allowed_value"
@@ -2809,7 +2829,7 @@ msgstr "HDCD"
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
 msgid "HFA ID"
-msgstr ""
+msgstr "מזהה HFA"
 
 #: DB:medium_format/name:37
 msgctxt "medium_format"
@@ -2829,7 +2849,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:104
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hamsadhvani"
-msgstr ""
+msgstr "המסהדבני"
 
 #: DB:work_attribute_type_allowed_value/value:918
 msgctxt "work_attribute_type_allowed_value"
@@ -2844,7 +2864,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:107
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hamsavinōdini"
-msgstr ""
+msgstr "המסהוינודיני"
 
 #: DB:work_attribute_type_allowed_value/value:917
 msgctxt "work_attribute_type_allowed_value"
@@ -2854,7 +2874,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:103
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hamīr kaḷyaṇi"
-msgstr ""
+msgstr "המיר קליאני"
 
 #: DB:work_attribute_type_allowed_value/value:108
 msgctxt "work_attribute_type_allowed_value"
@@ -2884,7 +2904,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:390
 msgctxt "work_attribute_type_allowed_value"
 msgid "Heftgah"
-msgstr ""
+msgstr "הפטגה"
 
 #: DB:work_attribute_type_allowed_value/value:738
 msgctxt "work_attribute_type_allowed_value"
@@ -3044,7 +3064,7 @@ msgstr "אחזקה"
 #: DB:work_attribute_type_allowed_value/value:414
 msgctxt "work_attribute_type_allowed_value"
 msgid "Horasan"
-msgstr ""
+msgstr "הורהסן"
 
 #: DB:work_attribute_type_allowed_value/value:415
 msgctxt "work_attribute_type_allowed_value"
@@ -3064,17 +3084,17 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:113
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hussēnī"
-msgstr ""
+msgstr "הוסייני"
 
 #: DB:work_attribute_type_allowed_value/value:619
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hutbe"
-msgstr ""
+msgstr "הוטבה"
 
 #: DB:work_attribute_type_allowed_value/value:417
 msgctxt "work_attribute_type_allowed_value"
 msgid "Huzi"
-msgstr ""
+msgstr "הוזי"
 
 #: DB:medium_format/name:38
 msgctxt "medium_format"
@@ -3199,7 +3219,7 @@ msgstr "מזהה עבור אגודת הזכויות הבלגית SABAM"
 #: DB:work_attribute_type/description:61
 msgctxt "work_attribute_type"
 msgid "ID for the Bolivian rights society SOBODAYCOM"
-msgstr ""
+msgstr "מזהה עבור אגודת הזכויות הבוליביאנית SOBODAYCOM"
 
 #: DB:work_attribute_type/description:37
 msgctxt "work_attribute_type"
@@ -3219,7 +3239,7 @@ msgstr "מזהה עבור אגודת הזכויות הקנדית  SOCAN"
 #: DB:work_attribute_type/description:53
 msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SODRAC"
-msgstr ""
+msgstr "מזהה עבור אגודת הזכויות הקנדית  SODRAC"
 
 #: DB:work_attribute_type/description:39
 msgctxt "work_attribute_type"
@@ -3244,42 +3264,42 @@ msgstr "מזהה עבור אגודת הזכויות הצ'כית OSA"
 #: DB:work_attribute_type/description:51
 msgctxt "work_attribute_type"
 msgid "ID for the Danish rights society KODA"
-msgstr ""
+msgstr "מזהה עבור אגודת הזכויות הדנית KODA"
 
 #: DB:work_attribute_type/description:60
 msgctxt "work_attribute_type"
 msgid "ID for the Dominican rights society SGACEDOM"
-msgstr ""
+msgstr "מזהה עבור אגודת הזכויות הדומיניקנית SGACEDOM"
 
 #: DB:work_attribute_type/description:26
 msgctxt "work_attribute_type"
 msgid "ID for the Dutch rights society BUMA/STEMRA"
-msgstr ""
+msgstr "מזהה עבור אגודת הזכויות ההולנדית BUMA/STEMRA"
 
 #: DB:work_attribute_type/description:40
 msgctxt "work_attribute_type"
 msgid "ID for the Ecuadorian rights society SAYCE"
-msgstr ""
+msgstr "מזהה עבור אגודת הזכויות האקוודורית SAYCE"
 
 #: DB:work_attribute_type/description:66
 msgctxt "work_attribute_type"
 msgid "ID for the Finnish rights society TEOSTO"
-msgstr ""
+msgstr "מזהה עבור אגודת הזכויות הפינית TEOSTO"
 
 #: DB:work_attribute_type/description:21
 msgctxt "work_attribute_type"
 msgid "ID for the French rights society Sacem"
-msgstr ""
+msgstr "מזהה עבור אגודת הזכויות הצרפתית Sacem"
 
 #: DB:work_attribute_type/description:9
 msgctxt "work_attribute_type"
 msgid "ID for the German rights society GEMA"
-msgstr ""
+msgstr "מזהה עבור אגודת הזכויות הגרמנית GEMA"
 
 #: DB:work_attribute_type/description:58
 msgctxt "work_attribute_type"
 msgid "ID for the Guatemalan rights society AEI"
-msgstr ""
+msgstr "מזהה עבור אגודת הזכויות גואטמלית AEI"
 
 #: DB:work_attribute_type/description:57
 msgctxt "work_attribute_type"
@@ -3389,6 +3409,11 @@ msgstr ""
 #: DB:work_attribute_type/description:45
 msgctxt "work_attribute_type"
 msgid "ID for the Singaporean rights society COMPASS"
+msgstr ""
+
+#: DB:work_attribute_type/description:68
+msgctxt "work_attribute_type"
+msgid "ID for the South African rights society SAMRO"
 msgstr ""
 
 #: DB:work_attribute_type/description:20
@@ -3604,6 +3629,13 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:115
 msgctxt "work_attribute_type_allowed_value"
 msgid "Janaranjani"
+msgstr "ג'נאראנג'אני"
+
+#: DB:release_packaging/description:21
+msgctxt "release_packaging"
+msgid ""
+"Japanese case that holds an 8cm CD. It is rectangular but can be snapped to "
+"make it more compact (hence the name)."
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:929
@@ -3669,7 +3701,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:120
 msgctxt "work_attribute_type_allowed_value"
 msgid "Jingala"
-msgstr ""
+msgstr "ג'ינגלה"
 
 #: DB:work_attribute_type_allowed_value/value:124
 msgctxt "work_attribute_type_allowed_value"
@@ -3705,7 +3737,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:123
 msgctxt "work_attribute_type_allowed_value"
 msgid "Jōnpuri"
-msgstr ""
+msgstr "ג'ונפורי"
 
 #: DB:work_attribute_type/name:51
 msgctxt "work_attribute_type"
@@ -3715,7 +3747,7 @@ msgstr " מזהה KODA"
 #: DB:work_attribute_type/name:11
 msgctxt "work_attribute_type"
 msgid "KOMCA ID"
-msgstr ""
+msgstr "מזהה KOMCA"
 
 #: DB:work_attribute_type_allowed_value/value:621
 msgctxt "work_attribute_type_allowed_value"
@@ -3977,7 +4009,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:156
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kurinji"
-msgstr ""
+msgstr "קורינג'י"
 
 #: DB:work_attribute_type_allowed_value/value:632
 msgctxt "work_attribute_type_allowed_value"
@@ -4042,7 +4074,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:136
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kānaḍa"
-msgstr ""
+msgstr "קאנאדה"
 
 #: DB:work_attribute_type_allowed_value/value:943
 msgctxt "work_attribute_type_allowed_value"
@@ -4173,7 +4205,7 @@ msgstr "לליטה"
 #: DB:work_attribute_type_allowed_value/value:158
 msgctxt "work_attribute_type_allowed_value"
 msgid "Lalita pancamaṁ"
-msgstr ""
+msgstr "לליטה פנקמאן"
 
 #: DB:medium_format/name:5
 msgctxt "medium_format"
@@ -4188,7 +4220,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:159
 msgctxt "work_attribute_type_allowed_value"
 msgid "Latāngi"
-msgstr ""
+msgstr "לטאנגי"
 
 #: DB:event_type/name:3
 msgctxt "event_type"
@@ -4198,7 +4230,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:160
 msgctxt "work_attribute_type_allowed_value"
 msgid "Lavāngi"
-msgstr ""
+msgstr "לבנגי"
 
 #: DB:work_attribute_type_allowed_value/value:962
 msgctxt "work_attribute_type_allowed_value"
@@ -4333,12 +4365,12 @@ msgstr "מנדארי"
 #: DB:series_ordering_type/name:2
 msgctxt "series_ordering_type"
 msgid "Manual"
-msgstr ""
+msgstr "מדריך"
 
 #: DB:label_type/name:10
 msgctxt "label_type"
 msgid "Manufacturer"
-msgstr ""
+msgstr "יצרן"
 
 #: DB:work_attribute_type_allowed_value/value:172
 msgctxt "work_attribute_type_allowed_value"
@@ -4353,7 +4385,7 @@ msgstr "מרש"
 #: DB:work_type/name:8
 msgctxt "work_type"
 msgid "Mass"
-msgstr ""
+msgstr "מיסה"
 
 #: DB:event_type/name:5
 msgctxt "event_type"
@@ -4658,7 +4690,7 @@ msgstr ""
 #: DB:work_attribute_type/name:12
 msgctxt "work_attribute_type"
 msgid "MÜST ID"
-msgstr ""
+msgstr "מזהה MÜST"
 
 #: DB:work_attribute_type_allowed_value/value:463
 msgctxt "work_attribute_type_allowed_value"
@@ -4743,7 +4775,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:171
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mānji"
-msgstr ""
+msgstr "מניי"
 
 #: DB:work_attribute_type_allowed_value/value:169
 msgctxt "work_attribute_type_allowed_value"
@@ -4778,7 +4810,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:165
 msgctxt "work_attribute_type_allowed_value"
 msgid "Māḷavi"
-msgstr ""
+msgstr "מלבי"
 
 #: DB:work_attribute_type_allowed_value/value:974
 msgctxt "work_attribute_type_allowed_value"
@@ -5334,7 +5366,7 @@ msgstr ""
 #: DB:instrument_type/name:3
 msgctxt "instrument_type"
 msgid "Percussion instrument"
-msgstr ""
+msgstr "כלי הקשה"
 
 #: DB:work_attribute_type_allowed_value/value:496
 msgctxt "work_attribute_type_allowed_value"
@@ -5424,7 +5456,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:11
 msgctxt "cover_art_type"
 msgid "Poster"
-msgstr "פוסטר"
+msgstr "כְּרָזָה"
 
 #: DB:work_attribute_type_allowed_value/value:998
 msgctxt "work_attribute_type_allowed_value"
@@ -5454,7 +5486,7 @@ msgstr "פרוזה"
 #: DB:release_status/name:4
 msgctxt "release_status"
 msgid "Pseudo-Release"
-msgstr ""
+msgstr "שחרור־מדומה"
 
 #: DB:label_type/name:7
 msgctxt "label_type"
@@ -5500,7 +5532,7 @@ msgstr "פדי"
 #: DB:work_attribute_type_allowed_value/value:1002
 msgctxt "work_attribute_type_allowed_value"
 msgid "Pūrvi"
-msgstr ""
+msgstr "פורוי"
 
 #: DB:work_attribute_type_allowed_value/value:206
 msgctxt "work_attribute_type_allowed_value"
@@ -5550,7 +5582,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:215
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ranjani"
-msgstr ""
+msgstr "רנג'אני"
 
 #: DB:work_attribute_type_allowed_value/value:216
 msgctxt "work_attribute_type_allowed_value"
@@ -5635,12 +5667,12 @@ msgstr "הקלטה"
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
 msgid "Recording name"
-msgstr ""
+msgstr "שם הקלטה"
 
 #: DB:series_type/name:3
 msgctxt "series_type"
 msgid "Recording series"
-msgstr ""
+msgstr "סדרת הקלטה"
 
 #: DB:medium_format/name:10
 msgctxt "medium_format"
@@ -5680,7 +5712,7 @@ msgstr ""
 #: DB:series_type/name:1
 msgctxt "series_type"
 msgid "Release group series"
-msgstr ""
+msgstr "‮סדרת קבוצות הוצאה"
 
 #: DB:release_alias_type/name:1
 msgctxt "alias_type"
@@ -5690,7 +5722,7 @@ msgstr ""
 #: DB:series_type/name:2
 msgctxt "series_type"
 msgid "Release series"
-msgstr ""
+msgstr "‮סדרת הוצאה"
 
 #: DB:place_type/name:6
 msgctxt "place_type"
@@ -5705,7 +5737,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:7
 msgctxt "release_group_secondary_type"
 msgid "Remix"
-msgstr "ערבול-מחודש"
+msgstr "ערבול־מחודש"
 
 #: DB:work_attribute_type_allowed_value/value:516
 msgctxt "work_attribute_type_allowed_value"
@@ -5730,7 +5762,7 @@ msgstr ""
 #: DB:label_type/name:8
 msgctxt "label_type"
 msgid "Rights Society"
-msgstr ""
+msgstr "אגודת זכויות"
 
 #: DB:work_attribute_type_allowed_value/value:222
 msgctxt "work_attribute_type_allowed_value"
@@ -5831,7 +5863,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:220
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rēvati"
-msgstr ""
+msgstr "רואטי"
 
 #: DB:work_attribute_type_allowed_value/value:221
 msgctxt "work_attribute_type_allowed_value"
@@ -5846,7 +5878,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:280
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rūpaka"
-msgstr ""
+msgstr "פופקה"
 
 #: DB:work_attribute_type/name:28
 msgctxt "work_attribute_type"
@@ -5893,6 +5925,11 @@ msgctxt "work_attribute_type"
 msgid "SADAIC ID"
 msgstr ""
 
+#: DB:work_attribute_type/name:68
+msgctxt "work_attribute_type"
+msgid "SAMRO ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:40
 msgctxt "work_attribute_type"
 msgid "SAYCE ID"
@@ -5911,7 +5948,7 @@ msgstr ""
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
 msgid "SESAC ID"
-msgstr ""
+msgstr "מזהה SESAC"
 
 #: DB:work_attribute_type/name:60
 msgctxt "work_attribute_type"
@@ -5956,7 +5993,7 @@ msgstr ""
 #: DB:work_attribute_type/name:10
 msgctxt "work_attribute_type"
 msgid "SOCAN ID"
-msgstr ""
+msgstr "מזהה SOCAN"
 
 #: DB:work_attribute_type/name:53
 msgctxt "work_attribute_type"
@@ -6026,7 +6063,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:223
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sahānā"
-msgstr ""
+msgstr "סהנה"
 
 #: DB:work_attribute_type_allowed_value/value:1009
 msgctxt "work_attribute_type_allowed_value"
@@ -6062,7 +6099,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:1014
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sarasvati"
-msgstr ""
+msgstr "סרסבטי"
 
 #: DB:work_attribute_type_allowed_value/value:232
 msgctxt "work_attribute_type_allowed_value"
@@ -6177,7 +6214,7 @@ msgstr "סדרה"
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
 msgid "Series name"
-msgstr ""
+msgstr "שם סדרה"
 
 #: DB:work_attribute_type_allowed_value/value:663
 msgctxt "work_attribute_type_allowed_value"
@@ -6260,6 +6297,11 @@ msgstr "מארז תקליטור דק"
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"
 msgid "Snap Case"
+msgstr "מארז סנאפ"
+
+#: DB:release_packaging/name:21
+msgctxt "release_packaging"
+msgid "SnapPack"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:771
@@ -6322,12 +6364,12 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"
 msgid "Sticker"
-msgstr ""
+msgstr "מַדבֵּקָה"
 
 #: DB:instrument_type/name:2
 msgctxt "instrument_type"
 msgid "String instrument"
-msgstr ""
+msgstr " כלי מיתר"
 
 #: DB:place_type/name:1
 msgctxt "place_type"
@@ -6337,7 +6379,7 @@ msgstr "סטוגיו"
 #: DB:area_type/name:2
 msgctxt "area_type"
 msgid "Subdivision"
-msgstr ""
+msgstr "תת־מחלקה"
 
 #: DB:area_type/description:2
 msgctxt "area_type"
@@ -6350,7 +6392,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:244
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sucaritra"
-msgstr ""
+msgstr "סוכריטרה"
 
 #: DB:work_attribute_type_allowed_value/value:1035
 msgctxt "work_attribute_type_allowed_value"
@@ -6435,7 +6477,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:252
 msgctxt "work_attribute_type_allowed_value"
 msgid "Suraṭi"
-msgstr ""
+msgstr "סורטי"
 
 #: DB:work_attribute_type_allowed_value/value:542
 msgctxt "work_attribute_type_allowed_value"
@@ -6585,7 +6627,7 @@ msgstr "תאקסים"
 #: DB:work_attribute_type_allowed_value/value:255
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tanarūpi"
-msgstr ""
+msgstr "טאנארופי"
 
 #: DB:work_attribute_type_allowed_value/value:668
 msgctxt "work_attribute_type_allowed_value"
@@ -6693,7 +6735,7 @@ msgctxt "medium_format"
 msgid ""
 "The CD side of a vinyl + CD VinylDisc. The vinyl side should be added as a "
 "separate medium."
-msgstr ""
+msgstr "צד תקליטור של ויניל + תקליטור תקליט וינל. יש להוסיף את צד הויניל כמדיה נפרדת."
 
 #: DB:medium_format/description:60
 msgctxt "medium_format"
@@ -6723,14 +6765,14 @@ msgctxt "medium_format"
 msgid ""
 "The DVD (video) layer of a DualDisc. The CD layer should be added as a "
 "separate medium."
-msgstr "שכבת DVD (וידאו) של תקליטור כפול. יש להוסיף שכבת תקליטור כמדיה נפרדת."
+msgstr "שכבת DVD (חוזי) של תקליטור כפול. יש להוסיף שכבת תקליטור כמדיה נפרדת."
 
 #: DB:medium_format/description:80
 msgctxt "medium_format"
 msgid ""
 "The DVD side of a vinyl + DVD VinylDisc. The vinyl side should be added as a"
 " separate medium."
-msgstr ""
+msgstr "צד DVD של ויניל + DVD תקליט וינל. יש להוסיף את צד הויניל כמדיה נפרדת."
 
 #: DB:medium_format/description:64
 msgctxt "medium_format"
@@ -6764,7 +6806,7 @@ msgctxt "medium_format"
 msgid ""
 "The vinyl side of a VinylDisc. The CD or DVD side should be added as a "
 "separate medium."
-msgstr ""
+msgstr "צד הויניל של תקליט וינל. יש להוסיף את צד התקליטור או ה־DVD כמדיה נפרדת."
 
 #: DB:artist_type/description:6
 msgctxt "artist_type"
@@ -6809,37 +6851,37 @@ msgstr "ייצוג יצירות ספרותיות שנכתבו בפרוזה, כל
 msgctxt "medium_format"
 msgid ""
 "This represents the 2 channel (stereo/mono) table of contents on a SACD."
-msgstr ""
+msgstr " מייצג תוכן עניינים ב־2 ערוצים (סטריאו/מונו) ב־SACD."
 
 #: DB:medium_format/description:89
 msgctxt "medium_format"
 msgid ""
 "This represents the 2 channel (stereo/mono) table of contents on a SHM-SACD."
-msgstr ""
+msgstr " מייצג תוכן עניינים ב־2 ערוצים (סטריאו/מונו) ב־SHM-SACD."
 
 #: DB:medium_format/description:87
 msgctxt "medium_format"
 msgid ""
 "This represents the 2 channel (stereo/mono) table of contents on a hybrid "
 "SACD's SACD layer."
-msgstr ""
+msgstr " מייצג תוכן עניינים ב־2 ערוצים (סטריאו/מונו) בשכבת כלאיים ב־ SACD של SACD."
 
 #: DB:medium_format/description:85
 msgctxt "medium_format"
 msgid "This represents the multichannel table of contents on a SACD."
-msgstr ""
+msgstr " מייצג תוכן עניינים רבי־ערוצים ב־SACD."
 
 #: DB:medium_format/description:88
 msgctxt "medium_format"
 msgid "This represents the multichannel table of contents on a SHM-SACD."
-msgstr ""
+msgstr " מייצג תוכן עניינים רבי־ערוצים ב־SHM-SACD."
 
 #: DB:medium_format/description:86
 msgctxt "medium_format"
 msgid ""
 "This represents the multichannel table of contents on a hybrid SACD's SACD "
 "layer."
-msgstr ""
+msgstr " מייצג תוכן עניינים רבי־ערוצים (סטריאו/מונו) בשכבת כלאיים ב־ SACD של SACD."
 
 #: DB:work_attribute_type_allowed_value/value:1041
 msgctxt "work_attribute_type_allowed_value"
@@ -6864,7 +6906,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:256
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tillāng"
-msgstr ""
+msgstr "טילאנג"
 
 #: DB:work_attribute_type_allowed_value/value:1044
 msgctxt "work_attribute_type_allowed_value"
@@ -6944,7 +6986,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:846
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tīntāl"
-msgstr ""
+msgstr "טינטל"
 
 #: DB:work_attribute_type_allowed_value/value:847
 msgctxt "work_attribute_type_allowed_value"
@@ -6954,12 +6996,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:257
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tōḍi"
-msgstr ""
+msgstr "טובי"
 
 #: DB:work_attribute_type_allowed_value/value:1045
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tōḍī"
-msgstr ""
+msgstr "טודי"
 
 #: DB:medium_format/name:28
 msgctxt "medium_format"
@@ -7011,12 +7053,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:601
 msgctxt "work_attribute_type_allowed_value"
 msgid "Uzzal"
-msgstr ""
+msgstr "אוזאל"
 
 #: DB:work_attribute_type_allowed_value/value:582
 msgctxt "work_attribute_type_allowed_value"
 msgid "Uşşak"
-msgstr ""
+msgstr "אושאק"
 
 #: DB:work_attribute_type_allowed_value/value:583
 msgctxt "work_attribute_type_allowed_value"
@@ -7051,7 +7093,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:262
 msgctxt "work_attribute_type_allowed_value"
 msgid "Valaji"
-msgstr ""
+msgstr "ואלאג'י"
 
 #: DB:work_attribute_type_allowed_value/value:263
 msgctxt "work_attribute_type_allowed_value"
@@ -7066,7 +7108,7 @@ msgstr "וראמו"
 #: DB:work_attribute_type_allowed_value/value:264
 msgctxt "work_attribute_type_allowed_value"
 msgid "Varāḷi"
-msgstr ""
+msgstr "וראלי"
 
 #: DB:work_attribute_type_allowed_value/value:266
 msgctxt "work_attribute_type_allowed_value"
@@ -7076,12 +7118,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:267
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vasanta"
-msgstr ""
+msgstr "ואסנטה"
 
 #: DB:work_attribute_type_allowed_value/value:268
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vasanta varāḷi"
-msgstr ""
+msgstr "ואסנטה וראלי"
 
 #: DB:work_attribute_type_allowed_value/value:269
 msgctxt "work_attribute_type_allowed_value"
@@ -7118,7 +7160,7 @@ msgctxt "medium_format"
 msgid ""
 "Video High Density (VHD) was a videodisc format which was marketed "
 "predominantly in Japan by JVC."
-msgstr "וידאו בצפיפות גבוהה (VHD) היה פורמט videodisc אשר שווק בעיקר ביפן על ידי JVC."
+msgstr "חוזי בצפיפות גבוהה (VHD) היה פורמט videodisc אשר שווק בעיקר ביפן על־ידי JVC."
 
 #: DB:work_attribute_type_allowed_value/value:273
 msgctxt "work_attribute_type_allowed_value"
@@ -7204,7 +7246,7 @@ msgstr "גליל שאווה"
 #: DB:instrument_type/name:1
 msgctxt "instrument_type"
 msgid "Wind instrument"
-msgstr ""
+msgstr "כלי נשיפה"
 
 #: DB:editor_collection_type/name:3
 msgctxt "collection_type"
@@ -7224,7 +7266,7 @@ msgstr "שם יצירה"
 #: DB:series_type/name:4
 msgctxt "series_type"
 msgid "Work series"
-msgstr ""
+msgstr "סדרת יצירה"
 
 #: DB:work_attribute_type_allowed_value/value:277
 msgctxt "work_attribute_type_allowed_value"
@@ -7280,7 +7322,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:780
 msgctxt "work_attribute_type_allowed_value"
 msgid "Zafer"
-msgstr ""
+msgstr "זאפר"
 
 #: DB:work_type/name:19
 msgctxt "work_type"
@@ -7290,7 +7332,7 @@ msgstr "זארזואלה"
 #: DB:work_attribute_type_allowed_value/value:591
 msgctxt "work_attribute_type_allowed_value"
 msgid "Zavil"
-msgstr ""
+msgstr "זאויל"
 
 #: DB:work_attribute_type_allowed_value/value:592
 msgctxt "work_attribute_type_allowed_value"
@@ -7300,12 +7342,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:781
 msgctxt "work_attribute_type_allowed_value"
 msgid "Zencir"
-msgstr ""
+msgstr "זנקיר"
 
 #: DB:work_attribute_type_allowed_value/value:593
 msgctxt "work_attribute_type_allowed_value"
 msgid "Zengule"
-msgstr ""
+msgstr "זנגולה"
 
 #: DB:work_attribute_type_allowed_value/value:594
 msgctxt "work_attribute_type_allowed_value"
@@ -7362,7 +7404,7 @@ msgstr ""
 #: DB:medium_format/name:27
 msgctxt "medium_format"
 msgid "slotMusic"
-msgstr ""
+msgstr "סלוט־מוזיק"
 
 #: DB:work_attribute_type_allowed_value/value:340
 msgctxt "work_attribute_type_allowed_value"
@@ -7427,7 +7469,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:35
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ābhēri"
-msgstr ""
+msgstr "אבהרי"
 
 #: DB:work_attribute_type_allowed_value/value:36
 msgctxt "work_attribute_type_allowed_value"
@@ -7458,7 +7500,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:824
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ādi"
-msgstr ""
+msgstr "אדי"
 
 #: DB:work_attribute_type_allowed_value/value:290
 msgctxt "work_attribute_type_allowed_value"
@@ -7473,7 +7515,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:38
 msgctxt "work_attribute_type_allowed_value"
 msgid "Āhiri"
-msgstr ""
+msgstr "אהירי"
 
 #: DB:work_attribute_type_allowed_value/value:859
 msgctxt "work_attribute_type_allowed_value"
@@ -7514,17 +7556,17 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:436
 msgctxt "work_attribute_type_allowed_value"
 msgid "İbrahimi"
-msgstr ""
+msgstr "איברהימי"
 
 #: DB:work_attribute_type_allowed_value/value:740
 msgctxt "work_attribute_type_allowed_value"
 msgid "İki Bir"
-msgstr ""
+msgstr "איקי ביר"
 
 #: DB:work_attribute_type_allowed_value/value:741
 msgctxt "work_attribute_type_allowed_value"
 msgid "İkiz Aksak"
-msgstr ""
+msgstr "איקיז אקשאק"
 
 #: DB:work_attribute_type_allowed_value/value:620
 msgctxt "work_attribute_type_allowed_value"
@@ -7655,7 +7697,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:665
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şarkı"
-msgstr ""
+msgstr "שרקי"
 
 #: DB:work_attribute_type_allowed_value/value:549
 msgctxt "work_attribute_type_allowed_value"
@@ -7665,7 +7707,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:550
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şedd-i Saba"
-msgstr ""
+msgstr "סד־אי סאבא"
 
 #: DB:work_attribute_type_allowed_value/value:551
 msgctxt "work_attribute_type_allowed_value"
@@ -7690,7 +7732,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:555
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şemsefruz"
-msgstr ""
+msgstr "סמפרוז"
 
 #: DB:work_attribute_type_allowed_value/value:556
 msgctxt "work_attribute_type_allowed_value"
@@ -7700,7 +7742,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:557
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şerefnuma"
-msgstr ""
+msgstr "סרפנומה"
 
 #: DB:work_attribute_type_allowed_value/value:558
 msgctxt "work_attribute_type_allowed_value"

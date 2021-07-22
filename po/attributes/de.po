@@ -47,8 +47,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-04-28 08:22+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2021-06-28 15:34+0000\n"
+"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -338,6 +338,16 @@ msgid ""
 "A school, university or other similar educational institution (especially, "
 "but not only, one where music is taught)"
 msgstr "Eine Schule, Universität oder vergleichbare Bildungseinrichtung (insbesondere aber nicht ausschließlich solche, in denen Musik unterrichtet wird)"
+
+#: DB:series_type/description:14
+msgctxt "series_type"
+msgid "A series of artists honoured by the same award."
+msgstr ""
+
+#: DB:series_type/description:13
+msgctxt "series_type"
+msgid "A series of artists."
+msgstr ""
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -826,10 +836,20 @@ msgctxt "collection_type"
 msgid "Artist"
 msgstr "Künstler"
 
+#: DB:series_type/name:14
+msgctxt "series_type"
+msgid "Artist award"
+msgstr ""
+
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
 msgid "Artist name"
 msgstr "Künstlername"
+
+#: DB:series_type/name:13
+msgctxt "series_type"
+msgid "Artist series"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:693
 msgctxt "work_attribute_type_allowed_value"
@@ -3433,6 +3453,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Singaporean rights society COMPASS"
 msgstr "ID für die singapurische Verwertungsgesellschaft COMPASS"
 
+#: DB:work_attribute_type/description:68
+msgctxt "work_attribute_type"
+msgid "ID for the South African rights society SAMRO"
+msgstr ""
+
 #: DB:work_attribute_type/description:20
 msgctxt "work_attribute_type"
 msgid "ID for the Spanish rights society SGAE"
@@ -3647,6 +3672,13 @@ msgstr ""
 msgctxt "work_attribute_type_allowed_value"
 msgid "Janaranjani"
 msgstr "Janaranjani"
+
+#: DB:release_packaging/description:21
+msgctxt "release_packaging"
+msgid ""
+"Japanese case that holds an 8cm CD. It is rectangular but can be snapped to "
+"make it more compact (hence the name)."
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:929
 msgctxt "work_attribute_type_allowed_value"
@@ -5935,6 +5967,11 @@ msgctxt "work_attribute_type"
 msgid "SADAIC ID"
 msgstr "SADAIC ID"
 
+#: DB:work_attribute_type/name:68
+msgctxt "work_attribute_type"
+msgid "SAMRO ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:40
 msgctxt "work_attribute_type"
 msgid "SAYCE ID"
@@ -6303,6 +6340,11 @@ msgstr "Slimcase"
 msgctxt "release_packaging"
 msgid "Snap Case"
 msgstr "Snap Case"
+
+#: DB:release_packaging/name:21
+msgctxt "release_packaging"
+msgid "SnapPack"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:771
 msgctxt "work_attribute_type_allowed_value"

@@ -12,8 +12,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-04-27 20:20+0000\n"
-"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
+"PO-Revision-Date: 2021-06-28 20:18+0000\n"
+"Last-Translator: Luca Salini\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -69,7 +69,7 @@ msgstr "Floppy disk 3,5\""
 #: DB:medium_format/name:91
 msgctxt "medium_format"
 msgid "5.25\" Floppy Disk"
-msgstr ""
+msgstr "Floppy disk 5,25\""
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
@@ -303,6 +303,16 @@ msgid ""
 "A school, university or other similar educational institution (especially, "
 "but not only, one where music is taught)"
 msgstr "Una scuola, università o altra simile istituzione di istruzione (in particolare, ma non solo, dove si insegna musica)"
+
+#: DB:series_type/description:14
+msgctxt "series_type"
+msgid "A series of artists honoured by the same award."
+msgstr "Una serie di artisti insigniti dello stesso premio."
+
+#: DB:series_type/description:13
+msgctxt "series_type"
+msgid "A series of artists."
+msgstr "Una serie di artisti."
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -791,10 +801,20 @@ msgctxt "collection_type"
 msgid "Artist"
 msgstr "Artista"
 
+#: DB:series_type/name:14
+msgctxt "series_type"
+msgid "Artist award"
+msgstr "Premio per artisti"
+
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
 msgid "Artist name"
 msgstr "Nome artista"
+
+#: DB:series_type/name:13
+msgctxt "series_type"
+msgid "Artist series"
+msgstr "Serie di artisti"
 
 #: DB:work_attribute_type_allowed_value/value:693
 msgctxt "work_attribute_type_allowed_value"
@@ -1651,7 +1671,7 @@ msgstr "\"Paese\" è utilizzato per le aree incluse (attualmente o in passato) n
 #: DB:area_type/name:7
 msgctxt "area_type"
 msgid "County"
-msgstr "Provincia"
+msgstr "Contea"
 
 #: DB:area_type/description:7
 msgctxt "area_type"
@@ -1660,7 +1680,7 @@ msgid ""
 "not the main administrative divisions but are also not municipalities, e.g. "
 "counties in the USA. These are not considered when displaying the parent "
 "areas for a given area."
-msgstr "\"Provincia\" è utilizzato per suddivisioni amministrative di livello basso di uno Stato che non siano né le suddivisioni amministrative principali né i comuni, per es. le contee negli Stati Uniti. Queste non sono considerate quando si visualizzano le aree di livello superiore di una determinata area."
+msgstr "\"Contea\" è utilizzato per suddivisioni amministrative di livello basso di uno Stato che non siano né le suddivisioni amministrative principali né i comuni, per es. le contee negli Stati Uniti. Queste non sono considerate quando si visualizzano le aree di livello superiore di una determinata area."
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -2691,7 +2711,7 @@ msgstr "Gerdaniyekürdi"
 msgctxt "medium_format"
 msgid ""
 "German tape cartridge format, using grooved tape rather than magnetic tape."
-msgstr ""
+msgstr "Formato tedesco di cartuccia a nastro, utilizzava un nastro con solchi anziché magnetico."
 
 #: DB:work_attribute_type_allowed_value/value:380
 msgctxt "work_attribute_type_allowed_value"
@@ -3361,7 +3381,7 @@ msgstr "ID per la società di diritti nicaraguense NICAUTOR"
 #: DB:work_attribute_type/description:67
 msgctxt "work_attribute_type"
 msgid "ID for the Norwegian rights society TONO"
-msgstr ""
+msgstr "ID per la società di diritti norvegese TONO"
 
 #: DB:work_attribute_type/description:62
 msgctxt "work_attribute_type"
@@ -3397,6 +3417,11 @@ msgstr "ID per la società di diritti salvadoregna SACIM"
 msgctxt "work_attribute_type"
 msgid "ID for the Singaporean rights society COMPASS"
 msgstr "ID per la società di diritti singaporiana COMPASS"
+
+#: DB:work_attribute_type/description:68
+msgctxt "work_attribute_type"
+msgid "ID for the South African rights society SAMRO"
+msgstr "ID per la società di diritti sudafricana SAMRO"
 
 #: DB:work_attribute_type/description:20
 msgctxt "work_attribute_type"
@@ -3612,6 +3637,13 @@ msgstr "Jait kalyāṇ"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Janaranjani"
 msgstr "Janaranjani"
+
+#: DB:release_packaging/description:21
+msgctxt "release_packaging"
+msgid ""
+"Japanese case that holds an 8cm CD. It is rectangular but can be snapped to "
+"make it more compact (hence the name)."
+msgstr "Custodia giapponese che contiene un CD da 8 cm. È rettangolare, ma può essere chiusa a scatto per renderla più compatta (da cui il nome)."
 
 #: DB:work_attribute_type_allowed_value/value:929
 msgctxt "work_attribute_type_allowed_value"
@@ -5900,6 +5932,11 @@ msgctxt "work_attribute_type"
 msgid "SADAIC ID"
 msgstr "ID SADAIC"
 
+#: DB:work_attribute_type/name:68
+msgctxt "work_attribute_type"
+msgid "SAMRO ID"
+msgstr "ID SAMRO"
+
 #: DB:work_attribute_type/name:40
 msgctxt "work_attribute_type"
 msgid "SAYCE ID"
@@ -6269,6 +6306,11 @@ msgctxt "release_packaging"
 msgid "Snap Case"
 msgstr "Snap case"
 
+#: DB:release_packaging/name:21
+msgctxt "release_packaging"
+msgid "SnapPack"
+msgstr "SnapPack"
+
 #: DB:work_attribute_type_allowed_value/value:771
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sofyan"
@@ -6344,7 +6386,7 @@ msgstr "Studio"
 #: DB:area_type/name:2
 msgctxt "area_type"
 msgid "Subdivision"
-msgstr "Circoscrizione"
+msgstr "Suddivisione"
 
 #: DB:area_type/description:2
 msgctxt "area_type"
@@ -6572,7 +6614,7 @@ msgstr "ID TEOSTO"
 #: DB:work_attribute_type/name:67
 msgctxt "work_attribute_type"
 msgid "TONO ID"
-msgstr ""
+msgstr "ID TONO"
 
 #: DB:work_attribute_type_allowed_value/value:573
 msgctxt "work_attribute_type_allowed_value"
@@ -6632,7 +6674,7 @@ msgstr "Tebriz"
 #: DB:medium_format/name:90
 msgctxt "medium_format"
 msgid "Tefifon"
-msgstr ""
+msgstr "Tefifon"
 
 #: DB:work_attribute_type_allowed_value/value:774
 msgctxt "work_attribute_type_allowed_value"

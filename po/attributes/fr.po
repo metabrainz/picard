@@ -29,7 +29,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-04-27 20:20+0000\n"
+"PO-Revision-Date: 2021-06-28 15:34+0000\n"
 "Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -86,7 +86,7 @@ msgstr "Disquette 3,5 po (90 mm)"
 #: DB:medium_format/name:91
 msgctxt "medium_format"
 msgid "5.25\" Floppy Disk"
-msgstr ""
+msgstr "Disquette 5,25 po (133,4 mm)"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
@@ -320,6 +320,16 @@ msgid ""
 "A school, university or other similar educational institution (especially, "
 "but not only, one where music is taught)"
 msgstr "Une école, université, ou tout autre type d’établissement scolaire (en particulier, mais pas uniquement, un où la musique est enseignée)."
+
+#: DB:series_type/description:14
+msgctxt "series_type"
+msgid "A series of artists honoured by the same award."
+msgstr "Une série d’artistes honorés par la même récompense."
+
+#: DB:series_type/description:13
+msgctxt "series_type"
+msgid "A series of artists."
+msgstr "Une série d’artistes."
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -808,10 +818,20 @@ msgctxt "collection_type"
 msgid "Artist"
 msgstr "Artiste"
 
+#: DB:series_type/name:14
+msgctxt "series_type"
+msgid "Artist award"
+msgstr "Récompense d’artiste"
+
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
 msgid "Artist name"
 msgstr "Nom d’artiste"
+
+#: DB:series_type/name:13
+msgctxt "series_type"
+msgid "Artist series"
+msgstr "Série d’artiste"
 
 #: DB:work_attribute_type_allowed_value/value:693
 msgctxt "work_attribute_type_allowed_value"
@@ -2708,7 +2728,7 @@ msgstr "Gerdaniyekürdi"
 msgctxt "medium_format"
 msgid ""
 "German tape cartridge format, using grooved tape rather than magnetic tape."
-msgstr ""
+msgstr "Cartouche à bande plastique exclusivement diffusée en Allemagne (avant les supports à bande magnétique)."
 
 #: DB:work_attribute_type_allowed_value/value:380
 msgctxt "work_attribute_type_allowed_value"
@@ -3378,7 +3398,7 @@ msgstr "ID pour la NICAUTOR, société nicaraguayenne de gestion des droits"
 #: DB:work_attribute_type/description:67
 msgctxt "work_attribute_type"
 msgid "ID for the Norwegian rights society TONO"
-msgstr ""
+msgstr "ID pour la TONO, société norvégienne de gestion des droits d'auteur"
 
 #: DB:work_attribute_type/description:62
 msgctxt "work_attribute_type"
@@ -3414,6 +3434,11 @@ msgstr "ID pour la SACIM, société salvadorienne de gestion des droits d'auteur
 msgctxt "work_attribute_type"
 msgid "ID for the Singaporean rights society COMPASS"
 msgstr "ID pour la COMPASS, société singapourienne de gestion des droits"
+
+#: DB:work_attribute_type/description:68
+msgctxt "work_attribute_type"
+msgid "ID for the South African rights society SAMRO"
+msgstr "ID pour la SAMRO, société sud-africaine de gestion des droits d'auteur"
 
 #: DB:work_attribute_type/description:20
 msgctxt "work_attribute_type"
@@ -3629,6 +3654,13 @@ msgstr "Jait kalyân"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Janaranjani"
 msgstr "Janaranjani"
+
+#: DB:release_packaging/description:21
+msgctxt "release_packaging"
+msgid ""
+"Japanese case that holds an 8cm CD. It is rectangular but can be snapped to "
+"make it more compact (hence the name)."
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:929
 msgctxt "work_attribute_type_allowed_value"
@@ -5917,6 +5949,11 @@ msgctxt "work_attribute_type"
 msgid "SADAIC ID"
 msgstr "ID SADAIC"
 
+#: DB:work_attribute_type/name:68
+msgctxt "work_attribute_type"
+msgid "SAMRO ID"
+msgstr "ID SAMRO"
+
 #: DB:work_attribute_type/name:40
 msgctxt "work_attribute_type"
 msgid "SAYCE ID"
@@ -6286,6 +6323,11 @@ msgctxt "release_packaging"
 msgid "Snap Case"
 msgstr "Boîtier plastique-papier cartonné"
 
+#: DB:release_packaging/name:21
+msgctxt "release_packaging"
+msgid "SnapPack"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:771
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sofyan"
@@ -6589,7 +6631,7 @@ msgstr "ID TEOSTO"
 #: DB:work_attribute_type/name:67
 msgctxt "work_attribute_type"
 msgid "TONO ID"
-msgstr ""
+msgstr "ID TONO"
 
 #: DB:work_attribute_type_allowed_value/value:573
 msgctxt "work_attribute_type_allowed_value"
@@ -6649,7 +6691,7 @@ msgstr "Tebriz"
 #: DB:medium_format/name:90
 msgctxt "medium_format"
 msgid "Tefifon"
-msgstr ""
+msgstr "Tefifon"
 
 #: DB:work_attribute_type_allowed_value/value:774
 msgctxt "work_attribute_type_allowed_value"

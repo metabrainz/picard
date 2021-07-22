@@ -6,7 +6,7 @@
 # Translators:
 # Jardel Alves <televinhetas@gmail.com>, 2019
 # Lukáš Lalinský <lalinsky@gmail.com>, 2020
-# Mateus Valente Bitarães, 2020
+# Mateus, 2020
 # Mario Busch <mario_busch@mac.com>, 2021
 # 
 #, fuzzy

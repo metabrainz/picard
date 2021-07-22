@@ -11,8 +11,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-04-27 20:20+0000\n"
-"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
+"PO-Revision-Date: 2021-06-30 18:50+0000\n"
+"Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,7 +68,7 @@ msgstr "3,5″-floppy"
 #: DB:medium_format/name:91
 msgctxt "medium_format"
 msgid "5.25\" Floppy Disk"
-msgstr ""
+msgstr "5,25″-floppy"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
@@ -156,7 +156,7 @@ msgid ""
 "A give-away release or a release intended to promote an upcoming official "
 "release (e.g. pre-release versions, releases included with a magazine, "
 "versions supplied to radio DJs for air-play)."
-msgstr "Een uitgave die wordt weggegeven of bedoeld is om een officiële uitgave te promoten (bijv. prerelease-uitgaves, uitgaves die met een tijdschrift gebundeld zijn of versies die aan radio-dj’s worden gegeven om te draaien)."
+msgstr "Een uitgave die wordt weggegeven of bedoeld is om een officiële uitgave te promoten (bijv. prerelease-uitgaven, uitgaven die met een tijdschrift gebundeld zijn of versies die aan radio-dj’s worden gegeven om te draaien)."
 
 #: DB:artist_type/description:2
 msgctxt "artist_type"
@@ -303,6 +303,16 @@ msgid ""
 "but not only, one where music is taught)"
 msgstr "Een school, conservatorium of ander soortgelijk onderwijsinstituut (vooral, maar niet alleen, een plek waar onderwijs in de muziek wordt gegeven)"
 
+#: DB:series_type/description:14
+msgctxt "series_type"
+msgid "A series of artists honoured by the same award."
+msgstr "Een serie artiesten die dezelfde prijs hebben gewonnen."
+
+#: DB:series_type/description:13
+msgctxt "series_type"
+msgid "A series of artists."
+msgstr "Een serie artiesten"
+
 #: DB:series_type/description:6
 msgctxt "series_type"
 msgid "A series of events."
@@ -336,7 +346,7 @@ msgstr "Een serie uitgavegroepen."
 #: DB:series_type/description:2
 msgctxt "series_type"
 msgid "A series of releases."
-msgstr "Een serie uitgaves."
+msgstr "Een serie uitgaven."
 
 #: DB:series_type/description:5
 msgctxt "series_type"
@@ -698,7 +708,7 @@ msgid ""
 "An unofficial/underground release that was not sanctioned by the artist "
 "and/or the record company. This includes unofficial live recordings and "
 "pirated releases."
-msgstr "Een onofficiële of underground uitgave waar geen toestemming voor is gegeven door de artiest en/of de platenmaatschappij. Hieronder vallen ook onofficiële liveopnames en illegaal verspreide uitgaves."
+msgstr "Een onofficiële of underground uitgave waar geen toestemming voor is gegeven door de artiest en/of de platenmaatschappij. Hieronder vallen ook onofficiële liveopnames en illegaal verspreide uitgaven."
 
 #: DB:work_type/description:20
 msgctxt "work_type"
@@ -718,7 +728,7 @@ msgctxt "release_status"
 msgid ""
 "Any release officially sanctioned by the artist and/or their record company."
 " Most releases will fit into this category."
-msgstr "Elke uitgave waar officieel toestemming voor is gegeven door de artiest en/of de platenmaatschappij. De meeste uitgaves vallen in deze categorie."
+msgstr "Elke uitgave waar officieel toestemming voor is gegeven door de artiest en/of de platenmaatschappij. De meeste uitgaven vallen in deze categorie."
 
 #: DB:work_attribute_type_allowed_value/value:311
 msgctxt "work_attribute_type_allowed_value"
@@ -790,10 +800,20 @@ msgctxt "collection_type"
 msgid "Artist"
 msgstr "Artiest"
 
+#: DB:series_type/name:14
+msgctxt "series_type"
+msgid "Artist award"
+msgstr "Artiestenprijs"
+
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
 msgid "Artist name"
 msgstr "Artiestennaam"
+
+#: DB:series_type/name:13
+msgctxt "series_type"
+msgid "Artist series"
+msgstr "Serie artiesten"
 
 #: DB:work_attribute_type_allowed_value/value:693
 msgctxt "work_attribute_type_allowed_value"
@@ -2690,7 +2710,7 @@ msgstr "Gerdaniyekürdi"
 msgctxt "medium_format"
 msgid ""
 "German tape cartridge format, using grooved tape rather than magnetic tape."
-msgstr ""
+msgstr "Tefifon was een Duits opslagmedium dat bestond uit een lint in een cassette, maar in plaats van een magneetband werd het geluid in groeven op het lint geschreven."
 
 #: DB:work_attribute_type_allowed_value/value:380
 msgctxt "work_attribute_type_allowed_value"
@@ -3360,7 +3380,7 @@ msgstr "Een ID van de Nicaraguaanse auteursrechtenorganisatie NICAUTOR"
 #: DB:work_attribute_type/description:67
 msgctxt "work_attribute_type"
 msgid "ID for the Norwegian rights society TONO"
-msgstr ""
+msgstr "Een ID van de Noorse auteursrechtenorganisatie TONO"
 
 #: DB:work_attribute_type/description:62
 msgctxt "work_attribute_type"
@@ -3396,6 +3416,11 @@ msgstr "Een ID van de Salvadoraanse auteursrechtenorganisatie SACIM"
 msgctxt "work_attribute_type"
 msgid "ID for the Singaporean rights society COMPASS"
 msgstr "Een ID van de Singaporese auteursrechtenorganisatie COMPASS"
+
+#: DB:work_attribute_type/description:68
+msgctxt "work_attribute_type"
+msgid "ID for the South African rights society SAMRO"
+msgstr "Een ID van de Zuid-Afrikaanse auteursrechtenorganisatie SAMRO"
 
 #: DB:work_attribute_type/description:20
 msgctxt "work_attribute_type"
@@ -3611,6 +3636,13 @@ msgstr "Jait kalyāṇ"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Janaranjani"
 msgstr "Janaranjani"
+
+#: DB:release_packaging/description:21
+msgctxt "release_packaging"
+msgid ""
+"Japanese case that holds an 8cm CD. It is rectangular but can be snapped to "
+"make it more compact (hence the name)."
+msgstr "Een Japans cd-doosje voor cd’s van 8 cm. Het is doosje is rechthoekig, maar kan worden dubbelgeklapt om het compacter te maken (vandaar de naam)."
 
 #: DB:work_attribute_type_allowed_value/value:929
 msgctxt "work_attribute_type_allowed_value"
@@ -5696,7 +5728,7 @@ msgstr "Naam van de uitgave"
 #: DB:series_type/name:2
 msgctxt "series_type"
 msgid "Release series"
-msgstr "Serie uitgaves"
+msgstr "Serie uitgaven"
 
 #: DB:place_type/name:6
 msgctxt "place_type"
@@ -5898,6 +5930,11 @@ msgstr "SACVEN-ID"
 msgctxt "work_attribute_type"
 msgid "SADAIC ID"
 msgstr "SADAIC-ID"
+
+#: DB:work_attribute_type/name:68
+msgctxt "work_attribute_type"
+msgid "SAMRO ID"
+msgstr "SAMRO-ID"
 
 #: DB:work_attribute_type/name:40
 msgctxt "work_attribute_type"
@@ -6268,6 +6305,11 @@ msgctxt "release_packaging"
 msgid "Snap Case"
 msgstr "Snap Case"
 
+#: DB:release_packaging/name:21
+msgctxt "release_packaging"
+msgid "SnapPack"
+msgstr "SnapPack"
+
 #: DB:work_attribute_type_allowed_value/value:771
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sofyan"
@@ -6571,7 +6613,7 @@ msgstr "TEOSTO-ID"
 #: DB:work_attribute_type/name:67
 msgctxt "work_attribute_type"
 msgid "TONO ID"
-msgstr ""
+msgstr "TONO-ID"
 
 #: DB:work_attribute_type_allowed_value/value:573
 msgctxt "work_attribute_type_allowed_value"
@@ -6631,7 +6673,7 @@ msgstr "Tebriz"
 #: DB:medium_format/name:90
 msgctxt "medium_format"
 msgid "Tefifon"
-msgstr ""
+msgstr "Tefifon"
 
 #: DB:work_attribute_type_allowed_value/value:774
 msgctxt "work_attribute_type_allowed_value"

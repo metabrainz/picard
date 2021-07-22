@@ -4,7 +4,7 @@
 #   Alastair McKinstry <mckinstry@computer.org>, 2002
 # Alastair McKinstry <mckinstry@computer.org>, 2001
 # Clay Cheng <569735195@qq.com>, 2017-2018
-# Clay Cheng <569735195@qq.com>, 2020
+# Clay Cheng <569735195@qq.com>, 2020-2021
 # Clay Cheng <569735195@qq.com>, 2016-2017
 # Dian Li <xslidian@gmail.com>, 2009-2019
 # Erwin Synth <kingdzy1996@gmail.com>, 2017
@@ -33,8 +33,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-04-27 20:20+0000\n"
-"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
+"PO-Revision-Date: 2021-07-16 00:55+0000\n"
+"Last-Translator: Clay Cheng <569735195@qq.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -60,7 +60,7 @@ msgstr "“奏鸣曲”是小型器乐作品的总称，通常是独奏或独奏
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
-msgstr "10\" 虫胶唱片"
+msgstr "10\" 胶木唱片"
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
@@ -70,12 +70,12 @@ msgstr "10\" 黑胶唱片"
 #: DB:medium_format/name:72
 msgctxt "medium_format"
 msgid "12\" LaserDisc"
-msgstr "12\" LaserDisc"
+msgstr "12\" LD"
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
-msgstr "12\" 虫胶唱片"
+msgstr "12\" 胶木唱片"
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
@@ -90,17 +90,17 @@ msgstr "3.5\" 软盘"
 #: DB:medium_format/name:91
 msgctxt "medium_format"
 msgid "5.25\" Floppy Disk"
-msgstr ""
+msgstr "5.25\" 软盘"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
 msgid "7\" Flexi-disc"
-msgstr "7\" Flexi-disc"
+msgstr "7\" 软唱片"
 
 #: DB:medium_format/name:56
 msgctxt "medium_format"
 msgid "7\" Shellac"
-msgstr "7\" 虫胶唱片"
+msgstr "7\" 胶木唱片"
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
@@ -110,12 +110,12 @@ msgstr "7\" 黑胶唱片"
 #: DB:medium_format/name:71
 msgctxt "medium_format"
 msgid "8\" LaserDisc"
-msgstr "8\" LaserDisc"
+msgstr "8\" LD"
 
 #: DB:medium_format/name:78
 msgctxt "medium_format"
 msgid "8-Track Cartridge"
-msgstr "8 轨唱头"
+msgstr "8轨磁带"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -132,7 +132,7 @@ msgctxt "medium_format"
 msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
-msgstr "每分钟90转的垂直切割虫胶唱片，1906至1932年由百代唱片公司制造。"
+msgstr "每分钟90转的垂直切割胶木唱片，1906至1932年由百代唱片公司制造。"
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
@@ -252,7 +252,7 @@ msgstr "以舞台形式演出舞台上的一种或多种戏剧，音乐剧，歌
 msgctxt "place_type"
 msgid ""
 "A place (generally a factory) at which physical media are manufactured."
-msgstr "指用来制造媒体设备的地方（通常是工厂）。"
+msgstr "指用来制造媒体设备的场所（通常是工厂）。"
 
 #: DB:place_type/description:5
 msgctxt "place_type"
@@ -324,6 +324,16 @@ msgid ""
 "A school, university or other similar educational institution (especially, "
 "but not only, one where music is taught)"
 msgstr "中小学,大学或其他类似的教育机构（尤指但不局限于音乐教育机构）"
+
+#: DB:series_type/description:14
+msgctxt "series_type"
+msgid "A series of artists honoured by the same award."
+msgstr "一系列获同一奖项的艺术家。"
+
+#: DB:series_type/description:13
+msgctxt "series_type"
+msgid "A series of artists."
+msgstr "一系列艺术家。"
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -812,10 +822,20 @@ msgctxt "collection_type"
 msgid "Artist"
 msgstr "艺术家"
 
+#: DB:series_type/name:14
+msgctxt "series_type"
+msgid "Artist award"
+msgstr "艺术家奖项"
+
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
 msgid "Artist name"
 msgstr "艺名"
+
+#: DB:series_type/name:13
+msgctxt "series_type"
+msgid "Artist series"
+msgstr "艺术家系列"
 
 #: DB:work_attribute_type_allowed_value/value:693
 msgctxt "work_attribute_type_allowed_value"
@@ -1660,19 +1680,19 @@ msgstr "Copy Control光盘（CCCD）是用于指代2001至2006年间发行的含
 #: DB:area_type/name:1
 msgctxt "area_type"
 msgid "Country"
-msgstr "国家"
+msgstr "国家和地区"
 
 #: DB:area_type/description:1
 msgctxt "area_type"
 msgid ""
 "Country is used for areas included (or previously included) in ISO 3166-1, "
 "e.g. United States."
-msgstr "国家指列于（或曾经列于）ISO 3166-1的区域，如美国。"
+msgstr "国家和地区指列于（或曾经列于）ISO 3166-1的区域，如美国。"
 
 #: DB:area_type/name:7
 msgctxt "area_type"
 msgid "County"
-msgstr "国家"
+msgstr "县"
 
 #: DB:area_type/description:7
 msgctxt "area_type"
@@ -2053,7 +2073,7 @@ msgstr "发行商"
 #: DB:area_type/name:5
 msgctxt "area_type"
 msgid "District"
-msgstr "地区"
+msgstr "市辖区"
 
 #: DB:area_type/description:5
 msgctxt "area_type"
@@ -2063,12 +2083,12 @@ msgstr "市辖区指大城市的区划，如昆斯区。"
 #: DB:work_attribute_type_allowed_value/value:611
 msgctxt "work_attribute_type_allowed_value"
 msgid "Divan"
-msgstr "底万"
+msgstr "Divan"
 
 #: DB:work_attribute_type_allowed_value/value:725
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dolap"
-msgstr "杜拉普"
+msgstr "Dolap"
 
 #: DB:medium_format/name:4
 msgctxt "medium_format"
@@ -2294,17 +2314,17 @@ msgstr "乐团"
 #: DB:work_attribute_type_allowed_value/value:356
 msgctxt "work_attribute_type_allowed_value"
 msgid "Eski Sipihr"
-msgstr "艾思奇希皮尔"
+msgstr "Eski Sipihr"
 
 #: DB:work_attribute_type_allowed_value/value:613
 msgctxt "work_attribute_type_allowed_value"
 msgid "Etüd"
-msgstr "艾图德"
+msgstr "Etüd"
 
 #: DB:work_attribute_type_allowed_value/value:357
 msgctxt "work_attribute_type_allowed_value"
 msgid "Evcara"
-msgstr "艾夫卡拉"
+msgstr "Evcara"
 
 #: DB:editor_collection_type/name:4
 msgctxt "collection_type"
@@ -2424,7 +2444,7 @@ msgstr "升 F 小调"
 #: DB:work_attribute_type_allowed_value/value:731
 msgctxt "work_attribute_type_allowed_value"
 msgid "Fahte"
-msgstr "法赫特"
+msgstr "Fahte"
 
 #: DB:instrument_type/name:7
 msgctxt "instrument_type"
@@ -2439,7 +2459,7 @@ msgstr "Fantezi"
 #: DB:release_packaging/name:10
 msgctxt "release_packaging"
 msgid "Fatbox"
-msgstr "Fatbox广播"
+msgstr "Fatbox"
 
 #: DB:gender/name:2
 msgctxt "gender"
@@ -2521,7 +2541,7 @@ msgctxt "medium_format"
 msgid ""
 "Flat discs with grooves used in phonographs/gramophones. For shellac and "
 "vinyl records, use that specifically"
-msgstr "留声机里使用的带沟槽的碟片，专门用于虫胶和黑胶唱片的录制。"
+msgstr "留声机里使用的带沟槽的碟片，专门用于胶木和黑胶唱片的录制。"
 
 #: DB:medium_format/name:51
 msgctxt "medium_format"
@@ -2712,7 +2732,7 @@ msgstr "Gerdaniyekürdi"
 msgctxt "medium_format"
 msgid ""
 "German tape cartridge format, using grooved tape rather than magnetic tape."
-msgstr ""
+msgstr "德国的一种卡带格式，使用机械音轨而非磁带。"
 
 #: DB:work_attribute_type_allowed_value/value:380
 msgctxt "work_attribute_type_allowed_value"
@@ -3067,7 +3087,7 @@ msgstr "Hisarbuselik"
 #: DB:label_type/name:2
 msgctxt "label_type"
 msgid "Holding"
-msgstr "控股"
+msgstr "举办"
 
 #: DB:work_attribute_type_allowed_value/value:414
 msgctxt "work_attribute_type_allowed_value"
@@ -3382,7 +3402,7 @@ msgstr "尼加拉瓜著作权协会NICAUTOR ID"
 #: DB:work_attribute_type/description:67
 msgctxt "work_attribute_type"
 msgid "ID for the Norwegian rights society TONO"
-msgstr ""
+msgstr "挪威著作权协会TONO ID"
 
 #: DB:work_attribute_type/description:62
 msgctxt "work_attribute_type"
@@ -3418,6 +3438,11 @@ msgstr "萨尔瓦多著作权协会SACIM ID"
 msgctxt "work_attribute_type"
 msgid "ID for the Singaporean rights society COMPASS"
 msgstr "新加坡著作权协会COMPASS ID"
+
+#: DB:work_attribute_type/description:68
+msgctxt "work_attribute_type"
+msgid "ID for the South African rights society SAMRO"
+msgstr "南非著作权协会SAMRO ID"
 
 #: DB:work_attribute_type/description:20
 msgctxt "work_attribute_type"
@@ -3472,17 +3497,17 @@ msgstr "委内瑞拉著作权协会SACVEN ID"
 #: DB:work_attribute_type/description:38
 msgctxt "work_attribute_type"
 msgid "ID for the international (formerly US) rights society AMRA"
-msgstr "国际（以前为美国）版权协会AMRA的ID"
+msgstr "国际（以前为美国）版权协会AMRA ID"
 
 #: DB:work_attribute_type/description:55
 msgctxt "work_attribute_type"
 msgid "ID for the international rights society consortium LatinNet"
-msgstr "国际权利社会联合会 LatinNet 的 ID"
+msgstr "国际著作权协会联合会 LatinNet ID"
 
 #: DB:work_attribute_type/description:22
 msgctxt "work_attribute_type"
 msgid "ID for the private licensing company CCLI"
-msgstr "私人许可公司CCLI的ID"
+msgstr "私人许可公司CCLI ID"
 
 #: DB:work_attribute_type/description:64
 msgctxt "work_attribute_type"
@@ -3633,6 +3658,13 @@ msgstr "Jait kalyāṇ"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Janaranjani"
 msgstr "Janaranjani"
+
+#: DB:release_packaging/description:21
+msgctxt "release_packaging"
+msgid ""
+"Japanese case that holds an 8cm CD. It is rectangular but can be snapped to "
+"make it more compact (hence the name)."
+msgstr "日本的8厘米CD盒。正方形，但可以闭合后使其更紧凑(由此得名)。"
 
 #: DB:work_attribute_type_allowed_value/value:929
 msgctxt "work_attribute_type_allowed_value"
@@ -4206,7 +4238,7 @@ msgstr "Lalita pancamaṁ"
 #: DB:medium_format/name:5
 msgctxt "medium_format"
 msgid "LaserDisc"
-msgstr "LaserDisc"
+msgstr "LD"
 
 #: DB:work_attribute_type/name:55
 msgctxt "work_attribute_type"
@@ -4641,7 +4673,7 @@ msgstr "Multāni"
 #: DB:area_type/name:4
 msgctxt "area_type"
 msgid "Municipality"
-msgstr "自治区"
+msgstr "自治体"
 
 #: DB:area_type/description:4
 msgctxt "area_type"
@@ -5402,7 +5434,7 @@ msgstr "留声机唱片"
 #: DB:medium_format/name:15
 msgctxt "medium_format"
 msgid "Piano Roll"
-msgstr "钢琴卷帘"
+msgstr "自动钢琴打孔纸卷"
 
 #: DB:editor_collection_type/name:11
 msgctxt "collection_type"
@@ -5487,7 +5519,7 @@ msgstr "虚拟专辑"
 #: DB:label_type/name:7
 msgctxt "label_type"
 msgid "Publisher"
-msgstr "出版社"
+msgstr "词曲版权持有者"
 
 #: DB:work_attribute_type_allowed_value/value:999
 msgctxt "work_attribute_type_allowed_value"
@@ -5758,7 +5790,7 @@ msgstr "Reyya"
 #: DB:label_type/name:8
 msgctxt "label_type"
 msgid "Rights Society"
-msgstr "版权学会"
+msgstr "版权协会"
 
 #: DB:work_attribute_type_allowed_value/value:222
 msgctxt "work_attribute_type_allowed_value"
@@ -5798,12 +5830,12 @@ msgstr "Ruy-i Neva"
 #: DB:work_attribute_type/name:4
 msgctxt "work_attribute_type"
 msgid "Rāga (Carnatic)"
-msgstr "拉格 （卡纳提克）"
+msgstr "拉格（卡纳提克）"
 
 #: DB:work_attribute_type/name:32
 msgctxt "work_attribute_type"
 msgid "Rāga (Hindustani)"
-msgstr "拉加（印度斯坦）"
+msgstr "拉格（印度斯坦）"
 
 #: DB:work_attribute_type_allowed_value/value:1003
 msgctxt "work_attribute_type_allowed_value"
@@ -5920,6 +5952,11 @@ msgstr "SACVEN ID"
 msgctxt "work_attribute_type"
 msgid "SADAIC ID"
 msgstr "SADAIC ID"
+
+#: DB:work_attribute_type/name:68
+msgctxt "work_attribute_type"
+msgid "SAMRO ID"
+msgstr "SAMRO ID"
 
 #: DB:work_attribute_type/name:40
 msgctxt "work_attribute_type"
@@ -6215,14 +6252,14 @@ msgstr "Seyir"
 #: DB:medium_format/name:53
 msgctxt "medium_format"
 msgid "Shellac"
-msgstr "虫胶"
+msgstr "胶木唱片"
 
 #: DB:medium_format/description:53
 msgctxt "medium_format"
 msgid ""
 "Shellac records were the most predominant type of gramophone record during "
 "the first half of the 20th century."
-msgstr "虫胶唱片是20世纪早期最盛行的留声机唱片形式。"
+msgstr "胶木唱片是20世纪早期最盛行的留声机唱片形式。"
 
 #: DB:work_attribute_type_allowed_value/value:236
 msgctxt "work_attribute_type_allowed_value"
@@ -6288,7 +6325,12 @@ msgstr "薄珍宝盒"
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"
 msgid "Snap Case"
-msgstr "一面塑料薄膜另一面纸的包装"
+msgstr "简易碟片套"
+
+#: DB:release_packaging/name:21
+msgctxt "release_packaging"
+msgid "SnapPack"
+msgstr "SnapPack"
 
 #: DB:work_attribute_type_allowed_value/value:771
 msgctxt "work_attribute_type_allowed_value"
@@ -6593,7 +6635,7 @@ msgstr "TEOSTO ID"
 #: DB:work_attribute_type/name:67
 msgctxt "work_attribute_type"
 msgid "TONO ID"
-msgstr ""
+msgstr "TONO ID"
 
 #: DB:work_attribute_type_allowed_value/value:573
 msgctxt "work_attribute_type_allowed_value"
@@ -6653,7 +6695,7 @@ msgstr "Tebriz"
 #: DB:medium_format/name:90
 msgctxt "medium_format"
 msgid "Tefifon"
-msgstr ""
+msgstr "Tefifon"
 
 #: DB:work_attribute_type_allowed_value/value:774
 msgctxt "work_attribute_type_allowed_value"
@@ -6814,7 +6856,7 @@ msgctxt "artist_type"
 msgid ""
 "This indicates an individual person, be it under its legal name (“John "
 "Lennon”), or a performance name (“Sting”)."
-msgstr "这表示一个人，无论是其法定名称（“ John Lennon”）还是艺名（“ Sting”）。"
+msgstr "这表示一个人，无论是其法定姓名（“ John Lennon”）还是艺名（“ Sting”）。"
 
 #: DB:artist_type/description:5
 msgctxt "artist_type"
@@ -6967,7 +7009,7 @@ msgstr "塔拉 （卡纳提克）"
 #: DB:work_attribute_type/name:31
 msgctxt "work_attribute_type"
 msgid "Tāla (Hindustani)"
-msgstr "Tāla （Hindustani）"
+msgstr "塔拉（印度斯坦）"
 
 #: DB:work_attribute_type_allowed_value/value:846
 msgctxt "work_attribute_type_allowed_value"
@@ -7016,7 +7058,7 @@ msgctxt "area_type"
 msgid ""
 "Used for any military bases that are large enough to be considered an area, "
 "not just a place."
-msgstr "用于任何足够大的军事基地，可以被视为一个地区，而不仅仅是一个地方。"
+msgstr "用于任何足够大的军事基地，可以被视为一个区域，而不仅仅是一个场所。"
 
 #: DB:area_type/description:9
 msgctxt "area_type"

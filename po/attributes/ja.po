@@ -8,10 +8,12 @@
 # ktu0457, 2017
 # mai inoue, 2015
 # mai inoue, 2015
+# Masuda Sunatomo <sunatomo@gmail.com>, 2021
 # Mitsuharu Kurita, 2016
 # nikki, 2013-2014
 # Nozomu Kurasawa <email address hidden>, 2012
 # Nozomu KURASAWA <nabetaro@caldron.jp>, 2012-2014
+# ffff23 <open_ffff23@protonmail.ch>, 2021
 # Osamu Takahashi, 2014
 # Osamu Takahashi, 2014
 # PATATE12, 2014
@@ -25,8 +27,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-04-27 20:20+0000\n"
-"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
+"PO-Revision-Date: 2021-07-18 12:19+0000\n"
+"Last-Translator: Masuda Sunatomo <sunatomo@gmail.com>\n"
 "Language-Team: Japanese (http://www.transifex.com/musicbrainz/musicbrainz/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -82,7 +84,7 @@ msgstr "3.5インチ フロッピーディスク"
 #: DB:medium_format/name:91
 msgctxt "medium_format"
 msgid "5.25\" Floppy Disk"
-msgstr ""
+msgstr "5.25インチ フロッピーディスク"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
@@ -129,12 +131,12 @@ msgstr "90 rpm、縦溝式 (Vertical-cut) のシェラック盤、Pathé レー�
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
-msgstr ""
+msgstr "ドリアンスケール"
 
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
-msgstr ""
+msgstr "ミクソリディアンスケール"
 
 #: DB:work_type/description:2
 msgctxt "work_type"
@@ -177,14 +179,14 @@ msgctxt "artist_type"
 msgid ""
 "A grouping of multiple musicians who perform together (in some cases, some "
 "or all of the members might differ in different performances or recordings)."
-msgstr ""
+msgstr "一緒に演奏する複数のミュージシャンのグループ（場合によっては、メンバーの一部またはすべてがパフォーマンスや録音によって異なる場合がある）。"
 
 #: DB:instrument_type/description:7
 msgctxt "instrument_type"
 msgid ""
 "A grouping of related but different instruments, like the different violin-"
 "like instruments"
-msgstr ""
+msgstr "別々のバイオリン風楽器のように、関連しているが異なる楽器のグループ"
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -205,7 +207,7 @@ msgid ""
 "A masterclass or clinic is an event where an artist meets with a small to "
 "medium-sized audience and instructs them individually and/or takes questions"
 " intended to improve the audience members' playing skills."
-msgstr ""
+msgstr "マスタークラスまたはクリニックは、アーティストが中小規模の聴衆と会い、個別に指導したり、聴衆の演奏スキルを向上させることを目的とした質問をしたりするイベント。"
 
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
@@ -217,7 +219,7 @@ msgctxt "work_type"
 msgid ""
 "A partita is an instrumental piece composed of a series of variations, and "
 "it's by its current definition very similar to a suite."
-msgstr ""
+msgstr "パルティータは一連のバリエーションで構成された器楽作品であり、現在の定義ではスイートと類似している。"
 
 #: DB:event_type/description:3
 msgctxt "event_type"
@@ -238,7 +240,7 @@ msgid ""
 "similar works for the stage in their staged form (as opposed to a <a "
 "href=\"https://en.wikipedia.org/wiki/Concert_performance\">concert "
 "performance</a> without staging)."
-msgstr ""
+msgstr "ステージでの1つまたは複数の演劇、ミュージカル、オペラ、バレエ、またはその他の同様の作品のステージ形式でのパフォーマンス（ステージングなしの<a href=\"https://en.wikipedia.org/wiki/Concert_performance\"> コンサートパフォーマンス</a> とは対照的に）。"
 
 #: DB:place_type/description:8
 msgctxt "place_type"
@@ -274,7 +276,7 @@ msgid ""
 "A place that has worship or religious studies as its main function. "
 "Religious buildings often host concerts and serve as recording locations, "
 "especially for classical music."
-msgstr "礼拝や宗教研究を主な機能とする場所。宗教的な建物はしばしばコンサートを主催し、特にクラシック音楽のレコーディング場所として使用されます。"
+msgstr "礼拝や宗教研究を主な機能とする場所。宗教的な建物はしばしばコンサートを主催し、特にクラシック音楽のレコーディング場所として使用される。"
 
 #: DB:place_type/description:4
 msgctxt "place_type"
@@ -282,7 +284,7 @@ msgid ""
 "A place whose main purpose is to host outdoor sport events, typically "
 "consisting of a pitch surrounded by a structure for spectators with no roof,"
 " or a roof which can be retracted."
-msgstr "屋外スポーツイベントを開催することを主な目的とする場所で、通常は屋根のない観客のための構造物で囲まれたピッチ、または格納することができる屋根で構成されています。"
+msgstr "屋外スポーツイベントを開催することを主な目的とする場所で、通常は屋根のない観客のための構造物で囲まれたピッチ、または格納することができる屋根で構成される。"
 
 #: DB:work_type/description:28
 msgctxt "work_type"
@@ -290,32 +292,42 @@ msgid ""
 "A play is a form of literature usually consisting of scripted dialogue "
 "between characters, and intended for theatrical performance rather than just"
 " reading."
-msgstr ""
+msgstr "戯曲は、通常、登場人物間の台本による会話で構成される文学の一形態であり、単に読むだけでなく、演劇を目的とする。"
 
 #: DB:work_type/description:21
 msgctxt "work_type"
 msgid ""
 "A poem is a literary piece, generally short and in verse, where words are "
 "usually chosen for their sound and for the images and ideas they suggest."
-msgstr ""
+msgstr "詩は、一般的に短く、詩のある文学作品であり、通常、言葉はその音と、彼らが提案するイメージやアイデアのために選択される。"
 
 #: DB:work_type/description:14
 msgctxt "work_type"
 msgid ""
 "A quartet is a musical composition scored for four voices or instruments."
-msgstr ""
+msgstr "カルテットは、4つの声または楽器で採譜された楽曲。"
 
 #: DB:series_type/description:8
 msgctxt "series_type"
 msgid "A recurring festival, usually happening annually in the same location."
-msgstr ""
+msgstr "定期的に開催されるフェスティバルで、通常は同一箇所で毎年開催される。"
 
 #: DB:place_type/description:7
 msgctxt "place_type"
 msgid ""
 "A school, university or other similar educational institution (especially, "
 "but not only, one where music is taught)"
-msgstr ""
+msgstr "学校、大学、または他の同様の教育機関（特に、音楽が教えられている機関）"
+
+#: DB:series_type/description:14
+msgctxt "series_type"
+msgid "A series of artists honoured by the same award."
+msgstr "同一賞を受賞した一連のアーティスト。"
+
+#: DB:series_type/description:13
+msgctxt "series_type"
+msgid "A series of artists."
+msgstr "アーティストのシリーズ"
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -325,7 +337,7 @@ msgstr "イベントのシリーズ"
 #: DB:series_type/description:9
 msgctxt "series_type"
 msgid "A series of performances of the same show at the same venue."
-msgstr ""
+msgstr "同一会場での同一ショーの一連のパフォーマンス。"
 
 #: DB:series_type/description:3
 msgctxt "series_type"
@@ -340,7 +352,7 @@ msgstr "アーティストによる異なる場所で開催された関連コン
 #: DB:series_type/description:12
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in the same location."
-msgstr ""
+msgstr "同じ場所でのアーティストによる一連の関連コンサート。"
 
 #: DB:series_type/description:1
 msgctxt "series_type"
@@ -368,7 +380,7 @@ msgid ""
 "A song cycle is a group of songs designed to be performed in a sequence as a"
 " single entity. In most cases, all of the songs are by the same composer, "
 "and often use words from the same poet or lyricist."
-msgstr ""
+msgstr "連作歌曲は、単一のエンティティとしてシーケンスで実行されるように設計された曲のグループでである。 大半の場合、すべての曲は同じ作曲家によるものであり、同じ詩人や作詞家の言葉を使用することが少なくない。"
 
 #: DB:work_type/description:17
 msgctxt "work_type"
@@ -377,21 +389,21 @@ msgid ""
 "with or without instruments, performed by singing. This is the most common "
 "form by far in folk and popular music, but also fairly common in a classical"
 " context (\"art songs\")."
-msgstr ""
+msgstr "歌はその起源であり（そしてほとんどの場合）、楽器の有無にかかわらず、歌うことによって演奏される声の作曲である。 これは、フォークミュージックやポピュラー音楽で群を抜いて最も一般的な形式ですが、古典的な文脈（「アートソング」）でもかなり一般的である。"
 
 #: DB:work_type/description:22
 msgctxt "work_type"
 msgid ""
 "A soundtrack is the music that accompanies a film, TV program, videogame, or"
 " even book."
-msgstr ""
+msgstr "サウンドトラックは、映画、テレビ番組、ビデオゲーム、さらには本に付随する音楽である。"
 
 #: DB:instrument_type/description:6
 msgctxt "instrument_type"
 msgid ""
 "A standard grouping of instruments often played together, like a string "
 "quartet"
-msgstr ""
+msgstr "弦楽四重奏のように、しばしば一緒に演奏される楽器の標準的なグループ"
 
 #: DB:work_type/description:6
 msgctxt "work_type"
@@ -399,7 +411,7 @@ msgid ""
 "A suite is an ordered set of instrumental or orchestral pieces normally "
 "performed in a concert setting. They may be extracts from a ballet or opera,"
 " or entirely original movements."
-msgstr ""
+msgstr "スイートは、通常コンサートの設定で演奏される楽器またはオーケストラの曲の注文されたセットを示す。 それらは、バレエやオペラからの抜粋、または完全にオリジナルのムーブメンツである可能性がある。"
 
 #: DB:work_type/description:18
 msgctxt "work_type"
@@ -407,14 +419,14 @@ msgid ""
 "A symphonic poem is a piece of programmatic orchestral music, usually in a "
 "single movement, that evokes a painting, a landscape, the content of a poem,"
 " a story or novel, or other non-musical source."
-msgstr ""
+msgstr "交響詩は、絵画、風景、詩の内容、物語や小説、またはその他の非音楽的な情報源を想起させる、通常は単一の動きのプログラムによるオーケストラ音楽の一部である。"
 
 #: DB:work_type/description:16
 msgctxt "work_type"
 msgid ""
 "A symphony is an extended composition, almost always scored for orchestra "
 "without soloists."
-msgstr ""
+msgstr "交響曲は拡張された作曲であり、ほとんどの場合、ソリストのいないオーケストラのために採譜される。"
 
 #: DB:release_packaging/description:2
 msgctxt "release_packaging"
@@ -442,7 +454,7 @@ msgstr "変イ短調"
 #: DB:work_attribute_type_allowed_value/value:817
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp major"
-msgstr ""
+msgstr "嬰イ長調"
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
@@ -452,32 +464,32 @@ msgstr "嬰イ短調"
 #: DB:work_attribute_type/name:57
 msgctxt "work_attribute_type"
 msgid "AACIMH ID"
-msgstr ""
+msgstr "AACIMH ID"
 
 #: DB:work_attribute_type/name:44
 msgctxt "work_attribute_type"
 msgid "ACAM ID"
-msgstr ""
+msgstr "ACAM ID"
 
 #: DB:work_attribute_type/name:47
 msgctxt "work_attribute_type"
 msgid "ACDAM ID"
-msgstr ""
+msgstr "ACDAM ID"
 
 #: DB:work_attribute_type/name:58
 msgctxt "work_attribute_type"
 msgid "AEI ID"
-msgstr ""
+msgstr "AEI ID"
 
 #: DB:work_attribute_type/name:43
 msgctxt "work_attribute_type"
 msgid "AGADU ID"
-msgstr ""
+msgstr "AGADU ID"
 
 #: DB:work_attribute_type/name:63
 msgctxt "work_attribute_type"
 msgid "AKKA/LAA ID"
-msgstr ""
+msgstr "AKKA/LAA ID"
 
 #: DB:work_attribute_type/name:23
 msgctxt "work_attribute_type"
@@ -487,17 +499,17 @@ msgstr "AKM ID"
 #: DB:work_attribute_type/name:38
 msgctxt "work_attribute_type"
 msgid "AMRA ID"
-msgstr ""
+msgstr "AMRA ID"
 
 #: DB:work_attribute_type/name:46
 msgctxt "work_attribute_type"
 msgid "APA ID"
-msgstr ""
+msgstr "APA ID"
 
 #: DB:work_attribute_type/name:41
 msgctxt "work_attribute_type"
 msgid "APDAYC ID"
-msgstr ""
+msgstr "APDAYC ID"
 
 #: DB:work_attribute_type/name:13
 msgctxt "work_attribute_type"
@@ -507,7 +519,7 @@ msgstr "APRA ID"
 #: DB:work_attribute_type/name:48
 msgctxt "work_attribute_type"
 msgid "ARTISJUS ID"
-msgstr ""
+msgstr "ARTISJUS ID"
 
 #: DB:work_attribute_type/name:6
 msgctxt "work_attribute_type"
@@ -622,7 +634,7 @@ msgstr "アルバム"
 #: DB:series_ordering_type/description:2
 msgctxt "series_ordering_type"
 msgid "Allows for manually setting the position of each item in the series."
-msgstr "シリーズの各要素の配置をマニュアルで設定できます。"
+msgstr "シリーズの各要素の配置を手動で設定できます。"
 
 #: DB:work_attribute_type_allowed_value/value:854
 msgctxt "work_attribute_type_allowed_value"
@@ -650,7 +662,7 @@ msgid ""
 "An alternate version of a release where the titles have been changed. These "
 "don't correspond to any real release and should be linked to the original "
 "release using the transl(iter)ation relationship."
-msgstr ""
+msgstr "タイトルが変更されたリリースの代替バージョン。 これらは実際のリリースに対応していないため、翻訳(者)間のリレーションシップにより元のリリースにリンクする必要がある。"
 
 #: DB:work_type/description:1
 msgctxt "work_type"
@@ -658,28 +670,28 @@ msgid ""
 "An aria is a self-contained piece for one voice usually with orchestral "
 "accompaniment. They are most common inside operas, but also appear in "
 "cantatas, oratorios and even on their own (concert arias)."
-msgstr ""
+msgstr "アリアは、通常オーケストラの伴奏を伴う1つの声のための自己完結型の作品である。 それらはオペラの中で最も一般的ですが、カンタータ、オラトリオ、さらにはそれ自体（コンサートアリア）にも現れることがある。"
 
 #: DB:work_type/description:25
 msgctxt "work_type"
 msgid ""
 "An audio drama is a dramatized, purely acoustic performance, broadcast on "
 "radio or published on an audio medium (tape, CD, etc.)."
-msgstr ""
+msgstr "オーディオドラマは、ドラマ化された純粋なアコースティックパフォーマンスであり、ラジオで放送されるか、オーディオメディア（テープ、CDなど）で公開される。"
 
 #: DB:event_type/description:2
 msgctxt "event_type"
 msgid ""
 "An event where a number of different acts perform across the course of the "
 "day. Larger festivals may be spread across multiple days."
-msgstr ""
+msgstr "1日を通してさまざまな行為が行われるイベント。 大規模なフェスティバルは、複数日に亘って開催される場合もある。"
 
 #: DB:event_type/description:1
 msgctxt "event_type"
 msgid ""
 "An individual concert by a single artist or collaboration, often with "
 "supporting artists who perform before the main act."
-msgstr ""
+msgstr "単一のアーティストまたは多くの場合メインアクトの前に演奏するサポートアーティストとのコラボレーションによる個別のコンサート。"
 
 #: DB:work_type/description:10
 msgctxt "work_type"
@@ -687,7 +699,7 @@ msgid ""
 "An opera is a dramatised work (text + musical score) for singers and "
 "orchestra/ensemble. In true operas all dialog is sung, through arias and "
 "recitatives, but some styles of opera include spoken dialogue."
-msgstr ""
+msgstr "オペラは、歌手やオーケストラ/アンサンブルのための脚色された作品（テキスト+楽譜）である。 真のオペラでは、すべての対話はアリアやレチタティーヴォを通じて歌われますが、オペラのいくつかのスタイルには口頭対話が含まれる。"
 
 #: DB:work_type/description:11
 msgctxt "work_type"
@@ -696,7 +708,7 @@ msgid ""
 "orchestra, a choir, and soloists. While it has characters and a plot, it is "
 "usually not performed theatrically (it lacks costumes, props and strong "
 "character interaction)."
-msgstr ""
+msgstr "オラトリオは、オーケストラ、合唱団、ソリストを含む大規模な（通常は神聖な）楽曲のことである。 キャラクターとプロットを持っていますが、通常劇場で上演されない（それは衣装、小道具、そして強いキャラクターの相互作用を欠いている）。"
 
 #: DB:work_type/description:12
 msgctxt "work_type"
@@ -704,7 +716,7 @@ msgid ""
 "An overture is, generally, the instrumental introduction to an opera. "
 "Independent (\"concert\") overtures also exist, which are generally "
 "programmatic works shorter than a symphonic poem."
-msgstr ""
+msgstr "序曲は、一般的に、オペラでの器楽の紹介でである。 独立した（「コンサート」）序曲も存在する。これは通常、交響詩よりも短いプログラムによる作品である。"
 
 #: DB:release_status/description:3
 msgctxt "release_status"
@@ -712,7 +724,7 @@ msgid ""
 "An unofficial/underground release that was not sanctioned by the artist "
 "and/or the record company. This includes unofficial live recordings and "
 "pirated releases."
-msgstr ""
+msgstr "アーティストやレコード会社によって認可されていない非公式/アンダーグラウンドリリース。 これには、非公式のライブレコーディングと海賊版リリースが含まれる。"
 
 #: DB:work_type/description:20
 msgctxt "work_type"
@@ -720,7 +732,7 @@ msgid ""
 "An étude is an instrumental musical composition, most commonly of "
 "considerable difficulty, usually designed to provide practice material for "
 "perfecting a particular technical skill."
-msgstr ""
+msgstr "エチュードは器楽の作曲であり、最も一般的にはかなり難しいものであり、通常、特定の技術的スキルを完成させるための練習資料を提供するように設計されているものである。"
 
 #: DB:work_attribute_type_allowed_value/value:310
 msgctxt "work_attribute_type_allowed_value"
@@ -732,7 +744,7 @@ msgctxt "release_status"
 msgid ""
 "Any release officially sanctioned by the artist and/or their record company."
 " Most releases will fit into this category."
-msgstr "アーティストやレコード会社の許諾で発売されるリリース（"
+msgstr "アーティストやレコード会社によって公式に認可されたリリース。 ほとんどのリリースはこのカテゴリに該当する。"
 
 #: DB:work_attribute_type_allowed_value/value:311
 msgctxt "work_attribute_type_allowed_value"
@@ -804,10 +816,20 @@ msgctxt "collection_type"
 msgid "Artist"
 msgstr "アーティスト"
 
+#: DB:series_type/name:14
+msgctxt "series_type"
+msgid "Artist award"
+msgstr ""
+
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
 msgid "Artist name"
 msgstr "アーティスト名"
+
+#: DB:series_type/name:13
+msgctxt "series_type"
+msgid "Artist series"
+msgstr "アーティストのシリーズ"
 
 #: DB:work_attribute_type_allowed_value/value:693
 msgctxt "work_attribute_type_allowed_value"
@@ -952,7 +974,7 @@ msgstr "ロ調ドリア"
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
-msgstr ""
+msgstr "ロ調ミクソリディア"
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
@@ -977,12 +999,12 @@ msgstr "変ロ短調"
 #: DB:work_attribute_type_allowed_value/value:818
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-sharp major"
-msgstr ""
+msgstr "嬰ロ長調"
 
 #: DB:work_attribute_type_allowed_value/value:819
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-sharp minor"
-msgstr ""
+msgstr "嬰ロ短調"
 
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
@@ -992,7 +1014,7 @@ msgstr "BMI ID"
 #: DB:work_attribute_type/name:26
 msgctxt "work_attribute_type"
 msgid "BUMA/STEMRA ID"
-msgstr ""
+msgstr "BUMA/STEMRA ID"
 
 #: DB:cover_art_archive.art_type/name:2
 msgctxt "cover_art_type"
@@ -1290,7 +1312,7 @@ msgstr "Blu-ray"
 #: DB:medium_format/name:79
 msgctxt "medium_format"
 msgid "Blu-ray-R"
-msgstr ""
+msgstr "Blu-ray-R"
 
 #: DB:medium_format/name:35
 msgctxt "medium_format"
@@ -1320,7 +1342,7 @@ msgstr "海賊版作品"
 #: DB:release_packaging/name:19
 msgctxt "release_packaging"
 msgid "Box"
-msgstr ""
+msgstr "ボックス"
 
 #: DB:work_attribute_type_allowed_value/value:607
 msgctxt "work_attribute_type_allowed_value"
@@ -1406,7 +1428,7 @@ msgstr "ハ調ドリア"
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Mixolydian"
-msgstr ""
+msgstr "ハ調ミクソディリア"
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
@@ -1426,7 +1448,7 @@ msgstr "変ハ長調"
 #: DB:work_attribute_type_allowed_value/value:812
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat minor"
-msgstr ""
+msgstr "変ハ短調"
 
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
@@ -1476,12 +1498,12 @@ msgstr ""
 #: DB:work_attribute_type/name:45
 msgctxt "work_attribute_type"
 msgid "COMPASS ID"
-msgstr ""
+msgstr "COMPASS ID"
 
 #: DB:work_attribute_type/name:65
 msgctxt "work_attribute_type"
 msgid "COTT ID"
-msgstr ""
+msgstr "COTT ID"
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"
@@ -1623,7 +1645,7 @@ msgstr "コンピレーション"
 #: DB:event_type/name:1
 msgctxt "event_type"
 msgid "Concert"
-msgstr ""
+msgstr "コンサート"
 
 #: DB:work_type/name:4
 msgctxt "work_type"
@@ -1633,7 +1655,7 @@ msgstr "協奏曲"
 #: DB:event_type/name:4
 msgctxt "event_type"
 msgid "Convention/Expo"
-msgstr ""
+msgstr "コンベンション/エキスポ"
 
 #: DB:medium_format/name:61
 msgctxt "medium_format"
@@ -1673,7 +1695,7 @@ msgid ""
 "not the main administrative divisions but are also not municipalities, e.g. "
 "counties in the USA. These are not considered when displaying the parent "
 "areas for a given area."
-msgstr ""
+msgstr "郡は、主要な行政区画ではなく、地方自治体でもない国の小規模な行政区画に使用される。 例:アメリカの郡。 特定の領域の親領域を表示する場合、これらは考慮されない。"
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -1749,7 +1771,7 @@ msgstr "変ニ短調"
 #: DB:work_attribute_type_allowed_value/value:813
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-sharp major"
-msgstr ""
+msgstr "嬰ニ長調"
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
@@ -1799,17 +1821,17 @@ msgstr "DVDplus"
 #: DB:medium_format/name:70
 msgctxt "medium_format"
 msgid "DVDplus (CD side)"
-msgstr ""
+msgstr "DVDplus (CD面)"
 
 #: DB:medium_format/name:68
 msgctxt "medium_format"
 msgid "DVDplus (DVD-Audio side)"
-msgstr ""
+msgstr "DVDplus (DVD-Audio面)"
 
 #: DB:medium_format/name:69
 msgctxt "medium_format"
 msgid "DVDplus (DVD-Video side)"
-msgstr ""
+msgstr "DVDplus (DVD-Video面)"
 
 #: DB:work_attribute_type_allowed_value/value:343
 msgctxt "work_attribute_type_allowed_value"
@@ -2050,7 +2072,7 @@ msgstr "地区"
 #: DB:area_type/description:5
 msgctxt "area_type"
 msgid "District is used for a division of a large city, e.g. Queens."
-msgstr ""
+msgstr "地区は、大都市の分割に使用されます。 例:クイーンズ。"
 
 #: DB:work_attribute_type_allowed_value/value:611
 msgctxt "work_attribute_type_allowed_value"
@@ -2070,17 +2092,17 @@ msgstr "DualDisc"
 #: DB:medium_format/name:67
 msgctxt "medium_format"
 msgid "DualDisc (CD side)"
-msgstr ""
+msgstr "DualDisc (CD 面)"
 
 #: DB:medium_format/name:65
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Audio side)"
-msgstr ""
+msgstr "DualDisc (DVD-Audio 面) "
 
 #: DB:medium_format/name:66
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Video side)"
-msgstr ""
+msgstr "DualDisc (DVD-Video 面) "
 
 #: DB:work_attribute_type_allowed_value/value:612
 msgctxt "work_attribute_type_allowed_value"
@@ -2241,7 +2263,7 @@ msgstr "変ホ短調"
 #: DB:work_attribute_type_allowed_value/value:814
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp major"
-msgstr ""
+msgstr "嬰ホ長調"
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
@@ -2251,7 +2273,7 @@ msgstr "嬰ホ短調"
 #: DB:work_attribute_type/name:37
 msgctxt "work_attribute_type"
 msgid "ECAD ID"
-msgstr ""
+msgstr "ECAD ID"
 
 #: DB:release_group_primary_type/name:3
 msgctxt "release_group_primary_type"
@@ -2266,7 +2288,7 @@ msgstr "エジソンダイヤモンドディスク"
 #: DB:place_type/name:7
 msgctxt "place_type"
 msgid "Educational institution"
-msgstr ""
+msgstr "教育施設"
 
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
@@ -2281,7 +2303,7 @@ msgstr "CD-EXTRA"
 #: DB:instrument_type/name:6
 msgctxt "instrument_type"
 msgid "Ensemble"
-msgstr ""
+msgstr "アンサンブル"
 
 #: DB:work_attribute_type_allowed_value/value:356
 msgctxt "work_attribute_type_allowed_value"
@@ -2311,7 +2333,7 @@ msgstr "イベント名"
 #: DB:series_type/name:6
 msgctxt "series_type"
 msgid "Event series"
-msgstr ""
+msgstr "イベントのシリーズ"
 
 #: DB:work_attribute_type_allowed_value/value:729
 msgctxt "work_attribute_type_allowed_value"
@@ -2401,7 +2423,7 @@ msgstr "変へ長調"
 #: DB:work_attribute_type_allowed_value/value:815
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-flat minor"
-msgstr ""
+msgstr "変へ短調"
 
 #: DB:work_attribute_type_allowed_value/value:19
 msgctxt "work_attribute_type_allowed_value"
@@ -2421,7 +2443,7 @@ msgstr ""
 #: DB:instrument_type/name:7
 msgctxt "instrument_type"
 msgid "Family"
-msgstr ""
+msgstr "ファミリー"
 
 #: DB:work_attribute_type_allowed_value/value:615
 msgctxt "work_attribute_type_allowed_value"
@@ -2476,12 +2498,12 @@ msgstr ""
 #: DB:event_type/name:2
 msgctxt "event_type"
 msgid "Festival"
-msgstr ""
+msgstr "フェスティバル"
 
 #: DB:series_type/name:8
 msgctxt "series_type"
 msgid "Festival"
-msgstr ""
+msgstr "フェスティバル"
 
 #: DB:work_attribute_type_allowed_value/value:372
 msgctxt "work_attribute_type_allowed_value"
@@ -2513,7 +2535,7 @@ msgctxt "medium_format"
 msgid ""
 "Flat discs with grooves used in phonographs/gramophones. For shellac and "
 "vinyl records, use that specifically"
-msgstr ""
+msgstr "フォノグラム/グラモフォンで使用される溝のある平面ディスク。 特にシェラックとビニールのレコードで使用される"
 
 #: DB:medium_format/name:51
 msgctxt "medium_format"
@@ -2526,19 +2548,19 @@ msgid ""
 "Flexi-discs are phonograph records made of a thin, flexible vinyl sheet with"
 " a molded-in groove, designed to be playable on a normal phonograph "
 "turntable."
-msgstr ""
+msgstr "ソノシートは、通常の蓄音機のターンテーブルで再生できるように設計された、成形された溝のある薄くて柔軟なビニールシートで作られた蓄音機のレコードである。"
 
 #: DB:medium_format/name:76
 msgctxt "medium_format"
 msgid "Floppy Disk"
-msgstr ""
+msgstr "フロッピードライブ"
 
 #: DB:gender/description:4
 msgctxt "gender"
 msgid ""
 "For cases where gender just doesn't apply at all (like companies entered as "
 "artists)."
-msgstr ""
+msgstr "性別がまったく当てはまらない場合（アーティストとして参入した企業など）。"
 
 #: DB:work_attribute_type/name:16
 msgctxt "work_attribute_type"
@@ -2588,7 +2610,7 @@ msgstr "変ト長調"
 #: DB:work_attribute_type_allowed_value/value:816
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat minor"
-msgstr ""
+msgstr "変ト短調"
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
@@ -2704,7 +2726,7 @@ msgstr ""
 msgctxt "medium_format"
 msgid ""
 "German tape cartridge format, using grooved tape rather than magnetic tape."
-msgstr ""
+msgstr "磁気テープではなく溝付きテープを使用したドイツのテープカートリッジ形式。"
 
 #: DB:work_attribute_type_allowed_value/value:380
 msgctxt "work_attribute_type_allowed_value"
@@ -2829,7 +2851,7 @@ msgstr "HDCD"
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
 msgid "HFA ID"
-msgstr ""
+msgstr "HFA ID"
 
 #: DB:medium_format/name:37
 msgctxt "medium_format"
@@ -3114,12 +3136,12 @@ msgstr " ハイブリッドSACD (SACD部)"
 #: DB:medium_format/name:87
 msgctxt "medium_format"
 msgid "Hybrid SACD (SACD layer, 2 channels)"
-msgstr ""
+msgstr " ハイブリッドSACD (SACD部, 2チャンネル)"
 
 #: DB:medium_format/name:86
 msgctxt "medium_format"
 msgid "Hybrid SACD (SACD layer, multichannel)"
-msgstr ""
+msgstr " ハイブリッドSACD (SACD部, マルチチャンネル)"
 
 #: DB:work_attribute_type_allowed_value/value:418
 msgctxt "work_attribute_type_allowed_value"
@@ -3199,292 +3221,297 @@ msgstr "ICE ID"
 #: DB:work_attribute_type/description:24
 msgctxt "work_attribute_type"
 msgid "ID for the Argentinean rights society SADAIC"
-msgstr ""
+msgstr "アルゼンチンの権利者団体SADAICのID"
 
 #: DB:work_attribute_type/description:13
 msgctxt "work_attribute_type"
 msgid "ID for the Australasian rights society APRA"
-msgstr ""
+msgstr " オーストラレーシアの権利者団体APRAのID"
 
 #: DB:work_attribute_type/description:23
 msgctxt "work_attribute_type"
 msgid "ID for the Austrian rights society AKM"
-msgstr ""
+msgstr " オーストリアの権利者団体AKMのID"
 
 #: DB:work_attribute_type/description:28
 msgctxt "work_attribute_type"
 msgid "ID for the Belgian rights society SABAM"
-msgstr ""
+msgstr "ベルギーの権利者団体SABAMのID"
 
 #: DB:work_attribute_type/description:61
 msgctxt "work_attribute_type"
 msgid "ID for the Bolivian rights society SOBODAYCOM"
-msgstr ""
+msgstr "ボリビアの権利者団体SOBODAYCOMのID"
 
 #: DB:work_attribute_type/description:37
 msgctxt "work_attribute_type"
 msgid "ID for the Brazilian rights society ECAD"
-msgstr ""
+msgstr "ブラジルの権利者団体ECADのID"
 
 #: DB:work_attribute_type/description:34
 msgctxt "work_attribute_type"
 msgid "ID for the British rights society PRS for Music"
-msgstr ""
+msgstr "イギリスの権利者団体PRSのID"
 
 #: DB:work_attribute_type/description:10
 msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SOCAN"
-msgstr ""
+msgstr "カナダの権利者団体SOCANのID"
 
 #: DB:work_attribute_type/description:53
 msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SODRAC"
-msgstr ""
+msgstr "カナダの権利者団体SODRACのID"
 
 #: DB:work_attribute_type/description:39
 msgctxt "work_attribute_type"
 msgid "ID for the Colombian rights society SAYCO"
-msgstr ""
+msgstr "コロンビアの権利者団体SAYCOのID"
 
 #: DB:work_attribute_type/description:44
 msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
-msgstr ""
+msgstr "コスタリカの権利者団体ACAMのID"
 
 #: DB:work_attribute_type/description:47
 msgctxt "work_attribute_type"
 msgid "ID for the Cuban rights society ACDAM"
-msgstr ""
+msgstr "キューバの権利者団体ACDAMのID"
 
 #: DB:work_attribute_type/description:25
 msgctxt "work_attribute_type"
 msgid "ID for the Czech rights society OSA"
-msgstr ""
+msgstr "チェコの権利者団体OSAのID"
 
 #: DB:work_attribute_type/description:51
 msgctxt "work_attribute_type"
 msgid "ID for the Danish rights society KODA"
-msgstr ""
+msgstr "デンマークの権利者団体KODAのID"
 
 #: DB:work_attribute_type/description:60
 msgctxt "work_attribute_type"
 msgid "ID for the Dominican rights society SGACEDOM"
-msgstr ""
+msgstr "ドミニカの権利者団体SGACEDOMのID"
 
 #: DB:work_attribute_type/description:26
 msgctxt "work_attribute_type"
 msgid "ID for the Dutch rights society BUMA/STEMRA"
-msgstr ""
+msgstr "オランダの権利者団体BUMA/STEMRAのID"
 
 #: DB:work_attribute_type/description:40
 msgctxt "work_attribute_type"
 msgid "ID for the Ecuadorian rights society SAYCE"
-msgstr ""
+msgstr "エクアドルの権利者団体SAYCEのID"
 
 #: DB:work_attribute_type/description:66
 msgctxt "work_attribute_type"
 msgid "ID for the Finnish rights society TEOSTO"
-msgstr ""
+msgstr "フィンランドの権利者団体TEOSTOのID"
 
 #: DB:work_attribute_type/description:21
 msgctxt "work_attribute_type"
 msgid "ID for the French rights society Sacem"
-msgstr ""
+msgstr "フランスの権利者団体SacemのID"
 
 #: DB:work_attribute_type/description:9
 msgctxt "work_attribute_type"
 msgid "ID for the German rights society GEMA"
-msgstr ""
+msgstr "ドイツの権利者団体GEMAのID"
 
 #: DB:work_attribute_type/description:58
 msgctxt "work_attribute_type"
 msgid "ID for the Guatemalan rights society AEI"
-msgstr ""
+msgstr "グアテマラの権利者団体AEIのID"
 
 #: DB:work_attribute_type/description:57
 msgctxt "work_attribute_type"
 msgid "ID for the Honduran rights society AACIMH"
-msgstr ""
+msgstr " ホンジュラスの権利者団体AACIMHのID"
 
 #: DB:work_attribute_type/description:19
 msgctxt "work_attribute_type"
 msgid "ID for the Hong Kong rights society CASH"
-msgstr ""
+msgstr "香港の権利者団体CASHのID"
 
 #: DB:work_attribute_type/description:48
 msgctxt "work_attribute_type"
 msgid "ID for the Hungarian rights society ARTISJUS"
-msgstr ""
+msgstr "ハンガリーの権利者団体ARTISJUSのID"
 
 #: DB:work_attribute_type/description:54
 msgctxt "work_attribute_type"
 msgid "ID for the Icelandic rights society STEF"
-msgstr ""
+msgstr "アイスランドの権利者団体STEFのID"
 
 #: DB:work_attribute_type/description:29
 msgctxt "work_attribute_type"
 msgid "ID for the International Copyright Enterprise"
-msgstr ""
+msgstr "イギリス・スウェーデン・ドイツの権利者団体ICEのID"
 
 #: DB:work_attribute_type/description:52
 msgctxt "work_attribute_type"
 msgid "ID for the Irish rights society IMRO"
-msgstr ""
+msgstr "アイルランドの権利者団体IMROのID"
 
 #: DB:work_attribute_type/description:36
 msgctxt "work_attribute_type"
 msgid "ID for the Italian rights society SIAE"
-msgstr ""
+msgstr "イタリアの権利者団体SIAEのID"
 
 #: DB:work_attribute_type/description:3
 msgctxt "work_attribute_type"
 msgid "ID for the Japanese rights society JASRAC"
-msgstr ""
+msgstr "日本の権利者団体JASRACのID"
 
 #: DB:work_attribute_type/description:33
 msgctxt "work_attribute_type"
 msgid "ID for the Japanese rights society NexTone"
-msgstr ""
+msgstr "日本の権利者団体NexToneのID"
 
 #: DB:work_attribute_type/description:11
 msgctxt "work_attribute_type"
 msgid "ID for the Korean rights society KOMCA"
-msgstr ""
+msgstr "韓国の権利者団体KOMCAのID"
 
 #: DB:work_attribute_type/description:63
 msgctxt "work_attribute_type"
 msgid "ID for the Latvian rights society AKKA/LAA"
-msgstr ""
+msgstr " ラトビアの権利者団体AKKA/LAAのID"
 
 #: DB:work_attribute_type/description:49
 msgctxt "work_attribute_type"
 msgid "ID for the Malaysian rights society MACP"
-msgstr ""
+msgstr "マレーシアの権利者団体MACPのID"
 
 #: DB:work_attribute_type/description:27
 msgctxt "work_attribute_type"
 msgid "ID for the Mexican rights society SACM"
-msgstr ""
+msgstr "メキシコの権利者団体SACMのID"
 
 #: DB:work_attribute_type/description:59
 msgctxt "work_attribute_type"
 msgid "ID for the Nicaraguan rights society NICAUTOR"
-msgstr ""
+msgstr "ニカラグアの権利者団体NICAUTORのID"
 
 #: DB:work_attribute_type/description:67
 msgctxt "work_attribute_type"
 msgid "ID for the Norwegian rights society TONO"
-msgstr ""
+msgstr "ノルウェーの権利者団体TONOのID"
 
 #: DB:work_attribute_type/description:62
 msgctxt "work_attribute_type"
 msgid "ID for the Panamanian rights society SPAC"
-msgstr ""
+msgstr "パナマの権利者団体SPACのID"
 
 #: DB:work_attribute_type/description:46
 msgctxt "work_attribute_type"
 msgid "ID for the Paraguayan rights society APA"
-msgstr ""
+msgstr "パラグアイの権利者団体APAのID"
 
 #: DB:work_attribute_type/description:41
 msgctxt "work_attribute_type"
 msgid "ID for the Peruvian rights society APDAYC"
-msgstr ""
+msgstr "ペルーの権利者団体APDAYCのID"
 
 #: DB:work_attribute_type/description:30
 msgctxt "work_attribute_type"
 msgid "ID for the Polish rights society ZAiKS"
-msgstr ""
+msgstr "ポーランドの権利者団体ZAiKSのID"
 
 #: DB:work_attribute_type/description:35
 msgctxt "work_attribute_type"
 msgid "ID for the Portuguese rights society SPA"
-msgstr ""
+msgstr "ポルトガルの権利者団体SPAのID"
 
 #: DB:work_attribute_type/description:56
 msgctxt "work_attribute_type"
 msgid "ID for the Salvadoran rights society SACIM"
-msgstr ""
+msgstr "エルサルバドルの権利者団体SACIMのID"
 
 #: DB:work_attribute_type/description:45
 msgctxt "work_attribute_type"
 msgid "ID for the Singaporean rights society COMPASS"
-msgstr ""
+msgstr "シンガポールの権利者団体COMPASSのID"
+
+#: DB:work_attribute_type/description:68
+msgctxt "work_attribute_type"
+msgid "ID for the South African rights society SAMRO"
+msgstr " 南アフリカの権利者団体SAMROのID"
 
 #: DB:work_attribute_type/description:20
 msgctxt "work_attribute_type"
 msgid "ID for the Spanish rights society SGAE"
-msgstr ""
+msgstr "スペインの権利者団体SGAEのID"
 
 #: DB:work_attribute_type/description:50
 msgctxt "work_attribute_type"
 msgid "ID for the Swedish rights society STIM"
-msgstr ""
+msgstr "スウェーデンの権利者団体STIMのID"
 
 #: DB:work_attribute_type/description:18
 msgctxt "work_attribute_type"
 msgid "ID for the Swiss rights society SUISA"
-msgstr ""
+msgstr "スイスの権利者団体SUISAのID"
 
 #: DB:work_attribute_type/description:12
 msgctxt "work_attribute_type"
 msgid "ID for the Taiwanese rights society MÜST"
-msgstr ""
+msgstr "台湾の権利者団体MÜSTのID"
 
 #: DB:work_attribute_type/description:65
 msgctxt "work_attribute_type"
 msgid "ID for the Trinidadian and Tobagonian rights society COTT"
-msgstr ""
+msgstr "トリニダードの権利者団体COTTのID"
 
 #: DB:work_attribute_type/description:6
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society ASCAP"
-msgstr ""
+msgstr "アメリカの権利者団体ASCAPのID"
 
 #: DB:work_attribute_type/description:7
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society BMI"
-msgstr ""
+msgstr "アメリカの権利者団体BMIのID"
 
 #: DB:work_attribute_type/description:8
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society SESAC"
-msgstr ""
+msgstr "アメリカの権利者団体SESACのID"
 
 #: DB:work_attribute_type/description:43
 msgctxt "work_attribute_type"
 msgid "ID for the Uruguayan rights society AGADU"
-msgstr ""
+msgstr "ウルグアイの権利者団体AGADUのID"
 
 #: DB:work_attribute_type/description:42
 msgctxt "work_attribute_type"
 msgid "ID for the Venezuelan rights society SACVEN"
-msgstr ""
+msgstr "ベネズエラの権利者団体SACVENのID"
 
 #: DB:work_attribute_type/description:38
 msgctxt "work_attribute_type"
 msgid "ID for the international (formerly US) rights society AMRA"
-msgstr ""
+msgstr " 国際的な(かつてはアメリカの)権利者団体AMRAのID"
 
 #: DB:work_attribute_type/description:55
 msgctxt "work_attribute_type"
 msgid "ID for the international rights society consortium LatinNet"
-msgstr ""
+msgstr " 国際的な権利者団体LatinNetのID"
 
 #: DB:work_attribute_type/description:22
 msgctxt "work_attribute_type"
 msgid "ID for the private licensing company CCLI"
-msgstr ""
+msgstr "国際的な権利者団体CCLIのID"
 
 #: DB:work_attribute_type/description:64
 msgctxt "work_attribute_type"
 msgid "ID for the private licensing company HFA (Harry Fox Agency)"
-msgstr ""
+msgstr "民間ライセンス会社HFA（Harry Fox Agency）のID"
 
 #: DB:work_attribute_type/name:52
 msgctxt "work_attribute_type"
 msgid "IMRO ID"
-msgstr ""
+msgstr "IMRO ID"
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
@@ -3499,29 +3526,29 @@ msgstr ""
 #: DB:label_type/name:9
 msgctxt "label_type"
 msgid "Imprint"
-msgstr ""
+msgstr "インプリント"
 
 #: DB:work_type/name:30
 msgctxt "work_type"
 msgid "Incidental music"
-msgstr ""
+msgstr "付随音楽"
 
 #: DB:work_type/description:30
 msgctxt "work_type"
 msgid ""
 "Incidental music is music written as background for (usually) a theatre "
 "play."
-msgstr ""
+msgstr "付随音楽は、（通常は）演劇の背景として書かれた音楽です。"
 
 #: DB:area_type/name:9
 msgctxt "area_type"
 msgid "Indigenous territory / reserve"
-msgstr ""
+msgstr "先住民の領土/保護区"
 
 #: DB:place_type/name:5
 msgctxt "place_type"
 msgid "Indoor arena"
-msgstr ""
+msgstr "室内アリーナ"
 
 #: DB:editor_collection_type/name:9
 msgctxt "collection_type"
@@ -3599,7 +3626,7 @@ msgid ""
 "Island is used for islands and atolls which don't form subdivisions of their"
 " own, e.g. Skye. These are not considered when displaying the parent areas "
 "for a given area."
-msgstr ""
+msgstr "島は、独自の細分化を形成しない島や環礁に使用されます。 例: スカイ島。 特定の領域の親領域を表示する場合、これらは考慮されない。"
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
@@ -3625,6 +3652,13 @@ msgstr ""
 msgctxt "work_attribute_type_allowed_value"
 msgid "Janaranjani"
 msgstr ""
+
+#: DB:release_packaging/description:21
+msgctxt "release_packaging"
+msgid ""
+"Japanese case that holds an 8cm CD. It is rectangular but can be snapped to "
+"make it more compact (hence the name)."
+msgstr "8cmCDを収納できる日本製ケース。 長方形であるが、スナップしよりコンパクトにすることが可能である（そのため名前が付けられている）。"
 
 #: DB:work_attribute_type_allowed_value/value:929
 msgctxt "work_attribute_type_allowed_value"
@@ -3730,7 +3764,7 @@ msgstr ""
 #: DB:work_attribute_type/name:51
 msgctxt "work_attribute_type"
 msgid "KODA ID"
-msgstr ""
+msgstr "KODA ID"
 
 #: DB:work_attribute_type/name:11
 msgctxt "work_attribute_type"
@@ -4203,7 +4237,7 @@ msgstr "レーザーディスク"
 #: DB:work_attribute_type/name:55
 msgctxt "work_attribute_type"
 msgid "LatinNet ID"
-msgstr ""
+msgstr "LatinNet ID"
 
 #: DB:work_attribute_type_allowed_value/value:159
 msgctxt "work_attribute_type_allowed_value"
@@ -4213,7 +4247,7 @@ msgstr ""
 #: DB:event_type/name:3
 msgctxt "event_type"
 msgid "Launch event"
-msgstr ""
+msgstr "発売イベント"
 
 #: DB:work_attribute_type_allowed_value/value:160
 msgctxt "work_attribute_type_allowed_value"
@@ -4253,7 +4287,7 @@ msgstr ""
 #: DB:work_attribute_type/name:49
 msgctxt "work_attribute_type"
 msgid "MACP ID"
-msgstr ""
+msgstr "MACP ID"
 
 #: DB:work_attribute_type_allowed_value/value:963
 msgctxt "work_attribute_type_allowed_value"
@@ -4353,7 +4387,7 @@ msgstr ""
 #: DB:series_ordering_type/name:2
 msgctxt "series_ordering_type"
 msgid "Manual"
-msgstr ""
+msgstr "手動"
 
 #: DB:label_type/name:10
 msgctxt "label_type"
@@ -4473,12 +4507,12 @@ msgstr ""
 #: DB:medium_format/name:83
 msgctxt "medium_format"
 msgid "Microcassette"
-msgstr ""
+msgstr "マイクロカセット"
 
 #: DB:area_type/name:8
 msgctxt "area_type"
 msgid "Military base"
-msgstr ""
+msgstr "軍事基地"
 
 #: DB:medium_format/name:6
 msgctxt "medium_format"
@@ -4641,7 +4675,7 @@ msgid ""
 "Municipality is used for small administrative divisions which, for urban "
 "municipalities, often contain a single city and a few surrounding villages. "
 "Rural municipalities typically group several villages together."
-msgstr ""
+msgstr "地方自治体は、都市の地方自治体の場合、単一の都市といくつかの周辺の村を含むことが多い小さな行政区画に使用される。 地方自治体は通常、いくつかの村をグループ化する。"
 
 #: DB:work_attribute_type_allowed_value/value:645
 msgctxt "work_attribute_type_allowed_value"
@@ -4661,14 +4695,14 @@ msgstr "MUSIC CARD"
 #: DB:work_type/name:29
 msgctxt "work_type"
 msgid "Musical"
-msgstr ""
+msgstr "ミュージカル"
 
 #: DB:work_type/description:29
 msgctxt "work_type"
 msgid ""
 "Musical theatre is a form of theatrical performance that combines songs, "
 "spoken dialogue, acting, and dance."
-msgstr ""
+msgstr "ミュージカルシアターは、歌、会話、演技、ダンスを組み合わせた演劇の一形態である。"
 
 #: DB:work_attribute_type_allowed_value/value:748
 msgctxt "work_attribute_type_allowed_value"
@@ -4828,7 +4862,7 @@ msgstr ""
 #: DB:work_attribute_type/name:59
 msgctxt "work_attribute_type"
 msgid "NICAUTOR ID"
-msgstr ""
+msgstr "NICAUTOR ID"
 
 #: DB:work_attribute_type_allowed_value/value:647
 msgctxt "work_attribute_type_allowed_value"
@@ -5008,7 +5042,7 @@ msgstr ""
 #: DB:work_attribute_type/name:33
 msgctxt "work_attribute_type"
 msgid "NexTone ID"
-msgstr ""
+msgstr "NexTone ID"
 
 #: DB:work_attribute_type_allowed_value/value:471
 msgctxt "work_attribute_type_allowed_value"
@@ -5108,7 +5142,7 @@ msgstr "なし"
 #: DB:gender/name:4
 msgctxt "gender"
 msgid "Not applicable"
-msgstr ""
+msgstr "該当なし"
 
 #: DB:work_attribute_type_allowed_value/value:491
 msgctxt "work_attribute_type_allowed_value"
@@ -5283,7 +5317,7 @@ msgstr ""
 #: DB:work_attribute_type/name:34
 msgctxt "work_attribute_type"
 msgid "PRS tune code"
-msgstr ""
+msgstr "PRS tune コード"
 
 #: DB:work_attribute_type_allowed_value/value:993
 msgctxt "work_attribute_type_allowed_value"
@@ -5354,7 +5388,7 @@ msgstr ""
 #: DB:instrument_type/name:3
 msgctxt "instrument_type"
 msgid "Percussion instrument"
-msgstr ""
+msgstr "打楽器"
 
 #: DB:work_attribute_type_allowed_value/value:496
 msgctxt "work_attribute_type_allowed_value"
@@ -5389,7 +5423,7 @@ msgstr ""
 #: DB:medium_format/name:73
 msgctxt "medium_format"
 msgid "Phonograph record"
-msgstr ""
+msgstr "レコード盤"
 
 #: DB:medium_format/name:15
 msgctxt "medium_format"
@@ -5409,12 +5443,12 @@ msgstr "場所名"
 #: DB:release_packaging/description:20
 msgctxt "release_packaging"
 msgid "Plastic CD tray inside a cardboard slipcover"
-msgstr ""
+msgstr "段ボールのスリップカバー内のプラスチックCDトレイ"
 
 #: DB:release_packaging/name:18
 msgctxt "release_packaging"
 msgid "Plastic Sleeve"
-msgstr ""
+msgstr "クリアファイル"
 
 #: DB:work_type/name:28
 msgctxt "work_type"
@@ -5454,7 +5488,7 @@ msgstr ""
 #: DB:place_type/name:8
 msgctxt "place_type"
 msgid "Pressing plant"
-msgstr ""
+msgstr "プレス工場"
 
 #: DB:label_type/name:3
 msgctxt "label_type"
@@ -5479,7 +5513,7 @@ msgstr "擬似リリース"
 #: DB:label_type/name:7
 msgctxt "label_type"
 msgid "Publisher"
-msgstr "発行元"
+msgstr "音楽出版社"
 
 #: DB:work_attribute_type_allowed_value/value:999
 msgctxt "work_attribute_type_allowed_value"
@@ -5645,7 +5679,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:14
 msgctxt "cover_art_type"
 msgid "Raw/Unedited"
-msgstr ""
+msgstr "生/未編集"
 
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
@@ -5660,7 +5694,7 @@ msgstr "レコーディング名"
 #: DB:series_type/name:3
 msgctxt "series_type"
 msgid "Recording series"
-msgstr ""
+msgstr "レコーディングのシリーズ"
 
 #: DB:medium_format/name:10
 msgctxt "medium_format"
@@ -5700,7 +5734,7 @@ msgstr "リリースグループ名"
 #: DB:series_type/name:1
 msgctxt "series_type"
 msgid "Release group series"
-msgstr ""
+msgstr "リリースグループのシリーズ"
 
 #: DB:release_alias_type/name:1
 msgctxt "alias_type"
@@ -5710,12 +5744,12 @@ msgstr "リリース名"
 #: DB:series_type/name:2
 msgctxt "series_type"
 msgid "Release series"
-msgstr ""
+msgstr "リリースのシリーズ"
 
 #: DB:place_type/name:6
 msgctxt "place_type"
 msgid "Religious building"
-msgstr ""
+msgstr "宗教建築物"
 
 #: DB:work_attribute_type_allowed_value/value:765
 msgctxt "work_attribute_type_allowed_value"
@@ -5881,12 +5915,12 @@ msgstr "SACD"
 #: DB:medium_format/name:84
 msgctxt "medium_format"
 msgid "SACD (2 channels)"
-msgstr ""
+msgstr "SACD (2チャンネル)"
 
 #: DB:medium_format/name:85
 msgctxt "medium_format"
 msgid "SACD (multichannel)"
-msgstr ""
+msgstr "SACD (マルチチャンネル)"
 
 #: DB:work_attribute_type/name:21
 msgctxt "work_attribute_type"
@@ -5896,7 +5930,7 @@ msgstr "SACEM ID"
 #: DB:work_attribute_type/name:56
 msgctxt "work_attribute_type"
 msgid "SACIM ID"
-msgstr ""
+msgstr "SACIM ID"
 
 #: DB:work_attribute_type/name:27
 msgctxt "work_attribute_type"
@@ -5906,22 +5940,27 @@ msgstr "SACM ID"
 #: DB:work_attribute_type/name:42
 msgctxt "work_attribute_type"
 msgid "SACVEN ID"
-msgstr ""
+msgstr "SACVEN ID"
 
 #: DB:work_attribute_type/name:24
 msgctxt "work_attribute_type"
 msgid "SADAIC ID"
 msgstr "SADAIC ID"
 
+#: DB:work_attribute_type/name:68
+msgctxt "work_attribute_type"
+msgid "SAMRO ID"
+msgstr "SAMRO ID"
+
 #: DB:work_attribute_type/name:40
 msgctxt "work_attribute_type"
 msgid "SAYCE ID"
-msgstr ""
+msgstr "SAYCE ID"
 
 #: DB:work_attribute_type/name:39
 msgctxt "work_attribute_type"
 msgid "SAYCO ID"
-msgstr ""
+msgstr "SAYCO ID"
 
 #: DB:medium_format/name:62
 msgctxt "medium_format"
@@ -5936,7 +5975,7 @@ msgstr "SESAC ID"
 #: DB:work_attribute_type/name:60
 msgctxt "work_attribute_type"
 msgid "SGACEDOM ID"
-msgstr ""
+msgstr "SGACEDOM ID"
 
 #: DB:work_attribute_type/name:20
 msgctxt "work_attribute_type"
@@ -5956,22 +5995,22 @@ msgstr "SHM-SACD"
 #: DB:medium_format/name:89
 msgctxt "medium_format"
 msgid "SHM-SACD (2 channels)"
-msgstr ""
+msgstr "SHM-SACD (2チャンネル)"
 
 #: DB:medium_format/name:88
 msgctxt "medium_format"
 msgid "SHM-SACD (multichannel)"
-msgstr ""
+msgstr "SHM-SACD (マルチチャンネル)"
 
 #: DB:work_attribute_type/name:36
 msgctxt "work_attribute_type"
 msgid "SIAE ID"
-msgstr ""
+msgstr "SIAE ID"
 
 #: DB:work_attribute_type/name:61
 msgctxt "work_attribute_type"
 msgid "SOBODAYCOM ID"
-msgstr ""
+msgstr "SOBODAYCOM ID"
 
 #: DB:work_attribute_type/name:10
 msgctxt "work_attribute_type"
@@ -5981,27 +6020,27 @@ msgstr "SOCAN ID"
 #: DB:work_attribute_type/name:53
 msgctxt "work_attribute_type"
 msgid "SODRAC ID"
-msgstr ""
+msgstr "SODRAC ID"
 
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
-msgstr ""
+msgstr "SPA ID"
 
 #: DB:work_attribute_type/name:62
 msgctxt "work_attribute_type"
 msgid "SPAC ID"
-msgstr ""
+msgstr "SPAC ID"
 
 #: DB:work_attribute_type/name:54
 msgctxt "work_attribute_type"
 msgid "STEF ID"
-msgstr ""
+msgstr "STEF ID"
 
 #: DB:work_attribute_type/name:50
 msgctxt "work_attribute_type"
 msgid "STIM ID"
-msgstr ""
+msgstr "STIM ID"
 
 #: DB:work_attribute_type/name:18
 msgctxt "work_attribute_type"
@@ -6270,7 +6309,7 @@ msgstr ""
 #: DB:release_packaging/name:20
 msgctxt "release_packaging"
 msgid "Slidepack"
-msgstr ""
+msgstr "スライドパック"
 
 #: DB:release_packaging/name:2
 msgctxt "release_packaging"
@@ -6281,6 +6320,11 @@ msgstr "スリムジュエルケース"
 msgctxt "release_packaging"
 msgid "Snap Case"
 msgstr "スナップケース"
+
+#: DB:release_packaging/name:21
+msgctxt "release_packaging"
+msgid "SnapPack"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:771
 msgctxt "work_attribute_type_allowed_value"
@@ -6307,7 +6351,7 @@ msgctxt "series_ordering_type"
 msgid ""
 "Sorts the items in the series automatically by their number attributes, "
 "using a natural sort order."
-msgstr ""
+msgstr "自然順を使用して、シリーズ内のアイテムを番号属性で自動的に並べ替えする。"
 
 #: DB:release_group_secondary_type/name:2
 msgctxt "release_group_secondary_type"
@@ -6337,7 +6381,7 @@ msgstr "スタジアム"
 #: DB:event_type/name:6
 msgctxt "event_type"
 msgid "Stage performance"
-msgstr ""
+msgstr "ステージパフォーマンス"
 
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"
@@ -6580,12 +6624,12 @@ msgstr ""
 #: DB:work_attribute_type/name:66
 msgctxt "work_attribute_type"
 msgid "TEOSTO ID"
-msgstr ""
+msgstr "TEOSTO ID"
 
 #: DB:work_attribute_type/name:67
 msgctxt "work_attribute_type"
 msgid "TONO ID"
-msgstr ""
+msgstr "TONO ID"
 
 #: DB:work_attribute_type_allowed_value/value:573
 msgctxt "work_attribute_type_allowed_value"
@@ -6645,7 +6689,7 @@ msgstr ""
 #: DB:medium_format/name:90
 msgctxt "medium_format"
 msgid "Tefifon"
-msgstr ""
+msgstr "Tefifon"
 
 #: DB:work_attribute_type_allowed_value/value:774
 msgctxt "work_attribute_type_allowed_value"
@@ -6692,28 +6736,28 @@ msgctxt "medium_format"
 msgid ""
 "The CD layer of a DVDplus. The DVD layer should be added as a separate "
 "medium."
-msgstr ""
+msgstr "DVDplusのCDレイヤー。 DVDレイヤーは別のメディアとして追加する必要がある。"
 
 #: DB:medium_format/description:67
 msgctxt "medium_format"
 msgid ""
 "The CD layer of a DualDisc. The DVD layer should be added as a separate "
 "medium."
-msgstr ""
+msgstr "DualDiscのCDレイヤー。 DVDレイヤーは別のメディアとして追加する必要がある。"
 
 #: DB:medium_format/description:63
 msgctxt "medium_format"
 msgid ""
 "The CD layer of a hybrid SACD. The SACD layer should be added as a separate "
 "medium."
-msgstr ""
+msgstr "ハイブリッド SACD のCDレイヤー。 SACDレイヤーは別のメディアとして追加する必要がある。"
 
 #: DB:medium_format/description:82
 msgctxt "medium_format"
 msgid ""
 "The CD side of a vinyl + CD VinylDisc. The vinyl side should be added as a "
 "separate medium."
-msgstr ""
+msgstr "vinyl + CD VinylDisc CD面 。 ビニール面は別の媒体として追加する必要がある。"
 
 #: DB:medium_format/description:60
 msgctxt "medium_format"
@@ -6722,42 +6766,42 @@ msgid ""
 "system developed by RCA, in which video and audio could be played back on a "
 "TV set using a special needle and high-density groove system similar to "
 "phonograph records."
-msgstr ""
+msgstr "Capacitance Electronic Disc（CED）は、RCAによって開発されたアナログビデオディスク再生システムであり、蓄音機のレコードと同様の特殊な針と高密度の溝システムを使用して、ビデオとオーディオをテレビで再生可能である。"
 
 #: DB:medium_format/description:68 DB:medium_format/description:69
 msgctxt "medium_format"
 msgid ""
 "The DVD (audio) layer of a DVDplus. The CD layer should be added as a "
 "separate medium."
-msgstr ""
+msgstr "DVDplusのDVD（オーディオ）レイヤー。 CDレイヤーは別のメディアとして追加する必要がある。"
 
 #: DB:medium_format/description:65
 msgctxt "medium_format"
 msgid ""
 "The DVD (audio) layer of a DualDisc. The CD layer should be added as a "
 "separate medium."
-msgstr ""
+msgstr "DualDiscのDVD（オーディオ）レイヤー。 CDレイヤーは別のメディアとして追加する必要がある。"
 
 #: DB:medium_format/description:66
 msgctxt "medium_format"
 msgid ""
 "The DVD (video) layer of a DualDisc. The CD layer should be added as a "
 "separate medium."
-msgstr ""
+msgstr "DualDiscのDVD（ビデオ）レイヤー。 CDレイヤーは別のメディアとして追加する必要がある。"
 
 #: DB:medium_format/description:80
 msgctxt "medium_format"
 msgid ""
 "The DVD side of a vinyl + DVD VinylDisc. The vinyl side should be added as a"
 " separate medium."
-msgstr ""
+msgstr "vinyl + DVD で構成される VinylDisc の DVD面。ビニール面は別の媒体として追加する必要がある。"
 
 #: DB:medium_format/description:64
 msgctxt "medium_format"
 msgid ""
 "The SACD layer of a hybrid SACD. The CD layer should be added as a separate "
 "medium."
-msgstr ""
+msgstr "ハイブリッドSACDのSACDレイヤー。 CDレイヤーは別のメディアとして追加する必要がある。"
 
 #: DB:work_type/description:7
 msgctxt "work_type"
@@ -6765,26 +6809,26 @@ msgid ""
 "The madrigal is a type of secular vocal music composition. In its original "
 "form, it had no instrumental accompaniment, although accompaniment is much "
 "more common in later madrigals."
-msgstr ""
+msgstr "マドリガーレは世俗的な声楽作品の一種である。 後のマドリガーレでは一般的ですが、元々伴奏無しであった。"
 
 #: DB:work_type/description:24
 msgctxt "work_type"
 msgid ""
 "The operetta is a genre of light opera, in terms both of music and subject "
 "matter. Operettas are generally short and include spoken parts."
-msgstr ""
+msgstr "オペレッタは、音楽と主題の両方の観点から、軽快なオペラのジャンルである。 オペレッタは一般的に短く、話し言葉の部分が含まれている。"
 
 #: DB:release_packaging/description:1
 msgctxt "release_packaging"
 msgid "The traditional CD case, made of hard, brittle plastic."
-msgstr ""
+msgstr "硬くて脆いプラスチック製の従来のCDケース"
 
 #: DB:medium_format/description:81
 msgctxt "medium_format"
 msgid ""
 "The vinyl side of a VinylDisc. The CD or DVD side should be added as a "
 "separate medium."
-msgstr ""
+msgstr "VinylDiscのビニール面。 CDまたはDVD側は別のメディアとして追加する必要がある。"
 
 #: DB:artist_type/description:6
 msgctxt "artist_type"
@@ -6792,21 +6836,21 @@ msgid ""
 "This indicates a choir/chorus (an organized, usually large group of "
 "singers). Smaller vocal ensembles and groupings that do not generally call "
 "themselves choirs are better entered as “Group”."
-msgstr ""
+msgstr "合唱団/合唱団（組織化された、通常は大勢の歌手のグループ）を示す。 一般に合唱団とは呼ばれない小さなボーカルアンサンブルやグループは、「グループ」として入力する方が適切である。"
 
 #: DB:artist_type/description:4
 msgctxt "artist_type"
 msgid ""
 "This indicates an individual fictional character (whether a fictional "
 "person, animal or any other kind of character)."
-msgstr ""
+msgstr "個々の架空の人物（架空の人物、動物、またはその他の種類の人物）を示す。"
 
 #: DB:artist_type/description:1
 msgctxt "artist_type"
 msgid ""
 "This indicates an individual person, be it under its legal name (“John "
 "Lennon”), or a performance name (“Sting”)."
-msgstr ""
+msgstr "正式な名前（「ジョン・レノン」）またはパフォーマンス名（「スティング」）のいずれであっても、個人を示す。"
 
 #: DB:artist_type/description:5
 msgctxt "artist_type"
@@ -6815,7 +6859,7 @@ msgid ""
 "instrumentalists). Smaller ensembles (such as trios and quartets) and "
 "groupings that do not generally call themselves orchestras are better "
 "entered as “Group”."
-msgstr ""
+msgstr "オーケストラ（組織化された、通常は大規模な楽器奏者のグループ）を示。 小さなアンサンブル（トリオやカルテットなど）や、一般にオーケストラとは呼ばれないグループは、「グループ」として入力する方が適切である。"
 
 #: DB:work_type/description:23
 msgctxt "work_type"
@@ -6823,43 +6867,43 @@ msgid ""
 "This represents literary works written in prose, that is, written in "
 "relatively ordinary language without metrical structure (e.g. novels, short "
 "stories, essays...)."
-msgstr ""
+msgstr "散文で書かれた、つまり、計量構造のない比較的普通の言語で書かれた文学作品（小説、短編小説、エッセイなど）"
 
 #: DB:medium_format/description:84
 msgctxt "medium_format"
 msgid ""
 "This represents the 2 channel (stereo/mono) table of contents on a SACD."
-msgstr ""
+msgstr "SACDの2チャンネル（ステレオ/モノラル）の目次"
 
 #: DB:medium_format/description:89
 msgctxt "medium_format"
 msgid ""
 "This represents the 2 channel (stereo/mono) table of contents on a SHM-SACD."
-msgstr ""
+msgstr "SHM-SACDの2チャンネル（ステレオ/モノラル）目次"
 
 #: DB:medium_format/description:87
 msgctxt "medium_format"
 msgid ""
 "This represents the 2 channel (stereo/mono) table of contents on a hybrid "
 "SACD's SACD layer."
-msgstr ""
+msgstr "ハイブリッドSACDのSACDレイヤーの2チャンネル（ステレオ/モノラル）目次"
 
 #: DB:medium_format/description:85
 msgctxt "medium_format"
 msgid "This represents the multichannel table of contents on a SACD."
-msgstr ""
+msgstr "SACDのマルチチャネル目次"
 
 #: DB:medium_format/description:88
 msgctxt "medium_format"
 msgid "This represents the multichannel table of contents on a SHM-SACD."
-msgstr ""
+msgstr "SHM-SACDのマルチチャネル目次"
 
 #: DB:medium_format/description:86
 msgctxt "medium_format"
 msgid ""
 "This represents the multichannel table of contents on a hybrid SACD's SACD "
 "layer."
-msgstr ""
+msgstr "ハイブリッドSACDのSACDレイヤー上のマルチチャネル目次"
 
 #: DB:work_attribute_type_allowed_value/value:1041
 msgctxt "work_attribute_type_allowed_value"
@@ -7001,14 +7045,14 @@ msgctxt "cover_art_type"
 msgid ""
 "Use for images that need work to be used for tagging (but can possibly "
 "already be used for reference)"
-msgstr ""
+msgstr "タグ付けに使用する作業が必要な画像に使用（ただし、参照用にすでに使用されている可能性あり）"
 
 #: DB:area_type/description:8
 msgctxt "area_type"
 msgid ""
 "Used for any military bases that are large enough to be considered an area, "
 "not just a place."
-msgstr ""
+msgstr "場所ではなく、エリアと見なすのに十分な大きさの軍事基地で使用される"
 
 #: DB:area_type/description:9
 msgctxt "area_type"
@@ -7016,7 +7060,7 @@ msgid ""
 "Used for semi-autonomous territories governed by indigenous peoples, such as"
 " Indian reserves/reservations in North America and indigenous territories in"
 " Central and South America."
-msgstr ""
+msgstr "北米のインディアン居留地/居留地や中南米の先住民の領土など、先住民が統治する半自治区に使用される。"
 
 #: DB:work_attribute_type/name:17
 msgctxt "work_attribute_type"
@@ -7131,14 +7175,14 @@ msgstr ""
 #: DB:place_type/name:2
 msgctxt "place_type"
 msgid "Venue"
-msgstr ""
+msgstr "会場"
 
 #: DB:medium_format/description:59
 msgctxt "medium_format"
 msgid ""
 "Video High Density (VHD) was a videodisc format which was marketed "
 "predominantly in Japan by JVC."
-msgstr ""
+msgstr "Video High Density（VHD）は、主に日本でJVCによって販売されたビデオディスク形式。"
 
 #: DB:work_attribute_type_allowed_value/value:273
 msgctxt "work_attribute_type_allowed_value"
@@ -7163,22 +7207,22 @@ msgstr "ビニール盤"
 #: DB:medium_format/name:48
 msgctxt "medium_format"
 msgid "VinylDisc"
-msgstr "ビニール盤"
+msgstr "VinylDisc"
 
 #: DB:medium_format/name:82
 msgctxt "medium_format"
 msgid "VinylDisc (CD side)"
-msgstr ""
+msgstr "VinylDisc (CD面)"
 
 #: DB:medium_format/name:80
 msgctxt "medium_format"
 msgid "VinylDisc (DVD side)"
-msgstr ""
+msgstr "VinylDisc (DVD面)"
 
 #: DB:medium_format/name:81
 msgctxt "medium_format"
 msgid "VinylDisc (Vinyl side)"
-msgstr ""
+msgstr "VinylDisc (Vinyl面)"
 
 #: DB:work_attribute_type_allowed_value/value:259
 #: DB:work_attribute_type_allowed_value/value:1047
@@ -7244,7 +7288,7 @@ msgstr "ワーク名"
 #: DB:series_type/name:4
 msgctxt "series_type"
 msgid "Work series"
-msgstr ""
+msgstr "作品のシリーズ"
 
 #: DB:work_attribute_type_allowed_value/value:277
 msgctxt "work_attribute_type_allowed_value"

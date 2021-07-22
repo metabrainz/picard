@@ -1,12 +1,12 @@
 # 
 # Translators:
-# Alex Mauer <hawke@hawkesnest.net>, 2016
+# Alex Mauer <hawke@hawkesnest.net>, 2016,2021
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009
 # Ian McEwen <ianmcorvidae@ianmcorvidae.net>, 2012-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-04-27 20:20+0000\n"
+"PO-Revision-Date: 2021-06-28 15:34+0000\n"
 "Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
 "Language-Team: Esperanto (http://www.transifex.com/musicbrainz/musicbrainz/language/eo/)\n"
 "MIME-Version: 1.0\n"
@@ -21,14 +21,14 @@ msgid ""
 "\"Motet\" is a term that applies to different types of (usually "
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
-msgstr "\"Motet\" estas termino kui aplikas al diversaj tipoj de (ordinare malakompanas) ĥora verkaro. Kio ĝuste estas moteto dependas multe la periodo."
+msgstr "\"Motet\" estas termino kui aplikas al diversaj tipoj de (ordinare malakompanita) ĥora verkaro. Kio ĝuste estas moteto multe dependas je la periodo."
 
 #: DB:work_type/description:5
 msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr ""
+msgstr "\"Sonato\" estas ĝenerala termino uzata por priskribi malgrandajn skalajn (tre ofte solajn aŭ solajn + klavarajn) instrumentajn verkojn, komence en baroka muziko."
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
@@ -43,7 +43,7 @@ msgstr "10″ vinildisko"
 #: DB:medium_format/name:72
 msgctxt "medium_format"
 msgid "12\" LaserDisc"
-msgstr ""
+msgstr "12″ LaserDisko"
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
@@ -63,7 +63,7 @@ msgstr "3.5″ disketo"
 #: DB:medium_format/name:91
 msgctxt "medium_format"
 msgid "5.25\" Floppy Disk"
-msgstr ""
+msgstr "5.25″ disketo"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
@@ -83,12 +83,12 @@ msgstr "7″ vinildisko"
 #: DB:medium_format/name:71
 msgctxt "medium_format"
 msgid "8\" LaserDisc"
-msgstr ""
+msgstr "8″ LaserDisko"
 
 #: DB:medium_format/name:78
 msgctxt "medium_format"
 msgid "8-Track Cartridge"
-msgstr ""
+msgstr "8-traka kartoĉo"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -105,17 +105,17 @@ msgctxt "medium_format"
 msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
-msgstr "90 RPM, vertikala-tranĉo ŝelako diskoj, produktis de la etikedo Pathé de 1906 ĝis 1932"
+msgstr "90 RPM, vertikala-tranĉo ŝelako diskoj, produktis de la etikedo Pathé de 1906 al 1932"
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
-msgstr "A dorio"
+msgstr "A doria"
 
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
-msgstr ""
+msgstr "A mezolidia"
 
 #: DB:work_type/description:2
 msgctxt "work_type"
@@ -129,13 +129,13 @@ msgctxt "work_type"
 msgid ""
 "A cantata is a vocal (often choral) composition with an instrumental "
 "(usually orchestral) accompaniment, typically in several movements."
-msgstr ""
+msgstr "Kantato estas voĉa (ofte ĉora) komponaĵo kun instrumenta (kutime orkestra) akompano, tipe en pluraj movadoj."
 
 #: DB:work_type/description:4
 msgctxt "work_type"
 msgid ""
 "A concerto is a musical work for soloist(s) accompanied by an orchestra."
-msgstr ""
+msgstr "Konĉerto estas muzika verko por solisto(j) akompane al orkestro."
 
 #: DB:event_type/description:4
 msgctxt "event_type"
@@ -143,7 +143,7 @@ msgid ""
 "A convention, expo or trade fair is an event which is not typically "
 "orientated around music performances, but can include them as side "
 "activities."
-msgstr ""
+msgstr "Kongreso, ekspozicio aŭ komerca foiro estas evento, kiu ne kutime orientiĝas ĉirkaŭ muzikaj prezentadoj, sed povas enhavi ilin kiel flankajn agadojn."
 
 #: DB:release_status/description:2
 msgctxt "release_status"
@@ -151,7 +151,7 @@ msgid ""
 "A give-away release or a release intended to promote an upcoming official "
 "release (e.g. pre-release versions, releases included with a magazine, "
 "versions supplied to radio DJs for air-play)."
-msgstr ""
+msgstr "Senpaga eldono aŭ eldono destinita por promocii venontan oficialan eldonon (ekz. antaŭeldonaj versioj, eldonoj enhavitaj kun revuo, versioj liveritaj al radiaj diskistoj por aera ludo)."
 
 #: DB:artist_type/description:2
 msgctxt "artist_type"
@@ -298,6 +298,16 @@ msgid ""
 "but not only, one where music is taught)"
 msgstr ""
 
+#: DB:series_type/description:14
+msgctxt "series_type"
+msgid "A series of artists honoured by the same award."
+msgstr ""
+
+#: DB:series_type/description:13
+msgctxt "series_type"
+msgid "A series of artists."
+msgstr ""
+
 #: DB:series_type/description:6
 msgctxt "series_type"
 msgid "A series of events."
@@ -413,22 +423,22 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:26
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat major"
-msgstr "A-bemolo maĵora"
+msgstr "A-bemola maĵora"
 
 #: DB:work_attribute_type_allowed_value/value:27
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat minor"
-msgstr "A-bemolo minora"
+msgstr "A-bemola minora"
 
 #: DB:work_attribute_type_allowed_value/value:817
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp major"
-msgstr ""
+msgstr "A-diesa maĵora"
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp minor"
-msgstr ""
+msgstr "A-diesa minora"
 
 #: DB:work_attribute_type/name:57
 msgctxt "work_attribute_type"
@@ -785,10 +795,20 @@ msgctxt "collection_type"
 msgid "Artist"
 msgstr ""
 
+#: DB:series_type/name:14
+msgctxt "series_type"
+msgid "Artist award"
+msgstr ""
+
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
 msgid "Artist name"
 msgstr "Artistnomo"
+
+#: DB:series_type/name:13
+msgctxt "series_type"
+msgid "Artist series"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:693
 msgctxt "work_attribute_type_allowed_value"
@@ -3392,6 +3412,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Singaporean rights society COMPASS"
 msgstr ""
 
+#: DB:work_attribute_type/description:68
+msgctxt "work_attribute_type"
+msgid "ID for the South African rights society SAMRO"
+msgstr ""
+
 #: DB:work_attribute_type/description:20
 msgctxt "work_attribute_type"
 msgid "ID for the Spanish rights society SGAE"
@@ -3605,6 +3630,13 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:115
 msgctxt "work_attribute_type_allowed_value"
 msgid "Janaranjani"
+msgstr ""
+
+#: DB:release_packaging/description:21
+msgctxt "release_packaging"
+msgid ""
+"Japanese case that holds an 8cm CD. It is rectangular but can be snapped to "
+"make it more compact (hence the name)."
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:929
@@ -5894,6 +5926,11 @@ msgctxt "work_attribute_type"
 msgid "SADAIC ID"
 msgstr ""
 
+#: DB:work_attribute_type/name:68
+msgctxt "work_attribute_type"
+msgid "SAMRO ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:40
 msgctxt "work_attribute_type"
 msgid "SAYCE ID"
@@ -6261,6 +6298,11 @@ msgstr ""
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"
 msgid "Snap Case"
+msgstr ""
+
+#: DB:release_packaging/name:21
+msgctxt "release_packaging"
+msgid "SnapPack"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:771
