@@ -1383,6 +1383,9 @@ def func_countryname(parser, country_code, translate=""):
     return name
 
 
+DateTuple = namedtuple('DateTuple', ('year', 'month', 'day'))
+
+
 def _split_date(date_to_parse, date_order="ymd", separator="-"):
     """Split the specified date into parts.
 
@@ -1400,11 +1403,11 @@ def _split_date(date_to_parse, date_order="ymd", separator="-"):
     parts.extend(['', '', ''])
     date_order = date_order.lower()
     if date_order == 'dmy':
-        return parts[2], parts[1], parts[0]
+        return DateTuple(parts[2], parts[1], parts[0])
     elif date_order == 'mdy':
-        return parts[2], parts[0], parts[1]
+        return DateTuple(parts[2], parts[0], parts[1])
     else:
-        return parts[0], parts[1], parts[2]
+        return DateTuple(parts[0], parts[1], parts[2])
 
 
 @script_function(documentation=N_(
@@ -1416,7 +1419,7 @@ specifying a different character if required. If the date is invalid an empty st
 """
 ))
 def func_year(parser, date_to_parse, date_order='ymd', separator="-"):
-    return _split_date(date_to_parse, date_order, separator)[0]
+    return _split_date(date_to_parse, date_order, separator).year
 
 
 @script_function(documentation=N_(
@@ -1428,7 +1431,7 @@ specifying a different character if required. If the date is invalid an empty st
 """
 ))
 def func_month(parser, date_to_parse, date_order='ymd', separator="-"):
-    return _split_date(date_to_parse, date_order, separator)[1]
+    return _split_date(date_to_parse, date_order, separator).month
 
 
 @script_function(documentation=N_(
@@ -1440,7 +1443,7 @@ specifying a different character if required. If the date is invalid an empty st
 """
 ))
 def func_day(parser, date_to_parse, date_order='ymd', separator="-"):
-    return _split_date(date_to_parse, date_order, separator)[2]
+    return _split_date(date_to_parse, date_order, separator).day
 
 
 @script_function(documentation=N_(
