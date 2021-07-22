@@ -155,6 +155,7 @@ class ScriptingOptionsPage(OptionsPage):
     def load(self):
         config = get_config()
         self.ui.enable_tagger_scripts.setChecked(config.setting["enable_tagger_scripts"])
+        self.ui.script_list.clear()
         for pos, name, enabled, text in config.setting["list_of_scripts"]:
             list_item = ScriptListWidgetItem(name, enabled, text)
             self.ui.script_list.addItem(list_item)

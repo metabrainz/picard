@@ -78,7 +78,7 @@ class UserProfileGroups():
         ],
     }
 
-    SETTINGS_GROUPS["coverart"] = {
+    SETTINGS_GROUPS["cover"] = {
         "title": N_("Cover Art"),
         "settings": [
             SettingDesc("save_images_to_tags", N_("Embed cover images into tags")),
@@ -92,7 +92,7 @@ class UserProfileGroups():
         ],
     }
 
-    SETTINGS_GROUPS["filenaming"] = {
+    SETTINGS_GROUPS["filerenaming"] = {
         "title": N_("File Naming"),
         "settings": [
             SettingDesc("windows_compatibility", N_("Windows compatibility")),

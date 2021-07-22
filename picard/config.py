@@ -149,14 +149,21 @@ class SettingConfigSection(ConfigSection):
         self.__prefix = self.__name + '/'
         self._memoization = defaultdict(Memovar)
         self.init_profile_options()
+        self._selected_profile = None
 
     def _get_active_profile_ids(self):
-        profiles = self.__qt_config.profiles[self.PROFILES_KEY]
-        if profiles is None:
-            return
-        for profile in profiles:
-            if profile['enabled']:
-                yield profile["id"]
+        if self._selected_profile is not None:
+            if self._selected_profile == "user_settings":
+                return
+            # Act as if the selected profile is the only active profile.
+            yield self._selected_profile
+        else:
+            profiles = self.__qt_config.profiles[self.PROFILES_KEY]
+            if profiles is None:
+                return
+            for profile in profiles:
+                if profile['enabled']:
+                    yield profile["id"]
 
     def _get_active_profile_settings(self):
         for id in self._get_active_profile_ids():
@@ -185,15 +192,22 @@ class SettingConfigSection(ConfigSection):
         if name in UserProfileGroups.get_all_settings_list():
             for id, settings in self._get_active_profile_settings():
                 if name in settings:
-                    profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY]
-                    profile_settings[id][name] = value
-                    key = self.__qt_config.profiles.key(self.SETTINGS_KEY)
-                    self.__qt_config.setValue(key, profile_settings)
-                    self._memoization[key].dirty = True
+                    self._save_profile_setting(id, name, value)
                     return
-        key = self.key(name)
-        self.__qt_config.setValue(key, value)
+        if self._selected_profile is None or self._selected_profile == "user_settings":
+            key = self.key(name)
+            self.__qt_config.setValue(key, value)
+            self._memoization[key].dirty = True
+
+    def _save_profile_setting(self, profile_id, name, value):
+        profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY]
+        profile_settings[profile_id][name] = value
+        key = self.__qt_config.profiles.key(self.SETTINGS_KEY)
+        self.__qt_config.setValue(key, profile_settings)
         self._memoization[key].dirty = True
+
+    def set_profile(self, profile_id=None):
+        self._selected_profile = profile_id
 
 
 class Config(QtCore.QSettings):

@@ -32,16 +32,22 @@
 
 from PyQt5 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
 from picard import log
 from picard.config import (
     ListOption,
+    SettingConfigSection,
     TextOption,
     get_config,
 )
-from picard.util import restore_method
+from picard.profile import UserProfileGroups
+from picard.util import (
+    restore_method,
+    webbrowser2,
+)
 
 from picard.ui import (
     HashableTreeWidgetItem,
@@ -74,6 +80,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     tags_compatibility_id3,
     tags_compatibility_wave,
 )
+from picard.ui.ui_options_attached_profiles import Ui_AttachedProfilesDialog
 from picard.ui.util import StandardButton
 
 
@@ -131,6 +138,31 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.ui.reset_button.clicked.connect(self.confirm_reset)
         self.ui.buttonbox.helpRequested.connect(self.show_help)
 
+        profile_help = StandardButton(StandardButton.HELP)
+        profile_help.setText(_("Profile Help"))
+        self.ui.profiles_buttonbox.addButton(profile_help, QtWidgets.QDialogButtonBox.HelpRole)
+        self.ui.profiles_buttonbox.helpRequested.connect(self.show_profile_help)
+
+        self.ui.attached_profiles_button = QtWidgets.QPushButton(_("Attached Profiles"))
+        self.ui.attached_profiles_button.setToolTip(_("Show which profiles are attached to the options on this page"))
+        self.ui.profiles_buttonbox.addButton(self.ui.attached_profiles_button, QtWidgets.QDialogButtonBox.ActionRole)
+        self.ui.attached_profiles_button.clicked.connect(self.show_attached_profiles_dialog)
+
+        config = get_config()
+        # Set initially displayed values to the user's base settings (with no profiles enabled)
+        config.setting.set_profile("user_settings")
+
+        if config.profiles[SettingConfigSection.PROFILES_KEY]:
+            self.ui.profile_frame.show()
+            self.ui.save_to_profile.clear()
+            self.ui.save_to_profile.addItem(_("User base settings"), "user_settings")
+            for item in config.profiles[SettingConfigSection.PROFILES_KEY]:
+                self.ui.save_to_profile.addItem(item["title"], item["id"],)
+            self.ui.save_to_profile.setCurrentIndex(0)
+            self.ui.save_to_profile.currentIndexChanged.connect(self.switch_profile)
+        else:
+            self.ui.profile_frame.hide()
+
         self.pages = []
         for Page in page_classes:
             try:
@@ -142,7 +174,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.page_to_item = {}
         self.default_item = None
         if not default_page:
-            config = get_config()
             default_page = config.persist["options_last_active_page"]
         self.add_pages(None, default_page, self.ui.pages_tree)
 
@@ -165,6 +196,40 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 log.exception('Failed loading options page %r', page)
                 self.disable_page(page.NAME)
         self.ui.pages_tree.setCurrentItem(self.default_item)
+
+    def show_profile_help(self):
+        """Open the profile documentation in a browser.
+        """
+        webbrowser2.open('doc_profile_edit')
+
+    def show_attached_profiles_dialog(self):
+        window_title = _("Profiles Attached to Options")
+        items = self.ui.pages_tree.selectedItems()
+        if items:
+            page = self.item_to_page[items[0]]
+            name = page.NAME
+        else:
+            name = ''
+        if name not in UserProfileGroups.get_setting_groups_list():
+            message_box = QtWidgets.QMessageBox(self)
+            message_box.setIcon(QtWidgets.QMessageBox.Information)
+            message_box.setWindowModality(QtCore.Qt.WindowModal)
+            message_box.setWindowTitle(window_title)
+            message_box.setText(_("The options on this page are not currently available to be managed using profiles."))
+            message_box.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            return message_box.exec_()
+
+        profile_dialog = AttachedProfilesDialog(parent=self, option_group=name)
+        profile_dialog.show()
+        profile_dialog.raise_()
+        profile_dialog.activateWindow()
+
+    def switch_profile(self, index):
+        profile_id = self.ui.save_to_profile.currentData()
+        config = get_config()
+        config.setting.set_profile(profile_id)
+        for page in self.pages:
+            page.load()
 
     def switch_page(self):
         items = self.ui.pages_tree.selectedItems()
@@ -208,7 +273,17 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 log.exception('Failed saving options page %r', page)
                 self._show_page_error(page, e)
                 return
+        self.reset_profile()
         super().accept()
+
+    def reject(self):
+        self.reset_profile()
+        super().reject()
+
+    @staticmethod
+    def reset_profile():
+        config = get_config()
+        config.setting.set_profile()
 
     def _show_page_error(self, page, error):
         if not isinstance(error, OptionsCheckError):
@@ -263,3 +338,62 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         message_box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
         if message_box.exec_() == QtWidgets.QMessageBox.Yes:
             function()
+
+
+class AttachedProfilesDialog(PicardDialog):
+    NAME = 'attachedprofiles'
+    TITLE = N_('Attached Profiles')
+
+    def __init__(self, parent=None, option_group=None):
+        super().__init__(parent=parent)
+        self.option_group = option_group
+        self.ui = Ui_AttachedProfilesDialog()
+        self.ui.setupUi(self)
+        self.ui.buttonBox.addButton(StandardButton(StandardButton.CLOSE), QtWidgets.QDialogButtonBox.RejectRole)
+        self.ui.buttonBox.rejected.connect(self.close_window)
+
+        self.populate_table()
+
+        self.ui.buttonBox.setFocus()
+        self.setModal(True)
+
+    def populate_table(self):
+        model = QtGui.QStandardItemModel()
+        model.setColumnCount(2)
+        header_names = [_("Option Setting"), _("Attached Profiles")]
+        model.setHorizontalHeaderLabels(header_names)
+
+        config = get_config()
+        profiles = config.profiles[SettingConfigSection.PROFILES_KEY]
+        settings = config.profiles[SettingConfigSection.SETTINGS_KEY]
+
+        group = UserProfileGroups.SETTINGS_GROUPS[self.option_group]
+        group_title = group["title"]
+        group_options = group["settings"]
+
+        window_title = _("Profiles Attached to Options in %s Section") % group_title
+        self.setWindowTitle(window_title)
+
+        for name, title in group_options:
+            option_item = QtGui.QStandardItem(_(title))
+            option_item.setEditable(False)
+            row = [option_item]
+            attached = []
+            for profile in profiles:
+                if name in settings[profile["id"]]:
+                    attached.append("{0}{1}".format(profile["title"], _(" [Enabled]") if profile["enabled"] else "",))
+            attached_profiles = "\n".join(attached) if attached else _("None")
+            profile_item = QtGui.QStandardItem(attached_profiles)
+            profile_item.setEditable(False)
+            row.append(profile_item)
+            model.appendRow(row)
+
+        self.ui.options_list.setModel(model)
+        self.ui.options_list.resizeColumnsToContents()
+        self.ui.options_list.resizeRowsToContents()
+        self.ui.options_list.horizontalHeader().setStretchLastSection(True)
+
+    def close_window(self):
+        """Close the script metadata editor window.
+        """
+        self.close()
