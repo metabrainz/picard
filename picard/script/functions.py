@@ -1397,7 +1397,7 @@ def _split_date(date_to_parse, date_order="ymd"):
         tuple: Tuple of the date parts as (year, month, day)
     """
 
-    parts = re.split('[^0-9]+', date_to_parse.strip())
+    parts = re.split(r'\D+', date_to_parse.strip())
     parts.extend(['', '', ''])
     date_order = date_order.lower()
     if date_order == 'dmy':
