@@ -228,8 +228,22 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         profile_id = self.ui.save_to_profile.currentData()
         config = get_config()
         config.setting.set_profile(profile_id)
+        highlight = not profile_id == 'user_settings'
         for page in self.pages:
             page.load()
+            page_name = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
+            if page_name in UserProfileGroups.SETTINGS_GROUPS:
+                for opt in UserProfileGroups.SETTINGS_GROUPS[page_name]['settings']:
+                    for opt_field in opt.fields:
+                        try:
+                            obj = eval("page.ui.{0}".format(opt_field,))
+                        except AttributeError:
+                            continue
+                        if highlight:
+                            style = '#' + opt_field + " { border: 1px solid red; padding: 1px 2px 2px; }"
+                        else:
+                            style = ""
+                        obj.setStyleSheet(style)
 
     def switch_page(self):
         items = self.ui.pages_tree.selectedItems()
