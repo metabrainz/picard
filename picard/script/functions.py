@@ -1446,7 +1446,8 @@ def func_day(parser, date_to_parse, date_order='ymd'):
 
 Returns the input date in the specified `format`, which is based on the standard
     Python `strftime` [format codes](https://strftime.org/). If no `format` is
-    specified the date will be returned in the form `2020-02-05`.
+    specified the date will be returned in the form `2020-02-05`.  If the date or
+    format are invalid an empty string will be returned.
 
     The default order for the input date is "ymd".  This can be changed by specifying
     either "dmy" or "mdy".
@@ -1464,10 +1465,8 @@ def func_dateformat(parser, date_to_parse, date_format=None, date_order='ymd'):
     try:
         date_object = datetime.date(int(yr), int(mo), int(da))
     except ValueError:
-        stackitem = parser._function_stack.get()
-        raise ScriptRuntimeError(stackitem, "Invalid date")
+        return ''
     try:
         return date_object.strftime(date_format)
     except ValueError:
-        stackitem = parser._function_stack.get()
-        raise ScriptRuntimeError(stackitem, "Unsupported format code")
+        return ''

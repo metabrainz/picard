@@ -1692,7 +1692,6 @@ class ScriptParserTest(PicardTestCase):
         # Test missing elements
         self.assertScriptResultEquals("$month(,)", "", context)
         self.assertScriptResultEquals("$month(-21-2021,mdy)", "", context)
-        # self.assertScriptResultEquals("$month(21--2021,dmy)", "", context)
 
         # Tests with invalid number of arguments
         areg = r"^\d+:\d+:\$month: Wrong number of arguments for \$month: Expected between 1 and 2, "
@@ -1721,7 +1720,6 @@ class ScriptParserTest(PicardTestCase):
         # Test missing elements
         self.assertScriptResultEquals("$day(,)", "", context)
         self.assertScriptResultEquals("$day(-07-2021,dmy)", "", context)
-        # self.assertScriptResultEquals("$day(07--2021,mdy)", "", context)
 
         # Tests with invalid number of arguments
         areg = r"^\d+:\d+:\$day: Wrong number of arguments for \$day: Expected between 1 and 2, "
@@ -1747,25 +1745,14 @@ class ScriptParserTest(PicardTestCase):
 
         # Test with invalid overrides
         self.assertScriptResultEquals("$dateformat(2021-07-21,,myd)", "2021-07-21", context)
-        areg = r"^\d+:\d+:\$dateformat: Invalid date"
-        # with self.assertRaisesRegex(ScriptError, areg):
-        #     self.parser.eval("$dateformat(2021-07-21,,,.)")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$dateformat(2021-07-21,,dmy)")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$dateformat(2021-07-21,,mdy)")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$dateformat(2021-July-21)")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$dateformat(2021)")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$dateformat(2021-07)")
-        # with self.assertRaisesRegex(ScriptError, areg):
-        #     self.parser.eval("$dateformat(2021--21)")
+        self.assertScriptResultEquals("$dateformat(2021-07-21,,dmy)", "", context)
+        self.assertScriptResultEquals("$dateformat(2021-07-21,,mdy)", "", context)
+        self.assertScriptResultEquals("$dateformat(2021-July-21)", "", context)
+        self.assertScriptResultEquals("$dateformat(2021)", "", context)
+        self.assertScriptResultEquals("$dateformat(2021-07)", "", context)
 
         # Test missing elements
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$dateformat(,)")
+        self.assertScriptResultEquals("$dateformat(,)", "", context)
 
         # Tests with invalid number of arguments
         areg = r"^\d+:\d+:\$dateformat: Wrong number of arguments for \$dateformat: Expected between 1 and 3, "
