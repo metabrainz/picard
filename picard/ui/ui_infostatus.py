@@ -3,12 +3,14 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_InfoStatus(object):
     def setupUi(self, InfoStatus):
         InfoStatus.setObjectName("InfoStatus")
-        InfoStatus.resize(350, 24)
+        InfoStatus.resize(683, 145)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -31,6 +33,7 @@ class Ui_InfoStatus(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label1.sizePolicy().hasHeightForWidth())
         self.label1.setSizePolicy(sizePolicy)
+        self.label1.setMinimumSize(QtCore.QSize(0, 0))
         self.label1.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.label1.setTextFormat(QtCore.Qt.AutoText)
         self.label1.setScaledContents(False)
@@ -82,6 +85,18 @@ class Ui_InfoStatus(object):
         self.label4.setScaledContents(False)
         self.label4.setObjectName("label4")
         self.horizontalLayout.addWidget(self.label4)
+        self.val5 = QtWidgets.QLabel(InfoStatus)
+        self.val5.setMinimumSize(QtCore.QSize(40, 0))
+        self.val5.setText("")
+        self.val5.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.val5.setObjectName("val5")
+        self.horizontalLayout.addWidget(self.val5)
+        self.label5 = QtWidgets.QLabel(InfoStatus)
+        self.label5.setMinimumSize(QtCore.QSize(0, 0))
+        self.label5.setText("")
+        self.label5.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label5.setObjectName("label5")
+        self.horizontalLayout.addWidget(self.label5)
 
         self.retranslateUi(InfoStatus)
         QtCore.QMetaObject.connectSlotsByName(InfoStatus)
@@ -89,4 +104,3 @@ class Ui_InfoStatus(object):
     def retranslateUi(self, InfoStatus):
         _translate = QtCore.QCoreApplication.translate
         InfoStatus.setWindowTitle(_("Form"))
-
