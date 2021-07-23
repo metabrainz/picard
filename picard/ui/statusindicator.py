@@ -36,13 +36,11 @@ class AbstractProgressStatusIndicator:
         self._max_pending = 0
         self._last_pending = 0
 
-    def update(self, files=0, albums=0, pending_files=0, pending_requests=0):
+    def update(self, files=0, albums=0, pending_files=0, pending_requests=0, progress=0):
         if not self.is_available:
             return
 
-        # Weight pending network requests higher as they are slower then file loads
-        total_pending = pending_files + 10 * pending_requests
-
+        total_pending = pending_files + pending_requests
         if total_pending == self._last_pending:
             return  # No changes, avoid update
 
@@ -55,7 +53,6 @@ class AbstractProgressStatusIndicator:
             self.hide_progress()
             return
 
-        progress = 1 - (total_pending / self._max_pending)
         self.set_progress(progress)
 
     @property

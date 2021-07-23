@@ -36,6 +36,8 @@
     <file>images/16x16/go-previous@2x.png</file>
     <file>images/16x16/go-up.png</file>
     <file>images/16x16/go-up@2x.png</file>
+    <file>images/16x16/hourglass.png</file>
+    <file>images/16x16/hourglass@2x.png</file>
     <file>images/16x16/list-remove.png</file>
     <file>images/16x16/list-remove@2x.png</file>
     <file>images/16x16/lookup-musicbrainz.png</file>
@@ -97,6 +99,8 @@
     <file>images/22x22/fingerprint@2x.png</file>
     <file>images/22x22/folder.png</file>
     <file>images/22x22/folder@2x.png</file>
+    <file>images/22x22/hourglass.png</file>
+    <file>images/22x22/hourglass@2x.png</file>
     <file>images/22x22/list-remove.png</file>
     <file>images/22x22/list-remove@2x.png</file>
     <file>images/22x22/lookup-musicbrainz.png</file>

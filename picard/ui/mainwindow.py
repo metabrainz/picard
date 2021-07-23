@@ -27,7 +27,7 @@
 # Copyright (C) 2018 virusMac
 # Copyright (C) 2018, 2021 Bob Swift
 # Copyright (C) 2019 Timur Enikeev
-# Copyright (C) 2020 Gabriel Ferreira
+# Copyright (C) 2020-2021 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion
 #
 # This program is free software; you can redistribute it and/or
@@ -383,6 +383,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """Creates a new status bar."""
         self.statusBar().showMessage(_("Ready"))
         infostatus = InfoStatus(self)
+        self._progress = infostatus.get_progress
         self.listening_label = QtWidgets.QLabel()
         self.listening_label.setVisible(False)
         self.listening_label.setToolTip("<qt/>" + _(
@@ -404,10 +405,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         total_albums = len(self.tagger.albums)
         pending_files = File.num_pending_files
         pending_requests = self.tagger.webservice.num_pending_web_requests
-
         for indicator in self.status_indicators:
             indicator.update(files=total_files, albums=total_albums,
-                pending_files=pending_files, pending_requests=pending_requests)
+                pending_files=pending_files, pending_requests=pending_requests, progress=self._progress())
 
     def update_statusbar_listen_port(self, listen_port):
         if listen_port:
