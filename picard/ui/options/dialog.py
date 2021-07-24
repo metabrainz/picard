@@ -236,7 +236,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 for opt in UserProfileGroups.SETTINGS_GROUPS[page_name]['settings']:
                     for opt_field in opt.fields:
                         try:
-                            obj = eval("page.ui.{0}".format(opt_field,))
+                            obj = getattr(page.ui, opt_field)
                         except AttributeError:
                             continue
                         if highlight:
