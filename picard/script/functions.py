@@ -1413,7 +1413,8 @@ def _split_date(date_to_parse, date_order="ymd"):
 
 Returns the year portion of the specified date.  The default order is "ymd".  This can be changed by specifying
 either "dmy" or "mdy".  If the date is invalid an empty string will be returned.
-"""
+
+_Since Picard 2.7_"""
 ))
 def func_year(parser, date_to_parse, date_order='ymd'):
     return _split_date(date_to_parse, date_order).year
@@ -1424,7 +1425,8 @@ def func_year(parser, date_to_parse, date_order='ymd'):
 
 Returns the month portion of the specified date.  The default order is "ymd".  This can be changed by specifying
 either "dmy" or "mdy".  If the date is invalid an empty string will be returned.
-"""
+
+_Since Picard 2.7_"""
 ))
 def func_month(parser, date_to_parse, date_order='ymd'):
     return _split_date(date_to_parse, date_order).month
@@ -1435,7 +1437,8 @@ def func_month(parser, date_to_parse, date_order='ymd'):
 
 Returns the day portion of the specified date.  The default order is "ymd".  This can be changed by specifying
 either "dmy" or "mdy".  If the date is invalid an empty string will be returned.
-"""
+
+_Since Picard 2.7_"""
 ))
 def func_day(parser, date_to_parse, date_order='ymd'):
     return _split_date(date_to_parse, date_order).day
@@ -1455,7 +1458,9 @@ Note: Platform-specific formatting codes should be avoided to help ensure the
     portability of scripts across the different platforms.  These codes include:
     remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and their
     equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.
-    `%3Y`); and hanging '%' at the end of the format string."""
+    `%3Y`); and hanging '%' at the end of the format string.
+
+_Since Picard 2.7_"""
 ))
 def func_dateformat(parser, date_to_parse, date_format=None, date_order='ymd'):
     # Handle case where format evaluates to ''
