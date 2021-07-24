@@ -1475,3 +1475,21 @@ def func_dateformat(parser, date_to_parse, date_format=None, date_order='ymd'):
         return date_object.strftime(date_format)
     except ValueError:
         return ''
+
+
+@script_function(eval_args=False, documentation=N_(
+    """`$is_multi(name)`
+
+Returns '1' if the argument is a multi-value tag and there are more than one elements, otherwise an empty string.
+
+Example:
+
+    $is_multi(%artists%)
+
+Result: 1 if there is more than one artist, otherwise "".
+
+_Since Picard 2.7_"""
+))
+def func_is_multi(parser, multi):
+    multi_value = MultiValue(parser, multi, MULTI_VALUED_JOINER)
+    return '' if len(multi_value) < 2 else '1'
