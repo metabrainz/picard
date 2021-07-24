@@ -80,6 +80,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     tags_compatibility_id3,
     tags_compatibility_wave,
 )
+from picard.ui.theme import theme
 from picard.ui.ui_options_attached_profiles import Ui_AttachedProfilesDialog
 from picard.ui.util import StandardButton
 
@@ -225,6 +226,10 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         profile_dialog.activateWindow()
 
     def switch_profile(self, index):
+        if theme.is_dark_theme:
+            highlight = "#%s { color: lightyellow; background-color: #2F4F4F; }"
+        else:
+            highlight = "#%s { color: black; background-color: lightyellow; }"
         profile_id = self.ui.save_to_profile.currentData()
         config = get_config()
         config.setting.set_profile(profile_id)
@@ -245,8 +250,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                         except AttributeError:
                             continue
                         if opt.name in profile_settings:
-                            # TODO: Select appropriate color combinations for light and dark themes.
-                            style = '#' + opt_field + " { color: black; background-color: lightyellow; }"
+                            style = highlight % opt_field
                         else:
                             style = ""
                         obj.setStyleSheet(style)
