@@ -228,7 +228,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         profile_id = self.ui.save_to_profile.currentData()
         config = get_config()
         config.setting.set_profile(profile_id)
-        highlight = not profile_id == 'user_settings'
+        settings = config.profiles[SettingConfigSection.SETTINGS_KEY]
+        if profile_id in settings:
+            profile_settings = settings[profile_id]
+        else:
+            profile_settings = {}
+
         for page in self.pages:
             page.load()
             page_name = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
@@ -239,8 +244,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                             obj = getattr(page.ui, opt_field)
                         except AttributeError:
                             continue
-                        if highlight:
-                            style = '#' + opt_field + " { border: 1px solid red; padding: 1px 2px 2px; }"
+                        if opt.name in profile_settings:
+                            # TODO: Select appropriate color combinations for light and dark themes.
+                            style = '#' + opt_field + " { color: black; background-color: lightyellow; }"
                         else:
                             style = ""
                         obj.setStyleSheet(style)

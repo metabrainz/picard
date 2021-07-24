@@ -81,9 +81,9 @@ class UserProfileGroups():
     SETTINGS_GROUPS["cover"] = {
         "title": N_("Cover Art"),
         "settings": [
-            SettingDesc("save_images_to_tags", N_("Embed cover images into tags"), []),
+            SettingDesc("save_images_to_tags", N_("Embed cover images into tags"), ["save_images_to_tags"]),
             SettingDesc("embed_only_one_front_image", N_("Embed only a single front image"), ["cb_embed_front_only"]),
-            SettingDesc("save_images_to_files", N_("Save cover images as separate files"), []),
+            SettingDesc("save_images_to_files", N_("Save cover images as separate files"), ["save_images_to_files"]),
             SettingDesc("cover_image_filename", N_("File name for images"), ["cover_image_filename"]),
             SettingDesc("save_images_overwrite", N_("Overwrite existing image files"), ["save_images_overwrite"]),
             SettingDesc("save_only_one_front_image", N_("Save only a single front image as separate file"), ["save_only_one_front_image"]),
@@ -98,7 +98,7 @@ class UserProfileGroups():
             SettingDesc("windows_compatibility", N_("Windows compatibility"), ["windows_compatibility"]),
             SettingDesc("ascii_filenames", N_("Replace non-ASCII characters"), ["ascii_filenames"]),
             SettingDesc("rename_files", N_("Rename files"), ["rename_files"]),
-            SettingDesc("move_files", N_("Move files"), []),
+            SettingDesc("move_files", N_("Move files"), ["move_files"]),
             SettingDesc("move_files_to", N_("Destination directory"), ["move_files_to"]),
             SettingDesc("move_additional_files", N_("Move additional files"), ["move_additional_files"]),
             SettingDesc("move_additional_files_pattern", N_("Additional file patterns"), ["move_additional_files_pattern"]),
@@ -110,7 +110,7 @@ class UserProfileGroups():
     SETTINGS_GROUPS["scripting"] = {
         "title": N_("Scripting"),
         "settings": [
-            SettingDesc("enable_tagger_scripts", N_("Enable tagger scripts"), []),
+            SettingDesc("enable_tagger_scripts", N_("Enable tagger scripts"), ["enable_tagger_scripts"]),
             SettingDesc("list_of_scripts", N_("Tagger scripts"), ["script_list"]),
         ],
     }
