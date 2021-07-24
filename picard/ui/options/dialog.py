@@ -280,6 +280,22 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         return url
 
     def accept(self):
+        profile_id = self.ui.save_to_profile.currentData()
+        if profile_id != "user_settings":
+            config = get_config()
+            profile_name = 'Unknown profile'
+            for item in config.profiles[SettingConfigSection.PROFILES_KEY]:
+                if item["id"] == profile_id:
+                    profile_name = item["title"]
+                    break
+            message_box = QtWidgets.QMessageBox(self)
+            message_box.setIcon(QtWidgets.QMessageBox.Warning)
+            message_box.setWindowModality(QtCore.Qt.WindowModal)
+            message_box.setWindowTitle(_("Save to Profile"))
+            message_box.setText(_("Changes will only be saved to the profile: \"%s\"\n\nDo you want to continue?") % profile_name)
+            message_box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.Cancel)
+            if message_box.exec_() != QtWidgets.QMessageBox.Yes:
+                return
         for page in self.pages:
             try:
                 page.check()
