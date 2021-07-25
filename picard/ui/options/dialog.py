@@ -30,6 +30,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import namedtuple
+
 from PyQt5 import (
     QtCore,
     QtGui,
@@ -43,7 +45,10 @@ from picard.config import (
     TextOption,
     get_config,
 )
-from picard.profile import UserProfileGroups
+from picard.profile import (
+    USER_SETTINGS_PROFILE_ID,
+    UserProfileGroups,
+)
 from picard.util import (
     restore_method,
     webbrowser2,
@@ -185,13 +190,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 self.disable_page(page.NAME)
         self.ui.pages_tree.setCurrentItem(self.default_item)
 
-        # Set initially displayed values to the user's base settings (with no profiles enabled)
-        # config.setting.set_profile("user_settings")
+        self.USER_SETTINGS_TITLE = _("User base settings")
 
         if config.profiles[SettingConfigSection.PROFILES_KEY]:
             self.ui.profile_frame.show()
             self.ui.save_to_profile.clear()
-            self.ui.save_to_profile.addItem(_("User base settings"), "user_settings")
+            self.ui.save_to_profile.addItem(self.USER_SETTINGS_TITLE, USER_SETTINGS_PROFILE_ID)
             index = 0
             for idx, item in enumerate(config.profiles[SettingConfigSection.PROFILES_KEY], start=1):
                 self.ui.save_to_profile.addItem(item["title"], item["id"],)
@@ -230,25 +234,27 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         profile_dialog.activateWindow()
 
     def _get_profile_title_from_id(self, profile_id):
-        if profile_id == "user_settings":
-            return _("User base settings")
+        if profile_id == USER_SETTINGS_PROFILE_ID:
+            return self.USER_SETTINGS_TITLE
         config = get_config()
         for item in config.profiles[SettingConfigSection.PROFILES_KEY]:
             if item["id"] == profile_id:
                 return item["title"]
-        return 'Unknown profile'
+        return _('Unknown profile')
 
     def switch_profile(self, index):
+        HighlightColors = namedtuple('HighlightColors', ('fg', 'bg'))
+        highlight = "#%s { color: %s; background-color: %s; }"
         if theme.is_dark_theme:
-            highlight = "#%s { color: white; background-color: #000080; }"
-            profile_highlight = "#save_to_profile { color: white; background-color: #300000; }"
+            option_colors = HighlightColors('#FFFFFF', '#000080')
+            profile_colors = HighlightColors('#FFFFFF', '#300000')
         else:
-            highlight = "#%s { color: black; background-color: #F9F906; }"
-            profile_highlight = "#save_to_profile { color: black; background-color: #FFA500; }"
+            option_colors = HighlightColors('#000000', '#F9F906')
+            profile_colors = HighlightColors('#000000', '#FFA500')
 
         # Highlight profile selector if profile selected.
         if self.ui.save_to_profile.currentIndex():
-            self.ui.save_to_profile.setStyleSheet(profile_highlight)
+            self.ui.save_to_profile.setStyleSheet(highlight % ('save_to_profile', profile_colors.fg, profile_colors.bg))
         else:
             self.ui.save_to_profile.setStyleSheet("")
 
@@ -273,7 +279,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                         except AttributeError:
                             continue
                         if opt.name in profile_settings:
-                            style = highlight % opt_field
+                            style = highlight % (opt_field, option_colors.fg, option_colors.bg)
                             tooltip = _("This option is managed by profile: %s") % profile_title
                         else:
                             style = ""
@@ -310,7 +316,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def accept(self):
         profile_id = self.ui.save_to_profile.currentData()
-        if profile_id != "user_settings":
+        if profile_id != USER_SETTINGS_PROFILE_ID:
             profile_name = self._get_profile_title_from_id(profile_id)
             message_box = QtWidgets.QMessageBox(self)
             message_box.setIcon(QtWidgets.QMessageBox.Warning)
