@@ -150,19 +150,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.ui.attached_profiles_button.clicked.connect(self.show_attached_profiles_dialog)
 
         config = get_config()
-        # Set initially displayed values to the user's base settings (with no profiles enabled)
-        config.setting.set_profile("user_settings")
-
-        if config.profiles[SettingConfigSection.PROFILES_KEY]:
-            self.ui.profile_frame.show()
-            self.ui.save_to_profile.clear()
-            self.ui.save_to_profile.addItem(_("User base settings"), "user_settings")
-            for item in config.profiles[SettingConfigSection.PROFILES_KEY]:
-                self.ui.save_to_profile.addItem(item["title"], item["id"],)
-            self.ui.save_to_profile.setCurrentIndex(0)
-            self.ui.save_to_profile.currentIndexChanged.connect(self.switch_profile)
-        else:
-            self.ui.profile_frame.hide()
 
         self.pages = []
         for Page in page_classes:
@@ -197,6 +184,23 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 log.exception('Failed loading options page %r', page)
                 self.disable_page(page.NAME)
         self.ui.pages_tree.setCurrentItem(self.default_item)
+
+        # Set initially displayed values to the user's base settings (with no profiles enabled)
+        # config.setting.set_profile("user_settings")
+
+        if config.profiles[SettingConfigSection.PROFILES_KEY]:
+            self.ui.profile_frame.show()
+            self.ui.save_to_profile.clear()
+            self.ui.save_to_profile.addItem(_("User base settings"), "user_settings")
+            index = 0
+            for idx, item in enumerate(config.profiles[SettingConfigSection.PROFILES_KEY], start=1):
+                self.ui.save_to_profile.addItem(item["title"], item["id"],)
+                if not index and item["enabled"]:
+                    index = idx
+            self.ui.save_to_profile.currentIndexChanged.connect(self.switch_profile)
+            self.ui.save_to_profile.setCurrentIndex(index)
+        else:
+            self.ui.profile_frame.hide()
 
     def show_profile_help(self):
         """Open the profile documentation in a browser.
@@ -236,9 +240,18 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def switch_profile(self, index):
         if theme.is_dark_theme:
-            highlight = "#%s { color: lightyellow; background-color: #2F4F4F; }"
+            highlight = "#%s { color: white; background-color: #000080; }"
+            profile_highlight = "#save_to_profile { color: white; background-color: #300000; }"
         else:
-            highlight = "#%s { color: black; background-color: lightyellow; }"
+            highlight = "#%s { color: black; background-color: #F9F906; }"
+            profile_highlight = "#save_to_profile { color: black; background-color: #FFA500; }"
+
+        # Highlight profile selector if profile selected.
+        if self.ui.save_to_profile.currentIndex():
+            self.ui.save_to_profile.setStyleSheet(profile_highlight)
+        else:
+            self.ui.save_to_profile.setStyleSheet("")
+
         profile_id = self.ui.save_to_profile.currentData()
         profile_title = self._get_profile_title_from_id(profile_id)
         config = get_config()
