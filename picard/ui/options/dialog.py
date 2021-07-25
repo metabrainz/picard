@@ -225,12 +225,22 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         profile_dialog.raise_()
         profile_dialog.activateWindow()
 
+    def _get_profile_title_from_id(self, profile_id):
+        if profile_id == "user_settings":
+            return _("User base settings")
+        config = get_config()
+        for item in config.profiles[SettingConfigSection.PROFILES_KEY]:
+            if item["id"] == profile_id:
+                return item["title"]
+        return 'Unknown profile'
+
     def switch_profile(self, index):
         if theme.is_dark_theme:
             highlight = "#%s { color: lightyellow; background-color: #2F4F4F; }"
         else:
             highlight = "#%s { color: black; background-color: lightyellow; }"
         profile_id = self.ui.save_to_profile.currentData()
+        profile_title = self._get_profile_title_from_id(profile_id)
         config = get_config()
         config.setting.set_profile(profile_id)
         settings = config.profiles[SettingConfigSection.SETTINGS_KEY]
@@ -251,9 +261,15 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                             continue
                         if opt.name in profile_settings:
                             style = highlight % opt_field
+                            tooltip = _("This option is managed by profile: %s") % profile_title
                         else:
                             style = ""
-                        obj.setStyleSheet(style)
+                            tooltip = ""
+                        try:
+                            obj.setStyleSheet(style)
+                            obj.setToolTip(tooltip)
+                        except AttributeError:
+                            pass
 
     def switch_page(self):
         items = self.ui.pages_tree.selectedItems()
@@ -282,12 +298,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     def accept(self):
         profile_id = self.ui.save_to_profile.currentData()
         if profile_id != "user_settings":
-            config = get_config()
-            profile_name = 'Unknown profile'
-            for item in config.profiles[SettingConfigSection.PROFILES_KEY]:
-                if item["id"] == profile_id:
-                    profile_name = item["title"]
-                    break
+            profile_name = self._get_profile_title_from_id(profile_id)
             message_box = QtWidgets.QMessageBox(self)
             message_box.setIcon(QtWidgets.QMessageBox.Warning)
             message_box.setWindowModality(QtCore.Qt.WindowModal)
