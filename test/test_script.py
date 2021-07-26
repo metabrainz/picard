@@ -1760,3 +1760,22 @@ class ScriptParserTest(PicardTestCase):
             self.parser.eval("$dateformat()")
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$dateformat(2021-07-21,,,)")
+
+    def test_cmd_is_multi(self):
+        context = Metadata()
+        context["foo"] = "a; b; c"
+        context["bar"] = ""
+
+        self.assertScriptResultEquals("$is_multi(%foo%)", "", context)
+        self.assertScriptResultEquals("$is_multi(%bar%)", "", context)
+        self.assertScriptResultEquals("$setmulti(baz,a)$is_multi(%baz%)", "", context)
+        self.assertScriptResultEquals("$setmulti(baz,a; b; c)$is_multi(%baz%)", "1", context)
+        self.assertScriptResultEquals("$is_multi(a; b; c)", "1", context)
+        self.assertScriptResultEquals("$is_multi(a)", "", context)
+
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$is_multi: Wrong number of arguments for \$is_multi: Expected exactly 1, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$is_multi()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$is_multi(a,)")
