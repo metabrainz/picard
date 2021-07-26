@@ -198,7 +198,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             self.ui.save_to_profile.addItem(self.USER_SETTINGS_TITLE, USER_SETTINGS_PROFILE_ID)
             index = 0
             for idx, item in enumerate(config.profiles[SettingConfigSection.PROFILES_KEY], start=1):
-                self.ui.save_to_profile.addItem(item["title"], item["id"],)
+                self.ui.save_to_profile.addItem(item["title"], item["id"])
                 if not index and item["enabled"]:
                     index = idx
             self.ui.save_to_profile.currentIndexChanged.connect(self.switch_profile)
@@ -244,7 +244,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def switch_profile(self, index):
         HighlightColors = namedtuple('HighlightColors', ('fg', 'bg'))
-        highlight = "#%s { color: %s; background-color: %s; }"
+        HIGHLIGHT_FMT = "#%s { color: %s; background-color: %s; }"
         if theme.is_dark_theme:
             option_colors = HighlightColors('#FFFFFF', '#000080')
             profile_colors = HighlightColors('#FFFFFF', '#300000')
@@ -254,7 +254,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
         # Highlight profile selector if profile selected.
         if self.ui.save_to_profile.currentIndex():
-            self.ui.save_to_profile.setStyleSheet(highlight % ('save_to_profile', profile_colors.fg, profile_colors.bg))
+            self.ui.save_to_profile.setStyleSheet(HIGHLIGHT_FMT % ('save_to_profile', profile_colors.fg, profile_colors.bg))
         else:
             self.ui.save_to_profile.setStyleSheet("")
 
@@ -279,7 +279,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                         except AttributeError:
                             continue
                         if opt.name in profile_settings:
-                            style = highlight % (opt_field, option_colors.fg, option_colors.bg)
+                            style = HIGHLIGHT_FMT % (opt_field, option_colors.fg, option_colors.bg)
                             tooltip = _("This option is managed by profile: %s") % profile_title
                         else:
                             style = ""
