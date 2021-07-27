@@ -190,6 +190,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 self.disable_page(page.NAME)
         self.ui.pages_tree.setCurrentItem(self.default_item)
 
+        self.first_enter = True
+        self.installEventFilter(self)
+
         self.USER_SETTINGS_TITLE = _("User base settings")
 
         if config.profiles[SettingConfigSection.PROFILES_KEY]:
@@ -289,6 +292,21 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                             obj.setToolTip(tooltip)
                         except AttributeError:
                             pass
+
+    def eventFilter(self, object, event):
+        """Process selected events.
+        """
+        evtype = event.type()
+        if evtype == QtCore.QEvent.Enter:
+            if self.first_enter:
+                self.first_enter = False
+                if self.tagger and self.tagger.window.script_editor_dialog is not None:
+                    self.get_page('filerenaming').show_script_editing_page()
+                    self.activateWindow()
+        return False
+
+    def get_page(self, name):
+        return self.item_to_page[self.page_to_item[name]]
 
     def switch_page(self):
         items = self.ui.pages_tree.selectedItems()

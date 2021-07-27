@@ -1110,7 +1110,21 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         return AboutDialog.show_instance(self)
 
     def show_options(self, page=None):
-        return OptionsDialog.show_instance(page, self)
+        options_dialog = OptionsDialog.show_instance(page, self)
+        options_dialog.finished.connect(self.options_closed)
+        if self.script_editor_dialog is not None:
+            # Disable signal processing to avoid saving changes not processed with "Make It So!"
+            for signal in self.script_editor_signals:
+                signal.disconnect()
+
+        return options_dialog
+
+    def options_closed(self):
+        if self.script_editor_dialog is not None:
+            self.open_file_naming_script_editor()
+            self.script_editor_dialog.show()
+        else:
+            self.show_script_editor_action.setEnabled(True)
 
     def show_help(self):
         webbrowser2.open('documentation')
@@ -1591,27 +1605,23 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def open_file_naming_script_editor(self):
         """Open the file naming script editor / manager in a new window.
         """
-        if self.script_editor_dialog:
-            self.script_editor_dialog.load()
-        else:
-            self.examples = ScriptEditorExamples(tagger=self.tagger)
-            self.create_script_editor_dialog()
-        self.script_editor_dialog.show()
-        self.script_editor_dialog.raise_()
-        self.script_editor_dialog.activateWindow()
-        self.examples.update_sample_example_files()
-        self.show_script_editor_action.setEnabled(False)
-        self.options_action.setEnabled(False)
-
-    def create_script_editor_dialog(self):
-        """Create the file naming script editor manager window.
-        """
-        self.script_editor_dialog = ScriptEditorDialog(parent=self, examples=self.examples)
+        self.examples = ScriptEditorExamples(tagger=self.tagger)
+        self.script_editor_dialog = ScriptEditorDialog.show_instance(parent=self, examples=self.examples)
         self.script_editor_dialog.signal_save.connect(self.script_editor_save)
         self.script_editor_dialog.signal_selection_changed.connect(self.update_selector_from_script_editor)
         self.script_editor_dialog.signal_update_scripts_list.connect(self.update_scripts_list_from_editor)
         self.script_editor_dialog.signal_index_changed.connect(self.script_editor_index_changed)
         self.script_editor_dialog.finished.connect(self.script_editor_closed)
+        # Create list of signals to disconnect when opening Options dialog.
+        # Do not include `finished` because that is still used to clean up
+        # locally when the editor is closed from the Options dialog.
+        self.script_editor_signals = [
+            self.script_editor_dialog.signal_save,
+            self.script_editor_dialog.signal_selection_changed,
+            self.script_editor_dialog.signal_update_scripts_list,
+            self.script_editor_dialog.signal_index_changed,
+        ]
+        self.show_script_editor_action.setEnabled(False)
 
     def script_editor_save(self):
         """Process "signal_save" signal from the script editor.
@@ -1626,7 +1636,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """Process "finished" signal from the script editor.
         """
         self.show_script_editor_action.setEnabled(True)
-        self.options_action.setEnabled(True)
+        self.script_editor_dialog = None
 
     def update_script_editor_example_files(self):
         """Update the list of example files for the file naming script editor.

@@ -183,21 +183,24 @@ class RenamingOptionsPage(OptionsPage):
         self.examples.synchronize_selected_example_lines(self.current_row, self.ui.example_filename_after, self.ui.example_filename_before)
 
     def show_script_editing_page(self):
-        if not self.script_editor_dialog:
-            self.create_script_editor_dialog()
-        self.script_editor_dialog.show()
-        self.script_editor_dialog.raise_()
-        self.script_editor_dialog.activateWindow()
-        self.script_editor_dialog.loading = True
-        self.update_selector_in_editor(skip_check=True)
-        self.script_editor_dialog.loading = False
+        self.script_editor_dialog = ScriptEditorDialog.show_instance(parent=self, examples=self.examples)
 
-    def create_script_editor_dialog(self):
-        self.script_editor_dialog = ScriptEditorDialog(parent=self, examples=self.examples)
         self.script_editor_dialog.signal_save.connect(self.save_from_editor)
         self.script_editor_dialog.signal_update.connect(self.display_examples)
         self.script_editor_dialog.signal_selection_changed.connect(self.update_selector_from_editor)
         self.script_editor_dialog.signal_update_scripts_list.connect(self.update_scripts_list_from_editor)
+        self.script_editor_dialog.finished.connect(self.script_editor_dialog_close)
+
+        if self.tagger.window.script_editor_dialog is not None:
+            self.update_selector_from_editor()
+        else:
+            self.script_editor_dialog.loading = True
+            self.update_selector_in_editor(skip_check=True)
+            self.script_editor_dialog.loading = False
+            self.tagger.window.script_editor_dialog = True
+
+    def script_editor_dialog_close(self):
+        self.tagger.window.script_editor_dialog = None
 
     def show_scripting_documentation(self):
         ScriptingDocumentationDialog.show_instance(parent=self)
