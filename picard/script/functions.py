@@ -1386,18 +1386,22 @@ def func_countryname(parser, country_code, translate=""):
 DateTuple = namedtuple('DateTuple', ('year', 'month', 'day'))
 
 
-def _split_date(date_to_parse, date_order="ymd"):
+def _split_date(date_to_parse, date_order="ymd", multi_char=False):
     """Split the specified date into parts.
 
     Args:
         date_to_parse (str): Date string to parse
         date_order (str, optional): Order of date elements. Can be "ymd", "mdy" or "dmy". Defaults to "ymd".
+        multi_char (bool, optional): Split on one or more non-digit character. Defaults to False (split at each character).
 
     Returns:
         tuple: Tuple of the date parts as (year, month, day)
     """
 
-    parts = re.split(r'\D+', date_to_parse.strip())
+    splitter = r'\D'
+    if multi_char:
+        splitter += '+'
+    parts = re.split(splitter, date_to_parse.strip())
     parts.extend(['', '', ''])
     date_order = date_order.lower()
     if date_order == 'dmy':
@@ -1409,43 +1413,49 @@ def _split_date(date_to_parse, date_order="ymd"):
 
 
 @script_function(documentation=N_(
-    """`$year(date,date_order="ymd")`
+    """`$year(date,date_order="ymd",multi_char=False)`
 
 Returns the year portion of the specified date.  The default order is "ymd".  This can be changed by specifying
-either "dmy" or "mdy".  If the date is invalid an empty string will be returned.
+either "dmy" or "mdy".  Splits at each non-digit character unless `multi_char` is specified.
+
+If the date is invalid an empty string will be returned.
 
 _Since Picard 2.7_"""
 ))
-def func_year(parser, date_to_parse, date_order='ymd'):
-    return _split_date(date_to_parse, date_order).year
+def func_year(parser, date_to_parse, date_order='ymd', multi_char=False):
+    return _split_date(date_to_parse, date_order, multi_char).year
 
 
 @script_function(documentation=N_(
-    """`$month(date,date_order="ymd")`
+    """`$month(date,date_order="ymd",multi_char=False)`
 
 Returns the month portion of the specified date.  The default order is "ymd".  This can be changed by specifying
-either "dmy" or "mdy".  If the date is invalid an empty string will be returned.
+either "dmy" or "mdy".  Splits at each non-digit character unless `multi_char` is specified.
+
+If the date is invalid an empty string will be returned.
 
 _Since Picard 2.7_"""
 ))
-def func_month(parser, date_to_parse, date_order='ymd'):
-    return _split_date(date_to_parse, date_order).month
+def func_month(parser, date_to_parse, date_order='ymd', multi_char=False):
+    return _split_date(date_to_parse, date_order, multi_char).month
 
 
 @script_function(documentation=N_(
-    """`$day(date,date_order="ymd")`
+    """`$day(date,date_order="ymd",multi_char=False)`
 
 Returns the day portion of the specified date.  The default order is "ymd".  This can be changed by specifying
-either "dmy" or "mdy".  If the date is invalid an empty string will be returned.
+either "dmy" or "mdy".  Splits at each non-digit character unless `multi_char` is specified.
+
+If the date is invalid an empty string will be returned.
 
 _Since Picard 2.7_"""
 ))
-def func_day(parser, date_to_parse, date_order='ymd'):
-    return _split_date(date_to_parse, date_order).day
+def func_day(parser, date_to_parse, date_order='ymd', multi_char=False):
+    return _split_date(date_to_parse, date_order, multi_char).day
 
 
 @script_function(documentation=N_(
-    """`$dateformat(date,format="%Y-%m-%d",date_order="ymd")`
+    """`$dateformat(date,format="%Y-%m-%d",date_order="ymd", multi_char=False)`
 
 Returns the input date in the specified `format`, which is based on the standard
     Python `strftime` [format codes](https://strftime.org/). If no `format` is
@@ -1454,6 +1464,9 @@ Returns the input date in the specified `format`, which is based on the standard
 
     The default order for the input date is "ymd".  This can be changed by specifying
     either "dmy" or "mdy".
+
+    The default is to split the input date at each non-digit character.  This can be
+    changed by specifying `multi_char`.
 Note: Platform-specific formatting codes should be avoided to help ensure the
     portability of scripts across the different platforms.  These codes include:
     remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and their
@@ -1462,11 +1475,11 @@ Note: Platform-specific formatting codes should be avoided to help ensure the
 
 _Since Picard 2.7_"""
 ))
-def func_dateformat(parser, date_to_parse, date_format=None, date_order='ymd'):
+def func_dateformat(parser, date_to_parse, date_format=None, date_order='ymd', multi_char=False):
     # Handle case where format evaluates to ''
     if not date_format:
         date_format = '%Y-%m-%d'
-    yr, mo, da = _split_date(date_to_parse, date_order)
+    yr, mo, da = _split_date(date_to_parse, date_order, multi_char)
     try:
         date_object = datetime.date(int(yr), int(mo), int(da))
     except ValueError:
