@@ -1370,7 +1370,7 @@ def func_unique(parser, multi, case_sensitive="", separator=MULTI_VALUED_JOINER)
 
 
 @script_function(documentation=N_(
-    """`$countryname(country_code, translate="")`
+    """`$countryname(country_code,translate="")`
 
 Returns the name of the country for the specified country code.  If the country code is invalid an empty string will be returned.
 If translate is not blank, the output will be translated into the current locale language.
@@ -1381,3 +1381,115 @@ def func_countryname(parser, country_code, translate=""):
     if translate:
         return gettext_countries(name)
     return name
+
+
+DateTuple = namedtuple('DateTuple', ('year', 'month', 'day'))
+
+
+def _split_date(date_to_parse, date_order="ymd"):
+    """Split the specified date into parts.
+
+    Args:
+        date_to_parse (str): Date string to parse
+        date_order (str, optional): Order of date elements. Can be "ymd", "mdy" or "dmy". Defaults to "ymd".
+
+    Returns:
+        tuple: Tuple of the date parts as (year, month, day)
+    """
+
+    parts = re.split(r'\D+', date_to_parse.strip())
+    parts.extend(['', '', ''])
+    date_order = date_order.lower()
+    if date_order == 'dmy':
+        return DateTuple(parts[2], parts[1], parts[0])
+    elif date_order == 'mdy':
+        return DateTuple(parts[2], parts[0], parts[1])
+    else:
+        return DateTuple(parts[0], parts[1], parts[2])
+
+
+@script_function(documentation=N_(
+    """`$year(date,date_order="ymd")`
+
+Returns the year portion of the specified date.  The default order is "ymd".  This can be changed by specifying
+either "dmy" or "mdy".  If the date is invalid an empty string will be returned.
+
+_Since Picard 2.7_"""
+))
+def func_year(parser, date_to_parse, date_order='ymd'):
+    return _split_date(date_to_parse, date_order).year
+
+
+@script_function(documentation=N_(
+    """`$month(date,date_order="ymd")`
+
+Returns the month portion of the specified date.  The default order is "ymd".  This can be changed by specifying
+either "dmy" or "mdy".  If the date is invalid an empty string will be returned.
+
+_Since Picard 2.7_"""
+))
+def func_month(parser, date_to_parse, date_order='ymd'):
+    return _split_date(date_to_parse, date_order).month
+
+
+@script_function(documentation=N_(
+    """`$day(date,date_order="ymd")`
+
+Returns the day portion of the specified date.  The default order is "ymd".  This can be changed by specifying
+either "dmy" or "mdy".  If the date is invalid an empty string will be returned.
+
+_Since Picard 2.7_"""
+))
+def func_day(parser, date_to_parse, date_order='ymd'):
+    return _split_date(date_to_parse, date_order).day
+
+
+@script_function(documentation=N_(
+    """`$dateformat(date,format="%Y-%m-%d",date_order="ymd")`
+
+Returns the input date in the specified `format`, which is based on the standard
+    Python `strftime` [format codes](https://strftime.org/). If no `format` is
+    specified the date will be returned in the form `2020-02-05`.  If the date or
+    format are invalid an empty string will be returned.
+
+    The default order for the input date is "ymd".  This can be changed by specifying
+    either "dmy" or "mdy".
+Note: Platform-specific formatting codes should be avoided to help ensure the
+    portability of scripts across the different platforms.  These codes include:
+    remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and their
+    equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.
+    `%3Y`); and hanging '%' at the end of the format string.
+
+_Since Picard 2.7_"""
+))
+def func_dateformat(parser, date_to_parse, date_format=None, date_order='ymd'):
+    # Handle case where format evaluates to ''
+    if not date_format:
+        date_format = '%Y-%m-%d'
+    yr, mo, da = _split_date(date_to_parse, date_order)
+    try:
+        date_object = datetime.date(int(yr), int(mo), int(da))
+    except ValueError:
+        return ''
+    try:
+        return date_object.strftime(date_format)
+    except ValueError:
+        return ''
+
+
+@script_function(eval_args=False, documentation=N_(
+    """`$is_multi(name)`
+
+Returns '1' if the argument is a multi-value tag and there are more than one elements, otherwise an empty string.
+
+Example:
+
+    $is_multi(%artists%)
+
+Result: 1 if there is more than one artist, otherwise "".
+
+_Since Picard 2.7_"""
+))
+def func_is_multi(parser, multi):
+    multi_value = MultiValue(parser, multi, MULTI_VALUED_JOINER)
+    return '' if len(multi_value) < 2 else '1'

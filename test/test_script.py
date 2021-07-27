@@ -1642,3 +1642,140 @@ class ScriptParserTest(PicardTestCase):
             self.parser.eval("$countryname()")
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$countryname(CA,,Extra)")
+
+    def test_cmd_year(self):
+        context = Metadata()
+        context["foo"] = "07.21.2021"
+        context["bar"] = "mdy"
+
+        # Test with default values
+        self.assertScriptResultEquals("$year(2021 07 21)", "2021", context)
+        self.assertScriptResultEquals("$year(2021.07.21)", "2021", context)
+        self.assertScriptResultEquals("$year(2021-07-21)", "2021", context)
+        self.assertScriptResultEquals("$year(21-07-21)", "21", context)
+
+        # Test with overrides specified
+        self.assertScriptResultEquals("$year(%foo%,%bar%)", "2021", context)
+
+        # Test with invalid overrides
+        self.assertScriptResultEquals("$year(2021-07-21,myd)", "2021", context)
+
+        # Test missing elements
+        self.assertScriptResultEquals("$year(,)", "", context)
+        self.assertScriptResultEquals("$year(07-21,mdy)", "", context)
+        self.assertScriptResultEquals("$year(21-07,dmy)", "", context)
+
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$year: Wrong number of arguments for \$year: Expected between 1 and 2, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$year()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$year(2021-07-21,,)")
+
+    def test_cmd_month(self):
+        context = Metadata()
+        context["foo"] = "07.21.2021"
+        context["bar"] = "mdy"
+
+        # Test with default values
+        self.assertScriptResultEquals("$month(2021 07 21)", "07", context)
+        self.assertScriptResultEquals("$month(2021.07.21)", "07", context)
+        self.assertScriptResultEquals("$month(2021-07-21)", "07", context)
+        self.assertScriptResultEquals("$month(2021-7-21)", "7", context)
+
+        # Test with overrides specified
+        self.assertScriptResultEquals("$month(%foo%,%bar%)", "07", context)
+
+        # Test with invalid overrides
+        self.assertScriptResultEquals("$month(2021-07-21,myd)", "07", context)
+
+        # Test missing elements
+        self.assertScriptResultEquals("$month(,)", "", context)
+        self.assertScriptResultEquals("$month(-21-2021,mdy)", "", context)
+
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$month: Wrong number of arguments for \$month: Expected between 1 and 2, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$month()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$month(2021-07-21,,)")
+
+    def test_cmd_day(self):
+        context = Metadata()
+        context["foo"] = "07.21.2021"
+        context["bar"] = "mdy"
+
+        # Test with default values
+        self.assertScriptResultEquals("$day(2021 07 21)", "21", context)
+        self.assertScriptResultEquals("$day(2021.07.21)", "21", context)
+        self.assertScriptResultEquals("$day(2021-07-21)", "21", context)
+        self.assertScriptResultEquals("$day(2021-07-2)", "2", context)
+
+        # Test with overrides specified
+        self.assertScriptResultEquals("$day(%foo%,%bar%)", "21", context)
+
+        # Test with invalid overrides
+        self.assertScriptResultEquals("$day(2021-07-21,myd)", "21", context)
+
+        # Test missing elements
+        self.assertScriptResultEquals("$day(,)", "", context)
+        self.assertScriptResultEquals("$day(-07-2021,dmy)", "", context)
+
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$day: Wrong number of arguments for \$day: Expected between 1 and 2, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$day()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$day(2021-07-21,,)")
+
+    def test_cmd_dateformat(self):
+        context = Metadata()
+        context["foo"] = "07.21.2021"
+        context["bar"] = "mdy"
+        context["format"] = "%Y.%m.%d"
+
+        # Test with default values
+        self.assertScriptResultEquals("$dateformat(2021 07 21)", "2021-07-21", context)
+        self.assertScriptResultEquals("$dateformat(2021.07.21)", "2021-07-21", context)
+        self.assertScriptResultEquals("$dateformat(2021-07-21)", "2021-07-21", context)
+        self.assertScriptResultEquals("$dateformat(2021-7-21)", "2021-07-21", context)
+
+        # Test with overrides specified
+        self.assertScriptResultEquals("$dateformat(%foo%,%format%,%bar%)", "2021.07.21", context)
+
+        # Test with invalid overrides
+        self.assertScriptResultEquals("$dateformat(2021-07-21,,myd)", "2021-07-21", context)
+        self.assertScriptResultEquals("$dateformat(2021-07-21,,dmy)", "", context)
+        self.assertScriptResultEquals("$dateformat(2021-07-21,,mdy)", "", context)
+        self.assertScriptResultEquals("$dateformat(2021-July-21)", "", context)
+        self.assertScriptResultEquals("$dateformat(2021)", "", context)
+        self.assertScriptResultEquals("$dateformat(2021-07)", "", context)
+
+        # Test missing elements
+        self.assertScriptResultEquals("$dateformat(,)", "", context)
+
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$dateformat: Wrong number of arguments for \$dateformat: Expected between 1 and 3, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$dateformat()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$dateformat(2021-07-21,,,)")
+
+    def test_cmd_is_multi(self):
+        context = Metadata()
+        context["foo"] = "a; b; c"
+        context["bar"] = ""
+
+        self.assertScriptResultEquals("$is_multi(%foo%)", "", context)
+        self.assertScriptResultEquals("$is_multi(%bar%)", "", context)
+        self.assertScriptResultEquals("$setmulti(baz,a)$is_multi(%baz%)", "", context)
+        self.assertScriptResultEquals("$setmulti(baz,a; b; c)$is_multi(%baz%)", "1", context)
+        self.assertScriptResultEquals("$is_multi(a; b; c)", "1", context)
+        self.assertScriptResultEquals("$is_multi(a)", "", context)
+
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$is_multi: Wrong number of arguments for \$is_multi: Expected exactly 1, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$is_multi()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$is_multi(a,)")

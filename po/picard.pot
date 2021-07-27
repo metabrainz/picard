@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.7.0.dev3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-07-13 10:23+0200\n"
+"POT-Creation-Date: 2021-07-24 12:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2491,7 +2491,7 @@ msgstr ""
 msgid "C&lear all"
 msgstr ""
 
-#: picard/coverart/providers/caa.py:326 picard/ui/options/dialog.py:117
+#: picard/coverart/providers/caa.py:326 picard/ui/options/dialog.py:124
 msgid "Restore &Defaults"
 msgstr ""
 
@@ -3334,12 +3334,93 @@ msgstr ""
 
 #: picard/script/functions.py:1372
 msgid ""
-"`$countryname(country_code, translate=\"\")`\n"
+"`$countryname(country_code,translate=\"\")`\n"
 "\n"
 "Returns the name of the country for the specified country code.  If the "
 "country code is invalid an empty string will be returned.\n"
 "If translate is not blank, the output will be translated into the current"
 " locale language.\n"
+msgstr ""
+
+#: picard/script/functions.py:1411
+msgid ""
+"`$year(date,date_order=\"ymd\")`\n"
+"\n"
+"Returns the year portion of the specified date.  The default order is "
+"\"ymd\".  This can be changed by specifying\n"
+"either \"dmy\" or \"mdy\".  If the date is invalid an empty string will "
+"be returned.\n"
+"\n"
+"_Since Picard 2.7_"
+msgstr ""
+
+#: picard/script/functions.py:1423
+msgid ""
+"`$month(date,date_order=\"ymd\")`\n"
+"\n"
+"Returns the month portion of the specified date.  The default order is "
+"\"ymd\".  This can be changed by specifying\n"
+"either \"dmy\" or \"mdy\".  If the date is invalid an empty string will "
+"be returned.\n"
+"\n"
+"_Since Picard 2.7_"
+msgstr ""
+
+#: picard/script/functions.py:1435
+msgid ""
+"`$day(date,date_order=\"ymd\")`\n"
+"\n"
+"Returns the day portion of the specified date.  The default order is "
+"\"ymd\".  This can be changed by specifying\n"
+"either \"dmy\" or \"mdy\".  If the date is invalid an empty string will "
+"be returned.\n"
+"\n"
+"_Since Picard 2.7_"
+msgstr ""
+
+#: picard/script/functions.py:1447
+#, python-format
+msgid ""
+"`$dateformat(date,format=\"%Y-%m-%d\",date_order=\"ymd\")`\n"
+"\n"
+"Returns the input date in the specified `format`, which is based on the "
+"standard\n"
+"    Python `strftime` [format codes](https://strftime.org/). If no "
+"`format` is\n"
+"    specified the date will be returned in the form `2020-02-05`.  If the"
+" date or\n"
+"    format are invalid an empty string will be returned.\n"
+"\n"
+"    The default order for the input date is \"ymd\".  This can be changed"
+" by specifying\n"
+"    either \"dmy\" or \"mdy\".\n"
+"Note: Platform-specific formatting codes should be avoided to help ensure"
+" the\n"
+"    portability of scripts across the different platforms.  These codes "
+"include:\n"
+"    remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and "
+"their\n"
+"    equivalent `%#d` and `%#m` on Windows); element length specifiers "
+"(e.g.\n"
+"    `%3Y`); and hanging '%' at the end of the format string.\n"
+"\n"
+"_Since Picard 2.7_"
+msgstr ""
+
+#: picard/script/functions.py:1480
+msgid ""
+"`$is_multi(name)`\n"
+"\n"
+"Returns '1' if the argument is a multi-value tag and there are more than "
+"one elements, otherwise an empty string.\n"
+"\n"
+"Example:\n"
+"\n"
+"    $is_multi(%artists%)\n"
+"\n"
+"Result: 1 if there is more than one artist, otherwise \"\".\n"
+"\n"
+"_Since Picard 2.7_"
 msgstr ""
 
 #: picard/script/serializer.py:194
@@ -3681,19 +3762,23 @@ msgstr[1] ""
 msgid "Cluster Info"
 msgstr ""
 
-#: picard/ui/infostatus.py:61 picard/ui/options/plugins.py:605
+#: picard/ui/infostatus.py:70
+msgid "Estimated Time"
+msgstr ""
+
+#: picard/ui/infostatus.py:71 picard/ui/options/plugins.py:605
 msgid "Files"
 msgstr ""
 
-#: picard/ui/infostatus.py:62
+#: picard/ui/infostatus.py:72
 msgid "Albums"
 msgstr ""
 
-#: picard/ui/infostatus.py:63
+#: picard/ui/infostatus.py:73
 msgid "Pending files"
 msgstr ""
 
-#: picard/ui/infostatus.py:64
+#: picard/ui/infostatus.py:74
 msgid "Pending requests"
 msgstr ""
 
@@ -3983,7 +4068,7 @@ msgstr ""
 msgid "Ready"
 msgstr ""
 
-#: picard/ui/mainwindow.py:388
+#: picard/ui/mainwindow.py:389
 msgid ""
 "Picard listens on this port to integrate with your browser. When you "
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
@@ -4636,7 +4721,7 @@ msgstr ""
 msgid "Option profile editor"
 msgstr ""
 
-#: picard/ui/options/dialog.py:121 picard/ui/profileeditor.py:115
+#: picard/ui/options/dialog.py:128 picard/ui/profileeditor.py:115
 msgid "Make It So!"
 msgstr ""
 
@@ -5074,14 +5159,18 @@ msgstr ""
 msgid "A&rtwork"
 msgstr ""
 
-#: picard/ui/ui_infostatus.py:91 picard/ui/ui_provider_options_caa.py:68
+#: picard/ui/ui_infostatus.py:106 picard/ui/ui_provider_options_caa.py:68
 #: picard/ui/ui_provider_options_local.py:50
 #: picard/ui/ui_widget_taglisteditor.py:68
 msgid "Form"
 msgstr ""
 
-#: picard/ui/ui_options.py:46
+#: picard/ui/ui_options.py:82
 msgid "Options"
+msgstr ""
+
+#: picard/ui/ui_options.py:83
+msgid "Save settings to:"
 msgstr ""
 
 #: picard/ui/ui_options_advanced.py:115
@@ -5126,6 +5215,10 @@ msgstr ""
 
 #: picard/ui/ui_options_advanced.py:125
 msgid "Tags to ignore for comparison:"
+msgstr ""
+
+#: picard/ui/options/dialog.py:206 picard/ui/ui_options_attached_profiles.py:34
+msgid "Profiles Attached to Options"
 msgstr ""
 
 #: picard/ui/ui_options_cdlookup.py:39
@@ -5856,36 +5949,76 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: picard/ui/options/dialog.py:115
+#: picard/ui/options/dialog.py:122
 msgid "&Restore all Defaults"
 msgstr ""
 
-#: picard/ui/options/dialog.py:116
+#: picard/ui/options/dialog.py:123
 msgid "Reset all of Picard's settings"
 msgstr ""
 
-#: picard/ui/options/dialog.py:118
+#: picard/ui/options/dialog.py:125
 msgid "Reset all settings for current option page"
 msgstr ""
 
-#: picard/ui/options/dialog.py:215
+#: picard/ui/options/dialog.py:142
+msgid "Profile Help"
+msgstr ""
+
+#: picard/ui/options/dialog.py:146 picard/ui/options/dialog.py:345
+#: picard/ui/options/dialog.py:363
+msgid "Attached Profiles"
+msgstr ""
+
+#: picard/ui/options/dialog.py:147
+msgid "Show which profiles are attached to the options on this page"
+msgstr ""
+
+#: picard/ui/options/dialog.py:158
+msgid "User base settings"
+msgstr ""
+
+#: picard/ui/options/dialog.py:218
+msgid ""
+"The options on this page are not currently available to be managed using "
+"profiles."
+msgstr ""
+
+#: picard/ui/options/dialog.py:290
 msgid "Unexpected error"
 msgstr ""
 
-#: picard/ui/options/dialog.py:250
+#: picard/ui/options/dialog.py:325
 msgid "You are about to reset your options for this page."
 msgstr ""
 
-#: picard/ui/options/dialog.py:254
+#: picard/ui/options/dialog.py:329
 msgid "Warning! This will reset all of your settings."
 msgstr ""
 
-#: picard/ui/options/dialog.py:261
+#: picard/ui/options/dialog.py:336
 msgid "Confirm Reset"
 msgstr ""
 
-#: picard/ui/options/dialog.py:262
+#: picard/ui/options/dialog.py:337
 msgid "Are you sure?"
+msgstr ""
+
+#: picard/ui/options/dialog.py:363
+msgid "Option Setting"
+msgstr ""
+
+#: picard/ui/options/dialog.py:374
+#, python-format
+msgid "Profiles Attached to Options in %s Section"
+msgstr ""
+
+#: picard/ui/options/dialog.py:384
+msgid " [Enabled]"
+msgstr ""
+
+#: picard/ui/options/dialog.py:385
+msgid "None"
 msgstr ""
 
 #: picard/ui/options/fingerprinting.py:60
@@ -6752,6 +6885,26 @@ msgstr ""
 
 #: picard/util/tags.py:122
 msgid "Writer"
+msgstr ""
+
+#: picard/util/time.py:42
+#, python-format
+msgid "%.2dd %.2dh"
+msgstr ""
+
+#: picard/util/time.py:44
+#, python-format
+msgid "%.2dh %.2dm"
+msgstr ""
+
+#: picard/util/time.py:46
+#, python-format
+msgid "%.2dm %.2ds"
+msgstr ""
+
+#: picard/util/time.py:48
+#, python-format
+msgid "%.2ds"
 msgstr ""
 
 #: picard/util/versions.py:66

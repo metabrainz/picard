@@ -46,7 +46,10 @@ from picard import (
     PICARD_VERSION,
     log,
 )
-from picard.profile import UserProfileGroups
+from picard.profile import (
+    USER_SETTINGS_PROFILE_ID,
+    UserProfileGroups,
+)
 from picard.version import Version
 
 
@@ -153,7 +156,7 @@ class SettingConfigSection(ConfigSection):
 
     def _get_active_profile_ids(self):
         if self._selected_profile is not None:
-            if self._selected_profile == "user_settings":
+            if self._selected_profile == USER_SETTINGS_PROFILE_ID:
                 return
             # Act as if the selected profile is the only active profile.
             yield self._selected_profile
@@ -194,7 +197,7 @@ class SettingConfigSection(ConfigSection):
                 if name in settings:
                     self._save_profile_setting(id, name, value)
                     return
-        if self._selected_profile is None or self._selected_profile == "user_settings":
+        if self._selected_profile is None or self._selected_profile == USER_SETTINGS_PROFILE_ID:
             key = self.key(name)
             self.__qt_config.setValue(key, value)
             self._memoization[key].dirty = True
