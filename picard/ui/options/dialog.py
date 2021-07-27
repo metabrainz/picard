@@ -30,6 +30,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import namedtuple
+
 from PyQt5 import (
     QtCore,
     QtGui,
@@ -43,7 +45,10 @@ from picard.config import (
     TextOption,
     get_config,
 )
-from picard.profile import UserProfileGroups
+from picard.profile import (
+    USER_SETTINGS_PROFILE_ID,
+    UserProfileGroups,
+)
 from picard.util import (
     restore_method,
     webbrowser2,
@@ -80,6 +85,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     tags_compatibility_id3,
     tags_compatibility_wave,
 )
+from picard.ui.theme import theme
 from picard.ui.ui_options_attached_profiles import Ui_AttachedProfilesDialog
 from picard.ui.util import StandardButton
 
@@ -149,19 +155,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.ui.attached_profiles_button.clicked.connect(self.show_attached_profiles_dialog)
 
         config = get_config()
-        # Set initially displayed values to the user's base settings (with no profiles enabled)
-        config.setting.set_profile("user_settings")
-
-        if config.profiles[SettingConfigSection.PROFILES_KEY]:
-            self.ui.profile_frame.show()
-            self.ui.save_to_profile.clear()
-            self.ui.save_to_profile.addItem(_("User base settings"), "user_settings")
-            for item in config.profiles[SettingConfigSection.PROFILES_KEY]:
-                self.ui.save_to_profile.addItem(item["title"], item["id"],)
-            self.ui.save_to_profile.setCurrentIndex(0)
-            self.ui.save_to_profile.currentIndexChanged.connect(self.switch_profile)
-        else:
-            self.ui.profile_frame.hide()
 
         self.pages = []
         for Page in page_classes:
@@ -197,6 +190,22 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 self.disable_page(page.NAME)
         self.ui.pages_tree.setCurrentItem(self.default_item)
 
+        self.USER_SETTINGS_TITLE = _("User base settings")
+
+        if config.profiles[SettingConfigSection.PROFILES_KEY]:
+            self.ui.profile_frame.show()
+            self.ui.save_to_profile.clear()
+            self.ui.save_to_profile.addItem(self.USER_SETTINGS_TITLE, USER_SETTINGS_PROFILE_ID)
+            index = 0
+            for idx, item in enumerate(config.profiles[SettingConfigSection.PROFILES_KEY], start=1):
+                self.ui.save_to_profile.addItem(item["title"], item["id"])
+                if not index and item["enabled"]:
+                    index = idx
+            self.ui.save_to_profile.currentIndexChanged.connect(self.switch_profile)
+            self.ui.save_to_profile.setCurrentIndex(index)
+        else:
+            self.ui.profile_frame.hide()
+
     def show_profile_help(self):
         """Open the profile documentation in a browser.
         """
@@ -224,12 +233,62 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         profile_dialog.raise_()
         profile_dialog.activateWindow()
 
+    def _get_profile_title_from_id(self, profile_id):
+        if profile_id == USER_SETTINGS_PROFILE_ID:
+            return self.USER_SETTINGS_TITLE
+        config = get_config()
+        for item in config.profiles[SettingConfigSection.PROFILES_KEY]:
+            if item["id"] == profile_id:
+                return item["title"]
+        return _('Unknown profile')
+
     def switch_profile(self, index):
+        HighlightColors = namedtuple('HighlightColors', ('fg', 'bg'))
+        HIGHLIGHT_FMT = "#%s { color: %s; background-color: %s; }"
+        if theme.is_dark_theme:
+            option_colors = HighlightColors('#FFFFFF', '#000080')
+            profile_colors = HighlightColors('#FFFFFF', '#300000')
+        else:
+            option_colors = HighlightColors('#000000', '#F9F906')
+            profile_colors = HighlightColors('#000000', '#FFA500')
+
+        # Highlight profile selector if profile selected.
+        if self.ui.save_to_profile.currentIndex():
+            self.ui.save_to_profile.setStyleSheet(HIGHLIGHT_FMT % ('save_to_profile', profile_colors.fg, profile_colors.bg))
+        else:
+            self.ui.save_to_profile.setStyleSheet("")
+
         profile_id = self.ui.save_to_profile.currentData()
+        profile_title = self._get_profile_title_from_id(profile_id)
         config = get_config()
         config.setting.set_profile(profile_id)
+        settings = config.profiles[SettingConfigSection.SETTINGS_KEY]
+        if profile_id in settings:
+            profile_settings = settings[profile_id]
+        else:
+            profile_settings = {}
+
         for page in self.pages:
             page.load()
+            page_name = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
+            if page_name in UserProfileGroups.SETTINGS_GROUPS:
+                for opt in UserProfileGroups.SETTINGS_GROUPS[page_name]['settings']:
+                    for opt_field in opt.fields:
+                        try:
+                            obj = getattr(page.ui, opt_field)
+                        except AttributeError:
+                            continue
+                        if opt.name in profile_settings:
+                            style = HIGHLIGHT_FMT % (opt_field, option_colors.fg, option_colors.bg)
+                            tooltip = _("This option is managed by profile: %s") % profile_title
+                        else:
+                            style = ""
+                            tooltip = ""
+                        try:
+                            obj.setStyleSheet(style)
+                            obj.setToolTip(tooltip)
+                        except AttributeError:
+                            pass
 
     def switch_page(self):
         items = self.ui.pages_tree.selectedItems()
@@ -256,6 +315,17 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         return url
 
     def accept(self):
+        profile_id = self.ui.save_to_profile.currentData()
+        if profile_id != USER_SETTINGS_PROFILE_ID:
+            profile_name = self._get_profile_title_from_id(profile_id)
+            message_box = QtWidgets.QMessageBox(self)
+            message_box.setIcon(QtWidgets.QMessageBox.Warning)
+            message_box.setWindowModality(QtCore.Qt.WindowModal)
+            message_box.setWindowTitle(_("Save to Profile"))
+            message_box.setText(_("Changes will only be saved to the profile: \"%s\"\n\nDo you want to continue?") % profile_name)
+            message_box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.Cancel)
+            if message_box.exec_() != QtWidgets.QMessageBox.Yes:
+                return
         for page in self.pages:
             try:
                 page.check()
