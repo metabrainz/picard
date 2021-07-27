@@ -44,6 +44,8 @@ import operator
 import re
 import unicodedata
 
+from dateutil.parser import parse as du_parse
+
 from picard.const.countries import RELEASE_COUNTRIES
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.script.parser import (
@@ -1493,3 +1495,33 @@ _Since Picard 2.7_"""
 def func_is_multi(parser, multi):
     multi_value = MultiValue(parser, multi, MULTI_VALUED_JOINER)
     return '' if len(multi_value) < 2 else '1'
+
+
+@script_function(documentation=N_(
+    """`$parsedate(date,first_element=None)`
+
+Parses the input date string and returns the resulting date in the form "YYYY-MM-DD". The
+function will try to automatically determine the date based on the content of each element
+(e.g. text month, day greater than 12, four-digit year, etc.), but you can force it to use
+the first element as either the year or the day by setting `first_element` to either "y"
+or "d".
+
+Missing elements are filled in from the date 1900-01-01.
+
+If the input date is invalid and cannot be parsed, an empty string will be returned.
+
+_Since Picard 2.7_"""
+))
+def func_parsedate(parser, date_to_parse, first_element=""):
+    if first_element:
+        dayfirst = first_element[0] in "dD"
+        yearfirst = first_element[0] in "yY"
+    else:
+        dayfirst = False
+        yearfirst = False
+    default = datetime.datetime(1900, 1, 1, 0, 0, 0, 0)
+    try:
+        parsed_date = du_parse(timestr=date_to_parse, dayfirst=dayfirst, yearfirst=yearfirst, default=default)
+    except (TypeError, ValueError):
+        return ""
+    return parsed_date.strftime("%Y-%m-%d")
