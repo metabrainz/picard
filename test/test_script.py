@@ -1802,6 +1802,11 @@ class ScriptParserTest(PicardTestCase):
         # Test with invalid overrides
         self.assertScriptResultEquals("$parsedate(2021 07 21,myd)", "2021-07-21", context)
 
+        # Test with ambiguous dates
+        self.assertScriptResultEquals("$parsedate(6 7 8,)", "2008-06-07", context)
+        self.assertScriptResultEquals("$parsedate(6 7 8,d)", "2008-07-06", context)
+        self.assertScriptResultEquals("$parsedate(6 7 8,y)", "2006-07-08", context)
+
         # Test missing elements
         self.assertScriptResultEquals("$parsedate(,)", "", context)
         self.assertScriptResultEquals("$parsedate(7 21,)", "1900-07-21", context)

@@ -1502,9 +1502,9 @@ def func_is_multi(parser, multi):
 
 Parses the input date string and returns the resulting date in the form "YYYY-MM-DD". The
 function will try to automatically determine the date based on the content of each element
-(e.g. text month, day greater than 12, four-digit year, etc.), but you can force it to use
-the first element as either the year or the day by setting `first_element` to either "y"
-or "d".
+(e.g. text month, day greater than 12, four-digit year, etc.). When date information is
+ambiguous (e.g. 06-07-08) the system will parse it in the order "mdy", but you can force
+it to use "dmy" or "ymd" by setting `first_element` to "d" or "y" respectively.
 
 Missing elements are filled in from the date 1900-01-01.
 
