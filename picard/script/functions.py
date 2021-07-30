@@ -1498,13 +1498,13 @@ def func_is_multi(parser, multi):
 
 
 @script_function(documentation=N_(
-    """`$parsedate(date,first_element=None)`
+    """`$parsedate(date,date_order="mdy")`
 
 Parses the input date string and returns the resulting date in the form "YYYY-MM-DD". The
 function will try to automatically determine the date based on the content of each element
 (e.g. text month, day greater than 12, four-digit year, etc.). When date information is
-ambiguous (e.g. 06-07-08) the system will parse it in the order "mdy", but you can force
-it to use "dmy" or "ymd" by setting `first_element` to "d" or "y" respectively.
+ambiguous (e.g. 06-07-08) the system will parse it in the order "mdy".  This can be changed
+by specifying either "dmy" or "mdy".
 
 Missing elements are filled in from the date 1900-01-01.
 
@@ -1512,10 +1512,14 @@ If the input date is invalid and cannot be parsed, an empty string will be retur
 
 _Since Picard 2.7_"""
 ))
-def func_parsedate(parser, date_to_parse, first_element=""):
-    if first_element:
-        dayfirst = first_element[0] in "dD"
-        yearfirst = first_element[0] in "yY"
+def func_parsedate(parser, date_to_parse, date_order=""):
+    date_order = date_order.lower()
+    if date_order == 'ymd':
+        dayfirst = False
+        yearfirst = True
+    elif date_order == 'dmy':
+        dayfirst = True
+        yearfirst = False
     else:
         dayfirst = False
         yearfirst = False
