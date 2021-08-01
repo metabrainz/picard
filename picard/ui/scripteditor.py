@@ -475,6 +475,11 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.Help)
         self.ui.buttonbox.helpRequested.connect(self.show_help)
 
+        # Add links to edit script metadata
+        self.ui.script_title.installEventFilter(self)
+        self.ui.script_title.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+        self.ui.script_title.addAction(self.details_action)
+
         self.ui.file_naming_format.setEnabled(True)
 
         # Add scripting documentation to parent frame.
@@ -649,6 +654,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         evtype = event.type()
         if evtype in {QtCore.QEvent.WindowActivate, QtCore.QEvent.FocusIn}:
             self.update_examples()
+        elif object == self.ui.script_title and evtype == QtCore.QEvent.MouseButtonDblClick:
+            self.details_action.trigger()
         return False
 
     def closeEvent(self, event):
@@ -1184,7 +1191,6 @@ class ScriptDetailsEditor(PicardDialog):
         super().__init__(parent=parent)
         self.script_item = script_item
         self.readonly = script_item["readonly"]
-        self.setWindowTitle(self.TITLE)
         self.displaying = False
         self.ui = Ui_ScriptDetails()
         self.ui.setupUi(self)
@@ -1211,6 +1217,7 @@ class ScriptDetailsEditor(PicardDialog):
         self.ui.buttonBox.setFocus()
 
         self.setModal(True)
+        self.setWindowTitle(self.TITLE)
         self.skip_change_check = False
 
     def has_changed(self):
