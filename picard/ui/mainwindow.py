@@ -319,6 +319,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             config.persist['mediaplayer_playback_rate'] = self.player.playback_rate()
             config.persist['mediaplayer_volume'] = self.player.volume()
         self.saveWindowState()
+        # Confirm loss of unsaved changes in script editor.
+        if self.script_editor_dialog:
+            if not self.script_editor_dialog.unsaved_changes_confirmation():
+                event.ignore()
+                return
+            else:
+                # Silently close the script editor without displaying the confirmation a second time.
+                self.script_editor_dialog.loading = True
         event.accept()
 
     def _setup_desktop_status_indicator(self):
