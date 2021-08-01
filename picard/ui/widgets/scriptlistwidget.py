@@ -38,6 +38,10 @@ from picard.ui import HashableListWidgetItem
 
 class ScriptListWidget(QtWidgets.QListWidget):
 
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.itemChanged.connect(self.item_changed)
+
     def contextMenuEvent(self, event):
         item = self.itemAt(event.x(), event.y())
         if item:
@@ -80,6 +84,11 @@ class ScriptListWidget(QtWidgets.QListWidget):
         if item and reply == QtWidgets.QMessageBox.Yes:
             item = self.takeItem(row)
             del item
+
+    def item_changed(self, item):
+        if not item.name.strip():
+            # Replace empty script name with default.
+            item.setText(_(DEFAULT_SCRIPT_NAME))
 
 
 class ScriptListWidgetItem(HashableListWidgetItem):
