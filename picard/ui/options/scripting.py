@@ -207,13 +207,12 @@ class ScriptingOptionsPage(OptionsPage):
         FILE_ERROR_EXPORT = N_('Error exporting file "%s". %s.')
 
         items = self.ui.script_list.selectedItems()
-        if items:
-            item = items[0]
-            script_text = item.script
-            script_title = item.name
-        else:
-            script_text = ""
-            script_title = ""
+        if not items:
+            return
+
+        item = items[0]
+        script_text = item.script
+        script_title = item.name if item.name.strip() else _("Unnamed Script")
 
         if script_text:
             script_item = PicardScript(title=script_title, script=script_text)
