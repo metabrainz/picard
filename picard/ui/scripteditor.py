@@ -656,6 +656,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             self.update_examples()
         elif object == self.ui.script_title and evtype == QtCore.QEvent.MouseButtonDblClick:
             self.details_action.trigger()
+            return True
         return False
 
     def closeEvent(self, event):
