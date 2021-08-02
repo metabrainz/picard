@@ -334,7 +334,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def accept(self):
         profile_id = self.ui.save_to_profile.currentData()
-        if profile_id != USER_SETTINGS_PROFILE_ID:
+        if profile_id and profile_id != USER_SETTINGS_PROFILE_ID:
             profile_name = self._get_profile_title_from_id(profile_id)
             message_box = QtWidgets.QMessageBox(self)
             message_box.setIcon(QtWidgets.QMessageBox.Warning)
