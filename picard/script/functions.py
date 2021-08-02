@@ -778,7 +778,7 @@ def func_performer(parser, pattern="", join=", "):
         return ''
     for name, value in parser.context.items():
         if name.startswith("performer:"):
-            name, performance = name.split(':', 2)
+            name, performance = name.split(':', 1)
             if regex.search(performance):
                 values.append(value)
     return join.join(values)
