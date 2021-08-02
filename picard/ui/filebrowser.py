@@ -102,7 +102,10 @@ class FileBrowser(QtWidgets.QTreeView):
         self.addAction(self.set_as_starting_directory_action)
         self.doubleClicked.connect(self.load_file_for_item)
         self.focused = False
-        self._set_model()
+
+    def showEvent(self, event):
+        if not self.model():
+            self._set_model()
 
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
@@ -115,20 +118,20 @@ class FileBrowser(QtWidgets.QTreeView):
         event.accept()
 
     def _set_model(self):
-        self.model = QtWidgets.QFileSystemModel()
-        self.model.layoutChanged.connect(self._layout_changed)
-        self.model.setRootPath("")
+        model = QtWidgets.QFileSystemModel()
+        self.setModel(model)
+        model.layoutChanged.connect(self._layout_changed)
+        model.setRootPath("")
         self._set_model_filter()
         filters = []
         for exts, name in supported_formats():
             filters.extend("*" + e for e in exts)
-        self.model.setNameFilters(filters)
+        model.setNameFilters(filters)
         # Hide unsupported files completely
-        self.model.setNameFilterDisables(False)
-        self.model.sort(0, QtCore.Qt.AscendingOrder)
-        self.setModel(self.model)
+        model.setNameFilterDisables(False)
+        model.sort(0, QtCore.Qt.AscendingOrder)
         if IS_MACOS:
-            self.setRootIndex(self.model.index("/Volumes"))
+            self.setRootIndex(model.index("/Volumes"))
         header = self.header()
         header.hideSection(1)
         header.hideSection(2)
@@ -142,7 +145,7 @@ class FileBrowser(QtWidgets.QTreeView):
         model_filter = QtCore.QDir.AllDirs | QtCore.QDir.Files | QtCore.QDir.Drives | QtCore.QDir.NoDotAndDotDot
         if config.persist["show_hidden_files"]:
             model_filter |= QtCore.QDir.Hidden
-        self.model.setFilter(model_filter)
+        self.model().setFilter(model_filter)
 
     def _layout_changed(self):
         def scroll():
@@ -191,7 +194,7 @@ class FileBrowser(QtWidgets.QTreeView):
     def save_state(self):
         indexes = self.selectedIndexes()
         if indexes:
-            path = self.model.filePath(indexes[0])
+            path = self.model().filePath(indexes[0])
             config = get_config()
             config.persist["current_browser_path"] = os.path.normpath(path)
 
@@ -207,7 +210,7 @@ class FileBrowser(QtWidgets.QTreeView):
             path = config.persist["current_browser_path"]
             scrolltype = QtWidgets.QAbstractItemView.PositionAtCenter
         if path:
-            index = self.model.index(find_existing_path(path))
+            index = self.model().index(find_existing_path(path))
             self.setCurrentIndex(index)
             self.expand(index)
             self.scrollTo(index, scrolltype)
@@ -219,16 +222,17 @@ class FileBrowser(QtWidgets.QTreeView):
         return destination
 
     def load_file_for_item(self, index):
-        if not self.model.isDir(index):
+        model = self.model()
+        if not model.isDir(index):
             QtCore.QObject.tagger.add_paths([
-                self.model.filePath(index)
+                model.filePath(index)
             ])
 
     def load_selected_files(self):
         indexes = self.selectedIndexes()
         if not indexes:
             return
-        paths = set(self.model.filePath(index) for index in indexes)
+        paths = set(self.model().filePath(index) for index in indexes)
         QtCore.QObject.tagger.add_paths(paths)
 
     def move_files_here(self):
@@ -236,12 +240,12 @@ class FileBrowser(QtWidgets.QTreeView):
         if not indexes:
             return
         config = get_config()
-        path = self.model.filePath(indexes[0])
+        path = self.model().filePath(indexes[0])
         config.setting["move_files_to"] = self._get_destination_from_path(path)
 
     def set_as_starting_directory(self):
         indexes = self.selectedIndexes()
         if indexes:
             config = get_config()
-            path = self.model.filePath(indexes[0])
+            path = self.model().filePath(indexes[0])
             config.setting["starting_directory_path"] = self._get_destination_from_path(path)
