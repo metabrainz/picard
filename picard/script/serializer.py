@@ -34,6 +34,11 @@ from picard.const import (
     DEFAULT_SCRIPT_NAME,
     SCRIPT_LANGUAGE_VERSION,
 )
+from picard.const.sys import IS_WIN
+from picard.util import (
+    replace_win32_incompat,
+    sanitize_filename,
+)
 
 
 @unique
@@ -244,6 +249,24 @@ class PicardScript():
         if create_new_id or not new_object['id']:
             new_object._set_new_id()
         return new_object
+
+    @property
+    def filename(self):
+        return self.make_filename(self.title)
+
+    @classmethod
+    def make_filename(cls, title=None):
+        """Make basic filename from script title.
+
+        Returns:
+            str: Filename
+        """
+        if not title:
+            title = _("Unnamed Script")
+        filename = sanitize_filename(title, win_compat=IS_WIN)
+        if IS_WIN:
+            filename = replace_win32_incompat(filename)
+        return filename
 
 
 class FileNamingScript(PicardScript):

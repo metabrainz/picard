@@ -112,7 +112,7 @@ class ScriptingOptionsPage(OptionsPage):
     ]
 
     default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DocumentsLocation))
-    default_script_filename = "picard_tagging_script.ptsp"
+    default_script_extension = "ptsp"
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -216,7 +216,8 @@ class ScriptingOptionsPage(OptionsPage):
 
         if script_text:
             script_item = PicardScript(title=script_title, script=script_text)
-            default_path = os.path.normpath(os.path.join(self.default_script_directory, self.default_script_filename))
+            script_filename = ".".join((script_item.filename, self.default_script_extension))
+            default_path = os.path.normpath(os.path.join(self.default_script_directory, script_filename))
             dialog_title = _("Export Script File")
             dialog_file_types = self._get_dialog_filetypes()
             options = QtWidgets.QFileDialog.Options()
@@ -227,7 +228,7 @@ class ScriptingOptionsPage(OptionsPage):
                 (name, ext) = os.path.splitext(filename)
                 if ext and str(name).endswith('.' + ext):
                     filename = name
-                log.debug('Exporting naming script file: %s' % filename)
+                log.debug('Exporting tagging script file: %s' % filename)
                 if file_type == self.FILE_TYPE_PACKAGE:
                     script_text = script_item.to_yaml()
                 try:
