@@ -46,6 +46,7 @@ from picard.util import (
     iter_files_from_objects,
     iter_unique,
     limited_join,
+    make_filename_from_title,
     pattern_as_regex,
     sort_by_similarity,
     tracknum_and_title_from_filename,
@@ -84,6 +85,25 @@ class ReplaceWin32IncompatTest(PicardTestCase):
     def test_incorrect(self):
         self.assertNotEqual(util.replace_win32_incompat("c:\\test\\te\"st2"),
                              "c:\\test\\te\"st2")
+
+
+class MakeFilenameTest(PicardTestCase):
+    def test_filename_from_title(self):
+        self.assertEqual(make_filename_from_title(), _("No Title"))
+        self.assertEqual(make_filename_from_title(""), _("No Title"))
+        self.assertEqual(make_filename_from_title(" "), _("No Title"))
+        self.assertEqual(make_filename_from_title(default="New Default"), "New Default")
+        self.assertEqual(make_filename_from_title("", "New Default"), "New Default")
+        self.assertEqual(make_filename_from_title("/"), "_")
+
+    @unittest.skipUnless(IS_WIN, "windows test")
+    def test_filename_from_title_win32(self):
+        self.assertEqual(make_filename_from_title("\\"), "_")
+        self.assertEqual(make_filename_from_title(":"), "_")
+
+    @unittest.skipUnless(not IS_WIN, "non-windows test")
+    def test_filename_from_title_non_win32(self):
+        self.assertEqual(make_filename_from_title(":"), ":")
 
 
 class ExtractYearTest(PicardTestCase):
