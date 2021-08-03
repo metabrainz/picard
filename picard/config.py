@@ -46,10 +46,7 @@ from picard import (
     PICARD_VERSION,
     log,
 )
-from picard.profile import (
-    USER_SETTINGS_PROFILE_ID,
-    UserProfileGroups,
-)
+from picard.profile import UserProfileGroups
 from picard.version import Version
 
 
@@ -152,21 +149,14 @@ class SettingConfigSection(ConfigSection):
         self.__prefix = self.__name + '/'
         self._memoization = defaultdict(Memovar)
         self.init_profile_options()
-        self._selected_profile = None
 
     def _get_active_profile_ids(self):
-        if self._selected_profile is not None:
-            if self._selected_profile == USER_SETTINGS_PROFILE_ID:
-                return
-            # Act as if the selected profile is the only active profile.
-            yield self._selected_profile
-        else:
-            profiles = self.__qt_config.profiles[self.PROFILES_KEY]
-            if profiles is None:
-                return
-            for profile in profiles:
-                if profile['enabled']:
-                    yield profile["id"]
+        profiles = self.__qt_config.profiles[self.PROFILES_KEY]
+        if profiles is None:
+            return
+        for profile in profiles:
+            if profile['enabled']:
+                yield profile["id"]
 
     def _get_active_profile_settings(self):
         for id in self._get_active_profile_ids():
@@ -197,10 +187,9 @@ class SettingConfigSection(ConfigSection):
                 if name in settings:
                     self._save_profile_setting(id, name, value)
                     return
-        if self._selected_profile is None or self._selected_profile == USER_SETTINGS_PROFILE_ID:
-            key = self.key(name)
-            self.__qt_config.setValue(key, value)
-            self._memoization[key].dirty = True
+        key = self.key(name)
+        self.__qt_config.setValue(key, value)
+        self._memoization[key].dirty = True
 
     def _save_profile_setting(self, profile_id, name, value):
         profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY]
@@ -208,9 +197,6 @@ class SettingConfigSection(ConfigSection):
         key = self.__qt_config.profiles.key(self.SETTINGS_KEY)
         self.__qt_config.setValue(key, profile_settings)
         self._memoization[key].dirty = True
-
-    def set_profile(self, profile_id=None):
-        self._selected_profile = profile_id
 
 
 class Config(QtCore.QSettings):

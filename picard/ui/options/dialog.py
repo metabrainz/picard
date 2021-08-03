@@ -45,10 +45,7 @@ from picard.config import (
     TextOption,
     get_config,
 )
-from picard.profile import (
-    USER_SETTINGS_PROFILE_ID,
-    UserProfileGroups,
-)
+from picard.profile import UserProfileGroups
 from picard.util import (
     restore_method,
     webbrowser2,
@@ -193,19 +190,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.first_enter = True
         self.installEventFilter(self)
 
-        self.USER_SETTINGS_TITLE = _("User base settings")
-
         if config.profiles[SettingConfigSection.PROFILES_KEY]:
             self.ui.profile_frame.show()
-            self.ui.save_to_profile.clear()
-            self.ui.save_to_profile.addItem(self.USER_SETTINGS_TITLE, USER_SETTINGS_PROFILE_ID)
-            index = 0
-            for idx, item in enumerate(config.profiles[SettingConfigSection.PROFILES_KEY], start=1):
-                self.ui.save_to_profile.addItem(item["title"], item["id"])
-                if not index and item["enabled"]:
-                    index = idx
-            self.ui.save_to_profile.currentIndexChanged.connect(self.switch_profile)
-            self.ui.save_to_profile.setCurrentIndex(index)
+            self.highlight_enabled_profile_options()
         else:
             self.ui.profile_frame.hide()
 
@@ -237,39 +224,31 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         profile_dialog.activateWindow()
 
     def _get_profile_title_from_id(self, profile_id):
-        if profile_id == USER_SETTINGS_PROFILE_ID:
-            return self.USER_SETTINGS_TITLE
         config = get_config()
         for item in config.profiles[SettingConfigSection.PROFILES_KEY]:
             if item["id"] == profile_id:
                 return item["title"]
         return _('Unknown profile')
 
-    def switch_profile(self, index):
+    def highlight_enabled_profile_options(self):
+        config = get_config()
+        if not config.profiles[SettingConfigSection.PROFILES_KEY]:
+            return
+
+        self.ui.notice_text.hide()
+
         HighlightColors = namedtuple('HighlightColors', ('fg', 'bg'))
         HIGHLIGHT_FMT = "#%s { color: %s; background-color: %s; }"
         if theme.is_dark_theme:
             option_colors = HighlightColors('#FFFFFF', '#000080')
-            profile_colors = HighlightColors('#FFFFFF', '#300000')
         else:
             option_colors = HighlightColors('#000000', '#F9F906')
-            profile_colors = HighlightColors('#000000', '#FFA500')
 
-        # Highlight profile selector if profile selected.
-        if self.ui.save_to_profile.currentIndex():
-            self.ui.save_to_profile.setStyleSheet(HIGHLIGHT_FMT % ('save_to_profile', profile_colors.fg, profile_colors.bg))
-        else:
-            self.ui.save_to_profile.setStyleSheet("")
+        self.ui.notice_text.setStyleSheet(HIGHLIGHT_FMT % ("notice_text", option_colors.fg, option_colors.bg))
+        self.ui.notice_text.setText(_("Highlighted options will be saved to a profile."))
+        self.ui.notice_text.setToolTip(_("Hover your cursor over a highlighted option to see which profile will be updated."))
 
-        profile_id = self.ui.save_to_profile.currentData()
-        profile_title = self._get_profile_title_from_id(profile_id)
-        config = get_config()
-        config.setting.set_profile(profile_id)
         settings = config.profiles[SettingConfigSection.SETTINGS_KEY]
-        if profile_id in settings:
-            profile_settings = settings[profile_id]
-        else:
-            profile_settings = {}
 
         for page in self.pages:
             page.load()
@@ -281,17 +260,24 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                             obj = getattr(page.ui, opt_field)
                         except AttributeError:
                             continue
-                        if opt.name in profile_settings:
-                            style = HIGHLIGHT_FMT % (opt_field, option_colors.fg, option_colors.bg)
-                            tooltip = _("This option is managed by profile: %s") % profile_title
-                        else:
-                            style = ""
-                            tooltip = ""
-                        try:
-                            obj.setStyleSheet(style)
-                            obj.setToolTip(tooltip)
-                        except AttributeError:
-                            pass
+                        for item in config.profiles[SettingConfigSection.PROFILES_KEY]:
+                            if item["enabled"]:
+                                profile_id = item["id"]
+                                profile_title = item["title"]
+                                if profile_id in settings:
+                                    profile_settings = settings[profile_id]
+                                else:
+                                    profile_settings = {}
+                                if opt.name in profile_settings:
+                                    style = HIGHLIGHT_FMT % (opt_field, option_colors.fg, option_colors.bg)
+                                    tooltip = _("This option will be saved to profile: %s") % profile_title
+                                    try:
+                                        obj.setStyleSheet(style)
+                                        obj.setToolTip(tooltip)
+                                    except AttributeError:
+                                        pass
+                                    self.ui.notice_text.show()
+                                    break
 
     def eventFilter(self, object, event):
         """Process selected events.
@@ -333,17 +319,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         return url
 
     def accept(self):
-        profile_id = self.ui.save_to_profile.currentData()
-        if profile_id and profile_id != USER_SETTINGS_PROFILE_ID:
-            profile_name = self._get_profile_title_from_id(profile_id)
-            message_box = QtWidgets.QMessageBox(self)
-            message_box.setIcon(QtWidgets.QMessageBox.Warning)
-            message_box.setWindowModality(QtCore.Qt.WindowModal)
-            message_box.setWindowTitle(_("Save to Profile"))
-            message_box.setText(_("Changes will only be saved to the profile: \"%s\"\n\nDo you want to continue?") % profile_name)
-            message_box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.Cancel)
-            if message_box.exec_() != QtWidgets.QMessageBox.Yes:
-                return
         for page in self.pages:
             try:
                 page.check()
@@ -361,17 +336,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 log.exception('Failed saving options page %r', page)
                 self._show_page_error(page, e)
                 return
-        self.reset_profile()
         super().accept()
-
-    def reject(self):
-        self.reset_profile()
-        super().reject()
-
-    @staticmethod
-    def reset_profile():
-        config = get_config()
-        config.setting.set_profile()
 
     def _show_page_error(self, page, error):
         if not isinstance(error, OptionsCheckError):
@@ -462,7 +427,7 @@ class AttachedProfilesDialog(PicardDialog):
         window_title = _("Profiles Attached to Options in %s Section") % group_title
         self.setWindowTitle(window_title)
 
-        for name, title in group_options:
+        for name, title, object_name in group_options:
             option_item = QtGui.QStandardItem(_(title))
             option_item.setEditable(False)
             row = [option_item]
