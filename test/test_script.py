@@ -975,6 +975,12 @@ class ScriptParserTest(PicardTestCase):
         result = self.parser.eval("$performer(guitar, / )", context=context)
         self.assertEqual({'Foo1', 'Foo2'}, set(result.split(' / ')))
 
+    def test_cmd_performer_multi_colons(self):
+        context = Metadata()
+        context['performer:CV:松井栞里'] = '仁奈(CV:大出千夏)'
+        result = self.parser.eval("$performer(CV:松井栞里)", context=context)
+        self.assertEqual('仁奈(CV:大出千夏)', result)
+
     def test_cmd_matchedtracks(self):
         file = MagicMock()
         file.parent.album.get_num_matched_tracks.return_value = 42
