@@ -72,6 +72,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     metadata,
     network,
     plugins,
+    profiles,
     ratings,
     releases,
     renaming,
@@ -187,6 +188,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 self.disable_page(page.NAME)
         self.ui.pages_tree.setCurrentItem(self.default_item)
 
+        self.profile_page = self.get_page('profiles')
+        self.profile_page.signal_refresh.connect(self.update_from_profile_changes)
+
         self.first_enter = True
         self.installEventFilter(self)
 
@@ -230,10 +234,42 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 return item["title"]
         return _('Unknown profile')
 
-    def highlight_enabled_profile_options(self):
-        config = get_config()
-        if not config.profiles[SettingConfigSection.PROFILES_KEY]:
-            return
+    def update_from_profile_changes(self):
+        # print("Update from profile changes.")
+        if self.profile_page._clean_and_get_all_profiles():
+            self.ui.profile_frame.show()
+        else:
+            self.ui.profile_frame.hide()
+        self.highlight_enabled_profile_options(load_settings=True)
+        # for page in self.pages:
+        #     print(page.NAME)
+        #     try:
+        #         page.load()
+        #     except Exception:
+        #         log.exception('Failed loading options page %r', page)
+        #         self.disable_page(page.NAME)
+        # self.ui.pages_tree.setCurrentItem(self.default_item)
+
+        # self.profile_page = self.get_page('profiles')
+        # self.profile_page.signal_refresh.connect(self.update_from_profile_changes)
+
+        # self.first_enter = True
+        # self.installEventFilter(self)
+
+        # if config.profiles[SettingConfigSection.PROFILES_KEY]:
+        #     self.ui.profile_frame.show()
+        #     self.highlight_enabled_profile_options()
+        # else:
+        #     self.ui.profile_frame.hide()
+
+    def highlight_enabled_profile_options(self, load_settings=False):
+        profile_page = self.get_page('profiles')
+        working_profiles = profile_page._clean_and_get_all_profiles()
+        if working_profiles is None:
+            working_profiles = []
+        working_settings = profile_page.profile_settings
+
+        # config = get_config()
 
         self.ui.notice_text.hide()
 
@@ -248,36 +284,40 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.ui.notice_text.setText(_("Highlighted options will be saved to a profile."))
         self.ui.notice_text.setToolTip(_("Hover your cursor over a highlighted option to see which profile will be updated."))
 
-        settings = config.profiles[SettingConfigSection.SETTINGS_KEY]
-
         for page in self.pages:
-            page.load()
             page_name = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
             if page_name in UserProfileGroups.SETTINGS_GROUPS:
+                if load_settings:
+                    page.load()
                 for opt in UserProfileGroups.SETTINGS_GROUPS[page_name]['settings']:
                     for opt_field in opt.fields:
+                        style = HIGHLIGHT_FMT % (opt_field, option_colors.fg, option_colors.bg)
                         try:
                             obj = getattr(page.ui, opt_field)
                         except AttributeError:
                             continue
-                        for item in config.profiles[SettingConfigSection.PROFILES_KEY]:
-                            if item["enabled"]:
-                                profile_id = item["id"]
-                                profile_title = item["title"]
-                                if profile_id in settings:
-                                    profile_settings = settings[profile_id]
-                                else:
-                                    profile_settings = {}
-                                if opt.name in profile_settings:
-                                    style = HIGHLIGHT_FMT % (opt_field, option_colors.fg, option_colors.bg)
-                                    tooltip = _("This option will be saved to profile: %s") % profile_title
-                                    try:
-                                        obj.setStyleSheet(style)
-                                        obj.setToolTip(tooltip)
-                                    except AttributeError:
-                                        pass
-                                    self.ui.notice_text.show()
-                                    break
+                        self._check_and_highlight_option(obj, opt.name, working_profiles, working_settings, style)
+
+    def _check_and_highlight_option(self, obj, option_name, working_profiles, working_settings, style):
+        obj.setStyleSheet(None)
+        obj.setToolTip(None)
+        for item in working_profiles:
+            if item["enabled"]:
+                profile_id = item["id"]
+                profile_title = item["title"]
+                if profile_id in working_settings:
+                    profile_settings = working_settings[profile_id]
+                else:
+                    profile_settings = {}
+                if option_name in profile_settings:
+                    tooltip = _("This option will be saved to profile: %s") % profile_title
+                    try:
+                        obj.setStyleSheet(style)
+                        obj.setToolTip(tooltip)
+                    except AttributeError:
+                        pass
+                    self.ui.notice_text.show()
+                    break
 
     def eventFilter(self, object, event):
         """Process selected events.
@@ -352,6 +392,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             expanded_pages.append((page, is_expanded))
         config = get_config()
         config.persist["options_pages_tree_state"] = expanded_pages
+        config.setting.set_profiles_override()
+        config.setting.set_settings_override()
 
     @restore_method
     def restoreWindowState(self):
@@ -370,9 +412,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     def restore_all_defaults(self):
         for page in self.pages:
             page.restore_defaults()
+        self.highlight_enabled_profile_options()
 
     def restore_page_defaults(self):
         self.ui.pages_stack.currentWidget().restore_defaults()
+        self.highlight_enabled_profile_options()
 
     def confirm_reset(self):
         msg = _("You are about to reset your options for this page.")
@@ -417,8 +461,8 @@ class AttachedProfilesDialog(PicardDialog):
         model.setHorizontalHeaderLabels(header_names)
 
         config = get_config()
-        profiles = config.profiles[SettingConfigSection.PROFILES_KEY]
-        settings = config.profiles[SettingConfigSection.SETTINGS_KEY]
+        this_profiles = config.profiles[SettingConfigSection.PROFILES_KEY]
+        this_settings = config.profiles[SettingConfigSection.SETTINGS_KEY]
 
         group = UserProfileGroups.SETTINGS_GROUPS[self.option_group]
         group_title = group["title"]
@@ -432,8 +476,8 @@ class AttachedProfilesDialog(PicardDialog):
             option_item.setEditable(False)
             row = [option_item]
             attached = []
-            for profile in profiles:
-                if name in settings[profile["id"]]:
+            for profile in this_profiles:
+                if name in this_settings[profile["id"]]:
                     attached.append("{0}{1}".format(profile["title"], _(" [Enabled]") if profile["enabled"] else "",))
             attached_profiles = "\n".join(attached) if attached else _("None")
             profile_item = QtGui.QStandardItem(attached_profiles)

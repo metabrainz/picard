@@ -35,25 +35,24 @@ from picard.config import (
 )
 from picard.const import PICARD_URLS
 from picard.profile import UserProfileGroups
-from picard.script import get_file_naming_script_presets
 
-from picard.ui import (
-    PicardDialog,
-    SingletonDialog,
-)
 from picard.ui.moveable_list_view import MoveableListView
-from picard.ui.options import OptionsPage
-from picard.ui.ui_profileeditor import Ui_ProfileEditorDialog
+from picard.ui.options import (
+    OptionsPage,
+    register_options_page,
+)
+from picard.ui.ui_options_profiles import Ui_ProfileEditorDialog
 from picard.ui.widgets.profilelistwidget import ProfileListWidgetItem
 
 
-class ProfileEditorDialog(SingletonDialog, PicardDialog):
-    """User Profile Editor Page
-    """
-    TITLE = N_("Option profile editor")
-    STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
+class ProfilesOptionsPage(OptionsPage):
 
-    help_url = PICARD_URLS["doc_profile_edit"]
+    NAME = "profiles"
+    TITLE = N_("Option Profiles")
+    PARENT = None
+    SORT_ORDER = 10
+    ACTIVE = True
+    HELP_URL = PICARD_URLS["doc_profile_edit"]
 
     PROFILES_KEY = SettingConfigSection.PROFILES_KEY
     SETTINGS_KEY = SettingConfigSection.SETTINGS_KEY
@@ -67,27 +66,12 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         ListOption("persist", EXPANDED_KEY, [])
     ]
 
-    signal_save = QtCore.pyqtSignal()
+    signal_refresh = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):
-        """Option profile editor.
-        """
         super().__init__(parent)
-
-        self.main_window = parent
-
-        self.ITEMS_TEMPLATES = {
-            True: "\n  ■ %s",
-            False:  "\n  □ %s",
-        }
-
-        self.setWindowTitle(_(self.TITLE))
-        self.displaying = False
-        self.loading = True
         self.ui = Ui_ProfileEditorDialog()
         self.ui.setupUi(self)
-        self.setModal(True)
-
         self.make_buttons()
 
         self.ui.profile_editor_splitter.setStretchFactor(1, 1)
@@ -106,17 +90,11 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         self.expanded_sections = []
         self.building_tree = False
 
-        self.load()
         self.loading = False
 
     def make_buttons(self):
         """Make buttons and add them to the button bars.
         """
-        self.make_it_so_button = QtWidgets.QPushButton(_("Make It So!"))
-        self.make_it_so_button.setToolTip(_("Save all profile information to the user settings"))
-        self.ui.buttonbox.addButton(self.make_it_so_button, QtWidgets.QDialogButtonBox.AcceptRole)
-        self.ui.buttonbox.accepted.connect(self.make_it_so)
-
         self.new_profile_button = QtWidgets.QPushButton(_('New'))
         self.new_profile_button.setToolTip(_("Create a new profile"))
         self.new_profile_button.clicked.connect(self.new_profile)
@@ -132,22 +110,16 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         self.delete_profile_button.clicked.connect(self.delete_profile)
         self.ui.profile_list_buttonbox.addButton(self.delete_profile_button, QtWidgets.QDialogButtonBox.ActionRole)
 
-        self.cancel_button = QtWidgets.QPushButton(_('Cancel'))
-        self.cancel_button.setToolTip(_("Close the profile editor without saving changes to the profiles"))
-        self.ui.buttonbox.addButton(self.cancel_button, QtWidgets.QDialogButtonBox.RejectRole)
-        self.ui.buttonbox.rejected.connect(self.close)
-
-        self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.Help)
-        self.ui.buttonbox.helpRequested.connect(self.show_help)
-
     def load(self):
         """Load initial configuration.
         """
+        self.loading = True
         config = get_config()
         # Use deepcopy() to avoid changes made locally from being cascaded into `config.profiles`
         # before the user clicks "Make It So!"
         self.profile_settings = deepcopy(config.profiles[self.SETTINGS_KEY])
 
+        self.ui.profile_list.clear()
         for profile in config.profiles[self.PROFILES_KEY]:
             list_item = ProfileListWidgetItem(profile['title'], profile['enabled'], profile['id'])
             self.ui.profile_list.addItem(list_item)
@@ -165,6 +137,17 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
             self.current_profile_id = id
             settings = self.get_settings_for_profile(id)
         self.make_setting_tree(settings=settings)
+        self.update_config_overrides()
+        self.loading = False
+
+    def update_config_overrides(self, reset=False):
+        config = get_config()
+        if reset:
+            config.setting.set_profiles_override(None)
+            config.setting.set_settings_override(None)
+        else:
+            config.setting.set_profiles_override(self._clean_and_get_all_profiles())
+            config.setting.set_settings_override(self.profile_settings)
 
     def get_settings_for_profile(self, id):
         """Get the settings for the specified profile ID.  Automatically adds an empty
@@ -182,42 +165,15 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
             self.profile_settings[id] = {}
         return self.profile_settings[id]
 
-    def get_current_selected_item(self):
-        """Gets the profile item currently selected in the profiles list.
+    def _all_profiles(self):
+        """Get all profiles from the profiles list in order from top to bottom.
 
-        Returns:
-            ProfileListWidgetItem: Currently selected item
+        Yields:
+            dict: Profile information in a format for saving to the user settings
         """
-        items = self.ui.profile_list.selectedItems()
-        if items:
-            return items[0]
-        return None
-
-    def update_current_expanded_items_list(self):
-        if self.building_tree:
-            return
-        self.expanded_sections = []
-        for i in range(self.ui.settings_tree.topLevelItemCount()):
-            tl_item = self.ui.settings_tree.topLevelItem(i)
-            if tl_item.isExpanded():
-                self.expanded_sections.append(tl_item.text(self.TREEWIDGETITEM_COLUMN))
-
-    def profile_selected(self, update_settings=True):
-        """Update working profile information for the selected item in the profiles list.
-
-        Args:
-            update_settings (bool, optional): Update settings tree. Defaults to True.
-        """
-        item = self.get_current_selected_item()
-        if item:
-            id = item.profile_id
-            self.current_profile_id = id
-            if update_settings:
-                settings = self.get_settings_for_profile(id)
-                self.make_setting_tree(settings=settings)
-        else:
-            self.current_profile_id = None
-            self.make_setting_tree(settings=None)
+        for row in range(self.ui.profile_list.count()):
+            item = self.ui.profile_list.item(row)
+            yield item.get_dict()
 
     def make_setting_tree(self, settings=None):
         """Update the profile settings tree based on the settings provided.
@@ -245,91 +201,56 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
                 child_item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsUserCheckable)
                 state = QtCore.Qt.Checked if settings and setting.name in settings else QtCore.Qt.Unchecked
                 child_item.setCheckState(self.TREEWIDGETITEM_COLUMN, state)
-                if settings and setting.name in settings and settings[setting.name] is not None:
-                    value = settings[setting.name]
-                else:
-                    value = None
-                child_item.setToolTip(self.TREEWIDGETITEM_COLUMN, self.make_setting_value_text(setting.name, value))
                 widget_item.addChild(child_item)
             self.ui.settings_tree.addTopLevelItem(widget_item)
             if title in self.expanded_sections:
                 widget_item.setExpanded(True)
         self.building_tree = False
 
-    def make_setting_value_text(self, key, value):
-        if value is None:
-            profile = self.get_controlling_profile(key)
-            return _("Value not set (set in \"%s\" profile)") % profile
-        if key == "selected_file_naming_script_id":
-            return self.get_file_naming_script_name(value)
-        if key == "list_of_scripts":
-            return self.get_list_of_scripts()
-        if key == "ca_providers":
-            return self.get_list_of_ca_providers()
-        if isinstance(value, str):
-            return '"%s"' % value
-        if isinstance(value, bool) or isinstance(value, int) or isinstance(value, float):
-            return str(value)
-        if isinstance(value, set) or isinstance(value, tuple) or isinstance(value, list) or isinstance(value, dict):
-            return _("List of %i items") % len(value)
-        return _("Unknown value format")
+    def update_current_expanded_items_list(self):
+        if self.building_tree:
+            return
+        self.expanded_sections = []
+        for i in range(self.ui.settings_tree.topLevelItemCount()):
+            tl_item = self.ui.settings_tree.topLevelItem(i)
+            if tl_item.isExpanded():
+                self.expanded_sections.append(tl_item.text(self.TREEWIDGETITEM_COLUMN))
 
-    def get_file_naming_script_name(self, script_id):
-        config = get_config()
-        scripts = config.setting["file_renaming_scripts"]
-        if script_id in scripts:
-            return scripts[script_id]["title"]
-        presets = {x["id"]: x["title"] for x in get_file_naming_script_presets()}
-        if script_id in presets:
-            return presets[script_id]
-        return _("Unknown script")
+    def get_current_selected_item(self):
+        """Gets the profile item currently selected in the profiles list.
 
-    def get_list_of_scripts(self):
-        config = get_config()
-        scripts = config.setting["list_of_scripts"]
-        if scripts:
-            value_text = _("Tagging scripts (%i found):") % len(scripts)
-            for (pos, name, enabled, script) in scripts:
-                value_text += self.ITEMS_TEMPLATES[enabled] % name
+        Returns:
+            ProfileListWidgetItem: Currently selected item
+        """
+        items = self.ui.profile_list.selectedItems()
+        if items:
+            return items[0]
+        return None
+
+    def profile_selected(self, update_settings=True):
+        """Update working profile information for the selected item in the profiles list.
+
+        Args:
+            update_settings (bool, optional): Update settings tree. Defaults to True.
+        """
+        item = self.get_current_selected_item()
+        if item:
+            id = item.profile_id
+            self.current_profile_id = id
+            if update_settings:
+                settings = self.get_settings_for_profile(id)
+                self.make_setting_tree(settings=settings)
         else:
-            value_text = _("No scripts in list")
-        return value_text
-
-    def get_list_of_ca_providers(self):
-        config = get_config()
-        providers = config.setting["ca_providers"]
-        value_text = _("CA providers (%i found):") % len(providers)
-        for (name, enabled) in providers:
-            value_text += self.ITEMS_TEMPLATES[enabled] % name
-        return value_text
-
-    def get_controlling_profile(self, key):
-        below_current_profile_flag = False
-        for profile in self.all_profiles:
-            if below_current_profile_flag:
-                if profile["enabled"]:
-                    settings = self.profile_settings[profile["id"]]
-                    if key in settings and settings[key] is not None:
-                        return profile["title"]
-            elif profile["id"] == self.current_profile_id:
-                below_current_profile_flag = True
-        return _("Default")
+            self.current_profile_id = None
+            self.make_setting_tree(settings=None)
 
     def profile_data_changed(self):
         """Update the profile settings values displayed.
         """
-        self.all_profiles = list(self._all_profiles())
-        settings = self.get_settings_for_profile(id)
-        for i in range(self.ui.settings_tree.topLevelItemCount()):
-            group = self.ui.settings_tree.topLevelItem(i)
-            for j in range(group.childCount()):
-                child = group.child(j)
-                key = child.data(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.UserRole)
-                if key in settings:
-                    value = settings[key]
-                else:
-                    value = None
-                child.setToolTip(self.TREEWIDGETITEM_COLUMN, self.make_setting_value_text(key, value))
+        self.reload_all_page_settings()
+
+    def reload_all_page_settings(self):
+        self.signal_refresh.emit()
 
     def profile_item_changed(self, item):
         """Check title is not blank and remove leading and trailing spaces.
@@ -351,6 +272,8 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
             elif text != item.text():
                 # Remove leading and trailing spaces from new title.
                 item.setText(text)
+            self.update_config_overrides()
+            self.reload_all_page_settings()
 
     def current_item_changed(self, new_item, old_item):
         """Update the display when a new item is selected in the profile list.
@@ -383,6 +306,19 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         self.ui.profile_list.setCurrentItem(item)
         self.loading = False
 
+    def get_checked_items_from_tree(self):
+        """Get the keys for the settings that are checked in the profile settings tree.
+
+        Yields:
+            str: Settings key
+        """
+        for i in range(self.ui.settings_tree.topLevelItemCount()):
+            tl_item = self.ui.settings_tree.topLevelItem(i)
+            for j in range(tl_item.childCount()):
+                item = tl_item.child(j)
+                if item.checkState(self.TREEWIDGETITEM_COLUMN) == QtCore.Qt.Checked:
+                    yield item.data(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.UserRole)
+
     def save_profile(self):
         """Save changes to the currently selected profile.
         """
@@ -398,6 +334,8 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         # Remove unchecked items from settings
         for item in settings.difference(checked_items):
             del self.profile_settings[self.current_profile_id][item]
+        self.update_config_overrides()
+        self.reload_all_page_settings()
 
     def copy_profile(self):
         """Make a copy of the currently selected profile.
@@ -408,37 +346,46 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         self.profile_settings[id] = settings
         name = _("%s (copy)") % item.name
         self.ui.profile_list.add_profile(name=name, profile_id=id)
+        self.update_config_overrides()
+        self.reload_all_page_settings()
 
     def new_profile(self):
         """Add a new profile with no settings selected.
         """
         self.ui.profile_list.add_profile()
+        self.update_config_overrides()
+        self.reload_all_page_settings()
 
     def delete_profile(self):
         """Delete the current profile.
         """
         self.ui.profile_list.remove_selected_profile()
         self.profile_selected()
+        self.update_config_overrides()
+        self.reload_all_page_settings()
 
-    def make_it_so(self):
-        """Save any changes to the current profile's settings, save all updated profile
-        information to the user settings, and close the profile editor dialog.
-        """
+    def _clean_and_get_all_profiles(self):
         all_profiles = list(self._all_profiles())
         all_profile_ids = set(x['id'] for x in all_profiles)
         keys = set(self.profile_settings.keys())
         for id in keys.difference(all_profile_ids):
             del self.profile_settings[id]
+        return all_profiles
 
+    def save(self):
+        """Save any changes to the current profile's settings, save all updated profile
+        information to the user settings, and close the profile editor dialog.
+        """
         config = get_config()
-        config.profiles[self.PROFILES_KEY] = all_profiles
+        config.profiles[self.PROFILES_KEY] = self._clean_and_get_all_profiles()
         config.profiles[self.SETTINGS_KEY] = self.profile_settings
 
-        self.main_window.enable_renaming_action.setChecked(config.setting["rename_files"])
-        self.main_window.enable_moving_action.setChecked(config.setting["move_files"])
-        self.main_window.enable_tag_saving_action.setChecked(not config.setting["dont_write_tags"])
-
-        self.close()
+    def set_button_states(self):
+        """Set the enabled / disabled states of the buttons.
+        """
+        state = self.current_profile_id is not None
+        self.copy_profile_button.setEnabled(state)
+        self.delete_profile_button.setEnabled(state)
 
     def closeEvent(self, event):
         """Custom close event handler to save editor settings.
@@ -448,32 +395,5 @@ class ProfileEditorDialog(SingletonDialog, PicardDialog):
         config.persist[self.EXPANDED_KEY] = self.expanded_sections
         super().closeEvent(event)
 
-    def _all_profiles(self):
-        """Get all profiles from the profiles list in order from top to bottom.
 
-        Yields:
-            dict: Profile information in a format for saving to the user settings
-        """
-        for row in range(self.ui.profile_list.count()):
-            item = self.ui.profile_list.item(row)
-            yield item.get_dict()
-
-    def set_button_states(self):
-        """Set the enabled / disabled states of the buttons.
-        """
-        state = self.current_profile_id is not None
-        self.copy_profile_button.setEnabled(state)
-        self.delete_profile_button.setEnabled(state)
-
-    def get_checked_items_from_tree(self):
-        """Get the keys for the settings that are checked in the profile settings tree.
-
-        Yields:
-            str: Settings key
-        """
-        for i in range(self.ui.settings_tree.topLevelItemCount()):
-            tl_item = self.ui.settings_tree.topLevelItem(i)
-            for j in range(tl_item.childCount()):
-                item = tl_item.child(j)
-                if item.checkState(self.TREEWIDGETITEM_COLUMN) == QtCore.Qt.Checked:
-                    yield item.data(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.UserRole)
+register_options_page(ProfilesOptionsPage)

@@ -149,9 +149,14 @@ class SettingConfigSection(ConfigSection):
         self.__prefix = self.__name + '/'
         self._memoization = defaultdict(Memovar)
         self.init_profile_options()
+        self.profiles_override = None
+        self.settings_override = None
 
     def _get_active_profile_ids(self):
-        profiles = self.__qt_config.profiles[self.PROFILES_KEY]
+        if self.profiles_override is None:
+            profiles = self.__qt_config.profiles[self.PROFILES_KEY]
+        else:
+            profiles = self.profiles_override
         if profiles is None:
             return
         for profile in profiles:
@@ -163,7 +168,10 @@ class SettingConfigSection(ConfigSection):
             yield id, self._get_profile_settings(id)
 
     def _get_profile_settings(self, id):
-        profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY][id]
+        if self.settings_override is None:
+            profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY][id]
+        else:
+            profile_settings = self.settings_override[id]
         if profile_settings is None:
             log.error("Unable to find settings for user profile '%s'", id)
             return {}
@@ -197,6 +205,12 @@ class SettingConfigSection(ConfigSection):
         key = self.__qt_config.profiles.key(self.SETTINGS_KEY)
         self.__qt_config.setValue(key, profile_settings)
         self._memoization[key].dirty = True
+
+    def set_profiles_override(self, new_profiles=None):
+        self.profiles_override = new_profiles
+
+    def set_settings_override(self, new_settings=None):
+        self.settings_override = new_settings
 
 
 class Config(QtCore.QSettings):
