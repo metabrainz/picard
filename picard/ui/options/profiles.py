@@ -91,6 +91,18 @@ class ProfilesOptionsPage(OptionsPage):
         self.building_tree = False
 
         self.loading = False
+        self.settings_changed = False
+        self.ui.settings_tree.installEventFilter(self)
+
+    def eventFilter(self, object, event):
+        """Process selected events.
+        """
+        event_type = event.type()
+        if event_type == QtCore.QEvent.FocusOut and object == self.ui.settings_tree:
+            if self.settings_changed:
+                self.settings_changed = False
+                self.reload_all_page_settings()
+        return False
 
     def make_buttons(self):
         """Make buttons and add them to the button bars.
@@ -141,6 +153,12 @@ class ProfilesOptionsPage(OptionsPage):
         self.loading = False
 
     def update_config_overrides(self, reset=False):
+        """Update the profile overrides used in `config.settings` when retrieving or
+        saving a setting.
+
+        Args:
+            reset (bool, optional): Remove the profile overrides. Defaults to False.
+        """
         config = get_config()
         if reset:
             config.setting.set_profiles_override(None)
@@ -208,6 +226,8 @@ class ProfilesOptionsPage(OptionsPage):
         self.building_tree = False
 
     def update_current_expanded_items_list(self):
+        """Update the list of expanded sections in the settings tree for persistent settings.
+        """
         if self.building_tree:
             return
         self.expanded_sections = []
@@ -250,6 +270,9 @@ class ProfilesOptionsPage(OptionsPage):
         self.reload_all_page_settings()
 
     def reload_all_page_settings(self):
+        """Trigger a reload of the settings and highlights for all pages containing
+        options that can be managed in a profile.
+        """
         self.signal_refresh.emit()
 
     def profile_item_changed(self, item):
@@ -320,7 +343,7 @@ class ProfilesOptionsPage(OptionsPage):
                     yield item.data(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.UserRole)
 
     def save_profile(self):
-        """Save changes to the currently selected profile.
+        """Save selected options changes to the currently selected profile.
         """
         if not self.current_profile_id:
             return
@@ -334,8 +357,10 @@ class ProfilesOptionsPage(OptionsPage):
         # Remove unchecked items from settings
         for item in settings.difference(checked_items):
             del self.profile_settings[self.current_profile_id][item]
-        self.update_config_overrides()
-        self.reload_all_page_settings()
+
+        # Set flag to trigger option page updates later (when focus is lost from the settings tree)
+        # to avoid updating after each change to the settings selected for a profile.
+        self.settings_changed = True
 
     def copy_profile(self):
         """Make a copy of the currently selected profile.
@@ -365,6 +390,12 @@ class ProfilesOptionsPage(OptionsPage):
         self.reload_all_page_settings()
 
     def _clean_and_get_all_profiles(self):
+        """Returns the list of profiles, and removes any "orphan" profile settings
+        (i.e. settings dictionaries not associated with an existing profile).
+
+        Returns:
+            list: List of profiles suitable for storing in `config.profiles`.
+        """
         all_profiles = list(self._all_profiles())
         all_profile_ids = set(x['id'] for x in all_profiles)
         keys = set(self.profile_settings.keys())
@@ -373,8 +404,8 @@ class ProfilesOptionsPage(OptionsPage):
         return all_profiles
 
     def save(self):
-        """Save any changes to the current profile's settings, save all updated profile
-        information to the user settings, and close the profile editor dialog.
+        """Save any changes to the current profile's settings, and save all updated
+        profile information to the user settings.
         """
         config = get_config()
         config.profiles[self.PROFILES_KEY] = self._clean_and_get_all_profiles()

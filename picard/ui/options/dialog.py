@@ -235,32 +235,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         return _('Unknown profile')
 
     def update_from_profile_changes(self):
-        # print("Update from profile changes.")
         if self.profile_page._clean_and_get_all_profiles():
             self.ui.profile_frame.show()
         else:
             self.ui.profile_frame.hide()
         self.highlight_enabled_profile_options(load_settings=True)
-        # for page in self.pages:
-        #     print(page.NAME)
-        #     try:
-        #         page.load()
-        #     except Exception:
-        #         log.exception('Failed loading options page %r', page)
-        #         self.disable_page(page.NAME)
-        # self.ui.pages_tree.setCurrentItem(self.default_item)
-
-        # self.profile_page = self.get_page('profiles')
-        # self.profile_page.signal_refresh.connect(self.update_from_profile_changes)
-
-        # self.first_enter = True
-        # self.installEventFilter(self)
-
-        # if config.profiles[SettingConfigSection.PROFILES_KEY]:
-        #     self.ui.profile_frame.show()
-        #     self.highlight_enabled_profile_options()
-        # else:
-        #     self.ui.profile_frame.hide()
 
     def highlight_enabled_profile_options(self, load_settings=False):
         profile_page = self.get_page('profiles')
@@ -268,8 +247,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         if working_profiles is None:
             working_profiles = []
         working_settings = profile_page.profile_settings
-
-        # config = get_config()
 
         self.ui.notice_text.hide()
 
