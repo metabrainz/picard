@@ -122,6 +122,15 @@ class ProfilesOptionsPage(OptionsPage):
         self.delete_profile_button.clicked.connect(self.delete_profile)
         self.ui.profile_list_buttonbox.addButton(self.delete_profile_button, QtWidgets.QDialogButtonBox.ActionRole)
 
+    def restore_defaults(self):
+        """Remove all profiles and profile settings.
+        """
+        self.ui.profile_list.clear()
+        self.profile_settings = {}
+        self.profile_selected()
+        self.update_config_overrides()
+        self.reload_all_page_settings()
+
     def load(self):
         """Load initial configuration.
         """
