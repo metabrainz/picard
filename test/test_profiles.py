@@ -199,6 +199,97 @@ class TestUserProfiles(TestPicardProfilesCommon):
         self.assertEqual(self.config.setting[self.test_setting_1], False)
         self.assertEqual(self.config.setting[self.test_setting_2], 99)
 
+    def test_settings_with_overrides(self):
+        self.config.setting[self.test_setting_0] = "abc"
+        self.config.setting[self.test_setting_1] = True
+        self.config.setting[self.test_setting_2] = 42
+        settings = {
+            "test_key_0": {self.test_setting_0: None},
+            "test_key_1": {self.test_setting_1: None},
+            "test_key_2": {self.test_setting_2: None},
+        }
+        self.config.profiles[self.SETTINGS_KEY] = settings
+        self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=False)
+        self.config.setting.set_profiles_override(self.get_profiles(enabled=True))
+
+        # Stack:
+        #                   setting_0   setting_1   setting_2
+        #                   ---------   ---------   ---------
+        # test_key_0:       None        n/a         n/a
+        # test_key_1:       n/a         None        n/a
+        # test_key_2:       n/a         n/a         None
+        # user_settings:    abc         True        42
+
+        # Test retrieval with overrides at None
+        self.assertEqual(self.config.setting[self.test_setting_0], "abc")
+        self.assertEqual(self.config.setting[self.test_setting_1], True)
+        self.assertEqual(self.config.setting[self.test_setting_2], 42)
+
+        # Test setting new values
+        self.config.setting[self.test_setting_0] = "def"
+        self.config.setting[self.test_setting_1] = False
+        self.config.setting[self.test_setting_2] = 99
+
+        # Stack:
+        #                   setting_0   setting_1   setting_2
+        #                   ---------   ---------   ---------
+        # test_key_0:       def         n/a         n/a
+        # test_key_1:       n/a         False       n/a
+        # test_key_2:       n/a         n/a         99
+        # user_settings:    abc         True        42
+
+        self.assertEqual(self.config.setting[self.test_setting_0], "def")
+        self.assertEqual(self.config.setting[self.test_setting_1], False)
+        self.assertEqual(self.config.setting[self.test_setting_2], 99)
+
+        # Test retrieval with profile overrides disabled
+        self.config.setting.set_profiles_override()
+        self.assertEqual(self.config.setting[self.test_setting_0], "abc")
+        self.assertEqual(self.config.setting[self.test_setting_1], True)
+        self.assertEqual(self.config.setting[self.test_setting_2], 42)
+
+        # Test retrieval with empty settings overrides
+        self.config.setting.set_profiles_override(self.get_profiles(enabled=True))
+        empty_settings = {
+            "test_key_0": {},
+            "test_key_1": {},
+            "test_key_2": {},
+        }
+        self.config.setting.set_settings_override(empty_settings)
+        self.assertEqual(self.config.setting[self.test_setting_0], "abc")
+        self.assertEqual(self.config.setting[self.test_setting_1], True)
+        self.assertEqual(self.config.setting[self.test_setting_2], 42)
+
+        # Test retrieval with settings overrides disabled
+        self.config.setting.set_settings_override()
+        self.assertEqual(self.config.setting[self.test_setting_0], "def")
+        self.assertEqual(self.config.setting[self.test_setting_1], False)
+        self.assertEqual(self.config.setting[self.test_setting_2], 99)
+
+        # Test setting new values with profiles override disabled
+        self.config.setting.set_profiles_override()
+        self.config.setting[self.test_setting_0] = "ghi"
+        self.config.setting[self.test_setting_1] = True
+        self.config.setting[self.test_setting_2] = 86
+
+        # Stack:
+        #                   setting_0   setting_1   setting_2
+        #                   ---------   ---------   ---------
+        # test_key_0:       def         n/a         n/a
+        # test_key_1:       n/a         False       n/a
+        # test_key_2:       n/a         n/a         99
+        # user_settings:    ghi         True        86
+
+        self.assertEqual(self.config.setting[self.test_setting_0], "ghi")
+        self.assertEqual(self.config.setting[self.test_setting_1], True)
+        self.assertEqual(self.config.setting[self.test_setting_2], 86)
+
+        # Re-enable profile overrides and check that the saved settings still exist
+        self.config.setting.set_profiles_override(self.get_profiles(enabled=True))
+        self.assertEqual(self.config.setting[self.test_setting_0], "def")
+        self.assertEqual(self.config.setting[self.test_setting_1], False)
+        self.assertEqual(self.config.setting[self.test_setting_2], 99)
+
     def test_config_option_rename(self):
         from picard.config_upgrade import rename_option
         self.config.setting[self.test_setting_0] = "abc"
