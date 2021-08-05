@@ -222,7 +222,14 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             message_box.setStandardButtons(QtWidgets.QMessageBox.Ok)
             return message_box.exec_()
 
-        profile_dialog = AttachedProfilesDialog(parent=self, option_group=name)
+        override_profiles = self.profile_page._clean_and_get_all_profiles()
+        override_settings = self.profile_page.profile_settings
+        profile_dialog = AttachedProfilesDialog(
+            parent=self,
+            option_group=name,
+            override_profiles=override_profiles,
+            override_settings=override_settings
+        )
         profile_dialog.show()
         profile_dialog.raise_()
         profile_dialog.activateWindow()
@@ -418,13 +425,21 @@ class AttachedProfilesDialog(PicardDialog):
     NAME = 'attachedprofiles'
     TITLE = N_('Attached Profiles')
 
-    def __init__(self, parent=None, option_group=None):
+    def __init__(self, parent=None, option_group=None, override_profiles=None, override_settings=None):
         super().__init__(parent=parent)
         self.option_group = option_group
         self.ui = Ui_AttachedProfilesDialog()
         self.ui.setupUi(self)
         self.ui.buttonBox.addButton(StandardButton(StandardButton.CLOSE), QtWidgets.QDialogButtonBox.RejectRole)
         self.ui.buttonBox.rejected.connect(self.close_window)
+
+        config = get_config()
+        if override_profiles is None or override_settings is None:
+            self.profiles = config.profiles[SettingConfigSection.PROFILES_KEY]
+            self.settings = config.profiles[SettingConfigSection.SETTINGS_KEY]
+        else:
+            self.profiles = override_profiles
+            self.settings = override_settings
 
         self.populate_table()
 
@@ -436,10 +451,6 @@ class AttachedProfilesDialog(PicardDialog):
         model.setColumnCount(2)
         header_names = [_("Option Setting"), _("Attached Profiles")]
         model.setHorizontalHeaderLabels(header_names)
-
-        config = get_config()
-        this_profiles = config.profiles[SettingConfigSection.PROFILES_KEY]
-        this_settings = config.profiles[SettingConfigSection.SETTINGS_KEY]
 
         group = UserProfileGroups.SETTINGS_GROUPS[self.option_group]
         group_title = group["title"]
@@ -453,8 +464,8 @@ class AttachedProfilesDialog(PicardDialog):
             option_item.setEditable(False)
             row = [option_item]
             attached = []
-            for profile in this_profiles:
-                if name in this_settings[profile["id"]]:
+            for profile in self.profiles:
+                if name in self.settings[profile["id"]]:
                     attached.append("{0}{1}".format(profile["title"], _(" [Enabled]") if profile["enabled"] else "",))
             attached_profiles = "\n".join(attached) if attached else _("None")
             profile_item = QtGui.QStandardItem(attached_profiles)

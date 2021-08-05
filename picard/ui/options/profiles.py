@@ -399,8 +399,8 @@ class ProfilesOptionsPage(OptionsPage):
         self.reload_all_page_settings()
 
     def _clean_and_get_all_profiles(self):
-        """Returns the list of profiles, and removes any "orphan" profile settings
-        (i.e. settings dictionaries not associated with an existing profile).
+        """Returns the list of profiles, adds any missing profile settings, and removes any "orphan"
+        profile settings (i.e. settings dictionaries not associated with an existing profile).
 
         Returns:
             list: List of profiles suitable for storing in `config.profiles`.
@@ -408,6 +408,10 @@ class ProfilesOptionsPage(OptionsPage):
         all_profiles = list(self._all_profiles())
         all_profile_ids = set(x['id'] for x in all_profiles)
         keys = set(self.profile_settings.keys())
+        # Add any missing profile settings
+        for id in all_profile_ids.difference(keys):
+            self.profile_settings[id] = {}
+        # Remove any "orphan" profile settings
         for id in keys.difference(all_profile_ids):
             del self.profile_settings[id]
         return all_profiles
