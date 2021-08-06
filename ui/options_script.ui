@@ -24,7 +24,7 @@
     <number>9</number>
    </property>
    <property name="bottomMargin">
-    <number>9</number>
+    <number>0</number>
    </property>
    <item>
     <widget class="QGroupBox" name="enable_tagger_scripts">
@@ -94,55 +94,6 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QToolButton" name="add_button">
-          <property name="toolTip">
-           <string>Add new script</string>
-          </property>
-          <property name="text">
-           <string>Add new script</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QPushButton" name="scripting_documentation_button">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Scripting Documentation</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
          <widget class="QToolButton" name="move_up_button">
           <property name="toolTip">
            <string>Move script up</string>
@@ -165,9 +116,88 @@
          </widget>
         </item>
         <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QToolButton" name="add_button">
+          <property name="toolTip">
+           <string>Add new script</string>
+          </property>
+          <property name="text">
+           <string>Add new script</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QToolButton" name="remove_button">
+          <property name="toolTip">
+           <string>Remove the selected script</string>
+          </property>
           <property name="text">
            <string>Remove script</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QToolButton" name="import_button">
+          <property name="text">
+           <string>Import</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="export_button">
+          <property name="text">
+           <string>Export</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QToolButton" name="scripting_documentation_button">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Scripting Documentation</string>
           </property>
          </widget>
         </item>
@@ -182,9 +212,6 @@
          <set>Qt::AlignCenter</set>
         </property>
        </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="hlayout_doc"/>
       </item>
      </layout>
     </widget>
@@ -211,8 +238,6 @@
   <tabstop>enable_tagger_scripts</tabstop>
   <tabstop>script_list</tabstop>
   <tabstop>tagger_script</tabstop>
-  <tabstop>add_button</tabstop>
-  <tabstop>scripting_documentation_button</tabstop>
   <tabstop>move_up_button</tabstop>
   <tabstop>move_down_button</tabstop>
   <tabstop>remove_button</tabstop>

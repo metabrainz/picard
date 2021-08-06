@@ -251,6 +251,17 @@ def sanitize_filename(string, repl="_", win_compat=False):
     return string
 
 
+def make_filename_from_title(title=None, default=None):
+    if default is None:
+        default = _("No Title")
+    if not title or not title.strip():
+        title = default
+    filename = sanitize_filename(title, win_compat=IS_WIN)
+    if IS_WIN:
+        filename = replace_win32_incompat(filename)
+    return filename
+
+
 def _reverse_sortname(sortname):
     """Reverse sortnames."""
     chunks = [a.strip() for a in sortname.split(",")]

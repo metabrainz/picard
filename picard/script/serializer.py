@@ -34,6 +34,7 @@ from picard.const import (
     DEFAULT_SCRIPT_NAME,
     SCRIPT_LANGUAGE_VERSION,
 )
+from picard.util import make_filename_from_title
 
 
 @unique
@@ -244,6 +245,10 @@ class PicardScript():
         if create_new_id or not new_object['id']:
             new_object._set_new_id()
         return new_object
+
+    @property
+    def filename(self):
+        return make_filename_from_title(self.title, _("Unnamed Script"))
 
 
 class FileNamingScript(PicardScript):
