@@ -851,6 +851,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addMenu(self.script_quick_selector_menu)
         menu.addAction(self.show_script_editor_action)
         menu.addSeparator()
+
+        self.profile_quick_selector_menu = QtWidgets.QMenu(_("&Enable/disable profiles"))
+        # self.profile_quick_selector_menu.setIcon(icontheme.lookup('document-open'))
+        self.make_profile_selector_menu()
+
+        menu.addMenu(self.profile_quick_selector_menu)
+        menu.addSeparator()
         menu.addAction(self.options_action)
         menu = self.menuBar().addMenu(_("&Tools"))
         menu.addAction(self.refresh_action)
@@ -1126,6 +1133,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.script_editor_dialog.show()
         else:
             self.show_script_editor_action.setEnabled(True)
+        self.make_profile_selector_menu()
 
     def show_help(self):
         webbrowser2.open('documentation')
@@ -1673,6 +1681,44 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """Process "signal_update_scripts_list" signal from the script editor.
         """
         self.script_editor_save()
+
+    def make_profile_selector_menu(self):
+        """Update the sub-menu of available option profiles.
+        """
+        config = get_config()
+        option_profiles = config.profiles[SettingConfigSection.PROFILES_KEY]
+        if not option_profiles:
+            self.profile_quick_selector_menu.setDisabled(True)
+            return
+        self.profile_quick_selector_menu.setDisabled(False)
+        self.profile_quick_selector_menu.clear()
+
+        group = QtWidgets.QActionGroup(self.profile_quick_selector_menu)
+        group.setExclusive(False)
+
+        def _add_menu_item(title, enabled, profile_id):
+            profile_action = QtWidgets.QAction(title, self.profile_quick_selector_menu)
+            profile_action.triggered.connect(partial(self.update_profile_selection, profile_id))
+            profile_action.setCheckable(True)
+            profile_action.setChecked(enabled)
+            self.profile_quick_selector_menu.addAction(profile_action)
+            group.addAction(profile_action)
+
+        for profile in option_profiles:
+            _add_menu_item(profile['title'], profile['enabled'], profile['id'])
+
+    def update_profile_selection(self, profile_id):
+        """Toggle the enabled state of the selected profile.
+
+        Args:
+            profile_id (str): ID code of the profile to modify
+        """
+        config = get_config()
+        option_profiles = config.profiles[SettingConfigSection.PROFILES_KEY]
+        for profile in option_profiles:
+            if profile['id'] == profile_id:
+                profile['enabled'] = not profile['enabled']
+                return
 
 
 def update_last_check_date(is_success):
