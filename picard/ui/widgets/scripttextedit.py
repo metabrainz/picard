@@ -296,7 +296,7 @@ def _replace_control_chars(text):
     simple_ctrl_chars = {'\n', '\r', '\t'}
     for ch in text:
         if ch not in simple_ctrl_chars and unicodedata.category(ch)[0] == "C":
-            yield '\\u' + hex(ord(ch))[2:]
+            yield '\\u' + hex(ord(ch))[2:].rjust(4, '0')
         else:
             yield ch
 
