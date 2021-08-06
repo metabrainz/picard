@@ -46,10 +46,7 @@ from picard.config import (
     get_config,
 )
 from picard.profile import UserProfileGroups
-from picard.util import (
-    restore_method,
-    webbrowser2,
-)
+from picard.util import restore_method
 
 from picard.ui import (
     HashableTreeWidgetItem,
@@ -142,14 +139,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.ui.reset_button.clicked.connect(self.confirm_reset)
         self.ui.buttonbox.helpRequested.connect(self.show_help)
 
-        profile_help = StandardButton(StandardButton.HELP)
-        profile_help.setText(_("Profile Help"))
-        self.ui.profiles_buttonbox.addButton(profile_help, QtWidgets.QDialogButtonBox.HelpRole)
-        self.ui.profiles_buttonbox.helpRequested.connect(self.show_profile_help)
-
         self.ui.attached_profiles_button = QtWidgets.QPushButton(_("Attached Profiles"))
         self.ui.attached_profiles_button.setToolTip(_("Show which profiles are attached to the options on this page"))
-        self.ui.profiles_buttonbox.addButton(self.ui.attached_profiles_button, QtWidgets.QDialogButtonBox.ActionRole)
+        self.ui.buttonbox.addButton(self.ui.attached_profiles_button, QtWidgets.QDialogButtonBox.ActionRole)
         self.ui.attached_profiles_button.clicked.connect(self.show_attached_profiles_dialog)
 
         config = get_config()
@@ -194,26 +186,24 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.first_enter = True
         self.installEventFilter(self)
 
-        if config.profiles[SettingConfigSection.PROFILES_KEY]:
-            self.ui.profile_frame.show()
-            self.highlight_enabled_profile_options()
-        else:
-            self.ui.profile_frame.hide()
+        self.highlight_enabled_profile_options()
+        current_page = self.item_to_page[self.ui.pages_tree.currentItem()]
+        self.set_profiles_button_and_highlight(current_page)
 
-    def show_profile_help(self):
-        """Open the profile documentation in a browser.
-        """
-        webbrowser2.open('doc_profile_edit')
+    def page_has_profile_options(self, page):
+        try:
+            name = page.NAME
+        except AttributeError:
+            return False
+        return name in UserProfileGroups.get_setting_groups_list()
 
     def show_attached_profiles_dialog(self):
         window_title = _("Profiles Attached to Options")
         items = self.ui.pages_tree.selectedItems()
-        if items:
-            page = self.item_to_page[items[0]]
-            name = page.NAME
-        else:
-            name = ''
-        if name not in UserProfileGroups.get_setting_groups_list():
+        if not items:
+            return
+        page = self.item_to_page[items[0]]
+        if not self.page_has_profile_options(page):
             message_box = QtWidgets.QMessageBox(self)
             message_box.setIcon(QtWidgets.QMessageBox.Information)
             message_box.setWindowModality(QtCore.Qt.WindowModal)
@@ -226,7 +216,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         override_settings = self.profile_page.profile_settings
         profile_dialog = AttachedProfilesDialog(
             parent=self,
-            option_group=name,
+            option_group=page.NAME,
             override_profiles=override_profiles,
             override_settings=override_settings
         )
@@ -242,18 +232,18 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         return _('Unknown profile')
 
     def update_from_profile_changes(self):
-        if self.profile_page._clean_and_get_all_profiles():
-            self.ui.profile_frame.show()
-        else:
-            self.ui.profile_frame.hide()
         self.highlight_enabled_profile_options(load_settings=True)
 
-    def highlight_enabled_profile_options(self, load_settings=False):
+    def get_working_profile_data(self):
         profile_page = self.get_page('profiles')
         working_profiles = profile_page._clean_and_get_all_profiles()
         if working_profiles is None:
             working_profiles = []
         working_settings = profile_page.profile_settings
+        return working_profiles, working_settings
+
+    def highlight_enabled_profile_options(self, load_settings=False):
+        working_profiles, working_settings = self.get_working_profile_data()
 
         self.ui.notice_text.hide()
 
@@ -265,7 +255,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             option_colors = HighlightColors('#000000', '#F9F906')
 
         self.ui.notice_text.setStyleSheet(HIGHLIGHT_FMT % ("notice_text", option_colors.fg, option_colors.bg))
-        self.ui.notice_text.setText(_("Highlighted options will be saved to a profile."))
+        self.ui.notice_text.setText(_("Highlighted options will be saved to an active profile (identified when you hover over the option)."))
         self.ui.notice_text.setToolTip(_("Hover your cursor over a highlighted option to see which profile will be updated."))
 
         for page in self.pages:
@@ -300,7 +290,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                         obj.setToolTip(tooltip)
                     except AttributeError:
                         pass
-                    self.ui.notice_text.show()
                     break
 
     def eventFilter(self, object, event):
@@ -318,13 +307,39 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     def get_page(self, name):
         return self.item_to_page[self.page_to_item[name]]
 
+    def page_has_attached_profiles(self, page, enabled_profiles_only=False):
+        if not self.page_has_profile_options(page):
+            return False
+        working_profiles, working_settings = self.get_working_profile_data()
+        page_name = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
+        for opt in UserProfileGroups.SETTINGS_GROUPS[page_name]['settings']:
+            for item in working_profiles:
+                if enabled_profiles_only and not item["enabled"]:
+                    continue
+                profile_id = item["id"]
+                if opt.name in working_settings[profile_id]:
+                    return True
+        return False
+
+    def set_profiles_button_and_highlight(self, page):
+        if self.page_has_attached_profiles(page):
+            self.ui.attached_profiles_button.setDisabled(False)
+            if self.page_has_attached_profiles(page, enabled_profiles_only=True):
+                self.ui.notice_text.show()
+            else:
+                self.ui.notice_text.hide()
+        else:
+            self.ui.attached_profiles_button.setDisabled(True)
+            self.ui.notice_text.hide()
+        self.ui.pages_stack.setCurrentWidget(page)
+
     def switch_page(self):
         items = self.ui.pages_tree.selectedItems()
         if items:
             config = get_config()
             page = self.item_to_page[items[0]]
             config.persist["options_last_active_page"] = page.NAME
-            self.ui.pages_stack.setCurrentWidget(page)
+            self.set_profiles_button_and_highlight(page)
 
     def disable_page(self, name):
         item = self.page_to_item[name]
