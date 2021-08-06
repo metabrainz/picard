@@ -33,7 +33,6 @@ from picard.config import (
     SettingConfigSection,
     get_config,
 )
-from picard.const import PICARD_URLS
 from picard.profile import UserProfileGroups
 
 from picard.ui.moveable_list_view import MoveableListView
@@ -52,7 +51,7 @@ class ProfilesOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 10
     ACTIVE = True
-    HELP_URL = PICARD_URLS["doc_profile_edit"]
+    HELP_URL = '/config/options_profiles.html'
 
     PROFILES_KEY = SettingConfigSection.PROFILES_KEY
     SETTINGS_KEY = SettingConfigSection.SETTINGS_KEY
