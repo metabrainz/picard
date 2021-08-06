@@ -171,7 +171,6 @@ class ScriptingOptionsPage(OptionsPage):
         dialog_title = _("Import Script File")
         dialog_file_types = self._get_dialog_filetypes()
         options = QtWidgets.QFileDialog.Options()
-        options |= QtWidgets.QFileDialog.DontUseNativeDialog
         filename, file_type = QtWidgets.QFileDialog.getOpenFileName(self, dialog_title, self.default_script_directory, dialog_file_types, options=options)
         if filename:
             log.debug('Importing tagging script file: %s' % filename)
@@ -221,7 +220,6 @@ class ScriptingOptionsPage(OptionsPage):
             dialog_title = _("Export Script File")
             dialog_file_types = self._get_dialog_filetypes()
             options = QtWidgets.QFileDialog.Options()
-            options |= QtWidgets.QFileDialog.DontUseNativeDialog
             filename, file_type = QtWidgets.QFileDialog.getSaveFileName(self, dialog_title, default_path, dialog_file_types, options=options)
             if filename:
                 # Fix issue where Qt may set the extension twice
