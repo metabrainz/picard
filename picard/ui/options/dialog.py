@@ -245,18 +245,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     def highlight_enabled_profile_options(self, load_settings=False):
         working_profiles, working_settings = self.get_working_profile_data()
 
-        self.ui.notice_text.hide()
-
         HighlightColors = namedtuple('HighlightColors', ('fg', 'bg'))
         HIGHLIGHT_FMT = "#%s { color: %s; background-color: %s; }"
         if theme.is_dark_theme:
             option_colors = HighlightColors('#FFFFFF', '#000080')
         else:
             option_colors = HighlightColors('#000000', '#F9F906')
-
-        self.ui.notice_text.setStyleSheet(HIGHLIGHT_FMT % ("notice_text", option_colors.fg, option_colors.bg))
-        self.ui.notice_text.setText(_("Highlighted options will be saved to an active profile (identified when you hover over the option)."))
-        self.ui.notice_text.setToolTip(_("Hover your cursor over a highlighted option to see which profile will be updated."))
 
         for page in self.pages:
             page_name = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
@@ -324,13 +318,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     def set_profiles_button_and_highlight(self, page):
         if self.page_has_attached_profiles(page):
             self.ui.attached_profiles_button.setDisabled(False)
-            if self.page_has_attached_profiles(page, enabled_profiles_only=True):
-                self.ui.notice_text.show()
-            else:
-                self.ui.notice_text.hide()
         else:
             self.ui.attached_profiles_button.setDisabled(True)
-            self.ui.notice_text.hide()
         self.ui.pages_stack.setCurrentWidget(page)
 
     def switch_page(self):
