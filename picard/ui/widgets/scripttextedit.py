@@ -316,6 +316,7 @@ class ScriptTextEdit(QTextEdit):
         self.enable_completer()
         self.setFontFamily(FONT_FAMILY_MONOSPACE)
         self.setMouseTracking(True)
+        self.setAcceptRichText(False)
         self.wordwrap_action = QAction(_("&Word wrap script"), self)
         self.wordwrap_action.setToolTip(_("Word wrap long lines in the editor"))
         self.wordwrap_action.triggered.connect(self.update_wordwrap)
@@ -382,7 +383,11 @@ class ScriptTextEdit(QTextEdit):
         return None
 
     def insertFromMimeData(self, source):
-        source.setText(_clean_text(source.text()))
+        text = _clean_text(source.text())
+        # Create a new data object, as modifying the existing one does not
+        # work on Windows if copying from outside the Qt app.
+        source = QtCore.QMimeData()
+        source.setText(text)
         return super().insertFromMimeData(source)
 
     def setPlainText(self, text):
