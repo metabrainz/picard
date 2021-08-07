@@ -30,10 +30,7 @@
 
 import os
 
-from PyQt5 import (
-    QtCore,
-    QtWidgets,
-)
+from PyQt5 import QtCore
 
 from picard import log
 from picard.config import (
@@ -45,8 +42,8 @@ from picard.config import (
 from picard.const.sys import IS_MACOS
 from picard.script import ScriptParser
 from picard.script.serializer import (
-    PicardScript,
-    ScriptImportError,
+    ScriptImportExportError,
+    TaggingScript,
 )
 
 from picard.ui import (
@@ -165,35 +162,12 @@ class ScriptingOptionsPage(OptionsPage):
         """Import from an external text file to a new script. Import can be either a plain text script or
         a Picard script package.
         """
-        FILE_ERROR_IMPORT = N_('Error importing "%s". %s.')
-        FILE_ERROR_DECODE = N_('Error decoding "%s". %s.')
-
-        dialog_title = _("Import Script File")
-        dialog_file_types = self._get_dialog_filetypes()
-        options = QtWidgets.QFileDialog.Options()
-        filename, file_type = QtWidgets.QFileDialog.getOpenFileName(self, dialog_title, self.default_script_directory, dialog_file_types, options=options)
-        if filename:
-            log.debug('Importing tagging script file: %s' % filename)
-            try:
-                with open(filename, 'r', encoding='utf8') as i_file:
-                    file_content = i_file.read()
-            except OSError as error:
-                self.output_file_error(FILE_ERROR_IMPORT, filename, error.strerror)
-                return
-            if not file_content.strip():
-                self.output_file_error(FILE_ERROR_IMPORT, filename, _('The file was empty'))
-                return
-            if file_type == self.FILE_TYPE_PACKAGE:
-                try:
-                    script_item = PicardScript().create_from_yaml(file_content)
-                except ScriptImportError as error:
-                    self.output_file_error(FILE_ERROR_DECODE, filename, error)
-                    return
-            else:
-                script_item = PicardScript(
-                    title=_("Imported from %s") % filename,
-                    script=file_content.strip()
-                )
+        try:
+            script_item = TaggingScript().import_script(self)
+        except ScriptImportExportError as error:
+            self.output_file_error(error.format, error.filename, error.error_msg)
+            return
+        if script_item:
             title = _("%s (imported)") % script_item["title"]
             list_item = ScriptListWidgetItem(title, False, script_item["script"])
             self.ui.script_list.addItem(list_item)
@@ -203,8 +177,6 @@ class ScriptingOptionsPage(OptionsPage):
         """Export the current script to an external file. Export can be either as a plain text
         script or a naming script package.
         """
-        FILE_ERROR_EXPORT = N_('Error exporting file "%s". %s.')
-
         items = self.ui.script_list.selectedItems()
         if not items:
             return
@@ -214,47 +186,11 @@ class ScriptingOptionsPage(OptionsPage):
         script_title = item.name if item.name.strip() else _("Unnamed Script")
 
         if script_text:
-            script_item = PicardScript(title=script_title, script=script_text)
-            script_filename = ".".join((script_item.filename, self.default_script_extension))
-            default_path = os.path.normpath(os.path.join(self.default_script_directory, script_filename))
-            dialog_title = _("Export Script File")
-            dialog_file_types = self._get_dialog_filetypes()
-            options = QtWidgets.QFileDialog.Options()
-            filename, file_type = QtWidgets.QFileDialog.getSaveFileName(self, dialog_title, default_path, dialog_file_types, options=options)
-            if filename:
-                # Fix issue where Qt may set the extension twice
-                (name, ext) = os.path.splitext(filename)
-                if ext and str(name).endswith('.' + ext):
-                    filename = name
-                log.debug('Exporting tagging script file: %s' % filename)
-                if file_type == self.FILE_TYPE_PACKAGE:
-                    script_text = script_item.to_yaml()
-                try:
-                    with open(filename, 'w', encoding='utf8') as o_file:
-                        o_file.write(script_text)
-                except OSError as error:
-                    self.output_file_error(FILE_ERROR_EXPORT, filename, error.strerror)
-                else:
-                    dialog = QtWidgets.QMessageBox(
-                        QtWidgets.QMessageBox.Information,
-                        _("Export Script"),
-                        _("Script successfully exported to %s") % filename,
-                        QtWidgets.QMessageBox.Ok,
-                        self
-                    )
-                    dialog.exec_()
-
-    def _get_dialog_filetypes(self):
-        """Helper function to build file type string used in the file dialogs.
-
-        Returns:
-            str: File type selection string
-        """
-        return ";;".join((
-            self.FILE_TYPE_PACKAGE,
-            self.FILE_TYPE_SCRIPT,
-            self.FILE_TYPE_ALL,
-        ))
+            script_item = TaggingScript(title=script_title, script=script_text)
+            try:
+                script_item.export_script(parent=self)
+            except ScriptImportExportError as error:
+                self.output_file_error(error.format, error.filename, error.error_msg)
 
     def enable_tagger_scripts_toggled(self, on):
         if on and self.ui.script_list.count() == 0:
