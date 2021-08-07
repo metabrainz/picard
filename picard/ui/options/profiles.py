@@ -80,7 +80,7 @@ class ProfilesOptionsPage(OptionsPage):
         self.ui.profile_list.itemChanged.connect(self.profile_item_changed)
         self.ui.profile_list.currentItemChanged.connect(self.current_item_changed)
         self.ui.profile_list.itemChanged.connect(self.reload_all_page_settings)
-        self.ui.settings_tree.itemChanged.connect(self.save_profile)
+        self.ui.settings_tree.itemChanged.connect(self.set_profile_settings_changed)
         self.ui.settings_tree.itemExpanded.connect(self.update_current_expanded_items_list)
         self.ui.settings_tree.itemCollapsed.connect(self.update_current_expanded_items_list)
 
@@ -99,6 +99,7 @@ class ProfilesOptionsPage(OptionsPage):
         if event_type == QtCore.QEvent.FocusOut and object == self.ui.settings_tree:
             if self.settings_changed:
                 self.settings_changed = False
+                self.update_values_in_profile_options()
                 self.reload_all_page_settings()
         return False
 
@@ -276,6 +277,24 @@ class ProfilesOptionsPage(OptionsPage):
         """
         self.signal_refresh.emit()
 
+    def update_values_in_profile_options(self):
+        """Update the current profile's settings dictionary from the settings tree.  Note
+        that this update is delayed to avoid losing a profile's option setting value when
+        a selected option (with an associated value) is de-selected and then re-selected.
+        """
+        if not self.current_profile_id:
+            return
+        checked_items = set(self.get_checked_items_from_tree())
+        settings = set(self.profile_settings[self.current_profile_id].keys())
+
+        # Add new items to settings
+        for item in checked_items.difference(settings):
+            self.profile_settings[self.current_profile_id][item] = None
+
+        # Remove unchecked items from settings
+        for item in settings.difference(checked_items):
+            del self.profile_settings[self.current_profile_id][item]
+
     def profile_item_changed(self, item):
         """Check title is not blank and remove leading and trailing spaces.
 
@@ -308,7 +327,6 @@ class ProfilesOptionsPage(OptionsPage):
         """
         if self.loading:
             return
-        self.save_profile()
         # Set self.loading to avoid looping through the `.currentItemChanged` event.
         self.loading = True
         self.ui.profile_list.setCurrentItem(new_item)
@@ -328,25 +346,12 @@ class ProfilesOptionsPage(OptionsPage):
                 if item.checkState(self.TREEWIDGETITEM_COLUMN) == QtCore.Qt.Checked:
                     yield item.data(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.UserRole)
 
-    def save_profile(self):
-        """Save selected options changes to the currently selected profile.
+    def set_profile_settings_changed(self):
+        """Set flag to trigger option page updates later (when focus is lost from the settings
+        tree) to avoid updating after each change to the settings selected for a profile.
         """
-        if not self.current_profile_id:
-            return
-        checked_items = set(self.get_checked_items_from_tree())
-        settings = set(self.profile_settings[self.current_profile_id].keys())
-
-        # Add new items to settings
-        for item in checked_items.difference(settings):
-            self.profile_settings[self.current_profile_id][item] = None
-
-        # Remove unchecked items from settings
-        for item in settings.difference(checked_items):
-            del self.profile_settings[self.current_profile_id][item]
-
-        # Set flag to trigger option page updates later (when focus is lost from the settings tree)
-        # to avoid updating after each change to the settings selected for a profile.
-        self.settings_changed = True
+        if self.current_profile_id:
+            self.settings_changed = True
 
     def copy_profile(self):
         """Make a copy of the currently selected profile.
