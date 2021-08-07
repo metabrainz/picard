@@ -79,8 +79,7 @@ class ProfilesOptionsPage(OptionsPage):
 
         self.ui.profile_list.itemChanged.connect(self.profile_item_changed)
         self.ui.profile_list.currentItemChanged.connect(self.current_item_changed)
-        self.ui.profile_list.itemSelectionChanged.connect(self.item_selection_changed)
-        self.ui.profile_list.itemChanged.connect(self.profile_data_changed)
+        self.ui.profile_list.itemChanged.connect(self.reload_all_page_settings)
         self.ui.settings_tree.itemChanged.connect(self.save_profile)
         self.ui.settings_tree.itemExpanded.connect(self.update_current_expanded_items_list)
         self.ui.settings_tree.itemCollapsed.connect(self.update_current_expanded_items_list)
@@ -143,7 +142,6 @@ class ProfilesOptionsPage(OptionsPage):
         for profile in config.profiles[self.PROFILES_KEY]:
             list_item = ProfileListWidgetItem(profile['title'], profile['enabled'], profile['id'])
             self.ui.profile_list.addItem(list_item)
-        self.all_profiles = list(self._all_profiles())
 
         # Select the last selected profile item
         last_selected_profile_pos = config.persist[self.POSITION_KEY]
@@ -272,11 +270,6 @@ class ProfilesOptionsPage(OptionsPage):
             self.current_profile_id = None
             self.make_setting_tree(settings=None)
 
-    def profile_data_changed(self):
-        """Update the profile settings values displayed.
-        """
-        self.reload_all_page_settings()
-
     def reload_all_page_settings(self):
         """Trigger a reload of the settings and highlights for all pages containing
         options that can be managed in a profile.
@@ -316,26 +309,11 @@ class ProfilesOptionsPage(OptionsPage):
         if self.loading:
             return
         self.save_profile()
-        self.all_profiles = list(self._all_profiles())
-        self.set_current_item(new_item)
-        self.profile_selected()
-
-    def item_selection_changed(self):
-        """Set tree list highlight bar to proper line if selection change canceled.
-        """
-        item = self.ui.profile_list.currentItem()
-        if item:
-            item.setSelected(True)
-
-    def set_current_item(self, item):
-        """Sets the specified item as the current selection in the profiles list.
-
-        Args:
-            item (ProfileListWidgetItem): Item to set as current selection
-        """
+        # Set self.loading to avoid looping through the `.currentItemChanged` event.
         self.loading = True
-        self.ui.profile_list.setCurrentItem(item)
+        self.ui.profile_list.setCurrentItem(new_item)
         self.loading = False
+        self.profile_selected()
 
     def get_checked_items_from_tree(self):
         """Get the keys for the settings that are checked in the profile settings tree.
