@@ -45,7 +45,7 @@
       <item>
        <widget class="QCheckBox" name="translate_artist_names_exception">
         <property name="text">
-         <string>Ignore artist name translation for locale (might be useful for your native language):</string>
+         <string>Ignore artist name translation for character set:</string>
         </property>
        </widget>
       </item>
