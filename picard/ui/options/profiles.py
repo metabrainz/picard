@@ -238,51 +238,59 @@ class ProfilesOptionsPage(OptionsPage):
                 widget_item.setExpanded(True)
         self.building_tree = False
 
+    def _get_naming_script(self, config, value):
+        if value in config.setting["file_renaming_scripts"]:
+            return config.setting["file_renaming_scripts"][value]["title"]
+        presets = {x["id"]: x["title"] for x in get_file_naming_script_presets()}
+        if value in presets:
+            return presets[value]
+        return _("Unknown script")
+
+    def _get_scripts_list(self, config, key, template, none_text):
+        if not config.setting[key]:
+            return _("No scripts in list")
+        flag = False
+        scripts = config.setting[key]
+        value_text = _("Enabled tagging scripts of %i found:") % len(scripts)
+        for (pos, name, enabled, script) in scripts:
+            if enabled:
+                flag = True
+                value_text += template % name
+        if not flag:
+            value_text += " %s" % none_text
+        return value_text
+
+    def _get_ca_providers_list(self, config, key, template, none_text):
+        flag = False
+        providers = config.setting[key]
+        value_text = _("Enabled providers of %i listed:") % len(providers)
+        for (name, enabled) in providers:
+            if enabled:
+                flag = True
+                value_text += template % name
+        if not flag:
+            value_text += " %s" % none_text
+        return value_text
+
     def make_setting_value_text(self, key, value):
         ITEMS_TEMPLATE = "\n  - %s"
         NONE_TEXT = _("None")
         config = get_config()
-        flag = False
         if value is None:
-            value_text = "None"
-        elif key == "selected_file_naming_script_id":
-            presets = {x["id"]: x["title"] for x in get_file_naming_script_presets()}
-            if value in config.setting["file_renaming_scripts"]:
-                value_text = config.setting["file_renaming_scripts"][value]["title"]
-            elif value in presets:
-                value_text = presets[value]
-            else:
-                value_text = _("Unknown script")
-        elif key == "list_of_scripts":
-            if config.setting[key]:
-                scripts = config.setting[key]
-                value_text = _("Enabled tagging scripts of %i found:") % len(scripts)
-                for (pos, name, enabled, script) in scripts:
-                    if enabled:
-                        flag = True
-                        value_text += ITEMS_TEMPLATE % name
-                if not flag:
-                    value_text += " %s" % NONE_TEXT
-            else:
-                value_text = _("No scripts in list")
-        elif key == "ca_providers":
-            providers = config.setting[key]
-            value_text = _("Enabled providers of %i listed:") % len(providers)
-            for (name, enabled) in providers:
-                if enabled:
-                    flag = True
-                    value_text += ITEMS_TEMPLATE % name
-            if not flag:
-                value_text += " %s" % NONE_TEXT
-        elif isinstance(value, str):
-            value_text = '"%s"' % value
-        elif type(value) in {bool, int, float}:
-            value_text = str(value)
-        elif type(value) in {set, tuple, list, dict}:
-            value_text = _("List of %i items") % len(value)
-        else:
-            value_text = _("Unknown value format")
-        return value_text
+            return NONE_TEXT
+        if key == "selected_file_naming_script_id":
+            return self._get_naming_script(config, value)
+        if key == "list_of_scripts":
+            return self._get_scripts_list(config, key, ITEMS_TEMPLATE, NONE_TEXT)
+        if key == "ca_providers":
+            return self._get_ca_providers_list(config, key, ITEMS_TEMPLATE, NONE_TEXT)
+        if isinstance(value, str):
+            return '"%s"' % value
+        if type(value) in {bool, int, float}:
+            return str(value)
+        if type(value) in {set, tuple, list, dict}:
+            return _("List of %i items") % len(value)
+        return _("Unknown value format")
 
     def update_current_expanded_items_list(self):
         """Update the list of expanded sections in the settings tree for persistent settings.
