@@ -15,6 +15,7 @@
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2020 RomFouq
 # Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021 Vladislav Karbovskii
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -124,6 +125,9 @@ for k, v in MB_ATTRIBUTES.items():
         RELEASE_SECONDARY_GROUPS[v] = v
     elif k.startswith('DB:release_status/name:'):
         RELEASE_STATUS[v] = v
+
+# List of available charsets
+from picard.const.scripts import SCRIPTS  # noqa: F401,E402 # pylint: disable=unused-import
 
 # Release countries
 from picard.const.countries import RELEASE_COUNTRIES  # noqa: F401,E402 # pylint: disable=unused-import

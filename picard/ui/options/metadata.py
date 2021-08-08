@@ -9,6 +9,7 @@
 # Copyright (C) 2013, 2018, 2020 Laurent Monin
 # Copyright (C) 2014 Wieland Hoffmann
 # Copyright (C) 2017 Sambhav Kothari
+# Copyright (C) 2021 Vladislav Karbovskii
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,7 +31,10 @@ from picard.config import (
     TextOption,
     get_config,
 )
-from picard.const import ALIAS_LOCALES
+from picard.const import (
+    ALIAS_LOCALES,
+    SCRIPTS,
+)
 
 from picard.ui.options import (
     OptionsPage,
@@ -69,7 +73,9 @@ class MetadataOptionsPage(OptionsPage):
         TextOption("setting", "va_name", "Various Artists"),
         TextOption("setting", "nat_name", "[non-album tracks]"),
         TextOption("setting", "artist_locale", "en"),
+        TextOption("setting", "artist_script_exception", "LATIN"),
         BoolOption("setting", "translate_artist_names", False),
+        BoolOption("setting", "translate_artist_names_script_exception", False),
         BoolOption("setting", "release_ars", True),
         BoolOption("setting", "track_ars", False),
         BoolOption("setting", "convert_punctuation", True),
@@ -84,6 +90,8 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.va_name_default.clicked.connect(self.set_va_name_default)
         self.ui.nat_name_default.clicked.connect(self.set_nat_name_default)
+        self.ui.translate_artist_names.stateChanged.connect(self.set_enabled_states)
+        self.ui.translate_artist_names_script_exception.stateChanged.connect(self.set_enabled_states)
 
     def load(self):
         config = get_config()
@@ -97,6 +105,16 @@ class MetadataOptionsPage(OptionsPage):
             if locale == current_locale:
                 combo_box.setCurrentIndex(i)
 
+        self.ui.translate_artist_names_script_exception.setChecked(config.setting["translate_artist_names_script_exception"])
+
+        combo_box = self.ui.artist_script_exception
+        current_locale = config.setting["artist_script_exception"]
+        for i, (locale, name, level) in enumerate(iter_sorted_locales(SCRIPTS)):
+            label = name
+            combo_box.addItem(label, locale)
+            if locale == current_locale:
+                combo_box.setCurrentIndex(i)
+
         self.ui.convert_punctuation.setChecked(config.setting["convert_punctuation"])
         self.ui.release_ars.setChecked(config.setting["release_ars"])
         self.ui.track_ars.setChecked(config.setting["track_ars"])
@@ -106,10 +124,14 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.standardize_instruments.setChecked(config.setting["standardize_instruments"])
         self.ui.guess_tracknumber_and_title.setChecked(config.setting["guess_tracknumber_and_title"])
 
+        self.set_enabled_states()
+
     def save(self):
         config = get_config()
         config.setting["translate_artist_names"] = self.ui.translate_artist_names.isChecked()
         config.setting["artist_locale"] = self.ui.artist_locale.itemData(self.ui.artist_locale.currentIndex())
+        config.setting["translate_artist_names_script_exception"] = self.ui.translate_artist_names_script_exception.isChecked()
+        config.setting["artist_script_exception"] = self.ui.artist_script_exception.itemData(self.ui.artist_script_exception.currentIndex())
         config.setting["convert_punctuation"] = self.ui.convert_punctuation.isChecked()
         config.setting["release_ars"] = self.ui.release_ars.isChecked()
         config.setting["track_ars"] = self.ui.track_ars.isChecked()
@@ -130,6 +152,13 @@ class MetadataOptionsPage(OptionsPage):
     def set_nat_name_default(self):
         self.ui.nat_name.setText(self.options[1].default)
         self.ui.nat_name.setCursorPosition(0)
+
+    def set_enabled_states(self):
+        translate_checked = self.ui.translate_artist_names.isChecked()
+        translate_exception_checked = self.ui.translate_artist_names_script_exception.isChecked()
+        self.ui.artist_locale.setEnabled(translate_checked)
+        self.ui.translate_artist_names_script_exception.setEnabled(translate_checked)
+        self.ui.artist_script_exception.setEnabled(translate_checked and translate_exception_checked)
 
 
 register_options_page(MetadataOptionsPage)

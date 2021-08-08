@@ -9,6 +9,7 @@
 # Copyright (C) 2019 Michael Wiencek
 # Copyright (C) 2020 David Kellner
 # Copyright (C) 2020 dukeyin
+# Copyright (C) 2021 Vladislav Karbovskii
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -33,6 +34,7 @@ from picard.util import (
     parse_amazon_url,
     translate_from_sortname,
 )
+from picard.util.script_detector import detect_script
 
 
 _artist_rel_types = {
@@ -192,6 +194,11 @@ def _translate_artist_node(node):
     if config.setting['translate_artist_names']:
         locale = config.setting["artist_locale"]
         lang = locale.split("_")[0]
+
+        if (config.setting['translate_artist_names_script_exception']
+                and config.setting["artist_script_exception"] in detect_script(node['name'])):
+            return node['name'], node['sort-name']
+
         if "aliases" in node:
             result = (-1, (None, None))
             for alias in node['aliases']:

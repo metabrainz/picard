@@ -43,6 +43,16 @@
        <widget class="QComboBox" name="artist_locale"/>
       </item>
       <item>
+       <widget class="QCheckBox" name="translate_artist_names_script_exception">
+        <property name="text">
+         <string>Ignore artist name translation for this script:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="artist_script_exception"/>
+      </item>
+      <item>
        <widget class="QCheckBox" name="standardize_artists">
         <property name="text">
          <string>Use standardized artist names</string>
@@ -172,6 +182,8 @@
  <tabstops>
   <tabstop>translate_artist_names</tabstop>
   <tabstop>artist_locale</tabstop>
+  <tabstop>translate_artist_names_script_exception</tabstop>
+  <tabstop>artist_script_exception</tabstop>
   <tabstop>standardize_artists</tabstop>
   <tabstop>standardize_instruments</tabstop>
   <tabstop>convert_punctuation</tabstop>
