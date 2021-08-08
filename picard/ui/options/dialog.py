@@ -192,7 +192,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def page_has_profile_options(self, page):
         try:
-            name = page.NAME
+            name = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
         except AttributeError:
             return False
         return name in UserProfileGroups.get_setting_groups_list()
