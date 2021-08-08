@@ -46,10 +46,7 @@ from picard import (
     PICARD_VERSION,
     log,
 )
-from picard.profile import (
-    USER_SETTINGS_PROFILE_ID,
-    UserProfileGroups,
-)
+from picard.profile import UserProfileGroups
 from picard.version import Version
 
 
@@ -152,28 +149,29 @@ class SettingConfigSection(ConfigSection):
         self.__prefix = self.__name + '/'
         self._memoization = defaultdict(Memovar)
         self.init_profile_options()
-        self._selected_profile = None
+        self.profiles_override = None
+        self.settings_override = None
 
     def _get_active_profile_ids(self):
-        if self._selected_profile is not None:
-            if self._selected_profile == USER_SETTINGS_PROFILE_ID:
-                return
-            # Act as if the selected profile is the only active profile.
-            yield self._selected_profile
-        else:
+        if self.profiles_override is None:
             profiles = self.__qt_config.profiles[self.PROFILES_KEY]
-            if profiles is None:
-                return
-            for profile in profiles:
-                if profile['enabled']:
-                    yield profile["id"]
+        else:
+            profiles = self.profiles_override
+        if profiles is None:
+            return
+        for profile in profiles:
+            if profile['enabled']:
+                yield profile["id"]
 
     def _get_active_profile_settings(self):
         for id in self._get_active_profile_ids():
             yield id, self._get_profile_settings(id)
 
     def _get_profile_settings(self, id):
-        profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY][id]
+        if self.settings_override is None:
+            profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY][id]
+        else:
+            profile_settings = self.settings_override[id]
         if profile_settings is None:
             log.error("Unable to find settings for user profile '%s'", id)
             return {}
@@ -197,10 +195,9 @@ class SettingConfigSection(ConfigSection):
                 if name in settings:
                     self._save_profile_setting(id, name, value)
                     return
-        if self._selected_profile is None or self._selected_profile == USER_SETTINGS_PROFILE_ID:
-            key = self.key(name)
-            self.__qt_config.setValue(key, value)
-            self._memoization[key].dirty = True
+        key = self.key(name)
+        self.__qt_config.setValue(key, value)
+        self._memoization[key].dirty = True
 
     def _save_profile_setting(self, profile_id, name, value):
         profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY]
@@ -209,8 +206,11 @@ class SettingConfigSection(ConfigSection):
         self.__qt_config.setValue(key, profile_settings)
         self._memoization[key].dirty = True
 
-    def set_profile(self, profile_id=None):
-        self._selected_profile = profile_id
+    def set_profiles_override(self, new_profiles=None):
+        self.profiles_override = new_profiles
+
+    def set_settings_override(self, new_settings=None):
+        self.settings_override = new_settings
 
 
 class Config(QtCore.QSettings):

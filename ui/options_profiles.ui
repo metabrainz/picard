@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>605</width>
+    <width>430</width>
     <height>551</height>
    </rect>
   </property>
@@ -27,9 +27,9 @@
     <number>9</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="user_profiles_groupbox">
+    <widget class="QGroupBox" name="option_profiles_groupbox">
      <property name="title">
-      <string>User Profile(s)</string>
+      <string>Option Profile(s)</string>
      </property>
      <property name="checkable">
       <bool>false</bool>
@@ -138,20 +138,6 @@
       </item>
      </layout>
     </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QDialogButtonBox" name="buttonbox">
-       <property name="standardButtons">
-        <set>QDialogButtonBox::NoButton</set>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
   </layout>
  </widget>

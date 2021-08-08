@@ -27,9 +27,6 @@ from collections import (
 from picard import i18n  # noqa: F401,E402 # pylint: disable=unused-import
 
 
-USER_SETTINGS_PROFILE_ID = 'user_settings'
-
-
 SettingDesc = namedtuple('SettingDesc', ('name', 'title', 'fields'))
 
 

@@ -122,7 +122,6 @@ from picard.ui.passworddialog import (
     PasswordDialog,
     ProxyDialog,
 )
-from picard.ui.profileeditor import ProfileEditorDialog
 from picard.ui.scripteditor import (
     ScriptEditorDialog,
     ScriptEditorExamples,
@@ -502,10 +501,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.show_script_editor_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+S")))
         self.show_script_editor_action.triggered.connect(self.open_file_naming_script_editor)
 
-        self.show_profile_editor_action = QtWidgets.QAction(_("Open option &profile editor..."))
-        self.show_profile_editor_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+P")))
-        self.show_profile_editor_action.triggered.connect(self.open_profile_editor)
-
         self.cut_action = QtWidgets.QAction(icontheme.lookup('edit-cut', icontheme.ICON_SIZE_MENU), _("&Cut"), self)
         self.cut_action.setShortcut(QtGui.QKeySequence.Cut)
         self.cut_action.setEnabled(False)
@@ -847,16 +842,21 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addAction(self.enable_renaming_action)
         menu.addAction(self.enable_moving_action)
         menu.addAction(self.enable_tag_saving_action)
+        menu.addSeparator()
 
         self.script_quick_selector_menu = QtWidgets.QMenu(_("&Select file naming script"))
         self.script_quick_selector_menu.setIcon(icontheme.lookup('document-open'))
         self.make_script_selector_menu()
 
         menu.addMenu(self.script_quick_selector_menu)
-        menu.addSeparator()
         menu.addAction(self.show_script_editor_action)
         menu.addSeparator()
-        menu.addAction(self.show_profile_editor_action)
+
+        self.profile_quick_selector_menu = QtWidgets.QMenu(_("&Enable/disable profiles"))
+        # self.profile_quick_selector_menu.setIcon(icontheme.lookup('document-open'))
+        self.make_profile_selector_menu()
+
+        menu.addMenu(self.profile_quick_selector_menu)
         menu.addSeparator()
         menu.addAction(self.options_action)
         menu = self.menuBar().addMenu(_("&Tools"))
@@ -1133,6 +1133,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.script_editor_dialog.show()
         else:
             self.show_script_editor_action.setEnabled(True)
+        self.make_profile_selector_menu()
 
     def show_help(self):
         webbrowser2.open('documentation')
@@ -1681,22 +1682,43 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """
         self.script_editor_save()
 
-    def open_profile_editor(self):
-        self.profile_editor_dialog = ProfileEditorDialog.show_instance(self)
-        self.profile_editor_dialog.finished.connect(self.profile_editor_dialog_finished)
-
-    def profile_editor_dialog_finished(self):
-        """Update menu bar entries to reflect any changes in profile selection.
+    def make_profile_selector_menu(self):
+        """Update the sub-menu of available option profiles.
         """
         config = get_config()
-        self.profile_editor_dialog.finished.disconnect()
-        self.profile_editor_dialog = None
-        self.enable_renaming_action.setChecked(config.setting["rename_files"])
-        self.enable_moving_action.setChecked(config.setting["move_files"])
-        self.enable_tag_saving_action.setChecked(not config.setting["dont_write_tags"])
-        self.make_script_selector_menu()
-        if self.script_editor_dialog:
-            self.script_editor_dialog.reload_after_profile()
+        option_profiles = config.profiles[SettingConfigSection.PROFILES_KEY]
+        if not option_profiles:
+            self.profile_quick_selector_menu.setDisabled(True)
+            return
+        self.profile_quick_selector_menu.setDisabled(False)
+        self.profile_quick_selector_menu.clear()
+
+        group = QtWidgets.QActionGroup(self.profile_quick_selector_menu)
+        group.setExclusive(False)
+
+        def _add_menu_item(title, enabled, profile_id):
+            profile_action = QtWidgets.QAction(title, self.profile_quick_selector_menu)
+            profile_action.triggered.connect(partial(self.update_profile_selection, profile_id))
+            profile_action.setCheckable(True)
+            profile_action.setChecked(enabled)
+            self.profile_quick_selector_menu.addAction(profile_action)
+            group.addAction(profile_action)
+
+        for profile in option_profiles:
+            _add_menu_item(profile['title'], profile['enabled'], profile['id'])
+
+    def update_profile_selection(self, profile_id):
+        """Toggle the enabled state of the selected profile.
+
+        Args:
+            profile_id (str): ID code of the profile to modify
+        """
+        config = get_config()
+        option_profiles = config.profiles[SettingConfigSection.PROFILES_KEY]
+        for profile in option_profiles:
+            if profile['id'] == profile_id:
+                profile['enabled'] = not profile['enabled']
+                return
 
 
 def update_last_check_date(is_success):
