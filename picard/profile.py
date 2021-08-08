@@ -44,6 +44,7 @@ class UserProfileGroups():
             SettingDesc("nat_name", N_("Non-album tracks name"), ["nat_name"]),
             SettingDesc("translate_artist_names", N_("Translate artist names"), ["translate_artist_names"]),
             SettingDesc("artist_locale", N_("Translation locale"), ["artist_locale"]),
+            SettingDesc("artist_locale_exception", N_("Translation locale exception"), ["artist_locale_exception"]),
             SettingDesc("release_ars", N_("Use release relationships"), ["release_ars"]),
             SettingDesc("track_ars", N_("Use track relationships"), ["track_ars"]),
             SettingDesc("convert_punctuation", N_("Convert Unicode punctuation characters to ASCII"), ["convert_punctuation"]),

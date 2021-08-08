@@ -69,6 +69,7 @@ class MetadataOptionsPage(OptionsPage):
         TextOption("setting", "va_name", "Various Artists"),
         TextOption("setting", "nat_name", "[non-album tracks]"),
         TextOption("setting", "artist_locale", "en"),
+        TextOption("setting", "artist_locale_exception", "en"),
         BoolOption("setting", "translate_artist_names", False),
         BoolOption("setting", "release_ars", True),
         BoolOption("setting", "track_ars", False),
@@ -97,6 +98,14 @@ class MetadataOptionsPage(OptionsPage):
             if locale == current_locale:
                 combo_box.setCurrentIndex(i)
 
+        combo_box = self.ui.artist_locale_exception
+        current_locale = config.setting["artist_locale_exception"]
+        for i, (locale, name, level) in enumerate(iter_sorted_locales(ALIAS_LOCALES)):
+            label = "    " * level + name
+            combo_box.addItem(label, locale)
+            if locale == current_locale:
+                combo_box.setCurrentIndex(i)
+
         self.ui.convert_punctuation.setChecked(config.setting["convert_punctuation"])
         self.ui.release_ars.setChecked(config.setting["release_ars"])
         self.ui.track_ars.setChecked(config.setting["track_ars"])
@@ -110,6 +119,7 @@ class MetadataOptionsPage(OptionsPage):
         config = get_config()
         config.setting["translate_artist_names"] = self.ui.translate_artist_names.isChecked()
         config.setting["artist_locale"] = self.ui.artist_locale.itemData(self.ui.artist_locale.currentIndex())
+        config.setting["artist_locale_exception"] = self.ui.artist_locale_exception.itemData(self.ui.artist_locale_exception.currentIndex())
         config.setting["convert_punctuation"] = self.ui.convert_punctuation.isChecked()
         config.setting["release_ars"] = self.ui.release_ars.isChecked()
         config.setting["track_ars"] = self.ui.track_ars.isChecked()
