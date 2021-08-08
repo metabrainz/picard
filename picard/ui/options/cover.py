@@ -83,6 +83,7 @@ class CoverOptionsPage(OptionsPage):
     def load_cover_art_providers(self):
         """Load available providers, initialize provider-specific options, restore state of each
         """
+        self.ui.ca_providers_list.clear()
         for p in cover_art_providers():
             self.ui.ca_providers_list.addItem(CheckboxListItem(_(p.title), checked=p.enabled, data=p.name))
 
