@@ -43,6 +43,13 @@
        <widget class="QComboBox" name="artist_locale"/>
       </item>
       <item>
+       <widget class="QCheckBox" name="translate_artist_names_exception">
+        <property name="text">
+         <string>Ignore artist name translation for locale (might be useful for your native language):</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QComboBox" name="artist_locale_exception"/>
       </item>
       <item>
@@ -175,6 +182,7 @@
  <tabstops>
   <tabstop>translate_artist_names</tabstop>
   <tabstop>artist_locale</tabstop>
+  <tabstop>translate_artist_names_exception</tabstop>
   <tabstop>artist_locale_exception</tabstop>
   <tabstop>standardize_artists</tabstop>
   <tabstop>standardize_instruments</tabstop>
