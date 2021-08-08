@@ -15,6 +15,7 @@
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2020 RomFouq
 # Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021 Vladislav Karbovskii
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -127,6 +128,9 @@ from picard.const.languages import UI_LANGUAGES  # noqa: F401,E402 # pylint: dis
 
 # List of alias locales
 from picard.const.locales import ALIAS_LOCALES  # noqa: F401,E402 # pylint: disable=unused-import
+
+# List of available charsets
+from picard.const.charsets import CHAR_SETS  # noqa: F401,E402 # pylint: disable=unused-import
 
 # List of official musicbrainz servers - must support SSL for mblogin requests (such as collections).
 MUSICBRAINZ_SERVERS = [

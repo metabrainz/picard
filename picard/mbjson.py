@@ -9,6 +9,7 @@
 # Copyright (C) 2019 Michael Wiencek
 # Copyright (C) 2020 David Kellner
 # Copyright (C) 2020 dukeyin
+# Copyright (C) 2021 Vladislav Karbovskii
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -33,6 +34,8 @@ from picard.util import (
     parse_amazon_url,
     translate_from_sortname,
 )
+
+from alphabet_detector import AlphabetDetector
 
 
 _artist_rel_types = {
@@ -192,6 +195,16 @@ def _translate_artist_node(node):
     if config.setting['translate_artist_names']:
         locale = config.setting["artist_locale"]
         lang = locale.split("_")[0]
+
+        if config.setting['translate_artist_names_exception']:
+            char_set_exception = config.setting["artist_locale_exception"]
+
+            ad = AlphabetDetector()
+            char_sets = ad.detect_alphabet(node['name'])
+
+            if char_set_exception in char_sets:
+                return node['name'], node['sort-name']
+
         if "aliases" in node:
             result = (-1, (None, None))
             for alias in node['aliases']:

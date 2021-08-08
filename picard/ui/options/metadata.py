@@ -9,6 +9,7 @@
 # Copyright (C) 2013, 2018, 2020 Laurent Monin
 # Copyright (C) 2014 Wieland Hoffmann
 # Copyright (C) 2017 Sambhav Kothari
+# Copyright (C) 2021 Vladislav Karbovskii
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,7 +31,7 @@ from picard.config import (
     TextOption,
     get_config,
 )
-from picard.const import ALIAS_LOCALES
+from picard.const import ALIAS_LOCALES, CHAR_SETS
 
 from picard.ui.options import (
     OptionsPage,
@@ -69,7 +70,7 @@ class MetadataOptionsPage(OptionsPage):
         TextOption("setting", "va_name", "Various Artists"),
         TextOption("setting", "nat_name", "[non-album tracks]"),
         TextOption("setting", "artist_locale", "en"),
-        TextOption("setting", "artist_locale_exception", "en"),
+        TextOption("setting", "artist_locale_exception", "LATIN"),
         BoolOption("setting", "translate_artist_names", False),
         BoolOption("setting", "translate_artist_names_exception", False),
         BoolOption("setting", "release_ars", True),
@@ -103,7 +104,7 @@ class MetadataOptionsPage(OptionsPage):
 
         combo_box = self.ui.artist_locale_exception
         current_locale = config.setting["artist_locale_exception"]
-        for i, (locale, name, level) in enumerate(iter_sorted_locales(ALIAS_LOCALES)):
+        for i, (locale, name, level) in enumerate(iter_sorted_locales(CHAR_SETS)):
             label = "    " * level + name
             combo_box.addItem(label, locale)
             if locale == current_locale:
