@@ -457,6 +457,8 @@ class ProfilesOptionsPage(OptionsPage):
         config = get_config()
         config.profiles[self.PROFILES_KEY] = self._clean_and_get_all_profiles()
         config.profiles[self.SETTINGS_KEY] = self.profile_settings
+        config.persist[self.POSITION_KEY] = self.ui.profile_list.currentRow()
+        config.persist[self.EXPANDED_KEY] = self.expanded_sections
 
     def set_button_states(self):
         """Set the enabled / disabled states of the buttons.
@@ -464,14 +466,6 @@ class ProfilesOptionsPage(OptionsPage):
         state = self.current_profile_id is not None
         self.copy_profile_button.setEnabled(state)
         self.delete_profile_button.setEnabled(state)
-
-    def closeEvent(self, event):
-        """Custom close event handler to save editor settings.
-        """
-        config = get_config()
-        config.persist[self.POSITION_KEY] = self.ui.profile_list.currentRow()
-        config.persist[self.EXPANDED_KEY] = self.expanded_sections
-        super().closeEvent(event)
 
 
 register_options_page(ProfilesOptionsPage)
