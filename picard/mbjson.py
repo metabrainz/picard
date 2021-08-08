@@ -35,7 +35,7 @@ from picard.util import (
     translate_from_sortname,
 )
 
-from alphabet_detector import AlphabetDetector
+from picard.util.alphabet_detector import AlphabetDetector
 
 
 _artist_rel_types = {
