@@ -60,7 +60,7 @@ class AlphabetDetector:
         return True if self.only_alphabet_chars(unistr, 'ARABIC') else False
 
     def is_hebrew(self, unistr):
-        return True if self.only_alphabet_chars(unistr, 'HEBREW') else False
+        return self.only_alphabet_chars(unistr, 'HEBREW')
 
     # NOTE: this only detects Chinese script characters (Hanzi/Kanji/Hanja).
     # it does not detect other CJK script characters like Hangul or Katakana
