@@ -382,7 +382,7 @@ def populate_script_selection_combo_box(naming_scripts, selected_script_id, comb
         naming_script = script_item.to_dict()
         naming_script["deletable"] = False
         naming_script["readonly"] = True
-        idx = _add_and_check(idx, count, naming_script['title'], naming_script)
+        idx = _add_and_check(idx, count, _(naming_script['title']), naming_script)
 
     combo_box.setCurrentIndex(idx)
     combo_box.blockSignals(False)
