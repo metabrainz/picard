@@ -446,10 +446,6 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         super().__init__(parent)
         self.examples = examples
 
-        self.FILE_TYPE_ALL = _("All Files") + " (*)"
-        self.FILE_TYPE_SCRIPT = _("Picard Script Files") + " (*.pts *.txt)"
-        self.FILE_TYPE_PACKAGE = _("Picard Naming Script Package") + " (*.ptsp *.yaml)"
-
         self.setWindowTitle(self.TITLE)
         self.displaying = False
         self.loading = True
