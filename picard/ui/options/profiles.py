@@ -34,6 +34,7 @@ from picard.config import (
     get_config,
 )
 from picard.profile import UserProfileGroups
+from picard.script import get_file_naming_script_presets
 
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import (
@@ -226,11 +227,70 @@ class ProfilesOptionsPage(OptionsPage):
                 child_item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsUserCheckable)
                 state = QtCore.Qt.Checked if settings and setting.name in settings else QtCore.Qt.Unchecked
                 child_item.setCheckState(self.TREEWIDGETITEM_COLUMN, state)
+                if setting.name in settings and settings[setting.name] is not None:
+                    value = settings[setting.name]
+                else:
+                    value = None
+                child_item.setToolTip(self.TREEWIDGETITEM_COLUMN, self.make_setting_value_text(setting.name, value))
                 widget_item.addChild(child_item)
             self.ui.settings_tree.addTopLevelItem(widget_item)
             if title in self.expanded_sections:
                 widget_item.setExpanded(True)
         self.building_tree = False
+
+    def _get_naming_script(self, config, value):
+        if value in config.setting["file_renaming_scripts"]:
+            return config.setting["file_renaming_scripts"][value]["title"]
+        presets = {x["id"]: x["title"] for x in get_file_naming_script_presets()}
+        if value in presets:
+            return presets[value]
+        return _("Unknown script")
+
+    def _get_scripts_list(self, config, key, template, none_text):
+        if not config.setting[key]:
+            return _("No scripts in list")
+        flag = False
+        scripts = config.setting[key]
+        value_text = _("Enabled tagging scripts of %i found:") % len(scripts)
+        for (pos, name, enabled, script) in scripts:
+            if enabled:
+                flag = True
+                value_text += template % name
+        if not flag:
+            value_text += " %s" % none_text
+        return value_text
+
+    def _get_ca_providers_list(self, config, key, template, none_text):
+        flag = False
+        providers = config.setting[key]
+        value_text = _("Enabled providers of %i listed:") % len(providers)
+        for (name, enabled) in providers:
+            if enabled:
+                flag = True
+                value_text += template % name
+        if not flag:
+            value_text += " %s" % none_text
+        return value_text
+
+    def make_setting_value_text(self, key, value):
+        ITEMS_TEMPLATE = "\n  - %s"
+        NONE_TEXT = _("None")
+        config = get_config()
+        if value is None:
+            return NONE_TEXT
+        if key == "selected_file_naming_script_id":
+            return self._get_naming_script(config, value)
+        if key == "list_of_scripts":
+            return self._get_scripts_list(config, key, ITEMS_TEMPLATE, NONE_TEXT)
+        if key == "ca_providers":
+            return self._get_ca_providers_list(config, key, ITEMS_TEMPLATE, NONE_TEXT)
+        if isinstance(value, str):
+            return '"%s"' % value
+        if type(value) in {bool, int, float}:
+            return str(value)
+        if type(value) in {set, tuple, list, dict}:
+            return _("List of %i items") % len(value)
+        return _("Unknown value format")
 
     def update_current_expanded_items_list(self):
         """Update the list of expanded sections in the settings tree for persistent settings.
@@ -405,6 +465,8 @@ class ProfilesOptionsPage(OptionsPage):
         config = get_config()
         config.profiles[self.PROFILES_KEY] = self._clean_and_get_all_profiles()
         config.profiles[self.SETTINGS_KEY] = self.profile_settings
+        config.persist[self.POSITION_KEY] = self.ui.profile_list.currentRow()
+        config.persist[self.EXPANDED_KEY] = self.expanded_sections
 
     def set_button_states(self):
         """Set the enabled / disabled states of the buttons.
@@ -412,14 +474,6 @@ class ProfilesOptionsPage(OptionsPage):
         state = self.current_profile_id is not None
         self.copy_profile_button.setEnabled(state)
         self.delete_profile_button.setEnabled(state)
-
-    def closeEvent(self, event):
-        """Custom close event handler to save editor settings.
-        """
-        config = get_config()
-        config.persist[self.POSITION_KEY] = self.ui.profile_list.currentRow()
-        config.persist[self.EXPANDED_KEY] = self.expanded_sections
-        super().closeEvent(event)
 
 
 register_options_page(ProfilesOptionsPage)
