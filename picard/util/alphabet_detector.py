@@ -54,7 +54,7 @@ class AlphabetDetector:
         return self.only_alphabet_chars(unistr, 'CYRILLIC')
 
     def is_latin(self, unistr):
-        return True if self.only_alphabet_chars(unistr, 'LATIN') else False
+        return self.only_alphabet_chars(unistr, 'LATIN')
 
     def is_arabic(self, unistr):
         return True if self.only_alphabet_chars(unistr, 'ARABIC') else False
