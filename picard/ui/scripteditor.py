@@ -446,7 +446,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         super().__init__(parent)
         self.examples = examples
 
-        self.setWindowTitle(self.TITLE)
+        self.setWindowTitle(_(self.TITLE))
         self.displaying = False
         self.loading = True
         self.ui = Ui_ScriptEditor()
@@ -1148,7 +1148,7 @@ class ScriptDetailsEditor(PicardDialog):
         self.ui.buttonBox.setFocus()
 
         self.setModal(True)
-        self.setWindowTitle(self.TITLE)
+        self.setWindowTitle(_(self.TITLE))
         self.skip_change_check = False
 
     def has_changed(self):
