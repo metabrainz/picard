@@ -74,7 +74,7 @@ class AlphabetDetector:
         return self.only_alphabet_chars(unistr, 'HIRAGANA')
 
     def is_katakana(self, unistr):
-        return True if self.only_alphabet_chars(unistr, 'KATAKANA') else False
+        return self.only_alphabet_chars(unistr, 'KATAKANA')
 
     def is_thai(self, unistr):
         return True if self.only_alphabet_chars(unistr, 'THAI') else False
