@@ -68,7 +68,7 @@ class AlphabetDetector:
         return self.only_alphabet_chars(unistr, 'CJK')
 
     def is_hangul(self, unistr):
-        return True if self.only_alphabet_chars(unistr, 'HANGUL') else False
+        return self.only_alphabet_chars(unistr, 'HANGUL')
 
     def is_hiragana(self, unistr):
         return self.only_alphabet_chars(unistr, 'HIRAGANA')
