@@ -52,7 +52,7 @@ from picard.script import (
 )
 from picard.script.serializer import (
     FileNamingScript,
-    ScriptImportError,
+    ScriptImportExportError,
 )
 from picard.util import (
     icontheme,
@@ -1026,91 +1026,25 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """Import from an external text file to a new script. Import can be either a plain text script or
         a naming script package.
         """
-        FILE_ERROR_IMPORT = N_('Error importing "%s". %s.')
-        FILE_ERROR_DECODE = N_('Error decoding "%s". %s.')
-
         if not self.unsaved_changes_confirmation():
             return
-
-        dialog_title = _("Import Script File")
-        dialog_file_types = self._get_dialog_filetypes()
-        options = QtWidgets.QFileDialog.Options()
-        options |= QtWidgets.QFileDialog.DontUseNativeDialog
-        filename, file_type = QtWidgets.QFileDialog.getOpenFileName(self, dialog_title, self.default_script_directory, dialog_file_types, options=options)
-        if filename:
-            log.debug('Importing naming script file: %s' % filename)
-            try:
-                with open(filename, 'r', encoding='utf8') as i_file:
-                    file_content = i_file.read()
-            except OSError as error:
-                self.output_file_error(FILE_ERROR_IMPORT, filename, error.strerror)
-                return
-            if not file_content.strip():
-                self.output_file_error(FILE_ERROR_IMPORT, filename, _('The file was empty'))
-                return
-            if file_type == self.FILE_TYPE_PACKAGE:
-                try:
-                    script_item = FileNamingScript().create_from_yaml(file_content)
-                except ScriptImportError as error:
-                    self.output_file_error(FILE_ERROR_DECODE, filename, error)
-                    return
-            else:
-                script_item = FileNamingScript(
-                    title=_("Imported from %s") % filename,
-                    script=file_content.strip()
-                )
+        try:
+            script_item = FileNamingScript().import_script(self)
+        except ScriptImportExportError as error:
+            self.output_file_error(error.format, error.filename, error.error_msg)
+            return
+        if script_item:
             self._insert_item(script_item.to_dict())
 
     def export_script(self):
         """Export the current script to an external file. Export can be either as a plain text
         script or a naming script package.
         """
-        FILE_ERROR_EXPORT = N_('Error exporting file "%s". %s.')
-
         script_item = FileNamingScript.create_from_dict(script_dict=self.get_selected_item(), create_new_id=False)
-        script_text = self.get_script()
-
-        if script_text:
-            default_path = os.path.normpath(os.path.join(self.default_script_directory, self.default_script_filename))
-            dialog_title = _("Export Script File")
-            dialog_file_types = self._get_dialog_filetypes()
-            options = QtWidgets.QFileDialog.Options()
-            options |= QtWidgets.QFileDialog.DontUseNativeDialog
-            filename, file_type = QtWidgets.QFileDialog.getSaveFileName(self, dialog_title, default_path, dialog_file_types, options=options)
-            if filename:
-                # Fix issue where Qt may set the extension twice
-                (name, ext) = os.path.splitext(filename)
-                if ext and str(name).endswith('.' + ext):
-                    filename = name
-                log.debug('Exporting naming script file: %s' % filename)
-                if file_type == self.FILE_TYPE_PACKAGE:
-                    script_text = script_item.to_yaml()
-                try:
-                    with open(filename, 'w', encoding='utf8') as o_file:
-                        o_file.write(script_text)
-                except OSError as error:
-                    self.output_file_error(FILE_ERROR_EXPORT, filename, error.strerror)
-                else:
-                    dialog = QtWidgets.QMessageBox(
-                        QtWidgets.QMessageBox.Information,
-                        _("Export Script"),
-                        _("Script successfully exported to %s") % filename,
-                        QtWidgets.QMessageBox.Ok,
-                        self
-                    )
-                    dialog.exec_()
-
-    def _get_dialog_filetypes(self):
-        """Helper function to build file type string used in the file dialogs.
-
-        Returns:
-            str: File type selection string
-        """
-        return ";;".join((
-            self.FILE_TYPE_PACKAGE,
-            self.FILE_TYPE_SCRIPT,
-            self.FILE_TYPE_ALL,
-        ))
+        try:
+            script_item.export_script(parent=self)
+        except ScriptImportExportError as error:
+            self.output_file_error(error.format, error.filename, error.error_msg)
 
     def reset_script(self):
         """Reset the script to the last saved value.

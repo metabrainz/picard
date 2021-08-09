@@ -25,11 +25,18 @@ from enum import (
     IntEnum,
     unique,
 )
+import os
 from typing import Mapping
 import uuid
 
 import yaml
 
+from PyQt5 import (
+    QtCore,
+    QtWidgets,
+)
+
+from picard import log
 from picard.const import (
     DEFAULT_SCRIPT_NAME,
     SCRIPT_LANGUAGE_VERSION,
@@ -44,6 +51,13 @@ class PicardScriptType(IntEnum):
     BASE = 0
     TAGGER = 1
     FILENAMING = 2
+
+
+class ScriptImportExportError(Exception):
+    def __init__(self, *args, format=None, filename=None, error_msg=None):
+        self.format = format
+        self.filename = filename
+        self.error_msg = error_msg
 
 
 class ScriptImportError(Exception):
@@ -178,6 +192,80 @@ class PicardScript():
         items["script"] = str(items["script"])
         return items
 
+    def export_script(self, parent=None):
+        """Export the script to a file.
+        """
+        # return _export_script_dialog(script_item=self, parent=parent)
+        FILE_ERROR_EXPORT = N_('Error exporting file "%s". %s.')
+
+        default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DocumentsLocation))
+        default_script_extension = "ptsp"
+        script_filename = ".".join((self.filename, default_script_extension))
+        default_path = os.path.normpath(os.path.join(default_script_directory, script_filename))
+
+        dialog_title = _("Export Script File")
+        dialog_file_types = self._get_dialog_filetypes()
+        options = QtWidgets.QFileDialog.Options()
+        filename, file_type = QtWidgets.QFileDialog.getSaveFileName(parent, dialog_title, default_path, dialog_file_types, options=options)
+        if not filename:
+            return False
+        # Fix issue where Qt may set the extension twice
+        (name, ext) = os.path.splitext(filename)
+        if ext and str(name).endswith('.' + ext):
+            filename = name
+        log.debug('Exporting script file: %s' % filename)
+        if file_type == self._file_types()['package']:
+            script_text = self.to_yaml()
+        else:
+            script_text = self.script + "\n"
+        try:
+            with open(filename, 'w', encoding='utf8') as o_file:
+                o_file.write(script_text)
+        except OSError as error:
+            raise ScriptImportExportError(format=FILE_ERROR_EXPORT, filename=filename, error_msg=error.strerror)
+        dialog = QtWidgets.QMessageBox(
+            QtWidgets.QMessageBox.Information,
+            _("Export Script"),
+            _("Script successfully exported to %s") % filename,
+            QtWidgets.QMessageBox.Ok,
+            parent
+        )
+        dialog.exec_()
+        return True
+
+    @classmethod
+    def import_script(cls, parent=None):
+        """Import a script from a file.
+        """
+        FILE_ERROR_IMPORT = N_('Error importing "%s". %s.')
+        FILE_ERROR_DECODE = N_('Error decoding "%s". %s.')
+
+        dialog_title = _("Import Script File")
+        dialog_file_types = cls._get_dialog_filetypes()
+        default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DocumentsLocation))
+        options = QtWidgets.QFileDialog.Options()
+        filename, file_type = QtWidgets.QFileDialog.getOpenFileName(parent, dialog_title, default_script_directory, dialog_file_types, options=options)
+        if not filename:
+            return None
+        log.debug('Importing script file: %s' % filename)
+        try:
+            with open(filename, 'r', encoding='utf8') as i_file:
+                file_content = i_file.read()
+        except OSError as error:
+            raise ScriptImportExportError(format=FILE_ERROR_IMPORT, filename=filename, error_msg=error.strerror)
+        if not file_content.strip():
+            raise ScriptImportExportError(format=FILE_ERROR_IMPORT, filename=filename, error_msg=N_('The file was empty'))
+        if file_type == cls._file_types()['package']:
+            try:
+                return cls().create_from_yaml(file_content)
+            except ScriptImportError as error:
+                raise ScriptImportExportError(format=FILE_ERROR_DECODE, filename=filename, error_msg=error)
+        else:
+            return cls(
+                title=_("Imported from %s") % filename,
+                script=file_content.strip()
+            )
+
     @classmethod
     def create_from_dict(cls, script_dict, create_new_id=True):
         """Creates an instance based on the contents of the dictionary provided.
@@ -249,6 +337,51 @@ class PicardScript():
     @property
     def filename(self):
         return make_filename_from_title(self.title, _("Unnamed Script"))
+
+    @classmethod
+    def _file_types(cls):
+        """Helper function to provide standard import/export file types (translated).
+
+        Returns:
+            dict: Diction of the standard file types
+        """
+        return {
+            'all': _("All Files") + " (*)",
+            'script': _("Picard Script Files") + " (*.pts *.txt)",
+            'package': _("Picard Script Package") + " (*.ptsp *.yaml)",
+        }
+
+    @classmethod
+    def _get_dialog_filetypes(cls):
+        """Helper function to build file type string used in the file dialogs.
+
+        Returns:
+            str: File type selection string
+        """
+        file_types = cls._file_types()
+        return ";;".join((
+            file_types['package'],
+            file_types['script'],
+            file_types['all'],
+        ))
+
+
+class TaggingScript(PicardScript):
+    """Picard tagging script class
+    """
+    TYPE = PicardScriptType.TAGGER
+    OUTPUT_FIELDS = ('title', 'script_language_version', 'script', 'id')
+
+    def __init__(self, script='', title='', id=None, last_updated=None, script_language_version=None):
+        """Creates a Picard tagging script object.
+
+        Args:
+            script (str): Text of the script.
+            title (str): Title of the script.
+            id (str): ID code for the script. Defaults to a system generated uuid.
+            last_updated (str): The UTC date and time when the script was last updated. Defaults to current date/time.
+        """
+        super().__init__(script=script, title=title, id=id, last_updated=last_updated, script_language_version=script_language_version)
 
 
 class FileNamingScript(PicardScript):
