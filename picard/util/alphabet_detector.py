@@ -48,7 +48,7 @@ class AlphabetDetector:
                    for char in unistr if char.isalpha())
 
     def is_greek(self, unistr):
-        return True if self.only_alphabet_chars(unistr, 'GREEK') else False
+        return self.only_alphabet_chars(unistr, 'GREEK')
 
     def is_cyrillic(self, unistr):
         return True if self.only_alphabet_chars(unistr, 'CYRILLIC') else False
