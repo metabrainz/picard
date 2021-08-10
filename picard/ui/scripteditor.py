@@ -382,7 +382,7 @@ def populate_script_selection_combo_box(naming_scripts, selected_script_id, comb
         naming_script = script_item.to_dict()
         naming_script["deletable"] = False
         naming_script["readonly"] = True
-        idx = _add_and_check(idx, count, naming_script['title'], naming_script)
+        idx = _add_and_check(idx, count, _(naming_script['title']), naming_script)
 
     combo_box.setCurrentIndex(idx)
     combo_box.blockSignals(False)
@@ -446,11 +446,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         super().__init__(parent)
         self.examples = examples
 
-        self.FILE_TYPE_ALL = _("All Files") + " (*)"
-        self.FILE_TYPE_SCRIPT = _("Picard Script Files") + " (*.pts *.txt)"
-        self.FILE_TYPE_PACKAGE = _("Picard Naming Script Package") + " (*.ptsp *.yaml)"
-
-        self.setWindowTitle(self.TITLE)
+        self.setWindowTitle(_(self.TITLE))
         self.displaying = False
         self.loading = True
         self.ui = Ui_ScriptEditor()
@@ -1152,7 +1148,7 @@ class ScriptDetailsEditor(PicardDialog):
         self.ui.buttonBox.setFocus()
 
         self.setModal(True)
-        self.setWindowTitle(self.TITLE)
+        self.setWindowTitle(_(self.TITLE))
         self.skip_change_check = False
 
     def has_changed(self):
