@@ -1,6 +1,6 @@
 # 
 # Translators:
-# Adolfo Jayme Barrientos, 2016
+# Adolfo Jayme-Barrientos, 2016
 # Alexander Dupuy <alex.dupuy@mac.com>, 2012
 # 3b2b9b2970dff2223d07f096c7a072f3, 2011
 # Héctor Arroyo <churruka@hangar18.cc>, 2012

@@ -5,7 +5,7 @@
 # Atsushi Nakamura <r1990297@gmail.com>, 2020
 # john doe, 2018
 # Keshav Kini <keshav.kini@gmail.com>, 2013
-# ktu0457, 2017
+# 532fd2f58e02ecfdf896ec90dcdd61a5_8e0e62b, 2017
 # mai inoue, 2015
 # mai inoue, 2015
 # Masuda Sunatomo <sunatomo@gmail.com>, 2021
