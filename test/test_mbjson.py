@@ -55,6 +55,7 @@ settings = {
     "release_ars": True,
     "preferred_release_countries": [],
     "artist_locale": 'en',
+    "translate_artist_names_exception": False,
 }
 
 
