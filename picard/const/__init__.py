@@ -120,6 +120,9 @@ for k, v in MB_ATTRIBUTES.items():
     elif k.startswith('DB:release_status/name:'):
         RELEASE_STATUS[v] = v
 
+# List of available charsets
+from picard.const.charsets import CHAR_SETS  # noqa: F401,E402 # pylint: disable=unused-import
+
 # Release countries
 from picard.const.countries import RELEASE_COUNTRIES  # noqa: F401,E402 # pylint: disable=unused-import
 
@@ -128,9 +131,6 @@ from picard.const.languages import UI_LANGUAGES  # noqa: F401,E402 # pylint: dis
 
 # List of alias locales
 from picard.const.locales import ALIAS_LOCALES  # noqa: F401,E402 # pylint: disable=unused-import
-
-# List of available charsets
-from picard.const.charsets import CHAR_SETS  # noqa: F401,E402 # pylint: disable=unused-import
 
 # List of official musicbrainz servers - must support SSL for mblogin requests (such as collections).
 MUSICBRAINZ_SERVERS = [
