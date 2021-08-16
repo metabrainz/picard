@@ -29,13 +29,12 @@
 from picard.config import get_config
 from picard.const import RELEASE_FORMATS
 from picard.util import (
+    alphabet_detector,
     format_time,
     linear_combination_of_weights,
     parse_amazon_url,
     translate_from_sortname,
 )
-
-from picard.util.alphabet_detector import AlphabetDetector
 
 
 _artist_rel_types = {
@@ -199,7 +198,7 @@ def _translate_artist_node(node):
         if config.setting['translate_artist_names_exception']:
             char_set_exception = config.setting["artist_locale_exception"]
 
-            ad = AlphabetDetector()
+            ad = alphabet_detector.AlphabetDetector()
             char_sets = ad.detect_alphabet(node['name'])
 
             if char_set_exception in char_sets:
