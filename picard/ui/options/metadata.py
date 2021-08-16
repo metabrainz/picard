@@ -31,7 +31,10 @@ from picard.config import (
     TextOption,
     get_config,
 )
-from picard.const import ALIAS_LOCALES, CHAR_SETS
+from picard.const import (
+    ALIAS_LOCALES,
+    CHAR_SETS,
+)
 
 from picard.ui.options import (
     OptionsPage,
