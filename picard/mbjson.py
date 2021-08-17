@@ -28,8 +28,8 @@
 
 from picard.config import get_config
 from picard.const import RELEASE_FORMATS
+from picard.util.alphabet_detector import detect_alphabet
 from picard.util import (
-    alphabet_detector,
     format_time,
     linear_combination_of_weights,
     parse_amazon_url,
@@ -196,7 +196,7 @@ def _translate_artist_node(node):
         lang = locale.split("_")[0]
 
         if (config.setting['translate_artist_names_exception'] and
-                config.setting["artist_locale_exception"] in alphabet_detector.detect_alphabet(node['name'])):
+                config.setting["artist_locale_exception"] in detect_alphabet(node['name'])):
             return node['name'], node['sort-name']
 
         if "aliases" in node:
