@@ -195,14 +195,9 @@ def _translate_artist_node(node):
         locale = config.setting["artist_locale"]
         lang = locale.split("_")[0]
 
-        if config.setting['translate_artist_names_exception']:
-            char_set_exception = config.setting["artist_locale_exception"]
-
-            ad = alphabet_detector.AlphabetDetector()
-            char_sets = ad.detect_alphabet(node['name'])
-
-            if char_set_exception in char_sets:
-                return node['name'], node['sort-name']
+        if (config.setting['translate_artist_names_exception'] and
+                config.setting["artist_locale_exception"] in alphabet_detector.detect_alphabet(node['name'])):
+            return node['name'], node['sort-name']
 
         if "aliases" in node:
             result = (-1, (None, None))

@@ -22,58 +22,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from collections import defaultdict
 import unicodedata as ud
 
 
-class AlphabetDetector:
-    def __init__(self, no_memory=False):
-        self.alphabet_letters = defaultdict(dict)
-        self.no_memory = no_memory
-
-    def is_in_alphabet(self, uchr, alphabet):
-        if self.no_memory:
-            return alphabet in ud.name(uchr)
-        try:
-            return self.alphabet_letters[alphabet][uchr]
-        except KeyError:
-            return self.alphabet_letters[alphabet].setdefault(
-                uchr, alphabet in ud.name(uchr))
-
-    def only_alphabet_chars(self, unistr, alphabet):
-        return all(self.is_in_alphabet(uchr, alphabet)
-                   for uchr in unistr if uchr.isalpha())
-
-    def detect_alphabet(self, unistr):
-        return set(ud.name(char).split(' ')[0]
-                   for char in unistr if char.isalpha())
-
-    def is_greek(self, unistr):
-        return self.only_alphabet_chars(unistr, 'GREEK')
-
-    def is_cyrillic(self, unistr):
-        return self.only_alphabet_chars(unistr, 'CYRILLIC')
-
-    def is_latin(self, unistr):
-        return self.only_alphabet_chars(unistr, 'LATIN')
-
-    def is_arabic(self, unistr):
-        return self.only_alphabet_chars(unistr, 'ARABIC')
-
-    def is_hebrew(self, unistr):
-        return self.only_alphabet_chars(unistr, 'HEBREW')
-
-    def is_cjk(self, unistr):
-        return self.only_alphabet_chars(unistr, 'CJK')
-
-    def is_hangul(self, unistr):
-        return self.only_alphabet_chars(unistr, 'HANGUL')
-
-    def is_hiragana(self, unistr):
-        return self.only_alphabet_chars(unistr, 'HIRAGANA')
-
-    def is_katakana(self, unistr):
-        return self.only_alphabet_chars(unistr, 'KATAKANA')
-
-    def is_thai(self, unistr):
-        return self.only_alphabet_chars(unistr, 'THAI')
+def detect_alphabet(unistr):
+    return set(ud.name(char).split(' ')[0]
+               for char in unistr if char.isalpha())
