@@ -163,6 +163,31 @@ class CommonId3Tests:
             self.assertEqual(len(new_metadata['performer:piano']), len(original_metadata['performer:piano']))
 
         @skipUnlessTestfile
+        def test_performer_no_role_tmcl(self):
+            metadata = Metadata({
+                'performer': 'Performer',
+                'performer:piano': 'Performer Piano',
+            })
+            save_metadata(self.filename, metadata)
+            raw_metadata = load_raw(self.filename)
+            self.assertIn(['piano', 'Performer Piano'], raw_metadata['TMCL'].people)
+            self.assertIn(['performer', 'Performer'], raw_metadata['TMCL'].people)
+            self.assertNotIn('TXXX:performer', raw_metadata)
+
+        @skipUnlessTestfile
+        def test_performer_no_role_tipl(self):
+            config.setting['write_id3v23'] = True
+            metadata = Metadata({
+                'performer': 'Performer',
+                'performer:piano': 'Performer Piano',
+            })
+            save_metadata(self.filename, metadata)
+            raw_metadata = load_raw(self.filename)
+            self.assertIn(['piano', 'Performer Piano'], raw_metadata['TIPL'].people)
+            self.assertIn(['performer', 'Performer'], raw_metadata['TIPL'].people)
+            self.assertNotIn('TXXX:performer', raw_metadata)
+
+        @skipUnlessTestfile
         def test_comment_delete(self):
             metadata = Metadata(self.tags)
             metadata['comment:bar'] = 'Foo'

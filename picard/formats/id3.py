@@ -292,8 +292,12 @@ class ID3File(File):
                         metadata.add(name, text)
             elif frameid == "TMCL":
                 for role, name in frame.people:
-                    if role or name:
+                    if role == 'performer':
+                        role = ''
+                    if role:
                         metadata.add('performer:%s' % role, name)
+                    else:
+                        metadata.add('performer', name)
             elif frameid == "TIPL":
                 # If file is ID3v2.3, TIPL tag could contain TMCL
                 # so we will test for TMCL values and add to TIPL if not TMCL
@@ -301,7 +305,12 @@ class ID3File(File):
                     if role in self._tipl_roles and name:
                         metadata.add(self._tipl_roles[role], name)
                     else:
-                        metadata.add('performer:%s' % role, name)
+                        if role == 'performer':
+                            role = ''
+                        if role:
+                            metadata.add('performer:%s' % role, name)
+                        else:
+                            metadata.add('performer', name)
             elif frameid == 'TXXX':
                 name = frame.desc
                 name_lower = name.lower()
@@ -433,8 +442,11 @@ class ID3File(File):
 
             if not self.supports_tag(name):
                 continue
-            elif name.startswith('performer:'):
-                role = name.split(':', 1)[1]
+            elif name == 'performer' or name.startswith('performer:'):
+                if ':' in name:
+                    role = name.split(':', 1)[1]
+                else:
+                    role = 'performer'
                 for value in values:
                     if config.setting['write_id3v23']:
                         # TIPL will be upgraded to IPLS
