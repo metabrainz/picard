@@ -49,8 +49,10 @@ binaries = []
 data_files = get_locale_messages()
 
 fpcalc_name = 'fpcalc'
+ab_extractor_name = 'streaming_extractor_music'
 if os_name == 'Windows':
     fpcalc_name = 'fpcalc.exe'
+    ab_extractor_name = 'streaming_extractor_music.exe'
     binaries += [('discid.dll', '.')]
     data_files.append((os.path.join('resources', 'win10', '*'), '.'))
 
@@ -59,6 +61,9 @@ if os_name == 'Darwin':
 
 if os.path.isfile(fpcalc_name):
     binaries += [(fpcalc_name, '.')]
+
+if os.path.isfile(ab_extractor_name):
+    binaries += [(ab_extractor_name, '.')]
 
 runtime_hooks = []
 if os_name == 'Windows':

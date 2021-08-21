@@ -4,7 +4,10 @@ Param(
   $DiscidVersion,
   [Parameter(Mandatory=$true)]
   [String]
-  $FpcalVersion
+  $FpcalVersion,
+  [Parameter(Mandatory=$true)]
+  [String]
+  $AbextractorVersion
 )
 
 $ErrorActionPreference = "Stop"
@@ -37,3 +40,10 @@ DownloadFile -Url "https://github.com/acoustid/chromaprint/releases/download/v$F
     -FileName $ArchiveFile
 Expand-Archive -Path $ArchiveFile -DestinationPath .\build\fpcalc -Force
 Copy-Item .\build\fpcalc\chromaprint-fpcalc-$FpcalVersion-windows-x86_64\fpcalc.exe .
+
+$ArchiveFile = ".\build\abz.zip"
+Write-Output "Downloading AcousticBrainz extractor $AbextractorVersion to $ArchiveFile..."
+DownloadFile -Url "https://ftp.acousticbrainz.org/pub/acousticbrainz/essentia-extractor-$AbextractorVersion-win-i686.zip" `
+    -FileName $ArchiveFile
+Expand-Archive -Path $ArchiveFile -DestinationPath .\build\abz -Force
+Copy-Item .\build\abz\streaming_extractor_music.exe .

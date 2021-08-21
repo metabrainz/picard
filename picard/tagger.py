@@ -25,7 +25,7 @@
 # Copyright (C) 2018 Bob Swift
 # Copyright (C) 2018 virusMac
 # Copyright (C) 2019 Joel Lintunen
-# Copyright (C) 2020 Gabriel Ferreira
+# Copyright (C) 2020-2021 Gabriel Ferreira
 # Copyright (C) 2020 Julius Michaelis
 #
 # This program is free software; you can redistribute it and/or
@@ -69,6 +69,12 @@ from picard import (
     PICARD_ORG_NAME,
     acoustid,
     log,
+)
+from picard.acousticbrainz import (
+    ab_available,
+    ab_extractor_callback,
+    ab_feature_extraction,
+    ab_setup_extractor,
 )
 from picard.acoustid.manager import AcoustIDManager
 from picard.album import (
@@ -256,6 +262,10 @@ class Tagger(QtWidgets.QApplication):
         self._acoustid = acoustid.AcoustIDClient(acoustid_api)
         self._acoustid.init()
         self.acoustidmanager = AcoustIDManager(acoustid_api)
+
+        # Setup AcousticBrainz extraction
+        if config.setting["use_acousticbrainz"]:
+            ab_setup_extractor()
 
         # Load plugins
         self.pluginmanager = PluginManager()
@@ -841,6 +851,37 @@ class Tagger(QtWidgets.QApplication):
         for file in iter_files_from_objects(objs):
             file.set_pending()
             self._acoustid.fingerprint(file, partial(finished, file))
+
+    def extract_and_submit_acousticbrainz_features(self, objs):
+        """Extract AcousticBrainz features and submit them."""
+        if not ab_available():
+            return
+
+        for file in iter_files_from_objects(objs):
+            # Skip unmatched files
+            if not file.can_extract():
+                log.warning("AcousticBrainz requires a MusicBrainz Recording ID, but file does not have it: %s" % file.filename)
+            # And process matched ones
+            else:
+                file.set_pending()
+
+                # Check if file was either already processed or sent to the AcousticBrainz server
+                if file.acousticbrainz_features_file:
+                    results = (file.acousticbrainz_features_file, 0, "Writing results")
+                    ab_extractor_callback(self, file, results, False)
+                elif file.acousticbrainz_is_duplicate:
+                    results = (None, 0, "Duplicate")
+                    ab_extractor_callback(self, file, results, False)
+                else:
+                    file.acousticbrainz_error = False
+                    # Launch the acousticbrainz on a separate process
+                    log.debug("Extracting AcousticBrainz features from %s" % file.filename)
+                    ab_feature_extraction(
+                        self,
+                        file.metadata["musicbrainz_recordingid"],
+                        file.filename,
+                        partial(ab_extractor_callback, self, file)
+                    )
 
     # =======================================================================
     #  Metadata-based lookups

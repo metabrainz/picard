@@ -1,5 +1,9 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
+    <file>images/16x16/acousticbrainz-submit.png</file>
+    <file>images/16x16/acousticbrainz-submit@2x.png</file>
+    <file>images/16x16/acousticbrainz.png</file>
+    <file>images/16x16/acousticbrainz@2x.png</file>
     <file>images/16x16/acoustid-fingerprinter.png</file>
     <file>images/16x16/acoustid-fingerprinter@2x.png</file>
     <file>images/16x16/action-go-down-16.png</file>
@@ -87,6 +91,10 @@
     <file>images/16x16/speaker-100@2x.png</file>
     <file>images/16x16/view-refresh.png</file>
     <file>images/16x16/view-refresh@2x.png</file>
+    <file>images/22x22/acousticbrainz-submit.png</file>
+    <file>images/22x22/acousticbrainz-submit@2x.png</file>
+    <file>images/22x22/acousticbrainz.png</file>
+    <file>images/22x22/acousticbrainz@2x.png</file>
     <file>images/22x22/acoustid-fingerprinter.png</file>
     <file>images/22x22/acoustid-fingerprinter@2x.png</file>
     <file>images/22x22/document-open.png</file>
