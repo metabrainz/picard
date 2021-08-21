@@ -158,6 +158,10 @@ class File(QtCore.QObject, Item):
         self.acoustid_length = 0
         self.match_recordingid = None
 
+        self.acousticbrainz_is_duplicate = False
+        self.acousticbrainz_features_file = None
+        self.acousticbrainz_error = False
+
     def __repr__(self):
         return '<%s %r>' % (type(self).__name__, self.base_filename)
 
@@ -701,6 +705,11 @@ class File(QtCore.QObject, Item):
 
     def can_view_info(self):
         return True
+
+    def can_extract(self):
+        if self.metadata["musicbrainz_recordingid"]:
+            return True
+        return False
 
     def _info(self, metadata, file):
         if hasattr(file.info, 'length'):

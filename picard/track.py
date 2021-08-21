@@ -235,6 +235,13 @@ class Track(DataObject, FileListItem):
     def can_view_info(self):
         return self.num_linked_files == 1 or self.metadata.images
 
+    def can_extract(self):
+        """Return if this object has a linked file with a recordingId, required by the AcosuticBrainz feature extractor."""
+        for file in self.files:
+            if file.can_extract():
+                return True
+        return False
+
     def column(self, column):
         m = self.metadata
         if column == 'title':

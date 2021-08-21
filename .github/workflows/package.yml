@@ -30,6 +30,7 @@ jobs:
     env:
       DISCID_VERSION: 0.6.2
       FPCALC_VERSION: 1.5.0
+      ABEXTRACTOR_VERSION: v2.1_beta2-2-gbb40004
       PYTHON_VERSION: 3.9.5
       MACOSX_DEPLOYMENT_TARGET: ${{ matrix.macos-deployment-version }}
     steps:
@@ -127,7 +128,7 @@ jobs:
         python-version: 3.8
     - name: Setup Windows build environment
       run: |
-        & .\scripts\package\win-setup.ps1 -DiscidVersion $Env:DISCID_VERSION -FpcalVersion $Env:FPCALC_VERSION
+        & .\scripts\package\win-setup.ps1 -DiscidVersion $Env:DISCID_VERSION -FpcalVersion $Env:FPCALC_VERSION -AbextractorVersion $Env:ABEXTRACTOR_VERSION
         Write-Output "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
         $ReleaseTag = $(git describe --match "release-*" --abbrev=0 --always HEAD)
         $BuildNumber = $(git rev-list --count "$ReleaseTag..HEAD")
@@ -136,6 +137,7 @@ jobs:
       env:
         DISCID_VERSION: 0.6.2
         FPCALC_VERSION: 1.5.0
+        ABEXTRACTOR_VERSION: v2.1_beta2-1-ge3940c0
     - name: Patch build version
       if: startsWith(github.ref, 'refs/tags/') != true
       run: |

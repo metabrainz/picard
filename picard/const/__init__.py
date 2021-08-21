@@ -57,6 +57,12 @@ USER_PLUGIN_DIR = os.path.normpath(os.path.join(USER_DIR, "plugins"))
 CACHE_DIR = os.path.normpath(QStandardPaths.writableLocation(QStandardPaths.CacheLocation))
 CACHE_SIZE_IN_BYTES = 100*1000*1000
 
+# AcousticBrainz
+ACOUSTICBRAINZ_HOST = 'acousticbrainz.org'
+ACOUSTICBRAINZ_PORT = 443
+ACOUSTICBRAINZ_DOWNLOAD_URL = 'https://acousticbrainz.org/download'
+EXTRACTOR_NAMES = ['streaming_extractor_music']
+
 # AcoustID client API key
 ACOUSTID_KEY = 'v8pQ6oyB'
 ACOUSTID_HOST = 'api.acoustid.org'

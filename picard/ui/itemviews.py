@@ -165,6 +165,7 @@ class MainPanel(QtWidgets.QSplitter):
         (N_('Media'), 'media'),
         (N_('Genre'), 'genre'),
         (N_('Fingerprint status'), '~fingerprint'),
+        (N_('AcousticBrainz status'), '~acousticbrainz'),
         (N_('Date'), 'date'),
         (N_('Original Release Date'), 'originaldate'),
         (N_('Cover'), 'covercount'),
@@ -177,6 +178,7 @@ class MainPanel(QtWidgets.QSplitter):
     DISCNUMBER_COLUMN = _column_indexes['discnumber']
     LENGTH_COLUMN = _column_indexes['~length']
     FINGERPRINT_COLUMN = _column_indexes['~fingerprint']
+    ACOUSTICBRAINZ_COLUMN = _column_indexes['~acousticbrainz']
 
     NAT_SORT_COLUMNS = [
         _column_indexes['title'],
@@ -258,6 +260,7 @@ class MainPanel(QtWidgets.QSplitter):
         FileItem.icon_saved = QtGui.QIcon(":/images/track-saved.png")
         FileItem.icon_fingerprint = icontheme.lookup('fingerprint', icontheme.ICON_SIZE_MENU)
         FileItem.icon_fingerprint_gray = icontheme.lookup('fingerprint-gray', icontheme.ICON_SIZE_MENU)
+        FileItem.icon_acousticbrainz = icontheme.lookup('acousticbrainz', icontheme.ICON_SIZE_MENU)
         FileItem.match_icons = [
             QtGui.QIcon(":/images/match-50.png"),
             QtGui.QIcon(":/images/match-60.png"),
@@ -321,7 +324,7 @@ class MainPanel(QtWidgets.QSplitter):
                 break
 
 
-def paint_fingerprint_icon(painter, rect, icon):
+def paint_column_icon(painter, rect, icon):
     if not icon:
         return
     size = COLUMN_ICON_SIZE
@@ -359,7 +362,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
             if self.sectionSize(column) == 0:
                 self.resizeSection(column, self.defaultSectionSize())
             self._visible_columns.add(column)
-            if column == MainPanel.FINGERPRINT_COLUMN:
+            if column in {MainPanel.FINGERPRINT_COLUMN, MainPanel.ACOUSTICBRAINZ_COLUMN}:
                 self.setSectionResizeMode(column, QtWidgets.QHeaderView.Fixed)
                 self.resizeSection(column, COLUMN_ICON_SIZE)
             else:
@@ -408,19 +411,24 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
             painter.save()
             super().paintSection(painter, rect, index)
             painter.restore()
-            paint_fingerprint_icon(painter, rect, FileItem.icon_fingerprint_gray)
+            paint_column_icon(painter, rect, FileItem.icon_fingerprint_gray)
+        elif index == MainPanel.ACOUSTICBRAINZ_COLUMN:
+            painter.save()
+            super().paintSection(painter, rect, index)
+            painter.restore()
+            paint_column_icon(painter, rect, FileItem.icon_acousticbrainz)
         else:
             super().paintSection(painter, rect, index)
 
     def on_sort_indicator_changed(self, index, order):
-        if index == MainPanel.FINGERPRINT_COLUMN:
+        if index in {MainPanel.FINGERPRINT_COLUMN, MainPanel.ACOUSTICBRAINZ_COLUMN}:
             self.setSortIndicator(-1, QtCore.Qt.AscendingOrder)
 
     def lock(self, is_locked):
         super().lock(is_locked)
-        fingerprint_column_index = MainPanel.FINGERPRINT_COLUMN
-        if not self.is_locked and self.count() > fingerprint_column_index:
-            self.setSectionResizeMode(fingerprint_column_index, QtWidgets.QHeaderView.Fixed)
+        for column_index in {MainPanel.FINGERPRINT_COLUMN, MainPanel.ACOUSTICBRAINZ_COLUMN}:
+            if not self.is_locked and self.count() > column_index:
+                self.setSectionResizeMode(column_index, QtWidgets.QHeaderView.Fixed)
 
 
 class BaseTreeView(QtWidgets.QTreeWidget):
@@ -432,7 +440,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.panel = parent
         # Should multiple files dropped be assigned to tracks sequentially?
         self._move_to_multi_tracks = True
-        self.setHeaderLabels([_(h) if n != '~fingerprint' else ''
+        self.setHeaderLabels([_(h) if n not in {'~fingerprint', '~acousticbrainz'} else ''
                               for h, n in MainPanel.columns])
         self.restore_state()
 
@@ -886,6 +894,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         ]:
             self.setTextAlignment(column, QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
         self.setSizeHint(MainPanel.FINGERPRINT_COLUMN, ICON_SIZE)
+        self.setSizeHint(MainPanel.ACOUSTICBRAINZ_COLUMN, ICON_SIZE)
 
     def setText(self, column, text):
         self._sortkeys[column] = None
@@ -1043,10 +1052,15 @@ class TrackItem(TreeItem):
             fingerprint_icon, fingerprint_tooltip = FileItem.decide_fingerprint_icon_info(file)
             self.setToolTip(MainPanel.FINGERPRINT_COLUMN, fingerprint_tooltip)
             self.setIcon(MainPanel.FINGERPRINT_COLUMN, fingerprint_icon)
+            ab_icon, ab_tooltip = FileItem.decide_ab_icon_info(file)
+            self.setToolTip(MainPanel.ACOUSTICBRAINZ_COLUMN, ab_tooltip)
+            self.setIcon(MainPanel.ACOUSTICBRAINZ_COLUMN, ab_icon)
         else:
             self.setToolTip(MainPanel.TITLE_COLUMN, "")
             self.setToolTip(MainPanel.FINGERPRINT_COLUMN, "")
             self.setIcon(MainPanel.FINGERPRINT_COLUMN, QtGui.QIcon())
+            self.setToolTip(MainPanel.ACOUSTICBRAINZ_COLUMN, "")
+            self.setIcon(MainPanel.ACOUSTICBRAINZ_COLUMN, QtGui.QIcon())
             if track.ignored_for_completeness():
                 color = TreeItem.text_color_secondary
             else:
@@ -1102,6 +1116,9 @@ class FileItem(TreeItem):
         fingerprint_icon, fingerprint_tooltip = FileItem.decide_fingerprint_icon_info(file)
         self.setToolTip(MainPanel.FINGERPRINT_COLUMN, fingerprint_tooltip)
         self.setIcon(MainPanel.FINGERPRINT_COLUMN, fingerprint_icon)
+        ab_icon, ab_tooltip = FileItem.decide_ab_icon_info(file)
+        self.setToolTip(MainPanel.ACOUSTICBRAINZ_COLUMN, ab_tooltip)
+        self.setIcon(MainPanel.ACOUSTICBRAINZ_COLUMN, ab_icon)
         color = FileItem.file_colors[file.state]
         bgcolor = get_match_color(file.similarity, TreeItem.base_color)
         for i, column in enumerate(MainPanel.columns):
@@ -1158,3 +1175,22 @@ class FileItem(TreeItem):
             icon = QtGui.QIcon()
             tooltip = _('No fingerprint was calculated for this file, use "Scan" or "Generate AcoustID Fingerprints" to calculate the fingerprint.')
         return (icon, tooltip)
+
+    @staticmethod
+    def decide_ab_icon_info(file):
+        if file.acousticbrainz_error:
+            icon = TrackItem.icon_error
+            tooltip = _('Extraction or submission of Acoustic features failed')
+        elif file.acousticbrainz_is_duplicate:
+            icon = FileItem.icon_saved
+            if file.acousticbrainz_features_file is None:
+                tooltip = _('The server already has the features of this file')
+            else:
+                tooltip = _('Features have already been submitted')
+        else:
+            icon = FileItem.icon_file_pending
+            if file.acousticbrainz_features_file is None:
+                tooltip = _('No acoustic features were extracted from this file. Use "Submit Acoustic features" to extract and submit them')
+            else:
+                tooltip = _('Unsubmitted features')
+        return icon, tooltip

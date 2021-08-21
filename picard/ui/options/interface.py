@@ -116,6 +116,10 @@ class InterfaceOptionsPage(OptionsPage):
             'label': N_('Submit AcoustIDs'),
             'icon': 'acoustid-fingerprinter'
         },
+        'extract_and_submit_acousticbrainz_features_action': {
+            'label': N_('Submit AcousticBrainz features'),
+            'icon': 'acousticbrainz-submit'
+        },
         'generate_fingerprints_action': {
             'label': N_("Generate Fingerprints"),
             'icon': 'fingerprint'
@@ -163,6 +167,7 @@ class InterfaceOptionsPage(OptionsPage):
             'cd_lookup_action',
             'separator',
             'submit_acoustid_action',
+            'extract_and_submit_acousticbrainz_features_action'
         ]),
     ]
 

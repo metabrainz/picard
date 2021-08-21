@@ -47,6 +47,7 @@ import ntpath
 from operator import attrgetter
 import os
 import re
+import subprocess  # nosec: B404
 import sys
 from time import monotonic
 import unicodedata
@@ -301,11 +302,17 @@ def find_existing_path(path):
     return decode_filename(path)
 
 
+def _add_windows_executable_extension(*executables):
+    return [e if e.endswith(('.py', '.exe')) else e + '.exe' for e in executables]
+
+
 def find_executable(*executables):
     if IS_WIN:
-        executables = [e + '.exe' for e in executables]
+        executables = _add_windows_executable_extension(*executables)
     paths = [os.path.dirname(sys.executable)] if sys.executable else []
     paths += os.environ.get('PATH', '').split(os.pathsep)
+    paths.append('./')
+
     # This is for searching for executables bundled in packaged builds
     if IS_FROZEN:
         paths += [FROZEN_TEMP_PATH]
@@ -313,7 +320,34 @@ def find_executable(*executables):
         for executable in executables:
             f = os.path.join(path, executable)
             if os.path.isfile(f):
-                return f
+                return os.path.abspath(f)
+
+
+def run_executable(executable, *args, timeout=None):
+    # Prevent new shell window from appearing
+    startupinfo = None
+    if IS_WIN:
+        startupinfo = subprocess.STARTUPINFO()
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+
+    # Include python interpreter if running a python script
+    if ".py" in executable:
+        arguments = [sys.executable, executable, *args]
+    else:
+        arguments = [executable, *args]
+
+    # Call program with arguments
+    ret = subprocess.run(  # nosec: B603
+        arguments,
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        startupinfo=startupinfo,
+        timeout=timeout
+    )
+
+    # Return (error code, stdout and stderr)
+    return ret.returncode, ret.stdout.decode(sys.stdout.encoding), ret.stderr.decode(sys.stderr.encoding)
 
 
 _mbid_format = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
