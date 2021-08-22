@@ -94,7 +94,7 @@ class AcousticBrainzOptionsPage(OptionsPage):
         if not ab_check_version(extractor_path):
             extractor_path = find_extractor()
         # if an extractor couldn't be found, use the extractor name as a placeholder
-        if not ab_check_version(extractor_path):
+        if extractor_path is None or not ab_check_version(extractor_path):
             extractor_path = "streaming_extractor_music"
         else:
             self._searched_extractor = extractor_path  # keep extractor path to prevent unnecessary searches
@@ -132,11 +132,12 @@ class AcousticBrainzOptionsPage(OptionsPage):
             # If current path to extractor is empty, look for an extractor
             extractor_path = self._searched_extractor
 
-        version = ab_check_version(extractor_path)
-        if version:
-            self._acousticbrainz_extractor_set_success(_("Extractor version: ") + version)
-        else:
-            self._acousticbrainz_extractor_set_error()
+        if extractor_path:
+            version = ab_check_version(extractor_path)
+            if version:
+                self._acousticbrainz_extractor_set_success(_("Extractor version: ") + version)
+                return
+        self._acousticbrainz_extractor_set_error()
 
     def _acousticbrainz_extractor_set_success(self, version):
         self._extractor_valid = True
