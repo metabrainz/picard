@@ -400,7 +400,7 @@ def throttle(interval):
             else:
                 decorator.args = args
                 decorator.kwargs = kwargs
-                QtCore.QTimer.singleShot(r, later)
+                QtCore.QTimer.singleShot(int(r), later)
                 decorator.is_ticking = True
             mutex.unlock()
 

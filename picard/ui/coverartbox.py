@@ -135,7 +135,7 @@ class CoverArtThumbnail(ActiveLabel):
             event.acceptProposedAction()
 
     def scaled(self, *dimensions):
-        return (self.pixel_ratio * dimension for dimension in dimensions)
+        return (round(self.pixel_ratio * dimension) for dimension in dimensions)
 
     def show(self):
         self.set_data(self.data, True)
