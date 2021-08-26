@@ -139,9 +139,9 @@ def get_match_color(similarity, basecolor):
     c1 = (basecolor.red(), basecolor.green(), basecolor.blue())
     c2 = (223, 125, 125)
     return QtGui.QColor(
-        c2[0] + (c1[0] - c2[0]) * similarity,
-        c2[1] + (c1[1] - c2[1]) * similarity,
-        c2[2] + (c1[2] - c2[2]) * similarity)
+        int(c2[0] + (c1[0] - c2[0]) * similarity),
+        int(c2[1] + (c1[1] - c2[1]) * similarity),
+        int(c2[2] + (c1[2] - c2[2]) * similarity))
 
 
 class MainPanel(QtWidgets.QSplitter):
