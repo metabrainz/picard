@@ -90,6 +90,8 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.va_name_default.clicked.connect(self.set_va_name_default)
         self.ui.nat_name_default.clicked.connect(self.set_nat_name_default)
+        self.ui.translate_artist_names.stateChanged.connect(self.set_enabled_states)
+        self.ui.translate_artist_names_script_exception.stateChanged.connect(self.set_enabled_states)
 
     def load(self):
         config = get_config()
@@ -122,6 +124,8 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.standardize_instruments.setChecked(config.setting["standardize_instruments"])
         self.ui.guess_tracknumber_and_title.setChecked(config.setting["guess_tracknumber_and_title"])
 
+        self.set_enabled_states()
+
     def save(self):
         config = get_config()
         config.setting["translate_artist_names"] = self.ui.translate_artist_names.isChecked()
@@ -148,6 +152,13 @@ class MetadataOptionsPage(OptionsPage):
     def set_nat_name_default(self):
         self.ui.nat_name.setText(self.options[1].default)
         self.ui.nat_name.setCursorPosition(0)
+
+    def set_enabled_states(self):
+        translate_checked = self.ui.translate_artist_names.isChecked()
+        translate_exception_checked = self.ui.translate_artist_names_script_exception.isChecked()
+        self.ui.artist_locale.setEnabled(translate_checked)
+        self.ui.translate_artist_names_script_exception.setEnabled(translate_checked)
+        self.ui.artist_script_exception.setEnabled(translate_checked and translate_exception_checked)
 
 
 register_options_page(MetadataOptionsPage)

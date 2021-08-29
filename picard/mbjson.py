@@ -28,13 +28,13 @@
 
 from picard.config import get_config
 from picard.const import RELEASE_FORMATS
-from picard.util.script_detector import detect_script
 from picard.util import (
     format_time,
     linear_combination_of_weights,
     parse_amazon_url,
     translate_from_sortname,
 )
+from picard.util.script_detector import detect_script
 
 
 _artist_rel_types = {
