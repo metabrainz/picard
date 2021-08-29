@@ -183,7 +183,7 @@
   <tabstop>translate_artist_names</tabstop>
   <tabstop>artist_locale</tabstop>
   <tabstop>translate_artist_names_script_exception</tabstop>
-  <tabstop>artist_locale_exception</tabstop>
+  <tabstop>artist_script_exception</tabstop>
   <tabstop>standardize_artists</tabstop>
   <tabstop>standardize_instruments</tabstop>
   <tabstop>convert_punctuation</tabstop>
