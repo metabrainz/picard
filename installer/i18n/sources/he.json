@@ -1,7 +1,7 @@
 {
     "MsgAlreadyInstalled": "${PRODUCT_NAME} כבר מותקן ונדרש להסירו לפני השדרוג לגרסה  ${PRODUCT_VERSION}.\n\nלהמשך נא להקיש 'אוקיי' או 'ביטול' לביטול השדרוג.",
     "MsgApplicationRunning": "היישומון ${PRODUCT_NAME} פועל כעת. נא לסגור את היישומון ולנסות שנית.",
-    "MsgRequires64Bit": "גרסה זו של ${PRODUCT_NAME} דורשת מערכת הפעלה התומכת ב 64-ביט.",
+    "MsgRequires64Bit": "גרסה זו של ${PRODUCT_NAME} דורשת מערכת הפעלה התומכת ב־64-ביט.",
     "MuiDescriptionRequired": "התקנת ${PRODUCT_NAME}  יחד עם הקבצים הנחוצים להרצה.",
     "MuiDescriptionLang": "התקנת תרגומים של ${PRODUCT_NAME} לשפות אחרות.",
     "MuiDescriptionShortcuts": "התקנת קיצור-דרך להפעלה ${PRODUCT_NAME}.",

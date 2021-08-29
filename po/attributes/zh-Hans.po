@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-07-03 09:22+0000\n"
-"Last-Translator: York Young\n"
+"PO-Revision-Date: 2021-08-12 16:32+0000\n"
+"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
 "Language-Team: Chinese Simplified (http://www.transifex.com/musicbrainz/musicbrainz/language/zh-Hans/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1476,6 +1476,11 @@ msgstr "CED"
 #: DB:work_attribute_type/name:45
 msgctxt "work_attribute_type"
 msgid "COMPASS ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:73
+msgctxt "work_attribute_type"
+msgid "COSCAP ID"
 msgstr ""
 
 #: DB:work_attribute_type/name:65
@@ -3211,6 +3216,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Austrian rights society AKM"
 msgstr ""
 
+#: DB:work_attribute_type/description:73
+msgctxt "work_attribute_type"
+msgid "ID for the Barbadian rights society COSCAP"
+msgstr ""
+
 #: DB:work_attribute_type/description:28
 msgctxt "work_attribute_type"
 msgid "ID for the Belgian rights society SABAM"
@@ -3239,6 +3249,11 @@ msgstr ""
 #: DB:work_attribute_type/description:53
 msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SODRAC"
+msgstr ""
+
+#: DB:work_attribute_type/description:71
+msgctxt "work_attribute_type"
+msgid "ID for the Chinese rights society MCSC"
 msgstr ""
 
 #: DB:work_attribute_type/description:39
@@ -3321,6 +3336,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Icelandic rights society STEF"
 msgstr ""
 
+#: DB:work_attribute_type/description:70
+msgctxt "work_attribute_type"
+msgid "ID for the Indian rights society IPRS"
+msgstr ""
+
 #: DB:work_attribute_type/description:29
 msgctxt "work_attribute_type"
 msgid "ID for the International Copyright Enterprise"
@@ -3334,6 +3354,11 @@ msgstr ""
 #: DB:work_attribute_type/description:36
 msgctxt "work_attribute_type"
 msgid "ID for the Italian rights society SIAE"
+msgstr ""
+
+#: DB:work_attribute_type/description:69
+msgctxt "work_attribute_type"
+msgid "ID for the Jamaican rights society JACAP"
 msgstr ""
 
 #: DB:work_attribute_type/description:3
@@ -3436,6 +3461,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Taiwanese rights society MÜST"
 msgstr ""
 
+#: DB:work_attribute_type/description:72
+msgctxt "work_attribute_type"
+msgid "ID for the Thai rights society MCT"
+msgstr ""
+
 #: DB:work_attribute_type/description:65
 msgctxt "work_attribute_type"
 msgid "ID for the Trinidadian and Tobagonian rights society COTT"
@@ -3489,6 +3519,11 @@ msgstr ""
 #: DB:work_attribute_type/name:52
 msgctxt "work_attribute_type"
 msgid "IMRO ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:70
+msgctxt "work_attribute_type"
+msgid "IPRS ID"
 msgstr ""
 
 #: DB:work_attribute_type/name:14
@@ -3604,6 +3639,11 @@ msgid ""
 "Island is used for islands and atolls which don't form subdivisions of their"
 " own, e.g. Skye. These are not considered when displaying the parent areas "
 "for a given area."
+msgstr ""
+
+#: DB:work_attribute_type/name:69
+msgctxt "work_attribute_type"
+msgid "JACAP ID"
 msgstr ""
 
 #: DB:work_attribute_type/name:3
@@ -4265,6 +4305,16 @@ msgstr "Longa"
 #: DB:work_attribute_type/name:49
 msgctxt "work_attribute_type"
 msgid "MACP ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:71
+msgctxt "work_attribute_type"
+msgid "MCSC ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:72
+msgctxt "work_attribute_type"
+msgid "MCT ID"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:963

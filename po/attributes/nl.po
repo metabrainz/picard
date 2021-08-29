@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-06-30 18:50+0000\n"
+"PO-Revision-Date: 2021-08-12 19:02+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -1483,6 +1483,11 @@ msgstr "CED"
 msgctxt "work_attribute_type"
 msgid "COMPASS ID"
 msgstr "COMPASS-ID"
+
+#: DB:work_attribute_type/name:73
+msgctxt "work_attribute_type"
+msgid "COSCAP ID"
+msgstr "COSCAP-ID"
 
 #: DB:work_attribute_type/name:65
 msgctxt "work_attribute_type"
@@ -3217,6 +3222,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Austrian rights society AKM"
 msgstr "Een ID van de Oostenrijkse auteursrechtenorganisatie AKM"
 
+#: DB:work_attribute_type/description:73
+msgctxt "work_attribute_type"
+msgid "ID for the Barbadian rights society COSCAP"
+msgstr "Een ID van de Barbadiaanse auteursrechtenorganisatie COSCAP"
+
 #: DB:work_attribute_type/description:28
 msgctxt "work_attribute_type"
 msgid "ID for the Belgian rights society SABAM"
@@ -3246,6 +3256,11 @@ msgstr "Een ID van de Canadese auteursrechtenorganisatie SOCAN"
 msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SODRAC"
 msgstr "Een ID van de Canadese auteursrechtenorganisatie SODRAC"
+
+#: DB:work_attribute_type/description:71
+msgctxt "work_attribute_type"
+msgid "ID for the Chinese rights society MCSC"
+msgstr "Een ID van de Chinese auteursrechtenorganisatie MCSC"
 
 #: DB:work_attribute_type/description:39
 msgctxt "work_attribute_type"
@@ -3327,6 +3342,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Icelandic rights society STEF"
 msgstr "Een ID van de IJslandse auteursrechtenorganisatie STEF"
 
+#: DB:work_attribute_type/description:70
+msgctxt "work_attribute_type"
+msgid "ID for the Indian rights society IPRS"
+msgstr "Een ID van de Indiase auteursrechtenorganisatie IPRS"
+
 #: DB:work_attribute_type/description:29
 msgctxt "work_attribute_type"
 msgid "ID for the International Copyright Enterprise"
@@ -3341,6 +3361,11 @@ msgstr "Een ID van de Ierse auteursrechtenorganisatie IMRO"
 msgctxt "work_attribute_type"
 msgid "ID for the Italian rights society SIAE"
 msgstr "Een ID van de Italiaanse auteursrechtenorganisatie SIAE"
+
+#: DB:work_attribute_type/description:69
+msgctxt "work_attribute_type"
+msgid "ID for the Jamaican rights society JACAP"
+msgstr "Een ID van de Jamaicaanse auteursrechtenorganisatie JACAP"
 
 #: DB:work_attribute_type/description:3
 msgctxt "work_attribute_type"
@@ -3442,6 +3467,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Taiwanese rights society MÜST"
 msgstr "Een ID van de Taiwanese auteursrechtenorganisatie MÜST"
 
+#: DB:work_attribute_type/description:72
+msgctxt "work_attribute_type"
+msgid "ID for the Thai rights society MCT"
+msgstr "Een ID van de Thaise auteursrechtenorganisatie MCT"
+
 #: DB:work_attribute_type/description:65
 msgctxt "work_attribute_type"
 msgid "ID for the Trinidadian and Tobagonian rights society COTT"
@@ -3496,6 +3526,11 @@ msgstr "Een ID van het particuliere licentiebedrijf HFA (Harry Fox Agency)"
 msgctxt "work_attribute_type"
 msgid "IMRO ID"
 msgstr "IMRO-ID"
+
+#: DB:work_attribute_type/name:70
+msgctxt "work_attribute_type"
+msgid "IPRS ID"
+msgstr "IPRS-ID"
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
@@ -3611,6 +3646,11 @@ msgid ""
 " own, e.g. Skye. These are not considered when displaying the parent areas "
 "for a given area."
 msgstr "Eiland wordt gebruikt voor eilanden en atollen die geen eigen onderafdeling vormen, zoals het Britse eiland Skye. Eilanden worden niet getoond als bovenliggende gebieden van andere gebieden."
+
+#: DB:work_attribute_type/name:69
+msgctxt "work_attribute_type"
+msgid "JACAP ID"
+msgstr "JACAP-ID"
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
@@ -4272,6 +4312,16 @@ msgstr "Longa"
 msgctxt "work_attribute_type"
 msgid "MACP ID"
 msgstr "MACP-ID"
+
+#: DB:work_attribute_type/name:71
+msgctxt "work_attribute_type"
+msgid "MCSC ID"
+msgstr "MCSC-ID"
+
+#: DB:work_attribute_type/name:72
+msgctxt "work_attribute_type"
+msgid "MCT ID"
+msgstr "MCT-ID"
 
 #: DB:work_attribute_type_allowed_value/value:963
 msgctxt "work_attribute_type_allowed_value"

@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-07-24 12:39+0200\n"
-"PO-Revision-Date: 2021-07-24 22:03+0000\n"
+"POT-Creation-Date: 2021-08-23 07:49+0200\n"
+"PO-Revision-Date: 2021-08-23 09:26+0000\n"
 "Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
 "Language-Team: Finnish (http://www.transifex.com/musicbrainz/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
@@ -81,13 +81,13 @@ msgid "Metadata Extraction"
 msgstr "Metatietojen poiminen"
 
 #: picard/cluster.py:513 picard/ui/cdlookup.py:72 picard/ui/itemviews.py:156
-#: picard/ui/mainwindow.py:949 picard/ui/searchdialog/album.py:152
+#: picard/ui/mainwindow.py:967 picard/ui/searchdialog/album.py:152
 #: picard/ui/searchdialog/track.py:65 picard/util/tags.py:41
 msgid "Artist"
 msgstr "Artisti"
 
 #: picard/cluster.py:514 picard/ui/cdlookup.py:72 picard/ui/itemviews.py:159
-#: picard/ui/mainwindow.py:948 picard/util/tags.py:38
+#: picard/ui/mainwindow.py:966 picard/util/tags.py:38
 msgid "Album"
 msgstr "Julkaisu"
 
@@ -145,22 +145,22 @@ msgstr "Poista"
 msgid "Primary file naming script"
 msgstr "Ensisijainen tiedostonnimeämiskomentosarja"
 
-#: picard/file.py:782
+#: picard/file.py:791
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "Tiedostolle '%(filename)s' ei löytynyt vastaavia kappaleita kynnysarvon yläpuolella"
 
-#: picard/file.py:784
+#: picard/file.py:793
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "Tiedosto '%(filename)s' tunnistettu!"
 
-#: picard/file.py:796
+#: picard/file.py:805
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "Tiedostolle '%(filename)s' ei löytynyt vastaavia kappaleita"
 
-#: picard/file.py:828
+#: picard/file.py:837
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr "Haetaan metatietoja tiedostolle %(filename)s ..."
@@ -402,7 +402,7 @@ msgstr "Poista tyhjät hakemistot"
 msgid "Selected file naming script"
 msgstr "Valittu tiedostonnimeämiskomentosarja"
 
-#: picard/profile.py:111 picard/ui/options/scripting.py:88
+#: picard/profile.py:111 picard/ui/options/scripting.py:99
 msgid "Scripting"
 msgstr "Komentosarjat"
 
@@ -447,24 +447,24 @@ msgstr "[ei viivakoodia]"
 msgid "[no release info]"
 msgstr "[ei julkaisutietoja]"
 
-#: picard/tagger.py:311 picard/ui/ui_options_general.py:163
+#: picard/tagger.py:321 picard/ui/ui_options_general.py:163
 msgid "MusicBrainz Account"
 msgstr "MusicBrainz-tili"
 
-#: picard/tagger.py:312
+#: picard/tagger.py:322
 msgid "Authorization code:"
 msgstr "Valtuutusavain:"
 
-#: picard/tagger.py:778
+#: picard/tagger.py:788
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Poistetaan julkaisu %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:796
+#: picard/tagger.py:806
 msgid "CD Lookup Error"
 msgstr "Virhe CD-haussa"
 
-#: picard/tagger.py:797
+#: picard/tagger.py:807
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -472,11 +472,11 @@ msgid ""
 "%s"
 msgstr "Virhe lukiessa CD-levyä:\n\n%s"
 
-#: picard/track.py:367
+#: picard/track.py:374
 msgid "[loading recording information]"
 msgstr "[ladataan äänitteen tietoja]"
 
-#: picard/track.py:403
+#: picard/track.py:410
 #, python-format
 msgid "[could not load recording %s]"
 msgstr "[äänitettä %s ei voitu ladata]"
@@ -552,33 +552,33 @@ msgstr "Lisää tiedosto äänitteenä"
 msgid "Add file as recording..."
 msgstr "Lisää tiedosto äänitteenä..."
 
-#: picard/const/__init__.py:161
+#: picard/const/__init__.py:166
 msgid "Stable releases only"
 msgstr "Vain vakaat versiot"
 
-#: picard/const/__init__.py:167
+#: picard/const/__init__.py:172
 msgid "Stable and Beta releases"
 msgstr "Vakaat ja beta-versiot"
 
-#: picard/const/__init__.py:173
+#: picard/const/__init__.py:178
 msgid "Stable, Beta and Dev releases"
 msgstr "Vakaat, beta- ja kehitys-versiot"
 
-#: picard/const/__init__.py:188
+#: picard/const/__init__.py:193
 #, python-format
 msgid "My script %d"
 msgstr "Oma komentosarja %d"
 
-#: picard/const/__init__.py:189
+#: picard/const/__init__.py:194
 msgid "My script"
 msgstr "Oma komentosarja"
 
-#: picard/const/__init__.py:191
+#: picard/const/__init__.py:196
 #, python-format
 msgid "My profile %d"
 msgstr "Oma profiili %d"
 
-#: picard/const/__init__.py:192
+#: picard/const/__init__.py:197
 msgid "My profile"
 msgstr "Oma profiili"
 
@@ -2501,7 +2501,7 @@ msgstr "&Hylkää kaikki"
 msgid "C&lear all"
 msgstr "&Tyhjennä kaikki"
 
-#: picard/coverart/providers/caa.py:326 picard/ui/options/dialog.py:124
+#: picard/coverart/providers/caa.py:326 picard/ui/options/dialog.py:126
 msgid "Restore &Defaults"
 msgstr "Palauta oletus&asetuksiin"
 
@@ -3345,22 +3345,79 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$is_multi(name)`\n\nPalauta '1' jos syöte on moniarvoinen ja sisältää enemmän kuin yhden osan, muuten palauta tyhjä merkkijono.\n\nEsimerkki:\n\n    $is_multi(%artists%)\n\nTulos: 1 jos enemmän kuin yksi artisti, muutoin \"\".\n\n_Picardin versiosta 2.7_"
 
-#: picard/script/serializer.py:194
+#: picard/script/serializer.py:199
+#, python-format
+msgid "Error exporting file \"%s\". %s."
+msgstr "Virhe vietäessä tiedostoon \"%s\". %s."
+
+#: picard/script/serializer.py:206
+msgid "Export Script File"
+msgstr "Vie komentosarja tiedostoon"
+
+#: picard/script/serializer.py:228
+msgid "Export Script"
+msgstr "Vie komentosarja"
+
+#: picard/script/serializer.py:229
+#, python-format
+msgid "Script successfully exported to %s"
+msgstr "Komentosarja viety onnistuneesti kohteeseen %s"
+
+#: picard/script/serializer.py:240
+#, python-format
+msgid "Error importing \"%s\". %s."
+msgstr "Virhe tuotaessa \"%s\". %s."
+
+#: picard/script/serializer.py:241
+#, python-format
+msgid "Error decoding \"%s\". %s."
+msgstr "Virhe luettaessa \"s\". %s."
+
+#: picard/script/serializer.py:243
+msgid "Import Script File"
+msgstr "Tuo komentosarja tiedostosta"
+
+#: picard/script/serializer.py:257
+msgid "The file was empty"
+msgstr "Tiedosto on tyhjä"
+
+#: picard/script/serializer.py:265
+#, python-format
+msgid "Imported from %s"
+msgstr "Tuotu kohteesta %s"
+
+#: picard/script/serializer.py:283
 msgid "Argument is not a dictionary"
 msgstr "Muuttuja ei ole dictionary-muotoinen"
 
-#: picard/script/serializer.py:196 picard/script/serializer.py:242
+#: picard/script/serializer.py:285 picard/script/serializer.py:331
 msgid "Invalid script package"
 msgstr "Epäkelpo komentosarjan paketti"
 
-#: picard/script/serializer.py:207
+#: picard/script/serializer.py:296
 #, python-format
 msgid "%s (Copy)"
 msgstr "%s (kopio)"
 
-#: picard/script/serializer.py:240
+#: picard/script/serializer.py:329
 msgid "File content not a dictionary"
 msgstr "Tiedoston sisältö ei ole dictionary-muotoinen"
+
+#: picard/script/serializer.py:339 picard/ui/options/scripting.py:186
+msgid "Unnamed Script"
+msgstr "Nimeämätön komentosarja"
+
+#: picard/script/serializer.py:349 picard/ui/options/scripting.py:131
+msgid "All Files"
+msgstr "Kaikki tiedostot"
+
+#: picard/script/serializer.py:350 picard/ui/options/scripting.py:132
+msgid "Picard Script Files"
+msgstr "Picardin komentosarjatiedostot"
+
+#: picard/script/serializer.py:351
+msgid "Picard Script Package"
+msgstr "Picardin komentosarjapaketti"
 
 #: picard/ui/aboutdialog.py:73
 msgid "translator-credits"
@@ -3421,7 +3478,7 @@ msgstr "Copyright © %(copyright_years)s %(authors_credits)s ja muut"
 msgid "Official website"
 msgstr "Virallinen kotisivu"
 
-#: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:168
+#: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:169
 #: picard/ui/searchdialog/album.py:155 picard/ui/searchdialog/track.py:67
 #: picard/util/tags.py:54
 msgid "Date"
@@ -3523,7 +3580,7 @@ msgstr "Alkuperäinen kansitaide"
 msgid "All supported image formats"
 msgstr "Kaikki tuetut kuvien tiedostomuodot"
 
-#: picard/ui/coverartbox.py:551 picard/ui/mainwindow.py:1067
+#: picard/ui/coverartbox.py:551 picard/ui/mainwindow.py:1085
 msgid "All files"
 msgstr "Kaikki tiedostot"
 
@@ -3585,7 +3642,7 @@ msgstr "Muoto"
 msgid "New Cover"
 msgstr "Uusi kansi"
 
-#: picard/ui/infodialog.py:109 picard/ui/itemviews.py:170
+#: picard/ui/infodialog.py:109 picard/ui/itemviews.py:171
 #: picard/ui/searchdialog/album.py:163
 msgid "Cover"
 msgstr "Kansi"
@@ -3704,14 +3761,14 @@ msgstr "Odottavat tiedostot"
 msgid "Pending requests"
 msgstr "Odottavat pyynnöt"
 
-#: picard/ui/item.py:135
+#: picard/ui/item.py:139
 #, python-format
 msgid "%i image"
 msgid_plural "%i images"
 msgstr[0] "%i kuva"
 msgstr[1] "%i kuvaa"
 
-#: picard/ui/item.py:138
+#: picard/ui/item.py:142
 #, python-format
 msgid "%i image not in all tracks"
 msgid_plural "%i different images among tracks"
@@ -3763,152 +3820,178 @@ msgstr "Tyylilaji"
 msgid "Fingerprint status"
 msgstr "Äänitunnisteen tila"
 
-#: picard/ui/itemviews.py:169 picard/util/tags.py:93
+#: picard/ui/itemviews.py:168
+msgid "AcousticBrainz status"
+msgstr "AcousticBrainzin tila"
+
+#: picard/ui/itemviews.py:170 picard/util/tags.py:93
 msgid "Original Release Date"
 msgstr "Alkuperäinen julkaisupäiväys"
 
-#: picard/ui/itemviews.py:270
+#: picard/ui/itemviews.py:273
 msgid "Bad match"
 msgstr "Huono yhteensopivuus"
 
-#: picard/ui/itemviews.py:271
+#: picard/ui/itemviews.py:274
 msgid "Poor match"
 msgstr "Heikko yhteensopivuus"
 
-#: picard/ui/itemviews.py:272
+#: picard/ui/itemviews.py:275
 msgid "Ok match"
 msgstr "Ok yhteensopivuus"
 
-#: picard/ui/itemviews.py:273
+#: picard/ui/itemviews.py:276
 msgid "Good match"
 msgstr "Hyvä yhteensopivuus"
 
-#: picard/ui/itemviews.py:274
+#: picard/ui/itemviews.py:277
 msgid "Great match"
 msgstr "Mahtava yhteensopivuus"
 
-#: picard/ui/itemviews.py:275
+#: picard/ui/itemviews.py:278
 msgid "Excellent match"
 msgstr "Erittäin hyvä yhteensopivuus"
 
-#: picard/ui/itemviews.py:389
+#: picard/ui/itemviews.py:392
 msgid "Restore default columns"
 msgstr "Palauta sarakkeet oletusasetuksiin"
 
-#: picard/ui/itemviews.py:394
+#: picard/ui/itemviews.py:397
 msgid "Lock columns"
 msgstr "Lukitse sarakkeet"
 
-#: picard/ui/itemviews.py:446
+#: picard/ui/itemviews.py:454
 msgid "&Expand all"
 msgstr "&Laajenna kaikki"
 
-#: picard/ui/itemviews.py:448
+#: picard/ui/itemviews.py:456
 msgid "&Collapse all"
 msgstr "&Kokoa kaikki"
 
-#: picard/ui/itemviews.py:450
+#: picard/ui/itemviews.py:458
 msgid "Select &all"
 msgstr "&Valitse kaikki"
 
-#: picard/ui/itemviews.py:452
+#: picard/ui/itemviews.py:460
 msgid "Ctrl+A"
 msgstr "Ctrl+A"
 
-#: picard/ui/itemviews.py:533
+#: picard/ui/itemviews.py:541
 msgid "&Other versions"
 msgstr "&Muut versiot"
 
-#: picard/ui/itemviews.py:536
+#: picard/ui/itemviews.py:544
 msgid "Loading..."
 msgstr "Ladataan…"
 
-#: picard/ui/itemviews.py:588
+#: picard/ui/itemviews.py:596
 #, python-format
 msgid "&Other versions (%d)"
 msgstr "&Muut versiot (%d)"
 
-#: picard/ui/itemviews.py:612
+#: picard/ui/itemviews.py:620
 msgid "Collections"
 msgstr "Kokoelmat"
 
-#: picard/ui/itemviews.py:620
+#: picard/ui/itemviews.py:628
 msgid "P&lugins"
 msgstr "L&iitännäiset"
 
-#: picard/ui/itemviews.py:636
+#: picard/ui/itemviews.py:644
 msgid "&Run scripts"
 msgstr "Suo&rita komentosarjoja"
 
-#: picard/ui/itemviews.py:818
+#: picard/ui/itemviews.py:826
 msgid "file view"
 msgstr "tiedostonäkymä"
 
-#: picard/ui/itemviews.py:819
+#: picard/ui/itemviews.py:827
 msgid "Contains unmatched files and clusters"
 msgstr "Sisältää täsmäämättömiä tiedostoja sekä ryhmiä"
 
-#: picard/ui/itemviews.py:839
+#: picard/ui/itemviews.py:847
 msgid "Clusters"
 msgstr "Ryhmät"
 
-#: picard/ui/itemviews.py:849
+#: picard/ui/itemviews.py:857
 msgid "album view"
 msgstr "julkaisunäkymä"
 
-#: picard/ui/itemviews.py:850
+#: picard/ui/itemviews.py:858
 msgid "Contains albums and matched files"
 msgstr "Sisältää julkaisuja ja täsmääviä tiedostoja"
 
-#: picard/ui/itemviews.py:993
+#: picard/ui/itemviews.py:1002
 msgid "Processing error(s): See the Errors tab in the Album Info dialog"
 msgstr "Käsittelyvirhe(et): katso julkaisun tiedot -valintaikkunan virheet-välilehdeltä"
 
-#: picard/ui/itemviews.py:997
+#: picard/ui/itemviews.py:1006
 msgid "Album modified and complete"
 msgstr "Julkaisu muokattu ja täydellinen"
 
-#: picard/ui/itemviews.py:1000
+#: picard/ui/itemviews.py:1009
 msgid "Album unchanged and complete"
 msgstr "Julkaisu muuttumaton ja täydellinen"
 
-#: picard/ui/itemviews.py:1004
+#: picard/ui/itemviews.py:1013
 msgid "Album modified"
 msgstr "Julkaisu muokattu"
 
-#: picard/ui/itemviews.py:1007
+#: picard/ui/itemviews.py:1016
 msgid "Album unchanged"
 msgstr "Julkaisu muuttumaton"
 
-#: picard/ui/itemviews.py:1084
+#: picard/ui/itemviews.py:1098
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
 msgstr "Käsittelyvirhe(et): katso kappaleen tiedot -valintaikkunan virheet-välilehdeltä"
 
-#: picard/ui/itemviews.py:1112
+#: picard/ui/itemviews.py:1129
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
 msgstr "Käsittelyvirhe(et): katso tiedoston tiedot -valintaikkunan virheet-välilehdeltä"
 
-#: picard/ui/itemviews.py:1140
+#: picard/ui/itemviews.py:1157
 msgid "Track saved"
 msgstr "Kappale tallennettu"
 
-#: picard/ui/itemviews.py:1142 picard/ui/itemviews.py:1146
+#: picard/ui/itemviews.py:1159 picard/ui/itemviews.py:1163
 msgid "Pending"
 msgstr "Odottaa"
 
-#: picard/ui/itemviews.py:1153
+#: picard/ui/itemviews.py:1170
 msgid "Fingerprint has already been submitted"
 msgstr "Äänitunniste on jo lähetetty"
 
-#: picard/ui/itemviews.py:1156
+#: picard/ui/itemviews.py:1173
 msgid "Unsubmitted fingerprint"
 msgstr "Lähettämätön äänitunniste"
 
-#: picard/ui/itemviews.py:1159
+#: picard/ui/itemviews.py:1176
 msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
 "AcoustID Fingerprints\" to calculate the fingerprint."
 msgstr "Tälle tiedostolle ei ole laskettu äänitunnistetta. Valitse \"Analysoi\" tai \"Luo AcoustID äänitunnisteet\" tunnisteen laskemiseksi."
+
+#: picard/ui/itemviews.py:1183
+msgid "Extraction or submission of Acoustic features failed"
+msgstr "Akustisten ominaisuuksien ottaminen tai lähettäminen epäonnistui"
+
+#: picard/ui/itemviews.py:1187
+msgid "The server already has the features of this file"
+msgstr "Tämän tiedoston ominaisuudet on jo palvelimella"
+
+#: picard/ui/itemviews.py:1189
+msgid "Features have already been submitted"
+msgstr "Ominaisuudet on jo lähetetty"
+
+#: picard/ui/itemviews.py:1193
+msgid ""
+"No acoustic features were extracted from this file. Use \"Submit Acoustic "
+"features\" to extract and submit them"
+msgstr "Tästä tiedostosta ei ole vielä otettu akustisia ominaisuuksia. Valitse \"Lähetä akustiset ominaisuudet\" ottaaksesi ja lähettääksesi ne"
+
+#: picard/ui/itemviews.py:1195
+msgid "Unsubmitted features"
+msgstr "Lähettämättömät ominaisuudet"
 
 #: picard/ui/logview.py:165
 msgid "Log"
@@ -3967,15 +4050,15 @@ msgstr "Aktiviteettihistoria"
 msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
-#: picard/ui/mainwindow.py:339
+#: picard/ui/mainwindow.py:347
 msgid "Unsaved Changes"
 msgstr "Tallentamattomia muutoksia"
 
-#: picard/ui/mainwindow.py:340
+#: picard/ui/mainwindow.py:348
 msgid "Are you sure you want to quit Picard?"
 msgstr "Haluatko varmasti sulkea Picardin?"
 
-#: picard/ui/mainwindow.py:341
+#: picard/ui/mainwindow.py:349
 #, python-format
 msgid ""
 "There is %d unsaved file. Closing Picard will lose all unsaved changes."
@@ -3984,501 +4067,509 @@ msgid_plural ""
 msgstr[0] "%d tallentamaton tiedosto. Sulkemalla Picardin menetät kaikki tallentamattomat muutokset."
 msgstr[1] "%d tallentamatonta tiedostoa. Sulkemalla Picardin menetät kaikki tallentamattomat muutokset."
 
-#: picard/ui/mainwindow.py:348
+#: picard/ui/mainwindow.py:356
 msgid "&Quit Picard"
 msgstr "&Poistu Picardista"
 
-#: picard/ui/mainwindow.py:384
+#: picard/ui/mainwindow.py:392
 msgid "Ready"
 msgstr "Valmis"
 
-#: picard/ui/mainwindow.py:389
+#: picard/ui/mainwindow.py:397
 msgid ""
 "Picard listens on this port to integrate with your browser. When you "
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
 "button on the web page loads the release into Picard."
 msgstr "Picard kuuntelee tätä porttia toimiakseen selaimesi kanssa. Valittuasi \"Hae\" tai \"Etsi selaimella\", voit käyttää verkkosivun \"Tagger\"-painiketta ladataksesi julkaisun tiedot Picardiin."
 
-#: picard/ui/mainwindow.py:415
+#: picard/ui/mainwindow.py:423
 #, python-format
 msgid " Listening on port %(port)d "
 msgstr " Tarkkaillaan porttia %(port)d "
 
-#: picard/ui/mainwindow.py:474
+#: picard/ui/mainwindow.py:482
 msgid "AcoustID submission not configured"
 msgstr "AcoustidID-tunnisteiden lähettämistä ei ole asetettu"
 
-#: picard/ui/mainwindow.py:475
+#: picard/ui/mainwindow.py:483
 msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
 msgstr "AcoustID:n API-avain täytyy määrittää äänitunnisteiden lähettämistä varten."
 
-#: picard/ui/mainwindow.py:478
+#: picard/ui/mainwindow.py:486
 msgid "Open AcoustID options"
 msgstr "Avaa AcoustID asetukset"
 
-#: picard/ui/mainwindow.py:489
+#: picard/ui/mainwindow.py:497
 msgid "&Options..."
 msgstr "&Asetukset..."
 
-#: picard/ui/mainwindow.py:493
+#: picard/ui/mainwindow.py:501
 msgid "Open &file naming script editor..."
 msgstr "Avaa &tiedostonnimeämiskomentosarjan muokkain..."
 
-#: picard/ui/mainwindow.py:494
+#: picard/ui/mainwindow.py:502
 msgid "Ctrl+Shift+S"
 msgstr "Ctrl+Shift+S"
 
-#: picard/ui/mainwindow.py:497
-msgid "Open option &profile editor..."
-msgstr "Avaa &valintaprofiilien muokkain..."
-
-#: picard/ui/mainwindow.py:498
-msgid "Ctrl+Shift+P"
-msgstr "Ctrl+Shift+P"
-
-#: picard/ui/mainwindow.py:501
+#: picard/ui/mainwindow.py:505
 msgid "&Cut"
 msgstr "&Leikkaa"
 
-#: picard/ui/mainwindow.py:506 picard/ui/metadatabox.py:438
+#: picard/ui/mainwindow.py:510 picard/ui/metadatabox.py:438
 msgid "&Paste"
 msgstr "L&iitä"
 
-#: picard/ui/mainwindow.py:511 picard/ui/scripteditor.py:577
+#: picard/ui/mainwindow.py:515 picard/ui/scripteditor.py:610
 msgid "&Help..."
 msgstr "&Ohje..."
 
-#: picard/ui/mainwindow.py:515
+#: picard/ui/mainwindow.py:519
 msgid "&About..."
 msgstr "&Tietoja..."
 
-#: picard/ui/mainwindow.py:519
+#: picard/ui/mainwindow.py:523
 msgid "&Donate..."
 msgstr "&Lahjoita..."
 
-#: picard/ui/mainwindow.py:522
+#: picard/ui/mainwindow.py:526
 msgid "&Report a Bug..."
 msgstr "&Ilmoita virheestä..."
 
-#: picard/ui/mainwindow.py:525
+#: picard/ui/mainwindow.py:529
 msgid "&Support Forum..."
 msgstr "Tuki&foorumi..."
 
-#: picard/ui/mainwindow.py:528
+#: picard/ui/mainwindow.py:532
 msgid "&Add Files..."
 msgstr "L&isää tiedostoja..."
 
-#: picard/ui/mainwindow.py:529
+#: picard/ui/mainwindow.py:533
 msgid "Add files to the tagger"
 msgstr "Lisää tiedostoja ohjelmaan"
 
-#: picard/ui/mainwindow.py:534
+#: picard/ui/mainwindow.py:538
 msgid "Add Fold&er..."
 msgstr "Lisää &kansio..."
 
-#: picard/ui/mainwindow.py:535
+#: picard/ui/mainwindow.py:539
 msgid "Add a folder to the tagger"
 msgstr "Lisää kansio ohjelmaan"
 
-#: picard/ui/mainwindow.py:537
+#: picard/ui/mainwindow.py:541
 msgid "Ctrl+E"
 msgstr "Ctrl+E"
 
-#: picard/ui/mainwindow.py:541
+#: picard/ui/mainwindow.py:545
 msgid "Close Window"
 msgstr "Sulje ikkuna"
 
-#: picard/ui/mainwindow.py:542
+#: picard/ui/mainwindow.py:546
 msgid "Ctrl+W"
 msgstr "Ctrl+W"
 
-#: picard/ui/mainwindow.py:545
+#: picard/ui/mainwindow.py:549
 msgid "&Save"
 msgstr "&Tallenna"
 
-#: picard/ui/mainwindow.py:546
+#: picard/ui/mainwindow.py:550
 msgid "Save selected files"
 msgstr "Tallenna valitut tiedostot"
 
-#: picard/ui/mainwindow.py:552
+#: picard/ui/mainwindow.py:556
 msgid "S&ubmit AcoustIDs"
 msgstr "Lähetä &AcoustID-tunnisteet"
 
-#: picard/ui/mainwindow.py:553
+#: picard/ui/mainwindow.py:557
 msgid "Submit acoustic fingerprints"
 msgstr "Lähetä äänitunnisteet"
 
-#: picard/ui/mainwindow.py:557
+#: picard/ui/mainwindow.py:561
 msgid "E&xit"
 msgstr "&Lopeta"
 
-#: picard/ui/mainwindow.py:560
+#: picard/ui/mainwindow.py:564
 msgid "Ctrl+Q"
 msgstr "Ctrl+Q"
 
-#: picard/ui/mainwindow.py:563
+#: picard/ui/mainwindow.py:567
 msgid "&Remove"
 msgstr "&Poista"
 
-#: picard/ui/mainwindow.py:564
+#: picard/ui/mainwindow.py:568
 msgid "Remove selected files/albums"
 msgstr "Poista valitut tiedostot/julkaisut"
 
-#: picard/ui/mainwindow.py:568 picard/ui/metadatabox.py:395
+#: picard/ui/mainwindow.py:572 picard/ui/metadatabox.py:395
 msgid "Lookup in &Browser"
 msgstr "Etsi &selaimella"
 
-#: picard/ui/mainwindow.py:569
+#: picard/ui/mainwindow.py:573
 msgid "Lookup selected item on MusicBrainz website"
 msgstr "Etsi valittua kohdetta MusicBrainz-sivustolta"
 
-#: picard/ui/mainwindow.py:572
+#: picard/ui/mainwindow.py:576
 msgid "Ctrl+Shift+L"
 msgstr "Ctrl+Shift+L"
 
-#: picard/ui/mainwindow.py:576
+#: picard/ui/mainwindow.py:580
 msgid "Submit cluster as release..."
 msgstr "Lähetä ryhmittely julkaisuna..."
 
-#: picard/ui/mainwindow.py:577
+#: picard/ui/mainwindow.py:581
 msgid "Submit cluster as a new release to MusicBrainz"
 msgstr "Lähetä ryhmittely uutena julkaisuna MusicBrainziin"
 
-#: picard/ui/mainwindow.py:581
+#: picard/ui/mainwindow.py:585
 msgid "Submit file as standalone recording..."
 msgstr "Lähetä tiedosto yksittäisenä äänitteenä..."
 
-#: picard/ui/mainwindow.py:582
+#: picard/ui/mainwindow.py:586
 msgid "Submit file as a new recording to MusicBrainz"
 msgstr "Lähetä tiedosto uutena äänitteenä MusicBrainziin"
 
-#: picard/ui/mainwindow.py:586
+#: picard/ui/mainwindow.py:590
 msgid "Submit file as release..."
 msgstr "Lähetä tiedosto julkaisuna..."
 
-#: picard/ui/mainwindow.py:587
+#: picard/ui/mainwindow.py:591
 msgid "Submit file as a new release to MusicBrainz"
 msgstr "Lähetä tiedosto uutena julkaisuna MusicBrainziin"
 
-#: picard/ui/mainwindow.py:595
+#: picard/ui/mainwindow.py:599
 msgid "Search for similar albums..."
 msgstr "Etsi samankaltaisia julkaisuja..."
 
-#: picard/ui/mainwindow.py:596
+#: picard/ui/mainwindow.py:600
 msgid "View similar releases and optionally choose a different release"
 msgstr "Näytä samankaltaisia julkaisuja ja mahdollisesti valitse toinen julkaisu"
 
-#: picard/ui/mainwindow.py:599
+#: picard/ui/mainwindow.py:603
 msgid "Search for similar tracks..."
 msgstr "Etsi samankaltaisia kappaleita..."
 
-#: picard/ui/mainwindow.py:600
+#: picard/ui/mainwindow.py:604
 msgid "View similar tracks and optionally choose a different release"
 msgstr "Näytä samankaltaisia kappaleita ja mahdollisesti valitse toinen julkaisu"
 
-#: picard/ui/mainwindow.py:602
+#: picard/ui/mainwindow.py:606
 msgid "Ctrl+T"
 msgstr "Ctrl+T"
 
-#: picard/ui/mainwindow.py:605
+#: picard/ui/mainwindow.py:609
 msgid "File &Browser"
 msgstr "Tiedosto&selain"
 
-#: picard/ui/mainwindow.py:609
+#: picard/ui/mainwindow.py:613
 msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
-#: picard/ui/mainwindow.py:612
+#: picard/ui/mainwindow.py:616
 msgid "&Metadata"
 msgstr "&Metatiedot"
 
-#: picard/ui/mainwindow.py:616
+#: picard/ui/mainwindow.py:620
 msgid "Ctrl+Shift+M"
 msgstr "Ctrl+Shift+M"
 
-#: picard/ui/mainwindow.py:619
+#: picard/ui/mainwindow.py:623
 msgid "&Cover Art"
 msgstr "&Kansitaide"
 
-#: picard/ui/mainwindow.py:626
+#: picard/ui/mainwindow.py:630
 msgid "&Actions"
 msgstr "&Toiminnot"
 
-#: picard/ui/mainwindow.py:632 picard/ui/mainwindow.py:939
+#: picard/ui/mainwindow.py:636 picard/ui/mainwindow.py:957
 #: picard/ui/searchdialog/__init__.py:48
 msgid "Search"
 msgstr "Hae"
 
-#: picard/ui/mainwindow.py:636 picard/ui/mainwindow.py:642
+#: picard/ui/mainwindow.py:640 picard/ui/mainwindow.py:646
 msgid "Lookup &CD..."
 msgstr "&CD-haku"
 
-#: picard/ui/mainwindow.py:637
+#: picard/ui/mainwindow.py:641
 msgid "Lookup the details of the CD in your drive"
 msgstr "Hae tietoja CD-levystäsi"
 
-#: picard/ui/mainwindow.py:639 picard/ui/mainwindow.py:768
+#: picard/ui/mainwindow.py:643 picard/ui/mainwindow.py:779
 msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
-#: picard/ui/mainwindow.py:650
+#: picard/ui/mainwindow.py:654
 msgid "&Scan"
 msgstr "&Analysoi"
 
-#: picard/ui/mainwindow.py:651
+#: picard/ui/mainwindow.py:655
 msgid ""
 "Use AcoustID audio fingerprint to identify the files by the actual music, "
 "even if they have no metadata"
 msgstr "Käytä AcoustID-tunnistusta tunnistamaan tiedostot niiden sisältämän musiikin mukaan, vaikka tiedostoissa ei olisi metatietoja"
 
-#: picard/ui/mainwindow.py:653
+#: picard/ui/mainwindow.py:657
 msgid "Identify the file using its AcoustID audio fingerprint"
 msgstr "Tunnista tiedosto sen AcoustID-tunnisteella"
 
-#: picard/ui/mainwindow.py:655
+#: picard/ui/mainwindow.py:659
 msgid "Ctrl+Y"
 msgstr "Ctrl+Y"
 
-#: picard/ui/mainwindow.py:658
+#: picard/ui/mainwindow.py:662
 msgid "&Generate AcoustID Fingerprints"
 msgstr "&Luo AcoustID äänitunnisteet"
 
-#: picard/ui/mainwindow.py:659 picard/ui/options/interface.py:120
+#: picard/ui/mainwindow.py:663 picard/ui/options/interface.py:124
 msgid "Generate Fingerprints"
 msgstr "Luo äänitunnisteita"
 
-#: picard/ui/mainwindow.py:660
+#: picard/ui/mainwindow.py:664
 msgid ""
 "Generate the AcoustID audio fingerprints for the selected files without "
 "doing a lookup"
 msgstr "Luo AcoustID äänitunnisteet valituille tiedostoille hakematta vastaavuuksia"
 
-#: picard/ui/mainwindow.py:662
+#: picard/ui/mainwindow.py:666
 msgid "Generate the AcoustID audio fingerprints for the selected files"
 msgstr "Luo AcoustID äänitunnisteet valituille tiedostoille"
 
-#: picard/ui/mainwindow.py:663
+#: picard/ui/mainwindow.py:667
 msgid "Ctrl+Shift+Y"
 msgstr "Ctrl+Shift+Y"
 
-#: picard/ui/mainwindow.py:666
+#: picard/ui/mainwindow.py:670
+msgid "&Submit AcousticBrainz features"
+msgstr "&Lähetä AcousticBrainz-ominaisuudet"
+
+#: picard/ui/mainwindow.py:671
+msgid "Submit Acoustic features"
+msgstr "Lähetä akustiset ominaisuudet"
+
+#: picard/ui/mainwindow.py:672 picard/ui/mainwindow.py:674
+msgid "Submit the AcousticBrainz features for the selected files"
+msgstr "Lähetä AcousticBrainz-ominaisuudet vailituille tiedostoille"
+
+#: picard/ui/mainwindow.py:677
 msgid "Cl&uster"
 msgstr "&Ryhmitä"
 
-#: picard/ui/mainwindow.py:667
+#: picard/ui/mainwindow.py:678
 msgid "Cluster files into album clusters"
 msgstr "Ryhmitä tiedostot julkaisuihin"
 
-#: picard/ui/mainwindow.py:670
+#: picard/ui/mainwindow.py:681
 msgid "Ctrl+U"
 msgstr "Ctrl+U"
 
-#: picard/ui/mainwindow.py:673
+#: picard/ui/mainwindow.py:684
 msgid "&Lookup"
 msgstr "&Hae"
 
-#: picard/ui/mainwindow.py:674
+#: picard/ui/mainwindow.py:685
 msgid "Lookup selected items in MusicBrainz"
 msgstr "Etsi valittua kohdetta MusicBrainzista"
 
-#: picard/ui/mainwindow.py:679
+#: picard/ui/mainwindow.py:690
 msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
-#: picard/ui/mainwindow.py:682
+#: picard/ui/mainwindow.py:693
 msgid "&Info..."
 msgstr "T&iedot..."
 
-#: picard/ui/mainwindow.py:685
+#: picard/ui/mainwindow.py:696
 msgid "Ctrl+I"
 msgstr "Ctrl+I"
 
-#: picard/ui/mainwindow.py:688
+#: picard/ui/mainwindow.py:699
 msgid "&Refresh"
 msgstr "P&äivitä"
 
-#: picard/ui/mainwindow.py:689
+#: picard/ui/mainwindow.py:700
 msgid "Ctrl+R"
 msgstr "Ctrl+R"
 
-#: picard/ui/mainwindow.py:692
+#: picard/ui/mainwindow.py:703
 msgid "&Rename Files"
 msgstr "&Nimeä tiedostot"
 
-#: picard/ui/mainwindow.py:697
+#: picard/ui/mainwindow.py:708
 msgid "&Move Files"
 msgstr "&Siirrä tiedostot"
 
-#: picard/ui/mainwindow.py:702
+#: picard/ui/mainwindow.py:713
 msgid "Save &Tags"
 msgstr "&Tallenna tunnisteet"
 
-#: picard/ui/mainwindow.py:707
+#: picard/ui/mainwindow.py:718
 msgid "Tags From &File Names..."
 msgstr "&Luo tunnisteet tiedostonimistä..."
 
-#: picard/ui/mainwindow.py:708 picard/ui/options/interface.py:132
+#: picard/ui/mainwindow.py:719 picard/ui/options/interface.py:136
 msgid "Parse File Names..."
 msgstr "Jäsentele tiedostonimistä..."
 
-#: picard/ui/mainwindow.py:709
+#: picard/ui/mainwindow.py:720
 msgid "Set tags based on the file names"
 msgstr "Luo tunnisteet tiedostonimistä"
 
-#: picard/ui/mainwindow.py:710 picard/ui/widgets/scripttextedit.py:331
+#: picard/ui/mainwindow.py:721 picard/ui/widgets/scripttextedit.py:332
 msgid "Ctrl+Shift+T"
 msgstr "Ctrl+Shift+T"
 
-#: picard/ui/mainwindow.py:714
+#: picard/ui/mainwindow.py:725
 msgid "&Open My Collections in Browser"
 msgstr "Avaa &kokoelmani selaimeen"
 
-#: picard/ui/mainwindow.py:718
+#: picard/ui/mainwindow.py:729
 msgid "View &Error/Debug Log"
 msgstr "Tarkastele virh&e/debug-lokia"
 
-#: picard/ui/mainwindow.py:721
+#: picard/ui/mainwindow.py:732
 msgid "Ctrl+G"
 msgstr "Ctrl+G"
 
-#: picard/ui/mainwindow.py:723
+#: picard/ui/mainwindow.py:734
 msgid "View Activity &History"
 msgstr "Näytä toiminta&historia"
 
-#: picard/ui/mainwindow.py:727
+#: picard/ui/mainwindow.py:738
 msgid "Ctrl+Shift+H"
 msgstr "Ctrl+Shift+H"
 
-#: picard/ui/mainwindow.py:727 picard/ui/scripteditor.py:568
+#: picard/ui/mainwindow.py:738 picard/ui/scripteditor.py:601
 msgid "Ctrl+H"
 msgstr "Ctrl+H"
 
-#: picard/ui/mainwindow.py:733
+#: picard/ui/mainwindow.py:744
 msgid "Open in &Player"
 msgstr "Avaa t&oistimessa"
 
-#: picard/ui/mainwindow.py:734
+#: picard/ui/mainwindow.py:745
 msgid "Play the file in your default media player"
 msgstr "Toista tiedosto oletussoittimellasi"
 
-#: picard/ui/mainwindow.py:738
+#: picard/ui/mainwindow.py:749
 msgid "Open Containing &Folder"
 msgstr "Avaa tie&doston kansio"
 
-#: picard/ui/mainwindow.py:739
+#: picard/ui/mainwindow.py:750
 msgid "Open the containing folder in your file explorer"
 msgstr "Avaa tiedoston kansio tiedostojen selaimessa"
 
-#: picard/ui/mainwindow.py:744
+#: picard/ui/mainwindow.py:755
 msgid "&Check for Update…"
 msgstr "&Etsi päivitystä…"
 
-#: picard/ui/mainwindow.py:810 picard/ui/scripteditor.py:491
+#: picard/ui/mainwindow.py:821 picard/ui/scripteditor.py:524
 msgid "&File"
 msgstr "&Tiedosto"
 
-#: picard/ui/mainwindow.py:823
+#: picard/ui/mainwindow.py:835
 msgid "&Edit"
 msgstr "&Muokkaa"
 
-#: picard/ui/mainwindow.py:829 picard/ui/scripteditor.py:553
+#: picard/ui/mainwindow.py:841 picard/ui/scripteditor.py:586
 msgid "&View"
 msgstr "&Näytä"
 
-#: picard/ui/mainwindow.py:838
+#: picard/ui/mainwindow.py:850
 msgid "&Options"
 msgstr "&Asetukset"
 
-#: picard/ui/mainwindow.py:843
+#: picard/ui/mainwindow.py:856
 msgid "&Select file naming script"
 msgstr "&Valitse tiedostonnimeämiskomentosarja"
 
-#: picard/ui/mainwindow.py:854
+#: picard/ui/mainwindow.py:864
+msgid "&Enable/disable profiles"
+msgstr "&Ota profiileja käyttöön"
+
+#: picard/ui/mainwindow.py:871
 msgid "&Tools"
 msgstr "Ty&ökalut"
 
-#: picard/ui/mainwindow.py:867 picard/ui/scripteditor.py:574
+#: picard/ui/mainwindow.py:885 picard/ui/scripteditor.py:607
 #: picard/ui/util.py:51
 msgid "&Help"
 msgstr "&Ohje"
 
-#: picard/ui/mainwindow.py:903 picard/ui/ui_options_plugins.py:132
+#: picard/ui/mainwindow.py:921 picard/ui/ui_options_plugins.py:132
 msgid "Actions"
 msgstr "Toiminnot"
 
-#: picard/ui/mainwindow.py:950
+#: picard/ui/mainwindow.py:968
 msgid "Track"
 msgstr "Kappale"
 
-#: picard/ui/mainwindow.py:967
+#: picard/ui/mainwindow.py:985
 msgid "&Advanced search"
 msgstr "&Edistynyt haku"
 
-#: picard/ui/mainwindow.py:968
+#: picard/ui/mainwindow.py:986
 msgid "&Builtin search"
 msgstr "Sisäänrakennettu &haku"
 
-#: picard/ui/mainwindow.py:1066
+#: picard/ui/mainwindow.py:1084
 msgid "All supported formats"
 msgstr "Kaikki tuetut tiedostomuodot"
 
-#: picard/ui/mainwindow.py:1095
+#: picard/ui/mainwindow.py:1113
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
 msgstr "Lisätään useita hakemistoja hakemistosta '%(directory)s' ..."
 
-#: picard/ui/mainwindow.py:1100
+#: picard/ui/mainwindow.py:1118
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
 msgstr "Lisätään hakemisto: '%(directory)s' ..."
 
-#: picard/ui/mainwindow.py:1188
+#: picard/ui/mainwindow.py:1224
 msgid "Configuration Required"
 msgstr "Asetukset puuttuvat"
 
-#: picard/ui/mainwindow.py:1189
+#: picard/ui/mainwindow.py:1225
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
 msgstr "Äänitunnistamisen asetuksia ei ole vielä määritetty. Määritetäänkö asetukset nyt?"
 
-#: picard/ui/mainwindow.py:1273
+#: picard/ui/mainwindow.py:1309
 msgid "Browser integration not enabled"
 msgstr "Selaimeen yhdistäminen ei ole käytössä"
 
-#: picard/ui/mainwindow.py:1274
+#: picard/ui/mainwindow.py:1310
 msgid ""
 "Submitting releases to MusicBrainz requires the browser integration to be "
 "enabled. Do you want to enable the browser integration now?"
 msgstr "Julkaisujen lähettäminen MusicBrainziin vaatii että selaimeen yhdistäminen on käytössä. Otetaanko selaimeen yhdistäminen käyttöön nyt?"
 
-#: picard/ui/mainwindow.py:1369
+#: picard/ui/mainwindow.py:1410
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
 msgstr "%(filename)s (virhe: %(error)s)"
 
-#: picard/ui/mainwindow.py:1375
+#: picard/ui/mainwindow.py:1416
 #, python-format
 msgid "%(filename)s"
 msgstr "%(filename)s"
 
-#: picard/ui/mainwindow.py:1384
+#: picard/ui/mainwindow.py:1425
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
 msgstr "%(filename)s (%(similarity)d%%) (virhe: %(error)s)"
 
-#: picard/ui/mainwindow.py:1391
+#: picard/ui/mainwindow.py:1432
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
-#: picard/ui/mainwindow.py:1454
+#: picard/ui/mainwindow.py:1495
 msgid "Authentication Required"
 msgstr "Tunnistautuminen vaaditaan"
 
-#: picard/ui/mainwindow.py:1455
+#: picard/ui/mainwindow.py:1496
 msgid ""
 "Picard needs authorization to access your personal data on the MusicBrainz "
 "server. Would you like to log in now?"
@@ -4641,114 +4732,11 @@ msgstr "Muuta äänenvoimakkuutta"
 msgid "Audio volume"
 msgstr "Äänenvoimakkuus"
 
-#: picard/ui/profileeditor.py:53
-msgid "Option profile editor"
-msgstr "Valintaprofiilin muokkain"
-
-#: picard/ui/options/dialog.py:128 picard/ui/profileeditor.py:115
-msgid "Make It So!"
-msgstr "&Tallenna asetukset!"
-
-#: picard/ui/profileeditor.py:116
-msgid "Save all profile information to the user settings"
-msgstr "Tallenna kaikki profiili-informaatio käyttäjäasetuksiin"
-
-#: picard/ui/profileeditor.py:120
-msgid "New"
-msgstr "Uusi"
-
-#: picard/ui/profileeditor.py:121
-msgid "Create a new profile"
-msgstr "Luo uusi profiili"
-
-#: picard/ui/profileeditor.py:125
-msgid "Copy"
-msgstr "Kopioi"
-
-#: picard/ui/profileeditor.py:126
-msgid "Copy to a new profile"
-msgstr "Kopioi uudeksi profiiliksi"
-
-#: picard/ui/profileeditor.py:130
-msgid "Delete"
-msgstr "Poista"
-
-#: picard/ui/profileeditor.py:131
-msgid "Delete the profile"
-msgstr "Poista profiili"
-
-#: picard/ui/profileeditor.py:135
-msgid "Cancel"
-msgstr "Peruuta"
-
-#: picard/ui/profileeditor.py:136
-msgid "Close the profile editor without saving changes to the profiles"
-msgstr "Sulje profiilien muokkain tallentamatta muutoksia profiileihin"
-
-#: picard/ui/profileeditor.py:232
-msgid "Settings to include in profile"
-msgstr "Asetukset jotka kuuluvat profiiliin"
-
-#: picard/ui/profileeditor.py:262
-#, python-format
-msgid "Value not set (set in \"%s\" profile)"
-msgstr "Arvo ei asetettu (aseta \"%s\" profiiliin)"
-
-#: picard/ui/profileeditor.py:274
-#, python-format
-msgid "List of %i items"
-msgstr "Sisältää %i valintaa"
-
-#: picard/ui/profileeditor.py:275
-msgid "Unknown value format"
-msgstr "Tuntematon arvon muoto"
-
-#: picard/ui/profileeditor.py:285
-msgid "Unknown script"
-msgstr "Tuntematon merkistö"
-
-#: picard/ui/profileeditor.py:291
-#, python-format
-msgid "Tagging scripts (%i found):"
-msgstr "Tunnisteiden komentosarjat (%i havaittu):"
-
-#: picard/ui/profileeditor.py:295
-msgid "No scripts in list"
-msgstr "Listalla ei ole komentosarjoja"
-
-#: picard/ui/profileeditor.py:301
-#, python-format
-msgid "CA providers (%i found):"
-msgstr "Kansitaidepalveluiden tarjoajat (%i havaittu):"
-
-#: picard/ui/options/interface.py:172 picard/ui/profileeditor.py:316
-#: picard/ui/ui_options_metadata.py:114 picard/ui/ui_options_metadata.py:115
-#: picard/ui/ui_provider_options_local.py:52
-msgid "Default"
-msgstr "Oletus"
-
-#: picard/ui/profileeditor.py:345
-msgid "Invalid Title"
-msgstr "Epäkelpo nimi"
-
-#: picard/ui/profileeditor.py:346
-msgid "The profile title cannot be blank."
-msgstr "Profiilin nimi ei voi olla tyhjä."
-
-#: picard/ui/profileeditor.py:350
-msgid "Unnamed profile"
-msgstr "Nimeämätön profiili"
-
-#: picard/ui/profileeditor.py:409
-#, python-format
-msgid "%s (copy)"
-msgstr "%s (kopio)"
-
-#: picard/ui/scripteditor.py:134
+#: picard/ui/scripteditor.py:137
 msgid "Renaming options are disabled"
 msgstr "Uudelleennimeämisen asetukset ovat pois käytöstä"
 
-#: picard/ui/scripteditor.py:205
+#: picard/ui/scripteditor.py:208
 #, python-format
 msgid ""
 "If you select files from the Cluster pane or Album pane prior to opening the"
@@ -4757,157 +4745,149 @@ msgid ""
 "default examples will be provided."
 msgstr "Mikäli valitset tiedostoja joko ryhmittely- tai julkaisuikkunassa ennen asetuksien avaamista, enintään %u tiedostoa valituista näytetään tiedostonnimeämisen esimerkkeinä. Ilman valittuja tiedostoja, oletusesimerkit näytetään."
 
-#: picard/ui/scripteditor.py:217
+#: picard/ui/scripteditor.py:220
 #, python-format
 msgid ""
 "Reload up to %u items chosen at random from files selected in the main "
 "window"
 msgstr "Valitse uudet %u satunnaista tiedostoa pääikkunassa valituista"
 
-#: picard/ui/scripteditor.py:306
+#: picard/ui/scripteditor.py:309
 msgid "Confirm"
 msgstr "Vahvista"
 
-#: picard/ui/scripteditor.py:347
+#: picard/ui/scripteditor.py:350
 #, python-format
 msgid "User: %s"
 msgstr "Käyttäjä: %s"
 
-#: picard/ui/scripteditor.py:392
+#: picard/ui/scripteditor.py:385
+msgid "title"
+msgstr "nimi"
+
+#: picard/ui/scripteditor.py:395
 msgid "File naming script editor"
 msgstr "Tiedostonnimeämiskomentosarjan muokkain"
 
-#: picard/ui/scripteditor.py:427
-msgid "All Files"
-msgstr "Kaikki tiedostot"
-
-#: picard/ui/scripteditor.py:428
-msgid "Picard Script Files"
-msgstr "Picardin komentosarjatiedostot"
-
-#: picard/ui/scripteditor.py:429
-msgid "Picard Naming Script Package"
-msgstr "Picardin tiedostonnimeämiskomentosarjan paketti"
-
-#: picard/ui/scripteditor.py:443
+#: picard/ui/scripteditor.py:461
 msgid "Revert"
 msgstr "Palauta"
 
-#: picard/ui/scripteditor.py:494
+#: picard/ui/scripteditor.py:527
 msgid "&Import a script file"
 msgstr "&Tuo komentosarja tiedostosta"
 
-#: picard/ui/scripteditor.py:495
+#: picard/ui/scripteditor.py:528
 msgid "Import a file as a new script"
 msgstr "Tuo komentosarja tiedostosta uutena komentosarjana"
 
-#: picard/ui/scripteditor.py:500
+#: picard/ui/scripteditor.py:533
 msgid "&Export a script file"
 msgstr "&Vie komentosarja tiedostoon"
 
-#: picard/ui/scripteditor.py:501
+#: picard/ui/scripteditor.py:534
 msgid "Export the script to a file"
 msgstr "Vie komentosarja tiedostoon"
 
-#: picard/ui/scripteditor.py:506
+#: picard/ui/scripteditor.py:539
 msgid "E&xit / Close editor"
 msgstr "Poistu / S&ulje muokkain"
 
-#: picard/ui/scripteditor.py:507
+#: picard/ui/scripteditor.py:540
 msgid "Close the script editor"
 msgstr "Sulje komentosarjan muokkain"
 
-#: picard/ui/scripteditor.py:512
+#: picard/ui/scripteditor.py:545
 msgid "&Script"
 msgstr "&Komentosarja"
 
-#: picard/ui/scripteditor.py:515
+#: picard/ui/scripteditor.py:548
 msgid "Edit Script &Metadata"
 msgstr "Muokkaa komentosarjan &Metatietoja"
 
-#: picard/ui/scripteditor.py:516
+#: picard/ui/scripteditor.py:549
 msgid "Display the details for the script"
 msgstr "Näytä lisätietoja komentosarjasta"
 
-#: picard/ui/scripteditor.py:518
+#: picard/ui/scripteditor.py:551
 msgid "Ctrl+M"
 msgstr "Ctrl+M"
 
-#: picard/ui/scripteditor.py:521
+#: picard/ui/scripteditor.py:554
 msgid "Add a &new script"
 msgstr "Lisää uusi &komentosarja"
 
-#: picard/ui/scripteditor.py:522
+#: picard/ui/scripteditor.py:555
 msgid "Create a new file naming script"
 msgstr "Luo uusi tiedostonnimeämiskomentosarja"
 
-#: picard/ui/scripteditor.py:527
+#: picard/ui/scripteditor.py:560
 msgid "&Copy the current script"
 msgstr "&Kopioi nykyinen komentosarja"
 
-#: picard/ui/scripteditor.py:528
+#: picard/ui/scripteditor.py:561
 msgid "Save a copy of the script as a new script"
 msgstr "Tallenna kopio komentosarjasta uutena komentosarjana"
 
-#: picard/ui/scripteditor.py:533
+#: picard/ui/scripteditor.py:566
 msgid "&Delete the current script"
 msgstr "&Poista nykyinen komentosarja"
 
-#: picard/ui/scripteditor.py:534
+#: picard/ui/scripteditor.py:567
 msgid "Delete the script"
 msgstr "Poista komentosarja"
 
-#: picard/ui/scripteditor.py:539
+#: picard/ui/scripteditor.py:572
 msgid "&Revert the current script"
 msgstr "Palauta nykyinen komentosa&rja"
 
-#: picard/ui/scripteditor.py:540
+#: picard/ui/scripteditor.py:573
 msgid "Revert the script to the last saved value"
 msgstr "Palauta komentosarja viimeisimpään tallennukseen"
 
-#: picard/ui/scripteditor.py:545
+#: picard/ui/scripteditor.py:578
 msgid "&Save the current script"
 msgstr "&Tallenna nykyinen komentosarja"
 
-#: picard/ui/scripteditor.py:546
+#: picard/ui/scripteditor.py:579
 msgid "Save changes to the script"
 msgstr "Tallenna komentosarjan muutokset"
 
-#: picard/ui/scripteditor.py:548
+#: picard/ui/scripteditor.py:581
 msgid "Ctrl+S"
 msgstr "Ctrl+S"
 
-#: picard/ui/scripteditor.py:556
+#: picard/ui/scripteditor.py:589
 msgid "&Reload random example files"
 msgstr "Lataa &uudet satunnaiset esimerkkitiedostonimet"
 
-#: picard/ui/scripteditor.py:565
+#: picard/ui/scripteditor.py:598
 msgid "&Show documentation"
 msgstr "&Näytä dokumentaatio"
 
-#: picard/ui/scripteditor.py:566
+#: picard/ui/scripteditor.py:599
 msgid "View the scripting documentation in a sidebar"
 msgstr "Näytä komentosarjan ohjeistus sivupalkissa"
 
-#: picard/ui/scripteditor.py:582
+#: picard/ui/scripteditor.py:615
 msgid "&Scripting documentation..."
 msgstr "&Komentosarjojen ohjeistus..."
 
-#: picard/ui/scripteditor.py:583
+#: picard/ui/scripteditor.py:616
 msgid "Open the scripting documentation in your browser"
 msgstr "Avaa komentosarjan ohjeistus selaimeen"
 
-#: picard/ui/scripteditor.py:758
+#: picard/ui/scripteditor.py:795
 msgid ""
 "There are unsaved changes to the current script.  Do you want to continue "
 "and lose these changes?"
 msgstr "Nykyisessä komentosarjassa on tallentamattomia muutoksia. Haluatko poistua ja menettää muutokset?"
 
-#: picard/ui/scripteditor.py:868
+#: picard/ui/scripteditor.py:905
 msgid "Error Deleting Script"
 msgstr "Virhe poistettaessa komentosarjaa"
 
-#: picard/ui/scripteditor.py:869
+#: picard/ui/scripteditor.py:906
 #, python-format
 msgid ""
 "The script could not be deleted because it is used in one of the user profiles.\n"
@@ -4915,95 +4895,54 @@ msgid ""
 "Profile: %s"
 msgstr "Komentosarjaa ei voitu poistaa sillä se on yhä käytössä käyttäjäprofiilissa:\n\nProfiili: %s"
 
-#: picard/ui/scripteditor.py:874
+#: picard/ui/scripteditor.py:911
 msgid "Are you sure that you want to delete the script?"
 msgstr "Haluatko varmasti poistaa tämän komentosarjan?"
 
-#: picard/ui/scripteditor.py:913
+#: picard/ui/scripteditor.py:950
 msgid "Save Script"
 msgstr "Tallenna komentosarja"
 
-#: picard/ui/scripteditor.py:914
+#: picard/ui/scripteditor.py:951
 msgid "Changes to the script have been saved."
 msgstr "Komentosarjan muutokset on tallennettu."
 
-#: picard/ui/options/renaming.py:286 picard/ui/scripteditor.py:920
-#: picard/ui/scripteditor.py:1219
+#: picard/ui/options/renaming.py:289 picard/ui/scripteditor.py:957
+#: picard/ui/scripteditor.py:1190
 msgid "Error"
 msgstr "Virhe"
 
-#: picard/ui/scripteditor.py:920 picard/ui/scripteditor.py:1220
+#: picard/ui/scripteditor.py:957 picard/ui/scripteditor.py:1191
 msgid "The script title must not be empty."
 msgstr "Komentosarjan nimi ei voi olla tyhjä."
 
-#: picard/ui/scripteditor.py:982
+#: picard/ui/options/scripting.py:159 picard/ui/scripteditor.py:1019
 msgid "File Error"
 msgstr "Tiedostovirhe"
 
-#: picard/ui/scripteditor.py:988
-#, python-format
-msgid "Error importing \"%s\". %s."
-msgstr "Virhe tuotaessa \"%s\". %s."
-
-#: picard/ui/scripteditor.py:989
-#, python-format
-msgid "Error decoding \"%s\". %s."
-msgstr "Virhe luettaessa \"s\". %s."
-
-#: picard/ui/scripteditor.py:994
-msgid "Import Script File"
-msgstr "Tuo komentosarja tiedostosta"
-
-#: picard/ui/scripteditor.py:1008
-msgid "The file was empty"
-msgstr "Tiedosto on tyhjä"
-
-#: picard/ui/scripteditor.py:1018
-#, python-format
-msgid "Imported from %s"
-msgstr "Tuotu kohteesta %s"
-
-#: picard/ui/scripteditor.py:1027
-#, python-format
-msgid "Error exporting file \"%s\". %s."
-msgstr "Virhe vietäessä tiedostoon \"%s\". %s."
-
-#: picard/ui/scripteditor.py:1034
-msgid "Export Script File"
-msgstr "Vie komentosarja tiedostoon"
-
-#: picard/ui/scripteditor.py:1055
-msgid "Export Script"
-msgstr "Vie komentosarja"
-
-#: picard/ui/scripteditor.py:1056
-#, python-format
-msgid "Script successfully exported to %s"
-msgstr "Komentosarja viety onnistuneesti kohteeseen %s"
-
-#: picard/ui/scripteditor.py:1078
+#: picard/ui/scripteditor.py:1049
 msgid ""
 "Are you sure that you want to reset the script to its last saved value?"
 msgstr "Haluatko varmasti palauttaa tämän komentosarjan viimeisimmästä tallennuksestaan?"
 
-#: picard/ui/scripteditor.py:1083
+#: picard/ui/scripteditor.py:1054
 msgid "Revert Script"
 msgstr "Palauta komentosarja"
 
-#: picard/ui/scripteditor.py:1084
+#: picard/ui/scripteditor.py:1055
 msgid ""
 "There have been no changes made since the last time the script was saved."
 msgstr "Komentosarjaan ei ole tehty muutoksia viimeisimmän tallennuksen jälkeen."
 
-#: picard/ui/options/renaming.py:296 picard/ui/scripteditor.py:1108
+#: picard/ui/options/renaming.py:299 picard/ui/scripteditor.py:1079
 msgid "The file naming format must not be empty."
 msgstr "Tiedostonnimeämismuoto ei ole asetettu."
 
-#: picard/ui/scripteditor.py:1140
+#: picard/ui/scripteditor.py:1111
 msgid "Script Details"
 msgstr "Komentosarjan tiedot"
 
-#: picard/ui/scripteditor.py:1203
+#: picard/ui/scripteditor.py:1174
 msgid ""
 "There are unsaved changes to the current metadata.  Do you want to continue "
 "and lose these changes?"
@@ -5090,13 +5029,40 @@ msgstr "&Kansikuva"
 msgid "Form"
 msgstr "Lomake"
 
-#: picard/ui/ui_options.py:82
+#: picard/ui/ui_options.py:47
 msgid "Options"
 msgstr "Asetukset"
 
-#: picard/ui/ui_options.py:83
-msgid "Save settings to:"
-msgstr "Tallenna asetukset kohteeseen:"
+#: picard/ui/ui_options_acousticbrainz.py:63
+msgid "AcousticBrainz features extraction"
+msgstr "AcousticBrainz-ominaisuuksien ottaminen"
+
+#: picard/ui/ui_options_acousticbrainz.py:64
+msgid "Do not use acoustic feature extraction"
+msgstr "Älä käytä akustisten ominaisuuksien ottamista"
+
+#: picard/ui/ui_options_acousticbrainz.py:65
+msgid "Use acoustic feature extraction"
+msgstr "Käytä akustisten ominaisuuksien ottamista"
+
+#: picard/ui/ui_options_acousticbrainz.py:66
+msgid "AcousticBrainz Settings"
+msgstr "AcousticBrainz-asetukset"
+
+#: picard/ui/ui_options_acousticbrainz.py:67
+msgid "AcousticBrainz/Essentia feature extractor:"
+msgstr "AcousticBrainz/Essentia ominaisuuksien otto-ohjelma:"
+
+#: picard/ui/ui_options_acousticbrainz.py:68
+#: picard/ui/ui_options_fingerprinting.py:79
+#: picard/ui/ui_options_interface.py:159 picard/ui/ui_options_renaming.py:156
+msgid "Browse..."
+msgstr "Selaa..."
+
+#: picard/ui/ui_options_acousticbrainz.py:69
+#: picard/ui/ui_options_fingerprinting.py:80
+msgid "Download..."
+msgstr "Lataa..."
 
 #: picard/ui/ui_options_advanced.py:115
 msgid "Advanced options"
@@ -5143,7 +5109,7 @@ msgstr "Äänettömät raidat"
 msgid "Tags to ignore for comparison:"
 msgstr "Tunnisteet jotka ohitetaan vertailtaessa:"
 
-#: picard/ui/options/dialog.py:206
+#: picard/ui/options/dialog.py:202
 #: picard/ui/ui_options_attached_profiles.py:34
 msgid "Profiles Attached to Options"
 msgstr "Asetuksiin liitetyt profiilit"
@@ -5203,15 +5169,6 @@ msgstr "Ohita olemassa olevat AcoustID-tunnisteet"
 #: picard/ui/ui_options_fingerprinting.py:78
 msgid "Fingerprint calculator:"
 msgstr "Äänitunnisteen laskemiseen käytettävä ohjelma:"
-
-#: picard/ui/ui_options_fingerprinting.py:79
-#: picard/ui/ui_options_interface.py:159 picard/ui/ui_options_renaming.py:156
-msgid "Browse..."
-msgstr "Selaa..."
-
-#: picard/ui/ui_options_fingerprinting.py:80
-msgid "Download..."
-msgstr "Lataa..."
 
 #: picard/ui/ui_options_fingerprinting.py:81
 msgid "API key:"
@@ -5436,6 +5393,12 @@ msgstr "Useita artisteja:"
 msgid "Non-album tracks:"
 msgstr "Julkaisuihin kuulumattomat kappaleet:"
 
+#: picard/ui/options/interface.py:177 picard/ui/ui_options_metadata.py:114
+#: picard/ui/ui_options_metadata.py:115
+#: picard/ui/ui_provider_options_local.py:52
+msgid "Default"
+msgstr "Oletus"
+
 #: picard/ui/ui_options_network.py:140
 msgid "Web Proxy"
 msgstr "Välityspalvelin"
@@ -5501,6 +5464,18 @@ msgstr "Päivitä lista liitännäisistä"
 #: picard/ui/ui_options_plugins.py:136
 msgid "Details"
 msgstr "Tiedot"
+
+#: picard/ui/ui_options_profiles.py:75
+msgid "Option Profile(s)"
+msgstr "Asetusprofiili(t)"
+
+#: picard/ui/ui_options_profiles.py:76 picard/ui/ui_options_script.py:113
+msgid "Move script up"
+msgstr "Siirrä komentosarjaa ylöspäin"
+
+#: picard/ui/ui_options_profiles.py:77 picard/ui/ui_options_script.py:114
+msgid "Move script down"
+msgstr "Siirrä komentosarjaa alaspäin"
 
 #: picard/ui/ui_options_ratings.py:45
 msgid "Enable track ratings"
@@ -5590,34 +5565,38 @@ msgstr "Jälkeen"
 msgid "Reload examples"
 msgstr "Lataa uudelleen esimerkit"
 
-#: picard/ui/ui_options_script.py:108
+#: picard/ui/ui_options_script.py:111
 msgid "Tagger Script(s)"
 msgstr "Tunnisteille suoritettavat komentosarjat"
 
-#: picard/ui/ui_options_script.py:109
+#: picard/ui/ui_options_script.py:112
 msgid "Enter your tagger script here."
 msgstr "Syötä komentosarja tähän."
 
-#: picard/ui/ui_options_script.py:110 picard/ui/ui_options_script.py:111
+#: picard/ui/ui_options_script.py:115 picard/ui/ui_options_script.py:116
 msgid "Add new script"
 msgstr "Lisää uusi komentosarja"
 
-#: picard/ui/ui_options_script.py:112 picard/ui/ui_scripteditor_details.py:91
+#: picard/ui/ui_options_script.py:117
+msgid "Remove the selected script"
+msgstr "Poista valittu komentosarja"
+
+#: picard/ui/ui_options_script.py:118 picard/ui/widgets/scriptlistwidget.py:52
+msgid "Remove script"
+msgstr "Poista komentosarja"
+
+#: picard/ui/ui_options_script.py:119
+msgid "Import"
+msgstr "Tuo"
+
+#: picard/ui/ui_options_script.py:120
+msgid "Export"
+msgstr "Vie"
+
+#: picard/ui/ui_options_script.py:121 picard/ui/ui_scripteditor_details.py:91
 #: picard/ui/ui_scripting_documentation_dialog.py:36
 msgid "Scripting Documentation"
 msgstr "Komentosarjojen ohjeistus"
-
-#: picard/ui/ui_options_script.py:113 picard/ui/ui_profileeditor.py:84
-msgid "Move script up"
-msgstr "Siirrä komentosarjaa ylöspäin"
-
-#: picard/ui/ui_options_script.py:114 picard/ui/ui_profileeditor.py:85
-msgid "Move script down"
-msgstr "Siirrä komentosarjaa alaspäin"
-
-#: picard/ui/ui_options_script.py:115 picard/ui/widgets/scriptlistwidget.py:48
-msgid "Remove script"
-msgstr "Poista komentosarja"
 
 #: picard/ui/ui_options_tags.py:67
 msgid "Write tags to files"
@@ -5736,10 +5715,6 @@ msgstr "Windows-1252"
 #: picard/ui/ui_passworddialog.py:60
 msgid "Authentication required"
 msgstr "Tunnistautuminen vaaditaan"
-
-#: picard/ui/ui_profileeditor.py:83
-msgid "User Profile(s)"
-msgstr "Käyttäjäprofiili(t)"
 
 #: picard/ui/ui_provider_options_caa.py:69
 msgid "Download only cover art images matching selected types"
@@ -5872,79 +5847,101 @@ msgstr "&Sulje"
 msgid "Regex Error"
 msgstr "Regex virhe"
 
+#: picard/ui/options/acousticbrainz.py:58
+msgid "AcousticBrainz"
+msgstr "AcousticBrainz"
+
+#: picard/ui/options/acousticbrainz.py:138
+msgid "Extractor version: "
+msgstr "Ominaisuuksien otto-ohjelman versio: "
+
+#: picard/ui/options/acousticbrainz.py:150
+#: picard/ui/options/acousticbrainz.py:154
+msgid "Please select a valid extractor executable."
+msgstr "Valitse kelvollinen suoritustiedosto otto-ohjelmalle."
+
+#: picard/ui/options/acousticbrainz.py:154
+msgid "Invalid extractor executable"
+msgstr "Epäkelpo suoritustiedosto otto-ohjelmalle"
+
 #: picard/ui/options/advanced.py:43
 msgid "Advanced"
 msgstr "Lisäasetukset"
 
-#: picard/ui/options/dialog.py:122
+#: picard/ui/options/dialog.py:124
 msgid "&Restore all Defaults"
 msgstr "Palauta &kaikki oletusasetuksiin"
 
-#: picard/ui/options/dialog.py:123
+#: picard/ui/options/dialog.py:125
 msgid "Reset all of Picard's settings"
 msgstr "Nollaa kaikki Picardin asetukset"
 
-#: picard/ui/options/dialog.py:125
+#: picard/ui/options/dialog.py:127
 msgid "Reset all settings for current option page"
 msgstr "Nollaa kaikki asetukset tälle asetussivulle"
 
-#: picard/ui/options/dialog.py:142
-msgid "Profile Help"
-msgstr "Profiilin ohje"
+#: picard/ui/options/dialog.py:130
+msgid "Make It So!"
+msgstr "&Tallenna asetukset!"
 
-#: picard/ui/options/dialog.py:146 picard/ui/options/dialog.py:345
-#: picard/ui/options/dialog.py:363
+#: picard/ui/options/dialog.py:143 picard/ui/options/dialog.py:431
+#: picard/ui/options/dialog.py:457
 msgid "Attached Profiles"
 msgstr "Liitetyt profiilit"
 
-#: picard/ui/options/dialog.py:147
+#: picard/ui/options/dialog.py:144
 msgid "Show which profiles are attached to the options on this page"
 msgstr "Näytä asetuksiin liitetyt profiilit tällä sivulla"
 
-#: picard/ui/options/dialog.py:158
-msgid "User base settings"
-msgstr "Käyttäjän perusasetukset"
-
-#: picard/ui/options/dialog.py:218
+#: picard/ui/options/dialog.py:212
 msgid ""
 "The options on this page are not currently available to be managed using "
 "profiles."
 msgstr "Tällä sivulla olevia asetuksia ei voida tällä hetkellä hallinnoida profiilein."
 
-#: picard/ui/options/dialog.py:290
+#: picard/ui/options/dialog.py:233
+msgid "Unknown profile"
+msgstr "Tuntematon profiili"
+
+#: picard/ui/options/dialog.py:282
+#, python-format
+msgid "This option will be saved to profile: %s"
+msgstr "Tämä asetus tallennetaan profiiliin %s"
+
+#: picard/ui/options/dialog.py:372
 msgid "Unexpected error"
 msgstr "Odottamaton virhe"
 
-#: picard/ui/options/dialog.py:325
+#: picard/ui/options/dialog.py:411
 msgid "You are about to reset your options for this page."
 msgstr "Olet nollaamassa tämän sivun asetukset."
 
-#: picard/ui/options/dialog.py:329
+#: picard/ui/options/dialog.py:415
 msgid "Warning! This will reset all of your settings."
 msgstr "Varoitus! Tämä nollaa kaikki asetukset."
 
-#: picard/ui/options/dialog.py:336
+#: picard/ui/options/dialog.py:422
 msgid "Confirm Reset"
 msgstr "Vahvista nollaus"
 
-#: picard/ui/options/dialog.py:337
+#: picard/ui/options/dialog.py:423
 msgid "Are you sure?"
 msgstr "Oletko aivan varma?"
 
-#: picard/ui/options/dialog.py:363
+#: picard/ui/options/dialog.py:457
 msgid "Option Setting"
 msgstr "Asetettu asetus"
 
-#: picard/ui/options/dialog.py:374
+#: picard/ui/options/dialog.py:464
 #, python-format
 msgid "Profiles Attached to Options in %s Section"
 msgstr "Asetuksiin liitetyt profiilit %s osiossa"
 
-#: picard/ui/options/dialog.py:384
+#: picard/ui/options/dialog.py:474
 msgid " [Enabled]"
 msgstr " [Valittu]"
 
-#: picard/ui/options/dialog.py:385
+#: picard/ui/options/dialog.py:475 picard/ui/options/profiles.py:277
 msgid "None"
 msgstr "Ei mitään"
 
@@ -6052,75 +6049,79 @@ msgstr "Tallenna"
 msgid "Submit AcoustIDs"
 msgstr "Lähetä AcoustID-tunnisteet"
 
-#: picard/ui/options/interface.py:124
+#: picard/ui/options/interface.py:120
+msgid "Submit AcousticBrainz features"
+msgstr "Lähetä AcousticBrainz-ominaisuudet"
+
+#: picard/ui/options/interface.py:128
 msgid "Open in Player"
 msgstr "Avaa toistimessa"
 
-#: picard/ui/options/interface.py:128
+#: picard/ui/options/interface.py:132
 msgid "Lookup CD..."
 msgstr "CD-haku..."
 
-#: picard/ui/options/interface.py:173
+#: picard/ui/options/interface.py:178
 msgid ""
 "The default color scheme based on the operating system display settings"
 msgstr "Oletusväriteema käyttöjärjestelmän mukaan"
 
-#: picard/ui/options/interface.py:176
+#: picard/ui/options/interface.py:181
 msgid "Dark"
 msgstr "Tumma"
 
-#: picard/ui/options/interface.py:177
+#: picard/ui/options/interface.py:182
 msgid "A dark display theme"
 msgstr "Tumma teema"
 
-#: picard/ui/options/interface.py:180
+#: picard/ui/options/interface.py:185
 msgid "Light"
 msgstr "Vaalea"
 
-#: picard/ui/options/interface.py:181
+#: picard/ui/options/interface.py:186
 msgid "A light display theme"
 msgstr "Vaalea teema"
 
-#: picard/ui/options/interface.py:184
+#: picard/ui/options/interface.py:189
 msgid "System"
 msgstr "Järjestelmä"
 
-#: picard/ui/options/interface.py:185
+#: picard/ui/options/interface.py:190
 msgid "The Qt5 theme configured in the desktop environment"
 msgstr "Työpöytäympäristön Qt5-teema"
 
-#: picard/ui/options/interface.py:203
+#: picard/ui/options/interface.py:208
 msgid "System default"
 msgstr "Järjestelmän oletus"
 
-#: picard/ui/options/interface.py:267
+#: picard/ui/options/interface.py:272
 msgid "Theme changed"
 msgstr "Teema vaihdettu"
 
-#: picard/ui/options/interface.py:268
+#: picard/ui/options/interface.py:273
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
 msgstr "Olet vaihtanut sovelluksen teeman. Saattaksesi muutoksen voimaan, käynnistä Picard uudelleen."
 
-#: picard/ui/options/interface.py:270
+#: picard/ui/options/interface.py:275
 msgid ""
 "Please note that using the system theme might cause the user interface to be"
 " not shown correctly. If this is the case select the \"Default\" theme "
 "option to use Picard's default theme again."
 msgstr "Huomioi, että käytettäessä järjestelmän teemaa, käyttöliittymä ei välttämättä näy oikein.  Mikäli niin käy, vaihda oletusteema saadaksesi Picardin oletusväriasetukset takaisin käyttöön."
 
-#: picard/ui/options/interface.py:275
+#: picard/ui/options/interface.py:280
 msgid "Language changed"
 msgstr "Kieli vaihdettu"
 
-#: picard/ui/options/interface.py:276
+#: picard/ui/options/interface.py:281
 msgid ""
 "You have changed the interface language. You have to restart Picard in order"
 " for the change to take effect."
 msgstr "Olet vaihtanut käyttöliittymän kielen. Käynnistä Picard uudelleen saattaaksesi muutoksen voimaan."
 
-#: picard/ui/options/interface.py:308
+#: picard/ui/options/interface.py:313
 msgid "Drag and Drop to re-order"
 msgstr "Raahaa ja pudota järjestääksesi"
 
@@ -6234,6 +6235,82 @@ msgstr "Liitännäistä '%s' ei voitu ladata."
 msgid "Please try again later."
 msgstr "Yritä myöhemmin uudelleen."
 
+#: picard/ui/options/profiles.py:51
+msgid "Option Profiles"
+msgstr "Asetusprofiilit"
+
+#: picard/ui/options/profiles.py:110
+msgid "New"
+msgstr "Uusi"
+
+#: picard/ui/options/profiles.py:111
+msgid "Create a new profile"
+msgstr "Luo uusi profiili"
+
+#: picard/ui/options/profiles.py:115
+msgid "Copy"
+msgstr "Kopioi"
+
+#: picard/ui/options/profiles.py:116
+msgid "Copy to a new profile"
+msgstr "Kopioi uudeksi profiiliksi"
+
+#: picard/ui/options/profiles.py:120
+msgid "Delete"
+msgstr "Poista"
+
+#: picard/ui/options/profiles.py:121
+msgid "Delete the profile"
+msgstr "Poista profiili"
+
+#: picard/ui/options/profiles.py:214
+msgid "Settings to include in profile"
+msgstr "Asetukset jotka kuuluvat profiiliin"
+
+#: picard/ui/options/profiles.py:247
+msgid "Unknown script"
+msgstr "Tuntematon merkistö"
+
+#: picard/ui/options/profiles.py:251
+msgid "No scripts in list"
+msgstr "Listalla ei ole komentosarjoja"
+
+#: picard/ui/options/profiles.py:254
+#, python-format
+msgid "Enabled tagging scripts of %i found:"
+msgstr "Päällä olevat tunnistekomentosarjat (%i kpl):"
+
+#: picard/ui/options/profiles.py:266
+#, python-format
+msgid "Enabled providers of %i listed:"
+msgstr "Päällä olevat kansitaidepalvelut (%i kpl):"
+
+#: picard/ui/options/profiles.py:292
+#, python-format
+msgid "List of %i items"
+msgstr "Sisältää %i valintaa"
+
+#: picard/ui/options/profiles.py:293
+msgid "Unknown value format"
+msgstr "Tuntematon arvon muoto"
+
+#: picard/ui/options/profiles.py:369
+msgid "Invalid Title"
+msgstr "Epäkelpo nimi"
+
+#: picard/ui/options/profiles.py:370
+msgid "The profile title cannot be blank."
+msgstr "Profiilin nimi ei voi olla tyhjä."
+
+#: picard/ui/options/profiles.py:374
+msgid "Unnamed profile"
+msgstr "Nimeämätön profiili"
+
+#: picard/ui/options/profiles.py:423
+#, python-format
+msgid "%s (copy)"
+msgstr "%s (kopio)"
+
 #: picard/ui/options/ratings.py:41
 msgid "Ratings"
 msgstr "Arvostelut"
@@ -6246,11 +6323,32 @@ msgstr "Julkaisujen suosiminen"
 msgid "Reset all"
 msgstr "Oletusasetukset"
 
-#: picard/ui/options/renaming.py:286
+#: picard/ui/options/renaming.py:289
 msgid "The location to move files to must not be empty."
 msgstr "Tiedostonsiirron kohdehakemistoa ei ole asetettu."
 
-#: picard/ui/options/scripting.py:147
+#: picard/ui/options/scripting.py:123
+msgid "Show scripting documentation in new window."
+msgstr "Näytä komentosarjan ohjeistus uudessa ikkunassa."
+
+#: picard/ui/options/scripting.py:126
+msgid "Import a script file as a new script."
+msgstr "Tuo komentosarjatiedosto uutena komentosarjana."
+
+#: picard/ui/options/scripting.py:129
+msgid "Export the current script to a file."
+msgstr "Vie nykyinen komentosarja tiedostoon."
+
+#: picard/ui/options/scripting.py:133
+msgid "Picard Tagging Script Package"
+msgstr "Picardin tunnistekomentosarjan paketti"
+
+#: picard/ui/options/scripting.py:171
+#, python-format
+msgid "%s (imported)"
+msgstr "%s (tuotu)"
+
+#: picard/ui/options/scripting.py:231
 msgid "Script Error"
 msgstr "Virhe komentosarjassa"
 
@@ -6375,7 +6473,7 @@ msgid "Are you sure you want to remove this profile?"
 msgstr "Haluatko varmasti poistaa tämän profiilin?"
 
 #: picard/ui/widgets/profilelistwidget.py:79
-#: picard/ui/widgets/scriptlistwidget.py:78
+#: picard/ui/widgets/scriptlistwidget.py:82
 msgid "Confirm Remove"
 msgstr "Vahvista poistaminen"
 
@@ -6383,31 +6481,31 @@ msgstr "Vahvista poistaminen"
 msgid "Open Scripting Documentation in your browser"
 msgstr "Avaa komentosarjan ohjeistus selaimeen"
 
-#: picard/ui/widgets/scriptlistwidget.py:45
+#: picard/ui/widgets/scriptlistwidget.py:49
 msgid "Rename script"
 msgstr "Nimeä komentosarja uudelleen"
 
-#: picard/ui/widgets/scriptlistwidget.py:77
+#: picard/ui/widgets/scriptlistwidget.py:81
 msgid "Are you sure you want to remove this script?"
 msgstr "Haluatko varmasti poistaa tämän komentosarjan?"
 
-#: picard/ui/widgets/scripttextedit.py:319
-msgid "&Word wrap script"
-msgstr "&Uudelleenrivityskomentosarja"
-
 #: picard/ui/widgets/scripttextedit.py:320
-msgid "Word wrap long lines in the editor"
-msgstr "Uudelleenrivitä pitkät rivit muokkaimessa"
+msgid "&Word wrap script"
+msgstr "&Dynaaminen rivinvaihto"
 
-#: picard/ui/widgets/scripttextedit.py:322
+#: picard/ui/widgets/scripttextedit.py:321
+msgid "Word wrap long lines in the editor"
+msgstr "Rivitä pitkät rivit automaattisesti uudelle riville"
+
+#: picard/ui/widgets/scripttextedit.py:323
 msgid "Ctrl+Shift+W"
 msgstr "Ctrl+Shift+W"
 
-#: picard/ui/widgets/scripttextedit.py:328
+#: picard/ui/widgets/scripttextedit.py:329
 msgid "Show help &tooltips"
 msgstr "Näytä auttavat &vihjelaatikot"
 
-#: picard/ui/widgets/scripttextedit.py:329
+#: picard/ui/widgets/scripttextedit.py:330
 msgid "Show tooltips for script elements"
 msgstr "Näytä vihjelaatikot komentosarjan osille"
 
@@ -6416,6 +6514,10 @@ msgid ""
 "The table is locked. To enable sorting and column resizing\n"
 "unlock the table in the table header's context menu."
 msgstr "Taulukko on lukittu. Vapauta lukitus taulukon otsikkorivin\nalasvetovalikosta lajitellaksesi ja muuttaaksesi kokoa."
+
+#: picard/util/__init__.py:257
+msgid "No Title"
+msgstr "Ei nimeä"
 
 #: picard/util/bytes2human.py:37
 #, python-format

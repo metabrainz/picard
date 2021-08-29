@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-08-03 06:21+0000\n"
+"PO-Revision-Date: 2021-08-22 04:30+0000\n"
 "Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -1478,6 +1478,11 @@ msgctxt "work_attribute_type"
 msgid "COMPASS ID"
 msgstr "מזהה COMPASS"
 
+#: DB:work_attribute_type/name:73
+msgctxt "work_attribute_type"
+msgid "COSCAP ID"
+msgstr "מזהה COSCAP"
+
 #: DB:work_attribute_type/name:65
 msgctxt "work_attribute_type"
 msgid "COTT ID"
@@ -2035,7 +2040,7 @@ msgstr ""
 #: DB:release_packaging/name:13
 msgctxt "release_packaging"
 msgid "Discbox Slider"
-msgstr ""
+msgstr "מעטפת תקליטור"
 
 #: DB:label_type/name:1
 msgctxt "label_type"
@@ -3211,6 +3216,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Austrian rights society AKM"
 msgstr "מזהה עבור אגודת הזכויות האוסטרית AKM"
 
+#: DB:work_attribute_type/description:73
+msgctxt "work_attribute_type"
+msgid "ID for the Barbadian rights society COSCAP"
+msgstr ""
+
 #: DB:work_attribute_type/description:28
 msgctxt "work_attribute_type"
 msgid "ID for the Belgian rights society SABAM"
@@ -3240,6 +3250,11 @@ msgstr "מזהה עבור אגודת הזכויות הקנדית  SOCAN"
 msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SODRAC"
 msgstr "מזהה עבור אגודת הזכויות הקנדית  SODRAC"
+
+#: DB:work_attribute_type/description:71
+msgctxt "work_attribute_type"
+msgid "ID for the Chinese rights society MCSC"
+msgstr ""
 
 #: DB:work_attribute_type/description:39
 msgctxt "work_attribute_type"
@@ -3321,6 +3336,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Icelandic rights society STEF"
 msgstr ""
 
+#: DB:work_attribute_type/description:70
+msgctxt "work_attribute_type"
+msgid "ID for the Indian rights society IPRS"
+msgstr ""
+
 #: DB:work_attribute_type/description:29
 msgctxt "work_attribute_type"
 msgid "ID for the International Copyright Enterprise"
@@ -3334,6 +3354,11 @@ msgstr ""
 #: DB:work_attribute_type/description:36
 msgctxt "work_attribute_type"
 msgid "ID for the Italian rights society SIAE"
+msgstr ""
+
+#: DB:work_attribute_type/description:69
+msgctxt "work_attribute_type"
+msgid "ID for the Jamaican rights society JACAP"
 msgstr ""
 
 #: DB:work_attribute_type/description:3
@@ -3436,6 +3461,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Taiwanese rights society MÜST"
 msgstr ""
 
+#: DB:work_attribute_type/description:72
+msgctxt "work_attribute_type"
+msgid "ID for the Thai rights society MCT"
+msgstr ""
+
 #: DB:work_attribute_type/description:65
 msgctxt "work_attribute_type"
 msgid "ID for the Trinidadian and Tobagonian rights society COTT"
@@ -3490,6 +3520,11 @@ msgstr ""
 msgctxt "work_attribute_type"
 msgid "IMRO ID"
 msgstr "מזהה IMRO"
+
+#: DB:work_attribute_type/name:70
+msgctxt "work_attribute_type"
+msgid "IPRS ID"
+msgstr "מזהה IPRS"
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
@@ -3605,6 +3640,11 @@ msgid ""
 " own, e.g. Skye. These are not considered when displaying the parent areas "
 "for a given area."
 msgstr ""
+
+#: DB:work_attribute_type/name:69
+msgctxt "work_attribute_type"
+msgid "JACAP ID"
+msgstr "מזהה JACAP"
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
@@ -4266,6 +4306,16 @@ msgstr "לאנגו"
 msgctxt "work_attribute_type"
 msgid "MACP ID"
 msgstr "מזהה MACP"
+
+#: DB:work_attribute_type/name:71
+msgctxt "work_attribute_type"
+msgid "MCSC ID"
+msgstr "מזהה MCSC"
+
+#: DB:work_attribute_type/name:72
+msgctxt "work_attribute_type"
+msgid "MCT ID"
+msgstr "מזהה MCT"
 
 #: DB:work_attribute_type_allowed_value/value:963
 msgctxt "work_attribute_type_allowed_value"
