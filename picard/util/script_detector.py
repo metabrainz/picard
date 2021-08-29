@@ -25,6 +25,6 @@
 import unicodedata as ud
 
 
-def detect_alphabet(unistr):
+def detect_script(unistr):
     return set(ud.name(char).split(' ')[0]
                for char in unistr if char.isalpha())

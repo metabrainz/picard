@@ -121,7 +121,7 @@ for k, v in MB_ATTRIBUTES.items():
         RELEASE_STATUS[v] = v
 
 # List of available charsets
-from picard.const.charsets import CHAR_SETS  # noqa: F401,E402 # pylint: disable=unused-import
+from picard.const.scripts import SCRIPTS  # noqa: F401,E402 # pylint: disable=unused-import
 
 # Release countries
 from picard.const.countries import RELEASE_COUNTRIES  # noqa: F401,E402 # pylint: disable=unused-import

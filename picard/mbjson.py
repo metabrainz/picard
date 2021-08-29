@@ -28,7 +28,7 @@
 
 from picard.config import get_config
 from picard.const import RELEASE_FORMATS
-from picard.util.alphabet_detector import detect_alphabet
+from picard.util.script_detector import detect_script
 from picard.util import (
     format_time,
     linear_combination_of_weights,
@@ -196,7 +196,7 @@ def _translate_artist_node(node):
         lang = locale.split("_")[0]
 
         if (config.setting['translate_artist_names_exception'] and
-                config.setting["artist_locale_exception"] in detect_alphabet(node['name'])):
+                config.setting["artist_locale_exception"] in detect_script(node['name'])):
             return node['name'], node['sort-name']
 
         if "aliases" in node:

@@ -39,7 +39,7 @@ from test.picardtestcase import PicardTestCase
 
 from picard import util
 from picard.const.sys import IS_WIN
-from picard.util.alphabet_detector import detect_alphabet
+from picard.util.script_detector import detect_script
 from picard.util import (
     extract_year_from_date,
     find_best_match,
@@ -595,18 +595,18 @@ class PatternAsRegexTest(PicardTestCase):
 
 class AlphabetDetectionTest(PicardTestCase):
 
-    def test_detect_alphabet(self):
-        assert detect_alphabet(u"Cyrillic and кириллический") == \
+    def test_detect_script(self):
+        assert detect_script(u"Cyrillic and кириллический") == \
                {"CYRILLIC", "LATIN"}
-        assert detect_alphabet(u".%?") == set([])
+        assert detect_script(u".%?") == set([])
 
-        assert detect_alphabet(u"hello") == {"LATIN"}
-        assert detect_alphabet(u"привет") == {"CYRILLIC"}
-        assert detect_alphabet(u"ελληνικά?") == {"GREEK"}
-        assert detect_alphabet(u"سماوي يدور") == {"ARABIC"}
-        assert detect_alphabet(u"שלום") == {"HEBREW"}
-        assert detect_alphabet(u"汉字") == {"CJK"}
-        assert detect_alphabet(u"한글") == {"HANGUL"}
-        assert detect_alphabet(u"ひらがな") == {"HIRAGANA"}
-        assert detect_alphabet(u"カタカナ") == {"KATAKANA"}
-        assert detect_alphabet(u"พยัญชนะ") == {"THAI"}
+        assert detect_script(u"hello") == {"LATIN"}
+        assert detect_script(u"привет") == {"CYRILLIC"}
+        assert detect_script(u"ελληνικά?") == {"GREEK"}
+        assert detect_script(u"سماوي يدور") == {"ARABIC"}
+        assert detect_script(u"שלום") == {"HEBREW"}
+        assert detect_script(u"汉字") == {"CJK"}
+        assert detect_script(u"한글") == {"HANGUL"}
+        assert detect_script(u"ひらがな") == {"HIRAGANA"}
+        assert detect_script(u"カタカナ") == {"KATAKANA"}
+        assert detect_script(u"พยัญชนะ") == {"THAI"}

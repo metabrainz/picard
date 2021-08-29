@@ -33,7 +33,7 @@ from picard.config import (
 )
 from picard.const import (
     ALIAS_LOCALES,
-    CHAR_SETS,
+    SCRIPTS,
 )
 
 from picard.ui.options import (
@@ -107,7 +107,7 @@ class MetadataOptionsPage(OptionsPage):
 
         combo_box = self.ui.artist_locale_exception
         current_locale = config.setting["artist_locale_exception"]
-        for i, (locale, name, level) in enumerate(iter_sorted_locales(CHAR_SETS)):
+        for i, (locale, name, level) in enumerate(iter_sorted_locales(SCRIPTS)):
             label = name
             combo_box.addItem(label, locale)
             if locale == current_locale:
