@@ -4,6 +4,10 @@
 .idea/
 .vscode/
 
+# virtualenv
+.venv
+venv/
+
 # OS generated files
 .DS_Store
 *:Zone.Identifier
