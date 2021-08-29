@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 cd "$(dirname "$0")/../../" || exit
 
 PICARD_VERSION=$(python -c "import picard; print(picard.__version__)")
