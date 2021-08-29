@@ -66,7 +66,7 @@ MakeAppx pack /o /h SHA256 /d $PackageDir /p $PackageFile
 ThrowOnExeError "MakeAppx failed"
 
 # Sign package
-If ($CertificateFile)  {
+If ($CertificateFile) {
   SignTool sign /fd SHA256 /f "$CertificateFile" /p "$CertificatePassword" $PackageFile
   ThrowOnExeError "SignTool failed"
 } ElseIf ($Certificate) {
