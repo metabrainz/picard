@@ -26,7 +26,7 @@ KEYCHAIN_PASSWORD=$(openssl rand -base64 32)
 CERTIFICATE_NAME="MetaBrainz Foundation Inc."
 CERTIFICATE_FILE=scripts/package/appledev.p12
 
-if [ -f $CERTIFICATE_FILE ] && [ -n "$CODESIGN_MACOS_P12_PASSWORD" ]; then
+if [ -f "$CERTIFICATE_FILE" ] && [ -n "$CODESIGN_MACOS_P12_PASSWORD" ]; then
     echo "Preparing code signing certificate..."
     security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
     security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
