@@ -195,8 +195,8 @@ def _translate_artist_node(node):
         locale = config.setting["artist_locale"]
         lang = locale.split("_")[0]
 
-        if (config.setting['translate_artist_names_exception']
-                and config.setting["artist_locale_exception"] in detect_script(node['name'])):
+        if (config.setting['translate_artist_names_script_exception']
+                and config.setting["artist_script_exception"] in detect_script(node['name'])):
             return node['name'], node['sort-name']
 
         if "aliases" in node:

@@ -51,7 +51,7 @@ settings = {
     "standardize_artists": False,
     "standardize_releases": False,
     "translate_artist_names": True,
-    "translate_artist_names_exception": False,
+    "translate_artist_names_script_exception": False,
     "standardize_instruments": True,
     "release_ars": True,
     "preferred_release_countries": [],

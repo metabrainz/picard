@@ -39,7 +39,7 @@ settings = {
     "standardize_releases": False,
     "translate_artist_names": True,
     "artist_locale": 'en',
-    "translate_artist_names_exception": False,
+    "translate_artist_names_script_exception": False,
 }
 
 
