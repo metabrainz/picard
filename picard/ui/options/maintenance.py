@@ -29,6 +29,7 @@ from picard.config import (
     Option,
     get_config,
 )
+from picard.plugin import _extension_points
 
 from picard.ui.options import (
     OptionsPage,
@@ -71,14 +72,10 @@ class MaintenanceOptionsPage(OptionsPage):
         self.ui.tableWidget.setHorizontalHeaderLabels([_("Option"), _("Value")])
 
     def load(self):
-        from picard.plugin import _extension_points
         config = get_config()
 
         # Setting options from all option pages and loaded plugins (including plugins currently disabled).
-        key_options = set(config.setting.as_dict().keys())
-
-        # All setting options included in the INI file.
-        file_options = set([key[8:] for key in config.allKeys() if key[:8] == 'setting/'])
+        key_options = set(config.setting.as_dict())
 
         # Combine all page and plugin settings with required options not appearing in option pages.
         current_options = set([
@@ -92,17 +89,21 @@ class MaintenanceOptionsPage(OptionsPage):
             'write_wave_riff_info',
         ]).union(key_options)
 
-        def _add_options_from_page(page, current_options):
-            if not hasattr(page, 'options'):
-                return
-            for option in page.options:
-                if option.section == "setting":
-                    current_options.add(option.name)
-
+        # Add options from Option pages
         for ep in _extension_points:
-            if ep.label == 'pages':
-                for page in ep:
-                    _add_options_from_page(page, current_options)
+            if ep.label != 'pages':
+                continue
+            for page in ep:
+                if not hasattr(page, 'options'):
+                    continue
+                for option in page.options:
+                    if option.section == "setting":
+                        current_options.add(option.name)
+
+        # All setting options included in the INI file.
+        config.beginGroup("setting")
+        file_options = set(config.childKeys())
+        config.endGroup()
 
         orphan_options = file_options.difference(current_options)
 
@@ -122,10 +123,13 @@ class MaintenanceOptionsPage(OptionsPage):
             tableitem.setCheckState(False)
             self.ui.tableWidget.setItem(row, 0, tableitem)
             text = self.make_setting_value_text(item)
-            line_height = max(25, 18 * min(5, text.count("\n") + 1))
             tableitem = QtWidgets.QTextEdit()
             tableitem.setText(text)
-            self.ui.tableWidget.setRowHeight(row, line_height)
+            # Adjust row height to reasonably accommodate values with more than one line, with a minimum
+            # height of 25 pixels.  Multi-line values will be expanded to display up to 5 lines, assuming
+            # a standard line height of 18 pixels.
+            row_height = max(25, 18 * min(5, text.count("\n") + 1))
+            self.ui.tableWidget.setRowHeight(row, row_height)
             self.ui.tableWidget.setCellWidget(row, 1, tableitem)
         self.ui.tableWidget.resizeColumnsToContents()
 
