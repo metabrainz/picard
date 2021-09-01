@@ -74,6 +74,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="select_all">
+     <property name="text">
+      <string>Select all</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QTableWidget" name="tableWidget">
      <property name="sizeAdjustPolicy">
       <enum>QAbstractScrollArea::AdjustToContents</enum>

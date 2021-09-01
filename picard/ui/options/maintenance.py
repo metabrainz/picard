@@ -70,6 +70,7 @@ class MaintenanceOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.description.setText(_(self.INSTRUCTIONS))
         self.ui.tableWidget.setHorizontalHeaderLabels([_("Option"), _("Value")])
+        self.ui.select_all.stateChanged.connect(self.select_all)
 
     def load(self):
         config = get_config()
@@ -132,6 +133,7 @@ class MaintenanceOptionsPage(OptionsPage):
             self.ui.tableWidget.setRowHeight(row, row_height)
             self.ui.tableWidget.setCellWidget(row, 1, tableitem)
         self.ui.tableWidget.resizeColumnsToContents()
+        self.ui.select_all.setCheckState(False)
 
     def save(self):
         if not self.ui.enable_cleanup.checkState() == QtCore.Qt.Checked:
@@ -166,7 +168,7 @@ class MaintenanceOptionsPage(OptionsPage):
             return str(value)
         if type(value) in {set, tuple, list, dict}:
             text = _("List of %i items:") % len(value)
-            if type(value) == dict:
+            if isinstance(value, dict):
                 for item in value.items():
                     text += "\n{0}".format(item)
             else:
@@ -174,6 +176,12 @@ class MaintenanceOptionsPage(OptionsPage):
                     text += '\n"{0}"'.format(item)
             return text
         return _("Unknown value format")
+
+    def select_all(self):
+        state = self.ui.select_all.checkState()
+        for idx in range(self.ui.tableWidget.rowCount()):
+            item = self.ui.tableWidget.item(idx, 0)
+            item.setCheckState(state)
 
 
 register_options_page(MaintenanceOptionsPage)

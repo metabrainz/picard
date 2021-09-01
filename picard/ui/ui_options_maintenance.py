@@ -32,6 +32,9 @@ class Ui_MaintenanceOptionsPage(object):
         self.enable_cleanup = QtWidgets.QCheckBox(MaintenanceOptionsPage)
         self.enable_cleanup.setObjectName("enable_cleanup")
         self.vboxlayout.addWidget(self.enable_cleanup)
+        self.select_all = QtWidgets.QCheckBox(MaintenanceOptionsPage)
+        self.select_all.setObjectName("select_all")
+        self.vboxlayout.addWidget(self.select_all)
         self.tableWidget = QtWidgets.QTableWidget(MaintenanceOptionsPage)
         self.tableWidget.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
@@ -48,3 +51,4 @@ class Ui_MaintenanceOptionsPage(object):
     def retranslateUi(self, MaintenanceOptionsPage):
         _translate = QtCore.QCoreApplication.translate
         self.enable_cleanup.setText(_("Remove selected options"))
+        self.select_all.setText(_("Select all"))
