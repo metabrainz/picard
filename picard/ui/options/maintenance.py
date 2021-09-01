@@ -165,7 +165,14 @@ class MaintenanceOptionsPage(OptionsPage):
         if type(value) in {bool, int, float}:
             return str(value)
         if type(value) in {set, tuple, list, dict}:
-            return _("List of %i items") % len(value)
+            text = _("List of %i items:") % len(value)
+            if type(value) == dict:
+                for item in value.items():
+                    text += "\n{0}".format(item)
+            else:
+                for item in value:
+                    text += '\n"{0}"'.format(item)
+            return text
         return _("Unknown value format")
 
 
