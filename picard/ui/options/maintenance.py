@@ -70,7 +70,8 @@ class MaintenanceOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.description.setText(_(self.INSTRUCTIONS))
         self.ui.tableWidget.setHorizontalHeaderLabels([_("Option"), _("Value")])
-        self.ui.select_all.stateChanged.connect(self.select_all)
+        self.ui.select_all.stateChanged.connect(self.select_all_changed)
+        self.ui.enable_cleanup.stateChanged.connect(self.enable_cleanup_changed)
 
     def load(self):
         config = get_config()
@@ -134,6 +135,7 @@ class MaintenanceOptionsPage(OptionsPage):
             self.ui.tableWidget.setCellWidget(row, 1, tableitem)
         self.ui.tableWidget.resizeColumnsToContents()
         self.ui.select_all.setCheckState(False)
+        self.enable_cleanup_changed()
 
     def save(self):
         if not self.ui.enable_cleanup.checkState() == QtCore.Qt.Checked:
@@ -177,11 +179,16 @@ class MaintenanceOptionsPage(OptionsPage):
             return text
         return _("Unknown value format")
 
-    def select_all(self):
+    def select_all_changed(self):
         state = self.ui.select_all.checkState()
         for idx in range(self.ui.tableWidget.rowCount()):
             item = self.ui.tableWidget.item(idx, 0)
             item.setCheckState(state)
+
+    def enable_cleanup_changed(self):
+        state = self.ui.enable_cleanup.checkState()
+        self.ui.select_all.setEnabled(state)
+        self.ui.tableWidget.setEnabled(state)
 
 
 register_options_page(MaintenanceOptionsPage)
