@@ -29,7 +29,6 @@ from picard.config import (
     Option,
     get_config,
 )
-from picard.plugin import _extension_points
 
 from picard.ui.options import (
     OptionsPage,
@@ -90,17 +89,6 @@ class MaintenanceOptionsPage(OptionsPage):
             'wave_riff_info_encoding',
             'write_wave_riff_info',
         ]).union(key_options)
-
-        # Add options from Option pages
-        for ep in _extension_points:
-            if ep.label != 'pages':
-                continue
-            for page in ep:
-                if not hasattr(page, 'options'):
-                    continue
-                for option in page.options:
-                    if option.section == "setting":
-                        current_options.add(option.name)
 
         # All setting options included in the INI file.
         config.beginGroup("setting")
