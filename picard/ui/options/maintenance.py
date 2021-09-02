@@ -107,14 +107,15 @@ class MaintenanceOptionsPage(OptionsPage):
         self.ui.enable_cleanup.setChecked(False)
         self.ui.tableWidget.clearContents()
         self.ui.tableWidget.setRowCount(len(orphan_options))
-        for row, item in enumerate(sorted(orphan_options)):
-            tableitem = QtWidgets.QTableWidgetItem(item)
+        for row, option_name in enumerate(sorted(orphan_options)):
+            tableitem = QtWidgets.QTableWidgetItem(option_name)
+            tableitem.setData(QtCore.Qt.UserRole, option_name)
             tableitem.setFlags(tableitem.flags() | QtCore.Qt.ItemIsUserCheckable)
             tableitem.setCheckState(False)
             self.ui.tableWidget.setItem(row, 0, tableitem)
-            text = self.make_setting_value_text(item)
             tableitem = QtWidgets.QTextEdit()
-            tableitem.setText(text)
+            text = self.make_setting_value_text(option_name)
+            tableitem.setPlainText(text)
             # Adjust row height to reasonably accommodate values with more than one line, with a minimum
             # height of 25 pixels.  Multi-line values will be expanded to display up to 5 lines, assuming
             # a standard line height of 18 pixels.
@@ -132,13 +133,11 @@ class MaintenanceOptionsPage(OptionsPage):
         for idx in range(self.ui.tableWidget.rowCount()):
             item = self.ui.tableWidget.item(idx, 0)
             if item.checkState() == QtCore.Qt.Checked:
-                to_remove.add(item.text())
+                to_remove.add(item.data(QtCore.Qt.UserRole))
         if to_remove and QtWidgets.QMessageBox.question(
             self,
             _('Confirm Remove'),
             _("Are you sure you want to remove the {0} selected option settings?").format(len(to_remove)),
-            QtWidgets.QMessageBox.Yes,
-            QtWidgets.QMessageBox.No
         ) == QtWidgets.QMessageBox.Yes:
             config = get_config()
             for item in to_remove:
@@ -150,22 +149,7 @@ class MaintenanceOptionsPage(OptionsPage):
         NONE_TEXT = _("None")
         config = get_config()
         value = config.setting.raw_value(key)
-        if value is None:
-            return NONE_TEXT
-        if isinstance(value, str):
-            return '"%s"' % value
-        if type(value) in {bool, int, float}:
-            return str(value)
-        if type(value) in {set, tuple, list, dict}:
-            text = _("List of %i items:") % len(value)
-            if isinstance(value, dict):
-                for item in value.items():
-                    text += "\n{0}".format(item)
-            else:
-                for item in value:
-                    text += '\n"{0}"'.format(item)
-            return text
-        return _("Unknown value format")
+        return repr(value)
 
     def select_all_changed(self):
         state = self.ui.select_all.checkState()
