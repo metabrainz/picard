@@ -163,12 +163,6 @@ class MaintenanceOptionsPage(OptionsPage):
         value = config.setting.raw_value(key)
         return repr(value)
 
-    # def select_all_changed(self):
-    #     state = self.ui.select_all.checkState()
-    #     for idx in range(self.ui.tableWidget.rowCount()):
-    #         item = self.ui.tableWidget.item(idx, 0)
-    #         item.setCheckState(state)
-
     def enable_cleanup_changed(self):
         state = self.ui.enable_cleanup.checkState()
         self.ui.select_all.setEnabled(state)
