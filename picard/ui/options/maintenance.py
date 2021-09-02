@@ -118,27 +118,39 @@ class MaintenanceOptionsPage(OptionsPage):
             tableitem.setPlainText(text)
             tableitem.setReadOnly(True)
             # Adjust row height to reasonably accommodate values with more than one line, with a minimum
-            # height of 25 pixels.  Multi-line values will be expanded to display up to 5 lines, assuming
-            # a standard line height of 18 pixels.
-            row_height = max(25, 18 * min(5, text.count("\n") + 1))
+            # height of 25 pixels.  Long line or multi-line values will be expanded to display up to 5
+            # lines, assuming a standard line height of 18 pixels.  Long lines are defined as having over
+            # 50 characters.
+            text_rows = max(text.count("\n") + 1, int(len(text) / 50))
+            row_height = max(25, 18 * min(5, text_rows))
             self.ui.tableWidget.setRowHeight(row, row_height)
             self.ui.tableWidget.setCellWidget(row, 1, tableitem)
         self.ui.tableWidget.resizeColumnsToContents()
         self.ui.select_all.setCheckState(False)
         self.enable_cleanup_changed()
 
+    def column_items(self, column):
+        for idx in range(self.ui.tableWidget.rowCount()):
+            yield self.ui.tableWidget.item(idx, column)
+
+    def selected_options(self):
+        for item in self.column_items(0):
+            if item.checkState() == QtCore.Qt.Checked:
+                yield item.data(QtCore.Qt.UserRole)
+
+    def select_all_changed(self):
+        state = self.ui.select_all.checkState()
+        for item in self.column_items(0):
+            item.setCheckState(state)
+
     def save(self):
         if not self.ui.enable_cleanup.checkState() == QtCore.Qt.Checked:
             return
-        to_remove = set()
-        for idx in range(self.ui.tableWidget.rowCount()):
-            item = self.ui.tableWidget.item(idx, 0)
-            if item.checkState() == QtCore.Qt.Checked:
-                to_remove.add(item.data(QtCore.Qt.UserRole))
+        to_remove = set(self.selected_options())
         if to_remove and QtWidgets.QMessageBox.question(
             self,
             _('Confirm Remove'),
-            _("Are you sure you want to remove the {0} selected option settings?").format(len(to_remove)),
+            _("Are you sure you want to remove the selected option settings?"),
         ) == QtWidgets.QMessageBox.Yes:
             config = get_config()
             for item in to_remove:
@@ -151,11 +163,11 @@ class MaintenanceOptionsPage(OptionsPage):
         value = config.setting.raw_value(key)
         return repr(value)
 
-    def select_all_changed(self):
-        state = self.ui.select_all.checkState()
-        for idx in range(self.ui.tableWidget.rowCount()):
-            item = self.ui.tableWidget.item(idx, 0)
-            item.setCheckState(state)
+    # def select_all_changed(self):
+    #     state = self.ui.select_all.checkState()
+    #     for idx in range(self.ui.tableWidget.rowCount()):
+    #         item = self.ui.tableWidget.item(idx, 0)
+    #         item.setCheckState(state)
 
     def enable_cleanup_changed(self):
         state = self.ui.enable_cleanup.checkState()
