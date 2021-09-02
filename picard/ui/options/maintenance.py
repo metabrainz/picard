@@ -147,7 +147,6 @@ class MaintenanceOptionsPage(OptionsPage):
                 config.setting.remove(item)
 
     def make_setting_value_text(self, key):
-        NONE_TEXT = _("None")
         config = get_config()
         value = config.setting.raw_value(key)
         return repr(value)
