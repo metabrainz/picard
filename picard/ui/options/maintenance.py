@@ -116,6 +116,7 @@ class MaintenanceOptionsPage(OptionsPage):
             tableitem = QtWidgets.QTextEdit()
             text = self.make_setting_value_text(option_name)
             tableitem.setPlainText(text)
+            tableitem.setReadOnly(True)
             # Adjust row height to reasonably accommodate values with more than one line, with a minimum
             # height of 25 pixels.  Multi-line values will be expanded to display up to 5 lines, assuming
             # a standard line height of 18 pixels.
