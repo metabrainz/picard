@@ -41,7 +41,7 @@ class MaintenanceOptionsPage(OptionsPage):
 
     NAME = "maintenance"
     TITLE = N_("Maintenance")
-    PARENT = None
+    PARENT = "advanced"
     SORT_ORDER = 99
     ACTIVE = True
     HELP_URL = '/config/options_maintenance.html'
