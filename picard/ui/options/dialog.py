@@ -66,6 +66,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     interface,
     interface_colors,
     interface_top_tags,
+    maintenance,
     matching,
     metadata,
     network,
