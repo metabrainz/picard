@@ -49,17 +49,18 @@ class MaintenanceOptionsPage(OptionsPage):
     options = []
 
     INSTRUCTIONS = N_(
-        "This allows you to remove unused option settings from the configuration.\n\n"
-        "Settings that are found in the configuration that do not appear on any option "
-        "settings page will be listed below. If your configuration does not contain any "
-        "unused option settings, then the list will be empty.\n\n"
-        "Note that unused option settings could come from plugins that have been removed, "
+        "This allows you to remove unused option settings from the configuration INI file.\n\n"
+        "Settings that are found in the configuration file that do not appear on any option "
+        "settings page will be listed below. If your configuration file does not contain any "
+        "unused option settings, then the list will be empty and the removal checkbox will be "
+        "disabled.\n\n"
+        "Note that unused option settings could come from plugins that have been uninstalled, "
         "so please be careful to not remove settings that you may want to use later when "
-        "the plugin is reloaded.  Options belonging to plugins that are loaded but "
+        "the plugin is reinstalled. Options belonging to plugins that are installed but "
         "currently disabled will not be listed for possible removal.\n\n"
-        "To remove one or more settings, select the settings to remove by checking the "
-        "box next to the settings, and then enable the removal by checking the \"Remove "
-        "selected options\" box. When you choose \"Make It So!\" to save your option "
+        "To remove one or more settings, first enable the removal by checking the \"Remove "
+        "selected options\" box. You can then select the settings to remove by checking the "
+        "box next to the setting. When you choose \"Make It So!\" to save your option "
         "settings, the selected items will be removed."
     )
 
@@ -99,7 +100,7 @@ class MaintenanceOptionsPage(OptionsPage):
 
         self.ui.description.setText(
             _(self.INSTRUCTIONS)
-            + _("\n\nThe configuration file currently contains {0} option settings, {1} which are unused.").format(
+            + _("\n\nThe configuration file currently contains %d option settings, %d which are unused.") % (
                 len(file_options),
                 len(orphan_options)
             )
