@@ -41,8 +41,10 @@ def check_extractor_version(essentia_path):
     # built with Essentia version v2.1_beta2-1-ge3940c0\r\n
     # \r\n
     # '
-    version = None
+    if not essentia_path:
+        return None
 
+    version = None
     try:
         return_code, stdout, stderr = run_executable(essentia_path, timeout=2)
         version_regex = re.compile(r"Essentia version (.*[^ \r\n])")
