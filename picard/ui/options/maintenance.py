@@ -114,6 +114,7 @@ class MaintenanceOptionsPage(OptionsPage):
             tableitem.setCheckState(False)
             self.ui.tableWidget.setItem(row, 0, tableitem)
             tableitem = QtWidgets.QTextEdit()
+            tableitem.setFrameStyle(QtWidgets.QFrame.NoFrame)
             text = self.make_setting_value_text(option_name)
             tableitem.setPlainText(text)
             tableitem.setReadOnly(True)
@@ -127,9 +128,8 @@ class MaintenanceOptionsPage(OptionsPage):
             self.ui.tableWidget.setCellWidget(row, 1, tableitem)
         self.ui.tableWidget.resizeColumnsToContents()
         self.ui.select_all.setCheckState(False)
-        # Disable removal processing checkbox if there are no orphaned options found.
         if not len(orphan_options):
-            self.ui.enable_cleanup.setEnabled(False)
+            self.ui.select_all.setEnabled(False)
         self.enable_cleanup_changed()
 
     def column_items(self, column):
