@@ -136,7 +136,7 @@ class AcousticBrainzOptionsPage(OptionsPage):
                     if try_find:
                         self.ui.acousticbrainz_extractor.setText("")
                         self.ui.acousticbrainz_extractor.setPlaceholderText(extractor_path)
-                    self._acousticbrainz_extractor_set_success(_("Extractor version: ") + version)
+                    self._acousticbrainz_extractor_set_success(_("Extractor version: %s") % version)
                     return
             self._acousticbrainz_extractor_set_error()
         else:
