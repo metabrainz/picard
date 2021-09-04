@@ -168,8 +168,12 @@ def extractor(input_path):
     output_file.close()  # close file to ensure other processes can write to it
 
     # Call the features extractor and wait for it to finish
-    return_code, stdout, stderr = run_executable(_acousticbrainz_extractor, input_path, output_file.name)
-    results = (output_file.name, return_code, stdout+stderr)
+    try:
+        return_code, stdout, stderr = run_executable(_acousticbrainz_extractor, input_path, output_file.name)
+        results = (output_file.name, return_code, stdout+stderr)
+    except (FileNotFoundError, PermissionError) as e:
+        # this can happen if _acousticbrainz_extractor was removed or its permissions changed
+        return (output_file.name, -1, str(e))
 
     # Add feature extractor sha to the output features file
     try:
