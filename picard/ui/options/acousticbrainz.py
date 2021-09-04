@@ -51,7 +51,7 @@ from picard.ui.ui_options_acousticbrainz import Ui_AcousticBrainzOptionsPage
 
 class AcousticBrainzOptionsPage(OptionsPage):
 
-    NAME = "AcousticBrainz"
+    NAME = "acousticbrainz"
     TITLE = N_("AcousticBrainz")
     PARENT = None
     SORT_ORDER = 45
