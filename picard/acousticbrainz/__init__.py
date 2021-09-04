@@ -84,9 +84,9 @@ def ab_setup_extractor():
         acousticbrainz_extractor = get_extractor(config)
         log.debug("Checking up AcousticBrainz availability")
         if acousticbrainz_extractor:
-            sha = precompute_extractor_sha(acousticbrainz_extractor)
             version = check_extractor_version(acousticbrainz_extractor)
             if version:
+                sha = precompute_extractor_sha(acousticbrainz_extractor)
                 _acousticbrainz_extractor = acousticbrainz_extractor
                 _acousticbrainz_extractor_sha = sha
                 log.debug("AcousticBrainz is available: version %s - sha1 %s" % (version, sha))
