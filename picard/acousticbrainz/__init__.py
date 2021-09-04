@@ -77,20 +77,20 @@ def ab_check_version(extractor):
 
 def ab_setup_extractor():
     global _acousticbrainz_extractor, _acousticbrainz_extractor_sha
+    _acousticbrainz_extractor = None
+    _acousticbrainz_extractor_sha = None
     config = get_config()
     if config.setting["use_acousticbrainz"]:
         acousticbrainz_extractor = get_extractor(config)
         log.debug("Checking up AcousticBrainz availability")
         if acousticbrainz_extractor:
-            sha = precompute_extractor_sha(acousticbrainz_extractor)
             version = check_extractor_version(acousticbrainz_extractor)
             if version:
+                sha = precompute_extractor_sha(acousticbrainz_extractor)
                 _acousticbrainz_extractor = acousticbrainz_extractor
                 _acousticbrainz_extractor_sha = sha
                 log.debug("AcousticBrainz is available: version %s - sha1 %s" % (version, sha))
                 return version
-        _acousticbrainz_extractor = None
-        _acousticbrainz_extractor_sha = None
         log.warning("AcousticBrainz is not available")
     return None
 
@@ -118,7 +118,7 @@ def ab_extractor_callback(tagger, file, result, error):
                   (file.metadata["musicbrainz_recordingid"], file.filename,))
 
         # Submit results
-        ab_submit_features(tagger, file, ab_metadata_file)
+        ab_submit_features(tagger, file)
     elif 'Duplicate' in error:
         log.debug("AcousticBrainz already has an entry for recording %s: %s" %
                   (file.metadata["musicbrainz_recordingid"], file.filename,))
@@ -168,8 +168,12 @@ def extractor(input_path):
     output_file.close()  # close file to ensure other processes can write to it
 
     # Call the features extractor and wait for it to finish
-    return_code, stdout, stderr = run_executable(_acousticbrainz_extractor, input_path, output_file.name)
-    results = (output_file.name, return_code, stdout+stderr)
+    try:
+        return_code, stdout, stderr = run_executable(_acousticbrainz_extractor, input_path, output_file.name)
+        results = (output_file.name, return_code, stdout+stderr)
+    except (FileNotFoundError, PermissionError) as e:
+        # this can happen if _acousticbrainz_extractor was removed or its permissions changed
+        return (output_file.name, -1, str(e))
 
     # Add feature extractor sha to the output features file
     try:
@@ -185,9 +189,9 @@ def extractor(input_path):
     return results
 
 
-def ab_submit_features(tagger, file, features_file):
+def ab_submit_features(tagger, file):
     # If file is not a duplicate and was previously extracted, we now load the features file
-    with open(features_file, "r", encoding="utf-8") as f:
+    with open(file.acousticbrainz_features_file, "r", encoding="utf-8") as f:
         features = json.load(f)
 
     # Check if extracted recording id matches the current file (recording ID may have been merged with others)

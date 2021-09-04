@@ -26,10 +26,7 @@
 
 import os
 
-from PyQt5 import (
-    QtCore,
-    QtWidgets,
-)
+from PyQt5 import QtWidgets
 
 from picard.acousticbrainz import (
     ab_check_version,
@@ -73,13 +70,13 @@ class AcousticBrainzOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.disable_acoustic_features.clicked.connect(self.update_groupboxes)
         self.ui.use_acoustic_features.clicked.connect(self.update_groupboxes)
-        self.ui.acousticbrainz_extractor.textChanged.connect(self._acousticbrainz_extractor_check)
+        self.ui.acousticbrainz_extractor.textEdited.connect(self._acousticbrainz_extractor_check)
         self.ui.acousticbrainz_extractor_browse.clicked.connect(self.acousticbrainz_extractor_browse)
         self.ui.acousticbrainz_extractor_download.clicked.connect(self.acousticbrainz_extractor_download)
-        self._acousticbrainz_extractor_info = ""
-        self._tagger = QtCore.QCoreApplication.instance()
+        self.ui.acousticbrainz_extractor_download.setToolTip(
+            _("Open AcousticBrainz website in browser to download extractor binary")
+        )
         self._config = get_config()
-        self._searched_extractor = None
 
     def load(self):
         if self._config.setting["use_acousticbrainz"]:
@@ -88,21 +85,15 @@ class AcousticBrainzOptionsPage(OptionsPage):
             self.ui.disable_acoustic_features.setChecked(True)
 
         extractor_path = self._config.setting["acousticbrainz_extractor"]
-        self.ui.acousticbrainz_extractor.setText(extractor_path)
-
-        # if the is no configured extractor, search for an extractor path to use as a placeholder
-        if not ab_check_version(extractor_path):
-            extractor_path = find_extractor()
-        # if an extractor couldn't be found, use the extractor name as a placeholder
-        if extractor_path is None or not ab_check_version(extractor_path):
-            extractor_path = "streaming_extractor_music"
+        if not extractor_path or not ab_check_version(extractor_path):
+            self.ui.acousticbrainz_extractor.clear()
         else:
-            self._searched_extractor = extractor_path  # keep extractor path to prevent unnecessary searches
-        self.ui.acousticbrainz_extractor.setPlaceholderText(extractor_path)
+            self.ui.acousticbrainz_extractor.setText(extractor_path)
+
         self.update_groupboxes()
 
     def save(self):
-        enabled = self.ui.use_acoustic_features.isChecked()
+        enabled = self.ui.acousticbrainz_settings.isEnabled()
         self._config.setting["use_acousticbrainz"] = enabled
         if enabled:
             self._config.setting["acousticbrainz_extractor"] = self.ui.acousticbrainz_extractor.text()
@@ -118,24 +109,32 @@ class AcousticBrainzOptionsPage(OptionsPage):
         if path:
             path = os.path.normpath(path)
             self.ui.acousticbrainz_extractor.setText(path)
+            self._acousticbrainz_extractor_check()
 
     def acousticbrainz_extractor_download(self):
         webbrowser2.open(ACOUSTICBRAINZ_DOWNLOAD_URL)
 
     def _acousticbrainz_extractor_check(self):
-        if not self.ui.use_acoustic_features.isChecked():
+        enabled = self.ui.acousticbrainz_settings.isEnabled()
+        self.ui.acousticbrainz_extractor.setPlaceholderText(_("Path to streaming_extractor_music(.exe)"))
+
+        if not enabled:
             self._acousticbrainz_extractor_set_success("")
             return
 
         extractor_path = self.ui.acousticbrainz_extractor.text()
-        if not extractor_path:
-            # If current path to extractor is empty, look for an extractor
-            extractor_path = self._searched_extractor
+        try_find = not extractor_path
+        if try_find:
+            extractor_path = find_extractor()
 
         if extractor_path:
             version = ab_check_version(extractor_path)
             if version:
-                self._acousticbrainz_extractor_set_success(_("Extractor version: ") + version)
+                if try_find:
+                    # extractor path will not be saved to config file if it was auto-detected
+                    self.ui.acousticbrainz_extractor.clear()
+                    self.ui.acousticbrainz_extractor.setPlaceholderText(extractor_path)
+                self._acousticbrainz_extractor_set_success(_("Extractor version: %s") % version)
                 return
         self._acousticbrainz_extractor_set_error()
 
