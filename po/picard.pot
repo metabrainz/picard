@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.7.0.dev3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-29 17:05+0200\n"
+"POT-Creation-Date: 2021-09-04 17:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2491,7 +2491,7 @@ msgstr ""
 msgid "C&lear all"
 msgstr ""
 
-#: picard/coverart/providers/caa.py:326 picard/ui/options/dialog.py:126
+#: picard/coverart/providers/caa.py:326 picard/ui/options/dialog.py:127
 msgid "Restore &Defaults"
 msgstr ""
 
@@ -5183,7 +5183,7 @@ msgstr ""
 msgid "Tags to ignore for comparison:"
 msgstr ""
 
-#: picard/ui/options/dialog.py:202 picard/ui/ui_options_attached_profiles.py:34
+#: picard/ui/options/dialog.py:203 picard/ui/ui_options_attached_profiles.py:34
 msgid "Profiles Attached to Options"
 msgstr ""
 
@@ -5432,6 +5432,14 @@ msgstr ""
 
 #: picard/ui/ui_options_interface_top_tags.py:37
 msgid "Show the below tags above all other tags in the metadata view"
+msgstr ""
+
+#: picard/ui/ui_options_maintenance.py:64
+msgid "Remove selected options"
+msgstr ""
+
+#: picard/ui/ui_options_maintenance.py:65
+msgid "Select all"
 msgstr ""
 
 #: picard/ui/ui_options_matching.py:69
@@ -5920,20 +5928,29 @@ msgstr ""
 msgid "Regex Error"
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:58
+#: picard/ui/options/acousticbrainz.py:55
 msgid "AcousticBrainz"
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:138
-msgid "Extractor version: "
+#: picard/ui/options/acousticbrainz.py:77
+msgid "Open AcousticBrainz website in browser to download extractor binary"
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:150
-#: picard/ui/options/acousticbrainz.py:154
+#: picard/ui/options/acousticbrainz.py:119
+msgid "Path to streaming_extractor_music(.exe)"
+msgstr ""
+
+#: picard/ui/options/acousticbrainz.py:137
+#, python-format
+msgid "Extractor version: %s"
+msgstr ""
+
+#: picard/ui/options/acousticbrainz.py:149
+#: picard/ui/options/acousticbrainz.py:153
 msgid "Please select a valid extractor executable."
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:154
+#: picard/ui/options/acousticbrainz.py:153
 msgid "Invalid extractor executable"
 msgstr ""
 
@@ -5941,80 +5958,80 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: picard/ui/options/dialog.py:124
+#: picard/ui/options/dialog.py:125
 msgid "&Restore all Defaults"
 msgstr ""
 
-#: picard/ui/options/dialog.py:125
+#: picard/ui/options/dialog.py:126
 msgid "Reset all of Picard's settings"
 msgstr ""
 
-#: picard/ui/options/dialog.py:127
+#: picard/ui/options/dialog.py:128
 msgid "Reset all settings for current option page"
 msgstr ""
 
-#: picard/ui/options/dialog.py:130
+#: picard/ui/options/dialog.py:131
 msgid "Make It So!"
 msgstr ""
 
-#: picard/ui/options/dialog.py:143 picard/ui/options/dialog.py:431
-#: picard/ui/options/dialog.py:457
+#: picard/ui/options/dialog.py:144 picard/ui/options/dialog.py:432
+#: picard/ui/options/dialog.py:458
 msgid "Attached Profiles"
 msgstr ""
 
-#: picard/ui/options/dialog.py:144
+#: picard/ui/options/dialog.py:145
 msgid "Show which profiles are attached to the options on this page"
 msgstr ""
 
-#: picard/ui/options/dialog.py:212
+#: picard/ui/options/dialog.py:213
 msgid ""
 "The options on this page are not currently available to be managed using "
 "profiles."
 msgstr ""
 
-#: picard/ui/options/dialog.py:233
+#: picard/ui/options/dialog.py:234
 msgid "Unknown profile"
 msgstr ""
 
-#: picard/ui/options/dialog.py:282
+#: picard/ui/options/dialog.py:283
 #, python-format
 msgid "This option will be saved to profile: %s"
 msgstr ""
 
-#: picard/ui/options/dialog.py:372
+#: picard/ui/options/dialog.py:373
 msgid "Unexpected error"
 msgstr ""
 
-#: picard/ui/options/dialog.py:411
+#: picard/ui/options/dialog.py:412
 msgid "You are about to reset your options for this page."
 msgstr ""
 
-#: picard/ui/options/dialog.py:415
+#: picard/ui/options/dialog.py:416
 msgid "Warning! This will reset all of your settings."
 msgstr ""
 
-#: picard/ui/options/dialog.py:422
+#: picard/ui/options/dialog.py:423
 msgid "Confirm Reset"
 msgstr ""
 
-#: picard/ui/options/dialog.py:423
+#: picard/ui/options/dialog.py:424
 msgid "Are you sure?"
 msgstr ""
 
-#: picard/ui/options/dialog.py:457
+#: picard/ui/options/dialog.py:458
 msgid "Option Setting"
 msgstr ""
 
-#: picard/ui/options/dialog.py:464
+#: picard/ui/options/dialog.py:465
 #, python-format
 msgid "Profiles Attached to Options in %s Section"
 msgstr ""
 
-#: picard/ui/options/dialog.py:474
+#: picard/ui/options/dialog.py:475
 msgid " [Enabled]"
 msgstr ""
 
-#: picard/ui/options/dialog.py:475 picard/ui/options/profiles.py:277
+#: picard/ui/options/dialog.py:476 picard/ui/options/profiles.py:277
 msgid "None"
 msgstr ""
 
@@ -6215,6 +6232,57 @@ msgstr ""
 
 #: picard/ui/options/interface_top_tags.py:40
 msgid "Top Tags"
+msgstr ""
+
+#: picard/ui/options/maintenance.py:55
+msgid "Maintenance"
+msgstr ""
+
+#: picard/ui/options/maintenance.py:67
+msgid ""
+"This allows you to remove unused option settings from the configuration "
+"INI file.\n"
+"\n"
+"Settings that are found in the configuration file that do not appear on "
+"any option settings page will be listed below. If your configuration file"
+" does not contain any unused option settings, then the list will be empty"
+" and the removal checkbox will be disabled.\n"
+"\n"
+"Note that unused option settings could come from plugins that have been "
+"uninstalled, so please be careful to not remove settings that you may "
+"want to use later when the plugin is reinstalled. Options belonging to "
+"plugins that are installed but currently disabled will not be listed for "
+"possible removal.\n"
+"\n"
+"To remove one or more settings, first enable the removal by checking the "
+"\"Remove selected options\" box. You can then select the settings to "
+"remove by checking the box next to the setting. When you choose \"Make It"
+" So!\" to save your option settings, the selected items will be removed."
+msgstr ""
+
+#: picard/ui/options/maintenance.py:82
+msgid "Option"
+msgstr ""
+
+#: picard/ui/options/maintenance.py:82
+msgid "Value"
+msgstr ""
+
+#: picard/ui/options/maintenance.py:103
+#, python-format
+msgid ""
+"The configuration file currently contains %d option settings, %d which "
+"are unused."
+msgstr ""
+
+#: picard/ui/options/maintenance.py:156
+#: picard/ui/widgets/profilelistwidget.py:79
+#: picard/ui/widgets/scriptlistwidget.py:82
+msgid "Confirm Remove"
+msgstr ""
+
+#: picard/ui/options/maintenance.py:157
+msgid "Are you sure you want to remove the selected option settings?"
 msgstr ""
 
 #: picard/ui/options/matching.py:40
@@ -6543,11 +6611,6 @@ msgstr ""
 
 #: picard/ui/widgets/profilelistwidget.py:78
 msgid "Are you sure you want to remove this profile?"
-msgstr ""
-
-#: picard/ui/widgets/profilelistwidget.py:79
-#: picard/ui/widgets/scriptlistwidget.py:82
-msgid "Confirm Remove"
 msgstr ""
 
 #: picard/ui/widgets/scriptdocumentation.py:107
