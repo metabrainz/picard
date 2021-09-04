@@ -26,10 +26,7 @@
 
 import os
 
-from PyQt5 import (
-    QtCore,
-    QtWidgets,
-)
+from PyQt5 import QtWidgets
 
 from picard.acousticbrainz import (
     ab_check_version,
@@ -79,10 +76,7 @@ class AcousticBrainzOptionsPage(OptionsPage):
         self.ui.acousticbrainz_extractor_download.setToolTip(
             _("Open AcousticBrainz website in browser to download extractor binary")
         )
-        self._acousticbrainz_extractor_info = ""
-        self._tagger = QtCore.QCoreApplication.instance()
         self._config = get_config()
-        self._searched_extractor = None
 
     def load(self):
         if self._config.setting["use_acousticbrainz"]:
