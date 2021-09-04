@@ -77,6 +77,8 @@ def ab_check_version(extractor):
 
 def ab_setup_extractor():
     global _acousticbrainz_extractor, _acousticbrainz_extractor_sha
+    _acousticbrainz_extractor = None
+    _acousticbrainz_extractor_sha = None
     config = get_config()
     if config.setting["use_acousticbrainz"]:
         acousticbrainz_extractor = get_extractor(config)
@@ -89,8 +91,6 @@ def ab_setup_extractor():
                 _acousticbrainz_extractor_sha = sha
                 log.debug("AcousticBrainz is available: version %s - sha1 %s" % (version, sha))
                 return version
-        _acousticbrainz_extractor = None
-        _acousticbrainz_extractor_sha = None
         log.warning("AcousticBrainz is not available")
     return None
 
