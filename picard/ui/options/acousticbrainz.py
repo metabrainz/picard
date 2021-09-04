@@ -94,7 +94,10 @@ class AcousticBrainzOptionsPage(OptionsPage):
 
     def save(self):
         enabled = self.ui.acousticbrainz_settings.isEnabled()
-        self._config.setting["use_acousticbrainz"] = enabled
+        changed = self._config.setting["use_acousticbrainz"] != enabled
+        if changed:
+            self._config.setting["use_acousticbrainz"] = enabled
+            self.tagger.window.update_actions()
         if enabled:
             self._config.setting["acousticbrainz_extractor"] = self.ui.acousticbrainz_extractor.text()
             ab_setup_extractor()
