@@ -86,7 +86,7 @@ class AcousticBrainzOptionsPage(OptionsPage):
 
         extractor_path = self._config.setting["acousticbrainz_extractor"]
         if not extractor_path or not ab_check_version(extractor_path):
-            self.ui.acousticbrainz_extractor.setText("")
+            self.ui.acousticbrainz_extractor.clear()
         else:
             self.ui.acousticbrainz_extractor.setText(extractor_path)
 
@@ -118,23 +118,25 @@ class AcousticBrainzOptionsPage(OptionsPage):
         enabled = self.ui.acousticbrainz_settings.isEnabled()
         self.ui.acousticbrainz_extractor.setPlaceholderText(_("Path to streaming_extractor_music(.exe)"))
 
-        if enabled:
-            extractor_path = self.ui.acousticbrainz_extractor.text()
-            try_find = not extractor_path
-            if try_find:
-                extractor_path = find_extractor()
-
-            if extractor_path:
-                version = ab_check_version(extractor_path)
-                if version:
-                    if try_find:
-                        self.ui.acousticbrainz_extractor.setText("")
-                        self.ui.acousticbrainz_extractor.setPlaceholderText(extractor_path)
-                    self._acousticbrainz_extractor_set_success(_("Extractor version: %s") % version)
-                    return
-            self._acousticbrainz_extractor_set_error()
-        else:
+        if not enabled:
             self._acousticbrainz_extractor_set_success("")
+            return
+
+        extractor_path = self.ui.acousticbrainz_extractor.text()
+        try_find = not extractor_path
+        if try_find:
+            extractor_path = find_extractor()
+
+        if extractor_path:
+            version = ab_check_version(extractor_path)
+            if version:
+                if try_find:
+                    # extractor path will not be saved to config file if it was auto-detected
+                    self.ui.acousticbrainz_extractor.clear()
+                    self.ui.acousticbrainz_extractor.setPlaceholderText(extractor_path)
+                self._acousticbrainz_extractor_set_success(_("Extractor version: %s") % version)
+                return
+        self._acousticbrainz_extractor_set_error()
 
     def _acousticbrainz_extractor_set_success(self, version):
         self._extractor_valid = True
