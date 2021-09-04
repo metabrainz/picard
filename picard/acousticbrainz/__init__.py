@@ -118,7 +118,7 @@ def ab_extractor_callback(tagger, file, result, error):
                   (file.metadata["musicbrainz_recordingid"], file.filename,))
 
         # Submit results
-        ab_submit_features(tagger, file, ab_metadata_file)
+        ab_submit_features(tagger, file)
     elif 'Duplicate' in error:
         log.debug("AcousticBrainz already has an entry for recording %s: %s" %
                   (file.metadata["musicbrainz_recordingid"], file.filename,))
@@ -189,9 +189,9 @@ def extractor(input_path):
     return results
 
 
-def ab_submit_features(tagger, file, features_file):
+def ab_submit_features(tagger, file):
     # If file is not a duplicate and was previously extracted, we now load the features file
-    with open(features_file, "r", encoding="utf-8") as f:
+    with open(file.acousticbrainz_features_file, "r", encoding="utf-8") as f:
         features = json.load(f)
 
     # Check if extracted recording id matches the current file (recording ID may have been merged with others)
