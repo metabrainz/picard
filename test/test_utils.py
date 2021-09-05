@@ -39,7 +39,6 @@ from test.picardtestcase import PicardTestCase
 
 from picard import util
 from picard.const.sys import IS_WIN
-from picard.util.script_detector import detect_script
 from picard.util import (
     extract_year_from_date,
     find_best_match,
@@ -54,6 +53,7 @@ from picard.util import (
     tracknum_from_filename,
     uniqify,
 )
+from picard.util.script_detector import detect_script
 
 
 # ensure _() is defined
