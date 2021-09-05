@@ -194,23 +194,15 @@ def ab_submit_features(tagger, file):
     with open(file.acousticbrainz_features_file, "r", encoding="utf-8") as f:
         features = json.load(f)
 
-    try:
-        musicbrainz_recordingid = features['metadata']['tags']['musicbrainz_trackid'][0]
-    except KeyError:
-        musicbrainz_recordingid = file.metadata['musicbrainz_recordingid']
-        features['metadata']['tags']['musicbrainz_trackid'] = [musicbrainz_recordingid]
-    # Check if extracted recording id matches the current file (recording ID may have been merged with others)
-    if musicbrainz_recordingid != file.metadata['musicbrainz_recordingid']:
-        # If it doesn't, skip the submission
-        log.debug("AcousticBrainz features recordingId do not match the file metadata: %s" % file.filename)
-        submit_features_callback(file, None, None, True)
-        return
+    # Always submit for currently matched recording ID
+    musicbrainz_recordingid = file.metadata['musicbrainz_recordingid']
+    features['metadata']['tags']['musicbrainz_trackid'] = [musicbrainz_recordingid]
 
     # Submit features to the server
     tagger.webservice.post(
         host=ACOUSTICBRAINZ_HOST,
         port=ACOUSTICBRAINZ_PORT,
-        path="/%s/low-level" % file.metadata["musicbrainz_recordingid"],
+        path="/%s/low-level" % musicbrainz_recordingid,
         data=json.dumps(features),
         handler=partial(submit_features_callback, file),
         priority=True,
