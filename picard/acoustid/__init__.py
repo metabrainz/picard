@@ -107,6 +107,11 @@ class AcoustIDClient(QtCore.QObject):
                                 parsed_recording['acoustid'] = result['id']
                                 recording_list.append(parsed_recording)
                         log.debug("AcoustID: Lookup successful for '%s'", file.filename)
+
+                    # Set AcoustID in tags if there was no matching recording
+                    if results and not recording_list:
+                        file.metadata['acoustid_id'] = results[0]['id']
+                        file.update()
                 else:
                     mparms = {
                         'error': document['error']['message'],
