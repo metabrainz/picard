@@ -421,6 +421,15 @@ def upgrade_to_v2_7_0_dev_3(config):
     config.setting.remove("file_naming_format")
 
 
+def upgrade_to_v2_7_0_dev_4(config):
+    """Replace artist_script_exception with artist_script_exceptions"""
+    _s = config.setting
+    ListOption("setting", "artist_script_exceptions", [])
+    if _s["artist_script_exception"]:
+        _s["artist_script_exceptions"] = [_s["artist_script_exception"]]
+    _s.remove("artist_script_exception")
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
@@ -462,4 +471,5 @@ def upgrade_config(config):
     cfg.register_upgrade_hook(upgrade_to_v2_6_0_beta_3)
     cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_2)
     cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_3)
+    cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_4)
     cfg.run_upgrade_hooks(log.debug)

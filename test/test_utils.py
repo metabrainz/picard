@@ -53,7 +53,6 @@ from picard.util import (
     tracknum_from_filename,
     uniqify,
 )
-from picard.util.script_detector import detect_script
 
 
 # ensure _() is defined
@@ -591,22 +590,3 @@ class PatternAsRegexTest(PicardTestCase):
         self.assertEqual(r'\(foo\)\*', regex.pattern)
         self.assertTrue(regex.flags & re.IGNORECASE)
         self.assertTrue(regex.flags & re.MULTILINE)
-
-
-class AlphabetDetectionTest(PicardTestCase):
-
-    def test_detect_script(self):
-        assert detect_script(u"Cyrillic and кириллический") == \
-               {"CYRILLIC", "LATIN"}
-        assert detect_script(u".%?") == set([])
-
-        assert detect_script(u"hello") == {"LATIN"}
-        assert detect_script(u"привет") == {"CYRILLIC"}
-        assert detect_script(u"ελληνικά?") == {"GREEK"}
-        assert detect_script(u"سماوي يدور") == {"ARABIC"}
-        assert detect_script(u"שלום") == {"HEBREW"}
-        assert detect_script(u"汉字") == {"CJK"}
-        assert detect_script(u"한글") == {"HANGUL"}
-        assert detect_script(u"ひらがな") == {"HIRAGANA"}
-        assert detect_script(u"カタカナ") == {"KATAKANA"}
-        assert detect_script(u"พยัญชนะ") == {"THAI"}

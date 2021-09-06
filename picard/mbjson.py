@@ -34,7 +34,7 @@ from picard.util import (
     parse_amazon_url,
     translate_from_sortname,
 )
-from picard.util.script_detector import detect_script
+from picard.util.script_detector_weighted import list_script_weighted
 
 
 _artist_rel_types = {
@@ -195,9 +195,12 @@ def _translate_artist_node(node):
         locale = config.setting["artist_locale"]
         lang = locale.split("_")[0]
 
-        if (config.setting['translate_artist_names_script_exception']
-                and config.setting["artist_script_exception"] in detect_script(node['name'])):
-            return node['name'], node['sort-name']
+        if config.setting['translate_artist_names_script_exception']:
+            threshhold = config.setting["artist_script_exception_weighting"] / 100
+            detected_scripts = list_script_weighted(node["name"], threshhold)
+            for script_id in config.setting["artist_script_exceptions"]:
+                if script_id in detected_scripts:
+                    return node['name'], node['sort-name']
 
         if "aliases" in node:
             result = (-1, (None, None))

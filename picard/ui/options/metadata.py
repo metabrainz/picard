@@ -26,8 +26,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from PyQt5 import (
+    QtCore,
+    QtWidgets,
+)
+
 from picard.config import (
     BoolOption,
+    IntOption,
+    ListOption,
     TextOption,
     get_config,
 )
@@ -73,9 +80,10 @@ class MetadataOptionsPage(OptionsPage):
         TextOption("setting", "va_name", "Various Artists"),
         TextOption("setting", "nat_name", "[non-album tracks]"),
         TextOption("setting", "artist_locale", "en"),
-        TextOption("setting", "artist_script_exception", "LATIN"),
         BoolOption("setting", "translate_artist_names", False),
         BoolOption("setting", "translate_artist_names_script_exception", False),
+        ListOption("setting", "artist_script_exceptions", []),
+        IntOption("setting", "artist_script_exception_weighting", 0),
         BoolOption("setting", "release_ars", True),
         BoolOption("setting", "track_ars", False),
         BoolOption("setting", "convert_punctuation", True),
@@ -106,14 +114,15 @@ class MetadataOptionsPage(OptionsPage):
                 combo_box.setCurrentIndex(i)
 
         self.ui.translate_artist_names_script_exception.setChecked(config.setting["translate_artist_names_script_exception"])
-
-        combo_box = self.ui.artist_script_exception
-        current_locale = config.setting["artist_script_exception"]
-        for i, (locale, name, level) in enumerate(iter_sorted_locales(SCRIPTS)):
-            label = name
-            combo_box.addItem(label, locale)
-            if locale == current_locale:
-                combo_box.setCurrentIndex(i)
+        self.ui.ignore_tx_scripts.clear()
+        for script_id in SCRIPTS:
+            enabled = script_id in config.setting["artist_script_exceptions"]
+            item = QtWidgets.QListWidgetItem(_(SCRIPTS[script_id]))
+            item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
+            item.setData(QtCore.Qt.UserRole, script_id)
+            item.setCheckState(QtCore.Qt.Checked if enabled else QtCore.Qt.Unchecked)
+            self.ui.ignore_tx_scripts.addItem(item)
+        self.ui.minimum_weighting.setValue(config.setting["artist_script_exception_weighting"])
 
         self.ui.convert_punctuation.setChecked(config.setting["convert_punctuation"])
         self.ui.release_ars.setChecked(config.setting["release_ars"])
@@ -131,7 +140,13 @@ class MetadataOptionsPage(OptionsPage):
         config.setting["translate_artist_names"] = self.ui.translate_artist_names.isChecked()
         config.setting["artist_locale"] = self.ui.artist_locale.itemData(self.ui.artist_locale.currentIndex())
         config.setting["translate_artist_names_script_exception"] = self.ui.translate_artist_names_script_exception.isChecked()
-        config.setting["artist_script_exception"] = self.ui.artist_script_exception.itemData(self.ui.artist_script_exception.currentIndex())
+        script_exceptions = []
+        for idx in range(self.ui.ignore_tx_scripts.count()):
+            item = self.ui.ignore_tx_scripts.item(idx)
+            if item.checkState() == QtCore.Qt.Checked:
+                script_exceptions.append(item.data(QtCore.Qt.UserRole))
+        config.setting["artist_script_exceptions"] = script_exceptions
+        config.setting["artist_script_exception_weighting"] = min(100, max(0, self.ui.minimum_weighting.value()))
         config.setting["convert_punctuation"] = self.ui.convert_punctuation.isChecked()
         config.setting["release_ars"] = self.ui.release_ars.isChecked()
         config.setting["track_ars"] = self.ui.track_ars.isChecked()
@@ -158,7 +173,7 @@ class MetadataOptionsPage(OptionsPage):
         translate_exception_checked = self.ui.translate_artist_names_script_exception.isChecked()
         self.ui.artist_locale.setEnabled(translate_checked)
         self.ui.translate_artist_names_script_exception.setEnabled(translate_checked)
-        self.ui.artist_script_exception.setEnabled(translate_checked and translate_exception_checked)
+        self.ui.ignore_script_frame.setEnabled(translate_checked and translate_exception_checked)
 
 
 register_options_page(MetadataOptionsPage)
