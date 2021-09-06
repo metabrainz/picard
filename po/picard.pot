@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.7.0.dev3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-09-04 17:50+0200\n"
+"POT-Creation-Date: 2021-09-06 12:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -193,8 +193,8 @@ msgstr ""
 msgid "Error loading plugins list: %(error)s"
 msgstr ""
 
-#: picard/profile.py:41 picard/ui/options/metadata.py:62
-#: picard/ui/ui_options_metadata.py:103
+#: picard/profile.py:41 picard/ui/options/metadata.py:66
+#: picard/ui/ui_options_metadata.py:111
 msgid "Metadata"
 msgstr ""
 
@@ -214,195 +214,203 @@ msgstr ""
 msgid "Translation locale"
 msgstr ""
 
-#: picard/profile.py:47 picard/ui/ui_options_metadata.py:108
+#: picard/profile.py:47
+msgid "Translate artist names script exception"
+msgstr ""
+
+#: picard/profile.py:48
+msgid "Translation script exception"
+msgstr ""
+
+#: picard/profile.py:49 picard/ui/ui_options_metadata.py:117
 msgid "Use release relationships"
 msgstr ""
 
-#: picard/profile.py:48 picard/ui/ui_options_metadata.py:109
+#: picard/profile.py:50 picard/ui/ui_options_metadata.py:118
 msgid "Use track relationships"
 msgstr ""
 
-#: picard/profile.py:49 picard/ui/ui_options_metadata.py:107
+#: picard/profile.py:51 picard/ui/ui_options_metadata.py:116
 msgid "Convert Unicode punctuation characters to ASCII"
 msgstr ""
 
-#: picard/profile.py:50 picard/ui/ui_options_metadata.py:105
+#: picard/profile.py:52 picard/ui/ui_options_metadata.py:114
 msgid "Use standardized artist names"
 msgstr ""
 
-#: picard/profile.py:51 picard/ui/ui_options_metadata.py:106
+#: picard/profile.py:53 picard/ui/ui_options_metadata.py:115
 msgid "Use standardized instrument and vocal credits"
 msgstr ""
 
-#: picard/profile.py:52 picard/ui/ui_options_metadata.py:110
+#: picard/profile.py:54 picard/ui/ui_options_metadata.py:119
 msgid "Guess track number and title from filename if empty"
 msgstr ""
 
-#: picard/profile.py:57 picard/ui/options/tags.py:46
+#: picard/profile.py:59 picard/ui/options/tags.py:46
 msgid "Tags"
 msgstr ""
 
-#: picard/profile.py:59
+#: picard/profile.py:61
 msgid "Don't write tags"
 msgstr ""
 
-#: picard/profile.py:60 picard/ui/ui_options_tags.py:68
+#: picard/profile.py:62 picard/ui/ui_options_tags.py:68
 msgid "Preserve timestamps of tagged files"
 msgstr ""
 
-#: picard/profile.py:61 picard/ui/ui_options_tags.py:70
+#: picard/profile.py:63 picard/ui/ui_options_tags.py:70
 msgid "Clear existing tags"
 msgstr ""
 
-#: picard/profile.py:62 picard/ui/ui_options_tags.py:71
+#: picard/profile.py:64 picard/ui/ui_options_tags.py:71
 msgid "Keep embedded images when clearing tags"
 msgstr ""
 
-#: picard/profile.py:63 picard/ui/ui_options_tags.py:72
+#: picard/profile.py:65 picard/ui/ui_options_tags.py:72
 msgid "Remove ID3 tags from FLAC files"
 msgstr ""
 
-#: picard/profile.py:64 picard/ui/ui_options_tags.py:73
+#: picard/profile.py:66 picard/ui/ui_options_tags.py:73
 msgid "Remove APEv2 tags from MP3 files"
 msgstr ""
 
-#: picard/profile.py:65
+#: picard/profile.py:67
 msgid "Preserved tags list"
 msgstr ""
 
-#: picard/profile.py:66
+#: picard/profile.py:68
 msgid "Save APEv2 tags to AAC"
 msgstr ""
 
-#: picard/profile.py:67 picard/ui/ui_options_tags_compatibility_aac.py:49
+#: picard/profile.py:69 picard/ui/ui_options_tags_compatibility_aac.py:49
 msgid "Remove APEv2 tags from AAC files"
 msgstr ""
 
-#: picard/profile.py:68
+#: picard/profile.py:70
 msgid "Save APEv2 tags to AC3"
 msgstr ""
 
-#: picard/profile.py:69 picard/ui/ui_options_tags_compatibility_ac3.py:49
+#: picard/profile.py:71 picard/ui/ui_options_tags_compatibility_ac3.py:49
 msgid "Remove APEv2 tags from AC3 files"
 msgstr ""
 
-#: picard/profile.py:70
+#: picard/profile.py:72
 msgid "Write ID3v1 tags"
 msgstr ""
 
-#: picard/profile.py:71
+#: picard/profile.py:73
 msgid "Write ID3v2.3 tags"
 msgstr ""
 
-#: picard/profile.py:72 picard/ui/ui_options_tags_compatibility_id3.py:119
+#: picard/profile.py:74 picard/ui/ui_options_tags_compatibility_id3.py:119
 msgid "ID3v2 text encoding"
 msgstr ""
 
-#: picard/profile.py:73
+#: picard/profile.py:75
 msgid "ID3v2.3 join character"
 msgstr ""
 
-#: picard/profile.py:74 picard/ui/ui_options_tags_compatibility_id3.py:125
+#: picard/profile.py:76 picard/ui/ui_options_tags_compatibility_id3.py:125
 msgid "Save iTunes compatible grouping and work"
 msgstr ""
 
-#: picard/profile.py:75
+#: picard/profile.py:77
 msgid "Write RIFF INFO tags to WAVE files"
 msgstr ""
 
-#: picard/profile.py:76 picard/ui/ui_options_tags_compatibility_wave.py:59
+#: picard/profile.py:78 picard/ui/ui_options_tags_compatibility_wave.py:59
 msgid "Remove existing RIFF INFO tags from WAVE files"
 msgstr ""
 
-#: picard/profile.py:77 picard/ui/ui_options_tags_compatibility_wave.py:60
+#: picard/profile.py:79 picard/ui/ui_options_tags_compatibility_wave.py:60
 msgid "RIFF INFO text encoding"
 msgstr ""
 
-#: picard/profile.py:82 picard/ui/options/cover.py:50
+#: picard/profile.py:84 picard/ui/options/cover.py:50
 msgid "Cover Art"
 msgstr ""
 
-#: picard/profile.py:84 picard/ui/ui_options_cover.py:95
+#: picard/profile.py:86 picard/ui/ui_options_cover.py:95
 msgid "Embed cover images into tags"
 msgstr ""
 
-#: picard/profile.py:85 picard/ui/ui_options_cover.py:96
+#: picard/profile.py:87 picard/ui/ui_options_cover.py:96
 msgid "Embed only a single front image"
 msgstr ""
 
-#: picard/profile.py:86 picard/ui/ui_options_cover.py:97
+#: picard/profile.py:88 picard/ui/ui_options_cover.py:97
 msgid "Save cover images as separate files"
 msgstr ""
 
-#: picard/profile.py:87
+#: picard/profile.py:89
 msgid "File name for images"
 msgstr ""
 
-#: picard/profile.py:88
+#: picard/profile.py:90
 msgid "Overwrite existing image files"
 msgstr ""
 
-#: picard/profile.py:89 picard/ui/ui_options_cover.py:100
+#: picard/profile.py:91 picard/ui/ui_options_cover.py:100
 msgid "Save only a single front image as separate file"
 msgstr ""
 
-#: picard/profile.py:90 picard/ui/ui_options_cover.py:101
+#: picard/profile.py:92 picard/ui/ui_options_cover.py:101
 msgid "Always use the primary image type as the file name for non-front images"
 msgstr ""
 
-#: picard/profile.py:91
+#: picard/profile.py:93
 msgid "Cover art providers"
 msgstr ""
 
-#: picard/profile.py:96 picard/ui/options/renaming.py:76
+#: picard/profile.py:98 picard/ui/options/renaming.py:76
 msgid "File Naming"
 msgstr ""
 
-#: picard/profile.py:98 picard/ui/ui_options_renaming.py:161
+#: picard/profile.py:100 picard/ui/ui_options_renaming.py:161
 msgid "Windows compatibility"
 msgstr ""
 
-#: picard/profile.py:99 picard/ui/ui_options_renaming.py:160
+#: picard/profile.py:101 picard/ui/ui_options_renaming.py:160
 msgid "Replace non-ASCII characters"
 msgstr ""
 
-#: picard/profile.py:100
+#: picard/profile.py:102
 msgid "Rename files"
 msgstr ""
 
-#: picard/profile.py:101
+#: picard/profile.py:103
 msgid "Move files"
 msgstr ""
 
-#: picard/profile.py:102
+#: picard/profile.py:104
 msgid "Destination directory"
 msgstr ""
 
-#: picard/profile.py:103
+#: picard/profile.py:105
 msgid "Move additional files"
 msgstr ""
 
-#: picard/profile.py:104
+#: picard/profile.py:106
 msgid "Additional file patterns"
 msgstr ""
 
-#: picard/profile.py:105 picard/ui/ui_options_renaming.py:158
+#: picard/profile.py:107 picard/ui/ui_options_renaming.py:158
 msgid "Delete empty directories"
 msgstr ""
 
-#: picard/profile.py:106
+#: picard/profile.py:108
 msgid "Selected file naming script"
 msgstr ""
 
-#: picard/profile.py:111 picard/ui/options/scripting.py:99
+#: picard/profile.py:113 picard/ui/options/scripting.py:99
 msgid "Scripting"
 msgstr ""
 
-#: picard/profile.py:113
+#: picard/profile.py:115
 msgid "Enable tagger scripts"
 msgstr ""
 
-#: picard/profile.py:114
+#: picard/profile.py:116
 msgid "Tagger scripts"
 msgstr ""
 
@@ -478,17 +486,17 @@ msgstr ""
 msgid "AcoustID lookup network error for '%(filename)s'!"
 msgstr ""
 
-#: picard/acoustid/__init__.py:119
+#: picard/acoustid/__init__.py:124
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
 msgstr ""
 
-#: picard/acoustid/__init__.py:144
+#: picard/acoustid/__init__.py:149
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
 msgstr ""
 
-#: picard/acoustid/__init__.py:155
+#: picard/acoustid/__init__.py:160
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
 msgstr ""
@@ -542,37 +550,38 @@ msgstr ""
 msgid "Add file as recording..."
 msgstr ""
 
-#: picard/const/__init__.py:166
+#: picard/const/__init__.py:170
 msgid "Stable releases only"
 msgstr ""
 
-#: picard/const/__init__.py:172
+#: picard/const/__init__.py:176
 msgid "Stable and Beta releases"
 msgstr ""
 
-#: picard/const/__init__.py:178
+#: picard/const/__init__.py:182
 msgid "Stable, Beta and Dev releases"
 msgstr ""
 
-#: picard/const/__init__.py:193
+#: picard/const/__init__.py:197
 #, python-format
 msgid "My script %d"
 msgstr ""
 
-#: picard/const/__init__.py:194
+#: picard/const/__init__.py:198
 msgid "My script"
 msgstr ""
 
-#: picard/const/__init__.py:196
+#: picard/const/__init__.py:200
 #, python-format
 msgid "My profile %d"
 msgstr ""
 
-#: picard/const/__init__.py:197
+#: picard/const/__init__.py:201
 msgid "My profile"
 msgstr ""
 
 #: picard/const/languages.py:29 picard/const/locales.py:41
+#: picard/const/scripts.py:27
 msgid "Arabic"
 msgstr ""
 
@@ -597,7 +606,7 @@ msgid "German (Switzerland)"
 msgstr ""
 
 #: picard/const/languages.py:38 picard/const/locales.py:189
-#: picard/const/locales.py:190
+#: picard/const/locales.py:190 picard/const/scripts.py:24
 msgid "Greek"
 msgstr ""
 
@@ -642,6 +651,7 @@ msgid "Galician"
 msgstr ""
 
 #: picard/const/languages.py:53 picard/const/locales.py:209
+#: picard/const/scripts.py:28
 msgid "Hebrew"
 msgstr ""
 
@@ -969,7 +979,7 @@ msgstr ""
 msgid "Catalan (Spain)"
 msgstr ""
 
-#: picard/const/locales.py:89
+#: picard/const/locales.py:89 picard/const/scripts.py:29
 msgid "Chinese"
 msgstr ""
 
@@ -2205,7 +2215,7 @@ msgstr ""
 msgid "Telugu (India)"
 msgstr ""
 
-#: picard/const/locales.py:436
+#: picard/const/locales.py:436 picard/const/scripts.py:33
 msgid "Thai"
 msgstr ""
 
@@ -2419,6 +2429,26 @@ msgstr ""
 
 #: picard/const/locales.py:491
 msgid "Zulu (South Africa)"
+msgstr ""
+
+#: picard/const/scripts.py:25
+msgid "Cyrillic"
+msgstr ""
+
+#: picard/const/scripts.py:26
+msgid "Latin"
+msgstr ""
+
+#: picard/const/scripts.py:30
+msgid "Hangul"
+msgstr ""
+
+#: picard/const/scripts.py:31
+msgid "Hiragana"
+msgstr ""
+
+#: picard/const/scripts.py:32
+msgid "Katakana"
 msgstr ""
 
 #: picard/coverart/__init__.py:107
@@ -5458,24 +5488,28 @@ msgstr ""
 msgid "Minimal similarity for cluster lookups:"
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:104
+#: picard/ui/ui_options_metadata.py:112
 msgid "Translate artist names to this locale where possible:"
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:111
+#: picard/ui/ui_options_metadata.py:113
+msgid "Ignore artist name translation for this script:"
+msgstr ""
+
+#: picard/ui/ui_options_metadata.py:120
 msgid "Custom Fields"
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:112
+#: picard/ui/ui_options_metadata.py:121
 msgid "Various artists:"
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:113
+#: picard/ui/ui_options_metadata.py:122
 msgid "Non-album tracks:"
 msgstr ""
 
-#: picard/ui/options/interface.py:177 picard/ui/ui_options_metadata.py:114
-#: picard/ui/ui_options_metadata.py:115
+#: picard/ui/options/interface.py:177 picard/ui/ui_options_metadata.py:123
+#: picard/ui/ui_options_metadata.py:124
 #: picard/ui/ui_provider_options_local.py:52
 msgid "Default"
 msgstr ""
@@ -5936,21 +5970,21 @@ msgstr ""
 msgid "Open AcousticBrainz website in browser to download extractor binary"
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:119
+#: picard/ui/options/acousticbrainz.py:122
 msgid "Path to streaming_extractor_music(.exe)"
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:137
+#: picard/ui/options/acousticbrainz.py:140
 #, python-format
 msgid "Extractor version: %s"
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:149
-#: picard/ui/options/acousticbrainz.py:153
+#: picard/ui/options/acousticbrainz.py:152
+#: picard/ui/options/acousticbrainz.py:156
 msgid "Please select a valid extractor executable."
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:153
+#: picard/ui/options/acousticbrainz.py:156
 msgid "Invalid extractor executable"
 msgstr ""
 
