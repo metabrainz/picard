@@ -146,7 +146,8 @@ class ScriptingDocumentationDialog(PicardDialog, SingletonDialog):
         }
         # Scripting code is always left-to-right. Qt does not support the dir
         # attribute on inline tags, insert explicit left-right-marks instead.
-        html = html.replace('<code>', '<code>&#8206;')
+        if text_direction == 'rtl':
+            html = html.replace('<code>', '<code>&#8206;')
         self.ui.textBrowser.setHtml(html)
         self.ui.buttonBox.rejected.connect(self.close)
 
