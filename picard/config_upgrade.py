@@ -10,6 +10,7 @@
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2021 Gabriel Ferreira
+# Copyright (C) 2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -428,6 +429,10 @@ def upgrade_to_v2_7_0_dev_4(config):
     if _s["artist_script_exception"]:
         _s["artist_script_exceptions"] = [_s["artist_script_exception"]]
     _s.remove("artist_script_exception")
+    ListOption("setting", "artist_locales", ['en'])
+    if _s["artist_locale"]:
+        _s["artist_locales"] = [_s["artist_locale"]]
+    _s.remove("artist_locale")
 
 
 def rename_option(config, old_opt, new_opt, option_type, default):

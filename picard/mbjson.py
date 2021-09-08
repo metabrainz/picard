@@ -10,6 +10,7 @@
 # Copyright (C) 2020 David Kellner
 # Copyright (C) 2020 dukeyin
 # Copyright (C) 2021 Vladislav Karbovskii
+# Copyright (C) 2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -192,9 +193,6 @@ def _translate_artist_node(node):
     config = get_config()
     transl, translsort = None, None
     if config.setting['translate_artist_names']:
-        locale = config.setting["artist_locale"]
-        lang = locale.split("_")[0]
-
         if config.setting['translate_artist_names_script_exception']:
             threshhold = config.setting["artist_script_exception_weighting"] / 100
             detected_scripts = list_script_weighted(node["name"], threshhold)
@@ -202,39 +200,45 @@ def _translate_artist_node(node):
                 if script_id in detected_scripts:
                     return node['name'], node['sort-name']
 
-        if "aliases" in node:
-            result = (-1, (None, None))
-            for alias in node['aliases']:
-                if not alias["primary"]:
-                    continue
-                if "locale" not in alias:
-                    continue
-                parts = []
-                if alias['locale'] == locale:
-                    score = 0.8
-                elif alias['locale'] == lang:
-                    score = 0.6
-                elif alias['locale'].split("_")[0] == lang:
-                    score = 0.4
-                else:
-                    continue
-                parts.append((score, 5))
-                if alias["type"] == "Artist name":
-                    score = 0.8
-                elif alias["type"] == "Legal Name":
-                    score = 0.5
-                else:
-                    # as 2014/09/19, only Artist or Legal names should have the
-                    # Primary flag
-                    score = 0.0
-                parts.append((score, 5))
-                comb = linear_combination_of_weights(parts)
-                if comb > result[0]:
-                    result = (comb, (alias['name'], alias["sort-name"]))
-            transl, translsort = result[1]
-        if not transl:
-            translsort = node['sort-name']
-            transl = translate_from_sortname(node['name'] or "", translsort)
+        for locale in config.setting["artist_locales"]:
+            lang = locale.split("_")[0]
+
+            if "aliases" in node:
+                result = (-1, (None, None))
+                for alias in node['aliases']:
+                    if not alias["primary"]:
+                        continue
+                    if "locale" not in alias:
+                        continue
+                    parts = []
+                    if alias['locale'] == locale:
+                        score = 0.8
+                    elif alias['locale'] == lang:
+                        score = 0.6
+                    elif alias['locale'].split("_")[0] == lang:
+                        score = 0.4
+                    else:
+                        continue
+                    parts.append((score, 5))
+                    if alias["type"] == "Artist name":
+                        score = 0.8
+                    elif alias["type"] == "Legal Name":
+                        score = 0.5
+                    else:
+                        # as 2014/09/19, only Artist or Legal names should have the
+                        # Primary flag
+                        score = 0.0
+                    parts.append((score, 5))
+                    comb = linear_combination_of_weights(parts)
+                    if comb > result[0]:
+                        result = (comb, (alias['name'], alias["sort-name"]))
+                transl, translsort = result[1]
+                if transl:
+                    # Matching locale found.  Skip further processing.
+                    return (transl, translsort)
+            if not transl:
+                translsort = node['sort-name']
+                transl = translate_from_sortname(node['name'] or "", translsort)
     else:
         transl, translsort = node['name'], node['sort-name']
     return (transl, translsort)

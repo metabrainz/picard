@@ -6,6 +6,7 @@
 # Copyright (C) 2017, 2019 Laurent Monin
 # Copyright (C) 2018 Wieland Hoffmann
 # Copyright (C) 2018-2021 Philipp Wolfer
+# Copyright (C) 2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -55,7 +56,7 @@ settings = {
     "standardize_instruments": True,
     "release_ars": True,
     "preferred_release_countries": [],
-    "artist_locale": 'en',
+    "artist_locales": ['en'],
 }
 
 
