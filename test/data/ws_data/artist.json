@@ -34,5 +34,40 @@
         "end":null,
         "begin":"1991-02-17",
         "ended":false
-    }
+    },
+    "aliases": [
+        {
+            "ended": false,
+            "name": "Shearan",
+            "sort-name": "Shearan",
+            "primary": null,
+            "begin": null,
+            "type": "Search hint",
+            "locale": null,
+            "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+            "end": null
+        },
+        {
+            "begin": null,
+            "primary": true,
+            "name": "Ed Sheeran (en)",
+            "ended": false,
+            "sort-name": "Sheeran, Ed",
+            "end": null,
+            "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+            "locale": "en",
+            "type": "Artist name"
+        },
+        {
+            "begin": null,
+            "primary": true,
+            "name": "Ed Sheeran (en_CA)",
+            "ended": false,
+            "sort-name": "Sheeran, Ed",
+            "end": null,
+            "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+            "locale": "en_CA",
+            "type": "Artist name"
+        }
+    ]
 }

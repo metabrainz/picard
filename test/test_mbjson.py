@@ -31,6 +31,7 @@ from test.picardtestcase import (
 from picard import config
 from picard.album import Album
 from picard.mbjson import (
+    _translate_artist_node,
     artist_to_metadata,
     countries_from_node,
     get_score,
@@ -367,6 +368,75 @@ class NullArtistTest(MBJSONTest):
         m = Metadata()
         artist_to_metadata(self.json_doc, m)
         self.assertEqual(m, {})
+
+
+class ArtistTranslationTest(MBJSONTest):
+
+    filename = 'artist.json'
+
+    def test_locale_specific_match_first(self):
+        settings = {
+            "standardize_tracks": False,
+            "standardize_artists": False,
+            "standardize_releases": False,
+            "translate_artist_names": True,
+            "translate_artist_names_script_exception": False,
+            "standardize_instruments": True,
+            "release_ars": True,
+            "preferred_release_countries": [],
+            "artist_locales": ['en_CA', 'en'],
+        }
+        self.set_config_values(settings)
+        (artist_name, artist_sort_name) = _translate_artist_node(self.json_doc)
+        self.assertEqual(artist_name, 'Ed Sheeran (en_CA)')
+
+    def test_locale_specific_match_second(self):
+        settings = {
+            "standardize_tracks": False,
+            "standardize_artists": False,
+            "standardize_releases": False,
+            "translate_artist_names": True,
+            "translate_artist_names_script_exception": False,
+            "standardize_instruments": True,
+            "release_ars": True,
+            "preferred_release_countries": [],
+            "artist_locales": ['en_UK', 'en'],
+        }
+        self.set_config_values(settings)
+        (artist_name, artist_sort_name) = _translate_artist_node(self.json_doc)
+        self.assertEqual(artist_name, 'Ed Sheeran (en)')
+
+    def test_artist_match_root_locale_fallback(self):
+        settings = {
+            "standardize_tracks": False,
+            "standardize_artists": False,
+            "standardize_releases": False,
+            "translate_artist_names": True,
+            "translate_artist_names_script_exception": False,
+            "standardize_instruments": True,
+            "release_ars": True,
+            "preferred_release_countries": [],
+            "artist_locales": ['en_UK'],
+        }
+        self.set_config_values(settings)
+        (artist_name, artist_sort_name) = _translate_artist_node(self.json_doc)
+        self.assertEqual(artist_name, 'Ed Sheeran (en)')
+
+    def test_artist_no_match(self):
+        settings = {
+            "standardize_tracks": False,
+            "standardize_artists": False,
+            "standardize_releases": False,
+            "translate_artist_names": True,
+            "translate_artist_names_script_exception": False,
+            "standardize_instruments": True,
+            "release_ars": True,
+            "preferred_release_countries": [],
+            "artist_locales": ['de'],
+        }
+        self.set_config_values(settings)
+        (artist_name, artist_sort_name) = _translate_artist_node(self.json_doc)
+        self.assertEqual(artist_name, 'Ed Sheeran')
 
 
 class ReleaseGroupTest(MBJSONTest):
