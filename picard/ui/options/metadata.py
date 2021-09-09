@@ -66,9 +66,9 @@ def iter_sorted_locales(locales):
             grouped_locales.setdefault(generic_locale, []).append((name, locale))
 
     for name, locale in sorted(generic_names):
-        yield (locale, name, 0)
+        yield (locale, 0)
         for name, locale in sorted(grouped_locales.get(locale, [])):
-            yield (locale, name, 1)
+            yield (locale, 1)
 
 
 class MetadataOptionsPage(OptionsPage):
@@ -134,8 +134,11 @@ class MetadataOptionsPage(OptionsPage):
         self.set_enabled_states()
 
     def make_locales_text(self):
-        locales = list(ALIAS_LOCALES[key] for key in self.current_locales)
-        self.ui.selected_locales.setText('; '.join(locales))
+        def translated_locales():
+            for locale in self.current_locales:
+                yield _(ALIAS_LOCALES[locale])
+
+        self.ui.selected_locales.setText('; '.join(translated_locales()))
 
     def save(self):
         config = get_config()
@@ -197,17 +200,25 @@ class MultiLocaleSelector(PicardDialog):
         self.load()
 
     def load(self):
-        self.ui.selected_locales.clear()
         for locale in self.parent().current_locales:
-            label = ("    " if '_' in locale else "") + ALIAS_LOCALES[locale]
+            # Note that items in the selected locales list are not indented because
+            # the root locale may not be in the list, or may not immediately precede
+            # the specific locale.
+            label = _(ALIAS_LOCALES[locale])
             item = QtWidgets.QListWidgetItem(label)
             item.setData(QtCore.Qt.UserRole, locale)
             self.ui.selected_locales.addItem(item)
         self.ui.selected_locales.setCurrentRow(0)
 
+        def indented_translated_locale(locale, level):
+            return _("{indent}{locale}").format(
+                indent="    " * level,
+                locale=_(ALIAS_LOCALES[locale])
+            )
+
         self.ui.available_locales.clear()
-        for (locale, name, level) in iter_sorted_locales(ALIAS_LOCALES):
-            label = "    " * level + name
+        for (locale, level) in iter_sorted_locales(ALIAS_LOCALES):
+            label = indented_translated_locale(locale, level)
             item = QtWidgets.QListWidgetItem(label)
             item.setData(QtCore.Qt.UserRole, locale)
             self.ui.available_locales.addItem(item)
@@ -225,7 +236,10 @@ class MultiLocaleSelector(PicardDialog):
             if selected_item.data(QtCore.Qt.UserRole) == locale:
                 return
         new_item = item.clone()
-        new_item.setText(new_item.text().strip())
+        # Note that items in the selected locales list are not indented because
+        # the root locale may not be in the list, or may not immediately precede
+        # the specific locale.
+        new_item.setText(_(ALIAS_LOCALES[locale]))
         self.ui.selected_locales.addItem(new_item)
         self.ui.selected_locales.setCurrentRow(self.ui.selected_locales.count() - 1)
 
