@@ -72,6 +72,9 @@ class WeightedScriptDetectionTest(PicardTestCase):
         scripts = detect_script_weighted("1234567890+-/*=,./!?")
         self.assertEqual(scripts, {})
 
+        scripts = detect_script_weighted("")
+        self.assertEqual(scripts, {})
+
 
 class ListScriptWeightedTest(PicardTestCase):
 
