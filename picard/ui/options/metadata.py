@@ -34,7 +34,6 @@ from PyQt5 import (
 
 from picard.config import (
     BoolOption,
-    IntOption,
     ListOption,
     TextOption,
     get_config,
@@ -50,6 +49,7 @@ from picard.ui.options import (
     OptionsPage,
     register_options_page,
 )
+from picard.ui.ui_exception_script_selector import Ui_ExceptionScriptSelector
 from picard.ui.ui_multi_locale_selector import Ui_MultiLocaleSelector
 from picard.ui.ui_options_metadata import Ui_MetadataOptionsPage
 
@@ -86,8 +86,7 @@ class MetadataOptionsPage(OptionsPage):
         ListOption("setting", "artist_locales", ["en"]),
         BoolOption("setting", "translate_artist_names", False),
         BoolOption("setting", "translate_artist_names_script_exception", False),
-        ListOption("setting", "artist_script_exceptions", []),
-        IntOption("setting", "artist_script_exception_weighting", 0),
+        ListOption("setting", "script_exceptions", []),
         BoolOption("setting", "release_ars", True),
         BoolOption("setting", "track_ars", False),
         BoolOption("setting", "convert_punctuation", True),
@@ -103,6 +102,7 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.va_name_default.clicked.connect(self.set_va_name_default)
         self.ui.nat_name_default.clicked.connect(self.set_nat_name_default)
         self.ui.select_locales.clicked.connect(self.open_locale_selector)
+        self.ui.select_scripts.clicked.connect(self.open_script_selector)
         self.ui.translate_artist_names.stateChanged.connect(self.set_enabled_states)
         self.ui.translate_artist_names_script_exception.stateChanged.connect(self.set_enabled_states)
 
@@ -111,16 +111,9 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.translate_artist_names.setChecked(config.setting["translate_artist_names"])
         self.current_locales = config.setting["artist_locales"]
         self.make_locales_text()
+        self.current_scripts = config.setting["script_exceptions"]
+        self.make_scripts_text()
         self.ui.translate_artist_names_script_exception.setChecked(config.setting["translate_artist_names_script_exception"])
-        self.ui.ignore_tx_scripts.clear()
-        for script_id in SCRIPTS:
-            enabled = script_id in config.setting["artist_script_exceptions"]
-            item = QtWidgets.QListWidgetItem(_(SCRIPTS[script_id]))
-            item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
-            item.setData(QtCore.Qt.UserRole, script_id)
-            item.setCheckState(QtCore.Qt.Checked if enabled else QtCore.Qt.Unchecked)
-            self.ui.ignore_tx_scripts.addItem(item)
-        self.ui.minimum_weighting.setValue(config.setting["artist_script_exception_weighting"])
 
         self.ui.convert_punctuation.setChecked(config.setting["convert_punctuation"])
         self.ui.release_ars.setChecked(config.setting["release_ars"])
@@ -140,18 +133,22 @@ class MetadataOptionsPage(OptionsPage):
 
         self.ui.selected_locales.setText('; '.join(translated_locales()))
 
+    def make_scripts_text(self):
+        def translated_scripts():
+            for script in self.current_scripts:
+                yield "{script} ({weighting}%)".format(
+                    script=_(SCRIPTS[script[0]]),
+                    weighting=script[1],
+                )
+
+        self.ui.selected_scripts.setText('; '.join(translated_scripts()))
+
     def save(self):
         config = get_config()
         config.setting["translate_artist_names"] = self.ui.translate_artist_names.isChecked()
         config.setting["artist_locales"] = self.current_locales
         config.setting["translate_artist_names_script_exception"] = self.ui.translate_artist_names_script_exception.isChecked()
-        script_exceptions = []
-        for idx in range(self.ui.ignore_tx_scripts.count()):
-            item = self.ui.ignore_tx_scripts.item(idx)
-            if item.checkState() == QtCore.Qt.Checked:
-                script_exceptions.append(item.data(QtCore.Qt.UserRole))
-        config.setting["artist_script_exceptions"] = script_exceptions
-        config.setting["artist_script_exception_weighting"] = min(100, max(0, self.ui.minimum_weighting.value()))
+        config.setting["script_exceptions"] = self.current_scripts
         config.setting["convert_punctuation"] = self.ui.convert_punctuation.isChecked()
         config.setting["release_ars"] = self.ui.release_ars.isChecked()
         config.setting["track_ars"] = self.ui.track_ars.isChecked()
@@ -179,10 +176,15 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.select_locales.setEnabled(translate_checked)
         self.ui.selected_locales.setEnabled(translate_checked)
         self.ui.translate_artist_names_script_exception.setEnabled(translate_checked)
-        self.ui.ignore_script_frame.setEnabled(translate_checked and translate_exception_checked)
+        self.ui.selected_scripts.setEnabled(translate_checked and translate_exception_checked)
+        self.ui.select_scripts.setEnabled(translate_checked and translate_exception_checked)
 
     def open_locale_selector(self):
         dialog = MultiLocaleSelector(self)
+        dialog.show()
+
+    def open_script_selector(self):
+        dialog = ScriptExceptionSelector(self)
         dialog.show()
 
 
@@ -258,6 +260,108 @@ class MultiLocaleSelector(PicardDialog):
             locales.append(selected_item.data(QtCore.Qt.UserRole))
         self.parent().current_locales = locales
         self.parent().make_locales_text()
+        self.accept()
+
+
+class ScriptExceptionSelector(PicardDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.ui = Ui_ExceptionScriptSelector()
+        self.ui.setupUi(self)
+        self.ui.button_box.accepted.connect(self.save_changes)
+        self.ui.button_box.rejected.connect(self.reject)
+        self.move_view = MoveableListView(self.ui.selected_scripts, self.ui.move_up, self.ui.move_down)
+        self.ui.add_script.clicked.connect(self.add_script)
+        self.ui.remove_script.clicked.connect(self.remove_script)
+        self.ui.selected_scripts.currentRowChanged.connect(self.selected_script_changed)
+        self.ui.weighting_selector.valueChanged.connect(self.weighting_changed)
+        self.load()
+
+    @staticmethod
+    def make_label(script_id, script_weighting):
+        return "{script} ({weighting}%)".format(
+            script=_(SCRIPTS[script_id]),
+            weighting=script_weighting,
+        )
+
+    def load(self):
+        self.ui.selected_scripts.clear()
+        for script in self.parent().current_scripts:
+            label = self.make_label(script_id=script[0], script_weighting=script[1])
+            item = QtWidgets.QListWidgetItem(label)
+            item.setData(QtCore.Qt.UserRole, script)
+            self.ui.selected_scripts.addItem(item)
+        if self.ui.selected_scripts.count() > 0:
+            self.ui.selected_scripts.setCurrentRow(0)
+        self.set_weighting_selector()
+
+        self.ui.available_scripts.clear()
+        for script_id in SCRIPTS:
+            item = QtWidgets.QListWidgetItem(_(SCRIPTS[script_id]))
+            item.setData(QtCore.Qt.UserRole, script_id)
+            self.ui.available_scripts.addItem(item)
+        self.ui.available_scripts.setCurrentRow(0)
+
+        self.set_button_state()
+
+    def add_script(self):
+        item = self.ui.available_scripts.currentItem()
+        if item is None:
+            return
+        script_id = item.data(QtCore.Qt.UserRole)
+        for row in range(self.ui.selected_scripts.count()):
+            selected_item = self.ui.selected_scripts.item(row)
+            if selected_item.data(QtCore.Qt.UserRole)[0] == script_id:
+                return
+        new_item = QtWidgets.QListWidgetItem(self.make_label(script_id, 0))
+        new_item.setData(QtCore.Qt.UserRole, (script_id, 0))
+        self.ui.selected_scripts.addItem(new_item)
+        self.ui.selected_scripts.setCurrentRow(self.ui.selected_scripts.count() - 1)
+        self.set_weighting_selector()
+
+    def remove_script(self):
+        row = self.ui.selected_scripts.currentRow()
+        self.ui.selected_scripts.takeItem(row)
+
+    def selected_script_changed(self):
+        self.set_weighting_selector()
+        self.set_button_state()
+
+    def weighting_changed(self):
+        self.set_item_from_weighting()
+
+    def set_button_state(self):
+        enabled = self.ui.selected_scripts.count() > 0
+        self.ui.remove_script.setEnabled(enabled)
+        self.ui.weighting_selector.setEnabled(enabled)
+
+    def set_weighting_selector(self):
+        row = self.ui.selected_scripts.currentRow()
+        selected_item = self.ui.selected_scripts.item(row)
+        if selected_item:
+            weighting = selected_item.data(QtCore.Qt.UserRole)[1]
+        else:
+            weighting = 0
+        self.ui.weighting_selector.setValue(weighting)
+
+    def set_item_from_weighting(self):
+        row = self.ui.selected_scripts.currentRow()
+        selected_item = self.ui.selected_scripts.item(row)
+        if selected_item:
+            item_data = selected_item.data(QtCore.Qt.UserRole)
+            weighting = self.ui.weighting_selector.value()
+            new_data = (item_data[0], weighting)
+            selected_item.setData(QtCore.Qt.UserRole, new_data)
+            label = self.make_label(script_id=item_data[0], script_weighting=weighting)
+            selected_item.setText(label)
+
+    def save_changes(self):
+        scripts = []
+        for row in range(self.ui.selected_scripts.count()):
+            selected_item = self.ui.selected_scripts.item(row)
+            scripts.append(selected_item.data(QtCore.Qt.UserRole))
+        self.parent().current_scripts = scripts
+        self.parent().make_scripts_text()
         self.accept()
 
 

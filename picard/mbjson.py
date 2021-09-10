@@ -35,7 +35,7 @@ from picard.util import (
     parse_amazon_url,
     translate_from_sortname,
 )
-from picard.util.script_detector_weighted import list_script_weighted
+from picard.util.script_detector_weighted import detect_script_weighted
 
 
 _artist_rel_types = {
@@ -194,10 +194,10 @@ def _translate_artist_node(node):
     transl, translsort = None, None
     if config.setting['translate_artist_names']:
         if config.setting['translate_artist_names_script_exception']:
-            threshhold = config.setting["artist_script_exception_weighting"] / 100
-            detected_scripts = list_script_weighted(node["name"], threshhold)
-            for script_id in config.setting["artist_script_exceptions"]:
-                if script_id in detected_scripts:
+            detected_scripts = detect_script_weighted(node["name"])
+            for script_item in config.setting["script_exceptions"]:
+                script_id, script_weighting = script_item
+                if script_id in detected_scripts and detected_scripts[script_id] >= script_weighting / 100:
                     return node['name'], node['sort-name']
 
         def check_higher_score(locale_dict, locale, score):
