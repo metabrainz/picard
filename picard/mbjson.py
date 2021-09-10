@@ -10,6 +10,7 @@
 # Copyright (C) 2020 David Kellner
 # Copyright (C) 2020 dukeyin
 # Copyright (C) 2021 Vladislav Karbovskii
+# Copyright (C) 2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -34,7 +35,7 @@ from picard.util import (
     parse_amazon_url,
     translate_from_sortname,
 )
-from picard.util.script_detector import detect_script
+from picard.util.script_detector_weighted import list_script_weighted
 
 
 _artist_rel_types = {
@@ -192,30 +193,34 @@ def _translate_artist_node(node):
     config = get_config()
     transl, translsort = None, None
     if config.setting['translate_artist_names']:
-        locale = config.setting["artist_locale"]
-        lang = locale.split("_")[0]
+        if config.setting['translate_artist_names_script_exception']:
+            threshhold = config.setting["artist_script_exception_weighting"] / 100
+            detected_scripts = list_script_weighted(node["name"], threshhold)
+            for script_id in config.setting["artist_script_exceptions"]:
+                if script_id in detected_scripts:
+                    return node['name'], node['sort-name']
 
-        if (config.setting['translate_artist_names_script_exception']
-                and config.setting["artist_script_exception"] in detect_script(node['name'])):
-            return node['name'], node['sort-name']
+        def check_higher_score(locale_dict, locale, score):
+            return locale not in locale_dict or score > locale_dict[locale][0]
 
+        # Prepare dictionaries of available locale aliases
+        full_locales = {}
+        root_locales = {}
         if "aliases" in node:
-            result = (-1, (None, None))
             for alias in node['aliases']:
                 if not alias["primary"]:
                     continue
                 if "locale" not in alias:
                     continue
-                parts = []
-                if alias['locale'] == locale:
-                    score = 0.8
-                elif alias['locale'] == lang:
-                    score = 0.6
-                elif alias['locale'].split("_")[0] == lang:
+                full_locale = alias['locale']
+                root_locale = full_locale.split("_")[0]
+                full_parts = []
+                root_parts = []
+                score = 0.8
+                full_parts.append((score, 5))
+                if '_' in full_locale:
                     score = 0.4
-                else:
-                    continue
-                parts.append((score, 5))
+                root_parts.append((score, 5))
                 if alias["type"] == "Artist name":
                     score = 0.8
                 elif alias["type"] == "Legal Name":
@@ -224,14 +229,29 @@ def _translate_artist_node(node):
                     # as 2014/09/19, only Artist or Legal names should have the
                     # Primary flag
                     score = 0.0
-                parts.append((score, 5))
-                comb = linear_combination_of_weights(parts)
-                if comb > result[0]:
-                    result = (comb, (alias['name'], alias["sort-name"]))
-            transl, translsort = result[1]
-        if not transl:
-            translsort = node['sort-name']
-            transl = translate_from_sortname(node['name'] or "", translsort)
+                full_parts.append((score, 5))
+                root_parts.append((score, 5))
+                comb = linear_combination_of_weights(full_parts)
+                if check_higher_score(full_locales, full_locale, comb):
+                    full_locales[full_locale] = (comb, (alias['name'], alias["sort-name"]))
+                comb = linear_combination_of_weights(root_parts)
+                if check_higher_score(root_locales, root_locale, comb):
+                    root_locales[root_locale] = (comb, (alias['name'], alias["sort-name"]))
+
+            # First pass to match full locale if available
+            for locale in config.setting["artist_locales"]:
+                if locale in full_locales:
+                    return full_locales[locale][1]
+
+            # Second pass to match root locale if available
+            for locale in config.setting["artist_locales"]:
+                lang = locale.split("_")[0]
+                if lang in root_locales:
+                    return root_locales[lang][1]
+
+        # No matches found in available alias locales
+        translsort = node['sort-name']
+        transl = translate_from_sortname(node['name'] or "", translsort)
     else:
         transl, translsort = node['name'], node['sort-name']
     return (transl, translsort)

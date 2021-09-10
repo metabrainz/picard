@@ -6,6 +6,7 @@
 # Copyright (C) 2018 Wieland Hoffmann
 # Copyright (C) 2019-2020 Philipp Wolfer
 # Copyright (C) 2020 Ray Bouchard
+# Copyright (C) 2021 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -38,7 +39,7 @@ settings = {
     "standardize_artists": False,
     "standardize_releases": False,
     "translate_artist_names": True,
-    "artist_locale": 'en',
+    "artist_locales": ['en'],
     "translate_artist_names_script_exception": False,
 }
 
