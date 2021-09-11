@@ -174,8 +174,9 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.select_locales.setEnabled(translate_checked)
         self.ui.selected_locales.setEnabled(translate_checked)
         self.ui.translate_artist_names_script_exception.setEnabled(translate_checked)
-        self.ui.selected_scripts.setEnabled(translate_checked and translate_exception_checked)
-        self.ui.select_scripts.setEnabled(translate_checked and translate_exception_checked)
+        select_scripts_enabled = translate_checked and translate_exception_checked
+        self.ui.selected_scripts.setEnabled(select_scripts_enabled)
+        self.ui.select_scripts.setEnabled(select_scripts_enabled)
 
     def open_locale_selector(self):
         dialog = MultiLocaleSelector(self)

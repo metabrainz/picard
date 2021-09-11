@@ -209,8 +209,7 @@ def _translate_artist_node(node):
                     log_text = " found in selected scripts: " + "; ".join(
                         list("{0} ({1}%)".format(scr[0], scr[1]) for scr in config.setting["script_exceptions"])
                     )
-                    for script_item in config.setting["script_exceptions"]:
-                        script_id, script_weighting = script_item
+                    for script_id, script_weighting in config.setting["script_exceptions"]:
                         if script_id in detected_scripts and detected_scripts[script_id] >= script_weighting / 100:
                             log.debug("Match" + log_text)
                             return node['name'], node['sort-name']

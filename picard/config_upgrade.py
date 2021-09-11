@@ -439,12 +439,9 @@ def upgrade_to_v2_7_0_dev_5(config):
     """Replace artist_script_exceptions with script_exceptions and remove artist_script_exception_weighting"""
     _s = config.setting
     ListOption("setting", "script_exceptions", [])
-    weighting = _s["artist_script_exception_weighting"] if _s["artist_script_exception_weighting"] else 0
-    script_exceptions = []
-    if _s["artist_script_exceptions"]:
-        for script_exception in _s["artist_script_exceptions"]:
-            script_exceptions.append((script_exception, weighting))
-    _s["script_exceptions"] = script_exceptions
+    weighting = _s["artist_script_exception_weighting"] or 0
+    artist_script_exceptions = _s["artist_script_exceptions"] or []
+    _s["script_exceptions"] = [(script_exception, weighting) for script_exception in artist_script_exceptions]
     _s.remove("artist_script_exceptions")
     _s.remove("artist_script_exception_weighting")
 
