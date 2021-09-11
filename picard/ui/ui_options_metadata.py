@@ -124,9 +124,9 @@ class Ui_MetadataOptionsPage(object):
         _translate = QtCore.QCoreApplication.translate
         self.metadata_groupbox.setTitle(_("Metadata"))
         self.translate_artist_names.setText(_("Translate artist names to these locales where possible:"))
-        self.select_locales.setText(_("Select"))
+        self.select_locales.setText(_("Select..."))
         self.translate_artist_names_script_exception.setText(_("Ignore artist name translation for these scripts:"))
-        self.select_scripts.setText(_("Select"))
+        self.select_scripts.setText(_("Select..."))
         self.standardize_artists.setText(_("Use standardized artist names"))
         self.standardize_instruments.setText(_("Use standardized instrument and vocal credits"))
         self.convert_punctuation.setText(_("Convert Unicode punctuation characters to ASCII"))

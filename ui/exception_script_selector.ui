@@ -9,20 +9,43 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>507</width>
-    <height>284</height>
+    <width>510</width>
+    <height>250</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
     <horstretch>1</horstretch>
     <verstretch>1</verstretch>
    </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>510</width>
+    <height>250</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Exception Script Selector</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="threshold_explanation">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -35,7 +58,14 @@
         </widget>
        </item>
        <item>
-        <widget class="QListWidget" name="selected_scripts"/>
+        <widget class="QListWidget" name="selected_scripts">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+        </widget>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -43,7 +73,7 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QLabel" name="label_3">
+          <widget class="QLabel" name="threshold_label">
            <property name="text">
             <string>Selected script match threshold:</string>
            </property>

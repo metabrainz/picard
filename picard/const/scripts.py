@@ -32,3 +32,8 @@ SCRIPTS = {
     'KATAKANA': N_('Katakana'),
     'THAI': N_('Thai')
 }
+
+
+def scripts_sorted_by_localized_name():
+    for script_id, label in sorted([(k, _(v)) for k, v in SCRIPTS.items()], key=lambda i: i[1]):
+        yield script_id, label

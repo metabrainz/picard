@@ -42,6 +42,7 @@ from picard.const import (
     ALIAS_LOCALES,
     SCRIPTS,
 )
+from picard.const.scripts import scripts_sorted_by_localized_name
 
 from picard.ui import PicardDialog
 from picard.ui.moveable_list_view import MoveableListView
@@ -136,10 +137,7 @@ class MetadataOptionsPage(OptionsPage):
     def make_scripts_text(self):
         def translated_scripts():
             for script in self.current_scripts:
-                yield "{script} ({weighting}%)".format(
-                    script=_(SCRIPTS[script[0]]),
-                    weighting=script[1],
-                )
+                yield ScriptExceptionSelector.make_label(script[0], script[1])
 
         self.ui.selected_scripts.setText('; '.join(translated_scripts()))
 
@@ -275,6 +273,18 @@ class ScriptExceptionSelector(PicardDialog):
         self.ui.remove_script.clicked.connect(self.remove_script)
         self.ui.selected_scripts.currentRowChanged.connect(self.selected_script_changed)
         self.ui.weighting_selector.valueChanged.connect(self.weighting_changed)
+
+        weighting_tooltip_text = (
+            "Each selected script includes a matching threshold value used to determine if that script should be used. When an artist name is "
+            "evaluated to determine if it matches one of your selected scripts, it is first parsed to determine which scripts are represented "
+            "in the name, and what weighted percentage of the name belongs to each script. Then each of your selected scripts are checked, and "
+            "if the name contains characters belonging to the script and the percentage of script characters in the name meets or exceeds the "
+            "match threshold specified for the script, then the artist name will not be translated."
+        )
+        self.ui.weighting_selector.setToolTip(weighting_tooltip_text)
+        self.ui.threshold_label.setToolTip(weighting_tooltip_text)
+        self.ui.threshold_explanation.setText(weighting_tooltip_text)
+
         self.load()
 
     @staticmethod
@@ -296,8 +306,8 @@ class ScriptExceptionSelector(PicardDialog):
         self.set_weighting_selector()
 
         self.ui.available_scripts.clear()
-        for script_id in SCRIPTS:
-            item = QtWidgets.QListWidgetItem(_(SCRIPTS[script_id]))
+        for script_id, label in scripts_sorted_by_localized_name():
+            item = QtWidgets.QListWidgetItem(label)
             item.setData(QtCore.Qt.UserRole, script_id)
             self.ui.available_scripts.addItem(item)
         self.ui.available_scripts.setCurrentRow(0)
