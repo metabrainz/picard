@@ -275,7 +275,7 @@ class ScriptExceptionSelector(PicardDialog):
         self.ui.selected_scripts.currentRowChanged.connect(self.selected_script_changed)
         self.ui.weighting_selector.valueChanged.connect(self.weighting_changed)
 
-        weighting_tooltip_text = (
+        weighting_tooltip_text = _(
             "Each selected script includes a matching threshold value used to determine if that script should be used. When an artist name is "
             "evaluated to determine if it matches one of your selected scripts, it is first parsed to determine which scripts are represented "
             "in the name, and what weighted percentage of the name belongs to each script. Then each of your selected scripts are checked, and "
