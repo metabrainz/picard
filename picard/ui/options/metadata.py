@@ -284,7 +284,6 @@ class ScriptExceptionSelector(PicardDialog):
         )
         self.ui.weighting_selector.setToolTip(weighting_tooltip_text)
         self.ui.threshold_label.setToolTip(weighting_tooltip_text)
-        self.ui.threshold_explanation.setText(weighting_tooltip_text)
 
         self.load()
 
