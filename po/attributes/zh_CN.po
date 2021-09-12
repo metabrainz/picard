@@ -33,8 +33,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-08-12 16:32+0000\n"
-"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
+"PO-Revision-Date: 2021-09-06 12:54+0000\n"
+"Last-Translator: Clay Cheng <569735195@qq.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1509,7 +1509,7 @@ msgstr "COMPASS ID"
 #: DB:work_attribute_type/name:73
 msgctxt "work_attribute_type"
 msgid "COSCAP ID"
-msgstr ""
+msgstr "COSCAP ID"
 
 #: DB:work_attribute_type/name:65
 msgctxt "work_attribute_type"
@@ -1706,7 +1706,7 @@ msgid ""
 "not the main administrative divisions but are also not municipalities, e.g. "
 "counties in the USA. These are not considered when displaying the parent "
 "areas for a given area."
-msgstr "县指一国内更小的不是一级区划也不是自治体的行政区划，如美国的县。在显示某区域的上级区域时不考虑。"
+msgstr "县指一国内更小的不是一级行政区也不是地方自治体的行政区划，如美国的县。在显示某区域的上级区域时不考虑。"
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -3247,7 +3247,7 @@ msgstr "奥地利著作权协会AKM ID"
 #: DB:work_attribute_type/description:73
 msgctxt "work_attribute_type"
 msgid "ID for the Barbadian rights society COSCAP"
-msgstr ""
+msgstr "巴巴多斯著作权协会COSCAP ID"
 
 #: DB:work_attribute_type/description:28
 msgctxt "work_attribute_type"
@@ -3282,7 +3282,7 @@ msgstr "加拿大著作权协会SODRAC ID"
 #: DB:work_attribute_type/description:71
 msgctxt "work_attribute_type"
 msgid "ID for the Chinese rights society MCSC"
-msgstr ""
+msgstr "中国大陆著作权协会MCSC(中国音乐著作权协会) ID"
 
 #: DB:work_attribute_type/description:39
 msgctxt "work_attribute_type"
@@ -3362,12 +3362,12 @@ msgstr "匈牙利著作权协会ARTISJUS ID"
 #: DB:work_attribute_type/description:54
 msgctxt "work_attribute_type"
 msgid "ID for the Icelandic rights society STEF"
-msgstr "冰岛权利协会 STEF 的 ID"
+msgstr "冰岛著作权协会 STEF 的 ID"
 
 #: DB:work_attribute_type/description:70
 msgctxt "work_attribute_type"
 msgid "ID for the Indian rights society IPRS"
-msgstr ""
+msgstr "印度著作权协会IPRS ID"
 
 #: DB:work_attribute_type/description:29
 msgctxt "work_attribute_type"
@@ -3387,12 +3387,12 @@ msgstr "意大利著作权协会SIAE ID"
 #: DB:work_attribute_type/description:69
 msgctxt "work_attribute_type"
 msgid "ID for the Jamaican rights society JACAP"
-msgstr ""
+msgstr "牙买加著作权协会JACAP ID"
 
 #: DB:work_attribute_type/description:3
 msgctxt "work_attribute_type"
 msgid "ID for the Japanese rights society JASRAC"
-msgstr "日本著作权协会JASRAC（社团法人日本音乐著作权协会）ID"
+msgstr "日本著作权协会JASRAC(社团法人日本音乐著作权协会) ID"
 
 #: DB:work_attribute_type/description:33
 msgctxt "work_attribute_type"
@@ -3492,12 +3492,12 @@ msgstr "台湾著作权协会MÜST(社团法人中华音乐著作权协会) ID"
 #: DB:work_attribute_type/description:72
 msgctxt "work_attribute_type"
 msgid "ID for the Thai rights society MCT"
-msgstr ""
+msgstr "泰国著作权协会MCT ID"
 
 #: DB:work_attribute_type/description:65
 msgctxt "work_attribute_type"
 msgid "ID for the Trinidadian and Tobagonian rights society COTT"
-msgstr "特立尼达和多巴哥岛著作权协会COTT ID"
+msgstr "特立尼达和多巴哥著作权协会COTT ID"
 
 #: DB:work_attribute_type/description:6
 msgctxt "work_attribute_type"
@@ -3552,7 +3552,7 @@ msgstr "IMRO ID"
 #: DB:work_attribute_type/name:70
 msgctxt "work_attribute_type"
 msgid "IPRS ID"
-msgstr ""
+msgstr "IPRS ID"
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
@@ -3672,7 +3672,7 @@ msgstr "岛屿指不下辖任何行政区划的岛屿和环礁，如斯凯岛。
 #: DB:work_attribute_type/name:69
 msgctxt "work_attribute_type"
 msgid "JACAP ID"
-msgstr ""
+msgstr "JACAP ID"
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
@@ -4338,12 +4338,12 @@ msgstr "MACP ID"
 #: DB:work_attribute_type/name:71
 msgctxt "work_attribute_type"
 msgid "MCSC ID"
-msgstr ""
+msgstr "MCSC ID"
 
 #: DB:work_attribute_type/name:72
 msgctxt "work_attribute_type"
 msgid "MCT ID"
-msgstr ""
+msgstr "MCT ID"
 
 #: DB:work_attribute_type_allowed_value/value:963
 msgctxt "work_attribute_type_allowed_value"
@@ -5815,7 +5815,7 @@ msgstr "Remel"
 #: DB:release_group_secondary_type/name:7
 msgctxt "release_group_secondary_type"
 msgid "Remix"
-msgstr "合成"
+msgstr "混音"
 
 #: DB:work_attribute_type_allowed_value/value:516
 msgctxt "work_attribute_type_allowed_value"
@@ -6385,7 +6385,7 @@ msgstr "SnapPack"
 #: DB:work_attribute_type_allowed_value/value:771
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sofyan"
-msgstr "索菲亚"
+msgstr "Sofyan"
 
 #: DB:work_type/name:5
 msgctxt "work_type"
@@ -6442,7 +6442,7 @@ msgstr "舞台表演"
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"
 msgid "Sticker"
-msgstr "表情贴纸"
+msgstr "贴纸"
 
 #: DB:instrument_type/name:2
 msgctxt "instrument_type"

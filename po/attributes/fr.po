@@ -29,8 +29,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-08-12 16:32+0000\n"
-"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
+"PO-Revision-Date: 2021-09-03 14:21+0000\n"
+"Last-Translator: yvanz\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1505,7 +1505,7 @@ msgstr "ID COMPASS"
 #: DB:work_attribute_type/name:73
 msgctxt "work_attribute_type"
 msgid "COSCAP ID"
-msgstr ""
+msgstr "ID COSCAP"
 
 #: DB:work_attribute_type/name:65
 msgctxt "work_attribute_type"
@@ -3243,7 +3243,7 @@ msgstr "ID pour l’AKM, société autrichienne de gestion des droits"
 #: DB:work_attribute_type/description:73
 msgctxt "work_attribute_type"
 msgid "ID for the Barbadian rights society COSCAP"
-msgstr ""
+msgstr "ID pour la COSCAP, société barbadienne de gestion des droits"
 
 #: DB:work_attribute_type/description:28
 msgctxt "work_attribute_type"
@@ -3278,7 +3278,7 @@ msgstr "ID pour la SODRAC, société canadienne de gestion des droits"
 #: DB:work_attribute_type/description:71
 msgctxt "work_attribute_type"
 msgid "ID for the Chinese rights society MCSC"
-msgstr ""
+msgstr "ID pour la MCSC, société chinoise de gestion des droits"
 
 #: DB:work_attribute_type/description:39
 msgctxt "work_attribute_type"
@@ -3363,7 +3363,7 @@ msgstr "ID pour la STEF, société islandaise de gestion des droits"
 #: DB:work_attribute_type/description:70
 msgctxt "work_attribute_type"
 msgid "ID for the Indian rights society IPRS"
-msgstr ""
+msgstr "ID pour l’IPRS, société indienne de gestion des droits"
 
 #: DB:work_attribute_type/description:29
 msgctxt "work_attribute_type"
@@ -3383,7 +3383,7 @@ msgstr "ID pour la SIAE, société italienne de gestion des droits"
 #: DB:work_attribute_type/description:69
 msgctxt "work_attribute_type"
 msgid "ID for the Jamaican rights society JACAP"
-msgstr ""
+msgstr "ID pour la JACAP, société jamaïcaine de gestion des droits"
 
 #: DB:work_attribute_type/description:3
 msgctxt "work_attribute_type"
@@ -3488,7 +3488,7 @@ msgstr "ID pour la MÜST, société taïwanaise de gestion des droits"
 #: DB:work_attribute_type/description:72
 msgctxt "work_attribute_type"
 msgid "ID for the Thai rights society MCT"
-msgstr ""
+msgstr "ID pour la MCT, société thaïlandaise de gestion des droits"
 
 #: DB:work_attribute_type/description:65
 msgctxt "work_attribute_type"
@@ -3548,7 +3548,7 @@ msgstr "ID IMRO"
 #: DB:work_attribute_type/name:70
 msgctxt "work_attribute_type"
 msgid "IPRS ID"
-msgstr ""
+msgstr "ID IPRS"
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
@@ -3668,7 +3668,7 @@ msgstr "Île est utilisé pour des îles et des atolls qui ne sont pas considér
 #: DB:work_attribute_type/name:69
 msgctxt "work_attribute_type"
 msgid "JACAP ID"
-msgstr ""
+msgstr "ID JACAP"
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
@@ -4334,12 +4334,12 @@ msgstr "ID MACP"
 #: DB:work_attribute_type/name:71
 msgctxt "work_attribute_type"
 msgid "MCSC ID"
-msgstr ""
+msgstr "ID MCSC"
 
 #: DB:work_attribute_type/name:72
 msgctxt "work_attribute_type"
 msgid "MCT ID"
-msgstr ""
+msgstr "ID MCT"
 
 #: DB:work_attribute_type_allowed_value/value:963
 msgctxt "work_attribute_type_allowed_value"
@@ -6376,7 +6376,7 @@ msgstr "Boîtier plastique-papier cartonné"
 #: DB:release_packaging/name:21
 msgctxt "release_packaging"
 msgid "SnapPack"
-msgstr ""
+msgstr "SnapPack"
 
 #: DB:work_attribute_type_allowed_value/value:771
 msgctxt "work_attribute_type_allowed_value"

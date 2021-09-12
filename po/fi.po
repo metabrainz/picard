@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-23 07:49+0200\n"
-"PO-Revision-Date: 2021-08-23 09:26+0000\n"
+"POT-Creation-Date: 2021-09-06 12:00+0200\n"
+"PO-Revision-Date: 2021-09-08 19:31+0000\n"
 "Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
 "Language-Team: Finnish (http://www.transifex.com/musicbrainz/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
@@ -200,8 +200,8 @@ msgstr "Liitännäinen %r"
 msgid "Error loading plugins list: %(error)s"
 msgstr "Virhe liitännäisluetteloa ladattaessa: %(error)s"
 
-#: picard/profile.py:41 picard/ui/options/metadata.py:62
-#: picard/ui/ui_options_metadata.py:103
+#: picard/profile.py:41 picard/ui/options/metadata.py:66
+#: picard/ui/ui_options_metadata.py:111
 msgid "Metadata"
 msgstr "Metatiedot"
 
@@ -215,202 +215,210 @@ msgstr "Julkaisuihin kuulumattomat kappaleet -nimi"
 
 #: picard/profile.py:45
 msgid "Translate artist names"
-msgstr "Käännä artistien nimet"
+msgstr "Muunna artistien nimet"
 
 #: picard/profile.py:46
 msgid "Translation locale"
-msgstr "Käännöksen lokaali"
+msgstr "Muunnoksen lokaali"
 
-#: picard/profile.py:47 picard/ui/ui_options_metadata.py:108
+#: picard/profile.py:47
+msgid "Translate artist names script exception"
+msgstr "Poikkeus artistien nimien muunnokseen"
+
+#: picard/profile.py:48
+msgid "Translation script exception"
+msgstr "Poikkeuksen lokaali"
+
+#: picard/profile.py:49 picard/ui/ui_options_metadata.py:117
 msgid "Use release relationships"
 msgstr "Käytä julkaisujen suhteiden tietoja"
 
-#: picard/profile.py:48 picard/ui/ui_options_metadata.py:109
+#: picard/profile.py:50 picard/ui/ui_options_metadata.py:118
 msgid "Use track relationships"
 msgstr "Käytä kappaleiden suhteiden tietoja"
 
-#: picard/profile.py:49 picard/ui/ui_options_metadata.py:107
+#: picard/profile.py:51 picard/ui/ui_options_metadata.py:116
 msgid "Convert Unicode punctuation characters to ASCII"
 msgstr "Muunna Unicode-välimerkit ASCII-merkeiksi"
 
-#: picard/profile.py:50 picard/ui/ui_options_metadata.py:105
+#: picard/profile.py:52 picard/ui/ui_options_metadata.py:114
 msgid "Use standardized artist names"
 msgstr "Käytä yhdenmukaistettuja artistien nimiä"
 
-#: picard/profile.py:51 picard/ui/ui_options_metadata.py:106
+#: picard/profile.py:53 picard/ui/ui_options_metadata.py:115
 msgid "Use standardized instrument and vocal credits"
 msgstr "Käytä yhdenmukaistettuja soittimien ja laulujen nimiä"
 
-#: picard/profile.py:52 picard/ui/ui_options_metadata.py:110
+#: picard/profile.py:54 picard/ui/ui_options_metadata.py:119
 msgid "Guess track number and title from filename if empty"
 msgstr "Arvaa kappaleen numero ja nimi tiedostonimestä jos tyhjä"
 
-#: picard/profile.py:57 picard/ui/options/tags.py:46
+#: picard/profile.py:59 picard/ui/options/tags.py:46
 msgid "Tags"
 msgstr "Tunnisteet"
 
-#: picard/profile.py:59
+#: picard/profile.py:61
 msgid "Don't write tags"
 msgstr "Älä kirjoita tunnisteita"
 
-#: picard/profile.py:60 picard/ui/ui_options_tags.py:68
+#: picard/profile.py:62 picard/ui/ui_options_tags.py:68
 msgid "Preserve timestamps of tagged files"
 msgstr "Säilytä tiedostojen aikaleima tallennettaessa"
 
-#: picard/profile.py:61 picard/ui/ui_options_tags.py:70
+#: picard/profile.py:63 picard/ui/ui_options_tags.py:70
 msgid "Clear existing tags"
 msgstr "Poista olemassa olevat tunnisteet"
 
-#: picard/profile.py:62 picard/ui/ui_options_tags.py:71
+#: picard/profile.py:64 picard/ui/ui_options_tags.py:71
 msgid "Keep embedded images when clearing tags"
 msgstr "Säilytä sisälletyt kansikuvat poistettaessa tunnisteet"
 
-#: picard/profile.py:63 picard/ui/ui_options_tags.py:72
+#: picard/profile.py:65 picard/ui/ui_options_tags.py:72
 msgid "Remove ID3 tags from FLAC files"
 msgstr "Poista ID3-tunnisteet FLAC-tiedostoista"
 
-#: picard/profile.py:64 picard/ui/ui_options_tags.py:73
+#: picard/profile.py:66 picard/ui/ui_options_tags.py:73
 msgid "Remove APEv2 tags from MP3 files"
 msgstr "Poista APEv2-tunnisteet MP3-tiedostoista"
 
-#: picard/profile.py:65
+#: picard/profile.py:67
 msgid "Preserved tags list"
 msgstr "Säilytettävien tunnisteiden lista"
 
-#: picard/profile.py:66
+#: picard/profile.py:68
 msgid "Save APEv2 tags to AAC"
 msgstr "Tallenna APEv2-tunnisteet AAC-tiedostoihin"
 
-#: picard/profile.py:67 picard/ui/ui_options_tags_compatibility_aac.py:49
+#: picard/profile.py:69 picard/ui/ui_options_tags_compatibility_aac.py:49
 msgid "Remove APEv2 tags from AAC files"
 msgstr "Poista APEv2-tunnisteet AAC-tiedostoista"
 
-#: picard/profile.py:68
+#: picard/profile.py:70
 msgid "Save APEv2 tags to AC3"
 msgstr "Tallenna APEv2-tunnisteet AC3-tiedostoihin"
 
-#: picard/profile.py:69 picard/ui/ui_options_tags_compatibility_ac3.py:49
+#: picard/profile.py:71 picard/ui/ui_options_tags_compatibility_ac3.py:49
 msgid "Remove APEv2 tags from AC3 files"
 msgstr "Poista APEv2-tunnisteet AC3-tiedostoista"
 
-#: picard/profile.py:70
+#: picard/profile.py:72
 msgid "Write ID3v1 tags"
 msgstr "Kirjoita ID3v1-tunnisteet"
 
-#: picard/profile.py:71
+#: picard/profile.py:73
 msgid "Write ID3v2.3 tags"
 msgstr "Kirjoita ID3v2.3-tunnisteet"
 
-#: picard/profile.py:72 picard/ui/ui_options_tags_compatibility_id3.py:119
+#: picard/profile.py:74 picard/ui/ui_options_tags_compatibility_id3.py:119
 msgid "ID3v2 text encoding"
 msgstr "ID3v2-merkkikoodaus"
 
-#: picard/profile.py:73
+#: picard/profile.py:75
 msgid "ID3v2.3 join character"
 msgstr "ID3v2.3 yhdistämismerkki"
 
-#: picard/profile.py:74 picard/ui/ui_options_tags_compatibility_id3.py:125
+#: picard/profile.py:76 picard/ui/ui_options_tags_compatibility_id3.py:125
 msgid "Save iTunes compatible grouping and work"
 msgstr "Tallenna ryhmittely ja teos iTunes-yhteensopivana"
 
-#: picard/profile.py:75
+#: picard/profile.py:77
 msgid "Write RIFF INFO tags to WAVE files"
 msgstr "Kirjoita RIFF INFO -tunnisteet WAVE-tiedostoihin"
 
-#: picard/profile.py:76 picard/ui/ui_options_tags_compatibility_wave.py:59
+#: picard/profile.py:78 picard/ui/ui_options_tags_compatibility_wave.py:59
 msgid "Remove existing RIFF INFO tags from WAVE files"
 msgstr "Poista olemassa olevat RIFF INFO -tunnisteet WAVE-tiedostoista"
 
-#: picard/profile.py:77 picard/ui/ui_options_tags_compatibility_wave.py:60
+#: picard/profile.py:79 picard/ui/ui_options_tags_compatibility_wave.py:60
 msgid "RIFF INFO text encoding"
 msgstr "RIFF INFO tekstin merkistö"
 
-#: picard/profile.py:82 picard/ui/options/cover.py:50
+#: picard/profile.py:84 picard/ui/options/cover.py:50
 msgid "Cover Art"
 msgstr "Kansitaide"
 
-#: picard/profile.py:84 picard/ui/ui_options_cover.py:95
+#: picard/profile.py:86 picard/ui/ui_options_cover.py:95
 msgid "Embed cover images into tags"
 msgstr "Sisällytä kansikuvat tunnisteisiin"
 
-#: picard/profile.py:85 picard/ui/ui_options_cover.py:96
+#: picard/profile.py:87 picard/ui/ui_options_cover.py:96
 msgid "Embed only a single front image"
 msgstr "Sisällytä vain yksi etukannen kuva"
 
-#: picard/profile.py:86 picard/ui/ui_options_cover.py:97
+#: picard/profile.py:88 picard/ui/ui_options_cover.py:97
 msgid "Save cover images as separate files"
 msgstr "Tallenna kansikuvat erillisinä tiedostoina"
 
-#: picard/profile.py:87
+#: picard/profile.py:89
 msgid "File name for images"
 msgstr "Tiedostonimi kuville"
 
-#: picard/profile.py:88
+#: picard/profile.py:90
 msgid "Overwrite existing image files"
 msgstr "Kirjoita olemassa olevien kuvatiedostojen päälle"
 
-#: picard/profile.py:89 picard/ui/ui_options_cover.py:100
+#: picard/profile.py:91 picard/ui/ui_options_cover.py:100
 msgid "Save only a single front image as separate file"
 msgstr "Tallenna vain yksi etukannen kuva erillisenä tiedostona"
 
-#: picard/profile.py:90 picard/ui/ui_options_cover.py:101
+#: picard/profile.py:92 picard/ui/ui_options_cover.py:101
 msgid ""
 "Always use the primary image type as the file name for non-front images"
 msgstr "Käytä aina ensisijaisen kuvan kuvatyyppiä tiedostonimenä muille kuin etukannen kuville"
 
-#: picard/profile.py:91
+#: picard/profile.py:93
 msgid "Cover art providers"
 msgstr "Kansitaidepalvelut"
 
-#: picard/profile.py:96 picard/ui/options/renaming.py:76
+#: picard/profile.py:98 picard/ui/options/renaming.py:76
 msgid "File Naming"
 msgstr "Nimeämisasetukset"
 
-#: picard/profile.py:98 picard/ui/ui_options_renaming.py:161
+#: picard/profile.py:100 picard/ui/ui_options_renaming.py:161
 msgid "Windows compatibility"
 msgstr "Windows-yhteensopivuus"
 
-#: picard/profile.py:99 picard/ui/ui_options_renaming.py:160
+#: picard/profile.py:101 picard/ui/ui_options_renaming.py:160
 msgid "Replace non-ASCII characters"
 msgstr "Korvaa ei-ASCII merkit"
 
-#: picard/profile.py:100
+#: picard/profile.py:102
 msgid "Rename files"
 msgstr "Nimeä tiedostot"
 
-#: picard/profile.py:101
+#: picard/profile.py:103
 msgid "Move files"
 msgstr "Siirrä tiedostot"
 
-#: picard/profile.py:102
+#: picard/profile.py:104
 msgid "Destination directory"
 msgstr "Kohdehakemisto"
 
-#: picard/profile.py:103
+#: picard/profile.py:105
 msgid "Move additional files"
 msgstr "Lisäksi siirrettävät tiedostot"
 
-#: picard/profile.py:104
+#: picard/profile.py:106
 msgid "Additional file patterns"
 msgstr "Lisätiedostojen lauseke"
 
-#: picard/profile.py:105 picard/ui/ui_options_renaming.py:158
+#: picard/profile.py:107 picard/ui/ui_options_renaming.py:158
 msgid "Delete empty directories"
 msgstr "Poista tyhjät hakemistot"
 
-#: picard/profile.py:106
+#: picard/profile.py:108
 msgid "Selected file naming script"
 msgstr "Valittu tiedostonnimeämiskomentosarja"
 
-#: picard/profile.py:111 picard/ui/options/scripting.py:99
+#: picard/profile.py:113 picard/ui/options/scripting.py:99
 msgid "Scripting"
 msgstr "Komentosarjat"
 
-#: picard/profile.py:113
+#: picard/profile.py:115
 msgid "Enable tagger scripts"
 msgstr "Käytä tunnisteiden komentosarjoja"
 
-#: picard/profile.py:114
+#: picard/profile.py:116
 msgid "Tagger scripts"
 msgstr "Tunnisteiden komentosarjat"
 
@@ -486,17 +494,17 @@ msgstr "[äänitettä %s ei voitu ladata]"
 msgid "AcoustID lookup network error for '%(filename)s'!"
 msgstr "Verkkovirhe AcoustID-haussa tiedostolle '%(filename)s'!"
 
-#: picard/acoustid/__init__.py:119
+#: picard/acoustid/__init__.py:124
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
 msgstr "AcoustID-haku epäonnistui tiedostolle '%(filename)s'!"
 
-#: picard/acoustid/__init__.py:144
+#: picard/acoustid/__init__.py:149
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
 msgstr "AcoustID-haku ei palauttanut tuloksia tiedostolle '%(filename)s'"
 
-#: picard/acoustid/__init__.py:155
+#: picard/acoustid/__init__.py:160
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
 msgstr "Haetaan äänitunnistetta tiedostolle '%(filename)s' ..."
@@ -552,37 +560,38 @@ msgstr "Lisää tiedosto äänitteenä"
 msgid "Add file as recording..."
 msgstr "Lisää tiedosto äänitteenä..."
 
-#: picard/const/__init__.py:166
+#: picard/const/__init__.py:170
 msgid "Stable releases only"
 msgstr "Vain vakaat versiot"
 
-#: picard/const/__init__.py:172
+#: picard/const/__init__.py:176
 msgid "Stable and Beta releases"
 msgstr "Vakaat ja beta-versiot"
 
-#: picard/const/__init__.py:178
+#: picard/const/__init__.py:182
 msgid "Stable, Beta and Dev releases"
 msgstr "Vakaat, beta- ja kehitys-versiot"
 
-#: picard/const/__init__.py:193
+#: picard/const/__init__.py:197
 #, python-format
 msgid "My script %d"
 msgstr "Oma komentosarja %d"
 
-#: picard/const/__init__.py:194
+#: picard/const/__init__.py:198
 msgid "My script"
 msgstr "Oma komentosarja"
 
-#: picard/const/__init__.py:196
+#: picard/const/__init__.py:200
 #, python-format
 msgid "My profile %d"
 msgstr "Oma profiili %d"
 
-#: picard/const/__init__.py:197
+#: picard/const/__init__.py:201
 msgid "My profile"
 msgstr "Oma profiili"
 
 #: picard/const/languages.py:29 picard/const/locales.py:41
+#: picard/const/scripts.py:27
 msgid "Arabic"
 msgstr "arabia"
 
@@ -607,7 +616,7 @@ msgid "German (Switzerland)"
 msgstr "saksa (Sveitsi)"
 
 #: picard/const/languages.py:38 picard/const/locales.py:189
-#: picard/const/locales.py:190
+#: picard/const/locales.py:190 picard/const/scripts.py:24
 msgid "Greek"
 msgstr "kreikka"
 
@@ -652,6 +661,7 @@ msgid "Galician"
 msgstr "galicia"
 
 #: picard/const/languages.py:53 picard/const/locales.py:209
+#: picard/const/scripts.py:28
 msgid "Hebrew"
 msgstr "heprea"
 
@@ -979,7 +989,7 @@ msgstr "burma (Myanmar (Burma))"
 msgid "Catalan (Spain)"
 msgstr "katalaani (Espanja)"
 
-#: picard/const/locales.py:89
+#: picard/const/locales.py:89 picard/const/scripts.py:29
 msgid "Chinese"
 msgstr "kiina"
 
@@ -2215,7 +2225,7 @@ msgstr "telugu"
 msgid "Telugu (India)"
 msgstr "telugu (Intia)"
 
-#: picard/const/locales.py:436
+#: picard/const/locales.py:436 picard/const/scripts.py:33
 msgid "Thai"
 msgstr "thai"
 
@@ -2431,6 +2441,26 @@ msgstr "zulu"
 msgid "Zulu (South Africa)"
 msgstr "zulu (Etelä-Afrikka)"
 
+#: picard/const/scripts.py:25
+msgid "Cyrillic"
+msgstr "kyrillinen"
+
+#: picard/const/scripts.py:26
+msgid "Latin"
+msgstr "latina"
+
+#: picard/const/scripts.py:30
+msgid "Hangul"
+msgstr "hangul"
+
+#: picard/const/scripts.py:31
+msgid "Hiragana"
+msgstr "hiragana"
+
+#: picard/const/scripts.py:32
+msgid "Katakana"
+msgstr "katakana"
+
 #: picard/coverart/__init__.py:107
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
@@ -2501,7 +2531,7 @@ msgstr "&Hylkää kaikki"
 msgid "C&lear all"
 msgstr "&Tyhjennä kaikki"
 
-#: picard/coverart/providers/caa.py:326 picard/ui/options/dialog.py:126
+#: picard/coverart/providers/caa.py:326 picard/ui/options/dialog.py:127
 msgid "Restore &Defaults"
 msgstr "Palauta oletus&asetuksiin"
 
@@ -3775,12 +3805,12 @@ msgid_plural "%i different images among tracks"
 msgstr[0] "%i kuva ei kaikissa kappaleissa"
 msgstr[1] "%i erilaista kuvaa kappaleille"
 
-#: picard/ui/itemviews.py:154 picard/util/tags.py:115
+#: picard/ui/itemviews.py:154 picard/util/tags.py:120
 msgid "Title"
 msgstr "Nimi"
 
 #: picard/ui/itemviews.py:155 picard/ui/searchdialog/track.py:64
-#: picard/util/tags.py:69
+#: picard/util/tags.py:70
 msgid "Length"
 msgstr "Kesto"
 
@@ -3808,11 +3838,11 @@ msgstr "Levyn numero"
 msgid "Catalog No."
 msgstr "Luettelonumero"
 
-#: picard/ui/itemviews.py:165 picard/util/tags.py:73
+#: picard/ui/itemviews.py:165 picard/util/tags.py:74
 msgid "Media"
 msgstr "Media"
 
-#: picard/ui/itemviews.py:166 picard/util/tags.py:63
+#: picard/ui/itemviews.py:166 picard/util/tags.py:64
 msgid "Genre"
 msgstr "Tyylilaji"
 
@@ -3824,7 +3854,7 @@ msgstr "Äänitunnisteen tila"
 msgid "AcousticBrainz status"
 msgstr "AcousticBrainzin tila"
 
-#: picard/ui/itemviews.py:170 picard/util/tags.py:93
+#: picard/ui/itemviews.py:170 picard/util/tags.py:94
 msgid "Original Release Date"
 msgstr "Alkuperäinen julkaisupäiväys"
 
@@ -5109,7 +5139,7 @@ msgstr "Äänettömät raidat"
 msgid "Tags to ignore for comparison:"
 msgstr "Tunnisteet jotka ohitetaan vertailtaessa:"
 
-#: picard/ui/options/dialog.py:202
+#: picard/ui/options/dialog.py:203
 #: picard/ui/ui_options_attached_profiles.py:34
 msgid "Profiles Attached to Options"
 msgstr "Asetuksiin liitetyt profiilit"
@@ -5361,6 +5391,14 @@ msgstr "Värit"
 msgid "Show the below tags above all other tags in the metadata view"
 msgstr "Näytä seuraavat tunnisteet ensimmäisenä metatietonäkymässä"
 
+#: picard/ui/ui_options_maintenance.py:64
+msgid "Remove selected options"
+msgstr "Poista valitut asetukset"
+
+#: picard/ui/ui_options_maintenance.py:65
+msgid "Select all"
+msgstr "Valitse kaikki"
+
 #: picard/ui/ui_options_matching.py:69
 msgid "Thresholds"
 msgstr "Kynnysarvot"
@@ -5377,24 +5415,28 @@ msgstr "Pienin samankaltaisuus tiedostojen hakuihin:"
 msgid "Minimal similarity for cluster lookups:"
 msgstr "Pienin samankaltaisuus ryhmien hakuihin:"
 
-#: picard/ui/ui_options_metadata.py:104
+#: picard/ui/ui_options_metadata.py:112
 msgid "Translate artist names to this locale where possible:"
 msgstr "Muunna artistien nimet tämän alueen asetuksiin mikäli mahdollista:"
 
-#: picard/ui/ui_options_metadata.py:111
+#: picard/ui/ui_options_metadata.py:113
+msgid "Ignore artist name translation for this script:"
+msgstr "Ohita artistien nimen muunnos tälle merkistölle:"
+
+#: picard/ui/ui_options_metadata.py:120
 msgid "Custom Fields"
 msgstr "Mukautettavat tiedot"
 
-#: picard/ui/ui_options_metadata.py:112
+#: picard/ui/ui_options_metadata.py:121
 msgid "Various artists:"
 msgstr "Useita artisteja:"
 
-#: picard/ui/ui_options_metadata.py:113
+#: picard/ui/ui_options_metadata.py:122
 msgid "Non-album tracks:"
 msgstr "Julkaisuihin kuulumattomat kappaleet:"
 
-#: picard/ui/options/interface.py:177 picard/ui/ui_options_metadata.py:114
-#: picard/ui/ui_options_metadata.py:115
+#: picard/ui/options/interface.py:177 picard/ui/ui_options_metadata.py:123
+#: picard/ui/ui_options_metadata.py:124
 #: picard/ui/ui_provider_options_local.py:52
 msgid "Default"
 msgstr "Oletus"
@@ -5847,20 +5889,29 @@ msgstr "&Sulje"
 msgid "Regex Error"
 msgstr "Regex virhe"
 
-#: picard/ui/options/acousticbrainz.py:58
+#: picard/ui/options/acousticbrainz.py:55
 msgid "AcousticBrainz"
 msgstr "AcousticBrainz"
 
-#: picard/ui/options/acousticbrainz.py:138
-msgid "Extractor version: "
-msgstr "Ominaisuuksien otto-ohjelman versio: "
+#: picard/ui/options/acousticbrainz.py:77
+msgid "Open AcousticBrainz website in browser to download extractor binary"
+msgstr "Avaa Acousticbrainzin verkkosivu selaimeen ladataksesi otto-ohjelman"
 
-#: picard/ui/options/acousticbrainz.py:150
-#: picard/ui/options/acousticbrainz.py:154
+#: picard/ui/options/acousticbrainz.py:122
+msgid "Path to streaming_extractor_music(.exe)"
+msgstr "Polku ohjelmaan streaming_extractor_music(.exe)"
+
+#: picard/ui/options/acousticbrainz.py:140
+#, python-format
+msgid "Extractor version: %s"
+msgstr "Otto-ohjelman versio: %s"
+
+#: picard/ui/options/acousticbrainz.py:152
+#: picard/ui/options/acousticbrainz.py:156
 msgid "Please select a valid extractor executable."
 msgstr "Valitse kelvollinen suoritustiedosto otto-ohjelmalle."
 
-#: picard/ui/options/acousticbrainz.py:154
+#: picard/ui/options/acousticbrainz.py:156
 msgid "Invalid extractor executable"
 msgstr "Epäkelpo suoritustiedosto otto-ohjelmalle"
 
@@ -5868,80 +5919,80 @@ msgstr "Epäkelpo suoritustiedosto otto-ohjelmalle"
 msgid "Advanced"
 msgstr "Lisäasetukset"
 
-#: picard/ui/options/dialog.py:124
+#: picard/ui/options/dialog.py:125
 msgid "&Restore all Defaults"
 msgstr "Palauta &kaikki oletusasetuksiin"
 
-#: picard/ui/options/dialog.py:125
+#: picard/ui/options/dialog.py:126
 msgid "Reset all of Picard's settings"
 msgstr "Nollaa kaikki Picardin asetukset"
 
-#: picard/ui/options/dialog.py:127
+#: picard/ui/options/dialog.py:128
 msgid "Reset all settings for current option page"
 msgstr "Nollaa kaikki asetukset tälle asetussivulle"
 
-#: picard/ui/options/dialog.py:130
+#: picard/ui/options/dialog.py:131
 msgid "Make It So!"
 msgstr "&Tallenna asetukset!"
 
-#: picard/ui/options/dialog.py:143 picard/ui/options/dialog.py:431
-#: picard/ui/options/dialog.py:457
+#: picard/ui/options/dialog.py:144 picard/ui/options/dialog.py:432
+#: picard/ui/options/dialog.py:458
 msgid "Attached Profiles"
 msgstr "Liitetyt profiilit"
 
-#: picard/ui/options/dialog.py:144
+#: picard/ui/options/dialog.py:145
 msgid "Show which profiles are attached to the options on this page"
 msgstr "Näytä asetuksiin liitetyt profiilit tällä sivulla"
 
-#: picard/ui/options/dialog.py:212
+#: picard/ui/options/dialog.py:213
 msgid ""
 "The options on this page are not currently available to be managed using "
 "profiles."
 msgstr "Tällä sivulla olevia asetuksia ei voida tällä hetkellä hallinnoida profiilein."
 
-#: picard/ui/options/dialog.py:233
+#: picard/ui/options/dialog.py:234
 msgid "Unknown profile"
 msgstr "Tuntematon profiili"
 
-#: picard/ui/options/dialog.py:282
+#: picard/ui/options/dialog.py:283
 #, python-format
 msgid "This option will be saved to profile: %s"
 msgstr "Tämä asetus tallennetaan profiiliin %s"
 
-#: picard/ui/options/dialog.py:372
+#: picard/ui/options/dialog.py:373
 msgid "Unexpected error"
 msgstr "Odottamaton virhe"
 
-#: picard/ui/options/dialog.py:411
+#: picard/ui/options/dialog.py:412
 msgid "You are about to reset your options for this page."
 msgstr "Olet nollaamassa tämän sivun asetukset."
 
-#: picard/ui/options/dialog.py:415
+#: picard/ui/options/dialog.py:416
 msgid "Warning! This will reset all of your settings."
 msgstr "Varoitus! Tämä nollaa kaikki asetukset."
 
-#: picard/ui/options/dialog.py:422
+#: picard/ui/options/dialog.py:423
 msgid "Confirm Reset"
 msgstr "Vahvista nollaus"
 
-#: picard/ui/options/dialog.py:423
+#: picard/ui/options/dialog.py:424
 msgid "Are you sure?"
 msgstr "Oletko aivan varma?"
 
-#: picard/ui/options/dialog.py:457
+#: picard/ui/options/dialog.py:458
 msgid "Option Setting"
 msgstr "Asetettu asetus"
 
-#: picard/ui/options/dialog.py:464
+#: picard/ui/options/dialog.py:465
 #, python-format
 msgid "Profiles Attached to Options in %s Section"
 msgstr "Asetuksiin liitetyt profiilit %s osiossa"
 
-#: picard/ui/options/dialog.py:474
+#: picard/ui/options/dialog.py:475
 msgid " [Enabled]"
 msgstr " [Valittu]"
 
-#: picard/ui/options/dialog.py:475 picard/ui/options/profiles.py:277
+#: picard/ui/options/dialog.py:476 picard/ui/options/profiles.py:277
 msgid "None"
 msgstr "Ei mitään"
 
@@ -6143,6 +6194,46 @@ msgstr "Olet vaihtanut käyttöliittymän värejä. Käynnistä Picard uudelleen
 msgid "Top Tags"
 msgstr "Suosituimmat tunnisteet"
 
+#: picard/ui/options/maintenance.py:55
+msgid "Maintenance"
+msgstr "Huoltotoimenpiteet"
+
+#: picard/ui/options/maintenance.py:67
+msgid ""
+"This allows you to remove unused option settings from the configuration INI file.\n"
+"\n"
+"Settings that are found in the configuration file that do not appear on any option settings page will be listed below. If your configuration file does not contain any unused option settings, then the list will be empty and the removal checkbox will be disabled.\n"
+"\n"
+"Note that unused option settings could come from plugins that have been uninstalled, so please be careful to not remove settings that you may want to use later when the plugin is reinstalled. Options belonging to plugins that are installed but currently disabled will not be listed for possible removal.\n"
+"\n"
+"To remove one or more settings, first enable the removal by checking the \"Remove selected options\" box. You can then select the settings to remove by checking the box next to the setting. When you choose \"Make It So!\" to save your option settings, the selected items will be removed."
+msgstr "Tämän avulla voit poistaa käyttämättömia asetuksia INI-asetustiedostosta.\n\nAsetukset, jotka ovat asetustiedostossa, ja joita ei löydy yhdeltäkään asetussivulla listataan tänne. Mikäli asetustiedostossa ei ole yhtään käyttämätöntä asetusta, niin lista on tyhjä ja poistopainike pois käytöstä.\n\nHuomioi, että käyttämättömät asetukset voivat olla peräisin poistetuista liitännäisistä, joten älä poista asetusta jonka todennäköisesti tarvitset jos asennat liitännäisen uudelleen. Asetukset liitännäisistä jotka ovat asennettuja, mutta poistettu käytöstä, ei näytetä tässä listassa.\n\nPoistaaksesi asetuksen tai useamman, merkitse \"Poista valitut asetukset\" valintaruutu. Sen jälkeen voit merkitä valintaruuduilla poistettavat asetukset. Kun valitset \"Tallenna asetukset!\" poistetaan myös tässä valitut asetukset."
+
+#: picard/ui/options/maintenance.py:82
+msgid "Option"
+msgstr "Asetus"
+
+#: picard/ui/options/maintenance.py:82
+msgid "Value"
+msgstr "Arvo"
+
+#: picard/ui/options/maintenance.py:103
+#, python-format
+msgid ""
+"The configuration file currently contains %d option settings, %d which are "
+"unused."
+msgstr "Asetustiedostossa on %d asetusta, joista %d on käyttämättömiä."
+
+#: picard/ui/options/maintenance.py:156
+#: picard/ui/widgets/profilelistwidget.py:79
+#: picard/ui/widgets/scriptlistwidget.py:82
+msgid "Confirm Remove"
+msgstr "Vahvista poistaminen"
+
+#: picard/ui/options/maintenance.py:157
+msgid "Are you sure you want to remove the selected option settings?"
+msgstr "Haluatko varmasti poistaa valitut asetustiedoston asetukset?"
+
 #: picard/ui/options/matching.py:40
 msgid "Matching"
 msgstr "Vastaavuus"
@@ -6222,7 +6313,7 @@ msgstr "Uusi versio saatavilla"
 msgid "Authors"
 msgstr "Tekijät"
 
-#: picard/ui/options/plugins.py:604 picard/util/tags.py:70
+#: picard/ui/options/plugins.py:604 picard/util/tags.py:71
 msgid "License"
 msgstr "Lisenssi"
 
@@ -6403,7 +6494,7 @@ msgstr "Lataa Picardiin"
 msgid "Album Search Results"
 msgstr "Julkaisuhaun tulokset"
 
-#: picard/ui/searchdialog/album.py:160 picard/util/tags.py:68
+#: picard/ui/searchdialog/album.py:160 picard/util/tags.py:69
 msgid "Language"
 msgstr "Kieli"
 
@@ -6471,11 +6562,6 @@ msgstr "Poista profiili"
 #: picard/ui/widgets/profilelistwidget.py:78
 msgid "Are you sure you want to remove this profile?"
 msgstr "Haluatko varmasti poistaa tämän profiilin?"
-
-#: picard/ui/widgets/profilelistwidget.py:79
-#: picard/ui/widgets/scriptlistwidget.py:82
-msgid "Confirm Remove"
-msgstr "Vahvista poistaminen"
 
 #: picard/ui/widgets/scriptdocumentation.py:107
 msgid "Open Scripting Documentation in your browser"
@@ -6703,215 +6789,235 @@ msgstr "Enkooderin asetukset"
 msgid "Engineer"
 msgstr "Insinööri"
 
-#: picard/util/tags.py:64
+#: picard/util/tags.py:63
+msgid "Gapless Playback"
+msgstr "Tauoton toisto"
+
+#: picard/util/tags.py:65
 msgid "Grouping"
 msgstr "Ryhmittely"
 
-#: picard/util/tags.py:65
+#: picard/util/tags.py:66
 msgid "ISRC"
 msgstr "ISRC"
 
-#: picard/util/tags.py:66
+#: picard/util/tags.py:67
 msgid "Key"
 msgstr "Sävellaji"
 
-#: picard/util/tags.py:67
+#: picard/util/tags.py:68
 msgid "Record Label"
 msgstr "Levymerkki"
 
-#: picard/util/tags.py:71
+#: picard/util/tags.py:72
 msgid "Lyricist"
 msgstr "Sanoittaja"
 
-#: picard/util/tags.py:72
+#: picard/util/tags.py:73
 msgid "Lyrics"
 msgstr "Sanoitus"
 
-#: picard/util/tags.py:74
+#: picard/util/tags.py:75
 msgid "Mixer"
 msgstr "Miksaaja"
 
-#: picard/util/tags.py:75
+#: picard/util/tags.py:76
 msgid "Mood"
 msgstr "Mieliala"
 
-#: picard/util/tags.py:76
+#: picard/util/tags.py:77
 msgid "Movement"
 msgstr "Osa"
 
-#: picard/util/tags.py:77
+#: picard/util/tags.py:78
 msgid "Movement Number"
 msgstr "Osan numero"
 
-#: picard/util/tags.py:78
+#: picard/util/tags.py:79
 msgid "Movement Count"
 msgstr "Osien määrä"
 
-#: picard/util/tags.py:79
+#: picard/util/tags.py:80
 msgid "MusicBrainz Release Artist Id"
 msgstr "MusicBrainz julkaisuartistin tunniste"
 
-#: picard/util/tags.py:80
+#: picard/util/tags.py:81
 msgid "MusicBrainz Release Id"
 msgstr "MusicBrainz julkaisun tunniste"
 
-#: picard/util/tags.py:81
+#: picard/util/tags.py:82
 msgid "MusicBrainz Artist Id"
 msgstr "MusicBrainz artistin tunniste"
 
-#: picard/util/tags.py:82
+#: picard/util/tags.py:83
 msgid "MusicBrainz Disc Id"
 msgstr "MusicBrainz levyn tunniste"
 
-#: picard/util/tags.py:83
+#: picard/util/tags.py:84
 msgid "MusicBrainz Original Release Id"
 msgstr "MusicBrainz alkuperäisen julkaisun tunniste"
 
-#: picard/util/tags.py:84
+#: picard/util/tags.py:85
 msgid "MusicBrainz Original Artist Id"
 msgstr "MusicBrainz alkuperäisen artistin tunniste"
 
-#: picard/util/tags.py:85
+#: picard/util/tags.py:86
 msgid "MusicBrainz Recording Id"
 msgstr "MusicBrainz äänitteen tunniste"
 
-#: picard/util/tags.py:86
+#: picard/util/tags.py:87
 msgid "MusicBrainz Release Group Id"
 msgstr "MusicBrainz julkaisuryhmän tunniste"
 
-#: picard/util/tags.py:87
+#: picard/util/tags.py:88
 msgid "MusicBrainz Track Id"
 msgstr "MusicBrainz kappaleen tunniste"
 
-#: picard/util/tags.py:88
+#: picard/util/tags.py:89
 msgid "MusicBrainz Work Id"
 msgstr "MusicBrainz teoksen tunniste"
 
-#: picard/util/tags.py:89
+#: picard/util/tags.py:90
 msgid "MusicIP Fingerprint"
 msgstr "MusicIP-äänitunniste"
 
-#: picard/util/tags.py:90
+#: picard/util/tags.py:91
 msgid "MusicIP PUID"
 msgstr "MusicIP PUID"
 
-#: picard/util/tags.py:91
+#: picard/util/tags.py:92
 msgid "Original Album"
 msgstr "Alkuperäinen julkaisu"
 
-#: picard/util/tags.py:92
+#: picard/util/tags.py:93
 msgid "Original Artist"
 msgstr "Alkuperäinen artisti"
 
-#: picard/util/tags.py:94
+#: picard/util/tags.py:95
 msgid "Original Filename"
 msgstr "Alkuperäinen tiedostonimi"
 
-#: picard/util/tags.py:95
+#: picard/util/tags.py:96
 msgid "Original Year"
 msgstr "Alkuperäinen julkaisuvuosi"
 
-#: picard/util/tags.py:96
+#: picard/util/tags.py:97
 msgid "Performer"
 msgstr "Esittäjä"
 
-#: picard/util/tags.py:97
+#: picard/util/tags.py:98
+msgid "Podcast"
+msgstr "Podcast"
+
+#: picard/util/tags.py:99
+msgid "Podcast URL"
+msgstr "Podcastin osoite"
+
+#: picard/util/tags.py:100
 msgid "Producer"
 msgstr "Tuottaja"
 
-#: picard/util/tags.py:98
+#: picard/util/tags.py:101
 msgid "R128 Album Gain"
 msgstr "R128 julkaisun vahvistus"
 
-#: picard/util/tags.py:99
+#: picard/util/tags.py:102
 msgid "R128 Track Gain"
 msgstr "R128 kappaleen vahvistus"
 
-#: picard/util/tags.py:100
+#: picard/util/tags.py:103
 msgid "Rating"
 msgstr "Arvostelu"
 
-#: picard/util/tags.py:101
+#: picard/util/tags.py:104
 msgid "Release Country"
 msgstr "Julkaisumaa"
 
-#: picard/util/tags.py:102
+#: picard/util/tags.py:105
 msgid "Release Status"
 msgstr "Julkaisun tila"
 
-#: picard/util/tags.py:103
+#: picard/util/tags.py:106
 msgid "Release Type"
 msgstr "Julkaisumuoto"
 
-#: picard/util/tags.py:104
+#: picard/util/tags.py:107
 msgid "Remixer"
 msgstr "Remiksaaja"
 
-#: picard/util/tags.py:105
+#: picard/util/tags.py:108
 msgid "ReplayGain Album Gain"
 msgstr "ReplayGain julkaisun vahvistus"
 
-#: picard/util/tags.py:106
+#: picard/util/tags.py:109
 msgid "ReplayGain Album Peak"
 msgstr "ReplayGain julkaisun huippu"
 
-#: picard/util/tags.py:107
+#: picard/util/tags.py:110
 msgid "ReplayGain Album Range"
 msgstr "ReplayGain julkaisun vaihtelu"
 
-#: picard/util/tags.py:108
+#: picard/util/tags.py:111
 msgid "ReplayGain Reference Loudness"
 msgstr "ReplayGain viiteäänenvoimakkuus"
 
-#: picard/util/tags.py:109
+#: picard/util/tags.py:112
 msgid "ReplayGain Track Gain"
 msgstr "ReplayGain kappaleen vahvistus"
 
-#: picard/util/tags.py:110
+#: picard/util/tags.py:113
 msgid "ReplayGain Track Peak"
 msgstr "ReplayGain kappaleen huippu"
 
-#: picard/util/tags.py:111
+#: picard/util/tags.py:114
 msgid "ReplayGain Track Range"
 msgstr "ReplayGain kappaleen vaihtelu"
 
-#: picard/util/tags.py:112
+#: picard/util/tags.py:115
 msgid "Script"
 msgstr "Kirjoitusjärjestelmä"
 
-#: picard/util/tags.py:113
+#: picard/util/tags.py:116
+msgid "Show Name"
+msgstr "Esityksen nimi"
+
+#: picard/util/tags.py:117
+msgid "Show Name Sort Order"
+msgstr "Esityksen nimen lajittelujärjestys"
+
+#: picard/util/tags.py:118
 msgid "Show Work & Movement"
 msgstr "Näytä teokset ja osat"
 
-#: picard/util/tags.py:114
+#: picard/util/tags.py:119
 msgid "Subtitle"
 msgstr "Alaotsikko"
 
-#: picard/util/tags.py:116
+#: picard/util/tags.py:121
 msgid "Title Sort Order"
 msgstr "Nimen lajittelujärjestys"
 
-#: picard/util/tags.py:117
+#: picard/util/tags.py:122
 msgid "Total Discs"
 msgstr "Levymäärä"
 
-#: picard/util/tags.py:118
+#: picard/util/tags.py:123
 msgid "Total Tracks"
 msgstr "Kappalemäärä"
 
-#: picard/util/tags.py:119
+#: picard/util/tags.py:124
 msgid "Track Number"
 msgstr "Kappalenumero"
 
-#: picard/util/tags.py:120
+#: picard/util/tags.py:125
 msgid "Artist Website"
 msgstr "Artistin verkkosivu"
 
-#: picard/util/tags.py:121
+#: picard/util/tags.py:126
 msgid "Work"
 msgstr "Teos"
 
-#: picard/util/tags.py:122
+#: picard/util/tags.py:127
 msgid "Writer"
 msgstr "Tekijä"
 
