@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: picard 2.7.0.dev3\n"
+"Project-Id-Version: picard 2.7.0.dev5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-09-06 12:00+0200\n"
+"POT-Creation-Date: 2021-09-12 16:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -103,11 +103,11 @@ msgstr ""
 msgid "Error loading collections: %(error)s"
 msgstr ""
 
-#: picard/config_upgrade.py:80 picard/config_upgrade.py:93
+#: picard/config_upgrade.py:81 picard/config_upgrade.py:94
 msgid "Various Artists file naming scheme removal"
 msgstr ""
 
-#: picard/config_upgrade.py:81
+#: picard/config_upgrade.py:82
 msgid ""
 "The separate file naming scheme for various artists albums has been "
 "removed in this version of Picard.\n"
@@ -115,7 +115,7 @@ msgid ""
 " artist albums."
 msgstr ""
 
-#: picard/config_upgrade.py:94
+#: picard/config_upgrade.py:95
 msgid ""
 "The separate file naming scheme for various artists albums has been "
 "removed in this version of Picard.\n"
@@ -125,16 +125,16 @@ msgid ""
 "single artist albums?"
 msgstr ""
 
-#: picard/config_upgrade.py:101
+#: picard/config_upgrade.py:102
 msgid "Merge"
 msgstr ""
 
-#: picard/config_upgrade.py:102 picard/ui/metadatabox.py:421
+#: picard/config_upgrade.py:103 picard/ui/metadatabox.py:421
 #: picard/ui/options/interface.py:112 picard/ui/ui_options_interface.py:169
 msgid "Remove"
 msgstr ""
 
-#: picard/config_upgrade.py:413
+#: picard/config_upgrade.py:414
 msgid "Primary file naming script"
 msgstr ""
 
@@ -193,8 +193,8 @@ msgstr ""
 msgid "Error loading plugins list: %(error)s"
 msgstr ""
 
-#: picard/profile.py:41 picard/ui/options/metadata.py:66
-#: picard/ui/ui_options_metadata.py:111
+#: picard/profile.py:41 picard/ui/options/metadata.py:78
+#: picard/ui/ui_options_metadata.py:125
 msgid "Metadata"
 msgstr ""
 
@@ -211,38 +211,38 @@ msgid "Translate artist names"
 msgstr ""
 
 #: picard/profile.py:46
-msgid "Translation locale"
+msgid "Translation locales"
 msgstr ""
 
 #: picard/profile.py:47
-msgid "Translate artist names script exception"
+msgid "Translate artist names exception"
 msgstr ""
 
 #: picard/profile.py:48
-msgid "Translation script exception"
+msgid "Translation script exceptions"
 msgstr ""
 
-#: picard/profile.py:49 picard/ui/ui_options_metadata.py:117
+#: picard/profile.py:49 picard/ui/ui_options_metadata.py:133
 msgid "Use release relationships"
 msgstr ""
 
-#: picard/profile.py:50 picard/ui/ui_options_metadata.py:118
+#: picard/profile.py:50 picard/ui/ui_options_metadata.py:134
 msgid "Use track relationships"
 msgstr ""
 
-#: picard/profile.py:51 picard/ui/ui_options_metadata.py:116
+#: picard/profile.py:51 picard/ui/ui_options_metadata.py:132
 msgid "Convert Unicode punctuation characters to ASCII"
 msgstr ""
 
-#: picard/profile.py:52 picard/ui/ui_options_metadata.py:114
+#: picard/profile.py:52 picard/ui/ui_options_metadata.py:130
 msgid "Use standardized artist names"
 msgstr ""
 
-#: picard/profile.py:53 picard/ui/ui_options_metadata.py:115
+#: picard/profile.py:53 picard/ui/ui_options_metadata.py:131
 msgid "Use standardized instrument and vocal credits"
 msgstr ""
 
-#: picard/profile.py:54 picard/ui/ui_options_metadata.py:119
+#: picard/profile.py:54 picard/ui/ui_options_metadata.py:135
 msgid "Guess track number and title from filename if empty"
 msgstr ""
 
@@ -4029,75 +4029,75 @@ msgstr ""
 msgid "Contains albums and matched files"
 msgstr ""
 
-#: picard/ui/itemviews.py:1002
+#: picard/ui/itemviews.py:1005
 msgid "Processing error(s): See the Errors tab in the Album Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1006
+#: picard/ui/itemviews.py:1009
 msgid "Album modified and complete"
 msgstr ""
 
-#: picard/ui/itemviews.py:1009
+#: picard/ui/itemviews.py:1012
 msgid "Album unchanged and complete"
 msgstr ""
 
-#: picard/ui/itemviews.py:1013
+#: picard/ui/itemviews.py:1016
 msgid "Album modified"
 msgstr ""
 
-#: picard/ui/itemviews.py:1016
+#: picard/ui/itemviews.py:1019
 msgid "Album unchanged"
 msgstr ""
 
-#: picard/ui/itemviews.py:1098
+#: picard/ui/itemviews.py:1104
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1129
+#: picard/ui/itemviews.py:1135
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1157
+#: picard/ui/itemviews.py:1163
 msgid "Track saved"
 msgstr ""
 
-#: picard/ui/itemviews.py:1159 picard/ui/itemviews.py:1163
+#: picard/ui/itemviews.py:1165 picard/ui/itemviews.py:1169
 msgid "Pending"
 msgstr ""
 
-#: picard/ui/itemviews.py:1170
+#: picard/ui/itemviews.py:1176
 msgid "Fingerprint has already been submitted"
 msgstr ""
 
-#: picard/ui/itemviews.py:1173
+#: picard/ui/itemviews.py:1179
 msgid "Unsubmitted fingerprint"
 msgstr ""
 
-#: picard/ui/itemviews.py:1176
+#: picard/ui/itemviews.py:1182
 msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
 "AcoustID Fingerprints\" to calculate the fingerprint."
 msgstr ""
 
-#: picard/ui/itemviews.py:1183
+#: picard/ui/itemviews.py:1189
 msgid "Extraction or submission of Acoustic features failed"
 msgstr ""
 
-#: picard/ui/itemviews.py:1187
+#: picard/ui/itemviews.py:1193
 msgid "The server already has the features of this file"
 msgstr ""
 
-#: picard/ui/itemviews.py:1189
+#: picard/ui/itemviews.py:1195
 msgid "Features have already been submitted"
 msgstr ""
 
-#: picard/ui/itemviews.py:1193
+#: picard/ui/itemviews.py:1199
 msgid ""
 "No acoustic features were extracted from this file. Use \"Submit Acoustic"
 " features\" to extract and submit them"
 msgstr ""
 
-#: picard/ui/itemviews.py:1195
+#: picard/ui/itemviews.py:1201
 msgid "Unsubmitted features"
 msgstr ""
 
@@ -5120,6 +5120,38 @@ msgstr ""
 msgid "Move selected value down"
 msgstr ""
 
+#: picard/ui/ui_exception_script_selector.py:105
+msgid "Exception Script Selector"
+msgstr ""
+
+#: picard/ui/ui_exception_script_selector.py:106
+msgid "Selected Scripts"
+msgstr ""
+
+#: picard/ui/ui_exception_script_selector.py:107
+msgid "Selected script match threshold:"
+msgstr ""
+
+#: picard/ui/ui_exception_script_selector.py:108
+msgid "Move selected script up"
+msgstr ""
+
+#: picard/ui/ui_exception_script_selector.py:109
+msgid "Add to selected scripts"
+msgstr ""
+
+#: picard/ui/ui_exception_script_selector.py:110
+msgid "Remove selected script"
+msgstr ""
+
+#: picard/ui/ui_exception_script_selector.py:111
+msgid "Move selected script down"
+msgstr ""
+
+#: picard/ui/ui_exception_script_selector.py:112
+msgid "Available Scripts"
+msgstr ""
+
 #: picard/ui/ui_infodialog.py:82
 msgid "&Error"
 msgstr ""
@@ -5132,6 +5164,34 @@ msgstr ""
 #: picard/ui/ui_provider_options_local.py:50
 #: picard/ui/ui_widget_taglisteditor.py:68
 msgid "Form"
+msgstr ""
+
+#: picard/ui/ui_multi_locale_selector.py:85
+msgid "Locale Selector"
+msgstr ""
+
+#: picard/ui/ui_multi_locale_selector.py:86
+msgid "Selected Locales"
+msgstr ""
+
+#: picard/ui/ui_multi_locale_selector.py:87
+msgid "Move selected locale up"
+msgstr ""
+
+#: picard/ui/ui_multi_locale_selector.py:88
+msgid "Add to selected locales"
+msgstr ""
+
+#: picard/ui/ui_multi_locale_selector.py:89
+msgid "Remove selected locale"
+msgstr ""
+
+#: picard/ui/ui_multi_locale_selector.py:90
+msgid "Move selected locale down"
+msgstr ""
+
+#: picard/ui/ui_multi_locale_selector.py:91
+msgid "Available Locales"
 msgstr ""
 
 #: picard/ui/ui_options.py:47
@@ -5488,28 +5548,32 @@ msgstr ""
 msgid "Minimal similarity for cluster lookups:"
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:112
-msgid "Translate artist names to this locale where possible:"
+#: picard/ui/ui_options_metadata.py:126
+msgid "Translate artist names to these locales where possible:"
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:113
-msgid "Ignore artist name translation for this script:"
+#: picard/ui/ui_options_metadata.py:127 picard/ui/ui_options_metadata.py:129
+msgid "Select..."
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:120
+#: picard/ui/ui_options_metadata.py:128
+msgid "Ignore artist name translation for these scripts:"
+msgstr ""
+
+#: picard/ui/ui_options_metadata.py:136
 msgid "Custom Fields"
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:121
+#: picard/ui/ui_options_metadata.py:137
 msgid "Various artists:"
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:122
+#: picard/ui/ui_options_metadata.py:138
 msgid "Non-album tracks:"
 msgstr ""
 
-#: picard/ui/options/interface.py:177 picard/ui/ui_options_metadata.py:123
-#: picard/ui/ui_options_metadata.py:124
+#: picard/ui/options/interface.py:177 picard/ui/ui_options_metadata.py:139
+#: picard/ui/ui_options_metadata.py:140
 #: picard/ui/ui_provider_options_local.py:52
 msgid "Default"
 msgstr ""
@@ -6321,6 +6385,23 @@ msgstr ""
 
 #: picard/ui/options/matching.py:40
 msgid "Matching"
+msgstr ""
+
+#: picard/ui/options/metadata.py:215
+msgid "{indent}{locale}"
+msgstr ""
+
+#: picard/ui/options/metadata.py:278
+msgid ""
+"Each selected script includes a matching threshold value used to "
+"determine if that script should be used. When an artist name is evaluated"
+" to determine if it matches one of your selected scripts, it is first "
+"parsed to determine which scripts are represented in the name, and what "
+"weighted percentage of the name belongs to each script. Then each of your"
+" selected scripts are checked, and if the name contains characters "
+"belonging to the script and the percentage of script characters in the "
+"name meets or exceeds the match threshold specified for the script, then "
+"the artist name will not be translated."
 msgstr ""
 
 #: picard/ui/options/network.py:42
