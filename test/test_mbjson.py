@@ -216,6 +216,37 @@ class RecordingTest(MBJSONTest):
         self.assertEqual(m['performer:acoustic guitar'], 'Ed Sheeran')
 
 
+class RecordingComposerCreditsTest(MBJSONTest):
+
+    filename = 'recording_composer.json'
+
+    def test_standardize_artists(self):
+        m = Metadata()
+        t = Track('1')
+        config.setting['translate_artist_names'] = False
+        config.setting['standardize_artists'] = True
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['composer'], 'Пётр Ильич Чайковский')
+        self.assertEqual(m['composersort'], 'Tchaikovsky, Pyotr Ilyich')
+
+    def test_use_credited_as(self):
+        m = Metadata()
+        t = Track('1')
+        config.setting['translate_artist_names'] = False
+        config.setting['standardize_artists'] = False
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['composer'], 'Tchaikovsky')
+        self.assertEqual(m['composersort'], 'Tchaikovsky, Pyotr Ilyich')
+
+    def test_translate(self):
+        m = Metadata()
+        t = Track('1')
+        config.setting['translate_artist_names'] = True
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['composer'], 'Pyotr Ilyich Tchaikovsky')
+        self.assertEqual(m['composersort'], 'Tchaikovsky, Pyotr Ilyich')
+
+
 class RecordingInstrumentalTest(MBJSONTest):
 
     filename = 'recording_instrumental.json'

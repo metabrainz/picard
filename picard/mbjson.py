@@ -150,7 +150,7 @@ def _relations_to_metadata(relations, m):
             if not has_translation and use_credited_as and 'target-credit' in relation:
                 credited_as = relation['target-credit']
                 if credited_as:
-                    value, valuesort = credited_as, credited_as
+                    value = credited_as
             reltype = relation['type']
             attribs = []
             if 'attributes' in relation:
