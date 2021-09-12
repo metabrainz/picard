@@ -435,6 +435,17 @@ def upgrade_to_v2_7_0_dev_4(config):
     _s.remove("artist_locale")
 
 
+def upgrade_to_v2_7_0_dev_5(config):
+    """Replace artist_script_exceptions with script_exceptions and remove artist_script_exception_weighting"""
+    _s = config.setting
+    ListOption("setting", "script_exceptions", [])
+    weighting = _s["artist_script_exception_weighting"] or 0
+    artist_script_exceptions = _s["artist_script_exceptions"] or []
+    _s["script_exceptions"] = [(script_exception, weighting) for script_exception in artist_script_exceptions]
+    _s.remove("artist_script_exceptions")
+    _s.remove("artist_script_exception_weighting")
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
@@ -477,4 +488,5 @@ def upgrade_config(config):
     cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_2)
     cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_3)
     cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_4)
+    cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_5)
     cfg.run_upgrade_hooks(log.debug)

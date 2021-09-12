@@ -27,6 +27,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from picard import log
 from picard.config import get_config
 from picard.const import RELEASE_FORMATS
 from picard.util import (
@@ -35,7 +36,7 @@ from picard.util import (
     parse_amazon_url,
     translate_from_sortname,
 )
-from picard.util.script_detector_weighted import list_script_weighted
+from picard.util.script_detector_weighted import detect_script_weighted
 
 
 _artist_rel_types = {
@@ -194,11 +195,27 @@ def _translate_artist_node(node):
     transl, translsort = None, None
     if config.setting['translate_artist_names']:
         if config.setting['translate_artist_names_script_exception']:
-            threshhold = config.setting["artist_script_exception_weighting"] / 100
-            detected_scripts = list_script_weighted(node["name"], threshhold)
-            for script_id in config.setting["artist_script_exceptions"]:
-                if script_id in detected_scripts:
-                    return node['name'], node['sort-name']
+            log_text = 'Script alpha characters found in "{0}": '.format(node["name"],)
+            detected_scripts = detect_script_weighted(node["name"])
+            if detected_scripts:
+                log_text += "; ".join(
+                    list("{0} ({1:.1f}%)".format(scr_id, detected_scripts[scr_id] * 100) for scr_id in detected_scripts)
+                )
+            else:
+                log_text += "None"
+            log.debug(log_text)
+            if detected_scripts:
+                if config.setting["script_exceptions"]:
+                    log_text = " found in selected scripts: " + "; ".join(
+                        list("{0} ({1}%)".format(scr[0], scr[1]) for scr in config.setting["script_exceptions"])
+                    )
+                    for script_id, script_weighting in config.setting["script_exceptions"]:
+                        if script_id in detected_scripts and detected_scripts[script_id] >= script_weighting / 100:
+                            log.debug("Match" + log_text)
+                            return node['name'], node['sort-name']
+                    log.debug("No match" + log_text)
+                else:
+                    log.warning("No scripts selected for translation exception match check.")
 
         def check_higher_score(locale_dict, locale, score):
             return locale not in locale_dict or score > locale_dict[locale][0]
