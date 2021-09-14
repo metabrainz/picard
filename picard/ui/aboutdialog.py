@@ -28,6 +28,7 @@
 
 from PyQt5 import QtCore
 
+from picard.config import get_config
 from picard.const import PICARD_URLS
 from picard.formats import supported_extensions
 from picard.util import versions
@@ -58,6 +59,9 @@ class AboutDialog(PicardDialog, SingletonDialog):
             for name, value
             in versions.as_dict(i18n=True).items()
             if name != 'version'])
+
+        config = get_config()
+        args['ini_file'] = config.fileName()
 
         args['formats'] = ", ".join(map(lambda x: x[1:], supported_extensions()))
         args['copyright_years'] = '2004-2021'
@@ -99,6 +103,7 @@ class AboutDialog(PicardDialog, SingletonDialog):
         text_paragraphs = [
             strong(_("Version %(version)s")),
             small('%(third_parties_versions)s'),
+            small(_('Configuration File: %(ini_file)s')),
             strong(_("Supported formats")),
             '%(formats)s',
             strong(_("Please donate")),
