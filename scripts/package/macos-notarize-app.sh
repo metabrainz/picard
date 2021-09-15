@@ -13,6 +13,15 @@ fi
 APP_BUNDLE=$(basename "$1")
 APP_BUNDLE_DIR=$(dirname "$1")
 
+xpath() {
+  # the xpath tool command line syntax changed in Big Sur
+  if [[ $(sw_vers -buildVersion) > "20A" ]]; then
+    /usr/bin/xpath -e "$@"
+  else
+    /usr/bin/xpath "$@"
+  fi
+}
+
 cd "$APP_BUNDLE_DIR" || exit 1
 
 # Package app for submission
