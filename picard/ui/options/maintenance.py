@@ -19,8 +19,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from os import path
+
 from PyQt5 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
@@ -82,9 +85,13 @@ class MaintenanceOptionsPage(OptionsPage):
         self.ui.tableWidget.setHorizontalHeaderLabels([_("Option"), _("Value")])
         self.ui.select_all.stateChanged.connect(self.select_all_changed)
         self.ui.enable_cleanup.stateChanged.connect(self.enable_cleanup_changed)
+        self.ui.open_folder_button.clicked.connect(self.open_config_dir)
 
     def load(self):
         config = get_config()
+
+        # Show the path and file name of the currently used configuration file.
+        self.ui.config_file.setText(config.fileName())
 
         # Setting options from all option pages and loaded plugins (including plugins currently disabled).
         key_options = set(config.setting.as_dict())
@@ -132,6 +139,11 @@ class MaintenanceOptionsPage(OptionsPage):
         if not len(orphan_options):
             self.ui.select_all.setEnabled(False)
         self.enable_cleanup_changed()
+
+    def open_config_dir(self):
+        config = get_config()
+        config_dir = path.split(config.fileName())[0]
+        QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(config_dir))
 
     def column_items(self, column):
         for idx in range(self.ui.tableWidget.rowCount()):
