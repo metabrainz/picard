@@ -4,6 +4,7 @@
 #
 # Copyright 2014 Music Technology Group - Universitat Pompeu Fabra
 # Copyright 2020-2021 Gabriel Ferreira
+# Copyright 2021 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -194,9 +195,17 @@ def ab_submit_features(tagger, file):
     with open(file.acousticbrainz_features_file, "r", encoding="utf-8") as f:
         features = json.load(f)
 
-    # Always submit for currently matched recording ID
-    musicbrainz_recordingid = file.metadata['musicbrainz_recordingid']
-    features['metadata']['tags']['musicbrainz_trackid'] = [musicbrainz_recordingid]
+    try:
+        musicbrainz_recordingid = features['metadata']['tags']['musicbrainz_trackid'][0]
+    except KeyError:
+        musicbrainz_recordingid = None
+
+    # Check if extracted recording id exists and matches the current file (recording ID may have been merged with others)
+    if not musicbrainz_recordingid or musicbrainz_recordingid != file.metadata['musicbrainz_recordingid']:
+        # If it doesn't, skip the submission
+        log.debug("AcousticBrainz features recording ID does not match the file metadata: %s" % file.filename)
+        submit_features_callback(file, None, None, True)
+        return
 
     # Submit features to the server
     tagger.webservice.post(
