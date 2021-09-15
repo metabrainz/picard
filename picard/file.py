@@ -707,9 +707,7 @@ class File(QtCore.QObject, Item):
         return True
 
     def can_extract(self):
-        if self.metadata["musicbrainz_recordingid"]:
-            return True
-        return False
+        return self.is_saved() and self.metadata["musicbrainz_recordingid"]
 
     def _info(self, metadata, file):
         if hasattr(file.info, 'length'):
