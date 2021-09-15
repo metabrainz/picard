@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_FingerprintingOptionsPage(object):
     def setupUi(self, FingerprintingOptionsPage):
@@ -30,6 +32,9 @@ class Ui_FingerprintingOptionsPage(object):
         self.ignore_existing_acoustid_fingerprints = QtWidgets.QCheckBox(self.acoustid_settings)
         self.ignore_existing_acoustid_fingerprints.setObjectName("ignore_existing_acoustid_fingerprints")
         self.verticalLayout_2.addWidget(self.ignore_existing_acoustid_fingerprints)
+        self.save_acoustid_fingerprints = QtWidgets.QCheckBox(self.acoustid_settings)
+        self.save_acoustid_fingerprints.setObjectName("save_acoustid_fingerprints")
+        self.verticalLayout_2.addWidget(self.save_acoustid_fingerprints)
         self.label = QtWidgets.QLabel(self.acoustid_settings)
         self.label.setObjectName("label")
         self.verticalLayout_2.addWidget(self.label)
@@ -75,9 +80,9 @@ class Ui_FingerprintingOptionsPage(object):
         self.use_acoustid.setText(_("Use AcoustID"))
         self.acoustid_settings.setTitle(_("AcoustID Settings"))
         self.ignore_existing_acoustid_fingerprints.setText(_("Ignore existing AcoustID fingerprints"))
+        self.save_acoustid_fingerprints.setText(_("Save AcoustID fingerprints to file tags"))
         self.label.setText(_("Fingerprint calculator:"))
         self.acoustid_fpcalc_browse.setText(_("Browse..."))
         self.acoustid_fpcalc_download.setText(_("Download..."))
         self.label_2.setText(_("API key:"))
         self.acoustid_apikey_get.setText(_("Get API key..."))
-

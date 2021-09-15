@@ -65,6 +65,7 @@ class FingerprintingOptionsPage(OptionsPage):
 
     options = [
         BoolOption("setting", "ignore_existing_acoustid_fingerprints", False),
+        BoolOption("setting", "save_acoustid_fingerprints", False),
         TextOption("setting", "fingerprinting_system", "acoustid"),
         TextOption("setting", "acoustid_fpcalc", ""),
         TextOption("setting", "acoustid_apikey", ""),
@@ -93,6 +94,7 @@ class FingerprintingOptionsPage(OptionsPage):
         self.ui.acoustid_fpcalc.setText(config.setting["acoustid_fpcalc"])
         self.ui.acoustid_apikey.setText(config.setting["acoustid_apikey"])
         self.ui.ignore_existing_acoustid_fingerprints.setChecked(config.setting["ignore_existing_acoustid_fingerprints"])
+        self.ui.save_acoustid_fingerprints.setChecked(config.setting["save_acoustid_fingerprints"])
         self.update_groupboxes()
 
     def save(self):
@@ -104,6 +106,7 @@ class FingerprintingOptionsPage(OptionsPage):
         config.setting["acoustid_fpcalc"] = self.ui.acoustid_fpcalc.text()
         config.setting["acoustid_apikey"] = self.ui.acoustid_apikey.text()
         config.setting["ignore_existing_acoustid_fingerprints"] = self.ui.ignore_existing_acoustid_fingerprints.isChecked()
+        config.setting["save_acoustid_fingerprints"] = self.ui.save_acoustid_fingerprints.isChecked()
 
     def update_groupboxes(self):
         if self.ui.use_acoustid.isChecked():

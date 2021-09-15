@@ -632,6 +632,9 @@ class File(QtCore.QObject, Item):
             self.acoustid_length = length or self.metadata.length // 1000
             self.tagger.acoustidmanager.add(self, None)
             self.acoustid_update()
+        config = get_config()
+        if config.setting['save_acoustid_fingerprints']:
+            self.metadata['acoustid_fingerprint'] = fingerprint
 
     def acoustid_update(self):
         recording_id = None

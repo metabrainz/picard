@@ -51,6 +51,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="save_acoustid_fingerprints">
+        <property name="text">
+         <string>Save AcoustID fingerprints to file tags</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="label">
         <property name="text">
          <string>Fingerprint calculator:</string>
