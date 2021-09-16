@@ -42,6 +42,9 @@ class DataObjectTest(PicardTestCase):
         super().setUp()
         self.tagger.acoustidmanager = MagicMock()
         self.file = File('somepath/somefile.mp3')
+        self.set_config_values({
+            'save_acoustid_fingerprints': True,
+        })
 
     def test_filename(self):
         self.assertEqual('somepath/somefile.mp3', self.file.filename)
@@ -72,6 +75,7 @@ class DataObjectTest(PicardTestCase):
         self.file.set_acoustid_fingerprint(fingerprint, length)
         self.tagger.acoustidmanager.add.assert_not_called()
         self.tagger.acoustidmanager.remove.assert_not_called()
+        self.assertEqual(fingerprint, self.file.metadata['acoustid_fingerprint'])
 
     def test_set_acoustid_fingerprint_no_length(self):
         self.file.metadata.length = 42000
@@ -79,6 +83,7 @@ class DataObjectTest(PicardTestCase):
         self.file.set_acoustid_fingerprint(fingerprint)
         self.assertEqual(fingerprint, self.file.acoustid_fingerprint)
         self.assertEqual(42, self.file.acoustid_length)
+        self.assertEqual(fingerprint, self.file.metadata['acoustid_fingerprint'])
 
     def test_set_acoustid_fingerprint_unset(self):
         self.file.acoustid_fingerprint = 'foo'
@@ -87,11 +92,23 @@ class DataObjectTest(PicardTestCase):
         self.tagger.acoustidmanager.remove.assert_called_with(self.file)
         self.assertEqual(None, self.file.acoustid_fingerprint)
         self.assertEqual(0, self.file.acoustid_length)
+        self.assertEqual('', self.file.metadata['acoustid_fingerprint'])
 
     def format_specific_metadata(self):
         values = ['foo', 'bar']
         self.file.metadata['test'] = values
         self.assertEqual(values, self.file.format_specific_metadata(self.file.metadata, 'test'))
+
+    def test_set_acoustid_fingerprint_no_save(self):
+        self.set_config_values({
+            'save_acoustid_fingerprints': False,
+        })
+        fingerprint = 'foo'
+        length = 36
+        self.file.set_acoustid_fingerprint(fingerprint, length)
+        self.assertEqual(fingerprint, self.file.acoustid_fingerprint)
+        self.assertEqual(length, self.file.acoustid_length)
+        self.assertEqual('', self.file.metadata['acoustid_fingerprint'])
 
 
 class TestPreserveTimes(PicardTestCase):
