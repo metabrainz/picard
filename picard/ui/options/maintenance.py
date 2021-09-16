@@ -92,6 +92,7 @@ class MaintenanceOptionsPage(OptionsPage):
 
         # Show the path and file name of the currently used configuration file.
         self.ui.config_file.setText(config.fileName())
+        self.ui.config_file.setWordWrap(False)
 
         # Setting options from all option pages and loaded plugins (including plugins currently disabled).
         key_options = set(config.setting.as_dict())
