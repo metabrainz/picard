@@ -87,6 +87,13 @@ class MaintenanceOptionsPage(OptionsPage):
         self.ui.enable_cleanup.stateChanged.connect(self.enable_cleanup_changed)
         self.ui.open_folder_button.clicked.connect(self.open_config_dir)
 
+        # Set the palette of the config file QLineEdit widget to inactive.
+        palette_normal = self.ui.config_file.palette()
+        palette_readonly = QtGui.QPalette(palette_normal)
+        disabled_color = palette_normal.color(QtGui.QPalette.Inactive, QtGui.QPalette.Window)
+        palette_readonly.setColor(QtGui.QPalette.Base, disabled_color)
+        self.ui.config_file.setPalette(palette_readonly)
+
     def load(self):
         config = get_config()
 
