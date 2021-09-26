@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.7.0.dev5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-09-26 11:47+0200\n"
+"POT-Creation-Date: 2021-09-26 17:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -447,7 +447,7 @@ msgstr ""
 msgid "[no release info]"
 msgstr ""
 
-#: picard/tagger.py:321 picard/ui/ui_options_general.py:163
+#: picard/tagger.py:321 picard/ui/ui_options_general.py:166
 msgid "MusicBrainz Account"
 msgstr ""
 
@@ -455,16 +455,16 @@ msgstr ""
 msgid "Authorization code:"
 msgstr ""
 
-#: picard/tagger.py:788
+#: picard/tagger.py:797
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr ""
 
-#: picard/tagger.py:806
+#: picard/tagger.py:815
 msgid "CD Lookup Error"
 msgstr ""
 
-#: picard/tagger.py:807
+#: picard/tagger.py:816
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -5345,62 +5345,66 @@ msgstr ""
 msgid "Get API key..."
 msgstr ""
 
-#: picard/ui/ui_options_general.py:158
+#: picard/ui/ui_options_general.py:161
 msgid "MusicBrainz Server"
 msgstr ""
 
-#: picard/ui/ui_options_general.py:159
+#: picard/ui/ui_options_general.py:162
 msgid ""
 "You have configured an unofficial MusicBrainz server. By default "
 "submissions of releases, recordings and disc IDs will go to the primary "
 "database on musicbrainz.org."
 msgstr ""
 
-#: picard/ui/ui_options_general.py:160
+#: picard/ui/ui_options_general.py:163
 msgid "Submit data to the configured server"
 msgstr ""
 
-#: picard/ui/ui_options_general.py:161 picard/ui/ui_options_network.py:144
+#: picard/ui/ui_options_general.py:164 picard/ui/ui_options_network.py:144
 msgid "Port:"
 msgstr ""
 
-#: picard/ui/ui_options_general.py:162 picard/ui/ui_options_network.py:146
+#: picard/ui/ui_options_general.py:165 picard/ui/ui_options_network.py:146
 msgid "Server address:"
 msgstr ""
 
-#: picard/ui/ui_options_general.py:164
+#: picard/ui/ui_options_general.py:167
 msgid "Log in"
 msgstr ""
 
-#: picard/ui/ui_options_general.py:165
+#: picard/ui/ui_options_general.py:168
 msgid "Log out"
 msgstr ""
 
-#: picard/ui/options/general.py:55 picard/ui/ui_options_general.py:166
+#: picard/ui/options/general.py:55 picard/ui/ui_options_general.py:169
 msgid "General"
 msgstr ""
 
-#: picard/ui/ui_options_general.py:167
+#: picard/ui/ui_options_general.py:170
 msgid "Automatically scan all new files"
 msgstr ""
 
-#: picard/ui/ui_options_general.py:168
-msgid "Ignore MBIDs when loading new files"
-msgstr ""
-
-#: picard/ui/ui_options_general.py:169
-msgid "Update Checking"
-msgstr ""
-
-#: picard/ui/ui_options_general.py:170
-msgid "Check for updates during start-up"
-msgstr ""
-
 #: picard/ui/ui_options_general.py:171
-msgid "Days between checks:"
+msgid "Automatically cluster all new files"
 msgstr ""
 
 #: picard/ui/ui_options_general.py:172
+msgid "Ignore MBIDs when loading new files"
+msgstr ""
+
+#: picard/ui/ui_options_general.py:173
+msgid "Update Checking"
+msgstr ""
+
+#: picard/ui/ui_options_general.py:174
+msgid "Check for updates during start-up"
+msgstr ""
+
+#: picard/ui/ui_options_general.py:175
+msgid "Days between checks:"
+msgstr ""
+
+#: picard/ui/ui_options_general.py:176
 msgid "Updates to check:"
 msgstr ""
 
@@ -6158,7 +6162,7 @@ msgstr ""
 msgid "Invalid fpcalc executable"
 msgstr ""
 
-#: picard/ui/options/general.py:130
+#: picard/ui/options/general.py:135
 #, python-format
 msgid "Logged in as <b>%s</b>."
 msgstr ""
