@@ -432,8 +432,6 @@ class Tagger(QtWidgets.QApplication):
         self._pending_files_count -= 1
         if self._pending_files_count == 0:
             self.window.set_sorting(True)
-            if new_files and config.setting["cluster_new_files"]:
-                self.cluster(new_files)
 
         if remove_file:
             file.remove()
@@ -446,6 +444,7 @@ class Tagger(QtWidgets.QApplication):
             self.unclustered_files.add_file(file)
             return
 
+        file_moved = False
         if not config.setting["ignore_file_mbids"]:
             recordingid = file.metadata.getall('musicbrainz_recordingid')
             recordingid = recordingid[0] if recordingid else ''
@@ -459,26 +458,34 @@ class Tagger(QtWidgets.QApplication):
                 log.debug("%r has release (%s) and recording (%s) MBIDs, moving to track...",
                           file, albumid, recordingid)
                 self.move_file_to_track(file, albumid, recordingid)
-                return
-
-            if is_valid_albumid:
+                file_moved = True
+            elif is_valid_albumid:
                 log.debug("%r has only release MBID (%s), moving to album...",
                           file, albumid)
                 self.move_file_to_album(file, albumid)
-                return
-
-            if is_valid_recordingid:
+                file_moved = True
+            elif is_valid_recordingid:
                 log.debug("%r has only recording MBID (%s), moving to non-album track...",
                           file, recordingid)
                 self.move_file_to_nat(file, recordingid)
-                return
+                file_moved = True
 
-        self.move_file(file, target)
+        if not file_moved:
+            self.move_file(file, target)
+            if target != self.unclustered_files:
+                file_moved = True
+
+        if file_moved:
+            new_files.remove(file)
 
         # fallback on analyze if nothing else worked
-        if config.setting['analyze_new_files'] and file.can_analyze():
+        if not file_moved and config.setting['analyze_new_files'] and file.can_analyze():
             log.debug("Trying to analyze %r ...", file)
             self.analyze([file])
+
+        # Auto cluster newly added files if they are not explicitly moved elsewhere
+        if self._pending_files_count == 0 and new_files and config.setting["cluster_new_files"]:
+            self.cluster(new_files)
 
     def move_file(self, file, target):
         if target is None:
