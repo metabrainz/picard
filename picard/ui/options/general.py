@@ -84,6 +84,8 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.server_host.currentTextChanged.connect(self.update_server_host)
         self.ui.login.clicked.connect(self.login)
         self.ui.logout.clicked.connect(self.logout)
+        self.ui.analyze_new_files.toggled.connect(self._update_cluster_new_files)
+        self.ui.cluster_new_files.toggled.connect(self._update_analyze_new_files)
         self.update_login_logout()
 
     def load(self):
@@ -155,6 +157,14 @@ class GeneralOptionsPage(OptionsPage):
     def logout(self):
         self.tagger.mb_logout()
         self.update_login_logout()
+
+    def _update_analyze_new_files(self, cluster_new_files):
+        if cluster_new_files:
+            self.ui.analyze_new_files.setChecked(False)
+
+    def _update_cluster_new_files(self, analyze_new_files):
+        if analyze_new_files:
+            self.ui.cluster_new_files.setChecked(False)
 
 
 register_options_page(GeneralOptionsPage)
