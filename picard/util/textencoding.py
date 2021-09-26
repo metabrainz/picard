@@ -7,7 +7,7 @@
 # Copyright (C) 2014 Sophist-UK
 # Copyright (C) 2014, 2018, 2020 Laurent Monin
 # Copyright (C) 2017 Sambhav Kothari
-# Copyright (C) 2018-2019 Philipp Wolfer
+# Copyright (C) 2018-2019, 2021 Philipp Wolfer
 # Copyright (C) 2020 Gabriel Ferreira
 # Copyright (C) 2020 Undearius
 #
@@ -102,11 +102,12 @@ _additional_compatibility = {
     "\u00A0": " ",  # NO-BREAK SPACE
     "\u3000": " ",  # IDEOGRAPHIC SPACE (from ‹character-fallback›)
     "\u2033": "”",  # DOUBLE PRIME
+    "\uff0f": "/",  # FULLWIDTH SOLIDUS
 }
 
 
-def unicode_simplify_compatibility(string):
-    interim = ''.join(_additional_compatibility.get(c, c) for c in string)
+def unicode_simplify_compatibility(string, pathsave=False, win_compat=False):
+    interim = ''.join([_replace_char(_additional_compatibility, ch, pathsave, win_compat) for ch in string])
     return unicodedata.normalize("NFKC", interim)
 
 
@@ -184,16 +185,7 @@ _simplify_punctuation = {
 
 
 def unicode_simplify_punctuation(string, pathsave=False, win_compat=False):
-    temp = []
-    for c in string:
-        try:
-            result = _simplify_punctuation[c]
-            if c != result and pathsave:
-                result = sanitize_filename(result, win_compat=win_compat)
-        except KeyError:
-            result = c
-        temp.append(result)
-    return ''.join(temp)
+    return ''.join([_replace_char(_simplify_punctuation, ch, pathsave, win_compat) for ch in string])
 
 
 _simplify_combinations = {
@@ -456,12 +448,22 @@ def unaccent(string):
 def replace_non_ascii(string, repl="_", pathsave=False, win_compat=False):
     """Replace non-ASCII characters from ``string`` by ``repl``."""
     interim = unicode_simplify_combinations(string, pathsave, win_compat)
-    interim = unicode_simplify_accents(interim)
     interim = unicode_simplify_punctuation(interim, pathsave, win_compat)
-    interim = unicode_simplify_compatibility(interim)
+    interim = unicode_simplify_compatibility(interim, pathsave, win_compat)
+    interim = unicode_simplify_accents(interim)
 
     def error_repl(e, repl="_"):
         return (repl, e.start + 1)
     codecs.register_error('repl', partial(error_repl, repl=repl))
     # Decoding and encoding to allow replacements
     return interim.encode('ascii', 'repl').decode('ascii')
+
+
+def _replace_char(map, ch, pathsave=False, win_compat=False):
+    try:
+        result = map[ch]
+        if ch != result and pathsave:
+            result = sanitize_filename(result, win_compat=win_compat)
+        return result
+    except KeyError:
+        return ch

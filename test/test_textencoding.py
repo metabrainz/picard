@@ -6,7 +6,7 @@
 # Copyright (C) 2015, 2018, 2020 Laurent Monin
 # Copyright (C) 2017 Ville Skyttä
 # Copyright (C) 2018 Wieland Hoffmann
-# Copyright (C) 2018-2019 Philipp Wolfer
+# Copyright (C) 2018-2019, 2021 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -138,6 +138,9 @@ class CompatibilityTest(PicardTestCase):
         self.assertEqual(util.textencoding.unicode_simplify_compatibility(combinations_from), combinations_from)
         self.assertEqual(util.textencoding.unicode_simplify_compatibility(ascii_chars), ascii_chars)
 
+    def test_pathsave(self):
+        self.assertEqual(util.textencoding.unicode_simplify_compatibility('\uff0f', pathsave=True), '_')
+
     def test_incorrect(self):
         pass
 
@@ -225,13 +228,14 @@ class ReplaceNonAsciiTest(PicardTestCase):
         self.assertEqual(util.textencoding.replace_non_ascii("⑴⑵⑶"), "(1)(2)(3)")  # Parenthesised numbers
         self.assertEqual(util.textencoding.replace_non_ascii("⒈ ⒉ ⒊"), "1. 2. 3.")  # Digit full stop
         self.assertEqual(util.textencoding.replace_non_ascii("１２３"), "123")  # Fullwidth digits
+        self.assertEqual(util.textencoding.replace_non_ascii("\u2216\u2044\u2215\uff0f"), "\\///")  # Slashes
 
     def test_pathsave(self):
-        expected = '__/8 1_2\\' if IS_WIN else '\\_/8 1_2\\'
-        self.assertEqual(util.textencoding.replace_non_ascii('\u2216\u2044/8½\\', pathsave=True), expected)
+        expected = '____/8 1_2\\' if IS_WIN else '\\___/8 1_2\\'
+        self.assertEqual(util.textencoding.replace_non_ascii('\u2216\u2044\u2215\uff0f/8½\\', pathsave=True), expected)
 
     def test_win_compat(self):
-        self.assertEqual(util.textencoding.replace_non_ascii('\u2216\u2044/8½\\', pathsave=True, win_compat=True), '__/8 1_2\\')
+        self.assertEqual(util.textencoding.replace_non_ascii('\u2216\u2044\u2215\uff0f/8½\\', pathsave=True, win_compat=True), '____/8 1_2\\')
 
     def test_incorrect(self):
         self.assertNotEqual(util.textencoding.replace_non_ascii("Lukáš"), "Lukáš")
