@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.7.0.dev5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-09-12 16:23+0200\n"
+"POT-Creation-Date: 2021-09-26 11:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -138,22 +138,22 @@ msgstr ""
 msgid "Primary file naming script"
 msgstr ""
 
-#: picard/file.py:791
+#: picard/file.py:792
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:793
+#: picard/file.py:794
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr ""
 
-#: picard/file.py:805
+#: picard/file.py:806
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:837
+#: picard/file.py:838
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr ""
@@ -550,33 +550,33 @@ msgstr ""
 msgid "Add file as recording..."
 msgstr ""
 
-#: picard/const/__init__.py:170
+#: picard/const/__init__.py:162
 msgid "Stable releases only"
 msgstr ""
 
-#: picard/const/__init__.py:176
+#: picard/const/__init__.py:168
 msgid "Stable and Beta releases"
 msgstr ""
 
-#: picard/const/__init__.py:182
+#: picard/const/__init__.py:174
 msgid "Stable, Beta and Dev releases"
 msgstr ""
 
-#: picard/const/__init__.py:197
+#: picard/const/__init__.py:189
 #, python-format
 msgid "My script %d"
 msgstr ""
 
-#: picard/const/__init__.py:198
+#: picard/const/__init__.py:190
 msgid "My script"
 msgstr ""
 
-#: picard/const/__init__.py:200
+#: picard/const/__init__.py:192
 #, python-format
 msgid "My profile %d"
 msgstr ""
 
-#: picard/const/__init__.py:201
+#: picard/const/__init__.py:193
 msgid "My profile"
 msgstr ""
 
@@ -5219,13 +5219,13 @@ msgid "AcousticBrainz/Essentia feature extractor:"
 msgstr ""
 
 #: picard/ui/ui_options_acousticbrainz.py:68
-#: picard/ui/ui_options_fingerprinting.py:79
+#: picard/ui/ui_options_fingerprinting.py:85
 #: picard/ui/ui_options_interface.py:159 picard/ui/ui_options_renaming.py:156
 msgid "Browse..."
 msgstr ""
 
 #: picard/ui/ui_options_acousticbrainz.py:69
-#: picard/ui/ui_options_fingerprinting.py:80
+#: picard/ui/ui_options_fingerprinting.py:86
 msgid "Download..."
 msgstr ""
 
@@ -5309,35 +5309,39 @@ msgstr ""
 msgid "Move selected item down"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:73
+#: picard/ui/ui_options_fingerprinting.py:78
 msgid "Audio Fingerprinting"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:74
+#: picard/ui/ui_options_fingerprinting.py:79
 msgid "Do not use audio fingerprinting"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:75
+#: picard/ui/ui_options_fingerprinting.py:80
 msgid "Use AcoustID"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:76
+#: picard/ui/ui_options_fingerprinting.py:81
 msgid "AcoustID Settings"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:77
+#: picard/ui/ui_options_fingerprinting.py:82
 msgid "Ignore existing AcoustID fingerprints"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:78
+#: picard/ui/ui_options_fingerprinting.py:83
+msgid "Save AcoustID fingerprints to file tags"
+msgstr ""
+
+#: picard/ui/ui_options_fingerprinting.py:84
 msgid "Fingerprint calculator:"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:81
+#: picard/ui/ui_options_fingerprinting.py:87
 msgid "API key:"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:82
+#: picard/ui/ui_options_fingerprinting.py:88
 msgid "Get API key..."
 msgstr ""
 
@@ -5524,11 +5528,19 @@ msgstr ""
 msgid "Show the below tags above all other tags in the metadata view"
 msgstr ""
 
-#: picard/ui/ui_options_maintenance.py:64
+#: picard/ui/ui_options_maintenance.py:74
+msgid "Configuration File:"
+msgstr ""
+
+#: picard/ui/ui_options_maintenance.py:75
+msgid "Open folder"
+msgstr ""
+
+#: picard/ui/ui_options_maintenance.py:76
 msgid "Remove selected options"
 msgstr ""
 
-#: picard/ui/ui_options_maintenance.py:65
+#: picard/ui/ui_options_maintenance.py:77
 msgid "Select all"
 msgstr ""
 
@@ -6137,12 +6149,12 @@ msgstr ""
 msgid "Fingerprinting"
 msgstr ""
 
-#: picard/ui/options/fingerprinting.py:162
-#: picard/ui/options/fingerprinting.py:166
+#: picard/ui/options/fingerprinting.py:165
+#: picard/ui/options/fingerprinting.py:169
 msgid "Please select a valid fpcalc executable."
 msgstr ""
 
-#: picard/ui/options/fingerprinting.py:166
+#: picard/ui/options/fingerprinting.py:169
 msgid "Invalid fpcalc executable"
 msgstr ""
 
@@ -6332,11 +6344,11 @@ msgstr ""
 msgid "Top Tags"
 msgstr ""
 
-#: picard/ui/options/maintenance.py:55
+#: picard/ui/options/maintenance.py:58
 msgid "Maintenance"
 msgstr ""
 
-#: picard/ui/options/maintenance.py:67
+#: picard/ui/options/maintenance.py:70
 msgid ""
 "This allows you to remove unused option settings from the configuration "
 "INI file.\n"
@@ -6358,28 +6370,28 @@ msgid ""
 " So!\" to save your option settings, the selected items will be removed."
 msgstr ""
 
-#: picard/ui/options/maintenance.py:82
+#: picard/ui/options/maintenance.py:85
 msgid "Option"
 msgstr ""
 
-#: picard/ui/options/maintenance.py:82
+#: picard/ui/options/maintenance.py:85
 msgid "Value"
 msgstr ""
 
-#: picard/ui/options/maintenance.py:103
+#: picard/ui/options/maintenance.py:117
 #, python-format
 msgid ""
 "The configuration file currently contains %d option settings, %d which "
 "are unused."
 msgstr ""
 
-#: picard/ui/options/maintenance.py:156
+#: picard/ui/options/maintenance.py:175
 #: picard/ui/widgets/profilelistwidget.py:79
 #: picard/ui/widgets/scriptlistwidget.py:82
 msgid "Confirm Remove"
 msgstr ""
 
-#: picard/ui/options/maintenance.py:157
+#: picard/ui/options/maintenance.py:176
 msgid "Are you sure you want to remove the selected option settings?"
 msgstr ""
 
