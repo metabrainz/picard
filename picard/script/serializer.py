@@ -346,9 +346,9 @@ class PicardScript():
             dict: Diction of the standard file types
         """
         return {
-            'all': _("All Files") + " (*)",
-            'script': _("Picard Script Files") + " (*.pts *.txt)",
-            'package': _("Picard Script Package") + " (*.ptsp *.yaml)",
+            'all': _("All files") + " (*)",
+            'script': _("Picard script files") + " (*.pts *.txt)",
+            'package': _("Picard script package") + " (*.ptsp *.yaml)",
         }
 
     @classmethod

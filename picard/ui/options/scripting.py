@@ -128,9 +128,9 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.export_button.clicked.connect(self.export_script)
         self.ui.export_button.setToolTip(_("Export the current script to a file."))
 
-        self.FILE_TYPE_ALL = _("All Files") + " (*)"
-        self.FILE_TYPE_SCRIPT = _("Picard Script Files") + " (*.pts *.txt)"
-        self.FILE_TYPE_PACKAGE = _("Picard Tagging Script Package") + " (*.ptsp *.yaml)"
+        self.FILE_TYPE_ALL = _("All files") + " (*)"
+        self.FILE_TYPE_SCRIPT = _("Picard script files") + " (*.pts *.txt)"
+        self.FILE_TYPE_PACKAGE = _("Picard tagging script package") + " (*.ptsp *.yaml)"
 
     def show_scripting_documentation(self):
         ScriptingDocumentationDialog.show_instance(parent=self)

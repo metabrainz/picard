@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.7.0.dev5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-09-26 17:19+0200\n"
+"POT-Creation-Date: 2021-09-26 17:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3515,16 +3515,17 @@ msgstr ""
 msgid "Unnamed Script"
 msgstr ""
 
-#: picard/script/serializer.py:349 picard/ui/options/scripting.py:131
-msgid "All Files"
+#: picard/script/serializer.py:349 picard/ui/coverartbox.py:551
+#: picard/ui/mainwindow.py:1085 picard/ui/options/scripting.py:131
+msgid "All files"
 msgstr ""
 
 #: picard/script/serializer.py:350 picard/ui/options/scripting.py:132
-msgid "Picard Script Files"
+msgid "Picard script files"
 msgstr ""
 
 #: picard/script/serializer.py:351
-msgid "Picard Script Package"
+msgid "Picard script package"
 msgstr ""
 
 #: picard/ui/aboutdialog.py:73
@@ -3686,10 +3687,6 @@ msgstr ""
 
 #: picard/ui/coverartbox.py:550
 msgid "All supported image formats"
-msgstr ""
-
-#: picard/ui/coverartbox.py:551 picard/ui/mainwindow.py:1085
-msgid "All files"
 msgstr ""
 
 #: picard/ui/coverartbox.py:570
@@ -6613,7 +6610,7 @@ msgid "Export the current script to a file."
 msgstr ""
 
 #: picard/ui/options/scripting.py:133
-msgid "Picard Tagging Script Package"
+msgid "Picard tagging script package"
 msgstr ""
 
 #: picard/ui/options/scripting.py:171
