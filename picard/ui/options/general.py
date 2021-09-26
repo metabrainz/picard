@@ -63,6 +63,7 @@ class GeneralOptionsPage(OptionsPage):
         IntOption("setting", "server_port", 443),
         BoolOption("setting", "use_server_for_submission", False),
         BoolOption("setting", "analyze_new_files", False),
+        BoolOption("setting", "cluster_new_files", False),
         BoolOption("setting", "ignore_file_mbids", False),
         TextOption("persist", "oauth_refresh_token", ""),
         TextOption("persist", "oauth_refresh_token_scopes", ""),
@@ -83,6 +84,8 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.server_host.currentTextChanged.connect(self.update_server_host)
         self.ui.login.clicked.connect(self.login)
         self.ui.logout.clicked.connect(self.logout)
+        self.ui.analyze_new_files.toggled.connect(self._update_cluster_new_files)
+        self.ui.cluster_new_files.toggled.connect(self._update_analyze_new_files)
         self.update_login_logout()
 
     def load(self):
@@ -92,6 +95,7 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.use_server_for_submission.setChecked(config.setting["use_server_for_submission"])
         self.update_server_host()
         self.ui.analyze_new_files.setChecked(config.setting["analyze_new_files"])
+        self.ui.cluster_new_files.setChecked(config.setting["cluster_new_files"])
         self.ui.ignore_file_mbids.setChecked(config.setting["ignore_file_mbids"])
         if self.tagger.autoupdate_enabled:
             self.ui.check_for_updates.setChecked(config.setting["check_for_updates"])
@@ -111,6 +115,7 @@ class GeneralOptionsPage(OptionsPage):
         config.setting["server_port"] = self.ui.server_port.value()
         config.setting["use_server_for_submission"] = self.ui.use_server_for_submission.isChecked()
         config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
+        config.setting["cluster_new_files"] = self.ui.cluster_new_files.isChecked()
         config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
         if self.tagger.autoupdate_enabled:
             config.setting["check_for_updates"] = self.ui.check_for_updates.isChecked()
@@ -152,6 +157,14 @@ class GeneralOptionsPage(OptionsPage):
     def logout(self):
         self.tagger.mb_logout()
         self.update_login_logout()
+
+    def _update_analyze_new_files(self, cluster_new_files):
+        if cluster_new_files:
+            self.ui.analyze_new_files.setChecked(False)
+
+    def _update_cluster_new_files(self, analyze_new_files):
+        if analyze_new_files:
+            self.ui.cluster_new_files.setChecked(False)
 
 
 register_options_page(GeneralOptionsPage)
