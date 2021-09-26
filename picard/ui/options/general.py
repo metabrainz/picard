@@ -63,6 +63,7 @@ class GeneralOptionsPage(OptionsPage):
         IntOption("setting", "server_port", 443),
         BoolOption("setting", "use_server_for_submission", False),
         BoolOption("setting", "analyze_new_files", False),
+        BoolOption("setting", "cluster_new_files", False),
         BoolOption("setting", "ignore_file_mbids", False),
         TextOption("persist", "oauth_refresh_token", ""),
         TextOption("persist", "oauth_refresh_token_scopes", ""),
@@ -92,6 +93,7 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.use_server_for_submission.setChecked(config.setting["use_server_for_submission"])
         self.update_server_host()
         self.ui.analyze_new_files.setChecked(config.setting["analyze_new_files"])
+        self.ui.cluster_new_files.setChecked(config.setting["cluster_new_files"])
         self.ui.ignore_file_mbids.setChecked(config.setting["ignore_file_mbids"])
         if self.tagger.autoupdate_enabled:
             self.ui.check_for_updates.setChecked(config.setting["check_for_updates"])
@@ -111,6 +113,7 @@ class GeneralOptionsPage(OptionsPage):
         config.setting["server_port"] = self.ui.server_port.value()
         config.setting["use_server_for_submission"] = self.ui.use_server_for_submission.isChecked()
         config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
+        config.setting["cluster_new_files"] = self.ui.cluster_new_files.isChecked()
         config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
         if self.tagger.autoupdate_enabled:
             config.setting["check_for_updates"] = self.ui.check_for_updates.isChecked()

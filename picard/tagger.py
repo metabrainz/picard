@@ -427,11 +427,13 @@ class Tagger(QtWidgets.QApplication):
             return 1
         return super().event(event)
 
-    def _file_loaded(self, file, target=None, remove_file=False):
+    def _file_loaded(self, file, target=None, remove_file=False, new_files=None):
         config = get_config()
         self._pending_files_count -= 1
         if self._pending_files_count == 0:
             self.window.set_sorting(True)
+            if new_files and config.setting["cluster_new_files"]:
+                self.cluster(new_files)
 
         if remove_file:
             file.remove()
@@ -557,7 +559,7 @@ class Tagger(QtWidgets.QApplication):
             self.window.set_sorting(False)
             self._pending_files_count += len(new_files)
             for i, file in enumerate(new_files):
-                file.load(partial(self._file_loaded, target=target))
+                file.load(partial(self._file_loaded, target=target, new_files=new_files))
                 # Calling processEvents helps processing the _file_loaded
                 # callbacks in between, which keeps the UI more responsive.
                 # Avoid calling it to often to not slow down the loading to much
