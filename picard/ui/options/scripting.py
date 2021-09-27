@@ -98,7 +98,7 @@ class ScriptingOptionsPage(OptionsPage):
     NAME = "scripting"
     TITLE = N_("Scripting")
     PARENT = None
-    SORT_ORDER = 85
+    SORT_ORDER = 75
     ACTIVE = True
     HELP_URL = '/config/options_scripting.html'
 
