@@ -198,14 +198,15 @@ class Track(DataObject, FileListItem):
             self.tagger.window.refresh_metadatabox()
 
     @staticmethod
-    def run_scripts(metadata):
+    def run_scripts(metadata, strip_whitespace=False):
         for s_name, s_text in enabled_tagger_scripts_texts():
             parser = ScriptParser()
             try:
                 parser.eval(s_text, metadata)
             except ScriptError:
                 log.exception("Failed to run tagger script %s on track", s_name)
-            metadata.strip_whitespace()
+            if strip_whitespace:
+                metadata.strip_whitespace()
 
     def update(self):
         if self.item:
@@ -416,7 +417,7 @@ class NonAlbumTrack(Track):
         self._customize_metadata()
         run_track_metadata_processors(self.album, m, recording)
         self.orig_metadata.copy(m)
-        self.run_scripts(m)
+        self.run_scripts(m, strip_whitespace=True)
         self.loaded = True
         self.status = None
         if self.callback:
