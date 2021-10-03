@@ -32,6 +32,7 @@ fi
 
 # Install AcousticBrainz extractor
 if [ -n "$ABEXTRACTOR_VERSION" ]; then
-  wget "https://ftp.acousticbrainz.org/pub/acousticbrainz/essentia-extractor-$ABEXTRACTOR_VERSION-osx.tar.gz"
-  tar -xf "essentia-extractor-$ABEXTRACTOR_VERSION-osx.tar.gz"
+  wget "https://github.com/phw/essentia-extractor-builds/releases/download/$ABEXTRACTOR_VERSION/essentia-extractor-$ABEXTRACTOR_VERSION-macos.tar.gz"
+  tar -xf "essentia-extractor-$ABEXTRACTOR_VERSION-macos.tar.gz"
+  cp "essentia-extractor-$ABEXTRACTOR_VERSION-macos/streaming_extractor_music" .
 fi

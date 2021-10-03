@@ -30,7 +30,7 @@ jobs:
     env:
       DISCID_VERSION: 0.6.2
       FPCALC_VERSION: 1.5.0
-      # ABEXTRACTOR_VERSION: v2.1_beta2-2-gbb40004
+      ABEXTRACTOR_VERSION: v2.1_beta2-4
       PYTHON_VERSION: 3.9.7
       MACOSX_DEPLOYMENT_TARGET: ${{ matrix.macos-deployment-version }}
     steps:
