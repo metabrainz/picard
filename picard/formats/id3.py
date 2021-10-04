@@ -473,10 +473,10 @@ class ID3File(File):
             elif name == 'musicbrainz_recordingid':
                 tags.add(id3.UFID(owner='http://musicbrainz.org', data=bytes(values[0], 'ascii')))
             elif name == '~rating':
-                rating_email = id3text(config.setting['rating_user_email'], 0)
+                rating_user_email = id3text(config.setting['rating_user_email'], 0)
                 # Search for an existing POPM frame to get the current playcount
                 for frame in tags.values():
-                    if frame.FrameID == 'POPM' and frame.email == rating_email:
+                    if frame.FrameID == 'POPM' and frame.email == rating_user_email:
                         count = getattr(frame, 'count', 0)
                         break
                 else:
@@ -484,7 +484,7 @@ class ID3File(File):
 
                 # Convert rating to range between 0 and 255
                 rating = int(round(float(values[0]) * 255 / (config.setting['rating_steps'] - 1)))
-                tags.add(id3.POPM(email=rating_email, rating=rating, count=count))
+                tags.add(id3.POPM(email=rating_user_email, rating=rating, count=count))
             elif name == 'grouping':
                 if config.setting['itunes_compatible_grouping']:
                     tags.add(id3.GRP1(encoding=encoding, text=values))
@@ -597,9 +597,9 @@ class ID3File(File):
                     tags.delall(real_name)
                     tags.delall('TXXX:' + self.__rtranslate_freetext[name])
                 elif real_name == 'POPM':
-                    user_email = id3text(config.setting['rating_user_email'], 0)
+                    rating_user_email = id3text(config.setting['rating_user_email'], 0)
                     for key, frame in list(tags.items()):
-                        if frame.FrameID == 'POPM' and frame.email == user_email:
+                        if frame.FrameID == 'POPM' and frame.email == rating_user_email:
                             del tags[key]
                 elif real_name in self.__translate:
                     tags.delall(real_name)
