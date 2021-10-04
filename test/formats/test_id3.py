@@ -516,6 +516,15 @@ class CommonId3Tests:
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertNotIn('website', loaded_metadata)
 
+        @skipUnlessTestfile
+        def test_rating_email_non_latin1(self):
+            for rating in range(6):
+                config.setting['rating_user_email'] = 'foo€'
+                rating = '3'
+                metadata = Metadata({'~rating': rating})
+                loaded_metadata = save_and_load_metadata(self.filename, metadata)
+                self.assertEqual(loaded_metadata['~rating'], rating, '~rating: %r != %r' % (loaded_metadata['~rating'], rating))
+
 
 class MP3Test(CommonId3Tests.Id3TestCase):
     testfile = 'test.mp3'
