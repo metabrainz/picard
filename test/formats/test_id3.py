@@ -644,11 +644,17 @@ class AIFFTest(CommonId3Tests.Id3TestCase):
 
 
 class Id3UtilTest(PicardTestCase):
+    def test_id3encoding_from_config(self):
+        self.assertEqual(id3.Id3Encoding.LATIN1, id3.Id3Encoding.from_config('iso-8859-1'))
+        self.assertEqual(id3.Id3Encoding.UTF16, id3.Id3Encoding.from_config('utf-16'))
+        self.assertEqual(id3.Id3Encoding.UTF8, id3.Id3Encoding.from_config('utf-8'))
+
     def test_id3text(self):
         teststring = '日本語testÖäß'
-        self.assertEqual(id3.id3text(teststring, 0), '???testÖäß')
-        self.assertEqual(id3.id3text(teststring, 1), teststring)
-        self.assertEqual(id3.id3text(teststring, 3), teststring)
+        self.assertEqual(id3.id3text(teststring, id3.Id3Encoding.LATIN1), '???testÖäß')
+        self.assertEqual(id3.id3text(teststring, id3.Id3Encoding.UTF16), teststring)
+        self.assertEqual(id3.id3text(teststring, id3.Id3Encoding.UTF16BE), teststring)
+        self.assertEqual(id3.id3text(teststring, id3.Id3Encoding.UTF8), teststring)
 
     def test_image_type_from_id3_num(self):
         self.assertEqual(id3.image_type_from_id3_num(0), 'other')

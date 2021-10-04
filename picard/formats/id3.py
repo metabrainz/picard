@@ -33,6 +33,7 @@
 
 
 from collections import defaultdict
+from enum import IntEnum
 import re
 from urllib.parse import urlparse
 
@@ -82,12 +83,25 @@ __ID3_IMAGE_TYPE_MAP = dict(__IMAGE_TYPES)
 __ID3_REVERSE_IMAGE_TYPE_MAP = dict([(v, k) for k, v in __IMAGE_TYPES])
 
 
+class Id3Encoding(IntEnum):
+    LATIN1 = 0
+    UTF16 = 1
+    UTF16BE = 2
+    UTF8 = 3
+
+    def from_config(id3v2_encoding):
+        return {
+            'utf-8': Id3Encoding.UTF8,
+            'utf-16': Id3Encoding.UTF16
+        }.get(id3v2_encoding, Id3Encoding.LATIN1)
+
+
 def id3text(text, encoding):
     """Returns a string which only contains code points which can
     be encododed with the given numeric id3 encoding.
     """
 
-    if encoding == 0:
+    if encoding == Id3Encoding.LATIN1:
         return text.encode("latin1", "replace").decode("latin1")
     return text
 
@@ -259,7 +273,7 @@ class ID3File(File):
         tags = file.tags or {}
         config = get_config()
         itunes_compatible = config.setting['itunes_compatible_grouping']
-        rating_user_email = id3text(config.setting['rating_user_email'], 0)
+        rating_user_email = id3text(config.setting['rating_user_email'], Id3Encoding.LATIN1)
         rating_steps = config.setting['rating_steps']
         # upgrade custom 2.3 frames to 2.4
         for old, new in self.__upgrade.items():
@@ -391,28 +405,28 @@ class ID3File(File):
         if images_to_save:
             tags.delall('APIC')
 
-        encoding = {'utf-8': 3, 'utf-16': 1}.get(config.setting['id3v2_encoding'], 0)
+        encoding = Id3Encoding.from_config(config.setting['id3v2_encoding'])
 
         if 'tracknumber' in metadata:
             if 'totaltracks' in metadata:
                 text = '%s/%s' % (metadata['tracknumber'], metadata['totaltracks'])
             else:
                 text = metadata['tracknumber']
-            tags.add(id3.TRCK(encoding=0, text=id3text(text, 0)))
+            tags.add(id3.TRCK(encoding=Id3Encoding.LATIN1, text=id3text(text, Id3Encoding.LATIN1)))
 
         if 'discnumber' in metadata:
             if 'totaldiscs' in metadata:
                 text = '%s/%s' % (metadata['discnumber'], metadata['totaldiscs'])
             else:
                 text = metadata['discnumber']
-            tags.add(id3.TPOS(encoding=0, text=id3text(text, 0)))
+            tags.add(id3.TPOS(encoding=Id3Encoding.LATIN1, text=id3text(text, Id3Encoding.LATIN1)))
 
         if 'movementnumber' in metadata:
             if 'movementtotal' in metadata:
                 text = '%s/%s' % (metadata['movementnumber'], metadata['movementtotal'])
             else:
                 text = metadata['movementnumber']
-            tags.add(id3.MVIN(encoding=0, text=id3text(text, 0)))
+            tags.add(id3.MVIN(encoding=Id3Encoding.LATIN1, text=id3text(text, Id3Encoding.LATIN1)))
 
         # This is necessary because mutagens HashKey for APIC frames only
         # includes the FrameID (APIC) and description - it's basically
@@ -427,10 +441,10 @@ class ID3File(File):
                 else:
                     desctag = "(%i)" % counters[desc]
             counters[desc] += 1
-            tags.add(id3.APIC(encoding=0,
+            tags.add(id3.APIC(encoding=Id3Encoding.LATIN1,
                               mime=image.mimetype,
                               type=image_type_as_id3_num(image.maintype),
-                              desc=id3text(desctag, 0),
+                              desc=id3text(desctag, Id3Encoding.LATIN1),
                               data=image.data))
 
         tmcl = mutagen.id3.TMCL(encoding=encoding, people=[])
@@ -457,7 +471,7 @@ class ID3File(File):
                 (lang, desc) = parse_comment_tag(name)
                 if desc.lower()[:4] == 'itun':
                     tags.delall('COMM:' + desc)
-                    tags.add(id3.COMM(encoding=0, desc=desc, lang='eng', text=[v + '\x00' for v in values]))
+                    tags.add(id3.COMM(encoding=Id3Encoding.LATIN1, desc=desc, lang='eng', text=[v + '\x00' for v in values]))
                 else:
                     tags.add(id3.COMM(encoding=encoding, desc=desc, lang=lang, text=values))
             elif name.startswith('lyrics:') or name == 'lyrics':
@@ -473,7 +487,7 @@ class ID3File(File):
             elif name == 'musicbrainz_recordingid':
                 tags.add(id3.UFID(owner='http://musicbrainz.org', data=bytes(values[0], 'ascii')))
             elif name == '~rating':
-                rating_user_email = id3text(config.setting['rating_user_email'], 0)
+                rating_user_email = id3text(config.setting['rating_user_email'], Id3Encoding.LATIN1)
                 # Search for an existing POPM frame to get the current playcount
                 for frame in tags.values():
                     if frame.FrameID == 'POPM' and frame.email == rating_user_email:
@@ -597,7 +611,7 @@ class ID3File(File):
                     tags.delall(real_name)
                     tags.delall('TXXX:' + self.__rtranslate_freetext[name])
                 elif real_name == 'POPM':
-                    rating_user_email = id3text(config.setting['rating_user_email'], 0)
+                    rating_user_email = id3text(config.setting['rating_user_email'], Id3Encoding.LATIN1)
                     for key, frame in list(tags.items()):
                         if frame.FrameID == 'POPM' and frame.email == rating_user_email:
                             del tags[key]
