@@ -1,3 +1,14 @@
+# Version 2.6.4 - 2021-10-06
+
+## Bugfixes
+
+- [PICARD-2199](https://tickets.metabrainz.org/browse/PICARD-2199) - Saving ID3 ratings fails, if rating e-mail contains non latin-1 characters
+- [PICARD-2200](https://tickets.metabrainz.org/browse/PICARD-2200) - Copy and pasting function names from inline scripting docs can copy Unicode left-to-right mark
+- [PICARD-2230](https://tickets.metabrainz.org/browse/PICARD-2230) - Picard fails to start on Windows if the hostname contains non-ASCII characters and browser integration is enabled
+- [PICARD-2269](https://tickets.metabrainz.org/browse/PICARD-2269) - "TypeError: arguments did not match any overloaded call" with Python 3.10
+- [PICARD-2274](https://tickets.metabrainz.org/browse/PICARD-2274) - Picard 2.6.3 crashes when track is removed or moved during lookup
+
+
 # Version 2.6.3 - 2021-06-07
 
 ## Bugfixes
