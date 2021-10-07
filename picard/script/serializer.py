@@ -189,6 +189,7 @@ class PicardScript():
             dict: Dictionary of the object's OUTPUT_FIELDS
         """
         items = {key: getattr(self, key) for key in self.OUTPUT_FIELDS}
+        items["description"] = str(items["description"])
         items["script"] = str(items["script"])
         return items
 
