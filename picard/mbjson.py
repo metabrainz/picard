@@ -456,6 +456,8 @@ def work_to_metadata(work, m):
         m.add_unique("language", work['language'])
     if 'title' in work:
         m.add_unique("work", work['title'])
+    if 'disambiguation' in work:
+        m.add_unique("~workcomment", work['disambiguation'])
     if 'relations' in work:
         _relations_to_metadata(work['relations'], m)
 
