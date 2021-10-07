@@ -191,6 +191,7 @@ class RecordingTest(MBJSONTest):
         self.assertEqual(m['performer:guitar family'], 'Ed Sheeran')
         self.assertEqual(m['title'], 'Thinking Out Loud')
         self.assertEqual(m['work'], 'Thinking Out Loud')
+        self.assertEqual(m['~workcomment'], 'Ed Sheeran song')
         self.assertEqual(m['writer'], 'Ed Sheeran; Amy Wadge')
         self.assertEqual(m['~artists_sort'], 'Sheeran, Ed')
         self.assertEqual(m['~length'], '4:41')
