@@ -1,3 +1,67 @@
+# Version 2.7.0b1 - 2021-10-07
+
+## Bugfixes
+
+- [PICARD-157](https://tickets.metabrainz.org/browse/PICARD-157) - "Translate artist names to this locale where possible" also translates ones already in the correct locale
+- [PICARD-1645](https://tickets.metabrainz.org/browse/PICARD-1645) - Picard doesn't respect MusicBrainz server settings for the CD lookup in browser functionality
+- [PICARD-2189](https://tickets.metabrainz.org/browse/PICARD-2189) - Network cache directory at wrong location on Windows
+- [PICARD-2217](https://tickets.metabrainz.org/browse/PICARD-2217) - `$performer()` pattern matches full tag name
+- [PICARD-2233](https://tickets.metabrainz.org/browse/PICARD-2233) - Composer Sort Order doesn't use the artist sort name when the "credited as" text is populated
+- [PICARD-2236](https://tickets.metabrainz.org/browse/PICARD-2236) - Renaming files with "replace non-ascii" treats fullwidth slash U+FF0F as directory separator
+- [PICARD-2261](https://tickets.metabrainz.org/browse/PICARD-2261) - Any tagger script causes multi-line fields to become changed
+- [PICARD-2276](https://tickets.metabrainz.org/browse/PICARD-2276) - Fix browser integration on Windows if hostname contains non-ASCII characters
+
+## New Features
+
+- [PICARD-9](https://tickets.metabrainz.org/browse/PICARD-9) - Options profiles / quick presets
+- [PICARD-257](https://tickets.metabrainz.org/browse/PICARD-257) - Option to preserve artwork when selecting "clear existing tags"
+- [PICARD-1127](https://tickets.metabrainz.org/browse/PICARD-1127) - Filename presets
+- [PICARD-1734](https://tickets.metabrainz.org/browse/PICARD-1734) - Add [AcousticBrainz](https://acousticbrainz.org) analyzer features
+- [PICARD-2165](https://tickets.metabrainz.org/browse/PICARD-2165) - Add `$is_multi()` function to test if a variable is multi-value
+- [PICARD-2203](https://tickets.metabrainz.org/browse/PICARD-2203) - Integrate add cluster as release functionality into Picard
+- [PICARD-2204](https://tickets.metabrainz.org/browse/PICARD-2204) - Support unicode escape sequences in tagger scripts
+- [PICARD-2213](https://tickets.metabrainz.org/browse/PICARD-2213) - Allow naming script import/export as YAML scripting package
+- [PICARD-2277](https://tickets.metabrainz.org/browse/PICARD-2277) - When translating artist names ignore selected scripts
+- [PICARD-2279](https://tickets.metabrainz.org/browse/PICARD-2279) - Allow saving AcoustID fingerprint in `acoustid_fingerprint` tag
+
+## Tasks
+
+- [PICARD-2231](https://tickets.metabrainz.org/browse/PICARD-2231) - Fix packaging Picard on Windows with Python 3.8 or later
+
+## Improvements
+
+- [PICARD-226](https://tickets.metabrainz.org/browse/PICARD-226) - Cluster automatically
+- [PICARD-412](https://tickets.metabrainz.org/browse/PICARD-412) - Allow several locales to be selected for "Translate artist names to this locale where possible"
+- [PICARD-524](https://tickets.metabrainz.org/browse/PICARD-524) - Ability to have more that one rename script and choose desired
+- [PICARD-563](https://tickets.metabrainz.org/browse/PICARD-563) - Pad disc number in default renaming script if more than 9 discs
+- [PICARD-1568](https://tickets.metabrainz.org/browse/PICARD-1568) - Improve parsing track number and title from filename
+- [PICARD-1718](https://tickets.metabrainz.org/browse/PICARD-1718) - Display and log crash details
+- [PICARD-2150](https://tickets.metabrainz.org/browse/PICARD-2150) - Option to show or hide the tag editor
+- [PICARD-2151](https://tickets.metabrainz.org/browse/PICARD-2151) - Provide functions `$year()`, `$month()`, `$day()`
+- [PICARD-2171](https://tickets.metabrainz.org/browse/PICARD-2171) - Make guessing title from filename if title is empty optional
+- [PICARD-2174](https://tickets.metabrainz.org/browse/PICARD-2174) - Optimize metadata view displaying format specific metadata
+- [PICARD-2176](https://tickets.metabrainz.org/browse/PICARD-2176) - Add column to see if cover art is present
+- [PICARD-2178](https://tickets.metabrainz.org/browse/PICARD-2178) - Select random sample of loaded files to use as renaming examples
+- [PICARD-2179](https://tickets.metabrainz.org/browse/PICARD-2179) - Refactor Options > File naming
+- [PICARD-2181](https://tickets.metabrainz.org/browse/PICARD-2181) - Support Markdown formatting for plugin descriptions
+- [PICARD-2184](https://tickets.metabrainz.org/browse/PICARD-2184) - Allow fully silent install using the Windows installer
+- [PICARD-2198](https://tickets.metabrainz.org/browse/PICARD-2198) - Update formats for Tefifon and 5.25" Floppy Disk
+- [PICARD-2201](https://tickets.metabrainz.org/browse/PICARD-2201) - Add help button to "Tags from file names" dialog
+- [PICARD-2207](https://tickets.metabrainz.org/browse/PICARD-2207) - Script editor: Show hover tooltip on Unicode escape sequences and functions
+- [PICARD-2218](https://tickets.metabrainz.org/browse/PICARD-2218) - `$performer()` should allow regular expressions
+- [PICARD-2220](https://tickets.metabrainz.org/browse/PICARD-2220) - Set default file extension for files with empty extension
+- [PICARD-2232](https://tickets.metabrainz.org/browse/PICARD-2232) - Allow data submission to unofficial server
+- [PICARD-2237](https://tickets.metabrainz.org/browse/PICARD-2237) - Realistic progress and ETA
+- [PICARD-2248](https://tickets.metabrainz.org/browse/PICARD-2248) - Lazily initialize the file browser on first display
+- [PICARD-2251](https://tickets.metabrainz.org/browse/PICARD-2251) - Add ability to import/export tagging scripts
+- [PICARD-2263](https://tickets.metabrainz.org/browse/PICARD-2263) - Performers without role do not get saved to `TMCL` (`TIPL` respectively) frames
+- [PICARD-2266](https://tickets.metabrainz.org/browse/PICARD-2266) - Add already mapped tags `gapless`, `podcast`, `podcasturl`, `show` and `showsort` to list of known tags
+- [PICARD-2271](https://tickets.metabrainz.org/browse/PICARD-2271) - Allow removing obsolete option settings from configuration INI file
+- [PICARD-2273](https://tickets.metabrainz.org/browse/PICARD-2273) - Set `acoustid_id` tag also if AcoustIDs were found, but no recordings are attached
+- [PICARD-2278](https://tickets.metabrainz.org/browse/PICARD-2278) - Show the path and name of the configuration currently used
+- [PICARD-2288](https://tickets.metabrainz.org/browse/PICARD-2288) - Add variable `%_workcomment%` for the work disambiguation comment
+
+
 # Version 2.6.4 - 2021-10-06
 
 ## Bugfixes
