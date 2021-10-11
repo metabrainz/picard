@@ -59,7 +59,6 @@ jobs:
       run: |
         python3 setup.py patch_version --platform=$BUILD_NUMBER.$(git rev-parse --short HEAD)
     - name: Compile and install PyInstaller
-      if: matrix.macos-deployment-version == '10.14'
       run: |
         git clone --depth 1 --branch "$PYINSTALLER_VERSION" https://github.com/pyinstaller/pyinstaller.git pyinstaller
         cd pyinstaller/bootloader
