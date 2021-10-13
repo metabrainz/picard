@@ -84,16 +84,18 @@ class CoverArtProviderLocal(CoverArtProvider):
 
     def queue_images(self):
         config = get_config()
-        _match_re = re.compile(config.setting['local_cover_regex'], re.IGNORECASE)
-        dirs_done = set()
+        regex = config.setting['local_cover_regex']
+        if regex:
+            _match_re = re.compile(regex, re.IGNORECASE)
+            dirs_done = set()
 
-        for file in self.album.iterfiles():
-            current_dir = os.path.dirname(file.filename)
-            if current_dir in dirs_done:
-                continue
-            dirs_done.add(current_dir)
-            for image in self.find_local_images(current_dir, _match_re):
-                self.queue_put(image)
+            for file in self.album.iterfiles():
+                current_dir = os.path.dirname(file.filename)
+                if current_dir in dirs_done:
+                    continue
+                dirs_done.add(current_dir)
+                for image in self.find_local_images(current_dir, _match_re):
+                    self.queue_put(image)
         return CoverArtProvider.FINISHED
 
     def get_types(self, string):
