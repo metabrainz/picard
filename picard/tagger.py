@@ -427,7 +427,7 @@ class Tagger(QtWidgets.QApplication):
             return 1
         return super().event(event)
 
-    def _file_loaded(self, file, target=None, remove_file=False, new_files=None):
+    def _file_loaded(self, file, target=None, remove_file=False, unmatched_files=None):
         config = get_config()
         self._pending_files_count -= 1
         if self._pending_files_count == 0:
@@ -475,8 +475,8 @@ class Tagger(QtWidgets.QApplication):
             if target != self.unclustered_files:
                 file_moved = True
 
-        if file_moved:
-            new_files.remove(file)
+        if not file_moved and unmatched_files is not None:
+            unmatched_files.append(file)
 
         # fallback on analyze if nothing else worked
         if not file_moved and config.setting['analyze_new_files'] and file.can_analyze():
@@ -484,8 +484,8 @@ class Tagger(QtWidgets.QApplication):
             self.analyze([file])
 
         # Auto cluster newly added files if they are not explicitly moved elsewhere
-        if self._pending_files_count == 0 and new_files and config.setting["cluster_new_files"]:
-            self.cluster(new_files)
+        if self._pending_files_count == 0 and unmatched_files and config.setting["cluster_new_files"]:
+            self.cluster(unmatched_files)
 
     def move_file(self, file, target):
         if target is None:
@@ -565,8 +565,9 @@ class Tagger(QtWidgets.QApplication):
             new_files.sort(key=lambda x: x.filename)
             self.window.set_sorting(False)
             self._pending_files_count += len(new_files)
+            unmatched_files = []
             for i, file in enumerate(new_files):
-                file.load(partial(self._file_loaded, target=target, new_files=new_files))
+                file.load(partial(self._file_loaded, target=target, unmatched_files=unmatched_files))
                 # Calling processEvents helps processing the _file_loaded
                 # callbacks in between, which keeps the UI more responsive.
                 # Avoid calling it to often to not slow down the loading to much
