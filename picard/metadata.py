@@ -46,6 +46,7 @@ from functools import partial
 from PyQt5.QtCore import QObject
 
 from picard.config import get_config
+from picard.const import VARIOUS_ARTISTS_ID
 from picard.mbjson import (
     artist_credit_from_node,
     get_score,
@@ -253,8 +254,22 @@ class Metadata(MutableMapping):
 
         if "albumartist" in self and "albumartist" in weights:
             a = self["albumartist"]
-            b = artist_credit_from_node(release['artist-credit'])[0]
-            parts.append((similarity2(a, b), weights["albumartist"]))
+            release_artists = release['artist-credit']
+            b = artist_credit_from_node(release_artists)[0]
+            artist_weight = weights["albumartist"]
+            if a.lower() in {'various', 'various artists'}:
+                # if artist in tag is 'various' or 'various artists',
+                # it is very likely we look for a VA compilation
+                # so increase the artist's weight
+                artist_weight *= 2
+            if release_artists[0]['artist']['id'] == VARIOUS_ARTISTS_ID:
+                # it is fairly common VA release are tagged with label's name
+                # so if a release is credited to VA, assume it is similar
+                # to artist in tag
+                sim = 1.0
+            else:
+                sim = similarity2(a, b)
+            parts.append((sim, artist_weight))
 
         if "totaltracks" in weights:
             try:
