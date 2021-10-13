@@ -80,32 +80,44 @@ class CoverArtProviderLocal(CoverArtProvider):
 
     _types_split_re = re.compile('[^a-z0-9]', re.IGNORECASE)
     _known_types = set([t['name'] for t in CAA_TYPES])
+    _default_types = ['front']
 
     def queue_images(self):
         config = get_config()
-        _match_re = re.compile(config.setting['local_cover_regex'], re.IGNORECASE)
-        dirs_done = set()
+        regex = config.setting['local_cover_regex']
+        if regex:
+            _match_re = re.compile(regex, re.IGNORECASE)
+            dirs_done = set()
 
-        for file in self.album.iterfiles():
-            current_dir = os.path.dirname(file.filename)
-            if current_dir in dirs_done:
-                continue
-            dirs_done.add(current_dir)
-            for root, dirs, files in os.walk(current_dir):
-                for filename in files:
-                    m = _match_re.search(filename)
-                    if not m:
-                        continue
-                    filepath = os.path.join(current_dir, root, filename)
-                    if os.path.exists(filepath):
-                        types = self.get_types(m.group(1)) or ['front']
-                        self.queue_put(
-                            LocalFileCoverArtImage(filepath,
-                                                   types=types,
-                                                   support_types=True,
-                                                   support_multi_types=True))
+            for file in self.album.iterfiles():
+                current_dir = os.path.dirname(file.filename)
+                if current_dir in dirs_done:
+                    continue
+                dirs_done.add(current_dir)
+                for image in self.find_local_images(current_dir, _match_re):
+                    self.queue_put(image)
         return CoverArtProvider.FINISHED
 
     def get_types(self, string):
         found = set([x.lower() for x in self._types_split_re.split(string) if x])
         return list(found.intersection(self._known_types))
+
+    def find_local_images(self, current_dir, match_re):
+        for root, dirs, files in os.walk(current_dir):
+            for filename in files:
+                m = match_re.search(filename)
+                if not m:
+                    continue
+                filepath = os.path.join(current_dir, root, filename)
+                if not os.path.exists(filepath):
+                    continue
+                try:
+                    type_from_filename = self.get_types(m.group(1))
+                except IndexError:
+                    type_from_filename = []
+                yield LocalFileCoverArtImage(
+                    filepath,
+                    types=type_from_filename or self._default_types,
+                    support_types=True,
+                    support_multi_types=True
+                )
