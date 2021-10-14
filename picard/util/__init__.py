@@ -789,7 +789,9 @@ def pattern_as_regex(pattern, allow_wildcards=False, flags=0):
     - If `allow_wildcards` is False a regex matching the literal string is returned
 
     Wildcard matching currently supports these characters:
-    - `*`: Matches an arbitrary number of characters or none, e.g. `foo*`
+    - `*`: Matches an arbitrary number of characters or none, e.g. `fo*` matches "foo" or "foot".
+    - `?`: Matches exactly one character, e.g. `fo?` matches "foo" or "for".
+    - `?`, `*` and `\\` can be escaped with a backslash \\ to match the literal character, e.g. `fo\\?` matches "fo?".
 
     Args:
         pattern: The pattern as a string
@@ -807,12 +809,44 @@ def pattern_as_regex(pattern, allow_wildcards=False, flags=0):
             flags |= re.IGNORECASE
         if 'm' in extra_flags:
             flags |= re.MULTILINE
-        return re.compile(plain_pattern[1:-1], flags)
+        regex = plain_pattern[1:-1]
     elif allow_wildcards:
-        # FIXME?: only support '*' (not '?' or '[abc]')
-        # replace multiple '*' by one
-        pattern = re.sub(r'\*+', '*', pattern)
-        regex = '.*'.join([re.escape(x) for x in pattern.split('*')])
-        return re.compile('^' + regex + '$', flags)
+        regex = '^' + wildcards_to_regex_pattern(pattern) + '$'
     else:
-        return re.compile(re.escape(pattern), flags)
+        regex = re.escape(pattern)
+    return re.compile(regex, flags)
+
+
+def wildcards_to_regex_pattern(pattern):
+    """Converts a pattern with shell like wildcards into a regular expression string.
+
+    The following syntax is supported:
+    - `*`: Matches an arbitrary number of characters or none, e.g. `fo*` matches "foo" or "foot".
+    - `?`: Matches exactly one character, e.g. `fo?` matches "foo" or "for".
+    - `?`, `*` and `\\` can be escaped with a backslash \\ to match the literal character, e.g. `fo\\?` matches "fo?".
+
+    Args:
+        pattern: The pattern as a string
+
+    Returns: A string with a valid regular expression.
+    """
+    regex = []
+    escape = False
+    for c in pattern:
+        if escape:
+            if c in ('*', '?', '\\'):
+                part = '\\' + c
+            else:
+                part = re.escape('\\' + c)
+            escape = False
+        elif c == '\\':
+            escape = True
+            continue
+        elif c == '*':
+            part = '.*'
+        elif c == '?':
+            part = '.'
+        else:
+            part = re.escape(c)
+        regex.append(part)
+    return ''.join(regex)

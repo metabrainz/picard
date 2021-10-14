@@ -52,6 +52,7 @@ from picard.util import (
     tracknum_and_title_from_filename,
     tracknum_from_filename,
     uniqify,
+    wildcards_to_regex_pattern,
 )
 
 
@@ -568,8 +569,8 @@ class PatternAsRegexTest(PicardTestCase):
             pattern_as_regex(r'/^foo(.*/')
 
     def test_wildcard(self):
-        regex = pattern_as_regex(r'(foo)*', allow_wildcards=True)
-        self.assertEqual(r'^\(foo\).*$', regex.pattern)
+        regex = pattern_as_regex(r'(foo?)\\*\?\*', allow_wildcards=True)
+        self.assertEqual(r'^\(foo.\)\\.*\?\*$', regex.pattern)
         self.assertFalse(regex.flags & re.IGNORECASE)
         self.assertFalse(regex.flags & re.MULTILINE)
 
@@ -590,3 +591,24 @@ class PatternAsRegexTest(PicardTestCase):
         self.assertEqual(r'\(foo\)\*', regex.pattern)
         self.assertTrue(regex.flags & re.IGNORECASE)
         self.assertTrue(regex.flags & re.MULTILINE)
+
+
+class WildcardsToRegexPatternTest(PicardTestCase):
+
+    def test_wildcard_pattern(self):
+        pattern = 'fo?o*'
+        regex = wildcards_to_regex_pattern(pattern)
+        self.assertEqual('fo.o.*', regex)
+        re.compile(regex)
+
+    def test_escape(self):
+        pattern = 'f\\?o\\*o?o*'
+        regex = wildcards_to_regex_pattern(pattern)
+        self.assertEqual('f\\?o\\*o.o.*', regex)
+        re.compile(regex)
+
+    def test_special_chars(self):
+        pattern = '[]()\\^$|'
+        regex = wildcards_to_regex_pattern(pattern)
+        self.assertEqual(re.escape(pattern), regex)
+        re.compile(regex)
