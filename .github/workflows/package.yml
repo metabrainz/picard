@@ -62,7 +62,7 @@ jobs:
       run: |
         git clone --depth 1 --branch "$PYINSTALLER_VERSION" https://github.com/pyinstaller/pyinstaller.git pyinstaller
         cd pyinstaller/bootloader
-        python3 ./waf all
+        python3 ./waf --verbose all
         cd ..
         pip3 install .
       env:
