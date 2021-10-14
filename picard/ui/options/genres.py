@@ -61,6 +61,8 @@ comment
 <p>
 <b>-*word</b>: exclude all genres ending with <i>word</i><br/>
 <b>+word*</b>: include all genres starting with <i>word</i><br/>
+<b>+wor?</b>: include all genres starting with <i>wor</i> and ending with an arbitrary character<br/>
+<b>+wor[dk]</b>: include all genres starting with <i>wor</i> and ending with <i>d</i> or <i>k</i><br/>
 <b>-w*rd</b>: exclude all genres starting with <i>w</i> and ending with <i>rd</i>
 </p>
 <p><u>Regular expressions filtering (Python re syntax):</u></p>
