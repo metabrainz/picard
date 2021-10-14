@@ -126,7 +126,7 @@ class MaintenanceOptionsPage(OptionsPage):
             tableitem = QtWidgets.QTableWidgetItem(option_name)
             tableitem.setData(QtCore.Qt.UserRole, option_name)
             tableitem.setFlags(tableitem.flags() | QtCore.Qt.ItemIsUserCheckable)
-            tableitem.setCheckState(False)
+            tableitem.setCheckState(QtCore.Qt.Unchecked)
             self.ui.tableWidget.setItem(row, 0, tableitem)
             tableitem = QtWidgets.QTextEdit()
             tableitem.setFrameStyle(QtWidgets.QFrame.NoFrame)
@@ -142,7 +142,7 @@ class MaintenanceOptionsPage(OptionsPage):
             self.ui.tableWidget.setRowHeight(row, row_height)
             self.ui.tableWidget.setCellWidget(row, 1, tableitem)
         self.ui.tableWidget.resizeColumnsToContents()
-        self.ui.select_all.setCheckState(False)
+        self.ui.select_all.setCheckState(QtCore.Qt.Unchecked)
         if not len(orphan_options):
             self.ui.select_all.setEnabled(False)
         self.enable_cleanup_changed()
@@ -187,7 +187,7 @@ class MaintenanceOptionsPage(OptionsPage):
         return repr(value)
 
     def enable_cleanup_changed(self):
-        state = self.ui.enable_cleanup.checkState()
+        state = self.ui.enable_cleanup.checkState() == QtCore.Qt.Checked
         self.ui.select_all.setEnabled(state)
         self.ui.tableWidget.setEnabled(state)
 
