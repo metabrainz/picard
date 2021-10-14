@@ -140,6 +140,7 @@ else:
             'LSMinimumSystemVersion': os.environ.get('MACOSX_DEPLOYMENT_TARGET', '10.12'),
             'NSHighResolutionCapable': 'True',
             'NSPrincipalClass': 'NSApplication',
+            'NSRequiresAquaSystemAppearance': False,
             'CFBundleDocumentTypes': [{
                 # Add UTIs understood by macOS
                 'LSItemContentTypes': [
