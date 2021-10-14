@@ -9,6 +9,12 @@ jobs:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
         python-version: [3.6, 3.7, 3.8, 3.9]
+        exclude:
+        - os: macos-latest
+          python-version: 3.6
+        include:
+        - os: macos-10.15
+          python-version: 3.6
     env:
       CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
