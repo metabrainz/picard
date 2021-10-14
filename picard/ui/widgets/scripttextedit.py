@@ -91,29 +91,34 @@ EXTRA_VARIABLES = (
 )
 
 
+def find_regex_index(regex, text, start=0):
+    match = regex.search(text[start:])
+    return start + match.start() if match else -1
+
+
 class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
     def __init__(self, document):
         super().__init__(document)
         syntax_theme = theme.syntax_theme
-        self.func_re = QtCore.QRegExp(r"\$(?!noop)[_a-zA-Z0-9]*\(")
+        self.func_re = re.compile(r"\$(?!noop)[_a-zA-Z0-9]*\(")
         self.func_fmt = QtGui.QTextCharFormat()
         self.func_fmt.setFontWeight(QtGui.QFont.Bold)
         self.func_fmt.setForeground(syntax_theme.func)
-        self.var_re = QtCore.QRegExp(r"%[_a-zA-Z0-9:]*%")
+        self.var_re = re.compile(r"%[_a-zA-Z0-9:]*%")
         self.var_fmt = QtGui.QTextCharFormat()
         self.var_fmt.setForeground(syntax_theme.var)
-        self.unicode_re = QtCore.QRegExp(r"\\u[a-fA-F0-9]{4}")
+        self.unicode_re = re.compile(r"\\u[a-fA-F0-9]{4}")
         self.unicode_fmt = QtGui.QTextCharFormat()
         self.unicode_fmt.setForeground(syntax_theme.escape)
-        self.escape_re = QtCore.QRegExp(r"\\[^u]")
+        self.escape_re = re.compile(r"\\[^u]")
         self.escape_fmt = QtGui.QTextCharFormat()
         self.escape_fmt.setForeground(syntax_theme.escape)
-        self.special_re = QtCore.QRegExp(r"[^\\][(),]")
+        self.special_re = re.compile(r"[^\\][(),]")
         self.special_fmt = QtGui.QTextCharFormat()
         self.special_fmt.setForeground(syntax_theme.special)
-        self.bracket_re = QtCore.QRegExp(r"[()]")
-        self.noop_re = QtCore.QRegExp(r"\$noop\(")
+        self.bracket_re = re.compile(r"[()]")
+        self.noop_re = re.compile(r"\$noop\(")
         self.noop_fmt = QtGui.QTextCharFormat()
         self.noop_fmt.setFontWeight(QtGui.QFont.Bold)
         self.noop_fmt.setFontItalic(True)
@@ -130,18 +135,17 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         self.setCurrentBlockState(0)
 
         for expr, fmt, a, b in self.rules:
-            index = expr.indexIn(text)
-            while index >= 0:
-                length = expr.matchedLength()
+            for match in expr.finditer(text):
+                index = match.start()
+                length = match.end() - match.start()
                 self.setFormat(index + a, length + b, fmt)
-                index = expr.indexIn(text, index + length + b)
 
         # Ignore everything if we're already in a noop function
-        index = self.noop_re.indexIn(text) if self.previousBlockState() <= 0 else 0
+        index = find_regex_index(self.noop_re, text) if self.previousBlockState() <= 0 else 0
         open_brackets = self.previousBlockState() if self.previousBlockState() > 0 else 0
         text_length = len(text)
         while index >= 0:
-            next_index = self.bracket_re.indexIn(text, index)
+            next_index = find_regex_index(self.bracket_re, text, index)
 
             # Skip escaped brackets
             if next_index > 0 and text[next_index - 1] == '\\':
@@ -164,7 +168,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
             # Check for next noop operation, necessary for multiple noops in one line
             if open_brackets == 0:
-                next_index = self.noop_re.indexIn(text, next_index)
+                next_index = find_regex_index(self.noop_re, text, next_index)
 
             index = next_index + 1 if next_index > -1 and next_index < text_length else -1
 
