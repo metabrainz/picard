@@ -602,13 +602,31 @@ class WildcardsToRegexPatternTest(PicardTestCase):
         re.compile(regex)
 
     def test_escape(self):
-        pattern = 'f\\?o\\*o?o*'
+        pattern = 'f\\?o\\*o?o*\\[o'
         regex = wildcards_to_regex_pattern(pattern)
-        self.assertEqual('f\\?o\\*o.o.*', regex)
+        self.assertEqual('f\\?o\\*o.o.*\\[o', regex)
+        re.compile(regex)
+
+    def test_character_group(self):
+        pattern = '[abc*?xyz]]'
+        regex = wildcards_to_regex_pattern(pattern)
+        self.assertEqual('[abc*?xyz]\\]', regex)
+        re.compile(regex)
+
+    def test_character_group_escape_square_brackets(self):
+        pattern = '[a[b\\]c]'
+        regex = wildcards_to_regex_pattern(pattern)
+        self.assertEqual('[a[b\\]c]', regex)
+        re.compile(regex)
+
+    def test_open_character_group(self):
+        pattern = '[abc*?xyz['
+        regex = wildcards_to_regex_pattern(pattern)
+        self.assertEqual('\\[abc.*.xyz\\[', regex)
         re.compile(regex)
 
     def test_special_chars(self):
-        pattern = '[]()\\^$|'
+        pattern = ']()\\^$|'
         regex = wildcards_to_regex_pattern(pattern)
         self.assertEqual(re.escape(pattern), regex)
         re.compile(regex)

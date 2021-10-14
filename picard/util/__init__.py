@@ -791,7 +791,9 @@ def pattern_as_regex(pattern, allow_wildcards=False, flags=0):
     Wildcard matching currently supports these characters:
     - `*`: Matches an arbitrary number of characters or none, e.g. `fo*` matches "foo" or "foot".
     - `?`: Matches exactly one character, e.g. `fo?` matches "foo" or "for".
-    - `?`, `*` and `\\` can be escaped with a backslash \\ to match the literal character, e.g. `fo\\?` matches "fo?".
+    - `[...]`: Matches any character in the set, e.g. `[fo?]` matches all of "f", "o" and "?".
+    - `?`, `*`, `[`, `]` and `\\` can be escaped with a backslash \\ to match the literal
+      character, e.g. `fo\\?` matches "fo?".
 
     Args:
         pattern: The pattern as a string
@@ -823,6 +825,7 @@ def wildcards_to_regex_pattern(pattern):
     The following syntax is supported:
     - `*`: Matches an arbitrary number of characters or none, e.g. `fo*` matches "foo" or "foot".
     - `?`: Matches exactly one character, e.g. `fo?` matches "foo" or "for".
+    - `[...]`
     - `?`, `*` and `\\` can be escaped with a backslash \\ to match the literal character, e.g. `fo\\?` matches "fo?".
 
     Args:
@@ -831,16 +834,37 @@ def wildcards_to_regex_pattern(pattern):
     Returns: A string with a valid regular expression.
     """
     regex = []
+    group = None
     escape = False
     for c in pattern:
-        if escape:
-            if c in ('*', '?', '\\'):
+        if group is not None:
+            if escape:
+                if c in ('\\', '[', ']'):
+                    c = '\\' + c
+                else:
+                    group.append('\\\\')
+                escape = False
+            if c == ']':
+                group.append(c)
+                part = ''.join(group)
+                group = None
+            elif c == '\\':
+                escape = True
+                continue
+            else:
+                group.append(c)
+                continue
+        elif escape:
+            if c in ('*', '?', '\\', '[', ']'):
                 part = '\\' + c
             else:
                 part = re.escape('\\' + c)
             escape = False
         elif c == '\\':
             escape = True
+            continue
+        elif c == '[':
+            group = ['[']
             continue
         elif c == '*':
             part = '.*'
@@ -849,4 +873,10 @@ def wildcards_to_regex_pattern(pattern):
         else:
             part = re.escape(c)
         regex.append(part)
+
+    # There might be an unclosed character group. Interpret the starting
+    # bracket of the group as a literal bracket and re-evaluate the rest.
+    if group is not None:
+        regex.append('\\[')
+        regex.append(wildcards_to_regex_pattern(''.join(group[1:])))
     return ''.join(regex)
