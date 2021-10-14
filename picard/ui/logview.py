@@ -28,6 +28,7 @@
 
 from functools import partial
 import os
+import re
 
 from PyQt5 import (
     QtCore,
@@ -40,7 +41,10 @@ from picard.config import (
     IntOption,
     get_config,
 )
-from picard.util import reconnect
+from picard.util import (
+    reconnect,
+    wildcards_to_regex_pattern,
+)
 
 from picard.ui import (
     FONT_FAMILY_MONOSPACE,
@@ -120,19 +124,13 @@ class Highlighter(QtGui.QSyntaxHighlighter):
 
         self.fmt = QtGui.QTextCharFormat()
         self.fmt.setBackground(QtCore.Qt.lightGray)
-
-        self.reg = QtCore.QRegExp()
-        self.reg.setPatternSyntax(QtCore.QRegExp.Wildcard)
-        self.reg.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
-        self.reg.setPattern(string)
+        self.reg = re.compile(wildcards_to_regex_pattern(string), re.IGNORECASE)
 
     def highlightBlock(self, text):
-        expression = self.reg
-        index = expression.indexIn(text)
-        while index >= 0:
-            length = expression.matchedLength()
+        for match in self.reg.finditer(text):
+            index = match.start()
+            length = match.end() - match.start()
             self.setFormat(index, length, self.fmt)
-            index = expression.indexIn(text, index + length)
 
 
 class VerbosityMenu(QtWidgets.QMenu):
