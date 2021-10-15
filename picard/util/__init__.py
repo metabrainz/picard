@@ -789,7 +789,11 @@ def pattern_as_regex(pattern, allow_wildcards=False, flags=0):
     - If `allow_wildcards` is False a regex matching the literal string is returned
 
     Wildcard matching currently supports these characters:
-    - `*`: Matches an arbitrary number of characters or none, e.g. `foo*`
+    - `*`: Matches an arbitrary number of characters or none, e.g. `fo*` matches "foo" or "foot".
+    - `?`: Matches exactly one character, e.g. `fo?` matches "foo" or "for".
+    - `[...]`: Matches any character in the set, e.g. `[fo?]` matches all of "f", "o" and "?".
+    - `?`, `*`, `[`, `]` and `\\` can be escaped with a backslash \\ to match the literal
+      character, e.g. `fo\\?` matches "fo?".
 
     Args:
         pattern: The pattern as a string
@@ -807,12 +811,72 @@ def pattern_as_regex(pattern, allow_wildcards=False, flags=0):
             flags |= re.IGNORECASE
         if 'm' in extra_flags:
             flags |= re.MULTILINE
-        return re.compile(plain_pattern[1:-1], flags)
+        regex = plain_pattern[1:-1]
     elif allow_wildcards:
-        # FIXME?: only support '*' (not '?' or '[abc]')
-        # replace multiple '*' by one
-        pattern = re.sub(r'\*+', '*', pattern)
-        regex = '.*'.join([re.escape(x) for x in pattern.split('*')])
-        return re.compile('^' + regex + '$', flags)
+        regex = '^' + wildcards_to_regex_pattern(pattern) + '$'
     else:
-        return re.compile(re.escape(pattern), flags)
+        regex = re.escape(pattern)
+    return re.compile(regex, flags)
+
+
+def wildcards_to_regex_pattern(pattern):
+    """Converts a pattern with shell like wildcards into a regular expression string.
+
+    The following syntax is supported:
+    - `*`: Matches an arbitrary number of characters or none, e.g. `fo*` matches "foo" or "foot".
+    - `?`: Matches exactly one character, e.g. `fo?` matches "foo" or "for".
+    - `[...]`
+    - `?`, `*` and `\\` can be escaped with a backslash \\ to match the literal character, e.g. `fo\\?` matches "fo?".
+
+    Args:
+        pattern: The pattern as a string
+
+    Returns: A string with a valid regular expression.
+    """
+    regex = []
+    group = None
+    escape = False
+    for c in pattern:
+        if group is not None:
+            if escape:
+                if c in ('\\', '[', ']'):
+                    c = '\\' + c
+                else:
+                    group.append('\\\\')
+                escape = False
+            if c == ']':
+                group.append(c)
+                part = ''.join(group)
+                group = None
+            elif c == '\\':
+                escape = True
+                continue
+            else:
+                group.append(c)
+                continue
+        elif escape:
+            if c in ('*', '?', '\\', '[', ']'):
+                part = '\\' + c
+            else:
+                part = re.escape('\\' + c)
+            escape = False
+        elif c == '\\':
+            escape = True
+            continue
+        elif c == '[':
+            group = ['[']
+            continue
+        elif c == '*':
+            part = '.*'
+        elif c == '?':
+            part = '.'
+        else:
+            part = re.escape(c)
+        regex.append(part)
+
+    # There might be an unclosed character group. Interpret the starting
+    # bracket of the group as a literal bracket and re-evaluate the rest.
+    if group is not None:
+        regex.append('\\[')
+        regex.append(wildcards_to_regex_pattern(''.join(group[1:])))
+    return ''.join(regex)
