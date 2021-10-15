@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: picard 2.7.0.dev5\n"
+"Project-Id-Version: picard 2.7.0b1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-09-26 17:28+0200\n"
+"POT-Creation-Date: 2021-10-15 12:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -455,16 +455,16 @@ msgstr ""
 msgid "Authorization code:"
 msgstr ""
 
-#: picard/tagger.py:797
+#: picard/tagger.py:798
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr ""
 
-#: picard/tagger.py:815
+#: picard/tagger.py:816
 msgid "CD Lookup Error"
 msgstr ""
 
-#: picard/tagger.py:816
+#: picard/tagger.py:817
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -472,11 +472,11 @@ msgid ""
 "%s"
 msgstr ""
 
-#: picard/track.py:374
+#: picard/track.py:375
 msgid "[loading recording information]"
 msgstr ""
 
-#: picard/track.py:410
+#: picard/track.py:411
 #, python-format
 msgid "[could not load recording %s]"
 msgstr ""
@@ -3453,78 +3453,78 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr ""
 
-#: picard/script/serializer.py:199
+#: picard/script/serializer.py:200
 #, python-format
 msgid "Error exporting file \"%s\". %s."
 msgstr ""
 
-#: picard/script/serializer.py:206
+#: picard/script/serializer.py:207
 msgid "Export Script File"
 msgstr ""
 
-#: picard/script/serializer.py:228
+#: picard/script/serializer.py:229
 msgid "Export Script"
 msgstr ""
 
-#: picard/script/serializer.py:229
+#: picard/script/serializer.py:230
 #, python-format
 msgid "Script successfully exported to %s"
 msgstr ""
 
-#: picard/script/serializer.py:240
+#: picard/script/serializer.py:241
 #, python-format
 msgid "Error importing \"%s\". %s."
 msgstr ""
 
-#: picard/script/serializer.py:241
+#: picard/script/serializer.py:242
 #, python-format
 msgid "Error decoding \"%s\". %s."
 msgstr ""
 
-#: picard/script/serializer.py:243
+#: picard/script/serializer.py:244
 msgid "Import Script File"
 msgstr ""
 
-#: picard/script/serializer.py:257
+#: picard/script/serializer.py:258
 msgid "The file was empty"
 msgstr ""
 
-#: picard/script/serializer.py:265
+#: picard/script/serializer.py:266
 #, python-format
 msgid "Imported from %s"
 msgstr ""
 
-#: picard/script/serializer.py:283
+#: picard/script/serializer.py:284
 msgid "Argument is not a dictionary"
 msgstr ""
 
-#: picard/script/serializer.py:285 picard/script/serializer.py:331
+#: picard/script/serializer.py:286 picard/script/serializer.py:332
 msgid "Invalid script package"
 msgstr ""
 
-#: picard/script/serializer.py:296
+#: picard/script/serializer.py:297
 #, python-format
 msgid "%s (Copy)"
 msgstr ""
 
-#: picard/script/serializer.py:329
+#: picard/script/serializer.py:330
 msgid "File content not a dictionary"
 msgstr ""
 
-#: picard/script/serializer.py:339 picard/ui/options/scripting.py:186
+#: picard/script/serializer.py:340 picard/ui/options/scripting.py:186
 msgid "Unnamed Script"
 msgstr ""
 
-#: picard/script/serializer.py:349 picard/ui/coverartbox.py:551
+#: picard/script/serializer.py:350 picard/ui/coverartbox.py:551
 #: picard/ui/mainwindow.py:1085 picard/ui/options/scripting.py:131
 msgid "All files"
 msgstr ""
 
-#: picard/script/serializer.py:350 picard/ui/options/scripting.py:132
+#: picard/script/serializer.py:351 picard/ui/options/scripting.py:132
 msgid "Picard script files"
 msgstr ""
 
-#: picard/script/serializer.py:351
+#: picard/script/serializer.py:352
 msgid "Picard script package"
 msgstr ""
 
@@ -4098,56 +4098,56 @@ msgstr ""
 msgid "Unsubmitted features"
 msgstr ""
 
-#: picard/ui/logview.py:165
+#: picard/ui/logview.py:163
 msgid "Log"
 msgstr ""
 
-#: picard/ui/logview.py:175
+#: picard/ui/logview.py:173
 msgid "Verbosity"
 msgstr ""
 
-#: picard/ui/logview.py:185
+#: picard/ui/logview.py:183
 msgid "String to highlight"
 msgstr ""
 
-#: picard/ui/logview.py:190
+#: picard/ui/logview.py:188
 msgid "Highlight"
 msgstr ""
 
-#: picard/ui/logview.py:199
+#: picard/ui/logview.py:197
 msgid "Clear Highlight"
 msgstr ""
 
-#: picard/ui/logview.py:205 picard/ui/logview.py:286
+#: picard/ui/logview.py:203 picard/ui/logview.py:284
 msgid "Clear Log"
 msgstr ""
 
-#: picard/ui/logview.py:210
+#: picard/ui/logview.py:208
 msgid "Save As..."
 msgstr ""
 
-#: picard/ui/logview.py:255 picard/ui/logview.py:262
+#: picard/ui/logview.py:253 picard/ui/logview.py:260
 msgid "Save Log View to File"
 msgstr ""
 
-#: picard/ui/logview.py:263
+#: picard/ui/logview.py:261
 msgid "File already exists, do you really want to save to this file?"
 msgstr ""
 
-#: picard/ui/logview.py:275
+#: picard/ui/logview.py:273
 msgid "Failed to save Log View to file"
 msgstr ""
 
-#: picard/ui/logview.py:276
+#: picard/ui/logview.py:274
 #, python-format
 msgid "Something prevented data to be written to '%s'"
 msgstr ""
 
-#: picard/ui/logview.py:287
+#: picard/ui/logview.py:285
 msgid "Are you sure you want to clear the log?"
 msgstr ""
 
-#: picard/ui/logview.py:322
+#: picard/ui/logview.py:320
 msgid "Activity History"
 msgstr ""
 
@@ -4517,7 +4517,7 @@ msgstr ""
 msgid "Set tags based on the file names"
 msgstr ""
 
-#: picard/ui/mainwindow.py:721 picard/ui/widgets/scripttextedit.py:332
+#: picard/ui/mainwindow.py:721 picard/ui/widgets/scripttextedit.py:336
 msgid "Ctrl+Shift+T"
 msgstr ""
 
@@ -6184,6 +6184,10 @@ msgid ""
 "<p>\n"
 "<b>-*word</b>: exclude all genres ending with <i>word</i><br/>\n"
 "<b>+word*</b>: include all genres starting with <i>word</i><br/>\n"
+"<b>+wor?</b>: include all genres starting with <i>wor</i> and ending with"
+" an arbitrary character<br/>\n"
+"<b>+wor[dk]</b>: include all genres starting with <i>wor</i> and ending "
+"with <i>d</i> or <i>k</i><br/>\n"
 "<b>-w*rd</b>: exclude all genres starting with <i>w</i> and ending with "
 "<i>rd</i>\n"
 "</p>\n"
@@ -6194,7 +6198,7 @@ msgid ""
 "</body></html>"
 msgstr ""
 
-#: picard/ui/options/genres.py:71
+#: picard/ui/options/genres.py:73
 msgid ""
 "<html><head/><body>\n"
 "<p>You can add genres to test filters against, one per line.<br/>\n"
@@ -6207,11 +6211,11 @@ msgid ""
 "</body></html>"
 msgstr ""
 
-#: picard/ui/options/genres.py:85
+#: picard/ui/options/genres.py:87
 msgid "Genres"
 msgstr ""
 
-#: picard/ui/options/genres.py:154
+#: picard/ui/options/genres.py:156
 #, python-format
 msgid "Error line %d: %s"
 msgstr ""
@@ -6753,23 +6757,23 @@ msgstr ""
 msgid "Are you sure you want to remove this script?"
 msgstr ""
 
-#: picard/ui/widgets/scripttextedit.py:320
+#: picard/ui/widgets/scripttextedit.py:324
 msgid "&Word wrap script"
 msgstr ""
 
-#: picard/ui/widgets/scripttextedit.py:321
+#: picard/ui/widgets/scripttextedit.py:325
 msgid "Word wrap long lines in the editor"
 msgstr ""
 
-#: picard/ui/widgets/scripttextedit.py:323
+#: picard/ui/widgets/scripttextedit.py:327
 msgid "Ctrl+Shift+W"
 msgstr ""
 
-#: picard/ui/widgets/scripttextedit.py:329
+#: picard/ui/widgets/scripttextedit.py:333
 msgid "Show help &tooltips"
 msgstr ""
 
-#: picard/ui/widgets/scripttextedit.py:330
+#: picard/ui/widgets/scripttextedit.py:334
 msgid "Show tooltips for script elements"
 msgstr ""
 
