@@ -67,7 +67,7 @@ if os.path.isfile(ab_extractor_name):
 
 runtime_hooks = []
 if os_name == 'Windows':
-    runtime_hooks.append('scripts/pyinstaller/win-console-hook.py')
+    runtime_hooks.append('scripts/pyinstaller/win-startup-hook.py')
 elif os_name == 'Darwin':
     runtime_hooks.append('scripts/pyinstaller/macos-library-path-hook.py')
 if '--onefile' in sys.argv:

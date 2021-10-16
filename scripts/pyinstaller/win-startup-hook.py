@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019, 2021 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,7 +18,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+from ctypes import windll
+import os
 import sys
 
 
@@ -26,8 +27,9 @@ import sys
 # to get stdout / stderr logged to console. This needs to happen before
 # logging gets imported.
 # See https://stackoverflow.com/questions/54536/win32-gui-app-that-writes-usage-text-to-stdout-when-invoked-as-app-exe-help
-if sys.platform == 'win32':
-    from ctypes import windll
-    if windll.kernel32.AttachConsole(-1):
-        sys.stdout = open('CON', 'w')
-        sys.stderr = open('CON', 'w')
+if windll.kernel32.AttachConsole(-1):
+    sys.stdout = open('CON', 'w')
+    sys.stderr = open('CON', 'w')
+
+# Ensure bundled DLLs are loaded
+os.environ['PATH'] = sys._MEIPASS + os.pathsep + os.environ['PATH']
