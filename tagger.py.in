@@ -12,9 +12,6 @@ if getattr(sys, 'frozen', False):
 else:
     basedir = os.path.dirname(os.path.abspath(__file__))
 
-if sys.platform == 'win32':
-    os.environ['PATH'] = basedir + ';' + os.environ['PATH']
-
 try:
     from picard.tagger import main
     main(os.path.join(basedir, 'locale'), %(autoupdate)s)
