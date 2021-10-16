@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import os
 import os.path
 
 from PyQt5.QtCore import (
@@ -37,14 +38,14 @@ QCoreApplication.setOrganizationName(PICARD_ORG_NAME)
 
 
 def config_folder():
-    return os.path.normpath(QStandardPaths.writableLocation(QStandardPaths.AppConfigLocation))
+    return os.path.normpath(os.environ.get('PICARD_CONFIG_DIR', QStandardPaths.writableLocation(QStandardPaths.AppConfigLocation)))
 
 
 def cache_folder():
-    return os.path.normpath(QStandardPaths.writableLocation(QStandardPaths.CacheLocation))
+    return os.path.normpath(os.environ.get('PICARD_CACHE_DIR', QStandardPaths.writableLocation(QStandardPaths.CacheLocation)))
 
 
 def plugin_folder():
     # FIXME: This really should be in QStandardPaths.AppDataLocation instead,
     # but this is a breaking change that requires data migration
-    return os.path.normpath(os.path.join(config_folder(), 'plugins'))
+    return os.path.normpath(os.environ.get('PICARD_PLUGIN_DIR', os.path.join(config_folder(), 'plugins')))

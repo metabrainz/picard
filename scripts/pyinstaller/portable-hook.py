@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019, 2021 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -27,8 +27,6 @@ from picard import (
     PICARD_APP_NAME,
     PICARD_ORG_NAME,
 )
-import picard.const
-import picard.const.appdirs
 
 
 # The portable version stores all data in a folder beside the executable
@@ -41,14 +39,9 @@ if '--config-file' not in sys.argv and '-c' not in sys.argv:
     sys.argv.append('--config-file')
     sys.argv.append(os.path.join(basedir, 'Config.ini'))
 
-# Setup plugin folder
 plugindir = os.path.normpath(os.path.join(basedir, 'Plugins'))
-picard.const.USER_PLUGIN_DIR = plugindir
-
-# Set standard cache location
 cachedir = os.path.normpath(os.path.join(basedir, 'Cache'))
-os.makedirs(cachedir, exist_ok=True)
 
-picard.const.appdirs.config_folder = lambda: basedir
-picard.const.appdirs.cache_folder = lambda: cachedir
-picard.const.appdirs.plugin_folder = lambda: plugindir
+os.environ['PICARD_CONFIG_DIR'] = basedir
+os.environ['PICARD_CACHE_DIR'] = cachedir
+os.environ['PICARD_PLUGIN_DIR'] = plugindir
