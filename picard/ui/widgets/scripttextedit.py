@@ -376,7 +376,7 @@ class ScriptTextEdit(QTextEdit):
             VariableScriptToken(doc, position),
             UnicodeEscapeScriptToken(doc, position)
         }
-        while position and documented_tokens:
+        while position >= 0 and documented_tokens:
             char = doc.characterAt(position)
             for token in list(documented_tokens):
                 if token.is_start_char(char):
