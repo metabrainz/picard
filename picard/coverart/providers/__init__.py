@@ -52,8 +52,10 @@ _cover_art_providers = ExtensionPoint(label='cover_art_providers')
 def register_cover_art_provider(provider):
     _cover_art_providers.register(provider.__module__, provider)
     if hasattr(provider, 'OPTIONS') and provider.OPTIONS:
-        provider.OPTIONS.NAME = provider.name.lower().replace(' ', '_')
-        provider.OPTIONS.TITLE = provider.title
+        if not hasattr(provider.OPTIONS, 'NAME'):
+            provider.OPTIONS.NAME = provider.name.lower().replace(' ', '_')
+        if not hasattr(provider.OPTIONS, 'TITLE'):
+            provider.OPTIONS.TITLE = provider.title
         register_options_page(provider.OPTIONS)
 
 

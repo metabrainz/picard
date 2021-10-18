@@ -431,6 +431,7 @@ class ProviderOptionsCaa(ProviderOptions):
         Options for Cover Art Archive cover art provider
     """
 
+    TITLE = N_("Cover Art Archive")
     HELP_URL = '/config/options_cover_art_archive.html'
 
     options = [
@@ -500,7 +501,7 @@ class CoverArtProviderCaa(CoverArtProvider):
     """Get cover art from Cover Art Archive using release mbid"""
 
     NAME = "Cover Art Archive"
-    TITLE = N_('Cover Art Archive')
+    TITLE = N_('Cover Art Archive: Release')
     OPTIONS = ProviderOptionsCaa
 
     ignore_json_not_found_error = False
