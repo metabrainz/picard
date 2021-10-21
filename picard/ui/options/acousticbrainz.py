@@ -68,7 +68,7 @@ class AcousticBrainzOptionsPage(OptionsPage):
         self._extractor_valid = True
         self.ui = Ui_AcousticBrainzOptionsPage()
         self.ui.setupUi(self)
-        self.ui.use_acousticbrainz.toggled.connect(lambda on: self._acousticbrainz_extractor_check())
+        self.ui.use_acousticbrainz.toggled.connect(self._acousticbrainz_extractor_check)
         self.ui.acousticbrainz_extractor.textEdited.connect(self._acousticbrainz_extractor_check)
         self.ui.acousticbrainz_extractor_browse.clicked.connect(self.acousticbrainz_extractor_browse)
         self.ui.acousticbrainz_extractor_download.clicked.connect(self.acousticbrainz_extractor_download)
