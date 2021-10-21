@@ -68,8 +68,7 @@ class AcousticBrainzOptionsPage(OptionsPage):
         self._extractor_valid = True
         self.ui = Ui_AcousticBrainzOptionsPage()
         self.ui.setupUi(self)
-        self.ui.disable_acoustic_features.clicked.connect(self.update_groupboxes)
-        self.ui.use_acoustic_features.clicked.connect(self.update_groupboxes)
+        self.ui.use_acousticbrainz.toggled.connect(self._acousticbrainz_extractor_check)
         self.ui.acousticbrainz_extractor.textEdited.connect(self._acousticbrainz_extractor_check)
         self.ui.acousticbrainz_extractor_browse.clicked.connect(self.acousticbrainz_extractor_browse)
         self.ui.acousticbrainz_extractor_download.clicked.connect(self.acousticbrainz_extractor_download)
@@ -79,21 +78,16 @@ class AcousticBrainzOptionsPage(OptionsPage):
         self._config = get_config()
 
     def load(self):
-        if self._config.setting["use_acousticbrainz"]:
-            self.ui.use_acoustic_features.setChecked(True)
-        else:
-            self.ui.disable_acoustic_features.setChecked(True)
-
+        self.ui.use_acousticbrainz.setChecked(self._config.setting["use_acousticbrainz"])
         extractor_path = self._config.setting["acousticbrainz_extractor"]
         if not extractor_path or not ab_check_version(extractor_path):
             self.ui.acousticbrainz_extractor.clear()
         else:
             self.ui.acousticbrainz_extractor.setText(extractor_path)
-
-        self.update_groupboxes()
+        self._acousticbrainz_extractor_check()
 
     def save(self):
-        enabled = self.ui.acousticbrainz_settings.isEnabled()
+        enabled = self.ui.use_acousticbrainz.isChecked()
         changed = self._config.setting["use_acousticbrainz"] != enabled
         if changed:
             self._config.setting["use_acousticbrainz"] = enabled
@@ -101,11 +95,6 @@ class AcousticBrainzOptionsPage(OptionsPage):
         if enabled:
             self._config.setting["acousticbrainz_extractor"] = self.ui.acousticbrainz_extractor.text()
             ab_setup_extractor()
-
-    def update_groupboxes(self):
-        enabled = self.ui.use_acoustic_features.isChecked()
-        self.ui.acousticbrainz_settings.setEnabled(enabled)
-        self._acousticbrainz_extractor_check()
 
     def acousticbrainz_extractor_browse(self):
         path, _filter = QtWidgets.QFileDialog.getOpenFileName(self, "", self.ui.acousticbrainz_extractor.text())
@@ -118,7 +107,7 @@ class AcousticBrainzOptionsPage(OptionsPage):
         webbrowser2.open(ACOUSTICBRAINZ_DOWNLOAD_URL)
 
     def _acousticbrainz_extractor_check(self):
-        enabled = self.ui.acousticbrainz_settings.isEnabled()
+        enabled = self.ui.use_acousticbrainz.isChecked()
         self.ui.acousticbrainz_extractor.setPlaceholderText(_("Path to streaming_extractor_music(.exe)"))
 
         if not enabled:
