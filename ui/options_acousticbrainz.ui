@@ -6,43 +6,23 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>371</width>
-    <height>408</height>
+    <width>515</width>
+    <height>503</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="acoustic_features">
+    <widget class="QGroupBox" name="use_acousticbrainz">
      <property name="title">
       <string>AcousticBrainz features extraction</string>
      </property>
      <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
       <bool>false</bool>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <widget class="QRadioButton" name="disable_acoustic_features">
-        <property name="text">
-         <string>Do not use acoustic feature extraction</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QRadioButton" name="use_acoustic_features">
-        <property name="text">
-         <string>Use acoustic feature extraction</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="acousticbrainz_settings">
-     <property name="title">
-      <string>AcousticBrainz Settings</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
@@ -77,9 +57,6 @@
          <string/>
         </property>
        </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout"/>
       </item>
      </layout>
     </widget>
