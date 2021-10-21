@@ -102,7 +102,6 @@ from picard.const import (
 from picard.const.sys import (
     IS_FROZEN,
     IS_HAIKU,
-    IS_MACOS,
     IS_WIN,
 )
 from picard.dataobj import DataObject
@@ -226,10 +225,6 @@ class Tagger(QtWidgets.QApplication):
             signal.signal(signal.SIGINT, self.signal)
             signal.signal(signal.SIGTERM, self.signal)
 
-        if IS_MACOS:
-            # On macOS it is not common that the global menu shows icons
-            self.setAttribute(QtCore.Qt.AA_DontShowIconsInMenus)
-
         # Setup logging
         log.debug("Starting Picard from %r", os.path.abspath(__file__))
         log.debug("Platform: %s %s %s", platform.platform(),
@@ -267,6 +262,8 @@ class Tagger(QtWidgets.QApplication):
         if config.setting["use_acousticbrainz"]:
             ab_setup_extractor()
 
+        self.enable_menu_icons(config.setting['show_menu_icons'])
+
         # Load plugins
         self.pluginmanager = PluginManager()
         if not self._no_plugins:
@@ -298,6 +295,9 @@ class Tagger(QtWidgets.QApplication):
         # Load release version information
         if self.autoupdate_enabled:
             self.updatecheckmanager = UpdateCheckManager(parent=self.window)
+
+    def enable_menu_icons(self, enabled):
+        self.setAttribute(QtCore.Qt.AA_DontShowIconsInMenus, not enabled)
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)

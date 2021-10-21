@@ -46,6 +46,7 @@ from picard.config import (
     get_config,
 )
 from picard.const import UI_LANGUAGES
+from picard.const.sys import IS_MACOS
 from picard.util import icontheme
 
 from picard.ui import PicardDialog
@@ -141,6 +142,7 @@ class InterfaceOptionsPage(OptionsPage):
     options = [
         BoolOption("setting", "toolbar_show_labels", True),
         BoolOption("setting", "toolbar_multiselect", False),
+        BoolOption("setting", "show_menu_icons", True if not IS_MACOS else False),  # On macOS it is not common that the global menu shows icons
         BoolOption("setting", "builtin_search", True),
         BoolOption("setting", "use_adv_search_syntax", False),
         BoolOption("setting", "quit_confirmation", True),
@@ -232,6 +234,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.add_button.clicked.connect(self.add_to_toolbar)
         self.ui.insert_separator_button.clicked.connect(self.insert_separator)
         self.ui.remove_button.clicked.connect(self.remove_action)
+        self.ui.show_menu_icons.toggled.connect(self.tagger.enable_menu_icons)
         self.move_view = MoveableListView(self.ui.toolbar_layout_list, self.ui.up_button,
                                           self.ui.down_button, self.update_action_buttons)
         self.update_buttons = self.move_view.update_buttons
@@ -243,6 +246,7 @@ class InterfaceOptionsPage(OptionsPage):
         config = get_config()
         self.ui.toolbar_show_labels.setChecked(config.setting["toolbar_show_labels"])
         self.ui.toolbar_multiselect.setChecked(config.setting["toolbar_multiselect"])
+        self.ui.show_menu_icons.setChecked(config.setting["show_menu_icons"])
         self.ui.builtin_search.setChecked(config.setting["builtin_search"])
         self.ui.use_adv_search_syntax.setChecked(config.setting["use_adv_search_syntax"])
         self.ui.quit_confirmation.setChecked(config.setting["quit_confirmation"])
@@ -261,6 +265,7 @@ class InterfaceOptionsPage(OptionsPage):
         config = get_config()
         config.setting["toolbar_show_labels"] = self.ui.toolbar_show_labels.isChecked()
         config.setting["toolbar_multiselect"] = self.ui.toolbar_multiselect.isChecked()
+        config.setting["show_menu_icons"] = self.ui.show_menu_icons.isChecked()
         config.setting["builtin_search"] = self.ui.builtin_search.isChecked()
         config.setting["use_adv_search_syntax"] = self.ui.use_adv_search_syntax.isChecked()
         config.setting["quit_confirmation"] = self.ui.quit_confirmation.isChecked()

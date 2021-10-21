@@ -44,6 +44,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QCheckBox" name="show_menu_icons">
+           <property name="text">
+            <string>Show icons in menus</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QCheckBox" name="builtin_search">
            <property name="text">
             <string>Use builtin search rather than looking in browser</string>
@@ -284,6 +291,7 @@
  <tabstops>
   <tabstop>toolbar_show_labels</tabstop>
   <tabstop>toolbar_multiselect</tabstop>
+  <tabstop>show_menu_icons</tabstop>
   <tabstop>builtin_search</tabstop>
   <tabstop>use_adv_search_syntax</tabstop>
   <tabstop>quit_confirmation</tabstop>
