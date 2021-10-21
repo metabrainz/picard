@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.7.0b1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-10-15 12:12+0200\n"
+"POT-Creation-Date: 2021-10-21 18:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -130,7 +130,7 @@ msgid "Merge"
 msgstr ""
 
 #: picard/config_upgrade.py:103 picard/ui/metadatabox.py:421
-#: picard/ui/options/interface.py:112 picard/ui/ui_options_interface.py:169
+#: picard/ui/options/interface.py:113 picard/ui/ui_options_interface.py:180
 msgid "Remove"
 msgstr ""
 
@@ -2525,12 +2525,16 @@ msgstr ""
 msgid "Restore &Defaults"
 msgstr ""
 
-#: picard/coverart/providers/caa.py:503
+#: picard/coverart/providers/caa.py:434
 msgid "Cover Art Archive"
 msgstr ""
 
+#: picard/coverart/providers/caa.py:504
+msgid "Cover Art Archive: Release"
+msgstr ""
+
 #: picard/coverart/providers/caa_release_group.py:44
-msgid "CAA Release Group"
+msgid "Cover Art Archive: Release Group"
 msgstr ""
 
 #: picard/coverart/providers/local.py:78
@@ -3753,7 +3757,7 @@ msgid "Cover"
 msgstr ""
 
 #: picard/ui/infodialog.py:153 picard/ui/infodialog.py:358
-#: picard/ui/options/interface.py:108
+#: picard/ui/options/interface.py:109
 msgid "Info"
 msgstr ""
 
@@ -4423,7 +4427,7 @@ msgstr ""
 msgid "&Generate AcoustID Fingerprints"
 msgstr ""
 
-#: picard/ui/mainwindow.py:663 picard/ui/options/interface.py:124
+#: picard/ui/mainwindow.py:663 picard/ui/options/interface.py:125
 msgid "Generate Fingerprints"
 msgstr ""
 
@@ -4509,7 +4513,7 @@ msgstr ""
 msgid "Tags From &File Names..."
 msgstr ""
 
-#: picard/ui/mainwindow.py:719 picard/ui/options/interface.py:136
+#: picard/ui/mainwindow.py:719 picard/ui/options/interface.py:137
 msgid "Parse File Names..."
 msgstr ""
 
@@ -5195,33 +5199,21 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: picard/ui/ui_options_acousticbrainz.py:63
+#: picard/ui/ui_options_acousticbrainz.py:50
 msgid "AcousticBrainz features extraction"
 msgstr ""
 
-#: picard/ui/ui_options_acousticbrainz.py:64
-msgid "Do not use acoustic feature extraction"
-msgstr ""
-
-#: picard/ui/ui_options_acousticbrainz.py:65
-msgid "Use acoustic feature extraction"
-msgstr ""
-
-#: picard/ui/ui_options_acousticbrainz.py:66
-msgid "AcousticBrainz Settings"
-msgstr ""
-
-#: picard/ui/ui_options_acousticbrainz.py:67
+#: picard/ui/ui_options_acousticbrainz.py:51
 msgid "AcousticBrainz/Essentia feature extractor:"
 msgstr ""
 
-#: picard/ui/ui_options_acousticbrainz.py:68
+#: picard/ui/ui_options_acousticbrainz.py:52
 #: picard/ui/ui_options_fingerprinting.py:85
-#: picard/ui/ui_options_interface.py:159 picard/ui/ui_options_renaming.py:156
+#: picard/ui/ui_options_interface.py:171 picard/ui/ui_options_renaming.py:156
 msgid "Browse..."
 msgstr ""
 
-#: picard/ui/ui_options_acousticbrainz.py:69
+#: picard/ui/ui_options_acousticbrainz.py:53
 #: picard/ui/ui_options_fingerprinting.py:86
 msgid "Download..."
 msgstr ""
@@ -5298,11 +5290,11 @@ msgstr ""
 msgid "Reorder Priority: "
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:104 picard/ui/ui_options_interface.py:166
+#: picard/ui/ui_options_cover.py:104 picard/ui/ui_options_interface.py:177
 msgid "Move selected item up"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:105 picard/ui/ui_options_interface.py:167
+#: picard/ui/ui_options_cover.py:105 picard/ui/ui_options_interface.py:178
 msgid "Move selected item down"
 msgstr ""
 
@@ -5456,67 +5448,75 @@ msgstr ""
 msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
 msgstr ""
 
-#: picard/ui/ui_options_interface.py:150
-msgid "Customize Action Toolbar"
-msgstr ""
-
-#: picard/ui/ui_options_interface.py:151
-msgid "Miscellaneous"
-msgstr ""
-
-#: picard/ui/ui_options_interface.py:152
-msgid "Show text labels under icons"
-msgstr ""
-
-#: picard/ui/ui_options_interface.py:153
-msgid "Allow selection of multiple directories"
-msgstr ""
-
-#: picard/ui/ui_options_interface.py:154
-msgid "Use builtin search rather than looking in browser"
-msgstr ""
-
-#: picard/ui/searchdialog/__init__.py:95 picard/ui/ui_options_interface.py:155
-msgid "Use advanced query syntax"
-msgstr ""
-
-#: picard/ui/ui_options_interface.py:156
-msgid "Show a quit confirmation dialog for unsaved changes"
-msgstr ""
-
-#: picard/ui/ui_options_interface.py:157
-msgid "Adjust horizontal position in file browser automatically"
-msgstr ""
-
-#: picard/ui/ui_options_interface.py:158
-msgid "Begin browsing in the following directory:"
+#: picard/ui/ui_options_interface.py:159
+msgid "Appearance"
 msgstr ""
 
 #: picard/ui/ui_options_interface.py:160
-msgid "User interface language:"
+msgid "Show text labels under icons"
 msgstr ""
 
 #: picard/ui/ui_options_interface.py:161
-msgid "User interface color theme:"
+msgid "Show icons in menus"
 msgstr ""
 
 #: picard/ui/ui_options_interface.py:162
-msgid "Add a new button to Toolbar"
+msgid "User interface language:"
 msgstr ""
 
 #: picard/ui/ui_options_interface.py:163
-msgid "Add Action"
+msgid "User interface color theme:"
 msgstr ""
 
 #: picard/ui/ui_options_interface.py:164
-msgid "Insert a separator"
+msgid "Miscellaneous"
 msgstr ""
 
 #: picard/ui/ui_options_interface.py:165
-msgid "Add Separator"
+msgid "Allow selection of multiple directories"
+msgstr ""
+
+#: picard/ui/ui_options_interface.py:166
+msgid "Use builtin search rather than looking in browser"
+msgstr ""
+
+#: picard/ui/searchdialog/__init__.py:95 picard/ui/ui_options_interface.py:167
+msgid "Use advanced query syntax"
 msgstr ""
 
 #: picard/ui/ui_options_interface.py:168
+msgid "Show a quit confirmation dialog for unsaved changes"
+msgstr ""
+
+#: picard/ui/ui_options_interface.py:169
+msgid "Adjust horizontal position in file browser automatically"
+msgstr ""
+
+#: picard/ui/ui_options_interface.py:170
+msgid "Begin browsing in the following directory:"
+msgstr ""
+
+#: picard/ui/ui_options_interface.py:172
+msgid "Customize Action Toolbar"
+msgstr ""
+
+#: picard/ui/ui_options_interface.py:173
+msgid "Add a new button to Toolbar"
+msgstr ""
+
+#: picard/ui/ui_options_interface.py:174
+msgid "Add Action"
+msgstr ""
+
+#: picard/ui/ui_options_interface.py:175
+msgid "Insert a separator"
+msgstr ""
+
+#: picard/ui/ui_options_interface.py:176
+msgid "Add Separator"
+msgstr ""
+
+#: picard/ui/ui_options_interface.py:179
 msgid "Remove button from toolbar"
 msgstr ""
 
@@ -5585,7 +5585,7 @@ msgstr ""
 msgid "Non-album tracks:"
 msgstr ""
 
-#: picard/ui/options/interface.py:177 picard/ui/ui_options_metadata.py:139
+#: picard/ui/options/interface.py:179 picard/ui/ui_options_metadata.py:139
 #: picard/ui/ui_options_metadata.py:140
 #: picard/ui/ui_provider_options_local.py:52
 msgid "Default"
@@ -6043,25 +6043,25 @@ msgstr ""
 msgid "AcousticBrainz"
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:77
+#: picard/ui/options/acousticbrainz.py:76
 msgid "Open AcousticBrainz website in browser to download extractor binary"
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:122
+#: picard/ui/options/acousticbrainz.py:111
 msgid "Path to streaming_extractor_music(.exe)"
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:140
+#: picard/ui/options/acousticbrainz.py:129
 #, python-format
 msgid "Extractor version: %s"
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:152
-#: picard/ui/options/acousticbrainz.py:156
+#: picard/ui/options/acousticbrainz.py:141
+#: picard/ui/options/acousticbrainz.py:145
 msgid "Please select a valid extractor executable."
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:156
+#: picard/ui/options/acousticbrainz.py:145
 msgid "Invalid extractor executable"
 msgstr ""
 
@@ -6220,114 +6220,114 @@ msgstr ""
 msgid "Error line %d: %s"
 msgstr ""
 
-#: picard/ui/options/interface.py:72
+#: picard/ui/options/interface.py:73
 msgid "User Interface"
 msgstr ""
 
-#: picard/ui/options/interface.py:80
+#: picard/ui/options/interface.py:81
 msgid "Add Folder"
 msgstr ""
 
-#: picard/ui/options/interface.py:84
+#: picard/ui/options/interface.py:85
 msgid "Add Files"
 msgstr ""
 
-#: picard/ui/options/interface.py:88
+#: picard/ui/options/interface.py:89
 msgid "Cluster"
 msgstr ""
 
-#: picard/ui/options/interface.py:92
+#: picard/ui/options/interface.py:93
 msgid "Lookup"
 msgstr ""
 
-#: picard/ui/options/interface.py:96
+#: picard/ui/options/interface.py:97
 msgid "Scan"
 msgstr ""
 
-#: picard/ui/options/interface.py:100
+#: picard/ui/options/interface.py:101
 msgid "Lookup in Browser"
 msgstr ""
 
-#: picard/ui/options/interface.py:104
+#: picard/ui/options/interface.py:105
 msgid "Save"
 msgstr ""
 
-#: picard/ui/options/interface.py:116
+#: picard/ui/options/interface.py:117
 msgid "Submit AcoustIDs"
 msgstr ""
 
-#: picard/ui/options/interface.py:120
+#: picard/ui/options/interface.py:121
 msgid "Submit AcousticBrainz features"
 msgstr ""
 
-#: picard/ui/options/interface.py:128
+#: picard/ui/options/interface.py:129
 msgid "Open in Player"
 msgstr ""
 
-#: picard/ui/options/interface.py:132
+#: picard/ui/options/interface.py:133
 msgid "Lookup CD..."
 msgstr ""
 
-#: picard/ui/options/interface.py:178
+#: picard/ui/options/interface.py:180
 msgid "The default color scheme based on the operating system display settings"
 msgstr ""
 
-#: picard/ui/options/interface.py:181
+#: picard/ui/options/interface.py:183
 msgid "Dark"
 msgstr ""
 
-#: picard/ui/options/interface.py:182
+#: picard/ui/options/interface.py:184
 msgid "A dark display theme"
 msgstr ""
 
-#: picard/ui/options/interface.py:185
+#: picard/ui/options/interface.py:187
 msgid "Light"
 msgstr ""
 
-#: picard/ui/options/interface.py:186
+#: picard/ui/options/interface.py:188
 msgid "A light display theme"
 msgstr ""
 
-#: picard/ui/options/interface.py:189
+#: picard/ui/options/interface.py:191
 msgid "System"
 msgstr ""
 
-#: picard/ui/options/interface.py:190
+#: picard/ui/options/interface.py:192
 msgid "The Qt5 theme configured in the desktop environment"
 msgstr ""
 
-#: picard/ui/options/interface.py:208
+#: picard/ui/options/interface.py:210
 msgid "System default"
 msgstr ""
 
-#: picard/ui/options/interface.py:272
+#: picard/ui/options/interface.py:277
 msgid "Theme changed"
 msgstr ""
 
-#: picard/ui/options/interface.py:273
+#: picard/ui/options/interface.py:278
 msgid ""
 "You have changed the application theme. You have to restart Picard in "
 "order for the change to take effect."
 msgstr ""
 
-#: picard/ui/options/interface.py:275
+#: picard/ui/options/interface.py:280
 msgid ""
 "Please note that using the system theme might cause the user interface to"
 " be not shown correctly. If this is the case select the \"Default\" theme"
 " option to use Picard's default theme again."
 msgstr ""
 
-#: picard/ui/options/interface.py:280
+#: picard/ui/options/interface.py:285
 msgid "Language changed"
 msgstr ""
 
-#: picard/ui/options/interface.py:281
+#: picard/ui/options/interface.py:286
 msgid ""
 "You have changed the interface language. You have to restart Picard in "
 "order for the change to take effect."
 msgstr ""
 
-#: picard/ui/options/interface.py:313
+#: picard/ui/options/interface.py:318
 msgid "Drag and Drop to re-order"
 msgstr ""
 
