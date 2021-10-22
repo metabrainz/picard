@@ -90,7 +90,7 @@ class MetadataOptionsPage(OptionsPage):
         ListOption("setting", "script_exceptions", []),
         BoolOption("setting", "release_ars", True),
         BoolOption("setting", "track_ars", False),
-        BoolOption("setting", "convert_punctuation", True),
+        BoolOption("setting", "convert_punctuation", False),
         BoolOption("setting", "standardize_artists", False),
         BoolOption("setting", "standardize_instruments", True),
         BoolOption("setting", "guess_tracknumber_and_title", True),
