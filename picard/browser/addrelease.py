@@ -221,6 +221,7 @@ def _add_track_data(data, files):
         if m['barcode']:
             barcode = m['barcode']
         data[mkey(disc_counter, track_counter, 'name')] = m['title']
+        data[mkey(disc_counter, track_counter, 'artist_credit.names.0.name')] = m['artist']
         data[mkey(disc_counter, track_counter, 'number')] = m['tracknumber'] or str(track_counter + 1)
         data[mkey(disc_counter, track_counter, 'length')] = str(m.length)
         if m['musicbrainz_recordingid']:
