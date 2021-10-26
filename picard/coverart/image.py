@@ -43,7 +43,11 @@ from PyQt5.QtCore import (
 from picard import log
 from picard.config import get_config
 from picard.const import DEFAULT_COVER_IMAGE_FILENAME
-from picard.coverart.utils import translate_caa_type
+from picard.coverart.utils import (
+    Id3ImageType,
+    image_type_as_id3_num,
+    translate_caa_type,
+)
 from picard.metadata import Metadata
 from picard.util import (
     decode_filename,
@@ -137,7 +141,8 @@ class CoverArtImage:
     is_front = None
     sourceprefix = "URL"
 
-    def __init__(self, url=None, types=None, comment='', data=None, support_types=None, support_multi_types=None):
+    def __init__(self, url=None, types=None, comment='', data=None, support_types=None,
+                 support_multi_types=None, id3_type=None):
         if types is None:
             self.types = []
         else:
@@ -153,6 +158,7 @@ class CoverArtImage:
         self.can_be_saved_to_tags = True
         self.can_be_saved_to_disk = True
         self.can_be_saved_to_metadata = True
+        self.id3_type = id3_type
         if support_types is not None:
             self.support_types = support_types
         if support_multi_types is not None:
@@ -278,6 +284,24 @@ class CoverArtImage:
             return 'front'
         # TODO: do something better than randomly using the first in the list
         return self.types[0]
+
+    @property
+    def id3_type(self):
+        """Returns the ID3 APIC image type.
+        If explicitly set the type is returned as is, otherwise it is derived
+        from `maintype`. See http://www.id3.org/id3v2.4.0-frames"""
+        if self._id3_type is not None:
+            return self._id3_type
+        else:
+            return image_type_as_id3_num(self.maintype)
+
+    @id3_type.setter
+    def id3_type(self, type):
+        """Explicitly sets the ID3 APIC image type.
+        If set to None the type will be derived from `maintype`."""
+        if type is not None:
+            type = Id3ImageType(type)
+        self._id3_type = type
 
     def _make_image_filename(self, filename, dirname, _metadata):
         metadata = Metadata()
@@ -415,8 +439,8 @@ class TagCoverArtImage(CoverArtImage):
 
     def __init__(self, file, tag=None, types=None, is_front=None,
                  support_types=False, comment='', data=None,
-                 support_multi_types=False):
-        super().__init__(url=None, types=types, comment=comment, data=data)
+                 support_multi_types=False, id3_type=None):
+        super().__init__(url=None, types=types, comment=comment, data=data, id3_type=id3_type)
         self.sourcefile = file
         self.tag = tag
         self.support_types = support_types
