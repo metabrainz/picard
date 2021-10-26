@@ -50,10 +50,7 @@ from picard.coverart.image import (
     CoverArtImageError,
     TagCoverArtImage,
 )
-from picard.coverart.utils import (
-    image_type_as_id3_num,
-    types_from_id3,
-)
+from picard.coverart.utils import types_from_id3
 from picard.file import File
 from picard.formats.mutagenext import (
     compatid3,
@@ -347,6 +344,7 @@ class ID3File(File):
                         comment=frame.desc,
                         support_types=True,
                         data=frame.data,
+                        id3_type=frame.type,
                     )
                 except CoverArtImageError as e:
                     log.error('Cannot load image from %r: %s' % (filename, e))
@@ -418,7 +416,7 @@ class ID3File(File):
             counters[desc] += 1
             tags.add(id3.APIC(encoding=Id3Encoding.LATIN1,
                               mime=image.mimetype,
-                              type=image_type_as_id3_num(image.maintype),
+                              type=image.id3_type,
                               desc=id3text(desctag, Id3Encoding.LATIN1),
                               data=image.data))
 

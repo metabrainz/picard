@@ -33,16 +33,18 @@ from picard.coverart.image import (
     CoverArtImage,
     LocalFileCoverArtImage,
 )
+from picard.coverart.utils import Id3ImageType
 
 
 def create_image(extra_data, types=None, support_types=False,
-                 support_multi_types=False, comment=None):
+                 support_multi_types=False, comment=None, id3_type=None):
     return CoverArtImage(
         data=create_fake_png(extra_data),
         types=types,
         comment=comment,
         support_types=support_types,
         support_multi_types=support_multi_types,
+        id3_type=id3_type,
     )
 
 
@@ -50,6 +52,7 @@ class CoverArtImageTest(PicardTestCase):
     def test_is_front_image_no_types(self):
         image = create_image(b'a')
         self.assertTrue(image.is_front_image())
+        self.assertEqual(Id3ImageType.COVER_FRONT, image.id3_type)
         image.can_be_saved_to_metadata = False
         self.assertFalse(image.is_front_image())
 
@@ -64,6 +67,7 @@ class CoverArtImageTest(PicardTestCase):
     def test_is_front_image_no_types_supported(self):
         image = create_image(b'a', types=["back"], support_types=False)
         self.assertTrue(image.is_front_image())
+        self.assertEqual(Id3ImageType.COVER_FRONT, image.id3_type)
 
     def test_maintype(self):
         self.assertEqual("front", create_image(b'a').maintype)
@@ -71,6 +75,31 @@ class CoverArtImageTest(PicardTestCase):
         self.assertEqual("front", create_image(b'a', types=["back", "front"], support_types=True).maintype)
         self.assertEqual("back", create_image(b'a', types=["back", "medium"], support_types=True).maintype)
         self.assertEqual("front", create_image(b'a', types=["back", "medium"], support_types=False).maintype)
+
+    def test_id3_type_derived(self):
+        self.assertEqual(Id3ImageType.COVER_FRONT, create_image(b'a').id3_type)
+        self.assertEqual(Id3ImageType.COVER_FRONT, create_image(b'a', support_types=True).id3_type)
+        self.assertEqual(Id3ImageType.COVER_FRONT, create_image(b'a', types=["back", "front"], support_types=True).id3_type)
+        self.assertEqual(Id3ImageType.COVER_BACK, create_image(b'a', types=["back", "medium"], support_types=True).id3_type)
+        self.assertEqual(Id3ImageType.COVER_FRONT, create_image(b'a', types=["back", "medium"], support_types=False).id3_type)
+        self.assertEqual(Id3ImageType.MEDIA, create_image(b'a', types=["medium"], support_types=True).id3_type)
+        self.assertEqual(Id3ImageType.LEAFLET_PAGE, create_image(b'a', types=["booklet"], support_types=True).id3_type)
+        self.assertEqual(Id3ImageType.OTHER, create_image(b'a', types=["spine"], support_types=True).id3_type)
+        self.assertEqual(Id3ImageType.OTHER, create_image(b'a', types=["sticker"], support_types=True).id3_type)
+
+    def test_id3_type_explicit(self):
+        image = create_image(b'a', types=["back"], support_types=True)
+        for id3_type in Id3ImageType:
+            image.id3_type = id3_type
+            self.assertEqual(id3_type, image.id3_type)
+        image.id3_type = None
+        self.assertEqual(Id3ImageType.COVER_BACK, image.id3_type)
+
+    def test_id3_type_value_error(self):
+        image = create_image(b'a')
+        for invalid_value in ('foo', 200, -1):
+            with self.assertRaises(ValueError):
+                image.id3_type = invalid_value
 
     def test_compare_without_type(self):
         image1 = create_image(b'a', types=["front"])
