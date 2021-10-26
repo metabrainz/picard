@@ -39,11 +39,11 @@ from picard.coverart.image import (
     CoverArtImageError,
     TagCoverArtImage,
 )
-from picard.file import File
-from picard.formats.id3 import (
+from picard.coverart.utils import (
     image_type_as_id3_num,
     types_from_id3,
 )
+from picard.file import File
 from picard.formats.mutagenext import delall_ci
 from picard.metadata import Metadata
 from picard.util import encode_filename

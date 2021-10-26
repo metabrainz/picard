@@ -50,6 +50,10 @@ from picard.coverart.image import (
     CoverArtImageError,
     TagCoverArtImage,
 )
+from picard.coverart.utils import (
+    image_type_as_id3_num,
+    types_from_id3,
+)
 from picard.file import File
 from picard.formats.mutagenext import (
     compatid3,
@@ -64,23 +68,6 @@ from picard.util.tags import parse_comment_tag
 
 
 id3.GRP1 = compatid3.GRP1
-
-__IMAGE_TYPES = [
-    ("obi", 0),
-    ("tray", 0),
-    ("spine", 0),
-    ("sticker", 0),
-    ("other", 0),
-    ("front", 3),
-    ("back", 4),
-    ("booklet", 5),
-    ("track", 6),
-    ("medium", 6),
-]
-
-__ID3_IMAGE_TYPE_MAP = dict(__IMAGE_TYPES)
-
-__ID3_REVERSE_IMAGE_TYPE_MAP = dict([(v, k) for k, v in __IMAGE_TYPES])
 
 
 class Id3Encoding(IntEnum):
@@ -104,18 +91,6 @@ def id3text(text, encoding):
     if encoding == Id3Encoding.LATIN1:
         return text.encode("latin1", "replace").decode("latin1")
     return text
-
-
-def image_type_from_id3_num(id3type):
-    return __ID3_REVERSE_IMAGE_TYPE_MAP.get(id3type, "other")
-
-
-def image_type_as_id3_num(texttype):
-    return __ID3_IMAGE_TYPE_MAP.get(texttype, 0)
-
-
-def types_from_id3(id3type):
-    return [image_type_from_id3_num(id3type)]
 
 
 def _remove_people_with_role(tags, frames, role):
