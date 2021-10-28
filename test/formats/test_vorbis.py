@@ -67,6 +67,7 @@ VALID_KEYS = [
 ]
 
 INVALID_KEYS = [
+    '',
     'invalid=key',
     'invalid\x19key',
     'invalid~key',
@@ -91,7 +92,7 @@ class CommonVorbisTests:
             supports_tag = self.format.supports_tag
             for key in VALID_KEYS + list(TAGS.keys()):
                 self.assertTrue(supports_tag(key), '%r should be supported' % key)
-            for key in INVALID_KEYS + ['']:
+            for key in INVALID_KEYS:
                 self.assertFalse(supports_tag(key), '%r should be unsupported' % key)
 
         @skipUnlessTestfile
