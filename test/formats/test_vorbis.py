@@ -184,6 +184,15 @@ class CommonVorbisTests:
             self.assertNotIn('tracktotal', loaded_metadata)
             self.assertNotIn('totaltracks', loaded_metadata)
 
+        @skipUnlessTestfile
+        def test_delete_invalid_tagname(self):
+            # Deleting tags that are not valid Vorbis tag names must not trigger
+            # an error
+            for invalid_tag in INVALID_KEYS:
+                metadata = Metadata()
+                del metadata[invalid_tag]
+                save_metadata(self.filename, metadata)
+
 
 class FLACTest(CommonVorbisTests.VorbisTestCase):
     testfile = 'test.flac'

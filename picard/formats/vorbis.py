@@ -323,7 +323,7 @@ class VCommentFile(File):
         """Remove the tags from the file that were deleted in the UI"""
         for tag in metadata.deleted_tags:
             real_name = self._get_tag_name(tag)
-            if real_name and real_name in tags:
+            if is_valid_key(real_name) and real_name in tags:
                 if real_name in ('performer', 'comment'):
                     parts = tag.split(':', 1)
                     if len(parts) == 2:
