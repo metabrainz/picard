@@ -75,7 +75,7 @@ def is_valid_key(key):
     Valid characters for Vorbis comment field names are
     ASCII 0x20 through 0x7D, 0x3D ('=') excluded.
     """
-    return INVALID_CHARS.search(key) is None
+    return key and INVALID_CHARS.search(key) is None
 
 
 def flac_sort_pics_after_tags(metadata_blocks):
