@@ -285,6 +285,7 @@ class APEv2File(File):
     @classmethod
     def supports_tag(cls, name):
         return (bool(name) and name not in UNSUPPORTED_TAGS
+                and not name.startswith('~')
                 and (is_valid_key(name)
                     or name.startswith('comment:')
                     or name.startswith('lyrics:')

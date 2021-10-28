@@ -342,13 +342,12 @@ class MP4File(File):
     @classmethod
     def supports_tag(cls, name):
         unsupported_tags = ['r128_album_gain', 'r128_track_gain']
-        return ((name
-                 and not name.startswith("~")
-                 and name not in unsupported_tags
-                 and not (name.startswith('comment:') and len(name) > 9)
-                 and not name.startswith('performer:')
-                 and _is_valid_key(name))
-                or name in ('~length'))
+        return (name
+                and not name.startswith("~")
+                and name not in unsupported_tags
+                and not (name.startswith('comment:') and len(name) > 9)
+                and not name.startswith('performer:')
+                and _is_valid_key(name))
 
     def _get_tag_name(self, name):
         if name.startswith('lyrics:'):

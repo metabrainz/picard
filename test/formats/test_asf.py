@@ -55,7 +55,6 @@ class CommonAsfTests:
             self.assertTrue(fmt.supports_tag('djmixer'))
             self.assertTrue(fmt.supports_tag('discnumber'))
             self.assertTrue(fmt.supports_tag('lyrics:lead'))
-            self.assertTrue(fmt.supports_tag('~length'))
             for tag in self.replaygain_tags.keys():
                 self.assertTrue(fmt.supports_tag(tag))
 
