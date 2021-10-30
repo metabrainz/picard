@@ -35,7 +35,6 @@ from picard.coverart.providers.caa import CoverArtProviderCaa
 from picard.coverart.providers.caa_release_group import (
     CoverArtProviderCaaReleaseGroup,
 )
-from picard.coverart.providers.local import CoverArtProviderLocal
 from picard.coverart.providers.provider import (  # noqa: F401 # pylint: disable=unused-import
     CoverArtProvider,
     ProviderOptions,
@@ -92,7 +91,6 @@ def cover_art_providers():
 
 
 __providers = [
-    CoverArtProviderLocal,
     CoverArtProviderCaa,
     CoverArtProviderUrlRelationships,
     CoverArtProviderCaaReleaseGroup,

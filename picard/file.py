@@ -63,6 +63,11 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
+from picard.coverart.image import (
+    CoverArtImageError,
+    LocalFileCoverArtImage
+)
+from picard.coverart.utils import CAA_TYPES
 from picard.metadata import (
     Metadata,
     SimMatchTrack,
@@ -240,6 +245,11 @@ class File(QtCore.QObject, Item):
             postprocessors = []
             if config.setting["guess_tracknumber_and_title"]:
                 postprocessors.append(self._guess_tracknumber_and_title)
+            # If no cover art was loaded from file tags, try loading from a local file
+            # TODO: should this be a preference? should we load from both sources?
+            log.debug("load local cover art: %r", config.setting["load_local_cover_art"])
+            if config.setting["load_local_cover_art"] and len(result.images) == 0:
+                self._load_local_cover_art(result, config)
             self._copy_loaded_metadata(result, postprocessors)
         # use cached fingerprint from file metadata
         if not config.setting["ignore_existing_acoustid_fingerprints"]:
@@ -249,6 +259,48 @@ class File(QtCore.QObject, Item):
         run_file_post_load_processors(self)
         self.update()
         callback(self)
+
+    _types_split_re = re.compile('[^a-z0-9]', re.IGNORECASE)
+    _known_types = set([t['name'] for t in CAA_TYPES])
+    _default_types = ['front']
+
+    def get_types(self, string):
+        found = set([x.lower() for x in self._types_split_re.split(string) if x])
+        return list(found.intersection(self._known_types))
+
+    def _load_local_cover_art(self, metadata, config):
+        log.debug("Attempting to load cover art from local files")
+        match_re = re.compile(config.setting['local_cover_regex'], re.IGNORECASE)
+        current_dir = os.path.dirname(self.filename)
+        for root, dirs, files in os.walk(current_dir):
+            for filename in files:
+                m = match_re.search(filename)
+                if not m:
+                    continue
+                filepath = os.path.join(current_dir, root, filename)
+                if not os.path.exists(filepath):
+                    continue
+                try:
+                    type_from_filename = self.get_types(m.group(1))
+                except IndexError:
+                    type_from_filename = []
+                try:
+                    coverartimage = LocalFileCoverArtImage(
+                        filepath,
+                        types=type_from_filename or self._default_types,
+                        support_types=True,
+                        support_multi_types=True
+                    )
+
+                    log.debug("Loaded local cover art image: %r", coverartimage)
+                except OSError as exc:
+                    (errnum, errmsg) = exc.args
+                    log.error("Failed to read %r: %s (%d)" %
+                            (filepath, errmsg, errnum))
+                except (CoverArtImageError) as e:
+                    log.error('Cannot load image from %r: %s' % (filename, e))
+                else:
+                    metadata.images.append(coverartimage)
 
     def _copy_loaded_metadata(self, metadata, postprocessors=None):
         metadata['~length'] = format_time(metadata.length)

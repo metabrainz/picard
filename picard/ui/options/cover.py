@@ -32,7 +32,10 @@ from picard.config import (
     TextOption,
     get_config,
 )
-from picard.const import DEFAULT_COVER_IMAGE_FILENAME
+from picard.const import (
+    DEFAULT_COVER_IMAGE_FILENAME,
+    DEFAULT_LOCAL_COVER_ART_REGEX,
+)
 from picard.coverart.providers import cover_art_providers
 
 from picard.ui.checkbox_list_item import CheckboxListItem
@@ -61,6 +64,8 @@ class CoverOptionsPage(OptionsPage):
         BoolOption("setting", "save_images_overwrite", False),
         BoolOption("setting", "save_only_one_front_image", False),
         BoolOption("setting", "image_type_as_filename", False),
+        BoolOption("setting", "load_local_cover_art", False),
+        TextOption("setting", "local_cover_regex", DEFAULT_LOCAL_COVER_ART_REGEX),
         ListOption("setting", "ca_providers", [
             ('Cover Art Archive', True),
             ('UrlRelationships', True),
