@@ -289,7 +289,7 @@ class File(QtCore.QObject, Item):
                         filepath,
                         types=type_from_filename or self._default_types,
                         support_types=True,
-                        support_multi_types=True
+                        support_multi_types=False
                     )
 
                     log.debug("Loaded local cover art image: %r", coverartimage)
