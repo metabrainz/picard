@@ -404,7 +404,7 @@ For example `$unset(performer:*)` would unset all performer tags."""
 def func_unset(parser, name):
     name = normalize_tagname(name)
     # Allow wild-card unset for certain keys
-    if name in ('performer:*', 'comment:*', 'lyrics:*'):
+    if name in {'performer:*', 'comment:*', 'lyrics:*'}:
         name = name[:-1]
         for key in list(parser.context.keys()):
             if key.startswith(name):

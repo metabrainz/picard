@@ -92,7 +92,7 @@ class TagGenreFilter:
         self.match_regexes = defaultdict(list)
         for lineno, line in enumerate(filters.splitlines()):
             line = line.strip()
-            if line and line[0] in ('+', '-'):
+            if line and line[0] in {'+', '-'}:
                 _list = line[0]
                 remain = line[1:].strip()
                 if not remain:

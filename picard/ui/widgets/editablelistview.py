@@ -212,7 +212,7 @@ class EditableListModel(QtCore.QAbstractListModel):
         return len(self._items)
 
     def data(self, index, role=QtCore.Qt.DisplayRole):
-        if not index.isValid() or role not in (QtCore.Qt.DisplayRole, QtCore.Qt.EditRole):
+        if not index.isValid() or role not in {QtCore.Qt.DisplayRole, QtCore.Qt.EditRole}:
             return None
         field = 1 if role == QtCore.Qt.DisplayRole else 0
         try:
@@ -221,7 +221,7 @@ class EditableListModel(QtCore.QAbstractListModel):
             return None
 
     def setData(self, index, value, role=QtCore.Qt.EditRole):
-        if not index.isValid() or role not in (QtCore.Qt.DisplayRole, QtCore.Qt.EditRole):
+        if not index.isValid() or role not in {QtCore.Qt.DisplayRole, QtCore.Qt.EditRole}:
             return False
         i = index.row()
         try:

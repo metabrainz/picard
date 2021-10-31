@@ -839,7 +839,7 @@ def wildcards_to_regex_pattern(pattern):
     for c in pattern:
         if group is not None:
             if escape:
-                if c in ('\\', '[', ']'):
+                if c in {'\\', '[', ']'}:
                     c = '\\' + c
                 else:
                     group.append('\\\\')
@@ -855,7 +855,7 @@ def wildcards_to_regex_pattern(pattern):
                 group.append(c)
                 continue
         elif escape:
-            if c in ('*', '?', '\\', '[', ']'):
+            if c in {'*', '?', '\\', '[', ']'}:
                 part = '\\' + c
             else:
                 part = re.escape('\\' + c)

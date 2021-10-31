@@ -73,7 +73,7 @@ def update_to_v23(tags):
     # leave TSOP, TSOA and TSOT even though they are officially defined
     # only in ID3v2.4, because most applications use them also in ID3v2.3
     frames = []
-    for key in ["TSOP", "TSOA", "TSOT", "TSST"]:
+    for key in {"TSOP", "TSOA", "TSOT", "TSST"}:
         frames.extend(tags.getall(key))
     ID3.update_to_v23(tags)
     for frame in frames:

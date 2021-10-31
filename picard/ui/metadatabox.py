@@ -285,9 +285,9 @@ class MetadataBox(QtWidgets.QTableWidget):
             return False
         item = self.itemFromIndex(index)
         if item.flags() & QtCore.Qt.ItemIsEditable and \
-           trigger in (QtWidgets.QAbstractItemView.DoubleClicked,
+           trigger in {QtWidgets.QAbstractItemView.DoubleClicked,
                        QtWidgets.QAbstractItemView.EditKeyPressed,
-                       QtWidgets.QAbstractItemView.AnyKeyPressed):
+                       QtWidgets.QAbstractItemView.AnyKeyPressed}:
             tag = self.tag_diff.tag_names[item.row()]
             values = self.tag_diff.new[tag]
             if len(values) > 1:

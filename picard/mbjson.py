@@ -155,7 +155,7 @@ def _relations_to_metadata(relations, m):
             attribs = []
             if 'attributes' in relation:
                 attribs = [a for a in relation['attributes']]
-            if reltype in ('vocal', 'instrument', 'performer'):
+            if reltype in {'vocal', 'instrument', 'performer'}:
                 if use_instrument_credits:
                     attr_credits = relation.get('attribute-credits', {})
                 else:
@@ -424,9 +424,9 @@ def recording_to_metadata(node, m, track=None):
                     add_genres_from_node(artist, artist_obj)
         elif key == 'relations':
             _relations_to_metadata(value, m)
-        elif key in ('genres', 'tags') and track:
+        elif track and key in {'genres', 'tags'}:
             add_genres(value, track)
-        elif key in ('user-genres', 'user-tags') and track:
+        elif track and key in {'user-genres', 'user-tags'}:
             add_user_genres(value, track)
         elif key == 'isrcs':
             add_isrcs_to_metadata(value, m)

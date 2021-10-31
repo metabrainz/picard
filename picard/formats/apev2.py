@@ -168,7 +168,7 @@ class APEv2File(File):
                         if len(disc) > 1:
                             metadata["totaldiscs"] = disc[1]
                             value = disc[0]
-                    elif name in ('performer', 'comment'):
+                    elif name in {'performer', 'comment'}:
                         if value.endswith(')'):
                             start = value.rfind(' (')
                             if start > 0:
@@ -213,7 +213,7 @@ class APEv2File(File):
             elif name == 'discnumber':
                 if 'totaldiscs' in metadata:
                     value = '%s/%s' % (value, metadata['totaldiscs'])
-            elif name in ('totaltracks', 'totaldiscs'):
+            elif name in {'totaltracks', 'totaldiscs'}:
                 continue
             # "performer:Piano=Joe Barr" => "Performer=Joe Barr (Piano)"
             elif name.startswith('performer:') or name.startswith('comment:'):
@@ -239,7 +239,7 @@ class APEv2File(File):
         """Remove the tags from the file that were deleted in the UI"""
         for tag in metadata.deleted_tags:
             real_name = self._get_tag_name(tag)
-            if real_name in ('Lyrics', 'Comment', 'Performer'):
+            if real_name in {'Lyrics', 'Comment', 'Performer'}:
                 parts = tag.split(':', 1)
                 if len(parts) == 2:
                     tag_type_regex = re.compile(r"\(%s\)$" % re.escape(parts[1]))
@@ -250,7 +250,7 @@ class APEv2File(File):
                     if re.search(tag_type_regex, item):
                         existing_tags.remove(item)
                 tags[real_name] = existing_tags
-            elif tag in ('totaltracks', 'totaldiscs'):
+            elif tag in {'totaltracks', 'totaldiscs'}:
                 tagstr = real_name.lower() + 'number'
                 if tagstr in metadata:
                     tags[real_name] = metadata[tagstr]
@@ -265,9 +265,9 @@ class APEv2File(File):
             return 'Lyrics'
         elif name == 'date':
             return 'Year'
-        elif name in ('tracknumber', 'totaltracks'):
+        elif name in {'tracknumber', 'totaltracks'}:
             return 'Track'
-        elif name in ('discnumber', 'totaldiscs'):
+        elif name in {'discnumber', 'totaldiscs'}:
             return 'Disc'
         elif name.startswith('performer:') or name.startswith('comment:'):
             return name.split(':', 1)[0].title()

@@ -214,7 +214,7 @@ class Metadata(MutableMapping):
             a = self[name]
             b = other[name]
             if a and b:
-                if name in ('tracknumber', 'totaltracks', 'discnumber', 'totaldiscs'):
+                if name in {'tracknumber', 'totaltracks', 'discnumber', 'totaldiscs'}:
                     try:
                         ia = int(a)
                         ib = int(b)
@@ -568,7 +568,7 @@ class MultiMetadataProxy:
                 return attribute
 
     def __setattr__(self, name, value):
-        if name in ('metadata', 'combined_metadata'):
+        if name in {'metadata', 'combined_metadata'}:
             super().__setattr__(name, value)
         else:
             self.metadata.__setattr__(name, value)
