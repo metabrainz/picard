@@ -233,7 +233,7 @@ class Cluster(FileList):
     def column(self, column):
         if column == 'title':
             return '%s (%d)' % (self.metadata['album'], len(self.files))
-        elif self.special and (column in ['~length', 'album', 'covercount']):
+        elif self.special and column in {'~length', 'album', 'covercount'}:
             return ''
         elif column == '~length':
             return format_time(self.metadata.length)

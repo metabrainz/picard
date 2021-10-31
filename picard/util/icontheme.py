@@ -42,7 +42,7 @@ else:
 _current_theme = None
 if 'XDG_CURRENT_DESKTOP' in os.environ:
     desktop = os.environ['XDG_CURRENT_DESKTOP'].lower()
-    if desktop in ('gnome', 'unity'):
+    if desktop in {'gnome', 'unity'}:
         _current_theme = (os.popen('gsettings get org.gnome.desktop.interface icon-theme').read().strip()[1:-1]
                           or None)
 elif os.environ.get('KDE_FULL_SESSION'):

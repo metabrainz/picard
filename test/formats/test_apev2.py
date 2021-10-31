@@ -52,14 +52,14 @@ from .common import (
 from .coverart import CommonCoverArtTests
 
 
-VALID_KEYS = [
+VALID_KEYS = {
     ' valid Key}',
     '{ $ome tag~}',
     'xx',
     'x' * 255,
-]
+}
 
-INVALID_KEYS = [
+INVALID_KEYS = {
     'invalid\x7fkey',
     'invalid\x19key',
     '',
@@ -69,10 +69,10 @@ INVALID_KEYS = [
     'TAG',
     'OggS',
     'MP+',
-]
+}
 
 
-SUPPORTED_TAGS = list(set(TAGS.keys()) - set(apev2.UNSUPPORTED_TAGS))
+SUPPORTED_TAGS = set(TAGS) - apev2.UNSUPPORTED_TAGS
 
 
 class CommonApeTests:
@@ -85,9 +85,9 @@ class CommonApeTests:
 
         def test_supports_tags(self):
             supports_tag = self.format.supports_tag
-            for key in VALID_KEYS + SUPPORTED_TAGS:
+            for key in VALID_KEYS | SUPPORTED_TAGS:
                 self.assertTrue(supports_tag(key), '%r should be supported' % key)
-            for key in INVALID_KEYS + apev2.UNSUPPORTED_TAGS:
+            for key in INVALID_KEYS | apev2.UNSUPPORTED_TAGS:
                 self.assertFalse(supports_tag(key), '%r should be unsupported' % key)
 
         @skipUnlessTestfile

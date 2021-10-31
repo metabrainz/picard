@@ -114,7 +114,7 @@ class CoverArtThumbnail(ActiveLabel):
 
         if not accepted:
             for url in mime_data.urls():
-                if url.scheme() in ('https', 'http', 'file'):
+                if url.scheme() in {'https', 'http', 'file'}:
                     accepted = True
                     log.debug("Dropped %s url (with %d bytes of data)",
                               url.toString(), len(dropped_data or ''))
@@ -398,7 +398,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         if fallback_data:
             self.load_remote_image(url, fallback_data)
 
-        if url.scheme() in ('http', 'https'):
+        if url.scheme() in {'http', 'https'}:
             path = url.path()
             if url.hasQuery():
                 query = QtCore.QUrlQuery(url.query())
@@ -434,7 +434,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         url_query = QtCore.QUrlQuery(url.query())
         log.debug('Fetched remote image with MIME-Type %s from %s', mime, url.toString())
         # If mime indicates only binary data we can try to guess the real mime type
-        if (mime in ('application/octet-stream', 'binary/data') or mime.startswith('image/')
+        if (mime in {'application/octet-stream', 'binary/data'} or mime.startswith('image/')
               or imageinfo.supports_mime_type(mime)):
             try:
                 self._try_load_remote_image(url, data)

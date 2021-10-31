@@ -310,7 +310,7 @@ class ASFFile(File):
     def supports_tag(cls, name):
         return (name in cls.__TRANS
                 or name in cls.__TRANS_CI
-                or name in ('~rating', 'totaldiscs')
+                or name in {'~rating', 'totaldiscs'}
                 or name.startswith('lyrics:'))
 
     def _get_tag_name(self, name):

@@ -57,14 +57,14 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
         if not index.isValid():
             return None
         tag = self.get_tag_name(index)
-        if tag.partition(':')[0] in ('comment', 'lyrics'):
+        if tag.partition(':')[0] in {'comment', 'lyrics'}:
             editor = QtWidgets.QPlainTextEdit(parent)
             editor.setFrameStyle(editor.style().styleHint(QtWidgets.QStyle.SH_ItemView_DrawDelegateFrame, None, editor))
             editor.setMinimumSize(QtCore.QSize(0, 80))
         else:
             editor = super().createEditor(parent, option, index)
         completer = None
-        if tag in ('date', 'originaldate'):
+        if tag in {'date', 'originaldate'}:
             editor.setPlaceholderText(_('YYYY-MM-DD'))
         elif tag == 'originalyear':
             editor.setPlaceholderText(_('YYYY'))
@@ -120,7 +120,7 @@ class EditTagDialog(PicardDialog):
         self.value_selection_changed()
 
     def keyPressEvent(self, event):
-        if event.modifiers() == QtCore.Qt.NoModifier and event.key() in (QtCore.Qt.Key_Enter, QtCore.Qt.Key_Return):
+        if event.modifiers() == QtCore.Qt.NoModifier and event.key() in {QtCore.Qt.Key_Enter, QtCore.Qt.Key_Return}:
             self.add_or_edit_value()
             event.accept()
         elif event.matches(QtGui.QKeySequence.Delete):

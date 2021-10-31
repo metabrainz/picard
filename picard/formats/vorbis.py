@@ -56,6 +56,7 @@ from picard.util import (
 
 FLAC_MAX_BLOCK_SIZE = 2 ** 24 - 1  # FLAC block size is limited to a 24 bit integer
 INVALID_CHARS = re.compile('([^\x20-\x7d]|=)')
+UNSUPPORTED_TAGS = {'r128_album_gain', 'r128_track_gain'}
 
 
 def sanitize_key(key):
@@ -322,7 +323,7 @@ class VCommentFile(File):
         for tag in metadata.deleted_tags:
             real_name = self._get_tag_name(tag)
             if is_valid_key(real_name) and real_name in tags:
-                if real_name in ('performer', 'comment'):
+                if real_name in {'performer', 'comment'}:
                     parts = tag.split(':', 1)
                     if len(parts) == 2:
                         tag_type_regex = re.compile(r"\(%s\)$" % re.escape(parts[1]))
@@ -334,7 +335,7 @@ class VCommentFile(File):
                             existing_tags.remove(item)
                     tags[real_name] = existing_tags
                 else:
-                    if tag in ('totaldiscs', 'totaltracks') and tag in tags:
+                    if tag in {'totaldiscs', 'totaltracks'} and tag in tags:
                         # both tag and real_name are to be deleted in this case
                         del tags[tag]
                     del tags[real_name]
@@ -365,8 +366,7 @@ class VCommentFile(File):
 
     @classmethod
     def supports_tag(cls, name):
-        unsupported_tags = ['r128_album_gain', 'r128_track_gain']
-        return (bool(name) and name not in unsupported_tags
+        return (bool(name) and name not in UNSUPPORTED_TAGS
                 and (is_valid_key(name)
                     or name.startswith('comment:')
                     or name.startswith('lyrics:')

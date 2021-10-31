@@ -64,6 +64,8 @@ from picard.util import (
 from picard.util.tags import parse_comment_tag
 
 
+UNSUPPORTED_TAGS = {'r128_album_gain', 'r128_track_gain'}
+
 id3.GRP1 = compatid3.GRP1
 
 
@@ -257,7 +259,7 @@ class ID3File(File):
             frameid = frame.FrameID
             if frameid in self.__translate:
                 name = self.__translate[frameid]
-                if frameid.startswith('T') or frameid in ["GRP1", "MVNM"]:
+                if frameid.startswith('T') or frameid in {"GRP1", "MVNM"}:
                     for text in frame.text:
                         if text:
                             metadata.add(name, text)
@@ -608,8 +610,7 @@ class ID3File(File):
 
     @classmethod
     def supports_tag(cls, name):
-        unsupported_tags = ['r128_album_gain', 'r128_track_gain']
-        return ((name and not name.startswith("~") and name not in unsupported_tags)
+        return ((name and not name.startswith("~") and name not in UNSUPPORTED_TAGS)
                 or name == "~rating"
                 or name.startswith("~id3"))
 

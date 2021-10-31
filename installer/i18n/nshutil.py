@@ -123,7 +123,7 @@ def code_to_language(language_code):
 
 def escape_string(text):
     for escape, char in ESCAPE_CHARS.items():
-        if char in ("'", "`"):  # No need to escape quotes other than ""
+        if char in {"'", "`"}:  # No need to escape quotes other than ""
             continue
         text = text.replace(char, escape)
     return text

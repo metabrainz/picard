@@ -78,7 +78,7 @@ class Version(namedtuple('VersionBase', 'major minor patch identifier revision')
         return set(cls._identifiers.keys())
 
     def to_string(self, short=False):
-        if short and self.identifier in ('alpha', 'beta'):
+        if short and self.identifier in {'alpha', 'beta'}:
             version = self._replace(identifier=self.identifier[0])
         else:
             version = self
@@ -87,7 +87,7 @@ class Version(namedtuple('VersionBase', 'major minor patch identifier revision')
                 version_str = '%d.%d' % version[:2]
             else:
                 version_str = '%d.%d.%d' % version[:3]
-        elif short and version.identifier in ('a', 'b', 'rc'):
+        elif short and version.identifier in {'a', 'b', 'rc'}:
             version_str = '%d.%d.%d%s%d' % version
         else:
             version_str = '%d.%d.%d.%s%d' % version

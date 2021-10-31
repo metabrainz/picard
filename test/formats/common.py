@@ -402,7 +402,7 @@ class CommonTests:
             new_metadata = save_and_load_metadata(self.filename, metadata)
 
             self.assertIn('totaldiscs', original_metadata)
-            if self.testfile_ext in ('.m4a', '.m4v'):
+            if self.testfile_ext in {'.m4a', '.m4v'}:
                 self.assertEqual('0', new_metadata['totaldiscs'])
             else:
                 self.assertNotIn('totaldiscs', new_metadata)

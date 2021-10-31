@@ -128,7 +128,7 @@ class IdentifyGIF(IdentifyImageType):
 
     def match(self):
         # http://en.wikipedia.org/wiki/Graphics_Interchange_Format
-        return self.data[:6] in (b'GIF87a', b'GIF89a')
+        return self.data[:6] in {b'GIF87a', b'GIF89a'}
 
     def _read(self):
         self.w, self.h = struct.unpack('<HH', self.data[6:10])

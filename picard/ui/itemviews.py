@@ -746,7 +746,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                     files.append(file)
                 else:
                     new_paths.append(filename)
-            elif url.scheme() in ("http", "https"):
+            elif url.scheme() in {"http", "https"}:
                 file_lookup = tagger.get_file_lookup()
                 file_lookup.mbid_lookup(url.path(), browser_fallback=False)
         if files:
@@ -809,7 +809,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             cluster_item.add_files(cluster.files)
 
     def moveCursor(self, action, modifiers):
-        if action in (QtWidgets.QAbstractItemView.MoveUp, QtWidgets.QAbstractItemView.MoveDown):
+        if action in {QtWidgets.QAbstractItemView.MoveUp, QtWidgets.QAbstractItemView.MoveDown}:
             item = self.currentItem()
             if item and not item.isSelected():
                 self.setCurrentItem(item)

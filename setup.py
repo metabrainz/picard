@@ -292,7 +292,7 @@ class picard_build(build):
                 'publisher': os.environ.get('PICARD_APPX_PUBLISHER', default_publisher),
                 'version': '.'.join([str(v) for v in store_version]),
             })
-        elif sys.platform not in ['darwin', 'haiku1', 'win32']:
+        elif sys.platform not in {'darwin', 'haiku1', 'win32'}:
             self.run_command('build_appdata')
         build.run(self)
 
@@ -823,7 +823,7 @@ def find_file_in_path(filename):
             return file_path
 
 
-if sys.platform not in ['darwin', 'haiku1', 'win32']:
+if sys.platform not in {'darwin', 'haiku1', 'win32'}:
     args['data_files'].append(('share/applications', [PICARD_DESKTOP_NAME]))
     args['data_files'].append(('share/icons/hicolor/scalable/apps', ['resources/%s.svg' % PICARD_APP_ID]))
     for size in (16, 24, 32, 48, 128, 256):

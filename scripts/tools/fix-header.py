@@ -271,7 +271,7 @@ def main():
     for path in paths:
         if os.path.isfile(path):
             name, ext = os.path.splitext(path)
-            if args.extension in ('', ext):
+            if args.extension in {'', ext}:
                 files.add(path)
         else:
             if args.recursive:

@@ -455,7 +455,7 @@ class ScriptTextEdit(QTextEdit):
         tc.select(QTextCursor.WordUnderCursor)
         selected_text = tc.selectedText()
         # Check for start of function or end of variable
-        if current_position > 0 and selected_text and selected_text[0] in ('(', '%'):
+        if current_position > 0 and selected_text and selected_text[0] in {'(', '%'}:
             current_position -= 1
             tc.setPosition(current_position)
             tc.select(QTextCursor.WordUnderCursor)
@@ -484,7 +484,7 @@ class ScriptTextEdit(QTextEdit):
 
     def keyPressEvent(self, event):
         if self.completer.popup().isVisible():
-            if event.key() in (Qt.Key_Tab, Qt.Key_Return, Qt.Key_Enter):
+            if event.key() in {Qt.Key_Tab, Qt.Key_Return, Qt.Key_Enter}:
                 self.completer.activated.emit(self.completer.get_selected())
                 return
 
@@ -497,14 +497,14 @@ class ScriptTextEdit(QTextEdit):
         modifier = QtCore.Qt.MetaModifier if IS_MACOS else QtCore.Qt.ControlModifier
         force_completion_popup = event.key() == QtCore.Qt.Key_Space and event.modifiers() & modifier
         if not (force_completion_popup
-                or event.key() in (Qt.Key_Backspace, Qt.Key_Delete)
+                or event.key() in {Qt.Key_Backspace, Qt.Key_Delete}
                 or self.autocomplete_trigger_chars.match(event.text())):
             self.popup_hide()
             return
 
         tc = self.cursor_select_word(full_word=False)
         selected_text = tc.selectedText()
-        if force_completion_popup or (selected_text and selected_text[0] in ('$', '%')):
+        if force_completion_popup or (selected_text and selected_text[0] in {'$', '%'}):
             self.completer.setCompletionPrefix(selected_text)
             popup = self.completer.popup()
             popup.setCurrentIndex(self.completer.currentIndex())
