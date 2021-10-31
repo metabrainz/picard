@@ -50,7 +50,6 @@ class CommonMP4Tests:
             self.assertTrue(fmt.supports_tag('djmixer'))
             self.assertTrue(fmt.supports_tag('discnumber'))
             self.assertTrue(fmt.supports_tag('lyrics:lead'))
-            self.assertTrue(fmt.supports_tag('~length'))
             self.assertTrue(fmt.supports_tag('Custom'))
             self.assertTrue(fmt.supports_tag('äöüéß\0'))  # Latin 1 is supported
             self.assertFalse(fmt.supports_tag('Б'))  # Unsupported custom tags
