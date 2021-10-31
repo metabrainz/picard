@@ -72,7 +72,7 @@ INVALID_KEYS = [
 ]
 
 
-SUPPORTED_TAGS = list(set(TAGS.keys()) - set(apev2.UNSUPPORTED_TAGS))
+SUPPORTED_TAGS = list(set(TAGS.keys()) - apev2.UNSUPPORTED_TAGS)
 
 
 class CommonApeTests:
@@ -87,7 +87,7 @@ class CommonApeTests:
             supports_tag = self.format.supports_tag
             for key in VALID_KEYS + SUPPORTED_TAGS:
                 self.assertTrue(supports_tag(key), '%r should be supported' % key)
-            for key in INVALID_KEYS + apev2.UNSUPPORTED_TAGS:
+            for key in INVALID_KEYS + list(apev2.UNSUPPORTED_TAGS):
                 self.assertFalse(supports_tag(key), '%r should be unsupported' % key)
 
         @skipUnlessTestfile

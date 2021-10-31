@@ -57,8 +57,8 @@ from .mutagenext import (
 
 
 INVALID_CHARS = re.compile('[^\x20-\x7e]')
-DISALLOWED_KEYS = ['ID3', 'TAG', 'OggS', 'MP+']
-UNSUPPORTED_TAGS = [
+DISALLOWED_KEYS = {'ID3', 'TAG', 'OggS', 'MP+'}
+UNSUPPORTED_TAGS = {
     'gapless',
     'musicip_fingerprint',
     'podcast',
@@ -67,7 +67,7 @@ UNSUPPORTED_TAGS = [
     'showsort',
     'r128_album_gain',
     'r128_track_gain',
-]
+}
 
 
 def is_valid_key(key):

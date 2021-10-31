@@ -54,6 +54,7 @@ def _add_text_values_to_metadata(metadata, name, values):
 
 
 _VALID_KEY_CHARS = re.compile('^[\x00-\xff]+$')
+UNSUPPORTED_TAGS = {'r128_album_gain', 'r128_track_gain'}
 
 
 def _is_valid_key(key):
@@ -341,10 +342,9 @@ class MP4File(File):
 
     @classmethod
     def supports_tag(cls, name):
-        unsupported_tags = ['r128_album_gain', 'r128_track_gain']
         return (name
                 and not name.startswith("~")
-                and name not in unsupported_tags
+                and name not in UNSUPPORTED_TAGS
                 and not (name.startswith('comment:') and len(name) > 9)
                 and not name.startswith('performer:')
                 and _is_valid_key(name))
