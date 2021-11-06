@@ -710,7 +710,12 @@ class File(QtCore.QObject, Item):
         return True
 
     def can_extract(self):
-        return self.is_saved() and self.metadata["musicbrainz_recordingid"]
+        from picard.track import Track
+        return (
+            isinstance(self.parent, Track)
+            and self.is_saved()
+            and self.metadata["musicbrainz_recordingid"]
+        )
 
     def _info(self, metadata, file):
         if hasattr(file.info, 'length'):
