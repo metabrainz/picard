@@ -102,7 +102,7 @@ class CommonCoverArtTests:
         def test_cover_art_with_types(self):
             expected = set('abcdefg'[:]) if self.supports_types else set('a')
             loaded_metadata = save_and_load_metadata(self.filename, self._cover_metadata())
-            found = set([chr(img.data[-1]) for img in loaded_metadata.images])
+            found = {chr(img.data[-1]) for img in loaded_metadata.images}
             self.assertEqual(expected, found)
 
         @skipUnlessTestfile

@@ -120,7 +120,7 @@ class TestPicardPluginManager(TestPicardPluginsCommon):
 
         # use first element from picard.api_versions, it should be compatible
         api_versions = picard.api_versions[:1]
-        expected = set([Version.from_string(v) for v in api_versions])
+        expected = {Version.from_string(v) for v in api_versions}
         result = _compatible_api_versions(api_versions)
         self.assertEqual(result, expected)
 

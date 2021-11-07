@@ -552,8 +552,8 @@ class MetadataBox(QtWidgets.QTableWidget):
             return None
 
         if new_selection or drop_album_caches:
-            self._single_file_album = len(set([file.metadata["album"] for file in files])) == 1
-            self._single_track_album = len(set([track.metadata["album"] for track in tracks])) == 1
+            self._single_file_album = len({file.metadata["album"] for file in files}) == 1
+            self._single_track_album = len({track.metadata["album"] for track in tracks}) == 1
 
         while not new_selection:  # Just an if with multiple exit points
             # If we are dealing with the same selection

@@ -79,7 +79,7 @@ class CoverArtProviderLocal(CoverArtProvider):
     OPTIONS = ProviderOptionsLocal
 
     _types_split_re = re.compile('[^a-z0-9]', re.IGNORECASE)
-    _known_types = set([t['name'] for t in CAA_TYPES])
+    _known_types = {t['name'] for t in CAA_TYPES}
     _default_types = ['front']
 
     def queue_images(self):
@@ -99,7 +99,7 @@ class CoverArtProviderLocal(CoverArtProvider):
         return CoverArtProvider.FINISHED
 
     def get_types(self, string):
-        found = set([x.lower() for x in self._types_split_re.split(string) if x])
+        found = {x.lower() for x in self._types_split_re.split(string) if x}
         return list(found.intersection(self._known_types))
 
     def find_local_images(self, current_dir, match_re):

@@ -32,7 +32,7 @@ from picard.util import get_qt_enum
 
 # Files not considered relevant for a directory. If a directory has only
 # some of these files inside it is still considered empty and can be deleted.
-JUNK_FILES = set([".DS_Store", "desktop.ini", "Desktop.ini", "Thumbs.db"])
+JUNK_FILES = {".DS_Store", "desktop.ini", "Desktop.ini", "Thumbs.db"}
 
 # Special file system locations Picard should never delete.
 PROTECTED_DIRECTORIES = set()
