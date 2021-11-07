@@ -252,6 +252,13 @@ class AddMetadataImagesTest(PicardTestCase):
         self.assertFalse(added)
         self.assertEqual(set(self.test_images), set(cluster.metadata.images))
 
+    def test_add_nothing(self):
+        cluster = Cluster('Test')
+        cluster.files = self.test_files
+        update_metadata_images(cluster)
+        added = add_metadata_images(cluster, [])
+        self.assertFalse(added)
+
 
 class ImageListTest(PicardTestCase):
 
