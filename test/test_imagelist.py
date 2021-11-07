@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2018-2019 Philipp Wolfer
+# Copyright (C) 2018-2019, 2021 Philipp Wolfer
 # Copyright (C) 2018-2019 Wieland Hoffmann
 # Copyright (C) 2018-2020 Laurent Monin
 #
@@ -239,9 +239,18 @@ class AddMetadataImagesTest(PicardTestCase):
         cluster.files = [self.test_files[0]]
         update_metadata_images(cluster)
         cluster.files += self.test_files[1:]
-        add_metadata_images(cluster, self.test_files[1:])
+        added = add_metadata_images(cluster, self.test_files[1:])
+        self.assertTrue(added)
         self.assertEqual(set(self.test_images), set(cluster.metadata.images))
         self.assertFalse(cluster.metadata.has_common_images)
+
+    def test_add_no_changes(self):
+        cluster = Cluster('Test')
+        cluster.files = self.test_files
+        update_metadata_images(cluster)
+        added = add_metadata_images(cluster, [self.test_files[1]])
+        self.assertFalse(added)
+        self.assertEqual(set(self.test_images), set(cluster.metadata.images))
 
 
 class ImageListTest(PicardTestCase):
