@@ -70,6 +70,7 @@ from picard.script import (
 )
 from picard.util import pattern_as_regex
 from picard.util.imagelist import (
+    ImageList,
     add_metadata_images,
     remove_metadata_images,
 )
@@ -137,6 +138,7 @@ class Track(DataObject, FileListItem):
         self.num_linked_files = 0
         self.scripted_metadata = Metadata()
         self._track_artists = []
+        self._orig_images = None
 
     def __repr__(self):
         return '<Track %s %r>' % (self.id, self.metadata["title"])
@@ -149,6 +151,9 @@ class Track(DataObject, FileListItem):
     def add_file(self, file, new_album=True):
         if file not in self.files:
             track_will_expand = self.num_linked_files == 1
+            if not self.files:  # The track uses original metadata from the file only
+                self._orig_images = self.orig_metadata.images
+                self.orig_metadata.images = ImageList()
             self.files.append(file)
             self.num_linked_files += 1
         self.update_file_metadata(file)
@@ -192,6 +197,9 @@ class Track(DataObject, FileListItem):
         file.copy_metadata(file.orig_metadata, preserve_deleted=False)
         self.album._remove_file(self, file, new_album=new_album)
         remove_metadata_images(self, [file])
+        if not self.files and self._orig_images:
+            self.orig_metadata.images = self._orig_images
+            self.metadata.images = self._orig_images.copy()
         run_file_post_removal_from_track_processors(self, file)
         self.update()
         if self.item.isSelected():
