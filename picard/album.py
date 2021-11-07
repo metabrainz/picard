@@ -408,6 +408,7 @@ class Album(DataObject, Item):
             self.status = None
             self.match_files(unmatched_files + self.unmatched_files.files)
             self.enable_update_metadata_images(True)
+            self.update_metadata_images()
             self.update()
             self.tagger.window.set_statusbar_message(
                 N_('Album %(id)s loaded: %(artist)s - %(album)s'),
