@@ -480,3 +480,6 @@ class LocalFileCoverArtImage(CoverArtImage):
         super().__init__(url=url, types=types, comment=comment)
         self.support_types = support_types
         self.support_multi_types = support_multi_types
+        path = self.url.toLocalFile()
+        with open(path, 'rb') as file:
+            self.set_data(file.read())

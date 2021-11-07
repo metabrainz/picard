@@ -189,6 +189,7 @@ DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/\n" \
 DEFAULT_NUMBERED_SCRIPT_NAME = N_("My script %d")
 DEFAULT_SCRIPT_NAME = N_("My script")
 DEFAULT_COVER_IMAGE_FILENAME = "cover"
+DEFAULT_LOCAL_COVER_ART_REGEX = r'^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|gif|tiff?|webp)$'
 DEFAULT_NUMBERED_PROFILE_NAME = N_("My profile %d")
 DEFAULT_PROFILE_NAME = N_("My profile")
 
