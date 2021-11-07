@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2017 Antonio Larrosa
 # Copyright (C) 2017 Sambhav Kothari
-# Copyright (C) 2018, 2020 Philipp Wolfer
+# Copyright (C) 2018, 2020-2021 Philipp Wolfer
 # Copyright (C) 2019-2020 Laurent Monin
 # Copyright (C) 2021 Gabriel Ferreira
 #
@@ -166,8 +166,7 @@ def _update_state(obj, state):
 # TODO: use functools.singledispatch when py3 is supported
 def _get_state(obj):
     from picard.album import Album
-    from picard.cluster import FileList
-    from picard.track import Track
+    from picard.ui.item import FileListItem
 
     state = ImageListState()
 
@@ -178,10 +177,7 @@ def _get_state(obj):
         state.sources += obj.unmatched_files.files
         state.update_new_metadata = True
         state.update_orig_metadata = True
-    elif isinstance(obj, Track):
-        state.sources = obj.files
-        state.update_orig_metadata = True
-    elif isinstance(obj, FileList):
+    elif isinstance(obj, FileListItem):
         state.sources = obj.files
         state.update_new_metadata = True
         state.update_orig_metadata = True
@@ -278,7 +274,7 @@ def _remove_images(metadata, sources, removed_images):
         previous_images = set(source_metadata.images)  # Remember for next iteration
         removed_images = removed_images.difference(source_images)
         if not removed_images and not common_images:
-            return  # No images left to remove, abort immediatelly
+            return  # No images left to remove, abort immediately
 
     metadata.images = ImageList(current_images.difference(removed_images))
     metadata.has_common_images = common_images

@@ -377,11 +377,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
 
         metadata = self.item.metadata
         orig_metadata = None
-        if isinstance(self.item, Track):
-            track = self.item
-            if track.num_linked_files == 1:
-                orig_metadata = track.files[0].orig_metadata
-        elif hasattr(self.item, 'orig_metadata'):
+        if hasattr(self.item, 'orig_metadata'):
             orig_metadata = self.item.orig_metadata
 
         if not metadata or not metadata.images:
