@@ -216,7 +216,7 @@ def update_metadata_images(obj):
 
 def _add_images(metadata, added_images):
     if not added_images:
-        return
+        return False
 
     current_images = set(metadata.images)
     if added_images.isdisjoint(current_images):
