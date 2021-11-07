@@ -219,9 +219,12 @@ def _add_images(metadata, added_images):
         return
 
     current_images = set(metadata.images)
-    if added_images != current_images:
+    if added_images.isdisjoint(current_images):
         metadata.images = ImageList(current_images.union(added_images))
         metadata.has_common_images = False
+        return True
+
+    return False
 
 
 def add_metadata_images(obj, added_sources):
@@ -233,11 +236,14 @@ def add_metadata_images(obj, added_sources):
     """
     state = _get_state(obj)
     (added_new_images, added_orig_images) = _get_metadata_images(state, added_sources)
+    changed = False
 
     if state.update_new_metadata:
-        _add_images(obj.metadata, added_new_images)
+        changed |= _add_images(obj.metadata, added_new_images)
     if state.update_orig_metadata:
-        _add_images(obj.orig_metadata, added_orig_images)
+        changed |= _add_images(obj.orig_metadata, added_orig_images)
+
+    return changed
 
 
 def _remove_images(metadata, sources, removed_images):
