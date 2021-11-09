@@ -561,16 +561,10 @@ class File(QtCore.QObject, Item):
         self._apply_additional_files_moves(moves)
 
     def _compile_move_additional_files_pattern(self, config):
-        patterns = config.setting["move_additional_files_pattern"].lower()
-        pattern_regexes = set()
-        for pattern in patterns.split():
-            pattern = pattern.strip()
-            if not pattern:
-                continue
-            pattern_regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
-            match_hidden = pattern.startswith('.')
-            pattern_regexes.add((pattern_regex, match_hidden))
-        return pattern_regexes
+        return {
+            (re.compile(fnmatch.translate(pattern), re.IGNORECASE), pattern.startswith('.'))
+            for pattern in set(config.setting["move_additional_files_pattern"].lower().split())
+        }
 
     def _get_additional_files_moves(self, old_path, new_path, patterns):
         moves = set()
