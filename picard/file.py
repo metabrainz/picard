@@ -554,10 +554,7 @@ class File(QtCore.QObject, Item):
         if new_path == old_path:
             # skip, same directory, nothing to move
             return
-        pattern_regexes = self._compile_move_additional_files_pattern(config)
-        if not pattern_regexes:
-            return
-        moves = self._get_additional_files_moves(old_path, new_path, pattern_regexes)
+        moves = self._get_additional_files_moves(old_path, new_path, config)
         self._apply_additional_files_moves(moves)
 
     def _compile_move_additional_files_pattern(self, config):
@@ -566,21 +563,23 @@ class File(QtCore.QObject, Item):
             for pattern in set(config.setting["move_additional_files_pattern"].lower().split())
         }
 
-    def _get_additional_files_moves(self, old_path, new_path, patterns):
+    def _get_additional_files_moves(self, old_path, new_path, config):
+        patterns = self._compile_move_additional_files_pattern(config)
         moves = set()
-        try:
-            with os.scandir(old_path) as scan:
-                for entry in scan:
-                    is_hidden = entry.name.startswith('.')
-                    for pattern_regex, match_hidden in patterns:
-                        if is_hidden and not match_hidden:
-                            continue
-                        if pattern_regex.match(entry.name):
-                            new_file_path = os.path.join(new_path, entry.name)
-                            moves.add((entry.path, new_file_path))
-                            break  # we are done with this file
-        except OSError as why:
-            log.error("Failed to scan %r: %s", old_path, why)
+        if patterns:
+            try:
+                with os.scandir(old_path) as scan:
+                    for entry in scan:
+                        is_hidden = entry.name.startswith('.')
+                        for pattern_regex, match_hidden in patterns:
+                            if is_hidden and not match_hidden:
+                                continue
+                            if pattern_regex.match(entry.name):
+                                new_file_path = os.path.join(new_path, entry.name)
+                                moves.add((entry.path, new_file_path))
+                                break  # we are done with this file
+            except OSError as why:
+                log.error("Failed to scan %r: %s", old_path, why)
         return moves
 
     def _apply_additional_files_moves(self, moves):
