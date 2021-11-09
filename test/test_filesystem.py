@@ -32,14 +32,6 @@ from picard import config
 import picard.formats
 
 
-settings = {
-    'enabled_plugins': '',
-    'move_files': True,
-    'move_additional_files': True,
-    'move_additional_files_pattern': 'cover.jpg',
-}
-
-
 def prepare_files(src_dir, dst_dir, src_files=None, dst_files=None, src_rel_path='', dst_rel_path=''):
     """Prepare src files and dst filenames for a test."""
     with suppress(FileExistsError):
@@ -86,12 +78,18 @@ def prepare_files(src_dir, dst_dir, src_files=None, dst_files=None, src_rel_path
 
 
 class TestFileSystem(PicardTestCase):
+    settings = {
+        'enabled_plugins': '',
+        'move_files': True,
+        'move_additional_files': True,
+        'move_additional_files_pattern': 'cover.jpg',
+    }
 
     def setUp(self):
         super().setUp()
         self.src_directory = self.mktmpdir()
         self.dst_directory = self.mktmpdir()
-        self.set_config_values(settings)
+        self.set_config_values(self.settings)
 
     def _prepare_files(self, src_rel_path='', dst_rel_path=''):
         """Prepare src files and dst filenames for a test."""
