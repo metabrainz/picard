@@ -525,3 +525,18 @@ def get_available_filename(new_path, old_path=None):
         new_path = "%s (%d)%s" % (tmp_filename, i, ext)
         i += 1
     return new_path
+
+
+def replace_extension(filename, new_ext):
+    """Replaces the extension in filename with new_ext.
+
+    If the file has no extension the extension is added.
+
+    Args:
+        filename: A file name
+        new_ext: New file extension
+
+    Returns: filename with replaced file extension
+    """
+    name, ext = os.path.splitext(filename)
+    return name + '.' + new_ext.lstrip('.')

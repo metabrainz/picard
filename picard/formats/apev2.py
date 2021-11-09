@@ -49,6 +49,11 @@ from picard.util import (
     encode_filename,
     sanitize_date,
 )
+from picard.util.filenaming import (
+    get_available_filename,
+    move_ensure_casing,
+    replace_extension,
+)
 
 from .mutagenext import (
     aac,
@@ -313,12 +318,14 @@ class WavPackFile(APEv2File):
 
     def _save_and_rename(self, old_filename, metadata):
         """Includes an additional check for WavPack correction files"""
-        wvc_filename = old_filename.replace(".wv", ".wvc")
+        new_filename = super()._save_and_rename(old_filename, metadata)
+        wvc_filename = replace_extension(old_filename, ".wvc")
         if isfile(wvc_filename):
-            config = get_config()
-            if config.setting["rename_files"] or config.setting["move_files"]:
-                self._rename(wvc_filename, metadata, config.setting)
-        return File._save_and_rename(self, old_filename, metadata)
+            wvc_new_filename = replace_extension(new_filename, ".wvc")
+            wvc_new_filename = get_available_filename(wvc_new_filename, wvc_filename)
+            log.debug('Moving Wavepack correction file %r => %r', wvc_filename, wvc_new_filename)
+            move_ensure_casing(wvc_filename, wvc_new_filename)
+        return new_filename
 
 
 class OptimFROGFile(APEv2File):

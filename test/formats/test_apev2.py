@@ -201,9 +201,10 @@ class WavPackTest(CommonApeTests.ApeTestCase):
         open(source_file_wvc, 'a').close()
         # Open file and rename it
         f = open_(self.filename)
-        metadata = Metadata({'title': 'renamed_' + os.path.basename(self.filename)})
+        f._copy_loaded_metadata(f._load(self.filename))
+        f.metadata['title'] = 'renamed_' + os.path.basename(self.filename)
         self.assertTrue(os.path.isfile(self.filename))
-        target_file_wv = f._save_and_rename(self.filename, metadata)
+        target_file_wv = f._save_and_rename(self.filename, f.metadata)
         target_file_wvc = target_file_wv + 'c'
         # Register cleanups
         self.addCleanup(os.unlink, target_file_wv)
