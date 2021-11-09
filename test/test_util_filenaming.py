@@ -44,6 +44,7 @@ from picard.util.filenaming import (
     make_save_path,
     make_short_filename,
     move_ensure_casing,
+    replace_extension,
     samefile_different_casing,
 )
 
@@ -245,3 +246,11 @@ class GetAvailableFilenameTest(PicardTestCase):
             oldname = self._add_number(filename, expected_number)
             new_filename = get_available_filename(filename, oldname)
             self.assertEqual(self._add_number(filename, expected_number), new_filename)
+
+
+class ReplaceExtensionTest(PicardTestCase):
+
+    def test_replace(self):
+        self.assertEqual('foo/bar.wvc', replace_extension('foo/bar.wv', '.wvc'))
+        self.assertEqual('foo/bar.wvc', replace_extension('foo/bar.wv', 'wvc'))
+        self.assertEqual('foo/bar.wvc', replace_extension('foo/bar', 'wvc'))

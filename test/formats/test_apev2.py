@@ -184,8 +184,8 @@ class WavPackTest(CommonApeTests.ApeTestCase):
     }
     unexpected_info = ['~video']
 
-    @skipUnlessTestfile
-    def test_save_wavpack_correction_file(self):
+    def setUp(self):
+        super().setUp()
         config.setting['rename_files'] = True
         config.setting['move_files'] = False
         config.setting['ascii_filenames'] = False
@@ -196,18 +196,40 @@ class WavPackTest(CommonApeTests.ApeTestCase):
         config.setting['save_images_to_files'] = False
         config.setting['file_renaming_scripts'] = {'test_id': {'script': '%title%'}}
         config.setting['selected_file_naming_script_id'] = 'test_id'
+
+    def _save_with_wavpack_correction_file(self, source_file_wvc):
         # Create dummy WavPack correction file
-        source_file_wvc = self.filename + 'c'
         open(source_file_wvc, 'a').close()
         # Open file and rename it
         f = open_(self.filename)
-        metadata = Metadata({'title': 'renamed_' + os.path.basename(self.filename)})
+        f._copy_loaded_metadata(f._load(self.filename))
+        f.metadata['title'] = 'renamed_' + os.path.basename(self.filename)
         self.assertTrue(os.path.isfile(self.filename))
-        target_file_wv = f._save_and_rename(self.filename, metadata)
+        target_file_wv = f._save_and_rename(self.filename, f.metadata)
         target_file_wvc = target_file_wv + 'c'
         # Register cleanups
         self.addCleanup(os.unlink, target_file_wv)
         self.addCleanup(os.unlink, target_file_wvc)
+        return (target_file_wv, target_file_wvc)
+
+    @skipUnlessTestfile
+    def test_save_wavpack_correction_file(self):
+        source_file_wvc = self.filename + 'c'
+        (target_file_wv, target_file_wvc) = self._save_with_wavpack_correction_file(source_file_wvc)
+        # Check both the WavPack file and the correction file got moved
+        self.assertFalse(os.path.isfile(self.filename))
+        self.assertFalse(os.path.isfile(source_file_wvc))
+        self.assertTrue(os.path.isfile(target_file_wv))
+        self.assertTrue(os.path.isfile(target_file_wvc))
+
+    @skipUnlessTestfile
+    def test_save_wavpack_correction_file_with_move_additional_files(self):
+        config.setting['move_files'] = True
+        config.setting['move_files_to'] = self.mktmpdir()
+        config.setting['move_additional_files'] = True
+        config.setting['move_additional_files_pattern'] = '*.wvc'
+        source_file_wvc = self.filename + 'c'
+        (target_file_wv, target_file_wvc) = self._save_with_wavpack_correction_file(source_file_wvc)
         # Check both the WavPack file and the correction file got moved
         self.assertFalse(os.path.isfile(self.filename))
         self.assertFalse(os.path.isfile(source_file_wvc))
