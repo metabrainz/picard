@@ -1,3 +1,34 @@
+# Version 2.7.0b2 - 2021-11-09
+
+## Bugfixes
+
+- [PICARD-2290](https://tickets.metabrainz.org/browse/PICARD-2290) - macOS: System wide dark mode is not respected
+- [PICARD-2291](https://tickets.metabrainz.org/browse/PICARD-2291) - Portable Picard 2.7.0b1 on Windows can conflict with system wide Qt5 install
+- [PICARD-2293](https://tickets.metabrainz.org/browse/PICARD-2293) - macOS: 2.7 beta 1 for macOS 10.12+ requires macOS 10.14
+- [PICARD-2294](https://tickets.metabrainz.org/browse/PICARD-2294) - Incorrect local file cover art regex can lead to exception
+- [PICARD-2297](https://tickets.metabrainz.org/browse/PICARD-2297) - Loading many files can cause some files to be skipped and not loaded
+- [PICARD-2302](https://tickets.metabrainz.org/browse/PICARD-2302) - First function in naming script not displaying tooltip
+- [PICARD-2307](https://tickets.metabrainz.org/browse/PICARD-2307) - Unable to save Vorbis Comments after `$delete` script with tag name that's not valid in Vorbis
+- [PICARD-2308](https://tickets.metabrainz.org/browse/PICARD-2308) - Add cluster as release does not set track artists
+- [PICARD-2311](https://tickets.metabrainz.org/browse/PICARD-2311) - ID3 cover art types, as used by ID3, ASF, FLAC and Vorbis, are not preserved
+- [PICARD-2314](https://tickets.metabrainz.org/browse/PICARD-2314) - Hidden variable `~length` gets written to MP4 tags
+- [PICARD-2318](https://tickets.metabrainz.org/browse/PICARD-2318) - Submit AcousticBrainz features enabled on unmatched files
+- [PICARD-2321](https://tickets.metabrainz.org/browse/PICARD-2321) - "Keep original cover art" for tracks not showing correctly
+- [PICARD-2322](https://tickets.metabrainz.org/browse/PICARD-2322) - If files are attached to album on load cover art changes are not shown on album level
+- [PICARD-2324](https://tickets.metabrainz.org/browse/PICARD-2324) - WavPack correction files are identified as duplicates to their WavPack files and renamed
+
+## New Features
+
+- [PICARD-2304](https://tickets.metabrainz.org/browse/PICARD-2304) - Add option to show/hide icons in menus
+
+## Improvements
+
+- [PICARD-2299](https://tickets.metabrainz.org/browse/PICARD-2299) - Extend genre wildcard filtering with "?" and "[...]" matching
+- [PICARD-2301](https://tickets.metabrainz.org/browse/PICARD-2301) - Slight rewording of "CAA" cover art provider options
+- [PICARD-2305](https://tickets.metabrainz.org/browse/PICARD-2305) - Restructure user interface options
+- [PICARD-2306](https://tickets.metabrainz.org/browse/PICARD-2306) - Disable "Convert Unicode Punctuation" option by default
+
+
 # Version 2.7.0b1 - 2021-10-07
 
 ## Bugfixes
