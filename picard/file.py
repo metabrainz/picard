@@ -554,8 +554,7 @@ class File(QtCore.QObject, Item):
         if new_path == old_path:
             # skip, same directory, nothing to move
             return
-        moves = self._get_additional_files_moves(old_path, new_path, config)
-        self._apply_additional_files_moves(moves)
+        self._apply_additional_files_moves(old_path, new_path, config)
 
     def _compile_move_additional_files_pattern(self, config):
         return {
@@ -582,8 +581,8 @@ class File(QtCore.QObject, Item):
                 log.error("Failed to scan %r: %s", old_path, why)
         return moves
 
-    def _apply_additional_files_moves(self, moves):
-        for old_file_path, new_file_path in moves:
+    def _apply_additional_files_moves(self, old_path, new_path, config):
+        for old_file_path, new_file_path in self._get_additional_files_moves(old_path, new_path, config):
             # FIXME we shouldn't do this from a thread!
             if self.tagger.files.get(decode_filename(old_file_path)):
                 log.debug("File loaded in the tagger, not moving %r", old_file_path)
