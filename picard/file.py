@@ -564,7 +564,6 @@ class File(QtCore.QObject, Item):
 
     def _get_additional_files_moves(self, old_path, new_path, config):
         patterns = self._compile_move_additional_files_pattern(config)
-        moves = set()
         if patterns:
             try:
                 with os.scandir(old_path) as scan:
@@ -575,11 +574,10 @@ class File(QtCore.QObject, Item):
                                 continue
                             if pattern_regex.match(entry.name):
                                 new_file_path = os.path.join(new_path, entry.name)
-                                moves.add((entry.path, new_file_path))
+                                yield (entry.path, new_file_path)
                                 break  # we are done with this file
             except OSError as why:
                 log.error("Failed to scan %r: %s", old_path, why)
-        return moves
 
     def _apply_additional_files_moves(self, old_path, new_path, config):
         for old_file_path, new_file_path in self._get_additional_files_moves(old_path, new_path, config):
