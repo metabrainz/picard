@@ -553,8 +553,11 @@ class File(QtCore.QObject, Item):
             if new_path != old_path:
                 patterns_string = config.setting["move_additional_files_pattern"]
                 patterns = self._compile_move_additional_files_pattern(patterns_string)
-                moves = self._get_additional_files_moves(old_path, new_path, patterns)
-                self._apply_additional_files_moves(moves)
+                try:
+                    moves = self._get_additional_files_moves(old_path, new_path, patterns)
+                    self._apply_additional_files_moves(moves)
+                except OSError as why:
+                    log.error("Failed to scan %r: %s", old_path, why)
 
     @staticmethod
     def _compile_move_additional_files_pattern(patterns_string):
@@ -565,19 +568,16 @@ class File(QtCore.QObject, Item):
 
     def _get_additional_files_moves(self, old_path, new_path, patterns):
         if patterns:
-            try:
-                with os.scandir(old_path) as scan:
-                    for entry in scan:
-                        is_hidden = entry.name.startswith('.')
-                        for pattern_regex, match_hidden in patterns:
-                            if is_hidden and not match_hidden:
-                                continue
-                            if pattern_regex.match(entry.name):
-                                new_file_path = os.path.join(new_path, entry.name)
-                                yield (entry.path, new_file_path)
-                                break  # we are done with this file
-            except OSError as why:
-                log.error("Failed to scan %r: %s", old_path, why)
+            with os.scandir(old_path) as scan:
+                for entry in scan:
+                    is_hidden = entry.name.startswith('.')
+                    for pattern_regex, match_hidden in patterns:
+                        if is_hidden and not match_hidden:
+                            continue
+                        if pattern_regex.match(entry.name):
+                            new_file_path = os.path.join(new_path, entry.name)
+                            yield (entry.path, new_file_path)
+                            break  # we are done with this file
 
     def _apply_additional_files_moves(self, moves):
         for old_file_path, new_file_path in moves:
