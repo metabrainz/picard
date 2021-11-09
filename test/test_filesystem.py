@@ -99,7 +99,7 @@ class TestFileSystem(PicardTestCase):
 
     def _move_additional_files(self, files):
         f = picard.formats.open_(files['old_mp3'])
-        f._move_additional_files(files['old_mp3'], files['new_mp3'])
+        f._move_additional_files(files['old_mp3'], files['new_mp3'], config)
 
     def _assert_additional_files_moved(self, files):
         self._move_additional_files(files)

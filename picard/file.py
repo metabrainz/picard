@@ -353,7 +353,7 @@ class File(QtCore.QObject, Item):
         if config.setting["rename_files"] or config.setting["move_files"]:
             new_filename = self._rename(old_filename, metadata, config.setting)
         # Move extra files (images, playlists, etc.)
-        self._move_additional_files(old_filename, new_filename)
+        self._move_additional_files(old_filename, new_filename, config)
         # Delete empty directories
         if config.setting["delete_empty_dirs"]:
             dirname = os.path.dirname(old_filename)
@@ -545,15 +545,14 @@ class File(QtCore.QObject, Item):
         for image in images:
             image.save(dirname, metadata, counters)
 
-    def _move_additional_files(self, old_filename, new_filename):
+    def _move_additional_files(self, old_filename, new_filename, config):
         """Move extra files, like images, playlists..."""
+        if not config.setting["move_files"] or not config.setting["move_additional_files"]:
+            return
         new_path = os.path.dirname(new_filename)
         old_path = os.path.dirname(old_filename)
         if new_path == old_path:
             # skip, same directory, nothing to move
-            return
-        config = get_config()
-        if not config.setting["move_files"] or not config.setting["move_additional_files"]:
             return
         patterns = config.setting["move_additional_files_pattern"]
         pattern_regexes = set()
