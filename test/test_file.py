@@ -378,6 +378,17 @@ class FileAdditionalFilesPatternsTest(PicardTestCase):
         }
         self.assertEqual(f._compile_move_additional_files_pattern(config), expected)
 
+    def test_whitespaces_patterns(self):
+        self.set_config_values({
+            'move_additional_files_pattern': "  a   \n b   ",
+        })
+        f = File('/somepath/01 somefile.mp3')
+        expected = {
+            (re.compile('(?s:a)\\Z', re.IGNORECASE), False),
+            (re.compile('(?s:b)\\Z', re.IGNORECASE), False),
+        }
+        self.assertEqual(f._compile_move_additional_files_pattern(config), expected)
+
     def test_duplicated_patterns(self):
         self.set_config_values({
             'move_additional_files_pattern': 'cover.jpg cover.jpg',
