@@ -408,6 +408,5 @@ class FileAdditionalFilesPatternsTest(PicardTestCase):
             (re.compile('(?s:c.ver\\.jpg)\\Z', re.IGNORECASE), False),
             (re.compile('(?s:\\.h.dden.*)\\Z', re.IGNORECASE), True),
             (re.compile('(?s:.*\\.jpg)\\Z', re.IGNORECASE), False),
-            (re.compile('(?s:.*\\.JPG)\\Z', re.IGNORECASE), False)
         }
         self.assertEqual(f._compile_move_additional_files_pattern(config), expected)

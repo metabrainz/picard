@@ -561,7 +561,7 @@ class File(QtCore.QObject, Item):
         self._apply_additional_files_moves(moves)
 
     def _compile_move_additional_files_pattern(self, config):
-        patterns = config.setting["move_additional_files_pattern"]
+        patterns = config.setting["move_additional_files_pattern"].lower()
         pattern_regexes = set()
         for pattern in patterns.split():
             pattern = pattern.strip()
