@@ -40,56 +40,79 @@ settings = {
 }
 
 
+def prepare_files(src_dir, dst_dir, src_files=None, dst_files=None, src_rel_path='', dst_rel_path=''):
+    """Prepare src files and dst filenames for a test."""
+    with suppress(FileExistsError):
+        os.mkdir(os.path.join(src_dir, src_rel_path))
+
+    # Prepare the source directory structure under src_dir
+    # <src_dir>/<src_rel_path>/test.mp3
+    # <src_dir>/<src_rel_path>/cover.jpg
+
+    def src_file(name, sample_name=None):
+        """Copy file from samples and returns path to temporary file to be
+        used as source.
+        If sample_name isn't provided, it will use name for it
+        """
+        if sample_name is None:
+            sample_name = name
+        sample = os.path.join('test', 'data', sample_name)
+        copy_to = os.path.join(src_dir, src_rel_path, name)
+        shutil.copy(sample, copy_to)
+        return copy_to
+
+    src = dict()
+    if src_files:
+        for filename, sample_name in src_files.items():
+            src[filename] = src_file(filename, sample_name)
+
+    with suppress(FileExistsError):
+        os.mkdir(os.path.join(dst_dir, dst_rel_path))
+
+    # Prepare the target filenames under dst_dir
+    # <dst_dir>/<dst_rel_path>/test.mp3
+    # <dst_dir>/<dst_rel_path>/cover.jpg
+
+    def dst_file(name):
+        """Returns path to temporary target file"""
+        return os.path.join(dst_dir, dst_rel_path, name)
+
+    dst = dict()
+    if dst_files:
+        for filename in dst_files:
+            dst[filename] = dst_file(filename)
+
+    return src, dst
+
+
 class TestFileSystem(PicardTestCase):
 
     def setUp(self):
         super().setUp()
         self.src_directory = self.mktmpdir()
-        self.tgt_directory = self.mktmpdir()
+        self.dst_directory = self.mktmpdir()
         self.set_config_values(settings)
 
-    def _prepare_files(self, src_rel_path='', tgt_rel_path=''):
-        """Prepare src files and tgt filenames for a test."""
-        with suppress(FileExistsError):
-            os.mkdir(os.path.join(self.src_directory, src_rel_path))
+    def _prepare_files(self, src_rel_path='', dst_rel_path=''):
+        """Prepare src files and dst filenames for a test."""
+        src_files = {
+            'test.mp3': None,
+            'cover.jpg': 'mb.jpg',
+            '.hidden.jpg': 'mb.jpg',
+        }
 
-        # Prepare the source directory structure under self.src_directory
-        # .../<src_rel_path>/test.mp3
-        # .../<src_rel_path>/cover.jpg
+        dst_files = {
+            'test.mp3',
+            'cover.jpg',
+            '.hidden.jpg',
+        }
 
-        def src_file(name, sample_name=None):
-            """Copy file from samples and returns path to temporary file to be
-            used as source.
-            If sample_name isn't provided, it will use name for it
-            """
-            if sample_name is None:
-                sample_name = name
-            sample = os.path.join('test', 'data', sample_name)
-            copy_to = os.path.join(self.src_directory, src_rel_path, name)
-            shutil.copy(sample, copy_to)
-            return copy_to
-
-        files = dict()
-        files['old_mp3'] = src_file('test.mp3')
-        files['old_img'] = src_file('cover.jpg', 'mb.jpg')
-        files['old_hidden_img'] = src_file('.hidden.jpg', 'mb.jpg')
-
-        with suppress(FileExistsError):
-            os.mkdir(os.path.join(self.tgt_directory, tgt_rel_path))
-
-        # Prepare the target filenames under self.tgt_directory
-        # .../<tgt_rel_path>/test.mp3
-        # .../<tgt_rel_path>/cover.jpg
-
-        def tgt_file(name):
-            """Returns path to temporary target file"""
-            return os.path.join(self.tgt_directory, tgt_rel_path, name)
-
-        files['new_mp3'] = tgt_file('test.mp3')
-        files['new_img'] = tgt_file('cover.jpg')
-        files['new_hidden_img'] = tgt_file('.hidden.jpg')
-
-        return files
+        return prepare_files(
+            self.src_directory, self.dst_directory,
+            src_files, dst_files,
+            src_rel_path=src_rel_path,
+            dst_rel_path=dst_rel_path
+        )
 
     def _assertFile(self, path):
         self.assertTrue(os.path.isfile(path))
@@ -97,53 +120,53 @@ class TestFileSystem(PicardTestCase):
     def _assertNoFile(self, path):
         self.assertFalse(os.path.isfile(path))
 
-    def _move_additional_files(self, files):
-        f = picard.formats.open_(files['old_mp3'])
-        f._move_additional_files(files['old_mp3'], files['new_mp3'], config)
+    def _move_additional_files(self, src, dst):
+        f = picard.formats.open_(src['test.mp3'])
+        f._move_additional_files(src['test.mp3'], dst['test.mp3'], config)
 
-    def _assert_additional_files_moved(self, files):
-        self._move_additional_files(files)
-        self._assertFile(files['new_img'])
-        self._assertNoFile(files['old_img'])
+    def _assert_files_moved(self, src, dst):
+        self._move_additional_files(src, dst)
+        self._assertFile(dst['cover.jpg'])
+        self._assertNoFile(src['cover.jpg'])
 
-    def _assert_additional_files_not_moved(self, files):
-        self._move_additional_files(files)
-        self._assertNoFile(files['new_img'])
-        self._assertFile(files['old_img'])
+    def _assert_files_not_moved(self, src, dst):
+        self._move_additional_files(src, dst)
+        self._assertNoFile(dst['cover.jpg'])
+        self._assertFile(src['cover.jpg'])
 
     def test_move_additional_files_source_unicode(self):
-        files = self._prepare_files(src_rel_path='música')
-        self._assert_additional_files_moved(files)
+        src, dst = self._prepare_files(src_rel_path='música')
+        self._assert_files_moved(src, dst)
 
     def test_move_additional_files_target_unicode(self):
-        files = self._prepare_files(tgt_rel_path='música')
-        self._assert_additional_files_moved(files)
+        src, dst = self._prepare_files(dst_rel_path='música')
+        self._assert_files_moved(src, dst)
 
     def test_move_additional_files_duplicate_patterns(self):
-        files = self._prepare_files()
+        src, dst = self._prepare_files()
         config.setting['move_additional_files_pattern'] = 'cover.jpg *.jpg'
-        self._assert_additional_files_moved(files)
+        self._assert_files_moved(src, dst)
 
     def test_move_additional_files_hidden_nopattern(self):
-        files = self._prepare_files()
+        src, dst = self._prepare_files()
         config.setting['move_additional_files_pattern'] = '*.jpg'
-        self._assert_additional_files_moved(files)
-        self._assertNoFile(files['new_hidden_img'])
-        self._assertFile(files['old_hidden_img'])
+        self._assert_files_moved(src, dst)
+        self._assertNoFile(dst['.hidden.jpg'])
+        self._assertFile(src['.hidden.jpg'])
 
     def test_move_additional_files_hidden_pattern(self):
-        files = self._prepare_files()
+        src, dst = self._prepare_files()
         config.setting['move_additional_files_pattern'] = '*.jpg .*.jpg'
-        self._assert_additional_files_moved(files)
-        self._assertFile(files['new_hidden_img'])
-        self._assertNoFile(files['old_hidden_img'])
+        self._assert_files_moved(src, dst)
+        self._assertFile(dst['.hidden.jpg'])
+        self._assertNoFile(src['.hidden.jpg'])
 
     def test_move_additional_files_disabled(self):
         config.setting['move_additional_files'] = False
-        files = self._prepare_files(src_rel_path='música')
-        self._assert_additional_files_not_moved(files)
+        src, dst = self._prepare_files(src_rel_path='música')
+        self._assert_files_not_moved(src, dst)
 
     def test_move_files_disabled(self):
         config.setting['move_files'] = False
-        files = self._prepare_files(src_rel_path='música')
-        self._assert_additional_files_not_moved(files)
+        src, dst = self._prepare_files(src_rel_path='música')
+        self._assert_files_not_moved(src, dst)
