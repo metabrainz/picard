@@ -1,12 +1,13 @@
 # 
 # Translators:
 # Dian Li <xslidian@gmail.com>, 2009-2019
+# qqqqqqq <qxc9302@163.com>, 2021
 # zhyupe <zyp108421@gmail.com>, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-08-12 16:32+0000\n"
-"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
+"PO-Revision-Date: 2021-10-09 16:55+0000\n"
+"Last-Translator: qqqqqqq <qxc9302@163.com>\n"
 "Language-Team: Chinese Simplified (http://www.transifex.com/musicbrainz/musicbrainz/language/zh-Hans/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,14 +21,14 @@ msgid ""
 "\"Motet\" is a term that applies to different types of (usually "
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
-msgstr ""
+msgstr "“经文歌”指不同种类、通常无伴奏的唱诗班作品，在不同年代有不同的定义。"
 
 #: DB:work_type/description:5
 msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr ""
+msgstr "“奏鸣曲”是小型器乐作品的总称，通常是独奏或独奏加键盘的作品，最早在巴洛克音乐中出现。"
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
@@ -62,7 +63,7 @@ msgstr "3.5\" 软盘"
 #: DB:medium_format/name:91
 msgctxt "medium_format"
 msgid "5.25\" Floppy Disk"
-msgstr ""
+msgstr "5.25\" 软盘"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
@@ -104,7 +105,7 @@ msgctxt "medium_format"
 msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
-msgstr ""
+msgstr "每分钟90转的垂直切割胶木唱片，1906至1932年由百代唱片公司制造。"
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
@@ -121,7 +122,7 @@ msgctxt "work_type"
 msgid ""
 "A ballet is music composed to be used, together with a choreography, for a "
 "ballet dance production."
-msgstr ""
+msgstr "芭蕾舞曲是与芭蕾编舞一起用于芭蕾舞表演的音乐。"
 
 #: DB:work_type/description:3
 msgctxt "work_type"

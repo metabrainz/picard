@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-09-26 17:28+0200\n"
-"PO-Revision-Date: 2021-09-26 18:25+0000\n"
+"POT-Creation-Date: 2021-10-21 18:42+0200\n"
+"PO-Revision-Date: 2021-10-21 18:25+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Malay (Malaysia) (http://www.transifex.com/musicbrainz/musicbrainz/language/ms_MY/)\n"
 "MIME-Version: 1.0\n"
@@ -126,7 +126,7 @@ msgid "Merge"
 msgstr "Cantumkan"
 
 #: picard/config_upgrade.py:103 picard/ui/metadatabox.py:421
-#: picard/ui/options/interface.py:112 picard/ui/ui_options_interface.py:169
+#: picard/ui/options/interface.py:113 picard/ui/ui_options_interface.py:180
 msgid "Remove"
 msgstr "Alih Keluar"
 
@@ -452,16 +452,16 @@ msgstr "Akaun MusicBrainz"
 msgid "Authorization code:"
 msgstr "Kod pengizinan:"
 
-#: picard/tagger.py:797
+#: picard/tagger.py:798
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Sedang mengalih keluar album %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:815
+#: picard/tagger.py:816
 msgid "CD Lookup Error"
 msgstr "Ralat Carian CD"
 
-#: picard/tagger.py:816
+#: picard/tagger.py:817
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -469,11 +469,11 @@ msgid ""
 "%s"
 msgstr "Terdapat ralat ketika pembacaan CD:\n\n%s"
 
-#: picard/track.py:374
+#: picard/track.py:375
 msgid "[loading recording information]"
 msgstr "[sedang memuat maklumat rakaman]"
 
-#: picard/track.py:410
+#: picard/track.py:411
 #, python-format
 msgid "[could not load recording %s]"
 msgstr "[gagal memuat rakaman %s]"
@@ -2524,13 +2524,17 @@ msgstr "Kosongkan semuanya"
 msgid "Restore &Defaults"
 msgstr "Pulihkan Lalai"
 
-#: picard/coverart/providers/caa.py:503
+#: picard/coverart/providers/caa.py:434
 msgid "Cover Art Archive"
 msgstr "Cover Art Archive"
 
+#: picard/coverart/providers/caa.py:504
+msgid "Cover Art Archive: Release"
+msgstr ""
+
 #: picard/coverart/providers/caa_release_group.py:44
-msgid "CAA Release Group"
-msgstr "Gabungan Keluaran CAA"
+msgid "Cover Art Archive: Release Group"
+msgstr ""
 
 #: picard/coverart/providers/local.py:78
 msgid "Local Files"
@@ -3364,78 +3368,78 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr ""
 
-#: picard/script/serializer.py:199
+#: picard/script/serializer.py:200
 #, python-format
 msgid "Error exporting file \"%s\". %s."
 msgstr "Ralat semasa menyimpan keluar \"%s\". %s."
 
-#: picard/script/serializer.py:206
+#: picard/script/serializer.py:207
 msgid "Export Script File"
 msgstr "Simpan Keluar Fail Skrip "
 
-#: picard/script/serializer.py:228
+#: picard/script/serializer.py:229
 msgid "Export Script"
 msgstr "Skrip Simpan Keluar"
 
-#: picard/script/serializer.py:229
+#: picard/script/serializer.py:230
 #, python-format
 msgid "Script successfully exported to %s"
 msgstr "Skrip selesai disimpan keluar ke %s"
 
-#: picard/script/serializer.py:240
+#: picard/script/serializer.py:241
 #, python-format
 msgid "Error importing \"%s\". %s."
 msgstr "Ralat semasa memuat masuk \"%s\". %s."
 
-#: picard/script/serializer.py:241
+#: picard/script/serializer.py:242
 #, python-format
 msgid "Error decoding \"%s\". %s."
 msgstr "Ralat semasa menyahkod \"%s\". %s."
 
-#: picard/script/serializer.py:243
+#: picard/script/serializer.py:244
 msgid "Import Script File"
 msgstr "Muat Masuk Fail Skrip"
 
-#: picard/script/serializer.py:257
+#: picard/script/serializer.py:258
 msgid "The file was empty"
 msgstr "Fail sebenarnya kosong"
 
-#: picard/script/serializer.py:265
+#: picard/script/serializer.py:266
 #, python-format
 msgid "Imported from %s"
 msgstr "Dimuat masuk daripada %s"
 
-#: picard/script/serializer.py:283
+#: picard/script/serializer.py:284
 msgid "Argument is not a dictionary"
 msgstr ""
 
-#: picard/script/serializer.py:285 picard/script/serializer.py:331
+#: picard/script/serializer.py:286 picard/script/serializer.py:332
 msgid "Invalid script package"
 msgstr "Kemasan skrip tak sah"
 
-#: picard/script/serializer.py:296
+#: picard/script/serializer.py:297
 #, python-format
 msgid "%s (Copy)"
 msgstr "%s (Salin)"
 
-#: picard/script/serializer.py:329
+#: picard/script/serializer.py:330
 msgid "File content not a dictionary"
 msgstr "Kandungan fail ini bukan kamus"
 
-#: picard/script/serializer.py:339 picard/ui/options/scripting.py:186
+#: picard/script/serializer.py:340 picard/ui/options/scripting.py:186
 msgid "Unnamed Script"
 msgstr ""
 
-#: picard/script/serializer.py:349 picard/ui/coverartbox.py:551
+#: picard/script/serializer.py:350 picard/ui/coverartbox.py:551
 #: picard/ui/mainwindow.py:1085 picard/ui/options/scripting.py:131
 msgid "All files"
 msgstr "Semua fail"
 
-#: picard/script/serializer.py:350 picard/ui/options/scripting.py:132
+#: picard/script/serializer.py:351 picard/ui/options/scripting.py:132
 msgid "Picard script files"
 msgstr ""
 
-#: picard/script/serializer.py:351
+#: picard/script/serializer.py:352
 msgid "Picard script package"
 msgstr ""
 
@@ -3663,7 +3667,7 @@ msgid "Cover"
 msgstr "Kulit"
 
 #: picard/ui/infodialog.py:153 picard/ui/infodialog.py:358
-#: picard/ui/options/interface.py:108
+#: picard/ui/options/interface.py:109
 msgid "Info"
 msgstr "Maklumat"
 
@@ -4005,56 +4009,56 @@ msgstr ""
 msgid "Unsubmitted features"
 msgstr ""
 
-#: picard/ui/logview.py:165
+#: picard/ui/logview.py:163
 msgid "Log"
 msgstr "Log"
 
-#: picard/ui/logview.py:175
+#: picard/ui/logview.py:173
 msgid "Verbosity"
 msgstr "Bahasa boros"
 
-#: picard/ui/logview.py:185
+#: picard/ui/logview.py:183
 msgid "String to highlight"
 msgstr "Rentetan yang akan ditonjolkan"
 
-#: picard/ui/logview.py:190
+#: picard/ui/logview.py:188
 msgid "Highlight"
 msgstr "Tonjolkan"
 
-#: picard/ui/logview.py:199
+#: picard/ui/logview.py:197
 msgid "Clear Highlight"
 msgstr "Hapuskan Tonjolan"
 
-#: picard/ui/logview.py:205 picard/ui/logview.py:286
+#: picard/ui/logview.py:203 picard/ui/logview.py:284
 msgid "Clear Log"
 msgstr "Hapuskan Log"
 
-#: picard/ui/logview.py:210
+#: picard/ui/logview.py:208
 msgid "Save As..."
 msgstr "Simpan Sebagai..."
 
-#: picard/ui/logview.py:255 picard/ui/logview.py:262
+#: picard/ui/logview.py:253 picard/ui/logview.py:260
 msgid "Save Log View to File"
 msgstr "Simpan Pandangan Log kepada Fail"
 
-#: picard/ui/logview.py:263
+#: picard/ui/logview.py:261
 msgid "File already exists, do you really want to save to this file?"
 msgstr "Fail sudah wujud. Adakah anda betul-betul mahu menyimpan di fail ini?"
 
-#: picard/ui/logview.py:275
+#: picard/ui/logview.py:273
 msgid "Failed to save Log View to file"
 msgstr "Gagal menyimpan Pandangan Log di fail"
 
-#: picard/ui/logview.py:276
+#: picard/ui/logview.py:274
 #, python-format
 msgid "Something prevented data to be written to '%s'"
 msgstr "Terdapat sesuatu yang mencegah penulisan data di '%s'"
 
-#: picard/ui/logview.py:287
+#: picard/ui/logview.py:285
 msgid "Are you sure you want to clear the log?"
 msgstr "Adakah anda pasti mahu mengosongkan log?"
 
-#: picard/ui/logview.py:322
+#: picard/ui/logview.py:320
 msgid "Activity History"
 msgstr "Sejarah Kegiatan"
 
@@ -4331,7 +4335,7 @@ msgstr "Ctrl+Y"
 msgid "&Generate AcoustID Fingerprints"
 msgstr "Janakan Cap Jari AcoustID"
 
-#: picard/ui/mainwindow.py:663 picard/ui/options/interface.py:124
+#: picard/ui/mainwindow.py:663 picard/ui/options/interface.py:125
 msgid "Generate Fingerprints"
 msgstr "Janakan Cap Jari"
 
@@ -4417,7 +4421,7 @@ msgstr "Simpan &Tanda"
 msgid "Tags From &File Names..."
 msgstr "Tanda Daripada Nama &Fail..."
 
-#: picard/ui/mainwindow.py:719 picard/ui/options/interface.py:136
+#: picard/ui/mainwindow.py:719 picard/ui/options/interface.py:137
 msgid "Parse File Names..."
 msgstr "Huraikan Nama Fail..."
 
@@ -4425,7 +4429,7 @@ msgstr "Huraikan Nama Fail..."
 msgid "Set tags based on the file names"
 msgstr "Tetapkan tanda berdasarkan nama fail"
 
-#: picard/ui/mainwindow.py:721 picard/ui/widgets/scripttextedit.py:332
+#: picard/ui/mainwindow.py:721 picard/ui/widgets/scripttextedit.py:336
 msgid "Ctrl+Shift+T"
 msgstr "Ctrl+Shift+T"
 
@@ -5101,33 +5105,21 @@ msgstr ""
 msgid "Options"
 msgstr "Pilihan"
 
-#: picard/ui/ui_options_acousticbrainz.py:63
+#: picard/ui/ui_options_acousticbrainz.py:50
 msgid "AcousticBrainz features extraction"
 msgstr ""
 
-#: picard/ui/ui_options_acousticbrainz.py:64
-msgid "Do not use acoustic feature extraction"
-msgstr ""
-
-#: picard/ui/ui_options_acousticbrainz.py:65
-msgid "Use acoustic feature extraction"
-msgstr ""
-
-#: picard/ui/ui_options_acousticbrainz.py:66
-msgid "AcousticBrainz Settings"
-msgstr ""
-
-#: picard/ui/ui_options_acousticbrainz.py:67
+#: picard/ui/ui_options_acousticbrainz.py:51
 msgid "AcousticBrainz/Essentia feature extractor:"
 msgstr ""
 
-#: picard/ui/ui_options_acousticbrainz.py:68
+#: picard/ui/ui_options_acousticbrainz.py:52
 #: picard/ui/ui_options_fingerprinting.py:85
-#: picard/ui/ui_options_interface.py:159 picard/ui/ui_options_renaming.py:156
+#: picard/ui/ui_options_interface.py:171 picard/ui/ui_options_renaming.py:156
 msgid "Browse..."
 msgstr "Semak imbas..."
 
-#: picard/ui/ui_options_acousticbrainz.py:69
+#: picard/ui/ui_options_acousticbrainz.py:53
 #: picard/ui/ui_options_fingerprinting.py:86
 msgid "Download..."
 msgstr "Muat turun..."
@@ -5206,11 +5198,11 @@ msgstr "Pembekal Seni Kulit"
 msgid "Reorder Priority: "
 msgstr "Susun Semula Keutamaan:"
 
-#: picard/ui/ui_options_cover.py:104 picard/ui/ui_options_interface.py:166
+#: picard/ui/ui_options_cover.py:104 picard/ui/ui_options_interface.py:177
 msgid "Move selected item up"
 msgstr "Alihkan item yang dipilih ke atas"
 
-#: picard/ui/ui_options_cover.py:105 picard/ui/ui_options_interface.py:167
+#: picard/ui/ui_options_cover.py:105 picard/ui/ui_options_interface.py:178
 msgid "Move selected item down"
 msgstr "Alihkan item yang dipilih ke bawah"
 
@@ -5364,67 +5356,75 @@ msgstr "Genre atau tanda susunama khalayak yang akan dimasukkan atau dikeluarkan
 msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
 msgstr "Tempat permainan penapis genre atau tanda susunama khalayak (dibersihkan ketika keluar):"
 
-#: picard/ui/ui_options_interface.py:150
-msgid "Customize Action Toolbar"
-msgstr "Sesuaikan Palang Alat Tindakan"
+#: picard/ui/ui_options_interface.py:159
+msgid "Appearance"
+msgstr ""
 
-#: picard/ui/ui_options_interface.py:151
-msgid "Miscellaneous"
-msgstr "Rencaman"
-
-#: picard/ui/ui_options_interface.py:152
+#: picard/ui/ui_options_interface.py:160
 msgid "Show text labels under icons"
 msgstr "Tunjukkan label teks di bawah arca"
 
-#: picard/ui/ui_options_interface.py:153
-msgid "Allow selection of multiple directories"
-msgstr "Benarkan pemilihan pelbagai direktori"
+#: picard/ui/ui_options_interface.py:161
+msgid "Show icons in menus"
+msgstr ""
 
-#: picard/ui/ui_options_interface.py:154
-msgid "Use builtin search rather than looking in browser"
-msgstr "Gunakan gelintaran yang terpasang daripada mencari di penyemak imbas"
-
-#: picard/ui/searchdialog/__init__.py:95 picard/ui/ui_options_interface.py:155
-msgid "Use advanced query syntax"
-msgstr "Gunakan sintaks pertanyaan lanjutan"
-
-#: picard/ui/ui_options_interface.py:156
-msgid "Show a quit confirmation dialog for unsaved changes"
-msgstr "Tunjukkan dialog pengesahan keluar apabila terdapat perubahan yang belum tersimpan"
-
-#: picard/ui/ui_options_interface.py:157
-msgid "Adjust horizontal position in file browser automatically"
-msgstr "Selaraskan kedudukan mendatar ketika di pelayar fail secara kendiri"
-
-#: picard/ui/ui_options_interface.py:158
-msgid "Begin browsing in the following directory:"
-msgstr "Mulakan pelayaran di direktori berikut:"
-
-#: picard/ui/ui_options_interface.py:160
+#: picard/ui/ui_options_interface.py:162
 msgid "User interface language:"
 msgstr "Bahasa antara muka pengguna:"
 
-#: picard/ui/ui_options_interface.py:161
+#: picard/ui/ui_options_interface.py:163
 msgid "User interface color theme:"
 msgstr "Tema warna antara muka pengguna:"
 
-#: picard/ui/ui_options_interface.py:162
+#: picard/ui/ui_options_interface.py:164
+msgid "Miscellaneous"
+msgstr "Rencaman"
+
+#: picard/ui/ui_options_interface.py:165
+msgid "Allow selection of multiple directories"
+msgstr "Benarkan pemilihan pelbagai direktori"
+
+#: picard/ui/ui_options_interface.py:166
+msgid "Use builtin search rather than looking in browser"
+msgstr "Gunakan gelintaran yang terpasang daripada mencari di penyemak imbas"
+
+#: picard/ui/searchdialog/__init__.py:95 picard/ui/ui_options_interface.py:167
+msgid "Use advanced query syntax"
+msgstr "Gunakan sintaks pertanyaan lanjutan"
+
+#: picard/ui/ui_options_interface.py:168
+msgid "Show a quit confirmation dialog for unsaved changes"
+msgstr "Tunjukkan dialog pengesahan keluar apabila terdapat perubahan yang belum tersimpan"
+
+#: picard/ui/ui_options_interface.py:169
+msgid "Adjust horizontal position in file browser automatically"
+msgstr "Selaraskan kedudukan mendatar ketika di pelayar fail secara kendiri"
+
+#: picard/ui/ui_options_interface.py:170
+msgid "Begin browsing in the following directory:"
+msgstr "Mulakan pelayaran di direktori berikut:"
+
+#: picard/ui/ui_options_interface.py:172
+msgid "Customize Action Toolbar"
+msgstr "Sesuaikan Palang Alat Tindakan"
+
+#: picard/ui/ui_options_interface.py:173
 msgid "Add a new button to Toolbar"
 msgstr "Tambah punat baharu di Palang Alat"
 
-#: picard/ui/ui_options_interface.py:163
+#: picard/ui/ui_options_interface.py:174
 msgid "Add Action"
 msgstr "Tambah Tindakan"
 
-#: picard/ui/ui_options_interface.py:164
+#: picard/ui/ui_options_interface.py:175
 msgid "Insert a separator"
 msgstr "Selitkan pemisah"
 
-#: picard/ui/ui_options_interface.py:165
+#: picard/ui/ui_options_interface.py:176
 msgid "Add Separator"
 msgstr "Tambahkan pemisah"
 
-#: picard/ui/ui_options_interface.py:168
+#: picard/ui/ui_options_interface.py:179
 msgid "Remove button from toolbar"
 msgstr "Alih keluar punat daripada palang alat"
 
@@ -5493,7 +5493,7 @@ msgstr "Aneka artis:"
 msgid "Non-album tracks:"
 msgstr "Runut bukan album:"
 
-#: picard/ui/options/interface.py:177 picard/ui/ui_options_metadata.py:139
+#: picard/ui/options/interface.py:179 picard/ui/ui_options_metadata.py:139
 #: picard/ui/ui_options_metadata.py:140
 #: picard/ui/ui_provider_options_local.py:52
 msgid "Default"
@@ -5951,25 +5951,25 @@ msgstr "Ralat Regex"
 msgid "AcousticBrainz"
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:77
+#: picard/ui/options/acousticbrainz.py:76
 msgid "Open AcousticBrainz website in browser to download extractor binary"
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:122
+#: picard/ui/options/acousticbrainz.py:111
 msgid "Path to streaming_extractor_music(.exe)"
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:140
+#: picard/ui/options/acousticbrainz.py:129
 #, python-format
 msgid "Extractor version: %s"
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:152
-#: picard/ui/options/acousticbrainz.py:156
+#: picard/ui/options/acousticbrainz.py:141
+#: picard/ui/options/acousticbrainz.py:145
 msgid "Please select a valid extractor executable."
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:156
+#: picard/ui/options/acousticbrainz.py:145
 msgid "Invalid extractor executable"
 msgstr ""
 
@@ -6092,15 +6092,17 @@ msgid ""
 "<p>\n"
 "<b>-*word</b>: exclude all genres ending with <i>word</i><br/>\n"
 "<b>+word*</b>: include all genres starting with <i>word</i><br/>\n"
+"<b>+wor?</b>: include all genres starting with <i>wor</i> and ending with an arbitrary character<br/>\n"
+"<b>+wor[dk]</b>: include all genres starting with <i>wor</i> and ending with <i>d</i> or <i>k</i><br/>\n"
 "<b>-w*rd</b>: exclude all genres starting with <i>w</i> and ending with <i>rd</i>\n"
 "</p>\n"
 "<p><u>Regular expressions filtering (Python re syntax):</u></p>\n"
 "<p><b>-/^w.rd+/</b>: exclude genres starting with <i>w</i> followed by any character, then <i>r</i> followed by at least one <i>d</i>\n"
 "</p>\n"
 "</body></html>"
-msgstr "<html><head/><body>\n<p>Baris yang tidak dimulakan dengan <b>-</b> atau <b>+</b> akan diabaikan.</p>\n<p>Hanya satu ungkapan bagi setiap baris tanpa mengambil kira kecil besar huruf </p>\n<p>Contoh:</p>\n<p><b>\n#ulasan<br/>\n!ulasan<br/>\nulasan\n</b></p>\n<p><u>Penapisan tegas:</u></p>\n<p>\n<b>-kata</b>: sisihkan <i>kata</i><br/>\n<b>+kata</b>: masukkan <i>kata</i>\n</p>\n<p><u>Penapisan kad liar:</u></p>\n<p>\n<b>-*kata</b>: sisihkan semua genre yang berakhir dengan <i>kata</i><br/>\n<b>+kata*</b>: masukkan semua genre yang bermula dengan <i>kata</i><br/>\n<b>-k*ta</b>: sisihkan semua genre yang bermula dengan <i>k</i> dan berakhir dengan <i>ta</i>\n</p>\n<p><u>Penapisan ungkapan nalar (pensistaksisan semula Python):</u></p>\n<p><b>-/^k.ta+/</b>: sisihkan genre yang bermula dengan <i>k</i> lalu diikuti oleh sebarang aksara. Kemudian, huruf <i>t</i> pula diikuti oleh sekurang-kurangnya satu huruf <i>a</i>\n</p>\n</body></html>"
+msgstr ""
 
-#: picard/ui/options/genres.py:71
+#: picard/ui/options/genres.py:73
 msgid ""
 "<html><head/><body>\n"
 "<p>You can add genres to test filters against, one per line.<br/>\n"
@@ -6113,124 +6115,124 @@ msgid ""
 "</body></html>"
 msgstr "<html><head/><body>\n<p>Di sini boleh dicuba penapis genre supaya disisihkan. Hanya satu begi setiap baris.<br/>\nTapak permainan ini tidak akan dipelihara apabila keluar dari Pilihan.\n</p>\n<p>\nLatar merah bermaksud tanda akan dilangkaui.<br/>\nLatar hijau bermaksud tanda akan dikekalkan.\n</p>\n</body></html>"
 
-#: picard/ui/options/genres.py:85
+#: picard/ui/options/genres.py:87
 msgid "Genres"
 msgstr "Genre"
 
-#: picard/ui/options/genres.py:154
+#: picard/ui/options/genres.py:156
 #, python-format
 msgid "Error line %d: %s"
 msgstr "Baris ralat %d: %s"
 
-#: picard/ui/options/interface.py:72
+#: picard/ui/options/interface.py:73
 msgid "User Interface"
 msgstr "Antara Muka Pengguna"
 
-#: picard/ui/options/interface.py:80
+#: picard/ui/options/interface.py:81
 msgid "Add Folder"
 msgstr "Tambah Pelipat"
 
-#: picard/ui/options/interface.py:84
+#: picard/ui/options/interface.py:85
 msgid "Add Files"
 msgstr "Tambah Fail"
 
-#: picard/ui/options/interface.py:88
+#: picard/ui/options/interface.py:89
 msgid "Cluster"
 msgstr "Kelompok"
 
-#: picard/ui/options/interface.py:92
+#: picard/ui/options/interface.py:93
 msgid "Lookup"
 msgstr "Cari"
 
-#: picard/ui/options/interface.py:96
+#: picard/ui/options/interface.py:97
 msgid "Scan"
 msgstr "Imbas"
 
-#: picard/ui/options/interface.py:100
+#: picard/ui/options/interface.py:101
 msgid "Lookup in Browser"
 msgstr "Cari di Penyemak Imbas"
 
-#: picard/ui/options/interface.py:104
+#: picard/ui/options/interface.py:105
 msgid "Save"
 msgstr "Simpan"
 
-#: picard/ui/options/interface.py:116
+#: picard/ui/options/interface.py:117
 msgid "Submit AcoustIDs"
 msgstr "Serahkan AcoustID"
 
-#: picard/ui/options/interface.py:120
+#: picard/ui/options/interface.py:121
 msgid "Submit AcousticBrainz features"
 msgstr ""
 
-#: picard/ui/options/interface.py:128
+#: picard/ui/options/interface.py:129
 msgid "Open in Player"
 msgstr "Buka Dengan Pemain"
 
-#: picard/ui/options/interface.py:132
+#: picard/ui/options/interface.py:133
 msgid "Lookup CD..."
 msgstr "Carian CD..."
 
-#: picard/ui/options/interface.py:178
+#: picard/ui/options/interface.py:180
 msgid ""
 "The default color scheme based on the operating system display settings"
 msgstr "Skema warna lalai mengikut tetapan paparan sistem pengendalian"
 
-#: picard/ui/options/interface.py:181
+#: picard/ui/options/interface.py:183
 msgid "Dark"
 msgstr "Gelap"
 
-#: picard/ui/options/interface.py:182
+#: picard/ui/options/interface.py:184
 msgid "A dark display theme"
 msgstr "Tema paparan gelap"
 
-#: picard/ui/options/interface.py:185
+#: picard/ui/options/interface.py:187
 msgid "Light"
 msgstr "Cerah"
 
-#: picard/ui/options/interface.py:186
+#: picard/ui/options/interface.py:188
 msgid "A light display theme"
 msgstr "Tema paparan cerah"
 
-#: picard/ui/options/interface.py:189
+#: picard/ui/options/interface.py:191
 msgid "System"
 msgstr "Sistem"
 
-#: picard/ui/options/interface.py:190
+#: picard/ui/options/interface.py:192
 msgid "The Qt5 theme configured in the desktop environment"
 msgstr "Tema Qt5 yang diatur sedia dalam persekitaran atas meja"
 
-#: picard/ui/options/interface.py:208
+#: picard/ui/options/interface.py:210
 msgid "System default"
 msgstr "Bahasa lalai sistem"
 
-#: picard/ui/options/interface.py:272
+#: picard/ui/options/interface.py:277
 msgid "Theme changed"
 msgstr "Tema telah diubah"
 
-#: picard/ui/options/interface.py:273
+#: picard/ui/options/interface.py:278
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
 msgstr "Tema perisian telah diubah. Picard haus dimulakan semula bagi menunjukkan perubahan."
 
-#: picard/ui/options/interface.py:275
+#: picard/ui/options/interface.py:280
 msgid ""
 "Please note that using the system theme might cause the user interface to be"
 " not shown correctly. If this is the case select the \"Default\" theme "
 "option to use Picard's default theme again."
 msgstr "Harap maklum bahawa penggunaan tema sistem boleh mengakibatkan antara muka pengguna tidak dapat dipaparkan dengan baik. Pilih tema \"Lalai\" sekiranya masalah ini muncul bagi kembali ke tema asal Picard."
 
-#: picard/ui/options/interface.py:280
+#: picard/ui/options/interface.py:285
 msgid "Language changed"
 msgstr "Bahasa telah diubah"
 
-#: picard/ui/options/interface.py:281
+#: picard/ui/options/interface.py:286
 msgid ""
 "You have changed the interface language. You have to restart Picard in order"
 " for the change to take effect."
 msgstr "Bahasa antara muka telah diubah. Picard perlu dimulakan semula barulah perubahan tersebut terjadi."
 
-#: picard/ui/options/interface.py:313
+#: picard/ui/options/interface.py:318
 msgid "Drag and Drop to re-order"
 msgstr "Tarik dan Lepas untuk menyusun semula"
 
@@ -6650,23 +6652,23 @@ msgstr "Namakan semula skrip"
 msgid "Are you sure you want to remove this script?"
 msgstr "Anda pasti ingin mengalih keluar skrip ini?"
 
-#: picard/ui/widgets/scripttextedit.py:320
+#: picard/ui/widgets/scripttextedit.py:324
 msgid "&Word wrap script"
 msgstr "Skrip balut kata (&W)"
 
-#: picard/ui/widgets/scripttextedit.py:321
+#: picard/ui/widgets/scripttextedit.py:325
 msgid "Word wrap long lines in the editor"
 msgstr "Letakkan kod di baris baharu sekiranya terlalu panjang"
 
-#: picard/ui/widgets/scripttextedit.py:323
+#: picard/ui/widgets/scripttextedit.py:327
 msgid "Ctrl+Shift+W"
 msgstr "Ctrl+Shift+W"
 
-#: picard/ui/widgets/scripttextedit.py:329
+#: picard/ui/widgets/scripttextedit.py:333
 msgid "Show help &tooltips"
 msgstr "Paparkan petua bantuan timbul (&T)"
 
-#: picard/ui/widgets/scripttextedit.py:330
+#: picard/ui/widgets/scripttextedit.py:334
 msgid "Show tooltips for script elements"
 msgstr "Paparkan petua bantuan timbul bagi unsur skrip"
 
