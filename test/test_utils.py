@@ -32,6 +32,7 @@ import builtins
 from collections import namedtuple
 from collections.abc import Iterator
 import re
+import subprocess  # nosec: B404
 from tempfile import NamedTemporaryFile
 import unittest
 from unittest.mock import Mock
@@ -39,7 +40,10 @@ from unittest.mock import Mock
 from test.picardtestcase import PicardTestCase
 
 from picard import util
-from picard.const.sys import IS_WIN
+from picard.const.sys import (
+    IS_MACOS,
+    IS_WIN,
+)
 from picard.util import (
     extract_year_from_date,
     find_best_match,
@@ -204,10 +208,17 @@ class HiddenFileTest(PicardTestCase):
     @unittest.skipUnless(IS_WIN, "windows test")
     def test_windows(self):
         from ctypes import windll
-        with NamedTemporaryFile(prefix='Foo') as f:
-            self.assertFalse(util.is_hidden(f.name))
+        with NamedTemporaryFile() as f:
+            self.assertFalse(util.is_hidden(f.name), "%s expected not to be hidden" % f.name)
             windll.kernel32.SetFileAttributesW(f.name, 2)
-            self.assertTrue(util.is_hidden(f.name))
+            self.assertTrue(util.is_hidden(f.name), "%s expected to be hidden" % f.name)
+
+    @unittest.skipUnless(IS_MACOS, "macOS test")
+    def test_macos(self):
+        with NamedTemporaryFile() as f:
+            self.assertFalse(util.is_hidden(f.name), "%s expected not to be hidden" % f.name)
+            subprocess.run(('SetFile', '-a', 'V', f.name))  # nosec: B603
+            self.assertTrue(util.is_hidden(f.name), "%s expected to be hidden" % f.name)
 
 
 class TagsTest(PicardTestCase):

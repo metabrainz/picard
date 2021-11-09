@@ -61,12 +61,9 @@ from picard.const import MUSICBRAINZ_SERVERS
 from picard.const.sys import (
     FROZEN_TEMP_PATH,
     IS_FROZEN,
+    IS_MACOS,
     IS_WIN,
 )
-
-
-if IS_WIN:
-    from ctypes import windll
 
 
 class LockableObject(QtCore.QObject):
@@ -488,17 +485,29 @@ def is_hidden(filepath):
         or _has_hidden_attribute(filepath)
 
 
-def _has_hidden_attribute(filepath):
-    if not IS_WIN:
-        return False
-    # FIXME: On OSX detecting hidden files involves more
-    # than just checking for dot files, see
-    # https://stackoverflow.com/questions/284115/cross-platform-hidden-file-detection
-    try:
-        attrs = windll.kernel32.GetFileAttributesW(filepath)
-        assert attrs != -1
-        return bool(attrs & 2)
-    except (AttributeError, AssertionError):
+if IS_WIN:
+    from ctypes import windll
+
+    def _has_hidden_attribute(filepath):
+        try:
+            attrs = windll.kernel32.GetFileAttributesW(filepath)
+            assert attrs != -1
+            return bool(attrs & 2)
+        except (AttributeError, AssertionError):
+            return False
+
+elif IS_MACOS:
+    import Foundation
+
+    def _has_hidden_attribute(filepath):
+        # On macOS detecting hidden files involves more than just checking for dot files, see
+        # https://stackoverflow.com/questions/284115/cross-platform-hidden-file-detection
+        url = Foundation.NSURL.fileURLWithPath_(filepath)
+        result = url.getResourceValue_forKey_error_(None, Foundation.NSURLIsHiddenKey, None)
+        return result[1]
+
+else:
+    def _has_hidden_attribute(filepath):
         return False
 
 
