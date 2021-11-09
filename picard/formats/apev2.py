@@ -316,14 +316,19 @@ class WavPackFile(APEv2File):
     NAME = "WavPack"
     _File = mutagen.wavpack.WavPack
 
+    def _move_or_rename_wvc(self, old_filename, new_filename):
+        wvc_filename = replace_extension(old_filename, ".wvc")
+        if not isfile(wvc_filename):
+            return
+        wvc_new_filename = replace_extension(new_filename, ".wvc")
+        wvc_new_filename = get_available_filename(wvc_new_filename, wvc_filename)
+        log.debug('Moving Wavepack correction file %r => %r', wvc_filename, wvc_new_filename)
+        move_ensure_casing(wvc_filename, wvc_new_filename)
+
     def _move_additional_files(self, old_filename, new_filename, config):
         """Includes an additional check for WavPack correction files"""
-        wvc_filename = replace_extension(old_filename, ".wvc")
-        if (config.setting["rename_files"] or config.setting["move_files"]) and isfile(wvc_filename):
-            wvc_new_filename = replace_extension(new_filename, ".wvc")
-            wvc_new_filename = get_available_filename(wvc_new_filename, wvc_filename)
-            log.debug('Moving Wavepack correction file %r => %r', wvc_filename, wvc_new_filename)
-            move_ensure_casing(wvc_filename, wvc_new_filename)
+        if config.setting["rename_files"] or config.setting["move_files"]:
+            self._move_or_rename_wvc(old_filename, new_filename)
         return super()._move_additional_files(old_filename, new_filename, config)
 
 
