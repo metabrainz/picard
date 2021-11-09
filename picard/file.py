@@ -551,14 +551,16 @@ class File(QtCore.QObject, Item):
             new_path = os.path.dirname(new_filename)
             old_path = os.path.dirname(old_filename)
             if new_path != old_path:
-                patterns = self._compile_move_additional_files_pattern(config)
+                patterns_string = config.setting["move_additional_files_pattern"]
+                patterns = self._compile_move_additional_files_pattern(patterns_string)
                 moves = self._get_additional_files_moves(old_path, new_path, patterns)
                 self._apply_additional_files_moves(moves)
 
-    def _compile_move_additional_files_pattern(self, config):
+    @staticmethod
+    def _compile_move_additional_files_pattern(patterns_string):
         return {
             (re.compile(fnmatch.translate(pattern), re.IGNORECASE), pattern.startswith('.'))
-            for pattern in set(config.setting["move_additional_files_pattern"].lower().split())
+            for pattern in set(patterns_string.lower().split())
         }
 
     def _get_additional_files_moves(self, old_path, new_path, patterns):
