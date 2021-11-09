@@ -547,14 +547,11 @@ class File(QtCore.QObject, Item):
 
     def _move_additional_files(self, old_filename, new_filename, config):
         """Move extra files, like images, playlists..."""
-        if not config.setting["move_files"] or not config.setting["move_additional_files"]:
-            return
-        new_path = os.path.dirname(new_filename)
-        old_path = os.path.dirname(old_filename)
-        if new_path == old_path:
-            # skip, same directory, nothing to move
-            return
-        self._apply_additional_files_moves(old_path, new_path, config)
+        if config.setting["move_files"] and config.setting["move_additional_files"]:
+            new_path = os.path.dirname(new_filename)
+            old_path = os.path.dirname(old_filename)
+            if new_path != old_path:
+                self._apply_additional_files_moves(old_path, new_path, config)
 
     def _compile_move_additional_files_pattern(self, config):
         return {
