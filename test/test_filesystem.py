@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2018 Antonio Larrosa
 # Copyright (C) 2018 Wieland Hoffmann
-# Copyright (C) 2018-2019 Philipp Wolfer
+# Copyright (C) 2018-2019, 2021 Philipp Wolfer
 # Copyright (C) 2018-2020 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -101,42 +101,49 @@ class TestFileSystem(PicardTestCase):
         f = picard.formats.open_(files['old_mp3'])
         f._move_additional_files(files['old_mp3'], files['new_mp3'])
 
+    def _assert_additional_files_moved(self, files):
+        self._move_additional_files(files)
         self._assertFile(files['new_img'])
         self._assertNoFile(files['old_img'])
 
+    def _assert_additional_files_not_moved(self, files):
+        self._move_additional_files(files)
+        self._assertNoFile(files['new_img'])
+        self._assertFile(files['old_img'])
+
     def test_move_additional_files_source_unicode(self):
         files = self._prepare_files(src_rel_path='música')
-
-        self._move_additional_files(files)
+        self._assert_additional_files_moved(files)
 
     def test_move_additional_files_target_unicode(self):
         files = self._prepare_files(tgt_rel_path='música')
-
-        self._move_additional_files(files)
+        self._assert_additional_files_moved(files)
 
     def test_move_additional_files_duplicate_patterns(self):
         files = self._prepare_files()
-
         config.setting['move_additional_files_pattern'] = 'cover.jpg *.jpg'
-
-        self._move_additional_files(files)
+        self._assert_additional_files_moved(files)
 
     def test_move_additional_files_hidden_nopattern(self):
         files = self._prepare_files()
-
         config.setting['move_additional_files_pattern'] = '*.jpg'
-
-        self._move_additional_files(files)
-
+        self._assert_additional_files_moved(files)
         self._assertNoFile(files['new_hidden_img'])
         self._assertFile(files['old_hidden_img'])
 
     def test_move_additional_files_hidden_pattern(self):
         files = self._prepare_files()
-
         config.setting['move_additional_files_pattern'] = '*.jpg .*.jpg'
-
-        self._move_additional_files(files)
-
+        self._assert_additional_files_moved(files)
         self._assertFile(files['new_hidden_img'])
         self._assertNoFile(files['old_hidden_img'])
+
+    def test_move_additional_files_disabled(self):
+        config.setting['move_additional_files'] = False
+        files = self._prepare_files(src_rel_path='música')
+        self._assert_additional_files_not_moved(files)
+
+    def test_move_files_disabled(self):
+        config.setting['move_files'] = False
+        files = self._prepare_files(src_rel_path='música')
+        self._assert_additional_files_not_moved(files)

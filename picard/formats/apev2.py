@@ -316,16 +316,15 @@ class WavPackFile(APEv2File):
     NAME = "WavPack"
     _File = mutagen.wavpack.WavPack
 
-    def _save_and_rename(self, old_filename, metadata):
+    def _move_additional_files(self, old_filename, new_filename):
         """Includes an additional check for WavPack correction files"""
-        new_filename = super()._save_and_rename(old_filename, metadata)
         wvc_filename = replace_extension(old_filename, ".wvc")
         if isfile(wvc_filename):
             wvc_new_filename = replace_extension(new_filename, ".wvc")
             wvc_new_filename = get_available_filename(wvc_new_filename, wvc_filename)
             log.debug('Moving Wavepack correction file %r => %r', wvc_filename, wvc_new_filename)
             move_ensure_casing(wvc_filename, wvc_new_filename)
-        return new_filename
+        return super()._move_additional_files(old_filename, new_filename)
 
 
 class OptimFROGFile(APEv2File):
