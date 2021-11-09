@@ -32,6 +32,7 @@ import builtins
 from collections import namedtuple
 from collections.abc import Iterator
 import re
+from tempfile import NamedTemporaryFile
 import unittest
 from unittest.mock import Mock
 
@@ -199,6 +200,14 @@ class HiddenFileTest(PicardTestCase):
         self.assertTrue(util.is_hidden('/a/b/.c.mp3'))
         self.assertTrue(util.is_hidden('/a/.b/.c.mp3'))
         self.assertFalse(util.is_hidden('/a/.b/c.mp3'))
+
+    @unittest.skipUnless(IS_WIN, "windows test")
+    def test_windows(self):
+        from ctypes import windll
+        with NamedTemporaryFile(prefix='Foo') as f:
+            self.assertFalse(util.is_hidden(f.name))
+            windll.kernel32.SetFileAttributesW(f.name, 2)
+            self.assertTrue(util.is_hidden(f.name))
 
 
 class TagsTest(PicardTestCase):
