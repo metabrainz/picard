@@ -22,6 +22,7 @@
 
 
 import os
+import re
 import unittest
 from unittest.mock import MagicMock
 
@@ -356,3 +357,57 @@ class FileGuessTracknumberAndTitleTest(PicardTestCase):
         f._guess_tracknumber_and_title(metadata)
         self.assertEqual(metadata['tracknumber'], '1')
         self.assertEqual(metadata['title'], 'somefile')
+
+
+class FileAdditionalFilesPatternsTest(PicardTestCase):
+
+    def test_empty_patterns(self):
+        self.set_config_values({
+            'move_additional_files_pattern': '   ',
+        })
+        f = File('/somepath/01 somefile.mp3')
+        self.assertEqual(f._compile_move_additional_files_pattern(config), set())
+
+    def test_simple_patterns(self):
+        self.set_config_values({
+            'move_additional_files_pattern': 'cover.jpg',
+        })
+        f = File('/somepath/01 somefile.mp3')
+        expected = {
+            (re.compile('(?s:cover\\.jpg)\\Z', re.IGNORECASE), False)
+        }
+        self.assertEqual(f._compile_move_additional_files_pattern(config), expected)
+
+    def test_duplicated_patterns(self):
+        self.set_config_values({
+            'move_additional_files_pattern': 'cover.jpg cover.jpg',
+        })
+        f = File('/somepath/01 somefile.mp3')
+        expected = {
+            (re.compile('(?s:cover\\.jpg)\\Z', re.IGNORECASE), False)
+        }
+        self.assertEqual(f._compile_move_additional_files_pattern(config), expected)
+
+    def test_simple_hidden_patterns(self):
+        self.set_config_values({
+            'move_additional_files_pattern': 'cover.jpg .hidden',
+        })
+        f = File('/somepath/01 somefile.mp3')
+        expected = {
+            (re.compile('(?s:cover\\.jpg)\\Z', re.IGNORECASE), False),
+            (re.compile('(?s:\\.hidden)\\Z', re.IGNORECASE), True)
+        }
+        self.assertEqual(f._compile_move_additional_files_pattern(config), expected)
+
+    def test_wildcard_patterns(self):
+        self.set_config_values({
+            'move_additional_files_pattern': 'c?ver.jpg .h?dden* *.jpg *.JPG',
+        })
+        f = File('/somepath/01 somefile.mp3')
+        expected = {
+            (re.compile('(?s:c.ver\\.jpg)\\Z', re.IGNORECASE), False),
+            (re.compile('(?s:\\.h.dden.*)\\Z', re.IGNORECASE), True),
+            (re.compile('(?s:.*\\.jpg)\\Z', re.IGNORECASE), False),
+            (re.compile('(?s:.*\\.JPG)\\Z', re.IGNORECASE), False)
+        }
+        self.assertEqual(f._compile_move_additional_files_pattern(config), expected)
