@@ -329,7 +329,7 @@ def paint_column_icon(painter, rect, icon):
         return
     size = COLUMN_ICON_SIZE
     padding_h = COLUMN_ICON_BORDER
-    padding_v = (rect.height() - size) / 2
+    padding_v = (rect.height() - size) // 2
     target_rect = QtCore.QRect(rect.x() + padding_h, rect.y() + padding_v, size, size)
     painter.drawPixmap(target_rect, icon.pixmap(size, size))
 
