@@ -663,20 +663,21 @@ class File(QtCore.QObject, Item):
                 continue
             if not self.supports_tag(name):
                 continue
-            if name not in ignored_tags:
-                new_values = metadata.getall(name)
-                if not (
-                    new_values
-                    or clear_existing_tags
-                    or name in metadata.deleted_tags
-                ):
-                    continue
-                orig_values = self.orig_metadata.getall(name)
-                if orig_values != new_values:
-                    self.similarity = self.orig_metadata.compare(metadata, ignored_tags)
-                    if self.state == File.NORMAL:
-                        self.state = File.CHANGED
-                    break
+            if name in ignored_tags:
+                continue
+            new_values = metadata.getall(name)
+            if not (
+                new_values
+                or clear_existing_tags
+                or name in metadata.deleted_tags
+            ):
+                continue
+            orig_values = self.orig_metadata.getall(name)
+            if orig_values != new_values:
+                self.similarity = self.orig_metadata.compare(metadata, ignored_tags)
+                if self.state == File.NORMAL:
+                    self.state = File.CHANGED
+                break
         else:
             if (self.metadata.images
                     and self.orig_metadata.images != self.metadata.images):
