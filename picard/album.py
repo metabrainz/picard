@@ -739,7 +739,7 @@ class NatAlbum(Album):
         self.loaded = True
         self.update()
 
-    def update(self, update_tracks=True):
+    def update(self, update_tracks=True, update_selection=True):
         config = get_config()
         self.enable_update_metadata_images(False)
         old_album_title = self.metadata["album"]
@@ -750,7 +750,7 @@ class NatAlbum(Album):
             for file in track.files:
                 track.update_file_metadata(file)
         self.enable_update_metadata_images(True)
-        super().update(update_tracks)
+        super().update(update_tracks, update_selection)
 
     def _finalize_loading(self, error):
         self.update()
