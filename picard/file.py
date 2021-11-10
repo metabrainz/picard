@@ -653,8 +653,7 @@ class File(QtCore.QObject, Item):
         return self.similarity == 1.0 and self.state == File.NORMAL
 
     def update(self, signal=True):
-        metadata = self.metadata
-        names = set(metadata) | set(self.orig_metadata)
+        names = set(self.metadata) | set(self.orig_metadata)
         config = get_config()
         clear_existing_tags = config.setting["clear_existing_tags"]
         ignored_tags = config.setting["compare_ignore_tags"]
@@ -665,16 +664,16 @@ class File(QtCore.QObject, Item):
                 continue
             if name in ignored_tags:
                 continue
-            new_values = metadata.getall(name)
+            new_values = self.metadata.getall(name)
             if not (
                 new_values
                 or clear_existing_tags
-                or name in metadata.deleted_tags
+                or name in self.metadata.deleted_tags
             ):
                 continue
             orig_values = self.orig_metadata.getall(name)
             if orig_values != new_values:
-                self.similarity = self.orig_metadata.compare(metadata, ignored_tags)
+                self.similarity = self.orig_metadata.compare(self.metadata, ignored_tags)
                 if self.state == File.NORMAL:
                     self.state = File.CHANGED
                 break
