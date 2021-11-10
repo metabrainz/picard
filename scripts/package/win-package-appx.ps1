@@ -66,7 +66,7 @@ ThrowOnExeError "MakeAppx failed"
 
 # Sign package
 If ($CertificateFile) {
-  SignTool sign /fd SHA256 /f "$CertificateFile" /p (ConvertFrom-SecureString -AsPlainText "$CertificatePassword") $PackageFile
+  SignTool sign /fd SHA256 /f "$CertificateFile" /p (ConvertFrom-SecureString -AsPlainText $CertificatePassword) $PackageFile
   ThrowOnExeError "SignTool failed"
 } ElseIf ($Certificate) {
   SignTool sign /fd SHA256 /sha1 $Certificate.Thumbprint $PackageFile
