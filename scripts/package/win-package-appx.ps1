@@ -6,7 +6,7 @@ Param(
   [ValidateScript({Test-Path $_ -PathType Leaf})]
   [String]
   $CertificateFile,
-  [String]
+  [SecureString]
   $CertificatePassword,
   [Int]
   $BuildNumber
@@ -21,8 +21,7 @@ If (-Not $BuildNumber) {
 }
 
 If (-Not $Certificate -And $CertificateFile) {
-  $CertPassword = ConvertTo-SecureString -String $CertificatePassword -Force -AsPlainText
-  $Certificate = Get-PfxCertificate -FilePath $CertificateFile -Password $CertPassword
+  $Certificate = Get-PfxCertificate -FilePath $CertificateFile -Password $CertificatePassword
 }
 
 $ScriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
@@ -67,7 +66,7 @@ ThrowOnExeError "MakeAppx failed"
 
 # Sign package
 If ($CertificateFile) {
-  SignTool sign /fd SHA256 /f "$CertificateFile" /p "$CertificatePassword" $PackageFile
+  SignTool sign /fd SHA256 /f "$CertificateFile" /p (ConvertFrom-SecureString -AsPlainText "$CertificatePassword") $PackageFile
   ThrowOnExeError "SignTool failed"
 } ElseIf ($Certificate) {
   SignTool sign /fd SHA256 /sha1 $Certificate.Thumbprint $PackageFile

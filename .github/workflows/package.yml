@@ -173,7 +173,8 @@ jobs:
     - name: Build Windows 10 signed app package
       if: matrix.type == 'signed-app' && env.CODESIGN == '1'
       run: |
-        & .\scripts\package\win-package-appx.ps1 -BuildNumber $Env:BUILD_NUMBER -CertificateFile .\codesign.pfx -CertificatePassword $Env:CODESIGN_PFX_PASSWORD
+        $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_PFX_PASSWORD -Force -AsPlainText
+        & .\scripts\package\win-package-appx.ps1 -BuildNumber $Env:BUILD_NUMBER -CertificateFile .\codesign.pfx -CertificatePassword $CertPassword
         Move-Item .\dist\*.msix .\artifacts
       env:
         CODESIGN_PFX_PASSWORD: ${{ secrets.CODESIGN_PFX_PASSWORD }}
@@ -184,10 +185,10 @@ jobs:
         If ($Env:CODESIGN) {
           $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_PFX_PASSWORD -Force -AsPlainText
           $Certificate = Get-PfxCertificate -FilePath .\codesign.pfx -Password $CertPassword
-          & .\scripts\package\win-package-installer.ps1 -BuildNumber $Env:BUILD_NUMBER -Certificate $Certificate
         } Else {
-          & .\scripts\package\win-package-installer.ps1 -BuildNumber $Env:BUILD_NUMBER
+          $Certificate = $null
         }
+        & .\scripts\package\win-package-installer.ps1 -BuildNumber $Env:BUILD_NUMBER -Certificate $Certificate
         Move-Item .\installer\*.exe .\artifacts
         dist\picard\fpcalc -version
       env:
@@ -198,14 +199,16 @@ jobs:
         If ($Env:CODESIGN) {
           $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_PFX_PASSWORD -Force -AsPlainText
           $Certificate = Get-PfxCertificate -FilePath .\codesign.pfx -Password $CertPassword
-          & .\scripts\package\win-package-portable.ps1 -BuildNumber $Env:BUILD_NUMBER -Certificate $Certificate
-          Remove-Item .\codesign.pfx
         } Else {
-          & .\scripts\package\win-package-portable.ps1 -BuildNumber $Env:BUILD_NUMBER
+          $Certificate = $null
         }
+        & .\scripts\package\win-package-portable.ps1 -BuildNumber $Env:BUILD_NUMBER -Certificate $Certificate
         Move-Item .\dist\*.exe .\artifacts
       env:
         CODESIGN_PFX_PASSWORD: ${{ secrets.CODESIGN_PFX_PASSWORD }}
+    - name: Cleanup
+      if: env.CODESIGN == '1'
+      run: Remove-Item .\codesign.pfx
     - name: Archive production artifacts
       uses: actions/upload-artifact@v1
       if: matrix.type != 'signed-app' || env.CODESIGN == '1'
