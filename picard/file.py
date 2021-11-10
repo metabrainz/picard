@@ -547,34 +547,27 @@ class File(QtCore.QObject, Item):
 
     def _move_additional_files(self, old_filename, new_filename, config):
         """Move extra files, like images, playlists..."""
-        if not config.setting["move_files"] or not config.setting["move_additional_files"]:
-            return
-        new_path = os.path.dirname(new_filename)
-        old_path = os.path.dirname(old_filename)
-        if new_path == old_path:
-            # skip, same directory, nothing to move
-            return
-        pattern_regexes = self._compile_move_additional_files_pattern(config)
-        if not pattern_regexes:
-            return
-        moves = self._get_additional_files_moves(old_path, new_path, pattern_regexes)
-        self._apply_additional_files_moves(moves)
+        if config.setting["move_files"] and config.setting["move_additional_files"]:
+            new_path = os.path.dirname(new_filename)
+            old_path = os.path.dirname(old_filename)
+            if new_path != old_path:
+                patterns_string = config.setting["move_additional_files_pattern"]
+                patterns = self._compile_move_additional_files_pattern(patterns_string)
+                try:
+                    moves = self._get_additional_files_moves(old_path, new_path, patterns)
+                    self._apply_additional_files_moves(moves)
+                except OSError as why:
+                    log.error("Failed to scan %r: %s", old_path, why)
 
-    def _compile_move_additional_files_pattern(self, config):
-        patterns = config.setting["move_additional_files_pattern"]
-        pattern_regexes = set()
-        for pattern in patterns.split():
-            pattern = pattern.strip()
-            if not pattern:
-                continue
-            pattern_regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
-            match_hidden = pattern.startswith('.')
-            pattern_regexes.add((pattern_regex, match_hidden))
-        return pattern_regexes
+    @staticmethod
+    def _compile_move_additional_files_pattern(patterns_string):
+        return {
+            (re.compile(fnmatch.translate(pattern), re.IGNORECASE), pattern.startswith('.'))
+            for pattern in set(patterns_string.lower().split())
+        }
 
     def _get_additional_files_moves(self, old_path, new_path, patterns):
-        moves = set()
-        try:
+        if patterns:
             with os.scandir(old_path) as scan:
                 for entry in scan:
                     is_hidden = entry.name.startswith('.')
@@ -583,11 +576,8 @@ class File(QtCore.QObject, Item):
                             continue
                         if pattern_regex.match(entry.name):
                             new_file_path = os.path.join(new_path, entry.name)
-                            moves.add((entry.path, new_file_path))
+                            yield (entry.path, new_file_path)
                             break  # we are done with this file
-        except OSError as why:
-            log.error("Failed to scan %r: %s", old_path, why)
-        return moves
 
     def _apply_additional_files_moves(self, moves):
         for old_file_path, new_file_path in moves:
