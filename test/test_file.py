@@ -410,6 +410,8 @@ class FileUpdateTest(PicardTestCase):
     def setUp(self):
         super().setUp()
         self.file = File('/somepath/somefile.mp3')
+        self.INVALIDSIMVAL = 666
+        self.file.similarity = self.INVALIDSIMVAL  # to check if changed or not
         self.set_config_values({
             'clear_existing_tags': False,
             'compare_ignore_tags': [],
@@ -423,8 +425,17 @@ class FileUpdateTest(PicardTestCase):
         self.file.state = File.NORMAL
 
         self.file.update(signal=False)
-        self.assertEqual(self.file.similarity, 1.0)
+        self.assertEqual(self.file.similarity, 1.0)  # it should be modified
         self.assertEqual(self.file.state, File.NORMAL)
+
+    def test_same_image_pending(self):
+        image = create_image(b'a')
+        self.file.metadata.images = [image]
+        self.file.orig_metadata.images = [image]
+
+        self.file.update(signal=False)
+        self.assertEqual(self.file.similarity, 1.0)
+        self.assertEqual(self.file.state, File.PENDING)
 
     def test_same_image_changed_state(self):
         image = create_image(b'a')
@@ -444,7 +455,7 @@ class FileUpdateTest(PicardTestCase):
         self.file.state = File.NORMAL
 
         self.file.update(signal=False)
-        self.assertEqual(self.file.similarity, 1.0)
+        self.assertEqual(self.file.similarity, self.INVALIDSIMVAL)  # it shouldbn't be modified
         self.assertEqual(self.file.state, File.CHANGED)
 
     def test_signal(self):
@@ -483,6 +494,23 @@ class FileUpdateTest(PicardTestCase):
         self.file.update(signal=False)
         self.assertLess(self.file.similarity, 1.0)
         self.assertEqual(self.file.state, File.CHANGED)
+
+    def test_changed_metadata_pending(self):
+        old_metadata = Metadata({
+            'album': 'somealbum',
+            'title': 'sometitle',
+        })
+        new_metadata = Metadata({
+            'album': 'somealbum2',
+            'title': 'sometitle2',
+        })
+
+        self.file.metadata = Metadata(new_metadata)
+        self.file.orig_metadata = Metadata(old_metadata)
+
+        self.file.update(signal=False)
+        self.assertLess(self.file.similarity, 1.0)
+        self.assertEqual(self.file.state, File.PENDING)  # it shouldn't be modified
 
     def test_clear_existing(self):
         old_metadata = Metadata({
