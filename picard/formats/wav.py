@@ -6,7 +6,7 @@
 # Copyright (C) 2012-2013, 2017 Wieland Hoffmann
 # Copyright (C) 2013 Michael Wiencek
 # Copyright (C) 2016-2017 Sambhav Kothari
-# Copyright (C) 2018, 2020 Laurent Monin
+# Copyright (C) 2018, 2020-2021 Laurent Monin
 # Copyright (C) 2018-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or

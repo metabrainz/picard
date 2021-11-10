@@ -11,10 +11,10 @@
 # Copyright (C) 2016-2017 Frederik “Freso” S. Olesen
 # Copyright (C) 2017 Antonio Larrosa
 # Copyright (C) 2017 Sambhav Kothari
-# Copyright (C) 2018 Bob Swift
 # Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2018, 2021 Bob Swift
 # Copyright (C) 2020 RomFouq
-# Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021 Gabriel Ferreira
 # Copyright (C) 2021 Vladislav Karbovskii
 #
 # This program is free software; you can redistribute it and/or

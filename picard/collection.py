@@ -5,7 +5,7 @@
 # Copyright (C) 2013 Michael Wiencek
 # Copyright (C) 2014 Lukáš Lalinský
 # Copyright (C) 2014, 2017 Sophist-UK
-# Copyright (C) 2014, 2017-2020 Laurent Monin
+# Copyright (C) 2014, 2017-2021 Laurent Monin
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2019, 2021 Philipp Wolfer
 #

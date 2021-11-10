@@ -5,8 +5,10 @@
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2018 Wieland Hoffmann
 # Copyright (C) 2019-2020 Philipp Wolfer
+# Copyright (C) 2020 Laurent Monin
 # Copyright (C) 2020 Ray Bouchard
 # Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021 Vladislav Karbovskii
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

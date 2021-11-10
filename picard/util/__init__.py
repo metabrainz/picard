@@ -18,9 +18,11 @@
 # Copyright (C) 2016 barami
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017 Frederik “Freso” S. Olesen
-# Copyright (C) 2018 Bob Swift
 # Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2018, 2021 Bob Swift
 # Copyright (C) 2020 Ray Bouchard
+# Copyright (C) 2021 Gabriel Ferreira
+# Copyright (C) 2021 Louis Sautier
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

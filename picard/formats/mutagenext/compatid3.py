@@ -5,8 +5,8 @@
 # Copyright (C) 2005 Michael Urman
 # Copyright (C) 2006-2008, 2011-2012 Lukáš Lalinský
 # Copyright (C) 2013-2014 Sophist-UK
-# Copyright (C) 2013-2014, 2018, 2020 Laurent Monin
-# Copyright (C) 2014, 2018-2020 Philipp Wolfer
+# Copyright (C) 2013-2014, 2018, 2020-2021 Laurent Monin
+# Copyright (C) 2014, 2018-2021 Philipp Wolfer
 # Copyright (C) 2016 Christoph Reiter
 # Copyright (C) 2016 Ville Skyttä
 # Copyright (C) 2017 Sambhav Kothari

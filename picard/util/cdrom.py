@@ -9,7 +9,7 @@
 # Copyright (C) 2009 david
 # Copyright (C) 2013 Johannes Dewender
 # Copyright (C) 2013 Sebastian Ramacher
-# Copyright (C) 2013, 2018-2020 Laurent Monin
+# Copyright (C) 2013, 2018-2021 Laurent Monin
 # Copyright (C) 2013-2014 Michael Wiencek
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017 Sophist-UK

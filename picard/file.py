@@ -23,10 +23,10 @@
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017-2018 Antonio Larrosa
 # Copyright (C) 2019 Joel Lintunen
-# Copyright (C) 2020 Gabriel Ferreira
 # Copyright (C) 2020 Ray Bouchard
-# Copyright (C) 2021 Petit Minion
+# Copyright (C) 2020-2021 Gabriel Ferreira
 # Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021 Petit Minion
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

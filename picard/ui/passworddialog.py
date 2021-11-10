@@ -6,7 +6,7 @@
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2012, 2014 Lukáš Lalinský
 # Copyright (C) 2012-2013 Michael Wiencek
-# Copyright (C) 2013-2014, 2018, 2020 Laurent Monin
+# Copyright (C) 2013-2014, 2018, 2020-2021 Laurent Monin
 # Copyright (C) 2014 Sophist-UK
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary

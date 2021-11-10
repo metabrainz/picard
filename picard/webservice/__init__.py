@@ -5,7 +5,7 @@
 # Copyright (C) 2007 Lukáš Lalinský
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2017 Sambhav Kothari
-# Copyright (C) 2018-2020 Laurent Monin
+# Copyright (C) 2018-2021 Laurent Monin
 # Copyright (C) 2018-2021 Philipp Wolfer
 # Copyright (C) 2021 Tche333
 #

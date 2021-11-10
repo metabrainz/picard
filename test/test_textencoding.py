@@ -7,6 +7,7 @@
 # Copyright (C) 2017 Ville Skyttä
 # Copyright (C) 2018 Wieland Hoffmann
 # Copyright (C) 2018-2019, 2021 Philipp Wolfer
+# Copyright (C) 2020 Undearius
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

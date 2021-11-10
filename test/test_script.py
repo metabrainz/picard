@@ -10,9 +10,10 @@
 # Copyright (C) 2014, 2017 Sophist-UK
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017 Antonio Larrosa
-# Copyright (C) 2017-2018 Wieland Hoffmann
+# Copyright (C) 2017-2018, 2021 Wieland Hoffmann
 # Copyright (C) 2018 virusMac
 # Copyright (C) 2020-2021 Bob Swift
+# Copyright (C) 2021 Adam James
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

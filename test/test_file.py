@@ -4,6 +4,7 @@
 #
 # Copyright (C) 2018-2021 Philipp Wolfer
 # Copyright (C) 2019-2021 Laurent Monin
+# Copyright (C) 2021 Bob Swift
 # Copyright (C) 2021 Sophist-UK
 #
 # This program is free software; you can redistribute it and/or

@@ -2,6 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
+# Copyright (C) 2021 Bob Swift
 # Copyright (C) 2021 Vladislav Karbovskii
 #
 # This program is free software; you can redistribute it and/or

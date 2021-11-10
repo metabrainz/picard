@@ -5,7 +5,7 @@
 # Copyright (C) 2004 Robert Kaye
 # Copyright (C) 2006 Lukáš Lalinský
 # Copyright (C) 2014 Sophist-UK
-# Copyright (C) 2014, 2018, 2020 Laurent Monin
+# Copyright (C) 2014, 2018, 2020-2021 Laurent Monin
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2018-2019, 2021 Philipp Wolfer
 # Copyright (C) 2020 Gabriel Ferreira

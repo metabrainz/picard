@@ -8,7 +8,7 @@
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2012-2014 Wieland Hoffmann
-# Copyright (C) 2013-2014, 2017-2020 Laurent Monin
+# Copyright (C) 2013-2014, 2017-2021 Laurent Monin
 # Copyright (C) 2014 Francois Ferrand
 # Copyright (C) 2015 Sophist-UK
 # Copyright (C) 2016 Ville Skyttä
@@ -16,6 +16,7 @@
 # Copyright (C) 2017 Paul Roub
 # Copyright (C) 2017-2019 Antonio Larrosa
 # Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2021 Louis Sautier
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

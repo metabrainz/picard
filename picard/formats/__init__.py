@@ -6,7 +6,7 @@
 # Copyright (C) 2008 Will
 # Copyright (C) 2010, 2014, 2018-2020 Philipp Wolfer
 # Copyright (C) 2013 Michael Wiencek
-# Copyright (C) 2013, 2017-2020 Laurent Monin
+# Copyright (C) 2013, 2017-2021 Laurent Monin
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017 Sophist-UK
 # Copyright (C) 2017 Ville Skyttä
