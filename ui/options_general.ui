@@ -118,14 +118,21 @@ QCheckBox { color: black }</string>
       <property name="spacing">
        <number>2</number>
       </property>
-      <item row="1" column="0">
+      <item row="3" column="0">
        <widget class="QPushButton" name="login">
         <property name="text">
          <string>Log in</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="2">
+      <item row="1" column="0" colspan="3">
+       <widget class="QLabel" name="logged_in">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -138,7 +145,7 @@ QCheckBox { color: black }</string>
         </property>
        </spacer>
       </item>
-      <item row="1" column="1">
+      <item row="3" column="1">
        <widget class="QPushButton" name="logout">
         <property name="text">
          <string>Log out</string>
@@ -146,7 +153,7 @@ QCheckBox { color: black }</string>
        </widget>
       </item>
       <item row="0" column="0" colspan="3">
-       <widget class="QLabel" name="logged_in">
+       <widget class="QLabel" name="login_error">
         <property name="text">
          <string/>
         </property>

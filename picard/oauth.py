@@ -223,17 +223,20 @@ class OAuthManager(object):
 
     def on_exchange_authorization_code_finished(self, scopes, callback, data, http, error):
         successful = False
+        error_msg = None
         try:
             if error:
                 log.error("OAuth: authorization_code exchange failed: %s", data)
+                error_msg = self._extract_error_description(http, data)
             else:
                 self.set_refresh_token(data["refresh_token"], scopes)
                 self.set_access_token(data["access_token"], data["expires_in"])
                 successful = True
         except Exception as e:
             log.error('OAuth: Unexpected error handling authorization code response: %r', e)
+            error_msg = _('Unexpected authentication error')
         finally:
-            callback(successful=successful)
+            callback(successful=successful, error_msg=error_msg)
 
     def fetch_username(self, callback):
         log.debug("OAuth: fetching username")
@@ -244,14 +247,24 @@ class OAuthManager(object):
 
     def on_fetch_username_finished(self, callback, data, http, error):
         successful = False
+        error_msg = None
         try:
             if error:
                 log.error("OAuth: username fetching failed: %s", data)
+                error_msg = self._extract_error_description(http, data)
             else:
                 self.username = data["sub"]
                 log.debug("OAuth: got username %s", self.username)
                 successful = True
         except Exception as e:
             log.error('OAuth: Unexpected error handling username fetch response: %r', e)
+            error_msg = _('Unexpected authentication error')
         finally:
-            callback(successful)
+            callback(successful=successful, error_msg=error_msg)
+
+    def _extract_error_description(self, http, data):
+        if self.webservice.http_response_code(http) == 400:
+            response = load_json(data)
+            if 'error_description' in response:
+                return response['error_description']
+        return None

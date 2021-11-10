@@ -86,6 +86,8 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.logout.clicked.connect(self.logout)
         self.ui.analyze_new_files.toggled.connect(self._update_cluster_new_files)
         self.ui.cluster_new_files.toggled.connect(self._update_analyze_new_files)
+        self.ui.login_error.setStyleSheet(self.STYLESHEET_ERROR)
+        self.ui.login_error.hide()
         self.update_login_logout()
 
     def load(self):
@@ -129,15 +131,23 @@ class GeneralOptionsPage(OptionsPage):
         else:
             self.ui.server_host_primary_warning.show()
 
-    def update_login_logout(self):
+    def update_login_logout(self, error_msg=None):
         if self.tagger.webservice.oauth_manager.is_logged_in():
             config = get_config()
             self.ui.logged_in.setText(_("Logged in as <b>%s</b>.") % config.persist["oauth_username"])
             self.ui.logged_in.show()
+            self.ui.login_error.hide()
             self.ui.login.hide()
             self.ui.logout.show()
+        elif error_msg:
+            self.ui.logged_in.hide()
+            self.ui.login_error.setText(_('Login failed: %s') % error_msg)
+            self.ui.login_error.show()
+            self.ui.login.show()
+            self.ui.logout.hide()
         else:
             self.ui.logged_in.hide()
+            self.ui.login_error.hide()
             self.ui.login.show()
             self.ui.logout.hide()
         # Workaround for Qt not repainting the view on macOS after the changes.
@@ -151,8 +161,8 @@ class GeneralOptionsPage(OptionsPage):
         super().restore_defaults()
         self.logout()
 
-    def on_login_finished(self, successful):
-        self.update_login_logout()
+    def on_login_finished(self, successful, error_msg=None):
+        self.update_login_logout(error_msg)
 
     def logout(self):
         self.tagger.mb_logout()

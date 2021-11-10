@@ -325,20 +325,20 @@ class Tagger(QtWidgets.QApplication):
                 authorization_code, scopes,
                 partial(self.on_mb_authorization_finished, callback))
         else:
-            callback(False)
+            callback(False, None)
 
-    def on_mb_authorization_finished(self, callback, successful=False):
+    def on_mb_authorization_finished(self, callback, successful=False, error_msg=None):
         if successful:
             self.webservice.oauth_manager.fetch_username(
                 partial(self.on_mb_login_finished, callback))
         else:
-            callback(False)
+            callback(False, error_msg)
 
     @classmethod
-    def on_mb_login_finished(self, callback, successful):
+    def on_mb_login_finished(self, callback, successful, error_msg):
         if successful:
             load_user_collections()
-        callback(successful)
+        callback(successful, error_msg)
 
     def mb_logout(self):
         self.webservice.oauth_manager.revoke_tokens()
