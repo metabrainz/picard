@@ -20,8 +20,12 @@
 
 
 import io
+from typing import Iterable
 import unittest
 
+from test.picardtestcase import PicardTestCase
+
+from picard.const.sys import IS_WIN
 from picard.util import cdrom
 
 
@@ -74,7 +78,7 @@ Can write RAM:
 """
 
 
-class LinuxParseCdromInfoTest(unittest.TestCase):
+class LinuxParseCdromInfoTest(PicardTestCase):
 
     def test_drives(self):
         with io.StringIO(MOCK_CDROM_INFO) as f:
@@ -90,3 +94,23 @@ class LinuxParseCdromInfoTest(unittest.TestCase):
         with io.StringIO("") as f:
             drives = list(cdrom._parse_linux_cdrom_info(f))
             self.assertEqual([], drives)
+
+
+class GetCdromDrivesTest(PicardTestCase):
+
+    def test_get_cdrom_drives(self):
+        self.set_config_values({"cd_lookup_device": "/dev/cdrom"})
+        self.assertIsInstance(cdrom.get_cdrom_drives(), Iterable)
+
+
+@unittest.skipUnless(IS_WIN, "windows test")
+class WindowsGetCdromDrivesTest(PicardTestCase):
+
+    def test_autodetect(self):
+        self.assertTrue(cdrom.AUTO_DETECT_DRIVES)
+
+    def test_iter_drives(self):
+        drives = cdrom._iter_drives()
+        self.assertIsInstance(drives, Iterable)
+        # This should not raise
+        list(drives)
