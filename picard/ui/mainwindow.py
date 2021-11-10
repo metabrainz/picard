@@ -1736,6 +1736,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         for profile in option_profiles:
             if profile['id'] == profile_id:
                 profile['enabled'] = not profile['enabled']
+                self.make_script_selector_menu()
                 return
 
 
