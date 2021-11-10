@@ -5,7 +5,7 @@
 # Copyright (C) 2004 Robert Kaye
 # Copyright (C) 2007 Lukáš Lalinský
 # Copyright (C) 2008 Will
-# Copyright (C) 2008, 2018-2020 Philipp Wolfer
+# Copyright (C) 2008, 2018-2021 Philipp Wolfer
 # Copyright (C) 2009 david
 # Copyright (C) 2013 Johannes Dewender
 # Copyright (C) 2013 Sebastian Ramacher
@@ -39,11 +39,6 @@ from picard.const.sys import (
     IS_LINUX,
     IS_WIN,
 )
-from picard.util import uniqify
-
-
-if IS_WIN:
-    from ctypes import windll
 
 
 try:
@@ -63,35 +58,26 @@ if discid is not None:
 
 LINUX_CDROM_INFO = '/proc/sys/dev/cdrom/info'
 
-# if get_cdrom_drives() lists ALL drives available on the machine
 if IS_WIN:
+    from ctypes import windll
+
     AUTO_DETECT_DRIVES = True
-elif IS_LINUX and QFile.exists(LINUX_CDROM_INFO):
-    AUTO_DETECT_DRIVES = True
-else:
-    # There might be more drives we couldn't detect
-    # setting uses a text field instead of a drop-down
-    AUTO_DETECT_DRIVES = False
+    DRIVE_TYPE_CDROM = 5
 
-
-def get_cdrom_drives():
-    """List available disc drives on the machine
-    """
-    # add default drive from libdiscid to the list
-    drives = list(DEFAULT_DRIVES)
-
-    if IS_WIN:
+    def _iter_drives():
         GetLogicalDrives = windll.kernel32.GetLogicalDrives
         GetDriveType = windll.kernel32.GetDriveTypeW
-        DRIVE_CDROM = 5
         mask = GetLogicalDrives()
         for i in range(26):
             if mask >> i & 1:
                 drive = chr(i + ord("A")) + ":"
-                if GetDriveType(drive) == DRIVE_CDROM:
-                    drives.append(drive)
+                if GetDriveType(drive) == DRIVE_TYPE_CDROM:
+                    yield drive
 
-    elif IS_LINUX and AUTO_DETECT_DRIVES:
+elif IS_LINUX and QFile.exists(LINUX_CDROM_INFO):
+    AUTO_DETECT_DRIVES = True
+
+    def _iter_drives():
         # Read info from /proc/sys/dev/cdrom/info
         cdinfo = QFile(LINUX_CDROM_INFO)
         if cdinfo.open(QIODevice.ReadOnly | QIODevice.Text):
@@ -115,15 +101,25 @@ def get_cdrom_drives():
                     symlink_target = QFile.symLinkTarget(device)
                     if symlink_target != '':
                         device = symlink_target
-                    drives.append(device)
+                    yield device
 
-    else:
+else:
+    # There might be more drives we couldn't detect
+    # setting uses a text field instead of a drop-down
+    AUTO_DETECT_DRIVES = False
+
+    def _iter_drives():
         config = get_config()
-        for device in config.setting["cd_lookup_device"].split(","):
-            # Need to filter out empty strings,
-            # particularly if the device list is empty
-            if device.strip() != '':
-                drives.append(device.strip())
+        yield from (
+            device.strip() for device
+            in config.setting["cd_lookup_device"].split(",")
+            if device and not device.isspace()
+        )
 
-    # make sure no drive is listed twice (given by multiple sources)
-    return sorted(uniqify(drives))
+
+def get_cdrom_drives():
+    """List available disc drives on the machine
+    """
+    # add default drive from libdiscid to the list
+    drives = set(DEFAULT_DRIVES) | set(_iter_drives())
+    return sorted(drives)
