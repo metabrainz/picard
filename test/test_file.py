@@ -23,10 +23,12 @@
 
 import os
 import re
+from types import GeneratorType
 import unittest
 from unittest.mock import MagicMock
 
 from test.picardtestcase import PicardTestCase
+from test.test_coverart_image import create_image
 
 from picard import config
 from picard.const.sys import (
@@ -402,3 +404,191 @@ class FileAdditionalFilesPatternsTest(PicardTestCase):
             (re.compile('(?s:.*\\.jpg)\\Z', re.IGNORECASE), False),
         }
         self.assertEqual(File._compile_move_additional_files_pattern(pattern), expected)
+
+
+class FileUpdateTest(PicardTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.file = File('/somepath/somefile.mp3')
+        self.INVALIDSIMVAL = 666
+        self.file.similarity = self.INVALIDSIMVAL  # to check if changed or not
+        self.file.supports_tag = lambda x: False if x.startswith('unsupported') else True
+        self.set_config_values({
+            'clear_existing_tags': False,
+            'compare_ignore_tags': [],
+            'enabled_plugins': [],
+        })
+
+    def test_same_image(self):
+        image = create_image(b'a')
+        self.file.metadata.images = [image]
+        self.file.orig_metadata.images = [image]
+        self.file.state = File.NORMAL
+
+        self.file.update(signal=False)
+        self.assertEqual(self.file.similarity, 1.0)  # it should be modified
+        self.assertEqual(self.file.state, File.NORMAL)
+
+    def test_same_image_pending(self):
+        image = create_image(b'a')
+        self.file.metadata.images = [image]
+        self.file.orig_metadata.images = [image]
+
+        self.file.update(signal=False)
+        self.assertEqual(self.file.similarity, 1.0)
+        self.assertEqual(self.file.state, File.PENDING)
+
+    def test_same_image_changed_state(self):
+        image = create_image(b'a')
+        self.file.metadata.images = [image]
+        self.file.orig_metadata.images = [image]
+        self.file.state = File.CHANGED
+
+        self.file.update(signal=False)
+        self.assertEqual(self.file.similarity, 1.0)
+        self.assertEqual(self.file.state, File.NORMAL)
+
+    def test_changed_image(self):
+        old_image = create_image(b'a')
+        new_image = create_image(b'b')
+        self.file.metadata.images = [new_image]
+        self.file.orig_metadata.images = [old_image]
+        self.file.state = File.NORMAL
+
+        self.file.update(signal=False)
+        self.assertEqual(self.file.similarity, self.INVALIDSIMVAL)  # it shouldbn't be modified
+        self.assertEqual(self.file.state, File.CHANGED)
+
+    def test_signal(self):
+        #  just for coverage
+        self.file.update(signal=True)
+        self.assertEqual(self.file.metadata, Metadata())
+        self.assertEqual(self.file.orig_metadata, Metadata())
+
+    def test_tags_to_update(self):
+        self.file.orig_metadata = Metadata({
+            'album': 'somealbum',
+            'title': 'sometitle',
+            'ignoreme_old': 'a',
+            '~ignoreme_old': 'b',
+            'unsupported_old': 'c',
+        })
+        self.file.metadata = Metadata({
+            'artist': 'someartist',
+            'ignoreme_new': 'd',
+            '~ignoreme_new': 'e',
+            'unsupported_new': 'f',
+        })
+
+        ignore_tags = {'ignoreme_old', 'ignoreme_new'}
+
+        expected = {'album', 'title', 'artist'}
+        result = self.file._tags_to_update(ignore_tags)
+        self.assertIsInstance(result, GeneratorType)
+        self.assertEqual(set(result), expected)
+
+    def test_unchanged_metadata(self):
+        self.file.orig_metadata = Metadata({
+            'album': 'somealbum',
+            'title': 'sometitle',
+        })
+        self.file.metadata = Metadata({
+            'album': 'somealbum',
+            'title': 'sometitle',
+        })
+        self.file.state = File.NORMAL
+
+        self.file.update(signal=False)
+        self.assertEqual(self.file.similarity, 1.0)
+        self.assertEqual(self.file.state, File.NORMAL)
+
+    def test_changed_metadata(self):
+        self.file.orig_metadata = Metadata({
+            'album': 'somealbum',
+            'title': 'sometitle',
+        })
+        self.file.metadata = Metadata({
+            'album': 'somealbum2',
+            'title': 'sometitle2',
+        })
+        self.file.state = File.NORMAL
+
+        self.file.update(signal=False)
+        self.assertLess(self.file.similarity, 1.0)
+        self.assertEqual(self.file.state, File.CHANGED)
+
+    def test_changed_metadata_pending(self):
+        self.file.orig_metadata = Metadata({
+            'album': 'somealbum',
+            'title': 'sometitle',
+        })
+        self.file.metadata = Metadata({
+            'album': 'somealbum2',
+            'title': 'sometitle2',
+        })
+
+        self.file.update(signal=False)
+        self.assertLess(self.file.similarity, 1.0)
+        self.assertEqual(self.file.state, File.PENDING)  # it shouldn't be modified
+
+    def test_clear_existing(self):
+        self.file.orig_metadata = Metadata({
+            'album': 'somealbum',
+            'title': 'sometitle',
+        })
+        self.file.metadata = Metadata()
+        self.file.state = File.NORMAL
+
+        config.setting["clear_existing_tags"] = True
+
+        self.file.update(signal=False)
+        self.assertEqual(self.file.similarity, 0.0)
+        self.assertEqual(self.file.state, File.CHANGED)
+
+    def test_no_new_metadata(self):
+        self.file.orig_metadata = Metadata({
+            'album': 'somealbum',
+            'title': 'sometitle',
+        })
+        self.file.metadata = Metadata()
+        self.file.state = File.NORMAL
+
+        self.file.update(signal=False)
+        self.assertEqual(self.file.similarity, 1.0)
+        self.assertEqual(self.file.state, File.NORMAL)
+
+    def test_tilde_tag(self):
+        self.file.orig_metadata = Metadata()
+        self.file.metadata = Metadata({
+            '~tag': 'value'
+        })
+        self.file.state = File.NORMAL
+
+        self.file.update(signal=False)
+        self.assertEqual(self.file.similarity, 1.0)
+        self.assertEqual(self.file.state, File.NORMAL)
+
+    def test_ignored_tag(self):
+        self.file.orig_metadata = Metadata()
+        self.file.metadata = Metadata({
+            'tag': 'value'
+        })
+        self.file.state = File.NORMAL
+
+        config.setting["compare_ignore_tags"] = ['tag']
+
+        self.file.update(signal=False)
+        self.assertEqual(self.file.similarity, 1.0)
+        self.assertEqual(self.file.state, File.NORMAL)
+
+    def test_unsupported_tag(self):
+        self.file.orig_metadata = Metadata()
+        self.file.metadata = Metadata({
+            'unsupported': 'value'
+        })
+        self.file.state = File.NORMAL
+
+        self.file.update(signal=False)
+        self.assertEqual(self.file.similarity, 1.0)
+        self.assertEqual(self.file.state, File.NORMAL)

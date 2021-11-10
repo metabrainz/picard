@@ -652,25 +652,35 @@ class File(QtCore.QObject, Item):
     def is_saved(self):
         return self.similarity == 1.0 and self.state == File.NORMAL
 
+    def _tags_to_update(self, ignored_tags):
+        for name in set(self.metadata) | set(self.orig_metadata):
+            if name.startswith('~'):
+                continue
+            if not self.supports_tag(name):
+                continue
+            if name in ignored_tags:
+                continue
+            yield name
+
     def update(self, signal=True):
-        metadata = self.metadata
-        names = set(metadata) | set(self.orig_metadata)
         config = get_config()
         clear_existing_tags = config.setting["clear_existing_tags"]
-        ignored_tags = config.setting["compare_ignore_tags"]
-        for name in names:
-            if (not name.startswith('~') and self.supports_tag(name)
-                and name not in ignored_tags):
-                new_values = metadata.getall(name)
-                if not (new_values or clear_existing_tags
-                        or name in metadata.deleted_tags):
-                    continue
-                orig_values = self.orig_metadata.getall(name)
-                if orig_values != new_values:
-                    self.similarity = self.orig_metadata.compare(metadata, ignored_tags)
-                    if self.state == File.NORMAL:
-                        self.state = File.CHANGED
-                    break
+        ignored_tags = set(config.setting["compare_ignore_tags"])
+
+        for name in self._tags_to_update(ignored_tags):
+            new_values = self.metadata.getall(name)
+            if not (
+                new_values
+                or clear_existing_tags
+                or name in self.metadata.deleted_tags
+            ):
+                continue
+            orig_values = self.orig_metadata.getall(name)
+            if orig_values != new_values:
+                self.similarity = self.orig_metadata.compare(self.metadata, ignored_tags)
+                if self.state == File.NORMAL:
+                    self.state = File.CHANGED
+                break
         else:
             if (self.metadata.images
                     and self.orig_metadata.images != self.metadata.images):
