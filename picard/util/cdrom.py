@@ -28,12 +28,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import os.path
 
-from PyQt5.QtCore import (
-    QFile,
-    QIODevice,
-)
-
+from picard import log
 from picard.config import get_config
 from picard.const.sys import (
     IS_LINUX,
@@ -58,6 +55,24 @@ if discid is not None:
 
 LINUX_CDROM_INFO = '/proc/sys/dev/cdrom/info'
 
+
+def _parse_linux_cdrom_info(f):
+    drive_names = []
+    drive_audio_caps = []
+    while True:
+        line = f.readline()
+        if not line:
+            break
+        if ":" in line:
+            key, values = line.split(':')
+            if key == 'drive name':
+                drive_names = values.split()
+            elif key == 'Can play audio':
+                drive_audio_caps = [v == '1' for v in values.split()]
+                break  # no need to continue past this line
+    yield from zip(drive_names, drive_audio_caps)
+
+
 if IS_WIN:
     from ctypes import windll
 
@@ -74,34 +89,18 @@ if IS_WIN:
                 if GetDriveType(drive) == DRIVE_TYPE_CDROM:
                     yield drive
 
-elif IS_LINUX and QFile.exists(LINUX_CDROM_INFO):
+elif IS_LINUX and os.path.isfile(LINUX_CDROM_INFO):
     AUTO_DETECT_DRIVES = True
 
     def _iter_drives():
         # Read info from /proc/sys/dev/cdrom/info
-        cdinfo = QFile(LINUX_CDROM_INFO)
-        if cdinfo.open(QIODevice.ReadOnly | QIODevice.Text):
-            drive_names = []
-            drive_audio_caps = []
-            while True:
-                line = bytes(cdinfo.readLine()).decode()
-                if not line:
-                    break
-                if ":" in line:
-                    key, values = line.split(':')
-                    if key == 'drive name':
-                        drive_names = values.split()
-                    elif key == 'Can play audio':
-                        drive_audio_caps = [v == '1' for v in values.split()]
-                        break  # no need to continue past this line
+        with open(LINUX_CDROM_INFO, 'r') as f:
             # Show only drives that are capable of playing audio
-            for index, drive in enumerate(drive_names):
-                if drive_audio_caps[index]:
-                    device = '/dev/%s' % drive
-                    symlink_target = QFile.symLinkTarget(device)
-                    if symlink_target != '':
-                        device = symlink_target
-                    yield device
+            yield from (
+                os.path.realpath('/dev/%s' % drive)
+                for drive, can_play_audio in _parse_linux_cdrom_info(f)
+                if can_play_audio
+            )
 
 else:
     # There might be more drives we couldn't detect
@@ -121,5 +120,9 @@ def get_cdrom_drives():
     """List available disc drives on the machine
     """
     # add default drive from libdiscid to the list
-    drives = set(DEFAULT_DRIVES) | set(_iter_drives())
+    drives = set(DEFAULT_DRIVES)
+    try:
+        drives |= set(_iter_drives())
+    except OSError as error:
+        log.error(error)
     return sorted(drives)
