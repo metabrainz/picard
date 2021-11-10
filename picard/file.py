@@ -659,9 +659,10 @@ class File(QtCore.QObject, Item):
         clear_existing_tags = config.setting["clear_existing_tags"]
         ignored_tags = config.setting["compare_ignore_tags"]
         for name in names:
+            if name.startswith('~'):
+                continue
             if (
-                not name.startswith('~')
-                and self.supports_tag(name)
+                self.supports_tag(name)
                 and name not in ignored_tags
             ):
                 new_values = metadata.getall(name)
