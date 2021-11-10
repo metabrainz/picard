@@ -661,10 +661,9 @@ class File(QtCore.QObject, Item):
         for name in names:
             if name.startswith('~'):
                 continue
-            if (
-                self.supports_tag(name)
-                and name not in ignored_tags
-            ):
+            if not self.supports_tag(name):
+                continue
+            if name not in ignored_tags:
                 new_values = metadata.getall(name)
                 if not (
                     new_values
