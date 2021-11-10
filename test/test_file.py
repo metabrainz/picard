@@ -23,6 +23,7 @@
 
 import os
 import re
+from types import GeneratorType
 import unittest
 from unittest.mock import MagicMock
 
@@ -412,6 +413,7 @@ class FileUpdateTest(PicardTestCase):
         self.file = File('/somepath/somefile.mp3')
         self.INVALIDSIMVAL = 666
         self.file.similarity = self.INVALIDSIMVAL  # to check if changed or not
+        self.file.supports_tag = lambda x: False if x.startswith('unsupported') else True
         self.set_config_values({
             'clear_existing_tags': False,
             'compare_ignore_tags': [],
@@ -463,6 +465,28 @@ class FileUpdateTest(PicardTestCase):
         self.file.update(signal=True)
         self.assertEqual(self.file.metadata, Metadata())
         self.assertEqual(self.file.orig_metadata, Metadata())
+
+    def test_tags_to_update(self):
+        self.file.orig_metadata = Metadata({
+            'album': 'somealbum',
+            'title': 'sometitle',
+            'ignoreme_old': 'a',
+            '~ignoreme_old': 'b',
+            'unsupported_old': 'c',
+        })
+        self.file.metadata = Metadata({
+            'artist': 'someartist',
+            'ignoreme_new': 'd',
+            '~ignoreme_new': 'e',
+            'unsupported_new': 'f',
+        })
+
+        ignore_tags = {'ignoreme_old', 'ignoreme_new'}
+
+        expected = {'album', 'title', 'artist'}
+        result = self.file._tags_to_update(ignore_tags)
+        self.assertIsInstance(result, GeneratorType)
+        self.assertEqual(set(result), expected)
 
     def test_unchanged_metadata(self):
         self.file.orig_metadata = Metadata({
@@ -564,8 +588,6 @@ class FileUpdateTest(PicardTestCase):
             'unsupported': 'value'
         })
         self.file.state = File.NORMAL
-
-        self.file.supports_tag = lambda x: False if x == 'unsupported' else True
 
         self.file.update(signal=False)
         self.assertEqual(self.file.similarity, 1.0)

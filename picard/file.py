@@ -652,18 +652,22 @@ class File(QtCore.QObject, Item):
     def is_saved(self):
         return self.similarity == 1.0 and self.state == File.NORMAL
 
-    def update(self, signal=True):
-        names = set(self.metadata) | set(self.orig_metadata)
-        config = get_config()
-        clear_existing_tags = config.setting["clear_existing_tags"]
-        ignored_tags = config.setting["compare_ignore_tags"]
-        for name in names:
+    def _tags_to_update(self, ignored_tags):
+        for name in set(self.metadata) | set(self.orig_metadata):
             if name.startswith('~'):
                 continue
             if not self.supports_tag(name):
                 continue
             if name in ignored_tags:
                 continue
+            yield name
+
+    def update(self, signal=True):
+        config = get_config()
+        clear_existing_tags = config.setting["clear_existing_tags"]
+        ignored_tags = set(config.setting["compare_ignore_tags"])
+
+        for name in self._tags_to_update(ignored_tags):
             new_values = self.metadata.getall(name)
             if not (
                 new_values
