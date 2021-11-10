@@ -5,7 +5,7 @@
 # Copyright (C) 2012 Frederik “Freso” S. Olesen
 # Copyright (C) 2013-2014, 2018-2020 Laurent Monin
 # Copyright (C) 2017 Sambhav Kothari
-# Copyright (C) 2017-2020 Philipp Wolfer
+# Copyright (C) 2017-2021 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -38,46 +38,47 @@ from picard.const.sys import (
 builtins.__dict__['N_'] = lambda a: a
 
 
+if IS_WIN:
+    from ctypes import windll
+
+    def _init_default_locale():
+        try:
+            current_locale = locale.windows_locale[windll.kernel32.GetUserDefaultUILanguage()]
+            current_locale += '.' + locale.getpreferredencoding()
+            locale.setlocale(locale.LC_ALL, current_locale)
+            return current_locale
+        except KeyError:
+            return locale.setlocale(locale.LC_ALL, '')
+
+elif IS_MACOS:
+    import Foundation
+
+    def _init_default_locale():
+        defaults = Foundation.NSUserDefaults.standardUserDefaults()
+        current_locale = defaults.objectForKey_('AppleLanguages')[0]
+        current_locale = current_locale.replace('-', '_')
+        locale.setlocale(locale.LC_ALL, current_locale)
+        return current_locale
+
+else:
+    def _init_default_locale():
+        locale.setlocale(locale.LC_ALL, '')
+        return '.'.join(locale.getlocale(locale.LC_MESSAGES))
+
+
 def setup_gettext(localedir, ui_language=None, logger=None):
     """Setup locales, load translations, install gettext functions."""
     if not logger:
         logger = lambda *a, **b: None  # noqa: E731
     current_locale = ''
-    if ui_language:
-        try:
+    try:
+        if ui_language:
             current_locale = locale.normalize(ui_language + '.' + locale.getpreferredencoding())
             locale.setlocale(locale.LC_ALL, current_locale)
-        except Exception as e:
-            logger(e)
-    else:
-        if IS_WIN:
-            from ctypes import windll
-            try:
-                current_locale = locale.windows_locale[windll.kernel32.GetUserDefaultUILanguage()]
-                current_locale += '.' + locale.getpreferredencoding()
-                locale.setlocale(locale.LC_ALL, current_locale)
-            except KeyError:
-                try:
-                    current_locale = locale.setlocale(locale.LC_ALL, '')
-                except Exception as e:
-                    logger(e)
-            except Exception as e:
-                logger(e)
-        elif IS_MACOS:
-            try:
-                import Foundation
-                defaults = Foundation.NSUserDefaults.standardUserDefaults()
-                current_locale = defaults.objectForKey_('AppleLanguages')[0]
-                current_locale = current_locale.replace('-', '_')
-                locale.setlocale(locale.LC_ALL, current_locale)
-            except Exception as e:
-                logger(e)
         else:
-            try:
-                locale.setlocale(locale.LC_ALL, '')
-                current_locale = '.'.join(locale.getlocale(locale.LC_MESSAGES))
-            except Exception as e:
-                logger(e)
+            current_locale = _init_default_locale()
+    except Exception as e:
+        logger(e)
     os.environ['LANGUAGE'] = os.environ['LANG'] = current_locale
     QLocale.setDefault(QLocale(current_locale))
     logger("Using locale %r", current_locale)
