@@ -73,7 +73,7 @@ def _parse_linux_cdrom_info(f):
         if not line:
             break
         if ":" in line:
-            key, values = line.split(':')
+            key, values = line.split(':', 1)
             if key == 'drive name':
                 drive_names = values.split()
             elif key == 'Can play audio':
