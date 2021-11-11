@@ -68,17 +68,17 @@ def _generic_iter_drives():
 def _parse_linux_cdrom_info(f):
     drive_names = []
     drive_audio_caps = []
-    while True:
-        line = f.readline()
-        if not line:
+    DRIVE_NAME = 'drive name:'
+    CAN_PLAY_AUDIO = 'Can play audio:'
+    for line in f:
+        if line.startswith(DRIVE_NAME):
+            drive_names = line[len(DRIVE_NAME):].split()
             break
-        if ":" in line:
-            key, values = line.split(':', 1)
-            if key == 'drive name':
-                drive_names = values.split()
-            elif key == 'Can play audio':
-                drive_audio_caps = [v == '1' for v in values.split()]
-                break  # no need to continue past this line
+    if drive_names:
+        for line in f:
+            if line.startswith(CAN_PLAY_AUDIO):
+                drive_audio_caps = [v == '1' for v in line[len(CAN_PLAY_AUDIO):].split()]
+                break
     yield from zip(drive_names, drive_audio_caps)
 
 
