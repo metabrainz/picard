@@ -8,7 +8,7 @@ MetaBrainz-sponsored projects.
 
 The full MetaBrainz Code of Conduct is found here:
 
-https://metabrainz.org/code-of-conduct
+<https://metabrainz.org/code-of-conduct>
 
 For questions about the Code of Conduct or to get help, please email
-support@metabrainz.org.
+<support@metabrainz.org>.

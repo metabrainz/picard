@@ -23,7 +23,7 @@
 
 ## Improvements
 
-- [PICARD-2299](https://tickets.metabrainz.org/browse/PICARD-2299) - Extend genre wildcard filtering with "?" and "[...]" matching
+- [PICARD-2299](https://tickets.metabrainz.org/browse/PICARD-2299) - Extend genre wildcard filtering with "?" and "\[...\]" matching
 - [PICARD-2301](https://tickets.metabrainz.org/browse/PICARD-2301) - Slight rewording of "CAA" cover art provider options
 - [PICARD-2305](https://tickets.metabrainz.org/browse/PICARD-2305) - Restructure user interface options
 - [PICARD-2306](https://tickets.metabrainz.org/browse/PICARD-2306) - Disable "Convert Unicode Punctuation" option by default
@@ -407,7 +407,7 @@
 
 ## Improvements
 - [PICARD-1860](https://tickets.metabrainz.org/browse/PICARD-1860) - New added tag should open field to enter value automatically
-- [PICARD-1899](https://tickets.metabrainz.org/browse/PICARD-1899) - Update help links to go to http://picard-docs.musicbrainz.org
+- [PICARD-1899](https://tickets.metabrainz.org/browse/PICARD-1899) - Update help links to go to <http://picard-docs.musicbrainz.org>
 - [PICARD-1920](https://tickets.metabrainz.org/browse/PICARD-1920) - Open documentation in options dialog using the platform's help shortcut (e.g. F1 on Windows or Ctrl+? on macOS)
 
 
@@ -1743,7 +1743,7 @@
 # Version 0.9.0alpha13 - 2007-07-29
 ## Bugfixes
 - Fixed drag&drop issue on Windows Vista.
-  http://forums.musicbrainz.org/viewtopic.php?id=693
+  <http://forums.musicbrainz.org/viewtopic.php?id=693>
 
 
 # Version 0.9.0alpha12 - 2007-07-29

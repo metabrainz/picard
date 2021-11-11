@@ -18,11 +18,11 @@
 -->
 
 * This is a…
-    * [x] Bug fix
-    * [ ] Feature addition
-    * [ ] Refactoring
-    * [ ] Minor / simple change (like a typo)
-    * [ ] Other
+  * [x] Bug fix
+  * [ ] Feature addition
+  * [ ] Refactoring
+  * [ ] Minor / simple change (like a typo)
+  * [ ] Other
 * **Describe this change in 1-2 sentences**:
 
 # Problem
