@@ -56,6 +56,15 @@ if discid is not None:
 LINUX_CDROM_INFO = '/proc/sys/dev/cdrom/info'
 
 
+def _generic_iter_drives():
+    config = get_config()
+    yield from (
+        device.strip() for device
+        in config.setting["cd_lookup_device"].split(",")
+        if device and not device.isspace()
+    )
+
+
 def _parse_linux_cdrom_info(f):
     drive_names = []
     drive_audio_caps = []
@@ -106,14 +115,7 @@ else:
     # There might be more drives we couldn't detect
     # setting uses a text field instead of a drop-down
     AUTO_DETECT_DRIVES = False
-
-    def _iter_drives():
-        config = get_config()
-        yield from (
-            device.strip() for device
-            in config.setting["cd_lookup_device"].split(",")
-            if device and not device.isspace()
-        )
+    _iter_drives = _generic_iter_drives
 
 
 def get_cdrom_drives():

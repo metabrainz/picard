@@ -100,7 +100,21 @@ class GetCdromDrivesTest(PicardTestCase):
 
     def test_get_cdrom_drives(self):
         self.set_config_values({"cd_lookup_device": "/dev/cdrom"})
-        self.assertIsInstance(cdrom.get_cdrom_drives(), Iterable)
+        # Independent of the implementation get_cdrom_drives must not rais
+        # and return an Iterable.
+        drives = cdrom.get_cdrom_drives()
+        self.assertIsInstance(drives, Iterable)
+        self.assertTrue(set(cdrom.DEFAULT_DRIVES).issubset(drives))
+
+    def test_generic_iter_drives(self):
+        self.set_config_values({"cd_lookup_device": "/dev/cdrom"})
+        self.assertEqual(["/dev/cdrom"], list(cdrom._generic_iter_drives()))
+        self.set_config_values({"cd_lookup_device": "/dev/cdrom, /dev/sr0"})
+        self.assertEqual(["/dev/cdrom", "/dev/sr0"], list(cdrom._generic_iter_drives()))
+        self.set_config_values({"cd_lookup_device": ""})
+        self.assertEqual([], list(cdrom._generic_iter_drives()))
+        self.set_config_values({"cd_lookup_device": " ,, ,\t, "})
+        self.assertEqual([], list(cdrom._generic_iter_drives()))
 
 
 @unittest.skipUnless(IS_WIN, "windows test")
