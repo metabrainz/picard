@@ -15,7 +15,7 @@ Required tools
 Picard source tree strings
 --------------------------
 
-Their translations are handled at https://www.transifex.com/projects/p/musicbrainz/resource/picard/
+Their translations are handled at <https://www.transifex.com/projects/p/musicbrainz/resource/picard/>
 
 One can update `picard.pot` using:
 ```bash
@@ -28,7 +28,7 @@ Transifex will _automatically_ pick `picard.pot` from [Picard git repository mas
 Attributes and countries strings
 --------------------------------
 
-Their translations are handled at https://www.transifex.com/projects/p/musicbrainz/resource/attributes/ and https://www.transifex.com/projects/p/musicbrainz/resource/countries/
+Their translations are handled at <https://www.transifex.com/projects/p/musicbrainz/resource/attributes/> and <https://www.transifex.com/projects/p/musicbrainz/resource/countries/>
 
 `attributes.pot` and `countries.pot` are updated by [musicbrainz-server project](https://bitbucket.org/metabrainz/musicbrainz-server/), outside the Picard project.
 
