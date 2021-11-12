@@ -29,10 +29,8 @@ from PyQt5 import (
     QtWidgets,
 )
 
-from picard.const import (
-    DEFAULT_NUMBERED_SCRIPT_NAME,
-    DEFAULT_SCRIPT_NAME,
-)
+from picard.const import DEFAULT_SCRIPT_NAME
+from picard.util import unique_numbered_title
 
 from picard.ui import HashableListWidgetItem
 
@@ -63,9 +61,12 @@ class ScriptListWidget(QtWidgets.QListWidget):
         else:
             super().keyPressEvent(event)
 
+    def unique_script_name(self):
+        existing_titles = [self.item(i).name for i in range(self.count())]
+        return unique_numbered_title(_(DEFAULT_SCRIPT_NAME), existing_titles)
+
     def add_script(self):
-        count = self.count()
-        numbered_name = _(DEFAULT_NUMBERED_SCRIPT_NAME) % (count + 1)
+        numbered_name = self.unique_script_name()
         list_item = ScriptListWidgetItem(name=numbered_name)
         list_item.setCheckState(QtCore.Qt.Checked)
         self.addItem(list_item)
@@ -88,8 +89,8 @@ class ScriptListWidget(QtWidgets.QListWidget):
 
     def item_changed(self, item):
         if not item.name.strip():
-            # Replace empty script name with default.
-            item.setText(_(DEFAULT_SCRIPT_NAME))
+            # Replace empty script name with unique numbered name.
+            item.setText(self.unique_script_name())
 
 
 class ScriptListWidgetItem(HashableListWidgetItem):

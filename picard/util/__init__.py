@@ -59,7 +59,10 @@ from dateutil.parser import parse
 from PyQt5 import QtCore
 
 from picard import log
-from picard.const import MUSICBRAINZ_SERVERS
+from picard.const import (
+    DEFAULT_COPY_TEXT,
+    MUSICBRAINZ_SERVERS,
+)
 from picard.const.sys import (
     FROZEN_TEMP_PATH,
     IS_FROZEN,
@@ -891,3 +894,38 @@ def wildcards_to_regex_pattern(pattern):
         regex.append('\\[')
         regex.append(wildcards_to_regex_pattern(''.join(group[1:])))
     return ''.join(regex)
+
+
+def unique_numbered_title(default_title, existing_titles):
+    """Generate a new unique and numbered title
+       based on given default title and existing titles
+    """
+    escaped = re.escape(default_title)
+    regex = re.compile('^' + escaped + '(?: \\((\\d+)\\))?$')
+    count = 0
+    for title in existing_titles:
+        m = regex.match(title)
+        if m:
+            num = m.group(1)
+            if num is not None:
+                count = max(count, int(num))
+            else:
+                count += 1
+    return "{0} ({1})".format(default_title, count + 1)
+
+
+def get_base_title_with_suffix(title, suffix):
+    """Extract the base portion of a title,
+       removing the suffix and number portion from the end.
+    """
+    escaped_suffix = re.escape(suffix)
+    re_text = "^(.*)\\s+" + escaped_suffix + "(\\s+\\(\\d*\\))?$"
+    match_obj = re.fullmatch(re_text, title)
+    return match_obj.group(1) if match_obj else title
+
+
+def get_base_title(title):
+    """Extract the base portion of a title, using the standard suffix.
+    """
+    suffix = _(DEFAULT_COPY_TEXT)
+    return get_base_title_with_suffix(title, suffix)

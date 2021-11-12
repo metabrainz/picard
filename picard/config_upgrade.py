@@ -41,9 +41,10 @@ from picard.config import (
 )
 from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
-    DEFAULT_NUMBERED_SCRIPT_NAME,
+    DEFAULT_SCRIPT_NAME,
 )
 from picard.const.sys import IS_FROZEN
+from picard.util import unique_numbered_title
 
 
 # TO ADD AN UPGRADE HOOK:
@@ -228,7 +229,7 @@ def upgrade_to_v1_4_0_dev_6(config):
     if old_script_text_option in _s:
         old_script_text = _s.value(old_script_text_option, TextOption, "")
         if old_script_text:
-            old_script = (0, _(DEFAULT_NUMBERED_SCRIPT_NAME) % 1, _s["enable_tagger_scripts"], old_script_text)
+            old_script = (0, unique_numbered_title(_(DEFAULT_SCRIPT_NAME), list_of_scripts), _s["enable_tagger_scripts"], old_script_text)
             list_of_scripts.append(old_script)
     _s["list_of_scripts"] = list_of_scripts
     _s.remove(old_enabled_option)
