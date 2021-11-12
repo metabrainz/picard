@@ -195,11 +195,14 @@ class RenamingOptionsPage(OptionsPage):
             self.update_selector_from_editor()
         else:
             self.script_editor_dialog.loading = True
+            self.script_editor_dialog.naming_scripts = self.naming_scripts
+            self.script_editor_dialog.populate_script_selector()
             self.update_selector_in_editor(skip_check=True)
             self.script_editor_dialog.loading = False
             self.tagger.window.script_editor_dialog = True
 
     def script_editor_dialog_close(self):
+        self.naming_scripts = self.script_editor_dialog.naming_scripts
         self.tagger.window.script_editor_dialog = None
 
     def show_scripting_documentation(self):
