@@ -23,7 +23,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import deque
+from collections import (
+    defaultdict,
+    deque,
+    namedtuple,
+)
 from functools import partial
 import json
 
@@ -56,11 +60,48 @@ def find_fpcalc():
     return find_executable(*FPCALC_NAMES)
 
 
+AcoustIDTask = namedtuple('AcoustIDTask', ['file', 'next_func'])
+
+
+class AcoustIDQueue:
+    def __init__(self):
+        self._queue = deque()
+        self._tasks = defaultdict(set)
+
+    def append(self, file, next_func):
+        task = AcoustIDTask(file, next_func)
+        if task in self:
+            # do not add same task twice
+            return
+        self._tasks[task.file].add(next_func)
+        self._queue.append(task)
+        log.debug("AcoustID: append task for %r", task.file)
+
+    def __contains__(self, task):
+        return task.next_func in self._tasks[task.file]
+
+    def popleft(self):
+        while True:
+            task = self._queue.popleft()
+            if task.file in self._tasks:
+                self._tasks[task.file].remove(task.next_func)
+                if not self._tasks[task.file]:
+                    # free memory if no more tasks for this file
+                    del self._tasks[task.file]
+                return task
+            # if file was removed, keep looping
+
+    def remove_file(self, file):
+        if file in self._tasks:
+            log.debug("AcoustID: removing %r from tasks", file)
+            del self._tasks[file]
+
+
 class AcoustIDClient(QtCore.QObject):
 
     def __init__(self, acoustid_api):
         super().__init__()
-        self._queue = deque()
+        self._queue = AcoustIDQueue()
         self._running = 0
         self._max_processes = 2
         self._acoustid_api = acoustid_api
@@ -218,16 +259,16 @@ class AcoustIDClient(QtCore.QObject):
 
     def _run_next_task(self):
         try:
-            file, next_func = self._queue.popleft()
+            task = self._queue.popleft()
         except IndexError:
             return
         self._running += 1
         process = QtCore.QProcess(self)
         process.setProperty('picard_finished', False)
-        process.finished.connect(partial(self._on_fpcalc_finished, next_func, file))
-        process.error.connect(partial(self._on_fpcalc_error, next_func, file))
-        process.start(self._fpcalc, ["-json", "-length", "120", file.filename])
-        log.debug("Starting fingerprint calculator %r %r", self._fpcalc, file.filename)
+        process.finished.connect(partial(self._on_fpcalc_finished, task.next_func, task.file))
+        process.error.connect(partial(self._on_fpcalc_error, task.next_func, task.file))
+        process.start(self._fpcalc, ["-json", "-length", "120", task.file.filename])
+        log.debug("Starting fingerprint calculator %r %r", self._fpcalc, task.file.filename)
 
     def analyze(self, file, next_func):
         fpcalc_next = partial(self._lookup_fingerprint, next_func, file.filename)
@@ -251,15 +292,10 @@ class AcoustIDClient(QtCore.QObject):
         self.fingerprint(file, fpcalc_next)
 
     def fingerprint(self, file, next_func):
-        task = (file, next_func)
-        self._queue.append(task)
+        self._queue.append(file, next_func)
         self._fpcalc = get_fpcalc()
         if self._running < self._max_processes:
             self._run_next_task()
 
     def stop_analyze(self, file):
-        new_queue = deque()
-        for task in self._queue:
-            if task[0] != file:
-                new_queue.appendleft(task)
-        self._queue = new_queue
+        self._queue.remove_file(file)
