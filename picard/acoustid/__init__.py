@@ -177,7 +177,7 @@ class AcoustIDClient(QtCore.QObject):
             params['recordingid'] = recordingid
         self._acoustid_api.query_acoustid(partial(self._on_lookup_finished, next_func, file), **params)
 
-    def _on_fpcalc_finished(self, next_func, file, exit_code, exit_status):
+    def _on_fpcalc_finished(self, task, exit_code, exit_status):
         process = self.sender()
         finished = process.property('picard_finished')
         if finished:
@@ -206,8 +206,8 @@ class AcoustIDClient(QtCore.QObject):
         finally:
             if result and result[0] == 'fingerprint':
                 fp_type, fingerprint, length = result
-                file.set_acoustid_fingerprint(fingerprint, length)
-            next_func(result)
+                task.file.set_acoustid_fingerprint(fingerprint, length)
+            task.next_func(result)
 
     def _on_fpcalc_error(self, next_func, filename, error):
         process = self.sender()
@@ -230,7 +230,7 @@ class AcoustIDClient(QtCore.QObject):
         self._running += 1
         process = QtCore.QProcess(self)
         process.setProperty('picard_finished', False)
-        process.finished.connect(partial(self._on_fpcalc_finished, task.next_func, task.file))
+        process.finished.connect(partial(self._on_fpcalc_finished, task))
         process.error.connect(partial(self._on_fpcalc_error, task.next_func, task.file))
         process.start(self._fpcalc, ["-json", "-length", "120", task.file.filename])
         log.debug("Starting fingerprint calculator %r %r", self._fpcalc, task.file.filename)
