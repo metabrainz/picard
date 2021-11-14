@@ -218,7 +218,10 @@ class AcoustIDClient(QtCore.QObject):
         try:
             self._running -= 1
             self._run_next_task()
-            log.error("Fingerprint calculator failed error = %s (%r)", process.errorString(), error)
+            log.error(
+                "Fingerprint calculator failed error= %s (%r) program=%r arguments=%r",
+                process.errorString(), error, process.program(), process.arguments()
+            )
         finally:
             next_func(None)
 
