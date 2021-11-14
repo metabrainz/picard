@@ -23,7 +23,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import deque
+from collections import (
+    deque,
+    namedtuple,
+)
 from functools import partial
 import json
 
@@ -54,6 +57,9 @@ def get_fpcalc(config=None):
 
 def find_fpcalc():
     return find_executable(*FPCALC_NAMES)
+
+
+AcoustIDTask = namedtuple('AcoustIDTask', ('file', 'next_func'))
 
 
 class AcoustIDClient(QtCore.QObject):
@@ -218,16 +224,16 @@ class AcoustIDClient(QtCore.QObject):
 
     def _run_next_task(self):
         try:
-            file, next_func = self._queue.popleft()
+            task = self._queue.popleft()
         except IndexError:
             return
         self._running += 1
         process = QtCore.QProcess(self)
         process.setProperty('picard_finished', False)
-        process.finished.connect(partial(self._on_fpcalc_finished, next_func, file))
-        process.error.connect(partial(self._on_fpcalc_error, next_func, file))
-        process.start(self._fpcalc, ["-json", "-length", "120", file.filename])
-        log.debug("Starting fingerprint calculator %r %r", self._fpcalc, file.filename)
+        process.finished.connect(partial(self._on_fpcalc_finished, task.next_func, task.file))
+        process.error.connect(partial(self._on_fpcalc_error, task.next_func, task.file))
+        process.start(self._fpcalc, ["-json", "-length", "120", task.file.filename])
+        log.debug("Starting fingerprint calculator %r %r", self._fpcalc, task.file.filename)
 
     def analyze(self, file, next_func):
         fpcalc_next = partial(self._lookup_fingerprint, next_func, file.filename)
@@ -251,7 +257,7 @@ class AcoustIDClient(QtCore.QObject):
         self.fingerprint(file, fpcalc_next)
 
     def fingerprint(self, file, next_func):
-        task = (file, next_func)
+        task = AcoustIDTask(file, next_func)
         self._queue.append(task)
         self._fpcalc = get_fpcalc()
         if self._running < self._max_processes:
@@ -260,6 +266,6 @@ class AcoustIDClient(QtCore.QObject):
     def stop_analyze(self, file):
         new_queue = deque()
         for task in self._queue:
-            if task[0] != file:
+            if task.file != file:
                 new_queue.appendleft(task)
         self._queue = new_queue
