@@ -77,13 +77,13 @@ class AcoustIDClient(QtCore.QObject):
     def done(self):
         pass
 
-    def _on_lookup_finished(self, next_func, file, document, http, error):
+    def _on_lookup_finished(self, task, document, http, error):
         doc = {}
         if error:
             mparms = {
                 'error': http.errorString(),
                 'body': document,
-                'filename': file.filename,
+                'filename': task.file.filename,
             }
             log.error(
                 "AcoustID: Lookup network error for '%(filename)s': %(error)r, %(body)s" %
@@ -112,16 +112,16 @@ class AcoustIDClient(QtCore.QObject):
                                 parsed_recording['score'] = score * result_score
                                 parsed_recording['acoustid'] = result['id']
                                 recording_list.append(parsed_recording)
-                        log.debug("AcoustID: Lookup successful for '%s'", file.filename)
+                        log.debug("AcoustID: Lookup successful for '%s'", task.file.filename)
 
                     # Set AcoustID in tags if there was no matching recording
                     if results and not recording_list:
-                        file.metadata['acoustid_id'] = results[0]['id']
-                        file.update()
+                        task.file.metadata['acoustid_id'] = results[0]['id']
+                        task.file.update()
                 else:
                     mparms = {
                         'error': document['error']['message'],
-                        'filename': file.filename
+                        'filename': task.file.filename
                     }
                     log.error(
                         "AcoustID: Lookup error for '%(filename)s': %(error)r" %
@@ -135,16 +135,16 @@ class AcoustIDClient(QtCore.QObject):
                 log.error("AcoustID: Error reading response", exc_info=True)
                 error = e
 
-        next_func(doc, http, error)
+        task.next_func(doc, http, error)
 
     def _lookup_fingerprint(self, next_func, filename, result=None, error=None):
         try:
-            file = self.tagger.files[filename]
+            task = AcoustIDTask(self.tagger.files[filename], next_func)
         except KeyError:
             # The file has been removed. do nothing
             return
         mparms = {
-            'filename': file.filename
+            'filename': task.file.filename
         }
         if not result:
             log.debug(
@@ -156,7 +156,7 @@ class AcoustIDClient(QtCore.QObject):
                 mparms,
                 echo=None
             )
-            file.clear_pending()
+            task.file.clear_pending()
             return
         log.debug(
             "AcoustID: looking up the fingerprint for file '%(filename)s'" %
@@ -175,7 +175,7 @@ class AcoustIDClient(QtCore.QObject):
         else:
             fp_type, recordingid = result
             params['recordingid'] = recordingid
-        self._acoustid_api.query_acoustid(partial(self._on_lookup_finished, next_func, file), **params)
+        self._acoustid_api.query_acoustid(partial(self._on_lookup_finished, task), **params)
 
     def _on_fpcalc_finished(self, task, exit_code, exit_status):
         process = self.sender()
