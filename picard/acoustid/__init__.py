@@ -259,12 +259,14 @@ class AcoustIDClient(QtCore.QObject):
         # calculate the fingerprint
         self.fingerprint(file, fpcalc_next)
 
-    def fingerprint(self, file, next_func):
-        task = AcoustIDTask(file, next_func)
+    def _fingerprint(self, task):
         self._queue.append(task)
         self._fpcalc = get_fpcalc()
         if self._running < self._max_processes:
             self._run_next_task()
+
+    def fingerprint(self, file, next_func):
+        self._fingerprint(AcoustIDTask(file, next_func))
 
     def stop_analyze(self, file):
         new_queue = deque()
