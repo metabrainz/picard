@@ -23,7 +23,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import deque
+from collections import (
+    deque,
+    namedtuple,
+)
 from functools import partial
 import json
 
@@ -33,6 +36,7 @@ from picard import log
 from picard.acoustid.json_helpers import parse_recording
 from picard.config import get_config
 from picard.const import FPCALC_NAMES
+from picard.file import File
 from picard.util import find_executable
 
 
@@ -56,6 +60,9 @@ def find_fpcalc():
     return find_executable(*FPCALC_NAMES)
 
 
+AcoustIDTask = namedtuple('AcoustIDTask', ('file', 'next_func'))
+
+
 class AcoustIDClient(QtCore.QObject):
 
     def __init__(self, acoustid_api):
@@ -71,13 +78,13 @@ class AcoustIDClient(QtCore.QObject):
     def done(self):
         pass
 
-    def _on_lookup_finished(self, next_func, file, document, http, error):
+    def _on_lookup_finished(self, task, document, http, error):
         doc = {}
         if error:
             mparms = {
                 'error': http.errorString(),
                 'body': document,
-                'filename': file.filename,
+                'filename': task.file.filename,
             }
             log.error(
                 "AcoustID: Lookup network error for '%(filename)s': %(error)r, %(body)s" %
@@ -106,16 +113,16 @@ class AcoustIDClient(QtCore.QObject):
                                 parsed_recording['score'] = score * result_score
                                 parsed_recording['acoustid'] = result['id']
                                 recording_list.append(parsed_recording)
-                        log.debug("AcoustID: Lookup successful for '%s'", file.filename)
+                        log.debug("AcoustID: Lookup successful for '%s'", task.file.filename)
 
                     # Set AcoustID in tags if there was no matching recording
                     if results and not recording_list:
-                        file.metadata['acoustid_id'] = results[0]['id']
-                        file.update()
+                        task.file.metadata['acoustid_id'] = results[0]['id']
+                        task.file.update()
                 else:
                     mparms = {
                         'error': document['error']['message'],
-                        'filename': file.filename
+                        'filename': task.file.filename
                     }
                     log.error(
                         "AcoustID: Lookup error for '%(filename)s': %(error)r" %
@@ -129,16 +136,14 @@ class AcoustIDClient(QtCore.QObject):
                 log.error("AcoustID: Error reading response", exc_info=True)
                 error = e
 
-        next_func(doc, http, error)
+        task.next_func(doc, http, error)
 
-    def _lookup_fingerprint(self, next_func, filename, result=None, error=None):
-        try:
-            file = self.tagger.files[filename]
-        except KeyError:
-            # The file has been removed. do nothing
+    def _lookup_fingerprint(self, task, result=None, error=None):
+        if task.file.state == File.REMOVED:
+            log.debug("File %r was removed", task.file)
             return
         mparms = {
-            'filename': file.filename
+            'filename': task.file.filename
         }
         if not result:
             log.debug(
@@ -150,7 +155,7 @@ class AcoustIDClient(QtCore.QObject):
                 mparms,
                 echo=None
             )
-            file.clear_pending()
+            task.file.clear_pending()
             return
         log.debug(
             "AcoustID: looking up the fingerprint for file '%(filename)s'" %
@@ -169,9 +174,9 @@ class AcoustIDClient(QtCore.QObject):
         else:
             fp_type, recordingid = result
             params['recordingid'] = recordingid
-        self._acoustid_api.query_acoustid(partial(self._on_lookup_finished, next_func, file), **params)
+        self._acoustid_api.query_acoustid(partial(self._on_lookup_finished, task), **params)
 
-    def _on_fpcalc_finished(self, next_func, file, exit_code, exit_status):
+    def _on_fpcalc_finished(self, task, exit_code, exit_status):
         process = self.sender()
         finished = process.property('picard_finished')
         if finished:
@@ -200,10 +205,10 @@ class AcoustIDClient(QtCore.QObject):
         finally:
             if result and result[0] == 'fingerprint':
                 fp_type, fingerprint, length = result
-                file.set_acoustid_fingerprint(fingerprint, length)
-            next_func(result)
+                task.file.set_acoustid_fingerprint(fingerprint, length)
+            task.next_func(result)
 
-    def _on_fpcalc_error(self, next_func, filename, error):
+    def _on_fpcalc_error(self, task, error):
         process = self.sender()
         finished = process.property('picard_finished')
         if finished:
@@ -212,54 +217,66 @@ class AcoustIDClient(QtCore.QObject):
         try:
             self._running -= 1
             self._run_next_task()
-            log.error("Fingerprint calculator failed error = %s (%r)", process.errorString(), error)
+            log.error(
+                "Fingerprint calculator failed error= %s (%r) program=%r arguments=%r",
+                process.errorString(), error, process.program(), process.arguments()
+            )
         finally:
-            next_func(None)
+            task.next_func(None)
 
     def _run_next_task(self):
         try:
-            file, next_func = self._queue.popleft()
+            task = self._queue.popleft()
         except IndexError:
+            return
+        if task.file.state == File.REMOVED:
+            log.debug("File %r was removed", task.file)
             return
         self._running += 1
         process = QtCore.QProcess(self)
         process.setProperty('picard_finished', False)
-        process.finished.connect(partial(self._on_fpcalc_finished, next_func, file))
-        process.error.connect(partial(self._on_fpcalc_error, next_func, file))
-        process.start(self._fpcalc, ["-json", "-length", "120", file.filename])
-        log.debug("Starting fingerprint calculator %r %r", self._fpcalc, file.filename)
+        process.finished.connect(partial(self._on_fpcalc_finished, task))
+        process.error.connect(partial(self._on_fpcalc_error, task))
+        process.start(self._fpcalc, ["-json", "-length", "120", task.file.filename])
+        log.debug("Starting fingerprint calculator %r %r", self._fpcalc, task.file.filename)
 
     def analyze(self, file, next_func):
-        fpcalc_next = partial(self._lookup_fingerprint, next_func, file.filename)
+        fpcalc_next = partial(self._lookup_fingerprint, AcoustIDTask(file, next_func))
+        task = AcoustIDTask(file, fpcalc_next)
 
         config = get_config()
-        fingerprint = file.acoustid_fingerprint
+        fingerprint = task.file.acoustid_fingerprint
         if not fingerprint and not config.setting["ignore_existing_acoustid_fingerprints"]:
             # use cached fingerprint from file metadata
-            fingerprints = file.metadata.getall('acoustid_fingerprint')
+            fingerprints = task.file.metadata.getall('acoustid_fingerprint')
             if fingerprints:
                 fingerprint = fingerprints[0]
-                file.set_acoustid_fingerprint(fingerprint)
+                task.file.set_acoustid_fingerprint(fingerprint)
 
         # If the fingerprint already exists skip calling fpcalc
         if fingerprint:
-            length = file.acoustid_length
+            length = task.file.acoustid_length
             fpcalc_next(result=('fingerprint', fingerprint, length))
             return
 
         # calculate the fingerprint
-        self.fingerprint(file, fpcalc_next)
+        self._fingerprint(task)
 
-    def fingerprint(self, file, next_func):
-        task = (file, next_func)
+    def _fingerprint(self, task):
+        if task.file.state == File.REMOVED:
+            log.debug("File %r was removed", task.file)
+            return
         self._queue.append(task)
         self._fpcalc = get_fpcalc()
         if self._running < self._max_processes:
             self._run_next_task()
 
+    def fingerprint(self, file, next_func):
+        self._fingerprint(AcoustIDTask(file, next_func))
+
     def stop_analyze(self, file):
         new_queue = deque()
         for task in self._queue:
-            if task[0] != file:
+            if task.file != file and task.file.state != File.REMOVED:
                 new_queue.appendleft(task)
         self._queue = new_queue
