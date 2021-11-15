@@ -277,6 +277,6 @@ class AcoustIDClient(QtCore.QObject):
     def stop_analyze(self, file):
         new_queue = deque()
         for task in self._queue:
-            if task.file != file:
+            if task.file != file and task.file.state != File.REMOVED:
                 new_queue.appendleft(task)
         self._queue = new_queue
