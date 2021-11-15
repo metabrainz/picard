@@ -229,6 +229,9 @@ class AcoustIDClient(QtCore.QObject):
             task = self._queue.popleft()
         except IndexError:
             return
+        if task.file.state == File.REMOVED:
+            log.debug("File %r was removed", task.file)
+            return
         self._running += 1
         process = QtCore.QProcess(self)
         process.setProperty('picard_finished', False)
@@ -260,6 +263,9 @@ class AcoustIDClient(QtCore.QObject):
         self._fingerprint(task)
 
     def _fingerprint(self, task):
+        if task.file.state == File.REMOVED:
+            log.debug("File %r was removed", task.file)
+            return
         self._queue.append(task)
         self._fpcalc = get_fpcalc()
         if self._running < self._max_processes:
