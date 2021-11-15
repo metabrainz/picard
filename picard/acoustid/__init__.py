@@ -36,6 +36,7 @@ from picard import log
 from picard.acoustid.json_helpers import parse_recording
 from picard.config import get_config
 from picard.const import FPCALC_NAMES
+from picard.file import File
 from picard.util import find_executable
 
 
@@ -137,11 +138,9 @@ class AcoustIDClient(QtCore.QObject):
 
         task.next_func(doc, http, error)
 
-    def _lookup_fingerprint(self, next_func, filename, result=None, error=None):
-        try:
-            task = AcoustIDTask(self.tagger.files[filename], next_func)
-        except KeyError:
-            # The file has been removed. do nothing
+    def _lookup_fingerprint(self, task, result=None, error=None):
+        if task.file.state == File.REMOVED:
+            log.debug("File %r was removed", task.file)
             return
         mparms = {
             'filename': task.file.filename
@@ -239,7 +238,7 @@ class AcoustIDClient(QtCore.QObject):
         log.debug("Starting fingerprint calculator %r %r", self._fpcalc, task.file.filename)
 
     def analyze(self, file, next_func):
-        fpcalc_next = partial(self._lookup_fingerprint, next_func, file.filename)
+        fpcalc_next = partial(self._lookup_fingerprint, AcoustIDTask(file, next_func))
         task = AcoustIDTask(file, fpcalc_next)
 
         config = get_config()
