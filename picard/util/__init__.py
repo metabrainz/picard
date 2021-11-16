@@ -705,7 +705,7 @@ def compare_barcodes(barcode1, barcode2):
     return barcode1.zfill(13) == barcode2.zfill(13)
 
 
-BestMatch = namedtuple('BestMatch', 'similarity result num_results')
+BestMatch = namedtuple('BestMatch', ('similarity', 'result'))
 
 
 def sort_by_similarity(candidates):
@@ -717,12 +717,8 @@ def sort_by_similarity(candidates):
 
 
 def find_best_match(candidates, no_match):
-    sorted_results = sort_by_similarity(candidates)
-    if sorted_results:
-        result = sorted_results[0]
-    else:
-        result = no_match
-    return BestMatch(similarity=result.similarity, result=result, num_results=len(sorted_results))
+    best_match = max(candidates(), key=attrgetter('similarity'), default=no_match)
+    return BestMatch(similarity=best_match.similarity, result=best_match)
 
 
 def get_qt_enum(cls, enum):
