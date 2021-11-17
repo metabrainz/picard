@@ -26,37 +26,75 @@ from picard.util import unique_numbered_title
 
 class UniqueNumberedTitle(PicardTestCase):
     def test_existing_titles_0(self):
-        title = unique_numbered_title('title', [])
+        title = unique_numbered_title('title', [], fmt='{title} ({count})')
         self.assertEqual(title, 'title (1)')
 
     def test_existing_titles_1(self):
-        title = unique_numbered_title('title', ['title'])
+        title = unique_numbered_title('title', ['title'], fmt='{title} ({count})')
         self.assertEqual(title, 'title (2)')
 
     def test_existing_titles_2(self):
-        title = unique_numbered_title('title', ['title', 'title (2)'])
+        title = unique_numbered_title('title', ['title', 'title (2)'], fmt='{title} ({count})')
         self.assertEqual(title, 'title (3)')
 
     def test_existing_titles_3(self):
-        title = unique_numbered_title('title', ['title (1)', 'title (2)'])
+        title = unique_numbered_title('title', ['title (1)', 'title (2)'], fmt='{title} ({count})')
         self.assertEqual(title, 'title (3)')
 
     def test_existing_titles_4(self):
-        title = unique_numbered_title('title', ['title', 'title'])
+        title = unique_numbered_title('title', ['title', 'title'], fmt='{title} ({count})')
         self.assertEqual(title, 'title (3)')
 
     def test_existing_titles_5(self):
-        title = unique_numbered_title('title', ['x title', 'title y'])
+        title = unique_numbered_title('title', ['x title', 'title y'], fmt='{title} ({count})')
         self.assertEqual(title, 'title (1)')
 
     def test_existing_titles_6(self):
-        title = unique_numbered_title('title', ['title (n)'])
+        title = unique_numbered_title('title', ['title (n)'], fmt='{title} ({count})')
         self.assertEqual(title, 'title (1)')
 
     def test_existing_titles_7(self):
-        title = unique_numbered_title('title', ['title ()'])
+        title = unique_numbered_title('title', ['title ()'], fmt='{title} ({count})')
         self.assertEqual(title, 'title (1)')
 
     def test_existing_titles_8(self):
-        title = unique_numbered_title('title', ['title(2)'])
+        title = unique_numbered_title('title', ['title(2)'], fmt='{title} ({count})')
         self.assertEqual(title, 'title (1)')
+
+
+class UniqueNumberedTitleFmt(PicardTestCase):
+    def test_existing_titles_0(self):
+        title = unique_numbered_title('title', [], fmt='({count}) {title}')
+        self.assertEqual(title, '(1) title')
+
+    def test_existing_titles_1(self):
+        title = unique_numbered_title('title', ['title'], fmt='({count}) {title}')
+        self.assertEqual(title, '(2) title')
+
+    def test_existing_titles_2(self):
+        title = unique_numbered_title('title', ['title', '(2) title'], fmt='({count}) {title}')
+        self.assertEqual(title, '(3) title')
+
+    def test_existing_titles_3(self):
+        title = unique_numbered_title('title', ['(1) title', '(2) title'], fmt='({count}) {title}')
+        self.assertEqual(title, '(3) title')
+
+    def test_existing_titles_4(self):
+        title = unique_numbered_title('title', ['title', 'title'], fmt='({count}) {title}')
+        self.assertEqual(title, '(3) title')
+
+    def test_existing_titles_5(self):
+        title = unique_numbered_title('title', ['x title', 'title y'], fmt='({count}) {title}')
+        self.assertEqual(title, '(1) title')
+
+    def test_existing_titles_6(self):
+        title = unique_numbered_title('title', ['(n) title'], fmt='({count}) {title}')
+        self.assertEqual(title, '(1) title')
+
+    def test_existing_titles_7(self):
+        title = unique_numbered_title('title', ['() title'], fmt='({count}) {title}')
+        self.assertEqual(title, '(1) title')
+
+    def test_existing_titles_8(self):
+        title = unique_numbered_title('title', ['(2)title'], fmt='({count}) {title}')
+        self.assertEqual(title, '(1) title')
