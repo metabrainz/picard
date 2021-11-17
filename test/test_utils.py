@@ -397,7 +397,6 @@ class SortBySimilarity(PicardTestCase):
 
         self.assertEqual(best_match.result.name, 'b')
         self.assertEqual(best_match.similarity, 0.75)
-        self.assertEqual(best_match.num_results, 4)
 
     def test_findbestmatch_nomatch(self):
         self.test_values = []
@@ -407,7 +406,6 @@ class SortBySimilarity(PicardTestCase):
 
         self.assertEqual(best_match.result.name, 'no_match')
         self.assertEqual(best_match.similarity, -1)
-        self.assertEqual(best_match.num_results, 0)
 
 
 class GetQtEnum(PicardTestCase):
