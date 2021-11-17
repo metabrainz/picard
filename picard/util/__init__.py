@@ -896,12 +896,24 @@ def wildcards_to_regex_pattern(pattern):
     return ''.join(regex)
 
 
-def unique_numbered_title(default_title, existing_titles):
+def unique_numbered_title(default_title, existing_titles, fmt=None):
     """Generate a new unique and numbered title
        based on given default title and existing titles
     """
-    escaped = re.escape(default_title)
-    regex = re.compile('^' + escaped + '(?: \\((\\d+)\\))?$')
+    if fmt is None:
+        fmt = _('{title} ({count})')
+
+    parts = fmt.split('{title}')
+
+    def wrap_count(p):
+        if '{count}' in p:
+            return '(?:' + re.escape(p).replace('\\{count\\}', '(\\d+)') + ')?'
+        else:
+            return p
+
+    escaped_title = re.escape(default_title)
+    regstr = '^' + '{title}'.join([wrap_count(p) for p in parts]).format(title=escaped_title) + '$'
+    regex = re.compile(regstr)
     count = 0
     for title in existing_titles:
         m = regex.match(title)
@@ -911,7 +923,7 @@ def unique_numbered_title(default_title, existing_titles):
                 count = max(count, int(num))
             else:
                 count += 1
-    return "{0} ({1})".format(default_title, count + 1)
+    return fmt.format(title=default_title, count=count + 1)
 
 
 def get_base_title_with_suffix(title, suffix):
