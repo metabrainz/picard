@@ -523,12 +523,20 @@ class Album(DataObject, Item):
             self.update(update_tracks=False)
             remove_metadata_images(self, [file])
 
-    def _match_files(self, files, threshold=0):
+    @staticmethod
+    def _match_files(files, tracks, unmatched_files, threshold=0, use_events_iter=False):
         """Match files to tracks on this album, based on metadata similarity or recordingid."""
+        if use_events_iter:
+            events_iter = process_events_iter
+        else:
+            def _events_iter(seq):
+                return seq
+            events_iter = _events_iter
+
         tracks_cache = defaultdict(lambda: None)
 
         def build_tracks_cache():
-            for track in self.tracks:
+            for track in tracks:
                 tm_recordingid = track.orig_metadata['musicbrainz_recordingid']
                 tm_tracknumber = track.orig_metadata['tracknumber']
                 tm_discnumber = track.orig_metadata['discnumber']
@@ -539,7 +547,7 @@ class Album(DataObject, Item):
                     tracks_cache[tup] = track
 
         SimMatchAlbum = namedtuple('SimMatchAlbum', 'similarity track')
-        no_match = SimMatchAlbum(similarity=-1, track=self.unmatched_files)
+        no_match = SimMatchAlbum(similarity=-1, track=unmatched_files)
 
         for file in files:
             if file.state == File.REMOVED:
@@ -560,7 +568,7 @@ class Album(DataObject, Item):
 
             # try to match by similarity
             def candidates():
-                for track in process_events_iter(self.tracks):
+                for track in events_iter(tracks):
                     similarity = track.metadata.compare(file.orig_metadata)
                     if similarity >= threshold:
                         yield SimMatchAlbum(similarity=similarity, track=track)
@@ -573,7 +581,8 @@ class Album(DataObject, Item):
         """Match and move files to tracks on this album, based on metadata similarity or recordingid."""
         if self.loaded:
             config = get_config()
-            moves = self._match_files(files, threshold=config.setting['track_matching_threshold'])
+            threshold = config.setting['track_matching_threshold']
+            moves = self._match_files(files, self.tracks, self.unmatched_files, threshold=threshold)
             for file, target in moves:
                 file.move(target)
         else:
