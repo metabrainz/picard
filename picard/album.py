@@ -541,7 +541,7 @@ class Album(DataObject, Item):
         SimMatchAlbum = namedtuple('SimMatchAlbum', 'similarity track')
         no_match = SimMatchAlbum(similarity=-1, track=self.unmatched_files)
 
-        for file in list(files):
+        for file in files:
             if file.state == File.REMOVED:
                 continue
             # if we have a recordingid to match against, use that in priority
