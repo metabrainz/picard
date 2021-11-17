@@ -527,6 +527,7 @@ class Album(DataObject, Item):
     def _match_files(files, tracks, unmatched_files, threshold=0, use_events_iter=False):
         """Match files to tracks on this album, based on metadata similarity or recordingid."""
         if use_events_iter:
+            #  TODO: get rid of this completely at some point
             events_iter = process_events_iter
         else:
             def _events_iter(seq):
