@@ -539,6 +539,7 @@ class Album(DataObject, Item):
                     tracks_cache[tup] = track
 
         SimMatchAlbum = namedtuple('SimMatchAlbum', 'similarity track')
+        no_match = SimMatchAlbum(similarity=-1, track=self.unmatched_files)
 
         for file in list(files):
             if file.state == File.REMOVED:
@@ -564,7 +565,6 @@ class Album(DataObject, Item):
                     if similarity >= threshold:
                         yield SimMatchAlbum(similarity=similarity, track=track)
 
-            no_match = SimMatchAlbum(similarity=-1, track=self.unmatched_files)
             best_match = find_best_match(candidates, no_match)
 
             yield (file, best_match.result.track)
