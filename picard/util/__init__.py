@@ -926,13 +926,25 @@ def unique_numbered_title(default_title, existing_titles, fmt=None):
     return fmt.format(title=default_title, count=count + 1)
 
 
-def get_base_title_with_suffix(title, suffix):
+def get_base_title_with_suffix(title, suffix, fmt=None):
     """Extract the base portion of a title,
        removing the suffix and number portion from the end.
     """
+    if fmt is None:
+        fmt = _('{title} ({count})')
+
+    parts = fmt.split('{title}')
+
+    def wrap_count(p):
+        if '{count}' in p:
+            return '(?:' + re.escape(p).replace('\\{count\\}', '\\d*') + ')?'
+        else:
+            return p
+
     escaped_suffix = re.escape(suffix)
-    re_text = "^(.*)\\s+" + escaped_suffix + "(\\s+\\(\\d*\\))?$"
-    match_obj = re.fullmatch(re_text, title)
+    joiner = '(.*?)(?:\\s*' + escaped_suffix + ')?'
+    regstr = '^' + joiner.join([wrap_count(p) for p in parts]) + '$'
+    match_obj = re.fullmatch(regstr, title)
     return match_obj.group(1) if match_obj else title
 
 
