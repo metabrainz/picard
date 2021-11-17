@@ -561,12 +561,8 @@ class Album(DataObject, Item):
             def candidates():
                 for track in process_events_iter(self.tracks):
                     similarity = track.metadata.compare(file.orig_metadata)
-                    if similarity < threshold:
-                        continue
-                    yield SimMatchAlbum(
-                        similarity=similarity,
-                        track=track
-                    )
+                    if similarity >= threshold:
+                        yield SimMatchAlbum(similarity=similarity, track=track)
 
             no_match = SimMatchAlbum(similarity=-1, track=self.unmatched_files)
             best_match = find_best_match(candidates, no_match)
