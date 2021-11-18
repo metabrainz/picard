@@ -30,10 +30,9 @@ from unittest.mock import (
 from test.picardtestcase import PicardTestCase
 
 from picard.acousticbrainz import (
-    ab_available,
+    ABExtractor,
     ab_extractor_callback,
     ab_feature_extraction,
-    ab_setup_extractor,
 )
 from picard.file import File
 
@@ -57,20 +56,20 @@ class AcousticBrainzSetupTest(PicardTestCase):
         self.set_config_values(settings)
 
         # Try to setup AB
-        ab_setup_extractor()
+        ab_extractor = ABExtractor()
 
         # Extractor should be found
-        self.assertTrue(ab_available())
+        self.assertTrue(ab_extractor.available())
 
     def test_ab_setup_not_present(self):
         settings['acousticbrainz_extractor'] = "non_existing_extractor"
         self.set_config_values(settings)
 
         # Try to setup AB
-        ab_setup_extractor()
+        ab_extractor = ABExtractor()
 
         # Extractor should not be found
-        self.assertFalse(ab_available())
+        self.assertFalse(ab_extractor.available())
 
 
 class AcousticBrainzFeatureExtractionTest(PicardTestCase):
@@ -85,8 +84,8 @@ class AcousticBrainzFeatureExtractionTest(PicardTestCase):
         settings['acousticbrainz_extractor'] = mock_extractor
         self.set_config_values(settings)
 
-        ab_setup_extractor()
-        self.assertTrue(ab_available())
+        self.tagger.ab_extractor = ABExtractor()
+        self.assertTrue(self.tagger.ab_extractor.available())
 
         # Load an irrelevant test file
         self.file = File("./test/data/test.mp3")

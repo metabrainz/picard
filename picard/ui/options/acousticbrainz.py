@@ -30,7 +30,6 @@ from PyQt5 import QtWidgets
 
 from picard.acousticbrainz import (
     ab_check_version,
-    ab_setup_extractor,
     find_extractor,
 )
 from picard.config import (
@@ -94,7 +93,6 @@ class AcousticBrainzOptionsPage(OptionsPage):
             self.tagger.window.update_actions()
         if enabled:
             self._config.setting["acousticbrainz_extractor"] = self.ui.acousticbrainz_extractor.text()
-            ab_setup_extractor()
 
     def acousticbrainz_extractor_browse(self):
         path, _filter = QtWidgets.QFileDialog.getOpenFileName(self, "", self.ui.acousticbrainz_extractor.text())

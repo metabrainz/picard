@@ -71,10 +71,9 @@ from picard import (
     log,
 )
 from picard.acousticbrainz import (
-    ab_available,
+    ABExtractor,
     ab_extractor_callback,
     ab_feature_extraction,
-    ab_setup_extractor,
 )
 from picard.acoustid.manager import AcoustIDManager
 from picard.album import (
@@ -259,8 +258,7 @@ class Tagger(QtWidgets.QApplication):
         self.acoustidmanager = AcoustIDManager(acoustid_api)
 
         # Setup AcousticBrainz extraction
-        if config.setting["use_acousticbrainz"]:
-            ab_setup_extractor()
+        self.ab_extractor = ABExtractor()
 
         self.enable_menu_icons(config.setting['show_menu_icons'])
 
@@ -864,7 +862,7 @@ class Tagger(QtWidgets.QApplication):
 
     def extract_and_submit_acousticbrainz_features(self, objs):
         """Extract AcousticBrainz features and submit them."""
-        if not ab_available():
+        if not self.ab_extractor.available():
             return
 
         for file in iter_files_from_objects(objs):
