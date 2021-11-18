@@ -61,6 +61,7 @@ from PyQt5 import QtCore
 from picard import log
 from picard.const import (
     DEFAULT_COPY_TEXT,
+    DEFAULT_NUMBERED_TITLE_FORMAT,
     MUSICBRAINZ_SERVERS,
 )
 from picard.const.sys import (
@@ -901,7 +902,7 @@ def unique_numbered_title(default_title, existing_titles, fmt=None):
        based on given default title and existing titles
     """
     if fmt is None:
-        fmt = _('{title} ({count})')
+        fmt = _(DEFAULT_NUMBERED_TITLE_FORMAT)
 
     parts = fmt.split('{title}')
 
@@ -931,7 +932,7 @@ def get_base_title_with_suffix(title, suffix, fmt=None):
        removing the suffix and number portion from the end.
     """
     if fmt is None:
-        fmt = _('{title} ({count})')
+        fmt = _(DEFAULT_NUMBERED_TITLE_FORMAT)
 
     parts = fmt.split('{title}')
 
