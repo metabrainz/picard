@@ -59,6 +59,9 @@ ABExtractorProperties = namedtuple('ABExtractorProperties', ('path', 'version', 
 class ABExtractor:
 
     def __init__(self):
+        self._init_cache()
+
+    def _init_cache(self):
         self.cache = defaultdict(lambda: None)
 
     def get(self, config=None):
@@ -101,6 +104,8 @@ class ABExtractor:
                     sha=sha,
                     mtime_ns=mtime_ns
                 )
+                # clear the cache, we keep only one entry
+                self._init_cache()
                 self.cache[(result.path, result.mtime_ns)] = result
                 log.debug('ABExtractor: caching: %r', result)
                 return result
