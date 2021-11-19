@@ -938,15 +938,20 @@ def get_base_title_with_suffix(title, suffix, fmt=None):
 
     def wrap_count(p):
         if '{count}' in p:
-            return '(?:' + re.escape(p).replace('\\{count\\}', '\\d*') + ')?'
+            return '(?:' + re.escape(p) + ')?'
         else:
             return p
 
     escaped_suffix = re.escape(suffix)
-    joiner = '(.*?)(?:\\s*' + escaped_suffix + ')?'
-    regstr = '^' + joiner.join([wrap_count(p) for p in parts]) + '$'
+    reg_title = r'(?P<title>.*?)(?:\s*' + escaped_suffix + ')?'
+    reg_count = r'\d*'
+    regstr = '^' + re.escape("{title}").join([wrap_count(p) for p in parts])\
+        .replace(r'\{title\}', reg_title)\
+        .replace(r'\{count\}', reg_count)\
+        .replace(r'\ ', r'\s+')\
+        .replace(' ', r'\s+') + '$'
     match_obj = re.fullmatch(regstr, title)
-    return match_obj.group(1) if match_obj else title
+    return match_obj['title'] if match_obj else title
 
 
 def get_base_title(title):
