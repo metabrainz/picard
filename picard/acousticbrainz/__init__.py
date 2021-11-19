@@ -21,7 +21,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+from collections import (
+    defaultdict,
+    namedtuple,
+)
 from concurrent.futures import Future
 from functools import partial
 import json
@@ -48,54 +51,93 @@ from picard.util.thread import run_task
 from picard.webservice import ratecontrol
 
 
-_acousticbrainz_extractor = None
-_acousticbrainz_extractor_sha = None
 ratecontrol.set_minimum_delay((ACOUSTICBRAINZ_HOST, ACOUSTICBRAINZ_PORT), 1000)
 
+ABExtractorProperties = namedtuple('ABExtractorProperties', ('path', 'version', 'sha', 'mtime_ns'))
 
-def get_extractor(config=None):
-    if not config:
-        config = get_config()
-    extractor_path = config.setting["acousticbrainz_extractor"]
-    if not extractor_path:
-        extractor_path = find_extractor()
-    else:
-        extractor_path = find_executable(extractor_path)
-    return extractor_path
+
+class ABExtractor:
+
+    def __init__(self):
+        self._init_cache()
+
+    def _init_cache(self):
+        self.cache = defaultdict(lambda: None)
+
+    def get(self, config=None):
+        if not config:
+            config = get_config()
+        if not config.setting["use_acousticbrainz"]:
+            log.debug('ABExtractor: AcousticBrainz disabled')
+            return None
+
+        extractor_path = config.setting["acousticbrainz_extractor"]
+        if not extractor_path:
+            extractor_path = find_extractor()
+        else:
+            extractor_path = find_executable(extractor_path)
+        if not extractor_path:
+            log.debug('ABExtractor: cannot find a path to extractor binary')
+            return None
+
+        try:
+            statinfo = os.stat(extractor_path)
+            mtime_ns = statinfo.st_mtime_ns
+        except OSError as exc:
+            log.warning('ABExtractor: cannot stat extractor: %s', exc)
+            return None
+
+        # check if we have this in cache already
+        cached = self.cache[(extractor_path, mtime_ns)]
+        if cached is not None:
+            log.debug('ABExtractor: cached: %r', cached)
+            return cached
+
+        # create a new cache entry
+        try:
+            version = check_extractor_version(extractor_path)
+            if version:
+                sha = precompute_extractor_sha(extractor_path)
+                result = ABExtractorProperties(
+                    path=extractor_path,
+                    version=version,
+                    sha=sha,
+                    mtime_ns=mtime_ns
+                )
+                # clear the cache, we keep only one entry
+                self._init_cache()
+                self.cache[(result.path, result.mtime_ns)] = result
+                log.debug('ABExtractor: caching: %r', result)
+                return result
+            else:
+                raise Exception("check_extractor_version(%r) returned None" % extractor_path)
+        except Exception as exc:
+            log.warning('ABExtractor: failed to get version or sha: %s', exc)
+        return None
+
+    def path(self, config=None):
+        result = self.get(config)
+        return result.path if result else None
+
+    def version(self, config=None):
+        result = self.get(config)
+        return result.version if result else None
+
+    def sha(self, config=None):
+        result = self.get(config)
+        return result.sha if result else None
+
+    def available(self, config=None):
+        return self.get(config) is not None
 
 
 def find_extractor():
     return find_executable(*EXTRACTOR_NAMES)
 
 
-def ab_available():
-    config = get_config()
-    return config.setting["use_acousticbrainz"] and _acousticbrainz_extractor_sha is not None
-
-
 def ab_check_version(extractor):
     extractor_path = find_executable(extractor)
     return check_extractor_version(extractor_path)
-
-
-def ab_setup_extractor():
-    global _acousticbrainz_extractor, _acousticbrainz_extractor_sha
-    _acousticbrainz_extractor = None
-    _acousticbrainz_extractor_sha = None
-    config = get_config()
-    if config.setting["use_acousticbrainz"]:
-        acousticbrainz_extractor = get_extractor(config)
-        log.debug("Checking up AcousticBrainz availability")
-        if acousticbrainz_extractor:
-            version = check_extractor_version(acousticbrainz_extractor)
-            if version:
-                sha = precompute_extractor_sha(acousticbrainz_extractor)
-                _acousticbrainz_extractor = acousticbrainz_extractor
-                _acousticbrainz_extractor_sha = sha
-                log.debug("AcousticBrainz is available: version %s - sha1 %s" % (version, sha))
-                return version
-        log.warning("AcousticBrainz is not available")
-    return None
 
 
 def ab_feature_extraction(tagger, recording_id, input_path, extractor_callback):
@@ -104,7 +146,7 @@ def ab_feature_extraction(tagger, recording_id, input_path, extractor_callback):
         host=ACOUSTICBRAINZ_HOST,
         port=ACOUSTICBRAINZ_PORT,
         path="/%s/low-level" % recording_id,
-        handler=partial(run_extractor, input_path, extractor_callback),
+        handler=partial(run_extractor, tagger, input_path, extractor_callback),
         priority=True,
         important=False,
         parse_response_type=None
@@ -140,7 +182,7 @@ def ab_extractor_callback(tagger, file, result, error):
     file.update()
 
 
-def run_extractor(input_path, extractor_callback, response, reply, error, main_thread=False):
+def run_extractor(tagger, input_path, extractor_callback, response, reply, error, main_thread=False):
     duplicate = False
     # Check if AcousticBrainz server answered with the json file for the recording id
     if not error:
@@ -159,30 +201,34 @@ def run_extractor(input_path, extractor_callback, response, reply, error, main_t
     else:
         if main_thread:
             # Run extractor on main thread, used for testing
-            extractor_callback(extractor(input_path), None)
+            extractor_callback(extractor(tagger, input_path), None)
         else:
             # Run extractor on a different thread and call the callback when done
-            run_task(partial(extractor, input_path), extractor_callback)
+            run_task(partial(extractor, tagger, input_path), extractor_callback)
 
 
-def extractor(input_path):
+def extractor(tagger, input_path):
     # Create a temporary file with AcousticBrainz output
     output_file = NamedTemporaryFile("w", suffix=".json")
     output_file.close()  # close file to ensure other processes can write to it
 
+    extractor = tagger.ab_extractor.get()
+    if not extractor:
+        return (output_file.name, -1, "no extractor found")
+
     # Call the features extractor and wait for it to finish
     try:
-        return_code, stdout, stderr = run_executable(_acousticbrainz_extractor, input_path, output_file.name)
+        return_code, stdout, stderr = run_executable(extractor.path, input_path, output_file.name)
         results = (output_file.name, return_code, stdout+stderr)
     except (FileNotFoundError, PermissionError) as e:
-        # this can happen if _acousticbrainz_extractor was removed or its permissions changed
+        # this can happen if AcousticBrainz extractor was removed or its permissions changed
         return (output_file.name, -1, str(e))
 
     # Add feature extractor sha to the output features file
     try:
         with open(output_file.name, "r+", encoding="utf-8") as f:
             features = json.load(f)
-            features["metadata"]["version"]["essentia_build_sha"] = _acousticbrainz_extractor_sha
+            features["metadata"]["version"]["essentia_build_sha"] = extractor.sha
             f.seek(0)
             json.dump(features, f, indent=4)
     except FileNotFoundError:

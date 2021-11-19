@@ -61,7 +61,6 @@ from picard import (
     PICARD_APP_ID,
     log,
 )
-from picard.acousticbrainz import ab_available
 from picard.album import Album
 from picard.browser import addrelease
 from picard.cluster import (
@@ -1358,7 +1357,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             # Skip further loops if all values now True.
             if can_analyze and can_save and can_remove and can_refresh and can_autotag and can_submit and can_extract:
                 break
-        can_extract = can_extract and ab_available()
+        can_extract = can_extract and self.tagger.ab_extractor.available()
         self.remove_action.setEnabled(can_remove)
         self.save_action.setEnabled(can_save)
         self.view_info_action.setEnabled(can_view_info)
