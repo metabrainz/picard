@@ -59,7 +59,11 @@ from dateutil.parser import parse
 from PyQt5 import QtCore
 
 from picard import log
-from picard.const import MUSICBRAINZ_SERVERS
+from picard.const import (
+    DEFAULT_COPY_TEXT,
+    DEFAULT_NUMBERED_TITLE_FORMAT,
+    MUSICBRAINZ_SERVERS,
+)
 from picard.const.sys import (
     FROZEN_TEMP_PATH,
     IS_FROZEN,
@@ -887,3 +891,69 @@ def wildcards_to_regex_pattern(pattern):
         regex.append('\\[')
         regex.append(wildcards_to_regex_pattern(''.join(group[1:])))
     return ''.join(regex)
+
+
+def _regex_numbered_title_fmt(fmt, title_repl, count_repl):
+    title_marker = '{title}'
+    count_marker = '{count}'
+
+    parts = fmt.split(title_marker)
+
+    def wrap_count(p):
+        if count_marker in p:
+            return '(?:' + re.escape(p) + ')?'
+        else:
+            return p
+
+    return (
+        re.escape(title_marker).join([wrap_count(p) for p in parts])
+        .replace(re.escape(title_marker), title_repl)
+        .replace(re.escape(count_marker), count_repl)
+    )
+
+
+def unique_numbered_title(default_title, existing_titles, fmt=None):
+    """Generate a new unique and numbered title
+       based on given default title and existing titles
+    """
+    if fmt is None:
+        fmt = _(DEFAULT_NUMBERED_TITLE_FORMAT)
+
+    escaped_title = re.escape(default_title)
+    reg_count = r'(\d+)'
+    regstr = _regex_numbered_title_fmt(fmt, escaped_title, reg_count)
+    regex = re.compile(regstr)
+    count = 0
+    for title in existing_titles:
+        m = regex.fullmatch(title)
+        if m:
+            num = m.group(1)
+            if num is not None:
+                count = max(count, int(num))
+            else:
+                count += 1
+    return fmt.format(title=default_title, count=count + 1)
+
+
+def get_base_title_with_suffix(title, suffix, fmt=None):
+    """Extract the base portion of a title,
+       removing the suffix and number portion from the end.
+    """
+    if fmt is None:
+        fmt = _(DEFAULT_NUMBERED_TITLE_FORMAT)
+
+    escaped_suffix = re.escape(suffix)
+    reg_title = r'(?P<title>.*?)(?:\s*' + escaped_suffix + ')?'
+    reg_count = r'\d*'
+    regstr = _regex_numbered_title_fmt(fmt, reg_title, reg_count)\
+        .replace(r'\ ', r'\s+')\
+        .replace(' ', r'\s+')
+    match_obj = re.fullmatch(regstr, title)
+    return match_obj['title'] if match_obj else title
+
+
+def get_base_title(title):
+    """Extract the base portion of a title, using the standard suffix.
+    """
+    suffix = _(DEFAULT_COPY_TEXT)
+    return get_base_title_with_suffix(title, suffix)

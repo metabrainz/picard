@@ -186,10 +186,10 @@ DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/\n" \
     "%title%"
 
 
-DEFAULT_NUMBERED_SCRIPT_NAME = N_("My script %d")
 DEFAULT_SCRIPT_NAME = N_("My script")
 DEFAULT_COVER_IMAGE_FILENAME = "cover"
-DEFAULT_NUMBERED_PROFILE_NAME = N_("My profile %d")
 DEFAULT_PROFILE_NAME = N_("My profile")
+DEFAULT_COPY_TEXT = N_("(copy)")
+DEFAULT_NUMBERED_TITLE_FORMAT = N_("{title} ({count})")
 
 SCRIPT_LANGUAGE_VERSION = '1.1'

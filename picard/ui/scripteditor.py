@@ -40,7 +40,9 @@ from picard.config import (
     get_config,
 )
 from picard.const import (
+    DEFAULT_COPY_TEXT,
     DEFAULT_FILE_NAMING_FORMAT,
+    DEFAULT_SCRIPT_NAME,
     PICARD_URLS,
 )
 from picard.file import File
@@ -55,7 +57,9 @@ from picard.script.serializer import (
     ScriptImportExportError,
 )
 from picard.util import (
+    get_base_title,
     icontheme,
+    unique_numbered_title,
     webbrowser2,
 )
 from picard.util.settingsoverride import SettingsOverride
@@ -739,11 +743,19 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         self.select_script(skip_check=True)
         self.restore_selected_script_index = idx
 
+    def new_script_name(self, base_title=None):
+        """Get new unique script name.
+        """
+        default_title = base_title if base_title is not None else _(DEFAULT_SCRIPT_NAME)
+        existing_titles = set(script['title'] for script in self.naming_scripts.values())
+        return unique_numbered_title(default_title, existing_titles)
+
     def new_script(self):
         """Add a new (empty) script to the script selection combo box and script list.
         """
         if self.unsaved_changes_confirmation():
-            script_item = FileNamingScript(script=DEFAULT_FILE_NAMING_FORMAT).to_dict()
+            title = self.new_script_name()
+            script_item = FileNamingScript(title=title, script=DEFAULT_FILE_NAMING_FORMAT).to_dict()
             self._insert_item(script_item)
 
     def copy_script(self):
@@ -752,8 +764,10 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         if self.unsaved_changes_confirmation():
             selected = self.ui.preset_naming_scripts.currentIndex()
             script_item = self.ui.preset_naming_scripts.itemData(selected)
-            new_item = FileNamingScript.create_from_dict(script_dict=script_item).copy().to_dict()
-            self._insert_item(new_item)
+            new_item = FileNamingScript.create_from_dict(script_dict=script_item).copy()
+            base_title = "%s %s" % (get_base_title(script_item['title']), _(DEFAULT_COPY_TEXT))
+            new_item.title = self.new_script_name(base_title)
+            self._insert_item(new_item.to_dict())
 
     def update_script_in_settings(self):
         """Sends a save signal to trigger processing in the parent.

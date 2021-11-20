@@ -59,8 +59,9 @@ from picard.config_upgrade import (
 )
 from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
-    DEFAULT_NUMBERED_SCRIPT_NAME,
+    DEFAULT_SCRIPT_NAME,
 )
+from picard.util import unique_numbered_title
 
 
 class TestPicardConfigUpgrades(TestPicardConfigCommon):
@@ -188,7 +189,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertNotIn('tagger_script', self.config.setting)
 
         self.assertTrue(self.config.setting['enable_tagger_scripts'])
-        self.assertEqual([(0, DEFAULT_NUMBERED_SCRIPT_NAME % 1, True, 'abc')], self.config.setting['list_of_scripts'])
+        self.assertEqual([(0, unique_numbered_title(DEFAULT_SCRIPT_NAME, []), True, 'abc')], self.config.setting['list_of_scripts'])
 
     def test_upgrade_to_v1_4_0_dev_7(self):
         BoolOption('setting', 'embed_only_one_front_image', False)

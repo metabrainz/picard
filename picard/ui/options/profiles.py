@@ -33,8 +33,10 @@ from picard.config import (
     SettingConfigSection,
     get_config,
 )
+from picard.const import DEFAULT_COPY_TEXT
 from picard.profile import UserProfileGroups
 from picard.script import get_file_naming_script_presets
+from picard.util import get_base_title
 
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import (
@@ -371,7 +373,7 @@ class ProfilesOptionsPage(OptionsPage):
                     QtWidgets.QMessageBox.Ok,
                     self
                 ).exec_()
-                item.setText(_("Unnamed profile"))
+                item.setText(self.ui.profile_list.unique_profile_name())
             elif text != item.text():
                 # Remove leading and trailing spaces from new title.
                 item.setText(text)
@@ -420,7 +422,8 @@ class ProfilesOptionsPage(OptionsPage):
         id = str(uuid.uuid4())
         settings = deepcopy(self.profile_settings[self.current_profile_id])
         self.profile_settings[id] = settings
-        name = _("%s (copy)") % item.name
+        base_title = "%s %s" % (get_base_title(item.name), _(DEFAULT_COPY_TEXT))
+        name = self.ui.profile_list.unique_profile_name(base_title)
         self.ui.profile_list.add_profile(name=name, profile_id=id)
         self.update_config_overrides()
         self.reload_all_page_settings()

@@ -28,10 +28,8 @@ from PyQt5 import (
     QtWidgets,
 )
 
-from picard.const import (
-    DEFAULT_NUMBERED_PROFILE_NAME,
-    DEFAULT_PROFILE_NAME,
-)
+from picard.const import DEFAULT_PROFILE_NAME
+from picard.util import unique_numbered_title
 
 from picard.ui import HashableListWidgetItem
 
@@ -58,10 +56,15 @@ class ProfileListWidget(QtWidgets.QListWidget):
         else:
             super().keyPressEvent(event)
 
+    def unique_profile_name(self, base_name=None):
+        if base_name is None:
+            base_name = _(DEFAULT_PROFILE_NAME)
+        existing_titles = [self.item(i).name for i in range(self.count())]
+        return unique_numbered_title(base_name, existing_titles)
+
     def add_profile(self, name=None, profile_id=""):
         if name is None:
-            count = self.count()
-            name = _(DEFAULT_NUMBERED_PROFILE_NAME) % (count + 1)
+            name = self.unique_profile_name()
         list_item = ProfileListWidgetItem(name=name, profile_id=profile_id)
         list_item.setCheckState(QtCore.Qt.Checked)
         self.insertItem(0, list_item)
