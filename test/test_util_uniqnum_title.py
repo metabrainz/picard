@@ -21,7 +21,33 @@
 
 from test.picardtestcase import PicardTestCase
 
-from picard.util import unique_numbered_title
+from picard.util import (
+    _regex_numbered_title_fmt,
+    unique_numbered_title,
+)
+
+
+class RegexNumberedTitleFmt(PicardTestCase):
+
+    def test_1(self):
+        fmt = ''
+        result = _regex_numbered_title_fmt(fmt, 'TITLE', 'COUNT')
+        self.assertEqual(result, '')
+
+    def test_2(self):
+        fmt = '{title} {count}'
+        result = _regex_numbered_title_fmt(fmt, 'TITLE', 'COUNT')
+        self.assertEqual(result, r'TITLE(?:\ COUNT)?')
+
+    def test_3(self):
+        fmt = 'x {count}  {title} y'
+        result = _regex_numbered_title_fmt(fmt, 'TITLE', 'COUNT')
+        self.assertEqual(result, r'(?:x\ COUNT\ \ )?TITLE y')
+
+    def test_4(self):
+        fmt = 'x {title}{count} y'
+        result = _regex_numbered_title_fmt(fmt, 'TITLE', 'COUNT')
+        self.assertEqual(result, r'x TITLE(?:COUNT\ y)?')
 
 
 class UniqueNumberedTitle(PicardTestCase):
