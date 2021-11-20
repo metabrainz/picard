@@ -150,9 +150,6 @@ class GeneralOptionsPage(OptionsPage):
             self.ui.login_error.hide()
             self.ui.login.show()
             self.ui.logout.hide()
-        # Workaround for Qt not repainting the view on macOS after the changes.
-        # See https://tickets.metabrainz.org/browse/PICARD-1654
-        self.ui.vboxlayout.parentWidget().repaint()
 
     def login(self):
         self.tagger.mb_login(self.on_login_finished, self)

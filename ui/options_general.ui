@@ -114,50 +114,57 @@ QCheckBox { color: black }</string>
      <property name="title">
       <string>MusicBrainz Account</string>
      </property>
-     <layout class="QGridLayout">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
       <property name="spacing">
        <number>2</number>
       </property>
-      <item row="3" column="0">
-       <widget class="QPushButton" name="login">
+      <item>
+       <widget class="QLabel" name="login_error">
         <property name="text">
-         <string>Log in</string>
+         <string/>
         </property>
        </widget>
       </item>
-      <item row="1" column="0" colspan="3">
+      <item>
        <widget class="QLabel" name="logged_in">
         <property name="text">
          <string/>
         </property>
        </widget>
       </item>
-      <item row="3" column="2">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="spacing">
+         <number>6</number>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="3" column="1">
-       <widget class="QPushButton" name="logout">
-        <property name="text">
-         <string>Log out</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="3">
-       <widget class="QLabel" name="login_error">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
+        <item>
+         <widget class="QPushButton" name="login">
+          <property name="text">
+           <string>Log in</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="logout">
+          <property name="text">
+           <string>Log out</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -299,8 +306,6 @@ QCheckBox { color: black }</string>
   <tabstop>server_host</tabstop>
   <tabstop>server_port</tabstop>
   <tabstop>use_server_for_submission</tabstop>
-  <tabstop>login</tabstop>
-  <tabstop>logout</tabstop>
   <tabstop>analyze_new_files</tabstop>
   <tabstop>ignore_file_mbids</tabstop>
   <tabstop>check_for_updates</tabstop>
