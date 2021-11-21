@@ -1501,9 +1501,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             dialog = PasswordDialog(authenticator, reply, parent=self)
             dialog.exec_()
 
-    @classmethod
-    def on_mb_login_finished(self, successful):
-        log.debug('MusicBrainz authentication finished: %s', successful)
+    def on_mb_login_finished(self, successful, error_msg):
+        if successful:
+            log.debug('MusicBrainz authentication finished successfully')
+        else:
+            log.info('MusicBrainz authentication failed: %s', error_msg)
+            QtWidgets.QMessageBox.critical(self,
+                _("Authentication failed"),
+                _('Login failed: %s') % error_msg)
 
     def show_proxy_dialog(self, proxy, authenticator):
         dialog = ProxyDialog(authenticator, proxy, parent=self)

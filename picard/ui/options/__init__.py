@@ -44,7 +44,7 @@ class OptionsPage(QtWidgets.QWidget):
     SORT_ORDER = 1000
     ACTIVE = True
     HELP_URL = None
-    STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold }"
+    STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold; padding: 2px; }"
     STYLESHEET = "QLabel { qproperty-wordWrap: true; }"
 
     def __init__(self, *args, **kwargs):
