@@ -159,7 +159,7 @@ class Track(DataObject, FileListItem):
             self.num_linked_files += 1
         self.update_file_metadata(file)
         add_metadata_images(self, [file])
-        self.album._add_file(self, file, new_album=new_album)
+        self.album.add_file(self, file, new_album=new_album)
         file.metadata_images_changed.connect(self.update_metadata_images)
         run_file_post_addition_to_track_processors(self, file)
         if track_will_expand:

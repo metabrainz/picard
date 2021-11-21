@@ -511,7 +511,7 @@ class Album(DataObject, Item):
         if self.item:
             self.item.update(update_tracks, update_selection=update_selection)
 
-    def _add_file(self, track, file, new_album=True):
+    def add_file(self, track, file, new_album=True):
         self._files += 1
         if new_album:
             self.update(update_tracks=False)
