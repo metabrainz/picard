@@ -122,7 +122,7 @@ class Album(DataObject, Item):
         self.loaded = False
         self.load_task = None
         self.release_group = None
-        self._files = 0
+        self._files_count = 0
         self._requests = 0
         self._tracks_loaded = False
         self._discids = set()
@@ -512,13 +512,13 @@ class Album(DataObject, Item):
             self.item.update(update_tracks, update_selection=update_selection)
 
     def add_file(self, track, file, new_album=True):
-        self._files += 1
+        self._files_count += 1
         if new_album:
             self.update(update_tracks=False)
             add_metadata_images(self, [file])
 
     def remove_file(self, track, file, new_album=True):
-        self._files -= 1
+        self._files_count -= 1
         if new_album:
             self.update(update_tracks=False)
             remove_metadata_images(self, [file])
@@ -591,7 +591,7 @@ class Album(DataObject, Item):
                 file.move(self.unmatched_files)
 
     def can_save(self):
-        return self._files > 0
+        return self._files_count > 0
 
     def can_remove(self):
         return True
@@ -631,7 +631,7 @@ class Album(DataObject, Item):
         return len(self.unmatched_files.files)
 
     def get_num_total_files(self):
-        return self._files + len(self.unmatched_files.files)
+        return self._files_count + len(self.unmatched_files.files)
 
     def is_complete(self):
         if not self.tracks:
