@@ -265,7 +265,7 @@ class Cluster(FileList):
         best_match_release = None
         if releases:
             config = get_config()
-            best_match_release = self._match_to_album(releases, threshold=config.setting['cluster_lookup_threshold'])
+            best_match_release = self._match_to_release(releases, threshold=config.setting['cluster_lookup_threshold'])
 
         if best_match_release:
             statusbar(N_("Cluster %(album)s identified!"))
@@ -273,7 +273,7 @@ class Cluster(FileList):
         else:
             statusbar(N_("No matching releases for cluster %(album)s"))
 
-    def _match_to_album(self, releases, threshold=0):
+    def _match_to_release(self, releases, threshold=0):
         # multiple matches -- calculate similarities to each of them
         def candidates():
             for release in releases:
