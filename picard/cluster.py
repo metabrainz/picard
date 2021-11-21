@@ -278,7 +278,9 @@ class Cluster(FileList):
         # multiple matches -- calculate similarities to each of them
         def candidates():
             for release in releases:
-                yield self.metadata.compare_to_release(release, Cluster.comparison_weights)
+                match = self.metadata.compare_to_release(release, Cluster.comparison_weights)
+                if match.similarity >= threshold:
+                    yield match
 
         no_match = SimMatchRelease(similarity=-1, release=None)
         best_match = find_best_match(candidates, no_match)
