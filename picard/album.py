@@ -650,12 +650,7 @@ class Album(DataObject, Item):
         return False
 
     def get_num_unsaved_files(self):
-        count = 0
-        for track in self.tracks:
-            for file in track.files:
-                if not file.is_saved():
-                    count += 1
-        return count
+        return sum(1 for file in self._iter_unsaved_files())
 
     def _iter_unsaved_files(self):
         for file in self.iterfiles(save=True):
