@@ -26,6 +26,7 @@
 
 
 from functools import partial
+from json.decoder import JSONDecodeError
 import time
 
 from PyQt5.QtCore import (
@@ -263,8 +264,8 @@ class OAuthManager(object):
             callback(successful=successful, error_msg=error_msg)
 
     def _extract_error_description(self, http, data):
-        if self.webservice.http_response_code(http) == 400:
+        try:
             response = load_json(data)
-            if 'error_description' in response:
-                return response['error_description']
-        return None
+            return response['error_description']
+        except (JSONDecodeError, KeyError, TypeError):
+            return _('Unexpected request error (HTTP code %s)') % self.webservice.http_response_code(http)
