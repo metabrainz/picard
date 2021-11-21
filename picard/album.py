@@ -517,7 +517,7 @@ class Album(DataObject, Item):
             self.update(update_tracks=False)
             add_metadata_images(self, [file])
 
-    def _remove_file(self, track, file, new_album=True):
+    def remove_file(self, track, file, new_album=True):
         self._files -= 1
         if new_album:
             self.update(update_tracks=False)

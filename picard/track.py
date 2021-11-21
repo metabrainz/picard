@@ -196,7 +196,7 @@ class Track(DataObject, FileListItem):
         self.num_linked_files -= 1
         file.metadata_images_changed.disconnect(self.update_metadata_images)
         file.copy_metadata(file.orig_metadata, preserve_deleted=False)
-        self.album._remove_file(self, file, new_album=new_album)
+        self.album.remove_file(self, file, new_album=new_album)
         remove_metadata_images(self, [file])
         if not self.files and self._orig_images:
             self.orig_metadata.images = self._orig_images
