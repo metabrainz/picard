@@ -660,6 +660,11 @@ class Album(DataObject, Item):
                     count += 1
         return count
 
+    def _iter_unsaved_files(self):
+        for file in self.iterfiles(save=True):
+            if not file.is_saved():
+                yield file
+
     def column(self, column):
         if column == 'title':
             if self.status is not None:
