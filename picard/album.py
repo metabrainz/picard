@@ -645,11 +645,8 @@ class Album(DataObject, Item):
             return True
 
     def is_modified(self):
-        if self.tracks:
-            for track in self.tracks:
-                for file in track.files:
-                    if not file.is_saved():
-                        return True
+        for file in self._iter_unsaved_files():
+            return True
         return False
 
     def get_num_unsaved_files(self):
