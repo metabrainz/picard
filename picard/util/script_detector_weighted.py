@@ -51,17 +51,17 @@ SCRIPT_WEIGHTING_FACTORS = {
 }
 
 
-def detect_script_weighted(string_to_check, threshhold=0.0):
+def detect_script_weighted(string_to_check, threshold=0.0):
     """Provide a dictionary of the unicode scripts found in the supplied string that meet
-    or exceed the specified weighting threshhold based on the number of characters matching
+    or exceed the specified weighting threshold based on the number of characters matching
     the script as a weighted percentage of the number of characters matching all scripts.
 
     Args:
         string_to_check (str): The unicode string to check
-        threshhold (float, optional): Minimum threshhold to include in the results. Defaults to 0.
+        threshold (float, optional): Minimum threshold to include in the results. Defaults to 0.
 
     Returns:
-        dict: Dictionary of the scripts represented in the string with their threshhold values.
+        dict: Dictionary of the scripts represented in the string with their threshold values.
     """
     scripts = {}
     total_weighting = 0
@@ -74,21 +74,21 @@ def detect_script_weighted(string_to_check, threshhold=0.0):
     # Normalize weightings to a float between 0 and 1 inclusive.
     for key in scripts:
         scripts[key] /= total_weighting
-    return dict(filter(lambda item: item[1] >= threshhold, scripts.items()))
+    return dict(filter(lambda item: item[1] >= threshold, scripts.items()))
 
 
-def list_script_weighted(string_to_check, threshhold=0.0):
+def list_script_weighted(string_to_check, threshold=0.0):
     """Provide a list of the unicode scripts found in the supplied string that meet
-    or exceed the specified weighting threshhold based on the number of characters
+    or exceed the specified weighting threshold based on the number of characters
     matching the script as a weighted percentage of the number of characters matching
     all scripts.  The list is sorted in descending order of weighted values.
 
     Args:
         string_to_check (str): The unicode string to check
-        threshhold (float, optional): Minimum threshhold to include in the results. Defaults to 0.
+        threshold (float, optional): Minimum threshold to include in the results. Defaults to 0.
 
     Returns:
         list: List of the scripts represented in the string sorted in descending order of weighted values.
     """
-    weighted_dict = detect_script_weighted(string_to_check, threshhold)
+    weighted_dict = detect_script_weighted(string_to_check, threshold)
     return sorted(weighted_dict, key=weighted_dict.get, reverse=True)
