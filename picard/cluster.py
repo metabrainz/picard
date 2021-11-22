@@ -334,7 +334,7 @@ class Cluster(FileList):
                 statusmsg = N_("Clustering - step %(step)d/3: %(cluster_type)s (%(update)d%%)")
                 mparams = {
                     'step': ClusterType.METADATA.value,
-                    'cluster_type': _(ClusterEngine.cluster_type_label(ClusterType.METADATA)),
+                    'cluster_type': _(CLUSTER_TYPE_LABELS[ClusterType.METADATA]),
                     'update': status_update_steps.progress(i),
                 }
                 tagger.window.set_statusbar_message(statusmsg, mparams)
@@ -505,12 +505,14 @@ class ClusterType(IntEnum):
     ALBUM = 3
 
 
+CLUSTER_TYPE_LABELS = {
+    ClusterType.METADATA: N_('Metadata Extraction'),
+    ClusterType.ARTIST: N_('Artist'),
+    ClusterType.ALBUM: N_('Album'),
+}
+
+
 class ClusterEngine(object):
-    CLUSTER_TYPE_LABELS = {
-        ClusterType.METADATA: N_('Metadata Extraction'),
-        ClusterType.ARTIST: N_('Artist'),
-        ClusterType.ALBUM: N_('Album'),
-    }
 
     def __init__(self, cluster_dict, cluster_type):
         # the cluster dictionary we're using
@@ -522,13 +524,6 @@ class ClusterEngine(object):
         # Index the word ids -> clusters
         self.index_id_cluster = {}
         self.cluster_type = cluster_type
-
-    @staticmethod
-    def cluster_type_label(cluster_type):
-        return ClusterEngine.CLUSTER_TYPE_LABELS[cluster_type]
-
-    def _cluster_type_label(self):
-        return ClusterEngine.cluster_type_label(self.cluster_type)
 
     def get_cluster_from_id(self, clusterid):
         return self.index_id_cluster.get(clusterid)
@@ -575,7 +570,7 @@ class ClusterEngine(object):
                 statusmsg = N_("Clustering - step %(step)d/3: %(cluster_type)s (%(update)d%%)")
                 mparams = {
                     'step': self.cluster_type.value,
-                    'cluster_type': _(self._cluster_type_label()),
+                    'cluster_type': _(CLUSTER_TYPE_LABELS[self.cluster_type]),
                     'update': status_update_steps.progress(y),
                 }
                 tagger.window.set_statusbar_message(statusmsg, mparams)
