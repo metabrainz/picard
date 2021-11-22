@@ -458,7 +458,7 @@ class ClusterDict(object):
     def get_size(self):
         return self.id
 
-    def tokenize(self, word):
+    def _tokenize(self, word):
         word = word.lower()
         token = self.regexp.sub('', word)
         return token if token else self.spaces.sub('', word)
@@ -475,7 +475,7 @@ class ClusterDict(object):
 
         index, count = self.words[word]
         if index == -1:
-            token = self.tokenize(word)
+            token = self._tokenize(word)
             if token == '':  # nosec
                 return -1
             index = self.id
