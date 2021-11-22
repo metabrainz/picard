@@ -22,6 +22,7 @@
 
 
 from collections import namedtuple
+from copy import deepcopy
 from functools import partial
 import os.path
 
@@ -647,11 +648,25 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         if not reload:
             self.examples.settings = config.setting
             self.original_script_id = self.selected_script_id
-            self.original_script_title = self.naming_scripts[self.original_script_id]['title']
+            self.original_script_title = self.all_scripts()[self.original_script_id]['title']
         self.selected_script_index = 0
         self.populate_script_selector()
         if not self.loading:
             self.select_script()
+
+    def all_scripts(self, scripts=None):
+        """Get dictionary of all current scripts (user scripts and presets).
+
+        Returns:
+            dict: All current scripts
+        """
+        all_scripts = deepcopy(scripts if scripts is not None else self.naming_scripts)
+        for script_item in get_file_naming_script_presets():
+            naming_script = script_item.to_dict()
+            naming_script["deletable"] = False
+            naming_script["readonly"] = True
+            all_scripts[naming_script['id']] = naming_script
+        return all_scripts
 
     def reload_from_config(self):
         """Reload the scripts and selected script from the configuration.
@@ -691,11 +706,12 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         Returns:
             bool: False if user chooses to cancel, otherwise True.
         """
+        all_naming_scripts = self.all_scripts()
         for script_id in self.unsaved_scripts():
             profile = self.is_used_in_profile(script_id=script_id)
             if not profile:
                 continue
-            old_script_title = self.naming_scripts[script_id]['title']
+            old_script_title = all_naming_scripts[script_id]['title']
             new_script_title = self.original_script_title
             if confirmation_dialog(
                 self,
@@ -751,8 +767,9 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """
         config = get_config()
         cfg_naming_scripts = config.setting[self.SCRIPTS_LIST_KEY]
+        all_naming_scripts = self.all_scripts(scripts=cfg_naming_scripts)
         for script_id in self.naming_scripts.keys():
-            if script_id not in cfg_naming_scripts:
+            if script_id not in all_naming_scripts:
                 yield script_id
 
     def scripts_in_profiles(self):
