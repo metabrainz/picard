@@ -746,7 +746,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         self.naming_scripts = config.setting[self.SCRIPTS_LIST_KEY]
         if self.selected_script_id not in self.naming_scripts:
             self.selected_script_id = self.original_script_id
-        script_text = self.naming_scripts[self.selected_script_id]['script']
+        script_text = self.all_scripts()[self.selected_script_id]['script']
         self.update_examples(script_text=script_text)
         self.signal_selection_changed.emit()
 
@@ -989,7 +989,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             script_item (dict): Updated file naming script information as produced by FileNamingScript().to_dict()
         """
         self.ui.preset_naming_scripts.setItemData(idx, script_item)
-        self.ui.preset_naming_scripts.setItemText(idx, user_script_title(script_item['title']))
+        title = user_script_title(script_item['title']) if script_item['deletable'] else script_item['title']
+        self.ui.preset_naming_scripts.setItemText(idx, title)
         self.update_scripts_list()
         if not self.loading:
             self.signal_save.emit()
