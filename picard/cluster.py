@@ -262,31 +262,29 @@ class Cluster(FileList):
                 timeout=3000
             )
 
+        best_match_release = None
         if releases:
             config = get_config()
-            albumid = self._match_to_album(releases, threshold=config.setting['cluster_lookup_threshold'])
-        else:
-            albumid = None
+            best_match_release = self._match_to_release(releases, threshold=config.setting['cluster_lookup_threshold'])
 
-        if albumid is None:
-            statusbar(N_("No matching releases for cluster %(album)s"))
-        else:
+        if best_match_release:
             statusbar(N_("Cluster %(album)s identified!"))
-            self.tagger.move_files_to_album(self.files, albumid)
+            self.tagger.move_files_to_album(self.files, best_match_release['id'])
+        else:
+            statusbar(N_("No matching releases for cluster %(album)s"))
 
-    def _match_to_album(self, releases, threshold=0):
+    def _match_to_release(self, releases, threshold=0):
         # multiple matches -- calculate similarities to each of them
         def candidates():
             for release in releases:
-                yield self.metadata.compare_to_release(release, Cluster.comparison_weights)
+                match = self.metadata.compare_to_release(release, Cluster.comparison_weights)
+                if match.similarity >= threshold:
+                    yield match
 
         no_match = SimMatchRelease(similarity=-1, release=None)
         best_match = find_best_match(candidates, no_match)
 
-        if best_match.similarity < threshold:
-            return None
-        else:
-            return best_match.result.release['id']
+        return best_match.result.release
 
     def lookup_metadata(self):
         """Try to identify the cluster using the existing metadata."""
