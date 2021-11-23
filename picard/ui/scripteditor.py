@@ -578,7 +578,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         script_menu = main_menu.addMenu(_('&Script'))
         script_menu.setToolTipsVisible(True)
 
-        self.details_action = QtWidgets.QAction(_("Edit Script &Metadata"), self)
+        self.details_action = QtWidgets.QAction(_("View/Edit Script &Metadata"), self)
         self.details_action.setToolTip(_("Display the details for the script"))
         self.details_action.triggered.connect(self.view_script_details)
         self.details_action.setShortcut(QtGui.QKeySequence(_("Ctrl+M")))
@@ -744,9 +744,10 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             config.setting[self.SELECTED_SCRIPT_KEY] = self.original_script_id
             break
         self.naming_scripts = config.setting[self.SCRIPTS_LIST_KEY]
-        if self.selected_script_id not in self.naming_scripts:
-            self.selected_script_id = self.original_script_id
-        script_text = self.all_scripts()[self.selected_script_id]['script']
+        all_scripts = self.all_scripts()
+        if self.selected_script_id not in all_scripts:
+            self.selected_script_id = "Preset 1"
+        script_text = all_scripts[self.selected_script_id]['script']
         self.update_examples(script_text=script_text)
         self.signal_selection_changed.emit()
 
@@ -1248,6 +1249,7 @@ class ScriptDetailsEditor(PicardDialog):
         self.ui.script_license.setText(self.script_item['license'])
         self.ui.script_description.setPlainText(self.script_item['description'])
 
+        self.ui.script_title.setReadOnly(self.readonly)
         self.ui.script_last_updated.setReadOnly(self.readonly)
         self.ui.script_author.setReadOnly(self.readonly)
         self.ui.script_version.setReadOnly(self.readonly)
@@ -1256,6 +1258,7 @@ class ScriptDetailsEditor(PicardDialog):
         self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.Close).setVisible(self.readonly)
         self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel).setVisible(not self.readonly)
         self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.Save).setVisible(not self.readonly)
+        self.ui.last_updated_now.setVisible(not self.readonly)
         self.ui.buttonBox.setFocus()
 
         self.setModal(True)
@@ -1325,7 +1328,7 @@ class ScriptDetailsEditor(PicardDialog):
     def closeEvent(self, event):
         """Custom close event handler to check for unsaved changes.
         """
-        if self.skip_change_check or not self.has_changed() or (self.has_changed() and self.change_check()):
+        if self.skip_change_check or self.readonly or not self.has_changed() or (self.has_changed() and self.change_check()):
             event.accept()
         else:
             event.ignore()
