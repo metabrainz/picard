@@ -44,7 +44,6 @@
 
 
 import argparse
-from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from functools import partial
 import logging
@@ -927,12 +926,9 @@ class Tagger(QtWidgets.QApplication):
 
         with self.window.ignore_selection_changes:
             self.window.set_sorting(False)
-            cluster_files = defaultdict(list)
-            for file_cluster in result:
+            for file_cluster in process_events_iter(result):
                 cluster = self.load_cluster(file_cluster.title, file_cluster.artist)
-                cluster_files[cluster].extend(file_cluster.files)
-            for cluster, files in process_events_iter(cluster_files.items()):
-                cluster.add_files(files)
+                cluster.add_files(file_cluster.files)
             self.window.set_sorting(True)
 
     def load_cluster(self, name, artist):
