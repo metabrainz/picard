@@ -342,7 +342,7 @@ class Cluster(FileList):
             if not token:
                 continue
             if not artist:
-                artist = 'Various Artists'
+                artist = config.setting['va_name']
             cluster_list[token].add(album, artist, file)
 
         for cluster in cluster_list.values():

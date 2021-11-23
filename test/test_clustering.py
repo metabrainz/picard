@@ -48,7 +48,8 @@ class ClusterTest(PicardTestCase):
     def setUp(self):
         super().setUp()
         self.set_config_values({
-            'windows_compatibility': False
+            'windows_compatibility': False,
+            'va_name': 'Diverse Interpreten',
         })
 
     def _create_file(self, album, artist, filename="foo.mp3"):
@@ -110,7 +111,7 @@ class ClusterTest(PicardTestCase):
         clusters = list(Cluster.cluster(files))
         self.assertEqual(2, len(clusters))
         self.assertClusterEqual('album1', 'artist1', {files[0], files[2], files[5]}, clusters[0])
-        self.assertClusterEqual('album2', 'Various Artists', {files[1], files[3]}, clusters[1])
+        self.assertClusterEqual('album2', 'Diverse Interpreten', {files[1], files[3]}, clusters[1])
 
     def test_cluster_no_metadata(self):
         files = [
