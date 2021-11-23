@@ -915,9 +915,9 @@ class Tagger(QtWidgets.QApplication):
         with self.window.ignore_selection_changes:
             self.window.set_sorting(False)
             cluster_files = defaultdict(list)
-            for name, artist, files in Cluster.cluster(files, 1.0, self):
-                cluster = self.load_cluster(name, artist)
-                cluster_files[cluster].extend(files)
+            for file_cluster in Cluster.cluster(files, self):
+                cluster = self.load_cluster(file_cluster.title, file_cluster.artist)
+                cluster_files[cluster].extend(file_cluster.files)
             for cluster, files in process_events_iter(cluster_files.items()):
                 cluster.add_files(files)
             self.window.set_sorting(True)
