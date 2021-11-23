@@ -35,12 +35,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import defaultdict
-import ntpath
-from operator import (
-    attrgetter,
-    itemgetter,
+from collections import (
+    Counter,
+    defaultdict,
 )
+import ntpath
+from operator import attrgetter
 import re
 
 from PyQt5 import QtCore
@@ -420,25 +420,27 @@ class ClusterList(list, Item):
 class FileCluster:
     def __init__(self):
         self.files = []
-        self._artist_counts = defaultdict(lambda: 0)
-        self._artists = defaultdict(lambda: defaultdict(lambda: 0))
-        self._titles = defaultdict(lambda: 0)
+        self._artist_counts = Counter()
+        self._artists = defaultdict(Counter)
+        self._titles = Counter()
 
     def add(self, album, artist, file):
         self.files.append(file)
-        self._artist_counts[tokenize(artist)] += 1
-        self._artists[tokenize(artist)][artist] += 1
+        token = tokenize(artist)
+        self._artist_counts[token] += 1
+        self._artists[token][artist] += 1
         self._titles[album] += 1
 
     @property
     def artist(self):
-        tokenized_artist = max(self._artist_counts.items(), key=itemgetter(1))[0]
-        return max(self._artists[tokenized_artist].items(), key=itemgetter(1))[0]
+        tokenized_artist = self._artist_counts.most_common(1)[0][0]
+        candidates = self._artists[tokenized_artist]
+        return candidates.most_common(1)[0][0]
 
     @property
     def title(self):
         # Find the most common title
-        return max(self._titles.items(), key=itemgetter(1))[0]
+        return self._titles.most_common(1)[0][0]
 
 
 _re_non_alphanum = re.compile(r'\W', re.UNICODE)
