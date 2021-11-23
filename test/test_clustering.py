@@ -24,6 +24,7 @@ from test.picardtestcase import PicardTestCase
 
 from picard.cluster import (
     Cluster,
+    FileCluster,
     tokenize,
 )
 from picard.file import File
@@ -120,14 +121,43 @@ class ClusterTest(PicardTestCase):
         clusters = list(Cluster.cluster(files))
         self.assertEqual(0, len(clusters))
 
-    # def test_common_artist_name(self):
-    #     files = [
-    #         self._create_file('cluster 1', 'artist 1'),
-    #         self._create_file('cluster 1', 'artist 2'),
-    #         self._create_file('cluster 1', 'artist2'),
-    #         self._create_file('cluster 1', 'artist 1'),
-    #         self._create_file('cluster 1', 'artist 2'),
-    #     ]
-    #     clusters = list(Cluster.cluster(files))
-    #     self.assertEqual(1, len(clusters))
-    #     self.assertClusterEqual('cluster 1', 'artist 2', files, clusters[0])
+    def test_common_artist_name(self):
+        files = [
+            self._create_file('cluster 1', 'artist 1'),
+            self._create_file('cluster 1', 'artist 2'),
+            self._create_file('cluster 1', 'artist2'),
+            self._create_file('cluster 1', 'artist 1'),
+            self._create_file('cluster 1', 'artist 2'),
+        ]
+        clusters = list(Cluster.cluster(files))
+        self.assertEqual(1, len(clusters))
+        self.assertClusterEqual('cluster 1', 'artist 2', files, clusters[0])
+
+
+class FileClusterTest(PicardTestCase):
+
+    def test_single(self):
+        file = File('foo')
+        fc = FileCluster()
+        fc.add('album 1', 'artist 1', file)
+        self.assertEqual('album 1', fc.title)
+        self.assertEqual('artist 1', fc.artist)
+        self.assertEqual([file], fc.files)
+
+    def test_multi(self):
+        files = [
+            File('foo1'),
+            File('foo2'),
+            File('foo3'),
+            File('foo4'),
+            File('foo5'),
+        ]
+        fc = FileCluster()
+        fc.add('album 1', 'artist1', files[0])
+        fc.add('Album 1', 'artist 2', files[1])
+        fc.add('album\t1', 'Artist 1', files[2])
+        fc.add('Album 1', 'Artist 2', files[3])
+        fc.add('album 2', 'Artist 1', files[4])
+        self.assertEqual('Album 1', fc.title)
+        self.assertEqual('Artist 1', fc.artist)
+        self.assertEqual(files, fc.files)

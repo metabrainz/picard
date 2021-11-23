@@ -420,21 +420,25 @@ class ClusterList(list, Item):
 class FileCluster:
     def __init__(self):
         self.files = []
-        self.artists = defaultdict(lambda: 0)
-        self.titles = defaultdict(lambda: 0)
+        self._artist_counts = defaultdict(lambda: 0)
+        self._artists = defaultdict(lambda: defaultdict(lambda: 0))
+        self._titles = defaultdict(lambda: 0)
 
     def add(self, album, artist, file):
         self.files.append(file)
-        self.artists[artist] += 1
-        self.titles[album] += 1
+        self._artist_counts[tokenize(artist)] += 1
+        self._artists[tokenize(artist)][artist] += 1
+        self._titles[album] += 1
 
     @property
     def artist(self):
-        return max(self.artists.items(), key=itemgetter(1))[0]
+        tokenized_artist = max(self._artist_counts.items(), key=itemgetter(1))[0]
+        return max(self._artists[tokenized_artist].items(), key=itemgetter(1))[0]
 
     @property
     def title(self):
-        return max(self.titles.items(), key=itemgetter(1))[0]
+        # Find the most common title
+        return max(self._titles.items(), key=itemgetter(1))[0]
 
 
 _re_non_alphanum = re.compile(r'\W', re.UNICODE)
