@@ -911,11 +911,24 @@ class Tagger(QtWidgets.QApplication):
             files = list(self.unclustered_files.files)
         else:
             files = self.get_files_from_objects(objs)
+        thread.run_task(
+            partial(self._do_clustering, files),
+            self._clustering_finished)
+
+    def _do_clustering(self, files):
+        # The clustering algorithm should completely run in the thread,
+        # hence do not return the iterator.
+        return list(Cluster.cluster(files))
+
+    def _clustering_finished(self, result=None, error=None):
+        if error:
+            log.error('Error while clustering: %r', error)
+            return
 
         with self.window.ignore_selection_changes:
             self.window.set_sorting(False)
             cluster_files = defaultdict(list)
-            for file_cluster in Cluster.cluster(files, self):
+            for file_cluster in result:
                 cluster = self.load_cluster(file_cluster.title, file_cluster.artist)
                 cluster_files[cluster].extend(file_cluster.files)
             for cluster, files in process_events_iter(cluster_files.items()):

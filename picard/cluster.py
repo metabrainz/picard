@@ -56,14 +56,12 @@ from picard.util import (
     album_artist_from_path,
     find_best_match,
     format_time,
-    process_events_iter,
 )
 from picard.util.imagelist import (
     add_metadata_images,
     remove_metadata_images,
     update_metadata_images,
 )
-from picard.util.progresscheckpoints import ProgressCheckpoints
 
 from picard.ui.item import (
     FileListItem,
@@ -303,12 +301,11 @@ class Cluster(FileList):
             self.lookup_task = None
 
     @staticmethod
-    def cluster(files, tagger=None):
+    def cluster(files):
         """Group the provided files into clusters, based on album tag in metadata.
 
         Args:
             files: List of File objects.
-            tagger: Tagger instance (optional). Only needed for statusbar updates.
 
         Yields:
             FileCluster objects
@@ -316,12 +313,8 @@ class Cluster(FileList):
         cluster_list = defaultdict(FileCluster)
         config = get_config()
         win_compat = config.setting["windows_compatibility"] or IS_WIN
-        num_files = len(files)
 
-        # 10 evenly spaced indexes of files being clustered, used as checkpoints for every 10% progress
-        status_update_steps = ProgressCheckpoints(num_files, 10)
-
-        for i, file in process_events_iter(enumerate(files)):
+        for file in files:
             artist = file.metadata["albumartist"] or file.metadata["artist"]
             album = file.metadata["album"]
 
@@ -332,11 +325,6 @@ class Cluster(FileList):
             else:
                 filename = file.filename
             album, artist = album_artist_from_path(filename, album, artist)
-
-            if tagger and status_update_steps.is_checkpoint(i):
-                statusmsg = N_("Clustering: %(update)d%%")
-                mparams = {'update': status_update_steps.progress(i)}
-                tagger.window.set_statusbar_message(statusmsg, mparams)
 
             token = tokenize(album)
             if not token:
