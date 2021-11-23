@@ -308,9 +308,10 @@ class Cluster(FileList):
         Yields:
             FileCluster objects
         """
-        cluster_list = defaultdict(FileCluster)
         config = get_config()
+        various_artists = config.setting['va_name']
 
+        cluster_list = defaultdict(FileCluster)
         for file in files:
             artist = file.metadata["albumartist"] or file.metadata["artist"]
             album = file.metadata["album"]
@@ -320,11 +321,8 @@ class Cluster(FileList):
             album, artist = album_artist_from_path(file.filename, album, artist)
 
             token = tokenize(album)
-            if not token:
-                continue
-            if not artist:
-                artist = config.setting['va_name']
-            cluster_list[token].add(album, artist, file)
+            if token:
+                cluster_list[token].add(album, artist or various_artists, file)
 
         for cluster in cluster_list.values():
             if len(cluster.files) <= 1:
