@@ -47,6 +47,7 @@ from picard.const.sys import (
     IS_WIN,
 )
 from picard.util import (
+    album_artist_from_path,
     extract_year_from_date,
     find_best_match,
     is_absolute_path,
@@ -284,7 +285,7 @@ class LinearCombinationTest(PicardTestCase):
 class AlbumArtistFromPathTest(PicardTestCase):
 
     def test_album_artist_from_path(self):
-        aafp = util.album_artist_from_path
+        aafp = album_artist_from_path
         file_1 = r"/10cc/Original Soundtrack/02 I'm Not in Love.mp3"
         file_2 = r"/10cc - Original Soundtrack/02 I'm Not in Love.mp3"
         file_3 = r"/Original Soundtrack/02 I'm Not in Love.mp3"
@@ -307,13 +308,33 @@ class AlbumArtistFromPathTest(PicardTestCase):
         self.assertEqual(aafp(file_2, 'album', 'artist'), ('album', 'artist'))
         self.assertEqual(aafp(file_3, 'album', 'artist'), ('album', 'artist'))
         self.assertEqual(aafp(file_4, 'album', 'artist'), ('album', 'artist'))
+
+    def test_path_no_dirs(self):
         for name in ('', 'x', '/', '\\', '///'):
-            self.assertEqual(aafp(name, '', 'artist'), ('', 'artist'))
-        # test Strip disc subdirectory
-        self.assertEqual(aafp(r'/artistx/albumy/CD 1/file.flac', '', ''), ('albumy', 'artistx'))
-        self.assertEqual(aafp(r'/artistx/albumy/the DVD 23 B/file.flac', '', ''), ('albumy', 'artistx'))
-        self.assertEqual(aafp(r'/artistx/albumy/disc23/file.flac', '', ''), ('albumy', 'artistx'))
-        self.assertNotEqual(aafp(r'/artistx/albumy/disc/file.flac', '', ''), ('albumy', 'artistx'))
+            self.assertEqual(('', 'artist'), album_artist_from_path(name, '', 'artist'))
+
+    def test_strip_disc_dir(self):
+        self.assertEqual(
+            ('albumy', 'artistx'),
+            album_artist_from_path(r'/artistx/albumy/CD 1/file.flac', '', ''))
+        self.assertEqual(
+            ('albumy', 'artistx'),
+            album_artist_from_path(r'/artistx/albumy/the DVD 23 B/file.flac', '', ''))
+        self.assertEqual(
+            ('albumy', 'artistx'),
+            album_artist_from_path(r'/artistx/albumy/disc23/file.flac', '', ''))
+        self.assertNotEqual(
+            ('albumy', 'artistx'),
+            album_artist_from_path(r'/artistx/albumy/disc/file.flac', '', ''))
+
+    @unittest.skipUnless(IS_WIN, "windows test")
+    def test_remove_windows_drive(self):
+        self.assertEqual(
+            ('album1', None),
+            album_artist_from_path(r'C:\album1\foo.mp3', None, None))
+        self.assertEqual(
+            ('album1', None),
+            album_artist_from_path(r'\\myserver\myshare\album1\foo.mp3', None, None))
 
 
 class IsAbsolutePathTest(PicardTestCase):
