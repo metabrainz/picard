@@ -48,6 +48,7 @@ import json
 import ntpath
 from operator import attrgetter
 import os
+from pathlib import PurePath
 import re
 import subprocess  # nosec: B404
 import sys
@@ -541,12 +542,21 @@ def linear_combination_of_weights(parts):
 
 
 def album_artist_from_path(filename, album, artist):
-    """If album is not set, try to extract album and artist from path
+    """If album is not set, try to extract album and artist from path.
+
+    Args:
+        filename: The full file path
+        album: Default album name
+        artist: Default artist name
+
+    Returns:
+        A tuple (album, artist)
     """
     if not album:
-        dirs = os.path.dirname(filename).replace('\\', '/').lstrip('/').split('/')
+        path = PurePath(filename)
+        dirs = list(path.relative_to(path.anchor).parent.parts)
         # Strip disc subdirectory from list
-        if re.search(r'\b(?:CD|DVD|Disc)\s*\d+\b', dirs[-1], re.I):
+        if dirs and re.search(r'\b(?:CD|DVD|Disc)\s*\d+\b', dirs[-1], re.I):
             del dirs[-1]
         if dirs:
             # For clustering assume %artist%/%album%/file or %artist% - %album%/file

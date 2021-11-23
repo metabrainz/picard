@@ -39,7 +39,6 @@ from collections import (
     Counter,
     defaultdict,
 )
-import ntpath
 from operator import attrgetter
 import re
 
@@ -47,7 +46,6 @@ from PyQt5 import QtCore
 
 from picard.config import get_config
 from picard.const import QUERY_LIMIT
-from picard.const.sys import IS_WIN
 from picard.metadata import (
     Metadata,
     SimMatchRelease,
@@ -312,7 +310,6 @@ class Cluster(FileList):
         """
         cluster_list = defaultdict(FileCluster)
         config = get_config()
-        win_compat = config.setting["windows_compatibility"] or IS_WIN
 
         for file in files:
             artist = file.metadata["albumartist"] or file.metadata["artist"]
@@ -320,11 +317,7 @@ class Cluster(FileList):
 
             # Improve clustering from directory structure if no existing tags
             # Only used for grouping and to provide cluster title / artist - not added to file tags.
-            if win_compat:
-                filename = ntpath.splitdrive(file.filename)[1]
-            else:
-                filename = file.filename
-            album, artist = album_artist_from_path(filename, album, artist)
+            album, artist = album_artist_from_path(file.filename, album, artist)
 
             token = tokenize(album)
             if not token:
