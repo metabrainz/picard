@@ -522,6 +522,9 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         self.original_script_id = ''
         self.original_script_title = ''
 
+        self.last_selected_id = ''
+        self.user_select_script = True
+
         self.load()
         self.loading = False
 
@@ -645,10 +648,16 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         config = get_config()
         self.naming_scripts = config.setting[self.SCRIPTS_LIST_KEY]
         self.selected_script_id = config.setting[self.SELECTED_SCRIPT_KEY]
+        self.last_selected_id = self.selected_script_id
         if not reload:
             self.examples.settings = config.setting
             self.original_script_id = self.selected_script_id
             self.original_script_title = self.all_scripts()[self.original_script_id]['title']
+        if self.parent().__class__.__name__ == 'RenamingOptionsPage':
+            idx = self.parent().ui.naming_script_selector.currentIndex()
+            id = self.parent().ui.naming_script_selector.itemData(idx)['id']
+            if id in self.all_scripts():
+                self.selected_script_id = id
         self.selected_script_index = 0
         self.populate_script_selector()
         if not self.loading:
@@ -738,13 +747,14 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """Reset the currently selected script if it was not saved and is no longer available.
         """
         config = get_config()
-        for script_id in self.unsaved_scripts():
-            if script_id != config.setting[self.SELECTED_SCRIPT_KEY]:
-                continue
+        unsaved = set(id for id in self.unsaved_scripts())
+        script_id = config.setting[self.SELECTED_SCRIPT_KEY]
+        if script_id in unsaved:
             config.setting[self.SELECTED_SCRIPT_KEY] = self.original_script_id
-            break
         self.naming_scripts = config.setting[self.SCRIPTS_LIST_KEY]
         all_scripts = self.all_scripts()
+        if self.last_selected_id in all_scripts:
+            self.selected_script_id = self.last_selected_id
         if self.selected_script_id not in all_scripts:
             self.selected_script_id = "Preset 1"
         script_text = all_scripts[self.selected_script_id]['script']
@@ -870,8 +880,10 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         idx = populate_script_selection_combo_box(self.naming_scripts, self.selected_script_id, self.ui.preset_naming_scripts)
         self._set_combobox_index(idx)
         self.update_scripts_list()
+        self.user_select_script = False
         self.select_script()
         self.save_script()
+        self.user_select_script = True
 
     def new_script_name(self, base_title=None):
         """Get new unique script name.
@@ -974,6 +986,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         self.ui.script_title.setText(script_item['title'])
         self.set_script(script_item['script'])
         self.selected_script_id = script_item['id']
+        if self.user_select_script:
+            self.last_selected_id = self.selected_script_id
         if not self.loading:
             self.save_script()
             self.signal_save.emit()
@@ -1053,7 +1067,9 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             self._set_combobox_index(idx)
             self.selected_script_index = idx
             self.update_scripts_list()
+            self.user_select_script = False
             self.select_script()
+            self.user_select_script = True
 
     def is_used_in_profile(self, script_id=None):
         """Check if the script is included in any profile settings.
