@@ -644,6 +644,12 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
 
         self.ui.layout_for_menubar.addWidget(main_menu)
 
+    def is_options_ui(self):
+        return self.parent().__class__.__name__ == 'RenamingOptionsPage'
+
+    def is_main_ui(self):
+        return self.parent().__class__.__name__ == 'MainWindow'
+
     def load(self, reload=False):
         """Load initial configuration.
         """
@@ -655,11 +661,12 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             self.examples.settings = config.setting
             self.original_script_id = self.selected_script_id
             self.original_script_title = self.all_scripts()[self.original_script_id]['title']
-        if self.parent().__class__.__name__ == 'RenamingOptionsPage':
-            idx = self.parent().ui.naming_script_selector.currentIndex()
-            id = self.parent().ui.naming_script_selector.itemData(idx)['id']
-            if id in self.all_scripts():
-                self.selected_script_id = id
+        if self.is_options_ui():
+            selector = self.parent().ui.naming_script_selector
+            idx = selector.currentIndex()
+            sel_id = selector.itemData(idx)['id']
+            if sel_id in self.all_scripts():
+                self.selected_script_id = sel_id
         self.selected_script_index = 0
         self.populate_script_selector()
         if not self.loading:
@@ -864,9 +871,10 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         Args:
             idx (int): New index position
         """
-        self.ui.preset_naming_scripts.blockSignals(True)
-        self.ui.preset_naming_scripts.setCurrentIndex(idx)
-        self.ui.preset_naming_scripts.blockSignals(False)
+        widget = self.ui.preset_naming_scripts
+        widget.blockSignals(True)
+        widget.setCurrentIndex(idx)
+        widget.blockSignals(False)
         self.selected_script_index = idx
         self.signal_index_changed.emit()
 
@@ -880,7 +888,11 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         script_item["deletable"] = True
         self.selected_script_id = script_item["id"]
         self.naming_scripts[self.selected_script_id] = script_item
-        idx = populate_script_selection_combo_box(self.naming_scripts, self.selected_script_id, self.ui.preset_naming_scripts)
+        idx = populate_script_selection_combo_box(
+            self.naming_scripts,
+            self.selected_script_id,
+            self.ui.preset_naming_scripts
+        )
         self._set_combobox_index(idx)
         self.naming_scripts = self.get_scripts_dict()
         self.select_script(update_last_selected=False)
@@ -906,8 +918,10 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         selected = self.ui.preset_naming_scripts.currentIndex()
         script_item = self.ui.preset_naming_scripts.itemData(selected)
         new_item = FileNamingScript.create_from_dict(script_dict=script_item).copy()
+
         base_title = "%s %s" % (get_base_title(script_item['title']), _(DEFAULT_COPY_TEXT))
         new_item.title = self.new_script_name(base_title)
+
         self._insert_item(new_item.to_dict())
 
     def make_it_so(self):
@@ -1009,9 +1023,9 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             save_enabled (bool, optional): Allow selection of different script item. Defaults to True.
         """
         self.ui.preset_naming_scripts.setEnabled(save_enabled)
-        if self.parent().__class__.__name__ == 'RenamingOptionsPage':
+        if self.is_options_ui():
             self.parent().ui.naming_script_selector.setEnabled(save_enabled)
-        if self.parent().__class__.__name__ == 'MainWindow':
+        elif self.is_main_ui():
             self.parent().script_quick_selector_menu.setEnabled(save_enabled)
 
     def set_button_states(self, save_enabled=True):
@@ -1048,12 +1062,20 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     def match_after_to_before(self):
         """Sets the selected item in the 'after' list to the corresponding item in the 'before' list.
         """
-        self.examples.synchronize_selected_example_lines(self.examples_current_row, self.ui.example_filename_before, self.ui.example_filename_after)
+        self.examples.synchronize_selected_example_lines(
+            self.examples_current_row,
+            self.ui.example_filename_before,
+            self.ui.example_filename_after
+        )
 
     def match_before_to_after(self):
         """Sets the selected item in the 'before' list to the corresponding item in the 'after' list.
         """
-        self.examples.synchronize_selected_example_lines(self.examples_current_row, self.ui.example_filename_after, self.ui.example_filename_before)
+        self.examples.synchronize_selected_example_lines(
+            self.examples_current_row,
+            self.ui.example_filename_after,
+            self.ui.example_filename_before
+        )
 
     def delete_script(self):
         """Removes the currently selected script from the script selection combo box and script list.
@@ -1063,18 +1085,23 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             QtWidgets.QMessageBox(
                 QtWidgets.QMessageBox.Warning,
                 _("Error Deleting Script"),
-                _("The script could not be deleted because it is used in one of the user profiles.\n\nProfile: %s") % profile.title,
+                _(
+                    "The script could not be deleted because it is used in one of the user profiles."
+                    "\n\n"
+                    "Profile: %s"
+                ) % profile.title,
                 QtWidgets.QMessageBox.Ok,
                 self
             ).exec_()
             return
         if confirmation_dialog(self, _('Are you sure that you want to delete the script?')):
+            widget = self.ui.preset_naming_scripts
             idx = self.ui.preset_naming_scripts.currentIndex()
-            self.ui.preset_naming_scripts.blockSignals(True)
-            self.ui.preset_naming_scripts.removeItem(idx)
-            self.ui.preset_naming_scripts.blockSignals(False)
-            if idx >= self.ui.preset_naming_scripts.count():
-                idx = self.ui.preset_naming_scripts.count() - 1
+            widget.blockSignals(True)
+            widget.removeItem(idx)
+            widget.blockSignals(False)
+            if idx >= widget.count():
+                idx = widget.count() - 1
             self._set_combobox_index(idx)
             self.selected_script_index = idx
             self.naming_scripts = self.get_scripts_dict()
@@ -1172,7 +1199,12 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
                 box = QtWidgets.QMessageBox()
                 box.setIcon(QtWidgets.QMessageBox.Question)
                 box.setWindowTitle(_('Confirm'))
-                box.setText(_("A script named \"{script_name}\" already exists.\n\nDo you want to overwrite it, add as a copy or cancel?").format(script_name=title,))
+                box.setText(
+                    _(
+                        "A script named \"{script_name}\" already exists.\n"
+                        "\n"
+                        "Do you want to overwrite it, add as a copy or cancel?"
+                    ).format(script_name=title,))
                 box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No | QtWidgets.QMessageBox.Cancel)
                 buttonY = box.button(QtWidgets.QMessageBox.Yes)
                 buttonY.setText(_("Overwrite"))
@@ -1197,7 +1229,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """Export the current script to an external file. Export can be either as a plain text
         script or a naming script package.
         """
-        script_item = FileNamingScript.create_from_dict(script_dict=self.get_selected_item(), create_new_id=False)
+        selected = self.get_selected_item()
+        script_item = FileNamingScript.create_from_dict(script_dict=selected, create_new_id=False)
         script_item.title = get_base_title(script_item.title)
         try:
             script_item.export_script(parent=self)
@@ -1232,7 +1265,10 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """
         # Ignore scripting errors, those are handled inline
         if not isinstance(error, ScriptCheckError):
-            dialog = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Warning, error.title, error.info, QtWidgets.QMessageBox.Ok, self)
+            dialog = QtWidgets.QMessageBox(
+                QtWidgets.QMessageBox.Warning, error.title,
+                error.info, QtWidgets.QMessageBox.Ok, self
+            )
             dialog.exec_()
 
     def test(self):
@@ -1290,6 +1326,7 @@ class ScriptDetailsEditor(PicardDialog):
         self.ui.script_version.setReadOnly(self.readonly)
         self.ui.script_license.setReadOnly(self.readonly)
         self.ui.script_description.setReadOnly(self.readonly)
+
         self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.Close).setVisible(self.readonly)
         self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel).setVisible(not self.readonly)
         self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.Save).setVisible(not self.readonly)
@@ -1320,7 +1357,11 @@ class ScriptDetailsEditor(PicardDialog):
         """
         return confirmation_dialog(
             self,
-            _("There are unsaved changes to the current metadata.  Do you want to continue and lose these changes?"),
+            _(
+                "There are unsaved changes to the current metadata."
+                "\n\n"
+                "Do you want to continue and lose these changes?"
+            ),
         )
 
     def set_last_updated(self):
@@ -1343,7 +1384,8 @@ class ScriptDetailsEditor(PicardDialog):
             ).exec_()
             return
         if self.has_changed():
-            if not self.ui.script_last_updated.isModified() or not self.ui.script_last_updated.text().strip():
+            last_updated = self.ui.script_last_updated
+            if not last_updated.isModified() or not last_updated.text().strip():
                 self.set_last_updated()
             self.script_item["title"] = self.ui.script_title.text().strip()
             self.script_item["author"] = self.ui.script_author.text().strip()
@@ -1363,7 +1405,10 @@ class ScriptDetailsEditor(PicardDialog):
     def closeEvent(self, event):
         """Custom close event handler to check for unsaved changes.
         """
-        if self.skip_change_check or self.readonly or not self.has_changed() or (self.has_changed() and self.change_check()):
+        if (self.skip_change_check
+            or self.readonly
+            or not self.has_changed()
+            or (self.has_changed() and self.change_check())):
             event.accept()
         else:
             event.ignore()
