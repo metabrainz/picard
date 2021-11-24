@@ -136,10 +136,13 @@ class Track(DataObject, FileListItem):
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
         self.album = album
-        self.num_linked_files = 0
         self.scripted_metadata = Metadata()
         self._track_artists = []
         self._orig_images = None
+
+    @property
+    def num_linked_files(self):
+        return len(self.files)
 
     def __repr__(self):
         return '<Track %s %r>' % (self.id, self.metadata["title"])
@@ -156,7 +159,6 @@ class Track(DataObject, FileListItem):
                 self._orig_images = self.orig_metadata.images
                 self.orig_metadata.images = ImageList()
             self.files.append(file)
-            self.num_linked_files += 1
         self.update_file_metadata(file)
         add_metadata_images(self, [file])
         self.album.add_file(self, file, new_album=new_album)
@@ -193,7 +195,6 @@ class Track(DataObject, FileListItem):
         if file not in self.files:
             return
         self.files.remove(file)
-        self.num_linked_files -= 1
         file.metadata_images_changed.disconnect(self.update_metadata_images)
         file.copy_metadata(file.orig_metadata, preserve_deleted=False)
         self.album.remove_file(self, file, new_album=new_album)
