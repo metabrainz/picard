@@ -1055,12 +1055,20 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     def match_after_to_before(self):
         """Sets the selected item in the 'after' list to the corresponding item in the 'before' list.
         """
-        self.examples.synchronize_selected_example_lines(self.examples_current_row, self.ui.example_filename_before, self.ui.example_filename_after)
+        self.examples.synchronize_selected_example_lines(
+            self.examples_current_row,
+            self.ui.example_filename_before,
+            self.ui.example_filename_after
+        )
 
     def match_before_to_after(self):
         """Sets the selected item in the 'before' list to the corresponding item in the 'after' list.
         """
-        self.examples.synchronize_selected_example_lines(self.examples_current_row, self.ui.example_filename_after, self.ui.example_filename_before)
+        self.examples.synchronize_selected_example_lines(
+            self.examples_current_row,
+            self.ui.example_filename_after,
+            self.ui.example_filename_before
+        )
 
     def delete_script(self):
         """Removes the currently selected script from the script selection combo box and script list.
