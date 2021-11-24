@@ -644,6 +644,12 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
 
         self.ui.layout_for_menubar.addWidget(main_menu)
 
+    def is_options_ui(self):
+        return self.parent().__class__.__name__ == 'RenamingOptionsPage'
+
+    def is_main_ui(self):
+        return self.parent().__class__.__name__ == 'MainWindow'
+
     def load(self, reload=False):
         """Load initial configuration.
         """
@@ -655,7 +661,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             self.examples.settings = config.setting
             self.original_script_id = self.selected_script_id
             self.original_script_title = self.all_scripts()[self.original_script_id]['title']
-        if self.parent().__class__.__name__ == 'RenamingOptionsPage':
+        if self.is_options_ui():
             idx = self.parent().ui.naming_script_selector.currentIndex()
             id = self.parent().ui.naming_script_selector.itemData(idx)['id']
             if id in self.all_scripts():
@@ -1009,9 +1015,9 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             save_enabled (bool, optional): Allow selection of different script item. Defaults to True.
         """
         self.ui.preset_naming_scripts.setEnabled(save_enabled)
-        if self.parent().__class__.__name__ == 'RenamingOptionsPage':
+        if self.is_options_ui():
             self.parent().ui.naming_script_selector.setEnabled(save_enabled)
-        if self.parent().__class__.__name__ == 'MainWindow':
+        elif self.is_main_ui():
             self.parent().script_quick_selector_menu.setEnabled(save_enabled)
 
     def set_button_states(self, save_enabled=True):
