@@ -918,8 +918,10 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         selected = self.ui.preset_naming_scripts.currentIndex()
         script_item = self.ui.preset_naming_scripts.itemData(selected)
         new_item = FileNamingScript.create_from_dict(script_dict=script_item).copy()
+
         base_title = "%s %s" % (get_base_title(script_item['title']), _(DEFAULT_COPY_TEXT))
         new_item.title = self.new_script_name(base_title)
+
         self._insert_item(new_item.to_dict())
 
     def make_it_so(self):
@@ -1324,6 +1326,7 @@ class ScriptDetailsEditor(PicardDialog):
         self.ui.script_version.setReadOnly(self.readonly)
         self.ui.script_license.setReadOnly(self.readonly)
         self.ui.script_description.setReadOnly(self.readonly)
+
         self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.Close).setVisible(self.readonly)
         self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel).setVisible(not self.readonly)
         self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.Save).setVisible(not self.readonly)
