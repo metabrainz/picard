@@ -632,10 +632,7 @@ class Album(DataObject, Item):
         for track in self.tracks:
             if not track.is_complete():
                 return False
-        if self.get_num_unmatched_files():
-            return False
-        else:
-            return True
+        return not self.get_num_unmatched_files()
 
     def is_modified(self):
         return any(self._iter_unsaved_files())
