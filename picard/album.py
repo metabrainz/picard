@@ -612,20 +612,13 @@ class Album(DataObject, Item):
         return self.loaded or self.errors
 
     def can_extract(self):
-        for track in self.tracks:
-            if track.can_extract():
-                return True
-        return False
+        return any(track.can_extract() for track in self.tracks)
 
     def is_album_like(self):
         return True
 
     def get_num_matched_tracks(self):
-        num = 0
-        for track in self.tracks:
-            if track.is_linked():
-                num += 1
-        return num
+        return sum(1 for track in self.tracks if track.is_linked())
 
     def get_num_unmatched_files(self):
         return len(self.unmatched_files.files)
@@ -645,17 +638,13 @@ class Album(DataObject, Item):
             return True
 
     def is_modified(self):
-        for file in self._iter_unsaved_files():
-            return True
-        return False
+        return any(self._iter_unsaved_files())
 
     def get_num_unsaved_files(self):
         return sum(1 for file in self._iter_unsaved_files())
 
     def _iter_unsaved_files(self):
-        for file in self.iterfiles(save=True):
-            if not file.is_saved():
-                yield file
+        yield from (file for file in self.iterfiles(save=True) if not file.is_saved())
 
     def column(self, column):
         if column == 'title':

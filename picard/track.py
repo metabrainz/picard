@@ -226,17 +226,11 @@ class Track(DataObject, FileListItem):
 
     def can_save(self):
         """Return if this object can be saved."""
-        for file in self.files:
-            if file.can_save():
-                return True
-        return False
+        return any(file.can_save() for file in self.files)
 
     def can_remove(self):
         """Return if this object can be removed."""
-        for file in self.files:
-            if file.can_remove():
-                return True
-        return False
+        return any(file.can_remove() for file in self.files)
 
     def can_edit_tags(self):
         """Return if this object supports tag editing."""
@@ -246,11 +240,8 @@ class Track(DataObject, FileListItem):
         return self.num_linked_files == 1 or self.metadata.images
 
     def can_extract(self):
-        """Return if this object has a linked file with a recordingId, required by the AcosuticBrainz feature extractor."""
-        for file in self.files:
-            if file.can_extract():
-                return True
-        return False
+        """Return if this object has a linked file with a recordingId, required by the AcousticBrainz feature extractor."""
+        return any(file.can_extract() for file in self.files)
 
     def column(self, column):
         m = self.metadata

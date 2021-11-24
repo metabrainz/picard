@@ -185,10 +185,7 @@ class Cluster(FileList):
 
     def can_save(self):
         """Return if this object can be saved."""
-        if self.files:
-            return True
-        else:
-            return False
+        return bool(self.files)
 
     def can_remove(self):
         """Return if this object can be removed."""
@@ -200,7 +197,7 @@ class Cluster(FileList):
 
     def can_analyze(self):
         """Return if this object can be fingerprinted."""
-        return any([_file.can_analyze() for _file in self.files])
+        return any(_file.can_analyze() for _file in self.files)
 
     def can_autotag(self):
         return True
@@ -212,10 +209,7 @@ class Cluster(FileList):
         return not self.special
 
     def can_view_info(self):
-        if self.files:
-            return True
-        else:
-            return False
+        return bool(self.files)
 
     def can_submit(self):
         return not self.special and self.files
@@ -276,7 +270,6 @@ class Cluster(FileList):
 
         no_match = SimMatchRelease(similarity=-1, release=None)
         best_match = find_best_match(candidates, no_match)
-
         return best_match.result.release
 
     def lookup_metadata(self):
@@ -324,10 +317,7 @@ class Cluster(FileList):
             if token:
                 cluster_list[token].add(album, artist or various_artists, file)
 
-        for cluster in cluster_list.values():
-            if len(cluster.files) <= 1:
-                continue
-            yield cluster
+        yield from (cluster for cluster in cluster_list.values() if len(cluster.files) > 1)
 
 
 class UnclusteredFiles(Cluster):
@@ -352,13 +342,13 @@ class UnclusteredFiles(Cluster):
         return False
 
     def can_autotag(self):
-        return len(self.files) > 0
+        return bool(self.files)
 
     def can_view_info(self):
         return False
 
     def can_remove(self):
-        return len(self.files) > 0
+        return bool(self.files)
 
     @property
     def can_show_coverart(self):
@@ -383,7 +373,7 @@ class ClusterList(list, Item):
         return len(self) > 0
 
     def can_analyze(self):
-        return any([cluster.can_analyze() for cluster in self])
+        return any(cluster.can_analyze() for cluster in self)
 
     def can_autotag(self):
         return len(self) > 0
