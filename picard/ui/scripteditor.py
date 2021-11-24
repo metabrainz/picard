@@ -888,7 +888,11 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         script_item["deletable"] = True
         self.selected_script_id = script_item["id"]
         self.naming_scripts[self.selected_script_id] = script_item
-        idx = populate_script_selection_combo_box(self.naming_scripts, self.selected_script_id, self.ui.preset_naming_scripts)
+        idx = populate_script_selection_combo_box(
+            self.naming_scripts,
+            self.selected_script_id,
+            self.ui.preset_naming_scripts
+        )
         self._set_combobox_index(idx)
         self.naming_scripts = self.get_scripts_dict()
         self.select_script(update_last_selected=False)
