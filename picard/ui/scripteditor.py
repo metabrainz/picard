@@ -1084,12 +1084,13 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             ).exec_()
             return
         if confirmation_dialog(self, _('Are you sure that you want to delete the script?')):
+            widget = self.ui.preset_naming_scripts
             idx = self.ui.preset_naming_scripts.currentIndex()
-            self.ui.preset_naming_scripts.blockSignals(True)
-            self.ui.preset_naming_scripts.removeItem(idx)
-            self.ui.preset_naming_scripts.blockSignals(False)
-            if idx >= self.ui.preset_naming_scripts.count():
-                idx = self.ui.preset_naming_scripts.count() - 1
+            widget.blockSignals(True)
+            widget.removeItem(idx)
+            widget.blockSignals(False)
+            if idx >= widget.count():
+                idx = widget.count() - 1
             self._set_combobox_index(idx)
             self.selected_script_index = idx
             self.naming_scripts = self.get_scripts_dict()
