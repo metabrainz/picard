@@ -1164,6 +1164,33 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             self.output_file_error(error.format, error.filename, error.error_msg)
             return
         if script_item:
+            title = script_item.title.strip()
+            for id in self.naming_scripts:
+                existing_script = self.naming_scripts[id]
+                if title != existing_script['title']:
+                    continue
+                box = QtWidgets.QMessageBox()
+                box.setIcon(QtWidgets.QMessageBox.Question)
+                box.setWindowTitle(_('Confirm'))
+                box.setText(_("A script named \"{script_name}\" already exists.\n\nDo you want to overwrite it, add as a copy or cancel?").format(script_name=title,))
+                box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No | QtWidgets.QMessageBox.Cancel)
+                buttonY = box.button(QtWidgets.QMessageBox.Yes)
+                buttonY.setText(_("Overwrite"))
+                buttonN = box.button(QtWidgets.QMessageBox.No)
+                buttonN.setText(_("Copy"))
+                box.setDefaultButton(QtWidgets.QMessageBox.Cancel)
+                box.exec_()
+
+                if box.clickedButton() == buttonY:
+                    # Overwrite pressed
+                    script_item.id = id
+                elif box.clickedButton() == buttonN:
+                    # Copy pressed
+                    titles = [self.naming_scripts[id]['title'] for id in self.naming_scripts]
+                    script_item.title = unique_numbered_title(title, titles)
+                else:
+                    return
+
             self._insert_item(script_item.to_dict())
 
     def export_script(self):
@@ -1171,6 +1198,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         script or a naming script package.
         """
         script_item = FileNamingScript.create_from_dict(script_dict=self.get_selected_item(), create_new_id=False)
+        script_item.title = get_base_title(script_item.title)
         try:
             script_item.export_script(parent=self)
         except ScriptImportExportError as error:
