@@ -653,12 +653,7 @@ class Album(DataObject, Item):
             else:
                 title = self.metadata['album']
             if self.tracks:
-                linked_tracks = 0
-                for track in self.tracks:
-                    if track.is_linked():
-                        linked_tracks += 1
-
-                elems = ['%d/%d' % (linked_tracks, len(self.tracks))]
+                elems = ['%d/%d' % (self.get_num_matched_tracks(), len(self.tracks))]
                 unmatched = self.get_num_unmatched_files()
                 if unmatched:
                     elems.append('%d?' % (unmatched,))
