@@ -662,10 +662,11 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             self.original_script_id = self.selected_script_id
             self.original_script_title = self.all_scripts()[self.original_script_id]['title']
         if self.is_options_ui():
-            idx = self.parent().ui.naming_script_selector.currentIndex()
-            id = self.parent().ui.naming_script_selector.itemData(idx)['id']
-            if id in self.all_scripts():
-                self.selected_script_id = id
+            selector = self.parent().ui.naming_script_selector
+            idx = selector.currentIndex()
+            sel_id = selector.itemData(idx)['id']
+            if sel_id in self.all_scripts():
+                self.selected_script_id = sel_id
         self.selected_script_index = 0
         self.populate_script_selector()
         if not self.loading:
