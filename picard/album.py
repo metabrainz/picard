@@ -43,6 +43,7 @@ from collections import (
     defaultdict,
     namedtuple,
 )
+from enum import IntEnum
 import traceback
 
 from PyQt5 import (
@@ -110,6 +111,13 @@ class AlbumArtist(DataObject):
         super().__init__(album_artist_id)
 
 
+class AlbumStatus(IntEnum):
+    NONE = 0
+    LOADING = 1
+    ERROR = 2
+    LOADED = 3
+
+
 class Album(DataObject, Item):
 
     metadata_images_changed = QtCore.pyqtSignal()
@@ -131,7 +139,7 @@ class Album(DataObject, Item):
         self._after_load_callbacks = []
         self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
         self.unmatched_files.metadata_images_changed.connect(self.update_metadata_images)
-        self.status = None
+        self.status = AlbumStatus.NONE
         self._album_artists = []
         self.update_metadata_images_enabled = True
 
@@ -286,7 +294,7 @@ class Album(DataObject, Item):
     def _finalize_loading(self, error):
         if error:
             self.metadata.clear()
-            self.status = _("[could not load album %s]") % self.id
+            self.status = AlbumStatus.ERROR
             del self._new_metadata
             del self._new_tracks
             self.update()
@@ -405,7 +413,7 @@ class Album(DataObject, Item):
             del self._new_metadata
             del self._new_tracks
             self.loaded = True
-            self.status = None
+            self.status = AlbumStatus.LOADED
             self.match_files(unmatched_files + self.unmatched_files.files)
             self.enable_update_metadata_images(True)
             self.update_metadata_images()
@@ -466,7 +474,7 @@ class Album(DataObject, Item):
             {'id': self.id}
         )
         self.loaded = False
-        self.status = _("[loading album information]")
+        self.status = AlbumStatus.LOADING
         if self.release_group:
             self.release_group.loaded = False
             self.release_group.genres.clear()
@@ -645,10 +653,13 @@ class Album(DataObject, Item):
 
     def column(self, column):
         if column == 'title':
-            if self.status is not None:
-                title = self.status
+            if self.status == AlbumStatus.LOADING:
+                title = _("[loading album information]")
+            elif self.status == AlbumStatus.ERROR:
+                title = _("[could not load album %s]") % self.id
             else:
                 title = self.metadata['album']
+
             if self.tracks:
                 elems = ['%d/%d' % (self.get_num_matched_tracks(), len(self.tracks))]
                 unmatched = self.get_num_unmatched_files()
