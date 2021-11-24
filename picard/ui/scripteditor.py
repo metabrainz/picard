@@ -871,9 +871,10 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         Args:
             idx (int): New index position
         """
-        self.ui.preset_naming_scripts.blockSignals(True)
-        self.ui.preset_naming_scripts.setCurrentIndex(idx)
-        self.ui.preset_naming_scripts.blockSignals(False)
+        widget = self.ui.preset_naming_scripts
+        widget.blockSignals(True)
+        widget.setCurrentIndex(idx)
+        widget.blockSignals(False)
         self.selected_script_index = idx
         self.signal_index_changed.emit()
 
