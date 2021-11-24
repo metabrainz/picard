@@ -1083,7 +1083,11 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             QtWidgets.QMessageBox(
                 QtWidgets.QMessageBox.Warning,
                 _("Error Deleting Script"),
-                _("The script could not be deleted because it is used in one of the user profiles.\n\nProfile: %s") % profile.title,
+                _(
+                    "The script could not be deleted because it is used in one of the user profiles."
+                    "\n\n"
+                    "Profile: %s"
+                ) % profile.title,
                 QtWidgets.QMessageBox.Ok,
                 self
             ).exec_()
@@ -1193,7 +1197,12 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
                 box = QtWidgets.QMessageBox()
                 box.setIcon(QtWidgets.QMessageBox.Question)
                 box.setWindowTitle(_('Confirm'))
-                box.setText(_("A script named \"{script_name}\" already exists.\n\nDo you want to overwrite it, add as a copy or cancel?").format(script_name=title,))
+                box.setText(
+                    _(
+                        "A script named \"{script_name}\" already exists.\n"
+                        "\n"
+                        "Do you want to overwrite it, add as a copy or cancel?"
+                    ).format(script_name=title,))
                 box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No | QtWidgets.QMessageBox.Cancel)
                 buttonY = box.button(QtWidgets.QMessageBox.Yes)
                 buttonY.setText(_("Overwrite"))
@@ -1218,7 +1227,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """Export the current script to an external file. Export can be either as a plain text
         script or a naming script package.
         """
-        script_item = FileNamingScript.create_from_dict(script_dict=self.get_selected_item(), create_new_id=False)
+        selected = self.get_selected_item()
+        script_item = FileNamingScript.create_from_dict(script_dict=selected, create_new_id=False)
         script_item.title = get_base_title(script_item.title)
         try:
             script_item.export_script(parent=self)
@@ -1253,7 +1263,10 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """
         # Ignore scripting errors, those are handled inline
         if not isinstance(error, ScriptCheckError):
-            dialog = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Warning, error.title, error.info, QtWidgets.QMessageBox.Ok, self)
+            dialog = QtWidgets.QMessageBox(
+                QtWidgets.QMessageBox.Warning, error.title,
+                error.info, QtWidgets.QMessageBox.Ok, self
+            )
             dialog.exec_()
 
     def test(self):
@@ -1341,7 +1354,11 @@ class ScriptDetailsEditor(PicardDialog):
         """
         return confirmation_dialog(
             self,
-            _("There are unsaved changes to the current metadata.  Do you want to continue and lose these changes?"),
+            _(
+                "There are unsaved changes to the current metadata."
+                "\n\n"
+                "Do you want to continue and lose these changes?"
+            ),
         )
 
     def set_last_updated(self):
@@ -1364,7 +1381,8 @@ class ScriptDetailsEditor(PicardDialog):
             ).exec_()
             return
         if self.has_changed():
-            if not self.ui.script_last_updated.isModified() or not self.ui.script_last_updated.text().strip():
+            last_updated = self.ui.script_last_updated
+            if not last_updated.isModified() or not last_updated.text().strip():
                 self.set_last_updated()
             self.script_item["title"] = self.ui.script_title.text().strip()
             self.script_item["author"] = self.ui.script_author.text().strip()
@@ -1384,7 +1402,10 @@ class ScriptDetailsEditor(PicardDialog):
     def closeEvent(self, event):
         """Custom close event handler to check for unsaved changes.
         """
-        if self.skip_change_check or self.readonly or not self.has_changed() or (self.has_changed() and self.change_check()):
+        if (self.skip_change_check
+            or self.readonly
+            or not self.has_changed()
+            or (self.has_changed() and self.change_check())):
             event.accept()
         else:
             event.ignore()
