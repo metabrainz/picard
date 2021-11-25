@@ -44,6 +44,7 @@ from picard.config import (
 from picard.const import (
     DEFAULT_COPY_TEXT,
     DEFAULT_FILE_NAMING_FORMAT,
+    DEFAULT_NAMING_PRESET_ID,
     DEFAULT_SCRIPT_NAME,
     PICARD_URLS,
 )
@@ -657,7 +658,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         self.naming_scripts = config.setting[self.SCRIPTS_LIST_KEY]
         self.selected_script_id = config.setting[self.SELECTED_SCRIPT_KEY]
         if not self.selected_script_id or self.selected_script_id not in self.naming_scripts:
-            self.selected_script_id = "Preset 1"
+            self.selected_script_id = DEFAULT_NAMING_PRESET_ID
         self.last_selected_id = self.selected_script_id
         if not reload:
             self.examples.settings = config.setting
@@ -768,7 +769,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         if self.last_selected_id in all_scripts:
             self.selected_script_id = self.last_selected_id
         if self.selected_script_id not in all_scripts:
-            self.selected_script_id = "Preset 1"
+            self.selected_script_id = DEFAULT_NAMING_PRESET_ID
         script_text = all_scripts[self.selected_script_id]['script']
         self.update_examples(script_text=script_text)
         self.signal_selection_changed.emit()
