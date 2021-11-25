@@ -305,7 +305,6 @@ class File(QtCore.QObject, Item):
         thread.run_task(
             partial(self._save_and_rename, self.filename, metadata),
             self._saving_finished,
-            priority=2,
             thread_pool=self.tagger.save_thread_pool)
 
     def _preserve_times(self, filename, func):
