@@ -936,8 +936,10 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """Save the scripts and settings to configuration and exit.
         """
         script_item = self.get_selected_item()
+        self.selected_script_id = script_item["id"]
+        self.naming_scripts = self.get_scripts_dict()
         config = get_config()
-        config.setting[self.SCRIPTS_LIST_KEY] = self.get_scripts_dict()
+        config.setting[self.SCRIPTS_LIST_KEY] = self.naming_scripts
         config.setting[self.SELECTED_SCRIPT_KEY] = script_item["id"]
         self.close()
 
