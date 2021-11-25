@@ -345,22 +345,22 @@ class Track(DataObject, FileListItem):
 
     def _convert_folksonomy_tags_to_genre(self):
         config = get_config()
-        # Combine release and track tags
-        tags = Counter(self.genres)
-        tags += self.album.genres
+        # Combine release and track genres
+        genres = Counter(self.genres)
+        genres += self.album.genres
         if self.album.release_group:
-            tags += self.album.release_group.genres
-        if not tags and config.setting['artists_genres']:
-            # For compilations use each track's artists to look up tags
+            genres += self.album.release_group.genres
+        if not genres and config.setting['artists_genres']:
+            # For compilations use each track's artists to look up genres
             if self.metadata['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
                 for artist in self._track_artists:
-                    tags += artist.genres
+                    genres += artist.genres
             else:
                 for artist in self.album.get_album_artists():
-                    tags += artist.genres
+                    genres += artist.genres
 
         self.metadata['genre'] = self._genres_to_metadata(
-            tags,
+            genres,
             limit=config.setting['max_genres'],
             minusage=config.setting['min_genre_usage'],
             filters=config.setting['genres_filter'],
