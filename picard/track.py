@@ -311,6 +311,39 @@ class Track(DataObject, FileListItem):
         if config.setting['convert_punctuation']:
             tm.apply_func(asciipunct)
 
+    @staticmethod
+    def _genres_to_metadata(genres, limit=None, minusage=0, filters='', join_with=None):
+        if limit is not None and limit < 1:
+            return []
+
+        # Ignore tags with zero or lower score
+        genres = +genres
+        if not genres:
+            return []
+
+        # Find most common genres
+        most_common_genres = genres.most_common(limit)
+        topcount = most_common_genres[0][1]
+
+        # Filter by name and usage
+        genres_filter = TagGenreFilter(filters)
+        genres_list = []
+        for name, count in most_common_genres:
+            if genres_filter.skip(name):
+                continue
+            percent = 100 * count // topcount
+            if percent < minusage:
+                break
+            name = _TRANSLATE_TAGS.get(name, name.title())
+            genres_list.append(name)
+        genres_list.sort()
+
+        # And generate the genre metadata tag
+        if join_with:
+            return [join_with.join(genres_list)]
+        else:
+            return genres_list
+
     def _convert_folksonomy_tags_to_genre(self):
         config = get_config()
         # Combine release and track tags
@@ -327,35 +360,13 @@ class Track(DataObject, FileListItem):
                 for artist in self.album.get_album_artists():
                     tags += artist.genres
 
-        # Ignore tags with zero or lower score
-        tags = +tags
-        if not tags:
-            return
-
-        # Find most common tags
-        maxtags = config.setting['max_genres']
-        most_common_tags = tags.most_common(maxtags)
-        maxcount = most_common_tags[0][1]
-
-        # Filter by name and usage according to settings
-        minusage = config.setting['min_genre_usage']
-        tag_filter = TagGenreFilter(config.setting['genres_filter'])
-        genre = []
-        for name, count in most_common_tags:
-            if tag_filter.skip(name):
-                continue
-            percent = 100 * count // maxcount
-            if percent < minusage:
-                break
-            name = _TRANSLATE_TAGS.get(name, name.title())
-            genre.append(name)
-        genre.sort()
-
-        # And generate the genre metadata tag
-        join_genres = config.setting['join_genres']
-        if join_genres:
-            genre = [join_genres.join(genre)]
-        self.metadata['genre'] = genre
+        self.metadata['genre'] = self._genres_to_metadata(
+            tags,
+            limit=config.setting['max_genres'],
+            minusage=config.setting['min_genre_usage'],
+            filters=config.setting['genres_filter'],
+            join_with=config.setting['join_genres']
+        )
 
 
 class NonAlbumTrack(Track):
