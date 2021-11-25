@@ -31,7 +31,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import defaultdict
+from collections import (
+    Counter,
+    defaultdict,
+)
 from functools import partial
 
 from PyQt5 import (
@@ -69,7 +72,7 @@ from picard.ui.edittagdialog import (
 
 
 class TagStatus:
-
+    NONE = 0
     NOCHANGE = 1
     ADDED = 2
     REMOVED = 4
@@ -85,7 +88,7 @@ class TagCounter(dict):
 
     def __init__(self, parent):
         self.parent = parent
-        self.counts = defaultdict(lambda: 0)
+        self.counts = Counter()
         self.different = set()
 
     def __getitem__(self, tag):
@@ -126,7 +129,7 @@ class TagDiff(object):
         self.tag_names = []
         self.new = TagCounter(self)
         self.orig = TagCounter(self)
-        self.status = defaultdict(lambda: 0)
+        self.status = defaultdict(lambda: TagStatus.NONE)
         self.objects = 0
         self.max_length_delta_ms = max_length_diff * 1000
 
