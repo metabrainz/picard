@@ -1096,7 +1096,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             return
         if confirmation_dialog(self, _('Are you sure that you want to delete the script?')):
             widget = self.ui.preset_naming_scripts
-            idx = self.ui.preset_naming_scripts.currentIndex()
+            idx = widget.currentIndex()
             widget.blockSignals(True)
             widget.removeItem(idx)
             widget.blockSignals(False)
