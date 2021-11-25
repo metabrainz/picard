@@ -72,7 +72,7 @@ from picard.ui.edittagdialog import (
 
 
 class TagStatus:
-
+    NONE = 0
     NOCHANGE = 1
     ADDED = 2
     REMOVED = 4
@@ -129,7 +129,7 @@ class TagDiff(object):
         self.tag_names = []
         self.new = TagCounter(self)
         self.orig = TagCounter(self)
-        self.status = defaultdict(lambda: 0)
+        self.status = defaultdict(lambda: TagStatus.NONE)
         self.objects = 0
         self.max_length_delta_ms = max_length_diff * 1000
 
