@@ -168,4 +168,5 @@ class TagGenreFilterTest(PicardTestCase):
 
     def test_filter_method(self):
         tag_filter = TagGenreFilter("-a*")
-        self.assertEqual(['bx', 'by'], tag_filter.filter(["ax", "bx", "ay", "by"]))
+        result = list(tag_filter.filter([("ax", 1), ("bx", 2), ("ay", 3), ("by", 4)]))
+        self.assertEqual([('bx', 2), ('by', 4)], result)

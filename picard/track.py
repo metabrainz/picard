@@ -43,7 +43,6 @@ from collections import (
     Counter,
     defaultdict,
 )
-from itertools import filterfalse
 import re
 import traceback
 
@@ -120,8 +119,10 @@ class TagGenreFilter:
                 return True
         return False
 
-    def filter(self, list_of_tags):
-        return list(filterfalse(self.skip, list_of_tags))
+    def filter(self, counter):
+        for name, count in counter:
+            if not self.skip(name):
+                yield (name, count)
 
 
 class TrackArtist(DataObject):
@@ -328,9 +329,7 @@ class Track(DataObject, FileListItem):
         # Filter by name and usage
         genres_filter = TagGenreFilter(filters)
         genres_list = []
-        for name, count in most_common_genres:
-            if genres_filter.skip(name):
-                continue
+        for name, count in genres_filter.filter(most_common_genres):
             percent = 100 * count // topcount
             if percent < minusage:
                 break
