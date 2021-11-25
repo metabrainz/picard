@@ -807,7 +807,13 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         for profile in profiles:
             settings = profile_settings[profile["id"]]
             if self.SELECTED_SCRIPT_KEY in settings:
-                profiles_list.append(self.Profile(profile["id"], profile["title"], settings[self.SELECTED_SCRIPT_KEY]))
+                profiles_list.append(
+                    self.Profile(
+                        profile["id"],
+                        profile["title"],
+                        settings[self.SELECTED_SCRIPT_KEY]
+                    )
+                )
         return profiles_list
 
     def update_script_text(self):
