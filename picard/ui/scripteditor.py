@@ -568,7 +568,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         self.reset_action.triggered.connect(self.reload_from_config)
         file_menu.addAction(self.reset_action)
 
-        self.save_action = QtWidgets.QAction(_("&Save & exit"), self)
+        self.save_action = QtWidgets.QAction(_("&Save and exit"), self)
         self.save_action.setToolTip(_("Save changes to the script settings and exit"))
         self.save_action.setIcon(icontheme.lookup('document-save'))
         self.save_action.triggered.connect(self.make_it_so)
