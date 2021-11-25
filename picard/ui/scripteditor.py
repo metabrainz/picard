@@ -656,6 +656,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         config = get_config()
         self.naming_scripts = config.setting[self.SCRIPTS_LIST_KEY]
         self.selected_script_id = config.setting[self.SELECTED_SCRIPT_KEY]
+        if not self.selected_script_id or self.selected_script_id not in self.naming_scripts:
+            self.selected_script_id = "Preset 1"
         self.last_selected_id = self.selected_script_id
         if not reload:
             self.examples.settings = config.setting
