@@ -53,8 +53,3 @@ class DataObject(LockableObject):
             else:
                 inc += ['tags'] if use_folksonomy else ['genres']
         return require_authentication
-
-    @staticmethod
-    def merge_genres(this, that):
-        for name, count in that.items():
-            this[name] = this.get(name, 0) + count

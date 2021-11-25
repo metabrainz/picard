@@ -39,7 +39,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import defaultdict
+from collections import (
+    Counter,
+    defaultdict,
+)
 from itertools import filterfalse
 import re
 import traceback
@@ -311,18 +314,18 @@ class Track(DataObject, FileListItem):
     def _convert_folksonomy_tags_to_genre(self):
         config = get_config()
         # Combine release and track tags
-        tags = dict(self.genres)
-        self.merge_genres(tags, self.album.genres)
+        tags = Counter(self.genres)
+        tags += Counter(self.album.genres)
         if self.album.release_group:
-            self.merge_genres(tags, self.album.release_group.genres)
+            tags += Counter(self.album.release_group.genres)
         if not tags and config.setting['artists_genres']:
             # For compilations use each track's artists to look up tags
             if self.metadata['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
                 for artist in self._track_artists:
-                    self.merge_genres(tags, artist.genres)
+                    tags += Counter(artist.genres)
             else:
                 for artist in self.album.get_album_artists():
-                    self.merge_genres(tags, artist.genres)
+                    tags += Counter(artist.genres)
         # Ignore tags with zero or lower score
         tags = dict((name, count) for name, count in tags.items() if count > 0)
         if not tags:
