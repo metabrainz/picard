@@ -32,7 +32,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import defaultdict
+from collections import Counter
 from enum import IntEnum
 import re
 from urllib.parse import urlparse
@@ -407,7 +407,7 @@ class ID3File(File):
         # includes the FrameID (APIC) and description - it's basically
         # impossible to save two images, even of different types, without
         # any description.
-        counters = defaultdict(lambda: 0)
+        counters = Counter()
         for image in images_to_save:
             desc = desctag = image.comment
             if counters[desc] > 0:
