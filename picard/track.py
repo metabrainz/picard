@@ -315,40 +315,43 @@ class Track(DataObject, FileListItem):
         config = get_config()
         # Combine release and track tags
         tags = Counter(self.genres)
-        tags += Counter(self.album.genres)
+        tags += self.album.genres
         if self.album.release_group:
-            tags += Counter(self.album.release_group.genres)
+            tags += self.album.release_group.genres
         if not tags and config.setting['artists_genres']:
             # For compilations use each track's artists to look up tags
             if self.metadata['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
                 for artist in self._track_artists:
-                    tags += Counter(artist.genres)
+                    tags += artist.genres
             else:
                 for artist in self.album.get_album_artists():
-                    tags += Counter(artist.genres)
+                    tags += artist.genres
+
         # Ignore tags with zero or lower score
-        tags = dict((name, count) for name, count in tags.items() if count > 0)
+        tags = +tags
         if not tags:
             return
-        # Convert counts to values from 0 to 100
-        maxcount = max(tags.values())
-        taglist = []
-        for name, count in tags.items():
-            taglist.append((100 * count // maxcount, name))
-        taglist.sort(reverse=True)
-        # And generate the genre metadata tag
+
+        # Find most common tags
         maxtags = config.setting['max_genres']
+        most_common_tags = tags.most_common(maxtags)
+        maxcount = most_common_tags[0][1]
+
+        # Filter by name and usage according to settings
         minusage = config.setting['min_genre_usage']
         tag_filter = TagGenreFilter(config.setting['genres_filter'])
         genre = []
-        for usage, name in taglist[:maxtags]:
+        for name, count in most_common_tags:
             if tag_filter.skip(name):
                 continue
-            if usage < minusage:
+            percent = 100 * count // maxcount
+            if percent < minusage:
                 break
             name = _TRANSLATE_TAGS.get(name, name.title())
             genre.append(name)
         genre.sort()
+
+        # And generate the genre metadata tag
         join_genres = config.setting['join_genres']
         if join_genres:
             genre = [join_genres.join(genre)]
