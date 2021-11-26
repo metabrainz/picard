@@ -132,6 +132,8 @@ class ScriptingOptionsPage(OptionsPage):
         self.FILE_TYPE_SCRIPT = _("Picard script files") + " (*.pts *.txt)"
         self.FILE_TYPE_PACKAGE = _("Picard tagging script package") + " (*.ptsp *.yaml)"
 
+        self.ui.script_list.signal_reset_selected_item.connect(self.reset_selected_item)
+
     def show_scripting_documentation(self):
         ScriptingDocumentationDialog.show_instance(parent=self)
 
@@ -219,9 +221,15 @@ class ScriptingOptionsPage(OptionsPage):
         try:
             self.check()
         except OptionsCheckError as e:
+            script.has_error = True
             self.ui.script_error.setStyleSheet(self.STYLESHEET_ERROR)
             self.ui.script_error.setText(e.info)
             return
+        script.has_error = False
+
+    def reset_selected_item(self):
+        widget = self.ui.script_list
+        widget.setCurrentRow(widget.bad_row)
 
     def check(self):
         parser = ScriptParser()
