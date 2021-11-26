@@ -152,8 +152,7 @@ class FileListItem(Item):
         self.update_metadata_images_enabled = True
 
     def iterfiles(self, save=False):
-        for file in self.files:
-            yield file
+        yield from self.files
 
     def enable_update_metadata_images(self, enabled):
         self.update_metadata_images_enabled = enabled

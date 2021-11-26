@@ -355,37 +355,37 @@ class TestPicardConfigVarOption(TestPicardConfigCommon):
         self.assertEqual(opt.convert(["a", "b", "a"]), {"a", "b"})
 
     def test_var_opt_no_config(self):
-        Option("setting", "var_option", set(["a", "b"]))
+        Option("setting", "var_option", {"a", "b"})
 
         # test default, nothing in config yet
-        self.assertEqual(self.config.setting["var_option"], set(["a", "b"]))
+        self.assertEqual(self.config.setting["var_option"], {"a", "b"})
         self.assertIs(type(self.config.setting["var_option"]), set)
 
     def test_var_opt_set_read_back(self):
-        Option("setting", "var_option", set(["a", "b"]))
+        Option("setting", "var_option", {"a", "b"})
 
         # set option to "def", and read back
-        self.config.setting["var_option"] = set(["c", "d"])
-        self.assertEqual(self.config.setting["var_option"], set(["c", "d"]))
+        self.config.setting["var_option"] = {"c", "d"}
+        self.assertEqual(self.config.setting["var_option"], {"c", "d"})
         self.assertIs(type(self.config.setting["var_option"]), set)
 
     def test_var_opt_set_none(self):
-        Option("setting", "var_option", set(["a", "b"]))
+        Option("setting", "var_option", {"a", "b"})
 
         # set option to None
         self.config.setting["var_option"] = None
-        self.assertEqual(self.config.setting["var_option"], set(["a", "b"]))
+        self.assertEqual(self.config.setting["var_option"], {"a", "b"})
 
     def test_var_opt_set_empty(self):
-        Option("setting", "var_option", set(["a", "b"]))
+        Option("setting", "var_option", {"a", "b"})
 
         # set option to ""
         self.config.setting["var_option"] = set()
         self.assertEqual(self.config.setting["var_option"], set())
 
     def test_var_opt_invalid_value(self):
-        Option("setting", "var_option", set(["a", "b"]))
+        Option("setting", "var_option", {"a", "b"})
 
         # store invalid value in config file directly
         self.config.setValue('setting/var_option', object)
-        self.assertEqual(self.config.setting["var_option"], set(["a", "b"]))
+        self.assertEqual(self.config.setting["var_option"], {"a", "b"})

@@ -107,7 +107,7 @@ _additional_compatibility = {
 
 
 def unicode_simplify_compatibility(string, pathsave=False, win_compat=False):
-    interim = ''.join([_replace_char(_additional_compatibility, ch, pathsave, win_compat) for ch in string])
+    interim = ''.join(_replace_char(_additional_compatibility, ch, pathsave, win_compat) for ch in string)
     return unicodedata.normalize("NFKC", interim)
 
 
@@ -185,7 +185,7 @@ _simplify_punctuation = {
 
 
 def unicode_simplify_punctuation(string, pathsave=False, win_compat=False):
-    return ''.join([_replace_char(_simplify_punctuation, ch, pathsave, win_compat) for ch in string])
+    return ''.join(_replace_char(_simplify_punctuation, ch, pathsave, win_compat) for ch in string)
 
 
 _simplify_combinations = {

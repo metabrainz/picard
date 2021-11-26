@@ -916,7 +916,7 @@ def _regex_numbered_title_fmt(fmt, title_repl, count_repl):
             return p
 
     return (
-        re.escape(title_marker).join([wrap_count(p) for p in parts])
+        re.escape(title_marker).join(wrap_count(p) for p in parts)
         .replace(re.escape(title_marker), title_repl)
         .replace(re.escape(count_marker), count_repl)
     )

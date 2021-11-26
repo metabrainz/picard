@@ -74,12 +74,11 @@ def version_name(key):
 
 
 def as_dict(i18n=False):
-    return OrderedDict([(key, _value_as_text(value, i18n)) for key,
-                        value in
-                        _versions.items()])
+    return OrderedDict((key, _value_as_text(value, i18n))
+                        for key, value in _versions.items())
 
 
 def as_string(i18n=False, separator=", "):
     values = as_dict(i18n)
-    return separator.join([_names[key] + " " + value for key, value in
-                           values.items()])
+    return separator.join(_names[key] + " " + value
+                          for key, value in values.items())

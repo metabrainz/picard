@@ -185,7 +185,7 @@ class ASFFile(File):
         'work': 'WM/Work',
         'website': 'WM/AuthorURL',
     }
-    __RTRANS = dict([(b, a) for a, b in __TRANS.items()])
+    __RTRANS = {b: a for a, b in __TRANS.items()}
 
     # Tags to load case insensitive
     __TRANS_CI = {
@@ -197,7 +197,7 @@ class ASFFile(File):
         'replaygain_track_range': 'REPLAYGAIN_TRACK_RANGE',
         'replaygain_reference_loudness': 'REPLAYGAIN_REFERENCE_LOUDNESS',
     }
-    __RTRANS_CI = dict([(b.lower(), a) for a, b in __TRANS_CI.items()])
+    __RTRANS_CI = {b.lower(): a for a, b in __TRANS_CI.items()}
 
     def __init__(self, filename):
         super().__init__(filename)

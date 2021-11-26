@@ -302,7 +302,7 @@ class PluginsOptionsPage(OptionsPage):
         return bool(plugin.module_name in config.setting["enabled_plugins"])
 
     def available_plugins_name_version(self):
-        return dict([(p.module_name, p.version) for p in self.manager.available_plugins])
+        return {p.module_name: p.version for p in self.manager.available_plugins}
 
     def installable_plugins(self):
         if self.manager.available_plugins is not None:

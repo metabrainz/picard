@@ -94,14 +94,14 @@ class MP4File(File):
         "\xa9mvn": "movement",
         "\xa9wrk": "work",
     }
-    __r_text_tags = dict([(v, k) for k, v in __text_tags.items()])
+    __r_text_tags = {v: k for k, v in __text_tags.items()}
 
     __bool_tags = {
         "pcst": "podcast",
         "cpil": "compilation",
         "pgap": "gapless",
     }
-    __r_bool_tags = dict([(v, k) for k, v in __bool_tags.items()])
+    __r_bool_tags = {v: k for k, v in __bool_tags.items()}
 
     __int_tags = {
         "tmpo": "bpm",
@@ -109,7 +109,7 @@ class MP4File(File):
         "\xa9mvc": "movementtotal",
         "shwm": "showmovement",
     }
-    __r_int_tags = dict([(v, k) for k, v in __int_tags.items()])
+    __r_int_tags = {v: k for k, v in __int_tags.items()}
 
     __freeform_tags = {
         "----:com.apple.iTunes:MusicBrainz Track Id": "musicbrainz_recordingid",
@@ -152,7 +152,7 @@ class MP4File(File):
         "----:com.apple.iTunes:WORK": "work",
         "----:com.apple.iTunes:initialkey": "key",
     }
-    __r_freeform_tags = dict([(v, k) for k, v in __freeform_tags.items()])
+    __r_freeform_tags = {v: k for k, v in __freeform_tags.items()}
 
     # Tags to load case insensitive. Case is preserved, but the specified case
     # is written if it is unset.
@@ -165,7 +165,7 @@ class MP4File(File):
         "replaygain_track_range": "----:com.apple.iTunes:REPLAYGAIN_TRACK_RANGE",
         "replaygain_reference_loudness": "----:com.apple.iTunes:REPLAYGAIN_REFERENCE_LOUDNESS",
     }
-    __freeform_tags_ci = dict([(b.lower(), a) for a, b in __r_freeform_tags_ci.items()])
+    __freeform_tags_ci = {b.lower(): a for a, b in __r_freeform_tags_ci.items()}
 
     __other_supported_tags = ("discnumber", "tracknumber",
                               "totaldiscs", "totaltracks")

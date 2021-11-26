@@ -324,7 +324,7 @@ class Track(DataObject, FileListItem):
                 for artist in self.album.get_album_artists():
                     self.merge_genres(tags, artist.genres)
         # Ignore tags with zero or lower score
-        tags = dict((name, count) for name, count in tags.items() if count > 0)
+        tags = {name: count for name, count in tags.items() if count > 0}
         if not tags:
             return
         # Convert counts to values from 0 to 100
