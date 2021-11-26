@@ -117,7 +117,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.open_script_editor.clicked.connect(self.show_script_editing_page)
         self.ui.move_files_to_browse.clicked.connect(self.move_files_to_browse)
 
-        self.ui.naming_script_selector.currentIndexChanged.connect(partial(self.update_selector_in_editor, skip_check=False))
+        self.ui.naming_script_selector.currentIndexChanged.connect(self.update_selector_in_editor)
 
         self.ui.example_filename_after.itemSelectionChanged.connect(self.match_before_to_after)
         self.ui.example_filename_before.itemSelectionChanged.connect(self.match_after_to_before)
@@ -156,15 +156,12 @@ class RenamingOptionsPage(OptionsPage):
         populate_script_selection_combo_box(self.naming_scripts, self.selected_naming_script_id, self.ui.naming_script_selector)
         self.update_selector_in_editor()
 
-    def update_selector_in_editor(self, skip_check=False):
+    def update_selector_in_editor(self):
         """Update the selection in the script editor page to match local selection.
-
-        Args:
-            skip_check (bool): Skip the check for unsaved edits.  Defaults to False.
         """
         idx = self.ui.naming_script_selector.currentIndex()
         if self.script_editor_dialog:
-            self.script_editor_dialog.set_selected_script_index(idx, skip_check=skip_check)
+            self.script_editor_dialog.set_selected_script_index(idx)
         else:
             script_item = self.ui.naming_script_selector.itemData(idx)
             self.script_text = script_item["script"]
@@ -188,7 +185,6 @@ class RenamingOptionsPage(OptionsPage):
         self.script_editor_dialog.signal_save.connect(self.save_from_editor)
         self.script_editor_dialog.signal_update.connect(self.display_examples)
         self.script_editor_dialog.signal_selection_changed.connect(self.update_selector_from_editor)
-        self.script_editor_dialog.signal_update_scripts_list.connect(self.update_scripts_list_from_editor)
         self.script_editor_dialog.finished.connect(self.script_editor_dialog_close)
 
         if self.tagger.window.script_editor_dialog is not None:
@@ -197,12 +193,12 @@ class RenamingOptionsPage(OptionsPage):
             self.script_editor_dialog.loading = True
             self.script_editor_dialog.naming_scripts = self.naming_scripts
             self.script_editor_dialog.populate_script_selector()
-            self.update_selector_in_editor(skip_check=True)
+            self.update_selector_in_editor()
             self.script_editor_dialog.loading = False
+            self.update_examples_from_local()
             self.tagger.window.script_editor_dialog = True
 
     def script_editor_dialog_close(self):
-        self.naming_scripts = self.script_editor_dialog.naming_scripts
         self.tagger.window.script_editor_dialog = None
 
     def show_scripting_documentation(self):
@@ -225,9 +221,6 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.ascii_filenames.setEnabled(active)
         if not IS_WIN:
             self.ui.windows_compatibility.setEnabled(active)
-
-    def update_scripts_list_from_editor(self):
-        self.naming_scripts = self.script_editor_dialog.naming_scripts
 
     def save_from_editor(self):
         self.script_text = self.script_editor_dialog.get_script()
@@ -311,7 +304,6 @@ class RenamingOptionsPage(OptionsPage):
         config.setting["move_additional_files"] = self.ui.move_additional_files.isChecked()
         config.setting["move_additional_files_pattern"] = self.ui.move_additional_files_pattern.text()
         config.setting["delete_empty_dirs"] = self.ui.delete_empty_dirs.isChecked()
-        config.setting["file_renaming_scripts"] = self.naming_scripts
         config.setting["selected_file_naming_script_id"] = self.selected_naming_script_id
         self.tagger.window.enable_renaming_action.setChecked(config.setting["rename_files"])
         self.tagger.window.enable_moving_action.setChecked(config.setting["move_files"])

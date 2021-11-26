@@ -37,7 +37,10 @@
 
 from picard import log
 from picard.config import get_config
-from picard.const import DEFAULT_FILE_NAMING_FORMAT
+from picard.const import (
+    DEFAULT_FILE_NAMING_FORMAT,
+    DEFAULT_NAMING_PRESET_ID,
+)
 from picard.script.functions import (  # noqa: F401 # pylint: disable=unused-import
     register_script_function,
     script_function,
@@ -142,7 +145,7 @@ def get_file_naming_script_presets():
         return _("Preset %d: %s") % (number, _(title))
 
     yield FileNamingScript(
-        id="Preset 1",
+        id=DEFAULT_NAMING_PRESET_ID,
         title=preset_title(1, N_("Default file naming script")),
         script=DEFAULT_FILE_NAMING_FORMAT,
         readonly=True,
