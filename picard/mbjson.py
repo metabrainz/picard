@@ -323,6 +323,15 @@ def _release_event_iter(node):
         yield from node['release-events']
 
 
+def _country_from_release_event(release_event):
+    try:
+        return release_event['area']['iso-3166-1-codes'][0]
+    # TypeError in case object is None
+    except (KeyError, IndexError, TypeError):
+        pass
+    return None
+
+
 def countries_from_node(node):
     countries = []
     if "release-events" in node:
