@@ -41,6 +41,7 @@ from picard.mbjson import (
     media_formats_from_node,
     medium_to_metadata,
     recording_to_metadata,
+    release_dates_and_countries_from_node,
     release_group_to_metadata,
     release_to_metadata,
     track_to_metadata,
@@ -515,6 +516,11 @@ class CountriesFromNodeTest(MBJSONTest):
         countries = countries_from_node(self.json_doc)
         self.assertEqual([], countries)
 
+    def test_countries_from_node_no_area(self):
+        del self.json_doc["release-events"][0]["area"]
+        countries = countries_from_node(self.json_doc)
+        self.assertEqual([], countries)
+
 
 class CountriesFromNodeNullTest(MBJSONTest):
 
@@ -523,6 +529,32 @@ class CountriesFromNodeNullTest(MBJSONTest):
     def test_countries_from_node(self):
         countries = countries_from_node(self.json_doc)
         self.assertEqual(countries, [])
+
+
+class DatesCountriesFromNodeTest(MBJSONTest):
+
+    filename = 'country.json'
+
+    def test_dates_countries_from_node(self):
+        dates, countries = release_dates_and_countries_from_node(self.json_doc)
+        self.assertEqual(['GB'], countries)
+        self.assertEqual(['1986-03'], dates)
+
+    def test_dates_countries_from_node_no_event(self):
+        del self.json_doc["release-events"]
+        dates, countries = release_dates_and_countries_from_node(self.json_doc)
+        self.assertEqual([], countries)
+        self.assertEqual([], dates)
+
+
+class DatesCountriesFromNodeNullTest(MBJSONTest):
+
+    filename = 'country_null.json'
+
+    def test_dates_countries_from_node(self):
+        dates, countries = release_dates_and_countries_from_node(self.json_doc)
+        self.assertEqual(countries, [])
+        self.assertEqual([''], dates)
 
 
 class LabelInfoTest(MBJSONTest):
