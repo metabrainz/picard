@@ -318,33 +318,36 @@ def artist_credit_to_metadata(node, m, release=False):
         m["~artists_sort"] = artistssort
 
 
+def _release_event_iter(node):
+    if "release-events" in node:
+        yield from node['release-events']
+
+
+def _country_from_release_event(release_event):
+    try:
+        return release_event['area']['iso-3166-1-codes'][0]
+    # TypeError in case object is None
+    except (KeyError, IndexError, TypeError):
+        pass
+    return None
+
+
 def countries_from_node(node):
     countries = []
-    if "release-events" in node:
-        for release_event in node['release-events']:
-            try:
-                country_code = release_event['area']['iso-3166-1-codes'][0]
-            # TypeError in case object is None
-            except (KeyError, IndexError, TypeError):
-                pass
-            else:
-                if country_code:
-                    countries.append(country_code)
+    for release_event in _release_event_iter(node):
+        country_code = _country_from_release_event(release_event)
+        if country_code:
+            countries.append(country_code)
     return countries
 
 
 def release_dates_and_countries_from_node(node):
     dates = []
     countries = []
-    if "release-events" in node:
-        for release_event in node['release-events']:
-            dates.append(release_event['date'] or '')
-            country_code = ''
-            try:
-                country_code = release_event['area']['iso-3166-1-codes'][0]
-            # TypeError in case object is None
-            except (KeyError, IndexError, TypeError):
-                pass
+    for release_event in _release_event_iter(node):
+        dates.append(release_event['date'] or '')
+        country_code = _country_from_release_event(release_event)
+        if country_code:
             countries.append(country_code)
     return dates, countries
 
