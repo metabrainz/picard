@@ -20,8 +20,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
 from functools import partial
+import threading
 
 from PyQt5 import (
     QtCore,
@@ -37,9 +37,14 @@ from picard.ui import HashableListWidgetItem
 
 class ScriptListWidget(QtWidgets.QListWidget):
 
+    signal_reset_selected_item = QtCore.pyqtSignal()
+
     def __init__(self, parent):
         super().__init__(parent)
         self.itemChanged.connect(self.item_changed)
+        self.currentItemChanged.connect(self.current_item_changed)
+        self.old_row = -1
+        self.bad_row = -1
 
     def contextMenuEvent(self, event):
         item = self.itemAt(event.x(), event.y())
@@ -92,6 +97,14 @@ class ScriptListWidget(QtWidgets.QListWidget):
             # Replace empty script name with unique numbered name.
             item.setText(self.unique_script_name())
 
+    def current_item_changed(self, new_item, old_item):
+        if old_item and old_item.has_error:
+            self.bad_row = self.old_row
+            # Use a new thread to force the reset of the selected item outside of the current_item_changed event.
+            threading.Thread(target=self.signal_reset_selected_item.emit).start()
+        else:
+            self.old_row = self.currentRow()
+
 
 class ScriptListWidgetItem(HashableListWidgetItem):
     """Holds a script's list and text widget properties"""
@@ -104,6 +117,7 @@ class ScriptListWidgetItem(HashableListWidgetItem):
         self.setText(name)
         self.setCheckState(QtCore.Qt.Checked if enabled else QtCore.Qt.Unchecked)
         self.script = script
+        self.has_error = False
 
     @property
     def pos(self):
