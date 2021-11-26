@@ -35,9 +35,7 @@ class ProgressCheckpoints:
                 self._checkpoints[num_jobs-1] = 100
 
     def is_checkpoint(self, index):
-        if index in self._checkpoints:
-            return True
-        return False
+        return index in self._checkpoints
 
     def progress(self, index):
         try:

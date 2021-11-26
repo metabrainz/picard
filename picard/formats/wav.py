@@ -65,7 +65,7 @@ try:
         'IWRI': 'writer',
     }
 
-    R_TRANSLATE_RIFF_INFO = dict([(v, k) for k, v in TRANSLATE_RIFF_INFO.items()])
+    R_TRANSLATE_RIFF_INFO = {v: k for k, v in TRANSLATE_RIFF_INFO.items()}
 
     def translate_tag_to_riff_name(name):
         if name.startswith('comment:'):

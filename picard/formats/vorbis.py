@@ -114,7 +114,7 @@ class VCommentFile(File):
         "musicbrainz_trackid": "musicbrainz_recordingid",
         "waveformatextensible_channel_mask": "~waveformatextensible_channel_mask",
     }
-    __rtranslate = dict([(v, k) for k, v in __translate.items()])
+    __rtranslate = {v: k for k, v in __translate.items()}
 
     def _load(self, filename):
         log.debug("Loading file %r", filename)

@@ -267,7 +267,7 @@ class picard_build(build):
         generate_file('scripts/picard.in', 'scripts/' + PACKAGE_NAME, params)
         if sys.platform == 'win32':
             file_version = PICARD_VERSION[0:3] + (self.build_number,)
-            file_version_str = '.'.join([str(v) for v in file_version])
+            file_version_str = '.'.join(str(v) for v in file_version)
 
             installer_args = {
                 'display-name': PICARD_DISPLAY_NAME,
@@ -291,7 +291,7 @@ class picard_build(build):
                 'display-name': PICARD_DISPLAY_NAME,
                 'short-name': PICARD_APP_NAME,
                 'publisher': os.environ.get('PICARD_APPX_PUBLISHER', default_publisher),
-                'version': '.'.join([str(v) for v in store_version]),
+                'version': '.'.join(str(v) for v in store_version),
             })
         elif sys.platform not in {'darwin', 'haiku1', 'win32'}:
             self.run_command('build_appdata')

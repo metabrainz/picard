@@ -87,9 +87,9 @@ class ReleaseGroup(DataObject):
             countries = countries_from_node(node)
 
             if len(node['media']) > max_tracks:
-                tracks = "+".join([str(m['track-count']) for m in node['media'][:max_tracks]]) + '+…'
+                tracks = "+".join(str(m['track-count']) for m in node['media'][:max_tracks]) + '+…'
             else:
-                tracks = "+".join([str(m['track-count']) for m in node['media']])
+                tracks = "+".join(str(m['track-count']) for m in node['media'])
             formats = []
             for medium in node['media']:
                 if "format" in medium:
@@ -100,14 +100,14 @@ class ReleaseGroup(DataObject):
                 "country": limited_join(countries, 10, '+', '…') if countries
                 else node.get('country', '') or "??",
                 "format":  media_formats_from_node(node['media']),
-                "label":  ", ".join([' '.join(x.split(' ')[:2]) for x in set(labels)]),
+                "label":  ", ".join(' '.join(x.split(' ')[:2]) for x in set(labels)),
                 "catnum": ", ".join(set(catnums)),
                 "tracks": tracks,
                 "barcode": node.get('barcode', '') or _('[no barcode]'),
                 "packaging": node.get('packaging', '') or '??',
                 "disambiguation": node.get('disambiguation', ''),
                 "_disambiguate_name": list(),
-                "totaltracks": sum([m['track-count'] for m in node['media']]),
+                "totaltracks": sum(m['track-count'] for m in node['media']),
                 "countries": countries,
                 "formats": formats,
             }
@@ -115,7 +115,7 @@ class ReleaseGroup(DataObject):
 
         versions = defaultdict(list)
         for release in data:
-            name = " / ".join([release[k] for k in namekeys]).replace("&", "&&")
+            name = " / ".join(release[k] for k in namekeys).replace("&", "&&")
             if name == release["tracks"]:
                 name = "%s / %s" % (_('[no release info]'), name)
             versions[name].append(release)

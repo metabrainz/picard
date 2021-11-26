@@ -43,7 +43,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import defaultdict
+from collections import Counter
 import fnmatch
 from functools import partial
 import os
@@ -305,7 +305,6 @@ class File(QtCore.QObject, Item):
         thread.run_task(
             partial(self._save_and_rename, self.filename, metadata),
             self._saving_finished,
-            priority=2,
             thread_pool=self.tagger.save_thread_pool)
 
     def _preserve_times(self, filename, func):
@@ -533,7 +532,7 @@ class File(QtCore.QObject, Item):
         """Save the cover images to disk."""
         if not metadata.images:
             return
-        counters = defaultdict(lambda: 0)
+        counters = Counter()
         images = []
         config = get_config()
         if config.setting["save_only_one_front_image"]:

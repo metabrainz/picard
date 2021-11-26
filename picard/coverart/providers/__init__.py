@@ -85,7 +85,7 @@ def cover_art_providers():
         checked = 'x' if order[p.name].enabled else ' '
         return "%s [%s]" % (p.name, checked)
 
-    log.debug("CA Providers order: %s", ' > '.join([label(p) for p in ordered_providers]))
+    log.debug("CA Providers order: %s", ' > '.join(label(p) for p in ordered_providers))
 
     for p in ordered_providers:
         yield ProviderTuple(name=p.name, title=p.title, enabled=order[p.name].enabled, cls=p)

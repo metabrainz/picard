@@ -32,7 +32,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import defaultdict
+from collections import Counter
 from enum import IntEnum
 import re
 from urllib.parse import urlparse
@@ -154,7 +154,7 @@ class ID3File(File):
         'TSO2': 'albumartistsort',
         'MVNM': 'movement'
     }
-    __rtranslate = dict([(v, k) for k, v in __translate.items()])
+    __rtranslate = {v: k for k, v in __translate.items()}
     __translate['GRP1'] = 'grouping'  # Always read, but writing depends on itunes_compatible_grouping
 
     __translate_freetext = {
@@ -186,7 +186,7 @@ class ID3File(File):
         'Writer': 'writer',
         'SHOWMOVEMENT': 'showmovement',
     }
-    __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.items()])
+    __rtranslate_freetext = {v: k for k, v in __translate_freetext.items()}
     __translate_freetext['writer'] = 'writer'  # For backward compatibility of case
 
     # Freetext fields that are loaded case-insensitive
@@ -199,14 +199,14 @@ class ID3File(File):
         'replaygain_track_range': 'REPLAYGAIN_TRACK_RANGE',
         'replaygain_reference_loudness': 'REPLAYGAIN_REFERENCE_LOUDNESS',
     }
-    __translate_freetext_ci = dict([(b.lower(), a) for a, b in __rtranslate_freetext_ci.items()])
+    __translate_freetext_ci = {b.lower(): a for a, b in __rtranslate_freetext_ci.items()}
 
     # Obsolete tag names which will still be loaded, but will get renamed on saving
     __rename_freetext = {
         'Artists': 'ARTISTS',
         'Work': 'WORK',
     }
-    __rrename_freetext = dict([(v, k) for k, v in __rename_freetext.items()])
+    __rrename_freetext = {v: k for k, v in __rename_freetext.items()}
 
     _tipl_roles = {
         'engineer': 'engineer',
@@ -215,7 +215,7 @@ class ID3File(File):
         'DJ-mix': 'djmixer',
         'mix': 'mixer',
     }
-    _rtipl_roles = dict([(v, k) for k, v in _tipl_roles.items()])
+    _rtipl_roles = {v: k for k, v in _tipl_roles.items()}
 
     __other_supported_tags = ("discnumber", "tracknumber",
                               "totaldiscs", "totaltracks",
@@ -407,7 +407,7 @@ class ID3File(File):
         # includes the FrameID (APIC) and description - it's basically
         # impossible to save two images, even of different types, without
         # any description.
-        counters = defaultdict(lambda: 0)
+        counters = Counter()
         for image in images_to_save:
             desc = desctag = image.comment
             if counters[desc] > 0:
@@ -486,7 +486,7 @@ class ID3File(File):
             elif name in self.__rtranslate:
                 frameid = self.__rtranslate[name]
                 if frameid.startswith('W'):
-                    valid_urls = all([all(urlparse(v)[:2]) for v in values])
+                    valid_urls = all(all(urlparse(v)[:2]) for v in values)
                     if frameid == 'WCOP':
                         # Only add WCOP if there is only one license URL, otherwise use TXXX:LICENSE
                         if len(values) > 1 or not valid_urls:

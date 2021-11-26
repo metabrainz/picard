@@ -114,4 +114,4 @@ class AboutDialog(PicardDialog, SingletonDialog):
             url(PICARD_URLS['home'])
         ]
         self.ui.label.setOpenExternalLinks(True)
-        self.ui.label.setText("".join(['<p align="center">' + p + "</p>" for p in text_paragraphs]) % args)
+        self.ui.label.setText("".join('<p align="center">' + p + "</p>" for p in text_paragraphs) % args)

@@ -3,7 +3,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2020 Philipp Wolfer
+# Copyright (C) 2020-2021 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -98,7 +98,7 @@ LANGUAGES = {
     'Yoruba': 'yo',
 }
 
-_R_LANGUAGES = dict([(code, name) for name, code in LANGUAGES.items()])
+_R_LANGUAGES = {code: name for name, code in LANGUAGES.items()}
 
 # See https://nsis.sourceforge.io/Docs/Chapter4.html#varstrings
 ESCAPE_CHARS = {
@@ -123,9 +123,8 @@ def code_to_language(language_code):
 
 def escape_string(text):
     for escape, char in ESCAPE_CHARS.items():
-        if char in {"'", "`"}:  # No need to escape quotes other than ""
-            continue
-        text = text.replace(char, escape)
+        if char not in {"'", "`"}:  # No need to escape quotes other than ""
+            text = text.replace(char, escape)
     return text
 
 

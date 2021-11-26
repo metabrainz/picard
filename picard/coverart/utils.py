@@ -88,7 +88,7 @@ __ID3_IMAGE_TYPE_MAP = {
     "medium": Id3ImageType.MEDIA,
 }
 
-__ID3_REVERSE_IMAGE_TYPE_MAP = dict([(v, k) for k, v in __ID3_IMAGE_TYPE_MAP.items()])
+__ID3_REVERSE_IMAGE_TYPE_MAP = {v: k for k, v in __ID3_IMAGE_TYPE_MAP.items()}
 
 
 def image_type_from_id3_num(id3type):
