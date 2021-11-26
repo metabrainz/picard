@@ -46,7 +46,7 @@ from picard.ui.ui_edittagdialog import Ui_EditTagDialog
 
 AUTOCOMPLETE_RELEASE_TYPES = [s.lower() for s
                               in sorted(RELEASE_PRIMARY_GROUPS) + sorted(RELEASE_SECONDARY_GROUPS)]
-AUTOCOMPLETE_RELEASE_STATUS = sorted([s.lower() for s in RELEASE_STATUS])
+AUTOCOMPLETE_RELEASE_STATUS = sorted(s.lower() for s in RELEASE_STATUS)
 AUTOCOMPLETE_RELEASE_COUNTRIES = sorted(RELEASE_COUNTRIES, key=str.casefold)
 AUTOCOMPLETE_RELEASE_FORMATS = sorted(RELEASE_FORMATS, key=str.casefold)
 

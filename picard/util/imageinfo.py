@@ -296,10 +296,7 @@ def identify(data):
 
 
 def supports_mime_type(mime):
-    for cls in knownimagetypes:
-        if cls.mime == mime:
-            return True
-    return False
+    return any(cls.mime == mime for cls in knownimagetypes)
 
 
 def get_supported_extensions():

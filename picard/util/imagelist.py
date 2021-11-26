@@ -85,10 +85,9 @@ class ImageList(MutableSequence):
                 if not image.can_be_saved_to_tags:
                     continue
                 if only_one_front:
-                    if not image.is_front_image():
-                        continue
-                    yield image
-                    break
+                    if image.is_front_image():
+                        yield image
+                        break
                 else:
                     yield image
 

@@ -244,10 +244,7 @@ class CoverArtImage:
                     return (self.datahash, self.maintype) == (other.datahash, other.maintype)
             else:
                 return self.datahash == other.datahash
-        elif not self and not other:
-            return True
-        else:
-            return False
+        return not self and not other
 
     def __hash__(self):
         if self.datahash is None:

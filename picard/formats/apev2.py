@@ -123,7 +123,7 @@ class APEv2File(File):
         "replaygain_track_range": "REPLAYGAIN_TRACK_RANGE",
         "replaygain_reference_loudness": "REPLAYGAIN_REFERENCE_LOUDNESS",
     }
-    __rtranslate = dict([(v.lower(), k) for k, v in __translate.items()])
+    __rtranslate = {v.lower(): k for k, v in __translate.items()}
 
     def __init__(self, filename):
         super().__init__(filename)

@@ -37,5 +37,5 @@ class MIDITest(CommonTests.SimpleFormatsTestCase):
     unexpected_info = ['~video']
 
     def test_supports_tag(self):
-        for tag in TAGS.keys():
+        for tag in TAGS:
             self.assertFalse(midi.MIDIFile.supports_tag(tag))

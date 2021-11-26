@@ -340,7 +340,7 @@ def format_tracklist(cluster):
             info.append("<b>%s</b>" % (_('Disc %d') % discnumber))
         lines = ["%s %s - %s (%s)" % item for item in sorted(tracklist, key=sorttracknum)]
         info.append("<b>%s</b><br />%s<br />" % (_('Tracklist:'),
-                    '<br />'.join([htmlescape(s).replace(' ', '&nbsp;') for s in lines])))
+                    '<br />'.join(htmlescape(s).replace(' ', '&nbsp;') for s in lines)))
     return '<br/>'.join(info)
 
 
