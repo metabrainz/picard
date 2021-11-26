@@ -334,16 +334,10 @@ def _country_from_release_event(release_event):
 
 def countries_from_node(node):
     countries = []
-    if "release-events" in node:
-        for release_event in node['release-events']:
-            try:
-                country_code = release_event['area']['iso-3166-1-codes'][0]
-            # TypeError in case object is None
-            except (KeyError, IndexError, TypeError):
-                pass
-            else:
-                if country_code:
-                    countries.append(country_code)
+    for release_event in _release_event_iter(node):
+        country_code = _country_from_release_event(release_event)
+        if country_code:
+            countries.append(country_code)
     return countries
 
 
