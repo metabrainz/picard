@@ -510,7 +510,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         self.ui.example_filename_after.itemSelectionChanged.connect(self.match_before_to_after)
         self.ui.example_filename_before.itemSelectionChanged.connect(self.match_after_to_before)
 
-        self.ui.preset_naming_scripts.currentIndexChanged.connect(self.select_script)
+        self.ui.preset_naming_scripts.currentIndexChanged.connect(partial(self.select_script, update_last_selected=True))
 
         synchronize_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
 
@@ -766,10 +766,11 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             config.setting[self.SELECTED_SCRIPT_KEY] = self.original_script_id
         self.naming_scripts = config.setting[self.SCRIPTS_LIST_KEY]
         all_scripts = self.all_scripts()
-        if self.last_selected_id in all_scripts:
-            self.selected_script_id = self.last_selected_id
         if self.selected_script_id not in all_scripts:
-            self.selected_script_id = DEFAULT_NAMING_PRESET_ID
+            if self.last_selected_id in all_scripts:
+                self.selected_script_id = self.last_selected_id
+            if self.selected_script_id not in all_scripts:
+                self.selected_script_id = DEFAULT_NAMING_PRESET_ID
         script_text = all_scripts[self.selected_script_id]['script']
         self.update_examples(script_text=script_text)
         self.signal_selection_changed.emit()
