@@ -6,9 +6,9 @@
                     "catalog-number": "NJ628311",
                     "label": {
                         "label-code": 540,
-                        "name": "na\u00efve",
+                        "name": "naïve",
                         "disambiguation": "",
-                        "sort-name": "na\u00efve",
+                        "sort-name": "naïve",
                         "id": "3c6b98c7-407e-498e-ab8c-adf891ab0d38"
                     }
                 }
@@ -20,9 +20,9 @@
                     "catalog-number": null,
                     "label": {
                         "label-code": 540,
-                        "name": "na\u00efve",
+                        "name": "naïve",
                         "disambiguation": "",
-                        "sort-name": "na\u00efve",
+                        "sort-name": "naïve",
                         "id": "3c6b98c7-407e-498e-ab8c-adf891ab0d38"
                     }
                 }
@@ -34,9 +34,9 @@
                     "catalog-number": "",
                     "label": {
                         "label-code": 540,
-                        "name": "na\u00efve",
+                        "name": "naïve",
                         "disambiguation": "",
-                        "sort-name": "na\u00efve",
+                        "sort-name": "naïve",
                         "id": "3c6b98c7-407e-498e-ab8c-adf891ab0d38"
                     }
                 }
@@ -50,6 +50,5 @@
                 }
             ]
         }
-
     ]
 }

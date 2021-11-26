@@ -1,679 +1,585 @@
 {
-    "id":"cb2cc207-8125-445c-9ef9-6ea44eee959a",
+    "id": "cb2cc207-8125-445c-9ef9-6ea44eee959a",
     "title": "Thinking Out Loud",
     "length": 281000,
     "first-release-date": "2014-06-20",
-    "disambiguation":"",
-    "aliases":[
+    "disambiguation": "",
+    "aliases": [
         {
-            "type":null,
-            "sort-name":"Thinking Out Loud’",
-            "primary":null,
-            "end":null,
-            "ended":false,
-            "begin":null,
-            "locale":null,
-            "name":"Thinking Out Loud’",
-            "type-id":null
+            "type": null,
+            "sort-name": "Thinking Out Loud’",
+            "primary": null,
+            "end": null,
+            "ended": false,
+            "begin": null,
+            "locale": null,
+            "name": "Thinking Out Loud’",
+            "type-id": null
         }
     ],
-    "video":false,
-    "isrcs":[
+    "video": false,
+    "isrcs": [
         "GBAHS1400099"
     ],
-    "artist-credit":[
+    "artist-credit": [
         {
             "name": "Ed Sheeran",
             "joinphrase": "",
             "artist": {
-                "disambiguation":"famous UK singer-songwriter",
-                "name":"Ed Sheeran",
-                "sort-name":"Sheeran, Ed",
-                "id":"b8a7c51f-362c-4dcb-a259-bc6e0095f0a6",
-                "tags": [{
-                  "name": "dance-pop",
-                  "count": 1
-                }, {
-                  "name": "guitarist",
-                  "count": 0
-                }]
+                "disambiguation": "famous UK singer-songwriter",
+                "name": "Ed Sheeran",
+                "sort-name": "Sheeran, Ed",
+                "id": "b8a7c51f-362c-4dcb-a259-bc6e0095f0a6",
+                "tags": [
+                    {
+                        "name": "dance-pop",
+                        "count": 1
+                    },
+                    {
+                        "name": "guitarist",
+                        "count": 0
+                    }
+                ]
             }
         }
     ],
-    "relations":[
+    "relations": [
         {
-            "target-credit":"",
-            "begin":null,
-            "attributes":[
-
-            ],
-            "direction":"backward",
-            "attribute-values":{
-
-            },
-            "type-id":"451076df-61cf-46ab-9921-555cab2f050d",
-            "source-credit":"",
-            "type":"DJ-mix",
-            "target-type":"recording",
-            "recording":{
-                "disambiguation":"",
-                "aliases":[
-
-                ],
-                "id":"89f35c6f-84f4-4b5d-8966-ef2572faf230",
-                "isrcs":[
-
-                ],
-                "video":false,
-                "length":317000,
-                "artist-credit":[
+            "target-credit": "",
+            "begin": null,
+            "attributes": [],
+            "direction": "backward",
+            "attribute-values": {},
+            "type-id": "451076df-61cf-46ab-9921-555cab2f050d",
+            "source-credit": "",
+            "type": "DJ-mix",
+            "target-type": "recording",
+            "recording": {
+                "disambiguation": "",
+                "aliases": [],
+                "id": "89f35c6f-84f4-4b5d-8966-ef2572faf230",
+                "isrcs": [],
+                "video": false,
+                "length": 317000,
+                "artist-credit": [
                     {
-                        "artist":{
-                            "disambiguation":"",
-                            "sort-name":"Earworm, DJ",
-                            "name":"DJ Earworm",
-                            "id":"e407802a-bfc3-4979-a5e1-3196ccf9c8d9"
+                        "artist": {
+                            "disambiguation": "",
+                            "sort-name": "Earworm, DJ",
+                            "name": "DJ Earworm",
+                            "id": "e407802a-bfc3-4979-a5e1-3196ccf9c8d9"
                         },
-                        "name":"DJ Earworm",
-                        "joinphrase":""
+                        "name": "DJ Earworm",
+                        "joinphrase": ""
                     }
                 ],
-                "title":"United State of Pop 2015 (50 Shades of Pop)"
+                "title": "United State of Pop 2015 (50 Shades of Pop)"
             },
-            "end":null,
-            "ended":false
+            "end": null,
+            "ended": false
         },
         {
-            "attributes":[
-
-            ],
-            "begin":null,
-            "target-credit":"",
-            "type-id":"a3005666-a872-32c3-ad06-98af558e99b0",
-            "attribute-values":{
-
-            },
-            "direction":"forward",
-            "work":{
-                "id":"dc469dc8-198e-42e5-b5a7-6be2f0a95ac0",
-                "language":"eng",
-                "aliases":[
-
-                ],
-                "type":null,
-                "disambiguation":"Ed Sheeran song",
-                "languages":[
+            "attributes": [],
+            "begin": null,
+            "target-credit": "",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "attribute-values": {},
+            "direction": "forward",
+            "work": {
+                "id": "dc469dc8-198e-42e5-b5a7-6be2f0a95ac0",
+                "language": "eng",
+                "aliases": [],
+                "type": null,
+                "disambiguation": "Ed Sheeran song",
+                "languages": [
                     "eng"
                 ],
-                "attributes":[
-
-                ],
-                "title":"Thinking Out Loud",
-                "relations":[
+                "attributes": [],
+                "title": "Thinking Out Loud",
+                "relations": [
                     {
-                        "direction":"backward",
-                        "type-id":"a3005666-a872-32c3-ad06-98af558e99b0",
-                        "attribute-values":{
-
-                        },
-                        "attributes":[
+                        "direction": "backward",
+                        "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+                        "attribute-values": {},
+                        "attributes": [
                             "cover"
                         ],
-                        "begin":null,
-                        "target-credit":"",
-                        "type":"performance",
-                        "source-credit":"",
-                        "recording":{
-                            "length":224000,
-                            "artist-credit":[
+                        "begin": null,
+                        "target-credit": "",
+                        "type": "performance",
+                        "source-credit": "",
+                        "recording": {
+                            "length": 224000,
+                            "artist-credit": [
                                 {
-                                    "artist":{
-                                        "id":"31c0df3c-2d23-41d3-a772-ec3cfc3cc625",
-                                        "disambiguation":"",
-                                        "sort-name":"Kidz Bop",
-                                        "name":"Kidz Bop"
+                                    "artist": {
+                                        "id": "31c0df3c-2d23-41d3-a772-ec3cfc3cc625",
+                                        "disambiguation": "",
+                                        "sort-name": "Kidz Bop",
+                                        "name": "Kidz Bop"
                                     },
-                                    "joinphrase":"",
-                                    "name":"Kidz Bop"
+                                    "joinphrase": "",
+                                    "name": "Kidz Bop"
                                 }
                             ],
-                            "title":"Thinking Out Loud",
-                            "disambiguation":"",
-                            "aliases":[
-
-                            ],
-                            "id":"5718a458-fefe-423a-9300-9758cdd0f69e",
-                            "isrcs":[
-
-                            ],
-                            "video":false
+                            "title": "Thinking Out Loud",
+                            "disambiguation": "",
+                            "aliases": [],
+                            "id": "5718a458-fefe-423a-9300-9758cdd0f69e",
+                            "isrcs": [],
+                            "video": false
                         },
-                        "ended":false,
-                        "target-type":"recording",
-                        "end":null
+                        "ended": false,
+                        "target-type": "recording",
+                        "end": null
                     },
                     {
-                        "begin":null,
-                        "attributes":[
+                        "begin": null,
+                        "attributes": [
                             "cover"
                         ],
-                        "target-credit":"",
-                        "type-id":"a3005666-a872-32c3-ad06-98af558e99b0",
-                        "attribute-values":{
-
-                        },
-                        "direction":"backward",
-                        "target-type":"recording",
-                        "recording":{
-                            "title":"Thinking out loud",
-                            "artist-credit":[
+                        "target-credit": "",
+                        "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+                        "attribute-values": {},
+                        "direction": "backward",
+                        "target-type": "recording",
+                        "recording": {
+                            "title": "Thinking out loud",
+                            "artist-credit": [
                                 {
-                                    "name":"Sofia Truta",
-                                    "joinphrase":"",
-                                    "artist":{
-                                        "id":"45440d49-cee2-458e-a558-9a22585fa0ce",
-                                        "disambiguation":"",
-                                        "name":"Sofia Truta",
-                                        "sort-name":"Truta, Sofia"
+                                    "name": "Sofia Truta",
+                                    "joinphrase": "",
+                                    "artist": {
+                                        "id": "45440d49-cee2-458e-a558-9a22585fa0ce",
+                                        "disambiguation": "",
+                                        "name": "Sofia Truta",
+                                        "sort-name": "Truta, Sofia"
                                     }
                                 }
                             ],
-                            "length":222179,
-                            "video":false,
-                            "isrcs":[
-
-                            ],
-                            "id":"5d240d0e-bbf5-4190-872d-116f532d9be2",
-                            "aliases":[
-
-                            ],
-                            "disambiguation":""
+                            "length": 222179,
+                            "video": false,
+                            "isrcs": [],
+                            "id": "5d240d0e-bbf5-4190-872d-116f532d9be2",
+                            "aliases": [],
+                            "disambiguation": ""
                         },
-                        "end":null,
-                        "ended":false,
-                        "source-credit":"",
-                        "type":"performance"
+                        "end": null,
+                        "ended": false,
+                        "source-credit": "",
+                        "type": "performance"
                     },
                     {
-                        "target-credit":"",
-                        "attributes":[
+                        "target-credit": "",
+                        "attributes": [
                             "cover"
                         ],
-                        "begin":null,
-                        "attribute-values":{
-
-                        },
-                        "type-id":"a3005666-a872-32c3-ad06-98af558e99b0",
-                        "direction":"backward",
-                        "target-type":"recording",
-                        "recording":{
-                            "disambiguation":"",
-                            "video":false,
-                            "isrcs":[
-
-                            ],
-                            "id":"6f6a7b2b-1b68-4b82-9fab-4cf952167e90",
-                            "aliases":[
-
-                            ],
-                            "artist-credit":[
+                        "begin": null,
+                        "attribute-values": {},
+                        "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+                        "direction": "backward",
+                        "target-type": "recording",
+                        "recording": {
+                            "disambiguation": "",
+                            "video": false,
+                            "isrcs": [],
+                            "id": "6f6a7b2b-1b68-4b82-9fab-4cf952167e90",
+                            "aliases": [],
+                            "artist-credit": [
                                 {
-                                    "joinphrase":"",
-                                    "name":"Luke Wade",
-                                    "artist":{
-                                        "name":"Luke Wade",
-                                        "sort-name":"Wade, Luke",
-                                        "disambiguation":"",
-                                        "id":"25f90957-0cdd-45e4-a1ab-3362dc5681fa"
+                                    "joinphrase": "",
+                                    "name": "Luke Wade",
+                                    "artist": {
+                                        "name": "Luke Wade",
+                                        "sort-name": "Wade, Luke",
+                                        "disambiguation": "",
+                                        "id": "25f90957-0cdd-45e4-a1ab-3362dc5681fa"
                                     }
                                 }
                             ],
-                            "length":230000,
-                            "title":"Thinking Out Loud"
+                            "length": 230000,
+                            "title": "Thinking Out Loud"
                         },
-                        "ended":false,
-                        "end":null,
-                        "source-credit":"",
-                        "type":"performance"
+                        "ended": false,
+                        "end": null,
+                        "source-credit": "",
+                        "type": "performance"
                     },
                     {
-                        "attribute-values":{
-
-                        },
-                        "type-id":"a3005666-a872-32c3-ad06-98af558e99b0",
-                        "direction":"backward",
-                        "target-credit":"",
-                        "attributes":[
+                        "attribute-values": {},
+                        "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+                        "direction": "backward",
+                        "target-credit": "",
+                        "attributes": [
                             "cover"
                         ],
-                        "begin":null,
-                        "recording":{
-                            "aliases":[
-
-                            ],
-                            "id":"c8133db7-f5ee-429d-90dd-586ad40b07e8",
-                            "isrcs":[
-
-                            ],
-                            "video":false,
-                            "disambiguation":"",
-                            "title":"Thinking Out Loud",
-                            "length":253000,
-                            "artist-credit":[
+                        "begin": null,
+                        "recording": {
+                            "aliases": [],
+                            "id": "c8133db7-f5ee-429d-90dd-586ad40b07e8",
+                            "isrcs": [],
+                            "video": false,
+                            "disambiguation": "",
+                            "title": "Thinking Out Loud",
+                            "length": 253000,
+                            "artist-credit": [
                                 {
-                                    "name":"Amy Wadge",
-                                    "joinphrase":"",
-                                    "artist":{
-                                        "id":"e6523192-ca22-40ab-a82c-995b82594031",
-                                        "disambiguation":"",
-                                        "sort-name":"Wadge, Amy",
-                                        "name":"Amy Wadge"
+                                    "name": "Amy Wadge",
+                                    "joinphrase": "",
+                                    "artist": {
+                                        "id": "e6523192-ca22-40ab-a82c-995b82594031",
+                                        "disambiguation": "",
+                                        "sort-name": "Wadge, Amy",
+                                        "name": "Amy Wadge"
                                     }
                                 }
                             ]
                         },
-                        "target-type":"recording",
-                        "ended":false,
-                        "end":null,
-                        "source-credit":"",
-                        "type":"performance"
+                        "target-type": "recording",
+                        "ended": false,
+                        "end": null,
+                        "source-credit": "",
+                        "type": "performance"
                     },
                     {
-                        "attribute-values":{
-
-                        },
-                        "type-id":"a3005666-a872-32c3-ad06-98af558e99b0",
-                        "direction":"backward",
-                        "target-credit":"",
-                        "attributes":[
+                        "attribute-values": {},
+                        "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+                        "direction": "backward",
+                        "target-credit": "",
+                        "attributes": [
                             "partial"
                         ],
-                        "begin":null,
-                        "recording":{
-                            "title":"Thinking Out Loud / Four Five Seconds",
-                            "length":232571,
-                            "artist-credit":[
+                        "begin": null,
+                        "recording": {
+                            "title": "Thinking Out Loud / Four Five Seconds",
+                            "length": 232571,
+                            "artist-credit": [
                                 {
-                                    "artist":{
-                                        "id":"18689349-0ec3-4fe0-b9da-bec4899560f0",
-                                        "disambiguation":"",
-                                        "sort-name":"Clark, Liddy",
-                                        "name":"Liddy Clark"
+                                    "artist": {
+                                        "id": "18689349-0ec3-4fe0-b9da-bec4899560f0",
+                                        "disambiguation": "",
+                                        "sort-name": "Clark, Liddy",
+                                        "name": "Liddy Clark"
                                     },
-                                    "name":"Liddy Clark",
-                                    "joinphrase":""
+                                    "name": "Liddy Clark",
+                                    "joinphrase": ""
                                 }
                             ],
-                            "isrcs":[
-
-                            ],
-                            "video":false,
-                            "aliases":[
-
-                            ],
-                            "id":"c8e0a6bf-3034-4879-a865-34fd89556054",
-                            "disambiguation":""
+                            "isrcs": [],
+                            "video": false,
+                            "aliases": [],
+                            "id": "c8e0a6bf-3034-4879-a865-34fd89556054",
+                            "disambiguation": ""
                         },
-                        "ended":false,
-                        "target-type":"recording",
-                        "end":null,
-                        "source-credit":"",
-                        "type":"performance"
+                        "ended": false,
+                        "target-type": "recording",
+                        "end": null,
+                        "source-credit": "",
+                        "type": "performance"
                     },
                     {
-                        "attributes":[
-
-                        ],
-                        "begin":null,
-                        "target-credit":"",
-                        "direction":"backward",
-                        "type-id":"a3005666-a872-32c3-ad06-98af558e99b0",
-                        "attribute-values":{
-
-                        },
-                        "type":"performance",
-                        "source-credit":"",
-                        "end":null,
-                        "recording":{
-                            "video":false,
-                            "isrcs":[
+                        "attributes": [],
+                        "begin": null,
+                        "target-credit": "",
+                        "direction": "backward",
+                        "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+                        "attribute-values": {},
+                        "type": "performance",
+                        "source-credit": "",
+                        "end": null,
+                        "recording": {
+                            "video": false,
+                            "isrcs": [
                                 "GBAHS1400099"
                             ],
-                            "id":"cb2cc207-8125-445c-9ef9-6ea44eee959a",
-                            "aliases":[
+                            "id": "cb2cc207-8125-445c-9ef9-6ea44eee959a",
+                            "aliases": [
                                 {
-                                    "name":"Thinking Out Loud’",
-                                    "type-id":null,
-                                    "begin":null,
-                                    "locale":null,
-                                    "type":null,
-                                    "sort-name":"Thinking Out Loud’",
-                                    "primary":null,
-                                    "ended":false,
-                                    "end":null
+                                    "name": "Thinking Out Loud’",
+                                    "type-id": null,
+                                    "begin": null,
+                                    "locale": null,
+                                    "type": null,
+                                    "sort-name": "Thinking Out Loud’",
+                                    "primary": null,
+                                    "ended": false,
+                                    "end": null
                                 }
                             ],
-                            "disambiguation":"",
-                            "title":"Thinking Out Loud",
-                            "artist-credit":[
+                            "disambiguation": "",
+                            "title": "Thinking Out Loud",
+                            "artist-credit": [
                                 {
-                                    "artist":{
-                                        "disambiguation":"famous UK singer-songwriter",
-                                        "name":"Ed Sheeran",
-                                        "sort-name":"Sheeran, Ed",
-                                        "id":"b8a7c51f-362c-4dcb-a259-bc6e0095f0a6"
+                                    "artist": {
+                                        "disambiguation": "famous UK singer-songwriter",
+                                        "name": "Ed Sheeran",
+                                        "sort-name": "Sheeran, Ed",
+                                        "id": "b8a7c51f-362c-4dcb-a259-bc6e0095f0a6"
                                     },
-                                    "joinphrase":"",
-                                    "name":"Ed Sheeran"
+                                    "joinphrase": "",
+                                    "name": "Ed Sheeran"
                                 }
                             ],
-                            "length":281000
+                            "length": 281000
                         },
-                        "target-type":"recording",
-                        "ended":false
+                        "target-type": "recording",
+                        "ended": false
                     },
                     {
-                        "ended":false,
-                        "recording":{
-                            "video":false,
-                            "isrcs":[
-
-                            ],
-                            "id":"cc5bc2ea-5ff8-48e0-a416-dde9a942c53c",
-                            "aliases":[
-
-                            ],
-                            "disambiguation":"",
-                            "title":"Thinking Out Loud",
-                            "artist-credit":[
+                        "ended": false,
+                        "recording": {
+                            "video": false,
+                            "isrcs": [],
+                            "id": "cc5bc2ea-5ff8-48e0-a416-dde9a942c53c",
+                            "aliases": [],
+                            "disambiguation": "",
+                            "title": "Thinking Out Loud",
+                            "artist-credit": [
                                 {
-                                    "artist":{
-                                        "disambiguation":"classical violinist",
-                                        "sort-name":"Garrett, David",
-                                        "name":"David Garrett",
-                                        "id":"88be1fb5-0112-4549-9608-526591c7f415"
+                                    "artist": {
+                                        "disambiguation": "classical violinist",
+                                        "sort-name": "Garrett, David",
+                                        "name": "David Garrett",
+                                        "id": "88be1fb5-0112-4549-9608-526591c7f415"
                                     },
-                                    "joinphrase":"",
-                                    "name":"David Garrett"
+                                    "joinphrase": "",
+                                    "name": "David Garrett"
                                 }
                             ],
-                            "length":223000
+                            "length": 223000
                         },
-                        "target-type":"recording",
-                        "end":null,
-                        "type":"performance",
-                        "source-credit":"",
-                        "type-id":"a3005666-a872-32c3-ad06-98af558e99b0",
-                        "attribute-values":{
-
-                        },
-                        "direction":"backward",
-                        "begin":null,
-                        "attributes":[
+                        "target-type": "recording",
+                        "end": null,
+                        "type": "performance",
+                        "source-credit": "",
+                        "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+                        "attribute-values": {},
+                        "direction": "backward",
+                        "begin": null,
+                        "attributes": [
                             "cover",
                             "instrumental"
                         ],
-                        "target-credit":""
+                        "target-credit": ""
                     },
                     {
-                        "target-credit":"",
-                        "attributes":[
+                        "target-credit": "",
+                        "attributes": [
                             "cover"
                         ],
-                        "begin":null,
-                        "attribute-values":{
-
-                        },
-                        "type-id":"a3005666-a872-32c3-ad06-98af558e99b0",
-                        "direction":"backward",
-                        "recording":{
-                            "length":219374,
-                            "artist-credit":[
+                        "begin": null,
+                        "attribute-values": {},
+                        "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+                        "direction": "backward",
+                        "recording": {
+                            "length": 219374,
+                            "artist-credit": [
                                 {
-                                    "artist":{
-                                        "id":"b25a57f6-2ddb-4f29-9d12-b0c308cfc845",
-                                        "name":"Tom Law",
-                                        "sort-name":"Law, Tom",
-                                        "disambiguation":""
+                                    "artist": {
+                                        "id": "b25a57f6-2ddb-4f29-9d12-b0c308cfc845",
+                                        "name": "Tom Law",
+                                        "sort-name": "Law, Tom",
+                                        "disambiguation": ""
                                     },
-                                    "name":"Tom Law",
-                                    "joinphrase":""
+                                    "name": "Tom Law",
+                                    "joinphrase": ""
                                 }
                             ],
-                            "title":"Thinking Out Loud",
-                            "disambiguation":"",
-                            "isrcs":[
-
-                            ],
-                            "video":false,
-                            "aliases":[
-
-                            ],
-                            "id":"e5705f6f-f450-49ab-9397-96c6b030e251"
+                            "title": "Thinking Out Loud",
+                            "disambiguation": "",
+                            "isrcs": [],
+                            "video": false,
+                            "aliases": [],
+                            "id": "e5705f6f-f450-49ab-9397-96c6b030e251"
                         },
-                        "end":null,
-                        "target-type":"recording",
-                        "ended":false,
-                        "type":"performance",
-                        "source-credit":""
+                        "end": null,
+                        "target-type": "recording",
+                        "ended": false,
+                        "type": "performance",
+                        "source-credit": ""
                     },
                     {
-                        "source-credit":"",
-                        "type":"performance",
-                        "end":null,
-                        "recording":{
-                            "disambiguation":"",
-                            "isrcs":[
-
-                            ],
-                            "video":false,
-                            "aliases":[
-
-                            ],
-                            "id":"fa9f3d37-3e43-428f-8a97-49311ff10775",
-                            "length":163000,
-                            "artist-credit":[
+                        "source-credit": "",
+                        "type": "performance",
+                        "end": null,
+                        "recording": {
+                            "disambiguation": "",
+                            "isrcs": [],
+                            "video": false,
+                            "aliases": [],
+                            "id": "fa9f3d37-3e43-428f-8a97-49311ff10775",
+                            "length": 163000,
+                            "artist-credit": [
                                 {
-                                    "name":"Soul System",
-                                    "joinphrase":"",
-                                    "artist":{
-                                        "id":"f3a47c64-e32a-473d-af34-b393d0c2f302",
-                                        "sort-name":"Soul System",
-                                        "name":"Soul System",
-                                        "disambiguation":"X-Factor 10 Italy"
+                                    "name": "Soul System",
+                                    "joinphrase": "",
+                                    "artist": {
+                                        "id": "f3a47c64-e32a-473d-af34-b393d0c2f302",
+                                        "sort-name": "Soul System",
+                                        "name": "Soul System",
+                                        "disambiguation": "X-Factor 10 Italy"
                                     }
                                 }
                             ],
-                            "title":"Thinking out Loud"
+                            "title": "Thinking out Loud"
                         },
-                        "target-type":"recording",
-                        "ended":false,
-                        "target-credit":"",
-                        "begin":null,
-                        "attributes":[
+                        "target-type": "recording",
+                        "ended": false,
+                        "target-credit": "",
+                        "begin": null,
+                        "attributes": [
                             "cover"
                         ],
-                        "direction":"backward",
-                        "attribute-values":{
-
-                        },
-                        "type-id":"a3005666-a872-32c3-ad06-98af558e99b0"
+                        "direction": "backward",
+                        "attribute-values": {},
+                        "type-id": "a3005666-a872-32c3-ad06-98af558e99b0"
                     },
                     {
-                        "type":"wikidata",
-                        "source-credit":"",
-                        "ended":false,
-                        "target-type":"url",
-                        "end":null,
-                        "target-credit":"",
-                        "begin":null,
-                        "attributes":[
-
-                        ],
-                        "direction":"backward",
-                        "attribute-values":{
-
+                        "type": "wikidata",
+                        "source-credit": "",
+                        "ended": false,
+                        "target-type": "url",
+                        "end": null,
+                        "target-credit": "",
+                        "begin": null,
+                        "attributes": [],
+                        "direction": "backward",
+                        "attribute-values": {},
+                        "url": {
+                            "id": "62a2695d-9218-487a-8b5e-d05dd00aa202",
+                            "resource": "https://www.wikidata.org/wiki/Q17332468"
                         },
-                        "url":{
-                            "id":"62a2695d-9218-487a-8b5e-d05dd00aa202",
-                            "resource":"https://www.wikidata.org/wiki/Q17332468"
-                        },
-                        "type-id":"587fdd8f-080e-46a9-97af-6425ebbcb3a2"
+                        "type-id": "587fdd8f-080e-46a9-97af-6425ebbcb3a2"
                     },
                     {
-                        "target-type":"artist",
-                        "ended":false,
-                        "end":null,
-                        "source-credit":"",
-                        "type":"writer",
-                        "attributes":[
-
-                        ],
-                        "artist":{
-                            "name":"Ed Sheeran",
-                            "sort-name":"Sheeran, Ed",
-                            "disambiguation":"famous UK singer-songwriter",
-                            "aliases":[
-
-                            ],
-                            "id":"b8a7c51f-362c-4dcb-a259-bc6e0095f0a6"
+                        "target-type": "artist",
+                        "ended": false,
+                        "end": null,
+                        "source-credit": "",
+                        "type": "writer",
+                        "attributes": [],
+                        "artist": {
+                            "name": "Ed Sheeran",
+                            "sort-name": "Sheeran, Ed",
+                            "disambiguation": "famous UK singer-songwriter",
+                            "aliases": [],
+                            "id": "b8a7c51f-362c-4dcb-a259-bc6e0095f0a6"
                         },
-                        "begin":null,
-                        "target-credit":"",
-                        "type-id":"a255bca1-b157-4518-9108-7b147dc3fc68",
-                        "attribute-values":{
-
-                        },
-                        "direction":"backward"
+                        "begin": null,
+                        "target-credit": "",
+                        "type-id": "a255bca1-b157-4518-9108-7b147dc3fc68",
+                        "attribute-values": {},
+                        "direction": "backward"
                     },
                     {
-                        "source-credit":"",
-                        "type":"writer",
-                        "ended":false,
-                        "target-type":"artist",
-                        "end":null,
-                        "direction":"backward",
-                        "attribute-values":{
-
+                        "source-credit": "",
+                        "type": "writer",
+                        "ended": false,
+                        "target-type": "artist",
+                        "end": null,
+                        "direction": "backward",
+                        "attribute-values": {},
+                        "type-id": "a255bca1-b157-4518-9108-7b147dc3fc68",
+                        "target-credit": "",
+                        "begin": null,
+                        "artist": {
+                            "name": "Amy Wadge",
+                            "sort-name": "Wadge, Amy",
+                            "disambiguation": "",
+                            "aliases": [],
+                            "id": "e6523192-ca22-40ab-a82c-995b82594031"
                         },
-                        "type-id":"a255bca1-b157-4518-9108-7b147dc3fc68",
-                        "target-credit":"",
-                        "begin":null,
-                        "artist":{
-                            "name":"Amy Wadge",
-                            "sort-name":"Wadge, Amy",
-                            "disambiguation":"",
-                            "aliases":[
-
-                            ],
-                            "id":"e6523192-ca22-40ab-a82c-995b82594031"
-                        },
-                        "attributes":[
-
-                        ]
+                        "attributes": []
                     }
                 ],
-                "type-id":null,
-                "iswcs":[
-
-                ]
+                "type-id": null,
+                "iswcs": []
             },
-            "ended":false,
-            "target-type":"work",
-            "end":null,
-            "type":"performance",
-            "source-credit":""
+            "ended": false,
+            "target-type": "work",
+            "end": null,
+            "type": "performance",
+            "source-credit": ""
         },
         {
-            "end":null,
-            "target-type":"artist",
-            "ended":false,
-            "type":"performer",
-            "source-credit":"",
-            "target-credit":"",
-            "artist":{
-                "id":"b8a7c51f-362c-4dcb-a259-bc6e0095f0a6",
-                "aliases":[
-
-                ],
-                "sort-name":"Sheeran, Ed",
-                "name":"Ed Sheeran",
-                "disambiguation":"famous UK singer-songwriter"
+            "end": null,
+            "target-type": "artist",
+            "ended": false,
+            "type": "performer",
+            "source-credit": "",
+            "target-credit": "",
+            "artist": {
+                "id": "b8a7c51f-362c-4dcb-a259-bc6e0095f0a6",
+                "aliases": [],
+                "sort-name": "Sheeran, Ed",
+                "name": "Ed Sheeran",
+                "disambiguation": "famous UK singer-songwriter"
             },
-            "attributes":[
-
-            ],
-            "begin":null,
-            "attribute-values":{
-
-            },
-            "type-id":"628a9658-f54c-4142-b0c0-95f031b544da",
-            "direction":"backward"
+            "attributes": [],
+            "begin": null,
+            "attribute-values": {},
+            "type-id": "628a9658-f54c-4142-b0c0-95f031b544da",
+            "direction": "backward"
         },
         {
-            "source-credit":"",
-            "type":"vocal",
-            "target-type":"artist",
-            "end":null,
-            "ended":false,
-            "direction":"backward",
-            "type-id":"0fdbe3c6-7700-4a31-ae54-b53f06ae1cfa",
-            "attribute-values":{
-
+            "source-credit": "",
+            "type": "vocal",
+            "target-type": "artist",
+            "end": null,
+            "ended": false,
+            "direction": "backward",
+            "type-id": "0fdbe3c6-7700-4a31-ae54-b53f06ae1cfa",
+            "attribute-values": {},
+            "artist": {
+                "aliases": [],
+                "id": "b8a7c51f-362c-4dcb-a259-bc6e0095f0a6",
+                "disambiguation": "famous UK singer-songwriter",
+                "sort-name": "Sheeran, Ed",
+                "name": "Ed Sheeran"
             },
-            "artist":{
-                "aliases":[
-
-                ],
-                "id":"b8a7c51f-362c-4dcb-a259-bc6e0095f0a6",
-                "disambiguation":"famous UK singer-songwriter",
-                "sort-name":"Sheeran, Ed",
-                "name":"Ed Sheeran"
-            },
-            "begin":null,
-            "attributes":[
+            "begin": null,
+            "attributes": [
                 "lead vocals"
             ],
-            "attribute-credits":{
+            "attribute-credits": {
                 "lead vocals": "vocals"
             },
-            "target-credit":""
+            "target-credit": ""
         },
         {
-            "source-credit":"",
-            "type":"instrument",
-            "target-type":"artist",
-            "end":null,
-            "ended":false,
-            "direction":"backward",
-            "type-id":"59054b12-01ac-43ee-a618-285fd397e461",
-            "attribute-values":{
-
+            "source-credit": "",
+            "type": "instrument",
+            "target-type": "artist",
+            "end": null,
+            "ended": false,
+            "direction": "backward",
+            "type-id": "59054b12-01ac-43ee-a618-285fd397e461",
+            "attribute-values": {},
+            "artist": {
+                "aliases": [],
+                "id": "b8a7c51f-362c-4dcb-a259-bc6e0095f0a6",
+                "disambiguation": "famous UK singer-songwriter",
+                "sort-name": "Sheeran, Ed",
+                "name": "Ed Sheeran"
             },
-            "artist":{
-                "aliases":[
-
-                ],
-                "id":"b8a7c51f-362c-4dcb-a259-bc6e0095f0a6",
-                "disambiguation":"famous UK singer-songwriter",
-                "sort-name":"Sheeran, Ed",
-                "name":"Ed Sheeran"
-            },
-            "begin":null,
-            "attributes":[
+            "begin": null,
+            "attributes": [
                 "guitar family"
             ],
-            "attribute-credits":{
+            "attribute-credits": {
                 "guitar family": "acoustic guitar"
             },
-            "target-credit":""
+            "target-credit": ""
         }
     ],
-    "tags": [{
-      "name": "blue-eyed soul",
-      "count": 1
-    }, {
-      "count": 3,
-      "name": "pop"
-    }]
+    "tags": [
+        {
+            "name": "blue-eyed soul",
+            "count": 1
+        },
+        {
+            "count": 3,
+            "name": "pop"
+        }
+    ]
 }

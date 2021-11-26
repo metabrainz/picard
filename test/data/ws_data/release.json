@@ -1,17 +1,33 @@
 {
     "genres": [
-        {"name": "genre1", "count": 5},
-        {"name": "genre2", "count": 3}
+        {
+            "name": "genre1",
+            "count": 5
+        },
+        {
+            "name": "genre2",
+            "count": 3
+        }
     ],
     "user-genres": [
-        {"name": "genre1"}
+        {
+            "name": "genre1"
+        }
     ],
     "tags": [
-        {"name": "tag1", "count": 5},
-        {"name": "tag2", "count": 3}
+        {
+            "name": "tag1",
+            "count": 5
+        },
+        {
+            "name": "tag2",
+            "count": 3
+        }
     ],
     "user-tags": [
-        {"name": "tag1"}
+        {
+            "name": "tag1"
+        }
     ],
     "release-group": {
         "first-release-date": "1973-03-24",
@@ -31,20 +47,12 @@
         "id": "f5093c06-23e3-404f-aeaa-40f72885ee3a",
         "title": "The Dark Side of the Moon",
         "disambiguation": "",
-        "secondary-type-ids": [
-
-        ],
+        "secondary-type-ids": [],
         "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-        "secondary-types": [
-
-        ],
-        "aliases": [
-
-        ]
+        "secondary-types": [],
+        "aliases": []
     },
-    "aliases": [
-
-    ],
+    "aliases": [],
     "cover-art-archive": {
         "front": true,
         "back": true,
@@ -283,13 +291,16 @@
                         "name": "핑크 플로이드"
                     }
                 ],
-                "tags": [{
-                  "name": "british",
-                  "count": 2
-                }, {
-                  "count": 10,
-                  "name": "progressive rock"
-                }],
+                "tags": [
+                    {
+                        "name": "british",
+                        "count": 2
+                    },
+                    {
+                        "count": 10,
+                        "name": "progressive rock"
+                    }
+                ],
                 "sort-name": "Pink Floyd",
                 "name": "Pink Floyd"
             },
@@ -333,25 +344,19 @@
     "barcode": "123",
     "relations": [
         {
-            "attributes": [
-
-            ],
+            "attributes": [],
             "target-credit": "George Hardie N.T.A.",
             "source-credit": "",
             "target-type": "artist",
             "type": "design/illustration",
-            "attribute-values": {
-
-            },
+            "attribute-values": {},
             "begin": null,
             "type-id": "307e95dd-88b5-419b-8223-b146d4a0d439",
             "end": null,
             "direction": "backward",
             "artist": {
                 "id": "89931942-3182-4448-8e63-0c2ce90f1f81",
-                "aliases": [
-
-                ],
+                "aliases": [],
                 "sort-name": "Hardie, George",
                 "disambiguation": "",
                 "name": "George Hardie"
@@ -359,16 +364,12 @@
             "ended": false
         },
         {
-            "attributes": [
-
-            ],
+            "attributes": [],
             "target-credit": "",
             "source-credit": "",
             "type": "design/illustration",
             "target-type": "artist",
-            "attribute-values": {
-
-            },
+            "attribute-values": {},
             "begin": null,
             "type-id": "307e95dd-88b5-419b-8223-b146d4a0d439",
             "end": null,
@@ -377,9 +378,7 @@
             "artist": {
                 "name": "Hipgnosis",
                 "id": "fd1a4572-59ca-40f2-8f55-b82be28bb0ff",
-                "aliases": [
-
-                ],
+                "aliases": [],
                 "sort-name": "Hipgnosis",
                 "disambiguation": "UK art design group"
             }
@@ -397,33 +396,23 @@
             },
             "target-type": "url",
             "type": "discogs",
-            "attributes": [
-
-            ],
-            "attribute-values": {
-
-            },
+            "attributes": [],
+            "attribute-values": {},
             "begin": null
         },
         {
-            "attribute-values": {
-
-            },
+            "attribute-values": {},
             "begin": null,
             "type": "photography",
             "target-type": "artist",
             "target-credit": "",
             "source-credit": "",
-            "attributes": [
-
-            ],
+            "attributes": [],
             "ended": false,
             "artist": {
                 "id": "fd1a4572-59ca-40f2-8f55-b82be28bb0ff",
                 "sort-name": "Hipgnosis",
-                "aliases": [
-
-                ],
+                "aliases": [],
                 "disambiguation": "UK art design group",
                 "name": "Hipgnosis"
             },
@@ -432,24 +421,18 @@
             "type-id": "0b58dc9b-9c49-4b19-bb58-9c06d41c8fbf"
         },
         {
-            "attribute-values": {
-
-            },
+            "attribute-values": {},
             "begin": null,
             "type": "producer",
             "target-type": "artist",
             "target-credit": "",
             "source-credit": "",
-            "attributes": [
-
-            ],
+            "attributes": [],
             "ended": false,
             "artist": {
                 "id": "fd1a4572-59ca-40f2-8f55-b82be28bb0ff",
                 "sort-name": "Hipgnosis",
-                "aliases": [
-
-                ],
+                "aliases": [],
                 "disambiguation": "UK art design group",
                 "name": "Hipgnosis"
             },

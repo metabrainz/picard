@@ -1,39 +1,39 @@
 {
-    "gender":"Male",
-    "type-id":"b6e035f4-3ce9-331c-97df-83397230b0df",
-    "id":"b8a7c51f-362c-4dcb-a259-bc6e0095f0a6",
-    "gender-id":"36d3d30a-839d-3eda-8cb3-29be4384e4a9",
-    "type":"Person",
-    "ipis":[
+    "gender": "Male",
+    "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+    "id": "b8a7c51f-362c-4dcb-a259-bc6e0095f0a6",
+    "gender-id": "36d3d30a-839d-3eda-8cb3-29be4384e4a9",
+    "type": "Person",
+    "ipis": [
         "00600664284"
     ],
-    "area":{
-        "iso-3166-1-codes":[
+    "area": {
+        "iso-3166-1-codes": [
             "GB"
         ],
-        "disambiguation":"",
-        "id":"8a754a16-0027-3a29-b6d7-2b40ea0481ed",
-        "name":"United Kingdom",
-        "sort-name":"United Kingdom"
+        "disambiguation": "",
+        "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+        "name": "United Kingdom",
+        "sort-name": "United Kingdom"
     },
-    "begin-area":{
-        "disambiguation":"",
-        "id":"3bad79a2-895a-49ff-8277-fe683fade6b2",
-        "name":"Hebden Bridge",
-        "sort-name":"Hebden Bridge"
+    "begin-area": {
+        "disambiguation": "",
+        "id": "3bad79a2-895a-49ff-8277-fe683fade6b2",
+        "name": "Hebden Bridge",
+        "sort-name": "Hebden Bridge"
     },
-    "country":"GB",
-    "disambiguation":"famous UK singer-songwriter",
-    "name":"Ed Sheeran",
-    "sort-name":"Sheeran, Ed",
-    "end-area":null,
-    "isnis":[
+    "country": "GB",
+    "disambiguation": "famous UK singer-songwriter",
+    "name": "Ed Sheeran",
+    "sort-name": "Sheeran, Ed",
+    "end-area": null,
+    "isnis": [
         "0000000364434564"
     ],
-    "life-span":{
-        "end":null,
-        "begin":"1991-02-17",
-        "ended":false
+    "life-span": {
+        "end": null,
+        "begin": "1991-02-17",
+        "ended": false
     },
     "aliases": [
         {
