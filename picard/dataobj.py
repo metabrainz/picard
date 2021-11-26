@@ -25,6 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import Counter
 
 from picard.config import get_config
 from picard.util import LockableObject
@@ -35,11 +36,11 @@ class DataObject(LockableObject):
     def __init__(self, obj_id):
         super().__init__()
         self.id = obj_id
-        self.genres = {}
+        self.genres = Counter()
         self.item = None
 
     def add_genre(self, name, count):
-        self.genres[name] = self.genres.get(name, 0) + count
+        self.genres[name] += count
 
     @staticmethod
     def set_genre_inc_params(inc):
@@ -53,8 +54,3 @@ class DataObject(LockableObject):
             else:
                 inc += ['tags'] if use_folksonomy else ['genres']
         return require_authentication
-
-    @staticmethod
-    def merge_genres(this, that):
-        for name, count in that.items():
-            this[name] = this.get(name, 0) + count

@@ -39,8 +39,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import defaultdict
-from itertools import filterfalse
+from collections import (
+    Counter,
+    defaultdict,
+)
 import re
 import traceback
 
@@ -117,8 +119,10 @@ class TagGenreFilter:
                 return True
         return False
 
-    def filter(self, list_of_tags):
-        return list(filterfalse(self.skip, list_of_tags))
+    def filter(self, counter):
+        for name, count in counter:
+            if not self.skip(name):
+                yield (name, count)
 
 
 class TrackArtist(DataObject):
@@ -308,48 +312,60 @@ class Track(DataObject, FileListItem):
         if config.setting['convert_punctuation']:
             tm.apply_func(asciipunct)
 
-    def _convert_folksonomy_tags_to_genre(self):
-        config = get_config()
-        # Combine release and track tags
-        tags = dict(self.genres)
-        self.merge_genres(tags, self.album.genres)
-        if self.album.release_group:
-            self.merge_genres(tags, self.album.release_group.genres)
-        if not tags and config.setting['artists_genres']:
-            # For compilations use each track's artists to look up tags
-            if self.metadata['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
-                for artist in self._track_artists:
-                    self.merge_genres(tags, artist.genres)
-            else:
-                for artist in self.album.get_album_artists():
-                    self.merge_genres(tags, artist.genres)
+    @staticmethod
+    def _genres_to_metadata(genres, limit=None, minusage=0, filters='', join_with=None):
+        if limit is not None and limit < 1:
+            return []
+
         # Ignore tags with zero or lower score
-        tags = {name: count for name, count in tags.items() if count > 0}
-        if not tags:
-            return
-        # Convert counts to values from 0 to 100
-        maxcount = max(tags.values())
-        taglist = []
-        for name, count in tags.items():
-            taglist.append((100 * count // maxcount, name))
-        taglist.sort(reverse=True)
-        # And generate the genre metadata tag
-        maxtags = config.setting['max_genres']
-        minusage = config.setting['min_genre_usage']
-        tag_filter = TagGenreFilter(config.setting['genres_filter'])
-        genre = []
-        for usage, name in taglist[:maxtags]:
-            if tag_filter.skip(name):
-                continue
-            if usage < minusage:
+        genres = +genres
+        if not genres:
+            return []
+
+        # Find most common genres
+        most_common_genres = genres.most_common(limit)
+        topcount = most_common_genres[0][1]
+
+        # Filter by name and usage
+        genres_filter = TagGenreFilter(filters)
+        genres_list = []
+        for name, count in genres_filter.filter(most_common_genres):
+            percent = 100 * count // topcount
+            if percent < minusage:
                 break
             name = _TRANSLATE_TAGS.get(name, name.title())
-            genre.append(name)
-        genre.sort()
-        join_genres = config.setting['join_genres']
-        if join_genres:
-            genre = [join_genres.join(genre)]
-        self.metadata['genre'] = genre
+            genres_list.append(name)
+        genres_list.sort()
+
+        # And generate the genre metadata tag
+        if join_with:
+            return [join_with.join(genres_list)]
+        else:
+            return genres_list
+
+    def _convert_folksonomy_tags_to_genre(self):
+        config = get_config()
+        # Combine release and track genres
+        genres = Counter(self.genres)
+        genres += self.album.genres
+        if self.album.release_group:
+            genres += self.album.release_group.genres
+        if not genres and config.setting['artists_genres']:
+            # For compilations use each track's artists to look up genres
+            if self.metadata['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
+                for artist in self._track_artists:
+                    genres += artist.genres
+            else:
+                for artist in self.album.get_album_artists():
+                    genres += artist.genres
+
+        self.metadata['genre'] = self._genres_to_metadata(
+            genres,
+            limit=config.setting['max_genres'],
+            minusage=config.setting['min_genre_usage'],
+            filters=config.setting['genres_filter'],
+            join_with=config.setting['join_genres']
+        )
 
 
 class NonAlbumTrack(Track):
