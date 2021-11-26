@@ -318,6 +318,11 @@ def artist_credit_to_metadata(node, m, release=False):
         m["~artists_sort"] = artistssort
 
 
+def _release_event_iter(node):
+    if "release-events" in node:
+        yield from node['release-events']
+
+
 def countries_from_node(node):
     countries = []
     if "release-events" in node:
