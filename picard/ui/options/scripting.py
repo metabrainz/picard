@@ -213,9 +213,10 @@ class ScriptingOptionsPage(OptionsPage):
 
     def live_update_and_check(self):
         items = self.ui.script_list.selectedItems()
-        if items:
-            script = items[0]
-            script.script = self.ui.tagger_script.toPlainText()
+        if not items:
+            return
+        script = items[0]
+        script.script = self.ui.tagger_script.toPlainText()
         self.ui.script_error.setStyleSheet("")
         self.ui.script_error.setText("")
         try:
