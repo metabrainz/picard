@@ -33,6 +33,7 @@ from test.picardtestcase import (
 from picard import config
 from picard.album import Album
 from picard.mbjson import (
+    _node_skip_empty_iter,
     _translate_artist_node,
     artist_to_metadata,
     countries_from_node,
@@ -62,6 +63,25 @@ settings = {
     "preferred_release_countries": [],
     "artist_locales": ['en'],
 }
+
+
+class MBJSONItersTest(PicardTestCase):
+    def test_node_skip_empty_iter(self):
+        d = {
+            'bool_false': False,
+            'bool_true': True,
+            'int_0': 0,
+            'int_1': 1,
+            'float_0': 0.0,
+            'float_1': 1.1,
+            'list_empty': [],
+            'list_non_empty': ['a'],
+            'dict_empty': {},
+            'dict_non_empty': {'a': 'b'},
+        }
+        expected = set(d) - {'list_empty', 'dict_empty'}
+        result = set({k: v for k, v in _node_skip_empty_iter(d)})
+        self.assertSetEqual(expected, result)
 
 
 class MBJSONTest(PicardTestCase):

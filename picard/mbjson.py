@@ -387,14 +387,18 @@ def media_formats_from_node(node):
     return " + ".join(formats)
 
 
+def _node_skip_empty_iter(node):
+    for key, value in node.items():
+        if value or value == 0:
+            yield key, value
+
+
 def track_to_metadata(node, track):
     m = track.metadata
     recording_to_metadata(node['recording'], m, track)
     m.add_unique('musicbrainz_trackid', node['id'])
     # overwrite with data we have on the track
-    for key, value in node.items():
-        if not value and value != 0:
-            continue
+    for key, value in _node_skip_empty_iter(node):
         if key in _TRACK_TO_METADATA:
             m[_TRACK_TO_METADATA[key]] = value
         elif key == 'length' and value:
@@ -408,9 +412,7 @@ def track_to_metadata(node, track):
 def recording_to_metadata(node, m, track=None):
     m.length = 0
     m.add_unique('musicbrainz_recordingid', node['id'])
-    for key, value in node.items():
-        if not value and value != 0:
-            continue
+    for key, value in _node_skip_empty_iter(node):
         if key in _RECORDING_TO_METADATA:
             m[_RECORDING_TO_METADATA[key]] = value
         elif key == 'user-rating':
@@ -466,9 +468,7 @@ def work_to_metadata(work, m):
 
 
 def medium_to_metadata(node, m):
-    for key, value in node.items():
-        if not value and value != 0:
-            continue
+    for key, value in _node_skip_empty_iter(node):
         if key in _MEDIUM_TO_METADATA:
             m[_MEDIUM_TO_METADATA[key]] = value
 
@@ -476,9 +476,7 @@ def medium_to_metadata(node, m):
 def artist_to_metadata(node, m):
     """Make meatadata dict from a JSON 'artist' node."""
     m.add_unique("musicbrainz_artistid", node['id'])
-    for key, value in node.items():
-        if not value and value != 0:
-            continue
+    for key, value in _node_skip_empty_iter(node):
         if key in _ARTIST_TO_METADATA:
             m[_ARTIST_TO_METADATA[key]] = value
         elif key == "area":
@@ -500,9 +498,7 @@ def release_to_metadata(node, m, album=None):
     """Make metadata dict from a JSON 'release' node."""
     config = get_config()
     m.add_unique('musicbrainz_albumid', node['id'])
-    for key, value in node.items():
-        if not value and value != 0:
-            continue
+    for key, value in _node_skip_empty_iter(node):
         if key in _RELEASE_TO_METADATA:
             m[_RELEASE_TO_METADATA[key]] = value
         elif key == 'status':
@@ -538,9 +534,7 @@ def release_to_metadata(node, m, album=None):
 def release_group_to_metadata(node, m, release_group=None):
     """Make metadata dict from a JSON 'release-group' node taken from inside a 'release' node."""
     m.add_unique('musicbrainz_releasegroupid', node['id'])
-    for key, value in node.items():
-        if not value and value != 0:
-            continue
+    for key, value in _node_skip_empty_iter(node):
         if key in _RELEASE_GROUP_TO_METADATA:
             m[_RELEASE_GROUP_TO_METADATA[key]] = value
         elif key == 'primary-type':
