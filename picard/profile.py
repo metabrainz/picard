@@ -41,6 +41,17 @@ class UserProfileGroups():
     SETTINGS_GROUPS = OrderedDict()  # Add groups in the order they should be displayed
 
     # Each item in "settings" is a tuple of the setting key, the display title, and a list of the names of the widgets to highlight
+    SETTINGS_GROUPS["general"] = {
+        "title": N_("General"),
+        "settings": [
+            SettingDesc("server_host", N_("Server address"), ["server_host"]),
+            SettingDesc("server_port", N_("Port"), ["server_port"]),
+            SettingDesc("analyze_new_files", N_("Automatically scan all new files"), ["analyze_new_files"]),
+            SettingDesc("cluster_new_files", N_("Automatically cluster all new files"), ["cluster_new_files"]),
+            SettingDesc("ignore_file_mbids", N_("IgnoreMBIDs when loading new files"), ["ignore_file_mbids"]),
+        ],
+    }
+
     SETTINGS_GROUPS["metadata"] = {
         "title": N_("Metadata"),
         "settings": [
@@ -118,6 +129,38 @@ class UserProfileGroups():
         "settings": [
             SettingDesc("enable_tagger_scripts", N_("Enable tagger scripts"), ["enable_tagger_scripts"]),
             SettingDesc("list_of_scripts", N_("Tagger scripts"), ["script_list"]),
+        ],
+    }
+
+    SETTINGS_GROUPS["interface"] = {
+        "title": N_("User Interface"),
+        "settings": [
+            SettingDesc("toolbar_multiselect", N_("Allow selection of multiple directories"), ["toolbar_multiselect"]),
+            SettingDesc("builtin_search", N_("Use builtin search rather than looking in browser"), ["builtin_search"]),
+            SettingDesc("use_adv_search_syntax", N_("Use builtin search rather than looking in browser"), ["use_adv_search_syntax"]),
+            SettingDesc("quit_confirmation", N_("Show a quit confirmation dialog for unsaved changes"), ["quit_confirmation"]),
+            SettingDesc("filebrowser_horizontal_autoscroll", N_("Adjust horizontal position in file browser automatically"), ["filebrowser_horizontal_autoscroll"]),
+            SettingDesc("starting_directory", N_("Begin browsing in a specific directory"), ["starting_directory"]),
+            SettingDesc("starting_directory_path", N_("Directory to begin browsing"), ["starting_directory_path"]),
+        ],
+    }
+
+    SETTINGS_GROUPS["advanced"] = {
+        "title": N_("Advanced"),
+        "settings": [
+            SettingDesc("ignore_regex", N_("Ignore file paths matching a regular expression"), ["ignore_regex"]),
+            SettingDesc("ignore_hidden_files", N_("Ignore hidden files"), ["ignore_hidden_files"]),
+            SettingDesc("recursively_add_files", N_("Include sub-folders when adding files from folder"), ["recursively_add_files"]),
+            SettingDesc(
+                "ignore_track_duration_difference_under",
+                N_("Ignore track duration difference under x seconds"),
+                ["ignore_track_duration_difference_under", "label_track_duration_diff"]
+            ),
+            SettingDesc("completeness_ignore_videos", N_("Completeness check ignore: Video tracks"), ["completeness_ignore_videos"]),
+            SettingDesc("completeness_ignore_pregap", N_("Completeness check ignore: Pregap tracks"), ["completeness_ignore_pregap"]),
+            SettingDesc("completeness_ignore_data", N_("Completeness check ignore: Data tracks"), ["completeness_ignore_data"]),
+            SettingDesc("completeness_ignore_silence", N_("Completeness check ignore: Silent tracks"), ["completeness_ignore_silence"]),
+            SettingDesc("compare_ignore_tags", N_("Tags to ignore for comparison"), ["groupBox_2"]),
         ],
     }
 
