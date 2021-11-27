@@ -137,6 +137,15 @@ class CommonCoverArtTests:
             metadata = save_and_load_metadata(self.filename, Metadata())
             self.assertEqual(0, len(metadata.images))
 
+        @skipUnlessTestfile
+        def test_cover_art_clear_tags_preserve_images_no_existing_images(self):
+            config.setting['clear_existing_tags'] = True
+            config.setting['preserve_images'] = True
+            image = CoverArtImage(data=self.pngdata, types=['front'])
+            file_save_image(self.filename, image)
+            metadata = load_metadata(self.filename)
+            self.assertEqual(image, metadata.images[0])
+
         def _cover_metadata(self):
             imgdata = self.jpegdata
             metadata = Metadata()
