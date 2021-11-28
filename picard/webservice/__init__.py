@@ -274,19 +274,20 @@ class RequestPriorityQueue:
         self._queues = defaultdict(lambda: defaultdict(deque))
         self._ratecontrol = ratecontrol
 
-    def count(self):
-        count = 0
+    def _iter_queues(self):
         for prio_queue in self._queues.values():
-            for queue in prio_queue.values():
-                count += len(queue)
-        return count
+            yield from prio_queue.values()
+
+    def count(self):
+        return sum(len(queue) for queue in self._iter_queues())
 
     def add_task(self, task, important=False):
         (hostkey, func, prio) = task
+        queue = self._queues[prio][hostkey]
         if important:
-            self._queues[prio][hostkey].appendleft(func)
+            queue.appendleft(func)
         else:
-            self._queues[prio][hostkey].append(func)
+            queue.append(func)
         return RequestTask(hostkey, func, prio)
 
     def remove_task(self, task):
