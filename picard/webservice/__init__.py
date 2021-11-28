@@ -273,13 +273,10 @@ class RequestPriorityQueue:
     def __init__(self, ratecontrol):
         self._queues = defaultdict(lambda: defaultdict(deque))
         self._ratecontrol = ratecontrol
-
-    def _iter_queues(self):
-        for prio_queue in self._queues.values():
-            yield from prio_queue.values()
+        self._count = 0
 
     def count(self):
-        return sum(len(queue) for queue in self._iter_queues())
+        return self._count
 
     def add_task(self, task, important=False):
         (hostkey, func, prio) = task
@@ -288,12 +285,14 @@ class RequestPriorityQueue:
             queue.appendleft(func)
         else:
             queue.append(func)
+        self._count += 1
         return RequestTask(hostkey, func, prio)
 
     def remove_task(self, task):
         hostkey, func, prio = task
         try:
             self._queues[prio][hostkey].remove(func)
+            self._count -= 1
         except Exception as e:
             log.debug(e)
 
@@ -313,6 +312,7 @@ class RequestPriorityQueue:
                 wait, d = self._ratecontrol.get_delay_to_next_request(hostkey)
                 if not wait:
                     queue.popleft()()
+                    self._count -= 1
                 if d < delay:
                     delay = d
         return delay
