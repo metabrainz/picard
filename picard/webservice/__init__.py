@@ -368,7 +368,6 @@ class WebService(QtCore.QObject):
         self._active_requests = {}
         self._queue = RequestPriorityQueue(ratecontrol)
         self.num_pending_web_requests = 0
-        self._last_num_pending_web_requests = -1
 
     def _init_timers(self):
         self._timer_run_next_task = QtCore.QTimer(self)
@@ -536,8 +535,8 @@ class WebService(QtCore.QObject):
 
         else:
             redirect = reply.attribute(QNetworkRequest.RedirectionTargetAttribute)
-            fromCache = reply.attribute(QNetworkRequest.SourceIsFromCacheAttribute)
-            cached = ' (CACHED)' if fromCache else ''
+            from_cache = reply.attribute(QNetworkRequest.SourceIsFromCacheAttribute)
+            cached = ' (CACHED)' if from_cache else ''
             log.debug("Received reply for %s: HTTP %d (%s) %s",
                       url,
                       response_code,
@@ -619,11 +618,9 @@ class WebService(QtCore.QObject):
         self._init_queues()
 
     def _count_pending_requests(self):
-        count = len(self._active_requests)
-        count += self._queue.count()
-        self.num_pending_web_requests = count
-        if count != self._last_num_pending_web_requests:
-            self._last_num_pending_web_requests = count
+        count = len(self._active_requests) + self._queue.count()
+        if count != self.num_pending_web_requests:
+            self.num_pending_web_requests = count
             self.tagger.tagger_stats_changed.emit()
         if count:
             self._timer_count_pending_requests.start(COUNT_REQUESTS_DELAY_MS)
