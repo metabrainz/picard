@@ -260,6 +260,64 @@ class WSPostRequest(WSRequest):
         super()._init_headers()
 
 
+class RequestTask(namedtuple('RequestTask', 'hostkey func priority')):
+
+    @staticmethod
+    def from_request(request, func):
+        # priority is a boolean
+        return RequestTask(request.get_host_key(), func, int(request.priority))
+
+
+class RequestPriorityQueue:
+
+    def __init__(self, ratecontrol):
+        self._queues = defaultdict(lambda: defaultdict(deque))
+        self._ratecontrol = ratecontrol
+        self._count = 0
+
+    def count(self):
+        return self._count
+
+    def add_task(self, task, important=False):
+        (hostkey, func, prio) = task
+        queue = self._queues[prio][hostkey]
+        if important:
+            queue.appendleft(func)
+        else:
+            queue.append(func)
+        self._count += 1
+        return RequestTask(hostkey, func, prio)
+
+    def remove_task(self, task):
+        hostkey, func, prio = task
+        try:
+            self._queues[prio][hostkey].remove(func)
+            self._count -= 1
+        except Exception as e:
+            log.debug(e)
+
+    def run_ready_tasks(self):
+        delay = sys.maxsize
+        for prio in sorted(self._queues.keys(), reverse=True):
+            prio_queue = self._queues[prio]
+            if not prio_queue:
+                del(self._queues[prio])
+                continue
+            for hostkey in sorted(prio_queue.keys(),
+                                  key=self._ratecontrol.current_delay):
+                queue = self._queues[prio][hostkey]
+                if not queue:
+                    del(self._queues[prio][hostkey])
+                    continue
+                wait, d = self._ratecontrol.get_delay_to_next_request(hostkey)
+                if not wait:
+                    queue.popleft()()
+                    self._count -= 1
+                if d < delay:
+                    delay = d
+        return delay
+
+
 class WebService(QtCore.QObject):
 
     PARSERS = dict()
@@ -308,9 +366,8 @@ class WebService(QtCore.QObject):
 
     def _init_queues(self):
         self._active_requests = {}
-        self._queues = defaultdict(lambda: defaultdict(deque))
+        self._queue = RequestPriorityQueue(ratecontrol)
         self.num_pending_web_requests = 0
-        self._last_num_pending_web_requests = -1
 
     def _init_timers(self):
         self._timer_run_next_task = QtCore.QTimer(self)
@@ -478,8 +535,8 @@ class WebService(QtCore.QObject):
 
         else:
             redirect = reply.attribute(QNetworkRequest.RedirectionTargetAttribute)
-            fromCache = reply.attribute(QNetworkRequest.SourceIsFromCacheAttribute)
-            cached = ' (CACHED)' if fromCache else ''
+            from_cache = reply.attribute(QNetworkRequest.SourceIsFromCacheAttribute)
+            cached = ' (CACHED)' if from_cache else ''
             log.debug("Received reply for %s: HTTP %d (%s) %s",
                       url,
                       response_code,
@@ -561,45 +618,21 @@ class WebService(QtCore.QObject):
         self._init_queues()
 
     def _count_pending_requests(self):
-        count = len(self._active_requests)
-        for prio_queue in self._queues.values():
-            for queue in prio_queue.values():
-                count += len(queue)
-        self.num_pending_web_requests = count
-        if count != self._last_num_pending_web_requests:
-            self._last_num_pending_web_requests = count
+        count = len(self._active_requests) + self._queue.count()
+        if count != self.num_pending_web_requests:
+            self.num_pending_web_requests = count
             self.tagger.tagger_stats_changed.emit()
         if count:
             self._timer_count_pending_requests.start(COUNT_REQUESTS_DELAY_MS)
 
     def _run_next_task(self):
-        delay = sys.maxsize
-        for prio in sorted(self._queues.keys(), reverse=True):
-            prio_queue = self._queues[prio]
-            if not prio_queue:
-                del(self._queues[prio])
-                continue
-            for hostkey in sorted(prio_queue.keys(),
-                                  key=ratecontrol.current_delay):
-                queue = self._queues[prio][hostkey]
-                if not queue:
-                    del(self._queues[prio][hostkey])
-                    continue
-                wait, d = ratecontrol.get_delay_to_next_request(hostkey)
-                if not wait:
-                    queue.popleft()()
-                if d < delay:
-                    delay = d
+        delay = self._queue.run_ready_tasks()
         if delay < sys.maxsize:
             self._timer_run_next_task.start(delay)
 
     def add_task(self, func, request):
-        hostkey = request.get_host_key()
-        prio = int(request.priority)  # priority is a boolean
-        if request.important:
-            self._queues[prio][hostkey].appendleft(func)
-        else:
-            self._queues[prio][hostkey].append(func)
+        task = RequestTask.from_request(request, func)
+        self._queue.add_task(task, request.important)
 
         if not self._timer_run_next_task.isActive():
             self._timer_run_next_task.start(0)
@@ -607,19 +640,15 @@ class WebService(QtCore.QObject):
         if not self._timer_count_pending_requests.isActive():
             self._timer_count_pending_requests.start(0)
 
-        return (hostkey, func, prio)
+        return task
 
     def add_request(self, request):
         return self.add_task(partial(self._start_request, request), request)
 
     def remove_task(self, task):
-        hostkey, func, prio = task
-        try:
-            self._queues[prio][hostkey].remove(func)
-            if not self._timer_count_pending_requests.isActive():
-                self._timer_count_pending_requests.start(0)
-        except Exception as e:
-            log.debug(e)
+        self._queue.remove_task(task)
+        if not self._timer_count_pending_requests.isActive():
+            self._timer_count_pending_requests.start(0)
 
     @classmethod
     def add_parser(cls, response_type, mimetype, parser):
