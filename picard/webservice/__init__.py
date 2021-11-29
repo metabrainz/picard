@@ -301,13 +301,13 @@ class RequestPriorityQueue:
         for prio in sorted(self._queues.keys(), reverse=True):
             prio_queue = self._queues[prio]
             if not prio_queue:
-                del(self._queues[prio])
+                del self._queues[prio]
                 continue
             for hostkey in sorted(prio_queue.keys(),
                                   key=self._ratecontrol.current_delay):
                 queue = self._queues[prio][hostkey]
                 if not queue:
-                    del(self._queues[prio][hostkey])
+                    del self._queues[prio][hostkey]
                     continue
                 wait, d = self._ratecontrol.get_delay_to_next_request(hostkey)
                 if not wait:
