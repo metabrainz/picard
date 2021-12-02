@@ -1,3 +1,23 @@
+# Version 2.7.0b3 - 2021-12-02
+
+## Bugfixes
+
+- [PICARD-2320](https://tickets.metabrainz.org/browse/PICARD-2320) - macOS: Picard 2.6.4 segfault upon authorization/login prompt
+- [PICARD-2328](https://tickets.metabrainz.org/browse/PICARD-2328) - Crash on startup with Python 3.10
+- [PICARD-2329](https://tickets.metabrainz.org/browse/PICARD-2329) - Changing the enabled options doesn't update the naming script
+- [PICARD-2330](https://tickets.metabrainz.org/browse/PICARD-2330) - Changes do not show when script editor is closed and re-opened from Options dialog
+- [PICARD-2342](https://tickets.metabrainz.org/browse/PICARD-2342) - Saving cover images to WMA or MP4 files fails if "clear existing tags" and "keep embedded images" are active
+
+## Improvements
+
+- [PICARD-2325](https://tickets.metabrainz.org/browse/PICARD-2325) - Show MusicBrainz login errors
+- [PICARD-2327](https://tickets.metabrainz.org/browse/PICARD-2327) - macOS: Treat files with hidden attribute as hidden files
+- [PICARD-2334](https://tickets.metabrainz.org/browse/PICARD-2334) - Have script editor consistently save to configuration
+- [PICARD-2339](https://tickets.metabrainz.org/browse/PICARD-2339) - Improve clustering performance
+- [PICARD-2340](https://tickets.metabrainz.org/browse/PICARD-2340) - Use configured name for Various Artists for clusters with unknown artist name
+- [PICARD-2344](https://tickets.metabrainz.org/browse/PICARD-2344) - Add more settings to option profiles
+
+
 # Version 2.7.0b2 - 2021-11-09
 
 ## Bugfixes
