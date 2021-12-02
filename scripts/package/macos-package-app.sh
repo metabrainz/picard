@@ -93,8 +93,25 @@ mkdir staging
 mv "$APP_BUNDLE" staging/
 # Offer a link to /Applications for easy installation
 ln -s /Applications staging/Applications
-hdiutil create -volname "MusicBrainz Picard $VERSION" \
-  -srcfolder staging -ov -format UDBZ "$DMG"
+
+set +e
+# workaround hdiutil: create failed - Resource busy
+ATTEMPTS=5
+DELAY=5
+for i in $(seq $ATTEMPTS); do
+    hdiutil create -verbose -volname "MusicBrainz Picard $VERSION" \
+      -srcfolder staging -ov -format UDBZ "$DMG"
+    ret=$?
+    [ $ret -eq 0 ] && break
+    echo "hdutil failed with exit code $ret ($i/$ATTEMPTS), retrying in $DELAY seconds"
+    sleep $DELAY
+done
+if [ $ret -ne 0 ]; then
+  echo "hdiutil failed too many times, exiting..."
+  exit $ret
+fi
+set -e
+
 [ "$CODESIGN" = '1' ] && codesign --verify --verbose \
   --keychain "$KEYCHAIN_PATH" --sign "$CERTIFICATE_NAME" "$DMG"
 md5 -r "$DMG"
