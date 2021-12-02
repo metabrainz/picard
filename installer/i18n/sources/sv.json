@@ -1,8 +1,8 @@
 {
-    "MsgAlreadyInstalled": "${PRODUCT_NAME} is already installed and must be uninstalled before installing this upgrade to version ${PRODUCT_VERSION}. \n\nClick \"OK\" to proceed or \"Cancel\" to cancel this upgrade.",
-    "MsgApplicationRunning": "The application ${PRODUCT_NAME} is running. Please close it and try again.",
+    "MsgAlreadyInstalled": "${PRODUCT_NAME} är redan installerat och måste avinstalleras innan du installerar denna uppgradering till version ${PRODUCT_VERSION}. \n\nKlicka på \"OK\" för att fortsätta eller \"Avbryt\" för att avbryta uppgraderingen.",
+    "MsgApplicationRunning": "Appen ${PRODUCT_NAME} körs. Vänligen stäng den och försök igen.",
     "MsgRequires64Bit": "Den här versionen av ${PRODUCT_NAME} kräver en 64-bitars version av Windows-systemet.",
-    "MuiDescriptionRequired": "Installs ${PRODUCT_NAME} along with the necessary files for it run.",
+    "MuiDescriptionRequired": "Installerar ${PRODUCT_NAME} tillsammans med de nödvändiga filerna för att den ska kunna köras.",
     "MuiDescriptionLang": "Installerar översättningar av ${PRODUCT_NAME} till olika språk.",
     "MuiDescriptionShortcuts": "Installerar en genväg för att starta ${PRODUCT_NAME}.",
     "MuiDescriptionDesktop": "Installerar en genväg på skrivbordet.",
