@@ -14,78 +14,58 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-10-21 18:42+0200\n"
-"PO-Revision-Date: 2021-10-21 18:25+0000\n"
+"POT-Creation-Date: 2021-11-26 12:34+0100\n"
+"PO-Revision-Date: 2021-11-26 12:24+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.9.0\n"
 "Language: he\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;\n"
 
-#: picard/album.py:132
+#: picard/album.py:140
 msgid "Unmatched Files"
 msgstr "קבצים לא תואמים"
 
-#: picard/album.py:289
-#, python-format
-msgid "[could not load album %s]"
-msgstr "[לא ניתן לטעון אלבום %s]"
-
-#: picard/album.py:413
+#: picard/album.py:416
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
 msgstr "אלבום %(id)s נטען %(artist)s - %(album)s"
 
-#: picard/album.py:464
+#: picard/album.py:467
 #, python-format
 msgid "Loading album %(id)s ..."
 msgstr "טעינת אלבום %(id)s‮..."
 
-#: picard/album.py:468
+#: picard/album.py:651
 msgid "[loading album information]"
 msgstr "[טעינת נתוני אלבום]"
 
-#: picard/cluster.py:272
+#: picard/album.py:653
 #, python-format
-msgid "No matching releases for cluster %(album)s"
-msgstr "אין הוצאות תואמות לאשכול %(album)s"
+msgid "[could not load album %s]"
+msgstr "[לא ניתן לטעון אלבום %s]"
 
-#: picard/cluster.py:274
+#: picard/cluster.py:258
 #, python-format
 msgid "Cluster %(album)s identified!"
 msgstr "זוהו %(album)sאשכולות!"
 
-#: picard/cluster.py:296
+#: picard/cluster.py:261
+#, python-format
+msgid "No matching releases for cluster %(album)s"
+msgstr "אין הוצאות תואמות לאשכול %(album)s"
+
+#: picard/cluster.py:280
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s..."
 msgstr "חיפוש אשכול %(album)sבנתוני־על..."
 
-#: picard/cluster.py:336 picard/cluster.py:577
-#, python-format
-msgid "Clustering - step %(step)d/3: %(cluster_type)s (%(update)d%%)"
-msgstr "אשכול - שלב %(step)d/3: %(cluster_type)s (%(update)d%%)"
-
-#: picard/cluster.py:387
+#: picard/cluster.py:328
 msgid "Unclustered Files"
 msgstr "קבצים לא מאוגדים באשכול"
-
-#: picard/cluster.py:512
-msgid "Metadata Extraction"
-msgstr "הרחבת נתוני־על"
-
-#: picard/cluster.py:513 picard/ui/cdlookup.py:72 picard/ui/itemviews.py:156
-#: picard/ui/mainwindow.py:967 picard/ui/searchdialog/album.py:152
-#: picard/ui/searchdialog/track.py:65 picard/util/tags.py:41
-msgid "Artist"
-msgstr "אמן"
-
-#: picard/cluster.py:514 picard/ui/cdlookup.py:72 picard/ui/itemviews.py:159
-#: picard/ui/mainwindow.py:966 picard/util/tags.py:38
-msgid "Album"
-msgstr "אלבום"
 
 #: picard/collection.py:78
 #, python-format
@@ -115,55 +95,64 @@ msgstr "%(error)sשגיאות בעת הסגלת אוספים: "
 msgid "Error loading collections: %(error)s"
 msgstr "%(error)sשגיאות בטעינת אוספים: "
 
-#: picard/config_upgrade.py:81 picard/config_upgrade.py:94
+#: picard/config_upgrade.py:82 picard/config_upgrade.py:95
 msgid "Various Artists file naming scheme removal"
 msgstr "הסרת סְכֶמָת שמות קבצים אמנים שונים"
 
-#: picard/config_upgrade.py:82
+#: picard/config_upgrade.py:83
 msgid ""
 "The separate file naming scheme for various artists albums has been removed in this version of Picard.\n"
 "Your file naming scheme has automatically been merged with that of single artist albums."
 msgstr "סְכֶמָת שמות קבצים יחודית עבור אלבומים בעלי אמנים שונים הוסרה בגרסה זו של פיקארד.\nסְכֶמָת שמות קבצים הקודמת מוזגה באופן אוטומטי עם זו של אלבומי אמנים בודדים."
 
-#: picard/config_upgrade.py:95
+#: picard/config_upgrade.py:96
 msgid ""
 "The separate file naming scheme for various artists albums has been removed in this version of Picard.\n"
 "You currently do not use this option, but have a separate file naming scheme defined.\n"
 "Do you want to remove it or merge it with your file naming scheme for single artist albums?"
 msgstr "סְכֶמָת שמות קבצים ייחודית עבור אלבומים בעלי אמנים שונים הוסרה בגרסה זו של פיקארד.\nלעת עתה לא נעשה באפשרות זו, אך סְכֶמָת שמות קבצים ייחודית הוגדרה\nהאם להסירה או למזגה עם סְכֶמָת שמות הקבצים עבור אלבומי אמנים בודדים?"
 
-#: picard/config_upgrade.py:102
+#: picard/config_upgrade.py:103
 msgid "Merge"
 msgstr "מיזוג"
 
-#: picard/config_upgrade.py:103 picard/ui/metadatabox.py:421
+#: picard/config_upgrade.py:104 picard/ui/metadatabox.py:424
 #: picard/ui/options/interface.py:113 picard/ui/ui_options_interface.py:180
 msgid "Remove"
 msgstr "הסרה"
 
-#: picard/config_upgrade.py:414
+#: picard/config_upgrade.py:415
 msgid "Primary file naming script"
 msgstr "תסריט שמות קבצים עיקרי"
 
-#: picard/file.py:792
+#: picard/file.py:805
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "אין רצועות תואמות מעבר לסף לקובץ %(filename)s"
 
-#: picard/file.py:794
+#: picard/file.py:807
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "קובץ %(filename)s זוהה!"
 
-#: picard/file.py:806
+#: picard/file.py:819
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr " אין רצועות תואמות לקובץ '%(filename)s'"
 
-#: picard/file.py:838
+#: picard/file.py:851
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr "חיפוש  קובץ %(filename)s בנתוני־על..."
+
+#: picard/oauth.py:238 picard/oauth.py:262
+msgid "Unexpected authentication error"
+msgstr ""
+
+#: picard/oauth.py:271
+#, python-format
+msgid "Unexpected request error (HTTP code %s)"
+msgstr ""
 
 #: picard/pluginmanager.py:226
 #, python-format
@@ -200,225 +189,225 @@ msgstr "מִתְקָע %r:"
 msgid "Error loading plugins list: %(error)s"
 msgstr "‮שגיאה בטעינת רשימת מִתְקָעים: %(error)s"
 
-#: picard/profile.py:41 picard/ui/options/metadata.py:78
+#: picard/profile.py:45 picard/ui/options/metadata.py:78
 #: picard/ui/ui_options_metadata.py:125
 msgid "Metadata"
 msgstr "נתוני־על"
 
-#: picard/profile.py:43
+#: picard/profile.py:47
 msgid "Various Artists name"
 msgstr "שמות אמנים שונים"
 
-#: picard/profile.py:44
+#: picard/profile.py:48
 msgid "Non-album tracks name"
 msgstr "שמות רצועות ללא אלבום"
 
-#: picard/profile.py:45
+#: picard/profile.py:49
 msgid "Translate artist names"
 msgstr "תרגום שמות אמן"
 
-#: picard/profile.py:46
+#: picard/profile.py:50
 msgid "Translation locales"
 msgstr ""
 
-#: picard/profile.py:47
+#: picard/profile.py:51
 msgid "Translate artist names exception"
 msgstr "החרגת תרגום שמות אמן"
 
-#: picard/profile.py:48
+#: picard/profile.py:52
 msgid "Translation script exceptions"
 msgstr "החרגות תרגום תסריט"
 
-#: picard/profile.py:49 picard/ui/ui_options_metadata.py:133
+#: picard/profile.py:53 picard/ui/ui_options_metadata.py:133
 msgid "Use release relationships"
 msgstr "שימוש קשרי־גומלין הוצאה"
 
-#: picard/profile.py:50 picard/ui/ui_options_metadata.py:134
+#: picard/profile.py:54 picard/ui/ui_options_metadata.py:134
 msgid "Use track relationships"
 msgstr "שימוש קשרי־גומלין רצוע"
 
-#: picard/profile.py:51 picard/ui/ui_options_metadata.py:132
+#: picard/profile.py:55 picard/ui/ui_options_metadata.py:132
 msgid "Convert Unicode punctuation characters to ASCII"
 msgstr "‮המרת תווי פיסוק  ליוניקוד ASCII"
 
-#: picard/profile.py:52 picard/ui/ui_options_metadata.py:130
+#: picard/profile.py:56 picard/ui/ui_options_metadata.py:130
 msgid "Use standardized artist names"
 msgstr "שימוש בשמות אמן מְתוּקנָנים"
 
-#: picard/profile.py:53 picard/ui/ui_options_metadata.py:131
+#: picard/profile.py:57 picard/ui/ui_options_metadata.py:131
 msgid "Use standardized instrument and vocal credits"
 msgstr "שימוש בשמות כלים וקולות מְתוּקנָנים"
 
-#: picard/profile.py:54 picard/ui/ui_options_metadata.py:135
+#: picard/profile.py:58 picard/ui/ui_options_metadata.py:135
 msgid "Guess track number and title from filename if empty"
 msgstr "ניחוש מספר רצועה ושם רצועה, משם הקובץ, במידה ואלו חסרים"
 
-#: picard/profile.py:59 picard/ui/options/tags.py:46
+#: picard/profile.py:63 picard/ui/options/tags.py:46
 msgid "Tags"
 msgstr "תגים"
 
-#: picard/profile.py:61
+#: picard/profile.py:65
 msgid "Don't write tags"
 msgstr "לא לכתוב תגים"
 
-#: picard/profile.py:62 picard/ui/ui_options_tags.py:68
+#: picard/profile.py:66 picard/ui/ui_options_tags.py:68
 msgid "Preserve timestamps of tagged files"
 msgstr "שימור חותמות זמן בקבצים מתוייגים"
 
-#: picard/profile.py:63 picard/ui/ui_options_tags.py:70
+#: picard/profile.py:67 picard/ui/ui_options_tags.py:70
 msgid "Clear existing tags"
 msgstr "מחיקת תגים קיימים"
 
-#: picard/profile.py:64 picard/ui/ui_options_tags.py:71
+#: picard/profile.py:68 picard/ui/ui_options_tags.py:71
 msgid "Keep embedded images when clearing tags"
 msgstr "שמירת תמונות משובצות בעת ניקוי תגים"
 
-#: picard/profile.py:65 picard/ui/ui_options_tags.py:72
+#: picard/profile.py:69 picard/ui/ui_options_tags.py:72
 msgid "Remove ID3 tags from FLAC files"
 msgstr "‮הסרת תגי 3DI מקבצי CALF"
 
-#: picard/profile.py:66 picard/ui/ui_options_tags.py:73
+#: picard/profile.py:70 picard/ui/ui_options_tags.py:73
 msgid "Remove APEv2 tags from MP3 files"
 msgstr "‮הסרת תגי 2vEPA מקבצי 3PM"
 
-#: picard/profile.py:67
+#: picard/profile.py:71
 msgid "Preserved tags list"
 msgstr "רשימת 'תגים שמורים'"
 
-#: picard/profile.py:68
+#: picard/profile.py:72
 msgid "Save APEv2 tags to AAC"
 msgstr "שמירת תגי APEv2 ל־AAC"
 
-#: picard/profile.py:69 picard/ui/ui_options_tags_compatibility_aac.py:49
+#: picard/profile.py:73 picard/ui/ui_options_tags_compatibility_aac.py:49
 msgid "Remove APEv2 tags from AAC files"
 msgstr "‮הסרת תגי 2vEPA מקבצי CAA"
 
-#: picard/profile.py:70
+#: picard/profile.py:74
 msgid "Save APEv2 tags to AC3"
 msgstr "שמירת תגי APEv2 ל־AC3"
 
-#: picard/profile.py:71 picard/ui/ui_options_tags_compatibility_ac3.py:49
+#: picard/profile.py:75 picard/ui/ui_options_tags_compatibility_ac3.py:49
 msgid "Remove APEv2 tags from AC3 files"
 msgstr "‮הסרת תגי 2vEPA מקבצי 3CA"
 
-#: picard/profile.py:72
+#: picard/profile.py:76
 msgid "Write ID3v1 tags"
 msgstr "כתיבת תגי ID3v1"
 
-#: picard/profile.py:73
+#: picard/profile.py:77
 msgid "Write ID3v2.3 tags"
 msgstr "כתיבת תגי ID3v2.3"
 
-#: picard/profile.py:74 picard/ui/ui_options_tags_compatibility_id3.py:119
+#: picard/profile.py:78 picard/ui/ui_options_tags_compatibility_id3.py:119
 msgid "ID3v2 text encoding"
 msgstr "קידוד טקסט ב־ID3V2"
 
-#: picard/profile.py:75
+#: picard/profile.py:79
 msgid "ID3v2.3 join character"
 msgstr "איחוד תווי ID3v2.3"
 
-#: picard/profile.py:76 picard/ui/ui_options_tags_compatibility_id3.py:125
+#: picard/profile.py:80 picard/ui/ui_options_tags_compatibility_id3.py:125
 msgid "Save iTunes compatible grouping and work"
 msgstr "שמירת יצירות וקיבוץ תואמי iTunes"
 
-#: picard/profile.py:77
+#: picard/profile.py:81
 msgid "Write RIFF INFO tags to WAVE files"
 msgstr "כתיבת תגי RIFF INFO מקבצי WAVE"
 
-#: picard/profile.py:78 picard/ui/ui_options_tags_compatibility_wave.py:59
+#: picard/profile.py:82 picard/ui/ui_options_tags_compatibility_wave.py:59
 msgid "Remove existing RIFF INFO tags from WAVE files"
 msgstr "‮הסרת תגי RIFF INFO מקבצי WAVE"
 
-#: picard/profile.py:79 picard/ui/ui_options_tags_compatibility_wave.py:60
+#: picard/profile.py:83 picard/ui/ui_options_tags_compatibility_wave.py:60
 msgid "RIFF INFO text encoding"
 msgstr "‮קידוד מלל RIFF INFO"
 
-#: picard/profile.py:84 picard/ui/options/cover.py:50
+#: picard/profile.py:88 picard/ui/options/cover.py:51
 msgid "Cover Art"
 msgstr "תמונת עטיפה"
 
-#: picard/profile.py:86 picard/ui/ui_options_cover.py:95
+#: picard/profile.py:90 picard/ui/ui_options_cover.py:95
 msgid "Embed cover images into tags"
 msgstr "שבוץ תמונות עטיפה בתגים"
 
-#: picard/profile.py:87 picard/ui/ui_options_cover.py:96
+#: picard/profile.py:91 picard/ui/ui_options_cover.py:96
 msgid "Embed only a single front image"
 msgstr "שבוץ תמונה קדמית יחידה בלבד"
 
-#: picard/profile.py:88 picard/ui/ui_options_cover.py:97
+#: picard/profile.py:92 picard/ui/ui_options_cover.py:97
 msgid "Save cover images as separate files"
 msgstr "שמירת תמונות עטיפה כקבצים נפרדים"
 
-#: picard/profile.py:89
+#: picard/profile.py:93
 msgid "File name for images"
 msgstr "שם קובץ לתמונות"
 
-#: picard/profile.py:90
+#: picard/profile.py:94
 msgid "Overwrite existing image files"
 msgstr "כתיבה על קבצי תמונה קיימים"
 
-#: picard/profile.py:91 picard/ui/ui_options_cover.py:100
+#: picard/profile.py:95 picard/ui/ui_options_cover.py:100
 msgid "Save only a single front image as separate file"
 msgstr "שמירת תמונה קדמית יחידה בלבד כקובץ נפרד"
 
-#: picard/profile.py:92 picard/ui/ui_options_cover.py:101
+#: picard/profile.py:96 picard/ui/ui_options_cover.py:101
 msgid ""
 "Always use the primary image type as the file name for non-front images"
 msgstr "שימוש בסוג התמונה הראשי כשם הקובץ של התמונות הקדמיות לתמונות שאינן תמונות קדמיות."
 
-#: picard/profile.py:93
+#: picard/profile.py:97
 msgid "Cover art providers"
 msgstr "מקורות תמונת עטיפה"
 
-#: picard/profile.py:98 picard/ui/options/renaming.py:76
+#: picard/profile.py:102 picard/ui/options/renaming.py:76
 msgid "File Naming"
 msgstr "קביעת שמות קבצים"
 
-#: picard/profile.py:100 picard/ui/ui_options_renaming.py:161
+#: picard/profile.py:104 picard/ui/ui_options_renaming.py:161
 msgid "Windows compatibility"
 msgstr "‮תאימות ל ‭וינדוס "
 
-#: picard/profile.py:101 picard/ui/ui_options_renaming.py:160
+#: picard/profile.py:105 picard/ui/ui_options_renaming.py:160
 msgid "Replace non-ASCII characters"
 msgstr "‮החלפת תווים שאינם ‭ASCII"
 
-#: picard/profile.py:102
+#: picard/profile.py:106
 msgid "Rename files"
 msgstr "שינוי שמות קבצים"
 
-#: picard/profile.py:103
+#: picard/profile.py:107
 msgid "Move files"
 msgstr "העברת קבצים"
 
-#: picard/profile.py:104
+#: picard/profile.py:108
 msgid "Destination directory"
 msgstr "מחיצת יעד:"
 
-#: picard/profile.py:105
+#: picard/profile.py:109
 msgid "Move additional files"
 msgstr "העברת קבצים נוספים"
 
-#: picard/profile.py:106
+#: picard/profile.py:110
 msgid "Additional file patterns"
 msgstr "דפוסי קבץ נוספים"
 
-#: picard/profile.py:107 picard/ui/ui_options_renaming.py:158
+#: picard/profile.py:111 picard/ui/ui_options_renaming.py:158
 msgid "Delete empty directories"
 msgstr "מחיקת ספריות ריקות"
 
-#: picard/profile.py:108
+#: picard/profile.py:112
 msgid "Selected file naming script"
 msgstr "תסריט שמות־קבצים שנבחר"
 
-#: picard/profile.py:113 picard/ui/options/scripting.py:99
+#: picard/profile.py:117 picard/ui/options/scripting.py:99
 msgid "Scripting"
 msgstr " תַּסְרוט"
 
-#: picard/profile.py:115
+#: picard/profile.py:119
 msgid "Enable tagger scripts"
 msgstr "אפשור תַּסְרִיטי תיוג"
 
-#: picard/profile.py:116
+#: picard/profile.py:120
 msgid "Tagger scripts"
 msgstr " תַּסְרִיטי תיוג"
 
@@ -455,24 +444,24 @@ msgstr "[אין ברקוד]"
 msgid "[no release info]"
 msgstr "[אין פרטי הוצאה]"
 
-#: picard/tagger.py:321 picard/ui/ui_options_general.py:166
+#: picard/tagger.py:318 picard/ui/ui_options_general.py:172
 msgid "MusicBrainz Account"
 msgstr "‮חשבון מוזיקבריינז"
 
-#: picard/tagger.py:322
+#: picard/tagger.py:319
 msgid "Authorization code:"
 msgstr "קוד אישור:"
 
-#: picard/tagger.py:798
+#: picard/tagger.py:795
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "הסרת אלבום/ים %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:816
+#: picard/tagger.py:813
 msgid "CD Lookup Error"
 msgstr "שגיאת חיפוש תקליטור"
 
-#: picard/tagger.py:817
+#: picard/tagger.py:814
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -480,31 +469,31 @@ msgid ""
 "%s"
 msgstr "שגיאה בקריאת תקליטור:\n\n%s"
 
-#: picard/track.py:375
+#: picard/track.py:392
 msgid "[loading recording information]"
 msgstr "[טעינת נתוני הקלטה]"
 
-#: picard/track.py:411
+#: picard/track.py:428
 #, python-format
 msgid "[could not load recording %s]"
 msgstr "[לא ניתן לטעון הקלטה %s]"
 
-#: picard/acoustid/__init__.py:86
+#: picard/acoustid/__init__.py:93
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
 msgstr "שגיאת רשת AcoustID בחיפוש '%(filename)s'!"
 
-#: picard/acoustid/__init__.py:124
+#: picard/acoustid/__init__.py:142
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
 msgstr "חיפוש AcoustID נכשל עבור '%(filename)s'!"
 
-#: picard/acoustid/__init__.py:149
+#: picard/acoustid/__init__.py:165
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
 msgstr " לא נמצאו תוצאות חיפוש AcoustID לקובץ '%(filename)s'"
 
-#: picard/acoustid/__init__.py:160
+#: picard/acoustid/__init__.py:176
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
 msgstr " חיפוש טביעת אצבע לקובץ '%(filename)s'..."
@@ -536,27 +525,27 @@ msgstr " שגור AcoustIDs..."
 msgid "AcoustID submission failed with error '%(error)s': %(message)s"
 msgstr "שגור AcoustID כשלה עם שגיאה '%(error)s': %(message)s"
 
-#: picard/browser/addrelease.py:143
+#: picard/browser/addrelease.py:144
 msgid "Add cluster as release"
 msgstr "הוספת אשכול כהוצאה"
 
-#: picard/browser/addrelease.py:145
+#: picard/browser/addrelease.py:146
 msgid "Add cluster as release..."
 msgstr "הוספת אשכול כהוצאה..."
 
-#: picard/browser/addrelease.py:152
+#: picard/browser/addrelease.py:153
 msgid "Add file as release"
 msgstr "הוספת קובץ כהוצאה"
 
-#: picard/browser/addrelease.py:154
+#: picard/browser/addrelease.py:155
 msgid "Add file as release..."
 msgstr "הוספת קובץ כהוצאה..."
 
-#: picard/browser/addrelease.py:161
+#: picard/browser/addrelease.py:162
 msgid "Add file as recording"
 msgstr "הוספת קובץ כהקלטה"
 
-#: picard/browser/addrelease.py:163
+#: picard/browser/addrelease.py:164
 msgid "Add file as recording..."
 msgstr "הוספת קובץ כהקלטה..."
 
@@ -573,25 +562,23 @@ msgid "Stable, Beta and Dev releases"
 msgstr "גרסה יציבה, גרסת בטא וגרסת פתוח"
 
 #: picard/const/__init__.py:189
-#, python-format
-msgid "My script %d"
-msgstr "התַּסְרִיט שלי %d"
-
-#: picard/const/__init__.py:190
 msgid "My script"
 msgstr "התַּסְרִיט שלי"
 
-#: picard/const/__init__.py:192
-#, python-format
-msgid "My profile %d"
-msgstr "%d פרופיל שלי"
-
-#: picard/const/__init__.py:193
+#: picard/const/__init__.py:191
 msgid "My profile"
 msgstr "פרופיל שלי"
 
+#: picard/const/__init__.py:192
+msgid "(copy)"
+msgstr ""
+
+#: picard/const/__init__.py:193
+msgid "{title} ({count})"
+msgstr ""
+
 #: picard/const/languages.py:29 picard/const/locales.py:41
-#: picard/const/scripts.py:27
+#: picard/const/scripts.py:28
 msgid "Arabic"
 msgstr "ערבית"
 
@@ -616,7 +603,7 @@ msgid "German (Switzerland)"
 msgstr "גרמנית (שוויץ)"
 
 #: picard/const/languages.py:38 picard/const/locales.py:189
-#: picard/const/locales.py:190 picard/const/scripts.py:24
+#: picard/const/locales.py:190 picard/const/scripts.py:25
 msgid "Greek"
 msgstr "ייונית"
 
@@ -661,7 +648,7 @@ msgid "Galician"
 msgstr "גליציאנית"
 
 #: picard/const/languages.py:53 picard/const/locales.py:209
-#: picard/const/scripts.py:28
+#: picard/const/scripts.py:29
 msgid "Hebrew"
 msgstr "עברית"
 
@@ -989,7 +976,7 @@ msgstr "בורמזית (מיאנמר [בורמה])"
 msgid "Catalan (Spain)"
 msgstr "קטלנית (ספרד)"
 
-#: picard/const/locales.py:89 picard/const/scripts.py:29
+#: picard/const/locales.py:89 picard/const/scripts.py:30
 msgid "Chinese"
 msgstr "סינית"
 
@@ -2225,7 +2212,7 @@ msgstr "טלוגו"
 msgid "Telugu (India)"
 msgstr "טלוגו (הודו)"
 
-#: picard/const/locales.py:436 picard/const/scripts.py:33
+#: picard/const/locales.py:436 picard/const/scripts.py:34
 msgid "Thai"
 msgstr "תאית"
 
@@ -2441,23 +2428,23 @@ msgstr "זולו"
 msgid "Zulu (South Africa)"
 msgstr "זולו (דרום אפריקה)"
 
-#: picard/const/scripts.py:25
+#: picard/const/scripts.py:26
 msgid "Cyrillic"
 msgstr "קירילית"
 
-#: picard/const/scripts.py:26
+#: picard/const/scripts.py:27
 msgid "Latin"
 msgstr "לטינית"
 
-#: picard/const/scripts.py:30
+#: picard/const/scripts.py:31
 msgid "Hangul"
 msgstr "האנגול"
 
-#: picard/const/scripts.py:31
+#: picard/const/scripts.py:32
 msgid "Hiragana"
 msgstr "היראגנא"
 
-#: picard/const/scripts.py:32
+#: picard/const/scripts.py:33
 msgid "Katakana"
 msgstr "קאתקנדה"
 
@@ -2472,7 +2459,7 @@ msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
 msgstr " הורדת תמונת עטיפה מסוג '%(type)s' עבור %(albumid)s מ־ %(host)s..."
 
-#: picard/coverart/utils.py:36
+#: picard/coverart/utils.py:38
 msgid "Unknown"
 msgstr "לא ידוע"
 
@@ -2531,7 +2518,7 @@ msgstr "ה&חרגת הכל"
 msgid "C&lear all"
 msgstr "נ&יקוי הכל"
 
-#: picard/coverart/providers/caa.py:326 picard/ui/options/dialog.py:127
+#: picard/coverart/providers/caa.py:326 picard/ui/options/dialog.py:128
 msgid "Restore &Defaults"
 msgstr "שחזור &ברירת מחדל"
 
@@ -2555,26 +2542,26 @@ msgstr "קבצים מקומיים"
 msgid "Allowed Cover Art URLs"
 msgstr "מעני url תמונת עטיפה, מאפשרים"
 
-#: picard/script/__init__.py:138
+#: picard/script/__init__.py:141
 msgid ""
 "This preset example file naming script does not require any special "
 "settings, tagging scripts or plugins."
 msgstr "קובץ דוגמת תסריט שמות מוגדר מראש זה, אינו דורש הגדרות מיוחדות, תיוג תסריטים או מתקעים."
 
-#: picard/script/__init__.py:142
+#: picard/script/__init__.py:145
 #, python-format
 msgid "Preset %d: %s"
 msgstr "הגדרה מראש %d %s"
 
-#: picard/script/__init__.py:146
+#: picard/script/__init__.py:149
 msgid "Default file naming script"
 msgstr "תסריט שמות קבצים ברירת מחדל"
 
-#: picard/script/__init__.py:160
+#: picard/script/__init__.py:163
 msgid "[album artist]/[album]/[track #]. [title]"
 msgstr "[album artist]/[album]/[track #]. [title]"
 
-#: picard/script/__init__.py:176
+#: picard/script/__init__.py:179
 msgid "[album artist]/[album]/[disc and track #] [artist] - [title]"
 msgstr "[album artist]/[album]/[disc and track #] [artist] - [title]"
 
@@ -3379,91 +3366,91 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr ""
 
-#: picard/script/serializer.py:200
+#: picard/script/serializer.py:201
 #, python-format
 msgid "Error exporting file \"%s\". %s."
 msgstr "שגיאה ביצוא קובץ \"%s. %s\""
 
-#: picard/script/serializer.py:207
+#: picard/script/serializer.py:208
 msgid "Export Script File"
 msgstr "יצוא קובצי תסריט"
 
-#: picard/script/serializer.py:229
+#: picard/script/serializer.py:230
 msgid "Export Script"
 msgstr "יצוא תסריט"
 
-#: picard/script/serializer.py:230
+#: picard/script/serializer.py:231
 #, python-format
 msgid "Script successfully exported to %s"
 msgstr "התסריט יוצא בהצלחה ל־%s"
 
-#: picard/script/serializer.py:241
+#: picard/script/serializer.py:242
 #, python-format
 msgid "Error importing \"%s\". %s."
 msgstr "שגיאה ביבוא \"%s. %s\""
 
-#: picard/script/serializer.py:242
+#: picard/script/serializer.py:243
 #, python-format
 msgid "Error decoding \"%s\". %s."
 msgstr "שגיאה בפענוח \"%s. %s\""
 
-#: picard/script/serializer.py:244
+#: picard/script/serializer.py:245
 msgid "Import Script File"
 msgstr "יבוא קובצי תסריט"
 
-#: picard/script/serializer.py:258
+#: picard/script/serializer.py:259
 msgid "The file was empty"
 msgstr "הקובץ ריק"
 
-#: picard/script/serializer.py:266
+#: picard/script/serializer.py:267
 #, python-format
 msgid "Imported from %s"
 msgstr "יובא מ־%s"
 
-#: picard/script/serializer.py:284
+#: picard/script/serializer.py:285
 msgid "Argument is not a dictionary"
 msgstr "המשתנה אינו מילון"
 
-#: picard/script/serializer.py:286 picard/script/serializer.py:332
+#: picard/script/serializer.py:287 picard/script/serializer.py:333
 msgid "Invalid script package"
 msgstr "חבילת תסריטים לא תקינה"
 
-#: picard/script/serializer.py:297
+#: picard/script/serializer.py:298
 #, python-format
 msgid "%s (Copy)"
 msgstr "%s (העתקה)"
 
-#: picard/script/serializer.py:330
+#: picard/script/serializer.py:331
 msgid "File content not a dictionary"
 msgstr "תכולת קובץ אינה מילון"
 
-#: picard/script/serializer.py:340 picard/ui/options/scripting.py:186
+#: picard/script/serializer.py:341 picard/ui/options/scripting.py:186
 msgid "Unnamed Script"
 msgstr "תַּסְרִיט ללא שם"
 
-#: picard/script/serializer.py:350 picard/ui/coverartbox.py:551
-#: picard/ui/mainwindow.py:1085 picard/ui/options/scripting.py:131
+#: picard/script/serializer.py:351 picard/ui/coverartbox.py:548
+#: picard/ui/mainwindow.py:1084 picard/ui/options/scripting.py:131
 msgid "All files"
 msgstr "כל הקבצים"
 
-#: picard/script/serializer.py:351 picard/ui/options/scripting.py:132
+#: picard/script/serializer.py:352 picard/ui/options/scripting.py:132
 msgid "Picard script files"
 msgstr ""
 
-#: picard/script/serializer.py:352
+#: picard/script/serializer.py:353
 msgid "Picard script package"
 msgstr ""
 
-#: picard/ui/aboutdialog.py:73
+#: picard/ui/aboutdialog.py:74
 msgid "translator-credits"
 msgstr "מִזְכֶּה־מתרגמים"
 
-#: picard/ui/aboutdialog.py:76
+#: picard/ui/aboutdialog.py:77
 #, python-format
 msgid "<br/>Translated to LANG by %s"
 msgstr "<br/>תורגם לעברית על־ידי %s"
 
-#: picard/ui/aboutdialog.py:79
+#: picard/ui/aboutdialog.py:80
 msgid ""
 "Icons made by Sambhav Kothari <sambhavs.email@gmail.com> and <a "
 "href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a "
@@ -3475,20 +3462,20 @@ msgid ""
 "href=\"https://www.flaticon.com\">www.flaticon.com</a>"
 msgstr "צלמיות יוצרו על־ידי סאמבהב קוטהארי <sambhavs.email@gmail.com> ו <a href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a href=\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a href=\"http://www.flaticon.com/authors/nikita-golubev\">ניקיטה גולודב</a>, <a href=\"http://www.flaticon.com/authors/maxim-basinski\">מקסים בסינסקי</a>, <a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> מ <a href=\"www.flaticon.com\">www.flaticon.com</a>"
 
-#: picard/ui/aboutdialog.py:100
+#: picard/ui/aboutdialog.py:101
 #, python-format
 msgid "Version %(version)s"
 msgstr "גרסה %(version)s"
 
-#: picard/ui/aboutdialog.py:102
+#: picard/ui/aboutdialog.py:103
 msgid "Supported formats"
 msgstr "תבניות נתמכות"
 
-#: picard/ui/aboutdialog.py:104
+#: picard/ui/aboutdialog.py:105
 msgid "Please donate"
 msgstr "נא תירמו"
 
-#: picard/ui/aboutdialog.py:105
+#: picard/ui/aboutdialog.py:106
 msgid ""
 "Thank you for using Picard. Picard relies on the MusicBrainz database, which"
 " is operated by the MetaBrainz Foundation with the help of thousands of "
@@ -3496,24 +3483,35 @@ msgid ""
 "MetaBrainz Foundation to keep the service running."
 msgstr "מודים לכם על השימוש בפיקארד. פיקארד מתבסס על מסד הנתונים של מיוזיקבריינז, המופעל על־ידי קרן מטהבריינז בעזרתם של אלפי מתנדבים. אם אתם אוהבים את היישום הזה, שקולו בבקשה לתרום למטהבריינז על מנת להבטיח את המשכיות השירות."
 
-#: picard/ui/aboutdialog.py:108
+#: picard/ui/aboutdialog.py:109
 msgid "Donate now!"
 msgstr "תירמו כעת!"
 
-#: picard/ui/aboutdialog.py:109
+#: picard/ui/aboutdialog.py:110
 msgid "Credits"
 msgstr "מזכים"
 
-#: picard/ui/aboutdialog.py:110
+#: picard/ui/aboutdialog.py:111
 #, python-format
 msgid "Copyright © %(copyright_years)s %(authors_credits)s and others"
 msgstr "זכויות יוצרים © %(copyright_years)s %(authors_credits)s ואחרים"
 
-#: picard/ui/aboutdialog.py:112
+#: picard/ui/aboutdialog.py:113
 msgid "Official website"
 msgstr "אתר רישמי"
 
-#: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:169
+#: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:160
+#: picard/ui/mainwindow.py:965 picard/util/tags.py:38
+msgid "Album"
+msgstr "אלבום"
+
+#: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:157
+#: picard/ui/mainwindow.py:966 picard/ui/searchdialog/album.py:152
+#: picard/ui/searchdialog/track.py:65 picard/util/tags.py:41
+msgid "Artist"
+msgstr "אמן"
+
+#: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:170
 #: picard/ui/searchdialog/album.py:155 picard/ui/searchdialog/track.py:67
 #: picard/util/tags.py:54
 msgid "Date"
@@ -3527,7 +3525,7 @@ msgstr "חברת תקליטים"
 msgid "Catalog #s"
 msgstr "קטלוג #s"
 
-#: picard/ui/cdlookup.py:73 picard/ui/itemviews.py:164
+#: picard/ui/cdlookup.py:73 picard/ui/itemviews.py:165
 #: picard/ui/searchdialog/album.py:159 picard/util/tags.py:45
 msgid "Barcode"
 msgstr "ברקוד"
@@ -3589,51 +3587,51 @@ msgstr "תג בוטל"
 msgid "Tag removed"
 msgstr "תג הוסר"
 
-#: picard/ui/coverartbox.py:257
+#: picard/ui/coverartbox.py:258
 msgid "View release on MusicBrainz"
 msgstr "‮הצגת הוצאה במוזיקבריינז"
 
-#: picard/ui/coverartbox.py:263
+#: picard/ui/coverartbox.py:264
 msgid "Common images on all tracks"
 msgstr "תמונות משותפות לכל הרצועות"
 
-#: picard/ui/coverartbox.py:265
+#: picard/ui/coverartbox.py:266
 msgid "Tracks contain different images"
 msgstr "רצועות מכילות תמונות שונות"
 
-#: picard/ui/coverartbox.py:321
+#: picard/ui/coverartbox.py:322
 msgid "Show more details"
 msgstr "הצגת פרטים נוספים"
 
-#: picard/ui/coverartbox.py:358
+#: picard/ui/coverartbox.py:359
 msgid "New Cover Art"
 msgstr "תמונת עטיפה חדשה"
 
-#: picard/ui/coverartbox.py:359
+#: picard/ui/coverartbox.py:360
 msgid "Original Cover Art"
 msgstr "תמונת עטיפה  מקורית"
 
-#: picard/ui/coverartbox.py:550
+#: picard/ui/coverartbox.py:547
 msgid "All supported image formats"
 msgstr "כל תבניות התמונה הנתמכות"
 
-#: picard/ui/coverartbox.py:570
+#: picard/ui/coverartbox.py:567
 msgid "Show more details..."
 msgstr "הצגת פרטים נוספים‮..."
 
-#: picard/ui/coverartbox.py:576
+#: picard/ui/coverartbox.py:573
 msgid "Keep original cover art"
 msgstr "השארת תמונת עטיפה מקורית"
 
-#: picard/ui/coverartbox.py:582
+#: picard/ui/coverartbox.py:579
 msgid "Choose local file..."
 msgstr "בחירת קובץ מקומי ..."
 
-#: picard/ui/coverartbox.py:591
+#: picard/ui/coverartbox.py:588
 msgid "Replace front cover art"
 msgstr "החלפת תמונת עטיפה קדמית"
 
-#: picard/ui/coverartbox.py:600
+#: picard/ui/coverartbox.py:597
 msgid "Append front cover art"
 msgstr "ספוח תמונת עטיפה קדמית "
 
@@ -3675,7 +3673,7 @@ msgstr "סוג"
 msgid "New Cover"
 msgstr "עטיפה חדשה"
 
-#: picard/ui/infodialog.py:109 picard/ui/itemviews.py:171
+#: picard/ui/infodialog.py:109 picard/ui/itemviews.py:172
 #: picard/ui/searchdialog/album.py:163
 msgid "Cover"
 msgstr "עטיפה"
@@ -3796,7 +3794,7 @@ msgstr "קבצים ממתינים"
 msgid "Pending requests"
 msgstr "בקשות ממתינות"
 
-#: picard/ui/item.py:139
+#: picard/ui/item.py:140
 #, python-format
 msgid "%i image"
 msgid_plural "%i images"
@@ -3805,7 +3803,7 @@ msgstr[1] ";%i תמונות"
 msgstr[2] ";%i תמונות"
 msgstr[3] ";%i תמונות"
 
-#: picard/ui/item.py:142
+#: picard/ui/item.py:143
 #, python-format
 msgid "%i image not in all tracks"
 msgid_plural "%i different images among tracks"
@@ -3814,221 +3812,221 @@ msgstr[1] " %i תמונות לא בכל הרצועות"
 msgstr[2] " %i תמונות לא בכל הרצועות"
 msgstr[3] " %i תמונות שונות לרצועות"
 
-#: picard/ui/itemviews.py:154 picard/util/tags.py:120
+#: picard/ui/itemviews.py:155 picard/util/tags.py:120
 msgid "Title"
 msgstr "כותרת"
 
-#: picard/ui/itemviews.py:155 picard/ui/searchdialog/track.py:64
+#: picard/ui/itemviews.py:156 picard/ui/searchdialog/track.py:64
 #: picard/util/tags.py:70
 msgid "Length"
 msgstr "אורך"
 
-#: picard/ui/itemviews.py:157 picard/util/tags.py:36
+#: picard/ui/itemviews.py:158 picard/util/tags.py:36
 msgid "Album Artist"
 msgstr "אמן אלבום"
 
-#: picard/ui/itemviews.py:158 picard/util/tags.py:50
+#: picard/ui/itemviews.py:159 picard/util/tags.py:50
 msgid "Composer"
 msgstr "מלחין"
 
-#: picard/ui/itemviews.py:160 picard/util/tags.py:58
+#: picard/ui/itemviews.py:161 picard/util/tags.py:58
 msgid "Disc Subtitle"
 msgstr "כתובית התקליטור"
 
-#: picard/ui/itemviews.py:161
+#: picard/ui/itemviews.py:162
 msgid "Track No."
 msgstr "מספר רצועה"
 
-#: picard/ui/itemviews.py:162
+#: picard/ui/itemviews.py:163
 msgid "Disc No."
 msgstr "מספר תקליטור"
 
-#: picard/ui/itemviews.py:163
+#: picard/ui/itemviews.py:164
 msgid "Catalog No."
 msgstr "מס' קטלוגי"
 
-#: picard/ui/itemviews.py:165 picard/util/tags.py:74
+#: picard/ui/itemviews.py:166 picard/util/tags.py:74
 msgid "Media"
 msgstr "מדיה"
 
-#: picard/ui/itemviews.py:166 picard/util/tags.py:64
+#: picard/ui/itemviews.py:167 picard/util/tags.py:64
 msgid "Genre"
 msgstr "סוגה"
 
-#: picard/ui/itemviews.py:167
+#: picard/ui/itemviews.py:168
 msgid "Fingerprint status"
 msgstr "מצב טביעות אצבע"
 
-#: picard/ui/itemviews.py:168
+#: picard/ui/itemviews.py:169
 msgid "AcousticBrainz status"
 msgstr "מצב אקוסטיקבריינז"
 
-#: picard/ui/itemviews.py:170 picard/util/tags.py:94
+#: picard/ui/itemviews.py:171 picard/util/tags.py:94
 msgid "Original Release Date"
 msgstr "תאריך הוצאה מקורי"
 
-#: picard/ui/itemviews.py:273
+#: picard/ui/itemviews.py:274
 msgid "Bad match"
 msgstr "התאמה גרועה"
 
-#: picard/ui/itemviews.py:274
+#: picard/ui/itemviews.py:275
 msgid "Poor match"
 msgstr "התאמה חלשה"
 
-#: picard/ui/itemviews.py:275
+#: picard/ui/itemviews.py:276
 msgid "Ok match"
 msgstr "התאמה סבירה"
 
-#: picard/ui/itemviews.py:276
+#: picard/ui/itemviews.py:277
 msgid "Good match"
 msgstr "התאמה טובה"
 
-#: picard/ui/itemviews.py:277
+#: picard/ui/itemviews.py:278
 msgid "Great match"
 msgstr "התאמה מעולה"
 
-#: picard/ui/itemviews.py:278
+#: picard/ui/itemviews.py:279
 msgid "Excellent match"
 msgstr "התאמה מושלמת"
 
-#: picard/ui/itemviews.py:392
+#: picard/ui/itemviews.py:393
 msgid "Restore default columns"
 msgstr "שחזור עמודות ברירת מחדל"
 
-#: picard/ui/itemviews.py:397
+#: picard/ui/itemviews.py:398
 msgid "Lock columns"
 msgstr "נעילת עמודות"
 
-#: picard/ui/itemviews.py:454
+#: picard/ui/itemviews.py:455
 msgid "&Expand all"
 msgstr "&הרחבת הכל"
 
-#: picard/ui/itemviews.py:456
+#: picard/ui/itemviews.py:457
 msgid "&Collapse all"
 msgstr "&כווץ הכל"
 
-#: picard/ui/itemviews.py:458
+#: picard/ui/itemviews.py:459
 msgid "Select &all"
 msgstr "בחירת &הכל"
 
-#: picard/ui/itemviews.py:460
+#: picard/ui/itemviews.py:461
 msgid "Ctrl+A"
 msgstr "Ctrl+A"
 
-#: picard/ui/itemviews.py:541
+#: picard/ui/itemviews.py:542
 msgid "&Other versions"
 msgstr "&גרסאות אחרות"
 
-#: picard/ui/itemviews.py:544
+#: picard/ui/itemviews.py:545
 msgid "Loading..."
 msgstr "טעינה..."
 
-#: picard/ui/itemviews.py:596
+#: picard/ui/itemviews.py:597
 #, python-format
 msgid "&Other versions (%d)"
 msgstr "&גרסאות אחרות (%d)"
 
-#: picard/ui/itemviews.py:620
+#: picard/ui/itemviews.py:621
 msgid "Collections"
 msgstr "אוספים"
 
-#: picard/ui/itemviews.py:628
+#: picard/ui/itemviews.py:629
 msgid "P&lugins"
 msgstr "מ&תקעים"
 
-#: picard/ui/itemviews.py:644
+#: picard/ui/itemviews.py:645
 msgid "&Run scripts"
 msgstr "&הרצת תַּסְרִיט"
 
-#: picard/ui/itemviews.py:826
+#: picard/ui/itemviews.py:827
 msgid "file view"
 msgstr "תצוגת קובץ"
 
-#: picard/ui/itemviews.py:827
+#: picard/ui/itemviews.py:828
 msgid "Contains unmatched files and clusters"
 msgstr "מכיל קבצים ואשכולות לא תואמים"
 
-#: picard/ui/itemviews.py:847
+#: picard/ui/itemviews.py:848
 msgid "Clusters"
 msgstr "אשכולות"
 
-#: picard/ui/itemviews.py:857
+#: picard/ui/itemviews.py:858
 msgid "album view"
 msgstr "מצג אלבום"
 
-#: picard/ui/itemviews.py:858
+#: picard/ui/itemviews.py:859
 msgid "Contains albums and matched files"
 msgstr "מכיל אלבומים וקבצים תואמים"
 
-#: picard/ui/itemviews.py:1005
+#: picard/ui/itemviews.py:1006
 msgid "Processing error(s): See the Errors tab in the Album Info dialog"
 msgstr "עיבוד שגיאות: צפיה בלשונית השגיאות בתיבת דו־שיח מידע אלבום."
 
-#: picard/ui/itemviews.py:1009
+#: picard/ui/itemviews.py:1010
 msgid "Album modified and complete"
 msgstr "אלבום עודכן והושלם"
 
-#: picard/ui/itemviews.py:1012
+#: picard/ui/itemviews.py:1013
 msgid "Album unchanged and complete"
 msgstr "אלבום לא השתנה והושלם"
 
-#: picard/ui/itemviews.py:1016
+#: picard/ui/itemviews.py:1017
 msgid "Album modified"
 msgstr "אלבום עודכן"
 
-#: picard/ui/itemviews.py:1019
+#: picard/ui/itemviews.py:1020
 msgid "Album unchanged"
 msgstr "אלבום ללא שינוי"
 
-#: picard/ui/itemviews.py:1104
+#: picard/ui/itemviews.py:1105
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
 msgstr "עיבוד שגיאות: צפיה בלשונית השגיאות בתיבת דו־שיח מידע רצועה."
 
-#: picard/ui/itemviews.py:1135
+#: picard/ui/itemviews.py:1136
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
 msgstr "עיבוד שגיאות: צפיה בלשונית השגיאות בתיבת דו־שיח מידע קובץ."
 
-#: picard/ui/itemviews.py:1163
+#: picard/ui/itemviews.py:1164
 msgid "Track saved"
 msgstr "רצועה נשמרה"
 
-#: picard/ui/itemviews.py:1165 picard/ui/itemviews.py:1169
+#: picard/ui/itemviews.py:1166 picard/ui/itemviews.py:1170
 msgid "Pending"
 msgstr "ממתין"
 
-#: picard/ui/itemviews.py:1176
+#: picard/ui/itemviews.py:1177
 msgid "Fingerprint has already been submitted"
 msgstr "טביעות האצבע שוגרו כבר"
 
-#: picard/ui/itemviews.py:1179
+#: picard/ui/itemviews.py:1180
 msgid "Unsubmitted fingerprint"
 msgstr " טביעות-אצבע שטרם שוגרו"
 
-#: picard/ui/itemviews.py:1182
+#: picard/ui/itemviews.py:1183
 msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
 "AcoustID Fingerprints\" to calculate the fingerprint."
 msgstr "לא חושבו טביעות אצבע AcoustID לקובץ זה, נא להריץ 'סריקה' או 'חילול טביעות אצבע AcoustID' לחישוב טביעות האצבע."
 
-#: picard/ui/itemviews.py:1189
+#: picard/ui/itemviews.py:1190
 msgid "Extraction or submission of Acoustic features failed"
 msgstr ""
 
-#: picard/ui/itemviews.py:1193
+#: picard/ui/itemviews.py:1194
 msgid "The server already has the features of this file"
 msgstr ""
 
-#: picard/ui/itemviews.py:1195
+#: picard/ui/itemviews.py:1196
 msgid "Features have already been submitted"
 msgstr ""
 
-#: picard/ui/itemviews.py:1199
+#: picard/ui/itemviews.py:1200
 msgid ""
 "No acoustic features were extracted from this file. Use \"Submit Acoustic "
 "features\" to extract and submit them"
 msgstr ""
 
-#: picard/ui/itemviews.py:1201
+#: picard/ui/itemviews.py:1202
 msgid "Unsubmitted features"
 msgstr ""
 
@@ -4085,19 +4083,19 @@ msgstr "האם לנקות את הלוג?"
 msgid "Activity History"
 msgstr "היסטוריית פעילות"
 
-#: picard/ui/mainwindow.py:220 picard/ui/ui_aboutdialog.py:84
+#: picard/ui/mainwindow.py:219 picard/ui/ui_aboutdialog.py:84
 msgid "MusicBrainz Picard"
 msgstr "מוזיקבריינז פיקארד"
 
-#: picard/ui/mainwindow.py:347
+#: picard/ui/mainwindow.py:346
 msgid "Unsaved Changes"
 msgstr "שינויים לא נשמרו"
 
-#: picard/ui/mainwindow.py:348
+#: picard/ui/mainwindow.py:347
 msgid "Are you sure you want to quit Picard?"
 msgstr "האם לצאת מפיקארד?"
 
-#: picard/ui/mainwindow.py:349
+#: picard/ui/mainwindow.py:348
 #, python-format
 msgid ""
 "There is %d unsaved file. Closing Picard will lose all unsaved changes."
@@ -4108,460 +4106,460 @@ msgstr[1] "%d קבצים לא נשמרו. סגירת פיקארד יגרום ל�
 msgstr[2] "%d קבצים לא נשמרו. סגירת פיקארד יגרום לאבדן כל השינויים שלא נשמרו."
 msgstr[3] "%d קבצים לא נשמרו. סגירת פיקארד יגרום לאבדן כל השינויים שלא נשמרו."
 
-#: picard/ui/mainwindow.py:356
+#: picard/ui/mainwindow.py:355
 msgid "&Quit Picard"
 msgstr "&יצאה מפיקארד"
 
-#: picard/ui/mainwindow.py:392
+#: picard/ui/mainwindow.py:391
 msgid "Ready"
 msgstr "מוכן"
 
-#: picard/ui/mainwindow.py:397
+#: picard/ui/mainwindow.py:396
 msgid ""
 "Picard listens on this port to integrate with your browser. When you "
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
 "button on the web page loads the release into Picard."
 msgstr "פיקארד \"מקשיב לפִּתְחָה זו בכדי להשתלב עם הדפדפן. כאשר יתבצע \"חיפוש\" או \"פתחה בדפדפן\" מתוך פיקארד, לחיצה על לחצן \"מתייג\" בעמוד המרשתת, ההוצאה תיטען לתוך פיקארד."
 
-#: picard/ui/mainwindow.py:423
+#: picard/ui/mainwindow.py:422
 #, python-format
 msgid " Listening on port %(port)d "
 msgstr "האזנה לפִּתְחָה %(port)d "
 
-#: picard/ui/mainwindow.py:482
+#: picard/ui/mainwindow.py:481
 msgid "AcoustID submission not configured"
 msgstr "שגור AcoustID לא תוצר"
 
-#: picard/ui/mainwindow.py:483
+#: picard/ui/mainwindow.py:482
 msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
 msgstr "נדרש להגדיר מפתח API ל־AcoustID לפני שיתאפשר לשגר טביעות אצבע."
 
-#: picard/ui/mainwindow.py:486
+#: picard/ui/mainwindow.py:485
 msgid "Open AcoustID options"
 msgstr "פתיחת אפשרויות AcoustID"
 
-#: picard/ui/mainwindow.py:497
+#: picard/ui/mainwindow.py:496
 msgid "&Options..."
 msgstr "א&פשרויות‮..."
 
-#: picard/ui/mainwindow.py:501
+#: picard/ui/mainwindow.py:500
 msgid "Open &file naming script editor..."
 msgstr "פתיחת &עורך תסריט שמות קבצים..."
 
-#: picard/ui/mainwindow.py:502
+#: picard/ui/mainwindow.py:501
 msgid "Ctrl+Shift+S"
 msgstr "Ctrl+Shift+S"
 
-#: picard/ui/mainwindow.py:505
+#: picard/ui/mainwindow.py:504
 msgid "&Cut"
 msgstr "&גזירה"
 
-#: picard/ui/mainwindow.py:510 picard/ui/metadatabox.py:438
+#: picard/ui/mainwindow.py:509 picard/ui/metadatabox.py:441
 msgid "&Paste"
 msgstr "ה&דבקה"
 
-#: picard/ui/mainwindow.py:515 picard/ui/scripteditor.py:610
+#: picard/ui/mainwindow.py:514 picard/ui/scripteditor.py:636
 msgid "&Help..."
 msgstr "ע&זרה‮..."
 
-#: picard/ui/mainwindow.py:519
+#: picard/ui/mainwindow.py:518
 msgid "&About..."
 msgstr "&אודות‮..."
 
-#: picard/ui/mainwindow.py:523
+#: picard/ui/mainwindow.py:522
 msgid "&Donate..."
 msgstr "ת&רומה‮..."
 
-#: picard/ui/mainwindow.py:526
+#: picard/ui/mainwindow.py:525
 msgid "&Report a Bug..."
 msgstr "דיווח על &תקל‮..."
 
-#: picard/ui/mainwindow.py:529
+#: picard/ui/mainwindow.py:528
 msgid "&Support Forum..."
 msgstr "פו&רום תמיכה‮..."
 
-#: picard/ui/mainwindow.py:532
+#: picard/ui/mainwindow.py:531
 msgid "&Add Files..."
 msgstr "הוספת &קבצים‮‮..."
 
-#: picard/ui/mainwindow.py:533
+#: picard/ui/mainwindow.py:532
 msgid "Add files to the tagger"
 msgstr "הוספת קבצים למתייג"
 
-#: picard/ui/mainwindow.py:538
+#: picard/ui/mainwindow.py:537
 msgid "Add Fold&er..."
 msgstr "הו&ספת תיקיה‮‮..."
 
-#: picard/ui/mainwindow.py:539
+#: picard/ui/mainwindow.py:538
 msgid "Add a folder to the tagger"
 msgstr "הוספת תיקיה למתייג"
 
-#: picard/ui/mainwindow.py:541
+#: picard/ui/mainwindow.py:540
 msgid "Ctrl+E"
 msgstr "Ctrl+E"
 
-#: picard/ui/mainwindow.py:545
+#: picard/ui/mainwindow.py:544
 msgid "Close Window"
 msgstr "סגירת חלון"
 
-#: picard/ui/mainwindow.py:546
+#: picard/ui/mainwindow.py:545
 msgid "Ctrl+W"
 msgstr "Ctrl+W"
 
-#: picard/ui/mainwindow.py:549
+#: picard/ui/mainwindow.py:548
 msgid "&Save"
 msgstr "&שמירה"
 
-#: picard/ui/mainwindow.py:550
+#: picard/ui/mainwindow.py:549
 msgid "Save selected files"
 msgstr "שמירת הקבצים שנבחרו"
 
-#: picard/ui/mainwindow.py:556
+#: picard/ui/mainwindow.py:555
 msgid "S&ubmit AcoustIDs"
 msgstr "ש&יגור AcoustID "
 
-#: picard/ui/mainwindow.py:557
+#: picard/ui/mainwindow.py:556
 msgid "Submit acoustic fingerprints"
 msgstr " שגור טביעות-אצבע-שמע"
 
-#: picard/ui/mainwindow.py:561
+#: picard/ui/mainwindow.py:560
 msgid "E&xit"
 msgstr "&יצאה"
 
-#: picard/ui/mainwindow.py:564
+#: picard/ui/mainwindow.py:563
 msgid "Ctrl+Q"
 msgstr "Ctrl+Q"
 
-#: picard/ui/mainwindow.py:567
+#: picard/ui/mainwindow.py:566
 msgid "&Remove"
 msgstr "ה&סרה"
 
-#: picard/ui/mainwindow.py:568
+#: picard/ui/mainwindow.py:567
 msgid "Remove selected files/albums"
 msgstr "הסרת קבצים/אלבומים שנבחרו"
 
-#: picard/ui/mainwindow.py:572 picard/ui/metadatabox.py:395
+#: picard/ui/mainwindow.py:571 picard/ui/metadatabox.py:398
 msgid "Lookup in &Browser"
 msgstr "חיפוש בד&פדפן"
 
-#: picard/ui/mainwindow.py:573
+#: picard/ui/mainwindow.py:572
 msgid "Lookup selected item on MusicBrainz website"
 msgstr "חיפוש פריטים שנבחרו באתר מוזיקבריינז"
 
-#: picard/ui/mainwindow.py:576
+#: picard/ui/mainwindow.py:575
 msgid "Ctrl+Shift+L"
 msgstr "Ctrl+Shift+L"
 
-#: picard/ui/mainwindow.py:580
+#: picard/ui/mainwindow.py:579
 msgid "Submit cluster as release..."
 msgstr "שגור אשכול כהוצאה..."
 
-#: picard/ui/mainwindow.py:581
+#: picard/ui/mainwindow.py:580
 msgid "Submit cluster as a new release to MusicBrainz"
 msgstr "שיגור אשכול למוזיקבריינז כהוצאה חדשה"
 
-#: picard/ui/mainwindow.py:585
+#: picard/ui/mainwindow.py:584
 msgid "Submit file as standalone recording..."
 msgstr "שיגור כהקלטה עצמאיות"
 
-#: picard/ui/mainwindow.py:586
+#: picard/ui/mainwindow.py:585
 msgid "Submit file as a new recording to MusicBrainz"
 msgstr "שיגור קובץ למוזיקבריינז כהקלטה חדשה"
 
-#: picard/ui/mainwindow.py:590
+#: picard/ui/mainwindow.py:589
 msgid "Submit file as release..."
 msgstr "שגור קובץ כהוצאה..."
 
-#: picard/ui/mainwindow.py:591
+#: picard/ui/mainwindow.py:590
 msgid "Submit file as a new release to MusicBrainz"
 msgstr "שיגור קובץ למוזיקבריינז כהוצאה חדשה"
 
-#: picard/ui/mainwindow.py:599
+#: picard/ui/mainwindow.py:598
 msgid "Search for similar albums..."
 msgstr "חיפוש אלבומים דומים‮..."
 
-#: picard/ui/mainwindow.py:600
+#: picard/ui/mainwindow.py:599
 msgid "View similar releases and optionally choose a different release"
 msgstr "הצגת הוצאות דומות ובחרת בהוצאה חלופית אחרת"
 
-#: picard/ui/mainwindow.py:603
+#: picard/ui/mainwindow.py:602
 msgid "Search for similar tracks..."
 msgstr "חיפוש רצועות דומות‮..."
 
-#: picard/ui/mainwindow.py:604
+#: picard/ui/mainwindow.py:603
 msgid "View similar tracks and optionally choose a different release"
 msgstr "הצגת רצועות דומות ובחרת בהוצאה חלופית אחרת"
 
-#: picard/ui/mainwindow.py:606
+#: picard/ui/mainwindow.py:605
 msgid "Ctrl+T"
 msgstr "Ctrl+T"
 
-#: picard/ui/mainwindow.py:609
+#: picard/ui/mainwindow.py:608
 msgid "File &Browser"
 msgstr "דפדפן &קבצים"
 
-#: picard/ui/mainwindow.py:613
+#: picard/ui/mainwindow.py:612
 msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
-#: picard/ui/mainwindow.py:616
+#: picard/ui/mainwindow.py:615
 msgid "&Metadata"
 msgstr "&נתוני־על"
 
-#: picard/ui/mainwindow.py:620
+#: picard/ui/mainwindow.py:619
 msgid "Ctrl+Shift+M"
 msgstr "Ctrl+Shift+M"
 
-#: picard/ui/mainwindow.py:623
+#: picard/ui/mainwindow.py:622
 msgid "&Cover Art"
 msgstr "&תמונת עטיפה"
 
-#: picard/ui/mainwindow.py:630
+#: picard/ui/mainwindow.py:629
 msgid "&Actions"
 msgstr "&פעולות"
 
-#: picard/ui/mainwindow.py:636 picard/ui/mainwindow.py:957
+#: picard/ui/mainwindow.py:635 picard/ui/mainwindow.py:956
 #: picard/ui/searchdialog/__init__.py:48
 msgid "Search"
 msgstr "חיפוש"
 
-#: picard/ui/mainwindow.py:640 picard/ui/mainwindow.py:646
+#: picard/ui/mainwindow.py:639 picard/ui/mainwindow.py:645
 msgid "Lookup &CD..."
 msgstr "איתור &תקליטור‮..."
 
-#: picard/ui/mainwindow.py:641
+#: picard/ui/mainwindow.py:640
 msgid "Lookup the details of the CD in your drive"
 msgstr "חיפוש את פרטי ה CD בקונן"
 
-#: picard/ui/mainwindow.py:643 picard/ui/mainwindow.py:779
+#: picard/ui/mainwindow.py:642 picard/ui/mainwindow.py:778
 msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
-#: picard/ui/mainwindow.py:654
+#: picard/ui/mainwindow.py:653
 msgid "&Scan"
 msgstr "&סריקה"
 
-#: picard/ui/mainwindow.py:655
+#: picard/ui/mainwindow.py:654
 msgid ""
 "Use AcoustID audio fingerprint to identify the files by the actual music, "
 "even if they have no metadata"
 msgstr "שימוש בטביעת אצבע אודיו AcoustID כדי לזהות את הקבצים על־ידי המוזיקה עצמה, גם אם אין להם נתוני־על"
 
-#: picard/ui/mainwindow.py:657
+#: picard/ui/mainwindow.py:656
 msgid "Identify the file using its AcoustID audio fingerprint"
 msgstr "זיהוי הקובץ בעזרת טביעת־אצבע־שמע  ‮AcoustID"
 
-#: picard/ui/mainwindow.py:659
+#: picard/ui/mainwindow.py:658
 msgid "Ctrl+Y"
 msgstr "Ctrl+Y"
 
-#: picard/ui/mainwindow.py:662
+#: picard/ui/mainwindow.py:661
 msgid "&Generate AcoustID Fingerprints"
 msgstr "&חילול טביעת אצבע AcoustID"
 
-#: picard/ui/mainwindow.py:663 picard/ui/options/interface.py:125
+#: picard/ui/mainwindow.py:662 picard/ui/options/interface.py:125
 msgid "Generate Fingerprints"
 msgstr "חילול טביעות אצבע"
 
-#: picard/ui/mainwindow.py:664
+#: picard/ui/mainwindow.py:663
 msgid ""
 "Generate the AcoustID audio fingerprints for the selected files without "
 "doing a lookup"
 msgstr "חילול טביעת־אצבע־שמע AcoustID לקבצים שנבחרו ללא ביצוע חיפוש"
 
-#: picard/ui/mainwindow.py:666
+#: picard/ui/mainwindow.py:665
 msgid "Generate the AcoustID audio fingerprints for the selected files"
 msgstr "חילול טביעת־אצבע־שמע AcoustID לקבצים שנבחרו"
 
-#: picard/ui/mainwindow.py:667
+#: picard/ui/mainwindow.py:666
 msgid "Ctrl+Shift+Y"
 msgstr "Ctrl+Shift+Y"
 
-#: picard/ui/mainwindow.py:670
+#: picard/ui/mainwindow.py:669
 msgid "&Submit AcousticBrainz features"
 msgstr ""
 
-#: picard/ui/mainwindow.py:671
+#: picard/ui/mainwindow.py:670
 msgid "Submit Acoustic features"
 msgstr ""
 
-#: picard/ui/mainwindow.py:672 picard/ui/mainwindow.py:674
+#: picard/ui/mainwindow.py:671 picard/ui/mainwindow.py:673
 msgid "Submit the AcousticBrainz features for the selected files"
 msgstr ""
 
-#: picard/ui/mainwindow.py:677
+#: picard/ui/mainwindow.py:676
 msgid "Cl&uster"
 msgstr "א&שכול"
 
-#: picard/ui/mainwindow.py:678
+#: picard/ui/mainwindow.py:677
 msgid "Cluster files into album clusters"
 msgstr "קבצי אשכול לתוך אשכולות אלבום"
 
-#: picard/ui/mainwindow.py:681
+#: picard/ui/mainwindow.py:680
 msgid "Ctrl+U"
 msgstr "Ctrl+U"
 
-#: picard/ui/mainwindow.py:684
+#: picard/ui/mainwindow.py:683
 msgid "&Lookup"
 msgstr "&איתור"
 
-#: picard/ui/mainwindow.py:685
+#: picard/ui/mainwindow.py:684
 msgid "Lookup selected items in MusicBrainz"
 msgstr "איתור פרטים שנבחרו במוזיקבריינז"
 
-#: picard/ui/mainwindow.py:690
+#: picard/ui/mainwindow.py:689
 msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
-#: picard/ui/mainwindow.py:693
+#: picard/ui/mainwindow.py:692
 msgid "&Info..."
 msgstr "&מידע‮..."
 
-#: picard/ui/mainwindow.py:696
+#: picard/ui/mainwindow.py:695
 msgid "Ctrl+I"
 msgstr "Ctrl+I"
 
-#: picard/ui/mainwindow.py:699
+#: picard/ui/mainwindow.py:698
 msgid "&Refresh"
 msgstr "רע&נון"
 
-#: picard/ui/mainwindow.py:700
+#: picard/ui/mainwindow.py:699
 msgid "Ctrl+R"
 msgstr "Ctrl+R"
 
-#: picard/ui/mainwindow.py:703
+#: picard/ui/mainwindow.py:702
 msgid "&Rename Files"
 msgstr "&שינוי שמות קבצים"
 
-#: picard/ui/mainwindow.py:708
+#: picard/ui/mainwindow.py:707
 msgid "&Move Files"
 msgstr "ה&עברת קבצים"
 
-#: picard/ui/mainwindow.py:713
+#: picard/ui/mainwindow.py:712
 msgid "Save &Tags"
 msgstr "שמירת &תגים"
 
-#: picard/ui/mainwindow.py:718
+#: picard/ui/mainwindow.py:717
 msgid "Tags From &File Names..."
 msgstr "תגים מ&שמות קבצים‮..."
 
-#: picard/ui/mainwindow.py:719 picard/ui/options/interface.py:137
+#: picard/ui/mainwindow.py:718 picard/ui/options/interface.py:137
 msgid "Parse File Names..."
 msgstr "נתוח שמות קבצים..."
 
-#: picard/ui/mainwindow.py:720
+#: picard/ui/mainwindow.py:719
 msgid "Set tags based on the file names"
 msgstr "הגדרת תגים לפי שמות קבצים"
 
-#: picard/ui/mainwindow.py:721 picard/ui/widgets/scripttextedit.py:336
+#: picard/ui/mainwindow.py:720 picard/ui/widgets/scripttextedit.py:337
 msgid "Ctrl+Shift+T"
 msgstr "Ctrl+Shift+T"
 
-#: picard/ui/mainwindow.py:725
+#: picard/ui/mainwindow.py:724
 msgid "&Open My Collections in Browser"
 msgstr "&פתיחת האוספים שלי בדפדפן"
 
-#: picard/ui/mainwindow.py:729
+#: picard/ui/mainwindow.py:728
 msgid "View &Error/Debug Log"
 msgstr "הצגת יומן &שגיאות/ניפוי תקלים"
 
-#: picard/ui/mainwindow.py:732
+#: picard/ui/mainwindow.py:731
 msgid "Ctrl+G"
 msgstr "Ctrl+G"
 
-#: picard/ui/mainwindow.py:734
+#: picard/ui/mainwindow.py:733
 msgid "View Activity &History"
 msgstr "הצגת &הסטורית פעולות"
 
-#: picard/ui/mainwindow.py:738
+#: picard/ui/mainwindow.py:737
 msgid "Ctrl+Shift+H"
 msgstr "Ctrl+Shift+H"
 
-#: picard/ui/mainwindow.py:738 picard/ui/scripteditor.py:601
+#: picard/ui/mainwindow.py:737 picard/ui/scripteditor.py:627
 msgid "Ctrl+H"
 msgstr "Ctrl+H"
 
-#: picard/ui/mainwindow.py:744
+#: picard/ui/mainwindow.py:743
 msgid "Open in &Player"
 msgstr "פתיחה ב&נגן"
 
-#: picard/ui/mainwindow.py:745
+#: picard/ui/mainwindow.py:744
 msgid "Play the file in your default media player"
 msgstr "נגון קובץ בנגן ברירת המחדל"
 
-#: picard/ui/mainwindow.py:749
+#: picard/ui/mainwindow.py:748
 msgid "Open Containing &Folder"
 msgstr "פתיחת &תקיה מכילה"
 
-#: picard/ui/mainwindow.py:750
+#: picard/ui/mainwindow.py:749
 msgid "Open the containing folder in your file explorer"
 msgstr "פתיחה התקיה המכילה בסייר"
 
-#: picard/ui/mainwindow.py:755
+#: picard/ui/mainwindow.py:754
 msgid "&Check for Update…"
 msgstr "&בדיקת זמינות עדכונים..."
 
-#: picard/ui/mainwindow.py:821 picard/ui/scripteditor.py:524
+#: picard/ui/mainwindow.py:820 picard/ui/scripteditor.py:551
 msgid "&File"
 msgstr "&קובץ"
 
-#: picard/ui/mainwindow.py:835
+#: picard/ui/mainwindow.py:834
 msgid "&Edit"
 msgstr "ע&ריכה"
 
-#: picard/ui/mainwindow.py:841 picard/ui/scripteditor.py:586
+#: picard/ui/mainwindow.py:840 picard/ui/scripteditor.py:612
 msgid "&View"
 msgstr "&מצג"
 
-#: picard/ui/mainwindow.py:850
+#: picard/ui/mainwindow.py:849
 msgid "&Options"
 msgstr "&אפשרויות"
 
-#: picard/ui/mainwindow.py:856
+#: picard/ui/mainwindow.py:855
 msgid "&Select file naming script"
 msgstr "בחירת תסריט שמות"
 
-#: picard/ui/mainwindow.py:864
+#: picard/ui/mainwindow.py:863
 msgid "&Enable/disable profiles"
 msgstr "&אפשור/השבתת פרופילים"
 
-#: picard/ui/mainwindow.py:871
+#: picard/ui/mainwindow.py:870
 msgid "&Tools"
 msgstr "&כלים"
 
-#: picard/ui/mainwindow.py:885 picard/ui/scripteditor.py:607
+#: picard/ui/mainwindow.py:884 picard/ui/scripteditor.py:633
 #: picard/ui/util.py:51
 msgid "&Help"
 msgstr "&עזרה"
 
-#: picard/ui/mainwindow.py:921 picard/ui/ui_options_plugins.py:132
+#: picard/ui/mainwindow.py:920 picard/ui/ui_options_plugins.py:132
 msgid "Actions"
 msgstr "פעולות"
 
-#: picard/ui/mainwindow.py:968
+#: picard/ui/mainwindow.py:967
 msgid "Track"
 msgstr "רצועה"
 
-#: picard/ui/mainwindow.py:985
+#: picard/ui/mainwindow.py:984
 msgid "&Advanced search"
 msgstr "חיפוש &מתקדם"
 
-#: picard/ui/mainwindow.py:986
+#: picard/ui/mainwindow.py:985
 msgid "&Builtin search"
 msgstr "חיפוש &מובנה"
 
-#: picard/ui/mainwindow.py:1084
+#: picard/ui/mainwindow.py:1083
 msgid "All supported formats"
 msgstr "כל סוגי התבניות הנתמכות"
 
-#: picard/ui/mainwindow.py:1113
+#: picard/ui/mainwindow.py:1112
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
 msgstr "הוספת מחיצות מרובות מ '%(directory)s'..."
 
-#: picard/ui/mainwindow.py:1118
+#: picard/ui/mainwindow.py:1117
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
 msgstr "  הוספת מחיצה: '%(directory)s'..."
@@ -4616,7 +4614,16 @@ msgid ""
 "server. Would you like to log in now?"
 msgstr "לפיקארד נדרשת הרשאת גישה לנתונים האישיים שלכם בשרת מוזיקבריינז. האם להתחבר כעת?"
 
-#: picard/ui/metadatabox.py:108
+#: picard/ui/mainwindow.py:1511
+msgid "Authentication failed"
+msgstr ""
+
+#: picard/ui/mainwindow.py:1512 picard/ui/options/general.py:144
+#, python-format
+msgid "Login failed: %s"
+msgstr ""
+
+#: picard/ui/metadatabox.py:111
 #, python-format
 msgid "(different across %d item)"
 msgid_plural "(different across %d items)"
@@ -4625,7 +4632,7 @@ msgstr[1] "(שונה ב %d פריטים)"
 msgstr[2] "(שונה ב %d פריטים)"
 msgstr[3] "(שונה ב %d פריטים)"
 
-#: picard/ui/metadatabox.py:116
+#: picard/ui/metadatabox.py:119
 #, python-format
 msgid "(missing from %d item)"
 msgid_plural "(missing from %d items)"
@@ -4634,59 +4641,59 @@ msgstr[1] "(חסרים מ %d פריטים)"
 msgstr[2] "(חסרים מ %d פריטים)"
 msgstr[3] "(חסרים מ %d פריטים)"
 
-#: picard/ui/metadatabox.py:214
+#: picard/ui/metadatabox.py:217
 msgid "metadata view"
 msgstr "תצוגת נתוני־על"
 
-#: picard/ui/metadatabox.py:215
+#: picard/ui/metadatabox.py:218
 msgid "Displays original and new tags for the selected files"
 msgstr "מציג תגים מקוריים וחדשים עבור הקבצים שנבחרו"
 
-#: picard/ui/metadatabox.py:217
+#: picard/ui/metadatabox.py:220
 msgid "Tag"
 msgstr "תג"
 
-#: picard/ui/metadatabox.py:217
+#: picard/ui/metadatabox.py:220
 msgid "Original Value"
 msgstr "ערך מקורי"
 
-#: picard/ui/metadatabox.py:217
+#: picard/ui/metadatabox.py:220
 msgid "New Value"
 msgstr "ערך חדש"
 
-#: picard/ui/metadatabox.py:237
+#: picard/ui/metadatabox.py:240
 msgid "Add New Tag..."
 msgstr "הוספת תג חדש‮..."
 
-#: picard/ui/metadatabox.py:239
+#: picard/ui/metadatabox.py:242
 msgid "Show Changes First"
 msgstr "הצגת שינויים תחילה"
 
-#: picard/ui/metadatabox.py:244
+#: picard/ui/metadatabox.py:247
 msgid "Alt+Shift+A"
 msgstr "Alt+Shift+A"
 
-#: picard/ui/metadatabox.py:247
+#: picard/ui/metadatabox.py:250
 msgid "Alt+Shift+E"
 msgstr "Alt+Shift+E"
 
-#: picard/ui/metadatabox.py:249
+#: picard/ui/metadatabox.py:252
 msgid "Alt+Shift+R"
 msgstr "Alt+Shift+R"
 
-#: picard/ui/metadatabox.py:368
+#: picard/ui/metadatabox.py:371
 msgid "Edit..."
 msgstr "עריכה..."
 
-#: picard/ui/metadatabox.py:374
+#: picard/ui/metadatabox.py:377
 msgid "Add to 'Preserve Tags' List"
 msgstr "הוספה לרשימת 'תגים שמורים'"
 
-#: picard/ui/metadatabox.py:379
+#: picard/ui/metadatabox.py:382
 msgid "Remove from 'Preserve Tags' List"
 msgstr "הסרה מרשימת 'תגים שמורים'"
 
-#: picard/ui/metadatabox.py:427
+#: picard/ui/metadatabox.py:430
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] "שימוש בערך מקורי"
@@ -4694,7 +4701,7 @@ msgstr[1] "שימוש בערכים מקוריים"
 msgstr[2] "שימוש בערכים מקוריים"
 msgstr[3] "שימוש בערכים מקוריים"
 
-#: picard/ui/metadatabox.py:434
+#: picard/ui/metadatabox.py:437
 msgid "&Copy"
 msgstr "&העתקה"
 
@@ -4779,11 +4786,11 @@ msgstr "שינוי עוצמת שמע"
 msgid "Audio volume"
 msgstr "עוצמת שמע"
 
-#: picard/ui/scripteditor.py:137
+#: picard/ui/scripteditor.py:144
 msgid "Renaming options are disabled"
 msgstr "אפשרויות שינוי שם מושבתות"
 
-#: picard/ui/scripteditor.py:208
+#: picard/ui/scripteditor.py:215
 #, python-format
 msgid ""
 "If you select files from the Cluster pane or Album pane prior to opening the"
@@ -4792,149 +4799,167 @@ msgid ""
 "default examples will be provided."
 msgstr "בבחירת קבצים מחלונית האשכול או מחלונית האלבום, לפני פתיחת מסך האפשרויות, עד %uקבצים ייבחרו באופן אקראי מהפריטים שנבחרו כדוגמאות למתן שמות קבצים. אם לא נבחרו קבצים כלשהם, יובאו דוגמאות ברירת מחדל."
 
-#: picard/ui/scripteditor.py:220
+#: picard/ui/scripteditor.py:227
 #, python-format
 msgid ""
 "Reload up to %u items chosen at random from files selected in the main "
 "window"
 msgstr "טעינה מחדש של עד %u פריטים שנבחרו באופן אקראי מקבצים שנבחרו בחלון הראשי"
 
-#: picard/ui/scripteditor.py:309
+#: picard/ui/scripteditor.py:316 picard/ui/scripteditor.py:1213
 msgid "Confirm"
 msgstr "אישור"
 
-#: picard/ui/scripteditor.py:350
+#: picard/ui/scripteditor.py:357
 #, python-format
 msgid "User: %s"
 msgstr "משתמש: %s"
 
-#: picard/ui/scripteditor.py:385
+#: picard/ui/scripteditor.py:392
 msgid "title"
 msgstr "כותרת"
 
-#: picard/ui/scripteditor.py:395
+#: picard/ui/scripteditor.py:411
 msgid "File naming script editor"
 msgstr "עורך תסריט שמות קבצים"
 
-#: picard/ui/scripteditor.py:461
-msgid "Revert"
-msgstr "הסגה"
+#: picard/ui/scripteditor.py:477
+msgid "Reset"
+msgstr ""
 
-#: picard/ui/scripteditor.py:527
+#: picard/ui/options/dialog.py:132 picard/ui/scripteditor.py:482
+msgid "Make It So!"
+msgstr "שמירה!"
+
+#: picard/ui/scripteditor.py:554
 msgid "&Import a script file"
 msgstr "&יבוא קובץ תסריט"
 
-#: picard/ui/scripteditor.py:528
+#: picard/ui/scripteditor.py:555
 msgid "Import a file as a new script"
 msgstr "יבוא קובץ כתסריט חדש"
 
-#: picard/ui/scripteditor.py:533
+#: picard/ui/scripteditor.py:560
 msgid "&Export a script file"
 msgstr "&יצוא קובץ תסריט"
 
-#: picard/ui/scripteditor.py:534
+#: picard/ui/scripteditor.py:561
 msgid "Export the script to a file"
 msgstr "יצוא התסריט לקובץ"
 
-#: picard/ui/scripteditor.py:539
-msgid "E&xit / Close editor"
-msgstr "י&ציאה / סגירת עורך"
+#: picard/ui/scripteditor.py:566
+msgid "&Reset all scripts"
+msgstr ""
 
-#: picard/ui/scripteditor.py:540
-msgid "Close the script editor"
-msgstr "סגירת עורך התסריט"
+#: picard/ui/scripteditor.py:567
+msgid "Reset all scripts to the saved values"
+msgstr ""
 
-#: picard/ui/scripteditor.py:545
+#: picard/ui/scripteditor.py:572
+msgid "&Save and exit"
+msgstr ""
+
+#: picard/ui/scripteditor.py:573
+msgid "Save changes to the script settings and exit"
+msgstr ""
+
+#: picard/ui/scripteditor.py:578
+msgid "E&xit without saving"
+msgstr ""
+
+#: picard/ui/scripteditor.py:579
+msgid "Close the script editor without saving changes"
+msgstr ""
+
+#: picard/ui/scripteditor.py:584
 msgid "&Script"
 msgstr "&תַּסְרִיט"
 
-#: picard/ui/scripteditor.py:548
-msgid "Edit Script &Metadata"
-msgstr "עריכת &נתוני־על תסריט"
+#: picard/ui/scripteditor.py:587
+msgid "View/Edit Script &Metadata"
+msgstr ""
 
-#: picard/ui/scripteditor.py:549
+#: picard/ui/scripteditor.py:588
 msgid "Display the details for the script"
 msgstr "הצגת פרטי התסריט"
 
-#: picard/ui/scripteditor.py:551
+#: picard/ui/scripteditor.py:590
 msgid "Ctrl+M"
 msgstr "Ctrl+M"
 
-#: picard/ui/scripteditor.py:554
+#: picard/ui/scripteditor.py:593
 msgid "Add a &new script"
 msgstr "הוספת &תַּסְרִיט חדש"
 
-#: picard/ui/scripteditor.py:555
+#: picard/ui/scripteditor.py:594
 msgid "Create a new file naming script"
 msgstr "יצירת תסריט שמות קבצים חדש"
 
-#: picard/ui/scripteditor.py:560
+#: picard/ui/scripteditor.py:599
 msgid "&Copy the current script"
 msgstr "&העתקת תסריט נוכחי"
 
-#: picard/ui/scripteditor.py:561
+#: picard/ui/scripteditor.py:600
 msgid "Save a copy of the script as a new script"
 msgstr "שמירת עותק של התסריט כתסריט חדש"
 
-#: picard/ui/scripteditor.py:566
+#: picard/ui/scripteditor.py:605
 msgid "&Delete the current script"
 msgstr "&מחיקת תסריט נוכחי"
 
-#: picard/ui/scripteditor.py:567
+#: picard/ui/scripteditor.py:606
 msgid "Delete the script"
 msgstr "מחיקת התסריט"
 
-#: picard/ui/scripteditor.py:572
-msgid "&Revert the current script"
-msgstr "&הסגת תסריט נוכחי"
-
-#: picard/ui/scripteditor.py:573
-msgid "Revert the script to the last saved value"
-msgstr "הסגת תסריט נוכחי לערך האחרון שנשמר"
-
-#: picard/ui/scripteditor.py:578
-msgid "&Save the current script"
-msgstr "&שמירת תסריט נוכחי"
-
-#: picard/ui/scripteditor.py:579
-msgid "Save changes to the script"
-msgstr "שמירת שינויים בתסריט"
-
-#: picard/ui/scripteditor.py:581
-msgid "Ctrl+S"
-msgstr "Ctrl+S"
-
-#: picard/ui/scripteditor.py:589
+#: picard/ui/scripteditor.py:615
 msgid "&Reload random example files"
 msgstr "&טעינת קובץ דוגמאות מחדש"
 
-#: picard/ui/scripteditor.py:598
+#: picard/ui/scripteditor.py:624
 msgid "&Show documentation"
 msgstr "&הצגת תיעוד"
 
-#: picard/ui/scripteditor.py:599
+#: picard/ui/scripteditor.py:625
 msgid "View the scripting documentation in a sidebar"
 msgstr "הצגת תיעוד התסרוט בסרגל צד"
 
-#: picard/ui/scripteditor.py:615
+#: picard/ui/scripteditor.py:641
 msgid "&Scripting documentation..."
 msgstr "&תיעוד תסרוט"
 
-#: picard/ui/scripteditor.py:616
+#: picard/ui/scripteditor.py:642
 msgid "Open the scripting documentation in your browser"
 msgstr "פתיחת תיעוד התסרוט בדפדפן"
 
-#: picard/ui/scripteditor.py:795
+#: picard/ui/scripteditor.py:741
 msgid ""
-"There are unsaved changes to the current script.  Do you want to continue "
-"and lose these changes?"
-msgstr "קיימים שינויים בתסריט הנוכחי שטרם נשמרו. האם להמשיך ולאבד שינויים אלו?"
+"At least one unsaved script has been attached to an option profile.\n"
+"\n"
+"   Profile: {profile_title}\n"
+"   Script: {old_script_title}\n"
+"\n"
+"Continuing without saving will reset the selected script in the profile to:\n"
+"\n"
+"   {new_script_title}\n"
+"\n"
+"Are you sure that you want to continue?"
+msgstr ""
 
-#: picard/ui/scripteditor.py:905
+#: picard/ui/options/renaming.py:285 picard/ui/scripteditor.py:843
+#: picard/ui/scripteditor.py:1152 picard/ui/scripteditor.py:1392
+msgid "Error"
+msgstr "שגיאה"
+
+#: picard/ui/scripteditor.py:843 picard/ui/scripteditor.py:1152
+#: picard/ui/scripteditor.py:1393
+msgid "The script title must not be empty."
+msgstr "כותרת התסריט לא יכולה להיות ריקה."
+
+#: picard/ui/scripteditor.py:1099
 msgid "Error Deleting Script"
 msgstr "שגיאה במחיקת תסריט"
 
-#: picard/ui/scripteditor.py:906
+#: picard/ui/scripteditor.py:1100
 #, python-format
 msgid ""
 "The script could not be deleted because it is used in one of the user profiles.\n"
@@ -4942,58 +4967,43 @@ msgid ""
 "Profile: %s"
 msgstr "לא ניתן למחוק את התסריט מאחר והוא בשימוש באחד מפרופילי המשתמש.\n\nפרופיל: %s"
 
-#: picard/ui/scripteditor.py:911
+#: picard/ui/scripteditor.py:1109
 msgid "Are you sure that you want to delete the script?"
 msgstr "האם למחוק תַּסְרִיט זה?"
 
-#: picard/ui/scripteditor.py:950
-msgid "Save Script"
-msgstr "שמירת תַּסְרִיט"
-
-#: picard/ui/scripteditor.py:951
-msgid "Changes to the script have been saved."
-msgstr "שינויים בתסריט נשמרו."
-
-#: picard/ui/options/renaming.py:289 picard/ui/scripteditor.py:957
-#: picard/ui/scripteditor.py:1190
-msgid "Error"
-msgstr "שגיאה"
-
-#: picard/ui/scripteditor.py:957 picard/ui/scripteditor.py:1191
-msgid "The script title must not be empty."
-msgstr "כותרת התסריט לא יכולה להיות ריקה."
-
-#: picard/ui/options/scripting.py:159 picard/ui/scripteditor.py:1019
+#: picard/ui/options/scripting.py:159 picard/ui/scripteditor.py:1194
 msgid "File Error"
 msgstr "שגיאת קובץ"
 
-#: picard/ui/scripteditor.py:1049
+#: picard/ui/scripteditor.py:1215
 msgid ""
-"Are you sure that you want to reset the script to its last saved value?"
-msgstr "האם להסיג את התסריט נוכחי לערך האחרון שנשמר?"
+"A script named \"{script_name}\" already exists.\n"
+"\n"
+"Do you want to overwrite it, add as a copy or cancel?"
+msgstr ""
 
-#: picard/ui/scripteditor.py:1054
-msgid "Revert Script"
-msgstr "הסגת תַּסְרִיט"
+#: picard/ui/scripteditor.py:1222
+msgid "Overwrite"
+msgstr ""
 
-#: picard/ui/scripteditor.py:1055
-msgid ""
-"There have been no changes made since the last time the script was saved."
-msgstr "לא היו כל שינויים מאז הפעם האחרונה שהתסריט נשמר."
+#: picard/ui/options/profiles.py:117 picard/ui/scripteditor.py:1224
+msgid "Copy"
+msgstr "העתקה"
 
-#: picard/ui/options/renaming.py:299 picard/ui/scripteditor.py:1079
+#: picard/ui/options/renaming.py:295 picard/ui/scripteditor.py:1270
 msgid "The file naming format must not be empty."
 msgstr "תבנית שמות הקבצים לא יכול להיות ריק."
 
-#: picard/ui/scripteditor.py:1111
+#: picard/ui/scripteditor.py:1307
 msgid "Script Details"
 msgstr "פרטי תסריט"
 
-#: picard/ui/scripteditor.py:1174
+#: picard/ui/scripteditor.py:1372
 msgid ""
-"There are unsaved changes to the current metadata.  Do you want to continue "
-"and lose these changes?"
-msgstr "קיימים שינויים בנתוני־העל הנוכחיים שטרם נשמרו. האם להמשיך ולאבד שינויים אלו?"
+"There are unsaved changes to the current metadata.\n"
+"\n"
+"Do you want to continue and lose these changes?"
+msgstr ""
 
 #: picard/ui/scriptsmenu.py:62
 #, python-format
@@ -5204,7 +5214,7 @@ msgstr "רצועות שקט"
 msgid "Tags to ignore for comparison:"
 msgstr "תגים שהמערכת תתעלם מהם להשוואה:"
 
-#: picard/ui/options/dialog.py:203
+#: picard/ui/options/dialog.py:204
 #: picard/ui/ui_options_attached_profiles.py:34
 msgid "Profiles Attached to Options"
 msgstr "פרופילים מצורפים לאפשרויות"
@@ -5277,66 +5287,66 @@ msgstr "מפתח API:"
 msgid "Get API key..."
 msgstr "‮קבלת מפתח IPA..."
 
-#: picard/ui/ui_options_general.py:161
+#: picard/ui/ui_options_general.py:167
 msgid "MusicBrainz Server"
 msgstr "‮שרת מוזיקבריינז"
 
-#: picard/ui/ui_options_general.py:162
+#: picard/ui/ui_options_general.py:168
 msgid ""
 "You have configured an unofficial MusicBrainz server. By default submissions"
 " of releases, recordings and disc IDs will go to the primary database on "
 "musicbrainz.org."
 msgstr "הוגדר שרת מוזיקבריינז לא רשמי. כברירת מחדל, שיגורי הוצאות, הקלטות ומזהי תקליטורים יועברו למסד הנתונים הראשי ב־ musicbrainz.org."
 
-#: picard/ui/ui_options_general.py:163
+#: picard/ui/ui_options_general.py:169
 msgid "Submit data to the configured server"
 msgstr "שיגור נתונים לשרת המתוצר"
 
-#: picard/ui/ui_options_general.py:164 picard/ui/ui_options_network.py:144
+#: picard/ui/ui_options_general.py:170 picard/ui/ui_options_network.py:144
 msgid "Port:"
 msgstr "פִּתְחָה:"
 
-#: picard/ui/ui_options_general.py:165 picard/ui/ui_options_network.py:146
+#: picard/ui/ui_options_general.py:171 picard/ui/ui_options_network.py:146
 msgid "Server address:"
 msgstr "כתובת שרת:"
 
-#: picard/ui/ui_options_general.py:167
+#: picard/ui/ui_options_general.py:173
 msgid "Log in"
 msgstr "התחברות למערכת"
 
-#: picard/ui/ui_options_general.py:168
+#: picard/ui/ui_options_general.py:174
 msgid "Log out"
 msgstr "התנתקות מהמערכת"
 
-#: picard/ui/options/general.py:55 picard/ui/ui_options_general.py:169
+#: picard/ui/options/general.py:55 picard/ui/ui_options_general.py:175
 msgid "General"
 msgstr "כללי"
 
-#: picard/ui/ui_options_general.py:170
+#: picard/ui/ui_options_general.py:176
 msgid "Automatically scan all new files"
 msgstr "סריקה אוטומטית של קבצים החדשים"
 
-#: picard/ui/ui_options_general.py:171
+#: picard/ui/ui_options_general.py:177
 msgid "Automatically cluster all new files"
 msgstr ""
 
-#: picard/ui/ui_options_general.py:172
+#: picard/ui/ui_options_general.py:178
 msgid "Ignore MBIDs when loading new files"
 msgstr "‮להתעלם ממזהי מוזיקבריינז בטעינת קבצים חדשים,"
 
-#: picard/ui/ui_options_general.py:173
+#: picard/ui/ui_options_general.py:179
 msgid "Update Checking"
 msgstr "בדיקת זמינות עדכונים"
 
-#: picard/ui/ui_options_general.py:174
+#: picard/ui/ui_options_general.py:180
 msgid "Check for updates during start-up"
 msgstr "בדיקת עדכונים בעת האתחול"
 
-#: picard/ui/ui_options_general.py:175
+#: picard/ui/ui_options_general.py:181
 msgid "Days between checks:"
 msgstr "מספר ימים בין בדיקות:"
 
-#: picard/ui/ui_options_general.py:176
+#: picard/ui/ui_options_general.py:182
 msgid "Updates to check:"
 msgstr "עדכונים לבדיקה:"
 
@@ -5716,7 +5726,7 @@ msgstr "הוספת תַּסְרִיט חדש"
 msgid "Remove the selected script"
 msgstr "הסרת התסריט שנבחר"
 
-#: picard/ui/ui_options_script.py:118 picard/ui/widgets/scriptlistwidget.py:52
+#: picard/ui/ui_options_script.py:118 picard/ui/widgets/scriptlistwidget.py:51
 msgid "Remove script"
 msgstr "הסרת תַּסְרִיט"
 
@@ -5782,7 +5792,7 @@ msgid ""
 "to those files."
 msgstr "פיקארד יכול לשמור תגי APEv2 בקבצי AC3 טהורים, אשר כברירת מחדל אינם תומכים בתיוג. תגי APEv2 ב־ AC3 נתמכים על־ידי נגנים מסוימים, אך נגנים שאינם תומכים בקבצי AC3 עם תגי APEv2 יכולים להיתקל בבעיות בטעינת והפעלת קבצים אלה. כדי להתמודד עם בעיה זו ניתן לבחור באם לשמור תגים בקבצים אלו."
 
-#: picard/ui/options/tags_compatibility_id3.py:43
+#: picard/ui/options/tags_compatibility_id3.py:44
 #: picard/ui/ui_options_tags_compatibility_id3.py:115
 msgid "ID3"
 msgstr "ID3"
@@ -5982,29 +5992,29 @@ msgstr "סגו&ר"
 msgid "Regex Error"
 msgstr "שגיאת Regex"
 
-#: picard/ui/options/acousticbrainz.py:55
+#: picard/ui/options/acousticbrainz.py:54
 msgid "AcousticBrainz"
 msgstr "אקוסטיקבריינז"
 
-#: picard/ui/options/acousticbrainz.py:76
+#: picard/ui/options/acousticbrainz.py:75
 msgid "Open AcousticBrainz website in browser to download extractor binary"
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:111
+#: picard/ui/options/acousticbrainz.py:109
 msgid "Path to streaming_extractor_music(.exe)"
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:129
+#: picard/ui/options/acousticbrainz.py:127
 #, python-format
 msgid "Extractor version: %s"
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:141
-#: picard/ui/options/acousticbrainz.py:145
+#: picard/ui/options/acousticbrainz.py:139
+#: picard/ui/options/acousticbrainz.py:143
 msgid "Please select a valid extractor executable."
 msgstr ""
 
-#: picard/ui/options/acousticbrainz.py:145
+#: picard/ui/options/acousticbrainz.py:143
 msgid "Invalid extractor executable"
 msgstr ""
 
@@ -6012,80 +6022,76 @@ msgstr ""
 msgid "Advanced"
 msgstr "מתקדם"
 
-#: picard/ui/options/dialog.py:125
+#: picard/ui/options/dialog.py:126
 msgid "&Restore all Defaults"
 msgstr "&שחזור כל ברירות המחדל"
 
-#: picard/ui/options/dialog.py:126
+#: picard/ui/options/dialog.py:127
 msgid "Reset all of Picard's settings"
 msgstr "אתחול כל הגדרות פיקארד"
 
-#: picard/ui/options/dialog.py:128
+#: picard/ui/options/dialog.py:129
 msgid "Reset all settings for current option page"
 msgstr "אתחול את כל ההגדרות  בעמוד האפשרויות הנוכחי"
 
-#: picard/ui/options/dialog.py:131
-msgid "Make It So!"
-msgstr "שמירה!"
-
-#: picard/ui/options/dialog.py:144 picard/ui/options/dialog.py:432
-#: picard/ui/options/dialog.py:458
+#: picard/ui/options/dialog.py:145 picard/ui/options/dialog.py:433
+#: picard/ui/options/dialog.py:459
 msgid "Attached Profiles"
 msgstr "פרופיל מצורף"
 
-#: picard/ui/options/dialog.py:145
+#: picard/ui/options/dialog.py:146
 msgid "Show which profiles are attached to the options on this page"
 msgstr "הצגת הפרופיל המצורף לאפשרויות בעמוד זה"
 
-#: picard/ui/options/dialog.py:213
+#: picard/ui/options/dialog.py:214
 msgid ""
 "The options on this page are not currently available to be managed using "
 "profiles."
 msgstr "האפשרויות בעמוד זה לא זמינות כעת לניהול באמצעות פרופילים."
 
-#: picard/ui/options/dialog.py:234
+#: picard/ui/options/dialog.py:235
 msgid "Unknown profile"
 msgstr "פרופיל ללא ידוע"
 
-#: picard/ui/options/dialog.py:283
+#: picard/ui/options/dialog.py:284
 #, python-format
 msgid "This option will be saved to profile: %s"
 msgstr "אפשרות זו תשמר לפרופיל: %s"
 
-#: picard/ui/options/dialog.py:373
+#: picard/ui/options/dialog.py:374
 msgid "Unexpected error"
 msgstr "שגיאה בלתי צפויה"
 
-#: picard/ui/options/dialog.py:412
+#: picard/ui/options/dialog.py:413
 msgid "You are about to reset your options for this page."
 msgstr "אתם עומדים לאפס את כל האפשרויות בעמוד זה."
 
-#: picard/ui/options/dialog.py:416
+#: picard/ui/options/dialog.py:417
 msgid "Warning! This will reset all of your settings."
 msgstr "אזהרה! פעולה זו תאתחל את כל ההגדרות."
 
-#: picard/ui/options/dialog.py:423
+#: picard/ui/options/dialog.py:424
 msgid "Confirm Reset"
 msgstr "אשר איתחול"
 
-#: picard/ui/options/dialog.py:424
+#: picard/ui/options/dialog.py:425
 msgid "Are you sure?"
 msgstr "האם לבצע?"
 
-#: picard/ui/options/dialog.py:458
+#: picard/ui/options/dialog.py:459
 msgid "Option Setting"
 msgstr "פתיחת הגדרות"
 
-#: picard/ui/options/dialog.py:465
+#: picard/ui/options/dialog.py:466
 #, python-format
 msgid "Profiles Attached to Options in %s Section"
 msgstr "פרופילים מצורפים לאפשרויות ב־%s מקטעים"
 
-#: picard/ui/options/dialog.py:475
+#: picard/ui/options/dialog.py:476
 msgid " [Enabled]"
 msgstr "[מאופשר]"
 
-#: picard/ui/options/dialog.py:476 picard/ui/options/profiles.py:277
+#: picard/ui/options/dialog.py:477 picard/ui/options/profiles.py:279
 msgid "None"
 msgstr "ללא"
 
@@ -6102,7 +6108,7 @@ msgstr "בחירת בקובץ הפעלה fpcalc תקין."
 msgid "Invalid fpcalc executable"
 msgstr " קובץ הפעלה fpcalc לא תקין"
 
-#: picard/ui/options/general.py:135
+#: picard/ui/options/general.py:137
 #, python-format
 msgid "Logged in as <b>%s</b>."
 msgstr "התחברות בשם <b>%s</b>."
@@ -6289,11 +6295,11 @@ msgstr "צבע ממשק המשתמש השתנתה, על מנת שהשנויים 
 msgid "Top Tags"
 msgstr "תגים מובילים"
 
-#: picard/ui/options/maintenance.py:58
+#: picard/ui/options/maintenance.py:59
 msgid "Maintenance"
 msgstr "תחזוקה"
 
-#: picard/ui/options/maintenance.py:70
+#: picard/ui/options/maintenance.py:71
 msgid ""
 "This allows you to remove unused option settings from the configuration INI file.\n"
 "\n"
@@ -6304,28 +6310,28 @@ msgid ""
 "To remove one or more settings, first enable the removal by checking the \"Remove selected options\" box. You can then select the settings to remove by checking the box next to the setting. When you choose \"Make It So!\" to save your option settings, the selected items will be removed."
 msgstr ""
 
-#: picard/ui/options/maintenance.py:85
+#: picard/ui/options/maintenance.py:86
 msgid "Option"
 msgstr ""
 
-#: picard/ui/options/maintenance.py:85
+#: picard/ui/options/maintenance.py:86
 msgid "Value"
 msgstr "ערך"
 
-#: picard/ui/options/maintenance.py:117
+#: picard/ui/options/maintenance.py:118
 #, python-format
 msgid ""
 "The configuration file currently contains %d option settings, %d which are "
 "unused."
 msgstr ""
 
-#: picard/ui/options/maintenance.py:175
-#: picard/ui/widgets/profilelistwidget.py:79
-#: picard/ui/widgets/scriptlistwidget.py:82
+#: picard/ui/options/maintenance.py:176
+#: picard/ui/widgets/profilelistwidget.py:82
+#: picard/ui/widgets/scriptlistwidget.py:84
 msgid "Confirm Remove"
 msgstr "אישור הסרה"
 
-#: picard/ui/options/maintenance.py:176
+#: picard/ui/options/maintenance.py:177
 msgid "Are you sure you want to remove the selected option settings?"
 msgstr ""
 
@@ -6438,81 +6444,68 @@ msgstr "לא ניתן להוריד את מִתְקָע '%s'."
 msgid "Please try again later."
 msgstr "נסו שוב מאוחר יותר."
 
-#: picard/ui/options/profiles.py:51
+#: picard/ui/options/profiles.py:53
 msgid "Option Profiles"
 msgstr "פרופילי אפשרויות"
 
-#: picard/ui/options/profiles.py:110
+#: picard/ui/options/profiles.py:112
 msgid "New"
 msgstr "חדש"
 
-#: picard/ui/options/profiles.py:111
+#: picard/ui/options/profiles.py:113
 msgid "Create a new profile"
 msgstr "יצירת פרופיל חדש"
 
-#: picard/ui/options/profiles.py:115
-msgid "Copy"
-msgstr "העתקה"
-
-#: picard/ui/options/profiles.py:116
+#: picard/ui/options/profiles.py:118
 msgid "Copy to a new profile"
 msgstr "העתקה לפרופיל חדש"
 
-#: picard/ui/options/profiles.py:120
+#: picard/ui/options/profiles.py:122
 msgid "Delete"
 msgstr "מחיקה"
 
-#: picard/ui/options/profiles.py:121
+#: picard/ui/options/profiles.py:123
 msgid "Delete the profile"
 msgstr "מחיקת הפרופיל"
 
-#: picard/ui/options/profiles.py:214
+#: picard/ui/options/profiles.py:216
 msgid "Settings to include in profile"
 msgstr "הגדרות שיכללו בפרופיל"
 
-#: picard/ui/options/profiles.py:247
+#: picard/ui/options/profiles.py:249
 msgid "Unknown script"
 msgstr "כיתוב לא ידוע"
 
-#: picard/ui/options/profiles.py:251
+#: picard/ui/options/profiles.py:253
 msgid "No scripts in list"
 msgstr "אין תסריטים ברשימה"
 
-#: picard/ui/options/profiles.py:254
+#: picard/ui/options/profiles.py:256
 #, python-format
 msgid "Enabled tagging scripts of %i found:"
 msgstr "תסריטי תיוג מאופשרים של %i נמצאו:"
 
-#: picard/ui/options/profiles.py:266
+#: picard/ui/options/profiles.py:268
 #, python-format
 msgid "Enabled providers of %i listed:"
 msgstr ""
 
-#: picard/ui/options/profiles.py:292
+#: picard/ui/options/profiles.py:294
 #, python-format
 msgid "List of %i items"
 msgstr "רשימת %iפריטים"
 
-#: picard/ui/options/profiles.py:293
+#: picard/ui/options/profiles.py:295
 msgid "Unknown value format"
 msgstr "תַּבְנִית ערך לא ידועה"
 
-#: picard/ui/options/profiles.py:369
+#: picard/ui/options/profiles.py:371
 msgid "Invalid Title"
 msgstr "כותרת לא תקינה"
 
-#: picard/ui/options/profiles.py:370
+#: picard/ui/options/profiles.py:372
 msgid "The profile title cannot be blank."
 msgstr "כותרת הפרופיל לא יכולה להיות ריקה"
-
-#: picard/ui/options/profiles.py:374
-msgid "Unnamed profile"
-msgstr "פרופיל ללא שם"
-
-#: picard/ui/options/profiles.py:423
-#, python-format
-msgid "%s (copy)"
-msgstr "%s (העתקה)"
 
 #: picard/ui/options/ratings.py:41
 msgid "Ratings"
@@ -6526,7 +6519,7 @@ msgstr "הוצאות מועדפות"
 msgid "Reset all"
 msgstr "אפס הכל"
 
-#: picard/ui/options/renaming.py:289
+#: picard/ui/options/renaming.py:285
 msgid "The location to move files to must not be empty."
 msgstr "המיקום עליו יועברו הקבצים חייב להיות ריק."
 
@@ -6555,15 +6548,15 @@ msgstr "%s (יובאו)"
 msgid "Script Error"
 msgstr "שגיאת תַּסְרִיט"
 
-#: picard/ui/options/tags_compatibility_aac.py:40
+#: picard/ui/options/tags_compatibility_aac.py:41
 msgid "AAC"
 msgstr "AAC"
 
-#: picard/ui/options/tags_compatibility_ac3.py:40
+#: picard/ui/options/tags_compatibility_ac3.py:41
 msgid "AC3"
 msgstr "AC3"
 
-#: picard/ui/options/tags_compatibility_wave.py:42
+#: picard/ui/options/tags_compatibility_wave.py:43
 msgid "WAVE"
 msgstr "WAVE"
 
@@ -6663,47 +6656,47 @@ msgstr "הוצאה"
 msgid "Standalone Recording"
 msgstr "הקלטה עצמאית"
 
-#: picard/ui/widgets/profilelistwidget.py:45
+#: picard/ui/widgets/profilelistwidget.py:43
 msgid "Rename profile"
 msgstr "שינוי שם פרופיל"
 
-#: picard/ui/widgets/profilelistwidget.py:48
+#: picard/ui/widgets/profilelistwidget.py:46
 msgid "Remove profile"
 msgstr "הסרת פרופיל"
 
-#: picard/ui/widgets/profilelistwidget.py:78
+#: picard/ui/widgets/profilelistwidget.py:81
 msgid "Are you sure you want to remove this profile?"
 msgstr "האם להסיר פרופיל זה?"
 
-#: picard/ui/widgets/scriptdocumentation.py:107
+#: picard/ui/widgets/scriptdocumentation.py:109
 msgid "Open Scripting Documentation in your browser"
 msgstr "פתיחת תיעוד התסרוט בדפדפן"
 
-#: picard/ui/widgets/scriptlistwidget.py:49
+#: picard/ui/widgets/scriptlistwidget.py:48
 msgid "Rename script"
 msgstr "שינוי שם תַּסְרִיט"
 
-#: picard/ui/widgets/scriptlistwidget.py:81
+#: picard/ui/widgets/scriptlistwidget.py:83
 msgid "Are you sure you want to remove this script?"
 msgstr "האם להסיר תַּסְרִיט זה?"
 
-#: picard/ui/widgets/scripttextedit.py:324
+#: picard/ui/widgets/scripttextedit.py:325
 msgid "&Word wrap script"
 msgstr "&תַּסְרִיט גלישת מלל"
 
-#: picard/ui/widgets/scripttextedit.py:325
+#: picard/ui/widgets/scripttextedit.py:326
 msgid "Word wrap long lines in the editor"
 msgstr "גלילת שורות מלל ארוכות בעורך"
 
-#: picard/ui/widgets/scripttextedit.py:327
+#: picard/ui/widgets/scripttextedit.py:328
 msgid "Ctrl+Shift+W"
 msgstr "Ctrl+Shift+W"
 
-#: picard/ui/widgets/scripttextedit.py:333
+#: picard/ui/widgets/scripttextedit.py:334
 msgid "Show help &tooltips"
 msgstr "הצגת &רמז־צץ עזרה"
 
-#: picard/ui/widgets/scripttextedit.py:334
+#: picard/ui/widgets/scripttextedit.py:335
 msgid "Show tooltips for script elements"
 msgstr "הצגת רמז־צץ לרכיבי תסריט"
 
@@ -6713,7 +6706,7 @@ msgid ""
 "unlock the table in the table header's context menu."
 msgstr "הטבלה נעולה. כדי לאפשר מיון ושינוי גודל עמודות יש לבטל את נעילת הטבלה מתפריט ההקשר כותרת הטבלה."
 
-#: picard/util/__init__.py:257
+#: picard/util/__init__.py:261
 msgid "No Title"
 msgstr "ללא כותרת"
 
@@ -7133,22 +7126,22 @@ msgstr "יצירה"
 msgid "Writer"
 msgstr "כותב"
 
-#: picard/util/time.py:42
+#: picard/util/time.py:43
 #, python-format
 msgid "%.2dd %.2dh"
 msgstr "%.2dd %.2dh"
 
-#: picard/util/time.py:44
+#: picard/util/time.py:45
 #, python-format
 msgid "%.2dh %.2dm"
 msgstr "%.2dh %.2dm"
 
-#: picard/util/time.py:46
+#: picard/util/time.py:47
 #, python-format
 msgid "%.2dm %.2ds"
 msgstr "%.2dm %.2ds"
 
-#: picard/util/time.py:48
+#: picard/util/time.py:49
 #, python-format
 msgid "%.2ds"
 msgstr "%.2ds"

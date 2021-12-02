@@ -1,13 +1,13 @@
 # 
 # Translators:
-# AO <ao@localizationlab.org>, 2013
+# AO_LL <ao@localizationlab.org>, 2013
 # Benjamin Sonntag <benjamin@octopuce.fr>, 2011-2012
 # Benjamin Sonntag <benjamin@sonntag.fr>, 2011-2012
 # Dibou <doc@boudon.nom.fr>, 2012
 # Laurent Monin <i18n@norz.org>, 2014
 # murdos <aurelien.mino@gmail.com>, 2011-2012
 # Paul Tremberth <agigaday@gmail.com>, 2013
-# AO <ao@localizationlab.org>, 2014-2015
+# AO_LL <ao@localizationlab.org>, 2014-2015
 # yvanz, 2016
 msgid ""
 msgstr ""

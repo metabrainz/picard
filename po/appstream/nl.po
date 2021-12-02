@@ -50,7 +50,7 @@ msgid ""
 msgstr ""
 "Met Picard kan je je muziekverzameling beheren door je muziekbestanden naar "
 "je eigen voorkeuren te hernoemen en op te slaan in een mapstructuur. Er zijn"
-" veel plug-ins beschikbaar en je kunt ook zelf plug-ins schrijven. Picard "
+" veel plug-ins beschikbaar en je kan ook zelf plug-ins schrijven. Picard "
 "ondersteunt een breed scala audioformaten en kan ook een hele cd voor je "
 "opzoeken."
 
@@ -97,7 +97,7 @@ msgid ""
 "Plugin support: If you need a particular feature, you can choose from a "
 "selection of available plugins or write your own."
 msgstr ""
-"Plug-inondersteuning: als je een bepaalde functie nodig hebt, kun je kiezen "
+"Plug-inondersteuning: als je een bepaalde functie nodig hebt, kan je kiezen "
 "uit een brede selectie beschikbare plug-ins of er zelf een schrijven."
 
 #: org.musicbrainz.Picard.appdata.xml.in:47
