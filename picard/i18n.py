@@ -44,9 +44,7 @@ if IS_WIN:
     def _init_default_locale():
         try:
             current_locale = locale.windows_locale[windll.kernel32.GetUserDefaultUILanguage()]
-            current_locale += '.' + locale.getpreferredencoding()
-            locale.setlocale(locale.LC_ALL, current_locale)
-            return current_locale
+            return locale.setlocale(locale.LC_ALL, current_locale)
         except KeyError:
             return locale.setlocale(locale.LC_ALL, '')
 
