@@ -56,7 +56,7 @@ class UserProfileGroups():
         "title": N_("Metadata"),
         "settings": [
             SettingDesc("va_name", N_("Various Artists name"), ["va_name"]),
-            SettingDesc("nat_name", N_("Non-album tracks name"), ["nat_name"]),
+            SettingDesc("nat_name", N_("Standalone recordings name"), ["nat_name"]),
             SettingDesc("translate_artist_names", N_("Translate artist names"), ["translate_artist_names"]),
             SettingDesc("artist_locales", N_("Translation locales"), ["selected_locales"]),
             SettingDesc("translate_artist_names_script_exception", N_("Translate artist names exception"), ["translate_artist_names_script_exception"]),
