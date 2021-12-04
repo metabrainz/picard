@@ -53,12 +53,22 @@ _split_words_re = re.compile(r'\W+', re.UNICODE)
 
 def similarity2(a, b):
     """Calculates similarity of a multi-word strings."""
+    if not a or not b:
+        return 0.0
+    if a == b:
+        return 1.0
+
     alist = list(filter(bool, _split_words_re.split(a.lower())))
     blist = list(filter(bool, _split_words_re.split(b.lower())))
-    total = 0
-    score = 0.0
-    if len(alist) > len(blist):
+
+    alen, blen = len(alist), len(blist)
+    if not alen or not blen:
+        return 0.0
+    if alen > blen:
         alist, blist = blist, alist
+        alen, blen = blen, alen
+
+    score = 0.0
     for av in alist:
         ms = 0.0
         mp = None
@@ -71,9 +81,6 @@ def similarity2(a, b):
             score += ms
             if ms > 0.6:
                 del blist[mp]
-        total += 1
-    total += len(blist) * 0.4
-    if total:
-        return score / total
-    else:
-        return 0
+
+    # division by zero cannot happen, alen > 0 at this point
+    return score / (alen + len(blist) * 0.4)

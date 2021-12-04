@@ -38,36 +38,61 @@ class SimilarityTest(PicardTestCase):
 
 
 class Similarity2Test(PicardTestCase):
-    def test_1(self):
+    def test_full_match(self):
         a = b = "a b c"
         self.assertEqual(similarity2(a, b), 1.0)
 
-    def test_2(self):
+    def test_match_various_separators_1(self):
         a = "a b c"
         b = "A,B•C"
         self.assertEqual(similarity2(a, b), 1.0)
 
-    def test_3(self):
+    def test_match_various_separators_2(self):
         a = "a b c"
         b = ",A, B •C•"
         self.assertEqual(similarity2(a, b), 1.0)
 
-    def test_4(self):
+    def test_a_b_order(self):
         a = "a b c"
         b = "c a b"
         self.assertEqual(similarity2(a, b), 1.0)
 
-    def test_5(self):
+    def test_a_similar_b_1(self):
         a = "a b c"
         b = "a b d"
         self.assertAlmostEqual(similarity2(a, b), 0.6, 1)
 
-    def test_6(self):
+    def test_a_similar_b_2(self):
         a = "a b c"
         b = "a f d"
         self.assertAlmostEqual(similarity2(a, b), 0.3, 1)
 
-    def test_7(self):
+    def test_a_b_totally_different(self):
         a = "abc"
         b = "def"
         self.assertEqual(similarity2(a, b), 0.0)
+
+    def test_not_a(self):
+        a = ""
+        b = "def"
+        self.assertEqual(similarity2(a, b), 0.0)
+
+    def test_not_b(self):
+        a = "abc"
+        b = ""
+        self.assertEqual(similarity2(a, b), 0.0)
+
+    def test_not_a_and_not_b(self):
+        a = ""
+        b = ""
+        self.assertEqual(similarity2(a, b), 0.0)
+
+    def test_empty_lists(self):
+        a = " "
+        b = "  "
+        self.assertEqual(similarity2(a, b), 0.0)
+
+    def test_a_longer_than_b(self):
+        a = "a b c d"
+        b = "a d c"
+        self.assertAlmostEqual(similarity2(a, b), 0.88, 1)
