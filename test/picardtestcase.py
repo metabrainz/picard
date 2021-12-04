@@ -21,8 +21,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+from contextlib import contextmanager
 import json
+import logging
 import os
 import shutil
 import struct
@@ -71,6 +72,7 @@ class FakeTagger(QtCore.QObject):
 
 class PicardTestCase(unittest.TestCase):
     def setUp(self):
+        log.set_level(logging.CRITICAL)
         self.tagger = FakeTagger()
         QtCore.QObject.tagger = self.tagger
         self.addCleanup(self.tagger.run_cleanup)
@@ -116,6 +118,14 @@ class PicardTestCase(unittest.TestCase):
     def remove_file_tmp(filepath):
         if os.path.isfile(filepath):
             os.unlink(filepath)
+
+    @staticmethod
+    @contextmanager
+    def loglevel(level):
+        old_level = log.get_effective_level()
+        log.set_level(level)
+        yield
+        log.set_level(old_level)
 
 
 def get_test_data_path(*paths):
