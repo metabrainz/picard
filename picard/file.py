@@ -667,7 +667,7 @@ class File(QtCore.QObject, Item):
         ignored_tags = set(config.setting["compare_ignore_tags"])
 
         for name in self._tags_to_update(ignored_tags):
-            new_values = self.metadata.getall(name)
+            new_values = self.format_specific_metadata(self.metadata, name, config.setting)
             if not (
                 new_values
                 or clear_existing_tags
