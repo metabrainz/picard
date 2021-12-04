@@ -30,7 +30,11 @@ import mutagen
 from test.picardtestcase import PicardTestCase
 
 from picard import config
-from picard.formats import id3
+from picard.file import File
+from picard.formats import (
+    id3,
+    open_,
+)
 from picard.metadata import Metadata
 
 from .common import (
@@ -551,6 +555,32 @@ class CommonId3Tests:
                 metadata = Metadata({'~rating': rating})
                 loaded_metadata = save_and_load_metadata(self.filename, metadata)
                 self.assertEqual(loaded_metadata['~rating'], rating, '~rating: %r != %r' % (loaded_metadata['~rating'], rating))
+
+        @skipUnlessTestfile
+        def test_unchanged_metadata(self):
+            self.set_config_values({
+                'compare_ignore_tags': [],
+                'write_id3v23': True,
+            })
+            file = open_(self.filename)
+            file.orig_metadata = Metadata({
+                'album': 'somealbum',
+                'title': 'sometitle',
+                'date': '2021',
+                'originaldate': '2021',
+                'artists': 'foo/bar',
+            })
+            file.metadata = Metadata({
+                'album': 'somealbum',
+                'title': 'sometitle',
+                'date': '2021-12',
+                'originaldate': '2021-12-04',
+                'artists': ['foo', 'bar'],
+            })
+            file.state = File.NORMAL
+            file.update(signal=False)
+            self.assertEqual(file.similarity, 1.0)
+            self.assertEqual(file.state, File.NORMAL)
 
 
 class MP3Test(CommonId3Tests.Id3TestCase):
