@@ -802,10 +802,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config.setting["dont_write_tags"] = not checked
 
     def get_selected_or_unmatched_files(self):
-        files = self.tagger.get_files_from_objects(self.selected_objects)
-        if not files:
-            files = self.tagger.unclustered_files.files
-        return files
+        if self.selected_objects:
+            files = list(iter_files_from_objects(self.selected_objects))
+            if files:
+                return files
+        return self.tagger.unclustered_files.files
 
     def open_tags_from_filenames(self):
         files = self.get_selected_or_unmatched_files()
