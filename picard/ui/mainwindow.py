@@ -1448,7 +1448,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                                                history=None)
         elif coverart_visible and new_selection:
             # Create a temporary file list which allows changing cover art for all selected files
-            files = self.tagger.get_files_from_objects(objects)
+            files = list(iter_files_from_objects(objects))
             obj = FileList(files)
 
         if coverart_visible and new_selection:
