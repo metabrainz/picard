@@ -1206,10 +1206,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _ensure_fingerprinting_configured(self, callback):
         config = get_config()
 
-        def on_finished(result):
-            callback(config.setting['fingerprinting_system'])
         if not config.setting['fingerprinting_system']:
             if self._show_analyze_settings_info():
+                def on_finished(result):
+                    callback(config.setting['fingerprinting_system'])
+
                 dialog = self.show_options("fingerprinting")
                 dialog.finished.connect(on_finished)
         else:
