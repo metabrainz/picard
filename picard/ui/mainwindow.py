@@ -898,14 +898,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def update_toolbar_style(self):
         config = get_config()
+        style = QtCore.Qt.ToolButtonIconOnly
         if config.setting["toolbar_show_labels"]:
-            self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
-            if self.player:
-                self.player.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
-        else:
-            self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
-            if self.player:
-                self.player.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
+            style = QtCore.Qt.ToolButtonTextUnderIcon
+        self.toolbar.setToolButtonStyle(style)
+        if self.player:
+            self.player.toolbar.setToolButtonStyle(style)
 
     def create_toolbar(self):
         self.create_search_toolbar()
