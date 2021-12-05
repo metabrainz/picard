@@ -1338,28 +1338,36 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         can_view_info = bool(single and single.can_view_info())
         can_browser_lookup = bool(single and single.can_browser_lookup())
         is_file = bool(single and isinstance(single, (File, Track)))
-        have_files = bool(self.tagger.get_files_from_objects(self.selected_objects))
-        have_objects = bool(self.selected_objects)
-        for obj in self.selected_objects:
-            if obj is None:
-                continue
-            if obj.can_analyze():
-                can_analyze = True
-            if obj.can_save():
-                can_save = True
-            if obj.can_remove():
-                can_remove = True
-            if obj.can_refresh():
-                can_refresh = True
-            if obj.can_autotag():
-                can_autotag = True
-            if obj.can_submit():
-                can_submit = True
-            if obj.can_extract():
-                can_extract = True
-            # Skip further loops if all values now True.
-            if can_analyze and can_save and can_remove and can_refresh and can_autotag and can_submit and can_extract:
-                break
+
+        if not self.selected_objects:
+            have_objects = have_files = False
+        else:
+            have_objects = True
+            try:
+                next(iter_files_from_objects(self.selected_objects))
+                have_files = True
+            except StopIteration:
+                have_files = False
+            for obj in self.selected_objects:
+                if obj is None:
+                    continue
+                if obj.can_analyze():
+                    can_analyze = True
+                if obj.can_save():
+                    can_save = True
+                if obj.can_remove():
+                    can_remove = True
+                if obj.can_refresh():
+                    can_refresh = True
+                if obj.can_autotag():
+                    can_autotag = True
+                if obj.can_submit():
+                    can_submit = True
+                if obj.can_extract():
+                    can_extract = True
+                # Skip further loops if all values now True.
+                if can_analyze and can_save and can_remove and can_refresh and can_autotag and can_submit and can_extract:
+                    break
         can_extract = can_extract and self.tagger.ab_extractor.available()
         self.remove_action.setEnabled(can_remove)
         self.save_action.setEnabled(can_save)
