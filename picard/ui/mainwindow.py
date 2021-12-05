@@ -1258,18 +1258,17 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def view_info(self, default_tab=0):
         if not self.selected_objects:
             return
-        elif isinstance(self.selected_objects[0], Album):
-            album = self.selected_objects[0]
-            dialog = AlbumInfoDialog(album, self)
-        elif isinstance(self.selected_objects[0], Cluster):
-            cluster = self.selected_objects[0]
-            dialog = ClusterInfoDialog(cluster, self)
-        elif isinstance(self.selected_objects[0], Track):
-            track = self.selected_objects[0]
-            dialog = TrackInfoDialog(track, self)
+        selected = self.selected_objects[0]
+        if isinstance(selected, Album):
+            dialog_class = AlbumInfoDialog
+        elif isinstance(selected, Cluster):
+            dialog_class = ClusterInfoDialog
+        elif isinstance(selected, Track):
+            dialog_class = TrackInfoDialog
         else:
-            file = self.tagger.get_files_from_objects(self.selected_objects)[0]
-            dialog = FileInfoDialog(file, self)
+            selected = self.tagger.get_files_from_objects(self.selected_objects)[0]
+            dialog_class = FileInfoDialog
+        dialog = dialog_class(selected, self)
         dialog.ui.tabWidget.setCurrentIndex(default_tab)
         dialog.exec_()
 
