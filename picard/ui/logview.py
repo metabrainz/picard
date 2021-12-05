@@ -27,6 +27,7 @@
 
 
 from functools import partial
+import logging
 import os
 import re
 
@@ -156,7 +157,7 @@ class VerbosityMenu(QtWidgets.QMenu):
 class LogView(LogViewCommon):
 
     options = [
-        IntOption("setting", "log_verbosity", log.VERBOSITY_DEFAULT),
+        IntOption("setting", "log_verbosity", logging.WARNING),
     ]
 
     def __init__(self, parent=None):

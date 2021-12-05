@@ -40,8 +40,6 @@ from PyQt5 import QtCore
 
 _MAX_TAIL_LEN = 10**6
 
-VERBOSITY_DEFAULT = logging.WARNING
-
 
 def set_level(level):
     main_logger.setLevel(level)
