@@ -1037,10 +1037,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def enable_search(self):
         """Enable/disable the 'Search' action."""
-        if self.search_edit.text():
-            self.search_action.setEnabled(True)
-        else:
-            self.search_action.setEnabled(False)
+        self.search_action.setEnabled(bool(self.search_edit.text()))
 
     def trigger_search_action(self):
         if self.search_action.isEnabled():
