@@ -1143,15 +1143,16 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show_help(self):
         webbrowser2.open('documentation')
 
+    def _show_log_dialog(self, dialog):
+        dialog.show()
+        dialog.raise_()
+        dialog.activateWindow()
+
     def show_log(self):
-        self.log_dialog.show()
-        self.log_dialog.raise_()
-        self.log_dialog.activateWindow()
+        self._show_log_dialog(self.log_dialog)
 
     def show_history(self):
-        self.history_dialog.show()
-        self.history_dialog.raise_()
-        self.history_dialog.activateWindow()
+        self._show_log_dialog(self.history_dialog)
 
     def open_bug_report(self):
         webbrowser2.open('troubleshooting')
