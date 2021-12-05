@@ -1266,7 +1266,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         elif isinstance(selected, Track):
             dialog_class = TrackInfoDialog
         else:
-            selected = self.tagger.get_files_from_objects(self.selected_objects)[0]
+            selected = next(iter_files_from_objects(self.selected_objects))
             dialog_class = FileInfoDialog
         dialog = dialog_class(selected, self)
         dialog.ui.tabWidget.setCurrentIndex(default_tab)
