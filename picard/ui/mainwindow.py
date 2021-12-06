@@ -1274,7 +1274,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         dialog.exec_()
 
     def cluster(self):
-        self.tagger.cluster(self.selected_objects)
+        self.tagger.cluster(self.selected_objects, self._cluster_finished)
+
+    def _cluster_finished(self):
         self.panel.update_current_view()
         # Select clusters if no other item or only empty unclustered files item is selected
         if not self.selected_objects or (len(self.selected_objects) == 1
