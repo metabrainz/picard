@@ -1257,9 +1257,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         dialog.exec_()
 
     def view_info(self, default_tab=0):
-        if not self.selected_objects:
+        try:
+            selected = self.selected_objects[0]
+        except IndexError:
             return
-        selected = self.selected_objects[0]
         if isinstance(selected, Album):
             dialog_class = AlbumInfoDialog
         elif isinstance(selected, Cluster):
@@ -1267,7 +1268,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         elif isinstance(selected, Track):
             dialog_class = TrackInfoDialog
         else:
-            selected = next(iter_files_from_objects(self.selected_objects))
+            try:
+                selected = next(iter_files_from_objects(self.selected_objects))
+            except StopIteration:
+                return
             dialog_class = FileInfoDialog
         dialog = dialog_class(selected, self)
         dialog.ui.tabWidget.setCurrentIndex(default_tab)
