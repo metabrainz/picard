@@ -903,7 +903,7 @@ class Tagger(QtWidgets.QApplication):
     #  Clusters
     # =======================================================================
 
-    def cluster(self, objs):
+    def cluster(self, objs, callback=None):
         """Group files with similar metadata to 'clusters'."""
         log.debug("Clustering %r", objs)
         if len(objs) <= 1 or self.unclustered_files in objs:
@@ -912,14 +912,14 @@ class Tagger(QtWidgets.QApplication):
             files = self.get_files_from_objects(objs)
         thread.run_task(
             partial(self._do_clustering, files),
-            self._clustering_finished)
+            partial(self._clustering_finished, callback))
 
     def _do_clustering(self, files):
         # The clustering algorithm should completely run in the thread,
         # hence do not return the iterator.
         return list(Cluster.cluster(files))
 
-    def _clustering_finished(self, result=None, error=None):
+    def _clustering_finished(self, callback, result=None, error=None):
         if error:
             log.error('Error while clustering: %r', error)
             return
@@ -930,6 +930,9 @@ class Tagger(QtWidgets.QApplication):
                 cluster = self.load_cluster(file_cluster.title, file_cluster.artist)
                 cluster.add_files(file_cluster.files)
             self.window.set_sorting(True)
+
+        if callback:
+            callback()
 
     def load_cluster(self, name, artist):
         for cluster in self.clusters:
