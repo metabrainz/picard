@@ -40,8 +40,6 @@ from PyQt5 import QtCore
 
 _MAX_TAIL_LEN = 10**6
 
-VERBOSITY_DEFAULT = logging.WARNING
-
 
 def set_level(level):
     main_logger.setLevel(level)
@@ -121,17 +119,15 @@ class TailLogger(QtCore.QObject):
 
     def contents(self, prev=-1):
         with self._queue_lock:
-            # If log queue is empty, return
-            if not self._log_queue:
-                return []
-            offset, length = _calculate_bounds(prev, self._log_queue[0].pos, self._log_queue[-1].pos, len(self._log_queue))
+            if self._log_queue:
+                offset, length = _calculate_bounds(prev, self._log_queue[0].pos, self._log_queue[-1].pos, len(self._log_queue))
 
-            if offset >= 0:
-                return (self._log_queue[i] for i in range(offset, length))
-                # If offset < 0, there is a discontinuity in the queue positions
-                # Use a slower approach to get the new content.
-            else:
-                return (x for x in self._log_queue if x.pos > prev)
+                if offset >= 0:
+                    yield from (self._log_queue[i] for i in range(offset, length))
+                    # If offset < 0, there is a discontinuity in the queue positions
+                    # Use a slower approach to get the new content.
+                else:
+                    yield from (x for x in self._log_queue if x.pos > prev)
 
     def clear(self):
         with self._queue_lock:

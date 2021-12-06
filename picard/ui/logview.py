@@ -27,6 +27,7 @@
 
 
 from functools import partial
+import logging
 import os
 import re
 
@@ -156,7 +157,7 @@ class VerbosityMenu(QtWidgets.QMenu):
 class LogView(LogViewCommon):
 
     options = [
-        IntOption("setting", "log_verbosity", log.VERBOSITY_DEFAULT),
+        IntOption("setting", "log_verbosity", logging.WARNING),
     ]
 
     def __init__(self, parent=None):
@@ -209,7 +210,7 @@ class LogView(LogViewCommon):
         self.hbox.addWidget(self.save_log_as_button)
         self.save_log_as_button.clicked.connect(self._save_log_as_do)
 
-        self._prev_logitem_level = log.VERBOSITY_DEFAULT
+        self._prev_logitem_level = logging.NOTSET
 
     def _clear_highlight_do(self):
         self.highlight_text.setText('')
@@ -277,6 +278,11 @@ class LogView(LogViewCommon):
     def show(self):
         self.highlight_text.setFocus(QtCore.Qt.OtherFocusReason)
         super().show()
+
+    def display(self, clear=False):
+        if clear:
+            self._prev_logitem_level = logging.NOTSET
+        super().display(clear=clear)
 
     def _clear_log_do(self):
         reply = QtWidgets.QMessageBox.question(
