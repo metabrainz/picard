@@ -1351,22 +1351,25 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             for obj in self.selected_objects:
                 if obj is None:
                     continue
-                if obj.can_analyze():
-                    can_analyze = True
-                if obj.can_save():
-                    can_save = True
-                if obj.can_remove():
-                    can_remove = True
-                if obj.can_refresh():
-                    can_refresh = True
-                if obj.can_autotag():
-                    can_autotag = True
-                if obj.can_submit():
-                    can_submit = True
-                if obj.can_extract():
-                    can_extract = True
+                # using x = x or obj.x() form prevents calling function
+                # if x is already True
+                can_analyze = can_analyze or obj.can_analyze()
+                can_autotag = can_autotag or obj.can_autotag()
+                can_extract = can_extract or obj.can_extract()
+                can_refresh = can_refresh or obj.can_refresh()
+                can_remove = can_remove or obj.can_remove()
+                can_save = can_save or obj.can_save()
+                can_submit = can_submit or obj.can_submit()
                 # Skip further loops if all values now True.
-                if can_analyze and can_save and can_remove and can_refresh and can_autotag and can_submit and can_extract:
+                if (
+                    can_analyze
+                    and can_autotag
+                    and can_extract
+                    and can_refresh
+                    and can_remove
+                    and can_save
+                    and can_submit
+                ):
                     break
         can_extract = can_extract and self.tagger.ab_extractor.available()
         self.remove_action.setEnabled(can_remove)
