@@ -898,14 +898,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def update_toolbar_style(self):
         config = get_config()
+        style = QtCore.Qt.ToolButtonIconOnly
         if config.setting["toolbar_show_labels"]:
-            self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
-            if self.player:
-                self.player.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
-        else:
-            self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
-            if self.player:
-                self.player.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
+            style = QtCore.Qt.ToolButtonTextUnderIcon
+        self.toolbar.setToolButtonStyle(style)
+        if self.player:
+            self.player.toolbar.setToolButtonStyle(style)
 
     def create_toolbar(self):
         self.create_search_toolbar()
@@ -1039,10 +1037,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def enable_search(self):
         """Enable/disable the 'Search' action."""
-        if self.search_edit.text():
-            self.search_action.setEnabled(True)
-        else:
-            self.search_action.setEnabled(False)
+        self.search_action.setEnabled(bool(self.search_edit.text()))
 
     def trigger_search_action(self):
         if self.search_action.isEnabled():
@@ -1148,15 +1143,16 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show_help(self):
         webbrowser2.open('documentation')
 
+    def _show_log_dialog(self, dialog):
+        dialog.show()
+        dialog.raise_()
+        dialog.activateWindow()
+
     def show_log(self):
-        self.log_dialog.show()
-        self.log_dialog.raise_()
-        self.log_dialog.activateWindow()
+        self._show_log_dialog(self.log_dialog)
 
     def show_history(self):
-        self.history_dialog.show()
-        self.history_dialog.raise_()
-        self.history_dialog.activateWindow()
+        self._show_log_dialog(self.history_dialog)
 
     def open_bug_report(self):
         webbrowser2.open('troubleshooting')
@@ -1210,10 +1206,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _ensure_fingerprinting_configured(self, callback):
         config = get_config()
 
-        def on_finished(result):
-            callback(config.setting['fingerprinting_system'])
         if not config.setting['fingerprinting_system']:
             if self._show_analyze_settings_info():
+                def on_finished(result):
+                    callback(config.setting['fingerprinting_system'])
+
                 dialog = self.show_options("fingerprinting")
                 dialog.finished.connect(on_finished)
         else:
