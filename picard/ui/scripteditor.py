@@ -25,6 +25,7 @@ from collections import namedtuple
 from copy import deepcopy
 from functools import partial
 import os.path
+import random
 
 from PyQt5 import (
     QtCore,
@@ -62,6 +63,7 @@ from picard.script.serializer import (
 from picard.util import (
     get_base_title,
     icontheme,
+    iter_files_from_objects,
     unique_numbered_title,
     webbrowser2,
 )
@@ -103,25 +105,23 @@ class ScriptEditorExamples():
         self.example_list = []
         self.script_text = get_file_naming_script(self.settings)
 
+    def _get_samples(self, candidates):
+        candidates = tuple(candidates)
+        length = min(self.max_samples, len(candidates))
+        return random.sample(candidates, k=length)
+
     def update_sample_example_files(self):
         """Get a new sample of randomly selected / loaded files to use as renaming examples.
         """
-        import random
         if self.tagger.window.selected_objects:
             # If files/albums/tracks are selected, sample example files from them
-            files = self.tagger.get_files_from_objects(self.tagger.window.selected_objects)
-            length = min(self.max_samples, len(files))
-            files = [file for file in random.sample(files, k=length)]
+            candidates = iter_files_from_objects(self.tagger.window.selected_objects)
         else:
             # If files/albums/tracks are not selected, sample example files from the pool of loaded files
-            files = self.tagger.files
-            length = min(self.max_samples, len(files))
-            files = [files[key] for key in random.sample(files.keys(), k=length)]
+            candidates = self.tagger.files.values()
 
-        if not files:
-            # If no file has been loaded, use generic examples
-            files = list(self.default_examples())
-        self._sampled_example_files = files
+        files = self._get_samples(candidates)
+        self._sampled_example_files = files or list(self.default_examples())
         self.update_examples()
 
     def update_examples(self, override=None, script_text=None):
