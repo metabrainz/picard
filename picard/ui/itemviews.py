@@ -77,6 +77,7 @@ from picard.track import (
 )
 from picard.util import (
     icontheme,
+    iter_files_from_objects,
     natsort,
     normpath,
     restore_method,
@@ -784,10 +785,12 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         # application/picard.album-list
         albums = data.data("application/picard.album-list")
         if albums:
-            albums = [self.tagger.load_album(id) for id in bytes(albums).decode().split("\n")]
+            album_ids = bytes(albums).decode().split("\n")
+            log.debug("Dropped albums = %r", album_ids)
+            files = iter_files_from_objects(self.tagger.load_album(id) for id in album_ids)
             # Use QTimer.singleShot to run expensive processing outside of the drop handler.
-            QtCore.QTimer.singleShot(0, partial(self.tagger.move_files,
-                self.tagger.get_files_from_objects(albums), target))
+            move_files = partial(self.tagger.move_files, files, target)
+            QtCore.QTimer.singleShot(0, move_files)
             handled = True
         self._move_to_multi_tracks = True  # Reset for next drop
         return handled
