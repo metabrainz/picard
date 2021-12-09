@@ -1786,3 +1786,46 @@ class ScriptParserTest(PicardTestCase):
             self.parser.eval("$is_multi()")
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$is_multi(a,)")
+
+    def test_cmd_parsedate(self):
+        context = Metadata()
+        context["foo"] = "06.07.2021"
+        context["bar"] = "dmy"
+
+        # Test with default values
+        self.assertScriptResultEquals("$parsedate(2021 07 21)", "2021-07-21", context)
+        self.assertScriptResultEquals("$parsedate(2021.07.21)", "2021-07-21", context)
+        self.assertScriptResultEquals("$parsedate(2021-07-21)", "2021-07-21", context)
+        self.assertScriptResultEquals("$parsedate(2021-7-21)", "2021-07-21", context)
+        self.assertScriptResultEquals("$parsedate(2021-July-21)", "2021-07-21", context)
+        self.assertScriptResultEquals("$parsedate(21-7-20)", "2020-07-21", context)
+        self.assertScriptResultEquals("$parsedate(21-7-20,ymd)", "2021-07-20", context)
+        self.assertScriptResultEquals("$parsedate(21-7-20,dmy)", "2020-07-21", context)
+
+        # Test with overrides specified
+        self.assertScriptResultEquals("$parsedate(%foo%,%bar%)", "2021-07-06", context)
+        self.assertScriptResultEquals("$parsedate(21 7 6,ymd)", "2021-07-06", context)
+
+        # Test with invalid overrides
+        self.assertScriptResultEquals("$parsedate(2021 07 21,myd)", "2021-07-21", context)
+
+        # Test with ambiguous dates
+        self.assertScriptResultEquals("$parsedate(6 7 8,)", "2008-06-07", context)
+        self.assertScriptResultEquals("$parsedate(6 7 8,dmy)", "2008-07-06", context)
+        self.assertScriptResultEquals("$parsedate(6 7 8,ymd)", "2006-07-08", context)
+
+        # Test missing elements
+        self.assertScriptResultEquals("$parsedate(,)", "", context)
+        self.assertScriptResultEquals("$parsedate(7 21,)", "1900-07-21", context)
+        self.assertScriptResultEquals("$parsedate(7 21,dmy)", "1900-07-21", context)
+        self.assertScriptResultEquals("$parsedate(7 21,ymd)", "1900-07-21", context)
+        self.assertScriptResultEquals("$parsedate(7 2021,)", "2021-07-01", context)
+        self.assertScriptResultEquals("$parsedate(7 2021,dmy)", "2021-07-01", context)
+        self.assertScriptResultEquals("$parsedate(7 2021,ymd)", "2021-07-01", context)
+
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$parsedate: Wrong number of arguments for \$parsedate: Expected between 1 and 2, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$parsedate()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$parsedate(2021-07-21,,)")
