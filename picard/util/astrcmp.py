@@ -29,7 +29,7 @@ def astrcmp_py(a, b):
             add, delete = previous[j]+1, current[j-1]+1
             change = previous[j-1]
             if a[j-1] != b[i-1]:
-                change +=1
+                change += 1
             current[j] = min(add, delete, change)
 
     return 1.0 - current[n] / max(m, n)
