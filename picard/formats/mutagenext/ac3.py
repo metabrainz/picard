@@ -61,7 +61,7 @@ except ImportError:
 
     class AC3(FileType):
         @loadfile()
-        def load(self, filething):
+        def load(self, filething, *args, **kwargs):
             self.info = AC3Info(filething.fileobj)
 
         @staticmethod
