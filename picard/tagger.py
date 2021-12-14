@@ -927,8 +927,10 @@ class Tagger(QtWidgets.QApplication):
         with self.window.ignore_selection_changes:
             self.window.set_sorting(False)
             for file_cluster in process_events_iter(result):
-                cluster = self.load_cluster(file_cluster.title, file_cluster.artist)
-                cluster.add_files(file_cluster.files)
+                files = set(file_cluster.files)
+                if len(files) > 1:
+                    cluster = self.load_cluster(file_cluster.title, file_cluster.artist)
+                    cluster.add_files(files)
             self.window.set_sorting(True)
 
         if callback:

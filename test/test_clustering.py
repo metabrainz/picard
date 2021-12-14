@@ -73,8 +73,7 @@ class ClusterTest(PicardTestCase):
             self._create_file('album foo', 'artist foo'),
         ]
         clusters = list(Cluster.cluster(files))
-        # No cluster is being created for single files
-        self.assertEqual(0, len(clusters))
+        self.assertEqual(1, len(clusters))
 
     def test_cluster_single_cluster(self):
         files = [
@@ -92,12 +91,13 @@ class ClusterTest(PicardTestCase):
             self._create_file('album cluster2', 'artist foo'),
             self._create_file('album cluster1', 'artist foo'),
             self._create_file('albumcluster2', 'artist bar'),
-            self._create_file('album nocluster', 'artist bar'),
+            self._create_file('album single', 'artist bar'),
         ]
         clusters = list(Cluster.cluster(files))
-        self.assertEqual(2, len(clusters))
+        self.assertEqual(3, len(clusters))
         self.assertClusterEqual('album cluster1', 'artist bar', {files[0], files[2]}, clusters[0])
         self.assertClusterEqual('album cluster2', 'artist foo', {files[1], files[3]}, clusters[1])
+        self.assertClusterEqual('album single', 'artist bar', {files[4]}, clusters[2])
 
     def test_cluster_by_path(self):
         files = [
@@ -105,13 +105,14 @@ class ClusterTest(PicardTestCase):
             self._create_file(None, None, 'album2/foo1.ogg'),
             self._create_file(None, None, 'artist1/album1/foo2.ogg'),
             self._create_file(None, None, 'album2/foo2.ogg'),
-            self._create_file(None, None, 'nocluster/foo.ogg'),
+            self._create_file(None, None, 'single/foo.ogg'),
             self._create_file(None, None, 'album1/foo3.ogg'),
         ]
         clusters = list(Cluster.cluster(files))
-        self.assertEqual(2, len(clusters))
+        self.assertEqual(3, len(clusters))
         self.assertClusterEqual('album1', 'artist1', {files[0], files[2], files[5]}, clusters[0])
         self.assertClusterEqual('album2', 'Diverse Interpreten', {files[1], files[3]}, clusters[1])
+        self.assertClusterEqual('single', 'Diverse Interpreten', {files[4]}, clusters[2])
 
     def test_cluster_no_metadata(self):
         files = [
@@ -143,7 +144,7 @@ class FileClusterTest(PicardTestCase):
         fc.add('album 1', 'artist 1', file)
         self.assertEqual('album 1', fc.title)
         self.assertEqual('artist 1', fc.artist)
-        self.assertEqual([file], fc.files)
+        self.assertEqual([file], list(fc.files))
 
     def test_multi(self):
         files = [
@@ -161,4 +162,4 @@ class FileClusterTest(PicardTestCase):
         fc.add('album 2', 'Artist 1', files[4])
         self.assertEqual('Album 1', fc.title)
         self.assertEqual('Artist 1', fc.artist)
-        self.assertEqual(files, fc.files)
+        self.assertEqual(files, list(fc.files))
