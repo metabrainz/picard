@@ -570,6 +570,22 @@ class CommonTests:
                 match = metadata.compare_to_release(release, Cluster.comparison_weights)
                 self.assertEqual(sim, match.similarity)
 
+        def test_compare_to_release_parts_match_totaltracks(self):
+            release = load_test_json('release_multidisc.json')
+            metadata = Metadata()
+            weights = {
+                "totaltracks": 30,
+                "album": 1,
+                "date": 1,
+                "format": 1,
+                "releasecountry": 1,
+            }
+            release_to_metadata(release, metadata)
+            for totaltracks, sim in ((4, 1.0), (3, 1.0), (2, 0.3), (5, 0.0)):
+                metadata['totaltracks'] = totaltracks
+                parts = metadata.compare_to_release_parts(release, weights)
+                self.assertIn((sim, 30), parts)
+
         def test_weights_from_release_type_scores(self):
             release = load_test_json('release.json')
             parts = []
