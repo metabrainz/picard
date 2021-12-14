@@ -252,8 +252,15 @@ class Metadata(MutableMapping):
 
         try:
             a = int(self["totaltracks"])
-            b = release['track-count']
-            score = 0.0 if a > b else 0.3 if a < b else 1.0
+            if 'media' in release:
+                scores = []
+                for media in release['media']:
+                    b = media.get('track-count', 0)
+                    scores.append(0.0 if a > b else 0.3 if a < b else 1.0)
+                score = max(scores)
+            else:
+                b = release['track-count']
+                score = 0.0 if a > b else 0.3 if a < b else 1.0
             parts.append((score, weights["totaltracks"]))
         except (ValueError, KeyError):
             pass
