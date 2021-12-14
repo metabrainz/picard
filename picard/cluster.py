@@ -46,6 +46,7 @@ from PyQt5 import QtCore
 
 from picard.config import get_config
 from picard.const import QUERY_LIMIT
+from picard.file import File
 from picard.metadata import (
     Metadata,
     SimMatchRelease,
@@ -317,7 +318,7 @@ class Cluster(FileList):
             if token:
                 cluster_list[token].add(album, artist or various_artists, file)
 
-        yield from (cluster for cluster in cluster_list.values() if len(cluster.files) > 1)
+        yield from cluster_list.values()
 
 
 class UnclusteredFiles(Cluster):
@@ -388,17 +389,21 @@ class ClusterList(list, Item):
 
 class FileCluster:
     def __init__(self):
-        self.files = []
+        self._files = []
         self._artist_counts = Counter()
         self._artists = defaultdict(Counter)
         self._titles = Counter()
 
     def add(self, album, artist, file):
-        self.files.append(file)
+        self._files.append(file)
         token = tokenize(artist)
         self._artist_counts[token] += 1
         self._artists[token][artist] += 1
         self._titles[album] += 1
+
+    @property
+    def files(self):
+        yield from (file for file in self._files if file.state != File.REMOVED)
 
     @property
     def artist(self):
