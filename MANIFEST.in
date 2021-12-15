@@ -10,6 +10,8 @@ include *.txt
 
 recursive-include test *.py
 recursive-include test/data *
+recursive-exclude test/data/testplugins/module/dummyplugin/__pycache__ *
+recursive-exclude test/data/testplugins/singlefile/__pycache__ *
 
 exclude org.musicbrainz.Picard.appdata.xml
 exclude win-version-info.txt
