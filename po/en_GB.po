@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2021-11-26 12:34+0100\n"
-"PO-Revision-Date: 2021-11-26 12:24+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"PO-Revision-Date: 2021-12-11 16:59+0000\n"
+"Last-Translator: Ivan Dobsky\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/musicbrainz/musicbrainz/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -239,7 +239,7 @@ msgstr ""
 
 #: picard/profile.py:63 picard/ui/options/tags.py:46
 msgid "Tags"
-msgstr "Tags"
+msgstr ""
 
 #: picard/profile.py:65
 msgid "Don't write tags"
@@ -295,7 +295,7 @@ msgstr ""
 
 #: picard/profile.py:78 picard/ui/ui_options_tags_compatibility_id3.py:119
 msgid "ID3v2 text encoding"
-msgstr "ID3v2 text encoding"
+msgstr ""
 
 #: picard/profile.py:79
 msgid "ID3v2.3 join character"
@@ -417,7 +417,7 @@ msgstr ""
 #: picard/releasegroup.py:71 picard/ui/cdlookup.py:72
 #: picard/ui/searchdialog/album.py:156 picard/ui/searchdialog/track.py:68
 msgid "Country"
-msgstr "Country"
+msgstr ""
 
 #: picard/releasegroup.py:72 picard/ui/searchdialog/album.py:153
 msgid "Format"
@@ -425,7 +425,7 @@ msgstr ""
 
 #: picard/releasegroup.py:73
 msgid "Label"
-msgstr "Label"
+msgstr ""
 
 #: picard/releasegroup.py:74
 msgid "Cat No"
@@ -649,7 +649,7 @@ msgstr ""
 
 #: picard/const/languages.py:55 picard/const/locales.py:213
 msgid "Hungarian"
-msgstr "Hungarian"
+msgstr ""
 
 #: picard/const/languages.py:57 picard/const/locales.py:215
 msgid "Icelandic"
@@ -757,7 +757,7 @@ msgstr ""
 
 #: picard/const/locales.py:32
 msgid "Afrikaans"
-msgstr "Afrikaans"
+msgstr ""
 
 #: picard/const/locales.py:33
 msgid "Afrikaans (Namibia)"
@@ -953,7 +953,7 @@ msgstr ""
 
 #: picard/const/locales.py:83
 msgid "Bulgarian"
-msgstr "Bulgarian"
+msgstr ""
 
 #: picard/const/locales.py:84
 msgid "Bulgarian (Bulgaria)"
@@ -973,7 +973,7 @@ msgstr ""
 
 #: picard/const/locales.py:89 picard/const/scripts.py:30
 msgid "Chinese"
-msgstr "Chinese"
+msgstr ""
 
 #: picard/const/locales.py:91
 msgid "Chinese (Hong Kong)"
@@ -1189,7 +1189,7 @@ msgstr ""
 
 #: picard/const/locales.py:151
 msgid "Esperanto"
-msgstr "Esperanto"
+msgstr ""
 
 #: picard/const/locales.py:153
 msgid "Estonian (Estonia)"
@@ -1209,7 +1209,7 @@ msgstr ""
 
 #: picard/const/locales.py:157
 msgid "Faroese"
-msgstr "Faroese"
+msgstr ""
 
 #: picard/const/locales.py:158
 msgid "Faroese (Faroe Islands)"
@@ -1389,7 +1389,7 @@ msgstr ""
 
 #: picard/const/locales.py:211
 msgid "Hindi"
-msgstr "Hindi"
+msgstr ""
 
 #: picard/const/locales.py:212
 msgid "Hindi (India)"
@@ -1413,7 +1413,7 @@ msgstr ""
 
 #: picard/const/locales.py:219
 msgid "Indonesian"
-msgstr "Indonesian"
+msgstr ""
 
 #: picard/const/locales.py:220
 msgid "Indonesian (Indonesia)"
@@ -1473,7 +1473,7 @@ msgstr ""
 
 #: picard/const/locales.py:236
 msgid "Kannada"
-msgstr "Kannada"
+msgstr ""
 
 #: picard/const/locales.py:237
 msgid "Kannada (India)"
@@ -1625,7 +1625,7 @@ msgstr ""
 
 #: picard/const/locales.py:275
 msgid "Lithuanian"
-msgstr "Lithuanian"
+msgstr ""
 
 #: picard/const/locales.py:276
 msgid "Lithuanian (Lithuania)"
@@ -1633,7 +1633,7 @@ msgstr ""
 
 #: picard/const/locales.py:277
 msgid "Low German"
-msgstr "Low German"
+msgstr ""
 
 #: picard/const/locales.py:278
 msgid "Low German (Germany)"
@@ -1809,7 +1809,7 @@ msgstr ""
 
 #: picard/const/locales.py:324
 msgid "Persian"
-msgstr "Persian"
+msgstr ""
 
 #: picard/const/locales.py:325
 msgid "Persian (Afghanistan)"
@@ -1885,7 +1885,7 @@ msgstr ""
 
 #: picard/const/locales.py:347 picard/const/locales.py:348
 msgid "Serbian"
-msgstr "Serbian"
+msgstr ""
 
 #: picard/const/locales.py:349
 msgid "Serbian (Bosnia and Herzegovina)"
@@ -2177,7 +2177,7 @@ msgstr ""
 
 #: picard/const/locales.py:428
 msgid "Tamil"
-msgstr "Tamil"
+msgstr ""
 
 #: picard/const/locales.py:429
 msgid "Tamil (India)"
@@ -2249,7 +2249,7 @@ msgstr ""
 
 #: picard/const/locales.py:446
 msgid "Tonga"
-msgstr "Tonga"
+msgstr ""
 
 #: picard/const/locales.py:447
 msgid "Tonga (Tonga)"
@@ -2377,7 +2377,7 @@ msgstr ""
 
 #: picard/const/locales.py:480
 msgid "Welsh"
-msgstr "Welsh"
+msgstr ""
 
 #: picard/const/locales.py:481
 msgid "Welsh (United Kingdom)"
@@ -3498,13 +3498,13 @@ msgstr ""
 #: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:160
 #: picard/ui/mainwindow.py:965 picard/util/tags.py:38
 msgid "Album"
-msgstr "Album"
+msgstr ""
 
 #: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:157
 #: picard/ui/mainwindow.py:966 picard/ui/searchdialog/album.py:152
 #: picard/ui/searchdialog/track.py:65 picard/util/tags.py:41
 msgid "Artist"
-msgstr "Artist"
+msgstr ""
 
 #: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:170
 #: picard/ui/searchdialog/album.py:155 picard/ui/searchdialog/track.py:67
@@ -3634,7 +3634,7 @@ msgstr ""
 
 #: picard/ui/edittagdialog.py:70
 msgid "YYYY"
-msgstr "YYYY"
+msgstr ""
 
 #: picard/ui/filebrowser.py:88
 msgid "&Load selected files"
@@ -4308,7 +4308,7 @@ msgstr ""
 #: picard/ui/mainwindow.py:635 picard/ui/mainwindow.py:956
 #: picard/ui/searchdialog/__init__.py:48
 msgid "Search"
-msgstr "Search"
+msgstr ""
 
 #: picard/ui/mainwindow.py:639 picard/ui/mainwindow.py:645
 msgid "Lookup &CD..."
@@ -4525,7 +4525,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:967
 msgid "Track"
-msgstr "Track"
+msgstr ""
 
 #: picard/ui/mainwindow.py:984
 msgid "&Advanced search"
@@ -4725,7 +4725,7 @@ msgstr ""
 
 #: picard/ui/playertoolbar.py:193
 msgid "Play"
-msgstr "Play"
+msgstr ""
 
 #: picard/ui/playertoolbar.py:194
 msgid "Play selected files"
@@ -5571,7 +5571,7 @@ msgstr ""
 
 #: picard/ui/ui_options_plugins.py:131
 msgid "Version"
-msgstr "Version"
+msgstr ""
 
 #: picard/ui/ui_options_plugins.py:133
 msgid "Install plugin..."
@@ -6003,7 +6003,7 @@ msgstr ""
 
 #: picard/ui/options/dialog.py:126
 msgid "&Restore all Defaults"
-msgstr "&Restore All Defaults"
+msgstr ""
 
 #: picard/ui/options/dialog.py:127
 msgid "Reset all of Picard's settings"
@@ -6072,7 +6072,7 @@ msgstr ""
 
 #: picard/ui/options/dialog.py:477 picard/ui/options/profiles.py:279
 msgid "None"
-msgstr "None"
+msgstr ""
 
 #: picard/ui/options/fingerprinting.py:60
 msgid "Fingerprinting"
@@ -6137,7 +6137,7 @@ msgstr ""
 
 #: picard/ui/options/genres.py:87
 msgid "Genres"
-msgstr "Genres"
+msgstr ""
 
 #: picard/ui/options/genres.py:156
 #, python-format
@@ -6166,7 +6166,7 @@ msgstr ""
 
 #: picard/ui/options/interface.py:97
 msgid "Scan"
-msgstr "Scan"
+msgstr ""
 
 #: picard/ui/options/interface.py:101
 msgid "Lookup in Browser"
@@ -6174,7 +6174,7 @@ msgstr ""
 
 #: picard/ui/options/interface.py:105
 msgid "Save"
-msgstr "Save"
+msgstr ""
 
 #: picard/ui/options/interface.py:117
 msgid "Submit AcoustIDs"
@@ -6580,7 +6580,7 @@ msgstr ""
 
 #: picard/ui/searchdialog/album.py:160 picard/util/tags.py:69
 msgid "Language"
-msgstr "Language"
+msgstr ""
 
 #: picard/ui/searchdialog/album.py:162
 msgid "Status"
@@ -6605,7 +6605,7 @@ msgstr ""
 
 #: picard/ui/searchdialog/artist.py:55
 msgid "Area"
-msgstr "Area"
+msgstr ""
 
 #: picard/ui/searchdialog/artist.py:56
 msgid "Begin"
@@ -6629,7 +6629,7 @@ msgstr ""
 
 #: picard/ui/searchdialog/track.py:66
 msgid "Release"
-msgstr "Release"
+msgstr ""
 
 #: picard/ui/searchdialog/track.py:178
 msgid "Standalone Recording"
@@ -6887,7 +6887,7 @@ msgstr ""
 
 #: picard/util/tags.py:67
 msgid "Key"
-msgstr "Key"
+msgstr ""
 
 #: picard/util/tags.py:68
 msgid "Record Label"
@@ -7011,7 +7011,7 @@ msgstr ""
 
 #: picard/util/tags.py:103
 msgid "Rating"
-msgstr "Rating"
+msgstr ""
 
 #: picard/util/tags.py:104
 msgid "Release Country"
@@ -7099,7 +7099,7 @@ msgstr ""
 
 #: picard/util/tags.py:126
 msgid "Work"
-msgstr "Work"
+msgstr ""
 
 #: picard/util/tags.py:127
 msgid "Writer"

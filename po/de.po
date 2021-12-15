@@ -12,6 +12,7 @@
 # Ettore Atalan <atalanttore@googlemail.com>, 2014,2018
 # Felix Kugler <relgukxilef@gmail.com>, 2015
 # Frank Matthiae <senax79@gmail.com>, 2017
+# Hans-Peter Braun <hape.braun@icloud.com>, 2021
 # happykraut, 2017
 # HumHumXX, 2012,2015
 # ix5, 2017
@@ -42,7 +43,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2021-11-26 12:34+0100\n"
-"PO-Revision-Date: 2021-12-02 07:05+0000\n"
+"PO-Revision-Date: 2021-12-15 17:14+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -231,7 +232,7 @@ msgstr "Künstlernamen übersetzen"
 
 #: picard/profile.py:50
 msgid "Translation locales"
-msgstr ""
+msgstr "Errate Tracknummer und -titel vom Dateinamen, wenn leer"
 
 #: picard/profile.py:51
 msgid "Translate artist names exception"
@@ -263,7 +264,7 @@ msgstr "Standardisierte Instrumentalisten- oder Gesangsnennungen verwenden"
 
 #: picard/profile.py:58 picard/ui/ui_options_metadata.py:135
 msgid "Guess track number and title from filename if empty"
-msgstr ""
+msgstr "Errate Tracknummer und -titel, falls leer"
 
 #: picard/profile.py:63 picard/ui/options/tags.py:46
 msgid "Tags"
@@ -295,7 +296,7 @@ msgstr "APEv2-Tags aus MP3-Dateien entfernen"
 
 #: picard/profile.py:71
 msgid "Preserved tags list"
-msgstr ""
+msgstr "Liste geschützter Tags"
 
 #: picard/profile.py:72
 msgid "Save APEv2 tags to AAC"
@@ -367,7 +368,7 @@ msgstr "Dateiname für Bilder"
 
 #: picard/profile.py:94
 msgid "Overwrite existing image files"
-msgstr ""
+msgstr "Überschreibe existierende Bilddateien"
 
 #: picard/profile.py:95 picard/ui/ui_options_cover.py:100
 msgid "Save only a single front image as separate file"
@@ -412,7 +413,7 @@ msgstr "Zusätzliche Dateien verschieben"
 
 #: picard/profile.py:110
 msgid "Additional file patterns"
-msgstr ""
+msgstr "Zusätzliche Dateimuster"
 
 #: picard/profile.py:111 picard/ui/ui_options_renaming.py:158
 msgid "Delete empty directories"
@@ -420,7 +421,7 @@ msgstr "Leere Verzeichnisse löschen"
 
 #: picard/profile.py:112
 msgid "Selected file naming script"
-msgstr ""
+msgstr "Ausgewähltes Dateibenennungsskript"
 
 #: picard/profile.py:117 picard/ui/options/scripting.py:99
 msgid "Scripting"
@@ -2569,24 +2570,24 @@ msgstr "Erlaubte Cover-Art-URLs"
 msgid ""
 "This preset example file naming script does not require any special "
 "settings, tagging scripts or plugins."
-msgstr ""
+msgstr "Dieses voreingestellte Beispielskript zur Benennung von Dateien erfordert keine besonderen Einstellungen, Tagging-Skripte oder Plugins."
 
 #: picard/script/__init__.py:145
 #, python-format
 msgid "Preset %d: %s"
-msgstr ""
+msgstr "Voreinstellung %d: %s"
 
 #: picard/script/__init__.py:149
 msgid "Default file naming script"
-msgstr ""
+msgstr "Voreingestelltes Dateibenennungsskript"
 
 #: picard/script/__init__.py:163
 msgid "[album artist]/[album]/[track #]. [title]"
-msgstr ""
+msgstr "[Albuminterpret]/[Album]/[Titelnr.]. [Titel]"
 
 #: picard/script/__init__.py:179
 msgid "[album artist]/[album]/[disc and track #] [artist] - [title]"
-msgstr ""
+msgstr "[Albuminterpret]/[Album]/[Tonträger- und Titelnr.] [Interpret] - [Titel]"
 
 #: picard/script/functions.py:186
 msgid ""
@@ -3436,7 +3437,7 @@ msgstr ""
 
 #: picard/script/serializer.py:287 picard/script/serializer.py:333
 msgid "Invalid script package"
-msgstr ""
+msgstr "Ungültiges Skriptpaket"
 
 #: picard/script/serializer.py:298
 #, python-format
@@ -3449,7 +3450,7 @@ msgstr ""
 
 #: picard/script/serializer.py:341 picard/ui/options/scripting.py:186
 msgid "Unnamed Script"
-msgstr ""
+msgstr "Unbenanntes Skript"
 
 #: picard/script/serializer.py:351 picard/ui/coverartbox.py:548
 #: picard/ui/mainwindow.py:1084 picard/ui/options/scripting.py:131
@@ -3458,11 +3459,11 @@ msgstr "Alle Dateien"
 
 #: picard/script/serializer.py:352 picard/ui/options/scripting.py:132
 msgid "Picard script files"
-msgstr ""
+msgstr "Picard Skript-Dateien"
 
 #: picard/script/serializer.py:353
 msgid "Picard script package"
-msgstr ""
+msgstr "Picard Skriptpaket"
 
 #: picard/ui/aboutdialog.py:74
 msgid "translator-credits"
@@ -3795,7 +3796,7 @@ msgstr "Informationen zur Gruppierung"
 
 #: picard/ui/infostatus.py:70
 msgid "Estimated Time"
-msgstr ""
+msgstr "Geschätzte Dauer"
 
 #: picard/ui/infostatus.py:71 picard/ui/options/plugins.py:605
 msgid "Files"
@@ -4159,7 +4160,7 @@ msgstr "&Einstellungen …"
 
 #: picard/ui/mainwindow.py:500
 msgid "Open &file naming script editor..."
-msgstr ""
+msgstr "&Dateibenennungsskripteditor öffnen ..."
 
 #: picard/ui/mainwindow.py:501
 msgid "Ctrl+Shift+S"
@@ -4828,7 +4829,7 @@ msgstr "Titel"
 
 #: picard/ui/scripteditor.py:411
 msgid "File naming script editor"
-msgstr ""
+msgstr "Dateibenennungsskripteditor"
 
 #: picard/ui/scripteditor.py:477
 msgid "Reset"
@@ -4840,27 +4841,27 @@ msgstr "Übernehmen"
 
 #: picard/ui/scripteditor.py:554
 msgid "&Import a script file"
-msgstr ""
+msgstr "Skriptdatei &importieren"
 
 #: picard/ui/scripteditor.py:555
 msgid "Import a file as a new script"
-msgstr ""
+msgstr "Datei als neues Skript importieren"
 
 #: picard/ui/scripteditor.py:560
 msgid "&Export a script file"
-msgstr ""
+msgstr "Skriptdatei &exportieren"
 
 #: picard/ui/scripteditor.py:561
 msgid "Export the script to a file"
-msgstr ""
+msgstr "Ein Skript in eine Datei exportieren"
 
 #: picard/ui/scripteditor.py:566
 msgid "&Reset all scripts"
-msgstr ""
+msgstr "Alle Skripte zu&rücksetzen"
 
 #: picard/ui/scripteditor.py:567
 msgid "Reset all scripts to the saved values"
-msgstr ""
+msgstr "Setzt alle Skripte auf die gespeicherten Werte zurück"
 
 #: picard/ui/scripteditor.py:572
 msgid "&Save and exit"
@@ -4868,15 +4869,15 @@ msgstr "&Speichern und schließen"
 
 #: picard/ui/scripteditor.py:573
 msgid "Save changes to the script settings and exit"
-msgstr ""
+msgstr "Skript-Änderungen speichern und schließen"
 
 #: picard/ui/scripteditor.py:578
 msgid "E&xit without saving"
-msgstr ""
+msgstr "Ohne Speichern &schließen"
 
 #: picard/ui/scripteditor.py:579
 msgid "Close the script editor without saving changes"
-msgstr ""
+msgstr "Den Skripteditor schließen, ohne die Änderungen zu speichern"
 
 #: picard/ui/scripteditor.py:584
 msgid "&Script"
@@ -4884,7 +4885,7 @@ msgstr "&Skript"
 
 #: picard/ui/scripteditor.py:587
 msgid "View/Edit Script &Metadata"
-msgstr ""
+msgstr "Skript-&Metadaten ansehen/bearbeiten"
 
 #: picard/ui/scripteditor.py:588
 msgid "Display the details for the script"
@@ -5085,7 +5086,7 @@ msgstr ""
 
 #: picard/ui/ui_exception_script_selector.py:106
 msgid "Selected Scripts"
-msgstr "Ausgewählte Skripte"
+msgstr "Ausgewählte Schriften"
 
 #: picard/ui/ui_exception_script_selector.py:107
 msgid "Selected script match threshold:"
@@ -5109,7 +5110,7 @@ msgstr "Ausgewähltes Skript nach unten verschieben"
 
 #: picard/ui/ui_exception_script_selector.py:112
 msgid "Available Scripts"
-msgstr "Verfügbare Skripte"
+msgstr "Verfügbare Schriften"
 
 #: picard/ui/ui_infodialog.py:82
 msgid "&Error"
@@ -5901,7 +5902,7 @@ msgstr ""
 
 #: picard/ui/ui_scripteditor.py:209
 msgid "Select the file naming script to load into the editor"
-msgstr ""
+msgstr "Zu ladendes Dateibennenungsskript auswählen"
 
 #: picard/ui/ui_scripteditor.py:210 picard/ui/ui_scripteditor_details.py:99
 msgid "Title:"

@@ -3,10 +3,10 @@
 # This file is distributed under the same license as the picard project.
 # 
 # Translators:
-# kepstin <calvin.walton@kepstin.ca>, 2013-2014
-# kepstin <calvin.walton@kepstin.ca>, 2012
+# Calvin Walton <calvin.walton@kepstin.ca>, 2013-2014
+# Calvin Walton <calvin.walton@kepstin.ca>, 2012
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2008
-# Ivan Dobsky, 2019-2020
+# Ivan Dobsky, 2019-2021
 # Luke Hollins <luke@farcry.ca>, 2015
 # navap <pavan@chander.ca>, 2012
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2020
@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2021-11-26 12:34+0100\n"
-"PO-Revision-Date: 2021-11-26 12:24+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"PO-Revision-Date: 2021-12-11 17:16+0000\n"
+"Last-Translator: Ivan Dobsky\n"
 "Language-Team: English (Canada) (http://www.transifex.com/musicbrainz/musicbrainz/language/en_CA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -296,7 +296,7 @@ msgstr ""
 
 #: picard/profile.py:78 picard/ui/ui_options_tags_compatibility_id3.py:119
 msgid "ID3v2 text encoding"
-msgstr "ID3v2 text encoding"
+msgstr ""
 
 #: picard/profile.py:79
 msgid "ID3v2.3 join character"
@@ -650,7 +650,7 @@ msgstr ""
 
 #: picard/const/languages.py:55 picard/const/locales.py:213
 msgid "Hungarian"
-msgstr "Hungarian"
+msgstr ""
 
 #: picard/const/languages.py:57 picard/const/locales.py:215
 msgid "Icelandic"
@@ -758,7 +758,7 @@ msgstr ""
 
 #: picard/const/locales.py:32
 msgid "Afrikaans"
-msgstr "Afrikaans"
+msgstr ""
 
 #: picard/const/locales.py:33
 msgid "Afrikaans (Namibia)"
@@ -954,7 +954,7 @@ msgstr ""
 
 #: picard/const/locales.py:83
 msgid "Bulgarian"
-msgstr "Bulgarian"
+msgstr ""
 
 #: picard/const/locales.py:84
 msgid "Bulgarian (Bulgaria)"
@@ -974,7 +974,7 @@ msgstr ""
 
 #: picard/const/locales.py:89 picard/const/scripts.py:30
 msgid "Chinese"
-msgstr "Chinese"
+msgstr ""
 
 #: picard/const/locales.py:91
 msgid "Chinese (Hong Kong)"
@@ -1190,7 +1190,7 @@ msgstr ""
 
 #: picard/const/locales.py:151
 msgid "Esperanto"
-msgstr "Esperanto"
+msgstr ""
 
 #: picard/const/locales.py:153
 msgid "Estonian (Estonia)"
@@ -1210,7 +1210,7 @@ msgstr ""
 
 #: picard/const/locales.py:157
 msgid "Faroese"
-msgstr "Faroese"
+msgstr ""
 
 #: picard/const/locales.py:158
 msgid "Faroese (Faroe Islands)"
@@ -1390,7 +1390,7 @@ msgstr ""
 
 #: picard/const/locales.py:211
 msgid "Hindi"
-msgstr "Hindi"
+msgstr ""
 
 #: picard/const/locales.py:212
 msgid "Hindi (India)"
@@ -1414,7 +1414,7 @@ msgstr ""
 
 #: picard/const/locales.py:219
 msgid "Indonesian"
-msgstr "Indonesian"
+msgstr ""
 
 #: picard/const/locales.py:220
 msgid "Indonesian (Indonesia)"
@@ -1474,7 +1474,7 @@ msgstr ""
 
 #: picard/const/locales.py:236
 msgid "Kannada"
-msgstr "Kannada"
+msgstr ""
 
 #: picard/const/locales.py:237
 msgid "Kannada (India)"
@@ -1626,7 +1626,7 @@ msgstr ""
 
 #: picard/const/locales.py:275
 msgid "Lithuanian"
-msgstr "Lithuanian"
+msgstr ""
 
 #: picard/const/locales.py:276
 msgid "Lithuanian (Lithuania)"
@@ -1634,7 +1634,7 @@ msgstr ""
 
 #: picard/const/locales.py:277
 msgid "Low German"
-msgstr "Low German"
+msgstr ""
 
 #: picard/const/locales.py:278
 msgid "Low German (Germany)"
@@ -1810,7 +1810,7 @@ msgstr ""
 
 #: picard/const/locales.py:324
 msgid "Persian"
-msgstr "Persian"
+msgstr ""
 
 #: picard/const/locales.py:325
 msgid "Persian (Afghanistan)"
@@ -1886,7 +1886,7 @@ msgstr ""
 
 #: picard/const/locales.py:347 picard/const/locales.py:348
 msgid "Serbian"
-msgstr "Serbian"
+msgstr ""
 
 #: picard/const/locales.py:349
 msgid "Serbian (Bosnia and Herzegovina)"
@@ -2178,7 +2178,7 @@ msgstr ""
 
 #: picard/const/locales.py:428
 msgid "Tamil"
-msgstr "Tamil"
+msgstr ""
 
 #: picard/const/locales.py:429
 msgid "Tamil (India)"
@@ -2250,7 +2250,7 @@ msgstr ""
 
 #: picard/const/locales.py:446
 msgid "Tonga"
-msgstr "Tonga"
+msgstr ""
 
 #: picard/const/locales.py:447
 msgid "Tonga (Tonga)"
@@ -2378,7 +2378,7 @@ msgstr ""
 
 #: picard/const/locales.py:480
 msgid "Welsh"
-msgstr "Welsh"
+msgstr ""
 
 #: picard/const/locales.py:481
 msgid "Welsh (United Kingdom)"
@@ -3485,7 +3485,7 @@ msgstr ""
 
 #: picard/ui/aboutdialog.py:110
 msgid "Credits"
-msgstr "Credits"
+msgstr ""
 
 #: picard/ui/aboutdialog.py:111
 #, python-format
@@ -3635,7 +3635,7 @@ msgstr ""
 
 #: picard/ui/edittagdialog.py:70
 msgid "YYYY"
-msgstr "YYYY"
+msgstr ""
 
 #: picard/ui/filebrowser.py:88
 msgid "&Load selected files"
@@ -4968,7 +4968,7 @@ msgstr ""
 
 #: picard/ui/options/profiles.py:117 picard/ui/scripteditor.py:1224
 msgid "Copy"
-msgstr "Copy"
+msgstr ""
 
 #: picard/ui/options/renaming.py:295 picard/ui/scripteditor.py:1270
 msgid "The file naming format must not be empty."
@@ -5399,7 +5399,7 @@ msgstr ""
 
 #: picard/ui/ui_options_interface.py:163
 msgid "User interface color theme:"
-msgstr ""
+msgstr "User interface colour theme:"
 
 #: picard/ui/ui_options_interface.py:164
 msgid "Miscellaneous"
@@ -5712,7 +5712,7 @@ msgstr ""
 
 #: picard/ui/ui_options_script.py:119
 msgid "Import"
-msgstr "Import"
+msgstr ""
 
 #: picard/ui/ui_options_script.py:120
 msgid "Export"
@@ -5914,7 +5914,7 @@ msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:101
 msgid "Description:"
-msgstr "Description:"
+msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:102
 msgid ""
@@ -6004,7 +6004,7 @@ msgstr ""
 
 #: picard/ui/options/dialog.py:126
 msgid "&Restore all Defaults"
-msgstr "&Restore All Defaults"
+msgstr ""
 
 #: picard/ui/options/dialog.py:127
 msgid "Reset all of Picard's settings"
@@ -6073,7 +6073,7 @@ msgstr ""
 
 #: picard/ui/options/dialog.py:477 picard/ui/options/profiles.py:279
 msgid "None"
-msgstr "None"
+msgstr ""
 
 #: picard/ui/options/fingerprinting.py:60
 msgid "Fingerprinting"
@@ -6196,7 +6196,7 @@ msgstr ""
 #: picard/ui/options/interface.py:180
 msgid ""
 "The default color scheme based on the operating system display settings"
-msgstr ""
+msgstr "The default colour scheme based on the operating system display settings"
 
 #: picard/ui/options/interface.py:183
 msgid "Dark"
@@ -6296,7 +6296,7 @@ msgstr ""
 
 #: picard/ui/options/maintenance.py:86
 msgid "Value"
-msgstr "Value"
+msgstr ""
 
 #: picard/ui/options/maintenance.py:118
 #, python-format

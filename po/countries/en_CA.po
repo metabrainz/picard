@@ -1,6 +1,6 @@
 # 
 # Translators:
-# kepstin <calvin.walton@kepstin.ca>, 2012
+# Calvin Walton <calvin.walton@kepstin.ca>, 2012
 # Luke Hollins <luke@farcry.ca>, 2015
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2020
 msgid ""

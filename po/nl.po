@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2021-11-26 12:34+0100\n"
-"PO-Revision-Date: 2021-11-30 12:21+0000\n"
+"PO-Revision-Date: 2021-12-10 15:39+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -566,11 +566,11 @@ msgstr "Mijn profiel"
 
 #: picard/const/__init__.py:192
 msgid "(copy)"
-msgstr ""
+msgstr "(kopie)"
 
 #: picard/const/__init__.py:193
 msgid "{title} ({count})"
-msgstr ""
+msgstr "{title} ({count})"
 
 #: picard/const/languages.py:29 picard/const/locales.py:41
 #: picard/const/scripts.py:28
@@ -4804,7 +4804,7 @@ msgstr "Bewerker voor bestandsnamenscripts"
 
 #: picard/ui/scripteditor.py:477
 msgid "Reset"
-msgstr ""
+msgstr "Terugzetten"
 
 #: picard/ui/options/dialog.py:132 picard/ui/scripteditor.py:482
 msgid "Make It So!"
@@ -4828,27 +4828,27 @@ msgstr "Het script naar een bestand exporteren"
 
 #: picard/ui/scripteditor.py:566
 msgid "&Reset all scripts"
-msgstr ""
+msgstr "Alle scripts &terugzetten"
 
 #: picard/ui/scripteditor.py:567
 msgid "Reset all scripts to the saved values"
-msgstr ""
+msgstr "Alle scripts naar de opgeslagen waarden terugzetten"
 
 #: picard/ui/scripteditor.py:572
 msgid "&Save and exit"
-msgstr ""
+msgstr "&Opslaan en afsluiten"
 
 #: picard/ui/scripteditor.py:573
 msgid "Save changes to the script settings and exit"
-msgstr ""
+msgstr "Veranderingen in het script opslaan en bewerker verlaten"
 
 #: picard/ui/scripteditor.py:578
 msgid "E&xit without saving"
-msgstr ""
+msgstr "&Sluiten zonder opslaan"
 
 #: picard/ui/scripteditor.py:579
 msgid "Close the script editor without saving changes"
-msgstr ""
+msgstr "De scriptbewerkers sluiten zonder veranderingen op te slaan"
 
 #: picard/ui/scripteditor.py:584
 msgid "&Script"
@@ -4856,7 +4856,7 @@ msgstr "&Script"
 
 #: picard/ui/scripteditor.py:587
 msgid "View/Edit Script &Metadata"
-msgstr ""
+msgstr "&Metadata van script bekijken/bewerken"
 
 #: picard/ui/scripteditor.py:588
 msgid "Display the details for the script"
@@ -4922,7 +4922,7 @@ msgid ""
 "   {new_script_title}\n"
 "\n"
 "Are you sure that you want to continue?"
-msgstr ""
+msgstr "Er is ten minste één script aan een optieprofiel gekoppeld.\n\n  Profiel: {profile_title}\n  Script: {old_script_title}\n\nAls je zonder opslaan verdergaat, wordt het geselecteerde script in het profiel teruggezet naar:\n\n  {new_script_title}\n\nWeet je zeker dat je door wil gaan?"
 
 #: picard/ui/options/renaming.py:285 picard/ui/scripteditor.py:843
 #: picard/ui/scripteditor.py:1152 picard/ui/scripteditor.py:1392

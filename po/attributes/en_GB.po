@@ -1,14 +1,14 @@
 # 
 # Translators:
-# Ivan Dobsky, 2019
+# Ivan Dobsky, 2019,2021
 # Jonathan Jonathan <hk0@live.hk>, 2020
 # Oliver Lineham, 2012
 # Sam, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-08-12 16:32+0000\n"
-"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
+"PO-Revision-Date: 2021-12-11 17:52+0000\n"
+"Last-Translator: Ivan Dobsky\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/musicbrainz/musicbrainz/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -187,7 +187,7 @@ msgid ""
 "A masterclass or clinic is an event where an artist meets with a small to "
 "medium-sized audience and instructs them individually and/or takes questions"
 " intended to improve the audience members' playing skills."
-msgstr "A masterclass or clinic is an event where an artist meets with a small to medium-sized audience and instructs them individually and/or takes questions intended to improve the audience members' playing skills."
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
@@ -1620,7 +1620,7 @@ msgstr "City"
 msgctxt "area_type"
 msgid ""
 "City is used for settlements of any size, including towns and villages."
-msgstr "City is used for settlements of any size, including towns and villages."
+msgstr ""
 
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
@@ -6866,7 +6866,7 @@ msgid ""
 "This indicates a choir/chorus (an organized, usually large group of "
 "singers). Smaller vocal ensembles and groupings that do not generally call "
 "themselves choirs are better entered as “Group”."
-msgstr ""
+msgstr "This indicates a choir/chorus (an organised, usually large group of singers). Smaller vocal ensembles and groupings that do not generally call themselves choirs are better entered as “Group”."
 
 #: DB:artist_type/description:4
 msgctxt "artist_type"
@@ -6889,7 +6889,7 @@ msgid ""
 "instrumentalists). Smaller ensembles (such as trios and quartets) and "
 "groupings that do not generally call themselves orchestras are better "
 "entered as “Group”."
-msgstr ""
+msgstr "This indicates an orchestra (an organised, usually large group of instrumentalists). Smaller ensembles (such as trios and quartets) and groupings that do not generally call themselves orchestras are better entered as “Group”."
 
 #: DB:work_type/description:23
 msgctxt "work_type"
