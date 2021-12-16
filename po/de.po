@@ -43,7 +43,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2021-11-26 12:34+0100\n"
-"PO-Revision-Date: 2021-12-15 17:14+0000\n"
+"PO-Revision-Date: 2021-12-16 11:06+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -236,11 +236,11 @@ msgstr "Errate Tracknummer und -titel vom Dateinamen, wenn leer"
 
 #: picard/profile.py:51
 msgid "Translate artist names exception"
-msgstr ""
+msgstr "Ausnahmen für die Übersetzung von Künstlernamen"
 
 #: picard/profile.py:52
 msgid "Translation script exceptions"
-msgstr ""
+msgstr "Ausnahmen für zu übersetzende Schriften"
 
 #: picard/profile.py:53 picard/ui/ui_options_metadata.py:133
 msgid "Use release relationships"
@@ -3322,7 +3322,7 @@ msgid ""
 "\n"
 "Returns the name of the country for the specified country code.  If the country code is invalid an empty string will be returned.\n"
 "If translate is not blank, the output will be translated into the current locale language.\n"
-msgstr ""
+msgstr "`$countryname(ländercode,übersetzen=\"\")`\n\nGibt den Ländernamen für den angegebenen Ländercode zurück. Falls der Ländercode ungültig ist, wird eine leere Zeichenkette zurückgegeben.\nFalls \"übersetzen\" nicht leer ist, wird die Ausgabe in die aktuelle Anzeigesprache übersetzt.\n"
 
 #: picard/script/functions.py:1411
 msgid ""
@@ -3393,15 +3393,15 @@ msgstr ""
 #: picard/script/serializer.py:201
 #, python-format
 msgid "Error exporting file \"%s\". %s."
-msgstr ""
+msgstr "Fehler beim Exportieren der Datei \"%s\". %s."
 
 #: picard/script/serializer.py:208
 msgid "Export Script File"
-msgstr ""
+msgstr "Skriptdatei exportieren"
 
 #: picard/script/serializer.py:230
 msgid "Export Script"
-msgstr ""
+msgstr "Skript exportieren"
 
 #: picard/script/serializer.py:231
 #, python-format
@@ -3411,16 +3411,16 @@ msgstr ""
 #: picard/script/serializer.py:242
 #, python-format
 msgid "Error importing \"%s\". %s."
-msgstr ""
+msgstr "Fehler beim Importieren \"%s\". %s."
 
 #: picard/script/serializer.py:243
 #, python-format
 msgid "Error decoding \"%s\". %s."
-msgstr ""
+msgstr "Fehler beim Decodieren \"%s\". %s."
 
 #: picard/script/serializer.py:245
 msgid "Import Script File"
-msgstr ""
+msgstr "Skriptdatei importieren"
 
 #: picard/script/serializer.py:259
 msgid "The file was empty"
@@ -4537,7 +4537,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:863
 msgid "&Enable/disable profiles"
-msgstr ""
+msgstr "Profile &aktivieren/deaktivieren"
 
 #: picard/ui/mainwindow.py:870
 msgid "&Tools"
@@ -4590,13 +4590,13 @@ msgstr "Das Erzeugen von Audio-Fingerabdrücken wurde noch nicht konfiguriert. S
 
 #: picard/ui/mainwindow.py:1309
 msgid "Browser integration not enabled"
-msgstr ""
+msgstr "Browser-Integration nicht aktiviert"
 
 #: picard/ui/mainwindow.py:1310
 msgid ""
 "Submitting releases to MusicBrainz requires the browser integration to be "
 "enabled. Do you want to enable the browser integration now?"
-msgstr ""
+msgstr "Für die Übermittlung von Veröffentlichungen an MusicBrainz muss die Browser-Integration aktiviert sein. Die Browser-Integration jetzt aktivieren?"
 
 #: picard/ui/mainwindow.py:1410
 #, python-format
@@ -4630,7 +4630,7 @@ msgstr "Picard benötigt die Berechtigung, auf persönlichen Daten auf dem Music
 
 #: picard/ui/mainwindow.py:1511
 msgid "Authentication failed"
-msgstr ""
+msgstr "Authentifizierung fehlgeschlagen"
 
 #: picard/ui/mainwindow.py:1512 picard/ui/options/general.py:144
 #, python-format
@@ -4796,7 +4796,7 @@ msgstr "Lautstärke"
 
 #: picard/ui/scripteditor.py:144
 msgid "Renaming options are disabled"
-msgstr ""
+msgstr "Benennungsoptionen sind deaktiviert"
 
 #: picard/ui/scripteditor.py:215
 #, python-format
@@ -4873,7 +4873,7 @@ msgstr "Skript-Änderungen speichern und schließen"
 
 #: picard/ui/scripteditor.py:578
 msgid "E&xit without saving"
-msgstr "Ohne Speichern &schließen"
+msgstr "&Ohne Speichern schließen"
 
 #: picard/ui/scripteditor.py:579
 msgid "Close the script editor without saving changes"
@@ -4992,7 +4992,7 @@ msgstr ""
 
 #: picard/ui/scripteditor.py:1222
 msgid "Overwrite"
-msgstr ""
+msgstr "Überschreiben"
 
 #: picard/ui/options/profiles.py:117 picard/ui/scripteditor.py:1224
 msgid "Copy"
@@ -5082,7 +5082,7 @@ msgstr "Ausgewählten Wert nach unten verschieben"
 
 #: picard/ui/ui_exception_script_selector.py:105
 msgid "Exception Script Selector"
-msgstr ""
+msgstr "Ausgenommene Schriften"
 
 #: picard/ui/ui_exception_script_selector.py:106
 msgid "Selected Scripts"
@@ -5090,7 +5090,7 @@ msgstr "Ausgewählte Schriften"
 
 #: picard/ui/ui_exception_script_selector.py:107
 msgid "Selected script match threshold:"
-msgstr ""
+msgstr "Schwellenwert für ausgewählte Schriften:"
 
 #: picard/ui/ui_exception_script_selector.py:108
 msgid "Move selected script up"
@@ -5098,11 +5098,11 @@ msgstr "Ausgewähltes Skript nach oben verschieben"
 
 #: picard/ui/ui_exception_script_selector.py:109
 msgid "Add to selected scripts"
-msgstr ""
+msgstr "Zu ausgewählten Schriften hinzufügen"
 
 #: picard/ui/ui_exception_script_selector.py:110
 msgid "Remove selected script"
-msgstr "Ausgewähltes Skript entfernen"
+msgstr "Ausgewählte Schrift entfernen"
 
 #: picard/ui/ui_exception_script_selector.py:111
 msgid "Move selected script down"
@@ -5128,31 +5128,31 @@ msgstr "Formular"
 
 #: picard/ui/ui_multi_locale_selector.py:85
 msgid "Locale Selector"
-msgstr ""
+msgstr "Sprachauswahl"
 
 #: picard/ui/ui_multi_locale_selector.py:86
 msgid "Selected Locales"
-msgstr ""
+msgstr "Ausgewählte Sprachen"
 
 #: picard/ui/ui_multi_locale_selector.py:87
 msgid "Move selected locale up"
-msgstr ""
+msgstr "Ausgewählte Sprache nach oben verschieben"
 
 #: picard/ui/ui_multi_locale_selector.py:88
 msgid "Add to selected locales"
-msgstr ""
+msgstr "Zu ausgewählten Sprachen hinzufügen"
 
 #: picard/ui/ui_multi_locale_selector.py:89
 msgid "Remove selected locale"
-msgstr ""
+msgstr "Ausgewählte Sprache entfernen"
 
 #: picard/ui/ui_multi_locale_selector.py:90
 msgid "Move selected locale down"
-msgstr ""
+msgstr "Ausgewählte Sprache nach unten verschieben"
 
 #: picard/ui/ui_multi_locale_selector.py:91
 msgid "Available Locales"
-msgstr ""
+msgstr "Verfügbare Sprachen"
 
 #: picard/ui/ui_options.py:47
 msgid "Options"
@@ -5524,7 +5524,7 @@ msgstr "Minimale Ähnlichkeit für Gruppierungsabfragen:"
 
 #: picard/ui/ui_options_metadata.py:126
 msgid "Translate artist names to these locales where possible:"
-msgstr ""
+msgstr "Künstlernamen wenn möglich in diese Sprachen übersetzen"
 
 #: picard/ui/ui_options_metadata.py:127 picard/ui/ui_options_metadata.py:129
 msgid "Select..."
@@ -5532,7 +5532,7 @@ msgstr "Auswählen …"
 
 #: picard/ui/ui_options_metadata.py:128
 msgid "Ignore artist name translation for these scripts:"
-msgstr ""
+msgstr "Übersetzung des Künsternamens für folgende Schriften ignorieren:"
 
 #: picard/ui/ui_options_metadata.py:136
 msgid "Custom Fields"
@@ -5732,7 +5732,7 @@ msgstr "Neues Skript hinzufügen"
 
 #: picard/ui/ui_options_script.py:117
 msgid "Remove the selected script"
-msgstr ""
+msgstr "Ausgewähltes Skript entfernen"
 
 #: picard/ui/ui_options_script.py:118 picard/ui/widgets/scriptlistwidget.py:51
 msgid "Remove script"
@@ -6341,7 +6341,7 @@ msgstr "Entfernen bestätigen"
 
 #: picard/ui/options/maintenance.py:177
 msgid "Are you sure you want to remove the selected option settings?"
-msgstr ""
+msgstr "Soll diese Options-Einstellung wirklich entfernt werden?"
 
 #: picard/ui/options/matching.py:40
 msgid "Matching"
@@ -6501,7 +6501,7 @@ msgstr ""
 #: picard/ui/options/profiles.py:294
 #, python-format
 msgid "List of %i items"
-msgstr ""
+msgstr "Liste mit %i Elementen"
 
 #: picard/ui/options/profiles.py:295
 msgid "Unknown value format"
@@ -6513,7 +6513,7 @@ msgstr "Ungültiger Titel"
 
 #: picard/ui/options/profiles.py:372
 msgid "The profile title cannot be blank."
-msgstr ""
+msgstr "Der Profiltitel darf nicht leer sein."
 
 #: picard/ui/options/ratings.py:41
 msgid "Ratings"
@@ -6533,19 +6533,19 @@ msgstr "Das Zielverzeichnis für verschobene Dateien darf nicht leer sein."
 
 #: picard/ui/options/scripting.py:123
 msgid "Show scripting documentation in new window."
-msgstr ""
+msgstr "Skript-Dokumentation in neuem Fenster anzeigen."
 
 #: picard/ui/options/scripting.py:126
 msgid "Import a script file as a new script."
-msgstr ""
+msgstr "Eine Skriptdatei als neues Skript importieren."
 
 #: picard/ui/options/scripting.py:129
 msgid "Export the current script to a file."
-msgstr ""
+msgstr "Das aktuelle Skript in eine Datei exportieren."
 
 #: picard/ui/options/scripting.py:133
 msgid "Picard tagging script package"
-msgstr ""
+msgstr "Picard Taggerskriptpaket"
 
 #: picard/ui/options/scripting.py:171
 #, python-format
@@ -6674,11 +6674,11 @@ msgstr "Profil entfernen"
 
 #: picard/ui/widgets/profilelistwidget.py:81
 msgid "Are you sure you want to remove this profile?"
-msgstr ""
+msgstr "Soll dieses Profil wirklich entfernt werden?"
 
 #: picard/ui/widgets/scriptdocumentation.py:109
 msgid "Open Scripting Documentation in your browser"
-msgstr ""
+msgstr "Skript-Dokumentation im Browser öffnen"
 
 #: picard/ui/widgets/scriptlistwidget.py:48
 msgid "Rename script"
@@ -6690,11 +6690,11 @@ msgstr "Soll dieses Skript wirklich entfernt werden?"
 
 #: picard/ui/widgets/scripttextedit.py:325
 msgid "&Word wrap script"
-msgstr ""
+msgstr "&Zeilenumbruch aktivieren"
 
 #: picard/ui/widgets/scripttextedit.py:326
 msgid "Word wrap long lines in the editor"
-msgstr ""
+msgstr "Umbruch von langen Zeilen im Editor aktivieren"
 
 #: picard/ui/widgets/scripttextedit.py:328
 msgid "Ctrl+Shift+W"
@@ -6702,11 +6702,11 @@ msgstr "Ctrl+Shift+W"
 
 #: picard/ui/widgets/scripttextedit.py:334
 msgid "Show help &tooltips"
-msgstr ""
+msgstr "Hilfe-&Tooltips anzeigen"
 
 #: picard/ui/widgets/scripttextedit.py:335
 msgid "Show tooltips for script elements"
-msgstr ""
+msgstr "Zeigt Tooltips für Skriptelemente an"
 
 #: picard/ui/widgets/tristatesortheaderview.py:54
 msgid ""
@@ -6904,7 +6904,7 @@ msgstr "Tontechniker"
 
 #: picard/util/tags.py:63
 msgid "Gapless Playback"
-msgstr ""
+msgstr "Lückenlose Wiedergabe"
 
 #: picard/util/tags.py:65
 msgid "Grouping"
