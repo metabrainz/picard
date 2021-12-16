@@ -1,3 +1,15 @@
+# Version 2.7 - 2021-12-16
+
+## Bugfixes
+
+- [PICARD-2346](https://tickets.metabrainz.org/browse/PICARD-2346) - ID3v2.3 files show as changed, even if no tags changed and no tag changes are indicated
+- [PICARD-2351](https://tickets.metabrainz.org/browse/PICARD-2351) - Windows: System language detection broken
+- [PICARD-2352](https://tickets.metabrainz.org/browse/PICARD-2352) - Log view colors are not restored after a clear
+- [PICARD-2353](https://tickets.metabrainz.org/browse/PICARD-2353) - Post cluster focus regression
+- [PICARD-2361](https://tickets.metabrainz.org/browse/PICARD-2361) - Removing files while clustering
+- [PICARD-2362](https://tickets.metabrainz.org/browse/PICARD-2362) - Added \_\_pycache__ directories make builds unreproducible
+
+
 # Version 2.7.0b3 - 2021-12-02
 
 ## Bugfixes
@@ -43,6 +55,7 @@
 
 ## Improvements
 
+- [PICARD-2239](https://tickets.metabrainz.org/browse/PICARD-2239) - Save option settings to specified profile
 - [PICARD-2299](https://tickets.metabrainz.org/browse/PICARD-2299) - Extend genre wildcard filtering with "?" and "\[...\]" matching
 - [PICARD-2301](https://tickets.metabrainz.org/browse/PICARD-2301) - Slight rewording of "CAA" cover art provider options
 - [PICARD-2305](https://tickets.metabrainz.org/browse/PICARD-2305) - Restructure user interface options
@@ -59,6 +72,7 @@
 - [PICARD-2217](https://tickets.metabrainz.org/browse/PICARD-2217) - `$performer()` pattern matches full tag name
 - [PICARD-2233](https://tickets.metabrainz.org/browse/PICARD-2233) - Composer Sort Order doesn't use the artist sort name when the "credited as" text is populated
 - [PICARD-2236](https://tickets.metabrainz.org/browse/PICARD-2236) - Renaming files with "replace non-ascii" treats fullwidth slash U+FF0F as directory separator
+- [PICARD-2253](https://tickets.metabrainz.org/browse/PICARD-2253) - Tagging script name can be changed to empty string
 - [PICARD-2261](https://tickets.metabrainz.org/browse/PICARD-2261) - Any tagger script causes multi-line fields to become changed
 - [PICARD-2276](https://tickets.metabrainz.org/browse/PICARD-2276) - Fix browser integration on Windows if hostname contains non-ASCII characters
 
@@ -99,6 +113,7 @@
 - [PICARD-2198](https://tickets.metabrainz.org/browse/PICARD-2198) - Update formats for Tefifon and 5.25" Floppy Disk
 - [PICARD-2201](https://tickets.metabrainz.org/browse/PICARD-2201) - Add help button to "Tags from file names" dialog
 - [PICARD-2207](https://tickets.metabrainz.org/browse/PICARD-2207) - Script editor: Show hover tooltip on Unicode escape sequences and functions
+- [PICARD-2215](https://tickets.metabrainz.org/browse/PICARD-2215) - Add function `$countryname()` to get country name from country code
 - [PICARD-2218](https://tickets.metabrainz.org/browse/PICARD-2218) - `$performer()` should allow regular expressions
 - [PICARD-2220](https://tickets.metabrainz.org/browse/PICARD-2220) - Set default file extension for files with empty extension
 - [PICARD-2232](https://tickets.metabrainz.org/browse/PICARD-2232) - Allow data submission to unofficial server
