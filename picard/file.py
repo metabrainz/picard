@@ -732,7 +732,7 @@ class File(QtCore.QObject, Item):
         return (
             isinstance(self.parent, Track)
             and self.is_saved()
-            and self.metadata["musicbrainz_recordingid"]
+            and bool(self.metadata["musicbrainz_recordingid"])
         )
 
     def _info(self, metadata, file):
