@@ -189,8 +189,8 @@ class File(QtCore.QObject, Item):
             deleted_tags=metadata.deleted_tags,
             images=metadata.images,
             length=metadata.length)
-        for name, value in metadata.rawitems():
-            copy.set(name, self.format_specific_metadata(metadata, name, settings))
+        for name in metadata:
+            copy[name] = self.format_specific_metadata(metadata, name, settings)
         return copy
 
     def load(self, callback):
