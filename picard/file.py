@@ -292,8 +292,7 @@ class File(QtCore.QObject, Item):
         if preserve_deleted:
             for tag in deleted_tags:
                 del self.metadata[tag]
-        for tag, values in saved_metadata.items():
-            self.metadata[tag] = values
+        self.metadata.update(saved_metadata)
 
         if acoustid and "acoustid_id" not in metadata.deleted_tags:
             self.metadata["acoustid_id"] = acoustid
@@ -415,8 +414,7 @@ class File(QtCore.QObject, Item):
             self.orig_metadata.clear_deleted()
             self.orig_metadata.length = length
             self.orig_metadata['~length'] = format_time(length)
-            for k, v in temp_info.items():
-                self.orig_metadata[k] = v
+            self.orig_metadata.update(temp_info)
             self.clear_errors()
             self.clear_pending(signal=False)
             self._add_path_to_metadata(self.orig_metadata)
