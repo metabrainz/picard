@@ -182,6 +182,17 @@ class File(QtCore.QObject, Item):
         """
         return metadata.getall(tag)
 
+    def _format_specific_copy(self, metadata, settings=None):
+        """Creates a copy of metadata, but applies format_specific_metadata() to the values.
+        """
+        copy = Metadata(
+            deleted_tags=metadata.deleted_tags,
+            images=metadata.images,
+            length=metadata.length)
+        for name, value in metadata.rawitems():
+            copy.set(name, self.format_specific_metadata(metadata, name, settings))
+        return copy
+
     def load(self, callback):
         thread.run_task(
             partial(self._load_check, self.filename),
@@ -391,13 +402,14 @@ class File(QtCore.QObject, Item):
             for info in FILE_INFO_TAGS:
                 temp_info[info] = self.orig_metadata[info]
             images_changed = self.orig_metadata.images != self.metadata.images
-            # Data is copied from New to Original because New may be
-            # a subclass to handle id3v23
+            # Copy new metadata to original metadata, applying format specific
+            # conversions (e.g. for ID3v2.3)
             config = get_config()
+            new_metadata = self._format_specific_copy(self.metadata, config.setting)
             if config.setting["clear_existing_tags"]:
-                self.orig_metadata.copy(self.metadata)
+                self.orig_metadata = new_metadata
             else:
-                self.orig_metadata.update(self.metadata)
+                self.orig_metadata.update(new_metadata)
             # After saving deleted tags should no longer be marked deleted
             self.metadata.clear_deleted()
             self.orig_metadata.clear_deleted()
