@@ -160,8 +160,7 @@ class TagsFromFileNamesDialog(PicardDialog):
         expression = TagMatchExpression(self.ui.format.currentText(), self.ui.replace_underscores.isChecked())
         for file in self.files:
             metadata = expression.match_file(file.filename)
-            for name, values in metadata.items():
-                file.metadata[name] = values
+            file.metadata.update(metadata)
             file.update()
         config = get_config()
         config.persist["tags_from_filenames_format"] = self.ui.format.currentText()
