@@ -469,7 +469,7 @@ class Tagger(QtWidgets.QApplication):
 
         if not file_moved:
             self.move_file(file, target)
-            if target != self.unclustered_files:
+            if target and target != self.unclustered_files:
                 file_moved = True
 
         if not file_moved and unmatched_files is not None:
