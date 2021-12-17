@@ -802,10 +802,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config.setting["dont_write_tags"] = not checked
 
     def get_selected_or_unmatched_files(self):
-        files = self.tagger.get_files_from_objects(self.selected_objects)
-        if not files:
-            files = self.tagger.unclustered_files.files
-        return files
+        if self.selected_objects:
+            files = list(iter_files_from_objects(self.selected_objects))
+            if files:
+                return files
+        return self.tagger.unclustered_files.files
 
     def open_tags_from_filenames(self):
         files = self.get_selected_or_unmatched_files()
@@ -1253,20 +1254,23 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         dialog.exec_()
 
     def view_info(self, default_tab=0):
-        if not self.selected_objects:
+        try:
+            selected = self.selected_objects[0]
+        except IndexError:
             return
-        elif isinstance(self.selected_objects[0], Album):
-            album = self.selected_objects[0]
-            dialog = AlbumInfoDialog(album, self)
-        elif isinstance(self.selected_objects[0], Cluster):
-            cluster = self.selected_objects[0]
-            dialog = ClusterInfoDialog(cluster, self)
-        elif isinstance(self.selected_objects[0], Track):
-            track = self.selected_objects[0]
-            dialog = TrackInfoDialog(track, self)
+        if isinstance(selected, Album):
+            dialog_class = AlbumInfoDialog
+        elif isinstance(selected, Cluster):
+            dialog_class = ClusterInfoDialog
+        elif isinstance(selected, Track):
+            dialog_class = TrackInfoDialog
         else:
-            file = self.tagger.get_files_from_objects(self.selected_objects)[0]
-            dialog = FileInfoDialog(file, self)
+            try:
+                selected = next(iter_files_from_objects(self.selected_objects))
+            except StopIteration:
+                return
+            dialog_class = FileInfoDialog
+        dialog = dialog_class(selected, self)
         dialog.ui.tabWidget.setCurrentIndex(default_tab)
         dialog.exec_()
 
@@ -1335,28 +1339,39 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         can_view_info = bool(single and single.can_view_info())
         can_browser_lookup = bool(single and single.can_browser_lookup())
         is_file = bool(single and isinstance(single, (File, Track)))
-        have_files = bool(self.tagger.get_files_from_objects(self.selected_objects))
-        have_objects = bool(self.selected_objects)
-        for obj in self.selected_objects:
-            if obj is None:
-                continue
-            if obj.can_analyze():
-                can_analyze = True
-            if obj.can_save():
-                can_save = True
-            if obj.can_remove():
-                can_remove = True
-            if obj.can_refresh():
-                can_refresh = True
-            if obj.can_autotag():
-                can_autotag = True
-            if obj.can_submit():
-                can_submit = True
-            if obj.can_extract():
-                can_extract = True
-            # Skip further loops if all values now True.
-            if can_analyze and can_save and can_remove and can_refresh and can_autotag and can_submit and can_extract:
-                break
+
+        if not self.selected_objects:
+            have_objects = have_files = False
+        else:
+            have_objects = True
+            try:
+                next(iter_files_from_objects(self.selected_objects))
+                have_files = True
+            except StopIteration:
+                have_files = False
+            for obj in self.selected_objects:
+                if obj is None:
+                    continue
+                # using x = x or obj.x() form prevents calling function
+                # if x is already True
+                can_analyze = can_analyze or obj.can_analyze()
+                can_autotag = can_autotag or obj.can_autotag()
+                can_extract = can_extract or obj.can_extract()
+                can_refresh = can_refresh or obj.can_refresh()
+                can_remove = can_remove or obj.can_remove()
+                can_save = can_save or obj.can_save()
+                can_submit = can_submit or obj.can_submit()
+                # Skip further loops if all values now True.
+                if (
+                    can_analyze
+                    and can_autotag
+                    and can_extract
+                    and can_refresh
+                    and can_remove
+                    and can_save
+                    and can_submit
+                ):
+                    break
         can_extract = can_extract and self.tagger.ab_extractor.available()
         self.remove_action.setEnabled(can_remove)
         self.save_action.setEnabled(can_save)
@@ -1437,7 +1452,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                                                history=None)
         elif coverart_visible and new_selection:
             # Create a temporary file list which allows changing cover art for all selected files
-            files = self.tagger.get_files_from_objects(objects)
+            files = list(iter_files_from_objects(objects))
             obj = FileList(files)
 
         if coverart_visible and new_selection:
