@@ -366,6 +366,11 @@ class ClusterList(list, Item):
     def __hash__(self):
         return id(self)
 
+    def __bool__(self):
+        # An existing Item object should not be considered False, even if it
+        # is based on a list.
+        return True
+
     def iterfiles(self, save=False):
         for cluster in self:
             yield from cluster.iterfiles(save)
