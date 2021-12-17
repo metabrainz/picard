@@ -213,7 +213,7 @@ class Cluster(FileList):
         return bool(self.files)
 
     def can_submit(self):
-        return not self.special and self.files
+        return not self.special and bool(self.files)
 
     def is_album_like(self):
         return True
