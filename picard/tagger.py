@@ -46,6 +46,7 @@
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 from functools import partial
+import itertools
 import logging
 import os.path
 import platform
@@ -521,9 +522,6 @@ class Tagger(QtWidgets.QApplication):
         elif isinstance(target, Album):
             self.move_files_to_album(files, album=target)
         elif isinstance(target, ClusterList):
-            for file in process_events_iter(files):
-                if isinstance(file.parent, Track):
-                    file.parent.remove_file(file)
             self.cluster(files)
         self.window.set_sorting(True)
 
@@ -906,10 +904,13 @@ class Tagger(QtWidgets.QApplication):
     def cluster(self, objs, callback=None):
         """Group files with similar metadata to 'clusters'."""
         log.debug("Clustering %r", objs)
-        if len(objs) <= 1 or self.unclustered_files in objs:
+        files = iter_files_from_objects(objs)
+        try:
+            file = next(files)
+        except StopIteration:
             files = self.unclustered_files.files
         else:
-            files = iter_files_from_objects(objs)
+            files = itertools.chain([file], files)
         thread.run_task(
             partial(self._do_clustering, list(files)),
             partial(self._clustering_finished, callback))
@@ -930,7 +931,9 @@ class Tagger(QtWidgets.QApplication):
                 files = set(file_cluster.files)
                 if len(files) > 1:
                     cluster = self.load_cluster(file_cluster.title, file_cluster.artist)
-                    cluster.add_files(files)
+                else:
+                    cluster = self.unclustered_files
+                cluster.add_files(files)
             self.window.set_sorting(True)
 
         if callback:
