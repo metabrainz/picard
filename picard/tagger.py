@@ -494,16 +494,14 @@ class Tagger(QtWidgets.QApplication):
         else:
             if isinstance(target, File) and target.parent:
                 target = target.parent
-            # To be able to move a file the target must implement add_file(file)
-            if not hasattr(target, 'add_file'):
+            if not file.move(target):
                 # Ensure a file always has a parent so it shows up in UI
                 if not file.parent:
                     target = self.unclustered_files
+                    file.move(target)
                 # Unsupported target, do not move the file
                 else:
                     target = None
-            if target is not None:
-                file.move(target)
         return target
 
     def move_files(self, files, target, move_to_multi_tracks=True):

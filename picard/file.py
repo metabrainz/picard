@@ -609,7 +609,8 @@ class File(QtCore.QObject, Item):
         self.state = File.REMOVED
 
     def move(self, parent):
-        if parent != self.parent:
+        # To be able to move a file the target must implement add_file(file)
+        if hasattr(parent, 'add_file') and parent != self.parent:
             log.debug("Moving %r from %r to %r", self, self.parent, parent)
             self.clear_lookup_task()
             self.tagger._acoustid.stop_analyze(self)
@@ -621,6 +622,9 @@ class File(QtCore.QObject, Item):
             self.parent = parent
             self.parent.add_file(self, new_album=new_album)
             self.acoustid_update()
+            return True
+        else:
+            return False
 
     def _move(self, parent):
         if parent != self.parent:
