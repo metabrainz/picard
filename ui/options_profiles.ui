@@ -89,7 +89,7 @@
         <item>
          <widget class="QToolButton" name="move_up_button">
           <property name="toolTip">
-           <string>Move script up</string>
+           <string>Move profile up</string>
           </property>
           <property name="icon">
            <iconset theme=":/images/16x16/go-up.png">
@@ -100,7 +100,7 @@
         <item>
          <widget class="QToolButton" name="move_down_button">
           <property name="toolTip">
-           <string>Move script down</string>
+           <string>Move profile down</string>
           </property>
           <property name="icon">
            <iconset theme=":/images/16x16/go-down.png">

@@ -73,6 +73,6 @@ class Ui_ProfileEditorDialog(object):
     def retranslateUi(self, ProfileEditorDialog):
         _translate = QtCore.QCoreApplication.translate
         self.option_profiles_groupbox.setTitle(_("Option Profile(s)"))
-        self.move_up_button.setToolTip(_("Move script up"))
-        self.move_down_button.setToolTip(_("Move script down"))
+        self.move_up_button.setToolTip(_("Move profile up"))
+        self.move_down_button.setToolTip(_("Move profile down"))
 from picard.ui.widgets.profilelistwidget import ProfileListWidget
