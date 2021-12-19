@@ -43,7 +43,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2021-11-26 12:34+0100\n"
-"PO-Revision-Date: 2021-12-16 11:06+0000\n"
+"PO-Revision-Date: 2021-12-19 14:25+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -2960,7 +2960,7 @@ msgid ""
 "performance type \"guitar\" or \"Guitars\", but not e.g. \"bass guitar\".\n"
 "\n"
 "_Since Picard 0.10_"
-msgstr ""
+msgstr "` $performer(Muster=\"\",Trenner=\", \")`\n\nLiefert alle Interpreten zurück, bei denen die Art der Performance (z.B. \"vocal\") mit `Muster` übereinstimmt. Die Interpreten werden durch `Trenner` getrennt.\nEs können reguläre Ausdrücke im Format `/Muster/Flags` angegeben werden. `Flags`  sind optional. Aktuell ist das einzige unterstützte Flag \"i\" (Groß-/Kleinschreibung ignorieren). Zum Beispiel stimmt `$performer(/^guitars?$/i)` mit der Performance \"guitar\" oder \"Guitars\" überein, nicht aber mit z.B. \"bass guitar\".\n\n_Ab Picard 0.10_"
 
 #: picard/script/functions.py:787
 msgid ""
@@ -3201,7 +3201,7 @@ msgid ""
 "    `_loop_count`. This allows the count value to be accessed within the `code`\n"
 "    script. The function limits the maximum number of iterations to 1000 as a\n"
 "    safeguard against accidentally creating an infinite loop."
-msgstr ""
+msgstr "$while(Bedingung,Befehl)`\n\nStandard 'while'-Schleife. Führt `Befehl` wiederholt aus, bis `Bedingung` nicht mehr als `wahr` ausgewertet wird. Für jede Durchlauf wird die Anzahl der Durchläufe in dem Tag `_loop_count` gespeichert. Dadurch kann auf den Zählwert innerhalb des Skripts `Befehl` zugegriffen werden. Skript zugreifen. Die Funktion begrenzt die maximale Anzahl der Iterationen auf 1000 als Schutz gegen das versehentliche Erzeugen einer Endlosschleife."
 
 #: picard/script/functions.py:1206
 msgid ""
@@ -3332,7 +3332,7 @@ msgid ""
 "either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be returned.\n"
 "\n"
 "_Since Picard 2.7_"
-msgstr ""
+msgstr "`$year(Datum,Reihenfolge=\"ymd\")`\n\nGibt das Jahr des angegebenen Datums zurück. Die Standardreihenfolge ist \"ymd\" (Jahr-Monat-Tag). Dies kann geändert werden, in dem als `Reihenfolge` entweder \"dmy\" oder \"mdy\" angegeben wird. Falls das Datum ungültig ist, wird eine leere Zeichenkette zurückgegeben.\n\n_Ab Picard 2.7_"
 
 #: picard/script/functions.py:1423
 msgid ""
@@ -3342,7 +3342,7 @@ msgid ""
 "either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be returned.\n"
 "\n"
 "_Since Picard 2.7_"
-msgstr ""
+msgstr "`$month(Datum,Reihenfolge=\"ymd\")`\n\nGibt den Monat des angegebenen Datums zurück. Die Standardreihenfolge ist \"ymd\" (Jahr-Monat-Tag). Dies kann geändert werden, in dem als `Reihenfolge` entweder \"dmy\" oder \"mdy\" angegeben wird. Falls das Datum ungültig ist, wird eine leere Zeichenkette zurückgegeben.\n\n_Ab Picard 2.7_"
 
 #: picard/script/functions.py:1435
 msgid ""
@@ -3352,7 +3352,7 @@ msgid ""
 "either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be returned.\n"
 "\n"
 "_Since Picard 2.7_"
-msgstr ""
+msgstr "`$day(Datum,Reihenfolge=\"ymd\")`\n\nGibt den Tag des angegebenen Datums zurück. Die Standardreihenfolge ist \"ymd\" (Jahr-Monat-Tag). Dies kann geändert werden, in dem als `Reihenfolge` entweder \"dmy\" oder \"mdy\" angegeben wird. Falls das Datum ungültig ist, wird eine leere Zeichenkette zurückgegeben.\n\n_Ab Picard 2.7_"
 
 #: picard/script/functions.py:1447
 #, python-format
@@ -3373,7 +3373,7 @@ msgid ""
 "    `%3Y`); and hanging '%' at the end of the format string.\n"
 "\n"
 "_Since Picard 2.7_"
-msgstr ""
+msgstr "`$dateformat(Datum,Format=\"%Y-%m-%d\",Reihenfolge=\"ymd\")`\n\nGibt das Datum im angegebenen `format` zurück. Das Format basiert auf den [Formatsangaben](https://strftime.org/) für Python `strftime`. Wenn kein Format angegeben wurde, wird das Datum im Format `2020-02-05` zurückgegeben. Falls das Datum oder das Format ungültig sind, wird eine leere Zeichenkette zurückgegeben.\n\n Die Standardreihenfolge ist \"ymd\" (Jahr-Monat-Tag). Dies kann geändert werden, in dem als `Reihenfolge` entweder \"dmy\" oder \"mdy\" angegeben wird.\nHinweis: Plattformspezifische Formatangaben sollten vermieden werden, um die Portabilität von Skripten zwischen verschiedenen Plattformen zu gewährleisten. Zu diesen Formatangaben zählen:\n    Angaben ohne führende Nullen (z.B. `%-d` und `%-m` unter Linux oder macOS, und die gleichartige Angaben `%#d` und `%#m` unter Windows); Angaben zur Elementlänge (z.B.\n    `%3Y`); und '%' am Ende der Formats-Zeichenkette.\n\n_Ab Picard 2.7_"
 
 #: picard/script/functions.py:1480
 msgid ""
@@ -3388,7 +3388,7 @@ msgid ""
 "Result: 1 if there is more than one artist, otherwise \"\".\n"
 "\n"
 "_Since Picard 2.7_"
-msgstr ""
+msgstr "`$is_multi(Name)`\n\nGibt '1' zurück, falls das Argument ein mehrwertiges Tag mit mehr als einem Wert ist, ansonsten eine leere Zeichenkette.\n\nBeispiel:\n\n    $is_multi(%artists%)\n\nErgebnis: 1, falls mehr als ein Interpret, ansonsten \"\".\n\n_Ab Picard 2.7_"
 
 #: picard/script/serializer.py:201
 #, python-format
@@ -3406,7 +3406,7 @@ msgstr "Skript exportieren"
 #: picard/script/serializer.py:231
 #, python-format
 msgid "Script successfully exported to %s"
-msgstr ""
+msgstr "Skript erfolgreich nach %s exportiert"
 
 #: picard/script/serializer.py:242
 #, python-format
@@ -3433,7 +3433,7 @@ msgstr "Importiert von %s"
 
 #: picard/script/serializer.py:285
 msgid "Argument is not a dictionary"
-msgstr ""
+msgstr "Parameter ist kein Dictinary"
 
 #: picard/script/serializer.py:287 picard/script/serializer.py:333
 msgid "Invalid script package"
@@ -3446,7 +3446,7 @@ msgstr "%s (Kopie)"
 
 #: picard/script/serializer.py:331
 msgid "File content not a dictionary"
-msgstr ""
+msgstr "Dateiinhalt ist kein Dictionary"
 
 #: picard/script/serializer.py:341 picard/ui/options/scripting.py:186
 msgid "Unnamed Script"
@@ -4026,21 +4026,21 @@ msgstr "Für diese Datei wurde kein Fingerabdruck generiert. Verwende \"Analysie
 
 #: picard/ui/itemviews.py:1190
 msgid "Extraction or submission of Acoustic features failed"
-msgstr ""
+msgstr "Extraktion oder Übermittlung der akustischen Merkmale fehlgeschlagen"
 
 #: picard/ui/itemviews.py:1194
 msgid "The server already has the features of this file"
-msgstr ""
+msgstr "Der Server kennt bereits die Merkmale dieser Datei"
 
 #: picard/ui/itemviews.py:1196
 msgid "Features have already been submitted"
-msgstr ""
+msgstr "Die Merkmale wurden bereits übermittelt"
 
 #: picard/ui/itemviews.py:1200
 msgid ""
 "No acoustic features were extracted from this file. Use \"Submit Acoustic "
 "features\" to extract and submit them"
-msgstr ""
+msgstr "Für diese Datei wurden keine akustischen Merkmale extrahiert. \"Akustische Merkmale übermitteln\" verwenden, um diese zu extrahieren und zu übermitteln."
 
 #: picard/ui/itemviews.py:1202
 msgid "Unsubmitted features"
@@ -4393,15 +4393,15 @@ msgstr "Ctrl+Shift+Y"
 
 #: picard/ui/mainwindow.py:669
 msgid "&Submit AcousticBrainz features"
-msgstr ""
+msgstr "AcousticBrainz-Merkmale &übermitteln"
 
 #: picard/ui/mainwindow.py:670
 msgid "Submit Acoustic features"
-msgstr ""
+msgstr "Akustische Merkmale übermitteln"
 
 #: picard/ui/mainwindow.py:671 picard/ui/mainwindow.py:673
 msgid "Submit the AcousticBrainz features for the selected files"
-msgstr ""
+msgstr "Die AcousticBrainz-Merkmale für die gewählten Dateien übermitteln"
 
 #: picard/ui/mainwindow.py:676
 msgid "Cl&uster"
@@ -4533,7 +4533,7 @@ msgstr "&Einstellungen"
 
 #: picard/ui/mainwindow.py:855
 msgid "&Select file naming script"
-msgstr ""
+msgstr "Dateibenennungsskript &auswählen"
 
 #: picard/ui/mainwindow.py:863
 msgid "&Enable/disable profiles"
@@ -4812,7 +4812,7 @@ msgstr ""
 msgid ""
 "Reload up to %u items chosen at random from files selected in the main "
 "window"
-msgstr ""
+msgstr "Lädt bis zu %u Einträge, die zufällig aus den ausgewählten Dateien im Hauptfenster übernommen werden"
 
 #: picard/ui/scripteditor.py:316 picard/ui/scripteditor.py:1213
 msgid "Confirm"
@@ -4889,7 +4889,7 @@ msgstr "Skript-&Metadaten ansehen/bearbeiten"
 
 #: picard/ui/scripteditor.py:588
 msgid "Display the details for the script"
-msgstr ""
+msgstr "Details dieses Skripts anzeigen"
 
 #: picard/ui/scripteditor.py:590
 msgid "Ctrl+M"
@@ -4901,19 +4901,19 @@ msgstr "&Neues Skript hinzufügen"
 
 #: picard/ui/scripteditor.py:594
 msgid "Create a new file naming script"
-msgstr ""
+msgstr "Neues Dateibenennungsskript anlegen"
 
 #: picard/ui/scripteditor.py:599
 msgid "&Copy the current script"
-msgstr ""
+msgstr "Aktuelles Skript &kopieren"
 
 #: picard/ui/scripteditor.py:600
 msgid "Save a copy of the script as a new script"
-msgstr ""
+msgstr "Eine Kopie des Skripts als neues Skript speichern"
 
 #: picard/ui/scripteditor.py:605
 msgid "&Delete the current script"
-msgstr ""
+msgstr "Aktuelles Skript &löschen"
 
 #: picard/ui/scripteditor.py:606
 msgid "Delete the script"
@@ -4921,15 +4921,15 @@ msgstr "Skript löschen"
 
 #: picard/ui/scripteditor.py:615
 msgid "&Reload random example files"
-msgstr ""
+msgstr "Zufällige Beispieldateien &neu laden"
 
 #: picard/ui/scripteditor.py:624
 msgid "&Show documentation"
-msgstr ""
+msgstr "&Dokumentation anzeigen"
 
 #: picard/ui/scripteditor.py:625
 msgid "View the scripting documentation in a sidebar"
-msgstr ""
+msgstr "Skript-Dokumentation in der Seitenleiste anzeigen"
 
 #: picard/ui/scripteditor.py:641
 msgid "&Scripting documentation..."
@@ -4937,7 +4937,7 @@ msgstr "&Skript-Dokumentation …"
 
 #: picard/ui/scripteditor.py:642
 msgid "Open the scripting documentation in your browser"
-msgstr ""
+msgstr "Skript-Dokumentation im Browser öffnen"
 
 #: picard/ui/scripteditor.py:741
 msgid ""
@@ -4981,14 +4981,14 @@ msgstr "Soll dieses Skript wirklich gelöscht werden?"
 
 #: picard/ui/options/scripting.py:159 picard/ui/scripteditor.py:1194
 msgid "File Error"
-msgstr ""
+msgstr "Datei-Fehler"
 
 #: picard/ui/scripteditor.py:1215
 msgid ""
 "A script named \"{script_name}\" already exists.\n"
 "\n"
 "Do you want to overwrite it, add as a copy or cancel?"
-msgstr ""
+msgstr "Ein Skript mit dem Namen \"{script_name}\" existiert bereits. Skript überschreiben, als Kopie hinzufügen oder abbrechen?"
 
 #: picard/ui/scripteditor.py:1222
 msgid "Overwrite"
@@ -5011,7 +5011,7 @@ msgid ""
 "There are unsaved changes to the current metadata.\n"
 "\n"
 "Do you want to continue and lose these changes?"
-msgstr ""
+msgstr "Es gibt nicht gespeicherte Änderungen in den aktuellen Metadaten.\n\nFortfahren und Änderungen verwerfen?"
 
 #: picard/ui/scriptsmenu.py:62
 #, python-format
@@ -5160,11 +5160,11 @@ msgstr "Einstellungen"
 
 #: picard/ui/ui_options_acousticbrainz.py:50
 msgid "AcousticBrainz features extraction"
-msgstr ""
+msgstr "Extraktion von AcousticBrainz-Merkmalen"
 
 #: picard/ui/ui_options_acousticbrainz.py:51
 msgid "AcousticBrainz/Essentia feature extractor:"
-msgstr ""
+msgstr "AcousticBrainz / Essentia Merkmalextraktor:"
 
 #: picard/ui/ui_options_acousticbrainz.py:52
 #: picard/ui/ui_options_fingerprinting.py:85
@@ -5225,7 +5225,7 @@ msgstr "Tags, die beim Vergleich ignoriert werden sollen:"
 #: picard/ui/options/dialog.py:204
 #: picard/ui/ui_options_attached_profiles.py:34
 msgid "Profiles Attached to Options"
-msgstr ""
+msgstr "Zu Einstellungen zugewiesene Profile"
 
 #: picard/ui/ui_options_cdlookup.py:39
 msgid "CD-ROM device to use for lookups:"
@@ -5304,11 +5304,11 @@ msgid ""
 "You have configured an unofficial MusicBrainz server. By default submissions"
 " of releases, recordings and disc IDs will go to the primary database on "
 "musicbrainz.org."
-msgstr ""
+msgstr "Du hast einen inoffiziellen MusicBrainz-Server konfiguriert. Standardmäßig werden Veröffentlichungen, Aufnahmen und Disc-IDs an die primäre Datenbank auf musicbrainz.org übermittelt."
 
 #: picard/ui/ui_options_general.py:169
 msgid "Submit data to the configured server"
-msgstr ""
+msgstr "Daten an den konfigurierten Server übermitteln"
 
 #: picard/ui/ui_options_general.py:170 picard/ui/ui_options_network.py:144
 msgid "Port:"
@@ -5620,7 +5620,7 @@ msgstr "Details"
 
 #: picard/ui/ui_options_profiles.py:75
 msgid "Option Profile(s)"
-msgstr ""
+msgstr "Einstellungs-Profil(e)"
 
 #: picard/ui/ui_options_profiles.py:76 picard/ui/ui_options_script.py:113
 msgid "Move script up"
@@ -5696,7 +5696,7 @@ msgstr "Dateien beim Speichern umbenennen"
 
 #: picard/ui/ui_options_renaming.py:162
 msgid "Selected file naming script:"
-msgstr ""
+msgstr "Dateibenennungsskript auswählen:"
 
 #: picard/ui/ui_options_renaming.py:163
 msgid "Edit script..."
@@ -5704,7 +5704,7 @@ msgstr "Skript bearbeiten …"
 
 #: picard/ui/ui_options_renaming.py:164 picard/ui/ui_scripteditor.py:211
 msgid "Files will be named like this:"
-msgstr ""
+msgstr "Dateien werden wie folgt umbenannt:"
 
 #: picard/ui/ui_options_renaming.py:165 picard/ui/ui_scripteditor.py:212
 msgid "Before"
@@ -5898,7 +5898,7 @@ msgstr "Die erste Gruppe im regulären Ausdruck, wenn vorhanden, wird als Typ ge
 
 #: picard/ui/ui_scripteditor.py:208
 msgid "Select the file naming script to use:"
-msgstr ""
+msgstr "Zu verwendendes Dateibenennungsskript auswählen:"
 
 #: picard/ui/ui_scripteditor.py:209
 msgid "Select the file naming script to load into the editor"
@@ -5910,19 +5910,19 @@ msgstr "Titel:"
 
 #: picard/ui/ui_scripteditor_details.py:92
 msgid "Version number of the script."
-msgstr ""
+msgstr "Versionsnummer des Skripts"
 
 #: picard/ui/ui_scripteditor_details.py:93
 msgid "Last Updated:"
-msgstr ""
+msgstr "Zuletzt aktualisiert:"
 
 #: picard/ui/ui_scripteditor_details.py:94
 msgid "Date and time the script was last updated (UTC)."
-msgstr ""
+msgstr "Datum und Uhrzeit, an dem das Skript zuletzt aktualisiert wurde (UTC)."
 
 #: picard/ui/ui_scripteditor_details.py:95
 msgid "Now"
-msgstr ""
+msgstr "Jetzt"
 
 #: picard/ui/ui_scripteditor_details.py:96
 msgid "Author:"
@@ -5938,7 +5938,7 @@ msgstr "Lizenz:"
 
 #: picard/ui/ui_scripteditor_details.py:100
 msgid "License under which the script is available."
-msgstr ""
+msgstr "Lizenz, unter der das Skript verfügbar ist."
 
 #: picard/ui/ui_scripteditor_details.py:101
 msgid "Description:"
@@ -5947,11 +5947,11 @@ msgstr "Beschreibung:"
 #: picard/ui/ui_scripteditor_details.py:102
 msgid ""
 "Brief description of the naming script, including any required plugins."
-msgstr ""
+msgstr "Kurze Beschreibung des Benennungsskripts, einschließlich notwendiger Plugins."
 
 #: picard/ui/ui_scripteditor_details.py:103
 msgid "The author of the script."
-msgstr ""
+msgstr "Autor des Skripts"
 
 #: picard/ui/ui_tagsfromfilenames.py:53
 msgid "Convert File Names to Tags"
@@ -6006,25 +6006,25 @@ msgstr "AcousticBrainz"
 
 #: picard/ui/options/acousticbrainz.py:75
 msgid "Open AcousticBrainz website in browser to download extractor binary"
-msgstr ""
+msgstr "AcousticBrainz-Website im Browser öffnen, um das Extraktor-Programm herunterzuladen"
 
 #: picard/ui/options/acousticbrainz.py:109
 msgid "Path to streaming_extractor_music(.exe)"
-msgstr ""
+msgstr "Pfad zu streaming_extractor_music(.exe)"
 
 #: picard/ui/options/acousticbrainz.py:127
 #, python-format
 msgid "Extractor version: %s"
-msgstr ""
+msgstr "Extraktor-Version: %s"
 
 #: picard/ui/options/acousticbrainz.py:139
 #: picard/ui/options/acousticbrainz.py:143
 msgid "Please select a valid extractor executable."
-msgstr ""
+msgstr "Bitte ein Extraktor-Programm auswählen."
 
 #: picard/ui/options/acousticbrainz.py:143
 msgid "Invalid extractor executable"
-msgstr ""
+msgstr "Ungültiges Extraktor-Programm"
 
 #: picard/ui/options/advanced.py:43
 msgid "Advanced"
@@ -6045,17 +6045,17 @@ msgstr "Alle Einstellungen für die aktuelle Optionsseite zurücksetzen"
 #: picard/ui/options/dialog.py:145 picard/ui/options/dialog.py:433
 #: picard/ui/options/dialog.py:459
 msgid "Attached Profiles"
-msgstr ""
+msgstr "Zugewiesene Profile"
 
 #: picard/ui/options/dialog.py:146
 msgid "Show which profiles are attached to the options on this page"
-msgstr ""
+msgstr "Zeigt an, welche Profile den Einstellungen auf dieser Seite zugewiesen sind"
 
 #: picard/ui/options/dialog.py:214
 msgid ""
 "The options on this page are not currently available to be managed using "
 "profiles."
-msgstr ""
+msgstr "Es ist aktuell nicht möglich die Einstellungen auf dieser Seite in Profilen zu verwalten."
 
 #: picard/ui/options/dialog.py:235
 msgid "Unknown profile"
@@ -6064,7 +6064,7 @@ msgstr "Unbekanntes Profil"
 #: picard/ui/options/dialog.py:284
 #, python-format
 msgid "This option will be saved to profile: %s"
-msgstr ""
+msgstr "Diese Option wird in folgendes Profil gespeichert: %s"
 
 #: picard/ui/options/dialog.py:374
 msgid "Unexpected error"
@@ -6093,7 +6093,7 @@ msgstr ""
 #: picard/ui/options/dialog.py:466
 #, python-format
 msgid "Profiles Attached to Options in %s Section"
-msgstr ""
+msgstr "Zu Einstellungen zugewiesene Profile im Abschnitt %s"
 
 #: picard/ui/options/dialog.py:476
 msgid " [Enabled]"
@@ -6211,7 +6211,7 @@ msgstr "AcoustIDs übermitteln"
 
 #: picard/ui/options/interface.py:121
 msgid "Submit AcousticBrainz features"
-msgstr ""
+msgstr "AcousticBrainz-Merkmale übermitteln"
 
 #: picard/ui/options/interface.py:129
 msgid "Open in Player"
@@ -6331,7 +6331,7 @@ msgstr "Wert"
 msgid ""
 "The configuration file currently contains %d option settings, %d which are "
 "unused."
-msgstr ""
+msgstr "Die Konfigurationsdatei enthält momentan %d Einstellungen, von denen %d nicht verwendet werden."
 
 #: picard/ui/options/maintenance.py:176
 #: picard/ui/widgets/profilelistwidget.py:82
@@ -6466,7 +6466,7 @@ msgstr "Neues Profil erstellen"
 
 #: picard/ui/options/profiles.py:118
 msgid "Copy to a new profile"
-msgstr ""
+msgstr "In ein neues Profil kopieren"
 
 #: picard/ui/options/profiles.py:122
 msgid "Delete"
@@ -6478,7 +6478,7 @@ msgstr "Profil löschen"
 
 #: picard/ui/options/profiles.py:216
 msgid "Settings to include in profile"
-msgstr ""
+msgstr "Einstellungen, die im Profile enthalten sind"
 
 #: picard/ui/options/profiles.py:249
 msgid "Unknown script"
@@ -6486,7 +6486,7 @@ msgstr "Unbekannte Schrift"
 
 #: picard/ui/options/profiles.py:253
 msgid "No scripts in list"
-msgstr ""
+msgstr "Keine Skripte in der Liste"
 
 #: picard/ui/options/profiles.py:256
 #, python-format
