@@ -122,7 +122,7 @@
               </size>
              </property>
              <property name="text">
-              <string>Select the file naming script to use:</string>
+              <string>Selected file naming script:</string>
              </property>
              <property name="indent">
               <number>0</number>
