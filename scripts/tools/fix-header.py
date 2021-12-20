@@ -113,13 +113,13 @@ def parse_copyright_text(text):
 EMPTY_LINE = ("\n", "#\n")
 
 
-def parse_file(path):
+def parse_file(path, encoding='utf-8'):
     authors_from_log = extract_authors_from_gitlog(path)
     start = end = None
     authors_from_file = {}
 
     skip_pattern = re.compile(r'^(?:#|/\*|//)\s+(fix-header:\s*skip|Automatically\s+generated)', re.IGNORECASE)
-    with open(path) as f:
+    with open(path, encoding=encoding) as f:
         lines = f.readlines()
         found = defaultdict(lambda: None)
         if lines and lines[0].startswith('#!'):
@@ -211,8 +211,8 @@ LICENSE_BOTTOM = """#
 """
 
 
-def fix_header(path):
-    found, authors_from_file, authors_from_log, before, after = parse_file(path)
+def fix_header(path, encoding='utf-8'):
+    found, authors_from_file, authors_from_log, before, after = parse_file(path, encoding)
     if found['skip'] is not None:
         return None, found['skip']
 
@@ -264,6 +264,7 @@ def main():
     parser.add_argument('-e', '--extension', default='.py', help='File extension to filter by')
     parser.add_argument('-i', '--in-place', action='store_true', default=False, help='Edit files in place')
     parser.add_argument('-r', '--recursive', action='store_true', default=False, help='Search through subfolders')
+    parser.add_argument('--encoding', default='utf-8', help='File encoding of the source files')
     args = parser.parse_args()
 
     paths = list(args.path)
@@ -281,13 +282,13 @@ def main():
         sys.exit(0)
 
     for path in files:
-        new_content, info = fix_header(path)
+        new_content, info = fix_header(path, encoding=args.encoding)
         if new_content is None:
             print("Skipping %s (%s)" % (path, info), file=sys.stderr)
             continue
         if args.in_place:
             print("Parsing and fixing %s (in place)" % path, file=sys.stderr)
-            with open(path, 'w') as f:
+            with open(path, 'w', encoding=args.encoding) as f:
                 print(new_content, file=f)
         else:
             # by default, we just output to stdout
