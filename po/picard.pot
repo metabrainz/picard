@@ -204,7 +204,7 @@ msgid "Automatically cluster all new files"
 msgstr ""
 
 #: picard/profile.py:51
-msgid "IgnoreMBIDs when loading new files"
+msgid "Ignore MBIDs when loading new files"
 msgstr ""
 
 #: picard/profile.py:56 picard/ui/options/metadata.py:78

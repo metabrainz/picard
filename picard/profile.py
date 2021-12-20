@@ -48,7 +48,7 @@ class UserProfileGroups():
             SettingDesc("server_port", N_("Port"), ["server_port"]),
             SettingDesc("analyze_new_files", N_("Automatically scan all new files"), ["analyze_new_files"]),
             SettingDesc("cluster_new_files", N_("Automatically cluster all new files"), ["cluster_new_files"]),
-            SettingDesc("ignore_file_mbids", N_("IgnoreMBIDs when loading new files"), ["ignore_file_mbids"]),
+            SettingDesc("ignore_file_mbids", N_("Ignore MBIDs when loading new files"), ["ignore_file_mbids"]),
         ],
     }
 
