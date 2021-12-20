@@ -456,7 +456,7 @@ class AttachedProfilesDialog(PicardDialog):
     def populate_table(self):
         model = QtGui.QStandardItemModel()
         model.setColumnCount(2)
-        header_names = [_("Option Setting"), _("Attached Profiles")]
+        header_names = [_("Option"), _("Attached Profiles")]
         model.setHorizontalHeaderLabels(header_names)
 
         group = UserProfileGroups.SETTINGS_GROUPS[self.option_group]

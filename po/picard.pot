@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.7\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-19 14:20+0100\n"
+"POT-Creation-Date: 2021-12-20 08:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -203,7 +203,7 @@ msgstr ""
 msgid "Automatically cluster all new files"
 msgstr ""
 
-#: picard/profile.py:51
+#: picard/profile.py:51 picard/ui/ui_options_general.py:178
 msgid "Ignore MBIDs when loading new files"
 msgstr ""
 
@@ -5464,10 +5464,6 @@ msgstr ""
 msgid "Log out"
 msgstr ""
 
-#: picard/ui/ui_options_general.py:178
-msgid "Ignore MBIDs when loading new files"
-msgstr ""
-
 #: picard/ui/ui_options_general.py:179
 msgid "Update Checking"
 msgstr ""
@@ -6196,8 +6192,8 @@ msgstr ""
 msgid "Are you sure?"
 msgstr ""
 
-#: picard/ui/options/dialog.py:459
-msgid "Option Setting"
+#: picard/ui/options/dialog.py:459 picard/ui/options/maintenance.py:86
+msgid "Option"
 msgstr ""
 
 #: picard/ui/options/dialog.py:466
@@ -6436,10 +6432,6 @@ msgid ""
 "\"Remove selected options\" box. You can then select the settings to "
 "remove by checking the box next to the setting. When you choose \"Make It"
 " So!\" to save your option settings, the selected items will be removed."
-msgstr ""
-
-#: picard/ui/options/maintenance.py:86
-msgid "Option"
 msgstr ""
 
 #: picard/ui/options/maintenance.py:86
