@@ -1258,12 +1258,13 @@ Returns a multi-value variable containing the elements between the `start` and
 The following example will create a multi-value variable with all artists
     in `%artists%` except the first, which can be used to create a "feat." list.
 
-Example:
+Examples:
 
-    $setmulti(supporting_artists,$slice(%artists%,1,))
+    $setmulti(supporting_artists,$slice(%artists%,1))
+    $setmulti(supporting_artists,$slice(%artists%,1,-1))
 """
 ))
-def func_slice(parser, multi, start_index, end_index, separator=MULTI_VALUED_JOINER):
+def func_slice(parser, multi, start_index, end_index=None, separator=MULTI_VALUED_JOINER):
     try:
         start = int(start_index.eval(parser)) if start_index else None
     except ValueError:
