@@ -360,9 +360,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 log.exception('Failed checking options page %r', page)
                 self._show_page_error(page, e)
                 return
+        self.profile_page.save()
         for page in self.pages:
             try:
-                page.save()
+                if page != self.profile_page:
+                    page.save()
             except Exception as e:
                 log.exception('Failed saving options page %r', page)
                 self._show_page_error(page, e)
