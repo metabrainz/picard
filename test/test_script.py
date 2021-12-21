@@ -1354,6 +1354,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$slice(First:A; Second:B; Third:C,-2,2)", output_1_2, context)
         # Tests with missing inputs
         self.assertScriptResultEquals("$slice(First:A; Second:B; Third:C,,1)", output_0_1, context)
+        self.assertScriptResultEquals("$slice(First:A; Second:B; Third:C,1)", output_1_3, context)
         self.assertScriptResultEquals("$slice(First:A; Second:B; Third:C,1,)", output_1_3, context)
         self.assertScriptResultEquals("$slice(First:A; Second:B; Third:C,,)", output_0_3, context)
         # Tests with invalid inputs (end < start)
@@ -1365,13 +1366,11 @@ class ScriptParserTest(PicardTestCase):
         # Tests with separator override
         self.assertScriptResultEquals("$slice(First:A; Second:B; Third:C,1,3,:)", alternate_output, context)
         # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$slice: Wrong number of arguments for \$slice: Expected between 3 and 4, "
+        areg = r"^\d+:\d+:\$slice: Wrong number of arguments for \$slice: Expected between 2 and 4, "
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$slice()")
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$slice(abc; def)")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$slice(abc; def,0)")
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$slice(abc; def),0,1,:,extra")
 
