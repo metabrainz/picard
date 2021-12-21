@@ -1,3 +1,17 @@
+# Version 2.7.1 - 2021-12-21
+
+## Bugfixes
+
+- [PICARD-2363](https://tickets.metabrainz.org/browse/PICARD-2363) - ID3 v2.3 files show as changed directly after saving
+- [PICARD-2366](https://tickets.metabrainz.org/browse/PICARD-2366) - Auto analyze / auto cluster only works if files are loaded via built-in file browser
+- [PICARD-2367](https://tickets.metabrainz.org/browse/PICARD-2367) - Crash when dropping an album onto "Clusters"
+- [PICARD-2372](https://tickets.metabrainz.org/browse/PICARD-2372) - Settings changed in profile not always saved
+
+## Improvements
+
+- [PICARD-2365](https://tickets.metabrainz.org/browse/PICARD-2365) - Allow building / packaging with PyYAML 6
+
+
 # Version 2.7 - 2021-12-16
 
 ## Bugfixes
