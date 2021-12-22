@@ -39,7 +39,10 @@ PROTECTED_DIRECTORIES = set()
 for location in get_qt_enum(QStandardPaths, QStandardPaths.StandardLocation):
     value = getattr(QStandardPaths, location)
     for path in QStandardPaths.standardLocations(value):
-        PROTECTED_DIRECTORIES.add(os.path.realpath(path))
+        try:
+            PROTECTED_DIRECTORIES.add(os.path.realpath(path))
+        except OSError:  # Path might no longer exist, skip it
+            pass
 
 
 class SkipRemoveDir(Exception):
