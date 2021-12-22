@@ -127,6 +127,6 @@ class Ui_ScriptingOptionsPage(object):
         self.remove_button.setText(_("Remove script"))
         self.import_button.setText(_("Import"))
         self.export_button.setText(_("Export"))
-        self.scripting_documentation_button.setText(_("Scripting Documentation"))
+        self.scripting_documentation_button.setText(_("Documentation"))
 from picard.ui.widgets.scriptlistwidget import ScriptListWidget
 from picard.ui.widgets.scripttextedit import ScriptTextEdit

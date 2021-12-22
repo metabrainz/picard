@@ -214,7 +214,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Scripting Documentation</string>
+           <string>Documentation</string>
           </property>
          </widget>
         </item>
