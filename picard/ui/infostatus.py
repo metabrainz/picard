@@ -93,12 +93,10 @@ class InfoStatus(QtWidgets.QWidget, Ui_InfoStatus):
         total_pending = pending_files + pending_requests
         last_pending = self._last_pending_files + self._last_pending_requests
 
-        if self._max_pending_files == 0 or (self._max_pending_files > 0
-                                            and self._last_pending_files == 0
-                                            and pending_files == 0):
-            # update starting timestamp when pending_files appear in order to discard the idle time
-            # and when all previous file requests already finished but network requests still ongoing
-            self.reset_file_counters()
+        # Reset the counters if we had no pending progress before and receive new pending items.
+        # This resets the starting timestamp and starts a new round of measurement.
+        if total_pending > 0 and last_pending == 0:
+            self.reset_counters()
 
         previous_done_files = max(0, self._max_pending_files - self._last_pending_files)
         previous_done_requests = max(0, self._max_pending_requests - self._last_pending_requests)
@@ -137,9 +135,6 @@ class InfoStatus(QtWidgets.QWidget, Ui_InfoStatus):
         self._last_progress = 0
         self._max_pending_requests = 0
         self._last_pending_requests = 0
-        self.reset_file_counters()
-
-    def reset_file_counters(self):
         self._max_pending_files = 0
         self._last_pending_files = 0
         self._prev_time = time.time()
