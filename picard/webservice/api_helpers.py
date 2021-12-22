@@ -31,8 +31,6 @@ from picard.const import (
     ACOUSTID_HOST,
     ACOUSTID_KEY,
     ACOUSTID_PORT,
-    CAA_HOST,
-    CAA_PORT,
 )
 from picard.webservice import (
     CLIENT_STRING,
@@ -42,7 +40,6 @@ from picard.webservice import (
 
 
 ratecontrol.set_minimum_delay((ACOUSTID_HOST, ACOUSTID_PORT), 333)
-ratecontrol.set_minimum_delay((CAA_HOST, CAA_PORT), 0)
 
 
 def escape_lucene_query(text):
