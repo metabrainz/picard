@@ -256,6 +256,13 @@ def ab_submit_features(tagger, file):
         submit_features_callback(file, None, None, True)
         return
 
+    # Set the filename. Especially on Windows the feature extractor fails to set the file basename only.
+    # As Picard already handles this just add the correct data ourselves.
+    try:
+        features['metadata']['tags']['file_name'] = file.base_filename
+    except KeyError:
+        log.warning('AcousticBrainz: Failed to set file_name in features data')
+
     # Submit features to the server
     tagger.webservice.post(
         host=ACOUSTICBRAINZ_HOST,
