@@ -117,7 +117,7 @@ class Ui_ScriptingOptionsPage(object):
     def retranslateUi(self, ScriptingOptionsPage):
         _translate = QtCore.QCoreApplication.translate
         self.enable_tagger_scripts.setTitle(_("Enable Tagger Script(s)"))
-        self.label.setText(_("<html><head/><body><p>Checked scripts will be executed automatically, once for each track in the release, when Picard retrieves release information from MusicBrainz.</p></body></html>"))
+        self.label.setText(_("Scripts that have been activated below will be executed automatically for each track of a release loaded from MusicBrainz."))
         self.tagger_script.setPlaceholderText(_("Enter your tagger script here."))
         self.move_up_button.setToolTip(_("Move script up"))
         self.move_down_button.setToolTip(_("Move script down"))

@@ -43,7 +43,7 @@
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked scripts will be executed automatically, once for each track in the release, when Picard retrieves release information from MusicBrainz.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>Scripts that have been activated below will be executed automatically for each track of a release loaded from MusicBrainz.</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
