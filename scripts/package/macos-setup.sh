@@ -19,7 +19,7 @@ if [ ! -f "$HOME/libdiscid/lib/libdiscid.0.dylib" ]; then
   DISCID_FILENAME="libdiscid-$DISCID_VERSION.tar.gz"
   wget "ftp://ftp.musicbrainz.org/pub/musicbrainz/libdiscid/$DISCID_FILENAME"
   echo "$DISCID_SHA256SUM  $DISCID_FILENAME" | shasum --algorithm 256 --check --status
-  tar -xf $DISCID_FILENAME
+  tar -xf "$DISCID_FILENAME"
   cd "libdiscid-$DISCID_VERSION"
   ./configure --prefix="$HOME/libdiscid"
   make install
