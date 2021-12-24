@@ -120,7 +120,7 @@ class MBAPIHelper(APIHelper):
 
     def _get_by_id(self, entitytype, entityid, handler, inc=None, queryargs=None,
                    priority=False, important=False, mblogin=False, refresh=False):
-        path_list = [entitytype, entityid]
+        path_list = (entitytype, entityid)
         if queryargs is None:
             queryargs = {}
         if inc:
@@ -131,20 +131,16 @@ class MBAPIHelper(APIHelper):
 
     def get_release_by_id(self, releaseid, handler, inc=None,
                           priority=False, important=False, mblogin=False, refresh=False):
-        if inc is None:
-            inc = []
         return self._get_by_id('release', releaseid, handler, inc,
                                priority=priority, important=important, mblogin=mblogin, refresh=refresh)
 
     def get_track_by_id(self, trackid, handler, inc=None,
                         priority=False, important=False, mblogin=False, refresh=False):
-        if inc is None:
-            inc = []
         return self._get_by_id('recording', trackid, handler, inc,
                                priority=priority, important=important, mblogin=mblogin, refresh=refresh)
 
     def lookup_discid(self, discid, handler, priority=True, important=True, refresh=False):
-        inc = ['artist-credits', 'labels']
+        inc = ('artist-credits', 'labels')
         return self._get_by_id('discid', discid, handler, inc, queryargs={"cdstubs": "no"},
                                priority=priority, important=important, refresh=refresh)
 
@@ -174,11 +170,13 @@ class MBAPIHelper(APIHelper):
 
         if query:
             filters.append(("query", query))
-        queryargs = {}
-        for name, value in filters:
-            queryargs[name] = bytes(QUrl.toPercentEncoding(str(value))).decode()
 
-        path_list = [entitytype]
+        queryargs = {
+            name: bytes(QUrl.toPercentEncoding(str(value))).decode()
+            for name, value in filters
+        }
+
+        path_list = (entitytype, )
         return self.get(path_list, handler, queryargs=queryargs,
                         priority=True, important=True, mblogin=False,
                         refresh=False)
@@ -193,7 +191,7 @@ class MBAPIHelper(APIHelper):
         return self._find('artist', handler, **kwargs)
 
     def _browse(self, entitytype, handler, inc=None, **kwargs):
-        path_list = [entitytype]
+        path_list = (entitytype, )
         queryargs = kwargs
         if inc:
             queryargs["inc"] = "+".join(inc)
@@ -202,11 +200,11 @@ class MBAPIHelper(APIHelper):
                         refresh=False)
 
     def browse_releases(self, handler, **kwargs):
-        inc = ["media", "labels"]
+        inc = ("media", "labels")
         return self._browse("release", handler, inc, **kwargs)
 
     def submit_ratings(self, ratings, handler):
-        path_list = ['rating']
+        path_list = ('rating', )
         params = {"client": CLIENT_STRING}
         recordings = (''.join(['<recording id="%s"><user-rating>%s</user-rating></recording>' %
             (i[1], j*20) for i, j in ratings.items() if i[0] == 'recording']))
@@ -217,16 +215,18 @@ class MBAPIHelper(APIHelper):
                          request_mimetype="application/xml; charset=utf-8")
 
     def get_collection(self, collection_id, handler, limit=100, offset=0):
-        path_list = ["collection"]
-        queryargs = None
         if collection_id is not None:
-            inc = ["releases", "artist-credits", "media"]
-            path_list.extend([collection_id, "releases"])
-            queryargs = {}
-            queryargs["inc"] = "+".join(inc)
-            queryargs["limit"] = limit
-            queryargs["offset"] = offset
-        return self.get(path_list, handler, priority=True, important=True,
+            inc = ("releases", "artist-credits", "media")
+            path_list = ('collection', collection_id, "releases")
+            queryargs = {
+                "inc": "+".join(inc),
+                "limit": limit,
+                "offset": offset,
+            }
+        else:
+            path_list = ('collection', )
+            queryargs = None
+        return self.get(tuple(path_list), handler, priority=True, important=True,
                         mblogin=True, queryargs=queryargs)
 
     def get_collection_list(self, handler):
@@ -237,7 +237,7 @@ class MBAPIHelper(APIHelper):
         while releases:
             ids = ";".join(releases if len(releases) <= 400 else releases[:400])
             releases = releases[400:]
-            yield ["collection", collection_id, "releases", ids]
+            yield ("collection", collection_id, "releases", ids)
 
     @staticmethod
     def _get_client_queryarg():
@@ -272,13 +272,13 @@ class AcoustIdAPIHelper(APIHelper):
         return '&'.join(filters)
 
     def query_acoustid(self, handler, **args):
-        path_list = ['lookup']
+        path_list = ('lookup', )
         body = self._encode_acoustid_args(args)
         return self.post(path_list, body, handler, priority=False, important=False,
                          mblogin=False, request_mimetype="application/x-www-form-urlencoded")
 
     def submit_acoustid_fingerprints(self, submissions, handler):
-        path_list = ['submit']
+        path_list = ('submit', )
         config = get_config()
         args = {'user': config.setting["acoustid_apikey"]}
         for i, submission in enumerate(submissions):

@@ -394,20 +394,32 @@ class NonAlbumTrack(Track):
         self.loaded = False
         self.album.update(True)
         config = get_config()
-        mblogin = False
-        inc = ["artist-credits", "artists", "aliases"]
+        require_authentication = False
+        inc = {
+            "aliases",
+            "artist-credits",
+            "artists",
+        }
         if config.setting["track_ars"]:
-            inc += ["artist-rels", "url-rels", "recording-rels",
-                    "work-rels", "work-level-rels"]
-        mblogin = self.set_genre_inc_params(inc) or mblogin
+            inc |= {
+                "artist-rels",
+                "recording-rels",
+                "url-rels",
+                "work-level-rels",
+                "work-rels",
+            }
+        require_authentication = self.set_genre_inc_params(inc, config) or require_authentication
         if config.setting["enable_ratings"]:
-            mblogin = True
-            inc += ["user-ratings"]
-        self.tagger.mb_api.get_track_by_id(self.id,
-                                           self._recording_request_finished,
-                                           inc, mblogin=mblogin,
-                                           priority=priority,
-                                           refresh=refresh)
+            require_authentication = True
+            inc |= {"user-ratings"}
+        self.tagger.mb_api.get_track_by_id(
+            self.id,
+            self._recording_request_finished,
+            inc=tuple(inc),
+            mblogin=require_authentication,
+            priority=priority,
+            refresh=refresh
+        )
 
     def can_remove(self):
         return True
