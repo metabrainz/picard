@@ -29,9 +29,13 @@ jobs:
         macos-deployment-version: [10.12, 10.14]
     env:
       DISCID_VERSION: 0.6.2
+      DISCID_SHA256SUM: f9e443ac4c0dd4819c2841fcc82169a46fb9a626352cdb9c7f65dd3624cd31b9
       FPCALC_VERSION: 1.5.0
+      FPCALC_SHA256SUM: 347fd7eee57e59b56c30221e24dc73358e64a1205c2bf235be38c1d6f2d42ddf
       ABEXTRACTOR_VERSION: v2.1_beta2-4
+      ABEXTRACTOR_SHA256SUM: 00650e89541b9f0fd25d5335c564b133b7d8457449829fcfca8abeab66583260
       PYTHON_VERSION: 3.9.8
+      PYTHON_SHA256SUM: 58d27898b50cd07fcd0992f12044764dbd84e934dd7cea0e5ffb6540e284214e
       MACOSX_DEPLOYMENT_TARGET: ${{ matrix.macos-deployment-version }}
     steps:
     - uses: actions/checkout@v2
