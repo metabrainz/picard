@@ -481,22 +481,48 @@ class Album(DataObject, Item):
         self.clear_errors()
         config = get_config()
         require_authentication = False
-        inc = ['release-groups', 'media', 'discids', 'recordings', 'artist-credits',
-               'artists', 'aliases', 'labels', 'isrcs', 'collections', 'annotation']
+        inc = {
+            'aliases',
+            'annotation',
+            'artist-credits',
+            'artists',
+            'collections',
+            'discids',
+            'isrcs',
+            'labels',
+            'media',
+            'recordings',
+            'release-groups',
+        }
         if self.tagger.webservice.oauth_manager.is_authorized():
             require_authentication = True
-            inc += ['user-collections']
+            inc |= {'user-collections'}
         if config.setting['release_ars'] or config.setting['track_ars']:
-            inc += ['artist-rels', 'release-rels', 'url-rels', 'recording-rels', 'work-rels']
+            inc |= {
+                'artist-rels',
+                'recording-rels',
+                'release-rels',
+                'url-rels',
+                'work-rels'
+            }
             if config.setting['track_ars']:
-                inc += ['recording-level-rels', 'work-level-rels']
-        require_authentication = self.set_genre_inc_params(inc) or require_authentication
+                inc |= {
+                    'recording-level-rels',
+                    'work-level-rels',
+                }
+        require_authentication = self.set_genre_inc_params(inc, config) or require_authentication
         if config.setting['enable_ratings']:
             require_authentication = True
-            inc += ['user-ratings']
+            inc |= {'user-ratings'}
+
         self.load_task = self.tagger.mb_api.get_release_by_id(
-            self.id, self._release_request_finished, inc=inc,
-            mblogin=require_authentication, priority=priority, refresh=refresh)
+            self.id,
+            self._release_request_finished,
+            inc=tuple(inc),
+            mblogin=require_authentication,
+            priority=priority,
+            refresh=refresh
+        )
 
     def run_when_loaded(self, func, always=False):
         if self.loaded:
