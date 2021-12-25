@@ -131,7 +131,10 @@ jobs:
         python-version: 3.8
     - name: Setup Windows build environment
       run: |
-        & .\scripts\package\win-setup.ps1 -DiscidVersion $Env:DISCID_VERSION -FpcalVersion $Env:FPCALC_VERSION -AbextractorVersion $Env:ABEXTRACTOR_VERSION
+        & .\scripts\package\win-setup.ps1 `
+          -DiscidVersion $Env:DISCID_VERSION -DiscidSha256Sum $Env:DISCID_SHA256SUM `
+          -FpcalcVersion $Env:FPCALC_VERSION -FpcalcSha256Sum $Env:FPCALC_SHA256SUM `
+          -AbextractorVersion $Env:ABEXTRACTOR_VERSION -AbextractorSha256Sum $Env:ABEXTRACTOR_SHA256SUM
         Write-Output "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
         $ReleaseTag = $(git describe --match "release-*" --abbrev=0 --always HEAD)
         $BuildNumber = $(git rev-list --count "$ReleaseTag..HEAD")
@@ -139,8 +142,11 @@ jobs:
         New-Item -Name .\artifacts -ItemType Directory
       env:
         DISCID_VERSION: 0.6.2
+        DISCID_SHA256SUM: 9fd815f6bd0c624f0f41dd81209aeaa3f2129dcd1d617f88b844b4503d12598e
         FPCALC_VERSION: 1.5.0
+        FPCALC_SHA256SUM: ce564a92aa9e13823379f2740624110e5f1bc5b25c10b031a5f9b8e71dce2fa9
         ABEXTRACTOR_VERSION: v2.1_beta2-1-ge3940c0
+        ABEXTRACTOR_SHA256SUM: eb4e64e4334ae5c63962fdc6b8bdfbdb53ba11e4705373feeb89503c08ee2688
     - name: Patch build version
       if: startsWith(github.ref, 'refs/tags/') != true
       run: |
