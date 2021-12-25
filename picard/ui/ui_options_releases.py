@@ -113,7 +113,7 @@ class Ui_ReleasesOptionsPage(object):
         self.add_countries.setAccessibleDescription(_("Add to preferred release countries"))
         self.remove_countries.setToolTip(_("Remove from preferred release countries"))
         self.remove_countries.setAccessibleDescription(_("Remove from preferred release countries"))
-        self.format_group.setTitle(_("Preferred release formats"))
+        self.format_group.setTitle(_("Preferred medium formats"))
         self.add_formats.setToolTip(_("Add to preferred release formats"))
         self.add_formats.setAccessibleName(_("Add to preferred release formats"))
         self.remove_formats.setToolTip(_("Remove from preferred release formats"))
