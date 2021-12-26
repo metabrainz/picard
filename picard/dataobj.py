@@ -44,9 +44,9 @@ class DataObject(LockableObject):
         self.genres[name] += count
 
     @staticmethod
-    def set_genre_inc_params(inc):
+    def set_genre_inc_params(inc, config=None):
         require_authentication = False
-        config = get_config()
+        config = config or get_config()
         if config.setting['use_genres']:
             use_folksonomy = config.setting['folksonomy_tags']
             if config.setting['only_my_genres']:

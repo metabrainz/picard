@@ -20,6 +20,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from unittest.mock import Mock
+
 from test.picardtestcase import PicardTestCase
 
 from picard import config
@@ -80,3 +82,18 @@ class DataObjectTest(PicardTestCase):
         self.assertEqual(self.obj.genres['genre1'], 2)
         self.obj.add_genre('genre1', 5)
         self.assertEqual(self.obj.genres['genre1'], 7)
+
+    def test_set_genre_inc_custom_config(self):
+        inc = set()
+        config.setting['use_genres'] = False
+        config.setting['folksonomy_tags'] = False
+        config.setting['only_my_genres'] = False
+        custom_config = Mock()
+        custom_config.setting = {
+            'use_genres': True,
+            'folksonomy_tags': True,
+            'only_my_genres': True,
+        }
+        require_auth = self.obj.set_genre_inc_params(inc, custom_config)
+        self.assertIn('user-tags', inc)
+        self.assertTrue(require_auth)
