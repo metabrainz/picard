@@ -203,13 +203,17 @@ class MBAPIHelper(APIHelper):
         inc = ("media", "labels")
         return self._browse("release", handler, inc, **kwargs)
 
-    def submit_ratings(self, ratings, handler):
-        path_list = ('rating', )
-        params = {"client": CLIENT_STRING}
+    @staticmethod
+    def _xml_ratings(ratings):
         recordings = (''.join(['<recording id="%s"><user-rating>%s</user-rating></recording>' %
             (i[1], j*20) for i, j in ratings.items() if i[0] == 'recording']))
 
-        data = _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
+        return _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
+
+    def submit_ratings(self, ratings, handler):
+        path_list = ('rating', )
+        params = {"client": CLIENT_STRING}
+        data = self._xml_ratings(ratings)
         return self.post(path_list, data, handler, priority=True,
                          queryargs=params, parse_response_type="xml",
                          request_mimetype="application/xml; charset=utf-8")
