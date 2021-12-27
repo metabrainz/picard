@@ -137,3 +137,45 @@ class MBAPITest(PicardTestCase):
         self.assertInPath(self.ws.delete, "collection/1/releases/" + collection_string)
         self.assertNotInPath(self.ws.delete, collection_string + ";" + collection_string)
         self.assertEqual(self.ws.delete.call_count, 2)
+
+    def test_xml_ratings_empty(self):
+        ratings = dict()
+        xmldata = self.api._xml_ratings(ratings)
+        self.assertEqual(
+            xmldata,
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">'
+            '<recording-list></recording-list>'
+            '</metadata>'
+        )
+
+    def test_xml_ratings_one(self):
+        ratings = {("recording", 'a'): 1}
+        xmldata = self.api._xml_ratings(ratings)
+        self.assertEqual(
+            xmldata,
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">'
+            '<recording-list>'
+            '<recording id="a"><user-rating>20</user-rating></recording>'
+            '</recording-list>'
+            '</metadata>'
+        )
+
+    def test_xml_ratings_multiple(self):
+        ratings = {
+            ("recording", 'a'): 1,
+            ("recording", 'b'): 2,
+            ("nonrecording", 'c'): 3,
+        }
+        xmldata = self.api._xml_ratings(ratings)
+        self.assertEqual(
+            xmldata,
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">'
+            '<recording-list>'
+            '<recording id="a"><user-rating>20</user-rating></recording>'
+            '<recording id="b"><user-rating>40</user-rating></recording>'
+            '</recording-list>'
+            '</metadata>'
+        )
