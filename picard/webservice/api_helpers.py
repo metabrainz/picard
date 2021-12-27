@@ -205,8 +205,10 @@ class MBAPIHelper(APIHelper):
 
     @staticmethod
     def _xml_ratings(ratings):
-        recordings = (''.join(['<recording id="%s"><user-rating>%s</user-rating></recording>' %
-            (i[1], j*20) for i, j in ratings.items() if i[0] == 'recording']))
+        recordings = ''.join(
+            '<recording id="%s"><user-rating>%s</user-rating></recording>' %
+            (i[1], j*20) for i, j in ratings.items() if i[0] == 'recording'
+        )
 
         return _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
 
