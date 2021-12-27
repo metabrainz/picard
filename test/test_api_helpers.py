@@ -179,3 +179,15 @@ class MBAPITest(PicardTestCase):
             '</recording-list>'
             '</metadata>'
         )
+
+    def test_collection_request(self):
+        releases = tuple("r"+str(i) for i in range(13))
+        generator = self.api._collection_request("test", releases, batchsize=5)
+        batch = next(generator)
+        self.assertEqual(batch, ('collection', 'test', 'releases', 'r0;r1;r2;r3;r4'))
+        batch = next(generator)
+        self.assertEqual(batch, ('collection', 'test', 'releases', 'r5;r6;r7;r8;r9'))
+        batch = next(generator)
+        self.assertEqual(batch, ('collection', 'test', 'releases', 'r10;r11;r12'))
+        with self.assertRaises(StopIteration):
+            next(generator)
