@@ -239,10 +239,9 @@ class MBAPIHelper(APIHelper):
         return self.get_collection(None, handler)
 
     @staticmethod
-    def _collection_request(collection_id, releases):
-        while releases:
-            ids = ";".join(releases if len(releases) <= 400 else releases[:400])
-            releases = releases[400:]
+    def _collection_request(collection_id, releases, batchsize=400):
+        for i in range(0, len(releases), batchsize):
+            ids = ";".join(releases[i:i+batchsize])
             yield ("collection", collection_id, "releases", ids)
 
     @staticmethod
