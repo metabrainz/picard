@@ -180,6 +180,23 @@ class MBAPITest(PicardTestCase):
             '</metadata>'
         )
 
+    def test_xml_ratings_encode(self):
+        ratings = {("recording", '<a&"\'>'): 0}
+        xmldata = self.api._xml_ratings(ratings)
+        self.assertEqual(
+            xmldata,
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">'
+            '<recording-list>'
+            '<recording id="&lt;a&amp;&quot;\'&gt;"><user-rating>0</user-rating></recording>'
+            '</recording-list>'
+            '</metadata>'
+        )
+
+    def test_xml_ratings_raises_value_error(self):
+        ratings = {("recording", 'a'): 'foo'}
+        self.assertRaises(ValueError, self.api._xml_ratings, ratings)
+
     def test_collection_request(self):
         releases = tuple("r"+str(i) for i in range(13))
         generator = self.api._collection_request("test", releases, batchsize=5)

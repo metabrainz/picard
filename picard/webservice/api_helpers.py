@@ -22,6 +22,7 @@
 
 
 import re
+from xml.sax.saxutils import quoteattr
 
 from PyQt5.QtCore import QUrl
 
@@ -206,10 +207,9 @@ class MBAPIHelper(APIHelper):
     @staticmethod
     def _xml_ratings(ratings):
         recordings = ''.join(
-            '<recording id="%s"><user-rating>%s</user-rating></recording>' %
-            (i[1], j*20) for i, j in ratings.items() if i[0] == 'recording'
+            '<recording id=%s><user-rating>%s</user-rating></recording>' %
+            (quoteattr(i[1]), int(j)*20) for i, j in ratings.items() if i[0] == 'recording'
         )
-
         return _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
 
     def submit_ratings(self, ratings, handler):
