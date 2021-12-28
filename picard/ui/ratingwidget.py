@@ -29,6 +29,7 @@ from PyQt5 import (
     QtWidgets,
 )
 
+from picard import log
 from picard.config import get_config
 
 
@@ -101,7 +102,10 @@ class RatingWidget(QtWidgets.QWidget):
         config = get_config()
         if config.setting["submit_ratings"]:
             ratings = {("recording", track.id): self._rating}
-            self.tagger.mb_api.submit_ratings(ratings, None)
+            try:
+                self.tagger.mb_api.submit_ratings(ratings, None)
+            except ValueError:  # This should never happen as self._rating is always an integer
+                log.error("Failed to submit rating for recording %s", track.id, exc_info=True)
 
     def paintEvent(self, event=None):
         painter = QtGui.QPainter(self)
