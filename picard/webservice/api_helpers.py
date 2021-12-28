@@ -261,29 +261,42 @@ class MBAPIHelper(APIHelper):
 
 class AcoustIdAPIHelper(APIHelper):
 
+    acoustid_host = ACOUSTID_HOST
+    acoustid_port = ACOUSTID_PORT
+    client_key = ACOUSTID_KEY
+    client_version = PICARD_VERSION_STR
+
     def __init__(self, webservice):
-        super().__init__(ACOUSTID_HOST, ACOUSTID_PORT,
-                         '/v2/', webservice)
+        super().__init__(
+            self.acoustid_host, self.acoustid_port, '/v2/', webservice
+        )
 
     @staticmethod
-    def _encode_acoustid_args(args, format_='json'):
+    def _static_encode_acoustid_args(args, client_key, client_version, format_):
         filters = []
-        args['client'] = ACOUSTID_KEY
-        args['clientversion'] = PICARD_VERSION_STR
+        args['client'] = client_key
+        args['clientversion'] = client_version
         args['format'] = format_
         for name, value in args.items():
             value = bytes(QUrl.toPercentEncoding(value)).decode()
             filters.append('%s=%s' % (name, value))
         return '&'.join(filters)
 
+    def _encode_acoustid_args(self, args):
+        return self._static_encode_acoustid_args(
+            args, self.client_key, self.client_version, format_='json'
+        )
+
     def query_acoustid(self, handler, **args):
         path_list = ('lookup', )
         body = self._encode_acoustid_args(args)
-        return self.post(path_list, body, handler, priority=False, important=False,
-                         mblogin=False, request_mimetype="application/x-www-form-urlencoded")
+        return self.post(
+            path_list, body, handler, priority=False, important=False,
+            mblogin=False, request_mimetype="application/x-www-form-urlencoded"
+        )
 
-    def submit_acoustid_fingerprints(self, submissions, handler):
-        path_list = ('submit', )
+    @staticmethod
+    def _submissions_to_args(submissions):
         config = get_config()
         args = {'user': config.setting["acoustid_apikey"]}
         for i, submission in enumerate(submissions):
@@ -292,6 +305,13 @@ class AcoustIdAPIHelper(APIHelper):
             args['mbid.%d' % i] = submission.recordingid
             if submission.puid:
                 args['puid.%d' % i] = submission.puid
-        body = self._encode_acoustid_args(args, format_='json')
-        return self.post(path_list, body, handler, priority=True, important=False,
-                         mblogin=False, request_mimetype="application/x-www-form-urlencoded")
+        return args
+
+    def submit_acoustid_fingerprints(self, submissions, handler):
+        path_list = ('submit', )
+        args = self._submissions_to_args(submissions)
+        body = self._encode_acoustid_args(args)
+        return self.post(
+            path_list, body, handler, priority=True, important=False,
+            mblogin=False, request_mimetype="application/x-www-form-urlencoded"
+        )

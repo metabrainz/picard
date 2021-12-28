@@ -26,8 +26,10 @@ from unittest.mock import MagicMock
 
 from test.picardtestcase import PicardTestCase
 
+from picard.acoustid.manager import Submission
 from picard.webservice import WebService
 from picard.webservice.api_helpers import (
+    AcoustIdAPIHelper,
     APIHelper,
     MBAPIHelper,
 )
@@ -191,3 +193,46 @@ class MBAPITest(PicardTestCase):
         self.assertEqual(batch, ('collection', 'test', 'releases', 'r10;r11;r12'))
         with self.assertRaises(StopIteration):
             next(generator)
+
+
+class AcoustdIdAPITest(PicardTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.config = {'acoustid_apikey': "apikey"}
+        self.set_config_values(self.config)
+        self.ws = MagicMock(auto_spec=WebService)
+        self.api = AcoustIdAPIHelper(self.ws)
+        self.api.acoustid_host = 'acoustid_host'
+        self.api.acoustid_port = 443
+        self.api.client_key = "client_key"
+        self.api.client_version = "client_version"
+
+    def test_encode_acoustid_args_static(self):
+        args = {'a': '1', 'b': 'v a l'}
+        result = self.api._static_encode_acoustid_args(
+            args, 'key', 'ver', 'json'
+        )
+        expected = 'a=1&b=v%20a%20l&client=key&clientversion=ver&format=json'
+        self.assertEqual(result, expected)
+
+    def test_encode_acoustid_args_static_empty(self):
+        args = dict()
+        result = self.api._static_encode_acoustid_args(
+            args, 'key', 'ver', 'json'
+        )
+        expected = 'client=key&clientversion=ver&format=json'
+        self.assertEqual(result, expected)
+
+    def test_submissions_to_args(self):
+        submissions = [
+            Submission('f1', 1, orig_recordingid='or1', recordingid='r1', puid='p1'),
+            Submission('f2', 2, orig_recordingid='or2', recordingid='r2', puid='p2'),
+        ]
+        result = self.api._submissions_to_args(submissions)
+        expected = {
+            'user': 'apikey',
+            'fingerprint.0': 'f1', 'duration.0': '1', 'mbid.0': 'r1', 'puid.0': 'p1',
+            'fingerprint.1': 'f2', 'duration.1': '2', 'mbid.1': 'r2', 'puid.1': 'p2'
+        }
+        self.assertEqual(result, expected)
