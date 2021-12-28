@@ -271,21 +271,15 @@ class AcoustIdAPIHelper(APIHelper):
             self.acoustid_host, self.acoustid_port, '/v2/', webservice
         )
 
-    @staticmethod
-    def _static_encode_acoustid_args(args, client_key, client_version, format_):
+    def _encode_acoustid_args(self, args):
         filters = []
-        args['client'] = client_key
-        args['clientversion'] = client_version
-        args['format'] = format_
+        args['client'] = self.client_key
+        args['clientversion'] = self.client_version
+        args['format'] = 'json'
         for name, value in args.items():
             value = bytes(QUrl.toPercentEncoding(value)).decode()
             filters.append('%s=%s' % (name, value))
         return '&'.join(filters)
-
-    def _encode_acoustid_args(self, args):
-        return self._static_encode_acoustid_args(
-            args, self.client_key, self.client_version, format_='json'
-        )
 
     def query_acoustid(self, handler, **args):
         path_list = ('lookup', )

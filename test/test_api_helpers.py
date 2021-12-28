@@ -205,22 +205,18 @@ class AcoustdIdAPITest(PicardTestCase):
         self.api = AcoustIdAPIHelper(self.ws)
         self.api.acoustid_host = 'acoustid_host'
         self.api.acoustid_port = 443
-        self.api.client_key = "client_key"
-        self.api.client_version = "client_version"
+        self.api.client_key = "key"
+        self.api.client_version = "ver"
 
     def test_encode_acoustid_args_static(self):
         args = {'a': '1', 'b': 'v a l'}
-        result = self.api._static_encode_acoustid_args(
-            args, 'key', 'ver', 'json'
-        )
+        result = self.api._encode_acoustid_args(args)
         expected = 'a=1&b=v%20a%20l&client=key&clientversion=ver&format=json'
         self.assertEqual(result, expected)
 
     def test_encode_acoustid_args_static_empty(self):
         args = dict()
-        result = self.api._static_encode_acoustid_args(
-            args, 'key', 'ver', 'json'
-        )
+        result = self.api._encode_acoustid_args(args)
         expected = 'client=key&clientversion=ver&format=json'
         self.assertEqual(result, expected)
 
