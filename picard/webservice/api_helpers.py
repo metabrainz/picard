@@ -22,7 +22,7 @@
 
 
 import re
-from xml.sax.saxutils import quoteattr
+from xml.sax.saxutils import quoteattr  # nosec: B404
 
 from PyQt5.QtCore import QUrl
 
