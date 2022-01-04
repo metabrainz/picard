@@ -593,3 +593,20 @@ class FileUpdateTest(PicardTestCase):
         self.file.update(signal=False)
         self.assertEqual(self.file.similarity, 1.0)
         self.assertEqual(self.file.state, File.NORMAL)
+
+    def test_copy_file_info_tags(self):
+        info_tags = {}
+        for info in File.FILE_INFO_TAGS:
+            info_tags[info] = 'val' + info
+
+        orig_metadata = Metadata(info_tags)
+        orig_metadata['a'] = 'vala'
+        metadata = Metadata({
+            '~bitrate': 'xxx',
+            'b': 'valb',
+        })
+        self.file._copy_file_info_tags(metadata, orig_metadata)
+        for info in File.FILE_INFO_TAGS:
+            self.assertEqual('val' + info, metadata[info])
+        self.assertEqual('valb', metadata['b'])
+        self.assertNotIn('a', metadata)
