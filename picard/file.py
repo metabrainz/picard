@@ -94,9 +94,6 @@ from picard.util.tags import PRESERVED_TAGS
 from picard.ui.item import Item
 
 
-FILE_INFO_TAGS = ('~bitrate', '~sample_rate', '~channels', '~bits_per_sample', '~format')
-
-
 class File(QtCore.QObject, Item):
 
     metadata_images_changed = QtCore.pyqtSignal()
@@ -114,6 +111,8 @@ class File(QtCore.QObject, Item):
     LOOKUP_ACOUSTID = 2
 
     EXTENSIONS = []
+
+    FILE_INFO_TAGS = ('~bitrate', '~sample_rate', '~channels', '~bits_per_sample', '~format')
 
     comparison_weights = {
         "title": 13,
@@ -276,6 +275,10 @@ class File(QtCore.QObject, Item):
             for m in missing:
                 metadata[m] = getattr(guessed, m)
 
+    def _copy_file_info_tags(self, to_metadata, from_metadata):
+        for info in self.FILE_INFO_TAGS:
+            to_metadata[info] = from_metadata[info]
+
     def copy_metadata(self, metadata, preserve_deleted=True):
         acoustid = self.metadata["acoustid_id"]
         saved_metadata = {}
@@ -287,8 +290,7 @@ class File(QtCore.QObject, Item):
         deleted_tags = self.metadata.deleted_tags
         images_changed = self.metadata.images != metadata.images
         self.metadata.copy(metadata)
-        for info in FILE_INFO_TAGS:
-            metadata[info] = self.orig_metadata[info]
+        self._copy_file_info_tags(metadata, self.orig_metadata)
         if preserve_deleted:
             for tag in deleted_tags:
                 del self.metadata[tag]
@@ -398,8 +400,7 @@ class File(QtCore.QObject, Item):
             self.base_filename = os.path.basename(new_filename)
             length = self.orig_metadata.length
             temp_info = {}
-            for info in FILE_INFO_TAGS:
-                temp_info[info] = self.orig_metadata[info]
+            self._copy_file_info_tags(temp_info, self.orig_metadata)
             images_changed = self.orig_metadata.images != self.metadata.images
             # Copy new metadata to original metadata, applying format specific
             # conversions (e.g. for ID3v2.3)
