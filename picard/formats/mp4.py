@@ -65,7 +65,7 @@ def _is_valid_key(key):
 
 
 class MP4File(File):
-    EXTENSIONS = [".m4a", ".m4b", ".m4p", ".m4v", ".mp4"]
+    EXTENSIONS = [".m4a", ".m4b", ".m4p", ".m4v", ".m4r", ".mp4"]
     NAME = "MPEG-4 Audio"
     _File = MP4
 
