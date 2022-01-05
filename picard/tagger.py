@@ -156,6 +156,21 @@ _orig_shutil_copystat = shutil.copystat
 shutil.copystat = _patched_shutil_copystat
 
 
+def plugin_dirs():
+    if IS_FROZEN:
+        toppath = sys.argv[0]
+    else:
+        toppath = os.path.abspath(__file__)
+
+    topdir = os.path.dirname(toppath)
+    plugin_dir = os.path.join(topdir, "plugins")
+    yield plugin_dir
+
+    if not os.path.exists(USER_PLUGIN_DIR):
+        os.makedirs(USER_PLUGIN_DIR)
+    yield USER_PLUGIN_DIR
+
+
 class Tagger(QtWidgets.QApplication):
 
     tagger_stats_changed = QtCore.pyqtSignal()
@@ -265,21 +280,7 @@ class Tagger(QtWidgets.QApplication):
         # Load plugins
         self.pluginmanager = PluginManager()
         if not self._no_plugins:
-            plugin_dirs = []
-            if IS_FROZEN:
-                toppath = sys.argv[0]
-            else:
-                toppath = os.path.abspath(__file__)
-
-            topdir = os.path.dirname(toppath)
-            plugin_dir = os.path.join(topdir, "plugins")
-            plugin_dirs.append(plugin_dir)
-
-            if not os.path.exists(USER_PLUGIN_DIR):
-                os.makedirs(USER_PLUGIN_DIR)
-            plugin_dirs.append(USER_PLUGIN_DIR)
-
-            for plugin_dir in plugin_dirs:
+            for plugin_dir in plugin_dirs():
                 self.pluginmanager.load_plugins_from_directory(plugin_dir)
 
         self.browser_integration = BrowserIntegration()
