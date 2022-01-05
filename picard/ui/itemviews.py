@@ -47,6 +47,7 @@ from heapq import (
     heappop,
     heappush,
 )
+from locale import strxfrm
 
 from PyQt5 import (
     QtCore,
@@ -919,9 +920,9 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         if column == MainPanel.LENGTH_COLUMN:
             sortkey = self.obj.metadata.length or 0
         elif column in MainPanel.NAT_SORT_COLUMNS:
-            sortkey = natsort.natkey(self.text(column).lower())
+            sortkey = natsort.natkey(self.text(column))
         else:
-            sortkey = self.text(column).lower()
+            sortkey = strxfrm(self.text(column))
         self._sortkeys[column] = sortkey
         return sortkey
 
