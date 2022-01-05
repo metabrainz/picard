@@ -64,6 +64,22 @@ else:
         return '.'.join(locale.getlocale(locale.LC_MESSAGES))
 
 
+def _try_set_locale(language):
+    # Try setting the locale with different or no encoding
+    for encoding in (locale.getpreferredencoding(), 'UTF-8', None):
+        if encoding:
+            current_locale = locale.normalize(language + '.' + encoding)
+        else:
+            current_locale = language
+        try:
+            locale.setlocale(locale.LC_ALL, current_locale)
+            return current_locale
+        except locale.Error:
+            continue
+    locale.setlocale(locale.LC_ALL, '')  # Ensure some locale settings are defined
+    return language  # Just return the language, so at least UI translation works
+
+
 def setup_gettext(localedir, ui_language=None, logger=None):
     """Setup locales, load translations, install gettext functions."""
     if not logger:
@@ -71,8 +87,7 @@ def setup_gettext(localedir, ui_language=None, logger=None):
     current_locale = ''
     try:
         if ui_language:
-            current_locale = locale.normalize(ui_language + '.' + locale.getpreferredencoding())
-            locale.setlocale(locale.LC_ALL, current_locale)
+            current_locale = _try_set_locale(ui_language)
         else:
             current_locale = _init_default_locale()
     except Exception as e:
