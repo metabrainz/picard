@@ -266,10 +266,12 @@ class Tagger(QtWidgets.QApplication):
         self.pluginmanager = PluginManager()
         if not self._no_plugins:
             if IS_FROZEN:
-                self.pluginmanager.load_plugins_from_directory(os.path.join(os.path.dirname(sys.argv[0]), "plugins"))
+                plugin_dir = os.path.join(os.path.dirname(sys.argv[0]), "plugins")
             else:
                 mydir = os.path.dirname(os.path.abspath(__file__))
-                self.pluginmanager.load_plugins_from_directory(os.path.join(mydir, "plugins"))
+                plugin_dir = os.path.join(mydir, "plugins")
+
+            self.pluginmanager.load_plugins_from_directory(plugin_dir)
 
             if not os.path.exists(USER_PLUGIN_DIR):
                 os.makedirs(USER_PLUGIN_DIR)
