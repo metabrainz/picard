@@ -265,6 +265,7 @@ class Tagger(QtWidgets.QApplication):
         # Load plugins
         self.pluginmanager = PluginManager()
         if not self._no_plugins:
+            plugin_dirs = []
             if IS_FROZEN:
                 toppath = sys.argv[0]
             else:
@@ -272,11 +273,14 @@ class Tagger(QtWidgets.QApplication):
 
             topdir = os.path.dirname(toppath)
             plugin_dir = os.path.join(topdir, "plugins")
-            self.pluginmanager.load_plugins_from_directory(plugin_dir)
+            plugin_dirs.append(plugin_dir)
 
             if not os.path.exists(USER_PLUGIN_DIR):
                 os.makedirs(USER_PLUGIN_DIR)
-            self.pluginmanager.load_plugins_from_directory(USER_PLUGIN_DIR)
+            plugin_dirs.append(USER_PLUGIN_DIR)
+
+            for plugin_dir in plugin_dirs:
+                self.pluginmanager.load_plugins_from_directory(plugin_dir)
 
         self.browser_integration = BrowserIntegration()
         self.browser_integration.listen_port_changed.connect(self.listen_port_changed)
