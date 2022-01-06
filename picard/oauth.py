@@ -172,21 +172,30 @@ class OAuthManager(object):
         self.access_token = access_token
         self.access_token_expires = int(time.time() + expires_in - 60)
 
+    @staticmethod
+    def _query_data(params):
+        url = QUrl()
+        url_query = QUrlQuery()
+        for key, value in params.items():
+            url_query.addQueryItem(key, value)
+        url.setQuery(url_query.query(QUrl.FullyEncoded))
+        return url.query()
+
     def refresh_access_token(self, callback):
         log.debug("OAuth: refreshing access_token with a refresh_token %s", self.refresh_token)
         path = "/oauth2/token"
-        url = QUrl()
-        url_query = QUrlQuery()
-        url_query.addQueryItem("grant_type", "refresh_token")
-        url_query.addQueryItem("refresh_token", self.refresh_token)
-        url_query.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)
-        url_query.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
-        url.setQuery(url_query.query(QUrl.FullyEncoded))
-        data = url.query()
-        self.webservice.post(self.host, self.port, path, data,
-                             partial(self.on_refresh_access_token_finished, callback),
-                             mblogin=True, priority=True, important=True,
-                             request_mimetype="application/x-www-form-urlencoded")
+        params = {
+            "grant_type": "refresh_token",
+            "refresh_token": self.refresh_token,
+            "client_id": MUSICBRAINZ_OAUTH_CLIENT_ID,
+            "client_secret": MUSICBRAINZ_OAUTH_CLIENT_SECRET,
+        }
+        self.webservice.post(
+            self.host, self.port, path, self._query_data(params),
+            partial(self.on_refresh_access_token_finished, callback),
+            mblogin=True, priority=True, important=True,
+            request_mimetype="application/x-www-form-urlencoded"
+        )
 
     def on_refresh_access_token_finished(self, callback, data, http, error):
         access_token = None
@@ -208,19 +217,19 @@ class OAuthManager(object):
     def exchange_authorization_code(self, authorization_code, scopes, callback):
         log.debug("OAuth: exchanging authorization_code %s for an access_token", authorization_code)
         path = "/oauth2/token"
-        url = QUrl()
-        url_query = QUrlQuery()
-        url_query.addQueryItem("grant_type", "authorization_code")
-        url_query.addQueryItem("code", authorization_code)
-        url_query.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)
-        url_query.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
-        url_query.addQueryItem("redirect_uri", "urn:ietf:wg:oauth:2.0:oob")
-        url.setQuery(url_query.query(QUrl.FullyEncoded))
-        data = url.query()
-        self.webservice.post(self.host, self.port, path, data,
-                             partial(self.on_exchange_authorization_code_finished, scopes, callback),
-                             mblogin=True, priority=True, important=True,
-                             request_mimetype="application/x-www-form-urlencoded")
+        params = {
+            "grant_type": "authorization_code",
+            "code": authorization_code,
+            "client_id": MUSICBRAINZ_OAUTH_CLIENT_ID,
+            "client_secret": MUSICBRAINZ_OAUTH_CLIENT_SECRET,
+            "redirect_uri": "urn:ietf:wg:oauth:2.0:oob",
+        }
+        self.webservice.post(
+            self.host, self.port, path, self._query_data(params),
+            partial(self.on_exchange_authorization_code_finished, scopes, callback),
+            mblogin=True, priority=True, important=True,
+            request_mimetype="application/x-www-form-urlencoded"
+        )
 
     def on_exchange_authorization_code_finished(self, scopes, callback, data, http, error):
         successful = False
