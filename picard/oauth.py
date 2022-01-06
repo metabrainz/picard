@@ -182,7 +182,8 @@ class OAuthManager(object):
         url = QUrl()
         url_query = QUrlQuery()
         for key, value in params.items():
-            url_query.addQueryItem(key, value)
+            if key:
+                url_query.addQueryItem(key, value)
         url.setQuery(url_query.query(QUrl.FullyEncoded))
         return url.query()
 
