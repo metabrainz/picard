@@ -256,9 +256,11 @@ class OAuthManager(object):
     def fetch_username(self, callback):
         log.debug("OAuth: fetching username")
         path = "/oauth2/userinfo"
-        self.webservice.get(self.host, self.port, path,
-                            partial(self.on_fetch_username_finished, callback),
-                            mblogin=True, priority=True, important=True)
+        self.webservice.get(
+            self.host, self.port, path,
+            partial(self.on_fetch_username_finished, callback),
+            mblogin=True, priority=True, important=True
+        )
 
     def on_fetch_username_finished(self, callback, data, http, error):
         successful = False
