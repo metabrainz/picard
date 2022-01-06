@@ -155,11 +155,16 @@ class OAuthManager(object):
                 self.refresh_access_token(callback)
 
     def get_authorization_url(self, scopes):
-        params = {"response_type": "code", "client_id":
-                  MUSICBRAINZ_OAUTH_CLIENT_ID, "redirect_uri":
-                  "urn:ietf:wg:oauth:2.0:oob", "scope": scopes}
-        url = build_qurl(self.host, self.port, path="/oauth2/authorize",
-                         queryargs=params)
+        params = {
+            "response_type": "code",
+            "client_id": MUSICBRAINZ_OAUTH_CLIENT_ID,
+            "redirect_uri": "urn:ietf:wg:oauth:2.0:oob",
+            "scope": scopes,
+        }
+        url = build_qurl(
+            self.host, self.port, path="/oauth2/authorize",
+            queryargs=params
+        )
         return bytes(url.toEncoded()).decode()
 
     def set_refresh_token(self, refresh_token, scopes):
