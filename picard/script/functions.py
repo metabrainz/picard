@@ -1494,3 +1494,24 @@ _Since Picard 2.7_"""
 def func_is_multi(parser, multi):
     multi_value = MultiValue(parser, multi, MULTI_VALUED_JOINER)
     return '' if len(multi_value) < 2 else '1'
+
+
+@script_function(eval_args=True, documentation=N_(
+    """`$clean_multi(name)`
+
+Removes all empty string elements from the multi-value variable.
+
+Example:
+
+    $$setmulti(test,one; ; two; three)
+    $clean_multi(%test%)
+
+Result: Sets the value of 'test' to ["one", "two", "three"].
+
+_Since Picard 2.8_"""
+))
+def func_clean_multi(parser, multi):
+    name = normalize_tagname(multi)
+    values = [str(value) for value in parser.context.getall(name) if value or value == 0]
+    parser.context[multi] = values
+    return ""

@@ -433,8 +433,9 @@ class Metadata(MutableMapping):
         name = self.normalize_tag(name)
         if isinstance(values, str) or not isinstance(values, Iterable):
             values = [values]
-        values = [str(value) for value in values if value or value == 0]
-        if values:
+        values = [str(value) for value in values if value or value == 0 or value == '']
+        # Remove if there is only a single empty or blank element.
+        if values and (len(values) > 1 or values[0]):
             self._store[name] = values
             self.deleted_tags.discard(name)
         elif name in self._store:
