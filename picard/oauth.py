@@ -207,7 +207,7 @@ class OAuthManager(object):
         try:
             if error:
                 log.error("OAuth: access_token refresh failed: %s", data)
-                if self.webservice.http_response_code(http) == 400:
+                if self._http_code(http) == 400:
                     response = load_json(data)
                     if response["error"] == "invalid_grant":
                         self.forget_refresh_token()
@@ -279,9 +279,12 @@ class OAuthManager(object):
         finally:
             callback(successful=successful, error_msg=error_msg)
 
+    def _http_code(self, http):
+        return self.webservice.http_response_code(http)
+
     def _extract_error_description(self, http, data):
         try:
             response = load_json(data)
             return response['error_description']
         except (JSONDecodeError, KeyError, TypeError):
-            return _('Unexpected request error (HTTP code %s)') % self.webservice.http_response_code(http)
+            return _('Unexpected request error (HTTP code %s)') % self._http_code(http)
