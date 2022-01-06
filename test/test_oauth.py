@@ -30,7 +30,8 @@ class OAuthManagerTest(PicardTestCase):
         params = {
             'a&b': 'a b',
             'c d': 'c&d',
+            'e=f': 'e=f',
             '': '',
         }
         data = OAuthManager._query_data(params)
-        self.assertEqual(data, "a%26b=a+b&c+d=c%26d")
+        self.assertEqual(data, "a%26b=a+b&c+d=c%26d&e%3Df=e%3Df")
