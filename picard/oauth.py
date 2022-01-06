@@ -28,11 +28,7 @@
 from functools import partial
 from json.decoder import JSONDecodeError
 import time
-
-from PyQt5.QtCore import (
-    QUrl,
-    QUrlQuery,
-)
+import urllib.parse
 
 from picard import log
 from picard.config import get_config
@@ -179,13 +175,7 @@ class OAuthManager(object):
 
     @staticmethod
     def _query_data(params):
-        url = QUrl()
-        url_query = QUrlQuery()
-        for key, value in params.items():
-            if key:
-                url_query.addQueryItem(key, value)
-        url.setQuery(url_query.query(QUrl.FullyEncoded))
-        return url.query()
+        return urllib.parse.urlencode({key: value for key, value in params.items() if key})
 
     def refresh_access_token(self, callback):
         log.debug("OAuth: refreshing access_token with a refresh_token %s", self.refresh_token)
