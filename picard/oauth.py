@@ -28,11 +28,7 @@
 from functools import partial
 from json.decoder import JSONDecodeError
 import time
-
-from PyQt5.QtCore import (
-    QUrl,
-    QUrlQuery,
-)
+import urllib.parse
 
 from picard import log
 from picard.config import get_config
@@ -155,11 +151,16 @@ class OAuthManager(object):
                 self.refresh_access_token(callback)
 
     def get_authorization_url(self, scopes):
-        params = {"response_type": "code", "client_id":
-                  MUSICBRAINZ_OAUTH_CLIENT_ID, "redirect_uri":
-                  "urn:ietf:wg:oauth:2.0:oob", "scope": scopes}
-        url = build_qurl(self.host, self.port, path="/oauth2/authorize",
-                         queryargs=params)
+        params = {
+            "response_type": "code",
+            "client_id": MUSICBRAINZ_OAUTH_CLIENT_ID,
+            "redirect_uri": "urn:ietf:wg:oauth:2.0:oob",
+            "scope": scopes,
+        }
+        url = build_qurl(
+            self.host, self.port, path="/oauth2/authorize",
+            queryargs=params
+        )
         return bytes(url.toEncoded()).decode()
 
     def set_refresh_token(self, refresh_token, scopes):
@@ -172,28 +173,32 @@ class OAuthManager(object):
         self.access_token = access_token
         self.access_token_expires = int(time.time() + expires_in - 60)
 
+    @staticmethod
+    def _query_data(params):
+        return urllib.parse.urlencode({key: value for key, value in params.items() if key})
+
     def refresh_access_token(self, callback):
         log.debug("OAuth: refreshing access_token with a refresh_token %s", self.refresh_token)
         path = "/oauth2/token"
-        url = QUrl()
-        url_query = QUrlQuery()
-        url_query.addQueryItem("grant_type", "refresh_token")
-        url_query.addQueryItem("refresh_token", self.refresh_token)
-        url_query.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)
-        url_query.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
-        url.setQuery(url_query.query(QUrl.FullyEncoded))
-        data = url.query()
-        self.webservice.post(self.host, self.port, path, data,
-                             partial(self.on_refresh_access_token_finished, callback),
-                             mblogin=True, priority=True, important=True,
-                             request_mimetype="application/x-www-form-urlencoded")
+        params = {
+            "grant_type": "refresh_token",
+            "refresh_token": self.refresh_token,
+            "client_id": MUSICBRAINZ_OAUTH_CLIENT_ID,
+            "client_secret": MUSICBRAINZ_OAUTH_CLIENT_SECRET,
+        }
+        self.webservice.post(
+            self.host, self.port, path, self._query_data(params),
+            partial(self.on_refresh_access_token_finished, callback),
+            mblogin=True, priority=True, important=True,
+            request_mimetype="application/x-www-form-urlencoded"
+        )
 
     def on_refresh_access_token_finished(self, callback, data, http, error):
         access_token = None
         try:
             if error:
                 log.error("OAuth: access_token refresh failed: %s", data)
-                if self.webservice.http_response_code(http) == 400:
+                if self._http_code(http) == 400:
                     response = load_json(data)
                     if response["error"] == "invalid_grant":
                         self.forget_refresh_token()
@@ -208,19 +213,19 @@ class OAuthManager(object):
     def exchange_authorization_code(self, authorization_code, scopes, callback):
         log.debug("OAuth: exchanging authorization_code %s for an access_token", authorization_code)
         path = "/oauth2/token"
-        url = QUrl()
-        url_query = QUrlQuery()
-        url_query.addQueryItem("grant_type", "authorization_code")
-        url_query.addQueryItem("code", authorization_code)
-        url_query.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)
-        url_query.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
-        url_query.addQueryItem("redirect_uri", "urn:ietf:wg:oauth:2.0:oob")
-        url.setQuery(url_query.query(QUrl.FullyEncoded))
-        data = url.query()
-        self.webservice.post(self.host, self.port, path, data,
-                             partial(self.on_exchange_authorization_code_finished, scopes, callback),
-                             mblogin=True, priority=True, important=True,
-                             request_mimetype="application/x-www-form-urlencoded")
+        params = {
+            "grant_type": "authorization_code",
+            "code": authorization_code,
+            "client_id": MUSICBRAINZ_OAUTH_CLIENT_ID,
+            "client_secret": MUSICBRAINZ_OAUTH_CLIENT_SECRET,
+            "redirect_uri": "urn:ietf:wg:oauth:2.0:oob",
+        }
+        self.webservice.post(
+            self.host, self.port, path, self._query_data(params),
+            partial(self.on_exchange_authorization_code_finished, scopes, callback),
+            mblogin=True, priority=True, important=True,
+            request_mimetype="application/x-www-form-urlencoded"
+        )
 
     def on_exchange_authorization_code_finished(self, scopes, callback, data, http, error):
         successful = False
@@ -242,9 +247,11 @@ class OAuthManager(object):
     def fetch_username(self, callback):
         log.debug("OAuth: fetching username")
         path = "/oauth2/userinfo"
-        self.webservice.get(self.host, self.port, path,
-                            partial(self.on_fetch_username_finished, callback),
-                            mblogin=True, priority=True, important=True)
+        self.webservice.get(
+            self.host, self.port, path,
+            partial(self.on_fetch_username_finished, callback),
+            mblogin=True, priority=True, important=True
+        )
 
     def on_fetch_username_finished(self, callback, data, http, error):
         successful = False
@@ -263,9 +270,12 @@ class OAuthManager(object):
         finally:
             callback(successful=successful, error_msg=error_msg)
 
+    def _http_code(self, http):
+        return self.webservice.http_response_code(http)
+
     def _extract_error_description(self, http, data):
         try:
             response = load_json(data)
             return response['error_description']
         except (JSONDecodeError, KeyError, TypeError):
-            return _('Unexpected request error (HTTP code %s)') % self.webservice.http_response_code(http)
+            return _('Unexpected request error (HTTP code %s)') % self._http_code(http)
