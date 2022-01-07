@@ -1767,6 +1767,36 @@ class ScriptParserTest(PicardTestCase):
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$dateformat(2021-07-21,,,)")
 
+    def test_cmd_appendmulti(self):
+        context = Metadata()
+
+        # Test appending one value
+        context["foo"] = ["one", "two"]
+        self.assertScriptResultEquals("$appendmulti(%foo%,three)%foo%", "one; two; three", context)
+
+        # Test appending empty value
+        context["foo"] = ["one", "two"]
+        self.assertScriptResultEquals("$appendmulti(%foo%,)%foo%", "one; two; ", context)
+
+        # Test appending two empty values
+        context["foo"] = ["one", "two"]
+        self.assertScriptResultEquals("$appendmulti(%foo%,,)%foo%", "one; two; ; ", context)
+
+        # Test appending one empty value and additional value
+        context["foo"] = ["one", "two"]
+        self.assertScriptResultEquals("$appendmulti(%foo%,,four)%foo%", "one; two; ; four", context)
+
+        # Test appending multiple additional values
+        context["foo"] = ["one", "two"]
+        self.assertScriptResultEquals("$appendmulti(%foo%,three,four,five)%foo%", "one; two; three; four; five", context)
+
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$appendmulti: Wrong number of arguments for \$appendmulti: Expected at least 2, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$appendmulti()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$appendmulti(%foo%)")
+
     def test_cmd_is_multi(self):
         context = Metadata()
         context["foo"] = "a; b; c"

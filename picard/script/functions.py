@@ -1479,6 +1479,25 @@ def func_dateformat(parser, date_to_parse, date_format=None, date_order='ymd'):
 
 
 @script_function(eval_args=False, documentation=N_(
+    """`$appendmulti(name,value[,...])`
+
+Appends the specified value(s) to a multi-value variable.
+
+Example:
+
+    $appendmulti(%genres%,My Collection,Good Stuff)
+
+_Since Picard 2.8_"""
+))
+def func_appendmulti(parser, multi, value, *args):
+    multi_value = MultiValue(parser, multi, MULTI_VALUED_JOINER)
+    multi_value.append(value.eval(parser))
+    for val in args:
+        multi_value.append(val.eval(parser))
+    return ''
+
+
+@script_function(eval_args=False, documentation=N_(
     """`$is_multi(name)`
 
 Returns '1' if the argument is a multi-value tag and there are more than one elements, otherwise an empty string.

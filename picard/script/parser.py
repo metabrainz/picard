@@ -431,3 +431,6 @@ class MultiValue(MutableSequence):
 
     def __str__(self):
         return self.separator.join(x for x in self if x)
+
+    def append(self, value):
+        self._multi.append(value)
