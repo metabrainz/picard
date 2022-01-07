@@ -137,7 +137,6 @@ from picard.webservice.api_helpers import (
 import picard.resources  # noqa: F401 # pylint: disable=unused-import
 
 from picard.ui import theme
-from picard.ui.itemviews import BaseTreeView
 from picard.ui.mainwindow import MainWindow
 from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.artist import ArtistSearchDialog
@@ -620,16 +619,6 @@ class Tagger(QtWidgets.QApplication):
         return FileLookup(self, config.setting["server_host"],
                           config.setting["server_port"],
                           self.browser_integration.port)
-
-    def copy_files(self, objects):
-        mimeData = QtCore.QMimeData()
-        mimeData.setUrls([QtCore.QUrl.fromLocalFile(f.filename) for f in iter_files_from_objects(objects)])
-        self.clipboard().setMimeData(mimeData)
-
-    def paste_files(self, target):
-        mimeData = self.clipboard().mimeData()
-        if mimeData.hasUrls():
-            BaseTreeView.drop_urls(mimeData.urls(), target)
 
     def search(self, text, search_type, adv=False, mbid_matched_callback=None, force_browser=False):
         """Search on the MusicBrainz website."""
