@@ -559,6 +559,9 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$replacemulti(%genre%,Bardcore,Hardcore)", "Electronic; Jungle; Hardcore", context)
 
         context["test"] = ["One", "Two", "Three"]
+        self.assertScriptResultEquals("$replacemulti(%test%,Two,)", "One; Three", context)
+
+        context["test"] = ["One", "Two", "Three"]
         self.assertScriptResultEquals("$replacemulti(%test%,Four,Five)", "One; Two; Three", context)
 
         context["test"] = ["Four", "Five", "Six"]
@@ -926,6 +929,9 @@ class ScriptParserTest(PicardTestCase):
         context["baz"] = []
         self.assertScriptResultEquals("$lenmulti(%baz%)", "0", context)
         self.assertScriptResultEquals("$lenmulti(%baz%,:)", "0", context)
+        # Test empty multi-value elements
+        context["baz"] = ["one", "", "three"]
+        self.assertScriptResultEquals("$lenmulti(%baz%)", "3", context)
         # Test missing name
         self.assertScriptResultEquals("$lenmulti(,)", "0", context)
         self.assertScriptResultEquals("$lenmulti(,:)", "0", context)
