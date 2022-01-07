@@ -111,7 +111,10 @@ from picard.ui.infodialog import (
     TrackInfoDialog,
 )
 from picard.ui.infostatus import InfoStatus
-from picard.ui.itemviews import MainPanel
+from picard.ui.itemviews import (
+    BaseTreeView,
+    MainPanel,
+)
 from picard.ui.logview import (
     HistoryView,
     LogView,
@@ -1532,8 +1535,18 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def autotag(self):
         self.tagger.autotag(self.selected_objects)
 
+    def copy_files(self, objects):
+        mimeData = QtCore.QMimeData()
+        mimeData.setUrls(QtCore.QUrl.fromLocalFile(f.filename) for f in iter_files_from_objects(objects))
+        self.tagger.clipboard().setMimeData(mimeData)
+
+    def paste_files(self, target):
+        mimeData = self.tagger.clipboard().mimeData()
+        if mimeData.hasUrls():
+            BaseTreeView.drop_urls(mimeData.urls(), target)
+
     def cut(self):
-        self.tagger.copy_files(self.selected_objects)
+        self.copy_files(self.selected_objects)
         self.paste_action.setEnabled(bool(self.selected_objects))
 
     def paste(self):
@@ -1542,7 +1555,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             target = self.tagger.unclustered_files
         else:
             target = selected_objects[0]
-        self.tagger.paste_files(target)
+        self.paste_files(target)
         self.paste_action.setEnabled(False)
 
     def do_update_check(self):
