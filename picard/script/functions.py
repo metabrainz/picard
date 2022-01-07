@@ -1503,8 +1503,8 @@ Removes all empty string elements from the multi-value variable.
 
 Example:
 
-    $$setmulti(test,one; ; two; three)
-    $cleanmulti(%test%)
+    $setmulti(test,one; ; two; three)
+    $cleanmulti(test)
 
 Result: Sets the value of 'test' to ["one", "two", "three"].
 
