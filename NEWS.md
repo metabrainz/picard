@@ -1,3 +1,21 @@
+# Version 2.7.2 - 2022-01-11
+
+## Bugfixes
+
+- [PICARD-2375](https://tickets.metabrainz.org/browse/PICARD-2375) - Loading indicator when loading releases stays near zero
+- [PICARD-2377](https://tickets.metabrainz.org/browse/PICARD-2377) - Crash on start if system reports a standard location path that no longer exists
+- [PICARD-2378](https://tickets.metabrainz.org/browse/PICARD-2378) - Windows: AcousticBrainz submission submits full path to files instead of just the basename
+- [PICARD-2386](https://tickets.metabrainz.org/browse/PICARD-2386) - Artist field sorts characters with diacritic after z
+- [PICARD-2389](https://tickets.metabrainz.org/browse/PICARD-2389) - Unsupported locale error on Windows
+- [PICARD-2390](https://tickets.metabrainz.org/browse/PICARD-2390) - "Default listening port" label only partially shown
+
+## Improvements
+
+- [PICARD-2373](https://tickets.metabrainz.org/browse/PICARD-2373) - Make `$slice()` "end" parameter optional
+- [PICARD-2374](https://tickets.metabrainz.org/browse/PICARD-2374) - Remove rate limit for archive.org
+- [PICARD-2388](https://tickets.metabrainz.org/browse/PICARD-2388) - Support .m4r file extension for MP4 (iTunes Ringtone files)
+
+
 # Version 2.7.1 - 2021-12-21
 
 ## Bugfixes
