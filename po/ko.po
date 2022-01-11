@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-20 08:00+0100\n"
-"PO-Revision-Date: 2021-12-20 09:24+0000\n"
+"POT-Creation-Date: 2021-12-22 12:24+0100\n"
+"PO-Revision-Date: 2021-12-22 12:24+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Korean (http://www.transifex.com/musicbrainz/musicbrainz/language/ko/)\n"
 "MIME-Version: 1.0\n"
@@ -3304,12 +3304,13 @@ msgid ""
 "The following example will create a multi-value variable with all artists\n"
 "    in `%artists%` except the first, which can be used to create a \"feat.\" list.\n"
 "\n"
-"Example:\n"
+"Examples:\n"
 "\n"
-"    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
+"    $setmulti(supporting_artists,$slice(%artists%,1))\n"
+"    $setmulti(supporting_artists,$slice(%artists%,1,-1))\n"
 msgstr ""
 
-#: picard/script/functions.py:1279
+#: picard/script/functions.py:1280
 #, python-format
 msgid ""
 "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
@@ -3325,7 +3326,7 @@ msgid ""
 "    `%3Y`); and hanging '%' at the end of the format string."
 msgstr ""
 
-#: picard/script/functions.py:1308
+#: picard/script/functions.py:1309
 msgid ""
 "`$sortmulti(name,separator=\"; \")`\n"
 "\n"
@@ -3338,7 +3339,7 @@ msgid ""
 "Result: A; B; C\n"
 msgstr ""
 
-#: picard/script/functions.py:1325
+#: picard/script/functions.py:1326
 msgid ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
@@ -3353,7 +3354,7 @@ msgid ""
 "Result: C; B; A\n"
 msgstr ""
 
-#: picard/script/functions.py:1344
+#: picard/script/functions.py:1345
 #, python-format
 msgid ""
 "`$unique(name,case_sensitive=\"\",separator=\"; \")`\n"
@@ -3376,7 +3377,7 @@ msgid ""
 "Result: A; B; a; b; cd\n"
 msgstr ""
 
-#: picard/script/functions.py:1372
+#: picard/script/functions.py:1373
 msgid ""
 "`$countryname(country_code,translate=\"\")`\n"
 "\n"
@@ -3384,7 +3385,7 @@ msgid ""
 "If translate is not blank, the output will be translated into the current locale language.\n"
 msgstr ""
 
-#: picard/script/functions.py:1411
+#: picard/script/functions.py:1412
 msgid ""
 "`$year(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3394,7 +3395,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr ""
 
-#: picard/script/functions.py:1423
+#: picard/script/functions.py:1424
 msgid ""
 "`$month(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3404,7 +3405,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr ""
 
-#: picard/script/functions.py:1435
+#: picard/script/functions.py:1436
 msgid ""
 "`$day(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3414,7 +3415,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr ""
 
-#: picard/script/functions.py:1447
+#: picard/script/functions.py:1448
 #, python-format
 msgid ""
 "`$dateformat(date,format=\"%Y-%m-%d\",date_order=\"ymd\")`\n"
@@ -3435,7 +3436,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr ""
 
-#: picard/script/functions.py:1480
+#: picard/script/functions.py:1481
 msgid ""
 "`$is_multi(name)`\n"
 "\n"
@@ -5754,7 +5755,7 @@ msgstr "새 스크립트 추가"
 msgid "Remove the selected script"
 msgstr ""
 
-#: picard/ui/ui_options_script.py:118 picard/ui/widgets/scriptlistwidget.py:56
+#: picard/ui/ui_options_script.py:118 picard/ui/widgets/scriptlistwidget.py:57
 msgid "Remove script"
 msgstr "스크립트 제거"
 
@@ -6054,8 +6055,8 @@ msgstr "모든 Picard 설정 초기화"
 msgid "Reset all settings for current option page"
 msgstr "현재 옵션 페이지의 모든 설정 초기화"
 
-#: picard/ui/options/dialog.py:145 picard/ui/options/dialog.py:433
-#: picard/ui/options/dialog.py:459
+#: picard/ui/options/dialog.py:145 picard/ui/options/dialog.py:435
+#: picard/ui/options/dialog.py:461
 msgid "Attached Profiles"
 msgstr ""
 
@@ -6078,40 +6079,40 @@ msgstr ""
 msgid "This option will be saved to profile: %s"
 msgstr ""
 
-#: picard/ui/options/dialog.py:374
+#: picard/ui/options/dialog.py:376
 msgid "Unexpected error"
 msgstr ""
 
-#: picard/ui/options/dialog.py:413
+#: picard/ui/options/dialog.py:415
 msgid "You are about to reset your options for this page."
 msgstr "이 페이지에서 옵션을 초기화할 수 있습니다."
 
-#: picard/ui/options/dialog.py:417
+#: picard/ui/options/dialog.py:419
 msgid "Warning! This will reset all of your settings."
 msgstr "경고! 모든 설정을 초기화 합니다."
 
-#: picard/ui/options/dialog.py:424
+#: picard/ui/options/dialog.py:426
 msgid "Confirm Reset"
 msgstr "초기화 확인"
 
-#: picard/ui/options/dialog.py:425
+#: picard/ui/options/dialog.py:427
 msgid "Are you sure?"
 msgstr "확실합니까?"
 
-#: picard/ui/options/dialog.py:459 picard/ui/options/maintenance.py:86
+#: picard/ui/options/dialog.py:461 picard/ui/options/maintenance.py:86
 msgid "Option"
 msgstr ""
 
-#: picard/ui/options/dialog.py:466
+#: picard/ui/options/dialog.py:468
 #, python-format
 msgid "Profiles Attached to Options in %s Section"
 msgstr ""
 
-#: picard/ui/options/dialog.py:476
+#: picard/ui/options/dialog.py:478
 msgid " [Enabled]"
 msgstr ""
 
-#: picard/ui/options/dialog.py:477 picard/ui/options/profiles.py:279
+#: picard/ui/options/dialog.py:479 picard/ui/options/profiles.py:279
 msgid "None"
 msgstr ""
 
@@ -6339,7 +6340,7 @@ msgstr ""
 
 #: picard/ui/options/maintenance.py:176
 #: picard/ui/widgets/profilelistwidget.py:82
-#: picard/ui/widgets/scriptlistwidget.py:89
+#: picard/ui/widgets/scriptlistwidget.py:90
 msgid "Confirm Remove"
 msgstr "제거 확인"
 
@@ -6684,11 +6685,11 @@ msgstr ""
 msgid "Open Scripting Documentation in your browser"
 msgstr ""
 
-#: picard/ui/widgets/scriptlistwidget.py:53
+#: picard/ui/widgets/scriptlistwidget.py:54
 msgid "Rename script"
 msgstr "스크립트 이름 변경"
 
-#: picard/ui/widgets/scriptlistwidget.py:88
+#: picard/ui/widgets/scriptlistwidget.py:89
 msgid "Are you sure you want to remove this script?"
 msgstr "이 스크립트를 제거하시겠습니까?"
 

@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-20 08:00+0100\n"
-"PO-Revision-Date: 2021-12-20 09:24+0000\n"
+"POT-Creation-Date: 2021-12-22 12:24+0100\n"
+"PO-Revision-Date: 2021-12-22 12:24+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -3309,12 +3309,13 @@ msgid ""
 "The following example will create a multi-value variable with all artists\n"
 "    in `%artists%` except the first, which can be used to create a \"feat.\" list.\n"
 "\n"
-"Example:\n"
+"Examples:\n"
 "\n"
-"    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
-msgstr "`$slice(naam,begin,eind[,scheidingsteken])`\n\nRetourneert een meervoudige variabele met de elementen tussen de plaatsen `begin` en `eind` uit de meervoudige tag `naam`.\nIn plaats van `naam` kan je ook een tekenreeks opgegeven, zodat deze tekenreeks in een meervoudige tag wordt omgezet. Je kan het scheidingsteken voor deze tekenreeks opgeven met de derde parameter (als je deze parameter niet opgeeft, wordt “; ” gebruikt).\nHet tellen begint bij nul. Negatieve getallen worden vanaf het einde van de tekenreeks terug geteld. Als `begin` of `eind` leeg wordt gelaten, wordt het begin respectievelijk het einde van de lijst gebruikt.\n\nDe functie uit het volgende voorbeeld creëert een meervoudige tag met alle artiesten in `%artists%`, behalve de eerste.\n\nVoorbeeld:\n\n    $setmulti(supporting_artists,$slice(rtists%,1,))\n"
+"    $setmulti(supporting_artists,$slice(%artists%,1))\n"
+"    $setmulti(supporting_artists,$slice(%artists%,1,-1))\n"
+msgstr ""
 
-#: picard/script/functions.py:1279
+#: picard/script/functions.py:1280
 #, python-format
 msgid ""
 "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
@@ -3330,7 +3331,7 @@ msgid ""
 "    `%3Y`); and hanging '%' at the end of the format string."
 msgstr "`$datetime([notatie])`\n\nRetourneert de huidige datum en tijd in de opgegeven `notatie`, die is gebaseerd op de standaard [strftime-codes](https://strftime.org/) van Python. Als de notatie niet wordt opgegeven, wordt de notatie `2020-02-05 14:26:32` gebruikt.\nOpmerking: het gebruik van platformspecifieke codes wordt afgeraden, zodat scripts op meerdere platformen kunnen worden gebruikt. Dit zijn bijvoorbeeld:\nHet verwijderen van voorloopnullen (bijv.  `%-d` en `%-m% op Linux of macOS en `%#d` en `%#m` op Windows).\nAanwijzers voor de lengte van elementen (bijvoorbeeld `%3Y`)\nHet plaatsen van `%` aan het einde van de notatiecode."
 
-#: picard/script/functions.py:1308
+#: picard/script/functions.py:1309
 msgid ""
 "`$sortmulti(name,separator=\"; \")`\n"
 "\n"
@@ -3343,7 +3344,7 @@ msgid ""
 "Result: A; B; C\n"
 msgstr "`$sortmulti(naam[,scheidingsteken])`\n\nRetourneert een kopie van de meervoudige tag `naam` met de elementen in oplopende volgorde.\n\nVoorbeeld:\n\n$sortmulti(B; A; C)\n\nResultaat: A; B; C\n"
 
-#: picard/script/functions.py:1325
+#: picard/script/functions.py:1326
 msgid ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
@@ -3358,7 +3359,7 @@ msgid ""
 "Result: C; B; A\n"
 msgstr "`$reversemulti(naam[,scheidingsteken])`\n\nRetourneert een kopie van de meervoudige tag `naam` met de elementen in omgekeerde volgorde.\n\nDeze functie kan samen met de functie `$sortmulti` worden gebruikt om een tag in aflopende volgorde te rangschikken.\n\nVoorbeeld:\n\n$reversemulti($sortmulti(B; A; C))\n\nResultaat: C; B; A\n"
 
-#: picard/script/functions.py:1344
+#: picard/script/functions.py:1345
 #, python-format
 msgid ""
 "`$unique(name,case_sensitive=\"\",separator=\"; \")`\n"
@@ -3381,7 +3382,7 @@ msgid ""
 "Result: A; B; a; b; cd\n"
 msgstr "`$unique(naam,[True][,scheidingsteken])`\n\nRetourneert een kopie van de meervoudige variabele `naam`, zonder dubbele elementen.\n    Standaard worden de elementen vergeleken zonder rekening te houden met hoofd- en kleine letters.\n\nVoorbeeld 1:\n\n    $setmulti(foo,a; A; B; b; cd; Cd; cD; CD; a; A; b)\n    $unique(%foo%)\n\nResultaat: A; CD; b\n\nVoorbeeld 2:\n\n    $setmulti(foo,a; A; B; b; a; b; A; B, cd)\n    $unique(%foo%,True)\n\nResultaat: A; B; a; b; cd\n"
 
-#: picard/script/functions.py:1372
+#: picard/script/functions.py:1373
 msgid ""
 "`$countryname(country_code,translate=\"\")`\n"
 "\n"
@@ -3389,7 +3390,7 @@ msgid ""
 "If translate is not blank, the output will be translated into the current locale language.\n"
 msgstr "`$countryname(country_code, translate=\"\")`\n\nRetourneert de naam van het land dat bij de opgegeven landcode past. Als de landcode ongeldig is, wordt een lege tekenreeks geretourneerd.\nAls `translate` niet leeg is, wordt de uitvoer vertaald naar de huidige ingestelde taal.\n"
 
-#: picard/script/functions.py:1411
+#: picard/script/functions.py:1412
 msgid ""
 "`$year(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3399,7 +3400,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$year(datum[,datumvolgorde])`\n\nRetourneert het jaar van de opgegeven datum. De standaardvolgorde is “ymd” (jaar, maand, dag). Met het optionele tweede argument (dmy of mdy) kan een andere volgorde worden opgegeven. Als de datum ongeldig is, wordt een lege tekenreeks geretourneerd.\n\n_Sinds Picard 2.7_"
 
-#: picard/script/functions.py:1423
+#: picard/script/functions.py:1424
 msgid ""
 "`$month(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3409,7 +3410,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$month(datum[,datumvolgorde])`\n\nRetourneert de maand van de opgegeven datum. De standaardvolgorde is “ymd” (jaar, maand, dag). Met het optionele tweede argument (dmy of mdy) kan een andere volgorde worden opgegeven. Als de datum ongeldig is, wordt een lege tekenreeks geretourneerd.\n\n_Sinds Picard 2.7_"
 
-#: picard/script/functions.py:1435
+#: picard/script/functions.py:1436
 msgid ""
 "`$day(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3419,7 +3420,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$day(datum[,datumvolgorde])`\n\nRetourneert de dag van de opgegeven datum. De standaardvolgorde is “ymd” (jaar, maand, dag). Met het optionele tweede argument (dmy of mdy) kan een andere volgorde worden opgegeven. Als de datum ongeldig is, wordt een lege tekenreeks geretourneerd.\n\n_Sinds Picard 2.7_"
 
-#: picard/script/functions.py:1447
+#: picard/script/functions.py:1448
 #, python-format
 msgid ""
 "`$dateformat(date,format=\"%Y-%m-%d\",date_order=\"ymd\")`\n"
@@ -3440,7 +3441,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$dateformat(datum,[notatie],[datumvolgorde])`\n\nRetourneert de opgegeven datum in de opgegeven `notatie`, die is gebaseerd op de standaard [strftime-codes](https://strftime.org/) van Python.  Als de notatie niet wordt opgegeven, wordt de notatie `2020-02-05` gebruikt. Als de datum of notatie ongeldig is, wordt een lege tekenreeks geretourneerd.\n\nDe standaardvolgorde voor de datum is “ymd” (jaar, maand, dag). Dit kan worden veranderd door voor de `datumvolgorde` “dmy” of “mdy” op te geven.\n\nOpmerking: het gebruik van platformspecifieke codes wordt afgeraden, zodat scripts op meerdere platformen kunnen worden gebruikt. Dit zijn bijvoorbeeld:\nHet verwijderen van voorloopnullen (bijv. `%-d` en `%-m% op Linux of macOS en `%#d` en `%#m` op Windows).\nAanwijzers voor de lengte van elementen (bijvoorbeeld `%3Y`)\nHet plaatsen van `%` aan het einde van de notatiecode.\n\n_Sinds Picard 2.7_"
 
-#: picard/script/functions.py:1480
+#: picard/script/functions.py:1481
 msgid ""
 "`$is_multi(name)`\n"
 "\n"
@@ -5767,7 +5768,7 @@ msgstr "Nieuw script toevoegen"
 msgid "Remove the selected script"
 msgstr "Het geselecteerde script verwijderen"
 
-#: picard/ui/ui_options_script.py:118 picard/ui/widgets/scriptlistwidget.py:56
+#: picard/ui/ui_options_script.py:118 picard/ui/widgets/scriptlistwidget.py:57
 msgid "Remove script"
 msgstr "Script verwijderen"
 
@@ -6067,8 +6068,8 @@ msgstr "Zet alle instellingen terug naar de standaard"
 msgid "Reset all settings for current option page"
 msgstr "Zet de instellingen van deze pagina terug naar de standaard"
 
-#: picard/ui/options/dialog.py:145 picard/ui/options/dialog.py:433
-#: picard/ui/options/dialog.py:459
+#: picard/ui/options/dialog.py:145 picard/ui/options/dialog.py:435
+#: picard/ui/options/dialog.py:461
 msgid "Attached Profiles"
 msgstr "Profielen"
 
@@ -6091,40 +6092,40 @@ msgstr "Onbekend profiel"
 msgid "This option will be saved to profile: %s"
 msgstr "Deze optie wordt opgeslagen in het profiel: %s"
 
-#: picard/ui/options/dialog.py:374
+#: picard/ui/options/dialog.py:376
 msgid "Unexpected error"
 msgstr "Onverwachte fout"
 
-#: picard/ui/options/dialog.py:413
+#: picard/ui/options/dialog.py:415
 msgid "You are about to reset your options for this page."
 msgstr "Je staat op het punt de instellingen op deze pagina naar de standaardwaardes te herstellen."
 
-#: picard/ui/options/dialog.py:417
+#: picard/ui/options/dialog.py:419
 msgid "Warning! This will reset all of your settings."
 msgstr "Waarschuwing! Dit zet al je instellingen terug naar de standaardwaardes."
 
-#: picard/ui/options/dialog.py:424
+#: picard/ui/options/dialog.py:426
 msgid "Confirm Reset"
 msgstr "Terugzetten bevestigen"
 
-#: picard/ui/options/dialog.py:425
+#: picard/ui/options/dialog.py:427
 msgid "Are you sure?"
 msgstr "Weet je het zeker?"
 
-#: picard/ui/options/dialog.py:459 picard/ui/options/maintenance.py:86
+#: picard/ui/options/dialog.py:461 picard/ui/options/maintenance.py:86
 msgid "Option"
 msgstr "Optie"
 
-#: picard/ui/options/dialog.py:466
+#: picard/ui/options/dialog.py:468
 #, python-format
 msgid "Profiles Attached to Options in %s Section"
 msgstr "Profielen voor de opties in het venster %s"
 
-#: picard/ui/options/dialog.py:476
+#: picard/ui/options/dialog.py:478
 msgid " [Enabled]"
 msgstr "[Ingeschakeld]"
 
-#: picard/ui/options/dialog.py:477 picard/ui/options/profiles.py:279
+#: picard/ui/options/dialog.py:479 picard/ui/options/profiles.py:279
 msgid "None"
 msgstr "Geen"
 
@@ -6352,7 +6353,7 @@ msgstr "Het configuratiebestand bevat nu %d optie-instellingen, waarvan er %d ni
 
 #: picard/ui/options/maintenance.py:176
 #: picard/ui/widgets/profilelistwidget.py:82
-#: picard/ui/widgets/scriptlistwidget.py:89
+#: picard/ui/widgets/scriptlistwidget.py:90
 msgid "Confirm Remove"
 msgstr "Verwijderen bevestigen"
 
@@ -6697,11 +6698,11 @@ msgstr "Weet je zeker dat je dit profiel wil verwijderen?"
 msgid "Open Scripting Documentation in your browser"
 msgstr "Documentatie over scripts in je browser openen"
 
-#: picard/ui/widgets/scriptlistwidget.py:53
+#: picard/ui/widgets/scriptlistwidget.py:54
 msgid "Rename script"
 msgstr "Script hernoemen"
 
-#: picard/ui/widgets/scriptlistwidget.py:88
+#: picard/ui/widgets/scriptlistwidget.py:89
 msgid "Are you sure you want to remove this script?"
 msgstr "Weet je zeker dat je dit script wil verwijderen?"
 

@@ -30,6 +30,7 @@
 # Nicolás Tamargo <email address hidden>, 2011-2012
 # Nicolás Tamargo <reosarevok@gmail.com>, 2011-2013,2015,2019
 # Pier Jose Gotta Perez <piegope@protonmail.com>, 2017
+# RepaNation Distributors, 2022
 # Robert Schneider <robertschv@gmail.com>, 2019
 # Kevin Doncam Demian López Brante <kevin@kddlb.cl>, 2012
 #   Tobias Quathamer <email address hidden>, 2007
@@ -39,8 +40,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-11-04 17:51+0000\n"
-"Last-Translator: Colectivo AlArte\n"
+"PO-Revision-Date: 2022-01-07 06:04+0000\n"
+"Last-Translator: RepaNation Distributors\n"
 "Language-Team: Spanish (http://www.transifex.com/musicbrainz/musicbrainz/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3283,7 +3284,7 @@ msgstr ""
 #: DB:work_attribute_type/description:53
 msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SODRAC"
-msgstr ""
+msgstr "ID para sociedad canadiense de derechos SODRAC"
 
 #: DB:work_attribute_type/description:71
 msgctxt "work_attribute_type"
@@ -3293,17 +3294,17 @@ msgstr ""
 #: DB:work_attribute_type/description:39
 msgctxt "work_attribute_type"
 msgid "ID for the Colombian rights society SAYCO"
-msgstr ""
+msgstr "ID para sociedad colombiana de derechos SAYCO"
 
 #: DB:work_attribute_type/description:44
 msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
-msgstr ""
+msgstr "ID para sociedad costarricense de derechos ACAM"
 
 #: DB:work_attribute_type/description:47
 msgctxt "work_attribute_type"
 msgid "ID for the Cuban rights society ACDAM"
-msgstr ""
+msgstr "ID para sociedad cubana de derechos ACDAM"
 
 #: DB:work_attribute_type/description:25
 msgctxt "work_attribute_type"
@@ -7122,7 +7123,7 @@ msgid ""
 "Used for semi-autonomous territories governed by indigenous peoples, such as"
 " Indian reserves/reservations in North America and indigenous territories in"
 " Central and South America."
-msgstr ""
+msgstr "‎Se utiliza para territorios semiautónomos gobernados por pueblos indígenas, como reservas/ reservas indias en América del Norte y territorios indígenas en América Central y del Sur."
 
 #: DB:work_attribute_type/name:17
 msgctxt "work_attribute_type"

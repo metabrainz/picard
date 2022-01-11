@@ -29,6 +29,8 @@
 #   - Wang Jian <lark@linux.net.cn>, 2000
 # Xia Zeyu <xiazeyu_2011@126.com>, 2018
 # Xie Yanbo <xieyanbo@gmail.com>, 2018
+# y941s, 2021
+# y941s, 2021
 # York Young, 2021
 # York Young, 2021
 # YunQiang Su <wzssyqa@gmail.com>, 2011
@@ -41,8 +43,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-20 08:00+0100\n"
-"PO-Revision-Date: 2021-12-20 09:24+0000\n"
+"POT-Creation-Date: 2021-12-22 12:24+0100\n"
+"PO-Revision-Date: 2021-12-22 12:24+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -168,12 +170,12 @@ msgstr "正在查询文件「%(filename)s」的元数据..."
 
 #: picard/oauth.py:238 picard/oauth.py:262
 msgid "Unexpected authentication error"
-msgstr "意外验证错误"
+msgstr "意外的验证错误"
 
 #: picard/oauth.py:271
 #, python-format
 msgid "Unexpected request error (HTTP code %s)"
-msgstr ""
+msgstr "意外的请求错误 (HTTP code %s)"
 
 #: picard/pluginmanager.py:226
 #, python-format
@@ -217,11 +219,11 @@ msgstr "常规"
 
 #: picard/profile.py:47
 msgid "Server address"
-msgstr ""
+msgstr "服务器地址"
 
 #: picard/profile.py:48
 msgid "Port"
-msgstr ""
+msgstr "端口"
 
 #: picard/profile.py:49 picard/ui/ui_options_general.py:176
 msgid "Automatically scan all new files"
@@ -480,11 +482,11 @@ msgstr "在文件浏览器中自动调整水平位置"
 
 #: picard/profile.py:143
 msgid "Begin browsing in a specific directory"
-msgstr ""
+msgstr "在特定目录中开始浏览"
 
 #: picard/profile.py:144
 msgid "Directory to begin browsing"
-msgstr ""
+msgstr "浏览开始的目录"
 
 #: picard/profile.py:149 picard/ui/options/advanced.py:43
 msgid "Advanced"
@@ -492,7 +494,7 @@ msgstr "高级"
 
 #: picard/profile.py:151
 msgid "Ignore file paths matching a regular expression"
-msgstr ""
+msgstr "忽略与正则表达式匹配的文件路径"
 
 #: picard/profile.py:152 picard/ui/ui_options_advanced.py:119
 msgid "Ignore hidden files"
@@ -504,27 +506,27 @@ msgstr "从文件夹添加文件时，包含子文件夹"
 
 #: picard/profile.py:156
 msgid "Ignore track duration difference under x seconds"
-msgstr ""
+msgstr "忽略小于 x 秒的音轨时长差异"
 
 #: picard/profile.py:159
 msgid "Completeness check ignore: Video tracks"
-msgstr ""
+msgstr "忽略完整性检查: 视频轨"
 
 #: picard/profile.py:160
 msgid "Completeness check ignore: Pregap tracks"
-msgstr ""
+msgstr "忽略完整性检查: 前间隙音轨"
 
 #: picard/profile.py:161
 msgid "Completeness check ignore: Data tracks"
-msgstr ""
+msgstr "忽略完整性检查: 数据轨"
 
 #: picard/profile.py:162
 msgid "Completeness check ignore: Silent tracks"
-msgstr ""
+msgstr "忽略完整性检查: 静音轨"
 
 #: picard/profile.py:163
 msgid "Tags to ignore for comparison"
-msgstr ""
+msgstr "比较时忽略以下标签"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:154
 msgid "Tracks"
@@ -686,11 +688,11 @@ msgstr "我的配置文件"
 
 #: picard/const/__init__.py:192
 msgid "(copy)"
-msgstr ""
+msgstr "(副本)"
 
 #: picard/const/__init__.py:193
 msgid "{title} ({count})"
-msgstr ""
+msgstr "{title} ({count})"
 
 #: picard/const/languages.py:29 picard/const/locales.py:41
 #: picard/const/scripts.py:28
@@ -3335,12 +3337,13 @@ msgid ""
 "The following example will create a multi-value variable with all artists\n"
 "    in `%artists%` except the first, which can be used to create a \"feat.\" list.\n"
 "\n"
-"Example:\n"
+"Examples:\n"
 "\n"
-"    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
-msgstr "`$slice(name,start,end,separator=\"; \")`\n\n恢复包含多值标签 `name` 中 `start` 和 `end` 索引之间元素的多值变量。\n     可使用分隔符（或“;”，若未成功）将代表多值的文字值替换为 `name`，\n     以将值强制转换为适当的多值标签。索引从零开始。负数将从列表的末尾算起。\n     若 `start` 或 `end` 索引留为空白，则它们将分别默认为列表的开始和结束。\n以下示例将创建一个多值变量，其中所有艺术家都位于 `%artists%` 中，但第一个可用于创建 \"feat.\" 列表的变量除外。\n例如：\n\n    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
+"    $setmulti(supporting_artists,$slice(%artists%,1))\n"
+"    $setmulti(supporting_artists,$slice(%artists%,1,-1))\n"
+msgstr ""
 
-#: picard/script/functions.py:1279
+#: picard/script/functions.py:1280
 #, python-format
 msgid ""
 "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
@@ -3356,7 +3359,7 @@ msgid ""
 "    `%3Y`); and hanging '%' at the end of the format string."
 msgstr "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n\n以指定的 `format` 恢复当前日期和时间，该格式基于标准的 Python `strftime` [编码格式]（https://strftime.org/）。\n       若未指定 `format`，则日期/时间将以 `2020-02-05 14:26:32` 的格式恢复。\n注意：应避免使用特定于平台的格式代码，以帮助确保脚本在不同平台之间的兼容性。\n       这些代码包括：填充移除（例如，在 Linux 或 macOS 上为 `%-d` 和 `%-m`，\n       在Windows上为等效的  `%#d`  和 `%#m）；元素长度说明符（例如 `%3Y`）；\n       并在格式字符串的末尾附上 '%'。"
 
-#: picard/script/functions.py:1308
+#: picard/script/functions.py:1309
 msgid ""
 "`$sortmulti(name,separator=\"; \")`\n"
 "\n"
@@ -3369,7 +3372,7 @@ msgid ""
 "Result: A; B; C\n"
 msgstr "`$sortmulti(name,separator=\"; \")`\n\n返回多值标签 `name` 的副本，元素按升序排序。\n\n例如：\n    $sortmulti(B; A; C)\n\n结果：A; B; C\n"
 
-#: picard/script/functions.py:1325
+#: picard/script/functions.py:1326
 msgid ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
@@ -3384,7 +3387,7 @@ msgid ""
 "Result: C; B; A\n"
 msgstr "`$reversemulti(name,separator=\"; \")`\n\n返回元素倒序的多值标签 `name` 的副本。\n可与 `$sortmulti` 函数一起使用来实现降序排列。\n\n例如：\n\n    $reversemulti($sortmulti(B; A; C))\n\n结果：C; B; A\n"
 
-#: picard/script/functions.py:1344
+#: picard/script/functions.py:1345
 #, python-format
 msgid ""
 "`$unique(name,case_sensitive=\"\",separator=\"; \")`\n"
@@ -3407,7 +3410,7 @@ msgid ""
 "Result: A; B; a; b; cd\n"
 msgstr "`$unique(name,case_sensitive=\"\",separator=\"; \")`\n\n返回多值标签 `name` 的副本，删除所有重复元素。\n    元素比较操作默认为大小写敏感。\n\n例子 1：\n\n    $setmulti(foo,a; A; B; b; cd; Cd; cD; CD; a; A; b)\n    $unique(%foo%)\n\n结果：A; CD; b\n\n例子 2：\n\n    $setmulti(foo,a; A; B; b; a; b; A; B, cd)\n    $unique(%foo%,True)\n\n结果：A; B; a; b; cd\n"
 
-#: picard/script/functions.py:1372
+#: picard/script/functions.py:1373
 msgid ""
 "`$countryname(country_code,translate=\"\")`\n"
 "\n"
@@ -3415,7 +3418,7 @@ msgid ""
 "If translate is not blank, the output will be translated into the current locale language.\n"
 msgstr "`$countryname(country_code,translate=\"\")`\n\n返回国家或地区代码对应的国家或地区名。如为无效代码则返回空字符串。\n若translate参数非空，输出为由语言设置决定的翻译版。\n"
 
-#: picard/script/functions.py:1411
+#: picard/script/functions.py:1412
 msgid ""
 "`$year(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3425,7 +3428,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$year(date,date_order=\"ymd\")`\n\n返回特定日期的年份部分。默认顺序为“ymd”，可以指定为\n\"dmy\"或者\"mdy\"。如为无效日期会返回空字符串。\n\n_Picard 2.7起_"
 
-#: picard/script/functions.py:1423
+#: picard/script/functions.py:1424
 msgid ""
 "`$month(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3435,7 +3438,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$month(date,date_order=\"ymd\")`\n\n返回特定日期的月份部分。默认顺序为“ymd”，可以指定为\n\"dmy\"或者\"mdy\"。如为无效日期会返回空字符串。\n\n_Picard 2.7起_"
 
-#: picard/script/functions.py:1435
+#: picard/script/functions.py:1436
 msgid ""
 "`$day(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3445,7 +3448,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$day(date,date_order=\"ymd\")`\n\n返回特定日期为一个月中的哪一日。默认顺序为“ymd”，可以指定为\"dmy\"或者\"mdy\"。如为无效日期会返回空字符串。\n\n_Picard 2.7起_"
 
-#: picard/script/functions.py:1447
+#: picard/script/functions.py:1448
 #, python-format
 msgid ""
 "`$dateformat(date,format=\"%Y-%m-%d\",date_order=\"ymd\")`\n"
@@ -3466,7 +3469,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$dateformat(date,format=\"%Y-%m-%d\",date_order=\"ymd\")`\n\n将日期转换为由满足Python标准`strftime` [格式规范](https://strftime.org/)的\n`format`参数决定的格式。若没有`format`参数则返回`2020-02-05`格式的日期。\n若日期或format参数无效则返回空字符串。\n\n输入日期默认顺序为\"ymd\"，可以指定为\"dmy\"或者\"mdy\"。\n备注:为保证脚本的平台间可移植性，需要避免不同平台有差异的语法。此类语法包括：\n去除最高位0(如Linux和MacOS中的`%-d`和`%-m`及其Windows等效语法\n`%#d`和`%#m`)；日期元素长度限定符(如 `%3Y`)；以及格式模板字符串末的单独百分号。\n\n_Picard 2.7起_"
 
-#: picard/script/functions.py:1480
+#: picard/script/functions.py:1481
 msgid ""
 "`$is_multi(name)`\n"
 "\n"
@@ -4940,27 +4943,27 @@ msgstr "导出脚本到文件"
 
 #: picard/ui/scripteditor.py:566
 msgid "&Reset all scripts"
-msgstr ""
+msgstr "重置所有脚本 (&R)"
 
 #: picard/ui/scripteditor.py:567
 msgid "Reset all scripts to the saved values"
-msgstr ""
+msgstr "将所有脚本重置为已保存值"
 
 #: picard/ui/scripteditor.py:572
 msgid "&Save and exit"
-msgstr ""
+msgstr "保存并退出 (&S)"
 
 #: picard/ui/scripteditor.py:573
 msgid "Save changes to the script settings and exit"
-msgstr ""
+msgstr "保存对脚本设置的更改并退出"
 
 #: picard/ui/scripteditor.py:578
 msgid "E&xit without saving"
-msgstr ""
+msgstr "丢弃更改并退出 (&X)"
 
 #: picard/ui/scripteditor.py:579
 msgid "Close the script editor without saving changes"
-msgstr ""
+msgstr "关闭脚本编辑器并丢弃更改"
 
 #: picard/ui/scripteditor.py:584
 msgid "&Script"
@@ -4968,7 +4971,7 @@ msgstr "脚本（&S）"
 
 #: picard/ui/scripteditor.py:587
 msgid "View/Edit Script &Metadata"
-msgstr ""
+msgstr "查看/编辑脚本元数据 (&M) "
 
 #: picard/ui/scripteditor.py:588
 msgid "Display the details for the script"
@@ -5034,7 +5037,7 @@ msgid ""
 "   {new_script_title}\n"
 "\n"
 "Are you sure that you want to continue?"
-msgstr ""
+msgstr "已有至少一个未保存脚本被附加于选项配置.\n\n   配置: {profile_title}\n   脚本: {old_script_title}\n\n继续并丢弃更改会将配置中已选择的脚本重置为:\n\n   {new_script_title}\n\n是否确定继续?"
 
 #: picard/ui/options/renaming.py:285 picard/ui/scripteditor.py:843
 #: picard/ui/scripteditor.py:1152 picard/ui/scripteditor.py:1392
@@ -5071,7 +5074,7 @@ msgid ""
 "A script named \"{script_name}\" already exists.\n"
 "\n"
 "Do you want to overwrite it, add as a copy or cancel?"
-msgstr ""
+msgstr "脚本 \"{script_name}\" 已存在.\n\n覆盖已有文件, 添加为新副本或取消"
 
 #: picard/ui/scripteditor.py:1222
 msgid "Overwrite"
@@ -5094,7 +5097,7 @@ msgid ""
 "There are unsaved changes to the current metadata.\n"
 "\n"
 "Do you want to continue and lose these changes?"
-msgstr ""
+msgstr "当前元数据中有未保存更改.\n\n是否确定继续并丢弃更改?"
 
 #: picard/ui/scriptsmenu.py:62
 #, python-format
@@ -5295,7 +5298,7 @@ msgstr "静音轨"
 
 #: picard/ui/ui_options_advanced.py:125
 msgid "Tags to ignore for comparison:"
-msgstr "比较以下标签："
+msgstr "比较时忽略以下标签："
 
 #: picard/ui/options/dialog.py:204
 #: picard/ui/ui_options_attached_profiles.py:34
@@ -5667,11 +5670,11 @@ msgstr "选项配置"
 
 #: picard/ui/ui_options_profiles.py:76
 msgid "Move profile up"
-msgstr ""
+msgstr "上移配置文件"
 
 #: picard/ui/ui_options_profiles.py:77
 msgid "Move profile down"
-msgstr ""
+msgstr "下移配置文件"
 
 #: picard/ui/ui_options_ratings.py:45
 msgid "Enable track ratings"
@@ -5785,7 +5788,7 @@ msgstr "添加新脚本"
 msgid "Remove the selected script"
 msgstr "移除所选脚本"
 
-#: picard/ui/ui_options_script.py:118 picard/ui/widgets/scriptlistwidget.py:56
+#: picard/ui/ui_options_script.py:118 picard/ui/widgets/scriptlistwidget.py:57
 msgid "Remove script"
 msgstr "移除脚本"
 
@@ -6085,8 +6088,8 @@ msgstr "重置 Picard 的所有设置"
 msgid "Reset all settings for current option page"
 msgstr "重置当前选项页的所有设置"
 
-#: picard/ui/options/dialog.py:145 picard/ui/options/dialog.py:433
-#: picard/ui/options/dialog.py:459
+#: picard/ui/options/dialog.py:145 picard/ui/options/dialog.py:435
+#: picard/ui/options/dialog.py:461
 msgid "Attached Profiles"
 msgstr "附加配置文件"
 
@@ -6109,40 +6112,40 @@ msgstr "未知配置文件"
 msgid "This option will be saved to profile: %s"
 msgstr "这一选项将保存为配置文件：%s"
 
-#: picard/ui/options/dialog.py:374
+#: picard/ui/options/dialog.py:376
 msgid "Unexpected error"
 msgstr "意外错误"
 
-#: picard/ui/options/dialog.py:413
+#: picard/ui/options/dialog.py:415
 msgid "You are about to reset your options for this page."
 msgstr "你即将重置当前页面的设置。"
 
-#: picard/ui/options/dialog.py:417
+#: picard/ui/options/dialog.py:419
 msgid "Warning! This will reset all of your settings."
 msgstr "警告! 所有设置均将被重置。"
 
-#: picard/ui/options/dialog.py:424
+#: picard/ui/options/dialog.py:426
 msgid "Confirm Reset"
 msgstr "确认重置"
 
-#: picard/ui/options/dialog.py:425
+#: picard/ui/options/dialog.py:427
 msgid "Are you sure?"
 msgstr "是否确定?"
 
-#: picard/ui/options/dialog.py:459 picard/ui/options/maintenance.py:86
+#: picard/ui/options/dialog.py:461 picard/ui/options/maintenance.py:86
 msgid "Option"
 msgstr "选项"
 
-#: picard/ui/options/dialog.py:466
+#: picard/ui/options/dialog.py:468
 #, python-format
 msgid "Profiles Attached to Options in %s Section"
 msgstr "附加于%s部分选项上的配置文件"
 
-#: picard/ui/options/dialog.py:476
+#: picard/ui/options/dialog.py:478
 msgid " [Enabled]"
 msgstr "[可用]"
 
-#: picard/ui/options/dialog.py:477 picard/ui/options/profiles.py:279
+#: picard/ui/options/dialog.py:479 picard/ui/options/profiles.py:279
 msgid "None"
 msgstr "无"
 
@@ -6370,7 +6373,7 @@ msgstr "配置文件含有%d个设置项，%d个未使用。"
 
 #: picard/ui/options/maintenance.py:176
 #: picard/ui/widgets/profilelistwidget.py:82
-#: picard/ui/widgets/scriptlistwidget.py:89
+#: picard/ui/widgets/scriptlistwidget.py:90
 msgid "Confirm Remove"
 msgstr "确认移除"
 
@@ -6715,11 +6718,11 @@ msgstr "是否确定要移除此配置文件？"
 msgid "Open Scripting Documentation in your browser"
 msgstr "在浏览器中打开脚本文档"
 
-#: picard/ui/widgets/scriptlistwidget.py:53
+#: picard/ui/widgets/scriptlistwidget.py:54
 msgid "Rename script"
 msgstr "重命名脚本"
 
-#: picard/ui/widgets/scriptlistwidget.py:88
+#: picard/ui/widgets/scriptlistwidget.py:89
 msgid "Are you sure you want to remove this script?"
 msgstr "是否确定要移除脚本?"
 

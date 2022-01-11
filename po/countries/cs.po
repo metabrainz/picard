@@ -1,12 +1,12 @@
 # 
 # Translators:
-# DJ Sweder <djsweder@gmail.com>, 2020
+# DJSweder <djsweder@gmail.com>, 2020
 # Jiří Hofman <jyrki.hofman@gmail.com>, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2020-05-12 09:54+0000\n"
-"Last-Translator: DJ Sweder <djsweder@gmail.com>\n"
+"Last-Translator: DJSweder <djsweder@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/musicbrainz/musicbrainz/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

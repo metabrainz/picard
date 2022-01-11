@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-20 08:00+0100\n"
-"PO-Revision-Date: 2021-12-20 09:24+0000\n"
+"POT-Creation-Date: 2021-12-22 12:24+0100\n"
+"PO-Revision-Date: 2021-12-22 12:24+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -3314,12 +3314,13 @@ msgid ""
 "The following example will create a multi-value variable with all artists\n"
 "    in `%artists%` except the first, which can be used to create a \"feat.\" list.\n"
 "\n"
-"Example:\n"
+"Examples:\n"
 "\n"
-"    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
-msgstr "`$slice(name,start,end,separator=\"; \")`\n\nהחזרת משתנה רב־ערכי המכיל במפתח את האברים שבין 'start' ל 'end'\n של תג רב־ערכי  `name`. \nניתן להחליף ערך מילולי המייצג ריבוי ערכים ב־ name`,  על־ידי המפריד (או \";\" אם לא עובר) כדי לאלץ את הערך לתג רב ערכי תקין. \nהמפתחים הם מבוססי אפס. מספרים שליליים נספרים מסוף הרשימה.\nאם האינדקסים 'start' או 'end' נותרים ריקים, הם יוגדרו כברירת מחדל\nהתחלה וסיום הרשימה בהתאמה.\n\nהדוגמה הבאה תיצור משתנה רב־ערכי של כל האמנים\nב־ %a `rtists%` למעט הראשון, שניתן להשתמש בו כדי ליצור  רשימת \"feat.\".\n\nלדוגמה:\n\n  $setmulti(supporting_artists,$slice(%artists%,1,))\n"
+"    $setmulti(supporting_artists,$slice(%artists%,1))\n"
+"    $setmulti(supporting_artists,$slice(%artists%,1,-1))\n"
+msgstr ""
 
-#: picard/script/functions.py:1279
+#: picard/script/functions.py:1280
 #, python-format
 msgid ""
 "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
@@ -3335,7 +3336,7 @@ msgid ""
 "    `%3Y`); and hanging '%' at the end of the format string."
 msgstr "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n\nהחזרת התאריך והשעה הנוכחיים ב־ 'format' שהוגדרו, המבוססים על פייתון סטנדרטי  `strftime` [format codes](https://strftime.org/). אם 'format' לא הוגדר,  התאריך / השעה יוחזרו בצורת '2020-02-05 14: 26: 32'.\nהערה: יש להימנע מקודי עיצוב יחודיים למסדת כדי להבטיח את ניידות התסריטים בין המסדות שונות. \nקודים אלה כוללים: הסרת ריפוד אפס (למשל '% -d' ו־ '% -m' ב־ Linux או ב־ macOS, והמקבילה שלהם  '% # d' ו־ '% # m' ב־ וינדוס); \nמפרט אורך הרכיבים (למשל '% 3Y'); ותליית '%' בסוף מחרוזת התבנית."
 
-#: picard/script/functions.py:1308
+#: picard/script/functions.py:1309
 msgid ""
 "`$sortmulti(name,separator=\"; \")`\n"
 "\n"
@@ -3348,7 +3349,7 @@ msgid ""
 "Result: A; B; C\n"
 msgstr "`$sortmulti(name,separator=\"; \")`\n\nהחזרת עותק של תג רב ערכי 'name', כאשר האיברים ממוינים בסדר  עולה.\n\nלדוגמה:\n\n     $sortmulti(B; A; C)\n\nתוצאה: A; B; C\n"
 
-#: picard/script/functions.py:1325
+#: picard/script/functions.py:1326
 msgid ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
@@ -3363,7 +3364,7 @@ msgid ""
 "Result: C; B; A\n"
 msgstr "`$reversemulti(name,separator=\"; \")`\n\nהחזרת עותק של תג רב ערכי 'name',  ומיון איברים בסדר הפוך.\nניתן לשימוש בשילוב עם הפונקציה `$sortmulti`  למיון\nסדר יורד.\n\nלדוגמה:\n\n    $reversemulti($sortmulti(B; A; C))\n\nתוצאה: C; B; A\n"
 
-#: picard/script/functions.py:1344
+#: picard/script/functions.py:1345
 #, python-format
 msgid ""
 "`$unique(name,case_sensitive=\"\",separator=\"; \")`\n"
@@ -3386,7 +3387,7 @@ msgid ""
 "Result: A; B; a; b; cd\n"
 msgstr "`$unique(name,case_sensitive=\"\",separator=\"; \")`\n\nהחזרת עותק של תג רב־ערכי 'name' ללא רכיבים כפולים.\nכברירת מחדל, מבוצעת השוואה ללא רגישות לאותיות רישיות של רכיבים.\n\nדוגמה 1:\n\n $setmulti(foo,a; A; B; b; cd; Cd; cD; CD; a; A; b)\n$unique(%foo%)\n\nתוצאה: A; CD; b\n\nדוגמה 2:\n\n$setmulti(foo,a; A; B; b; a; b; A; B, cd)\n$unique(%foo%,True)\n\nתוצאה: A; B; a; b; cd\n"
 
-#: picard/script/functions.py:1372
+#: picard/script/functions.py:1373
 msgid ""
 "`$countryname(country_code,translate=\"\")`\n"
 "\n"
@@ -3394,7 +3395,7 @@ msgid ""
 "If translate is not blank, the output will be translated into the current locale language.\n"
 msgstr "`$countryname(country_code,translate=\"\")`\n\nהחזרת שם המדינה לקוד המדינה שצוין. אם קוד המדינה אינו חוקי, תוחזר מחרוזת ריקה.\nאם התרגום אינו ריק, הפלט יתורגם לשפת המקום הנוכחית.\n"
 
-#: picard/script/functions.py:1411
+#: picard/script/functions.py:1412
 msgid ""
 "`$year(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3404,7 +3405,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$year(date,date_order=\"ymd\")`\n\nהחזרת חלק השנה מהתאריך שצוין. תבנית ברירת המחדל היא \"ymd\". ניתן לשנות זאת על ידי הגדרת\n\"dmy\", או \"mdy\". אם התאריך אינו תקין תוחזר מחרוזת ריקה.\n\n_החל מפיקארד 2.7_"
 
-#: picard/script/functions.py:1423
+#: picard/script/functions.py:1424
 msgid ""
 "`$month(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3414,7 +3415,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$year(date,date_order=\"ymd\")`\n\nהחזרת חלק החודש מהתאריך שצוין. תבנית ברירת המחדל היא \"ymd\". ניתן לשנות זאת על ידי הגדרת\n\"dmy\", או \"mdy\". אם התאריך אינו תקין תוחזר מחרוזת ריקה.\n\n_החל מפיקארד 2.7_"
 
-#: picard/script/functions.py:1435
+#: picard/script/functions.py:1436
 msgid ""
 "`$day(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3424,7 +3425,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$year(date,date_order=\"ymd\")`\n\nהחזרת חלק היום מהתאריך שצוין. תבנית ברירת המחדל היא \"ymd\". ניתן לשנות זאת על ידי הגדרת\n\"dmy\", או \"mdy\". אם התאריך אינו תקין תוחזר מחרוזת ריקה.\n\n_החל מפיקארד 2.7_"
 
-#: picard/script/functions.py:1447
+#: picard/script/functions.py:1448
 #, python-format
 msgid ""
 "`$dateformat(date,format=\"%Y-%m-%d\",date_order=\"ymd\")`\n"
@@ -3445,7 +3446,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$dateformat(date,format=\"%Y-%m-%d\",date_order=\"ymd\")`\n\nהחזרת התאריך והשעה הנוכחיים ב־'format' שהוגדר, המבוסס על פייתון תקני `strftime` [format codes](https://strftime.org/). אם לא הוגדר 'format', התאריך יוחזר כ־'2020-02-05'. את התאריך או התבנית לא תקינים, תוחזר מחרוזת ריקה.\n\nתבנית ברירת המחדל היא \"ymd\". ניתן לשנות זאת על ידי הגדרת\n\"dmy\", או \"mdy\".\nהערה: יש להימנע מקודי עיצוב יחודיים למסדת כדי להבטיח את ניידות התסריטים בין המסדות שונות. \nקודים אלה כוללים: הסרת ריפוד אפס (למשל '% -d' ו־ '% -m' ב־ Linux או ב־ macOS, והמקבילה שלהם  '% # d' ו־'% # m' בוינדוס); \nמפרט אורך הרכיבים (לדוגמה '% 3Y'); ותליית '%' בסוף מחרוזת התבנית.\n\n_החל מפיקארד 2.7_"
 
-#: picard/script/functions.py:1480
+#: picard/script/functions.py:1481
 msgid ""
 "`$is_multi(name)`\n"
 "\n"
@@ -5788,7 +5789,7 @@ msgstr "הוספת תַּסְרִיט חדש"
 msgid "Remove the selected script"
 msgstr "הסרת התסריט שנבחר"
 
-#: picard/ui/ui_options_script.py:118 picard/ui/widgets/scriptlistwidget.py:56
+#: picard/ui/ui_options_script.py:118 picard/ui/widgets/scriptlistwidget.py:57
 msgid "Remove script"
 msgstr "הסרת תַּסְרִיט"
 
@@ -6088,8 +6089,8 @@ msgstr "אתחול כל הגדרות פיקארד"
 msgid "Reset all settings for current option page"
 msgstr "אתחול את כל ההגדרות  בעמוד האפשרויות הנוכחי"
 
-#: picard/ui/options/dialog.py:145 picard/ui/options/dialog.py:433
-#: picard/ui/options/dialog.py:459
+#: picard/ui/options/dialog.py:145 picard/ui/options/dialog.py:435
+#: picard/ui/options/dialog.py:461
 msgid "Attached Profiles"
 msgstr "פרופיל מצורף"
 
@@ -6112,40 +6113,40 @@ msgstr "פרופיל ללא ידוע"
 msgid "This option will be saved to profile: %s"
 msgstr "אפשרות זו תשמר לפרופיל: %s"
 
-#: picard/ui/options/dialog.py:374
+#: picard/ui/options/dialog.py:376
 msgid "Unexpected error"
 msgstr "שגיאה בלתי צפויה"
 
-#: picard/ui/options/dialog.py:413
+#: picard/ui/options/dialog.py:415
 msgid "You are about to reset your options for this page."
 msgstr "אתם עומדים לאפס את כל האפשרויות בעמוד זה."
 
-#: picard/ui/options/dialog.py:417
+#: picard/ui/options/dialog.py:419
 msgid "Warning! This will reset all of your settings."
 msgstr "אזהרה! פעולה זו תאתחל את כל ההגדרות."
 
-#: picard/ui/options/dialog.py:424
+#: picard/ui/options/dialog.py:426
 msgid "Confirm Reset"
 msgstr "אשר איתחול"
 
-#: picard/ui/options/dialog.py:425
+#: picard/ui/options/dialog.py:427
 msgid "Are you sure?"
 msgstr "האם לבצע?"
 
-#: picard/ui/options/dialog.py:459 picard/ui/options/maintenance.py:86
+#: picard/ui/options/dialog.py:461 picard/ui/options/maintenance.py:86
 msgid "Option"
 msgstr ""
 
-#: picard/ui/options/dialog.py:466
+#: picard/ui/options/dialog.py:468
 #, python-format
 msgid "Profiles Attached to Options in %s Section"
 msgstr "פרופילים מצורפים לאפשרויות ב־%s מקטעים"
 
-#: picard/ui/options/dialog.py:476
+#: picard/ui/options/dialog.py:478
 msgid " [Enabled]"
 msgstr "[מאופשר]"
 
-#: picard/ui/options/dialog.py:477 picard/ui/options/profiles.py:279
+#: picard/ui/options/dialog.py:479 picard/ui/options/profiles.py:279
 msgid "None"
 msgstr "ללא"
 
@@ -6373,7 +6374,7 @@ msgstr ""
 
 #: picard/ui/options/maintenance.py:176
 #: picard/ui/widgets/profilelistwidget.py:82
-#: picard/ui/widgets/scriptlistwidget.py:89
+#: picard/ui/widgets/scriptlistwidget.py:90
 msgid "Confirm Remove"
 msgstr "אישור הסרה"
 
@@ -6718,11 +6719,11 @@ msgstr "האם להסיר פרופיל זה?"
 msgid "Open Scripting Documentation in your browser"
 msgstr "פתיחת תיעוד התסרוט בדפדפן"
 
-#: picard/ui/widgets/scriptlistwidget.py:53
+#: picard/ui/widgets/scriptlistwidget.py:54
 msgid "Rename script"
 msgstr "שינוי שם תַּסְרִיט"
 
-#: picard/ui/widgets/scriptlistwidget.py:88
+#: picard/ui/widgets/scriptlistwidget.py:89
 msgid "Are you sure you want to remove this script?"
 msgstr "האם להסיר תַּסְרִיט זה?"
 

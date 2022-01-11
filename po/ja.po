@@ -9,6 +9,7 @@
 # Keshav Kini <keshav.kini@gmail.com>, 2013
 # 532fd2f58e02ecfdf896ec90dcdd61a5_8e0e62b, 2017
 # mai inoue, 2015
+# Masakazu Araki, 2022
 # Masuda Sunatomo <sunatomo@gmail.com>, 2021
 # Mitsuharu Kurita, 2016
 # Nozomu KURASAWA <nabetaro@caldron.jp>, 2012
@@ -23,9 +24,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-20 08:00+0100\n"
-"PO-Revision-Date: 2021-12-20 09:24+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2021-12-22 12:24+0100\n"
+"PO-Revision-Date: 2022-01-03 08:27+0000\n"
+"Last-Translator: Masakazu Araki\n"
 "Language-Team: Japanese (http://www.transifex.com/musicbrainz/musicbrainz/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -150,12 +151,12 @@ msgstr "ファイル「%(filename)s」のメタデータを検索しています
 
 #: picard/oauth.py:238 picard/oauth.py:262
 msgid "Unexpected authentication error"
-msgstr ""
+msgstr "予期しない認証エラー"
 
 #: picard/oauth.py:271
 #, python-format
 msgid "Unexpected request error (HTTP code %s)"
-msgstr ""
+msgstr "予期しない認証エラー (HTTPコード %s)"
 
 #: picard/pluginmanager.py:226
 #, python-format
@@ -199,11 +200,11 @@ msgstr "全般"
 
 #: picard/profile.py:47
 msgid "Server address"
-msgstr ""
+msgstr "サーバーアドレス"
 
 #: picard/profile.py:48
 msgid "Port"
-msgstr ""
+msgstr "ポート"
 
 #: picard/profile.py:49 picard/ui/ui_options_general.py:176
 msgid "Automatically scan all new files"
@@ -211,7 +212,7 @@ msgstr "すべての新しいファイルを自動的にスキャンする"
 
 #: picard/profile.py:50 picard/ui/ui_options_general.py:177
 msgid "Automatically cluster all new files"
-msgstr ""
+msgstr "自動で新しいファイルをクラスタ化する"
 
 #: picard/profile.py:51 picard/ui/ui_options_general.py:178
 msgid "Ignore MBIDs when loading new files"
@@ -462,11 +463,11 @@ msgstr "ブラウザでの縦位置を自動調整"
 
 #: picard/profile.py:143
 msgid "Begin browsing in a specific directory"
-msgstr ""
+msgstr "指定のディレクトリの参照を開始する"
 
 #: picard/profile.py:144
 msgid "Directory to begin browsing"
-msgstr ""
+msgstr "参照を開始するディレクトリ"
 
 #: picard/profile.py:149 picard/ui/options/advanced.py:43
 msgid "Advanced"
@@ -474,7 +475,7 @@ msgstr "詳細設定"
 
 #: picard/profile.py:151
 msgid "Ignore file paths matching a regular expression"
-msgstr ""
+msgstr "正規表現にマッチするファイルパスを無視"
 
 #: picard/profile.py:152 picard/ui/ui_options_advanced.py:119
 msgid "Ignore hidden files"
@@ -486,11 +487,11 @@ msgstr "フォルダからファイルを追加するときにサブフォルダ
 
 #: picard/profile.py:156
 msgid "Ignore track duration difference under x seconds"
-msgstr ""
+msgstr "x 秒数以下のトラック再生時間の差異を無視する"
 
 #: picard/profile.py:159
 msgid "Completeness check ignore: Video tracks"
-msgstr ""
+msgstr "完全度確認から除外する: 映像トラック"
 
 #: picard/profile.py:160
 msgid "Completeness check ignore: Pregap tracks"
@@ -498,7 +499,7 @@ msgstr ""
 
 #: picard/profile.py:161
 msgid "Completeness check ignore: Data tracks"
-msgstr ""
+msgstr "完全度確認から除外する: データトラック"
 
 #: picard/profile.py:162
 msgid "Completeness check ignore: Silent tracks"
@@ -668,11 +669,11 @@ msgstr "マイプロファイル"
 
 #: picard/const/__init__.py:192
 msgid "(copy)"
-msgstr ""
+msgstr "(コピー)"
 
 #: picard/const/__init__.py:193
 msgid "{title} ({count})"
-msgstr ""
+msgstr "{title} ({count})"
 
 #: picard/const/languages.py:29 picard/const/locales.py:41
 #: picard/const/scripts.py:28
@@ -2625,11 +2626,11 @@ msgstr "カバーアートアーカイブ"
 
 #: picard/coverart/providers/caa.py:504
 msgid "Cover Art Archive: Release"
-msgstr ""
+msgstr "カバーアートアーカイブ: リリース"
 
 #: picard/coverart/providers/caa_release_group.py:44
 msgid "Cover Art Archive: Release Group"
-msgstr ""
+msgstr "カバーアートアーカイブ: リリースグループ"
 
 #: picard/coverart/providers/local.py:78
 msgid "Local Files"
@@ -3317,12 +3318,13 @@ msgid ""
 "The following example will create a multi-value variable with all artists\n"
 "    in `%artists%` except the first, which can be used to create a \"feat.\" list.\n"
 "\n"
-"Example:\n"
+"Examples:\n"
 "\n"
-"    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
-msgstr "`$slice(name,start,end,separator=\"; \")`\n\n複数値タグ `name` から` start` インデックスと `end` インデックスの間の要素を含む\n複数値変数を返す。 複数値を表すリテラル値は、区切り文字（渡されない場合は”; ”）を\n使用して値を適切な複数値タグに強制変換することにより、 `name`の代わりに使用される。\nインデックスはゼロベース。 負数指定時はリストの最後からカウントされる。`start` または\n` end` インデックスが空白の場合、デフォルトでそれぞれリストの開始と終了と判断する。\n\n次の例では、\"feat.\" リストの作成に使用可能な最初のアーティストを除く、 `%artists%` 内のすべてのアーティストを含む複数値変数を作成する。\n\n例:\n\n    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
+"    $setmulti(supporting_artists,$slice(%artists%,1))\n"
+"    $setmulti(supporting_artists,$slice(%artists%,1,-1))\n"
+msgstr ""
 
-#: picard/script/functions.py:1279
+#: picard/script/functions.py:1280
 #, python-format
 msgid ""
 "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
@@ -3338,7 +3340,7 @@ msgid ""
 "    `%3Y`); and hanging '%' at the end of the format string."
 msgstr "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n\n現在の日付と時刻を指定された `format` で返す。これは、標準のPython` strftime` [フォーマットコード]（https://strftime.org/）に基づく。\n`format`が指定されていない場合、日付/時刻は` 2020-02-0514：26：32`の形式で返される。\n注：異なるプラットフォーム間でのスクリプトの移植性を確保するために、プラットフォーム固有のフォーマットコードは避ける必要があります。 これらのコードはゼロパディングを削除ためのものである （Linux や macOS 等では `%-d` と `%-m` 、Windowsでは同等の `%#d`と`%#m`）; 要素の長さの指定子（例： `％3Y`）; そして、フォーマット文字列の最後に’％’ を追加する。"
 
-#: picard/script/functions.py:1308
+#: picard/script/functions.py:1309
 msgid ""
 "`$sortmulti(name,separator=\"; \")`\n"
 "\n"
@@ -3351,7 +3353,7 @@ msgid ""
 "Result: A; B; C\n"
 msgstr "`$sortmulti(name,separator=\"; \")`\n\n要素が昇順でソートされた複数値タグ `name` のコピーを返す。\n\n例:\n\n    $sortmulti(B; A; C)\n\n戻り値: A; B; C\n"
 
-#: picard/script/functions.py:1325
+#: picard/script/functions.py:1326
 msgid ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
@@ -3366,7 +3368,7 @@ msgid ""
 "Result: C; B; A\n"
 msgstr "`$reversemulti(name,separator=\"; \")`\n\n逆の順序で要素を含む複数値タグ `name`のコピーを返す。\nこれを `$ sortmulti`関数と組み合わせて使用すると、降順で並べ替えることが可能である。\n\n例:\n\n    $reversemulti($sortmulti(B; A; C))\n\n戻り値: C; B; A\n"
 
-#: picard/script/functions.py:1344
+#: picard/script/functions.py:1345
 #, python-format
 msgid ""
 "`$unique(name,case_sensitive=\"\",separator=\"; \")`\n"
@@ -3389,7 +3391,7 @@ msgid ""
 "Result: A; B; a; b; cd\n"
 msgstr "`$unique(name,case_sensitive=\"\",separator=\"; \")`\n\n重複する要素のない複数値タグ `name` のコピーを返す。\nデフォルトでは、大文字と小文字を区別しない要素の比較が実行される。\n\n例 1:\n\n    $setmulti(foo,a; A; B; b; cd; Cd; cD; CD; a; A; b)\n    $unique(%foo%)\n\n戻り値: A; CD; b\n\n例 2:\n\n    $setmulti(foo,a; A; B; b; a; b; A; B, cd)\n    $unique(%foo%,True)\n\n戻り値: A; B; a; b; cd\n"
 
-#: picard/script/functions.py:1372
+#: picard/script/functions.py:1373
 msgid ""
 "`$countryname(country_code,translate=\"\")`\n"
 "\n"
@@ -3397,7 +3399,7 @@ msgid ""
 "If translate is not blank, the output will be translated into the current locale language.\n"
 msgstr ""
 
-#: picard/script/functions.py:1411
+#: picard/script/functions.py:1412
 msgid ""
 "`$year(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3407,7 +3409,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr ""
 
-#: picard/script/functions.py:1423
+#: picard/script/functions.py:1424
 msgid ""
 "`$month(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3417,7 +3419,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr ""
 
-#: picard/script/functions.py:1435
+#: picard/script/functions.py:1436
 msgid ""
 "`$day(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3427,7 +3429,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr ""
 
-#: picard/script/functions.py:1447
+#: picard/script/functions.py:1448
 #, python-format
 msgid ""
 "`$dateformat(date,format=\"%Y-%m-%d\",date_order=\"ymd\")`\n"
@@ -3448,7 +3450,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr ""
 
-#: picard/script/functions.py:1480
+#: picard/script/functions.py:1481
 msgid ""
 "`$is_multi(name)`\n"
 "\n"
@@ -3523,7 +3525,7 @@ msgstr "辞書ではなくファイルの内容"
 
 #: picard/script/serializer.py:341 picard/ui/options/scripting.py:188
 msgid "Unnamed Script"
-msgstr ""
+msgstr "名前のないスクリプト"
 
 #: picard/script/serializer.py:351 picard/ui/coverartbox.py:548
 #: picard/ui/mainwindow.py:1080 picard/ui/options/scripting.py:131
@@ -3532,11 +3534,11 @@ msgstr "すべてのファイル"
 
 #: picard/script/serializer.py:352 picard/ui/options/scripting.py:132
 msgid "Picard script files"
-msgstr ""
+msgstr "Picardスクリプトファイル"
 
 #: picard/script/serializer.py:353
 msgid "Picard script package"
-msgstr ""
+msgstr "Picardスクリプトパッケージ"
 
 #: picard/ui/aboutdialog.py:74
 msgid "translator-credits"
@@ -3867,7 +3869,7 @@ msgstr "クラスタ情報"
 
 #: picard/ui/infostatus.py:70
 msgid "Estimated Time"
-msgstr ""
+msgstr "推定時間"
 
 #: picard/ui/infostatus.py:71 picard/ui/options/plugins.py:605
 msgid "Files"
@@ -4698,12 +4700,12 @@ msgstr "MusicBrainzサーバー上の個人情報にPicardからアクセスす�
 
 #: picard/ui/mainwindow.py:1525
 msgid "Authentication failed"
-msgstr ""
+msgstr "認証失敗"
 
 #: picard/ui/mainwindow.py:1526 picard/ui/options/general.py:144
 #, python-format
 msgid "Login failed: %s"
-msgstr ""
+msgstr "ログイン失敗: %s"
 
 #: picard/ui/metadatabox.py:111
 #, python-format
@@ -4898,7 +4900,7 @@ msgstr "ファイル名生成スクリプトエディタ"
 
 #: picard/ui/scripteditor.py:477
 msgid "Reset"
-msgstr ""
+msgstr "リセット"
 
 #: picard/ui/options/dialog.py:132 picard/ui/scripteditor.py:482
 msgid "Make It So!"
@@ -5057,7 +5059,7 @@ msgstr ""
 
 #: picard/ui/scripteditor.py:1222
 msgid "Overwrite"
-msgstr ""
+msgstr "上書き"
 
 #: picard/ui/options/profiles.py:117 picard/ui/scripteditor.py:1224
 msgid "Copy"
@@ -5151,7 +5153,7 @@ msgstr ""
 
 #: picard/ui/ui_exception_script_selector.py:106
 msgid "Selected Scripts"
-msgstr ""
+msgstr "選択されたスクリプト"
 
 #: picard/ui/ui_exception_script_selector.py:107
 msgid "Selected script match threshold:"
@@ -5767,7 +5769,7 @@ msgstr "新しいスクリプトを追加"
 msgid "Remove the selected script"
 msgstr ""
 
-#: picard/ui/ui_options_script.py:118 picard/ui/widgets/scriptlistwidget.py:56
+#: picard/ui/ui_options_script.py:118 picard/ui/widgets/scriptlistwidget.py:57
 msgid "Remove script"
 msgstr "スクリプトを削除"
 
@@ -6067,8 +6069,8 @@ msgstr "Picard の全設定をリセット"
 msgid "Reset all settings for current option page"
 msgstr "現在ページの全設定をリセット"
 
-#: picard/ui/options/dialog.py:145 picard/ui/options/dialog.py:433
-#: picard/ui/options/dialog.py:459
+#: picard/ui/options/dialog.py:145 picard/ui/options/dialog.py:435
+#: picard/ui/options/dialog.py:461
 msgid "Attached Profiles"
 msgstr ""
 
@@ -6091,40 +6093,40 @@ msgstr ""
 msgid "This option will be saved to profile: %s"
 msgstr ""
 
-#: picard/ui/options/dialog.py:374
+#: picard/ui/options/dialog.py:376
 msgid "Unexpected error"
 msgstr "予期しないエラー"
 
-#: picard/ui/options/dialog.py:413
+#: picard/ui/options/dialog.py:415
 msgid "You are about to reset your options for this page."
 msgstr "このページのオプションをリセットしますか？"
 
-#: picard/ui/options/dialog.py:417
+#: picard/ui/options/dialog.py:419
 msgid "Warning! This will reset all of your settings."
 msgstr "警告! 全設定をリセットします"
 
-#: picard/ui/options/dialog.py:424
+#: picard/ui/options/dialog.py:426
 msgid "Confirm Reset"
 msgstr "リセット確認"
 
-#: picard/ui/options/dialog.py:425
+#: picard/ui/options/dialog.py:427
 msgid "Are you sure?"
 msgstr "よろしいですか？"
 
-#: picard/ui/options/dialog.py:459 picard/ui/options/maintenance.py:86
+#: picard/ui/options/dialog.py:461 picard/ui/options/maintenance.py:86
 msgid "Option"
 msgstr ""
 
-#: picard/ui/options/dialog.py:466
+#: picard/ui/options/dialog.py:468
 #, python-format
 msgid "Profiles Attached to Options in %s Section"
 msgstr ""
 
-#: picard/ui/options/dialog.py:476
+#: picard/ui/options/dialog.py:478
 msgid " [Enabled]"
 msgstr ""
 
-#: picard/ui/options/dialog.py:477 picard/ui/options/profiles.py:279
+#: picard/ui/options/dialog.py:479 picard/ui/options/profiles.py:279
 msgid "None"
 msgstr "なし"
 
@@ -6352,7 +6354,7 @@ msgstr ""
 
 #: picard/ui/options/maintenance.py:176
 #: picard/ui/widgets/profilelistwidget.py:82
-#: picard/ui/widgets/scriptlistwidget.py:89
+#: picard/ui/widgets/scriptlistwidget.py:90
 msgid "Confirm Remove"
 msgstr "削除の確認"
 
@@ -6697,11 +6699,11 @@ msgstr "プロファイルを本当に削除しますか?"
 msgid "Open Scripting Documentation in your browser"
 msgstr "ブラウザでスクリプトドキュメントを開く"
 
-#: picard/ui/widgets/scriptlistwidget.py:53
+#: picard/ui/widgets/scriptlistwidget.py:54
 msgid "Rename script"
 msgstr "スクリプト名変更"
 
-#: picard/ui/widgets/scriptlistwidget.py:88
+#: picard/ui/widgets/scriptlistwidget.py:89
 msgid "Are you sure you want to remove this script?"
 msgstr "このスクリプトを削除しますか？"
 

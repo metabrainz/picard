@@ -18,9 +18,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-20 08:00+0100\n"
-"PO-Revision-Date: 2021-12-20 09:24+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2021-12-22 12:24+0100\n"
+"PO-Revision-Date: 2021-12-22 20:21+0000\n"
+"Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
 "Language-Team: Finnish (http://www.transifex.com/musicbrainz/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -147,12 +147,12 @@ msgstr "Haetaan metatietoja tiedostolle %(filename)s ..."
 
 #: picard/oauth.py:238 picard/oauth.py:262
 msgid "Unexpected authentication error"
-msgstr ""
+msgstr "Odottamaton virhe tunnistautumisessa"
 
 #: picard/oauth.py:271
 #, python-format
 msgid "Unexpected request error (HTTP code %s)"
-msgstr ""
+msgstr "Odottamaton virhe pyynnössä (HTTP koodi %s)"
 
 #: picard/pluginmanager.py:226
 #, python-format
@@ -196,11 +196,11 @@ msgstr "Yleiset"
 
 #: picard/profile.py:47
 msgid "Server address"
-msgstr ""
+msgstr "Palvelimen osoite"
 
 #: picard/profile.py:48
 msgid "Port"
-msgstr ""
+msgstr "Portti"
 
 #: picard/profile.py:49 picard/ui/ui_options_general.py:176
 msgid "Automatically scan all new files"
@@ -459,11 +459,11 @@ msgstr "Muuta vaakatason paikkaa automaattisesti tiedostoselaimessa"
 
 #: picard/profile.py:143
 msgid "Begin browsing in a specific directory"
-msgstr ""
+msgstr "Aloita tiedostoselaaminen määritetystä hakemistosta"
 
 #: picard/profile.py:144
 msgid "Directory to begin browsing"
-msgstr ""
+msgstr "Aloita tiedostoselaaminen tästä hakemistosta"
 
 #: picard/profile.py:149 picard/ui/options/advanced.py:43
 msgid "Advanced"
@@ -471,7 +471,7 @@ msgstr "Lisäasetukset"
 
 #: picard/profile.py:151
 msgid "Ignore file paths matching a regular expression"
-msgstr ""
+msgstr "Ohita tiedostopolut jotka täsmäävät säännölliseen lausekkeeseen"
 
 #: picard/profile.py:152 picard/ui/ui_options_advanced.py:119
 msgid "Ignore hidden files"
@@ -483,27 +483,27 @@ msgstr "Sisällytä myös alikansiot lisättäessä tiedostoja kansiosta"
 
 #: picard/profile.py:156
 msgid "Ignore track duration difference under x seconds"
-msgstr ""
+msgstr "Salli raitojen kestojen heittää näin monta sekuntia"
 
 #: picard/profile.py:159
 msgid "Completeness check ignore: Video tracks"
-msgstr ""
+msgstr "Täydellinen julkaisu: Ohita videoraidat"
 
 #: picard/profile.py:160
 msgid "Completeness check ignore: Pregap tracks"
-msgstr ""
+msgstr "Täydellinen julkaisu: Ohita esialueen raidat"
 
 #: picard/profile.py:161
 msgid "Completeness check ignore: Data tracks"
-msgstr ""
+msgstr "Täydellinen julkaisu: Ohita dataraidat"
 
 #: picard/profile.py:162
 msgid "Completeness check ignore: Silent tracks"
-msgstr ""
+msgstr "Täydellinen julkaisu: Ohita äänettömät raidat"
 
 #: picard/profile.py:163
 msgid "Tags to ignore for comparison"
-msgstr ""
+msgstr "Tunnisteet jotka ohitetaan vertailtaessa"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:154
 msgid "Tracks"
@@ -665,11 +665,11 @@ msgstr "Oma profiili"
 
 #: picard/const/__init__.py:192
 msgid "(copy)"
-msgstr ""
+msgstr "(kopio)"
 
 #: picard/const/__init__.py:193
 msgid "{title} ({count})"
-msgstr ""
+msgstr "{title} ({count})"
 
 #: picard/const/languages.py:29 picard/const/locales.py:41
 #: picard/const/scripts.py:28
@@ -3314,12 +3314,13 @@ msgid ""
 "The following example will create a multi-value variable with all artists\n"
 "    in `%artists%` except the first, which can be used to create a \"feat.\" list.\n"
 "\n"
-"Example:\n"
+"Examples:\n"
 "\n"
-"    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
-msgstr "`$slice(nimi,alku,loppu,separator=\"; \")`\n\nPalauta moniarvoinen muuttuja aloittaen muuttujan `nimi` alkiosta indeksissä `alku` aina\n    indeksiin `loppu` asti. Muuttujan sijaan voidaan käyttää merkkijonoa, josta saadaan\n    osien määrä erotinmerkin (`separator`) avulla, joka on vakiona \"; \". Indeksinumerot \n    aloitetaan luvusta nolla. Negatiiviset luvut lasketaan merkkijonon lopusta päin. Jos `alku`-\n    tai `loppu`-indeksi on tyhjä, käytetään arvona merkkijonon alkua tai loppua sen sijaan.\n Seuraava esimerkki luo moniarvoisen muuttujan, joka sisältää kaikki artistit lukuun ottamatta\n    ensimmäistä, millä voidaan luoda vierailevien artistin lista.\n\nEsimerkki:\n\n    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
+"    $setmulti(supporting_artists,$slice(%artists%,1))\n"
+"    $setmulti(supporting_artists,$slice(%artists%,1,-1))\n"
+msgstr "`$slice(nimi,alku,loppu,separator=\"; \")`\n\nPalauta moniarvoinen muuttuja aloittaen muuttujan `nimi` alkiosta indeksissä `alku` aina\n    indeksiin `loppu` asti. Muuttujan sijaan voidaan käyttää merkkijonoa, josta saadaan\n    osien määrä erotinmerkin (`separator`) avulla, joka on vakiona \"; \". Indeksinumerot \n    aloitetaan luvusta nolla. Negatiiviset luvut lasketaan merkkijonon lopusta päin. Jos `alku`-\n    tai `loppu`-indeksi on tyhjä, käytetään arvona merkkijonon alkua tai loppua sen sijaan.\n\nSeuraava esimerkki luo moniarvoisen muuttujan, joka sisältää kaikki artistit lukuun ottamatta\n    ensimmäistä, jolla voidaan luoda vierailevien artistin lista.\n\nEsimerkit:\n\n    $setmulti(supporting_artists,$slice(%artists%,1))\n    $setmulti(supporting_artists,$slice(%artists%,1,-1))\n"
 
-#: picard/script/functions.py:1279
+#: picard/script/functions.py:1280
 #, python-format
 msgid ""
 "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
@@ -3335,7 +3336,7 @@ msgid ""
 "    `%3Y`); and hanging '%' at the end of the format string."
 msgstr "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n\nPalauta nykyinen päiväys ja aika halutussa muodossa `format`, joka pohjautuu\n    Pythonin standardeihin `strftime`-[koodimuotoihin](https://strftime.org/).\n    Mikäli muotoa ei ole määritetty, palautetaan aika muodossa\n    `2020-02-05 14:26:32`.\nHuomio: Käyttöympäristöön rajoittuneita koodimuotoja ei tulisi käyttää, jotta\n    komentosarjat toimisivat erilaisissa ympäristöissäkin. Niihin lukeutuvat:\n    poista nolla-merkein täydentäminen (esim. `%-d` and `%-m` Linux tai macOS, ja\n    vastaavissa `%#d` ja `%#m` Windowsissa); alkion pituuden määritteet (esim.\n    `%3Y`); ja avoin-'%' muotomerkkijonon lopussa."
 
-#: picard/script/functions.py:1308
+#: picard/script/functions.py:1309
 msgid ""
 "`$sortmulti(name,separator=\"; \")`\n"
 "\n"
@@ -3348,7 +3349,7 @@ msgid ""
 "Result: A; B; C\n"
 msgstr "`$sortmulti(nimi,separator=\"; \")`\n\nPalauta kopio moniarvoisesta muuttujasta `nimi`, jossa alkiot on järjestetty nousevasti.\n\nEsimerkki:\n\n    $sortmulti(B; A; C)\n\nTulos: A; B; C\n"
 
-#: picard/script/functions.py:1325
+#: picard/script/functions.py:1326
 msgid ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
@@ -3363,7 +3364,7 @@ msgid ""
 "Result: C; B; A\n"
 msgstr "`$reversemulti(nimi,separator=\"; \")`\n\nPalauta kopio moniarvoisesta muuttujasta `nimi`, jossa alkiot on järjestetty käänteisesti.\n    Tätä voidaan hyödyntää `$sortmulti`-funktion kanssa järjestääkseen laskevasti.\n\nEsimerkki:\n\n    $reversemulti($sortmulti(B; A; C))\n\nTulos: C; B; A\n"
 
-#: picard/script/functions.py:1344
+#: picard/script/functions.py:1345
 #, python-format
 msgid ""
 "`$unique(name,case_sensitive=\"\",separator=\"; \")`\n"
@@ -3386,7 +3387,7 @@ msgid ""
 "Result: A; B; a; b; cd\n"
 msgstr "`$unique(nimi,case_sensitive=\"\",separator=\"; \")`\n\nPalauttaa kopion moniarvoisesta tunnisteesta `nimi` ilman kaksoiskappaleita.\n    Oletuksena kirjainkoolla ei ole merkitystä vertailussa.\n\nEsimerkki 1:\n\n    $setmulti(foo,a; A; B; b; cd; Cd; cD; CD; a; A; b)\n    $unique(%foo%)\n\nTulos: A; CD; b\n\nEsimerkki 2:\n\n    $setmulti(foo,a; A; B; b; a; b; A; B, cd)\n    $unique(%foo%,True)\n\nTulos: A; B; a; b; cd\n"
 
-#: picard/script/functions.py:1372
+#: picard/script/functions.py:1373
 msgid ""
 "`$countryname(country_code,translate=\"\")`\n"
 "\n"
@@ -3394,7 +3395,7 @@ msgid ""
 "If translate is not blank, the output will be translated into the current locale language.\n"
 msgstr "`$countryname(maakoodi,translate=\"\")`\n\nPalauta maan nimi maakoodille. Jos maakoodi ei ole kelvollinen, palauta tyhjä merkkijono.\nJos translate ei ole tyhjä, palauta maan nimi käännettynä nykyisen alueen kielelle.\n"
 
-#: picard/script/functions.py:1411
+#: picard/script/functions.py:1412
 msgid ""
 "`$year(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3404,7 +3405,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$year(date,date_order=\"ymd\")`\n\nPalauta vuosi päiväyksestä. Oletus on \"ymd\". Tämän voi vaihtaa määrittelemällä joko \"dmy\" tai \"mdy\".\nMikäli päiväys ei ole kelvollinen, palauta tyhjä merkkijono.\n\n_Picardin versiosta 2.7_"
 
-#: picard/script/functions.py:1423
+#: picard/script/functions.py:1424
 msgid ""
 "`$month(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3414,7 +3415,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$month(date,date_order=\"ymd\")`\n\nPalauta kuukausi päiväyksestä. Oletus on \"ymd\". Tämän voi vaihtaa määrittelemällä joko \"dmy\" tai \"mdy\".\nMikäli päiväys ei ole kelvollinen, palauta tyhjä merkkijono.\n\n_Picardin versiosta 2.7_"
 
-#: picard/script/functions.py:1435
+#: picard/script/functions.py:1436
 msgid ""
 "`$day(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3424,7 +3425,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$day(date,date_order=\"ymd\")`\n\nPalauta päivä päiväyksestä. Oletus on \"ymd\". Tämän voi vaihtaa määrittelemällä joko \"dmy\" tai \"mdy\".\nMikäli päiväys ei ole kelvollinen, palauta tyhjä merkkijono.\n\n_Picardin versiosta 2.7_"
 
-#: picard/script/functions.py:1447
+#: picard/script/functions.py:1448
 #, python-format
 msgid ""
 "`$dateformat(date,format=\"%Y-%m-%d\",date_order=\"ymd\")`\n"
@@ -3445,7 +3446,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$dateformat(date,format=\"%Y-%m-%d\",date_order=\"ymd\")`\n\nPalauta annettu päiväys muotoiltuna. Muotoilu `format` perustuu    Pythonin `strftime` [muotoiluun](https://strftime.org/).\n    Oletuksena päiväys palautetaan muodossa `2020-02-05`. Mikäli päiväys tai\n    muotoilu ei ole kelvollinen, palautetaan tyhjä merkkijono.\n\n    Syötetyn päiväyksen oletusmuoto on \"ymd\". Tämän voi vaihtaa määrittelemällä joko \"dmy\" tai \"mdy\".\nHuomioi: Järjestelmäkohtaisia muotoilukoodeja ei tulisi käyttää, jotta komentosarjat toimivat halutusti\n    muissakin käyttöympäristöissä. Näihin lukeutuvat: poista edessä olevat nollat (esim. `%-d` ja `%-m` Linux-\n    ja macOS-järjestelmissä tai vastaavat `%#d` ja `%#m` Windowsissa); osien pituuden määritteet (esim.\n    `%3Y`); ja roikkuva '%' muotoilumerkkijonon lopussa.\n\n_Picardin versiosta 2.7_"
 
-#: picard/script/functions.py:1480
+#: picard/script/functions.py:1481
 msgid ""
 "`$is_multi(name)`\n"
 "\n"
@@ -4700,12 +4701,12 @@ msgstr "Picard vaatii tunnistautumisen voidakseen käyttää henkilökohtaisia t
 
 #: picard/ui/mainwindow.py:1525
 msgid "Authentication failed"
-msgstr ""
+msgstr "Tunnistautuminen epäonnistui"
 
 #: picard/ui/mainwindow.py:1526 picard/ui/options/general.py:144
 #, python-format
 msgid "Login failed: %s"
-msgstr ""
+msgstr "Kirjautuminen epäonnistui: %s"
 
 #: picard/ui/metadatabox.py:111
 #, python-format
@@ -4903,7 +4904,7 @@ msgstr "Tiedostonnimeämiskomentosarjan muokkain"
 
 #: picard/ui/scripteditor.py:477
 msgid "Reset"
-msgstr ""
+msgstr "Aseta alkutilaan"
 
 #: picard/ui/options/dialog.py:132 picard/ui/scripteditor.py:482
 msgid "Make It So!"
@@ -4927,27 +4928,27 @@ msgstr "Vie komentosarja tiedostoon"
 
 #: picard/ui/scripteditor.py:566
 msgid "&Reset all scripts"
-msgstr ""
+msgstr "Aseta kaikki komentosa&rjat alkutiloihinsa"
 
 #: picard/ui/scripteditor.py:567
 msgid "Reset all scripts to the saved values"
-msgstr ""
+msgstr "Aseta kaikki komentosarjat tallennetuihin arvoihinsa"
 
 #: picard/ui/scripteditor.py:572
 msgid "&Save and exit"
-msgstr ""
+msgstr "Tallenna ja poi&stu"
 
 #: picard/ui/scripteditor.py:573
 msgid "Save changes to the script settings and exit"
-msgstr ""
+msgstr "Tallenna komentosarjan muutokset ja poistu"
 
 #: picard/ui/scripteditor.py:578
 msgid "E&xit without saving"
-msgstr ""
+msgstr "Lo&peta tallentamatta"
 
 #: picard/ui/scripteditor.py:579
 msgid "Close the script editor without saving changes"
-msgstr ""
+msgstr "Sulje komentosarjan muokkain tallentamatta muutoksia"
 
 #: picard/ui/scripteditor.py:584
 msgid "&Script"
@@ -4955,7 +4956,7 @@ msgstr "&Komentosarja"
 
 #: picard/ui/scripteditor.py:587
 msgid "View/Edit Script &Metadata"
-msgstr ""
+msgstr "Näytä/Muokkaa komentosarjan &Metatietoja"
 
 #: picard/ui/scripteditor.py:588
 msgid "Display the details for the script"
@@ -5021,7 +5022,7 @@ msgid ""
 "   {new_script_title}\n"
 "\n"
 "Are you sure that you want to continue?"
-msgstr ""
+msgstr "Vähintään yksi tallentamaton komentosarja on liitettynä asetusprofiiliin.\n\n   Profilii: {profile_title}\n   Komentosarja: {old_script_title}\n\nJatkaminen tallentamatta muutoksia asettaa profiilin asetukseen:\n\n   {new_script_title}\n\nOletko varma että haluat jatkaa?"
 
 #: picard/ui/options/renaming.py:285 picard/ui/scripteditor.py:843
 #: picard/ui/scripteditor.py:1152 picard/ui/scripteditor.py:1392
@@ -5058,11 +5059,11 @@ msgid ""
 "A script named \"{script_name}\" already exists.\n"
 "\n"
 "Do you want to overwrite it, add as a copy or cancel?"
-msgstr ""
+msgstr "Komentosarja nimeltä \"{script_name}\" on jo olemassa.\n\nKirjoitetaanko yli, tehdäänkö kopio vai peruutetaanko?"
 
 #: picard/ui/scripteditor.py:1222
 msgid "Overwrite"
-msgstr ""
+msgstr "Kirjoita yli"
 
 #: picard/ui/options/profiles.py:117 picard/ui/scripteditor.py:1224
 msgid "Copy"
@@ -5081,7 +5082,7 @@ msgid ""
 "There are unsaved changes to the current metadata.\n"
 "\n"
 "Do you want to continue and lose these changes?"
-msgstr ""
+msgstr "Nykyisissä metatiedoissa on tallentamattomia muutoksia.\n\nHaluatko poistua ja menettää muutokset?"
 
 #: picard/ui/scriptsmenu.py:62
 #, python-format
@@ -5654,11 +5655,11 @@ msgstr "Asetusprofiili(t)"
 
 #: picard/ui/ui_options_profiles.py:76
 msgid "Move profile up"
-msgstr ""
+msgstr "Siirrä profiilia ylöspäin"
 
 #: picard/ui/ui_options_profiles.py:77
 msgid "Move profile down"
-msgstr ""
+msgstr "Siirrä profiilia alaspäin"
 
 #: picard/ui/ui_options_ratings.py:45
 msgid "Enable track ratings"
@@ -5772,7 +5773,7 @@ msgstr "Lisää uusi komentosarja"
 msgid "Remove the selected script"
 msgstr "Poista valittu komentosarja"
 
-#: picard/ui/ui_options_script.py:118 picard/ui/widgets/scriptlistwidget.py:56
+#: picard/ui/ui_options_script.py:118 picard/ui/widgets/scriptlistwidget.py:57
 msgid "Remove script"
 msgstr "Poista komentosarja"
 
@@ -6006,12 +6007,12 @@ msgstr "Lisää tunniste"
 #: picard/ui/ui_widget_taglisteditor.py:70
 #: picard/ui/ui_widget_taglisteditor.py:71
 msgid "Move tag up"
-msgstr "Siirrä tunnistetta ylös"
+msgstr "Siirrä tunnistetta ylöspäin"
 
 #: picard/ui/ui_widget_taglisteditor.py:72
 #: picard/ui/ui_widget_taglisteditor.py:73
 msgid "Move tag down"
-msgstr "Siirrä tunnistetta alas"
+msgstr "Siirrä tunnistetta alaspäin"
 
 #: picard/ui/ui_widget_taglisteditor.py:74
 #: picard/ui/ui_widget_taglisteditor.py:75
@@ -6072,8 +6073,8 @@ msgstr "Nollaa kaikki Picardin asetukset"
 msgid "Reset all settings for current option page"
 msgstr "Nollaa kaikki asetukset tälle asetussivulle"
 
-#: picard/ui/options/dialog.py:145 picard/ui/options/dialog.py:433
-#: picard/ui/options/dialog.py:459
+#: picard/ui/options/dialog.py:145 picard/ui/options/dialog.py:435
+#: picard/ui/options/dialog.py:461
 msgid "Attached Profiles"
 msgstr "Liitetyt profiilit"
 
@@ -6096,40 +6097,40 @@ msgstr "Tuntematon profiili"
 msgid "This option will be saved to profile: %s"
 msgstr "Tämä asetus tallennetaan profiiliin %s"
 
-#: picard/ui/options/dialog.py:374
+#: picard/ui/options/dialog.py:376
 msgid "Unexpected error"
 msgstr "Odottamaton virhe"
 
-#: picard/ui/options/dialog.py:413
+#: picard/ui/options/dialog.py:415
 msgid "You are about to reset your options for this page."
 msgstr "Olet nollaamassa tämän sivun asetukset."
 
-#: picard/ui/options/dialog.py:417
+#: picard/ui/options/dialog.py:419
 msgid "Warning! This will reset all of your settings."
 msgstr "Varoitus! Tämä nollaa kaikki asetukset."
 
-#: picard/ui/options/dialog.py:424
+#: picard/ui/options/dialog.py:426
 msgid "Confirm Reset"
 msgstr "Vahvista nollaus"
 
-#: picard/ui/options/dialog.py:425
+#: picard/ui/options/dialog.py:427
 msgid "Are you sure?"
 msgstr "Oletko aivan varma?"
 
-#: picard/ui/options/dialog.py:459 picard/ui/options/maintenance.py:86
+#: picard/ui/options/dialog.py:461 picard/ui/options/maintenance.py:86
 msgid "Option"
 msgstr "Asetus"
 
-#: picard/ui/options/dialog.py:466
+#: picard/ui/options/dialog.py:468
 #, python-format
 msgid "Profiles Attached to Options in %s Section"
 msgstr "Asetuksiin liitetyt profiilit %s osiossa"
 
-#: picard/ui/options/dialog.py:476
+#: picard/ui/options/dialog.py:478
 msgid " [Enabled]"
 msgstr " [Valittu]"
 
-#: picard/ui/options/dialog.py:477 picard/ui/options/profiles.py:279
+#: picard/ui/options/dialog.py:479 picard/ui/options/profiles.py:279
 msgid "None"
 msgstr "Ei mitään"
 
@@ -6357,7 +6358,7 @@ msgstr "Asetustiedostossa on %d asetusta, joista %d on käyttämättömiä."
 
 #: picard/ui/options/maintenance.py:176
 #: picard/ui/widgets/profilelistwidget.py:82
-#: picard/ui/widgets/scriptlistwidget.py:89
+#: picard/ui/widgets/scriptlistwidget.py:90
 msgid "Confirm Remove"
 msgstr "Vahvista poistaminen"
 
@@ -6702,11 +6703,11 @@ msgstr "Haluatko varmasti poistaa tämän profiilin?"
 msgid "Open Scripting Documentation in your browser"
 msgstr "Avaa komentosarjan ohjeistus selaimeen"
 
-#: picard/ui/widgets/scriptlistwidget.py:53
+#: picard/ui/widgets/scriptlistwidget.py:54
 msgid "Rename script"
 msgstr "Nimeä komentosarja uudelleen"
 
-#: picard/ui/widgets/scriptlistwidget.py:88
+#: picard/ui/widgets/scriptlistwidget.py:89
 msgid "Are you sure you want to remove this script?"
 msgstr "Haluatko varmasti poistaa tämän komentosarjan?"
 
