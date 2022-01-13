@@ -1,3 +1,9 @@
+# Version 2.7.3 - 2022-01-13
+
+## Bugfixes
+- [PICARD-2395](https://tickets.metabrainz.org/browse/PICARD-2395) - macOS 10.13: On launch app is reported as damaged
+
+
 # Version 2.7.2 - 2022-01-11
 
 ## Bugfixes
