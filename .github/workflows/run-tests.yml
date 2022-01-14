@@ -67,8 +67,7 @@ jobs:
           "PyQt5==5.14.2",
           "PyQt5==5.13.2",
           "PyQt5==5.12.3",
-          "PyQt5==5.11.3",
-          "PyQt5==5.10.1 sip==4.19.8 mutagen==1.37",
+          "PyQt5==5.11.3 sip==4.19.8 mutagen==1.37",
         ]
 
     steps:

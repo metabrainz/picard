@@ -6,6 +6,6 @@ mutagen~=1.37
 PyJWT~=2.0
 pyobjc-core~=6.2; sys_platform == 'darwin'
 pyobjc-framework-Cocoa~=6.2; sys_platform == 'darwin'
-PyQt5~=5.10
+PyQt5~=5.11
 pywin32; sys_platform == 'win32'
 pyyaml>=5.1, <7
