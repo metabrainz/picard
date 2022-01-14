@@ -127,9 +127,9 @@ class TagsFromFileNamesDialog(PicardDialog):
             selected_index = items.index(tff_format)
         self.ui.format.addItems(items)
         self.ui.format.setCurrentIndex(selected_index)
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.HelpRole)
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtWidgets.QDialogButtonBox.AcceptRole)
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.RejectRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.ButtonRole.HelpRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
         self.ui.buttonbox.accepted.connect(self.accept)
         self.ui.buttonbox.rejected.connect(self.reject)
         self.ui.buttonbox.helpRequested.connect(self.show_help)
@@ -153,7 +153,7 @@ class TagsFromFileNamesDialog(PicardDialog):
             for i, column in enumerate(columns):
                 values = matches.get(column, [])
                 item.setText(i + 1, '; '.join(values))
-        self.ui.files.header().resizeSections(QtWidgets.QHeaderView.ResizeToContents)
+        self.ui.files.header().resizeSections(QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
         self.ui.files.header().setStretchLastSection(True)
 
     def accept(self):

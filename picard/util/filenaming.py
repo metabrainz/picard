@@ -348,7 +348,7 @@ def make_short_filename(basedir, relpath, win_compat=False, relative_to=""):
     except FileNotFoundError:
         # os.path.abspath raises an exception if basedir is a relative path and
         # cwd doesn't exist anymore
-        basedir = QStandardPaths.writableLocation(QStandardPaths.MusicLocation)
+        basedir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.MusicLocation)
     # also, make sure the relative path is clean
     relpath = os.path.normpath(relpath)
     if win_compat and relative_to:

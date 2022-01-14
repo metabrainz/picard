@@ -92,17 +92,17 @@ class Ui_EditTagDialog(object):
         self.verticalLayout_2.addWidget(self.buttonbox)
 
         self.retranslateUi(EditTagDialog)
-        self.buttonbox.accepted.connect(EditTagDialog.accept)
-        self.buttonbox.rejected.connect(EditTagDialog.reject)
-        self.move_value_up.clicked.connect(EditTagDialog.move_row_up)
-        self.move_value_down.clicked.connect(EditTagDialog.move_row_down)
-        self.edit_value.clicked.connect(EditTagDialog.edit_value)
-        self.add_value.clicked.connect(EditTagDialog.add_value)
-        self.value_list.itemChanged['QListWidgetItem*'].connect(EditTagDialog.value_edited)
-        self.remove_value.clicked.connect(EditTagDialog.remove_value)
-        self.value_list.itemSelectionChanged.connect(EditTagDialog.value_selection_changed)
-        self.tag_names.editTextChanged['QString'].connect(EditTagDialog.tag_changed)
-        self.tag_names.activated['QString'].connect(EditTagDialog.tag_selected)
+        self.buttonbox.accepted.connect(EditTagDialog.accept) # type: ignore
+        self.buttonbox.rejected.connect(EditTagDialog.reject) # type: ignore
+        self.move_value_up.clicked.connect(EditTagDialog.move_row_up) # type: ignore
+        self.move_value_down.clicked.connect(EditTagDialog.move_row_down) # type: ignore
+        self.edit_value.clicked.connect(EditTagDialog.edit_value) # type: ignore
+        self.add_value.clicked.connect(EditTagDialog.add_value) # type: ignore
+        self.value_list.itemChanged['QListWidgetItem*'].connect(EditTagDialog.value_edited) # type: ignore
+        self.remove_value.clicked.connect(EditTagDialog.remove_value) # type: ignore
+        self.value_list.itemSelectionChanged.connect(EditTagDialog.value_selection_changed) # type: ignore
+        self.tag_names.editTextChanged['QString'].connect(EditTagDialog.tag_changed) # type: ignore
+        self.tag_names.activated['QString'].connect(EditTagDialog.tag_selected) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(EditTagDialog)
         EditTagDialog.setTabOrder(self.tag_names, self.value_list)
         EditTagDialog.setTabOrder(self.value_list, self.edit_value)

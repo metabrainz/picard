@@ -89,7 +89,7 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
             postprocessor=process_html,
         )
 
-        if parent.layoutDirection() == QtCore.Qt.RightToLeft:
+        if parent.layoutDirection() == QtCore.Qt.LayoutDirection.RightToLeft:
             text_direction = 'rtl'
         else:
             text_direction = 'ltr'
@@ -122,14 +122,14 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         self.horizontalLayout.setContentsMargins(-1, 0, -1, -1)
         self.horizontalLayout.setObjectName("docs_horizontalLayout")
         self.scripting_doc_link = QtWidgets.QLabel(self)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.scripting_doc_link.sizePolicy().hasHeightForWidth())
         if include_link:
             self.scripting_doc_link.setSizePolicy(sizePolicy)
             self.scripting_doc_link.setMinimumSize(QtCore.QSize(0, 20))
-            self.scripting_doc_link.setAlignment(QtCore.Qt.AlignCenter)
+            self.scripting_doc_link.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             self.scripting_doc_link.setWordWrap(True)
             self.scripting_doc_link.setOpenExternalLinks(True)
             self.scripting_doc_link.setObjectName("docs_scripting_doc_link")

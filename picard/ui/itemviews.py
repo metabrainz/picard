@@ -214,7 +214,7 @@ class MainPanel(QtWidgets.QSplitter):
         TreeItem.base_color = self.palette().base().color()
         TreeItem.text_color = self.palette().text().color()
         TreeItem.text_color_secondary = self.palette() \
-            .brush(QtGui.QPalette.Disabled, QtGui.QPalette.Text).color()
+            .brush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Text).color()
         TrackItem.track_colors = defaultdict(lambda: TreeItem.text_color, {
             File.NORMAL: interface_colors.get_qcolor('entity_saved'),
             File.CHANGED: TreeItem.text_color,
@@ -244,7 +244,7 @@ class MainPanel(QtWidgets.QSplitter):
 
     def create_icons(self):
         if hasattr(QtWidgets.QStyle, 'SP_DirIcon'):
-            ClusterItem.icon_dir = self.style().standardIcon(QtWidgets.QStyle.SP_DirIcon)
+            ClusterItem.icon_dir = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DirIcon)
         else:
             ClusterItem.icon_dir = icontheme.lookup('folder', icontheme.ICON_SIZE_MENU)
         AlbumItem.icon_cd = icontheme.lookup('media-optical', icontheme.ICON_SIZE_MENU)
@@ -340,21 +340,21 @@ def paint_column_icon(painter, rect, icon):
 class ConfigurableColumnsHeader(TristateSortHeaderView):
 
     def __init__(self, parent=None):
-        super().__init__(QtCore.Qt.Horizontal, parent)
+        super().__init__(QtCore.Qt.Orientation.Horizontal, parent)
         self._visible_columns = set([0])
 
         # The following are settings applied to default headers
         # of QTreeView and QTreeWidget.
         self.setSectionsMovable(True)
         self.setStretchLastSection(True)
-        self.setDefaultAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        self.setDefaultAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.setSectionsClickable(False)
         self.sortIndicatorChanged.connect(self.on_sort_indicator_changed)
 
         # enable sorting, but don't actually use it by default
         # XXX it would be nice to be able to go to the 'no sort' mode, but the
         #     internal model that QTreeWidget uses doesn't support it
-        self.setSortIndicator(-1, QtCore.Qt.AscendingOrder)
+        self.setSortIndicator(-1, QtCore.Qt.SortOrder.AscendingOrder)
         self.setDefaultSectionSize(100)
 
     def show_column(self, column, show):
@@ -366,10 +366,10 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
                 self.resizeSection(column, self.defaultSectionSize())
             self._visible_columns.add(column)
             if column in {MainPanel.FINGERPRINT_COLUMN, MainPanel.ACOUSTICBRAINZ_COLUMN}:
-                self.setSectionResizeMode(column, QtWidgets.QHeaderView.Fixed)
+                self.setSectionResizeMode(column, QtWidgets.QHeaderView.ResizeMode.Fixed)
                 self.resizeSection(column, COLUMN_ICON_SIZE)
             else:
-                self.setSectionResizeMode(column, QtWidgets.QHeaderView.Interactive)
+                self.setSectionResizeMode(column, QtWidgets.QHeaderView.ResizeMode.Interactive)
         elif column in self._visible_columns:
             self._visible_columns.remove(column)
 
@@ -425,13 +425,13 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
 
     def on_sort_indicator_changed(self, index, order):
         if index in {MainPanel.FINGERPRINT_COLUMN, MainPanel.ACOUSTICBRAINZ_COLUMN}:
-            self.setSortIndicator(-1, QtCore.Qt.AscendingOrder)
+            self.setSortIndicator(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def lock(self, is_locked):
         super().lock(is_locked)
         for column_index in {MainPanel.FINGERPRINT_COLUMN, MainPanel.ACOUSTICBRAINZ_COLUMN}:
             if not self.is_locked and self.count() > column_index:
-                self.setSectionResizeMode(column_index, QtWidgets.QHeaderView.Fixed)
+                self.setSectionResizeMode(column_index, QtWidgets.QHeaderView.ResizeMode.Fixed)
 
 
 class BaseTreeView(QtWidgets.QTreeWidget):
@@ -450,7 +450,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.setAcceptDrops(True)
         self.setDragEnabled(True)
         self.setDropIndicatorShown(True)
-        self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
 
         self.setSortingEnabled(True)
 
@@ -681,10 +681,10 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             header.update_visible_columns([0, 1, 2])
             for i, size in enumerate([250, 50, 100]):
                 header.resizeSection(i, size)
-            self.sortByColumn(-1, QtCore.Qt.AscendingOrder)
+            self.sortByColumn(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def supportedDropActions(self):
-        return QtCore.Qt.CopyAction | QtCore.Qt.MoveAction
+        return QtCore.Qt.DropAction.CopyAction | QtCore.Qt.DropAction.MoveAction
 
     def mimeTypes(self):
         """List of MIME types accepted by this view."""
@@ -692,7 +692,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
-            event.setDropAction(QtCore.Qt.CopyAction)
+            event.setDropAction(QtCore.Qt.DropAction.CopyAction)
             event.accept()
         else:
             event.acceptProposedAction()
@@ -708,7 +708,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             pixmap = QtGui.QPixmap(rectangle.width(), rectangle.height())
             self.viewport().render(pixmap, QtCore.QPoint(), QtGui.QRegion(rectangle))
             drag.setPixmap(pixmap)
-            drag.exec_(QtCore.Qt.MoveAction)
+            drag.exec_(QtCore.Qt.DropAction.MoveAction)
 
     def mimeData(self, items):
         """Return MIME data for specified items."""
@@ -727,7 +727,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             mimeData.setUrls(files)
         return mimeData
 
-    def scrollTo(self, index, scrolltype=QtWidgets.QAbstractItemView.EnsureVisible):
+    def scrollTo(self, index, scrolltype=QtWidgets.QAbstractItemView.ScrollHint.EnsureVisible):
         # QTreeView.scrollTo resets the horizontal scroll position to 0.
         # Reimplemented to maintain current horizontal scroll position.
         hscrollbar = self.horizontalScrollBar()
@@ -741,7 +741,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         new_paths = []
         tagger = QtCore.QObject.tagger
         for url in urls:
-            log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.RemoveUserInfo))
+            log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo))
             if url.scheme() == "file" or not url.scheme():
                 filename = normpath(url.toLocalFile().rstrip("\0"))
                 file = tagger.files.get(filename)
@@ -760,7 +760,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     def dropEvent(self, event):
         # Dropping with Alt key pressed forces all dropped files being
         # assigned to the same track.
-        if event.keyboardModifiers() == QtCore.Qt.AltModifier:
+        if event.keyboardModifiers() == QtCore.Qt.KeyboardModifier.AltModifier:
             self._move_to_multi_tracks = False
         return QtWidgets.QTreeView.dropEvent(self, event)
 
@@ -814,7 +814,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             cluster_item.add_files(cluster.files)
 
     def moveCursor(self, action, modifiers):
-        if action in {QtWidgets.QAbstractItemView.MoveUp, QtWidgets.QAbstractItemView.MoveDown}:
+        if action in {QtWidgets.QAbstractItemView.CursorAction.MoveUp, QtWidgets.QAbstractItemView.CursorAction.MoveDown}:
             item = self.currentItem()
             if item and not item.isSelected():
                 self.setCurrentItem(item)
@@ -897,7 +897,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
             MainPanel.TRACKNUMBER_COLUMN,
             MainPanel.DISCNUMBER_COLUMN,
         ]:
-            self.setTextAlignment(column, QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
+            self.setTextAlignment(column, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.setSizeHint(MainPanel.FINGERPRINT_COLUMN, ICON_SIZE)
         self.setSizeHint(MainPanel.ACOUSTICBRAINZ_COLUMN, ICON_SIZE)
 
@@ -1044,7 +1044,7 @@ class NatAlbumItem(AlbumItem):
         if not tree_widget:
             return True
         order = tree_widget.header().sortIndicatorOrder()
-        return order == QtCore.Qt.AscendingOrder
+        return order == QtCore.Qt.SortOrder.AscendingOrder
 
 
 class TrackItem(TreeItem):

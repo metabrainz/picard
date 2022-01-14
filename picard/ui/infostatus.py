@@ -56,7 +56,7 @@ class InfoStatus(QtWidgets.QWidget, Ui_InfoStatus):
         self.label2.setPixmap(self.icon_file.pixmap(size))
         self.label3.setPixmap(self.icon_cd.pixmap(size))
         self.label4.setPixmap(self.icon_file_pending.pixmap(size))
-        self.label5.setPixmap(self.icon_download.pixmap(size, QtGui.QIcon.Disabled))
+        self.label5.setPixmap(self.icon_download.pixmap(size, QtGui.QIcon.Mode.Disabled))
         self._init_tooltips()
 
     def _create_icons(self):
@@ -165,8 +165,8 @@ class InfoStatus(QtWidgets.QWidget, Ui_InfoStatus):
 
     def set_pending_requests(self, num):
         if num <= 0:
-            enabled = QtGui.QIcon.Disabled
+            enabled = QtGui.QIcon.Mode.Disabled
         else:
-            enabled = QtGui.QIcon.Normal
+            enabled = QtGui.QIcon.Mode.Normal
         self.label5.setPixmap(self.icon_download.pixmap(self._size, enabled))
         self.val5.setText(str(num))

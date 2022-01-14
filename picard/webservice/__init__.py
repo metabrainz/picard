@@ -114,7 +114,7 @@ class WSRequest(QNetworkRequest):
             data: Data to include with ``PUT`` or ``POST`` requests.
             mblogin: Hints that this request should be tied to a MusicBrainz
             account, requiring that we obtain an OAuth token first.
-            cacheloadcontrol: See `QNetworkRequest.CacheLoadControlAttribute`.
+            cacheloadcontrol: See `QNetworkRequest.Attribute.CacheLoadControlAttribute`.
             refresh: Indicates a user-specified resource refresh, such as when
             the user wishes to reload a release.  Marks the request as high priority
             and disables caching.
@@ -156,13 +156,13 @@ class WSRequest(QNetworkRequest):
         self._init_headers()
 
     def _init_headers(self):
-        self.setHeader(QNetworkRequest.UserAgentHeader, USER_AGENT_STRING)
+        self.setHeader(QNetworkRequest.KnownHeaders.UserAgentHeader, USER_AGENT_STRING)
 
         if self.mblogin or self._high_prio_no_cache:
-            self.setPriority(QNetworkRequest.HighPriority)
-            self.setAttribute(QNetworkRequest.CacheLoadControlAttribute, QNetworkRequest.AlwaysNetwork)
+            self.setPriority(QNetworkRequest.Priority.HighPriority)
+            self.setAttribute(QNetworkRequest.Attribute.CacheLoadControlAttribute, QNetworkRequest.CacheLoadControl.AlwaysNetwork)
         elif self.cacheloadcontrol is not None:
-            self.setAttribute(QNetworkRequest.CacheLoadControlAttribute, self.cacheloadcontrol)
+            self.setAttribute(QNetworkRequest.Attribute.CacheLoadControlAttribute, self.cacheloadcontrol)
 
         if self.parse_response_type:
             try:
@@ -176,7 +176,7 @@ class WSRequest(QNetworkRequest):
         if self.data:
             if not self.request_mimetype:
                 self.request_mimetype = self.response_mimetype or "application/x-www-form-urlencoded"
-            self.setHeader(QNetworkRequest.ContentTypeHeader, self.request_mimetype)
+            self.setHeader(QNetworkRequest.KnownHeaders.ContentTypeHeader, self.request_mimetype)
 
     def _update_authorization_header(self):
         authorization = b""
@@ -226,7 +226,7 @@ class WSGetRequest(WSRequest):
     def _init_headers(self):
         self._high_prio_no_cache = self.refresh
         super()._init_headers()
-        self.setAttribute(QNetworkRequest.HttpPipeliningAllowedAttribute,
+        self.setAttribute(QNetworkRequest.Attribute.HttpPipeliningAllowedAttribute,
                           True)
 
 
@@ -344,24 +344,24 @@ class WebService(QtCore.QObject):
 
     @staticmethod
     def http_response_code(reply):
-        response_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        response_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)
         return int(response_code) if response_code else 0
 
     @staticmethod
     def http_response_phrase(reply):
-        return reply.attribute(QNetworkRequest.HttpReasonPhraseAttribute)
+        return reply.attribute(QNetworkRequest.Attribute.HttpReasonPhraseAttribute)
 
     @staticmethod
     def http_response_safe_url(reply):
-        return reply.request().url().toString(QUrl.RemoveUserInfo)
+        return reply.request().url().toString(QUrl.UrlFormattingOption.RemoveUserInfo)
 
     def _network_accessible_changed(self, accessible):
         # Qt's network accessibility check sometimes fails, e.g. with VPNs on Windows.
         # If the accessibility is reported to be not accessible, set it to
         # unknown instead. Let's just try any request and handle the error.
         # See https://tickets.metabrainz.org/browse/PICARD-1791
-        if accessible == QtNetwork.QNetworkAccessManager.NotAccessible:
-            self.manager.setNetworkAccessible(QtNetwork.QNetworkAccessManager.UnknownAccessibility)
+        if accessible == QtNetwork.QNetworkAccessManager.NetworkAccessibility.NotAccessible:
+            self.manager.setNetworkAccessible(QtNetwork.QNetworkAccessManager.NetworkAccessibility.UnknownAccessibility)
         log.debug("Network accessible requested: %s, actual: %s", accessible, self.manager.networkAccessible())
 
     def _init_queues(self):
@@ -394,9 +394,9 @@ class WebService(QtCore.QObject):
         config = get_config()
         if config.setting["use_proxy"]:
             if config.setting["proxy_type"] == 'socks':
-                proxy.setType(QtNetwork.QNetworkProxy.Socks5Proxy)
+                proxy.setType(QtNetwork.QNetworkProxy.ProxyType.Socks5Proxy)
             else:
-                proxy.setType(QtNetwork.QNetworkProxy.HttpProxy)
+                proxy.setType(QtNetwork.QNetworkProxy.ProxyType.HttpProxy)
             proxy.setHostName(config.setting["proxy_server_host"])
             proxy.setPort(config.setting["proxy_server_port"])
             if config.setting["proxy_username"]:
@@ -431,7 +431,7 @@ class WebService(QtCore.QObject):
         # Aborts a request if no data gets transferred for TRANSFER_TIMEOUT milliseconds.
         timer = QtCore.QTimer(self)
         timer.setSingleShot(True)
-        timer.setTimerType(QtCore.Qt.PreciseTimer)
+        timer.setTimerType(QtCore.Qt.TimerType.PreciseTimer)
         timer.timeout.connect(partial(self._timeout_request, reply))
         reply.finished.connect(timer.stop)
         reset_callback = partial(self._reset_transfer_timeout, timer)
@@ -461,7 +461,7 @@ class WebService(QtCore.QObject):
             from QT 4.7
         """
         return leftUrl.port(80) == rightUrl.port(80) and \
-            leftUrl.toString(QUrl.RemovePort) == rightUrl.toString(QUrl.RemovePort)
+            leftUrl.toString(QUrl.UrlFormattingOption.RemovePort) == rightUrl.toString(QUrl.UrlFormattingOption.RemovePort)
 
     @staticmethod
     def url_port(url):
@@ -475,10 +475,10 @@ class WebService(QtCore.QObject):
         # merge with base url (to cover the possibility of the URL being relative)
         redirect = url.resolved(redirect)
         if not WebService.urls_equivalent(redirect, reply.request().url()):
-            log.debug("Redirect to %s requested", redirect.toString(QUrl.RemoveUserInfo))
+            log.debug("Redirect to %s requested", redirect.toString(QUrl.UrlFormattingOption.RemoveUserInfo))
             redirect_host = redirect.host()
             redirect_port = self.url_port(redirect)
-            redirect_query = dict(QUrlQuery(redirect).queryItems(QUrl.FullyEncoded))
+            redirect_query = dict(QUrlQuery(redirect).queryItems(QUrl.ComponentFormattingOption.FullyEncoded))
             redirect_path = redirect.path()
 
             original_host = url.host()
@@ -492,7 +492,7 @@ class WebService(QtCore.QObject):
                      redirect_path,
                      request.handler, request.parse_response_type, priority=True, important=True,
                      refresh=request.refresh, queryargs=redirect_query, mblogin=request.mblogin,
-                     cacheloadcontrol=request.attribute(QNetworkRequest.CacheLoadControlAttribute))
+                     cacheloadcontrol=request.attribute(QNetworkRequest.Attribute.CacheLoadControlAttribute))
         else:
             log.error("Redirect loop: %s",
                       self.http_response_safe_url(reply)
@@ -534,8 +534,8 @@ class WebService(QtCore.QObject):
             slow_down = (slow_down or response_code >= 500)
 
         else:
-            redirect = reply.attribute(QNetworkRequest.RedirectionTargetAttribute)
-            from_cache = reply.attribute(QNetworkRequest.SourceIsFromCacheAttribute)
+            redirect = reply.attribute(QNetworkRequest.Attribute.RedirectionTargetAttribute)
+            from_cache = reply.attribute(QNetworkRequest.Attribute.SourceIsFromCacheAttribute)
             cached = ' (CACHED)' if from_cache else ''
             log.debug("Received reply for %s: HTTP %d (%s) %s",
                       url,

@@ -54,7 +54,7 @@ class Ui_TagsOptionsPage(object):
         self.vboxlayout.addWidget(self.before_tagging)
 
         self.retranslateUi(TagsOptionsPage)
-        self.clear_existing_tags.toggled['bool'].connect(self.preserve_images.setEnabled)
+        self.clear_existing_tags.toggled['bool'].connect(self.preserve_images.setEnabled) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(TagsOptionsPage)
         TagsOptionsPage.setTabOrder(self.write_tags, self.preserve_timestamps)
         TagsOptionsPage.setTabOrder(self.preserve_timestamps, self.clear_existing_tags)

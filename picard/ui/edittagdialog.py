@@ -59,7 +59,7 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
         tag = self.get_tag_name(index)
         if tag.partition(':')[0] in {'comment', 'lyrics'}:
             editor = QtWidgets.QPlainTextEdit(parent)
-            editor.setFrameStyle(editor.style().styleHint(QtWidgets.QStyle.SH_ItemView_DrawDelegateFrame, None, editor))
+            editor.setFrameStyle(editor.style().styleHint(QtWidgets.QStyle.StyleHint.SH_ItemView_DrawDelegateFrame, None, editor))
             editor.setMinimumSize(QtCore.QSize(0, 80))
         else:
             editor = super().createEditor(parent, option, index)
@@ -72,16 +72,16 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
             completer = QtWidgets.QCompleter(AUTOCOMPLETE_RELEASE_TYPES, editor)
         elif tag == 'releasestatus':
             completer = QtWidgets.QCompleter(AUTOCOMPLETE_RELEASE_STATUS, editor)
-            completer.setModelSorting(QtWidgets.QCompleter.CaseInsensitivelySortedModel)
+            completer.setModelSorting(QtWidgets.QCompleter.ModelSorting.CaseInsensitivelySortedModel)
         elif tag == 'releasecountry':
             completer = QtWidgets.QCompleter(AUTOCOMPLETE_RELEASE_COUNTRIES, editor)
-            completer.setModelSorting(QtWidgets.QCompleter.CaseInsensitivelySortedModel)
+            completer.setModelSorting(QtWidgets.QCompleter.ModelSorting.CaseInsensitivelySortedModel)
         elif tag == 'media':
             completer = QtWidgets.QCompleter(AUTOCOMPLETE_RELEASE_FORMATS, editor)
-            completer.setModelSorting(QtWidgets.QCompleter.CaseInsensitivelySortedModel)
+            completer.setModelSorting(QtWidgets.QCompleter.ModelSorting.CaseInsensitivelySortedModel)
         if editor and completer:
-            completer.setCompletionMode(QtWidgets.QCompleter.UnfilteredPopupCompletion)
-            completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
+            completer.setCompletionMode(QtWidgets.QCompleter.CompletionMode.UnfilteredPopupCompletion)
+            completer.setCaseSensitivity(QtCore.Qt.CaseSensitivity.CaseInsensitive)
             editor.setCompleter(completer)
         return editor
 
@@ -111,7 +111,7 @@ class EditTagDialog(PicardDialog):
         visible_tags = [tn for tn in self.default_tags if not tn.startswith("~")]
         tag_names.addItems(visible_tags)
         self.completer = QtWidgets.QCompleter(visible_tags, tag_names)
-        self.completer.setCompletionMode(QtWidgets.QCompleter.PopupCompletion)
+        self.completer.setCompletionMode(QtWidgets.QCompleter.CompletionMode.PopupCompletion)
         tag_names.setCompleter(self.completer)
         self.value_list.model().rowsInserted.connect(self.on_rows_inserted)
         self.value_list.model().rowsRemoved.connect(self.on_rows_removed)
@@ -120,12 +120,12 @@ class EditTagDialog(PicardDialog):
         self.value_selection_changed()
 
     def keyPressEvent(self, event):
-        if event.modifiers() == QtCore.Qt.NoModifier and event.key() in {QtCore.Qt.Key_Enter, QtCore.Qt.Key_Return}:
+        if event.modifiers() == QtCore.Qt.KeyboardModifier.NoModifier and event.key() in {QtCore.Qt.Key.Key_Enter, QtCore.Qt.Key.Key_Return}:
             self.add_or_edit_value()
             event.accept()
-        elif event.matches(QtGui.QKeySequence.Delete):
+        elif event.matches(QtGui.QKeySequence.StandardKey.Delete):
             self.remove_value()
-        elif event.key() == QtCore.Qt.Key_Insert:
+        elif event.key() == QtCore.Qt.Key.Key_Insert:
             self.add_value()
         else:
             super().keyPressEvent(event)
@@ -144,7 +144,7 @@ class EditTagDialog(PicardDialog):
 
     def add_value(self):
         item = QtWidgets.QListWidgetItem()
-        item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
+        item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsEditable)
         self.value_list.addItem(item)
         self.value_list.setCurrentItem(item)
         self.value_list.editItem(item)
@@ -206,7 +206,7 @@ class EditTagDialog(PicardDialog):
         tag_names.editTextChanged.disconnect(self.tag_changed)
         line_edit = tag_names.lineEdit()
         cursor_pos = line_edit.cursorPosition()
-        flags = QtCore.Qt.MatchFixedString | QtCore.Qt.MatchCaseSensitive
+        flags = QtCore.Qt.MatchFlag.MatchFixedString | QtCore.Qt.MatchFlag.MatchCaseSensitive
 
         # if the previous tag was new and has no value, remove it from the QComboBox.
         # e.g. typing "XYZ" should not leave "X" or "XY" in the QComboBox.
@@ -243,14 +243,14 @@ class EditTagDialog(PicardDialog):
         self.value_list.model().rowsInserted.disconnect(self.on_rows_inserted)
         self._add_value_items(values)
         self.value_list.model().rowsInserted.connect(self.on_rows_inserted)
-        self.value_list.setCurrentItem(self.value_list.item(0), QtCore.QItemSelectionModel.SelectCurrent)
+        self.value_list.setCurrentItem(self.value_list.item(0), QtCore.QItemSelectionModel.SelectionFlag.SelectCurrent)
         tag_names.editTextChanged.connect(self.tag_changed)
 
     def _add_value_items(self, values):
         values = [v for v in values if v] or [""]
         for value in values:
             item = QtWidgets.QListWidgetItem(value)
-            item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsDragEnabled)
+            item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsEditable | QtCore.Qt.ItemFlag.ItemIsDragEnabled)
             font = item.font()
             font.setItalic(self.different)
             item.setFont(font)

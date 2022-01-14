@@ -58,8 +58,8 @@ def get_logarithmic_volume(player_value):
     """Return logarithmic scale volume to set slider position"""
     logarithmic_volume = QtMultimedia.QAudio.convertVolume(
         player_value / 100.,
-        QtMultimedia.QAudio.LinearVolumeScale,
-        QtMultimedia.QAudio.LogarithmicVolumeScale)
+        QtMultimedia.QAudio.VolumeScale.LinearVolumeScale,
+        QtMultimedia.QAudio.VolumeScale.LogarithmicVolumeScale)
     return QtCore.qRound(logarithmic_volume * 100)
 
 
@@ -67,14 +67,14 @@ def get_linear_volume(slider_value):
     """Return linear scale volume from slider position"""
     linear_volume = QtMultimedia.QAudio.convertVolume(
         slider_value / 100.,
-        QtMultimedia.QAudio.LogarithmicVolumeScale,
-        QtMultimedia.QAudio.LinearVolumeScale)
+        QtMultimedia.QAudio.VolumeScale.LogarithmicVolumeScale,
+        QtMultimedia.QAudio.VolumeScale.LinearVolumeScale)
     return QtCore.qRound(linear_volume * 100)
 
 
 def get_text_width(font, text):
     metrics = QtGui.QFontMetrics(font)
-    size = metrics.size(QtCore.Qt.TextSingleLine, text)
+    size = metrics.size(QtCore.Qt.TextFlag.TextSingleLine, text)
     return size.width()
 
 
@@ -89,15 +89,15 @@ class Player(QtCore.QObject):
         if qt_multimedia_available:
             log.debug('Internal player: QtMultimedia available, initializing QMediaPlayer')
             player = QtMultimedia.QMediaPlayer(parent)
-            player.setAudioRole(QtMultimedia.QAudio.MusicRole)
+            player.setAudioRole(QtMultimedia.QAudio.Role.MusicRole)
             self.state_changed = player.stateChanged
             self._logarithmic_volume = get_logarithmic_volume(player.volume())
             availability = player.availability()
-            if availability == QtMultimedia.QMultimedia.Available:
+            if availability == QtMultimedia.QMultimedia.AvailabilityStatus.Available:
                 log.debug('Internal player: available, QMediaPlayer set up')
                 self._player = player
                 self._player.error.connect(self._on_error)
-            elif availability == QtMultimedia.QMultimedia.ServiceMissing:
+            elif availability == QtMultimedia.QMultimedia.AvailabilityStatus.ServiceMissing:
                 log.warning("Internal player: unavailable, service is missing")
             else:
                 log.warning("Internal player: unavailable, status=%d", availability)
@@ -130,7 +130,7 @@ class Player(QtCore.QObject):
         """Play selected tracks with an internal player"""
         self._player.stop()
         playlist = QtMultimedia.QMediaPlaylist(self)
-        playlist.setPlaybackMode(QtMultimedia.QMediaPlaylist.Sequential)
+        playlist.setPlaybackMode(QtMultimedia.QMediaPlaylist.PlaybackMode.Sequential)
         playlist.addMedia([QtMultimedia.QMediaContent(QtCore.QUrl.fromLocalFile(file.filename))
                           for file in iter_files_from_objects(self._selected_objects)])
         self._player.setPlaylist(playlist)
@@ -159,21 +159,21 @@ class Player(QtCore.QObject):
             # Linux and does work unreliable on Windows.
             # Force playback restart to have the rate change applied immediately.
             player_state = player.state()
-            if player_state != QtMultimedia.QMediaPlayer.StoppedState:
+            if player_state != QtMultimedia.QMediaPlayer.State.StoppedState:
                 position = player.position()
                 player.stop()
                 player.setPosition(position)
-                if player_state == QtMultimedia.QMediaPlayer.PlayingState:
+                if player_state == QtMultimedia.QMediaPlayer.State.PlayingState:
                     player.play()
-                elif player_state == QtMultimedia.QMediaPlayer.PausedState:
+                elif player_state == QtMultimedia.QMediaPlayer.State.PausedState:
                     player.pause()
 
     def _on_error(self, error):
-        if error == QtMultimedia.QMediaPlayer.FormatError:
+        if error == QtMultimedia.QMediaPlayer.Error.FormatError:
             msg = _("Internal player: The format of a media resource isn't (fully) supported")
-        elif error == QtMultimedia.QMediaPlayer.AccessDeniedError:
+        elif error == QtMultimedia.QMediaPlayer.Error.AccessDeniedError:
             msg = _("Internal player: There are not the appropriate permissions to play a media resource")
-        elif error == QtMultimedia.QMediaPlayer.ServiceMissingError:
+        elif error == QtMultimedia.QMediaPlayer.Error.ServiceMissingError:
             msg = _("Internal player: A valid playback service was not found, playback cannot proceed")
         else:
             msg = _("Internal player: error, code=%d, msg=%s") % (error, self._player.errorString())
@@ -184,9 +184,9 @@ class PlayerToolbar(QtWidgets.QToolBar):
     def __init__(self, parent, player):
         super().__init__(_("Player"), parent)
         self.setObjectName("player_toolbar")
-        self.setAllowedAreas(QtCore.Qt.TopToolBarArea
-            | QtCore.Qt.BottomToolBarArea
-            | QtCore.Qt.NoToolBarArea)
+        self.setAllowedAreas(QtCore.Qt.ToolBarArea.TopToolBarArea
+            | QtCore.Qt.ToolBarArea.BottomToolBarArea
+            | QtCore.Qt.ToolBarArea.NoToolBarArea)
 
         self.player = player
 
@@ -231,8 +231,8 @@ class PlayerToolbar(QtWidgets.QToolBar):
     def _add_toolbar_action(self, action):
         self.addAction(action)
         widget = self.widgetForAction(action)
-        widget.setFocusPolicy(QtCore.Qt.TabFocus)
-        widget.setAttribute(QtCore.Qt.WA_MacShowFocusRect)
+        widget.setFocusPolicy(QtCore.Qt.FocusPolicy.TabFocus)
+        widget.setAttribute(QtCore.Qt.WidgetAttribute.WA_MacShowFocusRect)
 
     def play(self):
         self.player.play()
@@ -272,14 +272,14 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
         tool_font = QtWidgets.QApplication.font("QToolButton")
 
         self.progress_slider = ClickableSlider(self)
-        self.progress_slider.setOrientation(QtCore.Qt.Horizontal)
+        self.progress_slider.setOrientation(QtCore.Qt.Orientation.Horizontal)
         self.progress_slider.setEnabled(False)
         self.progress_slider.setMinimumWidth(30)
         self.progress_slider.setSingleStep(1000)
         self.progress_slider.setPageStep(3000)
         self.progress_slider.valueChanged.connect(self.on_value_changed)
         self.media_name_label = ElidedLabel(self)
-        self.media_name_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.media_name_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.media_name_label.setFont(tool_font)
 
         slider_container = QtWidgets.QWidget(self)
@@ -337,7 +337,7 @@ class PlaybackRateButton(QtWidgets.QToolButton):
         super().__init__(parent)
         self.popover_position = 'bottom'
         self.rate_fmt = N_('%1.1f ×')
-        button_margin = self.style().pixelMetric(QtWidgets.QStyle.PM_ButtonMargin)
+        button_margin = self.style().pixelMetric(QtWidgets.QStyle.PixelMetric.PM_ButtonMargin)
         min_width = get_text_width(self.font(), _(self.rate_fmt) % 8.8)
         self.setMinimumWidth(min_width + (2 * button_margin) + 2)
         self.set_playback_rate(playback_rate)
@@ -356,7 +356,7 @@ class PlaybackRateButton(QtWidgets.QToolButton):
         popover.slider.setSingleStep(1)
         popover.slider.setPageStep(1)
         popover.slider.setTickInterval(1)
-        popover.slider.setTickPosition(QtWidgets.QSlider.TicksBelow)
+        popover.slider.setTickPosition(QtWidgets.QSlider.TickPosition.TicksBelow)
         popover.value_changed.connect(self.on_slider_value_changed)
         popover.show()
 
@@ -394,7 +394,7 @@ class VolumeControlButton(QtWidgets.QToolButton):
         self.step = 3
         self.volume_fmt = N_('%d%%')
         self.set_volume(volume)
-        button_margin = self.style().pixelMetric(QtWidgets.QStyle.PM_ButtonMargin)
+        button_margin = self.style().pixelMetric(QtWidgets.QStyle.PixelMetric.PM_ButtonMargin)
         min_width = get_text_width(self.font(), _(self.volume_fmt) % 888)
         self.setMinimumWidth(min_width + (2 * button_margin) + 2)
         self.clicked.connect(self.show_popover)

@@ -24,7 +24,7 @@ class Ui_InfoDialog(object):
         self.info_scroll.setObjectName("info_scroll")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setEnabled(True)
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 493, 358))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 623, 361))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayoutLabel = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayoutLabel.setObjectName("verticalLayoutLabel")

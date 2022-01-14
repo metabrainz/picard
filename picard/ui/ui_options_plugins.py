@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_PluginsOptionsPage(object):
     def setupUi(self, PluginsOptionsPage):
@@ -134,4 +136,3 @@ class Ui_PluginsOptionsPage(object):
         self.folder_open.setText(_("Open plugin folder"))
         self.reload_list_of_plugins.setText(_("Reload List of Plugins"))
         self.groupBox.setTitle(_("Details"))
-

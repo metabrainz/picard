@@ -87,7 +87,7 @@ class OptionsPage(QtWidgets.QWidget):
             config.setting[key] = old_options[key]
 
     def display_error(self, error):
-        dialog = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Warning, error.title, error.info, QtWidgets.QMessageBox.Ok, self)
+        dialog = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Icon.Warning, error.title, error.info, QtWidgets.QMessageBox.StandardButton.Ok, self)
         dialog.exec_()
 
     def init_regex_checker(self, regex_edit, regex_error):

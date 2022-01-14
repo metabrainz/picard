@@ -72,11 +72,11 @@ class CoverArtThumbnail(ActiveLabel):
         self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
         self.pixel_ratio = self.tagger.primaryScreen().devicePixelRatio()
         w, h = self.scaled(128, 128)
-        self.shadow = self.shadow.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+        self.shadow = self.shadow.scaled(w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
         self.shadow.setDevicePixelRatio(self.pixel_ratio)
         self.release = None
         self.setPixmap(self.shadow)
-        self.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
+        self.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter)
         self.setMargin(0)
         self.setAcceptDrops(drops)
         self.clicked.connect(self.open_release_page)
@@ -144,7 +144,7 @@ class CoverArtThumbnail(ActiveLabel):
     def decorate_cover(self, pixmap):
         offx, offy, w, h = self.scaled(1, 1, 121, 121)
         cover = QtGui.QPixmap(self.shadow)
-        pixmap = pixmap.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+        pixmap = pixmap.scaled(w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
         pixmap.setDevicePixelRatio(self.pixel_ratio)
         painter = QtGui.QPainter(cover)
         bgcolor = QtGui.QColor.fromRgb(0, 0, 0, 128)
@@ -192,7 +192,7 @@ class CoverArtThumbnail(ActiveLabel):
                     offset = displacements * (len(data_to_paint) - 1)
                 stack_width, stack_height = (w + offset, h + offset)
                 pixmap = QtGui.QPixmap(stack_width, stack_height)
-                bgcolor = self.palette().color(QtGui.QPalette.Window)
+                bgcolor = self.palette().color(QtGui.QPalette.ColorRole.Window)
                 painter = QtGui.QPainter(pixmap)
                 painter.fillRect(QtCore.QRectF(0, 0, stack_width, stack_height), bgcolor)
                 cx = stack_width - w // 2
@@ -232,7 +232,7 @@ class CoverArtThumbnail(ActiveLabel):
                         painter.setPen(bgcolor)
                         painter.drawLine(x + 121 + 2, y + 121 + 2 + k, x + 121 + border_length + 2, y + 121 + 2 + k)
                 painter.end()
-                pixmap = pixmap.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+                pixmap = pixmap.scaled(w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
             self._pixmap_cache[key] = pixmap
 
         pixmap.setDevicePixelRatio(self.pixel_ratio)
@@ -312,13 +312,13 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.item = None
         self.pixmap_cache = LRUCache(40)
         self.cover_art_label = QtWidgets.QLabel('')
-        self.cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
+        self.cover_art_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter)
         self.cover_art = CoverArtThumbnail(False, True, self.pixmap_cache, parent)
         self.cover_art.image_dropped.connect(self.fetch_remote_image)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.orig_cover_art_label = QtWidgets.QLabel('')
         self.orig_cover_art = CoverArtThumbnail(False, False, self.pixmap_cache, parent)
-        self.orig_cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
+        self.orig_cover_art_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter)
         self.show_details_button = QtWidgets.QPushButton(_('Show more details'), self)
         self.layout.addWidget(self.cover_art_label)
         self.layout.addWidget(self.cover_art)
@@ -425,7 +425,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
             return
 
         data = bytes(data)
-        mime = reply.header(QtNetwork.QNetworkRequest.ContentTypeHeader)
+        mime = reply.header(QtNetwork.QNetworkRequest.KnownHeaders.ContentTypeHeader)
         # Some sites return a mime type with encoding like "image/jpeg; charset=UTF-8"
         mime = mime.split(';')[0]
         url_query = QtCore.QUrlQuery(url.query())
@@ -440,12 +440,12 @@ class CoverArtBox(QtWidgets.QGroupBox):
                 pass
         if url_query.hasQueryItem("imgurl"):
             # This may be a google images result, try to get the URL which is encoded in the query
-            url = QtCore.QUrl(url_query.queryItemValue("imgurl", QtCore.QUrl.FullyDecoded))
+            url = QtCore.QUrl(url_query.queryItemValue("imgurl", QtCore.QUrl.ComponentFormattingOption.FullyDecoded))
             log.debug('Possible Google images result, trying to fetch imgurl=%s', url.toString())
             self.fetch_remote_image(url)
         elif url_query.hasQueryItem("mediaurl"):
             # Bing uses mediaurl
-            url = QtCore.QUrl(url_query.queryItemValue("mediaurl", QtCore.QUrl.FullyDecoded))
+            url = QtCore.QUrl(url_query.queryItemValue("mediaurl", QtCore.QUrl.ComponentFormattingOption.FullyDecoded))
             log.debug('Possible Bing images result, trying to fetch imgurl=%s', url.toString())
             self.fetch_remote_image(url)
         else:

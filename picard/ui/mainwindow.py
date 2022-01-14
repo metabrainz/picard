@@ -255,7 +255,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if IS_MACOS:
             self.setUnifiedTitleAndToolBarOnMac(True)
 
-        main_layout = QtWidgets.QSplitter(QtCore.Qt.Vertical)
+        main_layout = QtWidgets.QSplitter(QtCore.Qt.Orientation.Vertical)
         main_layout.setObjectName('main_window_bottom_splitter')
         main_layout.setChildrenCollapsible(False)
         main_layout.setContentsMargins(0, 0, 0, 0)
@@ -303,14 +303,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         # On macOS Command+Backspace triggers the so called "Forward Delete".
         # It should be treated the same as the Delete button.
         is_forward_delete = IS_MACOS and \
-            event.key() == QtCore.Qt.Key_Backspace and \
-            event.modifiers() & QtCore.Qt.ControlModifier
-        if event.matches(QtGui.QKeySequence.Delete) or is_forward_delete:
+            event.key() == QtCore.Qt.Key.Key_Backspace and \
+            event.modifiers() & QtCore.Qt.KeyboardModifier.ControlModifier
+        if event.matches(QtGui.QKeySequence.StandardKey.Delete) or is_forward_delete:
             if self.metadata_box.hasFocus():
                 self.metadata_box.remove_selected_tags()
             else:
                 self.remove()
-        elif event.matches(QtGui.QKeySequence.Find):
+        elif event.matches(QtGui.QKeySequence.StandardKey.Find):
             self.search_edit.setFocus(True)
         else:
             super().keyPressEvent(event)
@@ -360,8 +360,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         if unsaved_files > 0:
             msg = QMessageBox(self)
-            msg.setIcon(QMessageBox.Question)
-            msg.setWindowModality(QtCore.Qt.WindowModal)
+            msg.setIcon(QMessageBox.Icon.Question)
+            msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
             msg.setWindowTitle(_("Unsaved Changes"))
             msg.setText(_("Are you sure you want to quit Picard?"))
             txt = ngettext(
@@ -369,12 +369,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 "There are %d unsaved files. Closing Picard will lose all unsaved changes.",
                 unsaved_files) % unsaved_files
             msg.setInformativeText(txt)
-            cancel = msg.addButton(QMessageBox.Cancel)
+            cancel = msg.addButton(QMessageBox.StandardButton.Cancel)
             msg.setDefaultButton(cancel)
-            msg.addButton(_("&Quit Picard"), QMessageBox.YesRole)
+            msg.addButton(_("&Quit Picard"), QMessageBox.ButtonRole.YesRole)
             ret = msg.exec_()
 
-            if ret == QMessageBox.Cancel:
+            if ret == QMessageBox.StandardButton.Cancel:
                 return False
 
         return True
@@ -382,7 +382,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def saveWindowState(self):
         config = get_config()
         config.persist["window_state"] = self.saveState()
-        isMaximized = int(self.windowState()) & QtCore.Qt.WindowMaximized != 0
+        isMaximized = int(self.windowState()) & QtCore.Qt.WindowState.WindowMaximized != 0
         self.save_geometry()
         config.persist["window_maximized"] = isMaximized
         config.persist["view_metadata_view"] = self.show_metadata_view_action.isChecked()
@@ -399,7 +399,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.restoreState(config.persist["window_state"])
         self.restore_geometry()
         if config.persist["window_maximized"]:
-            self.setWindowState(QtCore.Qt.WindowMaximized)
+            self.setWindowState(QtCore.Qt.WindowState.WindowMaximized)
         splitters = config.persist["splitters_MainWindow"]
         if splitters is None or 'main_window_bottom_splitter' not in splitters:
             self.centralWidget().setSizes([366, 194])
@@ -495,15 +495,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             config = get_config()
             if not config.setting["acoustid_apikey"]:
                 msg = QtWidgets.QMessageBox(self)
-                msg.setIcon(QtWidgets.QMessageBox.Information)
-                msg.setWindowModality(QtCore.Qt.WindowModal)
+                msg.setIcon(QtWidgets.QMessageBox.Icon.Information)
+                msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
                 msg.setWindowTitle(_("AcoustID submission not configured"))
                 msg.setText(_(
                     "You need to configure your AcoustID API key before you can submit fingerprints."))
                 open_options = QtWidgets.QPushButton(
                     icontheme.lookup('preferences-desktop'), _("Open AcoustID options"))
-                msg.addButton(QtWidgets.QMessageBox.Cancel)
-                msg.addButton(open_options, QtWidgets.QMessageBox.YesRole)
+                msg.addButton(QtWidgets.QMessageBox.StandardButton.Cancel)
+                msg.addButton(open_options, QtWidgets.QMessageBox.ButtonRole.YesRole)
                 msg.exec_()
                 if msg.clickedButton() == open_options:
                     self.show_options("fingerprinting")
@@ -513,7 +513,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     @MainWindowActions.add()
     def _create_options_action(self):
         action = QtWidgets.QAction(icontheme.lookup('preferences-desktop'), _("&Options..."), self)
-        action.setMenuRole(QtWidgets.QAction.PreferencesRole)
+        action.setMenuRole(QtWidgets.QAction.MenuRole.PreferencesRole)
         action.triggered.connect(self.show_options)
         self.options_action = action
 
@@ -527,7 +527,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     @MainWindowActions.add()
     def _create_cut_action(self):
         action = QtWidgets.QAction(icontheme.lookup('edit-cut', icontheme.ICON_SIZE_MENU), _("&Cut"), self)
-        action.setShortcut(QtGui.QKeySequence.Cut)
+        action.setShortcut(QtGui.QKeySequence.StandardKey.Cut)
         action.setEnabled(False)
         action.triggered.connect(self.cut)
         self.cut_action = action
@@ -535,7 +535,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     @MainWindowActions.add()
     def _create_paste_action(self):
         action = QtWidgets.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _("&Paste"), self)
-        action.setShortcut(QtGui.QKeySequence.Paste)
+        action.setShortcut(QtGui.QKeySequence.StandardKey.Paste)
         action.setEnabled(False)
         action.triggered.connect(self.paste)
         self.paste_action = action
@@ -543,14 +543,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     @MainWindowActions.add()
     def _create_help_action(self):
         action = QtWidgets.QAction(_("&Help..."), self)
-        action.setShortcut(QtGui.QKeySequence.HelpContents)
+        action.setShortcut(QtGui.QKeySequence.StandardKey.HelpContents)
         action.triggered.connect(self.show_help)
         self.help_action = action
 
     @MainWindowActions.add()
     def _create_about_action(self):
         action = QtWidgets.QAction(_("&About..."), self)
-        action.setMenuRole(QtWidgets.QAction.AboutRole)
+        action.setMenuRole(QtWidgets.QAction.MenuRole.AboutRole)
         action.triggered.connect(self.show_about)
         self.about_action = action
 
@@ -577,7 +577,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         action = QtWidgets.QAction(icontheme.lookup('document-open'), _("&Add Files..."), self)
         action.setStatusTip(_("Add files to the tagger"))
         # TR: Keyboard shortcut for "Add Files..."
-        action.setShortcut(QtGui.QKeySequence.Open)
+        action.setShortcut(QtGui.QKeySequence.StandardKey.Open)
         action.triggered.connect(self.add_files)
         self.add_files_action = action
 
@@ -605,7 +605,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         action = QtWidgets.QAction(icontheme.lookup('document-save'), _("&Save"), self)
         action.setStatusTip(_("Save selected files"))
         # TR: Keyboard shortcut for "Save"
-        action.setShortcut(QtGui.QKeySequence.Save)
+        action.setShortcut(QtGui.QKeySequence.StandardKey.Save)
         action.setEnabled(False)
         action.triggered.connect(self.save)
         self.save_action = action
@@ -621,7 +621,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     @MainWindowActions.add()
     def _create_exit_action(self):
         action = QtWidgets.QAction(_("E&xit"), self)
-        action.setMenuRole(QtWidgets.QAction.QuitRole)
+        action.setMenuRole(QtWidgets.QAction.MenuRole.QuitRole)
         # TR: Keyboard shortcut for "Exit"
         action.setShortcut(QtGui.QKeySequence(_("Ctrl+Q")))
         action.triggered.connect(self.close)
@@ -913,7 +913,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _create_check_update_action(self):
         if self.tagger.autoupdate_enabled:
             action = QtWidgets.QAction(_("&Check for Update…"), self)
-            action.setMenuRole(QtWidgets.QAction.ApplicationSpecificRole)
+            action.setMenuRole(QtWidgets.QAction.MenuRole.ApplicationSpecificRole)
             action.triggered.connect(self.do_update_check)
         else:
             action = None
@@ -953,7 +953,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if len(self.cd_lookup_menu.actions()) > 1:
             button = self.toolbar.widgetForAction(self.cd_lookup_action)
             if button:
-                button.setPopupMode(QtWidgets.QToolButton.MenuButtonPopup)
+                button.setPopupMode(QtWidgets.QToolButton.ToolButtonPopupMode.MenuButtonPopup)
             self.cd_lookup_action.setMenu(self.cd_lookup_menu)
         else:
             self.cd_lookup_action.setMenu(None)
@@ -1070,9 +1070,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def update_toolbar_style(self):
         config = get_config()
-        style = QtCore.Qt.ToolButtonIconOnly
+        style = QtCore.Qt.ToolButtonStyle.ToolButtonIconOnly
         if config.setting["toolbar_show_labels"]:
-            style = QtCore.Qt.ToolButtonTextUnderIcon
+            style = QtCore.Qt.ToolButtonStyle.ToolButtonTextUnderIcon
         self.toolbar.setToolButtonStyle(style)
         if self.player:
             self.player.toolbar.setToolButtonStyle(style)
@@ -1097,8 +1097,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         def add_toolbar_action(action):
             toolbar.addAction(action)
             widget = toolbar.widgetForAction(action)
-            widget.setFocusPolicy(QtCore.Qt.TabFocus)
-            widget.setAttribute(QtCore.Qt.WA_MacShowFocusRect)
+            widget.setFocusPolicy(QtCore.Qt.FocusPolicy.TabFocus)
+            widget.setAttribute(QtCore.Qt.WidgetAttribute.WA_MacShowFocusRect)
 
         config = get_config()
         for action in config.setting['toolbar_layout']:
@@ -1117,7 +1117,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def create_player_toolbar(self):
         """"Create a toolbar with internal player control elements"""
         toolbar = self.player.create_toolbar()
-        self.addToolBar(QtCore.Qt.BottomToolBarArea, toolbar)
+        self.addToolBar(QtCore.Qt.ToolBarArea.BottomToolBarArea, toolbar)
         self.player_toolbar_toggle_action = toolbar.toggleViewAction()
         toolbar.hide()  # Hide by default
 
@@ -1145,7 +1145,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.search_button.setAutoRaise(True)
         self.search_button.setDefaultAction(self.search_action)
         self.search_button.setIconSize(QtCore.QSize(22, 22))
-        self.search_button.setAttribute(QtCore.Qt.WA_MacShowFocusRect)
+        self.search_button.setAttribute(QtCore.Qt.WidgetAttribute.WA_MacShowFocusRect)
 
         # search button contextual menu, shortcut to toggle search options
         def search_button_menu(position):
@@ -1166,7 +1166,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 menu.addAction(action)
             menu.exec_(self.search_button.mapToGlobal(position))
 
-        self.search_button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.search_button.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.search_button.customContextMenuRequested.connect(search_button_menu)
         hbox.addWidget(self.search_button)
         toolbar.addWidget(search_panel)
@@ -1267,7 +1267,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 dir_list.append(directory)
         else:
             file_dialog = MultiDirsSelectDialog(self, "", current_directory)
-            if file_dialog.exec_() == QtWidgets.QDialog.Accepted:
+            if file_dialog.exec_() == QtWidgets.QDialog.DialogCode.Accepted:
                 dir_list = file_dialog.selectedFiles()
 
         dir_count = len(dir_list)
@@ -1392,9 +1392,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         ret = QtWidgets.QMessageBox.question(self,
             _("Configuration Required"),
             _("Audio fingerprinting is not yet configured. Would you like to configure it now?"),
-            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-            QtWidgets.QMessageBox.Yes)
-        return ret == QtWidgets.QMessageBox.Yes
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            QtWidgets.QMessageBox.StandardButton.Yes)
+        return ret == QtWidgets.QMessageBox.StandardButton.Yes
 
     def get_first_obj_with_type(self, type):
         for obj in self.selected_objects:
@@ -1482,9 +1482,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         ret = QtWidgets.QMessageBox.question(self,
             _("Browser integration not enabled"),
             _("Submitting releases to MusicBrainz requires the browser integration to be enabled. Do you want to enable the browser integration now?"),
-            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-            QtWidgets.QMessageBox.Yes)
-        if ret == QtWidgets.QMessageBox.Yes:
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            QtWidgets.QMessageBox.StandardButton.Yes)
+        if ret == QtWidgets.QMessageBox.StandardButton.Yes:
             config = get_config()
             config.setting["browser_integration"] = True
             self.tagger.update_browser_integration()
@@ -1679,9 +1679,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             ret = QtWidgets.QMessageBox.question(self,
                 _("Authentication Required"),
                 _("Picard needs authorization to access your personal data on the MusicBrainz server. Would you like to log in now?"),
-                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-                QtWidgets.QMessageBox.Yes)
-            if ret == QtWidgets.QMessageBox.Yes:
+                QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+                QtWidgets.QMessageBox.StandardButton.Yes)
+            if ret == QtWidgets.QMessageBox.StandardButton.Yes:
                 self.tagger.mb_login(self.on_mb_login_finished)
         else:
             dialog = PasswordDialog(authenticator, reply, parent=self)

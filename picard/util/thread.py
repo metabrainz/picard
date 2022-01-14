@@ -41,7 +41,7 @@ from picard import log
 class ProxyToMainEvent(QEvent):
 
     def __init__(self, func, *args, **kwargs):
-        super().__init__(QEvent.User)
+        super().__init__(QEvent.Type.User)
         self.func = func
         self.args = args
         self.kwargs = kwargs

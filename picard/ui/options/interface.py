@@ -64,7 +64,7 @@ from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.util import enabledSlot
 
 
-_default_starting_dir = QStandardPaths.writableLocation(QStandardPaths.HomeLocation)
+_default_starting_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.HomeLocation)
 
 
 class InterfaceOptionsPage(OptionsPage):
@@ -204,7 +204,7 @@ class InterfaceOptionsPage(OptionsPage):
             desc = self._UI_THEME_LABELS[theme]['desc']
             self.ui.ui_theme.addItem(_(label), theme)
             idx = self.ui.ui_theme.findData(theme)
-            self.ui.ui_theme.setItemData(idx, _(desc), QtCore.Qt.ToolTipRole)
+            self.ui.ui_theme.setItemData(idx, _(desc), QtCore.Qt.ItemDataRole.ToolTipRole)
         self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(UiTheme.DEFAULT))
 
         self.ui.ui_language.addItem(_('System default'), '')
@@ -286,10 +286,10 @@ class InterfaceOptionsPage(OptionsPage):
             restart_warning = _('You have changed the interface language. You have to restart Picard in order for the change to take effect.')
         if restart_warning:
             dialog = QtWidgets.QMessageBox(
-                QtWidgets.QMessageBox.Information,
+                QtWidgets.QMessageBox.Icon.Information,
                 restart_warning_title,
                 restart_warning,
-                QtWidgets.QMessageBox.Ok,
+                QtWidgets.QMessageBox.StandardButton.Ok,
                 self)
             dialog.exec_()
         config.setting["ui_theme"] = new_theme_setting
@@ -387,10 +387,10 @@ class ToolbarListItem(QtWidgets.QListWidgetItem):
 class AddActionDialog(PicardDialog):
     def __init__(self, action_list, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.setWindowModality(QtCore.Qt.WindowModal)
+        self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
 
         layout = QtWidgets.QVBoxLayout(self)
-        layout.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
+        layout.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetFixedSize)
 
         # TODO: Remove temporary workaround once https://github.com/python-babel/babel/issues/415 has been resolved.
         babel_415_workaround_list = []
@@ -404,8 +404,8 @@ class AddActionDialog(PicardDialog):
         layout.addWidget(self.combo_box)
 
         buttons = QtWidgets.QDialogButtonBox(
-            QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel,
-            QtCore.Qt.Horizontal, self)
+            QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel,
+            QtCore.Qt.Orientation.Horizontal, self)
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         layout.addWidget(buttons)
@@ -418,7 +418,7 @@ class AddActionDialog(PicardDialog):
         dialog = AddActionDialog(action_list, parent)
         result = dialog.exec_()
         selected_action = dialog.selected_action()
-        return (selected_action, result == QtWidgets.QDialog.Accepted)
+        return (selected_action, result == QtWidgets.QDialog.DialogCode.Accepted)
 
 
 register_options_page(InterfaceOptionsPage)

@@ -59,7 +59,7 @@ class LogViewDialog(PicardDialog):
 
     def __init__(self, title, parent=None):
         super().__init__(parent)
-        self.setWindowFlags(QtCore.Qt.Window)
+        self.setWindowFlags(QtCore.Qt.WindowType.Window)
         self.setWindowTitle(title)
         self.doc = QtGui.QTextDocument()
         self.textCursor = QtGui.QTextCursor(self.doc)
@@ -81,7 +81,7 @@ class LogViewCommon(LogViewDialog):
     def _init_doc(self):
         self.prev = -1
         self.doc.clear()
-        self.textCursor.movePosition(QtGui.QTextCursor.Start)
+        self.textCursor.movePosition(QtGui.QTextCursor.MoveOperation.Start)
 
     def closeEvent(self, event):
         self.save_geometry()
@@ -112,7 +112,7 @@ class LogViewCommon(LogViewDialog):
         self.displaying = False
 
     def _add_entry(self, logitem):
-        self.textCursor.movePosition(QtGui.QTextCursor.End)
+        self.textCursor.movePosition(QtGui.QTextCursor.MoveOperation.End)
         self.textCursor.insertText(logitem.message)
         self.textCursor.insertBlock()
         sb = self.browser.verticalScrollBar()
@@ -124,7 +124,7 @@ class Highlighter(QtGui.QSyntaxHighlighter):
         super().__init__(parent)
 
         self.fmt = QtGui.QTextCharFormat()
-        self.fmt.setBackground(QtCore.Qt.lightGray)
+        self.fmt.setBackground(QtCore.Qt.GlobalColor.lightGray)
         self.reg = re.compile(wildcards_to_regex_pattern(string), re.IGNORECASE)
 
     def highlightBlock(self, text):
@@ -252,7 +252,7 @@ class LogView(LogViewCommon):
         path, ok = QtWidgets.QFileDialog.getSaveFileName(
             self,
             caption=_("Save Log View to File"),
-            options=QtWidgets.QFileDialog.DontConfirmOverwrite
+            options=QtWidgets.QFileDialog.Option.DontConfirmOverwrite
         )
         if ok and path:
             if os.path.isfile(path):
@@ -260,9 +260,9 @@ class LogView(LogViewCommon):
                     self,
                     _("Save Log View to File"),
                     _("File already exists, do you really want to save to this file?"),
-                    QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
+                    QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No
                 )
-                if reply != QtWidgets.QMessageBox.Yes:
+                if reply != QtWidgets.QMessageBox.StandardButton.Yes:
                     return
 
             writer = QtGui.QTextDocumentWriter(path)
@@ -276,7 +276,7 @@ class LogView(LogViewCommon):
                 )
 
     def show(self):
-        self.highlight_text.setFocus(QtCore.Qt.OtherFocusReason)
+        self.highlight_text.setFocus(QtCore.Qt.FocusReason.OtherFocusReason)
         super().show()
 
     def display(self, clear=False):
@@ -289,9 +289,9 @@ class LogView(LogViewCommon):
             self,
             _("Clear Log"),
             _("Are you sure you want to clear the log?"),
-            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No
         )
-        if reply != QtWidgets.QMessageBox.Yes:
+        if reply != QtWidgets.QMessageBox.StandardButton.Yes:
             return
         self.log_tail.clear()
         self.display(clear=True)

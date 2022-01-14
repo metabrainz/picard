@@ -3,6 +3,7 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -46,5 +47,3 @@ class Ui_InterfaceColorsOptionsPage(object):
     def retranslateUi(self, InterfaceColorsOptionsPage):
         _translate = QtCore.QCoreApplication.translate
         self.colors.setTitle(_("Colors"))
-
-

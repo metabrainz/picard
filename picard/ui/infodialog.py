@@ -73,15 +73,15 @@ class ArtworkCoverWidget(QtWidgets.QWidget):
         if pixmap is not None:
             image_label = QtWidgets.QLabel()
             image_label.setPixmap(pixmap.scaled(self.SIZE, self.SIZE,
-                                                QtCore.Qt.KeepAspectRatio,
-                                                QtCore.Qt.SmoothTransformation))
-            image_label.setAlignment(QtCore.Qt.AlignCenter)
+                                                QtCore.Qt.AspectRatioMode.KeepAspectRatio,
+                                                QtCore.Qt.TransformationMode.SmoothTransformation))
+            image_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             layout.addWidget(image_label)
 
         if text is not None:
             text_label = QtWidgets.QLabel()
             text_label.setText(text)
-            text_label.setAlignment(QtCore.Qt.AlignCenter)
+            text_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             text_label.setWordWrap(True)
             layout.addWidget(text_label)
 
@@ -140,7 +140,7 @@ class InfoDialog(PicardDialog):
             self.display_existing_artwork = False
         self.ui.setupUi(self)
         self.ui.buttonBox.addButton(
-            StandardButton(StandardButton.CLOSE), QtWidgets.QDialogButtonBox.AcceptRole)
+            StandardButton(StandardButton.CLOSE), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
         self.ui.buttonBox.accepted.connect(self.accept)
 
         # Add the ArtworkTable to the ui
@@ -184,7 +184,7 @@ class InfoDialog(PicardDialog):
         for image in images:
             while row != row_count:
                 image_type = self.artwork_table.item(row, self.artwork_table._type_col)
-                if image_type and image_type.data(QtCore.Qt.UserRole) == image.types_as_string():
+                if image_type and image_type.data(QtCore.Qt.ItemDataRole.UserRole) == image.types_as_string():
                     break
                 row += 1
             if row == row_count:
@@ -202,7 +202,7 @@ class InfoDialog(PicardDialog):
                 log.error(traceback.format_exc())
                 continue
             item = QtWidgets.QTableWidgetItem()
-            item.setData(QtCore.Qt.UserRole, image)
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, image)
             pixmap = QtGui.QPixmap()
             if data is not None:
                 pixmap.loadFromData(data)
@@ -240,7 +240,7 @@ class InfoDialog(PicardDialog):
         for row, artwork_type in enumerate(types):
             self.artwork_table.insertRow(row)
             item = QtWidgets.QTableWidgetItem()
-            item.setData(QtCore.Qt.UserRole, artwork_type)
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, artwork_type)
             type_wgt = ArtworkCoverWidget(pixmap=pixmap_arrow, text=artwork_type)
             self.artwork_table.setCellWidget(row, self.artwork_table._type_col, type_wgt)
             self.artwork_table.setItem(row, self.artwork_table._type_col, item)
@@ -253,7 +253,7 @@ class InfoDialog(PicardDialog):
         if self.existing_images:
             self._display_artwork(self.existing_images, self.artwork_table._existing_cover_col)
         self.artwork_table.itemDoubleClicked.connect(self.show_item)
-        self.artwork_table.verticalHeader().resizeSections(QtWidgets.QHeaderView.ResizeToContents)
+        self.artwork_table.verticalHeader().resizeSections(QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
 
     def tab_hide(self, widget):
         tab = self.ui.tabWidget
@@ -261,7 +261,7 @@ class InfoDialog(PicardDialog):
         tab.removeTab(index)
 
     def show_item(self, item):
-        data = item.data(QtCore.Qt.UserRole)
+        data = item.data(QtCore.Qt.ItemDataRole.UserRole)
         # Check if this function isn't triggered by cell in Type column
         if isinstance(data, str):
             return

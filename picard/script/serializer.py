@@ -200,7 +200,7 @@ class PicardScript():
         # return _export_script_dialog(script_item=self, parent=parent)
         FILE_ERROR_EXPORT = N_('Error exporting file "%s". %s.')
 
-        default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DocumentsLocation))
+        default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
         default_script_extension = "ptsp"
         script_filename = ".".join((self.filename, default_script_extension))
         default_path = os.path.normpath(os.path.join(default_script_directory, script_filename))
@@ -226,10 +226,10 @@ class PicardScript():
         except OSError as error:
             raise ScriptImportExportError(format=FILE_ERROR_EXPORT, filename=filename, error_msg=error.strerror)
         dialog = QtWidgets.QMessageBox(
-            QtWidgets.QMessageBox.Information,
+            QtWidgets.QMessageBox.Icon.Information,
             _("Export Script"),
             _("Script successfully exported to %s") % filename,
-            QtWidgets.QMessageBox.Ok,
+            QtWidgets.QMessageBox.StandardButton.Ok,
             parent
         )
         dialog.exec_()
@@ -244,7 +244,7 @@ class PicardScript():
 
         dialog_title = _("Import Script File")
         dialog_file_types = cls._get_dialog_filetypes()
-        default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DocumentsLocation))
+        default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
         options = QtWidgets.QFileDialog.Options()
         filename, file_type = QtWidgets.QFileDialog.getOpenFileName(parent, dialog_title, default_script_directory, dialog_file_types, options=options)
         if not filename:

@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_LocalOptions(object):
     def setupUi(self, LocalOptions):
@@ -51,4 +53,3 @@ class Ui_LocalOptions(object):
         self.local_cover_regex_label.setText(_("Local cover art files match the following regular expression:"))
         self.local_cover_regex_default.setText(_("Default"))
         self.note.setText(_("First group in the regular expression, if any, will be used as type, ie. cover-back-spine.jpg will be set as types Back + Spine. If no type is found, it will default to Front type."))
-

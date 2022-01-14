@@ -84,7 +84,7 @@ def upgrade_to_v1_0_0_final_0(config, interactive=True, merge=True):
                         "albums has been removed in this version of Picard.\n"
                         "Your file naming scheme has automatically been "
                         "merged with that of single artist albums."),
-                    QtWidgets.QMessageBox.Ok)
+                    QtWidgets.QMessageBox.StandardButton.Ok)
 
         elif (_s.value("va_file_naming_format", TextOption)
               != r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldis"
@@ -99,9 +99,9 @@ def upgrade_to_v1_0_0_final_0(config, interactive=True, merge=True):
                     "separate file naming scheme defined.\n"
                     "Do you want to remove it or merge it with your file "
                     "naming scheme for single artist albums?"))
-                msgbox.setIcon(QtWidgets.QMessageBox.Question)
-                merge_button = msgbox.addButton(_('Merge'), QtWidgets.QMessageBox.AcceptRole)
-                msgbox.addButton(_('Remove'), QtWidgets.QMessageBox.DestructiveRole)
+                msgbox.setIcon(QtWidgets.QMessageBox.Icon.Question)
+                merge_button = msgbox.addButton(_('Merge'), QtWidgets.QMessageBox.ButtonRole.AcceptRole)
+                msgbox.addButton(_('Remove'), QtWidgets.QMessageBox.ButtonRole.DestructiveRole)
                 msgbox.exec_()
                 merge = msgbox.clickedButton() == merge_button
             remove_va_file_naming_format(merge=merge)

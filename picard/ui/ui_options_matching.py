@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MatchingOptionsPage(object):
     def setupUi(self, MatchingOptionsPage):
@@ -73,4 +75,3 @@ class Ui_MatchingOptionsPage(object):
         self.file_lookup_threshold.setSuffix(_(" %"))
         self.label_4.setText(_("Minimal similarity for file lookups:"))
         self.label_5.setText(_("Minimal similarity for cluster lookups:"))
-

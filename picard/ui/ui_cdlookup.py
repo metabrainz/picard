@@ -72,11 +72,11 @@ class Ui_Dialog(object):
 
         self.retranslateUi(Dialog)
         self.results_view.setCurrentIndex(0)
-        self.ok_button.clicked.connect(Dialog.accept)
-        self.cancel_button.clicked.connect(Dialog.reject)
+        self.ok_button.clicked.connect(Dialog.accept) # type: ignore
+        self.cancel_button.clicked.connect(Dialog.reject) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-        Dialog.setTabOrder(self.submit_button, self.release_list)
-        Dialog.setTabOrder(self.release_list, self.ok_button)
+        Dialog.setTabOrder(self.release_list, self.submit_button)
+        Dialog.setTabOrder(self.submit_button, self.ok_button)
         Dialog.setTabOrder(self.ok_button, self.lookup_button)
         Dialog.setTabOrder(self.lookup_button, self.cancel_button)
 

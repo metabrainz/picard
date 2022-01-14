@@ -121,7 +121,7 @@ class GeneralOptionsPage(OptionsPage):
         config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
         if self.tagger.autoupdate_enabled:
             config.setting["check_for_updates"] = self.ui.check_for_updates.isChecked()
-            config.setting["update_level"] = self.ui.update_level.currentData(QtCore.Qt.UserRole)
+            config.setting["update_level"] = self.ui.update_level.currentData(QtCore.Qt.ItemDataRole.UserRole)
             config.setting["update_check_days"] = self.ui.update_check_days.value()
 
     def update_server_host(self):

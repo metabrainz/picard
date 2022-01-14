@@ -99,7 +99,7 @@ class ProfilesOptionsPage(OptionsPage):
         """Process selected events.
         """
         event_type = event.type()
-        if event_type == QtCore.QEvent.FocusOut and object == self.ui.settings_tree:
+        if event_type == QtCore.QEvent.Type.FocusOut and object == self.ui.settings_tree:
             if self.settings_changed:
                 self.settings_changed = False
                 self.update_values_in_profile_options()
@@ -112,17 +112,17 @@ class ProfilesOptionsPage(OptionsPage):
         self.new_profile_button = QtWidgets.QPushButton(_('New'))
         self.new_profile_button.setToolTip(_("Create a new profile"))
         self.new_profile_button.clicked.connect(self.new_profile)
-        self.ui.profile_list_buttonbox.addButton(self.new_profile_button, QtWidgets.QDialogButtonBox.ActionRole)
+        self.ui.profile_list_buttonbox.addButton(self.new_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
 
         self.copy_profile_button = QtWidgets.QPushButton(_('Copy'))
         self.copy_profile_button.setToolTip(_("Copy to a new profile"))
         self.copy_profile_button.clicked.connect(self.copy_profile)
-        self.ui.profile_list_buttonbox.addButton(self.copy_profile_button, QtWidgets.QDialogButtonBox.ActionRole)
+        self.ui.profile_list_buttonbox.addButton(self.copy_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
 
         self.delete_profile_button = QtWidgets.QPushButton(_('Delete'))
         self.delete_profile_button.setToolTip(_("Delete the profile"))
         self.delete_profile_button.clicked.connect(self.delete_profile)
-        self.ui.profile_list_buttonbox.addButton(self.delete_profile_button, QtWidgets.QDialogButtonBox.ActionRole)
+        self.ui.profile_list_buttonbox.addButton(self.delete_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
 
     def restore_defaults(self):
         """Remove all profiles and profile settings.
@@ -221,13 +221,13 @@ class ProfilesOptionsPage(OptionsPage):
             title = group["title"]
             group_settings = group["settings"]
             widget_item = QtWidgets.QTreeWidgetItem([title])
-            widget_item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsAutoTristate)
-            widget_item.setCheckState(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.Unchecked)
+            widget_item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsAutoTristate)
+            widget_item.setCheckState(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.CheckState.Unchecked)
             for setting in group_settings:
                 child_item = QtWidgets.QTreeWidgetItem([_(setting.title)])
-                child_item.setData(0, QtCore.Qt.UserRole, setting.name)
-                child_item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsUserCheckable)
-                state = QtCore.Qt.Checked if settings and setting.name in settings else QtCore.Qt.Unchecked
+                child_item.setData(0, QtCore.Qt.ItemDataRole.UserRole, setting.name)
+                child_item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+                state = QtCore.Qt.CheckState.Checked if settings and setting.name in settings else QtCore.Qt.CheckState.Unchecked
                 child_item.setCheckState(self.TREEWIDGETITEM_COLUMN, state)
                 if setting.name in settings and settings[setting.name] is not None:
                     value = settings[setting.name]
@@ -367,10 +367,10 @@ class ProfilesOptionsPage(OptionsPage):
             text = item.text().strip()
             if not text:
                 QtWidgets.QMessageBox(
-                    QtWidgets.QMessageBox.Warning,
+                    QtWidgets.QMessageBox.Icon.Warning,
                     _("Invalid Title"),
                     _("The profile title cannot be blank."),
-                    QtWidgets.QMessageBox.Ok,
+                    QtWidgets.QMessageBox.StandardButton.Ok,
                     self
                 ).exec_()
                 item.setText(self.ui.profile_list.unique_profile_name())
@@ -405,8 +405,8 @@ class ProfilesOptionsPage(OptionsPage):
             tl_item = self.ui.settings_tree.topLevelItem(i)
             for j in range(tl_item.childCount()):
                 item = tl_item.child(j)
-                if item.checkState(self.TREEWIDGETITEM_COLUMN) == QtCore.Qt.Checked:
-                    yield item.data(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.UserRole)
+                if item.checkState(self.TREEWIDGETITEM_COLUMN) == QtCore.Qt.CheckState.Checked:
+                    yield item.data(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.ItemDataRole.UserRole)
 
     def set_profile_settings_changed(self):
         """Set flag to trigger option page updates later (when focus is lost from the settings

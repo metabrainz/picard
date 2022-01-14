@@ -38,8 +38,8 @@ class MoveableListView:
         self.up_button.clicked.connect(partial(self.move_item, 1))
         self.down_button.clicked.connect(partial(self.move_item, -1))
         self.list_widget.currentRowChanged.connect(self.update_buttons)
-        self.list_widget.setDragDropMode(QtWidgets.QAbstractItemView.DragDrop)
-        self.list_widget.setDefaultDropAction(QtCore.Qt.MoveAction)
+        self.list_widget.setDragDropMode(QtWidgets.QAbstractItemView.DragDropMode.DragDrop)
+        self.list_widget.setDefaultDropAction(QtCore.Qt.DropAction.MoveAction)
 
     def move_item(self, offset):
         current_index = self.list_widget.currentRow()

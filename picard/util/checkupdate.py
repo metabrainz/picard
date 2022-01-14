@@ -109,7 +109,7 @@ class UpdateCheckManager(QtCore.QObject):
                         url=PLUGINS_API['host'],
                         endpoint=PLUGINS_API['endpoint']['releases'],
                     ),
-                    QMessageBox.Ok, QMessageBox.Ok)
+                    QMessageBox.StandardButton.Ok, QMessageBox.StandardButton.Ok)
         else:
             if response and 'versions' in response:
                 self._available_versions = response['versions']
@@ -148,9 +148,9 @@ class UpdateCheckManager(QtCore.QObject):
                       picard_old_version=PICARD_FANCY_VERSION_STR,
                       picard_new_version=self._available_versions[key]['tag']
                 ),
-                QMessageBox.Ok | QMessageBox.Cancel,
-                QMessageBox.Cancel
-            ) == QMessageBox.Ok:
+                QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel,
+                QMessageBox.StandardButton.Cancel
+            ) == QMessageBox.StandardButton.Ok:
                 webbrowser2.open(self._available_versions[key]['urls']['download'])
         else:
             if self._show_always:
@@ -166,5 +166,5 @@ class UpdateCheckManager(QtCore.QObject):
                         update_level=_(update_level),
                         picard_old_version=PICARD_FANCY_VERSION_STR,
                     ),
-                    QMessageBox.Ok, QMessageBox.Ok
+                    QMessageBox.StandardButton.Ok, QMessageBox.StandardButton.Ok
                 )

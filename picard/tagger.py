@@ -231,7 +231,7 @@ class Tagger(QtWidgets.QApplication):
             self.signalfd = socket.socketpair(socket.AF_UNIX, socket.SOCK_STREAM, 0)
 
             self.signalnotifier = QtCore.QSocketNotifier(self.signalfd[1].fileno(),
-                                                         QtCore.QSocketNotifier.Read, self)
+                                                         QtCore.QSocketNotifier.Type.Read, self)
             self.signalnotifier.activated.connect(self.sighandler)
 
             signal.signal(signal.SIGHUP, self.signal)
@@ -302,7 +302,7 @@ class Tagger(QtWidgets.QApplication):
             self.updatecheckmanager = UpdateCheckManager(parent=self.window)
 
     def enable_menu_icons(self, enabled):
-        self.setAttribute(QtCore.Qt.AA_DontShowIconsInMenus, not enabled)
+        self.setAttribute(QtCore.Qt.ApplicationAttribute.AA_DontShowIconsInMenus, not enabled)
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)
@@ -319,11 +319,11 @@ class Tagger(QtWidgets.QApplication):
         if not parent:
             parent = self.window
         dialog = QtWidgets.QInputDialog(parent)
-        dialog.setWindowModality(QtCore.Qt.WindowModal)
+        dialog.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         dialog.setWindowTitle(_("MusicBrainz Account"))
         dialog.setLabelText(_("Authorization code:"))
         status = dialog.exec_()
-        if status == QtWidgets.QDialog.Accepted:
+        if status == QtWidgets.QDialog.DialogCode.Accepted:
             return dialog.textValue()
         else:
             return None
@@ -427,7 +427,7 @@ class Tagger(QtWidgets.QApplication):
     def event(self, event):
         if isinstance(event, thread.ProxyToMainEvent):
             event.run()
-        elif event.type() == QtCore.QEvent.FileOpen:
+        elif event.type() == QtCore.QEvent.Type.FileOpen:
             file = event.file()
             self.add_paths([file])
             if IS_HAIKU:
@@ -962,7 +962,7 @@ class Tagger(QtWidgets.QApplication):
     def set_wait_cursor(self):
         """Sets the waiting cursor."""
         super().setOverrideCursor(
-            QtGui.QCursor(QtCore.Qt.WaitCursor))
+            QtGui.QCursor(QtCore.Qt.CursorShape.WaitCursor))
 
     def restore_cursor(self):
         """Restores the cursor set by ``set_wait_cursor``."""
@@ -974,7 +974,7 @@ class Tagger(QtWidgets.QApplication):
                 obj.load(priority=True, refresh=True)
 
     def bring_tagger_front(self):
-        self.window.setWindowState(self.window.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
+        self.window.setWindowState(self.window.windowState() & ~QtCore.Qt.WindowState.WindowMinimized | QtCore.Qt.WindowState.WindowActive)
         self.window.raise_()
         self.window.activateWindow()
 
@@ -1044,8 +1044,8 @@ def main(localedir=None, autoupdate=True):
     QtWidgets.QApplication.setDesktopFileName(PICARD_DESKTOP_NAME)
 
     # Allow High DPI Support
-    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps)
-    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
     # HighDpiScaleFactorRoundingPolicy is available since Qt 5.14. This is
     # required to support fractional scaling on Windows properly.
     # It causes issues without scaling on Linux, see https://tickets.metabrainz.org/browse/PICARD-1948
@@ -1076,7 +1076,7 @@ def main(localedir=None, autoupdate=True):
     # Initialize Qt default translations
     translator = QtCore.QTranslator()
     locale = QtCore.QLocale()
-    translation_path = QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.TranslationsPath)
+    translation_path = QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.LibraryLocation.TranslationsPath)
     log.debug("Looking for Qt locale %s in %s", locale.name(), translation_path)
     if translator.load(locale, "qtbase_", directory=translation_path):
         tagger.installTranslator(translator)

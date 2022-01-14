@@ -54,7 +54,7 @@ class RatingWidget(QtWidgets.QWidget):
         self._height = self._star_size + 6
         self.setMaximumSize(self._width, self._height)
         self.setMinimumSize(self._width, self._height)
-        self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))
+        self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed))
         self.setMouseTracking(True)
 
     def sizeHint(self):
@@ -67,7 +67,7 @@ class RatingWidget(QtWidgets.QWidget):
             self.update()
 
     def mousePressEvent(self, event):
-        if event.button() == QtCore.Qt.LeftButton:
+        if event.button() == QtCore.Qt.MouseButton.LeftButton:
             x = event.x()
             if x < self._offset:
                 return

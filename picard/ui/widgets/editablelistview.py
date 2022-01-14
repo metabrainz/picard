@@ -30,13 +30,13 @@ from PyQt5 import (
 class EditableListView(QtWidgets.QListView):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
-        self.setDragDropMode(QtWidgets.QAbstractItemView.InternalMove)
+        self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
+        self.setDragDropMode(QtWidgets.QAbstractItemView.DragDropMode.InternalMove)
 
     def keyPressEvent(self, event):
-        if event.matches(QtGui.QKeySequence.Delete):
+        if event.matches(QtGui.QKeySequence.StandardKey.Delete):
             self.remove_selected_rows()
-        elif event.key() == QtCore.Qt.Key_Insert:
+        elif event.key() == QtCore.Qt.Key.Key_Insert:
             self.add_empty_row()
         else:
             super().keyPressEvent(event)
@@ -59,7 +59,7 @@ class EditableListView(QtWidgets.QListView):
         else:
             super().closeEditor(editor, hint)
             if not model.user_sortable:
-                data = index.data(QtCore.Qt.EditRole)
+                data = index.data(QtCore.Qt.ItemDataRole.EditRole)
                 model.sort(0)
                 self.select_key(data)
 
@@ -122,7 +122,7 @@ class EditableListView(QtWidgets.QListView):
         model = self.model()
         for row in range(0, model.rowCount()):
             index = model.createIndex(row, 0)
-            if value == index.data(QtCore.Qt.EditRole):
+            if value == index.data(QtCore.Qt.ItemDataRole.EditRole):
                 self.setCurrentIndex(index)
                 break
 
@@ -136,9 +136,9 @@ class EditableListView(QtWidgets.QListView):
         for row in sorted(rows, reverse=direction > 0):
             new_index = model.index(row + direction, 0)
             model.move_row(row, new_index.row())
-            selection.select(new_index, QtCore.QItemSelectionModel.Select)
+            selection.select(new_index, QtCore.QItemSelectionModel.SelectionFlag.Select)
             if row == current_index.row():
-                selection.setCurrentIndex(new_index, QtCore.QItemSelectionModel.Current)
+                selection.setCurrentIndex(new_index, QtCore.QItemSelectionModel.SelectionFlag.Current)
 
 
 class UniqueEditableListView(EditableListView):
@@ -164,8 +164,8 @@ class UniqueEditableListView(EditableListView):
         if self._is_drag_drop:
             return
         model = self.model()
-        if QtCore.Qt.EditRole in roles:
-            value = model.data(top_left, QtCore.Qt.EditRole)
+        if QtCore.Qt.ItemDataRole.EditRole in roles:
+            value = model.data(top_left, QtCore.Qt.ItemDataRole.EditRole)
             if not value:
                 return
             # Remove duplicate entries from the model
@@ -200,9 +200,9 @@ class EditableListModel(QtCore.QAbstractListModel):
             self.sort(0)
         self.user_sortable_changed.emit(user_sortable)
 
-    def sort(self, column, order=QtCore.Qt.AscendingOrder):
+    def sort(self, column, order=QtCore.Qt.SortOrder.AscendingOrder):
         self.beginResetModel()
-        self._items.sort(key=lambda t: t[1], reverse=(order == QtCore.Qt.DescendingOrder))
+        self._items.sort(key=lambda t: t[1], reverse=(order == QtCore.Qt.SortOrder.DescendingOrder))
         self.endResetModel()
 
     def get_display_name(self, item):  # pylint: disable=no-self-use
@@ -211,24 +211,24 @@ class EditableListModel(QtCore.QAbstractListModel):
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self._items)
 
-    def data(self, index, role=QtCore.Qt.DisplayRole):
-        if not index.isValid() or role not in {QtCore.Qt.DisplayRole, QtCore.Qt.EditRole}:
+    def data(self, index, role=QtCore.Qt.ItemDataRole.DisplayRole):
+        if not index.isValid() or role not in {QtCore.Qt.ItemDataRole.DisplayRole, QtCore.Qt.ItemDataRole.EditRole}:
             return None
-        field = 1 if role == QtCore.Qt.DisplayRole else 0
+        field = 1 if role == QtCore.Qt.ItemDataRole.DisplayRole else 0
         try:
             return self._items[index.row()][field]
         except IndexError:
             return None
 
-    def setData(self, index, value, role=QtCore.Qt.EditRole):
-        if not index.isValid() or role not in {QtCore.Qt.DisplayRole, QtCore.Qt.EditRole}:
+    def setData(self, index, value, role=QtCore.Qt.ItemDataRole.EditRole):
+        if not index.isValid() or role not in {QtCore.Qt.ItemDataRole.DisplayRole, QtCore.Qt.ItemDataRole.EditRole}:
             return False
         i = index.row()
         try:
-            if role == QtCore.Qt.EditRole:
+            if role == QtCore.Qt.ItemDataRole.EditRole:
                 display_name = self.get_display_name(value) if value else value
                 self._items[i] = (value, display_name)
-            elif role == QtCore.Qt.DisplayRole:
+            elif role == QtCore.Qt.ItemDataRole.DisplayRole:
                 current = self._items[i]
                 self._items[i] = (current[0], value)
             self.dataChanged.emit(index, index, [role])
@@ -238,17 +238,17 @@ class EditableListModel(QtCore.QAbstractListModel):
 
     def flags(self, index):
         if index.isValid():
-            flags = (QtCore.Qt.ItemIsSelectable
-                | QtCore.Qt.ItemIsEditable
-                | QtCore.Qt.ItemIsEnabled
-                | QtCore.Qt.ItemNeverHasChildren)
+            flags = (QtCore.Qt.ItemFlag.ItemIsSelectable
+                | QtCore.Qt.ItemFlag.ItemIsEditable
+                | QtCore.Qt.ItemFlag.ItemIsEnabled
+                | QtCore.Qt.ItemFlag.ItemNeverHasChildren)
             if self.user_sortable:
-                flags |= QtCore.Qt.ItemIsDragEnabled
+                flags |= QtCore.Qt.ItemFlag.ItemIsDragEnabled
             return flags
         elif self.user_sortable:
-            return QtCore.Qt.ItemIsDropEnabled
+            return QtCore.Qt.ItemFlag.ItemIsDropEnabled
         else:
-            return QtCore.Qt.NoItemFlags
+            return QtCore.Qt.ItemFlag.NoItemFlags
 
     def insertRows(self, row, count, parent=QtCore.QModelIndex()):
         super().beginInsertRows(parent, row, row + count - 1)
@@ -265,11 +265,11 @@ class EditableListModel(QtCore.QAbstractListModel):
 
     @staticmethod
     def supportedDragActions():
-        return QtCore.Qt.MoveAction
+        return QtCore.Qt.DropAction.MoveAction
 
     @staticmethod
     def supportedDropActions():
-        return QtCore.Qt.MoveAction
+        return QtCore.Qt.DropAction.MoveAction
 
     def update(self, items):
         self.beginResetModel()
@@ -281,8 +281,8 @@ class EditableListModel(QtCore.QAbstractListModel):
         self.removeRow(row)
         self.insertRow(new_row)
         index = self.index(new_row, 0)
-        self.setData(index, item[0], QtCore.Qt.EditRole)
-        self.setData(index, item[1], QtCore.Qt.DisplayRole)
+        self.setData(index, item[0], QtCore.Qt.ItemDataRole.EditRole)
+        self.setData(index, item[1], QtCore.Qt.ItemDataRole.DisplayRole)
 
     @property
     def items(self):
@@ -303,8 +303,8 @@ class AutocompleteItemDelegate(QtWidgets.QItemDelegate):
 
         editor = super().createEditor(parent, option, index)
         completer = QtWidgets.QCompleter(self._completions, parent)
-        completer.setCompletionMode(QtWidgets.QCompleter.UnfilteredPopupCompletion)
-        completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
+        completer.setCompletionMode(QtWidgets.QCompleter.CompletionMode.UnfilteredPopupCompletion)
+        completer.setCaseSensitivity(QtCore.Qt.CaseSensitivity.CaseInsensitive)
         completer.activated.connect(complete)
         editor.setCompleter(completer)
         return editor

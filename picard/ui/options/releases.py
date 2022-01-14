@@ -72,7 +72,7 @@ class TipSlider(ClickableSlider):
         self.opt = QtWidgets.QStyleOptionSlider()
         self.setMinimum(self._minimum)
         self.setMaximum(self._maximum)
-        self.setOrientation(QtCore.Qt.Horizontal)
+        self.setOrientation(QtCore.Qt.Orientation.Horizontal)
         self.setSingleStep(self._step)
         self.setTickInterval(self._step)
         self.setPageStep(self._pagestep)
@@ -192,7 +192,7 @@ class ReleasesOptionsPage(OptionsPage):
 
         reset_types_btn = QtWidgets.QPushButton(self.ui.type_group)
         reset_types_btn.setText(_("Reset all"))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(reset_types_btn.sizePolicy().hasHeightForWidth())
@@ -214,10 +214,10 @@ class ReleasesOptionsPage(OptionsPage):
         self.ui.remove_countries.clicked.connect(self.remove_preferred_countries)
         self.ui.add_formats.clicked.connect(self.add_preferred_formats)
         self.ui.remove_formats.clicked.connect(self.remove_preferred_formats)
-        self.ui.country_list.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
-        self.ui.preferred_country_list.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
-        self.ui.format_list.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
-        self.ui.preferred_format_list.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.ui.country_list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
+        self.ui.preferred_country_list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
+        self.ui.format_list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
+        self.ui.preferred_format_list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
 
     def restore_defaults(self):
         # Clear lists
@@ -291,7 +291,7 @@ class ReleasesOptionsPage(OptionsPage):
         move = []
         for data, name in source_list:
             item = QtWidgets.QListWidgetItem(name)
-            item.setData(QtCore.Qt.UserRole, data)
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, data)
             try:
                 i = saved_data.index(data)
                 move.append((i, item))
@@ -305,7 +305,7 @@ class ReleasesOptionsPage(OptionsPage):
         data = []
         for i in range(list1.count()):
             item = list1.item(i)
-            data.append(item.data(QtCore.Qt.UserRole))
+            data.append(item.data(QtCore.Qt.ItemDataRole.UserRole))
         config = get_config()
         config.setting[setting] = data
 

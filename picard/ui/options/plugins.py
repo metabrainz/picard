@@ -199,7 +199,7 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
     @property
     def plugin(self):
-        return self.data(COLUMN_NAME, QtCore.Qt.UserRole)
+        return self.data(COLUMN_NAME, QtCore.Qt.ItemDataRole.UserRole)
 
     def enable(self, boolean, greyout=None):
         if boolean is not None:
@@ -225,7 +225,7 @@ class PluginsOptionsPage(OptionsPage):
         ListOption("setting", "enabled_plugins", []),
         Option("persist", "plugins_list_state", QtCore.QByteArray()),
         Option("persist", "plugins_list_sort_section", 0),
-        Option("persist", "plugins_list_sort_order", QtCore.Qt.AscendingOrder),
+        Option("persist", "plugins_list_sort_order", QtCore.Qt.SortOrder.AscendingOrder),
     ]
 
     def __init__(self, parent=None):
@@ -256,7 +256,7 @@ class PluginsOptionsPage(OptionsPage):
         self._preserve_selected = None
 
     def items(self):
-        iterator = QTreeWidgetItemIterator(self.ui.plugins, QTreeWidgetItemIterator.All)
+        iterator = QTreeWidgetItemIterator(self.ui.plugins, QTreeWidgetItemIterator.IteratorFlag.All)
         while iterator.value():
             item = iterator.value()
             iterator += 1
@@ -350,10 +350,10 @@ class PluginsOptionsPage(OptionsPage):
         self._user_interaction(True)
         header = self.ui.plugins.header()
         header.setStretchLastSection(False)
-        header.setSectionResizeMode(QtWidgets.QHeaderView.Fixed)
-        header.setSectionResizeMode(COLUMN_NAME, QtWidgets.QHeaderView.Stretch)
-        header.setSectionResizeMode(COLUMN_VERSION, QtWidgets.QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(COLUMN_ACTIONS, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Fixed)
+        header.setSectionResizeMode(COLUMN_NAME, QtWidgets.QHeaderView.ResizeMode.Stretch)
+        header.setSectionResizeMode(COLUMN_VERSION, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(COLUMN_ACTIONS, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
 
     def _remove_all(self):
         for item in self.items():
@@ -460,10 +460,10 @@ class PluginsOptionsPage(OptionsPage):
             self,
             _("Uninstall plugin '%s'?") % plugin.name,
             _("Do you really want to uninstall the plugin '%s' ?") % plugin.name,
-            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-            QtWidgets.QMessageBox.No
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            QtWidgets.QMessageBox.StandardButton.No
         )
-        if buttonReply == QtWidgets.QMessageBox.Yes:
+        if buttonReply == QtWidgets.QMessageBox.StandardButton.Yes:
             self.manager.remove_plugin(plugin.module_name, with_update=True)
 
     def update_plugin_item(self, item, plugin,
@@ -475,7 +475,7 @@ class PluginsOptionsPage(OptionsPage):
         if item is None:
             item = PluginTreeWidgetItem(self.ui.plugins)
         if plugin is not None:
-            item.setData(COLUMN_NAME, QtCore.Qt.UserRole, plugin)
+            item.setData(COLUMN_NAME, QtCore.Qt.ItemDataRole.UserRole, plugin)
         else:
             plugin = item.plugin
         if new_version is not None:
@@ -644,8 +644,8 @@ class PluginsOptionsPage(OptionsPage):
             msgbox = QtWidgets.QMessageBox(self)
             msgbox.setText(_("The plugin '%s' could not be downloaded.") % plugin.module_name)
             msgbox.setInformativeText(_("Please try again later."))
-            msgbox.setStandardButtons(QtWidgets.QMessageBox.Ok)
-            msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
+            msgbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+            msgbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
             msgbox.exec_()
             log.error("Error occurred while trying to download the plugin: '%s'" % plugin.module_name)
             return
@@ -665,7 +665,7 @@ class PluginsOptionsPage(OptionsPage):
         return ["text/uri-list"]
 
     def dragEnterEvent(self, event):
-        event.setDropAction(QtCore.Qt.CopyAction)
+        event.setDropAction(QtCore.Qt.DropAction.CopyAction)
         event.accept()
 
     def dropEvent(self, event):
