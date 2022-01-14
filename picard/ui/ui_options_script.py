@@ -20,6 +20,14 @@ class Ui_ScriptingOptionsPage(object):
         self.enable_tagger_scripts.setObjectName("enable_tagger_scripts")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.enable_tagger_scripts)
         self.verticalLayout.setObjectName("verticalLayout")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setContentsMargins(-1, -1, -1, 0)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.label = QtWidgets.QLabel(self.enable_tagger_scripts)
+        self.label.setWordWrap(True)
+        self.label.setObjectName("label")
+        self.horizontalLayout_2.addWidget(self.label)
+        self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.scripting_options_splitter = QtWidgets.QSplitter(self.enable_tagger_scripts)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -108,7 +116,8 @@ class Ui_ScriptingOptionsPage(object):
 
     def retranslateUi(self, ScriptingOptionsPage):
         _translate = QtCore.QCoreApplication.translate
-        self.enable_tagger_scripts.setTitle(_("Tagger Script(s)"))
+        self.enable_tagger_scripts.setTitle(_("Enable Tagger Script(s)"))
+        self.label.setText(_("Scripts that have been activated below will be executed automatically for each track of a release loaded from MusicBrainz."))
         self.tagger_script.setPlaceholderText(_("Enter your tagger script here."))
         self.move_up_button.setToolTip(_("Move script up"))
         self.move_down_button.setToolTip(_("Move script down"))
@@ -118,6 +127,6 @@ class Ui_ScriptingOptionsPage(object):
         self.remove_button.setText(_("Remove script"))
         self.import_button.setText(_("Import"))
         self.export_button.setText(_("Export"))
-        self.scripting_documentation_button.setText(_("Scripting Documentation"))
+        self.scripting_documentation_button.setText(_("Documentation"))
 from picard.ui.widgets.scriptlistwidget import ScriptListWidget
 from picard.ui.widgets.scripttextedit import ScriptTextEdit
