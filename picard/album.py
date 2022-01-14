@@ -260,7 +260,7 @@ class Album(DataObject, Item):
             if error:
                 self.error_append(http.errorString())
                 # Fix for broken NAT releases
-                if error == QtNetwork.QNetworkReply.ContentNotFoundError:
+                if error == QtNetwork.QNetworkReply.NetworkError.ContentNotFoundError:
                     config = get_config()
                     nats = False
                     nat_name = config.setting["nat_name"]

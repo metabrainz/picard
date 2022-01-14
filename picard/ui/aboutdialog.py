@@ -44,7 +44,7 @@ class AboutDialog(PicardDialog, SingletonDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
         self.ui = Ui_AboutDialog()
         self.ui.setupUi(self)
         self._update_content()

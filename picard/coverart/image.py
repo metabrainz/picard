@@ -59,7 +59,7 @@ from picard.util.scripttofilename import script_to_filename
 
 
 _datafiles = dict()
-_datafile_mutex = QMutex(QMutex.Recursive)
+_datafile_mutex = QMutex(QMutex.RecursionMode.Recursive)
 
 
 class DataHash:
@@ -170,7 +170,7 @@ class CoverArtImage:
         self.url = QUrl(url)
         self.host = self.url.host()
         self.port = self.url.port(443 if self.url.scheme() == 'https' else 80)
-        self.path = self.url.path(QUrl.FullyEncoded)
+        self.path = self.url.path(QUrl.ComponentFormattingOption.FullyEncoded)
         if self.url.hasQuery():
             query = QUrlQuery(self.url.query())
             self.queryargs = dict(query.queryItems())

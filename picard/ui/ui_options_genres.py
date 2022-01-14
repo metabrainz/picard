@@ -3,6 +3,7 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -127,5 +128,3 @@ class Ui_GenresOptionsPage(object):
         self.join_genres.setItemText(2, _(", "))
         self.label_genres_filter.setText(_("Genres or folksonomy tags to include or exclude, one per line:"))
         self.label_test_genres_filter.setText(_("Playground for genres or folksonomy tags filters (cleared on exit):"))
-
-

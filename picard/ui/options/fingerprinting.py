@@ -51,7 +51,7 @@ class ApiKeyValidator(QtGui.QValidator):
 
     def validate(self, input, pos):
         # Strip whitespace to avoid typical copy and paste user errors
-        return (QtGui.QValidator.Acceptable, input.strip(), pos)
+        return (QtGui.QValidator.State.Acceptable, input.strip(), pos)
 
 
 class FingerprintingOptionsPage(OptionsPage):

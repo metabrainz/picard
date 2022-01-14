@@ -207,7 +207,7 @@ class MultiLocaleSelector(PicardDialog):
             # the specific locale.
             label = _(ALIAS_LOCALES[locale])
             item = QtWidgets.QListWidgetItem(label)
-            item.setData(QtCore.Qt.UserRole, locale)
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, locale)
             self.ui.selected_locales.addItem(item)
         self.ui.selected_locales.setCurrentRow(0)
 
@@ -221,7 +221,7 @@ class MultiLocaleSelector(PicardDialog):
         for (locale, level) in iter_sorted_locales(ALIAS_LOCALES):
             label = indented_translated_locale(locale, level)
             item = QtWidgets.QListWidgetItem(label)
-            item.setData(QtCore.Qt.UserRole, locale)
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, locale)
             self.ui.available_locales.addItem(item)
         self.ui.available_locales.setCurrentRow(0)
 
@@ -231,10 +231,10 @@ class MultiLocaleSelector(PicardDialog):
         item = self.ui.available_locales.currentItem()
         if item is None:
             return
-        locale = item.data(QtCore.Qt.UserRole)
+        locale = item.data(QtCore.Qt.ItemDataRole.UserRole)
         for row in range(self.ui.selected_locales.count()):
             selected_item = self.ui.selected_locales.item(row)
-            if selected_item.data(QtCore.Qt.UserRole) == locale:
+            if selected_item.data(QtCore.Qt.ItemDataRole.UserRole) == locale:
                 return
         new_item = item.clone()
         # Note that items in the selected locales list are not indented because
@@ -256,7 +256,7 @@ class MultiLocaleSelector(PicardDialog):
         locales = []
         for row in range(self.ui.selected_locales.count()):
             selected_item = self.ui.selected_locales.item(row)
-            locales.append(selected_item.data(QtCore.Qt.UserRole))
+            locales.append(selected_item.data(QtCore.Qt.ItemDataRole.UserRole))
         self.parent().current_locales = locales
         self.parent().make_locales_text()
         self.accept()
@@ -299,7 +299,7 @@ class ScriptExceptionSelector(PicardDialog):
         for script in self.parent().current_scripts:
             label = self.make_label(script_id=script[0], script_weighting=script[1])
             item = QtWidgets.QListWidgetItem(label)
-            item.setData(QtCore.Qt.UserRole, script)
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, script)
             self.ui.selected_scripts.addItem(item)
         if self.ui.selected_scripts.count() > 0:
             self.ui.selected_scripts.setCurrentRow(0)
@@ -308,7 +308,7 @@ class ScriptExceptionSelector(PicardDialog):
         self.ui.available_scripts.clear()
         for script_id, label in scripts_sorted_by_localized_name():
             item = QtWidgets.QListWidgetItem(label)
-            item.setData(QtCore.Qt.UserRole, script_id)
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, script_id)
             self.ui.available_scripts.addItem(item)
         self.ui.available_scripts.setCurrentRow(0)
 
@@ -318,13 +318,13 @@ class ScriptExceptionSelector(PicardDialog):
         item = self.ui.available_scripts.currentItem()
         if item is None:
             return
-        script_id = item.data(QtCore.Qt.UserRole)
+        script_id = item.data(QtCore.Qt.ItemDataRole.UserRole)
         for row in range(self.ui.selected_scripts.count()):
             selected_item = self.ui.selected_scripts.item(row)
-            if selected_item.data(QtCore.Qt.UserRole)[0] == script_id:
+            if selected_item.data(QtCore.Qt.ItemDataRole.UserRole)[0] == script_id:
                 return
         new_item = QtWidgets.QListWidgetItem(self.make_label(script_id, 0))
-        new_item.setData(QtCore.Qt.UserRole, (script_id, 0))
+        new_item.setData(QtCore.Qt.ItemDataRole.UserRole, (script_id, 0))
         self.ui.selected_scripts.addItem(new_item)
         self.ui.selected_scripts.setCurrentRow(self.ui.selected_scripts.count() - 1)
         self.set_weighting_selector()
@@ -349,7 +349,7 @@ class ScriptExceptionSelector(PicardDialog):
         row = self.ui.selected_scripts.currentRow()
         selected_item = self.ui.selected_scripts.item(row)
         if selected_item:
-            weighting = selected_item.data(QtCore.Qt.UserRole)[1]
+            weighting = selected_item.data(QtCore.Qt.ItemDataRole.UserRole)[1]
         else:
             weighting = 0
         self.ui.weighting_selector.setValue(weighting)
@@ -358,10 +358,10 @@ class ScriptExceptionSelector(PicardDialog):
         row = self.ui.selected_scripts.currentRow()
         selected_item = self.ui.selected_scripts.item(row)
         if selected_item:
-            item_data = selected_item.data(QtCore.Qt.UserRole)
+            item_data = selected_item.data(QtCore.Qt.ItemDataRole.UserRole)
             weighting = self.ui.weighting_selector.value()
             new_data = (item_data[0], weighting)
-            selected_item.setData(QtCore.Qt.UserRole, new_data)
+            selected_item.setData(QtCore.Qt.ItemDataRole.UserRole, new_data)
             label = self.make_label(script_id=item_data[0], script_weighting=weighting)
             selected_item.setText(label)
 
@@ -369,7 +369,7 @@ class ScriptExceptionSelector(PicardDialog):
         scripts = []
         for row in range(self.ui.selected_scripts.count()):
             selected_item = self.ui.selected_scripts.item(row)
-            scripts.append(selected_item.data(QtCore.Qt.UserRole))
+            scripts.append(selected_item.data(QtCore.Qt.ItemDataRole.UserRole))
         self.parent().current_scripts = scripts
         self.parent().make_scripts_text()
         self.accept()

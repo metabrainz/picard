@@ -76,7 +76,7 @@ class SearchBox(QtWidgets.QWidget):
         self.search_edit.setClearButtonEnabled(True)
         self.search_edit.returnPressed.connect(self.trigger_search_action)
         self.search_edit.textChanged.connect(self.enable_search)
-        self.search_edit.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self.search_edit.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
         self.search_edit.focusInEvent = self.focus_in_event
         self.search_row_layout.addWidget(self.search_edit)
         self.search_button = QtWidgets.QToolButton(self.search_row_widget)
@@ -88,7 +88,7 @@ class SearchBox(QtWidgets.QWidget):
         self.layout.addWidget(self.search_row_widget)
         self.adv_opt_row_widget = QtWidgets.QWidget(self)
         self.adv_opt_row_layout = QtWidgets.QHBoxLayout(self.adv_opt_row_widget)
-        self.adv_opt_row_layout.setAlignment(QtCore.Qt.AlignLeft)
+        self.adv_opt_row_layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
         self.adv_opt_row_layout.setContentsMargins(1, 1, 1, 1)
         self.adv_opt_row_layout.setSpacing(1)
         self.use_adv_search_syntax = QtWidgets.QCheckBox(self.adv_opt_row_widget)
@@ -186,7 +186,7 @@ class SearchDialog(TableBasedDialog):
                 _("Search in browser"), self.buttonBox)
             self.buttonBox.addButton(
                 self.search_browser_button,
-                QtWidgets.QDialogButtonBox.ActionRole)
+                QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
             self.search_browser_button.clicked.connect(self.search_browser)
         self.accept_button = QtWidgets.QPushButton(
             self.accept_button_title,
@@ -194,10 +194,10 @@ class SearchDialog(TableBasedDialog):
         self.accept_button.setEnabled(False)
         self.buttonBox.addButton(
             self.accept_button,
-            QtWidgets.QDialogButtonBox.AcceptRole)
+            QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
         self.buttonBox.addButton(
             StandardButton(StandardButton.CANCEL),
-            QtWidgets.QDialogButtonBox.RejectRole)
+            QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
         self.verticalLayout.addWidget(self.buttonBox)
@@ -207,12 +207,12 @@ class SearchDialog(TableBasedDialog):
         progress_widget.setObjectName("progress_widget")
         layout = QtWidgets.QVBoxLayout(progress_widget)
         text_label = QtWidgets.QLabel(_('<strong>Loading...</strong>'), progress_widget)
-        text_label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom)
+        text_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter | QtCore.Qt.AlignmentFlag.AlignBottom)
         gif_label = QtWidgets.QLabel(progress_widget)
         movie = QtGui.QMovie(":/images/loader.gif")
         gif_label.setMovie(movie)
         movie.start()
-        gif_label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
+        gif_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter | QtCore.Qt.AlignmentFlag.AlignTop)
         layout.addWidget(text_label)
         layout.addWidget(gif_label)
         layout.setContentsMargins(1, 1, 1, 1)
@@ -231,17 +231,17 @@ class SearchDialog(TableBasedDialog):
         layout = QtWidgets.QVBoxLayout(error_widget)
         error_label = QtWidgets.QLabel(error, error_widget)
         error_label.setWordWrap(True)
-        error_label.setAlignment(QtCore.Qt.AlignCenter)
-        error_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
+        error_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        error_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         layout.addWidget(error_label)
         if show_retry_button:
             retry_widget = QtWidgets.QWidget(error_widget)
             retry_layout = QtWidgets.QHBoxLayout(retry_widget)
             retry_button = QtWidgets.QPushButton(_("Retry"), error_widget)
             retry_button.clicked.connect(self.retry)
-            retry_button.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed))
+            retry_button.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Fixed))
             retry_layout.addWidget(retry_button)
-            retry_layout.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
+            retry_layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter | QtCore.Qt.AlignmentFlag.AlignTop)
             retry_widget.setLayout(retry_layout)
             layout.addWidget(retry_widget)
         error_widget.setLayout(layout)
@@ -250,11 +250,11 @@ class SearchDialog(TableBasedDialog):
     def network_error(self, reply, error):
         error_msg = _("<strong>Following error occurred while fetching results:<br><br></strong>"
                       "Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>") % (
-                          reply.request().url().toString(QtCore.QUrl.RemoveUserInfo),
+                          reply.request().url().toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo),
                           reply.errorString(),
                           error,
                           repr(reply.attribute(
-                              QtNetwork.QNetworkRequest.HttpStatusCodeAttribute))
+                              QtNetwork.QNetworkRequest.Attribute.HttpStatusCodeAttribute))
         )
         self.show_error(error_msg, show_retry_button=True)
 

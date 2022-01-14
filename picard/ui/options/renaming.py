@@ -67,7 +67,7 @@ from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.util import enabledSlot
 
 
-_default_music_dir = QStandardPaths.writableLocation(QStandardPaths.MusicLocation)
+_default_music_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.MusicLocation)
 
 
 class RenamingOptionsPage(OptionsPage):
@@ -125,8 +125,8 @@ class RenamingOptionsPage(OptionsPage):
         script_edit = self.ui.move_additional_files_pattern
         self.script_palette_normal = script_edit.palette()
         self.script_palette_readonly = QPalette(self.script_palette_normal)
-        disabled_color = self.script_palette_normal.color(QPalette.Inactive, QPalette.Window)
-        self.script_palette_readonly.setColor(QPalette.Disabled, QPalette.Base, disabled_color)
+        disabled_color = self.script_palette_normal.color(QPalette.ColorGroup.Inactive, QPalette.ColorRole.Window)
+        self.script_palette_readonly.setColor(QPalette.ColorGroup.Disabled, QPalette.ColorRole.Base, disabled_color)
 
         self.ui.example_filename_sample_files_button.clicked.connect(self.update_example_files)
 

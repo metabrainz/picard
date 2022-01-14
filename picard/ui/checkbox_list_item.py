@@ -29,10 +29,10 @@ class CheckboxListItem(QListWidgetItem):
     def __init__(self, text='', checked=False, data=None):
         super().__init__()
         self.setText(text)
-        self.setFlags(self.flags() | Qt.ItemIsUserCheckable)
-        self.setCheckState(Qt.Checked if checked else Qt.Unchecked)
+        self.setFlags(self.flags() | Qt.ItemFlag.ItemIsUserCheckable)
+        self.setCheckState(Qt.CheckState.Checked if checked else Qt.CheckState.Unchecked)
         self.data = data
 
     @property
     def checked(self):
-        return self.checkState() == Qt.Checked
+        return self.checkState() == Qt.CheckState.Checked

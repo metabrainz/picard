@@ -80,8 +80,8 @@ class ScriptingDocumentationDialog(PicardDialog, SingletonDialog):
         # on macOS having this not a dialog causes the window to be placed
         # behind the options dialog.
         if not IS_MACOS:
-            self.setWindowFlags(QtCore.Qt.Window)
-        self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+            self.setWindowFlags(QtCore.Qt.WindowType.Window)
+        self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
         self.parent = parent
         self.ui = Ui_ScriptingDocumentationDialog()
         self.ui.setupUi(self)
@@ -108,7 +108,7 @@ class ScriptingOptionsPage(OptionsPage):
         IntOption("persist", "last_selected_script_pos", 0),
     ]
 
-    default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DocumentsLocation))
+    default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
     default_script_extension = "ptsp"
 
     def __init__(self, parent=None):
@@ -204,7 +204,7 @@ class ScriptingOptionsPage(OptionsPage):
             item = items[0]
             self.ui.tagger_script.setEnabled(True)
             self.ui.tagger_script.setText(item.script)
-            self.ui.tagger_script.setFocus(QtCore.Qt.OtherFocusReason)
+            self.ui.tagger_script.setFocus(QtCore.Qt.FocusReason.OtherFocusReason)
             self.ui.export_button.setEnabled(True)
         else:
             self.ui.tagger_script.setEnabled(False)

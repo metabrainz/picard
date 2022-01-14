@@ -124,9 +124,9 @@ def crash_handler():
     if not app:
         app = QApplication(sys.argv)
     msgbox = QMessageBox()
-    msgbox.setIcon(QMessageBox.Critical)
+    msgbox.setIcon(QMessageBox.Icon.Critical)
     msgbox.setWindowTitle("Picard terminated unexpectedly")
-    msgbox.setTextFormat(Qt.RichText)
+    msgbox.setTextFormat(Qt.TextFormat.RichText)
     msgbox.setText(
         'An unexpected error has caused Picard to crash. '
         'Please report this issue on the <a href="https://tickets.metabrainz.org/projects/PICARD">MusicBrainz bug tracker</a>.')
@@ -136,7 +136,7 @@ def crash_handler():
             'A logfile has been written to <a href="{0}">{1}</a>.'
             .format(logfile_url.url(), logfile))
     msgbox.setDetailedText(trace)
-    msgbox.setStandardButtons(QMessageBox.Close)
-    msgbox.setDefaultButton(QMessageBox.Close)
+    msgbox.setStandardButtons(QMessageBox.StandardButton.Close)
+    msgbox.setDefaultButton(QMessageBox.StandardButton.Close)
     msgbox.exec_()
     app.quit()

@@ -102,10 +102,10 @@ class CollectionMenuItem(QtWidgets.QWidget):
         layout = QtWidgets.QVBoxLayout(self)
         style = self.style()
         layout.setContentsMargins(
-            style.pixelMetric(QtWidgets.QStyle.PM_LayoutLeftMargin),
-            style.pixelMetric(QtWidgets.QStyle.PM_FocusFrameVMargin),
-            style.pixelMetric(QtWidgets.QStyle.PM_LayoutRightMargin),
-            style.pixelMetric(QtWidgets.QStyle.PM_FocusFrameVMargin))
+            style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_LayoutLeftMargin),
+            style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_FocusFrameVMargin),
+            style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_LayoutRightMargin),
+            style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_FocusFrameVMargin))
         self.checkbox = CollectionCheckBox(self, menu, collection)
         layout.addWidget(self.checkbox)
 
@@ -118,7 +118,7 @@ class CollectionMenuItem(QtWidgets.QWidget):
         self.active = active
         palette = self.palette()
         textcolor = self.highlight_color if active else self.text_color
-        palette.setColor(QtGui.QPalette.WindowText, textcolor)
+        palette.setColor(QtGui.QPalette.ColorRole.WindowText, textcolor)
         self.checkbox.setPalette(palette)
 
     def enterEvent(self, e):
@@ -131,12 +131,12 @@ class CollectionMenuItem(QtWidgets.QWidget):
         painter = QtWidgets.QStylePainter(self)
         option = QtWidgets.QStyleOptionMenuItem()
         option.initFrom(self)
-        option.state = QtWidgets.QStyle.State_None
+        option.state = QtWidgets.QStyle.StateFlag.State_None
         if self.isEnabled():
-            option.state |= QtWidgets.QStyle.State_Enabled
+            option.state |= QtWidgets.QStyle.StateFlag.State_Enabled
         if self.active:
-            option.state |= QtWidgets.QStyle.State_Selected
-        painter.drawControl(QtWidgets.QStyle.CE_MenuItem, option)
+            option.state |= QtWidgets.QStyle.StateFlag.State_Selected
+        painter.drawControl(QtWidgets.QStyle.ControlElement.CE_MenuItem, option)
 
 
 class CollectionCheckBox(QtWidgets.QCheckBox):
@@ -148,11 +148,11 @@ class CollectionCheckBox(QtWidgets.QCheckBox):
 
         releases = collection.releases & menu.ids
         if len(releases) == len(menu.ids):
-            self.setCheckState(QtCore.Qt.Checked)
+            self.setCheckState(QtCore.Qt.CheckState.Checked)
         elif not releases:
-            self.setCheckState(QtCore.Qt.Unchecked)
+            self.setCheckState(QtCore.Qt.CheckState.Unchecked)
         else:
-            self.setCheckState(QtCore.Qt.PartiallyChecked)
+            self.setCheckState(QtCore.Qt.CheckState.PartiallyChecked)
 
     def nextCheckState(self):
         ids = self.menu.ids
@@ -161,10 +161,10 @@ class CollectionCheckBox(QtWidgets.QCheckBox):
         diff = ids - self.collection.releases
         if diff:
             self.collection.add_releases(diff, self.updateText)
-            self.setCheckState(QtCore.Qt.Checked)
+            self.setCheckState(QtCore.Qt.CheckState.Checked)
         else:
             self.collection.remove_releases(ids & self.collection.releases, self.updateText)
-            self.setCheckState(QtCore.Qt.Unchecked)
+            self.setCheckState(QtCore.Qt.CheckState.Unchecked)
 
     def updateText(self):
         self.setText(self.label())

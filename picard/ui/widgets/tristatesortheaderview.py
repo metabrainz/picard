@@ -57,10 +57,10 @@ class TristateSortHeaderView(QtWidgets.QHeaderView):
             QtWidgets.QToolTip.showText(event.globalPos(), tooltip, self)
             return
 
-        if event.button() == QtCore.Qt.LeftButton:
+        if event.button() == QtCore.Qt.MouseButton.LeftButton:
             index = self.logicalIndexAt(event.pos())
             if (index != -1 and index == self.sortIndicatorSection()
-                and self.sortIndicatorOrder() == QtCore.Qt.DescendingOrder):
+                and self.sortIndicatorOrder() == QtCore.Qt.SortOrder.DescendingOrder):
                 # After a column was sorted descending we want to reset it
                 # to no sorting state. But we need to call the parent
                 # implementation of mouseReleaseEvent in order to handle
@@ -84,7 +84,7 @@ class TristateSortHeaderView(QtWidgets.QHeaderView):
         self.setSectionsClickable(not is_locked)
         self.setSectionsMovable(not is_locked)
         if is_locked:
-            resize_mode = QtWidgets.QHeaderView.Fixed
+            resize_mode = QtWidgets.QHeaderView.ResizeMode.Fixed
         else:
-            resize_mode = QtWidgets.QHeaderView.Interactive
+            resize_mode = QtWidgets.QHeaderView.ResizeMode.Interactive
         self.setSectionResizeMode(resize_mode)

@@ -106,7 +106,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 self.page_to_item[page.NAME] = item
                 self.ui.pages_stack.addWidget(page)
             else:
-                item.setFlags(QtCore.Qt.ItemIsEnabled)
+                item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
             self.add_pages(page.NAME, default_page, item)
             if page.NAME == default_page:
                 self.default_item = item
@@ -116,8 +116,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def __init__(self, default_page=None, parent=None):
         super().__init__(parent)
-        self.setWindowModality(QtCore.Qt.ApplicationModal)
-        self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+        self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
 
         from picard.ui.ui_options import Ui_Dialog
         self.ui = Ui_Dialog()
@@ -130,11 +130,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
         ok = StandardButton(StandardButton.OK)
         ok.setText(_("Make It So!"))
-        self.ui.buttonbox.addButton(ok, QtWidgets.QDialogButtonBox.AcceptRole)
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.RejectRole)
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.HelpRole)
-        self.ui.buttonbox.addButton(self.ui.reset_all_button, QtWidgets.QDialogButtonBox.ActionRole)
-        self.ui.buttonbox.addButton(self.ui.reset_button, QtWidgets.QDialogButtonBox.ActionRole)
+        self.ui.buttonbox.addButton(ok, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.ButtonRole.HelpRole)
+        self.ui.buttonbox.addButton(self.ui.reset_all_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
+        self.ui.buttonbox.addButton(self.ui.reset_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
 
         self.ui.buttonbox.accepted.connect(self.accept)
         self.ui.buttonbox.rejected.connect(self.reject)
@@ -144,7 +144,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
         self.ui.attached_profiles_button = QtWidgets.QPushButton(_("Attached Profiles"))
         self.ui.attached_profiles_button.setToolTip(_("Show which profiles are attached to the options on this page"))
-        self.ui.buttonbox.addButton(self.ui.attached_profiles_button, QtWidgets.QDialogButtonBox.ActionRole)
+        self.ui.buttonbox.addButton(self.ui.attached_profiles_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
         self.ui.attached_profiles_button.clicked.connect(self.show_attached_profiles_dialog)
 
         config = get_config()
@@ -208,11 +208,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         page = self.item_to_page[items[0]]
         if not self.page_has_profile_options(page):
             message_box = QtWidgets.QMessageBox(self)
-            message_box.setIcon(QtWidgets.QMessageBox.Information)
-            message_box.setWindowModality(QtCore.Qt.WindowModal)
+            message_box.setIcon(QtWidgets.QMessageBox.Icon.Information)
+            message_box.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
             message_box.setWindowTitle(window_title)
             message_box.setText(_("The options on this page are not currently available to be managed using profiles."))
-            message_box.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            message_box.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
             return message_box.exec_()
 
         override_profiles = self.profile_page._clean_and_get_all_profiles()
@@ -293,7 +293,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         """Process selected events.
         """
         evtype = event.type()
-        if evtype == QtCore.QEvent.Enter:
+        if evtype == QtCore.QEvent.Type.Enter:
             if self.first_enter:
                 self.first_enter = False
                 if self.tagger and self.tagger.window.script_editor_dialog is not None:
@@ -421,12 +421,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def _show_dialog(self, msg, function):
         message_box = QtWidgets.QMessageBox(self)
-        message_box.setIcon(QtWidgets.QMessageBox.Warning)
-        message_box.setWindowModality(QtCore.Qt.WindowModal)
+        message_box.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+        message_box.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         message_box.setWindowTitle(_("Confirm Reset"))
         message_box.setText(_("Are you sure?") + "\n\n" + msg)
-        message_box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-        if message_box.exec_() == QtWidgets.QMessageBox.Yes:
+        message_box.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+        if message_box.exec_() == QtWidgets.QMessageBox.StandardButton.Yes:
             function()
 
 
@@ -439,7 +439,7 @@ class AttachedProfilesDialog(PicardDialog):
         self.option_group = option_group
         self.ui = Ui_AttachedProfilesDialog()
         self.ui.setupUi(self)
-        self.ui.buttonBox.addButton(StandardButton(StandardButton.CLOSE), QtWidgets.QDialogButtonBox.RejectRole)
+        self.ui.buttonBox.addButton(StandardButton(StandardButton.CLOSE), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
         self.ui.buttonBox.rejected.connect(self.close_window)
 
         config = get_config()

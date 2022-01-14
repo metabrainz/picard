@@ -48,7 +48,7 @@ class ElidedLabel(QtWidgets.QLabel):
         # text does not properly fit into width(), as a workaround subtract
         # 2 pixels from the available width.
         elided_label = metrics.elidedText(self._full_label,
-                                          QtCore.Qt.ElideRight,
+                                          QtCore.Qt.TextElideMode.ElideRight,
                                           self.width() - 2)
         super().setText(elided_label)
         if self._full_label and elided_label != self._full_label:
@@ -69,12 +69,12 @@ class ActiveLabel(QtWidgets.QLabel):
     def setActive(self, active):
         self.active = active
         if self.active:
-            self.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+            self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         else:
             self.setCursor(QtGui.QCursor())
 
     def mouseReleaseEvent(self, event):
-        if self.active and event.button() == QtCore.Qt.LeftButton:
+        if self.active and event.button() == QtCore.Qt.MouseButton.LeftButton:
             self.clicked.emit()
 
 
@@ -102,7 +102,7 @@ class Popover(QtWidgets.QFrame):
 
     def __init__(self, parent, position='bottom'):
         super().__init__(parent)
-        self.setWindowFlags(QtCore.Qt.Popup | QtCore.Qt.FramelessWindowHint)
+        self.setWindowFlags(QtCore.Qt.WindowType.Popup | QtCore.Qt.WindowType.FramelessWindowHint)
         self.position = position
 
     def show(self):
@@ -140,11 +140,11 @@ class SliderPopover(Popover):
         super().__init__(parent, position)
         vbox = QtWidgets.QVBoxLayout(self)
         self.label = QtWidgets.QLabel(label, self)
-        self.label.setAlignment(QtCore.Qt.AlignCenter)
+        self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         vbox.addWidget(self.label)
 
         self.slider = ClickableSlider(self)
-        self.slider.setOrientation(QtCore.Qt.Horizontal)
+        self.slider.setOrientation(QtCore.Qt.Orientation.Horizontal)
         self.slider.setValue(value)
         self.slider.valueChanged.connect(self.value_changed)
         vbox.addWidget(self.slider)

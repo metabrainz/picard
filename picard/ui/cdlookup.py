@@ -66,7 +66,7 @@ class CDLookupDialog(PicardDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         release_list = self.ui.release_list
-        release_list.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        release_list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
         release_list.setSortingEnabled(True)
         release_list.setAlternatingRowColors(True)
         release_list.setHeaderLabels([_("Album"), _("Artist"), _("Date"), _("Country"),
@@ -94,14 +94,14 @@ class CDLookupDialog(PicardDialog):
                 item.setText(5, myjoin(catalog_numbers))
                 item.setText(6, barcode)
                 item.setText(7, release.get('disambiguation', ''))
-                item.setData(0, QtCore.Qt.UserRole, release['id'])
+                item.setData(0, QtCore.Qt.ItemDataRole.UserRole, release['id'])
             release_list.setCurrentItem(selected or release_list.topLevelItem(0))
             self.ui.ok_button.setEnabled(True)
             for i in range(release_list.columnCount() - 1):
                 release_list.resizeColumnToContents(i)
             # Sort by descending date, then ascending country
-            release_list.sortByColumn(3, QtCore.Qt.AscendingOrder)
-            release_list.sortByColumn(2, QtCore.Qt.DescendingOrder)
+            release_list.sortByColumn(3, QtCore.Qt.SortOrder.AscendingOrder)
+            release_list.sortByColumn(2, QtCore.Qt.SortOrder.DescendingOrder)
         else:
             self.ui.results_view.setCurrentIndex(1)
         self.ui.lookup_button.clicked.connect(self.lookup)
@@ -112,7 +112,7 @@ class CDLookupDialog(PicardDialog):
     def accept(self):
         release_list = self.ui.release_list
         for index in release_list.selectionModel().selectedRows():
-            release_id = release_list.itemFromIndex(index).data(0, QtCore.Qt.UserRole)
+            release_id = release_list.itemFromIndex(index).data(0, QtCore.Qt.ItemDataRole.UserRole)
             self.tagger.load_album(release_id, discid=self.disc.id)
         super().accept()
 

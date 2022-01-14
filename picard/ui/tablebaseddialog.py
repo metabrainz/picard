@@ -50,19 +50,19 @@ class ResultTable(QtWidgets.QTableWidget):
 
     def __init__(self, parent):
         super().__init__(parent)
-        self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
-        self.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
-        self.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
+        self.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
+        self.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
         self.horizontalHeader().setStretchLastSection(True)
-        self.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
-        self.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
+        self.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
+        self.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Interactive)
 
         @throttle(1000)  # only emit scrolled signal once per second
         def emit_scrolled(x):
             parent.scrolled.emit()
         self.horizontalScrollBar().valueChanged.connect(emit_scrolled)
         self.verticalScrollBar().valueChanged.connect(emit_scrolled)
-        self.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
+        self.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollMode.ScrollPerPixel)
 
     def prepare(self, headers):
         self.clear()
@@ -128,11 +128,11 @@ class TableBasedDialog(PicardDialog):
         if sortkey is None:
             sortkey = natsort.natkey(value)
         item = SortableTableWidgetItem(sortkey)
-        item.setData(QtCore.Qt.DisplayRole, value)
+        item.setData(QtCore.Qt.ItemDataRole.DisplayRole, value)
         pos = self.colpos(colname)
         if pos == 0:
             id = self.get_value_for_row_id(row, value)
-            item.setData(QtCore.Qt.UserRole, id)
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, id)
         self.table.setItem(row, pos, item)
 
     @abstractmethod
@@ -170,7 +170,7 @@ class TableBasedDialog(PicardDialog):
         self.table.prepare(self.table_headers)
         self.restore_table_header_state()
 
-    def show_table(self, sort_column=None, sort_order=QtCore.Qt.DescendingOrder):
+    def show_table(self, sort_column=None, sort_order=QtCore.Qt.SortOrder.DescendingOrder):
         self.add_widget_to_center_layout(self.table)
         self.table.horizontalHeader().setSortIndicatorShown(self.sorting_enabled)
         self.table.setSortingEnabled(self.sorting_enabled)
@@ -185,7 +185,7 @@ class TableBasedDialog(PicardDialog):
         if self.table:
             selected_rows_user_values = []
             for idx in self.table.selectionModel().selectedRows():
-                row = self.table.itemFromIndex(idx).data(QtCore.Qt.UserRole)
+                row = self.table.itemFromIndex(idx).data(QtCore.Qt.ItemDataRole.UserRole)
                 selected_rows_user_values .append(row)
             self.accept_event(selected_rows_user_values)
         super().accept()
@@ -197,7 +197,7 @@ class TableBasedDialog(PicardDialog):
         state = config.persist[self.dialog_header_state]
         if state:
             header.restoreState(state)
-        header.setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
+        header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Interactive)
         log.debug("restore_state: %s", self.dialog_header_state)
 
     def save_state(self):

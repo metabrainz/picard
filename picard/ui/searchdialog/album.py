@@ -61,9 +61,9 @@ class CoverWidget(QtWidgets.QWidget):
         super().__init__(parent)
         self.layout = QtWidgets.QVBoxLayout(self)
         self.layout.setContentsMargins(0, 0, 0, 0)
-        self.layout.setAlignment(QtCore.Qt.AlignCenter)
+        self.layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.loading_gif_label = QtWidgets.QLabel(self)
-        self.loading_gif_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.loading_gif_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         loading_gif = QtGui.QMovie(":/images/loader.gif")
         self.loading_gif_label.setMovie(loading_gif)
         loading_gif.start()
@@ -76,8 +76,8 @@ class CoverWidget(QtWidgets.QWidget):
         if wid:
             wid.widget().deleteLater()
         cover_label = QtWidgets.QLabel(self)
-        pixmap = pixmap.scaled(self.__size, QtCore.Qt.KeepAspectRatio,
-                               QtCore.Qt.SmoothTransformation)
+        pixmap = pixmap.scaled(self.__size, QtCore.Qt.AspectRatioMode.KeepAspectRatio,
+                               QtCore.Qt.TransformationMode.SmoothTransformation)
         self.__sizehint = pixmap.size()
         cover_label.setPixmap(pixmap)
         self.layout.addWidget(cover_label)

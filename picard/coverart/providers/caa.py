@@ -154,7 +154,7 @@ class ArrowsColumn(QtWidgets.QWidget):
         self.selection_list = selection_list
         self.ignore_list = ignore_list
         self.callback = callback
-        spacer_item = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacer_item = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         arrows_layout = QtWidgets.QVBoxLayout()
         arrows_layout.addItem(QtWidgets.QSpacerItem(spacer_item))
         self.button_add = ArrowButton('go-next' if reverse else 'go-previous', self.move_from_ignore)
@@ -194,9 +194,9 @@ class ListBox(QtWidgets.QListWidget):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setMinimumSize(QtCore.QSize(self.LISTBOX_WIDTH, self.LISTBOX_HEIGHT))
-        self.setSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Expanding)
+        self.setSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.Expanding)
         self.setSortingEnabled(True)
-        self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
 
     def move_item(self, item, target_list):
         """Move the specified item to another listbox."""
@@ -217,7 +217,7 @@ class ListBox(QtWidgets.QListWidget):
         if callback:
             callback()
 
-    def all_items_data(self, role=QtCore.Qt.UserRole):
+    def all_items_data(self, role=QtCore.Qt.ItemDataRole.UserRole):
         for index in range(self.count()):
             yield self.item(index).data(role)
 
@@ -241,9 +241,9 @@ class CAATypesSelectorDialog(PicardDialog):
             types_exclude = []
 
         self.setWindowTitle(_("Cover art types"))
-        self.setWindowModality(QtCore.Qt.WindowModal)
+        self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.layout = QtWidgets.QVBoxLayout(self)
-        self.layout.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
+        self.layout.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetFixedSize)
 
         # Create list boxes for dialog
         self.list_include = ListBox()
@@ -262,7 +262,7 @@ class CAATypesSelectorDialog(PicardDialog):
         instructions = QtWidgets.QLabel()
         instructions.setText(_("Please select the contents of the image type 'Include' and 'Exclude' lists."))
         instructions.setWordWrap(True)
-        instructions.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        instructions.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
         self.layout.addWidget(instructions)
 
         self.arrows_include = ArrowsColumn(
@@ -311,17 +311,17 @@ class CAATypesSelectorDialog(PicardDialog):
             "use a CAA image.\n")
         )
         instructions.setWordWrap(True)
-        instructions.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        instructions.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
         self.layout.addWidget(instructions)
 
         self.buttonbox = QtWidgets.QDialogButtonBox(self)
-        self.buttonbox.setOrientation(QtCore.Qt.Horizontal)
+        self.buttonbox.setOrientation(QtCore.Qt.Orientation.Horizontal)
         self.buttonbox.addButton(
-            StandardButton(StandardButton.OK), QtWidgets.QDialogButtonBox.AcceptRole)
+            StandardButton(StandardButton.OK), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
         self.buttonbox.addButton(StandardButton(StandardButton.CANCEL),
-                                 QtWidgets.QDialogButtonBox.RejectRole)
+                                 QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
         self.buttonbox.addButton(
-            StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.HelpRole)
+            StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.ButtonRole.HelpRole)
 
         extrabuttons = [
             (N_("I&nclude all"), self.move_all_to_include_list),
@@ -331,7 +331,7 @@ class CAATypesSelectorDialog(PicardDialog):
         ]
         for label, callback in extrabuttons:
             button = QtWidgets.QPushButton(_(label))
-            self.buttonbox.addButton(button, QtWidgets.QDialogButtonBox.ActionRole)
+            self.buttonbox.addButton(button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
             button.clicked.connect(callback)
 
         self.layout.addWidget(self.buttonbox)
@@ -375,7 +375,7 @@ class CAATypesSelectorDialog(PicardDialog):
             name = caa_type['name']
             title = translate_caa_type(name)
             item = QtWidgets.QListWidgetItem(title)
-            item.setData(QtCore.Qt.UserRole, name)
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, name)
             if name in includes:
                 self.list_include.addItem(item)
             elif name in excludes:
@@ -427,7 +427,7 @@ class CAATypesSelectorDialog(PicardDialog):
             types_exclude = []
         dialog = CAATypesSelectorDialog(parent, types_include, types_exclude)
         result = dialog.exec_()
-        return (dialog.get_selected_types_include(), dialog.get_selected_types_exclude(), result == QtWidgets.QDialog.Accepted)
+        return (dialog.get_selected_types_include(), dialog.get_selected_types_exclude(), result == QtWidgets.QDialog.DialogCode.Accepted)
 
 
 class ProviderOptionsCaa(ProviderOptions):
@@ -588,7 +588,7 @@ class CoverArtProviderCaa(CoverArtProvider):
             self._caa_json_downloaded,
             priority=True,
             important=False,
-            cacheloadcontrol=QNetworkRequest.PreferNetwork
+            cacheloadcontrol=QNetworkRequest.CacheLoadControl.PreferNetwork
         )
         self.album._requests += 1
         # we will call next_in_queue() after json parsing
@@ -598,7 +598,7 @@ class CoverArtProviderCaa(CoverArtProvider):
         """Parse CAA JSON file and queue CAA cover art images for download"""
         self.album._requests -= 1
         if error:
-            if not (error == QNetworkReply.ContentNotFoundError and self.ignore_json_not_found_error):
+            if not (error == QNetworkReply.NetworkError.ContentNotFoundError and self.ignore_json_not_found_error):
                 self.error('CAA JSON error: %s' % (http.errorString()))
         else:
             if self.restrict_types:

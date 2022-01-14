@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_CDLookupOptionsPage(object):
     def setupUi(self, CDLookupOptionsPage):
@@ -37,4 +39,3 @@ class Ui_CDLookupOptionsPage(object):
         _translate = QtCore.QCoreApplication.translate
         self.rename_files.setTitle(_("CD Lookup"))
         self.label_3.setText(_("CD-ROM device to use for lookups:"))
-

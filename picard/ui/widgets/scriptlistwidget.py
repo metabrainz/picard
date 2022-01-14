@@ -60,9 +60,9 @@ class ScriptListWidget(QtWidgets.QListWidget):
             menu.exec_(event.globalPos())
 
     def keyPressEvent(self, event):
-        if event.matches(QtGui.QKeySequence.Delete):
+        if event.matches(QtGui.QKeySequence.StandardKey.Delete):
             self.remove_selected_script()
-        elif event.key() == QtCore.Qt.Key_Insert:
+        elif event.key() == QtCore.Qt.Key.Key_Insert:
             self.add_script()
         else:
             super().keyPressEvent(event)
@@ -74,10 +74,10 @@ class ScriptListWidget(QtWidgets.QListWidget):
     def add_script(self):
         numbered_name = self.unique_script_name()
         list_item = ScriptListWidgetItem(name=numbered_name)
-        list_item.setCheckState(QtCore.Qt.Checked)
+        list_item.setCheckState(QtCore.Qt.CheckState.Checked)
         self.addItem(list_item)
-        self.setCurrentItem(list_item, QtCore.QItemSelectionModel.Clear
-            | QtCore.QItemSelectionModel.SelectCurrent)
+        self.setCurrentItem(list_item, QtCore.QItemSelectionModel.SelectionFlag.Clear
+            | QtCore.QItemSelectionModel.SelectionFlag.SelectCurrent)
 
     def remove_selected_script(self):
         items = self.selectedItems()
@@ -88,8 +88,8 @@ class ScriptListWidget(QtWidgets.QListWidget):
         row = self.row(item)
         msg = _("Are you sure you want to remove this script?")
         reply = QtWidgets.QMessageBox.question(self, _('Confirm Remove'), msg,
-            QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
-        if item and reply == QtWidgets.QMessageBox.Yes:
+            QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
+        if item and reply == QtWidgets.QMessageBox.StandardButton.Yes:
             item = self.takeItem(row)
             del item
 
@@ -112,11 +112,11 @@ class ScriptListWidgetItem(HashableListWidgetItem):
 
     def __init__(self, name=None, enabled=True, script=""):
         super().__init__(name)
-        self.setFlags(self.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEditable)
+        self.setFlags(self.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsEditable)
         if name is None:
             name = _(DEFAULT_SCRIPT_NAME)
         self.setText(name)
-        self.setCheckState(QtCore.Qt.Checked if enabled else QtCore.Qt.Unchecked)
+        self.setCheckState(QtCore.Qt.CheckState.Checked if enabled else QtCore.Qt.CheckState.Unchecked)
         self.script = script
         self.has_error = False
 
@@ -130,7 +130,7 @@ class ScriptListWidgetItem(HashableListWidgetItem):
 
     @property
     def enabled(self):
-        return self.checkState() == QtCore.Qt.Checked
+        return self.checkState() == QtCore.Qt.CheckState.Checked
 
     def get_all(self):
         # tuples used to get pickle dump of settings to work

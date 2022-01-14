@@ -118,17 +118,17 @@ class InterfaceColorsOptionsPage(OptionsPage):
             hlayout.setContentsMargins(0, 0, 0, 0)
 
             label = QtWidgets.QLabel(interface_colors.get_color_description(color_key))
-            label.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+            label.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
             hlayout.addWidget(label)
 
             button = ColorButton(color_value)
             button.color_changed.connect(partial(color_changed, color_key))
-            hlayout.addWidget(button, 0, QtCore.Qt.AlignRight)
+            hlayout.addWidget(button, 0, QtCore.Qt.AlignmentFlag.AlignRight)
 
             widget.setLayout(hlayout)
             self.colors_list.addWidget(widget)
 
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.colors_list.addItem(spacerItem1)
 
     def load(self):
@@ -138,10 +138,10 @@ class InterfaceColorsOptionsPage(OptionsPage):
     def save(self):
         if interface_colors.save_to_config():
             dialog = QtWidgets.QMessageBox(
-                QtWidgets.QMessageBox.Information,
+                QtWidgets.QMessageBox.Icon.Information,
                 _('Colors changed'),
                 _('You have changed the interface colors. You may have to restart Picard in order for the changes to take effect.'),
-                QtWidgets.QMessageBox.Ok,
+                QtWidgets.QMessageBox.StandardButton.Ok,
                 self)
             dialog.exec_()
 

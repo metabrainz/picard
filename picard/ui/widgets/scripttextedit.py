@@ -104,7 +104,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         syntax_theme = theme.syntax_theme
         self.func_re = re.compile(r"\$(?!noop)[_a-zA-Z0-9]*\(")
         self.func_fmt = QtGui.QTextCharFormat()
-        self.func_fmt.setFontWeight(QtGui.QFont.Bold)
+        self.func_fmt.setFontWeight(QtGui.QFont.Weight.Bold)
         self.func_fmt.setForeground(syntax_theme.func)
         self.var_re = re.compile(r"%[_a-zA-Z0-9:]*%")
         self.var_fmt = QtGui.QTextCharFormat()
@@ -121,7 +121,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         self.bracket_re = re.compile(r"[()]")
         self.noop_re = re.compile(r"\$noop\(")
         self.noop_fmt = QtGui.QTextCharFormat()
-        self.noop_fmt.setFontWeight(QtGui.QFont.Bold)
+        self.noop_fmt.setFontWeight(QtGui.QFont.Weight.Bold)
         self.noop_fmt.setFontItalic(True)
         self.noop_fmt.setForeground(syntax_theme.noop)
         self.rules = [
@@ -179,7 +179,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 class ScriptCompleter(QCompleter):
     def __init__(self, parent=None):
         super().__init__(sorted(self.choices), parent)
-        self.setCompletionMode(QCompleter.UnfilteredPopupCompletion)
+        self.setCompletionMode(QCompleter.CompletionMode.UnfilteredPopupCompletion)
         self.highlighted.connect(self.set_highlighted)
         self.last_selected = ''
 
@@ -406,9 +406,9 @@ class ScriptTextEdit(QTextEdit):
         config = get_config()
         config.persist['script_editor_wordwrap'] = wordwrap
         if wordwrap:
-            self.setLineWrapMode(QTextEdit.WidgetWidth)
+            self.setLineWrapMode(QTextEdit.LineWrapMode.WidgetWidth)
         else:
-            self.setLineWrapMode(QTextEdit.NoWrap)
+            self.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)
 
     def update_show_tooltips(self):
         """Toggles wordwrap in the script editor
@@ -437,7 +437,7 @@ class ScriptTextEdit(QTextEdit):
         if not tc.atEnd():
             pos = tc.position()
             tc = self.textCursor()
-            tc.setPosition(pos + 1, QTextCursor.KeepAnchor)
+            tc.setPosition(pos + 1, QTextCursor.MoveMode.KeepAnchor)
             first_char = completion[0]
             next_char = tc.selectedText()
             if (first_char == '$' and next_char == '(') or (first_char == '%' and next_char == '%'):
@@ -453,13 +453,13 @@ class ScriptTextEdit(QTextEdit):
     def cursor_select_word(self, full_word=True):
         tc = self.textCursor()
         current_position = tc.position()
-        tc.select(QTextCursor.WordUnderCursor)
+        tc.select(QTextCursor.SelectionType.WordUnderCursor)
         selected_text = tc.selectedText()
         # Check for start of function or end of variable
         if current_position > 0 and selected_text and selected_text[0] in {'(', '%'}:
             current_position -= 1
             tc.setPosition(current_position)
-            tc.select(QTextCursor.WordUnderCursor)
+            tc.select(QTextCursor.SelectionType.WordUnderCursor)
             selected_text = tc.selectedText()
         start = tc.selectionStart()
         end = tc.selectionEnd()
@@ -473,19 +473,19 @@ class ScriptTextEdit(QTextEdit):
             # Update selection to include the character before the
             # selected word to include the $ or %.
             tc.setPosition(start - 1 if start > 0 else 0)
-            tc.setPosition(end, QTextCursor.KeepAnchor)
+            tc.setPosition(end, QTextCursor.MoveMode.KeepAnchor)
             selected_text = tc.selectedText()
             # No match, reset position (otherwise we could replace an additional character)
             if not selected_text.startswith('$') and not selected_text.startswith('%'):
                 tc.setPosition(start)
-                tc.setPosition(end, QTextCursor.KeepAnchor)
+                tc.setPosition(end, QTextCursor.MoveMode.KeepAnchor)
         if not full_word:
-            tc.setPosition(current_position, QTextCursor.KeepAnchor)
+            tc.setPosition(current_position, QTextCursor.MoveMode.KeepAnchor)
         return tc
 
     def keyPressEvent(self, event):
         if self.completer.popup().isVisible():
-            if event.key() in {Qt.Key_Tab, Qt.Key_Return, Qt.Key_Enter}:
+            if event.key() in {Qt.Key.Key_Tab, Qt.Key.Key_Return, Qt.Key.Key_Enter}:
                 self.completer.activated.emit(self.completer.get_selected())
                 return
 
@@ -495,10 +495,10 @@ class ScriptTextEdit(QTextEdit):
     def handle_autocomplete(self, event):
         # Only trigger autocomplete on actual text input or if the user explicitly
         # requested auto completion with Ctrl+Space (Control+Space on macOS)
-        modifier = QtCore.Qt.MetaModifier if IS_MACOS else QtCore.Qt.ControlModifier
-        force_completion_popup = event.key() == QtCore.Qt.Key_Space and event.modifiers() & modifier
+        modifier = QtCore.Qt.KeyboardModifier.MetaModifier if IS_MACOS else QtCore.Qt.KeyboardModifier.ControlModifier
+        force_completion_popup = event.key() == QtCore.Qt.Key.Key_Space and event.modifiers() & modifier
         if not (force_completion_popup
-                or event.key() in {Qt.Key_Backspace, Qt.Key_Delete}
+                or event.key() in {Qt.Key.Key_Backspace, Qt.Key.Key_Delete}
                 or self.autocomplete_trigger_chars.match(event.text())):
             self.popup_hide()
             return

@@ -301,8 +301,8 @@ class WebServiceProxyTest(PicardTestCase):
 
     def test_proxy_setup(self):
         proxy_types = [
-            ('http', QNetworkProxy.HttpProxy),
-            ('socks', QNetworkProxy.Socks5Proxy),
+            ('http', QNetworkProxy.ProxyType.HttpProxy),
+            ('socks', QNetworkProxy.ProxyType.Socks5Proxy),
         ]
         for proxy_type, expected_qt_type in proxy_types:
             config.setting['proxy_type'] = proxy_type

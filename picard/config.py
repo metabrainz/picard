@@ -246,7 +246,7 @@ class Config(QtCore.QSettings):
         self._upgrade_hooks = dict()
 
     def event(self, event):
-        if event.type() == QtCore.QEvent.UpdateRequest:
+        if event.type() == QtCore.QEvent.Type.UpdateRequest:
             # Syncing the config file can trigger a deadlock between QSettings internal mutex and
             # the Python GIL in PyQt up to 5.15.2. Workaround this by handling this ourselves
             # with custom file locking.
@@ -274,8 +274,8 @@ class Config(QtCore.QSettings):
         """Build a Config object using the default configuration file
         location."""
         this = cls()
-        QtCore.QSettings.__init__(this, QtCore.QSettings.IniFormat,
-                                  QtCore.QSettings.UserScope, PICARD_ORG_NAME,
+        QtCore.QSettings.__init__(this, QtCore.QSettings.Format.IniFormat,
+                                  QtCore.QSettings.Scope.UserScope, PICARD_ORG_NAME,
                                   PICARD_APP_NAME, parent)
 
         # Check if there is a config file specifically for this version
@@ -300,7 +300,7 @@ class Config(QtCore.QSettings):
         """Build a Config object using a user-provided configuration file
         path."""
         this = cls()
-        QtCore.QSettings.__init__(this, filename, QtCore.QSettings.IniFormat,
+        QtCore.QSettings.__init__(this, filename, QtCore.QSettings.Format.IniFormat,
                                   parent)
         this.__initialize()
         return this

@@ -312,13 +312,13 @@ def confirmation_dialog(parent, message):
         bool: True if accepted, otherwise False.
     """
     dialog = QtWidgets.QMessageBox(
-        QtWidgets.QMessageBox.Warning,
+        QtWidgets.QMessageBox.Icon.Warning,
         _('Confirm'),
         message,
-        QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel,
+        QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.Cancel,
         parent
     )
-    return dialog.exec_() == QtWidgets.QMessageBox.Ok
+    return dialog.exec_() == QtWidgets.QMessageBox.StandardButton.Ok
 
 
 def synchronize_vertical_scrollbars(widgets):
@@ -329,8 +329,8 @@ def synchronize_vertical_scrollbars(widgets):
     """
     # Set highlight colors for selected list items
     example_style = widgets[0].palette()
-    highlight_bg = example_style.color(QPalette.Active, QPalette.Highlight)
-    highlight_fg = example_style.color(QPalette.Active, QPalette.HighlightedText)
+    highlight_bg = example_style.color(QPalette.ColorGroup.Active, QPalette.ColorRole.Highlight)
+    highlight_fg = example_style.color(QPalette.ColorGroup.Active, QPalette.ColorRole.HighlightedText)
     stylesheet = "QListView::item:selected { color: " + highlight_fg.name() + "; background-color: " + highlight_bg.name() + "; }"
 
     def _sync_scrollbar_vert(widget, value):
@@ -399,9 +399,9 @@ def populate_script_selection_combo_box(naming_scripts, selected_script_id, comb
 class NotEmptyValidator(QtGui.QValidator):
     def validate(self, text: str, pos):
         if bool(text.strip()):
-            state = QtGui.QValidator.Acceptable
+            state = QtGui.QValidator.State.Acceptable
         else:
-            state = QtGui.QValidator.Intermediate  # so that field can be made empty temporarily
+            state = QtGui.QValidator.State.Intermediate  # so that field can be made empty temporarily
         return state, text, pos
 
 
@@ -429,7 +429,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     signal_selection_changed = QtCore.pyqtSignal()
     signal_index_changed = QtCore.pyqtSignal()
 
-    default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DocumentsLocation))
+    default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
     default_script_filename = "picard_naming_script.ptsp"
 
     Profile = namedtuple('Profile', ['id', 'title', 'script_id'])
@@ -477,22 +477,22 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         self.reset_button = QtWidgets.QPushButton(_('Reset'))
         self.reset_button.setToolTip(self.reset_action.toolTip())
         self.reset_button.clicked.connect(self.reload_from_config)
-        self.ui.buttonbox.addButton(self.reset_button, QtWidgets.QDialogButtonBox.ActionRole)
+        self.ui.buttonbox.addButton(self.reset_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
 
-        self.save_button = self.ui.buttonbox.addButton(_("Make It So!"), QtWidgets.QDialogButtonBox.AcceptRole)
+        self.save_button = self.ui.buttonbox.addButton(_("Make It So!"), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
         self.save_button.setToolTip(self.save_action.toolTip())
         self.ui.buttonbox.accepted.connect(self.make_it_so)
 
-        self.close_button = self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.Cancel)
+        self.close_button = self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
         self.close_button.setToolTip(self.close_action.toolTip())
         self.ui.buttonbox.rejected.connect(self.close)
 
-        self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.Help)
+        self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Help)
         self.ui.buttonbox.helpRequested.connect(self.show_help)
 
         # Add links to edit script metadata
         self.ui.script_title.installEventFilter(self)
-        self.ui.script_title.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+        self.ui.script_title.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.ActionsContextMenu)
         self.ui.script_title.addAction(self.details_action)
 
         self.ui.file_naming_format.setEnabled(True)
@@ -535,7 +535,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             parent (object): Parent to set for the instance
         """
         if self.parent() != parent:
-            flags = self.windowFlags() | QtCore.Qt.Window
+            flags = self.windowFlags() | QtCore.Qt.WindowType.Window
             super().setParent(parent, flags)
             # Set appropriate state of script selector in parent
             save_enabled = self.save_button.isEnabled()
@@ -634,7 +634,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         help_menu.setToolTipsVisible(True)
 
         self.help_action = QtWidgets.QAction(_("&Help..."), self)
-        self.help_action.setShortcut(QtGui.QKeySequence.HelpContents)
+        self.help_action.setShortcut(QtGui.QKeySequence.StandardKey.HelpContents)
         self.help_action.triggered.connect(self.show_help)
         help_menu.addAction(self.help_action)
 
@@ -704,9 +704,9 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """Process selected events.
         """
         evtype = event.type()
-        if evtype in {QtCore.QEvent.WindowActivate, QtCore.QEvent.FocusIn}:
+        if evtype in {QtCore.QEvent.Type.WindowActivate, QtCore.QEvent.Type.FocusIn}:
             self.update_examples()
-        elif object == self.ui.script_title and evtype == QtCore.QEvent.MouseButtonDblClick:
+        elif object == self.ui.script_title and evtype == QtCore.QEvent.Type.MouseButtonDblClick:
             self.details_action.trigger()
             return True
         return False
@@ -1095,14 +1095,14 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         profile = self.is_used_in_profile()
         if profile is not None:
             QtWidgets.QMessageBox(
-                QtWidgets.QMessageBox.Warning,
+                QtWidgets.QMessageBox.Icon.Warning,
                 _("Error Deleting Script"),
                 _(
                     "The script could not be deleted because it is used in one of the user profiles."
                     "\n\n"
                     "Profile: %s"
                 ) % profile.title,
-                QtWidgets.QMessageBox.Ok,
+                QtWidgets.QMessageBox.StandardButton.Ok,
                 self
             ).exec_()
             return
@@ -1209,7 +1209,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
                 if title != existing_script['title']:
                     continue
                 box = QtWidgets.QMessageBox()
-                box.setIcon(QtWidgets.QMessageBox.Question)
+                box.setIcon(QtWidgets.QMessageBox.Icon.Question)
                 box.setWindowTitle(_('Confirm'))
                 box.setText(
                     _(
@@ -1217,12 +1217,12 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
                         "\n"
                         "Do you want to overwrite it, add as a copy or cancel?"
                     ).format(script_name=title,))
-                box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No | QtWidgets.QMessageBox.Cancel)
-                buttonY = box.button(QtWidgets.QMessageBox.Yes)
+                box.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No | QtWidgets.QMessageBox.StandardButton.Cancel)
+                buttonY = box.button(QtWidgets.QMessageBox.StandardButton.Yes)
                 buttonY.setText(_("Overwrite"))
-                buttonN = box.button(QtWidgets.QMessageBox.No)
+                buttonN = box.button(QtWidgets.QMessageBox.StandardButton.No)
                 buttonN.setText(_("Copy"))
-                box.setDefaultButton(QtWidgets.QMessageBox.Cancel)
+                box.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Cancel)
                 box.exec_()
 
                 if box.clickedButton() == buttonY:
@@ -1278,8 +1278,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         # Ignore scripting errors, those are handled inline
         if not isinstance(error, ScriptCheckError):
             dialog = QtWidgets.QMessageBox(
-                QtWidgets.QMessageBox.Warning, error.title,
-                error.info, QtWidgets.QMessageBox.Ok, self
+                QtWidgets.QMessageBox.Icon.Warning, error.title,
+                error.info, QtWidgets.QMessageBox.StandardButton.Ok, self
             )
             dialog.exec_()
 
@@ -1339,9 +1339,9 @@ class ScriptDetailsEditor(PicardDialog):
         self.ui.script_license.setReadOnly(self.readonly)
         self.ui.script_description.setReadOnly(self.readonly)
 
-        self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.Close).setVisible(self.readonly)
-        self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel).setVisible(not self.readonly)
-        self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.Save).setVisible(not self.readonly)
+        self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.StandardButton.Close).setVisible(self.readonly)
+        self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.StandardButton.Cancel).setVisible(not self.readonly)
+        self.ui.buttonBox.button(QtWidgets.QDialogButtonBox.StandardButton.Save).setVisible(not self.readonly)
         self.ui.last_updated_now.setVisible(not self.readonly)
         self.ui.buttonBox.setFocus()
 
@@ -1388,10 +1388,10 @@ class ScriptDetailsEditor(PicardDialog):
         title = self.ui.script_title.text().strip()
         if not title:
             QtWidgets.QMessageBox(
-                QtWidgets.QMessageBox.Critical,
+                QtWidgets.QMessageBox.Icon.Critical,
                 _("Error"),
                 _("The script title must not be empty."),
-                QtWidgets.QMessageBox.Ok,
+                QtWidgets.QMessageBox.StandardButton.Ok,
                 self
             ).exec_()
             return

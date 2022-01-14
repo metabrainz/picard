@@ -91,8 +91,8 @@ class MaintenanceOptionsPage(OptionsPage):
         # Set the palette of the config file QLineEdit widget to inactive.
         palette_normal = self.ui.config_file.palette()
         palette_readonly = QtGui.QPalette(palette_normal)
-        disabled_color = palette_normal.color(QtGui.QPalette.Inactive, QtGui.QPalette.Window)
-        palette_readonly.setColor(QtGui.QPalette.Base, disabled_color)
+        disabled_color = palette_normal.color(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Window)
+        palette_readonly.setColor(QtGui.QPalette.ColorRole.Base, disabled_color)
         self.ui.config_file.setPalette(palette_readonly)
 
     def load(self):
@@ -125,12 +125,12 @@ class MaintenanceOptionsPage(OptionsPage):
         self.ui.tableWidget.setRowCount(len(orphan_options))
         for row, option_name in enumerate(sorted(orphan_options)):
             tableitem = QtWidgets.QTableWidgetItem(option_name)
-            tableitem.setData(QtCore.Qt.UserRole, option_name)
-            tableitem.setFlags(tableitem.flags() | QtCore.Qt.ItemIsUserCheckable)
-            tableitem.setCheckState(QtCore.Qt.Unchecked)
+            tableitem.setData(QtCore.Qt.ItemDataRole.UserRole, option_name)
+            tableitem.setFlags(tableitem.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+            tableitem.setCheckState(QtCore.Qt.CheckState.Unchecked)
             self.ui.tableWidget.setItem(row, 0, tableitem)
             tableitem = QtWidgets.QTextEdit()
-            tableitem.setFrameStyle(QtWidgets.QFrame.NoFrame)
+            tableitem.setFrameStyle(QtWidgets.QFrame.Shape.NoFrame)
             text = self.make_setting_value_text(option_name)
             tableitem.setPlainText(text)
             tableitem.setReadOnly(True)
@@ -143,7 +143,7 @@ class MaintenanceOptionsPage(OptionsPage):
             self.ui.tableWidget.setRowHeight(row, row_height)
             self.ui.tableWidget.setCellWidget(row, 1, tableitem)
         self.ui.tableWidget.resizeColumnsToContents()
-        self.ui.select_all.setCheckState(QtCore.Qt.Unchecked)
+        self.ui.select_all.setCheckState(QtCore.Qt.CheckState.Unchecked)
         if not len(orphan_options):
             self.ui.select_all.setEnabled(False)
         self.enable_cleanup_changed()
@@ -159,8 +159,8 @@ class MaintenanceOptionsPage(OptionsPage):
 
     def selected_options(self):
         for item in self.column_items(0):
-            if item.checkState() == QtCore.Qt.Checked:
-                yield item.data(QtCore.Qt.UserRole)
+            if item.checkState() == QtCore.Qt.CheckState.Checked:
+                yield item.data(QtCore.Qt.ItemDataRole.UserRole)
 
     def select_all_changed(self):
         state = self.ui.select_all.checkState()
@@ -168,14 +168,14 @@ class MaintenanceOptionsPage(OptionsPage):
             item.setCheckState(state)
 
     def save(self):
-        if not self.ui.enable_cleanup.checkState() == QtCore.Qt.Checked:
+        if not self.ui.enable_cleanup.checkState() == QtCore.Qt.CheckState.Checked:
             return
         to_remove = set(self.selected_options())
         if to_remove and QtWidgets.QMessageBox.question(
             self,
             _('Confirm Remove'),
             _("Are you sure you want to remove the selected option settings?"),
-        ) == QtWidgets.QMessageBox.Yes:
+        ) == QtWidgets.QMessageBox.StandardButton.Yes:
             config = get_config()
             for item in to_remove:
                 Option.add_if_missing('setting', item, None)
@@ -188,7 +188,7 @@ class MaintenanceOptionsPage(OptionsPage):
         return repr(value)
 
     def enable_cleanup_changed(self):
-        state = self.ui.enable_cleanup.checkState() == QtCore.Qt.Checked
+        state = self.ui.enable_cleanup.checkState() == QtCore.Qt.CheckState.Checked
         self.ui.select_all.setEnabled(state)
         self.ui.tableWidget.setEnabled(state)
 

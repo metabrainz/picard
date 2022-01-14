@@ -197,7 +197,7 @@ class TableTagEditorDelegate(TagEditorDelegate):
         return QtCore.QSize(size_hint.width(), min(160, size_hint.height()))
 
     def get_tag_name(self, index):
-        return index.data(QtCore.Qt.UserRole)
+        return index.data(QtCore.Qt.ItemDataRole.UserRole)
 
 
 class MetadataBox(QtWidgets.QTableWidget):
@@ -219,15 +219,15 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.setColumnCount(3)
         self.setHorizontalHeaderLabels((_("Tag"), _("Original Value"), _("New Value")))
         self.horizontalHeader().setStretchLastSection(True)
-        self.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+        self.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
         self.horizontalHeader().setSectionsClickable(False)
         self.verticalHeader().setDefaultSectionSize(21)
         self.verticalHeader().setVisible(False)
-        self.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
-        self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollMode.ScrollPerPixel)
+        self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
         self.setTabKeyNavigation(False)
         self.setStyleSheet("QTableWidget {border: none;}")
-        self.setAttribute(QtCore.Qt.WA_MacShowFocusRect, 1)
+        self.setAttribute(QtCore.Qt.WidgetAttribute.WA_MacShowFocusRect, 1)
         self.setItemDelegate(TableTagEditorDelegate(self))
         self.setWordWrap(False)
         self.files = set()
@@ -287,10 +287,10 @@ class MetadataBox(QtWidgets.QTableWidget):
         if index.column() != self.COLUMN_NEW:
             return False
         item = self.itemFromIndex(index)
-        if item.flags() & QtCore.Qt.ItemIsEditable and \
-           trigger in {QtWidgets.QAbstractItemView.DoubleClicked,
-                       QtWidgets.QAbstractItemView.EditKeyPressed,
-                       QtWidgets.QAbstractItemView.AnyKeyPressed}:
+        if item.flags() & QtCore.Qt.ItemFlag.ItemIsEditable and \
+           trigger in {QtWidgets.QAbstractItemView.EditTrigger.DoubleClicked,
+                       QtWidgets.QAbstractItemView.EditTrigger.EditKeyPressed,
+                       QtWidgets.QAbstractItemView.EditTrigger.AnyKeyPressed}:
             tag = self.tag_diff.tag_names[item.row()]
             values = self.tag_diff.new[tag]
             if len(values) > 1:
@@ -303,9 +303,9 @@ class MetadataBox(QtWidgets.QTableWidget):
         return False
 
     def keyPressEvent(self, event):
-        if event.matches(QtGui.QKeySequence.Copy):
+        if event.matches(QtGui.QKeySequence.StandardKey.Copy):
             self.copy_value()
-        elif event.matches(QtGui.QKeySequence.Paste):
+        elif event.matches(QtGui.QKeySequence.StandardKey.Paste):
             self.paste_value()
         else:
             super().keyPressEvent(event)
@@ -436,11 +436,11 @@ class MetadataBox(QtWidgets.QTableWidget):
                     menu.addSeparator()
                     copy_action = QtWidgets.QAction(icontheme.lookup('edit-copy', icontheme.ICON_SIZE_MENU), _("&Copy"), self)
                     copy_action.triggered.connect(self.copy_value)
-                    copy_action.setShortcut(QtGui.QKeySequence.Copy)
+                    copy_action.setShortcut(QtGui.QKeySequence.StandardKey.Copy)
                     menu.addAction(copy_action)
                     paste_action = QtWidgets.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _("&Paste"), self)
                     paste_action.triggered.connect(self.paste_value)
-                    paste_action.setShortcut(QtGui.QKeySequence.Paste)
+                    paste_action.setShortcut(QtGui.QKeySequence.StandardKey.Paste)
                     paste_action.setEnabled(editable)
                     menu.addAction(paste_action)
             if single_tag or removals or useorigs:
@@ -573,7 +573,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             return self.tag_diff
 
         self.colors = {
-            TagStatus.NOCHANGE: self.palette().color(QtGui.QPalette.Text),
+            TagStatus.NOCHANGE: self.palette().color(QtGui.QPalette.ColorRole.Text),
             TagStatus.REMOVED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_removed')),
             TagStatus.ADDED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_added')),
             TagStatus.CHANGED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_changed'))
@@ -660,8 +660,8 @@ class MetadataBox(QtWidgets.QTableWidget):
 
         self.setRowCount(len(result.tag_names))
 
-        orig_flags = QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled
-        new_flags = orig_flags | QtCore.Qt.ItemIsEditable
+        orig_flags = QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled
+        new_flags = orig_flags | QtCore.Qt.ItemFlag.ItemIsEditable
 
         for i, name in enumerate(result.tag_names):
             tag_item = self.item(i, 0)
@@ -702,7 +702,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             orig_item.setForeground(color)
             new_item.setForeground(color)
 
-            alignment = QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
+            alignment = QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop
             tag_item.setTextAlignment(alignment)
             orig_item.setTextAlignment(alignment)
             new_item.setTextAlignment(alignment)
@@ -712,7 +712,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     def set_item_value(self, item, tags, name):
         text, italic = tags.display_value(name)
-        item.setData(QtCore.Qt.UserRole, name)
+        item.setData(QtCore.Qt.ItemDataRole.UserRole, name)
         item.setText(text)
         font = item.font()
         font.setItalic(italic)
@@ -724,7 +724,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         state = config.persist["metadatabox_header_state"]
         header = self.horizontalHeader()
         header.restoreState(state)
-        header.setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
+        header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Interactive)
 
     def save_state(self):
         config = get_config()

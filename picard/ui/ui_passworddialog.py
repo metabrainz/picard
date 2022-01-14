@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_PasswordDialog(object):
     def setupUi(self, PasswordDialog):
@@ -52,7 +54,7 @@ class Ui_PasswordDialog(object):
         self.verticalLayout.addWidget(self.buttonbox)
 
         self.retranslateUi(PasswordDialog)
-        self.buttonbox.rejected.connect(PasswordDialog.reject)
+        self.buttonbox.rejected.connect(PasswordDialog.reject) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(PasswordDialog)
 
     def retranslateUi(self, PasswordDialog):
@@ -60,4 +62,3 @@ class Ui_PasswordDialog(object):
         PasswordDialog.setWindowTitle(_("Authentication required"))
         self.label.setText(_("Username:"))
         self.label_2.setText(_("Password:"))
-

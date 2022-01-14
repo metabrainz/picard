@@ -57,10 +57,10 @@ class Ui_TagListEditor(object):
         self.horizontalLayout.addLayout(self.verticalLayout)
 
         self.retranslateUi(TagListEditor)
-        self.tags_add_btn.clicked.connect(self.tag_list_view.add_empty_row)
-        self.tags_remove_btn.clicked.connect(self.tag_list_view.remove_selected_rows)
-        self.tags_move_up_btn.clicked.connect(self.tag_list_view.move_selected_rows_up)
-        self.tags_move_down_btn.clicked.connect(self.tag_list_view.move_selected_rows_down)
+        self.tags_add_btn.clicked.connect(self.tag_list_view.add_empty_row) # type: ignore
+        self.tags_remove_btn.clicked.connect(self.tag_list_view.remove_selected_rows) # type: ignore
+        self.tags_move_up_btn.clicked.connect(self.tag_list_view.move_selected_rows_up) # type: ignore
+        self.tags_move_down_btn.clicked.connect(self.tag_list_view.move_selected_rows_down) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(TagListEditor)
 
     def retranslateUi(self, TagListEditor):

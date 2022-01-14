@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_RatingsOptionsPage(object):
     def setupUi(self, RatingsOptionsPage):
@@ -46,4 +48,3 @@ class Ui_RatingsOptionsPage(object):
         self.label.setText(_("Picard saves the ratings together with an e-mail address identifying the user who did the rating. That way different ratings for different users can be stored in the files. Please specify the e-mail you want to use to save your ratings."))
         self.ignore_tags_2.setText(_("E-mail:"))
         self.submit_ratings.setText(_("Submit ratings to MusicBrainz"))
-

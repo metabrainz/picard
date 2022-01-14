@@ -114,10 +114,10 @@ class GenresOptionsPage(OptionsPage):
 
         # FIXME: colors aren't great from accessibility POV
         self.fmt_keep = QTextBlockFormat()
-        self.fmt_keep.setBackground(Qt.green)
+        self.fmt_keep.setBackground(Qt.GlobalColor.green)
 
         self.fmt_skip = QTextBlockFormat()
-        self.fmt_skip.setBackground(Qt.red)
+        self.fmt_skip.setBackground(Qt.GlobalColor.red)
 
         self.fmt_clear = QTextBlockFormat()
         self.fmt_clear.clearBackground()

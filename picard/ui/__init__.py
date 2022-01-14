@@ -175,7 +175,7 @@ class SingletonDialog:
 class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
 
     help_url = None
-    flags = QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint
+    flags = QtCore.Qt.WindowType.WindowSystemMenuHint | QtCore.Qt.WindowType.WindowTitleHint | QtCore.Qt.WindowType.WindowCloseButtonHint
     ready_for_display = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):
@@ -184,9 +184,9 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
         self.ready_for_display.connect(self.restore_geometry)
 
     def keyPressEvent(self, event):
-        if event.matches(QtGui.QKeySequence.Close):
+        if event.matches(QtGui.QKeySequence.StandardKey.Close):
             self.close()
-        elif event.matches(QtGui.QKeySequence.HelpContents) and self.help_url:
+        elif event.matches(QtGui.QKeySequence.StandardKey.HelpContents) and self.help_url:
             self.show_help()
         else:
             super().keyPressEvent(event)
