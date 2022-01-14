@@ -167,7 +167,7 @@
       <item row="2" column="0" colspan="2">
        <widget class="QLabel" name="label_7">
         <property name="text">
-         <string>Non-album tracks:</string>
+         <string>Standalone recordings:</string>
         </property>
         <property name="buddy">
          <cstring>nat_name_default</cstring>

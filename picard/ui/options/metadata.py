@@ -83,7 +83,7 @@ class MetadataOptionsPage(OptionsPage):
 
     options = [
         TextOption("setting", "va_name", "Various Artists"),
-        TextOption("setting", "nat_name", "[non-album tracks]"),
+        TextOption("setting", "nat_name", "[standalone recordings]"),
         ListOption("setting", "artist_locales", ["en"]),
         BoolOption("setting", "translate_artist_names", False),
         BoolOption("setting", "translate_artist_names_script_exception", False),

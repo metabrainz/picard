@@ -135,6 +135,6 @@ class Ui_MetadataOptionsPage(object):
         self.guess_tracknumber_and_title.setText(_("Guess track number and title from filename if empty"))
         self.custom_fields_groupbox.setTitle(_("Custom Fields"))
         self.label_6.setText(_("Various artists:"))
-        self.label_7.setText(_("Non-album tracks:"))
+        self.label_7.setText(_("Standalone recordings:"))
         self.nat_name_default.setText(_("Default"))
         self.va_name_default.setText(_("Default"))

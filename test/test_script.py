@@ -772,7 +772,7 @@ class ScriptParserTest(PicardTestCase):
     def test_default_NAT_filenaming(self):
         context = Metadata()
         context['artist'] = 'artist'
-        context['album'] = '[non-album tracks]'
+        context['album'] = '[standalone recordings]'
         context['title'] = 'title'
         result = self.parser.eval(DEFAULT_FILE_NAMING_FORMAT, context)
         self.assertEqual(result, 'artist/\n\ntitle')
