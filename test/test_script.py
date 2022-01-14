@@ -700,6 +700,27 @@ class ScriptParserTest(PicardTestCase):
         context["source"] = "sourceval"
         self._eval_and_check_copymerge(context, ["targetval", "sourceval"])
 
+    def test_cmd_copymerge_empty_keepdupes(self):
+        context = Metadata()
+        context["target"] = ["tag1", "tag2", "tag1"]
+        context["source"] = ["tag2", "tag3", "tag2"]
+        self.parser.eval("$copymerge(target,source,)", context)
+        self.assertEqual(self.parser.context.getall("target"), ["tag1", "tag2", "tag3"])
+
+    def test_cmd_copymerge_keepdupes(self):
+        context = Metadata()
+        context["target"] = ["tag1", "tag2", "tag1"]
+        context["source"] = ["tag2", "tag3", "tag2"]
+        self.parser.eval("$copymerge(target,source,keep)", context)
+        self.assertEqual(self.parser.context.getall("target"), ["tag1", "tag2", "tag1", "tag2", "tag3", "tag2"])
+
+    def test_cmd_copymerge_nonlist_keepdupes(self):
+        context = Metadata()
+        context["target"] = "targetval"
+        context["source"] = "targetval"
+        self.parser.eval("$copymerge(target,source,keep)", context)
+        self.assertEqual(self.parser.context.getall("target"), ["targetval", "targetval"])
+
     def test_cmd_eq_any(self):
         self.assertScriptResultEquals("$eq_any(abc,def,ghi,jkl)", "")
         self.assertScriptResultEquals("$eq_any(abc,def,ghi,jkl,abc)", "1")

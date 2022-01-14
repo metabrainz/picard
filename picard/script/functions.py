@@ -492,20 +492,22 @@ def func_copy(parser, new, old):
 
 
 @script_function(documentation=N_(
-    """`$copymerge(new,old)`
+    """`$copymerge(new,old[,keep_duplicates])`
 
 Merges metadata from variable `old` into `new`, removing duplicates and
     appending to the end, so retaining the original ordering. Like `$copy`, this
     will also copy multi-valued variables without flattening them.
 
+If `keep_duplicates` is set, then the duplicates will not be removed from the result.
+
 _Since Picard 1.0_"""
 ))
-def func_copymerge(parser, new, old):
+def func_copymerge(parser, new, old, keep_duplicates=False):
     new = normalize_tagname(new)
     old = normalize_tagname(old)
     newvals = parser.context.getall(new)
     oldvals = parser.context.getall(old)
-    parser.context[new] = uniqify(newvals + oldvals)
+    parser.context[new] = newvals + oldvals if keep_duplicates else uniqify(newvals + oldvals)
     return ""
 
 
