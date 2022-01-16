@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2007, 2014 Lukáš Lalinský
-# Copyright (C) 2008, 2018-2021 Philipp Wolfer
+# Copyright (C) 2008, 2018-2022 Philipp Wolfer
 # Copyright (C) 2011, 2013 Michael Wiencek
 # Copyright (C) 2011, 2019 Wieland Hoffmann
 # Copyright (C) 2013-2014 Sophist-UK
@@ -132,6 +132,8 @@ class GeneralOptionsPage(OptionsPage):
             self.ui.server_host_primary_warning.show()
 
     def update_login_logout(self, error_msg=None):
+        if self.deleted:
+            return
         if self.tagger.webservice.oauth_manager.is_logged_in():
             config = get_config()
             self.ui.logged_in.setText(_("Logged in as <b>%s</b>.") % config.persist["oauth_username"])
