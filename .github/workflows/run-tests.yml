@@ -40,7 +40,7 @@ jobs:
       if: always()
       run: |
         pip install pytest pytest-randomly pytest-cov
-        pytest --verbose --cov=picard --cov-report xml:coverage.xml test
+        pytest --verbose --capture=tee-sys --cov=picard --cov-report xml:coverage.xml test
     - name: Test python-libdiscid (Linux)
       if: runner.os == 'Linux'
       run: |
