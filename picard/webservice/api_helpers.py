@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2018, 2020-2021 Laurent Monin
-# Copyright (C) 2018-2021 Philipp Wolfer
+# Copyright (C) 2018-2022 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -191,18 +191,22 @@ class MBAPIHelper(APIHelper):
     def find_artists(self, handler, **kwargs):
         return self._find('artist', handler, **kwargs)
 
-    def _browse(self, entitytype, handler, inc=None, **kwargs):
+    def _browse(self, entitytype, handler, inc=None, queryargs=None, mblogin=False):
         path_list = (entitytype, )
-        queryargs = kwargs
+        if queryargs is None:
+            queryargs = {}
         if inc:
             queryargs["inc"] = "+".join(inc)
         return self.get(path_list, handler, queryargs=queryargs,
-                        priority=True, important=True, mblogin=False,
+                        priority=True, important=True, mblogin=mblogin,
                         refresh=False)
 
     def browse_releases(self, handler, **kwargs):
         inc = ("media", "labels")
-        return self._browse("release", handler, inc, **kwargs)
+        return self._browse("release", handler, inc, queryargs=kwargs)
+
+    def browse_recordings(self, handler, inc, **kwargs):
+        return self._browse('recording', handler, inc, queryargs=kwargs)
 
     @staticmethod
     def _xml_ratings(ratings):

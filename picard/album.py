@@ -7,7 +7,7 @@
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008 Hendrik van Antwerpen
 # Copyright (C) 2008 ojnkpjg
-# Copyright (C) 2008-2011, 2014, 2018-2021 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014, 2018-2022 Philipp Wolfer
 # Copyright (C) 2009 Nikolai Prokoschenko
 # Copyright (C) 2011-2012 Chad Wilson
 # Copyright (C) 2011-2013, 2019 Michael Wiencek
@@ -95,6 +95,9 @@ from picard.util.textencoding import asciipunct
 from picard.ui.item import Item
 
 
+RECORDING_QUERY_LIMIT = 100
+
+
 def _create_artist_node_dict(source_node):
     return {x['artist']['id']: x['artist'] for x in source_node['artist-credit']}
 
@@ -134,6 +137,7 @@ class Album(DataObject, Item):
         self._requests = 0
         self._tracks_loaded = False
         self._discids = set()
+        self._recordings_map = {}
         if discid:
             self._discids.add(discid)
         self._after_load_callbacks = []
@@ -249,6 +253,16 @@ class Album(DataObject, Item):
             self.error_append(traceback.format_exc())
 
         self._release_node = release_node
+
+        if config.setting['track_ars']:
+            # Detect if track relationships did not get loaded
+            try:
+                for medium_node in release_node['media']:
+                    if medium_node['track-count']:
+                        return 'relations' in medium_node['tracks'][0]['recording']
+            except KeyError:
+                pass
+
         return True
 
     def _release_request_finished(self, document, http, error):
@@ -277,6 +291,10 @@ class Album(DataObject, Item):
             else:
                 try:
                     parsed = self._parse_release(document)
+                    config = get_config()
+                    if not parsed and config.setting['track_ars']:
+                        log.debug('Recording relationships not loaded in initial request for %r, issuing separate requests' % self)
+                        self._request_recording_relationships(config=config)
                 except Exception:
                     error = True
                     self.error_append(traceback.format_exc())
@@ -284,6 +302,51 @@ class Album(DataObject, Item):
             self._requests -= 1
             if parsed or error:
                 self._finalize_loading(error)
+
+    def _request_recording_relationships(self, offset=0, limit=RECORDING_QUERY_LIMIT, config=None):
+        if not config:
+            config = get_config()
+        inc = (
+            'artist-rels',
+            'recording-rels',
+            'release-rels',
+            'url-rels',
+            'work-rels',
+        )
+        log.debug('Loading recording relationships for %r (offset=%i, limit=%i)' % (self, offset, limit))
+        self._requests += 1
+        self.load_task = self.tagger.mb_api.browse_recordings(
+            self._recordings_request_finished,
+            inc=inc,
+            release=self.id,
+            limit=limit,
+            offset=offset
+        )
+
+    def _recordings_request_finished(self, document, http, error):
+        self._requests -= 1
+        if error:
+            self.error_append(http.errorString())
+            self._finalize_loading(error)
+        else:
+            for recording in document.get('recordings', []):
+                recording_id = recording.get('id')
+                if recording_id:
+                    self._recordings_map[recording_id] = recording
+            count = document.get('recording-count', 0)
+            offset = document.get('recording-offset', 0)
+            next_offset = offset + RECORDING_QUERY_LIMIT
+            if next_offset < count:
+                self._request_recording_relationships(offset=next_offset)
+            else:
+                self._finalize_loading(error)
+
+    def _merge_recording_relationships(self):
+        for medium_node in self._release_node.get('media', []):
+            for track_node in medium_node.get('tracks', []):
+                recording = self._recordings_map.get(track_node['recording']['id'])
+                if recording:
+                    track_node['recording']['relations'] = recording.get('relations')
 
     def _finalize_loading_track(self, track_node, metadata, artists, extra_metadata=None):
         # As noted in `_parse_release` above, the release artist nodes
@@ -460,6 +523,7 @@ class Album(DataObject, Item):
             return
 
         if not self._tracks_loaded:
+            self._merge_recording_relationships()
             self._load_tracks()
 
         if not self._requests:
