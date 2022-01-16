@@ -341,13 +341,6 @@ class Album(DataObject, Item):
             else:
                 self._finalize_loading(error)
 
-    def _merge_recording_relationships(self):
-        for medium_node in self._release_node.get('media', []):
-            for track_node in medium_node.get('tracks', []):
-                recording = self._recordings_map.get(track_node['recording']['id'])
-                if recording:
-                    track_node['recording']['relations'] = recording.get('relations')
-
     def _finalize_loading_track(self, track_node, metadata, artists, extra_metadata=None):
         # As noted in `_parse_release` above, the release artist nodes
         # may contain supplementary data that isn't present in track
@@ -357,6 +350,12 @@ class Album(DataObject, Item):
         _copy_artist_nodes(self._release_artist_nodes, track_node)
         _copy_artist_nodes(self._release_artist_nodes, track_node['recording'])
         _copy_artist_nodes(_create_artist_node_dict(track_node), track_node['recording'])
+
+        # Merge separately loaded recording relationships
+        if 'relations' not in track_node['recording']:
+            recording = self._recordings_map.get(track_node['recording']['id'])
+            if recording:
+                track_node['recording']['relations'] = recording.get('relations', [])
 
         track = Track(track_node['recording']['id'], self)
         self._new_tracks.append(track)
@@ -523,7 +522,6 @@ class Album(DataObject, Item):
             return
 
         if not self._tracks_loaded:
-            self._merge_recording_relationships()
             self._load_tracks()
 
         if not self._requests:
