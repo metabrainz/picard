@@ -85,7 +85,7 @@ class FileList(QtCore.QObject, FileListItem):
     def iterfiles(self, save=False):
         yield from self.files
 
-    def update(self):
+    def update(self, signal=True):
         pass
 
     @property
@@ -99,7 +99,7 @@ class Cluster(FileList):
     comparison_weights = {
         'album': 17,
         'albumartist': 6,
-        'totaltracks': 5,
+        'totalalbumtracks': 5,
         'releasetype': 10,
         'releasecountry': 2,
         'format': 2,
@@ -152,7 +152,7 @@ class Cluster(FileList):
                 file.metadata_images_changed.connect(self.update_metadata_images)
         added_files = sorted(added_files, key=attrgetter('discnumber', 'tracknumber', 'base_filename'))
         self.files.extend(added_files)
-        self.metadata['totaltracks'] = len(self.files)
+        self.update(signal=False)
         if self.can_show_coverart:
             add_metadata_images(self, added_files)
         self.item.add_files(added_files)
@@ -166,7 +166,7 @@ class Cluster(FileList):
         self.tagger.window.set_processing(True)
         self.metadata.length -= file.metadata.length
         self.files.remove(file)
-        self.metadata['totaltracks'] = len(self.files)
+        self.update(signal=False)
         self.item.remove_file(file)
         if self.can_show_coverart:
             file.metadata_images_changed.disconnect(self.update_metadata_images)
@@ -177,8 +177,9 @@ class Cluster(FileList):
         if not self.special and self.get_num_files() == 0:
             self.tagger.remove_cluster(self)
 
-    def update(self):
-        if self.item:
+    def update(self, signal=True):
+        self.metadata['~totalalbumtracks'] = self.metadata['totaltracks'] = len(self.files)
+        if signal and self.item:
             self.item.update()
 
     def get_num_files(self):

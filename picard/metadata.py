@@ -145,6 +145,10 @@ def weights_from_preferred_formats(parts, release, preferred_formats, weight):
         parts.append((score, weight))
 
 
+def trackcount_score(actual, expected):
+    return 0.0 if actual > expected else 0.3 if actual < expected else 1.0
+
+
 class Metadata(MutableMapping):
 
     """List of metadata items with dict-like access."""
@@ -241,7 +245,7 @@ class Metadata(MutableMapping):
 
     def compare_to_release_parts(self, release, weights):
         parts = []
-        if "album" in self:
+        if "album" in self and "album" in weights:
             b = release['title']
             parts.append((similarity2(self["album"], b), weights["album"]))
 
@@ -250,58 +254,79 @@ class Metadata(MutableMapping):
             b = artist_credit_from_node(release['artist-credit'])[0]
             parts.append((similarity2(a, b), weights["albumartist"]))
 
-        try:
-            a = int(self["totaltracks"])
-            b = release['track-count']
-            score = 0.0 if a > b else 0.3 if a < b else 1.0
-            parts.append((score, weights["totaltracks"]))
-        except (ValueError, KeyError):
-            pass
+        if "totaltracks" in weights:
+            try:
+                a = int(self["totaltracks"])
+                if 'media' in release:
+                    score = 0.0
+                    for media in release['media']:
+                        b = media.get('track-count', 0)
+                        score = max(score, trackcount_score(a, b))
+                        if score == 1.0:
+                            break
+                else:
+                    b = release['track-count']
+                    score = trackcount_score(a, b)
+                parts.append((score, weights["totaltracks"]))
+            except (ValueError, KeyError):
+                pass
+
+        if "totalalbumtracks" in weights:
+            try:
+                a = int(self["~totalalbumtracks"] or self["totaltracks"])
+                b = release['track-count']
+                score = trackcount_score(a, b)
+                parts.append((score, weights["totalalbumtracks"]))
+            except (ValueError, KeyError):
+                pass
 
         # Date Logic
         date_match_factor = 0.0
-        if "date" in release and release['date'] != '':
-            release_date = release['date']
-            if "date" in self:
-                metadata_date = self['date']
-                if release_date == metadata_date:
-                    # release has a date and it matches what our metadata had exactly.
-                    date_match_factor = self.__date_match_factors['exact']
+        if "date" in weights:
+            if "date" in release and release['date'] != '':
+                release_date = release['date']
+                if "date" in self:
+                    metadata_date = self['date']
+                    if release_date == metadata_date:
+                        # release has a date and it matches what our metadata had exactly.
+                        date_match_factor = self.__date_match_factors['exact']
+                    else:
+                        release_year = extract_year_from_date(release_date)
+                        if release_year is not None:
+                            metadata_year = extract_year_from_date(metadata_date)
+                            if metadata_year is not None:
+                                if release_year == metadata_year:
+                                    # release has a date and it matches what our metadata had for year exactly.
+                                    date_match_factor = self.__date_match_factors['year']
+                                elif abs(release_year - metadata_year) <= 2:
+                                    # release has a date and it matches what our metadata had closely (year +/- 2).
+                                    date_match_factor = self.__date_match_factors['close_year']
+                                else:
+                                    # release has a date but it does not match ours (all else equal,
+                                    # its better to have an unknown date than a wrong date, since
+                                    # the unknown could actually be correct)
+                                    date_match_factor = self.__date_match_factors['differed']
                 else:
-                    release_year = extract_year_from_date(release_date)
-                    if release_year is not None:
-                        metadata_year = extract_year_from_date(metadata_date)
-                        if metadata_year is not None:
-                            if release_year == metadata_year:
-                                # release has a date and it matches what our metadata had for year exactly.
-                                date_match_factor = self.__date_match_factors['year']
-                            elif abs(release_year - metadata_year) <= 2:
-                                # release has a date and it matches what our metadata had closely (year +/- 2).
-                                date_match_factor = self.__date_match_factors['close_year']
-                            else:
-                                # release has a date but it does not match ours (all else equal,
-                                # its better to have an unknown date than a wrong date, since
-                                # the unknown could actually be correct)
-                                date_match_factor = self.__date_match_factors['differed']
+                    # release has a date but we don't have one (all else equal, we prefer
+                    # tracks that have non-blank date values)
+                    date_match_factor = self.__date_match_factors['exists_vs_null']
             else:
-                # release has a date but we don't have one (all else equal, we prefer
-                # tracks that have non-blank date values)
-                date_match_factor = self.__date_match_factors['exists_vs_null']
-        else:
-            # release has a no date (all else equal, we don't prefer this
-            # release since its date is missing)
-            date_match_factor = self.__date_match_factors['no_release_date']
+                # release has a no date (all else equal, we don't prefer this
+                # release since its date is missing)
+                date_match_factor = self.__date_match_factors['no_release_date']
 
-        parts.append((date_match_factor, weights['date']))
+            parts.append((date_match_factor, weights['date']))
 
         config = get_config()
-        weights_from_preferred_countries(parts, release,
-                                         config.setting["preferred_release_countries"],
-                                         weights["releasecountry"])
+        if "releasecountry" in weights:
+            weights_from_preferred_countries(parts, release,
+                                             config.setting["preferred_release_countries"],
+                                             weights["releasecountry"])
 
-        weights_from_preferred_formats(parts, release,
-                                       config.setting["preferred_release_formats"],
-                                       weights["format"])
+        if "format" in weights:
+            weights_from_preferred_formats(parts, release,
+                                           config.setting["preferred_release_formats"],
+                                           weights["format"])
 
         if "releasetype" in weights:
             weights_from_release_type_scores(parts, release,

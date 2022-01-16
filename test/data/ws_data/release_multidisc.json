@@ -1,0 +1,179 @@
+{
+    "id": "6c4f766f-3351-4c10-a53d-b119452c27b2",
+    "packaging": null,
+    "disambiguation": "初回生産限定盤",
+    "barcode": "4547366518764",
+    "track-count": 7,
+    "media": [
+        {
+            "track-offset": 0,
+            "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+            "format": "CD",
+            "tracks": [
+                {
+                    "length": 256000,
+                    "id": "7dfe7b51-32c7-42e7-9685-bad653319116",
+                    "recording": {
+                        "video": false,
+                        "title": "ケアレス",
+                        "first-release-date": "2021-08-08",
+                        "disambiguation": "",
+                        "length": 256000,
+                        "id": "9e1bd108-5e69-41cf-b744-ff7731293403"
+                    },
+                    "number": "1",
+                    "position": 1,
+                    "title": "ケアレス"
+                },
+                {
+                    "length": 263000,
+                    "id": "36b94d44-b672-4668-8b21-c8178520ca1b",
+                    "recording": {
+                        "first-release-date": "2021-09-15",
+                        "title": "Bye‐Bye Butterfly",
+                        "video": false,
+                        "id": "e7434e09-727e-4962-aa20-6c8b38431d31",
+                        "length": 263000,
+                        "disambiguation": ""
+                    },
+                    "number": "2",
+                    "position": 2,
+                    "title": "Bye-Bye Butterfly"
+                },
+                {
+                    "recording": {
+                        "title": "Starry",
+                        "first-release-date": "2021-09-15",
+                        "video": false,
+                        "id": "781f567c-04de-4690-81f8-b5e9396af231",
+                        "disambiguation": "",
+                        "length": 262000
+                    },
+                    "id": "86ff242d-77bb-4887-9fba-27be2647146b",
+                    "length": 262000,
+                    "title": "Starry",
+                    "number": "3",
+                    "position": 3
+                },
+                {
+                    "length": 254000,
+                    "id": "a8458b10-53b2-4a02-b218-f98ae42fec4e",
+                    "recording": {
+                        "id": "e337e1b6-818b-4923-9bf2-8256168ff95a",
+                        "disambiguation": "",
+                        "length": 254000,
+                        "title": "ケアレス -Instrumental-",
+                        "first-release-date": "2021-09-15",
+                        "video": false
+                    },
+                    "number": "4",
+                    "position": 4,
+                    "title": "ケアレス -Instrumental-"
+                }
+            ],
+            "position": 1,
+            "track-count": 4,
+            "title": ""
+        },
+        {
+            "track-count": 3,
+            "title": "",
+            "position": 2,
+            "tracks": [
+                {
+                    "number": "1",
+                    "position": 1,
+                    "title": "ケアレス (Music Video)",
+                    "id": "8cb416e1-4dea-4495-8761-7ecaf1df8b53",
+                    "length": 249000,
+                    "recording": {
+                        "first-release-date": "2021-09-15",
+                        "title": "ケアレス (Music Video)",
+                        "video": true,
+                        "id": "187a4c6f-3920-46ee-869a-30077ff7feb8",
+                        "length": 249000,
+                        "disambiguation": ""
+                    }
+                },
+                {
+                    "recording": {
+                        "video": true,
+                        "title": "ケアレス (15秒CM)",
+                        "first-release-date": "2021-09-15",
+                        "length": 14000,
+                        "disambiguation": "",
+                        "id": "5f6bf35e-98c4-4dad-af43-5b14c42544c8"
+                    },
+                    "length": 14000,
+                    "id": "dd28ec8b-ec2b-422a-87dc-7c8f0ea8d69d",
+                    "title": "ケアレス (15秒CM)",
+                    "number": "2",
+                    "position": 2
+                },
+                {
+                    "recording": {
+                        "title": "ケアレス (30秒メッセージコメント入りCM)",
+                        "first-release-date": "2021-09-15",
+                        "video": true,
+                        "id": "1a7faef4-6f9c-4579-9770-4da2e05b247c",
+                        "disambiguation": "",
+                        "length": 29000
+                    },
+                    "length": 29000,
+                    "id": "f63daba7-835f-4303-943f-097c34b58d02",
+                    "title": "ケアレス (30秒メッセージコメント入りCM)",
+                    "position": 3,
+                    "number": "3"
+                }
+            ],
+            "format": "DVD-Video",
+            "format-id": "bb71fd58-ff93-32b4-a201-4ad1b2a80e5f",
+            "track-offset": 0
+        }
+    ],
+    "asin": "B09BGHWCW1",
+    "release-events": [
+        {
+            "date": "2021-09-15",
+            "area": {
+                "iso-3166-1-codes": [
+                    "JP"
+                ],
+                "type-id": null,
+                "name": "Japan",
+                "type": null,
+                "id": "2db42837-c832-3c27-b4a3-08198f75693c",
+                "disambiguation": "",
+                "sort-name": "Japan"
+            }
+        }
+    ],
+    "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+    "date": "2021-09-15",
+    "quality": "normal",
+    "country": "JP",
+    "text-representation": {
+        "language": "jpn",
+        "script": "Jpan"
+    },
+    "title": "ケアレス",
+    "status": "Official",
+    "cover-art-archive": {
+        "artwork": false,
+        "front": false,
+        "darkened": false,
+        "count": 0,
+        "back": false
+    },
+    "packaging-id": null,
+    "release-group": {
+        "secondary-types": [],
+        "id": "b89c4dbd-1734-4536-a16d-dde648f735c0",
+        "secondary-type-ids": [],
+        "disambiguation": "",
+        "first-release-date": "2021-09-15",
+        "title": "ケアレス",
+        "primary-type": "Single",
+        "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9"
+    }
+}
