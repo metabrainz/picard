@@ -22,6 +22,7 @@
 
 from functools import partial
 import json
+import logging
 import os
 from unittest.mock import (
     MagicMock,
@@ -85,8 +86,9 @@ class AcousticBrainzFeatureExtractionTest(PicardTestCase):
         settings['acousticbrainz_extractor'] = mock_extractor
         self.set_config_values(settings)
 
-        self.tagger.ab_extractor = ABExtractor()
-        self.assertTrue(self.tagger.ab_extractor.available())
+        with self.loglevel(logging.DEBUG):
+            self.tagger.ab_extractor = ABExtractor()
+            self.assertTrue(self.tagger.ab_extractor.available())
 
         # Load an irrelevant test file
         self.file = File("./test/data/test.mp3")
