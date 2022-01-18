@@ -1123,7 +1123,7 @@ def func_reverse(parser, text):
 
 
 @script_function(documentation=N_(
-    """`$substr(text,start,end)`
+    """`$substr(text,start[,end])`
 
 Returns the substring beginning with the character at the `start` index, up to
     (but not including) the character at the `end` index. Indexes are
@@ -1131,7 +1131,7 @@ Returns the substring beginning with the character at the `start` index, up to
     string. If the `start` or `end` indexes are left blank, they will default to
     the start and end of the string respectively."""
 ))
-def func_substr(parser, text, start_index, end_index):
+def func_substr(parser, text, start_index, end_index=None):
     try:
         start = int(start_index) if start_index else None
     except ValueError:
