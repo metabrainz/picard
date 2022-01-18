@@ -1169,16 +1169,18 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$substr(One; Two; Three,a,b)", "One; Two; Three", context)
         # # Tests with missing input
         self.assertScriptResultEquals("$substr(One; Two; Three,,4)", "One;", context)
+        self.assertScriptResultEquals("$substr(One; Two; Three,10)", "Three", context)
         self.assertScriptResultEquals("$substr(One; Two; Three,10,)", "Three", context)
+        self.assertScriptResultEquals("$substr(One; Two; Three,)", "One; Two; Three", context)
         self.assertScriptResultEquals("$substr(One; Two; Three,,)", "One; Two; Three", context)
         # Tests with missing input
-        areg = r"^\d+:\d+:\$substr: Wrong number of arguments for \$substr: Expected exactly 3, "
+        areg = r"^\d+:\d+:\$substr: Wrong number of arguments for \$substr: Expected between 2 and 3, "
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$substr()")
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$substr(abc)")
         with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$substr(abc,0)")
+            self.parser.eval("$substr(abc,0,,)")
 
     def test_cmd_getmulti(self):
         context = Metadata()
