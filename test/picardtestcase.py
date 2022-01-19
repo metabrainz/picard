@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2018 Wieland Hoffmann
-# Copyright (C) 2019-2021 Philipp Wolfer
+# Copyright (C) 2019-2022 Philipp Wolfer
 # Copyright (C) 2020 Laurent Monin
 # Copyright (C) 2021 Bob Swift
 #
@@ -21,8 +21,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
 import json
+import logging
 import os
 import shutil
 import struct
@@ -71,6 +71,7 @@ class FakeTagger(QtCore.QObject):
 
 class PicardTestCase(unittest.TestCase):
     def setUp(self):
+        log.set_level(logging.DEBUG)
         self.tagger = FakeTagger()
         QtCore.QObject.tagger = self.tagger
         self.addCleanup(self.tagger.run_cleanup)

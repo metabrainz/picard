@@ -21,7 +21,6 @@
 
 
 import base64
-import logging
 import os
 
 from mutagen.flac import (
@@ -35,10 +34,7 @@ from test.picardtestcase import (
     create_fake_png,
 )
 
-from picard import (
-    config,
-    log,
-)
+from picard import config
 from picard.coverart.image import CoverArtImage
 from picard.formats import vorbis
 from picard.formats.util import open_ as open_format
@@ -82,10 +78,7 @@ class CommonVorbisTests:
     class VorbisTestCase(CommonTests.TagFormatsTestCase):
         def test_invalid_rating(self):
             filename = os.path.join('test', 'data', 'test-invalid-rating.ogg')
-            old_log_level = log.get_effective_level()
-            log.set_level(logging.ERROR)
             metadata = load_metadata(filename)
-            log.set_level(old_log_level)
             self.assertEqual(metadata["~rating"], "THERATING")
 
         def test_supports_tags(self):
