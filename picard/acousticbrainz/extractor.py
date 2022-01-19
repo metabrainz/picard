@@ -48,7 +48,7 @@ def check_extractor_version(essentia_path):
 
     version = None
     try:
-        return_code, stdout, stderr = run_executable(essentia_path, timeout=2)
+        return_code, stdout, stderr = run_executable(essentia_path, timeout=10)
         version_regex = re.compile(r"Essentia version (.*[^ \r\n])")
         version = version_regex.findall(stdout)[0]
     except IndexError:
