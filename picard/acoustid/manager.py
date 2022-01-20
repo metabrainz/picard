@@ -6,7 +6,7 @@
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2018, 2020-2021 Laurent Monin
-# Copyright (C) 2020 Philipp Wolfer
+# Copyright (C) 2020, 2022 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -31,14 +31,19 @@ from picard import log
 from picard.util import load_json
 
 
+# Maximum difference between file duration and MB metadata length.
+# If the match is above this threshold the fingerprint will not get submitted.
+# Compare also acoustid/const.py in acoustid-server sources
+FINGERPRINT_MAX_ALLOWED_LENGTH_DIFF_MS = 30000
+
+
 class Submission(object):
 
-    def __init__(self, fingerprint, duration, orig_recordingid=None, recordingid=None, puid=None):
+    def __init__(self, fingerprint, duration, recordingid=None, metadata=None):
         self.fingerprint = fingerprint
         self.duration = duration
-        self.puid = puid
-        self.orig_recordingid = orig_recordingid
-        self.recordingid = recordingid
+        self.recordingid = self.orig_recordingid = recordingid
+        self.metadata = metadata
         self.attempts = 0
 
     def __len__(self):
@@ -49,6 +54,15 @@ class Submission(object):
         # we use 10% here, to be safe
         return int((len(self.fingerprint) + len(self.puid)) * 1.1)
 
+    @property
+    def puid(self):
+        return self.metadata.get('musicip_puid', '') if self.metadata else ''
+
+    @property
+    def valid_duration(self):
+        return abs(self.duration * 1000 - self.metadata.length) <= FINGERPRINT_MAX_ALLOWED_LENGTH_DIFF_MS
+
+    @property
     def is_submitted(self):
         return not self.recordingid or self.orig_recordingid == self.recordingid
 
@@ -71,8 +85,9 @@ class AcoustIDManager(QtCore.QObject):
     def add(self, file, recordingid):
         if not file.acoustid_fingerprint or not file.acoustid_length:
             return
-        puid = file.metadata['musicip_puid']
-        self._submissions[file] = Submission(file.acoustid_fingerprint, file.acoustid_length, recordingid, recordingid, puid)
+        metadata = file.metadata
+        self._submissions[file] = Submission(
+            file.acoustid_fingerprint, file.acoustid_length, recordingid, metadata)
         self._check_unsubmitted()
 
     def update(self, file, recordingid):
@@ -80,6 +95,7 @@ class AcoustIDManager(QtCore.QObject):
         if submission is None:
             return
         submission.recordingid = recordingid
+        submission.metadata = file.metadata
         self._check_unsubmitted()
 
     def remove(self, file):
@@ -90,12 +106,12 @@ class AcoustIDManager(QtCore.QObject):
     def is_submitted(self, file):
         submission = self._submissions.get(file)
         if submission:
-            return submission.is_submitted()
+            return submission.is_submitted
         return True
 
     def _unsubmitted(self, reset=False):
         for file, submission in self._submissions.items():
-            if not submission.is_submitted():
+            if not submission.is_submitted and submission.valid_duration:
                 if reset:
                     submission.attempts = 0
                 yield (file, submission)

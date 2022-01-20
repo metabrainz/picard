@@ -239,9 +239,11 @@ class AcoustdIdAPITest(PicardTestCase):
 
     def test_submissions_to_args(self):
         submissions = [
-            Submission('f1', 1, orig_recordingid='or1', recordingid='r1', puid='p1'),
-            Submission('f2', 2, orig_recordingid='or2', recordingid='r2', puid='p2'),
+            Submission('f1', 1, recordingid='r1', metadata={'musicip_puid': 'p1'}),
+            Submission('f2', 2, recordingid='r2', metadata={'musicip_puid': 'p2'}),
         ]
+        submissions[0].orig_recordingid = 'or1'
+        submissions[1].orig_recordingid = 'or2'
         result = self.api._submissions_to_args(submissions)
         expected = {
             'user': 'apikey',

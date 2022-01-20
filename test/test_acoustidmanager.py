@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2020 Laurent Monin
-# Copyright (C) 2020 Philipp Wolfer
+# Copyright (C) 2020, 2022 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -27,8 +27,13 @@ from unittest.mock import (
 
 from test.picardtestcase import PicardTestCase
 
-from picard.acoustid.manager import AcoustIDManager
+from picard.acoustid.manager import (
+    FINGERPRINT_MAX_ALLOWED_LENGTH_DIFF_MS,
+    AcoustIDManager,
+    Submission,
+)
 from picard.file import File
+from picard.metadata import Metadata
 
 
 def mock_succeed_submission(*args, **kwargs):
@@ -48,6 +53,7 @@ def dummy_file(i):
     file = File('foo%d.flac' % i)
     file.acoustid_fingerprint = 'Z' * FINGERPRINT_SIZE
     file.acoustid_length = 120
+    file.metadata = Metadata(length=file.acoustid_length * 1000)
     return file
 
 
@@ -132,3 +138,56 @@ class AcoustIDManagerTest(PicardTestCase):
         self.assertEqual(self.mock_api_helper.submit_acoustid_fingerprints.call_count, 8)
         for f in files:
             self.assertFalse(self.acoustidmanager.is_submitted(f))
+
+
+class SubmissionTest(PicardTestCase):
+
+    def test_init(self):
+        fingerprint = 'abc'
+        duration = 42
+        recordingid = 'rec1'
+        metadata = Metadata({
+            'musicip_puid': 'puid1'
+        })
+        submission = Submission(fingerprint, duration, recordingid, metadata)
+        self.assertEqual(fingerprint, submission.fingerprint)
+        self.assertEqual(duration, submission.duration)
+        self.assertEqual(recordingid, submission.recordingid)
+        self.assertEqual(recordingid, submission.orig_recordingid)
+        self.assertEqual(metadata, submission.metadata)
+        self.assertEqual(metadata['musicip_puid'], submission.puid)
+        self.assertEqual(0, submission.attempts)
+
+    def test_valid_duration(self):
+        duration_s = 342
+        duration_ms = duration_s * 1000
+        metadata = Metadata()
+        submission = Submission('abc', duration_s, metadata=metadata)
+        self.assertFalse(submission.valid_duration)
+        metadata.length = duration_ms
+        self.assertTrue(submission.valid_duration)
+        metadata.length = duration_ms + FINGERPRINT_MAX_ALLOWED_LENGTH_DIFF_MS
+        self.assertTrue(submission.valid_duration)
+        metadata.length = duration_ms - FINGERPRINT_MAX_ALLOWED_LENGTH_DIFF_MS
+        self.assertTrue(submission.valid_duration)
+        metadata.length = duration_ms + 1 + FINGERPRINT_MAX_ALLOWED_LENGTH_DIFF_MS
+        self.assertFalse(submission.valid_duration)
+        metadata.length = duration_ms - 1 - FINGERPRINT_MAX_ALLOWED_LENGTH_DIFF_MS
+        self.assertFalse(submission.valid_duration)
+
+    def test_init_no_metadata(self):
+        submission = Submission('abc', 42)
+        self.assertIsNone(submission.metadata)
+        self.assertEqual('', submission.puid)
+
+    def test_is_submitted_no_recording_id(self):
+        submission = Submission('abc', 42)
+        self.assertTrue(submission.is_submitted)
+        submission.recordingid = 'rec1'
+        self.assertFalse(submission.is_submitted)
+
+    def test_is_submitted_move_recording_id(self):
+        submission = Submission('abc', 42, recordingid='rec1')
+        self.assertTrue(submission.is_submitted)
+        submission.recordingid = 'rec2'
+        self.assertFalse(submission.is_submitted)
