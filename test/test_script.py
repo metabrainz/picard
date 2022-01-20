@@ -427,16 +427,16 @@ class ScriptParserTest(PicardTestCase):
         self.assertEqual("", self.parser.eval("$setmulti(test,%source%)", context))  # no return value
         self.assertEqual(context.getall("source"), context.getall("test"))
 
-    def test_cmd_setmulti_will_remove_empty_items(self):
+    def test_cmd_setmulti_will_keep_empty_items(self):
         context = Metadata()
         context["source"] = ["", "multi", ""]
         self.assertEqual("", self.parser.eval("$setmulti(test,%source%)", context))  # no return value
-        self.assertEqual(["multi"], context.getall("test"))
+        self.assertEqual(["", "multi", ""], context.getall("test"))
 
     def test_cmd_setmulti_custom_splitter_string(self):
         context = Metadata()
         self.assertEqual("", self.parser.eval("$setmulti(test,multi##valued##test##,##)", context))  # no return value
-        self.assertEqual(["multi", "valued", "test"], context.getall("test"))
+        self.assertEqual(["multi", "valued", "test", ""], context.getall("test"))
 
     def test_cmd_setmulti_empty_splitter_does_nothing(self):
         context = Metadata()
@@ -557,6 +557,9 @@ class ScriptParserTest(PicardTestCase):
 
         context["genre"] = ["Electronic", "Jungle", "Bardcore"]
         self.assertScriptResultEquals("$replacemulti(%genre%,Bardcore,Hardcore)", "Electronic; Jungle; Hardcore", context)
+
+        context["test"] = ["One", "Two", "Three"]
+        self.assertScriptResultEquals("$replacemulti(%test%,Two,)", "One; Three", context)
 
         context["test"] = ["One", "Two", "Three"]
         self.assertScriptResultEquals("$replacemulti(%test%,Four,Five)", "One; Two; Three", context)
@@ -947,6 +950,9 @@ class ScriptParserTest(PicardTestCase):
         context["baz"] = []
         self.assertScriptResultEquals("$lenmulti(%baz%)", "0", context)
         self.assertScriptResultEquals("$lenmulti(%baz%,:)", "0", context)
+        # Test empty multi-value elements
+        context["baz"] = ["one", "", "three"]
+        self.assertScriptResultEquals("$lenmulti(%baz%)", "3", context)
         # Test missing name
         self.assertScriptResultEquals("$lenmulti(,)", "0", context)
         self.assertScriptResultEquals("$lenmulti(,:)", "0", context)
@@ -1808,3 +1814,56 @@ class ScriptParserTest(PicardTestCase):
             self.parser.eval("$is_multi()")
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$is_multi(a,)")
+
+    def test_cmd_cleanmulti(self):
+        context = Metadata()
+        context["foo"] = ["", "one", "two"]
+        context["bar"] = ["one", "", "two"]
+        context["baz"] = ["one", "two", ""]
+
+        # Confirm initial values
+        self.assertScriptResultEquals("%foo%", "; one; two", context)
+        self.assertScriptResultEquals("%bar%", "one; ; two", context)
+        self.assertScriptResultEquals("%baz%", "one; two; ", context)
+        # Test cleaned values
+        self.assertScriptResultEquals("$cleanmulti(foo)%foo%", "one; two", context)
+        self.assertScriptResultEquals("$cleanmulti(bar)%bar%", "one; two", context)
+        self.assertScriptResultEquals("$cleanmulti(baz)%baz%", "one; two", context)
+
+        # Text clean with only empty string elements
+        context["foo"] = ["", "", ""]
+
+        # Confirm initial values
+        self.assertScriptResultEquals("%foo%", "; ; ", context)
+        # Test cleaned values
+        self.assertScriptResultEquals("$cleanmulti(foo)%foo%", "", context)
+
+        # Test clean with indirect argument
+        context["foo"] = ["", "one", "two"]
+        context["bar"] = "foo"
+
+        # Confirm initial values
+        self.assertScriptResultEquals("%foo%", "; one; two", context)
+        # Test cleaned values
+        self.assertScriptResultEquals("$cleanmulti(%bar%)%foo%", "one; two", context)
+
+        # Test clean with non-multi argument
+        context["foo"] = "one"
+        context["bar"] = "one; ; two"
+        context["baz"] = ""
+
+        # Confirm initial values
+        self.assertScriptResultEquals("%foo%", "one", context)
+        self.assertScriptResultEquals("%bar%", "one; ; two", context)
+        self.assertScriptResultEquals("%baz%", "", context)
+        # Test cleaned values
+        self.assertScriptResultEquals("$cleanmulti(foo)%foo%", "one", context)
+        self.assertScriptResultEquals("$cleanmulti(bar)%bar%", "one; ; two", context)
+        self.assertScriptResultEquals("$cleanmulti(baz)%baz%", "", context)
+
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$cleanmulti: Wrong number of arguments for \$cleanmulti: Expected exactly 1, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$cleanmulti()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$cleanmulti(foo,)")
