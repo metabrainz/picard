@@ -191,6 +191,12 @@ class Album(DataObject, Item):
         """Returns the list of album artists (as AlbumArtist objects)"""
         return self._album_artists
 
+    def _run_album_metadata_processors(self):
+        try:
+            run_album_metadata_processors(self, self._new_metadata, self._release_node)
+        except BaseException:
+            self.error_append(traceback.format_exc())
+
     def _parse_release(self, release_node):
         log.debug("Loading release %r ...", self.id)
         self._tracks_loaded = False
@@ -209,6 +215,7 @@ class Album(DataObject, Item):
                 self.tagger.albums[release_id] = self
                 self.id = release_id
 
+        self._release_node = release_node
         # Make the release artist nodes available, since they may
         # contain supplementary data (aliases, tags, genres, ratings)
         # which aren't present in the release group, track, or
@@ -245,14 +252,6 @@ class Album(DataObject, Item):
 
         # Add album to collections
         add_release_to_user_collections(release_node)
-
-        # Run album metadata plugins
-        try:
-            run_album_metadata_processors(self, m, release_node)
-        except BaseException:
-            self.error_append(traceback.format_exc())
-
-        self._release_node = release_node
 
         if config.setting['track_ars']:
             # Detect if track relationships did not get loaded
@@ -295,6 +294,8 @@ class Album(DataObject, Item):
                     if not parsed and config.setting['track_ars']:
                         log.debug('Recording relationships not loaded in initial request for %r, issuing separate requests' % self)
                         self._request_recording_relationships(config=config)
+                    else:
+                        self._run_album_metadata_processors()
                 except Exception:
                     error = True
                     self.error_append(traceback.format_exc())
@@ -339,7 +340,30 @@ class Album(DataObject, Item):
             if next_offset < count:
                 self._request_recording_relationships(offset=next_offset)
             else:
+                # Merge separately loaded recording relationships into release node
+                self._merge_release_recording_relationships()
+                self._run_album_metadata_processors()
                 self._finalize_loading(error)
+
+    def _merge_recording_relationships(self, track_node):
+        if 'relations' not in track_node['recording']:
+            recording = self._recordings_map.get(track_node['recording']['id'])
+            if recording:
+                track_node['recording']['relations'] = recording.get('relations', [])
+
+    def _merge_release_recording_relationships(self):
+        for medium_node in self._release_node['media']:
+            pregap_node = medium_node.get('pregap')
+            if pregap_node:
+                self._merge_recording_relationships(pregap_node)
+
+            for track_node in medium_node.get('tracks', []):
+                self._merge_recording_relationships(track_node)
+
+            for track_node in medium_node.get('data-tracks', []):
+                self._merge_recording_relationships(track_node)
+
+        self._recordings_map = {}
 
     def _finalize_loading_track(self, track_node, metadata, artists, extra_metadata=None):
         # As noted in `_parse_release` above, the release artist nodes
@@ -350,12 +374,6 @@ class Album(DataObject, Item):
         _copy_artist_nodes(self._release_artist_nodes, track_node)
         _copy_artist_nodes(self._release_artist_nodes, track_node['recording'])
         _copy_artist_nodes(_create_artist_node_dict(track_node), track_node['recording'])
-
-        # Merge separately loaded recording relationships
-        if 'relations' not in track_node['recording']:
-            recording = self._recordings_map.get(track_node['recording']['id'])
-            if recording:
-                track_node['recording']['relations'] = recording.get('relations', [])
 
         track = Track(track_node['recording']['id'], self)
         self._new_tracks.append(track)
@@ -411,7 +429,8 @@ class Album(DataObject, Item):
                 mm['~musicbrainz_discids'] = discids
                 mm['musicbrainz_discid'] = list(self._discids.intersection(discids))
 
-            if "pregap" in medium_node:
+            pregap_node = medium_node.get('pregap')
+            if pregap_node:
                 absolutetracknumber += 1
                 mm['~discpregap'] = '1'
                 extra_metadata = {
@@ -420,24 +439,20 @@ class Album(DataObject, Item):
                 }
                 self._finalize_loading_track(medium_node['pregap'], mm, artists, extra_metadata)
 
-            track_count = medium_node['track-count']
-            if track_count:
-                tracklist_node = medium_node['tracks']
-                for track_node in tracklist_node:
-                    absolutetracknumber += 1
-                    extra_metadata = {
-                        '~absolutetracknumber': absolutetracknumber,
-                    }
-                    self._finalize_loading_track(track_node, mm, artists, extra_metadata)
+            for track_node in medium_node.get('tracks', []):
+                absolutetracknumber += 1
+                extra_metadata = {
+                    '~absolutetracknumber': absolutetracknumber,
+                }
+                self._finalize_loading_track(track_node, mm, artists, extra_metadata)
 
-            if "data-tracks" in medium_node:
-                for track_node in medium_node['data-tracks']:
-                    absolutetracknumber += 1
-                    extra_metadata = {
-                        '~datatrack': '1',
-                        '~absolutetracknumber': absolutetracknumber,
-                    }
-                    self._finalize_loading_track(track_node, mm, artists, extra_metadata)
+            for track_node in medium_node.get('data-tracks', []):
+                absolutetracknumber += 1
+                extra_metadata = {
+                    '~datatrack': '1',
+                    '~absolutetracknumber': absolutetracknumber,
+                }
+                self._finalize_loading_track(track_node, mm, artists, extra_metadata)
 
         totalalbumtracks = absolutetracknumber
         self._new_metadata['~totalalbumtracks'] = totalalbumtracks
