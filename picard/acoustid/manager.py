@@ -31,8 +31,8 @@ from picard import log
 from picard.util import load_json
 
 
-# Maximum difference between file duration and MB metadata length.
-# If the match is above this threshold the fingerprint will not get submitted.
+# Maximum difference between file duration and MB recording length.
+# If the match is above this threshold the MBID will not get submitted.
 # Compare also acoustid/const.py in acoustid-server sources
 FINGERPRINT_MAX_ALLOWED_LENGTH_DIFF_MS = 30000
 
@@ -111,7 +111,7 @@ class AcoustIDManager(QtCore.QObject):
 
     def _unsubmitted(self, reset=False):
         for file, submission in self._submissions.items():
-            if not submission.is_submitted and submission.valid_duration:
+            if not submission.is_submitted:
                 if reset:
                     submission.attempts = 0
                 yield (file, submission)
