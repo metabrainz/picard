@@ -297,28 +297,10 @@ class AcoustIdAPIHelper(APIHelper):
     def _submissions_to_args(submissions):
         config = get_config()
         args = {'user': config.setting["acoustid_apikey"]}
-
-        def set_arg(name, i, value):
-            if value:
-                args[".".join((name, str(i)))] = value
-
         for i, submission in enumerate(submissions):
-            set_arg('fingerprint', i, submission.fingerprint)
-            set_arg('duration', i, str(submission.duration))
-            set_arg('puid', i, submission.puid)
-            if submission.valid_duration:
-                set_arg('mbid', i, submission.recordingid)
-            else:
-                metadata = submission.metadata
-                set_arg('track', i, metadata['title'])
-                set_arg('artist', i, metadata['artist'])
-                set_arg('album', i, metadata['album'])
-                set_arg('albumartist', i, metadata['albumartist'])
-                year = metadata['year'] or metadata['date'][:4]
-                if year and year.isdecimal():
-                    set_arg('year', i, year)
-                set_arg('trackno', i, metadata['tracknumber'])
-                set_arg('discno', i, metadata['discnumber'])
+            for key, value in submission.get_args().items():
+                if value:
+                    args[".".join((key, str(i)))] = value
         return args
 
     def submit_acoustid_fingerprints(self, submissions, handler):

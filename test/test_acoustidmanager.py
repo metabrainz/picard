@@ -175,6 +175,10 @@ class SubmissionTest(PicardTestCase):
         metadata.length = duration_ms - 1 - FINGERPRINT_MAX_ALLOWED_LENGTH_DIFF_MS
         self.assertFalse(submission.valid_duration)
 
+    def test_valid_duration_no_metadata(self):
+        submission = Submission('abc', 342)
+        self.assertTrue(submission.valid_duration)
+
     def test_init_no_metadata(self):
         submission = Submission('abc', 42)
         self.assertIsNone(submission.metadata)
@@ -191,3 +195,68 @@ class SubmissionTest(PicardTestCase):
         self.assertTrue(submission.is_submitted)
         submission.recordingid = 'rec2'
         self.assertFalse(submission.is_submitted)
+
+    def test_get_args_with_mbid(self):
+        submission = Submission('abc', 42, recordingid='rec1')
+        expected = {
+            'fingerprint': 'abc',
+            'duration': '42',
+            'mbid': 'rec1',
+        }
+        self.assertEqual(expected, submission.get_args())
+
+    def test_get_args_with_mbid_with_puid(self):
+        metadata = Metadata(
+            musicip_puid='p1'
+        )
+        metadata.length = 42000
+        submission = Submission('abc', 42, recordingid='rec1', metadata=metadata)
+        expected = {
+            'fingerprint': 'abc',
+            'duration': '42',
+            'mbid': 'rec1',
+            'puid': 'p1'
+        }
+        self.assertEqual(expected, submission.get_args())
+
+    def test_get_args_without_mbid(self):
+        metadata = Metadata({
+            'title': 'The Track',
+            'artist': 'The Artist',
+            'album': 'The Album',
+            'albumartist': 'The Album Artist',
+            'tracknumber': '4',
+            'discnumber': '2',
+            'date': '2022-01-22',
+        })
+        metadata.length = 500000
+        submission = Submission('abc', 42, recordingid='rec1', metadata=metadata)
+        expected = {
+            'fingerprint': 'abc',
+            'duration': '42',
+            'track': metadata['title'],
+            'artist': metadata['artist'],
+            'album': metadata['album'],
+            'albumartist': metadata['albumartist'],
+            'trackno': metadata['tracknumber'],
+            'discno': metadata['discnumber'],
+            'year': '2022',
+        }
+        self.assertEqual(expected, submission.get_args())
+
+    def test_get_args_year(self):
+        metadata = Metadata({
+            'year': '2022',
+        })
+        metadata.length = 500000
+        submission = Submission('abc', 42, recordingid='rec1', metadata=metadata)
+        args = submission.get_args()
+        self.assertEqual('2022', args['year'])
+
+    def test_get_args_invalid_year(self):
+        metadata = Metadata({
+            'year': 'NaN',
+        })
+        metadata.length = 500000
+        submission = Submission('abc', 42, recordingid='rec1', metadata=metadata)
+        self.assertNotIn('year', submission.get_args())

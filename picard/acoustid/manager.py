@@ -60,11 +60,36 @@ class Submission(object):
 
     @property
     def valid_duration(self):
-        return abs(self.duration * 1000 - self.metadata.length) <= FINGERPRINT_MAX_ALLOWED_LENGTH_DIFF_MS
+        return self.metadata is None or abs(self.duration * 1000 - self.metadata.length) <= FINGERPRINT_MAX_ALLOWED_LENGTH_DIFF_MS
 
     @property
     def is_submitted(self):
         return not self.recordingid or self.orig_recordingid == self.recordingid
+
+    def get_args(self):
+        """Returns a dictionary of arguments suitable for submission to AcoustID."""
+        args = {
+            'fingerprint': self.fingerprint,
+            'duration': str(self.duration),
+        }
+        metadata = self.metadata
+        if metadata:
+            puid = metadata['musicip_puid']
+            if puid:
+                args['puid'] = puid
+        if self.valid_duration:
+            args['mbid'] = self.recordingid
+        elif metadata:
+            args['track'] = metadata['title']
+            args['artist'] = metadata['artist']
+            args['album'] = metadata['album']
+            args['albumartist'] = metadata['albumartist']
+            args['trackno'] = metadata['tracknumber']
+            args['discno'] = metadata['discnumber']
+            year = metadata['year'] or metadata['date'][:4]
+            if year and year.isdecimal():
+                args['year'] = year
+        return args
 
 
 class AcoustIDManager(QtCore.QObject):
