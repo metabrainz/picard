@@ -260,3 +260,42 @@ class SubmissionTest(PicardTestCase):
         metadata.length = 500000
         submission = Submission('abc', 42, recordingid='rec1', metadata=metadata)
         self.assertNotIn('year', submission.get_args())
+
+    def test_len_mbid_puid(self):
+        fingerprint = 'abc' * 30
+        puid = 'p1'
+        recordingid = 'rec1'
+        duration = 42
+        metadata = Metadata(
+            musicip_puid=puid
+        )
+        metadata.length = 42000
+        submission = Submission(fingerprint, 42, recordingid=recordingid, metadata=metadata)
+        expected_min_length = len('&fingerprint=%s&duration=%s&mbid=%s&puid=%s' % (fingerprint, duration, recordingid, puid))
+        self.assertGreater(len(submission), expected_min_length)
+
+    def test_len_no_mbid(self):
+        metadata = Metadata({
+            'title': 'The Track',
+            'artist': 'The Artist',
+            'album': 'The Album',
+            'albumartist': 'The Album Artist',
+            'tracknumber': '4',
+            'discnumber': '2',
+            'date': '2022-01-22',
+        })
+        metadata.length = 500000
+        submission = Submission('abc', 42, recordingid='rec1', metadata=metadata)
+        expected_args = {
+            'fingerprint': 'abc',
+            'duration': '42',
+            'track': metadata['title'],
+            'artist': metadata['artist'],
+            'album': metadata['album'],
+            'albumartist': metadata['albumartist'],
+            'trackno': metadata['tracknumber'],
+            'discno': metadata['discnumber'],
+            'year': '2022',
+        }
+        expected_min_length = len('&'.join(('='.join([k, v]) for k, v in expected_args.items())))
+        self.assertGreater(len(submission), expected_min_length)

@@ -48,11 +48,9 @@ class Submission(object):
 
     def __len__(self):
         # payload approximation
-        # it is based on actual measures, as an example:
-        # with no puid, 2 fingerprints total size of 7501 bytes, post body was 7719 bytes (including all fields)
-        # so that's an overhead of ~3%
-        # we use 10% here, to be safe
-        return int((len(self.fingerprint) + len(self.puid)) * 1.1)
+        # the length of all submitted data, plus a small overhead to account for
+        # potential urlencode expansion
+        return int(sum((len(key) + len(value) + 2 for key, value in self.get_args().items())) * 1.03)
 
     @property
     def puid(self):
