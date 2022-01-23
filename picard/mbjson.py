@@ -172,10 +172,9 @@ def _relations_to_metadata(relations, m, instrumental=False):
                     continue
             if instrumental and name == 'lyricist':
                 continue
-            if value not in m[name]:
-                m.add(name, value)
-            if name == 'composer' and valuesort not in m['composersort']:
-                m.add('composersort', valuesort)
+            m.add_unique(name, value)
+            if name == 'composer':
+                m.add_unique('composersort', valuesort)
         elif relation['target-type'] == 'work':
             if relation['type'] == 'performance':
                 performance_attributes = get_relation_attributes(relation)
