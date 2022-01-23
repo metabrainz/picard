@@ -1,0 +1,143 @@
+Exact Audio Copy V1.6 from 23. October 2020
+
+EAC extraction logfile from 24. January 2022, 21:33
+
+pornophonique / Brave New World
+
+Used drive  : TSSTcorpCDDVDW SE-218BB   Adapter: 1  ID: 1
+
+Read mode : Burst
+
+Read offset correction                      : 6
+Overread into Lead-In and Lead-Out          : No
+Fill up missing offset samples with silence : Yes
+Delete leading and trailing silent blocks   : No
+Null samples used in CRC calculations       : Yes
+Used interface                              : Native Win32 interface for Win NT & 2000
+Gap handling                                : Not detected, thus appended to previous track
+
+Used output format              : User Defined Encoder
+Selected bitrate                : 768 kBit/s
+Quality                         : High
+Add ID3 tag                     : No
+Command line compressor         : C:\Program Files (x86)\Exact Audio Copy\FLAC\FLAC.EXE
+Additional command line options : -6 -V -T "ARTIST=%artist%" -T "TITLE=%title%" -T "ALBUM=%albumtitle%" -T "DATE=%year%" -T "TRACKNUMBER=%tracknr%" -T "GENRE=%genre%" -T "COMMENT=%comment%" -T "BAND=%albuminterpret%" -T "ALBUMARTIST=%albuminterpret%" -T "COMPOSER=%composer%" %haslyrics%--tag-from-file=LYRICS="%lyricsfile%"%haslyrics% -T "DISCNUMBER=%cdnumber%" -T "TOTALDISCS=%totalcds%" -T "TOTALTRACKS=%numtracks%" %hascover%--picture="%coverfile%"%hascover% %source% -o %dest%
+
+
+TOC of the extracted CD
+
+     Track |   Start  |  Length  | Start sector | End sector
+    ---------------------------------------------------------
+        1  |  0:00.00 |  5:32.14 |         0    |    24913
+        2  |  5:32.14 |  4:07.22 |     24914    |    43460
+        3  |  9:39.36 |  3:50.29 |     43461    |    60739
+        4  | 13:29.65 |  4:56.00 |     60740    |    82939
+        5  | 18:25.65 |  3:45.35 |     82940    |    99849
+        6  | 22:11.25 |  3:20.57 |     99850    |   114906
+        7  | 25:32.07 |  4:33.26 |    114907    |   135407
+        8  | 30:05.33 |  3:03.40 |    135408    |   149172
+
+
+Track  1
+
+     Filename C:\Users\Developer\Music\EAC\Brave New World\01 Coming Home.wav
+
+     Peak level 94.8 %
+     Extraction speed 9.0 X
+     Copy CRC E924FB20
+     Accurately ripped (confidence 2)  [3182EB6A]  (AR v2)
+     Copy OK
+
+Track  2
+
+     Filename C:\Users\Developer\Music\EAC\Brave New World\02 Save Game.wav
+
+     Peak level 98.1 %
+     Extraction speed 12.0 X
+     Copy CRC F19A6AFC
+     Accurately ripped (confidence 2)  [79A374E7]  (AR v2)
+     Copy OK
+
+Track  3
+
+     Filename C:\Users\Developer\Music\EAC\Brave New World\03 Voices in My Head.wav
+
+     Peak level 97.2 %
+     Extraction speed 13.0 X
+     Copy CRC 300DF15C
+     Accurately ripped (confidence 2)  [77DE3AFE]  (AR v2)
+     Copy OK
+
+Track  4
+
+     Filename C:\Users\Developer\Music\EAC\Brave New World\04 The Songs We Sang Together.wav
+
+     Peak level 98.8 %
+     Extraction speed 14.0 X
+     Copy CRC 1657126F
+     Accurately ripped (confidence 2)  [4D824E2F]  (AR v2)
+     Copy OK
+
+Track  5
+
+     Filename C:\Users\Developer\Music\EAC\Brave New World\05 Night Will Fall.wav
+
+     Peak level 92.8 %
+     Extraction speed 14.9 X
+     Copy CRC 66EFEA59
+     Accurately ripped (confidence 2)  [D0D39055]  (AR v2)
+     Copy OK
+
+Track  6
+
+     Filename C:\Users\Developer\Music\EAC\Brave New World\06 Brave New World.wav
+
+     Peak level 96.5 %
+     Extraction speed 15.6 X
+     Copy CRC 5D7B712B
+     Accurately ripped (confidence 2)  [CD69B7FC]  (AR v2)
+     Copy OK
+
+Track  7
+
+     Filename C:\Users\Developer\Music\EAC\Brave New World\07 Wave After Wave.wav
+
+     Peak level 97.5 %
+     Extraction speed 16.4 X
+     Copy CRC 694CDD79
+     Accurately ripped (confidence 2)  [FE6DBCBF]  (AR v2)
+     Copy OK
+
+Track  8
+
+     Filename C:\Users\Developer\Music\EAC\Brave New World\08 Awakening.wav
+
+     Peak level 98.4 %
+     Extraction speed 17.0 X
+     Copy CRC 629CC273
+     Accurately ripped (confidence 2)  [7EB7F715]  (AR v2)
+     Copy OK
+
+
+All tracks accurately ripped
+
+No errors occurred
+
+End of status report
+
+---- CUETools DB Plugin V2.1.6
+
+[CTDB TOCID: nj4ubZdFWgR4oA9uNKS.7OHP30U-] found
+Submit result: already submitted
+Track | CTDB Status
+  1   | (8/8) Accurately ripped
+  2   | (8/8) Accurately ripped
+  3   | (8/8) Accurately ripped
+  4   | (8/8) Accurately ripped
+  5   | (8/8) Accurately ripped
+  6   | (8/8) Accurately ripped
+  7   | (8/8) Accurately ripped
+  8   | (8/8) Accurately ripped
+
+
+==== Log checksum F97EE7C5E011FF7520B7AC437D42B9BCCD5D80929F8213EDF90656EE39B95F8A ====
