@@ -298,7 +298,7 @@ class AcoustIdAPIHelper(APIHelper):
         config = get_config()
         args = {'user': config.setting["acoustid_apikey"]}
         for i, submission in enumerate(submissions):
-            for key, value in submission.get_args().items():
+            for key, value in submission.args.items():
                 if value:
                     args[".".join((key, str(i)))] = value
         return args

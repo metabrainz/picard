@@ -196,16 +196,16 @@ class SubmissionTest(PicardTestCase):
         submission.recordingid = 'rec2'
         self.assertFalse(submission.is_submitted)
 
-    def test_get_args_with_mbid(self):
+    def test_args_with_mbid(self):
         submission = Submission('abc', 42, recordingid='rec1')
         expected = {
             'fingerprint': 'abc',
             'duration': '42',
             'mbid': 'rec1',
         }
-        self.assertEqual(expected, submission.get_args())
+        self.assertEqual(expected, submission.args)
 
-    def test_get_args_with_mbid_with_puid(self):
+    def test_args_with_mbid_with_puid(self):
         metadata = Metadata(
             musicip_puid='p1'
         )
@@ -217,9 +217,9 @@ class SubmissionTest(PicardTestCase):
             'mbid': 'rec1',
             'puid': 'p1'
         }
-        self.assertEqual(expected, submission.get_args())
+        self.assertEqual(expected, submission.args)
 
-    def test_get_args_without_mbid(self):
+    def test_args_without_mbid(self):
         metadata = Metadata({
             'title': 'The Track',
             'artist': 'The Artist',
@@ -242,24 +242,24 @@ class SubmissionTest(PicardTestCase):
             'discno': metadata['discnumber'],
             'year': '2022',
         }
-        self.assertEqual(expected, submission.get_args())
+        self.assertEqual(expected, submission.args)
 
-    def test_get_args_year(self):
+    def test_args_year(self):
         metadata = Metadata({
             'year': '2022',
         })
         metadata.length = 500000
         submission = Submission('abc', 42, recordingid='rec1', metadata=metadata)
-        args = submission.get_args()
+        args = submission.args
         self.assertEqual('2022', args['year'])
 
-    def test_get_args_invalid_year(self):
+    def test_args_invalid_year(self):
         metadata = Metadata({
             'year': 'NaN',
         })
         metadata.length = 500000
         submission = Submission('abc', 42, recordingid='rec1', metadata=metadata)
-        self.assertNotIn('year', submission.get_args())
+        self.assertNotIn('year', submission.args)
 
     def test_len_mbid_puid(self):
         fingerprint = 'abc' * 30

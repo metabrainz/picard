@@ -50,7 +50,7 @@ class Submission(object):
         # payload approximation
         # the length of all submitted data, plus a small overhead to account for
         # potential urlencode expansion
-        return int(sum((len(key) + len(value) + 2 for key, value in self.get_args().items())) * 1.03)
+        return int(sum((len(key) + len(value) + 2 for key, value in self.args.items())) * 1.03)
 
     @property
     def puid(self):
@@ -64,7 +64,8 @@ class Submission(object):
     def is_submitted(self):
         return not self.recordingid or self.orig_recordingid == self.recordingid
 
-    def get_args(self):
+    @property
+    def args(self):
         """Returns a dictionary of arguments suitable for submission to AcoustID."""
         args = {
             'fingerprint': self.fingerprint,
