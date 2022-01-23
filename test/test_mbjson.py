@@ -284,6 +284,19 @@ class RecordingInstrumentalTest(MBJSONTest):
         self.assertNotIn('lyricist', m)
 
 
+class MultiWorkRecordingTest(MBJSONTest):
+
+    filename = 'recording_multiple_works.json'
+
+    def test_recording(self):
+        m = Metadata()
+        t = Track('1')
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertIn('instrumental', m.getall('~performance_attributes'))
+        self.assertEqual(m['language'], 'jpn; eng; zxx')
+        self.assertEqual(m['lyricist'], 'Satoru Kōsaki; Aki Hata; Minoru Shiraishi')
+
+
 class RecordingVideoTest(MBJSONTest):
 
     filename = 'recording_video.json'

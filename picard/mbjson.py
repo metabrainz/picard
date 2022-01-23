@@ -138,7 +138,7 @@ def _parse_attributes(attrs, reltype, attr_credits):
     return ' '.join([prefix, result]).strip()
 
 
-def _relations_to_metadata(relations, m):
+def _relations_to_metadata(relations, m, instrumental=False):
     config = get_config()
     use_credited_as = not config.setting['standardize_artists']
     use_instrument_credits = not config.setting['standardize_instruments']
@@ -152,9 +152,7 @@ def _relations_to_metadata(relations, m):
                 if credited_as:
                     value = credited_as
             reltype = relation['type']
-            attribs = []
-            if 'attributes' in relation:
-                attribs = [a for a in relation['attributes']]
+            attribs = get_relation_attributes(relation)
             if reltype in {'vocal', 'instrument', 'performer'}:
                 if use_instrument_credits:
                     attr_credits = relation.get('attribute-credits', {})
@@ -172,14 +170,19 @@ def _relations_to_metadata(relations, m):
                     name = _artist_rel_types[reltype]
                 except KeyError:
                     continue
+            if instrumental and name == 'lyricist':
+                continue
             if value not in m[name]:
                 m.add(name, value)
             if name == 'composer' and valuesort not in m['composersort']:
                 m.add('composersort', valuesort)
         elif relation['target-type'] == 'work':
             if relation['type'] == 'performance':
-                performance_to_metadata(relation, m)
-                work_to_metadata(relation['work'], m)
+                performance_attributes = get_relation_attributes(relation)
+                for attribute in performance_attributes:
+                    m.add_unique("~performance_attributes", attribute)
+                instrumental = 'instrumental' in performance_attributes
+                work_to_metadata(relation['work'], m, instrumental)
         elif relation['target-type'] == 'url':
             if relation['type'] == 'amazon asin' and 'asin' not in m:
                 amz = parse_amazon_url(relation['url']['resource'])
@@ -441,20 +444,19 @@ def recording_to_metadata(node, m, track=None):
         m['~recordingtitle'] = m['title']
     if m.length:
         m['~length'] = format_time(m.length)
-    if 'instrumental' in m.getall('~performance_attributes'):
-        m.unset('lyricist')
-        m['language'] = 'zxx'
 
 
-def performance_to_metadata(relation, m):
+def get_relation_attributes(relation):
     if 'attributes' in relation:
-        for attribute in relation['attributes']:
-            m.add_unique("~performance_attributes", attribute)
+        return [a for a in relation['attributes']]
+    return []
 
 
-def work_to_metadata(work, m):
+def work_to_metadata(work, m, instrumental=False):
     m.add_unique("musicbrainz_workid", work['id'])
-    if 'languages' in work:
+    if instrumental:
+        m.add_unique("language", 'zxx')  # no lyrics
+    elif 'languages' in work:
         for language in work['languages']:
             m.add_unique("language", language)
     elif 'language' in work:
@@ -464,7 +466,7 @@ def work_to_metadata(work, m):
     if 'disambiguation' in work:
         m.add_unique("~workcomment", work['disambiguation'])
     if 'relations' in work:
-        _relations_to_metadata(work['relations'], m)
+        _relations_to_metadata(work['relations'], m, instrumental)
 
 
 def medium_to_metadata(node, m):

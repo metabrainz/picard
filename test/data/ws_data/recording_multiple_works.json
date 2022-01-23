@@ -1,0 +1,2730 @@
+{
+    "title": "組曲「らき☆すた動画」",
+    "video": false,
+    "disambiguation": "",
+    "id": "91b7e04e-529b-4119-bc30-867db56fd400",
+    "first-release-date": "2007-12-26",
+    "length": 930000,
+    "relations": [
+        {
+            "end": null,
+            "attribute-values": {},
+            "type": "arranger",
+            "ended": false,
+            "source-credit": "",
+            "direction": "backward",
+            "begin": null,
+            "target-credit": "",
+            "attribute-ids": {},
+            "target-type": "artist",
+            "attributes": [],
+            "type-id": "22661fb8-cdb7-4f67-8385-b2a8be6c9f0d",
+            "artist": {
+                "name": "神前暁",
+                "id": "557e6938-404b-4332-a169-bec2b77fe05b",
+                "disambiguation": "",
+                "sort-name": "Kōsaki, Satoru",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+            }
+        },
+        {
+            "ordering-key": 11,
+            "attributes": [
+                "medley"
+            ],
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "target-type": "work",
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-credit": "",
+            "begin": null,
+            "type": "performance",
+            "source-credit": "",
+            "ended": false,
+            "direction": "forward",
+            "attribute-values": {},
+            "end": null,
+            "work": {
+                "title": "Gravity",
+                "disambiguation": "",
+                "language": "mul",
+                "relations": [
+                    {
+                        "attributes": [],
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "artist": {
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "name": "神前暁",
+                            "disambiguation": "",
+                            "sort-name": "Kōsaki, Satoru",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b"
+                        },
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "begin": null,
+                        "target-credit": "",
+                        "type": "composer",
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "end": null,
+                        "attribute-values": {}
+                    },
+                    {
+                        "attribute-values": {},
+                        "end": null,
+                        "ended": false,
+                        "source-credit": "",
+                        "direction": "backward",
+                        "type": "lyricist",
+                        "target-credit": "",
+                        "begin": null,
+                        "target-type": "artist",
+                        "attribute-ids": {},
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "artist": {
+                            "name": "神前暁",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b",
+                            "disambiguation": "",
+                            "sort-name": "Kōsaki, Satoru",
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                        },
+                        "attributes": []
+                    }
+                ],
+                "iswcs": [
+                    "T-909.748.367-5"
+                ],
+                "id": "2fc3a055-d9c0-308a-a757-281a6214a137",
+                "languages": [
+                    "jpn",
+                    "eng"
+                ],
+                "attributes": [],
+                "type": "Song",
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6"
+            }
+        },
+        {
+            "begin": null,
+            "target-credit": "",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "ordering-key": 30,
+            "attributes": [
+                "medley"
+            ],
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-type": "work",
+            "work": {
+                "attributes": [],
+                "type": "Song",
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                "id": "e36c1245-65fa-3e23-8baf-3c007f08f973",
+                "languages": [
+                    "jpn"
+                ],
+                "language": "jpn",
+                "relations": [
+                    {
+                        "artist": {
+                            "id": "537321ad-e9ef-4562-8dc7-b715fe79ef64",
+                            "disambiguation": "",
+                            "sort-name": "nishi-ken",
+                            "name": "nishi-ken",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person"
+                        },
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "attributes": [],
+                        "target-type": "artist",
+                        "attribute-ids": {},
+                        "target-credit": "",
+                        "begin": null,
+                        "source-credit": "",
+                        "direction": "backward",
+                        "ended": false,
+                        "type": "composer",
+                        "attribute-values": {},
+                        "end": null
+                    },
+                    {
+                        "attribute-values": {},
+                        "end": null,
+                        "source-credit": "",
+                        "direction": "backward",
+                        "ended": false,
+                        "type": "lyricist",
+                        "target-credit": "",
+                        "begin": null,
+                        "target-type": "artist",
+                        "attribute-ids": {},
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "artist": {
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "name": "畑亜貴",
+                            "id": "e73a7bda-c66a-4346-a74f-436c4a07b627",
+                            "disambiguation": "",
+                            "sort-name": "Hata, Aki"
+                        },
+                        "attributes": []
+                    }
+                ],
+                "iswcs": [
+                    "T-909.739.349-2"
+                ],
+                "disambiguation": "",
+                "title": "かえして! ニーソックス"
+            },
+            "source-credit": "",
+            "ended": false,
+            "direction": "forward",
+            "type": "performance",
+            "end": null,
+            "attribute-values": {}
+        },
+        {
+            "attribute-values": {},
+            "end": null,
+            "ended": false,
+            "source-credit": "",
+            "direction": "forward",
+            "type": "performance",
+            "work": {
+                "disambiguation": "",
+                "title": "かおりんのテーマ -完全版-",
+                "iswcs": [
+                    "T-906.801.103-0"
+                ],
+                "relations": [
+                    {
+                        "target-credit": "",
+                        "begin": null,
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "artist": {
+                            "type": "Character",
+                            "type-id": "5c1375b0-f18d-3db7-a164-a49d7a63773f",
+                            "name": "白石みのる",
+                            "sort-name": "Shiraishi, Minoru",
+                            "disambiguation": "\"live-action\" character in らき☆すた",
+                            "id": "b2f249b8-b152-4c2c-b4e3-f595ab9a9439"
+                        },
+                        "attributes": [],
+                        "target-type": "artist",
+                        "attribute-ids": {},
+                        "direction": "backward",
+                        "source-credit": "",
+                        "ended": false,
+                        "type": "composer",
+                        "attribute-values": {},
+                        "end": null
+                    },
+                    {
+                        "begin": null,
+                        "target-credit": "",
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "artist": {
+                            "type": "Character",
+                            "type-id": "5c1375b0-f18d-3db7-a164-a49d7a63773f",
+                            "name": "白石みのる",
+                            "sort-name": "Shiraishi, Minoru",
+                            "disambiguation": "\"live-action\" character in らき☆すた",
+                            "id": "b2f249b8-b152-4c2c-b4e3-f595ab9a9439"
+                        },
+                        "attributes": [],
+                        "end": null,
+                        "attribute-values": {},
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "type": "lyricist"
+                    }
+                ],
+                "language": "jpn",
+                "languages": [
+                    "jpn"
+                ],
+                "id": "faa32b5b-8cdf-3509-9703-1166a08f6d16",
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                "type": "Song",
+                "attributes": []
+            },
+            "target-type": "work",
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "attributes": [
+                "medley"
+            ],
+            "ordering-key": 9,
+            "target-credit": "",
+            "begin": null
+        },
+        {
+            "ordering-key": 26,
+            "attributes": [
+                "medley"
+            ],
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "target-type": "work",
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-credit": "",
+            "begin": null,
+            "type": "performance",
+            "source-credit": "",
+            "ended": false,
+            "direction": "forward",
+            "attribute-values": {},
+            "end": null,
+            "work": {
+                "relations": [
+                    {
+                        "source-credit": "",
+                        "direction": "backward",
+                        "ended": false,
+                        "type": "composer",
+                        "attribute-values": {},
+                        "end": null,
+                        "target-credit": "",
+                        "begin": null,
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "artist": {
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person",
+                            "id": "b962b17c-3bff-464d-96d6-1d3fb1ef0fbb",
+                            "sort-name": "Ayahara, Keiji",
+                            "disambiguation": "",
+                            "name": "綾原圭二"
+                        },
+                        "attributes": [],
+                        "target-type": "artist",
+                        "attribute-ids": {}
+                    },
+                    {
+                        "artist": {
+                            "id": "e73a7bda-c66a-4346-a74f-436c4a07b627",
+                            "disambiguation": "",
+                            "sort-name": "Hata, Aki",
+                            "name": "畑亜貴",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person"
+                        },
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "attributes": [],
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "begin": null,
+                        "target-credit": "",
+                        "ended": false,
+                        "source-credit": "",
+                        "direction": "backward",
+                        "type": "lyricist",
+                        "end": null,
+                        "attribute-values": {}
+                    }
+                ],
+                "language": "jpn",
+                "iswcs": [
+                    "T-909.744.139-9"
+                ],
+                "title": "ケンカ予報の時間だよ",
+                "disambiguation": "",
+                "type": "Song",
+                "attributes": [],
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                "languages": [
+                    "jpn"
+                ],
+                "id": "9d61abd9-24b3-3ef0-a75c-bc5726195612"
+            }
+        },
+        {
+            "target-type": "work",
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "attributes": [
+                "medley"
+            ],
+            "ordering-key": 6,
+            "target-credit": "",
+            "begin": null,
+            "attribute-values": {},
+            "end": null,
+            "source-credit": "",
+            "direction": "forward",
+            "ended": false,
+            "type": "performance",
+            "work": {
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                "type": "Song",
+                "attributes": [],
+                "languages": [
+                    "jpn"
+                ],
+                "id": "c49da553-f67a-375e-a4b1-527344626e03",
+                "iswcs": [
+                    "T-909.743.510-4"
+                ],
+                "relations": [
+                    {
+                        "attributes": [],
+                        "artist": {
+                            "name": "神前暁",
+                            "sort-name": "Kōsaki, Satoru",
+                            "disambiguation": "",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b",
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                        },
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "begin": null,
+                        "target-credit": "",
+                        "type": "composer",
+                        "direction": "backward",
+                        "source-credit": "",
+                        "ended": false,
+                        "end": null,
+                        "attribute-values": {}
+                    },
+                    {
+                        "end": null,
+                        "attribute-values": {},
+                        "type": "lyricist",
+                        "ended": false,
+                        "source-credit": "",
+                        "direction": "backward",
+                        "begin": null,
+                        "target-credit": "",
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "attributes": [],
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "artist": {
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "name": "畑亜貴",
+                            "id": "e73a7bda-c66a-4346-a74f-436c4a07b627",
+                            "sort-name": "Hata, Aki",
+                            "disambiguation": ""
+                        }
+                    }
+                ],
+                "language": "jpn",
+                "title": "コスって! オーマイハニー",
+                "disambiguation": ""
+            }
+        },
+        {
+            "attributes": [
+                "medley"
+            ],
+            "ordering-key": 4,
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "target-type": "work",
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-credit": "",
+            "begin": null,
+            "type": "performance",
+            "ended": false,
+            "source-credit": "",
+            "direction": "forward",
+            "attribute-values": {},
+            "end": null,
+            "work": {
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                "attributes": [],
+                "type": "Song",
+                "id": "eacb3b0a-cb2f-39a2-acee-f1a7672e5625",
+                "languages": [
+                    "jpn"
+                ],
+                "iswcs": [
+                    "T-909.743.718-8"
+                ],
+                "language": "jpn",
+                "relations": [
+                    {
+                        "attributes": [],
+                        "artist": {
+                            "name": "金井江右",
+                            "id": "784791ce-64d3-4d23-a8df-8970092bdee7",
+                            "sort-name": "Kanai, Kousuke",
+                            "disambiguation": "",
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                        },
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "target-type": "artist",
+                        "attribute-ids": {},
+                        "target-credit": "",
+                        "begin": null,
+                        "type": "composer",
+                        "source-credit": "",
+                        "direction": "backward",
+                        "ended": false,
+                        "attribute-values": {},
+                        "end": null
+                    },
+                    {
+                        "end": null,
+                        "attribute-values": {},
+                        "type": "lyricist",
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "begin": null,
+                        "target-credit": "",
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "attributes": [],
+                        "artist": {
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person",
+                            "id": "e73a7bda-c66a-4346-a74f-436c4a07b627",
+                            "disambiguation": "",
+                            "sort-name": "Hata, Aki",
+                            "name": "畑亜貴"
+                        },
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c"
+                    }
+                ],
+                "title": "こすぷれノこころえ",
+                "disambiguation": ""
+            }
+        },
+        {
+            "attribute-values": {},
+            "end": null,
+            "source-credit": "",
+            "ended": false,
+            "direction": "forward",
+            "type": "performance",
+            "work": {
+                "disambiguation": "らき☆すた",
+                "title": "こなたのテーマ、普通バージョン",
+                "iswcs": [],
+                "language": "zxx",
+                "relations": [
+                    {
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "type": "composer",
+                        "attribute-values": {},
+                        "end": null,
+                        "target-credit": "",
+                        "begin": null,
+                        "artist": {
+                            "name": "神前暁",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b",
+                            "sort-name": "Kōsaki, Satoru",
+                            "disambiguation": "",
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                        },
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "attributes": [],
+                        "target-type": "artist",
+                        "attribute-ids": {}
+                    },
+                    {
+                        "work": {
+                            "type": "Soundtrack",
+                            "attributes": [],
+                            "type-id": "66d7962b-6377-364f-a0b4-b200febc510e",
+                            "languages": [],
+                            "id": "96ac9267-5b9f-4168-ac12-57e1544d91dd",
+                            "language": null,
+                            "iswcs": [],
+                            "title": "らき☆すた BGM",
+                            "disambiguation": ""
+                        },
+                        "type": "parts",
+                        "source-credit": "",
+                        "direction": "backward",
+                        "ended": false,
+                        "end": null,
+                        "attribute-values": {},
+                        "begin": null,
+                        "target-credit": "",
+                        "attributes": [
+                            "part of collection"
+                        ],
+                        "type-id": "ca8d3642-ce5f-49f8-91f2-125d72524e6a",
+                        "attribute-ids": {
+                            "part of collection": "5821a77f-f805-4c4f-beae-2fedb6ca5278"
+                        },
+                        "target-type": "work"
+                    }
+                ],
+                "id": "d646c4f3-882e-4a2e-8c88-7704f77b4097",
+                "languages": [
+                    "zxx"
+                ],
+                "type-id": null,
+                "attributes": [],
+                "type": null
+            },
+            "target-type": "work",
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "ordering-key": 19,
+            "attributes": [
+                "medley"
+            ],
+            "target-credit": "",
+            "begin": null
+        },
+        {
+            "target-type": "work",
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "attributes": [
+                "medley"
+            ],
+            "ordering-key": 27,
+            "target-credit": "",
+            "begin": null,
+            "attribute-values": {},
+            "end": null,
+            "source-credit": "",
+            "direction": "forward",
+            "ended": false,
+            "type": "performance",
+            "work": {
+                "id": "268ca635-cc42-40be-a79f-4e134323dbd5",
+                "languages": [
+                    "zxx"
+                ],
+                "type-id": null,
+                "attributes": [],
+                "type": null,
+                "disambiguation": "らき☆すた",
+                "title": "センチメンタル修学旅行",
+                "iswcs": [],
+                "language": "zxx",
+                "relations": [
+                    {
+                        "ended": false,
+                        "source-credit": "",
+                        "direction": "backward",
+                        "type": "composer",
+                        "end": null,
+                        "attribute-values": {},
+                        "begin": null,
+                        "target-credit": "",
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "artist": {
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "name": "神前暁",
+                            "disambiguation": "",
+                            "sort-name": "Kōsaki, Satoru",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b"
+                        },
+                        "attributes": [],
+                        "attribute-ids": {},
+                        "target-type": "artist"
+                    },
+                    {
+                        "target-type": "work",
+                        "attribute-ids": {
+                            "part of collection": "5821a77f-f805-4c4f-beae-2fedb6ca5278"
+                        },
+                        "attributes": [
+                            "part of collection"
+                        ],
+                        "type-id": "ca8d3642-ce5f-49f8-91f2-125d72524e6a",
+                        "target-credit": "",
+                        "begin": null,
+                        "attribute-values": {},
+                        "end": null,
+                        "type": "parts",
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "work": {
+                            "title": "らき☆すた BGM",
+                            "disambiguation": "",
+                            "language": null,
+                            "iswcs": [],
+                            "id": "96ac9267-5b9f-4168-ac12-57e1544d91dd",
+                            "languages": [],
+                            "attributes": [],
+                            "type": "Soundtrack",
+                            "type-id": "66d7962b-6377-364f-a0b4-b200febc510e"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "work": {
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                "type": "Song",
+                "attributes": [],
+                "languages": [
+                    "jpn"
+                ],
+                "id": "df1fe552-440d-3f01-a68a-a9ad90b61f8e",
+                "iswcs": [
+                    "T-909.743.724-6"
+                ],
+                "relations": [
+                    {
+                        "source-credit": "",
+                        "direction": "backward",
+                        "ended": false,
+                        "type": "composer",
+                        "end": null,
+                        "attribute-values": {},
+                        "begin": null,
+                        "target-credit": "",
+                        "artist": {
+                            "name": "橋本由香利",
+                            "id": "78857010-bde3-4f1c-8c3c-822ce2db2fcb",
+                            "disambiguation": "",
+                            "sort-name": "Hashimoto, Yukari",
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                        },
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "attributes": [],
+                        "attribute-ids": {},
+                        "target-type": "artist"
+                    },
+                    {
+                        "type": "lyricist",
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "attribute-values": {},
+                        "end": null,
+                        "target-credit": "",
+                        "begin": null,
+                        "attributes": [],
+                        "artist": {
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person",
+                            "disambiguation": "",
+                            "sort-name": "Hata, Aki",
+                            "id": "e73a7bda-c66a-4346-a74f-436c4a07b627",
+                            "name": "畑亜貴"
+                        },
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "target-type": "artist",
+                        "attribute-ids": {}
+                    }
+                ],
+                "language": "jpn",
+                "disambiguation": "",
+                "title": "どんだけファンファーレ"
+            },
+            "end": null,
+            "attribute-values": {},
+            "type": "performance",
+            "direction": "forward",
+            "source-credit": "",
+            "ended": false,
+            "begin": null,
+            "target-credit": "",
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-type": "work",
+            "ordering-key": 17,
+            "attributes": [
+                "medley"
+            ],
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0"
+        },
+        {
+            "end": null,
+            "attribute-values": {},
+            "type": "performance",
+            "source-credit": "",
+            "ended": false,
+            "direction": "forward",
+            "work": {
+                "type": null,
+                "attributes": [],
+                "type-id": null,
+                "languages": [
+                    "zxx"
+                ],
+                "id": "92493d74-6dae-471d-90ad-58e5da0a5d48",
+                "relations": [
+                    {
+                        "begin": null,
+                        "target-credit": "",
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "artist": {
+                            "name": "神前暁",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b",
+                            "sort-name": "Kōsaki, Satoru",
+                            "disambiguation": "",
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                        },
+                        "attributes": [],
+                        "end": null,
+                        "attribute-values": {},
+                        "direction": "backward",
+                        "source-credit": "",
+                        "ended": false,
+                        "type": "composer"
+                    },
+                    {
+                        "begin": null,
+                        "target-credit": "",
+                        "attribute-ids": {
+                            "part of collection": "5821a77f-f805-4c4f-beae-2fedb6ca5278"
+                        },
+                        "target-type": "work",
+                        "type-id": "ca8d3642-ce5f-49f8-91f2-125d72524e6a",
+                        "attributes": [
+                            "part of collection"
+                        ],
+                        "work": {
+                            "iswcs": [],
+                            "language": null,
+                            "disambiguation": "",
+                            "title": "らき☆すた BGM",
+                            "type-id": "66d7962b-6377-364f-a0b4-b200febc510e",
+                            "type": "Soundtrack",
+                            "attributes": [],
+                            "languages": [],
+                            "id": "96ac9267-5b9f-4168-ac12-57e1544d91dd"
+                        },
+                        "end": null,
+                        "attribute-values": {},
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "type": "parts"
+                    }
+                ],
+                "language": "zxx",
+                "iswcs": [],
+                "title": "バンガスター",
+                "disambiguation": "らき☆すた"
+            },
+            "attribute-ids": {},
+            "target-type": "work",
+            "ordering-key": 7,
+            "attributes": [],
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "begin": null,
+            "target-credit": ""
+        },
+        {
+            "target-credit": "",
+            "begin": null,
+            "target-type": "work",
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "attributes": [
+                "medley"
+            ],
+            "ordering-key": 5,
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "work": {
+                "disambiguation": "らき☆すた",
+                "title": "ぶっぶぶっぶぶーだね、らき☆すた",
+                "relations": [
+                    {
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "artist": {
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b",
+                            "disambiguation": "",
+                            "sort-name": "Kōsaki, Satoru",
+                            "name": "神前暁"
+                        },
+                        "attributes": [],
+                        "target-type": "artist",
+                        "attribute-ids": {},
+                        "target-credit": "",
+                        "begin": null,
+                        "source-credit": "",
+                        "direction": "backward",
+                        "ended": false,
+                        "type": "composer",
+                        "attribute-values": {},
+                        "end": null
+                    },
+                    {
+                        "work": {
+                            "type": "Soundtrack",
+                            "attributes": [],
+                            "type-id": "66d7962b-6377-364f-a0b4-b200febc510e",
+                            "languages": [],
+                            "id": "96ac9267-5b9f-4168-ac12-57e1544d91dd",
+                            "language": null,
+                            "iswcs": [],
+                            "title": "らき☆すた BGM",
+                            "disambiguation": ""
+                        },
+                        "attribute-values": {},
+                        "end": null,
+                        "direction": "backward",
+                        "source-credit": "",
+                        "ended": false,
+                        "type": "parts",
+                        "target-credit": "",
+                        "begin": null,
+                        "target-type": "work",
+                        "attribute-ids": {
+                            "part of collection": "5821a77f-f805-4c4f-beae-2fedb6ca5278"
+                        },
+                        "type-id": "ca8d3642-ce5f-49f8-91f2-125d72524e6a",
+                        "attributes": [
+                            "part of collection"
+                        ]
+                    }
+                ],
+                "language": "zxx",
+                "iswcs": [],
+                "languages": [
+                    "zxx"
+                ],
+                "id": "311f166c-3898-4cec-a463-0ebcf5df8326",
+                "type": null,
+                "attributes": [],
+                "type-id": null
+            },
+            "attribute-values": {},
+            "end": null,
+            "type": "performance",
+            "ended": false,
+            "source-credit": "",
+            "direction": "forward"
+        },
+        {
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "ordering-key": 2,
+            "attributes": [
+                "medley"
+            ],
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-type": "work",
+            "begin": null,
+            "target-credit": "",
+            "source-credit": "",
+            "ended": false,
+            "direction": "forward",
+            "type": "performance",
+            "end": null,
+            "attribute-values": {},
+            "work": {
+                "relations": [
+                    {
+                        "end": null,
+                        "attribute-values": {},
+                        "direction": "backward",
+                        "source-credit": "",
+                        "ended": false,
+                        "type": "composer",
+                        "begin": null,
+                        "target-credit": "",
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "artist": {
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b",
+                            "disambiguation": "",
+                            "sort-name": "Kōsaki, Satoru",
+                            "name": "神前暁"
+                        },
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "attributes": []
+                    },
+                    {
+                        "target-credit": "",
+                        "begin": null,
+                        "type-id": "51975ed8-bbfa-486b-9f28-5947f4370299",
+                        "attributes": [],
+                        "target-type": "work",
+                        "attribute-ids": {},
+                        "work": {
+                            "iswcs": [],
+                            "language": null,
+                            "title": "南国風ですが、何か",
+                            "disambiguation": "らき☆すた",
+                            "type-id": null,
+                            "type": null,
+                            "attributes": [],
+                            "languages": [],
+                            "id": "4e6f146d-32f7-4d14-a2f4-9c9ef99fc5c1"
+                        },
+                        "ended": false,
+                        "source-credit": "",
+                        "direction": "forward",
+                        "type": "arrangement",
+                        "attribute-values": {},
+                        "end": null
+                    },
+                    {
+                        "work": {
+                            "languages": [],
+                            "id": "96ac9267-5b9f-4168-ac12-57e1544d91dd",
+                            "type": "Soundtrack",
+                            "attributes": [],
+                            "type-id": "66d7962b-6377-364f-a0b4-b200febc510e",
+                            "disambiguation": "",
+                            "title": "らき☆すた BGM",
+                            "language": null,
+                            "iswcs": []
+                        },
+                        "end": null,
+                        "attribute-values": {},
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "type": "parts",
+                        "begin": null,
+                        "target-credit": "",
+                        "attribute-ids": {
+                            "part of collection": "5821a77f-f805-4c4f-beae-2fedb6ca5278"
+                        },
+                        "target-type": "work",
+                        "type-id": "ca8d3642-ce5f-49f8-91f2-125d72524e6a",
+                        "attributes": [
+                            "part of collection"
+                        ]
+                    }
+                ],
+                "language": "zxx",
+                "iswcs": [],
+                "title": "フンフンフン♪だよ、らき☆すた",
+                "disambiguation": "らき☆すた",
+                "type": null,
+                "attributes": [],
+                "type-id": null,
+                "languages": [
+                    "zxx"
+                ],
+                "id": "a14833b9-25c4-4c80-be9c-4000fd9ee635"
+            }
+        },
+        {
+            "begin": null,
+            "target-credit": "",
+            "attributes": [
+                "medley"
+            ],
+            "ordering-key": 25,
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-type": "work",
+            "work": {
+                "type": null,
+                "attributes": [],
+                "type-id": null,
+                "languages": [
+                    "zxx"
+                ],
+                "id": "2801c415-a9f0-4a6c-aeee-debb45d9ec03",
+                "relations": [
+                    {
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "type": "composer",
+                        "end": null,
+                        "attribute-values": {},
+                        "artist": {
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "name": "神前暁",
+                            "sort-name": "Kōsaki, Satoru",
+                            "disambiguation": "",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b"
+                        },
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "attributes": [],
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "begin": null,
+                        "target-credit": ""
+                    },
+                    {
+                        "begin": null,
+                        "target-credit": "",
+                        "attribute-ids": {
+                            "part of collection": "5821a77f-f805-4c4f-beae-2fedb6ca5278"
+                        },
+                        "target-type": "work",
+                        "attributes": [
+                            "part of collection"
+                        ],
+                        "type-id": "ca8d3642-ce5f-49f8-91f2-125d72524e6a",
+                        "work": {
+                            "title": "らき☆すた BGM",
+                            "disambiguation": "",
+                            "iswcs": [],
+                            "language": null,
+                            "id": "96ac9267-5b9f-4168-ac12-57e1544d91dd",
+                            "languages": [],
+                            "type-id": "66d7962b-6377-364f-a0b4-b200febc510e",
+                            "attributes": [],
+                            "type": "Soundtrack"
+                        },
+                        "end": null,
+                        "attribute-values": {},
+                        "type": "parts",
+                        "ended": false,
+                        "source-credit": "",
+                        "direction": "backward"
+                    }
+                ],
+                "language": "zxx",
+                "iswcs": [],
+                "title": "マッシー＆マーロー",
+                "disambiguation": "らき☆すた"
+            },
+            "type": "performance",
+            "ended": false,
+            "source-credit": "",
+            "direction": "forward",
+            "end": null,
+            "attribute-values": {}
+        },
+        {
+            "work": {
+                "languages": [
+                    "zxx"
+                ],
+                "id": "696529bf-dd7b-4da9-8e6b-82910f1c1efa",
+                "type": null,
+                "attributes": [],
+                "type-id": null,
+                "disambiguation": "らき☆すた",
+                "title": "みなみのテーマ",
+                "relations": [
+                    {
+                        "target-credit": "",
+                        "begin": null,
+                        "artist": {
+                            "disambiguation": "",
+                            "sort-name": "Kōsaki, Satoru",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b",
+                            "name": "神前暁",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person"
+                        },
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "attributes": [],
+                        "target-type": "artist",
+                        "attribute-ids": {},
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "type": "composer",
+                        "attribute-values": {},
+                        "end": null
+                    },
+                    {
+                        "attributes": [
+                            "part of collection"
+                        ],
+                        "type-id": "ca8d3642-ce5f-49f8-91f2-125d72524e6a",
+                        "attribute-ids": {
+                            "part of collection": "5821a77f-f805-4c4f-beae-2fedb6ca5278"
+                        },
+                        "target-type": "work",
+                        "begin": null,
+                        "target-credit": "",
+                        "type": "parts",
+                        "ended": false,
+                        "source-credit": "",
+                        "direction": "backward",
+                        "end": null,
+                        "attribute-values": {},
+                        "work": {
+                            "language": null,
+                            "iswcs": [],
+                            "disambiguation": "",
+                            "title": "らき☆すた BGM",
+                            "attributes": [],
+                            "type": "Soundtrack",
+                            "type-id": "66d7962b-6377-364f-a0b4-b200febc510e",
+                            "id": "96ac9267-5b9f-4168-ac12-57e1544d91dd",
+                            "languages": []
+                        }
+                    }
+                ],
+                "language": "zxx",
+                "iswcs": []
+            },
+            "source-credit": "",
+            "ended": false,
+            "direction": "forward",
+            "type": "performance",
+            "end": null,
+            "attribute-values": {},
+            "begin": null,
+            "target-credit": "",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "ordering-key": 14,
+            "attributes": [
+                "medley"
+            ],
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-type": "work"
+        },
+        {
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-type": "work",
+            "ordering-key": 13,
+            "attributes": [
+                "medley"
+            ],
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "begin": null,
+            "target-credit": "",
+            "end": null,
+            "attribute-values": {},
+            "type": "performance",
+            "source-credit": "",
+            "direction": "forward",
+            "ended": false,
+            "work": {
+                "title": "みにまむテンポ",
+                "disambiguation": "",
+                "language": "jpn",
+                "relations": [
+                    {
+                        "begin": null,
+                        "target-credit": "",
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "attributes": [],
+                        "artist": {
+                            "name": "菊谷知樹",
+                            "disambiguation": "",
+                            "sort-name": "Kikuya, Tomoki",
+                            "id": "1491b044-be66-4528-be9e-dc58a956f836",
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                        },
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "end": null,
+                        "attribute-values": {},
+                        "type": "composer",
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward"
+                    },
+                    {
+                        "attribute-values": {},
+                        "end": null,
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "type": "lyricist",
+                        "target-type": "artist",
+                        "attribute-ids": {},
+                        "artist": {
+                            "name": "畑亜貴",
+                            "disambiguation": "",
+                            "sort-name": "Hata, Aki",
+                            "id": "e73a7bda-c66a-4346-a74f-436c4a07b627",
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                        },
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "attributes": [],
+                        "target-credit": "",
+                        "begin": null
+                    }
+                ],
+                "iswcs": [
+                    "T-909.743.684-5"
+                ],
+                "id": "95127926-2b6d-384b-8949-8bf696fc58ac",
+                "languages": [
+                    "jpn"
+                ],
+                "attributes": [],
+                "type": "Song",
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6"
+            }
+        },
+        {
+            "direction": "forward",
+            "source-credit": "",
+            "ended": false,
+            "type": "performance",
+            "attribute-values": {},
+            "end": null,
+            "work": {
+                "attributes": [],
+                "type": "Song",
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                "id": "7ec2946a-fca2-301a-aa1a-0589a50de65a",
+                "languages": [
+                    "jpn"
+                ],
+                "language": "jpn",
+                "relations": [
+                    {
+                        "attributes": [],
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "artist": {
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person",
+                            "sort-name": "Tashiro, Tomokazu",
+                            "disambiguation": "",
+                            "id": "05143a28-41be-4e8a-9055-7c06a2e31d4c",
+                            "name": "田代智一"
+                        },
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "begin": null,
+                        "target-credit": "",
+                        "type": "composer",
+                        "source-credit": "",
+                        "direction": "backward",
+                        "ended": false,
+                        "end": null,
+                        "attribute-values": {}
+                    },
+                    {
+                        "target-credit": "",
+                        "begin": null,
+                        "artist": {
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person",
+                            "disambiguation": "",
+                            "sort-name": "Hata, Aki",
+                            "id": "e73a7bda-c66a-4346-a74f-436c4a07b627",
+                            "name": "畑亜貴"
+                        },
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "attributes": [],
+                        "target-type": "artist",
+                        "attribute-ids": {},
+                        "source-credit": "",
+                        "direction": "backward",
+                        "ended": false,
+                        "type": "lyricist",
+                        "attribute-values": {},
+                        "end": null
+                    }
+                ],
+                "iswcs": [
+                    "T-909.743.690-3"
+                ],
+                "disambiguation": "",
+                "title": "も、妄想マシーン。"
+            },
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "attributes": [
+                "medley"
+            ],
+            "ordering-key": 21,
+            "target-type": "work",
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-credit": "",
+            "begin": null
+        },
+        {
+            "work": {
+                "type": "Song",
+                "attributes": [],
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                "languages": [
+                    "jpn"
+                ],
+                "id": "9be12d7d-826f-3c28-9bf6-fe7af7773543",
+                "relations": [
+                    {
+                        "target-type": "artist",
+                        "attribute-ids": {},
+                        "attributes": [],
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "artist": {
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "name": "神前暁",
+                            "disambiguation": "",
+                            "sort-name": "Kōsaki, Satoru",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b"
+                        },
+                        "target-credit": "",
+                        "begin": null,
+                        "attribute-values": {},
+                        "end": null,
+                        "type": "composer",
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward"
+                    },
+                    {
+                        "type": "lyricist",
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "attribute-values": {},
+                        "end": null,
+                        "attributes": [],
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "artist": {
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "name": "畑亜貴",
+                            "id": "e73a7bda-c66a-4346-a74f-436c4a07b627",
+                            "sort-name": "Hata, Aki",
+                            "disambiguation": ""
+                        },
+                        "target-type": "artist",
+                        "attribute-ids": {},
+                        "target-credit": "",
+                        "begin": null
+                    },
+                    {
+                        "target-type": "work",
+                        "attribute-ids": {},
+                        "attributes": [],
+                        "type-id": "51975ed8-bbfa-486b-9f28-5947f4370299",
+                        "target-credit": "",
+                        "begin": null,
+                        "attribute-values": {},
+                        "end": null,
+                        "type": "arrangement",
+                        "source-credit": "",
+                        "direction": "forward",
+                        "ended": false,
+                        "work": {
+                            "title": "ずっと文化祭の準備をしていたい",
+                            "disambiguation": "らき☆すた",
+                            "iswcs": [],
+                            "language": null,
+                            "id": "44a07822-52b1-4f70-b1d6-9de114df6fd8",
+                            "languages": [],
+                            "type-id": null,
+                            "attributes": [],
+                            "type": null
+                        }
+                    },
+                    {
+                        "work": {
+                            "iswcs": [],
+                            "language": null,
+                            "title": "JAMがもってった! セーラーふく",
+                            "disambiguation": "",
+                            "type-id": null,
+                            "attributes": [],
+                            "type": null,
+                            "id": "bd64b9f9-6c97-351c-8229-972f45312f1d",
+                            "languages": []
+                        },
+                        "type": "other version",
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "forward",
+                        "attribute-values": {},
+                        "end": null,
+                        "target-credit": "",
+                        "begin": null,
+                        "attributes": [
+                            "parody"
+                        ],
+                        "type-id": "7440b539-19ab-4243-8c03-4f5942ca2218",
+                        "target-type": "work",
+                        "attribute-ids": {
+                            "parody": "d73de9d3-934b-419c-8c83-2e48a5773b14"
+                        }
+                    }
+                ],
+                "language": "jpn",
+                "iswcs": [
+                    "T-909.739.343-6"
+                ],
+                "disambiguation": "",
+                "title": "もってけ! セーラーふく"
+            },
+            "source-credit": "",
+            "direction": "forward",
+            "ended": false,
+            "type": "performance",
+            "end": null,
+            "attribute-values": {},
+            "begin": null,
+            "target-credit": "",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "ordering-key": 1,
+            "attributes": [
+                "instrumental",
+                "medley",
+                "partial"
+            ],
+            "attribute-ids": {
+                "partial": "d2b63be6-91ec-426a-987a-30b47f8aae2d",
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c",
+                "instrumental": "c031ed4f-c9bb-4394-8cf5-e8ce4db512ae"
+            },
+            "target-type": "work"
+        },
+        {
+            "attribute-ids": {
+                "partial": "d2b63be6-91ec-426a-987a-30b47f8aae2d",
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-type": "work",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "ordering-key": 31,
+            "attributes": [
+                "medley",
+                "partial"
+            ],
+            "begin": null,
+            "target-credit": "",
+            "end": null,
+            "attribute-values": {},
+            "source-credit": "",
+            "direction": "forward",
+            "ended": false,
+            "type": "performance",
+            "work": {
+                "languages": [
+                    "jpn"
+                ],
+                "id": "9be12d7d-826f-3c28-9bf6-fe7af7773543",
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                "type": "Song",
+                "attributes": [],
+                "title": "もってけ! セーラーふく",
+                "disambiguation": "",
+                "iswcs": [
+                    "T-909.739.343-6"
+                ],
+                "relations": [
+                    {
+                        "attributes": [],
+                        "artist": {
+                            "sort-name": "Kōsaki, Satoru",
+                            "disambiguation": "",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b",
+                            "name": "神前暁",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person"
+                        },
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "target-type": "artist",
+                        "attribute-ids": {},
+                        "target-credit": "",
+                        "begin": null,
+                        "type": "composer",
+                        "direction": "backward",
+                        "source-credit": "",
+                        "ended": false,
+                        "attribute-values": {},
+                        "end": null
+                    },
+                    {
+                        "end": null,
+                        "attribute-values": {},
+                        "type": "lyricist",
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "attributes": [],
+                        "artist": {
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "name": "畑亜貴",
+                            "sort-name": "Hata, Aki",
+                            "disambiguation": "",
+                            "id": "e73a7bda-c66a-4346-a74f-436c4a07b627"
+                        },
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "begin": null,
+                        "target-credit": ""
+                    },
+                    {
+                        "direction": "forward",
+                        "source-credit": "",
+                        "ended": false,
+                        "type": "arrangement",
+                        "end": null,
+                        "attribute-values": {},
+                        "work": {
+                            "language": null,
+                            "iswcs": [],
+                            "title": "ずっと文化祭の準備をしていたい",
+                            "disambiguation": "らき☆すた",
+                            "type": null,
+                            "attributes": [],
+                            "type-id": null,
+                            "languages": [],
+                            "id": "44a07822-52b1-4f70-b1d6-9de114df6fd8"
+                        },
+                        "type-id": "51975ed8-bbfa-486b-9f28-5947f4370299",
+                        "attributes": [],
+                        "attribute-ids": {},
+                        "target-type": "work",
+                        "begin": null,
+                        "target-credit": ""
+                    },
+                    {
+                        "work": {
+                            "language": null,
+                            "iswcs": [],
+                            "disambiguation": "",
+                            "title": "JAMがもってった! セーラーふく",
+                            "type": null,
+                            "attributes": [],
+                            "type-id": null,
+                            "languages": [],
+                            "id": "bd64b9f9-6c97-351c-8229-972f45312f1d"
+                        },
+                        "attribute-values": {},
+                        "end": null,
+                        "type": "other version",
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "forward",
+                        "target-credit": "",
+                        "begin": null,
+                        "target-type": "work",
+                        "attribute-ids": {
+                            "parody": "d73de9d3-934b-419c-8c83-2e48a5773b14"
+                        },
+                        "attributes": [
+                            "parody"
+                        ],
+                        "type-id": "7440b539-19ab-4243-8c03-4f5942ca2218"
+                    }
+                ],
+                "language": "jpn"
+            }
+        },
+        {
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-type": "work",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "ordering-key": 16,
+            "attributes": [
+                "medley"
+            ],
+            "begin": null,
+            "target-credit": "",
+            "end": null,
+            "attribute-values": {},
+            "ended": false,
+            "source-credit": "",
+            "direction": "forward",
+            "type": "performance",
+            "work": {
+                "title": "ゆたかのテーマ",
+                "disambiguation": "らき☆すた",
+                "language": "zxx",
+                "relations": [
+                    {
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "attributes": [],
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "artist": {
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person",
+                            "disambiguation": "",
+                            "sort-name": "Kōsaki, Satoru",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b",
+                            "name": "神前暁"
+                        },
+                        "begin": null,
+                        "target-credit": "",
+                        "end": null,
+                        "attribute-values": {},
+                        "type": "composer",
+                        "direction": "backward",
+                        "source-credit": "",
+                        "ended": false
+                    },
+                    {
+                        "target-credit": "",
+                        "begin": null,
+                        "attributes": [
+                            "part of collection"
+                        ],
+                        "type-id": "ca8d3642-ce5f-49f8-91f2-125d72524e6a",
+                        "target-type": "work",
+                        "attribute-ids": {
+                            "part of collection": "5821a77f-f805-4c4f-beae-2fedb6ca5278"
+                        },
+                        "work": {
+                            "language": null,
+                            "iswcs": [],
+                            "title": "らき☆すた BGM",
+                            "disambiguation": "",
+                            "type": "Soundtrack",
+                            "attributes": [],
+                            "type-id": "66d7962b-6377-364f-a0b4-b200febc510e",
+                            "languages": [],
+                            "id": "96ac9267-5b9f-4168-ac12-57e1544d91dd"
+                        },
+                        "type": "parts",
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "attribute-values": {},
+                        "end": null
+                    }
+                ],
+                "iswcs": [],
+                "id": "6ec462be-a5ba-4633-ab51-8c7708071765",
+                "languages": [
+                    "zxx"
+                ],
+                "attributes": [],
+                "type": null,
+                "type-id": null
+            }
+        },
+        {
+            "begin": null,
+            "target-credit": "",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "attributes": [
+                "medley"
+            ],
+            "ordering-key": 18,
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-type": "work",
+            "work": {
+                "attributes": [],
+                "type": "Song",
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                "id": "8859acfd-c764-36a1-acad-b0c1d54931fa",
+                "languages": [
+                    "jpn"
+                ],
+                "language": "jpn",
+                "relations": [
+                    {
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "type": "composer",
+                        "attribute-values": {},
+                        "end": null,
+                        "artist": {
+                            "name": "神前暁",
+                            "sort-name": "Kōsaki, Satoru",
+                            "disambiguation": "",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b",
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                        },
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "attributes": [],
+                        "target-type": "artist",
+                        "attribute-ids": {},
+                        "target-credit": "",
+                        "begin": null
+                    },
+                    {
+                        "target-credit": "",
+                        "begin": null,
+                        "target-type": "artist",
+                        "attribute-ids": {},
+                        "artist": {
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person",
+                            "disambiguation": "",
+                            "sort-name": "Hata, Aki",
+                            "id": "e73a7bda-c66a-4346-a74f-436c4a07b627",
+                            "name": "畑亜貴"
+                        },
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "attributes": [],
+                        "attribute-values": {},
+                        "end": null,
+                        "ended": false,
+                        "source-credit": "",
+                        "direction": "backward",
+                        "type": "lyricist"
+                    }
+                ],
+                "iswcs": [
+                    "T-909.743.506-8"
+                ],
+                "title": "三十路岬",
+                "disambiguation": ""
+            },
+            "source-credit": "",
+            "direction": "forward",
+            "ended": false,
+            "type": "performance",
+            "end": null,
+            "attribute-values": {}
+        },
+        {
+            "work": {
+                "iswcs": [
+                    "T-906.801.099-1"
+                ],
+                "language": "jpn",
+                "relations": [
+                    {
+                        "attribute-values": {},
+                        "end": null,
+                        "type": "composer",
+                        "source-credit": "",
+                        "direction": "backward",
+                        "ended": false,
+                        "target-type": "artist",
+                        "attribute-ids": {},
+                        "attributes": [],
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "artist": {
+                            "sort-name": "Shiraishi, Minoru",
+                            "disambiguation": "\"live-action\" character in らき☆すた",
+                            "id": "b2f249b8-b152-4c2c-b4e3-f595ab9a9439",
+                            "name": "白石みのる",
+                            "type-id": "5c1375b0-f18d-3db7-a164-a49d7a63773f",
+                            "type": "Character"
+                        },
+                        "target-credit": "",
+                        "begin": null
+                    },
+                    {
+                        "begin": null,
+                        "target-credit": "",
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "attributes": [],
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "artist": {
+                            "name": "白石みのる",
+                            "sort-name": "Shiraishi, Minoru",
+                            "disambiguation": "\"live-action\" character in らき☆すた",
+                            "id": "b2f249b8-b152-4c2c-b4e3-f595ab9a9439",
+                            "type": "Character",
+                            "type-id": "5c1375b0-f18d-3db7-a164-a49d7a63773f"
+                        },
+                        "end": null,
+                        "attribute-values": {},
+                        "type": "lyricist",
+                        "ended": false,
+                        "source-credit": "",
+                        "direction": "backward"
+                    }
+                ],
+                "disambiguation": "",
+                "title": "俺の忘れ物 -完全版-",
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                "attributes": [],
+                "type": "Song",
+                "id": "57e19d23-eabc-37ce-8314-451b452f98c9",
+                "languages": [
+                    "jpn"
+                ]
+            },
+            "end": null,
+            "attribute-values": {},
+            "source-credit": "",
+            "direction": "forward",
+            "ended": false,
+            "type": "performance",
+            "begin": null,
+            "target-credit": "",
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-type": "work",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "attributes": [
+                "medley"
+            ],
+            "ordering-key": 8
+        },
+        {
+            "attributes": [
+                "medley"
+            ],
+            "ordering-key": 3,
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "target-type": "work",
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-credit": "",
+            "begin": null,
+            "type": "performance",
+            "ended": false,
+            "source-credit": "",
+            "direction": "forward",
+            "attribute-values": {},
+            "end": null,
+            "work": {
+                "languages": [
+                    "jpn"
+                ],
+                "id": "fd1a3582-a614-3ea6-a1b8-ed0936b62d56",
+                "type": "Song",
+                "attributes": [],
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                "title": "寝・逃・げでリセット!",
+                "disambiguation": "",
+                "relations": [
+                    {
+                        "type": "composer",
+                        "ended": false,
+                        "source-credit": "",
+                        "direction": "backward",
+                        "attribute-values": {},
+                        "end": null,
+                        "attributes": [],
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "artist": {
+                            "disambiguation": "composer",
+                            "sort-name": "ISAO",
+                            "id": "b70459a0-ecef-4bb1-9098-de4d412eeb5c",
+                            "name": "ISAO",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person"
+                        },
+                        "target-type": "artist",
+                        "attribute-ids": {},
+                        "target-credit": "",
+                        "begin": null
+                    },
+                    {
+                        "type": "lyricist",
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "attribute-values": {},
+                        "end": null,
+                        "target-credit": "",
+                        "begin": null,
+                        "attributes": [],
+                        "artist": {
+                            "name": "畑亜貴",
+                            "id": "e73a7bda-c66a-4346-a74f-436c4a07b627",
+                            "disambiguation": "",
+                            "sort-name": "Hata, Aki",
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                        },
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "target-type": "artist",
+                        "attribute-ids": {}
+                    }
+                ],
+                "language": "jpn",
+                "iswcs": [
+                    "T-909.744.054-5"
+                ]
+            }
+        },
+        {
+            "end": null,
+            "attribute-values": {},
+            "ended": false,
+            "source-credit": "",
+            "direction": "forward",
+            "type": "performance",
+            "work": {
+                "title": "幸せ願う彼方から",
+                "disambiguation": "",
+                "language": "jpn",
+                "relations": [
+                    {
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "type": "composer",
+                        "end": null,
+                        "attribute-values": {},
+                        "begin": null,
+                        "target-credit": "",
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "artist": {
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "name": "神前暁",
+                            "disambiguation": "",
+                            "sort-name": "Kōsaki, Satoru",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b"
+                        },
+                        "attributes": [],
+                        "attribute-ids": {},
+                        "target-type": "artist"
+                    },
+                    {
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "artist": {
+                            "id": "e73a7bda-c66a-4346-a74f-436c4a07b627",
+                            "sort-name": "Hata, Aki",
+                            "disambiguation": "",
+                            "name": "畑亜貴",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person"
+                        },
+                        "attributes": [],
+                        "target-type": "artist",
+                        "attribute-ids": {},
+                        "target-credit": "",
+                        "begin": null,
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "type": "lyricist",
+                        "attribute-values": {},
+                        "end": null
+                    }
+                ],
+                "iswcs": [
+                    "T-909.745.989-7"
+                ],
+                "id": "f8474072-cb47-3a7a-a78c-2c20bf6b70a0",
+                "languages": [
+                    "jpn"
+                ],
+                "attributes": [],
+                "type": "Song",
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6"
+            },
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-type": "work",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "ordering-key": 15,
+            "attributes": [
+                "medley"
+            ],
+            "begin": null,
+            "target-credit": ""
+        },
+        {
+            "begin": null,
+            "target-credit": "",
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-type": "work",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "attributes": [
+                "medley"
+            ],
+            "ordering-key": 10,
+            "work": {
+                "languages": [
+                    "jpn"
+                ],
+                "id": "89a79c13-3482-3d78-bdde-5d398aff53c4",
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                "type": "Song",
+                "attributes": [],
+                "disambiguation": "",
+                "title": "恋のミノル伝説",
+                "iswcs": [
+                    "T-909.746.065-6"
+                ],
+                "relations": [
+                    {
+                        "type": "composer",
+                        "source-credit": "",
+                        "direction": "backward",
+                        "ended": false,
+                        "end": null,
+                        "attribute-values": {},
+                        "attributes": [],
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "artist": {
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person",
+                            "disambiguation": "",
+                            "sort-name": "Kōsaki, Satoru",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b",
+                            "name": "神前暁"
+                        },
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "begin": null,
+                        "target-credit": ""
+                    },
+                    {
+                        "end": null,
+                        "attribute-values": {},
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "type": "lyricist",
+                        "begin": null,
+                        "target-credit": "",
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "artist": {
+                            "sort-name": "Shiraishi, Minoru",
+                            "disambiguation": "\"live-action\" character in らき☆すた",
+                            "id": "b2f249b8-b152-4c2c-b4e3-f595ab9a9439",
+                            "name": "白石みのる",
+                            "type-id": "5c1375b0-f18d-3db7-a164-a49d7a63773f",
+                            "type": "Character"
+                        },
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "attributes": []
+                    },
+                    {
+                        "target-credit": "",
+                        "begin": null,
+                        "type-id": "7440b539-19ab-4243-8c03-4f5942ca2218",
+                        "attributes": [],
+                        "target-type": "work",
+                        "attribute-ids": {},
+                        "work": {
+                            "title": "恋のミクル伝説",
+                            "disambiguation": "",
+                            "iswcs": [],
+                            "language": null,
+                            "languages": [],
+                            "id": "e9c2bfae-d999-35d9-bcfd-2b429c4557b4",
+                            "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                            "type": "Song",
+                            "attributes": []
+                        },
+                        "direction": "backward",
+                        "source-credit": "",
+                        "ended": false,
+                        "type": "other version",
+                        "attribute-values": {},
+                        "end": null
+                    }
+                ],
+                "language": "jpn"
+            },
+            "end": null,
+            "attribute-values": {},
+            "source-credit": "",
+            "ended": false,
+            "direction": "forward",
+            "type": "performance"
+        },
+        {
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "attributes": [
+                "medley"
+            ],
+            "ordering-key": 24,
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-type": "work",
+            "begin": null,
+            "target-credit": "",
+            "source-credit": "",
+            "ended": false,
+            "direction": "forward",
+            "type": "performance",
+            "end": null,
+            "attribute-values": {},
+            "work": {
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                "type": "Song",
+                "attributes": [],
+                "languages": [
+                    "jpn"
+                ],
+                "id": "b5c3f07e-8104-358f-8425-abd64de4faac",
+                "iswcs": [
+                    "T-909.743.513-7"
+                ],
+                "relations": [
+                    {
+                        "target-credit": "",
+                        "begin": null,
+                        "target-type": "artist",
+                        "attribute-ids": {},
+                        "artist": {
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b",
+                            "disambiguation": "",
+                            "sort-name": "Kōsaki, Satoru",
+                            "name": "神前暁"
+                        },
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "attributes": [],
+                        "attribute-values": {},
+                        "end": null,
+                        "direction": "backward",
+                        "source-credit": "",
+                        "ended": false,
+                        "type": "composer"
+                    },
+                    {
+                        "begin": null,
+                        "target-credit": "",
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "attributes": [],
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "artist": {
+                            "name": "畑亜貴",
+                            "sort-name": "Hata, Aki",
+                            "disambiguation": "",
+                            "id": "e73a7bda-c66a-4346-a74f-436c4a07b627",
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                        },
+                        "end": null,
+                        "attribute-values": {},
+                        "type": "lyricist",
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward"
+                    }
+                ],
+                "language": "jpn",
+                "disambiguation": "",
+                "title": "悠長戦隊ダラレンジャー"
+            }
+        },
+        {
+            "work": {
+                "iswcs": [],
+                "relations": [
+                    {
+                        "begin": null,
+                        "target-credit": "",
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "attributes": [],
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "artist": {
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "name": "神前暁",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b",
+                            "disambiguation": "",
+                            "sort-name": "Kōsaki, Satoru"
+                        },
+                        "end": null,
+                        "attribute-values": {},
+                        "type": "composer",
+                        "ended": false,
+                        "source-credit": "",
+                        "direction": "backward"
+                    },
+                    {
+                        "work": {
+                            "language": null,
+                            "iswcs": [],
+                            "title": "らき☆すた BGM",
+                            "disambiguation": "",
+                            "type": "Soundtrack",
+                            "attributes": [],
+                            "type-id": "66d7962b-6377-364f-a0b4-b200febc510e",
+                            "languages": [],
+                            "id": "96ac9267-5b9f-4168-ac12-57e1544d91dd"
+                        },
+                        "end": null,
+                        "attribute-values": {},
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "type": "parts",
+                        "begin": null,
+                        "target-credit": "",
+                        "attribute-ids": {
+                            "part of collection": "5821a77f-f805-4c4f-beae-2fedb6ca5278"
+                        },
+                        "target-type": "work",
+                        "type-id": "ca8d3642-ce5f-49f8-91f2-125d72524e6a",
+                        "attributes": [
+                            "part of collection"
+                        ]
+                    }
+                ],
+                "language": "zxx",
+                "title": "愉快だね、らき☆すた",
+                "disambiguation": "らき☆すた",
+                "type-id": null,
+                "type": null,
+                "attributes": [],
+                "languages": [
+                    "zxx"
+                ],
+                "id": "0b3f1741-1c42-4ae4-aacd-74f1a7c1f1ad"
+            },
+            "attribute-values": {},
+            "end": null,
+            "type": "performance",
+            "source-credit": "",
+            "direction": "forward",
+            "ended": false,
+            "target-credit": "",
+            "begin": null,
+            "target-type": "work",
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "ordering-key": 12,
+            "attributes": [
+                "medley"
+            ],
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0"
+        },
+        {
+            "type": "performance",
+            "source-credit": "",
+            "ended": false,
+            "direction": "forward",
+            "attribute-values": {},
+            "end": null,
+            "work": {
+                "languages": [
+                    "jpn"
+                ],
+                "id": "4d31f396-c55e-4002-bea0-36adb70c3bc1",
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                "type": "Song",
+                "attributes": [],
+                "disambiguation": "",
+                "title": "曖昧ネットだーりん",
+                "iswcs": [
+                    "T-909.742.028-5"
+                ],
+                "relations": [
+                    {
+                        "end": null,
+                        "attribute-values": {},
+                        "type": "composer",
+                        "source-credit": "",
+                        "direction": "backward",
+                        "ended": false,
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "attributes": [],
+                        "artist": {
+                            "name": "神前暁",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b",
+                            "disambiguation": "",
+                            "sort-name": "Kōsaki, Satoru",
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                        },
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "begin": null,
+                        "target-credit": ""
+                    },
+                    {
+                        "target-type": "artist",
+                        "attribute-ids": {},
+                        "attributes": [],
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "artist": {
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person",
+                            "id": "e73a7bda-c66a-4346-a74f-436c4a07b627",
+                            "sort-name": "Hata, Aki",
+                            "disambiguation": "",
+                            "name": "畑亜貴"
+                        },
+                        "target-credit": "",
+                        "begin": null,
+                        "attribute-values": {},
+                        "end": null,
+                        "type": "lyricist",
+                        "ended": false,
+                        "source-credit": "",
+                        "direction": "backward"
+                    }
+                ],
+                "language": "jpn"
+            },
+            "attributes": [
+                "medley"
+            ],
+            "ordering-key": 20,
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "target-type": "work",
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-credit": "",
+            "begin": null
+        },
+        {
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "ordering-key": 29,
+            "attributes": [
+                "medley",
+                "partial"
+            ],
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c",
+                "partial": "d2b63be6-91ec-426a-987a-30b47f8aae2d"
+            },
+            "target-type": "work",
+            "begin": null,
+            "target-credit": "",
+            "source-credit": "",
+            "direction": "forward",
+            "ended": false,
+            "type": "performance",
+            "end": null,
+            "attribute-values": {},
+            "work": {
+                "languages": [
+                    "zxx"
+                ],
+                "id": "d76c8c06-a425-4dfd-9137-c49225d6ef43",
+                "type-id": null,
+                "type": null,
+                "attributes": [],
+                "disambiguation": "らき☆すた",
+                "title": "柊四姉妹",
+                "iswcs": [],
+                "relations": [
+                    {
+                        "end": null,
+                        "attribute-values": {},
+                        "ended": false,
+                        "source-credit": "",
+                        "direction": "backward",
+                        "type": "composer",
+                        "begin": null,
+                        "target-credit": "",
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "artist": {
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "name": "神前暁",
+                            "sort-name": "Kōsaki, Satoru",
+                            "disambiguation": "",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b"
+                        },
+                        "attributes": []
+                    },
+                    {
+                        "target-credit": "",
+                        "begin": null,
+                        "type-id": "ca8d3642-ce5f-49f8-91f2-125d72524e6a",
+                        "attributes": [
+                            "part of collection"
+                        ],
+                        "target-type": "work",
+                        "attribute-ids": {
+                            "part of collection": "5821a77f-f805-4c4f-beae-2fedb6ca5278"
+                        },
+                        "work": {
+                            "attributes": [],
+                            "type": "Soundtrack",
+                            "type-id": "66d7962b-6377-364f-a0b4-b200febc510e",
+                            "id": "96ac9267-5b9f-4168-ac12-57e1544d91dd",
+                            "languages": [],
+                            "language": null,
+                            "iswcs": [],
+                            "disambiguation": "",
+                            "title": "らき☆すた BGM"
+                        },
+                        "source-credit": "",
+                        "ended": false,
+                        "direction": "backward",
+                        "type": "parts",
+                        "attribute-values": {},
+                        "end": null
+                    }
+                ],
+                "language": "zxx"
+            }
+        },
+        {
+            "end": null,
+            "attribute-values": {},
+            "ended": false,
+            "source-credit": "",
+            "direction": "forward",
+            "type": "performance",
+            "work": {
+                "relations": [
+                    {
+                        "attributes": [],
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "artist": {
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "name": "綾原圭二",
+                            "id": "b962b17c-3bff-464d-96d6-1d3fb1ef0fbb",
+                            "sort-name": "Ayahara, Keiji",
+                            "disambiguation": ""
+                        },
+                        "target-type": "artist",
+                        "attribute-ids": {},
+                        "target-credit": "",
+                        "begin": null,
+                        "type": "composer",
+                        "ended": false,
+                        "source-credit": "",
+                        "direction": "backward",
+                        "attribute-values": {},
+                        "end": null
+                    },
+                    {
+                        "begin": null,
+                        "target-credit": "",
+                        "attributes": [],
+                        "artist": {
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person",
+                            "sort-name": "Hata, Aki",
+                            "disambiguation": "",
+                            "id": "e73a7bda-c66a-4346-a74f-436c4a07b627",
+                            "name": "畑亜貴"
+                        },
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "type": "lyricist",
+                        "source-credit": "",
+                        "direction": "backward",
+                        "ended": false,
+                        "end": null,
+                        "attribute-values": {}
+                    }
+                ],
+                "language": "jpn",
+                "iswcs": [
+                    "T-909.744.141-3"
+                ],
+                "disambiguation": "",
+                "title": "黙っと休み時間",
+                "type": "Song",
+                "attributes": [],
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                "languages": [
+                    "jpn"
+                ],
+                "id": "cc510728-637b-3529-825b-392810eb4650"
+            },
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-type": "work",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "attributes": [
+                "medley"
+            ],
+            "ordering-key": 28,
+            "begin": null,
+            "target-credit": ""
+        },
+        {
+            "type": "performance",
+            "source-credit": "",
+            "direction": "forward",
+            "ended": false,
+            "attribute-values": {},
+            "end": null,
+            "work": {
+                "language": "jpn",
+                "relations": [
+                    {
+                        "begin": null,
+                        "target-credit": "",
+                        "attributes": [],
+                        "artist": {
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "name": "とものかつみ",
+                            "id": "a68cd82d-66a6-4eae-9540-aec233389e95",
+                            "disambiguation": "",
+                            "sort-name": "Tomono, Katsumi"
+                        },
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "type": "composer",
+                        "source-credit": "",
+                        "direction": "backward",
+                        "ended": false,
+                        "end": null,
+                        "attribute-values": {}
+                    },
+                    {
+                        "type": "lyricist",
+                        "ended": false,
+                        "source-credit": "",
+                        "direction": "backward",
+                        "end": null,
+                        "attribute-values": {},
+                        "begin": null,
+                        "target-credit": "",
+                        "attributes": [],
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "artist": {
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person",
+                            "id": "e73a7bda-c66a-4346-a74f-436c4a07b627",
+                            "disambiguation": "",
+                            "sort-name": "Hata, Aki",
+                            "name": "畑亜貴"
+                        },
+                        "attribute-ids": {},
+                        "target-type": "artist"
+                    }
+                ],
+                "iswcs": [
+                    "T-909.743.680-1"
+                ],
+                "disambiguation": "",
+                "title": "萌え要素ってなんですか?",
+                "attributes": [],
+                "type": "Song",
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                "id": "daa43f0a-c928-3760-9721-9de74e9c6505",
+                "languages": [
+                    "jpn"
+                ]
+            },
+            "attributes": [
+                "medley"
+            ],
+            "ordering-key": 23,
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "target-type": "work",
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            },
+            "target-credit": "",
+            "begin": null
+        },
+        {
+            "work": {
+                "title": "軽やかだよ、らき☆すた",
+                "disambiguation": "らき☆すた",
+                "iswcs": [],
+                "language": "zxx",
+                "relations": [
+                    {
+                        "attribute-ids": {},
+                        "target-type": "artist",
+                        "artist": {
+                            "type": "Person",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "name": "神前暁",
+                            "sort-name": "Kōsaki, Satoru",
+                            "disambiguation": "",
+                            "id": "557e6938-404b-4332-a169-bec2b77fe05b"
+                        },
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "attributes": [],
+                        "begin": null,
+                        "target-credit": "",
+                        "end": null,
+                        "attribute-values": {},
+                        "source-credit": "",
+                        "direction": "backward",
+                        "ended": false,
+                        "type": "composer"
+                    },
+                    {
+                        "attribute-values": {},
+                        "end": null,
+                        "ended": false,
+                        "source-credit": "",
+                        "direction": "backward",
+                        "type": "parts",
+                        "work": {
+                            "disambiguation": "",
+                            "title": "らき☆すた BGM",
+                            "iswcs": [],
+                            "language": null,
+                            "languages": [],
+                            "id": "96ac9267-5b9f-4168-ac12-57e1544d91dd",
+                            "type-id": "66d7962b-6377-364f-a0b4-b200febc510e",
+                            "type": "Soundtrack",
+                            "attributes": []
+                        },
+                        "target-type": "work",
+                        "attribute-ids": {
+                            "part of collection": "5821a77f-f805-4c4f-beae-2fedb6ca5278"
+                        },
+                        "type-id": "ca8d3642-ce5f-49f8-91f2-125d72524e6a",
+                        "attributes": [
+                            "part of collection"
+                        ],
+                        "target-credit": "",
+                        "begin": null
+                    }
+                ],
+                "id": "70b349b6-8066-4d35-b46c-bdb8d658ae5c",
+                "languages": [
+                    "zxx"
+                ],
+                "type-id": null,
+                "attributes": [],
+                "type": null
+            },
+            "type": "performance",
+            "source-credit": "",
+            "ended": false,
+            "direction": "forward",
+            "attribute-values": {},
+            "end": null,
+            "target-credit": "",
+            "begin": null,
+            "ordering-key": 22,
+            "attributes": [
+                "medley"
+            ],
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "target-type": "work",
+            "attribute-ids": {
+                "medley": "37da3398-5d1b-4acb-be25-df95e33e423c"
+            }
+        }
+    ]
+}
