@@ -90,7 +90,7 @@ _CAA_THUMBNAIL_SIZE_ALIASES = {
 _CAA_IMAGE_SIZE_DEFAULT = 500
 
 _CAA_IMAGE_TYPE_DEFAULT_INCLUDE = ['front']
-_CAA_IMAGE_TYPE_DEFAULT_EXCLUDE = ['raw/unedited', 'watermark']
+_CAA_IMAGE_TYPE_DEFAULT_EXCLUDE = ['matrix/runout', 'raw/unedited', 'watermark']
 
 ratecontrol.set_minimum_delay((CAA_HOST, CAA_PORT), 0)
 ratecontrol.set_minimum_delay(('archive.org', 443), 0)
