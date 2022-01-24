@@ -298,11 +298,9 @@ class AcoustIdAPIHelper(APIHelper):
         config = get_config()
         args = {'user': config.setting["acoustid_apikey"]}
         for i, submission in enumerate(submissions):
-            args['fingerprint.%d' % i] = submission.fingerprint
-            args['duration.%d' % i] = str(submission.duration)
-            args['mbid.%d' % i] = submission.recordingid
-            if submission.puid:
-                args['puid.%d' % i] = submission.puid
+            for key, value in submission.args.items():
+                if value:
+                    args[".".join((key, str(i)))] = value
         return args
 
     def submit_acoustid_fingerprints(self, submissions, handler):
