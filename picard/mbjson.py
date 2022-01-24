@@ -159,7 +159,7 @@ def _relations_to_metadata(relations, m, instrumental=False):
                 else:
                     attr_credits = {}
                 name = 'performer:' + _parse_attributes(attribs, reltype, attr_credits)
-            elif reltype == 'mix-DJ' and len(attribs) > 0:
+            elif reltype == 'mix-DJ' and attribs:
                 if not hasattr(m, "_djmix_ars"):
                     m._djmix_ars = {}
                 for attr in attribs:
