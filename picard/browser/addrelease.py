@@ -142,7 +142,7 @@ def _find_file(path):
 def _get_cluster_form(cluster):
     return _get_form(
         _('Add cluster as release'),
-        '/release/add',
+        "/release/add?tport=%d" % (QCoreApplication.instance().browser_integration.port),
         _('Add cluster as release...'),
         _get_cluster_data(cluster)
     )
@@ -151,7 +151,7 @@ def _get_cluster_form(cluster):
 def _get_file_as_release_form(cluster):
     return _get_form(
         _('Add file as release'),
-        '/release/add',
+        "/release/add?tport=%d" % (QCoreApplication.instance().browser_integration.port),
         _('Add file as release...'),
         _get_file_as_release_data(cluster)
     )
