@@ -25,7 +25,7 @@ from test.picardtestcase import (
     get_test_data_path,
 )
 
-from picard.discid.eaclog import (
+from picard.disc.eaclog import (
     NotSupportedTOCError,
     calculate_mb_toc_numbers,
     filter_toc_entries,

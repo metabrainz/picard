@@ -104,8 +104,10 @@ from picard.const.sys import (
     IS_WIN,
 )
 from picard.dataobj import DataObject
-from picard.disc import Disc
-from picard.discid.eaclog import toc_from_file
+from picard.disc import (
+    Disc,
+    eaclog,
+)
 from picard.file import File
 from picard.formats import open_ as open_file
 from picard.i18n import setup_gettext
@@ -858,7 +860,7 @@ class Tagger(QtWidgets.QApplication):
                 traceback=self._debug)
 
     def _parse_eac_log(self, disc, path):
-        toc = toc_from_file(path)
+        toc = eaclog.toc_from_file(path)
         disc.put(toc)
 
     @property
