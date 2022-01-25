@@ -26,6 +26,28 @@
 import re
 
 
+RE_TOC_TABLE_HEADER = re.compile(r""" \s*
+    \s*.+\s+ \| # track
+    \s+.+\s+ \| # start
+    \s+.+\s+ \| # length
+    \s+.+\s+ \| # start sector
+    \s+.+\s*$   # end sector
+    """, re.VERBOSE)
+
+RE_TOC_TABLE_LINE = re.compile(r"""
+    ^\s*
+    (?P<num>\d+)
+    \s*\|\s*
+    (?P<start_time>[0-9:.]+)
+    \s*\|\s*
+    (?P<length_time>[0-9:.]+)
+    \s*\|\s*
+    (?P<start_sector>\d+)
+    \s*\|\s*
+    (?P<end_sector>\d+)
+    \s*$""", re.VERBOSE)
+
+
 class NotSupportedTOCError(Exception):
     pass
 
@@ -39,31 +61,13 @@ def filter_toc_entries(lines):
     for line in lines:
         # to allow internationalized EAC output where column headings
         # may differ
-        if re.match(r""" \s*
-                   .+\s+ \| (?#track)
-                \s+.+\s+ \| (?#start)
-                \s+.+\s+ \| (?#length)
-                \s+.+\s+ \| (?#start sec)
-                \s+.+\s*$   (?#end sec)
-                """, line, re.X):
+        if RE_TOC_TABLE_HEADER.match(line):
             # Skip over the table header separator
             next(lines)
             break
 
     for line in lines:
-        m = re.match(r"""
-            ^\s*
-            (?P<num>\d+)
-            \s*\|\s*
-            (?P<start_time>[0-9:.]+)
-            \s*\|\s*
-            (?P<length_time>[0-9:.]+)
-            \s*\|\s*
-            (?P<start_sector>\d+)
-            \s*\|\s*
-            (?P<end_sector>\d+)
-            \s*$
-            """, line, re.X)
+        m = RE_TOC_TABLE_LINE.match(line)
         if not m:
             break
         yield m.groupdict()
