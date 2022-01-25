@@ -49,6 +49,11 @@ from picard.ui.searchdialog.album import AlbumSearchDialog
 
 class FileLookup(object):
 
+    RE_MB_ENTITY = re.compile(r"""
+        \b(?P<entity>release-group|release|recording|work|artist|label|url|area|track)?
+        \W*(?P<mbid>[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12})
+    """, re.VERBOSE | re.IGNORECASE)
+
     def __init__(self, parent, server, port, local_port):
         self.server = server
         self.local_port = int(local_port)
@@ -109,19 +114,17 @@ class FileLookup(object):
         If entity type is 'release', it will load corresponding release if
         possible.
         """
-        uuid = '[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}'
-        entity_type = '(?:release-group|release|recording|work|artist|label|url|area|track)'
-        regex = r"\b(%s)?\W*(%s)" % (entity_type, uuid)
-        m = re.search(regex, string, re.IGNORECASE)
+        m = self.RE_MB_ENTITY.search(string)
         if m is None:
             return False
-        if m.group(1) is None:
+        entity = m.group('entity')
+        if entity is None:
             if type_ is None:
                 return False
             entity = type_
         else:
-            entity = m.group(1).lower()
-        mbid = m.group(2).lower()
+            entity = entity.lower()
+        mbid = m.group('mbid').lower()
         if mbid_matched_callback:
             mbid_matched_callback(entity, mbid)
         if entity == 'release':
