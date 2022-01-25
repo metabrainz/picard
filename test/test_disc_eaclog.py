@@ -79,7 +79,7 @@ class TestFilterTocEntries(PicardTestCase):
 class TestCalculateMbTocNumbers(PicardTestCase):
 
     def test_calculate_mb_toc_numbers(self):
-        self.assertEqual([1, 3, 60890, 150, 25064, 43611], calculate_mb_toc_numbers(test_entries))
+        self.assertEqual((1, 3, 60890, 150, 25064, 43611), calculate_mb_toc_numbers(test_entries))
 
     def test_calculate_mb_toc_numbers_invalid_track_numbers(self):
         entries = [{'num': '1'}, {'num': '3'}, {'num': '4'}]
@@ -96,7 +96,7 @@ class TestTocFromFile(PicardTestCase):
     def _test_toc_from_file(self, logfile):
         test_log = get_test_data_path(logfile)
         toc = toc_from_file(test_log)
-        self.assertEqual([1, 8, 149323, 150, 25064, 43611, 60890, 83090, 100000, 115057, 135558], toc)
+        self.assertEqual((1, 8, 149323, 150, 25064, 43611, 60890, 83090, 100000, 115057, 135558), toc)
 
     def test_toc_from_file_eac(self):
         self._test_toc_from_file('eac.log')
