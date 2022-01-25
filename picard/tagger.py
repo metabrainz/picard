@@ -104,7 +104,10 @@ from picard.const.sys import (
     IS_WIN,
 )
 from picard.dataobj import DataObject
-from picard.disc import Disc
+from picard.disc import (
+    Disc,
+    eaclog,
+)
 from picard.file import File
 from picard.formats import open_ as open_file
 from picard.i18n import setup_gettext
@@ -823,7 +826,11 @@ class Tagger(QtWidgets.QApplication):
         """Reads CD from the selected drive and tries to lookup the DiscID on MusicBrainz."""
         config = get_config()
         if isinstance(action, QtWidgets.QAction):
-            device = action.data()
+            data = action.data()
+            if data == 'logfile:eac':
+                return self.lookup_discid_from_logfile()
+            else:
+                device = data
         elif config.setting["cd_lookup_device"] != '':
             device = config.setting["cd_lookup_device"].split(",", 1)[0]
         else:
@@ -836,6 +843,25 @@ class Tagger(QtWidgets.QApplication):
             partial(disc.read, encode_filename(device)),
             partial(self._lookup_disc, disc),
             traceback=self._debug)
+
+    def lookup_discid_from_logfile(self):
+        file_chooser = QtWidgets.QFileDialog(self.window)
+        file_chooser.setNameFilters([
+            _("EAC / XLD log files") + " (*.log)",
+            _("All files") + " (*)",
+        ])
+        if file_chooser.exec_():
+            files = file_chooser.selectedFiles()
+            disc = Disc()
+            self.set_wait_cursor()
+            thread.run_task(
+                partial(self._parse_eac_log, disc, files[0]),
+                partial(self._lookup_disc, disc),
+                traceback=self._debug)
+
+    def _parse_eac_log(self, disc, path):
+        toc = eaclog.toc_from_file(path)
+        disc.put(toc)
 
     @property
     def use_acoustid(self):

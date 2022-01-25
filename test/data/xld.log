@@ -1,0 +1,169 @@
+X Lossless Decoder version 20211018 (154.0)
+
+XLD extraction logfile from 2022-01-24 16:30:17 +0100
+
+Pornophonique / Brave New World
+
+Used drive : TSSTcorp CDDVDW SE-218BB (revision TS01)
+Media type : Pressed CD
+
+Ripper mode             : XLD Secure Ripper
+Disable audio cache     : OK for the drive with a cache less than 1375KiB
+Make use of C2 pointers : NO
+Read offset correction  : 6
+Max retry count         : 20
+Gap status              : Analyzed, Appended (except HTOA)
+
+TOC of the extracted CD
+     Track |   Start  |  Length  | Start sector | End sector 
+    ---------------------------------------------------------
+        1  | 00:00:00 | 05:32:14 |         0    |    24913   
+        2  | 05:32:14 | 04:07:22 |     24914    |    43460   
+        3  | 09:39:36 | 03:50:29 |     43461    |    60739   
+        4  | 13:29:65 | 04:56:00 |     60740    |    82939   
+        5  | 18:25:65 | 03:45:35 |     82940    |    99849   
+        6  | 22:11:25 | 03:20:57 |     99850    |   114906   
+        7  | 25:32:07 | 04:33:26 |    114907    |   135407   
+        8  | 30:05:33 | 03:03:40 |    135408    |   149172   
+
+AccurateRip Summary (DiscID: 000adae1-00473706-5407c408)
+    Track 01 : OK (v2, confidence 2/2)
+    Track 02 : OK (v2, confidence 2/2)
+    Track 03 : OK (v2, confidence 2/2)
+    Track 04 : OK (v2, confidence 2/2)
+    Track 05 : OK (v2, confidence 2/2)
+    Track 06 : OK (v2, confidence 2/2)
+    Track 07 : OK (v2, confidence 2/2)
+    Track 08 : OK (v2, confidence 2/2)
+        ->All tracks accurately ripped.
+
+All Tracks
+    Statistics
+        Read error                           : 0
+        Jitter error (maybe fixed)           : 0
+        Retry sector count                   : 0
+        Damaged sector count                 : 0
+
+Track 01
+    Filename : /Users/phw/Music/01 pornophonique - Coming Home.aiff
+    Pre-gap length : 00:02:00
+
+    CRC32 hash               : E924FB20
+    CRC32 hash (skip zero)   : 1768DFD3
+    AccurateRip v1 signature : B55FBEF7
+    AccurateRip v2 signature : 3182EB6A
+        ->Accurately ripped (v2, confidence 2/2)
+    Statistics
+        Read error                           : 0
+        Jitter error (maybe fixed)           : 0
+        Retry sector count                   : 0
+        Damaged sector count                 : 0
+
+Track 02
+    Filename : /Users/phw/Music/02 pornophonique - Save Game.aiff
+    Pre-gap length : 00:00:34
+
+    CRC32 hash               : F19A6AFC
+    CRC32 hash (skip zero)   : 8DEE793C
+    AccurateRip v1 signature : EFD8C1B7
+    AccurateRip v2 signature : 79A374E7
+        ->Accurately ripped (v2, confidence 2/2)
+    Statistics
+        Read error                           : 0
+        Jitter error (maybe fixed)           : 0
+        Retry sector count                   : 0
+        Damaged sector count                 : 0
+
+Track 03
+    Filename : /Users/phw/Music/03 pornophonique - Voices In My Head.aiff
+    Pre-gap length : 00:00:29
+
+    CRC32 hash               : 300DF15C
+    CRC32 hash (skip zero)   : BD5F80DD
+    AccurateRip v1 signature : BBFF57B1
+    AccurateRip v2 signature : 77DE3AFE
+        ->Accurately ripped (v2, confidence 2/2)
+    Statistics
+        Read error                           : 0
+        Jitter error (maybe fixed)           : 0
+        Retry sector count                   : 0
+        Damaged sector count                 : 0
+
+Track 04
+    Filename : /Users/phw/Music/04 pornophonique - The Songs We Sang Together.aiff
+    Pre-gap length : 00:00:74
+
+    CRC32 hash               : 1657126F
+    CRC32 hash (skip zero)   : 08E00C2B
+    AccurateRip v1 signature : 2091E545
+    AccurateRip v2 signature : 4D824E2F
+        ->Accurately ripped (v2, confidence 2/2)
+    Statistics
+        Read error                           : 0
+        Jitter error (maybe fixed)           : 0
+        Retry sector count                   : 0
+        Damaged sector count                 : 0
+
+Track 05
+    Filename : /Users/phw/Music/05 pornophonique - Night Will Fall.aiff
+    Pre-gap length : 00:00:74
+
+    CRC32 hash               : 66EFEA59
+    CRC32 hash (skip zero)   : 9D5C5713
+    AccurateRip v1 signature : CA7C360C
+    AccurateRip v2 signature : D0D39055
+        ->Accurately ripped (v2, confidence 2/2)
+    Statistics
+        Read error                           : 0
+        Jitter error (maybe fixed)           : 0
+        Retry sector count                   : 0
+        Damaged sector count                 : 0
+
+Track 06
+    Filename : /Users/phw/Music/06 pornophonique - Brave New World.aiff
+    Pre-gap length : 00:00:74
+
+    CRC32 hash               : 5D7B712B
+    CRC32 hash (skip zero)   : B1F024AC
+    AccurateRip v1 signature : DE189DFF
+    AccurateRip v2 signature : CD69B7FC
+        ->Accurately ripped (v2, confidence 2/2)
+    Statistics
+        Read error                           : 0
+        Jitter error (maybe fixed)           : 0
+        Retry sector count                   : 0
+        Damaged sector count                 : 0
+
+Track 07
+    Filename : /Users/phw/Music/07 pornophonique - Wave After Wave.aiff
+    Pre-gap length : 00:00:74
+
+    CRC32 hash               : 694CDD79
+    CRC32 hash (skip zero)   : 676AD99D
+    AccurateRip v1 signature : EDCD4BC2
+    AccurateRip v2 signature : FE6DBCBF
+        ->Accurately ripped (v2, confidence 2/2)
+    Statistics
+        Read error                           : 0
+        Jitter error (maybe fixed)           : 0
+        Retry sector count                   : 0
+        Damaged sector count                 : 0
+
+Track 08
+    Filename : /Users/phw/Music/08 pornophonique - Awakening.aiff
+    Pre-gap length : 00:00:41
+
+    CRC32 hash               : 629CC273
+    CRC32 hash (skip zero)   : F49D7F3E
+    AccurateRip v1 signature : 84B968C7
+    AccurateRip v2 signature : 7EB7F715
+        ->Accurately ripped (v2, confidence 2/2)
+    Statistics
+        Read error                           : 0
+        Jitter error (maybe fixed)           : 0
+        Retry sector count                   : 0
+        Damaged sector count                 : 0
+
+No errors occurred
+
+End of status report

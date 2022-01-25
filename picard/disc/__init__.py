@@ -5,7 +5,7 @@
 # Copyright (C) 2006 Matthias Friedrich
 # Copyright (C) 2007-2008 Lukáš Lalinský
 # Copyright (C) 2008 Robert Kaye
-# Copyright (C) 2009, 2013, 2018-2021 Philipp Wolfer
+# Copyright (C) 2009, 2013, 2018-2022 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2013 Johannes Dewender
 # Copyright (C) 2013 Sebastian Ramacher
@@ -65,14 +65,30 @@ class Disc(QtCore.QObject):
         log.debug("Reading CD using device: %r", device)
         try:
             disc = discid.read(device, features=['mcn'])
-            self.id = disc.id
-            self.mcn = disc.mcn
-            self.tracks = len(disc.tracks)
-            self.toc_string = disc.toc_string
-            log.debug("Read disc ID %s with MCN %s", self.id, self.mcn)
+            self._set_disc_details(disc)
         except discid.DiscError as e:
             log.error("Error while reading %r: %s" % (device, str(e)))
             raise
+
+    def put(self, toc):
+        log.debug("Generating disc ID using TOC: %r", toc)
+        try:
+            first, last, sectors, *offsets = toc
+            disc = discid.put(first, last, sectors, offsets)
+            self._set_disc_details(disc)
+        except discid.TOCError as e:
+            log.error("Error while processing TOC %r: %s" % (toc, str(e)))
+            raise
+        except ValueError as e:
+            log.error("Error while processing TOC %r: %s" % (toc, str(e)))
+            raise discid.TOCError(e)
+
+    def _set_disc_details(self, disc):
+        self.id = disc.id
+        self.mcn = disc.mcn
+        self.tracks = len(disc.tracks)
+        self.toc_string = disc.toc_string
+        log.debug("Read disc ID %s with MCN %s", self.id, self.mcn)
 
     @property
     def submission_url(self):
