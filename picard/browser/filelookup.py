@@ -12,7 +12,7 @@
 # Copyright (C) 2015-2016 Wieland Hoffmann
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2016-2017 Sambhav Kothari
-# Copyright (C) 2020 Philipp Wolfer
+# Copyright (C) 2020, 2022 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -39,6 +39,7 @@ from picard.const import (
     PICARD_URLS,
     QUERY_LIMIT,
 )
+from picard.disc import Disc
 from picard.util import (
     build_qurl,
     webbrowser2,
@@ -52,6 +53,11 @@ class FileLookup(object):
     RE_MB_ENTITY = re.compile(r"""
         \b(?P<entity>release-group|release|recording|work|artist|label|url|area|track)?
         \W*(?P<mbid>[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12})
+    """, re.VERBOSE | re.IGNORECASE)
+
+    RE_MB_CDTOC = re.compile(r"""
+        \b(?P<entity>cdtoc)
+        \W*(?P<mbid>[a-z0-9-_.]{28})
     """, re.VERBOSE | re.IGNORECASE)
 
     def __init__(self, parent, server, port, local_port):
@@ -116,7 +122,9 @@ class FileLookup(object):
         """
         m = self.RE_MB_ENTITY.search(string)
         if m is None:
-            return False
+            m = self.RE_MB_CDTOC.search(string)
+            if m is None:
+                return False
         entity = m.group('entity')
         if entity is None:
             if type_ is None:
@@ -124,7 +132,10 @@ class FileLookup(object):
             entity = type_
         else:
             entity = entity.lower()
-        mbid = m.group('mbid').lower()
+        mbid = m.group('mbid')
+        if entity != 'cdtoc':
+            mbid = mbid.lower()
+        log.debug('Lookup for %s:%s', entity, mbid)
         if mbid_matched_callback:
             mbid_matched_callback(entity, mbid)
         if entity == 'release':
@@ -137,6 +148,10 @@ class FileLookup(object):
             dialog = AlbumSearchDialog(QtCore.QObject.tagger.window, force_advanced_search=True)
             dialog.search("rgid:{0}".format(mbid))
             dialog.exec_()
+            return True
+        elif entity == 'cdtoc':
+            disc = Disc(id=mbid)
+            disc.lookup()
             return True
         if browser_fallback:
             return self._lookup(entity, mbid)

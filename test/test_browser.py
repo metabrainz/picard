@@ -5,7 +5,7 @@
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2018 Wieland Hoffmann
 # Copyright (C) 2018, 2020 Laurent Monin
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019, 2022 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -55,6 +55,7 @@ class BrowserLookupTest(PicardTestCase):
             "artist": {'function': self.lookup.artist_lookup, 'path': 'artist'},
             "albumartist": {'function': self.lookup.artist_lookup, 'path': 'artist'},
             "releasegroup": {'function': self.lookup.release_group_lookup, 'path': 'release-group'},
+            "cdtoc": {'function': self.lookup.discid_lookup, 'path': 'cdtoc'},
         }
         for i, type_ in enumerate(lookups):
             lookups[type_]['function']("123")
@@ -71,3 +72,12 @@ class BrowserLookupTest(PicardTestCase):
 
             self.assertIn('tport', query_args)
             self.assertEqual(query_args['tport'][0], '8000')
+
+    @patch('picard.browser.filelookup.Disc')
+    def test_mbid_lookup_cdtoc(self, mock_disc):
+        url = 'https://musicbrainz.org/cdtoc/vtlGcbJUaP_IFdBUC10NGIhu2E0-'
+        result = self.lookup.mbid_lookup(url)
+        self.assertTrue(result)
+        mock_disc.assert_called_once_with(id='vtlGcbJUaP_IFdBUC10NGIhu2E0-')
+        instance = mock_disc.return_value
+        instance.lookup.assert_called_once()
