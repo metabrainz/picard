@@ -89,19 +89,21 @@ def serve_form(token):
     try:
         payload = jwt.decode(token, __key, algorithms=__algorithm)
         log.debug('received JWT token %r', payload)
+        tagger = QCoreApplication.instance()
+        tport = tagger.browser_integration.port
         if 'cluster' in payload:
-            cluster = _find_cluster(payload['cluster'])
+            cluster = _find_cluster(tagger, payload['cluster'])
             if not cluster:
                 raise NotFoundError('Cluster not found')
-            return _get_cluster_form(cluster)
+            return _get_cluster_form(cluster, tport)
         elif 'file' in payload:
-            file = _find_file(payload['file'])
+            file = _find_file(tagger, payload['file'])
             if not file:
                 raise NotFoundError('File not found')
             if payload.get('as_release', False):
-                return _get_file_as_release_form(file)
+                return _get_file_as_release_form(file, tport)
             else:
-                return _get_file_as_recording_form(file)
+                return _get_file_as_recording_form(file, tport)
         else:
             raise InvalidTokenError
     except jwt.exceptions.InvalidTokenError:
@@ -126,43 +128,44 @@ def _open_url_with_token(payload):
     open(url)
 
 
-def _find_cluster(cluster_hash):
-    tagger = QCoreApplication.instance()
+def _find_cluster(tagger, cluster_hash):
     for cluster in tagger.clusters:
         if hash(cluster) == cluster_hash:
             return cluster
     return None
 
 
-def _find_file(path):
-    tagger = QCoreApplication.instance()
+def _find_file(tagger, path):
     return tagger.files.get(path, None)
 
 
-def _get_cluster_form(cluster):
+def _get_cluster_form(cluster, tport):
     return _get_form(
         _('Add cluster as release'),
-        "/release/add?tport=%d" % (QCoreApplication.instance().browser_integration.port),
+        '/release/add',
         _('Add cluster as release...'),
-        _get_cluster_data(cluster)
+        _get_cluster_data(cluster),
+        {'tport': tport}
     )
 
 
-def _get_file_as_release_form(cluster):
+def _get_file_as_release_form(file, tport):
     return _get_form(
         _('Add file as release'),
-        "/release/add?tport=%d" % (QCoreApplication.instance().browser_integration.port),
+        '/release/add',
         _('Add file as release...'),
-        _get_file_as_release_data(cluster)
+        _get_file_as_release_data(file),
+        {'tport': tport}
     )
 
 
-def _get_file_as_recording_form(cluster):
+def _get_file_as_recording_form(file, tport):
     return _get_form(
         _('Add file as recording'),
         '/recording/create',
         _('Add file as recording...'),
-        _get_file_as_recording_data(cluster)
+        _get_file_as_recording_data(file),
+        {'tport': tport}
     )
 
 
@@ -238,11 +241,11 @@ def _add_track_data(data, files):
         data['barcode'] = barcode
 
 
-def _get_form(title, action, label, form_data):
+def _get_form(title, action, label, form_data, query_args=None):
     return _form_template.format(
         title=htmlescape(title),
         submit_label=htmlescape(label),
-        action=htmlescape(build_submission_url(action)),
+        action=htmlescape(build_submission_url(action, query_args)),
         form_data=_format_form_data(form_data),
     )
 
