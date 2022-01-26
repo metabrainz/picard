@@ -82,13 +82,6 @@ from picard.util.textencoding import asciipunct
 from picard.ui.item import FileListItem
 
 
-_TRANSLATE_TAGS = {
-    "hip hop": "Hip-Hop",
-    "synth-pop": "Synthpop",
-    "electronica": "Electronic",
-}
-
-
 class TagGenreFilter:
 
     def __init__(self, filters):
@@ -333,8 +326,7 @@ class Track(DataObject, FileListItem):
             percent = 100 * count // topcount
             if percent < minusage:
                 break
-            name = _TRANSLATE_TAGS.get(name, name.title())
-            genres_list.append(name)
+            genres_list.append(name.title())
         genres_list.sort()
 
         # And generate the genre metadata tag
