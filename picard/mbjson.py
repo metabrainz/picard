@@ -5,7 +5,7 @@
 # Copyright (C) 2017 David Mandelberg
 # Copyright (C) 2017-2018 Sambhav Kothari
 # Copyright (C) 2017-2021 Laurent Monin
-# Copyright (C) 2018-2021 Philipp Wolfer
+# Copyright (C) 2018-2022 Philipp Wolfer
 # Copyright (C) 2019 Michael Wiencek
 # Copyright (C) 2020 David Kellner
 # Copyright (C) 2020 dukeyin
@@ -144,14 +144,14 @@ def _relation_attributes(relation):
     return tuple()
 
 
-def _relations_to_metadata(relations, m, instrumental=False):
-    config = get_config()
+def _relations_to_metadata(relations, m, instrumental=False, config=None):
+    config = config or get_config()
     use_credited_as = not config.setting['standardize_artists']
     use_instrument_credits = not config.setting['standardize_instruments']
     for relation in relations:
         if relation['target-type'] == 'artist':
             artist = relation['artist']
-            value, valuesort = _translate_artist_node(artist)
+            value, valuesort = _translate_artist_node(artist, config=config)
             has_translation = (value != artist['name'])
             if not has_translation and use_credited_as and 'target-credit' in relation:
                 credited_as = relation['target-credit']
@@ -198,8 +198,8 @@ def _relations_to_metadata(relations, m, instrumental=False):
                 m.add('license', url)
 
 
-def _translate_artist_node(node):
-    config = get_config()
+def _translate_artist_node(node, config=None):
+    config = config or get_config()
     transl, translsort = None, None
     if config.setting['translate_artist_names']:
         if config.setting['translate_artist_names_script_exception']:
@@ -291,7 +291,7 @@ def artist_credit_from_node(node):
     use_credited_as = not config.setting["standardize_artists"]
     for artist_info in node:
         a = artist_info['artist']
-        translated, translated_sort = _translate_artist_node(a)
+        translated, translated_sort = _translate_artist_node(a, config=config)
         has_translation = (translated != a['name'])
         if has_translation:
             name = translated
@@ -420,6 +420,7 @@ def track_to_metadata(node, track):
 def recording_to_metadata(node, m, track=None):
     m.length = 0
     m.add_unique('musicbrainz_recordingid', node['id'])
+    config = get_config()
     for key, value in _node_skip_empty_iter(node):
         if key in _RECORDING_TO_METADATA:
             m[_RECORDING_TO_METADATA[key]] = value
@@ -436,7 +437,7 @@ def recording_to_metadata(node, m, track=None):
                     artist_obj = track.append_track_artist(artist['id'])
                     add_genres_from_node(artist, artist_obj)
         elif key == 'relations':
-            _relations_to_metadata(value, m)
+            _relations_to_metadata(value, m, config=config)
         elif track and key in {'genres', 'tags'}:
             add_genres(value, track)
         elif track and key in {'user-genres', 'user-tags'}:
@@ -513,7 +514,7 @@ def release_to_metadata(node, m, album=None):
                     artist_obj = album.append_album_artist(artist['id'])
                     add_genres_from_node(artist, artist_obj)
         elif key == 'relations' and config.setting['release_ars']:
-            _relations_to_metadata(value, m)
+            _relations_to_metadata(value, m, config=config)
         elif key == 'label-info':
             m['label'], m['catalognumber'] = label_info_from_node(value)
         elif key == 'text-representation':
