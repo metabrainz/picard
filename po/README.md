@@ -8,14 +8,14 @@ _Please do not manually edit the PO files._
 Required tools
 --------------
 
-* [Transifex client](http://support.transifex.com/customer/portal/topics/440187-transifex-client/articles)
-* [Babel](http://babel.pocoo.org/)
+* [Transifex client](https://developers.transifex.com/docs/cli)
+* [Babel](https://babel.pocoo.org/)
 
 
 Picard source tree strings
 --------------------------
 
-Their translations are handled at <https://www.transifex.com/projects/p/musicbrainz/resource/picard/>
+Their translations are handled at <https://www.transifex.com/musicbrainz/musicbrainz/picard/>
 
 One can update `picard.pot` using:
 ```bash
@@ -28,9 +28,9 @@ Transifex will _automatically_ pick `picard.pot` from [Picard git repository mas
 Attributes and countries strings
 --------------------------------
 
-Their translations are handled at <https://www.transifex.com/projects/p/musicbrainz/resource/attributes/> and <https://www.transifex.com/projects/p/musicbrainz/resource/countries/>
+Their translations are handled at <https://www.transifex.com/musicbrainz/musicbrainz/attributes/> and <https://www.transifex.com/musicbrainz/musicbrainz/countries/>
 
-`attributes.pot` and `countries.pot` are updated by [musicbrainz-server project](https://bitbucket.org/metabrainz/musicbrainz-server/), outside the Picard project.
+`attributes.pot` and `countries.pot` are updated by [musicbrainz-server project](https://github.com/metabrainz/musicbrainz-server), outside the Picard project.
 
 Picard maintainers can regenerate `picard/const/attributes.py` and `picard/const/countries.py`, which are using `attributes.pot` and `countries.pot` as base, using the command:
 ```bash
