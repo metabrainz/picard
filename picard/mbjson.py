@@ -138,6 +138,12 @@ def _parse_attributes(attrs, reltype, attr_credits):
     return ' '.join([prefix, result]).strip()
 
 
+def _relation_attributes(relation):
+    if 'attributes' in relation:
+        return tuple(a for a in relation['attributes'])
+    return tuple()
+
+
 def _relations_to_metadata(relations, m, instrumental=False):
     config = get_config()
     use_credited_as = not config.setting['standardize_artists']
@@ -152,7 +158,7 @@ def _relations_to_metadata(relations, m, instrumental=False):
                 if credited_as:
                     value = credited_as
             reltype = relation['type']
-            attribs = get_relation_attributes(relation)
+            attribs = _relation_attributes(relation)
             if reltype in {'vocal', 'instrument', 'performer'}:
                 if use_instrument_credits:
                     attr_credits = relation.get('attribute-credits', {})
@@ -177,7 +183,7 @@ def _relations_to_metadata(relations, m, instrumental=False):
                 m.add_unique('composersort', valuesort)
         elif relation['target-type'] == 'work':
             if relation['type'] == 'performance':
-                performance_attributes = get_relation_attributes(relation)
+                performance_attributes = _relation_attributes(relation)
                 for attribute in performance_attributes:
                     m.add_unique("~performance_attributes", attribute)
                 instrumental = 'instrumental' in performance_attributes
@@ -443,12 +449,6 @@ def recording_to_metadata(node, m, track=None):
         m['~recordingtitle'] = m['title']
     if m.length:
         m['~length'] = format_time(m.length)
-
-
-def get_relation_attributes(relation):
-    if 'attributes' in relation:
-        return [a for a in relation['attributes']]
-    return []
 
 
 def work_to_metadata(work, m, instrumental=False):
