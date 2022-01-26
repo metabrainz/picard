@@ -8,23 +8,23 @@ Before installing Picard from source, you need to check you have the following d
 
 Required:
 
-* [Python 3.6 or newer](http://python.org/download)
-* [PyQt 5.11 or newer](http://www.riverbankcomputing.co.uk/software/pyqt/download)
+* [Python 3.6 or newer](https://python.org/download)
+* [PyQt 5.11 or newer](https://riverbankcomputing.com/software/pyqt/download)
 * [Mutagen 1.37 or newer](https://mutagen.readthedocs.io/)
 * [PyYAML 5.1 or newer](https://pyyaml.org/)
 * [python-dateutil](https://dateutil.readthedocs.io/en/stable/)
 * gettext:
   * [Windows](https://mlocati.github.io/articles/gettext-iconv-windows.html)
 * a compiler
-  * Windows should work with [Visual C++ 2008 Express](http://go.microsoft.com/?linkid=7729279)
+  * Windows should work with [Visual Studio Community 2019](https://aka.ms/vs/16/release/vs_community.exe)
 
 Optional but recommended:
 
-* [chromaprint](http://acoustid.org/chromaprint)
+* [chromaprint](https://acoustid.org/chromaprint)
   * Required for fingerprinting (scanning) files
 * [python-discid](https://python-discid.readthedocs.org/) or [python-libdiscid](https://pypi.org/project/python-libdiscid/)
   * Required for CD lookups.
-  * Depends on [libdiscid](http://musicbrainz.org/doc/libdiscid)
+  * Depends on [libdiscid](https://musicbrainz.org/doc/libdiscid)
    Note: Due to slowdowns in reading the CD TOC, using libdiscid versions
    0.3.0 - 0.4.1 is not recommended.
 * [python-markdown](https://python-markdown.github.io/install/)

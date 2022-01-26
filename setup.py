@@ -517,7 +517,7 @@ try:
         return tuple(map(int, (v.split("."))))
 
     # input_dirs are incorrectly handled in babel versions < 1.0
-    # http://babel.edgewall.org/ticket/232
+    # https://web.archive.org/web/20150910064954/babel.edgewall.org/ticket/232
     input_dirs_workaround = versiontuple(babel_version) < (1, 0, 0)
 
     class picard_regen_pot_file(babel.extract_messages):
