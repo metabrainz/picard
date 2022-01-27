@@ -133,7 +133,7 @@ class BrowserLookupTest(PicardTestCase):
 
     def test_mbid_lookup_browser_fallback(self):
         mbid = '4836aa50-a9ae-490a-983b-cfc8efca92de'
-        for entity in {'area', 'artist', 'label', 'url', 'work'}:
+        for entity in {'area', 'artist', 'instrument', 'label', 'place', 'series', 'url', 'work'}:
             with patch.object(webbrowser2, 'open') as mock_open:
                 uri = '%s:%s' % (entity, mbid)
                 result = self.lookup.mbid_lookup(uri)

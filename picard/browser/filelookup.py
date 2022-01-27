@@ -51,7 +51,7 @@ from picard.ui.searchdialog.album import AlbumSearchDialog
 class FileLookup(object):
 
     RE_MB_ENTITY = re.compile(r"""
-        \b(?P<entity>release-group|release|recording|work|artist|label|url|area|track)?
+        \b(?P<entity>area|artist|instrument|label|place|recording|release|release-group|series|track|url|work)?
         \W*(?P<mbid>[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12})
     """, re.VERBOSE | re.IGNORECASE)
 
