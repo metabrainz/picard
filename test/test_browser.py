@@ -48,21 +48,18 @@ class BrowserLookupTest(PicardTestCase):
         super().setUp()
         self.lookup = FileLookup(None, SERVER, PORT, LOCAL_PORT)
 
-    def assert_mbid_url_matches(self, url, entity, mbid, expected_query_args=None):
-        url = urlparse(url)
-        path = url.path.split('/')[1:]
-        query_args = parse_qs(url.query)
+    def assert_mb_url_matches(self, url, path, query_args=None):
+        parsed_url = urlparse(url)
+        expected_host = "%s:%s" % (SERVER, PORT)
+        self.assertEqual(expected_host, parsed_url.netloc, '"%s" hostname does not match "%s"' % (url, expected_host))
+        self.assertEqual(path, parsed_url.path, '"%s" path does not match "%s"' % (url, path))
+        if query_args is not None:
+            actual_query_args = {k: v[0] for k, v in parse_qs(parsed_url.query).items()}
+            self.assertEqual(query_args, actual_query_args)
 
-        self.assertEqual(url.netloc, "%s:%s" % (SERVER, PORT))
-
-        self.assertEqual(entity, path[0])
-        self.assertEqual(mbid, path[1])
-
-        if expected_query_args:
-            for key, value in expected_query_args.items():
-                self.assertIn(key, query_args)
-                self.assertEqual(value, query_args['tport'][0])
-
+    def assert_mb_entity_url_matches(self, url, entity, mbid, query_args=None):
+        path = '/'.join(('', entity, mbid))
+        self.assert_mb_url_matches(url, path, query_args)
 
     def test_entity_lookups(self):
         lookups = (
@@ -77,11 +74,29 @@ class BrowserLookupTest(PicardTestCase):
         )
         for case in lookups:
             with patch.object(webbrowser2, 'open') as mock_open:
-                case['function']("123")
+                result = case['function']("123")
+                self.assertTrue(result)
                 mock_open.assert_called_once()
                 url = mock_open.call_args[0][0]
                 query_args = {'tport': '8000'}
-                self.assert_mbid_url_matches(url, case['entity'], '123', query_args)
+                self.assert_mb_entity_url_matches(url, case['entity'], '123', query_args)
+
+    @patch.object(webbrowser2, 'open')
+    def test_discid_submission(self, mock_open):
+        url = 'https://testmb.org/cdtoc/attach?id=123'
+        result = self.lookup.discid_submission(url)
+        self.assertTrue(result)
+        mock_open.assert_called_once()
+        url = mock_open.call_args[0][0]
+        self.assertEqual('https://testmb.org/cdtoc/attach?id=123&tport=8000', url)
+
+    @patch.object(webbrowser2, 'open')
+    def test_acoustid_lookup(self, mock_open):
+        result = self.lookup.acoust_lookup('123')
+        self.assertTrue(result)
+        mock_open.assert_called_once()
+        url = mock_open.call_args[0][0]
+        self.assertEqual('https://acoustid.org/track/123', url)
 
     def test_mbid_lookup_invalid_url(self):
         self.assertFalse(self.lookup.mbid_lookup('noentity:123'))
@@ -94,8 +109,8 @@ class BrowserLookupTest(PicardTestCase):
         result = self.lookup.mbid_lookup('bd55aeb7-19d1-4607-a500-14b8479d3fed', 'place')
         self.assertTrue(result)
         mock_open.assert_called_once()
-        url = mock_open.call_args.args[0]
-        self.assert_mbid_url_matches(url, 'place', 'bd55aeb7-19d1-4607-a500-14b8479d3fed')
+        url = mock_open.call_args[0][0]
+        self.assert_mb_entity_url_matches(url, 'place', 'bd55aeb7-19d1-4607-a500-14b8479d3fed')
 
     @patch.object(webbrowser2, 'open')
     def test_mbid_lookup_matched_callback(self, mock_open):
@@ -103,8 +118,8 @@ class BrowserLookupTest(PicardTestCase):
         result = self.lookup.mbid_lookup('area:F03D09B3-39DC-4083-AFD6-159E3F0D462F', mbid_matched_callback=mock_matched_callback)
         self.assertTrue(result)
         mock_open.assert_called_once()
-        url = mock_open.call_args.args[0]
-        self.assert_mbid_url_matches(url, 'area', 'f03d09b3-39dc-4083-afd6-159e3f0d462f')
+        url = mock_open.call_args[0][0]
+        self.assert_mb_entity_url_matches(url, 'area', 'f03d09b3-39dc-4083-afd6-159e3f0d462f')
 
     @patch('PyQt5.QtCore.QObject.tagger')
     def test_mbid_lookup_release(self, mock_tagger):
@@ -139,8 +154,8 @@ class BrowserLookupTest(PicardTestCase):
                 result = self.lookup.mbid_lookup(uri)
                 self.assertTrue(result, 'lookup failed for %s' % uri)
                 mock_open.assert_called_once()
-                url = mock_open.call_args.args[0]
-                self.assert_mbid_url_matches(url, entity, mbid)
+                url = mock_open.call_args[0][0]
+                self.assert_mb_entity_url_matches(url, entity, mbid)
 
     @patch.object(webbrowser2, 'open')
     def test_mbid_lookup_browser_fallback_disabled(self, mock_open):
@@ -157,3 +172,62 @@ class BrowserLookupTest(PicardTestCase):
         mock_disc.assert_called_once_with(id='vtlGcbJUaP_IFdBUC10NGIhu2E0-')
         instance = mock_disc.return_value
         instance.lookup.assert_called_once()
+
+    @patch.object(webbrowser2, 'open')
+    def test_tag_lookup(self, mock_open):
+        args = {
+            'artist': 'Artist',
+            'release': 'Release',
+            'track': 'Track',
+            'tracknum': 'Tracknum',
+            'duration': 'Duration',
+            'filename': 'Filename',
+        }
+        result = self.lookup.tag_lookup(**args)
+        self.assertTrue(result)
+        url = mock_open.call_args[0][0]
+        args['tport'] = '8000'
+        self.assert_mb_url_matches(url, '/taglookup', args)
+
+    @patch.object(webbrowser2, 'open')
+    def test_collection_lookup(self, mock_open):
+        result = self.lookup.collection_lookup(123)
+        self.assertTrue(result)
+        url = mock_open.call_args[0][0]
+        self.assert_mb_url_matches(url, '/user/123/collections')
+
+    @patch.object(webbrowser2, 'open')
+    def test_search_entity(self, mock_open):
+        result = self.lookup.search_entity('foo', 'search:123')
+        self.assertTrue(result)
+        url = mock_open.call_args[0][0]
+        query_args = {
+            'type': 'foo',
+            'query': 'search:123',
+            'limit': '25',
+            'tport': '8000',
+        }
+        self.assert_mb_url_matches(url, '/search/textsearch', query_args)
+
+    @patch.object(webbrowser2, 'open')
+    def test_search_entity_advanced(self, mock_open):
+        result = self.lookup.search_entity('foo', 'search:123', adv=True)
+        self.assertTrue(result)
+        url = mock_open.call_args[0][0]
+        query_args = {
+            'type': 'foo',
+            'query': 'search:123',
+            'limit': '25',
+            'tport': '8000',
+            'adv': 'on',
+        }
+        self.assert_mb_url_matches(url, '/search/textsearch', query_args)
+
+    def test_search_entity_mbid_lookup(self):
+        with patch.object(self.lookup, 'mbid_lookup') as mock_lookup:
+            entity = 'artist'
+            mbid = '4836aa50-a9ae-490a-983b-cfc8efca92de'
+            callback = Mock()
+            result = self.lookup.search_entity(entity, mbid, mbid_matched_callback=callback)
+            self.assertTrue(result)
+            mock_lookup.assert_called_once_with(mbid, entity, mbid_matched_callback=callback)

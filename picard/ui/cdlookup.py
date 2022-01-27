@@ -124,7 +124,7 @@ class CDLookupDialog(PicardDialog):
         submission_url = self.disc.submission_url
         if submission_url:
             lookup = self.tagger.get_file_lookup()
-            lookup.disc_lookup(submission_url)
+            lookup.discid_submission(submission_url)
         else:
             log.error('No submission URL for disc ID "%s"', self.disc.id)
         super().accept()

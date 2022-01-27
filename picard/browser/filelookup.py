@@ -83,11 +83,6 @@ class FileLookup(object):
         webbrowser2.open(url)
         return True
 
-    def disc_lookup(self, url):
-        if self.local_port:
-            url = "%s&tport=%d" % (url, self.local_port)
-        return self.launch(url)
-
     def _lookup(self, type_, id_):
         return self._build_launch("/%s/%s" % (type_, id_))
 
@@ -111,6 +106,11 @@ class FileLookup(object):
 
     def discid_lookup(self, discid):
         return self._lookup('cdtoc', discid)
+
+    def discid_submission(self, url):
+        if self.local_port:
+            url = "%s&tport=%d" % (url, self.local_port)
+        return self.launch(url)
 
     def acoust_lookup(self, acoust_id):
         return self.launch(PICARD_URLS['acoustid_track'] + acoust_id)
@@ -157,12 +157,12 @@ class FileLookup(object):
             return self._lookup(entity, mbid)
         return False
 
-    def tag_lookup(self, artist, release, track, trackNum, duration, filename):
+    def tag_lookup(self, artist, release, track, tracknum, duration, filename):
         params = {
             'artist': artist,
             'release': release,
             'track': track,
-            'tracknum': trackNum,
+            'tracknum': tracknum,
             'duration': duration,
             'filename': os.path.basename(filename),
         }
