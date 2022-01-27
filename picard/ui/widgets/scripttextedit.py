@@ -6,7 +6,7 @@
 # Copyright (C) 2014 m42i
 # Copyright (C) 2020-2021 Laurent Monin
 # Copyright (C) 2020-2021 Philipp Wolfer
-# Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021-2022 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -72,6 +72,7 @@ EXTRA_VARIABLES = (
     '~discpregap',
     '~multiartist',
     '~musicbrainz_discids',
+    '~musicbrainz_tracknumber',
     '~performance_attributes',
     '~pregap',
     '~primaryreleasetype',
