@@ -63,7 +63,7 @@
       <item>
        <widget class="QCheckBox" name="translate_artist_names_script_exception">
         <property name="text">
-         <string>Ignore artist name translation for these scripts:</string>
+         <string>Ignore artist name translation for these language scripts:</string>
         </property>
        </widget>
       </item>

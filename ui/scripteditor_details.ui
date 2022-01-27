@@ -20,7 +20,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Scripting Documentation</string>
+   <string>File Naming Script Metadata</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -54,7 +54,7 @@
           </size>
          </property>
          <property name="toolTip">
-          <string>Version number of the script.</string>
+          <string>Version number of the file naming script.</string>
          </property>
         </widget>
        </item>
@@ -93,7 +93,7 @@
           </size>
          </property>
          <property name="toolTip">
-          <string>Date and time the script was last updated (UTC).</string>
+          <string>Date and time the file naming script was last updated (UTC).</string>
          </property>
         </widget>
        </item>
@@ -137,7 +137,7 @@
      <item row="3" column="2">
       <widget class="QLineEdit" name="script_license">
        <property name="toolTip">
-        <string>License under which the script is available.</string>
+        <string>License under which the file naming script is available.</string>
        </property>
       </widget>
      </item>
@@ -154,14 +154,14 @@
      <item row="4" column="2">
       <widget class="QPlainTextEdit" name="script_description">
        <property name="toolTip">
-        <string>Brief description of the naming script, including any required plugins.</string>
+        <string>Brief description of the file naming script, including any required plugins.</string>
        </property>
       </widget>
      </item>
      <item row="1" column="2">
       <widget class="QLineEdit" name="script_author">
        <property name="toolTip">
-        <string>The author of the script.</string>
+        <string>The author of the file naming script.</string>
        </property>
       </widget>
      </item>

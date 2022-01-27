@@ -88,16 +88,16 @@ class Ui_ScriptDetails(object):
 
     def retranslateUi(self, ScriptDetails):
         _translate = QtCore.QCoreApplication.translate
-        ScriptDetails.setWindowTitle(_("Scripting Documentation"))
-        self.script_version.setToolTip(_("Version number of the script."))
+        ScriptDetails.setWindowTitle(_("File Naming Script Metadata"))
+        self.script_version.setToolTip(_("Version number of the file naming script."))
         self.label_4.setText(_("Last Updated:"))
-        self.script_last_updated.setToolTip(_("Date and time the script was last updated (UTC)."))
+        self.script_last_updated.setToolTip(_("Date and time the file naming script was last updated (UTC)."))
         self.last_updated_now.setText(_("Now"))
         self.label_2.setText(_("Author:"))
         self.label_3.setText(_("Version:"))
         self.label_5.setText(_("License:"))
         self.label.setText(_("Title:"))
-        self.script_license.setToolTip(_("License under which the script is available."))
+        self.script_license.setToolTip(_("License under which the file naming script is available."))
         self.label_6.setText(_("Description:"))
-        self.script_description.setToolTip(_("Brief description of the naming script, including any required plugins."))
-        self.script_author.setToolTip(_("The author of the script."))
+        self.script_description.setToolTip(_("Brief description of the file naming script, including any required plugins."))
+        self.script_author.setToolTip(_("The author of the file naming script."))

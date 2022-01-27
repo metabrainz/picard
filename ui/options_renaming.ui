@@ -142,7 +142,7 @@
      <item>
       <widget class="QPushButton" name="open_script_editor">
        <property name="text">
-        <string>Edit script...</string>
+        <string>Edit file naming script...</string>
        </property>
       </widget>
      </item>

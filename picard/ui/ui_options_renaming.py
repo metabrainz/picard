@@ -160,7 +160,7 @@ class Ui_RenamingOptionsPage(object):
         self.ascii_filenames.setText(_("Replace non-ASCII characters"))
         self.windows_compatibility.setText(_("Windows compatibility"))
         self.label_2.setText(_("Selected file naming script:"))
-        self.open_script_editor.setText(_("Edit script..."))
+        self.open_script_editor.setText(_("Edit file naming script..."))
         self.groupBox.setTitle(_("Files will be named like this:"))
         self.example_filename_before_label.setText(_("Before"))
         self.example_filename_after_label.setText(_("After"))

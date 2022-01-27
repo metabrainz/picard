@@ -26,7 +26,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Exception Script Selector</string>
+   <string>Exception Language Script Selector</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -58,7 +58,7 @@
          <item>
           <widget class="QLabel" name="threshold_label">
            <property name="text">
-            <string>Selected script match threshold:</string>
+            <string>Selected language script match threshold:</string>
            </property>
           </widget>
          </item>
@@ -106,7 +106,7 @@
        <item>
         <widget class="QToolButton" name="move_up">
          <property name="toolTip">
-          <string>Move selected script up</string>
+          <string>Move selected language script up</string>
          </property>
          <property name="text">
           <string/>
@@ -120,7 +120,7 @@
        <item>
         <widget class="QToolButton" name="add_script">
          <property name="toolTip">
-          <string>Add to selected scripts</string>
+          <string>Add to selected language scripts</string>
          </property>
          <property name="text">
           <string/>
@@ -134,7 +134,7 @@
        <item>
         <widget class="QToolButton" name="remove_script">
          <property name="toolTip">
-          <string>Remove selected script</string>
+          <string>Remove selected language script</string>
          </property>
          <property name="text">
           <string/>
@@ -148,7 +148,7 @@
        <item>
         <widget class="QToolButton" name="move_down">
          <property name="toolTip">
-          <string>Move selected script down</string>
+          <string>Move selected language script down</string>
          </property>
          <property name="text">
           <string/>
@@ -179,7 +179,7 @@
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Available Scripts</string>
+          <string>Available Language Scripts</string>
          </property>
         </widget>
        </item>
