@@ -102,11 +102,11 @@ class Ui_ExceptionScriptSelector(object):
 
     def retranslateUi(self, ExceptionScriptSelector):
         _translate = QtCore.QCoreApplication.translate
-        ExceptionScriptSelector.setWindowTitle(_("Exception Script Selector"))
+        ExceptionScriptSelector.setWindowTitle(_("Exception Language Script Selector"))
         self.label.setText(_("Selected Scripts"))
-        self.threshold_label.setText(_("Selected script match threshold:"))
-        self.move_up.setToolTip(_("Move selected script up"))
-        self.add_script.setToolTip(_("Add to selected scripts"))
-        self.remove_script.setToolTip(_("Remove selected script"))
-        self.move_down.setToolTip(_("Move selected script down"))
-        self.label_2.setText(_("Available Scripts"))
+        self.threshold_label.setText(_("Selected language script match threshold:"))
+        self.move_up.setToolTip(_("Move selected language script up"))
+        self.add_script.setToolTip(_("Add to selected language scripts"))
+        self.remove_script.setToolTip(_("Remove selected language script"))
+        self.move_down.setToolTip(_("Move selected language script down"))
+        self.label_2.setText(_("Available Language Scripts"))

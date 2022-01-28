@@ -43,7 +43,7 @@
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Scripts that have been activated below will be executed automatically for each track of a release loaded from MusicBrainz.</string>
+           <string>Tagger scripts that have been activated below will be executed automatically for each track of a release loaded from MusicBrainz.</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -113,7 +113,7 @@
         <item>
          <widget class="QToolButton" name="move_up_button">
           <property name="toolTip">
-           <string>Move script up</string>
+           <string>Move tagger script up</string>
           </property>
           <property name="icon">
            <iconset theme=":/images/16x16/go-up.png">
@@ -124,7 +124,7 @@
         <item>
          <widget class="QToolButton" name="move_down_button">
           <property name="toolTip">
-           <string>Move script down</string>
+           <string>Move tagger script down</string>
           </property>
           <property name="icon">
            <iconset theme=":/images/16x16/go-down.png">
@@ -148,20 +148,20 @@
         <item>
          <widget class="QToolButton" name="add_button">
           <property name="toolTip">
-           <string>Add new script</string>
+           <string>Add new tagger script</string>
           </property>
           <property name="text">
-           <string>Add new script</string>
+           <string>Add new tagger script</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QToolButton" name="remove_button">
           <property name="toolTip">
-           <string>Remove the selected script</string>
+           <string>Remove the selected tagger script</string>
           </property>
           <property name="text">
-           <string>Remove script</string>
+           <string>Remove tagger script</string>
           </property>
          </widget>
         </item>

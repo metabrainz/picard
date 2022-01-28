@@ -102,11 +102,11 @@ class Ui_ScriptingOptionsPage(object):
         self.vboxlayout.addWidget(self.enable_tagger_scripts)
 
         self.retranslateUi(ScriptingOptionsPage)
-        self.add_button.clicked.connect(self.script_list.add_script) # type: ignore
-        self.tagger_script.textChanged.connect(ScriptingOptionsPage.live_update_and_check) # type: ignore
-        self.script_list.itemSelectionChanged.connect(ScriptingOptionsPage.script_selected) # type: ignore
-        self.remove_button.clicked.connect(self.script_list.remove_selected_script) # type: ignore
-        self.enable_tagger_scripts.toggled['bool'].connect(ScriptingOptionsPage.enable_tagger_scripts_toggled) # type: ignore
+        self.add_button.clicked.connect(self.script_list.add_script)
+        self.tagger_script.textChanged.connect(ScriptingOptionsPage.live_update_and_check)
+        self.script_list.itemSelectionChanged.connect(ScriptingOptionsPage.script_selected)
+        self.remove_button.clicked.connect(self.script_list.remove_selected_script)
+        self.enable_tagger_scripts.toggled['bool'].connect(ScriptingOptionsPage.enable_tagger_scripts_toggled)
         QtCore.QMetaObject.connectSlotsByName(ScriptingOptionsPage)
         ScriptingOptionsPage.setTabOrder(self.enable_tagger_scripts, self.script_list)
         ScriptingOptionsPage.setTabOrder(self.script_list, self.tagger_script)
@@ -117,14 +117,14 @@ class Ui_ScriptingOptionsPage(object):
     def retranslateUi(self, ScriptingOptionsPage):
         _translate = QtCore.QCoreApplication.translate
         self.enable_tagger_scripts.setTitle(_("Enable Tagger Script(s)"))
-        self.label.setText(_("Scripts that have been activated below will be executed automatically for each track of a release loaded from MusicBrainz."))
+        self.label.setText(_("Tagger scripts that have been activated below will be executed automatically for each track of a release loaded from MusicBrainz."))
         self.tagger_script.setPlaceholderText(_("Enter your tagger script here."))
-        self.move_up_button.setToolTip(_("Move script up"))
-        self.move_down_button.setToolTip(_("Move script down"))
-        self.add_button.setToolTip(_("Add new script"))
-        self.add_button.setText(_("Add new script"))
-        self.remove_button.setToolTip(_("Remove the selected script"))
-        self.remove_button.setText(_("Remove script"))
+        self.move_up_button.setToolTip(_("Move tagger script up"))
+        self.move_down_button.setToolTip(_("Move tagger script down"))
+        self.add_button.setToolTip(_("Add new tagger script"))
+        self.add_button.setText(_("Add new tagger script"))
+        self.remove_button.setToolTip(_("Remove the selected tagger script"))
+        self.remove_button.setText(_("Remove tagger script"))
         self.import_button.setText(_("Import"))
         self.export_button.setText(_("Export"))
         self.scripting_documentation_button.setText(_("Documentation"))
