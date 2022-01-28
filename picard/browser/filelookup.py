@@ -52,12 +52,12 @@ class FileLookup(object):
 
     RE_MB_ENTITY = re.compile(r"""
         \b(?P<entity>area|artist|instrument|label|place|recording|release|release-group|series|track|url|work)?
-        \W*(?P<mbid>[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12})
+        \W*(?P<id>[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12})
     """, re.VERBOSE | re.IGNORECASE)
 
     RE_MB_CDTOC = re.compile(r"""
         \b(?P<entity>cdtoc)
-        \W*(?P<mbid>[a-z0-9-_.]{28})
+        \W*(?P<id>[a-z0-9-_.]{28})
     """, re.VERBOSE | re.IGNORECASE)
 
     def __init__(self, parent, server, port, local_port):
@@ -132,29 +132,29 @@ class FileLookup(object):
             entity = type_
         else:
             entity = entity.lower()
-        mbid = m.group('mbid')
+        id = m.group('id')
         if entity != 'cdtoc':
-            mbid = mbid.lower()
-        log.debug('Lookup for %s:%s', entity, mbid)
+            id = id.lower()
+        log.debug('Lookup for %s:%s', entity, id)
         if mbid_matched_callback:
-            mbid_matched_callback(entity, mbid)
+            mbid_matched_callback(entity, id)
         if entity == 'release':
-            QtCore.QObject.tagger.load_album(mbid)
+            QtCore.QObject.tagger.load_album(id)
             return True
         elif entity == 'recording':
-            QtCore.QObject.tagger.load_nat(mbid)
+            QtCore.QObject.tagger.load_nat(id)
             return True
         elif entity == 'release-group':
             dialog = AlbumSearchDialog(QtCore.QObject.tagger.window, force_advanced_search=True)
-            dialog.search("rgid:{0}".format(mbid))
+            dialog.search("rgid:{0}".format(id))
             dialog.exec_()
             return True
         elif entity == 'cdtoc':
-            disc = Disc(id=mbid)
+            disc = Disc(id=id)
             disc.lookup()
             return True
         if browser_fallback:
-            return self._lookup(entity, mbid)
+            return self._lookup(entity, id)
         return False
 
     def tag_lookup(self, artist, release, track, tracknum, duration, filename):
