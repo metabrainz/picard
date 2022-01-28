@@ -12,7 +12,7 @@
 # Copyright (C) 2015-2016 Wieland Hoffmann
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2016-2017 Sambhav Kothari
-# Copyright (C) 2020 Philipp Wolfer
+# Copyright (C) 2020, 2022 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -39,6 +39,7 @@ from picard.const import (
     PICARD_URLS,
     QUERY_LIMIT,
 )
+from picard.disc import Disc
 from picard.util import (
     build_qurl,
     webbrowser2,
@@ -48,6 +49,16 @@ from picard.ui.searchdialog.album import AlbumSearchDialog
 
 
 class FileLookup(object):
+
+    RE_MB_ENTITY = re.compile(r"""
+        \b(?P<entity>area|artist|instrument|label|place|recording|release|release-group|series|track|url|work)?
+        \W*(?P<id>[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12})
+    """, re.VERBOSE | re.IGNORECASE)
+
+    RE_MB_CDTOC = re.compile(r"""
+        \b(?P<entity>cdtoc)
+        \W*(?P<id>[a-z0-9-_.]{28})
+    """, re.VERBOSE | re.IGNORECASE)
 
     def __init__(self, parent, server, port, local_port):
         self.server = server
@@ -71,11 +82,6 @@ class FileLookup(object):
         log.debug("webbrowser2: %s" % url)
         webbrowser2.open(url)
         return True
-
-    def disc_lookup(self, url):
-        if self.local_port:
-            url = "%s&tport=%d" % (url, self.local_port)
-        return self.launch(url)
 
     def _lookup(self, type_, id_):
         return self._build_launch("/%s/%s" % (type_, id_))
@@ -101,6 +107,11 @@ class FileLookup(object):
     def discid_lookup(self, discid):
         return self._lookup('cdtoc', discid)
 
+    def discid_submission(self, url):
+        if self.local_port:
+            url = "%s&tport=%d" % (url, self.local_port)
+        return self.launch(url)
+
     def acoust_lookup(self, acoust_id):
         return self.launch(PICARD_URLS['acoustid_track'] + acoust_id)
 
@@ -109,42 +120,49 @@ class FileLookup(object):
         If entity type is 'release', it will load corresponding release if
         possible.
         """
-        uuid = '[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}'
-        entity_type = '(?:release-group|release|recording|work|artist|label|url|area|track)'
-        regex = r"\b(%s)?\W*(%s)" % (entity_type, uuid)
-        m = re.search(regex, string, re.IGNORECASE)
+        m = self.RE_MB_ENTITY.search(string)
         if m is None:
-            return False
-        if m.group(1) is None:
+            m = self.RE_MB_CDTOC.search(string)
+            if m is None:
+                return False
+        entity = m.group('entity')
+        if entity is None:
             if type_ is None:
                 return False
             entity = type_
         else:
-            entity = m.group(1).lower()
-        mbid = m.group(2).lower()
+            entity = entity.lower()
+        id = m.group('id')
+        if entity != 'cdtoc':
+            id = id.lower()
+        log.debug('Lookup for %s:%s', entity, id)
         if mbid_matched_callback:
-            mbid_matched_callback(entity, mbid)
+            mbid_matched_callback(entity, id)
         if entity == 'release':
-            QtCore.QObject.tagger.load_album(mbid)
+            QtCore.QObject.tagger.load_album(id)
             return True
         elif entity == 'recording':
-            QtCore.QObject.tagger.load_nat(mbid)
+            QtCore.QObject.tagger.load_nat(id)
             return True
         elif entity == 'release-group':
             dialog = AlbumSearchDialog(QtCore.QObject.tagger.window, force_advanced_search=True)
-            dialog.search("rgid:{0}".format(mbid))
+            dialog.search("rgid:{0}".format(id))
             dialog.exec_()
             return True
+        elif entity == 'cdtoc':
+            disc = Disc(id=id)
+            disc.lookup()
+            return True
         if browser_fallback:
-            return self._lookup(entity, mbid)
+            return self._lookup(entity, id)
         return False
 
-    def tag_lookup(self, artist, release, track, trackNum, duration, filename):
+    def tag_lookup(self, artist, release, track, tracknum, duration, filename):
         params = {
             'artist': artist,
             'release': release,
             'track': track,
-            'tracknum': trackNum,
+            'tracknum': tracknum,
             'duration': duration,
             'filename': os.path.basename(filename),
         }

@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
-# Copyright (C) 2009, 2018-2021 Philipp Wolfer
+# Copyright (C) 2009, 2018-2022 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2013-2014, 2018, 2020-2021 Laurent Monin
@@ -104,8 +104,12 @@ class CDLookupDialog(PicardDialog):
             release_list.sortByColumn(2, QtCore.Qt.SortOrder.DescendingOrder)
         else:
             self.ui.results_view.setCurrentIndex(1)
-        self.ui.lookup_button.clicked.connect(self.lookup)
-        self.ui.submit_button.clicked.connect(self.lookup)
+        if self.disc.submission_url:
+            self.ui.lookup_button.clicked.connect(self.lookup)
+            self.ui.submit_button.clicked.connect(self.lookup)
+        else:
+            self.ui.lookup_button.hide()
+            self.ui.submit_button.hide()
         self.restore_header_state()
         self.finished.connect(self.save_header_state)
 
@@ -117,8 +121,12 @@ class CDLookupDialog(PicardDialog):
         super().accept()
 
     def lookup(self):
-        lookup = self.tagger.get_file_lookup()
-        lookup.disc_lookup(self.disc.submission_url)
+        submission_url = self.disc.submission_url
+        if submission_url:
+            lookup = self.tagger.get_file_lookup()
+            lookup.discid_submission(submission_url)
+        else:
+            log.error('No submission URL for disc ID "%s"', self.disc.id)
         super().accept()
 
     @restore_method

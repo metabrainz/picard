@@ -52,9 +52,9 @@ except ImportError:
 
 class Disc(QtCore.QObject):
 
-    def __init__(self):
+    def __init__(self, id=None):
         super().__init__()
-        self.id = None
+        self.id = id
         self.mcn = None
         self.tracks = 0
         self.toc_string = None
@@ -92,7 +92,7 @@ class Disc(QtCore.QObject):
 
     @property
     def submission_url(self):
-        if self.id:
+        if self.id and self.tracks and self.toc_string:
             return build_submission_url('/cdtoc/attach', query_args={
                 'id': self.id,
                 'tracks': self.tracks,

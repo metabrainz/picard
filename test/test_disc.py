@@ -48,6 +48,14 @@ class DiscTest(PicardTestCase):
         disc = picard.disc.Disc()
         self.assertRaises(picard.disc.discid.DiscError, disc.read, 'notadevice')
 
+    def test_init_with_id(self):
+        discid = 'theId'
+        disc = picard.disc.Disc(id=discid)
+        self.assertEqual(discid, disc.id)
+        self.assertEqual(0, disc.tracks)
+        self.assertIsNone(disc.toc_string)
+        self.assertIsNone(disc.submission_url)
+
     @patch.object(picard.disc, 'discid')
     def test_read(self, mock_discid):
         self.set_config_values(setting={
