@@ -953,7 +953,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _set_cd_lookup_from_file_actions(self):
         if len(self.cd_lookup_menu.actions()) > 0:
             self.cd_lookup_menu.addSeparator()
-        action = self.cd_lookup_menu.addAction(_('From EAC / XLD &log file...'))
+        action = self.cd_lookup_menu.addAction(_('From EAC / XLD / Whipper &log file...'))
         action.setData('logfile:eac')
 
     def _update_cd_lookup_button(self):
