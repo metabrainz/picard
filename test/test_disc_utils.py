@@ -18,29 +18,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from typing import Iterator
+from test.picardtestcase import PicardTestCase
 
-from test.picardtestcase import (
-    PicardTestCase,
-    get_test_data_path,
+from picard.disc.utils import (
+    NotSupportedTOCError,
+    calculate_mb_toc_numbers,
 )
 
-from picard.disc.eaclog import (
-    filter_toc_entries,
-    toc_from_file,
-)
-
-
-test_log = (
-    'TEST LOG',
-    ' Track |   Start  |  Length  | Start sector | End sector',
-    '---------------------------------------------------------',
-    '    1  |  0:00.00 |  5:32.14 |         0    |    24913',
-    '    2  |  5:32.14 |  4:07.22 |     24914    |    43460',
-    '    3  |  9:39.36 |  3:50.29 |     43461    |    60739',
-    '',
-    'foo',
-)
 
 test_entries = [
     {
@@ -65,24 +49,16 @@ test_entries = [
 ]
 
 
-class TestFilterTocEntries(PicardTestCase):
+class TestCalculateMbTocNumbers(PicardTestCase):
 
-    def test_filter_toc_entries(self):
-        result = filter_toc_entries(iter(test_log))
-        self.assertTrue(isinstance(result, Iterator))
-        entries = list(result)
-        self.assertEqual(test_entries, entries)
+    def test_calculate_mb_toc_numbers(self):
+        self.assertEqual((1, 3, 60890, 150, 25064, 43611), calculate_mb_toc_numbers(test_entries))
 
+    def test_calculate_mb_toc_numbers_invalid_track_numbers(self):
+        entries = [{'num': '1'}, {'num': '3'}, {'num': '4'}]
+        with self.assertRaises(NotSupportedTOCError):
+            calculate_mb_toc_numbers(entries)
 
-class TestTocFromFile(PicardTestCase):
-
-    def _test_toc_from_file(self, logfile):
-        test_log = get_test_data_path(logfile)
-        toc = toc_from_file(test_log)
-        self.assertEqual((1, 8, 149323, 150, 25064, 43611, 60890, 83090, 100000, 115057, 135558), toc)
-
-    def test_toc_from_file_eac(self):
-        self._test_toc_from_file('eac.log')
-
-    def test_toc_from_file_xld(self):
-        self._test_toc_from_file('xld.log')
+    def test_calculate_mb_toc_numbers_empty_entries(self):
+        with self.assertRaises(NotSupportedTOCError):
+            calculate_mb_toc_numbers([])
