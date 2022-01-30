@@ -580,13 +580,14 @@ def build_qurl(host, port=80, path=None, queryargs=None):
     """
     url = QtCore.QUrl()
     url.setHost(host)
-    url.setPort(port)
 
-    if host in MUSICBRAINZ_SERVERS or port == 443:
+    if port == 443 or host in MUSICBRAINZ_SERVERS:
         url.setScheme("https")
-        url.setPort(443)
+    elif port == 80:
+        url.setScheme("http")
     else:
         url.setScheme("http")
+        url.setPort(port)
 
     if path is not None:
         url.setPath(path)

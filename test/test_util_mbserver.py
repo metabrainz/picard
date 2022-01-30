@@ -90,9 +90,9 @@ class BuildSubmissionUrlTest(PicardTestCase):
                 'server_port': 80,
                 'use_server_for_submission': False,
             })
-            self.assertEqual('https://%s:443' % host, build_submission_url())
-            self.assertEqual('https://%s:443/' % host, build_submission_url('/'))
-            self.assertEqual('https://%s:443/some/path?foo=1&bar=baz' % host,
+            self.assertEqual('https://%s' % host, build_submission_url())
+            self.assertEqual('https://%s/' % host, build_submission_url('/'))
+            self.assertEqual('https://%s/some/path?foo=1&bar=baz' % host,
                 build_submission_url('/some/path', {'foo': 1, 'bar': 'baz'}))
 
     def test_use_unofficial(self):
@@ -112,7 +112,7 @@ class BuildSubmissionUrlTest(PicardTestCase):
             'server_port': 80,
             'use_server_for_submission': False,
         })
-        self.assertEqual('https://musicbrainz.org:443', build_submission_url())
-        self.assertEqual('https://musicbrainz.org:443/', build_submission_url('/'))
-        self.assertEqual('https://musicbrainz.org:443/some/path?foo=1&bar=baz',
+        self.assertEqual('https://musicbrainz.org', build_submission_url())
+        self.assertEqual('https://musicbrainz.org/', build_submission_url('/'))
+        self.assertEqual('https://musicbrainz.org/some/path?foo=1&bar=baz',
                 build_submission_url('/some/path', {'foo': 1, 'bar': 'baz'}))
