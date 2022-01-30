@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.8.0.dev1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-28 13:45+0100\n"
+"POT-Creation-Date: 2022-01-30 16:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -530,24 +530,24 @@ msgstr ""
 msgid "[no release info]"
 msgstr ""
 
-#: picard/tagger.py:326 picard/ui/ui_options_general.py:172
+#: picard/tagger.py:327 picard/ui/ui_options_general.py:172
 msgid "MusicBrainz Account"
 msgstr ""
 
-#: picard/tagger.py:327
+#: picard/tagger.py:328
 msgid "Authorization code:"
 msgstr ""
 
-#: picard/tagger.py:802
+#: picard/tagger.py:803
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr ""
 
-#: picard/tagger.py:820
+#: picard/tagger.py:821
 msgid "CD Lookup Error"
 msgstr ""
 
-#: picard/tagger.py:821
+#: picard/tagger.py:822
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -555,11 +555,11 @@ msgid ""
 "%s"
 msgstr ""
 
-#: picard/tagger.py:850
-msgid "EAC / XLD log files"
+#: picard/tagger.py:851
+msgid "EAC / XLD / Whipper log files"
 msgstr ""
 
-#: picard/script/serializer.py:351 picard/tagger.py:851
+#: picard/script/serializer.py:351 picard/tagger.py:852
 #: picard/ui/coverartbox.py:548 picard/ui/mainwindow.py:1258
 #: picard/ui/options/scripting.py:131
 msgid "All files"
@@ -4687,7 +4687,7 @@ msgid "&Check for Update…"
 msgstr ""
 
 #: picard/ui/mainwindow.py:956
-msgid "From EAC / XLD &log file..."
+msgid "From EAC / XLD / Whipper &log file..."
 msgstr ""
 
 #: picard/ui/mainwindow.py:999 picard/ui/scripteditor.py:551
