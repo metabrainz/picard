@@ -107,6 +107,7 @@ from picard.dataobj import DataObject
 from picard.disc import (
     Disc,
     eaclog,
+    whipperlog,
 )
 from picard.file import File
 from picard.formats import open_ as open_file
@@ -847,7 +848,7 @@ class Tagger(QtWidgets.QApplication):
     def lookup_discid_from_logfile(self):
         file_chooser = QtWidgets.QFileDialog(self.window)
         file_chooser.setNameFilters([
-            _("EAC / XLD log files") + " (*.log)",
+            _("EAC / XLD / Whipper log files") + " (*.log)",
             _("All files") + " (*)",
         ])
         if file_chooser.exec_():
@@ -855,12 +856,21 @@ class Tagger(QtWidgets.QApplication):
             disc = Disc()
             self.set_wait_cursor()
             thread.run_task(
-                partial(self._parse_eac_log, disc, files[0]),
+                partial(self._parse_disc_ripping_log, disc, files[0]),
                 partial(self._lookup_disc, disc),
                 traceback=self._debug)
 
-    def _parse_eac_log(self, disc, path):
-        toc = eaclog.toc_from_file(path)
+    def _parse_disc_ripping_log(self, disc, path):
+        try:
+            log.debug('Trying to parse "%s" as EAC / XLD log...', path)
+            toc = eaclog.toc_from_file(path)
+        except Exception:
+            try:
+                log.debug('Trying to parse "%s" as Whipper log...', path)
+                toc = whipperlog.toc_from_file(path)
+            except Exception:
+                log.warning('Failed parsing ripping log "%s"', path, exc_info=True)
+                raise
         disc.put(toc)
 
     @property

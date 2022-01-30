@@ -1,0 +1,220 @@
+Log created by: whipper 0.0.0 (internal logger)
+Log creation date: 2022-01-30T09:52:15Z
+
+Ripping phase information:
+  Drive: TSSTcorpCDDVDW SE-218BB  (revision TS01)
+  Extraction engine: cdparanoia III 10.2 libcdio 2.1.0 x86_64-pc-linux-gnu
+  Defeat audio cache:
+  Read offset correction: 6
+  Overread into lead-out: false
+  Gap detection: cdrdao 1.2.4
+  CD-R detected: false
+
+CD metadata:
+  Release:
+    Artist: pornophonique
+    Title: Brave New World
+  CDDB Disc ID: 5407c408
+  MusicBrainz Disc ID: C2svSeTdtJVtN7VQR__XwmEScU8-
+  MusicBrainz lookup URL: https://musicbrainz.org/cdtoc/attach?toc=1+8+149323+150+25064+43611+60890+83090+100000+115057+135558&tracks=8&id=C2svSeTdtJVtN7VQR__XwmEScU8-
+  MusicBrainz Release URL: https://musicbrainz.org/release/d785183b-cb1c-4fda-8e0f-6d0864442479
+
+TOC:
+  1:
+    Start: 00:00:00
+    Length: 05:32:14
+    Start sector: 0
+    End sector: 24913
+
+  2:
+    Start: 05:32:14
+    Length: 04:07:22
+    Start sector: 24914
+    End sector: 43460
+
+  3:
+    Start: 09:39:36
+    Length: 03:50:29
+    Start sector: 43461
+    End sector: 60739
+
+  4:
+    Start: 13:29:65
+    Length: 04:56:00
+    Start sector: 60740
+    End sector: 82939
+
+  5:
+    Start: 18:25:65
+    Length: 03:45:35
+    Start sector: 82940
+    End sector: 99849
+
+  6:
+    Start: 22:11:25
+    Length: 03:20:57
+    Start sector: 99850
+    End sector: 114906
+
+  7:
+    Start: 25:32:07
+    Length: 04:33:26
+    Start sector: 114907
+    End sector: 135407
+
+  8:
+    Start: 30:05:33
+    Length: 03:03:40
+    Start sector: 135408
+    End sector: 149172
+
+Tracks:
+  1:
+    Filename: ./album/pornophonique - Brave New World/01. pornophonique - Coming Home.flac
+    Peak level: 0.948425
+    Pre-emphasis:
+    Extraction speed: 4.8 X
+    Extraction quality: 100.00 %
+    Test CRC: E924FB20
+    Copy CRC: E924FB20
+    AccurateRip v1:
+      Result: Track not present in AccurateRip database
+    AccurateRip v2:
+      Result: Found, exact match
+      Confidence: 2
+      Local CRC: 3182EB6A
+      Remote CRC: 3182EB6A
+    Status: Copy OK
+
+  2:
+    Filename: ./album/pornophonique - Brave New World/02. pornophonique - Save Game.flac
+    Pre-gap length: 00:00:34
+    Peak level: 0.981049
+    Pre-emphasis:
+    Extraction speed: 5.3 X
+    Extraction quality: 100.00 %
+    Test CRC: F19A6AFC
+    Copy CRC: F19A6AFC
+    AccurateRip v1:
+      Result: Track not present in AccurateRip database
+    AccurateRip v2:
+      Result: Found, exact match
+      Confidence: 2
+      Local CRC: 79A374E7
+      Remote CRC: 79A374E7
+    Status: Copy OK
+
+  3:
+    Filename: ./album/pornophonique - Brave New World/03. pornophonique - Voices in My Head.flac
+    Pre-gap length: 00:00:29
+    Peak level: 0.972351
+    Pre-emphasis:
+    Extraction speed: 5.7 X
+    Extraction quality: 100.00 %
+    Test CRC: 300DF15C
+    Copy CRC: 300DF15C
+    AccurateRip v1:
+      Result: Track not present in AccurateRip database
+    AccurateRip v2:
+      Result: Found, exact match
+      Confidence: 2
+      Local CRC: 77DE3AFE
+      Remote CRC: 77DE3AFE
+    Status: Copy OK
+
+  4:
+    Filename: ./album/pornophonique - Brave New World/04. pornophonique - The Songs We Sang Together.flac
+    Pre-gap length: 00:00:74
+    Peak level: 0.988586
+    Pre-emphasis:
+    Extraction speed: 6.2 X
+    Extraction quality: 100.00 %
+    Test CRC: 1657126F
+    Copy CRC: 1657126F
+    AccurateRip v1:
+      Result: Track not present in AccurateRip database
+    AccurateRip v2:
+      Result: Found, exact match
+      Confidence: 2
+      Local CRC: 4D824E2F
+      Remote CRC: 4D824E2F
+    Status: Copy OK
+
+  5:
+    Filename: ./album/pornophonique - Brave New World/05. pornophonique - Night Will Fall.flac
+    Pre-gap length: 00:00:74
+    Peak level: 0.92807
+    Pre-emphasis:
+    Extraction speed: 6.4 X
+    Extraction quality: 100.00 %
+    Test CRC: 66EFEA59
+    Copy CRC: 66EFEA59
+    AccurateRip v1:
+      Result: Track not present in AccurateRip database
+    AccurateRip v2:
+      Result: Found, exact match
+      Confidence: 2
+      Local CRC: D0D39055
+      Remote CRC: D0D39055
+    Status: Copy OK
+
+  6:
+    Filename: ./album/pornophonique - Brave New World/06. pornophonique - Brave New World.flac
+    Pre-gap length: 00:00:74
+    Peak level: 0.965851
+    Pre-emphasis:
+    Extraction speed: 6.8 X
+    Extraction quality: 100.00 %
+    Test CRC: 5D7B712B
+    Copy CRC: 5D7B712B
+    AccurateRip v1:
+      Result: Track not present in AccurateRip database
+    AccurateRip v2:
+      Result: Found, exact match
+      Confidence: 2
+      Local CRC: CD69B7FC
+      Remote CRC: CD69B7FC
+    Status: Copy OK
+
+  7:
+    Filename: ./album/pornophonique - Brave New World/07. pornophonique - Wave After Wave.flac
+    Pre-gap length: 00:00:74
+    Peak level: 0.975189
+    Pre-emphasis:
+    Extraction speed: 7.0 X
+    Extraction quality: 100.00 %
+    Test CRC: 694CDD79
+    Copy CRC: 694CDD79
+    AccurateRip v1:
+      Result: Track not present in AccurateRip database
+    AccurateRip v2:
+      Result: Found, exact match
+      Confidence: 2
+      Local CRC: FE6DBCBF
+      Remote CRC: FE6DBCBF
+    Status: Copy OK
+
+  8:
+    Filename: ./album/pornophonique - Brave New World/08. pornophonique - Awakening.flac
+    Pre-gap length: 00:00:41
+    Peak level: 0.9841
+    Pre-emphasis:
+    Extraction speed: 7.5 X
+    Extraction quality: 100.00 %
+    Test CRC: 629CC273
+    Copy CRC: 629CC273
+    AccurateRip v1:
+      Result: Track not present in AccurateRip database
+    AccurateRip v2:
+      Result: Found, exact match
+      Confidence: 2
+      Local CRC: 7EB7F715
+      Remote CRC: 7EB7F715
+    Status: Copy OK
+
+Conclusive status report:
+  AccurateRip summary: All tracks accurately ripped
+  Health Status: No errors occurred
+  EOF: End of status report
+
+SHA-256 hash: AFD2B29F82EF8104A359DDA9E52A4EB550919CCD6540E72AE68180E26D24D129
