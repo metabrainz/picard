@@ -39,7 +39,7 @@ class MockDisc:
     mcn = '5029343070452'
     tracks = list(range(0, 11))
     toc_string = ' '.join(str(i) for i in test_toc)
-    submission_url = 'https://musicbrainz.org:443/cdtoc/attach?id=lSOVc5h6IXSuzcamJS1Gp4_tRuA-&tracks=11&toc=1+11+242457+150+44942+61305+72755+96360+130485+147315+164275+190702+205412+220437'
+    submission_url = 'https://musicbrainz.org/cdtoc/attach?id=lSOVc5h6IXSuzcamJS1Gp4_tRuA-&tracks=11&toc=1+11+242457+150+44942+61305+72755+96360+130485+147315+164275+190702+205412+220437'
 
 
 class DiscTest(PicardTestCase):
@@ -112,6 +112,6 @@ class DiscTest(PicardTestCase):
         disc = picard.disc.Disc()
         disc.read()
         self.assertEqual(
-            'http://test.musicbrainz.org:80/cdtoc/attach?id=lSOVc5h6IXSuzcamJS1Gp4_tRuA-&tracks=11&toc=1+11+242457+150+44942+61305+72755+96360+130485+147315+164275+190702+205412+220437',
+            'http://test.musicbrainz.org/cdtoc/attach?id=lSOVc5h6IXSuzcamJS1Gp4_tRuA-&tracks=11&toc=1+11+242457+150+44942+61305+72755+96360+130485+147315+164275+190702+205412+220437',
             disc.submission_url
         )

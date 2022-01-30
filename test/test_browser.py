@@ -50,8 +50,9 @@ class BrowserLookupTest(PicardTestCase):
 
     def assert_mb_url_matches(self, url, path, query_args=None):
         parsed_url = urlparse(url)
-        expected_host = "%s:%s" % (SERVER, PORT)
+        expected_host = SERVER
         self.assertEqual(expected_host, parsed_url.netloc, '"%s" hostname does not match "%s"' % (url, expected_host))
+        self.assertEqual('https' if PORT == 443 else 'http', parsed_url.scheme)
         self.assertEqual(path, parsed_url.path, '"%s" path does not match "%s"' % (url, path))
         if query_args is not None:
             actual_query_args = {k: v[0] for k, v in parse_qs(parsed_url.query).items()}

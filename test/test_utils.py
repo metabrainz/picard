@@ -42,12 +42,14 @@ from unittest.mock import Mock
 from test.picardtestcase import PicardTestCase
 
 from picard import util
+from picard.const import MUSICBRAINZ_SERVERS
 from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
 from picard.util import (
     album_artist_from_path,
+    build_qurl,
     extract_year_from_date,
     find_best_match,
     is_absolute_path,
@@ -671,3 +673,30 @@ class WildcardsToRegexPatternTest(PicardTestCase):
         regex = wildcards_to_regex_pattern(pattern)
         self.assertEqual(re.escape(pattern), regex)
         re.compile(regex)
+
+
+class BuildQUrlTest(PicardTestCase):
+
+    def test_path_and_querystring(self):
+        query = {'foo': 'x', 'bar': 'y'}
+        self.assertEqual('http://example.com/', build_qurl('example.com', path='/').toDisplayString())
+        self.assertEqual('http://example.com/foo/bar', build_qurl('example.com', path='/foo/bar').toDisplayString())
+        self.assertEqual('http://example.com/foo/bar?foo=x&bar=y', build_qurl('example.com', path='/foo/bar', queryargs=query).toDisplayString())
+        self.assertEqual('http://example.com?foo=x&bar=y', build_qurl('example.com', queryargs=query).toDisplayString())
+
+    def test_standard_ports(self):
+        self.assertEqual('http://example.com', build_qurl('example.com').toDisplayString())
+        self.assertEqual('http://example.com', build_qurl('example.com', port=80).toDisplayString())
+        self.assertEqual('https://example.com', build_qurl('example.com', port=443).toDisplayString())
+
+    def test_custom_port(self):
+        self.assertEqual('http://example.com:8080', build_qurl('example.com', port=8080).toDisplayString())
+        self.assertEqual('http://example.com:8080/', build_qurl('example.com', port=8080, path="/").toDisplayString())
+        self.assertEqual('http://example.com:8080?foo=x', build_qurl('example.com', port=8080, queryargs={'foo': 'x'}).toDisplayString())
+
+    def test_mb_server(self):
+        for host in MUSICBRAINZ_SERVERS:
+            expected = 'https://' + host
+            self.assertEqual(expected, build_qurl(host, port=80).toDisplayString())
+            self.assertEqual(expected, build_qurl(host, port=443).toDisplayString())
+            self.assertEqual(expected, build_qurl(host, port=8080).toDisplayString())
