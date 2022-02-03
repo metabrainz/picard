@@ -207,18 +207,23 @@ def _translate_artist_node(node, config=None):
             detected_scripts = detect_script_weighted(node["name"])
             if detected_scripts:
                 log_text += "; ".join(
-                    list("{0} ({1:.1f}%)".format(scr_id, detected_scripts[scr_id] * 100) for scr_id in detected_scripts)
+                    "{0} ({1:.1f}%)".format(scr_id, detected_scripts[scr_id] * 100)
+                    for scr_id in detected_scripts
                 )
             else:
                 log_text += "None"
             log.debug(log_text)
             if detected_scripts:
-                if config.setting["script_exceptions"]:
+                script_exceptions = config.setting["script_exceptions"]
+                if script_exceptions:
                     log_text = " found in selected scripts: " + "; ".join(
-                        list("{0} ({1}%)".format(scr[0], scr[1]) for scr in config.setting["script_exceptions"])
+                        "{0} ({1}%)".format(scr[0], scr[1])
+                        for scr in script_exceptions
                     )
-                    for script_id, script_weighting in config.setting["script_exceptions"]:
-                        if script_id in detected_scripts and detected_scripts[script_id] >= script_weighting / 100:
+                    for script_id, script_weighting in script_exceptions:
+                        if script_id not in detected_scripts:
+                            continue
+                        if detected_scripts[script_id] >= script_weighting / 100:
                             log.debug("Match" + log_text)
                             return node['name'], node['sort-name']
                     log.debug("No match" + log_text)
