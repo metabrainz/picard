@@ -458,6 +458,23 @@ class ArtistTranslationTest(MBJSONTest):
         (artist_name, artist_sort_name) = _translate_artist_node(self.json_doc)
         self.assertEqual(artist_name, 'Ed Sheeran (en_CA)')
 
+    def test_locale_specific_match_first_exc(self):
+        settings = {
+            "standardize_tracks": False,
+            "standardize_artists": False,
+            "standardize_releases": False,
+            "translate_artist_names": True,
+            "translate_artist_names_script_exception": True,
+            "script_exceptions": [("LATIN", 0)],
+            "standardize_instruments": True,
+            "release_ars": True,
+            "preferred_release_countries": [],
+            "artist_locales": ['en_CA', 'en'],
+        }
+        self.set_config_values(settings)
+        (artist_name, artist_sort_name) = _translate_artist_node(self.json_doc)
+        self.assertEqual(artist_name, 'Ed Sheeran')
+
     def test_locale_specific_match_second(self):
         settings = {
             "standardize_tracks": False,
@@ -505,6 +522,45 @@ class ArtistTranslationTest(MBJSONTest):
         self.set_config_values(settings)
         (artist_name, artist_sort_name) = _translate_artist_node(self.json_doc)
         self.assertEqual(artist_name, 'Ed Sheeran')
+
+
+class ArtistTranslationArabicExceptionsTest(MBJSONTest):
+
+    filename = 'artist_arabic.json'
+
+    def test_locale_specific_match_first_exc1(self):
+        settings = {
+            "standardize_tracks": False,
+            "standardize_artists": False,
+            "standardize_releases": False,
+            "translate_artist_names": True,
+            "translate_artist_names_script_exception": True,
+            "script_exceptions": [("LATIN", 0)],
+            "standardize_instruments": True,
+            "release_ars": True,
+            "preferred_release_countries": [],
+            "artist_locales": ['en_CA', 'en'],
+        }
+        self.set_config_values(settings)
+        (artist_name, artist_sort_name) = _translate_artist_node(self.json_doc)
+        self.assertEqual(artist_name, 'Mohamed Mounir')
+
+    def test_locale_specific_match_first_exc2(self):
+        settings = {
+            "standardize_tracks": False,
+            "standardize_artists": False,
+            "standardize_releases": False,
+            "translate_artist_names": True,
+            "translate_artist_names_script_exception": True,
+            "script_exceptions": [("ARABIC", 0)],
+            "standardize_instruments": True,
+            "release_ars": True,
+            "preferred_release_countries": [],
+            "artist_locales": ['en_CA', 'en'],
+        }
+        self.set_config_values(settings)
+        (artist_name, artist_sort_name) = _translate_artist_node(self.json_doc)
+        self.assertEqual(artist_name, 'محمد منير')
 
 
 class ReleaseGroupTest(MBJSONTest):
