@@ -1,0 +1,90 @@
+{
+    "area": {
+        "type-id": null,
+        "id": "8e0551f2-95c2-3cc0-a0a9-f2d344f10667",
+        "name": "Egypt",
+        "disambiguation": "",
+        "sort-name": "Egypt",
+        "iso-3166-1-codes": [
+            "EG"
+        ],
+        "type": null
+    },
+    "begin-area": {
+        "type-id": null,
+        "disambiguation": "",
+        "id": "cf82cb78-741a-46e8-8448-13b824261ca0",
+        "name": "Asw\u0101n",
+        "sort-name": "Asw\u0101n",
+        "iso-3166-2-codes": [
+            "EG-ASN"
+        ],
+        "type": null
+    },
+    "country": "EG",
+    "isnis": [
+        "0000000081697225"
+    ],
+    "sort-name": "Mounir, Mohamed",
+    "end-area": null,
+    "life-span": {
+        "begin": "1954-10-10",
+        "ended": false,
+        "end": null
+    },
+    "begin_area": {
+        "type-id": null,
+        "disambiguation": "",
+        "id": "cf82cb78-741a-46e8-8448-13b824261ca0",
+        "name": "Asw\u0101n",
+        "sort-name": "Asw\u0101n",
+        "iso-3166-2-codes": [
+            "EG-ASN"
+        ],
+        "type": null
+    },
+    "disambiguation": "",
+    "gender": "Male",
+    "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+    "type": "Person",
+    "aliases": [
+        {
+            "type": null,
+            "primary": null,
+            "name": "Mohamed Moneer",
+            "end": null,
+            "ended": false,
+            "sort-name": "Mohamed Moneer",
+            "locale": null,
+            "begin": null,
+            "type-id": null
+        },
+        {
+            "ended": false,
+            "end": null,
+            "type": "Artist name",
+            "name": "Mohamed Mounir",
+            "primary": true,
+            "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+            "begin": null,
+            "locale": "en",
+            "sort-name": "Mounir, Mohamad"
+        },
+        {
+            "type-id": null,
+            "begin": null,
+            "locale": null,
+            "sort-name": "Mohamed Mounir",
+            "ended": false,
+            "end": null,
+            "primary": null,
+            "type": null,
+            "name": "Mohamed Mounir"
+        }
+    ],
+    "id": "5235052b-7fa0-498b-accf-26b9e7767da7",
+    "ipis": [],
+    "name": "\u0645\u062d\u0645\u062f \u0645\u0646\u064a\u0631",
+    "gender-id": "36d3d30a-839d-3eda-8cb3-29be4384e4a9",
+    "end_area": null
+}
