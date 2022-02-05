@@ -250,7 +250,7 @@ class VCommentFile(File):
         if is_flac and config.setting["fix_missing_seekpoints_flac"]:
             if len(file.seektable.seekpoints) == 0:
                 if file.info.total_samples > 0:
-                    file.seektable.seekpoints = [mutagen.flac.SeekPoint(0,0,1)]
+                    file.seektable.seekpoints = [mutagen.flac.SeekPoint(0, 0, 1)]
                     file.seektable.write()
                 else:
                     log.error("Unable to fix seektable of file {} because the file has no samples!".format(filename))
