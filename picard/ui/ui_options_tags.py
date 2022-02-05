@@ -38,6 +38,9 @@ class Ui_TagsOptionsPage(object):
         self.remove_ape_from_mp3 = QtWidgets.QCheckBox(self.before_tagging)
         self.remove_ape_from_mp3.setObjectName("remove_ape_from_mp3")
         self.vboxlayout1.addWidget(self.remove_ape_from_mp3)
+        self.fix_missing_seekpoints_flac = QtWidgets.QCheckBox(self.before_tagging)
+        self.fix_missing_seekpoints_flac.setObjectName("fix_missing_seekpoints_flac")
+        self.vboxlayout1.addWidget(self.fix_missing_seekpoints_flac)
         spacerItem = QtWidgets.QSpacerItem(20, 6, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         self.vboxlayout1.addItem(spacerItem)
         self.preserved_tags_label = QtWidgets.QLabel(self.before_tagging)
@@ -61,6 +64,7 @@ class Ui_TagsOptionsPage(object):
         TagsOptionsPage.setTabOrder(self.clear_existing_tags, self.preserve_images)
         TagsOptionsPage.setTabOrder(self.preserve_images, self.remove_id3_from_flac)
         TagsOptionsPage.setTabOrder(self.remove_id3_from_flac, self.remove_ape_from_mp3)
+        TagsOptionsPage.setTabOrder(self.remove_ape_from_mp3, self.fix_missing_seekpoints_flac)
 
     def retranslateUi(self, TagsOptionsPage):
         _translate = QtCore.QCoreApplication.translate
@@ -71,5 +75,6 @@ class Ui_TagsOptionsPage(object):
         self.preserve_images.setText(_("Keep embedded images when clearing tags"))
         self.remove_id3_from_flac.setText(_("Remove ID3 tags from FLAC files"))
         self.remove_ape_from_mp3.setText(_("Remove APEv2 tags from MP3 files"))
+        self.fix_missing_seekpoints_flac.setText(_("Fix missing seekpoints for FLAC files"))
         self.preserved_tags_label.setText(_("Preserve these tags from being cleared or overwritten with MusicBrainz data:"))
 from picard.ui.widgets.taglisteditor import TagListEditor

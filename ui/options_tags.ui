@@ -72,6 +72,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="fix_missing_seekpoints_flac">
+        <property name="text">
+         <string>Fix missing seekpoints for FLAC files</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -124,6 +131,7 @@
   <tabstop>preserve_images</tabstop>
   <tabstop>remove_id3_from_flac</tabstop>
   <tabstop>remove_ape_from_mp3</tabstop>
+  <tabstop>fix_missing_seekpoints_flac</tabstop>
  </tabstops>
  <resources/>
  <connections>

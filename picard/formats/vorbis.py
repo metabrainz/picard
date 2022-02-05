@@ -247,6 +247,14 @@ class VCommentFile(File):
                     and not config.setting["preserve_images"])):
             file.clear_pictures()
         tags = {}
+        if is_flac and config.setting["fix_missing_seekpoints_flac"]:
+            if len(file.seektable.seekpoints) == 0:
+                if file.info.total_samples > 0:
+                    file.seektable.seekpoints = [mutagen.flac.SeekPoint(0,0,1)]
+                    file.seektable.write()
+                else:
+                    log.error("Unable to fix seektable of file {} because the file has no samples!".format(filename))
+
         for name, value in metadata.items():
             if name == '~rating':
                 # Save rating according to http://code.google.com/p/quodlibet/wiki/Specs_VorbisComments

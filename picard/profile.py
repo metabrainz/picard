@@ -79,6 +79,7 @@ class UserProfileGroups():
             SettingDesc("preserve_images", N_("Keep embedded images when clearing tags"), ["preserve_images"]),
             SettingDesc("remove_id3_from_flac", N_("Remove ID3 tags from FLAC files"), ["remove_id3_from_flac"]),
             SettingDesc("remove_ape_from_mp3", N_("Remove APEv2 tags from MP3 files"), ["remove_ape_from_mp3"]),
+            SettingDesc("fix_missing_seekpoints_flac", N_("Fix missing seekpoints for FLAC files"), ["fix_missing_seekpoints_flac"]),
             SettingDesc("preserved_tags", N_("Preserved tags list"), ["preserved_tags"]),
             SettingDesc("aac_save_ape", N_("Save APEv2 tags to AAC"), ["aac_save_ape", "aac_no_tags"]),
             SettingDesc("remove_ape_from_aac", N_("Remove APEv2 tags from AAC files"), ["remove_ape_from_aac"]),
