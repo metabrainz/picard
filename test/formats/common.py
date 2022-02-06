@@ -50,6 +50,7 @@ settings = {
     'rating_user_email': 'users@musicbrainz.org',
     'remove_ape_from_mp3': False,
     'remove_id3_from_flac': False,
+    'fix_missing_seekpoints_flac': False,
     'remove_images_from_tags': False,
     'save_images_to_tags': True,
     'write_id3v1': True,

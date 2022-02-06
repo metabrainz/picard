@@ -56,6 +56,7 @@ class TagsOptionsPage(OptionsPage):
         BoolOption("setting", "preserve_images", False),
         BoolOption("setting", "remove_id3_from_flac", False),
         BoolOption("setting", "remove_ape_from_mp3", False),
+        BoolOption("setting", "fix_missing_seekpoints_flac", False),
         ListOption("setting", "preserved_tags", []),
     ]
 
@@ -72,6 +73,7 @@ class TagsOptionsPage(OptionsPage):
         self.ui.preserve_images.setChecked(config.setting["preserve_images"])
         self.ui.remove_ape_from_mp3.setChecked(config.setting["remove_ape_from_mp3"])
         self.ui.remove_id3_from_flac.setChecked(config.setting["remove_id3_from_flac"])
+        self.ui.fix_missing_seekpoints_flac.setChecked(config.setting["fix_missing_seekpoints_flac"])
         self.ui.preserved_tags.update(config.setting["preserved_tags"])
         self.ui.preserved_tags.set_user_sortable(False)
 
@@ -86,6 +88,7 @@ class TagsOptionsPage(OptionsPage):
         config.setting["preserve_images"] = self.ui.preserve_images.isChecked()
         config.setting["remove_ape_from_mp3"] = self.ui.remove_ape_from_mp3.isChecked()
         config.setting["remove_id3_from_flac"] = self.ui.remove_id3_from_flac.isChecked()
+        config.setting["fix_missing_seekpoints_flac"] = self.ui.fix_missing_seekpoints_flac.isChecked()
         config.setting["preserved_tags"] = list(self.ui.preserved_tags.tags)
         self.tagger.window.enable_tag_saving_action.setChecked(not config.setting["dont_write_tags"])
 
