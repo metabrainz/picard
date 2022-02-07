@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2017 David Mandelberg
 # Copyright (C) 2017-2018 Sambhav Kothari
-# Copyright (C) 2017-2021 Laurent Monin
+# Copyright (C) 2017-2022 Laurent Monin
 # Copyright (C) 2018-2022 Philipp Wolfer
 # Copyright (C) 2019 Michael Wiencek
 # Copyright (C) 2020 David Kellner

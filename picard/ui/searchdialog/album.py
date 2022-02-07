@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2018-2021 Laurent Monin
-# Copyright (C) 2018-2021 Philipp Wolfer
+# Copyright (C) 2018-2022 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2008 Lukáš Lalinský
-# Copyright (C) 2018, 2020-2021 Philipp Wolfer
+# Copyright (C) 2018, 2020-2022 Philipp Wolfer
 # Copyright (C) 2019 Wieland Hoffmann
 # Copyright (C) 2019-2021 Laurent Monin
 #

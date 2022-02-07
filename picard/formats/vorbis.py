@@ -8,9 +8,10 @@
 # Copyright (C) 2012-2013 Michael Wiencek
 # Copyright (C) 2012-2014 Wieland Hoffmann
 # Copyright (C) 2013 Calvin Walton
-# Copyright (C) 2013-2014, 2017-2021 Laurent Monin
+# Copyright (C) 2013-2014, 2017-2022 Laurent Monin
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017 Ville Skyttä
+# Copyright (C) 2022 Marcin Szalowicz
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

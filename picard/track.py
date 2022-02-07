@@ -20,7 +20,7 @@
 # Copyright (C) 2018 Calvin Walton
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2019 Joel Lintunen
-# Copyright (C) 2020 Adam James
+# Copyright (C) 2020, 2022 Adam James
 # Copyright (C) 2021 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion
 #

@@ -10,7 +10,7 @@
 # Copyright (C) 2013-2014, 2021 Sophist-UK
 # Copyright (C) 2015 Ohm Patel
 # Copyright (C) 2015 Wieland Hoffmann
-# Copyright (C) 2015, 2018-2021 Philipp Wolfer
+# Copyright (C) 2015, 2018-2022 Philipp Wolfer
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2020 Felix Schwarz

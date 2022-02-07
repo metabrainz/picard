@@ -8,7 +8,7 @@
 # Copyright (C) 2017 Frederik “Freso” S. Olesen
 # Copyright (C) 2017 Sophist-UK
 # Copyright (C) 2018 Vishal Choudhary
-# Copyright (C) 2019, 2021 Philipp Wolfer
+# Copyright (C) 2019, 2021-2022 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

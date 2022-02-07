@@ -11,6 +11,7 @@
 # Copyright (C) 2013, 2017 Sophist-UK
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017-2018, 2020-2021 Laurent Monin
+# Copyright (C) 2022 Marcin Szalowicz
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

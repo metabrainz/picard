@@ -17,7 +17,7 @@
 # Copyright (C) 2013 Calvin Walton
 # Copyright (C) 2013-2014 Ionuț Ciocîrlan
 # Copyright (C) 2013-2014, 2017, 2021 Sophist-UK
-# Copyright (C) 2013-2014, 2017-2021 Laurent Monin
+# Copyright (C) 2013-2014, 2017-2022 Laurent Monin
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2016 Ville Skyttä
 # Copyright (C) 2016-2018 Sambhav Kothari
