@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.8.0.dev1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-30 16:15+0100\n"
+"POT-Creation-Date: 2022-02-07 07:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -268,232 +268,236 @@ msgstr ""
 msgid "Don't write tags"
 msgstr ""
 
-#: picard/profile.py:77 picard/ui/ui_options_tags.py:68
+#: picard/profile.py:77 picard/ui/ui_options_tags.py:72
 msgid "Preserve timestamps of tagged files"
 msgstr ""
 
-#: picard/profile.py:78 picard/ui/ui_options_tags.py:70
+#: picard/profile.py:78 picard/ui/ui_options_tags.py:74
 msgid "Clear existing tags"
 msgstr ""
 
-#: picard/profile.py:79 picard/ui/ui_options_tags.py:71
+#: picard/profile.py:79 picard/ui/ui_options_tags.py:75
 msgid "Keep embedded images when clearing tags"
 msgstr ""
 
-#: picard/profile.py:80 picard/ui/ui_options_tags.py:72
+#: picard/profile.py:80 picard/ui/ui_options_tags.py:76
 msgid "Remove ID3 tags from FLAC files"
 msgstr ""
 
-#: picard/profile.py:81 picard/ui/ui_options_tags.py:73
+#: picard/profile.py:81 picard/ui/ui_options_tags.py:77
 msgid "Remove APEv2 tags from MP3 files"
 msgstr ""
 
-#: picard/profile.py:82
-msgid "Preserved tags list"
+#: picard/profile.py:82 picard/ui/ui_options_tags.py:78
+msgid "Fix missing seekpoints for FLAC files"
 msgstr ""
 
 #: picard/profile.py:83
+msgid "Preserved tags list"
+msgstr ""
+
+#: picard/profile.py:84
 msgid "Save APEv2 tags to AAC"
 msgstr ""
 
-#: picard/profile.py:84 picard/ui/ui_options_tags_compatibility_aac.py:49
+#: picard/profile.py:85 picard/ui/ui_options_tags_compatibility_aac.py:49
 msgid "Remove APEv2 tags from AAC files"
 msgstr ""
 
-#: picard/profile.py:85
+#: picard/profile.py:86
 msgid "Save APEv2 tags to AC3"
 msgstr ""
 
-#: picard/profile.py:86 picard/ui/ui_options_tags_compatibility_ac3.py:49
+#: picard/profile.py:87 picard/ui/ui_options_tags_compatibility_ac3.py:49
 msgid "Remove APEv2 tags from AC3 files"
 msgstr ""
 
-#: picard/profile.py:87
+#: picard/profile.py:88
 msgid "Write ID3v1 tags"
 msgstr ""
 
-#: picard/profile.py:88
+#: picard/profile.py:89
 msgid "Write ID3v2.3 tags"
 msgstr ""
 
-#: picard/profile.py:89 picard/ui/ui_options_tags_compatibility_id3.py:119
+#: picard/profile.py:90 picard/ui/ui_options_tags_compatibility_id3.py:119
 msgid "ID3v2 text encoding"
 msgstr ""
 
-#: picard/profile.py:90
+#: picard/profile.py:91
 msgid "ID3v2.3 join character"
 msgstr ""
 
-#: picard/profile.py:91 picard/ui/ui_options_tags_compatibility_id3.py:125
+#: picard/profile.py:92 picard/ui/ui_options_tags_compatibility_id3.py:125
 msgid "Save iTunes compatible grouping and work"
 msgstr ""
 
-#: picard/profile.py:92
+#: picard/profile.py:93
 msgid "Write RIFF INFO tags to WAVE files"
 msgstr ""
 
-#: picard/profile.py:93 picard/ui/ui_options_tags_compatibility_wave.py:59
+#: picard/profile.py:94 picard/ui/ui_options_tags_compatibility_wave.py:59
 msgid "Remove existing RIFF INFO tags from WAVE files"
 msgstr ""
 
-#: picard/profile.py:94 picard/ui/ui_options_tags_compatibility_wave.py:60
+#: picard/profile.py:95 picard/ui/ui_options_tags_compatibility_wave.py:60
 msgid "RIFF INFO text encoding"
 msgstr ""
 
-#: picard/profile.py:99 picard/ui/options/cover.py:51
+#: picard/profile.py:100 picard/ui/options/cover.py:51
 msgid "Cover Art"
 msgstr ""
 
-#: picard/profile.py:101 picard/ui/ui_options_cover.py:95
+#: picard/profile.py:102 picard/ui/ui_options_cover.py:95
 msgid "Embed cover images into tags"
 msgstr ""
 
-#: picard/profile.py:102 picard/ui/ui_options_cover.py:96
+#: picard/profile.py:103 picard/ui/ui_options_cover.py:96
 msgid "Embed only a single front image"
 msgstr ""
 
-#: picard/profile.py:103 picard/ui/ui_options_cover.py:97
+#: picard/profile.py:104 picard/ui/ui_options_cover.py:97
 msgid "Save cover images as separate files"
 msgstr ""
 
-#: picard/profile.py:104
+#: picard/profile.py:105
 msgid "File name for images"
 msgstr ""
 
-#: picard/profile.py:105
+#: picard/profile.py:106
 msgid "Overwrite existing image files"
 msgstr ""
 
-#: picard/profile.py:106 picard/ui/ui_options_cover.py:100
+#: picard/profile.py:107 picard/ui/ui_options_cover.py:100
 msgid "Save only a single front image as separate file"
 msgstr ""
 
-#: picard/profile.py:107 picard/ui/ui_options_cover.py:101
+#: picard/profile.py:108 picard/ui/ui_options_cover.py:101
 msgid "Always use the primary image type as the file name for non-front images"
 msgstr ""
 
-#: picard/profile.py:108
+#: picard/profile.py:109
 msgid "Cover art providers"
 msgstr ""
 
-#: picard/profile.py:113 picard/ui/options/renaming.py:76
+#: picard/profile.py:114 picard/ui/options/renaming.py:76
 msgid "File Naming"
 msgstr ""
 
-#: picard/profile.py:115 picard/ui/ui_options_renaming.py:161
+#: picard/profile.py:116 picard/ui/ui_options_renaming.py:161
 msgid "Windows compatibility"
 msgstr ""
 
-#: picard/profile.py:116 picard/ui/ui_options_renaming.py:160
+#: picard/profile.py:117 picard/ui/ui_options_renaming.py:160
 msgid "Replace non-ASCII characters"
 msgstr ""
 
-#: picard/profile.py:117
+#: picard/profile.py:118
 msgid "Rename files"
 msgstr ""
 
-#: picard/profile.py:118
+#: picard/profile.py:119
 msgid "Move files"
 msgstr ""
 
-#: picard/profile.py:119
+#: picard/profile.py:120
 msgid "Destination directory"
 msgstr ""
 
-#: picard/profile.py:120
+#: picard/profile.py:121
 msgid "Move additional files"
 msgstr ""
 
-#: picard/profile.py:121
+#: picard/profile.py:122
 msgid "Additional file patterns"
 msgstr ""
 
-#: picard/profile.py:122 picard/ui/ui_options_renaming.py:158
+#: picard/profile.py:123 picard/ui/ui_options_renaming.py:158
 msgid "Delete empty directories"
 msgstr ""
 
-#: picard/profile.py:123
+#: picard/profile.py:124
 msgid "Selected file naming script"
 msgstr ""
 
-#: picard/profile.py:128 picard/ui/options/scripting.py:99
+#: picard/profile.py:129 picard/ui/options/scripting.py:99
 msgid "Scripting"
 msgstr ""
 
-#: picard/profile.py:130
+#: picard/profile.py:131
 msgid "Enable tagger scripts"
 msgstr ""
 
-#: picard/profile.py:131
+#: picard/profile.py:132
 msgid "Tagger scripts"
 msgstr ""
 
-#: picard/profile.py:136 picard/ui/options/interface.py:73
+#: picard/profile.py:137 picard/ui/options/interface.py:73
 msgid "User Interface"
 msgstr ""
 
-#: picard/profile.py:138 picard/ui/ui_options_interface.py:165
+#: picard/profile.py:139 picard/ui/ui_options_interface.py:165
 msgid "Allow selection of multiple directories"
 msgstr ""
 
-#: picard/profile.py:139 picard/profile.py:140
+#: picard/profile.py:140 picard/profile.py:141
 #: picard/ui/ui_options_interface.py:166
 msgid "Use builtin search rather than looking in browser"
 msgstr ""
 
-#: picard/profile.py:141 picard/ui/ui_options_interface.py:168
+#: picard/profile.py:142 picard/ui/ui_options_interface.py:168
 msgid "Show a quit confirmation dialog for unsaved changes"
 msgstr ""
 
-#: picard/profile.py:142 picard/ui/ui_options_interface.py:169
+#: picard/profile.py:143 picard/ui/ui_options_interface.py:169
 msgid "Adjust horizontal position in file browser automatically"
 msgstr ""
 
-#: picard/profile.py:143
+#: picard/profile.py:144
 msgid "Begin browsing in a specific directory"
 msgstr ""
 
-#: picard/profile.py:144
+#: picard/profile.py:145
 msgid "Directory to begin browsing"
 msgstr ""
 
-#: picard/profile.py:149 picard/ui/options/advanced.py:43
+#: picard/profile.py:150 picard/ui/options/advanced.py:43
 msgid "Advanced"
 msgstr ""
 
-#: picard/profile.py:151
+#: picard/profile.py:152
 msgid "Ignore file paths matching a regular expression"
 msgstr ""
 
-#: picard/profile.py:152 picard/ui/ui_options_advanced.py:119
+#: picard/profile.py:153 picard/ui/ui_options_advanced.py:119
 msgid "Ignore hidden files"
 msgstr ""
 
-#: picard/profile.py:153 picard/ui/ui_options_advanced.py:116
+#: picard/profile.py:154 picard/ui/ui_options_advanced.py:116
 msgid "Include sub-folders when adding files from folder"
 msgstr ""
 
-#: picard/profile.py:156
+#: picard/profile.py:157
 msgid "Ignore track duration difference under x seconds"
 msgstr ""
 
-#: picard/profile.py:159
+#: picard/profile.py:160
 msgid "Completeness check ignore: Video tracks"
 msgstr ""
 
-#: picard/profile.py:160
+#: picard/profile.py:161
 msgid "Completeness check ignore: Pregap tracks"
 msgstr ""
 
-#: picard/profile.py:161
+#: picard/profile.py:162
 msgid "Completeness check ignore: Data tracks"
 msgstr ""
 
-#: picard/profile.py:162
+#: picard/profile.py:163
 msgid "Completeness check ignore: Silent tracks"
 msgstr ""
 
-#: picard/profile.py:163
+#: picard/profile.py:164
 msgid "Tags to ignore for comparison"
 msgstr ""
 
@@ -5899,15 +5903,15 @@ msgstr ""
 msgid "Documentation"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:67
+#: picard/ui/ui_options_tags.py:71
 msgid "Write tags to files"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:69
+#: picard/ui/ui_options_tags.py:73
 msgid "Before Tagging"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:74
+#: picard/ui/ui_options_tags.py:79
 msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz "
 "data:"
