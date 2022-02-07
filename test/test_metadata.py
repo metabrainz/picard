@@ -4,8 +4,8 @@
 #
 # Copyright (C) 2017 Sophist-UK
 # Copyright (C) 2018, 2020 Wieland Hoffmann
-# Copyright (C) 2018-2020 Laurent Monin
-# Copyright (C) 2018-2020 Philipp Wolfer
+# Copyright (C) 2018-2021 Laurent Monin
+# Copyright (C) 2018-2021 Philipp Wolfer
 # Copyright (C) 2020 dukeyin
 #
 # This program is free software; you can redistribute it and/or

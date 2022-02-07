@@ -4,6 +4,7 @@
 #
 # Copyright (C) 2021 Bob Swift
 # Copyright (C) 2021 Laurent Monin
+# Copyright (C) 2021 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
