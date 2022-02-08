@@ -29,6 +29,7 @@
 
 
 import base64
+import math
 import re
 
 import mutagen.flac
@@ -249,12 +250,37 @@ class VCommentFile(File):
             file.clear_pictures()
         tags = {}
         if is_flac and config.setting["fix_missing_seekpoints_flac"]:
-            if len(file.seektable.seekpoints) == 0:
-                if file.info.total_samples > 0:
-                    file.seektable.seekpoints = [mutagen.flac.SeekPoint(0, 0, 1)]
+            if not file.seektable:
+                seektable = mutagen.flac.SeekTable(None)
+            else:
+                seektable = file.seektable
+            if len(seektable.seekpoints) == 0:
+                if file.info.total_samples > 0 and math.floor(file.info.length) > 0:
+                    # We try to regenerate the seektable using 4096 samples as a step
+                    # the seekpoint is start pos, end pos, step sample
+                    prev = None
+                    SEEK_SIZE = 4096
+                    for i in range(math.floor(file.info.total_samples / SEEK_SIZE)):
+                        if prev is None:
+                            prev = 0
+                            continue
+
+                        seektable.seekpoints.append(mutagen.flac.SeekPoint(prev * SEEK_SIZE, i * SEEK_SIZE, SEEK_SIZE))
+                        prev = i
+
+                    if prev is not None:
+                        seektable.seekpoints.append(mutagen.flac.SeekPoint(prev * SEEK_SIZE, file.info.total_samples, file.info.total_samples - prev * SEEK_SIZE))
+                    elif math.floor(file.info.total_samples / SEEK_SIZE) == 0:
+                        seektable.seekpoints.append(mutagen.flac.SeekPoint(0, file.info.total_samples, file.info.total_samples))
+
+                    if not file.seektable:
+                        file.seektable = seektable
+                        file.metadata_blocks.append(seektable)
+
                     file.seektable.write()
-                else:
-                    log.error("Unable to fix seektable of file {} because the file has no samples!".format(filename))
+                elif file.seektable:
+                    file.metadata_blocks = [b for b in file.metadata_blocks if b != file.seektable]
+                    file.seektable = None
 
         for name, value in metadata.items():
             if name == '~rating':
