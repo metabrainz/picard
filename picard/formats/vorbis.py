@@ -104,6 +104,39 @@ def flac_sort_pics_after_tags(metadata_blocks):
         metadata_blocks.insert(tagindex, pic)
 
 
+def flac_fix_seektable(file):
+    seektable = file.seektable
+    if not seektable:
+        seektable = mutagen.flac.SeekTable(None)
+    if not seektable.seekpoints:
+        if file.info.total_samples > 0 and math.floor(file.info.length) > 0:
+            # We try to regenerate the seektable using 4096 samples as a step
+            # the seekpoint is start pos, end pos, step sample
+            prev = None
+            SEEK_SIZE = 4096
+            for i in range(file.info.total_samples // SEEK_SIZE):
+                if prev is None:
+                    prev = 0
+                    continue
+
+                seektable.seekpoints.append(mutagen.flac.SeekPoint(prev * SEEK_SIZE, i * SEEK_SIZE, SEEK_SIZE))
+                prev = i
+
+            if prev is not None:
+                seektable.seekpoints.append(mutagen.flac.SeekPoint(prev * SEEK_SIZE, file.info.total_samples, file.info.total_samples - prev * SEEK_SIZE))
+            elif file.info.total_samples // SEEK_SIZE == 0:
+                seektable.seekpoints.append(mutagen.flac.SeekPoint(0, file.info.total_samples, file.info.total_samples))
+
+            if not file.seektable:
+                file.seektable = seektable
+                file.metadata_blocks.append(seektable)
+
+            file.seektable.write()
+        elif file.seektable:
+            file.metadata_blocks = [b for b in file.metadata_blocks if b != file.seektable]
+            file.seektable = None
+
+
 class VCommentFile(File):
 
     """Generic VComment-based file."""
@@ -249,38 +282,6 @@ class VCommentFile(File):
                     and not config.setting["preserve_images"])):
             file.clear_pictures()
         tags = {}
-        if is_flac and config.setting["fix_missing_seekpoints_flac"]:
-            if not file.seektable:
-                seektable = mutagen.flac.SeekTable(None)
-            else:
-                seektable = file.seektable
-            if len(seektable.seekpoints) == 0:
-                if file.info.total_samples > 0 and math.floor(file.info.length) > 0:
-                    # We try to regenerate the seektable using 4096 samples as a step
-                    # the seekpoint is start pos, end pos, step sample
-                    prev = None
-                    SEEK_SIZE = 4096
-                    for i in range(math.floor(file.info.total_samples / SEEK_SIZE)):
-                        if prev is None:
-                            prev = 0
-                            continue
-
-                        seektable.seekpoints.append(mutagen.flac.SeekPoint(prev * SEEK_SIZE, i * SEEK_SIZE, SEEK_SIZE))
-                        prev = i
-
-                    if prev is not None:
-                        seektable.seekpoints.append(mutagen.flac.SeekPoint(prev * SEEK_SIZE, file.info.total_samples, file.info.total_samples - prev * SEEK_SIZE))
-                    elif math.floor(file.info.total_samples / SEEK_SIZE) == 0:
-                        seektable.seekpoints.append(mutagen.flac.SeekPoint(0, file.info.total_samples, file.info.total_samples))
-
-                    if not file.seektable:
-                        file.seektable = seektable
-                        file.metadata_blocks.append(seektable)
-
-                    file.seektable.write()
-                elif file.seektable:
-                    file.metadata_blocks = [b for b in file.metadata_blocks if b != file.seektable]
-                    file.seektable = None
 
         for name, value in metadata.items():
             if name == '~rating':
@@ -344,6 +345,8 @@ class VCommentFile(File):
 
         if is_flac:
             flac_sort_pics_after_tags(file.metadata_blocks)
+            if config.setting["fix_missing_seekpoints_flac"]:
+                flac_fix_seektable(file)
 
         kwargs = {}
         if is_flac and config.setting["remove_id3_from_flac"]:
