@@ -431,13 +431,13 @@ _tracknum_regexps = [re.compile(r, re.I) for r in (
     # search for explicit track number (prefix "track")
     r"track[\s_-]*(?:(?:no|nr)\.?)?[\s_-]*(?P<number>\d+)",
     # search for 1- or 2-digit number at start of string (additional leading zeroes are allowed)
-    # An optional disc number preceeding the track number is ignored.
+    # An optional disc number preceding the track number is ignored.
     r"^(?:\d+[\s_-])?(?P<number>0*\d{1,2})(?:\.)[^0-9,]",  # "99. ", but not "99.02"
     r"^(?:\d+[\s_-])?(?P<number>0*\d{1,2})[^0-9,.s]",
     # search for 2-digit number at end of string (additional leading zeroes are allowed)
-    r"[^0-9,.](?P<number>0*\d{2})$",
-    r"[^0-9,.]\[(?P<number>0*\d{1,2})\]$",
-    r"[^0-9,.]\((?P<number>0*\d{2})\)$",
+    r"[^0-9,.\w](?P<number>0*\d{2})$",
+    r"[^0-9,.\w]\[(?P<number>0*\d{1,2})\]$",
+    r"[^0-9,.\w]\((?P<number>0*\d{2})\)$",
     # File names which consist of only a number
     r"^(?P<number>\d+)$",
 )]
