@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019-2021 Philipp Wolfer
+# Copyright (C) 2019-2022 Philipp Wolfer
 # Copyright (C) 2020 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -22,10 +22,13 @@
 
 import base64
 import os
+from unittest.mock import patch
 
 from mutagen.flac import (
     Padding,
     Picture,
+    SeekPoint,
+    SeekTable,
     VCFLACDict,
 )
 
@@ -242,6 +245,43 @@ class FLACTest(CommonVorbisTests.VorbisTestCase):
                 haspics = True
                 self.assertGreater(f.metadata_blocks.index(b), tagindex)
         self.assertTrue(haspics, "Picture block expected, none found")
+
+    @patch.object(vorbis, 'flac_fix_seektable')
+    def test_setting_fix_missing_seekpoints_flac(self, mock_flac_fix_seektable):
+        save_metadata(self.filename, Metadata())
+        mock_flac_fix_seektable.assert_not_called()
+        self.set_config_values({
+            'fix_missing_seekpoints_flac': True
+        })
+        save_metadata(self.filename, Metadata())
+        mock_flac_fix_seektable.assert_called_once()
+
+    @skipUnlessTestfile
+    def test_flac_fix_seektable_remove_empty(self):
+        f = load_raw(self.filename)
+        # Add an empty seek table
+        seektable = SeekTable(None)
+        f.seektable = seektable
+        f.metadata_blocks.append(seektable)
+        # This is a zero length file. The empty seektable should get removed
+        vorbis.flac_fix_seektable(f)
+        self.assertIsNone(f.seektable)
+        self.assertNotIn(seektable, f.metadata_blocks)
+
+    @skipUnlessTestfile
+    def test_flac_fix_seektable_keep_existing(self):
+        f = load_raw(self.filename)
+        # Add an non-empty seek table
+        seektable = SeekTable(None)
+        seekpoint = SeekPoint(0, 0, 0)
+        seektable.seekpoints.append(seekpoint)
+        f.seektable = seektable
+        f.metadata_blocks.append(seektable)
+        # Existing non-empty seektable should be kept
+        vorbis.flac_fix_seektable(f)
+        self.assertEqual(seektable, f.seektable)
+        self.assertIn(seektable, f.metadata_blocks)
+        self.assertEqual([seekpoint], f.seektable.seekpoints)
 
 
 class OggVorbisTest(CommonVorbisTests.VorbisTestCase):
