@@ -517,6 +517,9 @@ class TracknumFromFilenameTest(PicardTestCase):
             (242, 'track-242.mp3'),
             (242, 'track nr 242.mp3'),
             (242, 'track_242.mp3'),
+            (3, 'track003.mp3'),
+            (40, 'Track40.mp3'),
+            (None, 'UB40.mp3'),
             (1, 'artist song 2004 track01 xxxx.ogg'),
             (1, 'artist song 2004 track-no-01 xxxx.ogg'),
             (1, 'artist song 2004 track-no_01 xxxx.ogg'),
@@ -570,11 +573,17 @@ class TracknumAndTitleFromFilenameTest(PicardTestCase):
         tests = (
             ((None, 'Foo'), 'Foo.mp3'),
             (('1', 'Track 0001'), 'Track 0001.mp3'),
+            (('42', 'Track-42'), 'Track-42.mp3'),
             (('99', 'Foo'), '99 Foo.mp3'),
             (('42', 'Foo'), '0000042 Foo.mp3'),
             (('2', 'Foo'), '0000002 Foo.mp3'),
             ((None, '20000 Feet'), '20000 Feet.mp3'),
             ((None, '20,000 Feet'), '20,000 Feet.mp3'),
+            ((None, 'Venus (Original 12" version)'), 'Venus (Original 12" version).mp3'),
+            ((None, 'Vanity 6'), 'Vanity 6.mp3'),
+            ((None, 'UB40 - Red Red Wine'), 'UB40 - Red Red Wine.mp3'),
+            ((None, 'Red Red Wine - UB40'), 'Red Red Wine - UB40.mp3'),
+            ((None, 'Symphony no. 5 in D minor'), 'Symphony no. 5 in D minor.mp3'),
         )
         for expected, filename in tests:
             result = tracknum_and_title_from_filename(filename)
