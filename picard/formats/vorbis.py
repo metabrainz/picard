@@ -29,7 +29,6 @@
 
 
 import base64
-import math
 import re
 
 import mutagen.flac
@@ -104,37 +103,16 @@ def flac_sort_pics_after_tags(metadata_blocks):
         metadata_blocks.insert(tagindex, pic)
 
 
-def flac_fix_seektable(file):
+def flac_remove_empty_seektable(file):
+    """Removes an existing but empty seektable from the Flac file.
+
+    Some software has issues with files that contain an empty seek table. Since
+    no seektable is also valid, remove it.
+    """
     seektable = file.seektable
-    if not seektable:
-        seektable = mutagen.flac.SeekTable(None)
-    if not seektable.seekpoints:
-        if file.info.total_samples > 0 and math.floor(file.info.length) > 0:
-            # We try to regenerate the seektable using 4096 samples as a step
-            # the seekpoint is start pos, end pos, step sample
-            prev = None
-            SEEK_SIZE = 4096
-            for i in range(file.info.total_samples // SEEK_SIZE):
-                if prev is None:
-                    prev = 0
-                    continue
-
-                seektable.seekpoints.append(mutagen.flac.SeekPoint(prev * SEEK_SIZE, i * SEEK_SIZE, SEEK_SIZE))
-                prev = i
-
-            if prev is not None:
-                seektable.seekpoints.append(mutagen.flac.SeekPoint(prev * SEEK_SIZE, file.info.total_samples, file.info.total_samples - prev * SEEK_SIZE))
-            elif file.info.total_samples // SEEK_SIZE == 0:
-                seektable.seekpoints.append(mutagen.flac.SeekPoint(0, file.info.total_samples, file.info.total_samples))
-
-            if not file.seektable:
-                file.seektable = seektable
-                file.metadata_blocks.append(seektable)
-
-            file.seektable.write()
-        elif file.seektable:
-            file.metadata_blocks = [b for b in file.metadata_blocks if b != file.seektable]
-            file.seektable = None
+    if seektable and not seektable.seekpoints:
+        file.metadata_blocks = [b for b in file.metadata_blocks if b != file.seektable]
+        file.seektable = None
 
 
 class VCommentFile(File):
@@ -346,7 +324,7 @@ class VCommentFile(File):
         if is_flac:
             flac_sort_pics_after_tags(file.metadata_blocks)
             if config.setting["fix_missing_seekpoints_flac"]:
-                flac_fix_seektable(file)
+                flac_remove_empty_seektable(file)
 
         kwargs = {}
         if is_flac and config.setting["remove_id3_from_flac"]:
