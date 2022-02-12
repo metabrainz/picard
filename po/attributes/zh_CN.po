@@ -4,7 +4,7 @@
 #   Alastair McKinstry <mckinstry@computer.org>, 2002
 # Alastair McKinstry <mckinstry@computer.org>, 2001
 # Clay Cheng <569735195@qq.com>, 2017-2018
-# Clay Cheng <569735195@qq.com>, 2020-2021
+# Clay Cheng <569735195@qq.com>, 2020-2022
 # Clay Cheng <569735195@qq.com>, 2016-2017
 # Dian Li <xslidian@gmail.com>, 2009-2019
 # Erwin Synth <kingdzy1996@gmail.com>, 2017
@@ -33,7 +33,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-09-06 12:54+0000\n"
+"PO-Revision-Date: 2022-02-01 04:59+0000\n"
 "Last-Translator: Clay Cheng <569735195@qq.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -48,7 +48,7 @@ msgid ""
 "\"Motet\" is a term that applies to different types of (usually "
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
-msgstr "“经文歌”指不同种类、通常无伴奏的唱诗班作品，在不同年代有不同的定义。"
+msgstr "“经文歌”指不同种类、通常无伴奏的唱诗班作品，在不同年代有不同的确切含义。"
 
 #: DB:work_type/description:5
 msgctxt "work_type"
@@ -133,6 +133,52 @@ msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
 msgstr "每分钟90转的垂直切割胶木唱片，1906至1932年由百代唱片公司制造。"
+
+#: DB:release_group_secondary_type/description:1
+msgctxt "release_group_secondary_type"
+msgid ""
+"<p>A compilation, for the purposes of the MusicBrainz database, covers the following types of releases:</p>\n"
+"\n"
+"<ul>\n"
+"<li>a collection of recordings from various old sources (not necessarily released) combined together. For example a \"best of\", retrospective or rarities type release.</li>\n"
+"<li>a various artists song collection, usually based on a general theme (\"Songs for Lovers\"), a particular time period (\"Hits of 1998\"), or some other kind of grouping (\"Songs From the Movies\", the \"Café del Mar\" series, etc).</li>\n"
+"</ul>\n"
+"\n"
+"<p>The MusicBrainz project does not generally consider the following to be compilations:</p>\n"
+"\n"
+"<ul>\n"
+"<li>a reissue of an album, even if it includes bonus tracks.</li>\n"
+"<li>a tribute release containing covers of music by another artist.</li>\n"
+"<li>a classical release containing new recordings of works by a classical artist.</li>\n"
+"<li>a split release containing new music by several artists</li>\n"
+"</ul>\n"
+"\n"
+"<p>Compilation should be used in addition to, not instead of, other types: for example, a various artists soundtrack using pre-released music should be marked as both a soundtrack and a compilation.</p>"
+msgstr "<p>MusicBrainz定义的合辑包括以下专辑类型：</p>\n\n<ul>\n<li>由多个不同老旧来源(不一定是已发行专辑)所采集录音的组合。如最佳集，回顾集或者精选集类型的专辑。</li>\n<li>群星歌曲收藏，通常基于一个一般主题(“情歌”)，一个特定时间段(“1998年流行金曲”)或其它分类标准(“电影配乐”，“Café del Mar系列”等)。</li>\n</ul>\n\n<p>MusicBrainz通常不认为如下类型是合辑：</p>\n\n<ul>\n<li>再发行专辑，即使含有彩蛋音轨。</li>\n<li>含有其他艺术家翻唱作品的致敬专辑。</li>\n<li>含有古典艺术家作品新录音的古典专辑。</li>\n<li>含有多位艺术家新曲的合作专辑。</li>\n</ul>\n\n<p>合辑应当与其他类型同时使用，而非代替其他类型：例如，使用了已有音乐的群星音轨应同时标记为合辑和音轨。</p>"
+
+#: DB:release_group_primary_type/description:2
+msgctxt "release_group_primary_type"
+msgid ""
+"<p>A single has different definitions depending on the market it is released for.</p>\n"
+"\n"
+"<ul>\n"
+"<li>In the US market, a single typically has one main song and possibly a handful of additional tracks or remixes of the main track; the single is usually named after its main song; the single is primarily released to get radio play and to promote release sales.</li>\n"
+"<li>The U.K. market (also Australia and Europe) is similar to the US market, however singles are often released as a two disc set, with each disc sold separately. They also sometimes have a longer version of the single (often combining the tracks from the two disc version) which is very similar to the US style single, and this is referred to as a \"maxi-single\". (In some cases the maxi-single is longer than the release the single comes from!)</li>\n"
+"<li>The Japanese market is much more single driven. The defining factor is typically the length of the single and the price it is sold at. Up until 1995 it was common that these singles would be released using a mini-cd format, which is basically a much smaller CD typically 8 cm in diameter. Around 1995 the 8cm single was phased out, and the standard 12cm CD single is more common now; generally re-releases of singles from pre-1995 will be released on the 12cm format, even if they were originally released on the 8cm format. Japanese singles often come with instrumental versions of the songs and also have maxi-singles like the UK with remixed versions of the songs. Sometimes a maxi-single will have more tracks than an EP but as it's all alternate versions of the same 2-3 songs it is still classified as a single.</li>\n"
+"</ul>\n"
+"\n"
+"<p>There are other variations of the single called a \"split single\" where songs by two different artists are released on the one disc, typically vinyl.</p>"
+msgstr "<p>单曲的定义因发行市场而异。</p>\n\n<ul>\n<li>在北美市场，单曲一般包括一首主打歌以及一些额外音轨或者主音轨重混作品；单曲依据主打歌命名；单曲主要针对电台销售，用于促进专辑销量。</li>\n<li>英国市场和北美市场类似(澳大利亚和欧陆亦然)，但是单曲通常以双碟片组合形式发行，每张碟片单独销售。有时也有类似于北美式单曲的长版单曲(通常整合了双碟片版本的所有曲目)，称为“单曲大碟”。(有时单曲大碟比收录该单曲的专辑还长！)</li>\n<li>日本市场明显更以单曲为主导。决定因素在于单曲长度及其售价。至1995年位置，单曲一般使用mini-CD格式，即明显较小，直径为8cm的CD。1995年前后8cm单曲淡出市场，现在标准12cm单曲更常见；一般1995年之前单曲的再发行会采用12cm格式，即使当时是以8cm格式发布的。日本单曲通常含有歌曲的器乐版，也有像英国一样含有重混版本的单曲大碟。单曲大碟有时比EP的音轨数多，但都是相同的2-3首歌的不同版本，因此仍属于单曲。</li>\n</ul>\n\n<p>单曲的其他变种包括同一碟内含有两个以上艺术家歌曲的“合作单曲”，典型上是黑胶。</p>"
+
+#: DB:release_group_secondary_type/description:8
+msgctxt "release_group_secondary_type"
+msgid ""
+"A DJ-mix is a sequence of several recordings played one after the other, "
+"each one modified so that they blend together into a continuous flow of "
+"music. A DJ-mix release requires that the recordings be modified in some "
+"manner, and the DJ who does this modification is usually (although not "
+"always) credited in a fairly prominent way."
+msgstr "DJ 混音是按次序注意播放的多个录音，每曲均经过修饰，整合为连续的音乐流。DJ 混音专辑要求录音经某种修饰，而实施修饰的DJ通常(虽然不总是)以相当突出的方式署名。"
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
@@ -307,6 +353,14 @@ msgid ""
 "usually chosen for their sound and for the images and ideas they suggest."
 msgstr "诗歌是通常较短并成行的文学作品，其语言押韵并用于表达意象及思想。"
 
+#: DB:release_group_secondary_type/description:10
+msgctxt "release_group_secondary_type"
+msgid ""
+"A promotional release mostly meant to have limited circulation and "
+"demonstrate the sound of an artist to record labels, publishers and other "
+"artists."
+msgstr "推广专辑更多意味着有限流通，用于向厂牌，词曲版权方以及其他艺术家演示某艺术家的声音。"
+
 #: DB:work_type/description:14
 msgctxt "work_type"
 msgid ""
@@ -317,6 +371,18 @@ msgstr "四重奏或四重唱指由四个人声或乐器声部组成的音乐作
 msgctxt "series_type"
 msgid "A recurring festival, usually happening annually in the same location."
 msgstr "重复举办的音乐节，通常每年在同一地点举办。"
+
+#: DB:release_group_secondary_type/description:7
+msgctxt "release_group_secondary_type"
+msgid "A release that primarily contains remixed material."
+msgstr "主要含重混音素材的专辑。"
+
+#: DB:release_group_secondary_type/description:6
+msgctxt "release_group_secondary_type"
+msgid ""
+"A release that was recorded live. Generally this means \"with an audience\","
+" be it in person, through the radio or in another similar way."
+msgstr "现场录制专辑。一般上这代表“有收听者”，可以是亲自，使用广播或其他类似手段收听。"
 
 #: DB:place_type/description:7
 msgctxt "place_type"
@@ -403,6 +469,15 @@ msgid ""
 "A soundtrack is the music that accompanies a film, TV program, videogame, or"
 " even book."
 msgstr "原声音乐是指电影、电视节目、游戏或书籍的配乐。"
+
+#: DB:release_group_secondary_type/description:2
+msgctxt "release_group_secondary_type"
+msgid ""
+"A soundtrack is the musical score to a movie, TV series, stage show, video "
+"game, or other medium. Video game CDs with audio tracks should be classified"
+" as soundtracks because the musical properties of the CDs are more "
+"interesting to MusicBrainz than their data properties."
+msgstr "原声音乐指的是电影，电视剧，舞台剧，电子游戏或其他媒体作品的音乐部分。带有音轨的游戏CD应视为原声音乐，因为这些CD的音乐性对MusicBrainz来说比数据性更有意义。"
 
 #: DB:instrument_type/description:6
 msgctxt "instrument_type"
@@ -662,6 +737,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Amṛtavāhiṇi"
 msgstr "Amṛtavāhiṇi"
 
+#: DB:release_group_primary_type/description:3
+msgctxt "release_group_primary_type"
+msgid ""
+"An EP is a so-called \"Extended Play\" release and often contains the "
+"letters EP in the title. Generally an EP will be shorter than a full length "
+"release (an LP or \"Long Play\") and the tracks are usually exclusive to the"
+" EP, in other words the tracks don't come from a previously issued release. "
+"EP is fairly difficult to define; usually it should only be assumed that a "
+"release is an EP if the artist defines it as such."
+msgstr "EP，即迷你专辑，在标题中常有“EP”字样。一般而言EP比全长专辑(常规专辑或LP)要短，而音轨则为EP专属，意味着不会来自过往专辑。EP相当难以定义；一般只会在艺术家将专辑定义为EP时才是EP。"
+
+#: DB:release_group_primary_type/description:1
+msgctxt "release_group_primary_type"
+msgid ""
+"An album, perhaps better defined as a \"Long Play\" (LP) release, generally "
+"consists of previously unreleased material (unless this type is combined "
+"with secondary types which change that, such as \"Compilation\")."
+msgstr "专辑，更确切的称呼是常规专辑(LP)，一般包含从未发布的素材(除非此类型与会改变性质的此类并用，如\"合辑\")。"
+
 #: DB:release_status/description:4
 msgctxt "release_status"
 msgid ""
@@ -683,7 +777,27 @@ msgctxt "work_type"
 msgid ""
 "An audio drama is a dramatized, purely acoustic performance, broadcast on "
 "radio or published on an audio medium (tape, CD, etc.)."
-msgstr "广播剧是戏剧化的纯声音表演，通过电台广播或者以音频媒介（磁带，CD等）出版。"
+msgstr "音频剧是戏剧化的纯声音表演，通过电台广播或者以音频媒介（磁带，CD等）出版。"
+
+#: DB:release_group_secondary_type/description:11
+msgctxt "release_group_secondary_type"
+msgid ""
+"An audio drama is an audio-only performance of a play (often, but not "
+"always, meant for radio). Unlike audiobooks, it usually has multiple "
+"performers rather than a main narrator."
+msgstr "音频剧是只有音频的话剧(通常，但不总是，在广播上播出)。与有声读物不同，它常有多位表演者而非单一叙述者。"
+
+#: DB:release_group_secondary_type/description:5
+msgctxt "release_group_secondary_type"
+msgid "An audiobook is a book read by a narrator without music."
+msgstr "有声读物是由叙述者阅读而没有音乐的书。"
+
+#: DB:release_group_primary_type/description:12
+msgctxt "release_group_primary_type"
+msgid ""
+"An episodic release that was originally broadcast via radio, television, or "
+"the Internet, including podcasts."
+msgstr "分集专辑原本是通过广播，电视或包含播客在内的互联网手段发布的。"
 
 #: DB:event_type/description:2
 msgctxt "event_type"
@@ -698,6 +812,11 @@ msgid ""
 "An individual concert by a single artist or collaboration, often with "
 "supporting artists who perform before the main act."
 msgstr "由单一艺术家或协作团体举办的独立音乐会，通常在主要演出前有协助艺术家表演。"
+
+#: DB:release_group_secondary_type/description:4
+msgctxt "release_group_secondary_type"
+msgid "An interview release contains an interview, generally with an artist."
+msgstr "采访专辑包含一段采访，一般含有一位艺术家。"
 
 #: DB:work_type/description:10
 msgctxt "work_type"
@@ -751,6 +870,13 @@ msgid ""
 "Any release officially sanctioned by the artist and/or their record company."
 " Most releases will fit into this category."
 msgstr "任何经艺术家和/或其唱片公司许可的发行版。大多数发行版符合此类。"
+
+#: DB:release_group_primary_type/description:11
+msgctxt "release_group_primary_type"
+msgid ""
+"Any release that does not fit or can't decisively be placed in any of the "
+"other categories."
+msgstr "不属于或无法精确认定为其他门类的专辑。"
 
 #: DB:work_attribute_type_allowed_value/value:311
 msgctxt "work_attribute_type_allowed_value"
@@ -1651,7 +1777,7 @@ msgstr "城市指代任何规模的居民点，包括城镇和村庄。"
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
 msgid "Compilation"
-msgstr "汇编"
+msgstr "合辑"
 
 #: DB:event_type/name:1
 msgctxt "event_type"
@@ -2334,7 +2460,7 @@ msgstr "Evcara"
 #: DB:editor_collection_type/name:4
 msgctxt "collection_type"
 msgid "Event"
-msgstr "事件"
+msgstr "活动"
 
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
@@ -4223,12 +4349,12 @@ msgstr "Kōmal riṣabh asāvēri"
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
 msgid "Label"
-msgstr "唱片公司"
+msgstr "厂牌"
 
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
 msgid "Label name"
-msgstr "唱片公司名称"
+msgstr "厂牌名称"
 
 #: DB:work_attribute_type_allowed_value/value:956
 msgctxt "work_attribute_type_allowed_value"
@@ -4469,6 +4595,11 @@ msgstr "弥撒"
 msgctxt "event_type"
 msgid "Masterclass/Clinic"
 msgstr "大师课程/诊断"
+
+#: DB:cover_art_archive.art_type/name:15
+msgctxt "cover_art_type"
+msgid "Matrix/Runout"
+msgstr "原版号/序列号"
 
 #: DB:work_attribute_type_allowed_value/value:449
 msgctxt "work_attribute_type_allowed_value"
@@ -5190,6 +5321,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Nişabureyn"
 msgstr "Nişabureyn"
 
+#: DB:release_group_secondary_type/description:3
+msgctxt "release_group_secondary_type"
+msgid "Non-music spoken word releases."
+msgstr "非音乐表达的发行专辑。"
+
 #: DB:release_packaging/name:7
 msgctxt "release_packaging"
 msgid "None"
@@ -5555,6 +5691,23 @@ msgstr "产品"
 msgctxt "release_status"
 msgid "Promotion"
 msgstr "推广"
+
+#: DB:release_group_secondary_type/description:9
+msgctxt "release_group_secondary_type"
+msgid ""
+"Promotional in nature (but not necessarily free), mixtapes and street albums"
+" are often released by artists to promote new artists, or upcoming studio "
+"albums by prominent artists. They are also sometimes used to keep fans' "
+"attention between studio releases and are most common in rap & hip hop "
+"genres. They are often not sanctioned by the artist's label, may lack proper"
+" sample or song clearances and vary widely in production and recording "
+"quality. While mixtapes are generally DJ-mixed, they are distinct from "
+"commercial DJ-mixes (which are usually deemed compilations) and are defined "
+"by having a significant proportion of new material, including original "
+"production or original vocals over top of other artists' instrumentals. They"
+" are distinct from demos in that they are designed for release directly to "
+"the public and fans; not to labels."
+msgstr "本质上属于推广品(尽管不一定免费)，混音带和街头专辑通常由艺术家发行，用于推广新人艺术家或者知名艺术家的新录音室专辑。有时也用于在录音室专辑发行间歇期保持粉丝注意力，在嘻哈流派中较为常见。通常它们未经厂牌核准，所用采样或歌曲未经许可，且制作和录音质量差异较大。尽管混音带一般由DJ混制，它们独立于商业DJ混音(常视为合辑)，其定义为含有大量新素材，包括原创制作或附加于其他艺术家伴奏上的原创人声。与样带的区别在于它们是为了直接向公众和粉丝而非厂牌方发行而制作的。"
 
 #: DB:work_type/name:23
 msgctxt "work_type"
@@ -6799,7 +6952,7 @@ msgctxt "medium_format"
 msgid ""
 "The CD layer of a DualDisc. The DVD layer should be added as a separate "
 "medium."
-msgstr "双面碟的CD面。DVD面应视为独立媒介。"
+msgstr "DualDisc的CD面。DVD面应视为独立媒介。"
 
 #: DB:medium_format/description:63
 msgctxt "medium_format"
@@ -6813,7 +6966,7 @@ msgctxt "medium_format"
 msgid ""
 "The CD side of a vinyl + CD VinylDisc. The vinyl side should be added as a "
 "separate medium."
-msgstr "黑胶唱片二合一碟的CD面。黑胶面材料为单独添加的介质。"
+msgstr "VinylDisc的CD面。黑胶面材料为单独添加的介质。"
 
 #: DB:medium_format/description:60
 msgctxt "medium_format"
@@ -6829,28 +6982,28 @@ msgctxt "medium_format"
 msgid ""
 "The DVD (audio) layer of a DVDplus. The CD layer should be added as a "
 "separate medium."
-msgstr "DVDplus的DVD（audio）面。CD面应视为独立媒介。"
+msgstr "DVDplus的DVD音频面。CD面应视为独立媒介。"
 
 #: DB:medium_format/description:65
 msgctxt "medium_format"
 msgid ""
 "The DVD (audio) layer of a DualDisc. The CD layer should be added as a "
 "separate medium."
-msgstr "双面碟的DVD（audio）面。CD面应视为独立媒介。"
+msgstr "DualDisc的DVD音频面。CD面应视为独立媒介。"
 
 #: DB:medium_format/description:66
 msgctxt "medium_format"
 msgid ""
 "The DVD (video) layer of a DualDisc. The CD layer should be added as a "
 "separate medium."
-msgstr "双面碟的DVD（video）面。CD面应视为独立媒介。"
+msgstr "DualDisc的DVD视频面。CD面应视为独立媒介。"
 
 #: DB:medium_format/description:80
 msgctxt "medium_format"
 msgid ""
 "The DVD side of a vinyl + DVD VinylDisc. The vinyl side should be added as a"
 " separate medium."
-msgstr "黑胶唱片二合一碟的DVD面。黑胶面材料为单独添加的介质。"
+msgstr "VinylDisc的DVD面。黑胶面应视为独立媒介。"
 
 #: DB:medium_format/description:64
 msgctxt "medium_format"
@@ -6874,6 +7027,14 @@ msgid ""
 "matter. Operettas are generally short and include spoken parts."
 msgstr "轻歌剧是一种轻型歌剧，在音乐和主题方面都是如此。轻歌剧一般较短且包括口白。"
 
+#: DB:cover_art_archive.art_type/description:15
+msgctxt "cover_art_type"
+msgid ""
+"The section on a CD, record or other media containing such data as matrix "
+"numbers. Usually found in the hub of a CD or the dead wax area of a vinyl "
+"record."
+msgstr "CD，唱片或其他媒介含有原版号的部分。通常可以在CD的内圈或黑胶唱片的蜡封区找到。"
+
 #: DB:release_packaging/description:1
 msgctxt "release_packaging"
 msgid "The traditional CD case, made of hard, brittle plastic."
@@ -6884,7 +7045,7 @@ msgctxt "medium_format"
 msgid ""
 "The vinyl side of a VinylDisc. The CD or DVD side should be added as a "
 "separate medium."
-msgstr "黑胶唱片二合一碟的黑胶面。CD/DVD面材料为单独添加的介质。"
+msgstr "VinylDisc的黑胶面。CD/DVD面应视为独立媒介。"
 
 #: DB:artist_type/description:6
 msgctxt "artist_type"
@@ -7278,7 +7439,7 @@ msgstr "VinylDisc （DVD 面）"
 #: DB:medium_format/name:81
 msgctxt "medium_format"
 msgid "VinylDisc (Vinyl side)"
-msgstr "VinylDisc （唱片面）"
+msgstr "VinylDisc （黑胶面）"
 
 #: DB:work_attribute_type_allowed_value/value:259
 #: DB:work_attribute_type_allowed_value/value:1047

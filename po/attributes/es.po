@@ -40,8 +40,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2022-01-07 06:04+0000\n"
-"Last-Translator: RepaNation Distributors\n"
+"PO-Revision-Date: 2022-01-24 20:52+0000\n"
+"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/musicbrainz/musicbrainz/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -140,6 +140,52 @@ msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
 msgstr "Discos de 90 rpm, de goma laca y cortados verticalmente, producidos por el sello Pathè desde 1906 hasta 1932."
+
+#: DB:release_group_secondary_type/description:1
+msgctxt "release_group_secondary_type"
+msgid ""
+"<p>A compilation, for the purposes of the MusicBrainz database, covers the following types of releases:</p>\n"
+"\n"
+"<ul>\n"
+"<li>a collection of recordings from various old sources (not necessarily released) combined together. For example a \"best of\", retrospective or rarities type release.</li>\n"
+"<li>a various artists song collection, usually based on a general theme (\"Songs for Lovers\"), a particular time period (\"Hits of 1998\"), or some other kind of grouping (\"Songs From the Movies\", the \"Café del Mar\" series, etc).</li>\n"
+"</ul>\n"
+"\n"
+"<p>The MusicBrainz project does not generally consider the following to be compilations:</p>\n"
+"\n"
+"<ul>\n"
+"<li>a reissue of an album, even if it includes bonus tracks.</li>\n"
+"<li>a tribute release containing covers of music by another artist.</li>\n"
+"<li>a classical release containing new recordings of works by a classical artist.</li>\n"
+"<li>a split release containing new music by several artists</li>\n"
+"</ul>\n"
+"\n"
+"<p>Compilation should be used in addition to, not instead of, other types: for example, a various artists soundtrack using pre-released music should be marked as both a soundtrack and a compilation.</p>"
+msgstr ""
+
+#: DB:release_group_primary_type/description:2
+msgctxt "release_group_primary_type"
+msgid ""
+"<p>A single has different definitions depending on the market it is released for.</p>\n"
+"\n"
+"<ul>\n"
+"<li>In the US market, a single typically has one main song and possibly a handful of additional tracks or remixes of the main track; the single is usually named after its main song; the single is primarily released to get radio play and to promote release sales.</li>\n"
+"<li>The U.K. market (also Australia and Europe) is similar to the US market, however singles are often released as a two disc set, with each disc sold separately. They also sometimes have a longer version of the single (often combining the tracks from the two disc version) which is very similar to the US style single, and this is referred to as a \"maxi-single\". (In some cases the maxi-single is longer than the release the single comes from!)</li>\n"
+"<li>The Japanese market is much more single driven. The defining factor is typically the length of the single and the price it is sold at. Up until 1995 it was common that these singles would be released using a mini-cd format, which is basically a much smaller CD typically 8 cm in diameter. Around 1995 the 8cm single was phased out, and the standard 12cm CD single is more common now; generally re-releases of singles from pre-1995 will be released on the 12cm format, even if they were originally released on the 8cm format. Japanese singles often come with instrumental versions of the songs and also have maxi-singles like the UK with remixed versions of the songs. Sometimes a maxi-single will have more tracks than an EP but as it's all alternate versions of the same 2-3 songs it is still classified as a single.</li>\n"
+"</ul>\n"
+"\n"
+"<p>There are other variations of the single called a \"split single\" where songs by two different artists are released on the one disc, typically vinyl.</p>"
+msgstr ""
+
+#: DB:release_group_secondary_type/description:8
+msgctxt "release_group_secondary_type"
+msgid ""
+"A DJ-mix is a sequence of several recordings played one after the other, "
+"each one modified so that they blend together into a continuous flow of "
+"music. A DJ-mix release requires that the recordings be modified in some "
+"manner, and the DJ who does this modification is usually (although not "
+"always) credited in a fairly prominent way."
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
@@ -314,6 +360,14 @@ msgid ""
 "usually chosen for their sound and for the images and ideas they suggest."
 msgstr "Un poema es una pieza literaria, generalmente corta y en verso, en la que las palabras son usualmente elegidas por su sonido y por las imágenes e ideas que sugieren. "
 
+#: DB:release_group_secondary_type/description:10
+msgctxt "release_group_secondary_type"
+msgid ""
+"A promotional release mostly meant to have limited circulation and "
+"demonstrate the sound of an artist to record labels, publishers and other "
+"artists."
+msgstr ""
+
 #: DB:work_type/description:14
 msgctxt "work_type"
 msgid ""
@@ -324,6 +378,18 @@ msgstr "Un cuarteto es una formación musical que consiste en cuatro cantantes"
 msgctxt "series_type"
 msgid "A recurring festival, usually happening annually in the same location."
 msgstr "Un festival que se repite, generalmente, cada año en la misma localidad."
+
+#: DB:release_group_secondary_type/description:7
+msgctxt "release_group_secondary_type"
+msgid "A release that primarily contains remixed material."
+msgstr ""
+
+#: DB:release_group_secondary_type/description:6
+msgctxt "release_group_secondary_type"
+msgid ""
+"A release that was recorded live. Generally this means \"with an audience\","
+" be it in person, through the radio or in another similar way."
+msgstr ""
 
 #: DB:place_type/description:7
 msgctxt "place_type"
@@ -410,6 +476,15 @@ msgid ""
 "A soundtrack is the music that accompanies a film, TV program, videogame, or"
 " even book."
 msgstr "Banda sonora es la parte de sonido completa de una pelicula, serie de Tv, video juego."
+
+#: DB:release_group_secondary_type/description:2
+msgctxt "release_group_secondary_type"
+msgid ""
+"A soundtrack is the musical score to a movie, TV series, stage show, video "
+"game, or other medium. Video game CDs with audio tracks should be classified"
+" as soundtracks because the musical properties of the CDs are more "
+"interesting to MusicBrainz than their data properties."
+msgstr ""
 
 #: DB:instrument_type/description:6
 msgctxt "instrument_type"
@@ -669,6 +744,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Amṛtavāhiṇi"
 msgstr "Amṛtavāhiṇi"
 
+#: DB:release_group_primary_type/description:3
+msgctxt "release_group_primary_type"
+msgid ""
+"An EP is a so-called \"Extended Play\" release and often contains the "
+"letters EP in the title. Generally an EP will be shorter than a full length "
+"release (an LP or \"Long Play\") and the tracks are usually exclusive to the"
+" EP, in other words the tracks don't come from a previously issued release. "
+"EP is fairly difficult to define; usually it should only be assumed that a "
+"release is an EP if the artist defines it as such."
+msgstr ""
+
+#: DB:release_group_primary_type/description:1
+msgctxt "release_group_primary_type"
+msgid ""
+"An album, perhaps better defined as a \"Long Play\" (LP) release, generally "
+"consists of previously unreleased material (unless this type is combined "
+"with secondary types which change that, such as \"Compilation\")."
+msgstr ""
+
 #: DB:release_status/description:4
 msgctxt "release_status"
 msgid ""
@@ -692,6 +786,26 @@ msgid ""
 "radio or published on an audio medium (tape, CD, etc.)."
 msgstr "Un audiodrama es una actuación dramatizada y esencialmente auditiva, ya sea por radio o publicada en un soporte de audio (casete, CD, etc)."
 
+#: DB:release_group_secondary_type/description:11
+msgctxt "release_group_secondary_type"
+msgid ""
+"An audio drama is an audio-only performance of a play (often, but not "
+"always, meant for radio). Unlike audiobooks, it usually has multiple "
+"performers rather than a main narrator."
+msgstr ""
+
+#: DB:release_group_secondary_type/description:5
+msgctxt "release_group_secondary_type"
+msgid "An audiobook is a book read by a narrator without music."
+msgstr ""
+
+#: DB:release_group_primary_type/description:12
+msgctxt "release_group_primary_type"
+msgid ""
+"An episodic release that was originally broadcast via radio, television, or "
+"the Internet, including podcasts."
+msgstr ""
+
 #: DB:event_type/description:2
 msgctxt "event_type"
 msgid ""
@@ -705,6 +819,11 @@ msgid ""
 "An individual concert by a single artist or collaboration, often with "
 "supporting artists who perform before the main act."
 msgstr "Un concierto individual por un solo artista o en colaboración, frecuentemente con artistas de apoyo que se presentan antes del acto principal."
+
+#: DB:release_group_secondary_type/description:4
+msgctxt "release_group_secondary_type"
+msgid "An interview release contains an interview, generally with an artist."
+msgstr ""
 
 #: DB:work_type/description:10
 msgctxt "work_type"
@@ -758,6 +877,13 @@ msgid ""
 "Any release officially sanctioned by the artist and/or their record company."
 " Most releases will fit into this category."
 msgstr "Cualquier publicación autorizada oficialmente por el artista y/o su discográfica (la mayoría de las publicaciones son oficiales)."
+
+#: DB:release_group_primary_type/description:11
+msgctxt "release_group_primary_type"
+msgid ""
+"Any release that does not fit or can't decisively be placed in any of the "
+"other categories."
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:311
 msgctxt "work_attribute_type_allowed_value"
@@ -4477,6 +4603,11 @@ msgctxt "event_type"
 msgid "Masterclass/Clinic"
 msgstr "Masterclass/Clinic"
 
+#: DB:cover_art_archive.art_type/name:15
+msgctxt "cover_art_type"
+msgid "Matrix/Runout"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:449
 msgctxt "work_attribute_type_allowed_value"
 msgid "Maver"
@@ -5197,6 +5328,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Nişabureyn"
 msgstr "Nişabureyn"
 
+#: DB:release_group_secondary_type/description:3
+msgctxt "release_group_secondary_type"
+msgid "Non-music spoken word releases."
+msgstr ""
+
 #: DB:release_packaging/name:7
 msgctxt "release_packaging"
 msgid "None"
@@ -5562,6 +5698,23 @@ msgstr "Producción"
 msgctxt "release_status"
 msgid "Promotion"
 msgstr "Promocional"
+
+#: DB:release_group_secondary_type/description:9
+msgctxt "release_group_secondary_type"
+msgid ""
+"Promotional in nature (but not necessarily free), mixtapes and street albums"
+" are often released by artists to promote new artists, or upcoming studio "
+"albums by prominent artists. They are also sometimes used to keep fans' "
+"attention between studio releases and are most common in rap & hip hop "
+"genres. They are often not sanctioned by the artist's label, may lack proper"
+" sample or song clearances and vary widely in production and recording "
+"quality. While mixtapes are generally DJ-mixed, they are distinct from "
+"commercial DJ-mixes (which are usually deemed compilations) and are defined "
+"by having a significant proportion of new material, including original "
+"production or original vocals over top of other artists' instrumentals. They"
+" are distinct from demos in that they are designed for release directly to "
+"the public and fans; not to labels."
+msgstr ""
 
 #: DB:work_type/name:23
 msgctxt "work_type"
@@ -6880,6 +7033,14 @@ msgid ""
 "The operetta is a genre of light opera, in terms both of music and subject "
 "matter. Operettas are generally short and include spoken parts."
 msgstr "La opereta es un género de ópera ligera, tanto en términos musicales como temáticos. Las operetas son generalmente cortas e incluyen partes habladas."
+
+#: DB:cover_art_archive.art_type/description:15
+msgctxt "cover_art_type"
+msgid ""
+"The section on a CD, record or other media containing such data as matrix "
+"numbers. Usually found in the hub of a CD or the dead wax area of a vinyl "
+"record."
+msgstr ""
 
 #: DB:release_packaging/description:1
 msgctxt "release_packaging"

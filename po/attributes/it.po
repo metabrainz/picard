@@ -6,14 +6,14 @@
 # Gioele  <email address hidden>, 2012
 # Gioele <gioele@svario.it>, 2012
 # leofiore <leofiore@libero.it>, 2012
-# Luca Salini, 2016-2021
-# Luca Salini, 2013-2015
-# Luca Salini, 2012
+# salo.rock, 2016-2022
+# salo.rock, 2013-2015
+# salo.rock, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2021-08-16 13:26+0000\n"
-"Last-Translator: Luca Salini\n"
+"PO-Revision-Date: 2022-01-27 01:37+0000\n"
+"Last-Translator: salo.rock\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -112,6 +112,52 @@ msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
 msgstr "Dischi di gommalacca 90 giri a incisione verticale, prodotti dall'etichetta Pathé dal 1906 al 1932."
+
+#: DB:release_group_secondary_type/description:1
+msgctxt "release_group_secondary_type"
+msgid ""
+"<p>A compilation, for the purposes of the MusicBrainz database, covers the following types of releases:</p>\n"
+"\n"
+"<ul>\n"
+"<li>a collection of recordings from various old sources (not necessarily released) combined together. For example a \"best of\", retrospective or rarities type release.</li>\n"
+"<li>a various artists song collection, usually based on a general theme (\"Songs for Lovers\"), a particular time period (\"Hits of 1998\"), or some other kind of grouping (\"Songs From the Movies\", the \"Café del Mar\" series, etc).</li>\n"
+"</ul>\n"
+"\n"
+"<p>The MusicBrainz project does not generally consider the following to be compilations:</p>\n"
+"\n"
+"<ul>\n"
+"<li>a reissue of an album, even if it includes bonus tracks.</li>\n"
+"<li>a tribute release containing covers of music by another artist.</li>\n"
+"<li>a classical release containing new recordings of works by a classical artist.</li>\n"
+"<li>a split release containing new music by several artists</li>\n"
+"</ul>\n"
+"\n"
+"<p>Compilation should be used in addition to, not instead of, other types: for example, a various artists soundtrack using pre-released music should be marked as both a soundtrack and a compilation.</p>"
+msgstr "<p>Una raccolta, ai fini del database di MusicBrainz, copre i seguenti tipi di pubblicazioni:</p>\n\n<ul>\n<li>una collezione di registrazioni da più fonti precedenti (non necessariamente già edite) che vengono messe insieme, per esempio una pubblicazione di tipo \"best of\", retrospettiva o di rarità.</li>\n<li>una collezione di canzoni di artisti vari, di solito basata su un tema generale (\"canzoni d'amore\"), un periodo specifico (\"successi del 1998\") o qualche altro tipo di categorizzazione (\"canzoni dei film\", la serie \"Café del Mar\", ecc).</li>\n</ul>\n\n<p>Il progetto MusicBrainz non considera in genere le seguenti come raccolte:</p>\n\n<ul>\n<li>una riedizione di un album, anche se contiene tracce bonus.</li>\n<li>una pubblicazione tributo che contiene cover della musica di un altro artista.</li>\n<li>una pubblicazione di musica classica che contiene nuove registrazioni delle opere di un artista di musica classica.</li>\n<li>una pubblicazione \"split\" che contiene nuova musica di più artisti</li>\n</ul>\n\n<p>Il tipo \"raccolta\" va utilizzato in aggiunta e non in sostituzione di altri tipi: per esempio, una colonna sonora di artisti vari che contiene musica già edita va contrassegnata sia come colonna sonora che come raccolta.</p>"
+
+#: DB:release_group_primary_type/description:2
+msgctxt "release_group_primary_type"
+msgid ""
+"<p>A single has different definitions depending on the market it is released for.</p>\n"
+"\n"
+"<ul>\n"
+"<li>In the US market, a single typically has one main song and possibly a handful of additional tracks or remixes of the main track; the single is usually named after its main song; the single is primarily released to get radio play and to promote release sales.</li>\n"
+"<li>The U.K. market (also Australia and Europe) is similar to the US market, however singles are often released as a two disc set, with each disc sold separately. They also sometimes have a longer version of the single (often combining the tracks from the two disc version) which is very similar to the US style single, and this is referred to as a \"maxi-single\". (In some cases the maxi-single is longer than the release the single comes from!)</li>\n"
+"<li>The Japanese market is much more single driven. The defining factor is typically the length of the single and the price it is sold at. Up until 1995 it was common that these singles would be released using a mini-cd format, which is basically a much smaller CD typically 8 cm in diameter. Around 1995 the 8cm single was phased out, and the standard 12cm CD single is more common now; generally re-releases of singles from pre-1995 will be released on the 12cm format, even if they were originally released on the 8cm format. Japanese singles often come with instrumental versions of the songs and also have maxi-singles like the UK with remixed versions of the songs. Sometimes a maxi-single will have more tracks than an EP but as it's all alternate versions of the same 2-3 songs it is still classified as a single.</li>\n"
+"</ul>\n"
+"\n"
+"<p>There are other variations of the single called a \"split single\" where songs by two different artists are released on the one disc, typically vinyl.</p>"
+msgstr "<p>Un singolo ha una definizione diversa a seconda del mercato in cui è pubblicato.</p>\n\n<ul>\n<li>Nel mercato statunitense, un singolo ha in genere una canzone principale ed eventualmente una manciata di tracce aggiuntive o remix della traccia principale; il singolo è intitolato di solito come la traccia principale; è pubblicato principalmente per ottenere passaggi in radio e per promuovere le vendite di una pubblicazione.</li>\n<li>Il mercato britannico (così come quello australiano ed europeo) è simile a quello statunitense, ma i singoli sono spesso pubblicati come set di due dischi, venduti separatamente. A volte hanno anche una versione più lunga del singolo (che spesso combina le tracce dei set di due dischi) che è molto simile al singolo di stile statunitense e che si definisce \"maxi singolo\". (In alcuni casi il maxi singolo è più lungo della pubblicazione da cui è tratto il singolo!)</li>\n<li>Il mercato giapponese è molto più orientato verso i singoli. Il fattore distintivo è in genere la lunghezza del singolo e di conseguenza il prezzo di vendita. Fino al 1995 era comune che questi singoli fossero pubblicati in formato mini CD, cioè un CD molto piccolo, in genere di 8 cm di diametro. Attorno al 1995 il singolo da 8 cm fu progressivamente eliminato e il CD singolo standard da 12 cm divenne più comune; in genere le riedizioni di singoli risalenti a prima del 1995 vengono pubblicate in formato 12 cm, anche se originariamente pubblicati in formato 8 cm. I singoli giapponesi includono spesso versioni strumentali delle canzoni ed esistono anche maxi singoli con versioni remixate delle canzoni, come nel Regno Unito. A volte un maxi singolo può avere più tracce di un EP, ma, trattandosi di versioni alternative delle stesse 2-3 canzoni, viene comunque classificato come singolo.</li>\n</ul>\n\n<p>Esistono anche altre variazioni dei singoli chiamate \"split single\", in cui le canzoni di due artisti diversi sono pubblicate sullo stesso disco, generalmente in vinile.</p>"
+
+#: DB:release_group_secondary_type/description:8
+msgctxt "release_group_secondary_type"
+msgid ""
+"A DJ-mix is a sequence of several recordings played one after the other, "
+"each one modified so that they blend together into a continuous flow of "
+"music. A DJ-mix release requires that the recordings be modified in some "
+"manner, and the DJ who does this modification is usually (although not "
+"always) credited in a fairly prominent way."
+msgstr "Un DJ mix è una sequenza di più registrazioni eseguite una dopo l'altra, modificate in modo da fondersi in un flusso ininterrotto di musica. Una pubblicazione di tipo DJ mix richiede che le registrazioni siano in qualche modo modificate e il DJ che si occupa di questa modifica è in genere (ma non sempre) accreditato in modo piuttosto evidente."
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
@@ -286,6 +332,14 @@ msgid ""
 "usually chosen for their sound and for the images and ideas they suggest."
 msgstr "Una poesia è un brano letterario, in genere breve e in versi, in cui le parole sono solitamente scelte per il loro suono e per le immagini e le idee che evocano."
 
+#: DB:release_group_secondary_type/description:10
+msgctxt "release_group_secondary_type"
+msgid ""
+"A promotional release mostly meant to have limited circulation and "
+"demonstrate the sound of an artist to record labels, publishers and other "
+"artists."
+msgstr "Una pubblicazione promozionale è perlopiù realizzata con una tiratura limitata e al fine di illustrare il sound di un artista ad etichette, editori e altri artisti."
+
 #: DB:work_type/description:14
 msgctxt "work_type"
 msgid ""
@@ -296,6 +350,18 @@ msgstr "Un quartetto è una composizione musicale scritta per quattro voci o str
 msgctxt "series_type"
 msgid "A recurring festival, usually happening annually in the same location."
 msgstr "Un festival che si tiene periodicamente, di solito annualmente nello stesso luogo."
+
+#: DB:release_group_secondary_type/description:7
+msgctxt "release_group_secondary_type"
+msgid "A release that primarily contains remixed material."
+msgstr "Una pubblicazione che contiene principalmente materiale remixato."
+
+#: DB:release_group_secondary_type/description:6
+msgctxt "release_group_secondary_type"
+msgid ""
+"A release that was recorded live. Generally this means \"with an audience\","
+" be it in person, through the radio or in another similar way."
+msgstr "Una pubblicazione che è stata registrata dal vivo. In genere questo significa \"con un pubblico\", che può essere di persona, alla radio o in altri modi simili."
 
 #: DB:place_type/description:7
 msgctxt "place_type"
@@ -382,6 +448,15 @@ msgid ""
 "A soundtrack is the music that accompanies a film, TV program, videogame, or"
 " even book."
 msgstr "Una colonna sonora è la musica che accompagna un film, un programma TV, un videogioco o anche un libro."
+
+#: DB:release_group_secondary_type/description:2
+msgctxt "release_group_secondary_type"
+msgid ""
+"A soundtrack is the musical score to a movie, TV series, stage show, video "
+"game, or other medium. Video game CDs with audio tracks should be classified"
+" as soundtracks because the musical properties of the CDs are more "
+"interesting to MusicBrainz than their data properties."
+msgstr "Una colonna sonora è l'accompagnamento musicale di un film, serie TV, rappresentazione, videogioco o altro supporto. I CD di videogiochi con tracce audio vanno classificati come colonne sonore poiché ai fini di MusicBrainz le proprietà musicali di tali CD sono più rilevanti rispetto alle loro proprietà dati."
 
 #: DB:instrument_type/description:6
 msgctxt "instrument_type"
@@ -641,6 +716,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Amṛtavāhiṇi"
 msgstr "Amṛtavāhiṇi"
 
+#: DB:release_group_primary_type/description:3
+msgctxt "release_group_primary_type"
+msgid ""
+"An EP is a so-called \"Extended Play\" release and often contains the "
+"letters EP in the title. Generally an EP will be shorter than a full length "
+"release (an LP or \"Long Play\") and the tracks are usually exclusive to the"
+" EP, in other words the tracks don't come from a previously issued release. "
+"EP is fairly difficult to define; usually it should only be assumed that a "
+"release is an EP if the artist defines it as such."
+msgstr "Un EP è una pubblicazione cosiddetta \"Extended Play\"; spesso contiene le lettere EP nel titolo. In genere è più breve di un album (un LP o \"Long Playing\") e le sue tracce sono solitamente esclusive, cioè non provengono da una pubblicazione già edita in precedenza. Non è facile definire un EP; di solito è raccomandabile presupporre che una pubblicazione sia un EP solo se l'artista la definisce come tale."
+
+#: DB:release_group_primary_type/description:1
+msgctxt "release_group_primary_type"
+msgid ""
+"An album, perhaps better defined as a \"Long Play\" (LP) release, generally "
+"consists of previously unreleased material (unless this type is combined "
+"with secondary types which change that, such as \"Compilation\")."
+msgstr "Una pubblicazione di tipo album, definita anche \"Long Playing\" (LP), contiene in genere materiale in precedenza inedito (a meno che questo tipo non sia combinato con tipi secondari che lo modificano, come \"Raccolta\")."
+
 #: DB:release_status/description:4
 msgctxt "release_status"
 msgid ""
@@ -664,6 +758,26 @@ msgid ""
 "radio or published on an audio medium (tape, CD, etc.)."
 msgstr "Un radiodramma è un'esibizione riadattata ed esclusivamente sonora, trasmessa alla radio o pubblicata su un supporto audio (cassetta, CD, ecc.)."
 
+#: DB:release_group_secondary_type/description:11
+msgctxt "release_group_secondary_type"
+msgid ""
+"An audio drama is an audio-only performance of a play (often, but not "
+"always, meant for radio). Unlike audiobooks, it usually has multiple "
+"performers rather than a main narrator."
+msgstr "Un audiodramma è una rappresentazione in solo audio di un'opera (spesso, ma non sempre, prodotta per la radio). A differenza degli audiolibri, di solito ha più attori anziché un narratore principale."
+
+#: DB:release_group_secondary_type/description:5
+msgctxt "release_group_secondary_type"
+msgid "An audiobook is a book read by a narrator without music."
+msgstr "Un audiolibro è un libro letto da un narratore senza musica."
+
+#: DB:release_group_primary_type/description:12
+msgctxt "release_group_primary_type"
+msgid ""
+"An episodic release that was originally broadcast via radio, television, or "
+"the Internet, including podcasts."
+msgstr "Una pubblicazione a episodi che è stata originariamente trasmessa per radio, televisione o su internet, compresi i podcast."
+
 #: DB:event_type/description:2
 msgctxt "event_type"
 msgid ""
@@ -677,6 +791,11 @@ msgid ""
 "An individual concert by a single artist or collaboration, often with "
 "supporting artists who perform before the main act."
 msgstr "Un concerto individuale di un singolo artista o collaborazione di artisti, spesso con artisti spalla che si esibiscono prima dell'esibizione principale."
+
+#: DB:release_group_secondary_type/description:4
+msgctxt "release_group_secondary_type"
+msgid "An interview release contains an interview, generally with an artist."
+msgstr "Una pubblicazione di tipo intervista contiene un'intervista, di solito con un artista."
 
 #: DB:work_type/description:10
 msgctxt "work_type"
@@ -730,6 +849,13 @@ msgid ""
 "Any release officially sanctioned by the artist and/or their record company."
 " Most releases will fit into this category."
 msgstr "Qualsiasi pubblicazione autorizzata ufficialmente dall'artista e/o dalla sua etichetta. La maggior parte delle pubblicazioni ricade in questa categoria."
+
+#: DB:release_group_primary_type/description:11
+msgctxt "release_group_primary_type"
+msgid ""
+"Any release that does not fit or can't decisively be placed in any of the "
+"other categories."
+msgstr "Qualsiasi pubblicazione che non rientra o non può essere inserita in modo chiaro in nessuna delle altre categorie."
 
 #: DB:work_attribute_type_allowed_value/value:311
 msgctxt "work_attribute_type_allowed_value"
@@ -4449,6 +4575,11 @@ msgctxt "event_type"
 msgid "Masterclass/Clinic"
 msgstr "Master class/Clinic"
 
+#: DB:cover_art_archive.art_type/name:15
+msgctxt "cover_art_type"
+msgid "Matrix/Runout"
+msgstr "Matrice"
+
 #: DB:work_attribute_type_allowed_value/value:449
 msgctxt "work_attribute_type_allowed_value"
 msgid "Maver"
@@ -5169,6 +5300,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Nişabureyn"
 msgstr "Nişabureyn"
 
+#: DB:release_group_secondary_type/description:3
+msgctxt "release_group_secondary_type"
+msgid "Non-music spoken word releases."
+msgstr "Pubblicazioni spoken word (parlate) non musicali."
+
 #: DB:release_packaging/name:7
 msgctxt "release_packaging"
 msgid "None"
@@ -5534,6 +5670,23 @@ msgstr "Produzione"
 msgctxt "release_status"
 msgid "Promotion"
 msgstr "Promozionale"
+
+#: DB:release_group_secondary_type/description:9
+msgctxt "release_group_secondary_type"
+msgid ""
+"Promotional in nature (but not necessarily free), mixtapes and street albums"
+" are often released by artists to promote new artists, or upcoming studio "
+"albums by prominent artists. They are also sometimes used to keep fans' "
+"attention between studio releases and are most common in rap & hip hop "
+"genres. They are often not sanctioned by the artist's label, may lack proper"
+" sample or song clearances and vary widely in production and recording "
+"quality. While mixtapes are generally DJ-mixed, they are distinct from "
+"commercial DJ-mixes (which are usually deemed compilations) and are defined "
+"by having a significant proportion of new material, including original "
+"production or original vocals over top of other artists' instrumentals. They"
+" are distinct from demos in that they are designed for release directly to "
+"the public and fans; not to labels."
+msgstr "Di natura promozionale (ma non necessariamente gratuiti), i mixtape e gli street album sono spesso pubblicati dagli artisti per promuovere nuovi artisti o prossimi album in studio di artisti noti. Talvolta sono utilizzati anche per mantenere l'attenzione dei fan tra un album in studio e l'altro e sono più comuni nei generi rap e hip hop. Spesso non sono autorizzati dall'etichetta dell'artista, possono non disporre delle autorizzazioni appropriate per campionamenti o canzoni e possono variare molto per qualità di produzione e di registrazione. Mentre i mixtape sono in genere mixati da un DJ, si distinguono dai DJ mix commerciali (che sono di solito considerati come raccolte) e si definiscono per l'avere una proporzione significativa di materiale inedito, comprese produzioni originali o parti vocali originali sopra parti strumentali di altri artisti. Si distinguono dalle demo per il fatto di essere ideati per una pubblicazione diretta al pubblico e ai fan anziché alle etichette."
 
 #: DB:work_type/name:23
 msgctxt "work_type"
@@ -6852,6 +7005,14 @@ msgid ""
 "The operetta is a genre of light opera, in terms both of music and subject "
 "matter. Operettas are generally short and include spoken parts."
 msgstr "L'operetta è un genere di opera leggera sia in termini musicali che di soggetto. Le operette sono in genere brevi e includono parti parlate."
+
+#: DB:cover_art_archive.art_type/description:15
+msgctxt "cover_art_type"
+msgid ""
+"The section on a CD, record or other media containing such data as matrix "
+"numbers. Usually found in the hub of a CD or the dead wax area of a vinyl "
+"record."
+msgstr "La parte di un CD, disco o altro supporto che contiene dati come i numeri di matrice. Si trova di solito nella parte più centrale di un CD o nella cera morta di un disco in vinile."
 
 #: DB:release_packaging/description:1
 msgctxt "release_packaging"

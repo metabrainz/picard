@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# AO_LL <ao@localizationlab.org>, 2020
+# AO <ao@localizationlab.org>, 2020
 # Laurent Monin <i18n@norz.org>, 2020
 # 
 #, fuzzy
