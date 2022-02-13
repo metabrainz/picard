@@ -1073,6 +1073,19 @@ def process_picard_args():
     return picard_args, unparsed_args
 
 
+class OverrideStyle(QtWidgets.QProxyStyle):
+    """Override the default style to fix some platform specific issues"""
+
+    def styleHint(self, hint, option, widget, returnData):
+        # This is disabled on macOS, but prevents collapsing tree view items easily with
+        # left arrow key. Enable this consistently on all platforms.
+        # See https://tickets.metabrainz.org/browse/PICARD-2417
+        # and https://bugreports.qt.io/browse/QTBUG-100305
+        if hint == QtWidgets.QStyle.StyleHint.SH_ItemView_ArrowKeysNavigateIntoChildren:
+            return True
+        return super().styleHint(hint, option, widget, returnData)
+
+
 def main(localedir=None, autoupdate=True):
     # Some libs (ie. Phonon) require those to be set
     QtWidgets.QApplication.setApplicationName(PICARD_APP_NAME)
@@ -1108,6 +1121,7 @@ def main(localedir=None, autoupdate=True):
         pass
 
     tagger = Tagger(picard_args, unparsed_args, localedir, autoupdate)
+    tagger.setStyle(OverrideStyle())
 
     # Initialize Qt default translations
     translator = QtCore.QTranslator()
