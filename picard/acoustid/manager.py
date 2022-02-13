@@ -76,7 +76,7 @@ class Submission(object):
             puid = metadata['musicip_puid']
             if puid:
                 args['puid'] = puid
-        if self.valid_duration:
+        if self.valid_duration and self.recordingid:
             args['mbid'] = self.recordingid
         elif metadata:
             args['track'] = metadata['title']
