@@ -219,7 +219,7 @@ class SubmissionTest(PicardTestCase):
         }
         self.assertEqual(expected, submission.args)
 
-    def test_args_without_mbid(self):
+    def test_args_with_invalid_duration(self):
         metadata = Metadata({
             'title': 'The Track',
             'artist': 'The Artist',
@@ -231,6 +231,31 @@ class SubmissionTest(PicardTestCase):
         })
         metadata.length = 500000
         submission = Submission('abc', 42, recordingid='rec1', metadata=metadata)
+        expected = {
+            'fingerprint': 'abc',
+            'duration': '42',
+            'track': metadata['title'],
+            'artist': metadata['artist'],
+            'album': metadata['album'],
+            'albumartist': metadata['albumartist'],
+            'trackno': metadata['tracknumber'],
+            'discno': metadata['discnumber'],
+            'year': '2022',
+        }
+        self.assertEqual(expected, submission.args)
+
+    def test_args_without_mbid(self):
+        metadata = Metadata({
+            'title': 'The Track',
+            'artist': 'The Artist',
+            'album': 'The Album',
+            'albumartist': 'The Album Artist',
+            'tracknumber': '4',
+            'discnumber': '2',
+            'date': '2022-01-22',
+        })
+        metadata.length = 42000
+        submission = Submission('abc', 42, recordingid=None, metadata=metadata)
         expected = {
             'fingerprint': 'abc',
             'duration': '42',
