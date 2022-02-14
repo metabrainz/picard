@@ -158,6 +158,13 @@ class SubmissionTest(PicardTestCase):
         self.assertEqual(metadata['musicip_puid'], submission.puid)
         self.assertEqual(0, submission.attempts)
 
+    def test_bool(self):
+        self.assertTrue(bool(Submission('foo', 1)))
+        self.assertTrue(bool(Submission('foo', 0)))
+        self.assertFalse(bool(Submission('foo', None)))
+        self.assertFalse(bool(Submission(None, 1)))
+        self.assertFalse(bool(Submission('', 1)))
+
     def test_valid_duration(self):
         duration_s = 342
         duration_ms = duration_s * 1000

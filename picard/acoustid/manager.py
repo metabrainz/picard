@@ -52,6 +52,12 @@ class Submission(object):
         # potential urlencode expansion
         return int(sum((len(key) + len(value) + 2 for key, value in self.args.items())) * 1.03)
 
+    def __bool__(self):
+        return bool(self.fingerprint and self.duration is not None)
+
+    def __repr__(self):
+        return '<%s %r, %d, %r>' % (self.__class__.__name__, self.fingerprint, self.duration, self.recordingid)
+
     @property
     def puid(self):
         return self.metadata.get('musicip_puid', '') if self.metadata else ''
