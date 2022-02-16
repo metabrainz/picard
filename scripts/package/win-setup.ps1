@@ -10,13 +10,7 @@ Param(
   $FpcalcVersion,
   [Parameter(Mandatory=$true)]
   [String]
-  $FpcalcSha256Sum,
-  [Parameter(Mandatory=$true)]
-  [String]
-  $AbextractorVersion,
-  [Parameter(Mandatory=$true)]
-  [String]
-  $AbextractorSha256Sum
+  $FpcalcSha256Sum
 )
 
 $ErrorActionPreference = "Stop"
@@ -65,11 +59,3 @@ DownloadFile -Url "https://github.com/acoustid/chromaprint/releases/download/v$F
 VerifyHash -FileName $ArchiveFile -Sha256Sum $FpcalcSha256Sum
 Expand-Archive -Path $ArchiveFile -DestinationPath .\build\fpcalc -Force
 Copy-Item .\build\fpcalc\chromaprint-fpcalc-$FpcalcVersion-windows-x86_64\fpcalc.exe .
-
-$ArchiveFile = ".\build\abz.zip"
-Write-Output "Downloading AcousticBrainz extractor $AbextractorVersion to $ArchiveFile..."
-DownloadFile -Url "https://ftp.acousticbrainz.org/pub/acousticbrainz/essentia-extractor-$AbextractorVersion-win-i686.zip" `
-  -FileName $ArchiveFile
-VerifyHash -FileName $ArchiveFile -Sha256Sum $AbextractorSha256Sum
-Expand-Archive -Path $ArchiveFile -DestinationPath .\build\abz -Force
-Copy-Item .\build\abz\streaming_extractor_music.exe .

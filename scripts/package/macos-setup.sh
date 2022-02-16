@@ -35,12 +35,3 @@ if [ -n "$FPCALC_VERSION" ]; then
   tar -xf "$FPCALC_FILENAME"
   cp "chromaprint-fpcalc-$FPCALC_VERSION-macos-x86_64/fpcalc" .
 fi
-
-# Install AcousticBrainz extractor
-if [ -n "$ABEXTRACTOR_VERSION" ]; then
-  ABEXTRACTOR_FILENAME="essentia-extractor-$ABEXTRACTOR_VERSION-macos.tar.gz"
-  wget "https://github.com/phw/essentia-extractor-builds/releases/download/$ABEXTRACTOR_VERSION/$ABEXTRACTOR_FILENAME"
-  echo "$ABEXTRACTOR_SHA256SUM  $ABEXTRACTOR_FILENAME" | shasum --algorithm 256 --check --status
-  tar -xf "$ABEXTRACTOR_FILENAME"
-  cp "essentia-extractor-$ABEXTRACTOR_VERSION-macos/streaming_extractor_music" .
-fi
