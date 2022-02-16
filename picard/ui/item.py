@@ -63,10 +63,6 @@ class Item(object):
         """Return True if this object can be submitted to MusicBrainz.org."""
         return False
 
-    def can_extract(self):
-        """Return True if this object can have AcousticBrainz features extracted"""
-        return False
-
     @property
     def can_show_coverart(self):
         """Return if this object supports cover art."""

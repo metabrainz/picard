@@ -722,9 +722,6 @@ class Album(DataObject, Item):
     def can_view_info(self):
         return self.loaded or bool(self.errors)
 
-    def can_extract(self):
-        return any(track.can_extract() for track in self.tracks)
-
     def is_album_like(self):
         return True
 

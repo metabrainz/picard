@@ -50,12 +50,6 @@ USER_PLUGIN_DIR = appdirs.plugin_folder()
 # Network Cache default settings
 CACHE_SIZE_IN_BYTES = 100*1000*1000
 
-# AcousticBrainz
-ACOUSTICBRAINZ_HOST = 'acousticbrainz.org'
-ACOUSTICBRAINZ_PORT = 443
-ACOUSTICBRAINZ_DOWNLOAD_URL = 'https://acousticbrainz.org/download'
-EXTRACTOR_NAMES = ['streaming_extractor_music']
-
 # AcoustID client API key
 ACOUSTID_KEY = 'v8pQ6oyB'
 ACOUSTID_HOST = 'api.acoustid.org'

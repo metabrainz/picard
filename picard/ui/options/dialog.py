@@ -57,7 +57,6 @@ from picard.ui import (
 from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     OptionsCheckError,
     _pages as page_classes,
-    acousticbrainz,
     advanced,
     cdlookup,
     cover,
