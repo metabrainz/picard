@@ -830,7 +830,7 @@ class File(QtCore.QObject, Item):
                 yield self.metadata.compare_to_track(track, self.comparison_weights)
 
         no_match = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
-        best_match = find_best_match(candidates, no_match)
+        best_match = find_best_match(candidates(), no_match)
 
         if best_match.similarity < threshold:
             return None

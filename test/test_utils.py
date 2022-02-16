@@ -407,16 +407,13 @@ class SortBySimilarity(PicardTestCase):
             SimMatchTest(similarity=0.75, name='c'),
         ]
 
-    def candidates(self):
-        yield from self.test_values
-
     def test_sort_by_similarity(self):
-        results = [result.name for result in sort_by_similarity(self.candidates)]
+        results = [result.name for result in sort_by_similarity(self.test_values)]
         self.assertEqual(results, ['b', 'c', 'd', 'a'])
 
     def test_findbestmatch(self):
         no_match = SimMatchTest(similarity=-1, name='no_match')
-        best_match = find_best_match(self.candidates, no_match)
+        best_match = find_best_match(self.test_values, no_match)
 
         self.assertEqual(best_match.result.name, 'b')
         self.assertEqual(best_match.similarity, 0.75)
@@ -425,7 +422,7 @@ class SortBySimilarity(PicardTestCase):
         self.test_values = []
 
         no_match = SimMatchTest(similarity=-1, name='no_match')
-        best_match = find_best_match(self.candidates, no_match)
+        best_match = find_best_match(self.test_values, no_match)
 
         self.assertEqual(best_match.result.name, 'no_match')
         self.assertEqual(best_match.similarity, -1)

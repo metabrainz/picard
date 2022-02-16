@@ -688,7 +688,7 @@ class Album(DataObject, Item):
                             similarity = track.metadata.length_score(track.metadata.length, file.metadata.length)
                             yield SimMatchAlbum(similarity=similarity, track=track)
 
-            best_match = find_best_match(mbid_candidates, no_match)
+            best_match = find_best_match(mbid_candidates(), no_match)
             if best_match != no_match:
                 yield (file, best_match.result.track)
                 continue
@@ -700,7 +700,7 @@ class Album(DataObject, Item):
                     if similarity >= threshold:
                         yield SimMatchAlbum(similarity=similarity, track=track)
 
-            best_match = find_best_match(similarity_candidates, no_match)
+            best_match = find_best_match(similarity_candidates(), no_match)
             yield (file, best_match.result.track)
 
     def match_files(self, files):
