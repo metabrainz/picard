@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2019-2021 Laurent Monin
-# Copyright (C) 2019-2021 Philipp Wolfer
+# Copyright (C) 2019-2022 Philipp Wolfer
 # Copyright (C) 2021 Bob Swift
 # Copyright (C) 2021 Gabriel Ferreira
 #
@@ -57,6 +57,7 @@ from picard.config_upgrade import (
     upgrade_to_v2_6_0_beta_2,
     upgrade_to_v2_6_0_beta_3,
     upgrade_to_v2_6_0_dev_1,
+    upgrade_to_v2_8_0_dev_2,
 )
 from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -344,3 +345,16 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertNotIn('use_system_theme', self.config.setting)
         self.assertIn('ui_theme', self.config.setting)
         self.assertEqual(str(UiTheme.SYSTEM), self.config.setting['ui_theme'])
+
+    def test_upgrade_to_v2_8_0_dev_2(self):
+        ListOption('setting', 'toolbar_layout', [])
+        self.config.setting['toolbar_layout'] = [
+            'add_directory_action',
+            'extract_and_submit_acousticbrainz_features_action',
+            'save_action'
+        ]
+        expected = ['add_directory_action', 'save_action']
+        upgrade_to_v2_8_0_dev_2(self.config)
+        self.assertEqual(expected, self.config.setting['toolbar_layout'])
+        upgrade_to_v2_8_0_dev_2(self.config)
+        self.assertEqual(expected, self.config.setting['toolbar_layout'])

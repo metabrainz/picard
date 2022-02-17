@@ -447,6 +447,16 @@ def upgrade_to_v2_7_0_dev_5(config):
     _s.remove("artist_script_exception_weighting")
 
 
+def upgrade_to_v2_8_0_dev_2(config):
+    """Remove AcousticBrainz settings from options"""
+    toolbar_layout = config.setting['toolbar_layout']
+    try:
+        toolbar_layout.remove('extract_and_submit_acousticbrainz_features_action')
+        config.setting['toolbar_layout'] = toolbar_layout
+    except ValueError:
+        pass
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
@@ -490,4 +500,5 @@ def upgrade_config(config):
     cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_3)
     cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_4)
     cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_5)
+    cfg.register_upgrade_hook(upgrade_to_v2_8_0_dev_2)
     cfg.run_upgrade_hooks(log.debug)

@@ -58,6 +58,3 @@ class MIDIFile(File):
 
     def can_analyze(self):
         return False
-
-    def can_extract(self):
-        return False

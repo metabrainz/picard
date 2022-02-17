@@ -784,16 +784,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.generate_fingerprints_action = action
 
     @MainWindowActions.add()
-    def _create_extract_and_submit_acousticbrainz_features_action(self):
-        action = QtWidgets.QAction(icontheme.lookup('acousticbrainz-submit'), _("&Submit AcousticBrainz features"), self)
-        action.setIconText(_("Submit Acoustic features"))
-        action.setStatusTip(_("Submit the AcousticBrainz features for the selected files"))
-        action.setEnabled(False)
-        action.setToolTip(_("Submit the AcousticBrainz features for the selected files"))
-        action.triggered.connect(self.extract_and_submit_acousticbrainz_features)
-        self.extract_and_submit_acousticbrainz_features_action = action
-
-    @MainWindowActions.add()
     def _create_cluster_action(self):
         action = QtWidgets.QAction(icontheme.lookup('picard-cluster'), _("Cl&uster"), self)
         action.setStatusTip(_("Cluster files into album clusters"))
@@ -1007,7 +997,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addSeparator()
         menu.addAction(self.save_action)
         menu.addAction(self.submit_acoustid_action)
-        menu.addAction(self.extract_and_submit_acousticbrainz_features_action)
         menu.addSeparator()
         menu.addAction(self.exit_action)
         menu = self.menuBar().addMenu(_("&Edit"))
@@ -1056,7 +1045,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addAction(self.track_search_action)
         menu.addSeparator()
         menu.addAction(self.generate_fingerprints_action)
-        menu.addAction(self.extract_and_submit_acousticbrainz_features_action)
         menu.addAction(self.tags_from_filenames_action)
         menu.addAction(self.open_collection_in_browser_action)
         self.menuBar().addSeparator()
@@ -1362,9 +1350,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 self.tagger.generate_fingerprints(self.selected_objects)
         self._ensure_fingerprinting_configured(callback)
 
-    def extract_and_submit_acousticbrainz_features(self):
-        self.tagger.extract_and_submit_acousticbrainz_features(self.selected_objects)
-
     def _openUrl(self, url):
         return QtCore.QUrl.fromLocalFile(url)
 
@@ -1512,7 +1497,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         can_refresh = False
         can_autotag = False
         can_submit = False
-        can_extract = False
         single = self.selected_objects[0] if len(self.selected_objects) == 1 else None
         can_view_info = bool(single and single.can_view_info())
         can_browser_lookup = bool(single and single.can_browser_lookup())
@@ -1534,7 +1518,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 # if x is already True
                 can_analyze = can_analyze or obj.can_analyze()
                 can_autotag = can_autotag or obj.can_autotag()
-                can_extract = can_extract or obj.can_extract()
                 can_refresh = can_refresh or obj.can_refresh()
                 can_remove = can_remove or obj.can_remove()
                 can_save = can_save or obj.can_save()
@@ -1543,20 +1526,17 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 if (
                     can_analyze
                     and can_autotag
-                    and can_extract
                     and can_refresh
                     and can_remove
                     and can_save
                     and can_submit
                 ):
                     break
-        can_extract = can_extract and self.tagger.ab_extractor.available()
         self.remove_action.setEnabled(can_remove)
         self.save_action.setEnabled(can_save)
         self.view_info_action.setEnabled(can_view_info)
         self.analyze_action.setEnabled(can_analyze)
         self.generate_fingerprints_action.setEnabled(have_files)
-        self.extract_and_submit_acousticbrainz_features_action.setEnabled(can_extract)
         self.refresh_action.setEnabled(can_refresh)
         self.autotag_action.setEnabled(can_autotag)
         self.browser_lookup_action.setEnabled(can_browser_lookup)
