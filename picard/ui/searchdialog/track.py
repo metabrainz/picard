@@ -129,12 +129,11 @@ class TrackSearchDialog(SearchDialog):
 
         if self.file_:
             metadata = self.file_.orig_metadata
-
-            def candidates():
-                for track in tracks:
-                    yield metadata.compare_to_track(track, File.comparison_weights)
-
-            tracks = [result.track for result in sort_by_similarity(candidates())]
+            candidates = (
+                metadata.compare_to_track(track, File.comparison_weights)
+                for track in tracks
+            )
+            tracks = (result.track for result in sort_by_similarity(candidates))
 
         del self.search_results[:]  # Clear existing data
         self.parse_tracks(tracks)
