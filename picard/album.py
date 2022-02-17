@@ -689,7 +689,7 @@ class Album(DataObject, Item):
                             yield SimMatchAlbum(similarity=similarity, track=track)
 
             best_match = find_best_match(mbid_candidates(), no_match)
-            if best_match != no_match:
+            if best_match.result != no_match:
                 yield (file, best_match.result.track)
                 continue
 
