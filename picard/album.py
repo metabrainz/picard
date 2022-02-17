@@ -684,8 +684,9 @@ class Album(DataObject, Item):
                         track = (tracks_cache[(mbid, tracknumber, discnumber)]
                                 or tracks_cache[(mbid, tracknumber)]
                                 or tracks_cache[(mbid, )])
-                        similarity = track.metadata.length_score(track.metadata.length, file.metadata.length)
-                        yield SimMatchAlbum(similarity=similarity, track=track)
+                        if track:
+                            similarity = track.metadata.length_score(track.metadata.length, file.metadata.length)
+                            yield SimMatchAlbum(similarity=similarity, track=track)
 
             best_match = find_best_match(mbid_candidates, no_match)
             if best_match != no_match:
