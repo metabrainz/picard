@@ -6,7 +6,7 @@
 # Copyright (C) 2006-2008, 2011 Lukáš Lalinský
 # Copyright (C) 2008 Hendrik van Antwerpen
 # Copyright (C) 2008 Will
-# Copyright (C) 2010-2011, 2014, 2018-2021 Philipp Wolfer
+# Copyright (C) 2010-2011, 2014, 2018-2022 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2012 Wieland Hoffmann
@@ -271,7 +271,7 @@ class Cluster(FileList):
                     yield match
 
         no_match = SimMatchRelease(similarity=-1, release=None)
-        best_match = find_best_match(candidates, no_match)
+        best_match = find_best_match(candidates(), no_match)
         return best_match.result.release
 
     def lookup_metadata(self):

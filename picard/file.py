@@ -825,10 +825,10 @@ class File(QtCore.QObject, Item):
 
     def _match_to_track(self, tracks, threshold=0):
         # multiple matches -- calculate similarities to each of them
-        def candidates():
-            for track in tracks:
-                yield self.metadata.compare_to_track(track, self.comparison_weights)
-
+        candidates = (
+            self.metadata.compare_to_track(track, self.comparison_weights)
+            for track in tracks
+        )
         no_match = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
         best_match = find_best_match(candidates, no_match)
 

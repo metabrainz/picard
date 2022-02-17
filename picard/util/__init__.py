@@ -724,15 +724,29 @@ BestMatch = namedtuple('BestMatch', ('similarity', 'result'))
 
 
 def sort_by_similarity(candidates):
+    """Sorts the objects in candidates by similarity.
+
+    Args:
+        candidates: Iterable with objects having a `similarity`  attribute
+    Returns: List of candidates sorted by similarity (highest similarity first)
+    """
     return sorted(
-        candidates(),
+        candidates,
         reverse=True,
         key=attrgetter('similarity')
     )
 
 
 def find_best_match(candidates, no_match):
-    best_match = max(candidates(), key=attrgetter('similarity'), default=no_match)
+    """Returns a BestMatch based on the similarity of candidates.
+
+    Args:
+        candidates: Iterable with objects having a `similarity`  attribute
+        no_match: Match to return if there was no candidate
+
+    Returns: `BestMatch` with the similarity and the matched object as result.
+    """
+    best_match = max(candidates, key=attrgetter('similarity'), default=no_match)
     return BestMatch(similarity=best_match.similarity, result=best_match)
 
 

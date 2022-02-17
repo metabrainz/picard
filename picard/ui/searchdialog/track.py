@@ -5,7 +5,7 @@
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2018 Antonio Larrosa
 # Copyright (C) 2018-2021 Laurent Monin
-# Copyright (C) 2018-2021 Philipp Wolfer
+# Copyright (C) 2018-2022 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -129,12 +129,11 @@ class TrackSearchDialog(SearchDialog):
 
         if self.file_:
             metadata = self.file_.orig_metadata
-
-            def candidates():
-                for track in tracks:
-                    yield metadata.compare_to_track(track, File.comparison_weights)
-
-            tracks = [result.track for result in sort_by_similarity(candidates)]
+            candidates = (
+                metadata.compare_to_track(track, File.comparison_weights)
+                for track in tracks
+            )
+            tracks = (result.track for result in sort_by_similarity(candidates))
 
         del self.search_results[:]  # Clear existing data
         self.parse_tracks(tracks)
