@@ -782,7 +782,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             log.debug("Dropped albums = %r", album_ids)
             files = iter_files_from_objects(self.tagger.load_album(id) for id in album_ids)
             # Use QTimer.singleShot to run expensive processing outside of the drop handler.
-            move_files = partial(self.tagger.move_files, files, target)
+            move_files = partial(self.tagger.move_files, list(files), target)
             QtCore.QTimer.singleShot(0, move_files)
             handled = True
         self._move_to_multi_tracks = True  # Reset for next drop
