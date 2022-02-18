@@ -1,0 +1,16 @@
+{
+    "MsgAlreadyInstalled": "${PRODUCT_NAME} jest już zainstalowany i musi być odinstalowany przed instalacją aktualizacji do wersji ${PRODUCT_VERSION}.\n\nKliknij \"OK\" by kontynuować, lub \"Cancel\" by przerwać aktualizację.",
+    "MsgApplicationRunning": "Aplikacja ${PRODUCT_NAME} już działa. Zamknij ją i spróbuj ponownie.",
+    "MsgRequires64Bit": "Ta wersja ${PRODUCT_NAME} wymaga 64-bitowej wersji systemu Windows.",
+    "MuiDescriptionRequired": "Instaluje ${PRODUCT_NAME} wraz z wymaganymi do uruchomienia plikami.",
+    "MuiDescriptionLang": "Instaluje tłumaczenia ${PRODUCT_NAME} w innych językach.",
+    "MuiDescriptionShortcuts": "Instaluje skróty do uruchomienia ${PRODUCT_NAME}.",
+    "MuiDescriptionDesktop": "Instaluje skrót na pulpicie.",
+    "MuiDescriptionStartMenu": "Instaluje skrót w menu Start.",
+    "OptionRemoveSettings": "Usuń ustawienia i dane osobiste",
+    "SectionDesktop": "Pulpit",
+    "SectionLanguages": "Języki",
+    "SectionRequired": "Pliki programu (wymagane)",
+    "SectionShortcuts": "Skróty",
+    "SectionStartMenu": "Menu Start"
+}
