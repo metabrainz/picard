@@ -400,8 +400,15 @@ def samefile_different_casing(path1, path2):
     path2 = os.path.normpath(path2)
     if path1 == path2 or not os.path.exists(path1) or not os.path.exists(path2):
         return False
-    dir1 = os.path.realpath(os.path.normcase(os.path.dirname(path1)))
-    dir2 = os.path.realpath(os.path.normcase(os.path.dirname(path2)))
+    dir1 = os.path.normcase(os.path.dirname(path1))
+    dir2 = os.path.normcase(os.path.dirname(path2))
+    try:
+        dir1 = os.path.realpath(dir1)
+        dir2 = os.path.realpath(dir2)
+    except OSError:
+        # os.path.realpath can fail if cwd does not exist and path is relative
+        # or on Windows if drives are mounted without mount manager.
+        pass
     if dir1 != dir2 or not samefile(path1, path2):
         return False
     file1 = os.path.basename(path1)

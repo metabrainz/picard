@@ -170,6 +170,8 @@ def normpath(path):
         path = os.path.realpath(path)
     except OSError as why:
         # realpath can fail if path does not exist or is not accessible
+        # or on Windows if drives are mounted without mount manager
+        # (see https://tickets.metabrainz.org/browse/PICARD-2425).
         log.warning('Failed getting realpath for "%s": %s', path, why)
     return os.path.normpath(path)
 

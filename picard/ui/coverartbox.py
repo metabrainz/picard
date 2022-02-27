@@ -55,7 +55,10 @@ from picard.coverart.image import (
 )
 from picard.file import File
 from picard.track import Track
-from picard.util import imageinfo
+from picard.util import (
+    imageinfo,
+    normpath,
+)
 from picard.util.lrucache import LRUCache
 
 from picard.ui.item import FileListItem
@@ -411,7 +414,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
                                        parse_response_type=None, queryargs=queryargs,
                                        priority=True, important=True)
         elif url.scheme() == 'file':
-            path = os.path.normpath(os.path.realpath(url.toLocalFile().rstrip("\0")))
+            path = normpath(url.toLocalFile().rstrip("\0"))
             if path and os.path.exists(path):
                 with open(path, 'rb') as f:
                     data = f.read()

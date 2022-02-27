@@ -78,6 +78,7 @@ from picard.util import (
     find_best_match,
     format_time,
     is_absolute_path,
+    normpath,
     thread,
     tracknum_and_title_from_filename,
 )
@@ -506,14 +507,10 @@ class File(QtCore.QObject, Item):
         if settings["move_files"]:
             new_dirname = settings["move_files_to"]
             if not is_absolute_path(new_dirname):
-                new_dirname = os.path.normpath(os.path.join(os.path.dirname(filename), new_dirname))
+                new_dirname = os.path.join(os.path.dirname(filename), new_dirname)
         else:
             new_dirname = os.path.dirname(filename)
-        try:
-            new_dirname = os.path.realpath(new_dirname)
-        except FileNotFoundError:
-            # os.path.realpath can fail if cwd does not exist and path is relative
-            pass
+        new_dirname = normpath(new_dirname)
         new_filename = os.path.basename(filename)
 
         if settings["rename_files"] or settings["move_files"]:
