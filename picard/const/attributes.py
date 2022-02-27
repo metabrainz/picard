@@ -108,6 +108,10 @@ MB_ATTRIBUTES = {
     'DB:medium_format/name:089': 'SHM-SACD (2 channels)',
     'DB:medium_format/name:090': 'Tefifon',
     'DB:medium_format/name:091': '5.25" Floppy Disk',
+    'DB:medium_format/name:092': 'DVD-R Video',
+    'DB:medium_format/name:093': 'Data DVD-R',
+    'DB:medium_format/name:094': 'Data DVD',
+    'DB:medium_format/name:095': 'KiT Album',
     'DB:release_group_primary_type/name:001': 'Album',
     'DB:release_group_primary_type/name:002': 'Single',
     'DB:release_group_primary_type/name:003': 'EP',
@@ -128,4 +132,6 @@ MB_ATTRIBUTES = {
     'DB:release_status/name:002': 'Promotion',
     'DB:release_status/name:003': 'Bootleg',
     'DB:release_status/name:004': 'Pseudo-Release',
+    'DB:release_status/name:005': 'Withdrawn',
+    'DB:release_status/name:006': 'Cancelled',
 }
