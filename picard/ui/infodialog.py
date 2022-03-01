@@ -32,6 +32,7 @@ from collections import (
     defaultdict,
     namedtuple,
 )
+from html import escape
 import os.path
 import re
 import traceback
@@ -51,7 +52,6 @@ from picard.util import (
     bytes2human,
     encode_filename,
     format_time,
-    htmlescape,
     union_sorted_lists,
 )
 
@@ -298,16 +298,13 @@ def format_file_info(file_):
             ch = _('Stereo')
         info.append((_('Channels:'), ch))
     return '<br/>'.join(map(lambda i: '<b>%s</b> %s' %
-                            (htmlescape(i[0]),
-                             htmlescape(i[1])), info))
+                            (escape(i[0]), escape(i[1])), info))
 
 
 def format_tracklist(cluster):
     info = []
-    info.append("<b>%s</b> %s" % (_('Album:'),
-                                  htmlescape(cluster.metadata["album"])))
-    info.append("<b>%s</b> %s" % (_('Artist:'),
-                                  htmlescape(cluster.metadata["albumartist"])))
+    info.append("<b>%s</b> %s" % (_('Album:'), escape(cluster.metadata["album"])))
+    info.append("<b>%s</b> %s" % (_('Artist:'), escape(cluster.metadata["albumartist"])))
     info.append("")
     TrackListItem = namedtuple('TrackListItem', 'number, title, artist, length')
     tracklists = defaultdict(list)
@@ -340,12 +337,12 @@ def format_tracklist(cluster):
             info.append("<b>%s</b>" % (_('Disc %d') % discnumber))
         lines = ["%s %s - %s (%s)" % item for item in sorted(tracklist, key=sorttracknum)]
         info.append("<b>%s</b><br />%s<br />" % (_('Tracklist:'),
-                    '<br />'.join(htmlescape(s).replace(' ', '&nbsp;') for s in lines)))
+                    '<br />'.join(escape(s).replace(' ', '&nbsp;') for s in lines)))
     return '<br/>'.join(info)
 
 
 def text_as_html(text):
-    return '<br />'.join(htmlescape(str(text))
+    return '<br />'.join(escape(str(text))
         .replace('\t', ' ')
         .replace(' ', '&nbsp;')
         .splitlines())
