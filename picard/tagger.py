@@ -588,7 +588,7 @@ class Tagger(QtWidgets.QApplication):
     def _scan_paths_recursive(paths, recursive, ignore_hidden):
         local_paths = list(paths)
         while local_paths:
-            current_path = local_paths.pop(0)
+            current_path = normpath(local_paths.pop(0))
             try:
                 if os.path.isdir(current_path):
                     for entry in os.scandir(current_path):
