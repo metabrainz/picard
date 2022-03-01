@@ -24,7 +24,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+from enum import IntEnum
 import math
 import os
 import re
@@ -146,18 +146,23 @@ def _shorten_to_bytes_length(text, length):  # noqa: E302
     return ""
 
 
-SHORTEN_BYTES, SHORTEN_UTF16, SHORTEN_UTF16_NFD = 0, 1, 2
+class ShortenMode(IntEnum):
+    BYTES = 0
+    UTF16 = 1
+    UTF16_NFD = 2
+
+
 def shorten_filename(filename, length, mode):  # noqa: E302
     """Truncates a filename to the given number of thingies,
     as implied by `mode`.
     """
     if isinstance(filename, bytes):
         return filename[:length]
-    if mode == SHORTEN_BYTES:
+    if mode == ShortenMode.BYTES:
         return _shorten_to_bytes_length(filename, length)
-    if mode == SHORTEN_UTF16:
+    if mode == ShortenMode.UTF16:
         return _shorten_to_utf16_length(filename, length)
-    if mode == SHORTEN_UTF16_NFD:
+    if mode == ShortenMode.UTF16_NFD:
         return _shorten_to_utf16_nfd_length(filename, length)
 
 
@@ -166,7 +171,7 @@ def shorten_path(path, length, mode):
 
     path: Absolute or relative path to shorten.
     length: Maximum number of code points / bytes allowed in a node.
-    mode: One of SHORTEN_BYTES, SHORTEN_UTF16, SHORTEN_UTF16_NFD.
+    mode: One of the enum values from ShortenMode.
     """
     def shorten(name, length):
         return name and shorten_filename(name, length, mode).strip() or ""
@@ -221,7 +226,7 @@ def _make_win_short_filename(relpath, reserved=0):
 
     # to make things more readable...
     def shorten(path, length):
-        return shorten_path(path, length, mode=SHORTEN_UTF16)
+        return shorten_path(path, length, mode=ShortenMode.UTF16)
     xlength = _get_utf16_length
 
     # shorten to MAX_NODE_LEN from the beginning
@@ -383,12 +388,12 @@ def make_short_filename(basedir, relpath, win_compat=False, relative_to=""):
     if IS_MACOS:
         # on OS X (i.e. HFS+), this is expressed in UTF-16 code points,
         # in NFD normalization form
-        relpath = shorten_path(relpath, 255, mode=SHORTEN_UTF16_NFD)
+        relpath = shorten_path(relpath, 255, mode=ShortenMode.UTF16_NFD)
     else:
         # on everything else the limit is expressed in bytes,
         # and filesystem-dependent
         limit = _get_filename_limit(basedir)
-        relpath = shorten_path(relpath, limit, mode=SHORTEN_BYTES)
+        relpath = shorten_path(relpath, limit, mode=ShortenMode.BYTES)
     return relpath
 
 
