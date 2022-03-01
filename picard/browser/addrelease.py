@@ -20,16 +20,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+from html import escape
 from secrets import token_bytes
 
 from PyQt5.QtCore import QCoreApplication
 
 from picard import log
-from picard.util import (
-    format_time,
-    htmlescape,
-)
+from picard.util import format_time
 from picard.util.mbserver import build_submission_url
 from picard.util.webbrowser2 import open
 
@@ -245,15 +242,15 @@ def _add_track_data(data, files):
 
 def _get_form(title, action, label, form_data, query_args=None):
     return _form_template.format(
-        title=htmlescape(title),
-        submit_label=htmlescape(label),
-        action=htmlescape(build_submission_url(action, query_args)),
+        title=escape(title),
+        submit_label=escape(label),
+        action=escape(build_submission_url(action, query_args)),
         form_data=_format_form_data(form_data),
     )
 
 
 def _format_form_data(data):
-    return ''.join((
-        _form_input_template.format(name=htmlescape(name), value=htmlescape(value))
+    return ''.join(
+        _form_input_template.format(name=escape(name), value=escape(value))
         for name, value in data.items()
-    ))
+    )
