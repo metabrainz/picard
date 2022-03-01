@@ -72,6 +72,17 @@ from picard.const.sys import (
 )
 
 
+# Windows path length constraints:
+# the entire path's length
+WIN_MAX_FILEPATH_LEN = 259
+# the entire parent directory path's length, *excluding* the final separator
+WIN_MAX_DIRPATH_LEN = 247
+# a single node's length (this seems to be the case for older NTFS)
+WIN_MAX_NODE_LEN = 226
+# Prefix for long paths in Windows API
+WIN_LONGPATH_PREFIX = '\\\\?\\'
+
+
 class LockableObject(QtCore.QObject):
 
     """Read/write lockable object."""
@@ -165,6 +176,12 @@ def decode_filename(filename):
 
 
 def normpath(path):
+    path = os.path.normpath(path)
+    # If the path is longer than 259 characters on Windows, prepend the \\?\
+    # prefix. This enables access to long paths using the Windows API. See
+    # https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation
+    if IS_WIN and len(path) > WIN_MAX_FILEPATH_LEN and not path.startswith(WIN_LONGPATH_PREFIX):
+        path = WIN_LONGPATH_PREFIX + path
     try:
         path = os.path.realpath(path)
     except OSError as why:
@@ -172,7 +189,7 @@ def normpath(path):
         # or on Windows if drives are mounted without mount manager
         # (see https://tickets.metabrainz.org/browse/PICARD-2425).
         log.warning('Failed getting realpath for "%s": %s', path, why)
-    return os.path.normpath(path)
+    return path
 
 
 def is_absolute_path(path):

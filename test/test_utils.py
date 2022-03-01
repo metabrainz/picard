@@ -57,6 +57,7 @@ from picard.util import (
     iter_unique,
     limited_join,
     make_filename_from_title,
+    normpath,
     pattern_as_regex,
     sort_by_similarity,
     tracknum_and_title_from_filename,
@@ -706,3 +707,23 @@ class BuildQUrlTest(PicardTestCase):
             self.assertEqual(expected, build_qurl(host, port=80).toDisplayString())
             self.assertEqual(expected, build_qurl(host, port=443).toDisplayString())
             self.assertEqual(expected, build_qurl(host, port=8080).toDisplayString())
+
+
+class NormpathTest(PicardTestCase):
+
+    @unittest.skipIf(IS_WIN, "non-windows test")
+    def test_normpath(self):
+        self.assertEqual('/foo/bar', normpath('/foo//bar'))
+        self.assertEqual('/bar', normpath('/foo/../bar'))
+
+    @unittest.skipUnless(IS_WIN, "windows test")
+    def test_normpath_windows(self):
+        self.assertEqual('C:\\Foo\\Bar.baz', normpath('C:/Foo/Bar.baz'))
+        self.assertEqual('C:\\Bar.baz', normpath('C:/Foo/../Bar.baz'))
+
+    @unittest.skipUnless(IS_WIN, "windows test")
+    def test_normpath_windows_longpath(self):
+        path = 'C:\\foo\\' + (252 * 'a')
+        self.assertEqual(path, normpath(path))
+        path += 'a'
+        self.assertEqual('\\\\?\\' + path, normpath(path))
