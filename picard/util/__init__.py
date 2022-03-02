@@ -42,7 +42,6 @@
 import builtins
 from collections import namedtuple
 from collections.abc import Mapping
-import html
 from itertools import chain
 import json
 import ntpath
@@ -655,10 +654,6 @@ def convert_to_string(obj):
 
 
 builtins.__dict__['string_'] = convert_to_string
-
-
-def htmlescape(string):
-    return html.escape(string, quote=False)
 
 
 def load_json(data):
