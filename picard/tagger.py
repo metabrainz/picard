@@ -189,6 +189,7 @@ class Tagger(QtWidgets.QApplication):
         self.__class__.__instance = self
         setup_config(self, picard_args.config_file)
         config = get_config()
+        self.setStyle(OverrideStyle())
         theme.setup(self)
 
         self._cmdline_files = picard_args.FILE
@@ -1082,7 +1083,6 @@ def main(localedir=None, autoupdate=True):
         pass
 
     tagger = Tagger(picard_args, unparsed_args, localedir, autoupdate)
-    tagger.setStyle(OverrideStyle())
 
     # Initialize Qt default translations
     translator = QtCore.QTranslator()
