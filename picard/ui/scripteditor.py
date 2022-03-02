@@ -261,7 +261,7 @@ class ScriptEditorExamples():
             'musicbrainz_albumartistid': 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d',
             'musicbrainz_artistid': 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d',
             'musicbrainz_recordingid': 'ed052ae1-c950-47f2-8d2b-46e1b58ab76c',
-            'musicbrainz_releasetrackid': '392639f5-5629-477e-b04b-93bffa703405',
+            'musicbrainz_trackid': '392639f5-5629-477e-b04b-93bffa703405',
         })
         yield efile
 
@@ -294,7 +294,7 @@ class ScriptEditorExamples():
             '~extension': 'mp3',
             'musicbrainz_albumid': '4b50c71e-0a07-46ac-82e4-cb85dc0c9bdd',
             'musicbrainz_recordingid': 'b3c487cb-0e55-477d-8df3-01ec6590f099',
-            'musicbrainz_releasetrackid': 'f8649a05-da39-39ba-957c-7abf8f9012be',
+            'musicbrainz_trackid': 'f8649a05-da39-39ba-957c-7abf8f9012be',
             'musicbrainz_albumartistid': '89ad4ac3-39f7-470e-963a-56509c546377',
             'musicbrainz_artistid': ['7b593455-d207-482c-8c6f-19ce22c94679', '9e082466-2390-40d1-891e-4803531f43fd'],
         })
