@@ -54,6 +54,7 @@ from picard.util import (
 
 win32api = None
 if IS_WIN:
+    import winreg
     try:
         import win32api  # isort:skip
         import pywintypes
@@ -147,6 +148,25 @@ def _shorten_to_bytes_length(text, length):  # noqa: E302
         i -= 1
     # hmm. we got here?
     return ""
+
+
+def system_supports_long_paths():
+    if not IS_WIN:
+        return True
+    else:
+        try:
+            # Use cached value
+            return system_supports_long_paths._supported
+        except AttributeError:
+            pass
+        try:
+            with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,
+                                r"SYSTEM\CurrentControlSet\Control\FileSystem") as key:
+                system_supports_long_paths._supported = winreg.QueryValueEx(key, "LongPathsEnabled")[0] == 1
+                return system_supports_long_paths._supported
+        except OSError:
+            log.info('Failed reading LongPathsEnabled from registry')
+            return False
 
 
 class ShortenMode(IntEnum):
@@ -332,13 +352,13 @@ def _get_filename_limit(target):
     return limit
 
 
-def make_short_filename(basedir, relpath, win_compat=False, relative_to=""):
+def make_short_filename(basedir, relpath, win_shorten_path=False, relative_to=""):
     """Shorten a filename's path to proper limits.
 
     basedir: Absolute path of the base directory where files will be moved.
     relpath: File path, relative from the base directory.
-    win_compat: Windows is quirky.
-    relative_to: An ancestor directory of basedir, against which win_compat
+    win_shorten_path: Enforce 259 character limit for the path for Windows compatibility.
+    relative_to: An ancestor directory of basedir, against which win_shorten_path
                  will be applied.
     """
     # only deal with absolute paths. it saves a lot of grief,
@@ -351,7 +371,7 @@ def make_short_filename(basedir, relpath, win_compat=False, relative_to=""):
         basedir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.MusicLocation)
     # also, make sure the relative path is clean
     relpath = os.path.normpath(relpath)
-    if win_compat and relative_to:
+    if win_shorten_path and relative_to:
         relative_to = os.path.abspath(relative_to)
         assert basedir.startswith(relative_to) and \
             basedir.split(relative_to)[1][:1] in (os.path.sep, ''), \
@@ -360,13 +380,16 @@ def make_short_filename(basedir, relpath, win_compat=False, relative_to=""):
     relpath = os.path.join(*[part.strip() for part in relpath.split(os.path.sep)])
     # if we're on windows, delegate the work to a windows-specific function
     if IS_WIN:
-        reserved = len(basedir)
-        if not basedir.endswith(os.path.sep):
-            reserved += 1
-        return _make_win_short_filename(relpath, reserved)
+        if win_shorten_path:
+            reserved = len(basedir)
+            if not basedir.endswith(os.path.sep):
+                reserved += 1
+            return _make_win_short_filename(relpath, reserved)
+        else:
+            return shorten_path(relpath, 255, mode=ShortenMode.UTF16)
     # if we're being windows compatible, figure out how much
     # needs to be reserved for the basedir part
-    if win_compat:
+    elif win_shorten_path:
         # if a relative ancestor wasn't provided,
         # use the basedir's mount point
         if not relative_to:

@@ -210,6 +210,7 @@ class FileNamingTest(PicardTestCase):
             'move_files': False,
             'rename_files': False,
             'windows_compatibility': True,
+            'windows_long_paths': False,
             'file_renaming_scripts': {'test_id': {'script': '%album%/%title%'}},
             'selected_file_naming_script_id': 'test_id',
         })

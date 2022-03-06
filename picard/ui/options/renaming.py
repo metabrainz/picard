@@ -46,6 +46,7 @@ from picard.config import (
 )
 from picard.const.sys import IS_WIN
 from picard.script import ScriptParser
+from picard.util.filenaming import system_supports_long_paths
 
 from picard.ui.options import (
     OptionsCheckError,
@@ -79,6 +80,7 @@ class RenamingOptionsPage(OptionsPage):
 
     options = [
         BoolOption("setting", "windows_compatibility", True),
+        BoolOption("setting", "windows_long_paths", system_supports_long_paths() if IS_WIN else False),
         BoolOption("setting", "ascii_filenames", False),
         BoolOption("setting", "rename_files", False),
         BoolOption("setting", "move_files", False),
@@ -96,6 +98,7 @@ class RenamingOptionsPage(OptionsPage):
 
         self.ui.ascii_filenames.clicked.connect(self.update_examples_from_local)
         self.ui.windows_compatibility.clicked.connect(self.update_examples_from_local)
+        self.ui.windows_long_paths.clicked.connect(self.update_examples_from_local)
         self.ui.rename_files.clicked.connect(self.update_examples_from_local)
         self.ui.move_files.clicked.connect(self.update_examples_from_local)
         self.ui.move_files_to.editingFinished.connect(self.update_examples_from_local)
@@ -240,6 +243,7 @@ class RenamingOptionsPage(OptionsPage):
             self.ui.windows_compatibility.setEnabled(False)
         else:
             self.ui.windows_compatibility.setChecked(config.setting["windows_compatibility"])
+        self.ui.windows_long_paths.setChecked(config.setting["windows_long_paths"])
         self.ui.rename_files.setChecked(config.setting["rename_files"])
         self.ui.move_files.setChecked(config.setting["move_files"])
         self.ui.ascii_filenames.setChecked(config.setting["ascii_filenames"])
@@ -274,6 +278,7 @@ class RenamingOptionsPage(OptionsPage):
     def save(self):
         config = get_config()
         config.setting["windows_compatibility"] = self.ui.windows_compatibility.isChecked()
+        config.setting["windows_long_paths"] = self.ui.windows_long_paths.isChecked()
         config.setting["ascii_filenames"] = self.ui.ascii_filenames.isChecked()
         config.setting["rename_files"] = self.ui.rename_files.isChecked()
         config.setting["move_files"] = self.ui.move_files.isChecked()

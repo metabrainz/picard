@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>453</width>
-    <height>650</height>
+    <height>679</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -94,10 +94,25 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="windows_compatibility">
-     <property name="text">
+    <widget class="QGroupBox" name="windows_compatibility">
+     <property name="title">
       <string>Windows compatibility</string>
      </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QCheckBox" name="windows_long_paths">
+        <property name="text">
+         <string>Allow paths longer than 259 characters</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
@@ -295,5 +310,4 @@
   <tabstop>delete_empty_dirs</tabstop>
  </tabstops>
  <resources/>
- <connections/>
 </ui>
