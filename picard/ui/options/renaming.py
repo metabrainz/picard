@@ -46,7 +46,7 @@ from picard.config import (
 )
 from picard.const.sys import IS_WIN
 from picard.script import ScriptParser
-from picard.util.filenaming import system_supports_long_paths
+from picard.util import system_supports_long_paths
 
 from picard.ui.options import (
     OptionsCheckError,

@@ -54,7 +54,6 @@ from picard.util import (
 
 win32api = None
 if IS_WIN:
-    import winreg
     try:
         import win32api  # isort:skip
         import pywintypes
@@ -148,25 +147,6 @@ def _shorten_to_bytes_length(text, length):  # noqa: E302
         i -= 1
     # hmm. we got here?
     return ""
-
-
-def system_supports_long_paths():
-    if not IS_WIN:
-        return True
-    else:
-        try:
-            # Use cached value
-            return system_supports_long_paths._supported
-        except AttributeError:
-            pass
-        try:
-            with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,
-                                r"SYSTEM\CurrentControlSet\Control\FileSystem") as key:
-                system_supports_long_paths._supported = winreg.QueryValueEx(key, "LongPathsEnabled")[0] == 1
-                return system_supports_long_paths._supported
-        except OSError:
-            log.info('Failed reading LongPathsEnabled from registry')
-            return False
 
 
 class ShortenMode(IntEnum):

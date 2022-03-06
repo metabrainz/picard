@@ -72,6 +72,9 @@ from picard.const.sys import (
 )
 
 
+if IS_WIN:
+    import winreg
+
 # Windows path length constraints:
 # the entire path's length
 WIN_MAX_FILEPATH_LEN = 259
@@ -175,12 +178,32 @@ def decode_filename(filename):
         return filename.decode(_io_encoding)
 
 
+def system_supports_long_paths():
+    if not IS_WIN:
+        return True
+    else:
+        try:
+            # Use cached value
+            return system_supports_long_paths._supported
+        except AttributeError:
+            pass
+        try:
+            with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,
+                                r"SYSTEM\CurrentControlSet\Control\FileSystem") as key:
+                system_supports_long_paths._supported = winreg.QueryValueEx(key, "LongPathsEnabled")[0] == 1
+                return system_supports_long_paths._supported
+        except OSError:
+            log.info('Failed reading LongPathsEnabled from registry')
+            return False
+
+
 def normpath(path):
     path = os.path.normpath(path)
     # If the path is longer than 259 characters on Windows, prepend the \\?\
     # prefix. This enables access to long paths using the Windows API. See
     # https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation
-    if IS_WIN and len(path) > WIN_MAX_FILEPATH_LEN and not path.startswith(WIN_LONGPATH_PREFIX):
+    if (IS_WIN and len(path) > WIN_MAX_FILEPATH_LEN and not system_supports_long_paths()
+        and not path.startswith(WIN_LONGPATH_PREFIX)):
         path = WIN_LONGPATH_PREFIX + path
     try:
         path = os.path.realpath(path)

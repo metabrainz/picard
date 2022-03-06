@@ -37,7 +37,10 @@ import re
 import subprocess  # nosec: B404
 from tempfile import NamedTemporaryFile
 import unittest
-from unittest.mock import Mock
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
 from test.picardtestcase import PicardTestCase
 
@@ -722,7 +725,9 @@ class NormpathTest(PicardTestCase):
         self.assertEqual('C:\\Bar.baz', normpath('C:/Foo/../Bar.baz'))
 
     @unittest.skipUnless(IS_WIN, "windows test")
-    def test_normpath_windows_longpath(self):
+    @patch.object(util, 'system_supports_long_paths')
+    def test_normpath_windows_longpath(self, mock_system_supports_long_paths):
+        mock_system_supports_long_paths.return_value = False
         path = 'C:\\foo\\' + (252 * 'a')
         self.assertEqual(path, normpath(path))
         path += 'a'
