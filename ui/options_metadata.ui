@@ -214,7 +214,11 @@
  </widget>
  <tabstops>
   <tabstop>translate_artist_names</tabstop>
+  <tabstop>selected_locales</tabstop>
+  <tabstop>select_locales</tabstop>
   <tabstop>translate_artist_names_script_exception</tabstop>
+  <tabstop>selected_scripts</tabstop>
+  <tabstop>select_scripts</tabstop>
   <tabstop>standardize_artists</tabstop>
   <tabstop>standardize_instruments</tabstop>
   <tabstop>convert_punctuation</tabstop>
