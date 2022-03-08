@@ -48,17 +48,10 @@
          <number>2</number>
         </property>
         <item>
-         <widget class="QLineEdit" name="move_files_to">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-         </widget>
+         <widget class="QLineEdit" name="move_files_to"/>
         </item>
         <item>
          <widget class="QPushButton" name="move_files_to_browse">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
           <property name="text">
            <string>Browse...</string>
           </property>
@@ -68,26 +61,16 @@
       </item>
       <item>
        <widget class="QCheckBox" name="move_additional_files">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
         <property name="text">
          <string>Move additional files (case insensitive):</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="move_additional_files_pattern">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-       </widget>
+       <widget class="QLineEdit" name="move_additional_files_pattern"/>
       </item>
       <item>
        <widget class="QCheckBox" name="delete_empty_dirs">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
         <property name="text">
          <string>Delete empty directories</string>
         </property>

@@ -100,8 +100,8 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_files.clicked.connect(self.update_examples_from_local)
         self.ui.move_files_to.editingFinished.connect(self.update_examples_from_local)
 
-        self.ui.move_files.toggled.connect(self.toggle_file_moving)
-        self.ui.rename_files.toggled.connect(self.toggle_file_renaming)
+        self.ui.move_files.toggled.connect(self.toggle_file_naming_format)
+        self.ui.rename_files.toggled.connect(self.toggle_file_naming_format)
         self.ui.open_script_editor.clicked.connect(self.show_script_editing_page)
         self.ui.move_files_to_browse.clicked.connect(self.move_files_to_browse)
 
@@ -192,18 +192,7 @@ class RenamingOptionsPage(OptionsPage):
     def show_scripting_documentation(self):
         ScriptingDocumentationDialog.show_instance(parent=self)
 
-    def toggle_file_moving(self, state):
-        self.toggle_file_naming_format()
-        self.ui.delete_empty_dirs.setEnabled(state)
-        self.ui.move_files_to.setEnabled(state)
-        self.ui.move_files_to_browse.setEnabled(state)
-        self.ui.move_additional_files.setEnabled(state)
-        self.ui.move_additional_files_pattern.setEnabled(state)
-
-    def toggle_file_renaming(self, state):
-        self.toggle_file_naming_format()
-
-    def toggle_file_naming_format(self):
+    def toggle_file_naming_format(self, state):
         active = self.ui.move_files.isChecked() or self.ui.rename_files.isChecked()
         self.ui.open_script_editor.setEnabled(active)
         self.ui.ascii_filenames.setEnabled(active)
