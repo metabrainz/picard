@@ -122,6 +122,7 @@ from picard.util import (
     mbid_validate,
     normpath,
     process_events_iter,
+    system_supports_long_paths,
     thread,
     versions,
     webbrowser2,
@@ -246,6 +247,7 @@ class Tagger(QtWidgets.QApplication):
         log.debug("Configuration file path: %r", config.fileName())
 
         log.debug("User directory: %r", os.path.abspath(USER_DIR))
+        log.debug("System long path support: %r", system_supports_long_paths())
 
         # for compatibility with pre-1.3 plugins
         QtCore.QObject.tagger = self
