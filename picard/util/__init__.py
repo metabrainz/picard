@@ -205,12 +205,6 @@ def system_supports_long_paths():
 
 def normpath(path):
     path = os.path.normpath(path)
-    # If the path is longer than 259 characters on Windows, prepend the \\?\
-    # prefix. This enables access to long paths using the Windows API. See
-    # https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation
-    if (IS_WIN and len(path) > WIN_MAX_FILEPATH_LEN and not system_supports_long_paths()
-        and not path.startswith(WIN_LONGPATH_PREFIX)):
-        path = WIN_LONGPATH_PREFIX + path
     try:
         path = os.path.realpath(path)
     except OSError as why:
@@ -218,6 +212,12 @@ def normpath(path):
         # or on Windows if drives are mounted without mount manager
         # (see https://tickets.metabrainz.org/browse/PICARD-2425).
         log.warning('Failed getting realpath for "%s": %s', path, why)
+    # If the path is longer than 259 characters on Windows, prepend the \\?\
+    # prefix. This enables access to long paths using the Windows API. See
+    # https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation
+    if (IS_WIN and len(path) > WIN_MAX_FILEPATH_LEN and not system_supports_long_paths()
+        and not path.startswith(WIN_LONGPATH_PREFIX)):
+        path = WIN_LONGPATH_PREFIX + path
     return path
 
 
