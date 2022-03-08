@@ -179,6 +179,14 @@ def decode_filename(filename):
         return filename.decode(_io_encoding)
 
 
+def _check_windows_min_version(major, build):
+    try:
+        v = sys.getwindowsversion()
+        return v.major >= major and v.build >= build
+    except AttributeError:
+        return False
+
+
 def system_supports_long_paths():
     """Detects long path support.
 
@@ -187,20 +195,24 @@ def system_supports_long_paths():
     """
     if not IS_WIN:
         return True
-    else:
-        try:
-            # Use cached value
-            return system_supports_long_paths._supported
-        except AttributeError:
-            pass
-        try:
+    try:
+        # Use cached value
+        return system_supports_long_paths._supported
+    except AttributeError:
+        pass
+    try:
+        # Long path support can be enabled in Windows 10 version 1607 or later
+        if _check_windows_min_version(10, 14393):
             with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,
                                 r"SYSTEM\CurrentControlSet\Control\FileSystem") as key:
-                system_supports_long_paths._supported = winreg.QueryValueEx(key, "LongPathsEnabled")[0] == 1
-                return system_supports_long_paths._supported
-        except OSError:
-            log.info('Failed reading LongPathsEnabled from registry')
-            return False
+                supported = winreg.QueryValueEx(key, "LongPathsEnabled")[0] == 1
+        else:
+            supported = False
+        system_supports_long_paths._supported = supported
+        return supported
+    except OSError:
+        log.info('Failed reading LongPathsEnabled from registry')
+        return False
 
 
 def normpath(path):
