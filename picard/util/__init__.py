@@ -180,6 +180,11 @@ def decode_filename(filename):
 
 
 def system_supports_long_paths():
+    """Detects long path support.
+
+    On Windows returns True, only if long path support is enabled in the registry (Windows 10 1607 or later).
+    All other systems return always True.
+    """
     if not IS_WIN:
         return True
     else:
