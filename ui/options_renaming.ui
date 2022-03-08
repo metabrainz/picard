@@ -19,7 +19,7 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0,0,0,0,0,0,0,0">
+  <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0,0,0,0,0,0,0,0,0">
    <item>
     <widget class="QGroupBox" name="move_files">
      <property name="title">
@@ -94,25 +94,20 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="windows_compatibility">
-     <property name="title">
+    <widget class="QCheckBox" name="windows_compatibility">
+     <property name="text">
       <string>Windows compatibility</string>
      </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="checked">
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="windows_long_paths">
+     <property name="enabled">
       <bool>false</bool>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QCheckBox" name="windows_long_paths">
-        <property name="text">
-         <string>Allow paths longer than 259 characters</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <property name="text">
+      <string>Allow paths longer than 259 characters</string>
+     </property>
     </widget>
    </item>
    <item>
@@ -308,6 +303,33 @@
   <tabstop>move_additional_files</tabstop>
   <tabstop>move_additional_files_pattern</tabstop>
   <tabstop>delete_empty_dirs</tabstop>
+  <tabstop>rename_files</tabstop>
+  <tabstop>ascii_filenames</tabstop>
+  <tabstop>windows_compatibility</tabstop>
+  <tabstop>windows_long_paths</tabstop>
+  <tabstop>naming_script_selector</tabstop>
+  <tabstop>open_script_editor</tabstop>
+  <tabstop>example_filename_before</tabstop>
+  <tabstop>example_filename_sample_files_button</tabstop>
+  <tabstop>example_filename_after</tabstop>
  </tabstops>
  <resources/>
+ <connections>
+  <connection>
+   <sender>windows_compatibility</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>windows_long_paths</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>226</x>
+     <y>267</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>226</x>
+     <y>296</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
