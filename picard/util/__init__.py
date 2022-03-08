@@ -75,13 +75,14 @@ from picard.const.sys import (
 if IS_WIN:
     import winreg
 
-# Windows path length constraints:
-# the entire path's length
+# Windows path length constraints
+# See https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation
+# the entire path's length (260 - 1 null character)
 WIN_MAX_FILEPATH_LEN = 259
-# the entire parent directory path's length, *excluding* the final separator
-WIN_MAX_DIRPATH_LEN = 247
-# a single node's length (this seems to be the case for older NTFS)
-WIN_MAX_NODE_LEN = 226
+# the entire parent directory path's length must leave room for a 8.3 filename
+WIN_MAX_DIRPATH_LEN = WIN_MAX_FILEPATH_LEN - 12
+# a single node's (directory or file) length
+WIN_MAX_NODE_LEN = 255
 # Prefix for long paths in Windows API
 WIN_LONGPATH_PREFIX = '\\\\?\\'
 

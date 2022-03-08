@@ -213,7 +213,11 @@ def _make_win_short_filename(relpath, reserved=0):
     # http://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx
     #
     # The MAX_PATH is 260 characters, with this possible format for a file:
-    # "X:\<244-char dir path>\<11-char filename><NUL>".
+    # "X:\<244-char dir path>\<12-char filename><NUL>".
+
+    # Use a shorter max node length then the theoretically allowed 255 characters
+    # to leave room for longer file names
+    MAX_NODE_LENGTH = WIN_MAX_NODE_LEN - 29
 
     # to make predictable directory paths we need to fit the directories in
     # WIN_MAX_DIRPATH_LEN, and truncate the filename to whatever's left
@@ -224,8 +228,8 @@ def _make_win_short_filename(relpath, reserved=0):
         return shorten_path(path, length, mode=ShortenMode.UTF16)
     xlength = _get_utf16_length
 
-    # shorten to WIN_MAX_NODE_LEN from the beginning
-    relpath = shorten(relpath, WIN_MAX_NODE_LEN)
+    # shorten to MAX_NODE_LENGTH from the beginning
+    relpath = shorten(relpath, MAX_NODE_LENGTH)
     dirpath, filename = os.path.split(relpath)
     # what if dirpath is already the right size?
     dplen = xlength(dirpath)
@@ -366,7 +370,7 @@ def make_short_filename(basedir, relpath, win_shorten_path=False, relative_to=""
                 reserved += 1
             return _make_win_short_filename(relpath, reserved)
         else:
-            return shorten_path(relpath, 255, mode=ShortenMode.UTF16)
+            return shorten_path(relpath, WIN_MAX_NODE_LEN, mode=ShortenMode.UTF16)
     # if we're being windows compatible, figure out how much
     # needs to be reserved for the basedir part
     elif win_shorten_path:
