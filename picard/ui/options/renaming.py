@@ -33,7 +33,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from functools import partial
 import os.path
 
 from PyQt5 import QtWidgets
@@ -64,7 +63,6 @@ from picard.ui.scripteditor import (
     synchronize_vertical_scrollbars,
 )
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
-from picard.ui.util import enabledSlot
 
 
 _default_music_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.MusicLocation)
@@ -102,18 +100,8 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_files.clicked.connect(self.update_examples_from_local)
         self.ui.move_files_to.editingFinished.connect(self.update_examples_from_local)
 
-        self.ui.move_files.toggled.connect(
-            partial(
-                enabledSlot,
-                self.toggle_file_moving
-            )
-        )
-        self.ui.rename_files.toggled.connect(
-            partial(
-                enabledSlot,
-                self.toggle_file_renaming
-            )
-        )
+        self.ui.move_files.toggled.connect(self.toggle_file_moving)
+        self.ui.rename_files.toggled.connect(self.toggle_file_renaming)
         self.ui.open_script_editor.clicked.connect(self.show_script_editing_page)
         self.ui.move_files_to_browse.clicked.connect(self.move_files_to_browse)
 

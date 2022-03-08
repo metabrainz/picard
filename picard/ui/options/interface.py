@@ -29,7 +29,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from functools import partial
 import locale
 import os.path
 
@@ -61,7 +60,6 @@ from picard.ui.theme import (
     UiTheme,
 )
 from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
-from picard.ui.util import enabledSlot
 
 
 _default_starting_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.HomeLocation)
@@ -213,17 +211,11 @@ class InterfaceOptionsPage(OptionsPage):
             else:
                 name = translation
             self.ui.ui_language.addItem(name, lang_code)
-        self.ui.starting_directory.stateChanged.connect(
-            partial(
-                enabledSlot,
-                self.ui.starting_directory_path.setEnabled
-            )
+        self.ui.starting_directory.toggled.connect(
+            self.ui.starting_directory_path.setEnabled
         )
-        self.ui.starting_directory.stateChanged.connect(
-            partial(
-                enabledSlot,
-                self.ui.starting_directory_browse.setEnabled
-            )
+        self.ui.starting_directory.toggled.connect(
+            self.ui.starting_directory_browse.setEnabled
         )
         self.ui.starting_directory_browse.clicked.connect(self.starting_directory_browse)
         self.ui.add_button.clicked.connect(self.add_to_toolbar)

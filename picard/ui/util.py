@@ -63,17 +63,6 @@ class StandardButton(QtWidgets.QPushButton):
         super().__init__(*args)
 
 
-# The following code is there to fix
-# https://tickets.metabrainz.org/browse/PICARD-417
-# In some older version of PyQt/sip it's impossible to connect a signal
-# emitting an `int` to a slot expecting a `bool`.
-# By using `enabledSlot` instead we can force python to do the
-# conversion from int (`state`) to bool.
-def enabledSlot(func, state):
-    """Calls `func` with `state`."""
-    func(state)
-
-
 def find_starting_directory():
     config = get_config()
     if config.setting["starting_directory"]:
