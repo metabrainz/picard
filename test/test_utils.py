@@ -37,7 +37,10 @@ import re
 import subprocess  # nosec: B404
 from tempfile import NamedTemporaryFile
 import unittest
-from unittest.mock import Mock
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
 from test.picardtestcase import PicardTestCase
 
@@ -60,6 +63,7 @@ from picard.util import (
     normpath,
     pattern_as_regex,
     sort_by_similarity,
+    system_supports_long_paths,
     tracknum_and_title_from_filename,
     tracknum_from_filename,
     uniqify,
@@ -722,8 +726,58 @@ class NormpathTest(PicardTestCase):
         self.assertEqual('C:\\Bar.baz', normpath('C:/Foo/../Bar.baz'))
 
     @unittest.skipUnless(IS_WIN, "windows test")
-    def test_normpath_windows_longpath(self):
+    @patch.object(util, 'system_supports_long_paths')
+    def test_normpath_windows_longpath(self, mock_system_supports_long_paths):
+        mock_system_supports_long_paths.return_value = False
         path = 'C:\\foo\\' + (252 * 'a')
         self.assertEqual(path, normpath(path))
         path += 'a'
         self.assertEqual('\\\\?\\' + path, normpath(path))
+
+
+class SystemSupportsLongPathsTest(PicardTestCase):
+
+    def setUp(self):
+        super().setUp()
+        try:
+            del system_supports_long_paths._supported
+        except AttributeError:
+            pass
+
+    def test_system_supports_long_paths_returns_bool(self):
+        result = system_supports_long_paths()
+        self.assertTrue(isinstance(result, bool))
+
+    @unittest.skipIf(IS_WIN, "non-windows test")
+    def test_system_supports_long_paths(self):
+        self.assertTrue(system_supports_long_paths())
+
+    @unittest.skipUnless(IS_WIN, "windows test")
+    @patch('winreg.OpenKey')
+    @patch('winreg.QueryValueEx')
+    def test_system_supports_long_paths_windows_unsupported(self, mock_query_value, mock_open_key):
+        mock_query_value.return_value = [0]
+        self.assertFalse(system_supports_long_paths())
+        mock_open_key.assert_called_once()
+        mock_query_value.assert_called_once()
+
+    @unittest.skipUnless(IS_WIN, "windows test")
+    @patch('winreg.OpenKey')
+    @patch('winreg.QueryValueEx')
+    def test_system_supports_long_paths_windows_supported(self, mock_query_value, mock_open_key):
+        mock_query_value.return_value = [1]
+        self.assertTrue(system_supports_long_paths())
+        mock_open_key.assert_called_once()
+        mock_query_value.assert_called_once()
+
+    @unittest.skipUnless(IS_WIN, "windows test")
+    @patch('winreg.OpenKey')
+    @patch('winreg.QueryValueEx')
+    def test_system_supports_long_paths_cache(self, mock_query_value, mock_open_key):
+        mock_query_value.return_value = [1]
+        self.assertTrue(system_supports_long_paths())
+        self.assertTrue(system_supports_long_paths._supported)
+        mock_query_value.return_value = [0]
+        self.assertTrue(system_supports_long_paths())
+        mock_open_key.assert_called_once()
+        mock_query_value.assert_called_once()

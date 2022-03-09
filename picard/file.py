@@ -493,7 +493,8 @@ class File(QtCore.QObject, Item):
             if not settings['move_files']:
                 new_filename = os.path.basename(new_filename)
             win_compat = IS_WIN or settings['windows_compatibility']
-            new_filename = make_short_filename(new_dirname, new_filename, win_compat)
+            win_shorten_path = win_compat and not settings['windows_long_paths']
+            new_filename = make_short_filename(new_dirname, new_filename, win_shorten_path=win_shorten_path)
             new_filename = make_save_path(new_filename, win_compat=win_compat, mac_compat=IS_MACOS)
         return new_filename
 
@@ -510,14 +511,13 @@ class File(QtCore.QObject, Item):
                 new_dirname = os.path.join(os.path.dirname(filename), new_dirname)
         else:
             new_dirname = os.path.dirname(filename)
-        new_dirname = normpath(new_dirname)
         new_filename = os.path.basename(filename)
 
         if settings["rename_files"] or settings["move_files"]:
             new_filename = self._format_filename(new_dirname, new_filename, metadata, settings, naming_format)
 
         new_path = os.path.join(new_dirname, new_filename)
-        return new_path
+        return normpath(new_path)
 
     def _rename(self, old_filename, metadata, settings=None):
         new_filename = self.make_filename(old_filename, metadata, settings)

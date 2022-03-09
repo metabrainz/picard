@@ -11,7 +11,7 @@ class Ui_RenamingOptionsPage(object):
     def setupUi(self, RenamingOptionsPage):
         RenamingOptionsPage.setObjectName("RenamingOptionsPage")
         RenamingOptionsPage.setEnabled(True)
-        RenamingOptionsPage.resize(453, 650)
+        RenamingOptionsPage.resize(453, 679)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -58,6 +58,10 @@ class Ui_RenamingOptionsPage(object):
         self.windows_compatibility = QtWidgets.QCheckBox(RenamingOptionsPage)
         self.windows_compatibility.setObjectName("windows_compatibility")
         self.verticalLayout_5.addWidget(self.windows_compatibility)
+        self.windows_long_paths = QtWidgets.QCheckBox(RenamingOptionsPage)
+        self.windows_long_paths.setEnabled(False)
+        self.windows_long_paths.setObjectName("windows_long_paths")
+        self.verticalLayout_5.addWidget(self.windows_long_paths)
         self.label_2 = QtWidgets.QLabel(RenamingOptionsPage)
         self.label_2.setObjectName("label_2")
         self.verticalLayout_5.addWidget(self.label_2)
@@ -137,12 +141,22 @@ class Ui_RenamingOptionsPage(object):
         self.verticalLayout_5.addLayout(self.horizontalLayout)
 
         self.retranslateUi(RenamingOptionsPage)
+        self.windows_compatibility.toggled['bool'].connect(self.windows_long_paths.setEnabled) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(RenamingOptionsPage)
         RenamingOptionsPage.setTabOrder(self.move_files, self.move_files_to)
         RenamingOptionsPage.setTabOrder(self.move_files_to, self.move_files_to_browse)
         RenamingOptionsPage.setTabOrder(self.move_files_to_browse, self.move_additional_files)
         RenamingOptionsPage.setTabOrder(self.move_additional_files, self.move_additional_files_pattern)
         RenamingOptionsPage.setTabOrder(self.move_additional_files_pattern, self.delete_empty_dirs)
+        RenamingOptionsPage.setTabOrder(self.delete_empty_dirs, self.rename_files)
+        RenamingOptionsPage.setTabOrder(self.rename_files, self.ascii_filenames)
+        RenamingOptionsPage.setTabOrder(self.ascii_filenames, self.windows_compatibility)
+        RenamingOptionsPage.setTabOrder(self.windows_compatibility, self.windows_long_paths)
+        RenamingOptionsPage.setTabOrder(self.windows_long_paths, self.naming_script_selector)
+        RenamingOptionsPage.setTabOrder(self.naming_script_selector, self.open_script_editor)
+        RenamingOptionsPage.setTabOrder(self.open_script_editor, self.example_filename_before)
+        RenamingOptionsPage.setTabOrder(self.example_filename_before, self.example_filename_sample_files_button)
+        RenamingOptionsPage.setTabOrder(self.example_filename_sample_files_button, self.example_filename_after)
 
     def retranslateUi(self, RenamingOptionsPage):
         _translate = QtCore.QCoreApplication.translate
@@ -154,6 +168,7 @@ class Ui_RenamingOptionsPage(object):
         self.rename_files.setText(_("Rename files when saving"))
         self.ascii_filenames.setText(_("Replace non-ASCII characters"))
         self.windows_compatibility.setText(_("Windows compatibility"))
+        self.windows_long_paths.setText(_("Allow paths longer than 259 characters"))
         self.label_2.setText(_("Selected file naming script:"))
         self.open_script_editor.setText(_("Edit file naming script..."))
         self.groupBox.setTitle(_("Files will be named like this:"))

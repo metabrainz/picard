@@ -192,6 +192,7 @@ class WavPackTest(CommonApeTests.ApeTestCase):
         config.setting['move_files'] = False
         config.setting['ascii_filenames'] = False
         config.setting['windows_compatibility'] = False
+        config.setting['windows_long_paths'] = True
         config.setting['dont_write_tags'] = True
         config.setting['preserve_timestamps'] = False
         config.setting['delete_empty_dirs'] = False

@@ -72,13 +72,17 @@ from picard.const.sys import (
 )
 
 
-# Windows path length constraints:
-# the entire path's length
+if IS_WIN:
+    import winreg
+
+# Windows path length constraints
+# See https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation
+# the entire path's length (260 - 1 null character)
 WIN_MAX_FILEPATH_LEN = 259
-# the entire parent directory path's length, *excluding* the final separator
-WIN_MAX_DIRPATH_LEN = 247
-# a single node's length (this seems to be the case for older NTFS)
-WIN_MAX_NODE_LEN = 226
+# the entire parent directory path's length must leave room for a 8.3 filename
+WIN_MAX_DIRPATH_LEN = WIN_MAX_FILEPATH_LEN - 12
+# a single node's (directory or file) length
+WIN_MAX_NODE_LEN = 255
 # Prefix for long paths in Windows API
 WIN_LONGPATH_PREFIX = '\\\\?\\'
 
@@ -175,13 +179,44 @@ def decode_filename(filename):
         return filename.decode(_io_encoding)
 
 
+def _check_windows_min_version(major, build):
+    try:
+        v = sys.getwindowsversion()
+        return v.major >= major and v.build >= build
+    except AttributeError:
+        return False
+
+
+def system_supports_long_paths():
+    """Detects long path support.
+
+    On Windows returns True, only if long path support is enabled in the registry (Windows 10 1607 or later).
+    All other systems return always True.
+    """
+    if not IS_WIN:
+        return True
+    try:
+        # Use cached value
+        return system_supports_long_paths._supported
+    except AttributeError:
+        pass
+    try:
+        # Long path support can be enabled in Windows 10 version 1607 or later
+        if _check_windows_min_version(10, 14393):
+            with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,
+                                r"SYSTEM\CurrentControlSet\Control\FileSystem") as key:
+                supported = winreg.QueryValueEx(key, "LongPathsEnabled")[0] == 1
+        else:
+            supported = False
+        system_supports_long_paths._supported = supported
+        return supported
+    except OSError:
+        log.info('Failed reading LongPathsEnabled from registry')
+        return False
+
+
 def normpath(path):
     path = os.path.normpath(path)
-    # If the path is longer than 259 characters on Windows, prepend the \\?\
-    # prefix. This enables access to long paths using the Windows API. See
-    # https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation
-    if IS_WIN and len(path) > WIN_MAX_FILEPATH_LEN and not path.startswith(WIN_LONGPATH_PREFIX):
-        path = WIN_LONGPATH_PREFIX + path
     try:
         path = os.path.realpath(path)
     except OSError as why:
@@ -189,6 +224,12 @@ def normpath(path):
         # or on Windows if drives are mounted without mount manager
         # (see https://tickets.metabrainz.org/browse/PICARD-2425).
         log.warning('Failed getting realpath for "%s": %s', path, why)
+    # If the path is longer than 259 characters on Windows, prepend the \\?\
+    # prefix. This enables access to long paths using the Windows API. See
+    # https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation
+    if (IS_WIN and len(path) > WIN_MAX_FILEPATH_LEN and not system_supports_long_paths()
+        and not path.startswith(WIN_LONGPATH_PREFIX)):
+        path = WIN_LONGPATH_PREFIX + path
     return path
 
 
