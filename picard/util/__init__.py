@@ -1037,3 +1037,18 @@ def get_base_title(title):
     """
     suffix = _(DEFAULT_COPY_TEXT)
     return get_base_title_with_suffix(title, suffix)
+
+
+def iter_exception_chain(err):
+    """Iterate over the exception chain.
+    Yields this exception and all __context__ and __cause__ exceptions"""
+    yield err
+    if hasattr(err, '__context__'):
+        yield from iter_exception_chain(err.__context__)
+    if hasattr(err, '__cause__'):
+        yield from iter_exception_chain(err.__cause__)
+
+
+def any_exception_isinstance(error, type_):
+    """Returns True, if any exception in the exception chain is instance of type_."""
+    return any(isinstance(err, type_) for err in iter_exception_chain(error))

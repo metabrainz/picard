@@ -70,7 +70,10 @@ from picard.config import (
     Option,
     get_config,
 )
-from picard.file import File
+from picard.file import (
+    File,
+    FileErrorType,
+)
 from picard.plugin import ExtensionPoint
 from picard.track import (
     NonAlbumTrack,
@@ -258,6 +261,8 @@ class MainPanel(QtWidgets.QSplitter):
         FileItem.icon_file = QtGui.QIcon(":/images/file.png")
         FileItem.icon_file_pending = QtGui.QIcon(":/images/file-pending.png")
         FileItem.icon_error = icontheme.lookup('dialog-error', icontheme.ICON_SIZE_MENU)
+        FileItem.icon_error_not_found = icontheme.lookup('error-not-found', icontheme.ICON_SIZE_MENU)
+        FileItem.icon_error_no_access = icontheme.lookup('error-no-access', icontheme.ICON_SIZE_MENU)
         FileItem.icon_saved = QtGui.QIcon(":/images/track-saved.png")
         FileItem.icon_fingerprint = icontheme.lookup('fingerprint', icontheme.ICON_SIZE_MENU)
         FileItem.icon_fingerprint_gray = icontheme.lookup('fingerprint-gray', icontheme.ICON_SIZE_MENU)
@@ -1130,7 +1135,12 @@ class FileItem(TreeItem):
     @staticmethod
     def decide_file_icon(file):
         if file.state == File.ERROR:
-            return FileItem.icon_error
+            if file.error_type == FileErrorType.NOTFOUND:
+                return FileItem.icon_error_not_found
+            elif file.error_type == FileErrorType.NOACCESS:
+                return FileItem.icon_error_no_access
+            else:
+                return FileItem.icon_error
         elif isinstance(file.parent, Track):
             if file.state == File.NORMAL:
                 return FileItem.icon_saved
