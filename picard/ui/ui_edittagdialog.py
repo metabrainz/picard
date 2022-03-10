@@ -87,7 +87,7 @@ class Ui_EditTagDialog(object):
         self.buttonbox.setSizePolicy(sizePolicy)
         self.buttonbox.setMinimumSize(QtCore.QSize(150, 0))
         self.buttonbox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonbox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Save)
+        self.buttonbox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonbox.setObjectName("buttonbox")
         self.verticalLayout_2.addWidget(self.buttonbox)
 
