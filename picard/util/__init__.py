@@ -706,12 +706,7 @@ def __convert_to_string(obj):
         return str(obj)
 
 
-def convert_to_string(obj):
-    log.warning("string_() and convert_to_string() are deprecated, do not use")
-    return __convert_to_string(obj)
-
-
-builtins.__dict__['string_'] = convert_to_string
+builtins.__dict__['string_'] = __convert_to_string
 
 
 def load_json(data):
