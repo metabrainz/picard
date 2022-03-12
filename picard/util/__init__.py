@@ -706,9 +706,6 @@ def __convert_to_string(obj):
         return str(obj)
 
 
-builtins.__dict__['string_'] = __convert_to_string
-
-
 def load_json(data):
     """Deserializes a string or bytes like json response and converts
     it to a python object.
