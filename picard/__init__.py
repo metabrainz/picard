@@ -50,16 +50,6 @@ PICARD_VERSION = Version(2, 8, 0, 'dev', 2)
 # ie. win32_20140415091256
 PICARD_BUILD_VERSION_STR = ""
 
-
-def version_to_string(version, short=False):
-    """Deprecated: Use picard.version.Version.to_string instead"""
-    if len(version) != 5:
-        raise VersionError("Length != 5")
-    if not isinstance(version, Version):
-        version = Version(*version)
-    return version.to_string(short=short)
-
-
 def version_from_string(version_str):
     """Deprecated: Use picard.version.Version.from_string instead"""
     return Version.from_string(version_str)
