@@ -44,6 +44,10 @@
 
 
 from collections import Counter
+from enum import (
+    Enum,
+    auto,
+)
 import fnmatch
 from functools import partial
 import os
@@ -73,6 +77,7 @@ from picard.plugin import (
 )
 from picard.script import get_file_naming_script
 from picard.util import (
+    any_exception_isinstance,
     decode_filename,
     emptydir,
     find_best_match,
@@ -93,6 +98,13 @@ from picard.util.scripttofilename import script_to_filename_with_metadata
 from picard.util.tags import PRESERVED_TAGS
 
 from picard.ui.item import Item
+
+
+class FileErrorType(Enum):
+
+    UNKNOWN = auto()
+    NOTFOUND = auto()
+    NOACCESS = auto()
 
 
 class File(QtCore.QObject, Item):
@@ -144,6 +156,7 @@ class File(QtCore.QObject, Item):
         self.base_filename = os.path.basename(filename)
         self._state = File.UNDEFINED
         self.state = File.PENDING
+        self.error_type = FileErrorType.UNKNOWN
 
         self.orig_metadata = Metadata()
         self.metadata = Metadata()
@@ -189,6 +202,16 @@ class File(QtCore.QObject, Item):
             copy[name] = self.format_specific_metadata(metadata, name, settings)
         return copy
 
+    def _set_error(self, error):
+        self.state = File.ERROR
+        self.error_append(str(error))
+        if any_exception_isinstance(error, FileNotFoundError):
+            self.error_type = FileErrorType.NOTFOUND
+        elif any_exception_isinstance(error, PermissionError):
+            self.error_type = FileErrorType.NOACCESS
+        else:
+            self.error_type = FileErrorType.UNKNOWN
+
     def load(self, callback):
         thread.run_task(
             partial(self._load_check, self.filename),
@@ -215,8 +238,7 @@ class File(QtCore.QObject, Item):
             return
         config = get_config()
         if error is not None:
-            self.state = self.ERROR
-            self.error_append(str(error))
+            self._set_error(error)
 
             # If loading failed, force format guessing and try loading again
             from picard.formats.util import guess_format
@@ -390,8 +412,7 @@ class File(QtCore.QObject, Item):
             return
         old_filename = new_filename = self.filename
         if error is not None:
-            self.state = File.ERROR
-            self.error_append(str(error))
+            self._set_error(error)
         else:
             self.filename = new_filename = result
             self.base_filename = os.path.basename(new_filename)

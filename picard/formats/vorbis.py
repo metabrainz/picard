@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008, 2012 Lukáš Lalinský
 # Copyright (C) 2008 Hendrik van Antwerpen
-# Copyright (C) 2008-2010, 2014-2015, 2018-2021 Philipp Wolfer
+# Copyright (C) 2008-2010, 2014-2015, 2018-2022 Philipp Wolfer
 # Copyright (C) 2012-2013 Michael Wiencek
 # Copyright (C) 2012-2014 Wieland Hoffmann
 # Copyright (C) 2013 Calvin Walton
@@ -209,6 +209,7 @@ class VCommentFile(File):
                         comment=image.desc,
                         support_types=True,
                         data=image.data,
+                        id3_type=image.type
                     )
                 except CoverArtImageError as e:
                     log.error('Cannot load image from %r: %s' % (filename, e))

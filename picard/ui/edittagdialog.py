@@ -110,9 +110,7 @@ class EditTagDialog(PicardDialog):
         tag_names.addItem("")
         visible_tags = [tn for tn in self.default_tags if not tn.startswith("~")]
         tag_names.addItems(visible_tags)
-        self.completer = QtWidgets.QCompleter(visible_tags, tag_names)
-        self.completer.setCompletionMode(QtWidgets.QCompleter.CompletionMode.PopupCompletion)
-        tag_names.setCompleter(self.completer)
+        tag_names.completer().setCompletionMode(QtWidgets.QCompleter.CompletionMode.PopupCompletion)
         self.value_list.model().rowsInserted.connect(self.on_rows_inserted)
         self.value_list.model().rowsRemoved.connect(self.on_rows_removed)
         self.value_list.setItemDelegate(TagEditorDelegate(self))
@@ -268,12 +266,6 @@ class EditTagDialog(PicardDialog):
             self.ui.add_value.setEnabled(True)
         else:
             self._modified_tag()[row] = value
-            # add tags to the completer model once they get values
-            cm = self.completer.model()
-            if self.tag not in cm.stringList():
-                cm.insertRows(0, 1)
-                cm.setData(cm.index(0, 0), self.tag)
-                cm.sort(0)
 
     def value_selection_changed(self):
         selection = len(self.value_list.selectedItems()) > 0
