@@ -32,7 +32,7 @@ from picard import (
 )
 from picard.version import (
     Version,
-    VersionError,
+    VersionError
 )
 
 
