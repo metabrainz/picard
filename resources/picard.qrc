@@ -22,6 +22,10 @@
     <file>images/16x16/edit-cut@2x.png</file>
     <file>images/16x16/edit-paste.png</file>
     <file>images/16x16/edit-paste@2x.png</file>
+    <file>images/16x16/error-no-access.png</file>
+    <file>images/16x16/error-no-access@2x.png</file>
+    <file>images/16x16/error-not-found.png</file>
+    <file>images/16x16/error-not-found@2x.png</file>
     <file>images/16x16/fingerprint-gray.png</file>
     <file>images/16x16/fingerprint-gray@2x.png</file>
     <file>images/16x16/fingerprint.png</file>
@@ -89,12 +93,18 @@
     <file>images/16x16/view-refresh@2x.png</file>
     <file>images/22x22/acoustid-fingerprinter.png</file>
     <file>images/22x22/acoustid-fingerprinter@2x.png</file>
+    <file>images/22x22/dialog-error.png</file>
+    <file>images/22x22/dialog-error@2x.png</file>
     <file>images/22x22/document-open.png</file>
     <file>images/22x22/document-open@2x.png</file>
     <file>images/22x22/document-save.png</file>
     <file>images/22x22/document-save@2x.png</file>
     <file>images/22x22/edit-clear.png</file>
     <file>images/22x22/edit-clear@2x.png</file>
+    <file>images/22x22/error-no-access.png</file>
+    <file>images/22x22/error-no-access@2x.png</file>
+    <file>images/22x22/error-not-found.png</file>
+    <file>images/22x22/error-not-found@2x.png@2x.png</file>
     <file>images/22x22/fingerprint.png</file>
     <file>images/22x22/fingerprint@2x.png</file>
     <file>images/22x22/folder.png</file>

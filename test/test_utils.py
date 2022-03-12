@@ -52,10 +52,12 @@ from picard.const.sys import (
 )
 from picard.util import (
     album_artist_from_path,
+    any_exception_isinstance,
     build_qurl,
     extract_year_from_date,
     find_best_match,
     is_absolute_path,
+    iter_exception_chain,
     iter_files_from_objects,
     iter_unique,
     limited_join,
@@ -781,3 +783,44 @@ class SystemSupportsLongPathsTest(PicardTestCase):
         self.assertTrue(system_supports_long_paths())
         mock_open_key.assert_called_once()
         mock_query_value.assert_called_once()
+
+
+class IterExceptionChainTest(PicardTestCase):
+
+    def test_iter_exception_chain(self):
+        e1 = Mock(name='e1')
+        e2 = Mock(name='e2')
+        e3 = Mock(name='e3')
+        e4 = Mock(name='e4')
+        e5 = Mock(name='e5')
+        e1.__context__ = e2
+        e2.__context__ = e3
+        e2.__cause__ = e4
+        e1.__cause__ = e5
+        self.assertEqual([e1, e2, e3, e4, e5], list(iter_exception_chain(e1)))
+
+
+class AnyExceptionIsinstanceTest(PicardTestCase):
+
+    def test_any_exception_isinstance_itself(self):
+        ex = RuntimeError()
+        self.assertTrue(any_exception_isinstance(ex, RuntimeError))
+
+    def test_any_exception_isinstance_context(self):
+        ex = Mock()
+        self.assertFalse(any_exception_isinstance(ex, RuntimeError))
+        ex.__context__ = RuntimeError()
+        self.assertTrue(any_exception_isinstance(ex, RuntimeError))
+
+    def test_any_exception_isinstance_cause(self):
+        ex = Mock()
+        self.assertFalse(any_exception_isinstance(ex, RuntimeError))
+        ex.__cause__ = RuntimeError()
+        self.assertTrue(any_exception_isinstance(ex, RuntimeError))
+
+    def test_any_exception_isinstance_nested(self):
+        ex = Mock()
+        self.assertFalse(any_exception_isinstance(ex, RuntimeError))
+        ex.__cause__ = Mock()
+        ex.__cause__.__context__ = RuntimeError()
+        self.assertTrue(any_exception_isinstance(ex, RuntimeError))
