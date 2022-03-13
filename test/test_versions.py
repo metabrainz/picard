@@ -28,11 +28,11 @@ from test.picardtestcase import PicardTestCase
 
 from picard import (
     api_versions,
-    api_versions_tuple
+    api_versions_tuple,
 )
 from picard.version import (
     Version,
-    VersionError
+    VersionError,
 )
 
 
