@@ -69,6 +69,55 @@ We follow the "typical" GitHub workflow when contributing changes:
 6. Do not make one big pull request with a lot of unrelated changes. If you are solving more than one issue, unless they are closely related, split them into multiple pull requests. It makes it easier to review and merge the patches this way.
 7. Try to avoid un-necessary commits after code reviews by making use of [git rebase](https://help.github.com/articles/about-git-rebase/) to fix merge conflicts, remove unwanted commits, rewording and editing previous commits or squashing multiple small related changes into one commit.
 
-### Translations
+## Translations
 
 See po/README.md for information about translations.
+
+
+## Audio Metadata Specifications
+
+The core functionality of Picard is the ability to read and write tags from / to files
+with different tagging formats. When implementing support for new tags the goal is to
+be compatible with existing software as good as possible. Below are links to relevant
+metadata specifications and to the tag mapping tables used by various audio software.
+
+### Format specs
+- [ID3](http://id3.org/Developer%20Information)
+- [VorbisComment](https://wiki.xiph.org/VorbisComment)
+- [OggOpus](https://wiki.xiph.org/OggOpus#Comment_Header) (in addition to Vorbis Comment spec)
+- [RFC 7845 - Ogg Encapsulation for the Opus Audio Codec](https://tools.ietf.org/html/rfc7845#section-5.2.1)
+- [APE-Tags](http://wiki.hydrogenaud.io/index.php?title=APE_key)
+- [Matroska \| Tag Specifications](https://www.matroska.org/technical/specs/tagging/index.html)
+- [ASF / WMA](http://msdn.microsoft.com/en-us/library/ms867702.aspx)
+- MP4: See iTunes Metadata Format Specification (was available at https://developer.apple.com/, but does not seem to be available anymore)
+- [RIFF Tags](https://exiftool.org/TagNames/RIFF.html) / [Resource Interchange File Format: INFO List Chunk](https://www.tactilemedia.com/info/MCI_Control_Info.html) / [Multimedia Programming Interface and Data Specifications 1.0](http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/Docs/riffmci.pdf)
+
+
+### Tag mapping tables
+- [Picard](https://picard-docs.musicbrainz.org/en/appendices/tag_mapping.html)
+- [JAudiotagger](http://www.jthink.net/jaudiotagger/tagmapping.html)
+- [MP3Tag](https://help.mp3tag.de/main_tags.html)
+- [Kid3](https://kid3.sourceforge.io/kid3_en.html#frame-list)
+- [Yate Tag Mapping Table](https://2manyrobots.com/YateResources/InAppHelp/TagMappingTable.html)
+- [MediaMonkey](https://www.mediamonkey.com/sw/webhelp/frame/index.html?abouttrackproperties.htm)
+- [MusicBee](http://musicbee.wikia.com/wiki/Tag)
+- [Kodi - Music Files & Tagging](https://kodi.wiki/view/Music_tagging#Tags_Kodi_reads)
+- [Kodi - Video file tagging](https://kodi.wiki/view/Video_file_tagging#MP4_tag_options)
+- [Quod Libet - Tag Formats & Spec Deviations](https://quodlibet.readthedocs.io/en/latest/development/formats.html)
+- [Foobar2000:ID3 Tag Mapping - Hydrogenaudio Knowledgebase](https://wiki.hydrogenaud.io/index.php?title=Foobar2000:ID3_Tag_Mapping)
+- [Tag Mapping - Hydrogenaudio Knowledgebase](https://wiki.hydrogenaud.io/index.php?title=Tag_Mapping)
+- [Windows](https://docs.microsoft.com/en-US/windows/win32/wmformat/id3-tag-support)
+- [SlimServerSupportedTags - SqueezeboxWiki](http://wiki.slimdevices.com/index.php/SlimServerSupportedTags)
+- [Music Player Daemon 0.21.2 documentation](https://mpd.readthedocs.io/en/stable/protocol.html#tags)
+- [Metadata Matrix – Pioneer DJ](https://forums.pioneerdj.com/hc/en-us/articles/360024701851-Metadata-Matrix)
+
+Also relevant:
+
+- [Comparisson Picard / JAudiotagger](https://docs.google.com/spreadsheets/d/1afugW3R1FRDN-mwt5SQLY4R7aLAu3RqzjN3pR1497Ok/edit#gid=0)
+- [Roon Knowledge Base - File Tag Best Practice](https://kb.roonlabs.com/File_Tag_Best_Practice)
+- [Roon Knowledge Base - Roon Vs Tags](https://kb.roonlabs.com/Roon_Vs_Tags)
+
+
+### Other specs
+
+- [ReplayGain 2.0 specification](http://wiki.hydrogenaud.io/index.php?title=ReplayGain_2.0_specification)
