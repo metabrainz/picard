@@ -6,14 +6,15 @@
 # Gioele  <email address hidden>, 2012
 # Gioele <gioele@svario.it>, 2012
 # leofiore <leofiore@libero.it>, 2012
-# salo.rock, 2016-2022
-# salo.rock, 2013-2015
-# salo.rock, 2012
+# Luca Salini, 2016-2022
+# Luca Salini, 2013-2015
+# Luca Salini, 2012
+# Luca Salini, 2022
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2022-01-27 01:37+0000\n"
-"Last-Translator: salo.rock\n"
+"PO-Revision-Date: 2012-05-24 18:52+0000\n"
+"Last-Translator: Luca Salini, 2016-2022\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -149,6 +150,14 @@ msgid ""
 "<p>There are other variations of the single called a \"split single\" where songs by two different artists are released on the one disc, typically vinyl.</p>"
 msgstr "<p>Un singolo ha una definizione diversa a seconda del mercato in cui è pubblicato.</p>\n\n<ul>\n<li>Nel mercato statunitense, un singolo ha in genere una canzone principale ed eventualmente una manciata di tracce aggiuntive o remix della traccia principale; il singolo è intitolato di solito come la traccia principale; è pubblicato principalmente per ottenere passaggi in radio e per promuovere le vendite di una pubblicazione.</li>\n<li>Il mercato britannico (così come quello australiano ed europeo) è simile a quello statunitense, ma i singoli sono spesso pubblicati come set di due dischi, venduti separatamente. A volte hanno anche una versione più lunga del singolo (che spesso combina le tracce dei set di due dischi) che è molto simile al singolo di stile statunitense e che si definisce \"maxi singolo\". (In alcuni casi il maxi singolo è più lungo della pubblicazione da cui è tratto il singolo!)</li>\n<li>Il mercato giapponese è molto più orientato verso i singoli. Il fattore distintivo è in genere la lunghezza del singolo e di conseguenza il prezzo di vendita. Fino al 1995 era comune che questi singoli fossero pubblicati in formato mini CD, cioè un CD molto piccolo, in genere di 8 cm di diametro. Attorno al 1995 il singolo da 8 cm fu progressivamente eliminato e il CD singolo standard da 12 cm divenne più comune; in genere le riedizioni di singoli risalenti a prima del 1995 vengono pubblicate in formato 12 cm, anche se originariamente pubblicati in formato 8 cm. I singoli giapponesi includono spesso versioni strumentali delle canzoni ed esistono anche maxi singoli con versioni remixate delle canzoni, come nel Regno Unito. A volte un maxi singolo può avere più tracce di un EP, ma, trattandosi di versioni alternative delle stesse 2-3 canzoni, viene comunque classificato come singolo.</li>\n</ul>\n\n<p>Esistono anche altre variazioni dei singoli chiamate \"split single\", in cui le canzoni di due artisti diversi sono pubblicate sullo stesso disco, generalmente in vinile.</p>"
 
+#: DB:medium_format/description:95
+msgctxt "medium_format"
+msgid ""
+"A \"digital collectible\" device, mostly used for k-pop music, that is "
+"connected to a phone via Bluetooth or headphone jack and unlocks the release"
+" for listening in a companion app for a limited period of time."
+msgstr "Un dispositivo digitale collezionabile, utilizzato soprattutto per la musica K-pop, che è collegato ad un telefono via Bluetooth o spinotto delle cuffie e sblocca la pubblicazione per l'ascolto in un'app integrativa per un periodo di tempo limitato."
+
 #: DB:release_group_secondary_type/description:8
 msgctxt "release_group_secondary_type"
 msgid ""
@@ -182,6 +191,15 @@ msgid ""
 "A cantata is a vocal (often choral) composition with an instrumental "
 "(usually orchestral) accompaniment, typically in several movements."
 msgstr "Una cantata è una composizione vocale (spesso corale) con un accompagnamento strumentale (solitamente orchestrale), tipicamente divisa in diversi movimenti."
+
+#: DB:medium_format/description:46
+msgctxt "medium_format"
+msgid ""
+"A card (or other similar physical support) that doesn't contain the music "
+"itself directly, but provides a code to download it digitally. Often bundled"
+" with physical releases but sometimes sold as a standalone item (especially "
+"in Asia)."
+msgstr "Un biglietto (o un altro tipo di supporto fisico simile) che non contiene direttamente la musica, ma fornisce un codice per scaricarla in formato digitale. Spesso accompagna una pubblicazione fisica, ma talvolta è venduto anche come articolo a sé stante (in modo particolare in Asia)."
 
 #: DB:work_type/description:4
 msgctxt "work_type"
@@ -317,6 +335,14 @@ msgid ""
 " or a roof which can be retracted."
 msgstr "Un luogo la cui funzione principale è ospitare eventi sportivi all'aperto, solitamente costituito da un campo circondato da una struttura per gli spettatori non coperta o con tetto retrattile."
 
+#: DB:release_status/description:6
+msgctxt "release_status"
+msgid ""
+"A planned official release that was cancelled before being released, but for"
+" which enough info is known to still confidently list it (e.g. it was "
+"available for preorder)."
+msgstr "Una pubblicazione ufficiale programmata che è stata annullata prima di essere pubblicata, ma sulla quale sono disponibili abbastanza informazioni da poterla inserire con certezza (per es. era disponibile in preordine)."
+
 #: DB:work_type/description:28
 msgctxt "work_type"
 msgid ""
@@ -331,6 +357,15 @@ msgid ""
 "A poem is a literary piece, generally short and in verse, where words are "
 "usually chosen for their sound and for the images and ideas they suggest."
 msgstr "Una poesia è un brano letterario, in genere breve e in versi, in cui le parole sono solitamente scelte per il loro suono e per le immagini e le idee che evocano."
+
+#: DB:release_status/description:5
+msgctxt "release_status"
+msgid ""
+"A previously official release that was actively withdrawn from circulation "
+"by the artist and/or their record company after being released, whether to "
+"replace it with a new version with some changes or to just retire it "
+"altogether (e.g. because of legal issues)."
+msgstr "Una pubblicazione in precedenza ufficiale che è stata attivamente ritirata dalla circolazione dall'artista e/o dalla sua casa discografica dopo essere stata pubblicata, che sia per sostituirla con una nuova versione con alcuni cambiamenti o per ritirarla del tutto (per es. a causa di problemi legali)."
 
 #: DB:release_group_secondary_type/description:10
 msgctxt "release_group_secondary_type"
@@ -379,6 +414,11 @@ msgstr "Una serie di artisti insigniti dello stesso premio."
 msgctxt "series_type"
 msgid "A series of artists."
 msgstr "Una serie di artisti."
+
+#: DB:series_type/description:15
+msgctxt "series_type"
+msgid "A series of award ceremonies, usually one per year."
+msgstr "Una serie di cerimonie di premiazione, solitamente annuali."
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -771,6 +811,14 @@ msgctxt "release_group_secondary_type"
 msgid "An audiobook is a book read by a narrator without music."
 msgstr "Un audiolibro è un libro letto da un narratore senza musica."
 
+#: DB:event_type/description:7
+msgctxt "event_type"
+msgid ""
+"An award ceremony is an event which is focused on the granting of prizes, "
+"but often includes musical performances in between the awarding of said "
+"prizes, especially for musical awards."
+msgstr "Una cerimonia di premiazione è un evento dedicato all'assegnazione di premi, ma spesso comprende esibizioni musicali tra una premiazione e l'altra, in particolare quando si tratta di premi musicali."
+
 #: DB:release_group_primary_type/description:12
 msgctxt "release_group_primary_type"
 msgid ""
@@ -909,8 +957,8 @@ msgstr "Arazbarek"
 
 #: DB:editor_collection_type/name:7
 msgctxt "collection_type"
-msgid "Area"
-msgstr "Area"
+msgid "Area collection"
+msgstr "Collezione di aree"
 
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
@@ -922,15 +970,15 @@ msgctxt "work_type"
 msgid "Aria"
 msgstr "Aria"
 
-#: DB:editor_collection_type/name:8
-msgctxt "collection_type"
-msgid "Artist"
-msgstr "Artista"
-
 #: DB:series_type/name:14
 msgctxt "series_type"
 msgid "Artist award"
 msgstr "Premio per artisti"
+
+#: DB:editor_collection_type/name:8
+msgctxt "collection_type"
+msgid "Artist collection"
+msgstr "Collezione di artisti"
 
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
@@ -981,6 +1029,16 @@ msgstr "Audiolibro"
 msgctxt "series_ordering_type"
 msgid "Automatic"
 msgstr "Automatico"
+
+#: DB:event_type/name:7
+msgctxt "event_type"
+msgid "Award ceremony"
+msgstr "Cerimonia di premiazione"
+
+#: DB:series_type/name:15
+msgctxt "series_type"
+msgid "Award ceremony"
+msgstr "Cerimonia di premiazione"
 
 #: DB:work_attribute_type_allowed_value/value:694
 msgctxt "work_attribute_type_allowed_value"
@@ -1636,6 +1694,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Campākali"
 msgstr "Campākali"
 
+#: DB:release_status/name:6
+msgctxt "release_status"
+msgid "Cancelled"
+msgstr "Annullate"
+
 #: DB:work_attribute_type_allowed_value/value:64
 msgctxt "work_attribute_type_allowed_value"
 msgid "Candrajyōti"
@@ -1924,6 +1987,11 @@ msgctxt "medium_format"
 msgid "DVD-Audio"
 msgstr "DVD-Audio"
 
+#: DB:medium_format/name:92
+msgctxt "medium_format"
+msgid "DVD-R Video"
+msgstr "DVD-R Video"
+
 #: DB:medium_format/name:19
 msgctxt "medium_format"
 msgid "DVD-Video"
@@ -2008,6 +2076,16 @@ msgstr "Darbārī tōḍī"
 msgctxt "medium_format"
 msgid "Data CD"
 msgstr "CD dati"
+
+#: DB:medium_format/name:94
+msgctxt "medium_format"
+msgid "Data DVD"
+msgstr "DVD dati"
+
+#: DB:medium_format/name:93
+msgctxt "medium_format"
+msgid "Data DVD-R"
+msgstr "DVD-R dati"
 
 #: DB:release_group_secondary_type/name:10
 msgctxt "release_group_secondary_type"
@@ -2199,6 +2277,11 @@ msgstr "Divan"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dolap"
 msgstr "Dolap"
+
+#: DB:medium_format/name:46
+msgctxt "medium_format"
+msgid "Download Card"
+msgstr "Download Card"
 
 #: DB:medium_format/name:4
 msgctxt "medium_format"
@@ -2438,8 +2521,8 @@ msgstr "Evcara"
 
 #: DB:editor_collection_type/name:4
 msgctxt "collection_type"
-msgid "Event"
-msgstr "Evento"
+msgid "Event collection"
+msgstr "Collezione di eventi"
 
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
@@ -3698,8 +3781,8 @@ msgstr "Arena coperta"
 
 #: DB:editor_collection_type/name:9
 msgctxt "collection_type"
-msgid "Instrument"
-msgstr "Strumento"
+msgid "Instrument collection"
+msgstr "Collezione di strumenti"
 
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
@@ -4154,6 +4237,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Khēmtāl"
 msgstr "Khēmtāl"
 
+#: DB:medium_format/name:95
+msgctxt "medium_format"
+msgid "KiT Album"
+msgstr "KiT Album"
+
 #: DB:work_attribute_type_allowed_value/value:630
 msgctxt "work_attribute_type_allowed_value"
 msgid "Koda"
@@ -4327,8 +4415,8 @@ msgstr "Kōmal riṣabh asāvēri"
 
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
-msgid "Label"
-msgstr "Etichetta"
+msgid "Label collection"
+msgstr "Collezione di etichette"
 
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
@@ -4853,11 +4941,6 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Murabba Beste "
 msgstr "Murabba Beste "
 
-#: DB:medium_format/name:46
-msgctxt "medium_format"
-msgid "Music Card"
-msgstr "Music Card"
-
 #: DB:work_type/name:29
 msgctxt "work_type"
 msgid "Musical"
@@ -5300,6 +5383,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Nişabureyn"
 msgstr "Nişabureyn"
 
+#: DB:gender/name:5
+msgctxt "gender"
+msgid "Non-binary"
+msgstr "Non binario"
+
 #: DB:release_group_secondary_type/description:3
 msgctxt "release_group_secondary_type"
 msgid "Non-music spoken word releases."
@@ -5603,8 +5691,8 @@ msgstr "Rullo per pianola"
 
 #: DB:editor_collection_type/name:11
 msgctxt "collection_type"
-msgid "Place"
-msgstr "Luogo"
+msgid "Place collection"
+msgstr "Collezione di luoghi"
 
 #: DB:place_alias_type/name:1
 msgctxt "alias_type"
@@ -5871,8 +5959,8 @@ msgstr "Grezza/non editata"
 
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
-msgid "Recording"
-msgstr "Registrazione"
+msgid "Recording collection"
+msgstr "Collezione di registrazioni"
 
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
@@ -5906,13 +5994,13 @@ msgstr "Rekb-i Zavil"
 
 #: DB:editor_collection_type/name:1
 msgctxt "collection_type"
-msgid "Release"
-msgstr "Pubblicazione"
+msgid "Release collection"
+msgstr "Collezione di pubblicazioni"
 
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
-msgid "Release group"
-msgstr "Gruppo di pubblicazioni"
+msgid "Release group collection"
+msgstr "Collezione di gruppi di pubblicazioni"
 
 #: DB:release_group_alias_type/name:1
 msgctxt "alias_type"
@@ -6418,8 +6506,8 @@ msgstr "Serbest"
 
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
-msgid "Series"
-msgstr "Serie"
+msgid "Series collection"
+msgstr "Collezione di serie"
 
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
@@ -7471,10 +7559,15 @@ msgctxt "collection_type"
 msgid "Wishlist"
 msgstr "Lista desideri"
 
+#: DB:release_status/name:5
+msgctxt "release_status"
+msgid "Withdrawn"
+msgstr "Ritirata"
+
 #: DB:editor_collection_type/name:15
 msgctxt "collection_type"
-msgid "Work"
-msgstr "Opera"
+msgid "Work collection"
+msgstr "Collezione di opere"
 
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"

@@ -11,8 +11,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2022-02-10 10:18+0000\n"
-"Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
+"PO-Revision-Date: 2012-05-24 18:52+0000\n"
+"Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2013-2022\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -148,6 +148,14 @@ msgid ""
 "<p>There are other variations of the single called a \"split single\" where songs by two different artists are released on the one disc, typically vinyl.</p>"
 msgstr "<p>De definitie van een single kan afhankelijk zijn van de markt waarvoor hij is bedoeld.</p>\n\n<ul>\n<li>In de VS staat er op een single meestal één hoofdnummer, met mogelijk een aantal extra nummers of remixes van het hoofdnummer. De single is meestal genoemd naar het hoofdnummer. De single wordt vooral uitgegeven om op de radio te worden gedraaid en de verkoop van het album te stimuleren.</li>\n<li>In het Verenigd Koninkrijk, Europa en Australië zijn singles vergelijkbaar met de VS, maar worden singles soms ook als een set van twee afzonderlijke singles verkocht. Ook is er vaak een langere versie van de single die soms een “maxi-single” wordt genoemd.</li>\n<li>De Japanse markt draait veel meer om singles. De belangrijkste onderscheidende factor is over het algemeen de duur van de single en de verkoopprijs. Tot 1995 werden deze singles vaak op minicd (een kleiner schijfje van meestal 8 cm) uitgebracht. In 1995 werd de 8cm-cd uitgefaseerd en werden normale cd’s van 12 cm voor singles gebruikelijker. Ook als singles die ooit op 8 cm zijn uitgebracht nu opnieuw worden uitgebracht, is dat meestal op een 12cm-cd. Japanse singles hebben vaak instrumentale versies van de nummers, en er worden ook maxi-singles verkocht. Deze maxi-singles kunnen meer nummers dan een EP hebben, maar omdat het alternatieve versies van dezelfde twee of drie nummers is, worden ze toch als single geclassificeerd.</li>\n</ul>\n\n<p>Er zijn ook andere ‘gedeelde singles’ met nummers van twee verschillende artiesten die op één medium (meestal vinyl) worden uitgebracht.</p>"
 
+#: DB:medium_format/description:95
+msgctxt "medium_format"
+msgid ""
+"A \"digital collectible\" device, mostly used for k-pop music, that is "
+"connected to a phone via Bluetooth or headphone jack and unlocks the release"
+" for listening in a companion app for a limited period of time."
+msgstr "Een ‘digitaal verzamelobject’ dat via bluetooth of de 3,5mm-aansluiting met een telefoon wordt verbonden, waarna de uitgave via een bijbehorende app een beperkte tijd te beluisteren is."
+
 #: DB:release_group_secondary_type/description:8
 msgctxt "release_group_secondary_type"
 msgid ""
@@ -181,6 +189,15 @@ msgid ""
 "A cantata is a vocal (often choral) composition with an instrumental "
 "(usually orchestral) accompaniment, typically in several movements."
 msgstr "Een cantate is een vocale compositie (vaak voor een koor) met een instrumentale (meestal orkestrale) begeleiding, meestal in meerdere delen."
+
+#: DB:medium_format/description:46
+msgctxt "medium_format"
+msgid ""
+"A card (or other similar physical support) that doesn't contain the music "
+"itself directly, but provides a code to download it digitally. Often bundled"
+" with physical releases but sometimes sold as a standalone item (especially "
+"in Asia)."
+msgstr "Een kaart (of ander fysiek object) waar geen muziek op staat, maar wel een code waarmee de muziek kan worden gedownload. Vaak worden ze met fysieke uitgaven gebundeld, maar soms worden ze ook los verkocht (vooral in Azië)."
 
 #: DB:work_type/description:4
 msgctxt "work_type"
@@ -316,6 +333,14 @@ msgid ""
 " or a roof which can be retracted."
 msgstr "Een plaats die als belangrijkste functie sportevenementen in de open lucht heeft. Meestal bestaat het uit een veld met daaromheen een gebouw voor toeschouwers zonder dak, of een dak dat kan worden ingetrokken."
 
+#: DB:release_status/description:6
+msgctxt "release_status"
+msgid ""
+"A planned official release that was cancelled before being released, but for"
+" which enough info is known to still confidently list it (e.g. it was "
+"available for preorder)."
+msgstr "Een geplande officiële uitgave die voor de uitgavedatum werd geannuleerd, maar waarvoor genoeg informatie is om haar toe te voegen (bijv. omdat ze al kon worden besteld)."
+
 #: DB:work_type/description:28
 msgctxt "work_type"
 msgid ""
@@ -330,6 +355,15 @@ msgid ""
 "A poem is a literary piece, generally short and in verse, where words are "
 "usually chosen for their sound and for the images and ideas they suggest."
 msgstr "Een gedicht is een vorm van literatuur, meestal kort en rijmend, waarbij de woorden meestal worden gekozen voor de klank en voor de beelden en ideeën die ze oproepen."
+
+#: DB:release_status/description:5
+msgctxt "release_status"
+msgid ""
+"A previously official release that was actively withdrawn from circulation "
+"by the artist and/or their record company after being released, whether to "
+"replace it with a new version with some changes or to just retire it "
+"altogether (e.g. because of legal issues)."
+msgstr "Een officiële uitgave die door de artiest en/of platenmaatschappij na de uitgavedatum is teruggetrokken. Dit kan gebeuren om een nieuwe versie met een paar veranderingen uit te brengen of om de uitgave helemaal te schrappen (bijv. om juridische redenen)."
 
 #: DB:release_group_secondary_type/description:10
 msgctxt "release_group_secondary_type"
@@ -378,6 +412,11 @@ msgstr "Een serie artiesten die dezelfde prijs hebben gewonnen."
 msgctxt "series_type"
 msgid "A series of artists."
 msgstr "Een serie artiesten"
+
+#: DB:series_type/description:15
+msgctxt "series_type"
+msgid "A series of award ceremonies, usually one per year."
+msgstr "Een serie prijsuitreikingen, meestal eens per jaar."
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -770,6 +809,14 @@ msgctxt "release_group_secondary_type"
 msgid "An audiobook is a book read by a narrator without music."
 msgstr "Een luisterboek is een boek dat zonder muzikale begeleiding wordt voorgelezen."
 
+#: DB:event_type/description:7
+msgctxt "event_type"
+msgid ""
+"An award ceremony is an event which is focused on the granting of prizes, "
+"but often includes musical performances in between the awarding of said "
+"prizes, especially for musical awards."
+msgstr "Een prijsuitreiking is een evenement waarvan het hoofddoel het uitreiken van prijzen is, maar waarbij vaak tussen de prijzen door muziekoptredens zijn. Dit is vooral bij muziekprijzen."
+
 #: DB:release_group_primary_type/description:12
 msgctxt "release_group_primary_type"
 msgid ""
@@ -908,8 +955,8 @@ msgstr "Arazbarek"
 
 #: DB:editor_collection_type/name:7
 msgctxt "collection_type"
-msgid "Area"
-msgstr "Gebied"
+msgid "Area collection"
+msgstr "Collectie van gebieden"
 
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
@@ -921,15 +968,15 @@ msgctxt "work_type"
 msgid "Aria"
 msgstr "Aria"
 
-#: DB:editor_collection_type/name:8
-msgctxt "collection_type"
-msgid "Artist"
-msgstr "Artiest"
-
 #: DB:series_type/name:14
 msgctxt "series_type"
 msgid "Artist award"
 msgstr "Artiestenprijs"
+
+#: DB:editor_collection_type/name:8
+msgctxt "collection_type"
+msgid "Artist collection"
+msgstr "Collectie van artiesten"
 
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
@@ -980,6 +1027,16 @@ msgstr "Luisterboek"
 msgctxt "series_ordering_type"
 msgid "Automatic"
 msgstr "Automatisch"
+
+#: DB:event_type/name:7
+msgctxt "event_type"
+msgid "Award ceremony"
+msgstr "Prijsuitreiking"
+
+#: DB:series_type/name:15
+msgctxt "series_type"
+msgid "Award ceremony"
+msgstr "Prijsuitreiking"
 
 #: DB:work_attribute_type_allowed_value/value:694
 msgctxt "work_attribute_type_allowed_value"
@@ -1635,6 +1692,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Campākali"
 msgstr "Campākali"
 
+#: DB:release_status/name:6
+msgctxt "release_status"
+msgid "Cancelled"
+msgstr "Geannuleerd"
+
 #: DB:work_attribute_type_allowed_value/value:64
 msgctxt "work_attribute_type_allowed_value"
 msgid "Candrajyōti"
@@ -1923,6 +1985,11 @@ msgctxt "medium_format"
 msgid "DVD-Audio"
 msgstr "dvd-audio"
 
+#: DB:medium_format/name:92
+msgctxt "medium_format"
+msgid "DVD-R Video"
+msgstr "dvd-r-video"
+
 #: DB:medium_format/name:19
 msgctxt "medium_format"
 msgid "DVD-Video"
@@ -2007,6 +2074,16 @@ msgstr "Darbārī tōḍī"
 msgctxt "medium_format"
 msgid "Data CD"
 msgstr "data-cd"
+
+#: DB:medium_format/name:94
+msgctxt "medium_format"
+msgid "Data DVD"
+msgstr "data-dvd"
+
+#: DB:medium_format/name:93
+msgctxt "medium_format"
+msgid "Data DVD-R"
+msgstr "data-dvd-r"
 
 #: DB:release_group_secondary_type/name:10
 msgctxt "release_group_secondary_type"
@@ -2198,6 +2275,11 @@ msgstr "Divan"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dolap"
 msgstr "Dolap"
+
+#: DB:medium_format/name:46
+msgctxt "medium_format"
+msgid "Download Card"
+msgstr "Downloadkaart"
 
 #: DB:medium_format/name:4
 msgctxt "medium_format"
@@ -2437,8 +2519,8 @@ msgstr "Evcara"
 
 #: DB:editor_collection_type/name:4
 msgctxt "collection_type"
-msgid "Event"
-msgstr "Evenement"
+msgid "Event collection"
+msgstr "Collectie van evenementen"
 
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
@@ -3697,8 +3779,8 @@ msgstr "Indoorarena"
 
 #: DB:editor_collection_type/name:9
 msgctxt "collection_type"
-msgid "Instrument"
-msgstr "Instrument"
+msgid "Instrument collection"
+msgstr "Collectie van instrumenten"
 
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
@@ -4153,6 +4235,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Khēmtāl"
 msgstr "Khēmtāl"
 
+#: DB:medium_format/name:95
+msgctxt "medium_format"
+msgid "KiT Album"
+msgstr "KiT Album"
+
 #: DB:work_attribute_type_allowed_value/value:630
 msgctxt "work_attribute_type_allowed_value"
 msgid "Koda"
@@ -4326,8 +4413,8 @@ msgstr "Kōmal riṣabh asāvēri"
 
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
-msgid "Label"
-msgstr "Platenmaatschappij"
+msgid "Label collection"
+msgstr "Collectie van platenmaatschappijen"
 
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
@@ -4852,11 +4939,6 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Murabba Beste "
 msgstr "Murabba Beste "
 
-#: DB:medium_format/name:46
-msgctxt "medium_format"
-msgid "Music Card"
-msgstr "muziekkaart"
-
 #: DB:work_type/name:29
 msgctxt "work_type"
 msgid "Musical"
@@ -5299,6 +5381,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Nişabureyn"
 msgstr "Nişabureyn"
 
+#: DB:gender/name:5
+msgctxt "gender"
+msgid "Non-binary"
+msgstr "Niet-binair"
+
 #: DB:release_group_secondary_type/description:3
 msgctxt "release_group_secondary_type"
 msgid "Non-music spoken word releases."
@@ -5602,8 +5689,8 @@ msgstr "pianorol (notenrol)"
 
 #: DB:editor_collection_type/name:11
 msgctxt "collection_type"
-msgid "Place"
-msgstr "Plaats"
+msgid "Place collection"
+msgstr "Collectie van plaatsen"
 
 #: DB:place_alias_type/name:1
 msgctxt "alias_type"
@@ -5870,8 +5957,8 @@ msgstr "onbewerkt"
 
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
-msgid "Recording"
-msgstr "Opnames"
+msgid "Recording collection"
+msgstr "Collectie van opnames"
 
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
@@ -5905,13 +5992,13 @@ msgstr "Rekb-i Zavil"
 
 #: DB:editor_collection_type/name:1
 msgctxt "collection_type"
-msgid "Release"
-msgstr "Uitgave"
+msgid "Release collection"
+msgstr "Collectie van uitgaven"
 
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
-msgid "Release group"
-msgstr "Uitgavegroepen"
+msgid "Release group collection"
+msgstr "Collectie van uitgavegroepen"
 
 #: DB:release_group_alias_type/name:1
 msgctxt "alias_type"
@@ -6417,8 +6504,8 @@ msgstr "Serbest"
 
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
-msgid "Series"
-msgstr "Serie"
+msgid "Series collection"
+msgstr "Collectie van series"
 
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
@@ -7470,10 +7557,15 @@ msgctxt "collection_type"
 msgid "Wishlist"
 msgstr "Verlanglijst"
 
+#: DB:release_status/name:5
+msgctxt "release_status"
+msgid "Withdrawn"
+msgstr "Teruggetrokken"
+
 #: DB:editor_collection_type/name:15
 msgctxt "collection_type"
-msgid "Work"
-msgstr "Composities"
+msgid "Work collection"
+msgstr "Collectie van composities"
 
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"

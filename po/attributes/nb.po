@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2022-01-24 20:52+0000\n"
-"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
+"PO-Revision-Date: 2012-05-24 18:52+0000\n"
+"Last-Translator: Allan Nordhøy <epost@anotheragency.no>, 2017\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/musicbrainz/musicbrainz/language/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -145,6 +145,14 @@ msgid ""
 "<p>There are other variations of the single called a \"split single\" where songs by two different artists are released on the one disc, typically vinyl.</p>"
 msgstr ""
 
+#: DB:medium_format/description:95
+msgctxt "medium_format"
+msgid ""
+"A \"digital collectible\" device, mostly used for k-pop music, that is "
+"connected to a phone via Bluetooth or headphone jack and unlocks the release"
+" for listening in a companion app for a limited period of time."
+msgstr ""
+
 #: DB:release_group_secondary_type/description:8
 msgctxt "release_group_secondary_type"
 msgid ""
@@ -177,6 +185,15 @@ msgctxt "work_type"
 msgid ""
 "A cantata is a vocal (often choral) composition with an instrumental "
 "(usually orchestral) accompaniment, typically in several movements."
+msgstr ""
+
+#: DB:medium_format/description:46
+msgctxt "medium_format"
+msgid ""
+"A card (or other similar physical support) that doesn't contain the music "
+"itself directly, but provides a code to download it digitally. Often bundled"
+" with physical releases but sometimes sold as a standalone item (especially "
+"in Asia)."
 msgstr ""
 
 #: DB:work_type/description:4
@@ -313,6 +330,14 @@ msgid ""
 " or a roof which can be retracted."
 msgstr ""
 
+#: DB:release_status/description:6
+msgctxt "release_status"
+msgid ""
+"A planned official release that was cancelled before being released, but for"
+" which enough info is known to still confidently list it (e.g. it was "
+"available for preorder)."
+msgstr ""
+
 #: DB:work_type/description:28
 msgctxt "work_type"
 msgid ""
@@ -326,6 +351,15 @@ msgctxt "work_type"
 msgid ""
 "A poem is a literary piece, generally short and in verse, where words are "
 "usually chosen for their sound and for the images and ideas they suggest."
+msgstr ""
+
+#: DB:release_status/description:5
+msgctxt "release_status"
+msgid ""
+"A previously official release that was actively withdrawn from circulation "
+"by the artist and/or their record company after being released, whether to "
+"replace it with a new version with some changes or to just retire it "
+"altogether (e.g. because of legal issues)."
 msgstr ""
 
 #: DB:release_group_secondary_type/description:10
@@ -374,6 +408,11 @@ msgstr ""
 #: DB:series_type/description:13
 msgctxt "series_type"
 msgid "A series of artists."
+msgstr ""
+
+#: DB:series_type/description:15
+msgctxt "series_type"
+msgid "A series of award ceremonies, usually one per year."
 msgstr ""
 
 #: DB:series_type/description:6
@@ -767,6 +806,14 @@ msgctxt "release_group_secondary_type"
 msgid "An audiobook is a book read by a narrator without music."
 msgstr ""
 
+#: DB:event_type/description:7
+msgctxt "event_type"
+msgid ""
+"An award ceremony is an event which is focused on the granting of prizes, "
+"but often includes musical performances in between the awarding of said "
+"prizes, especially for musical awards."
+msgstr ""
+
 #: DB:release_group_primary_type/description:12
 msgctxt "release_group_primary_type"
 msgid ""
@@ -905,8 +952,8 @@ msgstr "Arazbarek"
 
 #: DB:editor_collection_type/name:7
 msgctxt "collection_type"
-msgid "Area"
-msgstr "Område"
+msgid "Area collection"
+msgstr ""
 
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
@@ -918,14 +965,14 @@ msgctxt "work_type"
 msgid "Aria"
 msgstr "Aria"
 
-#: DB:editor_collection_type/name:8
-msgctxt "collection_type"
-msgid "Artist"
-msgstr "Artist"
-
 #: DB:series_type/name:14
 msgctxt "series_type"
 msgid "Artist award"
+msgstr ""
+
+#: DB:editor_collection_type/name:8
+msgctxt "collection_type"
+msgid "Artist collection"
 msgstr ""
 
 #: DB:artist_alias_type/name:1
@@ -977,6 +1024,16 @@ msgstr "Lydbok"
 msgctxt "series_ordering_type"
 msgid "Automatic"
 msgstr "Automatisk"
+
+#: DB:event_type/name:7
+msgctxt "event_type"
+msgid "Award ceremony"
+msgstr ""
+
+#: DB:series_type/name:15
+msgctxt "series_type"
+msgid "Award ceremony"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:694
 msgctxt "work_attribute_type_allowed_value"
@@ -1632,6 +1689,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Campākali"
 msgstr ""
 
+#: DB:release_status/name:6
+msgctxt "release_status"
+msgid "Cancelled"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:64
 msgctxt "work_attribute_type_allowed_value"
 msgid "Candrajyōti"
@@ -1920,6 +1982,11 @@ msgctxt "medium_format"
 msgid "DVD-Audio"
 msgstr "DVD-Audio"
 
+#: DB:medium_format/name:92
+msgctxt "medium_format"
+msgid "DVD-R Video"
+msgstr ""
+
 #: DB:medium_format/name:19
 msgctxt "medium_format"
 msgid "DVD-Video"
@@ -2004,6 +2071,16 @@ msgstr ""
 msgctxt "medium_format"
 msgid "Data CD"
 msgstr "Data CD"
+
+#: DB:medium_format/name:94
+msgctxt "medium_format"
+msgid "Data DVD"
+msgstr ""
+
+#: DB:medium_format/name:93
+msgctxt "medium_format"
+msgid "Data DVD-R"
+msgstr ""
 
 #: DB:release_group_secondary_type/name:10
 msgctxt "release_group_secondary_type"
@@ -2195,6 +2272,11 @@ msgstr "Divan"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dolap"
 msgstr "Dolap"
+
+#: DB:medium_format/name:46
+msgctxt "medium_format"
+msgid "Download Card"
+msgstr ""
 
 #: DB:medium_format/name:4
 msgctxt "medium_format"
@@ -2434,8 +2516,8 @@ msgstr "Evcara"
 
 #: DB:editor_collection_type/name:4
 msgctxt "collection_type"
-msgid "Event"
-msgstr "Arrangement"
+msgid "Event collection"
+msgstr ""
 
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
@@ -3694,8 +3776,8 @@ msgstr "Innendørs arena"
 
 #: DB:editor_collection_type/name:9
 msgctxt "collection_type"
-msgid "Instrument"
-msgstr "Instrument"
+msgid "Instrument collection"
+msgstr ""
 
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
@@ -4150,6 +4232,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Khēmtāl"
 msgstr ""
 
+#: DB:medium_format/name:95
+msgctxt "medium_format"
+msgid "KiT Album"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:630
 msgctxt "work_attribute_type_allowed_value"
 msgid "Koda"
@@ -4323,8 +4410,8 @@ msgstr ""
 
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
-msgid "Label"
-msgstr "Plateselskap"
+msgid "Label collection"
+msgstr ""
 
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
@@ -4849,11 +4936,6 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Murabba Beste "
 msgstr ""
 
-#: DB:medium_format/name:46
-msgctxt "medium_format"
-msgid "Music Card"
-msgstr "Musikkort"
-
 #: DB:work_type/name:29
 msgctxt "work_type"
 msgid "Musical"
@@ -5296,6 +5378,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Nişabureyn"
 msgstr "Nişabureyn"
 
+#: DB:gender/name:5
+msgctxt "gender"
+msgid "Non-binary"
+msgstr ""
+
 #: DB:release_group_secondary_type/description:3
 msgctxt "release_group_secondary_type"
 msgid "Non-music spoken word releases."
@@ -5599,8 +5686,8 @@ msgstr "Pianorull"
 
 #: DB:editor_collection_type/name:11
 msgctxt "collection_type"
-msgid "Place"
-msgstr "Sted"
+msgid "Place collection"
+msgstr ""
 
 #: DB:place_alias_type/name:1
 msgctxt "alias_type"
@@ -5867,8 +5954,8 @@ msgstr ""
 
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
-msgid "Recording"
-msgstr "Innspilling"
+msgid "Recording collection"
+msgstr ""
 
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
@@ -5902,13 +5989,13 @@ msgstr "Rekb-i Zavil"
 
 #: DB:editor_collection_type/name:1
 msgctxt "collection_type"
-msgid "Release"
-msgstr "Utgivelse"
+msgid "Release collection"
+msgstr ""
 
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
-msgid "Release group"
-msgstr "Utgivelsesgruppe"
+msgid "Release group collection"
+msgstr ""
 
 #: DB:release_group_alias_type/name:1
 msgctxt "alias_type"
@@ -6414,8 +6501,8 @@ msgstr "Serbest"
 
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
-msgid "Series"
-msgstr "Serie"
+msgid "Series collection"
+msgstr ""
 
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
@@ -7467,10 +7554,15 @@ msgctxt "collection_type"
 msgid "Wishlist"
 msgstr "Ønskeliste"
 
+#: DB:release_status/name:5
+msgctxt "release_status"
+msgid "Withdrawn"
+msgstr ""
+
 #: DB:editor_collection_type/name:15
 msgctxt "collection_type"
-msgid "Work"
-msgstr "Åndsverk"
+msgid "Work collection"
+msgstr ""
 
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"

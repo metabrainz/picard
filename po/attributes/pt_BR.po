@@ -1,9 +1,14 @@
 # 
 # Translators:
 # 0ed9961fdd2c469a85d0f0ef7ce7865b, 2015
+# 65f2af3cfa184c075942a0418b98d2de_d688669, 2014
+# 7c76de773fa2a98a476093903a6a2526, 2017
+# 0ed9961fdd2c469a85d0f0ef7ce7865b, 2015
 # Ayrton Albuquerque <ayrtonalbuaguiar@gmail.com>, 2018
 # Brunno Hofmann <brunno.hofmann@gmail.com>, 2018
+# c13105e646c4a52fdbce803eb58d1753_927b911 <83abe6c4a2f9c81681f8a202a802a027_478987>, 2016
 # 7c76de773fa2a98a476093903a6a2526, 2017
+# davitf <transifex@davitf.com>, 2012
 # Eduardo Bastos <eduardorochacg@gmail.com>, 2012
 # Erlandy Lopez <erlandy6@gmail.com>, 2019
 # Jaide Ambrosio <jaide.sp@gmail.com>, 2018
@@ -11,15 +16,21 @@
 # João Miguel Soares <joaomiguel32@live.com>, 2016
 # João Munhoz <jmunhoz@outlook.com>, 2017
 # lampih <lampih@gmail.com>, 2012
+# lampih <lampih@gmail.com>, 2012
 # Leonardo Pacheco <lpacheco@pobox.com>, 2018
 # c13105e646c4a52fdbce803eb58d1753_927b911 <83abe6c4a2f9c81681f8a202a802a027_478987>, 2016
 # Lucas Lira Gomes <x8lucas8x@gmail.com>, 2012
+# Lucas Lira Gomes <x8lucas8x@gmail.com>, 2012
 # Luciano Frota <lucianofrota@gmail.com>, 2017
 # Marco Costa <mmarcottulio@gmail.com>, 2012
+# Marco Costa <mmarcottulio@gmail.com>, 2012
 # 65f2af3cfa184c075942a0418b98d2de_d688669, 2014
+# Matheus Guimarães <jk.matheus@hotmail.com>, 2022
 # Marco Costa <mmarcottulio@gmail.com>, 2012
 # Murilo Grillo <murilogrillo08@gmail.com>, 2020
 # rafaelbrandao <rblcin@gmail.com>, 2012
+# rafaelbrandao <rblcin@gmail.com>, 2012
+# Rodrigo Tavares, 2019
 # Rodrigo Tavares, 2019
 # davitf <transifex@davitf.com>, 2012
 # Willer Portugal <willer_tj@hotmail.com>, 2019
@@ -30,8 +41,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2022-01-24 20:52+0000\n"
-"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
+"PO-Revision-Date: 2012-05-24 18:52+0000\n"
+"Last-Translator: Matheus Guimarães <jk.matheus@hotmail.com>, 2022\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/musicbrainz/musicbrainz/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -151,7 +162,7 @@ msgid ""
 "</ul>\n"
 "\n"
 "<p>Compilation should be used in addition to, not instead of, other types: for example, a various artists soundtrack using pre-released music should be marked as both a soundtrack and a compilation.</p>"
-msgstr ""
+msgstr "<p>Uma compilação, para fins do banco de dados MusicBrainz, abrange os seguintes tipos de lançamentos:</p>\n\n<ul>\n<li>uma coleção de gravações de várias fontes antigas (não necessariamente lançadas) combinadas. Por exemplo, um lançamento do tipo \"melhor de\", retrospectivo ou raridades.</li>\n<li>uma coleção de músicas de vários artistas, geralmente baseada em um tema geral (\"Songs for Lovers\"), um período específico (\"Hits of 1998\") ou algum outro tipo de agrupamento (\"Songs for Lovers\") From the Movies\", a série \"Café del Mar\", etc).</li>\n</ul>\n\n<p>O projeto MusicBrainz geralmente não considera o seguinte como compilações:</p>\n\n<ul>\n<li>uma reedição de um álbum, mesmo que inclua faixas bônus.</li>\n<li>um lançamento de tributo contendo covers de música de outro artista.</li>\n<li>um lançamento clássico contendo novas gravações de obras de um artista clássico.</li>\n<li>um lançamento dividido contendo novas músicas de vários artistas</li>\n</ul>\n\n<p>A compilação deve ser usada além de, não em vez de outros tipos: por exemplo, uma trilha sonora de vários artistas usando músicas pré-lançadas deve ser marcada como uma trilha sonora e uma compilação.</p>"
 
 #: DB:release_group_primary_type/description:2
 msgctxt "release_group_primary_type"
@@ -165,7 +176,15 @@ msgid ""
 "</ul>\n"
 "\n"
 "<p>There are other variations of the single called a \"split single\" where songs by two different artists are released on the one disc, typically vinyl.</p>"
-msgstr ""
+msgstr "<p>Um single tem definições diferentes dependendo do mercado para o qual foi lançado.</p>\n\n<ul>\n<li>No mercado dos EUA, um single normalmente tem uma música principal e possivelmente um punhado de faixas adicionais ou remixes da faixa principal; o single geralmente recebe o nome de sua música principal; o single é lançado principalmente para tocar nas rádios e para promover vendas de lançamentos.</li>\n<li>O mercado do Reino Unido (também Austrália e Europa) é semelhante ao mercado dos EUA, no entanto, os singles geralmente são lançados como um conjunto de dois discos, com cada disco vendido separadamente. Eles também às vezes têm uma versão mais longa do single (geralmente combinando as faixas da versão de dois discos) que é muito semelhante ao single de estilo americano, e isso é chamado de \"maxi-single\". (Em alguns casos, o maxi-single é mais longo do que o lançamento do single !)</li>\n<li>O mercado japonês é muito mais voltado para singles. O fator determinante é normalmente a duração do single e o preço pelo qual é vendido. Até 1995 era comum que esses singles fossem lançados usando um formato de mini-cd, que é basicamente um CD muito menor, normalmente com 8 cm de diâmetro. Por volta de 1995, o single de 8 cm foi extinto, e o CD single padrão de 12 cm é mais comum agora; geralmente relançamentos de singles anteriores a 1995 serão lançados no formato de 12 cm , mesmo que tenham sido lançados originalmente no formato 8cm. Os singles japoneses geralmente vêm com versões instrumentais das músicas e também têm maxi-singles como o Reino Unido com versões remixadas das músicas. Às vezes, um maxi-single terá mais faixas do que um EP mas como são todas versões alternativas das mesmas 2-3 músicas, ainda é classificado como um single.</li>\n</ul>\n\n<p>Existem outras variações do single chamado \"single dividido\", em que músicas de dois artistas diferentes são lançadas em um disco, normalmente vinil.</p>"
+
+#: DB:medium_format/description:95
+msgctxt "medium_format"
+msgid ""
+"A \"digital collectible\" device, mostly used for k-pop music, that is "
+"connected to a phone via Bluetooth or headphone jack and unlocks the release"
+" for listening in a companion app for a limited period of time."
+msgstr "Um dispositivo \"colecionável digital\", usado principalmente para música k-pop, ou seja, conectado a um telefone via Bluetooth ou fone de ouvido e desbloqueia o lançamento para ouvir em um aplicativo complementar por um período limitado de tempo."
 
 #: DB:release_group_secondary_type/description:8
 msgctxt "release_group_secondary_type"
@@ -175,7 +194,7 @@ msgid ""
 "music. A DJ-mix release requires that the recordings be modified in some "
 "manner, and the DJ who does this modification is usually (although not "
 "always) credited in a fairly prominent way."
-msgstr ""
+msgstr "Um DJ-mix é uma sequência de várias gravações tocadas uma após a outra,cada um modificado para que se misturem em um fluxo contínuo demúsica. Um lançamento de mixagem de DJ requer que as gravações sejam modificadas em alguns maneira, e o DJ que faz essa modificação geralmente é (embora não sempre) creditado de forma bastante proeminente."
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
@@ -200,6 +219,15 @@ msgid ""
 "A cantata is a vocal (often choral) composition with an instrumental "
 "(usually orchestral) accompaniment, typically in several movements."
 msgstr "Uma cantata é uma composição vocal (frequentemente coroal) com um acompanhamento instrumental (geralmente orquestral), tipicamente com vários movimentos."
+
+#: DB:medium_format/description:46
+msgctxt "medium_format"
+msgid ""
+"A card (or other similar physical support) that doesn't contain the music "
+"itself directly, but provides a code to download it digitally. Often bundled"
+" with physical releases but sometimes sold as a standalone item (especially "
+"in Asia)."
+msgstr ""
 
 #: DB:work_type/description:4
 msgctxt "work_type"
@@ -289,7 +317,7 @@ msgid ""
 "similar works for the stage in their staged form (as opposed to a <a "
 "href=\"https://en.wikipedia.org/wiki/Concert_performance\">concert "
 "performance</a> without staging)."
-msgstr ""
+msgstr "Uma apresentação de uma ou mais peças, musicais, óperas, balés ou outrostrabalhos semelhantes para o palco em sua forma encenada (em oposição a um <a href=\"https://en.wikipedia.org/wiki/Concert_performance\">concerto desempenho</a> sem encenação)."
 
 #: DB:place_type/description:8
 msgctxt "place_type"
@@ -303,7 +331,7 @@ msgid ""
 "A place consisting of a large enclosed area with a central event space "
 "surrounded by tiered seating for spectators, which can be used for indoor "
 "sports, concerts and other entertainment events."
-msgstr "Um local que consiste em uma grande área fechada com um espaço central para eventos cercado por assentos diferenciados para os espectadores, que podem ser usados para esportes de salão, shows e outros eventos de entretenimento."
+msgstr "Um local que consiste em uma grande área fechada com um espaçocentral para eventos cercado por assentos diferenciados para os espectadores, que podem serusados para esportes de salão, shows e outros eventos de entretenimento."
 
 #: DB:place_type/description:1
 msgctxt "place_type"
@@ -335,6 +363,14 @@ msgid ""
 " or a roof which can be retracted."
 msgstr "Um lugar cujo o principal propósito é abrigar evento esportivos, tipicamente consistindo de um campo rodeado por um estrutura sem teto para espectadores, ou com teto retrátil."
 
+#: DB:release_status/description:6
+msgctxt "release_status"
+msgid ""
+"A planned official release that was cancelled before being released, but for"
+" which enough info is known to still confidently list it (e.g. it was "
+"available for preorder)."
+msgstr "Um lançamento oficial planejado que foi cancelado antes de ser lançado, mas para que informações suficientes são conhecidas para ainda listá-lo com confiança (por exemplo, foi Disponível para pré-encomenda)."
+
 #: DB:work_type/description:28
 msgctxt "work_type"
 msgid ""
@@ -350,13 +386,22 @@ msgid ""
 "usually chosen for their sound and for the images and ideas they suggest."
 msgstr "Um poema é uma peça literária, geralmente curta e em verso, onde as palavras são geralmente escolhidas pelo som, imagens e ideias que sugerem."
 
+#: DB:release_status/description:5
+msgctxt "release_status"
+msgid ""
+"A previously official release that was actively withdrawn from circulation "
+"by the artist and/or their record company after being released, whether to "
+"replace it with a new version with some changes or to just retire it "
+"altogether (e.g. because of legal issues)."
+msgstr "Um lançamento anteriormente oficial que foi ativamente retirado de circulaçãopelo artista e/ou sua gravadora após o lançamento, seja para substitua-o por uma nova versão com algumas alterações ou apenas para desligá-lo totalmente (por exemplo, devido a questões legais)."
+
 #: DB:release_group_secondary_type/description:10
 msgctxt "release_group_secondary_type"
 msgid ""
 "A promotional release mostly meant to have limited circulation and "
 "demonstrate the sound of an artist to record labels, publishers and other "
 "artists."
-msgstr ""
+msgstr "Um lançamento promocional principalmente destinado a ter circulação limitada e demonstrar o som de um artista para gravadoras, editoras e outrosartistas."
 
 #: DB:work_type/description:14
 msgctxt "work_type"
@@ -372,14 +417,14 @@ msgstr "Um festival recorrente, geralmente acontecendo anualmente no mesmo local
 #: DB:release_group_secondary_type/description:7
 msgctxt "release_group_secondary_type"
 msgid "A release that primarily contains remixed material."
-msgstr ""
+msgstr "Um lançamento que contém principalmente material remixado."
 
 #: DB:release_group_secondary_type/description:6
 msgctxt "release_group_secondary_type"
 msgid ""
 "A release that was recorded live. Generally this means \"with an audience\","
 " be it in person, through the radio or in another similar way."
-msgstr ""
+msgstr "Um lançamento que foi gravado ao vivo. Geralmente isso significa \"com público\",seja pessoalmente, pelo rádio ou de outra forma semelhante."
 
 #: DB:place_type/description:7
 msgctxt "place_type"
@@ -391,12 +436,17 @@ msgstr "Uma escola, universidade ou outra instituição de ensino similar (espec
 #: DB:series_type/description:14
 msgctxt "series_type"
 msgid "A series of artists honoured by the same award."
-msgstr ""
+msgstr "Uma série de artistas homenageados pelo mesmo prêmio."
 
 #: DB:series_type/description:13
 msgctxt "series_type"
 msgid "A series of artists."
-msgstr ""
+msgstr "Uma série de artistas."
+
+#: DB:series_type/description:15
+msgctxt "series_type"
+msgid "A series of award ceremonies, usually one per year."
+msgstr "Uma série de cerimônias de premiação, geralmente uma por ano."
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -421,7 +471,7 @@ msgstr "Uma série de shows relacionados de um artista em diferentes locais."
 #: DB:series_type/description:12
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in the same location."
-msgstr ""
+msgstr "Uma série de concertos relacionados de um artista no mesmo local."
 
 #: DB:series_type/description:1
 msgctxt "series_type"
@@ -474,7 +524,7 @@ msgid ""
 "game, or other medium. Video game CDs with audio tracks should be classified"
 " as soundtracks because the musical properties of the CDs are more "
 "interesting to MusicBrainz than their data properties."
-msgstr ""
+msgstr "Uma trilha sonora é a trilha sonora de um filme, série de TV, show de palco, vídeojogo ou outro meio. CDs de videogame com faixas de áudio devem ser classificados como trilhas sonoras porque as propriedades musicais dos CDs são mais interessante para MusicBrainz do que suas propriedades de dados."
 
 #: DB:instrument_type/description:6
 msgctxt "instrument_type"
@@ -542,37 +592,37 @@ msgstr "Lá sustenido menor"
 #: DB:work_attribute_type/name:57
 msgctxt "work_attribute_type"
 msgid "AACIMH ID"
-msgstr ""
+msgstr "ID AACIMH"
 
 #: DB:work_attribute_type/name:44
 msgctxt "work_attribute_type"
 msgid "ACAM ID"
-msgstr ""
+msgstr "ID ACAM"
 
 #: DB:work_attribute_type/name:47
 msgctxt "work_attribute_type"
 msgid "ACDAM ID"
-msgstr ""
+msgstr "ID ACDAM"
 
 #: DB:work_attribute_type/name:58
 msgctxt "work_attribute_type"
 msgid "AEI ID"
-msgstr ""
+msgstr "ID AEI"
 
 #: DB:work_attribute_type/name:43
 msgctxt "work_attribute_type"
 msgid "AGADU ID"
-msgstr ""
+msgstr "ID AGADU"
 
 #: DB:work_attribute_type/name:63
 msgctxt "work_attribute_type"
 msgid "AKKA/LAA ID"
-msgstr ""
+msgstr "ID AKKA/LAA"
 
 #: DB:work_attribute_type/name:23
 msgctxt "work_attribute_type"
 msgid "AKM ID"
-msgstr "AKM ID"
+msgstr "ID AKM"
 
 #: DB:work_attribute_type/name:38
 msgctxt "work_attribute_type"
@@ -789,6 +839,14 @@ msgctxt "release_group_secondary_type"
 msgid "An audiobook is a book read by a narrator without music."
 msgstr ""
 
+#: DB:event_type/description:7
+msgctxt "event_type"
+msgid ""
+"An award ceremony is an event which is focused on the granting of prizes, "
+"but often includes musical performances in between the awarding of said "
+"prizes, especially for musical awards."
+msgstr ""
+
 #: DB:release_group_primary_type/description:12
 msgctxt "release_group_primary_type"
 msgid ""
@@ -927,8 +985,8 @@ msgstr ""
 
 #: DB:editor_collection_type/name:7
 msgctxt "collection_type"
-msgid "Area"
-msgstr "Área"
+msgid "Area collection"
+msgstr ""
 
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
@@ -940,14 +998,14 @@ msgctxt "work_type"
 msgid "Aria"
 msgstr "Ária"
 
-#: DB:editor_collection_type/name:8
-msgctxt "collection_type"
-msgid "Artist"
-msgstr "Artista"
-
 #: DB:series_type/name:14
 msgctxt "series_type"
 msgid "Artist award"
+msgstr ""
+
+#: DB:editor_collection_type/name:8
+msgctxt "collection_type"
+msgid "Artist collection"
 msgstr ""
 
 #: DB:artist_alias_type/name:1
@@ -999,6 +1057,16 @@ msgstr "Audiobook"
 msgctxt "series_ordering_type"
 msgid "Automatic"
 msgstr "Automático"
+
+#: DB:event_type/name:7
+msgctxt "event_type"
+msgid "Award ceremony"
+msgstr ""
+
+#: DB:series_type/name:15
+msgctxt "series_type"
+msgid "Award ceremony"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:694
 msgctxt "work_attribute_type_allowed_value"
@@ -1654,6 +1722,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Campākali"
 msgstr ""
 
+#: DB:release_status/name:6
+msgctxt "release_status"
+msgid "Cancelled"
+msgstr "Cancelado"
+
 #: DB:work_attribute_type_allowed_value/value:64
 msgctxt "work_attribute_type_allowed_value"
 msgid "Candrajyōti"
@@ -1942,6 +2015,11 @@ msgctxt "medium_format"
 msgid "DVD-Audio"
 msgstr "DVD-Audio"
 
+#: DB:medium_format/name:92
+msgctxt "medium_format"
+msgid "DVD-R Video"
+msgstr ""
+
 #: DB:medium_format/name:19
 msgctxt "medium_format"
 msgid "DVD-Video"
@@ -2025,6 +2103,16 @@ msgstr ""
 #: DB:medium_format/name:43
 msgctxt "medium_format"
 msgid "Data CD"
+msgstr ""
+
+#: DB:medium_format/name:94
+msgctxt "medium_format"
+msgid "Data DVD"
+msgstr ""
+
+#: DB:medium_format/name:93
+msgctxt "medium_format"
+msgid "Data DVD-R"
 msgstr ""
 
 #: DB:release_group_secondary_type/name:10
@@ -2216,6 +2304,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:725
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dolap"
+msgstr ""
+
+#: DB:medium_format/name:46
+msgctxt "medium_format"
+msgid "Download Card"
 msgstr ""
 
 #: DB:medium_format/name:4
@@ -2456,8 +2549,8 @@ msgstr ""
 
 #: DB:editor_collection_type/name:4
 msgctxt "collection_type"
-msgid "Event"
-msgstr "Evento"
+msgid "Event collection"
+msgstr ""
 
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
@@ -3716,8 +3809,8 @@ msgstr ""
 
 #: DB:editor_collection_type/name:9
 msgctxt "collection_type"
-msgid "Instrument"
-msgstr "InsTrumento"
+msgid "Instrument collection"
+msgstr ""
 
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
@@ -4172,6 +4265,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Khēmtāl"
 msgstr ""
 
+#: DB:medium_format/name:95
+msgctxt "medium_format"
+msgid "KiT Album"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:630
 msgctxt "work_attribute_type_allowed_value"
 msgid "Koda"
@@ -4345,8 +4443,8 @@ msgstr ""
 
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
-msgid "Label"
-msgstr "Gravadora"
+msgid "Label collection"
+msgstr ""
 
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
@@ -4871,11 +4969,6 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Murabba Beste "
 msgstr ""
 
-#: DB:medium_format/name:46
-msgctxt "medium_format"
-msgid "Music Card"
-msgstr ""
-
 #: DB:work_type/name:29
 msgctxt "work_type"
 msgid "Musical"
@@ -5318,6 +5411,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Nişabureyn"
 msgstr ""
 
+#: DB:gender/name:5
+msgctxt "gender"
+msgid "Non-binary"
+msgstr ""
+
 #: DB:release_group_secondary_type/description:3
 msgctxt "release_group_secondary_type"
 msgid "Non-music spoken word releases."
@@ -5621,8 +5719,8 @@ msgstr ""
 
 #: DB:editor_collection_type/name:11
 msgctxt "collection_type"
-msgid "Place"
-msgstr "Local"
+msgid "Place collection"
+msgstr ""
 
 #: DB:place_alias_type/name:1
 msgctxt "alias_type"
@@ -5889,8 +5987,8 @@ msgstr ""
 
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
-msgid "Recording"
-msgstr "Gravação"
+msgid "Recording collection"
+msgstr ""
 
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
@@ -5924,12 +6022,12 @@ msgstr ""
 
 #: DB:editor_collection_type/name:1
 msgctxt "collection_type"
-msgid "Release"
-msgstr "Álbum"
+msgid "Release collection"
+msgstr ""
 
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
-msgid "Release group"
+msgid "Release group collection"
 msgstr ""
 
 #: DB:release_group_alias_type/name:1
@@ -6436,7 +6534,7 @@ msgstr ""
 
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
-msgid "Series"
+msgid "Series collection"
 msgstr ""
 
 #: DB:series_alias_type/name:1
@@ -7489,10 +7587,15 @@ msgctxt "collection_type"
 msgid "Wishlist"
 msgstr ""
 
+#: DB:release_status/name:5
+msgctxt "release_status"
+msgid "Withdrawn"
+msgstr ""
+
 #: DB:editor_collection_type/name:15
 msgctxt "collection_type"
-msgid "Work"
-msgstr "Obra"
+msgid "Work collection"
+msgstr ""
 
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"
