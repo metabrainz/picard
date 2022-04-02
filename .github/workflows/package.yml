@@ -32,8 +32,8 @@ jobs:
       DISCID_SHA256SUM: f9e443ac4c0dd4819c2841fcc82169a46fb9a626352cdb9c7f65dd3624cd31b9
       FPCALC_VERSION: 1.5.1
       FPCALC_SHA256SUM: c6c2797c4f087cf139eedd71554bc59ef8f26a783dc00c7f3ad5ae71d3a616fe
-      PYTHON_VERSION: 3.9.10
-      PYTHON_SHA256SUM: 732bc5c95ae127dfb6fb1bcf683509ad20c558152b63b8d5f651246f6bdfc8da
+      PYTHON_VERSION: 3.9.12
+      PYTHON_SHA256SUM: 7888174c6fe441b00448c7ab3e9cbf0e6c3c7dea0750577baf09e1383fc44656
       MACOSX_DEPLOYMENT_TARGET: ${{ matrix.macos-deployment-version }}
     steps:
     - uses: actions/checkout@v2
