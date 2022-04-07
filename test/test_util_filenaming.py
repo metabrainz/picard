@@ -219,6 +219,10 @@ class MakeSavePathTest(PicardTestCase):
         path = 'foo/\u00E9bar'  # é
         self.assertEqual('foo/\u0065\u0301bar', make_save_path(path, mac_compat=True))
 
+    def test_remove_zero_length_space(self):
+        path = 'foo/\u200Bbar'
+        self.assertEqual('foo/bar', make_save_path(path))
+
 
 class GetAvailableFilenameTest(PicardTestCase):
 
