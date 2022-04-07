@@ -13,7 +13,7 @@
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017 Suhas
 # Copyright (C) 2018 Vishal Choudhary
-# Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021-2022 Bob Swift
 # Copyright (C) 2021 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
@@ -185,12 +185,23 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.profile_page = self.get_page('profiles')
         self.profile_page.signal_refresh.connect(self.update_from_profile_changes)
 
+        self.maintenance_page = self.get_page('maintenance')
+        self.maintenance_page.signal_reload.connect(self.reload_all_pages)
+
         self.first_enter = True
         self.installEventFilter(self)
 
         self.highlight_enabled_profile_options()
         current_page = self.item_to_page[self.ui.pages_tree.currentItem()]
         self.set_profiles_button_and_highlight(current_page)
+
+    def reload_all_pages(self):
+        for page in self.pages:
+            try:
+                page.load()
+            except Exception:
+                log.exception('Failed loading options page %r', page)
+                self.disable_page(page.NAME)
 
     def page_has_profile_options(self, page):
         try:

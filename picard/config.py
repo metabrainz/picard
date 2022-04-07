@@ -12,7 +12,7 @@
 # Copyright (C) 2017 Sophist-UK
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2020-2021 Gabriel Ferreira
-# Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021-2022 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -241,7 +241,8 @@ class Config(QtCore.QSettings):
         self.setting = SettingConfigSection(self, "setting")
         self.persist = ConfigSection(self, "persist")
 
-        TextOption("application", "version", '0.0.0dev0')
+        if 'version' not in self.application or not self.application['version']:
+            TextOption("application", "version", '0.0.0dev0')
         self._version = Version.from_string(self.application["version"])
         self._upgrade_hooks = dict()
 
@@ -368,11 +369,16 @@ class Config(QtCore.QSettings):
     def _backup_settings(self):
         if Version(0, 0, 0) < self._version < PICARD_VERSION:
             backup_path = self._versioned_config_filename()
-            log.info('Backing up config file to %s', backup_path)
-            try:
-                shutil.copyfile(self.fileName(), backup_path)
-            except OSError:
-                log.error('Failed backing up config file to %s', backup_path)
+            self._save_backup(backup_path)
+
+    def _save_backup(self, backup_path):
+        log.info('Backing up config file to %s', backup_path)
+        try:
+            shutil.copyfile(self.fileName(), backup_path)
+        except OSError:
+            log.error('Failed backing up config file to %s', backup_path)
+            return False
+        return True
 
     def _write_version(self):
         self.application["version"] = self._version.to_string()
@@ -383,6 +389,12 @@ class Config(QtCore.QSettings):
             version = self._version
         return os.path.join(os.path.dirname(self.fileName()), '%s-%s.ini' % (
             self.applicationName(), version.to_string(short=True)))
+
+    def save_user_backup(self, backup_path):
+        if backup_path == self.fileName():
+            log.warning("Attempt to backup configuration file to the same path.")
+            return False
+        return self._save_backup(backup_path)
 
 
 class Option(QtCore.QObject):
@@ -479,3 +491,9 @@ def get_config():
     Config objects for threads are created on demand and cached for later use.
     """
     return config
+
+
+def load_new_config(filename=None):
+    ini_file = get_config().fileName()
+    shutil.copy(filename, ini_file)
+    setup_config(QtCore.QObject.tagger, ini_file)
