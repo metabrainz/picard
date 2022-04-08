@@ -174,19 +174,14 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.restoreWindowState()
         self.finished.connect(self.saveWindowState)
 
-        for page in self.pages:
-            try:
-                page.load()
-            except Exception:
-                log.exception('Failed loading options page %r', page)
-                self.disable_page(page.NAME)
+        self.load_all_pages()
         self.ui.pages_tree.setCurrentItem(self.default_item)
 
         self.profile_page = self.get_page('profiles')
         self.profile_page.signal_refresh.connect(self.update_from_profile_changes)
 
         self.maintenance_page = self.get_page('maintenance')
-        self.maintenance_page.signal_reload.connect(self.reload_all_pages)
+        self.maintenance_page.signal_reload.connect(self.load_all_pages)
 
         self.first_enter = True
         self.installEventFilter(self)
@@ -195,7 +190,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         current_page = self.item_to_page[self.ui.pages_tree.currentItem()]
         self.set_profiles_button_and_highlight(current_page)
 
-    def reload_all_pages(self):
+    def load_all_pages(self):
         for page in self.pages:
             try:
                 page.load()
