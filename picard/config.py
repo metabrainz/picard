@@ -494,11 +494,11 @@ def get_config():
 
 
 def load_new_config(filename=None):
-    ini_file = get_config().fileName()
+    config_file = get_config().fileName()
     try:
-        shutil.copy(filename, ini_file)
+        shutil.copy(filename, config_file)
     except OSError:
         log.error('Failed restoring config file from %s', filename)
         return False
-    setup_config(QtCore.QObject.tagger, ini_file)
+    setup_config(QtCore.QObject.tagger, config_file)
     return True
