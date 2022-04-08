@@ -249,18 +249,26 @@ class MaintenanceOptionsPage(OptionsPage):
         if not filename:
             return
         log.warning('Loading configuration from %s' % filename)
-        load_new_config(filename)
-        config = get_config()
-        upgrade_config(config)
-        QtCore.QObject.config = get_config()
-        self.signal_reload.emit()
-        dialog = QtWidgets.QMessageBox(
-            QtWidgets.QMessageBox.Icon.Information,
-            dialog_title,
-            _("Configuration successfully loaded from %s") % filename,
-            QtWidgets.QMessageBox.StandardButton.Ok,
-            self
-        )
+        if load_new_config(filename):
+            config = get_config()
+            upgrade_config(config)
+            QtCore.QObject.config = get_config()
+            self.signal_reload.emit()
+            dialog = QtWidgets.QMessageBox(
+                QtWidgets.QMessageBox.Icon.Information,
+                dialog_title,
+                _("Configuration successfully loaded from %s") % filename,
+                QtWidgets.QMessageBox.StandardButton.Ok,
+                self
+            )
+        else:
+            dialog = QtWidgets.QMessageBox(
+                QtWidgets.QMessageBox.Icon.Critical,
+                dialog_title,
+                _("There was a problem restoring the configuration file. Please see the logs for more details."),
+                QtWidgets.QMessageBox.StandardButton.Ok,
+                self
+            )
         dialog.exec_()
 
     def column_items(self, column):
