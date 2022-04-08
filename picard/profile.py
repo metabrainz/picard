@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2021 Laurent Monin
-# Copyright (C) 2021 Philipp Wolfer
+# Copyright (C) 2021-2022 Philipp Wolfer
 # Copyright (C) 2021 Vladislav Karbovskii
 # Copyright (C) 2021-2022 Bob Swift
 # Copyright (C) 2022 Marcin Szalowicz
@@ -166,17 +166,10 @@ class UserProfileGroups():
         ],
     }
 
-    @classmethod
-    def get_all_settings_list(cls):
-        """Iterable of all settings names in all setting groups.
-
-        Yields:
-            str: Setting name
-        """
-        settings = set()
-        for settings_group in cls.SETTINGS_GROUPS.values():
-            settings |= set(x.name for x in settings_group["settings"])
-        return settings
+    ALL_SETTINGS = set(
+        s.name for group in SETTINGS_GROUPS.values()
+        for s in group['settings']
+    )
 
     @classmethod
     def get_setting_groups_list(cls):

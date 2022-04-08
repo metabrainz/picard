@@ -3,6 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2021 Bob Swift
+# Copyright (C) 2022 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -62,7 +63,7 @@ class TestPicardProfilesCommon(PicardTestCase):
         Option('profiles', self.SETTINGS_KEY, {})
 
         # Get valid profile option settings for testing
-        option_settings = list(UserProfileGroups.get_all_settings_list())
+        option_settings = list(UserProfileGroups.ALL_SETTINGS)
         self.test_setting_0 = option_settings[0]
         self.test_setting_1 = option_settings[1]
         self.test_setting_2 = option_settings[2]
@@ -109,7 +110,7 @@ class TestUserProfileGroups(PicardTestCase):
         for key in UserProfileGroups.get_setting_groups_list():
             settings = UserProfileGroups.SETTINGS_GROUPS[key]["settings"]
             count1 += len(settings)
-        count2 = len(UserProfileGroups.get_all_settings_list())
+        count2 = len(UserProfileGroups.ALL_SETTINGS)
         self.assertEqual(count1, count2)
 
     def test_settings_have_no_blank_keys(self):
