@@ -474,6 +474,38 @@ def throttle(interval):
     return decorator
 
 
+class IgnoreUpdatesContext:
+    """Context manager for holding a boolean value, indicating whether updates are performed or not.
+    By default the context resolves to False. If entered it is True. This allows
+    to temporarily set a state on a block of code like:
+
+        ignore_changes = IgnoreUpdatesContext()
+        # Initially ignore_changes is False
+        with ignore_changes:
+            # Perform some tasks with ignore_changes now being True
+            ...
+        # ignore_changes is False again
+
+    The code actually doing updates can check `ignore_changes` and only perform
+    updates if it is `False`.
+    """
+
+    def __init__(self, onexit=None):
+        self._entered = 0
+        self._onexit = onexit
+
+    def __enter__(self):
+        self._entered += 1
+
+    def __exit__(self, type, value, tb):
+        self._entered -= 1
+        if self._onexit:
+            self._onexit()
+
+    def __bool__(self):
+        return self._entered > 0
+
+
 def uniqify(seq):
     """Uniqify a list, preserving order"""
     return list(iter_unique(seq))

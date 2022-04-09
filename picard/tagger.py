@@ -522,22 +522,23 @@ class Tagger(QtWidgets.QApplication):
             log.debug("Aborting move since target is invalid")
             return
         self.window.set_sorting(False)
-        if isinstance(target, Cluster):
-            for file in process_events_iter(files):
-                file.move(target)
-        elif isinstance(target, Track):
-            album = target.album
-            for file in process_events_iter(files):
-                file.move(target)
-                if move_to_multi_tracks:  # Assign next file to following track
-                    target = album.get_next_track(target) or album.unmatched_files
-        elif isinstance(target, File):
-            for file in process_events_iter(files):
-                file.move(target.parent)
-        elif isinstance(target, Album):
-            self.move_files_to_album(files, album=target)
-        elif isinstance(target, ClusterList):
-            self.cluster(files)
+        with self.window.metadata_box.ignore_updates:
+            if isinstance(target, Cluster):
+                for file in process_events_iter(files):
+                    file.move(target)
+            elif isinstance(target, Track):
+                album = target.album
+                for file in process_events_iter(files):
+                    file.move(target)
+                    if move_to_multi_tracks:  # Assign next file to following track
+                        target = album.get_next_track(target) or album.unmatched_files
+            elif isinstance(target, File):
+                for file in process_events_iter(files):
+                    file.move(target.parent)
+            elif isinstance(target, Album):
+                self.move_files_to_album(files, album=target)
+            elif isinstance(target, ClusterList):
+                self.cluster(files)
         self.window.set_sorting(True)
 
     def add_files(self, filenames, target=None):

@@ -709,11 +709,13 @@ class Album(DataObject, Item):
             config = get_config()
             threshold = config.setting['track_matching_threshold']
             moves = self._match_files(files, self.tracks, self.unmatched_files, threshold=threshold)
-            for file, target in process_events_iter(moves):
-                file.move(target)
+            with self.tagger.window.metadata_box.ignore_updates:
+                for file, target in process_events_iter(moves):
+                    file.move(target)
         else:
-            for file in process_events_iter(list(files)):
-                file.move(self.unmatched_files)
+            with self.tagger.window.metadata_box.ignore_updates:
+                for file in process_events_iter(list(files)):
+                    file.move(self.unmatched_files)
 
     def can_save(self):
         return self._files_count > 0

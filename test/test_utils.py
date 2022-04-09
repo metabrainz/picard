@@ -51,6 +51,7 @@ from picard.const.sys import (
     IS_WIN,
 )
 from picard.util import (
+    IgnoreUpdatesContext,
     album_artist_from_path,
     any_exception_isinstance,
     build_qurl,
@@ -824,3 +825,28 @@ class AnyExceptionIsinstanceTest(PicardTestCase):
         ex.__cause__ = Mock()
         ex.__cause__.__context__ = RuntimeError()
         self.assertTrue(any_exception_isinstance(ex, RuntimeError))
+
+
+class IgnoreUpdatesContextTest(PicardTestCase):
+
+    def test_enter_exit(self):
+        context = IgnoreUpdatesContext()
+        self.assertFalse(context)
+        with context:
+            self.assertTrue(context)
+        self.assertFalse(context)
+
+    def test_run_onexit(self):
+        onexit = Mock()
+        context = IgnoreUpdatesContext(onexit=onexit)
+        with context:
+            onexit.assert_not_called()
+        onexit.assert_called_once_with()
+
+    def test_nested_with(self):
+        context = IgnoreUpdatesContext()
+        with context:
+            with context:
+                self.assertTrue(context)
+            self.assertTrue(context)
+        self.assertFalse(context)

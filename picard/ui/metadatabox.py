@@ -55,6 +55,7 @@ from picard.file import File
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.track import Track
 from picard.util import (
+    IgnoreUpdatesContext,
     format_time,
     icontheme,
     restore_method,
@@ -253,6 +254,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.preserved_tags = PreservedTags()
         self._single_file_album = False
         self._single_track_album = False
+        self.ignore_updates = IgnoreUpdatesContext(onexit=self.update)
         self.tagger.clipboard().dataChanged.connect(self.update_clipboard)
 
     def get_file_lookup(self):
@@ -537,7 +539,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     @throttle(100)
     def update(self, drop_album_caches=False):
-        if self.editing:
+        if self.editing or self.ignore_updates:
             return
         new_selection = self.selection_dirty
         if self.selection_dirty:
