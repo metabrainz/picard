@@ -494,6 +494,7 @@ def make_save_path(path, win_compat=False, mac_compat=False):
     - Leading dots in file and directory names will be removed. These files cannot be properly
       handled by Windows Explorer and on Unix like systems they count as hidden
     - If mac_compat is True, normalize precomposed Unicode characters on macOS
+    - Remove unicode zero-width space (\\u200B) from path
 
     Args:
         path: filename or path to clean
@@ -513,6 +514,8 @@ def make_save_path(path, win_compat=False, mac_compat=False):
     # Fix for precomposed characters on macOS.
     if mac_compat:
         path = unicodedata.normalize("NFD", path)
+    # Remove unicode zero-width space (\u200B) from path
+    path = path.replace("\u200B", "")
     return path
 
 
