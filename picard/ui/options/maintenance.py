@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021-2022 Bob Swift
 # Copyright (C) 2021 Laurent Monin
 # Copyright (C) 2021-2022 Philipp Wolfer
 #
@@ -21,6 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+import datetime
 from os import path
 
 from PyQt5 import (
@@ -33,7 +34,9 @@ from picard import log
 from picard.config import (
     Option,
     get_config,
+    load_new_config,
 )
+from picard.config_upgrade import upgrade_config
 
 from picard.ui.options import (
     OptionsPage,
@@ -65,6 +68,8 @@ class MaintenanceOptionsPage(OptionsPage):
 
     options = []
 
+    signal_reload = QtCore.pyqtSignal()
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_MaintenanceOptionsPage()
@@ -88,6 +93,8 @@ class MaintenanceOptionsPage(OptionsPage):
         self.ui.select_all.stateChanged.connect(self.select_all_changed)
         self.ui.enable_cleanup.stateChanged.connect(self.enable_cleanup_changed)
         self.ui.open_folder_button.clicked.connect(self.open_config_dir)
+        self.ui.save_backup_button.clicked.connect(self.save_backup)
+        self.ui.load_backup_button.clicked.connect(self.load_backup)
 
         # Set the palette of the config file QLineEdit widget to inactive.
         palette_normal = self.ui.config_file.palette()
@@ -153,6 +160,116 @@ class MaintenanceOptionsPage(OptionsPage):
         config = get_config()
         config_dir = path.split(config.fileName())[0]
         QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(config_dir))
+
+    def _get_dialog_filetypes(self, _ext='.ini'):
+        return ";;".join((
+            _("Configuration files") + " (*{0})".format(_ext,),
+            _("All files") + " (*)",
+        ))
+
+    def _make_backup_filename(self, auto=False):
+        config = get_config()
+        _filename = path.split(config.fileName())[1]
+        _root, _ext = path.splitext(_filename)
+        return "{0}_{1}_Backup_{2}{3}".format(
+            _root,
+            'Auto' if auto else 'User',
+            datetime.datetime.now().strftime("%Y%m%d_%H%M"),
+            _ext,
+        )
+
+    def _backup_error(self, dialog_title=None):
+        if not dialog_title:
+            dialog_title = _("Backup Configuration File")
+        dialog = QtWidgets.QMessageBox(
+            QtWidgets.QMessageBox.Icon.Critical,
+            dialog_title,
+            _("There was a problem backing up the configuration file. Please see the logs for more details."),
+            QtWidgets.QMessageBox.StandardButton.Ok,
+            self
+        )
+        dialog.exec_()
+
+    def save_backup(self):
+        config = get_config()
+        directory = path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
+        filename = self._make_backup_filename()
+        ext = path.splitext(filename)[1]
+        default_path = path.normpath(path.join(directory, filename))
+
+        dialog_title = _("Backup Configuration File")
+        dialog_file_types = self._get_dialog_filetypes(ext)
+        options = QtWidgets.QFileDialog.Options()
+        filename, file_type = QtWidgets.QFileDialog.getSaveFileName(self, dialog_title, default_path, dialog_file_types, options=options)
+        if not filename:
+            return
+        # Fix issue where Qt may set the extension twice
+        (name, ext) = path.splitext(filename)
+        if ext and str(name).endswith('.' + ext):
+            filename = name
+
+        if config.save_user_backup(filename):
+            dialog = QtWidgets.QMessageBox(
+                QtWidgets.QMessageBox.Icon.Information,
+                dialog_title,
+                _("Configuration successfully backed up to %s") % filename,
+                QtWidgets.QMessageBox.StandardButton.Ok,
+                self
+            )
+            dialog.exec_()
+        else:
+            self._backup_error(dialog_title)
+
+    def load_backup(self):
+        dialog_title = _("Load Backup Configuration File")
+        dialog = QtWidgets.QMessageBox(
+            QtWidgets.QMessageBox.Icon.Warning,
+            dialog_title,
+            _("Loading a backup configuration file will replace the current configuration settings. "
+            "A backup copy of the current file will be saved automatically.\n\nDo you want to continue?"),
+            QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.Cancel,
+            self
+        )
+        dialog.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Cancel)
+        if not dialog.exec_() == QtWidgets.QMessageBox.StandardButton.Ok:
+            return
+
+        config = get_config()
+        directory = path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
+        filename = path.join(directory, self._make_backup_filename(auto=True))
+        if not config.save_user_backup(filename):
+            self._backup_error()
+            return
+
+        ext = path.splitext(filename)[1]
+        dialog_file_types = self._get_dialog_filetypes(ext)
+        directory = path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
+        options = QtWidgets.QFileDialog.Options()
+        filename, file_type = QtWidgets.QFileDialog.getOpenFileName(self, dialog_title, directory, dialog_file_types, options=options)
+        if not filename:
+            return
+        log.warning('Loading configuration from %s' % filename)
+        if load_new_config(filename):
+            config = get_config()
+            upgrade_config(config)
+            QtCore.QObject.config = get_config()
+            self.signal_reload.emit()
+            dialog = QtWidgets.QMessageBox(
+                QtWidgets.QMessageBox.Icon.Information,
+                dialog_title,
+                _("Configuration successfully loaded from %s") % filename,
+                QtWidgets.QMessageBox.StandardButton.Ok,
+                self
+            )
+        else:
+            dialog = QtWidgets.QMessageBox(
+                QtWidgets.QMessageBox.Icon.Critical,
+                dialog_title,
+                _("There was a problem restoring the configuration file. Please see the logs for more details."),
+                QtWidgets.QMessageBox.StandardButton.Ok,
+                self
+            )
+        dialog.exec_()
 
     def column_items(self, column):
         for idx in range(self.ui.tableWidget.rowCount()):
