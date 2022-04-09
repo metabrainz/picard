@@ -5,6 +5,7 @@
 # Copyright (C) 2021 Laurent Monin
 # Copyright (C) 2021-2022 Philipp Wolfer
 # Copyright (C) 2022 jesus2099
+# Copyright (C) 2022 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -219,7 +220,7 @@ def _add_track_data(data, files):
             disc_counter += 1
             track_counter = 0
         last_discnumber = discnumber
-        if m['label']:
+        if m['label'] or m['catalognumber']:
             labels.add((m['label'], m['catalognumber']))
         if m['barcode']:
             barcode = m['barcode']
