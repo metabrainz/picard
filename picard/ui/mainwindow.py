@@ -87,6 +87,7 @@ from picard.plugin import ExtensionPoint
 from picard.script import get_file_naming_script_presets
 from picard.track import Track
 from picard.util import (
+    IgnoreUpdatesContext,
     icontheme,
     iter_files_from_objects,
     iter_unique,
@@ -147,35 +148,6 @@ def register_ui_init(function):
     ui_init.register(function.__module__, function)
 
 
-class IgnoreSelectionContext:
-    """Context manager for holding a boolean value, indicating whether selection changes are performed or not.
-    By default the context resolves to False. If entered it is True. This allows
-    to temporarily set a state on a block of code like:
-
-        ignore_changes = IgnoreSelectionContext()
-        # Initially ignore_changes is True
-        with ignore_changes:
-            # Perform some tasks with ignore_changes now being True
-            ...
-        # ignore_changes is False again
-    """
-
-    def __init__(self, onexit=None):
-        self._entered = 0
-        self._onexit = onexit
-
-    def __enter__(self):
-        self._entered += 1
-
-    def __exit__(self, type, value, tb):
-        self._entered -= 1
-        if self._onexit:
-            self._onexit()
-
-    def __bool__(self):
-        return self._entered > 0
-
-
 class MainWindowActions:
     _create_actions = []
 
@@ -214,7 +186,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         super().__init__(parent)
         self.__shown = False
         self.selected_objects = []
-        self.ignore_selection_changes = IgnoreSelectionContext(self.update_selection)
+        self.ignore_selection_changes = IgnoreUpdatesContext(self.update_selection)
         self.toolbar = None
         self.player = None
         self.status_indicators = []
