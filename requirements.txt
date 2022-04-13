@@ -7,5 +7,6 @@ PyJWT~=2.0
 pyobjc-core>=6.2, <10; sys_platform == 'darwin'
 pyobjc-framework-Cocoa>=6.2, <10; sys_platform == 'darwin'
 PyQt5~=5.11
+PyQt5-sip<=12.9.1; python_version < '3.7'
 pywin32; sys_platform == 'win32'
 pyyaml>=5.1, <7
