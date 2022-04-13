@@ -313,6 +313,7 @@ class Album(DataObject, Item):
             'release-rels',
             'url-rels',
             'work-rels',
+            'work-level-rels',
         )
         log.debug('Loading recording relationships for %r (offset=%i, limit=%i)' % (self, offset, limit))
         self._requests += 1
