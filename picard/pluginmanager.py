@@ -212,7 +212,7 @@ class PluginManager(QtCore.QObject):
             self.handle_plugin_updates()
         # now load found plugins
         names = set()
-        for path in [os.path.join(plugindir, file) for file in os.listdir(plugindir)]:
+        for path in (os.path.join(plugindir, file) for file in os.listdir(plugindir)):
             name = _plugin_name_from_path(path)
             if name:
                 names.add(name)
@@ -301,9 +301,10 @@ class PluginManager(QtCore.QObject):
         dirpath = os.path.join(self.plugins_directory, plugin_name)
         if not os.path.isdir(dirpath):
             dirpath = None
+        filenames = {plugin_name + ext for ext in fileexts}
         filepaths = [os.path.join(self.plugins_directory, f)
                      for f in os.listdir(self.plugins_directory)
-                     if f in [plugin_name + ext for ext in fileexts]
+                     if f in filenames
                      ]
         return (dirpath, filepaths)
 
