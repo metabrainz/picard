@@ -669,7 +669,7 @@ class PluginsOptionsPage(OptionsPage):
         event.accept()
 
     def dropEvent(self, event):
-        for path in [os.path.normpath(u.toLocalFile()) for u in event.mimeData().urls()]:
+        for path in (os.path.normpath(u.toLocalFile()) for u in event.mimeData().urls()):
             self.manager.install_plugin(path)
 
 

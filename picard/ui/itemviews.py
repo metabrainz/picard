@@ -889,11 +889,11 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
             obj.item = self
         self.sortable = sortable
         self._sortkeys = {}
-        for column in [
+        for column in (
             MainPanel.LENGTH_COLUMN,
             MainPanel.TRACKNUMBER_COLUMN,
             MainPanel.DISCNUMBER_COLUMN,
-        ]:
+        ):
             self.setTextAlignment(column, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.setSizeHint(MainPanel.FINGERPRINT_COLUMN, ICON_SIZE)
 
