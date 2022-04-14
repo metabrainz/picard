@@ -97,38 +97,23 @@ class CoverWidget(QtWidgets.QWidget):
 
 class CoverCell:
 
-    def __init__(self, parent, release, row, colname, on_show=None):
-        self.parent = parent
+    def __init__(self, table, release, row, column, on_show=None):
         self.release = release
         self.fetched = False
         self.fetch_task = None
-        self.row = row
-        self.column = self.parent.colpos(colname)
-        widget = CoverWidget(self.parent.table)
+        self.widget = widget = CoverWidget(table)
         if on_show is not None:
             widget.shown.connect(partial(on_show, self))
-        self.parent.table.setCellWidget(row, self.column, widget)
-
-    def widget(self):
-        if not self.parent.table:
-            return None
-        return self.parent.table.cellWidget(self.row, self.column)
+        table.setCellWidget(row, column, widget)
 
     def is_visible(self):
-        widget = self.widget()
-        if not widget:
-            return False
-        return not widget.visibleRegion().isEmpty()
+        return not self.widget.visibleRegion().isEmpty()
 
     def set_pixmap(self, pixmap):
-        widget = self.widget()
-        if widget:
-            widget.set_pixmap(pixmap)
+        self.widget.set_pixmap(pixmap)
 
     def not_found(self):
-        widget = self.widget()
-        if widget:
-            widget.not_found()
+        self.widget.not_found()
 
 
 class AlbumSearchDialog(SearchDialog):
@@ -335,6 +320,7 @@ class AlbumSearchDialog(SearchDialog):
     def display_results(self):
         self.prepare_table()
         self.cover_cells = []
+        column = self.colpos('cover')
         for row, release in enumerate(self.search_results):
             self.table.insertRow(row)
             self.set_table_item(row, 'name',     release, "album")
@@ -350,7 +336,7 @@ class AlbumSearchDialog(SearchDialog):
             self.set_table_item(row, 'type',     release, "releasetype")
             self.set_table_item(row, 'status',   release, "releasestatus")
             self.set_table_item(row, 'score',    release, "score")
-            self.cover_cells.append(CoverCell(self, release, row, 'cover',
+            self.cover_cells.append(CoverCell(self.table, release, row, column,
                                               on_show=self.fetch_coverart))
         self.show_table(sort_column='score')
 
