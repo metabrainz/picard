@@ -1867,3 +1867,71 @@ class ScriptParserTest(PicardTestCase):
             self.parser.eval("$cleanmulti()")
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$cleanmulti(foo,)")
+
+    def test_persistent_variable_functions(self):
+        context = Metadata()
+        context["foo"] = "bar"
+
+        # Assign values
+        self.assertScriptResultEquals("$setp(foo,one)", "", context)
+        self.assertScriptResultEquals("$setp(%foo%,two)", "", context)
+
+        # Retrieve saved values
+        self.assertScriptResultEquals("$getp(foo)", "one", context)
+        self.assertScriptResultEquals("$getp(%foo%)", "two", context)
+        self.assertScriptResultEquals("$getp(bar)", "two", context)
+        self.assertScriptResultEquals("$getp(baz)", "", context)
+
+        # Unset values and confirm that they return ""
+        self.assertScriptResultEquals("$unsetp(foo)", "", context)
+        self.assertScriptResultEquals("$unsetp(%foo%)", "", context)
+        self.assertScriptResultEquals("$getp(foo)", "", context)
+        self.assertScriptResultEquals("$getp(%foo%)", "", context)
+        self.assertScriptResultEquals("$getp(bar)", "", context)
+
+        # Assign values, clear all values and confirm that they return ""
+        self.assertScriptResultEquals("$setp(foo,one)", "", context)
+        self.assertScriptResultEquals("$setp(%foo%,two)", "", context)
+        self.assertScriptResultEquals("$clearp()", "", context)
+        self.assertScriptResultEquals("$getp(foo)", "", context)
+        self.assertScriptResultEquals("$getp(%foo%)", "", context)
+        self.assertScriptResultEquals("$getp(bar)", "", context)
+
+        # Multivalue testing
+        context["bar"] = ["a", "B", "c"]
+        self.assertScriptResultEquals("$setp(foo,%bar%)", "", context)
+        self.assertScriptResultEquals("$setp(%foo%,%bar%)", "", context)
+        self.assertScriptResultEquals("$getp(foo)", "a; B; c", context)
+        self.assertScriptResultEquals("$getp(%foo%)", "a; B; c", context)
+        self.assertScriptResultEquals("$getp(bar)", "a; B; c", context)
+
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$setp: Wrong number of arguments for \$setp: Expected exactly 2, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$setp()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$setp(foo)")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$setp(foo,bar,)")
+
+        areg = r"^\d+:\d+:\$getp: Wrong number of arguments for \$getp: Expected exactly 1, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$getp()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$getp(foo,)")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$getp(foo,bar)")
+
+        areg = r"^\d+:\d+:\$unsetp: Wrong number of arguments for \$unsetp: Expected exactly 1, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$unsetp()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$unsetp(foo,)")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$unsetp(foo,bar)")
+
+        areg = r"^\d+:\d+:\$clearp: Wrong number of arguments for \$clearp: Expected exactly 0, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$clearp(,)")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$clearp(foo)")

@@ -67,6 +67,29 @@ except ImportError:
 Bound = namedtuple("Bound", ["lower", "upper"])
 
 
+class PersistentVariables:
+    variables = {}
+
+    @classmethod
+    def clear_variables(cls):
+        cls.variables = {}
+
+    @classmethod
+    def set_variable(cls, key, value):
+        if key:
+            cls.variables[key] = value
+
+    @classmethod
+    def unset_variable(cls, key):
+        cls.variables.pop(key, None)
+
+    @classmethod
+    def get_variable(cls, key):
+        if key not in cls.variables:
+            return ""
+        return cls.variables[key]
+
+
 class FunctionRegistryItem:
     def __init__(self, function, eval_args, argcount, documentation=None,
                  name=None, module=None):
@@ -1516,4 +1539,54 @@ def func_cleanmulti(parser, multi):
     name = normalize_tagname(multi)
     values = [str(value) for value in parser.context.getall(name) if value or value == 0]
     parser.context[multi] = values
+    return ""
+
+
+@script_function(documentation=N_(
+    """`$setp(name,value)`
+
+Sets the persistent variable `name` to `value`.
+
+_Since Picard 2.8_"""
+))
+def func_setp(parser, name, value):
+    if value:
+        PersistentVariables.set_variable(normalize_tagname(name), value)
+    else:
+        func_unsetp(parser, name)
+    return ""
+
+
+@script_function(documentation=N_(
+    """`$unsetp(name)`
+
+Unsets the persistent variable `name`.
+
+_Since Picard 2.8_"""
+))
+def func_unsetp(parser, name):
+    PersistentVariables.unset_variable(normalize_tagname(name))
+    return ""
+
+
+@script_function(documentation=N_(
+    """`$getp(name)`
+
+Gets the persistent variable `name`.
+
+_Since Picard 2.8_"""
+))
+def func_getp(parser, name):
+    return PersistentVariables.get_variable(normalize_tagname(name))
+
+
+@script_function(documentation=N_(
+    """`$clearp()`
+
+Clears all persistent variables.
+
+_Since Picard 2.8_"""
+))
+def func_clearp(parser):
+    PersistentVariables.clear_variables()
     return ""
