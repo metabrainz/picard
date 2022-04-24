@@ -30,12 +30,14 @@
 
 from hashlib import md5
 import os
+from pathlib import Path
 import shutil
 import tempfile
 
 from PyQt5.QtCore import (
     QMutex,
     QObject,
+    QTimer,
     QUrl,
     QUrlQuery,
 )
@@ -56,6 +58,7 @@ from picard.util import (
     is_absolute_path,
 )
 from picard.util.scripttofilename import script_to_filename
+from picard.util.thread import to_main
 
 
 _datafiles = dict()
@@ -67,6 +70,7 @@ class DataHash:
     def __init__(self, data, prefix='picard', suffix=''):
         self._filename = None
         _datafile_mutex.lock()
+        self._touch_timer = None
         try:
             m = md5()  # nosec
             m.update(data)
@@ -76,6 +80,7 @@ class DataHash:
                 QObject.tagger.register_cleanup(self.delete_file)
                 with os.fdopen(fd, "wb") as imagefile:
                     imagefile.write(data)
+                to_main(self._setup_touch_timer)  # QTimer must be setup on main thread
                 _datafiles[self._hash] = self._filename
                 log.debug("Saving image data %s to %r" % (self._hash, self._filename))
             else:
@@ -83,14 +88,28 @@ class DataHash:
         finally:
             _datafile_mutex.unlock()
 
+    def _setup_touch_timer(self):
+        # Setup a timer to touch the temp file every hour. This prevents
+        # some systems (e.g. macOS) from removing those files in case Picard
+        # is left running over a long period of time.
+        self._touch_timer = timer = QTimer()
+        # For some reason touch does not get called if not being wrapped here
+        timer.timeout.connect(lambda: self.touch())
+        timer.start(60 * 60 * 1000)
+
     def __eq__(self, other):
         return self._hash == other._hash
+
+    def __repr__(self):
+        return '<DataHash %s>' % self._hash
 
     def hash(self):
         return self._hash
 
     def delete_file(self):
         if self._filename:
+            if self._touch_timer:
+                self._touch_timer.stop()
             try:
                 os.unlink(self._filename)
             except BaseException:
@@ -114,6 +133,13 @@ class DataHash:
     @property
     def filename(self):
         return self._filename
+
+    def touch(self):
+        if self._filename:
+            try:
+                Path(self._filename).touch()
+            except OSError:
+                log.error('%r: could not touch temporary file "%s"', self, self._filename)
 
 
 class CoverArtImageError(Exception):

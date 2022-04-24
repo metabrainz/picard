@@ -76,6 +76,8 @@ class CoverArtThumbnail(ActiveLabel):
         self.pixel_ratio = self.tagger.primaryScreen().devicePixelRatio()
         self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
         w, h = self.scaled(128, 128)
+        w *= int(self.pixel_ratio)
+        h *= int(self.pixel_ratio)
         self.shadow = self.shadow.scaled(w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
         self.shadow.setDevicePixelRatio(self.pixel_ratio)
         self.file_missing_pixmap = QtGui.QPixmap(":/images/image-missing.png")
