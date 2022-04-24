@@ -52,6 +52,7 @@ from picard.const import MAX_COVERS_TO_STACK
 from picard.coverart.image import (
     CoverArtImage,
     CoverArtImageError,
+    CoverArtImageIOError,
 )
 from picard.file import File
 from picard.track import Track
@@ -72,11 +73,14 @@ class CoverArtThumbnail(ActiveLabel):
         super().__init__(active, drops, *args, **kwargs)
         self.data = None
         self.has_common_images = None
-        self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
         self.pixel_ratio = self.tagger.primaryScreen().devicePixelRatio()
+        self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
         w, h = self.scaled(128, 128)
         self.shadow = self.shadow.scaled(w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
         self.shadow.setDevicePixelRatio(self.pixel_ratio)
+        self.file_missing_pixmap = QtGui.QPixmap(":/images/image-missing.png")
+        self.file_missing_pixmap = self.file_missing_pixmap.scaled(w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
+        self.file_missing_pixmap.setDevicePixelRatio(self.pixel_ratio)
         self.release = None
         self.setPixmap(self.shadow)
         self.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter)
@@ -183,8 +187,11 @@ class CoverArtThumbnail(ActiveLabel):
         except KeyError:
             if len(self.data) == 1:
                 pixmap = QtGui.QPixmap()
-                pixmap.loadFromData(self.data[0].data)
-                pixmap = self.decorate_cover(pixmap)
+                try:
+                    pixmap.loadFromData(self.data[0].data)
+                    pixmap = self.decorate_cover(pixmap)
+                except CoverArtImageIOError:
+                    pixmap = self.file_missing_pixmap
             else:
                 limited = len(self.data) > MAX_COVERS_TO_STACK
                 if limited:
@@ -216,7 +223,10 @@ class CoverArtThumbnail(ActiveLabel):
                         thumb = image
                     else:
                         thumb = QtGui.QPixmap()
-                        thumb.loadFromData(image.data)
+                        try:
+                            thumb.loadFromData(image.data)
+                        except CoverArtImageIOError:
+                            thumb = self.file_missing_pixmap
                     thumb = self.decorate_cover(thumb)
                     x, y = (cx - thumb.width() // 2, cy - thumb.height() // 2)
                     painter.drawPixmap(x, y, thumb)

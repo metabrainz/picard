@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="125mm"
+   height="125mm"
+   viewBox="0 0 125 125"
+   version="1.1"
+   id="svg1242"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="image-missing.svg"
+   inkscape:export-filename="/home/phw/devel/musicbrainz/picard/resources/images/image-missing.png"
+   inkscape:export-xdpi="52.02"
+   inkscape:export-ydpi="52.02"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title2206">CD Icon</title>
+  <defs
+     id="defs1236">
+    <inkscape:path-effect
+       effect="powerclip"
+       id="path-effect918"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false"
+       message="Füllregel Gerade-Ungerade im &lt;b&gt;Füllung und Kontur&lt;/b&gt;-Dialog verwenden, wenn das Anwenden des Ausschnitts mit nachfolgendem Umwandeln in Pfade kein Ergebnis bringt" />
+    <inkscape:path-effect
+       effect="powerclip"
+       id="path-effect910"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false"
+       message="Füllregel Gerade-Ungerade im &lt;b&gt;Füllung und Kontur&lt;/b&gt;-Dialog verwenden, wenn das Anwenden des Ausschnitts mit nachfolgendem Umwandeln in Pfade kein Ergebnis bringt" />
+    <inkscape:path-effect
+       effect="powerclip"
+       id="path-effect2192"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false"
+       message="Füllregel Gerade-Ungerade im &lt;b&gt;Füllung und Kontur&lt;/b&gt;-Dialog verwenden, wenn das Anwenden des Ausschnitts mit nachfolgendem Umwandeln in Pfade kein Ergebnis bringt" />
+    <inkscape:path-effect
+       effect="powerclip"
+       id="path-effect2180"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false"
+       message="Füllregel Gerade-Ungerade im &lt;b&gt;Füllung und Kontur&lt;/b&gt;-Dialog verwenden, wenn das Anwenden des Ausschnitts mit nachfolgendem Umwandeln in Pfade kein Ergebnis bringt" />
+    <inkscape:path-effect
+       effect="powerclip"
+       id="path-effect2142"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false"
+       message="Füllregel Gerade-Ungerade im &lt;b&gt;Füllung und Kontur&lt;/b&gt;-Dialog verwenden, wenn das Anwenden des Ausschnitts mit nachfolgendem Umwandeln in Pfade kein Ergebnis bringt" />
+    <inkscape:path-effect
+       effect="powerclip"
+       id="path-effect2080"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false"
+       message="Füllregel Gerade-Ungerade im &lt;b&gt;Füllung und Kontur&lt;/b&gt;-Dialog verwenden, wenn das Anwenden des Ausschnitts mit nachfolgendem Umwandeln in Pfade kein Ergebnis bringt" />
+    <inkscape:path-effect
+       effect="powerclip"
+       id="path-effect1992"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false"
+       message="Füllregel Gerade-Ungerade im &lt;b&gt;Füllung und Kontur&lt;/b&gt;-Dialog verwenden, wenn das Anwenden des Ausschnitts mit nachfolgendem Umwandeln in Pfade kein Ergebnis bringt" />
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath1988">
+      <circle
+         style="display:block;fill:#ffffff;fill-opacity:1;stroke-width:0.0712708"
+         id="circle1990"
+         cx="62.5"
+         cy="62.5"
+         r="11" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath2076">
+      <path
+         id="lpe_path-effect2080"
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0.0712708"
+         class="powerclip"
+         d="m 57.5,57.5 h 64.27792 v 64.27792 H 57.5 Z m 16,5 a 11,11 0 0 0 -11,-11 11,11 0 0 0 -11,11 11,11 0 0 0 11,11 11,11 0 0 0 11,-11 z" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath2076-5">
+      <circle
+         style="display:none;fill:#ffffff;fill-opacity:1;stroke-width:0.0712708"
+         id="circle2078-9"
+         cx="62.5"
+         cy="62.5"
+         r="11"
+         d="m 73.5,62.5 a 11,11 0 0 1 -11,11 11,11 0 0 1 -11,-11 11,11 0 0 1 11,-11 11,11 0 0 1 11,11 z" />
+      <path
+         id="lpe_path-effect2080-2"
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0.0712708"
+         class="powerclip"
+         d="m 57.5,57.5 h 64.27792 v 64.27792 H 57.5 Z m 16,5 a 11,11 0 0 0 -11,-11 11,11 0 0 0 -11,11 11,11 0 0 0 11,11 11,11 0 0 0 11,-11 z" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipath_lpe_path-effect2142">
+      <path
+         id="lpe_path-effect2142"
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0.0712708"
+         class="powerclip"
+         d="m 57.5,57.5 h 64.27792 v 64.27792 H 57.5 Z m 16,5 a 11,11 0 0 0 -11,-11 11,11 0 0 0 -11,11 11,11 0 0 0 11,11 11,11 0 0 0 11,-11 z" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath1988-8">
+      <circle
+         style="display:none;fill:#ffffff;fill-opacity:1;stroke-width:0.0712708"
+         id="circle1990-9"
+         cx="62.5"
+         cy="62.5"
+         r="11"
+         d="m 73.5,62.5 a 11,11 0 0 1 -11,11 11,11 0 0 1 -11,-11 11,11 0 0 1 11,-11 11,11 0 0 1 11,11 z" />
+      <path
+         id="lpe_path-effect1992-7"
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0.0712708"
+         class="powerclip"
+         d="M 41,41 H 84 V 84 H 41 Z m 32.5,21.5 a 11,11 0 0 0 -11,-11 11,11 0 0 0 -11,11 11,11 0 0 0 11,11 11,11 0 0 0 11,-11 z" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipath_lpe_path-effect2180">
+      <path
+         id="lpe_path-effect2180"
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0.0712708"
+         class="powerclip"
+         d="M 41,41 H 84 V 84 H 41 Z m 32.5,21.5 a 11,11 0 0 0 -11,-11 11,11 0 0 0 -11,11 11,11 0 0 0 11,11 11,11 0 0 0 11,-11 z" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath2188">
+      <path
+         id="lpe_path-effect2192"
+         style="fill:#bebebe;fill-opacity:0.602295;stroke-width:0.106906"
+         class="powerclip"
+         d="m 35.5,35.5 h 54 v 54 h -54 z M 79,62.5 A 16.5,16.5 0 0 0 62.5,46 16.5,16.5 0 0 0 46,62.5 16.5,16.5 0 0 0 62.5,79 16.5,16.5 0 0 0 79,62.5 Z" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath906">
+      <circle
+         style="display:none;fill:#ffffff;fill-opacity:1;stroke-width:0.0712708"
+         id="circle908"
+         cx="62.5"
+         cy="62.5"
+         r="11"
+         d="m 73.5,62.5 a 11,11 0 0 1 -11,11 11,11 0 0 1 -11,-11 11,11 0 0 1 11,-11 11,11 0 0 1 11,11 z" />
+      <path
+         id="lpe_path-effect910"
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0.0712708"
+         class="powerclip"
+         d="m -1.25,-1.25 h 127.5 v 127.5 H -1.25 Z M 73.5,62.5 a 11,11 0 0 0 -11,-11 11,11 0 0 0 -11,11 11,11 0 0 0 11,11 11,11 0 0 0 11,-11 z" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath914">
+      <circle
+         style="display:none;fill:#ffffff;fill-opacity:1;stroke-width:0.0712708"
+         id="circle916"
+         cx="62.5"
+         cy="62.5"
+         r="11"
+         d="m 73.5,62.5 a 11,11 0 0 1 -11,11 11,11 0 0 1 -11,-11 11,11 0 0 1 11,-11 11,11 0 0 1 11,11 z" />
+      <path
+         id="lpe_path-effect918"
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0.0712708"
+         class="powerclip"
+         d="m -5.25,-5.25 h 135.5 v 135.5 H -5.25 Z M 73.5,62.5 a 11,11 0 0 0 -11,-11 11,11 0 0 0 -11,11 11,11 0 0 0 11,11 11,11 0 0 0 11,-11 z" />
+    </clipPath>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#cacaca"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.70030768"
+     inkscape:cx="49.978033"
+     inkscape:cy="389.11468"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1846"
+     inkscape:window-height="1016"
+     inkscape:window-x="74"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:pagecheckerboard="0" />
+  <metadata
+     id="metadata1239">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>CD Icon</dc:title>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by-sa/4.0/" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Philipp Wolfer</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:description />
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Dieses Werk ist lizenziert unter einer Creative Commons Namensnennung - Weitergabe unter gleichen Bedingungen 4.0 International Lizenz.</dc:title>
+          </cc:Agent>
+        </dc:rights>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by-sa/4.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#ShareAlike" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#4d4d4d;stroke-width:2.00000006;stroke-miterlimit:4;stroke-dasharray:none;stroke:#b2b2b2;stroke-opacity:1"
+       id="rect945"
+       width="125"
+       height="125"
+       x="0"
+       y="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:98.7778px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;letter-spacing:0px;word-spacing:0px;fill:#b3b3b3;stroke-width:0.264583"
+       x="39.300728"
+       y="97.805344"
+       id="text5521"><tspan
+         sodipodi:role="line"
+         id="tspan5519"
+         style="font-size:98.7778px;fill:#b3b3b3;stroke-width:0.264583"
+         x="39.300728"
+         y="97.805344">?</tspan></text>
+  </g>
+</svg>

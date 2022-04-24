@@ -181,6 +181,7 @@ class InfoDialog(PicardDialog):
         """
         row = 0
         row_count = self.artwork_table.rowCount()
+        missing_pixmap = QtGui.QPixmap(":/images/image-missing.png")
         for image in images:
             while row != row_count:
                 image_type = self.artwork_table.item(row, self.artwork_table._type_col)
@@ -190,6 +191,9 @@ class InfoDialog(PicardDialog):
             if row == row_count:
                 continue
             data = None
+            item = QtWidgets.QTableWidgetItem()
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, image)
+            pixmap = QtGui.QPixmap()
             try:
                 if image.thumbnail:
                     try:
@@ -198,18 +202,18 @@ class InfoDialog(PicardDialog):
                         log.warning(e)
                 else:
                     data = image.data
+                if data:
+                    pixmap.loadFromData(data)
+                    item.setToolTip(
+                        _("Double-click to open in external viewer\n"
+                        "Temporary file: %s\n"
+                        "Source: %s") % (image.tempfile_filename, image.source))
             except CoverArtImageIOError:
                 log.error(traceback.format_exc())
-                continue
-            item = QtWidgets.QTableWidgetItem()
-            item.setData(QtCore.Qt.ItemDataRole.UserRole, image)
-            pixmap = QtGui.QPixmap()
-            if data is not None:
-                pixmap.loadFromData(data)
+                pixmap = missing_pixmap
                 item.setToolTip(
-                    _("Double-click to open in external viewer\n"
-                      "Temporary file: %s\n"
-                      "Source: %s") % (image.tempfile_filename, image.source))
+                    _("Missing temporary file: %s\n"
+                    "Source: %s") % (image.tempfile_filename, image.source))
             infos = []
             if image.comment:
                 infos.append(image.comment)
