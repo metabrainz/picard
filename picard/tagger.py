@@ -302,7 +302,7 @@ class Tagger(QtWidgets.QApplication):
         # Touch these files regularly if Picard to keep them alive if Picard
         # is left running for a long time.
         if IS_MACOS:
-            periodictouch.setup_timer()
+            periodictouch.enable_timer()
 
         # Load release version information
         if self.autoupdate_enabled:

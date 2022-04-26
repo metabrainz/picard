@@ -33,14 +33,16 @@ _files_to_touch = set()
 
 
 def register_file(filepath):
-    _files_to_touch.add(filepath)
+    if _touch_timer.isActive():
+        _files_to_touch.add(filepath)
 
 
 def unregister_file(filepath):
-    _files_to_touch.discard(filepath)
+    if _touch_timer.isActive():
+        _files_to_touch.discard(filepath)
 
 
-def setup_timer():
+def enable_timer():
     log.debug('Setup timer for touching files every %i seconds', TOUCH_FILES_DELAY_SECONDS)
     _touch_timer.timeout.connect(_touch_files)
     _touch_timer.start(TOUCH_FILES_DELAY_SECONDS * 1000)
