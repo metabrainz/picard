@@ -211,26 +211,33 @@ class CoverArtThumbnail(ActiveLabel):
                 pixmap = self.render_cover_stack(self.data, has_common_images)
             self._pixmap_cache[key] = pixmap
 
-        pixmap.setDevicePixelRatio(self.pixel_ratio)
         self.setPixmap(pixmap)
         self.current_pixmap_key = key
 
     def decorate_cover(self, pixmap):
-        offx, offy, w, h = self.scaled(1, 1, COVERART_WIDTH, COVERART_WIDTH)
+        offx = offy = 1
+        w = h = COVERART_WIDTH
         cover = QtGui.QPixmap(self.shadow)
-        pixmap = pixmap.scaled(w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
+        cover.setDevicePixelRatio(self.pixel_ratio)
+        pixmap = pixmap.scaled(*self.scaled(w, h), QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
         pixmap.setDevicePixelRatio(self.pixel_ratio)
         painter = QtGui.QPainter(cover)
         bgcolor = QtGui.QColor.fromRgb(0, 0, 0, 128)
         painter.fillRect(QtCore.QRectF(offx, offy, w, h), bgcolor)
-        x = offx + (w - pixmap.width()) // 2
-        y = offy + (h - pixmap.height()) // 2
-        painter.drawPixmap(x, y, pixmap)
+        self._draw_centered(painter, pixmap, w, h, offx, offy)
         painter.end()
         return cover
 
+    @staticmethod
+    def _draw_centered(painter, pixmap, width, height, offset_x=0, offset_y=0):
+        pixel_ratio = pixmap.devicePixelRatio()
+        x = offset_x + (width - pixmap.width() / pixel_ratio) // 2
+        y = offset_y + (height - pixmap.height() / pixel_ratio) // 2
+        painter.drawPixmap(x, y, pixmap)
+
     def render_cover_stack(self, data, has_common_images):
-        w, h, displacements = self.scaled(THUMBNAIL_WIDTH, THUMBNAIL_WIDTH, 20)
+        w = h = THUMBNAIL_WIDTH
+        displacements = 20
         limited = len(data) > MAX_COVERS_TO_STACK
         if limited:
             data_to_paint = data[:MAX_COVERS_TO_STACK - 1]
@@ -239,16 +246,24 @@ class CoverArtThumbnail(ActiveLabel):
             data_to_paint = data
             offset = displacements * (len(data_to_paint) - 1)
         stack_width, stack_height = (w + offset, h + offset)
-        pixmap = QtGui.QPixmap(stack_width, stack_height)
+        pixmap = QtGui.QPixmap(*self.scaled(stack_width, stack_height))
+        pixmap.setDevicePixelRatio(self.pixel_ratio)
         bgcolor = self.palette().color(QtGui.QPalette.ColorRole.Window)
         painter = QtGui.QPainter(pixmap)
         painter.fillRect(QtCore.QRectF(0, 0, stack_width, stack_height), bgcolor)
         cx = stack_width - w // 2
         cy = h // 2
+
+        def calculate_cover_coordinates(pixmap, cx, cy):
+            pixel_ratio = pixmap.devicePixelRatio()
+            x = cx - pixmap.width() / pixel_ratio // 2
+            y = cy - pixmap.height() / pixel_ratio // 2
+            return x, y
+
         if limited:
             # Draw the default background three times to indicate that there are more
             # covers than the ones displayed
-            x, y = (cx - self.shadow.width() // 2, cy - self.shadow.height() // 2)
+            x, y = calculate_cover_coordinates(self.shadow, cx, cy)
             for i in range(3):
                 painter.drawPixmap(x, y, self.shadow)
                 x -= displacements // 3
@@ -268,7 +283,7 @@ class CoverArtThumbnail(ActiveLabel):
                 except CoverArtImageIOError:
                     thumb = self.file_missing_pixmap
             thumb = self.decorate_cover(thumb)
-            x, y = (cx - thumb.width() // 2, cy - thumb.height() // 2)
+            x, y = calculate_cover_coordinates(thumb, cx, cy)
             painter.drawPixmap(x, y, thumb)
             cx -= displacements
             cy += displacements
@@ -291,7 +306,7 @@ class CoverArtThumbnail(ActiveLabel):
                 painter.setPen(bgcolor)
                 painter.drawLine(x + COVERART_WIDTH + 2, y + COVERART_WIDTH + 2 + k, x + COVERART_WIDTH + border_length + 2, y + COVERART_WIDTH + 2 + k)
         painter.end()
-        return pixmap.scaled(w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
+        return pixmap.scaled(*self.scaled(w, h), QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
 
     def set_metadata(self, metadata):
         data = None
