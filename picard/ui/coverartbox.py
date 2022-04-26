@@ -66,6 +66,9 @@ from picard.ui.item import FileListItem
 from picard.ui.widgets import ActiveLabel
 
 
+THUMBNAIL_WIDTH = 128
+
+
 class CoverArtThumbnail(ActiveLabel):
     image_dropped = QtCore.pyqtSignal(QtCore.QUrl, bytes)
 
@@ -73,23 +76,49 @@ class CoverArtThumbnail(ActiveLabel):
         super().__init__(active, drops, *args, **kwargs)
         self.data = None
         self.has_common_images = None
-        self.pixel_ratio = self.tagger.primaryScreen().devicePixelRatio()
-        self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
-        w, h = self.scaled(128, 128)
-        self.shadow = self.shadow.scaled(w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
-        self.shadow.setDevicePixelRatio(self.pixel_ratio)
-        self.file_missing_pixmap = QtGui.QPixmap(":/images/image-missing.png")
-        self.file_missing_pixmap = self.file_missing_pixmap.scaled(w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
-        self.file_missing_pixmap.setDevicePixelRatio(self.pixel_ratio)
         self.release = None
+        window_handle = self.window().windowHandle()
+        if window_handle:
+            self.pixel_ratio = window_handle.screen().devicePixelRatio()
+            window_handle.screenChanged.connect(self.screen_changed)
+        else:
+            self.pixel_ratio = self.tagger.primaryScreen().devicePixelRatio()
+        self._pixmap_cache = pixmap_cache
+        self._update_default_pixmaps()
         self.setPixmap(self.shadow)
         self.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter)
         self.setMargin(0)
         self.setAcceptDrops(drops)
         self.clicked.connect(self.open_release_page)
         self.related_images = []
-        self._pixmap_cache = pixmap_cache
         self.current_pixmap_key = None
+
+    def screen_changed(self, screen):
+        pixel_ratio = screen.devicePixelRatio()
+        log.debug('screen changed, pixel ratio %s', pixel_ratio)
+        if pixel_ratio != self.pixel_ratio:
+            self.pixel_ratio = pixel_ratio
+            self._update_default_pixmaps()
+            if self.data:
+                self.set_data(self.data, self.has_common_images)
+            else:
+                self.setPixmap(self.shadow)
+
+    def _update_default_pixmaps(self):
+        w, h = self.scaled(THUMBNAIL_WIDTH, THUMBNAIL_WIDTH)
+        self.shadow = self._load_cached_default_pixmap(':/images/CoverArtShadow.png', w, h)
+        self.file_missing_pixmap = self._load_cached_default_pixmap(':/images/image-missing.png', w, h)
+
+    def _load_cached_default_pixmap(self, pixmap_path, w, h):
+        key = hash((pixmap_path, self.pixel_ratio))
+        try:
+            pixmap = self._pixmap_cache[key]
+        except KeyError:
+            pixmap = QtGui.QPixmap(pixmap_path)
+            pixmap = pixmap.scaled(w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
+            pixmap.setDevicePixelRatio(self.pixel_ratio)
+            self._pixmap_cache[key] = pixmap
+        return pixmap
 
     def __eq__(self, other):
         if len(self.data) or len(other.data):
@@ -149,7 +178,8 @@ class CoverArtThumbnail(ActiveLabel):
         self.set_data(self.data, True)
 
     def decorate_cover(self, pixmap):
-        offx, offy, w, h = self.scaled(1, 1, 121, 121)
+        width = THUMBNAIL_WIDTH - 7
+        offx, offy, w, h = self.scaled(1, 1, width, width)
         cover = QtGui.QPixmap(self.shadow)
         pixmap = pixmap.scaled(w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
         pixmap.setDevicePixelRatio(self.pixel_ratio)
@@ -180,8 +210,8 @@ class CoverArtThumbnail(ActiveLabel):
         if len(self.data) == 1:
             has_common_images = True
 
-        w, h, displacements = self.scaled(128, 128, 20)
-        key = hash(tuple(sorted(self.data, key=lambda x: x.types_as_string())) + (has_common_images,))
+        w, h, displacements = self.scaled(THUMBNAIL_WIDTH, THUMBNAIL_WIDTH, 20)
+        key = hash(tuple(sorted(self.data, key=lambda x: x.types_as_string())) + (has_common_images, self.pixel_ratio))
         try:
             pixmap = self._pixmap_cache[key]
         except KeyError:
