@@ -184,6 +184,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def __init__(self, parent=None, disable_player=False):
         super().__init__(parent)
+        self.setAttribute(QtCore.Qt.WidgetAttribute.WA_NativeWindow)
         self.__shown = False
         self.selected_objects = []
         self.ignore_selection_changes = IgnoreUpdatesContext(self.update_selection)

@@ -66,6 +66,10 @@ from picard.ui.item import FileListItem
 from picard.ui.widgets import ActiveLabel
 
 
+THUMBNAIL_WIDTH = 128
+COVERART_WIDTH = THUMBNAIL_WIDTH - 7
+
+
 class CoverArtThumbnail(ActiveLabel):
     image_dropped = QtCore.pyqtSignal(QtCore.QUrl, bytes)
 
@@ -73,23 +77,49 @@ class CoverArtThumbnail(ActiveLabel):
         super().__init__(active, drops, *args, **kwargs)
         self.data = None
         self.has_common_images = None
-        self.pixel_ratio = self.tagger.primaryScreen().devicePixelRatio()
-        self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
-        w, h = self.scaled(128, 128)
-        self.shadow = self.shadow.scaled(w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
-        self.shadow.setDevicePixelRatio(self.pixel_ratio)
-        self.file_missing_pixmap = QtGui.QPixmap(":/images/image-missing.png")
-        self.file_missing_pixmap = self.file_missing_pixmap.scaled(w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
-        self.file_missing_pixmap.setDevicePixelRatio(self.pixel_ratio)
         self.release = None
+        window_handle = self.window().windowHandle()
+        if window_handle:
+            self.pixel_ratio = window_handle.screen().devicePixelRatio()
+            window_handle.screenChanged.connect(self.screen_changed)
+        else:
+            self.pixel_ratio = self.tagger.primaryScreen().devicePixelRatio()
+        self._pixmap_cache = pixmap_cache
+        self._update_default_pixmaps()
         self.setPixmap(self.shadow)
         self.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter)
         self.setMargin(0)
         self.setAcceptDrops(drops)
         self.clicked.connect(self.open_release_page)
         self.related_images = []
-        self._pixmap_cache = pixmap_cache
         self.current_pixmap_key = None
+
+    def screen_changed(self, screen):
+        pixel_ratio = screen.devicePixelRatio()
+        log.debug('screen changed, pixel ratio %s', pixel_ratio)
+        if pixel_ratio != self.pixel_ratio:
+            self.pixel_ratio = pixel_ratio
+            self._update_default_pixmaps()
+            if self.data:
+                self.set_data(self.data, force=True, has_common_images=self.has_common_images)
+            else:
+                self.setPixmap(self.shadow)
+
+    def _update_default_pixmaps(self):
+        w, h = self.scaled(THUMBNAIL_WIDTH, THUMBNAIL_WIDTH)
+        self.shadow = self._load_cached_default_pixmap(':/images/CoverArtShadow.png', w, h)
+        self.file_missing_pixmap = self._load_cached_default_pixmap(':/images/image-missing.png', w, h)
+
+    def _load_cached_default_pixmap(self, pixmap_path, w, h):
+        key = hash((pixmap_path, self.pixel_ratio))
+        try:
+            pixmap = self._pixmap_cache[key]
+        except KeyError:
+            pixmap = QtGui.QPixmap(pixmap_path)
+            pixmap = pixmap.scaled(w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
+            pixmap.setDevicePixelRatio(self.pixel_ratio)
+            self._pixmap_cache[key] = pixmap
+        return pixmap
 
     def __eq__(self, other):
         if len(self.data) or len(other.data):
@@ -148,20 +178,6 @@ class CoverArtThumbnail(ActiveLabel):
     def show(self):
         self.set_data(self.data, True)
 
-    def decorate_cover(self, pixmap):
-        offx, offy, w, h = self.scaled(1, 1, 121, 121)
-        cover = QtGui.QPixmap(self.shadow)
-        pixmap = pixmap.scaled(w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
-        pixmap.setDevicePixelRatio(self.pixel_ratio)
-        painter = QtGui.QPainter(cover)
-        bgcolor = QtGui.QColor.fromRgb(0, 0, 0, 128)
-        painter.fillRect(QtCore.QRectF(offx, offy, w, h), bgcolor)
-        x = offx + (w - pixmap.width()) // 2
-        y = offy + (h - pixmap.height()) // 2
-        painter.drawPixmap(x, y, pixmap)
-        painter.end()
-        return cover
-
     def set_data(self, data, force=False, has_common_images=True):
         if not force and self.data == data and self.has_common_images == has_common_images:
             return
@@ -180,8 +196,7 @@ class CoverArtThumbnail(ActiveLabel):
         if len(self.data) == 1:
             has_common_images = True
 
-        w, h, displacements = self.scaled(128, 128, 20)
-        key = hash(tuple(sorted(self.data, key=lambda x: x.types_as_string())) + (has_common_images,))
+        key = hash(tuple(sorted(self.data, key=lambda x: x.types_as_string())) + (has_common_images, self.pixel_ratio))
         try:
             pixmap = self._pixmap_cache[key]
         except KeyError:
@@ -193,64 +208,90 @@ class CoverArtThumbnail(ActiveLabel):
                 except CoverArtImageIOError:
                     pixmap = self.file_missing_pixmap
             else:
-                limited = len(self.data) > MAX_COVERS_TO_STACK
-                if limited:
-                    data_to_paint = data[:MAX_COVERS_TO_STACK - 1]
-                    offset = displacements * len(data_to_paint)
-                else:
-                    data_to_paint = data
-                    offset = displacements * (len(data_to_paint) - 1)
-                stack_width, stack_height = (w + offset, h + offset)
-                pixmap = QtGui.QPixmap(stack_width, stack_height)
-                bgcolor = self.palette().color(QtGui.QPalette.ColorRole.Window)
-                painter = QtGui.QPainter(pixmap)
-                painter.fillRect(QtCore.QRectF(0, 0, stack_width, stack_height), bgcolor)
-                cx = stack_width - w // 2
-                cy = h // 2
-                if limited:
-                    x, y = (cx - self.shadow.width() // 2, cy - self.shadow.height() // 2)
-                    for i in range(3):
-                        painter.drawPixmap(x, y, self.shadow)
-                        x -= displacements // 3
-                        y += displacements // 3
-                    cx -= displacements
-                    cy += displacements
-                else:
-                    cx = stack_width - w // 2
-                    cy = h // 2
-                for image in reversed(data_to_paint):
-                    if isinstance(image, QtGui.QPixmap):
-                        thumb = image
-                    else:
-                        thumb = QtGui.QPixmap()
-                        try:
-                            thumb.loadFromData(image.data)
-                        except CoverArtImageIOError:
-                            thumb = self.file_missing_pixmap
-                    thumb = self.decorate_cover(thumb)
-                    x, y = (cx - thumb.width() // 2, cy - thumb.height() // 2)
-                    painter.drawPixmap(x, y, thumb)
-                    cx -= displacements
-                    cy += displacements
-                if not has_common_images:
-                    color = QtGui.QColor("darkgoldenrod")
-                    border_length = 10
-                    for k in range(border_length):
-                        color.setAlpha(255 - k * 255 // border_length)
-                        painter.setPen(color)
-                        painter.drawLine(x, y - k - 1, x + 121 + k + 1, y - k - 1)
-                        painter.drawLine(x + 121 + k + 2, y - 1 - k, x + 121 + k + 2, y + 121 + 4)
-                    for k in range(5):
-                        bgcolor.setAlpha(80 + k * 255 // 7)
-                        painter.setPen(bgcolor)
-                        painter.drawLine(x + 121 + 2, y + 121 + 2 + k, x + 121 + border_length + 2, y + 121 + 2 + k)
-                painter.end()
-                pixmap = pixmap.scaled(w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
+                pixmap = self.render_cover_stack(self.data, has_common_images)
             self._pixmap_cache[key] = pixmap
 
         pixmap.setDevicePixelRatio(self.pixel_ratio)
         self.setPixmap(pixmap)
         self.current_pixmap_key = key
+
+    def decorate_cover(self, pixmap):
+        offx, offy, w, h = self.scaled(1, 1, COVERART_WIDTH, COVERART_WIDTH)
+        cover = QtGui.QPixmap(self.shadow)
+        pixmap = pixmap.scaled(w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
+        pixmap.setDevicePixelRatio(self.pixel_ratio)
+        painter = QtGui.QPainter(cover)
+        bgcolor = QtGui.QColor.fromRgb(0, 0, 0, 128)
+        painter.fillRect(QtCore.QRectF(offx, offy, w, h), bgcolor)
+        x = offx + (w - pixmap.width()) // 2
+        y = offy + (h - pixmap.height()) // 2
+        painter.drawPixmap(x, y, pixmap)
+        painter.end()
+        return cover
+
+    def render_cover_stack(self, data, has_common_images):
+        w, h, displacements = self.scaled(THUMBNAIL_WIDTH, THUMBNAIL_WIDTH, 20)
+        limited = len(data) > MAX_COVERS_TO_STACK
+        if limited:
+            data_to_paint = data[:MAX_COVERS_TO_STACK - 1]
+            offset = displacements * len(data_to_paint)
+        else:
+            data_to_paint = data
+            offset = displacements * (len(data_to_paint) - 1)
+        stack_width, stack_height = (w + offset, h + offset)
+        pixmap = QtGui.QPixmap(stack_width, stack_height)
+        bgcolor = self.palette().color(QtGui.QPalette.ColorRole.Window)
+        painter = QtGui.QPainter(pixmap)
+        painter.fillRect(QtCore.QRectF(0, 0, stack_width, stack_height), bgcolor)
+        cx = stack_width - w // 2
+        cy = h // 2
+        if limited:
+            # Draw the default background three times to indicate that there are more
+            # covers than the ones displayed
+            x, y = (cx - self.shadow.width() // 2, cy - self.shadow.height() // 2)
+            for i in range(3):
+                painter.drawPixmap(x, y, self.shadow)
+                x -= displacements // 3
+                y += displacements // 3
+            cx -= displacements
+            cy += displacements
+        else:
+            cx = stack_width - w // 2
+            cy = h // 2
+        for image in reversed(data_to_paint):
+            if isinstance(image, QtGui.QPixmap):
+                thumb = image
+            else:
+                thumb = QtGui.QPixmap()
+                try:
+                    thumb.loadFromData(image.data)
+                except CoverArtImageIOError:
+                    thumb = self.file_missing_pixmap
+            thumb = self.decorate_cover(thumb)
+            x, y = (cx - thumb.width() // 2, cy - thumb.height() // 2)
+            painter.drawPixmap(x, y, thumb)
+            cx -= displacements
+            cy += displacements
+        if not has_common_images:
+            # Draw a golden highlight around the first cover to indicate that
+            # images are not common to all selected items
+            color = QtGui.QColor("darkgoldenrod")
+            border_length = 10
+            for k in range(border_length):
+                color.setAlpha(255 - k * 255 // border_length)
+                painter.setPen(color)
+                x_offset = x + COVERART_WIDTH + k
+                # Horizontal line above the cover
+                painter.drawLine(x, y - k - 1, x_offset + 1, y - k - 1)
+                # Vertical line right of the cover
+                painter.drawLine(x_offset + 2, y - 1 - k, x_offset + 2, y + COVERART_WIDTH + 4)
+            # A bit of shadow
+            for k in range(5):
+                bgcolor.setAlpha(80 + k * 255 // 7)
+                painter.setPen(bgcolor)
+                painter.drawLine(x + COVERART_WIDTH + 2, y + COVERART_WIDTH + 2 + k, x + COVERART_WIDTH + border_length + 2, y + COVERART_WIDTH + 2 + k)
+        painter.end()
+        return pixmap.scaled(w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
 
     def set_metadata(self, metadata):
         data = None
