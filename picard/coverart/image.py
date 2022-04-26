@@ -54,6 +54,7 @@ from picard.util import (
     encode_filename,
     imageinfo,
     is_absolute_path,
+    periodictouch,
 )
 from picard.util.scripttofilename import script_to_filename
 
@@ -77,6 +78,7 @@ class DataHash:
                 with os.fdopen(fd, "wb") as imagefile:
                     imagefile.write(data)
                 _datafiles[self._hash] = self._filename
+                periodictouch.register_file(self._filename)
                 log.debug("Saving image data %s to %r" % (self._hash, self._filename))
             else:
                 self._filename = _datafiles[self._hash]
@@ -93,6 +95,7 @@ class DataHash:
         if self._filename:
             try:
                 os.unlink(self._filename)
+                periodictouch.unregister_file(self._filename)
             except BaseException:
                 pass
             else:

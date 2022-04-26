@@ -96,6 +96,7 @@ from picard.const import (
 from picard.const.sys import (
     IS_FROZEN,
     IS_HAIKU,
+    IS_MACOS,
     IS_WIN,
 )
 from picard.dataobj import DataObject
@@ -121,6 +122,7 @@ from picard.util import (
     iter_files_from_objects,
     mbid_validate,
     normpath,
+    periodictouch,
     process_events_iter,
     system_supports_long_paths,
     thread,
@@ -295,6 +297,12 @@ class Tagger(QtWidgets.QApplication):
         self.window = MainWindow(disable_player=picard_args.no_player)
         self.exit_cleanup = []
         self.stopping = False
+
+        # On macOS temporary files get deleted after 3 days not being accessed.
+        # Touch these files regularly if Picard to keep them alive if Picard
+        # is left running for a long time.
+        if IS_MACOS:
+            periodictouch.enable_timer()
 
         # Load release version information
         if self.autoupdate_enabled:
