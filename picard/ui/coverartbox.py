@@ -231,8 +231,8 @@ class CoverArtThumbnail(ActiveLabel):
     @staticmethod
     def _draw_centered(painter, pixmap, width, height, offset_x=0, offset_y=0):
         pixel_ratio = pixmap.devicePixelRatio()
-        x = offset_x + (width - pixmap.width() / pixel_ratio) // 2
-        y = offset_y + (height - pixmap.height() / pixel_ratio) // 2
+        x = int(offset_x + (width - pixmap.width() / pixel_ratio) // 2)
+        y = int(offset_y + (height - pixmap.height() / pixel_ratio) // 2)
         painter.drawPixmap(x, y, pixmap)
 
     def render_cover_stack(self, data, has_common_images):
@@ -256,8 +256,8 @@ class CoverArtThumbnail(ActiveLabel):
 
         def calculate_cover_coordinates(pixmap, cx, cy):
             pixel_ratio = pixmap.devicePixelRatio()
-            x = cx - pixmap.width() / pixel_ratio // 2
-            y = cy - pixmap.height() / pixel_ratio // 2
+            x = int(cx - pixmap.width() / pixel_ratio // 2)
+            y = int(cy - pixmap.height() / pixel_ratio // 2)
             return x, y
 
         if limited:
