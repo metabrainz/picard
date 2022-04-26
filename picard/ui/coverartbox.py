@@ -101,7 +101,7 @@ class CoverArtThumbnail(ActiveLabel):
             self.pixel_ratio = pixel_ratio
             self._update_default_pixmaps()
             if self.data:
-                self.set_data(self.data, self.has_common_images)
+                self.set_data(self.data, force=True, has_common_images=self.has_common_images)
             else:
                 self.setPixmap(self.shadow)
 
