@@ -47,6 +47,11 @@ def escape_lucene_query(text):
     return re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\/])', r'\\\1', text)
 
 
+def build_lucene_query(args):
+    return ' '.join('%s:(%s)' % (item, escape_lucene_query(value))
+                    for item, value in args.items() if value)
+
+
 def _wrap_xml_metadata(data):
     return ('<?xml version="1.0" encoding="UTF-8"?>'
             '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">%s</metadata>'
@@ -162,12 +167,7 @@ class MBAPIHelper(APIHelper):
                 query = escape_lucene_query(kwargs["query"]).strip().lower()
                 filters.append(("dismax", 'true'))
         else:
-            query = []
-            for name, value in kwargs.items():
-                value = escape_lucene_query(value).strip().lower()
-                if value:
-                    query.append('%s:(%s)' % (name, value))
-            query = ' '.join(query)
+            query = build_lucene_query(kwargs)
 
         if query:
             filters.append(("query", query))

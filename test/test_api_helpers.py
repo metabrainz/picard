@@ -33,6 +33,8 @@ from picard.webservice.api_helpers import (
     AcoustIdAPIHelper,
     APIHelper,
     MBAPIHelper,
+    build_lucene_query,
+    escape_lucene_query,
 )
 
 
@@ -302,3 +304,21 @@ class AcoustdIdAPITest(PicardTestCase):
             'duration.3': '500000',
         }
         self.assertEqual(result, expected)
+
+
+class LuceneHelpersTest(PicardTestCase):
+
+    def test_escape_lucene_query(self):
+        self.assertEqual('', escape_lucene_query(''))
+        self.assertEqual(
+            '\\+\\-\\&\\|\\!\\(\\)\\{\\}\\[\\]\\^\\"\\~\\*\\?\\:\\\\\\/',
+            escape_lucene_query('+-&|!(){}[]^"~*?:\\/'))
+
+    def test_build_lucene_query(self):
+        args = {
+            'title': 'test',
+            'artist': 'foo:bar',
+            'tnum': '3'
+        }
+        query = build_lucene_query(args)
+        self.assertEqual('title:(test) artist:(foo\\:bar) tnum:(3)', query)
