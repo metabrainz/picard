@@ -45,7 +45,7 @@ from picard.mbjson import (
     release_to_metadata,
 )
 from picard.metadata import Metadata
-from picard.webservice.api_helpers import escape_lucene_query
+from picard.webservice.api_helpers import build_lucene_query
 
 from picard.ui.searchdialog import (
     Retry,
@@ -166,7 +166,6 @@ class AlbumSearchDialog(SearchDialog):
     def show_similar_albums(self, cluster):
         """Perform search by using existing metadata information
         from the cluster as query."""
-        self.retry_params = Retry(self.show_similar_albums, cluster)
         self.cluster = cluster
         metadata = cluster.metadata
         query = {
@@ -175,21 +174,13 @@ class AlbumSearchDialog(SearchDialog):
             "tracks": str(len(cluster.files))
         }
 
-        # Generate query to be displayed to the user (in search box).
-        # If advanced query syntax setting is enabled by user, display query in
-        # advanced syntax style. Otherwise display only album title.
+        # If advanced query syntax setting is enabled by user, query in
+        # advanced syntax style. Otherwise query only album title.
         if self.use_advanced_search:
-            query_str = ' '.join(['%s:(%s)' % (item, escape_lucene_query(value))
-                                  for item, value in query.items() if value])
+            query_str = build_lucene_query(query)
         else:
             query_str = query["release"]
-
-        query["limit"] = QUERY_LIMIT
-        self.search_box_text(query_str)
-        self.show_progress()
-        self.tagger.mb_api.find_releases(
-            self.handle_reply,
-            **query)
+        self.search(query_str)
 
     def retry(self):
         self.retry_params.function(self.retry_params.query)

@@ -36,7 +36,7 @@ from picard.mbjson import (
 from picard.metadata import Metadata
 from picard.track import Track
 from picard.util import sort_by_similarity
-from picard.webservice.api_helpers import escape_lucene_query
+from picard.webservice.api_helpers import build_lucene_query
 
 from picard.ui.searchdialog import (
     Retry,
@@ -52,11 +52,12 @@ class TrackSearchDialog(SearchDialog):
         Option("persist", dialog_header_state, QtCore.QByteArray())
     ]
 
-    def __init__(self, parent):
+    def __init__(self, parent, force_advanced_search=None):
         super().__init__(
             parent,
             accept_button_title=_("Load into Picard"),
-            search_type="track")
+            search_type="track",
+            force_advanced_search=force_advanced_search)
         self.file_ = None
         self.setWindowTitle(_("Track Search Results"))
         self.columns = [
@@ -81,10 +82,9 @@ class TrackSearchDialog(SearchDialog):
                                        advanced_search=self.use_advanced_search,
                                        limit=QUERY_LIMIT)
 
-    def load_similar_tracks(self, file_):
+    def show_similar_tracks(self, file_):
         """Perform search using existing metadata information
         from the file as query."""
-        self.retry_params = Retry(self.load_similar_tracks, file_)
         self.file_ = file_
         metadata = file_.orig_metadata
         query = {
@@ -97,21 +97,13 @@ class TrackSearchDialog(SearchDialog):
             'isrc': metadata['isrc'],
         }
 
-        # Generate query to be displayed to the user (in search box).
-        # If advanced query syntax setting is enabled by user, display query in
-        # advanced syntax style. Otherwise display only track title.
+        # If advanced query syntax setting is enabled by user, query in
+        # advanced syntax style. Otherwise query only track title.
         if self.use_advanced_search:
-            query_str = ' '.join(['%s:(%s)' % (item, escape_lucene_query(value))
-                                  for item, value in query.items() if value])
+            query_str = build_lucene_query(query)
         else:
             query_str = query["track"]
-
-        query["limit"] = QUERY_LIMIT
-        self.search_box_text(query_str)
-        self.show_progress()
-        self.tagger.mb_api.find_tracks(
-            self.handle_reply,
-            **query)
+        self.search(query_str)
 
     def retry(self):
         self.retry_params.function(self.retry_params.query)

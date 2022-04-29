@@ -1376,8 +1376,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if not isinstance(obj, File):
             log.debug('show_more_tracks expected a File, got %r' % obj)
             return
-        dialog = TrackSearchDialog(self)
-        dialog.load_similar_tracks(obj)
+        dialog = TrackSearchDialog(self, force_advanced_search=True)
+        dialog.show_similar_tracks(obj)
         dialog.exec_()
 
     def show_more_albums(self):
@@ -1385,7 +1385,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if not obj:
             log.debug('show_more_albums expected a Cluster, got %r' % obj)
             return
-        dialog = AlbumSearchDialog(self)
+        dialog = AlbumSearchDialog(self, force_advanced_search=True)
         dialog.show_similar_albums(obj)
         dialog.exec_()
 
