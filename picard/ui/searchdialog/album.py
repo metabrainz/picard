@@ -124,13 +124,14 @@ class AlbumSearchDialog(SearchDialog):
         Option("persist", dialog_header_state, QtCore.QByteArray())
     ]
 
-    def __init__(self, parent, force_advanced_search=None):
+    def __init__(self, parent, force_advanced_search=None, existing_album=None):
         super().__init__(
             parent,
             accept_button_title=_("Load into Picard"),
             search_type="album",
             force_advanced_search=force_advanced_search)
         self.cluster = None
+        self.existing_album = existing_album
         self.setWindowTitle(_("Album Search Results"))
         self.columns = [
             ('name',     _("Name")),
@@ -151,6 +152,16 @@ class AlbumSearchDialog(SearchDialog):
         self.cover_cells = []
         self.fetching = False
         self.scrolled.connect(self.fetch_coverarts)
+
+    @staticmethod
+    def show_releasegroup_search(releasegroup_id, existing_album=None):
+        dialog = AlbumSearchDialog(
+            QtCore.QObject.tagger.window,
+            force_advanced_search=True,
+            existing_album=existing_album)
+        dialog.search("rgid:{0}".format(releasegroup_id))
+        dialog.exec_()
+        return dialog
 
     def search(self, text):
         """Perform search using query provided by the user."""
@@ -338,6 +349,8 @@ class AlbumSearchDialog(SearchDialog):
             self.set_table_item(row, 'score',    release, "score")
             self.cover_cells.append(CoverCell(self.table, release, row, column,
                                               on_show=self.fetch_coverart))
+            if self.existing_album and release['musicbrainz_albumid'] == self.existing_album.id:
+                self.highlight_row(row)
         self.show_table(sort_column='score')
 
     def accept_event(self, rows):
@@ -346,11 +359,14 @@ class AlbumSearchDialog(SearchDialog):
 
     def load_selection(self, row):
         release = self.search_results[row]
-        self.tagger.get_release_group_by_id(
-            release["musicbrainz_releasegroupid"]).loaded_albums.add(
-                release["musicbrainz_albumid"])
-        album = self.tagger.load_album(release["musicbrainz_albumid"])
-        if self.cluster:
-            files = self.cluster.iterfiles()
-            self.tagger.move_files_to_album(files, release["musicbrainz_albumid"],
-                                            album)
+        release_mbid = release["musicbrainz_albumid"]
+        if self.existing_album:
+            self.existing_album.switch_release_version(release_mbid)
+        else:
+            self.tagger.get_release_group_by_id(
+                release["musicbrainz_releasegroupid"]).loaded_albums.add(
+                    release_mbid)
+            album = self.tagger.load_album(release_mbid)
+            if self.cluster:
+                files = self.cluster.iterfiles()
+                self.tagger.move_files_to_album(files, release_mbid, album)

@@ -31,6 +31,7 @@ from collections import OrderedDict
 
 from PyQt5 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 from PyQt5.QtCore import pyqtSignal
@@ -165,6 +166,13 @@ class TableBasedDialog(PicardDialog):
         def enable_accept_button():
             self.accept_button.setEnabled(True)
         self.table.itemSelectionChanged.connect(enable_accept_button)
+
+    def highlight_row(self, row):
+        model = self.table.model()
+        highlight_color = QtGui.QBrush(QtGui.QColor('LightYellow'))
+        for column in range(0, model.columnCount()):
+            index = model.index(row, column)
+            model.setData(index, highlight_color, QtCore.Qt.ItemDataRole.BackgroundRole)
 
     def prepare_table(self):
         self.table.prepare(self.table_headers)

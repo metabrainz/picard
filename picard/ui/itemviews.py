@@ -91,6 +91,7 @@ from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.colors import interface_colors
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
+from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.widgets.tristatesortheaderview import TristateSortHeaderView
 
 
@@ -543,11 +544,14 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             menu.addMenu(releases_menu)
             loading = releases_menu.addAction(_('Loading...'))
             loading.setDisabled(True)
+            action_more = releases_menu.addAction(_('Show &more details...'))
+            action_more.triggered.connect(partial(AlbumSearchDialog.show_releasegroup_search, obj.release_group.id, obj))
             bottom_separator = True
 
             if len(self.selectedItems()) == 1 and obj.release_group:
                 def _add_other_versions():
                     releases_menu.removeAction(loading)
+                    releases_menu.removeAction(action_more)
                     heading = releases_menu.addAction(obj.release_group.version_headings)
                     heading.setDisabled(True)
                     font = heading.font()
@@ -594,6 +598,9 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                     versions_count = len(versions)
                     if versions_count > 1:
                         releases_menu.setTitle(_("&Other versions (%d)") % versions_count)
+
+                    releases_menu.addSeparator()
+                    action = releases_menu.addAction(action_more)
                 if obj.release_group.loaded:
                     _add_other_versions()
                 else:

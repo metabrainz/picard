@@ -142,10 +142,7 @@ class BrowserLookupTest(PicardTestCase):
         url = 'https://musicbrainz.org/release-group/168615bf-f841-49f7-ac98-36a4eb25479c'
         result = self.lookup.mbid_lookup(url)
         self.assertTrue(result)
-        mock_dialog.assert_called_once_with(mock_tagger.window, force_advanced_search=True)
-        instance = mock_dialog.return_value
-        instance.search.assert_called_once_with('rgid:168615bf-f841-49f7-ac98-36a4eb25479c')
-        instance.exec_.assert_called_once()
+        mock_dialog.show_releasegroup_search.assert_called_once_with('168615bf-f841-49f7-ac98-36a4eb25479c')
 
     def test_mbid_lookup_browser_fallback(self):
         mbid = '4836aa50-a9ae-490a-983b-cfc8efca92de'
