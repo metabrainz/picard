@@ -91,7 +91,6 @@ from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.colors import interface_colors
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
-from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.widgets.tristatesortheaderview import TristateSortHeaderView
 
 
@@ -545,7 +544,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             loading = releases_menu.addAction(_('Loading...'))
             loading.setDisabled(True)
             action_more = releases_menu.addAction(_('Show &more details...'))
-            action_more.triggered.connect(partial(AlbumSearchDialog.show_releasegroup_search, obj.release_group.id, obj))
+            action_more.triggered.connect(self.window.album_other_versions_action.trigger)
             bottom_separator = True
 
             if len(self.selectedItems()) == 1 and obj.release_group:
