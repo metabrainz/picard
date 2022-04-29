@@ -93,6 +93,7 @@ class SearchBox(QtWidgets.QWidget):
         self.adv_opt_row_layout.setSpacing(1)
         self.use_adv_search_syntax = QtWidgets.QCheckBox(self.adv_opt_row_widget)
         self.use_adv_search_syntax.setText(_("Use advanced query syntax"))
+        self.use_adv_search_syntax.setChecked(self.use_advanced_search)
         self.use_adv_search_syntax.stateChanged.connect(self.update_advanced_syntax_setting)
         self.adv_opt_row_layout.addWidget(self.use_adv_search_syntax)
         self.adv_syntax_help = QtWidgets.QLabel(self.adv_opt_row_widget)
