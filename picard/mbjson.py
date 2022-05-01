@@ -351,7 +351,7 @@ def countries_from_node(node):
         country_code = _country_from_release_event(release_event)
         if country_code:
             countries.append(country_code)
-    return countries
+    return sorted(countries)
 
 
 def release_dates_and_countries_from_node(node):
