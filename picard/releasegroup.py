@@ -8,7 +8,7 @@
 # Copyright (C) 2017 Wieland Hoffmann
 # Copyright (C) 2017-2018 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
-# Copyright (C) 2019, 2021 Philipp Wolfer
+# Copyright (C) 2019, 2021-2022 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -73,6 +73,7 @@ class ReleaseGroup(DataObject):
             "label":    N_('Label'),
             "catnum":   N_('Cat No'),
         }
+        # additional keys displayed only for disambiguation
         extrakeys = ("packaging", "barcode", "disambiguation")
 
         try:
@@ -85,6 +86,10 @@ class ReleaseGroup(DataObject):
             labels, catnums = label_info_from_node(node['label-info'])
 
             countries = countries_from_node(node)
+            if countries:
+                country_label = limited_join(countries, 6, '+', '…')
+            else:
+                country_label = node.get('country', '') or '??'
 
             if len(node['media']) > max_tracks:
                 tracks = "+".join(str(m['track-count']) for m in node['media'][:max_tracks]) + '+…'
@@ -97,8 +102,7 @@ class ReleaseGroup(DataObject):
             release = {
                 "id":      node['id'],
                 "year":    node['date'][:4] if "date" in node else "????",
-                "country": limited_join(countries, 10, '+', '…') if countries
-                else node.get('country', '') or "??",
+                "country": country_label,
                 "format":  media_formats_from_node(node['media']),
                 "label":  ", ".join(' '.join(x.split(' ')[:2]) for x in set(labels)),
                 "catnum": ", ".join(set(catnums)),
@@ -114,8 +118,10 @@ class ReleaseGroup(DataObject):
             data.append(release)
 
         versions = defaultdict(list)
+
+        # Group versions by same display name
         for release in data:
-            name = " / ".join(release[k] for k in namekeys).replace("&", "&&")
+            name = " / ".join(release[k] for k in namekeys)
             if name == release["tracks"]:
                 name = "%s / %s" % (_('[no release info]'), name)
             versions[name].append(release)
@@ -128,13 +134,15 @@ class ReleaseGroup(DataObject):
                     if value1 != value2:
                         a['_disambiguate_name'].append(value1)
                         b['_disambiguate_name'].append(value2)
+
+        # build the final list of versions, using the disambiguation if needed
         for name, releases in versions.items():
             for release in releases:
-                dis = " / ".join(filter(None, uniqify(release['_disambiguate_name']))).replace("&", "&&")
+                dis = " / ".join(filter(None, uniqify(release['_disambiguate_name'])))
                 disname = name if not dis else name + ' / ' + dis
                 version = {
                     'id': release['id'],
-                    'name': disname,
+                    'name': disname.replace("&", "&&"),
                     'totaltracks': release['totaltracks'],
                     'countries': release['countries'],
                     'formats': release['formats'],
