@@ -668,6 +668,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.track_search_action = action
 
     @MainWindowActions.add()
+    def _create_album_other_versions_action(self):
+        action = QtWidgets.QAction(_("Show &other album versions..."), self)
+        action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+O")))
+        action.triggered.connect(self.show_album_other_versions)
+        self.album_other_versions_action = action
+
+    @MainWindowActions.add()
     def _create_show_file_browser_action(self):
         config = get_config()
         action = QtWidgets.QAction(_("File &Browser"), self)
@@ -1016,6 +1023,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addAction(self.cluster_action)
         menu.addAction(self.browser_lookup_action)
         menu.addAction(self.track_search_action)
+        menu.addAction(self.album_other_versions_action)
         menu.addSeparator()
         menu.addAction(self.generate_fingerprints_action)
         menu.addAction(self.tags_from_filenames_action)
@@ -1389,6 +1397,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         dialog.show_similar_albums(obj)
         dialog.exec_()
 
+    def show_album_other_versions(self):
+        obj = self.get_first_obj_with_type(Album)
+        if obj and obj.release_group:
+            AlbumSearchDialog.show_releasegroup_search(obj.release_group.id, obj)
+
     def view_info(self, default_tab=0):
         try:
             selected = self.selected_objects[0]
@@ -1474,6 +1487,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         can_view_info = bool(single and single.can_view_info())
         can_browser_lookup = bool(single and single.can_browser_lookup())
         is_file = bool(single and isinstance(single, (File, Track)))
+        is_album = bool(single and isinstance(single, Album))
 
         if not self.selected_objects:
             have_objects = have_files = False
@@ -1525,6 +1539,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         files = self.get_selected_or_unmatched_files()
         self.tags_from_filenames_action.setEnabled(bool(files))
         self.track_search_action.setEnabled(is_file)
+        self.album_other_versions_action.setEnabled(is_album)
 
     def update_selection(self, objects=None, new_selection=True, drop_album_caches=False):
         if self.ignore_selection_changes:

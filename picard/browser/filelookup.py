@@ -145,9 +145,7 @@ class FileLookup(object):
             QtCore.QObject.tagger.load_nat(id)
             return True
         elif entity == 'release-group':
-            dialog = AlbumSearchDialog(QtCore.QObject.tagger.window, force_advanced_search=True)
-            dialog.search("rgid:{0}".format(id))
-            dialog.exec_()
+            AlbumSearchDialog.show_releasegroup_search(id)
             return True
         elif entity == 'cdtoc':
             disc = Disc(id=id)
