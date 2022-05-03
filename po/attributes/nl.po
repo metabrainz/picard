@@ -531,6 +531,14 @@ msgctxt "release_packaging"
 msgid "A thinner jewel case, commonly used for CD singles."
 msgstr "Een dunnere variant van de jewel case, vaak gebruikt voor cd-singles."
 
+#: DB:medium_format/description:128
+msgctxt "medium_format"
+msgid ""
+"A very small optical disc in a protective case that was intended for "
+"portable listening. It did not find commercial success, but a few albums "
+"were released in the format in the early 00s."
+msgstr "DataPlay is een optisch schijfje in een beschermende cassette. Het was bedoeld als draagbaar medium, maar werd geen commercieel succes. In de vroegen jaren 2000 zijn een paar DataPlay-albums uitgebracht."
+
 #: DB:work_type/description:19
 msgctxt "work_type"
 msgid ""
@@ -2084,6 +2092,11 @@ msgstr "data-dvd"
 msgctxt "medium_format"
 msgid "Data DVD-R"
 msgstr "data-dvd-r"
+
+#: DB:medium_format/name:128
+msgctxt "medium_format"
+msgid "DataPlay"
+msgstr "DataPlay"
 
 #: DB:release_group_secondary_type/name:10
 msgctxt "release_group_secondary_type"

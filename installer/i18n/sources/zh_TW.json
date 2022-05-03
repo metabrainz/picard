@@ -1,16 +1,16 @@
 {
-    "MsgAlreadyInstalled": "${PRODUCT_NAME} 已經安裝，而且必須先解除安裝後才能升級到版本 ${PRODUCT_VERSION}。\n\n點選「確認」繼續，或是「取消」來取消此次升級。",
-    "MsgApplicationRunning": "此應用程式 ${PRODUCT_NAME} 正在執行。請關閉該程式後再重試。",
-    "MsgRequires64Bit": "此版本的 ${PRODUCT_NAME} 需要 64-bit 的 Windows 作業系統。",
-    "MuiDescriptionRequired": "安裝 ${PRODUCT_NAME} 以及執行時必備的檔案。",
-    "MuiDescriptionLang": "安裝 ${PRODUCT_NAME} 的多國語言翻譯。",
-    "MuiDescriptionShortcuts": "安裝用來啟動 ${PRODUCT_NAME} 的捷徑。",
+    "MsgAlreadyInstalled": "${PRODUCT_NAME}經已安装，在升級至版本${PRODUCT_VERSION}前必須解除安裝。\n\n點選「确定」以示繼續，或點選「取消」停止升級。",
+    "MsgApplicationRunning": "應用程式${PRODUCT_NAME}正在執行，請關閉程式後重試。",
+    "MsgRequires64Bit": "此版本的${PRODUCT_NAME}需要64位元的Windows作業系統。",
+    "MuiDescriptionRequired": "安裝${PRODUCT_NAME}及其執行所需的檔案。",
+    "MuiDescriptionLang": "安裝${PRODUCT_NAME}的多種翻譯。",
+    "MuiDescriptionShortcuts": "安裝啟動${PRODUCT_NAME}的捷徑。",
     "MuiDescriptionDesktop": "在桌面安裝捷徑。",
     "MuiDescriptionStartMenu": "在開始功能表安裝捷徑。",
     "OptionRemoveSettings": "移除設定與個人資料",
     "SectionDesktop": "桌面",
     "SectionLanguages": "語言",
-    "SectionRequired": "應用程式檔案 (必備)",
+    "SectionRequired": "應用程式檔案（必填）",
     "SectionShortcuts": "捷徑",
     "SectionStartMenu": "開始功能表"
 }

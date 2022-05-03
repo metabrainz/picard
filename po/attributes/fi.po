@@ -536,6 +536,14 @@ msgctxt "release_packaging"
 msgid "A thinner jewel case, commonly used for CD singles."
 msgstr "Ohuempi Jewel Case, yleensä CD-singleille."
 
+#: DB:medium_format/description:128
+msgctxt "medium_format"
+msgid ""
+"A very small optical disc in a protective case that was intended for "
+"portable listening. It did not find commercial success, but a few albums "
+"were released in the format in the early 00s."
+msgstr ""
+
 #: DB:work_type/description:19
 msgctxt "work_type"
 msgid ""
@@ -2088,6 +2096,11 @@ msgstr ""
 #: DB:medium_format/name:93
 msgctxt "medium_format"
 msgid "Data DVD-R"
+msgstr ""
+
+#: DB:medium_format/name:128
+msgctxt "medium_format"
+msgid "DataPlay"
 msgstr ""
 
 #: DB:release_group_secondary_type/name:10

@@ -1,10 +1,10 @@
 {
-    "MsgAlreadyInstalled": "${PRODUCT_NAME} 已安装，必须先卸载才能安装此升级版本 ${PRODUCT_VERSION}。单击“确定”继续，或单击“取消”取消此次升级。",
-    "MsgApplicationRunning": "应用程序 ${PRODUCT_NAME} 正在运行。请关闭它，然后重试。",
-    "MsgRequires64Bit": "此版本的 ${PRODUCT_NAME} 需要64位Windows系统。",
-    "MuiDescriptionRequired": "安装 ${PRODUCT_NAME} 及其运行所需的文件。",
-    "MuiDescriptionLang": "安装 ${PRODUCT_NAME} 的不同语言版本。",
-    "MuiDescriptionShortcuts": "安装启动 ${PRODUCT_NAME} 的快捷方式。",
+    "MsgAlreadyInstalled": "${PRODUCT_NAME}经已安装，在升级至版本${PRODUCT_VERSION}前必须卸载。\n\n点击“确定”以示继续，或单击“取消”停止升级。",
+    "MsgApplicationRunning": "应用程序${PRODUCT_NAME}正在运行，请关闭程序后重试。",
+    "MsgRequires64Bit": "此版本的${PRODUCT_NAME}需要64位Windows系统。",
+    "MuiDescriptionRequired": "安装${PRODUCT_NAME}及其运行所需的文件。",
+    "MuiDescriptionLang": "安装${PRODUCT_NAME}不同语言的版本。",
+    "MuiDescriptionShortcuts": "安装启动${PRODUCT_NAME}的快捷方式。",
     "MuiDescriptionDesktop": "在桌面上创建快捷方式。",
     "MuiDescriptionStartMenu": "在“开始”菜单中创建快捷方式。",
     "OptionRemoveSettings": "删除设置和个人数据",
@@ -12,5 +12,5 @@
     "SectionLanguages": "语言",
     "SectionRequired": "程序文件（必填）",
     "SectionShortcuts": "快捷方式",
-    "SectionStartMenu": "开始菜单"
+    "SectionStartMenu": "“开始”菜单"
 }
