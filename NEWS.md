@@ -1,3 +1,56 @@
+# Version 2.8.0rc1 - 2022-05-03
+
+## Bugfixes
+- [PICARD-1570](https://tickets.metabrainz.org/browse/PICARD-1570) - Windows: Files with path length > 259 char fail to load
+- [PICARD-2292](https://tickets.metabrainz.org/browse/PICARD-2292) - When a recording is a performance of multiple works, any instrumental performance attribute erases all other lyrics languages
+- [PICARD-2368](https://tickets.metabrainz.org/browse/PICARD-2368) - Matching files compares "totaltracks" to the total no. of tracks across all mediums on the release
+- [PICARD-2398](https://tickets.metabrainz.org/browse/PICARD-2398) - "Use track relationships" doesn't work on large releases
+- [PICARD-2399](https://tickets.metabrainz.org/browse/PICARD-2399) - Crash on login if options get closed before login requests finished
+- [PICARD-2417](https://tickets.metabrainz.org/browse/PICARD-2417) - macOS: Expand/Collapse tracklist should use Left cursor to collapse
+- [PICARD-2420](https://tickets.metabrainz.org/browse/PICARD-2420) - Adding a file with existing AcoustID fingerprint and recording MBID in the tags activates submission
+- [PICARD-2423](https://tickets.metabrainz.org/browse/PICARD-2423) - Dragging album with multiple files matched to a track back to unmatched moves only half of the files
+- [PICARD-2425](https://tickets.metabrainz.org/browse/PICARD-2425) - Picard crashes when accessing WinFSP / SSHFS-Win share
+- [PICARD-2430](https://tickets.metabrainz.org/browse/PICARD-2430) - "Submit cluster as release" drops text after quotation marks
+- [PICARD-2435](https://tickets.metabrainz.org/browse/PICARD-2435) - File naming examples crash if selected target directory exceeds Windows path limit
+- [PICARD-2440](https://tickets.metabrainz.org/browse/PICARD-2440) - FLAC cover art does not preserve ID3 image type
+- [PICARD-2453](https://tickets.metabrainz.org/browse/PICARD-2453) - "Submit cluster as release" won't submit catalog number if there is no label tag
+- [PICARD-2454](https://tickets.metabrainz.org/browse/PICARD-2454) - UI blocks when loading releases with a huge amount of tracks
+- [PICARD-2457](https://tickets.metabrainz.org/browse/PICARD-2457) - "Search for similar albums" loads cover art into wrong rows
+- [PICARD-2459](https://tickets.metabrainz.org/browse/PICARD-2459) - Crash if temporary cover art files are removed from disk
+- [PICARD-2461](https://tickets.metabrainz.org/browse/PICARD-2461) - File does not show error icon after saving
+- [PICARD-2463](https://tickets.metabrainz.org/browse/PICARD-2463) - Cover art box does not handle different screen scalings on multi-screen setups
+- [PICARD-2464](https://tickets.metabrainz.org/browse/PICARD-2464) - Cover art stack on HiDPI displays rendered too small
+
+## New Features
+- [PICARD-1455](https://tickets.metabrainz.org/browse/PICARD-1455) - Use EAC / XLD log files for disc ID lookup
+- [PICARD-2410](https://tickets.metabrainz.org/browse/PICARD-2410) - Use Whipper log files for disc ID lookup
+- [PICARD-2411](https://tickets.metabrainz.org/browse/PICARD-2411) - Add option to remove broken seektable from FLAC files
+
+## Tasks
+- [PICARD-2332](https://tickets.metabrainz.org/browse/PICARD-2332) - Convert code to use scoped PyQt enums
+- [PICARD-2422](https://tickets.metabrainz.org/browse/PICARD-2422) - Remove AcousticBrainz analysis and submission features
+
+## Improvements
+- [PICARD-993](https://tickets.metabrainz.org/browse/PICARD-993) - Better error icons for file loading / saving errors
+- [PICARD-2076](https://tickets.metabrainz.org/browse/PICARD-2076) - Respect Windows 10 > 1607 removal of 260 limit on filenames
+- [PICARD-2282](https://tickets.metabrainz.org/browse/PICARD-2282) - Provide ability to import and export Picard config
+- [PICARD-2349](https://tickets.metabrainz.org/browse/PICARD-2349) - Use consistent terminology for "standalone recordings"
+- [PICARD-2369](https://tickets.metabrainz.org/browse/PICARD-2369) - Renamed "Preferred release formats" to "Preferred medium formats"
+- [PICARD-2379](https://tickets.metabrainz.org/browse/PICARD-2379) - Script options: Clarify what activating / deactivating scripts means
+- [PICARD-2380](https://tickets.metabrainz.org/browse/PICARD-2380) - Update to fpcalc 1.5.1 for Windows / macOS packages
+- [PICARD-2382](https://tickets.metabrainz.org/browse/PICARD-2382) - Make it easier to create a multi-value field value containing duplicate values
+- [PICARD-2392](https://tickets.metabrainz.org/browse/PICARD-2392) - Allow multi-value variables to contain empty strings
+- [PICARD-2396](https://tickets.metabrainz.org/browse/PICARD-2396) - Do not submit AcoustID fingerprints on significant track length mismatch
+- [PICARD-2402](https://tickets.metabrainz.org/browse/PICARD-2402) - Make 'end' argument optional for $substr() function
+- [PICARD-2405](https://tickets.metabrainz.org/browse/PICARD-2405) - Support CAA cover art type "Matrix/Runout"
+- [PICARD-2407](https://tickets.metabrainz.org/browse/PICARD-2407) - Set browser integration port in add cluster as release functionality
+- [PICARD-2409](https://tickets.metabrainz.org/browse/PICARD-2409) - Allow searching and dropping MusicBrainz disc ID URLs
+- [PICARD-2415](https://tickets.metabrainz.org/browse/PICARD-2415) - Make "Other versions" easier to access as a separate dialog
+- [PICARD-2419](https://tickets.metabrainz.org/browse/PICARD-2419) - Improve track number from filename detection to not treat e.g. UB40 at end of filename as track number
+- [PICARD-2421](https://tickets.metabrainz.org/browse/PICARD-2421) - Consider track MBID when matching files to tracks
+- [PICARD-2437](https://tickets.metabrainz.org/browse/PICARD-2437) - Tag editor dialog box should say “OK” instead of “Save"
+
+
 # Version 2.7.3 - 2022-01-13
 
 ## Bugfixes
