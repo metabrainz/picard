@@ -274,7 +274,7 @@ class File(QtCore.QObject, Item):
         if not config.setting["ignore_existing_acoustid_fingerprints"]:
             fingerprints = self.metadata.getall('acoustid_fingerprint')
             if fingerprints:
-                self.set_acoustid_fingerprint(fingerprints[0], recordingid=self.metadata['musicbrainz_recordingid'])
+                self.set_acoustid_fingerprint(fingerprints[0])
         run_file_post_load_processors(self)
         self.update()
         callback(self)
@@ -649,7 +649,7 @@ class File(QtCore.QObject, Item):
             self.parent = parent
             self.acoustid_update()
 
-    def set_acoustid_fingerprint(self, fingerprint, length=None, recordingid=None):
+    def set_acoustid_fingerprint(self, fingerprint, length=None):
         if not fingerprint:
             self.acoustid_fingerprint = None
             self.acoustid_length = 0
@@ -657,7 +657,7 @@ class File(QtCore.QObject, Item):
         elif fingerprint != self.acoustid_fingerprint:
             self.acoustid_fingerprint = fingerprint
             self.acoustid_length = length or self.metadata.length // 1000
-            self.tagger.acoustidmanager.add(self, recordingid)
+            self.tagger.acoustidmanager.add(self, None)
             self.acoustid_update()
         config = get_config()
         if config.setting['save_acoustid_fingerprints']:
