@@ -91,6 +91,7 @@ from picard.util import (
     icontheme,
     iter_files_from_objects,
     iter_unique,
+    reconnect,
     restore_method,
     thread,
     throttle,
@@ -731,13 +732,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         # TR: Keyboard shortcut for "Lookup CD"
         action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
         action.triggered.connect(self.tagger.lookup_cd)
-        action.setEnabled(False)
         self.cd_lookup_action = action
 
         self.cd_lookup_menu = QtWidgets.QMenu(_("Lookup &CD..."))
         self.cd_lookup_menu.triggered.connect(self.tagger.lookup_cd)
         if discid is None:
             log.warning("CDROM: discid library not found - Lookup CD functionality disabled")
+            self.cd_lookup_action.setEnabled(False)
         else:
             thread.run_task(get_cdrom_drives, self._update_cd_lookup_actions)
 
@@ -903,31 +904,37 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.update_cd_lookup_drives(result)
 
     def update_cd_lookup_drives(self, drives):
+        self.cd_lookup_menu.clear()
+        self.cd_lookup_action.setEnabled(discid is not None)
         if not drives:
             log.warning("CDROM: No CD-ROM drives found - Lookup CD functionality disabled")
         else:
             config = get_config()
             shortcut_drive = config.setting["cd_lookup_device"].split(",")[0] if len(drives) > 1 else ""
-            self.cd_lookup_action.setEnabled(discid is not None)
-            self.cd_lookup_menu.clear()
             for drive in drives:
                 action = self.cd_lookup_menu.addAction(drive)
                 action.setData(drive)
                 if drive == shortcut_drive:
-                    # Clear existing shortcode on main action and assign it to sub-action
-                    self.cd_lookup_action.setShortcut(QtGui.QKeySequence())
-                    action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
-        self._set_cd_lookup_from_file_actions()
+                    self._update_cd_lookup_default_action(action)
+        self._set_cd_lookup_from_file_actions(drives)
         self._update_cd_lookup_button()
 
-    def _set_cd_lookup_from_file_actions(self):
-        if len(self.cd_lookup_menu.actions()) > 0:
+    def _set_cd_lookup_from_file_actions(self, drives):
+        if self.cd_lookup_menu.actions():
             self.cd_lookup_menu.addSeparator()
         action = self.cd_lookup_menu.addAction(_('From EAC / XLD / Whipper &log file...'))
+        if not drives:
+            self._update_cd_lookup_default_action(action)
         action.setData('logfile:eac')
 
+    def _update_cd_lookup_default_action(self, action):
+        if action:
+            reconnect(self.cd_lookup_action.triggered, action.trigger)
+        else:
+            reconnect(self.cd_lookup_action.triggered, self.tagger.lookup_cd)
+
     def _update_cd_lookup_button(self):
-        if len(self.cd_lookup_menu.actions()) > 1:
+        if self.cd_lookup_menu.actions():
             button = self.toolbar.widgetForAction(self.cd_lookup_action)
             if button:
                 button.setPopupMode(QtWidgets.QToolButton.ToolButtonPopupMode.MenuButtonPopup)
