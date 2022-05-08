@@ -31,6 +31,7 @@ from picard.disc.eaclog import (
     filter_toc_entries,
     toc_from_file,
 )
+from picard.disc.utils import NotSupportedTOCError
 
 
 test_log = (
@@ -83,8 +84,16 @@ class TestTocFromFile(PicardTestCase):
         toc = toc_from_file(test_log)
         self.assertEqual((1, 8, 149323, 150, 25064, 43611, 60890, 83090, 100000, 115057, 135558), toc)
 
-    def test_toc_from_file_eac(self):
-        self._test_toc_from_file('eac.log')
+    def test_toc_from_file_eac_utf8(self):
+        self._test_toc_from_file('eac-utf8.log')
+
+    def test_toc_from_file_eac_utf16le(self):
+        self._test_toc_from_file('eac-utf16le.log')
 
     def test_toc_from_file_xld(self):
         self._test_toc_from_file('xld.log')
+
+    def test_toc_from_empty_file(self):
+        test_log = get_test_data_path('eac-empty.log')
+        with self.assertRaises(NotSupportedTOCError):
+            toc_from_file(test_log)
