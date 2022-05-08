@@ -229,3 +229,21 @@ class BrowserLookupTest(PicardTestCase):
             result = self.lookup.search_entity(entity, mbid, mbid_matched_callback=callback)
             self.assertTrue(result)
             mock_lookup.assert_called_once_with(mbid, entity, mbid_matched_callback=callback)
+
+    @patch.object(webbrowser2, 'open')
+    def test_search_entity_mbid_lookup_force_browser(self, mock_open):
+        with patch.object(self.lookup, 'mbid_lookup') as mock_lookup:
+            entity = 'artist'
+            mbid = '4836aa50-a9ae-490a-983b-cfc8efca92de'
+            callback = Mock()
+            result = self.lookup.search_entity(entity, mbid, mbid_matched_callback=callback, force_browser=True)
+            self.assertTrue(result)
+            mock_lookup.assert_not_called()
+            url = mock_open.call_args[0][0]
+            query_args = {
+                'type': entity,
+                'query': mbid,
+                'limit': '25',
+                'tport': '8000',
+            }
+            self.assert_mb_url_matches(url, '/search/textsearch', query_args)

@@ -656,7 +656,9 @@ class Tagger(QtWidgets.QApplication):
                 dialog.search(text)
                 dialog.exec_()
         else:
-            lookup.search_entity(search['entity'], text, adv, mbid_matched_callback=mbid_matched_callback)
+            lookup.search_entity(search['entity'], text, adv,
+                                 mbid_matched_callback=mbid_matched_callback,
+                                 force_browser=force_browser)
 
     def collection_lookup(self):
         """Lookup the users collections on the MusicBrainz website."""
