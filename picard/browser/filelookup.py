@@ -169,8 +169,8 @@ class FileLookup(object):
     def collection_lookup(self, userid):
         return self._build_launch('/user/%s/collections' % userid)
 
-    def search_entity(self, type_, query, adv=False, mbid_matched_callback=None):
-        if self.mbid_lookup(query, type_, mbid_matched_callback=mbid_matched_callback):
+    def search_entity(self, type_, query, adv=False, mbid_matched_callback=None, force_browser=False):
+        if not force_browser and self.mbid_lookup(query, type_, mbid_matched_callback=mbid_matched_callback):
             return True
         params = {
             'limit': QUERY_LIMIT,
