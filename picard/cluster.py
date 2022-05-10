@@ -331,11 +331,11 @@ class UnclusteredFiles(Cluster):
 
     def add_files(self, files, new_album=True):
         super().add_files(files, new_album=new_album)
-        self.tagger.window.enable_cluster(self.get_num_files() > 0)
+        self.tagger.window.enable_cluster(bool(self.files))
 
     def remove_file(self, file, new_album=True):
         super().remove_file(file, new_album=new_album)
-        self.tagger.window.enable_cluster(self.get_num_files() > 0)
+        self.tagger.window.enable_cluster(bool(self.files))
 
     def lookup_metadata(self):
         self.tagger.autotag(self.files)

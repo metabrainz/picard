@@ -921,7 +921,10 @@ class Tagger(QtWidgets.QApplication):
     def cluster(self, objs, callback=None):
         """Group files with similar metadata to 'clusters'."""
         log.debug("Clustering %r", objs)
-        files = iter_files_from_objects(objs)
+        files = (
+            f for f in iter_files_from_objects(objs)
+            if f.parent == self.unclustered_files
+        )
         try:
             file = next(files)
         except StopIteration:
