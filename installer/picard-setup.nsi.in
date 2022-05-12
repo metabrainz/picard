@@ -85,7 +85,7 @@ ReserveFile "${NSISDIR}\Plugins\x86-unicode\InstallOptions.dll"
 
 ; Language files
 ; See languages available in NSIS at
-; https://sourceforge.net/p/nsis/code/HEAD/tree/NSIS/trunk/Contrib/Language%20files/
+; https://sourceforge.net/p/nsis/code/HEAD/tree/NSIS/trunk/Contrib/Language%%20files/
 !insertmacro LOAD_LANGUAGE "English"
 ; !insertmacro LOAD_LANGUAGE "Arabic"
 !insertmacro LOAD_LANGUAGE "Albanian"
