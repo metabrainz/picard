@@ -5,14 +5,14 @@
 # Translators:
 # Hyeon-ho Shin <crossxp64@gmail.com>, 2017
 # Nikki, 2006
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-05-01 15:38+0200\n"
 "PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022\n"
 "Language-Team: Korean (http://www.transifex.com/musicbrainz/musicbrainz/language/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4232,7 +4232,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:496
 msgid "Ctrl+Shift+S"
-msgstr ""
+msgstr "Ctrl+Shift+S"
 
 #: picard/ui/mainwindow.py:502
 msgid "&Cut"
@@ -4384,7 +4384,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:673
 msgid "Ctrl+Shift+O"
-msgstr ""
+msgstr "Ctrl+Shift+O"
 
 #: picard/ui/mainwindow.py:680
 msgid "File &Browser"
@@ -4400,7 +4400,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:695
 msgid "Ctrl+Shift+M"
-msgstr ""
+msgstr "Ctrl+Shift+M"
 
 #: picard/ui/mainwindow.py:702
 msgid "&Cover Art"
@@ -4958,7 +4958,7 @@ msgstr ""
 
 #: picard/ui/scripteditor.py:589
 msgid "Ctrl+M"
-msgstr ""
+msgstr "Ctrl+M"
 
 #: picard/ui/scripteditor.py:592
 msgid "Add a &new script"
@@ -6756,7 +6756,7 @@ msgstr ""
 
 #: picard/ui/widgets/scripttextedit.py:329
 msgid "Ctrl+Shift+W"
-msgstr ""
+msgstr "Ctrl+Shift+W"
 
 #: picard/ui/widgets/scripttextedit.py:335
 msgid "Show help &tooltips"

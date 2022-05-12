@@ -20,7 +20,7 @@
 # Jahrynx <fjochaud@yahoo.fr>, 2006
 # Jean-Xavier Bardant <bardant.jean-xavier@neuf.fr>, 2019
 # Laurent Hosch <laurent.hosch@gmail.com>, 2017
-# Laurent Monin <i18n@norz.org>, 2013-2014,2017-2021
+# Laurent Monin <i18n@norz.org>, 2013-2014,2017-2022
 # Lotheric <lotheric@gmail.com>, 2012
 # Matthieu Martin, 2006
 # Matthieu Martin, 2006
@@ -40,7 +40,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-05-01 15:38+0200\n"
 "PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Laurent Monin <i18n@norz.org>, 2013-2014,2017-2021\n"
+"Last-Translator: Laurent Monin <i18n@norz.org>, 2013-2014,2017-2022\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -245,7 +245,7 @@ msgstr "Nom pour Artistes divers"
 
 #: picard/profile.py:60
 msgid "Standalone recordings name"
-msgstr ""
+msgstr "Nom des enregistrements isolés"
 
 #: picard/profile.py:61
 msgid "Translate artist names"
@@ -317,7 +317,7 @@ msgstr "Supprimer les balises APEv2 des fichiers MP3"
 
 #: picard/profile.py:83 picard/ui/ui_options_tags.py:78
 msgid "Fix missing seekpoints for FLAC files"
-msgstr ""
+msgstr "Corriger les points de recherche manquants dans les fichiers FLAC"
 
 #: picard/profile.py:84
 msgid "Preserved tags list"
@@ -589,7 +589,7 @@ msgstr "Erreur pendant la lecture du CD :\n\n%s"
 
 #: picard/tagger.py:855
 msgid "EAC / XLD / Whipper log files"
-msgstr ""
+msgstr "Fichiers de log EAC / XLD / Whipper"
 
 #: picard/script/serializer.py:352 picard/tagger.py:856
 #: picard/ui/coverartbox.py:617 picard/ui/mainwindow.py:1227
@@ -2776,7 +2776,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $replacemulti(%genre%,Idm,IDM)\n"
-msgstr ""
+msgstr "`$replacemulti(name,search,replace,separator=\"; \")`\n\nRemplace les occcurrences de `search` avec `replace` dans la variable multi-valeurs `name`.\nLes éléments vides sont automatiquement supprimés.\n\nExemple:\n\n    $replacemulti(%genre%,Idm,IDM)\n"
 
 #: picard/script/functions.py:320
 msgid ""
@@ -3836,7 +3836,7 @@ msgstr "Double-cliquer pour ouvrir dans le visualiseur externe\nFichier temporai
 msgid ""
 "Missing temporary file: %s\n"
 "Source: %s"
-msgstr ""
+msgstr "Fichier temporaire manquant : %s\nSource : %s"
 
 #: picard/ui/infodialog.py:280
 msgid "Filename:"
@@ -4060,7 +4060,7 @@ msgstr "Chargement..."
 
 #: picard/ui/itemviews.py:546
 msgid "Show &more details..."
-msgstr ""
+msgstr "&Plus de détails..."
 
 #: picard/ui/itemviews.py:599
 #, python-format
@@ -4415,11 +4415,11 @@ msgstr "Ctrl+T"
 
 #: picard/ui/mainwindow.py:672
 msgid "Show &other album versions..."
-msgstr ""
+msgstr "Autres versi&ons de l’album..."
 
 #: picard/ui/mainwindow.py:673
 msgid "Ctrl+Shift+O"
-msgstr ""
+msgstr "Ctrl+Shift+O"
 
 #: picard/ui/mainwindow.py:680
 msgid "File &Browser"
@@ -4616,7 +4616,7 @@ msgstr "&Consulter les mises à jour disponibles…"
 
 #: picard/ui/mainwindow.py:926
 msgid "From EAC / XLD / Whipper &log file..."
-msgstr ""
+msgstr "Depuis un fichier de &log EAC / XLD / Whipper..."
 
 #: picard/ui/mainwindow.py:969 picard/ui/scripteditor.py:550
 msgid "&File"
@@ -5480,7 +5480,7 @@ msgstr "Bac à sable pour les filtres de genres ou d’étiquettes folksonomique
 
 #: picard/ui/ui_options_interface.py:159
 msgid "Appearance"
-msgstr ""
+msgstr "Apparence"
 
 #: picard/ui/ui_options_interface.py:160
 msgid "Show text labels under icons"
@@ -5553,11 +5553,11 @@ msgstr "Ouvrir le dossier"
 
 #: picard/ui/ui_options_maintenance.py:88
 msgid "Load Backup"
-msgstr ""
+msgstr "Charger une sauvegarde"
 
 #: picard/ui/ui_options_maintenance.py:89
 msgid "Save Backup"
-msgstr ""
+msgstr "Faire une sauvegarde"
 
 #: picard/ui/ui_options_maintenance.py:90
 msgid "Remove selected options"
@@ -5593,7 +5593,7 @@ msgstr "Choisir…"
 
 #: picard/ui/ui_options_metadata.py:132
 msgid "Ignore artist name translation for these language scripts:"
-msgstr ""
+msgstr "Ignorer la traduction du nom d’artiste pour les systèmes d‘écriture suivants :"
 
 #: picard/ui/ui_options_metadata.py:140
 msgid "Custom Fields"
@@ -5605,7 +5605,7 @@ msgstr "Artistes divers :"
 
 #: picard/ui/ui_options_metadata.py:142
 msgid "Standalone recordings:"
-msgstr ""
+msgstr "Enregistrements isolés :"
 
 #: picard/ui/options/interface.py:172 picard/ui/ui_options_metadata.py:143
 #: picard/ui/ui_options_metadata.py:144
@@ -5729,7 +5729,7 @@ msgstr "Enlever des pays de parution préférés"
 
 #: picard/ui/ui_options_releases.py:116
 msgid "Preferred medium formats"
-msgstr ""
+msgstr "Formats de support préférés"
 
 #: picard/ui/ui_options_releases.py:117 picard/ui/ui_options_releases.py:118
 msgid "Add to preferred release formats"
@@ -5757,7 +5757,7 @@ msgstr "Renommer les fichiers à l’enregistrement"
 
 #: picard/ui/ui_options_renaming.py:171
 msgid "Allow paths longer than 259 characters"
-msgstr ""
+msgstr "Autoriser les chemins de plus de 259 caractères"
 
 #: picard/ui/ui_options_renaming.py:172 picard/ui/ui_scripteditor.py:208
 msgid "Selected file naming script:"
@@ -5765,7 +5765,7 @@ msgstr "Script de nommage de fichier sélectionné :"
 
 #: picard/ui/ui_options_renaming.py:173
 msgid "Edit file naming script..."
-msgstr ""
+msgstr "Éditer le script de nommage de fichier..."
 
 #: picard/ui/ui_options_renaming.py:174 picard/ui/ui_scripteditor.py:211
 msgid "Files will be named like this:"
@@ -5785,13 +5785,13 @@ msgstr "Recharger les exemples"
 
 #: picard/ui/ui_options_script.py:119
 msgid "Enable Tagger Script(s)"
-msgstr ""
+msgstr "Activer le(s) script(s) de balisage"
 
 #: picard/ui/ui_options_script.py:120
 msgid ""
 "Tagger scripts that have been activated below will be executed automatically"
 " for each track of a release loaded from MusicBrainz."
-msgstr ""
+msgstr "Les scripts de balisage qui ont été activés ci-dessous seront exécutés automatiquement pour chaque piste d'une parution chargée depuis MusicBrainz."
 
 #: picard/ui/ui_options_script.py:121
 msgid "Enter your tagger script here."
@@ -5799,23 +5799,23 @@ msgstr "Entrez votre script de balisage ici."
 
 #: picard/ui/ui_options_script.py:122
 msgid "Move tagger script up"
-msgstr ""
+msgstr "Déplacer le script de balisage vers le haut"
 
 #: picard/ui/ui_options_script.py:123
 msgid "Move tagger script down"
-msgstr ""
+msgstr "Déplacer le script de balisage vers le bas"
 
 #: picard/ui/ui_options_script.py:124 picard/ui/ui_options_script.py:125
 msgid "Add new tagger script"
-msgstr ""
+msgstr "Ajouter un nouveau script de balisage"
 
 #: picard/ui/ui_options_script.py:126
 msgid "Remove the selected tagger script"
-msgstr ""
+msgstr "Enlever le script de balisage sélectionné"
 
 #: picard/ui/ui_options_script.py:127
 msgid "Remove tagger script"
-msgstr ""
+msgstr "Supprimer le script de balisage"
 
 #: picard/ui/ui_options_script.py:128
 msgid "Import"
@@ -5827,7 +5827,7 @@ msgstr "Exporter"
 
 #: picard/ui/ui_options_script.py:130
 msgid "Documentation"
-msgstr ""
+msgstr "Documentation"
 
 #: picard/ui/ui_options_tags.py:71
 msgid "Write tags to files"
@@ -5984,11 +5984,11 @@ msgstr "Titre : "
 
 #: picard/ui/ui_scripteditor_details.py:91
 msgid "File Naming Script Metadata"
-msgstr ""
+msgstr "Métadonnées du script de nommage de fichier"
 
 #: picard/ui/ui_scripteditor_details.py:92
 msgid "Version number of the file naming script."
-msgstr ""
+msgstr "Numéro de version du script de nommage de fichier."
 
 #: picard/ui/ui_scripteditor_details.py:93
 msgid "Last Updated:"
@@ -5996,7 +5996,7 @@ msgstr "Dernière mise à jour :"
 
 #: picard/ui/ui_scripteditor_details.py:94
 msgid "Date and time the file naming script was last updated (UTC)."
-msgstr ""
+msgstr "Date et heure (UTC) de la dernière modification du script de nommage de fichier."
 
 #: picard/ui/ui_scripteditor_details.py:95
 msgid "Now"
@@ -6016,7 +6016,7 @@ msgstr "Licence :"
 
 #: picard/ui/ui_scripteditor_details.py:100
 msgid "License under which the file naming script is available."
-msgstr ""
+msgstr "Licence sous laquelle le script de nommage de fichier est disponible."
 
 #: picard/ui/ui_scripteditor_details.py:101
 msgid "Description:"
@@ -6025,11 +6025,11 @@ msgstr "Description :"
 #: picard/ui/ui_scripteditor_details.py:102
 msgid ""
 "Brief description of the file naming script, including any required plugins."
-msgstr ""
+msgstr "Description courte du script de nommage de fichier, greffons requis inclus."
 
 #: picard/ui/ui_scripteditor_details.py:103
 msgid "The author of the file naming script."
-msgstr ""
+msgstr "L'auteur du script de nommage de fichier."
 
 #: picard/ui/ui_scripting_documentation_dialog.py:36
 msgid "Scripting Documentation"
@@ -6375,44 +6375,44 @@ msgstr "La configuration contient actuellement %d paramètres d'options, %d sont
 
 #: picard/ui/options/maintenance.py:166
 msgid "Configuration files"
-msgstr ""
+msgstr "Fichiers de configuration"
 
 #: picard/ui/options/maintenance.py:183 picard/ui/options/maintenance.py:200
 msgid "Backup Configuration File"
-msgstr ""
+msgstr "Sauvegarder le fichier de configuration"
 
 #: picard/ui/options/maintenance.py:187
 msgid ""
 "There was a problem backing up the configuration file. Please see the logs "
 "for more details."
-msgstr ""
+msgstr "Il y a eu un problème lors de la sauvegarde du fichier de configuration. Merci de consulter les logs pour plus de détails."
 
 #: picard/ui/options/maintenance.py:215
 #, python-format
 msgid "Configuration successfully backed up to %s"
-msgstr ""
+msgstr "La configuration a été sauvée avec succès dans %s"
 
 #: picard/ui/options/maintenance.py:224
 msgid "Load Backup Configuration File"
-msgstr ""
+msgstr "Charger une sauvegarde de fichier de configuration"
 
 #: picard/ui/options/maintenance.py:228
 msgid ""
 "Loading a backup configuration file will replace the current configuration settings. A backup copy of the current file will be saved automatically.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "Charger une sauvegarde de fichier de configuration remplacera la configuration courante. Une copie de sauvegarde du fichier courant sera automatiquement réalisée.\n\nVoulez-vous continuer ?"
 
 #: picard/ui/options/maintenance.py:260
 #, python-format
 msgid "Configuration successfully loaded from %s"
-msgstr ""
+msgstr "La configuration a été chargée avec succès depuis %s"
 
 #: picard/ui/options/maintenance.py:268
 msgid ""
 "There was a problem restoring the configuration file. Please see the logs "
 "for more details."
-msgstr ""
+msgstr "Il y a eu un problème lors de la restoration du fichier de configuration. Merci de consulter les logs pour plus de détails."
 
 #: picard/ui/options/maintenance.py:294
 #: picard/ui/widgets/profilelistwidget.py:83
@@ -6610,14 +6610,14 @@ msgstr "Tout réinitialiser"
 
 #: picard/ui/options/renaming.py:209
 msgid "Windows long path support"
-msgstr ""
+msgstr "Support pour les chemins longs de Windows"
 
 #: picard/ui/options/renaming.py:210
 msgid ""
 "Enabling long paths on Windows might cause files being saved with path names"
 " exceeding the 259 character limit traditionally imposed by the Windows API."
 " Some software might not be able to properly access those files."
-msgstr ""
+msgstr "Activer les chemins longs sur Windows peut conduire à sauver des fichiers avec des chemins excédant la limite habituelle de 259 caractères imposés par l’API Windows. Certains logiciels peuvent ne pas être en mesure d‘accéder à ces fichiers."
 
 #: picard/ui/options/renaming.py:285
 msgid "The location to move files to must not be empty."

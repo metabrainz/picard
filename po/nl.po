@@ -377,7 +377,7 @@ msgstr "Slechts één afbeelding van de voorkant als los bestand opslaan"
 #: picard/profile.py:109 picard/ui/ui_options_cover.py:101
 msgid ""
 "Always use the primary image type as the file name for non-front images"
-msgstr "Altijd het eerste afbeeldingstype gebruiken als bestandsnaam voor afbeeldingen die niet van de voorkant zijn"
+msgstr "Bij afbeeldingen die niet van de voorkant zijn altijd het eerste type afbeelding als bestandsnaam gebruiken"
 
 #: picard/profile.py:110
 msgid "Cover art providers"
@@ -4390,11 +4390,11 @@ msgstr "Ctrl+T"
 
 #: picard/ui/mainwindow.py:672
 msgid "Show &other album versions..."
-msgstr ""
+msgstr "Andere versies van de uitgave zoeken"
 
 #: picard/ui/mainwindow.py:673
 msgid "Ctrl+Shift+O"
-msgstr ""
+msgstr "Ctrl+Shift+O"
 
 #: picard/ui/mainwindow.py:680
 msgid "File &Browser"
@@ -5160,7 +5160,7 @@ msgstr "Geselecteerde waarde omlaag"
 
 #: picard/ui/ui_exception_script_selector.py:105
 msgid "Exception Language Script Selector"
-msgstr ""
+msgstr "Te negeren schriften selecteren"
 
 #: picard/ui/ui_exception_script_selector.py:106
 msgid "Selected Scripts"
@@ -5168,11 +5168,11 @@ msgstr "Geselecteerde schriften"
 
 #: picard/ui/ui_exception_script_selector.py:107
 msgid "Selected language script match threshold:"
-msgstr ""
+msgstr "Drempel voor overeenkomst geselecteerd schrift:"
 
 #: picard/ui/ui_exception_script_selector.py:108
 msgid "Move selected language script up"
-msgstr ""
+msgstr "Geselecteerd schrift omhoog bewegen"
 
 #: picard/ui/ui_exception_script_selector.py:109
 msgid "Add to selected language scripts"
@@ -5528,11 +5528,11 @@ msgstr "Map openen"
 
 #: picard/ui/ui_options_maintenance.py:88
 msgid "Load Backup"
-msgstr ""
+msgstr "Back-up laden"
 
 #: picard/ui/ui_options_maintenance.py:89
 msgid "Save Backup"
-msgstr ""
+msgstr "Back-up opslaan"
 
 #: picard/ui/ui_options_maintenance.py:90
 msgid "Remove selected options"
@@ -5568,7 +5568,7 @@ msgstr "Selecteren"
 
 #: picard/ui/ui_options_metadata.py:132
 msgid "Ignore artist name translation for these language scripts:"
-msgstr ""
+msgstr "Het vertalen van artiestennamen voor deze schriften uitschakelen:"
 
 #: picard/ui/ui_options_metadata.py:140
 msgid "Custom Fields"
@@ -5704,7 +5704,7 @@ msgstr "Van landen met voorrang verwijderen"
 
 #: picard/ui/ui_options_releases.py:116
 msgid "Preferred medium formats"
-msgstr ""
+msgstr "Uitgaven met deze media voorrang geven"
 
 #: picard/ui/ui_options_releases.py:117 picard/ui/ui_options_releases.py:118
 msgid "Add to preferred release formats"
@@ -5732,7 +5732,7 @@ msgstr "Bestanden bij het opslaan een andere naam geven"
 
 #: picard/ui/ui_options_renaming.py:171
 msgid "Allow paths longer than 259 characters"
-msgstr ""
+msgstr "Bestandspaden langer dan 259 tekens toestaan"
 
 #: picard/ui/ui_options_renaming.py:172 picard/ui/ui_scripteditor.py:208
 msgid "Selected file naming script:"

@@ -23,6 +23,7 @@
 # michael zhou <forsaken628@gmail.com>, 2020
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021
 # RedHotHeat <gbonner@iol.ie>, 2012
+# S B <koalaleaves@protonmail.com>, 2022
 # Shenhua Zhao, 2021
 # taxigps <taxigps@sina.com>, 2018
 # riotism, 2017-2018
@@ -46,7 +47,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-05-01 15:38+0200\n"
 "PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Antares, 2022\n"
+"Last-Translator: S B <koalaleaves@protonmail.com>, 2022\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3839,7 +3840,7 @@ msgstr "双击可在外部查看器中打开\n临时文件: %s\n来源: %s"
 msgid ""
 "Missing temporary file: %s\n"
 "Source: %s"
-msgstr ""
+msgstr "找不到暂时性文件：%s\n来源：%s"
 
 #: picard/ui/infodialog.py:280
 msgid "Filename:"
@@ -4060,7 +4061,7 @@ msgstr "正在载入..."
 
 #: picard/ui/itemviews.py:546
 msgid "Show &more details..."
-msgstr ""
+msgstr "显示&详情……"
 
 #: picard/ui/itemviews.py:599
 #, python-format
@@ -4414,11 +4415,11 @@ msgstr "Ctrl+T"
 
 #: picard/ui/mainwindow.py:672
 msgid "Show &other album versions..."
-msgstr ""
+msgstr "显示&其他专辑版本……"
 
 #: picard/ui/mainwindow.py:673
 msgid "Ctrl+Shift+O"
-msgstr ""
+msgstr "Ctrl+Shift+O"
 
 #: picard/ui/mainwindow.py:680
 msgid "File &Browser"
@@ -5549,11 +5550,11 @@ msgstr "打开文件夹"
 
 #: picard/ui/ui_options_maintenance.py:88
 msgid "Load Backup"
-msgstr ""
+msgstr "载入备份"
 
 #: picard/ui/ui_options_maintenance.py:89
 msgid "Save Backup"
-msgstr ""
+msgstr "存储备份"
 
 #: picard/ui/ui_options_maintenance.py:90
 msgid "Remove selected options"
@@ -5753,7 +5754,7 @@ msgstr "保存时重命名文件"
 
 #: picard/ui/ui_options_renaming.py:171
 msgid "Allow paths longer than 259 characters"
-msgstr ""
+msgstr "允许长于259个字符的路径"
 
 #: picard/ui/ui_options_renaming.py:172 picard/ui/ui_scripteditor.py:208
 msgid "Selected file naming script:"
@@ -6371,44 +6372,44 @@ msgstr "配置文件含有%d个设置项，%d个未使用。"
 
 #: picard/ui/options/maintenance.py:166
 msgid "Configuration files"
-msgstr ""
+msgstr "设置文件"
 
 #: picard/ui/options/maintenance.py:183 picard/ui/options/maintenance.py:200
 msgid "Backup Configuration File"
-msgstr ""
+msgstr "备份设置文件"
 
 #: picard/ui/options/maintenance.py:187
 msgid ""
 "There was a problem backing up the configuration file. Please see the logs "
 "for more details."
-msgstr ""
+msgstr "备份设置文件时出现了问题，详情已记录在日志中。"
 
 #: picard/ui/options/maintenance.py:215
 #, python-format
 msgid "Configuration successfully backed up to %s"
-msgstr ""
+msgstr "设置已备份至%s"
 
 #: picard/ui/options/maintenance.py:224
 msgid "Load Backup Configuration File"
-msgstr ""
+msgstr "载入设置备份文件"
 
 #: picard/ui/options/maintenance.py:228
 msgid ""
 "Loading a backup configuration file will replace the current configuration settings. A backup copy of the current file will be saved automatically.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "载入设置备份文件将会取代现有的设置，但现有的文件亦会自动备份存档。\n\n你是否要继续？"
 
 #: picard/ui/options/maintenance.py:260
 #, python-format
 msgid "Configuration successfully loaded from %s"
-msgstr ""
+msgstr "设置已从%s载入"
 
 #: picard/ui/options/maintenance.py:268
 msgid ""
 "There was a problem restoring the configuration file. Please see the logs "
 "for more details."
-msgstr ""
+msgstr "恢复设置文件时出现了问题，详情已记录在日志中。"
 
 #: picard/ui/options/maintenance.py:294
 #: picard/ui/widgets/profilelistwidget.py:83
@@ -6606,14 +6607,14 @@ msgstr "全部重置"
 
 #: picard/ui/options/renaming.py:209
 msgid "Windows long path support"
-msgstr ""
+msgstr "Windows长路径支援"
 
 #: picard/ui/options/renaming.py:210
 msgid ""
 "Enabling long paths on Windows might cause files being saved with path names"
 " exceeding the 259 character limit traditionally imposed by the Windows API."
 " Some software might not be able to properly access those files."
-msgstr ""
+msgstr "让Windows使用长路径之后，文件存储时可能会用上长于259字符的路径。由于此路径长度超出Windows API的传统限制，因此某些软件可能无法读取该些文件。"
 
 #: picard/ui/options/renaming.py:285
 msgid "The location to move files to must not be empty."

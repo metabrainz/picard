@@ -20,7 +20,7 @@
 # 65f2af3cfa184c075942a0418b98d2de_d688669, 2014
 # Mateus, 2020
 # Mateus, 2020
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022
 # vitorgatti <vitorgatti@yahoo.com.br>, 2012
 # Willer Portugal <willer_tj@hotmail.com>, 2019
 # Willer Silva <programacaowp@gmail.com>, 2019
@@ -30,7 +30,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-05-01 15:38+0200\n"
 "PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Gabriel Ferreira <gabrielcarvfer@gmail.com>, 2021\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/musicbrainz/musicbrainz/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4409,7 +4409,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:673
 msgid "Ctrl+Shift+O"
-msgstr ""
+msgstr "Ctrl+Shift+O"
 
 #: picard/ui/mainwindow.py:680
 msgid "File &Browser"
