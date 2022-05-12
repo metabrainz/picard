@@ -83,7 +83,6 @@ from picard.util import (
     find_best_match,
     format_time,
     mbid_validate,
-    process_events_iter,
 )
 from picard.util.imagelist import (
     add_metadata_images,
@@ -636,16 +635,8 @@ class Album(DataObject, Item):
             remove_metadata_images(self, [file])
 
     @staticmethod
-    def _match_files(files, tracks, unmatched_files, threshold=0, use_events_iter=False):
+    def _match_files(files, tracks, unmatched_files, threshold=0):
         """Match files to tracks on this album, based on metadata similarity or recordingid."""
-        if use_events_iter:
-            #  TODO: get rid of this completely at some point
-            events_iter = process_events_iter
-        else:
-            def _events_iter(seq):
-                return seq
-            events_iter = _events_iter
-
         tracks_cache = defaultdict(lambda: None)
 
         def build_tracks_cache():
@@ -696,7 +687,7 @@ class Album(DataObject, Item):
 
             # try to match by similarity
             def similarity_candidates():
-                for track in events_iter(tracks):
+                for track in tracks:
                     similarity = track.metadata.compare(file.orig_metadata)
                     if similarity >= threshold:
                         yield SimMatchAlbum(similarity=similarity, track=track)
