@@ -1,3 +1,15 @@
+# Version 2.8.0rc2 - 2022-05-12
+
+## Bugfixes
+
+- [PICARD-2465](https://tickets.metabrainz.org/browse/PICARD-2465) - RecursionError after dragging folder from file browser
+- [PICARD-2470](https://tickets.metabrainz.org/browse/PICARD-2470) - CD Lookup error: utf-8 codec can't decode byte 0xff in position 0: invalid start byte
+- [PICARD-2472](https://tickets.metabrainz.org/browse/PICARD-2472) - Cluster action applies to already matched albums
+- [PICARD-2473](https://tickets.metabrainz.org/browse/PICARD-2473) - CD disc ID from log files is unavailable on Windows if there is no CD drive
+- [PICARD-2474](https://tickets.metabrainz.org/browse/PICARD-2474) - Revert PICARD-2420: Adding a file with existing AcoustID fingerprint and recording MBID in the tags activates submission
+- [PICARD-2475](https://tickets.metabrainz.org/browse/PICARD-2475) - If search dialog query contains an MBID "Lookup in browser" will not open in browser
+
+
 # Version 2.8.0rc1 - 2022-05-03
 
 ## Bugfixes
