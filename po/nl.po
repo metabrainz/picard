@@ -220,7 +220,7 @@ msgstr "Naam voor diverse artiesten"
 
 #: picard/profile.py:60
 msgid "Standalone recordings name"
-msgstr ""
+msgstr "Naam voor losse opnames"
 
 #: picard/profile.py:61
 msgid "Translate artist names"
@@ -3811,7 +3811,7 @@ msgstr "Dubbelklikken om in een extern programma te openen\nTijdelijk bestand: %
 msgid ""
 "Missing temporary file: %s\n"
 "Source: %s"
-msgstr ""
+msgstr "Ontbrekend tijdelijk bestand: %s\nBron: %s"
 
 #: picard/ui/infodialog.py:280
 msgid "Filename:"
@@ -4035,7 +4035,7 @@ msgstr "Laden …"
 
 #: picard/ui/itemviews.py:546
 msgid "Show &more details..."
-msgstr ""
+msgstr "&Meer details"
 
 #: picard/ui/itemviews.py:599
 #, python-format
@@ -5176,19 +5176,19 @@ msgstr "Geselecteerd schrift omhoog bewegen"
 
 #: picard/ui/ui_exception_script_selector.py:109
 msgid "Add to selected language scripts"
-msgstr ""
+msgstr "Aan geselecteerde schriften toevoegen"
 
 #: picard/ui/ui_exception_script_selector.py:110
 msgid "Remove selected language script"
-msgstr ""
+msgstr "Van geselecteerde schriften verwijderen"
 
 #: picard/ui/ui_exception_script_selector.py:111
 msgid "Move selected language script down"
-msgstr ""
+msgstr "Geselecteerde schrift omlaag bewegen"
 
 #: picard/ui/ui_exception_script_selector.py:112
 msgid "Available Language Scripts"
-msgstr ""
+msgstr "Beschikbare schriften"
 
 #: picard/ui/ui_infodialog.py:82
 msgid "&Error"
@@ -6350,44 +6350,44 @@ msgstr "Het configuratiebestand bevat nu %d optie-instellingen, waarvan er %d ni
 
 #: picard/ui/options/maintenance.py:166
 msgid "Configuration files"
-msgstr ""
+msgstr "Configuratiebestanden"
 
 #: picard/ui/options/maintenance.py:183 picard/ui/options/maintenance.py:200
 msgid "Backup Configuration File"
-msgstr ""
+msgstr "Back-up van configuratiebestand maken"
 
 #: picard/ui/options/maintenance.py:187
 msgid ""
 "There was a problem backing up the configuration file. Please see the logs "
 "for more details."
-msgstr ""
+msgstr "Er was een probleem met het maken van de back-up van je configuratiebestand. Zie het logboek voor meer informatie."
 
 #: picard/ui/options/maintenance.py:215
 #, python-format
 msgid "Configuration successfully backed up to %s"
-msgstr ""
+msgstr "Configuratie met succes in %s opgeslagen"
 
 #: picard/ui/options/maintenance.py:224
 msgid "Load Backup Configuration File"
-msgstr ""
+msgstr "Back-up van configuratiebestand laden"
 
 #: picard/ui/options/maintenance.py:228
 msgid ""
 "Loading a backup configuration file will replace the current configuration settings. A backup copy of the current file will be saved automatically.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "Als je een configuratiebestand uit een back-up laadt, wordt de huidige configuratie overschreven. Er wordt automatisch een back-up van het huidige bestand gemaakt.\n\nWil je verdergaan?"
 
 #: picard/ui/options/maintenance.py:260
 #, python-format
 msgid "Configuration successfully loaded from %s"
-msgstr ""
+msgstr "Configuratie met succes uit %s geladen"
 
 #: picard/ui/options/maintenance.py:268
 msgid ""
 "There was a problem restoring the configuration file. Please see the logs "
 "for more details."
-msgstr ""
+msgstr "Er was een probleem met het herstellen van je configuratiebestand. Zie het logboek voor meer informatie."
 
 #: picard/ui/options/maintenance.py:294
 #: picard/ui/widgets/profilelistwidget.py:83
@@ -6585,14 +6585,14 @@ msgstr "Alles terugzetten"
 
 #: picard/ui/options/renaming.py:209
 msgid "Windows long path support"
-msgstr ""
+msgstr "Windows-ondersteuning voor lange bestandspaden"
 
 #: picard/ui/options/renaming.py:210
 msgid ""
 "Enabling long paths on Windows might cause files being saved with path names"
 " exceeding the 259 character limit traditionally imposed by the Windows API."
 " Some software might not be able to properly access those files."
-msgstr ""
+msgstr "Als je lange bestandspaden op Windows inschakelt, kunnen bestanden met een langer pad dan de traditionele limiet van 259 tekens worden opgeslagen. Sommige software kan deze bestanden mogelijk niet goed openen."
 
 #: picard/ui/options/renaming.py:285
 msgid "The location to move files to must not be empty."

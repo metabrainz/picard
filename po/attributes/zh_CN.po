@@ -205,6 +205,11 @@ msgid ""
 "ballet dance production."
 msgstr "芭蕾舞曲是与芭蕾编舞一起用于芭蕾舞表演的音乐。"
 
+#: DB:release_packaging/description:19
+msgctxt "release_packaging"
+msgid "A box usually containing multiple discs as part of a boxed set."
+msgstr ""
+
 #: DB:work_type/description:3
 msgctxt "work_type"
 msgid ""
@@ -256,6 +261,13 @@ msgid ""
 "A grouping of related but different instruments, like the different violin-"
 "like instruments"
 msgstr "指由一些不同但相关的乐器组成的乐器统称，就像弦乐乐器是提琴类乐器的统称一样。"
+
+#: DB:release_packaging/description:55
+msgctxt "release_packaging"
+msgid ""
+"A large cardboard box often used until the mid-1990s to sell CDs in North "
+"America, so that they would fit existing vinyl racks in stores."
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -872,6 +884,11 @@ msgstr "由单一艺术家或协作团体举办的独立音乐会，通常在主
 msgctxt "release_group_secondary_type"
 msgid "An interview release contains an interview, generally with an artist."
 msgstr "采访专辑包含一段采访，一般含有一位艺术家。"
+
+#: DB:release_packaging/description:54
+msgctxt "release_packaging"
+msgid "An often decorated metal tin containing one or more CDs."
+msgstr ""
 
 #: DB:work_type/description:10
 msgctxt "work_type"
@@ -4556,6 +4573,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Longa"
 msgstr "Longa"
 
+#: DB:release_packaging/name:55
+msgctxt "release_packaging"
+msgid "Longbox"
+msgstr ""
+
 #: DB:work_attribute_type/name:49
 msgctxt "work_attribute_type"
 msgid "MACP ID"
@@ -4780,6 +4802,11 @@ msgstr "Mehter"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mersiye"
 msgstr "Mersiye"
+
+#: DB:release_packaging/name:54
+msgctxt "release_packaging"
+msgid "Metal Tin"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:745
 msgctxt "work_attribute_type_allowed_value"

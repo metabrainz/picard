@@ -1,11 +1,11 @@
 # 
 # Translators:
-# জয় সরকার, 2022
+# জয় সরকার <joysriram.sarkar.56@gmail.com>, 2022
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2012-05-24 19:20+0000\n"
-"Last-Translator: জয় সরকার, 2022\n"
+"Last-Translator: জয় সরকার <joysriram.sarkar.56@gmail.com>, 2022\n"
 "Language-Team: Bengali (http://www.transifex.com/musicbrainz/musicbrainz/language/bn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -296,57 +296,57 @@ msgstr "কুরাকাও"
 #. iso.code:CY
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:55
 msgid "Cyprus"
-msgstr ""
+msgstr "সাইপ্রাস"
 
 #. iso.code:CZ
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:56
 msgid "Czech Republic"
-msgstr ""
+msgstr "চেক প্রজাতন্ত্র "
 
 #. iso.code:XC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:245
 msgid "Czechoslovakia"
-msgstr ""
+msgstr "চেকোস্লোভাকিয়া"
 
 #. iso.code:CI
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:52
 msgid "Côte d'Ivoire"
-msgstr ""
+msgstr "কোত দিভোয়ার"
 
 #. iso.code:CD
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:236
 msgid "Democratic Republic of the Congo"
-msgstr ""
+msgstr "গণপ্রজাতন্ত্রী কঙ্গো "
 
 #. iso.code:DK
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:57
 msgid "Denmark"
-msgstr ""
+msgstr "ডেনমার্ক "
 
 #. iso.code:DJ
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:58
 msgid "Djibouti"
-msgstr ""
+msgstr "জিবুতি"
 
 #. iso.code:DM
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:59
 msgid "Dominica"
-msgstr ""
+msgstr "ডোমিনিকা"
 
 #. iso.code:DO
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:60
 msgid "Dominican Republic"
-msgstr ""
+msgstr "ডোমিনিকান প্রজাতন্ত্র "
 
 #. iso.code:XG
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:244
 msgid "East Germany"
-msgstr ""
+msgstr "পূর্ব জার্মানি "
 
 #. iso.code:EC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:62
 msgid "Ecuador"
-msgstr ""
+msgstr "একুয়াডোর "
 
 #. iso.code:EG
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:63

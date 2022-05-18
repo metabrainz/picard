@@ -199,6 +199,11 @@ msgid ""
 "ballet dance production."
 msgstr "バレエとは、バレエダンスの演出のために、振り付けとともに使用されるように作曲された楽曲のことです。"
 
+#: DB:release_packaging/description:19
+msgctxt "release_packaging"
+msgid "A box usually containing multiple discs as part of a boxed set."
+msgstr ""
+
 #: DB:work_type/description:3
 msgctxt "work_type"
 msgid ""
@@ -250,6 +255,13 @@ msgid ""
 "A grouping of related but different instruments, like the different violin-"
 "like instruments"
 msgstr "別々のバイオリン風楽器のように、関連しているが異なる楽器のグループ"
+
+#: DB:release_packaging/description:55
+msgctxt "release_packaging"
+msgid ""
+"A large cardboard box often used until the mid-1990s to sell CDs in North "
+"America, so that they would fit existing vinyl racks in stores."
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -865,6 +877,11 @@ msgstr "単一のアーティストまたは多くの場合メインアクトの
 #: DB:release_group_secondary_type/description:4
 msgctxt "release_group_secondary_type"
 msgid "An interview release contains an interview, generally with an artist."
+msgstr ""
+
+#: DB:release_packaging/description:54
+msgctxt "release_packaging"
+msgid "An often decorated metal tin containing one or more CDs."
 msgstr ""
 
 #: DB:work_type/description:10
@@ -4550,6 +4567,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Longa"
 msgstr ""
 
+#: DB:release_packaging/name:55
+msgctxt "release_packaging"
+msgid "Longbox"
+msgstr ""
+
 #: DB:work_attribute_type/name:49
 msgctxt "work_attribute_type"
 msgid "MACP ID"
@@ -4773,6 +4795,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:642
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mersiye"
+msgstr ""
+
+#: DB:release_packaging/name:54
+msgctxt "release_packaging"
+msgid "Metal Tin"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:745

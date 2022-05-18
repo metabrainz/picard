@@ -201,6 +201,11 @@ msgid ""
 "ballet dance production."
 msgstr "Un ballet est une musique composée pour être utilisée, avec une chorégraphie, dans une production de danse, le ballet."
 
+#: DB:release_packaging/description:19
+msgctxt "release_packaging"
+msgid "A box usually containing multiple discs as part of a boxed set."
+msgstr ""
+
 #: DB:work_type/description:3
 msgctxt "work_type"
 msgid ""
@@ -252,6 +257,13 @@ msgid ""
 "A grouping of related but different instruments, like the different violin-"
 "like instruments"
 msgstr "Un groupe d’instruments par similarité, par exemple la famille des violons"
+
+#: DB:release_packaging/description:55
+msgctxt "release_packaging"
+msgid ""
+"A large cardboard box often used until the mid-1990s to sell CDs in North "
+"America, so that they would fit existing vinyl racks in stores."
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -867,6 +879,11 @@ msgstr "Un concert individuel par un seul artiste ou en collaboration, souvent a
 #: DB:release_group_secondary_type/description:4
 msgctxt "release_group_secondary_type"
 msgid "An interview release contains an interview, generally with an artist."
+msgstr ""
+
+#: DB:release_packaging/description:54
+msgctxt "release_packaging"
+msgid "An often decorated metal tin containing one or more CDs."
 msgstr ""
 
 #: DB:work_type/description:10
@@ -4552,6 +4569,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Longa"
 msgstr "Longa"
 
+#: DB:release_packaging/name:55
+msgctxt "release_packaging"
+msgid "Longbox"
+msgstr ""
+
 #: DB:work_attribute_type/name:49
 msgctxt "work_attribute_type"
 msgid "MACP ID"
@@ -4776,6 +4798,11 @@ msgstr "Mehter"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mersiye"
 msgstr "Mersiye"
+
+#: DB:release_packaging/name:54
+msgctxt "release_packaging"
+msgid "Metal Tin"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:745
 msgctxt "work_attribute_type_allowed_value"

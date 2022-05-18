@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2012-05-24 18:52+0000\n"
-"Last-Translator: Luca Salini, 2016-2022\n"
+"Last-Translator: Luca Salini, 2022\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -185,6 +185,11 @@ msgid ""
 "ballet dance production."
 msgstr "Un balletto è la musica composta per essere utilizzata, insieme a una coreografia, per la produzione di un balletto di danza."
 
+#: DB:release_packaging/description:19
+msgctxt "release_packaging"
+msgid "A box usually containing multiple discs as part of a boxed set."
+msgstr "Una scatola solitamente contenente più dischi che compongono un box set."
+
 #: DB:work_type/description:3
 msgctxt "work_type"
 msgid ""
@@ -236,6 +241,13 @@ msgid ""
 "A grouping of related but different instruments, like the different violin-"
 "like instruments"
 msgstr "Un raggruppamento di strumenti imparentati ma distinti, come i diversi strumenti della famiglia del violino"
+
+#: DB:release_packaging/description:55
+msgctxt "release_packaging"
+msgid ""
+"A large cardboard box often used until the mid-1990s to sell CDs in North "
+"America, so that they would fit existing vinyl racks in stores."
+msgstr "Una grande scatola in cartone utilizzata con frequenza fino alla metà degli anni 1990 in Nord America per vendere CD, in modo che potessero entrare negli scaffali per vinili già presenti nei negozi."
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -852,6 +864,11 @@ msgstr "Un concerto individuale di un singolo artista o collaborazione di artist
 msgctxt "release_group_secondary_type"
 msgid "An interview release contains an interview, generally with an artist."
 msgstr "Una pubblicazione di tipo intervista contiene un'intervista, di solito con un artista."
+
+#: DB:release_packaging/description:54
+msgctxt "release_packaging"
+msgid "An often decorated metal tin containing one or more CDs."
+msgstr "Una scatola in metallo, spesso decorata, che contiene uno o più CD."
 
 #: DB:work_type/description:10
 msgctxt "work_type"
@@ -4536,6 +4553,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Longa"
 msgstr "Longa"
 
+#: DB:release_packaging/name:55
+msgctxt "release_packaging"
+msgid "Longbox"
+msgstr "Longbox"
+
 #: DB:work_attribute_type/name:49
 msgctxt "work_attribute_type"
 msgid "MACP ID"
@@ -4760,6 +4782,11 @@ msgstr "Mehter"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mersiye"
 msgstr "Mersiye"
+
+#: DB:release_packaging/name:54
+msgctxt "release_packaging"
+msgid "Metal Tin"
+msgstr "Scatola in metallo"
 
 #: DB:work_attribute_type_allowed_value/value:745
 msgctxt "work_attribute_type_allowed_value"
