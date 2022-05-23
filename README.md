@@ -3,9 +3,9 @@
 ![Github Actions Status](https://github.com/metabrainz/picard/workflows/Run%20tests/badge.svg)
 [![Codacy Grade](https://img.shields.io/codacy/grade/4dcabf0a13ed4b27b3a381ce9ba96ecc/master.svg?style=flat-square&label=Codacy)](https://app.codacy.com/gh/metabrainz/picard)
 
-[MusicBrainz Picard](http://picard.musicbrainz.org) is a cross-platform (Linux, macOS, Windows) audio tagging application. It is the official [MusicBrainz](http://musicbrainz.org) tagger.
+[MusicBrainz Picard](https://picard.musicbrainz.org) is a cross-platform (Linux, macOS, Windows) audio tagging application. It is the official [MusicBrainz](https://musicbrainz.org) tagger.
 
-Picard supports the majority of audio file formats, is capable of using audio fingerprints ([AcoustIDs](http://musicbrainz.org/doc/AcoustID)), performing CD lookups and [disc ID](http://musicbrainz.org/doc/Disc_ID) submissions, and it has excellent Unicode support. Additionally, there are several plugins available that extend Picard's features.
+Picard supports the majority of audio file formats, is capable of using audio fingerprints ([AcoustIDs](https://musicbrainz.org/doc/AcoustID)), performing CD lookups and [disc ID](https://musicbrainz.org/doc/Disc_ID) submissions, and it has excellent Unicode support. Additionally, there are several plugins available that extend Picard's features.
 
 When tagging files, Picard uses an album-oriented approach. This approach allows it to utilize the MusicBrainz data as effectively as possible and correctly tag your music. For more information, [see the illustrated quick start guide to tagging](https://picard.musicbrainz.org/quick-start/) and the [documentation](https://picard-docs.musicbrainz.org/).
 
@@ -14,11 +14,11 @@ When tagging files, Picard uses an album-oriented approach. This approach allows
 
 - **Multiple formats:** Picard supports all popular music formats,
   including MP3, FLAC, OGG, M4A, WMA, WAV, and more.
-- **AcoustID:** Picard uses [AcoustID](http://musicbrainz.org/doc/AcoustID)
+- **AcoustID:** Picard uses [AcoustID](https://musicbrainz.org/doc/AcoustID)
   audio fingerprints, allowing files to be identified by the actual
   music, even if they have no metadata.
 - **Comprehensive database:** Picard uses the open and
-  community-maintained [MusicBrainz database](http://musicbrainz.org)
+  community-maintained [MusicBrainz database](https://musicbrainz.org)
   to provide accurate information about millions of music releases.
 - **CD lookups:** Picard can lookup entire music CDs with a click.
 - **Plugin support:** If you need a particular feature, you can choose
@@ -36,7 +36,7 @@ When tagging files, Picard uses an album-oriented approach. This approach allows
 
 ## Installation
 
-Binary downloads are available on the [Picard download page](http://picard.musicbrainz.org/downloads/).
+Binary downloads are available on the [Picard download page](https://picard.musicbrainz.org/downloads/).
 
 [INSTALL.md has instructions on building this codebase.](INSTALL.md)
 
