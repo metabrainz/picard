@@ -22,7 +22,8 @@ When tagging files, Picard uses an album-oriented approach. This approach allows
   to provide accurate information about millions of music releases.
 - **CD lookups:** Picard can lookup entire music CDs with a click.
 - **Plugin support:** If you need a particular feature, you can choose
-  from a selection of available plugins or write your own.
+  from a selection of [available plugins](https://picard.musicbrainz.org/plugins/) or
+  [write your own](https://picard-docs.musicbrainz.org/en/extending/plugins.html).
 - **Scripting:** A flexible and powerful, yet easy to learn, scripting language
   allows you to exactly specify how your music files will be named and how the
   tags will look like.
