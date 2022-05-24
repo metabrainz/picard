@@ -1517,3 +1517,71 @@ def func_cleanmulti(parser, multi):
     values = [str(value) for value in parser.context.getall(name) if value or value == 0]
     parser.context[multi] = values
     return ""
+
+
+@script_function(documentation=N_(
+    """$textlt(x, y)
+
+Returns true if `x` is less than `y` using a text comparison.
+
+_Since Picard 3.0_"""
+))
+def func_textlt(parser, x, y):
+    return "1" if x < y else ""
+
+
+@script_function(documentation=N_(
+    """$textlte(x, y)
+
+Returns true if `x` is less than or equal to `y` using a text comparison.
+
+_Since Picard 3.0_"""
+))
+def func_textlte(parser, x, y):
+    return "" if x > y else "1"
+
+
+@script_function(documentation=N_(
+    """$textgt(x, y)
+
+Returns true if `x` is greater than `y` using a text comparison.
+
+_Since Picard 3.0_"""
+))
+def func_textgt(parser, x, y):
+    return "1" if x > y else ""
+
+
+@script_function(documentation=N_(
+    """$textgte(x, y)
+
+Returns true if `x` is greater than or equal to `y` using a text comparison.
+
+_Since Picard 3.0_"""
+))
+def func_textgte(parser, x, y):
+    return "" if x < y else "1"
+
+
+@script_function(documentation=N_(
+    """$textmin(x,...)
+
+Returns the minimum value using a text comparison.
+Can be used with an arbitrary number of arguments.
+
+_Since Picard 3.0_"""
+))
+def func_textmin(parser, x, *args):
+    return min((*args, x))
+
+
+@script_function(documentation=N_(
+    """$textmax(x,...)
+
+Returns the maximum value using a text comparison.
+Can be used with an arbitrary number of arguments.
+
+_Since Picard 3.0_"""
+))
+def func_textmax(parser, x, *args):
+    return max((*args, x))

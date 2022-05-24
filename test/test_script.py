@@ -1867,3 +1867,233 @@ class ScriptParserTest(PicardTestCase):
             self.parser.eval("$cleanmulti()")
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$cleanmulti(foo,)")
+
+    def test_cmd_textlt(self):
+        context = Metadata()
+
+        # Test date type arguments
+        context["foo"] = "2020-01-01"
+        context["bar"] = "2020-01-02"
+        context["baz"] = "2020-02"
+        self.assertScriptResultEquals("$textlt(%foo%,%bar%)", "1", context)
+        self.assertScriptResultEquals("$textlt(%bar%,%foo%)", "", context)
+        self.assertScriptResultEquals("$textlt(%foo%,%baz%)", "1", context)
+        self.assertScriptResultEquals("$textlt(%baz%,%foo%)", "", context)
+        self.assertScriptResultEquals("$textlt(%foo%,%foo%)", "", context)
+
+        # Test text type arguments
+        context["foo"] = "abc"
+        context["bar"] = "abcd"
+        context["baz"] = "ac"
+        self.assertScriptResultEquals("$textlt(%foo%,%bar%)", "1", context)
+        self.assertScriptResultEquals("$textlt(%bar%,%foo%)", "", context)
+        self.assertScriptResultEquals("$textlt(%foo%,%baz%)", "1", context)
+        self.assertScriptResultEquals("$textlt(%baz%,%foo%)", "", context)
+        self.assertScriptResultEquals("$textlt(%foo%,%foo%)", "", context)
+
+        # Test with empty arguments
+        self.assertScriptResultEquals("$textlt(,a)", "1", context)
+        self.assertScriptResultEquals("$textlt(a,)", "", context)
+        self.assertScriptResultEquals("$textlt(,)", "", context)
+
+        # Test case sensitive arguments
+        self.assertScriptResultEquals("$textlt(A,a)", "1", context)
+        self.assertScriptResultEquals("$textlt(a,A)", "", context)
+
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$textlt: Wrong number of arguments for \$textlt: Expected exactly 2, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$textlt()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$textlt(foo)")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$textlt(foo,bar,)")
+
+    def test_cmd_textlte(self):
+        context = Metadata()
+
+        # Test date type arguments
+        context["foo"] = "2020-01-01"
+        context["bar"] = "2020-01-02"
+        context["baz"] = "2020-02"
+        self.assertScriptResultEquals("$textlte(%foo%,%bar%)", "1", context)
+        self.assertScriptResultEquals("$textlte(%bar%,%foo%)", "", context)
+        self.assertScriptResultEquals("$textlte(%foo%,%baz%)", "1", context)
+        self.assertScriptResultEquals("$textlte(%baz%,%foo%)", "", context)
+        self.assertScriptResultEquals("$textlte(%foo%,%foo%)", "1", context)
+
+        # Test text type arguments
+        context["foo"] = "abc"
+        context["bar"] = "abcd"
+        context["baz"] = "ac"
+        self.assertScriptResultEquals("$textlte(%foo%,%bar%)", "1", context)
+        self.assertScriptResultEquals("$textlte(%bar%,%foo%)", "", context)
+        self.assertScriptResultEquals("$textlte(%foo%,%baz%)", "1", context)
+        self.assertScriptResultEquals("$textlte(%baz%,%foo%)", "", context)
+        self.assertScriptResultEquals("$textlte(%foo%,%foo%)", "1", context)
+
+        # Test with empty arguments
+        self.assertScriptResultEquals("$textlte(,a)", "1", context)
+        self.assertScriptResultEquals("$textlte(a,)", "", context)
+        self.assertScriptResultEquals("$textlte(,)", "1", context)
+
+        # Test case sensitive arguments
+        self.assertScriptResultEquals("$textlte(A,a)", "1", context)
+        self.assertScriptResultEquals("$textlte(a,A)", "", context)
+
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$textlte: Wrong number of arguments for \$textlte: Expected exactly 2, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$textlte()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$textlte(foo)")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$textlte(foo,bar,)")
+
+    def test_cmd_textgt(self):
+        context = Metadata()
+
+        # Test date type arguments
+        context["foo"] = "2020-01-01"
+        context["bar"] = "2020-01-02"
+        context["baz"] = "2020-02"
+        self.assertScriptResultEquals("$textgt(%foo%,%bar%)", "", context)
+        self.assertScriptResultEquals("$textgt(%bar%,%foo%)", "1", context)
+        self.assertScriptResultEquals("$textgt(%foo%,%baz%)", "", context)
+        self.assertScriptResultEquals("$textgt(%baz%,%foo%)", "1", context)
+        self.assertScriptResultEquals("$textgt(%foo%,%foo%)", "", context)
+
+        # Test text type arguments
+        context["foo"] = "abc"
+        context["bar"] = "abcd"
+        context["baz"] = "ac"
+        self.assertScriptResultEquals("$textgt(%foo%,%bar%)", "", context)
+        self.assertScriptResultEquals("$textgt(%bar%,%foo%)", "1", context)
+        self.assertScriptResultEquals("$textgt(%foo%,%baz%)", "", context)
+        self.assertScriptResultEquals("$textgt(%baz%,%foo%)", "1", context)
+        self.assertScriptResultEquals("$textgt(%foo%,%foo%)", "", context)
+
+        # Test with empty arguments
+        self.assertScriptResultEquals("$textgt(,a)", "", context)
+        self.assertScriptResultEquals("$textgt(a,)", "1", context)
+        self.assertScriptResultEquals("$textgt(,)", "", context)
+
+        # Test case sensitive arguments
+        self.assertScriptResultEquals("$textgt(A,a)", "", context)
+        self.assertScriptResultEquals("$textgt(a,A)", "1", context)
+
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$textgt: Wrong number of arguments for \$textgt: Expected exactly 2, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$textgt()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$textgt(foo)")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$textgt(foo,bar,)")
+
+    def test_cmd_textgte(self):
+        context = Metadata()
+
+        # Test date type arguments
+        context["foo"] = "2020-01-01"
+        context["bar"] = "2020-01-02"
+        context["baz"] = "2020-02"
+        self.assertScriptResultEquals("$textgte(%foo%,%bar%)", "", context)
+        self.assertScriptResultEquals("$textgte(%bar%,%foo%)", "1", context)
+        self.assertScriptResultEquals("$textgte(%foo%,%baz%)", "", context)
+        self.assertScriptResultEquals("$textgte(%baz%,%foo%)", "1", context)
+        self.assertScriptResultEquals("$textgte(%foo%,%foo%)", "1", context)
+
+        # Test text type arguments
+        context["foo"] = "abc"
+        context["bar"] = "abcd"
+        context["baz"] = "ac"
+        self.assertScriptResultEquals("$textgte(%foo%,%bar%)", "", context)
+        self.assertScriptResultEquals("$textgte(%bar%,%foo%)", "1", context)
+        self.assertScriptResultEquals("$textgte(%foo%,%baz%)", "", context)
+        self.assertScriptResultEquals("$textgte(%baz%,%foo%)", "1", context)
+        self.assertScriptResultEquals("$textgte(%foo%,%foo%)", "1", context)
+
+        # Test with empty arguments
+        self.assertScriptResultEquals("$textgte(,a)", "", context)
+        self.assertScriptResultEquals("$textgte(a,)", "1", context)
+        self.assertScriptResultEquals("$textgte(,)", "1", context)
+
+        # Test case sensitive arguments
+        self.assertScriptResultEquals("$textgte(A,a)", "", context)
+        self.assertScriptResultEquals("$textgte(a,A)", "1", context)
+
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$textgte: Wrong number of arguments for \$textgte: Expected exactly 2, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$textgte()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$textgte(foo)")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$textgte(foo,bar,)")
+
+    def test_cmd_textmin(self):
+        context = Metadata()
+
+        # Test date type arguments
+        context["foo"] = "2020-01-01"
+        context["bar"] = "2020-01-02"
+        context["baz"] = "2020-02"
+        self.assertScriptResultEquals("$textmin(%foo%)", "2020-01-01", context)
+        self.assertScriptResultEquals("$textmin(%foo%,%bar%,%baz%)", "2020-01-01", context)
+        self.assertScriptResultEquals("$textmin(%baz%,%bar%,%foo%)", "2020-01-01", context)
+
+        # Test text type arguments
+        context["foo"] = "abc"
+        context["bar"] = "abcd"
+        context["baz"] = "ac"
+        self.assertScriptResultEquals("$textmin(%foo%)", "abc", context)
+        self.assertScriptResultEquals("$textmin(%foo%,%bar%,%baz%)", "abc", context)
+        self.assertScriptResultEquals("$textmin(%baz%,%bar%,%foo%)", "abc", context)
+
+        # Test with empty arguments
+        self.assertScriptResultEquals("$textmin(,a)", "", context)
+        self.assertScriptResultEquals("$textmin(a,)", "", context)
+        self.assertScriptResultEquals("$textmin(,)", "", context)
+
+        # Test case sensitive arguments
+        self.assertScriptResultEquals("$textmin(A,a)", "A", context)
+        self.assertScriptResultEquals("$textmin(a,B)", "B", context)
+
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$textmin: Wrong number of arguments for \$textmin: Expected at least 1, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$textmin()")
+
+    def test_cmd_textmax(self):
+        context = Metadata()
+
+        # Test date type arguments
+        context["foo"] = "2020-01-01"
+        context["bar"] = "2020-01-02"
+        context["baz"] = "2020-02"
+        self.assertScriptResultEquals("$textmax(%foo%)", "2020-01-01", context)
+        self.assertScriptResultEquals("$textmax(%foo%,%bar%,%baz%)", "2020-02", context)
+        self.assertScriptResultEquals("$textmax(%baz%,%bar%,%foo%)", "2020-02", context)
+
+        # Test text type arguments
+        context["foo"] = "abc"
+        context["bar"] = "abcd"
+        context["baz"] = "ac"
+        self.assertScriptResultEquals("$textmax(%foo%)", "abc", context)
+        self.assertScriptResultEquals("$textmax(%foo%,%bar%,%baz%)", "ac", context)
+        self.assertScriptResultEquals("$textmax(%baz%,%bar%,%foo%)", "ac", context)
+
+        # Test with empty arguments
+        self.assertScriptResultEquals("$textmax(,a)", "a", context)
+        self.assertScriptResultEquals("$textmax(a,)", "a", context)
+        self.assertScriptResultEquals("$textmax(,)", "", context)
+
+        # Test case sensitive arguments
+        self.assertScriptResultEquals("$textmax(A,a)", "a", context)
+        self.assertScriptResultEquals("$textmax(a,B)", "a", context)
+
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$textmax: Wrong number of arguments for \$textmax: Expected at least 1, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$textmax()")
