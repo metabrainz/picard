@@ -168,7 +168,7 @@ msgid ""
 "</ul>\n"
 "\n"
 "<p>There are other variations of the single called a \"split single\" where songs by two different artists are released on the one disc, typically vinyl.</p>"
-msgstr "<p>单曲的定义因发行市场而异。</p>\n\n<ul>\n<li>在北美市场，单曲一般包括一首主打歌以及一些额外音轨或者主音轨重混作品；单曲依据主打歌命名；单曲主要针对电台销售，用于促进专辑销量。</li>\n<li>英国市场和北美市场类似(澳大利亚和欧陆亦然)，但是单曲通常以双碟片组合形式发行，每张碟片单独销售。有时也有类似于北美式单曲的长版单曲(通常整合了双碟片版本的所有曲目)，称为“单曲大碟”。(有时单曲大碟比收录该单曲的专辑还长！)</li>\n<li>日本市场明显更以单曲为主导。决定因素在于单曲长度及其售价。至1995年位置，单曲一般使用mini-CD格式，即明显较小，直径为8cm的CD。1995年前后8cm单曲淡出市场，现在标准12cm单曲更常见；一般1995年之前单曲的再发行会采用12cm格式，即使当时是以8cm格式发布的。日本单曲通常含有歌曲的器乐版，也有像英国一样含有重混版本的单曲大碟。单曲大碟有时比EP的音轨数多，但都是相同的2-3首歌的不同版本，因此仍属于单曲。</li>\n</ul>\n\n<p>单曲的其他变种包括同一碟内含有两个以上艺术家歌曲的“合作单曲”，典型上是黑胶。</p>"
+msgstr "<p>单曲的定义因发行市场而异。</p>\n\n<ul>\n<li>在北美市场，单曲一般包括一首主打歌以及一些额外音轨或者主音轨重混作品；单曲依据主打歌命名；单曲主要针对电台销售，用于促进专辑销量。</li>\n<li>英国市场和北美市场类似(澳大利亚和欧陆亦然)，但是单曲通常以双碟片组合形式发行，每张碟片单独销售。有时也有类似于北美式单曲的长版单曲(通常整合了双碟片版本的所有曲目)，称为“单曲大碟”。(有时单曲大碟比收录该单曲的专辑还长！)</li>\n<li>日本市场明显更以单曲为主导。决定因素在于单曲长度及其售价。至1995年为止，单曲一般使用mini-CD格式，即明显较小，直径为8cm的CD。1995年前后8cm单曲淡出市场，现在标准12cm单曲更常见；一般1995年之前单曲的再发行会采用12cm格式，即使当时是以8cm格式发布的。日本单曲通常含有歌曲的器乐版，也有像英国一样含有重混版本的单曲大碟。单曲大碟有时比EP的音轨数多，但都是相同的2-3首歌的不同版本，因此仍属于单曲。</li>\n</ul>\n\n<p>单曲的其他变种包括同一碟内含有两个以上艺术家歌曲的“合作单曲”，典型上是黑胶。</p>"
 
 #: DB:medium_format/description:95
 msgctxt "medium_format"
@@ -176,7 +176,7 @@ msgid ""
 "A \"digital collectible\" device, mostly used for k-pop music, that is "
 "connected to a phone via Bluetooth or headphone jack and unlocks the release"
 " for listening in a companion app for a limited period of time."
-msgstr ""
+msgstr "“数字典藏”设备，多用于韩国流行音乐，可使用蓝牙或者耳机插头与手机连接以解锁限时在配套APP中收听专辑的权利。"
 
 #: DB:release_group_secondary_type/description:8
 msgctxt "release_group_secondary_type"
@@ -208,7 +208,7 @@ msgstr "芭蕾舞曲是与芭蕾编舞一起用于芭蕾舞表演的音乐。"
 #: DB:release_packaging/description:19
 msgctxt "release_packaging"
 msgid "A box usually containing multiple discs as part of a boxed set."
-msgstr ""
+msgstr "通常装有作为盒装集一部分的多张碟片的盒子。"
 
 #: DB:work_type/description:3
 msgctxt "work_type"
@@ -224,7 +224,7 @@ msgid ""
 "itself directly, but provides a code to download it digitally. Often bundled"
 " with physical releases but sometimes sold as a standalone item (especially "
 "in Asia)."
-msgstr ""
+msgstr "不直接记录音乐，但载有数字版下载代码的卡片(或其他实体介质)。常与实体专辑打包出售，但有时也会单独出售(尤其在亚洲)。"
 
 #: DB:work_type/description:4
 msgctxt "work_type"
@@ -267,7 +267,7 @@ msgctxt "release_packaging"
 msgid ""
 "A large cardboard box often used until the mid-1990s to sell CDs in North "
 "America, so that they would fit existing vinyl racks in stores."
-msgstr ""
+msgstr "至1990年代中期为止在北美常用于出售CD的大纸箱，可放入已有的黑胶唱片架。"
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -373,7 +373,7 @@ msgid ""
 "A planned official release that was cancelled before being released, but for"
 " which enough info is known to still confidently list it (e.g. it was "
 "available for preorder)."
-msgstr ""
+msgstr "在正式发行前取消发行，但收录证据充足(如曾开放预购)的专辑。"
 
 #: DB:work_type/description:28
 msgctxt "work_type"
@@ -397,7 +397,7 @@ msgid ""
 "by the artist and/or their record company after being released, whether to "
 "replace it with a new version with some changes or to just retire it "
 "altogether (e.g. because of legal issues)."
-msgstr ""
+msgstr "被艺术家和/或唱片公司在发行后中止流通的正式专辑，不管是改为新版本还是彻底绝版(如因为法律诉讼问题)。"
 
 #: DB:release_group_secondary_type/description:10
 msgctxt "release_group_secondary_type"
@@ -450,7 +450,7 @@ msgstr "一系列艺术家。"
 #: DB:series_type/description:15
 msgctxt "series_type"
 msgid "A series of award ceremonies, usually one per year."
-msgstr ""
+msgstr "一系列颁奖典礼，通常为一年一度。"
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -571,7 +571,7 @@ msgid ""
 "A very small optical disc in a protective case that was intended for "
 "portable listening. It did not find commercial success, but a few albums "
 "were released in the format in the early 00s."
-msgstr ""
+msgstr "原本用于移动聆听的带保护壳的超小型光碟。商业上不成功，但是00年代早期少数专辑以此格式发行。"
 
 #: DB:work_type/description:19
 msgctxt "work_type"
@@ -857,7 +857,7 @@ msgid ""
 "An award ceremony is an event which is focused on the granting of prizes, "
 "but often includes musical performances in between the awarding of said "
 "prizes, especially for musical awards."
-msgstr ""
+msgstr "颁奖典礼是主要进行颁奖流程的活动，但在奖项之间常包括音乐表演，尤其是音乐类奖项。"
 
 #: DB:release_group_primary_type/description:12
 msgctxt "release_group_primary_type"
@@ -888,7 +888,7 @@ msgstr "采访专辑包含一段采访，一般含有一位艺术家。"
 #: DB:release_packaging/description:54
 msgctxt "release_packaging"
 msgid "An often decorated metal tin containing one or more CDs."
-msgstr ""
+msgstr "装有一张或多张CD的金属罐，通常带有装饰。"
 
 #: DB:work_type/description:10
 msgctxt "work_type"
@@ -1003,7 +1003,7 @@ msgstr "Arazbarek"
 #: DB:editor_collection_type/name:7
 msgctxt "collection_type"
 msgid "Area collection"
-msgstr ""
+msgstr "地区收藏"
 
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
@@ -1023,7 +1023,7 @@ msgstr "艺术家奖项"
 #: DB:editor_collection_type/name:8
 msgctxt "collection_type"
 msgid "Artist collection"
-msgstr ""
+msgstr "艺术家收藏"
 
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
@@ -1078,12 +1078,12 @@ msgstr "自动"
 #: DB:event_type/name:7
 msgctxt "event_type"
 msgid "Award ceremony"
-msgstr ""
+msgstr "颁奖典礼"
 
 #: DB:series_type/name:15
 msgctxt "series_type"
 msgid "Award ceremony"
-msgstr ""
+msgstr "颁奖典礼"
 
 #: DB:work_attribute_type_allowed_value/value:694
 msgctxt "work_attribute_type_allowed_value"
@@ -2030,17 +2030,17 @@ msgstr "DVD"
 #: DB:medium_format/name:18
 msgctxt "medium_format"
 msgid "DVD-Audio"
-msgstr "DVD 音频"
+msgstr "DVD-Audio"
 
 #: DB:medium_format/name:92
 msgctxt "medium_format"
 msgid "DVD-R Video"
-msgstr ""
+msgstr "DVD-R Video"
 
 #: DB:medium_format/name:19
 msgctxt "medium_format"
 msgid "DVD-Video"
-msgstr "DVD 视频"
+msgstr "DVD-Video"
 
 #: DB:medium_format/name:47
 msgctxt "medium_format"
@@ -2055,12 +2055,12 @@ msgstr "DVDplus （CD 面）"
 #: DB:medium_format/name:68
 msgctxt "medium_format"
 msgid "DVDplus (DVD-Audio side)"
-msgstr "DVDplus （DVD 音频面）"
+msgstr "DVDplus （DVD-Audio面）"
 
 #: DB:medium_format/name:69
 msgctxt "medium_format"
 msgid "DVDplus (DVD-Video side)"
-msgstr "DVDplus （DVD 视频面）"
+msgstr "DVDplus （DVD-Video面）"
 
 #: DB:work_attribute_type_allowed_value/value:343
 msgctxt "work_attribute_type_allowed_value"
@@ -2125,17 +2125,17 @@ msgstr "数据 CD"
 #: DB:medium_format/name:94
 msgctxt "medium_format"
 msgid "Data DVD"
-msgstr ""
+msgstr "数据 DVD"
 
 #: DB:medium_format/name:93
 msgctxt "medium_format"
 msgid "Data DVD-R"
-msgstr ""
+msgstr "数据 DVD-R"
 
 #: DB:medium_format/name:128
 msgctxt "medium_format"
 msgid "DataPlay"
-msgstr ""
+msgstr "DataPlay"
 
 #: DB:release_group_secondary_type/name:10
 msgctxt "release_group_secondary_type"
@@ -2331,7 +2331,7 @@ msgstr "Dolap"
 #: DB:medium_format/name:46
 msgctxt "medium_format"
 msgid "Download Card"
-msgstr ""
+msgstr "下载卡片"
 
 #: DB:medium_format/name:4
 msgctxt "medium_format"
@@ -2572,7 +2572,7 @@ msgstr "Evcara"
 #: DB:editor_collection_type/name:4
 msgctxt "collection_type"
 msgid "Event collection"
-msgstr ""
+msgstr "活动收藏"
 
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
@@ -3832,7 +3832,7 @@ msgstr "室内竞技场"
 #: DB:editor_collection_type/name:9
 msgctxt "collection_type"
 msgid "Instrument collection"
-msgstr ""
+msgstr "乐器收藏"
 
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
@@ -4290,7 +4290,7 @@ msgstr "Khēmtāl"
 #: DB:medium_format/name:95
 msgctxt "medium_format"
 msgid "KiT Album"
-msgstr ""
+msgstr "K版专辑"
 
 #: DB:work_attribute_type_allowed_value/value:630
 msgctxt "work_attribute_type_allowed_value"
@@ -4466,7 +4466,7 @@ msgstr "Kōmal riṣabh asāvēri"
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
 msgid "Label collection"
-msgstr ""
+msgstr "厂牌收藏"
 
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
@@ -4576,7 +4576,7 @@ msgstr "Longa"
 #: DB:release_packaging/name:55
 msgctxt "release_packaging"
 msgid "Longbox"
-msgstr ""
+msgstr "长盒"
 
 #: DB:work_attribute_type/name:49
 msgctxt "work_attribute_type"
@@ -4806,7 +4806,7 @@ msgstr "Mersiye"
 #: DB:release_packaging/name:54
 msgctxt "release_packaging"
 msgid "Metal Tin"
-msgstr ""
+msgstr "金属罐"
 
 #: DB:work_attribute_type_allowed_value/value:745
 msgctxt "work_attribute_type_allowed_value"
@@ -5446,7 +5446,7 @@ msgstr "Nişabureyn"
 #: DB:gender/name:5
 msgctxt "gender"
 msgid "Non-binary"
-msgstr ""
+msgstr "非二进制"
 
 #: DB:release_group_secondary_type/description:3
 msgctxt "release_group_secondary_type"
@@ -5752,7 +5752,7 @@ msgstr "自动钢琴打孔纸卷"
 #: DB:editor_collection_type/name:11
 msgctxt "collection_type"
 msgid "Place collection"
-msgstr ""
+msgstr "地点收藏"
 
 #: DB:place_alias_type/name:1
 msgctxt "alias_type"
@@ -6020,7 +6020,7 @@ msgstr "原始/未编辑"
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
 msgid "Recording collection"
-msgstr ""
+msgstr "录音收藏"
 
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
@@ -6055,12 +6055,12 @@ msgstr "Rekb-i Zavil"
 #: DB:editor_collection_type/name:1
 msgctxt "collection_type"
 msgid "Release collection"
-msgstr ""
+msgstr "专辑收藏"
 
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
 msgid "Release group collection"
-msgstr ""
+msgstr "专辑组收藏"
 
 #: DB:release_group_alias_type/name:1
 msgctxt "alias_type"
@@ -6095,7 +6095,7 @@ msgstr "Remel"
 #: DB:release_group_secondary_type/name:7
 msgctxt "release_group_secondary_type"
 msgid "Remix"
-msgstr "混音"
+msgstr "重混音"
 
 #: DB:work_attribute_type_allowed_value/value:516
 msgctxt "work_attribute_type_allowed_value"
@@ -6567,7 +6567,7 @@ msgstr "Serbest"
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
 msgid "Series collection"
-msgstr ""
+msgstr "系列收藏"
 
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
@@ -7622,12 +7622,12 @@ msgstr "愿望单"
 #: DB:release_status/name:5
 msgctxt "release_status"
 msgid "Withdrawn"
-msgstr ""
+msgstr "已取消"
 
 #: DB:editor_collection_type/name:15
 msgctxt "collection_type"
 msgid "Work collection"
-msgstr ""
+msgstr "作品收藏"
 
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"

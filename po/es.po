@@ -35,7 +35,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 "Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: picard/album.py:144
 msgid "Unmatched Files"
@@ -84,14 +84,16 @@ msgstr "Archivos desagrupados"
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
 msgstr[0] "Añadida %(count)i publicación a la colección \"%(name)s\""
-msgstr[1] "Añadidas %(count)i publicaciones a la colección \"%(name)s\""
+msgstr[1] ""
+msgstr[2] "Añadidas %(count)i publicaciones a la colección \"%(name)s\""
 
 #: picard/collection.py:86
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
 msgstr[0] "Eliminada %(count)i publicación de la colección \"%(name)s\""
-msgstr[1] "Eliminadas %(count)i publicaciones de la colección \"%(name)s\""
+msgstr[1] ""
+msgstr[2] "Eliminadas %(count)i publicaciones de la colección \"%(name)s\""
 
 #: picard/collection.py:97
 #, python-format
@@ -3673,7 +3675,8 @@ msgstr "Actualizar la lista"
 msgid "%s (%i release)"
 msgid_plural "%s (%i releases)"
 msgstr[0] "%s (%i publicación)"
-msgstr[1] "%s (%i publicaciones)"
+msgstr[1] ""
+msgstr[2] "%s (%i publicaciones)"
 
 #: picard/ui/colors.py:37
 msgid "Errored entity"
@@ -3901,7 +3904,8 @@ msgstr "&Información"
 msgid "%i file in this track"
 msgid_plural "%i files in this track"
 msgstr[0] "%i fichero en esta pista"
-msgstr[1] "%i ficheros en esta pista"
+msgstr[1] ""
+msgstr[2] "%i ficheros en esta pista"
 
 #: picard/ui/infodialog.py:409
 msgid "Cluster Info"
@@ -3933,6 +3937,7 @@ msgid "%i image"
 msgid_plural "%i images"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: picard/ui/item.py:139
 #, python-format
@@ -3940,6 +3945,7 @@ msgid "%i image not in all tracks"
 msgid_plural "%i different images among tracks"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: picard/ui/itemviews.py:160 picard/util/tags.py:120
 msgid "Title"
@@ -4209,7 +4215,8 @@ msgid ""
 msgid_plural ""
 "There are %d unsaved files. Closing Picard will lose all unsaved changes."
 msgstr[0] "Hay %d archivo no guardado. Si cierra Picard perderá todos los cambios sin guardar."
-msgstr[1] "Hay %d archivos no guardados. Si cierras Picard perderás todos los cambios sin guardar."
+msgstr[1] ""
+msgstr[2] "Hay %d archivos no guardados. Si cierras Picard perderás todos los cambios sin guardar."
 
 #: picard/ui/mainwindow.py:347
 msgid "&Quit Picard"
@@ -4733,14 +4740,16 @@ msgstr ""
 msgid "(different across %d item)"
 msgid_plural "(different across %d items)"
 msgstr[0] "(varía en %d elemento)"
-msgstr[1] "(varía en %d elementos)"
+msgstr[1] ""
+msgstr[2] "(varía en %d elementos)"
 
 #: picard/ui/metadatabox.py:120
 #, python-format
 msgid "(missing from %d item)"
 msgid_plural "(missing from %d items)"
 msgstr[0] "(falta en %d elemento)"
-msgstr[1] "(falta en %d elementos)"
+msgstr[1] ""
+msgstr[2] "(falta en %d elementos)"
 
 #: picard/ui/metadatabox.py:218
 msgid "metadata view"
@@ -4798,7 +4807,8 @@ msgstr "Remover de la lista 'Etiquetas Preservadas'"
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] ""
-msgstr[1] "Usar valor original"
+msgstr[1] ""
+msgstr[2] "Usar valor original"
 
 #: picard/ui/metadatabox.py:439
 msgid "&Copy"

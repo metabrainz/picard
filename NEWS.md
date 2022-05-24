@@ -1,3 +1,10 @@
+# Version 2.8 - 2022-05-24
+
+## Tasks
+
+- [PICARD-2484](https://tickets.metabrainz.org/browse/PICARD-2484) - Update bundled PyJWT to 2.4.0 for Windows and macOS builds
+
+
 # Version 2.8.0rc2 - 2022-05-12
 
 ## Bugfixes
@@ -53,7 +60,7 @@
 - [PICARD-2382](https://tickets.metabrainz.org/browse/PICARD-2382) - Make it easier to create a multi-value field value containing duplicate values
 - [PICARD-2392](https://tickets.metabrainz.org/browse/PICARD-2392) - Allow multi-value variables to contain empty strings
 - [PICARD-2396](https://tickets.metabrainz.org/browse/PICARD-2396) - Do not submit AcoustID fingerprints on significant track length mismatch
-- [PICARD-2402](https://tickets.metabrainz.org/browse/PICARD-2402) - Make 'end' argument optional for $substr() function
+- [PICARD-2402](https://tickets.metabrainz.org/browse/PICARD-2402) - Make `end` argument optional for `$substr()` function
 - [PICARD-2405](https://tickets.metabrainz.org/browse/PICARD-2405) - Support CAA cover art type "Matrix/Runout"
 - [PICARD-2407](https://tickets.metabrainz.org/browse/PICARD-2407) - Set browser integration port in add cluster as release functionality
 - [PICARD-2409](https://tickets.metabrainz.org/browse/PICARD-2409) - Allow searching and dropping MusicBrainz disc ID URLs
