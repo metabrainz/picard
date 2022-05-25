@@ -681,11 +681,14 @@ def func_ne(parser, x, y):
 
 
 @script_function(documentation=N_(
-    """`$lt(x,y)`
+    """`$lt(x,y[,text])`
 
-Returns true if `x` is less than `y`."""
+Returns true if `x` is less than `y`.
+Values `x` and `y` are treated as integers unless `text` is set."""
 ))
-def func_lt(parser, x, y):
+def func_lt(parser, x, y, text=None):
+    if text:
+        return "1" if x < y else ""
     try:
         if int(x) < int(y):
             return "1"
@@ -695,11 +698,14 @@ def func_lt(parser, x, y):
 
 
 @script_function(documentation=N_(
-    """`$lte(x,y)`
+    """`$lte(x,y[,text])`
 
-Returns true if `x` is less than or equal to `y`."""
+Returns true if `x` is less than or equal to `y`.
+Values `x` and `y` are treated as integers unless `text` is set."""
 ))
-def func_lte(parser, x, y):
+def func_lte(parser, x, y, text=None):
+    if text:
+        return "" if x > y else "1"
     try:
         if int(x) <= int(y):
             return "1"
@@ -709,11 +715,14 @@ def func_lte(parser, x, y):
 
 
 @script_function(documentation=N_(
-    """`$gt(x,y)`
+    """`$gt(x,y[,text])`
 
-Returns true if `x` is greater than `y`."""
+Returns true if `x` is greater than `y`.
+Values `x` and `y` are treated as integers unless `text` is set."""
 ))
-def func_gt(parser, x, y):
+def func_gt(parser, x, y, text=None):
+    if text:
+        return "1" if x > y else ""
     try:
         if int(x) > int(y):
             return "1"
@@ -723,11 +732,14 @@ def func_gt(parser, x, y):
 
 
 @script_function(documentation=N_(
-    """`$gte(x,y)`
+    """`$gte(x,y[,text])`
 
-Returns true if `x` is greater than or equal to `y`."""
+Returns true if `x` is greater than or equal to `y`.
+Values `x` and `y` are treated as integers unless `text` is set."""
 ))
-def func_gte(parser, x, y):
+def func_gte(parser, x, y, text=None):
+    if text:
+        return "" if x < y else "1"
     try:
         if int(x) >= int(y):
             return "1"
@@ -1517,50 +1529,6 @@ def func_cleanmulti(parser, multi):
     values = [str(value) for value in parser.context.getall(name) if value or value == 0]
     parser.context[multi] = values
     return ""
-
-
-@script_function(documentation=N_(
-    """$textlt(x, y)
-
-Returns true if `x` is less than `y` using a text comparison.
-
-_Since Picard 3.0_"""
-))
-def func_textlt(parser, x, y):
-    return "1" if x < y else ""
-
-
-@script_function(documentation=N_(
-    """$textlte(x, y)
-
-Returns true if `x` is less than or equal to `y` using a text comparison.
-
-_Since Picard 3.0_"""
-))
-def func_textlte(parser, x, y):
-    return "" if x > y else "1"
-
-
-@script_function(documentation=N_(
-    """$textgt(x, y)
-
-Returns true if `x` is greater than `y` using a text comparison.
-
-_Since Picard 3.0_"""
-))
-def func_textgt(parser, x, y):
-    return "1" if x > y else ""
-
-
-@script_function(documentation=N_(
-    """$textgte(x, y)
-
-Returns true if `x` is greater than or equal to `y` using a text comparison.
-
-_Since Picard 3.0_"""
-))
-def func_textgte(parser, x, y):
-    return "" if x < y else "1"
 
 
 @script_function(documentation=N_(
