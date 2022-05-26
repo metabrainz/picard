@@ -658,6 +658,12 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$gt(A,a,text)", "", context)
         self.assertScriptResultEquals("$gt(a,A,text)", "1", context)
 
+        # Test case insensitive arguments ("nocase" processing)
+        self.assertScriptResultEquals("$gt(a,B,nocase)", "", context)
+        self.assertScriptResultEquals("$gt(A,b,nocase)", "", context)
+        self.assertScriptResultEquals("$gt(B,a,nocase)", "1", context)
+        self.assertScriptResultEquals("$gt(b,A,nocase)", "1", context)
+
         # Test unknown processing type
         self.assertScriptResultEquals("$gt(2,1,unknown)", "", context)
 
@@ -741,6 +747,14 @@ class ScriptParserTest(PicardTestCase):
         # Test case sensitive arguments ("text" processing)
         self.assertScriptResultEquals("$gte(A,a,text)", "", context)
         self.assertScriptResultEquals("$gte(a,A,text)", "1", context)
+
+        # Test case insensitive arguments ("nocase" processing)
+        self.assertScriptResultEquals("$gte(a,B,nocase)", "", context)
+        self.assertScriptResultEquals("$gte(A,b,nocase)", "", context)
+        self.assertScriptResultEquals("$gte(B,a,nocase)", "1", context)
+        self.assertScriptResultEquals("$gte(b,A,nocase)", "1", context)
+        self.assertScriptResultEquals("$gte(a,A,nocase)", "1", context)
+        self.assertScriptResultEquals("$gte(A,a,nocase)", "1", context)
 
         # Test unknown processing type
         self.assertScriptResultEquals("$gte(2,1,unknown)", "", context)
@@ -827,6 +841,12 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$lt(A,a,text)", "1", context)
         self.assertScriptResultEquals("$lt(a,A,text)", "", context)
 
+        # Test case insensitive arguments ("nocase" processing)
+        self.assertScriptResultEquals("$lt(a,B,nocase)", "1", context)
+        self.assertScriptResultEquals("$lt(A,b,nocase)", "1", context)
+        self.assertScriptResultEquals("$lt(B,a,nocase)", "", context)
+        self.assertScriptResultEquals("$lt(b,A,nocase)", "", context)
+
         # Test unknown processing type
         self.assertScriptResultEquals("$lt(1,2,unknown)", "", context)
 
@@ -907,6 +927,14 @@ class ScriptParserTest(PicardTestCase):
         # Test case sensitive arguments ("text" processing)
         self.assertScriptResultEquals("$lte(A,a,text)", "1", context)
         self.assertScriptResultEquals("$lte(a,A,text)", "", context)
+
+        # Test case insensitive arguments ("nocase" processing)
+        self.assertScriptResultEquals("$lte(a,B,nocase)", "1", context)
+        self.assertScriptResultEquals("$lte(A,b,nocase)", "1", context)
+        self.assertScriptResultEquals("$lte(B,a,nocase)", "", context)
+        self.assertScriptResultEquals("$lte(b,A,nocase)", "", context)
+        self.assertScriptResultEquals("$lte(a,A,nocase)", "1", context)
+        self.assertScriptResultEquals("$lte(A,a,nocase)", "1", context)
 
         # Test unknown processing type
         self.assertScriptResultEquals("$lte(1,2,unknown)", "", context)

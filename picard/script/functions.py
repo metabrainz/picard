@@ -684,9 +684,9 @@ def func_ne(parser, x, y):
     """`$lt(x,y[,type])`
 
 Returns true if `x` is less than `y` using the comparison specified in `type`.
-Possible values of `type` are "int" (integer), "float" (floating point) and
-"text" (case-sensitive text), with "int" used as the default comparison method
-if `type` is not specified."""
+Possible values of `type` are "int" (integer), "float" (floating point), "text"
+(case-sensitive text) and "nocase" (case-insensitive text), with "int" used as
+the default comparison method if `type` is not specified."""
 ))
 def func_lt(parser, x, y, _type=None):
     if not _type:
@@ -694,6 +694,8 @@ def func_lt(parser, x, y, _type=None):
     _typer = None
     if _type == 'text':
         return "1" if x < y else ""
+    elif _type == 'nocase':
+        return "1" if x.lower() < y.lower() else ""
     elif _type == 'float':
         _typer = float
     elif _type == 'int':
@@ -711,9 +713,9 @@ def func_lt(parser, x, y, _type=None):
     """`$lte(x,y[,type])`
 
 Returns true if `x` is less than or equal to `y` using the comparison specified in `type`.
-Possible values of `type` are "int" (integer), "float" (floating point) and
-"text" (case-sensitive text), with "int" used as the default comparison method
-if `type` is not specified."""
+Possible values of `type` are "int" (integer), "float" (floating point), "text"
+(case-sensitive text) and "nocase" (case-insensitive text), with "int" used as
+the default comparison method if `type` is not specified."""
 ))
 def func_lte(parser, x, y, _type=None):
     if not _type:
@@ -721,6 +723,8 @@ def func_lte(parser, x, y, _type=None):
     _typer = None
     if _type == 'text':
         return "" if x > y else "1"
+    elif _type == 'nocase':
+        return "" if x.lower() > y.lower() else "1"
     elif _type == 'float':
         _typer = float
     elif _type == 'int':
@@ -738,9 +742,9 @@ def func_lte(parser, x, y, _type=None):
     """`$gt(x,y[,type])`
 
 Returns true if `x` is greater than `y` using the comparison specified in `type`.
-Possible values of `type` are "int" (integer), "float" (floating point) and
-"text" (case-sensitive text), with "int" used as the default comparison method
-if `type` is not specified."""
+Possible values of `type` are "int" (integer), "float" (floating point), "text"
+(case-sensitive text) and "nocase" (case-insensitive text), with "int" used as
+the default comparison method if `type` is not specified."""
 ))
 def func_gt(parser, x, y, _type=None):
     if not _type:
@@ -748,6 +752,8 @@ def func_gt(parser, x, y, _type=None):
     _typer = None
     if _type == 'text':
         return "1" if x > y else ""
+    elif _type == 'nocase':
+        return "1" if x.lower() > y.lower() else ""
     elif _type == 'float':
         _typer = float
     elif _type == 'int':
@@ -765,9 +771,9 @@ def func_gt(parser, x, y, _type=None):
     """`$gte(x,y[,type])`
 
 Returns true if `x` is greater than or equal to `y` using the comparison specified in `type`.
-Possible values of `type` are "int" (integer), "float" (floating point) and
-"text" (case-sensitive text), with "int" used as the default comparison method
-if `type` is not specified."""
+Possible values of `type` are "int" (integer), "float" (floating point), "text"
+(case-sensitive text) and "nocase" (case-insensitive text), with "int" used as
+the default comparison method if `type` is not specified."""
 ))
 def func_gte(parser, x, y, _type=None):
     if not _type:
@@ -775,6 +781,8 @@ def func_gte(parser, x, y, _type=None):
     _typer = None
     if _type == 'text':
         return "" if x < y else "1"
+    elif _type == 'nocase':
+        return "" if x.lower() < y.lower() else "1"
     elif _type == 'float':
         _typer = float
     elif _type == 'int':
