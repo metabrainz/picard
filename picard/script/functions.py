@@ -680,6 +680,30 @@ def func_ne(parser, x, y):
         return ""
 
 
+def _cmp(op, x, y, _type):
+    """Compare x vs y using op method and specified _type
+       op is expected to be a method from operator module
+    """
+    if not _type:
+        _type = 'int'
+    _typer = None
+    if _type == 'text':
+        return "1" if op(x, y) else ""
+    elif _type == 'nocase':
+        return "1" if op(x.lower(), y.lower()) else ""
+    elif _type == 'float':
+        _typer = float
+    elif _type == 'int':
+        _typer = int
+    if _typer is not None:
+        try:
+            if op(_typer(x), _typer(y)):
+                return "1"
+        except ValueError:
+            pass
+    return ""
+
+
 @script_function(documentation=N_(
     """`$lt(x,y[,type])`
 
@@ -689,24 +713,7 @@ Possible values of `type` are "int" (integer), "float" (floating point), "text"
 the default comparison method if `type` is not specified."""
 ))
 def func_lt(parser, x, y, _type=None):
-    if not _type:
-        _type = 'int'
-    _typer = None
-    if _type == 'text':
-        return "1" if x < y else ""
-    elif _type == 'nocase':
-        return "1" if x.lower() < y.lower() else ""
-    elif _type == 'float':
-        _typer = float
-    elif _type == 'int':
-        _typer = int
-    if _typer is not None:
-        try:
-            if _typer(x) < _typer(y):
-                return "1"
-        except ValueError:
-            pass
-    return ""
+    return _cmp(operator.lt, x, y, _type)
 
 
 @script_function(documentation=N_(
@@ -718,24 +725,7 @@ Possible values of `type` are "int" (integer), "float" (floating point), "text"
 the default comparison method if `type` is not specified."""
 ))
 def func_lte(parser, x, y, _type=None):
-    if not _type:
-        _type = 'int'
-    _typer = None
-    if _type == 'text':
-        return "" if x > y else "1"
-    elif _type == 'nocase':
-        return "" if x.lower() > y.lower() else "1"
-    elif _type == 'float':
-        _typer = float
-    elif _type == 'int':
-        _typer = int
-    if _typer is not None:
-        try:
-            if _typer(x) <= _typer(y):
-                return "1"
-        except ValueError:
-            pass
-    return ""
+    return _cmp(operator.le, x, y, _type)
 
 
 @script_function(documentation=N_(
@@ -747,24 +737,7 @@ Possible values of `type` are "int" (integer), "float" (floating point), "text"
 the default comparison method if `type` is not specified."""
 ))
 def func_gt(parser, x, y, _type=None):
-    if not _type:
-        _type = 'int'
-    _typer = None
-    if _type == 'text':
-        return "1" if x > y else ""
-    elif _type == 'nocase':
-        return "1" if x.lower() > y.lower() else ""
-    elif _type == 'float':
-        _typer = float
-    elif _type == 'int':
-        _typer = int
-    if _typer is not None:
-        try:
-            if _typer(x) > _typer(y):
-                return "1"
-        except ValueError:
-            pass
-    return ""
+    return _cmp(operator.gt, x, y, _type)
 
 
 @script_function(documentation=N_(
@@ -776,24 +749,7 @@ Possible values of `type` are "int" (integer), "float" (floating point), "text"
 the default comparison method if `type` is not specified."""
 ))
 def func_gte(parser, x, y, _type=None):
-    if not _type:
-        _type = 'int'
-    _typer = None
-    if _type == 'text':
-        return "" if x < y else "1"
-    elif _type == 'nocase':
-        return "" if x.lower() < y.lower() else "1"
-    elif _type == 'float':
-        _typer = float
-    elif _type == 'int':
-        _typer = int
-    if _typer is not None:
-        try:
-            if _typer(x) >= _typer(y):
-                return "1"
-        except ValueError:
-            pass
-    return ""
+    return _cmp(operator.ge, x, y, _type)
 
 
 @script_function(documentation=N_(
