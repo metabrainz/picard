@@ -681,70 +681,110 @@ def func_ne(parser, x, y):
 
 
 @script_function(documentation=N_(
-    """`$lt(x,y[,text])`
+    """`$lt(x,y[,type])`
 
-Returns true if `x` is less than `y`.
-Values `x` and `y` are treated as integers unless `text` is set."""
+Returns true if `x` is less than `y` using the comparison specified in `type`.
+Possible values of `type` are "int" (integer), "float" (floating point) and
+"text" (case-sensitive text), with "int" used as the default comparison method
+if `type` is not specified."""
 ))
-def func_lt(parser, x, y, text=None):
-    if text:
+def func_lt(parser, x, y, _type=None):
+    if not _type:
+        _type = 'int'
+    _typer = None
+    if _type == 'text':
         return "1" if x < y else ""
-    try:
-        if int(x) < int(y):
-            return "1"
-    except ValueError:
-        pass
+    elif _type == 'float':
+        _typer = float
+    elif _type == 'int':
+        _typer = int
+    if _typer is not None:
+        try:
+            if _typer(x) < _typer(y):
+                return "1"
+        except ValueError:
+            pass
     return ""
 
 
 @script_function(documentation=N_(
-    """`$lte(x,y[,text])`
+    """`$lte(x,y[,type])`
 
-Returns true if `x` is less than or equal to `y`.
-Values `x` and `y` are treated as integers unless `text` is set."""
+Returns true if `x` is less than or equal to `y` using the comparison specified in `type`.
+Possible values of `type` are "int" (integer), "float" (floating point) and
+"text" (case-sensitive text), with "int" used as the default comparison method
+if `type` is not specified."""
 ))
-def func_lte(parser, x, y, text=None):
-    if text:
+def func_lte(parser, x, y, _type=None):
+    if not _type:
+        _type = 'int'
+    _typer = None
+    if _type == 'text':
         return "" if x > y else "1"
-    try:
-        if int(x) <= int(y):
-            return "1"
-    except ValueError:
-        pass
+    elif _type == 'float':
+        _typer = float
+    elif _type == 'int':
+        _typer = int
+    if _typer is not None:
+        try:
+            if _typer(x) <= _typer(y):
+                return "1"
+        except ValueError:
+            pass
     return ""
 
 
 @script_function(documentation=N_(
-    """`$gt(x,y[,text])`
+    """`$gt(x,y[,type])`
 
-Returns true if `x` is greater than `y`.
-Values `x` and `y` are treated as integers unless `text` is set."""
+Returns true if `x` is greater than `y` using the comparison specified in `type`.
+Possible values of `type` are "int" (integer), "float" (floating point) and
+"text" (case-sensitive text), with "int" used as the default comparison method
+if `type` is not specified."""
 ))
-def func_gt(parser, x, y, text=None):
-    if text:
+def func_gt(parser, x, y, _type=None):
+    if not _type:
+        _type = 'int'
+    _typer = None
+    if _type == 'text':
         return "1" if x > y else ""
-    try:
-        if int(x) > int(y):
-            return "1"
-    except ValueError:
-        pass
+    elif _type == 'float':
+        _typer = float
+    elif _type == 'int':
+        _typer = int
+    if _typer is not None:
+        try:
+            if _typer(x) > _typer(y):
+                return "1"
+        except ValueError:
+            pass
     return ""
 
 
 @script_function(documentation=N_(
-    """`$gte(x,y[,text])`
+    """`$gte(x,y[,type])`
 
-Returns true if `x` is greater than or equal to `y`.
-Values `x` and `y` are treated as integers unless `text` is set."""
+Returns true if `x` is greater than or equal to `y` using the comparison specified in `type`.
+Possible values of `type` are "int" (integer), "float" (floating point) and
+"text" (case-sensitive text), with "int" used as the default comparison method
+if `type` is not specified."""
 ))
-def func_gte(parser, x, y, text=None):
-    if text:
+def func_gte(parser, x, y, _type=None):
+    if not _type:
+        _type = 'int'
+    _typer = None
+    if _type == 'text':
         return "" if x < y else "1"
-    try:
-        if int(x) >= int(y):
-            return "1"
-    except ValueError:
-        pass
+    elif _type == 'float':
+        _typer = float
+    elif _type == 'int':
+        _typer = int
+    if _typer is not None:
+        try:
+            if _typer(x) >= _typer(y):
+                return "1"
+        except ValueError:
+            pass
     return ""
 
 
@@ -1532,24 +1572,62 @@ def func_cleanmulti(parser, multi):
 
 
 @script_function(documentation=N_(
-    """$textmin(x,...)
+    """$min(type,x,...)
 
-Returns the minimum value using a text comparison.
+Returns the minimum value using the comparison specified in `type`.
+Possible values of `type` are "int" (integer), "float" (floating point) and
+"text" (case-sensitive text).
+
 Can be used with an arbitrary number of arguments.
 
 _Since Picard 3.0_"""
 ))
-def func_textmin(parser, x, *args):
-    return min((*args, x))
+def func_min(parser, _type, x, *args):
+    haystack = set((x, *args))
+    _typer = None
+    if _type == 'int':
+        _typer = int
+    elif _type == 'float':
+        _typer = float
+    elif _type == 'text':
+        pass
+    else:
+        # Unknown processing type
+        return ""
+    if _typer is not None:
+        try:
+            haystack = set(_typer(item) for item in haystack)
+        except ValueError:
+            return ""
+    return str(min(haystack))
 
 
 @script_function(documentation=N_(
-    """$textmax(x,...)
+    """$max(type,x,...)
 
-Returns the maximum value using a text comparison.
+Returns the maximum value using the comparison specified in `type`.
+Possible values of `type` are "int" (integer), "float" (floating point) and
+"text" (case-sensitive text).
+
 Can be used with an arbitrary number of arguments.
 
 _Since Picard 3.0_"""
 ))
-def func_textmax(parser, x, *args):
-    return max((*args, x))
+def func_max(parser, _type, x, *args):
+    haystack = set((x, *args))
+    _typer = None
+    if _type == 'int':
+        _typer = int
+    elif _type == 'float':
+        _typer = float
+    elif _type == 'text':
+        pass
+    else:
+        # Unknown processing type
+        return ""
+    if _typer is not None:
+        try:
+            haystack = set(_typer(item) for item in haystack)
+        except ValueError:
+            return ""
+    return str(max(haystack))

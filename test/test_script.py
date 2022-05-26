@@ -591,46 +591,75 @@ class ScriptParserTest(PicardTestCase):
     def test_cmd_gt(self):
         context = Metadata()
 
-        # Test with integer values (default processing)
+        # Test with default processing
         self.assertScriptResultEquals("$gt(10,4)", "1")
         self.assertScriptResultEquals("$gt(6,4)", "1")
+        self.assertScriptResultEquals("$gt(6.5,4)", "")
         self.assertScriptResultEquals("$gt(6,7)", "")
         self.assertScriptResultEquals("$gt(6,6)", "")
         self.assertScriptResultEquals("$gt(a,b)", "")
 
-        # Test date type arguments (text processing)
+        # Test with "int" processing
+        self.assertScriptResultEquals("$gt(10,4,int)", "1")
+        self.assertScriptResultEquals("$gt(6,4,int)", "1")
+        self.assertScriptResultEquals("$gt(6.5,4,int)", "")
+        self.assertScriptResultEquals("$gt(6,7,int)", "")
+        self.assertScriptResultEquals("$gt(6,6,int)", "")
+        self.assertScriptResultEquals("$gt(a,b,int)", "")
+
+        # Test with "float" processing
+        self.assertScriptResultEquals("$gt(1.2,1,float)", "1")
+        self.assertScriptResultEquals("$gt(1.2,1.1,float)", "1")
+        self.assertScriptResultEquals("$gt(1.2,1.3,float)", "")
+        self.assertScriptResultEquals("$gt(1.2,1.2,float)", "")
+        self.assertScriptResultEquals("$gt(a,b,float)", "")
+
+        # Test date type arguments with "text" processing
         context["foo"] = "2020-01-01"
         context["bar"] = "2020-01-02"
         context["baz"] = "2020-02"
-        self.assertScriptResultEquals("$gt(%foo%,%bar%,1)", "", context)
-        self.assertScriptResultEquals("$gt(%bar%,%foo%,1)", "1", context)
-        self.assertScriptResultEquals("$gt(%foo%,%baz%,1)", "", context)
-        self.assertScriptResultEquals("$gt(%baz%,%foo%,1)", "1", context)
-        self.assertScriptResultEquals("$gt(%foo%,%foo%,1)", "", context)
+        self.assertScriptResultEquals("$gt(%foo%,%bar%,text)", "", context)
+        self.assertScriptResultEquals("$gt(%bar%,%foo%,text)", "1", context)
+        self.assertScriptResultEquals("$gt(%foo%,%baz%,text)", "", context)
+        self.assertScriptResultEquals("$gt(%baz%,%foo%,text)", "1", context)
+        self.assertScriptResultEquals("$gt(%foo%,%foo%,text)", "", context)
 
-        # Test text type arguments (text processing)
+        # Test text type arguments with "text" processing
         context["foo"] = "abc"
         context["bar"] = "abcd"
         context["baz"] = "ac"
-        self.assertScriptResultEquals("$gt(%foo%,%bar%,1)", "", context)
-        self.assertScriptResultEquals("$gt(%bar%,%foo%,1)", "1", context)
-        self.assertScriptResultEquals("$gt(%foo%,%baz%,1)", "", context)
-        self.assertScriptResultEquals("$gt(%baz%,%foo%,1)", "1", context)
-        self.assertScriptResultEquals("$gt(%foo%,%foo%,1)", "", context)
+        self.assertScriptResultEquals("$gt(%foo%,%bar%,text)", "", context)
+        self.assertScriptResultEquals("$gt(%bar%,%foo%,text)", "1", context)
+        self.assertScriptResultEquals("$gt(%foo%,%baz%,text)", "", context)
+        self.assertScriptResultEquals("$gt(%baz%,%foo%,text)", "1", context)
+        self.assertScriptResultEquals("$gt(%foo%,%foo%,text)", "", context)
 
-        # Test with empty arguments (integer processing)
+        # Test with empty arguments (default processing)
         self.assertScriptResultEquals("$gt(,1)", "", context)
         self.assertScriptResultEquals("$gt(1,)", "", context)
         self.assertScriptResultEquals("$gt(,)", "", context)
 
-        # Test with empty arguments (text processing)
-        self.assertScriptResultEquals("$gt(,a,1)", "", context)
-        self.assertScriptResultEquals("$gt(a,,1)", "1", context)
-        self.assertScriptResultEquals("$gt(,,1)", "", context)
+        # Test with empty arguments ("int" processing)
+        self.assertScriptResultEquals("$gt(,1,int)", "", context)
+        self.assertScriptResultEquals("$gt(1,,int)", "", context)
+        self.assertScriptResultEquals("$gt(,,int)", "", context)
 
-        # Test case sensitive arguments (text processing)
-        self.assertScriptResultEquals("$gt(A,a,1)", "", context)
-        self.assertScriptResultEquals("$gt(a,A,1)", "1", context)
+        # Test with empty arguments ("float" processing)
+        self.assertScriptResultEquals("$gt(,1.1,float)", "", context)
+        self.assertScriptResultEquals("$gt(1.1,float)", "", context)
+        self.assertScriptResultEquals("$gt(,,float)", "", context)
+
+        # Test with empty arguments ("text" processing)
+        self.assertScriptResultEquals("$gt(,a,text)", "", context)
+        self.assertScriptResultEquals("$gt(a,,text)", "1", context)
+        self.assertScriptResultEquals("$gt(,,text)", "", context)
+
+        # Test case sensitive arguments ("text" processing)
+        self.assertScriptResultEquals("$gt(A,a,text)", "", context)
+        self.assertScriptResultEquals("$gt(a,A,text)", "1", context)
+
+        # Test unknown processing type
+        self.assertScriptResultEquals("$gt(2,1,unknown)", "", context)
 
         # Tests with invalid number of arguments
         areg = r"^\d+:\d+:\$gt: Wrong number of arguments for \$gt: Expected between 2 and 3, "
@@ -639,51 +668,82 @@ class ScriptParserTest(PicardTestCase):
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$gt(1)")
         with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$gt(foo,bar,1,)")
+            self.parser.eval("$gt(foo,bar,text,)")
 
     def test_cmd_gte(self):
         context = Metadata()
 
-        # Test with integer values (default processing)
+        # Test with default processing
+        self.assertScriptResultEquals("$gte(10,10.1)", "")
         self.assertScriptResultEquals("$gte(10,10)", "1")
         self.assertScriptResultEquals("$gte(10,4)", "1")
         self.assertScriptResultEquals("$gte(6,4)", "1")
         self.assertScriptResultEquals("$gte(6,7)", "")
         self.assertScriptResultEquals("$gte(a,b)", "")
 
-        # Test date type arguments (text processing)
+        # Test with "int" processing
+        self.assertScriptResultEquals("$gte(10,10.1,int)", "")
+        self.assertScriptResultEquals("$gte(10,10,int)", "1")
+        self.assertScriptResultEquals("$gte(10,4,int)", "1")
+        self.assertScriptResultEquals("$gte(6,4,int)", "1")
+        self.assertScriptResultEquals("$gte(6,7,int)", "")
+        self.assertScriptResultEquals("$gte(a,b,int)", "")
+
+        # Test with "float" processing
+        self.assertScriptResultEquals("$gte(10.2,10.1,float)", "1")
+        self.assertScriptResultEquals("$gte(10.2,10.2,float)", "1")
+        self.assertScriptResultEquals("$gte(6,4,float)", "1")
+        self.assertScriptResultEquals("$gte(10,10.1,float)", "")
+        self.assertScriptResultEquals("$gte(10.2,10.3,float)", "")
+        self.assertScriptResultEquals("$gte(6,7,float)", "")
+        self.assertScriptResultEquals("$gte(a,b,float)", "")
+
+        # Test date type arguments ("text" processing)
         context["foo"] = "2020-01-01"
         context["bar"] = "2020-01-02"
         context["baz"] = "2020-02"
-        self.assertScriptResultEquals("$gte(%foo%,%bar%,1)", "", context)
-        self.assertScriptResultEquals("$gte(%bar%,%foo%,1)", "1", context)
-        self.assertScriptResultEquals("$gte(%foo%,%baz%,1)", "", context)
-        self.assertScriptResultEquals("$gte(%baz%,%foo%,1)", "1", context)
-        self.assertScriptResultEquals("$gte(%foo%,%foo%,1)", "1", context)
+        self.assertScriptResultEquals("$gte(%foo%,%bar%,text)", "", context)
+        self.assertScriptResultEquals("$gte(%bar%,%foo%,text)", "1", context)
+        self.assertScriptResultEquals("$gte(%foo%,%baz%,text)", "", context)
+        self.assertScriptResultEquals("$gte(%baz%,%foo%,text)", "1", context)
+        self.assertScriptResultEquals("$gte(%foo%,%foo%,text)", "1", context)
 
-        # Test text type arguments (text processing)
+        # Test text type arguments ("text" processing)
         context["foo"] = "abc"
         context["bar"] = "abcd"
         context["baz"] = "ac"
-        self.assertScriptResultEquals("$gte(%foo%,%bar%,1)", "", context)
-        self.assertScriptResultEquals("$gte(%bar%,%foo%,1)", "1", context)
-        self.assertScriptResultEquals("$gte(%foo%,%baz%,1)", "", context)
-        self.assertScriptResultEquals("$gte(%baz%,%foo%,1)", "1", context)
-        self.assertScriptResultEquals("$gte(%foo%,%foo%,1)", "1", context)
+        self.assertScriptResultEquals("$gte(%foo%,%bar%,text)", "", context)
+        self.assertScriptResultEquals("$gte(%bar%,%foo%,text)", "1", context)
+        self.assertScriptResultEquals("$gte(%foo%,%baz%,text)", "", context)
+        self.assertScriptResultEquals("$gte(%baz%,%foo%,text)", "1", context)
+        self.assertScriptResultEquals("$gte(%foo%,%foo%,text)", "1", context)
 
-        # Test with empty arguments (integer processing)
+        # Test with empty arguments (default processing)
         self.assertScriptResultEquals("$gte(,1)", "", context)
         self.assertScriptResultEquals("$gte(1,)", "", context)
         self.assertScriptResultEquals("$gte(,)", "", context)
 
-        # Test with empty arguments (text processing)
-        self.assertScriptResultEquals("$gte(,a,1)", "", context)
-        self.assertScriptResultEquals("$gte(a,,1)", "1", context)
-        self.assertScriptResultEquals("$gte(,,1)", "1", context)
+        # Test with empty arguments ("int" processing)
+        self.assertScriptResultEquals("$gte(,1,int)", "", context)
+        self.assertScriptResultEquals("$gte(1,,int)", "", context)
+        self.assertScriptResultEquals("$gte(,,int)", "", context)
 
-        # Test case sensitive arguments (text processing)
-        self.assertScriptResultEquals("$gte(A,a,1)", "", context)
-        self.assertScriptResultEquals("$gte(a,A,1)", "1", context)
+        # Test with empty arguments ("float" processing)
+        self.assertScriptResultEquals("$gte(,1,float)", "", context)
+        self.assertScriptResultEquals("$gte(1,float)", "", context)
+        self.assertScriptResultEquals("$gte(,,float)", "", context)
+
+        # Test with empty arguments ("text" processing)
+        self.assertScriptResultEquals("$gte(,a,text)", "", context)
+        self.assertScriptResultEquals("$gte(a,,text)", "1", context)
+        self.assertScriptResultEquals("$gte(,,text)", "1", context)
+
+        # Test case sensitive arguments ("text" processing)
+        self.assertScriptResultEquals("$gte(A,a,text)", "", context)
+        self.assertScriptResultEquals("$gte(a,A,text)", "1", context)
+
+        # Test unknown processing type
+        self.assertScriptResultEquals("$gte(2,1,unknown)", "", context)
 
         # Tests with invalid number of arguments
         areg = r"^\d+:\d+:\$gte: Wrong number of arguments for \$gte: Expected between 2 and 3, "
@@ -692,51 +752,83 @@ class ScriptParserTest(PicardTestCase):
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$gte(1)")
         with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$gte(foo,bar,1,)")
+            self.parser.eval("$gte(foo,bar,text,)")
 
     def test_cmd_lt(self):
         context = Metadata()
 
-        # Test with integer values (default processing)
-        self.assertScriptResultEquals("$lt(4,10)", "1")
+        # Test with default processing
         self.assertScriptResultEquals("$lt(4,6)", "1")
+        self.assertScriptResultEquals("$lt(4,6.1)", "")
         self.assertScriptResultEquals("$lt(4,3)", "")
+        self.assertScriptResultEquals("$lt(4,4.1)", "")
+        self.assertScriptResultEquals("$lt(4.1,4.2)", "")
         self.assertScriptResultEquals("$lt(4,4)", "")
         self.assertScriptResultEquals("$lt(a,b)", "")
 
-        # Test date type arguments (text processing)
+        # Test with "int" processing
+        self.assertScriptResultEquals("$lt(4,6,int)", "1")
+        self.assertScriptResultEquals("$lt(4,6.1,int)", "")
+        self.assertScriptResultEquals("$lt(4,3,int)", "")
+        self.assertScriptResultEquals("$lt(4,4.1,int)", "")
+        self.assertScriptResultEquals("$lt(4.1,4.2,int)", "")
+        self.assertScriptResultEquals("$lt(4,4,int)", "")
+        self.assertScriptResultEquals("$lt(a,b,int)", "")
+
+        # Test with "float" processing
+        self.assertScriptResultEquals("$lt(4,4.1,float)", "1")
+        self.assertScriptResultEquals("$lt(4.1,4.2,float)", "1")
+        self.assertScriptResultEquals("$lt(4,6,float)", "1")
+        self.assertScriptResultEquals("$lt(4.2,4.1,float)", "")
+        self.assertScriptResultEquals("$lt(4.1,4.1,float)", "")
+        self.assertScriptResultEquals("$lt(a,b,float)", "")
+
+        # Test date type arguments ("text" processing)
         context["foo"] = "2020-01-01"
         context["bar"] = "2020-01-02"
         context["baz"] = "2020-02"
-        self.assertScriptResultEquals("$lt(%foo%,%bar%,1)", "1", context)
-        self.assertScriptResultEquals("$lt(%bar%,%foo%,1)", "", context)
-        self.assertScriptResultEquals("$lt(%foo%,%baz%,1)", "1", context)
-        self.assertScriptResultEquals("$lt(%baz%,%foo%,1)", "", context)
-        self.assertScriptResultEquals("$lt(%foo%,%foo%,1)", "", context)
+        self.assertScriptResultEquals("$lt(%foo%,%bar%,text)", "1", context)
+        self.assertScriptResultEquals("$lt(%bar%,%foo%,text)", "", context)
+        self.assertScriptResultEquals("$lt(%foo%,%baz%,text)", "1", context)
+        self.assertScriptResultEquals("$lt(%baz%,%foo%,text)", "", context)
+        self.assertScriptResultEquals("$lt(%foo%,%foo%,text)", "", context)
 
-        # Test text type arguments (text processing)
+        # Test text type arguments ("text" processing)
         context["foo"] = "abc"
         context["bar"] = "abcd"
         context["baz"] = "ac"
-        self.assertScriptResultEquals("$lt(%foo%,%bar%,1)", "1", context)
-        self.assertScriptResultEquals("$lt(%bar%,%foo%,1)", "", context)
-        self.assertScriptResultEquals("$lt(%foo%,%baz%,1)", "1", context)
-        self.assertScriptResultEquals("$lt(%baz%,%foo%,1)", "", context)
-        self.assertScriptResultEquals("$lt(%foo%,%foo%,1)", "", context)
+        self.assertScriptResultEquals("$lt(%foo%,%bar%,text)", "1", context)
+        self.assertScriptResultEquals("$lt(%bar%,%foo%,text)", "", context)
+        self.assertScriptResultEquals("$lt(%foo%,%baz%,text)", "1", context)
+        self.assertScriptResultEquals("$lt(%baz%,%foo%,text)", "", context)
+        self.assertScriptResultEquals("$lt(%foo%,%foo%,text)", "", context)
 
-        # Test with empty arguments (integer processing)
+        # Test with empty arguments (default processing)
         self.assertScriptResultEquals("$lt(,1)", "", context)
         self.assertScriptResultEquals("$lt(1,)", "", context)
         self.assertScriptResultEquals("$lt(,)", "", context)
 
-        # Test with empty arguments (text processing)
-        self.assertScriptResultEquals("$lt(,a,1)", "1", context)
-        self.assertScriptResultEquals("$lt(a,,1)", "", context)
-        self.assertScriptResultEquals("$lt(,,1)", "", context)
+        # Test with empty arguments ("int" processing)
+        self.assertScriptResultEquals("$lt(,1,int)", "", context)
+        self.assertScriptResultEquals("$lt(1,,int)", "", context)
+        self.assertScriptResultEquals("$lt(,,int)", "", context)
 
-        # Test case sensitive arguments (text processing)
-        self.assertScriptResultEquals("$lt(A,a,1)", "1", context)
-        self.assertScriptResultEquals("$lt(a,A,1)", "", context)
+        # Test with empty arguments ("float" processing)
+        self.assertScriptResultEquals("$lt(,1,float)", "", context)
+        self.assertScriptResultEquals("$lt(1,,float)", "", context)
+        self.assertScriptResultEquals("$lt(,,float)", "", context)
+
+        # Test with empty arguments ("text" processing)
+        self.assertScriptResultEquals("$lt(,a,text)", "1", context)
+        self.assertScriptResultEquals("$lt(a,,text)", "", context)
+        self.assertScriptResultEquals("$lt(,,text)", "", context)
+
+        # Test case sensitive arguments ("text" processing)
+        self.assertScriptResultEquals("$lt(A,a,text)", "1", context)
+        self.assertScriptResultEquals("$lt(a,A,text)", "", context)
+
+        # Test unknown processing type
+        self.assertScriptResultEquals("$lt(1,2,unknown)", "", context)
 
         # Tests with invalid number of arguments
         areg = r"^\d+:\d+:\$lt: Wrong number of arguments for \$lt: Expected between 2 and 3, "
@@ -745,51 +837,79 @@ class ScriptParserTest(PicardTestCase):
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$lt(1)")
         with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$lt(foo,bar,1,)")
+            self.parser.eval("$lt(foo,bar,text,)")
 
     def test_cmd_lte(self):
         context = Metadata()
 
-        # Test with integer values (default processing)
+        # Test with default processing
         self.assertScriptResultEquals("$lte(10,10)", "1")
+        self.assertScriptResultEquals("$lte(10.1,10.2)", "")
         self.assertScriptResultEquals("$lte(4,10)", "1")
-        self.assertScriptResultEquals("$lte(4,6)", "1")
         self.assertScriptResultEquals("$lte(4,3)", "")
         self.assertScriptResultEquals("$lte(a,b)", "")
 
-        # Test date type arguments (text processing)
+        # Test with "int" processing
+        self.assertScriptResultEquals("$lte(10,10,int)", "1")
+        self.assertScriptResultEquals("$lte(10.1,10.2,int)", "")
+        self.assertScriptResultEquals("$lte(4,10,int)", "1")
+        self.assertScriptResultEquals("$lte(4,3,int)", "")
+        self.assertScriptResultEquals("$lte(a,b,int)", "")
+
+        # Test with "float" processing
+        self.assertScriptResultEquals("$lte(10,10,float)", "1")
+        self.assertScriptResultEquals("$lte(10.1,10.1,float)", "1")
+        self.assertScriptResultEquals("$lte(10.1,10.2,float)", "1")
+        self.assertScriptResultEquals("$lte(10.2,10.1,float)", "")
+        self.assertScriptResultEquals("$lte(4,3,float)", "")
+        self.assertScriptResultEquals("$lte(a,b,float)", "")
+
+        # Test date type arguments ("text" processing)
         context["foo"] = "2020-01-01"
         context["bar"] = "2020-01-02"
         context["baz"] = "2020-02"
-        self.assertScriptResultEquals("$lte(%foo%,%bar%,1)", "1", context)
-        self.assertScriptResultEquals("$lte(%bar%,%foo%,1)", "", context)
-        self.assertScriptResultEquals("$lte(%foo%,%baz%,1)", "1", context)
-        self.assertScriptResultEquals("$lte(%baz%,%foo%,1)", "", context)
-        self.assertScriptResultEquals("$lte(%foo%,%foo%,1)", "1", context)
+        self.assertScriptResultEquals("$lte(%foo%,%bar%,text)", "1", context)
+        self.assertScriptResultEquals("$lte(%bar%,%foo%,text)", "", context)
+        self.assertScriptResultEquals("$lte(%foo%,%baz%,text)", "1", context)
+        self.assertScriptResultEquals("$lte(%baz%,%foo%,text)", "", context)
+        self.assertScriptResultEquals("$lte(%foo%,%foo%,text)", "1", context)
 
-        # Test text type arguments (text processing)
+        # Test text type arguments ("text" processing)
         context["foo"] = "abc"
         context["bar"] = "abcd"
         context["baz"] = "ac"
-        self.assertScriptResultEquals("$lte(%foo%,%bar%,1)", "1", context)
-        self.assertScriptResultEquals("$lte(%bar%,%foo%,1)", "", context)
-        self.assertScriptResultEquals("$lte(%foo%,%baz%,1)", "1", context)
-        self.assertScriptResultEquals("$lte(%baz%,%foo%,1)", "", context)
-        self.assertScriptResultEquals("$lte(%foo%,%foo%,1)", "1", context)
+        self.assertScriptResultEquals("$lte(%foo%,%bar%,text)", "1", context)
+        self.assertScriptResultEquals("$lte(%bar%,%foo%,text)", "", context)
+        self.assertScriptResultEquals("$lte(%foo%,%baz%,text)", "1", context)
+        self.assertScriptResultEquals("$lte(%baz%,%foo%,text)", "", context)
+        self.assertScriptResultEquals("$lte(%foo%,%foo%,text)", "1", context)
 
-        # Test with empty arguments (integer processing)
+        # Test with empty arguments (default processing)
         self.assertScriptResultEquals("$lte(,1)", "", context)
         self.assertScriptResultEquals("$lte(1,)", "", context)
         self.assertScriptResultEquals("$lte(,)", "", context)
 
-        # Test with empty arguments (text processing)
-        self.assertScriptResultEquals("$lte(,a,1)", "1", context)
-        self.assertScriptResultEquals("$lte(a,,1)", "", context)
-        self.assertScriptResultEquals("$lte(,,1)", "1", context)
+        # Test with empty arguments ("int" processing)
+        self.assertScriptResultEquals("$lte(,1,int)", "", context)
+        self.assertScriptResultEquals("$lte(1,,int)", "", context)
+        self.assertScriptResultEquals("$lte(,,int)", "", context)
 
-        # Test case sensitive arguments (text processing)
-        self.assertScriptResultEquals("$lte(A,a,1)", "1", context)
-        self.assertScriptResultEquals("$lte(a,A,1)", "", context)
+        # Test with empty arguments ("float" processing)
+        self.assertScriptResultEquals("$lte(,1,float)", "", context)
+        self.assertScriptResultEquals("$lte(1,,float)", "", context)
+        self.assertScriptResultEquals("$lte(,,float)", "", context)
+
+        # Test with empty arguments ("text" processing)
+        self.assertScriptResultEquals("$lte(,a,text)", "1", context)
+        self.assertScriptResultEquals("$lte(a,,text)", "", context)
+        self.assertScriptResultEquals("$lte(,,text)", "1", context)
+
+        # Test case sensitive arguments ("text" processing)
+        self.assertScriptResultEquals("$lte(A,a,text)", "1", context)
+        self.assertScriptResultEquals("$lte(a,A,text)", "", context)
+
+        # Test unknown processing type
+        self.assertScriptResultEquals("$lte(1,2,unknown)", "", context)
 
         # Tests with invalid number of arguments
         areg = r"^\d+:\d+:\$lte: Wrong number of arguments for \$lte: Expected between 2 and 3, "
@@ -798,7 +918,7 @@ class ScriptParserTest(PicardTestCase):
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$lte(1)")
         with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$lte(foo,bar,1,)")
+            self.parser.eval("$lte(foo,bar,text,)")
 
     def test_cmd_len(self):
         self.assertScriptResultEquals("$len(abcdefg)", "7")
@@ -2058,68 +2178,112 @@ class ScriptParserTest(PicardTestCase):
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$cleanmulti(foo,)")
 
-    def test_cmd_textmin(self):
+    def test_cmd_min(self):
         context = Metadata()
 
-        # Test date type arguments
-        context["foo"] = "2020-01-01"
-        context["bar"] = "2020-01-02"
-        context["baz"] = "2020-02"
-        self.assertScriptResultEquals("$textmin(%foo%)", "2020-01-01", context)
-        self.assertScriptResultEquals("$textmin(%foo%,%bar%,%baz%)", "2020-01-01", context)
-        self.assertScriptResultEquals("$textmin(%baz%,%bar%,%foo%)", "2020-01-01", context)
-
-        # Test text type arguments
+        # Test "text" processing
         context["foo"] = "abc"
         context["bar"] = "abcd"
         context["baz"] = "ac"
-        self.assertScriptResultEquals("$textmin(%foo%)", "abc", context)
-        self.assertScriptResultEquals("$textmin(%foo%,%bar%,%baz%)", "abc", context)
-        self.assertScriptResultEquals("$textmin(%baz%,%bar%,%foo%)", "abc", context)
+        self.assertScriptResultEquals("$min(text,%foo%)", "abc", context)
+        self.assertScriptResultEquals("$min(text,%foo%,%bar%,%baz%)", "abc", context)
+        self.assertScriptResultEquals("$min(text,%baz%,%bar%,%foo%)", "abc", context)
+        self.assertScriptResultEquals("$min(text,,a)", "", context)
+        self.assertScriptResultEquals("$min(text,a,)", "", context)
+        self.assertScriptResultEquals("$min(text,,)", "", context)
 
-        # Test with empty arguments
-        self.assertScriptResultEquals("$textmin(,a)", "", context)
-        self.assertScriptResultEquals("$textmin(a,)", "", context)
-        self.assertScriptResultEquals("$textmin(,)", "", context)
-
-        # Test case sensitive arguments
-        self.assertScriptResultEquals("$textmin(A,a)", "A", context)
-        self.assertScriptResultEquals("$textmin(a,B)", "B", context)
-
-        # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$textmin: Wrong number of arguments for \$textmin: Expected at least 1, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$textmin()")
-
-    def test_cmd_textmax(self):
-        context = Metadata()
-
-        # Test date type arguments
+        # Test date type arguments using "text" processing
         context["foo"] = "2020-01-01"
         context["bar"] = "2020-01-02"
         context["baz"] = "2020-02"
-        self.assertScriptResultEquals("$textmax(%foo%)", "2020-01-01", context)
-        self.assertScriptResultEquals("$textmax(%foo%,%bar%,%baz%)", "2020-02", context)
-        self.assertScriptResultEquals("$textmax(%baz%,%bar%,%foo%)", "2020-02", context)
+        self.assertScriptResultEquals("$min(text,%foo%)", "2020-01-01", context)
+        self.assertScriptResultEquals("$min(text,%foo%,%bar%,%baz%)", "2020-01-01", context)
+        self.assertScriptResultEquals("$min(text,%baz%,%bar%,%foo%)", "2020-01-01", context)
 
-        # Test text type arguments
+        # Test "int" processing
+        self.assertScriptResultEquals("$min(int,1)", "1", context)
+        self.assertScriptResultEquals("$min(int,2,3)", "2", context)
+        self.assertScriptResultEquals("$min(int,2,1,3)", "1", context)
+        self.assertScriptResultEquals("$min(int,2,1,3.1)", "", context)
+        self.assertScriptResultEquals("$min(int,2,1,a)", "", context)
+        self.assertScriptResultEquals("$min(int,2,,1)", "", context)
+        self.assertScriptResultEquals("$min(int,2,1,)", "", context)
+
+        # Test "float" processing
+        self.assertScriptResultEquals("$min(float,1)", "1.0", context)
+        self.assertScriptResultEquals("$min(float,2,3)", "2.0", context)
+        self.assertScriptResultEquals("$min(float,2,1,3)", "1.0", context)
+        self.assertScriptResultEquals("$min(float,2,1.1,3)", "1.1", context)
+        self.assertScriptResultEquals("$min(float,2,1,a)", "", context)
+        self.assertScriptResultEquals("$min(float,2,,1)", "", context)
+        self.assertScriptResultEquals("$min(float,2,1,)", "", context)
+
+        # Test case sensitive arguments
+        self.assertScriptResultEquals("$min(text,A,a)", "A", context)
+        self.assertScriptResultEquals("$min(text,a,B)", "B", context)
+
+        # Test invalid processing types
+        self.assertScriptResultEquals("$min(,A,a)", "", context)
+        self.assertScriptResultEquals("$min(unknown,a,B)", "", context)
+
+        # Tests with invalid number of arguments
+        areg = r"^\d+:\d+:\$min: Wrong number of arguments for \$min: Expected at least 2, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$min()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$min(text)")
+
+    def test_cmd_max(self):
+        context = Metadata()
+
+        # Test "text" processing
         context["foo"] = "abc"
         context["bar"] = "abcd"
         context["baz"] = "ac"
-        self.assertScriptResultEquals("$textmax(%foo%)", "abc", context)
-        self.assertScriptResultEquals("$textmax(%foo%,%bar%,%baz%)", "ac", context)
-        self.assertScriptResultEquals("$textmax(%baz%,%bar%,%foo%)", "ac", context)
+        self.assertScriptResultEquals("$max(text,%foo%)", "abc", context)
+        self.assertScriptResultEquals("$max(text,%foo%,%bar%,%baz%)", "ac", context)
+        self.assertScriptResultEquals("$max(text,%baz%,%bar%,%foo%)", "ac", context)
+        self.assertScriptResultEquals("$max(text,,a)", "a", context)
+        self.assertScriptResultEquals("$max(text,a,)", "a", context)
+        self.assertScriptResultEquals("$max(text,,)", "", context)
 
-        # Test with empty arguments
-        self.assertScriptResultEquals("$textmax(,a)", "a", context)
-        self.assertScriptResultEquals("$textmax(a,)", "a", context)
-        self.assertScriptResultEquals("$textmax(,)", "", context)
+        # Test date type arguments using "text" processing
+        context["foo"] = "2020-01-01"
+        context["bar"] = "2020-01-02"
+        context["baz"] = "2020-02"
+        self.assertScriptResultEquals("$max(text,%foo%)", "2020-01-01", context)
+        self.assertScriptResultEquals("$max(text,%foo%,%bar%,%baz%)", "2020-02", context)
+        self.assertScriptResultEquals("$max(text,%baz%,%bar%,%foo%)", "2020-02", context)
+
+        # Test "int" processing
+        self.assertScriptResultEquals("$max(int,1)", "1", context)
+        self.assertScriptResultEquals("$max(int,2,3)", "3", context)
+        self.assertScriptResultEquals("$max(int,2,1,3)", "3", context)
+        self.assertScriptResultEquals("$max(int,2,1,3.1)", "", context)
+        self.assertScriptResultEquals("$max(int,2,1,a)", "", context)
+        self.assertScriptResultEquals("$max(int,2,,1)", "", context)
+        self.assertScriptResultEquals("$max(int,2,1,)", "", context)
+
+        # Test "float" processing
+        self.assertScriptResultEquals("$max(float,1)", "1.0", context)
+        self.assertScriptResultEquals("$max(float,2,3)", "3.0", context)
+        self.assertScriptResultEquals("$max(float,2,1.1,3)", "3.0", context)
+        self.assertScriptResultEquals("$max(float,2,1,3.1)", "3.1", context)
+        self.assertScriptResultEquals("$max(float,2,1,a)", "", context)
+        self.assertScriptResultEquals("$max(float,2,,1)", "", context)
+        self.assertScriptResultEquals("$max(float,2,1,)", "", context)
 
         # Test case sensitive arguments
-        self.assertScriptResultEquals("$textmax(A,a)", "a", context)
-        self.assertScriptResultEquals("$textmax(a,B)", "a", context)
+        self.assertScriptResultEquals("$max(text,A,a)", "a", context)
+        self.assertScriptResultEquals("$max(text,a,B)", "a", context)
+
+        # Test invalid processing types
+        self.assertScriptResultEquals("$max(,A,a)", "", context)
+        self.assertScriptResultEquals("$max(unknown,a,B)", "", context)
 
         # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$textmax: Wrong number of arguments for \$textmax: Expected at least 1, "
+        areg = r"^\d+:\d+:\$max: Wrong number of arguments for \$max: Expected at least 2, "
         with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$textmax()")
+            self.parser.eval("$max()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$max(text)")
