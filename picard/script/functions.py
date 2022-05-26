@@ -1535,6 +1535,30 @@ def func_cleanmulti(parser, multi):
     return ""
 
 
+def _type_args(_type, *args):
+    haystack = set((args))
+    _typer = None
+    if _type == 'int':
+        _typer = int
+    elif _type == 'float':
+        _typer = float
+    elif _type == 'text':
+        pass
+    else:
+        # Unknown processing type
+        raise ValueError
+    if _typer is not None:
+        haystack = set(_typer(item) for item in haystack)
+    return haystack
+
+
+def _extract(_func, _type, *args):
+    try:
+        return str(_func(_type_args(_type, *args)))
+    except ValueError:
+        return ""
+
+
 @script_function(documentation=N_(
     """$min(type,x,...)
 
@@ -1547,23 +1571,7 @@ Can be used with an arbitrary number of arguments.
 _Since Picard 3.0_"""
 ))
 def func_min(parser, _type, x, *args):
-    haystack = set((x, *args))
-    _typer = None
-    if _type == 'int':
-        _typer = int
-    elif _type == 'float':
-        _typer = float
-    elif _type == 'text':
-        pass
-    else:
-        # Unknown processing type
-        return ""
-    if _typer is not None:
-        try:
-            haystack = set(_typer(item) for item in haystack)
-        except ValueError:
-            return ""
-    return str(min(haystack))
+    return _extract(min, _type, x, *args)
 
 
 @script_function(documentation=N_(
@@ -1578,20 +1586,4 @@ Can be used with an arbitrary number of arguments.
 _Since Picard 3.0_"""
 ))
 def func_max(parser, _type, x, *args):
-    haystack = set((x, *args))
-    _typer = None
-    if _type == 'int':
-        _typer = int
-    elif _type == 'float':
-        _typer = float
-    elif _type == 'text':
-        pass
-    else:
-        # Unknown processing type
-        return ""
-    if _typer is not None:
-        try:
-            haystack = set(_typer(item) for item in haystack)
-        except ValueError:
-            return ""
-    return str(max(haystack))
+    return _extract(max, _type, x, *args)
