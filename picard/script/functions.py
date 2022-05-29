@@ -685,8 +685,18 @@ def _cmp(op, x, y, _type):
        op is expected to be a method from operator module
     """
     if not _type:
-        _type = 'int'
+        _type = 'auto'
     _typer = None
+    if _type == 'auto':
+        for _test_type in [int, float]:
+            try:
+                _type = (_test_type(x), _test_type(y))
+                _type = _test_type.__name__
+                break
+            except ValueError:
+                pass
+        if _type == 'auto':
+            _type = 'text'
     if _type == 'text':
         return "1" if op(x, y) else ""
     elif _type == 'nocase':
@@ -709,8 +719,11 @@ def _cmp(op, x, y, _type):
 
 Returns true if `x` is less than `y` using the comparison specified in `type`.
 Possible values of `type` are "int" (integer), "float" (floating point), "text"
-(case-sensitive text) and "nocase" (case-insensitive text), with "int" used as
-the default comparison method if `type` is not specified."""
+(case-sensitive text), "nocase" (case-insensitive text) and "auto" (automatically
+determine the type of arguments provided), with "auto" used as the default
+comparison method if `type` is not specified.  The "auto" type will use the
+first type that applies to both arguments in the following order of preference:
+"int", "float" and "text"."""
 ))
 def func_lt(parser, x, y, _type=None):
     return _cmp(operator.lt, x, y, _type)
@@ -721,8 +734,11 @@ def func_lt(parser, x, y, _type=None):
 
 Returns true if `x` is less than or equal to `y` using the comparison specified in `type`.
 Possible values of `type` are "int" (integer), "float" (floating point), "text"
-(case-sensitive text) and "nocase" (case-insensitive text), with "int" used as
-the default comparison method if `type` is not specified."""
+(case-sensitive text), "nocase" (case-insensitive text) and "auto" (automatically
+determine the type of arguments provided), with "auto" used as the default
+comparison method if `type` is not specified.  The "auto" type will use the
+first type that applies to both arguments in the following order of preference:
+"int", "float" and "text"."""
 ))
 def func_lte(parser, x, y, _type=None):
     return _cmp(operator.le, x, y, _type)
@@ -733,8 +749,11 @@ def func_lte(parser, x, y, _type=None):
 
 Returns true if `x` is greater than `y` using the comparison specified in `type`.
 Possible values of `type` are "int" (integer), "float" (floating point), "text"
-(case-sensitive text) and "nocase" (case-insensitive text), with "int" used as
-the default comparison method if `type` is not specified."""
+(case-sensitive text), "nocase" (case-insensitive text) and "auto" (automatically
+determine the type of arguments provided), with "auto" used as the default
+comparison method if `type` is not specified.  The "auto" type will use the
+first type that applies to both arguments in the following order of preference:
+"int", "float" and "text"."""
 ))
 def func_gt(parser, x, y, _type=None):
     return _cmp(operator.gt, x, y, _type)
@@ -745,8 +764,11 @@ def func_gt(parser, x, y, _type=None):
 
 Returns true if `x` is greater than or equal to `y` using the comparison specified in `type`.
 Possible values of `type` are "int" (integer), "float" (floating point), "text"
-(case-sensitive text) and "nocase" (case-insensitive text), with "int" used as
-the default comparison method if `type` is not specified."""
+(case-sensitive text), "nocase" (case-insensitive text) and "auto" (automatically
+determine the type of arguments provided), with "auto" used as the default
+comparison method if `type` is not specified.  The "auto" type will use the
+first type that applies to both arguments in the following order of preference:
+"int", "float" and "text"."""
 ))
 def func_gte(parser, x, y, _type=None):
     return _cmp(operator.ge, x, y, _type)
@@ -1540,12 +1562,25 @@ def _type_args(_type, *args):
     # Automatically expand multi-value arguments
     for item in args:
         haystack = haystack.union(set(x for x in item.split('; ')))
+    if not _type:
+        _type = 'auto'
+    _typer = None
+    if _type == 'auto':
+        for _test_type in [int, float]:
+            try:
+                _type = set(_test_type(item) for item in haystack)
+                _type = _test_type.__name__
+                break
+            except ValueError:
+                pass
+        if _type == 'auto':
+            _type = 'text'
     _typer = None
     if _type == 'int':
         _typer = int
     elif _type == 'float':
         _typer = float
-    elif _type in ('text', 'ncase'):
+    elif _type in ('text', 'nocase'):
         pass
     else:
         # Unknown processing type
@@ -1561,7 +1596,7 @@ def _extract(_func, _type, *args):
     except ValueError:
         return ""
 
-    if _type == 'ncase':
+    if _type == 'nocase':
         op = operator.lt if _func == min else operator.gt
         val = None
         for item in haystack:
@@ -1576,8 +1611,13 @@ def _extract(_func, _type, *args):
     """$min(type,x,...)
 
 Returns the minimum value using the comparison specified in `type`.
-Possible values of `type` are "int" (integer), "float" (floating point),
-"text" (case-sensitive text) and "ncase" (case-insensitive text).
+
+Possible values of `type` are "int" (integer), "float" (floating point), "text"
+(case-sensitive text), "nocase" (case-insensitive text) and "auto" (automatically
+determine the type of arguments provided), with "auto" used as the default
+comparison method if `type` is not specified.  The "auto" type will use the
+first type that applies to both arguments in the following order of preference:
+"int", "float" and "text".
 
 Can be used with an arbitrary number of arguments.  Multi-value arguments
 will be expanded automatically.
@@ -1592,8 +1632,13 @@ def func_min(parser, _type, x, *args):
     """$max(type,x,...)
 
 Returns the maximum value using the comparison specified in `type`.
-Possible values of `type` are "int" (integer), "float" (floating point),
-"text" (case-sensitive text) and "ncase" (case-insensitive text).
+
+Possible values of `type` are "int" (integer), "float" (floating point), "text"
+(case-sensitive text), "nocase" (case-insensitive text) and "auto" (automatically
+determine the type of arguments provided), with "auto" used as the default
+comparison method if `type` is not specified.  The "auto" type will use the
+first type that applies to both arguments in the following order of preference:
+"int", "float" and "text".
 
 Can be used with an arbitrary number of arguments.  Multi-value arguments
 will be expanded automatically.
