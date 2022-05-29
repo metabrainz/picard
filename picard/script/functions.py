@@ -1536,13 +1536,16 @@ def func_cleanmulti(parser, multi):
 
 
 def _type_args(_type, *args):
-    haystack = set((args))
+    haystack = set()
+    # Automatically expand multi-value arguments
+    for item in args:
+        haystack = haystack.union(set(x for x in item.split('; ')))
     _typer = None
     if _type == 'int':
         _typer = int
     elif _type == 'float':
         _typer = float
-    elif _type == 'text':
+    elif _type in ('text', 'ncase'):
         pass
     else:
         # Unknown processing type
@@ -1554,19 +1557,30 @@ def _type_args(_type, *args):
 
 def _extract(_func, _type, *args):
     try:
-        return str(_func(_type_args(_type, *args)))
+        haystack = _type_args(_type, *args)
     except ValueError:
         return ""
+
+    if _type == 'ncase':
+        op = operator.lt if _func == min else operator.gt
+        val = None
+        for item in haystack:
+            if val is None or op(item.lower(), val.lower()):
+                val = item
+        return str(val)
+
+    return str(_func(haystack))
 
 
 @script_function(documentation=N_(
     """$min(type,x,...)
 
 Returns the minimum value using the comparison specified in `type`.
-Possible values of `type` are "int" (integer), "float" (floating point) and
-"text" (case-sensitive text).
+Possible values of `type` are "int" (integer), "float" (floating point),
+"text" (case-sensitive text) and "ncase" (case-insensitive text).
 
-Can be used with an arbitrary number of arguments.
+Can be used with an arbitrary number of arguments.  Multi-value arguments
+will be expanded automatically.
 
 _Since Picard 3.0_"""
 ))
@@ -1578,10 +1592,11 @@ def func_min(parser, _type, x, *args):
     """$max(type,x,...)
 
 Returns the maximum value using the comparison specified in `type`.
-Possible values of `type` are "int" (integer), "float" (floating point) and
-"text" (case-sensitive text).
+Possible values of `type` are "int" (integer), "float" (floating point),
+"text" (case-sensitive text) and "ncase" (case-insensitive text).
 
-Can be used with an arbitrary number of arguments.
+Can be used with an arbitrary number of arguments.  Multi-value arguments
+will be expanded automatically.
 
 _Since Picard 3.0_"""
 ))

@@ -2242,13 +2242,27 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$min(float,2,3)", "2.0", context)
         self.assertScriptResultEquals("$min(float,2,1,3)", "1.0", context)
         self.assertScriptResultEquals("$min(float,2,1.1,3)", "1.1", context)
+        self.assertScriptResultEquals("$min(float,1.11,1.1,1.111)", "1.1", context)
         self.assertScriptResultEquals("$min(float,2,1,a)", "", context)
         self.assertScriptResultEquals("$min(float,2,,1)", "", context)
         self.assertScriptResultEquals("$min(float,2,1,)", "", context)
 
-        # Test case sensitive arguments
+        # Test 'ncase' processing
+        self.assertScriptResultEquals("$min(ncase,a,B)", "a", context)
+        self.assertScriptResultEquals("$min(ncase,c,A,b)", "A", context)
+
+        # Test case sensitive arguments with 'text' processing
         self.assertScriptResultEquals("$min(text,A,a)", "A", context)
         self.assertScriptResultEquals("$min(text,a,B)", "B", context)
+
+        # Test multi-value arguments
+        context['mv'] = ['y', 'z', 'x']
+        self.assertScriptResultEquals("$min(text,%mv%)", "x", context)
+        self.assertScriptResultEquals("$min(text,y; z; x)", "x", context)
+        self.assertScriptResultEquals("$min(text,a,%mv%)", "a", context)
+        self.assertScriptResultEquals("$min(text,a,y; z; x)", "a", context)
+        self.assertScriptResultEquals("$min(int,5,4; 6; 3)", "3", context)
+        self.assertScriptResultEquals("$min(float,5.9,4.2; 6; 3.35)", "3.35", context)
 
         # Test invalid processing types
         self.assertScriptResultEquals("$min(,A,a)", "", context)
@@ -2297,13 +2311,27 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$max(float,2,3)", "3.0", context)
         self.assertScriptResultEquals("$max(float,2,1.1,3)", "3.0", context)
         self.assertScriptResultEquals("$max(float,2,1,3.1)", "3.1", context)
+        self.assertScriptResultEquals("$max(float,2.1,2.11,2.111)", "2.111", context)
         self.assertScriptResultEquals("$max(float,2,1,a)", "", context)
         self.assertScriptResultEquals("$max(float,2,,1)", "", context)
         self.assertScriptResultEquals("$max(float,2,1,)", "", context)
 
-        # Test case sensitive arguments
+        # Test 'ncase' processing
+        self.assertScriptResultEquals("$max(ncase,a,B)", "B", context)
+        self.assertScriptResultEquals("$max(ncase,c,a,B)", "c", context)
+
+        # Test case sensitive arguments with 'text' processing
         self.assertScriptResultEquals("$max(text,A,a)", "a", context)
         self.assertScriptResultEquals("$max(text,a,B)", "a", context)
+
+        # Test multi-value arguments
+        context['mv'] = ['y', 'z', 'x']
+        self.assertScriptResultEquals("$max(text,%mv%)", "z", context)
+        self.assertScriptResultEquals("$max(text,y; z; x)", "z", context)
+        self.assertScriptResultEquals("$max(text,a,%mv%)", "z", context)
+        self.assertScriptResultEquals("$max(text,a,y; z; x)", "z", context)
+        self.assertScriptResultEquals("$max(int,5,4; 6; 3)", "6", context)
+        self.assertScriptResultEquals("$max(float,5.9,4.2; 6; 3.35)", "6.0", context)
 
         # Test invalid processing types
         self.assertScriptResultEquals("$max(,A,a)", "", context)
