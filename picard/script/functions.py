@@ -688,6 +688,7 @@ def _cmp(op, x, y, _type):
         _type = 'auto'
     _typer = None
     if _type == 'auto':
+        _type = 'text'
         for _test_type in [int, float]:
             try:
                 _type = (_test_type(x), _test_type(y))
@@ -695,8 +696,6 @@ def _cmp(op, x, y, _type):
                 break
             except ValueError:
                 pass
-        if _type == 'auto':
-            _type = 'text'
     if _type == 'text':
         return "1" if op(x, y) else ""
     elif _type == 'nocase':
@@ -1566,6 +1565,7 @@ def _type_args(_type, *args):
         _type = 'auto'
     _typer = None
     if _type == 'auto':
+        _type = 'text'
         for _test_type in [int, float]:
             try:
                 _type = set(_test_type(item) for item in haystack)
@@ -1573,8 +1573,6 @@ def _type_args(_type, *args):
                 break
             except ValueError:
                 pass
-        if _type == 'auto':
-            _type = 'text'
     _typer = None
     if _type == 'int':
         _typer = int
