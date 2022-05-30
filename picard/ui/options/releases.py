@@ -25,7 +25,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from locale import strxfrm
 from operator import itemgetter
 
 from PyQt5 import (
@@ -44,6 +43,7 @@ from picard.const import (
     RELEASE_SECONDARY_GROUPS,
 )
 from picard.const.sys import IS_WIN
+from picard.util import strxfrm
 
 from picard.ui.options import (
     OptionsPage,

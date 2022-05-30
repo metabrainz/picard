@@ -23,8 +23,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-import locale
-
 from PyQt5 import (
     QtCore,
     QtGui,
@@ -35,6 +33,7 @@ from picard.collection import (
     load_user_collections,
     user_collections,
 )
+from picard.util import strxfrm
 
 
 class CollectionMenu(QtWidgets.QMenu):
@@ -51,7 +50,7 @@ class CollectionMenu(QtWidgets.QMenu):
         self.actions = []
         for id_, collection in sorted(user_collections.items(),
                                       key=lambda k_v:
-                                      (locale.strxfrm(str(k_v[1])), k_v[0])):
+                                      (strxfrm(str(k_v[1])), k_v[0])):
             action = QtWidgets.QWidgetAction(self)
             action.setDefaultWidget(CollectionMenuItem(self, collection))
             self.addAction(action)
