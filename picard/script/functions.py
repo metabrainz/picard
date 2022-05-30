@@ -1560,7 +1560,7 @@ def _type_args(_type, *args):
     haystack = set()
     # Automatically expand multi-value arguments
     for item in args:
-        haystack = haystack.union(set(x for x in item.split('; ')))
+        haystack = haystack.union(set(x for x in item.split(MULTI_VALUED_JOINER)))
     if not _type:
         _type = 'auto'
     _typer = None
