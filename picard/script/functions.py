@@ -689,7 +689,7 @@ def _cmp(op, x, y, _type):
     _typer = None
     if _type == 'auto':
         _type = 'text'
-        for _test_type in [int, float]:
+        for _test_type in (int, float):
             try:
                 _type = (_test_type(x), _test_type(y))
                 _type = _test_type.__name__
@@ -1566,7 +1566,7 @@ def _type_args(_type, *args):
     _typer = None
     if _type == 'auto':
         _type = 'text'
-        for _test_type in [int, float]:
+        for _test_type in (int, float):
             try:
                 _type = set(_test_type(item) for item in haystack)
                 _type = _test_type.__name__
