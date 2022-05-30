@@ -80,6 +80,15 @@ def _try_set_locale(language):
     return language  # Just return the language, so at least UI translation works
 
 
+def _load_translation(domain, localedir, logger):
+    try:
+        logger("Loading gettext translation for %s, localedir=%r", domain, localedir)
+        return gettext.translation(domain, localedir)
+    except OSError as e:
+        logger(e)
+        return gettext.NullTranslations()
+
+
 def setup_gettext(localedir, ui_language=None, logger=None):
     """Setup locales, load translations, install gettext functions."""
     if not logger:
@@ -95,18 +104,10 @@ def setup_gettext(localedir, ui_language=None, logger=None):
     os.environ['LANGUAGE'] = os.environ['LANG'] = current_locale
     QLocale.setDefault(QLocale(current_locale))
     logger("Using locale %r", current_locale)
-    try:
-        logger("Loading gettext translation, localedir=%r", localedir)
-        trans = gettext.translation("picard", localedir)
-        logger("Loading gettext translation (picard-countries), localedir=%r", localedir)
-        trans_countries = gettext.translation("picard-countries", localedir)
-        logger("Loading gettext translation (picard-attributes), localedir=%r", localedir)
-        trans_attributes = gettext.translation("picard-attributes", localedir)
-    except OSError as e:
-        logger(e)
-        trans = gettext.NullTranslations()
-        trans_countries = gettext.NullTranslations()
-        trans_attributes = gettext.NullTranslations()
+
+    trans = _load_translation('picard', localedir, logger)
+    trans_countries = _load_translation('picard-countries', localedir, logger)
+    trans_attributes = _load_translation('picard-attributes', localedir, logger)
 
     trans.install(['ngettext'])
     builtins.__dict__['gettext_countries'] = trans_countries.gettext
