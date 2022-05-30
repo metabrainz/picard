@@ -29,7 +29,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-import locale
 import os.path
 
 from PyQt5 import (
@@ -46,7 +45,10 @@ from picard.config import (
 )
 from picard.const import UI_LANGUAGES
 from picard.const.sys import IS_MACOS
-from picard.util import icontheme
+from picard.util import (
+    icontheme,
+    strxfrm,
+)
 
 from picard.ui import PicardDialog
 from picard.ui.moveable_list_view import MoveableListView
@@ -204,7 +206,7 @@ class InterfaceOptionsPage(OptionsPage):
         language_list = [(lang[0], lang[1], _(lang[2])) for lang in UI_LANGUAGES]
 
         def fcmp(x):
-            return locale.strxfrm(x[2])
+            return strxfrm(x[2])
         for lang_code, native, translation in sorted(language_list, key=fcmp):
             if native and native != translation:
                 name = '%s (%s)' % (translation, native)

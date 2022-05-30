@@ -47,7 +47,6 @@ from heapq import (
     heappop,
     heappush,
 )
-from locale import strxfrm
 
 from PyQt5 import (
     QtCore,
@@ -85,6 +84,7 @@ from picard.util import (
     natsort,
     normpath,
     restore_method,
+    strxfrm,
 )
 
 from picard.ui.collectionmenu import CollectionMenu

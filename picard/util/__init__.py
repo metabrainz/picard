@@ -44,6 +44,7 @@ from collections import namedtuple
 from collections.abc import Mapping
 from itertools import chain
 import json
+from locale import strxfrm as _strxfrm
 import ntpath
 from operator import attrgetter
 import os
@@ -1084,3 +1085,21 @@ def iter_exception_chain(err):
 def any_exception_isinstance(error, type_):
     """Returns True, if any exception in the exception chain is instance of type_."""
     return any(isinstance(err, type_) for err in iter_exception_chain(error))
+
+
+def strxfrm(string):
+    """Transforms a string to one that can be used in locale-aware comparisons.
+
+    Wrapper around locale.strxfrm, that never throws OSError. If an OSError
+    occurs this function will return the string converted to lower case.
+
+    Args:
+        string: The string to convert
+
+    Returns: A string that can be compared locale-aware
+    """
+    try:
+        return _strxfrm(string)
+    except OSError as err:
+        log.warning('strxfrm(%r) failed: %r', string, err)
+        return string.lower()

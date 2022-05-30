@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019-2020 Philipp Wolfer
+# Copyright (C) 2019-2020, 2022 Philipp Wolfer
 # Copyright (C) 2020-2021 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -23,8 +23,9 @@
 """Functions for natural sorting of strings containing numbers.
 """
 
-from locale import strxfrm
 import re
+
+from picard.util import strxfrm
 
 
 RE_NUMBER = re.compile(r'(\d+)')
