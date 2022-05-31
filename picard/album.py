@@ -120,6 +120,12 @@ class AlbumStatus(IntEnum):
     LOADED = 3
 
 
+class ParseResult(IntEnum):
+    PARSED = 0
+    REDIRECT = 1
+    MISSING_TRACK_RELS = 2
+
+
 class Album(DataObject, Item):
 
     metadata_images_changed = QtCore.pyqtSignal()
@@ -208,7 +214,7 @@ class Album(DataObject, Item):
                 album.match_files(self.unmatched_files.files)
                 album.update()
                 self.tagger.remove_album(self)
-                return False
+                return ParseResult.REDIRECT
             else:
                 del self.tagger.albums[self.id]
                 self.tagger.albums[release_id] = self
@@ -257,17 +263,20 @@ class Album(DataObject, Item):
             try:
                 for medium_node in release_node['media']:
                     if medium_node['track-count']:
-                        return 'relations' in medium_node['tracks'][0]['recording']
+                        if 'relations' in medium_node['tracks'][0]['recording']:
+                            return ParseResult.PARSED
+                        else:
+                            return ParseResult.MISSING_TRACK_RELS
             except KeyError:
                 pass
 
-        return True
+        return ParseResult.PARSED
 
     def _release_request_finished(self, document, http, error):
         if self.load_task is None:
             return
         self.load_task = None
-        parsed = False
+        parse_result = None
         try:
             if error:
                 self.error_append(http.errorString())
@@ -288,19 +297,21 @@ class Album(DataObject, Item):
                         error = False
             else:
                 try:
-                    parsed = self._parse_release(document)
+                    parse_result = self._parse_release(document)
                     config = get_config()
-                    if not parsed and config.setting['track_ars']:
+                    if parse_result == ParseResult.MISSING_TRACK_RELS:
                         log.debug('Recording relationships not loaded in initial request for %r, issuing separate requests' % self)
                         self._request_recording_relationships(config=config)
-                    else:
+                    elif parse_result == ParseResult.PARSED:
                         self._run_album_metadata_processors()
+                    elif parse_result == ParseResult.REDIRECT:
+                        error = False
                 except Exception:
                     error = True
                     self.error_append(traceback.format_exc())
         finally:
             self._requests -= 1
-            if parsed or error:
+            if parse_result == ParseResult.PARSED or error:
                 self._finalize_loading(error)
 
     def _request_recording_relationships(self, offset=0, limit=RECORDING_QUERY_LIMIT, config=None):
