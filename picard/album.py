@@ -875,6 +875,9 @@ class NatAlbum(Album):
     def can_browser_lookup(self):
         return False
 
+    def can_view_info(self):
+        return False
+
 
 _album_post_removal_processors = PluginFunctions(label='album_post_removal_processors')
 
