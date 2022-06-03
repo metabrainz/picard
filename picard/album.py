@@ -462,9 +462,10 @@ class Album(DataObject, Item):
         # Generate a list of unique media, but keep order of first appearance
         self._new_metadata['media'] = " / ".join(list(OrderedDict.fromkeys(all_media)))
 
+        multiartists = len(artists) > 1
         for track in self._new_tracks:
             track.metadata["~totalalbumtracks"] = totalalbumtracks
-            if len(artists) > 1:
+            if multiartists:
                 track.metadata["~multiartist"] = "1"
         del self._release_node
         del self._release_artist_nodes
