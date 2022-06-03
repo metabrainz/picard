@@ -413,6 +413,12 @@ class Album(DataObject, Item):
         all_media = []
         absolutetracknumber = 0
 
+        def _load_track(node, mm, artists, extra_metadata):
+            nonlocal absolutetracknumber
+            absolutetracknumber += 1
+            extra_metadata['~absolutetracknumber'] = absolutetracknumber
+            self._finalize_loading_track(node, mm, artists, extra_metadata)
+
         va = self._new_metadata['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID
 
         djmix_ars = {}
@@ -442,28 +448,14 @@ class Album(DataObject, Item):
 
             pregap_node = medium_node.get('pregap')
             if pregap_node:
-                absolutetracknumber += 1
                 mm['~discpregap'] = '1'
-                extra_metadata = {
-                    '~pregap': '1',
-                    '~absolutetracknumber': absolutetracknumber,
-                }
-                self._finalize_loading_track(medium_node['pregap'], mm, artists, extra_metadata)
+                _load_track(pregap_node, mm, artists, {'~pregap': '1'})
 
             for track_node in medium_node.get('tracks', []):
-                absolutetracknumber += 1
-                extra_metadata = {
-                    '~absolutetracknumber': absolutetracknumber,
-                }
-                self._finalize_loading_track(track_node, mm, artists, extra_metadata)
+                _load_track(track_node, mm, artists, {})
 
             for track_node in medium_node.get('data-tracks', []):
-                absolutetracknumber += 1
-                extra_metadata = {
-                    '~datatrack': '1',
-                    '~absolutetracknumber': absolutetracknumber,
-                }
-                self._finalize_loading_track(track_node, mm, artists, extra_metadata)
+                _load_track(track_node, mm, artists, {'~datatrack': '1'})
 
         totalalbumtracks = absolutetracknumber
         self._new_metadata['~totalalbumtracks'] = totalalbumtracks
