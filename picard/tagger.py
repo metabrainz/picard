@@ -27,6 +27,7 @@
 # Copyright (C) 2019 Joel Lintunen
 # Copyright (C) 2020 Julius Michaelis
 # Copyright (C) 2020-2021 Gabriel Ferreira
+# Copyright (c) 2022 skelly37
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -123,6 +124,7 @@ from picard.util import (
     mbid_validate,
     normpath,
     periodictouch,
+    pipe,
     process_events_iter,
     system_supports_long_paths,
     thread,
@@ -186,7 +188,7 @@ class Tagger(QtWidgets.QApplication):
     _debug = False
     _no_restore = False
 
-    def __init__(self, picard_args, unparsed_args, localedir, autoupdate):
+    def __init__(self, picard_args, localedir, autoupdate, pipe_handler):
 
         super().__init__(sys.argv)
         self.__class__.__instance = self
@@ -199,6 +201,9 @@ class Tagger(QtWidgets.QApplication):
         self.autoupdate_enabled = autoupdate
         self._no_restore = picard_args.no_restore
         self._no_plugins = picard_args.no_plugins
+
+        self.pipe_handler = pipe_handler
+        # TODO create a thread with this pipe handler, some kind of pipe server and constantly listen for any new messages
 
         self.set_log_level(config.setting['log_verbosity'])
 
@@ -1047,8 +1052,9 @@ def process_picard_args():
     parser.add_argument("-V", "--long-version", action='store_true',
                         help="display long version information and exit")
     parser.add_argument('FILE', nargs='*')
-    picard_args, unparsed_args = parser.parse_known_args()
-    return picard_args, unparsed_args
+
+    # return only picard args that were actually parsed, in index [1] there are stored unparsed args
+    return parser.parse_known_args()[0]
 
 
 class OverrideStyle(QtWidgets.QProxyStyle):
@@ -1085,30 +1091,35 @@ def main(localedir=None, autoupdate=True):
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-    picard_args, unparsed_args = process_picard_args()
+    picard_args = process_picard_args()
     if picard_args.version:
         return version()
     if picard_args.long_version:
         return longversion()
 
-    try:
-        from PyQt5.QtDBus import QDBusConnection
-        dbus = QDBusConnection.sessionBus()
-        dbus.registerService(PICARD_APP_ID)
-    except ImportError:
-        pass
+    PICARD_VER_NO_DOTS = PICARD_FANCY_VERSION_STR.replace(".", "-")
+    initial_pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_VER_NO_DOTS, args=picard_args)
 
-    tagger = Tagger(picard_args, unparsed_args, localedir, autoupdate)
+    # No `else` statement is needed since pipe.Pipe has already sent picard_args to the existing instance
+    if not initial_pipe_handler.is_pipe_owner:
+        try:
+            from PyQt5.QtDBus import QDBusConnection
+            dbus = QDBusConnection.sessionBus()
+            dbus.registerService(PICARD_APP_ID)
+        except ImportError:
+            pass
 
-    # Initialize Qt default translations
-    translator = QtCore.QTranslator()
-    locale = QtCore.QLocale()
-    translation_path = QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.LibraryLocation.TranslationsPath)
-    log.debug("Looking for Qt locale %s in %s", locale.name(), translation_path)
-    if translator.load(locale, "qtbase_", directory=translation_path):
-        tagger.installTranslator(translator)
-    else:
-        log.debug('Qt locale %s not available', locale.name())
+        tagger = Tagger(picard_args, localedir, autoupdate, pipe_handler=initial_pipe_handler)
 
-    tagger.startTimer(1000)
-    sys.exit(tagger.run())
+        # Initialize Qt default translations
+        translator = QtCore.QTranslator()
+        locale = QtCore.QLocale()
+        translation_path = QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.LibraryLocation.TranslationsPath)
+        log.debug("Looking for Qt locale %s in %s", locale.name(), translation_path)
+        if translator.load(locale, "qtbase_", directory=translation_path):
+            tagger.installTranslator(translator)
+        else:
+            log.debug('Qt locale %s not available', locale.name())
+
+        tagger.startTimer(1000)
+        sys.exit(tagger.run())
