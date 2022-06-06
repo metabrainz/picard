@@ -51,8 +51,7 @@ class Pipe:
             # win32pipe.CreateNamedPipe
             # more about the arguments: https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createnamedpipea
             self.__MAX_INSTANCES: int = 1
-            self.__OUT_BUFFER_SIZE: int = 65536
-            self.__IN_BUFFER_SIZE: int = 65536
+            self.__BUFFER_SIZE: int = 65536
             # timeout doesn't really matter, concurrent.futures ensures that connections are closed in declared time
             # the value is in milliseconds
             self.__DEFAULT_TIMEOUT: int = 300
@@ -62,12 +61,17 @@ class Pipe:
             self.__SHARE_MODE: int = 0
             self.__FLAGS_AND_ATTRIBUTES: int = 0
 
+            # pywintypes.error error codes
+            # more about the error codes: https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-erref/18d8fbe8-a967-4f1c-ae50-99ca8e491d2d
+            self.__FILE_NOT_FOUND_ERROR_CODE = 2
+            self.__BROKEN_PIPE_ERROR_CODE = 109
+
         self.path: str = self.__generate_filename()
 
         self.is_pipe_owner: bool = False
 
         # test if pipe is listened to even if no args provided
-        if type(args) == list:
+        if isinstance(args, list):
             if len(args) == 0:
                 args.append(self.MESSAGE_TO_IGNORE)
         else:
@@ -79,21 +83,13 @@ class Pipe:
                     self.is_pipe_owner = True
                     break
         else:
-            if self.__pipe_exists():
+            try:
+                self.__create_unix_pipe()
+            except FileExistsError:
                 for arg in args:
                     if not self.send_to_pipe(arg):
-                        try:
-                            os.unlink(self.path)
-                        except Exception as e:
-                            raise ValueError(f"There was a problem with removing the old pipe:\n{e}")
-
                         self.__create_unix_pipe()
                         break
-            else:
-                self.__create_unix_pipe()
-
-    def __pipe_exists(self) -> bool:
-        return os.path.exists(self.path)
 
     def __generate_filename(self) -> str:
         prefix: str = ""
@@ -106,7 +102,15 @@ class Pipe:
         return f"{prefix}{self.__app_name}_v{self.__app_version}_{username}_pipe_file"
 
     def __create_unix_pipe(self) -> None:
-        os.mkfifo(self.path)
+        try:
+            try:
+                # just to be sure that there's no broken pipe left
+                os.unlink(self.path)
+            except FileNotFoundError:
+                pass
+            os.mkfifo(self.path)
+        except PermissionError:
+            raise ValueError(f"Couldn't create a pipe: {self.path}\nCheck the permissions and try again.")
         self.is_pipe_owner = True
 
     def __win_sender(self, message: str) -> bool:
@@ -115,8 +119,8 @@ class Pipe:
             win32pipe.PIPE_ACCESS_DUPLEX,
             win32pipe.PIPE_TYPE_MESSAGE | win32pipe.PIPE_WAIT,
             self.__MAX_INSTANCES,
-            self.__OUT_BUFFER_SIZE,
-            self.__IN_BUFFER_SIZE,
+            self.__BUFFER_SIZE,
+            self.__BUFFER_SIZE,
             self.__DEFAULT_TIMEOUT,
             None)
         try:
@@ -134,7 +138,6 @@ class Pipe:
 
     def send_to_pipe(self, message: str, timeout_secs: float = 1.5) -> bool:
         __pool = concurrent.futures.ThreadPoolExecutor()
-        sender = None
         if self.__is_win:
             sender = __pool.submit(self.__win_sender, message)
         else:
@@ -150,10 +153,23 @@ class Pipe:
         return False
 
     def read_from_pipe(self, timeout_secs: float = 1.5) -> str:
+        __pool = concurrent.futures.ThreadPoolExecutor()
+
         if self.__is_win:
-            return str(self.__read_from_win_pipe(timeout_secs))
+            reader = __pool.submit(self.__win_reader)
         else:
-            return self.__read_from_unix_pipe(timeout_secs)
+            reader = __pool.submit(self.__unix_reader)
+
+        try:
+            if reader.result(timeout=timeout_secs):
+                res: str = reader.result()
+                if res != self.MESSAGE_TO_IGNORE:
+                    return res
+        except concurrent.futures._base.TimeoutError:
+            # hacky way to kill the file-opening loop
+            self.send_to_pipe(self.MESSAGE_TO_IGNORE)
+
+        return Pipe.NO_RESPONSE_MESSAGE
 
     def __win_reader(self) -> str:
         response = ""  # type: ignore
@@ -169,45 +185,30 @@ class Pipe:
                 None
             )
             while not response:
-                response = win32file.ReadFile(pipe, 64 * 1024)
+                response = win32file.ReadFile(pipe, self.__BUFFER_SIZE)
 
         except WinApiError as err:
-            if err.args[0] == 2:
+            if err.args[0] == self.__FILE_NOT_FOUND_ERROR_CODE:
                 raise FileNotFoundError(Pipe.NOT_FOUND_MESSAGE)
-            elif err.args[0] == 109:
+            elif err.args[0] == self.__BROKEN_PIPE_ERROR_CODE:
                 raise FileNotFoundError("Pipe is broken")
             else:
                 raise FileNotFoundError(f"{err.args[0]}; {err.args[1]}; {err.args[2]}")
 
         if response:
             if response[0] == 0:
-                return response[1].decode("utf-8")  # type: ignore
+                return str(response[1].decode("utf-8"))  # type: ignore
             else:
                 raise ValueError(f"INVALID RESPONSE: {response[1].decode('utf-8')}")  # type: ignore
         else:
             return Pipe.NO_RESPONSE_MESSAGE
 
-    def __read_from_win_pipe(self, timeout_secs: float) -> str:
-        __pool = concurrent.futures.ThreadPoolExecutor()
-        reader = __pool.submit(self.__win_reader)
-
-        try:
-            if reader.result(timeout=timeout_secs):
-                res: str = reader.result()
-                if res != self.MESSAGE_TO_IGNORE:
-                    return res
-        except concurrent.futures._base.TimeoutError:
-            # hacky way to kill the file-opening loop
-            self.send_to_pipe(self.MESSAGE_TO_IGNORE)
-
-        return Pipe.NO_RESPONSE_MESSAGE
-
     def __unix_reader(self) -> str:
         response: str = ""
         while not response:
             try:
-                fifo = open(self.path, 'r')
-                response = fifo.read().strip()
+                with open(self.path, 'r') as fifo:
+                    response = fifo.read().strip()
             except FileNotFoundError:
                 raise FileNotFoundError(Pipe.NOT_FOUND_MESSAGE)
 
@@ -215,18 +216,3 @@ class Pipe:
             return response
         else:
             return Pipe.NO_RESPONSE_MESSAGE
-
-    def __read_from_unix_pipe(self, timeout_secs: float) -> str:
-        __pool = concurrent.futures.ThreadPoolExecutor()
-        reader = __pool.submit(self.__unix_reader)
-
-        try:
-            if reader.result(timeout=timeout_secs):
-                res: str = reader.result()
-                if res != self.MESSAGE_TO_IGNORE:
-                    return res
-        except concurrent.futures._base.TimeoutError:
-            # hacky way to kill the file-opening loop
-            self.send_to_pipe(self.MESSAGE_TO_IGNORE)
-
-        return Pipe.NO_RESPONSE_MESSAGE
