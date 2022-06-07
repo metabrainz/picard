@@ -1044,8 +1044,8 @@ def process_picard_args():
                         help="location of the configuration file")
     parser.add_argument("-d", "--debug", action='store_true',
                         help="enable debug-level logging")
-    parser.add_argument("-f", "--force", action='store_true',
-                        help="force create new window")
+    parser.add_argument("--stand-alone-instance", action='store_true',
+                        help="force create new Picard instance")
     parser.add_argument("-M", "--no-player", action='store_true',
                         help="disable built-in media player")
     parser.add_argument("-N", "--no-restore", action='store_true',
@@ -1100,30 +1100,23 @@ def main(localedir=None, autoupdate=True):
 
     picard_args, unparsed_args = process_picard_args()
 
-    QUIT = 0
-    NO_PIPE = 1
-    USE_PIPE = 2
-
-    start_code = picard_args.force
-
     if picard_args.version:
         return version()
     if picard_args.long_version:
         return longversion()
 
-    if not start_code:
+    should_start = picard_args.stand_alone_instance
+
+    if not should_start:
         pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR, args=picard_args.FILE)
+        should_start = True in [pipe_handler.permission_error_happened, pipe_handler.is_pipe_owner]
         if pipe_handler.permission_error_happened:
-            start_code = NO_PIPE
-        elif pipe_handler.is_pipe_owner:
-            start_code = USE_PIPE
-        else:
-            start_code = QUIT
+            pipe_handler = None
     else:
         pipe_handler = None
 
     # No `else` statement is needed since pipe.Pipe has already sent picard_args to the existing instance
-    if start_code:
+    if should_start:
         try:
             from PyQt5.QtDBus import QDBusConnection
             dbus = QDBusConnection.sessionBus()
