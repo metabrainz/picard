@@ -21,6 +21,7 @@
 
 import concurrent.futures
 import os
+from typing import Optional
 
 from picard.const.sys import (
     IS_MACOS,
@@ -38,6 +39,7 @@ class Pipe:
     NO_RESPONSE_MESSAGE: str = "No response from FIFO"
     NOT_FOUND_MESSAGE: str = "FIFO doesn't exist"
     MESSAGE_TO_IGNORE: str = "Ignore this message, just testing the pipe"
+    TIMEOUT_SECS: float = 1.5
 
     def __init__(self, app_name: str, app_version: str, args=None):
         if args is None:
@@ -69,12 +71,11 @@ class Pipe:
             # more about the error codes: https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-erref/18d8fbe8-a967-4f1c-ae50-99ca8e491d2d
             self.__FILE_NOT_FOUND_ERROR_CODE: int = 2
             self.__BROKEN_PIPE_ERROR_CODE: int = 109
-        else:
-            self.permission_error_happened: bool = False
 
         self.path: str = self.__generate_filename()
 
         self.is_pipe_owner: bool = False
+        self.permission_error_happened: bool = False
 
         # test if pipe is listened to even if no args provided
         if isinstance(args, list):
@@ -117,7 +118,21 @@ class Pipe:
                 os.unlink(self.path)
             except FileNotFoundError:
                 pass
-            os.mkfifo(self.path)
+            try:
+                os.mkfifo(self.path)
+            # no parent dirs detected, need to create them
+            except FileNotFoundError:
+                dirs = self.path.split("/")
+                # we have to remove pipe name while creating dirs not to make it a dir
+                # also, the first index is "", because we're on *nix
+                dirs.pop(-1)
+                dirs.pop(0)
+                path = "/"
+                for d in dirs:
+                    path += d
+                    if not os.path.exists(path):
+                        os.mkdir(path)
+                os.mkfifo(self.path)
         except PermissionError:
             self.permission_error_happened = True
         self.is_pipe_owner = True
@@ -145,8 +160,12 @@ class Pipe:
             fifo.write(message)
         return True
 
-    def send_to_pipe(self, message: str, timeout_secs: float = 1.5) -> bool:
+    def send_to_pipe(self, message: str, timeout_secs: Optional[float] = None) -> bool:
+        if timeout_secs is None:
+            timeout_secs = self.TIMEOUT_SECS
+
         __pool = concurrent.futures.ThreadPoolExecutor()
+
         if self.__is_win:
             sender = __pool.submit(self.__win_sender, message)
         else:
@@ -161,7 +180,10 @@ class Pipe:
 
         return False
 
-    def read_from_pipe(self, timeout_secs: float = 1.5) -> str:
+    def read_from_pipe(self, timeout_secs: Optional[float] = None) -> str:
+        if timeout_secs is None:
+            timeout_secs = self.TIMEOUT_SECS
+
         __pool = concurrent.futures.ThreadPoolExecutor()
 
         if self.__is_win:
@@ -197,13 +219,14 @@ class Pipe:
                 response = win32file.ReadFile(pipe, self.__BUFFER_SIZE)
 
         except WinApiError as err:
-            if err.args[0] == self.__FILE_NOT_FOUND_ERROR_CODE:
+            if err.winerror == self.__FILE_NOT_FOUND_ERROR_CODE:
                 raise FileNotFoundError(Pipe.NOT_FOUND_MESSAGE)
-            elif err.args[0] == self.__BROKEN_PIPE_ERROR_CODE:
+            elif err.winerror == self.__BROKEN_PIPE_ERROR_CODE:
                 raise FileNotFoundError("Pipe is broken")
             else:
-                raise FileNotFoundError(f"{err.args[0]}; {err.args[1]}; {err.args[2]}")
+                raise FileNotFoundError(f"{err.winerror}; {err.funcname}; {err.strerror}")
 
+        # response[0] stores an exit code while response[1] an actual response
         if response:
             if response[0] == 0:
                 return str(response[1].decode("utf-8"))  # type: ignore
