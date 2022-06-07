@@ -1097,8 +1097,7 @@ def main(localedir=None, autoupdate=True):
     if picard_args.long_version:
         return longversion()
 
-    PICARD_VER_NO_DOTS = PICARD_FANCY_VERSION_STR.replace(".", "-")
-    initial_pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_VER_NO_DOTS, args=picard_args)
+    initial_pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR, args=picard_args)
 
     # No `else` statement is needed since pipe.Pipe has already sent picard_args to the existing instance
     if not initial_pipe_handler.is_pipe_owner:
