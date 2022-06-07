@@ -188,7 +188,7 @@ class Tagger(QtWidgets.QApplication):
     _debug = False
     _no_restore = False
 
-    def __init__(self, picard_args, localedir, autoupdate, pipe_handler):
+    def __init__(self, picard_args, unparsed_args, localedir, autoupdate, pipe_handler=None):
 
         super().__init__(sys.argv)
         self.__class__.__instance = self
@@ -203,7 +203,12 @@ class Tagger(QtWidgets.QApplication):
         self._no_plugins = picard_args.no_plugins
 
         self.pipe_handler = pipe_handler
-        # TODO create a thread with this pipe handler, some kind of pipe server and constantly listen for any new messages
+
+        # if the instance is forced, we get None instead of an actual handler
+        # even though there's always something provided as pipe_handler, I created a default argument to make it more obvious
+        if pipe_handler:
+            pass
+            # TODO create a thread with this pipe handler, some kind of pipe server and constantly listen for any new messages
 
         self.set_log_level(config.setting['log_verbosity'])
 
@@ -1039,6 +1044,8 @@ def process_picard_args():
                         help="location of the configuration file")
     parser.add_argument("-d", "--debug", action='store_true',
                         help="enable debug-level logging")
+    parser.add_argument("-f", "--force", action='store_true',
+                        help="force create new window")
     parser.add_argument("-M", "--no-player", action='store_true',
                         help="disable built-in media player")
     parser.add_argument("-N", "--no-restore", action='store_true',
@@ -1053,8 +1060,8 @@ def process_picard_args():
                         help="display long version information and exit")
     parser.add_argument('FILE', nargs='*')
 
-    # return only picard args that were actually parsed, in index [1] there are stored unparsed args
-    return parser.parse_known_args()[0]
+    picard_args, unparsed_args = parser.parse_known_args()
+    return picard_args, unparsed_args
 
 
 class OverrideStyle(QtWidgets.QProxyStyle):
@@ -1091,16 +1098,32 @@ def main(localedir=None, autoupdate=True):
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-    picard_args = process_picard_args()
+    picard_args, unparsed_args = process_picard_args()
+
+    QUIT = 0
+    NO_PIPE = 1
+    USE_PIPE = 2
+
+    start_code = picard_args.force
+
     if picard_args.version:
         return version()
     if picard_args.long_version:
         return longversion()
 
-    initial_pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR, args=picard_args)
+    if not start_code:
+        pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR, args=picard_args.FILE)
+        if pipe_handler.permission_error_happened:
+            start_code = NO_PIPE
+        elif pipe_handler.is_pipe_owner:
+            start_code = USE_PIPE
+        else:
+            start_code = QUIT
+    else:
+        pipe_handler = None
 
     # No `else` statement is needed since pipe.Pipe has already sent picard_args to the existing instance
-    if not initial_pipe_handler.is_pipe_owner:
+    if start_code:
         try:
             from PyQt5.QtDBus import QDBusConnection
             dbus = QDBusConnection.sessionBus()
@@ -1108,7 +1131,7 @@ def main(localedir=None, autoupdate=True):
         except ImportError:
             pass
 
-        tagger = Tagger(picard_args, localedir, autoupdate, pipe_handler=initial_pipe_handler)
+        tagger = Tagger(picard_args, unparsed_args, localedir, autoupdate, pipe_handler=pipe_handler)
 
         # Initialize Qt default translations
         translator = QtCore.QTranslator()

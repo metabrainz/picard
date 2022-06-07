@@ -65,6 +65,8 @@ class Pipe:
             # more about the error codes: https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-erref/18d8fbe8-a967-4f1c-ae50-99ca8e491d2d
             self.__FILE_NOT_FOUND_ERROR_CODE = 2
             self.__BROKEN_PIPE_ERROR_CODE = 109
+        else:
+            self.permission_error_happened = False
 
         self.path: str = self.__generate_filename()
 
@@ -110,7 +112,7 @@ class Pipe:
                 pass
             os.mkfifo(self.path)
         except PermissionError:
-            raise PermissionError(f"Couldn't create a pipe: {self.path}\nCheck the permissions and try again.")
+            self.permission_error_happened = True
         self.is_pipe_owner = True
 
     def __win_sender(self, message: str) -> bool:
