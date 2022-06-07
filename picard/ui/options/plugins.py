@@ -31,6 +31,7 @@
 
 
 from functools import partial
+from html import escape
 from operator import attrgetter
 import os.path
 
@@ -599,10 +600,10 @@ class PluginsOptionsPage(OptionsPage):
         if plugin.description:
             text.append(plugin.description + "<hr width='90%'/>")
         infos = [
-            (_("Name"), plugin.name),
-            (_("Authors"), plugin.author),
+            (_("Name"), escape(plugin.name)),
+            (_("Authors"), escape(plugin.author)),
             (_("License"), plugin.license),
-            (_("Files"), plugin.files_list),
+            (_("Files"), escape(plugin.files_list)),
         ]
         for label, value in infos:
             if value:
