@@ -22,7 +22,10 @@
 import concurrent.futures
 import os
 
-from picard.const.sys import IS_WIN
+from picard.const.sys import (
+    IS_MACOS,
+    IS_WIN,
+)
 
 
 if IS_WIN:
@@ -42,6 +45,7 @@ class Pipe:
 
         self.__app_name: str = app_name
         self.__app_version: str = app_version
+        self.__is_mac: bool = IS_MACOS
         self.__is_win: bool = IS_WIN
 
         # named pipe values needed by windows API
@@ -63,10 +67,10 @@ class Pipe:
 
             # pywintypes.error error codes
             # more about the error codes: https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-erref/18d8fbe8-a967-4f1c-ae50-99ca8e491d2d
-            self.__FILE_NOT_FOUND_ERROR_CODE = 2
-            self.__BROKEN_PIPE_ERROR_CODE = 109
+            self.__FILE_NOT_FOUND_ERROR_CODE: int = 2
+            self.__BROKEN_PIPE_ERROR_CODE: int = 109
         else:
-            self.permission_error_happened = False
+            self.permission_error_happened: bool = False
 
         self.path: str = self.__generate_filename()
 
@@ -94,14 +98,17 @@ class Pipe:
                         break
 
     def __generate_filename(self) -> str:
-        prefix: str = ""
-        username: str = os.getlogin()
         if self.__is_win:
             prefix = "\\\\.\\pipe\\"
+        elif self.__is_mac:
+            prefix = os.path.expanduser("~/Library/Application Support/MusicBrainz/Picard/pipes/")
         else:
-            prefix = "/tmp/"
+            prefix = f"{os.getenv('XDG_RUNTIME_DIR')}/"
+            # just in case the $XDG_RUNTIME_DIR is not declared, fallback dir
+            if not prefix:
+                prefix = os.path.expanduser("~/.config/MusicBrainz/Picard/pipes/")
 
-        return f"{prefix}{self.__app_name}_v{self.__app_version}_{username}_pipe_file"
+        return f"{prefix}{self.__app_name}_v{self.__app_version}_pipe_file"
 
     def __create_unix_pipe(self) -> None:
         try:
