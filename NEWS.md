@@ -1,3 +1,13 @@
+# Version 2.8.1 - 2022-06-07
+
+## Bugfixes
+
+- [PICARD-2489](https://tickets.metabrainz.org/browse/PICARD-2489) - Preferred Releases UI not loading in Options menu on FreeBSD
+- [PICARD-2491](https://tickets.metabrainz.org/browse/PICARD-2491) - Crash upon loading album information for releases with MBID redirects
+- [PICARD-2493](https://tickets.metabrainz.org/browse/PICARD-2493) - If locales for picard-countries or picard-attributes are missing UI translation is completely skipped
+- [PICARD-2494](https://tickets.metabrainz.org/browse/PICARD-2494) - Remove empty info dialog for "[standalone-recordings]" special album entry
+
+
 # Version 2.8 - 2022-05-24
 
 ## Tasks
