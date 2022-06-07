@@ -34,6 +34,7 @@ from functools import partial
 from html import escape
 from operator import attrgetter
 import os.path
+import re
 
 from PyQt5 import (
     QtCore,
@@ -601,7 +602,7 @@ class PluginsOptionsPage(OptionsPage):
             text.append(plugin.description + "<hr width='90%'/>")
         infos = [
             (_("Name"), escape(plugin.name)),
-            (_("Authors"), escape(plugin.author)),
+            (_("Authors"), self.link_authors(plugin.author)),
             (_("License"), plugin.license),
             (_("Files"), escape(plugin.files_list)),
         ]
@@ -609,6 +610,22 @@ class PluginsOptionsPage(OptionsPage):
             if value:
                 text.append("<b>{0}:</b> {1}".format(label, value))
         self.ui.details.setText("<p>{0}</p>".format("<br/>\n".join(text)))
+
+    @staticmethod
+    def link_authors(authors):
+        formatted_authors = []
+        re_author = re.compile(r"(?P<author>.*?)\s*<(?P<email>.*?)>")
+        for author in authors.split(','):
+            match = re_author.match(author.strip())
+            if match:
+                author_str = '<a href="mailto:{email}">{author}</a>'.format(
+                    email=escape(match['email']),
+                    author=escape(match['author']),
+                )
+                formatted_authors.append(author_str)
+            else:
+                formatted_authors.append(escape(author))
+        return ', '.join(formatted_authors)
 
     def change_details(self):
         item = self.selected_item()
