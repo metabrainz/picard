@@ -1044,7 +1044,7 @@ def process_picard_args():
                         help="location of the configuration file")
     parser.add_argument("-d", "--debug", action='store_true',
                         help="enable debug-level logging")
-    parser.add_argument("--stand-alone-instance", action='store_true',
+    parser.add_argument("-s", "--stand-alone-instance", action='store_true',
                         help="force create new Picard instance")
     parser.add_argument("-M", "--no-player", action='store_true',
                         help="disable built-in media player")
@@ -1138,3 +1138,6 @@ def main(localedir=None, autoupdate=True):
 
         tagger.startTimer(1000)
         sys.exit(tagger.run())
+    else:
+        # just a custom exit code to show that picard instance wasn't created
+        sys.exit(30403)
