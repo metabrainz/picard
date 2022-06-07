@@ -122,16 +122,7 @@ class Pipe:
                 os.mkfifo(self.path)
             # no parent dirs detected, need to create them
             except FileNotFoundError:
-                dirs = self.path.split("/")
-                # we have to remove pipe name while creating dirs not to make it a dir
-                # also, the first index is "", because we're on *nix
-                dirs.pop(-1)
-                dirs.pop(0)
-                path = "/"
-                for d in dirs:
-                    path += d + "/"
-                    if not os.path.exists(path):
-                        os.mkdir(path)
+                os.makedirs(self.path)
                 os.mkfifo(self.path)
         except PermissionError:
             self.permission_error_happened = True
