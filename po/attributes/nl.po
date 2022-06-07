@@ -2,8 +2,8 @@
 # Translators:
 # reneweesp <bmom43@hotmail.com>, 2017
 # Maurits Meulenbelt <email address hidden>, 2012
-# Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2012
-# Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2013-2022
+# Maurits Meulenbelt, 2012
+# Maurits Meulenbelt, 2013-2022
 # Nikolai Prokoschenko <email address hidden>, 2011
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # Niko Strijbol <strijbol.niko@gmail.com>, 2018
@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2012-05-24 18:52+0000\n"
-"Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2013-2022\n"
+"Last-Translator: Maurits Meulenbelt, 2013-2022\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -186,7 +186,7 @@ msgstr "Een ballet is muziek die is gecomponeerd om samen met choreografie te wo
 #: DB:release_packaging/description:19
 msgctxt "release_packaging"
 msgid "A box usually containing multiple discs as part of a boxed set."
-msgstr ""
+msgstr "Een doos met meestal meerdere cd’s als onderdeel van een boxset."
 
 #: DB:work_type/description:3
 msgctxt "work_type"

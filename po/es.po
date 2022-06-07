@@ -84,7 +84,7 @@ msgstr "Archivos desagrupados"
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
 msgstr[0] "Añadida %(count)i publicación a la colección \"%(name)s\""
-msgstr[1] ""
+msgstr[1] "Añadidas %(count)i publicaciones a la colección \"%(name)s\""
 msgstr[2] "Añadidas %(count)i publicaciones a la colección \"%(name)s\""
 
 #: picard/collection.py:86
@@ -92,7 +92,7 @@ msgstr[2] "Añadidas %(count)i publicaciones a la colección \"%(name)s\""
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
 msgstr[0] "Eliminada %(count)i publicación de la colección \"%(name)s\""
-msgstr[1] ""
+msgstr[1] "Eliminadas %(count)i publicaciones de la colección \"%(name)s\""
 msgstr[2] "Eliminadas %(count)i publicaciones de la colección \"%(name)s\""
 
 #: picard/collection.py:97
@@ -3675,7 +3675,7 @@ msgstr "Actualizar la lista"
 msgid "%s (%i release)"
 msgid_plural "%s (%i releases)"
 msgstr[0] "%s (%i publicación)"
-msgstr[1] ""
+msgstr[1] "%s (%i publicaciones)"
 msgstr[2] "%s (%i publicaciones)"
 
 #: picard/ui/colors.py:37
@@ -3904,7 +3904,7 @@ msgstr "&Información"
 msgid "%i file in this track"
 msgid_plural "%i files in this track"
 msgstr[0] "%i fichero en esta pista"
-msgstr[1] ""
+msgstr[1] "%i ficheros en esta pista"
 msgstr[2] "%i ficheros en esta pista"
 
 #: picard/ui/infodialog.py:409
@@ -4215,7 +4215,7 @@ msgid ""
 msgid_plural ""
 "There are %d unsaved files. Closing Picard will lose all unsaved changes."
 msgstr[0] "Hay %d archivo no guardado. Si cierra Picard perderá todos los cambios sin guardar."
-msgstr[1] ""
+msgstr[1] "Hay %d archivos no guardados. Si cierras Picard perderás todos los cambios sin guardar."
 msgstr[2] "Hay %d archivos no guardados. Si cierras Picard perderás todos los cambios sin guardar."
 
 #: picard/ui/mainwindow.py:347
@@ -4740,7 +4740,7 @@ msgstr ""
 msgid "(different across %d item)"
 msgid_plural "(different across %d items)"
 msgstr[0] "(varía en %d elemento)"
-msgstr[1] ""
+msgstr[1] "(varía en %d elementos)"
 msgstr[2] "(varía en %d elementos)"
 
 #: picard/ui/metadatabox.py:120
@@ -4748,7 +4748,7 @@ msgstr[2] "(varía en %d elementos)"
 msgid "(missing from %d item)"
 msgid_plural "(missing from %d items)"
 msgstr[0] "(falta en %d elemento)"
-msgstr[1] ""
+msgstr[1] "(falta en %d elementos)"
 msgstr[2] "(falta en %d elementos)"
 
 #: picard/ui/metadatabox.py:218
@@ -4807,7 +4807,7 @@ msgstr "Remover de la lista 'Etiquetas Preservadas'"
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] ""
-msgstr[1] ""
+msgstr[1] "Usar valor original"
 msgstr[2] "Usar valor original"
 
 #: picard/ui/metadatabox.py:439
