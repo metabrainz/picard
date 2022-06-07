@@ -129,7 +129,7 @@ class Pipe:
                 dirs.pop(0)
                 path = "/"
                 for d in dirs:
-                    path += d
+                    path += d + "/"
                     if not os.path.exists(path):
                         os.mkdir(path)
                 os.mkfifo(self.path)
