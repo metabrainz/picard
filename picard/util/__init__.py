@@ -905,24 +905,6 @@ def find_best_match(candidates, no_match):
     return BestMatch(similarity=best_match.similarity, result=best_match)
 
 
-def get_qt_enum(cls, attr_class):
-    """
-    Generate all the names of attributes inside a class that are instances of a specific class
-
-    Args:
-        cls: the class in which to search attributes
-        attr_class: class of attributes to match
-
-    Example:
-        >>> from PyQt6.Qt import Qt
-        >>> print(list(get_qt_enum(Qt, Qt.CoordinateSystem)))
-        ['DeviceCoordinates', 'LogicalCoordinates']
-    """
-    for key in dir(cls):
-        if isinstance(getattr(cls, key), attr_class):
-            yield key
-
-
 def limited_join(a_list, limit, join_string='+', middle_string='…'):
     """Join elements of a list with `join_string`
     If list is longer than `limit`, middle elements will be dropped,
