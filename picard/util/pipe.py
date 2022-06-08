@@ -23,12 +23,11 @@ import concurrent.futures
 import os
 from typing import Optional
 
-#from picard.const.sys import (
-#    IS_MACOS,
-#    IS_WIN,
-#)
+from picard.const.sys import (
+    IS_MACOS,
+    IS_WIN,
+)
 
-IS_WIN = False
 
 if IS_WIN:
     import win32pipe  # type: ignore
