@@ -38,7 +38,7 @@ import threading
 
 import fasteners
 
-from PyQt5 import QtCore
+from PyQt6 import QtCore
 
 from picard import (
     PICARD_APP_NAME,

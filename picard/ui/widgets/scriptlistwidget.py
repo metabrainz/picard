@@ -24,7 +24,7 @@
 from functools import partial
 import threading
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtGui,
     QtWidgets,

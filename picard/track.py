@@ -46,7 +46,7 @@ from collections import (
 import re
 import traceback
 
-from PyQt5 import QtCore
+from PyQt6 import QtCore
 
 from picard import log
 from picard.config import get_config

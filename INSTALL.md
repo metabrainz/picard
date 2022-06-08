@@ -9,7 +9,7 @@ Before installing Picard from source, you need to check you have the following d
 Required:
 
 * [Python 3.7 or newer](https://python.org/download)
-* [PyQt 5.11 or newer](https://riverbankcomputing.com/software/pyqt/download)
+* [PyQt 6.2 or newer](https://riverbankcomputing.com/software/pyqt/download)
 * [Mutagen 1.37 or newer](https://mutagen.readthedocs.io/)
 * [PyYAML 5.1 or newer](https://pyyaml.org/)
 * [python-dateutil](https://dateutil.readthedocs.io/en/stable/)
@@ -35,7 +35,7 @@ Optional but recommended:
 We recommend you use [pip](https://pip.pypa.io/en/stable/) to install the Python
 dependencies:
 
-Run the following command to install PyQt5, Mutagen and discid:
+Run the following command to install PyQt6, Mutagen and discid:
 
     pip3 install -r requirements.txt
 
@@ -106,7 +106,7 @@ For embedded multimedia player support (optional):
     apt install python3-pyqt5.qtmultimedia libqt5multimedia5-plugins
 
 For other distributions, check your distribution's documentation
-on how to install the packages for Qt5, PyQt5, Python3 C headers,
+on how to install the packages for Qt6, PyQt6, Python3 C headers,
 and Python3 venv.
 
 At top of source directory, create a .venv directory:

@@ -42,7 +42,7 @@ from collections import (
 from operator import attrgetter
 import re
 
-from PyQt5 import QtCore
+from PyQt6 import QtCore
 
 from picard.config import get_config
 from picard.file import File

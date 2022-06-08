@@ -68,7 +68,7 @@ class AbstractProgressStatusIndicator:
 
 
 if IS_WIN:
-    from PyQt5.QtWinExtras import QWinTaskbarButton
+    from PyQt6.QtWinExtras import QWinTaskbarButton
 
     class WindowsTaskbarStatusIndicator(AbstractProgressStatusIndicator):
         def __init__(self, window):
@@ -94,12 +94,12 @@ elif not (IS_MACOS or IS_HAIKU):
     QDBusConnection = None
 
     try:
-        from PyQt5.QtCore import (
+        from PyQt6.QtCore import (
             Q_CLASSINFO,
             QObject,
             pyqtSlot,
         )
-        from PyQt5.QtDBus import (
+        from PyQt6.QtDBus import (
             QDBusAbstractAdaptor,
             QDBusConnection,
             QDBusMessage,

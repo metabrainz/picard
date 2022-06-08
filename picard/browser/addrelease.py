@@ -25,7 +25,7 @@
 from html import escape
 from secrets import token_bytes
 
-from PyQt5.QtCore import QCoreApplication
+from PyQt6.QtCore import QCoreApplication
 
 from picard import log
 from picard.util import format_time

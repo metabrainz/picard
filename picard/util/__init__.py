@@ -61,8 +61,8 @@ import unicodedata
 
 from dateutil.parser import parse
 
-from PyQt5 import QtCore
-from PyQt5.QtGui import QDesktopServices
+from PyQt6 import QtCore
+from PyQt6.QtGui import QDesktopServices
 
 from picard import log
 from picard.const import (
@@ -914,7 +914,7 @@ def get_qt_enum(cls, attr_class):
         attr_class: class of attributes to match
 
     Example:
-        >>> from PyQt5.Qt import Qt
+        >>> from PyQt6.Qt import Qt
         >>> print(list(get_qt_enum(Qt, Qt.CoordinateSystem)))
         ['DeviceCoordinates', 'LogicalCoordinates']
     """

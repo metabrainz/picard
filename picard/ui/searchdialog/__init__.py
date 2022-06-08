@@ -24,7 +24,7 @@
 
 from collections import namedtuple
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtGui,
     QtNetwork,

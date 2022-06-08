@@ -22,7 +22,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt5.QtCore import QByteArray
+from PyQt6.QtCore import QByteArray
 
 from test.test_config import TestPicardConfigCommon
 

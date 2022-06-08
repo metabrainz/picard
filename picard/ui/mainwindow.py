@@ -52,7 +52,7 @@ from functools import partial
 import itertools
 import os.path
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtGui,
     QtWidgets,

@@ -47,7 +47,7 @@ from collections import (
 from enum import IntEnum
 import traceback
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtNetwork,
 )

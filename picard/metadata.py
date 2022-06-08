@@ -43,7 +43,7 @@ from collections.abc import (
 )
 from functools import partial
 
-from PyQt5.QtCore import QObject
+from PyQt6.QtCore import QObject
 
 from picard.config import get_config
 from picard.mbjson import (

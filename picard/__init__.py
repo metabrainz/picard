@@ -104,13 +104,13 @@ def crash_handler():
         logfile = None
 
     # Display the crash information to the user as a dialog. This requires
-    # importing Qt5 and has some potential to fail if things are broken.
-    from PyQt5.QtCore import (
+    # importing Qt6 and has some potential to fail if things are broken.
+    from PyQt6.QtCore import (
         QCoreApplication,
         Qt,
         QUrl,
     )
-    from PyQt5.QtWidgets import (
+    from PyQt6.QtWidgets import (
         QApplication,
         QMessageBox,
     )

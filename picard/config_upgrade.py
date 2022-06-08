@@ -29,7 +29,7 @@
 
 import re
 
-from PyQt5 import QtWidgets
+from PyQt6 import QtWidgets
 
 from picard import log
 from picard.config import (

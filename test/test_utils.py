@@ -491,7 +491,7 @@ class SortBySimilarity(PicardTestCase):
 class GetQtEnum(PicardTestCase):
 
     def test_get_qt_enum(self):
-        from PyQt5.QtCore import QStandardPaths
+        from PyQt6.QtCore import QStandardPaths
         keys = set(util.get_qt_enum(QStandardPaths, QStandardPaths.LocateOption))
         self.assertIn('LocateFile', keys)
         self.assertIn('LocateDirectory', keys)

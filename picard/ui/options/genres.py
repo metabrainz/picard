@@ -22,8 +22,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import (
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import (
     QTextBlockFormat,
     QTextCursor,
 )

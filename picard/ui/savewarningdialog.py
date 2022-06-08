@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtWidgets,
 )
@@ -84,4 +84,4 @@ class SaveWarningDialog():
         self.disable = not self.disable
 
     def show(self):
-        return self.msg.exec_() == QtWidgets.QMessageBox.StandardButton.Ok, self.disable
+        return self.msg.exec() == QtWidgets.QMessageBox.StandardButton.Ok, self.disable

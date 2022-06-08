@@ -25,7 +25,7 @@ import os
 import os.path
 import shutil
 
-from PyQt5.QtCore import QStandardPaths
+from PyQt6.QtCore import QStandardPaths
 
 from picard.util import get_qt_enum
 

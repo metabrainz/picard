@@ -31,7 +31,7 @@ from collections import (
 from functools import partial
 import json
 
-from PyQt5 import QtCore
+from PyQt6 import QtCore
 
 from picard import log
 from picard.acoustid.json_helpers import parse_recording

@@ -34,7 +34,7 @@ from tempfile import (
 import unittest
 from unittest.mock import Mock
 
-from PyQt5 import QtCore
+from PyQt6 import QtCore
 
 from picard import (
     config,

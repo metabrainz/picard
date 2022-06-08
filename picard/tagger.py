@@ -60,7 +60,7 @@ import time
 from urllib.parse import urlparse
 from uuid import uuid4
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -1561,7 +1561,7 @@ def main(localedir=None, autoupdate=True):
         sys.exit(EXIT_NO_NEW_INSTANCE)
 
     try:
-        from PyQt5.QtDBus import QDBusConnection
+        from PyQt6.QtDBus import QDBusConnection
         dbus = QDBusConnection.sessionBus()
         dbus.registerService(PICARD_APP_ID)
     except ImportError:

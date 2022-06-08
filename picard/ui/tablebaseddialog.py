@@ -29,12 +29,12 @@ This can be used for basic dialogs that mostly contain a table as its core featu
 from abc import abstractmethod
 from collections import OrderedDict
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtGui,
     QtWidgets,
 )
-from PyQt5.QtCore import pyqtSignal
+from PyQt6.QtCore import pyqtSignal
 
 from picard import log
 from picard.config import get_config

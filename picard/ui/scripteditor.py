@@ -27,12 +27,12 @@ from functools import partial
 import os.path
 import random
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtGui,
     QtWidgets,
 )
-from PyQt5.QtGui import QPalette
+from PyQt6.QtGui import QPalette
 
 from picard import log
 from picard.config import (

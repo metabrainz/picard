@@ -31,11 +31,11 @@
 
 import os.path
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtWidgets,
 )
-from PyQt5.QtCore import QStandardPaths
+from PyQt6.QtCore import QStandardPaths
 
 from picard.config import (
     BoolOption,
@@ -103,7 +103,7 @@ class InterfaceOptionsPage(OptionsPage):
         },
         UiTheme.SYSTEM: {
             'label': N_("System"),
-            'desc': N_("The Qt5 theme configured in the desktop environment"),
+            'desc': N_("The Qt6 theme configured in the desktop environment"),
         },
     }
 

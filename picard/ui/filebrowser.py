@@ -31,11 +31,11 @@
 
 import os
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtWidgets,
 )
-from PyQt5.QtCore import QStandardPaths
+from PyQt6.QtCore import QStandardPaths
 
 from picard import log
 from picard.config import (

@@ -23,7 +23,7 @@
 import locale
 import os
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -46,7 +46,7 @@ from picard.ui.widgets import (
 
 
 try:
-    from PyQt5 import QtMultimedia
+    from PyQt6 import QtMultimedia
 except ImportError as e:
     qt_multimedia_available = False
     qt_multimedia_errmsg = e.msg
