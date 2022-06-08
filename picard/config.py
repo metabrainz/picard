@@ -471,8 +471,12 @@ class FloatOption(Option):
 
 class ListOption(Option):
 
-    convert = list
-    qtype = 'QVariantList'
+    def convert(self, value):
+        if value is None:
+            return []
+        elif isinstance(value, str):
+            raise ValueError('Expected list or list like object, got "%r"' % value)
+        return list(value)
 
 
 config = None
