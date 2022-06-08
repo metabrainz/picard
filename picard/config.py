@@ -34,9 +34,6 @@ import inspect
 from operator import itemgetter
 import os
 import shutil
-import threading
-
-import fasteners
 
 from PyQt6 import QtCore
 
@@ -251,30 +248,6 @@ class Config(QtCore.QSettings):
             TextOption('application', 'version', '0.0.0dev0')
         self._version = Version.from_string(self.application['version'])
         self._upgrade_hooks = dict()
-
-    def event(self, event):
-        if event.type() == QtCore.QEvent.Type.UpdateRequest:
-            # Syncing the config file can trigger a deadlock between QSettings internal mutex and
-            # the Python GIL in PyQt up to 5.15.2. Workaround this by handling this ourselves
-            # with custom file locking.
-            # See also https: // tickets.metabrainz.org/browse/PICARD-2088
-            log.debug("Config file update requested on thread %r", threading.get_ident())
-            self.sync()
-            return True
-        else:
-            return super().event(event)
-
-    def sync(self):
-        # Custom file locking for save multi process syncing of the config file. This is needed
-        # as we have atomicSyncRequired disabled.
-        with fasteners.InterProcessLock(self.get_lockfile_name()):
-            super().sync()
-
-    def get_lockfile_name(self):
-        filename = self.fileName()
-        directory = os.path.dirname(filename)
-        filename = '.' + os.path.basename(filename) + '.synclock'
-        return os.path.join(directory, filename)
 
     @classmethod
     def from_app(cls, parent):

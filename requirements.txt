@@ -1,5 +1,4 @@
 discid~=1.0
-fasteners~=0.14
 Markdown~=3.2
 mutagen~=1.37
 PyJWT~=2.0
