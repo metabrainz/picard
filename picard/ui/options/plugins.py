@@ -614,9 +614,10 @@ class PluginsOptionsPage(OptionsPage):
     @staticmethod
     def link_authors(authors):
         formatted_authors = []
-        re_author = re.compile(r"(?P<author>.*?)\s*<(?P<email>.*?)>")
+        re_author = re.compile(r"(?P<author>.*?)\s*<(?P<email>.*?@.*?)>")
         for author in authors.split(','):
-            match = re_author.match(author.strip())
+            author = author.strip()
+            match = re_author.fullmatch(author)
             if match:
                 author_str = '<a href="mailto:{email}">{author}</a>'.format(
                     email=escape(match['email']),
