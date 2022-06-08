@@ -42,13 +42,13 @@ class ProfileListWidget(QtWidgets.QListWidget):
         item = self.itemAt(event.x(), event.y())
         if item:
             menu = QtWidgets.QMenu(self)
-            rename_action = QtWidgets.QAction(_("Rename profile"), self)
+            rename_action = QtGui.QAction(_("Rename profile"), self)
             rename_action.triggered.connect(partial(self.editItem, item))
             menu.addAction(rename_action)
-            remove_action = QtWidgets.QAction(_("Remove profile"), self)
+            remove_action = QtGui.QAction(_("Remove profile"), self)
             remove_action.triggered.connect(partial(self.remove_profile, item))
             menu.addAction(remove_action)
-            menu.exec_(event.globalPos())
+            menu.exec(event.globalPos())
 
     def keyPressEvent(self, event):
         if event.matches(QtGui.QKeySequence.StandardKey.Delete):

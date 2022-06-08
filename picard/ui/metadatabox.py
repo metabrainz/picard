@@ -238,19 +238,19 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.selection_dirty = False
         self.editing = None  # the QTableWidgetItem being edited
         self.clipboard = [""]
-        self.add_tag_action = QtWidgets.QAction(_("Add New Tag…"), parent)
+        self.add_tag_action = QtGui.QAction(_("Add New Tag…"), parent)
         self.add_tag_action.triggered.connect(partial(self.edit_tag, ""))
-        self.changes_first_action = QtWidgets.QAction(_("Show Changes First"), parent)
+        self.changes_first_action = QtGui.QAction(_("Show Changes First"), parent)
         self.changes_first_action.setCheckable(True)
         self.changes_first_action.setChecked(config.persist['show_changes_first'])
         self.changes_first_action.toggled.connect(self.toggle_changes_first)
         # TR: Keyboard shortcut for "Add New Tag…"
-        self.add_tag_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence(_("Alt+Shift+A")), self, partial(self.edit_tag, ""))
+        self.add_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+A")), self, partial(self.edit_tag, ""))
         self.add_tag_action.setShortcut(self.add_tag_shortcut.key())
         # TR: Keyboard shortcut for "Edit…" (tag)
-        self.edit_tag_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence(_("Alt+Shift+E")), self, partial(self.edit_selected_tag))
+        self.edit_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+E")), self, partial(self.edit_selected_tag))
         # TR: Keyboard shortcut for "Remove" (tag)
-        self.remove_tag_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence(_("Alt+Shift+R")), self, self.remove_selected_tags)
+        self.remove_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+R")), self, self.remove_selected_tags)
         self.preserved_tags = PreservedTags()
         self._single_file_album = False
         self._single_track_album = False
@@ -370,18 +370,18 @@ class MetadataBox(QtWidgets.QTableWidget):
             if single_tag:
                 selected_tag = tags[0]
                 editable = self.tag_is_editable(selected_tag)
-                edit_tag_action = QtWidgets.QAction(_("Edit…"), self.parent)
+                edit_tag_action = QtGui.QAction(_("Edit…"), self.parent)
                 edit_tag_action.triggered.connect(partial(self.edit_tag, selected_tag))
                 edit_tag_action.setShortcut(self.edit_tag_shortcut.key())
                 edit_tag_action.setEnabled(editable)
                 menu.addAction(edit_tag_action)
                 if selected_tag not in self.preserved_tags:
-                    add_to_preserved_tags_action = QtWidgets.QAction(_("Add to 'Preserve Tags' List"), self.parent)
+                    add_to_preserved_tags_action = QtGui.QAction(_("Add to 'Preserve Tags' List"), self.parent)
                     add_to_preserved_tags_action.triggered.connect(partial(self.preserved_tags.add, selected_tag))
                     add_to_preserved_tags_action.setEnabled(editable)
                     menu.addAction(add_to_preserved_tags_action)
                 else:
-                    remove_from_preserved_tags_action = QtWidgets.QAction(_("Remove from 'Preserve Tags' List"), self.parent)
+                    remove_from_preserved_tags_action = QtGui.QAction(_("Remove from 'Preserve Tags' List"), self.parent)
                     remove_from_preserved_tags_action.triggered.connect(partial(self.preserved_tags.discard, selected_tag))
                     remove_from_preserved_tags_action.setEnabled(editable)
                     menu.addAction(remove_from_preserved_tags_action)
@@ -397,7 +397,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                                 values = self.tag_diff.orig[tag]
                             else:
                                 values = self.tag_diff.new[tag]
-                            lookup_action = QtWidgets.QAction(_("Lookup in &Browser"), self.parent)
+                            lookup_action = QtGui.QAction(_("Lookup in &Browser"), self.parent)
                             lookup_action.triggered.connect(partial(self.open_link, values, tag))
                             menu.addAction(lookup_action)
                     if self.tag_is_removable(tag):
@@ -423,24 +423,24 @@ class MetadataBox(QtWidgets.QTableWidget):
                             objects = [album]
                             orig_values = list(album.orig_metadata.getall(tag)) or [""]
                             useorigs.append(partial(self.set_tag_values, tag, orig_values, objects))
-                remove_tag_action = QtWidgets.QAction(_("Remove"), self.parent)
+                remove_tag_action = QtGui.QAction(_("Remove"), self.parent)
                 remove_tag_action.triggered.connect(partial(self._apply_update_funcs, removals))
                 remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
                 remove_tag_action.setEnabled(bool(removals))
                 menu.addAction(remove_tag_action)
                 if useorigs:
                     name = ngettext("Use Original Value", "Use Original Values", len(useorigs))
-                    use_orig_value_action = QtWidgets.QAction(name, self.parent)
+                    use_orig_value_action = QtGui.QAction(name, self.parent)
                     use_orig_value_action.triggered.connect(partial(self._apply_update_funcs, useorigs))
                     menu.addAction(use_orig_value_action)
                     menu.addSeparator()
                 if single_tag:
                     menu.addSeparator()
-                    copy_action = QtWidgets.QAction(icontheme.lookup('edit-copy', icontheme.ICON_SIZE_MENU), _("&Copy"), self)
+                    copy_action = QtGui.QAction(icontheme.lookup('edit-copy', icontheme.ICON_SIZE_MENU), _("&Copy"), self)
                     copy_action.triggered.connect(self.copy_value)
                     copy_action.setShortcut(QtGui.QKeySequence.StandardKey.Copy)
                     menu.addAction(copy_action)
-                    paste_action = QtWidgets.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _("&Paste"), self)
+                    paste_action = QtGui.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _("&Paste"), self)
                     paste_action.triggered.connect(self.paste_value)
                     paste_action.setShortcut(QtGui.QKeySequence.StandardKey.Paste)
                     paste_action.setEnabled(editable)
@@ -450,7 +450,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             menu.addAction(self.add_tag_action)
             menu.addSeparator()
         menu.addAction(self.changes_first_action)
-        menu.exec_(event.globalPos())
+        menu.exec(event.globalPos())
         event.accept()
 
     def _apply_update_funcs(self, funcs):
@@ -460,7 +460,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.parent.update_selection(new_selection=False, drop_album_caches=True)
 
     def edit_tag(self, tag):
-        EditTagDialog(self.parent, tag).exec_()
+        EditTagDialog(self.parent, tag).exec()
 
     def edit_selected_tag(self):
         tags = self.selected_tags(filter_func=self.tag_is_editable)

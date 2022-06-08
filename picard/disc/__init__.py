@@ -116,7 +116,7 @@ class Disc(QtCore.QObject):
                 log.error(traceback.format_exc())
 
         dialog = CDLookupDialog(releases, self, parent=self.tagger.window)
-        dialog.exec_()
+        dialog.exec()
 
 
 if discid is not None:

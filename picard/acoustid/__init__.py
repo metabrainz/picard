@@ -258,7 +258,7 @@ class AcoustIDClient(QtCore.QObject):
         process = QtCore.QProcess(self)
         process.setProperty('picard_finished', False)
         process.finished.connect(partial(self._on_fpcalc_finished, task))
-        process.error.connect(partial(self._on_fpcalc_error, task))
+        process.errorOccurred.connect(partial(self._on_fpcalc_error, task))
         file_path = task.file.filename
         # On Windows fpcalc.exe does not handle long paths, even if system wide
         # long path support is enabled. Ensure the path is properly prefixed.

@@ -700,7 +700,7 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.setInformativeText(_("Please try again later."))
             msgbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
             msgbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
-            msgbox.exec_()
+            msgbox.exec()
             log.error('Error occurred while trying to download the plugin: "%(plugin)s"', params)
             return
 

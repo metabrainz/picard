@@ -32,12 +32,12 @@ from PyQt6 import (
 )
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import (
+    QAction,
     QCursor,
     QKeySequence,
     QTextCursor,
 )
 from PyQt6.QtWidgets import (
-    QAction,
     QCompleter,
     QTextEdit,
     QToolTip,
@@ -349,7 +349,7 @@ class ScriptTextEdit(QTextEdit):
         menu.addSeparator()
         menu.addAction(self.wordwrap_action)
         menu.addAction(self.show_tooltips_action)
-        menu.exec_(event.globalPos())
+        menu.exec(event.globalPos())
 
     def mouseMoveEvent(self, event):
         if self._show_tooltips:

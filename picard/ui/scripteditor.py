@@ -321,7 +321,7 @@ def confirmation_dialog(parent, message):
         QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.Cancel,
         parent
     )
-    return dialog.exec_() == QtWidgets.QMessageBox.StandardButton.Ok
+    return dialog.exec() == QtWidgets.QMessageBox.StandardButton.Ok
 
 
 def synchronize_vertical_scrollbars(widgets):
@@ -533,31 +533,31 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         file_menu = main_menu.addMenu(_("&File"))
         file_menu.setToolTipsVisible(True)
 
-        self.import_action = QtWidgets.QAction(_("&Import a script file"), self)
+        self.import_action = QtGui.QAction(_("&Import a script file"), self)
         self.import_action.setToolTip(_("Import a file as a new script"))
         self.import_action.setIcon(icontheme.lookup('document-open'))
         self.import_action.triggered.connect(self.import_script)
         file_menu.addAction(self.import_action)
 
-        self.export_action = QtWidgets.QAction(_("&Export a script file"), self)
+        self.export_action = QtGui.QAction(_("&Export a script file"), self)
         self.export_action.setToolTip(_("Export the script to a file"))
         self.export_action.setIcon(icontheme.lookup('document-save'))
         self.export_action.triggered.connect(self.export_script)
         file_menu.addAction(self.export_action)
 
-        self.reset_action = QtWidgets.QAction(_("&Reset all scripts"), self)
+        self.reset_action = QtGui.QAction(_("&Reset all scripts"), self)
         self.reset_action.setToolTip(_("Reset all scripts to the saved values"))
         self.reset_action.setIcon(icontheme.lookup('view-refresh'))
         self.reset_action.triggered.connect(self.reload_from_config)
         file_menu.addAction(self.reset_action)
 
-        self.save_action = QtWidgets.QAction(_("&Save and exit"), self)
+        self.save_action = QtGui.QAction(_("&Save and exit"), self)
         self.save_action.setToolTip(_("Save changes to the script settings and exit"))
         self.save_action.setIcon(icontheme.lookup('document-save'))
         self.save_action.triggered.connect(self.make_it_so)
         file_menu.addAction(self.save_action)
 
-        self.close_action = QtWidgets.QAction(_("E&xit without saving"), self)
+        self.close_action = QtGui.QAction(_("E&xit without saving"), self)
         self.close_action.setToolTip(_("Close the script editor without saving changes"))
         self.close_action.triggered.connect(self.close)
         file_menu.addAction(self.close_action)
@@ -566,7 +566,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         script_menu = main_menu.addMenu(_("&Script"))
         script_menu.setToolTipsVisible(True)
 
-        self.details_action = QtWidgets.QAction(_("View/Edit Script &Metadata"), self)
+        self.details_action = QtGui.QAction(_("View/Edit Script &Metadata"), self)
         self.details_action.setToolTip(_("Display the details for the script"))
         self.details_action.triggered.connect(self.view_script_details)
         self.details_action.setShortcut(QtGui.QKeySequence(_("Ctrl+M")))
@@ -577,13 +577,13 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         self.make_script_template_selector_menu()
         script_menu.addMenu(self.add_action)
 
-        self.copy_action = QtWidgets.QAction(_("&Copy the current script"), self)
+        self.copy_action = QtGui.QAction(_("&Copy the current script"), self)
         self.copy_action.setToolTip(_("Save a copy of the script as a new script"))
         self.copy_action.setIcon(icontheme.lookup('edit-copy'))
         self.copy_action.triggered.connect(self.copy_script)
         script_menu.addAction(self.copy_action)
 
-        self.delete_action = QtWidgets.QAction(_("&Delete the current script"), self)
+        self.delete_action = QtGui.QAction(_("&Delete the current script"), self)
         self.delete_action.setToolTip(_("Delete the script"))
         self.delete_action.setIcon(icontheme.lookup('list-remove'))
         self.delete_action.triggered.connect(self.delete_script)
@@ -593,7 +593,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         display_menu = main_menu.addMenu(_("&View"))
         display_menu.setToolTipsVisible(True)
 
-        self.examples_action = QtWidgets.QAction(_("&Reload random example files"), self)
+        self.examples_action = QtGui.QAction(_("&Reload random example files"), self)
         self.examples_action.setToolTip(self.examples.get_tooltip_text())
         self.examples_action.setIcon(icontheme.lookup('view-refresh'))
         self.examples_action.triggered.connect(self.update_example_files)
@@ -602,7 +602,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         display_menu.addAction(self.ui.file_naming_format.wordwrap_action)
         display_menu.addAction(self.ui.file_naming_format.show_tooltips_action)
 
-        self.docs_action = QtWidgets.QAction(_("&Show documentation"), self)
+        self.docs_action = QtGui.QAction(_("&Show documentation"), self)
         self.docs_action.setToolTip(_("View the scripting documentation in a sidebar"))
         self.docs_action.triggered.connect(self.toggle_documentation)
         self.docs_action.setShortcut(QtGui.QKeySequence(_("Ctrl+H")))
@@ -614,12 +614,12 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         help_menu = main_menu.addMenu(_("&Help"))
         help_menu.setToolTipsVisible(True)
 
-        self.help_action = QtWidgets.QAction(_("&Help…"), self)
+        self.help_action = QtGui.QAction(_("&Help…"), self)
         self.help_action.setShortcut(QtGui.QKeySequence.StandardKey.HelpContents)
         self.help_action.triggered.connect(self.show_help)
         help_menu.addAction(self.help_action)
 
-        self.scripting_docs_action = QtWidgets.QAction(_("&Scripting documentation…"), self)
+        self.scripting_docs_action = QtGui.QAction(_("&Scripting documentation…"), self)
         self.scripting_docs_action.setToolTip(_("Open the scripting documentation in your browser"))
         self.scripting_docs_action.triggered.connect(self.docs_browser)
         help_menu.addAction(self.scripting_docs_action)
@@ -633,7 +633,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         self.add_action.clear()
 
         def _add_menu_item(title, script):
-            script_action = QtWidgets.QAction(title, self.add_action)
+            script_action = QtGui.QAction(title, self.add_action)
             script_action.triggered.connect(partial(self.new_script, script))
             self.add_action.addAction(script_action)
 
@@ -1116,7 +1116,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
                 ) % profile.title,
                 QtWidgets.QMessageBox.StandardButton.Ok,
                 self
-            ).exec_()
+            ).exec()
             return
 
         if confirmation_dialog(self, _("Are you sure that you want to delete the script?")):
@@ -1237,7 +1237,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
                 buttonN = box.button(QtWidgets.QMessageBox.StandardButton.No)
                 buttonN.setText(_("Copy"))
                 box.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Cancel)
-                box.exec_()
+                box.exec()
 
                 if box.clickedButton() == buttonY:
                     # Overwrite pressed
@@ -1295,7 +1295,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
                 QtWidgets.QMessageBox.Icon.Warning, error.title,
                 error.info, QtWidgets.QMessageBox.StandardButton.Ok, self
             )
-            dialog.exec_()
+            dialog.exec()
 
     def test(self):
         """Parse the script and display any errors.
@@ -1395,7 +1395,7 @@ class ScriptDetailsEditor(PicardDialog):
                 _("The script title must not be empty."),
                 QtWidgets.QMessageBox.StandardButton.Ok,
                 self
-            ).exec_()
+            ).exec()
             return
         if self.has_changed():
             last_updated = self.ui.script_last_updated

@@ -45,7 +45,7 @@ class SearchBox(QtWidgets.QWidget):
 
     def __init__(self, parent, force_advanced_search=None):
         super().__init__(parent)
-        self.search_action = QtWidgets.QAction(icontheme.lookup('system-search'), _("Search"), self)
+        self.search_action = QtGui.QAction(icontheme.lookup('system-search'), _("Search"), self)
         self.search_action.setEnabled(False)
         self.search_action.triggered.connect(self.search)
         if force_advanced_search is None:

@@ -286,7 +286,7 @@ class AddActionDialog(PicardDialog):
     @staticmethod
     def get_selected_action(action_list, parent=None):
         dialog = AddActionDialog(action_list, parent)
-        result = dialog.exec_()
+        result = dialog.exec()
         selected_action = dialog.selected_action()
         return (selected_action, result == QtWidgets.QDialog.DialogCode.Accepted)
 

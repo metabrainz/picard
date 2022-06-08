@@ -194,7 +194,7 @@ class InterfaceOptionsPage(OptionsPage):
                 restart_warning,
                 QtWidgets.QMessageBox.StandardButton.Ok,
                 self)
-            dialog.exec_()
+            dialog.exec()
         config.setting['ui_theme'] = new_theme_setting
         config.setting['ui_language'] = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
         config.setting['filebrowser_horizontal_autoscroll'] = self.ui.filebrowser_horizontal_autoscroll.isChecked()

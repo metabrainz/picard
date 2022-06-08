@@ -612,7 +612,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
             _("All supported image formats") + " (" + " ".join(extensions) + ")",
             _("All files") + " (*)",
         ])
-        if file_chooser.exec_():
+        if file_chooser.exec():
             file_urls = file_chooser.selectedUrls()
             if file_urls:
                 self.fetch_remote_image(file_urls[0])
@@ -630,27 +630,27 @@ class CoverArtBox(QtWidgets.QGroupBox):
         menu = QtWidgets.QMenu(self)
         if self.show_details_button.isVisible():
             name = _("Show more details…")
-            show_more_details_action = QtWidgets.QAction(name, self.parent)
+            show_more_details_action = QtGui.QAction(name, self.parent)
             show_more_details_action.triggered.connect(self.show_cover_art_info)
             menu.addAction(show_more_details_action)
 
         if self.orig_cover_art.isVisible():
             name = _("Keep original cover art")
-            use_orig_value_action = QtWidgets.QAction(name, self.parent)
+            use_orig_value_action = QtGui.QAction(name, self.parent)
             use_orig_value_action.triggered.connect(self.keep_original_images)
             menu.addAction(use_orig_value_action)
 
         if self.item and self.item.can_show_coverart:
             name = _("Choose local file…")
-            choose_local_file_action = QtWidgets.QAction(name, self.parent)
+            choose_local_file_action = QtGui.QAction(name, self.parent)
             choose_local_file_action.triggered.connect(self.choose_local_file)
             menu.addAction(choose_local_file_action)
 
         if not menu.isEmpty():
             menu.addSeparator()
 
-        load_image_behavior_group = QtWidgets.QActionGroup(self.parent)
-        action = QtWidgets.QAction(_("Replace front cover art"), self.parent)
+        load_image_behavior_group = QtGui.QActionGroup(self.parent)
+        action = QtGui.QAction(_("Replace front cover art"), self.parent)
         action.setCheckable(True)
         action.triggered.connect(partial(self.set_load_image_behavior, behavior='replace'))
         load_image_behavior_group.addAction(action)
@@ -659,7 +659,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
             action.setChecked(True)
         menu.addAction(action)
 
-        action = QtWidgets.QAction(_("Append front cover art"), self.parent)
+        action = QtGui.QAction(_("Append front cover art"), self.parent)
         action.setCheckable(True)
         action.triggered.connect(partial(self.set_load_image_behavior, behavior='append'))
         load_image_behavior_group.addAction(action)
@@ -667,5 +667,5 @@ class CoverArtBox(QtWidgets.QGroupBox):
             action.setChecked(True)
         menu.addAction(action)
 
-        menu.exec_(event.globalPos())
+        menu.exec(event.globalPos())
         event.accept()

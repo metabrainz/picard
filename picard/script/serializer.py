@@ -233,7 +233,7 @@ class PicardScript():
             QtWidgets.QMessageBox.StandardButton.Ok,
             parent
         )
-        dialog.exec_()
+        dialog.exec()
         return True
 
     @classmethod

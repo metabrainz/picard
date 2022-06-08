@@ -143,7 +143,7 @@ class FingerprintingOptionsPage(OptionsPage):
         self._fpcalc_valid = False
         process = QtCore.QProcess(self)
         process.finished.connect(self._on_acoustid_fpcalc_check_finished)
-        process.error.connect(self._on_acoustid_fpcalc_check_error)
+        process.errorOccurred.connect(self._on_acoustid_fpcalc_check_error)
         process.start(fpcalc, ["-v"])
 
     def _on_acoustid_fpcalc_check_finished(self, exit_code, exit_status):

@@ -374,7 +374,7 @@ class ProfilesOptionsPage(OptionsPage):
                     _("The profile title cannot be blank."),
                     QtWidgets.QMessageBox.StandardButton.Ok,
                     self
-                ).exec_()
+                ).exec()
                 item.setText(self.ui.profile_list.unique_profile_name())
             elif text != item.text():
                 # Remove leading and trailing spaces from new title.

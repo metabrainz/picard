@@ -97,7 +97,7 @@ class Player(QtCore.QObject):
             if availability == QtMultimedia.QMultimedia.AvailabilityStatus.Available:
                 log.debug("Internal player: available, QMediaPlayer set up")
                 self._player = player
-                self._player.error.connect(self._on_error)
+                self._player.errorOccurred.connect(self._on_error)
             elif availability == QtMultimedia.QMultimedia.AvailabilityStatus.ServiceMissing:
                 log.warning("Internal player: unavailable, service is missing")
             else:
@@ -194,14 +194,14 @@ class PlayerToolbar(QtWidgets.QToolBar):
 
         self.player = player
 
-        self.play_action = QtWidgets.QAction(icontheme.lookup('play'), _("Play"), self)
+        self.play_action = QtGui.QAction(icontheme.lookup('play'), _("Play"), self)
         play_tip = _("Play selected files")
         self.play_action.setToolTip(play_tip)
         self.play_action.setStatusTip(play_tip)
         self.play_action.setEnabled(False)
         self.play_action.triggered.connect(self.play)
 
-        self.pause_action = QtWidgets.QAction(icontheme.lookup('pause'), _("Pause"), self)
+        self.pause_action = QtGui.QAction(icontheme.lookup('pause'), _("Pause"), self)
         pause_tip = _("Pause or resume current playback")
         self.pause_action.setToolTip(pause_tip)
         self.pause_action.setStatusTip(pause_tip)

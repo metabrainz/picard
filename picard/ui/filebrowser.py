@@ -33,6 +33,7 @@ import os
 
 from PyQt6 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 from PyQt6.QtCore import QStandardPaths
@@ -85,19 +86,19 @@ class FileBrowser(QtWidgets.QTreeView):
         super().__init__(parent)
         self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
         self.setDragEnabled(True)
-        self.load_selected_files_action = QtWidgets.QAction(_("&Load selected files"), self)
+        self.load_selected_files_action = QtGui.QAction(_("&Load selected files"), self)
         self.load_selected_files_action.triggered.connect(self.load_selected_files)
         self.addAction(self.load_selected_files_action)
-        self.move_files_here_action = QtWidgets.QAction(_("&Move tagged files here"), self)
+        self.move_files_here_action = QtGui.QAction(_("&Move tagged files here"), self)
         self.move_files_here_action.triggered.connect(self.move_files_here)
         self.addAction(self.move_files_here_action)
-        self.toggle_hidden_action = QtWidgets.QAction(_("Show &hidden files"), self)
+        self.toggle_hidden_action = QtGui.QAction(_("Show &hidden files"), self)
         self.toggle_hidden_action.setCheckable(True)
         config = get_config()
         self.toggle_hidden_action.setChecked(config.persist['show_hidden_files'])
         self.toggle_hidden_action.toggled.connect(self.show_hidden)
         self.addAction(self.toggle_hidden_action)
-        self.set_as_starting_directory_action = QtWidgets.QAction(_("&Set as starting directory"), self)
+        self.set_as_starting_directory_action = QtGui.QAction(_("&Set as starting directory"), self)
         self.set_as_starting_directory_action.triggered.connect(self.set_as_starting_directory)
         self.addAction(self.set_as_starting_directory_action)
         self.doubleClicked.connect(self.load_file_for_item)
@@ -114,11 +115,11 @@ class FileBrowser(QtWidgets.QTreeView):
         menu.addAction(self.move_files_here_action)
         menu.addAction(self.toggle_hidden_action)
         menu.addAction(self.set_as_starting_directory_action)
-        menu.exec_(event.globalPos())
+        menu.exec(event.globalPos())
         event.accept()
 
     def _set_model(self):
-        model = QtWidgets.QFileSystemModel()
+        model = QtGui.QFileSystemModel()
         self.setModel(model)
         model.layoutChanged.connect(self._layout_changed)
         model.setRootPath("")
