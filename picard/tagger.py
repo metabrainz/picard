@@ -1059,7 +1059,6 @@ def process_picard_args():
     parser.add_argument("-V", "--long-version", action='store_true',
                         help="display long version information and exit")
     parser.add_argument('FILE', nargs='*')
-
     picard_args, unparsed_args = parser.parse_known_args()
     return picard_args, unparsed_args
 
@@ -1099,7 +1098,6 @@ def main(localedir=None, autoupdate=True):
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     picard_args, unparsed_args = process_picard_args()
-
     if picard_args.version:
         return version()
     if picard_args.long_version:
@@ -1110,34 +1108,35 @@ def main(localedir=None, autoupdate=True):
     if not should_start:
         pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR, args=picard_args.FILE)
         should_start = True in [pipe_handler.permission_error_happened, pipe_handler.is_pipe_owner]
+
+        # pipe has sent its args to existing one, doesn't need to start
+        if not should_start:
+            # just a custom exit code to show that picard instance wasn't created
+            sys.exit(30403)
+
         if pipe_handler.permission_error_happened:
             pipe_handler = None
     else:
         pipe_handler = None
 
-    # No `else` statement is needed since pipe.Pipe has already sent picard_args to the existing instance
-    if should_start:
-        try:
-            from PyQt5.QtDBus import QDBusConnection
-            dbus = QDBusConnection.sessionBus()
-            dbus.registerService(PICARD_APP_ID)
-        except ImportError:
-            pass
+    try:
+        from PyQt5.QtDBus import QDBusConnection
+        dbus = QDBusConnection.sessionBus()
+        dbus.registerService(PICARD_APP_ID)
+    except ImportError:
+        pass
 
-        tagger = Tagger(picard_args, unparsed_args, localedir, autoupdate, pipe_handler=pipe_handler)
+    tagger = Tagger(picard_args, unparsed_args, localedir, autoupdate, pipe_handler=pipe_handler)
 
-        # Initialize Qt default translations
-        translator = QtCore.QTranslator()
-        locale = QtCore.QLocale()
-        translation_path = QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.LibraryLocation.TranslationsPath)
-        log.debug("Looking for Qt locale %s in %s", locale.name(), translation_path)
-        if translator.load(locale, "qtbase_", directory=translation_path):
-            tagger.installTranslator(translator)
-        else:
-            log.debug('Qt locale %s not available', locale.name())
-
-        tagger.startTimer(1000)
-        sys.exit(tagger.run())
+    # Initialize Qt default translations
+    translator = QtCore.QTranslator()
+    locale = QtCore.QLocale()
+    translation_path = QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.LibraryLocation.TranslationsPath)
+    log.debug("Looking for Qt locale %s in %s", locale.name(), translation_path)
+    if translator.load(locale, "qtbase_", directory=translation_path):
+        tagger.installTranslator(translator)
     else:
-        # just a custom exit code to show that picard instance wasn't created
-        sys.exit(30403)
+        log.debug('Qt locale %s not available', locale.name())
+
+    tagger.startTimer(1000)
+    sys.exit(tagger.run())
