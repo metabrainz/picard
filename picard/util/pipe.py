@@ -23,11 +23,12 @@ import concurrent.futures
 import os
 from typing import Optional
 
-from picard.const.sys import (
-    IS_MACOS,
-    IS_WIN,
-)
+#from picard.const.sys import (
+#    IS_MACOS,
+#    IS_WIN,
+#)
 
+IS_WIN = False
 
 if IS_WIN:
     import win32pipe  # type: ignore
@@ -42,36 +43,36 @@ class PipeError(Exception):
 class PipeErrorInvalidArgs(PipeError):
     MESSAGE = "ERROR: Pipe() args argument has to be iterable"
 
-    def __init__(self, t):
-        raise PipeError(f"{self.MESSAGE}, {type(t)} provied.")
+    def __init__(self, msg):
+        super().__init__(f"{self.MESSAGE}: {msg}.")
 
 
 class PipeErrorNotFound(PipeError):
     MESSAGE = "ERROR: Pipe doesn't exist."
 
     def __init__(self):
-        raise PipeError(self.MESSAGE)
+        super().__init__(self.MESSAGE)
 
 
 class PipeErrorBroken(PipeError):
     MESSAGE = "ERROR: Pipe is broken."
 
     def __init__(self):
-        raise PipeError(self.MESSAGE)
+        super().__init__(self.MESSAGE)
 
 
 class PipeErrorInvalidResponse(PipeError):
     MESSAGE = "ERROR: Invalid response from pipe:"
 
     def __init__(self, response):
-        raise PipeError(f"{self.MESSAGE} {response}")
+        super().__init__(f"{self.MESSAGE} {response}")
 
 
 class PipeErrorWin(PipeError):
     MESSAGE = "ERROR: Windows API error\n"
 
     def __init__(self, winerror):
-        raise PipeError(f"{self.MESSAGE}{winerror}")
+        super().__init__(f"{self.MESSAGE}{winerror}")
 
 
 class Pipe:
@@ -82,13 +83,13 @@ class Pipe:
     def __init__(self, app_name: str, app_version: str, args=None):
         if args is None:
             args = tuple()
-        elif args is str:
+        elif isinstance(args, str):
             args = (args,)
         else:
             try:
                 args = tuple(args)
-            except TypeError:
-                raise PipeErrorInvalidArgs(args)
+            except TypeError as exc:
+                raise PipeErrorInvalidArgs(exc)
 
         if not args:
             args = (self.MESSAGE_TO_IGNORE,)
@@ -252,11 +253,11 @@ class Pipe:
 
         except WinApiError as err:
             if err.winerror == self.__FILE_NOT_FOUND_ERROR_CODE:
-                raise PipeErrorNotFound
+                raise PipeErrorNotFound from None
             elif err.winerror == self.__BROKEN_PIPE_ERROR_CODE:
-                raise PipeErrorBroken
+                raise PipeErrorBroken from None
             else:
-                raise PipeErrorWin(f"{err.winerror}; {err.funcname}; {err.strerror}")
+                raise PipeErrorWin(f"{err.winerror}; {err.funcname}; {err.strerror}") from None
 
         # response[0] stores an exit code while response[1] an actual response
         if response:
@@ -274,9 +275,6 @@ class Pipe:
                 with open(self.path, 'r') as fifo:
                     response = fifo.read().strip()
             except FileNotFoundError:
-                raise PipeErrorNotFound
+                raise PipeErrorNotFound from None
 
-        if response:
-            return response
-        else:
-            return Pipe.NO_RESPONSE_MESSAGE
+        return response or Pipe.NO_RESPONSE_MESSAGE

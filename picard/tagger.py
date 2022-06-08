@@ -1107,7 +1107,7 @@ def main(localedir=None, autoupdate=True):
 
     if not should_start:
         pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR, args=picard_args.FILE)
-        should_start = True in [pipe_handler.permission_error_happened, pipe_handler.is_pipe_owner]
+        should_start = True in {pipe_handler.permission_error_happened, pipe_handler.is_pipe_owner}
 
         # pipe has sent its args to existing one, doesn't need to start
         if not should_start:
