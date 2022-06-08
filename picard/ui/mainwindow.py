@@ -737,11 +737,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         action.triggered.connect(self.tagger.lookup_cd)
         self.cd_lookup_action = action
 
-        self.cd_lookup_menu = QtWidgets.QMenu(_("Lookup &CD..."))
-        self.cd_lookup_menu.triggered.connect(self.tagger.lookup_cd)
+        menu = QtWidgets.QMenu(_("Lookup &CD..."))
+        menu.setIcon(icontheme.lookup('media-optical'))
+        menu.triggered.connect(self.tagger.lookup_cd)
+        self.cd_lookup_menu = menu
         if discid is None:
             log.warning("CDROM: discid library not found - Lookup CD functionality disabled")
             self.cd_lookup_action.setEnabled(False)
+            self.cd_lookup_menu.setEnabled(False)
         else:
             thread.run_task(get_cdrom_drives, self._update_cd_lookup_actions)
 
@@ -937,13 +940,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             reconnect(self.cd_lookup_action.triggered, self.tagger.lookup_cd)
 
     def _update_cd_lookup_button(self):
-        if self.cd_lookup_menu.actions():
-            button = self.toolbar.widgetForAction(self.cd_lookup_action)
-            if button:
+        button = self.toolbar.widgetForAction(self.cd_lookup_action)
+        enabled = bool(self.cd_lookup_menu.actions() and discid)
+        self.cd_lookup_menu.setEnabled(enabled)
+        if button:
+            if enabled:
                 button.setPopupMode(QtWidgets.QToolButton.ToolButtonPopupMode.MenuButtonPopup)
-            self.cd_lookup_action.setMenu(self.cd_lookup_menu)
-        else:
-            self.cd_lookup_action.setMenu(None)
+                button.setMenu(self.cd_lookup_menu)
+            else:
+                button.setMenu(None)
 
     def toggle_rename_files(self, checked):
         config = get_config()
@@ -1027,7 +1032,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addAction(self.options_action)
         menu = self.menuBar().addMenu(_("&Tools"))
         menu.addAction(self.refresh_action)
-        menu.addAction(self.cd_lookup_action)
+        menu.addMenu(self.cd_lookup_menu)
         menu.addAction(self.autotag_action)
         menu.addAction(self.analyze_action)
         menu.addAction(self.cluster_action)
