@@ -419,11 +419,7 @@ class WebService(QtCore.QObject):
 
     def set_transfer_timeout(self, timeout):
         timeout_ms = timeout * 1000
-        if hasattr(self.manager, 'setTransferTimeout'):  # Available since Qt 5.15
-            self.manager.setTransferTimeout(timeout_ms)
-            self._transfer_timeout = 0
-        else:  # Use fallback implementation
-            self._transfer_timeout = timeout_ms
+        self.manager.setTransferTimeout(timeout_ms)
 
     def _send_request(self, request, access_token=None):
         hostkey = request.get_host_key()
@@ -433,31 +429,7 @@ class WebService(QtCore.QObject):
         send = self._request_methods[request.method]
         data = request.data
         reply = send(request, data.encode('utf-8')) if data is not None else send(request)
-        self._start_transfer_timeout(reply)
         self._active_requests[reply] = request
-
-    def _start_transfer_timeout(self, reply):
-        if not self._transfer_timeout:
-            return
-        # Fallback implementation of a transfer timeout for Qt < 5.15.
-        # Aborts a request if no data gets transferred for TRANSFER_TIMEOUT milliseconds.
-        timer = QtCore.QTimer(self)
-        timer.setSingleShot(True)
-        timer.setTimerType(QtCore.Qt.TimerType.PreciseTimer)
-        timer.timeout.connect(partial(self._timeout_request, reply))
-        reply.finished.connect(timer.stop)
-        reset_callback = partial(self._reset_transfer_timeout, timer)
-        reply.uploadProgress.connect(reset_callback)
-        reply.downloadProgress.connect(reset_callback)
-        timer.start(self._transfer_timeout)
-
-    def _reset_transfer_timeout(self, timer, bytesTransferred, bytesTotal):
-        timer.start(self._transfer_timeout)
-
-    @staticmethod
-    def _timeout_request(reply):
-        if reply.isRunning():
-            reply.abort()
 
     def _start_request(self, request):
         if request.mblogin and request.path != "/oauth2/token":
