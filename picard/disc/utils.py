@@ -50,7 +50,7 @@ def calculate_mb_toc_numbers(toc):
     toc = _remove_data_track(toc)
     num_tracks = len(toc)
     if not num_tracks:
-        raise NotSupportedTOCError("Empty track list: %s", toc)
+        raise NotSupportedTOCError("Empty track list")
 
     expected_tracknums = tuple(range(1, num_tracks+1))
     tracknums = tuple(e.number for e in toc)
