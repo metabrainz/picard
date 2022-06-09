@@ -18,10 +18,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
 import yaml
 
-from picard.disc.utils import calculate_mb_toc_numbers
+from picard.disc.utils import (
+    TocEntry,
+    calculate_mb_toc_numbers,
+)
 
 
 def toc_from_file(path):
@@ -32,11 +34,7 @@ def toc_from_file(path):
     with open(path, encoding='utf-8') as f:
         data = yaml.safe_load(f)
         toc_entries = (
-            {
-                'num': num,
-                'start_sector': t['Start sector'],
-                'end_sector': t['End sector'],
-            }
+            TocEntry(num, t['Start sector'], t['End sector'])
             for num, t in data['TOC'].items()
         )
         return calculate_mb_toc_numbers(toc_entries)

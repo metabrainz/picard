@@ -23,30 +23,15 @@ from test.picardtestcase import PicardTestCase
 
 from picard.disc.utils import (
     NotSupportedTOCError,
+    TocEntry,
     calculate_mb_toc_numbers,
 )
 
 
 test_entries = [
-    {
-        'num': '1',
-        'start_time': '0:00.00',
-        'length_time': '5:32.14',
-        'start_sector': '0',
-        'end_sector': '24913'
-    }, {
-        'num': '2',
-        'start_time': '5:32.14',
-        'length_time': '4:07.22',
-        'start_sector': '24914',
-        'end_sector': '43460'
-    }, {
-        'num': '3',
-        'start_time': '9:39.36',
-        'length_time': '3:50.29',
-        'start_sector': '43461',
-        'end_sector': '60739'
-    }
+    TocEntry(1, 0, 24913),
+    TocEntry(2, 24914, 43460),
+    TocEntry(3, 43461, 60739),
 ]
 
 
@@ -56,10 +41,14 @@ class TestCalculateMbTocNumbers(PicardTestCase):
         self.assertEqual((1, 3, 60890, 150, 25064, 43611), calculate_mb_toc_numbers(test_entries))
 
     def test_calculate_mb_toc_numbers_invalid_track_numbers(self):
-        entries = [{'num': '1'}, {'num': '3'}, {'num': '4'}]
+        entries = [TocEntry(1, 0, 100), TocEntry(3, 101, 200), TocEntry(4, 201, 300)]
         with self.assertRaises(NotSupportedTOCError):
             calculate_mb_toc_numbers(entries)
 
     def test_calculate_mb_toc_numbers_empty_entries(self):
         with self.assertRaises(NotSupportedTOCError):
             calculate_mb_toc_numbers([])
+
+    def test_calculate_mb_toc_numbers_ignore_datatrack(self):
+        entries = [*test_entries, TocEntry(4, 72140, 80000)]
+        self.assertEqual((1, 3, 60890, 150, 25064, 43611), calculate_mb_toc_numbers(entries))

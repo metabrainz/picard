@@ -25,7 +25,10 @@
 
 import re
 
-from picard.disc.utils import calculate_mb_toc_numbers
+from picard.disc.utils import (
+    TocEntry,
+    calculate_mb_toc_numbers,
+)
 
 
 RE_TOC_TABLE_HEADER = re.compile(r""" \s*
@@ -50,9 +53,6 @@ RE_TOC_TABLE_LINE = re.compile(r"""
     \s*$""", re.VERBOSE)
 
 
-PREGAP_LENGTH = 150
-
-
 def filter_toc_entries(lines):
     """
     Take iterator of lines, return iterator of toc entries
@@ -71,7 +71,7 @@ def filter_toc_entries(lines):
         m = RE_TOC_TABLE_LINE.match(line)
         if not m:
             break
-        yield m.groupdict()
+        yield TocEntry(int(m['num']), int(m['start_sector']), int(m['end_sector']))
 
 
 ENCODING_BOMS = {
@@ -92,7 +92,7 @@ def _detect_encoding(path):
 
 
 def toc_from_file(path):
-    """Reads EAC / XLD log files, generates musicbrainz disc TOC listing for use as discid.
+    """Reads EAC / XLD log files, generates MusicBrainz disc TOC listing for use as discid.
 
     Warning: may work wrong for discs having data tracks. May generate wrong
     results on other non-standard cases."""

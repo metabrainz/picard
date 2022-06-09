@@ -31,7 +31,10 @@ from picard.disc.eaclog import (
     filter_toc_entries,
     toc_from_file,
 )
-from picard.disc.utils import NotSupportedTOCError
+from picard.disc.utils import (
+    NotSupportedTOCError,
+    TocEntry,
+)
 
 
 test_log = (
@@ -46,25 +49,9 @@ test_log = (
 )
 
 test_entries = [
-    {
-        'num': '1',
-        'start_time': '0:00.00',
-        'length_time': '5:32.14',
-        'start_sector': '0',
-        'end_sector': '24913'
-    }, {
-        'num': '2',
-        'start_time': '5:32.14',
-        'length_time': '4:07.22',
-        'start_sector': '24914',
-        'end_sector': '43460'
-    }, {
-        'num': '3',
-        'start_time': '9:39.36',
-        'length_time': '3:50.29',
-        'start_sector': '43461',
-        'end_sector': '60739'
-    }
+    TocEntry(1, 0, 24913),
+    TocEntry(2, 24914, 43460),
+    TocEntry(3, 43461, 60739),
 ]
 
 
