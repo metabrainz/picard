@@ -18,7 +18,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
 from test.picardtestcase import PicardTestCase
 
 from picard.disc.utils import (
@@ -42,11 +41,11 @@ class TestCalculateMbTocNumbers(PicardTestCase):
 
     def test_calculate_mb_toc_numbers_invalid_track_numbers(self):
         entries = [TocEntry(1, 0, 100), TocEntry(3, 101, 200), TocEntry(4, 201, 300)]
-        with self.assertRaises(NotSupportedTOCError):
+        with self.assertRaisesRegex(NotSupportedTOCError, r"^Non-standard track number sequence: \(1, 3, 4\)$"):
             calculate_mb_toc_numbers(entries)
 
     def test_calculate_mb_toc_numbers_empty_entries(self):
-        with self.assertRaises(NotSupportedTOCError):
+        with self.assertRaisesRegex(NotSupportedTOCError, r"^Empty track list$"):
             calculate_mb_toc_numbers([])
 
     def test_calculate_mb_toc_numbers_ignore_datatrack(self):
