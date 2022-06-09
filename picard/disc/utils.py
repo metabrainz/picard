@@ -55,7 +55,7 @@ def calculate_mb_toc_numbers(toc):
     expected_tracknums = tuple(range(1, num_tracks+1))
     tracknums = tuple(e.number for e in toc)
     if expected_tracknums != tracknums:
-        raise NotSupportedTOCError("Non-standard track number sequence: %s", tracknums)
+        raise NotSupportedTOCError(f"Non-standard track number sequence: {tracknums}")
 
     leadout_offset = toc[-1].end_sector + PREGAP_LENGTH + 1
     offsets = tuple(e.start_sector + PREGAP_LENGTH for e in toc)
