@@ -74,16 +74,26 @@ class PipeErrorWin(PipeError):
         super().__init__(f"{self.MESSAGE}{winerror}")
 
 
+class PipeErrorNoPermission(PipeError):
+    MESSAGE = "ERROR: No permissions for creating a pipe\n"
+
+    def __init__(self, exc):
+        super().__init__(f"{self.MESSAGE}{exc}")
+
+
 class Pipe:
     NO_RESPONSE_MESSAGE: str = "No response from FIFO"
     MESSAGE_TO_IGNORE: str = "Ignore this message, just testing the pipe"
     TIMEOUT_SECS: float = 1.5
 
+    PIPE_WIN_DIR = "\\\\.\\pipe\\"
+    PIPE_MAC_DIR = os.path.expanduser("~/Library/Application Support/MusicBrainz/Picard/pipes/")
+    PIPE_UNIX_DIR = os.getenv('XDG_RUNTIME_DIR')
+    PIPE_UNIX_FALLBACK_DIR = os.path.expanduser("~/.config/MusicBrainz/Picard/pipes/")
+
     def __init__(self, app_name: str, app_version: str, args=None):
         if args is None:
             args = tuple()
-        elif isinstance(args, str):
-            args = (args,)
         else:
             try:
                 args = tuple(args)
@@ -141,16 +151,16 @@ class Pipe:
 
     def __generate_filename(self) -> str:
         if self.__is_win:
-            self.__pipe_parent_dir = "\\\\.\\pipe\\"
+            self.__pipe_parent_dir = self.PIPE_WIN_DIR
         elif self.__is_mac:
-            self.__pipe_parent_dir = os.path.expanduser("~/Library/Application Support/MusicBrainz/Picard/pipes/")
+            self.__pipe_parent_dir = self.PIPE_MAC_DIR
         else:
-            self.__pipe_parent_dir = f"{os.getenv('XDG_RUNTIME_DIR')}/"
-            # just in case the $XDG_RUNTIME_DIR is not declared, fallback dir
+            self.__pipe_parent_dir = self.PIPE_UNIX_DIR
             if not self.__pipe_parent_dir:
-                self.__pipe_parent_dir = os.path.expanduser("~/.config/MusicBrainz/Picard/pipes/")
+                self.__pipe_parent_dir = self.PIPE_UNIX_FALLBACK_DIR
 
-        return f"{self.__pipe_parent_dir}{self.__app_name}_v{self.__app_version}_pipe_file"
+        pipe_name = f"{self.__app_name}_v{self.__app_version}_pipe_file"
+        return os.path.join(self.__pipe_parent_dir, pipe_name)
 
     def __create_unix_pipe(self) -> None:
         try:
@@ -159,15 +169,12 @@ class Pipe:
                 os.unlink(self.path)
             except FileNotFoundError:
                 pass
-            try:
-                os.mkfifo(self.path)
-            # no parent dirs detected, need to create them
-            except FileNotFoundError:
-                os.makedirs(self.__pipe_parent_dir, exist_ok=True)
-                os.mkfifo(self.path)
-        except PermissionError:
-            self.permission_error_happened = True
-        self.is_pipe_owner = True
+
+            os.makedirs(self.__pipe_parent_dir, exist_ok=True)
+            os.mkfifo(self.path)
+            self.is_pipe_owner = True
+        except PermissionError as exc:
+            raise PipeErrorNoPermission(exc) from None
 
     def __win_sender(self, message: str) -> bool:
         pipe = win32pipe.CreateNamedPipe(
