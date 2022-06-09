@@ -93,6 +93,11 @@ class TestTocFromFile(PicardTestCase):
     def test_toc_from_file_xld(self):
         self._test_toc_from_file('xld.log')
 
+    def test_toc_from_file_with_datatrack(self):
+        test_log = get_test_data_path('eac-datatrack.log')
+        toc = toc_from_file(test_log)
+        self.assertEqual((1, 8, 178288, 150, 20575, 42320, 62106, 78432, 94973, 109750, 130111), toc)
+
     def test_toc_from_empty_file(self):
         test_log = get_test_data_path('eac-empty.log')
         with self.assertRaises(NotSupportedTOCError):
