@@ -53,27 +53,27 @@ class PipeError(Exception):
 
 
 class PipeErrorInvalidArgs(PipeError):
-    MESSAGE = "ERROR: Pipe() args argument has to be iterable"
+    MESSAGE = "Pipe() args argument has to be iterable"
 
 
 class PipeErrorNotFound(PipeError):
-    MESSAGE = "ERROR: Pipe doesn't exist."
+    MESSAGE = "Pipe doesn't exist."
 
 
 class PipeErrorBroken(PipeError):
-    MESSAGE = "ERROR: Pipe is broken."
+    MESSAGE = "Pipe is broken."
 
 
 class PipeErrorInvalidResponse(PipeError):
-    MESSAGE = "ERROR: Invalid response from pipe:"
+    MESSAGE = "Invalid response from pipe:"
 
 
 class PipeErrorWin(PipeError):
-    MESSAGE = "ERROR: Windows API error\n"
+    MESSAGE = "Windows API error\n"
 
 
 class PipeErrorNoPermission(PipeError):
-    MESSAGE = "ERROR: No permissions for creating a pipe\n"
+    MESSAGE = "No permissions for creating a pipe\n"
 
 
 class Pipe:
@@ -103,8 +103,6 @@ class Pipe:
 
         # named pipe values needed by windows API
         if self.__is_win:
-            app_version = app_version.replace(".", "-")
-
             # win32pipe.CreateNamedPipe
             # more about the arguments: https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createnamedpipea
             self.__MAX_INSTANCES: int = 1
@@ -143,6 +141,7 @@ class Pipe:
 
     def __generate_filename(self, app_name: str, app_version: str) -> str:
         if self.__is_win:
+            app_version = app_version.replace(".", "-")
             self.__pipe_parent_dir = self.PIPE_WIN_DIR
         elif self.__is_mac:
             self.__pipe_parent_dir = self.PIPE_MAC_DIR
