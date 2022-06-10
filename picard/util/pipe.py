@@ -57,23 +57,23 @@ class PipeErrorInvalidArgs(PipeError):
 
 
 class PipeErrorNotFound(PipeError):
-    MESSAGE = "Pipe doesn't exist."
+    MESSAGE = "Pipe doesn't exist"
 
 
 class PipeErrorBroken(PipeError):
-    MESSAGE = "Pipe is broken."
+    MESSAGE = "Pipe is broken"
 
 
 class PipeErrorInvalidResponse(PipeError):
-    MESSAGE = "Invalid response from pipe:"
+    MESSAGE = "Invalid response from pipe"
 
 
 class PipeErrorWin(PipeError):
-    MESSAGE = "Windows API error\n"
+    MESSAGE = "Windows API error"
 
 
 class PipeErrorNoPermission(PipeError):
-    MESSAGE = "No permissions for creating a pipe\n"
+    MESSAGE = "No permissions for creating a pipe"
 
 
 class Pipe:
