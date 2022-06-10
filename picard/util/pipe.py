@@ -37,49 +37,43 @@ if IS_WIN:
 
 
 class PipeError(Exception):
-    pass
+    MESSAGE = None
+
+    def __init__(self, *messages):
+        if self.MESSAGE:
+            self.messages = (self.MESSAGE, ) + tuple(messages)
+        else:
+            self.messages = tuple(messages)
+
+    def __str__(self):
+        messages_str = "\n  ".join(str(m) for m in self.messages)
+        if not messages_str:
+            messages_str = "unknown"
+        return f"ERROR: {messages_str}"
 
 
 class PipeErrorInvalidArgs(PipeError):
     MESSAGE = "ERROR: Pipe() args argument has to be iterable"
 
-    def __init__(self, msg):
-        super().__init__(f"{self.MESSAGE}: {msg}.")
-
 
 class PipeErrorNotFound(PipeError):
     MESSAGE = "ERROR: Pipe doesn't exist."
-
-    def __init__(self):
-        super().__init__(self.MESSAGE)
 
 
 class PipeErrorBroken(PipeError):
     MESSAGE = "ERROR: Pipe is broken."
 
-    def __init__(self):
-        super().__init__(self.MESSAGE)
-
 
 class PipeErrorInvalidResponse(PipeError):
     MESSAGE = "ERROR: Invalid response from pipe:"
-
-    def __init__(self, response):
-        super().__init__(f"{self.MESSAGE} {response}")
 
 
 class PipeErrorWin(PipeError):
     MESSAGE = "ERROR: Windows API error\n"
 
-    def __init__(self, winerror):
-        super().__init__(f"{self.MESSAGE}{winerror}")
-
 
 class PipeErrorNoPermission(PipeError):
     MESSAGE = "ERROR: No permissions for creating a pipe\n"
-
-    def __init__(self, exc):
-        super().__init__(f"{self.MESSAGE}{exc}")
 
 
 class Pipe:
@@ -104,14 +98,12 @@ class Pipe:
         if not args:
             args = (self.MESSAGE_TO_IGNORE,)
 
-        self.__app_name: str = app_name
-        self.__app_version: str = app_version
         self.__is_mac: bool = IS_MACOS
         self.__is_win: bool = IS_WIN
 
         # named pipe values needed by windows API
         if self.__is_win:
-            self.__app_version = self.__app_version.replace(".", "-")
+            app_version = app_version.replace(".", "-")
 
             # win32pipe.CreateNamedPipe
             # more about the arguments: https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createnamedpipea
@@ -131,10 +123,9 @@ class Pipe:
             self.__FILE_NOT_FOUND_ERROR_CODE: int = 2
             self.__BROKEN_PIPE_ERROR_CODE: int = 109
 
-        self.path: str = self.__generate_filename()
+        self.path: str = self.__generate_filename(app_name, app_version)
 
         self.is_pipe_owner: bool = False
-        self.permission_error_happened: bool = False
 
         if self.__is_win:
             for arg in args:
@@ -150,7 +141,7 @@ class Pipe:
                         self.__create_unix_pipe()
                         break
 
-    def __generate_filename(self) -> str:
+    def __generate_filename(self, app_name: str, app_version: str) -> str:
         if self.__is_win:
             self.__pipe_parent_dir = self.PIPE_WIN_DIR
         elif self.__is_mac:
@@ -160,7 +151,7 @@ class Pipe:
             if not self.__pipe_parent_dir:
                 self.__pipe_parent_dir = self.PIPE_UNIX_FALLBACK_DIR
 
-        pipe_name = f"{self.__app_name}_v{self.__app_version}_pipe_file"
+        pipe_name = f"{app_name}_v{app_version}_pipe_file"
         return os.path.join(self.__pipe_parent_dir, pipe_name)
 
     def __create_unix_pipe(self) -> None:

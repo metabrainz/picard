@@ -1118,9 +1118,6 @@ def main(localedir=None, autoupdate=True):
         if not should_start:
             # just a custom exit code to show that picard instance wasn't created
             sys.exit(30403)
-
-        if pipe_handler.permission_error_happened:
-            pipe_handler = None
     else:
         pipe_handler = None
 
