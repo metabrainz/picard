@@ -23,6 +23,7 @@ import concurrent.futures
 import os
 from typing import Optional
 
+from picard import PICARD_APP_ID
 from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
@@ -87,7 +88,7 @@ class Pipe:
     TIMEOUT_SECS: float = 1.5
 
     PIPE_WIN_DIR = "\\\\.\\pipe\\"
-    PIPE_MAC_DIR = os.path.expanduser("~/Library/Application Support/MusicBrainz/Picard/pipes/")
+    PIPE_MAC_DIR = os.path.join(os.path.expanduser("~/Library/Application Support/"), PICARD_APP_ID)
     PIPE_UNIX_DIR = os.getenv('XDG_RUNTIME_DIR')
     PIPE_UNIX_FALLBACK_DIR = os.path.expanduser("~/.config/MusicBrainz/Picard/pipes/")
 
