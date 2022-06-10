@@ -31,7 +31,10 @@ from picard.disc.eaclog import (
     filter_toc_entries,
     toc_from_file,
 )
-from picard.disc.utils import NotSupportedTOCError
+from picard.disc.utils import (
+    NotSupportedTOCError,
+    TocEntry,
+)
 
 
 test_log = (
@@ -46,25 +49,9 @@ test_log = (
 )
 
 test_entries = [
-    {
-        'num': '1',
-        'start_time': '0:00.00',
-        'length_time': '5:32.14',
-        'start_sector': '0',
-        'end_sector': '24913'
-    }, {
-        'num': '2',
-        'start_time': '5:32.14',
-        'length_time': '4:07.22',
-        'start_sector': '24914',
-        'end_sector': '43460'
-    }, {
-        'num': '3',
-        'start_time': '9:39.36',
-        'length_time': '3:50.29',
-        'start_sector': '43461',
-        'end_sector': '60739'
-    }
+    TocEntry(1, 0, 24913),
+    TocEntry(2, 24914, 43460),
+    TocEntry(3, 43461, 60739),
 ]
 
 
@@ -92,6 +79,11 @@ class TestTocFromFile(PicardTestCase):
 
     def test_toc_from_file_xld(self):
         self._test_toc_from_file('xld.log')
+
+    def test_toc_from_file_with_datatrack(self):
+        test_log = get_test_data_path('eac-datatrack.log')
+        toc = toc_from_file(test_log)
+        self.assertEqual((1, 8, 178288, 150, 20575, 42320, 62106, 78432, 94973, 109750, 130111), toc)
 
     def test_toc_from_empty_file(self):
         test_log = get_test_data_path('eac-empty.log')
