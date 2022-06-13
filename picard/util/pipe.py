@@ -41,7 +41,7 @@ class PipeError(Exception):
 
     def __init__(self, *messages):
         if self.MESSAGE:
-            self.messages = (self.MESSAGE, ) + tuple(messages)
+            self.messages = (self.MESSAGE,) + tuple(messages)
         else:
             self.messages = tuple(messages)
 
@@ -54,6 +54,10 @@ class PipeError(Exception):
 
 class PipeErrorInvalidArgs(PipeError):
     MESSAGE = "Pipe() args argument has to be iterable"
+
+
+class PipeErrorInvalidAppData(PipeError):
+    MESSAGE = "Pipe() app_name and app_version arguments have to be str"
 
 
 class PipeErrorNotFound(PipeError):
@@ -93,10 +97,13 @@ class Pipe:
             try:
                 args = tuple(args)
             except TypeError as exc:
-                raise PipeErrorInvalidArgs(exc)
+                raise PipeErrorInvalidArgs(exc) from None
 
         if not args:
             args = (self.MESSAGE_TO_IGNORE,)
+
+        if not isinstance(app_name, str) or not isinstance(app_version, str):
+            raise PipeErrorInvalidAppData
 
         self.__is_mac: bool = IS_MACOS
         self.__is_win: bool = IS_WIN
