@@ -69,11 +69,12 @@ class TestPipe(PicardTestCase):
         to_send = [["it", "tests", "picard", "pipe"],
             ["test", "number", "two"],
             ["my_music_file.mp3"]]
+        NUM_OF_TESTS = len(to_send)
 
         pipe_listener_handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
         pipe_writer_handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
 
-        for i in range(len(to_send)):
+        for i in range(NUM_OF_TESTS):
             __pool = concurrent.futures.ThreadPoolExecutor()
             plistener = __pool.submit(pipe_listener, pipe_listener_handler, END_OF_SEQUENCE)
             __pool.submit(pipe_writer, pipe_writer_handler, to_send[i], END_OF_SEQUENCE)
