@@ -19,12 +19,17 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import concurrent.futures
+from os.path import join
 
 from test.picardtestcase import PicardTestCase
 
 from picard import (
     PICARD_APP_NAME,
     PICARD_FANCY_VERSION_STR,
+)
+from picard.const.sys import (
+    IS_MACOS,
+    IS_WIN,
 )
 from picard.util import pipe
 
@@ -60,11 +65,25 @@ class TestPipe(PicardTestCase):
         self.assertRaises(pipe.PipeErrorInvalidAppData, pipe.Pipe, PICARD_APP_NAME, 21, None)
 
     def test_filename_generation(self):
-        # TODO test pipe.__generate_filename for creating valid paths
-        # also test fallback linux dir somehow
-        # maybe some fake pipe instance that prevents itself from passing the args and creates the pipe just for tests
-        # maybe some debug parameter to force use the fallback dir?
-        pass
+        handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
+        suffix = f"{PICARD_APP_NAME}_v{PICARD_FANCY_VERSION_STR}_pipe_file"
+        MAC_PATH = join(pipe.Pipe.PIPE_MAC_DIR, suffix)
+        WIN_PATH = join(pipe.Pipe.PIPE_WIN_DIR, suffix.replace('.', '-'))
+
+        UNIX_PATHS = {
+            join(pipe.Pipe.PIPE_UNIX_DIR, suffix),
+            join(pipe.Pipe.PIPE_UNIX_FALLBACK_DIR, suffix)
+        }
+
+        if IS_MACOS:
+            self.assertEquals(handler.path, MAC_PATH,
+                              "Pipe path generation")
+        elif IS_WIN:
+            self.assertEquals(handler.path, WIN_PATH,
+                              "Pipe path generation")
+        else:
+            self.assertIn(handler.path, UNIX_PATHS,
+                          "Pipe path generation")
 
     def test_pipe_protocol(self):
         END_OF_SEQUENCE = "stop"
@@ -79,4 +98,5 @@ class TestPipe(PicardTestCase):
             __pool = concurrent.futures.ThreadPoolExecutor()
             plistener = __pool.submit(pipe_listener, pipe_listener_handler, END_OF_SEQUENCE)
             __pool.submit(pipe_writer, pipe_writer_handler, messages, END_OF_SEQUENCE)
-            self.assertEqual(plistener.result(), messages)
+            self.assertEqual(plistener.result(), messages,
+                             "Data is sent and read correctly")

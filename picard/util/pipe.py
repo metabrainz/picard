@@ -26,7 +26,10 @@ from typing import (
     Optional,
 )
 
-from picard import PICARD_APP_ID
+from picard import (
+    PICARD_APP_ID,
+    log,
+)
 from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
@@ -158,6 +161,7 @@ class Pipe:
         else:
             self.__pipe_parent_dir = self.PIPE_UNIX_DIR
             if not self.__pipe_parent_dir:
+                log.debug(f"Used fallback pipe path: {self.PIPE_UNIX_FALLBACK_DIR}\nCouldn't use: {self.PIPE_UNIX_DIR}")
                 self.__pipe_parent_dir = self.PIPE_UNIX_FALLBACK_DIR
 
         pipe_name = f"{app_name}_v{app_version}_pipe_file"
