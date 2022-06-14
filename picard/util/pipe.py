@@ -203,6 +203,10 @@ class Pipe:
 
         __pool = concurrent.futures.ThreadPoolExecutor()
 
+        # we're sending only filepaths, so it's safe to append newline
+        # this newline helps with handling collisions of messages
+        message += "\n"
+
         if self.__is_win:
             sender = __pool.submit(self.__win_sender, message)
         else:
@@ -217,7 +221,7 @@ class Pipe:
 
         return False
 
-    def read_from_pipe(self, timeout_secs: Optional[float] = None) -> str:
+    def read_from_pipe(self, timeout_secs: Optional[float] = None) -> list[str]:
         if timeout_secs is None:
             timeout_secs = self.TIMEOUT_SECS
 
@@ -228,16 +232,27 @@ class Pipe:
         else:
             reader = __pool.submit(self.__unix_reader)
 
+        out = []
+
         try:
-            if reader.result(timeout=timeout_secs):
-                res: str = reader.result()
-                if res != self.MESSAGE_TO_IGNORE:
-                    return res
+            res = reader.result(timeout=timeout_secs)
+            if res:
+                res = res.split("\n")
+                for r in res:
+                    if res == self.MESSAGE_TO_IGNORE:
+                        out = []
+                        break
+                    elif r:
+                        out.append(r)
+
         except concurrent.futures._base.TimeoutError:
             # hacky way to kill the file-opening loop
             self.send_to_pipe(self.MESSAGE_TO_IGNORE)
 
-        return Pipe.NO_RESPONSE_MESSAGE
+        if out:
+            return out
+
+        return [Pipe.NO_RESPONSE_MESSAGE]
 
     def __win_reader(self) -> str:
         response = ""  # type: ignore

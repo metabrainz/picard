@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import concurrent.futures
 
 from test.picardtestcase import PicardTestCase
 
@@ -26,6 +27,26 @@ from picard import (
     PICARD_FANCY_VERSION_STR,
 )
 from picard.util import pipe
+
+
+def pipe_listener(pipe_handler, end_of_sequence):
+    received = []
+    messages = []
+    while end_of_sequence not in messages:
+        messages = pipe_handler.read_from_pipe()
+        for message in messages:
+            if message not in (pipe.Pipe.MESSAGE_TO_IGNORE, pipe.Pipe.NO_RESPONSE_MESSAGE, "", end_of_sequence):
+                received.append(message)
+
+    return received
+
+
+def pipe_writer(pipe_handler, to_send, end_of_sequence):
+    for m in to_send:
+        while not pipe_handler.send_to_pipe(m):
+            pass
+    while not pipe_handler.send_to_pipe(end_of_sequence):
+        pass
 
 
 class TestPipe(PicardTestCase):
@@ -44,6 +65,16 @@ class TestPipe(PicardTestCase):
         pass
 
     def test_pipe_protocol(self):
-        # TODO concurrent.futures like in util/pipe.py, one with listener, one with sender
-        # test if the data is sent correctly
-        pass
+        END_OF_SEQUENCE = "stop"
+        to_send = [["it", "tests", "picard", "pipe"],
+            ["test", "number", "two"],
+            ["my_music_file.mp3"]]
+
+        pipe_listener_handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
+        pipe_writer_handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
+
+        for i in range(len(to_send)):
+            __pool = concurrent.futures.ThreadPoolExecutor()
+            plistener = __pool.submit(pipe_listener, pipe_listener_handler, END_OF_SEQUENCE)
+            __pool.submit(pipe_writer, pipe_writer_handler, to_send[i], END_OF_SEQUENCE)
+            self.assertEqual(plistener.result(), to_send[i])
