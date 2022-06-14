@@ -21,7 +21,10 @@
 
 import concurrent.futures
 import os
-from typing import Optional
+from typing import (
+    List,
+    Optional,
+)
 
 from picard import PICARD_APP_ID
 from picard.const.sys import (
@@ -221,7 +224,7 @@ class Pipe:
 
         return False
 
-    def read_from_pipe(self, timeout_secs: Optional[float] = None) -> list[str]:
+    def read_from_pipe(self, timeout_secs: Optional[float] = None) -> List[str]:
         if timeout_secs is None:
             timeout_secs = self.TIMEOUT_SECS
 
