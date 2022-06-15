@@ -20,6 +20,7 @@
 
 import concurrent.futures
 from os.path import join
+import unittest
 
 from test.picardtestcase import PicardTestCase
 
@@ -57,6 +58,7 @@ def pipe_writer(pipe_handler, to_send, end_of_sequence):
 
 
 class TestPipe(PicardTestCase):
+    SUFFIX = f"{PICARD_APP_NAME}_v{PICARD_FANCY_VERSION_STR}_pipe_file"
 
     def test_invalid_args(self):
         # Pipe should be able to make args iterable (last argument)
@@ -64,26 +66,26 @@ class TestPipe(PicardTestCase):
         self.assertRaises(pipe.PipeErrorInvalidAppData, pipe.Pipe, 21, PICARD_FANCY_VERSION_STR, None)
         self.assertRaises(pipe.PipeErrorInvalidAppData, pipe.Pipe, PICARD_APP_NAME, 21, None)
 
-    def test_filename_generation(self):
+    @unittest.skipUnless(IS_MACOS, "macos filename test")
+    def test_filename_generation_macos(self):
         handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
-        suffix = f"{PICARD_APP_NAME}_v{PICARD_FANCY_VERSION_STR}_pipe_file"
-        MAC_PATH = join(pipe.Pipe.PIPE_MAC_DIR, suffix)
-        WIN_PATH = join(pipe.Pipe.PIPE_WIN_DIR, suffix.replace('.', '-'))
+        MAC_PATH = join(pipe.Pipe.PIPE_MAC_DIR, self.SUFFIX)
+        self.assertEquals(handler.path, MAC_PATH)
 
+    @unittest.skipUnless(IS_WIN, "windows filename test")
+    def test_filename_generation_win(self):
+        handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
+        WIN_PATH = join(pipe.Pipe.PIPE_WIN_DIR, self.SUFFIX.replace('.', '-'))
+        self.assertEquals(handler.path, WIN_PATH)
+
+    @unittest.skipUnless(not IS_MACOS and not IS_WIN, "unix filename test")
+    def test_filename_generation_unix(self):
+        handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
         UNIX_PATHS = {
-            join(pipe.Pipe.PIPE_UNIX_DIR, suffix),
-            join(pipe.Pipe.PIPE_UNIX_FALLBACK_DIR, suffix)
+            join(pipe.Pipe.PIPE_UNIX_DIR, self.SUFFIX),
+            join(pipe.Pipe.PIPE_UNIX_FALLBACK_DIR, self.SUFFIX)
         }
-
-        if IS_MACOS:
-            self.assertEquals(handler.path, MAC_PATH,
-                              "Pipe path generation")
-        elif IS_WIN:
-            self.assertEquals(handler.path, WIN_PATH,
-                              "Pipe path generation")
-        else:
-            self.assertIn(handler.path, UNIX_PATHS,
-                          "Pipe path generation")
+        self.assertIn(handler.path, UNIX_PATHS)
 
     def test_pipe_protocol(self):
         END_OF_SEQUENCE = "stop"
