@@ -87,9 +87,11 @@ class TestPipe(PicardTestCase):
 
     def test_pipe_protocol(self):
         END_OF_SEQUENCE = "stop"
-        to_send = (("it", "tests", "picard", "pipe"),
-                   ("test", "number", "two"),
-                   ("my_music_file.mp3",))
+        to_send = (
+            ("it", "tests", "picard", "pipe"),
+            ("test", "number", "two"),
+            ("my_music_file.mp3",),
+        )
 
         pipe_listener_handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
         pipe_writer_handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)

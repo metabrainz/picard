@@ -160,8 +160,10 @@ class Pipe:
             self.__pipe_parent_dir = self.PIPE_MAC_DIR
         else:
             self.__pipe_parent_dir = self.PIPE_UNIX_DIR
-            if not self.__pipe_parent_dir:
-                log.debug(f"Used fallback pipe path: {self.PIPE_UNIX_FALLBACK_DIR}\nCouldn't use: {self.PIPE_UNIX_DIR}")
+            if self.__pipe_parent_dir:
+                log.debug("Using pipe path: %r", self.__pipe_parent_dir)
+            else:
+                log.warning("Using fallback pipe path: %r", self.__pipe_parent_dir)
                 self.__pipe_parent_dir = self.PIPE_UNIX_FALLBACK_DIR
 
         pipe_name = f"{app_name}_v{app_version}_pipe_file"
@@ -174,7 +176,6 @@ class Pipe:
                 os.unlink(self.path)
             except FileNotFoundError:
                 pass
-
             os.makedirs(self.__pipe_parent_dir, exist_ok=True)
             os.mkfifo(self.path)
             self.is_pipe_owner = True
