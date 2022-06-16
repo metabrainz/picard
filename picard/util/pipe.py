@@ -92,9 +92,9 @@ class Pipe:
     TIMEOUT_SECS: float = 1.5
 
     PIPE_WIN_DIR = "\\\\.\\pipe\\"
-    PIPE_MAC_DIR = os.path.join(os.path.expanduser("~/Library/Application Support/"), PICARD_APP_ID)
+    PIPE_MAC_DIR = os.path.join("Library/Application Support/", PICARD_APP_ID)
     PIPE_UNIX_DIR = os.getenv('XDG_RUNTIME_DIR')
-    PIPE_UNIX_FALLBACK_DIR = os.path.expanduser("~/.config/MusicBrainz/Picard/pipes/")
+    PIPE_UNIX_FALLBACK_DIR = ".config/MusicBrainz/Picard/pipes/"
 
     def __init__(self, app_name: str, app_version: str, args=None):
         if args is None:
@@ -133,6 +133,11 @@ class Pipe:
             # more about the error codes: https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-erref/18d8fbe8-a967-4f1c-ae50-99ca8e491d2d
             self.__FILE_NOT_FOUND_ERROR_CODE: int = 2
             self.__BROKEN_PIPE_ERROR_CODE: int = 109
+        # mocking for test purposes
+        elif self.__is_mac:
+            self.PIPE_MAC_DIR = os.path.join(os.environ.get("HOME", "."), self.PIPE_MAC_DIR)
+        else:
+            self.PIPE_UNIX_FALLBACK_DIR = os.path.join(os.environ.get("HOME", "."), self.PIPE_UNIX_FALLBACK_DIR)
 
         self.path: str = self.__generate_filename(app_name, app_version)
 
@@ -157,16 +162,12 @@ class Pipe:
             app_version = app_version.replace(".", "-")
             self.__pipe_parent_dir = self.PIPE_WIN_DIR
         elif self.__is_mac:
-            if not self.PIPE_MAC_DIR:
-                self.PIPE_MAC_DIR = os.path.join("./Library/Application Support/", PICARD_APP_ID)
             self.__pipe_parent_dir = self.PIPE_MAC_DIR
         else:
             self.__pipe_parent_dir = self.PIPE_UNIX_DIR
             if self.__pipe_parent_dir:
                 log.debug("Using pipe path: %r", self.__pipe_parent_dir)
             else:
-                if not self.PIPE_UNIX_FALLBACK_DIR:
-                    self.PIPE_UNIX_FALLBACK_DIR = "./.config/MusicBrainz/Picard/pipes/"
                 self.__pipe_parent_dir = self.PIPE_UNIX_FALLBACK_DIR
                 log.warning("Using fallback pipe path: %r", self.__pipe_parent_dir)
 
