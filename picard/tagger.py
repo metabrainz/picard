@@ -324,7 +324,6 @@ class Tagger(QtWidgets.QApplication):
             messages = self.pipe_handler.read_from_pipe()
             for message in messages:
                 if message not in IGNORED:
-                    print(message)
                     self.add_files((message,))
 
     def enable_menu_icons(self, enabled):
@@ -1131,7 +1130,6 @@ def main(localedir=None, autoupdate=True):
     else:
         pipe_handler = None
 
-    print(should_start, pipe_handler.path)
     try:
         from PyQt5.QtDBus import QDBusConnection
         dbus = QDBusConnection.sessionBus()
