@@ -157,14 +157,18 @@ class Pipe:
             app_version = app_version.replace(".", "-")
             self.__pipe_parent_dir = self.PIPE_WIN_DIR
         elif self.__is_mac:
+            if not self.PIPE_MAC_DIR:
+                self.PIPE_MAC_DIR = os.path.join("./Library/Application Support/", PICARD_APP_ID)
             self.__pipe_parent_dir = self.PIPE_MAC_DIR
         else:
             self.__pipe_parent_dir = self.PIPE_UNIX_DIR
             if self.__pipe_parent_dir:
                 log.debug("Using pipe path: %r", self.__pipe_parent_dir)
             else:
-                log.warning("Using fallback pipe path: %r", self.__pipe_parent_dir)
+                if not self.PIPE_UNIX_FALLBACK_DIR:
+                    self.PIPE_UNIX_FALLBACK_DIR = "./.config/MusicBrainz/Picard/pipes/"
                 self.__pipe_parent_dir = self.PIPE_UNIX_FALLBACK_DIR
+                log.warning("Using fallback pipe path: %r", self.__pipe_parent_dir)
 
         pipe_name = f"{app_name}_v{app_version}_pipe_file"
         return os.path.join(self.__pipe_parent_dir, pipe_name)

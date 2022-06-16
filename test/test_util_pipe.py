@@ -69,21 +69,21 @@ class TestPipe(PicardTestCase):
     @unittest.skipUnless(IS_MACOS, "macos filename test")
     def test_filename_generation_macos(self):
         handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
-        MAC_PATH = join(pipe.Pipe.PIPE_MAC_DIR, self.SUFFIX)
+        MAC_PATH = join(handler.PIPE_MAC_DIR, self.SUFFIX)
         self.assertEquals(handler.path, MAC_PATH)
 
     @unittest.skipUnless(IS_WIN, "windows filename test")
     def test_filename_generation_win(self):
         handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
-        WIN_PATH = join(pipe.Pipe.PIPE_WIN_DIR, self.SUFFIX.replace('.', '-'))
+        WIN_PATH = join(handler.PIPE_WIN_DIR, self.SUFFIX.replace('.', '-'))
         self.assertEquals(handler.path, WIN_PATH)
 
     @unittest.skipUnless(not IS_MACOS and not IS_WIN, "unix filename test")
     def test_filename_generation_unix(self):
         handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
         UNIX_PATHS = {
-            join(pipe.Pipe.PIPE_UNIX_DIR, self.SUFFIX),
-            join(pipe.Pipe.PIPE_UNIX_FALLBACK_DIR, self.SUFFIX)
+            join(handler.PIPE_UNIX_DIR, self.SUFFIX),
+            join(handler.PIPE_UNIX_FALLBACK_DIR, self.SUFFIX)
         }
         self.assertIn(handler.path, UNIX_PATHS)
 
