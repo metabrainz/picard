@@ -86,7 +86,7 @@ class TestPipe(PicardTestCase):
         }
         # None guard
         if handler.PIPE_UNIX_DIR:
-            UNIX_PATHS.add(handler.PIPE_UNIX_DIR)
+            UNIX_PATHS.add(join(handler.PIPE_UNIX_DIR, self.SUFFIX))
         self.assertIn(handler.path, UNIX_PATHS)
 
     def test_pipe_protocol(self):
