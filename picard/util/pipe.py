@@ -143,19 +143,13 @@ class Pipe:
 
         self.is_pipe_owner: bool = False
 
-        if self.__is_win:
-            for arg in args:
-                if not self.send_to_pipe(arg):
+        for arg in args:
+            if not self.send_to_pipe(arg):
+                if self.__is_win:
                     self.is_pipe_owner = True
-                    break
-        else:
-            try:
-                self.__create_unix_pipe()
-            except FileExistsError:
-                for arg in args:
-                    if not self.send_to_pipe(arg):
-                        self.__create_unix_pipe()
-                        break
+                else:
+                    self.__create_unix_pipe()
+                break
 
     def __generate_filename(self, app_name: str, app_version: str) -> str:
         if self.__is_win:
@@ -206,6 +200,9 @@ class Pipe:
         return True
 
     def __unix_sender(self, message: str) -> bool:
+        if not os.path.exists(self.path):
+            return False
+
         with open(self.path, 'a') as fifo:
             fifo.write(message)
         return True

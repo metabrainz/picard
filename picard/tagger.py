@@ -202,14 +202,6 @@ class Tagger(QtWidgets.QApplication):
         self._no_restore = picard_args.no_restore
         self._no_plugins = picard_args.no_plugins
 
-        self.pipe_handler = pipe_handler
-
-        # if the instance is forced, we get None instead of an actual handler
-        # even though there's always something provided as pipe_handler, I created a default argument to make it more obvious
-        if pipe_handler:
-            pass
-            # TODO create a thread with this pipe handler, some kind of pipe server and constantly listen for any new messages
-
         self.set_log_level(config.setting['log_verbosity'])
 
         if picard_args.debug or "PICARD_DEBUG" in os.environ:
@@ -217,6 +209,14 @@ class Tagger(QtWidgets.QApplication):
 
         # Default thread pool
         self.thread_pool = ThreadPoolExecutor()
+
+        # if the instance is forced, we get None instead of an actual handler
+        # even though there's always something provided as pipe_handler, I created a default argument to make it more obvious
+        if pipe_handler:
+            self.pipe_running = True
+            self.pipe_handler = pipe_handler
+            self.thread_pool.submit(self.pipe_server)
+            pass
 
         # Provide a separate thread pool for operations that should not be
         # delayed by longer background processing tasks, e.g. because the user
@@ -318,6 +318,15 @@ class Tagger(QtWidgets.QApplication):
         if self.autoupdate_enabled:
             self.updatecheckmanager = UpdateCheckManager(parent=self.window)
 
+    def pipe_server(self):
+        IGNORED = {pipe.Pipe.MESSAGE_TO_IGNORE, pipe.Pipe.NO_RESPONSE_MESSAGE}
+        while self.pipe_running:
+            messages = self.pipe_handler.read_from_pipe()
+            for message in messages:
+                if message not in IGNORED:
+                    print(message)
+                    self.add_files((message,))
+
     def enable_menu_icons(self, enabled):
         self.setAttribute(QtCore.Qt.ApplicationAttribute.AA_DontShowIconsInMenus, not enabled)
 
@@ -412,6 +421,7 @@ class Tagger(QtWidgets.QApplication):
         self.stopping = True
         log.debug("Picard stopping")
         self._acoustid.done()
+        self.pipe_running = False
         self.thread_pool.shutdown()
         self.save_thread_pool.shutdown()
         self.priority_thread_pool.shutdown()
@@ -1121,6 +1131,7 @@ def main(localedir=None, autoupdate=True):
     else:
         pipe_handler = None
 
+    print(should_start, pipe_handler.path)
     try:
         from PyQt5.QtDBus import QDBusConnection
         dbus = QDBusConnection.sessionBus()
