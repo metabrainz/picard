@@ -82,9 +82,11 @@ class TestPipe(PicardTestCase):
     def test_filename_generation_unix(self):
         handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
         UNIX_PATHS = {
-            join(handler.PIPE_UNIX_DIR, self.SUFFIX),
             join(handler.PIPE_UNIX_FALLBACK_DIR, self.SUFFIX)
         }
+        # None guard
+        if handler.PIPE_UNIX_DIR:
+            UNIX_PATHS.add(handler.PIPE_UNIX_DIR)
         self.assertIn(handler.path, UNIX_PATHS)
 
     def test_pipe_protocol(self):

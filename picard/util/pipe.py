@@ -135,9 +135,9 @@ class Pipe:
             self.__BROKEN_PIPE_ERROR_CODE: int = 109
         # mocking for test purposes
         elif self.__is_mac:
-            self.PIPE_MAC_DIR = os.path.join(os.environ.get("HOME", "."), self.PIPE_MAC_DIR)
+            self.PIPE_MAC_DIR = os.path.join(os.environ.get("HOME", "/tmp/test_dir"), self.PIPE_MAC_DIR)
         else:
-            self.PIPE_UNIX_FALLBACK_DIR = os.path.join(os.environ.get("HOME", "."), self.PIPE_UNIX_FALLBACK_DIR)
+            self.PIPE_UNIX_FALLBACK_DIR = os.path.join(os.environ.get("HOME", "/tmp/test_dir"), self.PIPE_UNIX_FALLBACK_DIR)
 
         self.path: str = self.__generate_filename(app_name, app_version)
 
