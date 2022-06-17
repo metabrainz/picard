@@ -216,7 +216,6 @@ class Tagger(QtWidgets.QApplication):
             self.pipe_running = True
             self.pipe_handler = pipe_handler
             self.thread_pool.submit(self.pipe_server)
-            pass
 
         # Provide a separate thread pool for operations that should not be
         # delayed by longer background processing tasks, e.g. because the user
