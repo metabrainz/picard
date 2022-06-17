@@ -1116,7 +1116,7 @@ def main(localedir=None, autoupdate=True):
 
     if not should_start:
         try:
-            pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR, args=picard_args.FILE)
+            pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR, args=[os.path.abspath(x) for x in picard_args.FILE])
             should_start = pipe_handler.is_pipe_owner
         except pipe.PipeErrorNoPermission as err:
             log.error(err)
