@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v3
       with:
         python-version: 3.8
     - name: Install dependencies
@@ -26,7 +26,7 @@ jobs:
       run: |
         python setup.py clean sdist
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: picard-sdist
         path: dist/*
@@ -79,9 +79,9 @@ jobs:
         - os: macos-10.15
           python-version: '3.10'
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install gettext and openssl (macOS)
@@ -103,7 +103,7 @@ jobs:
       run: |
         python setup.py clean bdist_wheel
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: picard-bdist-${{ runner.os }}
         path: dist/*.whl
