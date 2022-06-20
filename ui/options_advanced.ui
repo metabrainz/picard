@@ -39,7 +39,7 @@
       <item row="8" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QLabel" name="label_request_limit">
+         <widget class="QLabel" name="label_query_limit">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -47,7 +47,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Max. number of entities to return per MusicBrainz query</string>
+           <string>Maximum number of entities to return per MusicBrainz query</string>
           </property>
          </widget>
         </item>
