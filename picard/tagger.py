@@ -1085,6 +1085,8 @@ class OverrideStyle(QtWidgets.QProxyStyle):
 
 
 def main(localedir=None, autoupdate=True):
+    EXIT_NO_NEW_INSTANCE = 30403
+
     # Some libs (ie. Phonon) require those to be set
     QtWidgets.QApplication.setApplicationName(PICARD_APP_NAME)
     QtWidgets.QApplication.setOrganizationName(PICARD_ORG_NAME)
@@ -1125,7 +1127,7 @@ def main(localedir=None, autoupdate=True):
         # pipe has sent its args to existing one, doesn't need to start
         if not should_start:
             # just a custom exit code to show that picard instance wasn't created
-            sys.exit(30403)
+            sys.exit(EXIT_NO_NEW_INSTANCE)
     else:
         pipe_handler = None
 

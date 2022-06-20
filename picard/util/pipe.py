@@ -86,162 +86,70 @@ class PipeErrorNoPermission(PipeError):
     MESSAGE = "No permissions for creating a pipe"
 
 
-class Pipe:
+class PipeErrorNoDestination(PipeError):
+    MESSAGE = "No available dirs to place a pipe"
+
+
+class AbstractPipe:
     NO_RESPONSE_MESSAGE: str = "No response from FIFO"
     MESSAGE_TO_IGNORE: str = "Ignore this message, just testing the pipe"
     TIMEOUT_SECS: float = 1.5
 
-    PIPE_WIN_DIR = "\\\\.\\pipe\\"
-    PIPE_MAC_DIR = os.path.join("Library/Application Support/", PICARD_APP_ID)
-    PIPE_UNIX_DIR = os.getenv('XDG_RUNTIME_DIR')
-    PIPE_UNIX_FALLBACK_DIR = ".config/MusicBrainz/Picard/pipes/"
+    if IS_WIN:
+        PIPE_DIRS = ("\\\\.\\pipe\\",)
+    elif IS_MACOS:
+        PIPE_DIRS = (os.path.join("Library/Application Support/", PICARD_APP_ID),)
+    else:
+        PIPE_DIRS = (os.getenv('XDG_RUNTIME_DIR'),
+                     ".config/MusicBrainz/Picard/pipes/",
+                     )
 
     def __init__(self, app_name: str, app_version: str, args=None):
         if args is None:
-            args = tuple()
+            self._args = tuple()
         else:
             try:
-                args = tuple(args)
+                self._args = tuple(args)
             except TypeError as exc:
                 raise PipeErrorInvalidArgs(exc) from None
 
-        if not args:
-            args = (self.MESSAGE_TO_IGNORE,)
+        if not self._args:
+            self._args = (self.MESSAGE_TO_IGNORE,)
 
         if not isinstance(app_name, str) or not isinstance(app_version, str):
             raise PipeErrorInvalidAppData
 
-        self.__is_mac: bool = IS_MACOS
-        self.__is_win: bool = IS_WIN
-
-        # named pipe values needed by windows API
-        if self.__is_win:
-            # win32pipe.CreateNamedPipe
-            # more about the arguments: https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createnamedpipea
-            self.__MAX_INSTANCES: int = 1
-            self.__BUFFER_SIZE: int = 65536
-            # timeout doesn't really matter, concurrent.futures ensures that connections are closed in declared time
-            # the value is in milliseconds
-            self.__DEFAULT_TIMEOUT: int = 300
-
-            # win32file.CreateFile
-            # more about the arguments: http://timgolden.me.uk/pywin32-docs/win32file__CreateFile_meth.html
-            self.__SHARE_MODE: int = 0
-            self.__FLAGS_AND_ATTRIBUTES: int = 0
-
-            # pywintypes.error error codes
-            # more about the error codes: https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-erref/18d8fbe8-a967-4f1c-ae50-99ca8e491d2d
-            self.__FILE_NOT_FOUND_ERROR_CODE: int = 2
-            self.__BROKEN_PIPE_ERROR_CODE: int = 109
-        # mocking for test purposes
-        elif self.__is_mac:
-            self.PIPE_MAC_DIR = os.path.join(os.environ.get("HOME", "/tmp/test_dir"), self.PIPE_MAC_DIR)
-        else:
-            self.PIPE_UNIX_FALLBACK_DIR = os.path.join(os.environ.get("HOME", "/tmp/test_dir"), self.PIPE_UNIX_FALLBACK_DIR)
-
         self.path: str = self.__generate_filename(app_name, app_version)
-
+        log.debug("Using pipe directory: %r", self._pipe_parent_dir)
         self.is_pipe_owner: bool = False
 
-        for arg in args:
-            if not self.send_to_pipe(arg):
-                if self.__is_win:
-                    self.is_pipe_owner = True
-                else:
-                    self.__create_unix_pipe()
-                break
+        self.__thread_pool = concurrent.futures.ThreadPoolExecutor()
+
+    def _remove_temp_attributes(self):
+        del self._args
+        del self._pipe_parent_dir
 
     def __generate_filename(self, app_name: str, app_version: str) -> str:
-        if self.__is_win:
-            app_version = app_version.replace(".", "-")
-            self.__pipe_parent_dir = self.PIPE_WIN_DIR
-        elif self.__is_mac:
-            self.__pipe_parent_dir = self.PIPE_MAC_DIR
-        else:
-            self.__pipe_parent_dir = self.PIPE_UNIX_DIR
-            if self.__pipe_parent_dir:
-                log.debug("Using pipe path: %r", self.__pipe_parent_dir)
-            else:
-                self.__pipe_parent_dir = self.PIPE_UNIX_FALLBACK_DIR
-                log.warning("Using fallback pipe path: %r", self.__pipe_parent_dir)
+        self._pipe_parent_dir: str = ""
 
-        pipe_name = f"{app_name}_v{app_version}_pipe_file"
-        return os.path.join(self.__pipe_parent_dir, pipe_name)
+        for dir in self.PIPE_DIRS:
+            if dir:
+                self._pipe_parent_dir = dir
+                return os.path.join(self._pipe_parent_dir, f"{app_name}_v{app_version}_pipe_file")
 
-    def __create_unix_pipe(self) -> None:
-        try:
-            try:
-                # just to be sure that there's no broken pipe left
-                os.unlink(self.path)
-            except FileNotFoundError:
-                pass
-            os.makedirs(self.__pipe_parent_dir, exist_ok=True)
-            os.mkfifo(self.path)
-            self.is_pipe_owner = True
-        except PermissionError as exc:
-            raise PipeErrorNoPermission(exc) from None
+        raise PipeErrorNoDestination
 
-    def __win_sender(self, message: str) -> bool:
-        pipe = win32pipe.CreateNamedPipe(
-            self.path,
-            win32pipe.PIPE_ACCESS_DUPLEX,
-            win32pipe.PIPE_TYPE_MESSAGE | win32pipe.PIPE_WAIT,
-            self.__MAX_INSTANCES,
-            self.__BUFFER_SIZE,
-            self.__BUFFER_SIZE,
-            self.__DEFAULT_TIMEOUT,
-            None)
-        try:
-            win32pipe.ConnectNamedPipe(pipe, None)
-            win32file.WriteFile(pipe, str.encode(message))
-        finally:
-            win32file.CloseHandle(pipe)
+    def _reader(self) -> str:
+        raise NotImplementedError()
 
-        return True
-
-    def __unix_sender(self, message: str) -> bool:
-        if not os.path.exists(self.path):
-            return False
-
-        with open(self.path, 'a') as fifo:
-            fifo.write(message)
-        return True
-
-    def send_to_pipe(self, message: str, timeout_secs: Optional[float] = None) -> bool:
-        if timeout_secs is None:
-            timeout_secs = self.TIMEOUT_SECS
-
-        __pool = concurrent.futures.ThreadPoolExecutor()
-
-        # we're sending only filepaths, so it's safe to append newline
-        # this newline helps with handling collisions of messages
-        message += "\n"
-
-        if self.__is_win:
-            sender = __pool.submit(self.__win_sender, message)
-        else:
-            sender = __pool.submit(self.__unix_sender, message)
-
-        try:
-            if sender.result(timeout=timeout_secs):
-                return True
-        except concurrent.futures._base.TimeoutError:
-            # hacky way to kill the sender
-            self.read_from_pipe()
-
-        return False
+    def _sender(self, message) -> bool:
+        raise NotImplementedError()
 
     def read_from_pipe(self, timeout_secs: Optional[float] = None) -> List[str]:
         if timeout_secs is None:
             timeout_secs = self.TIMEOUT_SECS
 
-        __pool = concurrent.futures.ThreadPoolExecutor()
-
-        if self.__is_win:
-            reader = __pool.submit(self.__win_reader)
-        else:
-            reader = __pool.submit(self.__unix_reader)
-
+        reader = self.__thread_pool.submit(self._reader)
         out = []
 
         try:
@@ -262,9 +170,123 @@ class Pipe:
         if out:
             return out
 
-        return [Pipe.NO_RESPONSE_MESSAGE]
+        return [self.NO_RESPONSE_MESSAGE]
 
-    def __win_reader(self) -> str:
+    def send_to_pipe(self, message: str, timeout_secs: Optional[float] = None) -> bool:
+        if timeout_secs is None:
+            timeout_secs = self.TIMEOUT_SECS
+
+        # we're sending only filepaths, so it's safe to append newline
+        # this newline helps with handling collisions of messages
+        message += "\n"
+
+        sender = self.__thread_pool.submit(self._sender, message)
+
+        try:
+            if sender.result(timeout=timeout_secs):
+                return True
+        except concurrent.futures._base.TimeoutError:
+            # hacky way to kill the sender
+            self.read_from_pipe()
+
+        return False
+
+
+class UnixPipe(AbstractPipe):
+    def __init__(self, app_name: str, app_version: str, args=None):
+        super().__init__(app_name, app_version, args)
+
+        for arg in self._args:
+            if not self.send_to_pipe(arg):
+                self.__create_pipe()
+                break
+
+        self._remove_temp_attributes()
+
+
+    def __create_pipe(self) -> None:
+        try:
+            try:
+                # just to be sure that there's no broken pipe left
+                os.unlink(self.path)
+            except FileNotFoundError:
+                pass
+            os.makedirs(self._pipe_parent_dir, exist_ok=True)
+            os.mkfifo(self.path)
+            self.is_pipe_owner = True
+        except PermissionError as exc:
+            raise PipeErrorNoPermission(exc) from None
+
+    def _sender(self, message: str) -> bool:
+        if not os.path.exists(self.path):
+            return False
+
+        with open(self.path, 'a') as fifo:
+            fifo.write(message)
+        return True
+
+    def _reader(self) -> str:
+        response: str = ""
+        while not response:
+            try:
+                with open(self.path, 'r') as fifo:
+                    response = fifo.read().strip()
+            except FileNotFoundError:
+                raise PipeErrorNotFound from None
+
+        return response or self.NO_RESPONSE_MESSAGE
+
+
+class WinPipe(AbstractPipe):
+    # win32pipe.CreateNamedPipe
+    # more about the arguments: https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createnamedpipea
+    __MAX_INSTANCES: int = 1
+    __BUFFER_SIZE: int = 65536
+
+    # timeout doesn't really matter, concurrent.futures ensures that connections are closed in declared time
+    # the value is in milliseconds
+    __DEFAULT_TIMEOUT: int = 300
+
+    # win32file.CreateFile
+    # more about the arguments: http://timgolden.me.uk/pywin32-docs/win32file__CreateFile_meth.html
+    __SHARE_MODE: int = 0
+    __FLAGS_AND_ATTRIBUTES: int = 0
+
+    # pywintypes.error error codes
+    # more about the error codes: https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-erref/18d8fbe8-a967-4f1c-ae50-99ca8e491d2d
+    __FILE_NOT_FOUND_ERROR_CODE: int = 2
+    __BROKEN_PIPE_ERROR_CODE: int = 109
+
+    def __init__(self, app_name: str, app_version: str, args=None):
+        app_version = app_version.replace(".", "-")
+        super().__init__(app_name, app_version, args)
+
+        for arg in self._args:
+            if not self.send_to_pipe(arg):
+                self.is_pipe_owner = True
+                break
+
+        self._remove_temp_attributes()
+
+    def _sender(self, message: str) -> bool:
+        pipe = win32pipe.CreateNamedPipe(
+            self.path,
+            win32pipe.PIPE_ACCESS_DUPLEX,
+            win32pipe.PIPE_TYPE_MESSAGE | win32pipe.PIPE_WAIT,
+            self.__MAX_INSTANCES,
+            self.__BUFFER_SIZE,
+            self.__BUFFER_SIZE,
+            self.__DEFAULT_TIMEOUT,
+            None)
+        try:
+            win32pipe.ConnectNamedPipe(pipe, None)
+            win32file.WriteFile(pipe, str.encode(message))
+        finally:
+            win32file.CloseHandle(pipe)
+
+        return True
+
+    def _reader(self) -> str:
         response = ""  # type: ignore
 
         try:
@@ -295,15 +317,9 @@ class Pipe:
             else:
                 raise PipeErrorInvalidResponse(response[1].decode('utf-8'))  # type: ignore
         else:
-            return Pipe.NO_RESPONSE_MESSAGE
+            return self.NO_RESPONSE_MESSAGE
 
-    def __unix_reader(self) -> str:
-        response: str = ""
-        while not response:
-            try:
-                with open(self.path, 'r') as fifo:
-                    response = fifo.read().strip()
-            except FileNotFoundError:
-                raise PipeErrorNotFound from None
-
-        return response or Pipe.NO_RESPONSE_MESSAGE
+if IS_WIN:
+    Pipe = WinPipe
+else:
+    Pipe = UnixPipe
