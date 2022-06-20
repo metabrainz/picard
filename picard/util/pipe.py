@@ -203,7 +203,6 @@ class UnixPipe(AbstractPipe):
 
         self._remove_temp_attributes()
 
-
     def __create_pipe(self) -> None:
         try:
             try:
@@ -318,6 +317,7 @@ class WinPipe(AbstractPipe):
                 raise PipeErrorInvalidResponse(response[1].decode('utf-8'))  # type: ignore
         else:
             return self.NO_RESPONSE_MESSAGE
+
 
 if IS_WIN:
     Pipe = WinPipe
