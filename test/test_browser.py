@@ -196,6 +196,7 @@ class BrowserLookupTest(PicardTestCase):
 
     @patch.object(webbrowser2, 'open')
     def test_search_entity(self, mock_open):
+        self.set_config_values({'query_limit': 25})
         result = self.lookup.search_entity('foo', 'search:123')
         self.assertTrue(result)
         url = mock_open.call_args[0][0]
@@ -209,6 +210,7 @@ class BrowserLookupTest(PicardTestCase):
 
     @patch.object(webbrowser2, 'open')
     def test_search_entity_advanced(self, mock_open):
+        self.set_config_values({'query_limit': 25})
         result = self.lookup.search_entity('foo', 'search:123', adv=True)
         self.assertTrue(result)
         url = mock_open.call_args[0][0]
@@ -232,6 +234,7 @@ class BrowserLookupTest(PicardTestCase):
 
     @patch.object(webbrowser2, 'open')
     def test_search_entity_mbid_lookup_force_browser(self, mock_open):
+        self.set_config_values({'query_limit': 25})
         with patch.object(self.lookup, 'mbid_lookup') as mock_lookup:
             entity = 'artist'
             mbid = '4836aa50-a9ae-490a-983b-cfc8efca92de'

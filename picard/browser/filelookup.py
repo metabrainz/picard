@@ -35,10 +35,8 @@ import re
 from PyQt5 import QtCore
 
 from picard import log
-from picard.const import (
-    PICARD_URLS,
-    QUERY_LIMIT,
-)
+from picard.config import get_config
+from picard.const import PICARD_URLS
 from picard.disc import Disc
 from picard.util import (
     build_qurl,
@@ -172,8 +170,9 @@ class FileLookup(object):
     def search_entity(self, type_, query, adv=False, mbid_matched_callback=None, force_browser=False):
         if not force_browser and self.mbid_lookup(query, type_, mbid_matched_callback=mbid_matched_callback):
             return True
+        config = get_config()
         params = {
-            'limit': QUERY_LIMIT,
+            'limit': config.setting['query_limit'],
             'type': type_,
             'query': query,
         }

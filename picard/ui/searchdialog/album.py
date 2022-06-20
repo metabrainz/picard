@@ -31,11 +31,13 @@ from PyQt5 import (
 from PyQt5.QtCore import pyqtSignal
 
 from picard import log
-from picard.config import Option
+from picard.config import (
+    Option,
+    get_config,
+)
 from picard.const import (
     CAA_HOST,
     CAA_PORT,
-    QUERY_LIMIT,
 )
 from picard.coverart.image import CaaThumbnailCoverArtImage
 from picard.mbjson import (
@@ -168,11 +170,12 @@ class AlbumSearchDialog(SearchDialog):
         self.retry_params = Retry(self.search, text)
         self.search_box_text(text)
         self.show_progress()
+        config = get_config()
         self.tagger.mb_api.find_releases(self.handle_reply,
                                          query=text,
                                          search=True,
                                          advanced_search=self.use_advanced_search,
-                                         limit=QUERY_LIMIT)
+                                         limit=config.setting['query_limit'])
 
     def show_similar_albums(self, cluster):
         """Perform search by using existing metadata information

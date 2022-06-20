@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
 # Copyright (C) 2013-2015, 2018, 2020-2021 Laurent Monin
-# Copyright (C) 2014, 2019-2021 Philipp Wolfer
+# Copyright (C) 2014, 2019-2022 Philipp Wolfer
 # Copyright (C) 2016-2017 Sambhav Kothari
 #
 # This program is free software; you can redistribute it and/or
@@ -29,6 +29,7 @@ from picard.config import (
     TextOption,
     get_config,
 )
+from picard.const import QUERY_LIMIT
 
 from picard.ui.options import (
     OptionsPage,
@@ -51,6 +52,7 @@ class AdvancedOptionsPage(OptionsPage):
         BoolOption("setting", "ignore_hidden_files", False),
         BoolOption("setting", "recursively_add_files", True),
         IntOption("setting", "ignore_track_duration_difference_under", 2),
+        IntOption("setting", "query_limit", QUERY_LIMIT),
         BoolOption("setting", "completeness_ignore_videos", False),
         BoolOption("setting", "completeness_ignore_pregap", False),
         BoolOption("setting", "completeness_ignore_data", False),
@@ -70,6 +72,7 @@ class AdvancedOptionsPage(OptionsPage):
         self.ui.ignore_hidden_files.setChecked(config.setting["ignore_hidden_files"])
         self.ui.recursively_add_files.setChecked(config.setting["recursively_add_files"])
         self.ui.ignore_track_duration_difference_under.setValue(config.setting["ignore_track_duration_difference_under"])
+        self.ui.query_limit.setValue(config.setting["query_limit"])
         self.ui.completeness_ignore_videos.setChecked(config.setting["completeness_ignore_videos"])
         self.ui.completeness_ignore_pregap.setChecked(config.setting["completeness_ignore_pregap"])
         self.ui.completeness_ignore_data.setChecked(config.setting["completeness_ignore_data"])
@@ -83,6 +86,7 @@ class AdvancedOptionsPage(OptionsPage):
         config.setting["ignore_hidden_files"] = self.ui.ignore_hidden_files.isChecked()
         config.setting["recursively_add_files"] = self.ui.recursively_add_files.isChecked()
         config.setting["ignore_track_duration_difference_under"] = self.ui.ignore_track_duration_difference_under.value()
+        config.setting["query_limit"] = self.ui.query_limit.value()
         config.setting["completeness_ignore_videos"] = self.ui.completeness_ignore_videos.isChecked()
         config.setting["completeness_ignore_pregap"] = self.ui.completeness_ignore_pregap.isChecked()
         config.setting["completeness_ignore_data"] = self.ui.completeness_ignore_data.isChecked()
