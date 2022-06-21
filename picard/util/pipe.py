@@ -276,7 +276,7 @@ class WinPipe(AbstractPipe):
     __FILE_NOT_FOUND_ERROR_CODE: int = 2
     __BROKEN_PIPE_ERROR_CODE: int = 109
 
-    def __init__(self, app_name: str, app_version: str, args=None):
+    def __init__(self, app_name: str, app_version: str, args=None, forced_path=None):
         app_version = app_version.replace(".", "-")
         super().__init__(app_name, app_version, args)
 
