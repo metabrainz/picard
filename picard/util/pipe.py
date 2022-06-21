@@ -105,7 +105,7 @@ class AbstractPipe:
                      "~/.config/MusicBrainz/Picard/pipes/",
                      )
 
-    def __init__(self, app_name: str, app_version: str, args=None):
+    def __init__(self, app_name: str, app_version: str, args=None, forced_path=None):
         if args is None:
             self._args = tuple()
         else:
@@ -120,7 +120,9 @@ class AbstractPipe:
         if not isinstance(app_name, str) or not isinstance(app_version, str):
             raise PipeErrorInvalidAppData
 
-        if IS_WIN or os.getenv("HOME"):
+        if forced_path:
+            self._paths = (forced_path,)
+        elif IS_WIN or os.getenv("HOME"):
             self._paths = self.__generate_filenames(app_name, app_version)
             self.path_was_forced = False
         else:
@@ -203,10 +205,8 @@ class AbstractPipe:
 
 class UnixPipe(AbstractPipe):
     def __init__(self, app_name: str, app_version: str, args=None, forced_path=None):
-        super().__init__(app_name, app_version, args)
+        super().__init__(app_name, app_version, args, forced_path)
 
-        if forced_path:
-            self._paths = (forced_path,)
         for path in self._paths:
             self.path = path
             for arg in self._args:
@@ -278,7 +278,7 @@ class WinPipe(AbstractPipe):
 
     def __init__(self, app_name: str, app_version: str, args=None, forced_path=None):
         app_version = app_version.replace(".", "-")
-        super().__init__(app_name, app_version, args)
+        super().__init__(app_name, app_version, args, forced_path)
 
         for path in self._paths:
             self.path = path
