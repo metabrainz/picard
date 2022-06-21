@@ -18,7 +18,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from abc import ABCMeta, abstractmethod
+from abc import (
+    ABCMeta,
+    abstractmethod,
+)
 import concurrent.futures
 import os
 from tempfile import NamedTemporaryFile
@@ -95,6 +98,7 @@ class AbstractPipe(metaclass=ABCMeta):
     NO_RESPONSE_MESSAGE: str = "No response from FIFO"
     MESSAGE_TO_IGNORE: str = "Ignore this message, just testing the pipe"
     TIMEOUT_SECS: float = 1.5
+    _MESSAGES_SEPARATOR: str = "\n\n\n\t\t\n"
 
     @classmethod
     @property
@@ -116,8 +120,6 @@ class AbstractPipe(metaclass=ABCMeta):
 
         if not isinstance(app_name, str) or not isinstance(app_version, str):
             raise PipeErrorInvalidAppData
-        elif IS_WIN:
-            app_version = app_version.replace(".", "-")
 
         if forced_path:
             self._paths = (forced_path,)
@@ -131,6 +133,16 @@ class AbstractPipe(metaclass=ABCMeta):
         self.is_pipe_owner: bool = False
 
         self.__thread_pool = concurrent.futures.ThreadPoolExecutor()
+
+        for path in self._paths:
+            self.path = path
+            for arg in self._args:
+                if not self.send_to_pipe(arg):
+                    self.is_pipe_owner = True
+                    break
+            if self.path:
+                log.debug("Using pipe: %r", self.path)
+                break
 
     def _remove_temp_attributes(self):
         del self._args
@@ -165,12 +177,9 @@ class AbstractPipe(metaclass=ABCMeta):
         try:
             res = reader.result(timeout=timeout_secs)
             if res:
-                res = res.split("\n")
+                res = res.split(self._MESSAGES_SEPARATOR)
                 for r in res:
-                    if res == self.MESSAGE_TO_IGNORE:
-                        out = []
-                        break
-                    elif r:
+                    if r and r != self.MESSAGE_TO_IGNORE:
                         out.append(r)
 
         except concurrent.futures._base.TimeoutError:
@@ -186,9 +195,9 @@ class AbstractPipe(metaclass=ABCMeta):
         if timeout_secs is None:
             timeout_secs = self.TIMEOUT_SECS
 
-        # we're sending only filepaths, so it's safe to append newline
-        # this newline helps with handling collisions of messages
-        message += "\n"
+        # we're sending only filepaths, so we have to create some kind of separator
+        # to avoid any potential conflicts and mixing the data
+        message += self._MESSAGES_SEPARATOR
 
         sender = self.__thread_pool.submit(self._sender, message)
 
@@ -212,23 +221,16 @@ class UnixPipe(AbstractPipe):
     def __init__(self, app_name: str, app_version: str, args=None, forced_path=None):
         super().__init__(app_name, app_version, args, forced_path)
 
-        for path in self._paths:
-            self.path = path
-            for arg in self._args:
-                if not self.send_to_pipe(arg):
-                    self.__create_pipe()
-                    break
-            if self.path:
-                break
-
         if not self.path:
             raise PipeErrorNoPermission
-        else:
-            log.debug("Using pipe: %r", self.path)
+        elif self.is_pipe_owner:
+            self.__create_pipe()
 
         self._remove_temp_attributes()
 
     def __create_pipe(self) -> None:
+        # setting false to set make it true only when really created
+        self.is_pipe_owner = False
         try:
             try:
                 # just to be sure that there's no broken pipe left
@@ -238,7 +240,9 @@ class UnixPipe(AbstractPipe):
             os.makedirs(os.path.dirname(self.path), exist_ok=True)
             os.mkfifo(self.path)
             self.is_pipe_owner = True
+            log.debug("Pipe successfully created: %r", self.path)
         except PermissionError:
+            log.debug("Couldn't create pipe: %r", self.path)
             self.path = ""
 
     def _sender(self, message: str) -> bool:
@@ -288,16 +292,13 @@ class WinPipe(AbstractPipe):
     PIPE_DIRS = ("\\\\.\\pipe\\",)
 
     def __init__(self, app_name: str, app_version: str, args=None, forced_path=None):
+        # type checking is already enforced in the AbstractPipe
+        try:
+            app_version = app_version.replace(".", "-")
+        except AttributeError:
+            pass
         super().__init__(app_name, app_version, args, forced_path)
 
-        for path in self._paths:
-            self.path = path
-            for arg in self._args:
-                if not self.send_to_pipe(arg):
-                    self.is_pipe_owner = True
-                    break
-
-        log.debug("Using pipe: %r", self.path)
         self._remove_temp_attributes()
 
     def _sender(self, message: str) -> bool:
