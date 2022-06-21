@@ -18,7 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+from abc import ABCMeta, abstractmethod
 import concurrent.futures
 import os
 from tempfile import NamedTemporaryFile
@@ -91,19 +91,16 @@ class PipeErrorNoDestination(PipeError):
     MESSAGE = "No available dirs to place a pipe"
 
 
-class AbstractPipe:
+class AbstractPipe(metaclass=ABCMeta):
     NO_RESPONSE_MESSAGE: str = "No response from FIFO"
     MESSAGE_TO_IGNORE: str = "Ignore this message, just testing the pipe"
     TIMEOUT_SECS: float = 1.5
 
-    if IS_WIN:
-        PIPE_DIRS = ("\\\\.\\pipe\\",)
-    elif IS_MACOS:
-        PIPE_DIRS = (os.path.join("~/Library/Application Support/", PICARD_APP_ID),)
-    else:
-        PIPE_DIRS = (os.getenv('XDG_RUNTIME_DIR'),
-                     "~/.config/MusicBrainz/Picard/pipes/",
-                     )
+    @classmethod
+    @property
+    @abstractmethod
+    def PIPE_DIRS(cls):
+        raise NotImplementedError
 
     def __init__(self, app_name: str, app_version: str, args=None, forced_path=None):
         if args is None:
@@ -204,6 +201,12 @@ class AbstractPipe:
 
 
 class UnixPipe(AbstractPipe):
+
+    PIPE_DIRS = (
+        os.getenv('XDG_RUNTIME_DIR'),
+        "~/.config/MusicBrainz/Picard/pipes/",
+    )
+
     def __init__(self, app_name: str, app_version: str, args=None, forced_path=None):
         super().__init__(app_name, app_version, args, forced_path)
 
@@ -256,6 +259,10 @@ class UnixPipe(AbstractPipe):
         return response or self.NO_RESPONSE_MESSAGE
 
 
+class MacOSPipe(UnixPipe):
+    PIPE_DIRS = (os.path.join("~/Library/Application Support/", PICARD_APP_ID),)
+
+
 class WinPipe(AbstractPipe):
     # win32pipe.CreateNamedPipe
     # more about the arguments: https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createnamedpipea
@@ -275,6 +282,8 @@ class WinPipe(AbstractPipe):
     # more about the error codes: https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-erref/18d8fbe8-a967-4f1c-ae50-99ca8e491d2d
     __FILE_NOT_FOUND_ERROR_CODE: int = 2
     __BROKEN_PIPE_ERROR_CODE: int = 109
+
+    PIPE_DIRS = ("\\\\.\\pipe\\",)
 
     def __init__(self, app_name: str, app_version: str, args=None, forced_path=None):
         app_version = app_version.replace(".", "-")
@@ -344,5 +353,7 @@ class WinPipe(AbstractPipe):
 
 if IS_WIN:
     Pipe = WinPipe
+elif IS_MACOS:
+    Pipe = MacOSPipe
 else:
     Pipe = UnixPipe
