@@ -21,6 +21,7 @@
 
 import concurrent.futures
 import os
+from tempfile import NamedTemporaryFile
 from typing import (
     List,
     Optional,
@@ -98,10 +99,10 @@ class AbstractPipe:
     if IS_WIN:
         PIPE_DIRS = ("\\\\.\\pipe\\",)
     elif IS_MACOS:
-        PIPE_DIRS = (os.path.join("Library/Application Support/", PICARD_APP_ID),)
+        PIPE_DIRS = (os.path.join("~/Library/Application Support/", PICARD_APP_ID),)
     else:
         PIPE_DIRS = (os.getenv('XDG_RUNTIME_DIR'),
-                     ".config/MusicBrainz/Picard/pipes/",
+                     "~/.config/MusicBrainz/Picard/pipes/",
                      )
 
     def __init__(self, app_name: str, app_version: str, args=None):
@@ -119,23 +120,31 @@ class AbstractPipe:
         if not isinstance(app_name, str) or not isinstance(app_version, str):
             raise PipeErrorInvalidAppData
 
-        self.path: str = self.__generate_filename(app_name, app_version)
-        log.debug("Using pipe directory: %r", self._pipe_parent_dir)
+        if IS_WIN or os.getenv("HOME"):
+            self._paths = self.__generate_filenames(app_name, app_version)
+            self.path_was_forced = False
+        else:
+            self._paths = (NamedTemporaryFile(delete=False).name,)
+            self.path_was_forced = True
+            log.debug("Pipe path had to be mocked by a temporary file")
         self.is_pipe_owner: bool = False
 
         self.__thread_pool = concurrent.futures.ThreadPoolExecutor()
 
     def _remove_temp_attributes(self):
         del self._args
-        del self._pipe_parent_dir
+        del self._paths
 
-    def __generate_filename(self, app_name: str, app_version: str) -> str:
-        self._pipe_parent_dir: str = ""
+    def __generate_filenames(self, app_name: str, app_version: str):
+        _pipe_names = []
 
         for dir in self.PIPE_DIRS:
             if dir:
-                self._pipe_parent_dir = dir
-                return os.path.join(self._pipe_parent_dir, f"{app_name}_v{app_version}_pipe_file")
+                _pipe_names.append(os.path.join(os.path.expanduser(dir),
+                                                        f"{app_name}_v{app_version}_pipe_file"))
+
+        if _pipe_names:
+            return _pipe_names
 
         raise PipeErrorNoDestination
 
@@ -193,13 +202,24 @@ class AbstractPipe:
 
 
 class UnixPipe(AbstractPipe):
-    def __init__(self, app_name: str, app_version: str, args=None):
+    def __init__(self, app_name: str, app_version: str, args=None, forced_path=None):
         super().__init__(app_name, app_version, args)
 
-        for arg in self._args:
-            if not self.send_to_pipe(arg):
-                self.__create_pipe()
+        if forced_path:
+            self._paths = (forced_path,)
+        for path in self._paths:
+            self.path = path
+            for arg in self._args:
+                if not self.send_to_pipe(arg):
+                    self.__create_pipe()
+                    break
+            if self.path:
                 break
+
+        if not self.path:
+            raise PipeErrorNoPermission
+        else:
+            log.debug("Using pipe: %r", self.path)
 
         self._remove_temp_attributes()
 
@@ -210,11 +230,11 @@ class UnixPipe(AbstractPipe):
                 os.unlink(self.path)
             except FileNotFoundError:
                 pass
-            os.makedirs(self._pipe_parent_dir, exist_ok=True)
+            os.makedirs(os.path.dirname(self.path), exist_ok=True)
             os.mkfifo(self.path)
             self.is_pipe_owner = True
-        except PermissionError as exc:
-            raise PipeErrorNoPermission(exc) from None
+        except PermissionError:
+            self.path = ""
 
     def _sender(self, message: str) -> bool:
         if not os.path.exists(self.path):
@@ -260,11 +280,14 @@ class WinPipe(AbstractPipe):
         app_version = app_version.replace(".", "-")
         super().__init__(app_name, app_version, args)
 
-        for arg in self._args:
-            if not self.send_to_pipe(arg):
-                self.is_pipe_owner = True
-                break
+        for path in self._paths:
+            self.path = path
+            for arg in self._args:
+                if not self.send_to_pipe(arg):
+                    self.is_pipe_owner = True
+                    break
 
+        log.debug("Using pipe: %r", self.path)
         self._remove_temp_attributes()
 
     def _sender(self, message: str) -> bool:

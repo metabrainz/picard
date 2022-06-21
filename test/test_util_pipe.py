@@ -19,18 +19,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import concurrent.futures
-from os.path import join
-import unittest
 
 from test.picardtestcase import PicardTestCase
 
 from picard import (
     PICARD_APP_NAME,
     PICARD_FANCY_VERSION_STR,
-)
-from picard.const.sys import (
-    IS_MACOS,
-    IS_WIN,
 )
 from picard.util import pipe
 
@@ -66,29 +60,6 @@ class TestPipe(PicardTestCase):
         self.assertRaises(pipe.PipeErrorInvalidAppData, pipe.Pipe, 21, PICARD_FANCY_VERSION_STR, None)
         self.assertRaises(pipe.PipeErrorInvalidAppData, pipe.Pipe, PICARD_APP_NAME, 21, None)
 
-    @unittest.skipUnless(IS_MACOS, "macos filename test")
-    def test_filename_generation_macos(self):
-        handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
-        MAC_PATH = join(handler.PIPE_MAC_DIR, self.SUFFIX)
-        self.assertEquals(handler.path, MAC_PATH)
-
-    @unittest.skipUnless(IS_WIN, "windows filename test")
-    def test_filename_generation_win(self):
-        handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
-        WIN_PATH = join(handler.PIPE_WIN_DIR, self.SUFFIX.replace('.', '-'))
-        self.assertEquals(handler.path, WIN_PATH)
-
-    @unittest.skipUnless(not IS_MACOS and not IS_WIN, "unix filename test")
-    def test_filename_generation_unix(self):
-        handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
-        UNIX_PATHS = {
-            join(handler.PIPE_UNIX_FALLBACK_DIR, self.SUFFIX)
-        }
-        # None guard
-        if handler.PIPE_UNIX_DIR:
-            UNIX_PATHS.add(join(handler.PIPE_UNIX_DIR, self.SUFFIX))
-        self.assertIn(handler.path, UNIX_PATHS)
-
     def test_pipe_protocol(self):
         END_OF_SEQUENCE = "stop"
         to_send = (
@@ -98,7 +69,10 @@ class TestPipe(PicardTestCase):
         )
 
         pipe_listener_handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
-        pipe_writer_handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
+        if pipe_listener_handler.path_was_forced:
+            pipe_writer_handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR, forced_path=pipe_listener_handler.path)
+        else:
+            pipe_writer_handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
 
         for messages in to_send:
             __pool = concurrent.futures.ThreadPoolExecutor()
