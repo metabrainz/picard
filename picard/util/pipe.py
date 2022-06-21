@@ -119,6 +119,8 @@ class AbstractPipe:
 
         if not isinstance(app_name, str) or not isinstance(app_version, str):
             raise PipeErrorInvalidAppData
+        elif IS_WIN:
+            app_version = app_version.replace(".", "-")
 
         if forced_path:
             self._paths = (forced_path,)
@@ -277,7 +279,6 @@ class WinPipe(AbstractPipe):
     __BROKEN_PIPE_ERROR_CODE: int = 109
 
     def __init__(self, app_name: str, app_version: str, args=None, forced_path=None):
-        app_version = app_version.replace(".", "-")
         super().__init__(app_name, app_version, args, forced_path)
 
         for path in self._paths:

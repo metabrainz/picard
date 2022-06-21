@@ -50,7 +50,8 @@ def pipe_writer(pipe_handler, to_send, end_of_sequence):
 
 
 class TestPipe(PicardTestCase):
-    NAME = str(randint(0, 99999999))
+    # we don't need any strong and secure random numbers, just anything that is different on each run
+    NAME = str(randint(0, 99999999))    # nosec
     VERSION = python_version()
 
     def test_invalid_args(self):
@@ -73,9 +74,10 @@ class TestPipe(PicardTestCase):
         else:
             pipe_writer_handler = pipe.Pipe(self.NAME, self.VERSION)
 
+        __pool = concurrent.futures.ThreadPoolExecutor()
+
         for messages in to_send:
-            __pool = concurrent.futures.ThreadPoolExecutor()
-            plistener = __pool.submit(pipe_listener, pipe_listener_handler, END_OF_SEQUENCE)
             __pool.submit(pipe_writer, pipe_writer_handler, messages, END_OF_SEQUENCE)
+            plistener = __pool.submit(pipe_listener, pipe_listener_handler, END_OF_SEQUENCE)
             self.assertEqual(plistener.result(), messages,
                              "Data is sent and read correctly")
