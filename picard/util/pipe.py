@@ -96,9 +96,8 @@ class PipeErrorNoDestination(PipeError):
 
 class AbstractPipe(metaclass=ABCMeta):
     NO_RESPONSE_MESSAGE: str = "No response from FIFO"
-    MESSAGE_TO_IGNORE: str = "Ignore this message, just testing the pipe"
+    MESSAGE_TO_IGNORE: str = '\0'
     TIMEOUT_SECS: float = 1.5
-    _MESSAGES_SEPARATOR: str = "\n\n\n\t\t\n"
 
     @classmethod
     @property
@@ -177,7 +176,7 @@ class AbstractPipe(metaclass=ABCMeta):
         try:
             res = reader.result(timeout=timeout_secs)
             if res:
-                res = res.split(self._MESSAGES_SEPARATOR)
+                res = res.split(self.MESSAGE_TO_IGNORE)
                 for r in res:
                     if r and r != self.MESSAGE_TO_IGNORE:
                         out.append(r)
@@ -197,7 +196,7 @@ class AbstractPipe(metaclass=ABCMeta):
 
         # we're sending only filepaths, so we have to create some kind of separator
         # to avoid any potential conflicts and mixing the data
-        message += self._MESSAGES_SEPARATOR
+        message += self.MESSAGE_TO_IGNORE
 
         sender = self.__thread_pool.submit(self._sender, message)
 
