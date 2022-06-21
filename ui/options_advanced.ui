@@ -52,19 +52,33 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="query_limit">
-          <property name="accelerated">
-           <bool>true</bool>
+         <widget class="QComboBox" name="query_limit">
+          <property name="currentText">
+           <string notr="true">50</string>
           </property>
-          <property name="minimum">
+          <property name="currentIndex">
            <number>1</number>
           </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="value">
-           <number>50</number>
-          </property>
+          <item>
+           <property name="text">
+            <string notr="true">25</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">50</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">75</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">100</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
