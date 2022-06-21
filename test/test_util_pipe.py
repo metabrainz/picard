@@ -19,13 +19,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import concurrent.futures
+from platform import python_version
+from random import randint
 
 from test.picardtestcase import PicardTestCase
 
-from picard import (
-    PICARD_APP_NAME,
-    PICARD_FANCY_VERSION_STR,
-)
 from picard.util import pipe
 
 
@@ -52,13 +50,14 @@ def pipe_writer(pipe_handler, to_send, end_of_sequence):
 
 
 class TestPipe(PicardTestCase):
-    SUFFIX = f"{PICARD_APP_NAME}_v{PICARD_FANCY_VERSION_STR}_pipe_file"
+    NAME = str(randint(0, 99999999))
+    VERSION = python_version()
 
     def test_invalid_args(self):
         # Pipe should be able to make args iterable (last argument)
-        self.assertRaises(pipe.PipeErrorInvalidArgs, pipe.Pipe, PICARD_APP_NAME, PICARD_FANCY_VERSION_STR, 1)
-        self.assertRaises(pipe.PipeErrorInvalidAppData, pipe.Pipe, 21, PICARD_FANCY_VERSION_STR, None)
-        self.assertRaises(pipe.PipeErrorInvalidAppData, pipe.Pipe, PICARD_APP_NAME, 21, None)
+        self.assertRaises(pipe.PipeErrorInvalidArgs, pipe.Pipe, self.NAME, self.VERSION, 1)
+        self.assertRaises(pipe.PipeErrorInvalidAppData, pipe.Pipe, 21, self.VERSION, None)
+        self.assertRaises(pipe.PipeErrorInvalidAppData, pipe.Pipe, self.NAME, 21, None)
 
     def test_pipe_protocol(self):
         END_OF_SEQUENCE = "stop"
@@ -68,11 +67,11 @@ class TestPipe(PicardTestCase):
             ("my_music_file.mp3",),
         )
 
-        pipe_listener_handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
+        pipe_listener_handler = pipe.Pipe(self.NAME, self.VERSION)
         if pipe_listener_handler.path_was_forced:
-            pipe_writer_handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR, forced_path=pipe_listener_handler.path)
+            pipe_writer_handler = pipe.Pipe(self.NAME, self.VERSION, args=None, forced_path=pipe_listener_handler.path)
         else:
-            pipe_writer_handler = pipe.Pipe(PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
+            pipe_writer_handler = pipe.Pipe(self.NAME, self.VERSION)
 
         for messages in to_send:
             __pool = concurrent.futures.ThreadPoolExecutor()
