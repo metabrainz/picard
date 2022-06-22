@@ -171,21 +171,16 @@ class AbstractPipe(metaclass=ABCMeta):
             timeout_secs = self.TIMEOUT_SECS
 
         reader = self.__thread_pool.submit(self._reader)
-        out = []
 
         try:
             res = reader.result(timeout=timeout_secs)
             if res:
-                for r in res.split(self.MESSAGE_TO_IGNORE):
-                    if r:
-                        out.append(r)
-
+                out = [r for r in res.split(self.MESSAGE_TO_IGNORE) if r]
+                if out:
+                    return out
         except concurrent.futures._base.TimeoutError:
             # hacky way to kill the file-opening loop
             self.send_to_pipe(self.MESSAGE_TO_IGNORE)
-
-        if out:
-            return out
 
         return [self.NO_RESPONSE_MESSAGE]
 
@@ -239,8 +234,8 @@ class UnixPipe(AbstractPipe):
             os.mkfifo(self.path)
             self.is_pipe_owner = True
             log.debug("Pipe successfully created: %r", self.path)
-        except PermissionError:
-            log.debug("Couldn't create pipe: %r", self.path)
+        except PermissionError as e:
+            log.warning("Couldn't create pipe: %r (%s)", self.path, e)
             self.path = ""
 
     def _sender(self, message: str) -> bool:
