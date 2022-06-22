@@ -176,9 +176,8 @@ class AbstractPipe(metaclass=ABCMeta):
         try:
             res = reader.result(timeout=timeout_secs)
             if res:
-                res = res.split(self.MESSAGE_TO_IGNORE)
-                for r in res:
-                    if r and r != self.MESSAGE_TO_IGNORE:
+                for r in res.split(self.MESSAGE_TO_IGNORE):
+                    if r:
                         out.append(r)
 
         except concurrent.futures._base.TimeoutError:
