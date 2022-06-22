@@ -43,6 +43,7 @@ from PyQt5.QtCore import (
 from picard import log
 from picard.config import get_config
 from picard.const import DEFAULT_COVER_IMAGE_FILENAME
+from picard.const.sys import IS_WIN
 from picard.coverart.utils import (
     Id3ImageType,
     image_type_as_id3_num,
@@ -55,6 +56,7 @@ from picard.util import (
     imageinfo,
     is_absolute_path,
     periodictouch,
+    sanitize_filename,
 )
 from picard.util.scripttofilename import script_to_filename
 
@@ -331,7 +333,8 @@ class CoverArtImage:
             return
         config = get_config()
         if config.setting["image_type_as_filename"] and not self.is_front_image():
-            filename = self.maintype
+            win_compat = IS_WIN or config.setting["windows_compatibility"]
+            filename = sanitize_filename(self.maintype, win_compat=win_compat)
             log.debug("Make cover filename from types: %r -> %r",
                       self.types, filename)
         else:
