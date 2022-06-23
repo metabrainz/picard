@@ -330,7 +330,8 @@ class WinPipe(AbstractPipe):
 
         except WinApiError as err:
             if err.winerror == self.__FILE_NOT_FOUND_ERROR_CODE:
-                raise PipeErrorNotFound from None
+                # we just keep reopening the pipe, nothing wrong is happening
+                pass
             elif err.winerror == self.__BROKEN_PIPE_ERROR_CODE:
                 raise PipeErrorBroken from None
             else:
