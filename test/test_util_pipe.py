@@ -48,6 +48,8 @@ def pipe_writer(pipe_handler, to_send, end_of_sequence):
     while not pipe_handler.send_to_pipe(end_of_sequence):
         pass
 
+    return True
+
 
 class TestPipe(PicardTestCase):
     # we don't need any strong and secure random numbers, just anything that is different on each run
@@ -79,10 +81,13 @@ class TestPipe(PicardTestCase):
         for messages in to_send:
             for iteration in range(20):
                 plistener = __pool.submit(pipe_listener, pipe_listener_handler, END_OF_SEQUENCE)
-                __pool.submit(pipe_writer, pipe_writer_handler, messages, END_OF_SEQUENCE)
+                pwriter = __pool.submit(pipe_writer, pipe_writer_handler, messages, END_OF_SEQUENCE)
                 try:
                     self.assertEqual(plistener.result(timeout=4), messages,
                                     "Data is sent and read correctly")
                     break
                 except concurrent.futures._base.TimeoutError:
-                    pass
+                    try:
+                        pwriter.result(timeout=4)
+                    except concurrent.futures._base.TimeoutError:
+                        pass
