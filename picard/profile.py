@@ -158,6 +158,11 @@ class UserProfileGroups():
                 N_("Ignore track duration difference under x seconds"),
                 ["ignore_track_duration_difference_under", "label_track_duration_diff"]
             ),
+            SettingDesc(
+                "query_limit",
+                N_("Maximum number of entities to return per MusicBrainz query"),
+                ["query_limit", "label_query_limit"]
+            ),
             SettingDesc("completeness_ignore_videos", N_("Completeness check ignore: Video tracks"), ["completeness_ignore_videos"]),
             SettingDesc("completeness_ignore_pregap", N_("Completeness check ignore: Pregap tracks"), ["completeness_ignore_pregap"]),
             SettingDesc("completeness_ignore_data", N_("Completeness check ignore: Data tracks"), ["completeness_ignore_data"]),

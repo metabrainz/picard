@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2018, 2020-2021 Laurent Monin
-# Copyright (C) 2018-2021 Philipp Wolfer
+# Copyright (C) 2018-2022 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -23,8 +23,10 @@
 
 from PyQt5 import QtCore
 
-from picard.config import Option
-from picard.const import QUERY_LIMIT
+from picard.config import (
+    Option,
+    get_config,
+)
 from picard.mbjson import artist_to_metadata
 from picard.metadata import Metadata
 
@@ -64,11 +66,12 @@ class ArtistSearchDialog(SearchDialog):
         self.retry_params = Retry(self.search, text)
         self.search_box_text(text)
         self.show_progress()
+        config = get_config()
         self.tagger.mb_api.find_artists(self.handle_reply,
                                         query=text,
                                         search=True,
                                         advanced_search=self.use_advanced_search,
-                                        limit=QUERY_LIMIT)
+                                        limit=config.setting['query_limit'])
 
     def retry(self):
         self.retry_params.function(self.retry_params.query)

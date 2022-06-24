@@ -45,7 +45,6 @@ import re
 from PyQt5 import QtCore
 
 from picard.config import get_config
-from picard.const import QUERY_LIMIT
 from picard.file import File
 from picard.metadata import (
     Metadata,
@@ -282,11 +281,12 @@ class Cluster(FileList):
             N_("Looking up the metadata for cluster %(album)s..."),
             {'album': self.metadata['album']}
         )
+        config = get_config()
         self.lookup_task = self.tagger.mb_api.find_releases(self._lookup_finished,
             artist=self.metadata['albumartist'],
             release=self.metadata['album'],
             tracks=str(len(self.files)),
-            limit=QUERY_LIMIT)
+            limit=config.setting['query_limit'])
 
     def clear_lookup_task(self):
         if self.lookup_task:

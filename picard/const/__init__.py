@@ -142,7 +142,7 @@ PLUGINS_API = {
 }
 
 # Default query limit
-QUERY_LIMIT = 25
+QUERY_LIMIT = 50
 
 # Maximum number of covers to draw in a stack in CoverArtThumbnail
 MAX_COVERS_TO_STACK = 4
