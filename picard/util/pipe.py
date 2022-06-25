@@ -242,8 +242,15 @@ class UnixPipe(AbstractPipe):
         if not os.path.exists(self.path):
             return False
 
-        with open(self.path, 'a') as fifo:
-            fifo.write(message)
+        try:
+            with open(self.path, 'a') as fifo:
+                fifo.write(message)
+        except BrokenPipeError:
+            self.__create_pipe()
+            log.warning("BrokenPipeError happened for %r", message)
+            log.debug("Re-creating the pipe")
+            return False
+
         return True
 
     def _reader(self) -> str:
@@ -254,6 +261,11 @@ class UnixPipe(AbstractPipe):
                     response = fifo.read().strip()
             except FileNotFoundError:
                 raise PipeErrorNotFound from None
+            except BrokenPipeError:
+                self.__create_pipe()
+                log.warning("BrokenPipeError happened while listening to the pipe")
+                log.debug("Re-creating the pipe")
+                break
 
         return response or self.NO_RESPONSE_MESSAGE
 

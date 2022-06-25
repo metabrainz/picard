@@ -24,6 +24,7 @@ from random import randint
 
 from test.picardtestcase import PicardTestCase
 
+from picard import log
 from picard.util import pipe
 
 
@@ -80,11 +81,13 @@ class TestPipe(PicardTestCase):
 
         for messages in to_send:
             for iteration in range(20):
+                log.debug("No. %d attempt to send: %r", iteration+1, messages)
                 plistener = __pool.submit(pipe_listener, pipe_listener_handler, END_OF_SEQUENCE)
                 pwriter = __pool.submit(pipe_writer, pipe_writer_handler, messages, END_OF_SEQUENCE)
                 try:
                     self.assertEqual(plistener.result(timeout=4), messages,
                                     "Data is sent and read correctly")
+                    log.debug("Sent correctly!")
                     break
                 except concurrent.futures._base.TimeoutError:
                     try:
