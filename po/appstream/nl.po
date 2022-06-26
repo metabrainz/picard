@@ -5,7 +5,7 @@
 # 
 # Translators:
 # Lukáš Lalinský <lalinsky@gmail.com>, 2020
-# Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2021
+# Maurits Meulenbelt, 2021
 # 
 #, fuzzy
 msgid ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-14 23:03+0100\n"
 "PO-Revision-Date: 2018-11-25 07:37+0000\n"
-"Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2021\n"
+"Last-Translator: Maurits Meulenbelt, 2021\n"
 "Language-Team: Dutch (https://www.transifex.com/musicbrainz/teams/13846/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

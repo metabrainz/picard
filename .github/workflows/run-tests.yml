@@ -12,9 +12,6 @@ jobs:
         exclude:
         - os: macos-latest
           python-version: '3.6'
-        # pyobjc is not yet compatible with Python 3.10
-        - os: macos-latest
-          python-version: '3.10'
         include:
         - os: macos-10.15
           python-version: '3.6'
@@ -22,9 +19,9 @@ jobs:
       CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
@@ -38,6 +35,7 @@ jobs:
         isort --check-only --diff --recursive picard test
     - name: Test with pytest
       if: always()
+      timeout-minutes: 30
       run: |
         pip install pytest pytest-randomly pytest-cov
         pytest --verbose --cov=picard --cov-report xml:coverage.xml test
@@ -71,9 +69,9 @@ jobs:
         ]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
@@ -84,6 +82,7 @@ jobs:
       env:
         DEPENDENCIES: ${{ matrix.dependencies }}
     - name: Test with pytest
+      timeout-minutes: 30
       run: |
         pip install pytest pytest-randomly pytest-cov
         pytest --verbose test
@@ -96,9 +95,9 @@ jobs:
         python-version: ['3.8']
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install gettext (Linux)

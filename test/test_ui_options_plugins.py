@@ -18,23 +18,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import yaml
+from test.picardtestcase import PicardTestCase
 
-from picard.disc.utils import (
-    TocEntry,
-    calculate_mb_toc_numbers,
-)
+from picard.ui.options.plugins import PluginsOptionsPage
 
 
-def toc_from_file(path):
-    """Reads whipper log files, generates musicbrainz disc TOC listing for use as discid.
+class PluginsOptionsPageTest(PicardTestCase):
 
-    Warning: may work wrong for discs having data tracks. May generate wrong
-    results on other non-standard cases."""
-    with open(path, encoding='utf-8') as f:
-        data = yaml.safe_load(f)
-        toc_entries = (
-            TocEntry(num, t['Start sector'], t['End sector'])
-            for num, t in data['TOC'].items()
+    def test_link_authors(self):
+        self.assertEqual(
+            '<a href="mailto:coyote@acme.com">Wile E. Coyote</a>, Road &lt;Runner&gt;',
+            PluginsOptionsPage.link_authors('Wile E. Coyote <coyote@acme.com>, Road <Runner>'),
         )
-        return calculate_mb_toc_numbers(toc_entries)

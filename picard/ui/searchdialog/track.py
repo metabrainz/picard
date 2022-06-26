@@ -24,8 +24,10 @@
 
 from PyQt5 import QtCore
 
-from picard.config import Option
-from picard.const import QUERY_LIMIT
+from picard.config import (
+    Option,
+    get_config,
+)
 from picard.file import File
 from picard.mbjson import (
     countries_from_node,
@@ -76,11 +78,12 @@ class TrackSearchDialog(SearchDialog):
         self.retry_params = Retry(self.search, text)
         self.search_box_text(text)
         self.show_progress()
+        config = get_config()
         self.tagger.mb_api.find_tracks(self.handle_reply,
                                        query=text,
                                        search=True,
                                        advanced_search=self.use_advanced_search,
-                                       limit=QUERY_LIMIT)
+                                       limit=config.setting['query_limit'])
 
     def show_similar_tracks(self, file_):
         """Perform search using existing metadata information

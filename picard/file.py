@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2004 Robert Kaye
 # Copyright (C) 2006-2009, 2011-2013, 2017 Lukáš Lalinský
-# Copyright (C) 2007-2011, 2015, 2018-2021 Philipp Wolfer
+# Copyright (C) 2007-2011, 2015, 2018-2022 Philipp Wolfer
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008-2009 Nikolai Prokoschenko
 # Copyright (C) 2009 Carlin Mangar
@@ -62,7 +62,6 @@ from picard import (
     log,
 )
 from picard.config import get_config
-from picard.const import QUERY_LIMIT
 from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
@@ -876,6 +875,7 @@ class File(QtCore.QObject, Item):
         self.clear_lookup_task()
         metadata = self.metadata
         self.set_pending()
+        config = get_config()
         self.lookup_task = self.tagger.mb_api.find_tracks(
             partial(self._lookup_finished, File.LOOKUP_METADATA),
             track=metadata['title'],
@@ -885,7 +885,7 @@ class File(QtCore.QObject, Item):
             tracks=metadata['totaltracks'],
             qdur=str(metadata.length // 2000),
             isrc=metadata['isrc'],
-            limit=QUERY_LIMIT)
+            limit=config.setting['query_limit'])
 
     def clear_lookup_task(self):
         if self.lookup_task:
