@@ -159,7 +159,8 @@ class ScriptEditorExamples():
         c_metadata = Metadata()
         c_metadata.copy(file.metadata)
         try:
-            if self.settings["enable_tagger_scripts"]:
+            # Only apply scripts if the original file metadata has not been changed.
+            if self.settings["enable_tagger_scripts"] and not c_metadata.diff(file.orig_metadata):
                 for s_pos, s_name, s_enabled, s_text in self.settings["list_of_scripts"]:
                     if s_enabled and s_text:
                         parser = ScriptParser()
