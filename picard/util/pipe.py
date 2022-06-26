@@ -243,7 +243,7 @@ class UnixPipe(AbstractPipe):
             return False
 
         try:
-            with open(self.path, 'a') as fifo:
+            with open(self.path, 'w') as fifo:
                 fifo.write(message)
         except BrokenPipeError:
             self.__create_pipe()
