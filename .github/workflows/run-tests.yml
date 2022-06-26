@@ -82,7 +82,7 @@ jobs:
       env:
         DEPENDENCIES: ${{ matrix.dependencies }}
     - name: Test with pytest
-    	timeout-minutes: 30
+      timeout-minutes: 30
       run: |
         pip install pytest pytest-randomly pytest-cov
         pytest --verbose test
