@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021-2022 Bob Swift
 # Copyright (C) 2021 Laurent Monin
 # Copyright (C) 2021-2022 Philipp Wolfer
 #
@@ -50,6 +50,7 @@ from picard.const import (
     PICARD_URLS,
 )
 from picard.file import File
+from picard.metadata import Metadata
 from picard.script import (
     ScriptError,
     ScriptParser,
@@ -154,14 +155,17 @@ class ScriptEditorExamples():
         Returns:
             tuple: Example before and after names for the specified file
         """
+        # Operate on a copy of the file object metadata to avoid multiple changes to file metadata.  See PICARD-2508.
+        c_metadata = Metadata()
+        c_metadata.copy(file.metadata)
         try:
             if self.settings["enable_tagger_scripts"]:
                 for s_pos, s_name, s_enabled, s_text in self.settings["list_of_scripts"]:
                     if s_enabled and s_text:
                         parser = ScriptParser()
-                        parser.eval(s_text, file.metadata)
+                        parser.eval(s_text, c_metadata)
             filename_before = file.filename
-            filename_after = file.make_filename(filename_before, file.metadata, self.settings, self.script_text)
+            filename_after = file.make_filename(filename_before, c_metadata, self.settings, self.script_text)
             if not self.settings["move_files"]:
                 return os.path.basename(filename_before), os.path.basename(filename_after)
             return filename_before, filename_after
