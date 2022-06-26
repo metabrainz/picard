@@ -26,8 +26,8 @@ import concurrent.futures
 import os
 from tempfile import NamedTemporaryFile
 from typing import (
-    List,
     Optional,
+    Set,
 )
 
 from picard import (
@@ -166,7 +166,7 @@ class AbstractPipe(metaclass=ABCMeta):
     def _sender(self, message) -> bool:
         raise NotImplementedError()
 
-    def read_from_pipe(self, timeout_secs: Optional[float] = None) -> List[str]:
+    def read_from_pipe(self, timeout_secs: Optional[float] = None) -> Set[str]:
         if timeout_secs is None:
             timeout_secs = self.TIMEOUT_SECS
 
@@ -175,14 +175,14 @@ class AbstractPipe(metaclass=ABCMeta):
         try:
             res = reader.result(timeout=timeout_secs)
             if res:
-                out = [r for r in res.split(self.MESSAGE_TO_IGNORE) if r]
+                out = set([r for r in res.split(self.MESSAGE_TO_IGNORE) if r])
                 if out:
                     return out
         except concurrent.futures._base.TimeoutError:
             # hacky way to kill the file-opening loop
             self.send_to_pipe(self.MESSAGE_TO_IGNORE)
 
-        return [self.NO_RESPONSE_MESSAGE]
+        return {self.NO_RESPONSE_MESSAGE}
 
     def send_to_pipe(self, message: str, timeout_secs: Optional[float] = None) -> bool:
         if timeout_secs is None:
@@ -243,15 +243,23 @@ class UnixPipe(AbstractPipe):
             return False
 
         try:
-            with open(self.path, 'w') as fifo:
+            with open(self.path, 'a') as fifo:
                 fifo.write(message)
+            log.debug("sent successfully: %r", message)
+            return True
         except BrokenPipeError:
-            self.__create_pipe()
             log.warning("BrokenPipeError happened for %r", message)
-            log.debug("Re-creating the pipe")
-            return False
+        except OSError:
+            log.warning("append doesn't work, fallback to fifo write mode")
+            try:
+                with open(self.path, 'w') as fifo:
+                    fifo.write(message)
+                log.debug("sent successfully: %r", message)
+                return True
+            except BrokenPipeError:
+                log.warning("BrokenPipeError happened for %r", message)
 
-        return True
+        return False
 
     def _reader(self) -> str:
         response: str = ""
@@ -262,12 +270,14 @@ class UnixPipe(AbstractPipe):
             except FileNotFoundError:
                 raise PipeErrorNotFound from None
             except BrokenPipeError:
-                self.__create_pipe()
                 log.warning("BrokenPipeError happened while listening to the pipe")
-                log.debug("Re-creating the pipe")
                 break
 
-        return response or self.NO_RESPONSE_MESSAGE
+        if response:
+            log.debug("read value: %r", response)
+            return response
+
+        return self.NO_RESPONSE_MESSAGE
 
 
 class MacOSPipe(UnixPipe):

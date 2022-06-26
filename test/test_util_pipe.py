@@ -28,25 +28,25 @@ from picard import log
 from picard.util import pipe
 
 
-def pipe_listener(pipe_handler, end_of_sequence):
-    IGNORED_OUTPUT = {pipe.Pipe.MESSAGE_TO_IGNORE, pipe.Pipe.NO_RESPONSE_MESSAGE, "", end_of_sequence}
-    received = []
-    messages = []
+def pipe_listener(pipe_handler):
+    IGNORED_OUTPUT = {pipe.Pipe.MESSAGE_TO_IGNORE, pipe.Pipe.NO_RESPONSE_MESSAGE, ""}
+    received = ""
 
-    while end_of_sequence not in messages:
-        messages = pipe_handler.read_from_pipe()
-        for message in messages:
+    while not received:
+        for message in pipe_handler.read_from_pipe():
             if message not in IGNORED_OUTPUT:
-                received.append(message)
+                received = message
+                break
 
-    return tuple(received)
+    log.debug("returning: %r", received)
+    return received
 
 
-def pipe_writer(pipe_handler, to_send, end_of_sequence):
-    for message in to_send:
-        while not pipe_handler.send_to_pipe(message):
-            pass
-    while not pipe_handler.send_to_pipe(end_of_sequence):
+def pipe_writer(pipe_handler, to_send):
+    if not to_send:
+        return False
+
+    while not pipe_handler.send_to_pipe(to_send):
         pass
 
     return True
@@ -64,12 +64,12 @@ class TestPipe(PicardTestCase):
         self.assertRaises(pipe.PipeErrorInvalidAppData, pipe.Pipe, self.NAME, 21, None)
 
     def test_pipe_protocol(self):
-        END_OF_SEQUENCE = "stop"
-        to_send = (
-            ("it", "tests", "picard", "pipe"),
-            ("test", "number", "two"),
-            ("my_music_file.mp3",),
-        )
+        to_send = {
+            "it", "tests", "picard", "pipe",
+            "test", "number", "two",
+            "my_music_file.mp3", "last-case",
+            TestPipe.NAME, TestPipe.VERSION
+        }
 
         pipe_listener_handler = pipe.Pipe(self.NAME, self.VERSION)
         if pipe_listener_handler.path_was_forced:
@@ -78,19 +78,25 @@ class TestPipe(PicardTestCase):
             pipe_writer_handler = pipe.Pipe(self.NAME, self.VERSION)
 
         __pool = concurrent.futures.ThreadPoolExecutor()
-
-        for messages in to_send:
-            for iteration in range(20):
-                log.debug("No. %d attempt to send: %r", iteration+1, messages)
-                plistener = __pool.submit(pipe_listener, pipe_listener_handler, END_OF_SEQUENCE)
-                pwriter = __pool.submit(pipe_writer, pipe_writer_handler, messages, END_OF_SEQUENCE)
-                try:
-                    self.assertEqual(plistener.result(timeout=4), messages,
-                                    "Data is sent and read correctly")
-                    log.debug("Sent correctly!")
-                    break
-                except concurrent.futures._base.TimeoutError:
+        for count in range(100):
+            for message in to_send:
+                for iteration in range(20):
+                    log.debug("No. %d attempt to send: %r", iteration+1, message)
+                    plistener = __pool.submit(pipe_listener, pipe_listener_handler)
+                    pwriter = __pool.submit(pipe_writer, pipe_writer_handler, message)
+                    to_break = False
                     try:
-                        pwriter.result(timeout=4)
+                        self.assertEqual(plistener.result(timeout=6.5), message,
+                                        "Data is sent and read correctly")
+                        log.debug("Sent correctly!")
+                        to_break = True
                     except concurrent.futures._base.TimeoutError:
-                        pass
+                        pipe_writer_handler.send_to_pipe(pipe_writer_handler.MESSAGE_TO_IGNORE)
+
+                    try:
+                        pwriter.result(timeout=0.01)
+                    except concurrent.futures._base.TimeoutError:
+                        pipe_listener_handler.read_from_pipe()
+
+                    if to_break:
+                        break
