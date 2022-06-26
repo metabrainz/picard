@@ -35,6 +35,7 @@ jobs:
         isort --check-only --diff --recursive picard test
     - name: Test with pytest
       if: always()
+      timeout-minutes: 30
       run: |
         pip install pytest pytest-randomly pytest-cov
         pytest --verbose --cov=picard --cov-report xml:coverage.xml test
@@ -81,6 +82,7 @@ jobs:
       env:
         DEPENDENCIES: ${{ matrix.dependencies }}
     - name: Test with pytest
+      timeout-minutes: 30
       run: |
         pip install pytest pytest-randomly pytest-cov
         pytest --verbose test
