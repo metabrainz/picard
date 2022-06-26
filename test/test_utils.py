@@ -71,6 +71,7 @@ from picard.util import (
     tracknum_from_filename,
     uniqify,
     wildcards_to_regex_pattern,
+    win_prefix_longpath,
 )
 
 
@@ -736,6 +737,17 @@ class NormpathTest(PicardTestCase):
         self.assertEqual(path, normpath(path))
         path += 'a'
         self.assertEqual('\\\\?\\' + path, normpath(path))
+
+
+class WinPrefixLongpathTest(PicardTestCase):
+
+    def test_win_prefix_longpath_is_long(self):
+        path = 'C:\\foo\\' + (253 * 'a')
+        self.assertEqual('\\\\?\\' + path, win_prefix_longpath(path))
+
+    def test_win_prefix_longpath_is_short(self):
+        path = 'C:\\foo\\' + (252 * 'a')
+        self.assertEqual(path, win_prefix_longpath(path))
 
 
 class SystemSupportsLongPathsTest(PicardTestCase):
