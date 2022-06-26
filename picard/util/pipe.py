@@ -243,21 +243,12 @@ class UnixPipe(AbstractPipe):
             return False
 
         try:
-            with open(self.path, 'a') as fifo:
+            with open(self.path, 'w') as fifo:
                 fifo.write(message)
             log.debug("sent successfully: %r", message)
             return True
         except BrokenPipeError:
             log.warning("BrokenPipeError happened for %r", message)
-        except OSError:
-            log.warning("append doesn't work, fallback to fifo write mode")
-            try:
-                with open(self.path, 'w') as fifo:
-                    fifo.write(message)
-                log.debug("sent successfully: %r", message)
-                return True
-            except BrokenPipeError:
-                log.warning("BrokenPipeError happened for %r", message)
 
         return False
 
