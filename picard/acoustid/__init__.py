@@ -6,7 +6,7 @@
 # Copyright (C) 2017-2018 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2018-2021 Laurent Monin
-# Copyright (C) 2018-2021 Philipp Wolfer
+# Copyright (C) 2018-2022 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -36,8 +36,12 @@ from picard import log
 from picard.acoustid.json_helpers import parse_recording
 from picard.config import get_config
 from picard.const import FPCALC_NAMES
+from picard.const.sys import IS_WIN
 from picard.file import File
-from picard.util import find_executable
+from picard.util import (
+    find_executable,
+    win_prefix_longpath,
+)
 
 
 def get_score(node):
@@ -248,7 +252,10 @@ class AcoustIDClient(QtCore.QObject):
         process.setProperty('picard_finished', False)
         process.finished.connect(partial(self._on_fpcalc_finished, task))
         process.error.connect(partial(self._on_fpcalc_error, task))
-        process.start(self._fpcalc, ["-json", "-length", "120", task.file.filename])
+        file_path = task.file.filename
+        if IS_WIN:
+            file_path = win_prefix_longpath(file_path)
+        process.start(self._fpcalc, ["-json", "-length", "120", file_path])
         log.debug("Starting fingerprint calculator %r %r", self._fpcalc, task.file.filename)
 
     def analyze(self, file, next_func):

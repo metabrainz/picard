@@ -228,8 +228,13 @@ def normpath(path):
     # If the path is longer than 259 characters on Windows, prepend the \\?\
     # prefix. This enables access to long paths using the Windows API. See
     # https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation
-    if (IS_WIN and len(path) > WIN_MAX_FILEPATH_LEN and not system_supports_long_paths()
-        and not path.startswith(WIN_LONGPATH_PREFIX)):
+    if IS_WIN and not system_supports_long_paths():
+        path = win_prefix_longpath(path)
+    return path
+
+
+def win_prefix_longpath(path):
+    if len(path) > WIN_MAX_FILEPATH_LEN and not path.startswith(WIN_LONGPATH_PREFIX):
         path = WIN_LONGPATH_PREFIX + path
     return path
 
