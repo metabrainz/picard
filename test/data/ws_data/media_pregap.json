@@ -1,0 +1,83 @@
+{
+    "track-count": 8,
+    "discs": [
+        {
+            "sectors": 134481,
+            "offset-count": 8,
+            "id": "7v3LmtkMIT49mHs7LobaAwBNsck-",
+            "offsets": [
+                6824,
+                18966,
+                37134,
+                52930,
+                69024,
+                80329,
+                98814,
+                117353
+            ]
+        }
+    ],
+    "format-id": "8a08dc62-1aa2-34de-a904-fa467c53052c",
+    "position": 1,
+    "track-offset": 0,
+    "format": "Enhanced CD",
+    "title": "",
+    "pregap": {
+        "number": "0",
+        "position": 0,
+        "artist-credit": [
+            {
+                "name": "Lemon Demon",
+                "joinphrase": "",
+                "artist": {
+                    "type": "Person",
+                    "sort-name": "Lemon Demon",
+                    "disambiguation": "",
+                    "id": "6b014cfd-4927-4187-a741-715998e6d785",
+                    "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                    "aliases": [
+                        {
+                            "name": "Deporitaz",
+                            "primary": null,
+                            "type-id": null,
+                            "locale": null,
+                            "begin": null,
+                            "ended": false,
+                            "end": null,
+                            "sort-name": "Deporitaz",
+                            "type": null
+                        }
+                    ],
+                    "name": "Lemon Demon"
+                }
+            }
+        ],
+        "recording": {
+            "video": false,
+            "id": "a6f68447-7810-4d1e-a5a2-d10ff0943aee",
+            "first-release-date": "2019",
+            "aliases": [],
+            "title": "Sexy DVD",
+            "length": 88000,
+            "disambiguation": "",
+            "artist-credit": [
+                {
+                    "artist": {
+                        "id": "6b014cfd-4927-4187-a741-715998e6d785",
+                        "type": "Person",
+                        "sort-name": "Lemon Demon",
+                        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                        "disambiguation": "",
+                        "name": "Lemon Demon"
+                    },
+                    "joinphrase": "",
+                    "name": "Lemon Demon"
+                }
+            ]
+        },
+        "length": 88000,
+        "title": "Sexy DVD",
+        "id": "74fa2a03-325a-4a6b-bcfd-12f95ba30d16"
+    },
+    "tracks": []
+}
