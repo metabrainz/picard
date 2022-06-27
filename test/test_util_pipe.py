@@ -24,12 +24,11 @@ from random import randint
 
 from test.picardtestcase import PicardTestCase
 
-from picard import log
 from picard.util import pipe
 
 
 def pipe_listener(pipe_handler):
-    IGNORED_OUTPUT = {pipe.Pipe.MESSAGE_TO_IGNORE, pipe.Pipe.NO_RESPONSE_MESSAGE, ""}
+    IGNORED_OUTPUT = {pipe.Pipe.MESSAGE_TO_IGNORE, pipe.Pipe.NO_RESPONSE_MESSAGE}
     received = ""
 
     while not received:
@@ -38,7 +37,6 @@ def pipe_listener(pipe_handler):
                 received = message
                 break
 
-    log.debug("returning: %r", received)
     return received
 
 
@@ -54,7 +52,7 @@ def pipe_writer(pipe_handler, to_send):
 
 class TestPipe(PicardTestCase):
     # we don't need any strong and secure random numbers, just anything that is different on each run
-    NAME = str(randint(0, 99999999))    # nosec
+    NAME = str(randint(0, 99999999))  # nosec
     VERSION = python_version()
 
     def test_invalid_args(self):
@@ -80,23 +78,19 @@ class TestPipe(PicardTestCase):
         __pool = concurrent.futures.ThreadPoolExecutor()
         for count in range(100):
             for message in to_send:
-                for iteration in range(20):
-                    log.debug("No. %d attempt to send: %r", iteration+1, message)
-                    plistener = __pool.submit(pipe_listener, pipe_listener_handler)
-                    pwriter = __pool.submit(pipe_writer, pipe_writer_handler, message)
-                    to_break = False
-                    try:
-                        self.assertEqual(plistener.result(timeout=6.5), message,
-                                        "Data is sent and read correctly")
-                        log.debug("Sent correctly!")
-                        to_break = True
-                    except concurrent.futures._base.TimeoutError:
-                        pipe_writer_handler.send_to_pipe(pipe_writer_handler.MESSAGE_TO_IGNORE)
+                plistener = __pool.submit(pipe_listener, pipe_listener_handler)
+                pwriter = __pool.submit(pipe_writer, pipe_writer_handler, message)
+                res = []
 
-                    try:
-                        pwriter.result(timeout=0.01)
-                    except concurrent.futures._base.TimeoutError:
-                        pipe_listener_handler.read_from_pipe()
+                # handle the write/read processes
+                try:
+                    res = plistener.result(timeout=6.5)
+                except concurrent.futures._base.TimeoutError:
+                    pipe_writer_handler.send_to_pipe(pipe_writer_handler.MESSAGE_TO_IGNORE)
+                try:
+                    pwriter.result(timeout=0.01)
+                except concurrent.futures._base.TimeoutError:
+                    pipe_listener_handler.read_from_pipe()
 
-                    if to_break:
-                        break
+                self.assertEqual(res, message,
+                                 "Data is sent and read correctly")

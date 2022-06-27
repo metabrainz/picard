@@ -318,7 +318,7 @@ class Tagger(QtWidgets.QApplication):
             self.updatecheckmanager = UpdateCheckManager(parent=self.window)
 
     def pipe_server(self):
-        IGNORED = {pipe.Pipe.MESSAGE_TO_IGNORE, pipe.Pipe.NO_RESPONSE_MESSAGE, ""}
+        IGNORED = {pipe.Pipe.MESSAGE_TO_IGNORE, pipe.Pipe.NO_RESPONSE_MESSAGE}
         while self.pipe_running:
             messages = [x for x in self.pipe_handler.read_from_pipe() if x not in IGNORED]
             if messages:

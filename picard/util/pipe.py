@@ -30,7 +30,6 @@ from typing import (
     Iterable,
     List,
     Optional,
-    Set,
     Tuple,
 )
 
@@ -212,13 +211,13 @@ class AbstractPipe(metaclass=ABCMeta):
         """
         raise NotImplementedError()
 
-    def read_from_pipe(self, timeout_secs: Optional[float] = None) -> Set[str]:
+    def read_from_pipe(self, timeout_secs: Optional[float] = None) -> List[str]:
         """
         Common interface for the custom _reader implementations
 
         :param timeout_secs: (Optional[float]) Timeout for the function, by default it fallbacks to self.TIMEOUT_SECS
-        :return: Set of messages or {self.NO_RESPONSE_MESSAGE} (if no messages received)
-        :rtype: Set[str]
+        :return: List of messages or {self.NO_RESPONSE_MESSAGE} (if no messages received)
+        :rtype: List[str]
         """
         if timeout_secs is None:
             timeout_secs = self.TIMEOUT_SECS
@@ -228,15 +227,14 @@ class AbstractPipe(metaclass=ABCMeta):
         try:
             res = reader.result(timeout=timeout_secs)
             if res:
-                out = set([r for r in res.split(self.MESSAGE_TO_IGNORE) if r])
+                out = [r for r in res.split(self.MESSAGE_TO_IGNORE) if r]
                 if out:
-                    log.debug("Read message: %r", out)
                     return out
         except concurrent.futures._base.TimeoutError:
             # hacky way to kill the file-opening loop
             self.send_to_pipe(self.MESSAGE_TO_IGNORE)
 
-        return {self.NO_RESPONSE_MESSAGE}
+        return [self.NO_RESPONSE_MESSAGE]
 
     def send_to_pipe(self, message: str, timeout_secs: Optional[float] = None) -> bool:
         """
@@ -256,7 +254,6 @@ class AbstractPipe(metaclass=ABCMeta):
 
         try:
             if sender.result(timeout=timeout_secs):
-                log.debug("sent successfully: %r", message)
                 return True
         except concurrent.futures._base.TimeoutError:
             log.warning("Couldn't send: %r", message)
