@@ -1051,8 +1051,6 @@ def process_picard_args():
                         help="location of the configuration file")
     parser.add_argument("-d", "--debug", action='store_true',
                         help="enable debug-level logging")
-    parser.add_argument("-s", "--stand-alone-instance", action='store_true',
-                        help="force create new Picard instance")
     parser.add_argument("-M", "--no-player", action='store_true',
                         help="disable built-in media player")
     parser.add_argument("-N", "--no-restore", action='store_true',
@@ -1061,6 +1059,8 @@ def process_picard_args():
                         help="do not load any plugins")
     parser.add_argument("--no-crash-dialog", action='store_true',
                         help="disable the crash dialog")
+    parser.add_argument("-s", "--stand-alone-instance", action='store_true',
+                        help="force create new Picard instance")
     parser.add_argument('-v', '--version', action='store_true',
                         help="display version information and exit")
     parser.add_argument("-V", "--long-version", action='store_true',
