@@ -26,8 +26,12 @@ import concurrent.futures
 import os
 from tempfile import NamedTemporaryFile
 from typing import (
+    Any,
+    Iterable,
+    List,
     Optional,
     Set,
+    Tuple,
 )
 
 from picard import (
@@ -47,15 +51,15 @@ if IS_WIN:
 
 
 class PipeError(Exception):
-    MESSAGE = None
+    MESSAGE: str = ""
 
     def __init__(self, *messages):
         if self.MESSAGE:
-            self.messages = (self.MESSAGE,) + tuple(messages)
+            self.messages: Tuple[str] = (self.MESSAGE,) + tuple(messages)
         else:
-            self.messages = tuple(messages)
+            self.messages: Tuple[str] = tuple(messages)     # type: ignore
 
-    def __str__(self):
+    def __str__(self) -> str:
         messages_str = "\n  ".join(str(m) for m in self.messages)
         if not messages_str:
             messages_str = "unknown"
@@ -103,14 +107,26 @@ class AbstractPipe(metaclass=ABCMeta):
     @property
     @abstractmethod
     def PIPE_DIRS(cls):
+        """
+        Tuple of dirs where pipe could possibly be created
+
+        **Virtual**, implement in child classes
+        """
         raise NotImplementedError
 
-    def __init__(self, app_name: str, app_version: str, args=None, forced_path=None):
+    def __init__(self, app_name: str, app_version: str, args: Optional[Iterable[str]] = None,
+                 forced_path: Optional[str] = None):
+        """
+        :param app_name: (str) Name of the app, included in the pipe name
+        :param app_version: (str) Version of the app, included in the pipe name
+        :param args: (Optional[Iterable[str]]) Will be passed to an existing instance of app if possible
+        :param forced_path: (Optional[str]) Testing-purposes only, bypass of no $HOME on testing machines
+        """
         if args is None:
-            self._args = tuple()
+            self._args: Tuple[str] = tuple()    # type: ignore
         else:
             try:
-                self._args = tuple(args)
+                self._args = tuple(args)    # type: ignore
             except TypeError as exc:
                 raise PipeErrorInvalidArgs(exc) from None
 
@@ -143,17 +159,30 @@ class AbstractPipe(metaclass=ABCMeta):
                 log.debug("Using pipe: %r", self.path)
                 break
 
-    def _remove_temp_attributes(self):
+    def _remove_temp_attributes(self) -> None:
+        """
+        Removing self._args and self._paths when child classes don't need them anymore.
+
+        Should be called by child classes.
+        """
         del self._args
         del self._paths
 
-    def __generate_filenames(self, app_name: str, app_version: str):
+    def __generate_filenames(self, app_name: str, app_version: str) -> List[str]:
+        """
+        Returns list of paths available for pipe
+
+        :param app_name: (str) Name of the app, included in the pipe name
+        :param app_version: (str) Version of the app, included in the pipe name
+        :return: List of available pipe paths
+        :rtype: List[str]
+        """
         _pipe_names = []
 
-        for dir in self.PIPE_DIRS:
-            if dir:
-                _pipe_names.append(os.path.join(os.path.expanduser(dir),
-                                                        f"{app_name}_v{app_version}_pipe_file"))
+        for directory in self.PIPE_DIRS:
+            if directory:
+                _pipe_names.append(os.path.join(os.path.expanduser(directory),
+                                                f"{app_name}_v{app_version}_pipe_file"))
 
         if _pipe_names:
             return _pipe_names
@@ -161,12 +190,36 @@ class AbstractPipe(metaclass=ABCMeta):
         raise PipeErrorNoDestination
 
     def _reader(self) -> str:
+        """
+        Listens on the pipe for messages
+
+        **Virtual**, implement in child classes
+
+        :return: What has been read from pipe
+        :rtype: str
+        """
         raise NotImplementedError()
 
-    def _sender(self, message) -> bool:
+    def _sender(self, message: str) -> bool:
+        """
+        Sends message to the pipe
+
+        **Virtual**, implement in child classes
+
+        :param message: (str)
+        :return: True if operation went successfully, False otherwise
+        :rtype: bool
+        """
         raise NotImplementedError()
 
     def read_from_pipe(self, timeout_secs: Optional[float] = None) -> Set[str]:
+        """
+        Common interface for the custom _reader implementations
+
+        :param timeout_secs: (Optional[float]) Timeout for the function, by default it fallbacks to self.TIMEOUT_SECS
+        :return: Set of messages or {self.NO_RESPONSE_MESSAGE} (if no messages received)
+        :rtype: Set[str]
+        """
         if timeout_secs is None:
             timeout_secs = self.TIMEOUT_SECS
 
@@ -177,6 +230,7 @@ class AbstractPipe(metaclass=ABCMeta):
             if res:
                 out = set([r for r in res.split(self.MESSAGE_TO_IGNORE) if r])
                 if out:
+                    log.debug("Read message: %r", out)
                     return out
         except concurrent.futures._base.TimeoutError:
             # hacky way to kill the file-opening loop
@@ -185,19 +239,27 @@ class AbstractPipe(metaclass=ABCMeta):
         return {self.NO_RESPONSE_MESSAGE}
 
     def send_to_pipe(self, message: str, timeout_secs: Optional[float] = None) -> bool:
+        """
+        Common interface for the custom _sender implementations
+
+        :param message: (str) Message that will be sent to the pipe
+        :param timeout_secs: (Optional[float]) Timeout for the function, by default it fallbacks to self.TIMEOUT_SECS
+        :return: True if operation went successfully, False otherwise
+        :rtype: bool
+        """
         if timeout_secs is None:
             timeout_secs = self.TIMEOUT_SECS
 
         # we're sending only filepaths, so we have to create some kind of separator
         # to avoid any potential conflicts and mixing the data
-        message += self.MESSAGE_TO_IGNORE
-
-        sender = self.__thread_pool.submit(self._sender, message)
+        sender = self.__thread_pool.submit(self._sender, message + self.MESSAGE_TO_IGNORE)
 
         try:
             if sender.result(timeout=timeout_secs):
+                log.debug("sent successfully: %r", message)
                 return True
         except concurrent.futures._base.TimeoutError:
+            log.warning("Couldn't send: %r", message)
             # hacky way to kill the sender
             self.read_from_pipe()
 
@@ -206,12 +268,13 @@ class AbstractPipe(metaclass=ABCMeta):
 
 class UnixPipe(AbstractPipe):
 
-    PIPE_DIRS = (
+    PIPE_DIRS: Tuple[str] = (
         os.getenv('XDG_RUNTIME_DIR'),
         "~/.config/MusicBrainz/Picard/pipes/",
-    )
+    )   # type: ignore
 
-    def __init__(self, app_name: str, app_version: str, args=None, forced_path=None):
+    def __init__(self, app_name: str, app_version: str, args: Optional[Iterable[str]] = None,
+                 forced_path: Optional[str] = None):
         super().__init__(app_name, app_version, args, forced_path)
 
         if not self.path:
@@ -222,6 +285,9 @@ class UnixPipe(AbstractPipe):
         self._remove_temp_attributes()
 
     def __create_pipe(self) -> None:
+        """
+        Create pipe on Unix, if it doesn't exist
+        """
         # setting false to set make it true only when really created
         self.is_pipe_owner = False
         try:
@@ -245,7 +311,6 @@ class UnixPipe(AbstractPipe):
         try:
             with open(self.path, 'w') as fifo:
                 fifo.write(message)
-            log.debug("sent successfully: %r", message)
             return True
         except BrokenPipeError:
             log.warning("BrokenPipeError happened for %r", message)
@@ -264,15 +329,11 @@ class UnixPipe(AbstractPipe):
                 log.warning("BrokenPipeError happened while listening to the pipe")
                 break
 
-        if response:
-            log.debug("read value: %r", response)
-            return response
-
-        return self.NO_RESPONSE_MESSAGE
+        return response or self.NO_RESPONSE_MESSAGE
 
 
 class MacOSPipe(UnixPipe):
-    PIPE_DIRS = (os.path.join("~/Library/Application Support/", PICARD_APP_ID),)
+    PIPE_DIRS: Tuple[str] = (os.path.join("~/Library/Application Support/", PICARD_APP_ID),)
 
 
 class WinPipe(AbstractPipe):
@@ -295,9 +356,10 @@ class WinPipe(AbstractPipe):
     __FILE_NOT_FOUND_ERROR_CODE: int = 2
     __BROKEN_PIPE_ERROR_CODE: int = 109
 
-    PIPE_DIRS = ("\\\\.\\pipe\\",)
+    PIPE_DIRS: Tuple[str] = ("\\\\.\\pipe\\",)
 
-    def __init__(self, app_name: str, app_version: str, args=None, forced_path=None):
+    def __init__(self, app_name: str, app_version: str, args: Optional[Iterable[str]] = None,
+                 forced_path: Optional[str] = None):
         # type checking is already enforced in the AbstractPipe
         try:
             app_version = app_version.replace(".", "-")
@@ -361,7 +423,7 @@ class WinPipe(AbstractPipe):
 
 
 if IS_WIN:
-    Pipe = WinPipe
+    Pipe: Any = WinPipe
 elif IS_MACOS:
     Pipe = MacOSPipe
 else:
