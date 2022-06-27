@@ -28,16 +28,10 @@ from picard.util import pipe
 
 
 def pipe_listener(pipe_handler):
-    IGNORED_OUTPUT = {pipe.Pipe.MESSAGE_TO_IGNORE, pipe.Pipe.NO_RESPONSE_MESSAGE}
-    received = ""
-
-    while not received:
+    while True:
         for message in pipe_handler.read_from_pipe():
-            if message not in IGNORED_OUTPUT:
-                received = message
-                break
-
-    return received
+            if message != pipe.Pipe.NO_RESPONSE_MESSAGE:
+                return message
 
 
 def pipe_writer(pipe_handler, to_send):
@@ -80,7 +74,7 @@ class TestPipe(PicardTestCase):
             for message in to_send:
                 plistener = __pool.submit(pipe_listener, pipe_listener_handler)
                 pwriter = __pool.submit(pipe_writer, pipe_writer_handler, message)
-                res = []
+                res = ""
 
                 # handle the write/read processes
                 try:
