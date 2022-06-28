@@ -24,6 +24,7 @@ from random import randint
 
 from test.picardtestcase import PicardTestCase
 
+from picard import log
 from picard.util import pipe
 
 
@@ -56,12 +57,12 @@ class TestPipe(PicardTestCase):
         self.assertRaises(pipe.PipeErrorInvalidAppData, pipe.Pipe, self.NAME, 21, None)
 
     def test_pipe_protocol(self):
-        to_send = {
+        to_send = (
             "it", "tests", "picard", "pipe",
-            "test", "number", "two",
-            "my_music_file.mp3", "last-case",
-            TestPipe.NAME, TestPipe.VERSION
-        }
+            "my_music_file.mp3",
+            TestPipe.NAME, TestPipe.VERSION,
+            "last-case",
+        )
 
         pipe_listener_handler = pipe.Pipe(self.NAME, self.VERSION)
         if pipe_listener_handler.path_was_forced:
@@ -71,6 +72,7 @@ class TestPipe(PicardTestCase):
 
         __pool = concurrent.futures.ThreadPoolExecutor()
         for count in range(100):
+            log.debug("Iteration no. %d", count + 1)
             for message in to_send:
                 plistener = __pool.submit(pipe_listener, pipe_listener_handler)
                 pwriter = __pool.submit(pipe_writer, pipe_writer_handler, message)
