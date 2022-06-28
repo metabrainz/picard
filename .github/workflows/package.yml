@@ -79,6 +79,7 @@ jobs:
         pip3 install -r requirements-build.txt
         pip3 install -r requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt
     - name: Run tests
+      timeout-minutes: 30
       run: |
         python3 setup.py test
     - name: Prepare code signing certificate
@@ -153,6 +154,7 @@ jobs:
         pip install -r requirements-build.txt
         pip install -r requirements-win.txt
     - name: Run tests
+      timeout-minutes: 30
       run: python setup.py test
     - name: Prepare code signing certificate
       if: matrix.type != 'store-app'
