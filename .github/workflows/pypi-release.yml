@@ -20,6 +20,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install --upgrade -r requirements.txt
     - name: Run tests
+      timeout-minutes: 30
       run: |
         python setup.py test
     - name: Build Python source distribution
@@ -97,6 +98,7 @@ jobs:
         python -m pip install --upgrade pip wheel
         pip install --upgrade -r requirements.txt
     - name: Run tests
+      timeout-minutes: 30
       run: |
         python setup.py test
     - name: Build Python binary distribution
