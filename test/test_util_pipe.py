@@ -24,7 +24,6 @@ from random import randint
 
 from test.picardtestcase import PicardTestCase
 
-from picard import log
 from picard.util import pipe
 
 
@@ -72,7 +71,6 @@ class TestPipe(PicardTestCase):
 
         __pool = concurrent.futures.ThreadPoolExecutor()
         for count in range(100):
-            log.debug("Iteration no. %d", count + 1)
             for message in to_send:
                 plistener = __pool.submit(pipe_listener, pipe_listener_handler)
                 pwriter = __pool.submit(pipe_writer, pipe_writer_handler, message)
