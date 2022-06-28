@@ -1112,7 +1112,12 @@ def main(localedir=None, autoupdate=True):
     if picard_args.long_version:
         return longversion()
 
-    should_start = picard_args.stand_alone_instance
+    # any of the flags that change Picard's workflow significantly should trigger creation of a new instance
+    should_start = True in {
+        picard_args.config_file is not None,
+        picard_args.no_plugins,
+        picard_args.stand_alone_instance,
+    }
 
     if not should_start:
         try:
