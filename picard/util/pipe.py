@@ -319,7 +319,7 @@ class UnixPipe(AbstractPipe):
         while not response:
             try:
                 with open(self.path, 'r') as fifo:
-                    response = fifo.read().strip()
+                    response = fifo.read()
             except FileNotFoundError:
                 raise PipeErrorNotFound from None
             except BrokenPipeError:
