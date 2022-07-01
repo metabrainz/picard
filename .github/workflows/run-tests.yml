@@ -120,6 +120,7 @@ jobs:
       run: picard --long-version --no-crash-dialog
     - name: Verify sdist package
       if: runner.os != 'Windows'
+      timeout-minutes: 30
       run: |
         pip install pytest
         scripts/package/run-sdist-test.sh
