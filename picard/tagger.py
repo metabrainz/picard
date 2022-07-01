@@ -1047,7 +1047,7 @@ def process_picard_args():
     parser.add_argument("-V", "--long-version", action='store_true',
                         help="display long version information and exit")
     parser.add_argument('FILE', nargs='*')
-    
+
     return parser.parse_known_args()[0]
 
 
