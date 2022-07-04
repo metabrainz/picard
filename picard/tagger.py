@@ -188,7 +188,8 @@ class Tagger(QtWidgets.QApplication):
     _debug = False
     _no_restore = False
 
-    def __init__(self, picard_args, unparsed_args, localedir, autoupdate, pipe_handler=None):
+
+    def __init__(self, picard_args, localedir, autoupdate, pipe_handler=None):
 
         super().__init__(sys.argv)
         self.__class__.__instance = self
@@ -1066,8 +1067,8 @@ def process_picard_args():
     parser.add_argument("-V", "--long-version", action='store_true',
                         help="display long version information and exit")
     parser.add_argument('FILE', nargs='*')
-    picard_args, unparsed_args = parser.parse_known_args()
-    return picard_args, unparsed_args
+
+    return parser.parse_known_args()[0]
 
 
 class OverrideStyle(QtWidgets.QProxyStyle):
@@ -1106,7 +1107,7 @@ def main(localedir=None, autoupdate=True):
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-    picard_args, unparsed_args = process_picard_args()
+    picard_args = process_picard_args()
     if picard_args.version:
         return version()
     if picard_args.long_version:
@@ -1142,7 +1143,7 @@ def main(localedir=None, autoupdate=True):
     except ImportError:
         pass
 
-    tagger = Tagger(picard_args, unparsed_args, localedir, autoupdate, pipe_handler=pipe_handler)
+    tagger = Tagger(picard_args, localedir, autoupdate, pipe_handler=pipe_handler)
 
     # Initialize Qt default translations
     translator = QtCore.QTranslator()

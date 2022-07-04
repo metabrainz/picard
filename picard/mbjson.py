@@ -75,7 +75,6 @@ _MEDIUM_TO_METADATA = {
     'format': 'media',
     'position': 'discnumber',
     'title': 'discsubtitle',
-    'track-count': 'totaltracks',
 }
 
 _RECORDING_TO_METADATA = {
@@ -478,6 +477,11 @@ def medium_to_metadata(node, m):
     for key, value in _node_skip_empty_iter(node):
         if key in _MEDIUM_TO_METADATA:
             m[_MEDIUM_TO_METADATA[key]] = value
+    totaltracks = node.get('track-count', 0)
+    if node.get('pregap'):
+        totaltracks += 1
+    if totaltracks:
+        m['totaltracks'] = totaltracks
 
 
 def artist_to_metadata(node, m):

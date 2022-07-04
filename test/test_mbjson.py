@@ -402,6 +402,18 @@ class MediaTest(MBJSONTest):
         self.assertEqual(m['totaltracks'], '10')
 
 
+class MediaPregapTest(MBJSONTest):
+
+    filename = 'media_pregap.json'
+
+    def test_track(self):
+        m = Metadata()
+        medium_to_metadata(self.json_doc, m)
+        self.assertEqual(m['discnumber'], '1')
+        self.assertEqual(m['media'], 'Enhanced CD')
+        self.assertEqual(m['totaltracks'], '9')
+
+
 class NullMediaTest(MBJSONTest):
 
     filename = 'media_null.json'
