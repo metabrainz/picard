@@ -322,7 +322,7 @@ class Tagger(QtWidgets.QApplication):
         while self.pipe_running:
             messages = [x for x in self.pipe_handler.read_from_pipe() if x not in IGNORED]
             if messages:
-                self.add_files(messages)
+                self.add_paths(messages)
 
     def enable_menu_icons(self, enabled):
         self.setAttribute(QtCore.Qt.ApplicationAttribute.AA_DontShowIconsInMenus, not enabled)
