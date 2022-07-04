@@ -188,7 +188,6 @@ class Tagger(QtWidgets.QApplication):
     _debug = False
     _no_restore = False
 
-
     def __init__(self, picard_args, localedir, autoupdate, pipe_handler=None):
 
         super().__init__(sys.argv)
