@@ -321,6 +321,7 @@ class UnixPipe(AbstractPipe):
                 with open(self.path, 'r') as fifo:
                     response = fifo.read()
             except FileNotFoundError:
+                log.error("Pipe file removed unexpectedly")
                 raise PipeErrorNotFound from None
             except BrokenPipeError:
                 log.warning("BrokenPipeError happened while listening to the pipe")
