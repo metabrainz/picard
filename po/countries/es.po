@@ -7,7 +7,7 @@
 # Ismael Olea <ismael@olea.org>, 2014-2015
 # Jeremias Brown <comercialspam@gmail.com>, 2018
 # Nicolás Tamargo <reosarevok@gmail.com>, 2011, 2012
-# Kevin Doncam Demian López Brante <kevin@kddlb.cl>, 2012
+# Kevin López Brante <kevin@kddlb.cl>, 2012
 #   Tobias Quathamer <toddy@debian.org>, 2007
 # t0n3t <toni75@gmail.com>, 2012
 msgid ""

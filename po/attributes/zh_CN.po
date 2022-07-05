@@ -178,6 +178,29 @@ msgid ""
 " for listening in a companion app for a limited period of time."
 msgstr "“数字典藏”设备，多用于韩国流行音乐，可使用蓝牙或者耳机插头与手机连接以解锁限时在配套APP中收听专辑的权利。"
 
+#: DB:place_type/description:9
+msgctxt "place_type"
+msgid ""
+"A (usually green) space kept available for recreation in an otherwise built "
+"and populated area."
+msgstr ""
+
+#: DB:medium_format/description:129
+msgctxt "medium_format"
+msgid ""
+"A CD that contains both audio and data in the same session. The data is "
+"often in the first track, that will have to be skipped in many audio "
+"players. Relatively common in old video game CDs."
+msgstr ""
+
+#: DB:medium_format/description:42
+msgctxt "medium_format"
+msgid ""
+"A CD that contains two sessions, one with audio and one with data. Since "
+"they are properly separated, audio players will not try to play the data "
+"session and it won't be part of the disc ID for the CD."
+msgstr ""
+
 #: DB:release_group_secondary_type/description:8
 msgctxt "release_group_secondary_type"
 msgid ""
@@ -289,6 +312,13 @@ msgid ""
 "medium-sized audience and instructs them individually and/or takes questions"
 " intended to improve the audience members' playing skills."
 msgstr "大师课程或诊断是艺术家与中小规模听众会面并对其进行单独指导或者接受询问以提升观众的活动。"
+
+#: DB:release_packaging/description:56
+msgctxt "release_packaging"
+msgid ""
+"A minimalistic plastic case where the back and front are kept together by a "
+"small hinge. Most commonly used for cheap promotion / DIY releases."
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
@@ -1553,6 +1583,11 @@ msgctxt "label_type"
 msgid "Bootleg Production"
 msgstr "非法制作的产品"
 
+#: DB:cover_art_archive.art_type/name:49
+msgctxt "cover_art_type"
+msgid "Bottom"
+msgstr ""
+
 #: DB:release_packaging/name:19
 msgctxt "release_packaging"
 msgid "Box"
@@ -1860,6 +1895,11 @@ msgctxt "area_type"
 msgid ""
 "City is used for settlements of any size, including towns and villages."
 msgstr "城市指代任何规模的居民点，包括城镇和村庄。"
+
+#: DB:release_packaging/name:56
+msgctxt "release_packaging"
+msgid "Clamshell Case"
+msgstr ""
 
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
@@ -4838,6 +4878,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Miraciye"
 msgstr "Miraciye"
 
+#: DB:medium_format/name:129
+msgctxt "medium_format"
+msgid "Mixed Mode CD"
+msgstr ""
+
 #: DB:release_group_secondary_type/name:9
 msgctxt "release_group_secondary_type"
 msgid "Mixtape/Street"
@@ -5662,6 +5707,11 @@ msgstr "Paraj"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Paras"
 msgstr "Paras"
+
+#: DB:place_type/name:9
+msgctxt "place_type"
+msgid "Park"
+msgstr ""
 
 #: DB:work_type/name:13
 msgctxt "work_type"
@@ -7139,6 +7189,14 @@ msgid ""
 "medium."
 msgstr "复合SACD的SACD面。CD面应视为独立媒介。"
 
+#: DB:cover_art_archive.art_type/description:49
+msgctxt "cover_art_type"
+msgid ""
+"The bottom of a box or other similar packaging (for most common six sided "
+"packaging options, the one perpendicular to and below front, back and "
+"spines)."
+msgstr ""
+
 #: DB:work_type/description:7
 msgctxt "work_type"
 msgid ""
@@ -7161,6 +7219,14 @@ msgid ""
 "numbers. Usually found in the hub of a CD or the dead wax area of a vinyl "
 "record."
 msgstr "CD，唱片或其他媒介含有原版号的部分。通常可以在CD的内圈或黑胶唱片的蜡封区找到。"
+
+#: DB:cover_art_archive.art_type/description:48
+msgctxt "cover_art_type"
+msgid ""
+"The top of a box or other similar packaging (for most common six sided "
+"packaging options, the one perpendicular to and above front, back and "
+"spines)."
+msgstr ""
 
 #: DB:release_packaging/description:1
 msgctxt "release_packaging"
@@ -7288,6 +7354,11 @@ msgstr "Tiśra-jāti tripuṭa"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tiśra-jāti ēka"
 msgstr "Tiśra-jāti ēka"
+
+#: DB:cover_art_archive.art_type/name:48
+msgctxt "cover_art_type"
+msgid "Top"
+msgstr ""
 
 #: DB:series_type/name:7
 msgctxt "series_type"

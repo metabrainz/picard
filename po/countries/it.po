@@ -2,13 +2,13 @@
 # Translators:
 # Gioele <gioele@svario.it>, 2012
 # leofiore <leofiore@libero.it>, 2012
-# Luca Salini, 2014-2015
-# Luca Salini, 2012
+# salo.rock, 2014-2015
+# salo.rock, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2012-05-24 19:20+0000\n"
-"Last-Translator: Luca Salini, 2014-2015\n"
+"Last-Translator: salo.rock, 2014-2015\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

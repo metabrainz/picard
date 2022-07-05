@@ -156,6 +156,29 @@ msgid ""
 " for listening in a companion app for a limited period of time."
 msgstr "Een ‘digitaal verzamelobject’ dat via bluetooth of de 3,5mm-aansluiting met een telefoon wordt verbonden, waarna de uitgave via een bijbehorende app een beperkte tijd te beluisteren is."
 
+#: DB:place_type/description:9
+msgctxt "place_type"
+msgid ""
+"A (usually green) space kept available for recreation in an otherwise built "
+"and populated area."
+msgstr "Een park is een niet-bebouwd gebied in een verder bebouwd en bewoond gebied dat voor recreatie wordt gebruikt."
+
+#: DB:medium_format/description:129
+msgctxt "medium_format"
+msgid ""
+"A CD that contains both audio and data in the same session. The data is "
+"often in the first track, that will have to be skipped in many audio "
+"players. Relatively common in old video game CDs."
+msgstr "Een mixedmode-cd is een cd met audio en data in dezelfde sessie. De data bevindt zich vaak in het eerste nummer, dat vaak handmatig moet worden overgeslagen, omdat de cd-speler het niet begrijpt. Deze cd’s werden nogal eens gebruikt bij oude computerspelletjes."
+
+#: DB:medium_format/description:42
+msgctxt "medium_format"
+msgid ""
+"A CD that contains two sessions, one with audio and one with data. Since "
+"they are properly separated, audio players will not try to play the data "
+"session and it won't be part of the disc ID for the CD."
+msgstr "Een cd met twee sessies, een met audio en een met data. Omdat de sessies correct zijn gescheiden, proberen cd-spelers de datasessie niet af te spelen, en maakt de data-sessie geen deel van de disc-ID uit."
+
 #: DB:release_group_secondary_type/description:8
 msgctxt "release_group_secondary_type"
 msgid ""
@@ -267,6 +290,13 @@ msgid ""
 "medium-sized audience and instructs them individually and/or takes questions"
 " intended to improve the audience members' playing skills."
 msgstr "Een masterclass of clinic is een evenement waarbij een artiest een kleine tot middelgrote groep ontmoet en individueel instrueert en/of vragen beantwoordt met de bedoeling om het spelen van het publiek te verbeteren."
+
+#: DB:release_packaging/description:56
+msgctxt "release_packaging"
+msgid ""
+"A minimalistic plastic case where the back and front are kept together by a "
+"small hinge. Most commonly used for cheap promotion / DIY releases."
+msgstr "Een minimalistisch plastic doosje waarvan de voor- en achterkant met een klein scharnier bij elkaar worden gehouden. Deze verpakking wordt vooral voor goedkope promotie- of doe-het-zelf-uitgaven gebruikt."
 
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
@@ -1531,6 +1561,11 @@ msgctxt "label_type"
 msgid "Bootleg Production"
 msgstr "Onofficiële (bootleg) productie"
 
+#: DB:cover_art_archive.art_type/name:49
+msgctxt "cover_art_type"
+msgid "Bottom"
+msgstr "onderkant"
+
 #: DB:release_packaging/name:19
 msgctxt "release_packaging"
 msgid "Box"
@@ -1838,6 +1873,11 @@ msgctxt "area_type"
 msgid ""
 "City is used for settlements of any size, including towns and villages."
 msgstr "Stad wordt gebruikt voor plaatsen van elke grootte, inclusief dorpen."
+
+#: DB:release_packaging/name:56
+msgctxt "release_packaging"
+msgid "Clamshell Case"
+msgstr "Clamshell Case"
 
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
@@ -4816,6 +4856,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Miraciye"
 msgstr "Miraciye"
 
+#: DB:medium_format/name:129
+msgctxt "medium_format"
+msgid "Mixed Mode CD"
+msgstr "mixedmode-cd"
+
 #: DB:release_group_secondary_type/name:9
 msgctxt "release_group_secondary_type"
 msgid "Mixtape/Street"
@@ -5640,6 +5685,11 @@ msgstr "Paraj"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Paras"
 msgstr "Paras"
+
+#: DB:place_type/name:9
+msgctxt "place_type"
+msgid "Park"
+msgstr "Park"
 
 #: DB:work_type/name:13
 msgctxt "work_type"
@@ -7117,6 +7167,14 @@ msgid ""
 "medium."
 msgstr "De sacd-laag van een hybride sacd. De cd-laag moet als een apart medium worden toegevoegd."
 
+#: DB:cover_art_archive.art_type/description:49
+msgctxt "cover_art_type"
+msgid ""
+"The bottom of a box or other similar packaging (for most common six sided "
+"packaging options, the one perpendicular to and below front, back and "
+"spines)."
+msgstr "De onderkant van een doosje of vergelijkbare verpakking (bij de meest voorkomende verpakkingen met zes kanten, is dit de kant haaks op en onder de voorkant, achterkant en rug)."
+
 #: DB:work_type/description:7
 msgctxt "work_type"
 msgid ""
@@ -7139,6 +7197,14 @@ msgid ""
 "numbers. Usually found in the hub of a CD or the dead wax area of a vinyl "
 "record."
 msgstr "Het gedeelte van een cd, plaat of ander medium met informatie zoals matrixnummers. Meestal is dit het onbeschreven centrum van een cd of een grammofoonplaat."
+
+#: DB:cover_art_archive.art_type/description:48
+msgctxt "cover_art_type"
+msgid ""
+"The top of a box or other similar packaging (for most common six sided "
+"packaging options, the one perpendicular to and above front, back and "
+"spines)."
+msgstr "De bovenkant van een doosje of vergelijkbare verpakking (bij de meest voorkomende verpakkingen met zes kanten, is dit de kant haaks op en boven de voorkant, achterkant en rug)."
 
 #: DB:release_packaging/description:1
 msgctxt "release_packaging"
@@ -7266,6 +7332,11 @@ msgstr "Tiśra-jāti tripuṭa"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tiśra-jāti ēka"
 msgstr "Tiśra-jāti ēka"
+
+#: DB:cover_art_archive.art_type/name:48
+msgctxt "cover_art_type"
+msgid "Top"
+msgstr "bovenkant"
 
 #: DB:series_type/name:7
 msgctxt "series_type"

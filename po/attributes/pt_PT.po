@@ -149,6 +149,29 @@ msgid ""
 " for listening in a companion app for a limited period of time."
 msgstr ""
 
+#: DB:place_type/description:9
+msgctxt "place_type"
+msgid ""
+"A (usually green) space kept available for recreation in an otherwise built "
+"and populated area."
+msgstr ""
+
+#: DB:medium_format/description:129
+msgctxt "medium_format"
+msgid ""
+"A CD that contains both audio and data in the same session. The data is "
+"often in the first track, that will have to be skipped in many audio "
+"players. Relatively common in old video game CDs."
+msgstr ""
+
+#: DB:medium_format/description:42
+msgctxt "medium_format"
+msgid ""
+"A CD that contains two sessions, one with audio and one with data. Since "
+"they are properly separated, audio players will not try to play the data "
+"session and it won't be part of the disc ID for the CD."
+msgstr ""
+
 #: DB:release_group_secondary_type/description:8
 msgctxt "release_group_secondary_type"
 msgid ""
@@ -260,6 +283,13 @@ msgid ""
 "medium-sized audience and instructs them individually and/or takes questions"
 " intended to improve the audience members' playing skills."
 msgstr "Uma masterclass ou clínica é um evento em que um artista se encontra com um público pequeno a médio e os instrui individualmente e / ou faz perguntas para melhorar as habilidades de jogo dos membros da audiência"
+
+#: DB:release_packaging/description:56
+msgctxt "release_packaging"
+msgid ""
+"A minimalistic plastic case where the back and front are kept together by a "
+"small hinge. Most commonly used for cheap promotion / DIY releases."
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
@@ -1524,6 +1554,11 @@ msgctxt "label_type"
 msgid "Bootleg Production"
 msgstr ""
 
+#: DB:cover_art_archive.art_type/name:49
+msgctxt "cover_art_type"
+msgid "Bottom"
+msgstr ""
+
 #: DB:release_packaging/name:19
 msgctxt "release_packaging"
 msgid "Box"
@@ -1830,6 +1865,11 @@ msgstr ""
 msgctxt "area_type"
 msgid ""
 "City is used for settlements of any size, including towns and villages."
+msgstr ""
+
+#: DB:release_packaging/name:56
+msgctxt "release_packaging"
+msgid "Clamshell Case"
 msgstr ""
 
 #: DB:release_group_secondary_type/name:1
@@ -4809,6 +4849,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Miraciye"
 msgstr ""
 
+#: DB:medium_format/name:129
+msgctxt "medium_format"
+msgid "Mixed Mode CD"
+msgstr ""
+
 #: DB:release_group_secondary_type/name:9
 msgctxt "release_group_secondary_type"
 msgid "Mixtape/Street"
@@ -5632,6 +5677,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:203
 msgctxt "work_attribute_type_allowed_value"
 msgid "Paras"
+msgstr ""
+
+#: DB:place_type/name:9
+msgctxt "place_type"
+msgid "Park"
 msgstr ""
 
 #: DB:work_type/name:13
@@ -7110,6 +7160,14 @@ msgid ""
 "medium."
 msgstr ""
 
+#: DB:cover_art_archive.art_type/description:49
+msgctxt "cover_art_type"
+msgid ""
+"The bottom of a box or other similar packaging (for most common six sided "
+"packaging options, the one perpendicular to and below front, back and "
+"spines)."
+msgstr ""
+
 #: DB:work_type/description:7
 msgctxt "work_type"
 msgid ""
@@ -7131,6 +7189,14 @@ msgid ""
 "The section on a CD, record or other media containing such data as matrix "
 "numbers. Usually found in the hub of a CD or the dead wax area of a vinyl "
 "record."
+msgstr ""
+
+#: DB:cover_art_archive.art_type/description:48
+msgctxt "cover_art_type"
+msgid ""
+"The top of a box or other similar packaging (for most common six sided "
+"packaging options, the one perpendicular to and above front, back and "
+"spines)."
 msgstr ""
 
 #: DB:release_packaging/description:1
@@ -7258,6 +7324,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:284
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tiśra-jāti ēka"
+msgstr ""
+
+#: DB:cover_art_archive.art_type/name:48
+msgctxt "cover_art_type"
+msgid "Top"
 msgstr ""
 
 #: DB:series_type/name:7
