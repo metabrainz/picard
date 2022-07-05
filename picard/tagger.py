@@ -299,7 +299,7 @@ class Tagger(QtWidgets.QApplication):
         self.stopping = False
 
         # On macOS temporary files get deleted after 3 days not being accessed.
-        # Touch these files regularly if Picard to keep them alive if Picard
+        # Touch these files regularly to keep them alive if Picard
         # is left running for a long time.
         if IS_MACOS:
             periodictouch.enable_timer()
