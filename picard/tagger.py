@@ -213,8 +213,8 @@ class Tagger(QtWidgets.QApplication):
         # if the instance is forced, we get None instead of an actual handler
         # even though there's always something provided as pipe_handler, I created a default argument to make it more obvious
         if pipe_handler:
-            self.pipe_running = True
             self.pipe_handler = pipe_handler
+            self.pipe_handler.pipe_running = True
             self.thread_pool.submit(self.pipe_server)
 
         # Provide a separate thread pool for operations that should not be
@@ -319,7 +319,7 @@ class Tagger(QtWidgets.QApplication):
 
     def pipe_server(self):
         IGNORED = {pipe.Pipe.MESSAGE_TO_IGNORE, pipe.Pipe.NO_RESPONSE_MESSAGE}
-        while self.pipe_running:
+        while self.pipe_handler.pipe_running:
             messages = [x for x in self.pipe_handler.read_from_pipe() if x not in IGNORED]
             if messages:
                 self.add_paths(messages)
@@ -418,7 +418,7 @@ class Tagger(QtWidgets.QApplication):
         self.stopping = True
         log.debug("Picard stopping")
         self._acoustid.done()
-        self.pipe_running = False
+        self.pipe_handler.pipe_running = False
         self.thread_pool.shutdown()
         self.save_thread_pool.shutdown()
         self.priority_thread_pool.shutdown()
