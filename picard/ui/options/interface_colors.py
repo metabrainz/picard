@@ -29,6 +29,7 @@ from PyQt5 import (
 )
 
 from picard.config import Option
+from picard.const.sys import IS_MACOS
 
 from picard.ui.colors import (
     InterfaceColors,
@@ -47,7 +48,10 @@ class ColorButton(QtWidgets.QPushButton):
 
     def __init__(self, initial_color=None, parent=None):
         super().__init__('    ', parent=parent)
-
+        # On macOS the style override in picard.ui.theme breaks styling these
+        # buttons. Explicitly reset the style for this widget only.
+        if IS_MACOS:
+            self.setStyle(QtWidgets.QStyleFactory.create('macintosh'))
         color = QtGui.QColor(initial_color)
         if not color.isValid():
             color = QtGui.QColor("black")
