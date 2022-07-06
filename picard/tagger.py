@@ -192,7 +192,6 @@ class Tagger(QtWidgets.QApplication):
         self.__class__.__instance = self
         setup_config(self, picard_args.config_file)
         config = get_config()
-        self.setStyle(OverrideStyle())
         theme.setup(self)
 
         self._cmdline_files = picard_args.FILE
@@ -1049,19 +1048,6 @@ def process_picard_args():
     parser.add_argument('FILE', nargs='*')
 
     return parser.parse_known_args()[0]
-
-
-class OverrideStyle(QtWidgets.QProxyStyle):
-    """Override the default style to fix some platform specific issues"""
-
-    def styleHint(self, hint, option, widget, returnData):
-        # This is disabled on macOS, but prevents collapsing tree view items easily with
-        # left arrow key. Enable this consistently on all platforms.
-        # See https://tickets.metabrainz.org/browse/PICARD-2417
-        # and https://bugreports.qt.io/browse/QTBUG-100305
-        if hint == QtWidgets.QStyle.StyleHint.SH_ItemView_ArrowKeysNavigateIntoChildren:
-            return True
-        return super().styleHint(hint, option, widget, returnData)
 
 
 def main(localedir=None, autoupdate=True):
