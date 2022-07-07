@@ -1,3 +1,23 @@
+# Version 2.8.2 - 2022-07-07
+
+## Bugfixes
+
+- [PICARD-2480](https://tickets.metabrainz.org/browse/PICARD-2480) - Lookup CD from EAC log generates incorrect Disc ID from Enhanced CDs
+- [PICARD-2498](https://tickets.metabrainz.org/browse/PICARD-2498) - Except for the description no HTML should be allowed in plugin metadata
+- [PICARD-2505](https://tickets.metabrainz.org/browse/PICARD-2505) - Cover art type "matrix/runout" causes a folder "matrix" being created when saving cover art
+- [PICARD-2506](https://tickets.metabrainz.org/browse/PICARD-2506) - fpcalc errors out with paths > 259 characters
+- [PICARD-2507](https://tickets.metabrainz.org/browse/PICARD-2507) - CD pregap track not included in totaltracks
+- [PICARD-2508](https://tickets.metabrainz.org/browse/PICARD-2508) - Scripts being run repeatedly when script editor is open, can result in data duplication for scripts appending to existing tags
+- [PICARD-2515](https://tickets.metabrainz.org/browse/PICARD-2515) - macOS: Swatches not coloured in Options > User Interface > Colours
+- [PICARD-2518](https://tickets.metabrainz.org/browse/PICARD-2518) - Keyboard shortcuts not working in Italian localization
+
+## Improvements
+
+- [PICARD-2504](https://tickets.metabrainz.org/browse/PICARD-2504) - Increase default query limit and make it configurable
+- [PICARD-2516](https://tickets.metabrainz.org/browse/PICARD-2516) - Support CAA cover art types "Top" and "Bottom"
+- [PICARD-2517](https://tickets.metabrainz.org/browse/PICARD-2517) - Support media type "Mixed Mode CD"
+
+
 # Version 2.8.1 - 2022-06-07
 
 ## Bugfixes
