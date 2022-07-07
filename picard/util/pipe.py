@@ -146,7 +146,10 @@ class AbstractPipe(metaclass=ABCMeta):
             log.debug("Pipe path had to be mocked by a temporary file")
         self.is_pipe_owner: bool = False
 
-        self.__thread_pool = concurrent.futures.ThreadPoolExecutor()
+        # 2 workers for reader
+        # 2 workers for sender (they both need a worker to *hacky kill the job*)
+        # 2 workers just in case
+        self.__thread_pool = concurrent.futures.ThreadPoolExecutor(max_workers=6)
 
         self.pipe_running = False
         for path in self._paths:

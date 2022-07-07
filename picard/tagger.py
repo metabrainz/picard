@@ -1036,7 +1036,9 @@ def longversion():
 
 def process_picard_args():
     parser = argparse.ArgumentParser(
-        epilog="If one of the filenames begins with a hyphen, use -- to separate the options from the filenames."
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""If one of the filenames begins with a hyphen, use -- to separate the options from the filenames.
+If -c/-P/-s are not provided, your arguments will be ignored by an existing instance."""
     )
     # Qt default arguments. Parse them so Picard does not interpret the
     # arguments as file names to load.
@@ -1048,7 +1050,7 @@ def process_picard_args():
     # Picard specific arguments
     parser.add_argument("-c", "--config-file", action='store',
                         default=None,
-                        help="location of the configuration file")
+                        help="location of the configuration file, also start a stand-alone instance")
     parser.add_argument("-d", "--debug", action='store_true',
                         help="enable debug-level logging")
     parser.add_argument("-M", "--no-player", action='store_true',
@@ -1056,7 +1058,7 @@ def process_picard_args():
     parser.add_argument("-N", "--no-restore", action='store_true',
                         help="do not restore positions and/or sizes")
     parser.add_argument("-P", "--no-plugins", action='store_true',
-                        help="do not load any plugins")
+                        help="do not load any plugins and start a stand-alone instance")
     parser.add_argument("--no-crash-dialog", action='store_true',
                         help="disable the crash dialog")
     parser.add_argument("-s", "--stand-alone-instance", action='store_true',
