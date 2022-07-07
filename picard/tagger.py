@@ -1038,7 +1038,9 @@ def process_picard_args():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""If one of the filenames begins with a hyphen, use -- to separate the options from the filenames.
-If a new instance will not be spawned, the other arguments will be ignored"""
+If a new instance will not be spawned:
+  -files/directories will be passed to the existing instance,
+  -the other arguments will be ignored."""
     )
     # Qt default arguments. Parse them so Picard does not interpret the
     # arguments as file names to load.
