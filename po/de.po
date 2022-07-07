@@ -1058,11 +1058,11 @@ msgstr "Baskisch (Spanien)"
 
 #: picard/const/locales.py:74
 msgid "Belarusian"
-msgstr "Weißrussisch"
+msgstr "Belarusisch"
 
 #: picard/const/locales.py:75
 msgid "Belarusian (Belarus)"
-msgstr "Weißrussisch (Weißrussland)"
+msgstr "Belarusisch (Belarus)"
 
 #: picard/const/locales.py:76
 msgid "Bengali"

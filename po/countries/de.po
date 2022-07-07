@@ -9,6 +9,7 @@
 # nikki, 2013-2014
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # nikki, 2013
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2022
 # S.Brandt <s.brandt@mixxx.org>, 2015
 # Shepard, 2011
 # Shepard, 2011
@@ -18,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2012-05-24 19:20+0000\n"
-"Last-Translator: Tobias Quathamer <toddy@debian.org>, 2007\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2022\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -124,7 +125,7 @@ msgstr "Barbados"
 #. iso.code:BY
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:20
 msgid "Belarus"
-msgstr "Weißrussland"
+msgstr "Belarus"
 
 #. iso.code:BE
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:21
