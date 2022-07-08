@@ -680,60 +680,97 @@ def func_ne(parser, x, y):
         return ""
 
 
-@script_function(documentation=N_(
-    """`$lt(x,y)`
-
-Returns true if `x` is less than `y`."""
-))
-def func_lt(parser, x, y):
-    try:
-        if int(x) < int(y):
-            return "1"
-    except ValueError:
-        pass
+def _cmp(op, x, y, _type):
+    """Compare x vs y using op method and specified _type
+       op is expected to be a method from operator module
+    """
+    if not _type:
+        _type = 'auto'
+    _typer = None
+    if _type == 'auto':
+        _type = 'text'
+        for _test_type in (int, float):
+            try:
+                _type = (_test_type(x), _test_type(y))
+                _type = _test_type.__name__
+                break
+            except ValueError:
+                pass
+    if _type == 'text':
+        return "1" if op(x, y) else ""
+    elif _type == 'nocase':
+        return "1" if op(x.lower(), y.lower()) else ""
+    elif _type == 'float':
+        _typer = float
+    elif _type == 'int':
+        _typer = int
+    if _typer is not None:
+        try:
+            if op(_typer(x), _typer(y)):
+                return "1"
+        except ValueError:
+            pass
     return ""
 
 
 @script_function(documentation=N_(
-    """`$lte(x,y)`
+    """`$lt(x,y[,type])`
 
-Returns true if `x` is less than or equal to `y`."""
+Returns true if `x` is less than `y` using the comparison specified in `type`.
+Possible values of `type` are "int" (integer), "float" (floating point), "text"
+(case-sensitive text), "nocase" (case-insensitive text) and "auto" (automatically
+determine the type of arguments provided), with "auto" used as the default
+comparison method if `type` is not specified.  The "auto" type will use the
+first type that applies to both arguments in the following order of preference:
+"int", "float" and "text"."""
 ))
-def func_lte(parser, x, y):
-    try:
-        if int(x) <= int(y):
-            return "1"
-    except ValueError:
-        pass
-    return ""
+def func_lt(parser, x, y, _type=None):
+    return _cmp(operator.lt, x, y, _type)
 
 
 @script_function(documentation=N_(
-    """`$gt(x,y)`
+    """`$lte(x,y[,type])`
 
-Returns true if `x` is greater than `y`."""
+Returns true if `x` is less than or equal to `y` using the comparison specified in `type`.
+Possible values of `type` are "int" (integer), "float" (floating point), "text"
+(case-sensitive text), "nocase" (case-insensitive text) and "auto" (automatically
+determine the type of arguments provided), with "auto" used as the default
+comparison method if `type` is not specified.  The "auto" type will use the
+first type that applies to both arguments in the following order of preference:
+"int", "float" and "text"."""
 ))
-def func_gt(parser, x, y):
-    try:
-        if int(x) > int(y):
-            return "1"
-    except ValueError:
-        pass
-    return ""
+def func_lte(parser, x, y, _type=None):
+    return _cmp(operator.le, x, y, _type)
 
 
 @script_function(documentation=N_(
-    """`$gte(x,y)`
+    """`$gt(x,y[,type])`
 
-Returns true if `x` is greater than or equal to `y`."""
+Returns true if `x` is greater than `y` using the comparison specified in `type`.
+Possible values of `type` are "int" (integer), "float" (floating point), "text"
+(case-sensitive text), "nocase" (case-insensitive text) and "auto" (automatically
+determine the type of arguments provided), with "auto" used as the default
+comparison method if `type` is not specified.  The "auto" type will use the
+first type that applies to both arguments in the following order of preference:
+"int", "float" and "text"."""
 ))
-def func_gte(parser, x, y):
-    try:
-        if int(x) >= int(y):
-            return "1"
-    except ValueError:
-        pass
-    return ""
+def func_gt(parser, x, y, _type=None):
+    return _cmp(operator.gt, x, y, _type)
+
+
+@script_function(documentation=N_(
+    """`$gte(x,y[,type])`
+
+Returns true if `x` is greater than or equal to `y` using the comparison specified in `type`.
+Possible values of `type` are "int" (integer), "float" (floating point), "text"
+(case-sensitive text), "nocase" (case-insensitive text) and "auto" (automatically
+determine the type of arguments provided), with "auto" used as the default
+comparison method if `type` is not specified.  The "auto" type will use the
+first type that applies to both arguments in the following order of preference:
+"int", "float" and "text"."""
+))
+def func_gte(parser, x, y, _type=None):
+    return _cmp(operator.ge, x, y, _type)
 
 
 @script_function(documentation=N_(
@@ -1517,3 +1554,94 @@ def func_cleanmulti(parser, multi):
     values = [str(value) for value in parser.context.getall(name) if value or value == 0]
     parser.context[multi] = values
     return ""
+
+
+def _type_args(_type, *args):
+    haystack = set()
+    # Automatically expand multi-value arguments
+    for item in args:
+        haystack = haystack.union(set(x for x in item.split(MULTI_VALUED_JOINER)))
+    if not _type:
+        _type = 'auto'
+    _typer = None
+    if _type == 'auto':
+        _type = 'text'
+        for _test_type in (int, float):
+            try:
+                _type = set(_test_type(item) for item in haystack)
+                _type = _test_type.__name__
+                break
+            except ValueError:
+                pass
+    _typer = None
+    if _type == 'int':
+        _typer = int
+    elif _type == 'float':
+        _typer = float
+    elif _type in ('text', 'nocase'):
+        pass
+    else:
+        # Unknown processing type
+        raise ValueError
+    if _typer is not None:
+        haystack = set(_typer(item) for item in haystack)
+    return haystack
+
+
+def _extract(_func, _type, *args):
+    try:
+        haystack = _type_args(_type, *args)
+    except ValueError:
+        return ""
+
+    if _type == 'nocase':
+        op = operator.lt if _func == min else operator.gt
+        val = None
+        for item in haystack:
+            if val is None or op(item.lower(), val.lower()):
+                val = item
+        return str(val)
+
+    return str(_func(haystack))
+
+
+@script_function(documentation=N_(
+    """$min(type,x,...)
+
+Returns the minimum value using the comparison specified in `type`.
+
+Possible values of `type` are "int" (integer), "float" (floating point), "text"
+(case-sensitive text), "nocase" (case-insensitive text) and "auto" (automatically
+determine the type of arguments provided), with "auto" used as the default
+comparison method if `type` is not specified.  The "auto" type will use the
+first type that applies to both arguments in the following order of preference:
+"int", "float" and "text".
+
+Can be used with an arbitrary number of arguments.  Multi-value arguments
+will be expanded automatically.
+
+_Since Picard 3.0_"""
+))
+def func_min(parser, _type, x, *args):
+    return _extract(min, _type, x, *args)
+
+
+@script_function(documentation=N_(
+    """$max(type,x,...)
+
+Returns the maximum value using the comparison specified in `type`.
+
+Possible values of `type` are "int" (integer), "float" (floating point), "text"
+(case-sensitive text), "nocase" (case-insensitive text) and "auto" (automatically
+determine the type of arguments provided), with "auto" used as the default
+comparison method if `type` is not specified.  The "auto" type will use the
+first type that applies to both arguments in the following order of preference:
+"int", "float" and "text".
+
+Can be used with an arbitrary number of arguments.  Multi-value arguments
+will be expanded automatically.
+
+_Since Picard 3.0_"""
+))
+def func_max(parser, _type, x, *args):
+    return _extract(max, _type, x, *args)
