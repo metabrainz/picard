@@ -494,7 +494,6 @@ class Metadata(MutableMapping):
             self.add(name, value)
 
     def delete(self, name):
-        """Deprecated: use del directly"""
         del self[self.normalize_tag(name)]
 
     def unset(self, name):

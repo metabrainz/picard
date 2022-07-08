@@ -29,8 +29,6 @@ from test.picardtestcase import PicardTestCase
 from picard import (
     api_versions,
     api_versions_tuple,
-    version_from_string,
-    version_to_string,
 )
 from picard.version import (
     Version,
@@ -53,10 +51,8 @@ class VersionsTest(PicardTestCase):
             (Version(1, 1, 2, 'rc', 2), '1.1.2.rc2'),
         )
         for v, s in versions:
-            self.assertEqual(version_to_string(v), s)
             self.assertEqual(str(v), s)
             self.assertEqual(v, Version.from_string(s))
-            self.assertEqual(v, version_from_string(s))
 
     def test_version_conversion_short(self):
         versions = (
@@ -71,52 +67,42 @@ class VersionsTest(PicardTestCase):
             (Version(1, 1, 2, 'rc', 2), '1.1.2rc2'),
         )
         for v, s in versions:
-            self.assertEqual(version_to_string(v, short=True), s)
             self.assertEqual(v.to_string(short=True), s)
             self.assertEqual(v, Version.from_string(s))
-            self.assertEqual(v, version_from_string(s))
-
-    def test_version_to_string_invalid_identifier(self):
-        invalid = (1, 0, 2, 'xx', 0)
-        self.assertRaises(VersionError, version_to_string, (invalid))
 
     def test_version_from_string_underscores(self):
         l, s = (1, 1, 0, 'dev', 0), '1_1_0_dev_0'
-        self.assertEqual(l, version_from_string(s))
+        self.assertEqual(l, Version.from_string(s))
 
     def test_version_from_string_prefixed(self):
         l, s = (1, 1, 0, 'dev', 0), 'anything_28_1_1_0_dev_0'
-        self.assertEqual(l, version_from_string(s))
+        self.assertEqual(l, Version.from_string(s))
 
     def test_version_single_digit(self):
         l, s = (2, 0, 0, 'final', 0), '2'
-        self.assertEqual(l, version_from_string(s))
+        self.assertEqual(l, Version.from_string(s))
         self.assertEqual(l, Version(2))
-
-    def test_version_from_string_invalid(self):
-        invalid = 'anything_28x_1_0_dev_0'
-        self.assertRaises(VersionError, version_to_string, (invalid))
 
     def test_version_from_string_prefixed_final(self):
         l, s = (1, 1, 0, 'final', 0), 'anything_28_1_1_0'
-        self.assertEqual(l, version_from_string(s))
+        self.assertEqual(l, Version.from_string(s))
 
     def test_from_string_invalid_identifier(self):
-        self.assertRaises(VersionError, version_from_string, '1.1.0dev')
-        self.assertRaises(VersionError, version_from_string, '1.1.0devx')
+        self.assertRaises(VersionError, Version.from_string, '1.1.0dev')
+        self.assertRaises(VersionError, Version.from_string, '1.1.0devx')
 
     def test_version_from_string_invalid_partial(self):
-        self.assertRaises(VersionError, version_from_string, '1dev')
-        self.assertRaises(VersionError, version_from_string, '1.0dev')
-        self.assertRaises(VersionError, version_from_string, '123.')
+        self.assertRaises(VersionError, Version.from_string, '1dev')
+        self.assertRaises(VersionError, Version.from_string, '1.0dev')
+        self.assertRaises(VersionError, Version.from_string, '123.')
 
     @unittest.skipUnless(len(api_versions) > 1, "api_versions do not have enough elements")
     def test_api_versions_1(self):
         """Check api versions format and order (from oldest to newest)"""
 
         for i in range(len(api_versions) - 1):
-            a = version_from_string(api_versions[i])
-            b = version_from_string(api_versions[i+1])
+            a = Version.from_string(api_versions[i])
+            b = Version.from_string(api_versions[i+1])
             self.assertLess(a, b)
 
     @unittest.skipUnless(len(api_versions_tuple) > 1, "api_versions_tuple do not have enough elements")

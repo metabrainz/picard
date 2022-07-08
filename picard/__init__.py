@@ -31,10 +31,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard.version import (
-    Version,
-    VersionError,
-)
+from picard.version import Version
 
 
 PICARD_ORG_NAME = "MusicBrainz"
@@ -49,20 +46,6 @@ PICARD_VERSION = Version(2, 8, 2, 'final', 0)
 # it should be in the form '<platform>_<YYMMDDHHMMSS>'
 # ie. win32_20140415091256
 PICARD_BUILD_VERSION_STR = ""
-
-
-def version_to_string(version, short=False):
-    """Deprecated: Use picard.version.Version.to_string instead"""
-    if len(version) != 5:
-        raise VersionError("Length != 5")
-    if not isinstance(version, Version):
-        version = Version(*version)
-    return version.to_string(short=short)
-
-
-def version_from_string(version_str):
-    """Deprecated: Use picard.version.Version.from_string instead"""
-    return Version.from_string(version_str)
 
 
 PICARD_VERSION_STR = PICARD_VERSION.to_string()

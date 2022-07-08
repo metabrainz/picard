@@ -62,14 +62,13 @@ def future_callback(callback, future, log_traceback=True):
     to_main(callback, result=result, error=error)
 
 
-def run_task(func, next_func, priority=0, thread_pool=None, traceback=True):
+def run_task(func, next_func, thread_pool=None, traceback=True):
     """Schedules func to be run on a separate thread
 
     Args:
         func: Function to run on a separate thread.
         next_func: Callback function to run after the thread has been completed.
           The callback will be run on the main thread.
-        priority: Deprecated, for backward compatibility only
         thread_pool: Instance of concurrent.futures.Executor to run this task.
         traceback: If set to true the stack trace will be logged to the error log
           if an exception was raised.
