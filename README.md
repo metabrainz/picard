@@ -48,4 +48,4 @@ Please report all bugs and feature requests in the [MusicBrainz issue tracker](h
 
 ## Trivia
 
-Picard is named after Captain Jean-Luc Picard from the TV series Star Trek: The Next Generation.
+Picard is named after [Captain Jean-Luc Picard](https://en.wikipedia.org/wiki/Jean-Luc_Picard) from the TV series [Star Trek: The Next Generation](https://en.wikipedia.org/wiki/Star_Trek:_The_Next_Generation).
