@@ -27,6 +27,7 @@
 # Copyright (C) 2019 Joel Lintunen
 # Copyright (C) 2020 Julius Michaelis
 # Copyright (C) 2020-2021 Gabriel Ferreira
+# Copyright (c) 2022 skelly37
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -123,6 +124,7 @@ from picard.util import (
     mbid_validate,
     normpath,
     periodictouch,
+    pipe,
     process_events_iter,
     system_supports_long_paths,
     thread,
@@ -186,7 +188,7 @@ class Tagger(QtWidgets.QApplication):
     _debug = False
     _no_restore = False
 
-    def __init__(self, picard_args, localedir, autoupdate):
+    def __init__(self, picard_args, localedir, autoupdate, pipe_handler=None):
 
         super().__init__(sys.argv)
         self.__class__.__instance = self
@@ -206,6 +208,13 @@ class Tagger(QtWidgets.QApplication):
 
         # Default thread pool
         self.thread_pool = ThreadPoolExecutor()
+
+        # if the instance is forced, we get None instead of an actual handler
+        # even though there's always something provided as pipe_handler, I created a default argument to make it more obvious
+        if pipe_handler:
+            self.pipe_handler = pipe_handler
+            self.pipe_handler.pipe_running = True
+            self.thread_pool.submit(self.pipe_server)
 
         # Provide a separate thread pool for operations that should not be
         # delayed by longer background processing tasks, e.g. because the user
@@ -307,6 +316,13 @@ class Tagger(QtWidgets.QApplication):
         if self.autoupdate_enabled:
             self.updatecheckmanager = UpdateCheckManager(parent=self.window)
 
+    def pipe_server(self):
+        IGNORED = {pipe.Pipe.MESSAGE_TO_IGNORE, pipe.Pipe.NO_RESPONSE_MESSAGE}
+        while self.pipe_handler.pipe_running:
+            messages = [x for x in self.pipe_handler.read_from_pipe() if x not in IGNORED]
+            if messages:
+                self.add_paths(messages)
+
     def enable_menu_icons(self, enabled):
         self.setAttribute(QtCore.Qt.ApplicationAttribute.AA_DontShowIconsInMenus, not enabled)
 
@@ -401,6 +417,7 @@ class Tagger(QtWidgets.QApplication):
         self.stopping = True
         log.debug("Picard stopping")
         self._acoustid.done()
+        self.pipe_handler.pipe_running = False
         self.thread_pool.shutdown()
         self.save_thread_pool.shutdown()
         self.priority_thread_pool.shutdown()
@@ -1018,7 +1035,11 @@ def longversion():
 
 def process_picard_args():
     parser = argparse.ArgumentParser(
-        epilog="If one of the filenames begins with a hyphen, use -- to separate the options from the filenames."
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""If one of the filenames begins with a hyphen, use -- to separate the options from the filenames.
+If a new instance will not be spawned:
+  - files/directories will be passed to the existing instance,
+  - the other arguments will be ignored."""
     )
     # Qt default arguments. Parse them so Picard does not interpret the
     # arguments as file names to load.
@@ -1030,7 +1051,7 @@ def process_picard_args():
     # Picard specific arguments
     parser.add_argument("-c", "--config-file", action='store',
                         default=None,
-                        help="location of the configuration file")
+                        help="location of the configuration file (starts a stand-alone instance)")
     parser.add_argument("-d", "--debug", action='store_true',
                         help="enable debug-level logging")
     parser.add_argument("-M", "--no-player", action='store_true',
@@ -1038,9 +1059,11 @@ def process_picard_args():
     parser.add_argument("-N", "--no-restore", action='store_true',
                         help="do not restore positions and/or sizes")
     parser.add_argument("-P", "--no-plugins", action='store_true',
-                        help="do not load any plugins")
+                        help="do not load any plugins (starts a stand-alone instance)")
     parser.add_argument("--no-crash-dialog", action='store_true',
                         help="disable the crash dialog")
+    parser.add_argument("-s", "--stand-alone-instance", action='store_true',
+                        help="force Picard to create a new, stand-alone instance")
     parser.add_argument('-v', '--version', action='store_true',
                         help="display version information and exit")
     parser.add_argument("-V", "--long-version", action='store_true',
@@ -1051,6 +1074,8 @@ def process_picard_args():
 
 
 def main(localedir=None, autoupdate=True):
+    EXIT_NO_NEW_INSTANCE = 30403
+
     # Some libs (ie. Phonon) require those to be set
     QtWidgets.QApplication.setApplicationName(PICARD_APP_NAME)
     QtWidgets.QApplication.setOrganizationName(PICARD_ORG_NAME)
@@ -1077,6 +1102,29 @@ def main(localedir=None, autoupdate=True):
     if picard_args.long_version:
         return longversion()
 
+    # any of the flags that change Picard's workflow significantly should trigger creation of a new instance
+    should_start = True in {
+        picard_args.config_file is not None,
+        picard_args.no_plugins,
+        picard_args.stand_alone_instance,
+    }
+
+    if not should_start:
+        try:
+            pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR, args=[os.path.abspath(x) for x in picard_args.FILE])
+            should_start = pipe_handler.is_pipe_owner
+        except pipe.PipeErrorNoPermission as err:
+            log.error(err)
+            pipe_handler = None
+            should_start = True
+
+        # pipe has sent its args to existing one, doesn't need to start
+        if not should_start:
+            # just a custom exit code to show that picard instance wasn't created
+            sys.exit(EXIT_NO_NEW_INSTANCE)
+    else:
+        pipe_handler = None
+
     try:
         from PyQt5.QtDBus import QDBusConnection
         dbus = QDBusConnection.sessionBus()
@@ -1084,7 +1132,7 @@ def main(localedir=None, autoupdate=True):
     except ImportError:
         pass
 
-    tagger = Tagger(picard_args, localedir, autoupdate)
+    tagger = Tagger(picard_args, localedir, autoupdate, pipe_handler=pipe_handler)
 
     # Initialize Qt default translations
     translator = QtCore.QTranslator()
