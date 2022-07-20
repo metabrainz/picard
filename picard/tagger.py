@@ -55,6 +55,7 @@ import re
 import shutil
 import signal
 import sys
+from urllib.parse import urlparse
 
 from PyQt5 import (
     QtCore,
@@ -141,6 +142,7 @@ from picard.webservice.api_helpers import (
 import picard.resources  # noqa: F401 # pylint: disable=unused-import
 
 from picard.ui import theme
+from picard.ui.itemviews import BaseTreeView
 from picard.ui.mainwindow import MainWindow
 from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.artist import ArtistSearchDialog
@@ -321,7 +323,25 @@ class Tagger(QtWidgets.QApplication):
         while self.pipe_handler.pipe_running:
             messages = [x for x in self.pipe_handler.read_from_pipe() if x not in IGNORED]
             if messages:
-                self.add_paths(messages)
+                self.load_to_picard(messages)
+
+    def load_to_picard(self, items):
+        urls = []
+        files = []
+        for item in items:
+            parsed = urlparse(item)
+            if not parsed.netloc:
+                files.append(item)
+            else:
+                print(parsed.netloc)
+                urls.append(parsed.path)
+
+        if files:
+            self.add_paths(files)
+        if urls:
+            file_lookup = self.get_file_lookup()
+            for url in urls:
+                file_lookup.mbid_lookup(url, browser_fallback=False)
 
     def enable_menu_icons(self, enabled):
         self.setAttribute(QtCore.Qt.ApplicationAttribute.AA_DontShowIconsInMenus, not enabled)
@@ -428,8 +448,7 @@ class Tagger(QtWidgets.QApplication):
 
     def _run_init(self):
         if self._cmdline_files:
-            files = [decode_filename(f) for f in self._cmdline_files]
-            self.add_paths(files)
+            self.load_to_picard([decode_filename(f) for f in self._cmdline_files])
             del self._cmdline_files
 
     def run(self):
@@ -1109,9 +1128,15 @@ def main(localedir=None, autoupdate=True):
         picard_args.stand_alone_instance,
     }
 
+    to_be_added = []
+    for x in picard_args.FILE:
+        if not urlparse(x).netloc:
+            x = os.path.abspath(x)
+        to_be_added.append(x)
+
     if not should_start:
         try:
-            pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR, args=[os.path.abspath(x) for x in picard_args.FILE])
+            pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR, args=to_be_added)
             should_start = pipe_handler.is_pipe_owner
         except pipe.PipeErrorNoPermission as err:
             log.error(err)
