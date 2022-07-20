@@ -142,7 +142,6 @@ from picard.webservice.api_helpers import (
 import picard.resources  # noqa: F401 # pylint: disable=unused-import
 
 from picard.ui import theme
-from picard.ui.itemviews import BaseTreeView
 from picard.ui.mainwindow import MainWindow
 from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.artist import ArtistSearchDialog
