@@ -333,12 +333,13 @@ class Tagger(QtWidgets.QApplication):
             if not parsed.netloc:
                 files.append(item)
             else:
-                print(parsed.netloc)
-                urls.append(parsed.path)
+                # .path returns / before actual cdtoc
+                urls.append(parsed.path[1:])
 
         if files:
             self.add_paths(files)
         if urls:
+            print(urls)
             file_lookup = self.get_file_lookup()
             for url in urls:
                 file_lookup.mbid_lookup(url, browser_fallback=False)
