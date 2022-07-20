@@ -214,8 +214,7 @@ class File(QtCore.QObject, Item):
     def load(self, callback):
         thread.run_task(
             partial(self._load_check, self.filename),
-            partial(self._loading_finished, callback),
-            priority=1)
+            partial(self._loading_finished, callback))
 
     def _load_check(self, filename):
         # Check that file has not been removed since thread was queued
