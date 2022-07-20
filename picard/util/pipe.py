@@ -3,6 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2022 skelly37
+# Copyright (C) 2022 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -38,6 +39,7 @@ from picard import (
     log,
 )
 from picard.const.sys import (
+    IS_HAIKU,
     IS_MACOS,
     IS_WIN,
 )
@@ -339,6 +341,10 @@ class MacOSPipe(UnixPipe):
     PIPE_DIRS: Tuple[str] = (os.path.join("~/Library/Application Support/", PICARD_APP_ID),)
 
 
+class HaikuPipe(UnixPipe):
+    PIPE_DIRS: Tuple[str] = ("~/config/var/MusicBrainz/Picard/",)
+
+
 class WinPipe(AbstractPipe):
     # win32pipe.CreateNamedPipe
     # more about the arguments: https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createnamedpipea
@@ -429,5 +435,7 @@ if IS_WIN:
     Pipe: Any = WinPipe
 elif IS_MACOS:
     Pipe = MacOSPipe
+elif IS_HAIKU:
+    Pipe = HaikuPipe
 else:
     Pipe = UnixPipe
