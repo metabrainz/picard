@@ -63,7 +63,7 @@ class TestPipe(PicardTestCase):
             "last-case",
             "https://test-ca.se/index.html",
             "file:///data/test.py",
-            ""
+            "www.wikipedia.mp3",
         )
 
         pipe_listener_handler = pipe.Pipe(self.NAME, self.VERSION)
