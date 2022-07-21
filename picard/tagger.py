@@ -334,7 +334,7 @@ class Tagger(QtWidgets.QApplication):
             if not parsed.scheme:
                 files.append(item)
             elif parsed.scheme == "file":
-                files.append(item.replace("file://", ''))
+                files.append(parsed.path)
             elif parsed.scheme in {"http", "https"}:
                 # .path returns / before actual link
                 urls.append(parsed.path[1:])
