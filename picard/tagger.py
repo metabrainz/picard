@@ -332,7 +332,7 @@ class Tagger(QtWidgets.QApplication):
             if not parsed.netloc:
                 files.append(item)
             else:
-                # .path returns / before actual cdtoc
+                # .path returns / before actual link
                 urls.append(parsed.path[1:])
 
         if files:
@@ -341,7 +341,7 @@ class Tagger(QtWidgets.QApplication):
             print(urls)
             file_lookup = self.get_file_lookup()
             for url in urls:
-                file_lookup.mbid_lookup(url, browser_fallback=False)
+                thread.to_main(file_lookup.mbid_lookup, url, None, None, False)
 
     def enable_menu_icons(self, enabled):
         self.setAttribute(QtCore.Qt.ApplicationAttribute.AA_DontShowIconsInMenus, not enabled)
