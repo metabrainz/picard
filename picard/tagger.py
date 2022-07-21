@@ -343,13 +343,14 @@ class Tagger(QtWidgets.QApplication):
 
         if files:
             self.add_paths(files)
+            self.bring_tagger_front()
         if urls or mbids:
             file_lookup = self.get_file_lookup()
             for url in urls:
                 thread.to_main(file_lookup.mbid_lookup, url, None, None, False)
             for mbid in mbids:
                 thread.to_main(file_lookup.mbid_lookup, mbid, None, None, False)
-
+            self.bring_tagger_front()
 
     def enable_menu_icons(self, enabled):
         self.setAttribute(QtCore.Qt.ApplicationAttribute.AA_DontShowIconsInMenus, not enabled)
