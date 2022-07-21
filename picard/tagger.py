@@ -339,7 +339,7 @@ class Tagger(QtWidgets.QApplication):
                 # .path returns / before actual link
                 urls.append(parsed.path[1:])
             elif parsed.scheme == "mbid":
-                mbids.append(item.replace("mbid://", ''))
+                mbids.append(parsed.netloc + parsed.path)
 
         if files:
             self.add_paths(files)
