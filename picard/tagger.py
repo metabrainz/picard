@@ -197,7 +197,7 @@ class Tagger(QtWidgets.QApplication):
         config = get_config()
         theme.setup(self)
 
-        self._cmdline_files = picard_args.FILE
+        self._cmdline_files = picard_args.FILE_OR_URL
         self.autoupdate_enabled = autoupdate
         self._no_restore = picard_args.no_restore
         self._no_plugins = picard_args.no_plugins
@@ -1097,7 +1097,7 @@ If a new instance will not be spawned:
                         help="display version information and exit")
     parser.add_argument("-V", "--long-version", action='store_true',
                         help="display long version information and exit")
-    parser.add_argument('FILE', nargs='*')
+    parser.add_argument('FILE_OR_URL', nargs='*')
 
     return parser.parse_known_args()[0]
 
@@ -1139,7 +1139,7 @@ def main(localedir=None, autoupdate=True):
     }
 
     to_be_added = []
-    for x in picard_args.FILE:
+    for x in picard_args.FILE_OR_URL:
         if not urlparse(x).netloc:
             x = os.path.abspath(x)
         to_be_added.append(x)
