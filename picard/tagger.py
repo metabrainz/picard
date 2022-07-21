@@ -325,21 +325,21 @@ class Tagger(QtWidgets.QApplication):
                 self.load_to_picard(messages)
 
     def load_to_picard(self, items):
-        files = []
-        mbids = []
-        urls = []
+        files = set()
+        mbids = set()
+        urls = set()
 
         for item in items:
             parsed = urlparse(item)
             if not parsed.scheme:
-                files.append(item)
+                files.add(item)
             elif parsed.scheme == "file":
-                files.append(parsed.path)
+                files.add(parsed.path)
             elif parsed.scheme in {"http", "https"}:
                 # .path returns / before actual link
-                urls.append(parsed.path[1:])
+                urls.add(parsed.path[1:])
             elif parsed.scheme == "mbid":
-                mbids.append(parsed.netloc + parsed.path)
+                mbids.add(parsed.netloc + parsed.path)
 
         if files:
             self.add_paths(files)
