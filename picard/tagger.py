@@ -325,23 +325,31 @@ class Tagger(QtWidgets.QApplication):
                 self.load_to_picard(messages)
 
     def load_to_picard(self, items):
-        urls = []
         files = []
+        mbids = []
+        urls = []
+
         for item in items:
             parsed = urlparse(item)
-            if not parsed.netloc:
+            if not parsed.scheme:
                 files.append(item)
-            else:
+            elif parsed.scheme == "file":
+                files.append(item.replace("file://", ''))
+            elif parsed.scheme in {"http", "https"}:
                 # .path returns / before actual link
                 urls.append(parsed.path[1:])
+            elif parsed.scheme == "mbid":
+                mbids.append(item.replace("mbid://", ''))
 
         if files:
             self.add_paths(files)
-        if urls:
-            print(urls)
+        if urls or mbids:
             file_lookup = self.get_file_lookup()
             for url in urls:
                 thread.to_main(file_lookup.mbid_lookup, url, None, None, False)
+            for mbid in mbids:
+                thread.to_main(file_lookup.mbid_lookup, mbid, None, None, False)
+
 
     def enable_menu_icons(self, enabled):
         self.setAttribute(QtCore.Qt.ApplicationAttribute.AA_DontShowIconsInMenus, not enabled)
