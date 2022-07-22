@@ -154,6 +154,9 @@ class AbstractPipe(metaclass=ABCMeta):
         self.__thread_pool = concurrent.futures.ThreadPoolExecutor(max_workers=6)
 
         self.pipe_running = False
+
+        self.unexpected_removal = False
+
         for path in self._paths:
             self.path = path
             for arg in self._args:
@@ -329,6 +332,7 @@ class UnixPipe(AbstractPipe):
             except FileNotFoundError:
                 log.error("Pipe file removed unexpectedly")
                 self.pipe_running = False
+                self.unexpected_removal = True
                 raise PipeErrorNotFound from None
             except BrokenPipeError:
                 log.warning("BrokenPipeError happened while listening to the pipe")

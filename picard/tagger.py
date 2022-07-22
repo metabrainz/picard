@@ -209,14 +209,13 @@ class Tagger(QtWidgets.QApplication):
         # Default thread pool
         self.thread_pool = ThreadPoolExecutor()
 
-        self.pipe_pool = ThreadPoolExecutor()
         self.pipe_handler = pipe_handler
 
         # if the instance is forced, we get None instead of an actual handler
         # even though there's always something provided as pipe_handler, I created a default argument to make it more obvious
         if self.pipe_handler:
             self.pipe_handler.pipe_running = True
-            self.pipe_pool.submit(self.pipe_server)
+            self.thread_pool.submit(self.pipe_server)
 
         # Provide a separate thread pool for operations that should not be
         # delayed by longer background processing tasks, e.g. because the user
@@ -422,7 +421,6 @@ class Tagger(QtWidgets.QApplication):
         self._acoustid.done()
         if self.pipe_handler:
             self.pipe_handler.pipe_running = False
-            self.pipe_pool.shutdown()
         self.thread_pool.shutdown()
         self.save_thread_pool.shutdown()
         self.priority_thread_pool.shutdown()
@@ -1152,8 +1150,7 @@ def main(localedir=None, autoupdate=True):
     tagger.startTimer(1000)
     exit_code = tagger.run()
 
-    # pipe file removed unexpectedly
-    if len(tagger.pipe_pool._threads) > 0:
+    if tagger.pipe_handler.unexpected_removal:
         os._exit(exit_code)
 
     sys.exit(exit_code)
