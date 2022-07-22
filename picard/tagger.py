@@ -49,7 +49,7 @@ from concurrent.futures import ThreadPoolExecutor
 from functools import partial
 import itertools
 import logging
-import os.path
+import os
 import platform
 import re
 import shutil
@@ -209,10 +209,11 @@ class Tagger(QtWidgets.QApplication):
         # Default thread pool
         self.thread_pool = ThreadPoolExecutor()
 
+        self.pipe_handler = pipe_handler
+
         # if the instance is forced, we get None instead of an actual handler
         # even though there's always something provided as pipe_handler, I created a default argument to make it more obvious
-        if pipe_handler:
-            self.pipe_handler = pipe_handler
+        if self.pipe_handler:
             self.pipe_handler.pipe_running = True
             self.thread_pool.submit(self.pipe_server)
 
@@ -418,7 +419,8 @@ class Tagger(QtWidgets.QApplication):
         self.stopping = True
         log.debug("Picard stopping")
         self._acoustid.done()
-        self.pipe_handler.pipe_running = False
+        if self.pipe_handler:
+            self.pipe_handler.pipe_running = False
         self.thread_pool.shutdown()
         self.save_thread_pool.shutdown()
         self.priority_thread_pool.shutdown()
@@ -1146,4 +1148,9 @@ def main(localedir=None, autoupdate=True):
         log.debug('Qt locale %s not available', locale.name())
 
     tagger.startTimer(1000)
-    sys.exit(tagger.run())
+    exit_code = tagger.run()
+
+    if tagger.pipe_handler.unexpected_removal:
+        os._exit(exit_code)
+
+    sys.exit(exit_code)
