@@ -208,7 +208,7 @@ class Tagger(QtWidgets.QApplication):
 
         # Default thread pool
         self.thread_pool = ThreadPoolExecutor()
-        
+
         self.pipe_handler = pipe_handler
 
         # if the instance is forced, we get None instead of an actual handler
