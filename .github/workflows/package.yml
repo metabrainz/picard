@@ -23,7 +23,7 @@ on:
 
 jobs:
   package-macos:
-    runs-on: macos-10.15
+    runs-on: macos-11
     strategy:
       matrix:
         macos-deployment-version: [10.12, 10.14]
@@ -66,10 +66,10 @@ jobs:
         cd pyinstaller/bootloader
         python3 ./waf --verbose all
         cd ..
-        rm pyinstaller.py  # workaround for https://github.com/pyinstaller/pyinstaller/pull/6701
-        pip3 install .
+        pip3 install -r requirements.txt
+        python3 setup.py install
       env:
-        PYINSTALLER_VERSION: v4.10
+        PYINSTALLER_VERSION: v5.2
         CFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}
         CPPFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}
         LDFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}
