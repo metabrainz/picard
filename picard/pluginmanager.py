@@ -122,10 +122,8 @@ def _plugin_name_from_path(path):
 
 def load_manifest(archive_path):
     archive = zipfile.ZipFile(archive_path)
-    manifest_data = None
     with archive.open('MANIFEST.json') as f:
-        manifest_data = json.loads(str(f.read().decode()))
-    return manifest_data
+        return json.loads(str(f.read().decode()))
 
 
 def zip_import(path):
@@ -258,7 +256,6 @@ class PluginManager(QtCore.QObject):
 
             module_file = info["loader"]
             module_pathname = info["origin"]
-
 
         plugin = None
         try:
