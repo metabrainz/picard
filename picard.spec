@@ -42,6 +42,7 @@ def get_locale_messages():
 
 block_cipher = None
 os_name = platform.system()
+build_portable = bool(os.environ.get('PICARD_BUILD_PORTABLE'))
 binaries = []
 
 data_files = get_locale_messages()
@@ -63,7 +64,7 @@ if os_name == 'Windows':
     runtime_hooks.append('scripts/pyinstaller/win-startup-hook.py')
 elif os_name == 'Darwin':
     runtime_hooks.append('scripts/pyinstaller/macos-library-path-hook.py')
-if '--onefile' in sys.argv:
+if build_portable:
     runtime_hooks.append('scripts/pyinstaller/portable-hook.py')
 
 
@@ -84,7 +85,7 @@ pyz = PYZ(a.pure, a.zipped_data,
           cipher=block_cipher)
 
 
-if '--onefile' in sys.argv:
+if build_portable:
     exe = EXE(pyz,
               a.scripts,
               a.binaries,

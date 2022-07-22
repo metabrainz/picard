@@ -30,6 +30,7 @@ python setup.py build_ext -i 2>&1 | %{ "$_" }
 ThrowOnExeError "setup.py build_ext -i failed"
 
 # Package application
-pyinstaller --noconfirm --clean --onefile picard.spec 2>&1 | %{ "$_" }
+$env:PICARD_BUILD_PORTABLE = '1'
+pyinstaller --noconfirm --clean picard.spec 2>&1 | %{ "$_" }
 ThrowOnExeError "PyInstaller failed"
 CodeSignBinary dist\MusicBrainz-Picard-*.exe
