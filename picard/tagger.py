@@ -49,7 +49,7 @@ from concurrent.futures import ThreadPoolExecutor
 from functools import partial
 import itertools
 import logging
-import os.path
+import os
 import platform
 import re
 import shutil
@@ -426,6 +426,7 @@ class Tagger(QtWidgets.QApplication):
         self.webservice.stop()
         self.run_cleanup()
         QtCore.QCoreApplication.processEvents()
+        os._exit(0)
 
     def _run_init(self):
         if self._cmdline_files:
