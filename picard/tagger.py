@@ -432,7 +432,6 @@ class Tagger(QtWidgets.QApplication):
         self.run_cleanup()
         QtCore.QCoreApplication.processEvents()
 
-
     def _run_init(self):
         if self._cmdline_files:
             files = [decode_filename(f) for f in self._cmdline_files]
