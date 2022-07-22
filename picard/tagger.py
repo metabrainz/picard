@@ -1068,7 +1068,7 @@ If a new instance will not be spawned:
     parser.add_argument("-s", "--stand-alone-instance", action='store_true',
                         help="force Picard to create a new, stand-alone instance")
     parser.add_argument('-v', '--version', action='store_true',
-                        help="display version information and ]")
+                        help="display version information and exit")
     parser.add_argument("-V", "--long-version", action='store_true',
                         help="display long version information and exit")
     parser.add_argument('FILE', nargs='*')
