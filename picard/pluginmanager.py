@@ -254,7 +254,9 @@ class PluginManager(QtCore.QObject):
                 self.plugin_error(name, error, name, [plugindir])
                 return None
 
-            module_pathname = os.path.dirname(info.origin)
+            module_pathname = info.origin
+            if module_pathname.endswith("__init__.py"):
+                module_pathname = os.path.dirname(module_pathname)
 
         plugin = None
         try:
