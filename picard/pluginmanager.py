@@ -28,7 +28,6 @@ import importlib
 import json
 import os.path
 import shutil
-import sys
 import tempfile
 import zipfile
 import zipimport
@@ -230,7 +229,6 @@ class PluginManager(QtCore.QObject):
         return (None, None)
 
     def _load_plugin_from_directory(self, name, plugindir):
-        sys.path.append(plugindir)
         module_file = None
         info = None
         zipfilename = os.path.join(plugindir, name + '.zip')
