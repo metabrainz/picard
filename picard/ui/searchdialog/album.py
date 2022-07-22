@@ -62,6 +62,7 @@ class CoverWidget(QtWidgets.QWidget):
     def __init__(self, parent, width=100, height=100):
         super().__init__(parent)
         self.layout = QtWidgets.QVBoxLayout(self)
+        self.destroyed.connect(self.invalidate)
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.loading_gif_label = QtWidgets.QLabel(self)
@@ -74,6 +75,8 @@ class CoverWidget(QtWidgets.QWidget):
         self.setStyleSheet("padding: 0")
 
     def set_pixmap(self, pixmap):
+        if not self.layout:
+            return
         wid = self.layout.takeAt(0)
         if wid:
             wid.widget().deleteLater()
@@ -96,6 +99,9 @@ class CoverWidget(QtWidgets.QWidget):
         super().showEvent(event)
         self.shown.emit()
 
+    def invalidate(self):
+        self.layout = None
+
 
 class CoverCell:
 
@@ -104,18 +110,28 @@ class CoverCell:
         self.fetched = False
         self.fetch_task = None
         self.widget = widget = CoverWidget(table)
+        self.widget.destroyed.connect(self.invalidate)
         if on_show is not None:
             widget.shown.connect(partial(on_show, self))
         table.setCellWidget(row, column, widget)
 
     def is_visible(self):
-        return not self.widget.visibleRegion().isEmpty()
+        if self.widget:
+            return not self.widget.visibleRegion().isEmpty()
+        else:
+            return False
 
     def set_pixmap(self, pixmap):
-        self.widget.set_pixmap(pixmap)
+        if self.widget:
+            self.widget.set_pixmap(pixmap)
 
     def not_found(self):
-        self.widget.not_found()
+        if self.widget:
+            self.widget.not_found()
+
+    def invalidate(self):
+        if self.widget:
+            self.widget = None
 
 
 class AlbumSearchDialog(SearchDialog):
