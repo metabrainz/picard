@@ -46,7 +46,6 @@
 
 import argparse
 from concurrent.futures import ThreadPoolExecutor
-from concurrent.futures._base import TimeoutError
 from functools import partial
 import itertools
 import logging
