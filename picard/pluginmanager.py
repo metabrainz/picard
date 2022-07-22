@@ -250,14 +250,14 @@ class PluginManager(QtCore.QObject):
             # deprecated since 3.4
             #
             # comment to be deleted, just for the PR purposes
-            info = importlib.util.find_spec(name)
-            if not info:
+            info = importlib.machinery.PathFinder().find_spec(name, [plugindir])
+            if not info.loader:
                 error = _("Failed loading plugin %r in %r")
                 self.plugin_error(name, error, name, [plugindir])
                 return None
 
-            module_file = info["loader"]
-            module_pathname = info["origin"]
+            module_file = info.loader
+            module_pathname = info.origin
 
         plugin = None
         try:
