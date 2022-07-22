@@ -254,8 +254,7 @@ class PluginManager(QtCore.QObject):
                 self.plugin_error(name, error, name, [plugindir])
                 return None
 
-            module_file = info.loader
-            module_pathname = info.origin
+            module_pathname = os.path.dirname(info.origin)
 
         plugin = None
         try:
@@ -298,8 +297,6 @@ class PluginManager(QtCore.QObject):
         except BaseException:
             error = _("Plugin %r")
             self.plugin_error(name, error, name, log_func=log.exception)
-        if module_file is not None:
-            module_file.close()
         return plugin
 
     def _get_existing_paths(self, plugin_name, fileexts):
