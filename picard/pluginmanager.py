@@ -248,7 +248,8 @@ class PluginManager(QtCore.QObject):
             # deprecated since 3.4
             #
             # comment to be deleted, just for the PR purposes
-            info = importlib.util.spec_from_file_location(name, os.path.join(plugindir, name + ".py"))
+            info = importlib.util.spec_from_file_location(name, os.path.join(plugindir, name + ".py")) or \
+                   importlib.util.spec_from_file_location(name, os.path.join(plugindir, name, "__init__.py"))
             if not info:
                 error = _("Failed loading plugin %r in %r")
                 self.plugin_error(name, error, name, [plugindir])
