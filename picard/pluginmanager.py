@@ -24,7 +24,6 @@
 
 
 from functools import partial
-import imp
 import importlib
 import json
 import os.path
@@ -233,6 +232,7 @@ class PluginManager(QtCore.QObject):
 
     def _load_plugin_from_directory(self, name, plugindir):
         module_file = None
+        info = None
         zipfilename = os.path.join(plugindir, name + '.zip')
         (zip_importer, module_name, manifest_data) = zip_import(zipfilename)
         if zip_importer:
@@ -243,14 +243,22 @@ class PluginManager(QtCore.QObject):
                 return None
             module_pathname = zip_importer.get_filename(name)
         else:
-            try:
-                info = imp.find_module(name, [plugindir])
-                module_file = info[0]
-                module_pathname = info[1]
-            except ImportError:
+            # instead of looking for a module in the whole directory, we have to provide an explicit path to it
+            # e.g. for Picard in /home/user/picard it'd be:
+            # importlib.util.spec_from_file_location("picard", "/home/user/picard/picard/__init__.py")
+            # alternatively we could use importlib.find_loader, which works pretty much the same but is unfortunately
+            # deprecated since 3.4
+            #
+            # comment to be deleted, just for the PR purposes
+            info = importlib.util.spec_from_file_location(name, os.path.join(plugindir, name + ".py"))
+            if not info:
                 error = _("Failed loading plugin %r in %r")
                 self.plugin_error(name, error, name, [plugindir])
                 return None
+
+            module_file = info["loader"]
+            module_pathname = info["origin"]
+
 
         plugin = None
         try:
@@ -267,7 +275,7 @@ class PluginManager(QtCore.QObject):
             if zip_importer:
                 plugin_module = zip_importer.load_module(full_module_name)
             else:
-                plugin_module = imp.load_module(full_module_name, *info)
+                plugin_module = importlib.util.module_from_spec(info)
             plugin = PluginWrapper(plugin_module, plugindir,
                                    file=module_pathname, manifest_data=manifest_data)
             compatible_versions = _compatible_api_versions(plugin.api_versions)
