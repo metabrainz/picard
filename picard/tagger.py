@@ -208,11 +208,12 @@ class Tagger(QtWidgets.QApplication):
 
         # Default thread pool
         self.thread_pool = ThreadPoolExecutor()
+        
+        self.pipe_handler = pipe_handler
 
         # if the instance is forced, we get None instead of an actual handler
         # even though there's always something provided as pipe_handler, I created a default argument to make it more obvious
-        if pipe_handler:
-            self.pipe_handler = pipe_handler
+        if self.pipe_handler:
             self.pipe_handler.pipe_running = True
             self.thread_pool.submit(self.pipe_server)
 
@@ -418,7 +419,8 @@ class Tagger(QtWidgets.QApplication):
         self.stopping = True
         log.debug("Picard stopping")
         self._acoustid.done()
-        self.pipe_handler.pipe_running = False
+        if self.pipe_handler:
+            self.pipe_handler.pipe_running = False
         self.thread_pool.shutdown()
         self.save_thread_pool.shutdown()
         self.priority_thread_pool.shutdown()
@@ -1066,7 +1068,7 @@ If a new instance will not be spawned:
     parser.add_argument("-s", "--stand-alone-instance", action='store_true',
                         help="force Picard to create a new, stand-alone instance")
     parser.add_argument('-v', '--version', action='store_true',
-                        help="display version information and exit")
+                        help="display version information and ]")
     parser.add_argument("-V", "--long-version", action='store_true',
                         help="display long version information and exit")
     parser.add_argument('FILE', nargs='*')
