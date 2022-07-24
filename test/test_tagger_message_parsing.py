@@ -34,7 +34,7 @@ class TestMessageParsing(PicardTestCase):
         }
 
         result = Tagger._parse_items_to_load(test_cases)
-        self.assertSetEqual(result["file"], {"test_case.mp3", "file:///home/picard/music/test.flac"}, "Files test")
-        self.assertSetEqual(result["mbid"], {"mbid://recording/7cd3782d-86dc-4dd1-8d9b-e37f9cbe6b94"}, "MBIDs test")
+        self.assertSetEqual(result["files"], {"test_case.mp3", "file:///home/picard/music/test.flac"}, "Files test")
+        self.assertSetEqual(result["mbids"], {"mbid://recording/7cd3782d-86dc-4dd1-8d9b-e37f9cbe6b94"}, "MBIDs test")
         self.assertSetEqual(result["urls"], {"https://musicbrainz.org/recording/7cd3782d-86dc-4dd1-8d9b-e37f9cbe6b94",
             "http://musicbrainz.org/recording/7cd3782d-86dc-4dd1-8d9b-e37f9cbe6b94"}, "URLs test")
