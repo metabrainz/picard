@@ -326,7 +326,7 @@ class Tagger(QtWidgets.QApplication):
                 self.load_to_picard(messages)
 
     @staticmethod
-    def _parse_file_or_url_items(items):
+    def _parse_items_to_load(items):
         out = {
             "files": set(),
             "mbids": set(),
