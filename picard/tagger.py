@@ -175,6 +175,27 @@ def plugin_dirs():
     yield USER_PLUGIN_DIR
 
 
+class ParseItemsToLoad:
+
+    def __init__(self, items):
+        self.files = set()
+        self.mbids = set()
+        self.urls = set()
+
+        for item in items:
+            parsed = urlparse(item)
+            if not parsed.scheme:
+                self.files.add(item)
+            elif parsed.scheme == "file":
+                # remove file:// prefix safely
+                self.files.add(item[7:])
+            elif parsed.scheme == "mbid":
+                self.mbids.add(parsed.netloc + parsed.path)
+            elif parsed.scheme in {"http", "https"}:
+                # .path returns / before actual link
+                self.urls.add(parsed.path[1:])
+
+
 class Tagger(QtWidgets.QApplication):
 
     tagger_stats_changed = QtCore.pyqtSignal()
@@ -325,40 +346,17 @@ class Tagger(QtWidgets.QApplication):
             if messages:
                 self.load_to_picard(messages)
 
-    @staticmethod
-    def _parse_items_to_load(items):
-        out = {
-            "files": set(),
-            "mbids": set(),
-            "urls": set(),
-        }
-
-        for item in items:
-            parsed = urlparse(item)
-            if not parsed.scheme:
-                out["files"].add(item)
-            elif parsed.scheme == "file":
-                # remove file:// prefix safely
-                out["files"].add(item[7:])
-            elif parsed.scheme == "mbid":
-                out["mbids"].add(parsed.netloc + parsed.path)
-            elif parsed.scheme in {"http", "https"}:
-                # .path returns / before actual link
-                out["urls"].add(parsed.path[1:])
-
-        return out
-
     def load_to_picard(self, items):
-        parsed_items = self._parse_file_or_url_items(items)
+        parsed_items = ParseItemsToLoad(items)
 
-        if parsed_items["files"]:
-            self.add_paths(parsed_items["files"])
+        if parsed_items.files:
+            self.add_paths(parsed_items.files)
             self.bring_tagger_front()
-        if parsed_items["urls"] or parsed_items["mbids"]:
+        if parsed_items.urls or parsed_items.mbids:
             file_lookup = self.get_file_lookup()
-            for mbid in parsed_items["mbids"]:
+            for mbid in parsed_items.mbids:
                 thread.to_main(file_lookup.mbid_lookup, mbid, None, None, False)
-            for url in parsed_items["urls"]:
+            for url in parsed_items.urls:
                 thread.to_main(file_lookup.mbid_lookup, url, None, None, False)
             self.bring_tagger_front()
 
