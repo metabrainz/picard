@@ -1140,13 +1140,13 @@ def main(localedir=None, autoupdate=True):
         picard_args.stand_alone_instance,
     }
 
-    to_be_added = []
-    for x in picard_args.FILE_OR_URL:
-        if not urlparse(x).netloc:
-            x = os.path.abspath(x)
-        to_be_added.append(x)
-
     if not should_start:
+        to_be_added = []
+        for x in picard_args.FILE_OR_URL:
+            if not urlparse(x).netloc:
+                x = os.path.abspath(x)
+            to_be_added.append(x)
+
         try:
             pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR, args=to_be_added)
             should_start = pipe_handler.is_pipe_owner
