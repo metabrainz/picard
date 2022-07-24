@@ -325,33 +325,41 @@ class Tagger(QtWidgets.QApplication):
             if messages:
                 self.load_to_picard(messages)
 
-    def load_to_picard(self, items):
-        files = set()
-        mbids = set()
-        urls = set()
+    @staticmethod
+    def _parse_file_or_url_items(items):
+        out = {
+            "files": set(),
+            "mbids": set(),
+            "urls": set(),
+        }
 
         for item in items:
             parsed = urlparse(item)
             if not parsed.scheme:
-                files.add(item)
+                out["files"].add(item)
             elif parsed.scheme == "file":
                 # remove file:// prefix safely
-                files.add(item[7:])
+                out["files"].add(item[7:])
+            elif parsed.scheme == "mbid":
+                out["mbids"].add(parsed.netloc + parsed.path)
             elif parsed.scheme in {"http", "https"}:
                 # .path returns / before actual link
-                urls.add(parsed.path[1:])
-            elif parsed.scheme == "mbid":
-                mbids.add(parsed.netloc + parsed.path)
+                out["urls"].add(parsed.path[1:])
 
-        if files:
-            self.add_paths(files)
+        return out
+
+    def load_to_picard(self, items):
+        parsed_items = self._parse_file_or_url_items(items)
+
+        if parsed_items["files"]:
+            self.add_paths(parsed_items["files"])
             self.bring_tagger_front()
-        if urls or mbids:
+        if parsed_items["urls"] or parsed_items["mbids"]:
             file_lookup = self.get_file_lookup()
-            for url in urls:
-                thread.to_main(file_lookup.mbid_lookup, url, None, None, False)
-            for mbid in mbids:
+            for mbid in parsed_items["mbids"]:
                 thread.to_main(file_lookup.mbid_lookup, mbid, None, None, False)
+            for url in parsed_items["urls"]:
+                thread.to_main(file_lookup.mbid_lookup, url, None, None, False)
             self.bring_tagger_front()
 
     def enable_menu_icons(self, enabled):
