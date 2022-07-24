@@ -20,7 +20,7 @@
 
 from test.picardtestcase import PicardTestCase
 
-from picard.tagger import Tagger
+from picard.tagger import ParseItemsToLoad
 
 
 class TestMessageParsing(PicardTestCase):
@@ -33,8 +33,8 @@ class TestMessageParsing(PicardTestCase):
             "http://musicbrainz.org/recording/7cd3782d-86dc-4dd1-8d9b-e37f9cbe6b94",
         }
 
-        result = Tagger._parse_items_to_load(test_cases)
-        self.assertSetEqual(result["files"], {"test_case.mp3", "/home/picard/music/test.flac"}, "Files test")
-        self.assertSetEqual(result["mbids"], {"recording/7cd3782d-86dc-4dd1-8d9b-e37f9cbe6b94"}, "MBIDs test")
-        self.assertSetEqual(result["urls"], {"recording/7cd3782d-86dc-4dd1-8d9b-e37f9cbe6b94",
+        result = ParseItemsToLoad(test_cases)
+        self.assertSetEqual(result.files, {"test_case.mp3", "/home/picard/music/test.flac"}, "Files test")
+        self.assertSetEqual(result.mbids, {"recording/7cd3782d-86dc-4dd1-8d9b-e37f9cbe6b94"}, "MBIDs test")
+        self.assertSetEqual(result.urls, {"recording/7cd3782d-86dc-4dd1-8d9b-e37f9cbe6b94",
             "recording/7cd3782d-86dc-4dd1-8d9b-e37f9cbe6b94"}, "URLs test")
