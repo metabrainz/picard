@@ -1107,7 +1107,8 @@ If a new instance will not be spawned:
                         help="display version information and exit")
     parser.add_argument("-V", "--long-version", action='store_true',
                         help="display long version information and exit")
-    parser.add_argument('FILE_OR_URL', nargs='*')
+    parser.add_argument('FILE_OR_URL', nargs='*',
+                        help="the file(s), URL(s) and MBID(s) to load")
 
     return parser.parse_known_args()[0]
 
