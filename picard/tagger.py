@@ -354,10 +354,8 @@ class Tagger(QtWidgets.QApplication):
             self.bring_tagger_front()
         if parsed_items.urls or parsed_items.mbids:
             file_lookup = self.get_file_lookup()
-            for mbid in parsed_items.mbids:
-                thread.to_main(file_lookup.mbid_lookup, mbid, None, None, False)
-            for url in parsed_items.urls:
-                thread.to_main(file_lookup.mbid_lookup, url, None, None, False)
+            for item in parsed_items.mbids | parsed_items.urls:
+                thread.to_main(file_lookup.mbid_lookup, item, None, None, False)
             self.bring_tagger_front()
 
     def enable_menu_icons(self, enabled):
