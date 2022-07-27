@@ -195,6 +195,9 @@ class ParseItemsToLoad:
                 # .path returns / before actual link
                 self.urls.add(parsed.path[1:])
 
+    def __bool__(self):
+        return bool(self.files or self.mbids or self.urls)
+
 
 class Tagger(QtWidgets.QApplication):
 
@@ -351,11 +354,13 @@ class Tagger(QtWidgets.QApplication):
 
         if parsed_items.files:
             self.add_paths(parsed_items.files)
-            self.bring_tagger_front()
+
         if parsed_items.urls or parsed_items.mbids:
             file_lookup = self.get_file_lookup()
             for item in parsed_items.mbids | parsed_items.urls:
                 thread.to_main(file_lookup.mbid_lookup, item, None, None, False)
+
+        if parsed_items:
             self.bring_tagger_front()
 
     def enable_menu_icons(self, enabled):
