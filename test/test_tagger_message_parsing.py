@@ -38,3 +38,31 @@ class TestMessageParsing(PicardTestCase):
         self.assertSetEqual(result.mbids, {"recording/7cd3782d-86dc-4dd1-8d9b-e37f9cbe6b94"}, "MBIDs test")
         self.assertSetEqual(result.urls, {"recording/7cd3782d-86dc-4dd1-8d9b-e37f9cbe6b94",
             "recording/7cd3782d-86dc-4dd1-8d9b-e37f9cbe6b94"}, "URLs test")
+
+    def test_bool_files_true(self):
+        test_cases = {
+            "test_case.mp3",
+        }
+        self.assertTrue(ParseItemsToLoad(test_cases))
+
+    def test_bool_mbids_true(self):
+        test_cases = {
+            "mbid://recording/7cd3782d-86dc-4dd1-8d9b-e37f9cbe6b94",
+        }
+        self.assertTrue(ParseItemsToLoad(test_cases))
+
+    def test_bool_urls_true(self):
+        test_cases = {
+            "https://musicbrainz.org/recording/7cd3782d-86dc-4dd1-8d9b-e37f9cbe6b94",
+        }
+        self.assertTrue(ParseItemsToLoad(test_cases))
+
+    def test_bool_invalid_false(self):
+        test_cases = {
+            "mbd://recording/7cd3782d-86dc-4dd1-8d9b-e37f9cbe6b94",
+        }
+        self.assertFalse(ParseItemsToLoad(test_cases))
+
+    def test_bool_empty_false(self):
+        test_cases = {}
+        self.assertFalse(ParseItemsToLoad(test_cases))
