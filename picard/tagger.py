@@ -55,6 +55,7 @@ import re
 import shutil
 import signal
 import sys
+from urllib.parse import urlparse
 
 from PyQt5 import (
     QtCore,
@@ -174,6 +175,30 @@ def plugin_dirs():
     yield USER_PLUGIN_DIR
 
 
+class ParseItemsToLoad:
+
+    def __init__(self, items):
+        self.files = set()
+        self.mbids = set()
+        self.urls = set()
+
+        for item in items:
+            parsed = urlparse(item)
+            if not parsed.scheme:
+                self.files.add(item)
+            elif parsed.scheme == "file":
+                # remove file:// prefix safely
+                self.files.add(item[7:])
+            elif parsed.scheme == "mbid":
+                self.mbids.add(parsed.netloc + parsed.path)
+            elif parsed.scheme in {"http", "https"}:
+                # .path returns / before actual link
+                self.urls.add(parsed.path[1:])
+
+    def __bool__(self):
+        return bool(self.files or self.mbids or self.urls)
+
+
 class Tagger(QtWidgets.QApplication):
 
     tagger_stats_changed = QtCore.pyqtSignal()
@@ -196,7 +221,7 @@ class Tagger(QtWidgets.QApplication):
         config = get_config()
         theme.setup(self)
 
-        self._cmdline_files = picard_args.FILE
+        self._cmdline_files = picard_args.FILE_OR_URL
         self.autoupdate_enabled = autoupdate
         self._no_restore = picard_args.no_restore
         self._no_plugins = picard_args.no_plugins
@@ -322,8 +347,21 @@ class Tagger(QtWidgets.QApplication):
         while self.pipe_handler.pipe_running:
             messages = [x for x in self.pipe_handler.read_from_pipe() if x not in IGNORED]
             if messages:
-                self.add_paths(messages)
-                self.bring_tagger_front()
+                self.load_to_picard(messages)
+
+    def load_to_picard(self, items):
+        parsed_items = ParseItemsToLoad(items)
+
+        if parsed_items.files:
+            self.add_paths(parsed_items.files)
+
+        if parsed_items.urls or parsed_items.mbids:
+            file_lookup = self.get_file_lookup()
+            for item in parsed_items.mbids | parsed_items.urls:
+                thread.to_main(file_lookup.mbid_lookup, item, None, None, False)
+
+        if parsed_items:
+            self.bring_tagger_front()
 
     def enable_menu_icons(self, enabled):
         self.setAttribute(QtCore.Qt.ApplicationAttribute.AA_DontShowIconsInMenus, not enabled)
@@ -431,8 +469,7 @@ class Tagger(QtWidgets.QApplication):
 
     def _run_init(self):
         if self._cmdline_files:
-            files = [decode_filename(f) for f in self._cmdline_files]
-            self.add_paths(files)
+            self.load_to_picard([decode_filename(f) for f in self._cmdline_files])
             del self._cmdline_files
 
     def run(self):
@@ -1071,7 +1108,8 @@ If a new instance will not be spawned:
                         help="display version information and exit")
     parser.add_argument("-V", "--long-version", action='store_true',
                         help="display long version information and exit")
-    parser.add_argument('FILE', nargs='*')
+    parser.add_argument('FILE_OR_URL', nargs='*',
+                        help="the file(s), URL(s) and MBID(s) to load")
 
     return parser.parse_known_args()[0]
 
@@ -1113,8 +1151,14 @@ def main(localedir=None, autoupdate=True):
     }
 
     if not should_start:
+        to_be_added = []
+        for x in picard_args.FILE_OR_URL:
+            if not urlparse(x).netloc:
+                x = os.path.abspath(x)
+            to_be_added.append(x)
+
         try:
-            pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR, args=[os.path.abspath(x) for x in picard_args.FILE])
+            pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR, args=to_be_added)
             should_start = pipe_handler.is_pipe_owner
         except pipe.PipeErrorNoPermission as err:
             log.error(err)
