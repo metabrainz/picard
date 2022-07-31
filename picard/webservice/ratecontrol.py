@@ -141,7 +141,7 @@ def increment_requests(hostkey):
 def decrement_requests(hostkey):
     """Decrement counter, it has to be called on each reply
     """
-    assert(CONGESTION_UNACK[hostkey] > 0)
+    assert CONGESTION_UNACK[hostkey] > 0
     CONGESTION_UNACK[hostkey] -= 1
     log.debug("%s: Decrementing requests to: %d", hostkey, CONGESTION_UNACK[hostkey])
 

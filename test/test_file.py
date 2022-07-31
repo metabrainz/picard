@@ -168,7 +168,7 @@ class TestPreserveTimes(PicardTestCase):
         # access times may not be equal
         # time difference should be positive and reasonably low (if no access in between, it should be 0)
         delta = after_atime_ns - before_atime_ns
-        tolerance = 10**7  #  0.01 seconds
+        tolerance = 10**7  # 0.01 seconds
         self.assertTrue(0 <= delta < tolerance, "0 <= %s < %s" % (delta, tolerance))
 
         # ensure written data can be read back
