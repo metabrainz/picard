@@ -132,7 +132,7 @@ class ReleaseTypeScore:
 class RowColIter:
 
     def __init__(self, max_cells, max_cols=6, step=2):
-        assert(max_cols % step == 0)
+        assert max_cols % step == 0
         self.step = step
         self.cols = max_cols
         self.rows = int((max_cells - 1) / (self.cols / step)) + 1
