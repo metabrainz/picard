@@ -178,6 +178,7 @@ def plugin_dirs():
 class ParseItemsToLoad:
 
     def __init__(self, items):
+        self.commands = []
         self.files = set()
         self.mbids = set()
         self.urls = set()
@@ -186,6 +187,9 @@ class ParseItemsToLoad:
             parsed = urlparse(item)
             if not parsed.scheme:
                 self.files.add(item)
+            elif parsed.scheme == "command":
+                for x in item[10:].split(';'):
+                    self.commands.append(x.strip())
             elif parsed.scheme == "file":
                 # remove file:// prefix safely
                 self.files.add(item[7:])
@@ -195,8 +199,15 @@ class ParseItemsToLoad:
                 # .path returns / before actual link
                 self.urls.add(parsed.path[1:])
 
-    def __bool__(self):
+    # needed to indicate whether Picard should be brought to the front
+    def non_executable_items(self):
         return bool(self.files or self.mbids or self.urls)
+
+    def __bool__(self):
+        return bool(self.commands or self.files or self.mbids or self.urls)
+
+    def __str__(self):
+        return "files: %r mbids: %r urls: %r commands: %r" % (self.files, self.mbids, self.urls, self.commands)
 
 
 class Tagger(QtWidgets.QApplication):
@@ -360,7 +371,7 @@ class Tagger(QtWidgets.QApplication):
             for item in parsed_items.mbids | parsed_items.urls:
                 thread.to_main(file_lookup.mbid_lookup, item, None, None, False)
 
-        if parsed_items:
+        if parsed_items.non_executable_items():
             self.bring_tagger_front()
 
     def enable_menu_icons(self, enabled):
