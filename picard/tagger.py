@@ -253,6 +253,8 @@ class Tagger(QtWidgets.QApplication):
             self.pipe_handler.pipe_running = True
             self.thread_pool.submit(self.pipe_server)
 
+        self._init_remote_commands()
+
         # Provide a separate thread pool for operations that should not be
         # delayed by longer background processing tasks, e.g. because the user
         # expects instant feedback instead of waiting for a long list of
@@ -358,10 +360,15 @@ class Tagger(QtWidgets.QApplication):
         while self.pipe_handler.pipe_running:
             messages = [x for x in self.pipe_handler.read_from_pipe() if x not in IGNORED]
             if messages:
-                self.load_to_picard(messages)
+                log.debug("pipe messages: %r", messages)
+                thread.to_main(self.load_to_picard, messages)
 
     def load_to_picard(self, items):
         parsed_items = ParseItemsToLoad(items)
+        log.debug(str(parsed_items))
+
+        for command in parsed_items.commands:
+            self.handle_command(command)
 
         if parsed_items.files:
             self.add_paths(parsed_items.files)
@@ -378,6 +385,60 @@ class Tagger(QtWidgets.QApplication):
         for album in self.albums.values():
             for track in album.iterfiles():
                 yield track
+
+    def _init_remote_commands(self):
+        self.commands = {
+            "CLUSTER": self.handle_command_cluster,
+            "FINGERPRINT": self.handle_command_fingerprint,
+            "LOOKUP": self.handle_command_lookup,
+            "QUIT": self.handle_command_quit,
+            "REMOVE_SAVED": self.handle_command_remove_saved,
+            "SAVE_COMPLETE": self.handle_command_save_complete,
+            "SCAN": self.handle_command_scan,
+            "SHOW": self.handle_command_show,
+            "SUBMIT_FINGERPRINTS": self.handle_command_submit_fingerprints,
+        }
+
+    def handle_command(self, command):
+        try:
+            cmd, *args = command.split(' ', 1)
+            argstring = next(iter(args), "")
+            thread.to_main(self.commands[cmd.upper()], argstring.strip())
+        except KeyError:
+            log.error("Unknown command: %r", command)
+
+    def handle_command_cluster(self, argstring):
+        self.cluster(self.unclustered_files.files)
+
+    def handle_command_fingerprint(self, argstring):
+        for album_name in self.albums:
+            self.analyze(self.albums[album_name].iterfiles())
+
+    def handle_command_lookup(self, argstring):
+        self.autotag(self.unclustered_files.files)
+
+    def handle_command_quit(self, argstring):
+        self.exit()
+        self.quit()
+
+    def handle_command_remove_saved(self, argstring):
+        for track in self.get_album_pane_tracks():
+            if track.state == File.NORMAL:
+                track.remove()
+
+    def handle_command_save_complete(self, argstring):
+        for track in self.get_album_pane_tracks():
+            if track.state == File.CHANGED:
+                track.save()
+
+    def handle_command_scan(self, argstring):
+        self.analyze(self.unclustered_files.files)
+
+    def handle_command_show(self, argstring):
+        self.bring_tagger_front()
+
+    def handle_command_submit_fingerprints(self, argstring):
+        self.acoustidmanager.submit()
 
     def enable_menu_icons(self, enabled):
         self.setAttribute(QtCore.Qt.ApplicationAttribute.AA_DontShowIconsInMenus, not enabled)
