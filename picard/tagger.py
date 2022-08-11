@@ -1171,6 +1171,8 @@ If a new instance will not be spawned:
                         help="location of the configuration file (starts a stand-alone instance)")
     parser.add_argument("-d", "--debug", action='store_true',
                         help="enable debug-level logging")
+    parser.add_argument("-e", "--exec", nargs="+", action='append',
+                        help="send command (arguments can be entered after space) to a running instance")
     parser.add_argument("-M", "--no-player", action='store_true',
                         help="disable built-in media player")
     parser.add_argument("-N", "--no-restore", action='store_true',
@@ -1234,9 +1236,17 @@ def main(localedir=None, autoupdate=True):
                 x = os.path.abspath(x)
             to_be_added.append(x)
 
+        if picard_args.exec:
+            for e in picard_args.exec:
+                to_be_added.append("command://" + " ".join(e))
+
+        if to_be_added:
+            # note: log level isn't defined yet, it defaults to info, log.debug() would not work here
+            log.info("Sending messages to main instance: %r" % to_be_added)
+
         try:
             pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR, args=to_be_added)
-            should_start = pipe_handler.is_pipe_owner
+            should_start = pipe_handler.is_pipe_owner and (picard_args.exec is None)
         except pipe.PipeErrorNoPermission as err:
             log.error(err)
             pipe_handler = None
@@ -1245,6 +1255,7 @@ def main(localedir=None, autoupdate=True):
         # pipe has sent its args to existing one, doesn't need to start
         if not should_start:
             # just a custom exit code to show that picard instance wasn't created
+            log.info("No need for spawning a new instance, exiting...")
             sys.exit(EXIT_NO_NEW_INSTANCE)
     else:
         pipe_handler = None
