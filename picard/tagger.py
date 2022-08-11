@@ -374,6 +374,11 @@ class Tagger(QtWidgets.QApplication):
         if parsed_items.non_executable_items():
             self.bring_tagger_front()
 
+    def get_album_pane_tracks(self):
+        for album in self.albums.values():
+            for track in album.iterfiles():
+                yield track
+
     def enable_menu_icons(self, enabled):
         self.setAttribute(QtCore.Qt.ApplicationAttribute.AA_DontShowIconsInMenus, not enabled)
 
