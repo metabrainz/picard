@@ -456,7 +456,7 @@ class Tagger(QtWidgets.QApplication):
     def handle_command_remove(self, argstring):
         for file in self.get_all_file_objects():
             if argstring == file.filename:
-                argstring.remove()
+                file.remove()
                 return
 
     def handle_command_remove_all(self, argstring):
