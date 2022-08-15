@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-06-27 08:54+0200\n"
+"POT-Creation-Date: 2022-07-07 07:54+0200\n"
 "PO-Revision-Date: 2012-05-29 16:17+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022\n"
 "Language-Team: Japanese (http://www.transifex.com/musicbrainz/musicbrainz/language/ja/)\n"
@@ -550,24 +550,24 @@ msgstr "[バーコードなし]"
 msgid "[no release info]"
 msgstr "[リリース情報なし]"
 
-#: picard/tagger.py:330 picard/ui/ui_options_general.py:175
+#: picard/tagger.py:329 picard/ui/ui_options_general.py:175
 msgid "MusicBrainz Account"
 msgstr "MusicBrainzアカウント"
 
-#: picard/tagger.py:331
+#: picard/tagger.py:330
 msgid "Authorization code:"
 msgstr "認証コード:"
 
-#: picard/tagger.py:809
+#: picard/tagger.py:808
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "アルバム%(id)sを削除しています: %(artist)s - %(album)s"
 
-#: picard/tagger.py:827
+#: picard/tagger.py:826
 msgid "CD Lookup Error"
 msgstr "CD読み込みのエラー"
 
-#: picard/tagger.py:828
+#: picard/tagger.py:827
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -575,11 +575,11 @@ msgid ""
 "%s"
 msgstr "CDを読み込む際のエラー：\n\n%s"
 
-#: picard/tagger.py:857
+#: picard/tagger.py:856
 msgid "EAC / XLD / Whipper log files"
 msgstr ""
 
-#: picard/script/serializer.py:352 picard/tagger.py:858
+#: picard/script/serializer.py:352 picard/tagger.py:857
 #: picard/ui/coverartbox.py:617 picard/ui/mainwindow.py:1234
 #: picard/ui/options/maintenance.py:167 picard/ui/options/scripting.py:131
 msgid "All files"
@@ -5514,7 +5514,7 @@ msgstr "セパレータを追加"
 msgid "Remove button from toolbar"
 msgstr "ツールバーのボタンを削除"
 
-#: picard/ui/options/interface_colors.py:88
+#: picard/ui/options/interface_colors.py:92
 #: picard/ui/ui_options_interface_colors.py:49
 msgid "Colors"
 msgstr "色"
@@ -6309,15 +6309,15 @@ msgstr "インターフェースの言語を変更しました。変更を適用
 msgid "Drag and Drop to re-order"
 msgstr "ドラッグ&ドロップで並べ替え"
 
-#: picard/ui/options/interface_colors.py:63
+#: picard/ui/options/interface_colors.py:67
 msgid "Choose a color"
 msgstr "色を選択"
 
-#: picard/ui/options/interface_colors.py:142
+#: picard/ui/options/interface_colors.py:146
 msgid "Colors changed"
 msgstr "色が変更されました"
 
-#: picard/ui/options/interface_colors.py:143
+#: picard/ui/options/interface_colors.py:147
 msgid ""
 "You have changed the interface colors. You may have to restart Picard in "
 "order for the changes to take effect."
