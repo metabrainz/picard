@@ -132,6 +132,7 @@ from picard.util import (
     versions,
     webbrowser2,
 )
+from picard.util.cdrom import get_cdrom_drives
 from picard.util.checkupdate import UpdateCheckManager
 from picard.webservice import WebService
 from picard.webservice.api_helpers import (
@@ -394,6 +395,7 @@ class Tagger(QtWidgets.QApplication):
             "CLUSTER": self.handle_command_cluster,
             "FINGERPRINT": self.handle_command_fingerprint,
             "LOOKUP": self.handle_command_lookup,
+            "LOOKUP_CD": self.handle_command_lookup_cd,
             "QUIT": self.handle_command_quit,
             # due to the pipe protocol limitations
             # we currently can handle only one file per `remove` command
@@ -423,6 +425,29 @@ class Tagger(QtWidgets.QApplication):
 
     def handle_command_lookup(self, argstring):
         self.autotag(self.unclustered_files.files)
+
+    def handle_command_lookup_cd(self, argstring):
+        disc = Disc()
+
+        if not argstring:
+            devices = get_cdrom_drives()
+            if devices:
+                device = devices[0]
+            else:
+                device = None
+        elif argstring.startswith("/dev/"):
+            device = argstring
+        else:
+            thread.run_task(
+                partial(self._parse_disc_ripping_log, disc, argstring),
+                partial(self._lookup_disc, disc),
+                traceback=self._debug)
+            return
+
+        thread.run_task(
+            partial(disc.read, encode_filename(device)),
+            partial(self._lookup_disc, disc),
+            traceback=self._debug)
 
     def handle_command_quit(self, argstring):
         self.exit()
