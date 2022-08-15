@@ -4,17 +4,17 @@
 # 
 # Translators:
 # Andrea Borio <andrybo6@gmail.com>, 2016
-# salo.rock, 2012,2017-2022
+# Luca Salini, 2012,2017-2022
 # Matte <piotto@gmail.com>, 2006
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022
-# salo.rock, 2013-2015
-# salo.rock, 2012
-# salo.rock, 2021
+# Luca Salini, 2013-2015
+# Luca Salini, 2012
+# Luca Salini, 2021
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-06-27 08:54+0200\n"
+"POT-Creation-Date: 2022-07-07 07:54+0200\n"
 "PO-Revision-Date: 2012-05-29 16:17+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
@@ -544,24 +544,24 @@ msgstr "[nessun codice a barre]"
 msgid "[no release info]"
 msgstr "[nessuna informazione sulla pubblicazione]"
 
-#: picard/tagger.py:330 picard/ui/ui_options_general.py:175
+#: picard/tagger.py:329 picard/ui/ui_options_general.py:175
 msgid "MusicBrainz Account"
 msgstr "Account MusicBrainz"
 
-#: picard/tagger.py:331
+#: picard/tagger.py:330
 msgid "Authorization code:"
 msgstr "Codice di autorizzazione:"
 
-#: picard/tagger.py:809
+#: picard/tagger.py:808
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Rimozione album %(id)s: %(artist)s - %(album)s in corso"
 
-#: picard/tagger.py:827
+#: picard/tagger.py:826
 msgid "CD Lookup Error"
 msgstr "Errore di ricerca del CD"
 
-#: picard/tagger.py:828
+#: picard/tagger.py:827
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -569,11 +569,11 @@ msgid ""
 "%s"
 msgstr "Errore durante la lettura del CD:\n\n%s"
 
-#: picard/tagger.py:857
+#: picard/tagger.py:856
 msgid "EAC / XLD / Whipper log files"
 msgstr "File di registro EAC / XLD / Whipper"
 
-#: picard/script/serializer.py:352 picard/tagger.py:858
+#: picard/script/serializer.py:352 picard/tagger.py:857
 #: picard/ui/coverartbox.py:617 picard/ui/mainwindow.py:1234
 #: picard/ui/options/maintenance.py:167 picard/ui/options/scripting.py:131
 msgid "All files"
@@ -5524,7 +5524,7 @@ msgstr "Aggiungi separatore"
 msgid "Remove button from toolbar"
 msgstr "Rimuovi pulsante dalla barra degli strumenti"
 
-#: picard/ui/options/interface_colors.py:88
+#: picard/ui/options/interface_colors.py:92
 #: picard/ui/ui_options_interface_colors.py:49
 msgid "Colors"
 msgstr "Colori"
@@ -6319,15 +6319,15 @@ msgstr "Hai cambiato la lingua dell'interfaccia. Riavvia Picard affinché la mod
 msgid "Drag and Drop to re-order"
 msgstr "Trascina per riordinare"
 
-#: picard/ui/options/interface_colors.py:63
+#: picard/ui/options/interface_colors.py:67
 msgid "Choose a color"
 msgstr "Scegli un colore"
 
-#: picard/ui/options/interface_colors.py:142
+#: picard/ui/options/interface_colors.py:146
 msgid "Colors changed"
 msgstr "Colori cambiati"
 
-#: picard/ui/options/interface_colors.py:143
+#: picard/ui/options/interface_colors.py:147
 msgid ""
 "You have changed the interface colors. You may have to restart Picard in "
 "order for the changes to take effect."

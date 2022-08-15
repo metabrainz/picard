@@ -183,7 +183,7 @@ msgctxt "place_type"
 msgid ""
 "A (usually green) space kept available for recreation in an otherwise built "
 "and populated area."
-msgstr ""
+msgstr "在建成的聚居区保留的休闲地段(通常为绿地)。"
 
 #: DB:medium_format/description:129
 msgctxt "medium_format"
@@ -191,7 +191,7 @@ msgid ""
 "A CD that contains both audio and data in the same session. The data is "
 "often in the first track, that will have to be skipped in many audio "
 "players. Relatively common in old video game CDs."
-msgstr ""
+msgstr "在同一分区含有音频和数据的CD。数据通常位于第一音轨，常常会被多种音频播放器跳过。在古董游戏CD中常见。"
 
 #: DB:medium_format/description:42
 msgctxt "medium_format"
@@ -199,7 +199,7 @@ msgid ""
 "A CD that contains two sessions, one with audio and one with data. Since "
 "they are properly separated, audio players will not try to play the data "
 "session and it won't be part of the disc ID for the CD."
-msgstr ""
+msgstr "有分两个分区的CD， 一个含有音频，另一个含有数据。由于妥善分离的缘故，音频播放器不会试图播放数据部分，且不会是CD的唱片 ID一部分。"
 
 #: DB:release_group_secondary_type/description:8
 msgctxt "release_group_secondary_type"
@@ -269,7 +269,7 @@ msgid ""
 "A give-away release or a release intended to promote an upcoming official "
 "release (e.g. pre-release versions, releases included with a magazine, "
 "versions supplied to radio DJs for air-play)."
-msgstr "赠送式发行版或用于用于推广将发行正式版的发行版（如预发行版，随杂志发行版，电台DJ播放版）。"
+msgstr "赠送专辑或用于推广待发行正式专辑的专辑（如预发行专辑，杂志附赠专辑，电台DJ播放版）。"
 
 #: DB:artist_type/description:2
 msgctxt "artist_type"
@@ -318,7 +318,7 @@ msgctxt "release_packaging"
 msgid ""
 "A minimalistic plastic case where the back and front are kept together by a "
 "small hinge. Most commonly used for cheap promotion / DIY releases."
-msgstr ""
+msgstr "正面和背面使用铰链连接的极简塑料盒。常用于廉价的推广/自制专辑。"
 
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
@@ -337,7 +337,7 @@ msgctxt "event_type"
 msgid ""
 "A party, reception or other event held specifically for the launch of a "
 "release."
-msgstr "专门为发行启动而举办的聚会，招待会或其他活动。"
+msgstr "专门为专辑首发而举办的聚会，招待会或其他活动。"
 
 #: DB:release_packaging/description:17
 msgctxt "release_packaging"
@@ -851,7 +851,7 @@ msgid ""
 "An alternate version of a release where the titles have been changed. These "
 "don't correspond to any real release and should be linked to the original "
 "release using the transl(iter)ation relationship."
-msgstr "某发行版变更标题后的另一版本。它们并不对应任何正式发行版，与原发行版间关系为翻译（转写）。"
+msgstr "某专辑变更标题后的版本。它们并不对应任何正式专辑，与原专辑间关联为翻译（转写）。"
 
 #: DB:work_type/description:1
 msgctxt "work_type"
@@ -951,7 +951,7 @@ msgid ""
 "An unofficial/underground release that was not sanctioned by the artist "
 "and/or the record company. This includes unofficial live recordings and "
 "pirated releases."
-msgstr "非官方/地下发行版是未经艺术家和/或唱片公司许可的发行版。它包括非官方现场录音和盗版。"
+msgstr "非官方/地下专辑是未经艺术家和/或唱片公司许可的专辑。它包括非官方现场表演录音和盗版专辑。"
 
 #: DB:work_type/description:20
 msgctxt "work_type"
@@ -971,7 +971,7 @@ msgctxt "release_status"
 msgid ""
 "Any release officially sanctioned by the artist and/or their record company."
 " Most releases will fit into this category."
-msgstr "任何经艺术家和/或其唱片公司许可的发行版。大多数发行版符合此类。"
+msgstr "任何经艺术家和/或其唱片公司许可的专辑。多数专辑符合此分类。"
 
 #: DB:release_group_primary_type/description:11
 msgctxt "release_group_primary_type"
@@ -1586,7 +1586,7 @@ msgstr "非法制作的产品"
 #: DB:cover_art_archive.art_type/name:49
 msgctxt "cover_art_type"
 msgid "Bottom"
-msgstr ""
+msgstr "底面"
 
 #: DB:release_packaging/name:19
 msgctxt "release_packaging"
@@ -1899,7 +1899,7 @@ msgstr "城市指代任何规模的居民点，包括城镇和村庄。"
 #: DB:release_packaging/name:56
 msgctxt "release_packaging"
 msgid "Clamshell Case"
-msgstr ""
+msgstr "贝壳型碟片盒"
 
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
@@ -4881,7 +4881,7 @@ msgstr "Miraciye"
 #: DB:medium_format/name:129
 msgctxt "medium_format"
 msgid "Mixed Mode CD"
-msgstr ""
+msgstr "混合模式CD"
 
 #: DB:release_group_secondary_type/name:9
 msgctxt "release_group_secondary_type"
@@ -5496,7 +5496,7 @@ msgstr "非二进制"
 #: DB:release_group_secondary_type/description:3
 msgctxt "release_group_secondary_type"
 msgid "Non-music spoken word releases."
-msgstr "非音乐表达的发行专辑。"
+msgstr "非音乐口头表达专辑。"
 
 #: DB:release_packaging/name:7
 msgctxt "release_packaging"
@@ -5711,7 +5711,7 @@ msgstr "Paras"
 #: DB:place_type/name:9
 msgctxt "place_type"
 msgid "Park"
-msgstr ""
+msgstr "公园"
 
 #: DB:work_type/name:13
 msgctxt "work_type"
@@ -7195,7 +7195,7 @@ msgid ""
 "The bottom of a box or other similar packaging (for most common six sided "
 "packaging options, the one perpendicular to and below front, back and "
 "spines)."
-msgstr ""
+msgstr "盒子或类似包装的底面(对于最常见的六面体包装选项而言，指垂直于正面，背面和侧面且位于下方的面)。"
 
 #: DB:work_type/description:7
 msgctxt "work_type"
@@ -7226,7 +7226,7 @@ msgid ""
 "The top of a box or other similar packaging (for most common six sided "
 "packaging options, the one perpendicular to and above front, back and "
 "spines)."
-msgstr ""
+msgstr "盒子或类似包装的顶面(对于最常见的六面体包装选项而言，指垂直于正面，背面和侧面且位于上方的面)。"
 
 #: DB:release_packaging/description:1
 msgctxt "release_packaging"
@@ -7358,7 +7358,7 @@ msgstr "Tiśra-jāti ēka"
 #: DB:cover_art_archive.art_type/name:48
 msgctxt "cover_art_type"
 msgid "Top"
-msgstr ""
+msgstr "顶面"
 
 #: DB:series_type/name:7
 msgctxt "series_type"
