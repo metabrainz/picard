@@ -386,12 +386,18 @@ class Tagger(QtWidgets.QApplication):
             for track in album.iterfiles():
                 yield track
 
+    def get_all_file_objects(self):
+        return self.unclustered_files.files + [x for x in self.get_album_pane_tracks()] + [x for x in self.clusters.iterfiles()]
+
     def _init_remote_commands(self):
         self.commands = {
             "CLUSTER": self.handle_command_cluster,
             "FINGERPRINT": self.handle_command_fingerprint,
             "LOOKUP": self.handle_command_lookup,
             "QUIT": self.handle_command_quit,
+            # due to the pipe protocol limitations
+            # we currently can handle only one file per `remove` command
+            "REMOVE": self.handle_command_remove,
             "REMOVE_SAVED": self.handle_command_remove_saved,
             "SAVE_COMPLETE": self.handle_command_save_complete,
             "SCAN": self.handle_command_scan,
@@ -420,6 +426,12 @@ class Tagger(QtWidgets.QApplication):
     def handle_command_quit(self, argstring):
         self.exit()
         self.quit()
+
+    def handle_command_remove(self, argstring):
+        for file in self.get_all_file_objects():
+            if argstring == file.filename:
+                argstring.remove()
+                return
 
     def handle_command_remove_saved(self, argstring):
         for track in self.get_album_pane_tracks():
