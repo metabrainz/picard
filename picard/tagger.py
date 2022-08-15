@@ -398,6 +398,7 @@ class Tagger(QtWidgets.QApplication):
             # due to the pipe protocol limitations
             # we currently can handle only one file per `remove` command
             "REMOVE": self.handle_command_remove,
+            "REMOVE_ALL": self.handle_command_remove_all,
             "REMOVE_SAVED": self.handle_command_remove_saved,
             "SAVE_COMPLETE": self.handle_command_save_complete,
             "SCAN": self.handle_command_scan,
@@ -432,6 +433,10 @@ class Tagger(QtWidgets.QApplication):
             if argstring == file.filename:
                 argstring.remove()
                 return
+
+    def handle_command_remove_all(self, argstring):
+        for file in self.get_all_file_objects():
+            file.remove()
 
     def handle_command_remove_saved(self, argstring):
         for track in self.get_album_pane_tracks():
