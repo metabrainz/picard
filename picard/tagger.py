@@ -428,14 +428,14 @@ class Tagger(QtWidgets.QApplication):
 
     def handle_command_lookup_cd(self, argstring):
         disc = Disc()
+        devices = get_cdrom_drives()
 
         if not argstring:
-            devices = get_cdrom_drives()
             if devices:
                 device = devices[0]
             else:
                 device = None
-        elif argstring.startswith("/dev/"):
+        elif argstring in devices:
             device = argstring
         else:
             thread.run_task(
