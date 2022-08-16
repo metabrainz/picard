@@ -1215,7 +1215,10 @@ List of the commands available to execute in Picard from the command-line:
                                       files in the album pane
 
 - Commands are case insensitive (not args!), i.e. SHOW == show == ShOw
-- Arguments do not have to be entered, as they are required only for the two of commands
+- Arguments are optional and not providing them will not cause Picard to crash
+  - LOOKUP_CD without the argument will default to the first (alphabetically) available disc drive
+  - REMOVE without the argument will not do anything
+  - other commands ignore the arguments and act the same regardless of their amount
 - Only one path can be send per one REMOVE command""")
 
 
