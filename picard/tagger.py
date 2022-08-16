@@ -1192,6 +1192,33 @@ def longversion():
     print(versions.as_string())
 
 
+def print_help_for_commands():
+    print("""usage: picard -e [command] [arguments ...]
+or
+picard -e [command 1] [arguments ...] -e [commands 2] [arguments ...]
+
+List of the commands available to execute in Picard from the command-line:
+
+  - CLUSTER                           cluster all files in the cluster pane
+  - FINGERPRINT                       calculate acoustic fingerprints for all (matched) files in
+                                      the album pane
+  - LOOKUP                            lookup all clusters in the cluster pane.
+  - LOOKUP_CD [device/log file]       read CD from the selected drive and lookup on MusicBrainz.
+  - QUIT                              exit the running instance of Picard
+  - REMOVE [absolute path (1 file)]   remove the file from Picard
+  - REMOVE_ALL                        remove all files from Picard
+  - REMOVE_SAVED                      remove all saved releases from the album pane
+  - SAVE_COMPLETE                     save all completely matched releases in the album pane
+  - SCAN                              scan all files in the cluster pane
+  - SHOW                              make the running instance the currently active window
+  - SUBMIT_FINGERPRINTS               submit outstanding acoustic fingerprints for all (matched)
+                                      files in the album pane
+
+- Commands are case insensitive (not args!), i.e. SHOW == show == ShOw
+- Arguments do not have to be entered, as they are required only for the two of commands
+- Only one path can be send per one REMOVE command""")
+
+
 def process_picard_args():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -1282,6 +1309,10 @@ def main(localedir=None, autoupdate=True):
 
         if picard_args.exec:
             for e in picard_args.exec:
+                if "help" in [x.lower().strip() for x in e]:
+                    print_help_for_commands()
+                    to_be_added.clear()
+                    break
                 to_be_added.append("command://" + " ".join(e))
 
         if to_be_added:
@@ -1299,8 +1330,8 @@ def main(localedir=None, autoupdate=True):
 
         # pipe has sent its args to existing one, doesn't need to start
         if not should_start:
+            log.debug("No need for spawning a new instance, exiting...")
             # just a custom exit code to show that picard instance wasn't created
-            log.info("No need for spawning a new instance, exiting...")
             sys.exit(EXIT_NO_NEW_INSTANCE)
     else:
         pipe_handler = None
