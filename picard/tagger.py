@@ -1214,7 +1214,9 @@ If a new instance will not be spawned:
     parser.add_argument("-d", "--debug", action='store_true',
                         help="enable debug-level logging")
     parser.add_argument("-e", "--exec", nargs="+", action='append',
-                        help="send command (arguments can be entered after space) to a running instance")
+                        help="send command (arguments can be entered after space) to a running instance "
+                        "(use `-e help` for a list of the available commands",
+                        metavar="COMMAND")
     parser.add_argument("-M", "--no-player", action='store_true',
                         help="disable built-in media player")
     parser.add_argument("-N", "--no-restore", action='store_true',
