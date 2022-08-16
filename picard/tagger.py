@@ -1215,7 +1215,7 @@ If a new instance will not be spawned:
                         help="enable debug-level logging")
     parser.add_argument("-e", "--exec", nargs="+", action='append',
                         help="send command (arguments can be entered after space) to a running instance "
-                        "(use `-e help` for a list of the available commands",
+                        "(use `-e help` for a list of the available commands)",
                         metavar="COMMAND")
     parser.add_argument("-M", "--no-player", action='store_true',
                         help="disable built-in media player")
@@ -1288,13 +1288,14 @@ def main(localedir=None, autoupdate=True):
             # note: log level isn't defined yet, it defaults to info, log.debug() would not work here
             log.info("Sending messages to main instance: %r" % to_be_added)
 
-        try:
-            pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR, args=to_be_added)
-            should_start = pipe_handler.is_pipe_owner and (picard_args.exec is None)
-        except pipe.PipeErrorNoPermission as err:
-            log.error(err)
-            pipe_handler = None
-            should_start = True
+        if picard_args.exec is None:
+            try:
+                pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR, args=to_be_added)
+                should_start = pipe_handler.is_pipe_owner
+            except pipe.PipeErrorNoPermission as err:
+                log.error(err)
+                pipe_handler = None
+                should_start = True
 
         # pipe has sent its args to existing one, doesn't need to start
         if not should_start:
