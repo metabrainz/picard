@@ -1217,6 +1217,9 @@ List of the commands available to execute in Picard from the command-line:
                                       files in the album pane
 
 - Commands are case insensitive (not args!), i.e. SHOW == show == ShOw
+- If there is no running instance, picard -e blocks Picards startup and does nothing
+- If there is an existing instance, picard -e will send all the positional arguments in the given order.
+  Then the commands. So the files passed to the new instance with a command will be processed as well.
 - Arguments are optional and not providing them will not cause Picard to crash
   - LOOKUP_CD without the argument will default to the first (alphabetically) available disc drive
   - REMOVE without the argument will not do anything
