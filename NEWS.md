@@ -1,3 +1,10 @@
+# Version 2.8.3 - 2022-08-17
+
+## Bugfixes
+
+- [PICARD-2524](https://tickets.metabrainz.org/browse/PICARD-2524) - Random crash on album search
+
+
 # Version 2.8.2 - 2022-07-07
 
 ## Bugfixes
