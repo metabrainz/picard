@@ -55,6 +55,7 @@ import re
 import shutil
 import signal
 import sys
+from textwrap import fill
 from urllib.parse import urlparse
 
 from PyQt5 import (
@@ -208,6 +209,70 @@ class ParseItemsToLoad:
 
     def __str__(self):
         return "files: %r mbids: %r urls: %r commands: %r" % (self.files, self.mbids, self.urls, self.commands)
+
+
+class RemoteCommand:
+    def __init__(self, method_name, help_text=None, help_args=None):
+        self.method_name = method_name
+        self.help_text = help_text or ""
+        self.help_args = help_args or ""
+
+
+REMOTE_COMMANDS = {
+    "CLUSTER": RemoteCommand(
+        "handle_command_cluster",
+        help_text="Cluster all files in the cluster pane.",
+    ),
+    "FINGERPRINT": RemoteCommand(
+        "handle_command_fingerprint",
+        help_text="Calculate acoustic fingerprints for all (matched) files in the album pane.",
+    ),
+    "LOOKUP": RemoteCommand(
+        "handle_command_lookup",
+        help_text="Lookup all clusters in the cluster pane.",
+    ),
+    "LOOKUP_CD": RemoteCommand(
+        "handle_command_lookup_cd",
+        help_text="Read CD from the selected drive and lookup on MusicBrainz. "
+        "Without argument, it defaults to the first (alphabetically) available disc drive",
+        help_args="[device/log file]",
+    ),
+    "QUIT": RemoteCommand(
+        "handle_command_quit",
+        help_text="Exit the running instance of Picard.",
+    ),
+    # due to the pipe protocol limitations
+    # we currently can handle only one file per `remove` command
+    "REMOVE": RemoteCommand(
+        "handle_command_remove",
+        help_text="Remove the file from Picard. Do nothing if no argument.",
+        help_args="[absolute path (1 file)]",
+    ),
+    "REMOVE_ALL": RemoteCommand(
+        "handle_command_remove_all",
+        help_text="Remove all files from Picard.",
+    ),
+    "REMOVE_SAVED": RemoteCommand(
+        "handle_command_remove_saved",
+        help_text="Remove all saved releases from the album pane.",
+    ),
+    "SAVE_COMPLETE": RemoteCommand(
+        "handle_command_save_complete",
+        help_text="Save all completely matched releases in the album pane.",
+    ),
+    "SCAN": RemoteCommand(
+        "handle_command_scan",
+        help_text="Scan all files in the cluster pane.",
+    ),
+    "SHOW": RemoteCommand(
+        "handle_command_show",
+        help_text="Make the running instance the currently active window.",
+    ),
+    "SUBMIT_FINGERPRINTS": RemoteCommand(
+        "handle_command_submit_fingerprints",
+        help_text="Submit outstanding acoustic fingerprints for all (matched) files in the album pane.",
+    ),
+}
 
 
 class Tagger(QtWidgets.QApplication):
@@ -391,22 +456,7 @@ class Tagger(QtWidgets.QApplication):
         return self.unclustered_files.files + list(self.get_album_pane_tracks()) + list(self.clusters.iterfiles())
 
     def _init_remote_commands(self):
-        self.commands = {
-            "CLUSTER": self.handle_command_cluster,
-            "FINGERPRINT": self.handle_command_fingerprint,
-            "LOOKUP": self.handle_command_lookup,
-            "LOOKUP_CD": self.handle_command_lookup_cd,
-            "QUIT": self.handle_command_quit,
-            # due to the pipe protocol limitations
-            # we currently can handle only one file per `remove` command
-            "REMOVE": self.handle_command_remove,
-            "REMOVE_ALL": self.handle_command_remove_all,
-            "REMOVE_SAVED": self.handle_command_remove_saved,
-            "SAVE_COMPLETE": self.handle_command_save_complete,
-            "SCAN": self.handle_command_scan,
-            "SHOW": self.handle_command_show,
-            "SUBMIT_FINGERPRINTS": self.handle_command_submit_fingerprints,
-        }
+        self.commands = {name: getattr(self, remcmd.method_name) for name, remcmd in REMOTE_COMMANDS.items()}
 
     def handle_command(self, command):
         try:
@@ -1195,36 +1245,28 @@ def longversion():
 
 
 def print_help_for_commands():
+    maxwidth = 80
+    helpcmd = []
+    for name in sorted(REMOTE_COMMANDS):
+        remcmd = REMOTE_COMMANDS[name]
+        s = "  - %-34s %s" % (name + " " + remcmd.help_args, remcmd.help_text)
+        helpcmd.append(fill(s, width=maxwidth, subsequent_indent=' '*39))
+
     print("""usage: picard -e [command] [arguments ...]
-or
-picard -e [command 1] [arguments ...] -e [commands 2] [arguments ...]
+    or picard -e [command 1] [arguments ...] -e [command 2] [arguments ...]
 
 List of the commands available to execute in Picard from the command-line:
+""")
+    print("\n".join(helpcmd))
 
-  - CLUSTER                           cluster all files in the cluster pane
-  - FINGERPRINT                       calculate acoustic fingerprints for all (matched) files in
-                                      the album pane
-  - LOOKUP                            lookup all clusters in the cluster pane.
-  - LOOKUP_CD [device/log file]       read CD from the selected drive and lookup on MusicBrainz.
-  - QUIT                              exit the running instance of Picard
-  - REMOVE [absolute path (1 file)]   remove the file from Picard
-  - REMOVE_ALL                        remove all files from Picard
-  - REMOVE_SAVED                      remove all saved releases from the album pane
-  - SAVE_COMPLETE                     save all completely matched releases in the album pane
-  - SCAN                              scan all files in the cluster pane
-  - SHOW                              make the running instance the currently active window
-  - SUBMIT_FINGERPRINTS               submit outstanding acoustic fingerprints for all (matched)
-                                      files in the album pane
+    def fmt(s):
+        print(fill(s, width=maxwidth, initial_indent=' '*2))
 
-- Commands are case insensitive (not args!), i.e. SHOW == show == ShOw
-- If there is no running instance, picard -e blocks Picards startup and does nothing
-- If there is an existing instance, picard -e will send all the positional arguments in the given order.
-  Then the commands. So the files passed to the new instance with a command will be processed as well.
-- Arguments are optional and not providing them will not cause Picard to crash
-  - LOOKUP_CD without the argument will default to the first (alphabetically) available disc drive
-  - REMOVE without the argument will not do anything
-  - other commands ignore the arguments and act the same regardless of their amount
-- Only one path can be send per one REMOVE command""")
+    fmt("Commands are case insensitive.")
+    fmt("If there is no running instance, picard -e blocks Picards startup and does nothing.")
+    fmt("If there is an existing instance, picard -e will send all the positional arguments in the given order "
+    "followed by the commands, so the files passed to the new instance with a command will be processed as well.")
+    fmt("Arguments are optional, but some commands may require one or more arguments to actually do something.")
 
 
 def process_picard_args():
