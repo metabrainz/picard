@@ -1086,8 +1086,9 @@ def any_exception_isinstance(error, type_):
 def strxfrm(string):
     """Transforms a string to one that can be used in locale-aware comparisons.
 
-    Wrapper around locale.strxfrm, that never throws OSError. If an OSError
-    occurs this function will return the string converted to lower case.
+    Wrapper around locale.strxfrm, that never throws OSError or ValueError. If an
+    error occurs this function will return the string converted to lower case.
+    Also null bytes in the input string will be ignored.
 
     Args:
         string: The string to convert
@@ -1095,7 +1096,7 @@ def strxfrm(string):
     Returns: A string that can be compared locale-aware
     """
     try:
-        return _strxfrm(string)
-    except OSError as err:
+        return _strxfrm(string.replace('\0', ''))
+    except (OSError, ValueError) as err:
         log.warning('strxfrm(%r) failed: %r', string, err)
         return string.lower()

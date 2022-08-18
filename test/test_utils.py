@@ -33,6 +33,7 @@
 import builtins
 from collections import namedtuple
 from collections.abc import Iterator
+from locale import strxfrm as system_strxfrm
 import re
 import subprocess  # nosec: B404
 from tempfile import NamedTemporaryFile
@@ -66,6 +67,7 @@ from picard.util import (
     normpath,
     pattern_as_regex,
     sort_by_similarity,
+    strxfrm,
     system_supports_long_paths,
     tracknum_and_title_from_filename,
     tracknum_from_filename,
@@ -748,6 +750,20 @@ class WinPrefixLongpathTest(PicardTestCase):
     def test_win_prefix_longpath_is_short(self):
         path = 'C:\\foo\\' + (252 * 'a')
         self.assertEqual(path, win_prefix_longpath(path))
+
+
+class StrxfrmTest(PicardTestCase):
+
+    def test_strxfrm(self):
+        value = 'Motörhead'
+        self.assertEqual(
+            system_strxfrm(value),
+            strxfrm(value)
+        )
+
+    def test_strxfrm_ignore_null_chars(self):
+        result = strxfrm('Foo\0bar\0')
+        self.assertEqual(system_strxfrm('Foobar'), result)
 
 
 class SystemSupportsLongPathsTest(PicardTestCase):
