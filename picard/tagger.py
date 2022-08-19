@@ -256,9 +256,9 @@ REMOTE_COMMANDS = {
         "handle_command_remove_saved",
         help_text="Remove all saved releases from the album pane.",
     ),
-    "SAVE_COMPLETE": RemoteCommand(
-        "handle_command_save_complete",
-        help_text="Save all completely matched releases in the album pane.",
+    "SAVE_MODIFIED": RemoteCommand(
+        "handle_command_save_modified",
+        help_text="Save all modified files from the album pane.",
     ),
     "SCAN": RemoteCommand(
         "handle_command_scan",
@@ -519,7 +519,7 @@ class Tagger(QtWidgets.QApplication):
             if track.state == File.NORMAL:
                 track.remove()
 
-    def handle_command_save_complete(self, argstring):
+    def handle_command_save_modified(self, argstring):
         for track in self.get_album_pane_tracks():
             if track.state == File.CHANGED:
                 track.save()
