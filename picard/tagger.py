@@ -459,13 +459,14 @@ class Tagger(QtWidgets.QApplication):
         self.commands = {name: getattr(self, remcmd.method_name) for name, remcmd in REMOTE_COMMANDS.items()}
 
     def handle_command(self, command):
+        cmd, *args = command.split(' ', 1)
+        argstring = next(iter(args), "")
+        cmd = cmd.upper()
+        log.debug("Executing command: %r", cmd)
         try:
-            cmd, *args = command.split(' ', 1)
-            argstring = next(iter(args), "")
-            log.debug("Executing command: %r", cmd.upper())
-            thread.to_main(self.commands[cmd.upper()], argstring.strip())
+            thread.to_main(self.commands[cmd], argstring.strip())
         except KeyError:
-            log.error("Unknown command: %r", command)
+            log.error("Unknown command: %r", cmd)
 
     def handle_command_cluster(self, argstring):
         self.cluster(self.unclustered_files.files)
