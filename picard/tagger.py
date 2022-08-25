@@ -118,7 +118,6 @@ from picard.track import (
 )
 from picard.util import (
     check_io_encoding,
-    decode_filename,
     encode_filename,
     is_hidden,
     iter_files_from_objects,
@@ -225,7 +224,7 @@ class Tagger(QtWidgets.QApplication):
     _debug = False
     _no_restore = False
 
-    def __init__(self, picard_args, localedir, autoupdate, pipe_handler=None):
+    def __init__(self, picard_args, localedir, autoupdate, pipe_handler=None, to_load=None):
 
         super().__init__(sys.argv)
         self.__class__.__instance = self
@@ -233,7 +232,8 @@ class Tagger(QtWidgets.QApplication):
         config = get_config()
         theme.setup(self)
 
-        self._cmdline_files = picard_args.FILE_OR_URL
+        self._to_load = to_load
+
         self.autoupdate_enabled = autoupdate
         self._no_restore = picard_args.no_restore
         self._no_plugins = picard_args.no_plugins
@@ -368,9 +368,6 @@ class Tagger(QtWidgets.QApplication):
         parsed_items = ParseItemsToLoad(items)
         log.debug(str(parsed_items))
 
-        for command in parsed_items.commands:
-            self.handle_command(command)
-
         if parsed_items.files:
             self.add_paths(parsed_items.files)
 
@@ -378,6 +375,9 @@ class Tagger(QtWidgets.QApplication):
             file_lookup = self.get_file_lookup()
             for item in parsed_items.mbids | parsed_items.urls:
                 thread.to_main(file_lookup.mbid_lookup, item, None, None, False)
+
+        for command in parsed_items.commands:
+            self.handle_command(command)
 
         if parsed_items.non_executable_items():
             self.bring_tagger_front()
@@ -412,6 +412,7 @@ class Tagger(QtWidgets.QApplication):
         try:
             cmd, *args = command.split(' ', 1)
             argstring = next(iter(args), "")
+            log.debug("Executing command: %r", cmd.upper())
             thread.to_main(self.commands[cmd.upper()], argstring.strip())
         except KeyError:
             log.error("Unknown command: %r", command)
@@ -587,9 +588,10 @@ class Tagger(QtWidgets.QApplication):
         QtCore.QCoreApplication.processEvents()
 
     def _run_init(self):
-        if self._cmdline_files:
-            self.load_to_picard([decode_filename(f) for f in self._cmdline_files])
-            del self._cmdline_files
+        print(self._to_load)
+        if self._to_load:
+            self.load_to_picard(self._to_load)
+        del self._to_load
 
     def run(self):
         self.update_browser_integration()
@@ -1302,9 +1304,8 @@ def main(localedir=None, autoupdate=True):
         picard_args.no_plugins,
         picard_args.stand_alone_instance,
     }
-
+    to_be_added = []
     if not should_start:
-        to_be_added = []
         for x in picard_args.FILE_OR_URL:
             if not urlparse(x).netloc:
                 x = os.path.abspath(x)
@@ -1322,14 +1323,14 @@ def main(localedir=None, autoupdate=True):
             # note: log level isn't defined yet, it defaults to info, log.debug() would not work here
             log.info("Sending messages to main instance: %r" % to_be_added)
 
-        if picard_args.exec is None:
-            try:
-                pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR, args=to_be_added)
-                should_start = pipe_handler.is_pipe_owner
-            except pipe.PipeErrorNoPermission as err:
-                log.error(err)
-                pipe_handler = None
-                should_start = True
+        try:
+            pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR,
+                                     args=to_be_added)
+            should_start = pipe_handler.is_pipe_owner
+        except pipe.PipeErrorNoPermission as err:
+            log.error(err)
+            pipe_handler = None
+            should_start = True
 
         # pipe has sent its args to existing one, doesn't need to start
         if not should_start:
@@ -1346,7 +1347,7 @@ def main(localedir=None, autoupdate=True):
     except ImportError:
         pass
 
-    tagger = Tagger(picard_args, localedir, autoupdate, pipe_handler=pipe_handler)
+    tagger = Tagger(picard_args, localedir, autoupdate, pipe_handler=pipe_handler, to_load=to_be_added)
 
     # Initialize Qt default translations
     translator = QtCore.QTranslator()
