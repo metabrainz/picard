@@ -22,6 +22,7 @@
 # Copyright (C) 2019 Joel Lintunen
 # Copyright (C) 2020-2021 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion
+# Copyright (C) 2022 skelly37
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -755,12 +756,12 @@ class Album(DataObject, Item):
         return not self.get_num_unmatched_files()
 
     def is_modified(self):
-        return any(self._iter_unsaved_files())
+        return any(self.iter_unsaved_files())
 
     def get_num_unsaved_files(self):
-        return sum(1 for file in self._iter_unsaved_files())
+        return sum(1 for file in self.iter_unsaved_files())
 
-    def _iter_unsaved_files(self):
+    def iter_unsaved_files(self):
         yield from (file for file in self.iterfiles(save=True) if not file.is_saved())
 
     def column(self, column):
