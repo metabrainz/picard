@@ -1264,9 +1264,10 @@ List of the commands available to execute in Picard from the command-line:
         print(fill(s, width=maxwidth, initial_indent=' '*2))
 
     fmt("Commands are case insensitive.")
-    fmt("If there is no running instance, picard -e blocks Picards startup and does nothing.")
-    fmt("If there is an existing instance, picard -e will send all the positional arguments in the given order "
-    "followed by the commands, so the files passed to the new instance with a command will be processed as well.")
+    fmt("Picard will try to load all the positional arguments before processing commands.")
+    fmt("If there is no instance to pass the arguments to, Picard will start and process the commands after the"
+        "positional arguments are loaded, as mentioned above. Otherwise they will be handled by the running"
+        "Picard instance")
     fmt("Arguments are optional, but some commands may require one or more arguments to actually do something.")
 
 
@@ -1359,10 +1360,9 @@ def main(localedir=None, autoupdate=True):
 
         if picard_args.exec:
             for e in picard_args.exec:
-                if "help" in [x.lower().strip() for x in e]:
+                if "HELP" in [x.upper().strip() for x in e]:
                     print_help_for_commands()
-                    to_be_added.clear()
-                    break
+                    sys.exit(0)
                 to_be_added.append("command://" + " ".join(e))
 
         if to_be_added:
