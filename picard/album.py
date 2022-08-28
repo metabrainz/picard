@@ -162,6 +162,9 @@ class Album(DataObject, Item):
         if not save:
             yield from self.unmatched_files.iterfiles()
 
+    def iter_correctly_matched_tracks(self):
+        yield from (track for track in self.tracks if track.num_linked_files == 1)
+
     def enable_update_metadata_images(self, enabled):
         self.update_metadata_images_enabled = enabled
 
@@ -756,12 +759,12 @@ class Album(DataObject, Item):
         return not self.get_num_unmatched_files()
 
     def is_modified(self):
-        return any(self.iter_unsaved_files())
+        return any(self._iter_unsaved_files())
 
     def get_num_unsaved_files(self):
-        return sum(1 for file in self.iter_unsaved_files())
+        return sum(1 for file in self._iter_unsaved_files())
 
-    def iter_unsaved_files(self):
+    def _iter_unsaved_files(self):
         yield from (file for file in self.iterfiles(save=True) if not file.is_saved())
 
     def column(self, column):

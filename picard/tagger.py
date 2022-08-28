@@ -526,8 +526,8 @@ class Tagger(QtWidgets.QApplication):
 
     def handle_command_save_matched(self, argstring):
         for album in self.albums.values():
-            for track in album.iter_unsaved_files():
-                track.save()
+            for track in album.iter_correctly_matched_tracks():
+                track.files[0].save()
 
     def handle_command_save_modified(self, argstring):
         for track in self.get_album_pane_tracks():
