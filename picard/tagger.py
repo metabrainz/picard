@@ -457,7 +457,9 @@ class Tagger(QtWidgets.QApplication):
                 yield track
 
     def get_all_file_objects(self):
-        return self.unclustered_files.files + list(self.get_album_pane_tracks()) + list(self.clusters.iterfiles())
+        yield from self.unclustered_files.files
+        yield from self.get_album_pane_tracks()
+        yield from self.clusters.iterfiles()
 
     def _init_remote_commands(self):
         self.commands = {name: getattr(self, remcmd.method_name) for name, remcmd in REMOTE_COMMANDS.items()}
