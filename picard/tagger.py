@@ -456,7 +456,7 @@ class Tagger(QtWidgets.QApplication):
             for track in album.iterfiles():
                 yield track
 
-    def get_all_file_objects(self):
+    def iter_all_files(self):
         yield from self.unclustered_files.files
         yield from self.get_album_pane_tracks()
         yield from self.clusters.iterfiles()
@@ -512,13 +512,13 @@ class Tagger(QtWidgets.QApplication):
         self.quit()
 
     def handle_command_remove(self, argstring):
-        for file in self.get_all_file_objects():
+        for file in self.iter_all_files():
             if argstring == file.filename:
                 file.remove()
                 return
 
     def handle_command_remove_all(self, argstring):
-        for file in self.get_all_file_objects():
+        for file in self.iter_all_files():
             file.remove()
 
     def handle_command_remove_saved(self, argstring):
