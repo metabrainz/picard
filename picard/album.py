@@ -22,6 +22,7 @@
 # Copyright (C) 2019 Joel Lintunen
 # Copyright (C) 2020-2021 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion
+# Copyright (C) 2022 skelly37
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -160,6 +161,9 @@ class Album(DataObject, Item):
             yield from track.iterfiles()
         if not save:
             yield from self.unmatched_files.iterfiles()
+
+    def iter_correctly_matched_tracks(self):
+        yield from (track for track in self.tracks if track.num_linked_files == 1)
 
     def enable_update_metadata_images(self, enabled):
         self.update_metadata_images_enabled = enabled

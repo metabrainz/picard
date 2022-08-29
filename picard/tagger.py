@@ -55,6 +55,7 @@ import re
 import shutil
 import signal
 import sys
+from textwrap import fill
 from urllib.parse import urlparse
 
 from PyQt5 import (
@@ -118,7 +119,6 @@ from picard.track import (
 )
 from picard.util import (
     check_io_encoding,
-    decode_filename,
     encode_filename,
     is_hidden,
     iter_files_from_objects,
@@ -132,6 +132,7 @@ from picard.util import (
     versions,
     webbrowser2,
 )
+from picard.util.cdrom import get_cdrom_drives
 from picard.util.checkupdate import UpdateCheckManager
 from picard.webservice import WebService
 from picard.webservice.api_helpers import (
@@ -178,6 +179,7 @@ def plugin_dirs():
 class ParseItemsToLoad:
 
     def __init__(self, items):
+        self.commands = []
         self.files = set()
         self.mbids = set()
         self.urls = set()
@@ -186,6 +188,9 @@ class ParseItemsToLoad:
             parsed = urlparse(item)
             if not parsed.scheme:
                 self.files.add(item)
+            elif parsed.scheme == "command":
+                for x in item[10:].split(';'):
+                    self.commands.append(x.strip())
             elif parsed.scheme == "file":
                 # remove file:// prefix safely
                 self.files.add(item[7:])
@@ -195,8 +200,83 @@ class ParseItemsToLoad:
                 # .path returns / before actual link
                 self.urls.add(parsed.path[1:])
 
-    def __bool__(self):
+    # needed to indicate whether Picard should be brought to the front
+    def non_executable_items(self):
         return bool(self.files or self.mbids or self.urls)
+
+    def __bool__(self):
+        return bool(self.commands or self.files or self.mbids or self.urls)
+
+    def __str__(self):
+        return "files: %r mbids: %r urls: %r commands: %r" % (self.files, self.mbids, self.urls, self.commands)
+
+
+class RemoteCommand:
+    def __init__(self, method_name, help_text=None, help_args=None):
+        self.method_name = method_name
+        self.help_text = help_text or ""
+        self.help_args = help_args or ""
+
+
+REMOTE_COMMANDS = {
+    "CLUSTER": RemoteCommand(
+        "handle_command_cluster",
+        help_text="Cluster all files in the cluster pane.",
+    ),
+    "FINGERPRINT": RemoteCommand(
+        "handle_command_fingerprint",
+        help_text="Calculate acoustic fingerprints for all (matched) files in the album pane.",
+    ),
+    "LOOKUP": RemoteCommand(
+        "handle_command_lookup",
+        help_text="Lookup all clusters in the cluster pane.",
+    ),
+    "LOOKUP_CD": RemoteCommand(
+        "handle_command_lookup_cd",
+        help_text="Read CD from the selected drive and lookup on MusicBrainz. "
+        "Without argument, it defaults to the first (alphabetically) available disc drive",
+        help_args="[device/log file]",
+    ),
+    "QUIT": RemoteCommand(
+        "handle_command_quit",
+        help_text="Exit the running instance of Picard.",
+    ),
+    # due to the pipe protocol limitations
+    # we currently can handle only one file per `remove` command
+    "REMOVE": RemoteCommand(
+        "handle_command_remove",
+        help_text="Remove the file from Picard. Do nothing if no argument.",
+        help_args="[absolute path (1 file)]",
+    ),
+    "REMOVE_ALL": RemoteCommand(
+        "handle_command_remove_all",
+        help_text="Remove all files from Picard.",
+    ),
+    "REMOVE_SAVED": RemoteCommand(
+        "handle_command_remove_saved",
+        help_text="Remove all saved releases from the album pane.",
+    ),
+    "SAVE_MATCHED": RemoteCommand(
+        "handle_command_save_matched",
+        help_text="Remove all matched releases from the album pane."
+    ),
+    "SAVE_MODIFIED": RemoteCommand(
+        "handle_command_save_modified",
+        help_text="Save all modified files from the album pane.",
+    ),
+    "SCAN": RemoteCommand(
+        "handle_command_scan",
+        help_text="Scan all files in the cluster pane.",
+    ),
+    "SHOW": RemoteCommand(
+        "handle_command_show",
+        help_text="Make the running instance the currently active window.",
+    ),
+    "SUBMIT_FINGERPRINTS": RemoteCommand(
+        "handle_command_submit_fingerprints",
+        help_text="Submit outstanding acoustic fingerprints for all (matched) files in the album pane.",
+    ),
+}
 
 
 class Tagger(QtWidgets.QApplication):
@@ -213,7 +293,7 @@ class Tagger(QtWidgets.QApplication):
     _debug = False
     _no_restore = False
 
-    def __init__(self, picard_args, localedir, autoupdate, pipe_handler=None):
+    def __init__(self, picard_args, localedir, autoupdate, pipe_handler=None, to_load=None):
 
         super().__init__(sys.argv)
         self.__class__.__instance = self
@@ -221,7 +301,8 @@ class Tagger(QtWidgets.QApplication):
         config = get_config()
         theme.setup(self)
 
-        self._cmdline_files = picard_args.FILE_OR_URL
+        self._to_load = to_load
+
         self.autoupdate_enabled = autoupdate
         self._no_restore = picard_args.no_restore
         self._no_plugins = picard_args.no_plugins
@@ -241,6 +322,8 @@ class Tagger(QtWidgets.QApplication):
         if self.pipe_handler:
             self.pipe_handler.pipe_running = True
             self.thread_pool.submit(self.pipe_server)
+
+        self._init_remote_commands()
 
         # Provide a separate thread pool for operations that should not be
         # delayed by longer background processing tasks, e.g. because the user
@@ -347,10 +430,12 @@ class Tagger(QtWidgets.QApplication):
         while self.pipe_handler.pipe_running:
             messages = [x for x in self.pipe_handler.read_from_pipe() if x not in IGNORED]
             if messages:
-                self.load_to_picard(messages)
+                log.debug("pipe messages: %r", messages)
+                thread.to_main(self.load_to_picard, messages)
 
     def load_to_picard(self, items):
         parsed_items = ParseItemsToLoad(items)
+        log.debug(str(parsed_items))
 
         if parsed_items.files:
             self.add_paths(parsed_items.files)
@@ -360,8 +445,104 @@ class Tagger(QtWidgets.QApplication):
             for item in parsed_items.mbids | parsed_items.urls:
                 thread.to_main(file_lookup.mbid_lookup, item, None, None, False)
 
-        if parsed_items:
+        for command in parsed_items.commands:
+            self.handle_command(command)
+
+        if parsed_items.non_executable_items():
             self.bring_tagger_front()
+
+    def iter_album_files(self):
+        for album in self.albums.values():
+            yield from album.iterfiles()
+
+    def iter_all_files(self):
+        yield from self.unclustered_files.files
+        yield from self.iter_album_files()
+        yield from self.clusters.iterfiles()
+
+    def _init_remote_commands(self):
+        self.commands = {name: getattr(self, remcmd.method_name) for name, remcmd in REMOTE_COMMANDS.items()}
+
+    def handle_command(self, command):
+        cmd, *args = command.split(' ', 1)
+        argstring = next(iter(args), "")
+        cmd = cmd.upper()
+        log.debug("Executing command: %r", cmd)
+        try:
+            thread.to_main(self.commands[cmd], argstring.strip())
+        except KeyError:
+            log.error("Unknown command: %r", cmd)
+
+    def handle_command_cluster(self, argstring):
+        self.cluster(self.unclustered_files.files)
+
+    def handle_command_fingerprint(self, argstring):
+        for album_name in self.albums:
+            self.analyze(self.albums[album_name].iterfiles())
+
+    def handle_command_lookup(self, argstring):
+        self.autotag(self.unclustered_files.files)
+
+    def handle_command_lookup_cd(self, argstring):
+        disc = Disc()
+        devices = get_cdrom_drives()
+
+        if not argstring:
+            if devices:
+                device = devices[0]
+            else:
+                device = None
+        elif argstring in devices:
+            device = argstring
+        else:
+            thread.run_task(
+                partial(self._parse_disc_ripping_log, disc, argstring),
+                partial(self._lookup_disc, disc),
+                traceback=self._debug)
+            return
+
+        thread.run_task(
+            partial(disc.read, encode_filename(device)),
+            partial(self._lookup_disc, disc),
+            traceback=self._debug)
+
+    def handle_command_quit(self, argstring):
+        self.exit()
+        self.quit()
+
+    def handle_command_remove(self, argstring):
+        for file in self.iter_all_files():
+            if argstring == file.filename:
+                file.remove()
+                return
+
+    def handle_command_remove_all(self, argstring):
+        for file in self.iter_all_files():
+            file.remove()
+
+    def handle_command_remove_saved(self, argstring):
+        for track in self.iter_album_files():
+            if track.state == File.NORMAL:
+                track.remove()
+
+    def handle_command_save_matched(self, argstring):
+        for album in self.albums.values():
+            for track in album.iter_correctly_matched_tracks():
+                track.files[0].save()
+
+    def handle_command_save_modified(self, argstring):
+        for track in self.iter_album_files():
+            if track.state == File.CHANGED:
+                track.save()
+
+    def handle_command_scan(self, argstring):
+        self.analyze(self.unclustered_files.files)
+
+    def handle_command_show(self, argstring):
+        self.bring_tagger_front()
+
+    def handle_command_submit_fingerprints(self, argstring):
+        self.acoustidmanager.submit()
 
     def enable_menu_icons(self, enabled):
         self.setAttribute(QtCore.Qt.ApplicationAttribute.AA_DontShowIconsInMenus, not enabled)
@@ -468,9 +649,9 @@ class Tagger(QtWidgets.QApplication):
         QtCore.QCoreApplication.processEvents()
 
     def _run_init(self):
-        if self._cmdline_files:
-            self.load_to_picard([decode_filename(f) for f in self._cmdline_files])
-            del self._cmdline_files
+        if self._to_load:
+            self.load_to_picard(self._to_load)
+        del self._to_load
 
     def run(self):
         self.update_browser_integration()
@@ -1073,6 +1254,32 @@ def longversion():
     print(versions.as_string())
 
 
+def print_help_for_commands():
+    maxwidth = 80
+    helpcmd = []
+    for name in sorted(REMOTE_COMMANDS):
+        remcmd = REMOTE_COMMANDS[name]
+        s = "  - %-34s %s" % (name + " " + remcmd.help_args, remcmd.help_text)
+        helpcmd.append(fill(s, width=maxwidth, subsequent_indent=' '*39))
+
+    print("""usage: picard -e [command] [arguments ...]
+    or picard -e [command 1] [arguments ...] -e [command 2] [arguments ...]
+
+List of the commands available to execute in Picard from the command-line:
+""")
+    print("\n".join(helpcmd))
+
+    def fmt(s):
+        print(fill(s, width=maxwidth, initial_indent=' '*2))
+
+    fmt("Commands are case insensitive.")
+    fmt("Picard will try to load all the positional arguments before processing commands.")
+    fmt("If there is no instance to pass the arguments to, Picard will start and process the commands after the"
+        "positional arguments are loaded, as mentioned above. Otherwise they will be handled by the running"
+        "Picard instance")
+    fmt("Arguments are optional, but some commands may require one or more arguments to actually do something.")
+
+
 def process_picard_args():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -1094,6 +1301,10 @@ If a new instance will not be spawned:
                         help="location of the configuration file (starts a stand-alone instance)")
     parser.add_argument("-d", "--debug", action='store_true',
                         help="enable debug-level logging")
+    parser.add_argument("-e", "--exec", nargs="+", action='append',
+                        help="send command (arguments can be entered after space) to a running instance "
+                        "(use `-e help` for a list of the available commands)",
+                        metavar="COMMAND")
     parser.add_argument("-M", "--no-player", action='store_true',
                         help="disable built-in media player")
     parser.add_argument("-N", "--no-restore", action='store_true',
@@ -1149,16 +1360,27 @@ def main(localedir=None, autoupdate=True):
         picard_args.no_plugins,
         picard_args.stand_alone_instance,
     }
-
+    to_be_added = []
     if not should_start:
-        to_be_added = []
         for x in picard_args.FILE_OR_URL:
             if not urlparse(x).netloc:
                 x = os.path.abspath(x)
             to_be_added.append(x)
 
+        if picard_args.exec:
+            for e in picard_args.exec:
+                if "HELP" in [x.upper().strip() for x in e]:
+                    print_help_for_commands()
+                    sys.exit(0)
+                to_be_added.append("command://" + " ".join(e))
+
+        if to_be_added:
+            # note: log level isn't defined yet, it defaults to info, log.debug() would not work here
+            log.info("Sending messages to main instance: %r" % to_be_added)
+
         try:
-            pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR, args=to_be_added)
+            pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR,
+                                     args=to_be_added)
             should_start = pipe_handler.is_pipe_owner
         except pipe.PipeErrorNoPermission as err:
             log.error(err)
@@ -1167,6 +1389,7 @@ def main(localedir=None, autoupdate=True):
 
         # pipe has sent its args to existing one, doesn't need to start
         if not should_start:
+            log.debug("No need for spawning a new instance, exiting...")
             # just a custom exit code to show that picard instance wasn't created
             sys.exit(EXIT_NO_NEW_INSTANCE)
     else:
@@ -1179,7 +1402,7 @@ def main(localedir=None, autoupdate=True):
     except ImportError:
         pass
 
-    tagger = Tagger(picard_args, localedir, autoupdate, pipe_handler=pipe_handler)
+    tagger = Tagger(picard_args, localedir, autoupdate, pipe_handler=pipe_handler, to_load=to_be_added)
 
     # Initialize Qt default translations
     translator = QtCore.QTranslator()
