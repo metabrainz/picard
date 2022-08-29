@@ -649,7 +649,6 @@ class Tagger(QtWidgets.QApplication):
         QtCore.QCoreApplication.processEvents()
 
     def _run_init(self):
-        print(self._to_load)
         if self._to_load:
             self.load_to_picard(self._to_load)
         del self._to_load
