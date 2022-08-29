@@ -451,14 +451,13 @@ class Tagger(QtWidgets.QApplication):
         if parsed_items.non_executable_items():
             self.bring_tagger_front()
 
-    def get_album_pane_tracks(self):
+    def iter_album_files(self):
         for album in self.albums.values():
-            for track in album.iterfiles():
-                yield track
+            yield from album.iterfiles()
 
     def iter_all_files(self):
         yield from self.unclustered_files.files
-        yield from self.get_album_pane_tracks()
+        yield from self.iter_album_files()
         yield from self.clusters.iterfiles()
 
     def _init_remote_commands(self):
@@ -522,7 +521,7 @@ class Tagger(QtWidgets.QApplication):
             file.remove()
 
     def handle_command_remove_saved(self, argstring):
-        for track in self.get_album_pane_tracks():
+        for track in self.iter_album_files():
             if track.state == File.NORMAL:
                 track.remove()
 
@@ -532,7 +531,7 @@ class Tagger(QtWidgets.QApplication):
                 track.files[0].save()
 
     def handle_command_save_modified(self, argstring):
-        for track in self.get_album_pane_tracks():
+        for track in self.iter_album_files():
             if track.state == File.CHANGED:
                 track.save()
 
