@@ -1287,7 +1287,7 @@ class PicardArgs:
             self.load_from_argparse(argparse_args)
 
     def load_from_argparse(self, argparse_args):
-        self.CONFIG_FILE = argparse_args.config
+        self.CONFIG_FILE = argparse_args.config_file
         self.DEBUG = argparse_args.debug
         self._EXEC = argparse_args.exec
         self.NO_PLAYER = argparse_args.no_player
