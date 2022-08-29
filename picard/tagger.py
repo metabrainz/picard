@@ -293,23 +293,23 @@ class Tagger(QtWidgets.QApplication):
     _debug = False
     _no_restore = False
 
-    def __init__(self, picard_args, localedir, autoupdate, pipe_handler=None, to_load=None):
+    def __init__(self, picard_args, localedir, autoupdate, pipe_handler=None):
 
         super().__init__(sys.argv)
         self.__class__.__instance = self
-        setup_config(self, picard_args.config_file)
+        setup_config(self, picard_args.CONFIG_FILE)
         config = get_config()
         theme.setup(self)
 
-        self._to_load = to_load
+        self._to_load = picard_args.PROCESSABLE
 
         self.autoupdate_enabled = autoupdate
-        self._no_restore = picard_args.no_restore
-        self._no_plugins = picard_args.no_plugins
+        self._no_restore = picard_args.NO_RESTORE
+        self._no_plugins = picard_args.NO_PLUGINS
 
         self.set_log_level(config.setting['log_verbosity'])
 
-        if picard_args.debug or "PICARD_DEBUG" in os.environ:
+        if picard_args.DEBUG or "PICARD_DEBUG" in os.environ:
             self.set_log_level(logging.DEBUG)
 
         # Default thread pool
@@ -411,7 +411,7 @@ class Tagger(QtWidgets.QApplication):
         self.mbid_redirects = {}
         self.unclustered_files = UnclusteredFiles()
         self.nats = None
-        self.window = MainWindow(disable_player=picard_args.no_player)
+        self.window = MainWindow(disable_player=picard_args.NO_PLAYER)
         self.exit_cleanup = []
         self.stopping = False
 
@@ -1280,6 +1280,48 @@ List of the commands available to execute in Picard from the command-line:
     fmt("Arguments are optional, but some commands may require one or more arguments to actually do something.")
 
 
+class PicardArgs:
+
+    def __init__(self, argparse_args=None):
+        if argparse_args is not None:
+            self.load_from_argparse(argparse_args)
+
+    def load_from_argparse(self, argparse_args):
+        self.CONFIG_FILE = argparse_args.config
+        self.DEBUG = argparse_args.debug
+        self._EXEC = argparse_args.exec
+        self.NO_PLAYER = argparse_args.no_player
+        self.NO_RESTORE = argparse_args.no_restore
+        self.NO_PLUGINS = argparse_args.no_plugins
+        self.NO_CRASH_DIALOG = argparse_args.no_crash_dialog
+        self.STAND_ALONE_INSTANCE = argparse_args.stand_alone_instance
+        self.VERSION = argparse_args.version
+        self.LONG_VERSION = argparse_args.long_version
+        self._FILE_OR_URL = argparse_args.FILE_OR_URL
+
+    def __parse_loadable_items(self):
+        self.PROCESSABLE = []
+
+        for x in self._FILE_OR_URL:
+            if not urlparse(x).netloc:
+                x = os.path.abspath(x)
+            self.PROCESSABLE.append(x)
+
+        if self._EXEC:
+            for e in self._EXEC:
+                if "HELP" in [x.upper().strip() for x in e]:
+                    print_help_for_commands()
+                    sys.exit(0)
+                self.PROCESSABLE.append("command://" + " ".join(e))
+
+        del self._EXEC
+        del self._FILE_OR_URL
+
+    def delete_version_args(self):
+        del self.VERSION
+        del self.LONG_VERSION
+
+
 def process_picard_args():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -1348,39 +1390,27 @@ def main(localedir=None, autoupdate=True):
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-    picard_args = process_picard_args()
-    if picard_args.version:
+    picard_args = PicardArgs(process_picard_args())
+
+    if picard_args.VERSION:
         return version()
-    if picard_args.long_version:
+    if picard_args.LONG_VERSION:
         return longversion()
+    picard_args.delete_version_args()
 
     # any of the flags that change Picard's workflow significantly should trigger creation of a new instance
     should_start = True in {
-        picard_args.config_file is not None,
-        picard_args.no_plugins,
-        picard_args.stand_alone_instance,
+        picard_args.CONFIG_FILE is not None,
+        picard_args.NO_PLUGINS,
+        picard_args.STAND_ALONE_INSTANCE,
     }
-    to_be_added = []
     if not should_start:
-        for x in picard_args.FILE_OR_URL:
-            if not urlparse(x).netloc:
-                x = os.path.abspath(x)
-            to_be_added.append(x)
-
-        if picard_args.exec:
-            for e in picard_args.exec:
-                if "HELP" in [x.upper().strip() for x in e]:
-                    print_help_for_commands()
-                    sys.exit(0)
-                to_be_added.append("command://" + " ".join(e))
-
-        if to_be_added:
-            # note: log level isn't defined yet, it defaults to info, log.debug() would not work here
-            log.info("Sending messages to main instance: %r" % to_be_added)
+        if picard_args.PROCESSABLE:
+            log.info("Sending messages to main instance: %r" % picard_args.PROCESSABLE)
 
         try:
             pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR,
-                                     args=to_be_added)
+                                     args=picard_args.PROCESSABLE)
             should_start = pipe_handler.is_pipe_owner
         except pipe.PipeErrorNoPermission as err:
             log.error(err)
@@ -1402,7 +1432,7 @@ def main(localedir=None, autoupdate=True):
     except ImportError:
         pass
 
-    tagger = Tagger(picard_args, localedir, autoupdate, pipe_handler=pipe_handler, to_load=to_be_added)
+    tagger = Tagger(picard_args, localedir, autoupdate, pipe_handler=pipe_handler)
 
     # Initialize Qt default translations
     translator = QtCore.QTranslator()
