@@ -297,19 +297,19 @@ class Tagger(QtWidgets.QApplication):
 
         super().__init__(sys.argv)
         self.__class__.__instance = self
-        setup_config(self, picard_args.CONFIG_FILE)
+        setup_config(self, picard_args.config_file)
         config = get_config()
         theme.setup(self)
 
-        self._to_load = picard_args.PROCESSABLE
+        self._to_load = picard_args.processable
 
         self.autoupdate_enabled = autoupdate
-        self._no_restore = picard_args.NO_RESTORE
-        self._no_plugins = picard_args.NO_PLUGINS
+        self._no_restore = picard_args.no_restore
+        self._no_plugins = picard_args.no_plugins
 
         self.set_log_level(config.setting['log_verbosity'])
 
-        if picard_args.DEBUG or "PICARD_DEBUG" in os.environ:
+        if picard_args.debug or "PICARD_DEBUG" in os.environ:
             self.set_log_level(logging.DEBUG)
 
         # Default thread pool
@@ -411,7 +411,7 @@ class Tagger(QtWidgets.QApplication):
         self.mbid_redirects = {}
         self.unclustered_files = UnclusteredFiles()
         self.nats = None
-        self.window = MainWindow(disable_player=picard_args.NO_PLAYER)
+        self.window = MainWindow(disable_player=picard_args.no_player)
         self.exit_cleanup = []
         self.stopping = False
 
@@ -1253,47 +1253,47 @@ class PicardArgs:
             self.load_from_argparse(argparse_args)
 
     def load_from_argparse(self, argparse_args):
-        self.CONFIG_FILE = argparse_args.config_file
-        self.DEBUG = argparse_args.debug
-        self._EXEC = argparse_args.exec
-        self.NO_PLAYER = argparse_args.no_player
-        self.NO_RESTORE = argparse_args.no_restore
-        self.NO_PLUGINS = argparse_args.no_plugins
-        self.NO_CRASH_DIALOG = argparse_args.no_crash_dialog
-        self.STAND_ALONE_INSTANCE = argparse_args.stand_alone_instance
-        self.VERSION = argparse_args.version
-        self.LONG_VERSION = argparse_args.long_version
-        self._FILE_OR_URL = argparse_args.FILE_OR_URL
-        self.PROCESSABLE = []
+        self.config_file = argparse_args.config_file
+        self.debug = argparse_args.debug
+        self._exec = argparse_args.exec
+        self.no_player = argparse_args.no_player
+        self.no_restore = argparse_args.no_restore
+        self.no_plugins = argparse_args.no_plugins
+        self.no_crash_dialog = argparse_args.no_crash_dialog
+        self.stand_alone_instance = argparse_args.stand_alone_instance
+        self.version = argparse_args.version
+        self.long_version = argparse_args.long_version
+        self._file_or_url = argparse_args.FILE_OR_URL
+        self.processable = []
 
         self.__parse_loadable_items()
 
     def __parse_loadable_items(self):
-        for x in self._FILE_OR_URL:
+        for x in self._file_or_url:
             if not urlparse(x).netloc:
                 x = os.path.abspath(x)
-            self.PROCESSABLE.append(x)
+            self.processable.append(x)
 
-        if self._EXEC:
-            for e in self._EXEC:
+        if self._exec:
+            for e in self._exec:
                 if "HELP" in [x.upper().strip() for x in e]:
                     print_help_for_commands()
                     sys.exit(0)
                 args = e[1:] if len(e) > 1 else []
                 for arg in args:
-                    self.PROCESSABLE.append(f"command://{e[0]} {arg}")
+                    self.processable.append(f"command://{e[0]} {arg}")
 
-        del self._EXEC
-        del self._FILE_OR_URL
+        del self._exec
+        del self._file_or_url
 
     def __delete_version_args(self):
-        del self.VERSION
-        del self.LONG_VERSION
+        del self.version
+        del self.long_version
 
     def get_version(self):
-        if self.VERSION:
+        if self.version:
             return f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}"
-        elif self.LONG_VERSION:
+        elif self.long_version:
             return versions.as_string()
         else:
             self.__delete_version_args()
@@ -1403,17 +1403,17 @@ def main(localedir=None, autoupdate=True):
 
     # any of the flags that change Picard's workflow significantly should trigger creation of a new instance
     should_start = True in {
-        picard_args.CONFIG_FILE is not None,
-        picard_args.NO_PLUGINS,
-        picard_args.STAND_ALONE_INSTANCE,
+        picard_args.config_file is not None,
+        picard_args.no_plugins,
+        picard_args.stand_alone_instance,
     }
     if not should_start:
-        if picard_args.PROCESSABLE:
-            log.info("Sending messages to main instance: %r", picard_args.PROCESSABLE)
+        if picard_args.processable:
+            log.info("Sending messages to main instance: %r", picard_args.processable)
 
         try:
             pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR,
-                                     args=picard_args.PROCESSABLE)
+                                     args=picard_args.processable)
             should_start = pipe_handler.is_pipe_owner
         except pipe.PipeErrorNoPermission as err:
             log.error(err)
