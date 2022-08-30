@@ -4046,7 +4046,7 @@ msgstr ""
 
 #: picard/ui/itemviews.py:626
 msgid "Collections"
-msgstr ""
+msgstr "Gyüjtemény"
 
 #: picard/ui/itemviews.py:634
 msgid "P&lugins"
@@ -7113,7 +7113,7 @@ msgstr ""
 
 #: picard/util/tags.py:103
 msgid "Rating"
-msgstr ""
+msgstr "Értékelés"
 
 #: picard/util/tags.py:104
 msgid "Release Country"
