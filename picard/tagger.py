@@ -1248,11 +1248,10 @@ class Tagger(QtWidgets.QApplication):
 
 class PicardArgs:
 
-    def __init__(self, argparse_args=None):
-        if argparse_args is not None:
-            self.load_from_argparse(argparse_args)
+    def __init__(self, argparse_args):
+        self.__load_from_argparse(argparse_args)
 
-    def load_from_argparse(self, argparse_args):
+    def __load_from_argparse(self, argparse_args):
         self.config_file = argparse_args.config_file
         self.debug = argparse_args.debug
         self._exec = argparse_args.exec
