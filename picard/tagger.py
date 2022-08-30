@@ -1320,8 +1320,8 @@ List of the commands available to execute in Picard from the command-line:
 
     fmt("Commands are case insensitive.")
     fmt("Picard will try to load all the positional arguments before processing commands.")
-    fmt("If there is no instance to pass the arguments to, Picard will start and process the commands after the"
-        "positional arguments are loaded, as mentioned above. Otherwise they will be handled by the running"
+    fmt("If there is no instance to pass the arguments to, Picard will start and process the commands after the "
+        "positional arguments are loaded, as mentioned above. Otherwise they will be handled by the running "
         "Picard instance")
     fmt("Arguments are optional, but some commands may require one or more arguments to actually do something.")
 
