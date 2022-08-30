@@ -246,7 +246,7 @@ REMOTE_COMMANDS = {
     "REMOVE": RemoteCommand(
         "handle_command_remove",
         help_text="Remove the file from Picard. Do nothing if no argument.",
-        help_args="[absolute path (1 file)]",
+        help_args="[absolute path to 1 or more files]",
     ),
     "REMOVE_ALL": RemoteCommand(
         "handle_command_remove_all",
@@ -1246,6 +1246,51 @@ class Tagger(QtWidgets.QApplication):
         self.signalnotifier.setEnabled(True)
 
 
+class PicardArgs:
+
+    def __init__(self, argparse_args=None):
+        if argparse_args is not None:
+            self.load_from_argparse(argparse_args)
+
+    def load_from_argparse(self, argparse_args):
+        self.CONFIG_FILE = argparse_args.config_file
+        self.DEBUG = argparse_args.debug
+        self._EXEC = argparse_args.exec
+        self.NO_PLAYER = argparse_args.no_player
+        self.NO_RESTORE = argparse_args.no_restore
+        self.NO_PLUGINS = argparse_args.no_plugins
+        self.NO_CRASH_DIALOG = argparse_args.no_crash_dialog
+        self.STAND_ALONE_INSTANCE = argparse_args.stand_alone_instance
+        self.VERSION = argparse_args.version
+        self.LONG_VERSION = argparse_args.long_version
+        self._FILE_OR_URL = argparse_args.FILE_OR_URL
+        self.PROCESSABLE = []
+
+        self.__parse_loadable_items()
+
+    def __parse_loadable_items(self):
+        for x in self._FILE_OR_URL:
+            if not urlparse(x).netloc:
+                x = os.path.abspath(x)
+            self.PROCESSABLE.append(x)
+
+        if self._EXEC:
+            for e in self._EXEC:
+                if "HELP" in [x.upper().strip() for x in e]:
+                    print_help_for_commands()
+                    sys.exit(0)
+                args = e[1:] if len(e) > 1 else []
+                for arg in args:
+                    self.PROCESSABLE.append(f"command://{e[0]} {arg}")
+
+        del self._EXEC
+        del self._FILE_OR_URL
+
+    def delete_version_args(self):
+        del self.VERSION
+        del self.LONG_VERSION
+
+
 def version():
     print("%s %s %s" % (PICARD_ORG_NAME, PICARD_APP_NAME, PICARD_FANCY_VERSION_STR))
 
@@ -1278,48 +1323,6 @@ List of the commands available to execute in Picard from the command-line:
         "positional arguments are loaded, as mentioned above. Otherwise they will be handled by the running"
         "Picard instance")
     fmt("Arguments are optional, but some commands may require one or more arguments to actually do something.")
-
-
-class PicardArgs:
-
-    def __init__(self, argparse_args=None):
-        if argparse_args is not None:
-            self.load_from_argparse(argparse_args)
-
-    def load_from_argparse(self, argparse_args):
-        self.CONFIG_FILE = argparse_args.config_file
-        self.DEBUG = argparse_args.debug
-        self._EXEC = argparse_args.exec
-        self.NO_PLAYER = argparse_args.no_player
-        self.NO_RESTORE = argparse_args.no_restore
-        self.NO_PLUGINS = argparse_args.no_plugins
-        self.NO_CRASH_DIALOG = argparse_args.no_crash_dialog
-        self.STAND_ALONE_INSTANCE = argparse_args.stand_alone_instance
-        self.VERSION = argparse_args.version
-        self.LONG_VERSION = argparse_args.long_version
-        self._FILE_OR_URL = argparse_args.FILE_OR_URL
-
-    def __parse_loadable_items(self):
-        self.PROCESSABLE = []
-
-        for x in self._FILE_OR_URL:
-            if not urlparse(x).netloc:
-                x = os.path.abspath(x)
-            self.PROCESSABLE.append(x)
-
-        if self._EXEC:
-            for e in self._EXEC:
-                if "HELP" in [x.upper().strip() for x in e]:
-                    print_help_for_commands()
-                    sys.exit(0)
-                self.PROCESSABLE.append("command://" + " ".join(e))
-
-        del self._EXEC
-        del self._FILE_OR_URL
-
-    def delete_version_args(self):
-        del self.VERSION
-        del self.LONG_VERSION
 
 
 def process_picard_args():
