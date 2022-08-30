@@ -528,13 +528,27 @@ class Album(DataObject, Item):
             self.tagger.window.refresh_metadatabox()
 
     def _finalize_loading(self, error):
+        if self.loaded:
+            # This is not supposed to happen, _finalize_loading should only
+            # be called once after all requests finished.
+            import inspect
+            stack = inspect.stack()
+            args = [self]
+            msg = 'Album._finalize_loading called for already loaded album % r'
+            if len(stack) > 1:
+                f = stack[1]
+                msg += ' at %s:%d in %s'
+                args.extend((f.filename, f.lineno, f.function))
+            log.warning(msg, *args)
+            return
+
         if error:
             self.metadata.clear()
             self.status = AlbumStatus.ERROR
-            del self._new_metadata
-            del self._new_tracks
             self.update()
             if not self._requests:
+                del self._new_metadata
+                del self._new_tracks
                 self.loaded = True
                 for func, always in self._after_load_callbacks:
                     if always:
