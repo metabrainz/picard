@@ -1425,6 +1425,9 @@ def main(localedir=None, autoupdate=True):
             log.debug("No need for spawning a new instance, exiting...")
             # just a custom exit code to show that picard instance wasn't created
             sys.exit(EXIT_NO_NEW_INSTANCE)
+
+        del should_start
+
     else:
         pipe_handler = None
 
@@ -1436,6 +1439,9 @@ def main(localedir=None, autoupdate=True):
         pass
 
     tagger = Tagger(picard_args, localedir, autoupdate, pipe_handler=pipe_handler)
+
+    del pipe_handler
+    del picard_args
 
     # Initialize Qt default translations
     translator = QtCore.QTranslator()
