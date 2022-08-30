@@ -1286,17 +1286,18 @@ class PicardArgs:
         del self._EXEC
         del self._FILE_OR_URL
 
-    def delete_version_args(self):
+    def __delete_version_args(self):
         del self.VERSION
         del self.LONG_VERSION
 
-
-def version():
-    print("%s %s %s" % (PICARD_ORG_NAME, PICARD_APP_NAME, PICARD_FANCY_VERSION_STR))
-
-
-def longversion():
-    print(versions.as_string())
+    def get_version(self):
+        if self.VERSION:
+            return f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}"
+        elif self.LONG_VERSION:
+            return versions.as_string()
+        else:
+            self.__delete_version_args()
+            return ""
 
 
 def print_help_for_commands():
@@ -1395,11 +1396,10 @@ def main(localedir=None, autoupdate=True):
 
     picard_args = PicardArgs(process_picard_args())
 
-    if picard_args.VERSION:
-        return version()
-    if picard_args.LONG_VERSION:
-        return longversion()
-    picard_args.delete_version_args()
+    version = picard_args.get_version()
+    if version:
+        return version
+    del version
 
     # any of the flags that change Picard's workflow significantly should trigger creation of a new instance
     should_start = True in {
