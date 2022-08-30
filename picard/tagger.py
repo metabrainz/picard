@@ -1266,7 +1266,7 @@ class PicardArgs:
         self.version = ""
         self.processable = []
 
-        self.__get_version(short=argparse_args.version, long=argparse_args.long_version)
+        self.version = self.__get_version(short=argparse_args.version, long=argparse_args.long_version)
         self.__parse_loadable_items()
 
     def __parse_loadable_items(self):
@@ -1391,7 +1391,7 @@ def main(localedir=None, autoupdate=True):
     picard_args = PicardArgs(process_picard_args())
 
     if picard_args.version:
-        return picard_args.version
+        return print(picard_args.version)
 
     # any of the flags that change Picard's workflow significantly should trigger creation of a new instance
     should_start = True in {
