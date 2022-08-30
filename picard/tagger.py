@@ -362,7 +362,7 @@ class Tagger(QtWidgets.QApplication):
         log.debug("Starting Picard from %r", os.path.abspath(__file__))
         log.debug("Platform: %s %s %s", platform.platform(),
                   platform.python_implementation(), platform.python_version())
-        log.debug("Versions: %s", versions.as_string())
+        log.debug("Versions: %s", picard_args.long_version)
         log.debug("Configuration file path: %r", config.fileName())
 
         log.debug("User directory: %r", os.path.abspath(USER_DIR))
@@ -1260,11 +1260,13 @@ class PicardArgs:
         self.no_plugins = argparse_args.no_plugins
         self.no_crash_dialog = argparse_args.no_crash_dialog
         self.stand_alone_instance = argparse_args.stand_alone_instance
-        self.version = argparse_args.version
-        self.long_version = argparse_args.long_version
         self._file_or_url = argparse_args.FILE_OR_URL
+        self.long_version = versions.as_string()
+
+        self.version = ""
         self.processable = []
 
+        self.__get_version(short=argparse_args.version, long=argparse_args.long_version)
         self.__parse_loadable_items()
 
     def __parse_loadable_items(self):
@@ -1285,18 +1287,11 @@ class PicardArgs:
         del self._exec
         del self._file_or_url
 
-    def __delete_version_args(self):
-        del self.version
-        del self.long_version
-
-    def get_version(self):
-        if self.version:
+    def __get_version(self, short, long):
+        if short:
             return f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}"
-        elif self.long_version:
-            return versions.as_string()
-        else:
-            self.__delete_version_args()
-            return ""
+        elif long:
+            return self.long_version
 
 
 def print_help_for_commands():
@@ -1395,10 +1390,8 @@ def main(localedir=None, autoupdate=True):
 
     picard_args = PicardArgs(process_picard_args())
 
-    version = picard_args.get_version()
-    if version:
-        return version
-    del version
+    if picard_args.version:
+        return picard_args.version
 
     # any of the flags that change Picard's workflow significantly should trigger creation of a new instance
     should_start = True in {
