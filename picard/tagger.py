@@ -208,7 +208,7 @@ class ParseItemsToLoad:
         return bool(self.commands or self.files or self.mbids or self.urls)
 
     def __str__(self):
-        return "files: %r mbids: %r urls: %r commands: %r" % (self.files, self.mbids, self.urls, self.commands)
+        return f"files: {self.files}  mbids: f{self.mbids}  urls: {self.urls}  commands: {self.commands}"
 
 
 class RemoteCommand:
@@ -801,14 +801,14 @@ class Tagger(QtWidgets.QApplication):
         for filename in filenames:
             filename = normpath(filename)
             if ignore_hidden and is_hidden(filename):
-                log.debug("File ignored (hidden): %r" % (filename))
+                log.debug("File ignored (hidden): %r", filename)
                 continue
             # Ignore .smbdelete* files which Applie iOS SMB creates by renaming a file when it cannot delete it
             if os.path.basename(filename).startswith(".smbdelete"):
                 log.debug("File ignored (.smbdelete): %r", filename)
                 continue
             if ignoreregex is not None and ignoreregex.search(filename):
-                log.info("File ignored (matching %r): %r" % (pattern, filename))
+                log.info("File ignored (matching %r): %r", pattern, filename)
                 continue
             if filename not in self.files:
                 file = open_file(filename)
@@ -1062,7 +1062,7 @@ class Tagger(QtWidgets.QApplication):
         self.restore_cursor()
         if error is not None:
             QtWidgets.QMessageBox.critical(self.window, _("CD Lookup Error"),
-                                           _("Error while reading CD:\n\n%s") % error)
+                                           _("Error while reading CD:\n\n%s"), error)
         else:
             disc.lookup()
 
@@ -1409,7 +1409,7 @@ def main(localedir=None, autoupdate=True):
     }
     if not should_start:
         if picard_args.PROCESSABLE:
-            log.info("Sending messages to main instance: %r" % picard_args.PROCESSABLE)
+            log.info("Sending messages to main instance: %r", picard_args.PROCESSABLE)
 
         try:
             pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR,
