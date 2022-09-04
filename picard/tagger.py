@@ -319,8 +319,6 @@ class Tagger(QtWidgets.QApplication):
 
         self.pipe_handler = pipe_handler
 
-        # if the instance is forced, we get None instead of an actual handler
-        # even though there's always something provided as pipe_handler, I created a default argument to make it more obvious
         if self.pipe_handler:
             self.pipe_handler.pipe_running = True
             self.thread_pool.submit(self.pipe_server)
