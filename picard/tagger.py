@@ -210,7 +210,7 @@ class ParseItemsToLoad:
         return bool(self.commands or self.files or self.mbids or self.urls)
 
     def __str__(self):
-        return f"files: {self.files}  mbids: f{self.mbids}  urls: {self.urls}  commands: {self.commands}"
+        return f"files: {repr(self.files)}  mbids: f{repr(self.mbids)}  urls: {repr(self.urls)}  commands: {repr(self.commands)}"
 
 
 class RemoteCommand:
