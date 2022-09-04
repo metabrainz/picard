@@ -531,6 +531,9 @@ class Tagger(QtWidgets.QApplication):
         for album in [a for a in self.albums if a.iterfiles()]:
             self.remove_album(album)
 
+        for cluster in [c for c in self.clusters if c.iterfiles()]:
+            self.remove_cluster(cluster)
+
     def handle_command_remove_saved(self, argstring):
         for track in self.iter_album_files():
             if track.state == File.NORMAL:
