@@ -4,6 +4,7 @@
 #
 # Copyright (C) 2022 skelly37
 # Copyright (C) 2022 Philipp Wolfer
+# Copyright (C) 2022 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -115,11 +116,12 @@ class AbstractPipe(metaclass=ABCMeta):
         """
         raise NotImplementedError
 
-    def __init__(self, app_name: str, app_version: str, args: Optional[Iterable[str]] = None,
+    def __init__(self, app_name: str, app_version: str, identifier: Optional[str] = None, args: Optional[Iterable[str]] = None,
                  forced_path: Optional[str] = None):
         """
         :param app_name: (str) Name of the app, included in the pipe name
         :param app_version: (str) Version of the app, included in the pipe name
+        :param identifier: (Optional[str]) config file / standalone identifier, included in pipe name
         :param args: (Optional[Iterable[str]]) Will be passed to an existing instance of app if possible
         :param forced_path: (Optional[str]) Testing-purposes only, bypass of no $HOME on testing machines
         """
@@ -136,6 +138,8 @@ class AbstractPipe(metaclass=ABCMeta):
 
         if not isinstance(app_name, str) or not isinstance(app_version, str):
             raise PipeErrorInvalidAppData
+
+        self._identifier = identifier.replace(' ', '_') if identifier else 'main'
 
         if forced_path:
             self._paths = (forced_path,)
@@ -190,7 +194,7 @@ class AbstractPipe(metaclass=ABCMeta):
         for directory in self.PIPE_DIRS:
             if directory:
                 _pipe_names.append(os.path.join(os.path.expanduser(directory),
-                                                f"{app_name}_v{app_version}_pipe_file"))
+                                                f"{app_name}_v{app_version}_{self._identifier}_pipe_file"))
 
         if _pipe_names:
             return _pipe_names
@@ -279,7 +283,7 @@ class UnixPipe(AbstractPipe):
         "~/.config/MusicBrainz/Picard/pipes/",
     )   # type: ignore
 
-    def __init__(self, app_name: str, app_version: str, args: Optional[Iterable[str]] = None,
+    def __init__(self, app_name: str, app_version: str, identifier: Optional[str] = None,  args: Optional[Iterable[str]] = None,
                  forced_path: Optional[str] = None):
         super().__init__(app_name, app_version, args, forced_path)
 
@@ -371,7 +375,7 @@ class WinPipe(AbstractPipe):
 
     PIPE_DIRS: Tuple[str] = ("\\\\.\\pipe\\",)
 
-    def __init__(self, app_name: str, app_version: str, args: Optional[Iterable[str]] = None,
+    def __init__(self, app_name: str, app_version: str, identifier: Optional[str] = None,  args: Optional[Iterable[str]] = None,
                  forced_path: Optional[str] = None):
         # type checking is already enforced in the AbstractPipe
         try:
