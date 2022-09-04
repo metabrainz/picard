@@ -194,7 +194,7 @@ class AbstractPipe(metaclass=ABCMeta):
         for directory in self.PIPE_DIRS:
             if directory:
                 _pipe_names.append(os.path.join(os.path.expanduser(directory),
-                                                f"{app_name}_v{app_version}_{self._identifier}_pipe_file"))
+                                                sanitize_filename(f"{app_name}_v{app_version}_{self._identifier}_pipe_file")))
 
         if _pipe_names:
             return _pipe_names
