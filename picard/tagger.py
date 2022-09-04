@@ -22,7 +22,7 @@
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017-2018 Vishal Choudhary
-# Copyright (C) 2018 Bob Swift
+# Copyright (C) 2018, 2022 Bob Swift
 # Copyright (C) 2018 virusMac
 # Copyright (C) 2019 Joel Lintunen
 # Copyright (C) 2020 Julius Michaelis
@@ -47,6 +47,7 @@
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 from functools import partial
+from hashlib import md5
 import itertools
 import logging
 import os
@@ -57,6 +58,7 @@ import signal
 import sys
 from textwrap import fill
 from urllib.parse import urlparse
+from uuid import uuid4
 
 from PyQt5 import (
     QtCore,
@@ -1269,6 +1271,12 @@ class PicardArgs:
         self.version = self.__get_version(short=argparse_args.version, long=argparse_args.long_version)
         self.__parse_loadable_items()
 
+    # Add string output for debugging purposes
+    def __str__(self):
+        attributes = ('config_file', 'debug', 'no_player', 'no_restore', 'no_plugins',
+            'no_crash_dialog', 'stand_alone_instance', 'version', 'processable')
+        return str({a: getattr(self, a, None) for a in attributes})
+
     def __parse_loadable_items(self):
         for x in self._file_or_url:
             if not urlparse(x).netloc:
@@ -1394,32 +1402,29 @@ def main(localedir=None, autoupdate=True):
         return print(picard_args.version)
 
     # any of the flags that change Picard's workflow significantly should trigger creation of a new instance
-    should_start = True in {
-        picard_args.config_file is not None,
-        picard_args.no_plugins,
-        picard_args.stand_alone_instance,
-    }
-    if not should_start:
-        if picard_args.processable:
-            log.info("Sending messages to main instance: %r", picard_args.processable)
-
-        try:
-            pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR,
-                                     args=picard_args.processable)
-            should_start = pipe_handler.is_pipe_owner
-        except pipe.PipeErrorNoPermission as err:
-            log.error(err)
-            pipe_handler = None
-            should_start = True
-
-        # pipe has sent its args to existing one, doesn't need to start
-        if not should_start:
-            log.debug("No need for spawning a new instance, exiting...")
-            # just a custom exit code to show that picard instance wasn't created
-            sys.exit(EXIT_NO_NEW_INSTANCE)
-
+    if picard_args.stand_alone_instance:
+        identifier = uuid4().hex
     else:
+        identifier = md5(picard_args.config_file.encode('utf8')).hexdigest() if picard_args.config_file else 'main'
+        identifier += '_NP' if picard_args.no_plugins else ''
+
+    if picard_args.processable:
+        log.info("Sending messages to main instance: %r", picard_args.processable)
+
+    try:
+        pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR,
+                                    identifier=identifier, args=picard_args.processable)
+        should_start = pipe_handler.is_pipe_owner
+    except pipe.PipeErrorNoPermission as err:
+        log.error(err)
         pipe_handler = None
+        should_start = True
+
+    # pipe has sent its args to existing one, doesn't need to start
+    if not should_start:
+        log.debug("No need for spawning a new instance, exiting...")
+        # just a custom exit code to show that picard instance wasn't created
+        sys.exit(EXIT_NO_NEW_INSTANCE)
 
     try:
         from PyQt5.QtDBus import QDBusConnection
