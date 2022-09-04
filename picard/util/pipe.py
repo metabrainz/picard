@@ -139,7 +139,7 @@ class AbstractPipe(metaclass=ABCMeta):
         if not isinstance(app_name, str) or not isinstance(app_version, str):
             raise PipeErrorInvalidAppData
 
-        self._identifier = identifier.replace(' ', '_') if identifier else 'main'
+        self._identifier = identifier or "main"
 
         if forced_path:
             self._paths = (forced_path,)
