@@ -1276,9 +1276,7 @@ def process_picard_args():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""If one of the filenames begins with a hyphen, use -- to separate the options from the filenames.
-If a new instance will not be spawned:
-  - files/directories will be passed to the existing instance,
-  - the other arguments will be ignored."""
+If a new instance will not be spawned files/directories will be passed to the existing instance"""
     )
     # Qt default arguments. Parse them so Picard does not interpret the
     # arguments as file names to load.
@@ -1290,7 +1288,7 @@ If a new instance will not be spawned:
     # Picard specific arguments
     parser.add_argument("-c", "--config-file", action='store',
                         default=None,
-                        help="location of the configuration file (starts a stand-alone instance)")
+                        help="location of the configuration file")
     parser.add_argument("-d", "--debug", action='store_true',
                         help="enable debug-level logging")
     parser.add_argument("-e", "--exec", nargs="+", action='append',
@@ -1302,7 +1300,7 @@ If a new instance will not be spawned:
     parser.add_argument("-N", "--no-restore", action='store_true',
                         help="do not restore positions and/or sizes")
     parser.add_argument("-P", "--no-plugins", action='store_true',
-                        help="do not load any plugins (starts a stand-alone instance)")
+                        help="do not load any plugins")
     parser.add_argument("--no-crash-dialog", action='store_true',
                         help="disable the crash dialog")
     parser.add_argument("-s", "--stand-alone-instance", action='store_true',
