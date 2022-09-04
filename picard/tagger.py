@@ -364,7 +364,7 @@ class Tagger(QtWidgets.QApplication):
         log.debug("Starting Picard from %r", os.path.abspath(__file__))
         log.debug("Platform: %s %s %s", platform.platform(),
                   platform.python_implementation(), platform.python_version())
-        log.debug("Versions: %s", picard_args.long_version)
+        log.debug("Versions: %s", versions.as_string())
         log.debug("Configuration file path: %r", config.fileName())
 
         log.debug("User directory: %r", os.path.abspath(USER_DIR))
@@ -1248,60 +1248,6 @@ class Tagger(QtWidgets.QApplication):
         self.signalnotifier.setEnabled(True)
 
 
-class PicardArgs:
-
-    def __init__(self, argparse_args):
-        self.__load_from_argparse(argparse_args)
-
-    def __load_from_argparse(self, argparse_args):
-        self.config_file = argparse_args.config_file
-        self.debug = argparse_args.debug
-        self._exec = argparse_args.exec
-        self.no_player = argparse_args.no_player
-        self.no_restore = argparse_args.no_restore
-        self.no_plugins = argparse_args.no_plugins
-        self.no_crash_dialog = argparse_args.no_crash_dialog
-        self.stand_alone_instance = argparse_args.stand_alone_instance
-        self._file_or_url = argparse_args.FILE_OR_URL
-        self.long_version = versions.as_string()
-
-        self.version = ""
-        self.processable = []
-
-        self.version = self.__get_version(short=argparse_args.version, long=argparse_args.long_version)
-        self.__parse_loadable_items()
-
-    # Add string output for debugging purposes
-    def __str__(self):
-        attributes = ('config_file', 'debug', 'no_player', 'no_restore', 'no_plugins',
-            'no_crash_dialog', 'stand_alone_instance', 'version', 'processable')
-        return str({a: getattr(self, a, None) for a in attributes})
-
-    def __parse_loadable_items(self):
-        for x in self._file_or_url:
-            if not urlparse(x).netloc:
-                x = os.path.abspath(x)
-            self.processable.append(x)
-
-        if self._exec:
-            for e in self._exec:
-                if "HELP" in [x.upper().strip() for x in e]:
-                    print_help_for_commands()
-                    sys.exit(0)
-                args = e[1:] or ['']
-                for arg in args:
-                    self.processable.append(f"command://{e[0]} {arg}")
-
-        del self._exec
-        del self._file_or_url
-
-    def __get_version(self, short, long):
-        if short:
-            return f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}"
-        elif long:
-            return self.long_version
-
-
 def print_help_for_commands():
     maxwidth = 80
     helpcmd = []
@@ -1370,7 +1316,23 @@ If a new instance will not be spawned:
     parser.add_argument('FILE_OR_URL', nargs='*',
                         help="the file(s), URL(s) and MBID(s) to load")
 
-    return parser.parse_known_args()[0]
+    args = parser.parse_args()
+    args.remote_commands_help = False
+
+    args.processable = []
+    for x in args.FILE_OR_URL:
+        if not urlparse(x).netloc:
+            x = os.path.abspath(x)
+        args.processable.append(x)
+
+    if args.exec:
+        for e in args.exec:
+            args.remote_commands_help = args.remote_commands_help or "HELP" in {x.upper().strip() for x in e}
+            remote_command_args = e[1:] or ['']
+            for arg in remote_command_args:
+                args.processable.append(f"command://{e[0]} {arg}")
+
+    return args
 
 
 def main(localedir=None, autoupdate=True):
@@ -1396,10 +1358,14 @@ def main(localedir=None, autoupdate=True):
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-    picard_args = PicardArgs(process_picard_args())
+    picard_args = process_picard_args()
 
+    if picard_args.long_version:
+        return print(versions.as_string())
     if picard_args.version:
-        return print(picard_args.version)
+        return print(f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}")
+    if picard_args.remote_commands_help:
+        return print_help_for_commands()
 
     # any of the flags that change Picard's workflow significantly should trigger creation of a new instance
     if picard_args.stand_alone_instance:
