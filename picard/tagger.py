@@ -1405,7 +1405,7 @@ def main(localedir=None, autoupdate=True):
     if picard_args.stand_alone_instance:
         identifier = uuid4().hex
     else:
-        identifier = md5(picard_args.config_file.encode('utf8')).hexdigest() if picard_args.config_file else 'main'
+        identifier = md5(picard_args.config_file.encode('utf8')).hexdigest() if picard_args.config_file else 'main'  # nosec: B303
         identifier += '_NP' if picard_args.no_plugins else ''
 
     if picard_args.processable:
