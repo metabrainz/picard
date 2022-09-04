@@ -254,6 +254,10 @@ REMOTE_COMMANDS = {
         "handle_command_remove_all",
         help_text="Remove all files from Picard.",
     ),
+    "REMOVE_EMPTY": RemoteCommand(
+        "handle_command_remove_empty",
+        help_text="Remove all empty clusters and albums.",
+    ),
     "REMOVE_SAVED": RemoteCommand(
         "handle_command_remove_saved",
         help_text="Remove all saved releases from the album pane.",
@@ -523,6 +527,10 @@ class Tagger(QtWidgets.QApplication):
     def handle_command_remove_all(self, argstring):
         for file in self.iter_all_files():
             file.remove()
+
+    def handle_command_remove_empty(self, argstring):
+        for album in [a for a in self.albums if a.iterfiles()]:
+            self.remove_album(album)
 
     def handle_command_remove_saved(self, argstring):
         for track in self.iter_album_files():
