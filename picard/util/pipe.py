@@ -45,6 +45,7 @@ from picard.const.sys import (
     IS_WIN,
 )
 
+from picard.util import sanitize_filename
 
 if IS_WIN:
     import win32pipe  # type: ignore
