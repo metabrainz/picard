@@ -229,6 +229,10 @@ REMOTE_COMMANDS = {
         "handle_command_fingerprint",
         help_text="Calculate acoustic fingerprints for all (matched) files in the album pane.",
     ),
+    "LOAD": RemoteCommand(
+        "handle_command_load",
+        help_text="Load 1 or more files to Picard.",
+    ),
     "LOOKUP": RemoteCommand(
         "handle_command_lookup",
         help_text="Lookup all clusters in the cluster pane.",
@@ -479,6 +483,9 @@ class Tagger(QtWidgets.QApplication):
     def handle_command_fingerprint(self, argstring):
         for album_name in self.albums:
             self.analyze(self.albums[album_name].iterfiles())
+
+    def handle_command_load(self, argstring):
+        self.add_paths(argstring)
 
     def handle_command_lookup(self, argstring):
         self.autotag(self.unclustered_files.files)
