@@ -519,14 +519,13 @@ class Tagger(QtWidgets.QApplication):
         self.quit()
 
     def handle_command_remove(self, argstring):
-        for file in self.iter_all_files():
-            if argstring == file.filename:
-                file.remove()
-                return
+        for file in [x for x in self.iter_all_files() if argstring == x.filename]:
+            self.remove([file])
+            return
 
     def handle_command_remove_all(self, argstring):
         for file in self.iter_all_files():
-            file.remove()
+            self.remove([file])
 
     def handle_command_remove_empty(self, argstring):
         for album in [a for a in self.albums if a.iterfiles()]:
@@ -535,11 +534,10 @@ class Tagger(QtWidgets.QApplication):
     def handle_command_remove_saved(self, argstring):
         for track in self.iter_album_files():
             if track.state == File.NORMAL:
-                track.remove()
+                self.remove([track])
 
     def handle_command_remove_unclustered(self, argstring):
-        for file in self.unclustered_files.files:
-            file.remove()
+        self.remove(self.unclustered_files.files)
 
     def handle_command_save_matched(self, argstring):
         for album in self.albums.values():
