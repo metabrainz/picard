@@ -258,6 +258,10 @@ REMOTE_COMMANDS = {
         "handle_command_remove_saved",
         help_text="Remove all saved releases from the album pane.",
     ),
+    "REMOVE_UNCLUSTERED": RemoteCommand(
+        "handle_command_remove_unclustered",
+        help_text="Remove all unclustered files from the cluster pane.",
+    ),
     "SAVE_MATCHED": RemoteCommand(
         "handle_command_save_matched",
         help_text="Remove all matched releases from the album pane."
@@ -524,6 +528,10 @@ class Tagger(QtWidgets.QApplication):
         for track in self.iter_album_files():
             if track.state == File.NORMAL:
                 track.remove()
+
+    def handle_command_remove_unclustered(self, argstring):
+        for file in self.unclustered_files.files:
+            file.remove()
 
     def handle_command_save_matched(self, argstring):
         for album in self.albums.values():
