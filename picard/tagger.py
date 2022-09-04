@@ -1280,7 +1280,7 @@ class PicardArgs:
                 if "HELP" in [x.upper().strip() for x in e]:
                     print_help_for_commands()
                     sys.exit(0)
-                args = e[1:] if len(e) > 1 else ['']
+                args = e[1:] or ['']
                 for arg in args:
                     self.processable.append(f"command://{e[0]} {arg}")
 
