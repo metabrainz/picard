@@ -116,8 +116,8 @@ class AbstractPipe(metaclass=ABCMeta):
         """
         raise NotImplementedError
 
-    def __init__(self, app_name: str, app_version: str, identifier: Optional[str] = None, args: Optional[Iterable[str]] = None,
-                 forced_path: Optional[str] = None):
+    def __init__(self, app_name: str, app_version: str, args: Optional[Iterable[str]] = None,
+                 forced_path: Optional[str] = None, identifier: Optional[str] = None):
         """
         :param app_name: (str) Name of the app, included in the pipe name
         :param app_version: (str) Version of the app, included in the pipe name
@@ -283,8 +283,8 @@ class UnixPipe(AbstractPipe):
         "~/.config/MusicBrainz/Picard/pipes/",
     )   # type: ignore
 
-    def __init__(self, app_name: str, app_version: str, identifier: Optional[str] = None,  args: Optional[Iterable[str]] = None,
-                 forced_path: Optional[str] = None):
+    def __init__(self, app_name: str, app_version: str, args: Optional[Iterable[str]] = None,
+                 forced_path: Optional[str] = None, identifier: Optional[str] = None):
         super().__init__(app_name, app_version, args, forced_path)
 
         if not self.path:
@@ -375,8 +375,8 @@ class WinPipe(AbstractPipe):
 
     PIPE_DIRS: Tuple[str] = ("\\\\.\\pipe\\",)
 
-    def __init__(self, app_name: str, app_version: str, identifier: Optional[str] = None,  args: Optional[Iterable[str]] = None,
-                 forced_path: Optional[str] = None):
+    def __init__(self, app_name: str, app_version: str, args: Optional[Iterable[str]] = None,
+                 forced_path: Optional[str] = None, identifier: Optional[str] = None):
         # type checking is already enforced in the AbstractPipe
         try:
             app_version = app_version.replace(".", "-")
