@@ -243,8 +243,6 @@ REMOTE_COMMANDS = {
         "handle_command_quit",
         help_text="Exit the running instance of Picard.",
     ),
-    # due to the pipe protocol limitations
-    # we currently can handle only one file per `remove` command
     "REMOVE": RemoteCommand(
         "handle_command_remove",
         help_text="Remove the file from Picard. Do nothing if no argument.",
