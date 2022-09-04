@@ -229,6 +229,10 @@ REMOTE_COMMANDS = {
         "handle_command_fingerprint",
         help_text="Calculate acoustic fingerprints for all (matched) files in the album pane.",
     ),
+    "FROM_FILE": RemoteCommand(
+        "handle_command_from_file",
+        help_text="Load command pipeline from a file.",
+    ),
     "LOOKUP": RemoteCommand(
         "handle_command_lookup",
         help_text="Lookup all clusters in the cluster pane.",
@@ -479,6 +483,16 @@ class Tagger(QtWidgets.QApplication):
     def handle_command_fingerprint(self, argstring):
         for album_name in self.albums:
             self.analyze(self.albums[album_name].iterfiles())
+
+    def handle_command_from_file(self, argstring):
+        for command in [line.strip() for line in open(argstring).readlines()]:
+            elements = command.split(' ')
+
+            if len(elements) > 1:
+                for element in elements[1:]:
+                    self.handle_command(f"command://{elements[0]} {element}")
+            elif elements:
+                self.handle_command(f"command://{elements[0]} ")
 
     def handle_command_lookup(self, argstring):
         self.autotag(self.unclustered_files.files)
