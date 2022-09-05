@@ -7,6 +7,8 @@ class TestParsingFilesWithCommands(PicardTestCase):
     MOCK_FILE_CONTENTS = (
         "FROM_FILE file0.mp3",
         "",
+        " ",
+        "\n",
         "#commented command",
         "LOAD file1.mp3 file2.mp3",
     )
@@ -24,6 +26,10 @@ class TestParsingFilesWithCommands(PicardTestCase):
 
     def test_empty_lines(self):
         self.assertNotIn("command:// ", self.result)
+        self.assertNotIn("command://", self.result)
+        # 1 FROM_FILE
+        # 2 LOADs
+        self.assertEqual(len(self.result), 3)
 
     def test_commented_lines(self):
-        self.assertNotIn("command://#COMMENTED command", self.result)
+        self.assertNotIn("command://#commented command", self.result)
