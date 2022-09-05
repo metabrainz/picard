@@ -53,6 +53,7 @@ import logging
 import os
 import platform
 import re
+import shlex
 import shutil
 import signal
 import sys
