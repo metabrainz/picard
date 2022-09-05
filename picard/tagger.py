@@ -233,6 +233,7 @@ REMOTE_COMMANDS = {
     "FROM_FILE": RemoteCommand(
         "handle_command_from_file",
         help_text="Load command pipeline from a file.",
+        help_args="[Absolute path to a file containing command pipeline]"
     ),
     "LOOKUP": RemoteCommand(
         "handle_command_lookup",
