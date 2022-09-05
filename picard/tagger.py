@@ -497,7 +497,8 @@ class Tagger(QtWidgets.QApplication):
 
         for line in lines:
             elements = shlex.split(line.strip())
-            if not elements:
+            # Skip blank lines or comment lines beginning with an octothorpe (#)
+            if not elements or elements[0].startswith('#'):
                 continue
             command_args = elements[1:] or ['']
             for element in command_args:
