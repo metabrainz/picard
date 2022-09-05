@@ -485,14 +485,22 @@ class Tagger(QtWidgets.QApplication):
             self.analyze(self.albums[album_name].iterfiles())
 
     def handle_command_from_file(self, argstring):
-        for command in [line.strip() for line in open(argstring).readlines()]:
-            elements = command.split(' ')
+        try:
+            lines = [line.strip() for line in open(argstring).readlines()]
+        except OSError:
+            log.error("Error opening command file: %s", argstring)
+            return
+        except Exception:
+            log.error("Error reading command file: %s", argstring)
+            return
 
-            if len(elements) > 1:
-                for element in elements[1:]:
-                    self.handle_command(f"command://{elements[0]} {element}")
-            elif elements:
-                self.handle_command(f"command://{elements[0]} ")
+        for line in lines:
+            elements = shlex.split(line.strip())
+            if not elements:
+                continue
+            command_args = elements[1:] or ['']
+            for element in command_args:
+                self.handle_command(f"command://{elements[0]} {element}")
 
     def handle_command_lookup(self, argstring):
         self.autotag(self.unclustered_files.files)
