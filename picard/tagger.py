@@ -486,24 +486,26 @@ class Tagger(QtWidgets.QApplication):
         for album_name in self.albums:
             self.analyze(self.albums[album_name].iterfiles())
 
-    def handle_command_from_file(self, argstring):
+    @staticmethod
+    def _read_lines_from_file(filepath):
         try:
-            lines = [line.strip() for line in open(argstring).readlines()]
-        except OSError:
-            log.error("Error opening command file: %s", argstring)
-            return
-        except Exception:
-            log.error("Error reading command file: %s", argstring)
-            return
+            yield from (line.strip() for line in open(filepath).readlines())
+        except Exception as e:
+            log.error("Error reading command file '%s': %s" % (filepath, e))
 
+    @staticmethod
+    def _parse_commands_from_lines(lines):
         for line in lines:
-            elements = shlex.split(line.strip())
-            # Skip blank lines or comment lines beginning with an octothorpe (#)
-            if elements[0].startswith('#'):
+            if not line or line.startswith('#'):
                 continue
+            elements = shlex.split(line)
             command_args = elements[1:] or ['']
             for element in command_args:
-                self.handle_command(f"command://{elements[0]} {element}")
+                yield f"command://{elements[0]} {element}"
+
+    def handle_command_from_file(self, argstring):
+        for command in self._parse_commands_from_lines(self._read_lines_from_file(argstring)):
+            self.handle_command(command)
 
     def handle_command_lookup(self, argstring):
         self.autotag(self.unclustered_files.files)
