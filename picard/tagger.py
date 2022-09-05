@@ -490,9 +490,6 @@ class Tagger(QtWidgets.QApplication):
             log.error("Cannot LOAD a command: %s", argstring)
             return
 
-        if not argstring.startswith("file://") and not argstring.startswith("mbid://") and not argstring.startswith("url://"):
-            argstring = "file://" + argstring
-
         self.load_to_picard((argstring,))
 
     def handle_command_lookup(self, argstring):
