@@ -231,7 +231,8 @@ REMOTE_COMMANDS = {
     ),
     "LOAD": RemoteCommand(
         "handle_command_load",
-        help_text="Load 1 or more files to Picard.",
+        help_text="Load 1 or more files/MBIDs/URLs to Picard.",
+        help_args="[supported MBID/URL or absolute path to a file]",
     ),
     "LOOKUP": RemoteCommand(
         "handle_command_lookup",
@@ -485,7 +486,14 @@ class Tagger(QtWidgets.QApplication):
             self.analyze(self.albums[album_name].iterfiles())
 
     def handle_command_load(self, argstring):
-        self.add_paths(argstring)
+        if argstring.startswith("command://"):
+            log.error("Cannot LOAD a command: %s", argstring)
+            return
+
+        if not argstring.startswith("file://") and not argstring.startswith("mbid://") and not argstring.startswith("url://"):
+            argstring = "file://" + argstring
+
+        self.load_to_picard((argstring,))
 
     def handle_command_lookup(self, argstring):
         self.autotag(self.unclustered_files.files)
