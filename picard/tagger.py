@@ -499,6 +499,8 @@ class Tagger(QtWidgets.QApplication):
             if not line or line.startswith('#'):
                 continue
             elements = shlex.split(line)
+            if not elements:
+                continue
             command_args = elements[1:] or ['']
             for element in command_args:
                 yield f"command://{elements[0]} {element}"
