@@ -245,7 +245,7 @@ REMOTE_COMMANDS = {
     ),
     "REMOVE": RemoteCommand(
         "handle_command_remove",
-        help_text="Remove the file from Picard. Do nothing if no argument.",
+        help_text="Remove the file from Picard. Do nothing if no arguments provided.",
         help_args="[absolute path to 1 or more files]",
     ),
     "REMOVE_ALL": RemoteCommand(
@@ -266,7 +266,7 @@ REMOTE_COMMANDS = {
     ),
     "SAVE_MATCHED": RemoteCommand(
         "handle_command_save_matched",
-        help_text="Remove all matched releases from the album pane."
+        help_text="Save all matched releases from the album pane."
     ),
     "SAVE_MODIFIED": RemoteCommand(
         "handle_command_save_modified",
