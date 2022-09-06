@@ -527,11 +527,13 @@ class Tagger(QtWidgets.QApplication):
             self.remove([file])
 
     def handle_command_remove_empty(self, argstring):
-        for album in [a for a in self.albums if a.iterfiles()]:
-            self.remove_album(album)
+        for album in self.albums:
+            if not any(album.iterfiles()):
+                self.remove_album(album)
 
-        for cluster in [c for c in self.clusters if c.iterfiles()]:
-            self.remove_cluster(cluster)
+        for cluster in self.clusters:
+            if not any(cluster.iterfiles()):
+                self.remove_cluster(cluster)
 
     def handle_command_remove_saved(self, argstring):
         for track in self.iter_album_files():
