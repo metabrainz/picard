@@ -324,3 +324,7 @@ class HistoryView(LogViewCommon):
 
     def __init__(self, parent=None):
         super().__init__(log.history_tail, _("Activity History"), parent=parent)
+
+    def update_log_tail(self):
+        self.log_tail.clear()
+        self.display(clear=True)
