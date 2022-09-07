@@ -221,6 +221,10 @@ class RemoteCommand:
 
 
 REMOTE_COMMANDS = {
+    "CLEAR_LOGS": RemoteCommand(
+        "handle_command_clear_logs",
+        help_text="Clear the Picard logs",
+    ),
     "CLUSTER": RemoteCommand(
         "handle_command_cluster",
         help_text="Cluster all files in the cluster pane.",
@@ -228,10 +232,6 @@ REMOTE_COMMANDS = {
     "FINGERPRINT": RemoteCommand(
         "handle_command_fingerprint",
         help_text="Calculate acoustic fingerprints for all (matched) files in the album pane.",
-    ),
-    "LOG_CLEAR": RemoteCommand(
-        "handle_command_log_clear",
-        help_text="Clear the Picard logs",
     ),
     "LOOKUP": RemoteCommand(
         "handle_command_lookup",
@@ -477,16 +477,16 @@ class Tagger(QtWidgets.QApplication):
         except KeyError:
             log.error("Unknown command: %r", cmd)
 
+    def handle_command_clear_logs(self, argstring):
+        self.window.log_dialog.clear()
+        self.window.history_dialog.clear()
+
     def handle_command_cluster(self, argstring):
         self.cluster(self.unclustered_files.files)
 
     def handle_command_fingerprint(self, argstring):
         for album_name in self.albums:
             self.analyze(self.albums[album_name].iterfiles())
-
-    def handle_command_log_clear(self, argstring):
-        self.window.log_dialog.clear()
-        self.window.history_dialog.clear()
 
     def handle_command_lookup(self, argstring):
         self.autotag(self.unclustered_files.files)
