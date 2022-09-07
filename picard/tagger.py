@@ -291,6 +291,11 @@ REMOTE_COMMANDS = {
         "handle_command_scan",
         help_text="Scan all files in the cluster pane.",
     ),
+    "SET_SAVED_LOGS_VERBOSITY": RemoteCommand(
+        "handle_command_set_saved_logs_verbosity",
+        help_text="Set verbosity of logs that will be saved with WRITE_LOGS",
+        help_args="[verbosity level: DEBUG/D, INFO/I, WARNING/W, ERROR/E]",
+    ),
     "SHOW": RemoteCommand(
         "handle_command_show",
         help_text="Make the running instance the currently active window.",
@@ -298,6 +303,11 @@ REMOTE_COMMANDS = {
     "SUBMIT_FINGERPRINTS": RemoteCommand(
         "handle_command_submit_fingerprints",
         help_text="Submit outstanding acoustic fingerprints for all (matched) files in the album pane.",
+    ),
+    "WRITE_LOGS": RemoteCommand(
+        "handle_command_write_logs",
+        help_text="Write Picard logs to a given path.",
+        help_args="[absolute path to 1 file]",
     ),
 }
 
@@ -435,6 +445,8 @@ class Tagger(QtWidgets.QApplication):
         self.window = MainWindow(disable_player=picard_args.no_player)
         self.exit_cleanup = []
         self.stopping = False
+
+        self.saved_logs_verbosity = logging.DEBUG
 
         # On macOS temporary files get deleted after 3 days not being accessed.
         # Touch these files regularly to keep them alive if Picard
@@ -605,11 +617,27 @@ class Tagger(QtWidgets.QApplication):
     def handle_command_scan(self, argstring):
         self.analyze(self.unclustered_files.files)
 
+    def handle_command_set_saved_logs_verbosity(self, argstring):
+        if argstring.upper() in {"DEBUG", "D"}:
+            self.saved_logs_verbosity = logging.DEBUG
+        elif argstring.upper() in {"INFO", "I"}:
+            self.saved_logs_verbosity = logging.INFO
+        elif argstring.upper() in {"WARNING", "W"}:
+            self.saved_logs_verbosity = logging.WARNING
+        elif argstring.upper() in {"ERROR", "E"}:
+            self.saved_logs_verbosity = logging.ERROR
+
     def handle_command_show(self, argstring):
         self.bring_tagger_front()
 
     def handle_command_submit_fingerprints(self, argstring):
         self.acoustidmanager.submit()
+
+    def handle_command_write_logs(self, argstring):
+        with open(argstring, 'w') as f:
+            for x in self.window.log_dialog.log_tail.contents():
+                if x.level >= self.saved_logs_verbosity:
+                    f.write(f"{x.message}\n")
 
     def enable_menu_icons(self, enabled):
         self.setAttribute(QtCore.Qt.ApplicationAttribute.AA_DontShowIconsInMenus, not enabled)
