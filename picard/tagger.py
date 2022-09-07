@@ -518,7 +518,7 @@ class Tagger(QtWidgets.QApplication):
 
     def handle_command_from_file(self, argstring):
         for command in self._parse_commands_from_lines(self._read_lines_from_file(argstring)):
-            self.handle_command(command)
+            self.load_to_picard((command,))
 
     def handle_command_load(self, argstring):
         if argstring.startswith("command://"):
