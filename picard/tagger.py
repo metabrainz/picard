@@ -53,6 +53,7 @@ import logging
 import os
 import platform
 import re
+import shlex
 import shutil
 import signal
 import sys
@@ -228,6 +229,11 @@ REMOTE_COMMANDS = {
     "FINGERPRINT": RemoteCommand(
         "handle_command_fingerprint",
         help_text="Calculate acoustic fingerprints for all (matched) files in the album pane.",
+    ),
+    "FROM_FILE": RemoteCommand(
+        "handle_command_from_file",
+        help_text="Load command pipeline from a file.",
+        help_args="[Absolute path to a file containing command pipeline]",
     ),
     "LOAD": RemoteCommand(
         "handle_command_load",
@@ -490,6 +496,29 @@ class Tagger(QtWidgets.QApplication):
     def handle_command_fingerprint(self, argstring):
         for album_name in self.albums:
             self.analyze(self.albums[album_name].iterfiles())
+
+    @staticmethod
+    def _read_lines_from_file(filepath):
+        try:
+            yield from (line.strip() for line in open(filepath).readlines())
+        except Exception as e:
+            log.error("Error reading command file '%s': %s" % (filepath, e))
+
+    @staticmethod
+    def _parse_commands_from_lines(lines):
+        for line in lines:
+            if not line or line.startswith('#'):
+                continue
+            elements = shlex.split(line)
+            if not elements:
+                continue
+            command_args = elements[1:] or ['']
+            for element in command_args:
+                yield f"command://{elements[0]} {element}"
+
+    def handle_command_from_file(self, argstring):
+        for command in self._parse_commands_from_lines(self._read_lines_from_file(argstring)):
+            self.handle_command(command)
 
     def handle_command_load(self, argstring):
         if argstring.startswith("command://"):
