@@ -485,9 +485,8 @@ class Tagger(QtWidgets.QApplication):
             self.analyze(self.albums[album_name].iterfiles())
 
     def handle_command_log_clear(self, argstring):
-        log.main_tail.clear()
-        log.history_tail.clear()
-        self.window.history_dialog.update_log_tail()
+        self.window.log_dialog.clear()
+        self.window.history_dialog.clear()
 
     def handle_command_lookup(self, argstring):
         self.autotag(self.unclustered_files.files)
