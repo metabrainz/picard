@@ -222,6 +222,10 @@ class RemoteCommand:
 
 
 REMOTE_COMMANDS = {
+    "CLEAR_LOGS": RemoteCommand(
+        "handle_command_clear_logs",
+        help_text="Clear the Picard logs",
+    ),
     "CLUSTER": RemoteCommand(
         "handle_command_cluster",
         help_text="Cluster all files in the cluster pane.",
@@ -489,6 +493,10 @@ class Tagger(QtWidgets.QApplication):
             thread.to_main(self.commands[cmd], argstring.strip())
         except KeyError:
             log.error("Unknown command: %r", cmd)
+
+    def handle_command_clear_logs(self, argstring):
+        self.window.log_dialog.clear()
+        self.window.history_dialog.clear()
 
     def handle_command_cluster(self, argstring):
         self.cluster(self.unclustered_files.files)

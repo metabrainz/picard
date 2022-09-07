@@ -118,6 +118,10 @@ class LogViewCommon(LogViewDialog):
         sb = self.browser.verticalScrollBar()
         sb.setValue(sb.maximum())
 
+    def clear(self):
+        self.log_tail.clear()
+        self.display(clear=True)
+
 
 class Highlighter(QtGui.QSyntaxHighlighter):
     def __init__(self, string, parent=None):
