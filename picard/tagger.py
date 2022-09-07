@@ -233,7 +233,8 @@ REMOTE_COMMANDS = {
     "FROM_FILE": RemoteCommand(
         "handle_command_from_file",
         help_text="Load command pipeline from a file.",
-        help_args="[Absolute path to a file containing command pipeline]"
+        help_args="[Absolute path to a file containing command pipeline]",
+    ),
     "LOAD": RemoteCommand(
         "handle_command_load",
         help_text="Load 1 or more files/MBIDs/URLs to Picard.",
@@ -518,6 +519,7 @@ class Tagger(QtWidgets.QApplication):
     def handle_command_from_file(self, argstring):
         for command in self._parse_commands_from_lines(self._read_lines_from_file(argstring)):
             self.handle_command(command)
+            
     def handle_command_load(self, argstring):
         if argstring.startswith("command://"):
             log.error("Cannot LOAD a command: %s", argstring)
