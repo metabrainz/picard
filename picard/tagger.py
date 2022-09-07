@@ -234,6 +234,10 @@ REMOTE_COMMANDS = {
         "handle_command_from_file",
         help_text="Load command pipeline from a file.",
         help_args="[Absolute path to a file containing command pipeline]"
+    "LOAD": RemoteCommand(
+        "handle_command_load",
+        help_text="Load 1 or more files/MBIDs/URLs to Picard.",
+        help_args="[supported MBID/URL or absolute path to a file]",
     ),
     "LOOKUP": RemoteCommand(
         "handle_command_lookup",
@@ -249,24 +253,30 @@ REMOTE_COMMANDS = {
         "handle_command_quit",
         help_text="Exit the running instance of Picard.",
     ),
-    # due to the pipe protocol limitations
-    # we currently can handle only one file per `remove` command
     "REMOVE": RemoteCommand(
         "handle_command_remove",
-        help_text="Remove the file from Picard. Do nothing if no argument.",
+        help_text="Remove the file from Picard. Do nothing if no arguments provided.",
         help_args="[absolute path to 1 or more files]",
     ),
     "REMOVE_ALL": RemoteCommand(
         "handle_command_remove_all",
         help_text="Remove all files from Picard.",
     ),
+    "REMOVE_EMPTY": RemoteCommand(
+        "handle_command_remove_empty",
+        help_text="Remove all empty clusters and albums.",
+    ),
     "REMOVE_SAVED": RemoteCommand(
         "handle_command_remove_saved",
         help_text="Remove all saved releases from the album pane.",
     ),
+    "REMOVE_UNCLUSTERED": RemoteCommand(
+        "handle_command_remove_unclustered",
+        help_text="Remove all unclustered files from the cluster pane.",
+    ),
     "SAVE_MATCHED": RemoteCommand(
         "handle_command_save_matched",
-        help_text="Remove all matched releases from the album pane."
+        help_text="Save all matched releases from the album pane."
     ),
     "SAVE_MODIFIED": RemoteCommand(
         "handle_command_save_modified",
@@ -508,6 +518,12 @@ class Tagger(QtWidgets.QApplication):
     def handle_command_from_file(self, argstring):
         for command in self._parse_commands_from_lines(self._read_lines_from_file(argstring)):
             self.handle_command(command)
+    def handle_command_load(self, argstring):
+        if argstring.startswith("command://"):
+            log.error("Cannot LOAD a command: %s", argstring)
+            return
+
+        self.load_to_picard((argstring,))
 
     def handle_command_lookup(self, argstring):
         self.autotag(self.unclustered_files.files)
@@ -541,18 +557,30 @@ class Tagger(QtWidgets.QApplication):
 
     def handle_command_remove(self, argstring):
         for file in self.iter_all_files():
-            if argstring == file.filename:
-                file.remove()
+            if file.filename == argstring:
+                self.remove([file])
                 return
 
     def handle_command_remove_all(self, argstring):
         for file in self.iter_all_files():
-            file.remove()
+            self.remove([file])
+
+    def handle_command_remove_empty(self, argstring):
+        for album in self.albums:
+            if not any(album.iterfiles()):
+                self.remove_album(album)
+
+        for cluster in self.clusters:
+            if not any(cluster.iterfiles()):
+                self.remove_cluster(cluster)
 
     def handle_command_remove_saved(self, argstring):
         for track in self.iter_album_files():
             if track.state == File.NORMAL:
-                track.remove()
+                self.remove([track])
+
+    def handle_command_remove_unclustered(self, argstring):
+        self.remove(self.unclustered_files.files)
 
     def handle_command_save_matched(self, argstring):
         for album in self.albums.values():
