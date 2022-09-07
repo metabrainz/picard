@@ -291,11 +291,6 @@ REMOTE_COMMANDS = {
         "handle_command_scan",
         help_text="Scan all files in the cluster pane.",
     ),
-    "SET_SAVED_LOGS_VERBOSITY": RemoteCommand(
-        "handle_command_set_saved_logs_verbosity",
-        help_text="Set verbosity of logs that will be saved with WRITE_LOGS",
-        help_args="[verbosity level: DEBUG/D, INFO/I, WARNING/W, ERROR/E]",
-    ),
     "SHOW": RemoteCommand(
         "handle_command_show",
         help_text="Make the running instance the currently active window.",
@@ -617,16 +612,6 @@ class Tagger(QtWidgets.QApplication):
     def handle_command_scan(self, argstring):
         self.analyze(self.unclustered_files.files)
 
-    def handle_command_set_saved_logs_verbosity(self, argstring):
-        if argstring.upper() in {"DEBUG", "D"}:
-            self.saved_logs_verbosity = logging.DEBUG
-        elif argstring.upper() in {"INFO", "I"}:
-            self.saved_logs_verbosity = logging.INFO
-        elif argstring.upper() in {"WARNING", "W"}:
-            self.saved_logs_verbosity = logging.WARNING
-        elif argstring.upper() in {"ERROR", "E"}:
-            self.saved_logs_verbosity = logging.ERROR
-
     def handle_command_show(self, argstring):
         self.bring_tagger_front()
 
@@ -636,8 +621,7 @@ class Tagger(QtWidgets.QApplication):
     def handle_command_write_logs(self, argstring):
         with open(argstring, 'w') as f:
             for x in self.window.log_dialog.log_tail.contents():
-                if x.level >= self.saved_logs_verbosity:
-                    f.write(f"{x.message}\n")
+                f.write(f"{x.message}\n")
 
     def enable_menu_icons(self, enabled):
         self.setAttribute(QtCore.Qt.ApplicationAttribute.AA_DontShowIconsInMenus, not enabled)
