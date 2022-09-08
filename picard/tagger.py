@@ -624,7 +624,7 @@ class Tagger(QtWidgets.QApplication):
                 for x in self.window.log_dialog.log_tail.contents():
                     f.write(f"{x.message}\n")
         except Exception as e:
-            log.error("Error writing logs to a file: %r", e)
+            log.error("Error writing logs to a file: %s", e)
 
     def enable_menu_icons(self, enabled):
         self.setAttribute(QtCore.Qt.ApplicationAttribute.AA_DontShowIconsInMenus, not enabled)
