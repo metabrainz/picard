@@ -441,8 +441,6 @@ class Tagger(QtWidgets.QApplication):
         self.exit_cleanup = []
         self.stopping = False
 
-        self.saved_logs_verbosity = logging.DEBUG
-
         # On macOS temporary files get deleted after 3 days not being accessed.
         # Touch these files regularly to keep them alive if Picard
         # is left running for a long time.
