@@ -299,6 +299,11 @@ REMOTE_COMMANDS = {
         "handle_command_submit_fingerprints",
         help_text="Submit outstanding acoustic fingerprints for all (matched) files in the album pane.",
     ),
+    "WRITE_LOGS": RemoteCommand(
+        "handle_command_write_logs",
+        help_text="Write Picard logs to a given path.",
+        help_args="[absolute path to 1 file]",
+    ),
 }
 
 
@@ -610,6 +615,14 @@ class Tagger(QtWidgets.QApplication):
 
     def handle_command_submit_fingerprints(self, argstring):
         self.acoustidmanager.submit()
+
+    def handle_command_write_logs(self, argstring):
+        try:
+            with open(argstring, 'w') as f:
+                for x in self.window.log_dialog.log_tail.contents():
+                    f.write(f"{x.message}\n")
+        except Exception as e:
+            log.error("Error writing logs to a file: %s", e)
 
     def enable_menu_icons(self, enabled):
         self.setAttribute(QtCore.Qt.ApplicationAttribute.AA_DontShowIconsInMenus, not enabled)
