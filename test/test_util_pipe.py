@@ -20,7 +20,7 @@
 
 import concurrent.futures
 from platform import python_version
-from random import randint
+import uuid
 
 from test.picardtestcase import PicardTestCase
 
@@ -45,8 +45,8 @@ def pipe_writer(pipe_handler, to_send):
 
 
 class TestPipe(PicardTestCase):
-    # we don't need any strong and secure random numbers, just anything that is different on each run
-    NAME = str(randint(0, 99999999))  # nosec
+    # some random name that is different on each run
+    NAME = str(uuid.uuid4())
     VERSION = python_version()
 
     def test_invalid_args(self):
