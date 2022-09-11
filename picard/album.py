@@ -340,9 +340,9 @@ class Album(DataObject, Item):
         )
 
     def _recordings_request_finished(self, document, http, error):
-        self._requests -= 1
         if error:
             self.error_append(http.errorString())
+            self._requests -= 1
             self._finalize_loading(error)
         else:
             for recording in document.get('recordings', []):
@@ -353,11 +353,13 @@ class Album(DataObject, Item):
             offset = document.get('recording-offset', 0)
             next_offset = offset + RECORDING_QUERY_LIMIT
             if next_offset < count:
+                self._requests -= 1
                 self._request_recording_relationships(offset=next_offset)
             else:
                 # Merge separately loaded recording relationships into release node
                 self._merge_release_recording_relationships()
                 self._run_album_metadata_processors()
+                self._requests -= 1
                 self._finalize_loading(error)
 
     def _merge_recording_relationships(self, track_node):
@@ -534,7 +536,7 @@ class Album(DataObject, Item):
             import inspect
             stack = inspect.stack()
             args = [self]
-            msg = 'Album._finalize_loading called for already loaded album % r'
+            msg = 'Album._finalize_loading called for already loaded album %r'
             if len(stack) > 1:
                 f = stack[1]
                 msg += ' at %s:%d in %s'
