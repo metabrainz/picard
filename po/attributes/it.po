@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2012-05-24 18:52+0000\n"
-"Last-Translator: salo.rock, 2016-2022\n"
+"Last-Translator: salo.rock, 2022\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -472,6 +472,11 @@ msgctxt "series_type"
 msgid "A series of performances of the same show at the same venue."
 msgstr "Una serie di esibizioni dello stesso spettacolo nello stesso locale."
 
+#: DB:series_type/description:48
+msgctxt "series_type"
+msgid "A series of recordings honoured by the same award."
+msgstr "Una serie di registrazioni onorate dello stesso premio."
+
 #: DB:series_type/description:3
 msgctxt "series_type"
 msgid "A series of recordings."
@@ -487,6 +492,11 @@ msgctxt "series_type"
 msgid "A series of related concerts by an artist in the same location."
 msgstr "Una serie di concerti collegati tenuti dallo stesso artista nella stessa location."
 
+#: DB:series_type/description:47
+msgctxt "series_type"
+msgid "A series of release groups honoured by the same award."
+msgstr "Una serie di gruppi di pubblicazioni onorati dello stesso premio."
+
 #: DB:series_type/description:1
 msgctxt "series_type"
 msgid "A series of release groups."
@@ -496,6 +506,11 @@ msgstr "Una serie di gruppi di pubblicazioni."
 msgctxt "series_type"
 msgid "A series of releases."
 msgstr "Una serie di pubblicazioni."
+
+#: DB:series_type/description:46
+msgctxt "series_type"
+msgid "A series of works honoured by the same award."
+msgstr "Una serie di opere onorate dello stesso premio."
 
 #: DB:series_type/description:5
 msgctxt "series_type"
@@ -2363,6 +2378,11 @@ msgctxt "medium_format"
 msgid "DualDisc (CD side)"
 msgstr "DualDisc (lato CD)"
 
+#: DB:medium_format/name:130
+msgctxt "medium_format"
+msgid "DualDisc (DVD side)"
+msgstr "DualDisc (lato DVD)"
+
 #: DB:medium_format/name:65
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Audio side)"
@@ -2895,6 +2915,11 @@ msgstr "Sol diesis minore"
 msgctxt "work_attribute_type"
 msgid "GEMA ID"
 msgstr "ID GEMA"
+
+#: DB:work_attribute_type/name:106
+msgctxt "work_attribute_type"
+msgid "GMR ID"
+msgstr "ID GMR"
 
 #: DB:work_attribute_type_allowed_value/value:88
 msgctxt "work_attribute_type_allowed_value"
@@ -3766,6 +3791,11 @@ msgstr "ID per la società di diritti statunitense ASCAP"
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society BMI"
 msgstr "ID per la società di diritti statunitense BMI"
+
+#: DB:work_attribute_type/description:106
+msgctxt "work_attribute_type"
+msgid "ID for the US rights society GMR"
+msgstr "ID per la società di diritti statunitense GMR"
 
 #: DB:work_attribute_type/description:8
 msgctxt "work_attribute_type"
@@ -6047,6 +6077,11 @@ msgctxt "cover_art_type"
 msgid "Raw/Unedited"
 msgstr "Grezza/non editata"
 
+#: DB:series_type/name:48
+msgctxt "series_type"
+msgid "Recording award"
+msgstr "Premio a registrazioni"
+
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
 msgid "Recording collection"
@@ -6086,6 +6121,11 @@ msgstr "Rekb-i Zavil"
 msgctxt "collection_type"
 msgid "Release collection"
 msgstr "Collezione di pubblicazioni"
+
+#: DB:series_type/name:47
+msgctxt "series_type"
+msgid "Release group award"
+msgstr "Premio a gruppi di pubblicazioni"
 
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
@@ -7134,7 +7174,7 @@ msgid ""
 "phonograph records."
 msgstr "Il CED (Capacitance Electronic Disc) è un sistema di riproduzione di videodischi analogici sviluppato da RCA in cui video e audio possono essere riprodotti su un televisore utilizzando una puntina speciale e un sistema di solchi ad alta densità simile a quello dei dischi per fonografo."
 
-#: DB:medium_format/description:68 DB:medium_format/description:69
+#: DB:medium_format/description:68
 msgctxt "medium_format"
 msgid ""
 "The DVD (audio) layer of a DVDplus. The CD layer should be added as a "
@@ -7148,12 +7188,27 @@ msgid ""
 "separate medium."
 msgstr "Lo strato DVD (audio) di un DualDisc. Lo strato CD va aggiunto come supporto separato."
 
+#: DB:medium_format/description:69
+msgctxt "medium_format"
+msgid ""
+"The DVD (video) layer of a DVDplus. The CD layer should be added as a "
+"separate medium."
+msgstr "Lo strato DVD (video) di un DVDplus. Lo strato CD va aggiunto come supporto separato."
+
 #: DB:medium_format/description:66
 msgctxt "medium_format"
 msgid ""
 "The DVD (video) layer of a DualDisc. The CD layer should be added as a "
 "separate medium."
 msgstr "Lo strato DVD (video) di un DualDisc. Lo strato CD va aggiunto come supporto separato."
+
+#: DB:medium_format/description:130
+msgctxt "medium_format"
+msgid ""
+"The DVD layer of a DualDisc, when it's unclear whether it should be DVD-"
+"Audio or DVD-Video (or it includes both). The CD layer should be added as a "
+"separate medium."
+msgstr "Lo strato DVD di un DualDisc, nel caso in cui non sia chiaro se dovrebbe essere un DVD-Audio o un DVD-Video (o se include entrambi). Lo strato CD va aggiunto come supporto separato."
 
 #: DB:medium_format/description:80
 msgctxt "medium_format"
@@ -7674,6 +7729,11 @@ msgstr "Lista desideri"
 msgctxt "release_status"
 msgid "Withdrawn"
 msgstr "Ritirata"
+
+#: DB:series_type/name:46
+msgctxt "series_type"
+msgid "Work award"
+msgstr "Premio a opere"
 
 #: DB:editor_collection_type/name:15
 msgctxt "collection_type"

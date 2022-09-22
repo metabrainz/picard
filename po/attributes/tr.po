@@ -470,6 +470,11 @@ msgctxt "series_type"
 msgid "A series of performances of the same show at the same venue."
 msgstr ""
 
+#: DB:series_type/description:48
+msgctxt "series_type"
+msgid "A series of recordings honoured by the same award."
+msgstr ""
+
 #: DB:series_type/description:3
 msgctxt "series_type"
 msgid "A series of recordings."
@@ -485,6 +490,11 @@ msgctxt "series_type"
 msgid "A series of related concerts by an artist in the same location."
 msgstr ""
 
+#: DB:series_type/description:47
+msgctxt "series_type"
+msgid "A series of release groups honoured by the same award."
+msgstr ""
+
 #: DB:series_type/description:1
 msgctxt "series_type"
 msgid "A series of release groups."
@@ -494,6 +504,11 @@ msgstr "Bir dizi yayın grubu"
 msgctxt "series_type"
 msgid "A series of releases."
 msgstr "Bir dizi yayın."
+
+#: DB:series_type/description:46
+msgctxt "series_type"
+msgid "A series of works honoured by the same award."
+msgstr ""
 
 #: DB:series_type/description:5
 msgctxt "series_type"
@@ -2361,6 +2376,11 @@ msgctxt "medium_format"
 msgid "DualDisc (CD side)"
 msgstr ""
 
+#: DB:medium_format/name:130
+msgctxt "medium_format"
+msgid "DualDisc (DVD side)"
+msgstr ""
+
 #: DB:medium_format/name:65
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Audio side)"
@@ -2892,6 +2912,11 @@ msgstr "Sol diyez minör"
 #: DB:work_attribute_type/name:9
 msgctxt "work_attribute_type"
 msgid "GEMA ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:106
+msgctxt "work_attribute_type"
+msgid "GMR ID"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:88
@@ -3763,6 +3788,11 @@ msgstr ""
 #: DB:work_attribute_type/description:7
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society BMI"
+msgstr ""
+
+#: DB:work_attribute_type/description:106
+msgctxt "work_attribute_type"
+msgid "ID for the US rights society GMR"
 msgstr ""
 
 #: DB:work_attribute_type/description:8
@@ -6045,6 +6075,11 @@ msgctxt "cover_art_type"
 msgid "Raw/Unedited"
 msgstr ""
 
+#: DB:series_type/name:48
+msgctxt "series_type"
+msgid "Recording award"
+msgstr ""
+
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
 msgid "Recording collection"
@@ -6083,6 +6118,11 @@ msgstr "Rekb-i Zavil"
 #: DB:editor_collection_type/name:1
 msgctxt "collection_type"
 msgid "Release collection"
+msgstr ""
+
+#: DB:series_type/name:47
+msgctxt "series_type"
+msgid "Release group award"
 msgstr ""
 
 #: DB:editor_collection_type/name:13
@@ -7132,7 +7172,7 @@ msgid ""
 "phonograph records."
 msgstr ""
 
-#: DB:medium_format/description:68 DB:medium_format/description:69
+#: DB:medium_format/description:68
 msgctxt "medium_format"
 msgid ""
 "The DVD (audio) layer of a DVDplus. The CD layer should be added as a "
@@ -7146,10 +7186,25 @@ msgid ""
 "separate medium."
 msgstr ""
 
+#: DB:medium_format/description:69
+msgctxt "medium_format"
+msgid ""
+"The DVD (video) layer of a DVDplus. The CD layer should be added as a "
+"separate medium."
+msgstr ""
+
 #: DB:medium_format/description:66
 msgctxt "medium_format"
 msgid ""
 "The DVD (video) layer of a DualDisc. The CD layer should be added as a "
+"separate medium."
+msgstr ""
+
+#: DB:medium_format/description:130
+msgctxt "medium_format"
+msgid ""
+"The DVD layer of a DualDisc, when it's unclear whether it should be DVD-"
+"Audio or DVD-Video (or it includes both). The CD layer should be added as a "
 "separate medium."
 msgstr ""
 
@@ -7671,6 +7726,11 @@ msgstr ""
 #: DB:release_status/name:5
 msgctxt "release_status"
 msgid "Withdrawn"
+msgstr ""
+
+#: DB:series_type/name:46
+msgctxt "series_type"
+msgid "Work award"
 msgstr ""
 
 #: DB:editor_collection_type/name:15
