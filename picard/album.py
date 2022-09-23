@@ -524,6 +524,7 @@ class Album(DataObject, Item):
         self._after_load_callbacks = []
         if self.item.isSelected():
             self.tagger.window.refresh_metadatabox()
+            self.tagger.window.cover_art_box.update_metadata()
 
     def _finalize_loading(self, error):
         if self.loaded:
