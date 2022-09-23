@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2018-2021 Philipp Wolfer
+# Copyright (C) 2018-2022 Philipp Wolfer
 # Copyright (C) 2019-2022 Laurent Monin
 # Copyright (C) 2021 Bob Swift
 # Copyright (C) 2021 Sophist-UK
@@ -459,7 +459,7 @@ class FileUpdateTest(PicardTestCase):
         self.file.state = File.NORMAL
 
         self.file.update(signal=False)
-        self.assertEqual(self.file.similarity, self.INVALIDSIMVAL)  # it shouldbn't be modified
+        self.assertEqual(self.file.similarity, 1.0)
         self.assertEqual(self.file.state, File.CHANGED)
 
     def test_signal(self):
