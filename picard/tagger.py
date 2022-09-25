@@ -108,6 +108,7 @@ from picard.const.sys import (
 from picard.dataobj import DataObject
 from picard.disc import (
     Disc,
+    dbpoweramplog,
     eaclog,
     whipperlog,
 )
@@ -1171,7 +1172,9 @@ class Tagger(QtWidgets.QApplication):
     def lookup_discid_from_logfile(self):
         file_chooser = QtWidgets.QFileDialog(self.window)
         file_chooser.setNameFilters([
+            _("All supported log files") + " (*.log, *.txt)",
             _("EAC / XLD / Whipper log files") + " (*.log)",
+            _("dBpoweramp log files") + " (*.txt)",
             _("All files") + " (*)",
         ])
         if file_chooser.exec_():
@@ -1184,16 +1187,23 @@ class Tagger(QtWidgets.QApplication):
                 traceback=self._debug)
 
     def _parse_disc_ripping_log(self, disc, path):
-        try:
-            log.debug('Trying to parse "%s" as EAC / XLD log...', path)
-            toc = eaclog.toc_from_file(path)
-        except Exception:
+        log_readers = (
+            eaclog.toc_from_file,
+            whipperlog.toc_from_file,
+            dbpoweramplog.toc_from_file,
+        )
+        for reader in log_readers:
+            module_name = reader.__module__
             try:
-                log.debug('Trying to parse "%s" as Whipper log...', path)
-                toc = whipperlog.toc_from_file(path)
+                log.debug('Trying to parse "%s" with %s...', path, module_name)
+                toc = reader(path)
+                break
             except Exception:
-                log.warning('Failed parsing ripping log "%s"', path, exc_info=True)
-                raise
+                log.debug('Failed parsing ripping log "%s" with %s', path, module_name, exc_info=True)
+        else:
+            msg = N_('Failed parsing ripping log "%s"')
+            log.warning(msg, path)
+            raise Exception(_(msg) % path)
         disc.put(toc)
 
     @property

@@ -922,7 +922,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _set_cd_lookup_from_file_actions(self, drives):
         if self.cd_lookup_menu.actions():
             self.cd_lookup_menu.addSeparator()
-        action = self.cd_lookup_menu.addAction(_('From EAC / XLD / Whipper &log file...'))
+        action = self.cd_lookup_menu.addAction(_('From CD ripper &log file...'))
         if not drives:
             self._update_cd_lookup_default_action(action)
         action.setData('logfile:eac')

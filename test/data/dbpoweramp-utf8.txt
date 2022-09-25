@@ -1,0 +1,58 @@
+dBpoweramp 2022-09-02 Digital Audio Extraction Log from Donnerstag, 22. September 2022 08:03
+
+Drive & Settings
+----------------
+
+Ripping with drive 'E:   [TSSTcorp - CDDVDW SE-218BB ]',  Drive offset: 6,  Overread Lead-in/out: No
+AccurateRip: Active,  Using C2: No,  Cache: 1024 KB,  FUA Cache Invalidate: No
+Pass 1 Drive Speed: Max,  Pass 2 Drive Speed: Max
+Bad Sector Re-rip::  Drive Speed: Max,  Maximum Re-reads: 34
+
+Encoder: m4a FDK (AAC) -cli_encoder="C:\Program Files\dBpoweramp\encoder\m4a FDK (AAC)\fdkaac.exe" -cli_cmd="-b 224000 -w 22050 -p 2 -G 0 --ignorelength -S -o {qt}[outfile]{qt} - " -selection="1,14"  -cli_cmd_sf0=" -p 2 -G 0" -selection_sf0="0,0"
+
+Extraction Log
+--------------
+
+Track 1:  Ripped LBA 0 to 24914 (5:32) in 0:30. Filename: C:\Users\Developer\Music\pornophonique\Brave New World\01 pornophonique - Coming Home.m4a
+  AccurateRip: Accurate (confidence 3)     [Pass 1]
+  CRC32: E924FB20     AccurateRip CRC: 3182EB6A (CRCv2)     [DiscID: 008-000adae1-00473706-5407c408-1]
+  AccurateRip Verified Confidence 3 [CRCv2 3182eb6a]
+
+Track 2:  Ripped LBA 24914 to 43461 (4:07) in 0:20. Filename: C:\Users\Developer\Music\pornophonique\Brave New World\02 pornophonique - Save Game.m4a
+  AccurateRip: Accurate (confidence 3)     [Pass 1]
+  CRC32: F19A6AFC     AccurateRip CRC: 79A374E7 (CRCv2)     [DiscID: 008-000adae1-00473706-5407c408-2]
+  AccurateRip Verified Confidence 3 [CRCv2 79a374e7]
+
+Track 3:  Ripped LBA 43461 to 60740 (3:50) in 0:17. Filename: C:\Users\Developer\Music\pornophonique\Brave New World\03 pornophonique - Voices in My Head.m4a
+  AccurateRip: Accurate (confidence 3)     [Pass 1]
+  CRC32: 300DF15C     AccurateRip CRC: 77DE3AFE (CRCv2)     [DiscID: 008-000adae1-00473706-5407c408-3]
+  AccurateRip Verified Confidence 3 [CRCv2 77de3afe]
+
+Track 4:  Ripped LBA 60740 to 82940 (4:56) in 0:20. Filename: C:\Users\Developer\Music\pornophonique\Brave New World\04 pornophonique - The Songs We Sang Together.m4a
+  AccurateRip: Accurate (confidence 3)     [Pass 1]
+  CRC32: 1657126F     AccurateRip CRC: 4D824E2F (CRCv2)     [DiscID: 008-000adae1-00473706-5407c408-4]
+  AccurateRip Verified Confidence 3 [CRCv2 4d824e2f]
+
+Track 5:  Ripped LBA 82940 to 99850 (3:45) in 0:14. Filename: C:\Users\Developer\Music\pornophonique\Brave New World\05 pornophonique - Night Will Fall.m4a
+  AccurateRip: Accurate (confidence 3)     [Pass 1]
+  CRC32: 66EFEA59     AccurateRip CRC: D0D39055 (CRCv2)     [DiscID: 008-000adae1-00473706-5407c408-5]
+  AccurateRip Verified Confidence 3 [CRCv2 d0d39055]
+
+Track 6:  Ripped LBA 99850 to 114907 (3:20) in 0:12. Filename: C:\Users\Developer\Music\pornophonique\Brave New World\06 pornophonique - Brave New World.m4a
+  AccurateRip: Accurate (confidence 3)     [Pass 1]
+  CRC32: 5D7B712B     AccurateRip CRC: CD69B7FC (CRCv2)     [DiscID: 008-000adae1-00473706-5407c408-6]
+  AccurateRip Verified Confidence 3 [CRCv2 cd69b7fc]
+
+Track 7:  Ripped LBA 114907 to 135408 (4:33) in 0:16. Filename: C:\Users\Developer\Music\pornophonique\Brave New World\07 pornophonique - Wave After Wave.m4a
+  AccurateRip: Accurate (confidence 3)     [Pass 1]
+  CRC32: 694CDD79     AccurateRip CRC: FE6DBCBF (CRCv2)     [DiscID: 008-000adae1-00473706-5407c408-7]
+  AccurateRip Verified Confidence 3 [CRCv2 fe6dbcbf]
+
+Track 8:  Ripped LBA 135408 to 149173 (3:03) in 0:10. Filename: C:\Users\Developer\Music\pornophonique\Brave New World\08 pornophonique - Awakening.m4a
+  AccurateRip: Accurate (confidence 3)     [Pass 1]
+  CRC32: 629CC273     AccurateRip CRC: 7EB7F715 (CRCv2)     [DiscID: 008-000adae1-00473706-5407c408-8]
+  AccurateRip Verified Confidence 3 [CRCv2 7eb7f715]
+
+--------------
+
+8 Tracks Ripped Accurately
