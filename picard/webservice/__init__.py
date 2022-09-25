@@ -513,6 +513,7 @@ class WebService(QtCore.QObject):
             slow_down = (slow_down or response_code >= 500)
 
         else:
+            error = None
             redirect = reply.attribute(QNetworkRequest.Attribute.RedirectionTargetAttribute)
             from_cache = reply.attribute(QNetworkRequest.Attribute.SourceIsFromCacheAttribute)
             cached = ' (CACHED)' if from_cache else ''
