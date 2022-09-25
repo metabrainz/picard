@@ -151,6 +151,8 @@ from picard.webservice.api_helpers import (
     MBAPIHelper,
 )
 
+import picard.resources  # noqa: F401 # pylint: disable=unused-import
+
 from picard.ui import (
     FONT_FAMILY_MONOSPACE,
     theme,
