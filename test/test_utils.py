@@ -34,6 +34,7 @@ import builtins
 from collections import namedtuple
 from collections.abc import Iterator
 from locale import strxfrm as system_strxfrm
+import os
 import re
 import subprocess  # nosec: B404
 from tempfile import NamedTemporaryFile
@@ -56,6 +57,7 @@ from picard.util import (
     album_artist_from_path,
     any_exception_isinstance,
     build_qurl,
+    detect_unicode_encoding,
     extract_year_from_date,
     find_best_match,
     is_absolute_path,
@@ -878,3 +880,27 @@ class IgnoreUpdatesContextTest(PicardTestCase):
                 self.assertTrue(context)
             self.assertTrue(context)
         self.assertFalse(context)
+
+
+class DetectUnicodeEncodingTest(PicardTestCase):
+
+    def test_detect_encoding(self):
+        boms = {
+            b'\xff\xfe': 'utf-16-le',
+            b'\xfe\xff': 'utf-16-be',
+            b'\00\00\xff\xfe': 'utf-32-le',
+            b'\00\00\xfe\xff': 'utf-32-be',
+            b'\00\00\xfe\xff': 'utf-32-be',
+            b'\xef\xbb\xbf': 'utf-8',
+            b'': 'utf-8',
+            b'\00': 'utf-8',
+        }
+        for bom, expected_encoding in boms.items():
+            try:
+                f = NamedTemporaryFile(delete=False)
+                f.write(bom)
+                f.close()
+                self.assertEqual(expected_encoding, detect_unicode_encoding(f.name))
+            finally:
+                f.close()
+                os.remove(f.name)

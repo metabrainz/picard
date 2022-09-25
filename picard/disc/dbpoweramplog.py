@@ -25,6 +25,7 @@ from picard.disc.utils import (
     TocEntry,
     calculate_mb_toc_numbers,
 )
+from picard.util import detect_unicode_encoding
 
 
 RE_TOC_ENTRY = re.compile(
@@ -46,25 +47,8 @@ def filter_toc_entries(lines):
             yield TocEntry(track_num, int(m['start_sector']), int(m['end_sector'])-1)
 
 
-ENCODING_BOMS = {
-    b'\xff\xfe': 'utf-16-le',
-    b'\xfe\xff': 'utf-16-be',
-    b'\00\00\xff\xfe': 'utf-32-le',
-    b'\00\00\xfe\xff': 'utf-32-be',
-}
-
-
-def _detect_encoding(path):
-    with open(path, 'rb') as f:
-        first_bytes = f.read(4)
-        for bom, encoding in ENCODING_BOMS.items():
-            if first_bytes.startswith(bom):
-                return encoding
-        return 'utf-8'
-
-
 def toc_from_file(path):
     """Reads dBpoweramp log files, generates MusicBrainz disc TOC listing for use as discid."""
-    encoding = _detect_encoding(path)
+    encoding = detect_unicode_encoding(path)
     with open(path, 'r', encoding=encoding) as f:
         return calculate_mb_toc_numbers(filter_toc_entries(f))

@@ -1100,3 +1100,29 @@ def strxfrm(string):
     except (OSError, ValueError) as err:
         log.warning('strxfrm(%r) failed: %r', string, err)
         return string.lower()
+
+
+ENCODING_BOMS = {
+    b'\xff\xfe': 'utf-16-le',
+    b'\xfe\xff': 'utf-16-be',
+    b'\00\00\xff\xfe': 'utf-32-le',
+    b'\00\00\xfe\xff': 'utf-32-be',
+}
+
+
+def detect_unicode_encoding(path):
+    """Attempts to guess the unicode encoding of a file based on the BOM.
+
+    Assumes UTF-8 by default if there is no BOM.
+
+    Args:
+        path: The path to the file
+
+    Returns: The encoding as a string, e.g. "utf-16-le" or "utf-8"
+    """
+    with open(path, 'rb') as f:
+        first_bytes = f.read(4)
+        for bom, encoding in ENCODING_BOMS.items():
+            if first_bytes.startswith(bom):
+                return encoding
+        return 'utf-8'
