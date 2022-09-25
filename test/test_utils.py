@@ -890,7 +890,6 @@ class DetectUnicodeEncodingTest(PicardTestCase):
             b'\xfe\xff': 'utf-16-be',
             b'\00\00\xff\xfe': 'utf-32-le',
             b'\00\00\xfe\xff': 'utf-32-be',
-            b'\00\00\xfe\xff': 'utf-32-be',
             b'\xef\xbb\xbf': 'utf-8',
             b'': 'utf-8',
             b'\00': 'utf-8',
