@@ -452,6 +452,10 @@ class Tagger(QtWidgets.QApplication):
         if self.autoupdate_enabled:
             self.updatecheckmanager = UpdateCheckManager(parent=self.window)
 
+    @property
+    def is_wayland(self):
+        return self.platformName() == 'wayland'
+
     def pipe_server(self):
         IGNORED = {pipe.Pipe.MESSAGE_TO_IGNORE, pipe.Pipe.NO_RESPONSE_MESSAGE}
         while self.pipe_handler.pipe_running:

@@ -187,6 +187,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         super().__init__(parent)
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_NativeWindow)
         self.__shown = False
+        app = QtCore.QCoreApplication.instance()
+        self._is_wayland = app.is_wayland
         self.selected_objects = []
         self.ignore_selection_changes = IgnoreUpdatesContext(self.update_selection)
         self.toolbar = None
@@ -1065,6 +1067,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if self.player:
             self.create_player_toolbar()
         self.create_action_toolbar()
+        self.update_toolbar_style()
 
     def create_action_toolbar(self):
         if self.toolbar:
@@ -1072,10 +1075,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.removeToolBar(self.toolbar)
         self.toolbar = toolbar = QtWidgets.QToolBar(_("Actions"))
         self.insertToolBar(self.search_toolbar, self.toolbar)
-        self.update_toolbar_style()
         toolbar.setObjectName("main_toolbar")
+        if self._is_wayland:
+            toolbar.setFloatable(False)
         if IS_MACOS:
-            self.toolbar.setMovable(False)
+            toolbar.setMovable(False)
 
         def add_toolbar_action(action):
             toolbar.addAction(action)
@@ -1101,6 +1105,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """"Create a toolbar with internal player control elements"""
         toolbar = self.player.create_toolbar()
         self.addToolBar(QtCore.Qt.ToolBarArea.BottomToolBarArea, toolbar)
+        if self._is_wayland:
+            toolbar.setFloatable(False)
         self.player_toolbar_toggle_action = toolbar.toggleViewAction()
         toolbar.hide()  # Hide by default
 
@@ -1109,6 +1115,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.search_toolbar = toolbar = self.addToolBar(_("Search"))
         self.search_toolbar_toggle_action = self.search_toolbar.toggleViewAction()
         toolbar.setObjectName("search_toolbar")
+        if self._is_wayland:
+            toolbar.setFloatable(False)
         if IS_MACOS:
             self.search_toolbar.setMovable(False)
 
