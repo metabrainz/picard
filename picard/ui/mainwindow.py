@@ -1077,7 +1077,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.insertToolBar(self.search_toolbar, self.toolbar)
         toolbar.setObjectName("main_toolbar")
         if self._is_wayland:
-            toolbar.setFloatable(False)
+            toolbar.setFloatable(False)  # https://bugreports.qt.io/browse/QTBUG-92191
         if IS_MACOS:
             toolbar.setMovable(False)
 
@@ -1106,7 +1106,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         toolbar = self.player.create_toolbar()
         self.addToolBar(QtCore.Qt.ToolBarArea.BottomToolBarArea, toolbar)
         if self._is_wayland:
-            toolbar.setFloatable(False)
+            toolbar.setFloatable(False)  # https://bugreports.qt.io/browse/QTBUG-92191
         self.player_toolbar_toggle_action = toolbar.toggleViewAction()
         toolbar.hide()  # Hide by default
 
@@ -1116,7 +1116,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.search_toolbar_toggle_action = self.search_toolbar.toggleViewAction()
         toolbar.setObjectName("search_toolbar")
         if self._is_wayland:
-            toolbar.setFloatable(False)
+            toolbar.setFloatable(False)  # https://bugreports.qt.io/browse/QTBUG-92191
         if IS_MACOS:
             self.search_toolbar.setMovable(False)
 
