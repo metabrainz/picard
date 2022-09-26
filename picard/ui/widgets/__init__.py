@@ -104,10 +104,17 @@ class Popover(QtWidgets.QFrame):
         super().__init__(parent)
         self.setWindowFlags(QtCore.Qt.WindowType.Popup | QtCore.Qt.WindowType.FramelessWindowHint)
         self.position = position
+        app = QtCore.QCoreApplication.instance()
+        self._is_wayland = app.platformName() == 'wayland'
+        self._main_window = app.window
 
     def show(self):
-        super().show()
+        super().show()  # show so that the geometry gets known
         self.update_position()
+        # on Wayland position updates only work if widget gets shown
+        if self._is_wayland:
+            super().hide()
+            super().show()
 
     def update_position(self):
         parent = self.parent()
@@ -116,16 +123,29 @@ class Popover(QtWidgets.QFrame):
             y = -self.height()
         else:  # bottom
             y = parent.height()
-        pos = parent.mapToGlobal(QtCore.QPoint(int(x), int(y)))
-        screen_number = QtWidgets.QApplication.desktop().screenNumber()
-        screen = QtGui.QGuiApplication.screens()[screen_number]
-        screen_size = screen.availableVirtualSize()
-        if pos.x() < 0:
-            pos.setX(0)
+        pos = QtCore.QPoint(int(x), int(y))
+        pos = parent.mapToGlobal(pos)
+        if not self._is_wayland:
+            # Attempt to keep the popover fully visible on screen.
+            min_pos = QtCore.QPoint(0, 0)
+            screen_number = QtWidgets.QApplication.desktop().screenNumber()
+            screen = QtGui.QGuiApplication.screens()[screen_number]
+            screen_size = screen.availableVirtualSize()
+        else:
+            # The full screen size is not known on Wayland, but we can ensure
+            # the popover stays inside the app window boundary.
+            min_pos = self._main_window.pos()
+            window_size = self._main_window.size()
+            screen_size = QtCore.QSize(
+                min_pos.x() + window_size.width(),
+                min_pos.y() + window_size.height(),
+            )
+        if pos.x() < min_pos.x():
+            pos.setX(min_pos.x())
         if pos.x() + self.width() > screen_size.width():
             pos.setX(screen_size.width() - self.width())
-        if pos.y() < 0:
-            pos.setY(0)
+        if pos.y() < min_pos.y():
+            pos.setY(min_pos.y())
         if pos.y() + self.height() > screen_size.height():
             pos.setY(screen_size.height() - self.height())
         self.move(pos)
