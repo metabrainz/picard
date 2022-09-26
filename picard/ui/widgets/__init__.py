@@ -116,7 +116,7 @@ class Popover(QtWidgets.QFrame):
             y = -self.height()
         else:  # bottom
             y = parent.height()
-        pos = parent.mapToGlobal(QtCore.QPoint(x, y))
+        pos = parent.mapToGlobal(QtCore.QPoint(int(x), int(y)))
         screen_number = QtWidgets.QApplication.desktop().screenNumber()
         screen = QtGui.QGuiApplication.screens()[screen_number]
         screen_size = screen.availableVirtualSize()
@@ -145,6 +145,6 @@ class SliderPopover(Popover):
 
         self.slider = ClickableSlider(self)
         self.slider.setOrientation(QtCore.Qt.Orientation.Horizontal)
-        self.slider.setValue(value)
+        self.slider.setValue(int(value))
         self.slider.valueChanged.connect(self.value_changed)
         vbox.addWidget(self.slider)
