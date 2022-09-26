@@ -20,6 +20,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import deque
 import locale
 import os
 
@@ -87,21 +88,22 @@ class Player(QtCore.QObject):
         self._player = None
         self._toolbar = None
         self._selected_objects = []
+        self._media_queue = deque()
         if qt_multimedia_available:
             log.debug("Internal player: QtMultimedia available, initializing QMediaPlayer")
             player = QtMultimedia.QMediaPlayer(parent)
-            player.setAudioRole(QtMultimedia.QAudio.Role.MusicRole)
-            self.state_changed = player.stateChanged
-            self._logarithmic_volume = get_logarithmic_volume(player.volume())
-            availability = player.availability()
-            if availability == QtMultimedia.QMultimedia.AvailabilityStatus.Available:
+            if player.isAvailable():
+                output = QtMultimedia.QAudioOutput()
+                player.setAudioOutput(output)
+                self.state_changed = player.playbackStateChanged
+                self._logarithmic_volume = get_logarithmic_volume(output.volume())
                 log.debug("Internal player: available, QMediaPlayer set up")
                 self._player = player
+                self._audio_output = output
+                self._player.playbackStateChanged.connect(self._on_playback_state_changed)
                 self._player.errorOccurred.connect(self._on_error)
-            elif availability == QtMultimedia.QMultimedia.AvailabilityStatus.ServiceMissing:
-                log.warning("Internal player: unavailable, service is missing")
             else:
-                log.warning("Internal player: unavailable, status=%d", availability)
+                log.warning("Internal player: unavailable")
         else:
             log.warning("Internal player: unavailable, %s", qt_multimedia_errmsg)
 
@@ -129,13 +131,23 @@ class Player(QtCore.QObject):
 
     def play(self):
         """Play selected tracks with an internal player"""
-        self._player.stop()
-        playlist = QtMultimedia.QMediaPlaylist(self)
-        playlist.setPlaybackMode(QtMultimedia.QMediaPlaylist.PlaybackMode.Sequential)
-        playlist.addMedia([QtMultimedia.QMediaContent(QtCore.QUrl.fromLocalFile(file.filename))
-                          for file in iter_files_from_objects(self._selected_objects)])
-        self._player.setPlaylist(playlist)
-        self._player.play()
+        self._media_queue = deque(
+            QtCore.QUrl.fromLocalFile(file.filename)
+            for file in iter_files_from_objects(self._selected_objects)
+        )
+        self._play_next()
+
+    def _play_next(self):
+        try:
+            next_track = self._media_queue.popleft()
+            self._player.setSource(next_track)
+            self._player.play()
+        except IndexError:
+            self._player.stop()
+
+    def _on_playback_state_changed(self, state):
+        if state == QtMultimedia.QMediaPlayer.PlaybackState.StoppedState:
+            self._play_next()
 
     def pause(self, is_paused):
         """Toggle pause of an internal player"""
@@ -147,7 +159,7 @@ class Player(QtCore.QObject):
     def set_volume(self, logarithmic_volume):
         """Convert to linear scale and set"""
         self._logarithmic_volume = logarithmic_volume
-        self._player.setVolume(get_linear_volume(logarithmic_volume))
+        self._audio_output.setVolume(get_linear_volume(logarithmic_volume))
 
     def set_position(self, position):
         self._player.setPosition(position)
@@ -159,14 +171,14 @@ class Player(QtCore.QObject):
             # Playback rate changes do not affect the current media playback on
             # Linux and does work unreliable on Windows.
             # Force playback restart to have the rate change applied immediately.
-            player_state = player.state()
-            if player_state != QtMultimedia.QMediaPlayer.State.StoppedState:
+            player_state = player.playbackState()
+            if player_state != QtMultimedia.QMediaPlayer.PlaybackState.StoppedState:
                 position = player.position()
                 player.stop()
                 player.setPosition(position)
-                if player_state == QtMultimedia.QMediaPlayer.State.PlayingState:
+                if player_state == QtMultimedia.QMediaPlayer.PlaybackState.PlayingState:
                     player.play()
-                elif player_state == QtMultimedia.QMediaPlayer.State.PausedState:
+                elif player_state == QtMultimedia.QMediaPlayer.PlaybackState.PausedState:
                     player.pause()
 
     def _on_error(self, error):
@@ -174,11 +186,9 @@ class Player(QtCore.QObject):
             msg = _("Internal player: The format of a media resource isn't (fully) supported")
         elif error == QtMultimedia.QMediaPlayer.Error.AccessDeniedError:
             msg = _("Internal player: There are not the appropriate permissions to play a media resource")
-        elif error == QtMultimedia.QMediaPlayer.Error.ServiceMissingError:
-            msg = _("Internal player: A valid playback service was not found, playback cannot proceed")
         else:
-            msg = _("Internal player: error, code=%(code)d, msg=%(message)s") % {
-                'code': error,
+            msg = _("Internal player: %(error)s, %(message)s") % {
+                'error': error,
                 'message': self._player.errorString(),
             }
         self.error.emit(error, msg)
@@ -209,7 +219,7 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.pause_action.setChecked(False)
         self.pause_action.setEnabled(False)
         self.pause_action.triggered.connect(self.player.pause)
-        self.player.state_changed.connect(self.pause_action.setEnabled)
+        self.player.state_changed.connect(self.playback_state_changed)
 
         self._add_toolbar_action(self.play_action)
         self._add_toolbar_action(self.pause_action)
@@ -231,6 +241,10 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.playback_rate_button.playback_rate_changed.connect(self.player.set_playback_rate)
         self.playback_rate_button.setToolButtonStyle(self.toolButtonStyle())
         self.addWidget(self.playback_rate_button)
+
+    def playback_state_changed(self, state):
+        playing = state == QtMultimedia.QMediaPlayer.PlaybackState.PlayingState
+        self.pause_action.setEnabled(playing)
 
     def _add_toolbar_action(self, action):
         self.addAction(action)
@@ -307,7 +321,7 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
 
         self.player._player.durationChanged.connect(self.on_duration_changed)
         self.player._player.positionChanged.connect(self.on_position_changed)
-        self.player._player.currentMediaChanged.connect(self.on_media_changed)
+        self.player._player.sourceChanged.connect(self.on_media_changed)
 
     def on_duration_changed(self, duration):
         self.progress_slider.setMaximum(duration)
@@ -320,10 +334,10 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
         self.position_label.setText(format_time(position, display_zero=True))
 
     def on_media_changed(self, media):
-        if media.isNull():
+        if media.isEmpty():
             self.progress_slider.setEnabled(False)
         else:
-            url = media.canonicalUrl().toString()
+            url = media.toString()
             self.media_name_label.setText(os.path.basename(url))
             self.progress_slider.setEnabled(True)
 
