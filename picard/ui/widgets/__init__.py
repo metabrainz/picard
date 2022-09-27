@@ -105,7 +105,7 @@ class Popover(QtWidgets.QFrame):
         self.setWindowFlags(QtCore.Qt.WindowType.Popup | QtCore.Qt.WindowType.FramelessWindowHint)
         self.position = position
         app = QtCore.QCoreApplication.instance()
-        self._is_wayland = app.platformName() == 'wayland'
+        self._is_wayland = app.is_wayland
         self._main_window = app.window
 
     def show(self):
