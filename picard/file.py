@@ -663,7 +663,7 @@ class File(QtCore.QObject, Item):
 
     def acoustid_update(self):
         recording_id = None
-        if self.parent and hasattr(self.parent, 'orig_metadata'):
+        if self.parent and self.parent.can_link_fingerprint:
             recording_id = self.parent.orig_metadata['musicbrainz_recordingid']
             if not recording_id:
                 recording_id = self.metadata['musicbrainz_recordingid']
