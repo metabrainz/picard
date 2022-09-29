@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2021 Laurent Monin
-# Copyright (C) 2021 Philipp Wolfer
+# Copyright (C) 2021-2022 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,6 +25,12 @@ from collections import Counter
 from test.picardtestcase import PicardTestCase
 
 from picard.track import Track
+
+
+class TrackTest(PicardTestCase):
+    def test_can_link_fingerprint(self):
+        track = Track('123')
+        self.assertTrue(track.can_link_fingerprint)
 
 
 class TrackGenres2MetadataTest(PicardTestCase):
