@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
-# Copyright (C) 2010, 2018, 2020-2021 Philipp Wolfer
+# Copyright (C) 2010, 2018, 2020-2022 Philipp Wolfer
 # Copyright (C) 2011-2012 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2013, 2020-2021 Laurent Monin
@@ -72,6 +72,11 @@ class Item(object):
         return True
 
     def is_album_like(self):
+        return False
+
+    @property
+    def can_link_fingerprint(self):
+        """Return True if this item can provide a recording ID for linking to AcoustID."""
         return False
 
     def load(self, priority=False, refresh=False):
