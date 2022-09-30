@@ -1,0 +1,187 @@
+Conversion #2 - 10 tracks
+
+Client:  fre:ac - free audio converter
+Version: v1.1.6 (x86-64)
+
+System:  GNU/Linux (Linux 5.17.4-arch1-1)
+CPU:     AMD Ryzen 9 5950X 16-Core Processor            
+RAM:     63 GB
+
+Date:    2022-04-30
+Time:    17:59:15
+
+hh:mm:ss.fff
+------------
+00:00:00.002 Starting conversion process...
+00:00:00.002     Selected encoder:     FLAC Audio Encoder v1.3.4
+00:00:00.002     Parallel processing:  Enabled (up to 24 threads)
+00:00:00.002         SuperFast mode:   Disabled
+00:00:00.002 
+00:00:00.002     Output settings:      Multiple files
+00:00:00.002         Filename pattern: <albumartist> - <album>/<track> <title>
+00:00:00.002 
+00:00:00.002     Output verification:  Disabled
+00:00:00.002 
+00:00:00.085     Using drive:          device://cdda:0/
+00:00:00.085         Drive model:      ASUS BW-16D1HT 3.10
+00:00:00.085         Device path:      /dev/sr0
+00:00:00.085         Read offset:      6 samples
+00:00:00.085 
+00:00:00.085     Disc TOC:
+00:00:00.085 
+00:00:00.085         Track |   Start  |  Length  | Start sector | End sector
+00:00:00.085         -------------------------------------------------------
+00:00:00.086             1 | 00:00.00 | 06:07.57 |            0 |      27581
+00:00:00.086             2 | 06:07.57 | 06:03.35 |        27582 |      54841
+00:00:00.086             3 | 12:11.17 | 06:11.08 |        54842 |      82674
+00:00:00.086             4 | 18:22.25 | 05:46.62 |        82675 |     108686
+00:00:00.086             5 | 24:09.12 | 03:45.30 |       108687 |     125591
+00:00:00.086             6 | 27:54.42 | 06:32.18 |       125592 |     155009
+00:00:00.086             7 | 34:26.60 | 05:48.32 |       155010 |     181141
+00:00:00.086             8 | 40:15.17 | 07:12.23 |       181142 |     213564
+00:00:00.086             9 | 47:27.40 | 07:07.10 |       213565 |     245599
+00:00:00.086            10 | 54:34.50 | 07:49.70 |       245600 |     280844
+00:00:00.086 
+00:00:00.086     Disc info:
+00:00:00.086         CDDB disc ID:  8d0ea00a
+00:00:00.086         CDDB category: soundtrack
+00:00:00.086 
+00:00:00.087         Artist:        Jerry Martin
+00:00:00.087         Album:         Music From Sim City 3000
+00:00:00.087         Genre:         Game
+00:00:00.087         Published:     1996
+00:00:00.087 
+00:00:00.087         Track | Offset | Track title
+00:00:00.087         -------------------------------------------------------
+00:00:00.087             1 |    150 | Sim Broadway
+00:00:00.087             2 |  27732 | Building
+00:00:00.087             3 |  54992 | Magic City
+00:00:00.087             4 |  82825 | New Terrain
+00:00:00.087             5 | 108837 | Updown Town
+00:00:00.087             6 | 125742 | Night Life
+00:00:00.087             7 | 155160 | Power Grid
+00:00:00.087             8 | 181292 | Infrastructure
+00:00:00.087             9 | 213715 | Concrete Jungle
+00:00:00.087            10 | 245750 | Illumination
+00:00:00.087 
+00:00:00.091     Ripping: device://cdda:0/1
+00:00:00.091          to: Jerry Martin - Music From Sim City 3000/01 Sim Broadway.flac
+00:00:00.091         Decoder: CDIO Ripper Component v2.1.0
+00:00:00.092 
+00:00:23.793     Successfully verified input track: device://cdda:0/1
+00:00:23.793         Track has been accurately ripped:
+00:00:23.793             Checksum (AccurateRip v1): d8c00b59, Confidence: 2
+00:00:23.793 
+00:00:23.795     Finished ripping: device://cdda:0/1
+00:00:23.795         CRC checksum: 4ed77965
+00:00:23.795         Duration: 00:23.703 (15.5x speed)
+00:00:23.795 
+00:00:23.855     Ripping: device://cdda:0/2
+00:00:23.856          to: Jerry Martin - Music From Sim City 3000/02 Building.flac
+00:00:23.856         Decoder: CDIO Ripper Component v2.1.0
+00:00:23.856 
+00:00:41.512     Successfully verified input track: device://cdda:0/2
+00:00:41.512         Track has been accurately ripped:
+00:00:41.512             Checksum (AccurateRip v1): dea7eaac, Confidence: 2
+00:00:41.512 
+00:00:41.513     Finished ripping: device://cdda:0/2
+00:00:41.513         CRC checksum: 81c2f85f
+00:00:41.513         Duration: 00:17.657 (20.6x speed)
+00:00:41.513 
+00:00:41.602     Ripping: device://cdda:0/3
+00:00:41.602          to: Jerry Martin - Music From Sim City 3000/03 Magic City.flac
+00:00:41.602         Decoder: CDIO Ripper Component v2.1.0
+00:00:41.602 
+00:00:57.428     Successfully verified input track: device://cdda:0/3
+00:00:57.428         Track has been accurately ripped:
+00:00:57.428             Checksum (AccurateRip v1): 658d5072, Confidence: 2
+00:00:57.428 
+00:00:57.430     Finished ripping: device://cdda:0/3
+00:00:57.430         CRC checksum: aaabd98b
+00:00:57.430         Duration: 00:15.828 (23.4x speed)
+00:00:57.430 
+00:00:57.495     Ripping: device://cdda:0/4
+00:00:57.496          to: Jerry Martin - Music From Sim City 3000/04 New Terrain.flac
+00:00:57.496         Decoder: CDIO Ripper Component v2.1.0
+00:00:57.496 
+00:01:11.308     Successfully verified input track: device://cdda:0/4
+00:01:11.308         Track has been accurately ripped:
+00:01:11.309             Checksum (AccurateRip v1): 814bfe6f, Confidence: 2
+00:01:11.309 
+00:01:11.310     Finished ripping: device://cdda:0/4
+00:01:11.310         CRC checksum: 48f714c6
+00:01:11.310         Duration: 00:13.814 (25.1x speed)
+00:01:11.310 
+00:01:11.379     Ripping: device://cdda:0/5
+00:01:11.379          to: Jerry Martin - Music From Sim City 3000/05 Updown Town.flac
+00:01:11.379         Decoder: CDIO Ripper Component v2.1.0
+00:01:11.379 
+00:01:19.795     Successfully verified input track: device://cdda:0/5
+00:01:19.795         Track has been accurately ripped:
+00:01:19.795             Checksum (AccurateRip v1): 3be704f2, Confidence: 2
+00:01:19.795 
+00:01:19.796     Finished ripping: device://cdda:0/5
+00:01:19.796         CRC checksum: 03fbf35a
+00:01:19.796         Duration: 00:08.417 (26.8x speed)
+00:01:19.796 
+00:01:19.882     Ripping: device://cdda:0/6
+00:01:19.882          to: Jerry Martin - Music From Sim City 3000/06 Night Life.flac
+00:01:19.882         Decoder: CDIO Ripper Component v2.1.0
+00:01:19.882 
+00:01:33.735     Successfully verified input track: device://cdda:0/6
+00:01:33.735         Track has been accurately ripped:
+00:01:33.735             Checksum (AccurateRip v1): f2cd90a7, Confidence: 2
+00:01:33.735 
+00:01:33.737     Finished ripping: device://cdda:0/6
+00:01:33.737         CRC checksum: f23126a8
+00:01:33.737         Duration: 00:13.854 (28.3x speed)
+00:01:33.737 
+00:01:33.819     Ripping: device://cdda:0/7
+00:01:33.819          to: Jerry Martin - Music From Sim City 3000/07 Power Grid.flac
+00:01:33.819         Decoder: CDIO Ripper Component v2.1.0
+00:01:33.819 
+00:01:45.374     Successfully verified input track: device://cdda:0/7
+00:01:45.374         Track has been accurately ripped:
+00:01:45.374             Checksum (AccurateRip v1): 86bac22a, Confidence: 2
+00:01:45.374 
+00:01:45.376     Finished ripping: device://cdda:0/7
+00:01:45.376         CRC checksum: 20da4816
+00:01:45.376         Duration: 00:11.557 (30.1x speed)
+00:01:45.376 
+00:01:45.459     Ripping: device://cdda:0/8
+00:01:45.459          to: Jerry Martin - Music From Sim City 3000/08 Infrastructure.flac
+00:01:45.459         Decoder: CDIO Ripper Component v2.1.0
+00:01:45.459 
+00:01:59.006     Successfully verified input track: device://cdda:0/8
+00:01:59.006         Track has been accurately ripped:
+00:01:59.006             Checksum (AccurateRip v1): 932ac0d1, Confidence: 2
+00:01:59.006 
+00:01:59.007     Finished ripping: device://cdda:0/8
+00:01:59.008         CRC checksum: 9b41e668
+00:01:59.008         Duration: 00:13.549 (31.9x speed)
+00:01:59.008 
+00:01:59.066     Ripping: device://cdda:0/9
+00:01:59.066          to: Jerry Martin - Music From Sim City 3000/09 Concrete Jungle.flac
+00:01:59.067         Decoder: CDIO Ripper Component v2.1.0
+00:01:59.067 
+00:02:11.732     Successfully verified input track: device://cdda:0/9
+00:02:11.732         Track has been accurately ripped:
+00:02:11.732             Checksum (AccurateRip v1): c1313eba, Confidence: 2
+00:02:11.732 
+00:02:11.734     Finished ripping: device://cdda:0/9
+00:02:11.734         CRC checksum: 59905a73
+00:02:11.734         Duration: 00:12.667 (33.7x speed)
+00:02:11.734 
+00:02:11.792     Ripping: device://cdda:0/10
+00:02:11.792          to: Jerry Martin - Music From Sim City 3000/10 Illumination.flac
+00:02:11.792         Decoder: CDIO Ripper Component v2.1.0
+00:02:11.792 
+00:02:25.444     Successfully verified input track: device://cdda:0/10
+00:02:25.445         Track has been accurately ripped:
+00:02:25.445             Checksum (AccurateRip v1): 917e0269, Confidence: 2
+00:02:25.445 
+00:02:25.446     Finished ripping: device://cdda:0/10
+00:02:25.446         CRC checksum: 809e7170
+00:02:25.446         Duration: 00:13.654 (34.4x speed)
+00:02:25.446 
+00:02:25.461     Total duration: 02:25.374 (25.8x speed)
