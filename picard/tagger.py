@@ -1177,7 +1177,7 @@ class Tagger(QtWidgets.QApplication):
         file_chooser = QtWidgets.QFileDialog(self.window)
         file_chooser.setNameFilters([
             _("All supported log files") + " (*.log, *.txt)",
-            _("EAC / XLD / Whipper log files") + " (*.log)",
+            _("EAC / XLD / Whipper / fre:ac log files") + " (*.log)",
             _("dBpoweramp log files") + " (*.txt)",
             _("All files") + " (*)",
         ])
