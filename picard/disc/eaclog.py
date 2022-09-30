@@ -4,6 +4,7 @@
 #
 # Copyright(c) 2018 Konstantin Mochalov
 # Copyright(c) 2022 Philipp Wolfer
+# Copyright(c) 2022 Jeffrey Bosboom
 #
 # Original code from https://gist.github.com/kolen/765526
 #
@@ -41,7 +42,7 @@ RE_TOC_TABLE_HEADER = re.compile(r""" \s*
     """, re.VERBOSE)
 
 RE_TOC_TABLE_LINE = re.compile(r"""
-    ^\s*
+    \s*
     (?P<num>\d+)
     \s*\|\s*
     (?P<start_time>[0-9:.]+)
@@ -69,14 +70,14 @@ def filter_toc_entries(lines):
             break
 
     for line in lines:
-        m = RE_TOC_TABLE_LINE.match(line)
+        m = RE_TOC_TABLE_LINE.search(line)
         if not m:
             break
         yield TocEntry(int(m['num']), int(m['start_sector']), int(m['end_sector']))
 
 
 def toc_from_file(path):
-    """Reads EAC / XLD log files, generates MusicBrainz disc TOC listing for use as discid.
+    """Reads EAC / XLD / fre:ac log files, generates MusicBrainz disc TOC listing for use as discid.
 
     Warning: may work wrong for discs having data tracks. May generate wrong
     results on other non-standard cases."""

@@ -1,0 +1,244 @@
+Conversion #1 - 13 tracks
+
+Client:  fre:ac - free audio converter
+Version: v1.1.6 (x86-64)
+
+System:  GNU/Linux (Linux 5.17.4-arch1-1)
+CPU:     AMD Ryzen 9 5950X 16-Core Processor            
+RAM:     63 GB
+
+Date:    2022-04-30
+Time:    17:56:11
+
+hh:mm:ss.fff
+------------
+00:00:00.002 Starting conversion process...
+00:00:00.002     Selected encoder:     FLAC Audio Encoder v1.3.4
+00:00:00.002     Parallel processing:  Enabled (up to 24 threads)
+00:00:00.002         SuperFast mode:   Disabled
+00:00:00.002 
+00:00:00.002     Output settings:      Multiple files
+00:00:00.002         Filename pattern: <albumartist> - <album>/<track> <title>
+00:00:00.003 
+00:00:00.003     Output verification:  Disabled
+00:00:00.003 
+00:00:00.080     Using drive:          device://cdda:0/
+00:00:00.080         Drive model:      ASUS BW-16D1HT 3.10
+00:00:00.080         Device path:      /dev/sr0
+00:00:00.080         Read offset:      6 samples
+00:00:00.080 
+00:00:00.080     Disc TOC:
+00:00:00.080 
+00:00:00.080         Track |   Start  |  Length  | Start sector | End sector
+00:00:00.081         -------------------------------------------------------
+00:00:00.081             1 | 00:00.00 | 03:18.14 |            0 |      14863
+00:00:00.081             2 | 03:18.14 | 04:03.74 |        14864 |      33162
+00:00:00.081             3 | 07:22.13 | 03:29.35 |        33163 |      48872
+00:00:00.081             4 | 10:51.48 | 03:41.04 |        48873 |      65451
+00:00:00.081             5 | 14:32.52 | 03:29.39 |        65452 |      81165
+00:00:00.081             6 | 18:02.16 | 04:40.65 |        81166 |     102230
+00:00:00.081             7 | 22:43.06 | 03:05.38 |       102231 |     116143
+00:00:00.081             8 | 25:48.44 | 03:53.51 |       116144 |     133669
+00:00:00.081             9 | 29:42.20 | 03:52.73 |       133670 |     151142
+00:00:00.081            10 | 33:35.18 | 03:55.34 |       151143 |     168801
+00:00:00.081            11 | 37:30.52 | 04:43.10 |       168802 |     190036
+00:00:00.081            12 | 42:13.62 | 03:03.04 |       190037 |     203765
+00:00:00.081            13 | 45:16.66 | 03:09.59 |       203766 |     217999
+00:00:00.082          DATA |          |          |       229400 |     261577
+00:00:00.082 
+00:00:00.082     Disc info:
+00:00:00.082         CDDB disc ID:  ab0d9f0e
+00:00:00.082         CDDB category: soundtrack
+00:00:00.082 
+00:00:00.082         Artist:        Various
+00:00:00.082         Album:         Pokémon: 2.B.A. Master
+00:00:00.082         Genre:         Anime
+00:00:00.082         Published:     1999
+00:00:00.082 
+00:00:00.082         Track | Offset | Track title
+00:00:00.082         -------------------------------------------------------
+00:00:00.082             1 |    150 | Jason Paige / Pokémon Theme
+00:00:00.082             2 |  15014 | Russell Velázquez / 2B A Master
+00:00:00.082             3 |  33313 | Jason Paige / Viridian City
+00:00:00.082             4 |  49023 | Joshua Tyler / What Kind of Pokémon Are You?
+00:00:00.082             5 |  65602 | Ray Greene / My Best Friends
+00:00:00.082             6 |  81316 | Sheila Brody / Everything Changes
+00:00:00.083             7 | 102381 | Marti Lebow / The Time Has Come (Pikachu's Goodbye)
+00:00:00.083             8 | 116294 | Vicki Sue Robinson / Pokémon (Dance Mix)
+00:00:00.083             9 | 133820 | Rachael Lillis, Eric Stuart, Adam Blaustein & Ted Lewis / Double Trouble (Team Rocket)
+00:00:00.083            10 | 151293 | J. P. Hartmann / Together Forever
+00:00:00.083            11 | 168952 | Yvette Laboy / Misty's Song
+00:00:00.083            12 | 190187 | James "D Train" Williams & Babi Floyd / PokéRAP
+00:00:00.083            13 | 203916 | John Loeffler / You Can Do It (If You Really Try)
+00:00:00.083          DATA | 229550 | Pokémon / DATA
+00:00:00.083 
+00:00:00.091     Ripping: device://cdda:0/1
+00:00:00.092          to: Jason Paige - Pokémon 2.B.A. Master/01 Pokémon Theme.flac
+00:00:00.092         Decoder: CDIO Ripper Component v2.1.0
+00:00:00.092 
+00:00:13.720     Successfully verified input track: device://cdda:0/1
+00:00:13.720         Track has been accurately ripped:
+00:00:13.720             Checksum (AccurateRip v1): f0f3a3cc, Confidence: 16
+00:00:13.721             Checksum (AccurateRip v2): 8f0eeb3f, Confidence: 37
+00:00:13.721 
+00:00:13.722     Finished ripping: device://cdda:0/1
+00:00:13.722         CRC checksum: 7cd27b2e
+00:00:13.722         Duration: 00:13.630 (14.5x speed)
+00:00:13.723 
+00:00:13.819     Ripping: device://cdda:0/2
+00:00:13.819          to: Russell Velázquez - Pokémon 2.B.A. Master/02 2B A Master.flac
+00:00:13.819         Decoder: CDIO Ripper Component v2.1.0
+00:00:13.819 
+00:00:25.376     Successfully verified input track: device://cdda:0/2
+00:00:25.376         Track has been accurately ripped:
+00:00:25.376             Checksum (AccurateRip v1): f752cee1, Confidence: 17
+00:00:25.376             Checksum (AccurateRip v2): 68b83624, Confidence: 36
+00:00:25.376 
+00:00:25.377     Finished ripping: device://cdda:0/2
+00:00:25.378         CRC checksum: 4ee6e838
+00:00:25.378         Duration: 00:11.559 (21.1x speed)
+00:00:25.378 
+00:00:25.472     Ripping: device://cdda:0/3
+00:00:25.472          to: Jason Paige - Pokémon 2.B.A. Master/03 Viridian City.flac
+00:00:25.472         Decoder: CDIO Ripper Component v2.1.0
+00:00:25.472 
+00:00:34.554     Successfully verified input track: device://cdda:0/3
+00:00:34.554         Track has been accurately ripped:
+00:00:34.554             Checksum (AccurateRip v1): 7145a792, Confidence: 15
+00:00:34.555             Checksum (AccurateRip v2): 96b3779e, Confidence: 37
+00:00:34.555 
+00:00:34.556     Finished ripping: device://cdda:0/3
+00:00:34.557         CRC checksum: 828f442f
+00:00:34.557         Duration: 00:09.085 (23.1x speed)
+00:00:34.557 
+00:00:34.626     Ripping: device://cdda:0/4
+00:00:34.626          to: Joshua Tyler - Pokémon 2.B.A. Master/04 What Kind of Pokémon Are You.flac
+00:00:34.626         Decoder: CDIO Ripper Component v2.1.0
+00:00:34.626 
+00:00:43.589     Successfully verified input track: device://cdda:0/4
+00:00:43.590         Track has been accurately ripped:
+00:00:43.590             Checksum (AccurateRip v1): a240bdcd, Confidence: 15
+00:00:43.590             Checksum (AccurateRip v2): a7bc4352, Confidence: 36
+00:00:43.590 
+00:00:43.591     Finished ripping: device://cdda:0/4
+00:00:43.591         CRC checksum: f496507c
+00:00:43.592         Duration: 00:08.965 (24.7x speed)
+00:00:43.592 
+00:00:43.655     Ripping: device://cdda:0/5
+00:00:43.655          to: Ray Greene - Pokémon 2.B.A. Master/05 My Best Friends.flac
+00:00:43.655         Decoder: CDIO Ripper Component v2.1.0
+00:00:43.655 
+00:00:52.085     Successfully verified input track: device://cdda:0/5
+00:00:52.085         Track has been accurately ripped:
+00:00:52.085             Checksum (AccurateRip v1): f7477e1f, Confidence: 15
+00:00:52.086             Checksum (AccurateRip v2): 7368b92b, Confidence: 35
+00:00:52.086 
+00:00:52.088     Finished ripping: device://cdda:0/5
+00:00:52.088         CRC checksum: e3dd9987
+00:00:52.088         Duration: 00:08.433 (24.8x speed)
+00:00:52.088 
+00:00:52.172     Ripping: device://cdda:0/6
+00:00:52.172          to: Sheila Brody - Pokémon 2.B.A. Master/06 Everything Changes.flac
+00:00:52.172         Decoder: CDIO Ripper Component v2.1.0
+00:00:52.172 
+00:01:02.242     Successfully verified input track: device://cdda:0/6
+00:01:02.242         Track has been accurately ripped:
+00:01:02.242             Checksum (AccurateRip v1): 20b839eb, Confidence: 14
+00:01:02.242             Checksum (AccurateRip v2): edd2aad1, Confidence: 36
+00:01:02.242 
+00:01:02.244     Finished ripping: device://cdda:0/6
+00:01:02.244         CRC checksum: 0e0f34f0
+00:01:02.244         Duration: 00:10.072 (27.9x speed)
+00:01:02.244 
+00:01:02.312     Ripping: device://cdda:0/7
+00:01:02.312          to: Marti Lebow - Pokémon 2.B.A. Master/07 The Time Has Come (Pikachu's Goodbye).flac
+00:01:02.312         Decoder: CDIO Ripper Component v2.1.0
+00:01:02.312 
+00:01:08.606     Successfully verified input track: device://cdda:0/7
+00:01:08.606         Track has been accurately ripped:
+00:01:08.606             Checksum (AccurateRip v1): 9266260a, Confidence: 13
+00:01:08.606             Checksum (AccurateRip v2): aca79df3, Confidence: 35
+00:01:08.606 
+00:01:08.608     Finished ripping: device://cdda:0/7
+00:01:08.608         CRC checksum: 8ce49aa7
+00:01:08.608         Duration: 00:06.295 (29.5x speed)
+00:01:08.608 
+00:01:08.679     Ripping: device://cdda:0/8
+00:01:08.679          to: Vicki Sue Robinson - Pokémon 2.B.A. Master/08 Pokémon (Dance Mix).flac
+00:01:08.679         Decoder: CDIO Ripper Component v2.1.0
+00:01:08.679 
+00:01:16.288     Successfully verified input track: device://cdda:0/8
+00:01:16.289         Track has been accurately ripped:
+00:01:16.289             Checksum (AccurateRip v1): 8c3887c3, Confidence: 13
+00:01:16.289             Checksum (AccurateRip v2): 651e9759, Confidence: 35
+00:01:16.289 
+00:01:16.290     Finished ripping: device://cdda:0/8
+00:01:16.290         CRC checksum: a8706e7b
+00:01:16.291         Duration: 00:07.612 (30.7x speed)
+00:01:16.291 
+00:01:16.382     Ripping: device://cdda:0/9
+00:01:16.382          to: Rachael Lillis, Eric Stuart, Adam Blaustein & Ted Lewis - Pokémon 2.B.A. Master/09 Double Trouble (Team Rocket).flac
+00:01:16.382         Decoder: CDIO Ripper Component v2.1.0
+00:01:16.382 
+00:01:23.620     Successfully verified input track: device://cdda:0/9
+00:01:23.621         Track has been accurately ripped:
+00:01:23.621             Checksum (AccurateRip v1): 59020a6f, Confidence: 16
+00:01:23.621             Checksum (AccurateRip v2): 5bf43ee5, Confidence: 36
+00:01:23.621 
+00:01:23.622     Finished ripping: device://cdda:0/9
+00:01:23.623         CRC checksum: eb7b38b7
+00:01:23.623         Duration: 00:07.241 (32.2x speed)
+00:01:23.623 
+00:01:23.689     Ripping: device://cdda:0/10
+00:01:23.689          to: J. P. Hartmann - Pokémon 2.B.A. Master/10 Together Forever.flac
+00:01:23.689         Decoder: CDIO Ripper Component v2.1.0
+00:01:23.689 
+00:01:30.738     Successfully verified input track: device://cdda:0/10
+00:01:30.738         Track has been accurately ripped:
+00:01:30.739             Checksum (AccurateRip v1): 21d2c702, Confidence: 15
+00:01:30.739             Checksum (AccurateRip v2): d4d208f7, Confidence: 35
+00:01:30.739 
+00:01:30.740     Finished ripping: device://cdda:0/10
+00:01:30.741         CRC checksum: 6040589e
+00:01:30.741         Duration: 00:07.052 (33.4x speed)
+00:01:30.741 
+00:01:30.805     Ripping: device://cdda:0/11
+00:01:30.805          to: Yvette Laboy - Pokémon 2.B.A. Master/11 Misty's Song.flac
+00:01:30.805         Decoder: CDIO Ripper Component v2.1.0
+00:01:30.806 
+00:01:38.954     Successfully verified input track: device://cdda:0/11
+00:01:38.954         Track has been accurately ripped:
+00:01:38.954             Checksum (AccurateRip v1): 353edef1, Confidence: 14
+00:01:38.955             Checksum (AccurateRip v2): bc1795cc, Confidence: 35
+00:01:38.955 
+00:01:38.956     Finished ripping: device://cdda:0/11
+00:01:38.956         CRC checksum: 60bcfcd6
+00:01:38.956         Duration: 00:08.150 (34.7x speed)
+00:01:38.956 
+00:01:39.035     Ripping: device://cdda:0/12
+00:01:39.035          to: James ''D Train'' Williams & Babi Floyd - Pokémon 2.B.A. Master/12 PokéRAP.flac
+00:01:39.035         Decoder: CDIO Ripper Component v2.1.0
+00:01:39.036 
+00:01:44.085     Successfully verified input track: device://cdda:0/12
+00:01:44.086         Track has been accurately ripped:
+00:01:44.086             Checksum (AccurateRip v1): 23f0553f, Confidence: 16
+00:01:44.086             Checksum (AccurateRip v2): 8f169f2c, Confidence: 35
+00:01:44.086 
+00:01:44.087     Finished ripping: device://cdda:0/12
+00:01:44.087         CRC checksum: 18f82e46
+00:01:44.087         Duration: 00:05.051 (36.2x speed)
+00:01:44.088 
+00:01:44.156     Ripping: device://cdda:0/13
+00:01:44.156          to: John Loeffler - Pokémon 2.B.A. Master/13 You Can Do It (If You Really Try).flac
+00:01:44.156         Decoder: CDIO Ripper Component v2.1.0
+00:01:44.160 
+00:01:49.269     Successfully verified input track: device://cdda:0/13
+00:01:49.270         Track has been accurately ripped:
+00:01:49.270             Checksum (AccurateRip v1): 5b18a2ac, Confidence: 16
+00:01:49.270             Checksum (AccurateRip v2): 8ddccd6b, Confidence: 35
+00:01:49.270 
+00:01:49.272     Finished ripping: device://cdda:0/13
+00:01:49.272         CRC checksum: 53f4b4c3
+00:01:49.272         Duration: 00:05.112 (37.1x speed)
+00:01:49.272 
+00:01:49.285     Total duration: 01:49.202 (26.6x speed)

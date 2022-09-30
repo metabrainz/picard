@@ -4,6 +4,7 @@
 #
 # Copyright (C) 2022 Laurent Monin
 # Copyright (C) 2022 Philipp Wolfer
+# Copyright (C) 2022 Jeffrey Bosboom
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -80,10 +81,20 @@ class TestTocFromFile(PicardTestCase):
     def test_toc_from_file_xld(self):
         self._test_toc_from_file('xld.log')
 
+    def test_toc_from_file_freac(self):
+        test_log = get_test_data_path('freac.log')
+        toc = toc_from_file(test_log)
+        self.assertEqual((1, 10, 280995, 150, 27732, 54992, 82825, 108837, 125742, 155160, 181292, 213715, 245750), toc)
+
     def test_toc_from_file_with_datatrack(self):
         test_log = get_test_data_path('eac-datatrack.log')
         toc = toc_from_file(test_log)
         self.assertEqual((1, 8, 178288, 150, 20575, 42320, 62106, 78432, 94973, 109750, 130111), toc)
+
+    def test_toc_from_file_with_datatrack_freac(self):
+        test_log = get_test_data_path('freac-datatrack.log')
+        toc = toc_from_file(test_log)
+        self.assertEqual((1, 13, 218150, 150, 15014, 33313, 49023, 65602, 81316, 102381, 116294, 133820, 151293, 168952, 190187, 203916), toc)
 
     def test_toc_from_empty_file(self):
         test_log = get_test_data_path('eac-empty.log')
