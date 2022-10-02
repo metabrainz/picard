@@ -49,6 +49,7 @@ from collections import OrderedDict
 from copy import deepcopy
 import datetime
 from functools import partial
+import itertools
 import os.path
 
 from PyQt5 import (
@@ -1439,7 +1440,19 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         dialog.exec_()
 
     def cluster(self):
-        self.tagger.cluster(self.selected_objects, self._cluster_finished)
+        # Cluster all selected unclustered files. If there are no selected
+        # unclustered files cluster all unclustered files.
+        files = (
+            f for f in iter_files_from_objects(self.selected_objects)
+            if f.parent == self.tagger.unclustered_files
+        )
+        try:
+            file = next(files)
+        except StopIteration:
+            files = self.tagger.unclustered_files.files
+        else:
+            files = itertools.chain([file], files)
+        self.tagger.cluster(files, self._cluster_finished)
 
     def _cluster_finished(self):
         self.panel.update_current_view()
