@@ -46,7 +46,6 @@
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 from functools import partial
-import itertools
 import logging
 import os.path
 import platform
@@ -924,16 +923,7 @@ class Tagger(QtWidgets.QApplication):
     def cluster(self, objs, callback=None):
         """Group files with similar metadata to 'clusters'."""
         log.debug("Clustering %r", objs)
-        files = (
-            f for f in iter_files_from_objects(objs)
-            if f.parent == self.unclustered_files
-        )
-        try:
-            file = next(files)
-        except StopIteration:
-            files = self.unclustered_files.files
-        else:
-            files = itertools.chain([file], files)
+        files = iter_files_from_objects(objs)
         thread.run_task(
             partial(self._do_clustering, list(files)),
             partial(self._clustering_finished, callback))
