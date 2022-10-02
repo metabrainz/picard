@@ -1515,5 +1515,5 @@ _Since Picard 2.8_"""
 def func_cleanmulti(parser, multi):
     name = normalize_tagname(multi)
     values = [str(value) for value in parser.context.getall(name) if value or value == 0]
-    parser.context[multi] = values
+    parser.context[name] = values
     return ""
