@@ -2164,7 +2164,17 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$cleanmulti(bar)%bar%", "one; two", context)
         self.assertScriptResultEquals("$cleanmulti(baz)%baz%", "one; two", context)
 
-        # Text clean with only empty string elements
+    def test_cmd_cleanmulti_with_hidden_var(self):
+        context = Metadata()
+        context["~foo"] = ["one", "", "two"]
+
+        # Confirm initial values
+        self.assertScriptResultEquals("%_foo%", "one; ; two", context)
+        # Test cleaned values
+        self.assertScriptResultEquals("$cleanmulti(_foo)%_foo%", "one; two", context)
+
+    def test_cmd_cleanmulti_only_empty_strings(self):
+        context = Metadata()
         context["foo"] = ["", "", ""]
 
         # Confirm initial values
@@ -2172,7 +2182,8 @@ class ScriptParserTest(PicardTestCase):
         # Test cleaned values
         self.assertScriptResultEquals("$cleanmulti(foo)%foo%", "", context)
 
-        # Test clean with indirect argument
+    def test_cmd_cleanmulti_indirect_argument(self):
+        context = Metadata()
         context["foo"] = ["", "one", "two"]
         context["bar"] = "foo"
 
@@ -2181,7 +2192,8 @@ class ScriptParserTest(PicardTestCase):
         # Test cleaned values
         self.assertScriptResultEquals("$cleanmulti(%bar%)%foo%", "one; two", context)
 
-        # Test clean with non-multi argument
+    def test_cmd_cleanmulti_non_multi_argument(self):
+        context = Metadata()
         context["foo"] = "one"
         context["bar"] = "one; ; two"
         context["baz"] = ""
@@ -2195,7 +2207,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$cleanmulti(bar)%bar%", "one; ; two", context)
         self.assertScriptResultEquals("$cleanmulti(baz)%baz%", "", context)
 
-        # Tests with invalid number of arguments
+    def test_cmd_cleanmulti_invalid_number_of_arguments(self):
         areg = r"^\d+:\d+:\$cleanmulti: Wrong number of arguments for \$cleanmulti: Expected exactly 1, "
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$cleanmulti()")
