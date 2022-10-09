@@ -69,7 +69,7 @@ jobs:
         pip3 install -r requirements.txt
         python3 setup.py install
       env:
-        PYINSTALLER_VERSION: v5.3
+        PYINSTALLER_VERSION: v5.5
         CFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}
         CPPFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}
         LDFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}

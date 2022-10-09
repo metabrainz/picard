@@ -1,2 +1,2 @@
 Babel==2.9.1
-PyInstaller==5.3
+PyInstaller==5.5
