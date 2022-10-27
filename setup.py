@@ -6,7 +6,7 @@
 # Copyright (C) 2006-2008, 2011-2014, 2017 Lukáš Lalinský
 # Copyright (C) 2007 Santiago M. Mola
 # Copyright (C) 2008 Robert Kaye
-# Copyright (C) 2008-2009, 2018-2021 Philipp Wolfer
+# Copyright (C) 2008-2009, 2018-2022 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2011-2012, 2014, 2016-2018 Wieland Hoffmann
 # Copyright (C) 2011-2014 Michael Wiencek
@@ -39,14 +39,12 @@
 
 
 import datetime
-from distutils import log
-from distutils.command.build import build
-from distutils.dep_util import newer
-from distutils.spawn import find_executable
 import glob
 from io import StringIO
+import logging as log
 import os
 import re
+from shutil import which
 import stat
 import sys
 import tempfile
@@ -56,8 +54,12 @@ from setuptools import (
     Extension,
     setup,
 )
-from setuptools.command.install import install as install
+from setuptools.command.build import build
+from setuptools.command.install import install
 from setuptools.dist import Distribution
+
+# required for PEP 517
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 
 from picard import (
     PICARD_APP_ID,
@@ -80,7 +82,20 @@ ext_modules = [
     Extension('picard.util._astrcmp', sources=['picard/util/_astrcmp.c']),
 ]
 
-tx_executable = find_executable('tx')
+tx_executable = which('tx')
+
+
+def newer(source, target):
+    """Return true if 'source' exists and is more recently modified than
+    'target', or if 'source' exists and 'target' doesn't.  Return false if
+    both exist and 'target' is the same age or younger than 'source'.
+    Raise FileNotFoundError if 'source' does not exist.
+    """
+    if not os.path.exists(source):
+        raise FileNotFoundError('file "%s" does not exist' % os.path.abspath(source))
+    if not os.path.exists(target):
+        return True
+    return os.path.getmtime(source) > os.path.getmtime(target)
 
 
 class picard_test(Command):
@@ -235,10 +250,8 @@ class picard_build(build):
         ('build-number=', None, 'build number (integer)'),
     ]
 
-    sub_commands = build.sub_commands
-
     def initialize_options(self):
-        build.initialize_options(self)
+        super().initialize_options()
         self.build_number = 0
         self.build_locales = None
         self.localedir = None
@@ -246,7 +259,7 @@ class picard_build(build):
         self.disable_locales = None
 
     def finalize_options(self):
-        build.finalize_options(self)
+        super().finalize_options()
         try:
             self.build_number = int(self.build_number)
         except ValueError:
@@ -295,7 +308,7 @@ class picard_build(build):
             })
         elif sys.platform not in {'darwin', 'haiku1', 'win32'}:
             self.run_command('build_appdata')
-        build.run(self)
+        super().run()
 
 
 def py_from_ui(uifile):
