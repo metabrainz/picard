@@ -1,2 +1,3 @@
 Babel==2.9.1
 PyInstaller==5.5
+setuptools>=62.4.0
