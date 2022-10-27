@@ -48,9 +48,9 @@ from picard.util import sanitize_filename
 
 
 if IS_WIN:
-    import win32pipe  # type: ignore
-    import win32file  # type: ignore
     from pywintypes import error as WinApiError  # type: ignore
+    import win32file  # type: ignore
+    import win32pipe  # type: ignore
 
 
 class PipeError(Exception):

@@ -165,6 +165,7 @@ def _update_state(obj, state):
 # TODO: use functools.singledispatch when py3 is supported
 def _get_state(obj):
     from picard.album import Album
+
     from picard.ui.item import FileListItem
 
     state = ImageListState()
