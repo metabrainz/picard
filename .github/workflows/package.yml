@@ -144,15 +144,15 @@ jobs:
         DISCID_SHA256SUM: 9fd815f6bd0c624f0f41dd81209aeaa3f2129dcd1d617f88b844b4503d12598e
         FPCALC_VERSION: 1.5.1
         FPCALC_SHA256SUM: 36b478e16aa69f757f376645db0d436073a42c0097b6bb2677109e7835b59bbc
-    - name: Patch build version
-      if: startsWith(github.ref, 'refs/tags/') != true
-      run: |
-        python setup.py patch_version --platform=$Env:BUILD_NUMBER.$(git rev-parse --short HEAD)
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements-build.txt
         pip install -r requirements-win.txt
+    - name: Patch build version
+      if: startsWith(github.ref, 'refs/tags/') != true
+      run: |
+        python setup.py patch_version --platform=$Env:BUILD_NUMBER.$(git rev-parse --short HEAD)
     - name: Run tests
       timeout-minutes: 30
       run: python setup.py test
