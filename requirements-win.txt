@@ -1,9 +1,9 @@
 python-dateutil==2.8.2
 discid==1.2.0
-fasteners==0.17.2
-markdown==3.3.4
+fasteners==0.18
+markdown==3.4.1
 mutagen==1.46.0
-PyJWT==2.4.0
-PyQt5==5.15.6
-pywin32==303
+PyJWT==2.6.0
+PyQt5==5.15.7
+pywin32==304
 pyyaml==6.0

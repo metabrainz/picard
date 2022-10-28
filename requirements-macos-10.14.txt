@@ -1,10 +1,10 @@
 python-dateutil==2.8.2
 discid==1.2.0
-fasteners==0.17.2
-markdown==3.3.6
+fasteners==0.18
+markdown==3.4.1
 mutagen==1.46.0
-PyJWT==2.4.0
-pyobjc-core==8.1
-pyobjc-framework-Cocoa==8.1
-PyQt5==5.15.6
+PyJWT==2.6.0
+pyobjc-core==8.5.1
+pyobjc-framework-Cocoa==8.5.1
+PyQt5==5.15.7
 pyyaml==6.0
