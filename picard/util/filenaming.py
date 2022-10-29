@@ -55,8 +55,8 @@ from picard.util import (
 win32api = None
 if IS_WIN:
     try:
-        import win32api  # isort:skip
         import pywintypes
+        import win32api
     except ImportError as e:
         log.warning('pywin32 not available: %s', e)
 

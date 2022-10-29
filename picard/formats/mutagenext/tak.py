@@ -34,11 +34,11 @@ __all__ = ["TAK", "Open", "delete"]
 
 try:
     from mutagen.tak import (
-        Open,
         TAK,
+        Open,
         TAKHeaderError,
         TAKInfo,
-        delete
+        delete,
     )
 
     native_tak = True

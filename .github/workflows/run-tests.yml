@@ -28,7 +28,7 @@ jobs:
         pip install -r requirements.txt
     - name: Check coding style
       run: |
-        pip install flake8 "isort<5"
+        pip install flake8 "isort>=5"
         flake8 picard test --count --show-source --statistics
         isort --check-only --diff --recursive picard test
     - name: Test with pytest

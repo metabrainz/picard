@@ -1,3 +1,27 @@
 [build-system]
 requires = ["setuptools>=62.4.0"]
 build-backend = "setuptools.build_meta"
+
+[tool.isort]
+sections = [
+    "FUTURE", "STDLIB", "THIRDPARTY", "QT", "TEST", "PICARD", "LOCALFOLDER",
+    "RESOURCES", "PICARD_UI"
+]
+default_section = "LOCALFOLDER"
+known_picard = ["picard"]
+known_picard_ui = ["picard.ui"]
+known_qt = ["PyQt5"]
+known_resources = ["picard.resources"]
+known_test = ["test.*"]
+known_third_party = ["dateutil", "fasteners", "mutagen", "yaml"]
+skip_glob = ["**/ui_*.py", "picard/resources.py"]
+combine_as_imports = true
+float_to_top = false
+force_grid_wrap = 2
+force_sort_within_sections = true
+include_trailing_comma = true
+indent = "    "
+lines_after_imports = 2
+multi_line_output = 3
+order_by_type = true
+use_parentheses = true

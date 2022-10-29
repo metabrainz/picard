@@ -36,10 +36,10 @@ from picard.metadata import Metadata
 
 
 try:
-    import mutagen.wave
     from mutagen._iff import assert_valid_chunk_id
     from mutagen._riff import RiffFile
     from mutagen._util import loadfile
+    import mutagen.wave
 
     # See https://exiftool.org/TagNames/RIFF.html
     TRANSLATE_RIFF_INFO = {
