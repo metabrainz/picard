@@ -182,6 +182,8 @@ jobs:
       if: matrix.type == 'signed-app' && env.CODESIGN == '1'
       run: |
         $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_PFX_PASSWORD -Force -AsPlainText
+        $env:PICARD_APPX_PUBLISHER = (Get-PfxCertificate -FilePath .\codesign.pfx -Password $CertPassword).Subject
+        Write-Output "Publisher: $env:PICARD_APPX_PUBLISHER"
         & .\scripts\package\win-package-appx.ps1 -BuildNumber $Env:BUILD_NUMBER -CertificateFile .\codesign.pfx -CertificatePassword $CertPassword
         Move-Item .\dist\*.msix .\artifacts
       env:
