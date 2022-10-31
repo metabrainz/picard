@@ -29,6 +29,12 @@ $ScriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
 
 Write-Output "Building Windows 10 app package..."
 
+# Set the publisher based on the certificate subject
+if ($Certificate) {
+  $env:PICARD_APPX_PUBLISHER = $Certificate.Subject
+  Write-Output "Publisher: $env:PICARD_APPX_PUBLISHER"
+}
+
 # Build
 Remove-Item -Path build,dist/picard,locale -Recurse -ErrorAction Ignore
 python setup.py clean 2>&1 | %{ "$_" }
