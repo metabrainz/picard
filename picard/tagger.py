@@ -246,6 +246,10 @@ REMOTE_COMMANDS = {
     ),
     "LOOKUP": RemoteCommand(
         "handle_command_lookup",
+        help_text="Lookup all unclustered files in the cluster pane.",
+    ),
+    "LOOKUP_CLUSTERS": RemoteCommand(
+        "handle_command_lookup_clusters",
         help_text="Lookup all clusters in the cluster pane.",
     ),
     "LOOKUP_CD": RemoteCommand(
@@ -546,6 +550,9 @@ class Tagger(QtWidgets.QApplication):
 
     def handle_command_lookup(self, argstring):
         self.autotag(self.unclustered_files.files)
+
+    def handle_command_lookup_clusters(self, argstring):
+        self.autotag(self.clusters)
 
     def handle_command_lookup_cd(self, argstring):
         disc = Disc()
