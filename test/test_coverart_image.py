@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019, 2021 Philipp Wolfer
+# Copyright (C) 2019, 2021-2022 Philipp Wolfer
 # Copyright (C) 2019-2021 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -20,7 +20,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import Counter
 import os.path
+from tempfile import TemporaryDirectory
 import unittest
 
 from test.picardtestcase import (
@@ -34,6 +36,8 @@ from picard.coverart.image import (
     LocalFileCoverArtImage,
 )
 from picard.coverart.utils import Id3ImageType
+from picard.metadata import Metadata
+from picard.util import encode_filename
 
 
 def create_image(extra_data, types=None, support_types=False,
@@ -154,6 +158,32 @@ class CoverArtImageTest(PicardTestCase):
         # check file length again
         self.assertEqual(filesize, len(imgdata))
         self.assertEqual(coverartimage.data, imgdata)
+
+    def test_save(self):
+        self.set_config_values({
+            'image_type_as_filename': True,
+            'windows_compatibility': True,
+            'windows_long_paths': False,
+            'enabled_plugins': [],
+            'ascii_filenames': False,
+            'save_images_overwrite': False,
+        })
+        metadata = Metadata()
+        counters = Counter()
+        with TemporaryDirectory() as d:
+            image1 = create_image(b'a', types=['back'], support_types=True)
+            expected_filename = os.path.join(d, 'back.png')
+            counter_filename = encode_filename(os.path.join(d, 'back'))
+            image1.save(d, metadata, counters)
+            self.assertTrue(os.path.exists(expected_filename))
+            self.assertEqual(len(image1.data), os.path.getsize(expected_filename))
+            self.assertEqual(1, counters[counter_filename])
+            image2 = create_image(b'bb', types=['back'], support_types=True)
+            image2.save(d, metadata, counters)
+            expected_filename_2 = os.path.join(d, 'back (1).png')
+            self.assertTrue(os.path.exists(expected_filename_2))
+            self.assertEqual(len(image2.data), os.path.getsize(expected_filename_2))
+            self.assertEqual(2, counters[counter_filename])
 
 
 class LocalFileCoverArtImageTest(PicardTestCase):
