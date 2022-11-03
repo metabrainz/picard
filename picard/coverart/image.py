@@ -43,7 +43,10 @@ from PyQt5.QtCore import (
 from picard import log
 from picard.config import get_config
 from picard.const import DEFAULT_COVER_IMAGE_FILENAME
-from picard.const.sys import IS_WIN
+from picard.const.sys import (
+    IS_MACOS,
+    IS_WIN,
+)
 from picard.coverart.utils import (
     Id3ImageType,
     image_type_as_id3_num,
@@ -57,6 +60,10 @@ from picard.util import (
     is_absolute_path,
     periodictouch,
     sanitize_filename,
+)
+from picard.util.filenaming import (
+    make_save_path,
+    make_short_filename,
 )
 from picard.util.scripttofilename import script_to_filename
 
@@ -305,7 +312,7 @@ class CoverArtImage:
             type = Id3ImageType(type)
         self._id3_type = type
 
-    def _make_image_filename(self, filename, dirname, _metadata):
+    def _make_image_filename(self, filename, dirname, _metadata, win_compat, win_shorten_path):
         metadata = Metadata()
         metadata.copy(_metadata)
         metadata["coverart_maintype"] = self.maintype
@@ -317,8 +324,12 @@ class CoverArtImage:
         filename = script_to_filename(filename, metadata)
         if not filename:
             filename = DEFAULT_COVER_IMAGE_FILENAME
-        if not is_absolute_path(filename):
-            filename = os.path.join(dirname, filename)
+        if is_absolute_path(filename):
+            dirname = os.path.dirname(filename)
+        filename = make_short_filename(
+            dirname, os.path.basename(filename), win_shorten_path=win_shorten_path)
+        filename = os.path.join(dirname, filename)
+        filename = make_save_path(filename, win_compat=win_compat, mac_compat=IS_MACOS)
         return encode_filename(filename)
 
     def save(self, dirname, metadata, counters):
@@ -332,15 +343,17 @@ class CoverArtImage:
         if not self.can_be_saved_to_disk:
             return
         config = get_config()
+        win_compat = IS_WIN or config.setting["windows_compatibility"]
+        win_shorten_path = win_compat and not config.setting['windows_long_paths']
         if config.setting["image_type_as_filename"] and not self.is_front_image():
-            win_compat = IS_WIN or config.setting["windows_compatibility"]
             filename = sanitize_filename(self.maintype, win_compat=win_compat)
             log.debug("Make cover filename from types: %r -> %r",
                       self.types, filename)
         else:
             filename = config.setting["cover_image_filename"]
             log.debug("Using default cover image filename %r", filename)
-        filename = self._make_image_filename(filename, dirname, metadata)
+        filename = self._make_image_filename(
+            filename, dirname, metadata, win_compat, win_shorten_path)
 
         overwrite = config.setting["save_images_overwrite"]
         ext = encode_filename(self.extension)
