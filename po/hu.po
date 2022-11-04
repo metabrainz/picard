@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the picard project.
 # 
 # Translators:
+# Adrián Fülöp, 2022
 # Gavin James <theplayer1604@gmail.com>, 2020
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022
 # Pintér Ádám <pinteradam2000@gmail.com>, 2016
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-07-07 07:54+0200\n"
 "PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022\n"
+"Last-Translator: Adrián Fülöp, 2022\n"
 "Language-Team: Hungarian (http://www.transifex.com/musicbrainz/musicbrainz/language/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +30,7 @@ msgstr "Nem egyező fájlok"
 #: picard/album.py:512
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
-msgstr ""
+msgstr "%(id)s album betöltve: %(artist)s - %(album)s"
 
 #: picard/album.py:554
 #, python-format
@@ -189,7 +190,7 @@ msgstr "Általános"
 
 #: picard/profile.py:48
 msgid "Server address"
-msgstr ""
+msgstr "Szervercím"
 
 #: picard/profile.py:49
 msgid "Port"
@@ -222,7 +223,7 @@ msgstr ""
 
 #: picard/profile.py:61
 msgid "Translate artist names"
-msgstr ""
+msgstr "Előadónevek fordítása"
 
 #: picard/profile.py:62
 msgid "Translation locales"

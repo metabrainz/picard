@@ -6,7 +6,7 @@
 # DoomHammer <deha@irc.pl>, 2006
 # Formbi Chiss <formbi@interia.pl>, 2017
 # Jarek . <jarek83@gmail.com>, 2018
-# Karol Kosek, 2019
+# cbbd2834e4f65fe29be8a0db728247c5_37a907e, 2019
 # Debeat <krystian4842@gmail.com>, 2014-2015
 # Marcin Rataj <lidel@lidel.org>, 2012,2014
 # Marco Oliver Grunwald <m@mgrvnwald.com>, 2015
