@@ -39,6 +39,15 @@
 
 
 import datetime
+
+from setuptools import (
+    Command,
+    Extension,
+    setup,
+)
+from setuptools.command.install import install as install
+from setuptools.dist import Distribution
+
 from distutils import log
 from distutils.command.build import build
 from distutils.dep_util import newer
@@ -50,14 +59,6 @@ import re
 import stat
 import sys
 import tempfile
-
-from setuptools import (
-    Command,
-    Extension,
-    setup,
-)
-from setuptools.command.install import install as install
-from setuptools.dist import Distribution
 
 from picard import (
     PICARD_APP_ID,
