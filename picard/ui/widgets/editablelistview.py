@@ -42,7 +42,8 @@ class EditableListView(QtWidgets.QListView):
             super().keyPressEvent(event)
 
     def mouseDoubleClickEvent(self, event):
-        index = self.indexAt(QtCore.QPoint(event.x(), event.y()))
+        pos = event.pos()
+        index = self.indexAt(QtCore.QPoint(pos.x(), pos.y()))
         if index.isValid():
             super().mouseDoubleClickEvent(event)
         else:

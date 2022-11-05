@@ -89,7 +89,7 @@ class ClickableSlider(QtWidgets.QSlider):
 
     def _set_position_from_mouse_event(self, event):
         value = QtWidgets.QStyle.sliderValueFromPosition(
-            self.minimum(), self.maximum(), event.x(), self.width())
+            self.minimum(), self.maximum(), event.pos().x(), self.width())
         self.setValue(value)
 
 
