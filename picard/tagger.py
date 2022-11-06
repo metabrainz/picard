@@ -246,7 +246,8 @@ REMOTE_COMMANDS = {
     ),
     "LOOKUP": RemoteCommand(
         "handle_command_lookup",
-        help_text="Lookup all clusters in the cluster pane.",
+        help_text="Lookup files in the clustering pane. Defaults to all files.",
+        help_args="[clustered|unclustered|all]"
     ),
     "LOOKUP_CD": RemoteCommand(
         "handle_command_lookup_cd",
@@ -545,7 +546,17 @@ class Tagger(QtWidgets.QApplication):
         self.load_to_picard((argstring,))
 
     def handle_command_lookup(self, argstring):
-        self.autotag(self.unclustered_files.files)
+        if argstring:
+            argstring = argstring.upper()
+        if not argstring or argstring == 'ALL':
+            self.autotag(self.clusters)
+            self.autotag(self.unclustered_files.files)
+        elif argstring == 'CLUSTERED':
+            self.autotag(self.clusters)
+        elif argstring == 'UNCLUSTERED':
+            self.autotag(self.unclustered_files.files)
+        else:
+            log.error("Invalid LOOKUP command argument: '%s'", argstring)
 
     def handle_command_lookup_cd(self, argstring):
         disc = Disc()
