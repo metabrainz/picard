@@ -202,6 +202,10 @@ class ParseItemsToLoad:
             elif parsed.scheme in {"http", "https"}:
                 # .path returns / before actual link
                 self.urls.add(parsed.path[1:])
+            elif IS_WIN and re.match(r"^[a-zA-Z]\:", item):
+                # Treat all single-character schemes as part of the file spec to allow
+                # specifying a drive identifier on Windows systems.
+                self.files.add(item)
 
     # needed to indicate whether Picard should be brought to the front
     def non_executable_items(self):
