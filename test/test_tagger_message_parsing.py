@@ -3,6 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2022 skelly37
+# Copyright (C) 2022 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,6 +21,7 @@
 
 from test.picardtestcase import PicardTestCase
 
+from picard.const.sys import IS_WIN
 from picard.tagger import ParseItemsToLoad
 
 
@@ -66,3 +68,12 @@ class TestMessageParsing(PicardTestCase):
     def test_bool_empty_false(self):
         test_cases = {}
         self.assertFalse(ParseItemsToLoad(test_cases))
+
+    def test_windows_file_with_drive(self):
+        test_cases = {
+            "C:\\test_case.mp3",
+        }
+        if IS_WIN:
+            self.assertTrue(ParseItemsToLoad(test_cases))
+        else:
+            self.assertFalse(ParseItemsToLoad(test_cases))
