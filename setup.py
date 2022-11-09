@@ -54,9 +54,13 @@ from setuptools import (
     Extension,
     setup,
 )
-from setuptools.command.build import build
 from setuptools.command.install import install
 from setuptools.dist import Distribution
+
+try:
+    from setuptools.command.build import build
+except ImportError:
+    from distutils.command.build import build
 
 # required for PEP 517
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
