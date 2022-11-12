@@ -346,29 +346,14 @@ class Tagger(QtWidgets.QApplication):
         if picard_args.debug or "PICARD_DEBUG" in os.environ:
             self.set_log_level(logging.DEBUG)
 
-        # FIXME: Figure out what's wrong with QThreadPool.globalInstance().
-        # It's a valid reference, but its start() method doesn't work.
-        self.thread_pool = QtCore.QThreadPool(self)
+        self._setup_thread_pools()
 
         self.pipe_handler = pipe_handler
-
         if self.pipe_handler:
             self.pipe_handler.pipe_running = True
             thread.run_task(self.pipe_server, self._pipe_server_finished)
 
         self._init_remote_commands()
-
-        # Provide a separate thread pool for operations that should not be
-        # delayed by longer background processing tasks, e.g. because the user
-        # expects instant feedback instead of waiting for a long list of
-        # operations to finish.
-        self.priority_thread_pool = QtCore.QThreadPool(self)
-        self.priority_thread_pool.setMaxThreadCount(1)
-
-        # Use a separate thread pool for file saving, with a thread count of 1,
-        # to avoid race conditions in File._save_and_rename.
-        self.save_thread_pool = QtCore.QThreadPool(self)
-        self.save_thread_pool.setMaxThreadCount(1)
 
         if not IS_WIN:
             # Set up signal handling
@@ -463,6 +448,23 @@ class Tagger(QtWidgets.QApplication):
     @property
     def is_wayland(self):
         return self.platformName() == 'wayland'
+
+    def _setup_thread_pools(self):
+        # FIXME: Figure out what's wrong with QThreadPool.globalInstance().
+        # It's a valid reference, but its start() method doesn't work.
+        self.thread_pool = QtCore.QThreadPool(self)
+
+        # Provide a separate thread pool for operations that should not be
+        # delayed by longer background processing tasks, e.g. because the user
+        # expects instant feedback instead of waiting for a long list of
+        # operations to finish.
+        self.priority_thread_pool = QtCore.QThreadPool(self)
+        self.priority_thread_pool.setMaxThreadCount(1)
+
+        # Use a separate thread pool for file saving, with a thread count of 1,
+        # to avoid race conditions in File._save_and_rename.
+        self.save_thread_pool = QtCore.QThreadPool(self)
+        self.save_thread_pool.setMaxThreadCount(1)
 
     def pipe_server(self):
         IGNORED = {pipe.Pipe.MESSAGE_TO_IGNORE, pipe.Pipe.NO_RESPONSE_MESSAGE}
