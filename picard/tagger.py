@@ -453,6 +453,13 @@ class Tagger(QtWidgets.QApplication):
         # FIXME: Figure out what's wrong with QThreadPool.globalInstance().
         # It's a valid reference, but its start() method doesn't work.
         self.thread_pool = QtCore.QThreadPool(self)
+        # Limit threads to ideal thread count (based on CPUs), but reserve
+        # threads for the main thread and the priority and save thread pools.
+        # Also keep always at least 2 threads, as one will be used for the
+        # pipe server for interprocess communication.
+        max_threads = max(2, QtCore.QThread.idealThreadCount() - 3)
+        log.debug(f'Using {max_threads} worker threads.')
+        self.thread_pool.setMaxThreadCount(max_threads)
 
         # Provide a separate thread pool for operations that should not be
         # delayed by longer background processing tasks, e.g. because the user
