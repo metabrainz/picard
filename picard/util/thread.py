@@ -26,13 +26,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from functools import partial
 import sys
 import traceback
 
 from PyQt5.QtCore import (
     QCoreApplication,
     QEvent,
+    QRunnable,
+    QThread,
 )
 
 from picard import log
@@ -50,25 +51,33 @@ class ProxyToMainEvent(QEvent):
         self.func(*self.args, **self.kwargs)
 
 
-def future_callback(callback, future, log_traceback=True):
-    try:
-        result = future.result()
-        error = None
-    except BaseException:
-        if log_traceback:
-            log.error(traceback.format_exc())
-        result = None
-        error = sys.exc_info()[1]
-    to_main(callback, result=result, error=error)
+class Runnable(QRunnable):
+
+    def __init__(self, func, next_func, traceback=True):
+        super().__init__()
+        self.func = func
+        self.next_func = next_func
+        self.traceback = traceback
+
+    def run(self):
+        try:
+            result = self.func()
+        except BaseException:
+            if self.traceback:
+                log.error(traceback.format_exc())
+            to_main(self.next_func, error=sys.exc_info()[1])
+        else:
+            to_main(self.next_func, result=result)
 
 
-def run_task(func, next_func, thread_pool=None, traceback=True):
+def run_task(func, next_func, priority=QThread.Priority.IdlePriority, thread_pool=None, traceback=True):
     """Schedules func to be run on a separate thread
 
     Args:
         func: Function to run on a separate thread.
         next_func: Callback function to run after the thread has been completed.
           The callback will be run on the main thread.
+        priority: Thread priority (QThread.Priority)
         thread_pool: Instance of concurrent.futures.Executor to run this task.
         traceback: If set to true the stack trace will be logged to the error log
           if an exception was raised.
@@ -78,9 +87,7 @@ def run_task(func, next_func, thread_pool=None, traceback=True):
     """
     if not thread_pool:
         thread_pool = QCoreApplication.instance().thread_pool
-    future = thread_pool.submit(func)
-    future.add_done_callback(partial(future_callback, next_func, log_traceback=traceback))
-    return future
+    thread_pool.start(Runnable(func, next_func, traceback), priority)
 
 
 def to_main(func, *args, **kwargs):
