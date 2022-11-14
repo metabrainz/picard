@@ -33,7 +33,6 @@ from PyQt5.QtCore import (
     QCoreApplication,
     QEvent,
     QRunnable,
-    QThread,
 )
 
 from picard import log
@@ -70,14 +69,14 @@ class Runnable(QRunnable):
             to_main(self.next_func, result=result)
 
 
-def run_task(func, next_func, priority=QThread.Priority.IdlePriority, thread_pool=None, traceback=True):
+def run_task(func, next_func, priority=0, thread_pool=None, traceback=True):
     """Schedules func to be run on a separate thread
 
     Args:
         func: Function to run on a separate thread.
         next_func: Callback function to run after the thread has been completed.
           The callback will be run on the main thread.
-        priority: Thread priority (QThread.Priority)
+        priority: Priority for the run queue's order of execution.
         thread_pool: Instance of concurrent.futures.Executor to run this task.
         traceback: If set to true the stack trace will be logged to the error log
           if an exception was raised.

@@ -215,7 +215,7 @@ class File(QtCore.QObject, Item):
         thread.run_task(
             partial(self._load_check, self.filename),
             partial(self._loading_finished, callback),
-            priority=QtCore.QThread.Priority.LowestPriority)
+            priority=1)
 
     def _load_check(self, filename):
         # Check that file has not been removed since thread was queued
@@ -335,7 +335,6 @@ class File(QtCore.QObject, Item):
         thread.run_task(
             partial(self._save_and_rename, self.filename, metadata),
             self._saving_finished,
-            priority=QtCore.QThread.Priority.LowPriority,
             thread_pool=self.tagger.save_thread_pool)
 
     def _preserve_times(self, filename, func):
