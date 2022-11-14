@@ -354,7 +354,7 @@ class Tagger(QtWidgets.QApplication):
 
         if self.pipe_handler:
             self.pipe_handler.pipe_running = True
-            self.thread_pool.start(self.pipe_server)
+            thread.run_task(self.pipe_server, self._pipe_server_finished)
 
         self._init_remote_commands()
 
@@ -471,6 +471,12 @@ class Tagger(QtWidgets.QApplication):
             if messages:
                 log.debug("pipe messages: %r", messages)
                 thread.to_main(self.load_to_picard, messages)
+
+    def _pipe_server_finished(self, result=None, error=None):
+        if error:
+            log.error('pipe server failed: %r', error)
+        else:
+            log.debug('pipe server stopped')
 
     def load_to_picard(self, items):
         parsed_items = ParseItemsToLoad(items)
