@@ -1,0 +1,11 @@
+# should be split into 2 commands
+LOAD file1.mp3 file2.mp3
+# should be added as one
+LOAD file3.mp3
+FROM_FILE command_file.txt
+CLUSTER unclustered
+  FINGERPRINT  
+# should be ignored
+ 
+
+#commented command

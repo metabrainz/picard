@@ -50,6 +50,7 @@ from hashlib import md5
 import logging
 import os
 import platform
+import queue
 import re
 import shlex
 import shutil
@@ -178,6 +179,25 @@ def plugin_dirs():
     yield USER_PLUGIN_DIR
 
 
+class CommandFiles:
+    _command_files = set()
+
+    # Maintain a flag to indicate whether a 'QUIT' command has been queued
+    quit_flag = False
+
+    @classmethod
+    def contains(cls, filepath):
+        return filepath in cls._command_files
+
+    @classmethod
+    def add(cls, filepath):
+        cls._command_files.add(filepath)
+
+    @classmethod
+    def remove(cls, filepath):
+        cls._command_files.discard(filepath)
+
+
 class ParseItemsToLoad:
 
     WINDOWS_DRIVE_TEST = re.compile(r"^[a-z]\:", re.IGNORECASE)
@@ -190,8 +210,10 @@ class ParseItemsToLoad:
 
         for item in items:
             parsed = urlparse(item)
+            log.debug(f"Parsed: {repr(parsed)}")
             if not parsed.scheme:
                 self.files.add(item)
+            # TODO: Remove the "command" scheme if it is no longer required.
             elif parsed.scheme == "command":
                 for x in item[10:].split(';'):
                     self.commands.append(x.strip())
@@ -327,6 +349,9 @@ class Tagger(QtWidgets.QApplication):
     _debug = False
     _no_restore = False
 
+    command_queue = queue.Queue()
+    command_running = False
+
     def __init__(self, picard_args, localedir, autoupdate, pipe_handler=None):
 
         super().__init__(sys.argv)
@@ -460,6 +485,8 @@ class Tagger(QtWidgets.QApplication):
         if self.autoupdate_enabled:
             self.updatecheckmanager = UpdateCheckManager(parent=self.window)
 
+        thread.run_task(self.run_commands, self._run_commands_finished)
+
     @property
     def is_wayland(self):
         return self.platformName() == 'wayland'
@@ -470,7 +497,7 @@ class Tagger(QtWidgets.QApplication):
             messages = [x for x in self.pipe_handler.read_from_pipe() if x not in IGNORED]
             if messages:
                 log.debug("pipe messages: %r", messages)
-                thread.to_main(self.load_to_picard, messages)
+                self.load_to_picard(messages)
 
     def _pipe_server_finished(self, result=None, error=None):
         if error:
@@ -478,23 +505,91 @@ class Tagger(QtWidgets.QApplication):
         else:
             log.debug('pipe server stopped')
 
+    def clear_command_running(self, *args, **kwargs):
+        self.command_running = False
+
+    def run_commands(self):
+        # Provide a set of commands that should not automatically release the 'self.command_running'
+        # flag when the command execution completes.  For example, loading a release creates a number
+        # of sub-tasks on separate threads and requires additional process checks to ensure that all
+        # sub-tasks are complete before the 'self.command_running' flag should be released.
+
+        # no_auto_complete = {'LOAD', 'CLUSTER'}
+
+        while not self.stopping:
+            if not self.command_queue.empty() and not self.command_running:
+                (cmd, arg) = self.command_queue.get()
+                cmd = cmd.upper()
+                arg = arg.strip()
+                if cmd in self.commands:
+                    log.debug("Executing command: %s %r", cmd, arg)
+                    self.command_running = True
+
+                    # FIXME: Find a way to execute each command using a block to ensure completion
+                    # before executing the next command.  Perhaps track completion of all threads
+                    # created while "command_running" is True and only clear_command_running()
+                    # when all those threads have completed?  That may also remove the need for
+                    # the special "no_auto_complete" processing.
+
+                    thread.to_main(self.commands[cmd], arg)
+                    # if cmd in no_auto_complete:
+                    #     break
+                    self.clear_command_running()
+                else:
+                    log.error("Unknown command: %r", cmd)
+                self.command_queue.task_done()
+
+    def _run_commands_finished(self, result=None, error=None):
+        if error:
+            log.error('command executor failed: %r', error)
+        else:
+            log.debug('command executor stopped')
+
     def load_to_picard(self, items):
-        parsed_items = ParseItemsToLoad(items)
-        log.debug(str(parsed_items))
+        commands = []
+        for item in items:
+            parts = str(item).split(maxsplit=1)
+            commands.append((parts[0], parts[1:] or ['']))
+        self.parse_commands_to_queue(commands)
 
-        if parsed_items.files:
-            self.add_paths(parsed_items.files)
+    def parse_commands_to_queue(self, commands):
+        # Don't queue any more commands after a QUIT command.
+        if CommandFiles.quit_flag:
+            return
+        for (cmd, cmdargs) in commands:
+            cmd = cmd.upper()
+            if cmd not in REMOTE_COMMANDS:
+                log.error("Unknown command: %s", cmd)
+                continue
+            for cmd_arg in cmdargs or ['']:
+                if cmd == 'FROM_FILE':
+                    self.handle_command_from_file(cmd_arg)
+                else:
+                    log.debug(f"Queueing command: {cmd} {repr(cmd_arg)}")
+                    self.command_queue.put([cmd, cmd_arg])
+                    # Set flag so as to not queue any more commands after a QUIT command.
+                    if cmd == 'QUIT':
+                        CommandFiles.quit_flag = True
+                        return
 
-        if parsed_items.urls or parsed_items.mbids:
-            file_lookup = self.get_file_lookup()
-            for item in parsed_items.mbids | parsed_items.urls:
-                thread.to_main(file_lookup.mbid_lookup, item, None, None, False)
-
-        for command in parsed_items.commands:
-            self.handle_command(command)
-
-        if parsed_items.non_executable_items():
-            self.bring_tagger_front()
+    @staticmethod
+    def _read_commands_from_file(filepath):
+        commands = []
+        try:
+            lines = open(filepath).readlines()
+        except Exception as e:
+            log.error("Error reading command file '%s': %s" % (filepath, e))
+            return commands
+        for line in lines:
+            line = line.strip()
+            if not line or line.startswith('#'):
+                continue
+            elements = shlex.split(line)
+            if not elements:
+                continue
+            command_args = elements[1:] or ['']
+            commands.append((elements[0], command_args))
+        return commands
 
     def iter_album_files(self):
         for album in self.albums.values():
@@ -529,35 +624,33 @@ class Tagger(QtWidgets.QApplication):
         for album_name in self.albums:
             self.analyze(self.albums[album_name].iterfiles())
 
-    @staticmethod
-    def _read_lines_from_file(filepath):
-        try:
-            yield from (line.strip() for line in open(filepath).readlines())
-        except Exception as e:
-            log.error("Error reading command file '%s': %s" % (filepath, e))
-
-    @staticmethod
-    def _parse_commands_from_lines(lines):
-        for line in lines:
-            if not line or line.startswith('#'):
-                continue
-            elements = shlex.split(line)
-            if not elements:
-                continue
-            command_args = elements[1:] or ['']
-            for element in command_args:
-                yield f"command://{elements[0]} {element}"
-
     def handle_command_from_file(self, argstring):
-        for command in self._parse_commands_from_lines(self._read_lines_from_file(argstring)):
-            self.load_to_picard((command,))
+        log.debug("Reading commands from: %r", argstring)
+        if not os.path.exists(argstring):
+            log.error("Missing command file: '%s'", argstring)
+            return
+        filepath = os.path.abspath(argstring)
+        if CommandFiles.contains(filepath):
+            log.warning("Circular command file reference ignored: '%s'", argstring)
+            return
+        CommandFiles.add(filepath)
+        self.parse_commands_to_queue(self._read_commands_from_file(filepath))
+        CommandFiles.remove(filepath)
 
     def handle_command_load(self, argstring):
         if argstring.startswith("command://"):
             log.error("Cannot LOAD a command: %s", argstring)
             return
+        parsed_items = ParseItemsToLoad([argstring])
+        log.debug(str(parsed_items))
 
-        self.load_to_picard((argstring,))
+        if parsed_items.files:
+            self.add_paths(parsed_items.files)
+
+        if parsed_items.urls or parsed_items.mbids:
+            file_lookup = self.get_file_lookup()
+            for item in parsed_items.mbids | parsed_items.urls:
+                file_lookup.mbid_lookup(item)
 
     def handle_command_lookup(self, argstring):
         if argstring:
@@ -1428,14 +1521,14 @@ If a new instance will not be spawned files/directories will be passed to the ex
     for x in args.FILE_OR_URL:
         if not urlparse(x).netloc:
             x = os.path.abspath(x)
-        args.processable.append(x)
+        args.processable.append(f"LOAD {x}")
 
     if args.exec:
         for e in args.exec:
             args.remote_commands_help = args.remote_commands_help or "HELP" in {x.upper().strip() for x in e}
             remote_command_args = e[1:] or ['']
             for arg in remote_command_args:
-                args.processable.append(f"command://{e[0]} {arg}")
+                args.processable.append(f"{e[0]} {arg}")
 
     return args
 

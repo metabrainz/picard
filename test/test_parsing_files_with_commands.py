@@ -5,43 +5,33 @@ from picard.tagger import Tagger
 
 class TestParsingFilesWithCommands(PicardTestCase):
 
-    MOCK_FILE_CONTENTS = (
-        # should be split into 2 commands
-        "LOAD file1.mp3 file2.mp3",
-        # should be added as one
-        "FROM_FILE file0.mp3",
-        "CLUSTER",
-        "  FINGERPRINT  "
-        # should be ignored
-        "",
-        " ",
-        "\n",
-        "#commented command",
-    )
+    TEST_FILE = 'test/data/test-command-file-1.txt'
 
     def setUp(self):
         super().setUp()
-        self.result = tuple(x for x in Tagger._parse_commands_from_lines(self.MOCK_FILE_CONTENTS))
+        self.result = []
+        for (cmd, cmdargs) in Tagger._read_commands_from_file(self.TEST_FILE):
+            for cmd_arg in cmdargs or ['']:
+                self.result.append(f"{cmd} {cmd_arg}")
 
     def test_no_argument_command(self):
-        self.assertIn("command://CLUSTER ", self.result)
+        self.assertIn("CLUSTER unclustered", self.result)
 
     def test_no_argument_command_stripped_correctly(self):
-        self.assertIn("command://FINGERPRINT ", self.result)
+        self.assertIn("FINGERPRINT ", self.result)
 
     def test_single_argument_command(self):
-        self.assertIn("command://FROM_FILE file0.mp3", self.result)
+        self.assertIn("FROM_FILE command_file.txt", self.result)
+        self.assertIn("LOAD file3.mp3", self.result)
 
     def test_multiple_arguments_command(self):
-        self.assertIn("command://LOAD file1.mp3", self.result)
-        self.assertIn("command://LOAD file2.mp3", self.result)
+        self.assertIn("LOAD file1.mp3", self.result)
+        self.assertIn("LOAD file2.mp3", self.result)
 
     def test_empty_lines(self):
-        self.assertNotIn("command:// ", self.result)
-        self.assertNotIn("command://", self.result)
-        # 1 FROM_FILE
-        # 2 LOADs
-        self.assertEqual(len(self.result), 5)
+        self.assertNotIn(" ", self.result)
+        self.assertNotIn("", self.result)
+        self.assertEqual(len(self.result), 6)
 
     def test_commented_lines(self):
-        self.assertNotIn("command://#commented command", self.result)
+        self.assertNotIn("#commented command", self.result)
