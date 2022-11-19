@@ -55,6 +55,7 @@ import shutil
 import signal
 import sys
 from textwrap import fill
+import time
 from urllib.parse import urlparse
 from uuid import uuid4
 
@@ -395,35 +396,24 @@ class Tagger(QtWidgets.QApplication):
         RemoteCommands.set_running(False)
 
     def run_commands(self):
-        # Provide a set of commands that should not automatically release the 'self.command_running'
-        # flag when the command execution completes.  For example, loading a release creates a number
-        # of sub-tasks on separate threads and requires additional process checks to ensure that all
-        # sub-tasks are complete before the 'self.command_running' flag should be released.
-
-        # no_auto_complete = {'LOAD', 'CLUSTER'}
-
         while not self.stopping:
             if not RemoteCommands.command_queue.empty() and not RemoteCommands.get_running():
                 (cmd, arg) = RemoteCommands.command_queue.get()
                 cmd = cmd.upper()
-                arg = arg.strip()
                 if cmd in self.commands:
+                    arg = arg.strip()
                     log.debug("Executing command: %s %r", cmd, arg)
                     RemoteCommands.set_running(True)
+                    thread.to_main_with_blocking(self.commands[cmd], arg)
 
-                    # FIXME: Find a way to execute each command using a block to ensure completion
-                    # before executing the next command.  Perhaps track completion of all threads
-                    # created while "command_running" is True and only clear_command_running()
-                    # when all those threads have completed?  That may also remove the need for
-                    # the special "no_auto_complete" processing.
-
-                    thread.to_main(self.commands[cmd], arg)
-                    # if cmd in no_auto_complete:
-                    #     break
-                    self.clear_command_running()
+                    # 30 second timeout to avoid hanging up command processing indefinitely
+                    RemoteCommands.wait_for_completion(30)
+                    RemoteCommands.clear_command_running()
+                    log.debug("Completed command: %s %r", cmd, arg)
                 else:
                     log.error("Unknown command: %r", cmd)
                 RemoteCommands.command_queue.task_done()
+            time.sleep(.01)
 
     def _run_commands_finished(self, result=None, error=None):
         if error:

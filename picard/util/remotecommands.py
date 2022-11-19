@@ -201,7 +201,6 @@ class RemoteCommands:
     def parse_commands_to_queue(cls, commands):
         if cls.has_quit():
             # Don't queue any more commands after a QUIT command.
-            print(f"has_quit = {cls.has_quit()}\n\n")
             return
 
         for (cmd, cmdargs) in commands:
@@ -253,3 +252,11 @@ class RemoteCommands:
         cls.cmd_files_add(filepath)
         cls.parse_commands_to_queue(cls._read_commands_from_file(filepath))
         cls.cmd_files_remove(filepath)
+
+    @classmethod
+    def wait_for_completion(cls, timeout=None):
+        end_time = datetime.datetime.now() + datetime.timedelta(seconds=timeout) if timeout else None
+        while True:
+            time.sleep(.01)
+            if not cls.processing() or (timeout and datetime.datetime.now() > end_time):
+                return

@@ -27,7 +27,9 @@
 
 
 import sys
+import time
 import traceback
+import uuid
 
 from PyQt5.QtCore import (
     QCoreApplication,
@@ -36,6 +38,7 @@ from PyQt5.QtCore import (
 )
 
 from picard import log
+from picard.util.remotecommands import RemoteCommands
 
 
 class ProxyToMainEvent(QEvent):
@@ -57,8 +60,11 @@ class Runnable(QRunnable):
         self.func = func
         self.next_func = next_func
         self.traceback = traceback
+        self.id = uuid.uuid4()
 
     def run(self):
+        if RemoteCommands.get_running():
+            RemoteCommands.thread_add(self.id)
         try:
             result = self.func()
         except BaseException:
@@ -67,6 +73,7 @@ class Runnable(QRunnable):
             to_main(self.next_func, error=sys.exc_info()[1])
         else:
             to_main(self.next_func, result=result)
+        RemoteCommands.thread_remove(self.id)
 
 
 def run_task(func, next_func, priority=0, thread_pool=None, traceback=True):
@@ -92,3 +99,23 @@ def run_task(func, next_func, priority=0, thread_pool=None, traceback=True):
 def to_main(func, *args, **kwargs):
     QCoreApplication.postEvent(QCoreApplication.instance(),
                                ProxyToMainEvent(func, *args, **kwargs))
+
+
+def to_main_with_blocking(func, *args, **kwargs):
+    """Executes a command as a user-defined event, and waits until the event has
+    closed before returning.  Note that any new threads started while processing
+    the event will not be considered when releasing the blocking of the function.
+
+    Args:
+        func: Function to run.
+    """
+    _task = ProxyToMainEvent(func, *args, **kwargs)
+    QCoreApplication.postEvent(QCoreApplication.instance(), _task)
+
+    while True:
+        try:
+            if not _task.isAccepted():
+                break
+        except Exception:
+            break
+        time.sleep(.01)
