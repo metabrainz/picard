@@ -50,9 +50,7 @@ from hashlib import md5
 import logging
 import os
 import platform
-import queue
 import re
-import shlex
 import shutil
 import signal
 import sys
@@ -137,6 +135,10 @@ from picard.util import (
 )
 from picard.util.cdrom import get_cdrom_drives
 from picard.util.checkupdate import UpdateCheckManager
+from picard.util.remotecommands import (
+    REMOTE_COMMANDS,
+    RemoteCommands,
+)
 from picard.webservice import WebService
 from picard.webservice.api_helpers import (
     AcoustIdAPIHelper,
@@ -177,25 +179,6 @@ def plugin_dirs():
     if not os.path.exists(USER_PLUGIN_DIR):
         os.makedirs(USER_PLUGIN_DIR)
     yield USER_PLUGIN_DIR
-
-
-class CommandFiles:
-    _command_files = set()
-
-    # Maintain a flag to indicate whether a 'QUIT' command has been queued
-    quit_flag = False
-
-    @classmethod
-    def contains(cls, filepath):
-        return filepath in cls._command_files
-
-    @classmethod
-    def add(cls, filepath):
-        cls._command_files.add(filepath)
-
-    @classmethod
-    def remove(cls, filepath):
-        cls._command_files.discard(filepath)
 
 
 class ParseItemsToLoad:
@@ -241,100 +224,6 @@ class ParseItemsToLoad:
         return f"files: {repr(self.files)}  mbids: f{repr(self.mbids)}  urls: {repr(self.urls)}  commands: {repr(self.commands)}"
 
 
-class RemoteCommand:
-    def __init__(self, method_name, help_text=None, help_args=None):
-        self.method_name = method_name
-        self.help_text = help_text or ""
-        self.help_args = help_args or ""
-
-
-REMOTE_COMMANDS = {
-    "CLEAR_LOGS": RemoteCommand(
-        "handle_command_clear_logs",
-        help_text="Clear the Picard logs",
-    ),
-    "CLUSTER": RemoteCommand(
-        "handle_command_cluster",
-        help_text="Cluster all files in the cluster pane.",
-    ),
-    "FINGERPRINT": RemoteCommand(
-        "handle_command_fingerprint",
-        help_text="Calculate acoustic fingerprints for all (matched) files in the album pane.",
-    ),
-    "FROM_FILE": RemoteCommand(
-        "handle_command_from_file",
-        help_text="Load command pipeline from a file.",
-        help_args="[Absolute path to a file containing command pipeline]",
-    ),
-    "LOAD": RemoteCommand(
-        "handle_command_load",
-        help_text="Load 1 or more files/MBIDs/URLs to Picard.",
-        help_args="[supported MBID/URL or absolute path to a file]",
-    ),
-    "LOOKUP": RemoteCommand(
-        "handle_command_lookup",
-        help_text="Lookup files in the clustering pane. Defaults to all files.",
-        help_args="[clustered|unclustered|all]"
-    ),
-    "LOOKUP_CD": RemoteCommand(
-        "handle_command_lookup_cd",
-        help_text="Read CD from the selected drive and lookup on MusicBrainz. "
-        "Without argument, it defaults to the first (alphabetically) available disc drive",
-        help_args="[device/log file]",
-    ),
-    "QUIT": RemoteCommand(
-        "handle_command_quit",
-        help_text="Exit the running instance of Picard.",
-    ),
-    "REMOVE": RemoteCommand(
-        "handle_command_remove",
-        help_text="Remove the file from Picard. Do nothing if no arguments provided.",
-        help_args="[absolute path to 1 or more files]",
-    ),
-    "REMOVE_ALL": RemoteCommand(
-        "handle_command_remove_all",
-        help_text="Remove all files from Picard.",
-    ),
-    "REMOVE_EMPTY": RemoteCommand(
-        "handle_command_remove_empty",
-        help_text="Remove all empty clusters and albums.",
-    ),
-    "REMOVE_SAVED": RemoteCommand(
-        "handle_command_remove_saved",
-        help_text="Remove all saved releases from the album pane.",
-    ),
-    "REMOVE_UNCLUSTERED": RemoteCommand(
-        "handle_command_remove_unclustered",
-        help_text="Remove all unclustered files from the cluster pane.",
-    ),
-    "SAVE_MATCHED": RemoteCommand(
-        "handle_command_save_matched",
-        help_text="Save all matched releases from the album pane."
-    ),
-    "SAVE_MODIFIED": RemoteCommand(
-        "handle_command_save_modified",
-        help_text="Save all modified files from the album pane.",
-    ),
-    "SCAN": RemoteCommand(
-        "handle_command_scan",
-        help_text="Scan all files in the cluster pane.",
-    ),
-    "SHOW": RemoteCommand(
-        "handle_command_show",
-        help_text="Make the running instance the currently active window.",
-    ),
-    "SUBMIT_FINGERPRINTS": RemoteCommand(
-        "handle_command_submit_fingerprints",
-        help_text="Submit outstanding acoustic fingerprints for all (matched) files in the album pane.",
-    ),
-    "WRITE_LOGS": RemoteCommand(
-        "handle_command_write_logs",
-        help_text="Write Picard logs to a given path.",
-        help_args="[absolute path to 1 file]",
-    ),
-}
-
-
 class Tagger(QtWidgets.QApplication):
 
     tagger_stats_changed = QtCore.pyqtSignal()
@@ -348,9 +237,6 @@ class Tagger(QtWidgets.QApplication):
 
     _debug = False
     _no_restore = False
-
-    command_queue = queue.Queue()
-    command_running = False
 
     def __init__(self, picard_args, localedir, autoupdate, pipe_handler=None):
 
@@ -506,7 +392,7 @@ class Tagger(QtWidgets.QApplication):
             log.debug('pipe server stopped')
 
     def clear_command_running(self, *args, **kwargs):
-        self.command_running = False
+        RemoteCommands.set_running(False)
 
     def run_commands(self):
         # Provide a set of commands that should not automatically release the 'self.command_running'
@@ -517,13 +403,13 @@ class Tagger(QtWidgets.QApplication):
         # no_auto_complete = {'LOAD', 'CLUSTER'}
 
         while not self.stopping:
-            if not self.command_queue.empty() and not self.command_running:
-                (cmd, arg) = self.command_queue.get()
+            if not RemoteCommands.command_queue.empty() and not RemoteCommands.get_running():
+                (cmd, arg) = RemoteCommands.command_queue.get()
                 cmd = cmd.upper()
                 arg = arg.strip()
                 if cmd in self.commands:
                     log.debug("Executing command: %s %r", cmd, arg)
-                    self.command_running = True
+                    RemoteCommands.set_running(True)
 
                     # FIXME: Find a way to execute each command using a block to ensure completion
                     # before executing the next command.  Perhaps track completion of all threads
@@ -537,7 +423,7 @@ class Tagger(QtWidgets.QApplication):
                     self.clear_command_running()
                 else:
                     log.error("Unknown command: %r", cmd)
-                self.command_queue.task_done()
+                RemoteCommands.command_queue.task_done()
 
     def _run_commands_finished(self, result=None, error=None):
         if error:
@@ -545,51 +431,13 @@ class Tagger(QtWidgets.QApplication):
         else:
             log.debug('command executor stopped')
 
-    def load_to_picard(self, items):
+    @staticmethod
+    def load_to_picard(items):
         commands = []
         for item in items:
             parts = str(item).split(maxsplit=1)
             commands.append((parts[0], parts[1:] or ['']))
-        self.parse_commands_to_queue(commands)
-
-    def parse_commands_to_queue(self, commands):
-        # Don't queue any more commands after a QUIT command.
-        if CommandFiles.quit_flag:
-            return
-        for (cmd, cmdargs) in commands:
-            cmd = cmd.upper()
-            if cmd not in REMOTE_COMMANDS:
-                log.error("Unknown command: %s", cmd)
-                continue
-            for cmd_arg in cmdargs or ['']:
-                if cmd == 'FROM_FILE':
-                    self.handle_command_from_file(cmd_arg)
-                else:
-                    log.debug(f"Queueing command: {cmd} {repr(cmd_arg)}")
-                    self.command_queue.put([cmd, cmd_arg])
-                    # Set flag so as to not queue any more commands after a QUIT command.
-                    if cmd == 'QUIT':
-                        CommandFiles.quit_flag = True
-                        return
-
-    @staticmethod
-    def _read_commands_from_file(filepath):
-        commands = []
-        try:
-            lines = open(filepath).readlines()
-        except Exception as e:
-            log.error("Error reading command file '%s': %s" % (filepath, e))
-            return commands
-        for line in lines:
-            line = line.strip()
-            if not line or line.startswith('#'):
-                continue
-            elements = shlex.split(line)
-            if not elements:
-                continue
-            command_args = elements[1:] or ['']
-            commands.append((elements[0], command_args))
-        return commands
+        RemoteCommands.parse_commands_to_queue(commands)
 
     def iter_album_files(self):
         for album in self.albums.values():
@@ -625,19 +473,10 @@ class Tagger(QtWidgets.QApplication):
             self.analyze(self.albums[album_name].iterfiles())
 
     def handle_command_from_file(self, argstring):
-        log.debug("Reading commands from: %r", argstring)
-        if not os.path.exists(argstring):
-            log.error("Missing command file: '%s'", argstring)
-            return
-        filepath = os.path.abspath(argstring)
-        if CommandFiles.contains(filepath):
-            log.warning("Circular command file reference ignored: '%s'", argstring)
-            return
-        CommandFiles.add(filepath)
-        self.parse_commands_to_queue(self._read_commands_from_file(filepath))
-        CommandFiles.remove(filepath)
+        RemoteCommands.get_commands_from_file(argstring)
 
     def handle_command_load(self, argstring):
+        # TODO: Remove this check if "command://" no longer used.
         if argstring.startswith("command://"):
             log.error("Cannot LOAD a command: %s", argstring)
             return
