@@ -117,6 +117,7 @@ MB_ATTRIBUTES = {
     'DB:medium_format/name:128': 'DataPlay',
     'DB:medium_format/name:129': 'Mixed Mode CD',
     'DB:medium_format/name:130': 'DualDisc (DVD side)',
+    'DB:medium_format/name:131': 'Betacam SP',
     'DB:release_group_primary_type/name:001': 'Album',
     'DB:release_group_primary_type/name:002': 'Single',
     'DB:release_group_primary_type/name:003': 'EP',
