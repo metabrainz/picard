@@ -1,11 +1,12 @@
 # 
 # Translators:
 # Dian Li <xslidian@gmail.com>, 2009-2019
+# Gary Liu, 2022
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2012-05-24 18:52+0000\n"
-"Last-Translator: Dian Li <xslidian@gmail.com>, 2009-2019\n"
+"Last-Translator: Gary Liu, 2022\n"
 "Language-Team: Chinese (http://www.transifex.com/musicbrainz/musicbrainz/language/zh/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -587,6 +588,13 @@ msgid ""
 "A very small optical disc in a protective case that was intended for "
 "portable listening. It did not find commercial success, but a few albums "
 "were released in the format in the early 00s."
+msgstr ""
+
+#: DB:medium_format/description:131
+msgctxt "medium_format"
+msgid ""
+"A video format used in the 1980s and 90s for professional work, including "
+"television and video archival."
 msgstr ""
 
 #: DB:work_type/description:19
@@ -1388,6 +1396,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Bestenigar"
 msgstr "Bestenigar"
 
+#: DB:medium_format/name:131
+msgctxt "medium_format"
+msgid "Betacam SP"
+msgstr ""
+
 #: DB:medium_format/name:24
 msgctxt "medium_format"
 msgid "Betamax"
@@ -1668,7 +1681,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
 msgid "C major"
-msgstr ""
+msgstr "C 大调"
 
 #: DB:work_attribute_type_allowed_value/value:3
 msgctxt "work_attribute_type_allowed_value"
@@ -2688,7 +2701,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
 msgid "F major"
-msgstr ""
+msgstr "F 大调"
 
 #: DB:work_attribute_type_allowed_value/value:18
 msgctxt "work_attribute_type_allowed_value"
@@ -7714,7 +7727,7 @@ msgstr ""
 #: DB:editor_collection_type/name:3
 msgctxt "collection_type"
 msgid "Wishlist"
-msgstr ""
+msgstr "愿望清单"
 
 #: DB:release_status/name:5
 msgctxt "release_status"

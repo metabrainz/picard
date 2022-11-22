@@ -627,6 +627,13 @@ msgid ""
 "were released in the format in the early 00s."
 msgstr "Um disco óptico em uma caixinha protetora que era destinado à escuta portátil. Não teve muito sucesso comercial, mas alguns álbuns foram lançados no formato no início dos anos 2000."
 
+#: DB:medium_format/description:131
+msgctxt "medium_format"
+msgid ""
+"A video format used in the 1980s and 90s for professional work, including "
+"television and video archival."
+msgstr ""
+
 #: DB:work_type/description:19
 msgctxt "work_type"
 msgid ""
@@ -1424,6 +1431,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:328
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bestenigar"
+msgstr ""
+
+#: DB:medium_format/name:131
+msgctxt "medium_format"
+msgid "Betacam SP"
 msgstr ""
 
 #: DB:medium_format/name:24

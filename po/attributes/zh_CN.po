@@ -618,6 +618,13 @@ msgid ""
 "were released in the format in the early 00s."
 msgstr "原本用于移动聆听的带保护壳的超小型光碟。商业上不成功，但是00年代早期少数专辑以此格式发行。"
 
+#: DB:medium_format/description:131
+msgctxt "medium_format"
+msgid ""
+"A video format used in the 1980s and 90s for professional work, including "
+"television and video archival."
+msgstr ""
+
 #: DB:work_type/description:19
 msgctxt "work_type"
 msgid ""
@@ -1416,6 +1423,11 @@ msgstr "Beste Isfahan"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bestenigar"
 msgstr "Bestenigar"
+
+#: DB:medium_format/name:131
+msgctxt "medium_format"
+msgid "Betacam SP"
+msgstr ""
 
 #: DB:medium_format/name:24
 msgctxt "medium_format"
