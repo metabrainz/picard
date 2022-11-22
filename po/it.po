@@ -4,12 +4,12 @@
 # 
 # Translators:
 # Andrea Borio <andrybo6@gmail.com>, 2016
-# Luca Salini, 2012,2017-2022
+# salo.rock, 2012,2017-2022
 # Matte <piotto@gmail.com>, 2006
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022
-# Luca Salini, 2013-2015
-# Luca Salini, 2012
-# Luca Salini, 2021
+# salo.rock, 2013-2015
+# salo.rock, 2012
+# salo.rock, 2021
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

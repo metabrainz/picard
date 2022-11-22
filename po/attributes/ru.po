@@ -483,6 +483,11 @@ msgctxt "series_type"
 msgid "A series of performances of the same show at the same venue."
 msgstr "Серия выступлений одного и того же шоу в том же месте."
 
+#: DB:series_type/description:48
+msgctxt "series_type"
+msgid "A series of recordings honoured by the same award."
+msgstr ""
+
 #: DB:series_type/description:3
 msgctxt "series_type"
 msgid "A series of recordings."
@@ -498,6 +503,11 @@ msgctxt "series_type"
 msgid "A series of related concerts by an artist in the same location."
 msgstr ""
 
+#: DB:series_type/description:47
+msgctxt "series_type"
+msgid "A series of release groups honoured by the same award."
+msgstr ""
+
 #: DB:series_type/description:1
 msgctxt "series_type"
 msgid "A series of release groups."
@@ -507,6 +517,11 @@ msgstr "Серия из групп релизов."
 msgctxt "series_type"
 msgid "A series of releases."
 msgstr "Серия релизов."
+
+#: DB:series_type/description:46
+msgctxt "series_type"
+msgid "A series of works honoured by the same award."
+msgstr ""
 
 #: DB:series_type/description:5
 msgctxt "series_type"
@@ -592,6 +607,13 @@ msgid ""
 "A very small optical disc in a protective case that was intended for "
 "portable listening. It did not find commercial success, but a few albums "
 "were released in the format in the early 00s."
+msgstr ""
+
+#: DB:medium_format/description:131
+msgctxt "medium_format"
+msgid ""
+"A video format used in the 1980s and 90s for professional work, including "
+"television and video archival."
 msgstr ""
 
 #: DB:work_type/description:19
@@ -1391,6 +1413,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:328
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bestenigar"
+msgstr ""
+
+#: DB:medium_format/name:131
+msgctxt "medium_format"
+msgid "Betacam SP"
 msgstr ""
 
 #: DB:medium_format/name:24
@@ -2374,6 +2401,11 @@ msgctxt "medium_format"
 msgid "DualDisc (CD side)"
 msgstr "DualDisc (CD сторона)"
 
+#: DB:medium_format/name:130
+msgctxt "medium_format"
+msgid "DualDisc (DVD side)"
+msgstr ""
+
 #: DB:medium_format/name:65
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Audio side)"
@@ -2906,6 +2938,11 @@ msgstr "Соль диез минор"
 msgctxt "work_attribute_type"
 msgid "GEMA ID"
 msgstr "GEMA ID"
+
+#: DB:work_attribute_type/name:106
+msgctxt "work_attribute_type"
+msgid "GMR ID"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:88
 msgctxt "work_attribute_type_allowed_value"
@@ -3776,6 +3813,11 @@ msgstr ""
 #: DB:work_attribute_type/description:7
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society BMI"
+msgstr ""
+
+#: DB:work_attribute_type/description:106
+msgctxt "work_attribute_type"
+msgid "ID for the US rights society GMR"
 msgstr ""
 
 #: DB:work_attribute_type/description:8
@@ -6058,6 +6100,11 @@ msgctxt "cover_art_type"
 msgid "Raw/Unedited"
 msgstr ""
 
+#: DB:series_type/name:48
+msgctxt "series_type"
+msgid "Recording award"
+msgstr ""
+
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
 msgid "Recording collection"
@@ -6096,6 +6143,11 @@ msgstr ""
 #: DB:editor_collection_type/name:1
 msgctxt "collection_type"
 msgid "Release collection"
+msgstr ""
+
+#: DB:series_type/name:47
+msgctxt "series_type"
+msgid "Release group award"
 msgstr ""
 
 #: DB:editor_collection_type/name:13
@@ -7145,7 +7197,7 @@ msgid ""
 "phonograph records."
 msgstr "Ёмкостной электронный диск (CED) представляет собой систему воспроизведения аналоговых видеодисков, разработанную RCA, в которой видео и аудио можно воспроизводить на телевизоре с использованием специальной иглы и системы с высокой плотностью канавок, аналогичной записям фонографа."
 
-#: DB:medium_format/description:68 DB:medium_format/description:69
+#: DB:medium_format/description:68
 msgctxt "medium_format"
 msgid ""
 "The DVD (audio) layer of a DVDplus. The CD layer should be added as a "
@@ -7159,12 +7211,27 @@ msgid ""
 "separate medium."
 msgstr "DVD (audio) слой DualDisc диска. CD слой должен быть добавлен как отдельный носитель."
 
+#: DB:medium_format/description:69
+msgctxt "medium_format"
+msgid ""
+"The DVD (video) layer of a DVDplus. The CD layer should be added as a "
+"separate medium."
+msgstr ""
+
 #: DB:medium_format/description:66
 msgctxt "medium_format"
 msgid ""
 "The DVD (video) layer of a DualDisc. The CD layer should be added as a "
 "separate medium."
 msgstr "DVD (video) слой DualDisc диска. CD слой должен быть добавлен как отдельный носитель."
+
+#: DB:medium_format/description:130
+msgctxt "medium_format"
+msgid ""
+"The DVD layer of a DualDisc, when it's unclear whether it should be DVD-"
+"Audio or DVD-Video (or it includes both). The CD layer should be added as a "
+"separate medium."
+msgstr ""
 
 #: DB:medium_format/description:80
 msgctxt "medium_format"
@@ -7684,6 +7751,11 @@ msgstr "Список желаний"
 #: DB:release_status/name:5
 msgctxt "release_status"
 msgid "Withdrawn"
+msgstr ""
+
+#: DB:series_type/name:46
+msgctxt "series_type"
+msgid "Work award"
 msgstr ""
 
 #: DB:editor_collection_type/name:15

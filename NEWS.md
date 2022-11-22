@@ -1,3 +1,27 @@
+# Version 2.8.4 - 2022-11-22
+
+## Bugfixes
+
+- [PICARD-2520](https://tickets.metabrainz.org/browse/PICARD-2520) - Null bytes in tag values can cause crashes when sorting
+- [PICARD-2539](https://tickets.metabrainz.org/browse/PICARD-2539) - Picard crashes on huge releases if no cover art provider is active
+- [PICARD-2548](https://tickets.metabrainz.org/browse/PICARD-2548) - Loaded album does not update cover art display
+- [PICARD-2549](https://tickets.metabrainz.org/browse/PICARD-2549) - Moving tracks between albums shows tracks differ even when they do not
+- [PICARD-2554](https://tickets.metabrainz.org/browse/PICARD-2554) - Submit AcoustIDs submits even IDs that are in center pane
+- [PICARD-2556](https://tickets.metabrainz.org/browse/PICARD-2556) - Player popovers for volume and playback speed crash on Wayland and open on wrong position
+- [PICARD-2557](https://tickets.metabrainz.org/browse/PICARD-2557) - Add New Tag autocomplete list contains value typed so far
+- [PICARD-2558](https://tickets.metabrainz.org/browse/PICARD-2558) - Floatable toolbars unusable under Wayland
+- [PICARD-2564](https://tickets.metabrainz.org/browse/PICARD-2564) - Options for "Windows compatibility" and "Replace non-ASCII" get incorrectly set to inactive
+- [PICARD-2565](https://tickets.metabrainz.org/browse/PICARD-2565) - Rules for file name compatibility and max. path shortening are not applied when saving cover art
+- [PICARD-2568](https://tickets.metabrainz.org/browse/PICARD-2568) - `$cleanmulti()` has no effect for hidden variables
+- [PICARD-2570](https://tickets.metabrainz.org/browse/PICARD-2570) - Unable to drag tracks from right hand pane to Clusters
+- [PICARD-2582](https://tickets.metabrainz.org/browse/PICARD-2582) - `distutils.errors.DistutilsClassError` when building with `setup.py`
+- [PICARD-2588](https://tickets.metabrainz.org/browse/PICARD-2588) - `QObject::startTimer`: Timers can only be used with threads started with QThread
+
+## Improvements
+
+- [PICARD-2589](https://tickets.metabrainz.org/browse/PICARD-2589) - Support media types "DualDisc (DVD side)" and "Betacam SP"
+
+
 # Version 2.8.3 - 2022-08-17
 
 ## Bugfixes

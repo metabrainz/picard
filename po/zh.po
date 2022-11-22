@@ -11,6 +11,7 @@
 # Erocan Lancon, 2017
 # Erwin Synth <kingdzy1996@gmail.com>, 2017
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2007
+# Gary Liu, 2022
 # Maureen <mry_33@163.com>, 2014
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022
 # RedHotHeat <gbonner@iol.ie>, 2012
@@ -28,7 +29,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-07-07 07:54+0200\n"
 "PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022\n"
+"Last-Translator: Gary Liu, 2022\n"
 "Language-Team: Chinese (http://www.transifex.com/musicbrainz/musicbrainz/language/zh/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -408,7 +409,7 @@ msgstr "替换非 ASCII 字符"
 
 #: picard/profile.py:119
 msgid "Rename files"
-msgstr ""
+msgstr "文件重命名"
 
 #: picard/profile.py:120
 msgid "Move files"
@@ -685,7 +686,7 @@ msgstr "我的脚本"
 
 #: picard/const/__init__.py:185
 msgid "My profile"
-msgstr ""
+msgstr "我的个人资料"
 
 #: picard/const/__init__.py:186
 msgid "(copy)"
@@ -4046,7 +4047,7 @@ msgstr "正在载入..."
 
 #: picard/ui/itemviews.py:546
 msgid "Show &more details..."
-msgstr ""
+msgstr "显示更多细节..."
 
 #: picard/ui/itemviews.py:599
 #, python-format
@@ -4906,11 +4907,11 @@ msgstr ""
 #: picard/ui/scripteditor.py:361
 #, python-format
 msgid "User: %s"
-msgstr ""
+msgstr "用户："
 
 #: picard/ui/scripteditor.py:396
 msgid "title"
-msgstr ""
+msgstr "标题"
 
 #: picard/ui/scripteditor.py:415
 msgid "File naming script editor"
@@ -4918,7 +4919,7 @@ msgstr ""
 
 #: picard/ui/scripteditor.py:481
 msgid "Reset"
-msgstr ""
+msgstr "重置"
 
 #: picard/ui/options/dialog.py:131 picard/ui/scripteditor.py:486
 msgid "Make It So!"
@@ -5066,7 +5067,7 @@ msgstr ""
 
 #: picard/ui/options/scripting.py:161 picard/ui/scripteditor.py:1198
 msgid "File Error"
-msgstr ""
+msgstr "文件错误"
 
 #: picard/ui/scripteditor.py:1219
 msgid ""
@@ -5081,7 +5082,7 @@ msgstr ""
 
 #: picard/ui/options/profiles.py:118 picard/ui/scripteditor.py:1228
 msgid "Copy"
-msgstr ""
+msgstr "复制"
 
 #: picard/ui/options/renaming.py:295 picard/ui/scripteditor.py:1274
 msgid "The file naming format must not be empty."
@@ -5531,7 +5532,7 @@ msgstr ""
 
 #: picard/ui/ui_options_maintenance.py:87
 msgid "Open folder"
-msgstr ""
+msgstr "打开文件夹"
 
 #: picard/ui/ui_options_maintenance.py:88
 msgid "Load Backup"
@@ -5801,11 +5802,11 @@ msgstr ""
 
 #: picard/ui/ui_options_script.py:128
 msgid "Import"
-msgstr ""
+msgstr "导入"
 
 #: picard/ui/ui_options_script.py:129
 msgid "Export"
-msgstr ""
+msgstr "导出"
 
 #: picard/ui/ui_options_script.py:130
 msgid "Documentation"
@@ -6254,7 +6255,7 @@ msgstr ""
 
 #: picard/ui/options/interface.py:178
 msgid "Dark"
-msgstr ""
+msgstr "暗色"
 
 #: picard/ui/options/interface.py:179
 msgid "A dark display theme"
@@ -6262,7 +6263,7 @@ msgstr ""
 
 #: picard/ui/options/interface.py:182
 msgid "Light"
-msgstr ""
+msgstr "亮色"
 
 #: picard/ui/options/interface.py:183
 msgid "A light display theme"
@@ -6521,7 +6522,7 @@ msgstr ""
 
 #: picard/ui/options/profiles.py:113
 msgid "New"
-msgstr ""
+msgstr "新建"
 
 #: picard/ui/options/profiles.py:114
 msgid "Create a new profile"
@@ -6533,7 +6534,7 @@ msgstr ""
 
 #: picard/ui/options/profiles.py:123
 msgid "Delete"
-msgstr ""
+msgstr "删除"
 
 #: picard/ui/options/profiles.py:124
 msgid "Delete the profile"
@@ -6794,7 +6795,7 @@ msgstr ""
 
 #: picard/util/__init__.py:326
 msgid "No Title"
-msgstr ""
+msgstr "无标题"
 
 #: picard/util/bytes2human.py:37
 #, python-format
@@ -7098,11 +7099,11 @@ msgstr "表演者"
 
 #: picard/util/tags.py:98
 msgid "Podcast"
-msgstr ""
+msgstr "播客"
 
 #: picard/util/tags.py:99
 msgid "Podcast URL"
-msgstr ""
+msgstr "播客URL"
 
 #: picard/util/tags.py:100
 msgid "Producer"

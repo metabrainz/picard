@@ -15,13 +15,14 @@
 # Staffan Vilcans, 2014
 # Staffan Vilcans, 2016-2017
 # Staffan Vilcans, 2012
+# Tom Sawyer, 2022
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-07-07 07:54+0200\n"
 "PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Jonatan Nyberg <jonatan@autistici.org>, 2016-2017,2021-2022\n"
+"Last-Translator: Tom Sawyer, 2022\n"
 "Language-Team: Swedish (http://www.transifex.com/musicbrainz/musicbrainz/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -205,7 +206,7 @@ msgstr ""
 
 #: picard/profile.py:50 picard/ui/ui_options_general.py:179
 msgid "Automatically scan all new files"
-msgstr "Skanna automatiskt alla nya filer"
+msgstr "Analysera automatiskt alla nya filer"
 
 #: picard/profile.py:51 picard/ui/ui_options_general.py:180
 msgid "Automatically cluster all new files"
@@ -262,7 +263,7 @@ msgstr "Använd standardiserade artistnamn"
 
 #: picard/profile.py:69 picard/ui/ui_options_metadata.py:135
 msgid "Use standardized instrument and vocal credits"
-msgstr ""
+msgstr "Använd standardiserade instrument och rösterkännanden"
 
 #: picard/profile.py:70 picard/ui/ui_options_metadata.py:139
 msgid "Guess track number and title from filename if empty"
@@ -290,11 +291,11 @@ msgstr ""
 
 #: picard/profile.py:81 picard/ui/ui_options_tags.py:76
 msgid "Remove ID3 tags from FLAC files"
-msgstr "Ta bort ID3-taggar från FLAC-filer"
+msgstr "Ta bort ID3-etiketter från FLAC-filer"
 
 #: picard/profile.py:82 picard/ui/ui_options_tags.py:77
 msgid "Remove APEv2 tags from MP3 files"
-msgstr "Ta bort APEv2-taggar från MP3-filer"
+msgstr "Ta bort APEv2-etiketter från MP3-filer"
 
 #: picard/profile.py:83 picard/ui/ui_options_tags.py:78
 msgid "Fix missing seekpoints for FLAC files"
@@ -310,7 +311,7 @@ msgstr ""
 
 #: picard/profile.py:86 picard/ui/ui_options_tags_compatibility_aac.py:49
 msgid "Remove APEv2 tags from AAC files"
-msgstr "Ta bort APEv2-taggar från AAC-filer"
+msgstr "Ta bort APEv2-etiketter från AAC-filer"
 
 #: picard/profile.py:87
 msgid "Save APEv2 tags to AC3"
@@ -318,7 +319,7 @@ msgstr ""
 
 #: picard/profile.py:88 picard/ui/ui_options_tags_compatibility_ac3.py:49
 msgid "Remove APEv2 tags from AC3 files"
-msgstr "Ta bort APEv2-taggar från AC3-filer"
+msgstr "Ta bort APEv2-etiketter från AC3-filer"
 
 #: picard/profile.py:89
 msgid "Write ID3v1 tags"
@@ -346,7 +347,7 @@ msgstr ""
 
 #: picard/profile.py:95 picard/ui/ui_options_tags_compatibility_wave.py:59
 msgid "Remove existing RIFF INFO tags from WAVE files"
-msgstr ""
+msgstr "Ta bort befintliga RIFF INFO-etiketter från WAVE-filer"
 
 #: picard/profile.py:96 picard/ui/ui_options_tags_compatibility_wave.py:60
 msgid "RIFF INFO text encoding"
@@ -4761,7 +4762,7 @@ msgstr "Nytt värde"
 
 #: picard/ui/metadatabox.py:241
 msgid "Add New Tag..."
-msgstr "Lägg till ny tagg..."
+msgstr "Lägg till ny etikett..."
 
 #: picard/ui/metadatabox.py:243
 msgid "Show Changes First"
@@ -4789,7 +4790,7 @@ msgstr "Lägg till i listan \"Bevara taggar\""
 
 #: picard/ui/metadatabox.py:384
 msgid "Remove from 'Preserve Tags' List"
-msgstr "Ta bort från listan \"Bevara taggar\""
+msgstr "Ta bort från listan \"Bevara etiketter\""
 
 #: picard/ui/metadatabox.py:432
 msgid "Use Original Value"
@@ -4842,7 +4843,7 @@ msgstr "Spelare"
 
 #: picard/ui/playertoolbar.py:193
 msgid "Play"
-msgstr "Pjäs"
+msgstr "Spela"
 
 #: picard/ui/playertoolbar.py:194
 msgid "Play selected files"
@@ -5792,7 +5793,7 @@ msgstr ""
 
 #: picard/ui/ui_options_script.py:124 picard/ui/ui_options_script.py:125
 msgid "Add new tagger script"
-msgstr ""
+msgstr "Lägg till nytt etikettscript"
 
 #: picard/ui/ui_options_script.py:126
 msgid "Remove the selected tagger script"
@@ -5957,7 +5958,7 @@ msgid ""
 "First group in the regular expression, if any, will be used as type, ie. "
 "cover-back-spine.jpg will be set as types Back + Spine. If no type is found,"
 " it will default to Front type."
-msgstr ""
+msgstr "Första gruppen i det reguljära uttrycket, om tillgängligt, kommer att användas som typ. Med andra ord cover-back-spine.jpg kommer att anges som typer Back + Spine. Om ingen typ hittas kommer den att sättas till Front-typ."
 
 #: picard/ui/ui_scripteditor.py:209
 msgid "Select the file naming script to load into the editor"
@@ -6034,7 +6035,7 @@ msgstr "&Förhandsgranska"
 
 #: picard/ui/ui_widget_taglisteditor.py:69
 msgid "Add new tag"
-msgstr "Lägg till ny tagg"
+msgstr "Lägg till ny etikett"
 
 #: picard/ui/ui_widget_taglisteditor.py:70
 #: picard/ui/ui_widget_taglisteditor.py:71
@@ -6049,11 +6050,11 @@ msgstr "Flytta taggen nedåt"
 #: picard/ui/ui_widget_taglisteditor.py:74
 #: picard/ui/ui_widget_taglisteditor.py:75
 msgid "Remove selected tags"
-msgstr "Ta bort markerade taggar"
+msgstr "Ta bort markerade etiketter"
 
 #: picard/ui/ui_widget_taglisteditor.py:76
 msgid "Remove tags"
-msgstr "Ta bort taggar"
+msgstr "Ta bort etiketter"
 
 #: picard/ui/util.py:49
 msgid "&Ok"
@@ -7209,7 +7210,7 @@ msgstr "Artist webbsida"
 
 #: picard/util/tags.py:126
 msgid "Work"
-msgstr "Jobb"
+msgstr "Verk"
 
 #: picard/util/tags.py:127
 msgid "Writer"

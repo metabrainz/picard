@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Nerten <alex@nerten.info>, 2013
-# Andrew Pyndyk <andrew.pyndyk@gmail.com>, 2017
+# Андрій Пиндик <andrew.pyndyk@gmail.com>, 2017
 # Dmitr Y, 2017
 # Edward Pavlenko <dfcbktd@gmail.com>, 2019
 # Ekaterina <nawsikaya@bk.ru>, 2020

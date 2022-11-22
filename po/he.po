@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-07-07 07:54+0200\n"
 "PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022\n"
+"Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>, 2018-2022\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -491,7 +491,7 @@ msgstr "להתעלם מפער משך הרצועה מתחת ל־X שניות"
 
 #: picard/profile.py:163 picard/ui/ui_options_advanced.py:142
 msgid "Maximum number of entities to return per MusicBrainz query"
-msgstr ""
+msgstr "מספר רשומות מירבי שיאוחזרו לכול שאילתת מוזיקבריינז"
 
 #: picard/profile.py:166
 msgid "Completeness check ignore: Video tracks"
@@ -3513,7 +3513,7 @@ msgstr "יצוא תסריט"
 #: picard/script/serializer.py:232
 #, python-format
 msgid "Script successfully exported to %s"
-msgstr "התסריט יוצא בהצלחה ל־%s"
+msgstr " ייצא תסריט ל־%s צלח"
 
 #: picard/script/serializer.py:243
 #, python-format
@@ -3822,7 +3822,7 @@ msgstr "לחץ לחיצה כפולה לפתיחה במציג חיצוני\nקו�
 msgid ""
 "Missing temporary file: %s\n"
 "Source: %s"
-msgstr ""
+msgstr "קובץ זמני חסר: %s\nמקור: %s"
 
 #: picard/ui/infodialog.py:280
 msgid "Filename:"
@@ -4052,7 +4052,7 @@ msgstr "טעינה..."
 
 #: picard/ui/itemviews.py:546
 msgid "Show &more details..."
-msgstr ""
+msgstr "הצגת &פרטים נוספים‮..."
 
 #: picard/ui/itemviews.py:599
 #, python-format
@@ -4409,7 +4409,7 @@ msgstr "Ctrl+T"
 
 #: picard/ui/mainwindow.py:673
 msgid "Show &other album versions..."
-msgstr ""
+msgstr "הצגת גרסאות אלבום אחרות..."
 
 #: picard/ui/mainwindow.py:674
 msgid "Ctrl+Shift+O"
@@ -5553,11 +5553,11 @@ msgstr "פתיחת תיקייה"
 
 #: picard/ui/ui_options_maintenance.py:88
 msgid "Load Backup"
-msgstr ""
+msgstr "טעינת גיבוי"
 
 #: picard/ui/ui_options_maintenance.py:89
 msgid "Save Backup"
-msgstr ""
+msgstr "שמירת גיבוי"
 
 #: picard/ui/ui_options_maintenance.py:90
 msgid "Remove selected options"
@@ -5757,7 +5757,7 @@ msgstr "שנוי שמות קובץ במהלך השמירה"
 
 #: picard/ui/ui_options_renaming.py:171
 msgid "Allow paths longer than 259 characters"
-msgstr ""
+msgstr "אפשור נתיבים ארוכים מ־256 תווים"
 
 #: picard/ui/ui_options_renaming.py:172 picard/ui/ui_scripteditor.py:208
 msgid "Selected file naming script:"
@@ -6375,44 +6375,44 @@ msgstr "קובץ התצורה מכיל כעת %d הגדרות אפשרויות, 
 
 #: picard/ui/options/maintenance.py:166
 msgid "Configuration files"
-msgstr ""
+msgstr "קובץ תצורה"
 
 #: picard/ui/options/maintenance.py:183 picard/ui/options/maintenance.py:200
 msgid "Backup Configuration File"
-msgstr ""
+msgstr "גיבוי קובץ תצורה"
 
 #: picard/ui/options/maintenance.py:187
 msgid ""
 "There was a problem backing up the configuration file. Please see the logs "
 "for more details."
-msgstr ""
+msgstr "הייתה בעיה בגיבוי קובץ התצורה. לפרטים נוספים, נא לעיין ביומנים."
 
 #: picard/ui/options/maintenance.py:215
 #, python-format
 msgid "Configuration successfully backed up to %s"
-msgstr ""
+msgstr "גיבוי תצורה ל־%s צלח"
 
 #: picard/ui/options/maintenance.py:224
 msgid "Load Backup Configuration File"
-msgstr ""
+msgstr "טעינת קובץ תצורת גיבוי"
 
 #: picard/ui/options/maintenance.py:228
 msgid ""
 "Loading a backup configuration file will replace the current configuration settings. A backup copy of the current file will be saved automatically.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "טעינת קובץ תצורה, תחליף את הגדרות התצורה הנוכחית. קובץ גיבוי התצורה הנוכחית יישמר באופן אוטומטי.\n\nהאם להמשיך?"
 
 #: picard/ui/options/maintenance.py:260
 #, python-format
 msgid "Configuration successfully loaded from %s"
-msgstr ""
+msgstr "טעינת תצורה מ־%s צלחה"
 
 #: picard/ui/options/maintenance.py:268
 msgid ""
 "There was a problem restoring the configuration file. Please see the logs "
 "for more details."
-msgstr ""
+msgstr "הייתה בעיה בשיחזור קובץ התצורה. לפרטים נוספים, נא לעיין ביומנים."
 
 #: picard/ui/options/maintenance.py:294
 #: picard/ui/widgets/profilelistwidget.py:83
@@ -6610,14 +6610,14 @@ msgstr "שיצוב הכל"
 
 #: picard/ui/options/renaming.py:209
 msgid "Windows long path support"
-msgstr ""
+msgstr "תמיכה בנתיב וינדוס ארוך"
 
 #: picard/ui/options/renaming.py:210
 msgid ""
 "Enabling long paths on Windows might cause files being saved with path names"
 " exceeding the 259 character limit traditionally imposed by the Windows API."
 " Some software might not be able to properly access those files."
-msgstr ""
+msgstr "איפשור נתיבים ארוכים בווינדוס עלולה לגרום לשמירת קבצים עם שמות נתיבים, החורגים ממגבלת 259 התווים שהוכתבה באופן מסורתי על ידי ה־API של וינדוס. ייתכן שתוכנות מסוימות לא יוכלו לגשת כראוי לקבצים הללו."
 
 #: picard/ui/options/renaming.py:285
 msgid "The location to move files to must not be empty."
