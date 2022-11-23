@@ -2,24 +2,25 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Muhammad Adli Ibrahim <adli98@yahoo.com>, 2020
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2020
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-14 23:03+0100\n"
+"POT-Creation-Date: 2022-11-23 07:49+0100\n"
 "PO-Revision-Date: 2018-11-25 07:37+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2020\n"
-"Language-Team: Malay (Malaysia) (https://www.transifex.com/musicbrainz/teams/13846/ms_MY/)\n"
+"Language-Team: Malay (Malaysia) (https://www.transifex.com/musicbrainz/"
+"teams/13846/ms_MY/)\n"
+"Language: ms_MY\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ms_MY\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6
@@ -42,17 +43,17 @@ msgstr ""
 
 #: org.musicbrainz.Picard.appdata.xml.in:15
 msgid ""
-"Picard helps you organize your music collection by renaming your music files"
-" and sorting them into a folder structure exactly the way you want it. A "
+"Picard helps you organize your music collection by renaming your music files "
+"and sorting them into a folder structure exactly the way you want it. A "
 "variety of plugins are available and you can even write your own. Picard "
 "supports a wide range of audio formats and can also lookup an entire CD for "
 "you."
 msgstr ""
 "Picard mampu menyusun atur kumpulan muzik anda melalui penamaan semula dan "
-"pengisihan fail muzik ke dalam struktur pelipat yang dikehendaki. Anda boleh"
-" memilih antara pemalam yang tersedia ataupun menulis pemalam sendiri. "
-"Picard menyokong pelbagai jenis format audio. Di samping itu, Picard juga "
-"mampu mencari CD lengkap untuk anda."
+"pengisihan fail muzik ke dalam struktur pelipat yang dikehendaki. Anda boleh "
+"memilih antara pemalam yang tersedia ataupun menulis pemalam sendiri. Picard "
+"menyokong pelbagai jenis format audio. Di samping itu, Picard juga mampu "
+"mencari CD lengkap untuk anda."
 
 #: org.musicbrainz.Picard.appdata.xml.in:22
 msgid "Tagging audio files has never been easier."
@@ -81,8 +82,8 @@ msgstr ""
 #: org.musicbrainz.Picard.appdata.xml.in:35
 msgid ""
 "Comprehensive database: Picard uses the open and community-maintained "
-"MusicBrainz database to provide accurate information about millions of music"
-" releases."
+"MusicBrainz database to provide accurate information about millions of music "
+"releases."
 msgstr ""
 "Pangkalan data yang tuntas: Picard menggunakan pangkalan data MusicBrainz "
 "untuk membekalkan maklumat yang tepat berkenaan jutaan keluaran muzik. "
@@ -114,6 +115,12 @@ msgstr ""
 
 #: org.musicbrainz.Picard.appdata.xml.in:52
 msgid ""
+"Cover Art: Picard can find and download the correct cover art for your "
+"albums."
+msgstr ""
+
+#: org.musicbrainz.Picard.appdata.xml.in:56
+msgid ""
 "Open Source: Picard is licensed under the GNU General Public License 2.0 or "
 "later, and is hosted on GitHub where it is actively developed by some "
 "awesome developers."
@@ -122,6 +129,6 @@ msgstr ""
 "terkemudian. Picard juga dihoskan di GitHub serta sedang giat dibangunkan "
 "oleh pembangun-pembangun yang hebat."
 
-#: org.musicbrainz.Picard.appdata.xml.in:92
+#: org.musicbrainz.Picard.appdata.xml.in:102
 msgid "MetaBrainz Foundation"
 msgstr "Yayasan MetaBrainz"

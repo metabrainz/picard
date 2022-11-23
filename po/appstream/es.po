@@ -2,27 +2,30 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Jeremias Brown <comercialspam@gmail.com>, 2018
 # Ismael Olea <ismael@olea.org>, 2018
 # Nicolás Tamargo <reosarevok@gmail.com>, 2020
 # Jefferson Alejandro Neira Rodriguez <alejo.conejo27@hotmail.com>, 2020
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-14 23:03+0100\n"
+"POT-Creation-Date: 2022-11-23 07:49+0100\n"
 "PO-Revision-Date: 2018-11-25 07:37+0000\n"
-"Last-Translator: Jefferson Alejandro Neira Rodriguez <alejo.conejo27@hotmail.com>, 2020\n"
-"Language-Team: Spanish (https://www.transifex.com/musicbrainz/teams/13846/es/)\n"
+"Last-Translator: Jefferson Alejandro Neira Rodriguez <alejo.conejo27@hotmail."
+"com>, 2020\n"
+"Language-Team: Spanish (https://www.transifex.com/musicbrainz/teams/13846/"
+"es/)\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es\n"
-"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
+"1 : 2;\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6
 msgid "MusicBrainz Picard"
@@ -39,12 +42,14 @@ msgid ""
 "files even without any existing metadata."
 msgstr ""
 "¿Necesitas ordenar tu biblioteca de música? \n"
-"Picard es un etiquetador de música multiplataforma open source de MusicBrainz. Tiene la capacidad de identificar archivos de audio incluso sin metadatos disponibles."
+"Picard es un etiquetador de música multiplataforma open source de "
+"MusicBrainz. Tiene la capacidad de identificar archivos de audio incluso sin "
+"metadatos disponibles."
 
 #: org.musicbrainz.Picard.appdata.xml.in:15
 msgid ""
-"Picard helps you organize your music collection by renaming your music files"
-" and sorting them into a folder structure exactly the way you want it. A "
+"Picard helps you organize your music collection by renaming your music files "
+"and sorting them into a folder structure exactly the way you want it. A "
 "variety of plugins are available and you can even write your own. Picard "
 "supports a wide range of audio formats and can also lookup an entire CD for "
 "you."
@@ -52,8 +57,8 @@ msgstr ""
 "Picard lo ayuda a organizar su colección de música cambiando el nombre de "
 "sus archivos de música y ordenándolos en una estructura de carpetas "
 "exactamente como lo desea. Hay una variedad de complementos disponibles e "
-"incluso puedes escribir los tuyos. Picard admite una amplia gama de formatos"
-" de audio y también puede buscar un CD completo por ti."
+"incluso puedes escribir los tuyos. Picard admite una amplia gama de formatos "
+"de audio y también puede buscar un CD completo por ti."
 
 #: org.musicbrainz.Picard.appdata.xml.in:22
 msgid "Tagging audio files has never been easier."
@@ -69,7 +74,8 @@ msgid ""
 "FLAC, OGG, M4A, WMA, WAV, and more."
 msgstr ""
 "Múltiples formatos: \n"
-"Picard es compatible con todos los formatos de música populares como  MP3, FLAC, OGG, M4A, WMA, WAV y más."
+"Picard es compatible con todos los formatos de música populares como  MP3, "
+"FLAC, OGG, M4A, WMA, WAV y más."
 
 #: org.musicbrainz.Picard.appdata.xml.in:31
 msgid ""
@@ -77,13 +83,14 @@ msgid ""
 "identified by the actual music, even if they have no metadata."
 msgstr ""
 "AcoustID: \n"
-"Picard utiliza las huellas digitales de audio de AcoustID que permiten identificar los archivos de audio incluso si no tienen metadatos."
+"Picard utiliza las huellas digitales de audio de AcoustID que permiten "
+"identificar los archivos de audio incluso si no tienen metadatos."
 
 #: org.musicbrainz.Picard.appdata.xml.in:35
 msgid ""
 "Comprehensive database: Picard uses the open and community-maintained "
-"MusicBrainz database to provide accurate information about millions of music"
-" releases."
+"MusicBrainz database to provide accurate information about millions of music "
+"releases."
 msgstr ""
 "Amplia base de datos: Picard utiliza la base de datos abierta y mantenida "
 "por la comunidad MusicBrainz para proporcionar información precisa sobre "
@@ -110,18 +117,26 @@ msgid ""
 "look like."
 msgstr ""
 "Secuencias de órdenes: \n"
-"Un lenguaje de secuencias de órdenes flexible pero fácil de aprender: permite especificar exactamente cómo se llamarán sus archivos de música y cómo se verán las etiquetas."
+"Un lenguaje de secuencias de órdenes flexible pero fácil de aprender: "
+"permite especificar exactamente cómo se llamarán sus archivos de música y "
+"cómo se verán las etiquetas."
 
 #: org.musicbrainz.Picard.appdata.xml.in:52
+msgid ""
+"Cover Art: Picard can find and download the correct cover art for your "
+"albums."
+msgstr ""
+
+#: org.musicbrainz.Picard.appdata.xml.in:56
 msgid ""
 "Open Source: Picard is licensed under the GNU General Public License 2.0 or "
 "later, and is hosted on GitHub where it is actively developed by some "
 "awesome developers."
 msgstr ""
-"Open Source: Picard está licenciado bajo la Licencia Pública General GNU 2.0"
-" o posterior, y está alojado en GitHub, donde lo desarrollan activamente "
+"Open Source: Picard está licenciado bajo la Licencia Pública General GNU 2.0 "
+"o posterior, y está alojado en GitHub, donde lo desarrollan activamente "
 "muchos magníficos desarrolladores."
 
-#: org.musicbrainz.Picard.appdata.xml.in:92
+#: org.musicbrainz.Picard.appdata.xml.in:102
 msgid "MetaBrainz Foundation"
 msgstr "Fundación MetaBrainz"

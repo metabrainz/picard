@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-14 23:03+0100\n"
+"POT-Creation-Date: 2022-11-23 07:49+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,11 +87,17 @@ msgstr ""
 
 #: org.musicbrainz.Picard.appdata.xml.in:52
 msgid ""
+"Cover Art: Picard can find and download the correct cover art for your "
+"albums."
+msgstr ""
+
+#: org.musicbrainz.Picard.appdata.xml.in:56
+msgid ""
 "Open Source: Picard is licensed under the GNU General Public License 2.0 or "
 "later, and is hosted on GitHub where it is actively developed by some "
 "awesome developers."
 msgstr ""
 
-#: org.musicbrainz.Picard.appdata.xml.in:92
+#: org.musicbrainz.Picard.appdata.xml.in:102
 msgid "MetaBrainz Foundation"
 msgstr ""
