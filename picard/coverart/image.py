@@ -324,11 +324,17 @@ class CoverArtImage:
         filename = script_to_filename(filename, metadata)
         if not filename:
             filename = DEFAULT_COVER_IMAGE_FILENAME
-        if is_absolute_path(filename):
-            dirname = os.path.dirname(filename)
-        filename = make_short_filename(
-            dirname, os.path.basename(filename), win_shorten_path=win_shorten_path)
-        filename = os.path.join(dirname, filename)
+        dirname = os.path.normpath(dirname)
+        if not is_absolute_path(filename):
+            filename = os.path.normpath(os.path.join(dirname, filename))
+        try:
+            basedir = os.path.commonpath((dirname, os.path.dirname(filename)))
+            relpath = os.path.relpath(filename, start=basedir)
+        except ValueError:
+            basedir = os.path.dirname(filename)
+            relpath = os.path.basename(filename)
+        relpath = make_short_filename(basedir, relpath, win_shorten_path=win_shorten_path)
+        filename = os.path.join(basedir, relpath)
         filename = make_save_path(filename, win_compat=win_compat, mac_compat=IS_MACOS)
         return encode_filename(filename)
 
