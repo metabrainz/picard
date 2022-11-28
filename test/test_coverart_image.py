@@ -30,6 +30,7 @@ from test.picardtestcase import (
     create_fake_png,
 )
 
+from picard.const import DEFAULT_COVER_IMAGE_FILENAME
 from picard.const.sys import IS_WIN
 from picard.coverart.image import (
     CoverArtImage,
@@ -206,9 +207,15 @@ class CoverArtImageMakeFilenameTest(PicardTestCase):
         )
 
     def test_make_image_filename(self):
-        filename = self.image._make_image_filename("cover", "/music/albumart",
+        filename = self.image._make_image_filename('AlbumArt', '/music/albumart',
             self.metadata, win_compat=False, win_shorten_path=False)
-        self.compare_paths('/music/albumart/cover', filename)
+        self.compare_paths('/music/albumart/AlbumArt', filename)
+
+    def test_make_image_filename_default(self):
+        filename = self.image._make_image_filename('$noop()', '/music/albumart',
+            self.metadata, win_compat=False, win_shorten_path=False)
+        self.compare_paths(
+            os.path.join('/music/albumart/', DEFAULT_COVER_IMAGE_FILENAME), filename)
 
     def test_make_image_filename_relative_path(self):
         self.metadata['album'] = 'TheAlbum'
@@ -217,15 +224,15 @@ class CoverArtImageMakeFilenameTest(PicardTestCase):
         self.compare_paths('/music/covers/TheAlbum', filename)
 
     def test_make_image_filename_absolute_path(self):
-        filename = self.image._make_image_filename("/foo/bar/cover", "/music/albumart",
+        filename = self.image._make_image_filename('/foo/bar/AlbumArt', '/music/albumart',
             self.metadata, win_compat=False, win_shorten_path=False)
-        self.compare_paths('/foo/bar/cover', filename)
+        self.compare_paths('/foo/bar/AlbumArt', filename)
 
     @unittest.skipUnless(IS_WIN, "windows test")
     def test_make_image_filename_absolute_path_no_common_base(self):
-        filename = self.image._make_image_filename("D:/foo/cover", "C:/music",
+        filename = self.image._make_image_filename('D:/foo/AlbumArt', 'C:/music',
             self.metadata, win_compat=False, win_shorten_path=False)
-        self.compare_paths('D:\\foo\\cover', filename)
+        self.compare_paths('D:\\foo\\AlbumArt', filename)
 
     def test_make_image_filename_script(self):
         cover_script = '%album%-$if($eq(%coverart_maintype%,front),cover,%coverart_maintype%)'
