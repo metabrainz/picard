@@ -59,6 +59,9 @@ To uninstall Picard run:
 
     pip3 uninstall picard
 
+The [official packages for Picard on PyPI](https://pypi.org/project/picard/)
+are signed using the GPG key [67997e14d563da7c](https://keyserver.ubuntu.com/pks/lookup?op=vindex&search=0x67997e14d563da7c).
+
 
 Installation using setup.py
 ---------------------------
