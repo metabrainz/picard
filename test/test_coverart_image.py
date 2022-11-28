@@ -210,6 +210,12 @@ class CoverArtImageMakeFilenameTest(PicardTestCase):
             self.metadata, win_compat=False, win_shorten_path=False)
         self.compare_paths('/music/albumart/cover', filename)
 
+    def test_make_image_filename_relative_path(self):
+        self.metadata['album'] = 'TheAlbum'
+        filename = self.image._make_image_filename("../covers/%album%", "/music/album",
+            self.metadata, win_compat=False, win_shorten_path=False)
+        self.compare_paths('/music/covers/TheAlbum', filename)
+
     def test_make_image_filename_absolute_path(self):
         filename = self.image._make_image_filename("/foo/bar/cover", "/music/albumart",
             self.metadata, win_compat=False, win_shorten_path=False)
