@@ -268,7 +268,7 @@ jobs:
       continue-on-error: true
       run: |
         PICARD_VERSION=$(python -c "import picard; print(picard.__version__)")
-        echo "::set-output name=version::"$PICARD_VERSION
+        echo "version=$PICARD_VERSION" >> $GITHUB_OUTPUT
         ./scripts/tools/changelog-for-version.py $PICARD_VERSION > changes-$PICARD_VERSION.txt
     - name: Create release
       uses: softprops/action-gh-release@v1
