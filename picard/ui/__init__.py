@@ -40,6 +40,7 @@ from picard.config import (
 )
 from picard.const import DOCS_BASE_URL
 from picard.const.sys import (
+    IS_HAIKU,
     IS_MACOS,
     IS_WIN,
 )
@@ -53,6 +54,8 @@ if IS_MACOS:
     FONT_FAMILY_MONOSPACE = 'Menlo'
 elif IS_WIN:
     FONT_FAMILY_MONOSPACE = 'Consolas'
+elif IS_HAIKU:
+    FONT_FAMILY_MONOSPACE = 'Noto Sans Mono'
 else:
     FONT_FAMILY_MONOSPACE = 'Monospace'
 
