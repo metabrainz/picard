@@ -577,7 +577,7 @@ class Tagger(QtWidgets.QApplication):
 
     def handle_command_lookup_cd(self, argstring):
         if not _discid:
-            log.error("The Lookup CD function is not available.")
+            log.error("CDROM: discid library not found - Lookup CD functionality disabled")
             return
         disc = Disc()
         devices = get_cdrom_drives()
