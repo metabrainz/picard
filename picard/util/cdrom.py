@@ -47,6 +47,7 @@ except ImportError:
     except (ImportError, OSError):
         discid = None
 
+DISCID_NOT_LOADED_MESSAGE = "CDROM: discid library not found - Lookup CD functionality disabled"
 
 DEFAULT_DRIVES = []
 if discid is not None:

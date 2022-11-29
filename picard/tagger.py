@@ -135,6 +135,7 @@ from picard.util import (
     webbrowser2,
 )
 from picard.util.cdrom import (
+    DISCID_NOT_LOADED_MESSAGE,
     discid as _discid,
     get_cdrom_drives,
 )
@@ -577,7 +578,7 @@ class Tagger(QtWidgets.QApplication):
 
     def handle_command_lookup_cd(self, argstring):
         if not _discid:
-            log.error("CDROM: discid library not found - Lookup CD functionality disabled")
+            log.error(DISCID_NOT_LOADED_MESSAGE)
             return
         disc = Disc()
         devices = get_cdrom_drives()

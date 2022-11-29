@@ -99,6 +99,7 @@ from picard.util import (
     webbrowser2,
 )
 from picard.util.cdrom import (
+    DISCID_NOT_LOADED_MESSAGE,
     discid,
     get_cdrom_drives,
 )
@@ -913,7 +914,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.cd_lookup_menu.clear()
         self.cd_lookup_action.setEnabled(discid is not None)
         if not drives:
-            log.warning("CDROM: No CD-ROM drives found - Lookup CD functionality disabled")
+            log.warning(DISCID_NOT_LOADED_MESSAGE)
         else:
             config = get_config()
             shortcut_drive = config.setting["cd_lookup_device"].split(",")[0] if len(drives) > 1 else ""
