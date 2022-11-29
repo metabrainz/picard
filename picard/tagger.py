@@ -134,7 +134,11 @@ from picard.util import (
     versions,
     webbrowser2,
 )
-from picard.util.cdrom import get_cdrom_drives
+from picard.util.cdrom import (
+    DISCID_NOT_LOADED_MESSAGE,
+    discid as _discid,
+    get_cdrom_drives,
+)
 from picard.util.checkupdate import UpdateCheckManager
 from picard.webservice import WebService
 from picard.webservice.api_helpers import (
@@ -573,6 +577,9 @@ class Tagger(QtWidgets.QApplication):
             log.error("Invalid LOOKUP command argument: '%s'", argstring)
 
     def handle_command_lookup_cd(self, argstring):
+        if not _discid:
+            log.error(DISCID_NOT_LOADED_MESSAGE)
+            return
         disc = Disc()
         devices = get_cdrom_drives()
 
