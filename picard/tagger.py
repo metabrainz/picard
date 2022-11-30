@@ -45,7 +45,6 @@
 
 
 import argparse
-import datetime
 from functools import partial
 from hashlib import md5
 import logging
@@ -404,11 +403,8 @@ class Tagger(QtWidgets.QApplication):
                         original_save_thread_count = self.save_thread_pool.activeThreadCount()
                         thread.to_main_with_blocking(self.commands[cmd], arg)
 
-                        # 30 second timeout to avoid hanging up command processing indefinitely
-                        end_time = datetime.datetime.now() + datetime.timedelta(30)
-
-                        # Continue to show the task as running until the timeout is reached or
-                        # until all of the following conditions are met:
+                        # Continue to show the task as running until all of the following
+                        # conditions are met:
                         #
                         #   - main thread pool active tasks count is less than or equal to the
                         #     count at the start of task execution
@@ -425,16 +421,12 @@ class Tagger(QtWidgets.QApplication):
 
                         while True:
                             time.sleep(0.1)
-                            if datetime.datetime.now() > end_time:
-                                break
-
                             if self.priority_thread_pool.activeThreadCount() > original_priority_thread_count or \
                                     self.thread_pool.activeThreadCount() > original_main_thread_count or \
                                     self.save_thread_pool.activeThreadCount() > original_save_thread_count or \
                                     self.webservice.num_pending_web_requests or \
                                     self._acoustid._running:
                                 continue
-
                             break
 
                         log.info("Completed command: %s %r", cmd, arg)
