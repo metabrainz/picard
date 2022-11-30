@@ -10,6 +10,7 @@
 # Copyright (C) 2017 Sophist-UK
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2020, 2022 Philipp Wolfer
+# Copyright (C) 2022 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -29,7 +30,6 @@
 import sys
 import time
 import traceback
-import uuid
 
 from PyQt5.QtCore import (
     QCoreApplication,
@@ -38,7 +38,6 @@ from PyQt5.QtCore import (
 )
 
 from picard import log
-from picard.util.remotecommands import RemoteCommands
 
 
 class ProxyToMainEvent(QEvent):
@@ -60,11 +59,8 @@ class Runnable(QRunnable):
         self.func = func
         self.next_func = next_func
         self.traceback = traceback
-        self.id = uuid.uuid4()
 
     def run(self):
-        if RemoteCommands.get_running():
-            RemoteCommands.thread_add(self.id)
         try:
             result = self.func()
         except BaseException:
@@ -73,10 +69,9 @@ class Runnable(QRunnable):
             to_main(self.next_func, error=sys.exc_info()[1])
         else:
             to_main(self.next_func, result=result)
-        RemoteCommands.thread_remove(self.id)
 
 
-def run_task(func, next_func, priority=0, thread_pool=None, traceback=True):
+def run_task(func, next_func=None, priority=0, thread_pool=None, traceback=True):
     """Schedules func to be run on a separate thread
 
     Args:
@@ -91,6 +86,12 @@ def run_task(func, next_func, priority=0, thread_pool=None, traceback=True):
     Returns:
         An instance of concurrent.futures.Future
     """
+    def _no_operation(*args, **kwargs):
+        return
+
+    if not next_func:
+        next_func = _no_operation
+
     if not thread_pool:
         thread_pool = QCoreApplication.instance().thread_pool
     thread_pool.start(Runnable(func, next_func, traceback), priority)

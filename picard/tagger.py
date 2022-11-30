@@ -45,6 +45,7 @@
 
 
 import argparse
+import datetime
 from functools import partial
 from hashlib import md5
 import logging
@@ -187,7 +188,6 @@ class ParseItemsToLoad:
     WINDOWS_DRIVE_TEST = re.compile(r"^[a-z]\:", re.IGNORECASE)
 
     def __init__(self, items):
-        self.commands = []
         self.files = set()
         self.mbids = set()
         self.urls = set()
@@ -197,11 +197,7 @@ class ParseItemsToLoad:
             log.debug(f"Parsed: {repr(parsed)}")
             if not parsed.scheme:
                 self.files.add(item)
-            # TODO: Remove the "command" scheme if it is no longer required.
-            elif parsed.scheme == "command":
-                for x in item[10:].split(';'):
-                    self.commands.append(x.strip())
-            elif parsed.scheme == "file":
+            if parsed.scheme == "file":
                 # remove file:// prefix safely
                 self.files.add(item[7:])
             elif parsed.scheme == "mbid":
@@ -219,10 +215,10 @@ class ParseItemsToLoad:
         return bool(self.files or self.mbids or self.urls)
 
     def __bool__(self):
-        return bool(self.commands or self.files or self.mbids or self.urls)
+        return bool(self.files or self.mbids or self.urls)
 
     def __str__(self):
-        return f"files: {repr(self.files)}  mbids: f{repr(self.mbids)}  urls: {repr(self.urls)}  commands: {repr(self.commands)}"
+        return f"files: {repr(self.files)}  mbids: f{repr(self.mbids)}  urls: {repr(self.urls)}"
 
 
 class Tagger(QtWidgets.QApplication):
@@ -392,24 +388,58 @@ class Tagger(QtWidgets.QApplication):
         else:
             log.debug('pipe server stopped')
 
-    def clear_command_running(self, *args, **kwargs):
-        RemoteCommands.set_running(False)
-
     def run_commands(self):
         while not self.stopping:
             if not RemoteCommands.command_queue.empty() and not RemoteCommands.get_running():
                 (cmd, arg) = RemoteCommands.command_queue.get()
-                cmd = cmd.upper()
                 if cmd in self.commands:
                     arg = arg.strip()
-                    log.debug("Executing command: %s %r", cmd, arg)
-                    RemoteCommands.set_running(True)
-                    thread.to_main_with_blocking(self.commands[cmd], arg)
+                    log.info("Executing command: %s %r", cmd, arg)
+                    if cmd == 'QUIT':
+                        thread.to_main(self.commands[cmd], arg)
+                    else:
+                        RemoteCommands.set_running(True)
+                        original_priority_thread_count = self.priority_thread_pool.activeThreadCount()
+                        original_main_thread_count = self.thread_pool.activeThreadCount()
+                        original_save_thread_count = self.save_thread_pool.activeThreadCount()
+                        thread.to_main_with_blocking(self.commands[cmd], arg)
 
-                    # 30 second timeout to avoid hanging up command processing indefinitely
-                    RemoteCommands.wait_for_completion(30)
-                    RemoteCommands.clear_command_running()
-                    log.debug("Completed command: %s %r", cmd, arg)
+                        # 30 second timeout to avoid hanging up command processing indefinitely
+                        end_time = datetime.datetime.now() + datetime.timedelta(30)
+
+                        # Continue to show the task as running until the timeout is reached or
+                        # until all of the following conditions are met:
+                        #
+                        #   - main thread pool active tasks count is less than or equal to the
+                        #     count at the start of task execution
+                        #
+                        #   - priority thread pool active tasks count is less than or equal to
+                        #     the count at the start of task execution
+                        #
+                        #   - save thread pool active tasks count is less than or equal to the
+                        #     count at the start of task execution
+                        #
+                        #   - there are no pending webservice requests
+                        #
+                        #   - there are no acoustid fingerprinting tasks running
+
+                        while True:
+                            time.sleep(0.1)
+                            if datetime.datetime.now() > end_time:
+                                break
+
+                            if self.priority_thread_pool.activeThreadCount() > original_priority_thread_count or \
+                                    self.thread_pool.activeThreadCount() > original_main_thread_count or \
+                                    self.save_thread_pool.activeThreadCount() > original_save_thread_count or \
+                                    self.webservice.num_pending_web_requests or \
+                                    self._acoustid._running:
+                                continue
+
+                            break
+
+                        log.info("Completed command: %s %r", cmd, arg)
+                        RemoteCommands.set_running(False)
+
                 else:
                     log.error("Unknown command: %r", cmd)
                 RemoteCommands.command_queue.task_done()
@@ -441,16 +471,6 @@ class Tagger(QtWidgets.QApplication):
     def _init_remote_commands(self):
         self.commands = {name: getattr(self, remcmd.method_name) for name, remcmd in REMOTE_COMMANDS.items()}
 
-    def handle_command(self, command):
-        cmd, *args = command.split(' ', 1)
-        argstring = next(iter(args), "")
-        cmd = cmd.upper()
-        log.debug("Executing command: %r", cmd)
-        try:
-            thread.to_main(self.commands[cmd], argstring.strip())
-        except KeyError:
-            log.error("Unknown command: %r", cmd)
-
     def handle_command_clear_logs(self, argstring):
         self.window.log_dialog.clear()
         self.window.history_dialog.clear()
@@ -466,10 +486,6 @@ class Tagger(QtWidgets.QApplication):
         RemoteCommands.get_commands_from_file(argstring)
 
     def handle_command_load(self, argstring):
-        # TODO: Remove this check if "command://" no longer used.
-        if argstring.startswith("command://"):
-            log.error("Cannot LOAD a command: %s", argstring)
-            return
         parsed_items = ParseItemsToLoad([argstring])
         log.debug(str(parsed_items))
 
@@ -517,6 +533,20 @@ class Tagger(QtWidgets.QApplication):
             partial(self._lookup_disc, disc),
             traceback=self._debug)
 
+    def handle_command_pause(self, argstring):
+        arg = argstring.strip()
+        if arg:
+            try:
+                _delay = float(arg)
+                if _delay < 0:
+                    raise ValueError
+                log.debug(f"Pausing command execution by {_delay} seconds.")
+                thread.run_task(partial(time.sleep, _delay))
+            except ValueError:
+                log.error(f"Invalid command pause time specified: {repr(argstring)}")
+        else:
+            log.error("No command pause time specified.")
+
     def handle_command_quit(self, argstring):
         self.exit()
         self.quit()
@@ -532,7 +562,8 @@ class Tagger(QtWidgets.QApplication):
             self.remove([file])
 
     def handle_command_remove_empty(self, argstring):
-        for album in self.albums:
+        _albums = [a for a in self.albums.values()]
+        for album in _albums:
             if not any(album.iterfiles()):
                 self.remove_album(album)
 
@@ -569,7 +600,7 @@ class Tagger(QtWidgets.QApplication):
 
     def handle_command_write_logs(self, argstring):
         try:
-            with open(argstring, 'w') as f:
+            with open(argstring, 'w', encoding='utf8') as f:
                 for x in self.window.log_dialog.log_tail.contents():
                     f.write(f"{x.message}\n")
         except Exception as e:

@@ -18,12 +18,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import datetime
 import os
 import queue
 import shlex
 import threading
-import time
 
 from picard import log
 
@@ -50,13 +48,13 @@ REMOTE_COMMANDS = {
     ),
     "FROM_FILE": RemoteCommand(
         "handle_command_from_file",
-        help_text="Load command pipeline from a file.",
-        help_args="[Absolute path to a file containing command pipeline]",
+        help_text="Load commands from a file.",
+        help_args="[Path to a file containing commands]",
     ),
     "LOAD": RemoteCommand(
         "handle_command_load",
-        help_text="Load 1 or more files/MBIDs/URLs to Picard.",
-        help_args="[supported MBID/URL or absolute path to a file]",
+        help_text="Load one or more files/MBIDs/URLs to Picard.",
+        help_args="[supported MBID/URL or path to a file]",
     ),
     "LOOKUP": RemoteCommand(
         "handle_command_lookup",
@@ -69,6 +67,11 @@ REMOTE_COMMANDS = {
         "Without argument, it defaults to the first (alphabetically) available disc drive",
         help_args="[device/log file]",
     ),
+    "PAUSE": RemoteCommand(
+        "handle_command_pause",
+        help_text="Pause executable command processing.",
+        help_args="[number of seconds to pause]",
+    ),
     "QUIT": RemoteCommand(
         "handle_command_quit",
         help_text="Exit the running instance of Picard.",
@@ -76,7 +79,7 @@ REMOTE_COMMANDS = {
     "REMOVE": RemoteCommand(
         "handle_command_remove",
         help_text="Remove the file from Picard. Do nothing if no arguments provided.",
-        help_args="[absolute path to 1 or more files]",
+        help_args="[absolute path to one or more files]",
     ),
     "REMOVE_ALL": RemoteCommand(
         "handle_command_remove_all",
@@ -88,7 +91,7 @@ REMOTE_COMMANDS = {
     ),
     "REMOVE_SAVED": RemoteCommand(
         "handle_command_remove_saved",
-        help_text="Remove all saved releases from the album pane.",
+        help_text="Remove all saved files from the album pane.",
     ),
     "REMOVE_UNCLUSTERED": RemoteCommand(
         "handle_command_remove_unclustered",
@@ -96,7 +99,7 @@ REMOTE_COMMANDS = {
     ),
     "SAVE_MATCHED": RemoteCommand(
         "handle_command_save_matched",
-        help_text="Save all matched releases from the album pane."
+        help_text="Save all matched files from the album pane."
     ),
     "SAVE_MODIFIED": RemoteCommand(
         "handle_command_save_modified",
@@ -117,12 +120,14 @@ REMOTE_COMMANDS = {
     "WRITE_LOGS": RemoteCommand(
         "handle_command_write_logs",
         help_text="Write Picard logs to a given path.",
-        help_args="[absolute path to 1 file]",
+        help_args="[absolute path to one file]",
     ),
 }
 
 
 class RemoteCommands:
+    """Handler for remote commands processed from the command line using the '-e' option.
+    """
     # Collection of command files currently being parsed
     _command_files = set()
 
@@ -134,71 +139,92 @@ class RemoteCommands:
 
     _lock = threading.Lock()
     command_queue = queue.Queue()
-    _threads = set()
 
     @classmethod
-    def cmd_files_contains(cls, filepath):
+    def cmd_files_contains(cls, filepath: str):
+        """Check if the specified filepath is currently open for reading commands.
+
+        Args:
+            filepath (str): File path to check.
+
+        Returns:
+            bool: True if the filepath is open for processing, otherwise False.
+        """
         with cls._lock:
             return filepath in cls._command_files
 
     @classmethod
-    def cmd_files_add(cls, filepath):
+    def cmd_files_add(cls, filepath: str):
+        """Adds the specified filepath to the collection of files currently open
+        for reading commands.
+
+        Args:
+            filepath (str): File path to add.
+        """
         with cls._lock:
             cls._command_files.add(filepath)
 
     @classmethod
-    def cmd_files_remove(cls, filepath):
+    def cmd_files_remove(cls, filepath: str):
+        """Removes the specified filepath from the collection of files currently
+        open for reading commands.
+
+        Args:
+            filepath (str): File path to remove.
+        """
         with cls._lock:
             cls._command_files.discard(filepath)
 
     @classmethod
     def has_quit(cls):
+        """Indicates whether a 'QUIT' command has been added to the command queue.
+
+        Returns:
+            bool: True if a 'QUIT' command has been queued, otherwise False.
+        """
         with cls._lock:
             return cls._has_quit
 
     @classmethod
-    def set_quit(cls, value):
+    def set_quit(cls, value: bool):
+        """Sets the status of the 'has_quit()' flag.
+
+        Args:
+            value (bool): Value to set for the 'has_quit()' flag.
+        """
         with cls._lock:
             cls._has_quit = value
 
     @classmethod
-    def thread_add(cls, thread_id):
-        with cls._lock:
-            cls._threads.add(thread_id)
-
-    @classmethod
-    def thread_remove(cls, thread_id):
-        with cls._lock:
-            cls._threads.discard(thread_id)
-
-    @classmethod
-    def processing(cls):
-        with cls._lock:
-            return (len(cls._threads) > 0)
-
-    @classmethod
     def get_running(cls):
+        """Indicates whether a command is currently set as active regardless of
+        processing status.
+
+        Returns:
+            bool: True if there is an active command, otherwise False.
+        """
         with cls._lock:
             return cls._command_running
 
     @classmethod
-    def set_running(cls, value):
+    def set_running(cls, value: bool):
+        """Sets the status of the 'get_running()' flag.
+
+        Args:
+            value (bool): Value to set for the 'get_running()' flag.
+        """
         with cls._lock:
             cls._command_running = value
 
     @classmethod
-    def clear_command_running(cls, force=False, timeout=None):
-        end_time = datetime.datetime.now() + datetime.timedelta(seconds=timeout) if timeout else None
-        while True:
-            if not cls.processing() or force or (timeout and datetime.datetime.now() > end_time):
-                with cls._lock:
-                    cls._command_running = False
-                    cls._threads = set()
-                break
-            time.sleep(.01)
-
-    @classmethod
     def parse_commands_to_queue(cls, commands):
+        """Parses the list of command tuples, and adds them to the command queue.  If the command
+        is 'FROM_FILE' then the commands will be read from the file recursively.  Once a 'QUIT'
+        command has been queued, all further commands will be ignored and not placed in the queue.
+
+        Args:
+            commands (list): Command tuples in the form (command, [args]) to add to the queue.
+        """
         if cls.has_quit():
             # Don't queue any more commands after a QUIT command.
             return
@@ -221,7 +247,15 @@ class RemoteCommands:
                         return
 
     @staticmethod
-    def _read_commands_from_file(filepath):
+    def _read_commands_from_file(filepath: str):
+        """Reads the commands from the specified filepath.
+
+        Args:
+            filepath (str): File to read.
+
+        Returns:
+            list: Command tuples in the form (command, [args]).
+        """
         commands = []
         try:
             lines = open(filepath).readlines()
@@ -240,23 +274,21 @@ class RemoteCommands:
         return commands
 
     @classmethod
-    def get_commands_from_file(cls, argstring):
-        log.debug("Reading commands from: %r", argstring)
-        if not os.path.exists(argstring):
-            log.error("Missing command file: '%s'", argstring)
-            return
-        filepath = os.path.abspath(argstring)
-        if cls.cmd_files_contains(filepath):
-            log.warning("Circular command file reference ignored: '%s'", argstring)
-            return
-        cls.cmd_files_add(filepath)
-        cls.parse_commands_to_queue(cls._read_commands_from_file(filepath))
-        cls.cmd_files_remove(filepath)
+    def get_commands_from_file(cls, filepath: str):
+        """Reads and parses the commands from the specified filepath and adds
+        them to the command queue for processing.
 
-    @classmethod
-    def wait_for_completion(cls, timeout=None):
-        end_time = datetime.datetime.now() + datetime.timedelta(seconds=timeout) if timeout else None
-        while True:
-            time.sleep(.01)
-            if not cls.processing() or (timeout and datetime.datetime.now() > end_time):
-                return
+        Args:
+            filepath (str): File to read.
+        """
+        log.debug("Reading commands from: %r", filepath)
+        if not os.path.exists(filepath):
+            log.error("Missing command file: '%s'", filepath)
+            return
+        absfilepath = os.path.abspath(filepath)
+        if cls.cmd_files_contains(absfilepath):
+            log.warning("Circular command file reference ignored: '%s'", filepath)
+            return
+        cls.cmd_files_add(absfilepath)
+        cls.parse_commands_to_queue(cls._read_commands_from_file(absfilepath))
+        cls.cmd_files_remove(absfilepath)
