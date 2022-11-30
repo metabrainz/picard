@@ -537,11 +537,11 @@ class Tagger(QtWidgets.QApplication):
         arg = argstring.strip()
         if arg:
             try:
-                _delay = float(arg)
-                if _delay < 0:
+                delay = float(arg)
+                if delay < 0:
                     raise ValueError
-                log.debug(f"Pausing command execution by {_delay} seconds.")
-                thread.run_task(partial(time.sleep, _delay))
+                log.debug(f"Pausing command execution by {delay} seconds.")
+                thread.run_task(partial(time.sleep, delay))
             except ValueError:
                 log.error(f"Invalid command pause time specified: {repr(argstring)}")
         else:
