@@ -33,7 +33,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt5 import QtWidgets
+from PyQt5 import (
+    QtCore,
+    QtWidgets,
+)
 
 from picard.config import (
     BoolOption,
@@ -63,10 +66,15 @@ class RenamingCompatOptionsPage(OptionsPage):
         BoolOption("setting", "ascii_filenames", False),
     ]
 
+    options_changed = QtCore.pyqtSignal(dict)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_RenamingCompatOptionsPage()
         self.ui.setupUi(self)
+        self.ui.ascii_filenames.toggled.connect(self.on_options_changed)
+        self.ui.windows_compatibility.toggled.connect(self.on_options_changed)
+        self.ui.windows_long_paths.toggled.connect(self.on_options_changed)
 
     def load(self):
         config = get_config()
@@ -85,9 +93,9 @@ class RenamingCompatOptionsPage(OptionsPage):
 
     def save(self):
         config = get_config()
-        config.setting["windows_compatibility"] = self.ui.windows_compatibility.isChecked()
-        config.setting["windows_long_paths"] = self.ui.windows_long_paths.isChecked()
-        config.setting["ascii_filenames"] = self.ui.ascii_filenames.isChecked()
+        options = self.get_options()
+        for key, value in options.items():
+            config.setting[key] = value
 
     def toggle_windows_long_paths(self, state):
         if state and not system_supports_long_paths():
@@ -102,6 +110,16 @@ class RenamingCompatOptionsPage(OptionsPage):
                 QtWidgets.QMessageBox.StandardButton.Ok,
                 self)
             dialog.exec_()
+
+    def on_options_changed(self):
+        self.options_changed.emit(self.get_options())
+
+    def get_options(self):
+        return {
+            'ascii_filenames': self.ui.ascii_filenames.isChecked(),
+            'windows_compatibility': self.ui.windows_compatibility.isChecked(),
+            'windows_long_paths': self.ui.windows_long_paths.isChecked(),
+        }
 
 
 register_options_page(RenamingCompatOptionsPage)

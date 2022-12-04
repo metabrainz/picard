@@ -88,6 +88,7 @@ class RenamingOptionsPage(OptionsPage):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.script_text = ""
+        self.compat_options = {}
         self.ui = Ui_RenamingOptionsPage()
         self.ui.setupUi(self)
 
@@ -205,14 +206,10 @@ class RenamingOptionsPage(OptionsPage):
         self.update_displayed_examples()
 
     def update_examples_from_local(self):
-        override = {
-            'move_files': self.ui.move_files.isChecked(),
-            'move_files_to': os.path.normpath(self.ui.move_files_to.text()),
-            'rename_files': self.ui.rename_files.isChecked(),
-            # 'ascii_filenames': self.ui.ascii_filenames.isChecked(),
-            # 'windows_compatibility': self.ui.windows_compatibility.isChecked(),
-            # 'windows_long_paths': self.ui.windows_long_paths.isChecked(),
-        }
+        override = dict(self.compat_options)
+        override['move_files'] = self.ui.move_files.isChecked()
+        override['move_files_to'] = os.path.normpath(self.ui.move_files_to.text())
+        override['rename_files'] = self.ui.rename_files.isChecked()
         self.examples.update_examples(override=override)
         self.update_displayed_examples()
 
@@ -228,6 +225,11 @@ class RenamingOptionsPage(OptionsPage):
         self.examples.update_example_listboxes(self.ui.example_filename_before, self.ui.example_filename_after)
 
     def load(self):
+        # React to changes of compat options
+        compat_page = self.dialog.get_page('filerenaming_compat')
+        self.compat_options = compat_page.get_options()
+        compat_page.options_changed.connect(self.on_compat_options_changed)
+
         config = get_config()
         self.ui.rename_files.setChecked(config.setting["rename_files"])
         self.ui.move_files.setChecked(config.setting["move_files"])
@@ -242,6 +244,10 @@ class RenamingOptionsPage(OptionsPage):
             self.script_editor_dialog.load()
         else:
             self.update_selector_from_settings()
+        self.update_examples_from_local()
+
+    def on_compat_options_changed(self, options):
+        self.compat_options = options
         self.update_examples_from_local()
 
     def check(self):
