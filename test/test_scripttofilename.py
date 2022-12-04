@@ -39,6 +39,7 @@ settings = {
     'ascii_filenames': False,
     'enabled_plugins': [],
     'windows_compatibility': False,
+    'replace_spaces_with_underscores': False,
 }
 
 
@@ -115,6 +116,18 @@ class ScriptToFilenameTest(PicardTestCase):
         filename = script_to_filename('%artist%?', metadata, settings=settings)
         self.assertEqual(expect_compat, filename)
 
+    def test_replace_spaces_with_underscores(self):
+        metadata = Metadata()
+        metadata['artist'] = ' The \t  New* _ Artist  '
+        settings = config.setting.copy()
+        settings['windows_compatibility'] = True
+        settings['replace_spaces_with_underscores'] = False
+        filename = script_to_filename('%artist%', metadata, settings=settings)
+        self.assertEqual(' The \t  New_ _ Artist  ', filename)
+        settings['replace_spaces_with_underscores'] = True
+        filename = script_to_filename('%artist%', metadata, settings=settings)
+        self.assertEqual('The_New_Artist', filename)
+
     @unittest.skipUnless(IS_WIN, "windows test")
     def test_ascii_win_save(self):
         self._test_ascii_windows_compatibility()
@@ -141,7 +154,7 @@ class ScriptToFilenameTest(PicardTestCase):
         filename = script_to_filename('a\tb\nc', metadata)
         self.assertEqual('abc', filename)
 
-    def test_preserve_leading_and_trailing_whitespace(self):
+    def test_remove_leading_and_trailing_whitespace(self):
         metadata = Metadata()
         metadata['artist'] = 'The Artist'
         filename = script_to_filename(' %artist% ', metadata)

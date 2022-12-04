@@ -167,6 +167,7 @@ class CoverArtImageTest(PicardTestCase):
             'image_type_as_filename': True,
             'windows_compatibility': True,
             'windows_long_paths': False,
+            'replace_spaces_with_underscores': False,
             'enabled_plugins': [],
             'ascii_filenames': False,
             'save_images_overwrite': False,
@@ -198,6 +199,7 @@ class CoverArtImageMakeFilenameTest(PicardTestCase):
             'windows_compatibility': False,
             'enabled_plugins': [],
             'ascii_filenames': False,
+            'replace_spaces_with_underscores': False,
         })
 
     def compare_paths(self, path1, path2):

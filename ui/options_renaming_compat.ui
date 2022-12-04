@@ -19,7 +19,7 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0,0,0">
+  <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0,0,0,0">
    <item>
     <widget class="QCheckBox" name="ascii_filenames">
      <property name="text">
@@ -41,6 +41,13 @@
      </property>
      <property name="text">
       <string>Allow paths longer than 259 characters</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="replace_spaces_with_underscores">
+     <property name="text">
+      <string>Replace spaces with underscores</string>
      </property>
     </widget>
    </item>
