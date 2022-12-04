@@ -66,7 +66,7 @@ def script_to_filename_with_metadata(naming_format, metadata, file=None, setting
         filename = replace_non_ascii(filename, pathsave=True, win_compat=win_compat)
     # replace incompatible characters
     if win_compat:
-        filename = replace_win32_incompat(filename)
+        filename = replace_win32_incompat(filename, replacements=settings["win_compat_replacements"])
     if settings["replace_spaces_with_underscores"]:
         filename = _re_replace_underscores.sub('_', filename.strip())
     # remove null characters

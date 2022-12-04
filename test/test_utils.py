@@ -88,27 +88,62 @@ class ReplaceWin32IncompatTest(PicardTestCase):
 
     @unittest.skipUnless(IS_WIN, "windows test")
     def test_correct_absolute_win32(self):
-        self.assertEqual(util.replace_win32_incompat("c:\\test\\te\"st/2"),
-                             "c:\\test\\te_st/2")
-        self.assertEqual(util.replace_win32_incompat("c:\\test\\d:/2"),
-                             "c:\\test\\d_/2")
+        self.assertEqual(util.replace_win32_incompat('c:\\test\\te"st/2'),
+                             'c:\\test\\te_st/2')
+        self.assertEqual(util.replace_win32_incompat('c:\\test\\d:/2'),
+                             'c:\\test\\d_/2')
 
-    @unittest.skipUnless(not IS_WIN, "non-windows test")
+    @unittest.skipUnless(not IS_WIN, 'non-windows test')
     def test_correct_absolute_non_win32(self):
-        self.assertEqual(util.replace_win32_incompat("/test/te\"st/2"),
-                             "/test/te_st/2")
-        self.assertEqual(util.replace_win32_incompat("/test/d:/2"),
-                             "/test/d_/2")
+        self.assertEqual(util.replace_win32_incompat('/test/te"st/2'),
+                             '/test/te_st/2')
+        self.assertEqual(util.replace_win32_incompat('/test/d:/2'),
+                             '/test/d_/2')
 
     def test_correct_relative(self):
-        self.assertEqual(util.replace_win32_incompat("A\"*:<>?|b"),
-                             "A_______b")
-        self.assertEqual(util.replace_win32_incompat("d:tes<t"),
-                             "d_tes_t")
+        self.assertEqual(util.replace_win32_incompat('A"*:<>?|b'),
+                             'A_______b')
+        self.assertEqual(util.replace_win32_incompat('d:tes<t'),
+                             'd_tes_t')
 
     def test_incorrect(self):
-        self.assertNotEqual(util.replace_win32_incompat("c:\\test\\te\"st2"),
-                             "c:\\test\\te\"st2")
+        self.assertNotEqual(util.replace_win32_incompat('c:\\test\\te"st2'),
+                             'c:\\test\\te"st2')
+
+    def test_custom_replacement_char(self):
+        self.assertEqual(util.replace_win32_incompat('A"*:<>?|b', repl='+'),
+                             "A+++++++b")
+
+    def test_custom_replacement_map(self):
+        input = 'foo*:<>?|"'
+        replacments = {
+            '*': 'A',
+            ':': 'B',
+            '<': 'C',
+            '>': 'D',
+            '?': 'E',
+            '|': 'F',
+            '"': 'G',
+        }
+        replaced = util.replace_win32_incompat(input, replacements=replacments)
+        self.assertEqual('fooABCDEFG', replaced)
+
+    def test_partial_replacement_map(self):
+        input = 'foo*:<>?|"'
+        replacments = {
+            '*': 'A',
+            '<': 'C',
+        }
+        replaced = util.replace_win32_incompat(input, repl='-', replacements=replacments)
+        self.assertEqual('fooA-C----', replaced)
+
+    def test_empty_string_replacement_map(self):
+        input = 'foo:bar'
+        replacments = {
+            ':': '',
+        }
+        replaced = util.replace_win32_incompat(input, replacements=replacments)
+        self.assertEqual('foobar', replaced)
 
 
 class MakeFilenameTest(PicardTestCase):

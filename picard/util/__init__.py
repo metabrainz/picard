@@ -39,7 +39,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import namedtuple
+from collections import (
+    defaultdict,
+    namedtuple,
+)
 from collections.abc import Mapping
 from itertools import chain
 import json
@@ -293,16 +296,21 @@ def sanitize_date(datestr):
     return ("", "%04d", "%04d-%02d", "%04d-%02d-%02d")[len(date)] % tuple(date)
 
 
-_re_win32_incompat = re.compile(r'["*:<>?|]', re.UNICODE)
-def replace_win32_incompat(string, repl="_"):  # noqa: E302
+def replace_win32_incompat(string, repl="_", replacements=None):  # noqa: E302
     """Replace win32 filename incompatible characters from ``string`` by
        ``repl``."""
-    # Don't replace : with _ for windows drive
+    # Don't replace : for windows drive
     if IS_WIN and os.path.isabs(string):
-        drive, rest = ntpath.splitdrive(string)
-        return drive + _re_win32_incompat.sub(repl, rest)
+        drive, string = ntpath.splitdrive(string)
     else:
-        return _re_win32_incompat.sub(repl, string)
+        drive = ''
+
+    replacements = defaultdict(lambda: repl, replacements or {})
+    for char in {'"', '*', ':', '<', '>', '?', '|'}:
+        if char in string:
+            string = string.replace(char, replacements[char])
+
+    return drive + string
 
 
 _re_non_alphanum = re.compile(r'\W+', re.UNICODE)

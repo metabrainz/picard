@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>453</width>
-    <height>374</height>
+    <height>332</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0,0,0,0">
+  <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0,0,0,0,0">
    <item>
     <widget class="QCheckBox" name="ascii_filenames">
      <property name="text">
@@ -28,11 +28,31 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="windows_compatibility">
-     <property name="text">
-      <string>Windows compatibility</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QCheckBox" name="windows_compatibility">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Windows compatibility</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_windows_compatibility_change">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Customize...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QCheckBox" name="windows_long_paths">
@@ -52,6 +72,19 @@
     </widget>
    </item>
    <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
     <widget class="QLabel" name="example_selection_note">
      <property name="text">
       <string/>
@@ -65,7 +98,6 @@
  </widget>
  <tabstops>
   <tabstop>ascii_filenames</tabstop>
-  <tabstop>windows_compatibility</tabstop>
   <tabstop>windows_long_paths</tabstop>
  </tabstops>
  <resources/>
@@ -83,6 +115,22 @@
     <hint type="destinationlabel">
      <x>226</x>
      <y>296</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>windows_compatibility</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>btn_windows_compatibility_change</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>178</x>
+     <y>51</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>397</x>
+     <y>51</y>
     </hint>
    </hints>
   </connection>

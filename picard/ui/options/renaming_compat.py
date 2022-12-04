@@ -32,24 +32,29 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import re
 
 from PyQt5 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
 from picard.config import (
     BoolOption,
+    Option,
     get_config,
 )
 from picard.const.sys import IS_WIN
 from picard.util import system_supports_long_paths
 
+from picard.ui import PicardDialog
 from picard.ui.options import (
     OptionsPage,
     register_options_page,
 )
 from picard.ui.ui_options_renaming_compat import Ui_RenamingCompatOptionsPage
+from picard.ui.ui_win_compat_dialog import Ui_WinCompatDialog
 
 
 class RenamingCompatOptionsPage(OptionsPage):
@@ -65,21 +70,34 @@ class RenamingCompatOptionsPage(OptionsPage):
         BoolOption("setting", "windows_long_paths", system_supports_long_paths() if IS_WIN else False),
         BoolOption("setting", "ascii_filenames", False),
         BoolOption("setting", "replace_spaces_with_underscores", False),
+        Option("setting", "win_compat_replacements", {
+            '*': '_',
+            ':': '_',
+            '<': '_',
+            '>': '_',
+            '?': '_',
+            '|': '_',
+            '"': '_',
+        })
     ]
 
     options_changed = QtCore.pyqtSignal(dict)
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        config = get_config()
+        self.win_compat_replacements = config.setting["win_compat_replacements"]
         self.ui = Ui_RenamingCompatOptionsPage()
         self.ui.setupUi(self)
         self.ui.ascii_filenames.toggled.connect(self.on_options_changed)
         self.ui.windows_compatibility.toggled.connect(self.on_options_changed)
         self.ui.windows_long_paths.toggled.connect(self.on_options_changed)
         self.ui.replace_spaces_with_underscores.toggled.connect(self.on_options_changed)
+        self.ui.btn_windows_compatibility_change.clicked.connect(self.open_win_compat_dialog)
 
     def load(self):
         config = get_config()
+        self.win_compat_replacements = config.setting["win_compat_replacements"]
         try:
             self.ui.windows_long_paths.toggled.disconnect(self.toggle_windows_long_paths)
         except TypeError:
@@ -123,7 +141,62 @@ class RenamingCompatOptionsPage(OptionsPage):
             'windows_compatibility': self.ui.windows_compatibility.isChecked(),
             'windows_long_paths': self.ui.windows_long_paths.isChecked(),
             'replace_spaces_with_underscores': self.ui.replace_spaces_with_underscores.isChecked(),
+            'win_compat_replacements': self.win_compat_replacements,
         }
+
+    def open_win_compat_dialog(self):
+        dialog = WinCompatDialog(self.win_compat_replacements, parent=self)
+        if dialog.exec_() == QtWidgets.QDialog.DialogCode.Accepted:
+            self.win_compat_replacements = dialog.replacements
+            self.on_options_changed()
+
+
+class WinCompatReplacementValidator(QtGui.QValidator):
+    _re_valid_win_replacement = re.compile(r'^[^"*:<>?|/\\\s]?$')
+
+    def validate(self, text: str, pos):
+        if self._re_valid_win_replacement.match(text):
+            state = QtGui.QValidator.State.Acceptable
+        else:
+            state = QtGui.QValidator.State.Invalid
+        return state, text, pos
+
+
+class WinCompatDialog(PicardDialog):
+    def __init__(self, replacements, parent=None):
+        super().__init__(parent)
+        self.replacements = dict(replacements)
+        self.ui = Ui_WinCompatDialog()
+        self.ui.setupUi(self)
+        self.ui.replace_asterisk.setValidator(WinCompatReplacementValidator())
+        self.ui.replace_colon.setValidator(WinCompatReplacementValidator())
+        self.ui.replace_gt.setValidator(WinCompatReplacementValidator())
+        self.ui.replace_lt.setValidator(WinCompatReplacementValidator())
+        self.ui.replace_pipe.setValidator(WinCompatReplacementValidator())
+        self.ui.replace_questionmark.setValidator(WinCompatReplacementValidator())
+        self.ui.replace_quotationmark.setValidator(WinCompatReplacementValidator())
+        self.ui.buttonbox.accepted.connect(self.accept)
+        self.ui.buttonbox.rejected.connect(self.reject)
+        self.load()
+
+    def load(self):
+        self.ui.replace_asterisk.setText(self.replacements['*'])
+        self.ui.replace_colon.setText(self.replacements[':'])
+        self.ui.replace_gt.setText(self.replacements['>'])
+        self.ui.replace_lt.setText(self.replacements['<'])
+        self.ui.replace_pipe.setText(self.replacements['|'])
+        self.ui.replace_questionmark.setText(self.replacements['?'])
+        self.ui.replace_quotationmark.setText(self.replacements['"'])
+
+    def accept(self):
+        self.replacements['*'] = self.ui.replace_asterisk.text()
+        self.replacements[':'] = self.ui.replace_colon.text()
+        self.replacements['>'] = self.ui.replace_gt.text()
+        self.replacements['<'] = self.ui.replace_lt.text()
+        self.replacements['|'] = self.ui.replace_pipe.text()
+        self.replacements['?'] = self.ui.replace_questionmark.text()
+        self.replacements['"'] = self.ui.replace_quotationmark.text()
+        super().accept()
 
 
 register_options_page(RenamingCompatOptionsPage)

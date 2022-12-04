@@ -39,6 +39,7 @@ settings = {
     'ascii_filenames': False,
     'enabled_plugins': [],
     'windows_compatibility': False,
+    'win_compat_replacements': {},
     'replace_spaces_with_underscores': False,
 }
 
@@ -113,6 +114,19 @@ class ScriptToFilenameTest(PicardTestCase):
         filename = script_to_filename('%artist%?', metadata, settings=settings)
         self.assertEqual(expect_compat if IS_WIN else expect_orig, filename)
         settings['windows_compatibility'] = True
+        filename = script_to_filename('%artist%?', metadata, settings=settings)
+        self.assertEqual(expect_compat, filename)
+
+    def test_windows_compatibility_custom_replacements(self):
+        metadata = Metadata()
+        metadata['artist'] = '\\*:'
+        expect_compat = '_+_!'
+        settings = config.setting.copy()
+        settings['windows_compatibility'] = True
+        settings['win_compat_replacements'] = {
+            '*': '+',
+            '?': '!',
+        }
         filename = script_to_filename('%artist%?', metadata, settings=settings)
         self.assertEqual(expect_compat, filename)
 
