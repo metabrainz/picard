@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RenamingCompatOptionsPage</class>
+ <widget class="QWidget" name="RenamingCompatOptionsPage">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>453</width>
+    <height>374</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0,0,0">
+   <item>
+    <widget class="QCheckBox" name="ascii_filenames">
+     <property name="text">
+      <string>Replace non-ASCII characters</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="windows_compatibility">
+     <property name="text">
+      <string>Windows compatibility</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="windows_long_paths">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string>Allow paths longer than 259 characters</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="example_selection_note">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>ascii_filenames</tabstop>
+  <tabstop>windows_compatibility</tabstop>
+  <tabstop>windows_long_paths</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>windows_compatibility</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>windows_long_paths</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>226</x>
+     <y>267</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>226</x>
+     <y>296</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

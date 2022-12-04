@@ -75,6 +75,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     ratings,
     releases,
     renaming,
+    renaming_compat,
     scripting,
     tags,
     tags_compatibility_aac,
