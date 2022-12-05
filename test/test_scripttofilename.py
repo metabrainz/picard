@@ -41,6 +41,7 @@ settings = {
     'windows_compatibility': False,
     'win_compat_replacements': {},
     'replace_spaces_with_underscores': False,
+    'replace_dir_separator': '_',
 }
 
 
@@ -141,6 +142,14 @@ class ScriptToFilenameTest(PicardTestCase):
         settings['replace_spaces_with_underscores'] = True
         filename = script_to_filename('%artist%', metadata, settings=settings)
         self.assertEqual('The_New_Artist', filename)
+
+    def test_replace_dir_separator(self):
+        metadata = Metadata()
+        metadata['artist'] = 'AC/DC'
+        settings = config.setting.copy()
+        settings['replace_dir_separator'] = '-'
+        filename = script_to_filename('/music/%artist%', metadata, settings=settings)
+        self.assertEqual('/music/AC-DC', filename)
 
     @unittest.skipUnless(IS_WIN, "windows test")
     def test_ascii_win_save(self):
