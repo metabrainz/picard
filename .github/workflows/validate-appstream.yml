@@ -1,0 +1,28 @@
+name: Validate AppStream
+
+on:
+  push:
+    paths:
+    - '.github/workflows/validate-appstream.yml'
+    - 'org.musicbrainz.Picard.appdata.xml.in'
+    - 'po/appstream/*.po'
+    - 'setup.py'
+  pull_request:
+
+jobs:
+  validate-appstream:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install appstream-util
+      run: |
+        sudo apt-get update
+        sudo apt-get install appstream-util gettext
+    - name: Validate AppStream metadata
+      run: |
+        python setup.py build_appdata
+        appstream-util validate-relax org.musicbrainz.Picard.appdata.xml
