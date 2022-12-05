@@ -223,7 +223,6 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.add_button.clicked.connect(self.add_to_toolbar)
         self.ui.insert_separator_button.clicked.connect(self.insert_separator)
         self.ui.remove_button.clicked.connect(self.remove_action)
-        self.ui.show_menu_icons.toggled.connect(self.tagger.enable_menu_icons)
         self.move_view = MoveableListView(self.ui.toolbar_layout_list, self.ui.up_button,
                                           self.ui.down_button, self.update_action_buttons)
         self.update_buttons = self.move_view.update_buttons
@@ -255,6 +254,7 @@ class InterfaceOptionsPage(OptionsPage):
         config.setting["toolbar_show_labels"] = self.ui.toolbar_show_labels.isChecked()
         config.setting["toolbar_multiselect"] = self.ui.toolbar_multiselect.isChecked()
         config.setting["show_menu_icons"] = self.ui.show_menu_icons.isChecked()
+        self.tagger.enable_menu_icons(config.setting["show_menu_icons"])
         config.setting["builtin_search"] = self.ui.builtin_search.isChecked()
         config.setting["use_adv_search_syntax"] = self.ui.use_adv_search_syntax.isChecked()
         config.setting["quit_confirmation"] = self.ui.quit_confirmation.isChecked()
