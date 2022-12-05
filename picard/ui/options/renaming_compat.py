@@ -57,6 +57,9 @@ from picard.ui.ui_options_renaming_compat import Ui_RenamingCompatOptionsPage
 from picard.ui.ui_win_compat_dialog import Ui_WinCompatDialog
 
 
+DEFAULT_REPLACEMENT = '_'
+
+
 class RenamingCompatOptionsPage(OptionsPage):
 
     NAME = "filerenaming_compat"
@@ -71,13 +74,13 @@ class RenamingCompatOptionsPage(OptionsPage):
         BoolOption("setting", "ascii_filenames", False),
         BoolOption("setting", "replace_spaces_with_underscores", False),
         Option("setting", "win_compat_replacements", {
-            '*': '_',
-            ':': '_',
-            '<': '_',
-            '>': '_',
-            '?': '_',
-            '|': '_',
-            '"': '_',
+            '*': DEFAULT_REPLACEMENT,
+            ':': DEFAULT_REPLACEMENT,
+            '<': DEFAULT_REPLACEMENT,
+            '>': DEFAULT_REPLACEMENT,
+            '?': DEFAULT_REPLACEMENT,
+            '|': DEFAULT_REPLACEMENT,
+            '"': DEFAULT_REPLACEMENT,
         })
     ]
 
@@ -177,6 +180,9 @@ class WinCompatDialog(PicardDialog):
         self.ui.replace_quotationmark.setValidator(WinCompatReplacementValidator())
         self.ui.buttonbox.accepted.connect(self.accept)
         self.ui.buttonbox.rejected.connect(self.reject)
+        reset_button = QtWidgets.QPushButton(_("Restore &Defaults"))
+        self.ui.buttonbox.addButton(reset_button, QtWidgets.QDialogButtonBox.ButtonRole.ResetRole)
+        reset_button.clicked.connect(self.restore_defaults)
         self.load()
 
     def load(self):
@@ -197,6 +203,15 @@ class WinCompatDialog(PicardDialog):
         self.replacements['?'] = self.ui.replace_questionmark.text()
         self.replacements['"'] = self.ui.replace_quotationmark.text()
         super().accept()
+
+    def restore_defaults(self):
+        self.ui.replace_asterisk.setText(DEFAULT_REPLACEMENT)
+        self.ui.replace_colon.setText(DEFAULT_REPLACEMENT)
+        self.ui.replace_gt.setText(DEFAULT_REPLACEMENT)
+        self.ui.replace_lt.setText(DEFAULT_REPLACEMENT)
+        self.ui.replace_pipe.setText(DEFAULT_REPLACEMENT)
+        self.ui.replace_questionmark.setText(DEFAULT_REPLACEMENT)
+        self.ui.replace_quotationmark.setText(DEFAULT_REPLACEMENT)
 
 
 register_options_page(RenamingCompatOptionsPage)
