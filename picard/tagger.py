@@ -51,11 +51,11 @@ import logging
 import os
 import platform
 import re
-import shlex
 import shutil
 import signal
 import sys
 from textwrap import fill
+import time
 from urllib.parse import urlparse
 from uuid import uuid4
 
@@ -140,6 +140,10 @@ from picard.util.cdrom import (
     get_cdrom_drives,
 )
 from picard.util.checkupdate import UpdateCheckManager
+from picard.util.remotecommands import (
+    REMOTE_COMMANDS,
+    RemoteCommands,
+)
 from picard.webservice import WebService
 from picard.webservice.api_helpers import (
     AcoustIdAPIHelper,
@@ -187,19 +191,16 @@ class ParseItemsToLoad:
     WINDOWS_DRIVE_TEST = re.compile(r"^[a-z]\:", re.IGNORECASE)
 
     def __init__(self, items):
-        self.commands = []
         self.files = set()
         self.mbids = set()
         self.urls = set()
 
         for item in items:
             parsed = urlparse(item)
+            log.debug(f"Parsed: {repr(parsed)}")
             if not parsed.scheme:
                 self.files.add(item)
-            elif parsed.scheme == "command":
-                for x in item[10:].split(';'):
-                    self.commands.append(x.strip())
-            elif parsed.scheme == "file":
+            if parsed.scheme == "file":
                 # remove file:// prefix safely
                 self.files.add(item[7:])
             elif parsed.scheme == "mbid":
@@ -217,104 +218,10 @@ class ParseItemsToLoad:
         return bool(self.files or self.mbids or self.urls)
 
     def __bool__(self):
-        return bool(self.commands or self.files or self.mbids or self.urls)
+        return bool(self.files or self.mbids or self.urls)
 
     def __str__(self):
-        return f"files: {repr(self.files)}  mbids: f{repr(self.mbids)}  urls: {repr(self.urls)}  commands: {repr(self.commands)}"
-
-
-class RemoteCommand:
-    def __init__(self, method_name, help_text=None, help_args=None):
-        self.method_name = method_name
-        self.help_text = help_text or ""
-        self.help_args = help_args or ""
-
-
-REMOTE_COMMANDS = {
-    "CLEAR_LOGS": RemoteCommand(
-        "handle_command_clear_logs",
-        help_text="Clear the Picard logs",
-    ),
-    "CLUSTER": RemoteCommand(
-        "handle_command_cluster",
-        help_text="Cluster all files in the cluster pane.",
-    ),
-    "FINGERPRINT": RemoteCommand(
-        "handle_command_fingerprint",
-        help_text="Calculate acoustic fingerprints for all (matched) files in the album pane.",
-    ),
-    "FROM_FILE": RemoteCommand(
-        "handle_command_from_file",
-        help_text="Load command pipeline from a file.",
-        help_args="[Absolute path to a file containing command pipeline]",
-    ),
-    "LOAD": RemoteCommand(
-        "handle_command_load",
-        help_text="Load 1 or more files/MBIDs/URLs to Picard.",
-        help_args="[supported MBID/URL or absolute path to a file]",
-    ),
-    "LOOKUP": RemoteCommand(
-        "handle_command_lookup",
-        help_text="Lookup files in the clustering pane. Defaults to all files.",
-        help_args="[clustered|unclustered|all]"
-    ),
-    "LOOKUP_CD": RemoteCommand(
-        "handle_command_lookup_cd",
-        help_text="Read CD from the selected drive and lookup on MusicBrainz. "
-        "Without argument, it defaults to the first (alphabetically) available disc drive",
-        help_args="[device/log file]",
-    ),
-    "QUIT": RemoteCommand(
-        "handle_command_quit",
-        help_text="Exit the running instance of Picard.",
-    ),
-    "REMOVE": RemoteCommand(
-        "handle_command_remove",
-        help_text="Remove the file from Picard. Do nothing if no arguments provided.",
-        help_args="[absolute path to 1 or more files]",
-    ),
-    "REMOVE_ALL": RemoteCommand(
-        "handle_command_remove_all",
-        help_text="Remove all files from Picard.",
-    ),
-    "REMOVE_EMPTY": RemoteCommand(
-        "handle_command_remove_empty",
-        help_text="Remove all empty clusters and albums.",
-    ),
-    "REMOVE_SAVED": RemoteCommand(
-        "handle_command_remove_saved",
-        help_text="Remove all saved releases from the album pane.",
-    ),
-    "REMOVE_UNCLUSTERED": RemoteCommand(
-        "handle_command_remove_unclustered",
-        help_text="Remove all unclustered files from the cluster pane.",
-    ),
-    "SAVE_MATCHED": RemoteCommand(
-        "handle_command_save_matched",
-        help_text="Save all matched releases from the album pane."
-    ),
-    "SAVE_MODIFIED": RemoteCommand(
-        "handle_command_save_modified",
-        help_text="Save all modified files from the album pane.",
-    ),
-    "SCAN": RemoteCommand(
-        "handle_command_scan",
-        help_text="Scan all files in the cluster pane.",
-    ),
-    "SHOW": RemoteCommand(
-        "handle_command_show",
-        help_text="Make the running instance the currently active window.",
-    ),
-    "SUBMIT_FINGERPRINTS": RemoteCommand(
-        "handle_command_submit_fingerprints",
-        help_text="Submit outstanding acoustic fingerprints for all (matched) files in the album pane.",
-    ),
-    "WRITE_LOGS": RemoteCommand(
-        "handle_command_write_logs",
-        help_text="Write Picard logs to a given path.",
-        help_args="[absolute path to 1 file]",
-    ),
-}
+        return f"files: {repr(self.files)}  mbids: f{repr(self.mbids)}  urls: {repr(self.urls)}"
 
 
 class Tagger(QtWidgets.QApplication):
@@ -464,6 +371,8 @@ class Tagger(QtWidgets.QApplication):
         if self.autoupdate_enabled:
             self.updatecheckmanager = UpdateCheckManager(parent=self.window)
 
+        thread.run_task(self.run_commands, self._run_commands_finished)
+
     @property
     def is_wayland(self):
         return self.platformName() == 'wayland'
@@ -474,7 +383,7 @@ class Tagger(QtWidgets.QApplication):
             messages = [x for x in self.pipe_handler.read_from_pipe() if x not in IGNORED]
             if messages:
                 log.debug("pipe messages: %r", messages)
-                thread.to_main(self.load_to_picard, messages)
+                self.load_to_picard(messages)
 
     def _pipe_server_finished(self, result=None, error=None):
         if error:
@@ -482,23 +391,69 @@ class Tagger(QtWidgets.QApplication):
         else:
             log.debug('pipe server stopped')
 
-    def load_to_picard(self, items):
-        parsed_items = ParseItemsToLoad(items)
-        log.debug(str(parsed_items))
+    def run_commands(self):
+        while not self.stopping:
+            if not RemoteCommands.command_queue.empty() and not RemoteCommands.get_running():
+                (cmd, arg) = RemoteCommands.command_queue.get()
+                if cmd in self.commands:
+                    arg = arg.strip()
+                    log.info("Executing command: %s %r", cmd, arg)
+                    if cmd == 'QUIT':
+                        thread.to_main(self.commands[cmd], arg)
+                    else:
+                        RemoteCommands.set_running(True)
+                        original_priority_thread_count = self.priority_thread_pool.activeThreadCount()
+                        original_main_thread_count = self.thread_pool.activeThreadCount()
+                        original_save_thread_count = self.save_thread_pool.activeThreadCount()
+                        thread.to_main_with_blocking(self.commands[cmd], arg)
 
-        if parsed_items.files:
-            self.add_paths(parsed_items.files)
+                        # Continue to show the task as running until all of the following
+                        # conditions are met:
+                        #
+                        #   - main thread pool active tasks count is less than or equal to the
+                        #     count at the start of task execution
+                        #
+                        #   - priority thread pool active tasks count is less than or equal to
+                        #     the count at the start of task execution
+                        #
+                        #   - save thread pool active tasks count is less than or equal to the
+                        #     count at the start of task execution
+                        #
+                        #   - there are no pending webservice requests
+                        #
+                        #   - there are no acoustid fingerprinting tasks running
 
-        if parsed_items.urls or parsed_items.mbids:
-            file_lookup = self.get_file_lookup()
-            for item in parsed_items.mbids | parsed_items.urls:
-                thread.to_main(file_lookup.mbid_lookup, item, None, None, False)
+                        while True:
+                            time.sleep(0.1)
+                            if self.priority_thread_pool.activeThreadCount() > original_priority_thread_count or \
+                                    self.thread_pool.activeThreadCount() > original_main_thread_count or \
+                                    self.save_thread_pool.activeThreadCount() > original_save_thread_count or \
+                                    self.webservice.num_pending_web_requests or \
+                                    self._acoustid._running:
+                                continue
+                            break
 
-        for command in parsed_items.commands:
-            self.handle_command(command)
+                        log.info("Completed command: %s %r", cmd, arg)
+                        RemoteCommands.set_running(False)
 
-        if parsed_items.non_executable_items():
-            self.bring_tagger_front()
+                else:
+                    log.error("Unknown command: %r", cmd)
+                RemoteCommands.command_queue.task_done()
+            time.sleep(.01)
+
+    def _run_commands_finished(self, result=None, error=None):
+        if error:
+            log.error('command executor failed: %r', error)
+        else:
+            log.debug('command executor stopped')
+
+    @staticmethod
+    def load_to_picard(items):
+        commands = []
+        for item in items:
+            parts = str(item).split(maxsplit=1)
+            commands.append((parts[0], parts[1:] or ['']))
+        RemoteCommands.parse_commands_to_queue(commands)
 
     def iter_album_files(self):
         for album in self.albums.values():
@@ -512,16 +467,6 @@ class Tagger(QtWidgets.QApplication):
     def _init_remote_commands(self):
         self.commands = {name: getattr(self, remcmd.method_name) for name, remcmd in REMOTE_COMMANDS.items()}
 
-    def handle_command(self, command):
-        cmd, *args = command.split(' ', 1)
-        argstring = next(iter(args), "")
-        cmd = cmd.upper()
-        log.debug("Executing command: %r", cmd)
-        try:
-            thread.to_main(self.commands[cmd], argstring.strip())
-        except KeyError:
-            log.error("Unknown command: %r", cmd)
-
     def handle_command_clear_logs(self, argstring):
         self.window.log_dialog.clear()
         self.window.history_dialog.clear()
@@ -533,35 +478,20 @@ class Tagger(QtWidgets.QApplication):
         for album_name in self.albums:
             self.analyze(self.albums[album_name].iterfiles())
 
-    @staticmethod
-    def _read_lines_from_file(filepath):
-        try:
-            yield from (line.strip() for line in open(filepath).readlines())
-        except Exception as e:
-            log.error("Error reading command file '%s': %s" % (filepath, e))
-
-    @staticmethod
-    def _parse_commands_from_lines(lines):
-        for line in lines:
-            if not line or line.startswith('#'):
-                continue
-            elements = shlex.split(line)
-            if not elements:
-                continue
-            command_args = elements[1:] or ['']
-            for element in command_args:
-                yield f"command://{elements[0]} {element}"
-
     def handle_command_from_file(self, argstring):
-        for command in self._parse_commands_from_lines(self._read_lines_from_file(argstring)):
-            self.load_to_picard((command,))
+        RemoteCommands.get_commands_from_file(argstring)
 
     def handle_command_load(self, argstring):
-        if argstring.startswith("command://"):
-            log.error("Cannot LOAD a command: %s", argstring)
-            return
+        parsed_items = ParseItemsToLoad([argstring])
+        log.debug(str(parsed_items))
 
-        self.load_to_picard((argstring,))
+        if parsed_items.files:
+            self.add_paths(parsed_items.files)
+
+        if parsed_items.urls or parsed_items.mbids:
+            file_lookup = self.get_file_lookup()
+            for item in parsed_items.mbids | parsed_items.urls:
+                file_lookup.mbid_lookup(item)
 
     def handle_command_lookup(self, argstring):
         if argstring:
@@ -602,6 +532,20 @@ class Tagger(QtWidgets.QApplication):
             partial(self._lookup_disc, disc),
             traceback=self._debug)
 
+    def handle_command_pause(self, argstring):
+        arg = argstring.strip()
+        if arg:
+            try:
+                delay = float(arg)
+                if delay < 0:
+                    raise ValueError
+                log.debug(f"Pausing command execution by {delay} seconds.")
+                thread.run_task(partial(time.sleep, delay))
+            except ValueError:
+                log.error(f"Invalid command pause time specified: {repr(argstring)}")
+        else:
+            log.error("No command pause time specified.")
+
     def handle_command_quit(self, argstring):
         self.exit()
         self.quit()
@@ -617,7 +561,8 @@ class Tagger(QtWidgets.QApplication):
             self.remove([file])
 
     def handle_command_remove_empty(self, argstring):
-        for album in self.albums:
+        _albums = [a for a in self.albums.values()]
+        for album in _albums:
             if not any(album.iterfiles()):
                 self.remove_album(album)
 
@@ -654,7 +599,7 @@ class Tagger(QtWidgets.QApplication):
 
     def handle_command_write_logs(self, argstring):
         try:
-            with open(argstring, 'w') as f:
+            with open(argstring, 'w', encoding='utf8') as f:
                 for x in self.window.log_dialog.log_tail.contents():
                     f.write(f"{x.message}\n")
         except Exception as e:
@@ -1435,14 +1380,14 @@ If a new instance will not be spawned files/directories will be passed to the ex
     for x in args.FILE_OR_URL:
         if not urlparse(x).netloc:
             x = os.path.abspath(x)
-        args.processable.append(x)
+        args.processable.append(f"LOAD {x}")
 
     if args.exec:
         for e in args.exec:
             args.remote_commands_help = args.remote_commands_help or "HELP" in {x.upper().strip() for x in e}
             remote_command_args = e[1:] or ['']
             for arg in remote_command_args:
-                args.processable.append(f"command://{e[0]} {arg}")
+                args.processable.append(f"{e[0]} {arg}")
 
     return args
 

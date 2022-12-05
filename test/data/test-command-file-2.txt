@@ -1,0 +1,10 @@
+# should be ignored because missing
+FROM_FILE command_file.txt
+
+CLUSTER
+  FINGERPRINT  
+LOOKUP unclustered
+QUIT
+
+# should be ignored because after QUIT command
+LOOKUP clustered

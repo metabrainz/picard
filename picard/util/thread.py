@@ -10,6 +10,7 @@
 # Copyright (C) 2017 Sophist-UK
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2020, 2022 Philipp Wolfer
+# Copyright (C) 2022 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -27,6 +28,7 @@
 
 
 import sys
+import time
 import traceback
 
 from PyQt5.QtCore import (
@@ -69,7 +71,7 @@ class Runnable(QRunnable):
             to_main(self.next_func, result=result)
 
 
-def run_task(func, next_func, priority=0, thread_pool=None, traceback=True):
+def run_task(func, next_func=None, priority=0, thread_pool=None, traceback=True):
     """Schedules func to be run on a separate thread
 
     Args:
@@ -84,6 +86,12 @@ def run_task(func, next_func, priority=0, thread_pool=None, traceback=True):
     Returns:
         An instance of concurrent.futures.Future
     """
+    def _no_operation(*args, **kwargs):
+        return
+
+    if not next_func:
+        next_func = _no_operation
+
     if not thread_pool:
         thread_pool = QCoreApplication.instance().thread_pool
     thread_pool.start(Runnable(func, next_func, traceback), priority)
@@ -92,3 +100,23 @@ def run_task(func, next_func, priority=0, thread_pool=None, traceback=True):
 def to_main(func, *args, **kwargs):
     QCoreApplication.postEvent(QCoreApplication.instance(),
                                ProxyToMainEvent(func, *args, **kwargs))
+
+
+def to_main_with_blocking(func, *args, **kwargs):
+    """Executes a command as a user-defined event, and waits until the event has
+    closed before returning.  Note that any new threads started while processing
+    the event will not be considered when releasing the blocking of the function.
+
+    Args:
+        func: Function to run.
+    """
+    _task = ProxyToMainEvent(func, *args, **kwargs)
+    QCoreApplication.postEvent(QCoreApplication.instance(), _task)
+
+    while True:
+        try:
+            if not _task.isAccepted():
+                break
+        except Exception:
+            break
+        time.sleep(.01)
