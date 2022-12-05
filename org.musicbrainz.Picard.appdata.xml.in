@@ -73,6 +73,17 @@
     <binary>picard</binary>
   </provides>
 
+  <recommends>
+    <control>keyboard</control>
+    <control>pointing</control>
+  </recommends>
+  <recommends>
+    <display_length compare="ge">medium</display_length>
+  </recommends>
+  <recommends>
+    <internet>always</internet>
+  </recommends>
+
   <screenshots>
     <screenshot type="default">
       <image>https://picard.musicbrainz.org/static/img/screenshots/picard-main-windows.png</image>
