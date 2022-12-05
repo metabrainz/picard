@@ -68,7 +68,7 @@
         </font>
        </property>
        <property name="text">
-        <string>&lt;</string>
+        <string notr="true">&lt;</string>
        </property>
       </widget>
      </item>
@@ -80,7 +80,7 @@
         </font>
        </property>
        <property name="text">
-        <string>:</string>
+        <string notr="true">:</string>
        </property>
       </widget>
      </item>
@@ -92,7 +92,7 @@
         </font>
        </property>
        <property name="text">
-        <string>&gt;</string>
+        <string notr="true">&gt;</string>
        </property>
       </widget>
      </item>
@@ -111,7 +111,7 @@
         </size>
        </property>
        <property name="text">
-        <string>_</string>
+        <string notr="true">_</string>
        </property>
        <property name="maxLength">
         <number>1</number>
@@ -126,7 +126,7 @@
         </font>
        </property>
        <property name="text">
-        <string>?</string>
+        <string notr="true">?</string>
        </property>
       </widget>
      </item>
@@ -138,7 +138,7 @@
         </font>
        </property>
        <property name="text">
-        <string>|</string>
+        <string notr="true">|</string>
        </property>
       </widget>
      </item>
@@ -157,7 +157,7 @@
         </size>
        </property>
        <property name="text">
-        <string>_</string>
+        <string notr="true">_</string>
        </property>
        <property name="maxLength">
         <number>1</number>
@@ -179,7 +179,7 @@
         </size>
        </property>
        <property name="text">
-        <string>_</string>
+        <string notr="true">_</string>
        </property>
        <property name="maxLength">
         <number>1</number>
@@ -214,7 +214,7 @@
         </size>
        </property>
        <property name="text">
-        <string>_</string>
+        <string notr="true">_</string>
        </property>
        <property name="maxLength">
         <number>1</number>
@@ -229,7 +229,7 @@
         </font>
        </property>
        <property name="text">
-        <string>*</string>
+        <string notr="true">*</string>
        </property>
       </widget>
      </item>
@@ -248,7 +248,7 @@
         </size>
        </property>
        <property name="text">
-        <string>_</string>
+        <string notr="true">_</string>
        </property>
        <property name="maxLength">
         <number>1</number>
@@ -270,7 +270,7 @@
         </size>
        </property>
        <property name="text">
-        <string>_</string>
+        <string notr="true">_</string>
        </property>
        <property name="maxLength">
         <number>1</number>
@@ -285,7 +285,7 @@
         </font>
        </property>
        <property name="text">
-        <string>&quot;</string>
+        <string notr="true">&quot;</string>
        </property>
       </widget>
      </item>
@@ -304,7 +304,7 @@
         </size>
        </property>
        <property name="text">
-        <string>_</string>
+        <string notr="true">_</string>
        </property>
       </widget>
      </item>
