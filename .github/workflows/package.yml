@@ -66,10 +66,9 @@ jobs:
         cd pyinstaller/bootloader
         python3 ./waf --verbose all
         cd ..
-        pip3 install -r requirements.txt
-        python3 setup.py install
+        pip3 install .
       env:
-        PYINSTALLER_VERSION: v5.5
+        PYINSTALLER_VERSION: v5.7.0
         CFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}
         CPPFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}
         LDFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}
