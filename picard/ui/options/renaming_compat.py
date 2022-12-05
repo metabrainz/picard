@@ -43,6 +43,7 @@ from PyQt5 import (
 from picard.config import (
     BoolOption,
     Option,
+    TextOption,
     get_config,
 )
 from picard.const.sys import IS_WIN
@@ -73,6 +74,7 @@ class RenamingCompatOptionsPage(OptionsPage):
         BoolOption("setting", "windows_long_paths", system_supports_long_paths() if IS_WIN else False),
         BoolOption("setting", "ascii_filenames", False),
         BoolOption("setting", "replace_spaces_with_underscores", False),
+        TextOption("setting", "replace_dir_separator", DEFAULT_REPLACEMENT),
         Option("setting", "win_compat_replacements", {
             '*': DEFAULT_REPLACEMENT,
             ':': DEFAULT_REPLACEMENT,
@@ -96,6 +98,7 @@ class RenamingCompatOptionsPage(OptionsPage):
         self.ui.windows_compatibility.toggled.connect(self.on_options_changed)
         self.ui.windows_long_paths.toggled.connect(self.on_options_changed)
         self.ui.replace_spaces_with_underscores.toggled.connect(self.on_options_changed)
+        self.ui.replace_dir_separator.textChanged.connect(self.on_options_changed)
         self.ui.btn_windows_compatibility_change.clicked.connect(self.open_win_compat_dialog)
 
     def load(self):
@@ -113,6 +116,7 @@ class RenamingCompatOptionsPage(OptionsPage):
         self.ui.windows_long_paths.setChecked(config.setting["windows_long_paths"])
         self.ui.ascii_filenames.setChecked(config.setting["ascii_filenames"])
         self.ui.replace_spaces_with_underscores.setChecked(config.setting["replace_spaces_with_underscores"])
+        self.ui.replace_dir_separator.setText(config.setting["replace_dir_separator"])
         self.ui.windows_long_paths.toggled.connect(self.toggle_windows_long_paths)
 
     def save(self):
@@ -144,6 +148,7 @@ class RenamingCompatOptionsPage(OptionsPage):
             'windows_compatibility': self.ui.windows_compatibility.isChecked(),
             'windows_long_paths': self.ui.windows_long_paths.isChecked(),
             'replace_spaces_with_underscores': self.ui.replace_spaces_with_underscores.isChecked(),
+            'replace_dir_separator': self.ui.replace_dir_separator.text(),
             'win_compat_replacements': self.win_compat_replacements,
         }
 
