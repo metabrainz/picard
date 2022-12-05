@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.0.dev1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-12-05 17:49+0100\n"
+"POT-Creation-Date: 2022-12-05 21:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -110,7 +110,8 @@ msgid "Merge"
 msgstr ""
 
 #: picard/config_upgrade.py:104 picard/ui/metadatabox.py:426
-#: picard/ui/options/interface.py:113 picard/ui/ui_options_interface.py:180
+#: picard/ui/options/interface_toolbar.py:99
+#: picard/ui/ui_options_interface_toolbar.py:80
 msgid "Remove"
 msgstr ""
 
@@ -433,24 +434,24 @@ msgstr ""
 msgid "Tagger scripts"
 msgstr ""
 
-#: picard/profile.py:138 picard/ui/options/interface.py:73
+#: picard/profile.py:138 picard/ui/options/interface.py:67
 msgid "User Interface"
 msgstr ""
 
-#: picard/profile.py:140 picard/ui/ui_options_interface.py:165
+#: picard/profile.py:140 picard/ui/ui_options_interface.py:116
 msgid "Allow selection of multiple directories"
 msgstr ""
 
 #: picard/profile.py:141 picard/profile.py:142
-#: picard/ui/ui_options_interface.py:166
+#: picard/ui/ui_options_interface.py:117
 msgid "Use builtin search rather than looking in browser"
 msgstr ""
 
-#: picard/profile.py:143 picard/ui/ui_options_interface.py:168
+#: picard/profile.py:143 picard/ui/ui_options_interface.py:119
 msgid "Show a quit confirmation dialog for unsaved changes"
 msgstr ""
 
-#: picard/profile.py:144 picard/ui/ui_options_interface.py:169
+#: picard/profile.py:144 picard/ui/ui_options_interface.py:120
 msgid "Adjust horizontal position in file browser automatically"
 msgstr ""
 
@@ -2634,7 +2635,7 @@ msgstr ""
 msgid "C&lear all"
 msgstr ""
 
-#: picard/coverart/providers/caa.py:330 picard/ui/options/dialog.py:128
+#: picard/coverart/providers/caa.py:330 picard/ui/options/dialog.py:129
 #: picard/ui/options/renaming_compat.py:183
 msgid "Restore &Defaults"
 msgstr ""
@@ -3995,7 +3996,7 @@ msgid "Cover"
 msgstr ""
 
 #: picard/ui/infodialog.py:153 picard/ui/infodialog.py:359
-#: picard/ui/options/interface.py:109
+#: picard/ui/options/interface_toolbar.py:95
 msgid "Info"
 msgstr ""
 
@@ -4658,7 +4659,7 @@ msgstr ""
 msgid "&Generate AcoustID Fingerprints"
 msgstr ""
 
-#: picard/ui/mainwindow.py:766 picard/ui/options/interface.py:121
+#: picard/ui/mainwindow.py:766 picard/ui/options/interface_toolbar.py:107
 msgid "Generate Fingerprints"
 msgstr ""
 
@@ -4732,7 +4733,7 @@ msgstr ""
 msgid "Tags From &File Names..."
 msgstr ""
 
-#: picard/ui/mainwindow.py:842 picard/ui/options/interface.py:133
+#: picard/ui/mainwindow.py:842 picard/ui/options/interface_toolbar.py:119
 msgid "Parse File Names..."
 msgstr ""
 
@@ -5112,7 +5113,7 @@ msgstr ""
 msgid "Reset"
 msgstr ""
 
-#: picard/ui/options/dialog.py:132 picard/ui/scripteditor.py:486
+#: picard/ui/options/dialog.py:133 picard/ui/scripteditor.py:486
 msgid "Make It So!"
 msgstr ""
 
@@ -5473,7 +5474,7 @@ msgstr ""
 msgid "Tags to ignore for comparison:"
 msgstr ""
 
-#: picard/ui/options/dialog.py:211 picard/ui/ui_options_attached_profiles.py:34
+#: picard/ui/options/dialog.py:212 picard/ui/ui_options_attached_profiles.py:34
 msgid "Profiles Attached to Options"
 msgstr ""
 
@@ -5501,11 +5502,13 @@ msgstr ""
 msgid "Reorder Priority: "
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:104 picard/ui/ui_options_interface.py:177
+#: picard/ui/ui_options_cover.py:104
+#: picard/ui/ui_options_interface_toolbar.py:77
 msgid "Move selected item up"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:105 picard/ui/ui_options_interface.py:178
+#: picard/ui/ui_options_cover.py:105
+#: picard/ui/ui_options_interface_toolbar.py:78
 msgid "Move selected item down"
 msgstr ""
 
@@ -5538,7 +5541,7 @@ msgid "Fingerprint calculator:"
 msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:85
-#: picard/ui/ui_options_interface.py:171 picard/ui/ui_options_renaming.py:152
+#: picard/ui/ui_options_interface.py:122 picard/ui/ui_options_renaming.py:152
 msgid "Browse..."
 msgstr ""
 
@@ -5652,65 +5655,65 @@ msgstr ""
 msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
 msgstr ""
 
-#: picard/ui/ui_options_interface.py:159
+#: picard/ui/ui_options_interface.py:110
 msgid "Appearance"
 msgstr ""
 
-#: picard/ui/ui_options_interface.py:160
+#: picard/ui/ui_options_interface.py:111
 msgid "Show text labels under icons"
 msgstr ""
 
-#: picard/ui/ui_options_interface.py:161
+#: picard/ui/ui_options_interface.py:112
 msgid "Show icons in menus"
 msgstr ""
 
-#: picard/ui/ui_options_interface.py:162
+#: picard/ui/ui_options_interface.py:113
 msgid "User interface language:"
 msgstr ""
 
-#: picard/ui/ui_options_interface.py:163
+#: picard/ui/ui_options_interface.py:114
 msgid "User interface color theme:"
 msgstr ""
 
-#: picard/ui/ui_options_interface.py:164
+#: picard/ui/ui_options_interface.py:115
 msgid "Miscellaneous"
 msgstr ""
 
-#: picard/ui/searchdialog/__init__.py:95 picard/ui/ui_options_interface.py:167
+#: picard/ui/searchdialog/__init__.py:95 picard/ui/ui_options_interface.py:118
 msgid "Use advanced query syntax"
 msgstr ""
 
-#: picard/ui/ui_options_interface.py:170
+#: picard/ui/ui_options_interface.py:121
 msgid "Begin browsing in the following directory:"
-msgstr ""
-
-#: picard/ui/ui_options_interface.py:172
-msgid "Customize Action Toolbar"
-msgstr ""
-
-#: picard/ui/ui_options_interface.py:173
-msgid "Add a new button to Toolbar"
-msgstr ""
-
-#: picard/ui/ui_options_interface.py:174
-msgid "Add Action"
-msgstr ""
-
-#: picard/ui/ui_options_interface.py:175
-msgid "Insert a separator"
-msgstr ""
-
-#: picard/ui/ui_options_interface.py:176
-msgid "Add Separator"
-msgstr ""
-
-#: picard/ui/ui_options_interface.py:179
-msgid "Remove button from toolbar"
 msgstr ""
 
 #: picard/ui/options/interface_colors.py:92
 #: picard/ui/ui_options_interface_colors.py:49
 msgid "Colors"
+msgstr ""
+
+#: picard/ui/ui_options_interface_toolbar.py:72
+msgid "Customize Action Toolbar"
+msgstr ""
+
+#: picard/ui/ui_options_interface_toolbar.py:73
+msgid "Add a new button to Toolbar"
+msgstr ""
+
+#: picard/ui/ui_options_interface_toolbar.py:74
+msgid "Add Action"
+msgstr ""
+
+#: picard/ui/ui_options_interface_toolbar.py:75
+msgid "Insert a separator"
+msgstr ""
+
+#: picard/ui/ui_options_interface_toolbar.py:76
+msgid "Add Separator"
+msgstr ""
+
+#: picard/ui/ui_options_interface_toolbar.py:79
+msgid "Remove button from toolbar"
 msgstr ""
 
 #: picard/ui/ui_options_interface_top_tags.py:37
@@ -5781,7 +5784,7 @@ msgstr ""
 msgid "Standalone recordings:"
 msgstr ""
 
-#: picard/ui/options/interface.py:174 picard/ui/ui_options_metadata.py:143
+#: picard/ui/options/interface.py:91 picard/ui/ui_options_metadata.py:143
 #: picard/ui/ui_options_metadata.py:144
 #: picard/ui/ui_provider_options_local.py:54
 msgid "Default"
@@ -6274,76 +6277,76 @@ msgstr ""
 msgid "Regex Error"
 msgstr ""
 
-#: picard/ui/options/dialog.py:126
+#: picard/ui/options/dialog.py:127
 msgid "&Restore all Defaults"
 msgstr ""
 
-#: picard/ui/options/dialog.py:127
+#: picard/ui/options/dialog.py:128
 msgid "Reset all of Picard's settings"
 msgstr ""
 
-#: picard/ui/options/dialog.py:129
+#: picard/ui/options/dialog.py:130
 msgid "Reset all settings for current option page"
 msgstr ""
 
-#: picard/ui/options/dialog.py:145 picard/ui/options/dialog.py:442
-#: picard/ui/options/dialog.py:468
+#: picard/ui/options/dialog.py:146 picard/ui/options/dialog.py:443
+#: picard/ui/options/dialog.py:469
 msgid "Attached Profiles"
 msgstr ""
 
-#: picard/ui/options/dialog.py:146
+#: picard/ui/options/dialog.py:147
 msgid "Show which profiles are attached to the options on this page"
 msgstr ""
 
-#: picard/ui/options/dialog.py:221
+#: picard/ui/options/dialog.py:222
 msgid ""
 "The options on this page are not currently available to be managed using "
 "profiles."
 msgstr ""
 
-#: picard/ui/options/dialog.py:242
+#: picard/ui/options/dialog.py:243
 msgid "Unknown profile"
 msgstr ""
 
-#: picard/ui/options/dialog.py:291
+#: picard/ui/options/dialog.py:292
 #, python-format
 msgid "This option will be saved to profile: %s"
 msgstr ""
 
-#: picard/ui/options/dialog.py:383
+#: picard/ui/options/dialog.py:384
 msgid "Unexpected error"
 msgstr ""
 
-#: picard/ui/options/dialog.py:422
+#: picard/ui/options/dialog.py:423
 msgid "You are about to reset your options for this page."
 msgstr ""
 
-#: picard/ui/options/dialog.py:426
+#: picard/ui/options/dialog.py:427
 msgid "Warning! This will reset all of your settings."
 msgstr ""
 
-#: picard/ui/options/dialog.py:433
+#: picard/ui/options/dialog.py:434
 msgid "Confirm Reset"
 msgstr ""
 
-#: picard/ui/options/dialog.py:434
+#: picard/ui/options/dialog.py:435
 msgid "Are you sure?"
 msgstr ""
 
-#: picard/ui/options/dialog.py:468 picard/ui/options/maintenance.py:92
+#: picard/ui/options/dialog.py:469 picard/ui/options/maintenance.py:92
 msgid "Option"
 msgstr ""
 
-#: picard/ui/options/dialog.py:475
+#: picard/ui/options/dialog.py:476
 #, python-format
 msgid "Profiles Attached to Options in %s Section"
 msgstr ""
 
-#: picard/ui/options/dialog.py:485
+#: picard/ui/options/dialog.py:486
 msgid " [Enabled]"
 msgstr ""
 
-#: picard/ui/options/dialog.py:486 picard/ui/options/profiles.py:280
+#: picard/ui/options/dialog.py:487 picard/ui/options/profiles.py:280
 msgid "None"
 msgstr ""
 
@@ -6421,107 +6424,63 @@ msgstr ""
 msgid "Error line %d: %s"
 msgstr ""
 
-#: picard/ui/options/interface.py:81
-msgid "Add Folder"
-msgstr ""
-
-#: picard/ui/options/interface.py:85
-msgid "Add Files"
-msgstr ""
-
-#: picard/ui/options/interface.py:89
-msgid "Cluster"
-msgstr ""
-
-#: picard/ui/options/interface.py:93
-msgid "Lookup"
-msgstr ""
-
-#: picard/ui/options/interface.py:97
-msgid "Scan"
-msgstr ""
-
-#: picard/ui/options/interface.py:101
-msgid "Lookup in Browser"
-msgstr ""
-
-#: picard/ui/options/interface.py:105
-msgid "Save"
-msgstr ""
-
-#: picard/ui/options/interface.py:117
-msgid "Submit AcoustIDs"
-msgstr ""
-
-#: picard/ui/options/interface.py:125
-msgid "Open in Player"
-msgstr ""
-
-#: picard/ui/options/interface.py:129
-msgid "Lookup CD..."
-msgstr ""
-
-#: picard/ui/options/interface.py:175
+#: picard/ui/options/interface.py:92
 msgid "The default color scheme based on the operating system display settings"
 msgstr ""
 
-#: picard/ui/options/interface.py:178
+#: picard/ui/options/interface.py:95
 msgid "Dark"
 msgstr ""
 
-#: picard/ui/options/interface.py:179
+#: picard/ui/options/interface.py:96
 msgid "A dark display theme"
 msgstr ""
 
-#: picard/ui/options/interface.py:182
+#: picard/ui/options/interface.py:99
 msgid "Light"
 msgstr ""
 
-#: picard/ui/options/interface.py:183
+#: picard/ui/options/interface.py:100
 msgid "A light display theme"
 msgstr ""
 
-#: picard/ui/options/interface.py:186
+#: picard/ui/options/interface.py:103
 msgid "System"
 msgstr ""
 
-#: picard/ui/options/interface.py:187
+#: picard/ui/options/interface.py:104
 msgid "The Qt5 theme configured in the desktop environment"
 msgstr ""
 
-#: picard/ui/options/interface.py:205
+#: picard/ui/options/interface.py:122
 msgid "System default"
 msgstr ""
 
-#: picard/ui/options/interface.py:266
+#: picard/ui/options/interface.py:174
 msgid "Theme changed"
 msgstr ""
 
-#: picard/ui/options/interface.py:267
+#: picard/ui/options/interface.py:175
 msgid ""
 "You have changed the application theme. You have to restart Picard in "
 "order for the change to take effect."
 msgstr ""
 
-#: picard/ui/options/interface.py:269
+#: picard/ui/options/interface.py:177
 msgid ""
 "Please note that using the system theme might cause the user interface to"
 " be not shown correctly. If this is the case select the \"Default\" theme"
 " option to use Picard's default theme again."
 msgstr ""
 
-#: picard/ui/options/interface.py:274
+#: picard/ui/options/interface.py:182
 msgid "Language changed"
 msgstr ""
 
-#: picard/ui/options/interface.py:275
+#: picard/ui/options/interface.py:183
 msgid ""
 "You have changed the interface language. You have to restart Picard in "
 "order for the change to take effect."
-msgstr ""
-
-#: picard/ui/options/interface.py:307
-msgid "Drag and Drop to re-order"
 msgstr ""
 
 #: picard/ui/options/interface_colors.py:67
@@ -6536,6 +6495,54 @@ msgstr ""
 msgid ""
 "You have changed the interface colors. You may have to restart Picard in "
 "order for the changes to take effect."
+msgstr ""
+
+#: picard/ui/options/interface_toolbar.py:59
+msgid "Action Toolbar"
+msgstr ""
+
+#: picard/ui/options/interface_toolbar.py:67
+msgid "Add Folder"
+msgstr ""
+
+#: picard/ui/options/interface_toolbar.py:71
+msgid "Add Files"
+msgstr ""
+
+#: picard/ui/options/interface_toolbar.py:75
+msgid "Cluster"
+msgstr ""
+
+#: picard/ui/options/interface_toolbar.py:79
+msgid "Lookup"
+msgstr ""
+
+#: picard/ui/options/interface_toolbar.py:83
+msgid "Scan"
+msgstr ""
+
+#: picard/ui/options/interface_toolbar.py:87
+msgid "Lookup in Browser"
+msgstr ""
+
+#: picard/ui/options/interface_toolbar.py:91
+msgid "Save"
+msgstr ""
+
+#: picard/ui/options/interface_toolbar.py:103
+msgid "Submit AcoustIDs"
+msgstr ""
+
+#: picard/ui/options/interface_toolbar.py:111
+msgid "Open in Player"
+msgstr ""
+
+#: picard/ui/options/interface_toolbar.py:115
+msgid "Lookup CD..."
+msgstr ""
+
+#: picard/ui/options/interface_toolbar.py:182
+msgid "Drag and Drop to re-order"
 msgstr ""
 
 #: picard/ui/options/interface_top_tags.py:40
