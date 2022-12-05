@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>453</width>
-    <height>679</height>
+    <height>468</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0,0,0,0,0,0,0,0,0">
+  <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0,0,0,0,0,0">
    <item>
     <widget class="QGroupBox" name="move_files">
      <property name="title">
@@ -87,30 +87,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="ascii_filenames">
-     <property name="text">
-      <string>Replace non-ASCII characters</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="windows_compatibility">
-     <property name="text">
-      <string>Windows compatibility</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="windows_long_paths">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="text">
-      <string>Allow paths longer than 259 characters</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
       <string>Selected file naming script:</string>
@@ -148,6 +124,12 @@
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>120</height>
+      </size>
      </property>
      <property name="title">
       <string>Files will be named like this:</string>
@@ -304,9 +286,6 @@
   <tabstop>move_additional_files_pattern</tabstop>
   <tabstop>delete_empty_dirs</tabstop>
   <tabstop>rename_files</tabstop>
-  <tabstop>ascii_filenames</tabstop>
-  <tabstop>windows_compatibility</tabstop>
-  <tabstop>windows_long_paths</tabstop>
   <tabstop>naming_script_selector</tabstop>
   <tabstop>open_script_editor</tabstop>
   <tabstop>example_filename_before</tabstop>
@@ -314,22 +293,5 @@
   <tabstop>example_filename_after</tabstop>
  </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>windows_compatibility</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>windows_long_paths</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>226</x>
-     <y>267</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>226</x>
-     <y>296</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

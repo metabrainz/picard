@@ -62,6 +62,8 @@ settings = {
     'write_wave_riff_info': True,
     'remove_wave_riff_info': False,
     'wave_riff_info_encoding': 'iso-8859-1',
+    'replace_spaces_with_underscores': False,
+    'win_compat_replacements': {},
 }
 
 

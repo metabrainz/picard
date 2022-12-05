@@ -44,9 +44,7 @@ from picard.config import (
     TextOption,
     get_config,
 )
-from picard.const.sys import IS_WIN
 from picard.script import ScriptParser
-from picard.util import system_supports_long_paths
 
 from picard.ui.options import (
     OptionsCheckError,
@@ -79,9 +77,6 @@ class RenamingOptionsPage(OptionsPage):
     HELP_URL = '/config/options_filerenaming.html'
 
     options = [
-        BoolOption("setting", "windows_compatibility", True),
-        BoolOption("setting", "windows_long_paths", system_supports_long_paths() if IS_WIN else False),
-        BoolOption("setting", "ascii_filenames", False),
         BoolOption("setting", "rename_files", False),
         BoolOption("setting", "move_files", False),
         TextOption("setting", "move_files_to", _default_music_dir),
@@ -93,12 +88,10 @@ class RenamingOptionsPage(OptionsPage):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.script_text = ""
+        self.compat_options = {}
         self.ui = Ui_RenamingOptionsPage()
         self.ui.setupUi(self)
 
-        self.ui.ascii_filenames.clicked.connect(self.update_examples_from_local)
-        self.ui.windows_compatibility.clicked.connect(self.update_examples_from_local)
-        self.ui.windows_long_paths.clicked.connect(self.update_examples_from_local)
         self.ui.rename_files.clicked.connect(self.update_examples_from_local)
         self.ui.move_files.clicked.connect(self.update_examples_from_local)
         self.ui.move_files_to.editingFinished.connect(self.update_examples_from_local)
@@ -200,20 +193,6 @@ class RenamingOptionsPage(OptionsPage):
         active = self.ui.move_files.isChecked() or self.ui.rename_files.isChecked()
         self.ui.open_script_editor.setEnabled(active)
 
-    def toggle_windows_long_paths(self, state):
-        if state and not system_supports_long_paths():
-            dialog = QtWidgets.QMessageBox(
-                QtWidgets.QMessageBox.Icon.Information,
-                _('Windows long path support'),
-                _(
-                    'Enabling long paths on Windows might cause files being saved with path names '
-                    'exceeding the 259 character limit traditionally imposed by the Windows API. '
-                    'Some software might not be able to properly access those files.'
-                ),
-                QtWidgets.QMessageBox.StandardButton.Ok,
-                self)
-            dialog.exec_()
-
     def save_from_editor(self):
         self.script_text = self.script_editor_dialog.get_script()
         self.update_selector_from_editor()
@@ -227,13 +206,10 @@ class RenamingOptionsPage(OptionsPage):
         self.update_displayed_examples()
 
     def update_examples_from_local(self):
-        override = {
-            'ascii_filenames': self.ui.ascii_filenames.isChecked(),
-            'move_files': self.ui.move_files.isChecked(),
-            'move_files_to': os.path.normpath(self.ui.move_files_to.text()),
-            'rename_files': self.ui.rename_files.isChecked(),
-            'windows_compatibility': self.ui.windows_compatibility.isChecked(),
-        }
+        override = dict(self.compat_options)
+        override['move_files'] = self.ui.move_files.isChecked()
+        override['move_files_to'] = os.path.normpath(self.ui.move_files_to.text())
+        override['rename_files'] = self.ui.rename_files.isChecked()
         self.examples.update_examples(override=override)
         self.update_displayed_examples()
 
@@ -249,20 +225,14 @@ class RenamingOptionsPage(OptionsPage):
         self.examples.update_example_listboxes(self.ui.example_filename_before, self.ui.example_filename_after)
 
     def load(self):
+        # React to changes of compat options
+        compat_page = self.dialog.get_page('filerenaming_compat')
+        self.compat_options = compat_page.get_options()
+        compat_page.options_changed.connect(self.on_compat_options_changed)
+
         config = get_config()
-        try:
-            self.ui.windows_long_paths.toggled.disconnect(self.toggle_windows_long_paths)
-        except TypeError:
-            pass
-        if IS_WIN:
-            self.ui.windows_compatibility.setChecked(True)
-            self.ui.windows_compatibility.setEnabled(False)
-        else:
-            self.ui.windows_compatibility.setChecked(config.setting["windows_compatibility"])
-        self.ui.windows_long_paths.setChecked(config.setting["windows_long_paths"])
         self.ui.rename_files.setChecked(config.setting["rename_files"])
         self.ui.move_files.setChecked(config.setting["move_files"])
-        self.ui.ascii_filenames.setChecked(config.setting["ascii_filenames"])
         self.ui.move_files_to.setText(config.setting["move_files_to"])
         self.ui.move_files_to.setCursorPosition(0)
         self.ui.move_additional_files.setChecked(config.setting["move_additional_files"])
@@ -275,7 +245,10 @@ class RenamingOptionsPage(OptionsPage):
         else:
             self.update_selector_from_settings()
         self.update_examples_from_local()
-        self.ui.windows_long_paths.toggled.connect(self.toggle_windows_long_paths)
+
+    def on_compat_options_changed(self, options):
+        self.compat_options = options
+        self.update_examples_from_local()
 
     def check(self):
         self.check_format()
@@ -294,9 +267,6 @@ class RenamingOptionsPage(OptionsPage):
 
     def save(self):
         config = get_config()
-        config.setting["windows_compatibility"] = self.ui.windows_compatibility.isChecked()
-        config.setting["windows_long_paths"] = self.ui.windows_long_paths.isChecked()
-        config.setting["ascii_filenames"] = self.ui.ascii_filenames.isChecked()
         config.setting["rename_files"] = self.ui.rename_files.isChecked()
         config.setting["move_files"] = self.ui.move_files.isChecked()
         config.setting["move_files_to"] = os.path.normpath(self.ui.move_files_to.text())

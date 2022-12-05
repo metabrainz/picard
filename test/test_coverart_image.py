@@ -166,7 +166,9 @@ class CoverArtImageTest(PicardTestCase):
         self.set_config_values({
             'image_type_as_filename': True,
             'windows_compatibility': True,
+            'win_compat_replacements': {},
             'windows_long_paths': False,
+            'replace_spaces_with_underscores': False,
             'enabled_plugins': [],
             'ascii_filenames': False,
             'save_images_overwrite': False,
@@ -196,8 +198,10 @@ class CoverArtImageMakeFilenameTest(PicardTestCase):
         self.metadata = Metadata()
         self.set_config_values({
             'windows_compatibility': False,
+            'win_compat_replacements': {},
             'enabled_plugins': [],
             'ascii_filenames': False,
+            'replace_spaces_with_underscores': False,
         })
 
     def compare_paths(self, path1, path2):

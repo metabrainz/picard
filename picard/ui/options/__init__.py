@@ -61,6 +61,9 @@ class OptionsPage(QtWidgets.QWidget):
             self.deleted = True
         self.destroyed.connect(on_destroyed)
 
+    def set_dialog(self, dialog):
+        self.dialog = dialog
+
     def check(self):
         pass
 

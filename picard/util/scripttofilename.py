@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2004 Robert Kaye
 # Copyright (C) 2006 Lukáš Lalinský
-# Copyright (C) 2018-2020 Philipp Wolfer
+# Copyright (C) 2018-2020, 2022 Philipp Wolfer
 # Copyright (C) 2019-2021 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import re
 
 from picard.config import get_config
 from picard.const.sys import IS_WIN
@@ -31,6 +32,9 @@ from picard.util import (
     sanitize_filename,
 )
 from picard.util.textencoding import replace_non_ascii
+
+
+_re_replace_underscores = re.compile(r'[\s_]+')
 
 
 def script_to_filename_with_metadata(naming_format, metadata, file=None, settings=None):
@@ -62,7 +66,9 @@ def script_to_filename_with_metadata(naming_format, metadata, file=None, setting
         filename = replace_non_ascii(filename, pathsave=True, win_compat=win_compat)
     # replace incompatible characters
     if win_compat:
-        filename = replace_win32_incompat(filename)
+        filename = replace_win32_incompat(filename, replacements=settings["win_compat_replacements"])
+    if settings["replace_spaces_with_underscores"]:
+        filename = _re_replace_underscores.sub('_', filename.strip())
     # remove null characters
     filename = filename.replace("\x00", "")
     return (filename, new_metadata)

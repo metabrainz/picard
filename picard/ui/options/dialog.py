@@ -75,6 +75,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     ratings,
     releases,
     renaming,
+    renaming_compat,
     scripting,
     tags,
     tags_compatibility_aac,
@@ -152,9 +153,10 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         for Page in page_classes:
             try:
                 page = Page(self.ui.pages_stack)
+                page.set_dialog(self)
                 self.pages.append(page)
             except Exception:
-                log.exception('Failed initializing options page %r', page)
+                log.exception('Failed initializing options page %r', Page)
         self.item_to_page = {}
         self.page_to_item = {}
         self.default_item = None
