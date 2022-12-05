@@ -166,22 +166,15 @@
      <property name="title">
       <string>Ignore the following tracks when determining whether a release is complete</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
        <widget class="QCheckBox" name="completeness_ignore_videos">
         <property name="text">
          <string>Video tracks</string>
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QCheckBox" name="completeness_ignore_pregap">
-        <property name="text">
-         <string>Pregap tracks</string>
-        </property>
-       </widget>
-      </item>
-      <item>
+      <item row="3" column="0">
        <widget class="QCheckBox" name="completeness_ignore_data">
         <property name="text">
          <string>Data tracks</string>
@@ -191,7 +184,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="0" column="1">
+       <widget class="QCheckBox" name="completeness_ignore_pregap">
+        <property name="text">
+         <string>Pregap tracks</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
        <widget class="QCheckBox" name="completeness_ignore_silence">
         <property name="text">
          <string>Silent tracks</string>
@@ -237,9 +237,7 @@
   <tabstop>ignore_track_duration_difference_under</tabstop>
   <tabstop>query_limit</tabstop>
   <tabstop>completeness_ignore_videos</tabstop>
-  <tabstop>completeness_ignore_pregap</tabstop>
   <tabstop>completeness_ignore_data</tabstop>
-  <tabstop>completeness_ignore_silence</tabstop>
  </tabstops>
  <resources/>
  <connections/>
