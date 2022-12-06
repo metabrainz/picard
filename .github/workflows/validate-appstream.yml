@@ -6,6 +6,7 @@ on:
     - '.github/workflows/validate-appstream.yml'
     - 'org.musicbrainz.Picard.appdata.xml.in'
     - 'po/appstream/*.po'
+    - 'NEWS.md'
     - 'setup.py'
   pull_request:
 
