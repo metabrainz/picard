@@ -1,3 +1,12 @@
+# Version 2.8.5 - 2022-12-06
+
+## Bugfixes
+
+- [PICARD-2590](https://tickets.metabrainz.org/browse/PICARD-2590) - Relative paths for cover art file names no longer work
+- [PICARD-2593](https://tickets.metabrainz.org/browse/PICARD-2593) - Toolbar icon text disappears when saving options
+- [PICARD-2596](https://tickets.metabrainz.org/browse/PICARD-2596) - "Show icons in menus" option is applied without saving options
+
+
 # Version 2.8.4 - 2022-11-22
 
 ## Bugfixes
