@@ -229,7 +229,6 @@ class PluginManager(QtCore.QObject):
         return (None, None)
 
     def _load_plugin_from_directory(self, name, plugindir):
-        module_file = None
         info = None
         zipfilename = os.path.join(plugindir, name + '.zip')
         (zip_importer, module_name, manifest_data) = zip_import(zipfilename)
@@ -274,6 +273,8 @@ class PluginManager(QtCore.QObject):
                 plugin_module = zip_importer.load_module(full_module_name)
             else:
                 plugin_module = importlib.util.module_from_spec(info)
+                info.loader.exec_module(plugin_module)
+
             plugin = PluginWrapper(plugin_module, plugindir,
                                    file=module_pathname, manifest_data=manifest_data)
             compatible_versions = _compatible_api_versions(plugin.api_versions)
