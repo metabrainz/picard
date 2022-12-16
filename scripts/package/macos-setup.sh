@@ -29,9 +29,9 @@ cp "$HOME/libdiscid/lib/libdiscid.0.dylib" .
 
 # Install fpcalc
 if [ -n "$FPCALC_VERSION" ]; then
-  FPCALC_FILENAME="chromaprint-fpcalc-$FPCALC_VERSION-macos-x86_64.tar.gz"
+  FPCALC_FILENAME="chromaprint-fpcalc-$FPCALC_VERSION-macos-universal.tar.gz"
   wget "https://github.com/acoustid/chromaprint/releases/download/v$FPCALC_VERSION/$FPCALC_FILENAME"
   echo "$FPCALC_SHA256SUM  $FPCALC_FILENAME" | shasum --algorithm 256 --check --status
   tar -xf "$FPCALC_FILENAME"
-  cp "chromaprint-fpcalc-$FPCALC_VERSION-macos-x86_64/fpcalc" .
+  cp "chromaprint-fpcalc-$FPCALC_VERSION-macos-universal/fpcalc" .
 fi
