@@ -653,15 +653,16 @@ class Tagger(QtWidgets.QApplication):
 
     def mb_login(self, callback, parent=None):
         scopes = 'profile tag rating collection submit_isrc submit_barcode'
-        authorization_url = self.webservice.oauth_manager.get_authorization_url(scopes)
+        authorization_url = self.webservice.oauth_manager.get_authorization_url(
+            scopes, partial(self.on_mb_authorization_finished, callback))
         webbrowser2.open(authorization_url)
-        authorization_code = self._mb_login_dialog(parent)
-        if authorization_code is not None:
-            self.webservice.oauth_manager.exchange_authorization_code(
-                authorization_code, scopes,
-                partial(self.on_mb_authorization_finished, callback))
-        else:
-            callback(False, None)
+        # authorization_code = self._mb_login_dialog(parent)
+        # if authorization_code is not None:
+        #     self.webservice.oauth_manager.exchange_authorization_code(
+        #         authorization_code, scopes,
+        #         partial(self.on_mb_authorization_finished, callback))
+        # else:
+        #     callback(False, None)
 
     def on_mb_authorization_finished(self, callback, successful=False, error_msg=None):
         if successful:
