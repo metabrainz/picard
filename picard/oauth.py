@@ -5,7 +5,7 @@
 # Copyright (C) 2014 Lukáš Lalinský
 # Copyright (C) 2015 Sophist-UK
 # Copyright (C) 2015 Wieland Hoffmann
-# Copyright (C) 2015, 2018, 2021, 2024 Philipp Wolfer
+# Copyright (C) 2015, 2018, 2021-2022, 2024 Philipp Wolfer
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017 Frederik “Freso” S. Olesen
 # Copyright (C) 2018-2022 Laurent Monin
@@ -44,10 +44,21 @@ from picard.util import (
 )
 
 
+class OAuthInvalidStateError(Exception):
+    pass
+
+
 class OAuthManager(object):
 
     def __init__(self, webservice):
         self.webservice = webservice
+        # Associates state tokens with callbacks
+        self.__states = {}
+
+    @property
+    def redirect_uri(self):
+        # return "urn:ietf:wg:oauth:2.0:oob"
+        return "http://localhost:8000/auth"
 
     @property
     def setting(self):
@@ -166,14 +177,35 @@ class OAuthManager(object):
         code_challenge = s256_encode(code_verifier)  # code_challenge_method=S256
         return code_challenge.decode('ASCII')
 
-    def get_authorization_url(self, scopes):
+    def _create_auth_state(self, callback):
+        state = secrets.token_urlsafe(16)
+        self.__states[state] = callback
+        return state
+
+    def verify_state(self, state):
+        """Verifies a state variable used in an authorization URL.
+
+        On success returns a callback associated with this state.
+        If the state is invalid raises OAuthInvalidStateError. Can only be
+        called once on a state, the state itself will be revoked afterwards.
+        """
+        try:
+            callback = self.__states[state]
+            del self.__states[state]
+            return callback
+        except KeyError:
+            raise OAuthInvalidStateError
+
+    def get_authorization_url(self, scopes, callback: callable):
         params = {
             'response_type': 'code',
             'client_id': MUSICBRAINZ_OAUTH_CLIENT_ID,
-            'redirect_uri': "urn:ietf:wg:oauth:2.0:oob",
+            'redirect_uri': self.redirect_uri,
             'code_challenge_method': 'S256',
             'code_challenge': self._create_code_challenge(),
             'scope': scopes,
+            'state': self._create_auth_state(callback),
+            'access_type': 'offline',
         }
         return bytes(self.url(path="/oauth2/authorize", params=params).toEncoded()).decode()
 
@@ -233,7 +265,7 @@ class OAuthManager(object):
             'code': authorization_code,
             'client_id': MUSICBRAINZ_OAUTH_CLIENT_ID,
             'client_secret': MUSICBRAINZ_OAUTH_CLIENT_SECRET,
-            'redirect_uri': "urn:ietf:wg:oauth:2.0:oob",
+            'redirect_uri': self.redirect_uri,
             'code_verifier': self.__code_verifier,
         }
         self.webservice.post_url(

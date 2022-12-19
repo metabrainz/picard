@@ -5,8 +5,8 @@
 # Copyright (C) 2006-2007, 2011 Lukáš Lalinský
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
-# Copyright (C) 2012-2013, 2018, 2021 Philipp Wolfer
-# Copyright (C) 2013, 2018, 2020-2021 Laurent Monin
+# Copyright (C) 2012-2013, 2018, 2021-2022, 2024 Philipp Wolfer
+# Copyright (C) 2013, 2018, 2020-2021, 2024 Laurent Monin
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
@@ -24,7 +24,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
 
 from http.server import (
     BaseHTTPRequestHandler,
@@ -47,6 +46,7 @@ from picard import (
 )
 from picard.browser import addrelease
 from picard.config import get_config
+from picard.oauth import OAuthInvalidStateError
 from picard.util import mbid_validate
 from picard.util.thread import to_main
 
@@ -184,6 +184,8 @@ class RequestHandler(BaseHTTPRequestHandler):
             self._load_mbid('nat', args)
         elif action == '/add' and addrelease.is_available():
             self._add_release(args)
+        elif action == '/auth':
+            self._auth(args)
         else:
             self._response(404, 'Unknown action.')
 
@@ -210,6 +212,26 @@ class RequestHandler(BaseHTTPRequestHandler):
                 self._response(400, 'Invalid token')
         else:
             self._response(400, 'Missing parameter "token".')
+
+    def _auth(self, args):
+        if 'code' in args and args['code']:
+            tagger = QtCore.QCoreApplication.instance()
+            oauth_manager = tagger.webservice.oauth_manager
+            try:
+                state = args.get('state', [''])[0]
+                callback = oauth_manager.verify_state(state)
+            except OAuthInvalidStateError:
+                self._response(400, 'Invalid "state" parameter.')
+                return
+            to_main(
+                oauth_manager.exchange_authorization_code,
+                authorization_code=args['code'][0],
+                scopes='profile tag rating collection submit_isrc submit_barcode',
+                callback=callback,
+            )
+            self._response(200, "Authentication successful, you can close this window now.", 'text/html')
+        else:
+            self._response(400, 'Missing parameter "code".')
 
     def _response(self, code, content='', content_type='text/plain'):
         self.server_version = SERVER_VERSION
