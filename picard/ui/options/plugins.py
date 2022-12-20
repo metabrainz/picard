@@ -659,6 +659,8 @@ class PluginsOptionsPage(OptionsPage):
         )
 
     def download_handler(self, update, response, reply, error, plugin):
+        if self.deleted:
+            return
         if error:
             msgbox = QtWidgets.QMessageBox(self)
             msgbox.setText(_("The plugin '%s' could not be downloaded.") % plugin.module_name)
