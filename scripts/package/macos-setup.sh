@@ -7,7 +7,7 @@ brew link gettext --force
 
 # Install requested Python version
 if [ -n "$PYTHON_VERSION" ]; then
-  PYTHON_FILENAME=python-$PYTHON_VERSION-macosx10.9.pkg
+  PYTHON_FILENAME=python-$PYTHON_VERSION-macos11.pkg
   wget "https://www.python.org/ftp/python/$PYTHON_VERSION/$PYTHON_FILENAME"
   echo "$PYTHON_SHA256SUM  $PYTHON_FILENAME" | shasum --algorithm 256 --check --status
   sudo installer -pkg "$PYTHON_FILENAME" -target /
