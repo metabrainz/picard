@@ -4,7 +4,7 @@ fasteners==0.18
 markdown==3.4.1
 mutagen==1.46.0
 PyJWT==2.6.0
-pyobjc-core==8.1
-pyobjc-framework-Cocoa==8.1
+pyobjc-core==9.0.1
+pyobjc-framework-Cocoa==9.0.1
 PyQt5==5.13.1
 pyyaml==6.0
