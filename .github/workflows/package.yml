@@ -26,15 +26,21 @@ jobs:
     runs-on: macos-11
     strategy:
       matrix:
-        macos-deployment-version: [10.12, 10.14]
+        setup:
+        - macos-deployment-version: 10.12
+          python-version: 3.9.12-macosx10.9
+          python-sha256sum: 7888174c6fe441b00448c7ab3e9cbf0e6c3c7dea0750577baf09e1383fc44656
+        - macos-deployment-version: 10.14
+          python-version: 3.11.1-macos11
+          python-sha256sum: f4de33ad3ef09c3e31196b296aec761eabab4564fc8c25e50ea99edd01969819
     env:
       DISCID_VERSION: 0.6.2
       DISCID_SHA256SUM: f9e443ac4c0dd4819c2841fcc82169a46fb9a626352cdb9c7f65dd3624cd31b9
       FPCALC_VERSION: 1.5.1
       FPCALC_SHA256SUM: d4d8faff4b5f7c558d9be053da47804f9501eaa6c2f87906a9f040f38d61c860
-      PYTHON_VERSION: 3.11.1
-      PYTHON_SHA256SUM: f4de33ad3ef09c3e31196b296aec761eabab4564fc8c25e50ea99edd01969819
-      MACOSX_DEPLOYMENT_TARGET: ${{ matrix.macos-deployment-version }}
+      PYTHON_VERSION: ${{ matrix.setup.python-version }}
+      PYTHON_SHA256SUM: ${{ matrix.setup.python-sha256sum }}
+      MACOSX_DEPLOYMENT_TARGET: ${{ matrix.setup.macos-deployment-version }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -69,10 +75,10 @@ jobs:
         pip3 install .
       env:
         PYINSTALLER_VERSION: v5.7.0
-        CFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}
-        CPPFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}
-        LDFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}
-        LINKFLAGS: -mmacosx-version-min=${{ matrix.macos-deployment-version }}
+        CFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-version }}
+        CPPFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-version }}
+        LDFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-version }}
+        LINKFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-version }}
     - name: Install dependencies
       run: |
         pip3 install -r requirements-build.txt
@@ -106,7 +112,7 @@ jobs:
     - name: Archive production artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: macos-app-${{ matrix.macos-deployment-version }}
+        name: macos-app-${{ matrix.setup.macos-deployment-version }}
         path: artifacts/
 
   package-windows:
