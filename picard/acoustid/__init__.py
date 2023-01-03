@@ -36,7 +36,10 @@ from PyQt5 import QtCore
 from picard import log
 from picard.acoustid.json_helpers import parse_recording
 from picard.config import get_config
-from picard.const import FPCALC_NAMES
+from picard.const import (
+    DEFAULT_FPCALC_THREADS,
+    FPCALC_NAMES,
+)
 from picard.const.sys import IS_WIN
 from picard.file import File
 from picard.util import (
@@ -84,7 +87,7 @@ class AcoustIDClient(QtCore.QObject):
 
     def get_max_processes(self):
         config = get_config()
-        return config.setting['fpcalc_threads'] or 2
+        return config.setting['fpcalc_threads'] or DEFAULT_FPCALC_THREADS
 
     def _on_lookup_finished(self, task, document, http, error):
         doc = {}

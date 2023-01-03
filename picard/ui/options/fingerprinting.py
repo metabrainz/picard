@@ -39,6 +39,7 @@ from picard.config import (
     TextOption,
     get_config,
 )
+from picard.const import DEFAULT_FPCALC_THREADS
 from picard.util import webbrowser2
 
 from picard.ui.options import (
@@ -71,7 +72,7 @@ class FingerprintingOptionsPage(OptionsPage):
         TextOption("setting", "fingerprinting_system", "acoustid"),
         TextOption("setting", "acoustid_fpcalc", ""),
         TextOption("setting", "acoustid_apikey", ""),
-        IntOption("setting", "fpcalc_threads", 2),
+        IntOption("setting", "fpcalc_threads", DEFAULT_FPCALC_THREADS),
     ]
 
     def __init__(self, parent=None):
