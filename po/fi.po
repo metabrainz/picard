@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-07 07:54+0200\n"
+"POT-Creation-Date: 2022-12-05 21:15+0100\n"
 "PO-Revision-Date: 2012-05-29 16:17+0000\n"
 "Last-Translator: Timo Martikainen <musicbrainz@listmycds.com>, 2012,2014\n"
 "Language-Team: Finnish (http://www.transifex.com/musicbrainz/musicbrainz/language/fi/)\n"
@@ -29,25 +29,25 @@ msgstr ""
 "Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: picard/album.py:149
+#: picard/album.py:150
 msgid "Unmatched Files"
 msgstr "Täsmäämättömät tiedostot"
 
-#: picard/album.py:512
+#: picard/album.py:518
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
 msgstr "Julkaisu %(id)s ladattu: %(artist)s - %(album)s"
 
-#: picard/album.py:554
+#: picard/album.py:575
 #, python-format
 msgid "Loading album %(id)s ..."
 msgstr "Ladataan julkaisua %(id)s ..."
 
-#: picard/album.py:769
+#: picard/album.py:790
 msgid "[loading album information]"
 msgstr "[ladataan julkaisun tietoja]"
 
-#: picard/album.py:771
+#: picard/album.py:792
 #, python-format
 msgid "[could not load album %s]"
 msgstr "[julkaisua %s ei voitu ladata]"
@@ -117,7 +117,8 @@ msgid "Merge"
 msgstr "Yhdistä"
 
 #: picard/config_upgrade.py:104 picard/ui/metadatabox.py:426
-#: picard/ui/options/interface.py:113 picard/ui/ui_options_interface.py:180
+#: picard/ui/options/interface_toolbar.py:99
+#: picard/ui/ui_options_interface_toolbar.py:80
 msgid "Remove"
 msgstr "Poista"
 
@@ -388,15 +389,16 @@ msgstr "Käytä aina ensisijaisen kuvan kuvatyyppiä tiedostonimenä muille kuin
 msgid "Cover art providers"
 msgstr "Kansitaidepalvelut"
 
-#: picard/profile.py:115 picard/ui/options/renaming.py:75
+#: picard/profile.py:115 picard/ui/options/renaming.py:73
 msgid "File Naming"
 msgstr "Nimeämisasetukset"
 
-#: picard/profile.py:117 picard/ui/ui_options_renaming.py:170
+#: picard/profile.py:117 picard/ui/ui_options_renaming_compat.py:64
+#: picard/ui/ui_win_compat_dialog.py:191
 msgid "Windows compatibility"
 msgstr "Windows-yhteensopivuus"
 
-#: picard/profile.py:118 picard/ui/ui_options_renaming.py:169
+#: picard/profile.py:118 picard/ui/ui_options_renaming_compat.py:63
 msgid "Replace non-ASCII characters"
 msgstr "Korvaa ei-ASCII merkit"
 
@@ -420,7 +422,7 @@ msgstr "Lisäksi siirrettävät tiedostot"
 msgid "Additional file patterns"
 msgstr "Lisätiedostojen lauseke"
 
-#: picard/profile.py:124 picard/ui/ui_options_renaming.py:167
+#: picard/profile.py:124 picard/ui/ui_options_renaming.py:154
 msgid "Delete empty directories"
 msgstr "Poista tyhjät hakemistot"
 
@@ -440,24 +442,24 @@ msgstr "Käytä tunnisteiden komentosarjoja"
 msgid "Tagger scripts"
 msgstr "Tunnisteiden komentosarjat"
 
-#: picard/profile.py:138 picard/ui/options/interface.py:73
+#: picard/profile.py:138 picard/ui/options/interface.py:67
 msgid "User Interface"
 msgstr "Käyttöliittymä"
 
-#: picard/profile.py:140 picard/ui/ui_options_interface.py:165
+#: picard/profile.py:140 picard/ui/ui_options_interface.py:116
 msgid "Allow selection of multiple directories"
 msgstr "Salli usean kansion valinta"
 
 #: picard/profile.py:141 picard/profile.py:142
-#: picard/ui/ui_options_interface.py:166
+#: picard/ui/ui_options_interface.py:117
 msgid "Use builtin search rather than looking in browser"
 msgstr "Käytä sisäänrakennettua hakutoimintoa selaimen sijaan"
 
-#: picard/profile.py:143 picard/ui/ui_options_interface.py:168
+#: picard/profile.py:143 picard/ui/ui_options_interface.py:119
 msgid "Show a quit confirmation dialog for unsaved changes"
 msgstr "Kysy vahvistus poistuttaessa, mikäli tallentamattomia muutoksia"
 
-#: picard/profile.py:144 picard/ui/ui_options_interface.py:169
+#: picard/profile.py:144 picard/ui/ui_options_interface.py:120
 msgid "Adjust horizontal position in file browser automatically"
 msgstr "Muuta vaakatason paikkaa automaattisesti tiedostoselaimessa"
 
@@ -513,7 +515,7 @@ msgstr "Täydellinen julkaisu: Ohita äänettömät raidat"
 msgid "Tags to ignore for comparison"
 msgstr "Tunnisteet jotka ohitetaan vertailtaessa"
 
-#: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:142
+#: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:158
 msgid "Tracks"
 msgstr "Kappaleet"
 
@@ -522,11 +524,11 @@ msgid "Year"
 msgstr "Vuosi"
 
 #: picard/releasegroup.py:71 picard/ui/cdlookup.py:72
-#: picard/ui/searchdialog/album.py:144 picard/ui/searchdialog/track.py:71
+#: picard/ui/searchdialog/album.py:160 picard/ui/searchdialog/track.py:71
 msgid "Country"
 msgstr "Maa"
 
-#: picard/releasegroup.py:72 picard/ui/searchdialog/album.py:141
+#: picard/releasegroup.py:72 picard/ui/searchdialog/album.py:157
 msgid "Format"
 msgstr "Formaatti"
 
@@ -546,24 +548,24 @@ msgstr "[ei viivakoodia]"
 msgid "[no release info]"
 msgstr "[ei julkaisutietoja]"
 
-#: picard/tagger.py:329 picard/ui/ui_options_general.py:175
+#: picard/tagger.py:627 picard/ui/ui_options_general.py:175
 msgid "MusicBrainz Account"
 msgstr "MusicBrainz-tili"
 
-#: picard/tagger.py:330
+#: picard/tagger.py:628
 msgid "Authorization code:"
 msgstr "Valtuutusavain:"
 
-#: picard/tagger.py:808
+#: picard/tagger.py:1107
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Poistetaan julkaisu %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:826
+#: picard/tagger.py:1125
 msgid "CD Lookup Error"
 msgstr "Virhe CD-haussa"
 
-#: picard/tagger.py:827
+#: picard/tagger.py:1126
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -571,21 +573,34 @@ msgid ""
 "%s"
 msgstr "Virhe lukiessa CD-levyä:\n\n%s"
 
-#: picard/tagger.py:856
-msgid "EAC / XLD / Whipper log files"
-msgstr "EAC / XLD / Whipper -lokitiedostot"
+#: picard/tagger.py:1155
+msgid "All supported log files"
+msgstr ""
 
-#: picard/script/serializer.py:352 picard/tagger.py:857
-#: picard/ui/coverartbox.py:617 picard/ui/mainwindow.py:1234
+#: picard/tagger.py:1156
+msgid "EAC / XLD / Whipper / fre:ac log files"
+msgstr ""
+
+#: picard/tagger.py:1157
+msgid "dBpoweramp log files"
+msgstr ""
+
+#: picard/script/serializer.py:352 picard/tagger.py:1158
+#: picard/ui/coverartbox.py:617 picard/ui/mainwindow.py:1249
 #: picard/ui/options/maintenance.py:167 picard/ui/options/scripting.py:131
 msgid "All files"
 msgstr "Kaikki tiedostot"
 
-#: picard/track.py:380
+#: picard/tagger.py:1184
+#, python-format
+msgid "Failed parsing ripping log \"%s\""
+msgstr ""
+
+#: picard/track.py:385
 msgid "[loading recording information]"
 msgstr "[ladataan äänitteen tietoja]"
 
-#: picard/track.py:428
+#: picard/track.py:433
 #, python-format
 msgid "[could not load recording %s]"
 msgstr "[äänitettä %s ei voitu ladata]"
@@ -661,31 +676,31 @@ msgstr "Lisää tiedosto äänitteenä"
 msgid "Add file as recording..."
 msgstr "Lisää tiedosto äänitteenä..."
 
-#: picard/const/__init__.py:156
+#: picard/const/__init__.py:163
 msgid "Stable releases only"
 msgstr "Vain vakaat versiot"
 
-#: picard/const/__init__.py:162
+#: picard/const/__init__.py:169
 msgid "Stable and Beta releases"
 msgstr "Vakaat ja beta-versiot"
 
-#: picard/const/__init__.py:168
+#: picard/const/__init__.py:175
 msgid "Stable, Beta and Dev releases"
 msgstr "Vakaat, beta- ja kehitys-versiot"
 
-#: picard/const/__init__.py:183
+#: picard/const/__init__.py:190
 msgid "My script"
 msgstr "Oma komentosarja"
 
-#: picard/const/__init__.py:185
+#: picard/const/__init__.py:192
 msgid "My profile"
 msgstr "Oma profiili"
 
-#: picard/const/__init__.py:186
+#: picard/const/__init__.py:193
 msgid "(copy)"
 msgstr "(kopio)"
 
-#: picard/const/__init__.py:187
+#: picard/const/__init__.py:194
 msgid "{title} ({count})"
 msgstr "{title} ({count})"
 
@@ -2630,7 +2645,8 @@ msgstr "&Hylkää kaikki"
 msgid "C&lear all"
 msgstr "&Tyhjennä kaikki"
 
-#: picard/coverart/providers/caa.py:330 picard/ui/options/dialog.py:127
+#: picard/coverart/providers/caa.py:330 picard/ui/options/dialog.py:129
+#: picard/ui/options/renaming_compat.py:183
 msgid "Restore &Defaults"
 msgstr "Palauta oletus&asetuksiin"
 
@@ -2991,42 +3007,66 @@ msgid ""
 "Returns true if `x` does not equal `y`."
 msgstr "`$ne(x,y)`\n\nPalauta tosi jos `x` ei ole yhtä kuin `y`."
 
-#: picard/script/functions.py:683
+#: picard/script/functions.py:716
 msgid ""
-"`$lt(x,y)`\n"
+"`$lt(x,y[,type])`\n"
 "\n"
-"Returns true if `x` is less than `y`."
-msgstr "`$lt(x,y)`\n\nPalauta tosi jos `x` on pienempi kuin `y`."
+"Returns true if `x` is less than `y` using the comparison specified in `type`.\n"
+"Possible values of `type` are \"int\" (integer), \"float\" (floating point), \"text\"\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto\" (automatically\n"
+"determine the type of arguments provided), with \"auto\" used as the default\n"
+"comparison method if `type` is not specified.  The \"auto\" type will use the\n"
+"first type that applies to both arguments in the following order of preference:\n"
+"\"int\", \"float\" and \"text\"."
+msgstr ""
 
-#: picard/script/functions.py:697
+#: picard/script/functions.py:731
 msgid ""
-"`$lte(x,y)`\n"
+"`$lte(x,y[,type])`\n"
 "\n"
-"Returns true if `x` is less than or equal to `y`."
-msgstr "`$lte(x,y)`\n\nPalauta tosi jos `x` on pienempi tai yhtä suuri kuin `y`."
+"Returns true if `x` is less than or equal to `y` using the comparison specified in `type`.\n"
+"Possible values of `type` are \"int\" (integer), \"float\" (floating point), \"text\"\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto\" (automatically\n"
+"determine the type of arguments provided), with \"auto\" used as the default\n"
+"comparison method if `type` is not specified.  The \"auto\" type will use the\n"
+"first type that applies to both arguments in the following order of preference:\n"
+"\"int\", \"float\" and \"text\"."
+msgstr ""
 
-#: picard/script/functions.py:711
+#: picard/script/functions.py:746
 msgid ""
-"`$gt(x,y)`\n"
+"`$gt(x,y[,type])`\n"
 "\n"
-"Returns true if `x` is greater than `y`."
-msgstr "`$gt(x,y)`\n\nPalauta tosi jos `x` on suurempi kuin `y`."
+"Returns true if `x` is greater than `y` using the comparison specified in `type`.\n"
+"Possible values of `type` are \"int\" (integer), \"float\" (floating point), \"text\"\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto\" (automatically\n"
+"determine the type of arguments provided), with \"auto\" used as the default\n"
+"comparison method if `type` is not specified.  The \"auto\" type will use the\n"
+"first type that applies to both arguments in the following order of preference:\n"
+"\"int\", \"float\" and \"text\"."
+msgstr ""
 
-#: picard/script/functions.py:725
+#: picard/script/functions.py:761
 msgid ""
-"`$gte(x,y)`\n"
+"`$gte(x,y[,type])`\n"
 "\n"
-"Returns true if `x` is greater than or equal to `y`."
-msgstr "`$gte(x,y)`\n\nPalauta tosi jos `x` on suurempi tai yhtä suuri kuin `y`."
+"Returns true if `x` is greater than or equal to `y` using the comparison specified in `type`.\n"
+"Possible values of `type` are \"int\" (integer), \"float\" (floating point), \"text\"\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto\" (automatically\n"
+"determine the type of arguments provided), with \"auto\" used as the default\n"
+"comparison method if `type` is not specified.  The \"auto\" type will use the\n"
+"first type that applies to both arguments in the following order of preference:\n"
+"\"int\", \"float\" and \"text\"."
+msgstr ""
 
-#: picard/script/functions.py:739
+#: picard/script/functions.py:776
 msgid ""
 "`$len(text)`\n"
 "\n"
 "Returns the number of characters in `text`."
 msgstr "`$len(teksti)`\n\nPalauta merkkien määrä `teksti`ssä."
 
-#: picard/script/functions.py:748
+#: picard/script/functions.py:785
 msgid ""
 "`$lenmulti(name,separator=\"; \")`\n"
 "\n"
@@ -3040,7 +3080,7 @@ msgid ""
 "    $lenmulti(One; Two; Three) = 3\n"
 msgstr "`$lenmulti(nimi,separator=\"; \")`\n\nPalauta moniarvoisen muuttujan `nimi` osien määrä. Muuttujan sijaan\n    voidaan käyttää merkkijonoa, josta saadaan osien määrä erotinmerkin (`separator`)\n    avulla, joka on vakiona \"; \".\n\nEsimerkki:\n\n    $lenmulti(Yksi; Kaksi; Kolme) = 3\n"
 
-#: picard/script/functions.py:765
+#: picard/script/functions.py:802
 msgid ""
 "`$performer(pattern=\"\",join=\", \")`\n"
 "\n"
@@ -3052,7 +3092,7 @@ msgid ""
 "_Since Picard 0.10_"
 msgstr "`$performer(pattern=\"\",join=\", \")`\n\nPalauta esittäjät, joiden esitystyyppi (esim. \"vocal\") täsmää `pattern`, lueteltuna välimerkeillä `join`.\nSäännöllistä lauseketta voi käyttää muodossa `/pattern/flags`. `flags` on valinnainen. Tällä hetkellä flags-arvona\non tuettuna vain \"i\" (kirjainkoolla ei ole väliä). Esimerkki`$performer(/^guitars?$/i)` täsmää\nesitystyyppiin \"guitar\" or \"Guitars\", mutta ei esimerkiksi esitystyyppiin \"bass guitar\".\n\n_Picardin versiosta 0.10_"
 
-#: picard/script/functions.py:789
+#: picard/script/functions.py:826
 msgid ""
 "`$matchedtracks()`\n"
 "\n"
@@ -3062,7 +3102,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr "`$matchedtracks()`\n\nPalauta täsmäävien kappaleiden määrä julkaisussa.\n    **Toimii ainoastaan tiedoston nimeämisen komentosarjassa.**\n\n_Picardin versiosta 0.12_"
 
-#: picard/script/functions.py:805
+#: picard/script/functions.py:842
 msgid ""
 "`$is_complete()`\n"
 "\n"
@@ -3070,7 +3110,7 @@ msgid ""
 "**Only works in File Naming scripts.**"
 msgstr "`$is_complete()`\n\nPalauta tosi jos jokainen julkaisun kappale on määritetty yhteen tiedostoon.\n**Toimii ainoastaan tiedoston nimeämisen komentosarjassa.**"
 
-#: picard/script/functions.py:820
+#: picard/script/functions.py:857
 msgid ""
 "`$firstalphachar(text,nonalpha=\"#\")`\n"
 "\n"
@@ -3081,7 +3121,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr "`$firstalphachar(teksti,nonalpha=\"#\")`\n\nPalauttaa `teksti`n ensimmäisen merkin.\nMikäli `teksti` ei ala aakkosten merkillä, palauttaa `nonalpha`n. Jos `nonalpha`a ei ole määritetty, palautetaan vakioarvo \"#\".\n\n_Picardin versiosta 0.12_"
 
-#: picard/script/functions.py:839
+#: picard/script/functions.py:876
 msgid ""
 "`$initials(text)`\n"
 "\n"
@@ -3090,7 +3130,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr "`$initials(teksti)`\n\nPalauttaa `teksti`n jokaisen sanan ensimmäisen alkukirjaimen, mikäli se on aakkosten merkki.\n\n_Picardin versiosta 0.12_"
 
-#: picard/script/functions.py:850
+#: picard/script/functions.py:887
 msgid ""
 "`$firstwords(text,length)`\n"
 "\n"
@@ -3099,7 +3139,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr "`$firstwords(teksti,pituus)`\n\nAivan kuten`$truncate()`, paitsi palauttaa kokonaiset sanat `teksti`stä, jotka mahtuvat merkkimäärään `pituus`.\n\n_Picardin versiosta 0.12_"
 
-#: picard/script/functions.py:873
+#: picard/script/functions.py:910
 msgid ""
 "`$startswith(text,prefix)`\n"
 "\n"
@@ -3108,7 +3148,7 @@ msgid ""
 "_Since Picard 1.4_"
 msgstr "`$startswith(teksti,etu)`\n\nPalauta tosi jos `teksti` alkaa `etu`.\n\n_Picardin versiosta 1.4_"
 
-#: picard/script/functions.py:886
+#: picard/script/functions.py:923
 msgid ""
 "`$endswith(text,suffix)`\n"
 "\n"
@@ -3117,7 +3157,7 @@ msgid ""
 "_Since Picard 1.4_"
 msgstr "`$endswith(teksti,loppu)`\n\nPalauta tosi jos `teksti` loppuu `loppu`.\n\n_Picardin versiosta 1.4_"
 
-#: picard/script/functions.py:899
+#: picard/script/functions.py:936
 msgid ""
 "`$truncate(text,length)`\n"
 "\n"
@@ -3126,7 +3166,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr "`$truncate(teksti,pituus)`\n\nLyhennä `teksti` pituuteen `pituus`.\n\n_Picardin versiosta 0.12_"
 
-#: picard/script/functions.py:914
+#: picard/script/functions.py:951
 msgid ""
 "`$swapprefix(text,prefix1,prefix2,...)`\n"
 "\n"
@@ -3141,7 +3181,7 @@ msgid ""
 "_Since Picard 1.3, previously as a plugin since Picard 0.13_"
 msgstr "`$swapprefix(teksti,etuliite1,etuliite2,...)`\n\nSiirrä määritetyt etuliitteet `teksti`n alusta loppuun. Useita etuliitteitä\nvoidaan antaa samalla. Mikäli etuliitteitä ei anneta, käytetään etuliitteinä\n'A' ja 'The'.\n\nEsimerkki:\n\n    $swapprefix(%albumartist%,A,An,The,La,Le,Les,Un,Une)\n\n_Picardin versiosta 1.3, sitä ennen liitännäisenä Picardin versiosta 0.13_"
 
-#: picard/script/functions.py:936
+#: picard/script/functions.py:973
 msgid ""
 "`$delprefix(text,prefix1,prefix2,...)`\n"
 "\n"
@@ -3156,7 +3196,7 @@ msgid ""
 "_Since Picard 1.3_"
 msgstr "`$delprefix(teksti,etuliite1,etuliite2,...)`\n\nPoista määritetyt etuliitteet `teksti`n alusta. Useita etuliitteitä\nvoidaan antaa samalla. Mikäli etuliitteitä ei anneta, käytetään etuliitteinä\n'A' ja 'The'.\n\nEsimerkki:\n\n    $delprefix(albumartist%,A,An,The,La,Le,Les,Un,Une)\n\n_Picardin versiosta 1.3_"
 
-#: picard/script/functions.py:974
+#: picard/script/functions.py:1011
 msgid ""
 "`$eq_any(x,a1,a2,...)`\n"
 "\n"
@@ -3165,7 +3205,7 @@ msgid ""
 "Functionally equivalent to the eq2 plugin."
 msgstr "`$eq_any(x,a1,a2,...)`\n\nPalauta tosi jos `x` on yhtä suuri kuin `a1` tai `a2` tai ...\nToiminnallisesti sama kuin `$or($eq(x,a1),$eq(x,a2) ...)`.\nToiminnallisesti sama kuin eq2-liitännäinen."
 
-#: picard/script/functions.py:986
+#: picard/script/functions.py:1023
 msgid ""
 "`$ne_all(x,a1,a2,...)`\n"
 "\n"
@@ -3174,7 +3214,7 @@ msgid ""
 "Functionally equivalent to the ne2 plugin."
 msgstr "`$ne_all(x,a1,a2,...)`\n\nPalauta tosi jos `x` ei ole yhtä suuri kuin `a1` ja `a2` ja ...\nToiminnallisesti sama kuin `$and($ne(x,a1),$ne(x,a2) ...)`.\nToiminnallisesti sama kuin ne2-liitännäinen."
 
-#: picard/script/functions.py:998
+#: picard/script/functions.py:1035
 msgid ""
 "`$eq_all(x,a1,a2,...)`\n"
 "\n"
@@ -3186,7 +3226,7 @@ msgid ""
 "    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat Loaf))\n"
 msgstr "`$eq_all(x,a1,a2,...)`\n\nPalauta tosi jos `x` on yhtä suuri kuin `a1` ja `a2` ja ...\nToiminnallisesti sama kuin `$and($eq(x,a1),$eq(x,a2) ...)`.\n\nEsimerkki:\n\n    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat Loaf))\n"
 
-#: picard/script/functions.py:1016
+#: picard/script/functions.py:1053
 #, python-format
 msgid ""
 "`$ne_any(x,a1,a2,...)`\n"
@@ -3199,7 +3239,7 @@ msgid ""
 "    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
 msgstr "`$ne_any(x,a1,a2,...)`\n\nPalauta tosi jos `x` ei ole yhtä suuri kuin `a1` tai `a2` tai ...\nToiminnallisesti sama kuin `$or($ne(x,a1),$ne(x,a2) ...)`.\n\nEsimerkki:\n\n    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
 
-#: picard/script/functions.py:1031
+#: picard/script/functions.py:1068
 msgid ""
 "`$title(text)`\n"
 "\n"
@@ -3211,7 +3251,7 @@ msgid ""
 "_Since Picard 2.1_"
 msgstr "`$title(teksti)`\n\nPalauta `teksti` isoin alkukirjaimin (jokaisen sanan ensimmäinen kirjain isolla).\n\nEsimerkki:\n\n    $set(album,$title(%album%))\n\n_Picardin versiosta 2.1_"
 
-#: picard/script/functions.py:1071
+#: picard/script/functions.py:1108
 msgid ""
 "`$is_audio()`\n"
 "\n"
@@ -3220,7 +3260,7 @@ msgid ""
 "_Since Picard 2.2_"
 msgstr "`$is_audio()`\n\nPalauta tosi jos kyseinen tiedosto on äänitiedosto.\n\n_Picardin versiosta 2.2_"
 
-#: picard/script/functions.py:1085
+#: picard/script/functions.py:1122
 msgid ""
 "`$is_video()`\n"
 "\n"
@@ -3229,7 +3269,7 @@ msgid ""
 "_Since Picard 2.2_"
 msgstr "`$is_video()`\n\nPalauta tosi jos kyseinen tiedosto on videotiedosto.\n\n_Picardin versiosta 2.2_"
 
-#: picard/script/functions.py:1099
+#: picard/script/functions.py:1136
 msgid ""
 "`$find(haystack,needle)`\n"
 "\n"
@@ -3241,14 +3281,14 @@ msgid ""
 "Note that prior to Picard 2.3.2 `$find` returned \"-1\" if `needle` was not found."
 msgstr "`$find(haystack,needle)`\n\nEtsi merkkijonon sijainti toisessa merkkijonossa.\n    Palauta indeksinumero ensimmäiselle osumalle `needle` merkkijonossa `haystack`,\ntai \"\" mikäli merkkijonoa `needle` ei löytynyt.\n\n_Picardin versiosta 2.3_\n\nEnnen Picardin versiota 2.3.2 `$find` palautti \"-1\" mikäli merkkijonoa `needle` ei löytynyt."
 
-#: picard/script/functions.py:1116
+#: picard/script/functions.py:1153
 msgid ""
 "`$reverse(text)`\n"
 "\n"
 "Returns `text` in reverse order."
 msgstr "`$reverse(teksti)`\n\nPalauta `teksti` käännetyssä järjestyksessä."
 
-#: picard/script/functions.py:1125
+#: picard/script/functions.py:1162
 msgid ""
 "`$substr(text,start[,end])`\n"
 "\n"
@@ -3259,7 +3299,7 @@ msgid ""
 "    the start and end of the string respectively."
 msgstr "`$substr(teksi,alku[,loppu])`\n\nPalauta merkkijono alkaen merkistä paikassa `alku` aina merkkiin `loppu`\n    asti (loppumerkkiä mukaan ottamatta). Paikkanumerot aloitetaan luvusta nolla.\n    Negatiiviset luvut lasketaan merkkijonon lopusta päin. Jos paikkanumero `alku` tai `loppu`\n    on tyhjä, käytetään arvona merkkijonon alkua tai loppua sen sijaan."
 
-#: picard/script/functions.py:1146
+#: picard/script/functions.py:1183
 msgid ""
 "`$getmulti(name,index,separator=\"; \")`\n"
 "\n"
@@ -3269,7 +3309,7 @@ msgid ""
 "    multi-valued tag."
 msgstr "`$getmulti(nimi,index,separator=\"; \")`\n\nPalauta moniarvoisen muuttujan `nimi` alkio indeksistä `index`. Muuttujan sijaan\n    voidaan käyttää merkkijonoa, josta saadaan osien määrä erotinmerkin (`separator`)\n    avulla, joka on vakiona \"; \"."
 
-#: picard/script/functions.py:1165
+#: picard/script/functions.py:1202
 msgid ""
 "`$foreach(name,code,separator=\"; \")`\n"
 "\n"
@@ -3282,7 +3322,7 @@ msgid ""
 "    proper multi-valued tag."
 msgstr "`$foreach(nimi,code,separator=\"; \")`\n\nIteroi moniarvoisen tunnisteen `nimi` kaikki alkiot suorittaen `code`-komentosarjan.\n    Jokaisella kierroksella alkion arvo tallennetaan ensin `_loop_value` muuttujaan ja\n    lukumäärä muuttujaan `_loop_count`. Tämä mahdollistaa alkion arvon tai lukumäärän\n    hyödyntämisen `code`-komentosarjassa. Muuttujan sijaan voidaan käyttää merkkijonoa,\n    josta saadaan osien määrä erotinmerkin (`separator`) avulla, joka on vakiona \"; \"."
 
-#: picard/script/functions.py:1187
+#: picard/script/functions.py:1224
 msgid ""
 "`$while(condition,code)`\n"
 "\n"
@@ -3293,7 +3333,7 @@ msgid ""
 "    safeguard against accidentally creating an infinite loop."
 msgstr "`$while(condition,code)`\n\nStandardi 'while'-silmukka. Suorita `code` toistuvasti kunnes `condition` ei enää päde.\n    Jokaisella kierroksella lukumäärä tallennetaan muuttujaan `_loop_count`. Tämä\n    mahdollistaa lukumäärän hyödyntämisen `code`-komentosarjassa. Funktio rajoittaa\n    toistojen määrän 1000:een estääkseen ikisilmukan muodostumisen."
 
-#: picard/script/functions.py:1208
+#: picard/script/functions.py:1245
 msgid ""
 "`$map(name,code,separator=\"; \")`\n"
 "\n"
@@ -3312,14 +3352,14 @@ msgid ""
 "Result: 1=FIRST:A; 2=SECOND:B\n"
 msgstr "`$map(nimi,code,separator=\"; \")`\n\nIteroi moniarvoisen tunnisteen `nimi` kaikki alkiot ja päivittää niiden arvot\n    `code`-komentosarjan palauttamiksi arvoiksi. Palauttaa päivitetyn moniarvoisen tunnisteen.\n    Jokaisella kierroksella alkion arvo tallennetaan ensin `_loop_value` muuttujaan ja\n    lukumäärä muuttujaan `_loop_count`. Tämä mahdollistaa alkion arvon tai lukumäärän\n    hyödyntämisen `code`-komentosarjassa.\n\nTyhjät alkiot poistetaan automaattisesti.\n\nEsimerkki:\n\n    $map(First:A; Second:B,$upper(%_loop_count%=%_loop_value%))\n\nTulos: 1=FIRST:A; 2=SECOND:B\n"
 
-#: picard/script/functions.py:1238
+#: picard/script/functions.py:1275
 msgid ""
 "`$join(name,text,separator=\"; \")`\n"
 "\n"
 "Joins all elements in `name`, placing `text` between each element, and returns the result as a string."
 msgstr "`$join(nimi,teksti,separator=\"; \")`\n\nPalauta merkkijonona muuttujan `nimi` kaikki alkiot liittäen `teksti` alkioiden väliin."
 
-#: picard/script/functions.py:1249
+#: picard/script/functions.py:1286
 msgid ""
 "`$slice(name,start,end,separator=\"; \")`\n"
 "\n"
@@ -3340,7 +3380,7 @@ msgid ""
 "    $setmulti(supporting_artists,$slice(%artists%,1,-1))\n"
 msgstr "`$slice(nimi,alku,loppu,separator=\"; \")`\n\nPalauta moniarvoinen muuttuja aloittaen muuttujan `nimi` alkiosta indeksissä `alku` aina\n    indeksiin `loppu` asti. Muuttujan sijaan voidaan käyttää merkkijonoa, josta saadaan\n    osien määrä erotinmerkin (`separator`) avulla, joka on vakiona \"; \". Indeksinumerot \n    aloitetaan luvusta nolla. Negatiiviset luvut lasketaan merkkijonon lopusta päin. Jos `alku`-\n    tai `loppu`-indeksi on tyhjä, käytetään arvona merkkijonon alkua tai loppua sen sijaan.\n\nSeuraava esimerkki luo moniarvoisen muuttujan, joka sisältää kaikki artistit lukuun ottamatta\n    ensimmäistä, jolla voidaan luoda vierailevien artistin lista.\n\nEsimerkit:\n\n    $setmulti(supporting_artists,$slice(%artists%,1))\n    $setmulti(supporting_artists,$slice(%artists%,1,-1))\n"
 
-#: picard/script/functions.py:1282
+#: picard/script/functions.py:1319
 #, python-format
 msgid ""
 "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
@@ -3356,7 +3396,7 @@ msgid ""
 "    `%3Y`); and hanging '%' at the end of the format string."
 msgstr "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n\nPalauta nykyinen päiväys ja aika halutussa muodossa `format`, joka pohjautuu\n    Pythonin standardeihin `strftime`-[koodimuotoihin](https://strftime.org/).\n    Mikäli muotoa ei ole määritetty, palautetaan aika muodossa\n    `2020-02-05 14:26:32`.\nHuomio: Käyttöympäristöön rajoittuneita koodimuotoja ei tulisi käyttää, jotta\n    komentosarjat toimisivat erilaisissa ympäristöissäkin. Niihin lukeutuvat:\n    poista nolla-merkein täydentäminen (esim. `%-d` and `%-m` Linux tai macOS, ja\n    vastaavissa `%#d` ja `%#m` Windowsissa); alkion pituuden määritteet (esim.\n    `%3Y`); ja avoin-'%' muotomerkkijonon lopussa."
 
-#: picard/script/functions.py:1311
+#: picard/script/functions.py:1348
 msgid ""
 "`$sortmulti(name,separator=\"; \")`\n"
 "\n"
@@ -3369,7 +3409,7 @@ msgid ""
 "Result: A; B; C\n"
 msgstr "`$sortmulti(nimi,separator=\"; \")`\n\nPalauta kopio moniarvoisesta muuttujasta `nimi`, jossa alkiot on järjestetty nousevasti.\n\nEsimerkki:\n\n    $sortmulti(B; A; C)\n\nTulos: A; B; C\n"
 
-#: picard/script/functions.py:1328
+#: picard/script/functions.py:1365
 msgid ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
@@ -3384,7 +3424,7 @@ msgid ""
 "Result: C; B; A\n"
 msgstr "`$reversemulti(nimi,separator=\"; \")`\n\nPalauta kopio moniarvoisesta muuttujasta `nimi`, jossa alkiot on järjestetty käänteisesti.\n    Tätä voidaan hyödyntää `$sortmulti`-funktion kanssa järjestääkseen laskevasti.\n\nEsimerkki:\n\n    $reversemulti($sortmulti(B; A; C))\n\nTulos: C; B; A\n"
 
-#: picard/script/functions.py:1347
+#: picard/script/functions.py:1384
 #, python-format
 msgid ""
 "`$unique(name,case_sensitive=\"\",separator=\"; \")`\n"
@@ -3407,7 +3447,7 @@ msgid ""
 "Result: A; B; a; b; cd\n"
 msgstr "`$unique(nimi,case_sensitive=\"\",separator=\"; \")`\n\nPalauttaa kopion moniarvoisesta tunnisteesta `nimi` ilman kaksoiskappaleita.\n    Oletuksena kirjainkoolla ei ole merkitystä vertailussa.\n\nEsimerkki 1:\n\n    $setmulti(foo,a; A; B; b; cd; Cd; cD; CD; a; A; b)\n    $unique(%foo%)\n\nTulos: A; CD; b\n\nEsimerkki 2:\n\n    $setmulti(foo,a; A; B; b; a; b; A; B, cd)\n    $unique(%foo%,True)\n\nTulos: A; B; a; b; cd\n"
 
-#: picard/script/functions.py:1375
+#: picard/script/functions.py:1412
 msgid ""
 "`$countryname(country_code,translate=\"\")`\n"
 "\n"
@@ -3415,7 +3455,7 @@ msgid ""
 "If translate is not blank, the output will be translated into the current locale language.\n"
 msgstr "`$countryname(maakoodi,translate=\"\")`\n\nPalauta maan nimi maakoodille. Jos maakoodi ei ole kelvollinen, palauta tyhjä merkkijono.\nJos translate ei ole tyhjä, palauta maan nimi käännettynä nykyisen alueen kielelle.\n"
 
-#: picard/script/functions.py:1414
+#: picard/script/functions.py:1451
 msgid ""
 "`$year(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3425,7 +3465,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$year(date,date_order=\"ymd\")`\n\nPalauta vuosi päiväyksestä. Oletus on \"ymd\". Tämän voi vaihtaa määrittelemällä joko \"dmy\" tai \"mdy\".\nMikäli päiväys ei ole kelvollinen, palauta tyhjä merkkijono.\n\n_Picardin versiosta 2.7_"
 
-#: picard/script/functions.py:1426
+#: picard/script/functions.py:1463
 msgid ""
 "`$month(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3435,7 +3475,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$month(date,date_order=\"ymd\")`\n\nPalauta kuukausi päiväyksestä. Oletus on \"ymd\". Tämän voi vaihtaa määrittelemällä joko \"dmy\" tai \"mdy\".\nMikäli päiväys ei ole kelvollinen, palauta tyhjä merkkijono.\n\n_Picardin versiosta 2.7_"
 
-#: picard/script/functions.py:1438
+#: picard/script/functions.py:1475
 msgid ""
 "`$day(date,date_order=\"ymd\")`\n"
 "\n"
@@ -3445,7 +3485,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$day(date,date_order=\"ymd\")`\n\nPalauta päivä päiväyksestä. Oletus on \"ymd\". Tämän voi vaihtaa määrittelemällä joko \"dmy\" tai \"mdy\".\nMikäli päiväys ei ole kelvollinen, palauta tyhjä merkkijono.\n\n_Picardin versiosta 2.7_"
 
-#: picard/script/functions.py:1450
+#: picard/script/functions.py:1487
 #, python-format
 msgid ""
 "`$dateformat(date,format=\"%Y-%m-%d\",date_order=\"ymd\")`\n"
@@ -3466,7 +3506,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$dateformat(date,format=\"%Y-%m-%d\",date_order=\"ymd\")`\n\nPalauta annettu päiväys muotoiltuna. Muotoilu `format` perustuu    Pythonin `strftime` [muotoiluun](https://strftime.org/).\n    Oletuksena päiväys palautetaan muodossa `2020-02-05`. Mikäli päiväys tai\n    muotoilu ei ole kelvollinen, palautetaan tyhjä merkkijono.\n\n    Syötetyn päiväyksen oletusmuoto on \"ymd\". Tämän voi vaihtaa määrittelemällä joko \"dmy\" tai \"mdy\".\nHuomioi: Järjestelmäkohtaisia muotoilukoodeja ei tulisi käyttää, jotta komentosarjat toimivat halutusti\n    muissakin käyttöympäristöissä. Näihin lukeutuvat: poista edessä olevat nollat (esim. `%-d` ja `%-m` Linux-\n    ja macOS-järjestelmissä tai vastaavat `%#d` ja `%#m` Windowsissa); osien pituuden määritteet (esim.\n    `%3Y`); ja roikkuva '%' muotoilumerkkijonon lopussa.\n\n_Picardin versiosta 2.7_"
 
-#: picard/script/functions.py:1483
+#: picard/script/functions.py:1520
 msgid ""
 "`$is_multi(name)`\n"
 "\n"
@@ -3481,7 +3521,7 @@ msgid ""
 "_Since Picard 2.7_"
 msgstr "`$is_multi(name)`\n\nPalauta '1' jos syöte on moniarvoinen ja sisältää enemmän kuin yhden osan, muuten palauta tyhjä merkkijono.\n\nEsimerkki:\n\n    $is_multi(%artists%)\n\nTulos: 1 jos enemmän kuin yksi artisti, muutoin \"\".\n\n_Picardin versiosta 2.7_"
 
-#: picard/script/functions.py:1501
+#: picard/script/functions.py:1538
 msgid ""
 "`$cleanmulti(name)`\n"
 "\n"
@@ -3496,6 +3536,44 @@ msgid ""
 "\n"
 "_Since Picard 2.8_"
 msgstr "`$cleanmulti(nimi)`\n\nPoista kaikki tyhjät merkkijonot moniarvoisesta muuttujasta.\n\nEsimerkki:\n\n    $setmulti(testi,yksi; ; kaksi; kolme)\n    $cleanmulti(testi)\n\nTulos: Muuttujan 'testi' arvo on [\"yksi\", \"kaksi\", \"kolme\"].\n\n_Picardin versiosta 2.8_"
+
+#: picard/script/functions.py:1608
+msgid ""
+"$min(type,x,...)\n"
+"\n"
+"Returns the minimum value using the comparison specified in `type`.\n"
+"\n"
+"Possible values of `type` are \"int\" (integer), \"float\" (floating point), \"text\"\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto\" (automatically\n"
+"determine the type of arguments provided), with \"auto\" used as the default\n"
+"comparison method if `type` is not specified.  The \"auto\" type will use the\n"
+"first type that applies to both arguments in the following order of preference:\n"
+"\"int\", \"float\" and \"text\".\n"
+"\n"
+"Can be used with an arbitrary number of arguments.  Multi-value arguments\n"
+"will be expanded automatically.\n"
+"\n"
+"_Since Picard 3.0_"
+msgstr ""
+
+#: picard/script/functions.py:1629
+msgid ""
+"$max(type,x,...)\n"
+"\n"
+"Returns the maximum value using the comparison specified in `type`.\n"
+"\n"
+"Possible values of `type` are \"int\" (integer), \"float\" (floating point), \"text\"\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto\" (automatically\n"
+"determine the type of arguments provided), with \"auto\" used as the default\n"
+"comparison method if `type` is not specified.  The \"auto\" type will use the\n"
+"first type that applies to both arguments in the following order of preference:\n"
+"\"int\", \"float\" and \"text\".\n"
+"\n"
+"Can be used with an arbitrary number of arguments.  Multi-value arguments\n"
+"will be expanded automatically.\n"
+"\n"
+"_Since Picard 3.0_"
+msgstr ""
 
 #: picard/script/serializer.py:202
 #, python-format
@@ -3627,32 +3705,32 @@ msgid "Official website"
 msgstr "Virallinen kotisivu"
 
 #: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:165
-#: picard/ui/mainwindow.py:1118 picard/util/tags.py:38
+#: picard/ui/mainwindow.py:1133 picard/util/tags.py:38
 msgid "Album"
 msgstr "Julkaisu"
 
 #: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:162
-#: picard/ui/mainwindow.py:1119 picard/ui/searchdialog/album.py:140
+#: picard/ui/mainwindow.py:1134 picard/ui/searchdialog/album.py:156
 #: picard/ui/searchdialog/track.py:68 picard/util/tags.py:41
 msgid "Artist"
 msgstr "Artisti"
 
 #: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:174
-#: picard/ui/searchdialog/album.py:143 picard/ui/searchdialog/track.py:70
+#: picard/ui/searchdialog/album.py:159 picard/ui/searchdialog/track.py:70
 #: picard/util/tags.py:54
 msgid "Date"
 msgstr "Päiväys"
 
-#: picard/ui/cdlookup.py:73 picard/ui/searchdialog/album.py:145
+#: picard/ui/cdlookup.py:73 picard/ui/searchdialog/album.py:161
 msgid "Labels"
 msgstr "Levymerkit"
 
-#: picard/ui/cdlookup.py:73 picard/ui/searchdialog/album.py:146
+#: picard/ui/cdlookup.py:73 picard/ui/searchdialog/album.py:162
 msgid "Catalog #s"
 msgstr "Luettelonumerot"
 
 #: picard/ui/cdlookup.py:73 picard/ui/itemviews.py:170
-#: picard/ui/searchdialog/album.py:147 picard/util/tags.py:45
+#: picard/ui/searchdialog/album.py:163 picard/util/tags.py:45
 msgid "Barcode"
 msgstr "Viivakoodi"
 
@@ -3788,7 +3866,7 @@ msgid "Existing Cover"
 msgstr "Olemassa oleva kansi"
 
 #: picard/ui/infodialog.py:104 picard/ui/infodialog.py:109
-#: picard/ui/searchdialog/album.py:149 picard/ui/searchdialog/artist.py:55
+#: picard/ui/searchdialog/album.py:165 picard/ui/searchdialog/artist.py:55
 #: picard/ui/searchdialog/track.py:72
 msgid "Type"
 msgstr "Muoto"
@@ -3798,12 +3876,12 @@ msgid "New Cover"
 msgstr "Uusi kansi"
 
 #: picard/ui/infodialog.py:109 picard/ui/itemviews.py:176
-#: picard/ui/searchdialog/album.py:151
+#: picard/ui/searchdialog/album.py:167
 msgid "Cover"
 msgstr "Kansi"
 
 #: picard/ui/infodialog.py:153 picard/ui/infodialog.py:359
-#: picard/ui/options/interface.py:109
+#: picard/ui/options/interface_toolbar.py:95
 msgid "Info"
 msgstr "Lisätietoja"
 
@@ -3923,14 +4001,14 @@ msgstr "Odottavat tiedostot"
 msgid "Pending requests"
 msgstr "Odottavat pyynnöt"
 
-#: picard/ui/item.py:136
+#: picard/ui/item.py:141
 #, python-format
 msgid "%i image"
 msgid_plural "%i images"
 msgstr[0] "%i kuva"
 msgstr[1] "%i kuvaa"
 
-#: picard/ui/item.py:139
+#: picard/ui/item.py:144
 #, python-format
 msgid "%i image not in all tracks"
 msgid_plural "%i different images among tracks"
@@ -4133,72 +4211,72 @@ msgid ""
 "AcoustID Fingerprints\" to calculate the fingerprint."
 msgstr "Tälle tiedostolle ei ole laskettu äänitunnistetta. Valitse \"Analysoi\" tai \"Luo AcoustID-tunnisteet\" tunnisteen laskemiseksi."
 
-#: picard/ui/logview.py:164
+#: picard/ui/logview.py:168
 msgid "Log"
 msgstr "Loki"
 
-#: picard/ui/logview.py:174
+#: picard/ui/logview.py:178
 msgid "Verbosity"
 msgstr "Monisanaisuus"
 
-#: picard/ui/logview.py:184
+#: picard/ui/logview.py:188
 msgid "String to highlight"
 msgstr "Korostettava teksti"
 
-#: picard/ui/logview.py:189
+#: picard/ui/logview.py:193
 msgid "Highlight"
 msgstr "Korosta"
 
-#: picard/ui/logview.py:198
+#: picard/ui/logview.py:202
 msgid "Clear Highlight"
 msgstr "Poista korostus"
 
-#: picard/ui/logview.py:204 picard/ui/logview.py:290
+#: picard/ui/logview.py:208 picard/ui/logview.py:294
 msgid "Clear Log"
 msgstr "Tyhjennä loki"
 
-#: picard/ui/logview.py:209
+#: picard/ui/logview.py:213
 msgid "Save As..."
 msgstr "Tallenna nimellä..."
 
-#: picard/ui/logview.py:254 picard/ui/logview.py:261
+#: picard/ui/logview.py:258 picard/ui/logview.py:265
 msgid "Save Log View to File"
 msgstr "Tallenna loki tiedostoon"
 
-#: picard/ui/logview.py:262
+#: picard/ui/logview.py:266
 msgid "File already exists, do you really want to save to this file?"
 msgstr "Tiedosto on jo olemassa, haluatko kirjoittaa sen päälle?"
 
-#: picard/ui/logview.py:274
+#: picard/ui/logview.py:278
 msgid "Failed to save Log View to file"
 msgstr "Lokitiedoston tallentaminen epäonnistui"
 
-#: picard/ui/logview.py:275
+#: picard/ui/logview.py:279
 #, python-format
 msgid "Something prevented data to be written to '%s'"
 msgstr "Tiedostoon '%s' ei pystytty kirjoittamaan"
 
-#: picard/ui/logview.py:291
+#: picard/ui/logview.py:295
 msgid "Are you sure you want to clear the log?"
 msgstr "Haluatko varmasti tyhjentää lokin?"
 
-#: picard/ui/logview.py:326
+#: picard/ui/logview.py:330
 msgid "Activity History"
 msgstr "Aktiviteettihistoria"
 
-#: picard/ui/mainwindow.py:212 picard/ui/ui_aboutdialog.py:84
+#: picard/ui/mainwindow.py:216 picard/ui/ui_aboutdialog.py:84
 msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
-#: picard/ui/mainwindow.py:339
+#: picard/ui/mainwindow.py:343
 msgid "Unsaved Changes"
 msgstr "Tallentamattomia muutoksia"
 
-#: picard/ui/mainwindow.py:340
+#: picard/ui/mainwindow.py:344
 msgid "Are you sure you want to quit Picard?"
 msgstr "Haluatko varmasti sulkea Picardin?"
 
-#: picard/ui/mainwindow.py:341
+#: picard/ui/mainwindow.py:345
 #, python-format
 msgid ""
 "There is %d unsaved file. Closing Picard will lose all unsaved changes."
@@ -4207,519 +4285,519 @@ msgid_plural ""
 msgstr[0] "%d tallentamaton tiedosto. Sulkemalla Picardin menetät kaikki tallentamattomat muutokset."
 msgstr[1] "%d tallentamatonta tiedostoa. Sulkemalla Picardin menetät kaikki tallentamattomat muutokset."
 
-#: picard/ui/mainwindow.py:348
+#: picard/ui/mainwindow.py:352
 msgid "&Quit Picard"
 msgstr "&Poistu Picardista"
 
-#: picard/ui/mainwindow.py:384
+#: picard/ui/mainwindow.py:388
 msgid "Ready"
 msgstr "Valmis"
 
-#: picard/ui/mainwindow.py:389
+#: picard/ui/mainwindow.py:393
 msgid ""
 "Picard listens on this port to integrate with your browser. When you "
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
 "button on the web page loads the release into Picard."
 msgstr "Picard kuuntelee tätä porttia toimiakseen selaimesi kanssa. Valittuasi \"Hae\" tai \"Etsi selaimella\", voit käyttää verkkosivun \"Tagger\"-painiketta ladataksesi julkaisun tiedot Picardiin."
 
-#: picard/ui/mainwindow.py:415
+#: picard/ui/mainwindow.py:419
 #, python-format
 msgid " Listening on port %(port)d "
 msgstr " Tarkkaillaan porttia %(port)d "
 
-#: picard/ui/mainwindow.py:474
+#: picard/ui/mainwindow.py:478
 msgid "AcoustID submission not configured"
 msgstr "AcoustID-tunnisteiden lähettämistä ei ole asetettu"
 
-#: picard/ui/mainwindow.py:475
+#: picard/ui/mainwindow.py:479
 msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
 msgstr "AcoustID:n API-avain täytyy määrittää äänitunnisteiden lähettämistä varten."
 
-#: picard/ui/mainwindow.py:478
+#: picard/ui/mainwindow.py:482
 msgid "Open AcoustID options"
 msgstr "Avaa AcoustID-asetukset"
 
-#: picard/ui/mainwindow.py:489
+#: picard/ui/mainwindow.py:493
 msgid "&Options..."
 msgstr "&Asetukset..."
 
-#: picard/ui/mainwindow.py:496
+#: picard/ui/mainwindow.py:500
 msgid "Open &file naming script editor..."
 msgstr "Avaa &tiedostonnimeämiskomentosarjan muokkain..."
 
-#: picard/ui/mainwindow.py:497
+#: picard/ui/mainwindow.py:501
 msgid "Ctrl+Shift+S"
 msgstr "Ctrl+Shift+S"
 
-#: picard/ui/mainwindow.py:503
+#: picard/ui/mainwindow.py:507
 msgid "&Cut"
 msgstr "&Leikkaa"
 
-#: picard/ui/mainwindow.py:511 picard/ui/metadatabox.py:443
+#: picard/ui/mainwindow.py:515 picard/ui/metadatabox.py:443
 msgid "&Paste"
 msgstr "L&iitä"
 
-#: picard/ui/mainwindow.py:519 picard/ui/scripteditor.py:640
+#: picard/ui/mainwindow.py:523 picard/ui/scripteditor.py:640
 msgid "&Help..."
 msgstr "&Ohje..."
 
-#: picard/ui/mainwindow.py:526
+#: picard/ui/mainwindow.py:530
 msgid "&About..."
 msgstr "&Tietoja..."
 
-#: picard/ui/mainwindow.py:533
+#: picard/ui/mainwindow.py:537
 msgid "&Donate..."
 msgstr "&Lahjoita..."
 
-#: picard/ui/mainwindow.py:539
+#: picard/ui/mainwindow.py:543
 msgid "&Report a Bug..."
 msgstr "&Ilmoita virheestä..."
 
-#: picard/ui/mainwindow.py:545
+#: picard/ui/mainwindow.py:549
 msgid "&Support Forum..."
 msgstr "Tuki&foorumi..."
 
-#: picard/ui/mainwindow.py:551
+#: picard/ui/mainwindow.py:555
 msgid "&Add Files..."
 msgstr "L&isää tiedostoja..."
 
-#: picard/ui/mainwindow.py:552
+#: picard/ui/mainwindow.py:556
 msgid "Add files to the tagger"
 msgstr "Lisää tiedostoja ohjelmaan"
 
-#: picard/ui/mainwindow.py:560
+#: picard/ui/mainwindow.py:564
 msgid "Add Fold&er..."
 msgstr "Lisää &kansio..."
 
-#: picard/ui/mainwindow.py:561
+#: picard/ui/mainwindow.py:565
 msgid "Add a folder to the tagger"
 msgstr "Lisää kansio ohjelmaan"
 
-#: picard/ui/mainwindow.py:563
+#: picard/ui/mainwindow.py:567
 msgid "Ctrl+E"
 msgstr "Ctrl+E"
 
-#: picard/ui/mainwindow.py:570
+#: picard/ui/mainwindow.py:574
 msgid "Close Window"
 msgstr "Sulje ikkuna"
 
-#: picard/ui/mainwindow.py:571
+#: picard/ui/mainwindow.py:575
 msgid "Ctrl+W"
 msgstr "Ctrl+W"
 
-#: picard/ui/mainwindow.py:579
+#: picard/ui/mainwindow.py:583
 msgid "&Save"
 msgstr "&Tallenna"
 
-#: picard/ui/mainwindow.py:580
+#: picard/ui/mainwindow.py:584
 msgid "Save selected files"
 msgstr "Tallenna valitut tiedostot"
 
-#: picard/ui/mainwindow.py:589
+#: picard/ui/mainwindow.py:593
 msgid "S&ubmit AcoustIDs"
 msgstr "Lähetä &AcoustID-tunnisteet"
 
-#: picard/ui/mainwindow.py:590
+#: picard/ui/mainwindow.py:594
 msgid "Submit acoustic fingerprints"
 msgstr "Lähetä äänitunnisteet"
 
-#: picard/ui/mainwindow.py:597
+#: picard/ui/mainwindow.py:601
 msgid "E&xit"
 msgstr "&Lopeta"
 
-#: picard/ui/mainwindow.py:600
+#: picard/ui/mainwindow.py:604
 msgid "Ctrl+Q"
 msgstr "Ctrl+Q"
 
-#: picard/ui/mainwindow.py:606
+#: picard/ui/mainwindow.py:610
 msgid "&Remove"
 msgstr "&Poista"
 
-#: picard/ui/mainwindow.py:607
+#: picard/ui/mainwindow.py:611
 msgid "Remove selected files/albums"
 msgstr "Poista valitut tiedostot/julkaisut"
 
-#: picard/ui/mainwindow.py:614 picard/ui/metadatabox.py:400
+#: picard/ui/mainwindow.py:618 picard/ui/metadatabox.py:400
 msgid "Lookup in &Browser"
 msgstr "Etsi &selaimella"
 
-#: picard/ui/mainwindow.py:615
+#: picard/ui/mainwindow.py:619
 msgid "Lookup selected item on MusicBrainz website"
 msgstr "Etsi valittua kohdetta MusicBrainz-sivustolta"
 
-#: picard/ui/mainwindow.py:618
+#: picard/ui/mainwindow.py:622
 msgid "Ctrl+Shift+L"
 msgstr "Ctrl+Shift+L"
 
-#: picard/ui/mainwindow.py:625
+#: picard/ui/mainwindow.py:629
 msgid "Submit cluster as release..."
 msgstr "Lähetä ryhmittely julkaisuna..."
 
-#: picard/ui/mainwindow.py:626
+#: picard/ui/mainwindow.py:630
 msgid "Submit cluster as a new release to MusicBrainz"
 msgstr "Lähetä ryhmittely uutena julkaisuna MusicBrainziin"
 
-#: picard/ui/mainwindow.py:636
+#: picard/ui/mainwindow.py:640
 msgid "Submit file as standalone recording..."
 msgstr "Lähetä tiedosto yksittäisenä äänitteenä..."
 
-#: picard/ui/mainwindow.py:637
+#: picard/ui/mainwindow.py:641
 msgid "Submit file as a new recording to MusicBrainz"
 msgstr "Lähetä tiedosto uutena äänitteenä MusicBrainziin"
 
-#: picard/ui/mainwindow.py:647
+#: picard/ui/mainwindow.py:651
 msgid "Submit file as release..."
 msgstr "Lähetä tiedosto julkaisuna..."
 
-#: picard/ui/mainwindow.py:648
+#: picard/ui/mainwindow.py:652
 msgid "Submit file as a new release to MusicBrainz"
 msgstr "Lähetä tiedosto uutena julkaisuna MusicBrainziin"
 
-#: picard/ui/mainwindow.py:657
+#: picard/ui/mainwindow.py:661
 msgid "Search for similar albums..."
 msgstr "Etsi samankaltaisia julkaisuja..."
 
-#: picard/ui/mainwindow.py:658
+#: picard/ui/mainwindow.py:662
 msgid "View similar releases and optionally choose a different release"
 msgstr "Näytä samankaltaisia julkaisuja ja mahdollisesti valitse toinen julkaisu"
 
-#: picard/ui/mainwindow.py:664
+#: picard/ui/mainwindow.py:668
 msgid "Search for similar tracks..."
 msgstr "Etsi samankaltaisia kappaleita..."
 
-#: picard/ui/mainwindow.py:665
+#: picard/ui/mainwindow.py:669
 msgid "View similar tracks and optionally choose a different release"
 msgstr "Näytä samankaltaisia kappaleita ja mahdollisesti valitse toinen julkaisu"
 
-#: picard/ui/mainwindow.py:667
+#: picard/ui/mainwindow.py:671
 msgid "Ctrl+T"
 msgstr "Ctrl+T"
 
-#: picard/ui/mainwindow.py:673
+#: picard/ui/mainwindow.py:677
 msgid "Show &other album versions..."
 msgstr "Näytä &muut albumin versiot..."
 
-#: picard/ui/mainwindow.py:674
+#: picard/ui/mainwindow.py:678
 msgid "Ctrl+Shift+O"
 msgstr "Ctrl+Shift+O"
 
-#: picard/ui/mainwindow.py:681
+#: picard/ui/mainwindow.py:685
 msgid "File &Browser"
 msgstr "Tiedosto&selain"
 
-#: picard/ui/mainwindow.py:685
+#: picard/ui/mainwindow.py:689
 msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
-#: picard/ui/mainwindow.py:692
+#: picard/ui/mainwindow.py:696
 msgid "&Metadata"
 msgstr "&Metatiedot"
 
-#: picard/ui/mainwindow.py:696
+#: picard/ui/mainwindow.py:700
 msgid "Ctrl+Shift+M"
 msgstr "Ctrl+Shift+M"
 
-#: picard/ui/mainwindow.py:703
+#: picard/ui/mainwindow.py:707
 msgid "&Cover Art"
 msgstr "&Kansitaide"
 
-#: picard/ui/mainwindow.py:714
+#: picard/ui/mainwindow.py:718
 msgid "&Actions"
 msgstr "&Toiminnot"
 
-#: picard/ui/mainwindow.py:723 picard/ui/mainwindow.py:1109
+#: picard/ui/mainwindow.py:727 picard/ui/mainwindow.py:1122
 #: picard/ui/searchdialog/__init__.py:48
 msgid "Search"
 msgstr "Hae"
 
-#: picard/ui/mainwindow.py:730 picard/ui/mainwindow.py:737
+#: picard/ui/mainwindow.py:734 picard/ui/mainwindow.py:741
 msgid "Lookup &CD..."
 msgstr "&CD-haku"
 
-#: picard/ui/mainwindow.py:731
+#: picard/ui/mainwindow.py:735
 msgid "Lookup the details of the CD in your drive"
 msgstr "Hae tietoja CD-levystäsi"
 
-#: picard/ui/mainwindow.py:733
+#: picard/ui/mainwindow.py:737
 msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
-#: picard/ui/mainwindow.py:747
+#: picard/ui/mainwindow.py:754
 msgid "&Scan"
 msgstr "&Analysoi"
 
-#: picard/ui/mainwindow.py:748
+#: picard/ui/mainwindow.py:755
 msgid ""
 "Use AcoustID audio fingerprint to identify the files by the actual music, "
 "even if they have no metadata"
 msgstr "Käytä AcoustID-tunnistusta tunnistamaan tiedostot niiden sisältämän musiikin mukaan, vaikka tiedostoissa ei olisi metatietoja"
 
-#: picard/ui/mainwindow.py:750
+#: picard/ui/mainwindow.py:757
 msgid "Identify the file using its AcoustID audio fingerprint"
 msgstr "Tunnista tiedosto sen AcoustID-tunnisteella"
 
-#: picard/ui/mainwindow.py:752
+#: picard/ui/mainwindow.py:759
 msgid "Ctrl+Y"
 msgstr "Ctrl+Y"
 
-#: picard/ui/mainwindow.py:758
+#: picard/ui/mainwindow.py:765
 msgid "&Generate AcoustID Fingerprints"
 msgstr "&Luo AcoustID-tunnisteet"
 
-#: picard/ui/mainwindow.py:759 picard/ui/options/interface.py:121
+#: picard/ui/mainwindow.py:766 picard/ui/options/interface_toolbar.py:107
 msgid "Generate Fingerprints"
 msgstr "Luo äänitunnisteita"
 
-#: picard/ui/mainwindow.py:760
+#: picard/ui/mainwindow.py:767
 msgid ""
 "Generate the AcoustID audio fingerprints for the selected files without "
 "doing a lookup"
 msgstr "Luo AcoustID-äänitunnisteet valituille tiedostoille hakematta vastaavuuksia"
 
-#: picard/ui/mainwindow.py:762
+#: picard/ui/mainwindow.py:769
 msgid "Generate the AcoustID audio fingerprints for the selected files"
 msgstr "Luo AcoustID-äänitunnisteet valituille tiedostoille"
 
-#: picard/ui/mainwindow.py:763
+#: picard/ui/mainwindow.py:770
 msgid "Ctrl+Shift+Y"
 msgstr "Ctrl+Shift+Y"
 
-#: picard/ui/mainwindow.py:769
+#: picard/ui/mainwindow.py:776
 msgid "Cl&uster"
 msgstr "&Ryhmitä"
 
-#: picard/ui/mainwindow.py:770
+#: picard/ui/mainwindow.py:777
 msgid "Cluster files into album clusters"
 msgstr "Ryhmitä tiedostot julkaisuihin"
 
-#: picard/ui/mainwindow.py:773
+#: picard/ui/mainwindow.py:780
 msgid "Ctrl+U"
 msgstr "Ctrl+U"
 
-#: picard/ui/mainwindow.py:779
+#: picard/ui/mainwindow.py:786
 msgid "&Lookup"
 msgstr "&Hae"
 
-#: picard/ui/mainwindow.py:780
+#: picard/ui/mainwindow.py:787
 msgid "Lookup selected items in MusicBrainz"
 msgstr "Etsi valittua kohdetta MusicBrainzista"
 
-#: picard/ui/mainwindow.py:785
+#: picard/ui/mainwindow.py:792
 msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
-#: picard/ui/mainwindow.py:791
+#: picard/ui/mainwindow.py:798
 msgid "&Info..."
 msgstr "T&iedot..."
 
-#: picard/ui/mainwindow.py:794
+#: picard/ui/mainwindow.py:801
 msgid "Ctrl+I"
 msgstr "Ctrl+I"
 
-#: picard/ui/mainwindow.py:800
+#: picard/ui/mainwindow.py:807
 msgid "&Refresh"
 msgstr "P&äivitä"
 
-#: picard/ui/mainwindow.py:801
+#: picard/ui/mainwindow.py:808
 msgid "Ctrl+R"
 msgstr "Ctrl+R"
 
-#: picard/ui/mainwindow.py:808
+#: picard/ui/mainwindow.py:815
 msgid "&Rename Files"
 msgstr "&Nimeä tiedostot"
 
-#: picard/ui/mainwindow.py:817
+#: picard/ui/mainwindow.py:824
 msgid "&Move Files"
 msgstr "&Siirrä tiedostot"
 
-#: picard/ui/mainwindow.py:826
+#: picard/ui/mainwindow.py:833
 msgid "Save &Tags"
 msgstr "&Tallenna tunnisteet"
 
-#: picard/ui/mainwindow.py:834
+#: picard/ui/mainwindow.py:841
 msgid "Tags From &File Names..."
 msgstr "&Luo tunnisteet tiedostonimistä..."
 
-#: picard/ui/mainwindow.py:835 picard/ui/options/interface.py:133
+#: picard/ui/mainwindow.py:842 picard/ui/options/interface_toolbar.py:119
 msgid "Parse File Names..."
 msgstr "Jäsentele tiedostonimistä..."
 
-#: picard/ui/mainwindow.py:836
+#: picard/ui/mainwindow.py:843
 msgid "Set tags based on the file names"
 msgstr "Luo tunnisteet tiedostonimistä"
 
-#: picard/ui/mainwindow.py:837 picard/ui/widgets/scripttextedit.py:338
+#: picard/ui/mainwindow.py:844 picard/ui/widgets/scripttextedit.py:338
 msgid "Ctrl+Shift+T"
 msgstr "Ctrl+Shift+T"
 
-#: picard/ui/mainwindow.py:845
+#: picard/ui/mainwindow.py:852
 msgid "&Open My Collections in Browser"
 msgstr "Avaa &kokoelmani selaimeen"
 
-#: picard/ui/mainwindow.py:852
+#: picard/ui/mainwindow.py:859
 msgid "View &Error/Debug Log"
 msgstr "Tarkastele virh&e/debug-lokia"
 
-#: picard/ui/mainwindow.py:854
+#: picard/ui/mainwindow.py:861
 msgid "Ctrl+G"
 msgstr "Ctrl+G"
 
-#: picard/ui/mainwindow.py:860
+#: picard/ui/mainwindow.py:867
 msgid "View Activity &History"
 msgstr "Näytä toiminta&historia"
 
-#: picard/ui/mainwindow.py:863
+#: picard/ui/mainwindow.py:870
 msgid "Ctrl+Shift+H"
 msgstr "Ctrl+Shift+H"
 
-#: picard/ui/mainwindow.py:863 picard/ui/scripteditor.py:631
+#: picard/ui/mainwindow.py:870 picard/ui/scripteditor.py:631
 msgid "Ctrl+H"
 msgstr "Ctrl+H"
 
-#: picard/ui/mainwindow.py:869
+#: picard/ui/mainwindow.py:876
 msgid "Open in &Player"
 msgstr "Avaa t&oistimessa"
 
-#: picard/ui/mainwindow.py:870
+#: picard/ui/mainwindow.py:877
 msgid "Play the file in your default media player"
 msgstr "Toista tiedosto oletussoittimellasi"
 
-#: picard/ui/mainwindow.py:877
+#: picard/ui/mainwindow.py:884
 msgid "Open Containing &Folder"
 msgstr "Avaa tie&doston kansio"
 
-#: picard/ui/mainwindow.py:878
+#: picard/ui/mainwindow.py:885
 msgid "Open the containing folder in your file explorer"
 msgstr "Avaa tiedoston kansio tiedostojen selaimessa"
 
-#: picard/ui/mainwindow.py:886
+#: picard/ui/mainwindow.py:893
 msgid "&Check for Update…"
 msgstr "&Etsi päivitystä…"
 
-#: picard/ui/mainwindow.py:925
-msgid "From EAC / XLD / Whipper &log file..."
-msgstr "Tuo EAC / XLD / Whipper -&lokitiedostosta..."
+#: picard/ui/mainwindow.py:932
+msgid "From CD ripper &log file..."
+msgstr ""
 
-#: picard/ui/mainwindow.py:976 picard/ui/scripteditor.py:555
+#: picard/ui/mainwindow.py:985 picard/ui/scripteditor.py:555
 msgid "&File"
 msgstr "&Tiedosto"
 
-#: picard/ui/mainwindow.py:989
+#: picard/ui/mainwindow.py:998
 msgid "&Edit"
 msgstr "&Muokkaa"
 
-#: picard/ui/mainwindow.py:995 picard/ui/scripteditor.py:616
+#: picard/ui/mainwindow.py:1004 picard/ui/scripteditor.py:616
 msgid "&View"
 msgstr "&Näytä"
 
-#: picard/ui/mainwindow.py:1004
+#: picard/ui/mainwindow.py:1013
 msgid "&Options"
 msgstr "&Asetukset"
 
-#: picard/ui/mainwindow.py:1010
+#: picard/ui/mainwindow.py:1019
 msgid "&Select file naming script"
 msgstr "&Valitse tiedostonnimeämiskomentosarja"
 
-#: picard/ui/mainwindow.py:1018
+#: picard/ui/mainwindow.py:1027
 msgid "&Enable/disable profiles"
 msgstr "&Ota profiileja käyttöön"
 
-#: picard/ui/mainwindow.py:1025
+#: picard/ui/mainwindow.py:1034
 msgid "&Tools"
 msgstr "Ty&ökalut"
 
-#: picard/ui/mainwindow.py:1039 picard/ui/scripteditor.py:637
+#: picard/ui/mainwindow.py:1048 picard/ui/scripteditor.py:637
 #: picard/ui/util.py:51
 msgid "&Help"
 msgstr "&Ohje"
 
-#: picard/ui/mainwindow.py:1073 picard/ui/ui_options_plugins.py:134
+#: picard/ui/mainwindow.py:1083 picard/ui/ui_options_plugins.py:134
 msgid "Actions"
 msgstr "Toiminnot"
 
-#: picard/ui/mainwindow.py:1120
+#: picard/ui/mainwindow.py:1135
 msgid "Track"
 msgstr "Kappale"
 
-#: picard/ui/mainwindow.py:1137
+#: picard/ui/mainwindow.py:1152
 msgid "&Advanced search"
 msgstr "&Edistynyt haku"
 
-#: picard/ui/mainwindow.py:1138
+#: picard/ui/mainwindow.py:1153
 msgid "&Builtin search"
 msgstr "Sisäänrakennettu &haku"
 
-#: picard/ui/mainwindow.py:1233
+#: picard/ui/mainwindow.py:1248
 msgid "All supported formats"
 msgstr "Kaikki tuetut tiedostomuodot"
 
-#: picard/ui/mainwindow.py:1262
+#: picard/ui/mainwindow.py:1277
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
 msgstr "Lisätään useita hakemistoja hakemistosta '%(directory)s' ..."
 
-#: picard/ui/mainwindow.py:1267
+#: picard/ui/mainwindow.py:1282
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
 msgstr "Lisätään hakemisto: '%(directory)s' ..."
 
-#: picard/ui/mainwindow.py:1373
+#: picard/ui/mainwindow.py:1388
 msgid "Configuration Required"
 msgstr "Asetukset puuttuvat"
 
-#: picard/ui/mainwindow.py:1374
+#: picard/ui/mainwindow.py:1389
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
 msgstr "Äänitunnistamisen asetuksia ei ole vielä määritetty. Määritetäänkö asetukset nyt?"
 
-#: picard/ui/mainwindow.py:1468
+#: picard/ui/mainwindow.py:1495
 msgid "Browser integration not enabled"
 msgstr "Selaimeen yhdistäminen ei ole käytössä"
 
-#: picard/ui/mainwindow.py:1469
+#: picard/ui/mainwindow.py:1496
 msgid ""
 "Submitting releases to MusicBrainz requires the browser integration to be "
 "enabled. Do you want to enable the browser integration now?"
 msgstr "Julkaisujen lähettäminen MusicBrainziin vaatii että selaimeen yhdistäminen on käytössä. Otetaanko selaimeen yhdistäminen käyttöön nyt?"
 
-#: picard/ui/mainwindow.py:1577
+#: picard/ui/mainwindow.py:1604
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
 msgstr "%(filename)s (virhe: %(error)s)"
 
-#: picard/ui/mainwindow.py:1583
+#: picard/ui/mainwindow.py:1610
 #, python-format
 msgid "%(filename)s"
 msgstr "%(filename)s"
 
-#: picard/ui/mainwindow.py:1592
+#: picard/ui/mainwindow.py:1619
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
 msgstr "%(filename)s (%(similarity)d%%) (virhe: %(error)s)"
 
-#: picard/ui/mainwindow.py:1599
+#: picard/ui/mainwindow.py:1626
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
-#: picard/ui/mainwindow.py:1662
+#: picard/ui/mainwindow.py:1689
 msgid "Authentication Required"
 msgstr "Tunnistautuminen vaaditaan"
 
-#: picard/ui/mainwindow.py:1663
+#: picard/ui/mainwindow.py:1690
 msgid ""
 "Picard needs authorization to access your personal data on the MusicBrainz "
 "server. Would you like to log in now?"
 msgstr "Picard vaatii tunnistautumisen voidakseen käyttää henkilökohtaisia tietojasi MusicBrainzin palvelimelta. Haluaisitko kirjautua sisään nyt?"
 
-#: picard/ui/mainwindow.py:1678
+#: picard/ui/mainwindow.py:1705
 msgid "Authentication failed"
 msgstr "Tunnistautuminen epäonnistui"
 
-#: picard/ui/mainwindow.py:1679 picard/ui/options/general.py:146
+#: picard/ui/mainwindow.py:1706 picard/ui/options/general.py:146
 #, python-format
 msgid "Login failed: %s"
 msgstr "Kirjautuminen epäonnistui: %s"
@@ -4922,7 +5000,7 @@ msgstr "Tiedostonnimeämiskomentosarjan muokkain"
 msgid "Reset"
 msgstr "Aseta alkutilaan"
 
-#: picard/ui/options/dialog.py:131 picard/ui/scripteditor.py:486
+#: picard/ui/options/dialog.py:133 picard/ui/scripteditor.py:486
 msgid "Make It So!"
 msgstr "&Tallenna asetukset!"
 
@@ -5040,7 +5118,7 @@ msgid ""
 "Are you sure that you want to continue?"
 msgstr "Vähintään yksi tallentamaton komentosarja on liitettynä asetusprofiiliin.\n\n   Profilii: {profile_title}\n   Komentosarja: {old_script_title}\n\nJatkaminen tallentamatta muutoksia asettaa profiilin asetukseen:\n\n   {new_script_title}\n\nOletko varma että haluat jatkaa?"
 
-#: picard/ui/options/renaming.py:285 picard/ui/scripteditor.py:847
+#: picard/ui/options/renaming.py:256 picard/ui/scripteditor.py:847
 #: picard/ui/scripteditor.py:1156 picard/ui/scripteditor.py:1396
 msgid "Error"
 msgstr "Virhe"
@@ -5085,7 +5163,7 @@ msgstr "Kirjoita yli"
 msgid "Copy"
 msgstr "Kopioi"
 
-#: picard/ui/options/renaming.py:295 picard/ui/scripteditor.py:1274
+#: picard/ui/options/renaming.py:266 picard/ui/scripteditor.py:1274
 msgid "The file naming format must not be empty."
 msgstr "Tiedostonnimeämismuoto ei ole asetettu."
 
@@ -5282,7 +5360,7 @@ msgstr "Äänettömät raidat"
 msgid "Tags to ignore for comparison:"
 msgstr "Tunnisteet jotka ohitetaan vertailtaessa:"
 
-#: picard/ui/options/dialog.py:209
+#: picard/ui/options/dialog.py:212
 #: picard/ui/ui_options_attached_profiles.py:34
 msgid "Profiles Attached to Options"
 msgstr "Asetuksiin liitetyt profiilit"
@@ -5311,11 +5389,13 @@ msgstr "Kansitaidepalvelut"
 msgid "Reorder Priority: "
 msgstr "Muuta tärkeysjärjestystä: "
 
-#: picard/ui/ui_options_cover.py:104 picard/ui/ui_options_interface.py:177
+#: picard/ui/ui_options_cover.py:104
+#: picard/ui/ui_options_interface_toolbar.py:77
 msgid "Move selected item up"
 msgstr "Siirrä valittua kohdetta ylöspäin"
 
-#: picard/ui/ui_options_cover.py:105 picard/ui/ui_options_interface.py:178
+#: picard/ui/ui_options_cover.py:105
+#: picard/ui/ui_options_interface_toolbar.py:78
 msgid "Move selected item down"
 msgstr "Siirrä valittua kohdetta alaspäin"
 
@@ -5348,7 +5428,7 @@ msgid "Fingerprint calculator:"
 msgstr "Äänitunnisteen laskemiseen käytettävä ohjelma:"
 
 #: picard/ui/ui_options_fingerprinting.py:85
-#: picard/ui/ui_options_interface.py:171 picard/ui/ui_options_renaming.py:165
+#: picard/ui/ui_options_interface.py:122 picard/ui/ui_options_renaming.py:152
 msgid "Browse..."
 msgstr "Selaa..."
 
@@ -5462,66 +5542,66 @@ msgstr "Tyylilajit tai folksonomia-luokitukset, jotka otetaan mukaan tai ohiteta
 msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
 msgstr "Testialue tyylilajien tai folksonomia-luokituksien suodattimille (tyhjennetään poistuttaessa):"
 
-#: picard/ui/ui_options_interface.py:159
+#: picard/ui/ui_options_interface.py:110
 msgid "Appearance"
 msgstr "Ulkoasu"
 
-#: picard/ui/ui_options_interface.py:160
+#: picard/ui/ui_options_interface.py:111
 msgid "Show text labels under icons"
 msgstr "Näytä teksti kuvakkeiden alla"
 
-#: picard/ui/ui_options_interface.py:161
+#: picard/ui/ui_options_interface.py:112
 msgid "Show icons in menus"
 msgstr "Näytä kuvakkeet valikoissa"
 
-#: picard/ui/ui_options_interface.py:162
+#: picard/ui/ui_options_interface.py:113
 msgid "User interface language:"
 msgstr "Käyttöliittymän kieli:"
 
-#: picard/ui/ui_options_interface.py:163
+#: picard/ui/ui_options_interface.py:114
 msgid "User interface color theme:"
 msgstr "Käyttöliittymän väriteema:"
 
-#: picard/ui/ui_options_interface.py:164
+#: picard/ui/ui_options_interface.py:115
 msgid "Miscellaneous"
 msgstr "Muut"
 
-#: picard/ui/searchdialog/__init__.py:95 picard/ui/ui_options_interface.py:167
+#: picard/ui/searchdialog/__init__.py:95 picard/ui/ui_options_interface.py:118
 msgid "Use advanced query syntax"
 msgstr "Käytä laajennettuja hakukomentoja"
 
-#: picard/ui/ui_options_interface.py:170
+#: picard/ui/ui_options_interface.py:121
 msgid "Begin browsing in the following directory:"
 msgstr "Aloita tiedostoselaaminen tästä hakemistosta:"
-
-#: picard/ui/ui_options_interface.py:172
-msgid "Customize Action Toolbar"
-msgstr "Mukauta toimintatyökaluriviä"
-
-#: picard/ui/ui_options_interface.py:173
-msgid "Add a new button to Toolbar"
-msgstr "Lisää uuden painikkeen työkaluriviin"
-
-#: picard/ui/ui_options_interface.py:174
-msgid "Add Action"
-msgstr "Lisää toiminta"
-
-#: picard/ui/ui_options_interface.py:175
-msgid "Insert a separator"
-msgstr "Lisää jakajan työkaluriviin"
-
-#: picard/ui/ui_options_interface.py:176
-msgid "Add Separator"
-msgstr "Lisää jakaja"
-
-#: picard/ui/ui_options_interface.py:179
-msgid "Remove button from toolbar"
-msgstr "Poista painike työkalurivistä"
 
 #: picard/ui/options/interface_colors.py:92
 #: picard/ui/ui_options_interface_colors.py:49
 msgid "Colors"
 msgstr "Värit"
+
+#: picard/ui/ui_options_interface_toolbar.py:72
+msgid "Customize Action Toolbar"
+msgstr "Mukauta toimintatyökaluriviä"
+
+#: picard/ui/ui_options_interface_toolbar.py:73
+msgid "Add a new button to Toolbar"
+msgstr "Lisää uuden painikkeen työkaluriviin"
+
+#: picard/ui/ui_options_interface_toolbar.py:74
+msgid "Add Action"
+msgstr "Lisää toiminta"
+
+#: picard/ui/ui_options_interface_toolbar.py:75
+msgid "Insert a separator"
+msgstr "Lisää jakajan työkaluriviin"
+
+#: picard/ui/ui_options_interface_toolbar.py:76
+msgid "Add Separator"
+msgstr "Lisää jakaja"
+
+#: picard/ui/ui_options_interface_toolbar.py:79
+msgid "Remove button from toolbar"
+msgstr "Poista painike työkalurivistä"
 
 #: picard/ui/ui_options_interface_top_tags.py:37
 msgid "Show the below tags above all other tags in the metadata view"
@@ -5591,7 +5671,7 @@ msgstr "Useita artisteja:"
 msgid "Standalone recordings:"
 msgstr "Yksittäiset äänitteet"
 
-#: picard/ui/options/interface.py:174 picard/ui/ui_options_metadata.py:143
+#: picard/ui/options/interface.py:91 picard/ui/ui_options_metadata.py:143
 #: picard/ui/ui_options_metadata.py:144
 #: picard/ui/ui_provider_options_local.py:54
 msgid "Default"
@@ -5637,7 +5717,7 @@ msgstr "Salli yhteydet vain isäntäkoneelta"
 msgid "Plugins"
 msgstr "Liitännäiset"
 
-#: picard/ui/options/plugins.py:604 picard/ui/searchdialog/album.py:139
+#: picard/ui/options/plugins.py:604 picard/ui/searchdialog/album.py:155
 #: picard/ui/searchdialog/artist.py:54 picard/ui/searchdialog/track.py:66
 #: picard/ui/ui_options_plugins.py:132
 msgid "Name"
@@ -5723,49 +5803,57 @@ msgstr "Lisää suosittuihin julkaisumuotoihin"
 msgid "Remove from preferred release formats"
 msgstr "Poista suosituista julkaisumuodoista"
 
-#: picard/ui/ui_options_renaming.py:163
+#: picard/ui/ui_options_renaming.py:150
 msgid "Move files when saving"
 msgstr "Siirrä tiedostot tallennettaessa"
 
-#: picard/ui/ui_options_renaming.py:164
+#: picard/ui/ui_options_renaming.py:151
 msgid "Destination directory:"
 msgstr "Kohdehakemisto:"
 
-#: picard/ui/ui_options_renaming.py:166
+#: picard/ui/ui_options_renaming.py:153
 msgid "Move additional files (case insensitive):"
 msgstr "Siirrä lisäksi seuraavat tiedostot (kirjainkoolla ei merkitystä):"
 
-#: picard/ui/ui_options_renaming.py:168
+#: picard/ui/ui_options_renaming.py:155
 msgid "Rename files when saving"
 msgstr "Nimeä tiedostot tallennettaessa"
 
-#: picard/ui/ui_options_renaming.py:171
-msgid "Allow paths longer than 259 characters"
-msgstr "Salli 259 merkkiä pidemmät tiedostopolut"
-
-#: picard/ui/ui_options_renaming.py:172 picard/ui/ui_scripteditor.py:208
+#: picard/ui/ui_options_renaming.py:156 picard/ui/ui_scripteditor.py:208
 msgid "Selected file naming script:"
 msgstr "Valittu tiedostonnimeämiskomentosarja:"
 
-#: picard/ui/ui_options_renaming.py:173
+#: picard/ui/ui_options_renaming.py:157
 msgid "Edit file naming script..."
 msgstr "Muokkaa tiedostonnimeämiskomentosarjaa..."
 
-#: picard/ui/ui_options_renaming.py:174 picard/ui/ui_scripteditor.py:211
+#: picard/ui/ui_options_renaming.py:158 picard/ui/ui_scripteditor.py:211
 msgid "Files will be named like this:"
 msgstr "Tiedostot nimetään näin:"
 
-#: picard/ui/ui_options_renaming.py:175 picard/ui/ui_scripteditor.py:212
+#: picard/ui/ui_options_renaming.py:159 picard/ui/ui_scripteditor.py:212
 msgid "Before"
 msgstr "Ennen"
 
-#: picard/ui/ui_options_renaming.py:176 picard/ui/ui_scripteditor.py:213
+#: picard/ui/ui_options_renaming.py:160 picard/ui/ui_scripteditor.py:213
 msgid "After"
 msgstr "Jälkeen"
 
-#: picard/ui/ui_options_renaming.py:177
+#: picard/ui/ui_options_renaming.py:161
 msgid "Reload examples"
 msgstr "Lataa uudelleen esimerkit"
+
+#: picard/ui/ui_options_renaming_compat.py:65
+msgid "Customize..."
+msgstr ""
+
+#: picard/ui/ui_options_renaming_compat.py:66
+msgid "Allow paths longer than 259 characters"
+msgstr "Salli 259 merkkiä pidemmät tiedostopolut"
+
+#: picard/ui/ui_options_renaming_compat.py:67
+msgid "Replace spaces with underscores"
+msgstr ""
 
 #: picard/ui/ui_options_script.py:119
 msgid "Enable Tagger Script(s)"
@@ -6054,6 +6142,14 @@ msgstr "Poista valitut tunnisteet"
 msgid "Remove tags"
 msgstr "Poista tunnisteet"
 
+#: picard/ui/ui_win_compat_dialog.py:192
+msgid "Character"
+msgstr "Kuvitteellinen hahmo"
+
+#: picard/ui/ui_win_compat_dialog.py:193
+msgid "Replacement"
+msgstr ""
+
 #: picard/ui/util.py:49
 msgid "&Ok"
 msgstr "O&K"
@@ -6062,80 +6158,80 @@ msgstr "O&K"
 msgid "Clos&e"
 msgstr "&Sulje"
 
-#: picard/ui/options/__init__.py:105
+#: picard/ui/options/__init__.py:108
 msgid "Regex Error"
 msgstr "Regex virhe"
 
-#: picard/ui/options/dialog.py:125
+#: picard/ui/options/dialog.py:127
 msgid "&Restore all Defaults"
 msgstr "Palauta &kaikki oletusasetuksiin"
 
-#: picard/ui/options/dialog.py:126
+#: picard/ui/options/dialog.py:128
 msgid "Reset all of Picard's settings"
 msgstr "Nollaa kaikki Picardin asetukset"
 
-#: picard/ui/options/dialog.py:128
+#: picard/ui/options/dialog.py:130
 msgid "Reset all settings for current option page"
 msgstr "Nollaa kaikki asetukset tälle asetussivulle"
 
-#: picard/ui/options/dialog.py:144 picard/ui/options/dialog.py:440
-#: picard/ui/options/dialog.py:466
+#: picard/ui/options/dialog.py:146 picard/ui/options/dialog.py:443
+#: picard/ui/options/dialog.py:469
 msgid "Attached Profiles"
 msgstr "Liitetyt profiilit"
 
-#: picard/ui/options/dialog.py:145
+#: picard/ui/options/dialog.py:147
 msgid "Show which profiles are attached to the options on this page"
 msgstr "Näytä asetuksiin liitetyt profiilit tällä sivulla"
 
-#: picard/ui/options/dialog.py:219
+#: picard/ui/options/dialog.py:222
 msgid ""
 "The options on this page are not currently available to be managed using "
 "profiles."
 msgstr "Tällä sivulla olevia asetuksia ei voida tällä hetkellä hallinnoida profiilein."
 
-#: picard/ui/options/dialog.py:240
+#: picard/ui/options/dialog.py:243
 msgid "Unknown profile"
 msgstr "Tuntematon profiili"
 
-#: picard/ui/options/dialog.py:289
+#: picard/ui/options/dialog.py:292
 #, python-format
 msgid "This option will be saved to profile: %s"
 msgstr "Tämä asetus tallennetaan profiiliin %s"
 
-#: picard/ui/options/dialog.py:381
+#: picard/ui/options/dialog.py:384
 msgid "Unexpected error"
 msgstr "Odottamaton virhe"
 
-#: picard/ui/options/dialog.py:420
+#: picard/ui/options/dialog.py:423
 msgid "You are about to reset your options for this page."
 msgstr "Olet nollaamassa tämän sivun asetukset."
 
-#: picard/ui/options/dialog.py:424
+#: picard/ui/options/dialog.py:427
 msgid "Warning! This will reset all of your settings."
 msgstr "Varoitus! Tämä nollaa kaikki asetukset."
 
-#: picard/ui/options/dialog.py:431
+#: picard/ui/options/dialog.py:434
 msgid "Confirm Reset"
 msgstr "Vahvista nollaus"
 
-#: picard/ui/options/dialog.py:432
+#: picard/ui/options/dialog.py:435
 msgid "Are you sure?"
 msgstr "Oletko aivan varma?"
 
-#: picard/ui/options/dialog.py:466 picard/ui/options/maintenance.py:92
+#: picard/ui/options/dialog.py:469 picard/ui/options/maintenance.py:92
 msgid "Option"
 msgstr "Asetus"
 
-#: picard/ui/options/dialog.py:473
+#: picard/ui/options/dialog.py:476
 #, python-format
 msgid "Profiles Attached to Options in %s Section"
 msgstr "Asetuksiin liitetyt profiilit %s osiossa"
 
-#: picard/ui/options/dialog.py:483
+#: picard/ui/options/dialog.py:486
 msgid " [Enabled]"
 msgstr " [Valittu]"
 
-#: picard/ui/options/dialog.py:484 picard/ui/options/profiles.py:280
+#: picard/ui/options/dialog.py:487 picard/ui/options/profiles.py:280
 msgid "None"
 msgstr "Ei mitään"
 
@@ -6209,109 +6305,65 @@ msgstr "Tyylilajit"
 msgid "Error line %d: %s"
 msgstr "Virherivi %d: %s"
 
-#: picard/ui/options/interface.py:81
-msgid "Add Folder"
-msgstr "Lisää kansio"
-
-#: picard/ui/options/interface.py:85
-msgid "Add Files"
-msgstr "Lisää tiedostoja"
-
-#: picard/ui/options/interface.py:89
-msgid "Cluster"
-msgstr "Ryhmä"
-
-#: picard/ui/options/interface.py:93
-msgid "Lookup"
-msgstr "Haku"
-
-#: picard/ui/options/interface.py:97
-msgid "Scan"
-msgstr "Analysoi"
-
-#: picard/ui/options/interface.py:101
-msgid "Lookup in Browser"
-msgstr "Etsi selaimella"
-
-#: picard/ui/options/interface.py:105
-msgid "Save"
-msgstr "Tallenna"
-
-#: picard/ui/options/interface.py:117
-msgid "Submit AcoustIDs"
-msgstr "Lähetä AcoustID-tunnisteet"
-
-#: picard/ui/options/interface.py:125
-msgid "Open in Player"
-msgstr "Avaa toistimessa"
-
-#: picard/ui/options/interface.py:129
-msgid "Lookup CD..."
-msgstr "CD-haku..."
-
-#: picard/ui/options/interface.py:175
+#: picard/ui/options/interface.py:92
 msgid ""
 "The default color scheme based on the operating system display settings"
 msgstr "Oletusväriteema käyttöjärjestelmän mukaan"
 
-#: picard/ui/options/interface.py:178
+#: picard/ui/options/interface.py:95
 msgid "Dark"
 msgstr "Tumma"
 
-#: picard/ui/options/interface.py:179
+#: picard/ui/options/interface.py:96
 msgid "A dark display theme"
 msgstr "Tumma teema"
 
-#: picard/ui/options/interface.py:182
+#: picard/ui/options/interface.py:99
 msgid "Light"
 msgstr "Vaalea"
 
-#: picard/ui/options/interface.py:183
+#: picard/ui/options/interface.py:100
 msgid "A light display theme"
 msgstr "Vaalea teema"
 
-#: picard/ui/options/interface.py:186
+#: picard/ui/options/interface.py:103
 msgid "System"
 msgstr "Järjestelmä"
 
-#: picard/ui/options/interface.py:187
+#: picard/ui/options/interface.py:104
 msgid "The Qt5 theme configured in the desktop environment"
 msgstr "Työpöytäympäristön Qt5-teema"
 
-#: picard/ui/options/interface.py:205
+#: picard/ui/options/interface.py:122
 msgid "System default"
 msgstr "Järjestelmän oletus"
 
-#: picard/ui/options/interface.py:266
+#: picard/ui/options/interface.py:174
 msgid "Theme changed"
 msgstr "Teema vaihdettu"
 
-#: picard/ui/options/interface.py:267
+#: picard/ui/options/interface.py:175
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
 msgstr "Olet vaihtanut sovelluksen teeman. Saattaksesi muutoksen voimaan, käynnistä Picard uudelleen."
 
-#: picard/ui/options/interface.py:269
+#: picard/ui/options/interface.py:177
 msgid ""
 "Please note that using the system theme might cause the user interface to be"
 " not shown correctly. If this is the case select the \"Default\" theme "
 "option to use Picard's default theme again."
 msgstr "Huomioi, että käytettäessä järjestelmän teemaa, käyttöliittymä ei välttämättä näy oikein.  Mikäli niin käy, vaihda oletusteema saadaksesi Picardin oletusväriasetukset takaisin käyttöön."
 
-#: picard/ui/options/interface.py:274
+#: picard/ui/options/interface.py:182
 msgid "Language changed"
 msgstr "Kieli vaihdettu"
 
-#: picard/ui/options/interface.py:275
+#: picard/ui/options/interface.py:183
 msgid ""
 "You have changed the interface language. You have to restart Picard in order"
 " for the change to take effect."
 msgstr "Olet vaihtanut käyttöliittymän kielen. Käynnistä Picard uudelleen saattaaksesi muutoksen voimaan."
-
-#: picard/ui/options/interface.py:307
-msgid "Drag and Drop to re-order"
-msgstr "Raahaa ja pudota järjestääksesi"
 
 #: picard/ui/options/interface_colors.py:67
 msgid "Choose a color"
@@ -6326,6 +6378,54 @@ msgid ""
 "You have changed the interface colors. You may have to restart Picard in "
 "order for the changes to take effect."
 msgstr "Olet vaihtanut käyttöliittymän värejä. Käynnistä Picard uudelleen saattaaksesi muutokset voimaan."
+
+#: picard/ui/options/interface_toolbar.py:59
+msgid "Action Toolbar"
+msgstr ""
+
+#: picard/ui/options/interface_toolbar.py:67
+msgid "Add Folder"
+msgstr "Lisää kansio"
+
+#: picard/ui/options/interface_toolbar.py:71
+msgid "Add Files"
+msgstr "Lisää tiedostoja"
+
+#: picard/ui/options/interface_toolbar.py:75
+msgid "Cluster"
+msgstr "Ryhmä"
+
+#: picard/ui/options/interface_toolbar.py:79
+msgid "Lookup"
+msgstr "Haku"
+
+#: picard/ui/options/interface_toolbar.py:83
+msgid "Scan"
+msgstr "Analysoi"
+
+#: picard/ui/options/interface_toolbar.py:87
+msgid "Lookup in Browser"
+msgstr "Etsi selaimella"
+
+#: picard/ui/options/interface_toolbar.py:91
+msgid "Save"
+msgstr "Tallenna"
+
+#: picard/ui/options/interface_toolbar.py:103
+msgid "Submit AcoustIDs"
+msgstr "Lähetä AcoustID-tunnisteet"
+
+#: picard/ui/options/interface_toolbar.py:111
+msgid "Open in Player"
+msgstr "Avaa toistimessa"
+
+#: picard/ui/options/interface_toolbar.py:115
+msgid "Lookup CD..."
+msgstr "CD-haku..."
+
+#: picard/ui/options/interface_toolbar.py:182
+msgid "Drag and Drop to re-order"
+msgstr "Raahaa ja pudota järjestääksesi"
 
 #: picard/ui/options/interface_top_tags.py:40
 msgid "Top Tags"
@@ -6592,20 +6692,24 @@ msgstr "Julkaisujen suosiminen"
 msgid "Reset all"
 msgstr "Oletusasetukset"
 
-#: picard/ui/options/renaming.py:209
+#: picard/ui/options/renaming.py:256
+msgid "The location to move files to must not be empty."
+msgstr "Tiedostonsiirron kohdehakemistoa ei ole asetettu."
+
+#: picard/ui/options/renaming_compat.py:66
+msgid "Compatibility"
+msgstr ""
+
+#: picard/ui/options/renaming_compat.py:128
 msgid "Windows long path support"
 msgstr "Pitkien tiedostonimien tuki Windowsissa"
 
-#: picard/ui/options/renaming.py:210
+#: picard/ui/options/renaming_compat.py:129
 msgid ""
 "Enabling long paths on Windows might cause files being saved with path names"
 " exceeding the 259 character limit traditionally imposed by the Windows API."
 " Some software might not be able to properly access those files."
 msgstr "Pitkien tiedostonimien käyttöönotto Windowsissa saattaa tallentaa tiedostopolut pidemmiksi kuin 259 merkkiä, joka on perinteisesti Windowsin rajapintarajoitus. Jotkin ohjelmistot eivät osaa välttämättä avata tällaisia tiedostoja."
-
-#: picard/ui/options/renaming.py:285
-msgid "The location to move files to must not be empty."
-msgstr "Tiedostonsiirron kohdehakemistoa ei ole asetettu."
 
 #: picard/ui/options/scripting.py:123
 msgid "Show scripting documentation in new window."
@@ -6675,23 +6779,23 @@ msgid ""
 "<strong>No results found. Please try a different search query.</strong>"
 msgstr "<strong>Ei tuloksia. Yritä vaihtaa hakuehtoja.</strong>"
 
-#: picard/ui/searchdialog/album.py:132 picard/ui/searchdialog/track.py:60
+#: picard/ui/searchdialog/album.py:148 picard/ui/searchdialog/track.py:60
 msgid "Load into Picard"
 msgstr "Lataa Picardiin"
 
-#: picard/ui/searchdialog/album.py:137
+#: picard/ui/searchdialog/album.py:153
 msgid "Album Search Results"
 msgstr "Julkaisuhaun tulokset"
 
-#: picard/ui/searchdialog/album.py:148 picard/util/tags.py:69
+#: picard/ui/searchdialog/album.py:164 picard/util/tags.py:69
 msgid "Language"
 msgstr "Kieli"
 
-#: picard/ui/searchdialog/album.py:150
+#: picard/ui/searchdialog/album.py:166
 msgid "Status"
 msgstr "Tila"
 
-#: picard/ui/searchdialog/album.py:152 picard/ui/searchdialog/artist.py:62
+#: picard/ui/searchdialog/album.py:168 picard/ui/searchdialog/artist.py:62
 #: picard/ui/searchdialog/track.py:73
 msgid "Score"
 msgstr "Nuotit"
@@ -6794,7 +6898,7 @@ msgid ""
 "unlock the table in the table header's context menu."
 msgstr "Taulukko on lukittu. Vapauta lukitus taulukon otsikkorivin\nalasvetovalikosta lajitellaksesi ja muuttaaksesi kokoa."
 
-#: picard/util/__init__.py:326
+#: picard/util/__init__.py:333
 msgid "No Title"
 msgstr "Ei nimeä"
 

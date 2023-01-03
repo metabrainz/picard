@@ -34,6 +34,7 @@
 # RepaNation Distributors, 2022
 # Robert Schneider <robertschv@gmail.com>, 2019
 # Kevin López Brante <kevin@kddlb.cl>, 2012
+# Tiago Natale, 2022
 #   Tobias Quathamer <email address hidden>, 2007
 #   Tobias Quathamer <toddy@debian.org>, 2007
 # t0n3t <toni75@gmail.com>, 2012
@@ -42,7 +43,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2012-05-24 18:52+0000\n"
-"Last-Translator: Carlos Ernesto Lugo Mejia <Carlostrewher@gmail.com>, 2022\n"
+"Last-Translator: Tiago Natale, 2022\n"
 "Language-Team: Spanish (http://www.transifex.com/musicbrainz/musicbrainz/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,32 +69,32 @@ msgstr "Sonata es un término general usado para describir pequeñas piezas inst
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
-msgstr "Goma laca de 10\""
+msgstr "Disco de acetato de 10\""
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr "Vinilo 10\""
+msgstr "Disco de vinilo de 10\""
 
 #: DB:medium_format/name:72
 msgctxt "medium_format"
 msgid "12\" LaserDisc"
-msgstr " LaserDisc 12\""
+msgstr " LaserDisc de 12\""
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
-msgstr "Goma laca de 12\""
+msgstr "Disco de acetato de 12\""
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
 msgid "12\" Vinyl"
-msgstr "Vinilo 12″"
+msgstr "Disco de vinilo de 12\""
 
 #: DB:medium_format/name:49
 msgctxt "medium_format"
 msgid "3.5\" Floppy Disk"
-msgstr "Disquete 3,5\""
+msgstr "Disquete de 3,5\""
 
 #: DB:medium_format/name:91
 msgctxt "medium_format"
@@ -103,22 +104,22 @@ msgstr "Disquete de 5.25\""
 #: DB:medium_format/name:52
 msgctxt "medium_format"
 msgid "7\" Flexi-disc"
-msgstr "Flexi disco 7\""
+msgstr "Flexi disco de 7\""
 
 #: DB:medium_format/name:56
 msgctxt "medium_format"
 msgid "7\" Shellac"
-msgstr "Goma laca 7\""
+msgstr "Disco de acetato de 7\""
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
-msgstr "Vinilo 7″"
+msgstr "Vinilo de 7″"
 
 #: DB:medium_format/name:71
 msgctxt "medium_format"
 msgid "8\" LaserDisc"
-msgstr "8\" LaserDisc"
+msgstr "LaserDisc de 8\""
 
 #: DB:medium_format/name:78
 msgctxt "medium_format"
@@ -128,19 +129,19 @@ msgstr "Cartucho de 8-pistas"
 #: DB:medium_format/name:34
 msgctxt "medium_format"
 msgid "8cm CD"
-msgstr "CD, 8cm"
+msgstr "CD de 8cm"
 
 #: DB:medium_format/name:40
 msgctxt "medium_format"
 msgid "8cm CD+G"
-msgstr "8cm CD+G"
+msgstr "CD+G de 8cm"
 
 #: DB:medium_format/description:58
 msgctxt "medium_format"
 msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
-msgstr "Discos de 90 rpm, de goma laca y cortados verticalmente, producidos por el sello Pathè desde 1906 hasta 1932."
+msgstr "Discos de 90 rpm, de goma laca y cortados verticalmente, producidos por el sello Pathé desde 1906 hasta 1932."
 
 #: DB:release_group_secondary_type/description:1
 msgctxt "release_group_secondary_type"
@@ -162,7 +163,7 @@ msgid ""
 "</ul>\n"
 "\n"
 "<p>Compilation should be used in addition to, not instead of, other types: for example, a various artists soundtrack using pre-released music should be marked as both a soundtrack and a compilation.</p>"
-msgstr ""
+msgstr "<p>Una recopilación, para los propósitos de la base de datos de MusicBrainz, cubre los siguientes tipos de lanzamientos:</p>\n\n<ul>\n<li>Una colección de grabaciones de varias fuentes viejas  (No necesariamente lanzadas) combinadas entre sí. Por ejemplo un \"Lo mejor de\", lanzamientos retrospectivos o rarezas.</li>\n<li>una colección de canciones de varios artistas, usualmente basados en una temática general (\"Canciones para enamorados\"), un periodo de tiempo particular (\"Éxitos del 1998\"), o algún otro tipo de agrupación (\"Canciones de la película\", la serie el \"Café del Mar\", etc.)\n</ul>\n\n<p>El proyecto MusicBrainz generalmente no considera lo siguiente como recopilaciones:</p>\n\n<ul>\n<li>una reedición del álbum, incluso si incluye bonus tracks.</li>\n<li>un lanzamiento tributo que contiene covers de música de otro artista.</li>\n<li>un lanzamiento clásico que contiene nuevas grabaciones de obras de un artista clásico.</li>\n<li>una versión dividida que contiene nueva música de varios artistas.</li>\n</ul>\n\n<p>Las recopilaciones deberían ser usadas además de, no en lugar de, otros tipos: por ejemplo, un banda sonora de varios artistas usando música de pre-lanzamiento debe ser marcado como una banda sonora y como una recopilación.</p>"
 
 #: DB:release_group_primary_type/description:2
 msgctxt "release_group_primary_type"
@@ -176,7 +177,7 @@ msgid ""
 "</ul>\n"
 "\n"
 "<p>There are other variations of the single called a \"split single\" where songs by two different artists are released on the one disc, typically vinyl.</p>"
-msgstr ""
+msgstr "<p>Un single tiene diferentes definiciones dependiendo del mercado en el que fue lanzado<p><ul><li>En el mercado de USA, un single típicamente tiene una canción principal y posiblemente un puñado de pistas adicionales o remixes de la pista principal; El sencillo generalmente lleva el nombre de su canción principal; El sencillo se lanza principalmente para obtener reproducción en la radio y para promover las ventas de lanzamientos.</li><li>El mercado de U.K (también Australia y Europa) es similar al mercado de USA, sin embargo, los singles a menudo se lanzan como un conjunto de dos discos, con cada disco vendido por separado. También a veces tienen una versión más larga del sencillo (a menudo combinando las pistas de la versión de dos discos) que es muy similar al sencillo de estilo estadounidense, y esto se conoce como un \"maxi-single\". (¡En algunos casos, el maxi-single es más largo que el lanzamiento del que proviene el single!) </li><li> El mercado japonés es mucho más impulsado por singles. El factor definitorio suele ser la duración del single y el precio al que se vende. Hasta 1995 era común que estos singles fueran lanzados usando un formato mini-cd, que es básicamente un CD mucho más pequeño típicamente de 8 cm de diámetro. ‎ Alrededor de 1995, el sencillo de 8 cm fue eliminado, y el ‎‎sencillo‎‎ estándar de ‎‎CD‎‎ de 12 cm es más común ahora; En general, los ‎‎relanzamientos‎‎ de singles anteriores a 1995 se lanzarán en el formato de 12 cm, incluso si se lanzaron originalmente en el ‎‎formato‎‎ de 8 cm.‎ ‎ Los singles japoneses a menudo vienen con versiones instrumentales de las canciones y también tienen maxi-singles como en UK con versiones remezcladas de las canciones. A veces, un maxi-single tendrá más pistas que un EP, pero como todas son versiones alternativas de las mismas 2-3 canciones, todavía se clasifica como un ‎‎single‎‎.‎ </li></ul><p>Hay otras variaciones del sencillo llamadas \"split single\" donde las canciones de dos artistas diferentes se lanzan en un solo disco, típicamente vinilo.<p>"
 
 #: DB:medium_format/description:95
 msgctxt "medium_format"
@@ -191,7 +192,7 @@ msgctxt "place_type"
 msgid ""
 "A (usually green) space kept available for recreation in an otherwise built "
 "and populated area."
-msgstr ""
+msgstr "Un espacio (usualmente verde) se mantiene libre para la recreación en un área construida y poblada."
 
 #: DB:medium_format/description:129
 msgctxt "medium_format"
@@ -199,7 +200,7 @@ msgid ""
 "A CD that contains both audio and data in the same session. The data is "
 "often in the first track, that will have to be skipped in many audio "
 "players. Relatively common in old video game CDs."
-msgstr ""
+msgstr "Un CD contiene tanto audio como datos en la misma sesión. Los datos a menudo se encuentran en la primera pista, estos tendrán que ser omitidos por los reproductores de audio. Esto es relativamente común en los CDs de videojuegos viejos."
 
 #: DB:medium_format/description:42
 msgctxt "medium_format"
@@ -207,7 +208,7 @@ msgid ""
 "A CD that contains two sessions, one with audio and one with data. Since "
 "they are properly separated, audio players will not try to play the data "
 "session and it won't be part of the disc ID for the CD."
-msgstr ""
+msgstr "Un CD que contiene dos sesiones, una con audio y la otra con datos. Dado que están propiamente separadas, reproductores de audio no van a intentar reproducir la sesión de datos y no formará parte del ID del disco para el CD"
 
 #: DB:release_group_secondary_type/description:8
 msgctxt "release_group_secondary_type"
@@ -239,7 +240,7 @@ msgstr "Un ballet es música compuesta principalmente para ser usado, junto con 
 #: DB:release_packaging/description:19
 msgctxt "release_packaging"
 msgid "A box usually containing multiple discs as part of a boxed set."
-msgstr ""
+msgstr "Una caja que contiene varios discos como parte de un conjunto en caja."
 
 #: DB:work_type/description:3
 msgctxt "work_type"
@@ -255,7 +256,7 @@ msgid ""
 "itself directly, but provides a code to download it digitally. Often bundled"
 " with physical releases but sometimes sold as a standalone item (especially "
 "in Asia)."
-msgstr ""
+msgstr "Una tarjeta (u otro soporte físico similar) que no contiene la música en sí directamente, sino que proporciona un código para descargarla digitalmente. A menudo se incluye con lanzamientos físicos, pero a veces se vende como un artículo independiente (especialmente en Asia)"
 
 #: DB:work_type/description:4
 msgctxt "work_type"
@@ -298,7 +299,7 @@ msgctxt "release_packaging"
 msgid ""
 "A large cardboard box often used until the mid-1990s to sell CDs in North "
 "America, so that they would fit existing vinyl racks in stores."
-msgstr ""
+msgstr "Una caja de cartón grande utilizada a menudo hasta mediados de los 90's para vender CD's en Norte América, de modo que encajaran en los estantes de vinilos existentes en las tiendas"
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -326,7 +327,7 @@ msgctxt "release_packaging"
 msgid ""
 "A minimalistic plastic case where the back and front are kept together by a "
 "small hinge. Most commonly used for cheap promotion / DIY releases."
-msgstr ""
+msgstr "Una carcasa de plástico minimalista donde la parte trasera y delantera se mantienen unidas por una pequeña bisagra. Comúnmente utilizada para promociones baratas y lanzamientos DIY."
 
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
@@ -503,7 +504,7 @@ msgstr "Una serie de actuaciones del mismo show en la misma sala."
 #: DB:series_type/description:48
 msgctxt "series_type"
 msgid "A series of recordings honoured by the same award."
-msgstr ""
+msgstr "Una serie de grabaciones galardonadas con el mismo premio."
 
 #: DB:series_type/description:3
 msgctxt "series_type"
@@ -523,7 +524,7 @@ msgstr "Una serie de conciertos relacionados de un artista en el mismo sitio."
 #: DB:series_type/description:47
 msgctxt "series_type"
 msgid "A series of release groups honoured by the same award."
-msgstr ""
+msgstr "Una serie de grupos de lanzamiento galardonados con el mismo premio."
 
 #: DB:series_type/description:1
 msgctxt "series_type"
@@ -538,7 +539,7 @@ msgstr "Una serie de ediciones."
 #: DB:series_type/description:46
 msgctxt "series_type"
 msgid "A series of works honoured by the same award."
-msgstr ""
+msgstr "Una serie de piezas galardonados con el mismo premio."
 
 #: DB:series_type/description:5
 msgctxt "series_type"
@@ -624,14 +625,14 @@ msgid ""
 "A very small optical disc in a protective case that was intended for "
 "portable listening. It did not find commercial success, but a few albums "
 "were released in the format in the early 00s."
-msgstr ""
+msgstr "Un disco óptico muy pequeño en una funda protectora que fue diseñada para una escucha portátil. No encontró éxito comercial, pero algunos álbumes fueron lanzados en ese formato a principios de los años 00's "
 
 #: DB:medium_format/description:131
 msgctxt "medium_format"
 msgid ""
 "A video format used in the 1980s and 90s for professional work, including "
 "television and video archival."
-msgstr ""
+msgstr "Un formato de video usado en los 1980's y los 90's para trabajo profesional, incluyendo TV y archivos de video."
 
 #: DB:work_type/description:19
 msgctxt "work_type"
@@ -948,7 +949,7 @@ msgstr "Un comunicado de entrevista contiene una entrevista, generalmente con un
 #: DB:release_packaging/description:54
 msgctxt "release_packaging"
 msgid "An often decorated metal tin containing one or more CDs."
-msgstr ""
+msgstr "Una lata de metal a menudo decorada que contiene uno o más CDs."
 
 #: DB:work_type/description:10
 msgctxt "work_type"
@@ -1063,7 +1064,7 @@ msgstr "Arazbarek"
 #: DB:editor_collection_type/name:7
 msgctxt "collection_type"
 msgid "Area collection"
-msgstr ""
+msgstr "Colección de area"
 
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
@@ -1083,7 +1084,7 @@ msgstr "Premio al Artista"
 #: DB:editor_collection_type/name:8
 msgctxt "collection_type"
 msgid "Artist collection"
-msgstr ""
+msgstr "Colección de artista"
 
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
@@ -1435,7 +1436,7 @@ msgstr "Bestenigar"
 #: DB:medium_format/name:131
 msgctxt "medium_format"
 msgid "Betacam SP"
-msgstr ""
+msgstr "Betacam SP"
 
 #: DB:medium_format/name:24
 msgctxt "medium_format"
@@ -1621,7 +1622,7 @@ msgstr "Producción de bootlegs"
 #: DB:cover_art_archive.art_type/name:49
 msgctxt "cover_art_type"
 msgid "Bottom"
-msgstr ""
+msgstr "Abajo"
 
 #: DB:release_packaging/name:19
 msgctxt "release_packaging"
@@ -1934,7 +1935,7 @@ msgstr "Ciudad es usado para asentamientos de cualquier tamaño, incluyendo pueb
 #: DB:release_packaging/name:56
 msgctxt "release_packaging"
 msgid "Clamshell Case"
-msgstr ""
+msgstr "Estuche Clamshell"
 
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
@@ -2210,7 +2211,7 @@ msgstr "Datos de DVD-R"
 #: DB:medium_format/name:128
 msgctxt "medium_format"
 msgid "DataPlay"
-msgstr ""
+msgstr "DataPlay"
 
 #: DB:release_group_secondary_type/name:10
 msgctxt "release_group_secondary_type"
@@ -2406,7 +2407,7 @@ msgstr "Dolap"
 #: DB:medium_format/name:46
 msgctxt "medium_format"
 msgid "Download Card"
-msgstr ""
+msgstr "Tarjeta de Descarga"
 
 #: DB:medium_format/name:4
 msgctxt "medium_format"
@@ -2421,7 +2422,7 @@ msgstr "Disco dual (lado de CD)"
 #: DB:medium_format/name:130
 msgctxt "medium_format"
 msgid "DualDisc (DVD side)"
-msgstr ""
+msgstr "DualDisc (lado del DVD)"
 
 #: DB:medium_format/name:65
 msgctxt "medium_format"
@@ -2652,7 +2653,7 @@ msgstr "Evcara"
 #: DB:editor_collection_type/name:4
 msgctxt "collection_type"
 msgid "Event collection"
-msgstr ""
+msgstr "Colección de eventos"
 
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
@@ -2959,7 +2960,7 @@ msgstr "Identificador GEMA"
 #: DB:work_attribute_type/name:106
 msgctxt "work_attribute_type"
 msgid "GMR ID"
-msgstr ""
+msgstr "GMR ID"
 
 #: DB:work_attribute_type_allowed_value/value:88
 msgctxt "work_attribute_type_allowed_value"
@@ -3670,27 +3671,27 @@ msgstr "ID para la sociedad guatemalteca de derechos AEI"
 #: DB:work_attribute_type/description:57
 msgctxt "work_attribute_type"
 msgid "ID for the Honduran rights society AACIMH"
-msgstr ""
+msgstr "Identificación para la sociedad hondureña de derechos AACIMH"
 
 #: DB:work_attribute_type/description:19
 msgctxt "work_attribute_type"
 msgid "ID for the Hong Kong rights society CASH"
-msgstr ""
+msgstr "Identificación para la sociedad de derechos de Hong Kong CASH"
 
 #: DB:work_attribute_type/description:48
 msgctxt "work_attribute_type"
 msgid "ID for the Hungarian rights society ARTISJUS"
-msgstr ""
+msgstr "ID para la sociedad húngara de derechos ARTISJUS"
 
 #: DB:work_attribute_type/description:54
 msgctxt "work_attribute_type"
 msgid "ID for the Icelandic rights society STEF"
-msgstr ""
+msgstr "ID para la sociedad islandesa de derechos STEF"
 
 #: DB:work_attribute_type/description:70
 msgctxt "work_attribute_type"
 msgid "ID for the Indian rights society IPRS"
-msgstr ""
+msgstr "ID para la sociedad india de derechos IPRS"
 
 #: DB:work_attribute_type/description:29
 msgctxt "work_attribute_type"
@@ -3700,17 +3701,17 @@ msgstr "ID para la International Copyright Enterprise"
 #: DB:work_attribute_type/description:52
 msgctxt "work_attribute_type"
 msgid "ID for the Irish rights society IMRO"
-msgstr ""
+msgstr "ID para la sociedad irlandesa de derechos IMRO"
 
 #: DB:work_attribute_type/description:36
 msgctxt "work_attribute_type"
 msgid "ID for the Italian rights society SIAE"
-msgstr ""
+msgstr "ID para la sociedad italiana de derechos SIAE"
 
 #: DB:work_attribute_type/description:69
 msgctxt "work_attribute_type"
 msgid "ID for the Jamaican rights society JACAP"
-msgstr ""
+msgstr "ID para la sociedad jamaicana de derechos JACAP"
 
 #: DB:work_attribute_type/description:3
 msgctxt "work_attribute_type"
@@ -3725,17 +3726,17 @@ msgstr "ID de la sociedad japonesa de derechos NexTone"
 #: DB:work_attribute_type/description:11
 msgctxt "work_attribute_type"
 msgid "ID for the Korean rights society KOMCA"
-msgstr ""
+msgstr "ID para la sociedad coreana de derechos KOMCA"
 
 #: DB:work_attribute_type/description:63
 msgctxt "work_attribute_type"
 msgid "ID for the Latvian rights society AKKA/LAA"
-msgstr ""
+msgstr "ID para la sociedad letona de derechos AKKA/LAA"
 
 #: DB:work_attribute_type/description:49
 msgctxt "work_attribute_type"
 msgid "ID for the Malaysian rights society MACP"
-msgstr ""
+msgstr "ID para la sociedad de derechos de Malasia MACP"
 
 #: DB:work_attribute_type/description:27
 msgctxt "work_attribute_type"
@@ -3745,27 +3746,27 @@ msgstr "ID para la sociedad mexicana de derechos SACM"
 #: DB:work_attribute_type/description:59
 msgctxt "work_attribute_type"
 msgid "ID for the Nicaraguan rights society NICAUTOR"
-msgstr ""
+msgstr "ID para la sociedad nicaragüense de derechos NICAUTOR"
 
 #: DB:work_attribute_type/description:67
 msgctxt "work_attribute_type"
 msgid "ID for the Norwegian rights society TONO"
-msgstr ""
+msgstr "ID para la sociedad noruega de derechos TONO"
 
 #: DB:work_attribute_type/description:62
 msgctxt "work_attribute_type"
 msgid "ID for the Panamanian rights society SPAC"
-msgstr ""
+msgstr "ID para la sociedad panameña de derechos SPAC"
 
 #: DB:work_attribute_type/description:46
 msgctxt "work_attribute_type"
 msgid "ID for the Paraguayan rights society APA"
-msgstr ""
+msgstr "ID para la sociedad paraguaya de derechos APA"
 
 #: DB:work_attribute_type/description:41
 msgctxt "work_attribute_type"
 msgid "ID for the Peruvian rights society APDAYC"
-msgstr ""
+msgstr "ID para la sociedad peruana de derechos APDAYC"
 
 #: DB:work_attribute_type/description:30
 msgctxt "work_attribute_type"
@@ -3775,27 +3776,27 @@ msgstr "ID para la sociedad polaca de derechos ZAiKS"
 #: DB:work_attribute_type/description:35
 msgctxt "work_attribute_type"
 msgid "ID for the Portuguese rights society SPA"
-msgstr ""
+msgstr "ID para la sociedad portuguesa de derechos SPA"
 
 #: DB:work_attribute_type/description:56
 msgctxt "work_attribute_type"
 msgid "ID for the Salvadoran rights society SACIM"
-msgstr ""
+msgstr "ID para la sociedad salvadoreña de derechos SACIM"
 
 #: DB:work_attribute_type/description:45
 msgctxt "work_attribute_type"
 msgid "ID for the Singaporean rights society COMPASS"
-msgstr ""
+msgstr "ID para la sociedad de derechos de Singapur COMPASS"
 
 #: DB:work_attribute_type/description:68
 msgctxt "work_attribute_type"
 msgid "ID for the South African rights society SAMRO"
-msgstr ""
+msgstr "ID para la sociedad sudafricana de derechos SAMRO"
 
 #: DB:work_attribute_type/description:20
 msgctxt "work_attribute_type"
 msgid "ID for the Spanish rights society SGAE"
-msgstr ""
+msgstr "ID para la sociedad española de derechos SGAE"
 
 #: DB:work_attribute_type/description:50
 msgctxt "work_attribute_type"
@@ -3860,7 +3861,7 @@ msgstr ""
 #: DB:work_attribute_type/description:55
 msgctxt "work_attribute_type"
 msgid "ID for the international rights society consortium LatinNet"
-msgstr ""
+msgstr "ID para el consorcio de la sociedad internacional de derechos LatinNet"
 
 #: DB:work_attribute_type/description:22
 msgctxt "work_attribute_type"
@@ -3875,12 +3876,12 @@ msgstr ""
 #: DB:work_attribute_type/name:52
 msgctxt "work_attribute_type"
 msgid "IMRO ID"
-msgstr ""
+msgstr "IMRO ID"
 
 #: DB:work_attribute_type/name:70
 msgctxt "work_attribute_type"
 msgid "IPRS ID"
-msgstr ""
+msgstr "IPRS ID"
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
@@ -3922,7 +3923,7 @@ msgstr "Pabellón cubierto."
 #: DB:editor_collection_type/name:9
 msgctxt "collection_type"
 msgid "Instrument collection"
-msgstr ""
+msgstr "Colección de instrumentos"
 
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
@@ -4000,7 +4001,7 @@ msgstr "Una isla es un tipo de división usado para atolones e islas que no form
 #: DB:work_attribute_type/name:69
 msgctxt "work_attribute_type"
 msgid "JACAP ID"
-msgstr ""
+msgstr "JACAP ID"
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
@@ -4138,7 +4139,7 @@ msgstr "Jōnpuri"
 #: DB:work_attribute_type/name:51
 msgctxt "work_attribute_type"
 msgid "KODA ID"
-msgstr ""
+msgstr "KODA ID"
 
 #: DB:work_attribute_type/name:11
 msgctxt "work_attribute_type"
@@ -4556,7 +4557,7 @@ msgstr "Kōmal riṣabh asāvēri"
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
 msgid "Label collection"
-msgstr ""
+msgstr "Colección del sello"
 
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
@@ -4616,7 +4617,7 @@ msgstr "LaserDisc"
 #: DB:work_attribute_type/name:55
 msgctxt "work_attribute_type"
 msgid "LatinNet ID"
-msgstr ""
+msgstr "LatinNet ID"
 
 #: DB:work_attribute_type_allowed_value/value:159
 msgctxt "work_attribute_type_allowed_value"
@@ -4671,17 +4672,17 @@ msgstr ""
 #: DB:work_attribute_type/name:49
 msgctxt "work_attribute_type"
 msgid "MACP ID"
-msgstr ""
+msgstr "MACP ID"
 
 #: DB:work_attribute_type/name:71
 msgctxt "work_attribute_type"
 msgid "MCSC ID"
-msgstr ""
+msgstr "MCSC ID"
 
 #: DB:work_attribute_type/name:72
 msgctxt "work_attribute_type"
 msgid "MCT ID"
-msgstr ""
+msgstr "MCT ID"
 
 #: DB:work_attribute_type_allowed_value/value:963
 msgctxt "work_attribute_type_allowed_value"
@@ -4916,7 +4917,7 @@ msgstr "Microcassette"
 #: DB:area_type/name:8
 msgctxt "area_type"
 msgid "Military base"
-msgstr ""
+msgstr "Base militar"
 
 #: DB:medium_format/name:6
 msgctxt "medium_format"
@@ -5266,7 +5267,7 @@ msgstr "Mōhanaṁ"
 #: DB:work_attribute_type/name:59
 msgctxt "work_attribute_type"
 msgid "NICAUTOR ID"
-msgstr ""
+msgstr "NICAUTOR ID"
 
 #: DB:work_attribute_type_allowed_value/value:647
 msgctxt "work_attribute_type_allowed_value"
@@ -5541,7 +5542,7 @@ msgstr "Nişabureyn"
 #: DB:gender/name:5
 msgctxt "gender"
 msgid "Non-binary"
-msgstr ""
+msgstr "No binario"
 
 #: DB:release_group_secondary_type/description:3
 msgctxt "release_group_secondary_type"
@@ -6120,12 +6121,12 @@ msgstr "Sin procesar/Sin editar"
 #: DB:series_type/name:48
 msgctxt "series_type"
 msgid "Recording award"
-msgstr ""
+msgstr "Premio de grabación"
 
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
 msgid "Recording collection"
-msgstr ""
+msgstr "Colección de grabación"
 
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
@@ -6160,7 +6161,7 @@ msgstr "Rekb-i Zavil"
 #: DB:editor_collection_type/name:1
 msgctxt "collection_type"
 msgid "Release collection"
-msgstr ""
+msgstr "Colección de versiones"
 
 #: DB:series_type/name:47
 msgctxt "series_type"
@@ -6215,7 +6216,7 @@ msgstr "Reng-i Dil"
 #: DB:series_type/name:12
 msgctxt "series_type"
 msgid "Residency"
-msgstr ""
+msgstr "Residencia"
 
 #: DB:work_attribute_type_allowed_value/value:517
 msgctxt "work_attribute_type_allowed_value"
@@ -6401,12 +6402,12 @@ msgstr ""
 #: DB:work_attribute_type/name:40
 msgctxt "work_attribute_type"
 msgid "SAYCE ID"
-msgstr ""
+msgstr "SAYCE ID"
 
 #: DB:work_attribute_type/name:39
 msgctxt "work_attribute_type"
 msgid "SAYCO ID"
-msgstr ""
+msgstr "SAYCO ID"
 
 #: DB:medium_format/name:62
 msgctxt "medium_format"
@@ -6421,7 +6422,7 @@ msgstr "Identificador SESAC"
 #: DB:work_attribute_type/name:60
 msgctxt "work_attribute_type"
 msgid "SGACEDOM ID"
-msgstr ""
+msgstr "SGACEDOM ID"
 
 #: DB:work_attribute_type/name:20
 msgctxt "work_attribute_type"
@@ -6451,12 +6452,12 @@ msgstr ""
 #: DB:work_attribute_type/name:36
 msgctxt "work_attribute_type"
 msgid "SIAE ID"
-msgstr ""
+msgstr "SIAE ID"
 
 #: DB:work_attribute_type/name:61
 msgctxt "work_attribute_type"
 msgid "SOBODAYCOM ID"
-msgstr ""
+msgstr "SOBODAYCOM ID"
 
 #: DB:work_attribute_type/name:10
 msgctxt "work_attribute_type"
@@ -6466,27 +6467,27 @@ msgstr "Identificador SOCAN"
 #: DB:work_attribute_type/name:53
 msgctxt "work_attribute_type"
 msgid "SODRAC ID"
-msgstr ""
+msgstr "SODRAC ID"
 
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
-msgstr ""
+msgstr "SPA ID"
 
 #: DB:work_attribute_type/name:62
 msgctxt "work_attribute_type"
 msgid "SPAC ID"
-msgstr ""
+msgstr "SPAC ID"
 
 #: DB:work_attribute_type/name:54
 msgctxt "work_attribute_type"
 msgid "STEF ID"
-msgstr ""
+msgstr "STEF ID"
 
 #: DB:work_attribute_type/name:50
 msgctxt "work_attribute_type"
 msgid "STIM ID"
-msgstr ""
+msgstr "STIM ID"
 
 #: DB:work_attribute_type/name:18
 msgctxt "work_attribute_type"
@@ -7070,12 +7071,12 @@ msgstr "Sūltāl"
 #: DB:work_attribute_type/name:66
 msgctxt "work_attribute_type"
 msgid "TEOSTO ID"
-msgstr ""
+msgstr "TEOSTO ID"
 
 #: DB:work_attribute_type/name:67
 msgctxt "work_attribute_type"
 msgid "TONO ID"
-msgstr ""
+msgstr "TONO ID"
 
 #: DB:work_attribute_type_allowed_value/value:573
 msgctxt "work_attribute_type_allowed_value"
@@ -7433,7 +7434,7 @@ msgstr "Tiśra-jāti ēka"
 #: DB:cover_art_archive.art_type/name:48
 msgctxt "cover_art_type"
 msgid "Top"
-msgstr ""
+msgstr "Arriba"
 
 #: DB:series_type/name:7
 msgctxt "series_type"
@@ -7542,7 +7543,7 @@ msgctxt "area_type"
 msgid ""
 "Used for any military bases that are large enough to be considered an area, "
 "not just a place."
-msgstr ""
+msgstr "Usado por cualquier base militar que sea lo suficientemente grande como para ser considerada un área, no solo un lugar."
 
 #: DB:area_type/description:9
 msgctxt "area_type"
@@ -7768,7 +7769,7 @@ msgstr "Lista de deseos"
 #: DB:release_status/name:5
 msgctxt "release_status"
 msgid "Withdrawn"
-msgstr ""
+msgstr "Retirado"
 
 #: DB:series_type/name:46
 msgctxt "series_type"
@@ -7778,7 +7779,7 @@ msgstr ""
 #: DB:editor_collection_type/name:15
 msgctxt "collection_type"
 msgid "Work collection"
-msgstr ""
+msgstr "Colección de piezas"
 
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"

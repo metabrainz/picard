@@ -28,13 +28,14 @@
 # York Young, 2021
 # YunQiang Su <wzssyqa@gmail.com>, 2011
 # Zhenzhong Yin <cnrocke@gmail.com>, 2021
+# 同福客栈跑堂蘸糖, 2022
 # Maureen <mry_33@163.com>, 2014,2019
 # 刘岩 <xuanqidongjim@gmail.com>, 2020
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2012-05-24 18:52+0000\n"
-"Last-Translator: Clay Cheng <569735195@qq.com>, 2020-2022\n"
+"Last-Translator: 同福客栈跑堂蘸糖, 2022\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -495,7 +496,7 @@ msgstr "同一节目在同一个场馆的一系列演出。"
 #: DB:series_type/description:48
 msgctxt "series_type"
 msgid "A series of recordings honoured by the same award."
-msgstr ""
+msgstr "一系列录音荣获同一个奖项。"
 
 #: DB:series_type/description:3
 msgctxt "series_type"
@@ -515,7 +516,7 @@ msgstr "同一位艺术家在不同地点的一系列相关的音乐会。"
 #: DB:series_type/description:47
 msgctxt "series_type"
 msgid "A series of release groups honoured by the same award."
-msgstr ""
+msgstr "一系列专辑组荣获同一个奖项。"
 
 #: DB:series_type/description:1
 msgctxt "series_type"
@@ -530,7 +531,7 @@ msgstr "一系列专辑。"
 #: DB:series_type/description:46
 msgctxt "series_type"
 msgid "A series of works honoured by the same award."
-msgstr ""
+msgstr "一系列作品荣获同一个奖项。"
 
 #: DB:series_type/description:5
 msgctxt "series_type"
@@ -623,7 +624,7 @@ msgctxt "medium_format"
 msgid ""
 "A video format used in the 1980s and 90s for professional work, including "
 "television and video archival."
-msgstr ""
+msgstr "一个用于1980年代到1990年代专业作品的格式，包括电视台和视频档案。"
 
 #: DB:work_type/description:19
 msgctxt "work_type"
@@ -1427,7 +1428,7 @@ msgstr "Bestenigar"
 #: DB:medium_format/name:131
 msgctxt "medium_format"
 msgid "Betacam SP"
-msgstr ""
+msgstr "Betacam SP磁带"
 
 #: DB:medium_format/name:24
 msgctxt "medium_format"
@@ -2413,7 +2414,7 @@ msgstr "DualDisc （CD 面）"
 #: DB:medium_format/name:130
 msgctxt "medium_format"
 msgid "DualDisc (DVD side)"
-msgstr ""
+msgstr "双面光盘(DVD)"
 
 #: DB:medium_format/name:65
 msgctxt "medium_format"
@@ -2951,7 +2952,7 @@ msgstr "GEMA ID"
 #: DB:work_attribute_type/name:106
 msgctxt "work_attribute_type"
 msgid "GMR ID"
-msgstr ""
+msgstr "GMR ID"
 
 #: DB:work_attribute_type_allowed_value/value:88
 msgctxt "work_attribute_type_allowed_value"
@@ -3827,7 +3828,7 @@ msgstr "美国著作权协会BMI ID"
 #: DB:work_attribute_type/description:106
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society GMR"
-msgstr ""
+msgstr "美国版权协会GMR ID"
 
 #: DB:work_attribute_type/description:8
 msgctxt "work_attribute_type"
@@ -6112,7 +6113,7 @@ msgstr "原始/未编辑"
 #: DB:series_type/name:48
 msgctxt "series_type"
 msgid "Recording award"
-msgstr ""
+msgstr "录音奖项"
 
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
@@ -6157,7 +6158,7 @@ msgstr "专辑收藏"
 #: DB:series_type/name:47
 msgctxt "series_type"
 msgid "Release group award"
-msgstr ""
+msgstr "专辑组奖项"
 
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
@@ -7225,7 +7226,7 @@ msgctxt "medium_format"
 msgid ""
 "The DVD (video) layer of a DVDplus. The CD layer should be added as a "
 "separate medium."
-msgstr ""
+msgstr "DVD+的一个DVD(视频)层。CD层应该作为单独的的媒介添加。"
 
 #: DB:medium_format/description:66
 msgctxt "medium_format"
@@ -7240,7 +7241,7 @@ msgid ""
 "The DVD layer of a DualDisc, when it's unclear whether it should be DVD-"
 "Audio or DVD-Video (or it includes both). The CD layer should be added as a "
 "separate medium."
-msgstr ""
+msgstr "双面光盘的DVD层，当不清楚它应该是DVD-音频还是DVD-视频（或者两者都有）时。CD层应该作为单独的媒介添加。"
 
 #: DB:medium_format/description:80
 msgctxt "medium_format"
@@ -7765,7 +7766,7 @@ msgstr "已取消"
 #: DB:series_type/name:46
 msgctxt "series_type"
 msgid "Work award"
-msgstr ""
+msgstr "作品奖项"
 
 #: DB:editor_collection_type/name:15
 msgctxt "collection_type"

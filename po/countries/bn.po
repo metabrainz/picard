@@ -1,12 +1,12 @@
 # 
 # Translators:
-# আমি তোমাদেরই লোক <joysriram.sarkar.56@gmail.com>, 2022
-# আমি তোমাদেরই লোক <joysriram.sarkar.56@gmail.com>, 2022
+# জয়শ্রীরাম সরকার <joysriram.sarkar.56@gmail.com>, 2022
+# জয়শ্রীরাম সরকার <joysriram.sarkar.56@gmail.com>, 2022
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2012-05-24 19:20+0000\n"
-"Last-Translator: আমি তোমাদেরই লোক <joysriram.sarkar.56@gmail.com>, 2022\n"
+"Last-Translator: জয়শ্রীরাম সরকার <joysriram.sarkar.56@gmail.com>, 2022\n"
 "Language-Team: Bengali (http://www.transifex.com/musicbrainz/musicbrainz/language/bn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

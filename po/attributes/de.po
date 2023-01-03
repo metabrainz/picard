@@ -2,6 +2,7 @@
 # Translators:
 # nikki, 2014
 # nikki2 <b4931048@nwldx.com>, 2012
+# Jonas S. Vogt (Baba Jones), 2022
 # Daniel Schury <Daniel.Schury@physik.uni-giessen.de>, 2011
 # Daniel Schury <email address hidden>, 2011
 # David Kellner <kellnerd@gmx.net>, 2019-2020
@@ -18,6 +19,7 @@
 # 871cf62ea721ffc486279ce0e5a0f34c_d3e66b3 <3d1fc2557ad8bc41db62b2fba21e9eae_680078>, 2018
 # 871cf62ea721ffc486279ce0e5a0f34c_d3e66b3 <3d1fc2557ad8bc41db62b2fba21e9eae_680078>, 2018
 # Jod isnotmyname <beebeebeethats3bees@aaathats3as.com>, 2017
+# Jonas S. Vogt (Baba Jones), 2022
 # happykraut, 2017
 # Leo_Verto <leotheverto@googlemail.com>, 2017
 # Leo_Verto <leotheverto@googlemail.com>, 2017
@@ -48,7 +50,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2012-05-24 18:52+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2012,2018-2022\n"
+"Last-Translator: Jonas S. Vogt (Baba Jones), 2022\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1279,7 +1281,7 @@ msgstr "b-Moll"
 #: DB:work_attribute_type_allowed_value/value:818
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-sharp major"
-msgstr ""
+msgstr "bis-Dur"
 
 #: DB:work_attribute_type_allowed_value/value:819
 msgctxt "work_attribute_type_allowed_value"
@@ -1294,7 +1296,7 @@ msgstr "BMI-ID"
 #: DB:work_attribute_type/name:26
 msgctxt "work_attribute_type"
 msgid "BUMA/STEMRA ID"
-msgstr ""
+msgstr "BUMA/STEMRA ID"
 
 #: DB:cover_art_archive.art_type/name:2
 msgctxt "cover_art_type"
@@ -7239,7 +7241,7 @@ msgctxt "medium_format"
 msgid ""
 "The DVD (video) layer of a DVDplus. The CD layer should be added as a "
 "separate medium."
-msgstr ""
+msgstr "Die DVD-Schicht (Video) einer DVDplus. Die CD-Schicht sollte als separates Medium hinzugefügt werden."
 
 #: DB:medium_format/description:66
 msgctxt "medium_format"
@@ -7254,7 +7256,7 @@ msgid ""
 "The DVD layer of a DualDisc, when it's unclear whether it should be DVD-"
 "Audio or DVD-Video (or it includes both). The CD layer should be added as a "
 "separate medium."
-msgstr ""
+msgstr "Die DVD-Schicht einer DualDisc, wenn unklar ist, ob es sich um DVD-Audio oder DVD-Video handeln soll (oder ob es beides enthält). Die CD-Schicht sollte als separates Medium hinzugefügt werden."
 
 #: DB:medium_format/description:80
 msgctxt "medium_format"
@@ -7276,7 +7278,7 @@ msgid ""
 "The bottom of a box or other similar packaging (for most common six sided "
 "packaging options, the one perpendicular to and below front, back and "
 "spines)."
-msgstr ""
+msgstr "Der Boden einer Schachtel oder einer anderen ähnlichen Verpackung (für die gängigsten sechsseitigen Verpackungsoptionen, die senkrecht zu und unter Vorder-, Rückseiten- und Rücken)."
 
 #: DB:work_type/description:7
 msgctxt "work_type"
@@ -7284,14 +7286,14 @@ msgid ""
 "The madrigal is a type of secular vocal music composition. In its original "
 "form, it had no instrumental accompaniment, although accompaniment is much "
 "more common in later madrigals."
-msgstr "Das Madrigal ist ein mehrstimmiges Vokalstück meist weltlichen Inhalts. Es ist ursprünglich eine sehr freie Gedichtform, die als Textgrundlage für eine Komposition diente (Singgedicht). Der Text beinhaltet zumeist weltliche Themen; das geistliche Pendant zum Madrigal bildet die Motette."
+msgstr "Das Madrigal ist eine Art weltliche Vokalmusikkomposition. In seiner ursprünglichen Form hatte es keine instrumentelle Begleitung, obwohl Begleitung bei späteren Madrigalen viel häufiger vorkommt."
 
 #: DB:work_type/description:24
 msgctxt "work_type"
 msgid ""
 "The operetta is a genre of light opera, in terms both of music and subject "
 "matter. Operettas are generally short and include spoken parts."
-msgstr "Die Operette ist ein musikalisches Bühnenwerk und bedeutet wörtlich „kleine Oper“ - entweder weil sie kürzer war als andere Werke (vor allem Einakter wurden als „Operette“ bezeichnet), weil sie „bloss“ eine Komödienhandlung hatte im Unterschied zu Opera seria oder Tragédie lyrique, oder weil nur wenige Figuren ohne Chor in ihr auftraten. Ausserdem wurden manche musikalischen Theaterwerke „Operette“ genannt, weil sie keine Gesangsvirtuosen erforderten, sondern von singenden Schauspielern ausgeführt werden konnten."
+msgstr "Die Operette ist ein Genre der leichten Oper, sowohl in Bezug auf die Musik als auch auf das Thema. Operetten sind in der Regel kurz und enthalten gesprochene Teile."
 
 #: DB:cover_art_archive.art_type/description:15
 msgctxt "cover_art_type"
@@ -7299,7 +7301,7 @@ msgid ""
 "The section on a CD, record or other media containing such data as matrix "
 "numbers. Usually found in the hub of a CD or the dead wax area of a vinyl "
 "record."
-msgstr ""
+msgstr "Der Abschnitt auf einer CD, einem Datensatz oder einem anderen Medium, der solche Daten wie Matrixnummern enthält. Normalerweise in der Nabe einer CD oder im toten Wachsbereich einer Schallplatte gefunden."
 
 #: DB:cover_art_archive.art_type/description:48
 msgctxt "cover_art_type"
@@ -7307,7 +7309,7 @@ msgid ""
 "The top of a box or other similar packaging (for most common six sided "
 "packaging options, the one perpendicular to and above front, back and "
 "spines)."
-msgstr ""
+msgstr "Die Oberseite einer Schachtel oder einer anderen ähnlichen Verpackung (für die gängigsten sechsseitigen Verpackungsoptionen diejenige senkrecht zu und über Vorder-, Rückseite und Rücken)."
 
 #: DB:release_packaging/description:1
 msgctxt "release_packaging"
@@ -7439,7 +7441,7 @@ msgstr "Tiśra-jāti ēka"
 #: DB:cover_art_archive.art_type/name:48
 msgctxt "cover_art_type"
 msgid "Top"
-msgstr ""
+msgstr "Top"
 
 #: DB:series_type/name:7
 msgctxt "series_type"
@@ -7499,7 +7501,7 @@ msgstr "Tala (karnatisch)"
 #: DB:work_attribute_type/name:31
 msgctxt "work_attribute_type"
 msgid "Tāla (Hindustani)"
-msgstr ""
+msgstr "Tāla (Hindustani)"
 
 #: DB:work_attribute_type_allowed_value/value:846
 msgctxt "work_attribute_type_allowed_value"
@@ -7548,7 +7550,7 @@ msgctxt "area_type"
 msgid ""
 "Used for any military bases that are large enough to be considered an area, "
 "not just a place."
-msgstr ""
+msgstr "Wird für alle Militärstützpunkte verwendet, die groß genug sind, um als Gebiet und nicht nur als Ort angesehen zu werden."
 
 #: DB:area_type/description:9
 msgctxt "area_type"
@@ -7556,7 +7558,7 @@ msgid ""
 "Used for semi-autonomous territories governed by indigenous peoples, such as"
 " Indian reserves/reservations in North America and indigenous territories in"
 " Central and South America."
-msgstr ""
+msgstr "Wird für halbautonome Gebiete verwendet, die von indigenen Völkern regiert werden, wie z. B. Indianerreservate/Reservate in Nordamerika und indigene Gebiete in Mittel- und Südamerika."
 
 #: DB:work_attribute_type/name:17
 msgctxt "work_attribute_type"
@@ -8079,7 +8081,7 @@ msgstr "Ēka"
 #: DB:work_attribute_type_allowed_value/value:831
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ēktāl"
-msgstr ""
+msgstr "Ēktāl"
 
 #: DB:work_attribute_type_allowed_value/value:436
 msgctxt "work_attribute_type_allowed_value"
@@ -8109,17 +8111,17 @@ msgstr "Śankarābharaṇaṁ"
 #: DB:work_attribute_type_allowed_value/value:1012
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śaṅkara"
-msgstr ""
+msgstr "Śaṅkara"
 
 #: DB:work_attribute_type_allowed_value/value:842
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śikhar"
-msgstr ""
+msgstr "Śikhar"
 
 #: DB:work_attribute_type_allowed_value/value:1021
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śivamat bhairav"
-msgstr ""
+msgstr "Śivamat bhairav"
 
 #: DB:work_attribute_type_allowed_value/value:240
 msgctxt "work_attribute_type_allowed_value"
@@ -8129,7 +8131,7 @@ msgstr "Śivaranjani"
 #: DB:work_attribute_type_allowed_value/value:1022
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śivaran̄jani"
-msgstr ""
+msgstr "Śivaran̄jani"
 
 #: DB:work_attribute_type_allowed_value/value:241
 #: DB:work_attribute_type_allowed_value/value:1027
@@ -8145,7 +8147,7 @@ msgstr "Śrīranjani"
 #: DB:work_attribute_type_allowed_value/value:1028
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śubhalakṣmi"
-msgstr ""
+msgstr "Śubhalakṣmi"
 
 #: DB:work_attribute_type_allowed_value/value:243
 msgctxt "work_attribute_type_allowed_value"
@@ -8175,37 +8177,37 @@ msgstr "Śuddasīmantini"
 #: DB:work_attribute_type_allowed_value/value:1029
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śuddh baradi"
-msgstr ""
+msgstr "Śuddh baradi"
 
 #: DB:work_attribute_type_allowed_value/value:1030
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śuddh basant"
-msgstr ""
+msgstr "Śuddh basant"
 
 #: DB:work_attribute_type_allowed_value/value:1031
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śuddh kalyāṇ"
-msgstr ""
+msgstr "Śuddh kalyāṇ"
 
 #: DB:work_attribute_type_allowed_value/value:1032
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śuddh mārū"
-msgstr ""
+msgstr "Śuddh mārū"
 
 #: DB:work_attribute_type_allowed_value/value:1033
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śuddh naṭa"
-msgstr ""
+msgstr "Śuddh naṭa"
 
 #: DB:work_attribute_type_allowed_value/value:1034
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śuddh sāraṅg"
-msgstr ""
+msgstr "Śuddh sāraṅg"
 
 #: DB:work_attribute_type_allowed_value/value:1039
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śyām kalyāṇ"
-msgstr ""
+msgstr "Śyām kalyāṇ"
 
 #: DB:work_attribute_type_allowed_value/value:254
 msgctxt "work_attribute_type_allowed_value"
@@ -8355,7 +8357,7 @@ msgstr "Şuğul"
 #: DB:work_attribute_type_allowed_value/value:894
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ḍāgori"
-msgstr ""
+msgstr "Ḍāgori"
 
 #: DB:work_attribute_type_allowed_value/value:227
 msgctxt "work_attribute_type_allowed_value"

@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 # Translators:
 # Jardel Alves <televinhetas@gmail.com>, 2019
 # Lukáš Lalinský <lalinsky@gmail.com>, 2020
 # Mateus, 2020
 # Mario Busch <mario_busch@mac.com>, 2021
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -17,14 +17,12 @@ msgstr ""
 "POT-Creation-Date: 2022-11-23 07:49+0100\n"
 "PO-Revision-Date: 2018-11-25 07:37+0000\n"
 "Last-Translator: Mario Busch <mario_busch@mac.com>, 2021\n"
-"Language-Team: Portuguese (Brazil) (https://www.transifex.com/musicbrainz/"
-"teams/13846/pt_BR/)\n"
-"Language: pt_BR\n"
+"Language-Team: Portuguese (Brazil) (https://www.transifex.com/musicbrainz/teams/13846/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
-"1000000 == 0 ? 1 : 2;\n"
+"Language: pt_BR\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6
 msgid "MusicBrainz Picard"
@@ -40,20 +38,20 @@ msgid ""
 "platform music tagger by MusicBrainz. It has the ability to identify audio "
 "files even without any existing metadata."
 msgstr ""
-"Você precisa limpar sua biblioteca de música? Picard é um marcador de música "
-"multiplataforma de código aberto da MusicBrainz. Ele tem a capacidade de "
+"Você precisa limpar sua biblioteca de música? Picard é um marcador de música"
+" multiplataforma de código aberto da MusicBrainz. Ele tem a capacidade de "
 "identificar arquivos de áudio, mesmo sem qualquer metadado existente."
 
 #: org.musicbrainz.Picard.appdata.xml.in:15
 msgid ""
-"Picard helps you organize your music collection by renaming your music files "
-"and sorting them into a folder structure exactly the way you want it. A "
+"Picard helps you organize your music collection by renaming your music files"
+" and sorting them into a folder structure exactly the way you want it. A "
 "variety of plugins are available and you can even write your own. Picard "
 "supports a wide range of audio formats and can also lookup an entire CD for "
 "you."
 msgstr ""
-"Picard te ajuda a organizar sua coleção de músicas ao renomear seus arquivos "
-"e organizá-los em uma pasta estruturada do jeito que você preferir. Um "
+"Picard te ajuda a organizar sua coleção de músicas ao renomear seus arquivos"
+" e organizá-los em uma pasta estruturada do jeito que você preferir. Um "
 "variedade de plugins estão disponíveis e você até pode criar o seu. Picard "
 "suporta uma grande gama de formatos de áudio e pode também procurar um CD "
 "inteiro para você."
@@ -79,15 +77,15 @@ msgid ""
 "AcoustID: Picard uses AcoustID audio fingerprints, allowing files to be "
 "identified by the actual music, even if they have no metadata."
 msgstr ""
-"AcoustID: O Picard usa impressões digitais de áudio AcoustID, permitindo que "
-"os arquivos sejam identificados pela música real, mesmo que eles não tenham "
-"metadados."
+"AcoustID: O Picard usa impressões digitais de áudio AcoustID, permitindo que"
+" os arquivos sejam identificados pela música real, mesmo que eles não tenham"
+" metadados."
 
 #: org.musicbrainz.Picard.appdata.xml.in:35
 msgid ""
 "Comprehensive database: Picard uses the open and community-maintained "
-"MusicBrainz database to provide accurate information about millions of music "
-"releases."
+"MusicBrainz database to provide accurate information about millions of music"
+" releases."
 msgstr ""
 "Banco de dados abrangente: o Picard usa o banco de dados aberto e mantido "
 "pela comunidade do MusicBrainz para fornecer informações precisas sobre "
@@ -104,7 +102,8 @@ msgid ""
 "selection of available plugins or write your own."
 msgstr ""
 "Suporte a plug-ins: se você precisar de um recurso específico, poderá "
-"escolher entre uma seleção de plug-ins disponíveis ou escrever seus próprios."
+"escolher entre uma seleção de plug-ins disponíveis ou escrever seus "
+"próprios."
 
 #: org.musicbrainz.Picard.appdata.xml.in:47
 msgid ""

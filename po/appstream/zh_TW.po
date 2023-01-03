@@ -2,10 +2,10 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 # Translators:
 # Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2020
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -14,12 +14,11 @@ msgstr ""
 "POT-Creation-Date: 2022-11-23 07:49+0100\n"
 "PO-Revision-Date: 2018-11-25 07:37+0000\n"
 "Last-Translator: Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2020\n"
-"Language-Team: Chinese (Taiwan) (https://www.transifex.com/musicbrainz/"
-"teams/13846/zh_TW/)\n"
-"Language: zh_TW\n"
+"Language-Team: Chinese (Taiwan) (https://www.transifex.com/musicbrainz/teams/13846/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6
@@ -36,20 +35,19 @@ msgid ""
 "platform music tagger by MusicBrainz. It has the ability to identify audio "
 "files even without any existing metadata."
 msgstr ""
-"您需要整理您的音樂收藏庫？Picard 是開放源代碼且跨平臺的音樂標籤管理程式，由 "
-"MusicBrainz 製作。就算沒有後設資料參考，它也有能力辨識音訊檔案。"
+"您需要整理您的音樂收藏庫？Picard 是開放源代碼且跨平臺的音樂標籤管理程式，由 MusicBrainz "
+"製作。就算沒有後設資料參考，它也有能力辨識音訊檔案。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:15
 msgid ""
-"Picard helps you organize your music collection by renaming your music files "
-"and sorting them into a folder structure exactly the way you want it. A "
+"Picard helps you organize your music collection by renaming your music files"
+" and sorting them into a folder structure exactly the way you want it. A "
 "variety of plugins are available and you can even write your own. Picard "
 "supports a wide range of audio formats and can also lookup an entire CD for "
 "you."
 msgstr ""
-"Picard 依照您指定的方式來重新命名音樂檔案，並整理進資料夾，藉此幫助您整理您的"
-"音樂收藏。Picard 有多種插件可使用，您甚至可以撰寫自己的插件。Picard 支援多種"
-"音樂格式，也可以為您查找整張 CD。"
+"Picard 依照您指定的方式來重新命名音樂檔案，並整理進資料夾，藉此幫助您整理您的音樂收藏。Picard "
+"有多種插件可使用，您甚至可以撰寫自己的插件。Picard 支援多種音樂格式，也可以為您查找整張 CD。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:22
 msgid "Tagging audio files has never been easier."
@@ -63,26 +61,20 @@ msgstr "功能:"
 msgid ""
 "Multiple formats: Picard supports all popular music formats, including MP3, "
 "FLAC, OGG, M4A, WMA, WAV, and more."
-msgstr ""
-"多種格式: Picard 支援所有流行的音樂格式，包含 MP3、FLAC、OGG、M4A、WMA、WAV，"
-"與其他。"
+msgstr "多種格式: Picard 支援所有流行的音樂格式，包含 MP3、FLAC、OGG、M4A、WMA、WAV，與其他。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:31
 msgid ""
 "AcoustID: Picard uses AcoustID audio fingerprints, allowing files to be "
 "identified by the actual music, even if they have no metadata."
-msgstr ""
-"AcoustID: Picard 使用 AcoustID 音訊特徵碼，來實際辨認音樂本體，即使它們缺少後"
-"設資料。"
+msgstr "AcoustID: Picard 使用 AcoustID 音訊特徵碼，來實際辨認音樂本體，即使它們缺少後設資料。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:35
 msgid ""
 "Comprehensive database: Picard uses the open and community-maintained "
-"MusicBrainz database to provide accurate information about millions of music "
-"releases."
-msgstr ""
-"綜合資料庫: Picard 使用開放且由社群維護的 MusicBrainz 資料庫來提供上百萬筆音"
-"樂發行品的準確資訊。"
+"MusicBrainz database to provide accurate information about millions of music"
+" releases."
+msgstr "綜合資料庫: Picard 使用開放且由社群維護的 MusicBrainz 資料庫來提供上百萬筆音樂發行品的準確資訊。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:40
 msgid "CD lookups: Picard can lookup entire music CDs with a click."
@@ -92,18 +84,14 @@ msgstr "CD 查找: Picard 可以按一下就查找整張音樂 CD。"
 msgid ""
 "Plugin support: If you need a particular feature, you can choose from a "
 "selection of available plugins or write your own."
-msgstr ""
-"套件支援: 如果您需要特別功能，您可以從預先提供的套件中選擇，或是製作您自己的"
-"套件。"
+msgstr "套件支援: 如果您需要特別功能，您可以從預先提供的套件中選擇，或是製作您自己的套件。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:47
 msgid ""
 "Scripting: A flexible but easy to learn scripting language allows you to "
 "exactly specify how your music files will be named and how the tags will "
 "look like."
-msgstr ""
-"腳本: 彈性但易學的腳本語言，讓您可以準確指定您的音樂檔案如何命名，與如何上標"
-"籤。"
+msgstr "腳本: 彈性但易學的腳本語言，讓您可以準確指定您的音樂檔案如何命名，與如何上標籤。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:52
 msgid ""
@@ -116,9 +104,7 @@ msgid ""
 "Open Source: Picard is licensed under the GNU General Public License 2.0 or "
 "later, and is hosted on GitHub where it is actively developed by some "
 "awesome developers."
-msgstr ""
-"開放源代碼: Picard 基於 GNU 通用公共授權條款 2.0 或其之後的版本，且在有優秀開"
-"發者所開發的 GitHub 上託管。"
+msgstr "開放源代碼: Picard 基於 GNU 通用公共授權條款 2.0 或其之後的版本，且在有優秀開發者所開發的 GitHub 上託管。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:102
 msgid "MetaBrainz Foundation"
