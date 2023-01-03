@@ -1,3 +1,26 @@
+# Version 2.9.0a1
+
+## Bugfixes
+
+- [PICARD-2576](https://tickets.metabrainz.org/browse/PICARD-2576) - Options window minimum height does not fit on smaller screens
+- [PICARD-2599](https://tickets.metabrainz.org/browse/PICARD-2599) - Crash on plugin install / update
+
+## New Features
+
+- [PICARD-2471](https://tickets.metabrainz.org/browse/PICARD-2471) - Restrict Picard to a single instance, open new files in existing instance
+- [PICARD-2519](https://tickets.metabrainz.org/browse/PICARD-2519) - Allow passing supported URLs on command line
+- [PICARD-2526](https://tickets.metabrainz.org/browse/PICARD-2526) - Allow starting processing actions from the command line
+
+## Improvements
+
+- [PICARD-356](https://tickets.metabrainz.org/browse/PICARD-356) - Replace Windows incompatible characters with user defined character
+- [PICARD-2486](https://tickets.metabrainz.org/browse/PICARD-2486) - Add text-based comparison scripting functions
+- [PICARD-2550](https://tickets.metabrainz.org/browse/PICARD-2550) - Support dBpoweramp secure ripping log files for disc ID lookup
+- [PICARD-2553](https://tickets.metabrainz.org/browse/PICARD-2553) - Add option to use underscores instead of spaces in file naming
+- [PICARD-2567](https://tickets.metabrainz.org/browse/PICARD-2567) - Support fre:ac ripping log for disc ID lookup
+- [PICARD-2595](https://tickets.metabrainz.org/browse/PICARD-2595) - Customizable replacement character for directory separators
+
+
 # Version 2.8.5 - 2022-12-06
 
 ## Bugfixes
