@@ -56,6 +56,7 @@ ACOUSTID_KEY = 'v8pQ6oyB'
 ACOUSTID_HOST = 'api.acoustid.org'
 ACOUSTID_PORT = 443
 FPCALC_NAMES = ['fpcalc', 'pyfpcalc']
+DEFAULT_FPCALC_THREADS = 2
 
 # MB OAuth client credentials
 MUSICBRAINZ_OAUTH_CLIENT_ID = 'ACa9wsDX19cLp-AeEP-vVw'
