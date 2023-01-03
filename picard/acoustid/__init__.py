@@ -7,6 +7,7 @@
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2018-2021 Laurent Monin
 # Copyright (C) 2018-2022 Philipp Wolfer
+# Copyright (C) 2023 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -73,7 +74,6 @@ class AcoustIDClient(QtCore.QObject):
         super().__init__()
         self._queue = deque()
         self._running = 0
-        self._max_processes = 2
         self._acoustid_api = acoustid_api
 
     def init(self):
@@ -81,6 +81,10 @@ class AcoustIDClient(QtCore.QObject):
 
     def done(self):
         pass
+
+    def get_max_processes(self):
+        config = get_config()
+        return config.setting['fpcalc_threads'] or 2
 
     def _on_lookup_finished(self, task, document, http, error):
         doc = {}
@@ -286,7 +290,7 @@ class AcoustIDClient(QtCore.QObject):
             return
         self._queue.append(task)
         self._fpcalc = get_fpcalc()
-        if self._running < self._max_processes:
+        if self._running < self.get_max_processes():
             self._run_next_task()
 
     def fingerprint(self, file, next_func):

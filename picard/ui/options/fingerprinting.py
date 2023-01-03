@@ -7,6 +7,7 @@
 # Copyright (C) 2013, 2018, 2020-2021 Laurent Monin
 # Copyright (C) 2015, 2020-2022 Philipp Wolfer
 # Copyright (C) 2016-2017 Sambhav Kothari
+# Copyright (C) 2023 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -34,6 +35,7 @@ from PyQt5 import (
 from picard.acoustid import find_fpcalc
 from picard.config import (
     BoolOption,
+    IntOption,
     TextOption,
     get_config,
 )
@@ -69,6 +71,7 @@ class FingerprintingOptionsPage(OptionsPage):
         TextOption("setting", "fingerprinting_system", "acoustid"),
         TextOption("setting", "acoustid_fpcalc", ""),
         TextOption("setting", "acoustid_apikey", ""),
+        IntOption("setting", "fpcalc_threads", 2),
     ]
 
     def __init__(self, parent=None):
@@ -95,6 +98,7 @@ class FingerprintingOptionsPage(OptionsPage):
         self.ui.acoustid_apikey.setText(config.setting["acoustid_apikey"])
         self.ui.ignore_existing_acoustid_fingerprints.setChecked(config.setting["ignore_existing_acoustid_fingerprints"])
         self.ui.save_acoustid_fingerprints.setChecked(config.setting["save_acoustid_fingerprints"])
+        self.ui.fpcalc_threads.setValue(config.setting["fpcalc_threads"])
         self.update_groupboxes()
 
     def save(self):
@@ -107,6 +111,7 @@ class FingerprintingOptionsPage(OptionsPage):
         config.setting["acoustid_apikey"] = self.ui.acoustid_apikey.text()
         config.setting["ignore_existing_acoustid_fingerprints"] = self.ui.ignore_existing_acoustid_fingerprints.isChecked()
         config.setting["save_acoustid_fingerprints"] = self.ui.save_acoustid_fingerprints.isChecked()
+        config.setting["fpcalc_threads"] = self.ui.fpcalc_threads.value()
 
     def update_groupboxes(self):
         if self.ui.use_acoustid.isChecked():
