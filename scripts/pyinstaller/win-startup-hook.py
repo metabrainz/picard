@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019, 2021 Philipp Wolfer
+# Copyright (C) 2019, 2021, 2023 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@
 
 from ctypes import windll
 import os
+import os.path
 import sys
 
 
@@ -32,4 +33,8 @@ if windll.kernel32.AttachConsole(-1):
     sys.stderr = open('CON', 'w')
 
 # Ensure bundled DLLs are loaded
-os.environ['PATH'] = sys._MEIPASS + os.pathsep + os.environ['PATH']
+os.environ['PATH'] = os.pathsep.join((
+    os.path.normpath(sys._MEIPASS),
+    os.path.normpath(os.path.join(sys._MEIPASS, 'PyQt5\\Qt5\\bin')),
+    os.environ['PATH'],
+))
