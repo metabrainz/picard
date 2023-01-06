@@ -701,11 +701,11 @@ class Tagger(QtWidgets.QApplication):
         self._acoustid.done()
         if self.pipe_handler:
             self.pipe_handler.pipe_running = False
+        self.webservice.stop()
         self.thread_pool.waitForDone()
         self.save_thread_pool.waitForDone()
         self.priority_thread_pool.waitForDone()
         self.browser_integration.stop()
-        self.webservice.stop()
         self.run_cleanup()
         QtCore.QCoreApplication.processEvents()
 
