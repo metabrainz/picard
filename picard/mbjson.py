@@ -7,7 +7,7 @@
 # Copyright (C) 2017-2022 Laurent Monin
 # Copyright (C) 2018-2022 Philipp Wolfer
 # Copyright (C) 2019 Michael Wiencek
-# Copyright (C) 2020 David Kellner
+# Copyright (C) 2020, 2023 David Kellner
 # Copyright (C) 2020 dukeyin
 # Copyright (C) 2021 Bob Swift
 # Copyright (C) 2021 Vladislav Karbovskii
@@ -180,6 +180,10 @@ def _relations_to_metadata(relations, m, instrumental=False, config=None):
             m.add_unique(name, value)
             if name == 'composer':
                 m.add_unique('composersort', valuesort)
+            elif name == 'lyricist':
+                m.add_unique('~lyricistsort', valuesort)
+            elif name == 'writer':
+                m.add_unique('~writersort', valuesort)
         elif relation['target-type'] == 'work':
             if relation['type'] == 'performance':
                 performance_attributes = _relation_attributes(relation)
