@@ -9,6 +9,7 @@
 # Copyright (C) 2020 dukeyin
 # Copyright (C) 2021 Bob Swift
 # Copyright (C) 2021 Vladislav Karbovskii
+# Copyright (C) 2023 David Kellner
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -216,6 +217,7 @@ class RecordingTest(MBJSONTest):
         self.assertEqual(m['work'], 'Thinking Out Loud')
         self.assertEqual(m['~workcomment'], 'Ed Sheeran song')
         self.assertEqual(m['writer'], 'Ed Sheeran; Amy Wadge')
+        self.assertEqual(m['~writersort'], 'Sheeran, Ed; Wadge, Amy')
         self.assertEqual(m['~artists_sort'], 'Sheeran, Ed')
         self.assertEqual(m['~length'], '4:41')
         self.assertEqual(m['~recordingtitle'], 'Thinking Out Loud')
@@ -295,6 +297,7 @@ class MultiWorkRecordingTest(MBJSONTest):
         self.assertIn('instrumental', m.getall('~performance_attributes'))
         self.assertEqual(m['language'], 'jpn; eng; zxx')
         self.assertEqual(m['lyricist'], 'Satoru Kōsaki; Aki Hata; Minoru Shiraishi')
+        self.assertEqual(m['~lyricistsort'], 'Kōsaki, Satoru; Hata, Aki; Shiraishi, Minoru')
 
 
 class RecordingVideoTest(MBJSONTest):
