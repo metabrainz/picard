@@ -446,14 +446,11 @@ def recording_to_metadata(node, m, track=None):
                     add_genres_from_node(artist, artist_obj)
         elif key == 'relations':
             _relations_to_metadata(value, m, config=config)
-        elif track and key in {'genres', 'tags'}:
-            add_genres(value, track)
-        elif track and key in {'user-genres', 'user-tags'}:
-            add_user_genres(value, track)
         elif key == 'isrcs':
             add_isrcs_to_metadata(value, m)
         elif key == 'video' and value:
             m['~video'] = '1'
+    add_genres_from_node(node, track)
     if m['title']:
         m['~recordingtitle'] = m['title']
     if m.length:
