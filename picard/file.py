@@ -691,7 +691,8 @@ class File(QtCore.QObject, Item):
     def update(self, signal=True):
         thread.run_task(
             self._compare_metadata,
-            partial(self._compare_metadata_finished, signal)
+            partial(self._compare_metadata_finished, signal),
+            thread_pool=self.tagger.priority_thread_pool
         )
 
     def _compare_metadata(self):
