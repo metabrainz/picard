@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2018 Wieland Hoffmann
-# Copyright (C) 2019-2022 Philipp Wolfer
+# Copyright (C) 2019-2023 Philipp Wolfer
 # Copyright (C) 2020-2021 Laurent Monin
 # Copyright (C) 2021 Bob Swift
 #
@@ -43,6 +43,12 @@ from picard import (
 from picard.releasegroup import ReleaseGroup
 
 
+class FakeThreadPool(QtCore.QObject):
+
+    def start(self, runnable, priority):
+        runnable.run()
+
+
 class FakeTagger(QtCore.QObject):
 
     tagger_stats_changed = QtCore.pyqtSignal()
@@ -55,6 +61,7 @@ class FakeTagger(QtCore.QObject):
         self.exit_cleanup = []
         self.files = {}
         self.stopping = False
+        self.thread_pool = FakeThreadPool()
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)
@@ -75,6 +82,7 @@ class PicardTestCase(unittest.TestCase):
         log.set_level(logging.DEBUG)
         self.tagger = FakeTagger()
         QtCore.QObject.tagger = self.tagger
+        QtCore.QCoreApplication.instance = lambda: self.tagger
         self.addCleanup(self.tagger.run_cleanup)
         self.init_config()
 
