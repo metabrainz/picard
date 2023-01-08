@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2004 Robert Kaye
 # Copyright (C) 2006-2009, 2011-2013, 2017 Lukáš Lalinský
-# Copyright (C) 2007-2011, 2015, 2018-2022 Philipp Wolfer
+# Copyright (C) 2007-2011, 2015, 2018-2023 Philipp Wolfer
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008-2009 Nikolai Prokoschenko
 # Copyright (C) 2009 Carlin Mangar
@@ -690,6 +690,12 @@ class File(QtCore.QObject, Item):
             yield name
 
     def update(self, signal=True):
+        thread.run_task(
+            self._compare_metadata,
+            partial(self._compare_metadata_finished, signal)
+        )
+
+    def _compare_metadata(self):
         if not (self.state == File.ERROR and self.errors):
             config = get_config()
             clear_existing_tags = config.setting["clear_existing_tags"]
@@ -717,6 +723,10 @@ class File(QtCore.QObject, Item):
                         self.state = File.CHANGED
                     else:
                         self.state = File.NORMAL
+
+    def _compare_metadata_finished(self, signal, result=None, error=None):
+        if error:
+            log.error("Comparing file metadata for %r failed: %s", self, error)
         if signal:
             log.debug("Updating file %r", self)
             self.update_item()
