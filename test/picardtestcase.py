@@ -62,6 +62,7 @@ class FakeTagger(QtCore.QObject):
         self.files = {}
         self.stopping = False
         self.thread_pool = FakeThreadPool()
+        self.priority_thread_pool = FakeThreadPool()
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)
