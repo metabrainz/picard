@@ -275,7 +275,6 @@ class File(QtCore.QObject, Item):
             if fingerprints:
                 self.set_acoustid_fingerprint(fingerprints[0])
         run_file_post_load_processors(self)
-        self.update()
         callback(self)
 
     def _copy_loaded_metadata(self, metadata, postprocessors=None):
@@ -683,9 +682,9 @@ class File(QtCore.QObject, Item):
         for name in set(self.metadata) | set(self.orig_metadata):
             if name.startswith('~'):
                 continue
-            if not self.supports_tag(name):
-                continue
             if name in ignored_tags:
+                continue
+            if not self.supports_tag(name):
                 continue
             yield name
 
