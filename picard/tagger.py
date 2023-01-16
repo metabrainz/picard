@@ -1243,16 +1243,15 @@ class Tagger(QtWidgets.QApplication):
             log.error('Error while clustering: %r', error)
             return
 
-        with self.window.ignore_selection_changes:
-            self.window.set_sorting(False)
-            for file_cluster in process_events_iter(result):
-                files = set(file_cluster.files)
-                if len(files) > 1:
-                    cluster = self.load_cluster(file_cluster.title, file_cluster.artist)
-                else:
-                    cluster = self.unclustered_files
-                cluster.add_files(files)
-            self.window.set_sorting(True)
+        self.window.set_sorting(False)
+        for file_cluster in process_events_iter(result):
+            files = set(file_cluster.files)
+            if len(files) > 1:
+                cluster = self.load_cluster(file_cluster.title, file_cluster.artist)
+            else:
+                cluster = self.unclustered_files
+            cluster.add_files(files)
+        self.window.set_sorting(True)
 
         if callback:
             callback()
