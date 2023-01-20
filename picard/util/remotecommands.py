@@ -64,7 +64,7 @@ REMOTE_COMMANDS = {
     "LOOKUP_CD": RemoteCommand(
         "handle_command_lookup_cd",
         help_text="Read CD from the selected drive and lookup on MusicBrainz. "
-        "Without argument, it defaults to the first (alphabetically) available disc drive",
+        "Without argument, it defaults to the first (alphabetically) available disc drive.",
         help_args="[device/log file]",
     ),
     "PAUSE": RemoteCommand(
@@ -74,7 +74,9 @@ REMOTE_COMMANDS = {
     ),
     "QUIT": RemoteCommand(
         "handle_command_quit",
-        help_text="Exit the running instance of Picard.",
+        help_text="Exit the running instance of Picard. "
+        "Use the argument 'FORCE' to bypass Picard's unsaved files check.",
+        help_args="[FORCE]",
     ),
     "REMOVE": RemoteCommand(
         "handle_command_remove",
