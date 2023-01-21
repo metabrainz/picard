@@ -64,7 +64,7 @@ REMOTE_COMMANDS = {
     "LOOKUP_CD": RemoteCommand(
         "handle_command_lookup_cd",
         help_text="Read CD from the selected drive and lookup on MusicBrainz. "
-        "Without argument, it defaults to the first (alphabetically) available disc drive.",
+        "Without argument, it defaults to the first (alphabetically) available disc drive",
         help_args="[device/log file]",
     ),
     "PAUSE": RemoteCommand(
