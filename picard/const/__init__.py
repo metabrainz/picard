@@ -12,7 +12,7 @@
 # Copyright (C) 2017 Antonio Larrosa
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
-# Copyright (C) 2018, 2021 Bob Swift
+# Copyright (C) 2018, 2021, 2023 Bob Swift
 # Copyright (C) 2020 RomFouq
 # Copyright (C) 2021 Gabriel Ferreira
 # Copyright (C) 2021 Vladislav Karbovskii
@@ -196,3 +196,5 @@ DEFAULT_NUMBERED_TITLE_FORMAT = N_("{title} ({count})")
 DEFAULT_NAMING_PRESET_ID = "Preset 1"
 
 SCRIPT_LANGUAGE_VERSION = '1.1'
+
+DEFAULT_TIME_FORMAT = '%Y-%m-%d %H:%M:%S'

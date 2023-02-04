@@ -11,6 +11,7 @@
 # Copyright (C) 2013-2014, 2019-2021 Laurent Monin
 # Copyright (C) 2013-2015, 2017 Sophist-UK
 # Copyright (C) 2019 Zenara Daley
+# Copyright (C) 2023 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -134,6 +135,8 @@ PRESERVED_TAGS = (
     '~dirname',
     '~extension',
     '~filename',
+    '~file_created_timestamp',
+    '~file_modified_timestamp',
     '~format',
     '~sample_rate',
     '~video',

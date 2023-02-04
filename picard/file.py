@@ -25,7 +25,7 @@
 # Copyright (C) 2019 Joel Lintunen
 # Copyright (C) 2020 Ray Bouchard
 # Copyright (C) 2020-2021 Gabriel Ferreira
-# Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021, 2023 Bob Swift
 # Copyright (C) 2021 Petit Minion
 #
 # This program is free software; you can redistribute it and/or
@@ -54,6 +54,7 @@ import os
 import os.path
 import re
 import shutil
+import time
 
 from PyQt5 import QtCore
 
@@ -62,6 +63,7 @@ from picard import (
     log,
 )
 from picard.config import get_config
+from picard.const import DEFAULT_TIME_FORMAT
 from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
@@ -778,6 +780,17 @@ class File(QtCore.QObject, Item):
         filename, extension = os.path.splitext(os.path.basename(self.filename))
         metadata['~filename'] = filename
         metadata['~extension'] = extension.lower()[1:]
+
+        try:
+            created = os.path.getctime(self.filename)
+            created_timestamp = time.strftime(DEFAULT_TIME_FORMAT, time.localtime(created))
+            metadata['~file_created_timestamp'] = created_timestamp
+
+            modified = os.path.getmtime(self.filename)
+            modified_timestamp = time.strftime(DEFAULT_TIME_FORMAT, time.localtime(modified))
+            metadata['~file_modified_timestamp'] = modified_timestamp
+        except OSError as ex:
+            log.error(f"File Timestamps Error: {ex}")
 
     @property
     def state(self):
