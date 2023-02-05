@@ -74,7 +74,9 @@ REMOTE_COMMANDS = {
     ),
     "QUIT": RemoteCommand(
         "handle_command_quit",
-        help_text="Exit the running instance of Picard.",
+        help_text="Exit the running instance of Picard. "
+        "Use the argument 'FORCE' to bypass Picard's unsaved files check.",
+        help_args="[FORCE]",
     ),
     "REMOVE": RemoteCommand(
         "handle_command_remove",
