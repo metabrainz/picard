@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019-2021 Philipp Wolfer
+# Copyright (C) 2019-2021, 2023 Philipp Wolfer
 # Copyright (C) 2020 Julius Michaelis
 # Copyright (C) 2020-2021 Laurent Monin
 # Copyright (C) 2021 Gabriel Ferreira
@@ -67,30 +67,34 @@ class AbstractProgressStatusIndicator:
         raise NotImplementedError
 
 
-if IS_WIN:
-    from PyQt6.QtWinExtras import QWinTaskbarButton
+# FIXME: QtWinExtras got removed in Qt6
+# See: https://www.qt.io/blog/qt-extras-modules-in-qt-6
+#      https://bugreports.qt.io/browse/QTBUG-89564
+#      https://bugreports.qt.io/browse/QTBUG-94008
+# if IS_WIN:
+#     from PyQt6.QtWinExtras import QWinTaskbarButton
 
-    class WindowsTaskbarStatusIndicator(AbstractProgressStatusIndicator):
-        def __init__(self, window):
-            super().__init__()
-            taskbar_button = QWinTaskbarButton(window)
-            taskbar_button.setWindow(window)
-            self._progress = taskbar_button.progress()
+#     class WindowsTaskbarStatusIndicator(AbstractProgressStatusIndicator):
+#         def __init__(self, window):
+#             super().__init__()
+#             taskbar_button = QWinTaskbarButton(window)
+#             taskbar_button.setWindow(window)
+#             self._progress = taskbar_button.progress()
 
-        @property
-        def is_available(self):
-            return bool(self._progress)
+#         @property
+#         def is_available(self):
+#             return bool(self._progress)
 
-        def hide_progress(self):
-            self._progress.hide()
+#         def hide_progress(self):
+#             self._progress.hide()
 
-        def set_progress(self, progress):
-            self._progress.setValue(int(progress * 100))
-            self._progress.show()
+#         def set_progress(self, progress):
+#             self._progress.setValue(int(progress * 100))
+#             self._progress.show()
 
-    DesktopStatusIndicator = WindowsTaskbarStatusIndicator
+#     DesktopStatusIndicator = WindowsTaskbarStatusIndicator
 
-elif not (IS_MACOS or IS_HAIKU):
+if not (IS_WIN or IS_MACOS or IS_HAIKU):
     QDBusConnection = None
 
     try:
