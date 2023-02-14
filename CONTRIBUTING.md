@@ -91,6 +91,7 @@ metadata specifications and to the tag mapping tables used by various audio soft
 - [ASF / WMA](http://msdn.microsoft.com/en-us/library/ms867702.aspx)
 - MP4: See iTunes Metadata Format Specification (was available at https://developer.apple.com/, but does not seem to be available anymore)
 - [RIFF Tags](https://exiftool.org/TagNames/RIFF.html) / [Resource Interchange File Format: INFO List Chunk](https://www.tactilemedia.com/info/MCI_Control_Info.html) / [Multimedia Programming Interface and Data Specifications 1.0](http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/Docs/riffmci.pdf)
+- [Mutagen Spec Collection](https://mutagen-specs.readthedocs.io/en/latest/)
 
 
 ### Tag mapping tables
