@@ -82,7 +82,7 @@ be compatible with existing software as good as possible. Below are links to rel
 metadata specifications and to the tag mapping tables used by various audio software.
 
 ### Format specs
-- [ID3](http://id3.org/Developer%20Information)
+- [ID3](https://github.com/id3/ID3v2.4)
 - [VorbisComment](https://wiki.xiph.org/VorbisComment)
 - [OggOpus](https://wiki.xiph.org/OggOpus#Comment_Header) (in addition to Vorbis Comment spec)
 - [RFC 7845 - Ogg Encapsulation for the Opus Audio Codec](https://tools.ietf.org/html/rfc7845#section-5.2.1)
@@ -110,6 +110,7 @@ metadata specifications and to the tag mapping tables used by various audio soft
 - [SlimServerSupportedTags - SqueezeboxWiki](http://wiki.slimdevices.com/index.php/SlimServerSupportedTags)
 - [Music Player Daemon 0.21.2 documentation](https://mpd.readthedocs.io/en/stable/protocol.html#tags)
 - [Metadata Matrix – Pioneer DJ](https://forums.pioneerdj.com/hc/en-us/articles/360024701851-Metadata-Matrix)
+- [DJ apps metadata matrix](https://docs.google.com/spreadsheets/d/1zhIJPOtYIueV72Gd81aVnbSa6dIA-azq9fnGC2rHUzo/edit?usp=sharing)
 
 Also relevant:
 
