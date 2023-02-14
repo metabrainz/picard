@@ -74,6 +74,13 @@ jobs:
         CPPFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-version }}
         LDFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-version }}
         LINKFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-version }}
+    - name: Install patched mutagen
+      run: |
+        mkdir -p build
+        cd build
+        git clone -b release-1.46-picard --single-branch --depth 1 https://github.com/phw/mutagen.git
+        cd mutagen
+        pip3 install .
     - name: Install dependencies
       run: |
         pip3 install -r requirements-build.txt
@@ -144,6 +151,13 @@ jobs:
         DISCID_SHA256SUM: c9486ece9796584a5ce5cf49efe88ada4454c24fa6f028c8bde1aaef28e99853
         FPCALC_VERSION: 1.5.1
         FPCALC_SHA256SUM: 36b478e16aa69f757f376645db0d436073a42c0097b6bb2677109e7835b59bbc
+    - name: Install patched mutagen
+      run: |
+        New-Item -Name .\build -ItemType Directory -Force
+        cd build
+        git clone -b release-1.46-picard --single-branch --depth 1 https://github.com/phw/mutagen.git
+        cd mutagen
+        pip install .
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
