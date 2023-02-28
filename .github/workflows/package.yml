@@ -35,7 +35,7 @@ jobs:
           python-sha256sum: f4de33ad3ef09c3e31196b296aec761eabab4564fc8c25e50ea99edd01969819
     env:
       DISCID_VERSION: 0.6.3
-      DISCID_SHA256SUM: 0f9efc7ab65f24da57673547304b0143ee89f33638beadcc20a8401e077b3c25
+      DISCID_SHA256SUM: 8bca27e2f621c7813a6a9951fd573b31754a6fb51551a373c1acea1aa188adeb
       FPCALC_VERSION: 1.5.1
       FPCALC_SHA256SUM: d4d8faff4b5f7c558d9be053da47804f9501eaa6c2f87906a9f040f38d61c860
       PYTHON_VERSION: ${{ matrix.setup.python-version }}
@@ -46,11 +46,6 @@ jobs:
       with:
         fetch-depth: 0  # Fetch entire history, needed for setting the build number
     - run: git fetch --depth=1 origin +refs/tags/release-*:refs/tags/release-*
-    - name: Cache libdiscid
-      uses: actions/cache@v3
-      with:
-        path: ~/libdiscid
-        key: ${{ runner.os }}-libdiscid-${{ env.DISCID_VERSION }}-${{ env.MACOSX_DEPLOYMENT_TARGET }}
     - name: Setup macOS build environment
       run: |
         ./scripts/package/macos-setup.sh
