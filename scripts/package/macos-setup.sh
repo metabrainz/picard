@@ -15,17 +15,13 @@ if [ -n "$PYTHON_VERSION" ]; then
 fi
 
 # Install libdiscid
-if [ ! -f "$HOME/libdiscid/lib/libdiscid.0.dylib" ]; then
-  DISCID_FILENAME="libdiscid-$DISCID_VERSION.tar.gz"
+if [ -n "$DISCID_VERSION" ]; then
+  DISCID_FILENAME="libdiscid-$DISCID_VERSION-mac.zip"
   wget "ftp://ftp.musicbrainz.org/pub/musicbrainz/libdiscid/$DISCID_FILENAME"
   echo "$DISCID_SHA256SUM  $DISCID_FILENAME" | shasum --algorithm 256 --check --status
-  tar -xf "$DISCID_FILENAME"
-  cd "libdiscid-$DISCID_VERSION"
-  ./configure --prefix="$HOME/libdiscid"
-  make install
-  cd ..
+  unzip "$DISCID_FILENAME"
+  cp "libdiscid-macos-$DISCID_VERSION/x86_64/libdiscid.0.dylib" .
 fi
-cp "$HOME/libdiscid/lib/libdiscid.0.dylib" .
 
 # Install fpcalc
 if [ -n "$FPCALC_VERSION" ]; then
