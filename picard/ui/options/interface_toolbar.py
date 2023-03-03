@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2007-2008 Lukáš Lalinský
 # Copyright (C) 2008 Will
-# Copyright (C) 2009, 2019-2022 Philipp Wolfer
+# Copyright (C) 2009, 2019-2023 Philipp Wolfer
 # Copyright (C) 2011, 2013 Michael Wiencek
 # Copyright (C) 2013, 2019 Wieland Hoffmann
 # Copyright (C) 2013-2014, 2018, 2020-2021 Laurent Monin
@@ -118,6 +118,10 @@ class InterfaceToolbarOptionsPage(OptionsPage):
         'tags_from_filenames_action': {
             'label': N_('Parse File Names...'),
             'icon': 'picard-tags-from-filename'
+        },
+        'similar_items_search_action': {
+            'label': N_('Similar items'),
+            'icon': 'system-search'
         },
     }
     ACTION_NAMES = set(TOOLBAR_BUTTONS.keys())
