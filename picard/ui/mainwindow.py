@@ -657,6 +657,16 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.submit_file_as_release_action = action
 
     @MainWindowActions.add()
+    def _create_similar_items_search_action(self):
+        action = QtWidgets.QAction(icontheme.lookup('system-search'), _("Search for similar items..."), self)
+        action.setIconText(_("Similar items"))
+        action.setStatusTip(_("View similar releases or recordings and optionally choose a different one"))
+        action.setEnabled(False)
+        action.setShortcut(QtGui.QKeySequence(_("Ctrl+T")))
+        action.triggered.connect(self.show_similar_items_search)
+        self.similar_items_search_action = action
+
+    @MainWindowActions.add()
     def _create_album_search_action(self):
         action = QtWidgets.QAction(icontheme.lookup('system-search'), _("Search for similar albums..."), self)
         action.setStatusTip(_("View similar releases and optionally choose a different release"))
@@ -1040,8 +1050,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addAction(self.analyze_action)
         menu.addAction(self.cluster_action)
         menu.addAction(self.browser_lookup_action)
-        menu.addAction(self.track_search_action)
-        menu.addAction(self.album_search_action)
+        menu.addAction(self.similar_items_search_action)
         menu.addAction(self.album_other_versions_action)
         menu.addSeparator()
         menu.addAction(self.generate_fingerprints_action)
@@ -1400,6 +1409,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 return obj
         return None
 
+    def show_similar_items_search(self):
+        obj = self.get_first_obj_with_type(Cluster)
+        if obj:
+            self.show_more_albums()
+        else:
+            self.show_more_tracks()
+
     def show_more_tracks(self):
         if not self.selected_objects:
             return
@@ -1525,7 +1541,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         can_browser_lookup = bool(single and single.can_browser_lookup())
         is_file = bool(single and isinstance(single, (File, Track)))
         is_album = bool(single and isinstance(single, Album))
-        is_cluster = bool(single and isinstance(single, Cluster))
+        is_cluster = bool(single and isinstance(single, Cluster) and not single.special)
 
         if not self.selected_objects:
             have_objects = have_files = False
@@ -1576,6 +1592,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.submit_file_as_release_action.setEnabled(have_files)
         files = self.get_selected_or_unmatched_files()
         self.tags_from_filenames_action.setEnabled(bool(files))
+        self.similar_items_search_action.setEnabled(is_file or is_cluster)
         self.track_search_action.setEnabled(is_file)
         self.album_search_action.setEnabled(is_cluster)
         self.album_other_versions_action.setEnabled(is_album)
