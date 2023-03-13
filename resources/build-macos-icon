@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd $(dirname $0)
+iconutil -c icns ./img-src/macos-picard.iconset/ -o ../picard.icns
