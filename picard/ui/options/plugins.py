@@ -605,6 +605,7 @@ class PluginsOptionsPage(OptionsPage):
             (_("Authors"), self.link_authors(plugin.author)),
             (_("License"), plugin.license),
             (_("Files"), escape(plugin.files_list)),
+            (_("User Guide"), self.link_user_guide(plugin.user_guide_url)),
         ]
         for label, value in infos:
             if value:
@@ -627,6 +628,14 @@ class PluginsOptionsPage(OptionsPage):
             else:
                 formatted_authors.append(escape(author))
         return ', '.join(formatted_authors)
+
+    @staticmethod
+    def link_user_guide(user_guide):
+        if user_guide:
+            user_guide = '<a href="{url}">{url}</a>'.format(
+                url=escape(user_guide)
+            )
+        return user_guide
 
     def change_details(self):
         item = self.selected_item()
