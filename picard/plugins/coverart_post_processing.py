@@ -13,17 +13,15 @@ PLUGIN_LICENSE_URL = "https://www.gnu.org/licenses/gpl-2.0.html"
 from PIL import Image
 from io import BytesIO
 from picard.util import imageinfo
-from picard import config, log
-from picard.metadata import (register_album_metadata_processor,
-                           register_track_metadata_processor)
+from picard import log
+from picard.metadata import register_track_metadata_processor
 from picard.plugin import PluginPriority
 
-MAX_DIMENSION = 600  # Set maximum allowable dimensions of image in pixels
-MIN_DIMENSION = 400  # Set minimum allowable dimensions of image in pixels
-    
+MAX_DIMENSION = 600 # Set maximum allowable dimensions of image in pixels
+MIN_DIMENSION = 400 # Set minimum allowable dimensions of image in pixels
+
 def ignore_image(img_data):
     """Ignore The image file if the dimensions are smaller than a predefined"""
-    
     (width, height, mimetype, extension,
              datalength) = imageinfo.identify(img_data)
     if width < MIN_DIMENSION or height < MIN_DIMENSION:
@@ -69,7 +67,7 @@ def Track_images(album, metadata, track, release):
                 else:
                     img_data_edited = resize_image(image_data)
                     metadata.images[id].set_data(img_data_edited)
-                    
+
                     log.debug("Cover art image processed: %r [%s]" % (
                         image,
                         image.imageinfo_as_string())
