@@ -1,9 +1,9 @@
-PLUGIN_NAME = "Cover Art Post Processing"
+PLUGIN_NAME = "CoverArt Post Processing"
 PLUGIN_AUTHOR = "Pranay"
 PLUGIN_DESCRIPTION = """
 Post Processing Features for the CoverArt Images.
 Ignore images smaller than specified width and height.
-Resize/Crop the image if larger than specified dimensions.
+Resize the image if larger than specified dimensions.
 """
 PLUGIN_VERSION = '0.1'
 PLUGIN_API_VERSIONS = ['2.2']
