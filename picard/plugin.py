@@ -187,6 +187,13 @@ class PluginWrapper(PluginShared):
             return ""
 
     @property
+    def user_guide_url(self):
+        try:
+            return self.data['PLUGIN_USER_GUIDE_URL']
+        except KeyError:
+            return ""
+
+    @property
     def files_list(self):
         return self.file[len(self.dir)+1:]
 
