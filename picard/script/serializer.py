@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021, 2023 Bob Swift
 # Copyright (C) 2021 Laurent Monin
 # Copyright (C) 2021-2022 Philipp Wolfer
 #
@@ -398,14 +398,13 @@ class FileNamingScript(PicardScript):
         script='',
         title='',
         id=None,
-        readonly=False,
-        deletable=True,
         author='',
         description='',
         license='',
         version='',
         last_updated=None,
-        script_language_version=None
+        script_language_version=None,
+        **kwargs,   # Catch additional (deprecated) arguments to avoid error in prior version config_upgrade functions.
     ):
         """Creates a Picard file naming script object.
 
@@ -413,8 +412,6 @@ class FileNamingScript(PicardScript):
             script (str): Text of the script.
             title (str): Title of the script.
             id (str): ID code for the script. Defaults to a system generated uuid.
-            readonly (bool): Identifies if the script is readonly. Defaults to False.
-            deletable (bool): Identifies if the script can be deleted from the selection list. Defaults to True.
             author (str): The author of the script. Defaults to ''.
             description (str): A description of the script, typically including type of output and any required plugins or settings. Defaults to ''.
             license (str): The license under which the script is being distributed. Defaults to ''.
@@ -423,8 +420,6 @@ class FileNamingScript(PicardScript):
             script_language_version (str): The version of the script language supported by the script.
         """
         super().__init__(script=script, title=title, id=id, last_updated=last_updated, script_language_version=script_language_version)
-        self.readonly = readonly    # for presets
-        self.deletable = deletable  # Allow removal from list of scripts
         self.author = author
         self.description = description
         self.license = license

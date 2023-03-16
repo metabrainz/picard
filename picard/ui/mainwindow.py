@@ -25,7 +25,7 @@
 # Copyright (C) 2018 Kartik Ohri
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2018 virusMac
-# Copyright (C) 2018, 2021 Bob Swift
+# Copyright (C) 2018, 2021, 2023 Bob Swift
 # Copyright (C) 2019 Timur Enikeev
 # Copyright (C) 2020-2021 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion
@@ -132,7 +132,6 @@ from picard.ui.passworddialog import (
 from picard.ui.scripteditor import (
     ScriptEditorDialog,
     ScriptEditorExamples,
-    user_script_title,
 )
 from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
@@ -208,6 +207,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.script_editor_dialog = None
         self.examples = None
 
+        self.check_and_repair_naming_scripts()
         self.check_and_repair_profiles()
 
         self.setupUi()
@@ -1787,6 +1787,23 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             callback=update_last_check_date
         )
 
+    def check_and_repair_naming_scripts(self):
+        """Check the 'file_renaming_scripts' config setting to ensure that the list of scripts
+        is not empty.  Check that the 'selected_file_naming_script_id' config setting points to
+        a valid file naming script.
+        """
+        config = get_config()
+        script_key = 'file_renaming_scripts'
+        script_id_key = 'selected_file_naming_script_id'
+        if not config.setting[script_key]:
+            scripts = {}
+            for script in get_file_naming_script_presets():
+                scripts[script['id']] = script.to_dict()
+            config.setting[script_key] = scripts
+        naming_script_ids = list(config.setting[script_key].keys())
+        if config.setting[script_id_key] not in naming_script_ids:
+            config.setting[script_id_key] = naming_script_ids[0]
+
     def check_and_repair_profiles(self):
         """Check the profiles and profile settings and repair the values if required.
         Checks that there is a settings dictionary for each profile, and that no profiles
@@ -1796,7 +1813,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         naming_scripts = config.setting["file_renaming_scripts"]
         naming_script_ids = set(naming_scripts.keys())
-        naming_script_ids |= set(item["id"] for item in get_file_naming_script_presets())
         profile_settings = deepcopy(config.profiles[SettingConfigSection.SETTINGS_KEY])
         for profile in config.profiles[SettingConfigSection.PROFILES_KEY]:
             p_id = profile["id"]
@@ -1845,11 +1861,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             group.addAction(script_action)
 
         for (id, naming_script) in sorted(naming_scripts.items(), key=lambda item: item[1]['title']):
-            _add_menu_item(user_script_title(naming_script['title']), id)
-
-        # Add preset scripts not provided in the user-defined scripts list.
-        for script_item in get_file_naming_script_presets():
-            _add_menu_item(script_item['title'], script_item['id'])
+            _add_menu_item(naming_script['title'], id)
 
     def select_new_naming_script(self, id):
         """Update the currently selected naming script ID in the settings.
