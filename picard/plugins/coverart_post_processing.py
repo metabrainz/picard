@@ -18,7 +18,7 @@ from picard.metadata import (register_album_metadata_processor,
                            register_track_metadata_processor)
 from picard.plugin import PluginPriority
 
-MAX_DIMENSION = 420  # Set maximum allowable dimensions of image in pixels
+MAX_DIMENSION = 600  # Set maximum allowable dimensions of image in pixels
 MIN_DIMENSION = 400  # Set minimum allowable dimensions of image in pixels
     
 def ignore_image(img_data):
