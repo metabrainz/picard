@@ -765,7 +765,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             if self.last_selected_id in all_scripts:
                 self.selected_script_id = self.last_selected_id
             if self.selected_script_id not in all_scripts:
-                self.selected_script_id = all_scripts.keys()[0]
+                self.selected_script_id = list(all_scripts.keys())[0]
         script_text = all_scripts[self.selected_script_id]['script']
         self.update_examples(script_text=script_text)
         self.signal_selection_changed.emit()
@@ -823,6 +823,26 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         script_item["script"] = self.get_script()
         self.update_combo_box_item(selected, script_item)
 
+    def check_duplicate_script_title(self, new_title=None):
+        """Checks the script title to see if it is a duplicate of an existing script title.
+        If no title is provided, then it will be extracted from the item data for the
+        currently selected script.
+
+        Args:
+            new_title (string, optional): New title to check. Defaults to None.
+
+        Returns:
+            bool: True if the title is unique, otherwise False.
+        """
+        selected = self.ui.preset_naming_scripts.currentIndex()
+        title = self.ui.preset_naming_scripts.itemData(selected)['title'] if new_title is None else new_title
+        for i in range(self.ui.preset_naming_scripts.count()):
+            if i == selected:
+                continue
+            if title == self.ui.preset_naming_scripts.itemData(i)['title']:
+                return False
+        return True
+
     def update_script_title(self):
         """Update the script selection combo box after updating the script title.
         """
@@ -830,10 +850,14 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         title = str(self.ui.script_title.text()).strip()
         script_item = self.ui.preset_naming_scripts.itemData(selected)
         if title:
-            script_item["title"] = title
-            self.update_combo_box_item(selected, script_item)
-            self.save_script()
-            self.signal_selection_changed.emit()
+            if self.check_duplicate_script_title(new_title=title):
+                script_item["title"] = title
+                self.update_combo_box_item(selected, script_item)
+                self.save_script()
+                self.signal_selection_changed.emit()
+            else:
+                self.display_error(OptionsCheckError(_("Error"), _("There is already a script with that title.")))
+                self.ui.script_title.setFocus()
         else:
             self.display_error(OptionsCheckError(_("Error"), _("The script title must not be empty.")))
             self.ui.script_title.setText(script_item["title"])
@@ -866,8 +890,13 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     def update_from_details(self):
         """Update the script selection combo box and script list after updates from the script details dialog.
         """
-        self.update_combo_box_item(self.ui.preset_naming_scripts.currentIndex(), self.current_item_dict)
-        self.ui.script_title.setText(self.current_item_dict['title'])
+        selected = self.ui.preset_naming_scripts.currentIndex()
+        new_title = self.current_item_dict['title']
+        old_title = self.ui.preset_naming_scripts.itemData(selected)['title']
+        if not self.check_duplicate_script_title(new_title=new_title):
+            self.current_item_dict['title'] = old_title
+        self.update_combo_box_item(selected, self.current_item_dict)
+        self.ui.script_title.setText(new_title)
         self.save_script()
 
     def _set_combobox_index(self, idx):
@@ -1131,7 +1160,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         title = str(self.ui.script_title.text()).strip()
         if title:
             script_item = self.ui.preset_naming_scripts.itemData(selected)
-            script_item["title"] = title
+            if self.check_duplicate_script_title(new_title=title):
+                script_item["title"] = title
             script_item["script"] = self.get_script()
             self.update_combo_box_item(selected, script_item)
         else:
