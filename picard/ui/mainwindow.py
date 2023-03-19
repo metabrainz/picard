@@ -14,7 +14,7 @@
 # Copyright (C) 2011-2013, 2015-2017 Wieland Hoffmann
 # Copyright (C) 2011-2014 Michael Wiencek
 # Copyright (C) 2013-2014, 2017 Sophist-UK
-# Copyright (C) 2013-2022 Laurent Monin
+# Copyright (C) 2013-2023 Laurent Monin
 # Copyright (C) 2015 Ohm Patel
 # Copyright (C) 2015 samithaj
 # Copyright (C) 2016 Rahul Raturi
@@ -1794,13 +1794,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """
         config = get_config()
         script_key = 'file_renaming_scripts'
-        script_id_key = 'selected_file_naming_script_id'
         if not config.setting[script_key]:
-            scripts = {}
-            for script in get_file_naming_script_presets():
-                scripts[script['id']] = script.to_dict()
-            config.setting[script_key] = scripts
-        naming_script_ids = list(config.setting[script_key].keys())
+            config.setting[script_key] = {
+                script['id']: script.to_dict()
+                for script in get_file_naming_script_presets()
+            }
+        naming_script_ids = list(config.setting[script_key])
+        script_id_key = 'selected_file_naming_script_id'
         if config.setting[script_id_key] not in naming_script_ids:
             config.setting[script_id_key] = naming_script_ids[0]
 
