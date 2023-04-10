@@ -18,7 +18,7 @@
 # Copyright (C) 2017-2018 Antonio Larrosa
 # Copyright (C) 2018 Calvin Walton
 # Copyright (C) 2018 virusMac
-# Copyright (C) 2020-2021 Bob Swift
+# Copyright (C) 2020-2021, 2023 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -148,8 +148,6 @@ def get_file_naming_script_presets():
         id=DEFAULT_NAMING_PRESET_ID,
         title=preset_title(1, N_("Default file naming script")),
         script=DEFAULT_FILE_NAMING_FORMAT,
-        readonly=True,
-        deletable=False,
         author=AUTHOR,
         description=DESCRIPTION,
         version="1.0",
@@ -164,8 +162,6 @@ def get_file_naming_script_presets():
         script="%albumartist%/\n"
                "%album%/\n"
                "%tracknumber%. %title%",
-        readonly=True,
-        deletable=False,
         author=AUTHOR,
         description=DESCRIPTION,
         version="1.0",
@@ -183,8 +179,6 @@ def get_file_naming_script_presets():
                "$if($and(%albumartist%,%tracknumber%),$num(%tracknumber%,2) ,)\n"
                "$if(%_multiartist%,%artist% - ,)\n"
                "%title%",
-        readonly=True,
-        deletable=False,
         author=AUTHOR,
         description=DESCRIPTION,
         version="1.0",

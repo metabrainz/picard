@@ -9,7 +9,7 @@
 # Copyright (C) 2015 Ohm Patel
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2017 Sambhav Kothari
-# Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021, 2023 Bob Swift
 # Copyright (C) 2021 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
@@ -457,6 +457,15 @@ def upgrade_to_v2_8_0_dev_2(config):
         pass
 
 
+def upgrade_to_v2_9_0_alpha_2(config):
+    """Add preset file naming scripts to editable user scripts disctionary"""
+    from picard.script import get_file_naming_script_presets
+    scripts = config.setting["file_renaming_scripts"]
+    for item in get_file_naming_script_presets():
+        scripts[item["id"]] = item.to_dict()
+    config.setting["file_renaming_scripts"] = scripts
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
@@ -501,4 +510,5 @@ def upgrade_config(config):
     cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_4)
     cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_5)
     cfg.register_upgrade_hook(upgrade_to_v2_8_0_dev_2)
+    cfg.register_upgrade_hook(upgrade_to_v2_9_0_alpha_2)
     cfg.run_upgrade_hooks(log.debug)
