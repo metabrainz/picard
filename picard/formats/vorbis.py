@@ -137,6 +137,7 @@ class VCommentFile(File):
         metadata = Metadata()
         for origname, values in file.tags.items():
             for value in values:
+                value = value.rstrip('\0')
                 name = origname
                 if name == "date" or name == "originaldate":
                     # YYYY-00-00 => YYYY
@@ -289,7 +290,7 @@ class VCommentFile(File):
                 value = "MusicMagic Fingerprint%s" % value
             elif name in self.__rtranslate:
                 name = self.__rtranslate[name]
-            tags.setdefault(name.upper(), []).append(value)
+            tags.setdefault(name.upper(), []).append(value.rstrip('\0'))
 
         if "totaltracks" in metadata:
             tags.setdefault("TRACKTOTAL", []).append(metadata["totaltracks"])
