@@ -5,7 +5,7 @@
 # Copyright (C) 2013-2014 Michael Wiencek
 # Copyright (C) 2013-2016, 2018-2021 Laurent Monin
 # Copyright (C) 2014, 2017 Lukáš Lalinský
-# Copyright (C) 2014, 2018-2022 Philipp Wolfer
+# Copyright (C) 2014, 2018-2023 Philipp Wolfer
 # Copyright (C) 2015 Ohm Patel
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2017 Sambhav Kothari
@@ -306,7 +306,9 @@ def upgrade_to_v2_4_0_beta_3(config):
     """Convert preserved tags to list"""
     _s = config.setting
     opt = 'preserved_tags'
-    _s[opt] = [t.strip() for t in _s.raw_value(opt, qtype='QString').split(',')]
+    value = _s.raw_value(opt, qtype='QString')
+    if not isinstance(value, list):
+        _s[opt] = [t.strip() for t in value.split(',')]
 
 
 def upgrade_to_v2_5_0_dev_1(config):
