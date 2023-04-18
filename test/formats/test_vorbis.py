@@ -189,6 +189,16 @@ class CommonVorbisTests:
                 del metadata[invalid_tag]
                 save_metadata(self.filename, metadata)
 
+        @skipUnlessTestfile
+        def test_load_strip_trailing_null_char(self):
+            save_raw(self.filename, {
+                'date': '2023-04-18\0',
+                'title': 'foo\0',
+            })
+            metadata = load_metadata(self.filename)
+            self.assertEqual('2023-04-18', metadata['date'])
+            self.assertEqual('foo', metadata['title'])
+
 
 class FLACTest(CommonVorbisTests.VorbisTestCase):
     testfile = 'test.flac'
