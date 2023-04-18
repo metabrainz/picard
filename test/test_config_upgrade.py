@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2019-2021 Laurent Monin
-# Copyright (C) 2019-2022 Philipp Wolfer
+# Copyright (C) 2019-2023 Philipp Wolfer
 # Copyright (C) 2021 Bob Swift
 # Copyright (C) 2021 Gabriel Ferreira
 #
@@ -271,6 +271,12 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
     def test_upgrade_to_v2_4_0_beta_3(self):
         ListOption("setting", "preserved_tags", [])
         self.config.setting['preserved_tags'] = 'foo,bar'
+        upgrade_to_v2_4_0_beta_3(self.config)
+        self.assertEqual(['foo', 'bar'], self.config.setting['preserved_tags'])
+
+    def test_upgrade_to_v2_4_0_beta_3_already_done(self):
+        ListOption("setting", "preserved_tags", [])
+        self.config.setting['preserved_tags'] = ['foo', 'bar']
         upgrade_to_v2_4_0_beta_3(self.config)
         self.assertEqual(['foo', 'bar'], self.config.setting['preserved_tags'])
 
