@@ -110,6 +110,7 @@ class ID3File(File):
         'TXXX:ALBUMARTISTSORT': 'TSO2',
         'TXXX:COMPOSERSORT': 'TSOC',
         'TXXX:mood': 'TMOO',
+        'TXXX:releasedate': 'TDRL',
     }
 
     __translate = {
@@ -506,6 +507,8 @@ class ID3File(File):
                             tags.add(self.build_TXXX(encoding, 'mood', values))
                     # No need to care about the TMOO tag being added again as it is
                     # automatically deleted by Mutagen if id2v23 is selected
+                        if frameid == 'TDRL':
+                            tags.add(self.build_TXXX(encoding, 'releasedate', values))
                     tags.add(getattr(id3, frameid)(encoding=encoding, text=values))
                     if frameid == 'TSOA':
                         tags.delall('XSOA')
