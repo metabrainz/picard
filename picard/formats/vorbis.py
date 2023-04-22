@@ -139,7 +139,7 @@ class VCommentFile(File):
             for value in values:
                 value = value.rstrip('\0')
                 name = origname
-                if name == "date" or name == "originaldate" or name == "releasedate":
+                if name in {'date', 'originaldate', releasedate'}:
                     # YYYY-00-00 => YYYY
                     value = sanitize_date(value)
                 elif name == 'performer' or name == 'comment':
