@@ -103,6 +103,7 @@ TAG_NAMES = {
     'r128_track_gain': N_('R128 Track Gain'),
     '~rating': N_('Rating'),
     'releasecountry': N_('Release Country'),
+    'releasedate': N_('Release Date'),
     'releasestatus': N_('Release Status'),
     'releasetype': N_('Release Type'),
     'remixer': N_('Remixer'),
