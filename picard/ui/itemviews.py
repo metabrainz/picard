@@ -173,6 +173,7 @@ class MainPanel(QtWidgets.QSplitter):
         (N_('Fingerprint status'), '~fingerprint'),
         (N_('Date'), 'date'),
         (N_('Original Release Date'), 'originaldate'),
+        (N_('Release Date'), 'releasedate'),
         (N_('Cover'), 'covercount'),
     ]
 
