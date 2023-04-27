@@ -525,14 +525,14 @@ class CoverArtProviderCaa(CoverArtProvider):
         # MB web service indicates if CAA has artwork
         # https://tickets.metabrainz.org/browse/MBS-4536
         if 'cover-art-archive' not in self.release:
-            log.debug('No Cover Art Archive information for {release_id}'.format(release_id=self.release['id']))
+            log.debug('No Cover Art Archive information for %s', self.release['id'])
             return False
 
         caa_node = self.release['cover-art-archive']
         caa_has_suitable_artwork = caa_node['artwork']
 
         if not caa_has_suitable_artwork:
-            log.debug('There are no images in the Cover Art Archive for {release_id}'.format(release_id=self.release['id']))
+            log.debug('There are no images in the Cover Art Archive for %s', self.release['id'])
             return False
 
         if self.restrict_types:
@@ -561,9 +561,9 @@ class CoverArtProviderCaa(CoverArtProvider):
                 caa_has_suitable_artwork = front_in_caa or back_in_caa
 
         if not caa_has_suitable_artwork:
-            log.debug('There are no suitable images in the Cover Art Archive for {release_id}'.format(release_id=self.release['id']))
+            log.debug('There are no suitable images in the Cover Art Archive for %s', self.release['id'])
         else:
-            log.debug('There are suitable images in the Cover Art Archive for {release_id}'.format(release_id=self.release['id']))
+            log.debug('There are suitable images in the Cover Art Archive for %s', self.release['id'])
 
         return caa_has_suitable_artwork
 
@@ -602,7 +602,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                 self.error('CAA JSON error: %s' % (http.errorString()))
         else:
             if self.restrict_types:
-                log.debug('CAA types: included: %s, excluded: %s' % (self.caa_types, self.caa_types_to_omit,))
+                log.debug('CAA types: included: %s, excluded: %s', self.caa_types, self.caa_types_to_omit)
             try:
                 config = get_config()
                 for image in data["images"]:
@@ -610,8 +610,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                         continue
                     is_pdf = image["image"].endswith('.pdf')
                     if is_pdf and not config.setting["save_images_to_files"]:
-                        log.debug("Skipping pdf cover art : %s" %
-                                  image["image"])
+                        log.debug("Skipping pdf cover art : %s", image["image"])
                         continue
                     # if image has no type set, we still want it to match
                     # pseudo type 'unknown'
@@ -626,10 +625,10 @@ class CoverArtProviderCaa(CoverArtProvider):
                         if types and self.caa_types_to_omit:
                             types = not set(image["types"]).intersection(
                                 set(self.caa_types_to_omit))
-                        log.debug('CAA image {status}: {image_name}  {image_types}'.format(
-                            status=('accepted' if types else 'rejected'),
-                            image_name=image['image'],
-                            image_types=image['types'],)
+                        log.debug('CAA image %s: %s  %s',
+                            ('accepted' if types else 'rejected'),
+                            image['image'],
+                            image['types']
                         )
                     else:
                         types = True

@@ -148,8 +148,7 @@ class APEv2File(File):
                                 data=data,
                             )
                         except CoverArtImageError as e:
-                            log.error('Cannot load image from %r: %s' %
-                                      (filename, e))
+                            log.error('Cannot load image from %r: %s', filename, e)
                         else:
                             metadata.images.append(coverartimage)
 

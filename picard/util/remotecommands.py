@@ -262,7 +262,7 @@ class RemoteCommands:
         try:
             lines = open(filepath).readlines()
         except Exception as e:
-            log.error("Error reading command file '%s': %s" % (filepath, e))
+            log.error("Error reading command file '%s': %s", filepath, e)
             return commands
         for line in lines:
             line = line.strip()

@@ -101,7 +101,7 @@ class PreserveGeometry:
         name = widget.objectName()
         if not name:
             name = '.'.join(self._get_lineage(widget))
-            log.debug("Splitter does not have objectName(): %s" % name)
+            log.debug("Splitter does not have objectName(): %s", name)
         return name
 
     @property

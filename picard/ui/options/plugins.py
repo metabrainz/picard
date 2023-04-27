@@ -677,7 +677,7 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
             msgbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
             msgbox.exec_()
-            log.error("Error occurred while trying to download the plugin: '%s'" % plugin.module_name)
+            log.error("Error occurred while trying to download the plugin: '%s'", plugin.module_name)
             return
 
         self.manager.install_plugin(

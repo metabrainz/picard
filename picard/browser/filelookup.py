@@ -77,7 +77,7 @@ class FileLookup(object):
         return self.launch(self._url(path, params))
 
     def launch(self, url):
-        log.debug("webbrowser2: %s" % url)
+        log.debug("webbrowser2: %s", url)
         webbrowser2.open(url)
         return True
 

@@ -349,7 +349,7 @@ class ID3File(File):
                         id3_type=frame.type,
                     )
                 except CoverArtImageError as e:
-                    log.error('Cannot load image from %r: %s' % (filename, e))
+                    log.error('Cannot load image from %r: %s', filename, e)
                 else:
                     metadata.images.append(coverartimage)
             elif frameid == 'POPM':

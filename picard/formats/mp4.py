@@ -225,8 +225,7 @@ class MP4File(File):
                             data=value,
                         )
                     except CoverArtImageError as e:
-                        log.error('Cannot load image from %r: %s' %
-                                  (filename, e))
+                        log.error('Cannot load image from %r: %s', filename, e)
                     else:
                         metadata.images.append(coverartimage)
             # Read other freeform tags always case insensitive

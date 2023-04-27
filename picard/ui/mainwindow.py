@@ -1423,7 +1423,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if isinstance(obj, Track) and obj.files:
             obj = obj.files[0]
         if not isinstance(obj, File):
-            log.debug('show_more_tracks expected a File, got %r' % obj)
+            log.debug('show_more_tracks expected a File, got %r', obj)
             return
         dialog = TrackSearchDialog(self, force_advanced_search=True)
         dialog.show_similar_tracks(obj)
@@ -1432,7 +1432,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show_more_albums(self):
         obj = self.get_first_obj_with_type(Cluster)
         if not obj:
-            log.debug('show_more_albums expected a Cluster, got %r' % obj)
+            log.debug('show_more_albums expected a Cluster, got %r', obj)
             return
         dialog = AlbumSearchDialog(self, force_advanced_search=True)
         dialog.show_similar_albums(obj)
@@ -1768,14 +1768,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         update_level = config.setting['update_level']
         today = datetime.date.today().toordinal()
         do_auto_update_check = check_for_updates and update_check_days > 0 and today >= last_update_check + update_check_days
-        log.debug('{check_status} start-up check for program updates.  Today: {today_date}, Last check: {last_check} (Check interval: {check_interval} days), Update level: {update_level} ({update_level_name})'.format(
-            check_status='Initiating' if do_auto_update_check else 'Skipping',
-            today_date=datetime.date.today(),
-            last_check=str(datetime.date.fromordinal(last_update_check)) if last_update_check > 0 else 'never',
-            check_interval=update_check_days,
-            update_level=update_level,
-            update_level_name=PROGRAM_UPDATE_LEVELS[update_level]['name'] if update_level in PROGRAM_UPDATE_LEVELS else 'unknown',
-        ))
+        log.debug('%(check_status)s start-up check for program updates.  Today: %(today_date)s, Last check: %(last_check)s (Check interval: %(check_interval)s days), Update level: %(update_level)s (%(update_level_name)s)', {
+            'check_status': 'Initiating' if do_auto_update_check else 'Skipping',
+            'today_date': datetime.date.today(),
+            'last_check': str(datetime.date.fromordinal(last_update_check)) if last_update_check > 0 else 'never',
+            'check_interval': update_check_days,
+            'update_level': update_level,
+            'update_level_name': PROGRAM_UPDATE_LEVELS[update_level]['name'] if update_level in PROGRAM_UPDATE_LEVELS else 'unknown',
+        })
         if do_auto_update_check:
             self.check_for_update(False)
 
