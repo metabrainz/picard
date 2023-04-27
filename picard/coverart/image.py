@@ -88,7 +88,7 @@ class DataHash:
                     imagefile.write(data)
                 _datafiles[self._hash] = self._filename
                 periodictouch.register_file(self._filename)
-                log.debug("Saving image data %s to %r" % (self._hash, self._filename))
+                log.debug("Saving image data %s to %r", self._hash, self._filename)
             else:
                 self._filename = _datafiles[self._hash]
         finally:

@@ -346,7 +346,7 @@ class picard_build_ui(Command):
                 if m:
                     name = m.group(1)
                 else:
-                    log.warn('ignoring %r (cannot extract base name)' % f)
+                    log.warn('ignoring %r (cannot extract base name)', f)
                     continue
                 uiname = name + '.ui'
                 uifile = os.path.join(head, uiname)
@@ -360,7 +360,7 @@ class picard_build_ui(Command):
                         files.append((uifile,
                                       py_from_ui_with_defaultdir(uifile)))
                     else:
-                        log.warn('ignoring %r' % f)
+                        log.warn('ignoring %r', f)
             self.files = files
 
     def run(self):
@@ -664,8 +664,7 @@ class picard_update_constants(Command):
             for code, name in sorted(countries.items(), key=lambda t: t[0]):
                 write(line, code=code, name=name.replace("'", "\\'"))
             write(footer)
-            log.info("%s was rewritten (%d countries)" % (filename,
-                                                          len(countries)))
+            log.info("%s was rewritten (%d countries)", filename, len(countries))
 
     def attributes_py_file(self, attributes):
         header = ("# -*- coding: utf-8 -*-\n"
@@ -684,8 +683,7 @@ class picard_update_constants(Command):
             for key, value in sorted(attributes.items(), key=lambda i: i[0]):
                 write(line, key=key, value=value.replace("'", "\\'"))
             write(footer)
-            log.info("%s was rewritten (%d attributes)" % (filename,
-                                                           len(attributes)))
+            log.info("%s was rewritten (%d attributes)", filename, len(attributes))
 
 
 class picard_patch_version(Command):

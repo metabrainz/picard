@@ -304,7 +304,7 @@ class Album(DataObject, Item):
                     parse_result = self._parse_release(document)
                     config = get_config()
                     if parse_result == ParseResult.MISSING_TRACK_RELS:
-                        log.debug('Recording relationships not loaded in initial request for %r, issuing separate requests' % self)
+                        log.debug('Recording relationships not loaded in initial request for %r, issuing separate requests', self)
                         self._request_recording_relationships(config=config)
                     elif parse_result == ParseResult.PARSED:
                         self._run_album_metadata_processors()
@@ -329,7 +329,7 @@ class Album(DataObject, Item):
             'work-rels',
             'work-level-rels',
         )
-        log.debug('Loading recording relationships for %r (offset=%i, limit=%i)' % (self, offset, limit))
+        log.debug('Loading recording relationships for %r (offset=%i, limit=%i)', self, offset, limit)
         self._requests += 1
         self.load_task = self.tagger.mb_api.browse_recordings(
             self._recordings_request_finished,

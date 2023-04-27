@@ -193,7 +193,7 @@ class VCommentFile(File):
                             id3_type=image.type
                         )
                     except (CoverArtImageError, TypeError, ValueError, mutagen.flac.error) as e:
-                        log.error('Cannot load image from %r: %s' % (filename, e))
+                        log.error('Cannot load image from %r: %s', filename, e)
                     else:
                         metadata.images.append(coverartimage)
                     continue
@@ -213,7 +213,7 @@ class VCommentFile(File):
                         id3_type=image.type
                     )
                 except CoverArtImageError as e:
-                    log.error('Cannot load image from %r: %s' % (filename, e))
+                    log.error('Cannot load image from %r: %s', filename, e)
                 else:
                     metadata.images.append(coverartimage)
 
@@ -228,7 +228,7 @@ class VCommentFile(File):
                             data=base64.standard_b64decode(data)
                         )
                     except (CoverArtImageError, TypeError, ValueError) as e:
-                        log.error('Cannot load image from %r: %s' % (filename, e))
+                        log.error('Cannot load image from %r: %s', filename, e)
                     else:
                         metadata.images.append(coverartimage)
             except KeyError:
