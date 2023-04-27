@@ -123,8 +123,7 @@ def _open_url_with_token(payload):
     if isinstance(token, bytes):  # For compatibility with PyJWT 1.x
         token = token.decode()
     browser_integration = QCoreApplication.instance().browser_integration
-    url = 'http://%s:%s/add?token=%s' % (
-        browser_integration.host_address, browser_integration.port, token)
+    url = f'http://127.0.0.1:{browser_integration.port}/add?token={token}'
     open(url)
 
 
