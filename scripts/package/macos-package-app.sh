@@ -54,34 +54,28 @@ ditto -rsrc --arch x86_64 "$APP_BUNDLE" "$APP_BUNDLE.tmp"
 rm -r "$APP_BUNDLE"
 mv "$APP_BUNDLE.tmp" "$APP_BUNDLE"
 
-# Fix placing text files in Resources instead of Contents to avoid signatures ending up in extended attributes.
-# This fixes the signature breaking if extended attributes get removed or modified.
-# Fixes https://tickets.metabrainz.org/browse/PICARD-1943 and related issues.
-echo "Fixing location of Qt6 translation resources for code signing..."
-mkdir "$APP_BUNDLE/Contents/Resources/Qt6/"
-mv "$APP_BUNDLE/Contents/MacOS/PyQt6/Qt6/translations" "$APP_BUNDLE/Contents/Resources/Qt6/"
-pushd "$APP_BUNDLE/Contents/MacOS/PyQt6/Qt6/"
-ln -s "../../../Resources/Qt6/translations" .
-popd
-
 # Mitigate libwebp vulnerability allowing for arbitrary code execution (CVE-2023-4863).
 # Disable the Qt webp imageformat plugin.
-rm "$APP_BUNDLE/Contents/MacOS/PyQt5/$QT5_DIR/plugins/imageformats/libqwebp.dylib"
+rm "$APP_BUNDLE/Contents/MacOS/PyQt6/Qt6/plugins/imageformats/libqwebp.dylib"
 
 if [ "$CODESIGN" = '1' ]; then
-    # Enable hardened runtime if app will get notarized
+    echo "Code signing app bundle ${APP_BUNDLE}..."
     if [ "$NOTARIZE" = "1" ]; then
+      # Enable hardened runtime if app will get notarized
       codesign --verbose --deep --force \
         --options runtime \
         --entitlements ../scripts/package/entitlements.plist \
         --keychain "$KEYCHAIN_PATH" --sign "$CERTIFICATE_NAME" \
         "$APP_BUNDLE"
       ../scripts/package/macos-notarize-app.sh "$APP_BUNDLE"
-      codesign --verbose --deep --verbose --strict=all --check-notarization "$APP_BUNDLE"
+      echo "Verifying signature and notarization for app bundle ${APP_BUNDLE}..."
+      codesign --verify --verbose --deep --strict=symlinks --check-notarization  "$APP_BUNDLE"
     else
-      codesign --verify --verbose --deep --force \
+      codesign --verbose --deep --force \
         --keychain "$KEYCHAIN_PATH" --sign "$CERTIFICATE_NAME" \
         "$APP_BUNDLE"
+      echo "Verifying signature for app bundle ${APP_BUNDLE}..."
+      codesign --verify --verbose --deep --strict=all "$APP_BUNDLE"
     fi
 fi
 
