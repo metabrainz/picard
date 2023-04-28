@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Kerem Kuralay, 2016
+# Bora Atıcı, 2023
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009
 # joseph <josph0@gmail.com>, 2016
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022
@@ -17,8 +18,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-12-05 21:15+0100\n"
 "PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022\n"
-"Language-Team: Turkish (http://www.transifex.com/musicbrainz/musicbrainz/language/tr/)\n"
+"Last-Translator: Bora Atıcı, 2023\n"
+"Language-Team: Turkish (http://app.transifex.com/musicbrainz/musicbrainz/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -117,7 +118,7 @@ msgstr "Birleştir"
 #: picard/ui/options/interface_toolbar.py:99
 #: picard/ui/ui_options_interface_toolbar.py:80
 msgid "Remove"
-msgstr "Sil"
+msgstr "Kaldır"
 
 #: picard/config_upgrade.py:415
 msgid "Primary file naming script"
@@ -7173,7 +7174,7 @@ msgstr ""
 
 #: picard/util/tags.py:90
 msgid "MusicIP Fingerprint"
-msgstr "MusicIP Parmakizi"
+msgstr "MusicIP Parmak izi"
 
 #: picard/util/tags.py:91
 msgid "MusicIP PUID"
@@ -7269,7 +7270,7 @@ msgstr ""
 
 #: picard/util/tags.py:115
 msgid "Script"
-msgstr "Alfabe"
+msgstr "Abece"
 
 #: picard/util/tags.py:116
 msgid "Show Name"
@@ -7305,7 +7306,7 @@ msgstr "Parça Numarası"
 
 #: picard/util/tags.py:125
 msgid "Artist Website"
-msgstr ""
+msgstr "Sanatçı İnternet Sitesi"
 
 #: picard/util/tags.py:126
 msgid "Work"

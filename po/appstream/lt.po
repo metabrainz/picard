@@ -4,8 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Lukáš Lalinský <lalinsky@gmail.com>, 2020
-# DJSweder <djsweder@gmail.com>, 2020
+# Vaclovas lntas (Vac.) <vaclovas1999@gmail.com>, 2023
 # 
 #, fuzzy
 msgid ""
@@ -14,21 +13,21 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-23 07:49+0100\n"
 "PO-Revision-Date: 2018-11-25 07:37+0000\n"
-"Last-Translator: DJSweder <djsweder@gmail.com>, 2020\n"
-"Language-Team: Czech (https://app.transifex.com/musicbrainz/teams/13846/cs/)\n"
+"Last-Translator: Vaclovas lntas (Vac.) <vaclovas1999@gmail.com>, 2023\n"
+"Language-Team: Lithuanian (https://app.transifex.com/musicbrainz/teams/13846/lt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: cs\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
+"Language: lt\n"
+"Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6
 msgid "MusicBrainz Picard"
-msgstr "MusicBrainz Picard"
+msgstr "„MusicBrainz“ „Picard“"
 
 #: org.musicbrainz.Picard.appdata.xml.in:7
 msgid "MusicBrainz's music tagger"
-msgstr "MusicBrainz's hudební tagger"
+msgstr "„MusicBrainz“ muzikos žymeklis"
 
 #: org.musicbrainz.Picard.appdata.xml.in:10
 msgid ""
@@ -36,10 +35,9 @@ msgid ""
 "platform music tagger by MusicBrainz. It has the ability to identify audio "
 "files even without any existing metadata."
 msgstr ""
-"Potřebujete pročistit Vaší hudební knihovnu? Picard je open-source a "
-"multiplatformní editor hudebních značek - tagů od MusicBrainz. Je schopný "
-"rozpoznat informace o hudebních souborech i když neobsahují žádná jiná "
-"metadata."
+"Ar jums reikia sutvarkyti muzikos biblioteką? „Picard“ yra atvirojo kodo "
+"daugiaplatformė muzikos žymeklių programa, sukurta „MusicBrainz“. Jis turi "
+"galimybę identifikuoti garso failus net be jokių esamų metaduomenų."
 
 #: org.musicbrainz.Picard.appdata.xml.in:15
 msgid ""
@@ -49,38 +47,35 @@ msgid ""
 "supports a wide range of audio formats and can also lookup an entire CD for "
 "you."
 msgstr ""
-"Přejmenováním souborů a jejich zařazením do struktury složek Vám Picard "
-"pomůže uspořádat Vaší hudební sbírku přesně tak, jak Vy budete chtít. K "
-"dispozici je celá řada doplňků a Vy máte možnost si vytvořit - napsat i "
-"svoje vlastní. Picard podporuje širokou škálu hudebních formátů a pokud máte"
-" nekompletní informace k Vašim CD, umí chybějící údaje dohledat."
+"„Picard“ padeda tvarkyti jūsų muzikos kolekciją - pervadinti muzikos failus "
+"ir suskirstyti juos į aplankų struktūrą taip, kaip norite. Yra įvairių "
+"įskiepių ir netgi galite sukurti savo įskiepį. „Picard“ palaiko daugybę "
+"garso formatų, taip pat gali peržiūrėti visą CD diską."
 
 #: org.musicbrainz.Picard.appdata.xml.in:22
 msgid "Tagging audio files has never been easier."
-msgstr ""
-"Doplňování informací, metadat či tagů do hudebních souborů nebylo nikdy "
-"snažší."
+msgstr "Žymėti garso failus dar niekada nebuvo taip paprasta."
 
 #: org.musicbrainz.Picard.appdata.xml.in:25
 msgid "Features:"
-msgstr "Funkce:"
+msgstr "Funkcijos:"
 
 #: org.musicbrainz.Picard.appdata.xml.in:27
 msgid ""
 "Multiple formats: Picard supports all popular music formats, including MP3, "
 "FLAC, OGG, M4A, WMA, WAV, and more."
 msgstr ""
-"Pestrá škála formátů: Picard podporuje všechny známé hudební formáty vč. "
-"MP3, FLAC, OGG, M4A, WMA, WAV a další. "
+"Kelių formatų: „Picard“ palaiko visus populiarius muzikos formatus, "
+"įskaitant MP3, FLAC, OGG, M4A, WMA, WAV ir kitus."
 
 #: org.musicbrainz.Picard.appdata.xml.in:31
 msgid ""
 "AcoustID: Picard uses AcoustID audio fingerprints, allowing files to be "
 "identified by the actual music, even if they have no metadata."
 msgstr ""
-"AcoustID: Picard používá akustický otisk AcoustID, což umožňuje rozpoznat "
-"soubory podle jejich skutečného hudebního obsahu i v případě, že žádné údaje"
-" metadat neobsahují."
+"„AcoustID“: „Picard“ naudoja „AcoustID“ garso pirštų atspaudus, kuriuos "
+"leidžia identifikuoti failus pagal tikrąją muziką, net jei juose nėra "
+"metaduomenų."
 
 #: org.musicbrainz.Picard.appdata.xml.in:35
 msgid ""
@@ -88,24 +83,23 @@ msgid ""
 "MusicBrainz database to provide accurate information about millions of music"
 " releases."
 msgstr ""
-"Rozsáhlá databáze:  Picard používá otevřenou a komunitou udržovanou databázi"
-" MusicBrainz k poskytování přesných informací k miliónům vydání hudebních "
-"děl. "
+"Išsami duomenų bazė: „Picard“ naudoja atvirą ir bendruomenės prižiūrimą "
+"„MusicBrainz“ duomenų bazę, kad pateiktų tikslią informaciją apie milijonus "
+"muzikos leidinių."
 
 #: org.musicbrainz.Picard.appdata.xml.in:40
 msgid "CD lookups: Picard can lookup entire music CDs with a click."
 msgstr ""
-"Dohledávání informací o CD: Picard umí dohledat informace o obsahu hudebního"
-" CD na jedno kliknutí."
+"CD paieškos: „Picard“ gali vienu paspaudimu paieškoti ištisų muzikos CD "
+"diskų."
 
 #: org.musicbrainz.Picard.appdata.xml.in:43
 msgid ""
 "Plugin support: If you need a particular feature, you can choose from a "
 "selection of available plugins or write your own."
 msgstr ""
-"Podpora rozšíření: pokud Vám nestačí standardní funkce a potřebujete něco "
-"víc, máte na výběr buď z dostupných rozšíření nebo si můžete vytvořit své "
-"vlastní."
+"Įskiepių palaikymas: Jei jums reikia tam tikros funkcijos, galite rinktis iš"
+" turimų įskiepių arba sukurti savo."
 
 #: org.musicbrainz.Picard.appdata.xml.in:47
 msgid ""
@@ -113,15 +107,17 @@ msgid ""
 "exactly specify how your music files will be named and how the tags will "
 "look like."
 msgstr ""
-"Skriptování: Přizpůsobivý a snadno pochopitelný skriptovací jazyk Vám umožní"
-" přesně určit, jak budou Vaše hudební soubory pojmenovány a jak budou "
-"uložená metadata - tagy."
+"Skriptavimas: Lanksti, bet lengvai išmokstama scenarijų kalba leidžia "
+"tiksliai nurodyti, kaip bus pavadinti jūsų muzikos failai ir kaip atrodys "
+"žymos."
 
 #: org.musicbrainz.Picard.appdata.xml.in:52
 msgid ""
 "Cover Art: Picard can find and download the correct cover art for your "
 "albums."
 msgstr ""
+"Viršelio paveikslas: „Picard“ gali surasti ir atsisiųsti tinkamą albumų "
+"viršelio paveikslėlį jūsų albumui."
 
 #: org.musicbrainz.Picard.appdata.xml.in:56
 msgid ""
@@ -129,10 +125,10 @@ msgid ""
 "later, and is hosted on GitHub where it is actively developed by some "
 "awesome developers."
 msgstr ""
-"Otevřený zdrojový kód: Picard je licencován pod GNU General Public License "
-"2.0 či novější a je hostován na platformě GitHub, kde je aktivně vyvíjen "
-"několika skvělými vývojáři."
+"Atviras šaltinis: „Picard“ - licencijuota pagal „GNU“ bendrąją viešąją "
+"licenciją 2.0 ar vėlesnę, ir yra patalpinta „GitHub“, kur ją aktyviai "
+"plėtoja nuostabūs kūrėjai."
 
 #: org.musicbrainz.Picard.appdata.xml.in:102
 msgid "MetaBrainz Foundation"
-msgstr "Sdružení MetaBrainz"
+msgstr "„MetaBrainz“ fondas"

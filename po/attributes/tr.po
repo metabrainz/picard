@@ -1,6 +1,6 @@
 # 
 # Translators:
-# Bora Atıcı, 2021
+# Bora Atıcı, 2021,2023
 # ym syserror <cilek.kocak@gmail.com>, 2012
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # Sertan Şentürk <sertan.senturk@upf.edu>, 2017
@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2012-05-24 18:52+0000\n"
-"Last-Translator: Bora Atıcı, 2021\n"
-"Language-Team: Turkish (http://www.transifex.com/musicbrainz/musicbrainz/language/tr/)\n"
+"Last-Translator: Bora Atıcı, 2021,2023\n"
+"Language-Team: Turkish (http://app.transifex.com/musicbrainz/musicbrainz/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -498,7 +498,7 @@ msgstr ""
 #: DB:series_type/description:1
 msgctxt "series_type"
 msgid "A series of release groups."
-msgstr "Bir dizi yayın grubu"
+msgstr "Bir dizi yayın grubu."
 
 #: DB:series_type/description:2
 msgctxt "series_type"
@@ -2288,6 +2288,11 @@ msgctxt "release_packaging"
 msgid "Digibook"
 msgstr ""
 
+#: DB:release_packaging/name:89
+msgctxt "release_packaging"
+msgid "Digifile"
+msgstr ""
+
 #: DB:release_packaging/name:3
 msgctxt "release_packaging"
 msgid "Digipak"
@@ -3757,6 +3762,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Singaporean rights society COMPASS"
 msgstr ""
 
+#: DB:work_attribute_type/description:140
+msgctxt "work_attribute_type"
+msgid "ID for the Slovenian rights society SAZAS"
+msgstr ""
+
 #: DB:work_attribute_type/description:68
 msgctxt "work_attribute_type"
 msgid "ID for the South African rights society SAMRO"
@@ -3820,6 +3830,11 @@ msgstr ""
 #: DB:work_attribute_type/description:42
 msgctxt "work_attribute_type"
 msgid "ID for the Venezuelan rights society SACVEN"
+msgstr ""
+
+#: DB:work_attribute_type/description:107
+msgctxt "work_attribute_type"
+msgid "ID for the Vietnamese rights society VCPMC"
 msgstr ""
 
 #: DB:work_attribute_type/description:38
@@ -5688,6 +5703,11 @@ msgctxt "collection_type"
 msgid "Owned music"
 msgstr ""
 
+#: DB:editor_collection_type/name:17
+msgctxt "collection_type"
+msgid "Owned recordings"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:762
 msgctxt "work_attribute_type_allowed_value"
 msgid "Oynak"
@@ -6376,6 +6396,11 @@ msgstr ""
 #: DB:work_attribute_type/name:39
 msgctxt "work_attribute_type"
 msgid "SAYCO ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:140
+msgctxt "work_attribute_type"
+msgid "SAZAS ID"
 msgstr ""
 
 #: DB:medium_format/name:62
@@ -7556,6 +7581,11 @@ msgstr "Uşşakaşiran"
 msgctxt "medium_format"
 msgid "VCD"
 msgstr "VCD"
+
+#: DB:work_attribute_type/name:107
+msgctxt "work_attribute_type"
+msgid "VCPMC ID"
+msgstr ""
 
 #: DB:medium_format/name:59
 msgctxt "medium_format"

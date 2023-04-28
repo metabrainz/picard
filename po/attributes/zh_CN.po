@@ -11,6 +11,7 @@
 #   Free Software Foundation, Inc., 2002, 2003, 2007, 2008
 # RedHotHeat <gbonner@iol.ie>, 2012
 # RedHotHeat <gbonner@iol.ie>, 2012
+# Izaiah Zhang (Beteix), 2023
 #   LI Daobing <lidaobing@gmail.com>, 2007, 2008, 2009, 2010, 2011
 # LI Daobing <lidaobing@gmail.com>, 2007, 2008, 2009, 2010
 # LXY <767763591@qq.com>, 2016
@@ -26,6 +27,7 @@
 #   Tobias Toedter <t.toedter@gmx.net>, 2007
 #   - Wang Jian <lark@linux.net.cn>, 2000
 # York Young, 2021
+# York Young, 2023
 # YunQiang Su <wzssyqa@gmail.com>, 2011
 # Zhenzhong Yin <cnrocke@gmail.com>, 2021
 # 同福客栈跑堂蘸糖, 2022
@@ -35,8 +37,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2012-05-24 18:52+0000\n"
-"Last-Translator: 同福客栈跑堂蘸糖, 2022\n"
-"Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
+"Last-Translator: Izaiah Zhang (Beteix), 2023\n"
+"Language-Team: Chinese (China) (http://app.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2311,6 +2313,11 @@ msgctxt "release_packaging"
 msgid "Digibook"
 msgstr "Digibook"
 
+#: DB:release_packaging/name:89
+msgctxt "release_packaging"
+msgid "Digifile"
+msgstr "Digifile"
+
 #: DB:release_packaging/name:3
 msgctxt "release_packaging"
 msgid "Digipak"
@@ -3780,6 +3787,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Singaporean rights society COMPASS"
 msgstr "新加坡著作权协会COMPASS ID"
 
+#: DB:work_attribute_type/description:140
+msgctxt "work_attribute_type"
+msgid "ID for the Slovenian rights society SAZAS"
+msgstr ""
+
 #: DB:work_attribute_type/description:68
 msgctxt "work_attribute_type"
 msgid "ID for the South African rights society SAMRO"
@@ -3844,6 +3856,11 @@ msgstr "乌拉圭著作权协会AGADU ID"
 msgctxt "work_attribute_type"
 msgid "ID for the Venezuelan rights society SACVEN"
 msgstr "委内瑞拉著作权协会SACVEN ID"
+
+#: DB:work_attribute_type/description:107
+msgctxt "work_attribute_type"
+msgid "ID for the Vietnamese rights society VCPMC"
+msgstr "越南著作权协会ID VCPMC"
 
 #: DB:work_attribute_type/description:38
 msgctxt "work_attribute_type"
@@ -5711,6 +5728,11 @@ msgctxt "collection_type"
 msgid "Owned music"
 msgstr "私有音乐"
 
+#: DB:editor_collection_type/name:17
+msgctxt "collection_type"
+msgid "Owned recordings"
+msgstr "已拥有的录音"
+
 #: DB:work_attribute_type_allowed_value/value:762
 msgctxt "work_attribute_type_allowed_value"
 msgid "Oynak"
@@ -6400,6 +6422,11 @@ msgstr "SAYCE ID"
 msgctxt "work_attribute_type"
 msgid "SAYCO ID"
 msgstr "SAYCO ID"
+
+#: DB:work_attribute_type/name:140
+msgctxt "work_attribute_type"
+msgid "SAZAS ID"
+msgstr ""
 
 #: DB:medium_format/name:62
 msgctxt "medium_format"
@@ -7579,6 +7606,11 @@ msgstr "Uşşakaşiran"
 msgctxt "medium_format"
 msgid "VCD"
 msgstr "VCD"
+
+#: DB:work_attribute_type/name:107
+msgctxt "work_attribute_type"
+msgid "VCPMC ID"
+msgstr "VCPMC ID"
 
 #: DB:medium_format/name:59
 msgctxt "medium_format"

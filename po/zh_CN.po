@@ -10,11 +10,13 @@
 # Clay Cheng <569735195@qq.com>, 2016,2018,2021-2022
 # Clay Cheng <569735195@qq.com>, 2016,2018
 # Dian Li <xslidian@gmail.com>, 2009-2019
+# poi, 2023
 # Erocan Lancon, 2017
 # Erocan Lancon, 2017
 # Erwin Synth <kingdzy1996@gmail.com>, 2017
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2007
 #   Free Software Foundation, Inc., 2002-2003,2007-2008
+# Hantong Chen (陈寒彤), 2023
 # LI Daobing <lidaobing@gmail.com>, 2007-2011
 # LI Daobing <lidaobing@gmail.com>, 2007-2010
 # Lionel <a472714747@gmail.com>, 2020
@@ -47,8 +49,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-12-05 21:15+0100\n"
 "PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: S B <koalaleaves@protonmail.com>, 2022\n"
-"Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
+"Last-Translator: poi, 2023\n"
+"Language-Team: Chinese (China) (http://app.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -518,7 +520,7 @@ msgstr "忽略小于 x 秒的音轨时长差异"
 
 #: picard/profile.py:163 picard/ui/ui_options_advanced.py:142
 msgid "Maximum number of entities to return per MusicBrainz query"
-msgstr ""
+msgstr "每次向MusicBrainz发起的请求所期望的返回结果数量"
 
 #: picard/profile.py:166
 msgid "Completeness check ignore: Video tracks"
@@ -600,15 +602,15 @@ msgstr "读取下列 CD 时出错: \n\n%s"
 
 #: picard/tagger.py:1155
 msgid "All supported log files"
-msgstr ""
+msgstr "所有支持的日志文件"
 
 #: picard/tagger.py:1156
 msgid "EAC / XLD / Whipper / fre:ac log files"
-msgstr ""
+msgstr "EAC / XLD / Whipper / fre:ac 日志文件"
 
 #: picard/tagger.py:1157
 msgid "dBpoweramp log files"
-msgstr ""
+msgstr "dBpoweramp日志文件"
 
 #: picard/script/serializer.py:352 picard/tagger.py:1158
 #: picard/ui/coverartbox.py:617 picard/ui/mainwindow.py:1249
@@ -619,7 +621,7 @@ msgstr "全部文件"
 #: picard/tagger.py:1184
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
-msgstr ""
+msgstr "解析翻录日志\"%s\"失败"
 
 #: picard/track.py:385
 msgid "[loading recording information]"
@@ -2723,14 +2725,14 @@ msgid ""
 "`$if(if,then,else)`\n"
 "\n"
 "If `if` is not empty, it returns `then`, otherwise it returns `else`."
-msgstr "`$if（if,then,else）`\n\n若 `if` 不为空，则返回 `then` ，否则返回 `else` 。"
+msgstr "`$if(if,then,else)`\n\n若 `if` 不为空，则返回 `then` ，否则返回 `else` 。"
 
 #: picard/script/functions.py:199
 msgid ""
 "`$if2(a1,a2,a3,...)`\n"
 "\n"
 "Returns first non empty argument."
-msgstr "`$if2（a1,a2,a3,...）`\n\n返回第一个非空参数。"
+msgstr "`$if2(a1,a2,a3,...)`\n\n返回第一个非空参数。"
 
 #: picard/script/functions.py:212
 msgid ""
@@ -2744,28 +2746,28 @@ msgid ""
 "`$left(text,number)`\n"
 "\n"
 "Returns the first `number` characters from `text`."
-msgstr "`$left（text,number）`\n\n返回 `text` 中的前 `number` 个字符。"
+msgstr "`$left(text,number)`\n\n返回 `text` 中的前 `number` 个字符。"
 
 #: picard/script/functions.py:233
 msgid ""
 "`$right(text,number)`\n"
 "\n"
 "Returns the last `number` characters from `text`."
-msgstr "`$right（text,number）`\n\n返回 `text` 中的最后 `number` 个字符。"
+msgstr "`$right(text,number)`\n\n返回 `text` 中的最后 `number` 个字符。"
 
 #: picard/script/functions.py:245
 msgid ""
 "`$lower(text)`\n"
 "\n"
 "Returns `text` in lower case."
-msgstr "`$lower（text）`\n\n以小写形式返回 `text`。"
+msgstr "`$lower(text)`\n\n以小写形式返回 `text`。"
 
 #: picard/script/functions.py:254
 msgid ""
 "`$upper(text)`\n"
 "\n"
 "Returns `text` in upper case."
-msgstr "`$upper（text）`\n\n以大写形式返回 `text`。"
+msgstr "`$upper(text)`\n\n以大写形式返回 `text`。"
 
 #: picard/script/functions.py:263
 msgid ""
@@ -3043,7 +3045,7 @@ msgid ""
 "comparison method if `type` is not specified.  The \"auto\" type will use the\n"
 "first type that applies to both arguments in the following order of preference:\n"
 "\"int\", \"float\" and \"text\"."
-msgstr ""
+msgstr "`$lt(x,y[,type])`\n\n如果按`type`中指定的比较方式比较`x`小于`y`，则返回 true。\n`type`可以是“int”（整数）、“float”（浮点数）、\n“text”（大小写敏感的文本），“nocase”（不区分大小写的文本）\n和“auto”（自动确定提供的参数类型，此项为默认值）。\n设定为“auto”时，将按以下优先顺序使用适用于两个参数的第一个类型：“int”、“float”和“text”。"
 
 #: picard/script/functions.py:731
 msgid ""
@@ -3056,7 +3058,7 @@ msgid ""
 "comparison method if `type` is not specified.  The \"auto\" type will use the\n"
 "first type that applies to both arguments in the following order of preference:\n"
 "\"int\", \"float\" and \"text\"."
-msgstr ""
+msgstr "`$lte(x,y[,type])`\n\n如果按`type`中指定的比较方式比较`x`小于或等于`y`，则返回 true。\n`type`可以是“int”（整数）、“float”（浮点数）、\n“text”（大小写敏感的文本），“nocase”（不区分大小写的文本）\n和“auto”（自动确定提供的参数类型，此项为默认值）。\n设定为“auto”时，将按以下优先顺序使用适用于两个参数的第一个类型：“int”、“float”和“text”。"
 
 #: picard/script/functions.py:746
 msgid ""
@@ -3069,7 +3071,7 @@ msgid ""
 "comparison method if `type` is not specified.  The \"auto\" type will use the\n"
 "first type that applies to both arguments in the following order of preference:\n"
 "\"int\", \"float\" and \"text\"."
-msgstr ""
+msgstr "`$gt(x,y[,type])`\n\n如果按`type`中指定的比较方式比较`x`大于`y`，则返回 true。\n`type`可以是“int”（整数）、“float”（浮点数）、\n“text”（大小写敏感的文本），“nocase”（不区分大小写的文本）\n和“auto”（自动确定提供的参数类型，此项为默认值）。\n设定为“auto”时，将按以下优先顺序使用适用于两个参数的第一个类型：“int”、“float”和“text”。"
 
 #: picard/script/functions.py:761
 msgid ""
@@ -3082,7 +3084,7 @@ msgid ""
 "comparison method if `type` is not specified.  The \"auto\" type will use the\n"
 "first type that applies to both arguments in the following order of preference:\n"
 "\"int\", \"float\" and \"text\"."
-msgstr ""
+msgstr "`$gte(x,y[,type])`\n\n如果按`type`中指定的比较方式比较`x`大于或等于`y`，则返回 true。\n`type`可以是“int”（整数）、“float”（浮点数）、\n“text”（大小写敏感的文本），“nocase”（不区分大小写的文本）\n和“auto”（自动确定提供的参数类型，此项为默认值）。\n设定为“auto”时，将按以下优先顺序使用适用于两个参数的第一个类型：“int”、“float”和“text”。"
 
 #: picard/script/functions.py:776
 msgid ""
@@ -3103,7 +3105,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $lenmulti(One; Two; Three) = 3\n"
-msgstr "`$lenmulti(name,separator=\"; \")`\n\n返回多值标签 `name` 中的元素数。文本值\n    表示一个多值可以用 `separator`（或“;”，若未通过）\n    将 `name` 值强制转换为适当的多值标签。\n\n例如：\n\n    $lenmulti(One; Two; Three) = 3\n"
+msgstr "`$lenmulti(name,separator=\"; \")`\n\n返回多值标签 `name` 中的元素数。文本值\n    表示一个多值可以用 `separator`（或“; ”，若未通过）\n    将 `name` 值强制转换为适当的多值标签。\n\n例如：\n\n    $lenmulti(One; Two; Three) = 3\n"
 
 #: picard/script/functions.py:802
 msgid ""
@@ -3228,7 +3230,7 @@ msgid ""
 "Returns true if `x` equals `a1` or `a2` or ...\n"
 "Functionally equivalent to `$or($eq(x,a1),$eq(x,a2),...)`.\n"
 "Functionally equivalent to the eq2 plugin."
-msgstr "`$eq_any(x,a1,a2...)`\n\n若 `x` 等于 `a1` 或 `a2` 或...，则返回true。\n在功能上等同于 `$or($eq(x,a1),$eq(x,a2) ...）\n在功能上等效于 eq2 插件。"
+msgstr "`$eq_any(x,a1,a2,...)`\n\n若 `x` 等于 `a1` 或 `a2` 或...，则返回true。\n在功能上等同于 `$or($eq(x,a1),$eq(x,a2),...)`\n在功能上等效于 eq2 插件。"
 
 #: picard/script/functions.py:1023
 msgid ""
@@ -3237,7 +3239,7 @@ msgid ""
 "Returns true if `x` does not equal `a1` and `a2` and ...\n"
 "Functionally equivalent to `$and($ne(x,a1),$ne(x,a2),...)`.\n"
 "Functionally equivalent to the ne2 plugin."
-msgstr "`$ne_all(x,a1,a2...)`\n\n若 `x` 不等于 `a1` 和 `a2` 和...，则返回true。\n在功能上等同于 `$and($ne(x,a1),$ne(x,a2) ...）\n在功能上等效于 ne2 插件。"
+msgstr "`$ne_all(x,a1,a2,...)`\n\n若 `x` 不等于 `a1` 和 `a2` 和...，则返回true。\n在功能上等同于 `$and($ne(x,a1),$ne(x,a2),...)`\n在功能上等效于 ne2 插件。"
 
 #: picard/script/functions.py:1035
 msgid ""
@@ -3249,7 +3251,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat Loaf))\n"
-msgstr "`$eq_all(x,a1,a2...)`\n\n若 `x` 等于 `a1` 和 `a2` 和...，则返回true。\n在功能上等同于 `$and($ne(x,a1),$ne(x,a2) ...）\n\n例如：\n\n    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat Loaf))\n"
+msgstr "`$eq_all(x,a1,a2,...)`\n\n若 `x` 等于 `a1` 和 `a2` 和...，则返回true。\n在功能上等同于 `$and($eq(x,a1),$eq(x,a2),...)`\n\n例如：\n\n    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat Loaf))\n"
 
 #: picard/script/functions.py:1053
 #, python-format
@@ -3262,7 +3264,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
-msgstr "`$ne_any(x,a1,a2...)`\n\n若 `x` 不等于 `a1` 或 `a2` 或...，则返回true。\n在功能上等同于 `$or($ne(x,a1),$ne(x,a2) ...）\n\n例如：\n\n    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
+msgstr "`$ne_any(x,a1,a2,...)`\n\n若 `x` 不等于 `a1` 或 `a2` 或...，则返回true。\n在功能上等同于 `$or($ne(x,a1),$ne(x,a2),...)`\n\n例如：\n\n    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
 
 #: picard/script/functions.py:1068
 msgid ""
@@ -3403,7 +3405,7 @@ msgid ""
 "\n"
 "    $setmulti(supporting_artists,$slice(%artists%,1))\n"
 "    $setmulti(supporting_artists,$slice(%artists%,1,-1))\n"
-msgstr "`$slice(name,start,end,separator=\"; \")`\n\n返回包含多值标签 `name` 中 `start` 和 `end` 索引之间元素的多值变量。\n     可使用分隔符（或“;”，若未成功）将代表多值的文字值替换为 `name`，\n     以将值强制转换为适当的多值标签。索引从零开始。负数则从末尾往前倒数。\n若`start`或`end`索引为空白，则默认为列表开头或结尾。\n以下示例将创建一个多值变量，其中所有艺术家都位于 `%artists%` 中，但第一个可用于创建 \"feat.\" 列表的变量除外。\n例如：\nExamples:\n\n$setmulti(supporting_artists,$slice(%artists%,1))\n$setmulti(supporting_artists,$slice(%artists%,1,-1))\n"
+msgstr "`$slice(name,start,end,separator=\"; \")`\n\n返回包含多值标签 `name` 中 `start` 和 `end` 索引之间元素的多值变量。\n     可使用分隔符（或“; ”，若未成功）将代表多值的文字值替换为 `name`，\n     以将值强制转换为适当的多值标签。索引从零开始。负数则从末尾往前倒数。\n若`start`或`end`索引为空白，则默认为列表开头或结尾。\n以下示例将创建一个多值变量，其中所有艺术家都位于 `%artists%` 中，但第一个可用于创建 \"feat.\" 列表的变量除外。\n例如：\nExamples:\n\n$setmulti(supporting_artists,$slice(%artists%,1))\n$setmulti(supporting_artists,$slice(%artists%,1,-1))\n"
 
 #: picard/script/functions.py:1319
 #, python-format
@@ -3419,7 +3421,7 @@ msgid ""
 "    remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and their\n"
 "    equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.\n"
 "    `%3Y`); and hanging '%' at the end of the format string."
-msgstr "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n\n以指定的 `format` 恢复当前日期和时间，该格式基于标准的 Python `strftime` [编码格式]（https://strftime.org/）。\n       若未指定 `format`，则日期/时间将以 `2020-02-05 14:26:32` 的格式恢复。\n注意：应避免使用特定于平台的格式代码，以帮助确保脚本在不同平台之间的兼容性。\n       这些代码包括：填充移除（例如，在 Linux 或 macOS 上为 `%-d` 和 `%-m`，\n       在Windows上为等效的  `%#d`  和 `%#m）；元素长度说明符（例如 `%3Y`）；\n       并在格式字符串的末尾附上 '%'。"
+msgstr "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n\n以指定的 `format` 恢复当前日期和时间，该格式基于标准的 Python `strftime` [编码格式]（https://strftime.org/）。\n       若未指定 `format`，则日期/时间将以 `2020-02-05 14:26:32` 的格式恢复。\n注意：应避免使用特定于平台的格式代码，以帮助确保脚本在不同平台之间的兼容性。\n       这些代码包括：填充移除（例如，在 Linux 或 macOS 上为 `%-d` 和 `%-m`，\n       在Windows上为等效的  `%#d`  和 `%#m`）；元素长度说明符（例如 `%3Y`）；\n       并在格式字符串的末尾附上 '%'。"
 
 #: picard/script/functions.py:1348
 msgid ""
@@ -3579,7 +3581,7 @@ msgid ""
 "will be expanded automatically.\n"
 "\n"
 "_Since Picard 3.0_"
-msgstr ""
+msgstr "$min(type,x,...)\n\n按`type`中指定的比较方式返回最小值。\n\n`type`可以是“int”（整数）、“float”（浮点数）、\n“text”（大小写敏感的文本），“nocase”（不区分大小写的文本）\n和“auto”（自动确定提供的参数类型，此项为默认值）。\n设定为“auto”时，将按以下优先顺序使用适用于两个参数的第一个类型：“int”、“float”和“text”。\n\n可与任意数量的参数一起使用。多值参数\n会被自动展开。\n\n_Picard 3.0起_"
 
 #: picard/script/functions.py:1629
 msgid ""
@@ -3598,7 +3600,7 @@ msgid ""
 "will be expanded automatically.\n"
 "\n"
 "_Since Picard 3.0_"
-msgstr ""
+msgstr "$max(type,x,...)\n\n按`type`中指定的比较方式返回最大值。\n\n`type`可以是“int”（整数）、“float”（浮点数）、\n“text”（大小写敏感的文本），“nocase”（不区分大小写的文本）\n和“auto”（自动确定提供的参数类型，此项为默认值）。\n设定为“auto”时，将按以下优先顺序使用适用于两个参数的第一个类型：“int”、“float”和“text”。\n\n可与任意数量的参数一起使用。多值参数\n会被自动展开。\n\n_Picard 3.0起_"
 
 #: picard/script/serializer.py:202
 #, python-format
@@ -4698,7 +4700,7 @@ msgstr "检查更新（&C）…"
 
 #: picard/ui/mainwindow.py:932
 msgid "From CD ripper &log file..."
-msgstr ""
+msgstr "从CD和日志文件..."
 
 #: picard/ui/mainwindow.py:985 picard/ui/scripteditor.py:555
 msgid "&File"
@@ -5862,7 +5864,7 @@ msgstr "重新加载示例"
 
 #: picard/ui/ui_options_renaming_compat.py:65
 msgid "Customize..."
-msgstr ""
+msgstr "自定义..."
 
 #: picard/ui/ui_options_renaming_compat.py:66
 msgid "Allow paths longer than 259 characters"
@@ -5870,7 +5872,7 @@ msgstr "允许长于259个字符的路径"
 
 #: picard/ui/ui_options_renaming_compat.py:67
 msgid "Replace spaces with underscores"
-msgstr ""
+msgstr "使用下划线替代空格"
 
 #: picard/ui/ui_options_script.py:119
 msgid "Enable Tagger Script(s)"
@@ -6165,7 +6167,7 @@ msgstr "特性"
 
 #: picard/ui/ui_win_compat_dialog.py:193
 msgid "Replacement"
-msgstr ""
+msgstr "替换"
 
 #: picard/ui/util.py:49
 msgid "&Ok"
@@ -6398,7 +6400,7 @@ msgstr "您已更改界面颜色。可能需要重新启动 Picard 方可生效�
 
 #: picard/ui/options/interface_toolbar.py:59
 msgid "Action Toolbar"
-msgstr ""
+msgstr "工具栏"
 
 #: picard/ui/options/interface_toolbar.py:67
 msgid "Add Folder"
@@ -6715,7 +6717,7 @@ msgstr "移动文件的目标位置不能为空。"
 
 #: picard/ui/options/renaming_compat.py:66
 msgid "Compatibility"
-msgstr ""
+msgstr "兼容性"
 
 #: picard/ui/options/renaming_compat.py:128
 msgid "Windows long path support"
