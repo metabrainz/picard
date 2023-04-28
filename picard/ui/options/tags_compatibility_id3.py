@@ -49,8 +49,8 @@ class TagsCompatibilityID3OptionsPage(OptionsPage):
 
     options = [
         BoolOption("setting", "write_id3v1", True),
-        BoolOption("setting", "write_id3v23", True),
-        TextOption("setting", "id3v2_encoding", "utf-16"),
+        BoolOption("setting", "write_id3v23", False),
+        TextOption("setting", "id3v2_encoding", "utf-8"),
         TextOption("setting", "id3v23_join_with", "/"),
         BoolOption("setting", "itunes_compatible_grouping", False),
     ]
