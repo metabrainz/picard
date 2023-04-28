@@ -58,20 +58,18 @@ else:
 
 def get_logarithmic_volume(player_value):
     """Return logarithmic scale volume to set slider position"""
-    logarithmic_volume = QtMultimedia.QAudio.convertVolume(
-        player_value / 100.,
+    return QtMultimedia.QAudio.convertVolume(
+        player_value,
         QtMultimedia.QAudio.VolumeScale.LinearVolumeScale,
         QtMultimedia.QAudio.VolumeScale.LogarithmicVolumeScale)
-    return QtCore.qRound(logarithmic_volume * 100)
 
 
 def get_linear_volume(slider_value):
     """Return linear scale volume from slider position"""
-    linear_volume = QtMultimedia.QAudio.convertVolume(
-        slider_value / 100.,
+    return QtMultimedia.QAudio.convertVolume(
+        slider_value,
         QtMultimedia.QAudio.VolumeScale.LogarithmicVolumeScale,
         QtMultimedia.QAudio.VolumeScale.LinearVolumeScale)
-    return QtCore.qRound(linear_volume * 100)
 
 
 def get_text_width(font, text):
@@ -116,7 +114,7 @@ class Player(QtCore.QObject):
         return self._toolbar
 
     def volume(self):
-        return self._logarithmic_volume
+        return int(self._logarithmic_volume * 100)
 
     def playback_rate(self):
         return self._player.playbackRate()
@@ -157,9 +155,14 @@ class Player(QtCore.QObject):
             self._player.play()
 
     def set_volume(self, logarithmic_volume):
-        """Convert to linear scale and set"""
-        self._logarithmic_volume = logarithmic_volume
-        self._audio_output.setVolume(get_linear_volume(logarithmic_volume))
+        """Convert to linear scale and set the volume
+
+        The value must be given in logarithmic scale as a value between 0 and 100.
+        """
+        self._logarithmic_volume = logarithmic_volume / 100.
+        linear_volume = get_linear_volume(self._logarithmic_volume)
+        log.debug('Internal player: Set volume %f -> linear %f', logarithmic_volume, linear_volume)
+        self._audio_output.setVolume(linear_volume)
 
     def set_position(self, position):
         self._player.setPosition(position)
