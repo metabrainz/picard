@@ -518,10 +518,9 @@ class picard_pull_translations(Command):
             tx_executable,
             'pull',
             '--force',
-            '--resource',
-            'musicbrainz.picard',
-            '--language',
+            '--languages',
             'en_AU,en_GB,en_CA'
+            'musicbrainz.picard',
         ])
 
 
@@ -600,9 +599,9 @@ class picard_update_constants(Command):
                 tx_executable,
                 'pull',
                 '--force',
-                '--resource=musicbrainz.attributes,musicbrainz.countries',
                 '--source',
-                '--language=none',
+                'musicbrainz.attributes',
+                'musicbrainz.countries',
             ]
             self.spawn(txpull_cmd)
 
