@@ -30,7 +30,7 @@ jobs:
     strategy:
       matrix:
         setup:
-        - macos-deployment-version: 10.14
+        - macos-deployment-version: 11
           python-version: 3.11.5-macos11
           python-sha256sum: c6cd76659bfb364c2ac63bc57f6b10c1e131a20170359c5d65e2d41fdc674a4f
     env:

@@ -2,7 +2,7 @@ discid==1.2.0
 Markdown==3.4.4
 mutagen==1.47.0
 PyJWT==2.8.0
-PyQt6==6.3.1
+PyQt6==6.5.2
 python-dateutil==2.8.2
 pywin32==306
 PyYAML==6.0.1
