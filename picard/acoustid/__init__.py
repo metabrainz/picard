@@ -208,7 +208,7 @@ class AcoustIDClient(QtCore.QObject):
         try:
             self._running -= 1
             self._run_next_task()
-            if exit_code == 0 and exit_status == 0:
+            if exit_code == 0 and exit_status == QtCore.QProcess.ExitStatus.NormalExit:
                 output = bytes(process.readAllStandardOutput()).decode()
                 jsondata = json.loads(output)
                 # Use only integer part of duration, floats are not allowed in lookup
