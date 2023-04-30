@@ -323,14 +323,13 @@ class VCommentFile(File):
 
         self._remove_deleted_tags(metadata, file.tags)
 
+        kwargs = {}
         if is_flac:
             flac_sort_pics_after_tags(file.metadata_blocks)
             if config.setting["fix_missing_seekpoints_flac"]:
                 flac_remove_empty_seektable(file)
-
-        kwargs = {}
-        if is_flac and config.setting["remove_id3_from_flac"]:
-            kwargs["deleteid3"] = True
+            if config.setting["remove_id3_from_flac"]:
+                kwargs["deleteid3"] = True
         try:
             file.save(**kwargs)
         except TypeError:
