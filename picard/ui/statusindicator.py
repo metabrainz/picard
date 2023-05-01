@@ -22,6 +22,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from picard import log
 from picard.const.sys import (
     IS_HAIKU,
     IS_MACOS,
@@ -99,7 +100,6 @@ if not (IS_WIN or IS_MACOS or IS_HAIKU):
 
     try:
         from PyQt6.QtCore import (
-            Q_CLASSINFO,
             QObject,
             pyqtSlot,
         )
@@ -109,8 +109,8 @@ if not (IS_WIN or IS_MACOS or IS_HAIKU):
             QDBusMessage,
         )
 
-    except ImportError:
-        pass
+    except ImportError as err:
+        log.warning('Failed importing PyQt6.QtDBus: %r', err)
 
     else:
 
@@ -155,20 +155,21 @@ if not (IS_WIN or IS_MACOS or IS_HAIKU):
                 return [self._app_uri, self.current_progress]
 
         class UnityLauncherEntryAdaptor(QDBusAbstractAdaptor):
-            """ This provides the DBus adaptor to the outside world"""
+            """ This provides the DBus adaptor to the outside world
 
-            Q_CLASSINFO("D-Bus Interface", DBUS_INTERFACE)
-            Q_CLASSINFO("D-Bus Introspection",
-                '<interface name="%s">\n'
-                '  <signal name="Update">\n'
-                '    <arg direction="out" type="s" name="app_uri"/>\n'
-                '    <arg direction="out" type="a{sv}" name="properties"/>\n'
-                '  </signal>\n'
-                '  <method name="Query">\n'
-                '    <arg direction="out" type="s" name="app_uri"/>\n'
-                '    <arg direction="out" type="a{sv}" name="properties"/>\n'
-                '  </method>\n'
-                '</interface>' % DBUS_INTERFACE)
+            The supported interface is:
+
+                <interface name="com.canonical.Unity.LauncherEntry">
+                  <signal name="Update">
+                    <arg direction="out" type="s" name="app_uri"/>
+                    <arg direction="out" type="a{sv}" name="properties"/>
+                  </signal>
+                  <method name="Query">
+                    <arg direction="out" type="s" name="app_uri"/>
+                    <arg direction="out" type="a{sv}" name="properties"/>
+                  </method>
+                </interface>
+            """
 
             def __init__(self, parent):
                 super().__init__(parent)
