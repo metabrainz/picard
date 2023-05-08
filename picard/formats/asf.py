@@ -229,8 +229,7 @@ class ASFFile(File):
                             id3_type=image_type,
                         )
                     except CoverArtImageError as e:
-                        log.error('Cannot load image from %r: %s' %
-                                  (filename, e))
+                        log.error('Cannot load image from %r: %s', filename, e)
                     else:
                         metadata.images.append(coverartimage)
 

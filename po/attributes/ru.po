@@ -4,6 +4,7 @@
 # Dmitr Y, 2017
 # Ekaterina <nawsikaya@bk.ru>, 2020
 # greycat <greycat.na.kor@gmail.com>, 2012
+# Ilya <wileyfoxyx@gmail.com>, 2023
 # Konstantin Artemev <konst.artemev@gmail.com>, 2021
 # MrClon . <MrClon2007@yandex.ru>, 2019
 # Nikita P <nik-p13@yandex.ru>, 2018
@@ -25,8 +26,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2012-05-24 18:52+0000\n"
-"Last-Translator: Rashid R <rashidrama200@gmail.com>, 2021\n"
-"Language-Team: Russian (http://www.transifex.com/musicbrainz/musicbrainz/language/ru/)\n"
+"Last-Translator: Ilya <wileyfoxyx@gmail.com>, 2023\n"
+"Language-Team: Russian (http://app.transifex.com/musicbrainz/musicbrainz/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -56,12 +57,12 @@ msgstr "10-дюймовая грампластинка"
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr "10-дюймовый Винил"
+msgstr "10-дюймовый винил"
 
 #: DB:medium_format/name:72
 msgctxt "medium_format"
 msgid "12\" LaserDisc"
-msgstr "12-дюймовый LaserDisc"
+msgstr "12-дюймовый лазердиск"
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
@@ -394,7 +395,7 @@ msgid ""
 "A planned official release that was cancelled before being released, but for"
 " which enough info is known to still confidently list it (e.g. it was "
 "available for preorder)."
-msgstr ""
+msgstr "Запланированное официальное издание, которое было отменено до выхода, но о котором есть достаточно информации, чтобы уверено перечислить его (например, оно было доступно для предзаказа)."
 
 #: DB:work_type/description:28
 msgctxt "work_type"
@@ -418,7 +419,7 @@ msgid ""
 "by the artist and/or their record company after being released, whether to "
 "replace it with a new version with some changes or to just retire it "
 "altogether (e.g. because of legal issues)."
-msgstr ""
+msgstr "Ранее официальное издание, которое после выпуска было активно изъято из обращения исполнителем и/или звукозаписывающей компанией, либо для замены его новой версией с некоторыми изменениями, либо для полного изъятия из обращения (например, из-за юридических проблем)."
 
 #: DB:release_group_secondary_type/description:10
 msgctxt "release_group_secondary_type"
@@ -426,7 +427,7 @@ msgid ""
 "A promotional release mostly meant to have limited circulation and "
 "demonstrate the sound of an artist to record labels, publishers and other "
 "artists."
-msgstr ""
+msgstr "Промо-издание, в основном предназначенное для ограниченного тиража и демонстрации звучания исполнителя звукозаписывающим лейблам, издателям и другим исполнителям."
 
 #: DB:work_type/description:14
 msgctxt "work_type"
@@ -442,14 +443,14 @@ msgstr "Повторяющийся фестиваль, обычно происх
 #: DB:release_group_secondary_type/description:7
 msgctxt "release_group_secondary_type"
 msgid "A release that primarily contains remixed material."
-msgstr ""
+msgstr "Издание, преимущественно содержащее ремиксы."
 
 #: DB:release_group_secondary_type/description:6
 msgctxt "release_group_secondary_type"
 msgid ""
 "A release that was recorded live. Generally this means \"with an audience\","
 " be it in person, through the radio or in another similar way."
-msgstr ""
+msgstr "Издание, которое было записано вживую. Обычно это означает \"с аудиторией\", будь то лично, по радио или другим подобным способом."
 
 #: DB:place_type/description:7
 msgctxt "place_type"
@@ -461,17 +462,17 @@ msgstr "Школа, университет или другое подобное 
 #: DB:series_type/description:14
 msgctxt "series_type"
 msgid "A series of artists honoured by the same award."
-msgstr ""
+msgstr "Серия исполнителей, награжденных одной и той же наградой."
 
 #: DB:series_type/description:13
 msgctxt "series_type"
 msgid "A series of artists."
-msgstr ""
+msgstr "Серия исполнителей."
 
 #: DB:series_type/description:15
 msgctxt "series_type"
 msgid "A series of award ceremonies, usually one per year."
-msgstr ""
+msgstr "Серия церемоний награждения, обычно одна в год."
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -486,7 +487,7 @@ msgstr "Серия выступлений одного и того же шоу �
 #: DB:series_type/description:48
 msgctxt "series_type"
 msgid "A series of recordings honoured by the same award."
-msgstr ""
+msgstr "Серия записей, награжденных одной и той же наградой."
 
 #: DB:series_type/description:3
 msgctxt "series_type"
@@ -496,12 +497,12 @@ msgstr "Серия записей."
 #: DB:series_type/description:7
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in different locations."
-msgstr "Серия связанных концертов артиста в разных местах."
+msgstr "Серия связанных концертов исполнителя в разных местах."
 
 #: DB:series_type/description:12
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in the same location."
-msgstr ""
+msgstr "Серия связанных концертов исполнителя в одном и том же месте."
 
 #: DB:series_type/description:47
 msgctxt "series_type"
@@ -539,7 +540,7 @@ msgid ""
 "A song cycle is a group of songs designed to be performed in a sequence as a"
 " single entity. In most cases, all of the songs are by the same composer, "
 "and often use words from the same poet or lyricist."
-msgstr "Песенный цикл представляет собой группу песен, которые должны выполняться в последовательности как единое целое. В большинстве случаев все песни принадлежат одному композитору и часто используют слова одного и того же поэта или автора."
+msgstr "Песенный цикл - это группа песен, предназначенных для исполнения в последовательности как единое целое. В большинстве случаев все песни написаны одним композитором, и часто в них используются слова одного поэта или лирика."
 
 #: DB:work_type/description:17
 msgctxt "work_type"
@@ -564,7 +565,7 @@ msgid ""
 "game, or other medium. Video game CDs with audio tracks should be classified"
 " as soundtracks because the musical properties of the CDs are more "
 "interesting to MusicBrainz than their data properties."
-msgstr ""
+msgstr "Саундтрек — это музыкальная партитура к фильму, телесериалу, сценическому шоу, видеоигре или другому средству. Компакт-диски с аудиодорожками к видеоиграм следует классифицировать как саундтреки, поскольку музыкальные свойства компакт-дисков представляют для MusicBrainz больший интерес, чем свойства данных."
 
 #: DB:instrument_type/description:6
 msgctxt "instrument_type"
@@ -1968,7 +1969,7 @@ msgstr "Страна используется для областей, вклю�
 #: DB:area_type/name:7
 msgctxt "area_type"
 msgid "County"
-msgstr "Страна"
+msgstr "Графство"
 
 #: DB:area_type/description:7
 msgctxt "area_type"
@@ -2301,6 +2302,11 @@ msgctxt "release_packaging"
 msgid "Digibook"
 msgstr ""
 
+#: DB:release_packaging/name:89
+msgctxt "release_packaging"
+msgid "Digifile"
+msgstr ""
+
 #: DB:release_packaging/name:3
 msgctxt "release_packaging"
 msgid "Digipak"
@@ -2309,7 +2315,7 @@ msgstr "Диджипак"
 #: DB:medium_format/name:12
 msgctxt "medium_format"
 msgid "Digital Media"
-msgstr "Digital Media"
+msgstr "Цифровое медиа"
 
 #: DB:work_attribute_type_allowed_value/value:345
 msgctxt "work_attribute_type_allowed_value"
@@ -2389,7 +2395,7 @@ msgstr ""
 #: DB:medium_format/name:46
 msgctxt "medium_format"
 msgid "Download Card"
-msgstr ""
+msgstr "Карта загрузки"
 
 #: DB:medium_format/name:4
 msgctxt "medium_format"
@@ -3770,6 +3776,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Singaporean rights society COMPASS"
 msgstr ""
 
+#: DB:work_attribute_type/description:140
+msgctxt "work_attribute_type"
+msgid "ID for the Slovenian rights society SAZAS"
+msgstr ""
+
 #: DB:work_attribute_type/description:68
 msgctxt "work_attribute_type"
 msgid "ID for the South African rights society SAMRO"
@@ -3833,6 +3844,11 @@ msgstr ""
 #: DB:work_attribute_type/description:42
 msgctxt "work_attribute_type"
 msgid "ID for the Venezuelan rights society SACVEN"
+msgstr ""
+
+#: DB:work_attribute_type/description:107
+msgctxt "work_attribute_type"
+msgid "ID for the Vietnamese rights society VCPMC"
 msgstr ""
 
 #: DB:work_attribute_type/description:38
@@ -5701,6 +5717,11 @@ msgctxt "collection_type"
 msgid "Owned music"
 msgstr ""
 
+#: DB:editor_collection_type/name:17
+msgctxt "collection_type"
+msgid "Owned recordings"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:762
 msgctxt "work_attribute_type_allowed_value"
 msgid "Oynak"
@@ -6389,6 +6410,11 @@ msgstr ""
 #: DB:work_attribute_type/name:39
 msgctxt "work_attribute_type"
 msgid "SAYCO ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:140
+msgctxt "work_attribute_type"
+msgid "SAZAS ID"
 msgstr ""
 
 #: DB:medium_format/name:62
@@ -7569,6 +7595,11 @@ msgstr ""
 msgctxt "medium_format"
 msgid "VCD"
 msgstr "VCD"
+
+#: DB:work_attribute_type/name:107
+msgctxt "work_attribute_type"
+msgid "VCPMC ID"
+msgstr ""
 
 #: DB:medium_format/name:59
 msgctxt "medium_format"

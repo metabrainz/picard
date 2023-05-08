@@ -87,7 +87,7 @@ class UpdateCheckManager(QtCore.QObject):
 
     def _query_available_updates(self, callback=None):
         """Gets list of releases from specified website api."""
-        log.debug("Getting Picard release information from {host_url}".format(host_url=PLUGINS_API['host'],))
+        log.debug("Getting Picard release information from %s", PLUGINS_API['host'])
         self.tagger.webservice.get(
             PLUGINS_API['host'],
             PLUGINS_API['port'],
@@ -116,8 +116,7 @@ class UpdateCheckManager(QtCore.QObject):
             else:
                 self._available_versions = {}
             for key in self._available_versions:
-                log.debug("Version key '{version_key}' --> {version_information}".format(
-                    version_key=key, version_information=self._available_versions[key],))
+                log.debug("Version key '%s' -> %s", key, self._available_versions[key])
             self._display_results()
         if callback:
             callback(not error)
@@ -132,7 +131,7 @@ class UpdateCheckManager(QtCore.QObject):
             try:
                 test_version = Version(*version_tuple)
             except (TypeError, VersionError):
-                log.error('Invalid version %r for update level %s.' % (version_tuple, update_level))
+                log.error('Invalid version %r for update level %s.', version_tuple, update_level)
                 continue
             if self._update_level >= test_key and test_version > high_version:
                 key = PROGRAM_UPDATE_LEVELS[test_key]['name']

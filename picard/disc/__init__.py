@@ -67,7 +67,7 @@ class Disc(QtCore.QObject):
             disc = discid.read(device, features=['mcn'])
             self._set_disc_details(disc)
         except discid.DiscError as e:
-            log.error("Error while reading %r: %s" % (device, str(e)))
+            log.error("Error while reading %r: %s", device, e)
             raise
 
     def put(self, toc):
@@ -77,10 +77,10 @@ class Disc(QtCore.QObject):
             disc = discid.put(first, last, sectors, offsets)
             self._set_disc_details(disc)
         except discid.TOCError as e:
-            log.error("Error while processing TOC %r: %s" % (toc, str(e)))
+            log.error("Error while processing TOC %r: %s", toc, e)
             raise
         except ValueError as e:
-            log.error("Error while processing TOC %r: %s" % (toc, str(e)))
+            log.error("Error while processing TOC %r: %s", toc, e)
             raise discid.TOCError(e)
 
     def _set_disc_details(self, disc):

@@ -216,7 +216,7 @@ class PicardScript():
         (name, ext) = os.path.splitext(filename)
         if ext and str(name).endswith('.' + ext):
             filename = name
-        log.debug('Exporting script file: %s' % filename)
+        log.debug('Exporting script file: %s', filename)
         if file_type == self._file_types()['package']:
             script_text = self.to_yaml()
         else:
@@ -250,7 +250,7 @@ class PicardScript():
         filename, file_type = QtWidgets.QFileDialog.getOpenFileName(parent, dialog_title, default_script_directory, dialog_file_types, options=options)
         if not filename:
             return None
-        log.debug('Importing script file: %s' % filename)
+        log.debug('Importing script file: %s', filename)
         try:
             with open(filename, 'r', encoding='utf8') as i_file:
                 file_content = i_file.read()

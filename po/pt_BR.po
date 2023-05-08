@@ -17,10 +17,12 @@
 # João Munhoz <jmunhoz@outlook.com>, 2017
 # Leonardo Pacheco <lpacheco@pobox.com>, 2018
 # Lucas Miranda <Liddack@outlook.com>, 2016
+# LUIS PEDRO NUNES LESSA, 2023
 # 65f2af3cfa184c075942a0418b98d2de_d688669, 2014
 # Mateus, 2020
 # Mateus, 2020
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022
+# SpeedyKingGamer Speedy, 2023
 # vitorgatti <vitorgatti@yahoo.com.br>, 2012
 # Willer Portugal <willer_tj@hotmail.com>, 2019
 # Willer Silva <programacaowp@gmail.com>, 2019
@@ -30,8 +32,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-12-05 21:15+0100\n"
 "PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.com/musicbrainz/musicbrainz/language/pt_BR/)\n"
+"Last-Translator: SpeedyKingGamer Speedy, 2023\n"
+"Language-Team: Portuguese (Brazil) (http://app.transifex.com/musicbrainz/musicbrainz/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -160,7 +162,7 @@ msgstr "Procurando metadados para o arquivo %(filename)s ..."
 
 #: picard/oauth.py:243 picard/oauth.py:269
 msgid "Unexpected authentication error"
-msgstr ""
+msgstr "Erro de autenticação inesperado"
 
 #: picard/oauth.py:281
 #, python-format
@@ -209,11 +211,11 @@ msgstr "Geral"
 
 #: picard/profile.py:48
 msgid "Server address"
-msgstr ""
+msgstr "Endereço do servidor"
 
 #: picard/profile.py:49
 msgid "Port"
-msgstr ""
+msgstr "Porta"
 
 #: picard/profile.py:50 picard/ui/ui_options_general.py:179
 msgid "Automatically scan all new files"
@@ -318,7 +320,7 @@ msgstr ""
 
 #: picard/profile.py:85
 msgid "Save APEv2 tags to AAC"
-msgstr ""
+msgstr "Salvar APEv2 tags para AAC"
 
 #: picard/profile.py:86 picard/ui/ui_options_tags_compatibility_aac.py:49
 msgid "Remove APEv2 tags from AAC files"
@@ -326,7 +328,7 @@ msgstr "Remover tags APEv2 de arquivos AAC"
 
 #: picard/profile.py:87
 msgid "Save APEv2 tags to AC3"
-msgstr ""
+msgstr "Salvar APEv2 tags para AC3"
 
 #: picard/profile.py:88 picard/ui/ui_options_tags_compatibility_ac3.py:49
 msgid "Remove APEv2 tags from AC3 files"
@@ -334,7 +336,7 @@ msgstr "Remover etiquetas APEv2 de arquivos AC3"
 
 #: picard/profile.py:89
 msgid "Write ID3v1 tags"
-msgstr ""
+msgstr "Escrevendo ID3v1 tags"
 
 #: picard/profile.py:90
 msgid "Write ID3v2.3 tags"
@@ -416,11 +418,11 @@ msgstr "Substituir caracteres não-ASCII"
 
 #: picard/profile.py:119
 msgid "Rename files"
-msgstr ""
+msgstr "Renomear arquivos"
 
 #: picard/profile.py:120
 msgid "Move files"
-msgstr ""
+msgstr "Mover os arquivos"
 
 #: picard/profile.py:121
 msgid "Destination directory"
@@ -428,7 +430,7 @@ msgstr ""
 
 #: picard/profile.py:122
 msgid "Move additional files"
-msgstr ""
+msgstr "Mover arquivos adicionais"
 
 #: picard/profile.py:123
 msgid "Additional file patterns"
@@ -2013,11 +2015,11 @@ msgstr ""
 
 #: picard/const/locales.py:343
 msgid "Russian (Russia)"
-msgstr ""
+msgstr "Russo (Rússia)"
 
 #: picard/const/locales.py:344
 msgid "Russian (Ukraine)"
-msgstr ""
+msgstr "Russo (Ucraniano)"
 
 #: picard/const/locales.py:345
 msgid "Sanskrit"
@@ -2341,7 +2343,7 @@ msgstr "Tártaro"
 
 #: picard/const/locales.py:433
 msgid "Tatar (Russia)"
-msgstr ""
+msgstr "Tártaro (Rússia)"
 
 #: picard/const/locales.py:434
 msgid "Telugu"
@@ -3594,11 +3596,11 @@ msgstr ""
 
 #: picard/script/serializer.py:209
 msgid "Export Script File"
-msgstr ""
+msgstr "Exportar arquivos de Script"
 
 #: picard/script/serializer.py:231
 msgid "Export Script"
-msgstr ""
+msgstr "Exportar Script"
 
 #: picard/script/serializer.py:232
 #, python-format
@@ -3621,7 +3623,7 @@ msgstr ""
 
 #: picard/script/serializer.py:260
 msgid "The file was empty"
-msgstr ""
+msgstr "O arquivo está vazio"
 
 #: picard/script/serializer.py:268
 #, python-format
@@ -3997,7 +3999,7 @@ msgstr "Informações do agrupamento"
 
 #: picard/ui/infostatus.py:70
 msgid "Estimated Time"
-msgstr ""
+msgstr "Duração estimada"
 
 #: picard/ui/infostatus.py:71 picard/ui/options/plugins.py:607
 msgid "Files"
@@ -4138,7 +4140,7 @@ msgstr "Carregando..."
 
 #: picard/ui/itemviews.py:546
 msgid "Show &more details..."
-msgstr ""
+msgstr "Mostrar &more detalhes..."
 
 #: picard/ui/itemviews.py:599
 #, python-format
@@ -4261,7 +4263,7 @@ msgstr "Salvar Log View no arquivo"
 
 #: picard/ui/logview.py:266
 msgid "File already exists, do you really want to save to this file?"
-msgstr "Arquivo já existe, deseja sobrescrever?"
+msgstr "Arquivo já existe, você realmente deseja sobrescrever?"
 
 #: picard/ui/logview.py:278
 msgid "Failed to save Log View to file"
@@ -4334,7 +4336,7 @@ msgstr "Você precisa configurar sua chave API do AcoustID antes de enviar as im
 
 #: picard/ui/mainwindow.py:482
 msgid "Open AcoustID options"
-msgstr ""
+msgstr "Abrir AcoustID opções"
 
 #: picard/ui/mainwindow.py:493
 msgid "&Options..."
@@ -4510,7 +4512,7 @@ msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:696
 msgid "&Metadata"
-msgstr ""
+msgstr "&Metadados"
 
 #: picard/ui/mainwindow.py:700
 msgid "Ctrl+Shift+M"
@@ -5070,7 +5072,7 @@ msgstr ""
 
 #: picard/ui/scripteditor.py:591
 msgid "View/Edit Script &Metadata"
-msgstr ""
+msgstr "Ver/Editar Script &Metadados"
 
 #: picard/ui/scripteditor.py:592
 msgid "Display the details for the script"
@@ -5903,11 +5905,11 @@ msgstr ""
 
 #: picard/ui/ui_options_script.py:126
 msgid "Remove the selected tagger script"
-msgstr ""
+msgstr "Remover o selecionado Script de tagging"
 
 #: picard/ui/ui_options_script.py:127
 msgid "Remove tagger script"
-msgstr ""
+msgstr "Remover Script de tagging"
 
 #: picard/ui/ui_options_script.py:128
 msgid "Import"
@@ -6526,7 +6528,7 @@ msgstr "Confirmar Remoção"
 
 #: picard/ui/options/maintenance.py:295
 msgid "Are you sure you want to remove the selected option settings?"
-msgstr ""
+msgstr "Tem certeza que deseja remover a selecionada opção de configuração"
 
 #: picard/ui/options/matching.py:40
 msgid "Matching"
@@ -6866,15 +6868,15 @@ msgstr "Gravação Solo"
 
 #: picard/ui/widgets/profilelistwidget.py:44
 msgid "Rename profile"
-msgstr ""
+msgstr "Renomear perfil"
 
 #: picard/ui/widgets/profilelistwidget.py:47
 msgid "Remove profile"
-msgstr ""
+msgstr "Remover perfil"
 
 #: picard/ui/widgets/profilelistwidget.py:82
 msgid "Are you sure you want to remove this profile?"
-msgstr ""
+msgstr "Tem certeza que deseja remover esse perfil?"
 
 #: picard/ui/widgets/scriptdocumentation.py:109
 msgid "Open Scripting Documentation in your browser"

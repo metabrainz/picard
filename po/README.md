@@ -8,7 +8,7 @@ _Please do not manually edit the PO files._
 Required tools
 --------------
 
-* [Transifex client](https://developers.transifex.com/docs/cli)
+* [Transifex client 1.x](https://developers.transifex.com/docs/cli)
 * [Babel](https://babel.pocoo.org/)
 
 

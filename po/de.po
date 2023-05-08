@@ -25,7 +25,7 @@
 # nikki, 2013
 # nikki2 <b4931048@nwldx.com>, 2012
 # nikki, 2013
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2014,2017-2022
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2014,2017-2023
 # S.Brandt <s.brandt@mixxx.org>, 2014-2015,2017-2018
 # Shepard, 2012
 # Simon Legner <simon.legner@gmail.com>, 2018
@@ -44,8 +44,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-12-05 21:15+0100\n"
 "PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2014,2017-2022\n"
-"Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2014,2017-2023\n"
+"Language-Team: German (http://app.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -362,7 +362,7 @@ msgstr "Trennzeichen für ID3v2.3"
 
 #: picard/profile.py:93 picard/ui/ui_options_tags_compatibility_id3.py:125
 msgid "Save iTunes compatible grouping and work"
-msgstr "iTunes-kompatible Gruppe und Werk schreiben"
+msgstr "iTunes-kompatible Gruppierung und Werk schreiben"
 
 #: picard/profile.py:94
 msgid "Write RIFF INFO tags to WAVE files"

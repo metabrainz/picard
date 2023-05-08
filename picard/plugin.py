@@ -78,7 +78,7 @@ class ExtensionPoint(object):
     def register(self, module, item):
         if module.startswith(_PLUGIN_MODULE_PREFIX):
             name = module[_PLUGIN_MODULE_PREFIX_LEN:]
-            log.debug("ExtensionPoint: %s register <- plugin=%r item=%r" % (self.label, name, item))
+            log.debug("ExtensionPoint: %s register <- plugin=%r item=%r", self.label, name, item)
         else:
             name = None
             # uncomment to debug internal extensions loaded at startup

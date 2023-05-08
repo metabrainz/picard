@@ -8,22 +8,22 @@
 # Christian Andersson <christian.ld.andersson@gmail.com>, 2012
 # Filip Bengtsson, 2018
 # Henrik Mattsson-Mårn <h@reglage.net>, 2020
-# Jonatan Nyberg <jonatan@autistici.org>, 2016-2017,2021-2022
+# Jonatan Nyberg, 2016-2017,2021-2023
 # efef6ec5b435a041fce803c7f8af77d2_2341d43, 2018,2020-2021
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022
 # Robin Björnsvik <robin@bjornsvik.se>, 2013
 # Staffan Vilcans, 2014
 # Staffan Vilcans, 2016-2017
 # Staffan Vilcans, 2012
-# Tom Sawyer, 2022
+# Tom Sawyer, 2022-2023
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-12-05 21:15+0100\n"
 "PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Tom Sawyer, 2022\n"
-"Language-Team: Swedish (http://www.transifex.com/musicbrainz/musicbrainz/language/sv/)\n"
+"Last-Translator: Tom Sawyer, 2022-2023\n"
+"Language-Team: Swedish (http://app.transifex.com/musicbrainz/musicbrainz/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -126,7 +126,7 @@ msgstr "Ta bort"
 
 #: picard/config_upgrade.py:415
 msgid "Primary file naming script"
-msgstr ""
+msgstr "Primärt filnamngivningsskript"
 
 #: picard/file.py:826
 #, python-format
@@ -150,12 +150,12 @@ msgstr "Letar upp metadata för file %(filename)s ..."
 
 #: picard/oauth.py:243 picard/oauth.py:269
 msgid "Unexpected authentication error"
-msgstr ""
+msgstr "Oväntat autentiseringsfel"
 
 #: picard/oauth.py:281
 #, python-format
 msgid "Unexpected request error (HTTP code %s)"
-msgstr ""
+msgstr "Oväntat anropsfel (HTTP kod %s)"
 
 #: picard/pluginmanager.py:226
 #, python-format
@@ -165,12 +165,12 @@ msgstr "Det gick inte att läsa in tillägget \"%s\""
 #: picard/pluginmanager.py:241
 #, python-format
 msgid "Failed loading zipped plugin %r from %r"
-msgstr ""
+msgstr "Misslyckades att ladda komprimerad insticksmodul %r från %r"
 
 #: picard/pluginmanager.py:251
 #, python-format
 msgid "Failed loading plugin %r in %r"
-msgstr ""
+msgstr "Misslyckades att ladda insticksmodul %r i %r"
 
 #: picard/pluginmanager.py:287
 #, python-format
@@ -180,12 +180,12 @@ msgstr "Tillägget \"%s\" från \"%s\" är inte kompatibel med den här versione
 #: picard/pluginmanager.py:291
 #, python-format
 msgid "Plugin %r has an invalid API version string : %s"
-msgstr ""
+msgstr "Insiicksmodul %r har en ogiltig API versionssträng : %s"
 
 #: picard/pluginmanager.py:294
 #, python-format
 msgid "Plugin %r"
-msgstr ""
+msgstr "Insticksmodul %r"
 
 #: picard/pluginmanager.py:432
 #, python-format
@@ -199,11 +199,11 @@ msgstr "Allmänt"
 
 #: picard/profile.py:48
 msgid "Server address"
-msgstr ""
+msgstr "Serveradress"
 
 #: picard/profile.py:49
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 #: picard/profile.py:50 picard/ui/ui_options_general.py:179
 msgid "Automatically scan all new files"
@@ -211,7 +211,7 @@ msgstr "Analysera automatiskt alla nya filer"
 
 #: picard/profile.py:51 picard/ui/ui_options_general.py:180
 msgid "Automatically cluster all new files"
-msgstr ""
+msgstr "Klustra automatiskt alla nya filer"
 
 #: picard/profile.py:52 picard/ui/ui_options_general.py:181
 msgid "Ignore MBIDs when loading new files"
@@ -224,27 +224,27 @@ msgstr "Metadata"
 
 #: picard/profile.py:59
 msgid "Various Artists name"
-msgstr ""
+msgstr "Blandade artistnamn"
 
 #: picard/profile.py:60
 msgid "Standalone recordings name"
-msgstr ""
+msgstr "Fristående inspelningsnamn"
 
 #: picard/profile.py:61
 msgid "Translate artist names"
-msgstr ""
+msgstr "Översätt artistnamn"
 
 #: picard/profile.py:62
 msgid "Translation locales"
-msgstr ""
+msgstr "Översättningsspråk"
 
 #: picard/profile.py:63
 msgid "Translate artist names exception"
-msgstr ""
+msgstr "Översätt artistnamn undantag"
 
 #: picard/profile.py:64
 msgid "Translation script exceptions"
-msgstr ""
+msgstr "Översättningsskript undantag"
 
 #: picard/profile.py:65 picard/ui/ui_options_metadata.py:137
 msgid "Use release relationships"
@@ -268,7 +268,7 @@ msgstr "Använd standardiserade instrument och rösterkännanden"
 
 #: picard/profile.py:70 picard/ui/ui_options_metadata.py:139
 msgid "Guess track number and title from filename if empty"
-msgstr ""
+msgstr "Gissa spårnummer och rubrik från filnamn om tomt"
 
 #: picard/profile.py:75 picard/ui/options/tags.py:47
 msgid "Tags"
@@ -276,7 +276,7 @@ msgstr "Taggar"
 
 #: picard/profile.py:77
 msgid "Don't write tags"
-msgstr ""
+msgstr "Spara inte taggar"
 
 #: picard/profile.py:78 picard/ui/ui_options_tags.py:72
 msgid "Preserve timestamps of tagged files"
@@ -288,7 +288,7 @@ msgstr "Rensa befintliga taggar"
 
 #: picard/profile.py:80 picard/ui/ui_options_tags.py:75
 msgid "Keep embedded images when clearing tags"
-msgstr ""
+msgstr "Behåll inbäddade bilder när taggar rensas"
 
 #: picard/profile.py:81 picard/ui/ui_options_tags.py:76
 msgid "Remove ID3 tags from FLAC files"
@@ -300,7 +300,7 @@ msgstr "Ta bort APEv2-etiketter från MP3-filer"
 
 #: picard/profile.py:83 picard/ui/ui_options_tags.py:78
 msgid "Fix missing seekpoints for FLAC files"
-msgstr ""
+msgstr "Åtgärda saknade sökpunkter för FLAC-filer"
 
 #: picard/profile.py:84
 msgid "Preserved tags list"
@@ -3679,7 +3679,7 @@ msgstr "Format som stöds"
 
 #: picard/ui/aboutdialog.py:105
 msgid "Please donate"
-msgstr "Donera"
+msgstr "Vänligen donera"
 
 #: picard/ui/aboutdialog.py:106
 msgid ""

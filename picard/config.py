@@ -422,8 +422,6 @@ class Option(QtCore.QObject):
         self.section = section
         self.name = name
         self.default = default
-        if not hasattr(self, "convert"):
-            self.convert = type(default)
         self.registry[key] = self
 
     @classmethod
@@ -438,6 +436,9 @@ class Option(QtCore.QObject):
     @classmethod
     def exists(cls, section, name):
         return (section, name) in cls.registry
+
+    def convert(self, value):
+        return type(self.default)(value)
 
 
 class TextOption(Option):

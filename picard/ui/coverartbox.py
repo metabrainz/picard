@@ -528,7 +528,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
             self._try_load_remote_image(url, data)
             return
         except CoverArtImageError as e:
-            log.debug("Unable to identify dropped data format: %s" % e)
+            log.debug("Unable to identify dropped data format: %s", e)
 
         # Try getting image out of HTML (e.g. for Google image search detail view)
         try:
@@ -537,7 +537,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
             if match:
                 url = QtCore.QUrl(match.group(1))
         except UnicodeDecodeError as e:
-            log.warning("Unable to decode dropped data format: %s" % e)
+            log.warning("Unable to decode dropped data format: %s", e)
         else:
             log.debug("Trying URL parsed from HTML: %s", url.toString())
             self.fetch_remote_image(url)
@@ -546,7 +546,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         try:
             self._try_load_remote_image(url, data)
         except CoverArtImageError as e:
-            log.warning("Can't load image: %s" % e)
+            log.warning("Can't load image: %s", e)
             return
 
     def _try_load_remote_image(self, url, data):

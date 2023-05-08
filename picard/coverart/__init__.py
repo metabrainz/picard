@@ -70,10 +70,8 @@ class CoverArt:
         try:
             coverartimage.set_data(data)
             if coverartimage.can_be_saved_to_metadata:
-                log.debug("Cover art image stored to metadata: %r [%s]" % (
-                    coverartimage,
-                    coverartimage.imageinfo_as_string())
-                )
+                log.debug("Cover art image stored to metadata: %r [%s]",
+                    coverartimage, coverartimage.imageinfo_as_string())
                 self.metadata.images.append(coverartimage)
                 for track in self.album._new_tracks:
                     track.metadata.images.append(coverartimage)
@@ -83,10 +81,8 @@ class CoverArt:
                 if not self.front_image_found:
                     self.front_image_found = coverartimage.is_front_image()
             else:
-                log.debug("Thumbnail for cover art image: %r [%s]" % (
-                    coverartimage,
-                    coverartimage.imageinfo_as_string())
-                )
+                log.debug("Thumbnail for cover art image: %r [%s]",
+                    coverartimage, coverartimage.imageinfo_as_string())
         except CoverArtImageIOError as e:
             self.album.error_append(e)
             self.album._finalize_loading(error=True)
@@ -99,9 +95,9 @@ class CoverArt:
         self.album._requests -= 1
 
         if error:
-            self.album.error_append('Coverart error: %s' % (http.errorString()))
+            self.album.error_append('Coverart error: %s' % http.errorString())
         elif len(data) < 1000:
-            log.warning("Not enough data, skipping %s" % coverartimage)
+            log.warning("Not enough data, skipping %s", coverartimage)
         else:
             self._message(
                 N_("Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"),
@@ -146,12 +142,10 @@ class CoverArt:
                 try:
                     instance = provider.cls(self)
                     if provider.enabled and instance.enabled():
-                        log.debug("Trying cover art provider %s ..." %
-                                  provider.name)
+                        log.debug("Trying cover art provider %s ...", provider.name)
                         ret = instance.queue_images()
                     else:
-                        log.debug("Skipping cover art provider %s ..." %
-                                  provider.name)
+                        log.debug("Skipping cover art provider %s ...", provider.name)
                 except BaseException:
                     log.error(traceback.format_exc())
                     raise
@@ -182,8 +176,7 @@ class CoverArt:
                     self._set_metadata(coverartimage, file.read())
             except OSError as exc:
                 (errnum, errmsg) = exc.args
-                log.error("Failed to read %r: %s (%d)" %
-                          (path, errmsg, errnum))
+                log.error("Failed to read %r: %s (%d)", path, errmsg, errnum)
             except CoverArtImageIOError:
                 # It doesn't make sense to store/download more images if we can't
                 # save them in the temporary folder, abort.
@@ -201,7 +194,7 @@ class CoverArt:
             },
             echo=None
         )
-        log.debug("Downloading %r" % coverartimage)
+        log.debug("Downloading %r", coverartimage)
         self.album.tagger.webservice.download(
             coverartimage.host,
             coverartimage.port,

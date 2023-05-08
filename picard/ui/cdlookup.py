@@ -137,11 +137,11 @@ class CDLookupDialog(PicardDialog):
             state = config.persist[self.dialog_header_state]
             if state:
                 header.restoreState(state)
-                log.debug("restore_state: %s" % self.dialog_header_state)
+                log.debug("restore_state: %s", self.dialog_header_state)
 
     def save_header_state(self):
         if self.ui.release_list:
             state = self.ui.release_list.header().saveState()
             config = get_config()
             config.persist[self.dialog_header_state] = state
-            log.debug("save_state: %s" % self.dialog_header_state)
+            log.debug("save_state: %s", self.dialog_header_state)

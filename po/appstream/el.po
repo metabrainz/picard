@@ -5,6 +5,7 @@
 # 
 # Translators:
 # Panos Bouklis <panos@echidna-band.com>, 2020
+# Marios Pizinas <speardog98@outlook.com>, 2023
 # 
 #, fuzzy
 msgid ""
@@ -13,8 +14,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-23 07:49+0100\n"
 "PO-Revision-Date: 2018-11-25 07:37+0000\n"
-"Last-Translator: Panos Bouklis <panos@echidna-band.com>, 2020\n"
-"Language-Team: Greek (https://www.transifex.com/musicbrainz/teams/13846/el/)\n"
+"Last-Translator: Marios Pizinas <speardog98@outlook.com>, 2023\n"
+"Language-Team: Greek (https://app.transifex.com/musicbrainz/teams/13846/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -27,7 +28,7 @@ msgstr "MusicBrainz Picard"
 
 #: org.musicbrainz.Picard.appdata.xml.in:7
 msgid "MusicBrainz's music tagger"
-msgstr ""
+msgstr "Μουσικές ετικέτες του MusicBrainz"
 
 #: org.musicbrainz.Picard.appdata.xml.in:10
 msgid ""
@@ -35,6 +36,10 @@ msgid ""
 "platform music tagger by MusicBrainz. It has the ability to identify audio "
 "files even without any existing metadata."
 msgstr ""
+"Θέλετε να κάνετε εκκαθάριση την μουσική σας βιβλιοθήκη; Το Picard είναι ένα "
+"ανοικτού κώδικα για πολλαπλές πλατφόρμες πρόγραμμα για μουσικές ετικέτες από"
+" το MusicBrainz. Έχει τη δυνατότητα αναγνώρισης αρχείων ήχου ακόμη και χωρίς"
+" υπάρχοντα μεταδεδομένα."
 
 #: org.musicbrainz.Picard.appdata.xml.in:15
 msgid ""
@@ -44,26 +49,37 @@ msgid ""
 "supports a wide range of audio formats and can also lookup an entire CD for "
 "you."
 msgstr ""
+"Το Picard σας βοηθά στο να οργανώσετε την μουσική σας συλλογή με το να "
+"μετονομάζετε τα μουσικά σας αρχεία και με το να τα ταξινομείτε σε δομή "
+"φακέλων ακριβώς όπως το θέλετε εσείς. Ποικιλία από προσθήκες είναι διαθέσιμα"
+" και μπορείτε ακόμα να γράψετε και τις δικές σας. Το Picard υποστηρίζει ένα "
+"μεγάλο εύρος από μορφές ήχου και μπορεί ακόμα να διαβάσει ένα ολόκληρο CD "
+"για εσας."
 
 #: org.musicbrainz.Picard.appdata.xml.in:22
 msgid "Tagging audio files has never been easier."
-msgstr ""
+msgstr "Το να βάζεις ετικέτες σε αρχεία ήχου δεν ήταν ποτέ πιο εύκολο."
 
 #: org.musicbrainz.Picard.appdata.xml.in:25
 msgid "Features:"
-msgstr ""
+msgstr "Χαρακτηριστικά:"
 
 #: org.musicbrainz.Picard.appdata.xml.in:27
 msgid ""
 "Multiple formats: Picard supports all popular music formats, including MP3, "
 "FLAC, OGG, M4A, WMA, WAV, and more."
 msgstr ""
+"Πολλαπλές μορφές: Το Picard υποστηρίζει όλες τις δημοφιλές μουσικές μορφές, "
+"συμπεριλαμβανομένων MP3, FLAC, OGG, M4A, WMA, WAV, και άλλα."
 
 #: org.musicbrainz.Picard.appdata.xml.in:31
 msgid ""
 "AcoustID: Picard uses AcoustID audio fingerprints, allowing files to be "
 "identified by the actual music, even if they have no metadata."
 msgstr ""
+"AcoustID: Το Picard χρησιμοποιεί το AcoustID ηχητικό αποτύπωμα, επιτρέποντας"
+" τα αρχεία να αναγνωρίζονται από την πραγματική μουσική, ακόμα και αν δεν "
+"έχουν μεταδεδομένα."
 
 #: org.musicbrainz.Picard.appdata.xml.in:35
 msgid ""

@@ -5,6 +5,7 @@
 # Translators:
 # Jaakko Perttilä <jormangeud@gmail.com>, 2012-2015,2017-2022
 # Jaakko Perttilä <jormangeud@gmail.com>, 2018
+# Juhana Uuttu <rexroom@sci.fi>, 2023
 # Timo Martikainen <musicbrainz@listmycds.com>, 2012
 # Mika Heiska <kilualmighty@gmail.com>, 2006
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021
@@ -20,8 +21,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-12-05 21:15+0100\n"
 "PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Timo Martikainen <musicbrainz@listmycds.com>, 2012,2014\n"
-"Language-Team: Finnish (http://www.transifex.com/musicbrainz/musicbrainz/language/fi/)\n"
+"Last-Translator: Juhana Uuttu <rexroom@sci.fi>, 2023\n"
+"Language-Team: Finnish (http://app.transifex.com/musicbrainz/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -404,7 +405,7 @@ msgstr "Korvaa ei-ASCII merkit"
 
 #: picard/profile.py:119
 msgid "Rename files"
-msgstr "Nimeä tiedostot"
+msgstr "Nimeä uudestaan tiedostot"
 
 #: picard/profile.py:120
 msgid "Move files"
@@ -493,7 +494,7 @@ msgstr "Salli raitojen kestojen heittää näin monta sekuntia"
 
 #: picard/profile.py:163 picard/ui/ui_options_advanced.py:142
 msgid "Maximum number of entities to return per MusicBrainz query"
-msgstr "Suurin määrä entiteettejä jotka MusicBrainz-haku voi palauttaa"
+msgstr "Suurin määrä kohteita MusicBrainz-haku voi tuoda"
 
 #: picard/profile.py:166
 msgid "Completeness check ignore: Video tracks"
@@ -575,15 +576,15 @@ msgstr "Virhe lukiessa CD-levyä:\n\n%s"
 
 #: picard/tagger.py:1155
 msgid "All supported log files"
-msgstr ""
+msgstr "Kaikki tuetut lokitiedostot"
 
 #: picard/tagger.py:1156
 msgid "EAC / XLD / Whipper / fre:ac log files"
-msgstr ""
+msgstr "EAC / XLD / Whipper / fre:ac -lokitiedostot"
 
 #: picard/tagger.py:1157
 msgid "dBpoweramp log files"
-msgstr ""
+msgstr "dBpoweramp-lokitiedostot"
 
 #: picard/script/serializer.py:352 picard/tagger.py:1158
 #: picard/ui/coverartbox.py:617 picard/ui/mainwindow.py:1249
@@ -594,7 +595,7 @@ msgstr "Kaikki tiedostot"
 #: picard/tagger.py:1184
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
-msgstr ""
+msgstr "CD-kopioinnin lokitiedoston jäsentäminen epäonnistui"
 
 #: picard/track.py:385
 msgid "[loading recording information]"
@@ -2906,7 +2907,7 @@ msgid ""
 "\n"
 "Trims all leading and trailing whitespaces from `text`.\n"
 "    The optional second parameter `char` specifies the character to trim."
-msgstr "`$trim(teksti[,merkki])`\n\nPoistaa kaikki alussa ja lopussa olevat tyhjät merkit `teksti`stä.\n    `merkki`-argumentti määrittää vaihtoehtoisen merkin poistettavaksi."
+msgstr "`$trim(teksti[,merkki])`\n\nPoistaa kaikki alussa ja lopussa olevat tyhjät merkit `teksti`stä.\n    `merkki`-muuttuja määrittää vaihtoehtoisen merkin poistettavaksi."
 
 #: picard/script/functions.py:527
 msgid ""
@@ -2918,7 +2919,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $add(x,y,z) = ((x + y) + z)\n"
-msgstr "`$add(x,y,*...)`\n\nLaske yhteen `y` ja `x`.\nArgumentteja voi olla useampiakin.\n\nEsimerkki:\n\n    $add(x,y,z) = ((x + y) + z)\n"
+msgstr "`$add(x,y,*...)`\n\nLaske yhteen `y` ja `x`.\nMuuttujia voi olla useampiakin.\n\nEsimerkki:\n\n    $add(x,y,z) = ((x + y) + z)\n"
 
 #: picard/script/functions.py:545
 msgid ""
@@ -2930,7 +2931,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $sub(x,y,z) = ((x - y) - z)\n"
-msgstr "`$sub(x,y,...)`\n\nVähennä `x`:stä `y`.\nArgumentteja voi olla useampiakin.\n\nEsimerkki:\n\n    $sub(x,y,z) = ((x - y) - z)\n"
+msgstr "`$sub(x,y,...)`\n\nVähennä `x`:stä `y`.\nMuuttujia voi olla useampiakin.\n\nEsimerkki:\n\n    $sub(x,y,z) = ((x - y) - z)\n"
 
 #: picard/script/functions.py:563
 msgid ""
@@ -2942,7 +2943,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $div(x,y,z) = ((x / y) / z)\n"
-msgstr "`$div(x,y,...)`\n\nJaa `x` `y`:llä.\nArgumentteja voi olla useampiakin.\n\nEsimerkki:\n\n    $div(x,y,z) = ((x / y) / z)\n"
+msgstr "`$div(x,y,...)`\n\nJaa `x` `y`:llä.\nMuuttujia voi olla useampiakin.\n\nEsimerkki:\n\n    $div(x,y,z) = ((x / y) / z)\n"
 
 #: picard/script/functions.py:583
 msgid ""
@@ -2954,7 +2955,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $mod(x,y,z) = ((x % y) % z)\n"
-msgstr "`$mod(x,y,...)`\n\nPalauttaa jakojäännöksen `x` jaettuna `y`:llä.\nArgumentteja voi olla useampiakin.\n\nEsimerkki:\n\n    $mod(x,y,z) = ((x % y) % z)\n"
+msgstr "`$mod(x,y,...)`\n\nPalauttaa jakojäännöksen `x` jaettuna `y`:llä.\nMuuttujia voi olla useampiakin.\n\nEsimerkki:\n\n    $mod(x,y,z) = ((x % y) % z)\n"
 
 #: picard/script/functions.py:601
 msgid ""
@@ -2966,7 +2967,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $mul(x,y,z) = ((x * y) * z)\n"
-msgstr "`$mul(x,y,...)`\n\nKerro `x` `y`:llä.\nArgumentteja voi olla useampiakin.\n\nEsimerkki:\n\n    $mul(x,y,z) = ((x * y) * z)\n"
+msgstr "`$mul(x,y,...)`\n\nKerro `x` `y`:llä.\nMuuttujia voi olla useampiakin.\n\nEsimerkki:\n\n    $mul(x,y,z) = ((x * y) * z)\n"
 
 #: picard/script/functions.py:619
 msgid ""
@@ -2975,7 +2976,7 @@ msgid ""
 "Returns true if either `x` or `y` not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
 "    The result is true if ANY of the arguments is not empty."
-msgstr "`$or(x,y,...)`\n\nPalauta tosi jos `x` tai `y` ei ole tyhjä.\n    Argumentteja voi olla useampiakin.\n    Palauta tosi jos JOKIN argumenteista ei ole tyhjä."
+msgstr "`$or(x,y,...)`\n\nPalauta tosi jos `x` tai `y` ei ole tyhjä.\n    Muuttujia voi olla useampiakin.\n    Palauta tosi jos JOKIN muuttujista ei ole tyhjä."
 
 #: picard/script/functions.py:633
 msgid ""
@@ -2984,7 +2985,7 @@ msgid ""
 "Returns true if both `x` and `y` are not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
 "    The result is true if ALL of the arguments are not empty."
-msgstr "`$and(x,y,...)`\n\nPalauta tosi jos `x` ja `y` eivät ole tyhjiä.\n    Argumentteja voi olla useampiakin.\n    Palauta tosi jos YKSIKÄÄN argumenteista ei ole tyhjä."
+msgstr "`$and(x,y,...)`\n\nPalauta tosi jos `x` ja `y` eivät ole tyhjiä.\n    Muuttujia voi olla useampiakin.\n    Palauta tosi jos YKSIKÄÄN muuttujista ei ole tyhjä."
 
 #: picard/script/functions.py:647
 msgid ""
@@ -3018,7 +3019,7 @@ msgid ""
 "comparison method if `type` is not specified.  The \"auto\" type will use the\n"
 "first type that applies to both arguments in the following order of preference:\n"
 "\"int\", \"float\" and \"text\"."
-msgstr ""
+msgstr "`$lt(x,y[,tyyppi])`\n\nPalauta tosi jos `x` on pienempi kuin `y` käyttäen määritettyä vertailua `tyyppi`.\nMahdolliset arvot muuttujalle `tyyppi` ovat \"int\" (kokonaisluku), \"float\" (liukuluku),\n\"text\" (teksti, kirjainkoolla merkitystä), \"nocase\" (teksti, kirjainkoolla ei merkitystä)\nja \"auto\" (muuttujien tyyppi päätellään automaattisesti). Arvoa \"auto\" käytetään\nvertailussa vakiona, mikäli `tyyppi`ä ei ole määritelty. Käytettäessä tyypin arvoa\n\"auto\", vertailussa käytetään ensimmäistä tyyppiä, joka sopii molempiin syötettyihin\narvoihin seuraavassa järjestyksessä: \"int\", \"float\" ja \"text\"."
 
 #: picard/script/functions.py:731
 msgid ""
@@ -3031,7 +3032,7 @@ msgid ""
 "comparison method if `type` is not specified.  The \"auto\" type will use the\n"
 "first type that applies to both arguments in the following order of preference:\n"
 "\"int\", \"float\" and \"text\"."
-msgstr ""
+msgstr "`$lte(x,y[,tyyppi])`\n\nPalauta tosi jos `x` on pienempi tai yhtä kuin `y` käyttäen määritettyä vertailua `tyyppi`.\nMahdolliset arvot muuttujalle `tyyppi` ovat \"int\" (kokonaisluku), \"float\" (liukuluku),\n\"text\" (teksti, kirjainkoolla merkitystä), \"nocase\" (teksti, kirjainkoolla ei merkitystä)\nja \"auto\" (muuttujien tyyppi päätellään automaattisesti). Arvoa \"auto\" käytetään\nvertailussa vakiona, mikäli `tyyppi`ä ei ole määritelty. Käytettäessä tyypin arvoa\n\"auto\", vertailussa käytetään ensimmäistä tyyppiä, joka sopii molempiin syötettyihin\narvoihin seuraavassa järjestyksessä: \"int\", \"float\" ja \"text\"."
 
 #: picard/script/functions.py:746
 msgid ""
@@ -3044,7 +3045,7 @@ msgid ""
 "comparison method if `type` is not specified.  The \"auto\" type will use the\n"
 "first type that applies to both arguments in the following order of preference:\n"
 "\"int\", \"float\" and \"text\"."
-msgstr ""
+msgstr "`$gt(x,y[,tyyppi])`\n\nPalauta tosi jos `x` on suurempi kuin `y` käyttäen määritettyä vertailua `tyyppi`.\nMahdolliset arvot muuttujalle `tyyppi` ovat \"int\" (kokonaisluku), \"float\" (liukuluku),\n\"text\" (teksti, kirjainkoolla merkitystä), \"nocase\" (teksti, kirjainkoolla ei merkitystä)\nja \"auto\" (muuttujien tyyppi päätellään automaattisesti). Arvoa \"auto\" käytetään\nvertailussa vakiona, mikäli `tyyppi`ä ei ole määritelty. Käytettäessä tyypin arvoa\n\"auto\", vertailussa käytetään ensimmäistä tyyppiä, joka sopii molempiin syötettyihin\narvoihin seuraavassa järjestyksessä: \"int\", \"float\" ja \"text\"."
 
 #: picard/script/functions.py:761
 msgid ""
@@ -3057,7 +3058,7 @@ msgid ""
 "comparison method if `type` is not specified.  The \"auto\" type will use the\n"
 "first type that applies to both arguments in the following order of preference:\n"
 "\"int\", \"float\" and \"text\"."
-msgstr ""
+msgstr "`$gte(x,y[,tyyppi])`\n\nPalauta tosi jos `x` on suurempi tai yhtä kuin `y` käyttäen määritettyä vertailua `tyyppi`.\nMahdolliset arvot muuttujalle `tyyppi` ovat \"int\" (kokonaisluku), \"float\" (liukuluku),\n\"text\" (teksti, kirjainkoolla merkitystä), \"nocase\" (teksti, kirjainkoolla ei merkitystä)\nja \"auto\" (muuttujien tyyppi päätellään automaattisesti). Arvoa \"auto\" käytetään\nvertailussa vakiona, mikäli `tyyppi`ä ei ole määritelty. Käytettäessä tyypin arvoa\n\"auto\", vertailussa käytetään ensimmäistä tyyppiä, joka sopii molempiin syötettyihin\narvoihin seuraavassa järjestyksessä: \"int\", \"float\" ja \"text\"."
 
 #: picard/script/functions.py:776
 msgid ""
@@ -3519,7 +3520,7 @@ msgid ""
 "Result: 1 if there is more than one artist, otherwise \"\".\n"
 "\n"
 "_Since Picard 2.7_"
-msgstr "`$is_multi(name)`\n\nPalauta '1' jos syöte on moniarvoinen ja sisältää enemmän kuin yhden osan, muuten palauta tyhjä merkkijono.\n\nEsimerkki:\n\n    $is_multi(%artists%)\n\nTulos: 1 jos enemmän kuin yksi artisti, muutoin \"\".\n\n_Picardin versiosta 2.7_"
+msgstr "`$is_multi(name)`\n\nPalauta '1' jos muuttuja on moniarvoinen ja sisältää enemmän kuin yhden osan, muuten palauta tyhjä merkkijono.\n\nEsimerkki:\n\n    $is_multi(%artists%)\n\nTulos: 1 jos enemmän kuin yksi artisti, muutoin \"\".\n\n_Picardin versiosta 2.7_"
 
 #: picard/script/functions.py:1538
 msgid ""
@@ -3554,7 +3555,7 @@ msgid ""
 "will be expanded automatically.\n"
 "\n"
 "_Since Picard 3.0_"
-msgstr ""
+msgstr "`$min(tyyppi,x,...)`\n\nPalauta pienin arvo käyttäen määritettyä vertailua `tyyppi`.\n\nMahdolliset arvot muuttujalle `tyyppi` ovat \"int\" (kokonaisluku), \"float\" (liukuluku),\n\"text\" (teksti, kirjainkoolla merkitystä), \"nocase\" (teksti, kirjainkoolla ei merkitystä)\nja \"auto\" (muuttujien tyyppi päätellään automaattisesti). Arvoa \"auto\" käytetään\nvertailussa vakiona, mikäli `tyyppi`ä ei ole määritelty. Käytettäessä tyypin arvoa\n\"auto\", vertailussa käytetään ensimmäistä tyyppiä, joka sopii molempiin syötettyihin\narvoihin seuraavassa järjestyksessä: \"int\", \"float\" ja \"text\".\n\nMuuttujia voi olla useampiakin. Moniarvoiset muuttujat laajennetaan automaattisesti.\n\n_Picardin versiosta 3.0_"
 
 #: picard/script/functions.py:1629
 msgid ""
@@ -3573,7 +3574,7 @@ msgid ""
 "will be expanded automatically.\n"
 "\n"
 "_Since Picard 3.0_"
-msgstr ""
+msgstr "`$max(tyyppi,x,...)`\n\nPalauta suurin arvo käyttäen määritettyä vertailua `tyyppi`.\n\nMahdolliset arvot muuttujalle `tyyppi` ovat \"int\" (kokonaisluku), \"float\" (liukuluku),\n\"text\" (teksti, kirjainkoolla merkitystä), \"nocase\" (teksti, kirjainkoolla ei merkitystä)\nja \"auto\" (muuttujien tyyppi päätellään automaattisesti). Arvoa \"auto\" käytetään\nvertailussa vakiona, mikäli `tyyppi`ä ei ole määritelty. Käytettäessä tyypin arvoa\n\"auto\", vertailussa käytetään ensimmäistä tyyppiä, joka sopii molempiin syötettyihin\narvoihin seuraavassa järjestyksessä: \"int\", \"float\" ja \"text\".\n\nMuuttujia voi olla useampiakin. Moniarvoiset muuttujat laajennetaan automaattisesti.\n\n_Picardin versiosta 3.0_"
 
 #: picard/script/serializer.py:202
 #, python-format
@@ -3751,15 +3752,15 @@ msgstr[1] "%s (%i julkaisua)"
 
 #: picard/ui/colors.py:37
 msgid "Errored entity"
-msgstr "Väärin mennyt entiteetti"
+msgstr "Väärin mennyt kohde"
 
 #: picard/ui/colors.py:38
 msgid "Pending entity"
-msgstr "Odottava entiteetti"
+msgstr "Odottava kohde"
 
 #: picard/ui/colors.py:39
 msgid "Saved entity"
-msgstr "Tallennettu entiteetti"
+msgstr "Tallennettu kohde"
 
 #: picard/ui/colors.py:40
 msgid "Log view text (debug)"
@@ -4678,7 +4679,7 @@ msgstr "&Etsi päivitystä…"
 
 #: picard/ui/mainwindow.py:932
 msgid "From CD ripper &log file..."
-msgstr ""
+msgstr "&CD-kopioinnin lokitiedostosta..."
 
 #: picard/ui/mainwindow.py:985 picard/ui/scripteditor.py:555
 msgid "&File"
@@ -5845,7 +5846,7 @@ msgstr "Lataa uudelleen esimerkit"
 
 #: picard/ui/ui_options_renaming_compat.py:65
 msgid "Customize..."
-msgstr ""
+msgstr "Mukauta..."
 
 #: picard/ui/ui_options_renaming_compat.py:66
 msgid "Allow paths longer than 259 characters"
@@ -5853,7 +5854,7 @@ msgstr "Salli 259 merkkiä pidemmät tiedostopolut"
 
 #: picard/ui/ui_options_renaming_compat.py:67
 msgid "Replace spaces with underscores"
-msgstr ""
+msgstr "Korvaa välilyönnit alaviivoilla"
 
 #: picard/ui/ui_options_script.py:119
 msgid "Enable Tagger Script(s)"
@@ -6148,7 +6149,7 @@ msgstr "Kuvitteellinen hahmo"
 
 #: picard/ui/ui_win_compat_dialog.py:193
 msgid "Replacement"
-msgstr ""
+msgstr "Korvaaminen"
 
 #: picard/ui/util.py:49
 msgid "&Ok"
@@ -6381,7 +6382,7 @@ msgstr "Olet vaihtanut käyttöliittymän värejä. Käynnistä Picard uudelleen
 
 #: picard/ui/options/interface_toolbar.py:59
 msgid "Action Toolbar"
-msgstr ""
+msgstr "Toimintatyökalurivi"
 
 #: picard/ui/options/interface_toolbar.py:67
 msgid "Add Folder"
@@ -6698,7 +6699,7 @@ msgstr "Tiedostonsiirron kohdehakemistoa ei ole asetettu."
 
 #: picard/ui/options/renaming_compat.py:66
 msgid "Compatibility"
-msgstr ""
+msgstr "Yhteensopivuus"
 
 #: picard/ui/options/renaming_compat.py:128
 msgid "Windows long path support"

@@ -3,6 +3,7 @@
 # Jaakko Perttilä <email address hidden>, 2012
 # Jaakko Perttilä <jormangeud@gmail.com>, 2012-2014,2017-2019
 # Jaakko Perttilä <jormangeud@gmail.com>, 2014
+# Juhana Uuttu <rexroom@sci.fi>, 2023
 # Kai Kasurinen <kai.kasurinen@iki.fi>, 2014
 # ListMyCDs.com Martikainen <email address hidden>, 2012
 # Timo Martikainen <musicbrainz@listmycds.com>, 2012
@@ -17,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2012-05-24 18:52+0000\n"
-"Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>, 2012-2014,2017-2019\n"
-"Language-Team: Finnish (http://www.transifex.com/musicbrainz/musicbrainz/language/fi/)\n"
+"Last-Translator: Juhana Uuttu <rexroom@sci.fi>, 2023\n"
+"Language-Team: Finnish (http://app.transifex.com/musicbrainz/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -73,7 +74,7 @@ msgstr "3,5″ levyke"
 #: DB:medium_format/name:91
 msgctxt "medium_format"
 msgid "5.25\" Floppy Disk"
-msgstr ""
+msgstr "5,25\" levyke"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
@@ -115,7 +116,7 @@ msgctxt "medium_format"
 msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
-msgstr "90 rpm, pystysuuntaisesti leikatut sellakkalevyt, jotka Pathé-levymerkki tuotti vuodesta 1906 vuoteen 1932."
+msgstr "90 rpm, pystysuuntaisesti leikatut sellakkalevyt, joita Pathé-levymerkki tuotti vuosina 1906–1932."
 
 #: DB:release_group_secondary_type/description:1
 msgctxt "release_group_secondary_type"
@@ -151,7 +152,7 @@ msgid ""
 "</ul>\n"
 "\n"
 "<p>There are other variations of the single called a \"split single\" where songs by two different artists are released on the one disc, typically vinyl.</p>"
-msgstr ""
+msgstr "<p>Singlen (tai \"sinkun\") määritelmä vaihtelee sen mukaan, mihin markkina-alueeseen se julkaistaan.</p>\n\n<ul>\n<li>Yhdysvalloissa singlellä on tyypillisesti yksi pääkappale ja mahdollisesti kourallinen lisäraitoja tai pääkappaleen remix-versioita; single yleensä nimetään sen pääkappaleen mukaan; single julkaistaan pääasiallisesti radiosoittoa varten ja tukea julkaisumyyntiä.</li>\n<li>Yhdistyneessä kuningaskunnassa (myös Euroopassa ja Austaliassa) on samanlaiset markkinat kuin Yhdysvalloissa, mutta singlet julkaistaan usein kahden erillään myytävän levyn seteissä. Jotkut singlet ovat kestoiltaan pidempiä (usein yhdistäen kahden eri levyn raidat) mikä on hyvin samanlainen yhdysvaltojen single-muotoon, jota kutsutaan \"maxi-singlenä\". (Joissakin tapauksissa maxi-single on pitempi kuin itse alkuperäinen julkaisu!) </li>\n<li>Japanilainen markkina-alue on enemmän single-painoitteinen. Määrittävä tekijä on tyypillisesti singlen pituus ja myyntihinta. Aina vuoteen 1995 saakka se oli yleistä, että singlejä julkaistiin mini-cd-formaatissa, mikä on käytännössä halkaisijaltaan 8 cm leveä CD. Vuoden 1995 aikoihin 8 cm single vaiheittaisesti luovuttiin käytöstä ja standardi 12 cm CD-single on nykyään yleinen; yleisesti 8 cm alkuperäisjulkaisut julkaistaan nykyään 12 cm formaatissa. Japanilaiset singlet sisältävät usein kappaleiden instrumentaaliversioita ja myös sisältävät maxi-singlejä Yhdistyneen kuningaskuntien tapaan, joissa on remix-versioita kappaleista. Toisinaan maxi-single sisältää enemmän raitoja kuin EP-levy, mutta koska se sisältää erilaisia versioita 2–3 kappaleesta, se luokitellaan silti singleksi.</li>\n</ul>\n\n<p>On myös muita muunnelmia singlestä, joita kutsutaan \"split singleksi\", missä kahden eri artistin kappaleita julkaistaan yhdelle levylle, tyypillisesti vinyylinä.</p>"
 
 #: DB:medium_format/description:95
 msgctxt "medium_format"
@@ -174,7 +175,7 @@ msgid ""
 "A CD that contains both audio and data in the same session. The data is "
 "often in the first track, that will have to be skipped in many audio "
 "players. Relatively common in old video game CDs."
-msgstr ""
+msgstr "CD joka sisältää sekä audion että datan samassa sessiossa. Data on yleensä ensimmäisellä raidalla, ja jota useimmissa audiosoittimissa pitää skipata. Suhteellisen yleinen vanhoissa videopelien CD:ssä."
 
 #: DB:medium_format/description:42
 msgctxt "medium_format"
@@ -214,7 +215,7 @@ msgstr "Baletti on musiikkia, jota käytetään yhdessä koreografian kanssa bal
 #: DB:release_packaging/description:19
 msgctxt "release_packaging"
 msgid "A box usually containing multiple discs as part of a boxed set."
-msgstr ""
+msgstr "Laatikko, yleensä monta levyä sisältävänä laatikoituna settinä."
 
 #: DB:work_type/description:3
 msgctxt "work_type"
@@ -230,7 +231,7 @@ msgid ""
 "itself directly, but provides a code to download it digitally. Often bundled"
 " with physical releases but sometimes sold as a standalone item (especially "
 "in Asia)."
-msgstr ""
+msgstr "Kortti (tai muu vastaava fyysinen alusta), joka ei itsessään pidä sisällään musiikkia, mutta antaa koodin jolla ladata sitä digitaalisesti. Usein paketoitu fyysisten julkaisujen kanssa, mutta joskus myydään itsenäisesti (etenkin Aasiassa)."
 
 #: DB:work_type/description:4
 msgctxt "work_type"
@@ -259,7 +260,7 @@ msgctxt "artist_type"
 msgid ""
 "A grouping of multiple musicians who perform together (in some cases, some "
 "or all of the members might differ in different performances or recordings)."
-msgstr ""
+msgstr "Ryhmittymä erilaisia muusikkoja, jotka esiintyvät yhdessä (joissakin tapauksissa osa tai kaikki jäsenet voivat olla vaihtuneet eri esityksissä tai äänitteissä)."
 
 #: DB:instrument_type/description:7
 msgctxt "instrument_type"
@@ -386,7 +387,7 @@ msgid ""
 "A planned official release that was cancelled before being released, but for"
 " which enough info is known to still confidently list it (e.g. it was "
 "available for preorder)."
-msgstr ""
+msgstr "Suunniteltu virallinen julkaisu, joka peruttiin ennen sen julkaisua, mutta josta on tarpeeksi varmaa tietoa sen listaukseen (esim. se oli ennakkotilattavissa)."
 
 #: DB:work_type/description:28
 msgctxt "work_type"
@@ -434,14 +435,14 @@ msgstr "Toistuva festivaali, joka yleensä järjestetään vuosittain samassa pa
 #: DB:release_group_secondary_type/description:7
 msgctxt "release_group_secondary_type"
 msgid "A release that primarily contains remixed material."
-msgstr ""
+msgstr "Julkaisu, joka koostuu pääasiassa uudelleenmiksatusta materiaalista."
 
 #: DB:release_group_secondary_type/description:6
 msgctxt "release_group_secondary_type"
 msgid ""
 "A release that was recorded live. Generally this means \"with an audience\","
 " be it in person, through the radio or in another similar way."
-msgstr ""
+msgstr "Julkaisu, joka äänitettiin suorana. Yleensä tämä tarkoittaa \"yleisön edessä\", oli se sitten paikan päällä, radion kautta tai muulla tavalla."
 
 #: DB:place_type/description:7
 msgctxt "place_type"
@@ -453,7 +454,7 @@ msgstr "Koulu, yliopisto tai muu vastaava koulutuslaitos (erityisesti, mutta ei 
 #: DB:series_type/description:14
 msgctxt "series_type"
 msgid "A series of artists honoured by the same award."
-msgstr ""
+msgstr "Sarja saman palkinnon saaneita artisteja."
 
 #: DB:series_type/description:13
 msgctxt "series_type"
@@ -629,7 +630,7 @@ msgstr "as-molli"
 #: DB:work_attribute_type_allowed_value/value:817
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp major"
-msgstr ""
+msgstr "Ais-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
@@ -848,7 +849,7 @@ msgid ""
 "An album, perhaps better defined as a \"Long Play\" (LP) release, generally "
 "consists of previously unreleased material (unless this type is combined "
 "with secondary types which change that, such as \"Compilation\")."
-msgstr ""
+msgstr "Albumi, ehkä paremmin määriteltynä \"pitkäsoitto\"-julkaisu (\"Long Play\" tai LP), koostuu yleensä ennestään julkaisemattomasta materiaalista (paitsi jos tämä tyyppi yhdistetään toissijaisella tyypillä, kuten \"kokoelma\")."
 
 #: DB:release_status/description:4
 msgctxt "release_status"
@@ -871,7 +872,7 @@ msgctxt "work_type"
 msgid ""
 "An audio drama is a dramatized, purely acoustic performance, broadcast on "
 "radio or published on an audio medium (tape, CD, etc.)."
-msgstr ""
+msgstr "Kuunnelma on dramatisoitu, puhtaasti akustinen näytelmä, lähetetty radiosta tai julkaistu äänitallenteena (kasetti, CD, jne.)."
 
 #: DB:release_group_secondary_type/description:11
 msgctxt "release_group_secondary_type"
@@ -879,12 +880,12 @@ msgid ""
 "An audio drama is an audio-only performance of a play (often, but not "
 "always, meant for radio). Unlike audiobooks, it usually has multiple "
 "performers rather than a main narrator."
-msgstr ""
+msgstr "Kuunnelma on näytelmän näytelty ääniversio (yleensä radiota varten, mutta ei aina). Toisin kuin äänikirjoissa, pääkertojan sijaan on yleensä useita näyttelijöitä esiintymässä."
 
 #: DB:release_group_secondary_type/description:5
 msgctxt "release_group_secondary_type"
 msgid "An audiobook is a book read by a narrator without music."
-msgstr ""
+msgstr "Äänikirja on juontajan lukema kirja, missä ei ole musiikkia."
 
 #: DB:event_type/description:7
 msgctxt "event_type"
@@ -918,7 +919,7 @@ msgstr ""
 #: DB:release_group_secondary_type/description:4
 msgctxt "release_group_secondary_type"
 msgid "An interview release contains an interview, generally with an artist."
-msgstr ""
+msgstr "Haastattelujulkaisu sisältää haastattelun, yleensä artistin kanssa."
 
 #: DB:release_packaging/description:54
 msgctxt "release_packaging"
@@ -956,7 +957,7 @@ msgid ""
 "An unofficial/underground release that was not sanctioned by the artist "
 "and/or the record company. This includes unofficial live recordings and "
 "pirated releases."
-msgstr ""
+msgstr "Epävirallinen/underground-julkaisu joka ei ole artistin ja/tai levy-yhtiön hyväksymä. Tähän kuuluu myös epäviralliset live-äänitteet ja piraattijulkaisut."
 
 #: DB:work_type/description:20
 msgctxt "work_type"
@@ -976,7 +977,7 @@ msgctxt "release_status"
 msgid ""
 "Any release officially sanctioned by the artist and/or their record company."
 " Most releases will fit into this category."
-msgstr ""
+msgstr "Mikä tahansa artistin ja/tai levy-yhtiön virallisesti hyväksymä julkaisu. Useimmat julkaisut sopivat tähän kategoriaan."
 
 #: DB:release_group_primary_type/description:11
 msgctxt "release_group_primary_type"
@@ -1038,7 +1039,7 @@ msgstr ""
 #: DB:editor_collection_type/name:7
 msgctxt "collection_type"
 msgid "Area collection"
-msgstr ""
+msgstr "Aluekokoelma"
 
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
@@ -1053,12 +1054,12 @@ msgstr "Aaria"
 #: DB:series_type/name:14
 msgctxt "series_type"
 msgid "Artist award"
-msgstr ""
+msgstr "Artistipalkinto"
 
 #: DB:editor_collection_type/name:8
 msgctxt "collection_type"
 msgid "Artist collection"
-msgstr ""
+msgstr "Artistikokoelma"
 
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
@@ -1093,12 +1094,12 @@ msgstr ""
 #: DB:release_group_secondary_type/name:11
 msgctxt "release_group_secondary_type"
 msgid "Audio drama"
-msgstr "Ääninäytelmä"
+msgstr "Kuunnelma"
 
 #: DB:work_type/name:25
 msgctxt "work_type"
 msgid "Audio drama"
-msgstr "Ääninäytelmä"
+msgstr "Kuunnelma"
 
 #: DB:release_group_secondary_type/name:5
 msgctxt "release_group_secondary_type"
@@ -1113,12 +1114,12 @@ msgstr "Automaattinen"
 #: DB:event_type/name:7
 msgctxt "event_type"
 msgid "Award ceremony"
-msgstr ""
+msgstr "Palkintojenjakotilaisuus"
 
 #: DB:series_type/name:15
 msgctxt "series_type"
 msgid "Award ceremony"
-msgstr ""
+msgstr "Palkintojenjakotilaisuus"
 
 #: DB:work_attribute_type_allowed_value/value:694
 msgctxt "work_attribute_type_allowed_value"
@@ -1248,12 +1249,12 @@ msgstr "b-molli"
 #: DB:work_attribute_type_allowed_value/value:818
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-sharp major"
-msgstr ""
+msgstr "Bis-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:819
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-sharp minor"
-msgstr ""
+msgstr "bis-molli"
 
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
@@ -1410,7 +1411,7 @@ msgstr ""
 #: DB:medium_format/name:131
 msgctxt "medium_format"
 msgid "Betacam SP"
-msgstr ""
+msgstr "Betacam SP"
 
 #: DB:medium_format/name:24
 msgctxt "medium_format"
@@ -1566,7 +1567,7 @@ msgstr "Blu-ray"
 #: DB:medium_format/name:79
 msgctxt "medium_format"
 msgid "Blu-ray-R"
-msgstr ""
+msgstr "Blu-ray-R"
 
 #: DB:medium_format/name:35
 msgctxt "medium_format"
@@ -1596,12 +1597,12 @@ msgstr "Bootleg-tuotanto"
 #: DB:cover_art_archive.art_type/name:49
 msgctxt "cover_art_type"
 msgid "Bottom"
-msgstr ""
+msgstr "Pohja"
 
 #: DB:release_packaging/name:19
 msgctxt "release_packaging"
 msgid "Box"
-msgstr ""
+msgstr "Laatikko"
 
 #: DB:work_attribute_type_allowed_value/value:607
 msgctxt "work_attribute_type_allowed_value"
@@ -1707,7 +1708,7 @@ msgstr "Ces-duuri"
 #: DB:work_attribute_type_allowed_value/value:812
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat minor"
-msgstr ""
+msgstr "ces-molli"
 
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
@@ -1752,7 +1753,7 @@ msgstr "CD-Video"
 #: DB:medium_format/name:60
 msgctxt "medium_format"
 msgid "CED"
-msgstr ""
+msgstr "CED"
 
 #: DB:work_attribute_type/name:45
 msgctxt "work_attribute_type"
@@ -1787,7 +1788,7 @@ msgstr ""
 #: DB:release_status/name:6
 msgctxt "release_status"
 msgid "Cancelled"
-msgstr ""
+msgstr "Peruutettu"
 
 #: DB:work_attribute_type_allowed_value/value:64
 msgctxt "work_attribute_type_allowed_value"
@@ -1919,7 +1920,7 @@ msgstr "Kokoelma"
 #: DB:event_type/name:1
 msgctxt "event_type"
 msgid "Concert"
-msgstr ""
+msgstr "Konsertti"
 
 #: DB:work_type/name:4
 msgctxt "work_type"
@@ -1934,7 +1935,7 @@ msgstr ""
 #: DB:medium_format/name:61
 msgctxt "medium_format"
 msgid "Copy Control CD"
-msgstr ""
+msgstr "Copy Control CD"
 
 #: DB:medium_format/description:61
 msgctxt "medium_format"
@@ -2045,7 +2046,7 @@ msgstr "des-molli"
 #: DB:work_attribute_type_allowed_value/value:813
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-sharp major"
-msgstr ""
+msgstr "Dis-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
@@ -2070,7 +2071,7 @@ msgstr "DJ-miksaus"
 #: DB:medium_format/name:44
 msgctxt "medium_format"
 msgid "DTS CD"
-msgstr ""
+msgstr "DTS CD"
 
 #: DB:medium_format/name:2
 msgctxt "medium_format"
@@ -2085,7 +2086,7 @@ msgstr "DVD-Audio"
 #: DB:medium_format/name:92
 msgctxt "medium_format"
 msgid "DVD-R Video"
-msgstr ""
+msgstr "DVD-R Video"
 
 #: DB:medium_format/name:19
 msgctxt "medium_format"
@@ -2095,22 +2096,22 @@ msgstr "DVD-Video"
 #: DB:medium_format/name:47
 msgctxt "medium_format"
 msgid "DVDplus"
-msgstr ""
+msgstr "DVDplus"
 
 #: DB:medium_format/name:70
 msgctxt "medium_format"
 msgid "DVDplus (CD side)"
-msgstr ""
+msgstr "DVDplus (CD-puoli)"
 
 #: DB:medium_format/name:68
 msgctxt "medium_format"
 msgid "DVDplus (DVD-Audio side)"
-msgstr ""
+msgstr "DVDplus (DVD-Audio-puoli)"
 
 #: DB:medium_format/name:69
 msgctxt "medium_format"
 msgid "DVDplus (DVD-Video side)"
-msgstr ""
+msgstr "DVDplus (DVD-Video-puoli)"
 
 #: DB:work_attribute_type_allowed_value/value:343
 msgctxt "work_attribute_type_allowed_value"
@@ -2185,7 +2186,7 @@ msgstr ""
 #: DB:medium_format/name:128
 msgctxt "medium_format"
 msgid "DataPlay"
-msgstr ""
+msgstr "DataPlay"
 
 #: DB:release_group_secondary_type/name:10
 msgctxt "release_group_secondary_type"
@@ -2291,6 +2292,11 @@ msgstr "Dhēnuka"
 #: DB:release_packaging/name:17
 msgctxt "release_packaging"
 msgid "Digibook"
+msgstr "Digibook"
+
+#: DB:release_packaging/name:89
+msgctxt "release_packaging"
+msgid "Digifile"
 msgstr ""
 
 #: DB:release_packaging/name:3
@@ -2381,7 +2387,7 @@ msgstr ""
 #: DB:medium_format/name:46
 msgctxt "medium_format"
 msgid "Download Card"
-msgstr ""
+msgstr "Latauskortti"
 
 #: DB:medium_format/name:4
 msgctxt "medium_format"
@@ -2391,22 +2397,22 @@ msgstr "DualDisc"
 #: DB:medium_format/name:67
 msgctxt "medium_format"
 msgid "DualDisc (CD side)"
-msgstr ""
+msgstr "DualDisc (CD-puoli)"
 
 #: DB:medium_format/name:130
 msgctxt "medium_format"
 msgid "DualDisc (DVD side)"
-msgstr ""
+msgstr "DualDisc (DVD-puoli)"
 
 #: DB:medium_format/name:65
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Audio side)"
-msgstr ""
+msgstr "DualDisc (DVD-Audio-puoli)"
 
 #: DB:medium_format/name:66
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Video side)"
-msgstr ""
+msgstr "DualDisc (DVD-Video-puoli)"
 
 #: DB:work_attribute_type_allowed_value/value:612
 msgctxt "work_attribute_type_allowed_value"
@@ -2567,7 +2573,7 @@ msgstr "es-molli"
 #: DB:work_attribute_type_allowed_value/value:814
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp major"
-msgstr ""
+msgstr "Eis-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
@@ -2592,7 +2598,7 @@ msgstr ""
 #: DB:place_type/name:7
 msgctxt "place_type"
 msgid "Educational institution"
-msgstr ""
+msgstr "Opetuslaitos"
 
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
@@ -2602,7 +2608,7 @@ msgstr "Sähköinen soitin"
 #: DB:medium_format/name:42
 msgctxt "medium_format"
 msgid "Enhanced CD"
-msgstr ""
+msgstr "Enhanced CD"
 
 #: DB:instrument_type/name:6
 msgctxt "instrument_type"
@@ -2627,7 +2633,7 @@ msgstr ""
 #: DB:editor_collection_type/name:4
 msgctxt "collection_type"
 msgid "Event collection"
-msgstr ""
+msgstr "Tapahtumakokoelma"
 
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
@@ -2727,7 +2733,7 @@ msgstr "Fes-duuri"
 #: DB:work_attribute_type_allowed_value/value:815
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-flat minor"
-msgstr ""
+msgstr "fes-molli"
 
 #: DB:work_attribute_type_allowed_value/value:19
 msgctxt "work_attribute_type_allowed_value"
@@ -2802,12 +2808,12 @@ msgstr ""
 #: DB:event_type/name:2
 msgctxt "event_type"
 msgid "Festival"
-msgstr ""
+msgstr "Festivaali"
 
 #: DB:series_type/name:8
 msgctxt "series_type"
 msgid "Festival"
-msgstr ""
+msgstr "Festivaali"
 
 #: DB:work_attribute_type_allowed_value/value:372
 msgctxt "work_attribute_type_allowed_value"
@@ -2844,7 +2850,7 @@ msgstr ""
 #: DB:medium_format/name:51
 msgctxt "medium_format"
 msgid "Flexi-disc"
-msgstr ""
+msgstr "Flexi-levy"
 
 #: DB:medium_format/description:51
 msgctxt "medium_format"
@@ -2857,14 +2863,14 @@ msgstr ""
 #: DB:medium_format/name:76
 msgctxt "medium_format"
 msgid "Floppy Disk"
-msgstr ""
+msgstr "Levyke"
 
 #: DB:gender/description:4
 msgctxt "gender"
 msgid ""
 "For cases where gender just doesn't apply at all (like companies entered as "
 "artists)."
-msgstr ""
+msgstr "Tapauksiin, jossa sukupuoli ei päde lainkaan (kuten artisteiksi listatut yhtiöt)."
 
 #: DB:work_attribute_type/name:16
 msgctxt "work_attribute_type"
@@ -2914,7 +2920,7 @@ msgstr "Ges-duuri"
 #: DB:work_attribute_type_allowed_value/value:816
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat minor"
-msgstr ""
+msgstr "ges-molli"
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
@@ -3435,22 +3441,22 @@ msgstr "Hybridi-SACD"
 #: DB:medium_format/name:63
 msgctxt "medium_format"
 msgid "Hybrid SACD (CD layer)"
-msgstr ""
+msgstr "Hybrid SACD (CD-kerros)"
 
 #: DB:medium_format/name:64
 msgctxt "medium_format"
 msgid "Hybrid SACD (SACD layer)"
-msgstr ""
+msgstr "Hybrid SACD (SACD-kerros)"
 
 #: DB:medium_format/name:87
 msgctxt "medium_format"
 msgid "Hybrid SACD (SACD layer, 2 channels)"
-msgstr ""
+msgstr "Hybrid SACD (SACD-kerros, stereo)"
 
 #: DB:medium_format/name:86
 msgctxt "medium_format"
 msgid "Hybrid SACD (SACD layer, multichannel)"
-msgstr ""
+msgstr "Hybrid SACD (SACD-kerros, monikanavainen)"
 
 #: DB:work_attribute_type_allowed_value/value:418
 msgctxt "work_attribute_type_allowed_value"
@@ -3762,6 +3768,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Singaporean rights society COMPASS"
 msgstr ""
 
+#: DB:work_attribute_type/description:140
+msgctxt "work_attribute_type"
+msgid "ID for the Slovenian rights society SAZAS"
+msgstr ""
+
 #: DB:work_attribute_type/description:68
 msgctxt "work_attribute_type"
 msgid "ID for the South African rights society SAMRO"
@@ -3827,6 +3838,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Venezuelan rights society SACVEN"
 msgstr ""
 
+#: DB:work_attribute_type/description:107
+msgctxt "work_attribute_type"
+msgid "ID for the Vietnamese rights society VCPMC"
+msgstr ""
+
 #: DB:work_attribute_type/description:38
 msgctxt "work_attribute_type"
 msgid "ID for the international (formerly US) rights society AMRA"
@@ -3875,7 +3891,7 @@ msgstr "Valmistajamerkki"
 #: DB:work_type/name:30
 msgctxt "work_type"
 msgid "Incidental music"
-msgstr ""
+msgstr "Taustamusiikki"
 
 #: DB:work_type/description:30
 msgctxt "work_type"
@@ -3897,7 +3913,7 @@ msgstr "Sisähalli"
 #: DB:editor_collection_type/name:9
 msgctxt "collection_type"
 msgid "Instrument collection"
-msgstr ""
+msgstr "Soitinkokoelma"
 
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
@@ -4601,7 +4617,7 @@ msgstr "Latāngi"
 #: DB:event_type/name:3
 msgctxt "event_type"
 msgid "Launch event"
-msgstr ""
+msgstr "Julkaisutapahtuma"
 
 #: DB:work_attribute_type_allowed_value/value:160
 msgctxt "work_attribute_type_allowed_value"
@@ -4641,7 +4657,7 @@ msgstr ""
 #: DB:release_packaging/name:55
 msgctxt "release_packaging"
 msgid "Longbox"
-msgstr ""
+msgstr "Longbox"
 
 #: DB:work_attribute_type/name:49
 msgctxt "work_attribute_type"
@@ -4886,12 +4902,12 @@ msgstr ""
 #: DB:medium_format/name:83
 msgctxt "medium_format"
 msgid "Microcassette"
-msgstr ""
+msgstr "Mikrokasetti"
 
 #: DB:area_type/name:8
 msgctxt "area_type"
 msgid "Military base"
-msgstr ""
+msgstr "Sotilastukikohta"
 
 #: DB:medium_format/name:6
 msgctxt "medium_format"
@@ -5074,7 +5090,7 @@ msgstr ""
 #: DB:work_type/name:29
 msgctxt "work_type"
 msgid "Musical"
-msgstr ""
+msgstr "Musikaali"
 
 #: DB:work_type/description:29
 msgctxt "work_type"
@@ -5516,7 +5532,7 @@ msgstr ""
 #: DB:gender/name:5
 msgctxt "gender"
 msgid "Non-binary"
-msgstr ""
+msgstr "Muunsukupuolinen"
 
 #: DB:release_group_secondary_type/description:3
 msgctxt "release_group_secondary_type"
@@ -5531,7 +5547,7 @@ msgstr "Ei mitään"
 #: DB:gender/name:4
 msgctxt "gender"
 msgid "Not applicable"
-msgstr ""
+msgstr "Ei sovellettavissa"
 
 #: DB:work_attribute_type_allowed_value/value:491
 msgctxt "work_attribute_type_allowed_value"
@@ -5693,6 +5709,11 @@ msgctxt "collection_type"
 msgid "Owned music"
 msgstr ""
 
+#: DB:editor_collection_type/name:17
+msgctxt "collection_type"
+msgid "Owned recordings"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:762
 msgctxt "work_attribute_type_allowed_value"
 msgid "Oynak"
@@ -5746,7 +5767,7 @@ msgstr "Partita"
 #: DB:medium_format/name:58
 msgctxt "medium_format"
 msgid "Pathé disc"
-msgstr ""
+msgstr "Pathé-levy"
 
 #: DB:work_attribute_type_allowed_value/value:995
 msgctxt "work_attribute_type_allowed_value"
@@ -5827,7 +5848,7 @@ msgstr "Pianorulla"
 #: DB:editor_collection_type/name:11
 msgctxt "collection_type"
 msgid "Place collection"
-msgstr ""
+msgstr "Paikkakokoelma"
 
 #: DB:place_alias_type/name:1
 msgctxt "alias_type"
@@ -5852,7 +5873,7 @@ msgstr "Toista"
 #: DB:medium_format/name:74
 msgctxt "medium_format"
 msgid "PlayTape"
-msgstr ""
+msgstr "PlayTape"
 
 #: DB:medium_format/name:45
 msgctxt "medium_format"
@@ -6090,17 +6111,17 @@ msgstr "Ravicandrika"
 #: DB:cover_art_archive.art_type/name:14
 msgctxt "cover_art_type"
 msgid "Raw/Unedited"
-msgstr ""
+msgstr "Raaka/käsittelemätön"
 
 #: DB:series_type/name:48
 msgctxt "series_type"
 msgid "Recording award"
-msgstr ""
+msgstr "Äänitepalkinto"
 
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
 msgid "Recording collection"
-msgstr ""
+msgstr "Äänitekokoelma"
 
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
@@ -6135,17 +6156,17 @@ msgstr ""
 #: DB:editor_collection_type/name:1
 msgctxt "collection_type"
 msgid "Release collection"
-msgstr ""
+msgstr "Julkaisukokoelma"
 
 #: DB:series_type/name:47
 msgctxt "series_type"
 msgid "Release group award"
-msgstr ""
+msgstr "Julkaisuryhmäpalkinto"
 
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
 msgid "Release group collection"
-msgstr ""
+msgstr "Julkaisuryhmäkokoelma"
 
 #: DB:release_group_alias_type/name:1
 msgctxt "alias_type"
@@ -6170,7 +6191,7 @@ msgstr ""
 #: DB:place_type/name:6
 msgctxt "place_type"
 msgid "Religious building"
-msgstr ""
+msgstr "Uskonnollinen rakennus"
 
 #: DB:work_attribute_type_allowed_value/value:765
 msgctxt "work_attribute_type_allowed_value"
@@ -6336,12 +6357,12 @@ msgstr "Super Audio CD"
 #: DB:medium_format/name:84
 msgctxt "medium_format"
 msgid "SACD (2 channels)"
-msgstr ""
+msgstr "SACD (2-kanava)"
 
 #: DB:medium_format/name:85
 msgctxt "medium_format"
 msgid "SACD (multichannel)"
-msgstr ""
+msgstr "SACD (monikanava)"
 
 #: DB:work_attribute_type/name:21
 msgctxt "work_attribute_type"
@@ -6383,10 +6404,15 @@ msgctxt "work_attribute_type"
 msgid "SAYCO ID"
 msgstr ""
 
+#: DB:work_attribute_type/name:140
+msgctxt "work_attribute_type"
+msgid "SAZAS ID"
+msgstr ""
+
 #: DB:medium_format/name:62
 msgctxt "medium_format"
 msgid "SD Card"
-msgstr ""
+msgstr "SD-kortti"
 
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
@@ -6667,14 +6693,14 @@ msgstr ""
 #: DB:medium_format/name:53
 msgctxt "medium_format"
 msgid "Shellac"
-msgstr ""
+msgstr "Sellakka"
 
 #: DB:medium_format/description:53
 msgctxt "medium_format"
 msgid ""
 "Shellac records were the most predominant type of gramophone record during "
 "the first half of the 20th century."
-msgstr ""
+msgstr "Sellakkalevyt olivat vallitsevin gramofonilevytyyppi 1900-luvun ensimmäisellä puoliskolla."
 
 #: DB:work_attribute_type_allowed_value/value:236
 msgctxt "work_attribute_type_allowed_value"
@@ -6730,7 +6756,7 @@ msgstr ""
 #: DB:release_packaging/name:20
 msgctxt "release_packaging"
 msgid "Slidepack"
-msgstr ""
+msgstr "Slidepack"
 
 #: DB:release_packaging/name:2
 msgctxt "release_packaging"
@@ -6792,7 +6818,7 @@ msgstr "Selkäosa"
 #: DB:release_group_secondary_type/name:3
 msgctxt "release_group_secondary_type"
 msgid "Spokenword"
-msgstr "Puhe"
+msgstr "Spokenword"
 
 #: DB:place_type/name:4
 msgctxt "place_type"
@@ -6802,7 +6828,7 @@ msgstr "Stadion"
 #: DB:event_type/name:6
 msgctxt "event_type"
 msgid "Stage performance"
-msgstr ""
+msgstr "Lavaesitys"
 
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"
@@ -7075,7 +7101,7 @@ msgstr "Tanarūpi"
 #: DB:work_attribute_type_allowed_value/value:668
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tango"
-msgstr ""
+msgstr "Tango"
 
 #: DB:work_attribute_type_allowed_value/value:1040
 msgctxt "work_attribute_type_allowed_value"
@@ -7413,7 +7439,7 @@ msgstr ""
 #: DB:series_type/name:7
 msgctxt "series_type"
 msgid "Tour"
-msgstr ""
+msgstr "Kiertue"
 
 #: DB:cover_art_archive.art_type/name:7
 msgctxt "cover_art_type"
@@ -7562,10 +7588,15 @@ msgctxt "medium_format"
 msgid "VCD"
 msgstr "Video-CD"
 
+#: DB:work_attribute_type/name:107
+msgctxt "work_attribute_type"
+msgid "VCPMC ID"
+msgstr ""
+
 #: DB:medium_format/name:59
 msgctxt "medium_format"
 msgid "VHD"
-msgstr ""
+msgstr "VHD"
 
 #: DB:medium_format/name:21
 msgctxt "medium_format"
@@ -7672,22 +7703,22 @@ msgstr "Vinyyli"
 #: DB:medium_format/name:48
 msgctxt "medium_format"
 msgid "VinylDisc"
-msgstr ""
+msgstr "VinylDisc"
 
 #: DB:medium_format/name:82
 msgctxt "medium_format"
 msgid "VinylDisc (CD side)"
-msgstr ""
+msgstr "VinylDisc (CD-puoli)"
 
 #: DB:medium_format/name:80
 msgctxt "medium_format"
 msgid "VinylDisc (DVD side)"
-msgstr ""
+msgstr "VinylDisc (DVD-puoli)"
 
 #: DB:medium_format/name:81
 msgctxt "medium_format"
 msgid "VinylDisc (Vinyl side)"
-msgstr ""
+msgstr "VinylDisc (vinyylipuoli)"
 
 #: DB:work_attribute_type_allowed_value/value:259
 #: DB:work_attribute_type_allowed_value/value:1047
@@ -7738,22 +7769,22 @@ msgstr "Puhallinsoitin"
 #: DB:editor_collection_type/name:3
 msgctxt "collection_type"
 msgid "Wishlist"
-msgstr ""
+msgstr "Toivelista"
 
 #: DB:release_status/name:5
 msgctxt "release_status"
 msgid "Withdrawn"
-msgstr ""
+msgstr "Poisvedetty"
 
 #: DB:series_type/name:46
 msgctxt "series_type"
 msgid "Work award"
-msgstr ""
+msgstr "Teospalkinto"
 
 #: DB:editor_collection_type/name:15
 msgctxt "collection_type"
 msgid "Work collection"
-msgstr ""
+msgstr "Teoskokoelma"
 
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"
@@ -7896,7 +7927,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:681
 msgctxt "work_attribute_type_allowed_value"
 msgid "ambiguous"
-msgstr ""
+msgstr "epäselvä"
 
 #: DB:medium_format/name:27
 msgctxt "medium_format"
