@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2022 skelly37
-# Copyright (C) 2022 Philipp Wolfer
+# Copyright (C) 2022-2023 Philipp Wolfer
 # Copyright (C) 2022 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
@@ -275,6 +275,11 @@ class AbstractPipe(metaclass=ABCMeta):
             self.read_from_pipe()
 
         return False
+
+    def stop(self):
+        log.debug("Stopping pipe")
+        self.pipe_running = False
+        self.send_to_pipe(self.MESSAGE_TO_IGNORE)
 
 
 class UnixPipe(AbstractPipe):

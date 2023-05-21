@@ -6,7 +6,7 @@
 # Copyright (C) 2006-2009, 2011-2014, 2017 Lukáš Lalinský
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008 amckinle
-# Copyright (C) 2008-2010, 2014-2015, 2018-2022 Philipp Wolfer
+# Copyright (C) 2008-2010, 2014-2015, 2018-2023 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2010 Andrew Barnert
 # Copyright (C) 2011-2014 Michael Wiencek
@@ -704,7 +704,7 @@ class Tagger(QtWidgets.QApplication):
         log.debug("Picard stopping")
         self._acoustid.done()
         if self.pipe_handler:
-            self.pipe_handler.pipe_running = False
+            self.pipe_handler.stop()
         self.webservice.stop()
         self.thread_pool.waitForDone()
         self.save_thread_pool.waitForDone()
