@@ -547,12 +547,13 @@ class Tagger(QtWidgets.QApplication):
             log.error("No command pause time specified.")
 
     def handle_command_quit(self, argstring):
-        if not argstring.upper() == 'FORCE' and self.window.show_quit_confirmation():
+        if argstring.upper() == 'FORCE' or self.window.show_quit_confirmation():
+            self.exit()
+            self.quit()
+        else:
             log.info("QUIT command cancelled by the user.")
             RemoteCommands.set_quit(False)  # Allow queueing more commands.
             return
-        self.exit()
-        self.quit()
 
     def handle_command_remove(self, argstring):
         for file in self.iter_all_files():
