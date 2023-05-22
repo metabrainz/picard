@@ -163,6 +163,7 @@ TAGS = {
     'podcast': '1',
     'podcasturl': 'Foo',
     'producer': 'Foo',
+    'releasedate': '2022-05-22',
     'releasecountry': 'XW',
     'releasestatus': 'Foo',
     'releasetype': 'Foo',

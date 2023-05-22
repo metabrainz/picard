@@ -582,6 +582,26 @@ class CommonId3Tests:
             self.assertEqual(file.similarity, 1.0)
             self.assertEqual(file.state, File.NORMAL)
 
+        @skipUnlessTestfile
+        def test_releasedate_v23(self):
+            config.setting['write_id3v23'] = True
+            metadata = Metadata({
+                'releasedate': '2023-04-28',
+            })
+            save_metadata(self.filename, metadata)
+            raw_metadata = load_raw(self.filename)
+            self.assertEqual(metadata['releasedate'], raw_metadata['TXXX:RELEASEDATE'])
+
+        @skipUnlessTestfile
+        def test_releasedate_v24(self):
+            config.setting['write_id3v23'] = False
+            metadata = Metadata({
+                'releasedate': '2023-04-28',
+            })
+            save_metadata(self.filename, metadata)
+            raw_metadata = load_raw(self.filename)
+            self.assertEqual(metadata['releasedate'], raw_metadata['TDRL'])
+
 
 class MP3Test(CommonId3Tests.Id3TestCase):
     testfile = 'test.mp3'
