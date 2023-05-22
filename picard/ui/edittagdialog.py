@@ -64,7 +64,7 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
         else:
             editor = super().createEditor(parent, option, index)
         completer = None
-        if tag in {'date', 'originaldate'}:
+        if tag in {'date', 'originaldate', 'releasedate'}:
             editor.setPlaceholderText(_('YYYY-MM-DD'))
         elif tag == 'originalyear':
             editor.setPlaceholderText(_('YYYY'))

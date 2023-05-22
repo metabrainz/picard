@@ -164,6 +164,7 @@ class MP4File(File):
         "replaygain_track_peak": "----:com.apple.iTunes:REPLAYGAIN_TRACK_PEAK",
         "replaygain_track_range": "----:com.apple.iTunes:REPLAYGAIN_TRACK_RANGE",
         "replaygain_reference_loudness": "----:com.apple.iTunes:REPLAYGAIN_REFERENCE_LOUDNESS",
+        "releasedate": "----:com.apple.iTunes:RELEASEDATE",
     }
     __freeform_tags_ci = {b.lower(): a for a, b in __r_freeform_tags_ci.items()}
 
