@@ -50,7 +50,65 @@
         "secondary-type-ids": [],
         "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
         "secondary-types": [],
-        "aliases": []
+        "aliases": [],
+        "relations": [
+            {
+                "ordering-key": 15,
+                "begin": null,
+                "type": "part of",
+                "attributes": [
+                    "number"
+                ],
+                "series": {
+                    "type": "Release group series",
+                    "type-id": "4c1c4949-7b6c-3a2d-9d54-a50a27e4fa77",
+                    "name": "Absolute Radio's The 100 Collection",
+                    "id": "4bf41050-6fa9-41a6-8398-15bdab4b0352",
+                    "disambiguation": ""
+                },
+                "ended": false,
+                "target-credit": "",
+                "attribute-ids": {
+                    "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+                },
+                "type-id": "01018437-91d8-36b9-bf89-3f885d53b5bd",
+                "attribute-values": {
+                    "number": "15"
+                },
+                "end": null,
+                "direction": "forward",
+                "target-type": "series",
+                "source-credit": ""
+            },
+            {
+                "direction": "forward",
+                "attribute-values": {
+                    "number": "291"
+                },
+                "end": null,
+                "source-credit": "",
+                "target-type": "series",
+                "ordering-key": 352,
+                "type": "part of",
+                "begin": null,
+                "target-credit": "",
+                "type-id": "01018437-91d8-36b9-bf89-3f885d53b5bd",
+                "attribute-ids": {
+                    "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+                },
+                "series": {
+                    "name": "1001 Albums You Must Hear Before You Die",
+                    "disambiguation": "2005 edition",
+                    "id": "4bc2a338-e1d8-4546-8a61-640da8aaf888",
+                    "type-id": "4c1c4949-7b6c-3a2d-9d54-a50a27e4fa77",
+                    "type": "Release group series"
+                },
+                "ended": false,
+                "attributes": [
+                    "number"
+                ]
+            }
+        ]
     },
     "aliases": [],
     "cover-art-archive": {
@@ -439,6 +497,28 @@
             "end": null,
             "direction": "backward",
             "type-id": "8bf377ba-8d71-4ecc-97f2-7bb2d8a2a75f"
+        },
+        {
+            "type": "part of",
+            "attributes": [],
+            "source-credit": "",
+            "attribute-values": {},
+            "target-type": "series",
+            "ordering-key": 1,
+            "type-id": "3fa29f01-8e13-3e49-9b0a-ad212aa2f81d",
+            "end": null,
+            "ended": false,
+            "direction": "forward",
+            "target-credit": "",
+            "begin": null,
+            "attribute-ids": {},
+            "series": {
+                "type": "Release series",
+                "type-id": "52b90f1e-ff62-3bd0-b254-5d91ced5d757",
+                "disambiguation": "Pink Floyed special editions",
+                "name": "Why Pink Floyd?",
+                "id": "7421b602-a413-4151-bcf4-d831debc3f27"
+            }
         }
     ],
     "id": "b84ee12a-09ef-421b-82de-0441a926375b",

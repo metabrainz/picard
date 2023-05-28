@@ -5,7 +5,7 @@
 # Copyright (C) 2017 David Mandelberg
 # Copyright (C) 2017-2018 Sambhav Kothari
 # Copyright (C) 2017-2022 Laurent Monin
-# Copyright (C) 2018-2022 Philipp Wolfer
+# Copyright (C) 2018-2023 Philipp Wolfer
 # Copyright (C) 2019 Michael Wiencek
 # Copyright (C) 2020, 2023 David Kellner
 # Copyright (C) 2020 dukeyin
@@ -143,7 +143,7 @@ def _relation_attributes(relation):
     return tuple()
 
 
-def _relations_to_metadata(relations, m, instrumental=False, config=None):
+def _relations_to_metadata(relations, m, instrumental=False, config=None, entity=None):
     config = config or get_config()
     use_credited_as = not config.setting['standardize_artists']
     use_instrument_credits = not config.setting['standardize_instruments']
@@ -199,6 +199,13 @@ def _relations_to_metadata(relations, m, instrumental=False, config=None):
             elif relation['type'] == 'license':
                 url = relation['url']['resource']
                 m.add('license', url)
+        elif relation['target-type'] == 'series' and relation['type'] == 'part of':
+            series = relation['series']
+            var_prefix = f'~{entity}_' if entity else '~'
+            m.add(f'{var_prefix}series', series['name'])
+            m.add(f'{var_prefix}seriesid', series['id'])
+            m.add(f'{var_prefix}seriescomment', series['disambiguation'])
+            m.add(f'{var_prefix}seriesnumber', relation['attribute-values'].get('number', ''))
 
 
 def _translate_artist_node(node, config=None):
@@ -445,7 +452,7 @@ def recording_to_metadata(node, m, track=None):
                     artist_obj = track.append_track_artist(artist['id'])
                     add_genres_from_node(artist, artist_obj)
         elif key == 'relations':
-            _relations_to_metadata(value, m, config=config)
+            _relations_to_metadata(value, m, config=config, entity='recording')
         elif key == 'isrcs':
             add_isrcs_to_metadata(value, m)
         elif key == 'video' and value:
@@ -471,7 +478,7 @@ def work_to_metadata(work, m, instrumental=False):
     if 'disambiguation' in work:
         m.add_unique("~workcomment", work['disambiguation'])
     if 'relations' in work:
-        _relations_to_metadata(work['relations'], m, instrumental)
+        _relations_to_metadata(work['relations'], m, instrumental, entity='work')
 
 
 def medium_to_metadata(node, m):
@@ -524,7 +531,7 @@ def release_to_metadata(node, m, album=None):
                     artist_obj = album.append_album_artist(artist['id'])
                     add_genres_from_node(artist, artist_obj)
         elif key == 'relations' and config.setting['release_ars']:
-            _relations_to_metadata(value, m, config=config)
+            _relations_to_metadata(value, m, config=config, entity='release')
         elif key == 'label-info':
             m['label'], m['catalognumber'] = label_info_from_node(value)
         elif key == 'text-representation':
@@ -545,6 +552,7 @@ def release_to_metadata(node, m, album=None):
 
 def release_group_to_metadata(node, m, release_group=None):
     """Make metadata dict from a JSON 'release-group' node taken from inside a 'release' node."""
+    config = get_config()
     m.add_unique('musicbrainz_releasegroupid', node['id'])
     for key, value in _node_skip_empty_iter(node):
         if key in _RELEASE_GROUP_TO_METADATA:
@@ -553,6 +561,8 @@ def release_group_to_metadata(node, m, release_group=None):
             m['~primaryreleasetype'] = value.lower()
         elif key == 'secondary-types':
             add_secondary_release_types(value, m)
+        elif key == 'relations' and config.setting['release_ars']:
+            _relations_to_metadata(value, m, config=config, entity='releasegroup')
     add_genres_from_node(node, release_group)
     if m['~releasegroup_firstreleasedate']:
         m['originaldate'] = m['~releasegroup_firstreleasedate']
