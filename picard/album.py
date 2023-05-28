@@ -7,7 +7,7 @@
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008 Hendrik van Antwerpen
 # Copyright (C) 2008 ojnkpjg
-# Copyright (C) 2008-2011, 2014, 2018-2022 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014, 2018-2023 Philipp Wolfer
 # Copyright (C) 2009 Nikolai Prokoschenko
 # Copyright (C) 2011-2012 Chad Wilson
 # Copyright (C) 2011-2013, 2019 Michael Wiencek
@@ -610,12 +610,14 @@ class Album(DataObject, Item):
                 'artist-rels',
                 'recording-rels',
                 'release-rels',
+                'series-rels',
                 'url-rels',
                 'work-rels'
             }
             if config.setting['track_ars']:
                 inc |= {
                     'recording-level-rels',
+                    'release-group-level-rels',
                     'work-level-rels',
                 }
         require_authentication = self.set_genre_inc_params(inc, config) or require_authentication
