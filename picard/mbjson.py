@@ -190,6 +190,16 @@ def _relations_to_metadata_target_type_work(relation, m, **context):
         work_to_metadata(relation['work'], m, instrumental)
 
 
+def _relations_to_metadata_target_type_url(relation, m, **context):
+    if relation['type'] == 'amazon asin' and 'asin' not in m:
+        amz = parse_amazon_url(relation['url']['resource'])
+        if amz is not None:
+            m['asin'] = amz['asin']
+    elif relation['type'] == 'license':
+        url = relation['url']['resource']
+        m.add('license', url)
+
+
 def _relations_to_metadata(relations, m, instrumental=False, config=None, entity=None):
     config = config or get_config()
     use_credited_as = not config.setting['standardize_artists']
@@ -207,13 +217,8 @@ def _relations_to_metadata(relations, m, instrumental=False, config=None, entity
             context = {}
             _relations_to_metadata_target_type_work(relation, m, **context)
         elif relation['target-type'] == 'url':
-            if relation['type'] == 'amazon asin' and 'asin' not in m:
-                amz = parse_amazon_url(relation['url']['resource'])
-                if amz is not None:
-                    m['asin'] = amz['asin']
-            elif relation['type'] == 'license':
-                url = relation['url']['resource']
-                m.add('license', url)
+            context = {}
+            _relations_to_metadata_target_type_url(relation, m, **context)
         elif relation['target-type'] == 'series' and relation['type'] == 'part of':
             series = relation['series']
             var_prefix = f'~{entity}_' if entity else '~'
