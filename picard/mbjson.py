@@ -213,27 +213,21 @@ def _relations_to_metadata_target_type_series(relation, m, **context):
 
 def _relations_to_metadata(relations, m, instrumental=False, config=None, entity=None):
     config = config or get_config()
-    use_credited_as = not config.setting['standardize_artists']
-    use_instrument_credits = not config.setting['standardize_instruments']
+    context = {
+        'config': config,
+        'entity': entity,
+        'instrumental': instrumental,
+        'use_credited_as': not config.setting['standardize_artists'],
+        'use_instrument_credits': not config.setting['standardize_instruments'],
+    }
     for relation in relations:
         if relation['target-type'] == 'artist':
-            context = {
-                'config': config,
-                'instrumental': instrumental,
-                'use_credited_as': use_credited_as,
-                'use_instrument_credits': use_instrument_credits,
-            }
             _relations_to_metadata_target_type_artist(relation, m, **context)
         elif relation['target-type'] == 'work':
-            context = {}
             _relations_to_metadata_target_type_work(relation, m, **context)
         elif relation['target-type'] == 'url':
-            context = {}
             _relations_to_metadata_target_type_url(relation, m, **context)
         elif relation['target-type'] == 'series':
-            context = {
-                'entity': entity,
-            }
             _relations_to_metadata_target_type_series(relation, m, **context)
 
 
