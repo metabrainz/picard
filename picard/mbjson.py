@@ -200,6 +200,17 @@ def _relations_to_metadata_target_type_url(relation, m, **context):
         m.add('license', url)
 
 
+def _relations_to_metadata_target_type_series(relation, m, **context):
+    if relation['type'] == 'part of':
+        entity = context['entity']
+        series = relation['series']
+        var_prefix = f'~{entity}_' if entity else '~'
+        m.add(f'{var_prefix}series', series['name'])
+        m.add(f'{var_prefix}seriesid', series['id'])
+        m.add(f'{var_prefix}seriescomment', series['disambiguation'])
+        m.add(f'{var_prefix}seriesnumber', relation['attribute-values'].get('number', ''))
+
+
 def _relations_to_metadata(relations, m, instrumental=False, config=None, entity=None):
     config = config or get_config()
     use_credited_as = not config.setting['standardize_artists']
@@ -219,13 +230,11 @@ def _relations_to_metadata(relations, m, instrumental=False, config=None, entity
         elif relation['target-type'] == 'url':
             context = {}
             _relations_to_metadata_target_type_url(relation, m, **context)
-        elif relation['target-type'] == 'series' and relation['type'] == 'part of':
-            series = relation['series']
-            var_prefix = f'~{entity}_' if entity else '~'
-            m.add(f'{var_prefix}series', series['name'])
-            m.add(f'{var_prefix}seriesid', series['id'])
-            m.add(f'{var_prefix}seriescomment', series['disambiguation'])
-            m.add(f'{var_prefix}seriesnumber', relation['attribute-values'].get('number', ''))
+        elif relation['target-type'] == 'series':
+            context = {
+                'entity': entity,
+            }
+            _relations_to_metadata_target_type_series(relation, m, **context)
 
 
 def _translate_artist_node(node, config=None):
