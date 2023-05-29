@@ -212,6 +212,14 @@ def _relations_to_metadata_target_type_series(relation, m, context):
         m.add(f'{var_prefix}seriesnumber', relation['attribute-values'].get('number', ''))
 
 
+_RELATIONS_TO_METADATA_TARGET_TYPE_FUNC = {
+    'artist': _relations_to_metadata_target_type_artist,
+    'series': _relations_to_metadata_target_type_series,
+    'url': _relations_to_metadata_target_type_url,
+    'work': _relations_to_metadata_target_type_work,
+}
+
+
 TargetTypeFuncContext = namedtuple(
     'TargetTypeFuncContext',
     "config entity instrumental use_credited_as use_instrument_credits"
@@ -228,14 +236,8 @@ def _relations_to_metadata(relations, m, instrumental=False, config=None, entity
         not config.setting['standardize_instruments'],
     )
     for relation in relations:
-        if relation['target-type'] == 'artist':
-            _relations_to_metadata_target_type_artist(relation, m, context)
-        elif relation['target-type'] == 'work':
-            _relations_to_metadata_target_type_work(relation, m, context)
-        elif relation['target-type'] == 'url':
-            _relations_to_metadata_target_type_url(relation, m, context)
-        elif relation['target-type'] == 'series':
-            _relations_to_metadata_target_type_series(relation, m, context)
+        if relation['target-type'] in _RELATIONS_TO_METADATA_TARGET_TYPE_FUNC:
+            _RELATIONS_TO_METADATA_TARGET_TYPE_FUNC[relation['target-type']](relation, m, context)
 
 
 def _translate_artist_node(node, config=None):
