@@ -26,6 +26,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import namedtuple
 
 from picard import log
 from picard.config import get_config
@@ -143,18 +144,18 @@ def _relation_attributes(relation):
     return tuple()
 
 
-def _relations_to_metadata_target_type_artist(relation, m, **context):
+def _relations_to_metadata_target_type_artist(relation, m, context):
     artist = relation['artist']
-    value, valuesort = _translate_artist_node(artist, config=context['config'])
+    value, valuesort = _translate_artist_node(artist, config=context.config)
     has_translation = (value != artist['name'])
-    if not has_translation and context['use_credited_as'] and 'target-credit' in relation:
+    if not has_translation and context.use_credited_as and 'target-credit' in relation:
         credited_as = relation['target-credit']
         if credited_as:
             value = credited_as
     reltype = relation['type']
     attribs = _relation_attributes(relation)
     if reltype in {'vocal', 'instrument', 'performer'}:
-        if context['use_instrument_credits']:
+        if context.use_instrument_credits:
             attr_credits = relation.get('attribute-credits', {})
         else:
             attr_credits = {}
@@ -170,7 +171,7 @@ def _relations_to_metadata_target_type_artist(relation, m, **context):
             name = _artist_rel_types[reltype]
         except KeyError:
             return
-    if context['instrumental'] and name == 'lyricist':
+    if context.instrumental and name == 'lyricist':
         return
     m.add_unique(name, value)
     if name == 'composer':
@@ -181,7 +182,7 @@ def _relations_to_metadata_target_type_artist(relation, m, **context):
         m.add_unique('~writersort', valuesort)
 
 
-def _relations_to_metadata_target_type_work(relation, m, **context):
+def _relations_to_metadata_target_type_work(relation, m, context):
     if relation['type'] == 'performance':
         performance_attributes = _relation_attributes(relation)
         for attribute in performance_attributes:
@@ -190,7 +191,7 @@ def _relations_to_metadata_target_type_work(relation, m, **context):
         work_to_metadata(relation['work'], m, instrumental)
 
 
-def _relations_to_metadata_target_type_url(relation, m, **context):
+def _relations_to_metadata_target_type_url(relation, m, context):
     if relation['type'] == 'amazon asin' and 'asin' not in m:
         amz = parse_amazon_url(relation['url']['resource'])
         if amz is not None:
@@ -200,9 +201,9 @@ def _relations_to_metadata_target_type_url(relation, m, **context):
         m.add('license', url)
 
 
-def _relations_to_metadata_target_type_series(relation, m, **context):
+def _relations_to_metadata_target_type_series(relation, m, context):
     if relation['type'] == 'part of':
-        entity = context['entity']
+        entity = context.entity
         series = relation['series']
         var_prefix = f'~{entity}_' if entity else '~'
         m.add(f'{var_prefix}series', series['name'])
@@ -211,24 +212,30 @@ def _relations_to_metadata_target_type_series(relation, m, **context):
         m.add(f'{var_prefix}seriesnumber', relation['attribute-values'].get('number', ''))
 
 
+TargetTypeFuncContext = namedtuple(
+    'TargetTypeFuncContext',
+    "config entity instrumental use_credited_as use_instrument_credits"
+)
+
+
 def _relations_to_metadata(relations, m, instrumental=False, config=None, entity=None):
     config = config or get_config()
-    context = {
-        'config': config,
-        'entity': entity,
-        'instrumental': instrumental,
-        'use_credited_as': not config.setting['standardize_artists'],
-        'use_instrument_credits': not config.setting['standardize_instruments'],
-    }
+    context = TargetTypeFuncContext(
+        config,
+        entity,
+        instrumental,
+        not config.setting['standardize_artists'],
+        not config.setting['standardize_instruments'],
+    )
     for relation in relations:
         if relation['target-type'] == 'artist':
-            _relations_to_metadata_target_type_artist(relation, m, **context)
+            _relations_to_metadata_target_type_artist(relation, m, context)
         elif relation['target-type'] == 'work':
-            _relations_to_metadata_target_type_work(relation, m, **context)
+            _relations_to_metadata_target_type_work(relation, m, context)
         elif relation['target-type'] == 'url':
-            _relations_to_metadata_target_type_url(relation, m, **context)
+            _relations_to_metadata_target_type_url(relation, m, context)
         elif relation['target-type'] == 'series':
-            _relations_to_metadata_target_type_series(relation, m, **context)
+            _relations_to_metadata_target_type_series(relation, m, context)
 
 
 def _translate_artist_node(node, config=None):
