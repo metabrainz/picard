@@ -1606,7 +1606,7 @@ def _extract(_func, _type, *args):
 
 
 @script_function(documentation=N_(
-    """$min(type,x,...)
+    """`$min(type,x,...)`
 
 Returns the minimum value using the comparison specified in `type`.
 
@@ -1620,14 +1620,14 @@ first type that applies to both arguments in the following order of preference:
 Can be used with an arbitrary number of arguments.  Multi-value arguments
 will be expanded automatically.
 
-_Since Picard 3.0_"""
+_Since Picard 2.9_"""
 ))
 def func_min(parser, _type, x, *args):
     return _extract(min, _type, x, *args)
 
 
 @script_function(documentation=N_(
-    """$max(type,x,...)
+    """`$max(type,x,...)`
 
 Returns the maximum value using the comparison specified in `type`.
 
@@ -1641,7 +1641,7 @@ first type that applies to both arguments in the following order of preference:
 Can be used with an arbitrary number of arguments.  Multi-value arguments
 will be expanded automatically.
 
-_Since Picard 3.0_"""
+_Since Picard 2.9_"""
 ))
 def func_max(parser, _type, x, *args):
     return _extract(max, _type, x, *args)

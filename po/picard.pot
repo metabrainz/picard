@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.0a2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-05-22 21:52+0200\n"
+"POT-Creation-Date: 2023-05-29 22:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,11 +31,11 @@ msgstr ""
 msgid "Loading album %(id)s ..."
 msgstr ""
 
-#: picard/album.py:790
+#: picard/album.py:792
 msgid "[loading album information]"
 msgstr ""
 
-#: picard/album.py:792
+#: picard/album.py:794
 #, python-format
 msgid "[could not load album %s]"
 msgstr ""
@@ -3642,7 +3642,7 @@ msgstr ""
 
 #: picard/script/functions.py:1608
 msgid ""
-"$min(type,x,...)\n"
+"`$min(type,x,...)`\n"
 "\n"
 "Returns the minimum value using the comparison specified in `type`.\n"
 "\n"
@@ -3662,12 +3662,12 @@ msgid ""
 "\n"
 "will be expanded automatically.\n"
 "\n"
-"_Since Picard 3.0_"
+"_Since Picard 2.9_"
 msgstr ""
 
 #: picard/script/functions.py:1629
 msgid ""
-"$max(type,x,...)\n"
+"`$max(type,x,...)`\n"
 "\n"
 "Returns the maximum value using the comparison specified in `type`.\n"
 "\n"
@@ -3687,7 +3687,7 @@ msgid ""
 "\n"
 "will be expanded automatically.\n"
 "\n"
-"_Since Picard 3.0_"
+"_Since Picard 2.9_"
 msgstr ""
 
 #: picard/script/serializer.py:202
