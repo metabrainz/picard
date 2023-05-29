@@ -609,15 +609,15 @@ class Album(DataObject, Item):
             inc |= {
                 'artist-rels',
                 'recording-rels',
+                'release-group-level-rels',
                 'release-rels',
                 'series-rels',
                 'url-rels',
-                'work-rels'
+                'work-rels',
             }
             if config.setting['track_ars']:
                 inc |= {
                     'recording-level-rels',
-                    'release-group-level-rels',
                     'work-level-rels',
                 }
         require_authentication = self.set_genre_inc_params(inc, config) or require_authentication
