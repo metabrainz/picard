@@ -181,6 +181,15 @@ def _relations_to_metadata_target_type_artist(relation, m, **context):
         m.add_unique('~writersort', valuesort)
 
 
+def _relations_to_metadata_target_type_work(relation, m, **context):
+    if relation['type'] == 'performance':
+        performance_attributes = _relation_attributes(relation)
+        for attribute in performance_attributes:
+            m.add_unique("~performance_attributes", attribute)
+        instrumental = 'instrumental' in performance_attributes
+        work_to_metadata(relation['work'], m, instrumental)
+
+
 def _relations_to_metadata(relations, m, instrumental=False, config=None, entity=None):
     config = config or get_config()
     use_credited_as = not config.setting['standardize_artists']
@@ -195,12 +204,8 @@ def _relations_to_metadata(relations, m, instrumental=False, config=None, entity
             }
             _relations_to_metadata_target_type_artist(relation, m, **context)
         elif relation['target-type'] == 'work':
-            if relation['type'] == 'performance':
-                performance_attributes = _relation_attributes(relation)
-                for attribute in performance_attributes:
-                    m.add_unique("~performance_attributes", attribute)
-                instrumental = 'instrumental' in performance_attributes
-                work_to_metadata(relation['work'], m, instrumental)
+            context = {}
+            _relations_to_metadata_target_type_work(relation, m, **context)
         elif relation['target-type'] == 'url':
             if relation['type'] == 'amazon asin' and 'asin' not in m:
                 amz = parse_amazon_url(relation['url']['resource'])
