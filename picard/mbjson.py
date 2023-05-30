@@ -147,12 +147,12 @@ def _relation_attributes(relation):
 
 def _relations_to_metadata_target_type_artist(relation, m, context):
     artist = relation['artist']
-    value, valuesort = _translate_artist_node(artist, config=context.config)
-    has_translation = (value != artist['name'])
+    translated_name, valuesort = _translate_artist_node(artist, config=context.config)
+    has_translation = (translated_name != artist['name'])
     if not has_translation and context.use_credited_as and 'target-credit' in relation:
         credited_as = relation['target-credit']
         if credited_as:
-            value = credited_as
+            translated_name = credited_as
     reltype = relation['type']
     attribs = _relation_attributes(relation)
     if reltype in {'vocal', 'instrument', 'performer'}:
@@ -165,7 +165,7 @@ def _relations_to_metadata_target_type_artist(relation, m, context):
         if not hasattr(m, '_djmix_ars'):
             m._djmix_ars = {}
         for attr in attribs:
-            m._djmix_ars.setdefault(attr.split()[1], []).append(value)
+            m._djmix_ars.setdefault(attr.split()[1], []).append(translated_name)
         return
     else:
         try:
@@ -174,7 +174,7 @@ def _relations_to_metadata_target_type_artist(relation, m, context):
             return
     if context.instrumental and name == 'lyricist':
         return
-    m.add_unique(name, value)
+    m.add_unique(name, translated_name)
     if name == 'composer':
         m.add_unique('composersort', valuesort)
     elif name == 'lyricist':
