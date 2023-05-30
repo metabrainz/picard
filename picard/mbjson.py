@@ -147,7 +147,7 @@ def _relation_attributes(relation):
 
 def _relations_to_metadata_target_type_artist(relation, m, context):
     artist = relation['artist']
-    translated_name, valuesort = _translate_artist_node(artist, config=context.config)
+    translated_name, sort_name = _translate_artist_node(artist, config=context.config)
     has_translation = (translated_name != artist['name'])
     if not has_translation and context.use_credited_as and 'target-credit' in relation:
         credited_as = relation['target-credit']
@@ -176,11 +176,11 @@ def _relations_to_metadata_target_type_artist(relation, m, context):
         return
     m.add_unique(name, translated_name)
     if name == 'composer':
-        m.add_unique('composersort', valuesort)
+        m.add_unique('composersort', sort_name)
     elif name == 'lyricist':
-        m.add_unique('~lyricistsort', valuesort)
+        m.add_unique('~lyricistsort', sort_name)
     elif name == 'writer':
-        m.add_unique('~writersort', valuesort)
+        m.add_unique('~writersort', sort_name)
 
 
 def _relations_to_metadata_target_type_work(relation, m, context):
