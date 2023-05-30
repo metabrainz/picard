@@ -286,7 +286,7 @@ def _translate_artist_node(node, config=None):
                 if 'locale' not in alias:
                     continue
                 full_locale = alias['locale']
-                root_locale = full_locale.split("_")[0]
+                root_locale = full_locale.split('_')[0]
                 full_parts = []
                 root_parts = []
                 score = 0.8
@@ -324,7 +324,7 @@ def _translate_artist_node(node, config=None):
 
         # No matches found in available alias locales
         sort_name = node['sort-name']
-        translated_name = translate_from_sortname(node['name'] or "", sort_name)
+        translated_name = translate_from_sortname(node['name'] or '', sort_name)
     else:
         translated_name, sort_name = node['name'], node['sort-name']
     return (translated_name, sort_name)
@@ -348,12 +348,12 @@ def artist_credit_from_node(node):
         else:
             name = artist['name']
         artist_name += name
-        artist_sort_name += sort_name or ""
+        artist_sort_name += sort_name or ''
         artist_names.append(name)
-        artist_sort_names.append(sort_name or "")
+        artist_sort_names.append(sort_name or '')
         if 'joinphrase' in artist_info:
-            artist_name += artist_info['joinphrase'] or ""
-            artist_sort_name += artist_info['joinphrase'] or ""
+            artist_name += artist_info['joinphrase'] or ''
+            artist_sort_name += artist_info['joinphrase'] or ''
     return (artist_name, artist_sort_name, artist_names, artist_sort_names)
 
 
