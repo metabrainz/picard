@@ -243,7 +243,7 @@ def _relations_to_metadata(relations, m, instrumental=False, config=None, entity
 
 def _translate_artist_node(node, config=None):
     config = config or get_config()
-    transl, sort_name = None, None
+    translated_name, sort_name = None, None
     if config.setting['translate_artist_names']:
         if config.setting['translate_artist_names_script_exception']:
             log_text = 'Script alpha characters found in "{0}": '.format(node['name'],)
@@ -324,10 +324,10 @@ def _translate_artist_node(node, config=None):
 
         # No matches found in available alias locales
         sort_name = node['sort-name']
-        transl = translate_from_sortname(node['name'] or "", sort_name)
+        translated_name = translate_from_sortname(node['name'] or "", sort_name)
     else:
-        transl, sort_name = node['name'], node['sort-name']
-    return (transl, sort_name)
+        translated_name, sort_name = node['name'], node['sort-name']
+    return (translated_name, sort_name)
 
 
 def artist_credit_from_node(node):
