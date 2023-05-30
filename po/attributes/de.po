@@ -308,6 +308,11 @@ msgid ""
 "America, so that they would fit existing vinyl racks in stores."
 msgstr ""
 
+#: DB:place_type/description:43
+msgctxt "place_type"
+msgid "A large, permanent outdoor stage, typically with a fixed seating area."
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
@@ -558,6 +563,13 @@ msgctxt "series_type"
 msgid "A series of works."
 msgstr "Eine Reihe von Werken"
 
+#: DB:place_type/description:42
+msgctxt "place_type"
+msgid ""
+"A small venue (such as a jazz club, nightclub or pub) that hosts concerts "
+"and social events. May or may not have a dedicated stage or seating."
+msgstr ""
+
 #: DB:work_type/description:15
 msgctxt "work_type"
 msgid ""
@@ -620,6 +632,13 @@ msgid ""
 "A symphony is an extended composition, almost always scored for orchestra "
 "without soloists."
 msgstr "Eine Sinfonie oder Symphonie ist die Bezeichnung für Instrumentalwerke von über die Jahrhunderte wechselnder Form und Besetzung, inklusive Kompositionen für Tasteninstrumente."
+
+#: DB:place_type/description:45
+msgctxt "place_type"
+msgid ""
+"A temporary outdoor stage erected for a music festival or other similar "
+"event."
+msgstr ""
 
 #: DB:release_packaging/description:2
 msgctxt "release_packaging"
@@ -849,6 +868,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Ambikā"
 msgstr ""
 
+#: DB:place_type/name:43
+msgctxt "place_type"
+msgid "Amphitheatre"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:855
 msgctxt "work_attribute_type_allowed_value"
 msgid "Amr̥t varṣiṇi"
@@ -947,6 +971,13 @@ msgid ""
 "An individual concert by a single artist or collaboration, often with "
 "supporting artists who perform before the main act."
 msgstr "Ein individuelles Konzert von einem einzelnen Künstler oder einer Gruppe, oftmals mit Gastkünstler, die vor dem Hauptkonzert auftreten."
+
+#: DB:place_type/description:44
+msgctxt "place_type"
+msgid ""
+"An indoor performance facility with fixed seating, whether for music "
+"(usually, but not always, classical music) or theatre."
+msgstr ""
 
 #: DB:release_group_secondary_type/description:4
 msgctxt "release_group_secondary_type"
@@ -1944,6 +1975,11 @@ msgctxt "release_packaging"
 msgid "Clamshell Case"
 msgstr ""
 
+#: DB:place_type/name:42
+msgctxt "place_type"
+msgid "Club"
+msgstr ""
+
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
 msgid "Compilation"
@@ -1953,6 +1989,11 @@ msgstr "Kompilation"
 msgctxt "event_type"
 msgid "Concert"
 msgstr "Konzert"
+
+#: DB:place_type/name:44
+msgctxt "place_type"
+msgid "Concert hall / Theatre"
+msgstr ""
 
 #: DB:work_type/name:4
 msgctxt "work_type"
@@ -2846,6 +2887,11 @@ msgstr "Festival"
 msgctxt "series_type"
 msgid "Festival"
 msgstr "Festival"
+
+#: DB:place_type/name:45
+msgctxt "place_type"
+msgid "Festival stage"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:372
 msgctxt "work_attribute_type_allowed_value"

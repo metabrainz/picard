@@ -287,6 +287,11 @@ msgctxt "release_packaging"
 msgid ""
 "A large cardboard box often used until the mid-1990s to sell CDs in North "
 "America, so that they would fit existing vinyl racks in stores."
+msgstr "Une boîte en carton très haute souvent utilisée au milieu des années 1990 pour vendre des CD en Amérique du Nord, de façon à ce qu’ils puissent tenir dans les étagères à vinyle présentes dans les magasins."
+
+#: DB:place_type/description:43
+msgctxt "place_type"
+msgid "A large, permanent outdoor stage, typically with a fixed seating area."
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:28
@@ -539,6 +544,13 @@ msgctxt "series_type"
 msgid "A series of works."
 msgstr "Une série d’œuvres."
 
+#: DB:place_type/description:42
+msgctxt "place_type"
+msgid ""
+"A small venue (such as a jazz club, nightclub or pub) that hosts concerts "
+"and social events. May or may not have a dedicated stage or seating."
+msgstr ""
+
 #: DB:work_type/description:15
 msgctxt "work_type"
 msgid ""
@@ -601,6 +613,13 @@ msgid ""
 "A symphony is an extended composition, almost always scored for orchestra "
 "without soloists."
 msgstr "Une symphonie est une vaste composition, presque toujours arrangée pour des orchestres sans soliste."
+
+#: DB:place_type/description:45
+msgctxt "place_type"
+msgid ""
+"A temporary outdoor stage erected for a music festival or other similar "
+"event."
+msgstr ""
 
 #: DB:release_packaging/description:2
 msgctxt "release_packaging"
@@ -830,6 +849,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Ambikā"
 msgstr "Ambikâ"
 
+#: DB:place_type/name:43
+msgctxt "place_type"
+msgid "Amphitheatre"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:855
 msgctxt "work_attribute_type_allowed_value"
 msgid "Amr̥t varṣiṇi"
@@ -929,10 +953,17 @@ msgid ""
 "supporting artists who perform before the main act."
 msgstr "Un concert individuel par un seul artiste ou en collaboration, souvent avec des artistes de soutien qui se produisent en première partie."
 
+#: DB:place_type/description:44
+msgctxt "place_type"
+msgid ""
+"An indoor performance facility with fixed seating, whether for music "
+"(usually, but not always, classical music) or theatre."
+msgstr ""
+
 #: DB:release_group_secondary_type/description:4
 msgctxt "release_group_secondary_type"
 msgid "An interview release contains an interview, generally with an artist."
-msgstr ""
+msgstr "Une parution d'entrevue contient une entrevue, généralement avec un artiste."
 
 #: DB:release_packaging/description:54
 msgctxt "release_packaging"
@@ -1424,7 +1455,7 @@ msgstr "Bestenigar"
 #: DB:medium_format/name:131
 msgctxt "medium_format"
 msgid "Betacam SP"
-msgstr ""
+msgstr "Betacam SP"
 
 #: DB:medium_format/name:24
 msgctxt "medium_format"
@@ -1610,7 +1641,7 @@ msgstr "Production pirate"
 #: DB:cover_art_archive.art_type/name:49
 msgctxt "cover_art_type"
 msgid "Bottom"
-msgstr "Bas"
+msgstr "Dessous"
 
 #: DB:release_packaging/name:19
 msgctxt "release_packaging"
@@ -1923,6 +1954,11 @@ msgstr "Ville est utilisé pour des localités de toutes les tailles, incluant l
 #: DB:release_packaging/name:56
 msgctxt "release_packaging"
 msgid "Clamshell Case"
+msgstr "Boîte à clapet"
+
+#: DB:place_type/name:42
+msgctxt "place_type"
+msgid "Club"
 msgstr ""
 
 #: DB:release_group_secondary_type/name:1
@@ -1934,6 +1970,11 @@ msgstr "Compilation"
 msgctxt "event_type"
 msgid "Concert"
 msgstr "Concert"
+
+#: DB:place_type/name:44
+msgctxt "place_type"
+msgid "Concert hall / Theatre"
+msgstr ""
 
 #: DB:work_type/name:4
 msgctxt "work_type"
@@ -2827,6 +2868,11 @@ msgstr "Festival"
 msgctxt "series_type"
 msgid "Festival"
 msgstr "Festival"
+
+#: DB:place_type/name:45
+msgctxt "place_type"
+msgid "Festival stage"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:372
 msgctxt "work_attribute_type_allowed_value"
@@ -4384,7 +4430,7 @@ msgstr "Khêmtâl"
 #: DB:medium_format/name:95
 msgctxt "medium_format"
 msgid "KiT Album"
-msgstr ""
+msgstr "« KiT Album »"
 
 #: DB:work_attribute_type_allowed_value/value:630
 msgctxt "work_attribute_type_allowed_value"
@@ -4670,7 +4716,7 @@ msgstr "Longa"
 #: DB:release_packaging/name:55
 msgctxt "release_packaging"
 msgid "Longbox"
-msgstr ""
+msgstr "« Longbox »"
 
 #: DB:work_attribute_type/name:49
 msgctxt "work_attribute_type"
@@ -4900,7 +4946,7 @@ msgstr "Mersiye"
 #: DB:release_packaging/name:54
 msgctxt "release_packaging"
 msgid "Metal Tin"
-msgstr ""
+msgstr "Boîte en métal"
 
 #: DB:work_attribute_type_allowed_value/value:745
 msgctxt "work_attribute_type_allowed_value"
@@ -5550,7 +5596,7 @@ msgstr "Non-binaire"
 #: DB:release_group_secondary_type/description:3
 msgctxt "release_group_secondary_type"
 msgid "Non-music spoken word releases."
-msgstr ""
+msgstr "Parutions non-musicales parlées."
 
 #: DB:release_packaging/name:7
 msgctxt "release_packaging"
@@ -5725,7 +5771,7 @@ msgstr "Musique possédée"
 #: DB:editor_collection_type/name:17
 msgctxt "collection_type"
 msgid "Owned recordings"
-msgstr ""
+msgstr "Enregistrements possédés"
 
 #: DB:work_attribute_type_allowed_value/value:762
 msgctxt "work_attribute_type_allowed_value"
@@ -7284,7 +7330,7 @@ msgid ""
 "The bottom of a box or other similar packaging (for most common six sided "
 "packaging options, the one perpendicular to and below front, back and "
 "spines)."
-msgstr ""
+msgstr "Le dessous d’une boîte ou d’un autre emballage similaire (pour la plupart des emballages à six faces, celle qui est perpendiculaire à et en-dessous du devant, du derrière, et de la tranche)."
 
 #: DB:work_type/description:7
 msgctxt "work_type"
@@ -7315,7 +7361,7 @@ msgid ""
 "The top of a box or other similar packaging (for most common six sided "
 "packaging options, the one perpendicular to and above front, back and "
 "spines)."
-msgstr ""
+msgstr "Le dessus d’une boîte ou d’un autre emballage similaire (pour la plupart des emballages à six faces, celle qui est perpendiculaire à et au-dessus du devant, du derrière, et de la tranche)."
 
 #: DB:release_packaging/description:1
 msgctxt "release_packaging"
@@ -7447,7 +7493,7 @@ msgstr "Tishra-jâti êka"
 #: DB:cover_art_archive.art_type/name:48
 msgctxt "cover_art_type"
 msgid "Top"
-msgstr "Haut"
+msgstr "Dessus"
 
 #: DB:series_type/name:7
 msgctxt "series_type"
