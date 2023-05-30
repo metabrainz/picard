@@ -139,9 +139,10 @@ def _parse_attributes(attrs, reltype, attr_credits):
 
 
 def _relation_attributes(relation):
-    if 'attributes' in relation:
-        return tuple(a for a in relation['attributes'])
-    return tuple()
+    try:
+        return tuple(relation['attributes'])
+    except KeyError:
+        return tuple()
 
 
 def _relations_to_metadata_target_type_artist(relation, m, context):
