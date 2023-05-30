@@ -331,47 +331,47 @@ def _translate_artist_node(node, config=None):
 
 
 def artist_credit_from_node(node):
-    artist = ''
-    artistsort = ''
-    artists = []
-    artistssort = []
+    artist_name = ''
+    artist_sort_name = ''
+    artist_names = []
+    artist_sort_names = []
     config = get_config()
     use_credited_as = not config.setting['standardize_artists']
     for artist_info in node:
-        a = artist_info['artist']
-        translated, translated_sort = _translate_artist_node(a, config=config)
-        has_translation = (translated != a['name'])
+        artist = artist_info['artist']
+        translated_name, sort_name = _translate_artist_node(artist, config=config)
+        has_translation = (translated_name != artist['name'])
         if has_translation:
-            name = translated
+            name = translated_name
         elif use_credited_as and 'name' in artist_info:
             name = artist_info['name']
         else:
-            name = a['name']
-        artist += name
-        artistsort += translated_sort or ""
-        artists.append(name)
-        artistssort.append(translated_sort)
+            name = artist['name']
+        artist_name += name
+        artist_sort_name += sort_name or ""
+        artist_names.append(name)
+        artist_sort_names.append(sort_name or "")
         if 'joinphrase' in artist_info:
-            artist += artist_info['joinphrase'] or ""
-            artistsort += artist_info['joinphrase'] or ""
-    return (artist, artistsort, artists, artistssort)
+            artist_name += artist_info['joinphrase'] or ""
+            artist_sort_name += artist_info['joinphrase'] or ""
+    return (artist_name, artist_sort_name, artist_names, artist_sort_names)
 
 
 def artist_credit_to_metadata(node, m, release=False):
     ids = [n['artist']['id'] for n in node]
-    artist, artistsort, artists, artistssort = artist_credit_from_node(node)
+    artist_name, artist_sort_name, artist_names, artist_sort_names = artist_credit_from_node(node)
     if release:
         m['musicbrainz_albumartistid'] = ids
-        m['albumartist'] = artist
-        m['albumartistsort'] = artistsort
-        m['~albumartists'] = artists
-        m['~albumartists_sort'] = artistssort
+        m['albumartist'] = artist_name
+        m['albumartistsort'] = artist_sort_name
+        m['~albumartists'] = artist_names
+        m['~albumartists_sort'] = artist_sort_names
     else:
         m['musicbrainz_artistid'] = ids
-        m['artist'] = artist
-        m['artistsort'] = artistsort
-        m['artists'] = artists
-        m['~artists_sort'] = artistssort
+        m['artist'] = artist_name
+        m['artistsort'] = artist_sort_name
+        m['artists'] = artist_names
+        m['~artists_sort'] = artist_sort_names
 
 
 def _release_event_iter(node):
