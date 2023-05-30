@@ -41,7 +41,8 @@ class DataObject(LockableObject):
         self.item = None
 
     def add_genre(self, name, count):
-        self.genres[name] += count
+        if name:
+            self.genres[name] += count
 
     @staticmethod
     def set_genre_inc_params(inc, config=None):
