@@ -623,17 +623,12 @@ def add_genres_from_node(node, obj):
 
 def add_genres(node, obj):
     for tag in node:
-        key = tag['name']
-        count = tag['count']
-        if key:
-            obj.add_genre(key, count)
+        obj.add_genre(tag['name'], tag['count'])
 
 
 def add_user_genres(node, obj):
     for tag in node:
-        key = tag['name']
-        if key:
-            obj.add_genre(key, 1)
+        obj.add_genre(tag['name'], 1)
 
 
 def add_isrcs_to_metadata(node, metadata):
