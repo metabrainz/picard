@@ -32,42 +32,14 @@ jobs:
       with:
         name: picard-sdist
         path: dist/*
-    - name: Prepare GPG signing key
-      if: startsWith(github.ref, 'refs/tags/')
-      run: |
-        if [ -n "$CODESIGN_PGP_URL" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
-          pip3 install awscli
-          aws s3 cp "$CODESIGN_PGP_URL" signkey.asc.enc
-          openssl enc -d -aes-256-cbc -pbkdf2 -iter 100000 -in signkey.asc.enc -out signkey.asc -k "$CODESIGN_PGP_PASSWORD"
-          gpg --import signkey.asc
-          rm signkey.asc*
-          echo "CODESIGN=1" >> $GITHUB_ENV
-        else
-          echo "::warning::No signing key available, skipping code signing."
-        fi
-      env:
-        AWS_DEFAULT_REGION: eu-central-1
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        CODESIGN_PGP_URL: ${{ secrets.CODESIGN_PGP_URL }}
-        CODESIGN_PGP_PASSWORD: ${{ secrets.CODESIGN_PGP_PASSWORD }}
     - name: Publish Python distribution to PyPI
       if: startsWith(github.ref, 'refs/tags/')
       run: |
         pip install --upgrade twine
-        if [ "$CODESIGN" = '1' ]; then
-          twine upload --non-interactive --sign --identity "$SIGN_IDENTITY" dist/*
-        else
-          twine upload --non-interactive dist/*
-        fi
+        twine upload --non-interactive dist/*
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_UPLOAD_TOKEN }}
-        SIGN_IDENTITY: picard@metabrainz.org
-    - name: Cleanup
-      if: env.CODESIGN
-      run: |
-        rm -rf "$HOME/.gnupg"
 
   pypi-bdist:
     runs-on: ${{ matrix.os }}
@@ -107,35 +79,11 @@ jobs:
       with:
         name: picard-bdist-${{ runner.os }}
         path: dist/*.whl
-    - name: Prepare GPG signing key
-      if: startsWith(github.ref, 'refs/tags/')
-      run: |
-        if [ -n "$CODESIGN_PGP_URL" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
-          pip3 install awscli
-          aws s3 cp "$CODESIGN_PGP_URL" signkey.asc.enc
-          openssl enc -d -aes-256-cbc -pbkdf2 -iter 100000 -in signkey.asc.enc -out signkey.asc -k "$CODESIGN_PGP_PASSWORD"
-          gpg --import signkey.asc
-          rm signkey.asc*
-          echo "CODESIGN=1" >> $GITHUB_ENV
-        else
-          echo "::warning::No signing key available, skipping code signing."
-        fi
-      env:
-        AWS_DEFAULT_REGION: eu-central-1
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        CODESIGN_PGP_URL: ${{ secrets.CODESIGN_PGP_URL }}
-        CODESIGN_PGP_PASSWORD: ${{ secrets.CODESIGN_PGP_PASSWORD }}
     - name: Publish Python distribution to PyPI
       if: startsWith(github.ref, 'refs/tags/')
       run: |
         pip install --upgrade twine>=3.0
-        if [ "$CODESIGN" = '1' ]; then
-          twine upload --non-interactive --sign --identity "$SIGN_IDENTITY" dist/*.whl
-        else
-          twine upload --non-interactive dist/*
-        fi
+        twine upload --non-interactive dist/*
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_UPLOAD_TOKEN }}
-        SIGN_IDENTITY: picard@metabrainz.org
