@@ -1,18 +1,48 @@
+# Version 2.9.0b1 - 2023-05-31
+
+## Bug Fixes
+- [PICARD-2534](https://tickets.metabrainz.org/browse/PICARD-2534) - Vorbis / FLAC: Trailing null char in `date` tag causes date to be ignored
+- [PICARD-2605](https://tickets.metabrainz.org/browse/PICARD-2605) - Windows: libssl-1_1-x64.dll missing
+- [PICARD-2608](https://tickets.metabrainz.org/browse/PICARD-2608) - Application exit waits for outstanding loading request
+- [PICARD-2611](https://tickets.metabrainz.org/browse/PICARD-2611) - During clustering selection changes are ignored, can lead to users performing actions on unexpected files
+- [PICARD-2615](https://tickets.metabrainz.org/browse/PICARD-2615) - Picard does not check for unsaved files when using the QUIT command
+- [PICARD-2624](https://tickets.metabrainz.org/browse/PICARD-2624) - ValueError writing truncated AIFF / WAVE / DSDIFF files
+- [PICARD-2627](https://tickets.metabrainz.org/browse/PICARD-2627) - Interprocess communication pipe hangs on quit
+- [PICARD-2629](https://tickets.metabrainz.org/browse/PICARD-2629) - Keyboard shortcut for "Search for similar albums"
+- [PICARD-2630](https://tickets.metabrainz.org/browse/PICARD-2630) - Crash at startup due failing to upgrade configuration
+- [PICARD-2642](https://tickets.metabrainz.org/browse/PICARD-2642) - Submit cluster as release opens on 0.0.0.0 if "Listen only on localhost" is disabled
+- [PICARD-2645](https://tickets.metabrainz.org/browse/PICARD-2645) - QUIT command only works if there are files that need saving and user cancels the quit
+
+## New Features
+- [PICARD-711](https://tickets.metabrainz.org/browse/PICARD-711) - New variables for release group, release, recording and work series
+- [PICARD-2617](https://tickets.metabrainz.org/browse/PICARD-2617) - Add variables for file creation (`_file_created_timestamp`) and modification date(time) (`_file_modified_timestamp`)
+- [PICARD-2606](https://tickets.metabrainz.org/browse/PICARD-2606) - Add `_writersort` and `_lyricistsort` variables
+
+## Improvements
+- [PICARD-900](https://tickets.metabrainz.org/browse/PICARD-900) - Use Id3v24 by default instead of id3v23
+- [PICARD-1649](https://tickets.metabrainz.org/browse/PICARD-1649) - Allow plugins to link to documentation
+- [PICARD-1945](https://tickets.metabrainz.org/browse/PICARD-1945) - Option to set the number of parallel fpcalc processes
+- [PICARD-2535](https://tickets.metabrainz.org/browse/PICARD-2535) - Handle null terminated tag values in Vorbis / FLAC tags
+- [PICARD-2609](https://tickets.metabrainz.org/browse/PICARD-2609) - Improve UI responsiveness during file loading
+- [PICARD-2616](https://tickets.metabrainz.org/browse/PICARD-2616) - Support tag `releasedate` for TDRL / RELEASEDATE (not filled by default, but available for scripting and plugins)
+- [PICARD-2620](https://tickets.metabrainz.org/browse/PICARD-2620) - New icon for Picard on macOS
+- [PICARD-2625](https://tickets.metabrainz.org/browse/PICARD-2625) - Improve visibility of creating a new file naming script
+- [PICARD-2626](https://tickets.metabrainz.org/browse/PICARD-2626) - macOS: add 512px & 1024px icons
+- [PICARD-2634](https://tickets.metabrainz.org/browse/PICARD-2634) - Use standardized artist names by default
+
+
 # Version 2.9.0a1 - 2023-01-03
 
 ## Bugfixes
-
 - [PICARD-2576](https://tickets.metabrainz.org/browse/PICARD-2576) - Options window minimum height does not fit on smaller screens
 - [PICARD-2599](https://tickets.metabrainz.org/browse/PICARD-2599) - Crash on plugin install / update
 
 ## New Features
-
 - [PICARD-2471](https://tickets.metabrainz.org/browse/PICARD-2471) - Restrict Picard to a single instance, open new files in existing instance
 - [PICARD-2519](https://tickets.metabrainz.org/browse/PICARD-2519) - Allow passing supported URLs on command line
 - [PICARD-2526](https://tickets.metabrainz.org/browse/PICARD-2526) - Allow starting processing actions from the command line
 
 ## Improvements
-
 - [PICARD-356](https://tickets.metabrainz.org/browse/PICARD-356) - Replace Windows incompatible characters with user defined character
 - [PICARD-2486](https://tickets.metabrainz.org/browse/PICARD-2486) - Add text-based comparison scripting functions
 - [PICARD-2550](https://tickets.metabrainz.org/browse/PICARD-2550) - Support dBpoweramp secure ripping log files for disc ID lookup
@@ -24,7 +54,6 @@
 # Version 2.8.5 - 2022-12-06
 
 ## Bugfixes
-
 - [PICARD-2590](https://tickets.metabrainz.org/browse/PICARD-2590) - Relative paths for cover art file names no longer work
 - [PICARD-2593](https://tickets.metabrainz.org/browse/PICARD-2593) - Toolbar icon text disappears when saving options
 - [PICARD-2596](https://tickets.metabrainz.org/browse/PICARD-2596) - "Show icons in menus" option is applied without saving options
@@ -33,7 +62,6 @@
 # Version 2.8.4 - 2022-11-22
 
 ## Bugfixes
-
 - [PICARD-2520](https://tickets.metabrainz.org/browse/PICARD-2520) - Null bytes in tag values can cause crashes when sorting
 - [PICARD-2539](https://tickets.metabrainz.org/browse/PICARD-2539) - Picard crashes on huge releases if no cover art provider is active
 - [PICARD-2548](https://tickets.metabrainz.org/browse/PICARD-2548) - Loaded album does not update cover art display
@@ -50,21 +78,18 @@
 - [PICARD-2588](https://tickets.metabrainz.org/browse/PICARD-2588) - `QObject::startTimer`: Timers can only be used with threads started with QThread
 
 ## Improvements
-
 - [PICARD-2589](https://tickets.metabrainz.org/browse/PICARD-2589) - Support media types "DualDisc (DVD side)" and "Betacam SP"
 
 
 # Version 2.8.3 - 2022-08-17
 
 ## Bugfixes
-
 - [PICARD-2524](https://tickets.metabrainz.org/browse/PICARD-2524) - Random crash on album search
 
 
 # Version 2.8.2 - 2022-07-07
 
 ## Bugfixes
-
 - [PICARD-2480](https://tickets.metabrainz.org/browse/PICARD-2480) - Lookup CD from EAC log generates incorrect Disc ID from Enhanced CDs
 - [PICARD-2498](https://tickets.metabrainz.org/browse/PICARD-2498) - Except for the description no HTML should be allowed in plugin metadata
 - [PICARD-2505](https://tickets.metabrainz.org/browse/PICARD-2505) - Cover art type "matrix/runout" causes a folder "matrix" being created when saving cover art
@@ -75,7 +100,6 @@
 - [PICARD-2518](https://tickets.metabrainz.org/browse/PICARD-2518) - Keyboard shortcuts not working in Italian localization
 
 ## Improvements
-
 - [PICARD-2504](https://tickets.metabrainz.org/browse/PICARD-2504) - Increase default query limit and make it configurable
 - [PICARD-2516](https://tickets.metabrainz.org/browse/PICARD-2516) - Support CAA cover art types "Top" and "Bottom"
 - [PICARD-2517](https://tickets.metabrainz.org/browse/PICARD-2517) - Support media type "Mixed Mode CD"
@@ -84,7 +108,6 @@
 # Version 2.8.1 - 2022-06-07
 
 ## Bugfixes
-
 - [PICARD-2489](https://tickets.metabrainz.org/browse/PICARD-2489) - Preferred Releases UI not loading in Options menu on FreeBSD
 - [PICARD-2491](https://tickets.metabrainz.org/browse/PICARD-2491) - Crash upon loading album information for releases with MBID redirects
 - [PICARD-2493](https://tickets.metabrainz.org/browse/PICARD-2493) - If locales for picard-countries or picard-attributes are missing UI translation is completely skipped
@@ -94,14 +117,12 @@
 # Version 2.8 - 2022-05-24
 
 ## Tasks
-
 - [PICARD-2484](https://tickets.metabrainz.org/browse/PICARD-2484) - Update bundled PyJWT to 2.4.0 for Windows and macOS builds
 
 
 # Version 2.8.0rc2 - 2022-05-12
 
 ## Bugfixes
-
 - [PICARD-2465](https://tickets.metabrainz.org/browse/PICARD-2465) - RecursionError after dragging folder from file browser
 - [PICARD-2470](https://tickets.metabrainz.org/browse/PICARD-2470) - CD Lookup error: utf-8 codec can't decode byte 0xff in position 0: invalid start byte
 - [PICARD-2472](https://tickets.metabrainz.org/browse/PICARD-2472) - Cluster action applies to already matched albums
