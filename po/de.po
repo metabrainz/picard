@@ -1,7 +1,7 @@
 # Translations template for picard.
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the picard project.
-# 
+#
 # Translators:
 # nikki, 2014-2015
 # nikki2 <b4931048@nwldx.com>, 2012
@@ -43,15 +43,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-05-29 22:28+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2014,2017-2023\n"
-"Language-Team: German (http://app.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
+"PO-Revision-Date: 2023-05-31 13:18+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"Language-Team: German <https://translations.metabrainz.org/projects/picard/"
+"app/de/>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
 "Generated-By: Babel 2.12.1\n"
-"Language: de\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -595,7 +597,10 @@ msgid ""
 "Error while reading CD:\n"
 "\n"
 "%s"
-msgstr "Fehler beim Lesen der CD:\n%s"
+msgstr ""
+"Fehler beim Lesen der CD:\n"
+"\n"
+"%s"
 
 #: picard/tagger.py:1160
 msgid "All supported log files"
@@ -642,7 +647,7 @@ msgstr "Nachschlagen von AcoustID fehlgeschlagen für „%(filename)s“!"
 #: picard/acoustid/__init__.py:176
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
-msgstr "Nachschlagen von AcoustID für „%(filename)s“ ergab kein Ergebnis!"
+msgstr "Nachschlagen von AcoustID für „%(filename)s“ ergab kein Ergebnis"
 
 #: picard/acoustid/__init__.py:187
 #, python-format
@@ -2655,7 +2660,14 @@ msgid ""
 "types not appearing in the 'Include' or 'Exclude' lists will not be "
 "considered when determining whether or not to download and use a CAA "
 "image.\n"
-msgstr "CAA-Bilder mit einem Cover-Art-Typ, der auf der „Verwendet“-Liste aufgeführt ist, werden heruntergeladen und verwendet AUSSER dieses Bild hat zusätzlich noch einen Cover-Art-Typ, der auf der „Ausgeschlossen“-Liste steht. \nBilder mit einem Cover-Art-Typ, der auf der „Ausgeschlossen“-Liste aufgeführt ist, werden NIE verwendet. \nBilder mit einem Cover-Art-Typen, die weder auf der „Verwendet“- noch auf der „Ausgeschlossen“-Liste aufgeführt sind, werden NIE verwendet.\n"
+msgstr ""
+"CAA-Bilder mit einem Cover-Art-Typ, der auf der „Verwendet“-Liste aufgeführt "
+"ist, werden heruntergeladen und verwendet AUSSER dieses Bild hat zusätzlich "
+"noch einen Cover-Art-Typ, der auf der „Ausgeschlossen“-Liste steht. Bilder "
+"mit einem Cover-Art-Typ, der auf der „Ausgeschlossen“-Liste aufgeführt ist, "
+"werden NIE verwendet. Bilder mit einem Cover-Art-Typen, die weder auf der "
+"„Verwendet“- noch auf der „Ausgeschlossen“-Liste aufgeführt sind, werden NIE "
+"verwendet.\n"
 
 #: picard/coverart/providers/caa.py:327
 msgid "I&nclude all"
@@ -2722,7 +2734,10 @@ msgid ""
 "`$if(if,then,else)`\n"
 "\n"
 "If `if` is not empty, it returns `then`, otherwise it returns `else`."
-msgstr "`$if(if,then,else)`\nWenn `if` nicht leer ist, wird `then` zurückgegeben, andernfalls `else`."
+msgstr ""
+"`$if(if,then,else)`\n"
+"\n"
+"Wenn `if` nicht leer ist, wird `then` zurückgegeben, andernfalls `else`."
 
 #: picard/script/functions.py:199
 msgid ""
@@ -2807,7 +2822,10 @@ msgid ""
 "`$in(x,y)`\n"
 "\n"
 "Returns true, if `x` contains `y`."
-msgstr "`$in(x,y)`\nGibt wahr zurück, wenn `y` in `x` enthalten ist."
+msgstr ""
+"`$in(x,y)`\n"
+"\n"
+"Gibt wahr zurück, wenn `y` in `x` enthalten ist."
 
 #: picard/script/functions.py:332
 #, python-format
@@ -2848,7 +2866,13 @@ msgid ""
 "Unsets the variable `name`.\n"
 "Allows for wildcards to unset certain tags (works with \"performer:\\*\", \"comment:\\*\", and \"lyrics:\\*\").\n"
 "For example `$unset(performer:*)` would unset all performer tags."
-msgstr "`$unset(Name)`\nLeert die Variable `Name`.\nErlaubt die Angabe von Plattzhaltern, um bestimmte Tags zu leeren (funktioniert mit \"performer:\\*\", 'comment:\\*' und 'lyrics:\\*').\nZum Beispiel `$unset(performer:*)` leert alle Tags für `perfomer`."
+msgstr ""
+"`$unset(Name)`\n"
+"\n"
+"Leert die Variable `Name`.\n"
+"Erlaubt die Angabe von Plattzhaltern, um bestimmte Tags zu leeren ("
+"funktioniert mit \"performer:\\*\", 'comment:\\*' und 'lyrics:\\*').\n"
+"Zum Beispiel `$unset(performer:*)` leert alle Tags für `perfomer`."
 
 #: picard/script/functions.py:417
 msgid ""
@@ -3114,7 +3138,19 @@ msgid ""
 "performance type \"guitar\" or \"Guitars\", but not e.g. \"bass guitar\".\n"
 "\n"
 "_Since Picard 0.10_"
-msgstr "` $performer(Muster=\"\",Trenner=\", \")`\n\nLiefert alle Interpreten zurück, bei denen die Art der Performance (z.B. \"vocal\") mit `Muster` übereinstimmt. Die Interpreten werden durch `Trenner` getrennt.\nEs können reguläre Ausdrücke im Format `/Muster/Flags` angegeben werden. `Flags`  sind optional. Aktuell ist das einzige unterstützte Flag \"i\" (Groß-/Kleinschreibung ignorieren). Zum Beispiel stimmt `$performer(/^guitars?$/i)` mit der Performance \"guitar\" oder \"Guitars\" überein, nicht aber mit z.B. \"bass guitar\".\n\n_Ab Picard 0.10_"
+msgstr ""
+"` $performer(Muster=\"\",Trenner=\", \")`\n"
+"\n"
+"Liefert alle Interpreten zurück, bei denen die Art der Performance (z.B. "
+"\"vocal\") mit `Muster` übereinstimmt. Die Interpreten werden durch `Trenner`"
+" getrennt.\n"
+"Es können reguläre Ausdrücke im Format `/Muster/Flags` angegeben werden. "
+"`Flags` sind optional. Aktuell ist das einzige unterstützte Flag \"i\" (Groß"
+"-/Kleinschreibung ignorieren). Zum Beispiel stimmt "
+"`$performer(/^guitars?$/i)` mit der Performance \"guitar\" oder \"Guitars\" "
+"überein, nicht aber mit z.B. \"bass guitar\".\n"
+"\n"
+"_Ab Picard 0.10_"
 
 #: picard/script/functions.py:826
 msgid ""
@@ -3261,7 +3297,16 @@ msgid ""
 "Example:\n"
 "\n"
 "    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
-msgstr "`$ne_any(x,a1,a2,…)`\n\nLiefert wahr zurück, wenn `x` ungleich `a1` oder `a2` oder …\nFunktional gleichwertig zu `$or($ne(x,a1),$ne(x,a2) …)`.Beispiel:\n\n    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
+msgstr ""
+"`$ne_any(x,a1,a2,…)`\n"
+"\n"
+"Liefert wahr zurück, wenn `x` ungleich `a1` oder `a2` oder …\n"
+"Funktional gleichwertig zu `$or($ne(x,a1),$ne(x,a2) …)`.\n"
+"\n"
+"Beispiel:\n"
+"\n"
+"    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%compos"
+"er%))\n"
 
 #: picard/script/functions.py:1068
 msgid ""
@@ -3321,7 +3366,15 @@ msgid ""
 "    zero-based. Negative numbers will be counted back from the end of the\n"
 "    string. If the `start` or `end` indexes are left blank, they will default to\n"
 "    the start and end of the string respectively."
-msgstr "`$substr(Text,Start[,Ende])`\n\nGibt die Teilzeichenkette zurück, beginnend mit dem Zeichen am `Start`-Index, bis zu\n(aber nicht einschließlich) des Zeichens am `Ende`-Index. Indizes sind\nNull-basiert. Negative Zahlen werden vom Ende der Zeichenkette gezählt. Wenn die Indizes `Start` oder `Ende` leer gelassen werden, werden sie standardmäßig auf den Anfang bzw. das Ende der Zeichenkette gesetzt."
+msgstr ""
+"`$substr(Text,Start[,Ende])`\n"
+"\n"
+"Gibt die Teilzeichenkette zurück, beginnend mit dem Zeichen am `Start`-"
+"Index, bis zu\n"
+"(aber nicht einschließlich) des Zeichens am `Ende`-Index. Indizes sind\n"
+"Null-basiert. Negative Zahlen werden vom Ende der Zeichenkette gezählt. Wenn "
+"die Indizes `Start` oder `Ende` leer gelassen werden, dann werden sie "
+"standardmäßig auf den Anfang bzw. das Ende der Zeichenkette gesetzt."
 
 #: picard/script/functions.py:1183
 msgid ""
@@ -3355,7 +3408,15 @@ msgid ""
 "    `_loop_count`. This allows the count value to be accessed within the `code`\n"
 "    script. The function limits the maximum number of iterations to 1000 as a\n"
 "    safeguard against accidentally creating an infinite loop."
-msgstr "$while(Bedingung,Befehl)`\n\nStandard 'while'-Schleife. Führt `Befehl` wiederholt aus, bis `Bedingung` nicht mehr als `wahr` ausgewertet wird. Für jede Durchlauf wird die Anzahl der Durchläufe in dem Tag `_loop_count` gespeichert. Dadurch kann auf den Zählwert innerhalb des Skripts `Befehl` zugegriffen werden. Skript zugreifen. Die Funktion begrenzt die maximale Anzahl der Iterationen auf 1000 als Schutz gegen das versehentliche Erzeugen einer Endlosschleife."
+msgstr ""
+"`$while(Bedingung,Befehl)`\n"
+"\n"
+"Standard 'while'-Schleife. Führt `Befehl` wiederholt aus, bis `Bedingung` "
+"nicht mehr als `wahr` ausgewertet wird. Für jede Durchlauf wird die Anzahl "
+"der Durchläufe in dem Tag `_loop_count` gespeichert. Dadurch kann auf den "
+"Zählwert innerhalb des Skripts `Befehl` zugegriffen werden. Skript "
+"zugreifen. Die Funktion begrenzt die maximale Anzahl der Iterationen auf "
+"1000 als Schutz gegen das versehentliche Erzeugen einer Endlosschleife."
 
 #: picard/script/functions.py:1245
 msgid ""
@@ -3418,7 +3479,24 @@ msgid ""
 "    remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and their\n"
 "    equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.\n"
 "    `%3Y`); and hanging '%' at the end of the format string."
-msgstr "`$datetime(format=\"%Y-%m- %H:%M:%S\")`\n\nGibt das aktuelle Datum und die Uhrzeit im angegebenen `format` zurück, das auf dem\ndem Python-Standard `strftime` [Formatcodes](https://strftime.org/). Wenn kein\n`format` angegeben wird, wird das Datum/die Uhrzeit in folgender Form zurückgegeben\n`2020-02-05 14:26:32`.\nHinweis: Plattformspezifische Formatierungscodes sollten vermieden werden, um die\nPortabilität von Skripten über die verschiedenen Plattformen hinweg zu gewährleisten. Diese Codes umfassen:\nEntfernen des Null-Musters (z. B. `` und `%-m` unter Linux oder macOS, und deren\nÄquivalent `` und `%#m` unter Windows); Elementlängenangaben (z. B.\n`%3Y`); und das Hängen von '%' am Ende der Formatzeichenfolge."
+msgstr ""
+"`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
+"\n"
+"Gibt das aktuelle Datum und die Uhrzeit im angegebenen `format` zurück, das "
+"auf\n"
+"dem Python-Standard `strftime` [Formatcodes](https://strftime.org/). Wenn "
+"kein\n"
+"`format` angegeben wird, dann wird das Datum/die Uhrzeit in folgender Form "
+"zurückgegeben\n"
+"`2020-02-05 14:26:32`.\n"
+"Hinweis: Plattformspezifische Formatierungscodes sollten vermieden werden, "
+"um die\n"
+"Portabilität von Skripten über die verschiedenen Plattformen hinweg zu "
+"gewährleisten. Diese Codes umfassen:\n"
+"Entfernen des Null-Musters (z. B. `%-d` und `%-m` unter Linux oder macOS, "
+"und deren\n"
+"Äquivalent `%#d` und `%#m` unter Windows); Elementlängenangaben (z. B.\n"
+"`%3Y`); und das Hängen von '%' am Ende der Formatzeichenfolge."
 
 #: picard/script/functions.py:1348
 msgid ""
@@ -3671,7 +3749,18 @@ msgstr "Picard Skriptpaket"
 
 #: picard/ui/aboutdialog.py:74
 msgid "translator-credits"
-msgstr "Launchpad Contributions:\n  Achim Zien https://launchpad.net/~achimzien\n  Daniel Dietrich https://launchpad.net/~shaddowy2\n  Lukáš Lalinský https://launchpad.net/~luks\n  Maximilian R. https://launchpad.net/~max-r\n  Nikki https://launchpad.net/~nikki\n  Philipp Wolfer https://launchpad.net/~phw\n  Simon Reinhardt https://launchpad.net/~simon-reinhardt\n  Wieland Hoffmann https://launchpad.net/~themineo\n  hangy https://launchpad.net/~hangy\n  pkramerruiz https://launchpad.net/~pkramerruiz"
+msgstr ""
+"Launchpad Contributions:\n"
+"Achim Zien https://launchpad.net/~achimzien\n"
+"Daniel Dietrich https://launchpad.net/~shaddowy2\n"
+"Lukáš Lalinský https://launchpad.net/~luks\n"
+"Maximilian R. https://launchpad.net/~max-r\n"
+"Nikki https://launchpad.net/~nikki\n"
+"Philipp Wolfer https://launchpad.net/~phw\n"
+"Simon Reinhardt https://launchpad.net/~simon-reinhardt\n"
+"Wieland Hoffmann https://launchpad.net/~themineo\n"
+"hangy https://launchpad.net/~hangy\n"
+"pkramerruiz https://launchpad.net/~pkramerruiz"
 
 #: picard/ui/aboutdialog.py:77
 #, python-format
@@ -4282,7 +4371,7 @@ msgstr "Fehler beim Speichern des Protokolls als Datei"
 #: picard/ui/logview.py:279
 #, python-format
 msgid "Something prevented data to be written to '%s'"
-msgstr "Etwas verhinderte, dass Daten nach „%s“  geschrieben werden konnten."
+msgstr "Etwas verhinderte, dass Daten nach „%s“ geschrieben werden konnten."
 
 #: picard/ui/logview.py:295
 msgid "Are you sure you want to clear the log?"
@@ -4331,7 +4420,7 @@ msgstr "Picard nutzt diesen Port, um den Browser einzubinden. Wird in Picard „
 #: picard/ui/mainwindow.py:419
 #, python-format
 msgid " Listening on port %(port)d "
-msgstr "Auf Port %(port)d wird gelauscht"
+msgstr " Auf Port %(port)d wird gelauscht "
 
 #: picard/ui/mainwindow.py:478
 msgid "AcoustID submission not configured"
@@ -4385,7 +4474,7 @@ msgstr "Einen Fehler &melden …"
 
 #: picard/ui/mainwindow.py:549
 msgid "&Support Forum..."
-msgstr "Hilfe-&Forum"
+msgstr "Hilfe-&Forum …"
 
 #: picard/ui/mainwindow.py:555
 msgid "&Add Files..."
@@ -4925,7 +5014,9 @@ msgstr "&Kopieren"
 msgid ""
 "The server %s requires you to login. Please enter your username and "
 "password."
-msgstr "Der Server %s erfordert eine Authentifizierung. Bitte  Benutzernamen und Passwort eingeben."
+msgstr ""
+"Der Server %s erfordert eine Authentifizierung. Bitte Benutzernamen und "
+"Passwort eingeben."
 
 #: picard/ui/passworddialog.py:64
 #, python-format
@@ -5191,7 +5282,10 @@ msgid ""
 "A script named \"{script_name}\" already exists.\n"
 "\n"
 "Do you want to overwrite it, add as a copy or cancel?"
-msgstr "Ein Skript mit dem Namen \"{script_name}\" existiert bereits. Skript überschreiben, als Kopie hinzufügen oder abbrechen?"
+msgstr ""
+"Ein Skript mit dem Namen \"{script_name}\" existiert bereits.\n"
+"\n"
+"Skript überschreiben, als Kopie hinzufügen oder abbrechen?"
 
 #: picard/ui/scripteditor.py:1236
 msgid "Overwrite"
@@ -5425,7 +5519,7 @@ msgstr "Cover-Art-Anbieter"
 
 #: picard/ui/ui_options_cover.py:103
 msgid "Reorder Priority: "
-msgstr "Priorität zum Umsortieren:"
+msgstr "Priorität zum Umsortieren: "
 
 #: picard/ui/ui_options_cover.py:104
 #: picard/ui/ui_options_interface_toolbar.py:77
@@ -5467,7 +5561,7 @@ msgstr "Maximale Anzahl Threads für den Fingerabdruckerzeuger:"
 
 #: picard/ui/ui_options_fingerprinting.py:104
 msgid "Fingerprint calculator:"
-msgstr "Fingerabdruckerzeuger"
+msgstr "Fingerabdruckerzeuger:"
 
 #: picard/ui/ui_options_fingerprinting.py:105
 #: picard/ui/ui_options_interface.py:122 picard/ui/ui_options_renaming.py:152
@@ -5691,7 +5785,7 @@ msgstr "Minimale Ähnlichkeit für Gruppierungsabfragen:"
 
 #: picard/ui/ui_options_metadata.py:130
 msgid "Translate artist names to these locales where possible:"
-msgstr "Künstlernamen wenn möglich in diese Sprachen übersetzen"
+msgstr "Künstlernamen wenn möglich in diese Sprachen übersetzen:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select..."
@@ -6090,7 +6184,11 @@ msgid ""
 "First group in the regular expression, if any, will be used as type, ie. "
 "cover-back-spine.jpg will be set as types Back + Spine. If no type is found,"
 " it will default to Front type."
-msgstr "Die erste Gruppe im regulären Ausdruck, wenn vorhanden, wird als Typ genutzt, z. B. wird cover-back-spine.jpg als Typ  Hinten und Rücken verwendet. Falls kein Typ gefunden werden kann, wird der voreingestellte Typ Vorne verwendet. "
+msgstr ""
+"Die erste Gruppe im regulären Ausdruck, wenn vorhanden, wird als Typ "
+"genutzt, z. B. wird cover-back-spine.jpg als Typ Hinten und Rücken "
+"verwendet. Falls kein Typ gefunden werden kann, wird der voreingestellte Typ "
+"Vorne verwendet."
 
 #: picard/ui/ui_scripteditor.py:209
 msgid "Select the file naming script to load into the editor"
@@ -6327,7 +6425,39 @@ msgid ""
 "<p><b>-/^w.rd+/</b>: exclude genres starting with <i>w</i> followed by any character, then <i>r</i> followed by at least one <i>d</i>\n"
 "</p>\n"
 "</body></html>"
-msgstr "<html><head/><body>\n<p>Zeilen, die nicht mit <b>-</b> oder <b>+</b> beginnen werden ignoriert.</p>\n<p>Eine Bezeichnung pro Zeile, Groß- und Klein­schrei­bung beachten</p>\n<p>Beispiele</p>\n<p><b>\n#Kommentar<br/>\n!Kommentar<br/>\nKommentar\n</b></p>\n<p><u>Strenges Filtern:</u></p>\n<p>\n<b>-Wort</b>: <i>Wort</i> ausschließen<br/>\n<b>+Wort</b>: <i>Wort</i> einschließen\n</p>\n<p><u>Wildcard-Filtern:</u></p>\n<p>\n<b>-*Wort</b>: alle Genres ausschließen, die auf <i>Wort</i> enden<br/>\n<b>+Wort*</b>: alle Genres einschließen, die mit <i>Wort</i> beginnen<br/>\n<b>+Wor?</b>: alle Genres einschließen, die mit <i>Wor</i> beginnen und auf ein beliebiges Zeichen enden<br/>\n<b>+Wor[tk]</b>: alle Genres einschließen, die mit <i>Wor</i> beginnen und auf <i>t</i> oder <i>k</i> enden<br/>\n<b>-W*rt</b>: alle Genres ausschließen, die mit <i>W</i>  beginnen und auf <i>rt</i> enden\n</p>\n<p><u>Filtern mit regulären Ausdrücken (Python re Syntax):</u></p>\n<p>-/^w.rt+/: Genres ausschließen, die mit w beginnen, gefolgt von irgendeinem Zeichen, dann ein rund wenigstens ein t enthalten\n</p>\n</body></html>"
+msgstr ""
+"<html><head/><body>\n"
+"<p>Zeilen, die nicht mit <b>-</b> oder <b>+</b> beginnen werden "
+"ignoriert.</p>\n"
+"<p>Eine Bezeichnung pro Zeile, Groß- und Klein­schrei­bung beachten</p>\n"
+"<p>Beispiele</p>\n"
+"<p><b>\n"
+"#Kommentar<br/>\n"
+"!Kommentar<br/>\n"
+"Kommentar\n"
+"</b></p>\n"
+"<p><u>Strenges Filtern:</u></p>\n"
+"<p>\n"
+"<b>-Wort</b>: <i>Wort</i> ausschließen<br/>\n"
+"<b>+Wort</b>: <i>Wort</i> einschließen\n"
+"</p>\n"
+"<p><u>Wildcard-Filtern:</u></p>\n"
+"<p>\n"
+"<b>-*Wort</b>: alle Genres ausschließen, die auf <i>Wort</i> enden<br/>\n"
+"<b>+Wort*</b>: alle Genres einschließen, die mit <i>Wort</i> beginnen<br/>\n"
+"<b>+Wor?</b>: alle Genres einschließen, die mit <i>Wor</i> beginnen und auf "
+"ein beliebiges Zeichen enden<br/>\n"
+"<b>+Wor[tk]</b>: alle Genres einschließen, die mit <i>Wor</i> beginnen und "
+"auf <i>t</i> oder <i>k</i> enden<br/>\n"
+"<b>-W*rt</b>: alle Genres ausschließen, die mit <i>W</i> beginnen und auf "
+"<i>rt</i> enden\n"
+"</p>\n"
+"<p><u>Filtern mit regulären Ausdrücken (Python re Syntax):</u></p>\n"
+"<p><b>-/^w.rt+/</b>: Genres ausschließen, die mit <i>w</i> beginnen, gefolgt "
+"von irgendeinem Zeichen, dann ein <i>r</i> und wenigstens ein <i>t</i> "
+"enthalten\n"
+"</p>\n"
+"</body></html>"
 
 #: picard/ui/options/genres.py:73
 msgid ""
@@ -6467,7 +6597,7 @@ msgstr "Im Player öffnen"
 
 #: picard/ui/options/interface_toolbar.py:115
 msgid "Lookup CD..."
-msgstr "CD abfragen"
+msgstr "CD abfragen …"
 
 #: picard/ui/options/interface_toolbar.py:186
 msgid "Drag and Drop to re-order"
@@ -7010,7 +7140,7 @@ msgstr "%s PiB"
 #: picard/util/bytes2human.py:89
 #, python-format
 msgid "%s "
-msgstr "%s"
+msgstr "%s "
 
 #: picard/util/checkupdate.py:103
 msgid "Error loading Picard releases list: {error_message}"
