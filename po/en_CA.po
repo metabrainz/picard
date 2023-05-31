@@ -1,7 +1,7 @@
 # Translations template for picard.
 # Copyright (C) 2022 ORGANIZATION
 # This file is distributed under the same license as the picard project.
-# 
+#
 # Translators:
 # Calvin Walton <calvin.walton@kepstin.ca>, 2013-2014
 # Calvin Walton <calvin.walton@kepstin.ca>, 2012
@@ -14,15 +14,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-12-05 21:15+0100\n"
+"POT-Creation-Date: 2023-05-29 22:28+0200\n"
 "PO-Revision-Date: 2012-05-29 16:17+0000\n"
 "Last-Translator: Ivan Dobsky, 2019-2022\n"
-"Language-Team: English (Canada) (http://app.transifex.com/musicbrainz/musicbrainz/language/en_CA/)\n"
+"Language-Team: English (Canada) (http://app.transifex.com/musicbrainz/"
+"musicbrainz/language/en_CA/)\n"
+"Language: en_CA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
-"Language: en_CA\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: picard/album.py:150
@@ -39,11 +40,11 @@ msgstr ""
 msgid "Loading album %(id)s ..."
 msgstr ""
 
-#: picard/album.py:790
+#: picard/album.py:792
 msgid "[loading album information]"
 msgstr ""
 
-#: picard/album.py:792
+#: picard/album.py:794
 #, python-format
 msgid "[could not load album %s]"
 msgstr ""
@@ -97,15 +98,20 @@ msgstr ""
 
 #: picard/config_upgrade.py:83
 msgid ""
-"The separate file naming scheme for various artists albums has been removed in this version of Picard.\n"
-"Your file naming scheme has automatically been merged with that of single artist albums."
+"The separate file naming scheme for various artists albums has been removed "
+"in this version of Picard.\n"
+"Your file naming scheme has automatically been merged with that of single "
+"artist albums."
 msgstr ""
 
 #: picard/config_upgrade.py:96
 msgid ""
-"The separate file naming scheme for various artists albums has been removed in this version of Picard.\n"
-"You currently do not use this option, but have a separate file naming scheme defined.\n"
-"Do you want to remove it or merge it with your file naming scheme for single artist albums?"
+"The separate file naming scheme for various artists albums has been removed "
+"in this version of Picard.\n"
+"You currently do not use this option, but have a separate file naming scheme "
+"defined.\n"
+"Do you want to remove it or merge it with your file naming scheme for single "
+"artist albums?"
 msgstr ""
 
 #: picard/config_upgrade.py:103
@@ -118,26 +124,26 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: picard/config_upgrade.py:415
+#: picard/config_upgrade.py:417
 msgid "Primary file naming script"
 msgstr ""
 
-#: picard/file.py:826
+#: picard/file.py:849
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:828
+#: picard/file.py:851
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr ""
 
-#: picard/file.py:840
+#: picard/file.py:863
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:872
+#: picard/file.py:895
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr ""
@@ -377,8 +383,7 @@ msgid "Save only a single front image as separate file"
 msgstr ""
 
 #: picard/profile.py:109 picard/ui/ui_options_cover.py:101
-msgid ""
-"Always use the primary image type as the file name for non-front images"
+msgid "Always use the primary image type as the file name for non-front images"
 msgstr ""
 
 #: picard/profile.py:110
@@ -389,12 +394,12 @@ msgstr ""
 msgid "File Naming"
 msgstr ""
 
-#: picard/profile.py:117 picard/ui/ui_options_renaming_compat.py:64
+#: picard/profile.py:117 picard/ui/ui_options_renaming_compat.py:86
 #: picard/ui/ui_win_compat_dialog.py:191
 msgid "Windows compatibility"
 msgstr ""
 
-#: picard/profile.py:118 picard/ui/ui_options_renaming_compat.py:63
+#: picard/profile.py:118 picard/ui/ui_options_renaming_compat.py:85
 msgid "Replace non-ASCII characters"
 msgstr ""
 
@@ -475,11 +480,11 @@ msgstr ""
 msgid "Ignore file paths matching a regular expression"
 msgstr ""
 
-#: picard/profile.py:154 picard/ui/ui_options_advanced.py:145
+#: picard/profile.py:154 picard/ui/ui_options_advanced.py:143
 msgid "Ignore hidden files"
 msgstr ""
 
-#: picard/profile.py:155 picard/ui/ui_options_advanced.py:144
+#: picard/profile.py:155 picard/ui/ui_options_advanced.py:142
 msgid "Include sub-folders when adding files from folder"
 msgstr ""
 
@@ -487,7 +492,7 @@ msgstr ""
 msgid "Ignore track duration difference under x seconds"
 msgstr ""
 
-#: picard/profile.py:163 picard/ui/ui_options_advanced.py:142
+#: picard/profile.py:163 picard/ui/ui_options_advanced.py:140
 msgid "Maximum number of entities to return per MusicBrainz query"
 msgstr ""
 
@@ -544,24 +549,24 @@ msgstr ""
 msgid "[no release info]"
 msgstr ""
 
-#: picard/tagger.py:627 picard/ui/ui_options_general.py:175
+#: picard/tagger.py:632 picard/ui/ui_options_general.py:175
 msgid "MusicBrainz Account"
 msgstr ""
 
-#: picard/tagger.py:628
+#: picard/tagger.py:633
 msgid "Authorization code:"
 msgstr "Authorization code:"
 
-#: picard/tagger.py:1107
+#: picard/tagger.py:1112
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr ""
 
-#: picard/tagger.py:1125
+#: picard/tagger.py:1130
 msgid "CD Lookup Error"
 msgstr ""
 
-#: picard/tagger.py:1126
+#: picard/tagger.py:1131
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -569,25 +574,25 @@ msgid ""
 "%s"
 msgstr ""
 
-#: picard/tagger.py:1155
+#: picard/tagger.py:1160
 msgid "All supported log files"
 msgstr ""
 
-#: picard/tagger.py:1156
+#: picard/tagger.py:1161
 msgid "EAC / XLD / Whipper / fre:ac log files"
 msgstr ""
 
-#: picard/tagger.py:1157
+#: picard/tagger.py:1162
 msgid "dBpoweramp log files"
 msgstr ""
 
-#: picard/script/serializer.py:352 picard/tagger.py:1158
-#: picard/ui/coverartbox.py:617 picard/ui/mainwindow.py:1249
+#: picard/script/serializer.py:350 picard/tagger.py:1163
+#: picard/ui/coverartbox.py:617 picard/ui/mainwindow.py:1261
 #: picard/ui/options/maintenance.py:167 picard/ui/options/scripting.py:131
 msgid "All files"
 msgstr ""
 
-#: picard/tagger.py:1184
+#: picard/tagger.py:1189
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr ""
@@ -601,22 +606,22 @@ msgstr ""
 msgid "[could not load recording %s]"
 msgstr ""
 
-#: picard/acoustid/__init__.py:97
+#: picard/acoustid/__init__.py:104
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
 msgstr ""
 
-#: picard/acoustid/__init__.py:146
+#: picard/acoustid/__init__.py:153
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
 msgstr ""
 
-#: picard/acoustid/__init__.py:169
+#: picard/acoustid/__init__.py:176
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
 msgstr ""
 
-#: picard/acoustid/__init__.py:180
+#: picard/acoustid/__init__.py:187
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
 msgstr ""
@@ -648,55 +653,55 @@ msgstr ""
 msgid "AcoustID submission failed with error '%(error)s': %(message)s"
 msgstr ""
 
-#: picard/browser/addrelease.py:144
+#: picard/browser/addrelease.py:143
 msgid "Add cluster as release"
 msgstr ""
 
-#: picard/browser/addrelease.py:146
+#: picard/browser/addrelease.py:145
 msgid "Add cluster as release..."
 msgstr ""
 
-#: picard/browser/addrelease.py:154
+#: picard/browser/addrelease.py:153
 msgid "Add file as release"
 msgstr ""
 
-#: picard/browser/addrelease.py:156
+#: picard/browser/addrelease.py:155
 msgid "Add file as release..."
 msgstr ""
 
-#: picard/browser/addrelease.py:164
+#: picard/browser/addrelease.py:163
 msgid "Add file as recording"
 msgstr ""
 
-#: picard/browser/addrelease.py:166
+#: picard/browser/addrelease.py:165
 msgid "Add file as recording..."
 msgstr ""
 
-#: picard/const/__init__.py:163
+#: picard/const/__init__.py:164
 msgid "Stable releases only"
 msgstr ""
 
-#: picard/const/__init__.py:169
+#: picard/const/__init__.py:170
 msgid "Stable and Beta releases"
 msgstr ""
 
-#: picard/const/__init__.py:175
+#: picard/const/__init__.py:176
 msgid "Stable, Beta and Dev releases"
 msgstr ""
 
-#: picard/const/__init__.py:190
+#: picard/const/__init__.py:191
 msgid "My script"
 msgstr ""
 
-#: picard/const/__init__.py:192
+#: picard/const/__init__.py:193
 msgid "My profile"
 msgstr ""
 
-#: picard/const/__init__.py:193
+#: picard/const/__init__.py:194
 msgid "(copy)"
 msgstr ""
 
-#: picard/const/__init__.py:194
+#: picard/const/__init__.py:195
 msgid "{title} ({count})"
 msgstr ""
 
@@ -2571,12 +2576,12 @@ msgstr ""
 msgid "Katakana"
 msgstr ""
 
-#: picard/coverart/__init__.py:107
+#: picard/coverart/__init__.py:103
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
 msgstr ""
 
-#: picard/coverart/__init__.py:196
+#: picard/coverart/__init__.py:189
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
@@ -2621,12 +2626,11 @@ msgstr ""
 
 #: picard/coverart/providers/caa.py:306
 msgid ""
-"CAA images with an image type found in the 'Include' list will be downloaded"
-" and used UNLESS they also have an image type found in the 'Exclude' list. "
+"CAA images with an image type found in the 'Include' list will be downloaded "
+"and used UNLESS they also have an image type found in the 'Exclude' list. "
 "Images with types found in the 'Exclude' list will NEVER be used. Image "
 "types not appearing in the 'Include' or 'Exclude' lists will not be "
-"considered when determining whether or not to download and use a CAA "
-"image.\n"
+"considered when determining whether or not to download and use a CAA image.\n"
 msgstr ""
 
 #: picard/coverart/providers/caa.py:327
@@ -2642,7 +2646,7 @@ msgid "C&lear all"
 msgstr ""
 
 #: picard/coverart/providers/caa.py:330 picard/ui/options/dialog.py:129
-#: picard/ui/options/renaming_compat.py:183
+#: picard/ui/options/renaming_compat.py:188
 msgid "Restore &Defaults"
 msgstr ""
 
@@ -2681,11 +2685,11 @@ msgstr ""
 msgid "Default file naming script"
 msgstr ""
 
-#: picard/script/__init__.py:163
+#: picard/script/__init__.py:161
 msgid "[album artist]/[album]/[track #]. [title]"
 msgstr ""
 
-#: picard/script/__init__.py:179
+#: picard/script/__init__.py:175
 msgid "[album artist]/[album]/[disc and track #] [artist] - [title]"
 msgstr ""
 
@@ -2742,7 +2746,8 @@ msgstr ""
 msgid ""
 "`$pad(text,length,char)`\n"
 "\n"
-"Pads the `text` to the `length` provided by adding as many copies of `char` as\n"
+"Pads the `text` to the `length` provided by adding as many copies of `char` "
+"as\n"
 "    needed to the **beginning** of the string."
 msgstr ""
 
@@ -2750,15 +2755,18 @@ msgstr ""
 msgid ""
 "`$strip(text)`\n"
 "\n"
-"Replaces all whitespace in `text` with a single space, and removes leading and trailing spaces.\n"
-"Whitespace characters include multiple consecutive spaces, and various other unicode characters."
+"Replaces all whitespace in `text` with a single space, and removes leading "
+"and trailing spaces.\n"
+"Whitespace characters include multiple consecutive spaces, and various other "
+"unicode characters."
 msgstr ""
 
 #: picard/script/functions.py:286
 msgid ""
 "`$replace(text,search,replace)`\n"
 "\n"
-"Replaces occurrences of `search` in `text` with value of `replace` and returns the resulting string."
+"Replaces occurrences of `search` in `text` with value of `replace` and "
+"returns the resulting string."
 msgstr ""
 
 #: picard/script/functions.py:295
@@ -2766,7 +2774,8 @@ msgstr ""
 msgid ""
 "`$replacemulti(name,search,replace,separator=\"; \")`\n"
 "\n"
-"Replaces occurrences of `search` with `replace` in the multi-value variable `name`.\n"
+"Replaces occurrences of `search` with `replace` in the multi-value variable "
+"`name`.\n"
 "Empty elements are automatically removed.\n"
 "\n"
 "Example:\n"
@@ -2786,7 +2795,8 @@ msgstr ""
 msgid ""
 "`$inmulti(%x%,y)`\n"
 "\n"
-"Returns true if multi-value variable `x` contains exactly `y` as one of its values.\n"
+"Returns true if multi-value variable `x` contains exactly `y` as one of its "
+"values.\n"
 "\n"
 "_Since Picard 1.0_"
 msgstr ""
@@ -2795,14 +2805,16 @@ msgstr ""
 msgid ""
 "`$rreplace(text,pattern,replace)`\n"
 "\n"
-"[Regular expression](https://docs.python.org/3/library/re.html#regular-expression-syntax) replace."
+"[Regular expression](https://docs.python.org/3/library/re.html#regular-"
+"expression-syntax) replace."
 msgstr ""
 
 #: picard/script/functions.py:361
 msgid ""
 "`$rsearch(text,pattern)`\n"
 "\n"
-"[Regular expression](https://docs.python.org/3/library/re.html#regular-expression-syntax) search.\n"
+"[Regular expression](https://docs.python.org/3/library/re.html#regular-"
+"expression-syntax) search.\n"
 "    This function will return the first matching group."
 msgstr ""
 
@@ -2818,7 +2830,8 @@ msgid ""
 "`$unset(name)`\n"
 "\n"
 "Unsets the variable `name`.\n"
-"Allows for wildcards to unset certain tags (works with \"performer:\\*\", \"comment:\\*\", and \"lyrics:\\*\").\n"
+"Allows for wildcards to unset certain tags (works with \"performer:\\*\", "
+"\"comment:\\*\", and \"lyrics:\\*\").\n"
 "For example `$unset(performer:*)` would unset all performer tags."
 msgstr ""
 
@@ -2828,7 +2841,8 @@ msgid ""
 "\n"
 "Unsets the variable `name` and marks the tag for deletion.\n"
 "This is similar to `$unset(name)` but also marks the tag for deletion. E.g.\n"
-"    running `$delete(genre)` will actually remove the genre tag from a file when\n"
+"    running `$delete(genre)` will actually remove the genre tag from a file "
+"when\n"
 "    saving.\n"
 "\n"
 "_Since Picard 2.1_"
@@ -2841,8 +2855,10 @@ msgid ""
 "\n"
 "Sets the variable `name` to `value`.\n"
 "\n"
-"Note: To create a variable which can be used for the file naming string, but\n"
-"    which will not be written as a tag in the file, prefix the variable name\n"
+"Note: To create a variable which can be used for the file naming string, "
+"but\n"
+"    which will not be written as a tag in the file, prefix the variable "
+"name\n"
 "    with an underscore. `%something%` will create a \"something\" tag;\n"
 "    `%_something%` will not."
 msgstr ""
@@ -2852,9 +2868,12 @@ msgstr ""
 msgid ""
 "`$setmulti(name,value,separator=\"; \")`\n"
 "\n"
-"Sets the variable `name` to `value`, using the separator (or \"; \" if not passed)\n"
-"    to coerce the value back into a proper multi-valued tag. This can be used to\n"
-"    operate on multi-valued tags as a string, and then set them back as proper\n"
+"Sets the variable `name` to `value`, using the separator (or \"; \" if not "
+"passed)\n"
+"    to coerce the value back into a proper multi-valued tag. This can be "
+"used to\n"
+"    operate on multi-valued tags as a string, and then set them back as "
+"proper\n"
 "    multi-valued tags.\n"
 "\n"
 "Example:\n"
@@ -2888,10 +2907,12 @@ msgid ""
 "`$copymerge(new,old[,keep_duplicates])`\n"
 "\n"
 "Merges metadata from variable `old` into `new`, removing duplicates and\n"
-"    appending to the end, so retaining the original ordering. Like `$copy`, this\n"
+"    appending to the end, so retaining the original ordering. Like `$copy`, "
+"this\n"
 "    will also copy multi-valued variables without flattening them.\n"
 "\n"
-"If `keep_duplicates` is set, then the duplicates will not be removed from the result.\n"
+"If `keep_duplicates` is set, then the duplicates will not be removed from "
+"the result.\n"
 "\n"
 "_Since Picard 1.0_"
 msgstr ""
@@ -3007,12 +3028,18 @@ msgstr ""
 msgid ""
 "`$lt(x,y[,type])`\n"
 "\n"
-"Returns true if `x` is less than `y` using the comparison specified in `type`.\n"
-"Possible values of `type` are \"int\" (integer), \"float\" (floating point), \"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto\" (automatically\n"
-"determine the type of arguments provided), with \"auto\" used as the default\n"
-"comparison method if `type` is not specified.  The \"auto\" type will use the\n"
-"first type that applies to both arguments in the following order of preference:\n"
+"Returns true if `x` is less than `y` using the comparison specified in "
+"`type`.\n"
+"Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
+"\"text\"\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
+"determine the type of arguments provided), with \"auto\" used as the "
+"default\n"
+"comparison method if `type` is not specified.  The \"auto\" type will use "
+"the\n"
+"first type that applies to both arguments in the following order of "
+"preference:\n"
 "\"int\", \"float\" and \"text\"."
 msgstr ""
 
@@ -3020,12 +3047,18 @@ msgstr ""
 msgid ""
 "`$lte(x,y[,type])`\n"
 "\n"
-"Returns true if `x` is less than or equal to `y` using the comparison specified in `type`.\n"
-"Possible values of `type` are \"int\" (integer), \"float\" (floating point), \"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto\" (automatically\n"
-"determine the type of arguments provided), with \"auto\" used as the default\n"
-"comparison method if `type` is not specified.  The \"auto\" type will use the\n"
-"first type that applies to both arguments in the following order of preference:\n"
+"Returns true if `x` is less than or equal to `y` using the comparison "
+"specified in `type`.\n"
+"Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
+"\"text\"\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
+"determine the type of arguments provided), with \"auto\" used as the "
+"default\n"
+"comparison method if `type` is not specified.  The \"auto\" type will use "
+"the\n"
+"first type that applies to both arguments in the following order of "
+"preference:\n"
 "\"int\", \"float\" and \"text\"."
 msgstr ""
 
@@ -3033,12 +3066,18 @@ msgstr ""
 msgid ""
 "`$gt(x,y[,type])`\n"
 "\n"
-"Returns true if `x` is greater than `y` using the comparison specified in `type`.\n"
-"Possible values of `type` are \"int\" (integer), \"float\" (floating point), \"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto\" (automatically\n"
-"determine the type of arguments provided), with \"auto\" used as the default\n"
-"comparison method if `type` is not specified.  The \"auto\" type will use the\n"
-"first type that applies to both arguments in the following order of preference:\n"
+"Returns true if `x` is greater than `y` using the comparison specified in "
+"`type`.\n"
+"Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
+"\"text\"\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
+"determine the type of arguments provided), with \"auto\" used as the "
+"default\n"
+"comparison method if `type` is not specified.  The \"auto\" type will use "
+"the\n"
+"first type that applies to both arguments in the following order of "
+"preference:\n"
 "\"int\", \"float\" and \"text\"."
 msgstr ""
 
@@ -3046,12 +3085,18 @@ msgstr ""
 msgid ""
 "`$gte(x,y[,type])`\n"
 "\n"
-"Returns true if `x` is greater than or equal to `y` using the comparison specified in `type`.\n"
-"Possible values of `type` are \"int\" (integer), \"float\" (floating point), \"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto\" (automatically\n"
-"determine the type of arguments provided), with \"auto\" used as the default\n"
-"comparison method if `type` is not specified.  The \"auto\" type will use the\n"
-"first type that applies to both arguments in the following order of preference:\n"
+"Returns true if `x` is greater than or equal to `y` using the comparison "
+"specified in `type`.\n"
+"Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
+"\"text\"\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
+"determine the type of arguments provided), with \"auto\" used as the "
+"default\n"
+"comparison method if `type` is not specified.  The \"auto\" type will use "
+"the\n"
+"first type that applies to both arguments in the following order of "
+"preference:\n"
 "\"int\", \"float\" and \"text\"."
 msgstr ""
 
@@ -3066,7 +3111,8 @@ msgstr ""
 msgid ""
 "`$lenmulti(name,separator=\"; \")`\n"
 "\n"
-"Returns the number of elements in the multi-value tag `name`. A literal value\n"
+"Returns the number of elements in the multi-value tag `name`. A literal "
+"value\n"
 "    representing a multi-value can be substituted for `name`, using the\n"
 "    `separator` (or \"; \" if not passed) to coerce the value into a proper\n"
 "    multi-valued tag.\n"
@@ -3080,9 +3126,12 @@ msgstr ""
 msgid ""
 "`$performer(pattern=\"\",join=\", \")`\n"
 "\n"
-"Returns the performers where the performance type (e.g. \"vocal\") matches `pattern`, joined by `join`.\n"
-"You can specify a regular expression in the format `/pattern/flags`. `flags` are optional. Currently\n"
-"the only supported flag is \"i\" (ignore case). For example `$performer(/^guitars?$/i)` matches the\n"
+"Returns the performers where the performance type (e.g. \"vocal\") matches "
+"`pattern`, joined by `join`.\n"
+"You can specify a regular expression in the format `/pattern/flags`. `flags` "
+"are optional. Currently\n"
+"the only supported flag is \"i\" (ignore case). For example `$performer(/"
+"^guitars?$/i)` matches the\n"
 "performance type \"guitar\" or \"Guitars\", but not e.g. \"bass guitar\".\n"
 "\n"
 "_Since Picard 0.10_"
@@ -3111,7 +3160,8 @@ msgid ""
 "`$firstalphachar(text,nonalpha=\"#\")`\n"
 "\n"
 "Returns the first character of `text`.\n"
-"If `text` does not begin with an alphabetic character, then `nonalpha` is returned instead. If `nonalpha` is not\n"
+"If `text` does not begin with an alphabetic character, then `nonalpha` is "
+"returned instead. If `nonalpha` is not\n"
 "specified, the default value \"#\" will be used.\n"
 "\n"
 "_Since Picard 0.12_"
@@ -3121,7 +3171,8 @@ msgstr ""
 msgid ""
 "`$initials(text)`\n"
 "\n"
-"Returns the first character of each word in `text`, if it is an alphabetic character.\n"
+"Returns the first character of each word in `text`, if it is an alphabetic "
+"character.\n"
 "\n"
 "_Since Picard 0.12_"
 msgstr ""
@@ -3130,7 +3181,8 @@ msgstr ""
 msgid ""
 "`$firstwords(text,length)`\n"
 "\n"
-"Like `$truncate()` except that it will only return the complete words from `text` which fit within `length` characters.\n"
+"Like `$truncate()` except that it will only return the complete words from "
+"`text` which fit within `length` characters.\n"
 "\n"
 "_Since Picard 0.12_"
 msgstr ""
@@ -3166,8 +3218,10 @@ msgstr ""
 msgid ""
 "`$swapprefix(text,prefix1,prefix2,...)`\n"
 "\n"
-"Moves the specified prefixes from the beginning to the end of `text`. Multiple\n"
-"prefixes can be specified as separate parameters. If no prefix is specified 'A'\n"
+"Moves the specified prefixes from the beginning to the end of `text`. "
+"Multiple\n"
+"prefixes can be specified as separate parameters. If no prefix is specified "
+"'A'\n"
 "and 'The' are used by default.\n"
 "\n"
 "Example:\n"
@@ -3182,7 +3236,8 @@ msgid ""
 "`$delprefix(text,prefix1,prefix2,...)`\n"
 "\n"
 "Deletes the specified prefixes from the beginning of `text`. Multiple\n"
-"prefixes can be specified as separate parameters.  If no prefix is specified 'A'\n"
+"prefixes can be specified as separate parameters.  If no prefix is specified "
+"'A'\n"
 "and 'The' are used by default.\n"
 "\n"
 "Example:\n"
@@ -3219,7 +3274,8 @@ msgid ""
 "\n"
 "Example:\n"
 "\n"
-"    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat Loaf))\n"
+"    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat "
+"Loaf))\n"
 msgstr ""
 
 #: picard/script/functions.py:1053
@@ -3232,7 +3288,8 @@ msgid ""
 "\n"
 "Example:\n"
 "\n"
-"    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
+"    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,"
+"%composer%))\n"
 msgstr ""
 
 #: picard/script/functions.py:1068
@@ -3245,7 +3302,15 @@ msgid ""
 "\n"
 "    $set(album,$title(%album%))\n"
 "_Since Picard 2.1_"
-msgstr "`$title(text)`\n\nReturns `text` in title case (first character in every word capitalized).\n\nExample:\n\n    $set(album,$title(%album%))\n_Since Picard 2.1_"
+msgstr ""
+"`$title(text)`\n"
+"\n"
+"Returns `text` in title case (first character in every word capitalized).\n"
+"\n"
+"Example:\n"
+"\n"
+"    $set(album,$title(%album%))\n"
+"_Since Picard 2.1_"
 
 #: picard/script/functions.py:1108
 msgid ""
@@ -3270,11 +3335,13 @@ msgid ""
 "`$find(haystack,needle)`\n"
 "\n"
 "Finds the location of one string within another.\n"
-"    Returns the index of the first occurrence of `needle` in `haystack`, or \"\" if `needle` was not found.\n"
+"    Returns the index of the first occurrence of `needle` in `haystack`, or "
+"\"\" if `needle` was not found.\n"
 "\n"
 "_Since Picard 2.3_\n"
 "\n"
-"Note that prior to Picard 2.3.2 `$find` returned \"-1\" if `needle` was not found."
+"Note that prior to Picard 2.3.2 `$find` returned \"-1\" if `needle` was not "
+"found."
 msgstr ""
 
 #: picard/script/functions.py:1153
@@ -3288,10 +3355,12 @@ msgstr ""
 msgid ""
 "`$substr(text,start[,end])`\n"
 "\n"
-"Returns the substring beginning with the character at the `start` index, up to\n"
+"Returns the substring beginning with the character at the `start` index, up "
+"to\n"
 "    (but not including) the character at the `end` index. Indexes are\n"
 "    zero-based. Negative numbers will be counted back from the end of the\n"
-"    string. If the `start` or `end` indexes are left blank, they will default to\n"
+"    string. If the `start` or `end` indexes are left blank, they will "
+"default to\n"
 "    the start and end of the string respectively."
 msgstr ""
 
@@ -3299,7 +3368,8 @@ msgstr ""
 msgid ""
 "`$getmulti(name,index,separator=\"; \")`\n"
 "\n"
-"Gets the element at `index` from the multi-value tag `name`. A literal value\n"
+"Gets the element at `index` from the multi-value tag `name`. A literal "
+"value\n"
 "    representing a multi-value can be substituted for `name`, using the\n"
 "    separator (or \"; \" if not passed) to coerce the value into a proper\n"
 "    multi-valued tag."
@@ -3311,10 +3381,12 @@ msgid ""
 "\n"
 "Iterates over each element found in the multi-value tag `name`, executing\n"
 "    `code`. For each loop, the element value is first stored in the tag\n"
-"    `_loop_value` and the count is stored in the tag `_loop_count`. This allows\n"
+"    `_loop_value` and the count is stored in the tag `_loop_count`. This "
+"allows\n"
 "    the element or count value to be accessed within the `code` script. A\n"
 "    literal value representing a multi-value can be substituted for `name`,\n"
-"    using the separator (or \"; \" if not passed) to coerce the value into a\n"
+"    using the separator (or \"; \" if not passed) to coerce the value into "
+"a\n"
 "    proper multi-valued tag."
 msgstr ""
 
@@ -3322,10 +3394,13 @@ msgstr ""
 msgid ""
 "`$while(condition,code)`\n"
 "\n"
-"Standard 'while' loop. Executes `code` repeatedly until `condition` no longer\n"
+"Standard 'while' loop. Executes `code` repeatedly until `condition` no "
+"longer\n"
 "    evaluates to `True`. For each loop, the count is stored in the tag\n"
-"    `_loop_count`. This allows the count value to be accessed within the `code`\n"
-"    script. The function limits the maximum number of iterations to 1000 as a\n"
+"    `_loop_count`. This allows the count value to be accessed within the "
+"`code`\n"
+"    script. The function limits the maximum number of iterations to 1000 as "
+"a\n"
 "    safeguard against accidentally creating an infinite loop."
 msgstr ""
 
@@ -3333,10 +3408,14 @@ msgstr ""
 msgid ""
 "`$map(name,code,separator=\"; \")`\n"
 "\n"
-"Iterates over each element found in the multi-value tag `name` and updates the\n"
-"    value of the element to the value returned by `code`, returning the updated\n"
-"    multi-value tag. For each loop, the element value is first stored in the tag\n"
-"    `_loop_value` and the count is stored in the tag `_loop_count`. This allows\n"
+"Iterates over each element found in the multi-value tag `name` and updates "
+"the\n"
+"    value of the element to the value returned by `code`, returning the "
+"updated\n"
+"    multi-value tag. For each loop, the element value is first stored in the "
+"tag\n"
+"    `_loop_value` and the count is stored in the tag `_loop_count`. This "
+"allows\n"
 "    the element or count value to be accessed within the `code` script.\n"
 "\n"
 "Empty elements are automatically removed.\n"
@@ -3352,23 +3431,31 @@ msgstr ""
 msgid ""
 "`$join(name,text,separator=\"; \")`\n"
 "\n"
-"Joins all elements in `name`, placing `text` between each element, and returns the result as a string."
+"Joins all elements in `name`, placing `text` between each element, and "
+"returns the result as a string."
 msgstr ""
 
 #: picard/script/functions.py:1286
 msgid ""
 "`$slice(name,start,end,separator=\"; \")`\n"
 "\n"
-"Returns a multi-value variable containing the elements between the `start` and\n"
-"    `end` indexes from the multi-value tag `name`. A literal value representing\n"
-"    a multi-value can be substituted for `name`, using the separator (or \"; \" if\n"
-"    not passed) to coerce the value into a proper multi-valued tag. Indexes are\n"
-"    zero based. Negative numbers will be counted back from the end of the list.\n"
-"    If the `start` or `end` indexes are left blank, they will default to the\n"
+"Returns a multi-value variable containing the elements between the `start` "
+"and\n"
+"    `end` indexes from the multi-value tag `name`. A literal value "
+"representing\n"
+"    a multi-value can be substituted for `name`, using the separator (or \"; "
+"\" if\n"
+"    not passed) to coerce the value into a proper multi-valued tag. Indexes "
+"are\n"
+"    zero based. Negative numbers will be counted back from the end of the "
+"list.\n"
+"    If the `start` or `end` indexes are left blank, they will default to "
+"the\n"
 "    start and end of the list respectively.\n"
 "\n"
 "The following example will create a multi-value variable with all artists\n"
-"    in `%artists%` except the first, which can be used to create a \"feat.\" list.\n"
+"    in `%artists%` except the first, which can be used to create a \"feat.\" "
+"list.\n"
 "\n"
 "Examples:\n"
 "\n"
@@ -3381,12 +3468,16 @@ msgstr ""
 msgid ""
 "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
 "\n"
-"Returns the current date and time in the specified `format`, which is based on\n"
-"    the standard Python `strftime` [format codes](https://strftime.org/). If no\n"
+"Returns the current date and time in the specified `format`, which is based "
+"on\n"
+"    the standard Python `strftime` [format codes](https://strftime.org/). If "
+"no\n"
 "    `format` is specified the date/time will be returned in the form\n"
 "    `2020-02-05 14:26:32`.\n"
-"Note: Platform-specific formatting codes should be avoided to help ensure the\n"
-"    portability of scripts across the different platforms.  These codes include:\n"
+"Note: Platform-specific formatting codes should be avoided to help ensure "
+"the\n"
+"    portability of scripts across the different platforms.  These codes "
+"include:\n"
 "    remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and their\n"
 "    equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.\n"
 "    `%3Y`); and hanging '%' at the end of the format string."
@@ -3396,7 +3487,8 @@ msgstr ""
 msgid ""
 "`$sortmulti(name,separator=\"; \")`\n"
 "\n"
-"Returns a copy of the multi-value tag `name` with the elements sorted in ascending order.\n"
+"Returns a copy of the multi-value tag `name` with the elements sorted in "
+"ascending order.\n"
 "\n"
 "Example:\n"
 "\n"
@@ -3409,8 +3501,10 @@ msgstr ""
 msgid ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
-"Returns a copy of the multi-value tag `name` with the elements in reverse order.\n"
-"    This can be used in conjunction with the `$sortmulti` function to sort in\n"
+"Returns a copy of the multi-value tag `name` with the elements in reverse "
+"order.\n"
+"    This can be used in conjunction with the `$sortmulti` function to sort "
+"in\n"
 "    descending order.\n"
 "\n"
 "Example:\n"
@@ -3447,16 +3541,20 @@ msgstr ""
 msgid ""
 "`$countryname(country_code,translate=\"\")`\n"
 "\n"
-"Returns the name of the country for the specified country code.  If the country code is invalid an empty string will be returned.\n"
-"If translate is not blank, the output will be translated into the current locale language.\n"
+"Returns the name of the country for the specified country code.  If the "
+"country code is invalid an empty string will be returned.\n"
+"If translate is not blank, the output will be translated into the current "
+"locale language.\n"
 msgstr ""
 
 #: picard/script/functions.py:1451
 msgid ""
 "`$year(date,date_order=\"ymd\")`\n"
 "\n"
-"Returns the year portion of the specified date.  The default order is \"ymd\".  This can be changed by specifying\n"
-"either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be returned.\n"
+"Returns the year portion of the specified date.  The default order is "
+"\"ymd\".  This can be changed by specifying\n"
+"either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be "
+"returned.\n"
 "\n"
 "_Since Picard 2.7_"
 msgstr ""
@@ -3465,8 +3563,10 @@ msgstr ""
 msgid ""
 "`$month(date,date_order=\"ymd\")`\n"
 "\n"
-"Returns the month portion of the specified date.  The default order is \"ymd\".  This can be changed by specifying\n"
-"either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be returned.\n"
+"Returns the month portion of the specified date.  The default order is "
+"\"ymd\".  This can be changed by specifying\n"
+"either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be "
+"returned.\n"
 "\n"
 "_Since Picard 2.7_"
 msgstr ""
@@ -3475,8 +3575,10 @@ msgstr ""
 msgid ""
 "`$day(date,date_order=\"ymd\")`\n"
 "\n"
-"Returns the day portion of the specified date.  The default order is \"ymd\".  This can be changed by specifying\n"
-"either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be returned.\n"
+"Returns the day portion of the specified date.  The default order is "
+"\"ymd\".  This can be changed by specifying\n"
+"either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be "
+"returned.\n"
 "\n"
 "_Since Picard 2.7_"
 msgstr ""
@@ -3486,15 +3588,21 @@ msgstr ""
 msgid ""
 "`$dateformat(date,format=\"%Y-%m-%d\",date_order=\"ymd\")`\n"
 "\n"
-"Returns the input date in the specified `format`, which is based on the standard\n"
-"    Python `strftime` [format codes](https://strftime.org/). If no `format` is\n"
-"    specified the date will be returned in the form `2020-02-05`.  If the date or\n"
+"Returns the input date in the specified `format`, which is based on the "
+"standard\n"
+"    Python `strftime` [format codes](https://strftime.org/). If no `format` "
+"is\n"
+"    specified the date will be returned in the form `2020-02-05`.  If the "
+"date or\n"
 "    format are invalid an empty string will be returned.\n"
 "\n"
-"    The default order for the input date is \"ymd\".  This can be changed by specifying\n"
+"    The default order for the input date is \"ymd\".  This can be changed by "
+"specifying\n"
 "    either \"dmy\" or \"mdy\".\n"
-"Note: Platform-specific formatting codes should be avoided to help ensure the\n"
-"    portability of scripts across the different platforms.  These codes include:\n"
+"Note: Platform-specific formatting codes should be avoided to help ensure "
+"the\n"
+"    portability of scripts across the different platforms.  These codes "
+"include:\n"
 "    remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and their\n"
 "    equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.\n"
 "    `%3Y`); and hanging '%' at the end of the format string.\n"
@@ -3506,7 +3614,8 @@ msgstr ""
 msgid ""
 "`$is_multi(name)`\n"
 "\n"
-"Returns '1' if the argument is a multi-value tag and there are more than one elements, otherwise an empty string.\n"
+"Returns '1' if the argument is a multi-value tag and there are more than one "
+"elements, otherwise an empty string.\n"
 "\n"
 "Example:\n"
 "\n"
@@ -3535,40 +3644,50 @@ msgstr ""
 
 #: picard/script/functions.py:1608
 msgid ""
-"$min(type,x,...)\n"
+"`$min(type,x,...)`\n"
 "\n"
 "Returns the minimum value using the comparison specified in `type`.\n"
 "\n"
-"Possible values of `type` are \"int\" (integer), \"float\" (floating point), \"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto\" (automatically\n"
-"determine the type of arguments provided), with \"auto\" used as the default\n"
-"comparison method if `type` is not specified.  The \"auto\" type will use the\n"
-"first type that applies to both arguments in the following order of preference:\n"
+"Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
+"\"text\"\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
+"determine the type of arguments provided), with \"auto\" used as the "
+"default\n"
+"comparison method if `type` is not specified.  The \"auto\" type will use "
+"the\n"
+"first type that applies to both arguments in the following order of "
+"preference:\n"
 "\"int\", \"float\" and \"text\".\n"
 "\n"
 "Can be used with an arbitrary number of arguments.  Multi-value arguments\n"
 "will be expanded automatically.\n"
 "\n"
-"_Since Picard 3.0_"
+"_Since Picard 2.9_"
 msgstr ""
 
 #: picard/script/functions.py:1629
 msgid ""
-"$max(type,x,...)\n"
+"`$max(type,x,...)`\n"
 "\n"
 "Returns the maximum value using the comparison specified in `type`.\n"
 "\n"
-"Possible values of `type` are \"int\" (integer), \"float\" (floating point), \"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto\" (automatically\n"
-"determine the type of arguments provided), with \"auto\" used as the default\n"
-"comparison method if `type` is not specified.  The \"auto\" type will use the\n"
-"first type that applies to both arguments in the following order of preference:\n"
+"Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
+"\"text\"\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
+"determine the type of arguments provided), with \"auto\" used as the "
+"default\n"
+"comparison method if `type` is not specified.  The \"auto\" type will use "
+"the\n"
+"first type that applies to both arguments in the following order of "
+"preference:\n"
 "\"int\", \"float\" and \"text\".\n"
 "\n"
 "Can be used with an arbitrary number of arguments.  Multi-value arguments\n"
 "will be expanded automatically.\n"
 "\n"
-"_Since Picard 3.0_"
+"_Since Picard 2.9_"
 msgstr ""
 
 #: picard/script/serializer.py:202
@@ -3616,7 +3735,7 @@ msgstr ""
 msgid "Argument is not a dictionary"
 msgstr ""
 
-#: picard/script/serializer.py:288 picard/script/serializer.py:334
+#: picard/script/serializer.py:288 picard/script/serializer.py:332
 msgid "Invalid script package"
 msgstr ""
 
@@ -3625,25 +3744,30 @@ msgstr ""
 msgid "%s (Copy)"
 msgstr ""
 
-#: picard/script/serializer.py:332
+#: picard/script/serializer.py:330
 msgid "File content not a dictionary"
 msgstr ""
 
-#: picard/script/serializer.py:342 picard/ui/options/scripting.py:188
+#: picard/script/serializer.py:340 picard/ui/options/scripting.py:188
 msgid "Unnamed Script"
 msgstr ""
 
-#: picard/script/serializer.py:353 picard/ui/options/scripting.py:132
+#: picard/script/serializer.py:351 picard/ui/options/scripting.py:132
 msgid "Picard script files"
 msgstr ""
 
-#: picard/script/serializer.py:354
+#: picard/script/serializer.py:352
 msgid "Picard script package"
 msgstr ""
 
 #: picard/ui/aboutdialog.py:74
 msgid "translator-credits"
-msgstr "Contributions via Transifex: \n  Ivan Dobsky https://www.transifex.com/accounts/profile/ivandobsky/\nLaunchpad Contributions:\n  Dr Johnny Fever https://launchpad.net/~drjohnnyfever-ca\n  Nick Ellery https://launchpad.net/~nick.ellery"
+msgstr ""
+"Contributions via Transifex: \n"
+"  Ivan Dobsky https://www.transifex.com/accounts/profile/ivandobsky/\n"
+"Launchpad Contributions:\n"
+"  Dr Johnny Fever https://launchpad.net/~drjohnnyfever-ca\n"
+"  Nick Ellery https://launchpad.net/~nick.ellery"
 
 #: picard/ui/aboutdialog.py:77
 #, python-format
@@ -3656,10 +3780,9 @@ msgid ""
 "href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a "
 "href=\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a "
 "href=\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, "
-"<a href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim "
-"Basinski</a>, <a "
-"href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> from <a "
-"href=\"https://www.flaticon.com\">www.flaticon.com</a>"
+"<a href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</"
+"a>, <a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> "
+"from <a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
 msgstr ""
 
 #: picard/ui/aboutdialog.py:101
@@ -3677,8 +3800,8 @@ msgstr ""
 
 #: picard/ui/aboutdialog.py:106
 msgid ""
-"Thank you for using Picard. Picard relies on the MusicBrainz database, which"
-" is operated by the MetaBrainz Foundation with the help of thousands of "
+"Thank you for using Picard. Picard relies on the MusicBrainz database, which "
+"is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running."
 msgstr ""
@@ -3701,19 +3824,19 @@ msgid "Official website"
 msgstr ""
 
 #: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:165
-#: picard/ui/mainwindow.py:1133 picard/util/tags.py:38
+#: picard/ui/mainwindow.py:1145 picard/util/tags.py:39
 msgid "Album"
 msgstr ""
 
 #: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:162
-#: picard/ui/mainwindow.py:1134 picard/ui/searchdialog/album.py:156
-#: picard/ui/searchdialog/track.py:68 picard/util/tags.py:41
+#: picard/ui/mainwindow.py:1146 picard/ui/searchdialog/album.py:156
+#: picard/ui/searchdialog/track.py:68 picard/util/tags.py:42
 msgid "Artist"
 msgstr ""
 
 #: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:174
 #: picard/ui/searchdialog/album.py:159 picard/ui/searchdialog/track.py:70
-#: picard/util/tags.py:54
+#: picard/util/tags.py:55
 msgid "Date"
 msgstr ""
 
@@ -3726,7 +3849,7 @@ msgid "Catalog #s"
 msgstr "Catalogue #s"
 
 #: picard/ui/cdlookup.py:73 picard/ui/itemviews.py:170
-#: picard/ui/searchdialog/album.py:163 picard/util/tags.py:45
+#: picard/ui/searchdialog/album.py:163 picard/util/tags.py:46
 msgid "Barcode"
 msgstr ""
 
@@ -3871,7 +3994,7 @@ msgstr ""
 msgid "New Cover"
 msgstr ""
 
-#: picard/ui/infodialog.py:109 picard/ui/itemviews.py:176
+#: picard/ui/infodialog.py:109 picard/ui/itemviews.py:177
 #: picard/ui/searchdialog/album.py:167
 msgid "Cover"
 msgstr ""
@@ -4011,24 +4134,24 @@ msgid_plural "%i different images among tracks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/ui/itemviews.py:160 picard/util/tags.py:120
+#: picard/ui/itemviews.py:160 picard/util/tags.py:122
 msgid "Title"
 msgstr ""
 
 #: picard/ui/itemviews.py:161 picard/ui/searchdialog/track.py:67
-#: picard/util/tags.py:70
+#: picard/util/tags.py:71
 msgid "Length"
 msgstr ""
 
-#: picard/ui/itemviews.py:163 picard/util/tags.py:36
+#: picard/ui/itemviews.py:163 picard/util/tags.py:37
 msgid "Album Artist"
 msgstr ""
 
-#: picard/ui/itemviews.py:164 picard/util/tags.py:50
+#: picard/ui/itemviews.py:164 picard/util/tags.py:51
 msgid "Composer"
 msgstr ""
 
-#: picard/ui/itemviews.py:166 picard/util/tags.py:58
+#: picard/ui/itemviews.py:166 picard/util/tags.py:59
 msgid "Disc Subtitle"
 msgstr ""
 
@@ -4044,11 +4167,11 @@ msgstr ""
 msgid "Catalog No."
 msgstr "Catalogue No."
 
-#: picard/ui/itemviews.py:171 picard/util/tags.py:74
+#: picard/ui/itemviews.py:171 picard/util/tags.py:75
 msgid "Media"
 msgstr ""
 
-#: picard/ui/itemviews.py:172 picard/util/tags.py:64
+#: picard/ui/itemviews.py:172 picard/util/tags.py:65
 msgid "Genre"
 msgstr ""
 
@@ -4056,152 +4179,156 @@ msgstr ""
 msgid "Fingerprint status"
 msgstr ""
 
-#: picard/ui/itemviews.py:175 picard/util/tags.py:94
+#: picard/ui/itemviews.py:175 picard/util/tags.py:95
 msgid "Original Release Date"
 msgstr ""
 
-#: picard/ui/itemviews.py:278
-msgid "Bad match"
+#: picard/ui/itemviews.py:176 picard/util/tags.py:106
+msgid "Release Date"
 msgstr ""
 
 #: picard/ui/itemviews.py:279
-msgid "Poor match"
+msgid "Bad match"
 msgstr ""
 
 #: picard/ui/itemviews.py:280
+msgid "Poor match"
+msgstr ""
+
+#: picard/ui/itemviews.py:281
 msgid "Ok match"
 msgstr "OK match"
 
-#: picard/ui/itemviews.py:281
+#: picard/ui/itemviews.py:282
 msgid "Good match"
 msgstr ""
 
-#: picard/ui/itemviews.py:282
+#: picard/ui/itemviews.py:283
 msgid "Great match"
 msgstr ""
 
-#: picard/ui/itemviews.py:283
+#: picard/ui/itemviews.py:284
 msgid "Excellent match"
 msgstr ""
 
-#: picard/ui/itemviews.py:397
+#: picard/ui/itemviews.py:398
 msgid "Restore default columns"
 msgstr ""
 
-#: picard/ui/itemviews.py:402
+#: picard/ui/itemviews.py:403
 msgid "Lock columns"
 msgstr ""
 
-#: picard/ui/itemviews.py:454
+#: picard/ui/itemviews.py:455
 msgid "&Expand all"
 msgstr ""
 
-#: picard/ui/itemviews.py:456
+#: picard/ui/itemviews.py:457
 msgid "&Collapse all"
 msgstr ""
 
-#: picard/ui/itemviews.py:458
+#: picard/ui/itemviews.py:459
 msgid "Select &all"
 msgstr ""
 
-#: picard/ui/itemviews.py:460
+#: picard/ui/itemviews.py:461
 msgid "Ctrl+A"
 msgstr ""
 
-#: picard/ui/itemviews.py:541
+#: picard/ui/itemviews.py:542
 msgid "&Other versions"
 msgstr ""
 
-#: picard/ui/itemviews.py:544
+#: picard/ui/itemviews.py:545
 msgid "Loading..."
 msgstr ""
 
-#: picard/ui/itemviews.py:546
+#: picard/ui/itemviews.py:547
 msgid "Show &more details..."
 msgstr ""
 
-#: picard/ui/itemviews.py:599
+#: picard/ui/itemviews.py:600
 #, python-format
 msgid "&Other versions (%d)"
 msgstr ""
 
-#: picard/ui/itemviews.py:626
+#: picard/ui/itemviews.py:627
 msgid "Collections"
 msgstr ""
 
-#: picard/ui/itemviews.py:634
+#: picard/ui/itemviews.py:635
 msgid "P&lugins"
 msgstr ""
 
-#: picard/ui/itemviews.py:650
+#: picard/ui/itemviews.py:651
 msgid "&Run scripts"
 msgstr ""
 
-#: picard/ui/itemviews.py:834
+#: picard/ui/itemviews.py:835
 msgid "file view"
 msgstr ""
 
-#: picard/ui/itemviews.py:835
+#: picard/ui/itemviews.py:836
 msgid "Contains unmatched files and clusters"
 msgstr ""
 
-#: picard/ui/itemviews.py:855
+#: picard/ui/itemviews.py:856
 msgid "Clusters"
 msgstr ""
 
-#: picard/ui/itemviews.py:865
+#: picard/ui/itemviews.py:866
 msgid "album view"
 msgstr ""
 
-#: picard/ui/itemviews.py:866
+#: picard/ui/itemviews.py:867
 msgid "Contains albums and matched files"
 msgstr ""
 
-#: picard/ui/itemviews.py:1012
+#: picard/ui/itemviews.py:1013
 msgid "Processing error(s): See the Errors tab in the Album Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1016
+#: picard/ui/itemviews.py:1017
 msgid "Album modified and complete"
 msgstr ""
 
-#: picard/ui/itemviews.py:1019
+#: picard/ui/itemviews.py:1020
 msgid "Album unchanged and complete"
 msgstr ""
 
-#: picard/ui/itemviews.py:1023
+#: picard/ui/itemviews.py:1024
 msgid "Album modified"
 msgstr ""
 
-#: picard/ui/itemviews.py:1026
+#: picard/ui/itemviews.py:1027
 msgid "Album unchanged"
 msgstr ""
 
-#: picard/ui/itemviews.py:1106
+#: picard/ui/itemviews.py:1107
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1134
+#: picard/ui/itemviews.py:1135
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1167
+#: picard/ui/itemviews.py:1168
 msgid "Track saved"
 msgstr ""
 
-#: picard/ui/itemviews.py:1169 picard/ui/itemviews.py:1173
+#: picard/ui/itemviews.py:1170 picard/ui/itemviews.py:1174
 msgid "Pending"
 msgstr ""
 
-#: picard/ui/itemviews.py:1180
+#: picard/ui/itemviews.py:1181
 msgid "Fingerprint has already been submitted"
 msgstr ""
 
-#: picard/ui/itemviews.py:1183
+#: picard/ui/itemviews.py:1184
 msgid "Unsubmitted fingerprint"
 msgstr ""
 
-#: picard/ui/itemviews.py:1186
+#: picard/ui/itemviews.py:1187
 msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
 "AcoustID Fingerprints\" to calculate the fingerprint."
@@ -4274,8 +4401,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:345
 #, python-format
-msgid ""
-"There is %d unsaved file. Closing Picard will lose all unsaved changes."
+msgid "There is %d unsaved file. Closing Picard will lose all unsaved changes."
 msgid_plural ""
 "There are %d unsaved files. Closing Picard will lose all unsaved changes."
 msgstr[0] ""
@@ -4335,7 +4461,7 @@ msgstr ""
 msgid "&Paste"
 msgstr ""
 
-#: picard/ui/mainwindow.py:523 picard/ui/scripteditor.py:640
+#: picard/ui/mainwindow.py:523 picard/ui/scripteditor.py:617
 msgid "&Help..."
 msgstr ""
 
@@ -4452,348 +4578,364 @@ msgid "Submit file as a new release to MusicBrainz"
 msgstr ""
 
 #: picard/ui/mainwindow.py:661
-msgid "Search for similar albums..."
+msgid "Search for similar items..."
 msgstr ""
 
-#: picard/ui/mainwindow.py:662
-msgid "View similar releases and optionally choose a different release"
+#: picard/ui/mainwindow.py:662 picard/ui/options/interface_toolbar.py:123
+msgid "Similar items"
 msgstr ""
 
-#: picard/ui/mainwindow.py:668
-msgid "Search for similar tracks..."
+#: picard/ui/mainwindow.py:663
+msgid ""
+"View similar releases or recordings and optionally choose a different one"
 msgstr ""
 
-#: picard/ui/mainwindow.py:669
-msgid "View similar tracks and optionally choose a different release"
-msgstr ""
-
-#: picard/ui/mainwindow.py:671
+#: picard/ui/mainwindow.py:665 picard/ui/mainwindow.py:674
+#: picard/ui/mainwindow.py:683
 msgid "Ctrl+T"
 msgstr ""
 
-#: picard/ui/mainwindow.py:677
-msgid "Show &other album versions..."
+#: picard/ui/mainwindow.py:671
+msgid "Search for similar albums..."
 msgstr ""
 
-#: picard/ui/mainwindow.py:678
-msgid "Ctrl+Shift+O"
+#: picard/ui/mainwindow.py:672
+msgid "View similar releases and optionally choose a different release"
 msgstr ""
 
-#: picard/ui/mainwindow.py:685
-msgid "File &Browser"
+#: picard/ui/mainwindow.py:680
+msgid "Search for similar tracks..."
+msgstr ""
+
+#: picard/ui/mainwindow.py:681
+msgid "View similar tracks and optionally choose a different release"
 msgstr ""
 
 #: picard/ui/mainwindow.py:689
+msgid "Show &other album versions..."
+msgstr ""
+
+#: picard/ui/mainwindow.py:690
+msgid "Ctrl+Shift+O"
+msgstr ""
+
+#: picard/ui/mainwindow.py:697
+msgid "File &Browser"
+msgstr ""
+
+#: picard/ui/mainwindow.py:701
 msgid "Ctrl+B"
 msgstr ""
 
-#: picard/ui/mainwindow.py:696
+#: picard/ui/mainwindow.py:708
 msgid "&Metadata"
 msgstr ""
 
-#: picard/ui/mainwindow.py:700
+#: picard/ui/mainwindow.py:712
 msgid "Ctrl+Shift+M"
 msgstr ""
 
-#: picard/ui/mainwindow.py:707
+#: picard/ui/mainwindow.py:719
 msgid "&Cover Art"
 msgstr ""
 
-#: picard/ui/mainwindow.py:718
+#: picard/ui/mainwindow.py:730
 msgid "&Actions"
 msgstr ""
 
-#: picard/ui/mainwindow.py:727 picard/ui/mainwindow.py:1122
+#: picard/ui/mainwindow.py:739 picard/ui/mainwindow.py:1134
 #: picard/ui/searchdialog/__init__.py:48
 msgid "Search"
 msgstr ""
 
-#: picard/ui/mainwindow.py:734 picard/ui/mainwindow.py:741
+#: picard/ui/mainwindow.py:746 picard/ui/mainwindow.py:753
 msgid "Lookup &CD..."
 msgstr ""
 
-#: picard/ui/mainwindow.py:735
+#: picard/ui/mainwindow.py:747
 msgid "Lookup the details of the CD in your drive"
 msgstr ""
 
-#: picard/ui/mainwindow.py:737
+#: picard/ui/mainwindow.py:749
 msgid "Ctrl+K"
 msgstr ""
 
-#: picard/ui/mainwindow.py:754
+#: picard/ui/mainwindow.py:766
 msgid "&Scan"
 msgstr ""
 
-#: picard/ui/mainwindow.py:755
+#: picard/ui/mainwindow.py:767
 msgid ""
 "Use AcoustID audio fingerprint to identify the files by the actual music, "
 "even if they have no metadata"
 msgstr ""
 
-#: picard/ui/mainwindow.py:757
+#: picard/ui/mainwindow.py:769
 msgid "Identify the file using its AcoustID audio fingerprint"
 msgstr ""
 
-#: picard/ui/mainwindow.py:759
+#: picard/ui/mainwindow.py:771
 msgid "Ctrl+Y"
 msgstr ""
 
-#: picard/ui/mainwindow.py:765
+#: picard/ui/mainwindow.py:777
 msgid "&Generate AcoustID Fingerprints"
 msgstr ""
 
-#: picard/ui/mainwindow.py:766 picard/ui/options/interface_toolbar.py:107
+#: picard/ui/mainwindow.py:778 picard/ui/options/interface_toolbar.py:107
 msgid "Generate Fingerprints"
 msgstr ""
 
-#: picard/ui/mainwindow.py:767
+#: picard/ui/mainwindow.py:779
 msgid ""
 "Generate the AcoustID audio fingerprints for the selected files without "
 "doing a lookup"
 msgstr ""
 
-#: picard/ui/mainwindow.py:769
+#: picard/ui/mainwindow.py:781
 msgid "Generate the AcoustID audio fingerprints for the selected files"
 msgstr ""
 
-#: picard/ui/mainwindow.py:770
+#: picard/ui/mainwindow.py:782
 msgid "Ctrl+Shift+Y"
 msgstr ""
 
-#: picard/ui/mainwindow.py:776
+#: picard/ui/mainwindow.py:788
 msgid "Cl&uster"
 msgstr ""
 
-#: picard/ui/mainwindow.py:777
+#: picard/ui/mainwindow.py:789
 msgid "Cluster files into album clusters"
 msgstr ""
 
-#: picard/ui/mainwindow.py:780
+#: picard/ui/mainwindow.py:792
 msgid "Ctrl+U"
 msgstr ""
 
-#: picard/ui/mainwindow.py:786
+#: picard/ui/mainwindow.py:798
 msgid "&Lookup"
 msgstr ""
 
-#: picard/ui/mainwindow.py:787
+#: picard/ui/mainwindow.py:799
 msgid "Lookup selected items in MusicBrainz"
 msgstr ""
 
-#: picard/ui/mainwindow.py:792
+#: picard/ui/mainwindow.py:804
 msgid "Ctrl+L"
 msgstr ""
 
-#: picard/ui/mainwindow.py:798
+#: picard/ui/mainwindow.py:810
 msgid "&Info..."
 msgstr ""
 
-#: picard/ui/mainwindow.py:801
+#: picard/ui/mainwindow.py:813
 msgid "Ctrl+I"
 msgstr ""
 
-#: picard/ui/mainwindow.py:807
+#: picard/ui/mainwindow.py:819
 msgid "&Refresh"
 msgstr ""
 
-#: picard/ui/mainwindow.py:808
+#: picard/ui/mainwindow.py:820
 msgid "Ctrl+R"
 msgstr ""
 
-#: picard/ui/mainwindow.py:815
+#: picard/ui/mainwindow.py:827
 msgid "&Rename Files"
 msgstr ""
 
-#: picard/ui/mainwindow.py:824
+#: picard/ui/mainwindow.py:836
 msgid "&Move Files"
 msgstr ""
 
-#: picard/ui/mainwindow.py:833
+#: picard/ui/mainwindow.py:845
 msgid "Save &Tags"
 msgstr ""
 
-#: picard/ui/mainwindow.py:841
+#: picard/ui/mainwindow.py:853
 msgid "Tags From &File Names..."
 msgstr ""
 
-#: picard/ui/mainwindow.py:842 picard/ui/options/interface_toolbar.py:119
+#: picard/ui/mainwindow.py:854 picard/ui/options/interface_toolbar.py:119
 msgid "Parse File Names..."
 msgstr ""
 
-#: picard/ui/mainwindow.py:843
+#: picard/ui/mainwindow.py:855
 msgid "Set tags based on the file names"
 msgstr ""
 
-#: picard/ui/mainwindow.py:844 picard/ui/widgets/scripttextedit.py:338
+#: picard/ui/mainwindow.py:856 picard/ui/widgets/scripttextedit.py:338
 msgid "Ctrl+Shift+T"
 msgstr ""
 
-#: picard/ui/mainwindow.py:852
+#: picard/ui/mainwindow.py:864
 msgid "&Open My Collections in Browser"
 msgstr ""
 
-#: picard/ui/mainwindow.py:859
+#: picard/ui/mainwindow.py:871
 msgid "View &Error/Debug Log"
 msgstr ""
 
-#: picard/ui/mainwindow.py:861
+#: picard/ui/mainwindow.py:873
 msgid "Ctrl+G"
 msgstr ""
 
-#: picard/ui/mainwindow.py:867
+#: picard/ui/mainwindow.py:879
 msgid "View Activity &History"
 msgstr ""
 
-#: picard/ui/mainwindow.py:870
+#: picard/ui/mainwindow.py:882
 msgid "Ctrl+Shift+H"
 msgstr ""
 
-#: picard/ui/mainwindow.py:870 picard/ui/scripteditor.py:631
+#: picard/ui/mainwindow.py:882 picard/ui/scripteditor.py:608
 msgid "Ctrl+H"
 msgstr ""
 
-#: picard/ui/mainwindow.py:876
+#: picard/ui/mainwindow.py:888
 msgid "Open in &Player"
 msgstr ""
 
-#: picard/ui/mainwindow.py:877
+#: picard/ui/mainwindow.py:889
 msgid "Play the file in your default media player"
 msgstr ""
 
-#: picard/ui/mainwindow.py:884
+#: picard/ui/mainwindow.py:896
 msgid "Open Containing &Folder"
 msgstr ""
 
-#: picard/ui/mainwindow.py:885
+#: picard/ui/mainwindow.py:897
 msgid "Open the containing folder in your file explorer"
 msgstr ""
 
-#: picard/ui/mainwindow.py:893
+#: picard/ui/mainwindow.py:905
 msgid "&Check for Update…"
 msgstr ""
 
-#: picard/ui/mainwindow.py:932
+#: picard/ui/mainwindow.py:944
 msgid "From CD ripper &log file..."
 msgstr ""
 
-#: picard/ui/mainwindow.py:985 picard/ui/scripteditor.py:555
+#: picard/ui/mainwindow.py:997 picard/ui/scripteditor.py:533
 msgid "&File"
 msgstr ""
 
-#: picard/ui/mainwindow.py:998
+#: picard/ui/mainwindow.py:1010
 msgid "&Edit"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1004 picard/ui/scripteditor.py:616
+#: picard/ui/mainwindow.py:1016 picard/ui/scripteditor.py:593
 msgid "&View"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1013
+#: picard/ui/mainwindow.py:1025
 msgid "&Options"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1019
+#: picard/ui/mainwindow.py:1031
 msgid "&Select file naming script"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1027
+#: picard/ui/mainwindow.py:1039
 msgid "&Enable/disable profiles"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1034
+#: picard/ui/mainwindow.py:1046
 msgid "&Tools"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1048 picard/ui/scripteditor.py:637
+#: picard/ui/mainwindow.py:1060 picard/ui/scripteditor.py:614
 #: picard/ui/util.py:51
 msgid "&Help"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1083 picard/ui/ui_options_plugins.py:134
+#: picard/ui/mainwindow.py:1095 picard/ui/ui_options_plugins.py:134
 msgid "Actions"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1135
+#: picard/ui/mainwindow.py:1147
 msgid "Track"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1152
+#: picard/ui/mainwindow.py:1164
 msgid "&Advanced search"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1153
+#: picard/ui/mainwindow.py:1165
 msgid "&Builtin search"
 msgstr "&Built-in search"
 
-#: picard/ui/mainwindow.py:1248
+#: picard/ui/mainwindow.py:1260
 msgid "All supported formats"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1277
+#: picard/ui/mainwindow.py:1289
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
 msgstr ""
 
-#: picard/ui/mainwindow.py:1282
+#: picard/ui/mainwindow.py:1294
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
 msgstr ""
 
-#: picard/ui/mainwindow.py:1388
+#: picard/ui/mainwindow.py:1400
 msgid "Configuration Required"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1389
+#: picard/ui/mainwindow.py:1401
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1495
+#: picard/ui/mainwindow.py:1514
 msgid "Browser integration not enabled"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1496
+#: picard/ui/mainwindow.py:1515
 msgid ""
 "Submitting releases to MusicBrainz requires the browser integration to be "
 "enabled. Do you want to enable the browser integration now?"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1604
+#: picard/ui/mainwindow.py:1626
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1610
+#: picard/ui/mainwindow.py:1632
 #, python-format
 msgid "%(filename)s"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1619
+#: picard/ui/mainwindow.py:1641
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1626
+#: picard/ui/mainwindow.py:1648
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1689
+#: picard/ui/mainwindow.py:1711
 msgid "Authentication Required"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1690
+#: picard/ui/mainwindow.py:1712
 msgid ""
 "Picard needs authorization to access your personal data on the MusicBrainz "
 "server. Would you like to log in now?"
-msgstr "Picard needs authorization to access your personal data on the MusicBrainz server. Would you like to log in now?"
+msgstr ""
+"Picard needs authorization to access your personal data on the MusicBrainz "
+"server. Would you like to log in now?"
 
-#: picard/ui/mainwindow.py:1705
+#: picard/ui/mainwindow.py:1727
 msgid "Authentication failed"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1706 picard/ui/options/general.py:146
+#: picard/ui/mainwindow.py:1728 picard/ui/options/general.py:146
 #, python-format
 msgid "Login failed: %s"
 msgstr ""
@@ -4877,8 +5019,7 @@ msgstr ""
 #: picard/ui/passworddialog.py:43
 #, python-format
 msgid ""
-"The server %s requires you to login. Please enter your username and "
-"password."
+"The server %s requires you to login. Please enter your username and password."
 msgstr ""
 
 #: picard/ui/passworddialog.py:64
@@ -4888,8 +5029,7 @@ msgid ""
 msgstr ""
 
 #: picard/ui/playertoolbar.py:173
-msgid ""
-"Internal player: The format of a media resource isn't (fully) supported"
+msgid "Internal player: The format of a media resource isn't (fully) supported"
 msgstr ""
 
 #: picard/ui/playertoolbar.py:175
@@ -4955,152 +5095,142 @@ msgstr ""
 msgid "Audio volume"
 msgstr ""
 
-#: picard/ui/scripteditor.py:146
+#: picard/ui/scripteditor.py:145
 msgid "Renaming options are disabled"
 msgstr ""
 
-#: picard/ui/scripteditor.py:219
+#: picard/ui/scripteditor.py:218
 #, python-format
 msgid ""
-"If you select files from the Cluster pane or Album pane prior to opening the"
-" Options screen, up to %u files will be randomly chosen from your selection "
+"If you select files from the Cluster pane or Album pane prior to opening the "
+"Options screen, up to %u files will be randomly chosen from your selection "
 "as file naming examples.  If you have not selected any files, then some "
 "default examples will be provided."
 msgstr ""
 
-#: picard/ui/scripteditor.py:231
+#: picard/ui/scripteditor.py:230
 #, python-format
 msgid ""
-"Reload up to %u items chosen at random from files selected in the main "
-"window"
+"Reload up to %u items chosen at random from files selected in the main window"
 msgstr ""
 
-#: picard/ui/scripteditor.py:320 picard/ui/scripteditor.py:1217
+#: picard/ui/scripteditor.py:319 picard/ui/scripteditor.py:1227
 msgid "Confirm"
 msgstr ""
 
-#: picard/ui/scripteditor.py:361
-#, python-format
-msgid "User: %s"
-msgstr ""
-
-#: picard/ui/scripteditor.py:396
-msgid "title"
-msgstr ""
-
-#: picard/ui/scripteditor.py:415
+#: picard/ui/scripteditor.py:393
 msgid "File naming script editor"
 msgstr ""
 
-#: picard/ui/scripteditor.py:481
+#: picard/ui/scripteditor.py:459
 msgid "Reset"
 msgstr ""
 
-#: picard/ui/options/dialog.py:133 picard/ui/scripteditor.py:486
+#: picard/ui/options/dialog.py:133 picard/ui/scripteditor.py:464
 msgid "Make It So!"
 msgstr ""
 
-#: picard/ui/scripteditor.py:558
+#: picard/ui/scripteditor.py:536
 msgid "&Import a script file"
 msgstr ""
 
-#: picard/ui/scripteditor.py:559
+#: picard/ui/scripteditor.py:537
 msgid "Import a file as a new script"
 msgstr ""
 
-#: picard/ui/scripteditor.py:564
+#: picard/ui/scripteditor.py:542
 msgid "&Export a script file"
 msgstr ""
 
-#: picard/ui/scripteditor.py:565
+#: picard/ui/scripteditor.py:543
 msgid "Export the script to a file"
 msgstr ""
 
-#: picard/ui/scripteditor.py:570
+#: picard/ui/scripteditor.py:548
 msgid "&Reset all scripts"
 msgstr ""
 
-#: picard/ui/scripteditor.py:571
+#: picard/ui/scripteditor.py:549
 msgid "Reset all scripts to the saved values"
 msgstr ""
 
-#: picard/ui/scripteditor.py:576
+#: picard/ui/scripteditor.py:554
 msgid "&Save and exit"
 msgstr ""
 
-#: picard/ui/scripteditor.py:577
+#: picard/ui/scripteditor.py:555
 msgid "Save changes to the script settings and exit"
 msgstr ""
 
-#: picard/ui/scripteditor.py:582
+#: picard/ui/scripteditor.py:560
 msgid "E&xit without saving"
 msgstr ""
 
-#: picard/ui/scripteditor.py:583
+#: picard/ui/scripteditor.py:561
 msgid "Close the script editor without saving changes"
 msgstr ""
 
-#: picard/ui/scripteditor.py:588
+#: picard/ui/scripteditor.py:566
 msgid "&Script"
 msgstr ""
 
-#: picard/ui/scripteditor.py:591
+#: picard/ui/scripteditor.py:569
 msgid "View/Edit Script &Metadata"
 msgstr ""
 
-#: picard/ui/scripteditor.py:592
+#: picard/ui/scripteditor.py:570
 msgid "Display the details for the script"
 msgstr ""
 
-#: picard/ui/scripteditor.py:594
+#: picard/ui/scripteditor.py:572
 msgid "Ctrl+M"
 msgstr ""
 
-#: picard/ui/scripteditor.py:597
+#: picard/ui/scripteditor.py:575
 msgid "Add a &new script"
 msgstr ""
 
-#: picard/ui/scripteditor.py:598
-msgid "Create a new file naming script"
-msgstr ""
-
-#: picard/ui/scripteditor.py:603
+#: picard/ui/scripteditor.py:580
 msgid "&Copy the current script"
 msgstr ""
 
-#: picard/ui/scripteditor.py:604
+#: picard/ui/scripteditor.py:581
 msgid "Save a copy of the script as a new script"
 msgstr ""
 
-#: picard/ui/scripteditor.py:609
+#: picard/ui/scripteditor.py:586
 msgid "&Delete the current script"
 msgstr ""
 
-#: picard/ui/scripteditor.py:610
+#: picard/ui/scripteditor.py:587
 msgid "Delete the script"
 msgstr ""
 
-#: picard/ui/scripteditor.py:619
+#: picard/ui/scripteditor.py:596
 msgid "&Reload random example files"
 msgstr ""
 
-#: picard/ui/scripteditor.py:628
+#: picard/ui/scripteditor.py:605
 msgid "&Show documentation"
 msgstr ""
 
-#: picard/ui/scripteditor.py:629
+#: picard/ui/scripteditor.py:606
 msgid "View the scripting documentation in a sidebar"
 msgstr ""
 
-#: picard/ui/scripteditor.py:645
+#: picard/ui/scripteditor.py:622
 msgid "&Scripting documentation..."
 msgstr ""
 
-#: picard/ui/scripteditor.py:646
+#: picard/ui/scripteditor.py:623
 msgid "Open the scripting documentation in your browser"
 msgstr ""
 
-#: picard/ui/scripteditor.py:745
+#: picard/ui/scripteditor.py:641
+msgid "Empty / blank script"
+msgstr ""
+
+#: picard/ui/scripteditor.py:734
 msgid ""
 "At least one unsaved script has been attached to an option profile.\n"
 "\n"
@@ -5114,60 +5244,66 @@ msgid ""
 "Are you sure that you want to continue?"
 msgstr ""
 
-#: picard/ui/options/renaming.py:256 picard/ui/scripteditor.py:847
-#: picard/ui/scripteditor.py:1156 picard/ui/scripteditor.py:1396
+#: picard/ui/options/renaming.py:256 picard/ui/scripteditor.py:857
+#: picard/ui/scripteditor.py:860 picard/ui/scripteditor.py:1166
+#: picard/ui/scripteditor.py:1394
 msgid "Error"
 msgstr ""
 
-#: picard/ui/scripteditor.py:847 picard/ui/scripteditor.py:1156
-#: picard/ui/scripteditor.py:1397
+#: picard/ui/scripteditor.py:857
+msgid "There is already a script with that title."
+msgstr ""
+
+#: picard/ui/scripteditor.py:860 picard/ui/scripteditor.py:1166
+#: picard/ui/scripteditor.py:1395
 msgid "The script title must not be empty."
 msgstr ""
 
-#: picard/ui/scripteditor.py:1103
+#: picard/ui/scripteditor.py:1111
 msgid "Error Deleting Script"
 msgstr ""
 
-#: picard/ui/scripteditor.py:1104
+#: picard/ui/scripteditor.py:1112
 #, python-format
 msgid ""
-"The script could not be deleted because it is used in one of the user profiles.\n"
+"The script could not be deleted because it is used in one of the user "
+"profiles.\n"
 "\n"
 "Profile: %s"
 msgstr ""
 
-#: picard/ui/scripteditor.py:1113
+#: picard/ui/scripteditor.py:1122
 msgid "Are you sure that you want to delete the script?"
 msgstr ""
 
-#: picard/ui/options/scripting.py:161 picard/ui/scripteditor.py:1198
+#: picard/ui/options/scripting.py:161 picard/ui/scripteditor.py:1208
 msgid "File Error"
 msgstr ""
 
-#: picard/ui/scripteditor.py:1219
+#: picard/ui/scripteditor.py:1229
 msgid ""
 "A script named \"{script_name}\" already exists.\n"
 "\n"
 "Do you want to overwrite it, add as a copy or cancel?"
 msgstr ""
 
-#: picard/ui/scripteditor.py:1226
+#: picard/ui/scripteditor.py:1236
 msgid "Overwrite"
 msgstr ""
 
-#: picard/ui/options/profiles.py:118 picard/ui/scripteditor.py:1228
+#: picard/ui/options/profiles.py:118 picard/ui/scripteditor.py:1238
 msgid "Copy"
 msgstr ""
 
-#: picard/ui/options/renaming.py:266 picard/ui/scripteditor.py:1274
+#: picard/ui/options/renaming.py:266 picard/ui/scripteditor.py:1284
 msgid "The file naming format must not be empty."
 msgstr ""
 
-#: picard/ui/scripteditor.py:1311
+#: picard/ui/scripteditor.py:1321
 msgid "Script Details"
 msgstr ""
 
-#: picard/ui/scripteditor.py:1376
+#: picard/ui/scripteditor.py:1374
 msgid ""
 "There are unsaved changes to the current metadata.\n"
 "\n"
@@ -5319,45 +5455,44 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: picard/ui/ui_options_advanced.py:140
+#: picard/ui/ui_options_advanced.py:138
 msgid "Advanced options"
 msgstr ""
 
-#: picard/ui/ui_options_advanced.py:141
+#: picard/ui/ui_options_advanced.py:139
 msgid "Ignore file paths matching the following regular expression:"
 msgstr ""
 
-#: picard/ui/ui_options_advanced.py:143
+#: picard/ui/ui_options_advanced.py:141
 msgid "Ignore track duration difference under this number of seconds"
 msgstr ""
 
-#: picard/ui/ui_options_advanced.py:146
+#: picard/ui/ui_options_advanced.py:144
 msgid ""
 "Ignore the following tracks when determining whether a release is complete"
 msgstr ""
 
-#: picard/ui/ui_options_advanced.py:147
+#: picard/ui/ui_options_advanced.py:145
 msgid "Video tracks"
 msgstr ""
 
-#: picard/ui/ui_options_advanced.py:148
-msgid "Pregap tracks"
-msgstr ""
-
-#: picard/ui/ui_options_advanced.py:149
+#: picard/ui/ui_options_advanced.py:146
 msgid "Data tracks"
 msgstr ""
 
-#: picard/ui/ui_options_advanced.py:150
+#: picard/ui/ui_options_advanced.py:147
+msgid "Pregap tracks"
+msgstr ""
+
+#: picard/ui/ui_options_advanced.py:148
 msgid "Silent tracks"
 msgstr ""
 
-#: picard/ui/ui_options_advanced.py:151
+#: picard/ui/ui_options_advanced.py:149
 msgid "Tags to ignore for comparison:"
 msgstr ""
 
-#: picard/ui/options/dialog.py:212
-#: picard/ui/ui_options_attached_profiles.py:34
+#: picard/ui/options/dialog.py:212 picard/ui/ui_options_attached_profiles.py:34
 msgid "Profiles Attached to Options"
 msgstr ""
 
@@ -5395,48 +5530,52 @@ msgstr ""
 msgid "Move selected item down"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:78
+#: picard/ui/ui_options_fingerprinting.py:97
 msgid "Audio Fingerprinting"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:79
+#: picard/ui/ui_options_fingerprinting.py:98
 msgid "Do not use audio fingerprinting"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:80
+#: picard/ui/ui_options_fingerprinting.py:99
 msgid "Use AcoustID"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:81
+#: picard/ui/ui_options_fingerprinting.py:100
 msgid "AcoustID Settings"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:82
+#: picard/ui/ui_options_fingerprinting.py:101
 msgid "Ignore existing AcoustID fingerprints"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:83
+#: picard/ui/ui_options_fingerprinting.py:102
 msgid "Save AcoustID fingerprints to file tags"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:84
+#: picard/ui/ui_options_fingerprinting.py:103
+msgid "Maximum threads to use for calculator:"
+msgstr ""
+
+#: picard/ui/ui_options_fingerprinting.py:104
 msgid "Fingerprint calculator:"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:85
+#: picard/ui/ui_options_fingerprinting.py:105
 #: picard/ui/ui_options_interface.py:122 picard/ui/ui_options_renaming.py:152
 msgid "Browse..."
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:86
+#: picard/ui/ui_options_fingerprinting.py:106
 msgid "Download..."
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:87
+#: picard/ui/ui_options_fingerprinting.py:107
 msgid "API key:"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:88
+#: picard/ui/ui_options_fingerprinting.py:108
 msgid "Get API key..."
 msgstr ""
 
@@ -5446,8 +5585,8 @@ msgstr ""
 
 #: picard/ui/ui_options_general.py:171
 msgid ""
-"You have configured an unofficial MusicBrainz server. By default submissions"
-" of releases, recordings and disc IDs will go to the primary database on "
+"You have configured an unofficial MusicBrainz server. By default submissions "
+"of releases, recordings and disc IDs will go to the primary database on "
 "musicbrainz.org."
 msgstr ""
 
@@ -5839,16 +5978,20 @@ msgstr ""
 msgid "Reload examples"
 msgstr ""
 
-#: picard/ui/ui_options_renaming_compat.py:65
+#: picard/ui/ui_options_renaming_compat.py:87
 msgid "Customize..."
 msgstr ""
 
-#: picard/ui/ui_options_renaming_compat.py:66
+#: picard/ui/ui_options_renaming_compat.py:88
 msgid "Allow paths longer than 259 characters"
 msgstr ""
 
-#: picard/ui/ui_options_renaming_compat.py:67
+#: picard/ui/ui_options_renaming_compat.py:89
 msgid "Replace spaces with underscores"
+msgstr ""
+
+#: picard/ui/ui_options_renaming_compat.py:90
+msgid "Replace directory separators with:"
 msgstr ""
 
 #: picard/ui/ui_options_script.py:119
@@ -5857,8 +6000,8 @@ msgstr ""
 
 #: picard/ui/ui_options_script.py:120
 msgid ""
-"Tagger scripts that have been activated below will be executed automatically"
-" for each track of a release loaded from MusicBrainz."
+"Tagger scripts that have been activated below will be executed automatically "
+"for each track of a release loaded from MusicBrainz."
 msgstr ""
 
 #: picard/ui/ui_options_script.py:121
@@ -5918,8 +6061,8 @@ msgstr ""
 msgid ""
 "Picard can save APEv2 tags to pure AAC files, which by default do not "
 "support tagging. APEv2 tags in AAC are supported by some players, but "
-"players not supporting AAC files with APEv2 tags can have issues loading and"
-" playing those files. To deal with this you can choose whether to save tags "
+"players not supporting AAC files with APEv2 tags can have issues loading and "
+"playing those files. To deal with this you can choose whether to save tags "
 "to those files."
 msgstr ""
 
@@ -5941,8 +6084,8 @@ msgstr ""
 msgid ""
 "Picard can save APEv2 tags to pure AC3 files, which by default do not "
 "support tagging. APEv2 tags in AC3 are supported by some players, but "
-"players not supporting AC3 files with APEv2 tags can have issues loading and"
-" playing those files. To deal with this you can choose whether to save tags "
+"players not supporting AC3 files with APEv2 tags can have issues loading and "
+"playing those files. To deal with this you can choose whether to save tags "
 "to those files."
 msgstr ""
 
@@ -5982,9 +6125,9 @@ msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility_id3.py:124
 msgid ""
-"<html><head/><body><p>Default is '/' to maintain compatibility with previous"
-" Picard releases.</p><p>New alternatives are ';_' or '_/_' or type your own."
-" </p></body></html>"
+"<html><head/><body><p>Default is '/' to maintain compatibility with previous "
+"Picard releases.</p><p>New alternatives are ';_' or '_/_' or type your own. "
+"</p></body></html>"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility_id3.py:126
@@ -6038,8 +6181,8 @@ msgstr ""
 #: picard/ui/ui_provider_options_local.py:55
 msgid ""
 "First group in the regular expression, if any, will be used as type, ie. "
-"cover-back-spine.jpg will be set as types Back + Spine. If no type is found,"
-" it will default to Front type."
+"cover-back-spine.jpg will be set as types Back + Spine. If no type is found, "
+"it will default to Front type."
 msgstr ""
 
 #: picard/ui/ui_scripteditor.py:209
@@ -6231,16 +6374,16 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: picard/ui/options/fingerprinting.py:60
+#: picard/ui/options/fingerprinting.py:63
 msgid "Fingerprinting"
 msgstr ""
 
-#: picard/ui/options/fingerprinting.py:165
-#: picard/ui/options/fingerprinting.py:169
+#: picard/ui/options/fingerprinting.py:171
+#: picard/ui/options/fingerprinting.py:175
 msgid "Please select a valid fpcalc executable."
 msgstr ""
 
-#: picard/ui/options/fingerprinting.py:169
+#: picard/ui/options/fingerprinting.py:175
 msgid "Invalid fpcalc executable"
 msgstr ""
 
@@ -6269,12 +6412,16 @@ msgid ""
 "<p>\n"
 "<b>-*word</b>: exclude all genres ending with <i>word</i><br/>\n"
 "<b>+word*</b>: include all genres starting with <i>word</i><br/>\n"
-"<b>+wor?</b>: include all genres starting with <i>wor</i> and ending with an arbitrary character<br/>\n"
-"<b>+wor[dk]</b>: include all genres starting with <i>wor</i> and ending with <i>d</i> or <i>k</i><br/>\n"
-"<b>-w*rd</b>: exclude all genres starting with <i>w</i> and ending with <i>rd</i>\n"
+"<b>+wor?</b>: include all genres starting with <i>wor</i> and ending with an "
+"arbitrary character<br/>\n"
+"<b>+wor[dk]</b>: include all genres starting with <i>wor</i> and ending with "
+"<i>d</i> or <i>k</i><br/>\n"
+"<b>-w*rd</b>: exclude all genres starting with <i>w</i> and ending with "
+"<i>rd</i>\n"
 "</p>\n"
 "<p><u>Regular expressions filtering (Python re syntax):</u></p>\n"
-"<p><b>-/^w.rd+/</b>: exclude genres starting with <i>w</i> followed by any character, then <i>r</i> followed by at least one <i>d</i>\n"
+"<p><b>-/^w.rd+/</b>: exclude genres starting with <i>w</i> followed by any "
+"character, then <i>r</i> followed by at least one <i>d</i>\n"
 "</p>\n"
 "</body></html>"
 msgstr ""
@@ -6302,9 +6449,9 @@ msgid "Error line %d: %s"
 msgstr ""
 
 #: picard/ui/options/interface.py:92
-msgid ""
-"The default color scheme based on the operating system display settings"
-msgstr "The default colour scheme based on the operating system display settings"
+msgid "The default color scheme based on the operating system display settings"
+msgstr ""
+"The default colour scheme based on the operating system display settings"
 
 #: picard/ui/options/interface.py:95
 msgid "Dark"
@@ -6346,9 +6493,9 @@ msgstr ""
 
 #: picard/ui/options/interface.py:177
 msgid ""
-"Please note that using the system theme might cause the user interface to be"
-" not shown correctly. If this is the case select the \"Default\" theme "
-"option to use Picard's default theme again."
+"Please note that using the system theme might cause the user interface to be "
+"not shown correctly. If this is the case select the \"Default\" theme option "
+"to use Picard's default theme again."
 msgstr ""
 
 #: picard/ui/options/interface.py:182
@@ -6357,8 +6504,8 @@ msgstr ""
 
 #: picard/ui/options/interface.py:183
 msgid ""
-"You have changed the interface language. You have to restart Picard in order"
-" for the change to take effect."
+"You have changed the interface language. You have to restart Picard in order "
+"for the change to take effect."
 msgstr ""
 
 #: picard/ui/options/interface_colors.py:67
@@ -6373,7 +6520,9 @@ msgstr "Colours changed"
 msgid ""
 "You have changed the interface colors. You may have to restart Picard in "
 "order for the changes to take effect."
-msgstr "You have changed the interface colours. You may have to restart Picard in order for the changes to take effect."
+msgstr ""
+"You have changed the interface colours. You may have to restart Picard in "
+"order for the changes to take effect."
 
 #: picard/ui/options/interface_toolbar.py:59
 msgid "Action Toolbar"
@@ -6419,7 +6568,7 @@ msgstr ""
 msgid "Lookup CD..."
 msgstr ""
 
-#: picard/ui/options/interface_toolbar.py:182
+#: picard/ui/options/interface_toolbar.py:186
 msgid "Drag and Drop to re-order"
 msgstr ""
 
@@ -6433,13 +6582,24 @@ msgstr ""
 
 #: picard/ui/options/maintenance.py:77
 msgid ""
-"This allows you to remove unused option settings from the configuration INI file.\n"
+"This allows you to remove unused option settings from the configuration INI "
+"file.\n"
 "\n"
-"Settings that are found in the configuration file that do not appear on any option settings page will be listed below. If your configuration file does not contain any unused option settings, then the list will be empty and the removal checkbox will be disabled.\n"
+"Settings that are found in the configuration file that do not appear on any "
+"option settings page will be listed below. If your configuration file does "
+"not contain any unused option settings, then the list will be empty and the "
+"removal checkbox will be disabled.\n"
 "\n"
-"Note that unused option settings could come from plugins that have been uninstalled, so please be careful to not remove settings that you may want to use later when the plugin is reinstalled. Options belonging to plugins that are installed but currently disabled will not be listed for possible removal.\n"
+"Note that unused option settings could come from plugins that have been "
+"uninstalled, so please be careful to not remove settings that you may want "
+"to use later when the plugin is reinstalled. Options belonging to plugins "
+"that are installed but currently disabled will not be listed for possible "
+"removal.\n"
 "\n"
-"To remove one or more settings, first enable the removal by checking the \"Remove selected options\" box. You can then select the settings to remove by checking the box next to the setting. When you choose \"Make It So!\" to save your option settings, the selected items will be removed."
+"To remove one or more settings, first enable the removal by checking the "
+"\"Remove selected options\" box. You can then select the settings to remove "
+"by checking the box next to the setting. When you choose \"Make It So!\" to "
+"save your option settings, the selected items will be removed."
 msgstr ""
 
 #: picard/ui/options/maintenance.py:92
@@ -6478,7 +6638,8 @@ msgstr ""
 
 #: picard/ui/options/maintenance.py:228
 msgid ""
-"Loading a backup configuration file will replace the current configuration settings. A backup copy of the current file will be saved automatically.\n"
+"Loading a backup configuration file will replace the current configuration "
+"settings. A backup copy of the current file will be saved automatically.\n"
 "\n"
 "Do you want to continue?"
 msgstr ""
@@ -6515,12 +6676,12 @@ msgstr ""
 #: picard/ui/options/metadata.py:278
 msgid ""
 "Each selected script includes a matching threshold value used to determine "
-"if that script should be used. When an artist name is evaluated to determine"
-" if it matches one of your selected scripts, it is first parsed to determine"
-" which scripts are represented in the name, and what weighted percentage of "
+"if that script should be used. When an artist name is evaluated to determine "
+"if it matches one of your selected scripts, it is first parsed to determine "
+"which scripts are represented in the name, and what weighted percentage of "
 "the name belongs to each script. Then each of your selected scripts are "
-"checked, and if the name contains characters belonging to the script and the"
-" percentage of script characters in the name meets or exceeds the match "
+"checked, and if the name contains characters belonging to the script and the "
+"percentage of script characters in the name meets or exceeds the match "
 "threshold specified for the script, then the artist name will not be "
 "translated."
 msgstr ""
@@ -6600,16 +6761,20 @@ msgstr ""
 msgid "Authors"
 msgstr ""
 
-#: picard/ui/options/plugins.py:606 picard/util/tags.py:71
+#: picard/ui/options/plugins.py:606 picard/util/tags.py:72
 msgid "License"
 msgstr "Licence"
 
-#: picard/ui/options/plugins.py:664
+#: picard/ui/options/plugins.py:608
+msgid "User Guide"
+msgstr ""
+
+#: picard/ui/options/plugins.py:675
 #, python-format
 msgid "The plugin '%s' could not be downloaded."
 msgstr ""
 
-#: picard/ui/options/plugins.py:665
+#: picard/ui/options/plugins.py:676
 msgid "Please try again later."
 msgstr ""
 
@@ -6692,19 +6857,19 @@ msgstr ""
 msgid "The location to move files to must not be empty."
 msgstr ""
 
-#: picard/ui/options/renaming_compat.py:66
+#: picard/ui/options/renaming_compat.py:67
 msgid "Compatibility"
 msgstr ""
 
-#: picard/ui/options/renaming_compat.py:128
+#: picard/ui/options/renaming_compat.py:132
 msgid "Windows long path support"
 msgstr ""
 
-#: picard/ui/options/renaming_compat.py:129
+#: picard/ui/options/renaming_compat.py:133
 msgid ""
-"Enabling long paths on Windows might cause files being saved with path names"
-" exceeding the 259 character limit traditionally imposed by the Windows API."
-" Some software might not be able to properly access those files."
+"Enabling long paths on Windows might cause files being saved with path names "
+"exceeding the 259 character limit traditionally imposed by the Windows API. "
+"Some software might not be able to properly access those files."
 msgstr ""
 
 #: picard/ui/options/scripting.py:123
@@ -6765,14 +6930,12 @@ msgstr ""
 #: picard/ui/searchdialog/__init__.py:252
 #, python-format
 msgid ""
-"<strong>Following error occurred while fetching "
-"results:<br><br></strong>Network request error for %s:<br>%s (QT code %d, "
-"HTTP code %s)<br>"
+"<strong>Following error occurred while fetching results:<br><br></"
+"strong>Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>"
 msgstr ""
 
 #: picard/ui/searchdialog/__init__.py:263
-msgid ""
-"<strong>No results found. Please try a different search query.</strong>"
+msgid "<strong>No results found. Please try a different search query.</strong>"
 msgstr ""
 
 #: picard/ui/searchdialog/album.py:148 picard/ui/searchdialog/track.py:60
@@ -6783,7 +6946,7 @@ msgstr ""
 msgid "Album Search Results"
 msgstr ""
 
-#: picard/ui/searchdialog/album.py:164 picard/util/tags.py:69
+#: picard/ui/searchdialog/album.py:164 picard/util/tags.py:70
 msgid "Language"
 msgstr ""
 
@@ -6962,8 +7125,8 @@ msgstr ""
 msgid "Error loading Picard releases list: {error_message}"
 msgstr ""
 
-#: picard/util/checkupdate.py:107 picard/util/checkupdate.py:143
-#: picard/util/checkupdate.py:163
+#: picard/util/checkupdate.py:107 picard/util/checkupdate.py:142
+#: picard/util/checkupdate.py:162
 msgid "Picard Update"
 msgstr ""
 
@@ -6973,7 +7136,7 @@ msgid ""
 "(https://{url}{endpoint})"
 msgstr ""
 
-#: picard/util/checkupdate.py:144
+#: picard/util/checkupdate.py:143
 msgid ""
 "A new version of Picard is available.\n"
 "\n"
@@ -6983,334 +7146,335 @@ msgid ""
 "Would you like to download the new version?"
 msgstr ""
 
-#: picard/util/checkupdate.py:160
+#: picard/util/checkupdate.py:159
 msgid "unknown"
 msgstr ""
 
-#: picard/util/checkupdate.py:164
+#: picard/util/checkupdate.py:163
 msgid ""
-"There is no update currently available for your subscribed update level: {update_level}\n"
+"There is no update currently available for your subscribed update level: "
+"{update_level}\n"
 "\n"
 "Your version: {picard_old_version}\n"
 msgstr ""
 
-#: picard/util/tags.py:34
+#: picard/util/tags.py:35
 msgid "AcoustID Fingerprint"
 msgstr ""
 
-#: picard/util/tags.py:35
+#: picard/util/tags.py:36
 msgid "AcoustID"
 msgstr ""
 
-#: picard/util/tags.py:37
+#: picard/util/tags.py:38
 msgid "Album Artist Sort Order"
 msgstr ""
 
-#: picard/util/tags.py:39
+#: picard/util/tags.py:40
 msgid "Album Sort Order"
 msgstr ""
 
-#: picard/util/tags.py:40
+#: picard/util/tags.py:41
 msgid "Arranger"
 msgstr ""
 
-#: picard/util/tags.py:42
+#: picard/util/tags.py:43
 msgid "Artists"
 msgstr ""
 
-#: picard/util/tags.py:43
+#: picard/util/tags.py:44
 msgid "Artist Sort Order"
 msgstr ""
 
-#: picard/util/tags.py:44
+#: picard/util/tags.py:45
 msgid "ASIN"
 msgstr ""
 
-#: picard/util/tags.py:46
+#: picard/util/tags.py:47
 msgid "BPM"
 msgstr ""
 
-#: picard/util/tags.py:47
+#: picard/util/tags.py:48
 msgid "Catalog Number"
 msgstr "Catalogue Number"
 
-#: picard/util/tags.py:48
+#: picard/util/tags.py:49
 msgid "Comment"
 msgstr ""
 
-#: picard/util/tags.py:49
+#: picard/util/tags.py:50
 msgid "Compilation (iTunes)"
 msgstr ""
 
-#: picard/util/tags.py:51
+#: picard/util/tags.py:52
 msgid "Composer Sort Order"
 msgstr ""
 
-#: picard/util/tags.py:52
+#: picard/util/tags.py:53
 msgid "Conductor"
 msgstr ""
 
-#: picard/util/tags.py:53
+#: picard/util/tags.py:54
 msgid "Copyright"
 msgstr ""
 
-#: picard/util/tags.py:55
+#: picard/util/tags.py:56
 msgid "Video Director"
 msgstr ""
 
-#: picard/util/tags.py:56
+#: picard/util/tags.py:57
 msgid "Disc Id"
 msgstr ""
 
-#: picard/util/tags.py:57
+#: picard/util/tags.py:58
 msgid "Disc Number"
 msgstr ""
 
-#: picard/util/tags.py:59
+#: picard/util/tags.py:60
 msgid "DJ-Mixer"
 msgstr ""
 
-#: picard/util/tags.py:60
+#: picard/util/tags.py:61
 msgid "Encoded By"
 msgstr ""
 
-#: picard/util/tags.py:61
+#: picard/util/tags.py:62
 msgid "Encoder Settings"
 msgstr ""
 
-#: picard/util/tags.py:62
+#: picard/util/tags.py:63
 msgid "Engineer"
 msgstr ""
 
-#: picard/util/tags.py:63
+#: picard/util/tags.py:64
 msgid "Gapless Playback"
 msgstr ""
 
-#: picard/util/tags.py:65
+#: picard/util/tags.py:66
 msgid "Grouping"
 msgstr ""
 
-#: picard/util/tags.py:66
+#: picard/util/tags.py:67
 msgid "ISRC"
 msgstr ""
 
-#: picard/util/tags.py:67
+#: picard/util/tags.py:68
 msgid "Key"
 msgstr ""
 
-#: picard/util/tags.py:68
+#: picard/util/tags.py:69
 msgid "Record Label"
 msgstr ""
 
-#: picard/util/tags.py:72
+#: picard/util/tags.py:73
 msgid "Lyricist"
 msgstr ""
 
-#: picard/util/tags.py:73
+#: picard/util/tags.py:74
 msgid "Lyrics"
 msgstr ""
 
-#: picard/util/tags.py:75
+#: picard/util/tags.py:76
 msgid "Mixer"
 msgstr ""
 
-#: picard/util/tags.py:76
+#: picard/util/tags.py:77
 msgid "Mood"
 msgstr ""
 
-#: picard/util/tags.py:77
+#: picard/util/tags.py:78
 msgid "Movement"
 msgstr ""
 
-#: picard/util/tags.py:78
+#: picard/util/tags.py:79
 msgid "Movement Number"
 msgstr ""
 
-#: picard/util/tags.py:79
+#: picard/util/tags.py:80
 msgid "Movement Count"
 msgstr ""
 
-#: picard/util/tags.py:80
+#: picard/util/tags.py:81
 msgid "MusicBrainz Release Artist Id"
 msgstr ""
 
-#: picard/util/tags.py:81
+#: picard/util/tags.py:82
 msgid "MusicBrainz Release Id"
 msgstr ""
 
-#: picard/util/tags.py:82
+#: picard/util/tags.py:83
 msgid "MusicBrainz Artist Id"
 msgstr ""
 
-#: picard/util/tags.py:83
+#: picard/util/tags.py:84
 msgid "MusicBrainz Disc Id"
 msgstr ""
 
-#: picard/util/tags.py:84
+#: picard/util/tags.py:85
 msgid "MusicBrainz Original Release Id"
 msgstr ""
 
-#: picard/util/tags.py:85
+#: picard/util/tags.py:86
 msgid "MusicBrainz Original Artist Id"
 msgstr ""
 
-#: picard/util/tags.py:86
+#: picard/util/tags.py:87
 msgid "MusicBrainz Recording Id"
 msgstr ""
 
-#: picard/util/tags.py:87
+#: picard/util/tags.py:88
 msgid "MusicBrainz Release Group Id"
 msgstr ""
 
-#: picard/util/tags.py:88
+#: picard/util/tags.py:89
 msgid "MusicBrainz Track Id"
 msgstr ""
 
-#: picard/util/tags.py:89
+#: picard/util/tags.py:90
 msgid "MusicBrainz Work Id"
 msgstr ""
 
-#: picard/util/tags.py:90
+#: picard/util/tags.py:91
 msgid "MusicIP Fingerprint"
 msgstr ""
 
-#: picard/util/tags.py:91
+#: picard/util/tags.py:92
 msgid "MusicIP PUID"
 msgstr ""
 
-#: picard/util/tags.py:92
+#: picard/util/tags.py:93
 msgid "Original Album"
 msgstr ""
 
-#: picard/util/tags.py:93
+#: picard/util/tags.py:94
 msgid "Original Artist"
 msgstr ""
 
-#: picard/util/tags.py:95
+#: picard/util/tags.py:96
 msgid "Original Filename"
 msgstr ""
 
-#: picard/util/tags.py:96
+#: picard/util/tags.py:97
 msgid "Original Year"
 msgstr ""
 
-#: picard/util/tags.py:97
+#: picard/util/tags.py:98
 msgid "Performer"
 msgstr ""
 
-#: picard/util/tags.py:98
+#: picard/util/tags.py:99
 msgid "Podcast"
 msgstr ""
 
-#: picard/util/tags.py:99
+#: picard/util/tags.py:100
 msgid "Podcast URL"
 msgstr ""
 
-#: picard/util/tags.py:100
+#: picard/util/tags.py:101
 msgid "Producer"
 msgstr ""
 
-#: picard/util/tags.py:101
+#: picard/util/tags.py:102
 msgid "R128 Album Gain"
 msgstr ""
 
-#: picard/util/tags.py:102
+#: picard/util/tags.py:103
 msgid "R128 Track Gain"
 msgstr ""
 
-#: picard/util/tags.py:103
+#: picard/util/tags.py:104
 msgid "Rating"
 msgstr ""
 
-#: picard/util/tags.py:104
+#: picard/util/tags.py:105
 msgid "Release Country"
 msgstr ""
 
-#: picard/util/tags.py:105
+#: picard/util/tags.py:107
 msgid "Release Status"
 msgstr ""
 
-#: picard/util/tags.py:106
+#: picard/util/tags.py:108
 msgid "Release Type"
 msgstr ""
 
-#: picard/util/tags.py:107
+#: picard/util/tags.py:109
 msgid "Remixer"
 msgstr ""
 
-#: picard/util/tags.py:108
+#: picard/util/tags.py:110
 msgid "ReplayGain Album Gain"
 msgstr ""
 
-#: picard/util/tags.py:109
+#: picard/util/tags.py:111
 msgid "ReplayGain Album Peak"
 msgstr ""
 
-#: picard/util/tags.py:110
+#: picard/util/tags.py:112
 msgid "ReplayGain Album Range"
 msgstr ""
 
-#: picard/util/tags.py:111
+#: picard/util/tags.py:113
 msgid "ReplayGain Reference Loudness"
 msgstr ""
 
-#: picard/util/tags.py:112
+#: picard/util/tags.py:114
 msgid "ReplayGain Track Gain"
 msgstr ""
 
-#: picard/util/tags.py:113
+#: picard/util/tags.py:115
 msgid "ReplayGain Track Peak"
 msgstr ""
 
-#: picard/util/tags.py:114
+#: picard/util/tags.py:116
 msgid "ReplayGain Track Range"
 msgstr ""
 
-#: picard/util/tags.py:115
+#: picard/util/tags.py:117
 msgid "Script"
 msgstr ""
 
-#: picard/util/tags.py:116
+#: picard/util/tags.py:118
 msgid "Show Name"
 msgstr ""
 
-#: picard/util/tags.py:117
+#: picard/util/tags.py:119
 msgid "Show Name Sort Order"
 msgstr ""
 
-#: picard/util/tags.py:118
+#: picard/util/tags.py:120
 msgid "Show Work & Movement"
 msgstr ""
 
-#: picard/util/tags.py:119
+#: picard/util/tags.py:121
 msgid "Subtitle"
 msgstr ""
 
-#: picard/util/tags.py:121
+#: picard/util/tags.py:123
 msgid "Title Sort Order"
 msgstr ""
 
-#: picard/util/tags.py:122
+#: picard/util/tags.py:124
 msgid "Total Discs"
 msgstr ""
 
-#: picard/util/tags.py:123
+#: picard/util/tags.py:125
 msgid "Total Tracks"
 msgstr ""
 
-#: picard/util/tags.py:124
+#: picard/util/tags.py:126
 msgid "Track Number"
 msgstr ""
 
-#: picard/util/tags.py:125
+#: picard/util/tags.py:127
 msgid "Artist Website"
 msgstr ""
 
-#: picard/util/tags.py:126
+#: picard/util/tags.py:128
 msgid "Work"
 msgstr ""
 
-#: picard/util/tags.py:127
+#: picard/util/tags.py:129
 msgid "Writer"
 msgstr ""
 
