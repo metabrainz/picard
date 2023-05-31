@@ -22,7 +22,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-05-29 22:28+0200\n"
 "PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Tom Sawyer, 2022-2023\n"
+"Last-Translator: Jonatan Nyberg, 2016-2017,2021-2023\n"
 "Language-Team: Swedish (http://app.transifex.com/musicbrainz/musicbrainz/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -5462,7 +5462,7 @@ msgstr "API-nyckel:"
 
 #: picard/ui/ui_options_fingerprinting.py:108
 msgid "Get API key..."
-msgstr "Hämta API-nyckel...Aktivera spårgradering"
+msgstr "Hämta API-nyckel..."
 
 #: picard/ui/ui_options_general.py:170
 msgid "MusicBrainz Server"
@@ -5797,7 +5797,7 @@ msgstr "Skicka betyg till MusicBrainz"
 
 #: picard/ui/ui_options_releases.py:110
 msgid "Preferred release types"
-msgstr "Föredragna utgivningstyper"
+msgstr "Föredragna utgåvstyper"
 
 #: picard/ui/ui_options_releases.py:111
 msgid "Preferred release countries"
