@@ -128,13 +128,13 @@ def _parse_attributes(attrs, reltype, attr_credits):
             prefixes.append(attr)
         else:
             nouns.append(attr)
-    prefix = " ".join(prefixes)
     if len(nouns) > 1:
         result = "%s and %s" % (", ".join(nouns[:-1]), nouns[-1:][0])
     elif len(nouns) == 1:
         result = nouns[0]
     else:
         result = _BLANK_SPECIAL_RELTYPES.get(reltype, "")
+    prefix = " ".join(prefixes)
     return " ".join([prefix, result]).strip()
 
 
