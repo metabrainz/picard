@@ -40,7 +40,7 @@ from picard.util import (
 from picard.util.script_detector_weighted import detect_script_weighted
 
 
-_artist_rel_types = {
+_ARTIST_REL_TYPES = {
     'arranger': 'arranger',
     'audio': 'engineer',
     'chorus master': 'performer:chorus master',
@@ -169,7 +169,7 @@ def _relations_to_metadata_target_type_artist(relation, m, context):
         return
     else:
         try:
-            name = _artist_rel_types[reltype]
+            name = _ARTIST_REL_TYPES[reltype]
         except KeyError:
             return
     if context.instrumental and name == 'lyricist':
