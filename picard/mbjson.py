@@ -108,7 +108,7 @@ _RELEASE_GROUP_TO_METADATA = {
 
 
 _REPLACE_MAP = {}
-_PREFIX_ATTRS = ['guest', 'additional', 'minor', 'solo']
+_PREFIX_ATTRS = {'guest', 'additional', 'minor', 'solo'}
 _BLANK_SPECIAL_RELTYPES = {'vocal': 'vocals'}
 
 
