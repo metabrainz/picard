@@ -276,13 +276,13 @@ def _translate_artist_node(node, config=None):
                 else:
                     log.warning("No scripts selected for translation exception match check.")
 
-        def check_higher_score(locale_dict, locale, score):
-            return locale not in locale_dict or score > locale_dict[locale][0]
-
         # Prepare dictionaries of available locale aliases
-        full_locales = {}
-        root_locales = {}
         if 'aliases' in node:
+            def check_higher_score(locale_dict, locale, score):
+                return locale not in locale_dict or score > locale_dict[locale][0]
+
+            full_locales = {}
+            root_locales = {}
             for alias in node['aliases']:
                 if not alias['primary']:
                     continue
