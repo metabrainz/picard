@@ -33,7 +33,13 @@ from test.picardtestcase import (
 
 from picard import config
 from picard.album import Album
+from picard.const import (
+    ALIAS_TYPE_ARTIST_NAME_ID,
+    ALIAS_TYPE_LEGAL_NAME_ID,
+    ALIAS_TYPE_SEARCH_HINT_ID,
+)
 from picard.mbjson import (
+    _locales_from_aliases,
     _node_skip_empty_iter,
     _translate_artist_node,
     artist_to_metadata,
@@ -596,6 +602,100 @@ class ArtistTranslationArabicExceptionsTest(MBJSONTest):
         self.set_config_values(settings)
         (artist_name, artist_sort_name) = _translate_artist_node(self.json_doc)
         self.assertEqual(artist_name, 'محمد منير')
+
+
+class TestAliasesLocales(PicardTestCase):
+
+    def setUp(self):
+        self.maxDiff = None
+
+        self.aliases = [
+            {
+                "name": "Shearan",
+                "sort-name": "Shearan",
+                "primary": None,
+                "locale": None,
+                "type-id": ALIAS_TYPE_SEARCH_HINT_ID,
+            },
+            {
+                "primary": True,
+                "name": "Ed Sheeran (en)",
+                "sort-name": "Sheeran, Ed",
+                "type-id": ALIAS_TYPE_ARTIST_NAME_ID,
+                "locale": "en",
+            },
+            {
+                "primary": True,
+                "name": "Ed Sheeran (en_CA)",
+                "sort-name": "Sheeran, Ed",
+                "type-id": ALIAS_TYPE_ARTIST_NAME_ID,
+                "locale": "en_CA",
+            },
+        ]
+
+    def test_1(self):
+        expect_full = {'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed')), 'en_CA': (0.8, ('Ed Sheeran (en_CA)', 'Sheeran, Ed'))}
+        expect_root = {'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed'))}
+
+        full_locales, root_locales = _locales_from_aliases(self.aliases)
+        self.assertDictEqual(expect_full, full_locales)
+        self.assertDictEqual(expect_root, root_locales)
+
+    def test_2(self):
+        self.aliases[2]['type-id'] = ALIAS_TYPE_LEGAL_NAME_ID
+
+        expect_full = {'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed')), 'en_CA': (0.65, ('Ed Sheeran (en_CA)', 'Sheeran, Ed'))}
+        expect_root = {'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed'))}
+
+        full_locales, root_locales = _locales_from_aliases(self.aliases)
+        self.assertDictEqual(expect_full, full_locales)
+        self.assertDictEqual(expect_root, root_locales)
+
+    def test_3(self):
+        self.aliases[0]['primary'] = True
+        del self.aliases[0]['locale']
+
+        expect_full = {'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed')), 'en_CA': (0.8, ('Ed Sheeran (en_CA)', 'Sheeran, Ed'))}
+        expect_root = {'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed'))}
+
+        full_locales, root_locales = _locales_from_aliases(self.aliases)
+        self.assertDictEqual(expect_full, full_locales)
+        self.assertDictEqual(expect_root, root_locales)
+
+    def test_4(self):
+        self.aliases[2]['type-id'] = ALIAS_TYPE_SEARCH_HINT_ID
+
+        expect_full = {'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed')), 'en_CA': (0.4, ('Ed Sheeran (en_CA)', 'Sheeran, Ed'))}
+        expect_root = {'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed'))}
+
+        full_locales, root_locales = _locales_from_aliases(self.aliases)
+        self.assertDictEqual(expect_full, full_locales)
+        self.assertDictEqual(expect_root, root_locales)
+
+    def test_5(self):
+        self.aliases[1]['locale'] = 'en_US'
+        self.aliases[1]['name'] = 'Ed Sheeran (en_US)'
+
+        expect_full = {'en_US': (0.8, ('Ed Sheeran (en_US)', 'Sheeran, Ed')), 'en_CA': (0.8, ('Ed Sheeran (en_CA)', 'Sheeran, Ed'))}
+        expect_root = {'en': (0.6, ('Ed Sheeran (en_US)', 'Sheeran, Ed'))}
+
+        full_locales, root_locales = _locales_from_aliases(self.aliases)
+        self.assertDictEqual(expect_full, full_locales)
+        self.assertDictEqual(expect_root, root_locales)
+
+    def test_6(self):
+        self.aliases[2]['locale'] = 'en'
+        self.aliases[2]['name'] = 'Ed Sheeran (en2)'
+        self.aliases[2]['type-id'] = ALIAS_TYPE_ARTIST_NAME_ID
+        self.aliases[1]['type-id'] = ALIAS_TYPE_LEGAL_NAME_ID
+        self.aliases[1]['name'] = 'Ed Sheeran (en1)'
+
+        expect_full = {'en': (0.8, ('Ed Sheeran (en2)', 'Sheeran, Ed'))}
+        expect_root = {'en': (0.8, ('Ed Sheeran (en2)', 'Sheeran, Ed'))}
+
+        full_locales, root_locales = _locales_from_aliases(self.aliases)
+        self.assertDictEqual(expect_full, full_locales)
+        self.assertDictEqual(expect_root, root_locales)
 
 
 class ReleaseGroupTest(MBJSONTest):
