@@ -30,7 +30,11 @@ from collections import namedtuple
 
 from picard import log
 from picard.config import get_config
-from picard.const import RELEASE_FORMATS
+from picard.const import (
+    ALIAS_TYPE_ARTIST_NAME_ID,
+    ALIAS_TYPE_LEGAL_NAME_ID,
+    RELEASE_FORMATS,
+)
 from picard.util import (
     format_time,
     linear_combination_of_weights,
@@ -105,7 +109,6 @@ _RELEASE_GROUP_TO_METADATA = {
     'first-release-date': '~releasegroup_firstreleasedate',
     'title': '~releasegroup',
 }
-
 
 _REPLACE_MAP = {}
 _PREFIX_ATTRS = {'guest', 'additional', 'minor', 'solo'}
@@ -294,9 +297,9 @@ def _translate_artist_node(node, config=None):
                 if '_' in full_locale:
                     score = 0.4
                 root_parts.append((score, 5))
-                if alias['type'] == "Artist name":
+                if alias['type-id'] == ALIAS_TYPE_ARTIST_NAME_ID:
                     score = 0.8
-                elif alias['type'] == "Legal Name":
+                elif alias['type-id'] == ALIAS_TYPE_LEGAL_NAME_ID:
                     score = 0.5
                 else:
                     # as 2014/09/19, only Artist or Legal names should have the
