@@ -244,6 +244,46 @@ def _relations_to_metadata(relations, m, instrumental=False, config=None, entity
             _RELATIONS_TO_METADATA_TARGET_TYPE_FUNC[relation['target-type']](relation, m, context)
 
 
+def _locales_from_aliases(aliases):
+    def check_higher_score(locale_dict, locale, score):
+        return locale not in locale_dict or score > locale_dict[locale][0]
+
+    full_locales = {}
+    root_locales = {}
+    for alias in aliases:
+        if not alias['primary']:
+            continue
+        if 'locale' not in alias:
+            continue
+        full_locale = alias['locale']
+        root_locale = full_locale.split('_')[0]
+        full_parts = []
+        root_parts = []
+        score = 0.8
+        full_parts.append((score, 5))
+        if '_' in full_locale:
+            score = 0.4
+        root_parts.append((score, 5))
+        if alias['type-id'] == ALIAS_TYPE_ARTIST_NAME_ID:
+            score = 0.8
+        elif alias['type-id'] == ALIAS_TYPE_LEGAL_NAME_ID:
+            score = 0.5
+        else:
+            # as 2014/09/19, only Artist or Legal names should have the
+            # Primary flag
+            score = 0.0
+        full_parts.append((score, 5))
+        root_parts.append((score, 5))
+        comb = linear_combination_of_weights(full_parts)
+        if check_higher_score(full_locales, full_locale, comb):
+            full_locales[full_locale] = (comb, (alias['name'], alias['sort-name']))
+        comb = linear_combination_of_weights(root_parts)
+        if check_higher_score(root_locales, root_locale, comb):
+            root_locales[root_locale] = (comb, (alias['name'], alias['sort-name']))
+
+    return full_locales, root_locales
+
+
 def _translate_artist_node(node, config=None):
     config = config or get_config()
     translated_name, sort_name = None, None
@@ -278,41 +318,7 @@ def _translate_artist_node(node, config=None):
 
         # Prepare dictionaries of available locale aliases
         if 'aliases' in node:
-            def check_higher_score(locale_dict, locale, score):
-                return locale not in locale_dict or score > locale_dict[locale][0]
-
-            full_locales = {}
-            root_locales = {}
-            for alias in node['aliases']:
-                if not alias['primary']:
-                    continue
-                if 'locale' not in alias:
-                    continue
-                full_locale = alias['locale']
-                root_locale = full_locale.split('_')[0]
-                full_parts = []
-                root_parts = []
-                score = 0.8
-                full_parts.append((score, 5))
-                if '_' in full_locale:
-                    score = 0.4
-                root_parts.append((score, 5))
-                if alias['type-id'] == ALIAS_TYPE_ARTIST_NAME_ID:
-                    score = 0.8
-                elif alias['type-id'] == ALIAS_TYPE_LEGAL_NAME_ID:
-                    score = 0.5
-                else:
-                    # as 2014/09/19, only Artist or Legal names should have the
-                    # Primary flag
-                    score = 0.0
-                full_parts.append((score, 5))
-                root_parts.append((score, 5))
-                comb = linear_combination_of_weights(full_parts)
-                if check_higher_score(full_locales, full_locale, comb):
-                    full_locales[full_locale] = (comb, (alias['name'], alias['sort-name']))
-                comb = linear_combination_of_weights(root_parts)
-                if check_higher_score(root_locales, root_locale, comb):
-                    root_locales[root_locale] = (comb, (alias['name'], alias['sort-name']))
+            full_locales, root_locales = _locales_from_aliases(node['aliases'])
 
             # First pass to match full locale if available
             for locale in config.setting['artist_locales']:
