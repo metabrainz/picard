@@ -468,22 +468,6 @@ class NullMediaTest(MBJSONTest):
         self.assertEqual(m, {})
 
 
-class ArtistTest(MBJSONTest):
-
-    filename = 'artist.json'
-
-    def test_artist(self):
-        m = Metadata()
-        artist_to_metadata(self.json_doc, m)
-        self.assertEqual(m['area'], 'United Kingdom')
-        self.assertEqual(m['beginarea'], 'Hebden Bridge')
-        self.assertEqual(m['begindate'], '1991-02-17')
-        self.assertEqual(m['gender'], 'Male')
-        self.assertEqual(m['musicbrainz_artistid'], 'b8a7c51f-362c-4dcb-a259-bc6e0095f0a6')
-        self.assertEqual(m['name'], 'Ed Sheeran')
-        self.assertEqual(m['type'], 'Person')
-
-
 class NullArtistTest(MBJSONTest):
 
     filename = 'artist_null.json'
@@ -492,6 +476,24 @@ class NullArtistTest(MBJSONTest):
         m = Metadata()
         artist_to_metadata(self.json_doc, m)
         self.assertEqual(m, {})
+
+
+class ArtistEndedTest(MBJSONTest):
+
+    filename = 'artist_ended.json'
+
+    def test_artist_ended(self):
+        m = Metadata()
+        artist_to_metadata(self.json_doc, m)
+        self.assertEqual(m['area'], 'France')
+        self.assertEqual(m['beginarea'], 'Paris')
+        self.assertEqual(m['begindate'], '1928-04-02')
+        self.assertEqual(m['endarea'], 'Paris')
+        self.assertEqual(m['enddate'], '1991-03-02')
+        self.assertEqual(m['gender'], 'Male')
+        self.assertEqual(m['musicbrainz_artistid'], 'b21ef19b-c6aa-4775-90d3-3cc3e067ce6d')
+        self.assertEqual(m['name'], 'Serge Gainsbourg')
+        self.assertEqual(m['type'], 'Person')
 
 
 class ArtistTranslationTest(MBJSONTest):

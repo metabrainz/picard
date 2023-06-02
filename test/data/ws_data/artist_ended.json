@@ -1,0 +1,79 @@
+{
+    "name": "Serge Gainsbourg",
+    "sort-name": "Gainsbourg, Serge",
+    "isnis": [
+        "0000000115935851"
+    ],
+    "life-span": {
+        "ended": true,
+        "begin": "1928-04-02",
+        "end": "1991-03-02"
+    },
+    "id": "b21ef19b-c6aa-4775-90d3-3cc3e067ce6d",
+    "end_area": {
+        "sort-name": "Paris",
+        "name": "Paris",
+        "iso-3166-2-codes": [
+            "FR-75"
+        ],
+        "type-id": null,
+        "disambiguation": "",
+        "id": "dc10c22b-e510-4006-8b7f-fecb4f36436e",
+        "type": null
+    },
+    "begin-area": {
+        "disambiguation": "",
+        "type": null,
+        "id": "dc10c22b-e510-4006-8b7f-fecb4f36436e",
+        "name": "Paris",
+        "iso-3166-2-codes": [
+            "FR-75"
+        ],
+        "type-id": null,
+        "sort-name": "Paris"
+    },
+    "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+    "area": {
+        "iso-3166-1-codes": [
+            "FR"
+        ],
+        "disambiguation": "",
+        "id": "08310658-51eb-3801-80de-5a0739207115",
+        "type": null,
+        "sort-name": "France",
+        "name": "France",
+        "type-id": null
+    },
+    "country": "FR",
+    "ipis": [
+        "00011123948",
+        "00011935702",
+        "00012741616"
+    ],
+    "gender": "Male",
+    "gender-id": "36d3d30a-839d-3eda-8cb3-29be4384e4a9",
+    "type": "Person",
+    "disambiguation": "",
+    "end-area": {
+        "sort-name": "Paris",
+        "name": "Paris",
+        "iso-3166-2-codes": [
+            "FR-75"
+        ],
+        "type-id": null,
+        "disambiguation": "",
+        "id": "dc10c22b-e510-4006-8b7f-fecb4f36436e",
+        "type": null
+    },
+    "begin_area": {
+        "disambiguation": "",
+        "type": null,
+        "id": "dc10c22b-e510-4006-8b7f-fecb4f36436e",
+        "name": "Paris",
+        "iso-3166-2-codes": [
+            "FR-75"
+        ],
+        "type-id": null,
+        "sort-name": "Paris"
+    }
+}
