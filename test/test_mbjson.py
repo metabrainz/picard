@@ -42,6 +42,7 @@ from picard.mbjson import (
     _locales_from_aliases,
     _node_skip_empty_iter,
     _parse_attributes,
+    _relations_to_metadata_target_type_url,
     _translate_artist_node,
     artist_to_metadata,
     countries_from_node,
@@ -839,3 +840,49 @@ class ParseAttributeTest(PicardTestCase):
         result = _parse_attributes(attrs, reltype, attr_credits)
         expected = 'weird guitar and keyboards'
         self.assertEqual(expected, result)
+
+
+class RelationsToMetadataTargetTypeUrlTest(PicardTestCase):
+    def test_invalid_asin_url(self):
+        m = Metadata()
+        relation = {
+            'type': 'amazon asin',
+            'url': {
+                'resource': 'http://www.amazon.com/dp/020530902x',
+            }
+        }
+        _relations_to_metadata_target_type_url(relation, m, None)
+        self.assertEqual('', m['asin'])
+
+    def test_has_asin_already(self):
+        m = Metadata({'asin': 'ASIN'})
+        relation = {
+            'type': 'amazon asin',
+            'url': {
+                'resource': 'http://www.amazon.com/dp/020530902X',
+            }
+        }
+        _relations_to_metadata_target_type_url(relation, m, None)
+        self.assertEqual('ASIN', m['asin'])
+
+    def test_valid_asin_url(self):
+        m = Metadata()
+        relation = {
+            'type': 'amazon asin',
+            'url': {
+                'resource': 'http://www.amazon.com/dp/020530902X',
+            }
+        }
+        _relations_to_metadata_target_type_url(relation, m, None)
+        self.assertEqual('020530902X', m['asin'])
+
+    def test_license_url(self):
+        m = Metadata()
+        relation = {
+            'type': 'license',
+            'url': {
+                'resource': 'https://URL.LICENSE',
+            }
+        }
+        _relations_to_metadata_target_type_url(relation, m, None)
+        self.assertEqual('https://URL.LICENSE', m['license'])
