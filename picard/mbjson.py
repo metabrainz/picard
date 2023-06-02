@@ -30,7 +30,11 @@ from collections import namedtuple
 
 from picard import log
 from picard.config import get_config
-from picard.const import RELEASE_FORMATS
+from picard.const import (
+    ALIAS_TYPE_ARTIST_NAME_ID,
+    ALIAS_TYPE_LEGAL_NAME_ID,
+    RELEASE_FORMATS,
+)
 from picard.util import (
     format_time,
     linear_combination_of_weights,
@@ -40,7 +44,7 @@ from picard.util import (
 from picard.util.script_detector_weighted import detect_script_weighted
 
 
-_artist_rel_types = {
+_ARTIST_REL_TYPES = {
     'arranger': 'arranger',
     'audio': 'engineer',
     'chorus master': 'performer:chorus master',
@@ -106,35 +110,27 @@ _RELEASE_GROUP_TO_METADATA = {
     'title': '~releasegroup',
 }
 
-
-_REPLACE_MAP = {}
-_PREFIX_ATTRS = ['guest', 'additional', 'minor', 'solo']
+_PREFIX_ATTRS = {'guest', 'additional', 'minor', 'solo'}
 _BLANK_SPECIAL_RELTYPES = {'vocal': 'vocals'}
-
-
-def _transform_attribute(attr, attr_credits):
-    if attr in attr_credits:
-        return attr_credits[attr]
-    else:
-        return _REPLACE_MAP.get(attr, attr)
 
 
 def _parse_attributes(attrs, reltype, attr_credits):
     prefixes = []
     nouns = []
     for attr in attrs:
-        attr = _transform_attribute(attr, attr_credits)
+        if attr in attr_credits:
+            attr = attr_credits[attr]
         if attr in _PREFIX_ATTRS:
             prefixes.append(attr)
         else:
             nouns.append(attr)
-    prefix = " ".join(prefixes)
     if len(nouns) > 1:
         result = "%s and %s" % (", ".join(nouns[:-1]), nouns[-1:][0])
     elif len(nouns) == 1:
         result = nouns[0]
     else:
         result = _BLANK_SPECIAL_RELTYPES.get(reltype, "")
+    prefix = " ".join(prefixes)
     return " ".join([prefix, result]).strip()
 
 
@@ -169,7 +165,7 @@ def _relations_to_metadata_target_type_artist(relation, m, context):
         return
     else:
         try:
-            name = _artist_rel_types[reltype]
+            name = _ARTIST_REL_TYPES[reltype]
         except KeyError:
             return
     if context.instrumental and name == 'lyricist':
@@ -241,6 +237,46 @@ def _relations_to_metadata(relations, m, instrumental=False, config=None, entity
             _RELATIONS_TO_METADATA_TARGET_TYPE_FUNC[relation['target-type']](relation, m, context)
 
 
+def _locales_from_aliases(aliases):
+    def check_higher_score(locale_dict, locale, score):
+        return locale not in locale_dict or score > locale_dict[locale][0]
+
+    full_locales = {}
+    root_locales = {}
+    for alias in aliases:
+        if not alias['primary']:
+            continue
+        if 'locale' not in alias:
+            continue
+        full_locale = alias['locale']
+        root_locale = full_locale.split('_')[0]
+        full_parts = []
+        root_parts = []
+        score = 0.8
+        full_parts.append((score, 5))
+        if '_' in full_locale:
+            score = 0.4
+        root_parts.append((score, 5))
+        if alias['type-id'] == ALIAS_TYPE_ARTIST_NAME_ID:
+            score = 0.8
+        elif alias['type-id'] == ALIAS_TYPE_LEGAL_NAME_ID:
+            score = 0.5
+        else:
+            # as 2014/09/19, only Artist or Legal names should have the
+            # Primary flag
+            score = 0.0
+        full_parts.append((score, 5))
+        root_parts.append((score, 5))
+        comb = linear_combination_of_weights(full_parts)
+        if check_higher_score(full_locales, full_locale, comb):
+            full_locales[full_locale] = (comb, (alias['name'], alias['sort-name']))
+        comb = linear_combination_of_weights(root_parts)
+        if check_higher_score(root_locales, root_locale, comb):
+            root_locales[root_locale] = (comb, (alias['name'], alias['sort-name']))
+
+    return full_locales, root_locales
+
+
 def _translate_artist_node(node, config=None):
     config = config or get_config()
     translated_name, sort_name = None, None
@@ -273,43 +309,9 @@ def _translate_artist_node(node, config=None):
                 else:
                     log.warning("No scripts selected for translation exception match check.")
 
-        def check_higher_score(locale_dict, locale, score):
-            return locale not in locale_dict or score > locale_dict[locale][0]
-
         # Prepare dictionaries of available locale aliases
-        full_locales = {}
-        root_locales = {}
         if 'aliases' in node:
-            for alias in node['aliases']:
-                if not alias['primary']:
-                    continue
-                if 'locale' not in alias:
-                    continue
-                full_locale = alias['locale']
-                root_locale = full_locale.split('_')[0]
-                full_parts = []
-                root_parts = []
-                score = 0.8
-                full_parts.append((score, 5))
-                if '_' in full_locale:
-                    score = 0.4
-                root_parts.append((score, 5))
-                if alias['type'] == "Artist name":
-                    score = 0.8
-                elif alias['type'] == "Legal Name":
-                    score = 0.5
-                else:
-                    # as 2014/09/19, only Artist or Legal names should have the
-                    # Primary flag
-                    score = 0.0
-                full_parts.append((score, 5))
-                root_parts.append((score, 5))
-                comb = linear_combination_of_weights(full_parts)
-                if check_higher_score(full_locales, full_locale, comb):
-                    full_locales[full_locale] = (comb, (alias['name'], alias['sort-name']))
-                comb = linear_combination_of_weights(root_parts)
-                if check_higher_score(root_locales, root_locale, comb):
-                    root_locales[root_locale] = (comb, (alias['name'], alias['sort-name']))
+            full_locales, root_locales = _locales_from_aliases(node['aliases'])
 
             # First pass to match full locale if available
             for locale in config.setting['artist_locales']:

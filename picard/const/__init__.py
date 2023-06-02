@@ -95,6 +95,11 @@ PICARD_URLS = {
 # Various Artists MBID
 VARIOUS_ARTISTS_ID = '89ad4ac3-39f7-470e-963a-56509c546377'
 
+# Artist alias types
+ALIAS_TYPE_ARTIST_NAME_ID = '894afba6-2816-3c24-8072-eadb66bd04bc'
+ALIAS_TYPE_LEGAL_NAME_ID = 'd4dcd0c0-b341-3612-a332-c0ce797b25cf'
+ALIAS_TYPE_SEARCH_HINT_ID = '1937e404-b981-3cb7-8151-4c86ebfc8d8e'
+
 # Special purpose track titles
 SILENCE_TRACK_TITLE = '[silence]'
 DATA_TRACK_TITLE = '[data track]'

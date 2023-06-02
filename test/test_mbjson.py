@@ -33,8 +33,16 @@ from test.picardtestcase import (
 
 from picard import config
 from picard.album import Album
+from picard.const import (
+    ALIAS_TYPE_ARTIST_NAME_ID,
+    ALIAS_TYPE_LEGAL_NAME_ID,
+    ALIAS_TYPE_SEARCH_HINT_ID,
+)
 from picard.mbjson import (
+    _locales_from_aliases,
     _node_skip_empty_iter,
+    _parse_attributes,
+    _relations_to_metadata_target_type_url,
     _translate_artist_node,
     artist_to_metadata,
     countries_from_node,
@@ -415,14 +423,27 @@ class NullTrackTest(MBJSONTest):
 
 class MediaTest(MBJSONTest):
 
-    filename = 'media.json'
+    filename = 'release_5medias.json'
 
-    def test_track(self):
+    def test_media_formats_from_node_multi(self):
+        formats = media_formats_from_node(self.json_doc['media'])
+        self.assertEqual('2×CD + 2×DVD-Video + Blu-ray', formats)
+
+    def test_medium_to_metadata_0(self):
         m = Metadata()
-        medium_to_metadata(self.json_doc, m)
+        medium_to_metadata(self.json_doc['media'][0], m)
         self.assertEqual(m['discnumber'], '1')
-        self.assertEqual(m['media'], '12" Vinyl')
-        self.assertEqual(m['totaltracks'], '10')
+        self.assertEqual(m['media'], 'CD')
+        self.assertEqual(m['totaltracks'], '5')
+        self.assertEqual(m['discsubtitle'], 'The Original Album')
+
+    def test_medium_to_metadata_4(self):
+        m = Metadata()
+        medium_to_metadata(self.json_doc['media'][4], m)
+        self.assertEqual(m['discnumber'], '5')
+        self.assertEqual(m['media'], 'Blu-ray')
+        self.assertEqual(m['totaltracks'], '19')
+        self.assertEqual(m['discsubtitle'], 'High Resolution Audio and Audio‐Visual Material')
 
 
 class MediaPregapTest(MBJSONTest):
@@ -447,22 +468,6 @@ class NullMediaTest(MBJSONTest):
         self.assertEqual(m, {})
 
 
-class ArtistTest(MBJSONTest):
-
-    filename = 'artist.json'
-
-    def test_artist(self):
-        m = Metadata()
-        artist_to_metadata(self.json_doc, m)
-        self.assertEqual(m['area'], 'United Kingdom')
-        self.assertEqual(m['beginarea'], 'Hebden Bridge')
-        self.assertEqual(m['begindate'], '1991-02-17')
-        self.assertEqual(m['gender'], 'Male')
-        self.assertEqual(m['musicbrainz_artistid'], 'b8a7c51f-362c-4dcb-a259-bc6e0095f0a6')
-        self.assertEqual(m['name'], 'Ed Sheeran')
-        self.assertEqual(m['type'], 'Person')
-
-
 class NullArtistTest(MBJSONTest):
 
     filename = 'artist_null.json'
@@ -471,6 +476,24 @@ class NullArtistTest(MBJSONTest):
         m = Metadata()
         artist_to_metadata(self.json_doc, m)
         self.assertEqual(m, {})
+
+
+class ArtistEndedTest(MBJSONTest):
+
+    filename = 'artist_ended.json'
+
+    def test_artist_ended(self):
+        m = Metadata()
+        artist_to_metadata(self.json_doc, m)
+        self.assertEqual(m['area'], 'France')
+        self.assertEqual(m['beginarea'], 'Paris')
+        self.assertEqual(m['begindate'], '1928-04-02')
+        self.assertEqual(m['endarea'], 'Paris')
+        self.assertEqual(m['enddate'], '1991-03-02')
+        self.assertEqual(m['gender'], 'Male')
+        self.assertEqual(m['musicbrainz_artistid'], 'b21ef19b-c6aa-4775-90d3-3cc3e067ce6d')
+        self.assertEqual(m['name'], 'Serge Gainsbourg')
+        self.assertEqual(m['type'], 'Person')
 
 
 class ArtistTranslationTest(MBJSONTest):
@@ -598,6 +621,100 @@ class ArtistTranslationArabicExceptionsTest(MBJSONTest):
         self.assertEqual(artist_name, 'محمد منير')
 
 
+class TestAliasesLocales(PicardTestCase):
+
+    def setUp(self):
+        self.maxDiff = None
+
+        self.aliases = [
+            {
+                "name": "Shearan",
+                "sort-name": "Shearan",
+                "primary": None,
+                "locale": None,
+                "type-id": ALIAS_TYPE_SEARCH_HINT_ID,
+            },
+            {
+                "primary": True,
+                "name": "Ed Sheeran (en)",
+                "sort-name": "Sheeran, Ed",
+                "type-id": ALIAS_TYPE_ARTIST_NAME_ID,
+                "locale": "en",
+            },
+            {
+                "primary": True,
+                "name": "Ed Sheeran (en_CA)",
+                "sort-name": "Sheeran, Ed",
+                "type-id": ALIAS_TYPE_ARTIST_NAME_ID,
+                "locale": "en_CA",
+            },
+        ]
+
+    def test_1(self):
+        expect_full = {'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed')), 'en_CA': (0.8, ('Ed Sheeran (en_CA)', 'Sheeran, Ed'))}
+        expect_root = {'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed'))}
+
+        full_locales, root_locales = _locales_from_aliases(self.aliases)
+        self.assertDictEqual(expect_full, full_locales)
+        self.assertDictEqual(expect_root, root_locales)
+
+    def test_2(self):
+        self.aliases[2]['type-id'] = ALIAS_TYPE_LEGAL_NAME_ID
+
+        expect_full = {'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed')), 'en_CA': (0.65, ('Ed Sheeran (en_CA)', 'Sheeran, Ed'))}
+        expect_root = {'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed'))}
+
+        full_locales, root_locales = _locales_from_aliases(self.aliases)
+        self.assertDictEqual(expect_full, full_locales)
+        self.assertDictEqual(expect_root, root_locales)
+
+    def test_3(self):
+        self.aliases[0]['primary'] = True
+        del self.aliases[0]['locale']
+
+        expect_full = {'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed')), 'en_CA': (0.8, ('Ed Sheeran (en_CA)', 'Sheeran, Ed'))}
+        expect_root = {'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed'))}
+
+        full_locales, root_locales = _locales_from_aliases(self.aliases)
+        self.assertDictEqual(expect_full, full_locales)
+        self.assertDictEqual(expect_root, root_locales)
+
+    def test_4(self):
+        self.aliases[2]['type-id'] = ALIAS_TYPE_SEARCH_HINT_ID
+
+        expect_full = {'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed')), 'en_CA': (0.4, ('Ed Sheeran (en_CA)', 'Sheeran, Ed'))}
+        expect_root = {'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed'))}
+
+        full_locales, root_locales = _locales_from_aliases(self.aliases)
+        self.assertDictEqual(expect_full, full_locales)
+        self.assertDictEqual(expect_root, root_locales)
+
+    def test_5(self):
+        self.aliases[1]['locale'] = 'en_US'
+        self.aliases[1]['name'] = 'Ed Sheeran (en_US)'
+
+        expect_full = {'en_US': (0.8, ('Ed Sheeran (en_US)', 'Sheeran, Ed')), 'en_CA': (0.8, ('Ed Sheeran (en_CA)', 'Sheeran, Ed'))}
+        expect_root = {'en': (0.6, ('Ed Sheeran (en_US)', 'Sheeran, Ed'))}
+
+        full_locales, root_locales = _locales_from_aliases(self.aliases)
+        self.assertDictEqual(expect_full, full_locales)
+        self.assertDictEqual(expect_root, root_locales)
+
+    def test_6(self):
+        self.aliases[2]['locale'] = 'en'
+        self.aliases[2]['name'] = 'Ed Sheeran (en2)'
+        self.aliases[2]['type-id'] = ALIAS_TYPE_ARTIST_NAME_ID
+        self.aliases[1]['type-id'] = ALIAS_TYPE_LEGAL_NAME_ID
+        self.aliases[1]['name'] = 'Ed Sheeran (en1)'
+
+        expect_full = {'en': (0.8, ('Ed Sheeran (en2)', 'Sheeran, Ed'))}
+        expect_root = {'en': (0.8, ('Ed Sheeran (en2)', 'Sheeran, Ed'))}
+
+        full_locales, root_locales = _locales_from_aliases(self.aliases)
+        self.assertDictEqual(expect_full, full_locales)
+        self.assertDictEqual(expect_root, root_locales)
+
+
 class ReleaseGroupTest(MBJSONTest):
 
     filename = 'release_group.json'
@@ -717,3 +834,70 @@ class GetScoreTest(PicardTestCase):
 
     def test_get_score_no_score(self):
         self.assertEqual(1.0, get_score({}))
+
+
+class ParseAttributeTest(PicardTestCase):
+
+    def test_1(self):
+        attrs, reltype, attr_credits = ('guest', 'keyboard'), 'instrument', {'keyboard': 'keyboards'}
+        result = _parse_attributes(attrs, reltype, attr_credits)
+        expected = 'guest keyboards'
+        self.assertEqual(expected, result)
+
+    def test_2(self):
+        attrs, reltype, attr_credits = (), 'vocal', {}
+        result = _parse_attributes(attrs, reltype, attr_credits)
+        expected = 'vocals'
+        self.assertEqual(expected, result)
+
+    def test_3(self):
+        attrs, reltype, attr_credits = ('guitar', 'keyboard'), 'instrument', {'keyboard': 'keyboards', 'guitar': 'weird guitar'}
+        result = _parse_attributes(attrs, reltype, attr_credits)
+        expected = 'weird guitar and keyboards'
+        self.assertEqual(expected, result)
+
+
+class RelationsToMetadataTargetTypeUrlTest(PicardTestCase):
+    def test_invalid_asin_url(self):
+        m = Metadata()
+        relation = {
+            'type': 'amazon asin',
+            'url': {
+                'resource': 'http://www.amazon.com/dp/020530902x',
+            }
+        }
+        _relations_to_metadata_target_type_url(relation, m, None)
+        self.assertEqual('', m['asin'])
+
+    def test_has_asin_already(self):
+        m = Metadata({'asin': 'ASIN'})
+        relation = {
+            'type': 'amazon asin',
+            'url': {
+                'resource': 'http://www.amazon.com/dp/020530902X',
+            }
+        }
+        _relations_to_metadata_target_type_url(relation, m, None)
+        self.assertEqual('ASIN', m['asin'])
+
+    def test_valid_asin_url(self):
+        m = Metadata()
+        relation = {
+            'type': 'amazon asin',
+            'url': {
+                'resource': 'http://www.amazon.com/dp/020530902X',
+            }
+        }
+        _relations_to_metadata_target_type_url(relation, m, None)
+        self.assertEqual('020530902X', m['asin'])
+
+    def test_license_url(self):
+        m = Metadata()
+        relation = {
+            'type': 'license',
+            'url': {
+                'resource': 'https://URL.LICENSE',
+            }
+        }
+        _relations_to_metadata_target_type_url(relation, m, None)
+        self.assertEqual('https://URL.LICENSE', m['license'])
