@@ -108,7 +108,13 @@ class WebServiceTaskTest(PicardTestCase):
         self.ws._timer_count_pending_requests = MagicMock()
 
     def test_add_task(self):
-        request = WSRequest("", "abc.xyz", 80, "", None)
+        request = WSRequest(
+            method='GET',
+            host='abc.xyz',
+            port=80,
+            path="",
+            handler=None,
+        )
         func = 1
         task = self.ws.add_task(func, request)
         self.assertEqual((request.get_host_key(), func, 0), task)
@@ -120,8 +126,13 @@ class WebServiceTaskTest(PicardTestCase):
     def test_add_task_calls_timers(self):
         mock_timer1 = self.ws._timer_run_next_task
         mock_timer2 = self.ws._timer_count_pending_requests
-        request = WSRequest("", "abc.xyz", 80, "", None)
-
+        request = WSRequest(
+            method='GET',
+            host='abc.xyz',
+            port=80,
+            path="",
+            handler=None,
+        )
         self.ws.add_task(0, request)
         mock_timer1.start.assert_not_called()
         mock_timer2.start.assert_not_called()
@@ -166,7 +177,14 @@ class WebServiceTaskTest(PicardTestCase):
 class RequestTaskTest(PicardTestCase):
 
     def test_from_request(self):
-        request = WSRequest('', 'example.com', 443, '', None, priority=True)
+        request = WSRequest(
+            method='GET',
+            host='example.com',
+            port=443,
+            path='',
+            handler=None,
+            priority=True,
+        )
         func = 1
         task = RequestTask.from_request(request, func)
         self.assertEqual(request.get_host_key(), task.hostkey)
