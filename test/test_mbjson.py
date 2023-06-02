@@ -41,6 +41,7 @@ from picard.const import (
 from picard.mbjson import (
     _locales_from_aliases,
     _node_skip_empty_iter,
+    _parse_attributes,
     _translate_artist_node,
     artist_to_metadata,
     countries_from_node,
@@ -817,3 +818,24 @@ class GetScoreTest(PicardTestCase):
 
     def test_get_score_no_score(self):
         self.assertEqual(1.0, get_score({}))
+
+
+class ParseAttributeTest(PicardTestCase):
+
+    def test_1(self):
+        attrs, reltype, attr_credits = ('guest', 'keyboard'), 'instrument', {'keyboard': 'keyboards'}
+        result = _parse_attributes(attrs, reltype, attr_credits)
+        expected = 'guest keyboards'
+        self.assertEqual(expected, result)
+
+    def test_2(self):
+        attrs, reltype, attr_credits = (), 'vocal', {}
+        result = _parse_attributes(attrs, reltype, attr_credits)
+        expected = 'vocals'
+        self.assertEqual(expected, result)
+
+    def test_3(self):
+        attrs, reltype, attr_credits = ('guitar', 'keyboard'), 'instrument', {'keyboard': 'keyboards', 'guitar': 'weird guitar'}
+        result = _parse_attributes(attrs, reltype, attr_credits)
+        expected = 'weird guitar and keyboards'
+        self.assertEqual(expected, result)
