@@ -110,23 +110,16 @@ _RELEASE_GROUP_TO_METADATA = {
     'title': '~releasegroup',
 }
 
-_REPLACE_MAP = {}
 _PREFIX_ATTRS = {'guest', 'additional', 'minor', 'solo'}
 _BLANK_SPECIAL_RELTYPES = {'vocal': 'vocals'}
-
-
-def _transform_attribute(attr, attr_credits):
-    if attr in attr_credits:
-        return attr_credits[attr]
-    else:
-        return _REPLACE_MAP.get(attr, attr)
 
 
 def _parse_attributes(attrs, reltype, attr_credits):
     prefixes = []
     nouns = []
     for attr in attrs:
-        attr = _transform_attribute(attr, attr_credits)
+        if attr in attr_credits:
+            attr = attr_credits[attr]
         if attr in _PREFIX_ATTRS:
             prefixes.append(attr)
         else:
