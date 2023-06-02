@@ -423,14 +423,27 @@ class NullTrackTest(MBJSONTest):
 
 class MediaTest(MBJSONTest):
 
-    filename = 'media.json'
+    filename = 'release_5medias.json'
 
-    def test_track(self):
+    def test_media_formats_from_node_multi(self):
+        formats = media_formats_from_node(self.json_doc['media'])
+        self.assertEqual('2×CD + 2×DVD-Video + Blu-ray', formats)
+
+    def test_medium_to_metadata_0(self):
         m = Metadata()
-        medium_to_metadata(self.json_doc, m)
+        medium_to_metadata(self.json_doc['media'][0], m)
         self.assertEqual(m['discnumber'], '1')
-        self.assertEqual(m['media'], '12" Vinyl')
-        self.assertEqual(m['totaltracks'], '10')
+        self.assertEqual(m['media'], 'CD')
+        self.assertEqual(m['totaltracks'], '5')
+        self.assertEqual(m['discsubtitle'], 'The Original Album')
+
+    def test_medium_to_metadata_4(self):
+        m = Metadata()
+        medium_to_metadata(self.json_doc['media'][4], m)
+        self.assertEqual(m['discnumber'], '5')
+        self.assertEqual(m['media'], 'Blu-ray')
+        self.assertEqual(m['totaltracks'], '19')
+        self.assertEqual(m['discsubtitle'], 'High Resolution Audio and Audio‐Visual Material')
 
 
 class MediaPregapTest(MBJSONTest):

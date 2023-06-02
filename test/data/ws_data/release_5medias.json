@@ -1,0 +1,197 @@
+{
+    "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+    "id": "f17a0f30-8eb1-4322-b54e-fb71edb78d7c",
+    "quality": "normal",
+    "date": "2011-07-11",
+    "label-info": [
+        {
+            "catalog-number": "50999 029435 2 7",
+            "label": {
+                "label-code": 542,
+                "type-id": "7aaa37fe-2def-3476-b359-80245850062d",
+                "type": "Original Production",
+                "sort-name": "EMI",
+                "name": "EMI",
+                "id": "c029628b-6633-439e-bcee-ed02e8a338f7",
+                "disambiguation": "EMI Records, since 1972",
+                "aliases": [
+                    {
+                        "type-id": null,
+                        "locale": null,
+                        "primary": null,
+                        "begin": null,
+                        "end": null,
+                        "name": "EMI",
+                        "sort-name": "EMI",
+                        "type": null,
+                        "ended": false
+                    },
+                    {
+                        "type": null,
+                        "sort-name": "EMI 100",
+                        "name": "EMI 100",
+                        "ended": false,
+                        "begin": null,
+                        "end": null,
+                        "type-id": null,
+                        "locale": null,
+                        "primary": null
+                    },
+                    {
+                        "ended": false,
+                        "type": "Search hint",
+                        "name": "EMI Recorded Music Australia Pty Ltd",
+                        "sort-name": "EMI Recorded Music Australia Pty Ltd",
+                        "end": null,
+                        "begin": null,
+                        "primary": null,
+                        "type-id": "829662f2-a781-3ec8-8b46-fbcea6196f81",
+                        "locale": null
+                    },
+                    {
+                        "begin": null,
+                        "end": null,
+                        "locale": null,
+                        "type-id": null,
+                        "primary": null,
+                        "type": null,
+                        "sort-name": "EMI Records (UK)",
+                        "name": "EMI Records (UK)",
+                        "ended": false
+                    },
+                    {
+                        "begin": null,
+                        "end": null,
+                        "locale": null,
+                        "type-id": null,
+                        "primary": null,
+                        "name": "EMI UK",
+                        "sort-name": "EMI UK",
+                        "type": null,
+                        "ended": false
+                    }
+                ]
+            }
+        }
+    ],
+    "cover-art-archive": {
+        "count": 88,
+        "back": true,
+        "darkened": false,
+        "front": true,
+        "artwork": true
+    },
+    "packaging-id": "815b7785-8284-3926-8f04-e48bc6c4d102",
+    "country": "XE",
+    "status": "Official",
+    "packaging": "Other",
+    "artist-credit": [
+        {
+            "joinphrase": "",
+            "artist": {
+                "aliases": [],
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "id": "83d91898-7763-47d7-b03b-b92132375c47",
+                "disambiguation": "",
+                "type": "Group",
+                "name": "Pink Floyd",
+                "sort-name": "Pink Floyd"
+            },
+            "name": "Pink Floyd"
+        }
+    ],
+    "disambiguation": "Immersion box set",
+    "aliases": [],
+    "asin": "B004ZNAUVW",
+    "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+    },
+    "media": [
+        {
+            "position": 1,
+            "track-count": 5,
+            "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+            "title": "The Original Album",
+            "discs": [
+                {
+                    "sectors": 199410,
+                    "offsets": [
+                        150,
+                        61109,
+                        94976,
+                        118065,
+                        143171
+                    ],
+                    "offset-count": 5,
+                    "id": "tNSQ3K59B8ZkSb19P__Jet6B.sk-"
+                }
+            ],
+            "format": "CD"
+        },
+        {
+            "track-count": 6,
+            "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+            "position": 2,
+            "format": "CD",
+            "title": "Unreleased Audio Tracks",
+            "discs": [
+                {
+                    "id": "6NksHllhjO74WpVDabBDhj3P0qk-",
+                    "offset-count": 6,
+                    "offsets": [
+                        150,
+                        91851,
+                        148493,
+                        230435,
+                        240674,
+                        273050
+                    ],
+                    "sectors": 301068
+                }
+            ]
+        },
+        {
+            "format": "DVD-Video",
+            "discs": [],
+            "title": "Wish You Were Here Multi\u2010Channel Audio Mixes",
+            "format-id": "bb71fd58-ff93-32b4-a201-4ad1b2a80e5f",
+            "track-count": 15,
+            "position": 3
+        },
+        {
+            "format": "DVD-Video",
+            "discs": [],
+            "title": "Audio\u2010Visual Material",
+            "format-id": "bb71fd58-ff93-32b4-a201-4ad1b2a80e5f",
+            "track-count": 4,
+            "position": 4
+        },
+        {
+            "discs": [],
+            "title": "High Resolution Audio and Audio\u2010Visual Material",
+            "format": "Blu-ray",
+            "position": 5,
+            "format-id": "c693c05b-3316-3d69-afc2-5e2bc455bffc",
+            "track-count": 19
+        }
+    ],
+    "title": "Wish You Were Here",
+    "barcode": "5099902943527",
+    "release-events": [
+        {
+            "date": "2011-07-11",
+            "area": {
+                "disambiguation": "",
+                "id": "89a675c2-3e37-3518-b83c-418bad59a85a",
+                "type-id": null,
+                "iso-3166-1-codes": [
+                    "XE"
+                ],
+                "sort-name": "Europe",
+                "name": "Europe",
+                "type": null
+            }
+        }
+    ]
+}
