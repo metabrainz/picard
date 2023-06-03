@@ -491,19 +491,9 @@ class WebService(QtCore.QObject):
         if not WebService.urls_equivalent(redirect_qurl, reply.request().url()):
             log.debug("Redirect to %s requested", redirect_qurl.toString(QUrl.UrlFormattingOption.RemoveUserInfo))
 
-            redirect_host = redirect_qurl.host()
-            redirect_port = qurl_port(redirect_qurl)
-
-            ratecontrol.copy_minimal_delay(
-                request.get_host_key(),
-                (redirect_host, redirect_port),
-            )
-
             redirect_request = WSRequest(
                 method='GET',
-                host=redirect_host,
-                port=redirect_port,
-                path=redirect_qurl.path(),
+                qurl=redirect_qurl,
                 handler=request.handler,
                 parse_response_type=request.parse_response_type,
                 priority=True,
@@ -511,8 +501,13 @@ class WebService(QtCore.QObject):
                 mblogin=request.mblogin,
                 cacheloadcontrol=request.attribute(QNetworkRequest.Attribute.CacheLoadControlAttribute),
                 refresh=request.refresh,
-                queryargs=dict(QUrlQuery(redirect_qurl).queryItems(QUrl.ComponentFormattingOption.FullyEncoded)),
             )
+
+            ratecontrol.copy_minimal_delay(
+                request.get_host_key(),
+                redirect_request.get_host_key(),
+            )
+
             self.add_request(redirect_request)
         else:
             log.error("Redirect loop: %s",
