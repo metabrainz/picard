@@ -145,11 +145,11 @@ class WSRequest(QNetworkRequest):
         if self.handler is None:
             raise AssertionError('handler undefined')
 
-        self.qurl = qurl
-        if self.qurl is None:
+        if qurl is None:
             raise AssertionError('URL undefined')
 
-        super().__init__(self.qurl)
+        super().__init__(qurl)
+        self.qurl = self.url()
 
         # optional parameters
         self.parse_response_type = parse_response_type
