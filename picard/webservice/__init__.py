@@ -149,7 +149,6 @@ class WSRequest(QNetworkRequest):
             raise AssertionError('URL undefined')
 
         super().__init__(qurl)
-        self.qurl = self.url()
 
         # optional parameters
         self.parse_response_type = parse_response_type
@@ -206,22 +205,23 @@ class WSRequest(QNetworkRequest):
 
     @property
     def host(self):
-        return self.qurl.host()
+        return self.url().host()
 
     @property
     def port(self):
         """Returns QUrl port or default ports (443 for https, 80 for http)"""
-        if self.qurl.scheme() == 'https':
-            return self.qurl.port(443)
-        return self.qurl.port(80)
+        url = self.url()
+        if url.scheme() == 'https':
+            return url.port(443)
+        return url.port(80)
 
     @property
     def path(self):
-        return self.qurl.path()
+        return self.url().path()
 
     @property
     def queryargs(self):
-        return dict(QUrlQuery(self.qurl).queryItems(QUrl.ComponentFormattingOption.FullyEncoded))
+        return dict(QUrlQuery(self.url()).queryItems(QUrl.ComponentFormattingOption.FullyEncoded))
 
     @property
     def access_token(self):
@@ -463,7 +463,7 @@ class WebService(QtCore.QObject):
     def _handle_redirect(self, reply, request, redirect):
         error = int(reply.error())
         # merge with base url (to cover the possibility of the URL being relative)
-        redirect_qurl = request.qurl.resolved(redirect)
+        redirect_qurl = request.url().resolved(redirect)
         if not WebService.urls_equivalent(redirect_qurl, reply.request().url()):
             log.debug("Redirect to %s requested", redirect_qurl.toString(QUrl.UrlFormattingOption.RemoveUserInfo))
 
