@@ -28,6 +28,7 @@ from unittest.mock import (
     patch,
 )
 
+from PyQt5.QtCore import QUrl
 from PyQt5.QtNetwork import QNetworkProxy
 
 from test.picardtestcase import PicardTestCase
@@ -346,3 +347,28 @@ class ParserHookTest(PicardTestCase):
             WebService.get_response_parser('B')
         with self.assertRaises(UnknownResponseParserError):
             WebService.get_response_mimetype('B')
+
+
+class WSRequestTest(PicardTestCase):
+
+    def test_init_minimal(self):
+        request = WSRequest(url='https://example.org/path', method='GET', handler=dummy_handler)
+        self.assertEqual(request.host, 'example.org')
+        self.assertEqual(request.port, 443)
+        self.assertEqual(request.path, '/path')
+        self.assertEqual(request.handler, dummy_handler)
+        self.assertEqual(request.method, 'GET')
+        self.assertEqual(request.get_host_key(), ('example.org', 443))
+
+    def test_init_minimal_qurl(self):
+        url = 'https://example.org/path?q=1'
+        request = WSRequest(url=QUrl(url), method='GET', handler=dummy_handler)
+        self.assertEqual(request.url().toString(), url)
+
+    def test_init_port_80(self):
+        request = WSRequest(url='http://example.org/path', method='GET', handler=dummy_handler)
+        self.assertEqual(request.port, 80)
+
+    def test_init_port_other(self):
+        request = WSRequest(url='http://example.org:666/path', method='GET', handler=dummy_handler)
+        self.assertEqual(request.port, 666)
