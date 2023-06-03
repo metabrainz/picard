@@ -138,6 +138,9 @@ class TailLogger(QtCore.QObject):
 
 main_logger = logging.getLogger('main')
 
+# do not pass logging messages to the handlers of ancestor loggers (PICARD-2651)
+main_logger.propagate = False
+
 main_logger.setLevel(logging.INFO)
 
 
