@@ -639,10 +639,19 @@ class WebService(QtCore.QObject):
     def download(self, host, port, path, handler, priority=False,
                  important=False, cacheloadcontrol=None, refresh=False,
                  queryargs=None):
-        return self.get(host, port, path, handler, parse_response_type=None,
-                        priority=priority, important=important,
-                        cacheloadcontrol=cacheloadcontrol, refresh=refresh,
-                        queryargs=queryargs)
+        request = WSRequest(
+            method='GET',
+            host=host,
+            port=port,
+            path=path,
+            handler=handler,
+            priority=priority,
+            important=important,
+            cacheloadcontrol=cacheloadcontrol,
+            refresh=refresh,
+            queryargs=queryargs,
+        )
+        return self.add_request(request)
 
     def stop(self):
         for reply in list(self._active_requests):
