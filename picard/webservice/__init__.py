@@ -161,19 +161,16 @@ class WSRequest(QNetworkRequest):
 
         # setup
         self._retries = 0
+        self._high_prio_no_cache = True
+        self.response_parser = None
+        self.response_mimetype = None
+        self.access_token = None
+
+        # set headers and attributes
         if self.method == 'GET':
             self._high_prio_no_cache = self.refresh
             self.setAttribute(QNetworkRequest.Attribute.HttpPipeliningAllowedAttribute, True)
-        else:
-            self._high_prio_no_cache = True
 
-        self.response_parser = None
-        self.response_mimetype = None
-
-        self.access_token = None
-        self._init_headers()
-
-    def _init_headers(self):
         self.setHeader(QNetworkRequest.KnownHeaders.UserAgentHeader, USER_AGENT_STRING)
 
         if self.mblogin or self._high_prio_no_cache:
