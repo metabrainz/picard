@@ -463,18 +463,18 @@ class WebService(QtCore.QObject):
         return url.port(80)
 
     def _handle_redirect(self, reply, request, redirect):
-        url = request.url()
+        source_qurl = request.url()
         error = int(reply.error())
         # merge with base url (to cover the possibility of the URL being relative)
-        redirect = url.resolved(redirect)
-        if not WebService.urls_equivalent(redirect, reply.request().url()):
-            log.debug("Redirect to %s requested", redirect.toString(QUrl.UrlFormattingOption.RemoveUserInfo))
+        redirect_qurl = source_qurl.resolved(redirect)
+        if not WebService.urls_equivalent(redirect_qurl, reply.request().url()):
+            log.debug("Redirect to %s requested", redirect_qurl.toString(QUrl.UrlFormattingOption.RemoveUserInfo))
 
-            redirect_host = redirect.host()
-            redirect_port = self.url_port(redirect)
+            redirect_host = redirect_qurl.host()
+            redirect_port = self.url_port(redirect_qurl)
 
-            original_host = url.host()
-            original_port = self.url_port(url)
+            original_host = source_qurl.host()
+            original_port = self.url_port(source_qurl)
 
             ratecontrol.copy_minimal_delay(
                 (original_host, original_port),
@@ -485,7 +485,7 @@ class WebService(QtCore.QObject):
                 method='GET',
                 host=redirect_host,
                 port=redirect_port,
-                path=redirect.path(),
+                path=redirect_qurl.path(),
                 handler=request.handler,
                 parse_response_type=request.parse_response_type,
                 priority=True,
@@ -493,7 +493,7 @@ class WebService(QtCore.QObject):
                 mblogin=request.mblogin,
                 cacheloadcontrol=request.attribute(QNetworkRequest.Attribute.CacheLoadControlAttribute),
                 refresh=request.refresh,
-                queryargs=dict(QUrlQuery(redirect).queryItems(QUrl.ComponentFormattingOption.FullyEncoded)),
+                queryargs=dict(QUrlQuery(redirect_qurl).queryItems(QUrl.ComponentFormattingOption.FullyEncoded)),
             )
             self.add_request(redirect_request)
         else:
