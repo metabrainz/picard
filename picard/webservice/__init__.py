@@ -101,16 +101,12 @@ class WSRequest(QNetworkRequest):
         self,
         *,
         method=None,
-        host=None,
-        port=-1,
-        path=None,
         handler=None,
         parse_response_type=None,
         data=None,
         mblogin=False,
         cacheloadcontrol=None,
         refresh=False,
-        queryargs=None,
         priority=False,
         important=False,
         request_mimetype=None,
@@ -119,9 +115,6 @@ class WSRequest(QNetworkRequest):
         """
         Args:
             method: HTTP method.  One of ``GET``, ``POST``, ``PUT``, or ``DELETE``.
-            host: Hostname.
-            port: TCP port number (80 or 443).
-            path: Path component.
             handler: Callback which takes a 3-tuple of `(str:document,
                 QNetworkReply:reply, QNetworkReply.Error:error)`.
             parse_response_type: Specifies that request either sends or accepts
@@ -133,11 +126,10 @@ class WSRequest(QNetworkRequest):
             refresh: Indicates a user-specified resource refresh, such as when
                 the user wishes to reload a release.  Marks the request as high priority
                 and disables caching.
-            queryargs: `dict` of query arguments.
             priority: Indicates that this is a high priority request.
             important: Indicates that this is an important request.
             request_mimetype: Set the Content-Type header.
-            qurl: QUrl object to use (in this case, host, port, path and queryargs are ignored)
+            qurl: QUrl object to use for this request
         """
         # These two are codependent (see _update_authorization_header) and must
         # be initialized explicitly.
@@ -154,18 +146,6 @@ class WSRequest(QNetworkRequest):
             raise AssertionError('handler undefined')
 
         self.qurl = qurl
-        if self.qurl is None:
-            if host is None:
-                raise AssertionError('host undefined')
-            port = int(port)
-            if port < 0:
-                raise AssertionError('port invalid')
-            if path is None:
-                raise AssertionError('path undefined')
-
-            # must be called before setting mblogin
-            self.qurl = build_qurl(host, port, path=path, queryargs=queryargs)
-
         if self.qurl is None:
             raise AssertionError('URL undefined')
 
@@ -591,9 +571,7 @@ class WebService(QtCore.QObject):
             queryargs=None):
         request = WSRequest(
             method='GET',
-            host=host,
-            port=port,
-            path=path,
+            qurl=build_qurl(host, port, path=path, queryargs=queryargs),
             handler=handler,
             parse_response_type=parse_response_type,
             priority=priority,
@@ -601,7 +579,6 @@ class WebService(QtCore.QObject):
             mblogin=mblogin,
             cacheloadcontrol=cacheloadcontrol,
             refresh=refresh,
-            queryargs=queryargs,
         )
         return self.add_request(request)
 
@@ -609,15 +586,12 @@ class WebService(QtCore.QObject):
              priority=False, important=False, mblogin=True, queryargs=None, request_mimetype=None):
         request = WSRequest(
             method='POST',
-            host=host,
-            port=port,
-            path=path,
+            qurl=build_qurl(host, port, path=path, queryargs=queryargs),
             handler=handler,
             parse_response_type=parse_response_type,
             priority=priority,
             important=important,
             mblogin=mblogin,
-            queryargs=queryargs,
             data=data,
             request_mimetype=request_mimetype,
         )
@@ -628,14 +602,11 @@ class WebService(QtCore.QObject):
             queryargs=None, request_mimetype=None):
         request = WSRequest(
             method='PUT',
-            host=host,
-            port=port,
-            path=path,
+            qurl=build_qurl(host, port, path=path, queryargs=queryargs),
             handler=handler,
             priority=priority,
             important=important,
             mblogin=mblogin,
-            queryargs=queryargs,
             data=data,
             request_mimetype=request_mimetype,
         )
@@ -645,9 +616,7 @@ class WebService(QtCore.QObject):
                queryargs=None):
         request = WSRequest(
             method='DELETE',
-            host=host,
-            port=port,
-            path=path,
+            qurl=build_qurl(host, port, path=path, queryargs=queryargs),
             handler=handler,
             priority=priority,
             important=important,
@@ -660,15 +629,12 @@ class WebService(QtCore.QObject):
                  queryargs=None):
         request = WSRequest(
             method='GET',
-            host=host,
-            port=port,
-            path=path,
+            qurl=build_qurl(host, port, path=path, queryargs=queryargs),
             handler=handler,
             priority=priority,
             important=important,
             cacheloadcontrol=cacheloadcontrol,
             refresh=refresh,
-            queryargs=queryargs,
         )
         return self.add_request(request)
 
