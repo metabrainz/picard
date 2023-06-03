@@ -114,6 +114,7 @@ class WSRequest(QNetworkRequest):
         priority=False,
         important=False,
         request_mimetype=None,
+        qurl=None,
     ):
         """
         Args:
@@ -136,6 +137,7 @@ class WSRequest(QNetworkRequest):
             priority: Indicates that this is a high priority request.
             important: Indicates that this is an important request.
             request_mimetype: Set the Content-Type header.
+            qurl: QUrl object to use (in this case, host, port, path and queryargs are ignored)
         """
         # These two are codependent (see _update_authorization_header) and must
         # be initialized explicitly.
@@ -146,25 +148,33 @@ class WSRequest(QNetworkRequest):
         self.method = method
         if self.method not in {'GET', 'PUT', 'DELETE', 'POST'}:
             raise AssertionError('invalid method')
-        self.host = host
-        if self.host is None:
-            raise AssertionError('host undefined')
-        self.port = int(port)
-        if self.port < 0:
-            raise AssertionError('port invalid')
-        self.path = path
-        if self.path is None:
-            raise AssertionError('path undefined')
+
         self.handler = handler
         if self.handler is None:
             raise AssertionError('handler undefined')
 
-        # optional parameter, must be set before calling build_qurl()
-        self.queryargs = queryargs
+        self.qurl = qurl
+        if self.qurl is None:
+            self.host = host
+            if self.host is None:
+                raise AssertionError('host undefined')
+            self.port = int(port)
+            if self.port < 0:
+                raise AssertionError('port invalid')
+            self.path = path
+            if self.path is None:
+                raise AssertionError('path undefined')
 
-        # must be called before setting mblogin
-        url = build_qurl(self.host, self.port, path=self.path, queryargs=self.queryargs)
-        super().__init__(url)
+            # optional parameter, must be set before calling build_qurl()
+            self.queryargs = queryargs
+
+            # must be called before setting mblogin
+            self.qurl = build_qurl(self.host, self.port, path=self.path, queryargs=self.queryargs)
+
+        if self.qurl is None:
+            raise AssertionError('URL undefined')
+
+        super().__init__(self.qurl)
 
         # optional parameters
         self.parse_response_type = parse_response_type
