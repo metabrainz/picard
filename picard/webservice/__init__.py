@@ -144,14 +144,20 @@ class WSRequest(QNetworkRequest):
 
         # mandatory parameters
         self.method = method
-        assert self.method in {'GET', 'PUT', 'DELETE', 'POST'}
+        if self.method not in {'GET', 'PUT', 'DELETE', 'POST'}:
+            raise AssertionError('invalid method')
         self.host = host
-        assert self.host is not None
+        if self.host is None:
+            raise AssertionError('host undefined')
         self.port = int(port)
-        assert self.port >= 0
-
+        if self.port < 0:
+            raise AssertionError('port invalid')
         self.path = path
+        if self.path is None:
+            raise AssertionError('path undefined')
         self.handler = handler
+        if self.handler is None:
+            raise AssertionError('handler undefined')
 
         # optional parameter, must be set before calling build_qurl()
         self.queryargs = queryargs

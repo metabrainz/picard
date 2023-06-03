@@ -54,6 +54,10 @@ PROXY_SETTINGS = {
 }
 
 
+def dummy_handler(*args, **kwargs):
+    """Dummy handler method for tests"""
+
+
 class WebServiceTest(PicardTestCase):
 
     def setUp(self):
@@ -70,7 +74,7 @@ class WebServiceTest(PicardTestCase):
         host = "abc.xyz"
         port = 80
         path = ""
-        handler = None
+        handler = dummy_handler
         data = None
 
         def get_wsreq(mock_add_task):
@@ -113,7 +117,7 @@ class WebServiceTaskTest(PicardTestCase):
             host='abc.xyz',
             port=80,
             path="",
-            handler=None,
+            handler=dummy_handler,
         )
         func = 1
         task = self.ws.add_task(func, request)
@@ -131,7 +135,7 @@ class WebServiceTaskTest(PicardTestCase):
             host='abc.xyz',
             port=80,
             path="",
-            handler=None,
+            handler=dummy_handler,
         )
         self.ws.add_task(0, request)
         mock_timer1.start.assert_not_called()
@@ -145,13 +149,13 @@ class WebServiceTaskTest(PicardTestCase):
         mock_timer2.start.assert_called_with(0)
 
     def test_remove_task(self):
-        task = RequestTask(('example.com', 80), lambda: 1, priority=0)
+        task = RequestTask(('example.com', 80), dummy_handler, priority=0)
         self.ws.remove_task(task)
         self.ws._queue.remove_task.assert_called_with(task)
 
     def test_remove_task_calls_timers(self):
         mock_timer = self.ws._timer_count_pending_requests
-        task = RequestTask(('example.com', 80), lambda: 1, priority=0)
+        task = RequestTask(('example.com', 80), dummy_handler, priority=0)
         self.ws.remove_task(task)
         mock_timer.start.assert_not_called()
         mock_timer.isActive.return_value = False
@@ -182,7 +186,7 @@ class RequestTaskTest(PicardTestCase):
             host='example.com',
             port=443,
             path='',
-            handler=None,
+            handler=dummy_handler,
             priority=True,
         )
         func = 1
@@ -199,13 +203,13 @@ class RequestPriorityQueueTest(PicardTestCase):
         queue = RequestPriorityQueue(ratecontrol)
         key = ("abc.xyz", 80)
 
-        task1 = RequestTask(key, lambda: 1, priority=0)
+        task1 = RequestTask(key, dummy_handler, priority=0)
         queue.add_task(task1)
-        task2 = RequestTask(key, lambda: 1, priority=1)
+        task2 = RequestTask(key, dummy_handler, priority=1)
         queue.add_task(task2)
-        task3 = RequestTask(key, lambda: 1, priority=0)
+        task3 = RequestTask(key, dummy_handler, priority=0)
         queue.add_task(task3, important=True)
-        task4 = RequestTask(key, lambda: 1, priority=1)
+        task4 = RequestTask(key, dummy_handler, priority=1)
         queue.add_task(task4, important=True)
 
         # Test if 2 requests were added in each queue
@@ -223,7 +227,7 @@ class RequestPriorityQueueTest(PicardTestCase):
         key = ("abc.xyz", 80)
 
         # Add a task and check for its existence
-        task = RequestTask(key, lambda: 1, priority=0)
+        task = RequestTask(key, dummy_handler, priority=0)
         task = queue.add_task(task)
         self.assertIn(key, queue._queues[0])
         self.assertEqual(len(queue._queues[0][key]), 1)
@@ -289,16 +293,16 @@ class RequestPriorityQueueTest(PicardTestCase):
         key = ("abc.xyz", 80)
 
         self.assertEqual(0, queue.count())
-        task1 = RequestTask(key, lambda: 1, priority=0)
+        task1 = RequestTask(key, dummy_handler, priority=0)
         queue.add_task(task1)
         self.assertEqual(1, queue.count())
-        task2 = RequestTask(key, lambda: 1, priority=1)
+        task2 = RequestTask(key, dummy_handler, priority=1)
         queue.add_task(task2)
         self.assertEqual(2, queue.count())
-        task3 = RequestTask(key, lambda: 1, priority=0)
+        task3 = RequestTask(key, dummy_handler, priority=0)
         queue.add_task(task3, important=True)
         self.assertEqual(3, queue.count())
-        task4 = RequestTask(key, lambda: 1, priority=1)
+        task4 = RequestTask(key, dummy_handler, priority=1)
         queue.add_task(task4, important=True)
         self.assertEqual(4, queue.count())
         queue.remove_task(task1)
