@@ -94,6 +94,13 @@ class UnknownResponseParserError(Exception):
         super().__init__(message)
 
 
+def qurl_port(qurl):
+    """Returns QUrl port or default ports (443 for https, 80 for http)"""
+    if qurl.scheme() == 'https':
+        return qurl.port(443)
+    return qurl.port(80)
+
+
 class WSRequest(QNetworkRequest):
     """Represents a single HTTP request."""
 
@@ -155,21 +162,16 @@ class WSRequest(QNetworkRequest):
 
         self.qurl = qurl
         if self.qurl is None:
-            self.host = host
-            if self.host is None:
+            if host is None:
                 raise AssertionError('host undefined')
-            self.port = int(port)
-            if self.port < 0:
+            port = int(port)
+            if port < 0:
                 raise AssertionError('port invalid')
-            self.path = path
-            if self.path is None:
+            if path is None:
                 raise AssertionError('path undefined')
 
-            # optional parameter, must be set before calling build_qurl()
-            self.queryargs = queryargs
-
             # must be called before setting mblogin
-            self.qurl = build_qurl(self.host, self.port, path=self.path, queryargs=self.queryargs)
+            self.qurl = build_qurl(host, port, path=path, queryargs=queryargs)
 
         if self.qurl is None:
             raise AssertionError('URL undefined')
@@ -228,6 +230,22 @@ class WSRequest(QNetworkRequest):
         if self.mblogin and self.access_token:
             authorization = ("Bearer %s" % self.access_token).encode('utf-8')
         self.setRawHeader(b"Authorization", authorization)
+
+    @property
+    def host(self):
+        return self.qurl.host()
+
+    @property
+    def port(self):
+        return qurl_port(self.qurl)
+
+    @property
+    def path(self):
+        return self.qurl.path()
+
+    @property
+    def queryargs(self):
+        return dict(QUrlQuery(self.qurl).queryItems(QUrl.ComponentFormattingOption.FullyEncoded))
 
     @property
     def access_token(self):
@@ -466,12 +484,6 @@ class WebService(QtCore.QObject):
         return leftUrl.port(80) == rightUrl.port(80) and \
             leftUrl.toString(QUrl.UrlFormattingOption.RemovePort) == rightUrl.toString(QUrl.UrlFormattingOption.RemovePort)
 
-    @staticmethod
-    def url_port(url):
-        if url.scheme() == 'https':
-            return url.port(443)
-        return url.port(80)
-
     def _handle_redirect(self, reply, request, redirect):
         source_qurl = request.url()
         error = int(reply.error())
@@ -481,10 +493,10 @@ class WebService(QtCore.QObject):
             log.debug("Redirect to %s requested", redirect_qurl.toString(QUrl.UrlFormattingOption.RemoveUserInfo))
 
             redirect_host = redirect_qurl.host()
-            redirect_port = self.url_port(redirect_qurl)
+            redirect_port = qurl_port(redirect_qurl)
 
             original_host = source_qurl.host()
-            original_port = self.url_port(source_qurl)
+            original_port = qurl_port(source_qurl)
 
             ratecontrol.copy_minimal_delay(
                 (original_host, original_port),
