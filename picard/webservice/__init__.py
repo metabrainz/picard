@@ -93,6 +93,13 @@ class UnknownResponseParserError(Exception):
 
 class WSRequest(QNetworkRequest):
     """Represents a single HTTP request."""
+    _access_token = None
+    _high_prio_no_cache = True
+    _mblogin = None
+    _retries = 0
+
+    response_mimetype = None
+    response_parser = None
 
     def __init__(
         self,
@@ -128,11 +135,6 @@ class WSRequest(QNetworkRequest):
             request_mimetype: Set the Content-Type header.
             url: URL passed as a string or as a QUrl to use for this request
         """
-        # These two are codependent (see _update_authorization_header) and must
-        # be initialized explicitly.
-        self._access_token = None
-        self._mblogin = None
-
         # mandatory parameters
         self.method = method
         if self.method not in {'GET', 'PUT', 'DELETE', 'POST'}:
@@ -159,14 +161,9 @@ class WSRequest(QNetworkRequest):
         self.priority = priority
         self.important = important
 
-        # setup
-        self._retries = 0
-        self._high_prio_no_cache = True
-        self.response_parser = None
-        self.response_mimetype = None
-        self.access_token = None
-
         # set headers and attributes
+        self.access_token = None  # call _update_authorization_header
+
         if self.method == 'GET':
             self._high_prio_no_cache = self.refresh
             self.setAttribute(QNetworkRequest.Attribute.HttpPipeliningAllowedAttribute, True)
