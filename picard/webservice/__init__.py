@@ -97,10 +97,24 @@ class UnknownResponseParserError(Exception):
 class WSRequest(QNetworkRequest):
     """Represents a single HTTP request."""
 
-    def __init__(self, method, host, port, path, handler, parse_response_type=None, data=None,
-                 mblogin=False, cacheloadcontrol=None, refresh=False,
-                 queryargs=None, priority=False, important=False,
-                 request_mimetype=None):
+    def __init__(
+        self,
+        *,
+        method=None,
+        host=None,
+        port=-1,
+        path=None,
+        handler=None,
+        parse_response_type=None,
+        data=None,
+        mblogin=False,
+        cacheloadcontrol=None,
+        refresh=False,
+        queryargs=None,
+        priority=False,
+        important=False,
+        request_mimetype=None,
+    ):
         """
         Args:
             method: HTTP method.  One of ``GET``, ``POST``, ``PUT``, or ``DELETE``.
@@ -108,49 +122,70 @@ class WSRequest(QNetworkRequest):
             port: TCP port number (80 or 443).
             path: Path component.
             handler: Callback which takes a 3-tuple of `(str:document,
-            QNetworkReply:reply, QNetworkReply.Error:error)`.
+                QNetworkReply:reply, QNetworkReply.Error:error)`.
             parse_response_type: Specifies that request either sends or accepts
-            data as ``application/{{response_mimetype}}``.
+                data as ``application/{{response_mimetype}}``.
             data: Data to include with ``PUT`` or ``POST`` requests.
             mblogin: Hints that this request should be tied to a MusicBrainz
             account, requiring that we obtain an OAuth token first.
             cacheloadcontrol: See `QNetworkRequest.Attribute.CacheLoadControlAttribute`.
             refresh: Indicates a user-specified resource refresh, such as when
-            the user wishes to reload a release.  Marks the request as high priority
-            and disables caching.
+                the user wishes to reload a release.  Marks the request as high priority
+                and disables caching.
             queryargs: `dict` of query arguments.
-            retries: Current retry attempt number.
             priority: Indicates that this is a high priority request.
             important: Indicates that this is an important request.
             request_mimetype: Set the Content-Type header.
         """
-        url = build_qurl(host, port, path=path, queryargs=queryargs)
-        super().__init__(url)
-
         # These two are codependent (see _update_authorization_header) and must
         # be initialized explicitly.
         self._access_token = None
         self._mblogin = None
 
-        self._retries = 0
-
+        # mandatory parameters
         self.method = method
+        if self.method not in {'GET', 'PUT', 'DELETE', 'POST'}:
+            raise AssertionError('invalid method')
         self.host = host
-        self.port = port
+        if self.host is None:
+            raise AssertionError('host undefined')
+        self.port = int(port)
+        if self.port < 0:
+            raise AssertionError('port invalid')
         self.path = path
+        if self.path is None:
+            raise AssertionError('path undefined')
         self.handler = handler
+        if self.handler is None:
+            raise AssertionError('handler undefined')
+
+        # optional parameter, must be set before calling build_qurl()
+        self.queryargs = queryargs
+
+        # must be called before setting mblogin
+        url = build_qurl(self.host, self.port, path=self.path, queryargs=self.queryargs)
+        super().__init__(url)
+
+        # optional parameters
         self.parse_response_type = parse_response_type
-        self.response_parser = None
-        self.response_mimetype = None
         self.request_mimetype = request_mimetype
         self.data = data
         self.mblogin = mblogin
         self.cacheloadcontrol = cacheloadcontrol
         self.refresh = refresh
-        self.queryargs = queryargs
         self.priority = priority
         self.important = important
-        self._high_prio_no_cache = False
+
+        # setup
+        self._retries = 0
+        if self.method == 'GET':
+            self._high_prio_no_cache = self.refresh
+            self.setAttribute(QNetworkRequest.Attribute.HttpPipeliningAllowedAttribute, True)
+        else:
+            self._high_prio_no_cache = True
+
+        self.response_parser = None
+        self.response_mimetype = None
 
         self.access_token = None
         self._init_headers()
@@ -216,48 +251,6 @@ class WSRequest(QNetworkRequest):
         self.priority = priority
         self._retries += 1
         return self._retries
-
-
-class WSGetRequest(WSRequest):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__("GET", *args, **kwargs)
-
-    def _init_headers(self):
-        self._high_prio_no_cache = self.refresh
-        super()._init_headers()
-        self.setAttribute(QNetworkRequest.Attribute.HttpPipeliningAllowedAttribute,
-                          True)
-
-
-class WSPutRequest(WSRequest):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__("PUT", *args, **kwargs)
-
-    def _init_headers(self):
-        self._high_prio_no_cache = True
-        super()._init_headers()
-
-
-class WSDeleteRequest(WSRequest):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__("DELETE", *args, **kwargs)
-
-    def _init_headers(self):
-        self._high_prio_no_cache = True
-        super()._init_headers()
-
-
-class WSPostRequest(WSRequest):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__("POST", *args, **kwargs)
-
-    def _init_headers(self):
-        self._high_prio_no_cache = True
-        super()._init_headers()
 
 
 class RequestTask(namedtuple('RequestTask', 'hostkey func priority')):
@@ -577,40 +570,88 @@ class WebService(QtCore.QObject):
     def get(self, host, port, path, handler, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE,
             priority=False, important=False, mblogin=False, cacheloadcontrol=None, refresh=False,
             queryargs=None):
-        request = WSGetRequest(host, port, path, handler, parse_response_type=parse_response_type,
-                               mblogin=mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh,
-                               queryargs=queryargs, priority=priority, important=important)
+        request = WSRequest(
+            method='GET',
+            host=host,
+            port=port,
+            path=path,
+            handler=handler,
+            parse_response_type=parse_response_type,
+            priority=priority,
+            important=important,
+            mblogin=mblogin,
+            cacheloadcontrol=cacheloadcontrol,
+            refresh=refresh,
+            queryargs=queryargs,
+        )
         return self.add_request(request)
 
     def post(self, host, port, path, data, handler, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE,
              priority=False, important=False, mblogin=True, queryargs=None, request_mimetype=None):
-        request = WSPostRequest(host, port, path, handler, parse_response_type=parse_response_type,
-                                data=data, mblogin=mblogin, queryargs=queryargs,
-                                priority=priority, important=important,
-                                request_mimetype=request_mimetype)
+        request = WSRequest(
+            method='POST',
+            host=host,
+            port=port,
+            path=path,
+            handler=handler,
+            parse_response_type=parse_response_type,
+            priority=priority,
+            important=important,
+            mblogin=mblogin,
+            queryargs=queryargs,
+            data=data,
+            request_mimetype=request_mimetype,
+        )
         log.debug("POST-DATA %r", data)
         return self.add_request(request)
 
     def put(self, host, port, path, data, handler, priority=True, important=False, mblogin=True,
             queryargs=None, request_mimetype=None):
-        request = WSPutRequest(host, port, path, handler, data=data, mblogin=mblogin,
-                               queryargs=queryargs, priority=priority,
-                               important=important, request_mimetype=request_mimetype)
+        request = WSRequest(
+            method='PUT',
+            host=host,
+            port=port,
+            path=path,
+            handler=handler,
+            priority=priority,
+            important=important,
+            mblogin=mblogin,
+            queryargs=queryargs,
+            data=data,
+            request_mimetype=request_mimetype,
+        )
         return self.add_request(request)
 
     def delete(self, host, port, path, handler, priority=True, important=False, mblogin=True,
                queryargs=None):
-        request = WSDeleteRequest(host, port, path, handler, mblogin=mblogin,
-                                  queryargs=queryargs, priority=priority, important=important)
+        request = WSRequest(
+            method='DELETE',
+            host=host,
+            port=port,
+            path=path,
+            handler=handler,
+            priority=priority,
+            important=important,
+            mblogin=mblogin,
+        )
         return self.add_request(request)
 
     def download(self, host, port, path, handler, priority=False,
                  important=False, cacheloadcontrol=None, refresh=False,
                  queryargs=None):
-        return self.get(host, port, path, handler, parse_response_type=None,
-                        priority=priority, important=important,
-                        cacheloadcontrol=cacheloadcontrol, refresh=refresh,
-                        queryargs=queryargs)
+        request = WSRequest(
+            method='GET',
+            host=host,
+            port=port,
+            path=path,
+            handler=handler,
+            priority=priority,
+            important=important,
+            cacheloadcontrol=cacheloadcontrol,
+            refresh=refresh,
+            queryargs=queryargs,
+        )
+        return self.add_request(request)
 
     def stop(self):
         for reply in list(self._active_requests):
