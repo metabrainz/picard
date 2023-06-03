@@ -28,6 +28,7 @@ from unittest.mock import (
     patch,
 )
 
+from PyQt5.QtCore import QUrl
 from PyQt5.QtNetwork import QNetworkProxy
 
 from test.picardtestcase import PicardTestCase
@@ -114,9 +115,7 @@ class WebServiceTaskTest(PicardTestCase):
     def test_add_task(self):
         request = WSRequest(
             method='GET',
-            host='abc.xyz',
-            port=80,
-            path="",
+            qurl=QUrl('http://abc.xyz'),
             handler=dummy_handler,
         )
         func = 1
@@ -132,9 +131,7 @@ class WebServiceTaskTest(PicardTestCase):
         mock_timer2 = self.ws._timer_count_pending_requests
         request = WSRequest(
             method='GET',
-            host='abc.xyz',
-            port=80,
-            path="",
+            qurl=QUrl('http://abc.xyz'),
             handler=dummy_handler,
         )
         self.ws.add_task(0, request)
@@ -183,9 +180,7 @@ class RequestTaskTest(PicardTestCase):
     def test_from_request(self):
         request = WSRequest(
             method='GET',
-            host='example.com',
-            port=443,
-            path='',
+            qurl=QUrl('https://example.com'),
             handler=dummy_handler,
             priority=True,
         )
