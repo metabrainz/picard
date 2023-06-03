@@ -107,7 +107,7 @@ class WSRequest(QNetworkRequest):
         priority=False,
         important=False,
         request_mimetype=None,
-        qurl=None,
+        url=None,
     ):
         """
         Args:
@@ -126,7 +126,7 @@ class WSRequest(QNetworkRequest):
             priority: Indicates that this is a high priority request.
             important: Indicates that this is an important request.
             request_mimetype: Set the Content-Type header.
-            qurl: QUrl object to use for this request
+            url: URL passed as a string or as a QUrl to use for this request
         """
         # These two are codependent (see _update_authorization_header) and must
         # be initialized explicitly.
@@ -142,10 +142,12 @@ class WSRequest(QNetworkRequest):
         if self.handler is None:
             raise AssertionError('handler undefined')
 
-        if qurl is None:
+        if url is None:
             raise AssertionError('URL undefined')
 
-        super().__init__(qurl)
+        if not isinstance(url, QUrl):
+            url = QUrl(url)
+        super().__init__(url)
 
         # optional parameters
         self.parse_response_type = parse_response_type
@@ -462,7 +464,7 @@ class WebService(QtCore.QObject):
 
             redirect_request = WSRequest(
                 method='GET',
-                qurl=redirect_qurl,
+                url=redirect_qurl,
                 handler=request.handler,
                 parse_response_type=request.parse_response_type,
                 priority=True,
@@ -564,7 +566,7 @@ class WebService(QtCore.QObject):
             queryargs=None):
         request = WSRequest(
             method='GET',
-            qurl=build_qurl(host, port, path=path, queryargs=queryargs),
+            url=build_qurl(host, port, path=path, queryargs=queryargs),
             handler=handler,
             parse_response_type=parse_response_type,
             priority=priority,
@@ -579,7 +581,7 @@ class WebService(QtCore.QObject):
              priority=False, important=False, mblogin=True, queryargs=None, request_mimetype=None):
         request = WSRequest(
             method='POST',
-            qurl=build_qurl(host, port, path=path, queryargs=queryargs),
+            url=build_qurl(host, port, path=path, queryargs=queryargs),
             handler=handler,
             parse_response_type=parse_response_type,
             priority=priority,
@@ -595,7 +597,7 @@ class WebService(QtCore.QObject):
             queryargs=None, request_mimetype=None):
         request = WSRequest(
             method='PUT',
-            qurl=build_qurl(host, port, path=path, queryargs=queryargs),
+            url=build_qurl(host, port, path=path, queryargs=queryargs),
             handler=handler,
             priority=priority,
             important=important,
@@ -609,7 +611,7 @@ class WebService(QtCore.QObject):
                queryargs=None):
         request = WSRequest(
             method='DELETE',
-            qurl=build_qurl(host, port, path=path, queryargs=queryargs),
+            url=build_qurl(host, port, path=path, queryargs=queryargs),
             handler=handler,
             priority=priority,
             important=important,
@@ -622,7 +624,7 @@ class WebService(QtCore.QObject):
                  queryargs=None):
         request = WSRequest(
             method='GET',
-            qurl=build_qurl(host, port, path=path, queryargs=queryargs),
+            url=build_qurl(host, port, path=path, queryargs=queryargs),
             handler=handler,
             priority=priority,
             important=important,
