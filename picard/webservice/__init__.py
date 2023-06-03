@@ -485,21 +485,17 @@ class WebService(QtCore.QObject):
             leftUrl.toString(QUrl.UrlFormattingOption.RemovePort) == rightUrl.toString(QUrl.UrlFormattingOption.RemovePort)
 
     def _handle_redirect(self, reply, request, redirect):
-        source_qurl = request.url()
         error = int(reply.error())
         # merge with base url (to cover the possibility of the URL being relative)
-        redirect_qurl = source_qurl.resolved(redirect)
+        redirect_qurl = request.qurl.resolved(redirect)
         if not WebService.urls_equivalent(redirect_qurl, reply.request().url()):
             log.debug("Redirect to %s requested", redirect_qurl.toString(QUrl.UrlFormattingOption.RemoveUserInfo))
 
             redirect_host = redirect_qurl.host()
             redirect_port = qurl_port(redirect_qurl)
 
-            original_host = source_qurl.host()
-            original_port = qurl_port(source_qurl)
-
             ratecontrol.copy_minimal_delay(
-                (original_host, original_port),
+                request.get_host_key(),
                 (redirect_host, redirect_port),
             )
 
