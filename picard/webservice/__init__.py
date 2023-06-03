@@ -469,23 +469,33 @@ class WebService(QtCore.QObject):
         redirect = url.resolved(redirect)
         if not WebService.urls_equivalent(redirect, reply.request().url()):
             log.debug("Redirect to %s requested", redirect.toString(QUrl.UrlFormattingOption.RemoveUserInfo))
+
             redirect_host = redirect.host()
             redirect_port = self.url_port(redirect)
-            redirect_query = dict(QUrlQuery(redirect).queryItems(QUrl.ComponentFormattingOption.FullyEncoded))
-            redirect_path = redirect.path()
 
             original_host = url.host()
             original_port = self.url_port(url)
-            original_host_key = (original_host, original_port)
-            redirect_host_key = (redirect_host, redirect_port)
-            ratecontrol.copy_minimal_delay(original_host_key, redirect_host_key)
 
-            self.get(redirect_host,
-                     redirect_port,
-                     redirect_path,
-                     request.handler, request.parse_response_type, priority=True, important=True,
-                     refresh=request.refresh, queryargs=redirect_query, mblogin=request.mblogin,
-                     cacheloadcontrol=request.attribute(QNetworkRequest.Attribute.CacheLoadControlAttribute))
+            ratecontrol.copy_minimal_delay(
+                (original_host, original_port),
+                (redirect_host, redirect_port),
+            )
+
+            redirect_request = WSRequest(
+                method='GET',
+                host=redirect_host,
+                port=redirect_port,
+                path=redirect.path(),
+                handler=request.handler,
+                parse_response_type=request.parse_response_type,
+                priority=True,
+                important=True,
+                mblogin=request.mblogin,
+                cacheloadcontrol=request.attribute(QNetworkRequest.Attribute.CacheLoadControlAttribute),
+                refresh=request.refresh,
+                queryargs=dict(QUrlQuery(redirect).queryItems(QUrl.ComponentFormattingOption.FullyEncoded)),
+            )
+            self.add_request(redirect_request)
         else:
             log.error("Redirect loop: %s",
                       self.http_response_safe_url(reply)
