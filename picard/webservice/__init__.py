@@ -42,10 +42,7 @@ from PyQt5 import (
     QtCore,
     QtNetwork,
 )
-from PyQt5.QtCore import (
-    QUrl,
-    QUrlQuery,
-)
+from PyQt5.QtCore import QUrl
 from PyQt5.QtNetwork import QNetworkRequest
 
 from picard import (
@@ -218,10 +215,6 @@ class WSRequest(QNetworkRequest):
     @property
     def path(self):
         return self.url().path()
-
-    @property
-    def queryargs(self):
-        return dict(QUrlQuery(self.url()).queryItems(QUrl.ComponentFormattingOption.FullyEncoded))
 
     @property
     def access_token(self):
