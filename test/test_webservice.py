@@ -371,6 +371,7 @@ class WSRequestTest(PicardTestCase):
         self.assertFalse(request.refresh)
         self.assertFalse(request.priority)
         self.assertFalse(request.important)
+        self.assertFalse(request.has_auth)
 
     def test_init_minimal_extra(self):
         request = WSRequest(
@@ -456,10 +457,16 @@ class WSRequestTest(PicardTestCase):
         # getter
         self.assertEqual(request.mblogin, 'test')
 
+        # auth needs a token too
+        self.assertFalse(request.has_auth)
+
         # setter
         request.access_token = 'token'
         # getter
         self.assertEqual(request.access_token, 'token')
+
+        # auth is now possible
+        self.assertTrue(request.has_auth)
 
     def test_set_data(self):
         request = WSRequest(
