@@ -25,10 +25,19 @@ import argparse
 from collections import defaultdict
 import glob
 import itertools
+import logging
 import os
 import re
 import subprocess  # nosec: B404
 import sys
+
+
+logging.basicConfig(
+    force=True,
+    format="%(asctime)s:%(levelname)s: %(message)s",
+    level=logging.DEBUG,
+    stream=sys.stderr,
+)
 
 
 ALIASES = {
@@ -278,23 +287,26 @@ def main():
             if args.recursive:
                 paths += glob.glob(path + '/*')
     if not files:
-        print("No valid file found", file=sys.stderr)
+        logging.info("No valid file found")
         sys.exit(0)
 
     for path in files:
         new_content, info = fix_header(path, encoding=args.encoding)
         if new_content is None:
-            print("Skipping %s (%s)" % (path, info), file=sys.stderr)
+            logging.info("Skipping %s (%s)" % (path, info))
             continue
         if args.in_place:
-            print("Parsing and fixing %s (in place)" % path, file=sys.stderr)
+            logging.info("Parsing and fixing %s (in place)" % path)
             with open(path, 'w', encoding=args.encoding) as f:
                 print(new_content, file=f)
         else:
             # by default, we just output to stdout
-            print("Parsing and fixing %s (stdout)" % path, file=sys.stderr)
+            logging.info("Parsing and fixing %s (stdout)" % path)
             print(new_content)
 
 
 if __name__ == '__main__':
+
+    logging.debug("Starting...")
+
     main()
