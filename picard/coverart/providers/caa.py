@@ -55,6 +55,7 @@ from picard.config import (
 from picard.const import (
     CAA_HOST,
     CAA_PORT,
+    CAA_URL,
 )
 from picard.coverart.image import (
     CaaCoverArtImage,
@@ -581,14 +582,12 @@ class CoverArtProviderCaa(CoverArtProvider):
         return "/release/%s/" % self.metadata["musicbrainz_albumid"]
 
     def queue_images(self):
-        self.album.tagger.webservice.get(
-            CAA_HOST,
-            CAA_PORT,
-            self._caa_path,
-            self._caa_json_downloaded,
+        self.album.tagger.webservice.get_url(
+            url=CAA_URL + self._caa_path,
+            handler=self._caa_json_downloaded,
             priority=True,
             important=False,
-            cacheloadcontrol=QNetworkRequest.CacheLoadControl.PreferNetwork
+            cacheloadcontrol=QNetworkRequest.CacheLoadControl.PreferNetwork,
         )
         self.album._requests += 1
         # we will call next_in_queue() after json parsing
