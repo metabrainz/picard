@@ -43,6 +43,7 @@ logging.basicConfig(
 ALIASES = {
     'abhi-ohri': 'Abhinav Ohri',
     'Antonio Larrosa <alarrosa@suse.com>': 'Antonio Larrosa',
+    'bob': 'Bob Swift',
     'Lukas Lalinsky <lalinsky@gmail.com>': 'Lukáš Lalinský',
     'petitminion': 'Petit Minion',
     'Philipp Wolfer <ph.wolfer@gmail.com>': 'Philipp Wolfer',
