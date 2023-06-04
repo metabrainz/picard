@@ -62,9 +62,7 @@ DEFAULT_FPCALC_THREADS = 2
 MUSICBRAINZ_OAUTH_CLIENT_ID = 'ACa9wsDX19cLp-AeEP-vVw'
 MUSICBRAINZ_OAUTH_CLIENT_SECRET = 'xIsvXbIuntaLuRRhzuazOA'
 
-# Cover art archive URL and port
-CAA_HOST = "coverartarchive.org"
-CAA_PORT = 443
+# Cover art archive URL
 CAA_URL = 'https://coverartarchive.org'
 
 # Prepare documentation URLs
