@@ -28,12 +28,17 @@ from unittest.mock import (
     patch,
 )
 
-from PyQt5.QtNetwork import QNetworkProxy
+from PyQt5.QtCore import QUrl
+from PyQt5.QtNetwork import (
+    QNetworkProxy,
+    QNetworkRequest,
+)
 
 from test.picardtestcase import PicardTestCase
 
 from picard import config
 from picard.webservice import (
+    TEMP_ERRORS_RETRIES,
     RequestPriorityQueue,
     RequestTask,
     UnknownResponseParserError,
@@ -114,9 +119,7 @@ class WebServiceTaskTest(PicardTestCase):
     def test_add_task(self):
         request = WSRequest(
             method='GET',
-            host='abc.xyz',
-            port=80,
-            path="",
+            url='http://abc.xyz',
             handler=dummy_handler,
         )
         func = 1
@@ -132,9 +135,7 @@ class WebServiceTaskTest(PicardTestCase):
         mock_timer2 = self.ws._timer_count_pending_requests
         request = WSRequest(
             method='GET',
-            host='abc.xyz',
-            port=80,
-            path="",
+            url='http://abc.xyz',
             handler=dummy_handler,
         )
         self.ws.add_task(0, request)
@@ -183,9 +184,7 @@ class RequestTaskTest(PicardTestCase):
     def test_from_request(self):
         request = WSRequest(
             method='GET',
-            host='example.com',
-            port=443,
-            path='',
+            url='https://example.com',
             handler=dummy_handler,
             priority=True,
         )
@@ -352,3 +351,149 @@ class ParserHookTest(PicardTestCase):
             WebService.get_response_parser('B')
         with self.assertRaises(UnknownResponseParserError):
             WebService.get_response_mimetype('B')
+
+
+class WSRequestTest(PicardTestCase):
+
+    def test_init_minimal(self):
+        request = WSRequest(url='https://example.org/path', method='GET', handler=dummy_handler)
+        self.assertEqual(request.host, 'example.org')
+        self.assertEqual(request.port, 443)
+        self.assertEqual(request.path, '/path')
+        self.assertEqual(request.handler, dummy_handler)
+        self.assertEqual(request.method, 'GET')
+        self.assertEqual(request.get_host_key(), ('example.org', 443))
+        self.assertIsNone(request.parse_response_type)
+        self.assertIsNone(request.data)
+        self.assertIsNone(request.cacheloadcontrol)
+        self.assertIsNone(request.request_mimetype)
+        self.assertFalse(request.mblogin)
+        self.assertFalse(request.refresh)
+        self.assertFalse(request.priority)
+        self.assertFalse(request.important)
+        self.assertFalse(request.has_auth)
+
+    def test_init_minimal_extra(self):
+        request = WSRequest(
+            url='https://example.org/path',
+            method='GET',
+            handler=dummy_handler,
+            priority=True,
+            important=True,
+            refresh=True,
+        )
+        self.assertTrue(request.priority)
+        self.assertTrue(request.important)
+        self.assertTrue(request.refresh)
+
+    def test_init_minimal_qurl(self):
+        url = 'https://example.org/path?q=1'
+        request = WSRequest(url=QUrl(url), method='GET', handler=dummy_handler)
+        self.assertEqual(request.url().toString(), url)
+
+    def test_init_port_80(self):
+        request = WSRequest(url='http://example.org/path', method='GET', handler=dummy_handler)
+        self.assertEqual(request.port, 80)
+
+    def test_init_port_other(self):
+        request = WSRequest(url='http://example.org:666/path', method='GET', handler=dummy_handler)
+        self.assertEqual(request.port, 666)
+
+    def test_missing_url(self):
+        with self.assertRaises(AssertionError):
+            WSRequest(method='GET', handler=dummy_handler)
+
+    def test_missing_method(self):
+        with self.assertRaises(AssertionError):
+            WSRequest(url='http://x', handler=dummy_handler)
+
+    def test_missing_handler(self):
+        with self.assertRaises(AssertionError):
+            WSRequest(url='http://x', method='GET')
+
+    def test_invalid_method(self):
+        with self.assertRaises(AssertionError):
+            WSRequest(url='http://x', method='XXX', handler=dummy_handler)
+
+    def test_set_cacheloadcontrol(self):
+        request = WSRequest(
+            url='http://example.org/path',
+            method='GET',
+            handler=dummy_handler,
+            cacheloadcontrol=QNetworkRequest.CacheLoadControl.AlwaysNetwork,
+        )
+        self.assertEqual(request.cacheloadcontrol, QNetworkRequest.CacheLoadControl.AlwaysNetwork)
+
+    def test_set_parse_response_type(self):
+        WebService.add_parser('A', 'mime', 'parser')
+        request = WSRequest(
+            url='http://example.org/path',
+            method='GET',
+            handler=dummy_handler,
+            parse_response_type='A',
+        )
+        self.assertEqual(request.response_mimetype, 'mime')
+        self.assertEqual(request.response_parser, 'parser')
+
+    def test_set_invalid_parse_response_type(self):
+        WebService.add_parser('A', 'mime', 'parser')
+        request = WSRequest(
+            url='http://example.org/path',
+            method='GET',
+            handler=dummy_handler,
+            parse_response_type='invalid',
+        )
+        self.assertEqual(request.response_mimetype, None)
+        self.assertEqual(request.response_parser, None)
+
+    def test_set_mblogin_access_token(self):
+        request = WSRequest(
+            url='http://example.org/path',
+            method='POST',
+            handler=dummy_handler,
+        )
+        # setter
+        request.mblogin = 'test'
+        # getter
+        self.assertEqual(request.mblogin, 'test')
+
+        # auth needs a token too
+        self.assertFalse(request.has_auth)
+
+        # setter
+        request.access_token = 'token'
+        # getter
+        self.assertEqual(request.access_token, 'token')
+
+        # auth is now possible
+        self.assertTrue(request.has_auth)
+
+    def test_set_data(self):
+        request = WSRequest(
+            url='http://example.org/path',
+            method='POST',
+            handler=dummy_handler,
+            data='data',
+        )
+        self.assertEqual(request.data, 'data')
+
+    def test_set_retries_reached(self):
+        request = WSRequest(
+            url='http://example.org/path',
+            method='GET',
+            handler=dummy_handler,
+        )
+        for i in range(0, TEMP_ERRORS_RETRIES):
+            self.assertEqual(request.mark_for_retry(), i+1)
+
+        self.assertTrue(request.max_retries_reached())
+
+    def test_set_retries_not_reached(self):
+        request = WSRequest(
+            url='http://example.org/path',
+            method='GET',
+            handler=dummy_handler,
+        )
+        self.assertTrue(TEMP_ERRORS_RETRIES > 1)
+        self.assertEqual(request.mark_for_retry(), 1)
+        self.assertFalse(request.max_retries_reached())

@@ -42,10 +42,7 @@ from PyQt5 import (
     QtCore,
     QtNetwork,
 )
-from PyQt5.QtCore import (
-    QUrl,
-    QUrlQuery,
-)
+from PyQt5.QtCore import QUrl
 from PyQt5.QtNetwork import QNetworkRequest
 
 from picard import (
@@ -96,31 +93,32 @@ class UnknownResponseParserError(Exception):
 
 class WSRequest(QNetworkRequest):
     """Represents a single HTTP request."""
+    _access_token = None
+    _high_prio_no_cache = True
+    _mblogin = None
+    _retries = 0
+
+    response_mimetype = None
+    response_parser = None
 
     def __init__(
         self,
         *,
         method=None,
-        host=None,
-        port=-1,
-        path=None,
         handler=None,
         parse_response_type=None,
         data=None,
         mblogin=False,
         cacheloadcontrol=None,
         refresh=False,
-        queryargs=None,
         priority=False,
         important=False,
         request_mimetype=None,
+        url=None,
     ):
         """
         Args:
             method: HTTP method.  One of ``GET``, ``POST``, ``PUT``, or ``DELETE``.
-            host: Hostname.
-            port: TCP port number (80 or 443).
-            path: Path component.
             handler: Callback which takes a 3-tuple of `(str:document,
                 QNetworkReply:reply, QNetworkReply.Error:error)`.
             parse_response_type: Specifies that request either sends or accepts
@@ -132,38 +130,25 @@ class WSRequest(QNetworkRequest):
             refresh: Indicates a user-specified resource refresh, such as when
                 the user wishes to reload a release.  Marks the request as high priority
                 and disables caching.
-            queryargs: `dict` of query arguments.
             priority: Indicates that this is a high priority request.
             important: Indicates that this is an important request.
             request_mimetype: Set the Content-Type header.
+            url: URL passed as a string or as a QUrl to use for this request
         """
-        # These two are codependent (see _update_authorization_header) and must
-        # be initialized explicitly.
-        self._access_token = None
-        self._mblogin = None
-
         # mandatory parameters
         self.method = method
         if self.method not in {'GET', 'PUT', 'DELETE', 'POST'}:
             raise AssertionError('invalid method')
-        self.host = host
-        if self.host is None:
-            raise AssertionError('host undefined')
-        self.port = int(port)
-        if self.port < 0:
-            raise AssertionError('port invalid')
-        self.path = path
-        if self.path is None:
-            raise AssertionError('path undefined')
+
         self.handler = handler
         if self.handler is None:
             raise AssertionError('handler undefined')
 
-        # optional parameter, must be set before calling build_qurl()
-        self.queryargs = queryargs
+        if url is None:
+            raise AssertionError('URL undefined')
 
-        # must be called before setting mblogin
-        url = build_qurl(self.host, self.port, path=self.path, queryargs=self.queryargs)
+        if not isinstance(url, QUrl):
+            url = QUrl(url)
         super().__init__(url)
 
         # optional parameters
@@ -176,21 +161,13 @@ class WSRequest(QNetworkRequest):
         self.priority = priority
         self.important = important
 
-        # setup
-        self._retries = 0
+        # set headers and attributes
+        self.access_token = None  # call _update_authorization_header
+
         if self.method == 'GET':
             self._high_prio_no_cache = self.refresh
             self.setAttribute(QNetworkRequest.Attribute.HttpPipeliningAllowedAttribute, True)
-        else:
-            self._high_prio_no_cache = True
 
-        self.response_parser = None
-        self.response_mimetype = None
-
-        self.access_token = None
-        self._init_headers()
-
-    def _init_headers(self):
         self.setHeader(QNetworkRequest.KnownHeaders.UserAgentHeader, USER_AGENT_STRING)
 
         if self.mblogin or self._high_prio_no_cache:
@@ -213,11 +190,29 @@ class WSRequest(QNetworkRequest):
                 self.request_mimetype = self.response_mimetype or "application/x-www-form-urlencoded"
             self.setHeader(QNetworkRequest.KnownHeaders.ContentTypeHeader, self.request_mimetype)
 
+    @property
+    def has_auth(self):
+        return self.mblogin and self.access_token
+
     def _update_authorization_header(self):
-        authorization = b""
-        if self.mblogin and self.access_token:
-            authorization = ("Bearer %s" % self.access_token).encode('utf-8')
-        self.setRawHeader(b"Authorization", authorization)
+        auth = "Bearer " + self.access_token if self.has_auth else ""
+        self.setRawHeader(b"Authorization", auth.encode('utf-8'))
+
+    @property
+    def host(self):
+        return self.url().host()
+
+    @property
+    def port(self):
+        """Returns QUrl port or default ports (443 for https, 80 for http)"""
+        url = self.url()
+        if url.scheme() == 'https':
+            return url.port(443)
+        return url.port(80)
+
+    @property
+    def path(self):
+        return self.url().path()
 
     @property
     def access_token(self):
@@ -456,36 +451,31 @@ class WebService(QtCore.QObject):
         return leftUrl.port(80) == rightUrl.port(80) and \
             leftUrl.toString(QUrl.UrlFormattingOption.RemovePort) == rightUrl.toString(QUrl.UrlFormattingOption.RemovePort)
 
-    @staticmethod
-    def url_port(url):
-        if url.scheme() == 'https':
-            return url.port(443)
-        return url.port(80)
-
     def _handle_redirect(self, reply, request, redirect):
-        url = request.url()
         error = int(reply.error())
         # merge with base url (to cover the possibility of the URL being relative)
-        redirect = url.resolved(redirect)
-        if not WebService.urls_equivalent(redirect, reply.request().url()):
-            log.debug("Redirect to %s requested", redirect.toString(QUrl.UrlFormattingOption.RemoveUserInfo))
-            redirect_host = redirect.host()
-            redirect_port = self.url_port(redirect)
-            redirect_query = dict(QUrlQuery(redirect).queryItems(QUrl.ComponentFormattingOption.FullyEncoded))
-            redirect_path = redirect.path()
+        redirect_qurl = request.url().resolved(redirect)
+        if not WebService.urls_equivalent(redirect_qurl, reply.request().url()):
+            log.debug("Redirect to %s requested", redirect_qurl.toString(QUrl.UrlFormattingOption.RemoveUserInfo))
 
-            original_host = url.host()
-            original_port = self.url_port(url)
-            original_host_key = (original_host, original_port)
-            redirect_host_key = (redirect_host, redirect_port)
-            ratecontrol.copy_minimal_delay(original_host_key, redirect_host_key)
+            redirect_request = WSRequest(
+                method='GET',
+                url=redirect_qurl,
+                handler=request.handler,
+                parse_response_type=request.parse_response_type,
+                priority=True,
+                important=True,
+                mblogin=request.mblogin,
+                cacheloadcontrol=request.attribute(QNetworkRequest.Attribute.CacheLoadControlAttribute),
+                refresh=request.refresh,
+            )
 
-            self.get(redirect_host,
-                     redirect_port,
-                     redirect_path,
-                     request.handler, request.parse_response_type, priority=True, important=True,
-                     refresh=request.refresh, queryargs=redirect_query, mblogin=request.mblogin,
-                     cacheloadcontrol=request.attribute(QNetworkRequest.Attribute.CacheLoadControlAttribute))
+            ratecontrol.copy_minimal_delay(
+                request.get_host_key(),
+                redirect_request.get_host_key(),
+            )
+
+            self.add_request(redirect_request)
         else:
             log.error("Redirect loop: %s",
                       self.http_response_safe_url(reply)
@@ -572,9 +562,7 @@ class WebService(QtCore.QObject):
             queryargs=None):
         request = WSRequest(
             method='GET',
-            host=host,
-            port=port,
-            path=path,
+            url=build_qurl(host, port, path=path, queryargs=queryargs),
             handler=handler,
             parse_response_type=parse_response_type,
             priority=priority,
@@ -582,7 +570,6 @@ class WebService(QtCore.QObject):
             mblogin=mblogin,
             cacheloadcontrol=cacheloadcontrol,
             refresh=refresh,
-            queryargs=queryargs,
         )
         return self.add_request(request)
 
@@ -590,15 +577,12 @@ class WebService(QtCore.QObject):
              priority=False, important=False, mblogin=True, queryargs=None, request_mimetype=None):
         request = WSRequest(
             method='POST',
-            host=host,
-            port=port,
-            path=path,
+            url=build_qurl(host, port, path=path, queryargs=queryargs),
             handler=handler,
             parse_response_type=parse_response_type,
             priority=priority,
             important=important,
             mblogin=mblogin,
-            queryargs=queryargs,
             data=data,
             request_mimetype=request_mimetype,
         )
@@ -609,14 +593,11 @@ class WebService(QtCore.QObject):
             queryargs=None, request_mimetype=None):
         request = WSRequest(
             method='PUT',
-            host=host,
-            port=port,
-            path=path,
+            url=build_qurl(host, port, path=path, queryargs=queryargs),
             handler=handler,
             priority=priority,
             important=important,
             mblogin=mblogin,
-            queryargs=queryargs,
             data=data,
             request_mimetype=request_mimetype,
         )
@@ -626,9 +607,7 @@ class WebService(QtCore.QObject):
                queryargs=None):
         request = WSRequest(
             method='DELETE',
-            host=host,
-            port=port,
-            path=path,
+            url=build_qurl(host, port, path=path, queryargs=queryargs),
             handler=handler,
             priority=priority,
             important=important,
@@ -641,15 +620,12 @@ class WebService(QtCore.QObject):
                  queryargs=None):
         request = WSRequest(
             method='GET',
-            host=host,
-            port=port,
-            path=path,
+            url=build_qurl(host, port, path=path, queryargs=queryargs),
             handler=handler,
             priority=priority,
             important=important,
             cacheloadcontrol=cacheloadcontrol,
             refresh=refresh,
-            queryargs=queryargs,
         )
         return self.add_request(request)
 
