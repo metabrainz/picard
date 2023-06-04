@@ -100,6 +100,30 @@ class WebServiceTest(PicardTestCase):
         self.assertIn("GET", get_wsreq(mock_add_task).method)
         self.assertEqual(5, mock_add_task.call_count)
 
+    @patch.object(WebService, 'add_task')
+    def test_webservice_url_method_calls(self, mock_add_task):
+        url = "http://abc.xyz"
+        handler = dummy_handler
+        data = None
+
+        def get_wsreq(mock_add_task):
+            return mock_add_task.call_args[0][1]
+
+        self.ws.get_url(url=url, handler=handler)
+        self.assertEqual(1, mock_add_task.call_count)
+        self.assertEqual('abc.xyz', get_wsreq(mock_add_task).host)
+        self.assertEqual(80, get_wsreq(mock_add_task).port)
+        self.assertIn("GET", get_wsreq(mock_add_task).method)
+        self.ws.post_url(url=url, data=data, handler=handler)
+        self.assertIn("POST", get_wsreq(mock_add_task).method)
+        self.ws.put_url(url=url, data=data, handler=handler)
+        self.assertIn("PUT", get_wsreq(mock_add_task).method)
+        self.ws.delete_url(url=url, handler=handler)
+        self.assertIn("DELETE", get_wsreq(mock_add_task).method)
+        self.ws.download_url(url=url, handler=handler)
+        self.assertIn("GET", get_wsreq(mock_add_task).method)
+        self.assertEqual(5, mock_add_task.call_count)
+
 
 class WebServiceTaskTest(PicardTestCase):
 
