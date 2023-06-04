@@ -629,6 +629,34 @@ class WebService(QtCore.QObject):
         )
         return self.add_request(request)
 
+    def get_url(self, **kwargs):
+        kwargs['method'] = 'GET'
+        kwargs['parse_response_type'] = kwargs.get('parse_response_type', DEFAULT_RESPONSE_PARSER_TYPE)
+        return self.add_request(WSRequest(**kwargs))
+
+    def post_url(self, **kwargs):
+        kwargs['method'] = 'POST'
+        kwargs['parse_response_type'] = kwargs.get('parse_response_type', DEFAULT_RESPONSE_PARSER_TYPE)
+        kwargs['mblogin'] = kwargs.get('mblogin', True)
+        log.debug("POST-DATA %r", kwargs['data'])
+        return self.add_request(WSRequest(**kwargs))
+
+    def put_url(self, **kwargs):
+        kwargs['method'] = 'PUT'
+        kwargs['priority'] = kwargs.get('priority', True)
+        kwargs['mblogin'] = kwargs.get('mblogin', True)
+        return self.add_request(WSRequest(**kwargs))
+
+    def delete_url(self, **kwargs):
+        kwargs['method'] = 'DELETE'
+        kwargs['priority'] = kwargs.get('priority', True)
+        kwargs['mblogin'] = kwargs.get('mblogin', True)
+        return self.add_request(WSRequest(**kwargs))
+
+    def download_url(self, **kwargs):
+        kwargs['method'] = 'GET'
+        return self.add_request(WSRequest(**kwargs))
+
     def stop(self):
         for reply in list(self._active_requests):
             reply.abort()
