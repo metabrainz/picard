@@ -98,11 +98,11 @@ def parse_copyright_text(text):
     range_pattern = re.compile(r'^\s*(\d{4})\s*-\s*(\d{4})\s*$')
 
     for line in text.split("\n"):
-        match = pattern_copyright.search(line)
-        if match:
+        matched = pattern_copyright.search(line)
+        if matched:
             all_years = []
-            years_group = match.group(1)
-            author = match.group(2)
+            years_group = matched.group(1)
+            author = matched.group(2)
             author = ALIASES.get(author, author)
             comma_years = []
             if ',' in years_group:
