@@ -64,21 +64,31 @@ def ranges(i):
 
 def extract_authors_from_gitlog(path):
     authors = {}
-    cmd = ['git', 'log', r'--pretty=format:%ad %aN', r'--date=format:%Y', r'--', path]
+    cmd = ['git', 'log', r'--pretty=format:%ad¤%aN¤%aE', r'--date=format:%Y', r'--', path]
     result = subprocess.run(cmd, stdout=subprocess.PIPE, timeout=30)  # nosec: B603
+    aliased = set()
     if result.returncode == 0:
-        pattern = re.compile(r'^(\d+) (.*)$')
+        pattern = re.compile(r'^(?P<year>\d+)¤(?P<name>[^¤]*)¤(?P<email>.*)$')
         for line in result.stdout.decode('utf-8').split("\n"):
-            match = pattern.search(line)
-            if match:
-                year = int(match.group(1))
-                author = match.group(2)
-                author = ALIASES.get(author, author)
+            matched = pattern.search(line)
+            if matched:
+                year = int(matched.group('year'))
+                author = matched.group('name')
+                email = matched.group('email')
+                for c in (f"{author} <{email}>", email, author):
+                    if c in ALIASES:
+                        alias = ALIASES[c]
+                        aliased.add(f"{author} <{email}> -> {alias}")
+                        author = alias
+                        break
                 if author in authors:
                     if year not in authors[author]:
                         authors[author].append(year)
                 else:
                     authors[author] = [year]
+    for a in aliased:
+        logging.debug(f"Alias found: {a}")
+
     return authors
 
 
