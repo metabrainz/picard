@@ -150,6 +150,12 @@ class OAuthManager(object):
                 self.forget_access_token()
                 self.refresh_access_token(callback)
 
+    def url(self, path=None, params=None):
+        return build_qurl(
+            self.host, self.port, path=path,
+            queryargs=params
+        )
+
     def get_authorization_url(self, scopes):
         params = {
             "response_type": "code",
@@ -157,11 +163,7 @@ class OAuthManager(object):
             "redirect_uri": "urn:ietf:wg:oauth:2.0:oob",
             "scope": scopes,
         }
-        url = build_qurl(
-            self.host, self.port, path="/oauth2/authorize",
-            queryargs=params
-        )
-        return bytes(url.toEncoded()).decode()
+        return bytes(self.url(path="/oauth2/authorize", params=params).toEncoded()).decode()
 
     def set_refresh_token(self, refresh_token, scopes):
         log.debug("OAuth: got refresh_token %s with scopes %s", refresh_token, scopes)
@@ -179,18 +181,20 @@ class OAuthManager(object):
 
     def refresh_access_token(self, callback):
         log.debug("OAuth: refreshing access_token with a refresh_token %s", self.refresh_token)
-        path = "/oauth2/token"
         params = {
             "grant_type": "refresh_token",
             "refresh_token": self.refresh_token,
             "client_id": MUSICBRAINZ_OAUTH_CLIENT_ID,
             "client_secret": MUSICBRAINZ_OAUTH_CLIENT_SECRET,
         }
-        self.webservice.post(
-            self.host, self.port, path, self._query_data(params),
-            partial(self.on_refresh_access_token_finished, callback),
-            mblogin=True, priority=True, important=True,
-            request_mimetype="application/x-www-form-urlencoded"
+        self.webservice.post_url(
+            url=self.url(path="/oauth2/token"),
+            data=self._query_data(params),
+            handler=partial(self.on_refresh_access_token_finished, callback),
+            mblogin=True,
+            priority=True,
+            important=True,
+            request_mimetype="application/x-www-form-urlencoded",
         )
 
     def on_refresh_access_token_finished(self, callback, data, http, error):
@@ -212,7 +216,6 @@ class OAuthManager(object):
 
     def exchange_authorization_code(self, authorization_code, scopes, callback):
         log.debug("OAuth: exchanging authorization_code %s for an access_token", authorization_code)
-        path = "/oauth2/token"
         params = {
             "grant_type": "authorization_code",
             "code": authorization_code,
@@ -220,11 +223,14 @@ class OAuthManager(object):
             "client_secret": MUSICBRAINZ_OAUTH_CLIENT_SECRET,
             "redirect_uri": "urn:ietf:wg:oauth:2.0:oob",
         }
-        self.webservice.post(
-            self.host, self.port, path, self._query_data(params),
-            partial(self.on_exchange_authorization_code_finished, scopes, callback),
-            mblogin=True, priority=True, important=True,
-            request_mimetype="application/x-www-form-urlencoded"
+        self.webservice.post_url(
+            url=self.url(path="/oauth2/token"),
+            data=self._query_data(params),
+            handler=partial(self.on_exchange_authorization_code_finished, scopes, callback),
+            mblogin=True,
+            priority=True,
+            important=True,
+            request_mimetype="application/x-www-form-urlencoded",
         )
 
     def on_exchange_authorization_code_finished(self, scopes, callback, data, http, error):
@@ -246,11 +252,12 @@ class OAuthManager(object):
 
     def fetch_username(self, callback):
         log.debug("OAuth: fetching username")
-        path = "/oauth2/userinfo"
-        self.webservice.get(
-            self.host, self.port, path,
-            partial(self.on_fetch_username_finished, callback),
-            mblogin=True, priority=True, important=True
+        self.webservice.get_url(
+            url=self.url(path="/oauth2/userinfo"),
+            handler=partial(self.on_fetch_username_finished, callback),
+            mblogin=True,
+            priority=True,
+            important=True,
         )
 
     def on_fetch_username_finished(self, callback, data, http, error):
