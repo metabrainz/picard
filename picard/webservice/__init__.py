@@ -91,6 +91,13 @@ class UnknownResponseParserError(Exception):
         super().__init__(message)
 
 
+def port_from_qurl(qurl):
+    """Returns QUrl port or default ports (443 for https, 80 for http)"""
+    if qurl.scheme() == 'https':
+        return qurl.port(443)
+    return qurl.port(80)
+
+
 class WSRequest(QNetworkRequest):
     """Represents a single HTTP request."""
     _access_token = None
@@ -214,11 +221,7 @@ class WSRequest(QNetworkRequest):
 
     @property
     def port(self):
-        """Returns QUrl port or default ports (443 for https, 80 for http)"""
-        url = self.url()
-        if url.scheme() == 'https':
-            return url.port(443)
-        return url.port(80)
+        return port_from_qurl(self.url())
 
     @property
     def path(self):
