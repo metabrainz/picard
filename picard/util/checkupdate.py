@@ -87,12 +87,10 @@ class UpdateCheckManager(QtCore.QObject):
 
     def _query_available_updates(self, callback=None):
         """Gets list of releases from specified website api."""
-        log.debug("Getting Picard release information from %s", PLUGINS_API['host'])
-        self.tagger.webservice.get(
-            PLUGINS_API['host'],
-            PLUGINS_API['port'],
-            PLUGINS_API['endpoint']['releases'],
-            partial(self._releases_json_loaded, callback=callback),
+        log.debug("Getting Picard release information from %s", PLUGINS_API['urls']['releases'])
+        self.tagger.webservice.get_url(
+            url=PLUGINS_API['urls']['releases'],
+            handler=partial(self._releases_json_loaded, callback=callback),
             priority=True,
             important=True
         )
@@ -105,9 +103,8 @@ class UpdateCheckManager(QtCore.QObject):
                 QMessageBox.information(
                     self._parent,
                     _("Picard Update"),
-                    _("Unable to retrieve the latest version information from the website.\n(https://{url}{endpoint})").format(
-                        url=PLUGINS_API['host'],
-                        endpoint=PLUGINS_API['endpoint']['releases'],
+                    _("Unable to retrieve the latest version information from the website.\n({url})").format(
+                        url=PLUGINS_API['urls']['releases'],
                     ),
                     QMessageBox.StandardButton.Ok, QMessageBox.StandardButton.Ok)
         else:

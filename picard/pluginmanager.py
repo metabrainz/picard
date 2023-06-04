@@ -414,13 +414,11 @@ class PluginManager(QtCore.QObject):
                 self.plugin_updated.emit(plugin_name, False)
 
     def query_available_plugins(self, callback=None):
-        self.tagger.webservice.get(
-            PLUGINS_API['host'],
-            PLUGINS_API['port'],
-            PLUGINS_API['endpoint']['plugins'],
-            partial(self._plugins_json_loaded, callback=callback),
+        self.tagger.webservice.get_url(
+            url=PLUGINS_API['urls']['plugins'],
+            handler=partial(self._plugins_json_loaded, callback=callback),
             priority=True,
-            important=True
+            important=True,
         )
 
     def is_available(self, plugin_name):

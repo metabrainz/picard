@@ -145,14 +145,13 @@ MUSICBRAINZ_SERVERS = [
 ]
 
 # Plugins and Release Versions API
+PLUGINS_API_BASE_URL = 'https://picard.musicbrainz.org/api/v2/'
 PLUGINS_API = {
-    'host': 'picard.musicbrainz.org',
-    'port': 443,
-    'endpoint': {
-        'plugins': '/api/v2/plugins/',
-        'download': '/api/v2/download/',
-        'releases': '/api/v2/releases',
-    }
+    'urls': {
+        'plugins': PLUGINS_API_BASE_URL + 'plugins/',
+        'download': PLUGINS_API_BASE_URL + 'download/',
+        'releases': PLUGINS_API_BASE_URL + 'releases',
+    },
 }
 
 # Default query limit
