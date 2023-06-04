@@ -98,6 +98,13 @@ def port_from_qurl(qurl):
     return qurl.port(80)
 
 
+def hostkey_from_url(url):
+    """Returns (host, port) from passed url (as string or QUrl)"""
+    if not isinstance(url, QUrl):
+        url = QUrl(url)
+    return (url.host(), port_from_qurl(url))
+
+
 class WSRequest(QNetworkRequest):
     """Represents a single HTTP request."""
     _access_token = None
