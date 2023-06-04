@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2017 Antonio Larrosa
 # Copyright (C) 2017 Sambhav Kothari
-# Copyright (C) 2018, 2020-2021 Philipp Wolfer
+# Copyright (C) 2018, 2020-2022 Philipp Wolfer
 # Copyright (C) 2019-2021 Laurent Monin
 # Copyright (C) 2021 Gabriel Ferreira
 #

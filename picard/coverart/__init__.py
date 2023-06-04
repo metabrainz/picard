@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2007 Oliver Charles
 # Copyright (C) 2007, 2010-2011 Lukáš Lalinský
-# Copyright (C) 2007-2011, 2019-2021 Philipp Wolfer
+# Copyright (C) 2007-2011, 2019-2021, 2023 Philipp Wolfer
 # Copyright (C) 2011 Michael Wiencek
 # Copyright (C) 2011-2012 Wieland Hoffmann
 # Copyright (C) 2013-2015, 2018-2021 Laurent Monin

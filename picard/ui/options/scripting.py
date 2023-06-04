@@ -6,7 +6,7 @@
 # Copyright (C) 2009 Nikolai Prokoschenko
 # Copyright (C) 2009-2010, 2019-2022 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
-# Copyright (C) 2013-2015, 2017-2021 Laurent Monin
+# Copyright (C) 2013-2015, 2017-2022 Laurent Monin
 # Copyright (C) 2014 m42i
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2016-2017 Suhas

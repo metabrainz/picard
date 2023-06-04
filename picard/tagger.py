@@ -22,12 +22,13 @@
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017-2018 Vishal Choudhary
-# Copyright (C) 2018, 2022 Bob Swift
 # Copyright (C) 2018 virusMac
+# Copyright (C) 2018, 2022-2023 Bob Swift
 # Copyright (C) 2019 Joel Lintunen
 # Copyright (C) 2020 Julius Michaelis
 # Copyright (C) 2020-2021 Gabriel Ferreira
-# Copyright (c) 2022 skelly37
+# Copyright (C) 2022 Kamil
+# Copyright (C) 2022 skelly37
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
