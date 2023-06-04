@@ -115,6 +115,7 @@ class WSRequest(QNetworkRequest):
         important=False,
         request_mimetype=None,
         url=None,
+        queryargs=None,
     ):
         """
         Args:
@@ -134,6 +135,7 @@ class WSRequest(QNetworkRequest):
             important: Indicates that this is an important request.
             request_mimetype: Set the Content-Type header.
             url: URL passed as a string or as a QUrl to use for this request
+            queryargs: dictionary of keys and values to add to the url
         """
         # mandatory parameters
         self.method = method
@@ -149,6 +151,14 @@ class WSRequest(QNetworkRequest):
 
         if not isinstance(url, QUrl):
             url = QUrl(url)
+
+        if queryargs is not None:
+            query = QtCore.QUrlQuery(url)
+            for k, v in queryargs.items():
+                # FIXME: check if encoding is correct
+                query.addQueryItem(k, str(v))
+            url.setQuery(query)
+
         super().__init__(url)
 
         # optional parameters

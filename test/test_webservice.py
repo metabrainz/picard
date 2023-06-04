@@ -521,3 +521,13 @@ class WSRequestTest(PicardTestCase):
         self.assertTrue(TEMP_ERRORS_RETRIES > 1)
         self.assertEqual(request.mark_for_retry(), 1)
         self.assertFalse(request.max_retries_reached())
+
+    def test_queryargs(self):
+        request = WSRequest(
+            url='http://example.org/path?a=1',
+            method='GET',
+            handler=dummy_handler,
+            queryargs={'a': 2, 'b': 'x%20x', 'c': '1+2', 'd': '&', 'e': '?'},
+        )
+        # FIXME: check encoding
+        self.assertEqual(request.url().toString(), 'http://example.org/path?a=1&a=2&b=x x&c=1+2&d=%26&e=?')
