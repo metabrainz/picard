@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 #
+# fix-header: nolicense
 # MIT License
 #
 # Copyright(c) 2018 Konstantin Mochalov

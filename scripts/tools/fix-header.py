@@ -25,15 +25,25 @@ import argparse
 from collections import defaultdict
 import glob
 import itertools
+import logging
 import os
 import re
 import subprocess  # nosec: B404
 import sys
 
 
+logging.basicConfig(
+    force=True,
+    format="%(asctime)s:%(levelname)s: %(message)s",
+    level=logging.DEBUG,
+    stream=sys.stderr,
+)
+
+
 ALIASES = {
     'abhi-ohri': 'Abhinav Ohri',
     'Antonio Larrosa <alarrosa@suse.com>': 'Antonio Larrosa',
+    'bob': 'Bob Swift',
     'Lukas Lalinsky <lalinsky@gmail.com>': 'Lukáš Lalinský',
     'petitminion': 'Petit Minion',
     'Philipp Wolfer <ph.wolfer@gmail.com>': 'Philipp Wolfer',
@@ -55,21 +65,31 @@ def ranges(i):
 
 def extract_authors_from_gitlog(path):
     authors = {}
-    cmd = ['git', 'log', r'--pretty=format:%ad %aN', r'--date=format:%Y', r'--', path]
+    cmd = ['git', 'log', r'--pretty=format:%ad¤%aN¤%aE', r'--date=format:%Y', r'--', path]
     result = subprocess.run(cmd, stdout=subprocess.PIPE, timeout=30)  # nosec: B603
+    aliased = set()
     if result.returncode == 0:
-        pattern = re.compile(r'^(\d+) (.*)$')
+        pattern = re.compile(r'^(?P<year>\d+)¤(?P<name>[^¤]*)¤(?P<email>.*)$')
         for line in result.stdout.decode('utf-8').split("\n"):
-            match = pattern.search(line)
-            if match:
-                year = int(match.group(1))
-                author = match.group(2)
-                author = ALIASES.get(author, author)
+            matched = pattern.search(line)
+            if matched:
+                year = int(matched.group('year'))
+                author = matched.group('name')
+                email = matched.group('email')
+                for c in (f"{author} <{email}>", email, author):
+                    if c in ALIASES:
+                        alias = ALIASES[c]
+                        aliased.add(f"{author} <{email}> -> {alias}")
+                        author = alias
+                        break
                 if author in authors:
                     if year not in authors[author]:
                         authors[author].append(year)
                 else:
                     authors[author] = [year]
+    for a in aliased:
+        logging.debug(f"Alias found: {a}")
+
     return authors
 
 
@@ -79,11 +99,11 @@ def parse_copyright_text(text):
     range_pattern = re.compile(r'^\s*(\d{4})\s*-\s*(\d{4})\s*$')
 
     for line in text.split("\n"):
-        match = pattern_copyright.search(line)
-        if match:
+        matched = pattern_copyright.search(line)
+        if matched:
             all_years = []
-            years_group = match.group(1)
-            author = match.group(2)
+            years_group = matched.group(1)
+            author = matched.group(2)
             author = ALIASES.get(author, author)
             comma_years = []
             if ',' in years_group:
@@ -118,7 +138,8 @@ def parse_file(path, encoding='utf-8'):
     start = end = None
     authors_from_file = {}
 
-    skip_pattern = re.compile(r'^(?:#|/\*|//)\s+(fix-header:\s*skip|Automatically\s+generated|Created\s+by:\s+The\s+Resource\s+Compiler\s+for\s+PyQt5)', re.IGNORECASE)
+    fix_header_pattern = re.compile(r'^(?:#|/\*|//)\s+(fix-header:)\s*(.*)$', re.IGNORECASE)
+    skip_pattern = re.compile(r'^(?:#|/\*|//)\s+(Automatically\s+generated|Created\s+by:\s+The\s+Resource\s+Compiler\s+for\s+PyQt5)', re.IGNORECASE)
     with open(path, encoding=encoding) as f:
         lines = f.readlines()
         found = defaultdict(lambda: None)
@@ -126,10 +147,22 @@ def parse_file(path, encoding='utf-8'):
             found["shebang"] = lines[0].rstrip()
             del lines[0]
         for num, line in enumerate(lines):
-            match = skip_pattern.search(line)
-            if match:
-                found['skip'] = match.group(1)
+            skip_matched = skip_pattern.search(line)
+            if skip_matched:
+                found['skip'] = skip_matched.group(1)
+                logging.debug("Found skip indicator: {}".format(found['skip']))
                 return (found, {}, {}, '', "".join(lines))
+            fix_header_matched = fix_header_pattern.search(line)
+            if fix_header_matched:
+                words = fix_header_matched.group(2).lower().split()
+                if 'nolicense' in words:
+                    # do not add a license header
+                    logging.debug("Found fix-header: nolicense")
+                    found['nolicense'] = True
+                if 'skip' in words:
+                    logging.debug("Found fix-header: skip")
+                    found['skip'] = fix_header_matched.group(1) + ' ' + fix_header_matched.group(2)
+                    return (found, {}, {}, '', "".join(lines))
 
         for num, line in enumerate(lines):
             if not line.startswith("#") and line not in EMPTY_LINE:
@@ -246,9 +279,9 @@ def fix_header(path, encoding='utf-8'):
     parts = list(filter(None, [
         found["shebang"],
         CODING_TEXT.strip(),
-        LICENSE_TOP.strip(),
-        new_copyright.strip(),
-        LICENSE_BOTTOM.strip() + ("\n\n" if has_content else ""),
+        LICENSE_TOP.strip() if not found['nolicense'] else None,
+        new_copyright.strip() if not found['nolicense'] else None,
+        (LICENSE_BOTTOM.strip() + ("\n\n" if has_content else "")) if not found['nolicense'] else None,
         before.strip(),
         after.strip(),
     ]))
@@ -278,23 +311,26 @@ def main():
             if args.recursive:
                 paths += glob.glob(path + '/*')
     if not files:
-        print("No valid file found", file=sys.stderr)
+        logging.info("No valid file found")
         sys.exit(0)
 
     for path in files:
         new_content, info = fix_header(path, encoding=args.encoding)
         if new_content is None:
-            print("Skipping %s (%s)" % (path, info), file=sys.stderr)
+            logging.info("Skipping %s (%s)" % (path, info))
             continue
         if args.in_place:
-            print("Parsing and fixing %s (in place)" % path, file=sys.stderr)
+            logging.info("Parsing and fixing %s (in place)" % path)
             with open(path, 'w', encoding=args.encoding) as f:
                 print(new_content, file=f)
         else:
             # by default, we just output to stdout
-            print("Parsing and fixing %s (stdout)" % path, file=sys.stderr)
+            logging.info("Parsing and fixing %s (stdout)" % path)
             print(new_content)
 
 
 if __name__ == '__main__':
+
+    logging.debug("Starting...")
+
     main()
