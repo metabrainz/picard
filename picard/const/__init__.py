@@ -65,6 +65,7 @@ MUSICBRAINZ_OAUTH_CLIENT_SECRET = 'xIsvXbIuntaLuRRhzuazOA'
 # Cover art archive URL and port
 CAA_HOST = "coverartarchive.org"
 CAA_PORT = 443
+CAA_URL = 'https://coverartarchive.org'
 
 # Prepare documentation URLs
 if PICARD_VERSION.identifier == 'final':
