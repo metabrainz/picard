@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2007-2008 Lukáš Lalinský
 # Copyright (C) 2009 Carlin Mangar
-# Copyright (C) 2009, 2014, 2017-2021 Philipp Wolfer
+# Copyright (C) 2009, 2014, 2017-2021, 2023 Philipp Wolfer
 # Copyright (C) 2011 johnny64
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2013 Sebastian Ramacher
@@ -17,6 +17,7 @@
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017 Frederik “Freso” S. Olesen
 # Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2023 tuspar
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

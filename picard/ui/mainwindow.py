@@ -7,7 +7,7 @@
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008 Robert Kaye
 # Copyright (C) 2008 Will
-# Copyright (C) 2008-2010, 2015, 2018-2022 Philipp Wolfer
+# Copyright (C) 2008-2010, 2015, 2018-2023 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2009 David Hilton
 # Copyright (C) 2011-2012 Chad Wilson
@@ -25,7 +25,7 @@
 # Copyright (C) 2018 Kartik Ohri
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2018 virusMac
-# Copyright (C) 2018, 2021, 2023 Bob Swift
+# Copyright (C) 2018, 2021-2023 Bob Swift
 # Copyright (C) 2019 Timur Enikeev
 # Copyright (C) 2020-2021 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion

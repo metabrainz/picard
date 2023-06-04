@@ -12,6 +12,7 @@
 # Copyright (C) 2013-2015, 2017 Sophist-UK
 # Copyright (C) 2019 Zenara Daley
 # Copyright (C) 2023 Bob Swift
+# Copyright (C) 2023 certuna
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

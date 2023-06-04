@@ -4,11 +4,11 @@
 #
 # Copyright (C) 2017 David Mandelberg
 # Copyright (C) 2017-2018 Sambhav Kothari
-# Copyright (C) 2017-2022 Laurent Monin
+# Copyright (C) 2017-2023 Laurent Monin
 # Copyright (C) 2018-2023 Philipp Wolfer
 # Copyright (C) 2019 Michael Wiencek
-# Copyright (C) 2020, 2023 David Kellner
 # Copyright (C) 2020 dukeyin
+# Copyright (C) 2020, 2023 David Kellner
 # Copyright (C) 2021 Bob Swift
 # Copyright (C) 2021 Vladislav Karbovskii
 #
@@ -25,6 +25,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 
 from collections import namedtuple
 

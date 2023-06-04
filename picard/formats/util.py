@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008, 2012 Lukáš Lalinský
 # Copyright (C) 2008 Will
-# Copyright (C) 2010, 2014, 2018-2020 Philipp Wolfer
+# Copyright (C) 2010, 2014, 2018-2020, 2023 Philipp Wolfer
 # Copyright (C) 2013 Michael Wiencek
 # Copyright (C) 2013, 2017-2019, 2021 Laurent Monin
 # Copyright (C) 2016-2018 Sambhav Kothari

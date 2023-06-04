@@ -5,7 +5,7 @@
 # Copyright (C) 2006 Matthias Friedrich
 # Copyright (C) 2007-2008 Lukáš Lalinský
 # Copyright (C) 2008 Robert Kaye
-# Copyright (C) 2009, 2013, 2018-2022 Philipp Wolfer
+# Copyright (C) 2009, 2013, 2018-2023 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2013 Johannes Dewender
 # Copyright (C) 2013 Sebastian Ramacher

@@ -4,11 +4,11 @@
 #
 # Copyright (C) 2006-2007, 2011 Lukáš Lalinský
 # Copyright (C) 2009 Carlin Mangar
-# Copyright (C) 2009, 2018-2022 Philipp Wolfer
+# Copyright (C) 2009, 2018-2023 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2012-2014 Wieland Hoffmann
-# Copyright (C) 2013-2014, 2017-2021 Laurent Monin
+# Copyright (C) 2013-2014, 2017-2022 Laurent Monin
 # Copyright (C) 2014 Francois Ferrand
 # Copyright (C) 2015 Sophist-UK
 # Copyright (C) 2016 Ville Skyttä
