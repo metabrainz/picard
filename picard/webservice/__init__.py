@@ -105,6 +105,28 @@ def hostkey_from_url(url):
     return (url.host(), port_from_qurl(url))
 
 
+def host_port_to_url(host, port, path=None, scheme=None, as_string=False):
+    """Convert host & port (with optional path and scheme) to an URL"""
+    url = QUrl()
+    if scheme is None:
+        if port == 443:
+            scheme = 'https'
+        else:
+            scheme = 'http'
+    url.setScheme(scheme)
+
+    if ((scheme == 'https' and port != 443)
+            or (scheme == 'http' and port != 80)):
+        url.setPort(port)
+
+    url.setHost(host)
+
+    if path is not None:
+        url.setPath(path)
+
+    return url.toString() if as_string else url
+
+
 class WSRequest(QNetworkRequest):
     """Represents a single HTTP request."""
     _access_token = None

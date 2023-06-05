@@ -44,6 +44,7 @@ from picard.webservice import (
     UnknownResponseParserError,
     WebService,
     WSRequest,
+    host_port_to_url,
     hostkey_from_url,
     port_from_qurl,
     ratecontrol,
@@ -558,3 +559,18 @@ class MiscWebServiceTest(PicardTestCase):
 
     def test_hostkey_from_url_https_other(self):
         self.assertEqual(hostkey_from_url('https://example.org:666'), ('example.org', 666))
+
+    def test_host_port_to_url_http_80(self):
+        self.assertEqual(host_port_to_url('example.org', 80, as_string=True), 'http://example.org')
+
+    def test_host_port_to_url_http_80_qurl(self):
+        self.assertEqual(host_port_to_url('example.org', 80).toString(), 'http://example.org')
+
+    def test_host_port_to_url_https_443(self):
+        self.assertEqual(host_port_to_url('example.org', 443, as_string=True), 'https://example.org')
+
+    def test_host_port_to_url_https_scheme_80(self):
+        self.assertEqual(host_port_to_url('example.org', 80, scheme='https', as_string=True), 'https://example.org:80')
+
+    def test_host_port_to_url_http_666_with_path(self):
+        self.assertEqual(host_port_to_url('example.org', 666, path='/abc', as_string=True), 'http://example.org:666/abc')
