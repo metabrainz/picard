@@ -125,26 +125,18 @@ class MBAPIHelper(APIHelper):
         config = get_config()
         return config.setting['server_port']
 
-    def _get_by_id(self, entitytype, entityid, handler, inc=None, queryargs=None,
-                   priority=False, important=False, mblogin=False, refresh=False):
+    def _get_by_id(self, entitytype, entityid, handler, inc=None, **kwargs):
         path_list = (entitytype, entityid)
-        if queryargs is None:
-            queryargs = {}
         if inc:
-            queryargs["inc"] = "+".join(inc)
-        return self.get(path_list, handler,
-                        priority=priority, important=important, mblogin=mblogin,
-                        refresh=refresh, queryargs=queryargs)
+            kwargs['queryargs'] = kwargs.get('queryargs', {})
+            kwargs['queryargs']["inc"] = "+".join(sorted(set(inc)))
+        return self.get(path_list, handler, **kwargs)
 
-    def get_release_by_id(self, releaseid, handler, inc=None,
-                          priority=False, important=False, mblogin=False, refresh=False):
-        return self._get_by_id('release', releaseid, handler, inc,
-                               priority=priority, important=important, mblogin=mblogin, refresh=refresh)
+    def get_release_by_id(self, releaseid, handler, inc=None, **kwargs):
+        return self._get_by_id('release', releaseid, handler, inc, **kwargs)
 
-    def get_track_by_id(self, trackid, handler, inc=None,
-                        priority=False, important=False, mblogin=False, refresh=False):
-        return self._get_by_id('recording', trackid, handler, inc,
-                               priority=priority, important=important, mblogin=mblogin, refresh=refresh)
+    def get_track_by_id(self, trackid, handler, inc=None, **kwargs):
+        return self._get_by_id('recording', trackid, handler, inc, **kwargs)
 
     def lookup_discid(self, discid, handler, priority=True, important=True, refresh=False):
         inc = ('artist-credits', 'labels')
