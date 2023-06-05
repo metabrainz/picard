@@ -35,7 +35,7 @@ from picard.const import (
 )
 from picard.webservice import (
     CLIENT_STRING,
-    DEFAULT_RESPONSE_PARSER_TYPE,
+    host_port_to_url,
     ratecontrol,
 )
 
@@ -78,35 +78,36 @@ class APIHelper(object):
     def port(self):
         return self._port
 
-    def get(self, path_list, handler, priority=False, important=False, mblogin=False,
-            cacheloadcontrol=None, refresh=False, queryargs=None, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE):
+    def url_from_path_list(self, path_list):
         path = self.api_path + "/".join(path_list)
-        return self._webservice.get(self.host, self.port, path, handler,
-                                    priority=priority, important=important, mblogin=mblogin,
-                                    refresh=refresh, queryargs=queryargs, parse_response_type=parse_response_type)
+        return host_port_to_url(self.host, self.port, path=path)
 
-    def post(self, path_list, data, handler, priority=False, important=False,
-             mblogin=True, queryargs=None, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE,
-             request_mimetype=None):
-        path = self.api_path + "/".join(path_list)
-        return self._webservice.post(self.host, self.port, path, data, handler,
-                                     priority=priority, important=important, mblogin=mblogin,
-                                     queryargs=queryargs, parse_response_type=parse_response_type,
-                                     request_mimetype=request_mimetype)
+    def get(self, path_list, handler, **kwargs):
+        kwargs['url'] = self.url_from_path_list(path_list)
+        kwargs['handler'] = handler
+        return self._webservice.get_url(**kwargs)
 
-    def put(self, path_list, data, handler, priority=True, important=False,
-            mblogin=True, queryargs=None, request_mimetype=None):
-        path = self.api_path + "/".join(path_list)
-        return self._webservice.put(self.host, self.port, path, data, handler,
-                                    priority=priority, important=important, mblogin=mblogin,
-                                    queryargs=queryargs, request_mimetype=request_mimetype)
+    def post(self, path_list, data, handler, **kwargs):
+        kwargs['url'] = self.url_from_path_list(path_list)
+        kwargs['handler'] = handler
+        kwargs['data'] = data
+        kwargs['mblogin'] = kwargs.get('mblogin', True)
+        return self._webservice.post_url(**kwargs)
 
-    def delete(self, path_list, handler, priority=True, important=False,
-               mblogin=True, queryargs=None):
-        path = self.api_path + "/".join(path_list)
-        return self._webservice.delete(self.host, self.port, path, handler,
-                                       priority=priority, important=important, mblogin=mblogin,
-                                       queryargs=queryargs)
+    def put(self, path_list, data, handler, **kwargs):
+        kwargs['url'] = self.url_from_path_list(path_list)
+        kwargs['handler'] = handler
+        kwargs['data'] = data
+        kwargs['priority'] = kwargs.get('priority', True)
+        kwargs['mblogin'] = kwargs.get('mblogin', True)
+        return self._webservice.put_url(**kwargs)
+
+    def delete(self, path_list, handler, **kwargs):
+        kwargs['url'] = self.url_from_path_list(path_list)
+        kwargs['handler'] = handler
+        kwargs['priority'] = kwargs.get('priority', True)
+        kwargs['mblogin'] = kwargs.get('mblogin', True)
+        return self._webservice.delete_url(**kwargs)
 
 
 class MBAPIHelper(APIHelper):
