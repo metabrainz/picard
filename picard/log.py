@@ -190,6 +190,10 @@ log = main_logger.log
 
 
 history_logger = logging.getLogger('history')
+
+# do not pass logging messages to the handlers of ancestor loggers (PICARD-2651)
+history_logger.propagate = False
+
 history_logger.setLevel(logging.INFO)
 
 history_tail = TailLogger(_MAX_TAIL_LEN)
