@@ -59,11 +59,9 @@ def _wrap_xml_metadata(data):
 
 
 class APIHelper(object):
+    base_path = "/"
 
-    def __init__(self, host, port, api_path, webservice):
-        self._host = host
-        self._port = port
-        self.api_path = api_path
+    def __init__(self, webservice):
         self._webservice = webservice
 
     @property
@@ -71,16 +69,13 @@ class APIHelper(object):
         return self._webservice
 
     @property
-    def host(self):
-        return self._host
-
-    @property
-    def port(self):
-        return self._port
+    def url(self):
+        raise NotImplementedError
 
     def url_from_path_list(self, path_list):
-        path = self.api_path + "/".join(path_list)
-        return host_port_to_url(self.host, self.port, path=path)
+        url = self.url
+        url.setPath("/".join([self.base_path] + list(path_list)))
+        return url
 
     def get(self, path_list, handler, **kwargs):
         kwargs['url'] = self.url_from_path_list(path_list)
@@ -111,19 +106,14 @@ class APIHelper(object):
 
 
 class MBAPIHelper(APIHelper):
-
-    def __init__(self, webservice):
-        super().__init__(None, None, "/ws/2/", webservice)
+    base_path = '/ws/2'
 
     @property
-    def host(self):
+    def url(self):
         config = get_config()
-        return config.setting['server_host']
-
-    @property
-    def port(self):
-        config = get_config()
-        return config.setting['server_port']
+        host = config.setting['server_host']
+        port = config.setting['server_port']
+        return host_port_to_url(host, port)
 
     def _get_by_id(self, entitytype, entityid, handler, inc=None, **kwargs):
         path_list = (entitytype, entityid)
@@ -258,15 +248,13 @@ class MBAPIHelper(APIHelper):
 
 class AcoustIdAPIHelper(APIHelper):
 
-    acoustid_host = ACOUSTID_HOST
-    acoustid_port = ACOUSTID_PORT
+    base_path = '/v2'
     client_key = ACOUSTID_KEY
     client_version = PICARD_VERSION_STR
 
-    def __init__(self, webservice):
-        super().__init__(
-            self.acoustid_host, self.acoustid_port, '/v2/', webservice
-        )
+    @property
+    def url(self):
+        return host_port_to_url(ACOUSTID_HOST, ACOUSTID_PORT)
 
     def _encode_acoustid_args(self, args):
         filters = []
