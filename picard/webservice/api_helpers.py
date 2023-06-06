@@ -29,18 +29,18 @@ from PyQt5.QtCore import QUrl
 from picard import PICARD_VERSION_STR
 from picard.config import get_config
 from picard.const import (
-    ACOUSTID_HOST,
     ACOUSTID_KEY,
-    ACOUSTID_PORT,
+    ACOUSTID_URL,
 )
 from picard.webservice import (
     CLIENT_STRING,
     host_port_to_url,
+    hostkey_from_url,
     ratecontrol,
 )
 
 
-ratecontrol.set_minimum_delay((ACOUSTID_HOST, ACOUSTID_PORT), 333)
+ratecontrol.set_minimum_delay(hostkey_from_url(ACOUSTID_URL), 333)
 
 
 def escape_lucene_query(text):
@@ -254,7 +254,7 @@ class AcoustIdAPIHelper(APIHelper):
 
     @property
     def url(self):
-        return host_port_to_url(ACOUSTID_HOST, ACOUSTID_PORT)
+        return QUrl(ACOUSTID_URL)
 
     def _encode_acoustid_args(self, args):
         filters = []

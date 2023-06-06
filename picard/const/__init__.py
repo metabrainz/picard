@@ -53,8 +53,7 @@ CACHE_SIZE_IN_BYTES = 100*1000*1000
 
 # AcoustID client API key
 ACOUSTID_KEY = 'v8pQ6oyB'
-ACOUSTID_HOST = 'api.acoustid.org'
-ACOUSTID_PORT = 443
+ACOUSTID_URL = 'https://api.acoustid.org'
 FPCALC_NAMES = ['fpcalc', 'pyfpcalc']
 DEFAULT_FPCALC_THREADS = 2
 
