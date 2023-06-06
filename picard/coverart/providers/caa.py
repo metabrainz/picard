@@ -65,10 +65,7 @@ from picard.coverart.utils import (
     CAA_TYPES,
     translate_caa_type,
 )
-from picard.webservice import (
-    hostkey_from_url,
-    ratecontrol,
-)
+from picard.webservice import ratecontrol
 
 from picard.ui import PicardDialog
 from picard.ui.ui_provider_options_caa import Ui_CaaOptions
@@ -92,8 +89,8 @@ _CAA_IMAGE_SIZE_DEFAULT = 500
 _CAA_IMAGE_TYPE_DEFAULT_INCLUDE = ['front']
 _CAA_IMAGE_TYPE_DEFAULT_EXCLUDE = ['matrix/runout', 'raw/unedited', 'watermark']
 
-ratecontrol.set_minimum_delay(hostkey_from_url(CAA_URL), 0)
-ratecontrol.set_minimum_delay(hostkey_from_url('https://archive.org'), 0)
+ratecontrol.set_minimum_delay_for_url(CAA_URL, 0)
+ratecontrol.set_minimum_delay_for_url('https://archive.org', 0)
 
 
 def caa_url_fallback_list(desired_size, thumbnails):

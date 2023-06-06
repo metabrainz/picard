@@ -44,10 +44,12 @@ from picard.webservice import (
     UnknownResponseParserError,
     WebService,
     WSRequest,
+    ratecontrol,
+)
+from picard.webservice.utils import (
     host_port_to_url,
     hostkey_from_url,
     port_from_qurl,
-    ratecontrol,
 )
 
 
@@ -536,7 +538,7 @@ class WSRequestTest(PicardTestCase):
         self.assertEqual(request.url().toString(), 'http://example.org/path?a=1&a=2&b=x x&c=1+2&d=%26&e=?')
 
 
-class MiscWebServiceTest(PicardTestCase):
+class WebServiceUtilsTest(PicardTestCase):
 
     def test_port_from_qurl_http(self):
         self.assertEqual(port_from_qurl(QUrl('http://example.org')), 80)

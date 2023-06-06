@@ -29,6 +29,7 @@ import sys
 import time
 
 from picard import log
+from picard.webservice.utils import hostkey_from_url
 
 
 # ============================================================================
@@ -83,6 +84,14 @@ def set_minimum_delay(hostkey, delay_ms):
             delay_ms is the delay in milliseconds
     """
     REQUEST_DELAY_MINIMUM[hostkey] = delay_ms
+
+
+def set_minimum_delay_for_url(url, delay_ms):
+    """Set the minimun delay between requests
+            url will be converted to an unique key (host, port)
+            delay_ms is the delay in milliseconds
+    """
+    set_minimum_delay(hostkey_from_url(url), delay_ms)
 
 
 def current_delay(hostkey):

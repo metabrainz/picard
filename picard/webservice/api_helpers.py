@@ -34,13 +34,12 @@ from picard.const import (
 )
 from picard.webservice import (
     CLIENT_STRING,
-    host_port_to_url,
-    hostkey_from_url,
     ratecontrol,
 )
+from picard.webservice.utils import host_port_to_url
 
 
-ratecontrol.set_minimum_delay(hostkey_from_url(ACOUSTID_URL), 333)
+ratecontrol.set_minimum_delay_for_url(ACOUSTID_URL, 333)
 
 
 def escape_lucene_query(text):
