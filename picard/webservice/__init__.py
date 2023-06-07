@@ -567,6 +567,7 @@ class WebService(QtCore.QObject):
     def get(self, host, port, path, handler, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE,
             priority=False, important=False, mblogin=False, cacheloadcontrol=None, refresh=False,
             queryargs=None):
+        log.warning("This method is deprecated, use WebService.get_url() instead")
         request = WSRequest(
             method='GET',
             url=build_qurl(host, port, path=path, queryargs=queryargs),
@@ -582,6 +583,7 @@ class WebService(QtCore.QObject):
 
     def post(self, host, port, path, data, handler, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE,
              priority=False, important=False, mblogin=True, queryargs=None, request_mimetype=None):
+        log.warning("This method is deprecated, use WebService.post_url() instead")
         request = WSRequest(
             method='POST',
             url=build_qurl(host, port, path=path, queryargs=queryargs),
@@ -598,6 +600,7 @@ class WebService(QtCore.QObject):
 
     def put(self, host, port, path, data, handler, priority=True, important=False, mblogin=True,
             queryargs=None, request_mimetype=None):
+        log.warning("This method is deprecated, use WebService.put_url() instead")
         request = WSRequest(
             method='PUT',
             url=build_qurl(host, port, path=path, queryargs=queryargs),
@@ -612,6 +615,7 @@ class WebService(QtCore.QObject):
 
     def delete(self, host, port, path, handler, priority=True, important=False, mblogin=True,
                queryargs=None):
+        log.warning("This method is deprecated, use WebService.delete_url() instead")
         request = WSRequest(
             method='DELETE',
             url=build_qurl(host, port, path=path, queryargs=queryargs),
@@ -625,6 +629,7 @@ class WebService(QtCore.QObject):
     def download(self, host, port, path, handler, priority=False,
                  important=False, cacheloadcontrol=None, refresh=False,
                  queryargs=None):
+        log.warning("This method is deprecated, use WebService.download_url() instead")
         request = WSRequest(
             method='GET',
             url=build_qurl(host, port, path=path, queryargs=queryargs),
