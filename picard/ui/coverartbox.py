@@ -465,20 +465,12 @@ class CoverArtBox(QtWidgets.QGroupBox):
             self.load_remote_image(url, fallback_data)
 
         if url.scheme() in {'http', 'https'}:
-            path = url.path()
-            if url.hasQuery():
-                query = QtCore.QUrlQuery(url.query())
-                queryargs = dict(query.queryItems())
-            else:
-                queryargs = {}
-            if url.scheme() == 'https':
-                port = 443
-            else:
-                port = 80
-            self.tagger.webservice.get(url.host(), url.port(port), path,
-                                       partial(self.on_remote_image_fetched, url, fallback_data=fallback_data),
-                                       parse_response_type=None, queryargs=queryargs,
-                                       priority=True, important=True)
+            self.tagger.webservice.download_url(
+                url=url,
+                handler=partial(self.on_remote_image_fetched, url, fallback_data=fallback_data),
+                priority=True,
+                important=True,
+            )
         elif url.scheme() == 'file':
             path = normpath(url.toLocalFile().rstrip("\0"))
             if path and os.path.exists(path):
