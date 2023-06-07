@@ -302,7 +302,10 @@ class picard_build(build):
             generate_file('win-version-info.txt.in', 'win-version-info.txt', {**args, **version_args})
 
             default_publisher = 'CN=Metabrainz Foundation Inc., O=Metabrainz Foundation Inc., L=San Luis Obispo, S=California, C=US'
-            store_version = (PICARD_VERSION.major, PICARD_VERSION.minor, PICARD_VERSION.patch * 10000 + self.build_number, 0)
+            # Combine patch version with build number. As Windows store apps require continuously
+            # growing version numbers we combine the patch version with a build number set by the
+            # build script.
+            store_version = (PICARD_VERSION.major, PICARD_VERSION.minor, PICARD_VERSION.patch * 1000 + min(self.build_number, 999), 0)
             generate_file('appxmanifest.xml.in', 'appxmanifest.xml', {
                 'app-id': "MetaBrainzFoundationInc." + PICARD_APP_ID,
                 'display-name': PICARD_DISPLAY_NAME,
