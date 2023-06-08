@@ -3,8 +3,8 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2017 Sambhav Kothari
-# Copyright (C) 2018, 2020-2021 Laurent Monin
-# Copyright (C) 2018-2022 Philipp Wolfer
+# Copyright (C) 2018, 2020-2021, 2023 Laurent Monin
+# Copyright (C) 2018-2023 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -59,22 +59,22 @@ def _wrap_xml_metadata(data):
 
 
 class APIHelper(object):
-    base_path = "/"
 
-    def __init__(self, webservice):
+    def __init__(self, webservice, base_url=None):
         self._webservice = webservice
+        if not base_url:
+            raise ValueError("base_url is required")
+        elif not isinstance(base_url, QUrl):
+            base_url = QUrl(base_url)
+        self._base_url = base_url
 
     @property
     def webservice(self):
         return self._webservice
 
-    @property
-    def url(self):
-        raise NotImplementedError
-
     def url_from_path_list(self, path_list):
-        url = self.url
-        url.setPath("/".join([self.base_path] + list(path_list)))
+        url = QUrl(self._base_url)
+        url.setPath("/".join([self._base_url.path()] + list(path_list)))
         return url
 
     def get(self, path_list, handler, **kwargs):
@@ -106,14 +106,14 @@ class APIHelper(object):
 
 
 class MBAPIHelper(APIHelper):
-    base_path = '/ws/2'
 
-    @property
-    def url(self):
+    def __init__(self, webservice):
         config = get_config()
         host = config.setting['server_host']
         port = config.setting['server_port']
-        return host_port_to_url(host, port)
+        base_url = host_port_to_url(host, port)
+        base_url.setPath('/ws/2')
+        super().__init__(webservice, base_url=base_url)
 
     def _get_by_id(self, entitytype, entityid, handler, inc=None, **kwargs):
         path_list = (entitytype, entityid)
@@ -243,13 +243,11 @@ class MBAPIHelper(APIHelper):
 
 class AcoustIdAPIHelper(APIHelper):
 
-    base_path = '/v2'
     client_key = ACOUSTID_KEY
     client_version = PICARD_VERSION_STR
 
-    @property
-    def url(self):
-        return QUrl(ACOUSTID_URL)
+    def __init__(self, webservice):
+        super().__init__(webservice, base_url=ACOUSTID_URL + '/v2')
 
     def _encode_acoustid_args(self, args):
         args['client'] = self.client_key
