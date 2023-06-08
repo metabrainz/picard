@@ -72,33 +72,33 @@ class APIHelper(object):
     def webservice(self):
         return self._webservice
 
-    def url_from_path_list(self, path_list):
+    def url_from_path(self, path):
         url = QUrl(self._base_url)
-        url.setPath("/".join([self._base_url.path()] + list(path_list)))
+        url.setPath(self._base_url.path() + path)
         return url
 
-    def get(self, path_list, handler, **kwargs):
-        kwargs['url'] = self.url_from_path_list(path_list)
+    def get(self, path, handler, **kwargs):
+        kwargs['url'] = self.url_from_path(path)
         kwargs['handler'] = handler
         return self._webservice.get_url(**kwargs)
 
-    def post(self, path_list, data, handler, **kwargs):
-        kwargs['url'] = self.url_from_path_list(path_list)
+    def post(self, path, data, handler, **kwargs):
+        kwargs['url'] = self.url_from_path(path)
         kwargs['handler'] = handler
         kwargs['data'] = data
         kwargs['mblogin'] = kwargs.get('mblogin', True)
         return self._webservice.post_url(**kwargs)
 
-    def put(self, path_list, data, handler, **kwargs):
-        kwargs['url'] = self.url_from_path_list(path_list)
+    def put(self, path, data, handler, **kwargs):
+        kwargs['url'] = self.url_from_path(path)
         kwargs['handler'] = handler
         kwargs['data'] = data
         kwargs['priority'] = kwargs.get('priority', True)
         kwargs['mblogin'] = kwargs.get('mblogin', True)
         return self._webservice.put_url(**kwargs)
 
-    def delete(self, path_list, handler, **kwargs):
-        kwargs['url'] = self.url_from_path_list(path_list)
+    def delete(self, path, handler, **kwargs):
+        kwargs['url'] = self.url_from_path(path)
         kwargs['handler'] = handler
         kwargs['priority'] = kwargs.get('priority', True)
         kwargs['mblogin'] = kwargs.get('mblogin', True)
@@ -116,11 +116,10 @@ class MBAPIHelper(APIHelper):
         super().__init__(webservice, base_url=base_url)
 
     def _get_by_id(self, entitytype, entityid, handler, inc=None, **kwargs):
-        path_list = (entitytype, entityid)
         if inc:
             kwargs['unencoded_queryargs'] = kwargs.get('queryargs', {})
             kwargs['unencoded_queryargs']["inc"] = "+".join(sorted(set(inc)))
-        return self.get(path_list, handler, **kwargs)
+        return self.get(f"/{entitytype}/{entityid}", handler, **kwargs)
 
     def get_release_by_id(self, releaseid, handler, inc=None, **kwargs):
         return self._get_by_id('release', releaseid, handler, inc, **kwargs)
@@ -155,8 +154,7 @@ class MBAPIHelper(APIHelper):
         if query:
             filters['query'] = query
 
-        path_list = (entitytype, )
-        return self.get(path_list, handler, unencoded_queryargs=filters,
+        return self.get(f"/{entitytype}", handler, unencoded_queryargs=filters,
                         priority=True, important=True, mblogin=False,
                         refresh=False)
 
@@ -170,12 +168,11 @@ class MBAPIHelper(APIHelper):
         return self._find('artist', handler, **kwargs)
 
     def _browse(self, entitytype, handler, inc=None, queryargs=None, mblogin=False):
-        path_list = (entitytype, )
         if queryargs is None:
             queryargs = {}
         if inc:
             queryargs["inc"] = "+".join(inc)
-        return self.get(path_list, handler, unencoded_queryargs=queryargs,
+        return self.get(f"/{entitytype}", handler, unencoded_queryargs=queryargs,
                         priority=True, important=True, mblogin=mblogin,
                         refresh=False)
 
@@ -195,26 +192,25 @@ class MBAPIHelper(APIHelper):
         return _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
 
     def submit_ratings(self, ratings, handler):
-        path_list = ('rating', )
         params = {"client": CLIENT_STRING}
         data = self._xml_ratings(ratings)
-        return self.post(path_list, data, handler, priority=True,
+        return self.post("/rating", data, handler, priority=True,
                          unencoded_queryargs=params, parse_response_type="xml",
                          request_mimetype="application/xml; charset=utf-8")
 
     def get_collection(self, collection_id, handler, limit=100, offset=0):
         if collection_id is not None:
             inc = ("releases", "artist-credits", "media")
-            path_list = ('collection', collection_id, "releases")
+            path = f"/collection/{collection_id}/releases"
             queryargs = {
                 "inc": "+".join(inc),
                 "limit": limit,
                 "offset": offset,
             }
         else:
-            path_list = ('collection', )
+            path = '/collection'
             queryargs = None
-        return self.get(tuple(path_list), handler, priority=True, important=True,
+        return self.get(path, handler, priority=True, important=True,
                         mblogin=True, unencoded_queryargs=queryargs)
 
     def get_collection_list(self, handler):
@@ -224,20 +220,20 @@ class MBAPIHelper(APIHelper):
     def _collection_request(collection_id, releases, batchsize=400):
         for i in range(0, len(releases), batchsize):
             ids = ";".join(releases[i:i+batchsize])
-            yield ("collection", collection_id, "releases", ids)
+            yield f"/collection/{collection_id}/releases/{ids}"
 
     @staticmethod
     def _get_client_queryarg():
         return {"client": CLIENT_STRING}
 
     def put_to_collection(self, collection_id, releases, handler):
-        for path_list in self._collection_request(collection_id, releases):
-            self.put(path_list, "", handler,
+        for path in self._collection_request(collection_id, releases):
+            self.put(path, "", handler,
                      unencoded_queryargs=self._get_client_queryarg())
 
     def delete_from_collection(self, collection_id, releases, handler):
-        for path_list in self._collection_request(collection_id, releases):
-            self.delete(path_list, handler,
+        for path in self._collection_request(collection_id, releases):
+            self.delete(path, handler,
                         unencoded_queryargs=self._get_client_queryarg())
 
 
@@ -256,10 +252,9 @@ class AcoustIdAPIHelper(APIHelper):
         return '&'.join((k + '=' + v for k, v in encoded_queryargs(args).items()))
 
     def query_acoustid(self, handler, **args):
-        path_list = ('lookup', )
         body = self._encode_acoustid_args(args)
         return self.post(
-            path_list, body, handler, priority=False, important=False,
+            "/lookup", body, handler, priority=False, important=False,
             mblogin=False, request_mimetype="application/x-www-form-urlencoded"
         )
 
@@ -274,10 +269,9 @@ class AcoustIdAPIHelper(APIHelper):
         return args
 
     def submit_acoustid_fingerprints(self, submissions, handler):
-        path_list = ('submit', )
         args = self._submissions_to_args(submissions)
         body = self._encode_acoustid_args(args)
         return self.post(
-            path_list, body, handler, priority=True, important=False,
+            "/submit", body, handler, priority=True, important=False,
             mblogin=False, request_mimetype="application/x-www-form-urlencoded"
         )

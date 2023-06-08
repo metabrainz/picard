@@ -44,9 +44,9 @@ class APITest(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        base_url = "http://abc.com/v1/"
-        self.path_list = ['test', 'more', 'test']
-        self.complete_url = QUrl(base_url + "/test/more/test")
+        base_url = "http://abc.com/v1"
+        self.path = "/test/more/test"
+        self.complete_url = QUrl(base_url + self.path)
         self.ws = MagicMock(auto_spec=WebService)
         self.api = APIHelper(self.ws, base_url=base_url)
 
@@ -55,19 +55,19 @@ class APITest(PicardTestCase):
         self.assertEqual(ws_function.call_args[1]['url'], self.complete_url)
 
     def test_get(self):
-        self.api.get(self.path_list, None)
+        self.api.get(self.path, None)
         self._test_ws_function_args(self.ws.get_url)
 
     def test_post(self):
-        self.api.post(self.path_list, None, None)
+        self.api.post(self.path, None, None)
         self._test_ws_function_args(self.ws.post_url)
 
     def test_put(self):
-        self.api.put(self.path_list, None, None)
+        self.api.put(self.path, None, None)
         self._test_ws_function_args(self.ws.put_url)
 
     def test_delete(self):
-        self.api.delete(self.path_list, None)
+        self.api.delete(self.path, None)
         self._test_ws_function_args(self.ws.delete_url)
 
 
@@ -204,11 +204,11 @@ class MBAPITest(PicardTestCase):
         releases = tuple("r"+str(i) for i in range(13))
         generator = self.api._collection_request("test", releases, batchsize=5)
         batch = next(generator)
-        self.assertEqual(batch, ('collection', 'test', 'releases', 'r0;r1;r2;r3;r4'))
+        self.assertEqual(batch, '/collection/test/releases/r0;r1;r2;r3;r4')
         batch = next(generator)
-        self.assertEqual(batch, ('collection', 'test', 'releases', 'r5;r6;r7;r8;r9'))
+        self.assertEqual(batch, '/collection/test/releases/r5;r6;r7;r8;r9')
         batch = next(generator)
-        self.assertEqual(batch, ('collection', 'test', 'releases', 'r10;r11;r12'))
+        self.assertEqual(batch, '/collection/test/releases/r10;r11;r12')
         with self.assertRaises(StopIteration):
             next(generator)
 
