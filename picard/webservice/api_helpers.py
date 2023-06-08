@@ -118,8 +118,8 @@ class MBAPIHelper(APIHelper):
     def _get_by_id(self, entitytype, entityid, handler, inc=None, **kwargs):
         path_list = (entitytype, entityid)
         if inc:
-            kwargs['queryargs'] = kwargs.get('queryargs', {})
-            kwargs['queryargs']["inc"] = "+".join(sorted(set(inc)))
+            kwargs['unencoded_queryargs'] = kwargs.get('queryargs', {})
+            kwargs['unencoded_queryargs']["inc"] = "+".join(sorted(set(inc)))
         return self.get(path_list, handler, **kwargs)
 
     def get_release_by_id(self, releaseid, handler, inc=None, **kwargs):
@@ -156,7 +156,7 @@ class MBAPIHelper(APIHelper):
             filters['query'] = query
 
         path_list = (entitytype, )
-        return self.get(path_list, handler, queryargs=encoded_queryargs(filters),
+        return self.get(path_list, handler, unencoded_queryargs=filters,
                         priority=True, important=True, mblogin=False,
                         refresh=False)
 
@@ -175,7 +175,7 @@ class MBAPIHelper(APIHelper):
             queryargs = {}
         if inc:
             queryargs["inc"] = "+".join(inc)
-        return self.get(path_list, handler, queryargs=queryargs,
+        return self.get(path_list, handler, unencoded_queryargs=queryargs,
                         priority=True, important=True, mblogin=mblogin,
                         refresh=False)
 
@@ -199,7 +199,7 @@ class MBAPIHelper(APIHelper):
         params = {"client": CLIENT_STRING}
         data = self._xml_ratings(ratings)
         return self.post(path_list, data, handler, priority=True,
-                         queryargs=params, parse_response_type="xml",
+                         unencoded_queryargs=params, parse_response_type="xml",
                          request_mimetype="application/xml; charset=utf-8")
 
     def get_collection(self, collection_id, handler, limit=100, offset=0):
@@ -215,7 +215,7 @@ class MBAPIHelper(APIHelper):
             path_list = ('collection', )
             queryargs = None
         return self.get(tuple(path_list), handler, priority=True, important=True,
-                        mblogin=True, queryargs=queryargs)
+                        mblogin=True, unencoded_queryargs=queryargs)
 
     def get_collection_list(self, handler):
         return self.get_collection(None, handler)
@@ -233,12 +233,12 @@ class MBAPIHelper(APIHelper):
     def put_to_collection(self, collection_id, releases, handler):
         for path_list in self._collection_request(collection_id, releases):
             self.put(path_list, "", handler,
-                     queryargs=self._get_client_queryarg())
+                     unencoded_queryargs=self._get_client_queryarg())
 
     def delete_from_collection(self, collection_id, releases, handler):
         for path_list in self._collection_request(collection_id, releases):
             self.delete(path_list, handler,
-                        queryargs=self._get_client_queryarg())
+                        unencoded_queryargs=self._get_client_queryarg())
 
 
 class AcoustIdAPIHelper(APIHelper):

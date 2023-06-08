@@ -93,9 +93,9 @@ class MBAPITest(PicardTestCase):
         self.assertNotIn(path, ws_function.call_args[1]['url'].path())
 
     def assertInQuery(self, ws_function, argname, value=None):
-        query_args = ws_function.call_args[1]['queryargs']
-        self.assertIn(argname, query_args)
-        self.assertEqual(value, query_args[argname])
+        unencoded_query_args = ws_function.call_args[1]['unencoded_queryargs']
+        self.assertIn(argname, unencoded_query_args)
+        self.assertEqual(value, unencoded_query_args[argname])
 
     def _test_inc_args(self, ws_function, arg_list):
         self.assertInQuery(self.ws.get_url, 'inc', "+".join(arg_list))
