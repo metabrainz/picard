@@ -93,6 +93,15 @@ class RatingWidget(QtWidgets.QWidget):
             rating = self._maximum
         return rating
 
+    def _submitted(self, document, http, error):
+        if error:
+            self.tagger.window.set_statusbar_message(
+                N_("Failed to submit rating for track '%(track_title)s' due to server error %(error)d"),
+                {'track_title': self._track.metadata['title'], 'error': error},
+                echo=None,
+            )
+            log.error("Failed to submit rating for %s (server HTTP error %d)", self._track, error)
+
     def _update_track(self):
         track = self._track
         rating = str(self._rating)
@@ -103,7 +112,7 @@ class RatingWidget(QtWidgets.QWidget):
         if config.setting["submit_ratings"]:
             ratings = {("recording", track.id): self._rating}
             try:
-                self.tagger.mb_api.submit_ratings(ratings, None)
+                self.tagger.mb_api.submit_ratings(ratings, self._submitted)
             except ValueError:  # This should never happen as self._rating is always an integer
                 log.error("Failed to submit rating for recording %s", track.id, exc_info=True)
 
