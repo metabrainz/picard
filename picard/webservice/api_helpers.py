@@ -59,22 +59,32 @@ def _wrap_xml_metadata(data):
 
 
 class APIHelper(object):
+    _base_url = None
 
     def __init__(self, webservice, base_url=None):
         self._webservice = webservice
-        if not base_url:
-            raise ValueError("base_url is required")
-        elif not isinstance(base_url, QUrl):
-            base_url = QUrl(base_url)
-        self._base_url = base_url
+        if base_url is not None:
+            self.base_url = base_url
+
+    @property
+    def base_url(self):
+        if self._base_url is None:
+            raise ValueError("base_url undefined")
+        return self._base_url
+
+    @base_url.setter
+    def base_url(self, url):
+        if not isinstance(url, QUrl):
+            url = QUrl(url)
+        self._base_url = url
 
     @property
     def webservice(self):
         return self._webservice
 
     def url_from_path(self, path):
-        url = QUrl(self._base_url)
-        url.setPath(self._base_url.path() + path)
+        url = QUrl(self.base_url)
+        url.setPath(url.path() + path)
         return url
 
     def get(self, path, handler, **kwargs):
@@ -106,14 +116,15 @@ class APIHelper(object):
 
 
 class MBAPIHelper(APIHelper):
-
-    def __init__(self, webservice):
+    @property
+    def base_url(self):
+        # we have to keep it dynamic since host/port can be changed via options
         config = get_config()
         host = config.setting['server_host']
         port = config.setting['server_port']
-        base_url = host_port_to_url(host, port)
-        base_url.setPath('/ws/2')
-        super().__init__(webservice, base_url=base_url)
+        self._base_url = host_port_to_url(host, port)
+        self._base_url.setPath('/ws/2')
+        return self._base_url
 
     def _get_by_id(self, entitytype, entityid, handler, inc=None, **kwargs):
         if inc:
