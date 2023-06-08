@@ -104,7 +104,7 @@ class CoverArt:
                 {
                     'type': coverartimage.types_as_string(),
                     'albumid': self.album.id,
-                    'host': coverartimage.host
+                    'host': coverartimage.url.host(),
                 },
                 echo=None
             )
@@ -190,7 +190,7 @@ class CoverArt:
             {
                 'type': coverartimage.types_as_string(),
                 'albumid': self.album.id,
-                'host': coverartimage.host
+                'host': coverartimage.url.host(),
             },
             echo=None
         )
