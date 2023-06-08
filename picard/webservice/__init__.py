@@ -60,6 +60,7 @@ from picard.oauth import OAuthManager
 from picard.util import (
     build_qurl,
     bytes2human,
+    encoded_queryargs,
     parse_json,
 )
 from picard.util.xml import parse_xml
@@ -117,6 +118,7 @@ class WSRequest(QNetworkRequest):
         request_mimetype=None,
         url=None,
         queryargs=None,
+        unencoded_queryargs=None,
     ):
         """
         Args:
@@ -137,6 +139,7 @@ class WSRequest(QNetworkRequest):
             request_mimetype: Set the Content-Type header.
             url: URL passed as a string or as a QUrl to use for this request
             queryargs: Encoded query arguments, a dictionary mapping field names to values
+            unencoded_queryargs: Unencoded query arguments, a dictionary mapping field names to values
         """
         # mandatory parameters
         self.method = method
@@ -153,7 +156,11 @@ class WSRequest(QNetworkRequest):
         if not isinstance(url, QUrl):
             url = QUrl(url)
 
-        if queryargs is not None:
+        if queryargs is not None or unencoded_queryargs is not None:
+            if queryargs is None:
+                queryargs = {}
+            if unencoded_queryargs:
+                queryargs.update(encoded_queryargs(unencoded_queryargs))
             query = QtCore.QUrlQuery(url)
             for k, v in queryargs.items():
                 query.addQueryItem(k, str(v))
