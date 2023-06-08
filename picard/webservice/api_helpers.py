@@ -32,6 +32,7 @@ from picard.const import (
     ACOUSTID_KEY,
     ACOUSTID_URL,
 )
+from picard.util import encoded_queryargs
 from picard.webservice import (
     CLIENT_STRING,
     ratecontrol,
@@ -133,11 +134,11 @@ class MBAPIHelper(APIHelper):
                                priority=priority, important=important, refresh=refresh)
 
     def _find(self, entitytype, handler, **kwargs):
-        filters = []
+        filters = {}
 
         limit = kwargs.pop("limit")
         if limit:
-            filters.append(("limit", limit))
+            filters['limit'] = limit
 
         is_search = kwargs.pop("search", False)
         if is_search:
@@ -147,20 +148,15 @@ class MBAPIHelper(APIHelper):
                 query = kwargs["query"]
             else:
                 query = escape_lucene_query(kwargs["query"]).strip().lower()
-                filters.append(("dismax", 'true'))
+                filters['dismax'] = 'true'
         else:
             query = build_lucene_query(kwargs)
 
         if query:
-            filters.append(("query", query))
-
-        queryargs = {
-            name: bytes(QUrl.toPercentEncoding(str(value))).decode()
-            for name, value in filters
-        }
+            filters['query'] = query
 
         path_list = (entitytype, )
-        return self.get(path_list, handler, queryargs=queryargs,
+        return self.get(path_list, handler, queryargs=encoded_queryargs(filters),
                         priority=True, important=True, mblogin=False,
                         refresh=False)
 
@@ -256,14 +252,10 @@ class AcoustIdAPIHelper(APIHelper):
         return QUrl(ACOUSTID_URL)
 
     def _encode_acoustid_args(self, args):
-        filters = []
         args['client'] = self.client_key
         args['clientversion'] = self.client_version
         args['format'] = 'json'
-        for name, value in args.items():
-            value = bytes(QUrl.toPercentEncoding(value)).decode()
-            filters.append('%s=%s' % (name, value))
-        return '&'.join(filters)
+        return '&'.join((k + '=' + v for k, v in encoded_queryargs(args).items()))
 
     def query_acoustid(self, handler, **args):
         path_list = ('lookup', )
