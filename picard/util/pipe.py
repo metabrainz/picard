@@ -273,7 +273,8 @@ class AbstractPipe(metaclass=ABCMeta):
             if sender.result(timeout=timeout_secs):
                 return True
         except concurrent.futures._base.TimeoutError:
-            log.warning("Couldn't send: %r", message)
+            if self.pipe_running:
+                log.warning("Couldn't send: %r", message)
             # hacky way to kill the sender
             self.read_from_pipe()
 
