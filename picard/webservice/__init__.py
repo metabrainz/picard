@@ -351,8 +351,8 @@ class WebService(QtCore.QObject):
         return reply.attribute(QNetworkRequest.Attribute.HttpReasonPhraseAttribute)
 
     @staticmethod
-    def http_response_safe_url(reply):
-        return reply.request().url().toString(QUrl.UrlFormattingOption.RemoveUserInfo)
+    def display_url(url):
+        return url.toDisplayString(QUrl.UrlFormattingOption.RemoveUserInfo | QUrl.ComponentFormattingOption.EncodeSpaces)
 
     def _network_accessible_changed(self, accessible):
         # Qt's network accessibility check sometimes fails, e.g. with VPNs on Windows.
@@ -465,13 +465,16 @@ class WebService(QtCore.QObject):
     def _handle_redirect(self, reply, request, redirect):
         error = int(reply.error())
         # merge with base url (to cover the possibility of the URL being relative)
-        redirect_qurl = request.url().resolved(redirect)
-        if not WebService.urls_equivalent(redirect_qurl, reply.request().url()):
-            log.debug("Redirect to %s requested", redirect_qurl.toString(QUrl.UrlFormattingOption.RemoveUserInfo))
+        redirect_url = request.url().resolved(redirect)
+        reply_url = reply.request().url()
+        display_redirect_url = self.display_url(redirect_url)
+        display_reply_url = self.display_url(reply_url)
+        if not WebService.urls_equivalent(redirect_url, reply_url):
+            log.debug("Redirect to %s requested", display_redirect_url)
 
             redirect_request = WSRequest(
                 method='GET',
-                url=redirect_qurl,
+                url=redirect_url,
                 handler=request.handler,
                 parse_response_type=request.parse_response_type,
                 priority=True,
@@ -488,9 +491,7 @@ class WebService(QtCore.QObject):
 
             self.add_request(redirect_request)
         else:
-            log.error("Redirect loop: %s",
-                      self.http_response_safe_url(reply)
-                      )
+            log.error("Redirect loop: %s", display_reply_url)
             request.handler(reply.readAll(), reply, error)
 
     def _handle_reply(self, reply, request):
@@ -504,11 +505,11 @@ class WebService(QtCore.QObject):
         error = int(reply.error())
         handler = request.handler
         response_code = self.http_response_code(reply)
-        url = self.http_response_safe_url(reply)
+        display_reply_url = self.display_url(reply.request().url())
         if error:
             errstr = reply.errorString()
-            log.error("Network request error for %s: %s (QT code %d, HTTP code %d)",
-                      url, errstr, error, response_code)
+            log.error("Network request error for %s -> %s (QT code %d, HTTP code %d)",
+                      display_reply_url, errstr, error, response_code)
             if (not request.max_retries_reached()
                 and (response_code == 503
                      or response_code == 429
@@ -519,7 +520,7 @@ class WebService(QtCore.QObject):
                      )):
                 slow_down = True
                 retries = request.mark_for_retry()
-                log.debug("Retrying %s (#%d)", url, retries)
+                log.debug("Retrying %s (#%d)", display_reply_url, retries)
                 self.add_request(request)
 
             elif handler is not None:
@@ -531,8 +532,8 @@ class WebService(QtCore.QObject):
             redirect = reply.attribute(QNetworkRequest.Attribute.RedirectionTargetAttribute)
             from_cache = reply.attribute(QNetworkRequest.Attribute.SourceIsFromCacheAttribute)
             cached = ' (CACHED)' if from_cache else ''
-            log.debug("Received reply for %s: HTTP %d (%s) %s",
-                      url,
+            log.debug("Received reply for %s -> HTTP %d (%s) %s",
+                      display_reply_url,
                       response_code,
                       self.http_response_phrase(reply),
                       cached
@@ -546,7 +547,7 @@ class WebService(QtCore.QObject):
                         document = request.response_parser(reply)
                         log.debug("Response received: %s", document)
                     except Exception as e:
-                        log.error("Unable to parse the response for %s: %s", url, e)
+                        log.error("Unable to parse the response for %s -> %s", display_reply_url, e)
                         document = reply.readAll()
                         error = e
                     finally:
@@ -560,7 +561,8 @@ class WebService(QtCore.QObject):
         try:
             request = self._active_requests.pop(reply)
         except KeyError:
-            log.error("Request not found for %s", self.http_response_safe_url(reply))
+            display_reply_url = self.display_url(reply.request().url())
+            log.error("Request not found for %s", display_reply_url)
             return
         try:
             self._handle_reply(reply, request)
