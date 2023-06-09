@@ -22,10 +22,14 @@
 import os
 import shutil
 import tempfile
+import unittest
 
 from test.picardtestcase import PicardTestCase
 
 from picard import i18n
+
+
+localedir = os.path.join(os.path.dirname(__file__), '..', 'locale')
 
 
 class TestI18n(PicardTestCase):
@@ -48,8 +52,9 @@ class TestI18n(PicardTestCase):
         self.assertEqual('France', gettext_countries('France'))
         self.assertEqual('Cassette', pgettext_attributes('medium_format', 'Cassette'))
 
+    @unittest.skipUnless(os.path.exists(os.path.join(localedir, 'de')),
+        'Test requires locales to be built with "python setup.py build_locales -i"')
     def test_existing_locales(self):
-        localedir = os.path.join(os.path.dirname(__file__), '..', 'locale')
         locale_de = os.path.join(localedir, 'de', 'LC_MESSAGES', 'picard.mo')
         self.assertTrue(os.path.exists(locale_de), 'expected file %s' % locale_de)
         i18n.setup_gettext(localedir, 'de')
