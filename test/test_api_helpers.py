@@ -98,7 +98,7 @@ class MBAPITest(PicardTestCase):
         self.assertEqual(value, unencoded_query_args[argname])
 
     def _test_inc_args(self, ws_function, arg_list):
-        self.assertInQuery(self.ws.get_url, 'inc', "+".join(arg_list))
+        self.assertInQuery(self.ws.get_url, 'inc', self.api._make_inc_arg(arg_list))
 
     def test_get_release(self):
         inc_args_list = ['test']
@@ -211,6 +211,11 @@ class MBAPITest(PicardTestCase):
         self.assertEqual(batch, '/collection/test/releases/r10;r11;r12')
         with self.assertRaises(StopIteration):
             next(generator)
+
+    def test_make_inc_arg(self):
+        result = self.api._make_inc_arg(['b', 'a', '', 1, (), 0])
+        expected = '1+a+b'
+        self.assertEqual(result, expected)
 
 
 class AcoustdIdAPITest(PicardTestCase):

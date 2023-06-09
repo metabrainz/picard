@@ -129,7 +129,7 @@ class MBAPIHelper(APIHelper):
     def _get_by_id(self, entitytype, entityid, handler, inc=None, **kwargs):
         if inc:
             kwargs['unencoded_queryargs'] = kwargs.get('queryargs', {})
-            kwargs['unencoded_queryargs']["inc"] = "+".join(sorted(set(inc)))
+            kwargs['unencoded_queryargs']['inc'] = self._make_inc_arg(inc)
         return self.get(f"/{entitytype}/{entityid}", handler, **kwargs)
 
     def get_release_by_id(self, releaseid, handler, inc=None, **kwargs):
@@ -178,11 +178,21 @@ class MBAPIHelper(APIHelper):
     def find_artists(self, handler, **kwargs):
         return self._find('artist', handler, **kwargs)
 
+    @staticmethod
+    def _make_inc_arg(inc):
+        """
+        Convert an iterable to a string to be passed as inc paramater to MB
+
+        It drops non-unique and empty elements, and sort them before joining
+        them as a '+'-separated string
+        """
+        return '+'.join(sorted(set(str(e) for e in inc if e)))
+
     def _browse(self, entitytype, handler, inc=None, queryargs=None, mblogin=False):
         if queryargs is None:
             queryargs = {}
         if inc:
-            queryargs["inc"] = "+".join(inc)
+            queryargs["inc"] = self._make_inc_arg(inc)
         return self.get(f"/{entitytype}", handler, unencoded_queryargs=queryargs,
                         priority=True, important=True, mblogin=mblogin,
                         refresh=False)
@@ -214,7 +224,7 @@ class MBAPIHelper(APIHelper):
             inc = ("releases", "artist-credits", "media")
             path = f"/collection/{collection_id}/releases"
             queryargs = {
-                "inc": "+".join(inc),
+                "inc": self._make_inc_arg(inc),
                 "limit": limit,
                 "offset": offset,
             }

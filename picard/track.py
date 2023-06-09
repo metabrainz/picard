@@ -408,7 +408,7 @@ class NonAlbumTrack(Track):
         self.tagger.mb_api.get_track_by_id(
             self.id,
             self._recording_request_finished,
-            inc=tuple(inc),
+            inc=inc,
             mblogin=require_authentication,
             priority=priority,
             refresh=refresh
