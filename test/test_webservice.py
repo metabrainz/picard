@@ -534,8 +534,29 @@ class WSRequestTest(PicardTestCase):
             handler=dummy_handler,
             queryargs={'a': 2, 'b': 'x%20x', 'c': '1+2', 'd': '&', 'e': '?'},
         )
-        # FIXME: check encoding
-        self.assertEqual(request.url().toString(), 'http://example.org/path?a=1&a=2&b=x x&c=1+2&d=%26&e=?')
+        expected = 'http://example.org/path?a=1&a=2&b=x x&c=1+2&d=%26&e=?'
+        self.assertEqual(request.url().toString(), expected)
+
+    def test_unencoded_queryargs(self):
+        request = WSRequest(
+            url='http://example.org/path?a=1',
+            method='GET',
+            handler=dummy_handler,
+            unencoded_queryargs={'a': 2, 'b': 'x%20x', 'c': '1+2', 'd': '&', 'e': '?'},
+        )
+        expected = 'http://example.org/path?a=1&a=2&b=x%2520x&c=1%2B2&d=%26&e=%3F'
+        self.assertEqual(request.url().toString(), expected)
+
+    def test_mixed_queryargs(self):
+        request = WSRequest(
+            url='http://example.org/path?a=1',
+            method='GET',
+            handler=dummy_handler,
+            queryargs={'a': '2&', 'b': '1&', 'c': '&'},
+            unencoded_queryargs={'a': '1&', 'b': '2&', 'd': '&'},
+        )
+        expected = 'http://example.org/path?a=1&a=1%26&b=2%26&c=%26&d=%26'
+        self.assertEqual(request.url().toString(), expected)
 
 
 class WebServiceUtilsTest(PicardTestCase):
