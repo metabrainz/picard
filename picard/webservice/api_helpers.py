@@ -264,7 +264,7 @@ class AcoustIdAPIHelper(APIHelper):
     client_version = PICARD_VERSION_STR
 
     def __init__(self, webservice):
-        super().__init__(webservice, base_url=ACOUSTID_URL + '/v2')
+        super().__init__(webservice, base_url=ACOUSTID_URL)
 
     def _encode_acoustid_args(self, args):
         args['client'] = self.client_key
