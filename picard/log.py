@@ -160,14 +160,14 @@ def name_filter(record):
     # In case the module exists within picard, remove the picard prefix
     # else, in case of something like a plugin, keep the path as it is.
     # It provides a significant but short name from the filepath of the module
-    path = Path(record.pathname).resolve().with_suffix('')
+    path = Path(record.pathname).with_suffix('')
     # PyInstaller paths are already relative
     # FIXME: With Python 3.9 this should better use
     # path.is_relative_to(picard_module_path.parent)
     # to avoid the exception handling.
-    if not IS_FROZEN:
+    if path.is_absolute():
         try:
-            path = path.relative_to(picard_module_path.parent)
+            path = path.resolve().relative_to(picard_module_path.parent)
         except ValueError:
             pass
     record.name = '/'.join(p for p in path.parts if p != '__init__')
