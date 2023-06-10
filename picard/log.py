@@ -31,11 +31,16 @@ from collections import (
     deque,
     namedtuple,
 )
+from importlib.machinery import PathFinder
 import logging
-import os
+from pathlib import Path
 from threading import Lock
 
 from PyQt5 import QtCore
+
+
+# Get the absolute path for the picard module
+picard_module_path = Path(PathFinder().find_module('picard').get_filename()).resolve()
 
 
 _MAX_TAIL_LEN = 10**6
@@ -145,14 +150,15 @@ main_logger.setLevel(logging.INFO)
 
 
 def name_filter(record):
-    # provide a significant name from the filepath of the module
-    name, _ = os.path.splitext(os.path.normpath(record.pathname))
-    prefix = os.path.normpath(__package__)
     # In case the module exists within picard, remove the picard prefix
     # else, in case of something like a plugin, keep the path as it is.
-    if name.startswith(prefix):
-        name = name[len(prefix) + 1:].replace(os.sep, ".").replace('.__init__', '')
-    record.name = name
+    # It provides a significant but short name from the filepath of the module
+    try:
+        record_path = Path(record.pathname).resolve()
+        name = record_path.relative_to(picard_module_path.parent).with_suffix('')
+        record.name = '/'.join(p for p in name.parts if p != '__init__')
+    except ValueError:
+        record.name = record.pathname
     return True
 
 
