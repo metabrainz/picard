@@ -30,5 +30,5 @@ IS_HAIKU = sys.platform == 'haiku1'
 
 # These variables are set by pyinstaller if running from a packaged build
 # See http://pyinstaller.readthedocs.io/en/stable/runtime-information.html
-IS_FROZEN = getattr(sys, 'frozen', False)
+IS_FROZEN = getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS')
 FROZEN_TEMP_PATH = getattr(sys, '_MEIPASS', '')
