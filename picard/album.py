@@ -628,7 +628,7 @@ class Album(DataObject, Item):
         self.load_task = self.tagger.mb_api.get_release_by_id(
             self.id,
             self._release_request_finished,
-            inc=tuple(inc),
+            inc=inc,
             mblogin=require_authentication,
             priority=priority,
             refresh=refresh

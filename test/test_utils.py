@@ -58,6 +58,7 @@ from picard.util import (
     any_exception_isinstance,
     build_qurl,
     detect_unicode_encoding,
+    encoded_queryargs,
     extract_year_from_date,
     find_best_match,
     is_absolute_path,
@@ -754,6 +755,15 @@ class BuildQUrlTest(PicardTestCase):
             self.assertEqual(expected, build_qurl(host, port=80).toDisplayString())
             self.assertEqual(expected, build_qurl(host, port=443).toDisplayString())
             self.assertEqual(expected, build_qurl(host, port=8080).toDisplayString())
+
+    def test_encoded_queryargs(self):
+        query = encoded_queryargs({'foo': ' %20&;', 'bar': '=%+?abc'})
+        self.assertEqual('%20%2520%26%3B', query['foo'])
+        self.assertEqual('%3D%25%2B%3Fabc', query['bar'])
+        # spaces are decoded in displayed string
+        expected = 'http://example.com?foo= %2520%26%3B&bar=%3D%25%2B%3Fabc'
+        result = build_qurl('example.com', queryargs=query).toDisplayString()
+        self.assertEqual(expected, result)
 
 
 class NormpathTest(PicardTestCase):

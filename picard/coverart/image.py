@@ -37,7 +37,6 @@ from PyQt5.QtCore import (
     QMutex,
     QObject,
     QUrl,
-    QUrlQuery,
 )
 
 from picard import log
@@ -160,7 +159,10 @@ class CoverArtImage:
         else:
             self.types = types
         if url is not None:
-            self.parse_url(url)
+            if not isinstance(url, QUrl):
+                self.url = QUrl(url)
+            else:
+                self.url = url
         else:
             self.url = None
         self.comment = comment
@@ -177,17 +179,6 @@ class CoverArtImage:
             self.support_multi_types = support_multi_types
         if data is not None:
             self.set_data(data)
-
-    def parse_url(self, url):
-        self.url = QUrl(url)
-        self.host = self.url.host()
-        self.port = self.url.port(443 if self.url.scheme() == 'https' else 80)
-        self.path = self.url.path(QUrl.ComponentFormattingOption.FullyEncoded)
-        if self.url.hasQuery():
-            query = QUrlQuery(self.url.query())
-            self.queryargs = dict(query.queryItems())
-        else:
-            self.queryargs = None
 
     @property
     def source(self):

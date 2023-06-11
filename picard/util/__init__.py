@@ -676,6 +676,17 @@ def album_artist_from_path(filename, album, artist):
     return album, artist
 
 
+def encoded_queryargs(queryargs):
+    """
+    Percent-encode all values from passed dictionary
+    Keys are left unmodified
+    """
+    return {
+        name: bytes(QtCore.QUrl.toPercentEncoding(str(value))).decode()
+        for name, value in queryargs.items()
+    }
+
+
 def build_qurl(host, port=80, path=None, queryargs=None):
     """
     Builds and returns a QUrl object from `host`, `port` and `path` and

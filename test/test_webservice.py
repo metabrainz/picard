@@ -46,6 +46,11 @@ from picard.webservice import (
     WSRequest,
     ratecontrol,
 )
+from picard.webservice.utils import (
+    host_port_to_url,
+    hostkey_from_url,
+    port_from_qurl,
+)
 
 
 PROXY_SETTINGS = {
@@ -97,6 +102,30 @@ class WebServiceTest(PicardTestCase):
         self.ws.delete(host, port, path, handler)
         self.assertIn("DELETE", get_wsreq(mock_add_task).method)
         self.ws.download(host, port, path, handler)
+        self.assertIn("GET", get_wsreq(mock_add_task).method)
+        self.assertEqual(5, mock_add_task.call_count)
+
+    @patch.object(WebService, 'add_task')
+    def test_webservice_url_method_calls(self, mock_add_task):
+        url = "http://abc.xyz"
+        handler = dummy_handler
+        data = None
+
+        def get_wsreq(mock_add_task):
+            return mock_add_task.call_args[0][1]
+
+        self.ws.get_url(url=url, handler=handler)
+        self.assertEqual(1, mock_add_task.call_count)
+        self.assertEqual('abc.xyz', get_wsreq(mock_add_task).host)
+        self.assertEqual(80, get_wsreq(mock_add_task).port)
+        self.assertIn("GET", get_wsreq(mock_add_task).method)
+        self.ws.post_url(url=url, data=data, handler=handler)
+        self.assertIn("POST", get_wsreq(mock_add_task).method)
+        self.ws.put_url(url=url, data=data, handler=handler)
+        self.assertIn("PUT", get_wsreq(mock_add_task).method)
+        self.ws.delete_url(url=url, handler=handler)
+        self.assertIn("DELETE", get_wsreq(mock_add_task).method)
+        self.ws.download_url(url=url, handler=handler)
         self.assertIn("GET", get_wsreq(mock_add_task).method)
         self.assertEqual(5, mock_add_task.call_count)
 
@@ -497,3 +526,74 @@ class WSRequestTest(PicardTestCase):
         self.assertTrue(TEMP_ERRORS_RETRIES > 1)
         self.assertEqual(request.mark_for_retry(), 1)
         self.assertFalse(request.max_retries_reached())
+
+    def test_queryargs(self):
+        request = WSRequest(
+            url='http://example.org/path?a=1',
+            method='GET',
+            handler=dummy_handler,
+            queryargs={'a': 2, 'b': 'x%20x', 'c': '1+2', 'd': '&', 'e': '?'},
+        )
+        expected = 'http://example.org/path?a=1&a=2&b=x x&c=1+2&d=%26&e=?'
+        self.assertEqual(request.url().toString(), expected)
+
+    def test_unencoded_queryargs(self):
+        request = WSRequest(
+            url='http://example.org/path?a=1',
+            method='GET',
+            handler=dummy_handler,
+            unencoded_queryargs={'a': 2, 'b': 'x%20x', 'c': '1+2', 'd': '&', 'e': '?'},
+        )
+        expected = 'http://example.org/path?a=1&a=2&b=x%2520x&c=1%2B2&d=%26&e=%3F'
+        self.assertEqual(request.url().toString(), expected)
+
+    def test_mixed_queryargs(self):
+        request = WSRequest(
+            url='http://example.org/path?a=1',
+            method='GET',
+            handler=dummy_handler,
+            queryargs={'a': '2&', 'b': '1&', 'c': '&'},
+            unencoded_queryargs={'a': '1&', 'b': '2&', 'd': '&'},
+        )
+        expected = 'http://example.org/path?a=1&a=1%26&b=2%26&c=%26&d=%26'
+        self.assertEqual(request.url().toString(), expected)
+
+
+class WebServiceUtilsTest(PicardTestCase):
+
+    def test_port_from_qurl_http(self):
+        self.assertEqual(port_from_qurl(QUrl('http://example.org')), 80)
+
+    def test_port_from_qurl_http_other(self):
+        self.assertEqual(port_from_qurl(QUrl('http://example.org:666')), 666)
+
+    def test_port_from_qurl_https(self):
+        self.assertEqual(port_from_qurl(QUrl('https://example.org')), 443)
+
+    def test_port_from_qurl_https_other(self):
+        self.assertEqual(port_from_qurl(QUrl('https://example.org:666')), 666)
+
+    def test_port_from_qurl_exception(self):
+        with self.assertRaises(AttributeError):
+            port_from_qurl('xxx')
+
+    def test_hostkey_from_qurl_http(self):
+        self.assertEqual(hostkey_from_url(QUrl('http://example.org')), ('example.org', 80))
+
+    def test_hostkey_from_url_https_other(self):
+        self.assertEqual(hostkey_from_url('https://example.org:666'), ('example.org', 666))
+
+    def test_host_port_to_url_http_80(self):
+        self.assertEqual(host_port_to_url('example.org', 80, as_string=True), 'http://example.org')
+
+    def test_host_port_to_url_http_80_qurl(self):
+        self.assertEqual(host_port_to_url('example.org', 80).toString(), 'http://example.org')
+
+    def test_host_port_to_url_https_443(self):
+        self.assertEqual(host_port_to_url('example.org', 443, as_string=True), 'https://example.org')
+
+    def test_host_port_to_url_https_scheme_80(self):
+        self.assertEqual(host_port_to_url('example.org', 80, scheme='https', as_string=True), 'https://example.org:80')
+
+    def test_host_port_to_url_http_666_with_path(self):
+        self.assertEqual(host_port_to_url('example.org', 666, path='/abc', as_string=True), 'http://example.org:666/abc')

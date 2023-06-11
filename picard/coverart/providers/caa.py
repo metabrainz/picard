@@ -52,10 +52,7 @@ from picard.config import (
     ListOption,
     get_config,
 )
-from picard.const import (
-    CAA_HOST,
-    CAA_PORT,
-)
+from picard.const import CAA_URL
 from picard.coverart.image import (
     CaaCoverArtImage,
     CaaThumbnailCoverArtImage,
@@ -92,8 +89,8 @@ _CAA_IMAGE_SIZE_DEFAULT = 500
 _CAA_IMAGE_TYPE_DEFAULT_INCLUDE = ['front']
 _CAA_IMAGE_TYPE_DEFAULT_EXCLUDE = ['matrix/runout', 'raw/unedited', 'watermark']
 
-ratecontrol.set_minimum_delay((CAA_HOST, CAA_PORT), 0)
-ratecontrol.set_minimum_delay(('archive.org', 443), 0)
+ratecontrol.set_minimum_delay_for_url(CAA_URL, 0)
+ratecontrol.set_minimum_delay_for_url('https://archive.org', 0)
 
 
 def caa_url_fallback_list(desired_size, thumbnails):
@@ -581,14 +578,12 @@ class CoverArtProviderCaa(CoverArtProvider):
         return "/release/%s/" % self.metadata["musicbrainz_albumid"]
 
     def queue_images(self):
-        self.album.tagger.webservice.get(
-            CAA_HOST,
-            CAA_PORT,
-            self._caa_path,
-            self._caa_json_downloaded,
+        self.album.tagger.webservice.get_url(
+            url=CAA_URL + self._caa_path,
+            handler=self._caa_json_downloaded,
             priority=True,
             important=False,
-            cacheloadcontrol=QNetworkRequest.CacheLoadControl.PreferNetwork
+            cacheloadcontrol=QNetworkRequest.CacheLoadControl.PreferNetwork,
         )
         self.album._requests += 1
         # we will call next_in_queue() after json parsing

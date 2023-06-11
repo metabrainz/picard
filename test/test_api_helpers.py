@@ -4,8 +4,8 @@
 #
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2018 Wieland Hoffmann
-# Copyright (C) 2018, 2020-2021 Laurent Monin
-# Copyright (C) 2019-2022 Philipp Wolfer
+# Copyright (C) 2018, 2020-2021, 2023 Laurent Monin
+# Copyright (C) 2019-2023 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -23,6 +23,8 @@
 
 
 from unittest.mock import MagicMock
+
+from PyQt5.QtCore import QUrl
 
 from test.picardtestcase import PicardTestCase
 
@@ -42,35 +44,31 @@ class APITest(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        self.host = "abc.com"
-        self.port = 80
-        self.api_path = "/v1/"
-        self.path_list = ['test', 'more', 'test']
-        self.complete_path = "/v1/test/more/test"
+        base_url = "http://abc.com/v1"
+        self.path = "/test/more/test"
+        self.complete_url = QUrl(base_url + self.path)
         self.ws = MagicMock(auto_spec=WebService)
-        self.api = APIHelper(self.host, self.port, self.api_path, self.ws)
+        self.api = APIHelper(self.ws, base_url=base_url)
 
     def _test_ws_function_args(self, ws_function):
         self.assertGreater(ws_function.call_count, 0)
-        self.assertEqual(ws_function.call_args[0][0], self.host)
-        self.assertEqual(ws_function.call_args[0][1], self.port)
-        self.assertEqual(ws_function.call_args[0][2], self.complete_path)
+        self.assertEqual(ws_function.call_args[1]['url'], self.complete_url)
 
     def test_get(self):
-        self.api.get(self.path_list, None)
-        self._test_ws_function_args(self.ws.get)
+        self.api.get(self.path, None)
+        self._test_ws_function_args(self.ws.get_url)
 
     def test_post(self):
-        self.api.post(self.path_list, None, None)
-        self._test_ws_function_args(self.ws.post)
+        self.api.post(self.path, None, None)
+        self._test_ws_function_args(self.ws.post_url)
 
     def test_put(self):
-        self.api.put(self.path_list, None, None)
-        self._test_ws_function_args(self.ws.put)
+        self.api.put(self.path, None, None)
+        self._test_ws_function_args(self.ws.put_url)
 
     def test_delete(self):
-        self.api.delete(self.path_list, None)
-        self._test_ws_function_args(self.ws.delete)
+        self.api.delete(self.path, None)
+        self._test_ws_function_args(self.ws.delete_url)
 
 
 class MBAPITest(PicardTestCase):
@@ -84,64 +82,64 @@ class MBAPITest(PicardTestCase):
 
     def _test_ws_function_args(self, ws_function):
         self.assertGreater(ws_function.call_count, 0)
-        self.assertEqual(ws_function.call_args[0][0], self.config['server_host'])
-        self.assertEqual(ws_function.call_args[0][1], self.config['server_port'])
-        self.assertIn("/ws/2/", ws_function.call_args[0][2])
+        url = ws_function.call_args[1]['url']
+        self.assertTrue(url.toString().startswith("https://mb.org/"))
+        self.assertTrue(url.path().startswith("/ws/2/"))
 
     def assertInPath(self, ws_function, path):
-        self.assertIn(path, ws_function.call_args[0][2])
+        self.assertIn(path, ws_function.call_args[1]['url'].path())
 
     def assertNotInPath(self, ws_function, path):
-        self.assertNotIn(path, ws_function.call_args[0][2])
+        self.assertNotIn(path, ws_function.call_args[1]['url'].path())
 
     def assertInQuery(self, ws_function, argname, value=None):
-        query_args = ws_function.call_args[1]['queryargs']
-        self.assertIn(argname, query_args)
-        self.assertEqual(value, query_args[argname])
+        unencoded_query_args = ws_function.call_args[1]['unencoded_queryargs']
+        self.assertIn(argname, unencoded_query_args)
+        self.assertEqual(value, unencoded_query_args[argname])
 
     def _test_inc_args(self, ws_function, arg_list):
-        self.assertInQuery(self.ws.get, 'inc', "+".join(arg_list))
+        self.assertInQuery(self.ws.get_url, 'inc', self.api._make_inc_arg(arg_list))
 
     def test_get_release(self):
         inc_args_list = ['test']
         self.api.get_release_by_id("1", None, inc=inc_args_list)
-        self._test_ws_function_args(self.ws.get)
-        self.assertInPath(self.ws.get, "/release/1")
-        self._test_inc_args(self.ws.get, inc_args_list)
+        self._test_ws_function_args(self.ws.get_url)
+        self.assertInPath(self.ws.get_url, "/release/1")
+        self._test_inc_args(self.ws.get_url, inc_args_list)
 
     def test_get_track(self):
         inc_args_list = ['test']
         self.api.get_track_by_id("1", None, inc=inc_args_list)
-        self._test_ws_function_args(self.ws.get)
-        self.assertInPath(self.ws.get, "/recording/1")
-        self._test_inc_args(self.ws.get, inc_args_list)
+        self._test_ws_function_args(self.ws.get_url)
+        self.assertInPath(self.ws.get_url, "/recording/1")
+        self._test_inc_args(self.ws.get_url, inc_args_list)
 
     def test_get_collection(self):
         inc_args_list = ["releases", "artist-credits", "media"]
         self.api.get_collection("1", None)
-        self._test_ws_function_args(self.ws.get)
-        self.assertInPath(self.ws.get, "collection")
-        self.assertInPath(self.ws.get, "1/releases")
-        self._test_inc_args(self.ws.get, inc_args_list)
+        self._test_ws_function_args(self.ws.get_url)
+        self.assertInPath(self.ws.get_url, "collection")
+        self.assertInPath(self.ws.get_url, "1/releases")
+        self._test_inc_args(self.ws.get_url, inc_args_list)
 
     def test_get_collection_list(self):
         self.api.get_collection_list(None)
-        self._test_ws_function_args(self.ws.get)
-        self.assertInPath(self.ws.get, "collection")
-        self.assertNotInPath(self.ws.get, "releases")
+        self._test_ws_function_args(self.ws.get_url)
+        self.assertInPath(self.ws.get_url, "collection")
+        self.assertNotInPath(self.ws.get_url, "releases")
 
     def test_put_collection(self):
         self.api.put_to_collection("1", ["1", "2", "3"], None)
-        self._test_ws_function_args(self.ws.put)
-        self.assertInPath(self.ws.put, "collection/1/releases/1;2;3")
+        self._test_ws_function_args(self.ws.put_url)
+        self.assertInPath(self.ws.put_url, "collection/1/releases/1;2;3")
 
     def test_delete_collection(self):
         self.api.delete_from_collection("1", ["1", "2", "3", "4"] * 200, None)
         collection_string = ";".join(["1", "2", "3", "4"] * 100)
-        self._test_ws_function_args(self.ws.delete)
-        self.assertInPath(self.ws.delete, "collection/1/releases/" + collection_string)
-        self.assertNotInPath(self.ws.delete, collection_string + ";" + collection_string)
-        self.assertEqual(self.ws.delete.call_count, 2)
+        self._test_ws_function_args(self.ws.delete_url)
+        self.assertInPath(self.ws.delete_url, "collection/1/releases/" + collection_string)
+        self.assertNotInPath(self.ws.delete_url, collection_string + ";" + collection_string)
+        self.assertEqual(self.ws.delete_url.call_count, 2)
 
     def test_xml_ratings_empty(self):
         ratings = dict()
@@ -206,13 +204,18 @@ class MBAPITest(PicardTestCase):
         releases = tuple("r"+str(i) for i in range(13))
         generator = self.api._collection_request("test", releases, batchsize=5)
         batch = next(generator)
-        self.assertEqual(batch, ('collection', 'test', 'releases', 'r0;r1;r2;r3;r4'))
+        self.assertEqual(batch, '/collection/test/releases/r0;r1;r2;r3;r4')
         batch = next(generator)
-        self.assertEqual(batch, ('collection', 'test', 'releases', 'r5;r6;r7;r8;r9'))
+        self.assertEqual(batch, '/collection/test/releases/r5;r6;r7;r8;r9')
         batch = next(generator)
-        self.assertEqual(batch, ('collection', 'test', 'releases', 'r10;r11;r12'))
+        self.assertEqual(batch, '/collection/test/releases/r10;r11;r12')
         with self.assertRaises(StopIteration):
             next(generator)
+
+    def test_make_inc_arg(self):
+        result = self.api._make_inc_arg(['b', 'a', '', 1, (), 0])
+        expected = '1+a+b'
+        self.assertEqual(result, expected)
 
 
 class AcoustdIdAPITest(PicardTestCase):

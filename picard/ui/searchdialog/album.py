@@ -35,11 +35,7 @@ from picard.config import (
     Option,
     get_config,
 )
-from picard.const import (
-    CAA_HOST,
-    CAA_PORT,
-)
-from picard.coverart.image import CaaThumbnailCoverArtImage
+from picard.const import CAA_URL
 from picard.mbjson import (
     countries_from_node,
     media_formats_from_node,
@@ -248,12 +244,10 @@ class AlbumSearchDialog(SearchDialog):
         if not cell.is_visible():
             return
         cell.fetched = True
-        caa_path = "/release/%s" % cell.release["musicbrainz_albumid"]
-        cell.fetch_task = self.tagger.webservice.get(
-            CAA_HOST,
-            CAA_PORT,
-            caa_path,
-            partial(self._caa_json_downloaded, cell)
+        mbid = cell.release["musicbrainz_albumid"]
+        cell.fetch_task = self.tagger.webservice.get_url(
+            url=f'{CAA_URL}/release/{mbid}',
+            handler=partial(self._caa_json_downloaded, cell),
         )
 
     def _caa_json_downloaded(self, cover_cell, data, http, error):
@@ -275,13 +269,9 @@ class AlbumSearchDialog(SearchDialog):
                     break
 
             if front:
-                url = front["thumbnails"]["small"]
-                coverartimage = CaaThumbnailCoverArtImage(url=url)
-                cover_cell.fetch_task = self.tagger.webservice.download(
-                    coverartimage.host,
-                    coverartimage.port,
-                    coverartimage.path,
-                    partial(self._cover_downloaded, cover_cell)
+                cover_cell.fetch_task = self.tagger.webservice.download_url(
+                    url=front["thumbnails"]["small"],
+                    handler=partial(self._cover_downloaded, cover_cell)
                 )
             else:
                 cover_cell.not_found()

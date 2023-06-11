@@ -104,7 +104,7 @@ class CoverArt:
                 {
                     'type': coverartimage.types_as_string(),
                     'albumid': self.album.id,
-                    'host': coverartimage.host
+                    'host': coverartimage.url.host(),
                 },
                 echo=None
             )
@@ -190,19 +190,15 @@ class CoverArt:
             {
                 'type': coverartimage.types_as_string(),
                 'albumid': self.album.id,
-                'host': coverartimage.host
+                'host': coverartimage.url.host(),
             },
             echo=None
         )
         log.debug("Downloading %r", coverartimage)
-        self.album.tagger.webservice.download(
-            coverartimage.host,
-            coverartimage.port,
-            coverartimage.path,
-            partial(self._coverart_downloaded, coverartimage),
-            queryargs=coverartimage.queryargs,
+        self.album.tagger.webservice.download_url(
+            url=coverartimage.url,
+            handler=partial(self._coverart_downloaded, coverartimage),
             priority=True,
-            important=False
         )
         self.album._requests += 1
 

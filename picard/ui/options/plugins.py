@@ -657,15 +657,13 @@ class PluginsOptionsPage(OptionsPage):
     def download_plugin(self, item, update=False):
         plugin = item.plugin
 
-        self.tagger.webservice.get(
-            PLUGINS_API['host'],
-            PLUGINS_API['port'],
-            PLUGINS_API['endpoint']['download'],
-            partial(self.download_handler, update, plugin=plugin),
+        self.tagger.webservice.get_url(
+            url=PLUGINS_API['urls']['download'],
+            handler=partial(self.download_handler, update, plugin=plugin),
             parse_response_type=None,
             priority=True,
             important=True,
-            queryargs={"id": plugin.module_name, "version": plugin.version.to_string(short=True)}
+            unencoded_queryargs={"id": plugin.module_name, "version": plugin.version.to_string(short=True)},
         )
 
     def download_handler(self, update, response, reply, error, plugin):

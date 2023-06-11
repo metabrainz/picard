@@ -53,8 +53,7 @@ CACHE_SIZE_IN_BYTES = 100*1000*1000
 
 # AcoustID client API key
 ACOUSTID_KEY = 'v8pQ6oyB'
-ACOUSTID_HOST = 'api.acoustid.org'
-ACOUSTID_PORT = 443
+ACOUSTID_URL = 'https://api.acoustid.org/v2'
 FPCALC_NAMES = ['fpcalc', 'pyfpcalc']
 DEFAULT_FPCALC_THREADS = 2
 
@@ -62,9 +61,8 @@ DEFAULT_FPCALC_THREADS = 2
 MUSICBRAINZ_OAUTH_CLIENT_ID = 'ACa9wsDX19cLp-AeEP-vVw'
 MUSICBRAINZ_OAUTH_CLIENT_SECRET = 'xIsvXbIuntaLuRRhzuazOA'
 
-# Cover art archive URL and port
-CAA_HOST = "coverartarchive.org"
-CAA_PORT = 443
+# Cover art archive URL
+CAA_URL = 'https://coverartarchive.org'
 
 # Prepare documentation URLs
 if PICARD_VERSION.identifier == 'final':
@@ -144,14 +142,13 @@ MUSICBRAINZ_SERVERS = [
 ]
 
 # Plugins and Release Versions API
+PLUGINS_API_BASE_URL = 'https://picard.musicbrainz.org/api/v2/'
 PLUGINS_API = {
-    'host': 'picard.musicbrainz.org',
-    'port': 443,
-    'endpoint': {
-        'plugins': '/api/v2/plugins/',
-        'download': '/api/v2/download/',
-        'releases': '/api/v2/releases',
-    }
+    'urls': {
+        'plugins': PLUGINS_API_BASE_URL + 'plugins/',
+        'download': PLUGINS_API_BASE_URL + 'download/',
+        'releases': PLUGINS_API_BASE_URL + 'releases',
+    },
 }
 
 # Default query limit

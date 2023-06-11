@@ -60,10 +60,12 @@ from picard.oauth import OAuthManager
 from picard.util import (
     build_qurl,
     bytes2human,
+    encoded_queryargs,
     parse_json,
 )
 from picard.util.xml import parse_xml
 from picard.webservice import ratecontrol
+from picard.webservice.utils import port_from_qurl
 
 
 COUNT_REQUESTS_DELAY_MS = 250
@@ -74,9 +76,7 @@ USER_AGENT_STRING = '%s-%s/%s (%s;%s-%s)' % (PICARD_ORG_NAME, PICARD_APP_NAME,
                                              platform.platform(),
                                              platform.python_implementation(),
                                              platform.python_version())
-CLIENT_STRING = bytes(QUrl.toPercentEncoding('%s %s-%s' % (PICARD_ORG_NAME,
-                                                           PICARD_APP_NAME,
-                                                           PICARD_VERSION_STR))).decode()
+CLIENT_STRING = '%s %s-%s' % (PICARD_ORG_NAME, PICARD_APP_NAME, PICARD_VERSION_STR)
 
 
 DEFAULT_RESPONSE_PARSER_TYPE = "json"
@@ -115,6 +115,8 @@ class WSRequest(QNetworkRequest):
         important=False,
         request_mimetype=None,
         url=None,
+        queryargs=None,
+        unencoded_queryargs=None,
     ):
         """
         Args:
@@ -134,6 +136,8 @@ class WSRequest(QNetworkRequest):
             important: Indicates that this is an important request.
             request_mimetype: Set the Content-Type header.
             url: URL passed as a string or as a QUrl to use for this request
+            queryargs: Encoded query arguments, a dictionary mapping field names to values
+            unencoded_queryargs: Unencoded query arguments, a dictionary mapping field names to values
         """
         # mandatory parameters
         self.method = method
@@ -149,6 +153,17 @@ class WSRequest(QNetworkRequest):
 
         if not isinstance(url, QUrl):
             url = QUrl(url)
+
+        if queryargs is not None or unencoded_queryargs is not None:
+            if queryargs is None:
+                queryargs = {}
+            if unencoded_queryargs:
+                queryargs.update(encoded_queryargs(unencoded_queryargs))
+            query = QtCore.QUrlQuery(url)
+            for k, v in queryargs.items():
+                query.addQueryItem(k, str(v))
+            url.setQuery(query)
+
         super().__init__(url)
 
         # optional parameters
@@ -204,11 +219,7 @@ class WSRequest(QNetworkRequest):
 
     @property
     def port(self):
-        """Returns QUrl port or default ports (443 for https, 80 for http)"""
-        url = self.url()
-        if url.scheme() == 'https':
-            return url.port(443)
-        return url.port(80)
+        return port_from_qurl(self.url())
 
     @property
     def path(self):
@@ -340,8 +351,8 @@ class WebService(QtCore.QObject):
         return reply.attribute(QNetworkRequest.Attribute.HttpReasonPhraseAttribute)
 
     @staticmethod
-    def http_response_safe_url(reply):
-        return reply.request().url().toString(QUrl.UrlFormattingOption.RemoveUserInfo)
+    def display_url(url):
+        return url.toDisplayString(QUrl.UrlFormattingOption.RemoveUserInfo | QUrl.ComponentFormattingOption.EncodeSpaces)
 
     def _network_accessible_changed(self, accessible):
         # Qt's network accessibility check sometimes fails, e.g. with VPNs on Windows.
@@ -454,13 +465,16 @@ class WebService(QtCore.QObject):
     def _handle_redirect(self, reply, request, redirect):
         error = int(reply.error())
         # merge with base url (to cover the possibility of the URL being relative)
-        redirect_qurl = request.url().resolved(redirect)
-        if not WebService.urls_equivalent(redirect_qurl, reply.request().url()):
-            log.debug("Redirect to %s requested", redirect_qurl.toString(QUrl.UrlFormattingOption.RemoveUserInfo))
+        redirect_url = request.url().resolved(redirect)
+        reply_url = reply.request().url()
+        display_redirect_url = self.display_url(redirect_url)
+        display_reply_url = self.display_url(reply_url)
+        if not WebService.urls_equivalent(redirect_url, reply_url):
+            log.debug("Redirect to %s requested", display_redirect_url)
 
             redirect_request = WSRequest(
                 method='GET',
-                url=redirect_qurl,
+                url=redirect_url,
                 handler=request.handler,
                 parse_response_type=request.parse_response_type,
                 priority=True,
@@ -477,9 +491,7 @@ class WebService(QtCore.QObject):
 
             self.add_request(redirect_request)
         else:
-            log.error("Redirect loop: %s",
-                      self.http_response_safe_url(reply)
-                      )
+            log.error("Redirect loop: %s", display_reply_url)
             request.handler(reply.readAll(), reply, error)
 
     def _handle_reply(self, reply, request):
@@ -493,11 +505,11 @@ class WebService(QtCore.QObject):
         error = int(reply.error())
         handler = request.handler
         response_code = self.http_response_code(reply)
-        url = self.http_response_safe_url(reply)
+        display_reply_url = self.display_url(reply.request().url())
         if error:
             errstr = reply.errorString()
-            log.error("Network request error for %s: %s (QT code %d, HTTP code %d)",
-                      url, errstr, error, response_code)
+            log.error("Network request error for %s -> %s (QT code %d, HTTP code %d)",
+                      display_reply_url, errstr, error, response_code)
             if (not request.max_retries_reached()
                 and (response_code == 503
                      or response_code == 429
@@ -508,7 +520,7 @@ class WebService(QtCore.QObject):
                      )):
                 slow_down = True
                 retries = request.mark_for_retry()
-                log.debug("Retrying %s (#%d)", url, retries)
+                log.debug("Retrying %s (#%d)", display_reply_url, retries)
                 self.add_request(request)
 
             elif handler is not None:
@@ -520,8 +532,8 @@ class WebService(QtCore.QObject):
             redirect = reply.attribute(QNetworkRequest.Attribute.RedirectionTargetAttribute)
             from_cache = reply.attribute(QNetworkRequest.Attribute.SourceIsFromCacheAttribute)
             cached = ' (CACHED)' if from_cache else ''
-            log.debug("Received reply for %s: HTTP %d (%s) %s",
-                      url,
+            log.debug("Received reply for %s -> HTTP %d (%s) %s",
+                      display_reply_url,
                       response_code,
                       self.http_response_phrase(reply),
                       cached
@@ -535,7 +547,7 @@ class WebService(QtCore.QObject):
                         document = request.response_parser(reply)
                         log.debug("Response received: %s", document)
                     except Exception as e:
-                        log.error("Unable to parse the response for %s: %s", url, e)
+                        log.error("Unable to parse the response for %s -> %s", display_reply_url, e)
                         document = reply.readAll()
                         error = e
                     finally:
@@ -549,7 +561,8 @@ class WebService(QtCore.QObject):
         try:
             request = self._active_requests.pop(reply)
         except KeyError:
-            log.error("Request not found for %s", self.http_response_safe_url(reply))
+            display_reply_url = self.display_url(reply.request().url())
+            log.error("Request not found for %s", display_reply_url)
             return
         try:
             self._handle_reply(reply, request)
@@ -560,6 +573,7 @@ class WebService(QtCore.QObject):
     def get(self, host, port, path, handler, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE,
             priority=False, important=False, mblogin=False, cacheloadcontrol=None, refresh=False,
             queryargs=None):
+        log.warning("This method is deprecated, use WebService.get_url() instead")
         request = WSRequest(
             method='GET',
             url=build_qurl(host, port, path=path, queryargs=queryargs),
@@ -575,6 +589,7 @@ class WebService(QtCore.QObject):
 
     def post(self, host, port, path, data, handler, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE,
              priority=False, important=False, mblogin=True, queryargs=None, request_mimetype=None):
+        log.warning("This method is deprecated, use WebService.post_url() instead")
         request = WSRequest(
             method='POST',
             url=build_qurl(host, port, path=path, queryargs=queryargs),
@@ -591,6 +606,7 @@ class WebService(QtCore.QObject):
 
     def put(self, host, port, path, data, handler, priority=True, important=False, mblogin=True,
             queryargs=None, request_mimetype=None):
+        log.warning("This method is deprecated, use WebService.put_url() instead")
         request = WSRequest(
             method='PUT',
             url=build_qurl(host, port, path=path, queryargs=queryargs),
@@ -605,6 +621,7 @@ class WebService(QtCore.QObject):
 
     def delete(self, host, port, path, handler, priority=True, important=False, mblogin=True,
                queryargs=None):
+        log.warning("This method is deprecated, use WebService.delete_url() instead")
         request = WSRequest(
             method='DELETE',
             url=build_qurl(host, port, path=path, queryargs=queryargs),
@@ -618,6 +635,7 @@ class WebService(QtCore.QObject):
     def download(self, host, port, path, handler, priority=False,
                  important=False, cacheloadcontrol=None, refresh=False,
                  queryargs=None):
+        log.warning("This method is deprecated, use WebService.download_url() instead")
         request = WSRequest(
             method='GET',
             url=build_qurl(host, port, path=path, queryargs=queryargs),
@@ -628,6 +646,34 @@ class WebService(QtCore.QObject):
             refresh=refresh,
         )
         return self.add_request(request)
+
+    def get_url(self, **kwargs):
+        kwargs['method'] = 'GET'
+        kwargs['parse_response_type'] = kwargs.get('parse_response_type', DEFAULT_RESPONSE_PARSER_TYPE)
+        return self.add_request(WSRequest(**kwargs))
+
+    def post_url(self, **kwargs):
+        kwargs['method'] = 'POST'
+        kwargs['parse_response_type'] = kwargs.get('parse_response_type', DEFAULT_RESPONSE_PARSER_TYPE)
+        kwargs['mblogin'] = kwargs.get('mblogin', True)
+        log.debug("POST-DATA %r", kwargs['data'])
+        return self.add_request(WSRequest(**kwargs))
+
+    def put_url(self, **kwargs):
+        kwargs['method'] = 'PUT'
+        kwargs['priority'] = kwargs.get('priority', True)
+        kwargs['mblogin'] = kwargs.get('mblogin', True)
+        return self.add_request(WSRequest(**kwargs))
+
+    def delete_url(self, **kwargs):
+        kwargs['method'] = 'DELETE'
+        kwargs['priority'] = kwargs.get('priority', True)
+        kwargs['mblogin'] = kwargs.get('mblogin', True)
+        return self.add_request(WSRequest(**kwargs))
+
+    def download_url(self, **kwargs):
+        kwargs['method'] = 'GET'
+        return self.add_request(WSRequest(**kwargs))
 
     def stop(self):
         for reply in list(self._active_requests):
