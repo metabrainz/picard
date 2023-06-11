@@ -26,6 +26,17 @@ jobs:
         python -m pip install --upgrade pip
         pip install --upgrade setuptools
         pip install -r requirements.txt
+    - name: Install gettext (Linux)
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install gettext
+    - name: Install gettext (macOS)
+      if: runner.os == 'macOS'
+      run: |
+        brew install gettext
+        brew link gettext --force
+        echo "/usr/local/opt/gettext/bin" >> $GITHUB_PATH
     - name: Check coding style
       run: |
         pip install flake8 "isort>=5"
@@ -35,6 +46,7 @@ jobs:
       if: always()
       timeout-minutes: 30
       run: |
+        python setup.py build_locales -i
         pip install pytest pytest-randomly pytest-cov
         pytest --verbose --cov=picard --cov-report xml:coverage.xml test
     - name: Test python-libdiscid (Linux)

@@ -40,6 +40,7 @@ from picard import (
     config,
     log,
 )
+from picard.i18n import setup_gettext
 from picard.releasegroup import ReleaseGroup
 
 
@@ -81,6 +82,7 @@ class FakeTagger(QtCore.QObject):
 class PicardTestCase(unittest.TestCase):
     def setUp(self):
         log.set_level(logging.DEBUG)
+        setup_gettext(None, 'C')
         self.tagger = FakeTagger()
         QtCore.QObject.tagger = self.tagger
         QtCore.QCoreApplication.instance = lambda: self.tagger

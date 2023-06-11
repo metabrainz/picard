@@ -27,22 +27,12 @@ import os.path
 
 from test.picardtestcase import PicardTestCase
 
-from picard.i18n import setup_gettext
 from picard.util import bytes2human
 
 
 class Testbytes2human(PicardTestCase):
-    def setUp(self):
-        super().setUp()
-        # we are using temporary locales for tests
-        self.tmp_path = self.mktmpdir()
-        self.localedir = os.path.join(self.tmp_path, 'locale')
-
     def test_00(self):
-        # testing with default C locale, english
-        lang = 'C'
-        setup_gettext(self.localedir, lang)
-        self.run_test(lang)
+        self.run_test()
 
         self.assertEqual(bytes2human.binary(45682), '44.6 KiB')
         self.assertEqual(bytes2human.binary(-45682), '-44.6 KiB')

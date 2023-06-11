@@ -24,14 +24,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-import os.path
-
 from test.picardtestcase import (
     PicardTestCase,
     load_test_json,
 )
 
-from picard.i18n import setup_gettext
 from picard.releasegroup import ReleaseGroup
 
 
@@ -44,13 +41,6 @@ settings = {
 
 
 class ReleaseTest(PicardTestCase):
-
-    def setUp(self):
-        super().setUp()
-        # we are using temporary locales for tests
-        self.tmp_path = self.mktmpdir()
-        self.localedir = os.path.join(self.tmp_path, 'locale')
-        setup_gettext(self.localedir, 'C')
 
     def test_1(self):
         self.set_config_values(settings)
