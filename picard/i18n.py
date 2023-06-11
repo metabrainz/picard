@@ -25,6 +25,7 @@
 import builtins
 import gettext
 import locale
+import os
 
 from PyQt5.QtCore import QLocale
 
@@ -113,11 +114,20 @@ def _try_locales(language):
 
 def _load_translation(domain, localedir, language):
     try:
-        _logger("Loading gettext translation for %s, localedir=%r, langage=%r", domain, localedir, language)
+        _logger("Loading gettext translation for %s, localedir=%r, language=%r", domain, localedir, language)
         return gettext.translation(domain, localedir, languages=[language])
     except OSError as e:
         _logger(e)
         return gettext.NullTranslations()
+
+
+def _log_lang_env_vars():
+    env_vars = []
+    lc_keys = sorted(k for k in os.environ.keys() if k.startswith('LC_'))
+    for k in ('LANG', 'LANGUAGE') + tuple(lc_keys):
+        if k in os.environ:
+            env_vars.append(k + '=' + os.environ[k])
+    _logger("Env vars: %s", ' '.join(env_vars))
 
 
 def setup_gettext(localedir, ui_language=None, logger=None):
@@ -133,6 +143,7 @@ def setup_gettext(localedir, ui_language=None, logger=None):
         try_locales = list(_try_locales(ui_language))
     else:
         _logger("UI language: system")
+        _log_lang_env_vars()
         try_locales = []
 
     default_locale = _get_default_locale()
