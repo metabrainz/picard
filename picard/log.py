@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2007, 2011 Lukáš Lalinský
-# Copyright (C) 2008-2010, 2019, 2021 Philipp Wolfer
+# Copyright (C) 2008-2010, 2019, 2021, 2023 Philipp Wolfer
 # Copyright (C) 2012-2013 Michael Wiencek
 # Copyright (C) 2013, 2015, 2018-2021, 2023 Laurent Monin
 # Copyright (C) 2016-2018 Sambhav Kothari
@@ -38,10 +38,17 @@ from threading import Lock
 
 from PyQt5 import QtCore
 
+from picard.const.sys import (
+    FROZEN_TEMP_PATH,
+    IS_FROZEN,
+)
+
 
 # Get the absolute path for the picard module
-picard_module_path = Path(PathFinder().find_module('picard').get_filename()).resolve()
-
+if IS_FROZEN:
+    picard_module_path = Path(FROZEN_TEMP_PATH).joinpath('picard').resolve()
+else:
+    picard_module_path = Path(PathFinder().find_module('picard').get_filename()).resolve()
 
 _MAX_TAIL_LEN = 10**6
 
@@ -153,12 +160,17 @@ def name_filter(record):
     # In case the module exists within picard, remove the picard prefix
     # else, in case of something like a plugin, keep the path as it is.
     # It provides a significant but short name from the filepath of the module
-    try:
-        record_path = Path(record.pathname).resolve()
-        name = record_path.relative_to(picard_module_path.parent).with_suffix('')
-        record.name = '/'.join(p for p in name.parts if p != '__init__')
-    except ValueError:
-        record.name = record.pathname
+    path = Path(record.pathname).with_suffix('')
+    # PyInstaller paths are already relative
+    # FIXME: With Python 3.9 this should better use
+    # path.is_relative_to(picard_module_path.parent)
+    # to avoid the exception handling.
+    if path.is_absolute():
+        try:
+            path = path.resolve().relative_to(picard_module_path.parent)
+        except ValueError:
+            pass
+    record.name = '/'.join(p for p in path.parts if p != '__init__')
     return True
 
 
