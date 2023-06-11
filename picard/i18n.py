@@ -93,11 +93,10 @@ elif IS_MACOS:
         current_locale = defaults.objectForKey_('AppleLanguages')[0]
         current_locale = current_locale.replace('-', '_')
         try:
-            locale.setlocale(locale.LC_ALL, current_locale)
-            return current_locale
+            return locale.setlocale(locale.LC_ALL, current_locale)
         except locale.Error:
-            _logger("Defaulting to C locale")
-            return locale.setlocale(locale.LC_ALL, 'C')
+            _logger("Failed to set locale: %r", current_locale)
+            return set_locale_from_env()
 
 else:
     def _init_default_locale():
