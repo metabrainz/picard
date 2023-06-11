@@ -57,7 +57,13 @@ class TestI18n(PicardTestCase):
     def test_existing_locales(self):
         locale_de = os.path.join(localedir, 'de', 'LC_MESSAGES', 'picard.mo')
         self.assertTrue(os.path.exists(locale_de), 'expected file %s' % locale_de)
+
+        gettext_before_setup = _
         i18n.setup_gettext(localedir, 'de')
+        gettext_after_setup = _
+
+        self.assertNotEqual(gettext_before_setup, gettext_after_setup)
+
         self.assertEqual('foo', _('foo'))
         self.assertEqual('Land', _('Country'))
         self.assertEqual('Country', N_('Country'))
