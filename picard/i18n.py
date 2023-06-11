@@ -38,6 +38,43 @@ from picard.const.sys import (
 builtins.__dict__['N_'] = lambda a: a
 
 
+_logger = None
+
+
+def set_locale_from_env():
+    """
+    Depending on environment, locale.setlocale(locale.LC_ALL, '') can fail.
+
+    Returns a string LANG[.ENCODING]
+
+    >>> import locale
+    >>> import os
+    >>> os.environ['LANG'] = 'buggy'
+    >>> locale.setlocale(locale.LC_ALL, '')
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+      File "/usr/lib/python3.10/locale.py", line 620, in setlocale
+        return _setlocale(category, locale)
+    locale.Error: unsupported locale setting
+    >>> locale.setlocale(locale.LC_ALL, 'C')
+    'C'
+    >>> locale.getlocale(locale.LC_ALL)
+    (None, None)
+    >>> os.environ['LANG'] = 'en_US.UTF-8'
+    >>> locale.setlocale(locale.LC_ALL, '')
+    'en_US.UTF-8'
+    >>> locale.getlocale(locale.LC_ALL)
+    ('en_US', 'UTF-8')
+    """
+    try:
+        current_locale = locale.setlocale(locale.LC_ALL, '')
+    except locale.Error:
+        # default to 'C' locale if it couldn't be set from env
+        current_locale = locale.setlocale(locale.LC_ALL, 'C')
+    _logger("Setting locale from env: %r", current_locale)
+    return current_locale
+
+
 if IS_WIN:
     from ctypes import windll
 
@@ -46,7 +83,7 @@ if IS_WIN:
             current_locale = locale.windows_locale[windll.kernel32.GetUserDefaultUILanguage()]
             return locale.setlocale(locale.LC_ALL, current_locale)
         except KeyError:
-            return locale.setlocale(locale.LC_ALL, '')
+            return set_locale_from_env()
 
 elif IS_MACOS:
     import Foundation
@@ -55,13 +92,16 @@ elif IS_MACOS:
         defaults = Foundation.NSUserDefaults.standardUserDefaults()
         current_locale = defaults.objectForKey_('AppleLanguages')[0]
         current_locale = current_locale.replace('-', '_')
-        locale.setlocale(locale.LC_ALL, current_locale)
-        return current_locale
+        try:
+            locale.setlocale(locale.LC_ALL, current_locale)
+            return current_locale
+        except locale.Error:
+            _logger("Defaulting to C locale")
+            return locale.setlocale(locale.LC_ALL, 'C')
 
 else:
     def _init_default_locale():
-        locale.setlocale(locale.LC_ALL, '')
-        return '.'.join(locale.getlocale(locale.LC_MESSAGES))
+        return set_locale_from_env()
 
 
 def _try_set_locale(language):
@@ -72,42 +112,44 @@ def _try_set_locale(language):
         else:
             current_locale = language
         try:
-            locale.setlocale(locale.LC_ALL, current_locale)
-            return current_locale
+            return locale.setlocale(locale.LC_ALL, current_locale)
         except locale.Error:
+            _logger("Failed to set locale: %r", current_locale)
             continue
-    locale.setlocale(locale.LC_ALL, '')  # Ensure some locale settings are defined
+    set_locale_from_env()  # Ensure some locale settings are defined
     return language  # Just return the language, so at least UI translation works
 
 
-def _load_translation(domain, localedir, logger):
+def _load_translation(domain, localedir):
     try:
-        logger("Loading gettext translation for %s, localedir=%r", domain, localedir)
+        _logger("Loading gettext translation for %s, localedir=%r", domain, localedir)
         return gettext.translation(domain, localedir)
     except OSError as e:
-        logger(e)
+        _logger(e)
         return gettext.NullTranslations()
 
 
 def setup_gettext(localedir, ui_language=None, logger=None):
     """Setup locales, load translations, install gettext functions."""
+    global _logger
     if not logger:
-        logger = lambda *a, **b: None  # noqa: E731
-    current_locale = ''
-    try:
-        if ui_language:
-            current_locale = _try_set_locale(ui_language)
-        else:
-            current_locale = _init_default_locale()
-    except Exception as e:
-        logger(e)
+        _logger = lambda *a, **b: None  # noqa: E731
+    else:
+        _logger = logger
+    current_locale = None
+    if ui_language:
+        _logger("UI language: %r", ui_language)
+        current_locale = _try_set_locale(ui_language)
+        _logger("Using locale (UI): %r", current_locale)
+    if current_locale is None:
+        current_locale = _init_default_locale()
+        _logger("Using locale (init): %r", current_locale)
     os.environ['LANGUAGE'] = os.environ['LANG'] = current_locale
     QLocale.setDefault(QLocale(current_locale))
-    logger("Using locale %r", current_locale)
 
-    trans = _load_translation('picard', localedir, logger)
-    trans_countries = _load_translation('picard-countries', localedir, logger)
-    trans_attributes = _load_translation('picard-attributes', localedir, logger)
+    trans = _load_translation('picard', localedir)
+    trans_countries = _load_translation('picard-countries', localedir)
+    trans_attributes = _load_translation('picard-attributes', localedir)
 
     trans.install(['ngettext'])
     builtins.__dict__['gettext_countries'] = trans_countries.gettext
@@ -120,12 +162,12 @@ def setup_gettext(localedir, ui_language=None, logger=None):
             return gettext_ctxt(trans_attributes.gettext, message, context)
         builtins.__dict__['pgettext_attributes'] = pgettext
 
-    logger("_ = %r", _)
-    logger("N_ = %r", N_)
-    logger("ngettext = %r", ngettext)
-    logger("gettext_countries = %r", gettext_countries)
-    logger("gettext_attributes = %r", gettext_attributes)
-    logger("pgettext_attributes = %r", pgettext_attributes)
+    _logger("_ = %r", _)
+    _logger("N_ = %r", N_)
+    _logger("ngettext = %r", ngettext)
+    _logger("gettext_countries = %r", gettext_countries)
+    _logger("gettext_attributes = %r", gettext_attributes)
+    _logger("pgettext_attributes = %r", pgettext_attributes)
 
 
 # Workaround for po files with msgctxt which isn't supported by Python < 3.8
