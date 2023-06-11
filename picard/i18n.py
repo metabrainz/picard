@@ -25,7 +25,6 @@
 import builtins
 import gettext
 import locale
-import os.path
 
 from PyQt5.QtCore import QLocale
 
@@ -78,51 +77,44 @@ def set_locale_from_env():
 if IS_WIN:
     from ctypes import windll
 
-    def _init_default_locale():
+    def _get_default_locale():
         try:
-            current_locale = locale.windows_locale[windll.kernel32.GetUserDefaultUILanguage()]
-            return locale.setlocale(locale.LC_ALL, current_locale)
+            return locale.windows_locale[windll.kernel32.GetUserDefaultUILanguage()]
         except KeyError:
-            return set_locale_from_env()
+            return None
 
 elif IS_MACOS:
     import Foundation
 
-    def _init_default_locale():
+    def _get_default_locale():
         defaults = Foundation.NSUserDefaults.standardUserDefaults()
-        current_locale = defaults.objectForKey_('AppleLanguages')[0]
-        current_locale = current_locale.replace('-', '_')
-        try:
-            return locale.setlocale(locale.LC_ALL, current_locale)
-        except locale.Error:
-            _logger("Failed to set locale: %r", current_locale)
-            return set_locale_from_env()
+        return defaults.objectForKey_('AppleLanguages')[0].replace('-', '_')
 
 else:
-    def _init_default_locale():
-        return set_locale_from_env()
+    def _get_default_locale():
+        return None
 
 
-def _try_set_locale(language):
+def _try_locales(language):
     # Try setting the locale with different or no encoding
-    for encoding in (locale.getpreferredencoding(), 'UTF-8', None):
+    preferred_encoding = locale.getpreferredencoding()
+    if preferred_encoding != 'UTF-8':
+        try_encodings = (preferred_encoding, 'UTF-8', None)
+    else:
+        try_encodings = ('UTF-8', None)
+
+    for encoding in try_encodings:
         if encoding:
             current_locale = locale.normalize(language + '.' + encoding)
         else:
             current_locale = language
-        try:
-            return locale.setlocale(locale.LC_ALL, current_locale)
-        except locale.Error:
-            _logger("Failed to set locale: %r", current_locale)
-            continue
-    set_locale_from_env()  # Ensure some locale settings are defined
-    return language  # Just return the language, so at least UI translation works
+        yield current_locale
 
 
-def _load_translation(domain, localedir):
+def _load_translation(domain, localedir, language):
     try:
-        _logger("Loading gettext translation for %s, localedir=%r", domain, localedir)
-        return gettext.translation(domain, localedir)
+        _logger("Loading gettext translation for %s, localedir=%r, langage=%r", domain, localedir, language)
+        return gettext.translation(domain, localedir, languages=[language])
     except OSError as e:
         _logger(e)
         return gettext.NullTranslations()
@@ -135,20 +127,41 @@ def setup_gettext(localedir, ui_language=None, logger=None):
         _logger = lambda *a, **b: None  # noqa: E731
     else:
         _logger = logger
-    current_locale = None
+
     if ui_language:
         _logger("UI language: %r", ui_language)
-        current_locale = _try_set_locale(ui_language)
-        _logger("Using locale (UI): %r", current_locale)
+        try_locales = list(_try_locales(ui_language))
+    else:
+        _logger("UI language: system")
+        try_locales = []
+
+    default_locale = _get_default_locale()
+    if default_locale:
+        try_locales.append(default_locale)
+
+    _logger("Trying locales: %r", try_locales)
+
+    current_locale = None
+    for loc in try_locales:
+        try:
+            current_locale = locale.setlocale(locale.LC_ALL, loc)
+            _logger("Set locale to: %r", current_locale)
+            break
+        except locale.Error:
+            _logger("Failed to set locale: %r", loc)
+
+    if ui_language:
+        # UI locale may differ from env, those have to match files in po/
+        current_locale = ui_language
     if current_locale is None:
-        current_locale = _init_default_locale()
-        _logger("Using locale (init): %r", current_locale)
-    os.environ['LANGUAGE'] = os.environ['LANG'] = current_locale
+        current_locale = set_locale_from_env()
+
+    _logger("Using locale: %r", current_locale)
     QLocale.setDefault(QLocale(current_locale))
 
-    trans = _load_translation('picard', localedir)
-    trans_countries = _load_translation('picard-countries', localedir)
-    trans_attributes = _load_translation('picard-attributes', localedir)
+    trans = _load_translation('picard', localedir, language=current_locale)
+    trans_countries = _load_translation('picard-countries', localedir, language=current_locale)
+    trans_attributes = _load_translation('picard-attributes', localedir, language=current_locale)
 
     trans.install(['ngettext'])
     builtins.__dict__['gettext_countries'] = trans_countries.gettext
