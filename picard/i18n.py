@@ -96,20 +96,21 @@ else:
         return None
 
 
-def _try_locales(language):
-    # Try setting the locale with different or no encoding
+def _try_encodings():
+    """Generate encodings to try, starting with preferred encoding if possible"""
     preferred_encoding = locale.getpreferredencoding()
     if preferred_encoding != 'UTF-8':
-        try_encodings = (preferred_encoding, 'UTF-8', None)
-    else:
-        try_encodings = ('UTF-8', None)
+        yield preferred_encoding
+    yield from ('UTF-8', None)
 
-    for encoding in try_encodings:
+
+def _try_locales(language):
+    """Try setting the locale from language with preferred/UTF-8/no encoding"""
+    for encoding in _try_encodings():
         if encoding:
-            current_locale = locale.normalize(language + '.' + encoding)
+            yield locale.normalize(language + '.' + encoding)
         else:
-            current_locale = language
-        yield current_locale
+            yield language
 
 
 def _load_translation(domain, localedir, language):
