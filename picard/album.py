@@ -305,7 +305,7 @@ class Album(DataObject, Item):
                     config = get_config()
                     if parse_result == ParseResult.MISSING_TRACK_RELS:
                         log.debug('Recording relationships not loaded in initial request for %r, issuing separate requests', self)
-                        self._request_recording_relationships(config=config)
+                        self._request_recording_relationships()
                     elif parse_result == ParseResult.PARSED:
                         self._run_album_metadata_processors()
                     elif parse_result == ParseResult.REDIRECT:
@@ -318,9 +318,7 @@ class Album(DataObject, Item):
             if parse_result == ParseResult.PARSED or error:
                 self._finalize_loading(error)
 
-    def _request_recording_relationships(self, offset=0, limit=RECORDING_QUERY_LIMIT, config=None):
-        if not config:
-            config = get_config()
+    def _request_recording_relationships(self, offset=0, limit=RECORDING_QUERY_LIMIT):
         inc = (
             'artist-rels',
             'recording-rels',
@@ -336,7 +334,7 @@ class Album(DataObject, Item):
             inc=inc,
             release=self.id,
             limit=limit,
-            offset=offset
+            offset=offset,
         )
 
     def _recordings_request_finished(self, document, http, error):
