@@ -908,6 +908,10 @@ def limited_join(a_list, limit, join_string='+', middle_string='…'):
     return join_string.join(start + [middle_string] + end)
 
 
+def countries_shortlist(countries):
+    return limited_join(countries, 6, '+', '…')
+
+
 def extract_year_from_date(dt):
     """ Extracts year from  passed in date either dict or string """
 

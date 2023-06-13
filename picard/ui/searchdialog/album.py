@@ -43,6 +43,7 @@ from picard.mbjson import (
     release_to_metadata,
 )
 from picard.metadata import Metadata
+from picard.util import countries_shortlist
 from picard.webservice.api_helpers import build_lucene_query
 
 from picard.ui.searchdialog import (
@@ -325,7 +326,7 @@ class AlbumSearchDialog(SearchDialog):
                 release["tracks"] = node['track-count']
             countries = countries_from_node(node)
             if countries:
-                release["country"] = ", ".join(countries)
+                release["country"] = countries_shortlist(countries)
             self.search_results.append(release)
 
     def display_results(self):

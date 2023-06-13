@@ -39,7 +39,7 @@ from picard.mbjson import (
 )
 from picard.metadata import Metadata
 from picard.util import (
-    limited_join,
+    countries_shortlist,
     uniqify,
 )
 
@@ -87,7 +87,7 @@ class ReleaseGroup(DataObject):
 
             countries = countries_from_node(node)
             if countries:
-                country_label = limited_join(countries, 6, '+', '…')
+                country_label = countries_shortlist(countries)
             else:
                 country_label = node.get('country', '') or '??'
 
