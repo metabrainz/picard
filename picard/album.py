@@ -433,9 +433,9 @@ class Album(DataObject, Item):
             mm = Metadata()
             mm.copy(self._new_metadata)
             medium_to_metadata(medium_node, mm)
-            format = medium_node.get('format')
-            if format:
-                all_media.append(format)
+            fmt = medium_node.get('format')
+            if fmt:
+                all_media.append(fmt)
 
             for dj in djmix_ars.get(mm["discnumber"], []):
                 mm.add("djmixer", dj)
