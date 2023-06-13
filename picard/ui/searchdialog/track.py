@@ -37,7 +37,10 @@ from picard.mbjson import (
 )
 from picard.metadata import Metadata
 from picard.track import Track
-from picard.util import sort_by_similarity
+from picard.util import (
+    countries_shortlist,
+    sort_by_similarity,
+)
 from picard.webservice.api_helpers import build_lucene_query
 
 from picard.ui.searchdialog import (
@@ -161,7 +164,7 @@ class TrackSearchDialog(SearchDialog):
                     release_group_to_metadata(rg_node, track)
                     countries = countries_from_node(rel_node)
                     if countries:
-                        track["country"] = ", ".join(countries)
+                        track["country"] = countries_shortlist(countries)
                     self.search_results.append((track, node))
             else:
                 # This handles the case when no release is associated with a track
