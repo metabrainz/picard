@@ -109,6 +109,7 @@ jobs:
         mv dist/*.dmg artifacts/
       env:
         APPLE_ID_USER: ${{ secrets.APPLE_ID_USER }}
+        APPLE_ID_TEAM: ${{ secrets.APPLE_ID_TEAM }}
         APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
         CODESIGN_MACOS_P12_PASSWORD: ${{ secrets.CODESIGN_MACOS_P12_PASSWORD }}
     - name: Archive production artifacts
