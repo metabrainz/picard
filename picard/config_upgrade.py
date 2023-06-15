@@ -473,6 +473,39 @@ def upgrade_to_v2_9_0_alpha_2(config):
     config.setting['file_renaming_scripts'] = scripts
 
 
+def upgrade_to_v3_0_0_dev_1(config):
+    """Clear Qt5 state config"""
+    # A lot of persisted data is serialized Qt5 data that is not compatible with Qt6.
+    # Keep only the data that is still useful and definitely supported.
+    keep_persist = (
+        'current_browser_path',
+        'current_directory',
+        'mediaplayer_playback_rate',
+        'mediaplayer_volume',
+        'oauth_access_token_expires',
+        'oauth_access_token',
+        'oauth_refresh_token_scopes',
+        'oauth_refresh_token',
+        'oauth_username',
+        'script_editor_show_documentation',
+        'script_editor_tooltips',
+        'script_editor_wordwrap',
+        'show_changes_first',
+        'show_hidden_files',
+        'tags_from_filenames_format',
+        'view_cover_art',
+        'view_file_browser',
+        'view_metadata_view',
+        'view_toolbar',
+    )
+
+    # We need to make sure to load all keys in the config file, not just
+    # those for which an initialized Option exists.
+    for key in config.allKeys():
+        if key.startswith('persist/') and key[8:] not in keep_persist:
+            config.remove(key)
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
@@ -518,4 +551,5 @@ def upgrade_config(config):
     cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_5)
     cfg.register_upgrade_hook(upgrade_to_v2_8_0_dev_2)
     cfg.register_upgrade_hook(upgrade_to_v2_9_0_alpha_2)
+    cfg.register_upgrade_hook(upgrade_to_v3_0_0_dev_1)
     cfg.run_upgrade_hooks(log.debug)
