@@ -93,8 +93,33 @@ To uninstall Picard again simply remove all the files listed in
 Running From the Source Tree
 ----------------------------
 
-If you want to run Picard from the source directory without installing, you
-need to build the C extensions and locales manually:
+If you want to run Picard from the source directory without installing,
+or want to develop, you need to follow those steps.
+
+On Debian-based systems:
+
+   apt install python3-pyqt5 python3-venv python3-dev
+
+For other distributions, check your distribution's documentation
+on how to install the packages for Qt5, PyQt5, Python3 C headers,
+and Python3 venv.
+
+At top of source directory, create a .venv directory:
+
+    python3 -m venv --system-site-packages .venv
+
+Activate it:
+
+    . .venv/bin/activate
+
+Install requirements (here we also install build & dev requirements):
+
+    pip install -r requirements.txt -r requirements-build.txt -r requirements-dev.txt
+
+You then need to build the C extensions and locales manually.
+C extension will require header file `Python.h`.
+
+Then you can build Picard dependencies:
 
     python3 setup.py build
     python3 setup.py build_ext -i
@@ -103,6 +128,10 @@ need to build the C extensions and locales manually:
 And to start Picard use:
 
     python3 tagger.py
+
+Or, to enable debug mode:
+
+    python3 tagger.py -d
 
 
 Running the Test Suite
