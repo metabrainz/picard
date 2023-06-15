@@ -1,7 +1,7 @@
 # Translations template for picard.
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the picard project.
-#
+# 
 # Translators:
 # nikki, 2014-2015
 # nikki2 <b4931048@nwldx.com>, 2012
