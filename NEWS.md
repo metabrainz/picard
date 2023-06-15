@@ -1,3 +1,16 @@
+# Version 2.9.0b2 - 2023-06-15
+
+## Bugfixes
+
+- [PICARD-2481](https://tickets.metabrainz.org/browse/PICARD-2481) - Shorten long country lists in search results
+- [PICARD-2651](https://tickets.metabrainz.org/browse/PICARD-2651) - Repeated / duplicate log lines on console output
+
+## Improvements
+
+- [PICARD-2653](https://tickets.metabrainz.org/browse/PICARD-2653) - Update alias locales for updated server list
+- [PICARD-2654](https://tickets.metabrainz.org/browse/PICARD-2654) - Show error message on rating submission failure due to server error
+
+
 # Version 2.9.0b1 - 2023-05-31
 
 ## Bug Fixes
