@@ -19,11 +19,11 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
-    - name: Install appstream-util
+    - name: Install appstream
       run: |
         sudo apt-get update
-        sudo apt-get install appstream-util gettext
+        sudo apt-get install appstream gettext
     - name: Validate AppStream metadata
       run: |
         python setup.py build_appdata
-        appstream-util validate-relax org.musicbrainz.Picard.appdata.xml
+        appstreamcli validate --pedantic --explain org.musicbrainz.Picard.appdata.xml
