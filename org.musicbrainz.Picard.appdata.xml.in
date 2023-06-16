@@ -76,11 +76,7 @@
   <recommends>
     <control>keyboard</control>
     <control>pointing</control>
-  </recommends>
-  <recommends>
     <display_length compare="ge">medium</display_length>
-  </recommends>
-  <recommends>
     <internet>always</internet>
   </recommends>
 
