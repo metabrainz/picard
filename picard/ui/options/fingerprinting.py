@@ -69,7 +69,7 @@ class FingerprintingOptionsPage(OptionsPage):
     options = [
         BoolOption("setting", "ignore_existing_acoustid_fingerprints", False),
         BoolOption("setting", "save_acoustid_fingerprints", False),
-        TextOption("setting", "fingerprinting_system", "acoustid"),
+        TextOption("setting", "fingerprinting_system", ""),
         TextOption("setting", "acoustid_fpcalc", ""),
         TextOption("setting", "acoustid_apikey", ""),
         IntOption("setting", "fpcalc_threads", DEFAULT_FPCALC_THREADS),
