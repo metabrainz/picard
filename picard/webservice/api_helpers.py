@@ -31,6 +31,7 @@ from picard.config import get_config
 from picard.const import (
     ACOUSTID_KEY,
     ACOUSTID_URL,
+    MUSICBRAINZ_SERVERS,
 )
 from picard.util import encoded_queryargs
 from picard.webservice import (
@@ -121,7 +122,9 @@ class MBAPIHelper(APIHelper):
         # we have to keep it dynamic since host/port can be changed via options
         config = get_config()
         host = config.setting['server_host']
-        port = config.setting['server_port']
+        # FIXME: We should get rid of this hard coded exception and move the
+        #        configuration to use proper URLs everywhere.
+        port = 443 if host in MUSICBRAINZ_SERVERS else config.setting['server_port']
         self._base_url = host_port_to_url(host, port)
         self._base_url.setPath('/ws/2')
         return self._base_url
