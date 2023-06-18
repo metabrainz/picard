@@ -239,22 +239,29 @@ class AbstractPipe(metaclass=ABCMeta):
         if timeout_secs is None:
             timeout_secs = self.TIMEOUT_SECS
 
-        with concurrent.futures.ThreadPoolExecutor() as executor:
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+
+        try:
             reader = executor.submit(self._reader)
-            #print("reader: %r" % reader)
-            try:
-                res = reader.result(timeout=timeout_secs)
-                if res:
-                    out = [r for r in res.split(self.MESSAGE_TO_IGNORE) if r]
-                    if out:
-                        return out
-            except concurrent.futures._base.TimeoutError:
-                # hacky way to kill the file-opening loop
-                self.send_to_pipe(self.MESSAGE_TO_IGNORE)
-            except Exception as e:
-                # https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future.result
-                # If the call raised an exception, this method will raise the same exception.
-                log.error("pipe reader exception: %s", e)
+            # Without this the Python interpreter cannot stop when the user writes an infinite loop
+            # Even though all threads in ThreadPoolExecutor are created as daemon threads
+            # They are not stopped on Python's shutdown but Python waits for them to stop on their own
+            # See https://stackoverflow.com/a/49992422/13160001
+            del concurrent.futures.thread._threads_queues[list(executor._threads)[0]]
+            res = reader.result(timeout=timeout_secs)
+            if res:
+                out = [r for r in res.split(self.MESSAGE_TO_IGNORE) if r]
+                if out:
+                    return out
+        except concurrent.futures._base.TimeoutError:
+            # hacky way to kill the file-opening loop
+            self.send_to_pipe(self.MESSAGE_TO_IGNORE)
+        except Exception as e:
+            # https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future.result
+            # If the call raised an exception, this method will raise the same exception.
+            log.error("pipe reader exception: %s", e)
+        finally:
+            executor.shutdown(wait=False)
 
         return [self.NO_RESPONSE_MESSAGE]
 
@@ -270,23 +277,25 @@ class AbstractPipe(metaclass=ABCMeta):
         if timeout_secs is None:
             timeout_secs = self.TIMEOUT_SECS
 
-        with concurrent.futures.ThreadPoolExecutor() as executor:
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        try:
             # we're sending only filepaths, so we have to create some kind of separator
             # to avoid any potential conflicts and mixing the data
             sender = executor.submit(self._sender, message + self.MESSAGE_TO_IGNORE)
-            #print("sender: %r" % sender)
-            try:
-                if sender.result(timeout=timeout_secs):
-                    return True
-            except concurrent.futures._base.TimeoutError:
-                if self.pipe_running:
-                    log.warning("Couldn't send: %r", message)
-                # hacky way to kill the sender
-                self.read_from_pipe()
-            except Exception as e:
-                # https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future.result
-                # If the call raised an exception, this method will raise the same exception.
-                log.error("pipe sender exception: %s", e)
+            del concurrent.futures.thread._threads_queues[list(executor._threads)[0]]
+            if sender.result(timeout=timeout_secs):
+                return True
+        except concurrent.futures._base.TimeoutError:
+            if self.pipe_running:
+                log.warning("Couldn't send: %r", message)
+            # hacky way to kill the sender
+            self.read_from_pipe()
+        except Exception as e:
+            # https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future.result
+            # If the call raised an exception, this method will raise the same exception.
+            log.error("pipe sender exception: %s", e)
+        finally:
+            executor.shutdown(wait=False)
 
         return False
 
