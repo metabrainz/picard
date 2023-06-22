@@ -56,6 +56,8 @@ import re
 import shutil
 import time
 
+from mutagen._util import MutagenError
+
 from PyQt5 import QtCore
 
 from picard import (
@@ -106,6 +108,7 @@ class FileErrorType(Enum):
     UNKNOWN = auto()
     NOTFOUND = auto()
     NOACCESS = auto()
+    MUTAGEN = auto()
 
 
 class File(QtCore.QObject, Item):
@@ -205,13 +208,16 @@ class File(QtCore.QObject, Item):
 
     def _set_error(self, error):
         self.state = File.ERROR
-        self.error_append(str(error))
-        if any_exception_isinstance(error, FileNotFoundError):
+        if any_exception_isinstance(error, MutagenError):
+            self.error_type = FileErrorType.MUTAGEN
+            self.error_append(_('The file failed to parse, either the file is damaged or has an unsupported file format.'))
+        elif any_exception_isinstance(error, FileNotFoundError):
             self.error_type = FileErrorType.NOTFOUND
         elif any_exception_isinstance(error, PermissionError):
             self.error_type = FileErrorType.NOACCESS
         else:
             self.error_type = FileErrorType.UNKNOWN
+        self.error_append(str(error))
 
     def load(self, callback):
         thread.run_task(
