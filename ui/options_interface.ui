@@ -123,6 +123,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="file_save_warning">
+        <property name="text">
+         <string>Show a confirmation dialog when saving files</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="filebrowser_horizontal_autoscroll">
         <property name="text">
          <string>Adjust horizontal position in file browser automatically</string>

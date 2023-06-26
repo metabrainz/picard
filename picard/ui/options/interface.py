@@ -11,7 +11,7 @@
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017 Antonio Larrosa
-# Copyright (C) 2018 Bob Swift
+# Copyright (C) 2018, 2023 Bob Swift
 # Copyright (C) 2021 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
@@ -77,6 +77,7 @@ class InterfaceOptionsPage(OptionsPage):
         BoolOption("setting", "builtin_search", True),
         BoolOption("setting", "use_adv_search_syntax", False),
         BoolOption("setting", "quit_confirmation", True),
+        BoolOption("setting", "file_save_warning", True),
         TextOption("setting", "ui_language", ""),
         TextOption("setting", "ui_theme", str(UiTheme.DEFAULT)),
         BoolOption("setting", "filebrowser_horizontal_autoscroll", True),
@@ -149,6 +150,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.builtin_search.setChecked(config.setting["builtin_search"])
         self.ui.use_adv_search_syntax.setChecked(config.setting["use_adv_search_syntax"])
         self.ui.quit_confirmation.setChecked(config.setting["quit_confirmation"])
+        self.ui.file_save_warning.setChecked(config.setting["file_save_warning"])
         current_ui_language = config.setting["ui_language"]
         self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
         self.ui.filebrowser_horizontal_autoscroll.setChecked(config.setting["filebrowser_horizontal_autoscroll"])
@@ -166,6 +168,7 @@ class InterfaceOptionsPage(OptionsPage):
         config.setting["builtin_search"] = self.ui.builtin_search.isChecked()
         config.setting["use_adv_search_syntax"] = self.ui.use_adv_search_syntax.isChecked()
         config.setting["quit_confirmation"] = self.ui.quit_confirmation.isChecked()
+        config.setting["file_save_warning"] = self.ui.file_save_warning.isChecked()
         self.tagger.window.update_toolbar_style()
         new_theme_setting = str(self.ui.ui_theme.itemData(self.ui.ui_theme.currentIndex()))
         new_language = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())

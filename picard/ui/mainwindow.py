@@ -108,6 +108,7 @@ from picard.ui import PreserveGeometry
 from picard.ui.aboutdialog import AboutDialog
 from picard.ui.coverartbox import CoverArtBox
 from picard.ui.filebrowser import FileBrowser
+from picard.ui.firstrundialog import FirstRunDialog
 from picard.ui.infodialog import (
     AlbumInfoDialog,
     ClusterInfoDialog,
@@ -129,6 +130,7 @@ from picard.ui.passworddialog import (
     PasswordDialog,
     ProxyDialog,
 )
+from picard.ui.savewarningdialog import SaveWarningDialog
 from picard.ui.scripteditor import (
     ScriptEditorDialog,
     ScriptEditorExamples,
@@ -182,6 +184,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         TextOption("persist", "current_directory", ""),
         FloatOption("persist", "mediaplayer_playback_rate", 1.0),
         IntOption("persist", "mediaplayer_volume", 50),
+        BoolOption("persist", "first_run", True),
     ]
 
     def __init__(self, parent=None, disable_player=False):
@@ -296,6 +299,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show(self):
         self.restoreWindowState()
         super().show()
+        self.show_first_run_dialog()
         if self.tagger.autoupdate_enabled:
             self.auto_update_check()
         self.metadata_box.restore_state()
@@ -1347,7 +1351,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def save(self):
         """Tell the tagger to save the selected objects."""
-        self.tagger.save(self.selected_objects)
+        config = get_config()
+        if config.setting["file_save_warning"]:
+            msg = SaveWarningDialog()
+            proceed_with_save, disable_warning = msg.show()
+            config.setting["file_save_warning"] = not disable_warning
+        else:
+            proceed_with_save = True
+        if proceed_with_save:
+            self.tagger.save(self.selected_objects)
 
     def remove(self):
         """Tell the tagger to remove the selected objects."""
@@ -1975,6 +1987,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 profile['enabled'] = not profile['enabled']
                 self.make_script_selector_menu()
                 return
+
+    def show_first_run_dialog(self):
+        config = get_config()
+        if config.persist["first_run"]:
+            msg = FirstRunDialog()
+            config.persist["first_run"] = msg.show()
 
 
 def update_last_check_date(is_success):
