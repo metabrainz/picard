@@ -43,8 +43,8 @@ class SaveWarningDialog():
             footer = _("<strong>This action cannot be undone.</strong>  Do you want to continue?")
             list_of_actions = ''
             for action in actions:
-                list_of_actions += f'<li>{action}</li>'
-            self.WARNING_TEXT = f'<p>{header}</p><ul>{list_of_actions}</ul><p>{footer}</p>'
+                list_of_actions += _('<li>{action}</li>').format(action=action)
+            self.WARNING_TEXT = _('<p>{header}</p><ul>{list_of_actions}</ul><p>{footer}</p>').format(header=header, list_of_actions=list_of_actions, footer=footer)
         else:
             self.WARNING_TEXT = _("There are no actions selected.  No changes will be saved.")
 
