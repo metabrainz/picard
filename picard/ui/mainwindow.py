@@ -108,7 +108,6 @@ from picard.ui import PreserveGeometry
 from picard.ui.aboutdialog import AboutDialog
 from picard.ui.coverartbox import CoverArtBox
 from picard.ui.filebrowser import FileBrowser
-from picard.ui.firstrundialog import FirstRunDialog
 from picard.ui.infodialog import (
     AlbumInfoDialog,
     ClusterInfoDialog,
@@ -125,6 +124,7 @@ from picard.ui.logview import (
     LogView,
 )
 from picard.ui.metadatabox import MetadataBox
+from picard.ui.newuserdialog import NewUserDialog
 from picard.ui.options.dialog import OptionsDialog
 from picard.ui.passworddialog import (
     PasswordDialog,
@@ -184,7 +184,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         TextOption("persist", "current_directory", ""),
         FloatOption("persist", "mediaplayer_playback_rate", 1.0),
         IntOption("persist", "mediaplayer_volume", 50),
-        BoolOption("persist", "first_run", True),
+        BoolOption("persist", "show_new_user", True),
     ]
 
     def __init__(self, parent=None, disable_player=False):
@@ -299,7 +299,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show(self):
         self.restoreWindowState()
         super().show()
-        self.show_first_run_dialog()
+        self.show_new_user_dialog()
         if self.tagger.autoupdate_enabled:
             self.auto_update_check()
         self.metadata_box.restore_state()
@@ -1988,11 +1988,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 self.make_script_selector_menu()
                 return
 
-    def show_first_run_dialog(self):
+    def show_new_user_dialog(self):
         config = get_config()
-        if config.persist["first_run"]:
-            msg = FirstRunDialog()
-            config.persist["first_run"] = msg.show()
+        if config.persist["show_new_user"]:
+            msg = NewUserDialog()
+            config.persist["show_new_user"] = msg.show()
 
 
 def update_last_check_date(is_success):

@@ -21,46 +21,45 @@
 
 from PyQt5 import QtWidgets
 
-from picard.ui import (
-    PicardDialog,
-    SingletonDialog,
-)
+from picard.const import PICARD_URLS
 
 
-class FirstRunDialog(PicardDialog, SingletonDialog):
+class NewUserDialog():
 
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self):
 
         self.DIALOG_TEXT = _(
             (
                 "<p>"
-                "It appears that this is the first time that Picard has been started on this system, so there are a few things that you should know about its use.  "
                 "MusicBrainz Picard is an extremely powerful cross-platform music file tagger.  "
                 "In addition to downloading metadata from the MusicBrainz database and updating the tags in your music files, "
                 "it can also automatically rename your files and move them into directories based on a file renaming script."
                 "</p><p>"
                 "Because of Picard's power and flexibility, it has a great number of option settings that can be configured.  "
-                "We encourage all new users to review the on-line documentation found under the 'Help' menu (or by pressing the F1 key) to see what "
-                "each option does.  There are also explanations of all the screens displayed by the program, as well as suggested work flows and tutorials to "
-                "help you get started."
+                "We encourage all new users to review all of the option settings along with the <a href='%s'>on-line documentation</a> found under "
+                "the 'Help' menu (or by pressing the F1 key) to see what each option does, and to ensure that they are set to your preference.  "
+                "The documentation also includes explanations of all the screens and icons displayed by the program, "
+                "as well as recommended work flows and tutorials to help you get started."
                 "</p><p>"
-                "Finally, we strongly encourage you to work with a copy of your music files initially, until you are sure that Picard is configured properly and "
-                "is producing the results that you expect.  Once Picard has updated a file, there is no simple way to undo the changes."
+                "We strongly encourage you to work with a copy of your music files and to work on small batches of files (ideally one album at a time).  "
+                "Once Picard has updated a file, there is no simple way to undo the changes."
+                "</p><p>"
+                "Picard is provided free of charge, as-is with no warranty, under the GNU General Public License <a href='%s'>GPL 2.0</a> or later.  "
+                "You use it at your own risk."
                 "</p>"
             )
-        )
+        ) % (PICARD_URLS['documentation'], PICARD_URLS['license'])
 
-        self.show_again = False
+        self.show_again = True
         self.SHOW_AGAIN_TEXT = _("Show this message again on next program start.")
 
         self.msg = QtWidgets.QMessageBox()
         self.msg.setIcon(QtWidgets.QMessageBox.Information)
         self.msg.setText(self.DIALOG_TEXT)
-        self.msg.setWindowTitle(_("First Use Information"))
+        self.msg.setWindowTitle(_("New User Information"))
 
         self.cb = QtWidgets.QCheckBox(self.SHOW_AGAIN_TEXT)
-        self.cb.setChecked(False)
+        self.cb.setChecked(self.show_again)
         self.cb.toggled.connect(self._set_state)
 
         self.msg.setCheckBox(self.cb)

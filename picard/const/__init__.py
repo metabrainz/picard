@@ -75,6 +75,7 @@ DOCS_BASE_URL = "https://picard-docs.musicbrainz.org/" + DOCS_VERSION + DOCS_LAN
 # URLs
 PICARD_URLS = {
     'home':                    "https://picard.musicbrainz.org/",
+    'license':                 "https://www.gnu.org/licenses/gpl-2.0.html",
     'documentation':           DOCS_BASE_URL + '/',
     'troubleshooting':         DOCS_BASE_URL + '/troubleshooting/troubleshooting.html',
     'doc_options':             DOCS_BASE_URL + '/config/configuration.html',
