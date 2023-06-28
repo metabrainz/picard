@@ -1353,7 +1353,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """Tell the tagger to save the selected objects."""
         config = get_config()
         if config.setting["file_save_warning"]:
-            msg = SaveWarningDialog()
+            count = len(self.tagger.get_files_from_objects(self.selected_objects))
+            msg = SaveWarningDialog(count)
             proceed_with_save, disable_warning = msg.show()
             config.setting["file_save_warning"] = not disable_warning
         else:

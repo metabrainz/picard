@@ -26,7 +26,7 @@ from picard.config import get_config
 
 class SaveWarningDialog():
 
-    def __init__(self):
+    def __init__(self, file_count=None):
 
         actions = []
         config = get_config()
@@ -44,19 +44,24 @@ class SaveWarningDialog():
             list_of_actions = ''
             for action in actions:
                 list_of_actions += _('<li>{action}</li>').format(action=action)
-            self.WARNING_TEXT = _('<p>{header}</p><ul>{list_of_actions}</ul><p>{footer}</p>').format(header=header, list_of_actions=list_of_actions, footer=footer)
+            if file_count:
+                count_text = _("The number of files to be processed is {file_count:,d}.").format(file_count=file_count)
+                warning_text = _('<p>{header}</p><ul>{list_of_actions}</ul><p>{count_text}</p><p>{footer}</p>').format(
+                    header=header, list_of_actions=list_of_actions, footer=footer, count_text=count_text)
+            else:
+                warning_text = _('<p>{header}</p><ul>{list_of_actions}</ul><p>{footer}</p>').format(header=header, list_of_actions=list_of_actions, footer=footer)
         else:
-            self.WARNING_TEXT = _("There are no actions selected.  No changes will be saved.")
+            warning_text = _("There are no actions selected.  No changes will be saved.")
 
-        self.DISABLE_TEXT = _("Don't show this warning again.")
+        disable_text = _("Don't show this warning again.")
 
         self.disable = False
         self.msg = QtWidgets.QMessageBox()
         self.msg.setIcon(QtWidgets.QMessageBox.Warning)
-        self.msg.setText(self.WARNING_TEXT)
+        self.msg.setText(warning_text)
         self.msg.setWindowTitle(_("File Save Warning"))
 
-        self.cb = QtWidgets.QCheckBox(self.DISABLE_TEXT)
+        self.cb = QtWidgets.QCheckBox(disable_text)
         self.cb.setChecked(False)
         self.cb.toggled.connect(self._set_state)
 
