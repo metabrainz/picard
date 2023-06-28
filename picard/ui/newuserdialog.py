@@ -28,37 +28,36 @@ class NewUserDialog():
 
     def __init__(self):
 
-        self.DIALOG_TEXT = _(
+        dialog_text = _(
             (
+                "<h2 align=center>READ THIS BEFORE USING PICARD</h2>"
                 "<p>"
-                "MusicBrainz Picard is an extremely powerful cross-platform music file tagger.  "
-                "In addition to downloading metadata from the MusicBrainz database and updating the tags in your music files, "
-                "it can also automatically rename your files and move them into directories based on a file renaming script."
+                "Picard is a very flexible music tagging tool, using MusicBrainz metadata for tags and file naming, "
+                "but if you don't understand how it works, what its limitations are, and how to configure it, "
+                "you can easily mess up your music library."
                 "</p><p>"
-                "Because of Picard's power and flexibility, it has a great number of option settings that can be configured.  "
-                "We encourage all new users to review all of the option settings along with the <a href='%s'>on-line documentation</a> found under "
-                "the 'Help' menu (or by pressing the F1 key) to see what each option does, and to ensure that they are set to your preference.  "
-                "The documentation also includes explanations of all the screens and icons displayed by the program, "
-                "as well as recommended work flows and tutorials to help you get started."
-                "</p><p>"
-                "We strongly encourage you to work with a copy of your music files and to work on small batches of files (ideally one album at a time).  "
-                "Once Picard has updated a file, there is no simple way to undo the changes."
-                "</p><p>"
-                "Picard is provided free of charge, as-is with no warranty, under the GNU General Public License <a href='%s'>GPL 2.0</a> or later.  "
-                "You use it at your own risk."
+                "We therefore <strong>STRONGLY</strong> recommend that you:"
+                "</p><ol>"
+                "<li>Read the Picard documentation at <a href='{documentation_url}'>{documentation_url}</a> "
+                "before you use this tool on your music collection.  The link is also available from the Help menu.<br /></li>"
+                "<li>Work on copies of your music files and in small batches until you are fully confident that your music files will be handled the way "
+                "you want them to be. <strong>Once Picard has updated a file, there is no way to undo the changes</strong>.</li>"
+                "</ol><p>"
+                "Picard is open source software written by volunteers.  It is provided as-is and with no warranty. "
+                "<strong>You use Picard at your own risk.</strong>"
                 "</p>"
             )
-        ) % (PICARD_URLS['documentation'], PICARD_URLS['license'])
+        ).format(documentation_url=PICARD_URLS['documentation_server'])
 
         self.show_again = True
-        self.SHOW_AGAIN_TEXT = _("Show this message again on next program start.")
+        show_again_text = _("Show this message again the next time you start Picard.")
 
         self.msg = QtWidgets.QMessageBox()
         self.msg.setIcon(QtWidgets.QMessageBox.Information)
-        self.msg.setText(self.DIALOG_TEXT)
+        self.msg.setText(dialog_text)
         self.msg.setWindowTitle(_("New User Information"))
 
-        self.cb = QtWidgets.QCheckBox(self.SHOW_AGAIN_TEXT)
+        self.cb = QtWidgets.QCheckBox(show_again_text)
         self.cb.setChecked(self.show_again)
         self.cb.toggled.connect(self._set_state)
 
