@@ -76,7 +76,7 @@ class InterfaceOptionsPage(OptionsPage):
         BoolOption("setting", "show_menu_icons", True if not IS_MACOS else False),  # On macOS it is not common that the global menu shows icons
         BoolOption("setting", "builtin_search", True),
         BoolOption("setting", "use_adv_search_syntax", False),
-        BoolOption("setting", "show_new_user", True),
+        BoolOption("setting", "show_new_user_dialog", True),
         BoolOption("setting", "quit_confirmation", True),
         BoolOption("setting", "file_save_warning", True),
         TextOption("setting", "ui_language", ""),
@@ -150,7 +150,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.show_menu_icons.setChecked(config.setting["show_menu_icons"])
         self.ui.builtin_search.setChecked(config.setting["builtin_search"])
         self.ui.use_adv_search_syntax.setChecked(config.setting["use_adv_search_syntax"])
-        self.ui.new_user_dialog.setChecked(config.setting["show_new_user"])
+        self.ui.new_user_dialog.setChecked(config.setting["show_new_user_dialog"])
         self.ui.quit_confirmation.setChecked(config.setting["quit_confirmation"])
         self.ui.file_save_warning.setChecked(config.setting["file_save_warning"])
         current_ui_language = config.setting["ui_language"]
@@ -169,7 +169,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.tagger.enable_menu_icons(config.setting["show_menu_icons"])
         config.setting["builtin_search"] = self.ui.builtin_search.isChecked()
         config.setting["use_adv_search_syntax"] = self.ui.use_adv_search_syntax.isChecked()
-        config.setting["show_new_user"] = self.ui.new_user_dialog.isChecked()
+        config.setting["show_new_user_dialog"] = self.ui.new_user_dialog.isChecked()
         config.setting["quit_confirmation"] = self.ui.quit_confirmation.isChecked()
         config.setting["file_save_warning"] = self.ui.file_save_warning.isChecked()
         self.tagger.window.update_toolbar_style()

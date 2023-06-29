@@ -1990,9 +1990,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def show_new_user_dialog(self):
         config = get_config()
-        if config.setting["show_new_user"]:
+        if config.setting["show_new_user_dialog"]:
             msg = NewUserDialog()
-            config.setting["show_new_user"] = msg.show()
+            config.setting["show_new_user_dialog"] = msg.show()
 
 
 def update_last_check_date(is_success):
