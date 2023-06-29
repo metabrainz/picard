@@ -53,7 +53,7 @@ class NewUserDialog():
         show_again_text = _("Show this message again the next time you start Picard.")
 
         self.msg = QtWidgets.QMessageBox()
-        self.msg.setIcon(QtWidgets.QMessageBox.Information)
+        self.msg.setIcon(QtWidgets.QMessageBox.Warning)
         self.msg.setText(dialog_text)
         self.msg.setWindowTitle(_("New User Information"))
 
