@@ -184,7 +184,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         TextOption("persist", "current_directory", ""),
         FloatOption("persist", "mediaplayer_playback_rate", 1.0),
         IntOption("persist", "mediaplayer_volume", 50),
-        BoolOption("persist", "show_new_user", True),
     ]
 
     def __init__(self, parent=None, disable_player=False):
@@ -1991,9 +1990,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def show_new_user_dialog(self):
         config = get_config()
-        if config.persist["show_new_user"]:
+        if config.setting["show_new_user"]:
             msg = NewUserDialog()
-            config.persist["show_new_user"] = msg.show()
+            config.setting["show_new_user"] = msg.show()
 
 
 def update_last_check_date(is_success):
