@@ -38,7 +38,7 @@ class NewUserDialog():
                 "</p><p>"
                 "We therefore <strong>STRONGLY</strong> recommend that you:"
                 "</p><ol>"
-                "<li>Read the Picard documentation at <a href='{documentation_url}'>{documentation_url}</a> "
+                "<li>Read the Picard  <a href='{documentation_url}'>documentation</a> "
                 "before you use this tool on your music collection.  The link is also available from the Help menu.<br /></li>"
                 "<li>Work on copies of your music files and in small batches until you are fully confident that your music files will be handled the way "
                 "you want them to be. <strong>Once Picard has updated a file, there is no way to undo the changes</strong>.</li>"
