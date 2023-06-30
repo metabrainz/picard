@@ -70,11 +70,14 @@ if PICARD_VERSION.identifier == 'final':
 else:
     DOCS_VERSION = ""  # points to latest version
 DOCS_LANGUAGE = 'en'
-DOCS_BASE_URL = "https://picard-docs.musicbrainz.org/" + DOCS_VERSION + DOCS_LANGUAGE
+DOCS_SERVER_URL = "https://picard-docs.musicbrainz.org/"
+DOCS_BASE_URL = DOCS_SERVER_URL + DOCS_VERSION + DOCS_LANGUAGE
 
 # URLs
 PICARD_URLS = {
     'home':                    "https://picard.musicbrainz.org/",
+    'license':                 "https://www.gnu.org/licenses/gpl-2.0.html",
+    'documentation_server':    DOCS_SERVER_URL,     # Shows latest version and tries to match the user's language if available.
     'documentation':           DOCS_BASE_URL + '/',
     'troubleshooting':         DOCS_BASE_URL + '/troubleshooting/troubleshooting.html',
     'doc_options':             DOCS_BASE_URL + '/config/configuration.html',

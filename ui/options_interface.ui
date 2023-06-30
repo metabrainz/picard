@@ -116,9 +116,23 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="new_user_dialog">
+        <property name="text">
+         <string>Show the new user dialog when starting Picard</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="quit_confirmation">
         <property name="text">
          <string>Show a quit confirmation dialog for unsaved changes</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="file_save_warning">
+        <property name="text">
+         <string>Show a confirmation dialog when saving files</string>
         </property>
        </widget>
       </item>
@@ -207,7 +221,9 @@
   <tabstop>toolbar_multiselect</tabstop>
   <tabstop>builtin_search</tabstop>
   <tabstop>use_adv_search_syntax</tabstop>
+  <tabstop>new_user_dialog</tabstop>
   <tabstop>quit_confirmation</tabstop>
+  <tabstop>file_save_warning</tabstop>
   <tabstop>filebrowser_horizontal_autoscroll</tabstop>
   <tabstop>starting_directory</tabstop>
   <tabstop>starting_directory_path</tabstop>

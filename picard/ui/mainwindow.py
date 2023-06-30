@@ -124,11 +124,13 @@ from picard.ui.logview import (
     LogView,
 )
 from picard.ui.metadatabox import MetadataBox
+from picard.ui.newuserdialog import NewUserDialog
 from picard.ui.options.dialog import OptionsDialog
 from picard.ui.passworddialog import (
     PasswordDialog,
     ProxyDialog,
 )
+from picard.ui.savewarningdialog import SaveWarningDialog
 from picard.ui.scripteditor import (
     ScriptEditorDialog,
     ScriptEditorExamples,
@@ -296,6 +298,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show(self):
         self.restoreWindowState()
         super().show()
+        self.show_new_user_dialog()
         if self.tagger.autoupdate_enabled:
             self.auto_update_check()
         self.metadata_box.restore_state()
@@ -1347,7 +1350,16 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def save(self):
         """Tell the tagger to save the selected objects."""
-        self.tagger.save(self.selected_objects)
+        config = get_config()
+        if config.setting["file_save_warning"]:
+            count = len(self.tagger.get_files_from_objects(self.selected_objects))
+            msg = SaveWarningDialog(count)
+            proceed_with_save, disable_warning = msg.show()
+            config.setting["file_save_warning"] = not disable_warning
+        else:
+            proceed_with_save = True
+        if proceed_with_save:
+            self.tagger.save(self.selected_objects)
 
     def remove(self):
         """Tell the tagger to remove the selected objects."""
@@ -1975,6 +1987,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 profile['enabled'] = not profile['enabled']
                 self.make_script_selector_menu()
                 return
+
+    def show_new_user_dialog(self):
+        config = get_config()
+        if config.setting["show_new_user_dialog"]:
+            msg = NewUserDialog()
+            config.setting["show_new_user_dialog"] = msg.show()
 
 
 def update_last_check_date(is_success):
