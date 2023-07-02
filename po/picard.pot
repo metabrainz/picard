@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.0b2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-02 11:52+0200\n"
+"POT-Creation-Date: 2023-07-02 12:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7290,11 +7290,29 @@ msgstr[1] ""
 msgid "&Copy"
 msgstr ""
 
-#: picard/ui/newuserdialog.py:53
+#: picard/ui/newuserdialog.py:31
+msgid ""
+"<h2 align=center>READ THIS BEFORE USING PICARD</h2><p>Picard is a very "
+"flexible music tagging tool, using MusicBrainz metadata for tags and file"
+" naming, but if you don't understand how it works, what its limitations "
+"are, and how to configure it, you can easily mess up your music "
+"library.</p><p>We therefore <strong>STRONGLY</strong> recommend that "
+"you:</p><ol><li>Read the Picard <a "
+"href='{documentation_url}'>documentation</a> before you use this tool on "
+"your music collection. The link is also available from the Help menu.<br "
+"/></li><li>Work on copies of your music files and in small batches until "
+"you are fully confident that your music files will be handled the way you"
+" want them to be. <strong>Once Picard has updated a file, there is no way"
+" to undo the changes</strong>.</li></ol><p>Picard is open source software"
+" written by volunteers. It is provided as-is and with no warranty. "
+"<strong>You use Picard at your own risk.</strong></p>"
+msgstr ""
+
+#: picard/ui/newuserdialog.py:51
 msgid "Show this message again the next time you start Picard."
 msgstr ""
 
-#: picard/ui/newuserdialog.py:58
+#: picard/ui/newuserdialog.py:56
 msgid "New User Information"
 msgstr ""
 
