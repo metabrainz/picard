@@ -6,7 +6,7 @@
 # Copyright (C) 2008-2009, 2018-2022 Philipp Wolfer
 # Copyright (C) 2011 Johannes Weißl
 # Copyright (C) 2011-2013 Michael Wiencek
-# Copyright (C) 2013, 2018, 2020-2023 Laurent Monin
+# Copyright (C) 2013, 2018, 2020-2021 Laurent Monin
 # Copyright (C) 2014 Wieland Hoffmann
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2021 Vladislav Karbovskii
@@ -91,7 +91,7 @@ class MetadataOptionsPage(OptionsPage):
         BoolOption("setting", "release_ars", True),
         BoolOption("setting", "track_ars", False),
         BoolOption("setting", "convert_punctuation", False),
-        BoolOption("setting", "standardize_artists", True),
+        BoolOption("setting", "standardize_artists", False),
         BoolOption("setting", "standardize_instruments", True),
         BoolOption("setting", "guess_tracknumber_and_title", True),
     ]
