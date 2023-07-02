@@ -240,6 +240,17 @@ class Tagger(QtWidgets.QApplication):
     _no_restore = False
 
     def __init__(self, picard_args, localedir, autoupdate, pipe_handler=None):
+        # Initialize these variables early as they are needed for a clean
+        # shutdown.
+        self._acoustid = None
+        self.browser_integration = None
+        self.exit_cleanup = []
+        self.pipe_handler = None
+        self.priority_thread_pool = None
+        self.save_thread_pool = None
+        self.stopping = False
+        self.thread_pool = None
+        self.webservice = None
 
         super().__init__(sys.argv)
         self.__class__.__instance = self
@@ -359,8 +370,6 @@ class Tagger(QtWidgets.QApplication):
         self.unclustered_files = UnclusteredFiles()
         self.nats = None
         self.window = MainWindow(disable_player=picard_args.no_player)
-        self.exit_cleanup = []
-        self.stopping = False
 
         # On macOS temporary files get deleted after 3 days not being accessed.
         # Touch these files regularly to keep them alive if Picard
@@ -549,7 +558,6 @@ class Tagger(QtWidgets.QApplication):
 
     def handle_command_quit(self, argstring):
         if argstring.upper() == 'FORCE' or self.window.show_quit_confirmation():
-            self.exit()
             self.quit()
         else:
             log.info("QUIT command cancelled by the user.")
@@ -699,19 +707,29 @@ class Tagger(QtWidgets.QApplication):
         if nat.loaded:
             self.nats.update()
 
+    def quit(self):
+        self.exit()
+        super().quit()
+
     def exit(self):
         if self.stopping:
             return
         self.stopping = True
         log.debug("Picard stopping")
-        self._acoustid.done()
+        if self._acoustid:
+            self._acoustid.done()
         if self.pipe_handler:
             self.pipe_handler.stop()
-        self.webservice.stop()
-        self.thread_pool.waitForDone()
-        self.save_thread_pool.waitForDone()
-        self.priority_thread_pool.waitForDone()
-        self.browser_integration.stop()
+        if self.webservice:
+            self.webservice.stop()
+        if self.thread_pool:
+            self.thread_pool.waitForDone()
+        if self.save_thread_pool:
+            self.save_thread_pool.waitForDone()
+        if self.priority_thread_pool:
+            self.priority_thread_pool.waitForDone()
+        if self.browser_integration:
+            self.browser_integration.stop()
         self.run_cleanup()
         QtCore.QCoreApplication.processEvents()
 
@@ -1307,7 +1325,6 @@ class Tagger(QtWidgets.QApplication):
 
     def sighandler(self):
         self.signalnotifier.setEnabled(False)
-        self.exit()
         self.quit()
         self.signalnotifier.setEnabled(True)
 

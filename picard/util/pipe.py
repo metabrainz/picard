@@ -264,7 +264,7 @@ class AbstractPipe(metaclass=ABCMeta):
         if timeout_secs is None:
             timeout_secs = self.TIMEOUT_SECS
 
-        with concurrent.futures.ThreadPoolExecutor() as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
             # we're sending only filepaths, so we have to create some kind of separator
             # to avoid any potential conflicts and mixing the data
             sender = executor.submit(self._sender, message + self.MESSAGE_TO_IGNORE)
