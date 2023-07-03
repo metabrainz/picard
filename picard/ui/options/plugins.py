@@ -54,7 +54,10 @@ from picard.const import (
     PLUGINS_API,
     USER_PLUGIN_DIR,
 )
-from picard.util import reconnect
+from picard.util import (
+    open_local_path,
+    reconnect,
+)
 
 from picard.ui import HashableTreeWidgetItem
 from picard.ui.options import (
@@ -688,7 +691,7 @@ class PluginsOptionsPage(OptionsPage):
 
     @staticmethod
     def open_plugin_dir():
-        QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(USER_PLUGIN_DIR))
+        open_local_path(USER_PLUGIN_DIR)
 
     def mimeTypes(self):
         return ["text/uri-list"]

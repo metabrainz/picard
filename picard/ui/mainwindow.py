@@ -92,6 +92,7 @@ from picard.util import (
     icontheme,
     iter_files_from_objects,
     iter_unique,
+    open_local_path,
     reconnect,
     restore_method,
     thread,
@@ -1377,12 +1378,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 self.tagger.generate_fingerprints(self.selected_objects)
         self._ensure_fingerprinting_configured(callback)
 
-    def _openUrl(self, url):
-        return QtCore.QUrl.fromLocalFile(url)
-
     def play_file(self):
         for file in iter_files_from_objects(self.selected_objects):
-            QtGui.QDesktopServices.openUrl(self._openUrl(file.filename))
+            open_local_path(file.filename)
 
     def _on_player_error(self, error, msg):
         self.set_statusbar_message(msg, echo=log.warning, translate=None)
@@ -1392,7 +1390,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             os.path.dirname(f.filename) for f
             in iter_files_from_objects(self.selected_objects))
         for folder in folders:
-            QtGui.QDesktopServices.openUrl(self._openUrl(folder))
+            open_local_path(folder)
 
     def _ensure_fingerprinting_configured(self, callback):
         config = get_config()

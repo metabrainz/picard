@@ -52,6 +52,7 @@ from picard.util import (
     bytes2human,
     encode_filename,
     format_time,
+    open_local_path,
     union_sorted_lists,
 )
 
@@ -271,8 +272,7 @@ class InfoDialog(PicardDialog):
             return
         filename = data.tempfile_filename
         if filename:
-            url = QtCore.QUrl.fromLocalFile(filename)
-            QtGui.QDesktopServices.openUrl(url)
+            open_local_path(filename)
 
 
 def format_file_info(file_):
