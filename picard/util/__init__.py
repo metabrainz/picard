@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2004 Robert Kaye
 # Copyright (C) 2006-2009, 2011-2012, 2014 Lukáš Lalinský
-# Copyright (C) 2008-2011, 2014, 2018-2022 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014, 2018-2023 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2009 david
 # Copyright (C) 2010 fatih
@@ -62,6 +62,7 @@ import unicodedata
 from dateutil.parser import parse
 
 from PyQt5 import QtCore
+from PyQt5.QtGui import QDesktopServices
 
 from picard import log
 from picard.const import (
@@ -426,6 +427,14 @@ def run_executable(executable, *args, timeout=None):
 
     # Return (error code, stdout and stderr)
     return ret.returncode, ret.stdout.decode(sys.stdout.encoding), ret.stderr.decode(sys.stderr.encoding)
+
+
+def open_local_path(path):
+    url = QtCore.QUrl.fromLocalFile(path)
+    if os.environ.get('SNAP'):
+        run_executable('xdg-open', url.toString())
+    else:
+        QDesktopServices.openUrl(url)
 
 
 _mbid_format = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'

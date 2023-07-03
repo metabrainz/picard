@@ -37,6 +37,7 @@ from picard.config import (
     load_new_config,
 )
 from picard.config_upgrade import upgrade_config
+from picard.util import open_local_path
 
 from picard.ui.options import (
     OptionsPage,
@@ -159,7 +160,7 @@ class MaintenanceOptionsPage(OptionsPage):
     def open_config_dir(self):
         config = get_config()
         config_dir = path.split(config.fileName())[0]
-        QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(config_dir))
+        open_local_path(config_dir)
 
     def _get_dialog_filetypes(self, _ext='.ini'):
         return ";;".join((
