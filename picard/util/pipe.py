@@ -107,7 +107,8 @@ class PipeErrorNoDestination(PipeError):
 class AbstractPipe(metaclass=ABCMeta):
     NO_RESPONSE_MESSAGE: str = "No response from FIFO"
     MESSAGE_TO_IGNORE: str = '\0'
-    TIMEOUT_SECS: float = 1.5
+    TIMEOUT_SECS_READ: float = 5.0
+    TIMEOUT_SECS_WRITE: float = 1.5
 
     @classmethod
     @property
@@ -234,7 +235,7 @@ class AbstractPipe(metaclass=ABCMeta):
         :rtype: List[str]
         """
         if timeout_secs is None:
-            timeout_secs = self.TIMEOUT_SECS
+            timeout_secs = self.TIMEOUT_SECS_READ
 
         try:
             reader = self.__thread_pool.submit(self._reader)
@@ -263,7 +264,7 @@ class AbstractPipe(metaclass=ABCMeta):
         :rtype: bool
         """
         if timeout_secs is None:
-            timeout_secs = self.TIMEOUT_SECS
+            timeout_secs = self.TIMEOUT_SECS_WRITE
 
         # we're sending only filepaths, so we have to create some kind of separator
         # to avoid any potential conflicts and mixing the data
