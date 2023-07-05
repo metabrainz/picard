@@ -107,7 +107,6 @@ class PipeErrorNoDestination(PipeError):
 class AbstractPipe(metaclass=ABCMeta):
     NO_RESPONSE_MESSAGE: str = "No response from FIFO"
     MESSAGE_TO_IGNORE: str = '\0'
-    TIMEOUT_SECS_READ: float = 5.0
     TIMEOUT_SECS_WRITE: float = 1.5
 
     @classmethod
@@ -226,27 +225,19 @@ class AbstractPipe(metaclass=ABCMeta):
         """
         raise NotImplementedError()
 
-    def read_from_pipe(self, timeout_secs: Optional[float] = None) -> List[str]:
+    def read_from_pipe(self) -> List[str]:
         """
         Common interface for the custom _reader implementations
 
-        :param timeout_secs: (Optional[float]) Timeout for the function, by default it fallbacks to self.TIMEOUT_SECS
         :return: List of messages or {self.NO_RESPONSE_MESSAGE} (if no messages received)
         :rtype: List[str]
         """
-        if timeout_secs is None:
-            timeout_secs = self.TIMEOUT_SECS_READ
-
         try:
-            reader = self.__thread_pool.submit(self._reader)
-            res = reader.result(timeout=timeout_secs)
+            res = self._reader()
             if res:
                 out = [r for r in res.split(self.MESSAGE_TO_IGNORE) if r]
                 if out:
                     return out
-        except concurrent.futures._base.TimeoutError:
-            # hacky way to kill the file-opening loop
-            self.send_to_pipe(self.MESSAGE_TO_IGNORE)
         except Exception as e:
             # https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future.result
             # If the call raised an exception, this method will raise the same exception.
