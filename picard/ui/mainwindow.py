@@ -1354,7 +1354,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         if config.setting["file_save_warning"]:
             count = len(self.tagger.get_files_from_objects(self.selected_objects))
-            msg = SaveWarningDialog(count)
+            msg = SaveWarningDialog(self, count)
             proceed_with_save, disable_warning = msg.show()
             config.setting["file_save_warning"] = not disable_warning
         else:
@@ -1989,7 +1989,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show_new_user_dialog(self):
         config = get_config()
         if config.setting["show_new_user_dialog"]:
-            msg = NewUserDialog()
+            msg = NewUserDialog(self)
             config.setting["show_new_user_dialog"] = msg.show()
 
 
