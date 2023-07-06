@@ -19,14 +19,17 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt5 import QtWidgets
+from PyQt5 import (
+    QtCore,
+    QtWidgets,
+)
 
 from picard.config import get_config
 
 
 class SaveWarningDialog():
 
-    def __init__(self, file_count=None):
+    def __init__(self, parent, file_count=None):
 
         actions = []
         config = get_config()
@@ -56,10 +59,11 @@ class SaveWarningDialog():
         disable_text = _("Don't show this warning again.")
 
         self.disable = False
-        self.msg = QtWidgets.QMessageBox()
+        self.msg = QtWidgets.QMessageBox(parent)
         self.msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
         self.msg.setText(warning_text)
         self.msg.setWindowTitle(_("File Save Warning"))
+        self.msg.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
 
         self.cb = QtWidgets.QCheckBox(disable_text)
         self.cb.setChecked(False)

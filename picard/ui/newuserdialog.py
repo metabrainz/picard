@@ -19,14 +19,17 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt5 import QtWidgets
+from PyQt5 import (
+    QtCore,
+    QtWidgets,
+)
 
 from picard.const import PICARD_URLS
 
 
 class NewUserDialog():
 
-    def __init__(self):
+    def __init__(self, parent):
 
         dialog_text = _(
             "<h2 align=center>READ THIS BEFORE USING PICARD</h2>"
@@ -50,10 +53,11 @@ class NewUserDialog():
         self.show_again = True
         show_again_text = _("Show this message again the next time you start Picard.")
 
-        self.msg = QtWidgets.QMessageBox()
+        self.msg = QtWidgets.QMessageBox(parent)
         self.msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
         self.msg.setText(dialog_text)
         self.msg.setWindowTitle(_("New User Information"))
+        self.msg.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
 
         self.cb = QtWidgets.QCheckBox(show_again_text)
         self.cb.setChecked(self.show_again)
