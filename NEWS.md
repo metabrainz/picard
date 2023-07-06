@@ -1,19 +1,34 @@
+# Version 2.9.0b3 - 2023-07-06
+
+## Bugfixes
+- [PICARD-2658](https://tickets.metabrainz.org/browse/PICARD-2658) - macOS 10.12 build is not responding after launch, no UI shown
+- [PICARD-2659](https://tickets.metabrainz.org/browse/PICARD-2659) - Picard 2.9.0b2 stuck in login loop if MusicBrainz server port is not set to 443
+- [PICARD-2660](https://tickets.metabrainz.org/browse/PICARD-2660) - RecursionError: maximum recursion depth exceeded while calling a Python object
+- [PICARD-2668](https://tickets.metabrainz.org/browse/PICARD-2668) - On application crash the main process does not exist, waits for interprocess communication pipe threads
+- [PICARD-2669](https://tickets.metabrainz.org/browse/PICARD-2669) - File status icon sometimes shows wrong status
+
+## Improvements
+- [PICARD-2662](https://tickets.metabrainz.org/browse/PICARD-2662) - Give better user message with corrupted file
+- [PICARD-2665](https://tickets.metabrainz.org/browse/PICARD-2665) - Ignoring artist credits shouldn't be default behavior
+- [PICARD-2671](https://tickets.metabrainz.org/browse/PICARD-2671) - Show a first run information dialog
+- [PICARD-2676](https://tickets.metabrainz.org/browse/PICARD-2676) - Show a file save confirmation dialog
+- [PICARD-2679](https://tickets.metabrainz.org/browse/PICARD-2679) - "Open folder" does not work on Snap install
+
+
 # Version 2.9.0b2 - 2023-06-15
 
 ## Bugfixes
-
 - [PICARD-2481](https://tickets.metabrainz.org/browse/PICARD-2481) - Shorten long country lists in search results
 - [PICARD-2651](https://tickets.metabrainz.org/browse/PICARD-2651) - Repeated / duplicate log lines on console output
 
 ## Improvements
-
 - [PICARD-2653](https://tickets.metabrainz.org/browse/PICARD-2653) - Update alias locales for updated server list
 - [PICARD-2654](https://tickets.metabrainz.org/browse/PICARD-2654) - Show error message on rating submission failure due to server error
 
 
 # Version 2.9.0b1 - 2023-05-31
 
-## Bug Fixes
+## Bugfixes
 - [PICARD-2534](https://tickets.metabrainz.org/browse/PICARD-2534) - Vorbis / FLAC: Trailing null char in `date` tag causes date to be ignored
 - [PICARD-2605](https://tickets.metabrainz.org/browse/PICARD-2605) - Windows: libssl-1_1-x64.dll missing
 - [PICARD-2608](https://tickets.metabrainz.org/browse/PICARD-2608) - Application exit waits for outstanding loading request
