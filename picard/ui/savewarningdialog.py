@@ -57,7 +57,7 @@ class SaveWarningDialog():
 
         self.disable = False
         self.msg = QtWidgets.QMessageBox()
-        self.msg.setIcon(QtWidgets.QMessageBox.Warning)
+        self.msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
         self.msg.setText(warning_text)
         self.msg.setWindowTitle(_("File Save Warning"))
 
@@ -66,10 +66,10 @@ class SaveWarningDialog():
         self.cb.toggled.connect(self._set_state)
 
         self.msg.setCheckBox(self.cb)
-        self.msg.setStandardButtons(QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
+        self.msg.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.Cancel)
 
     def _set_state(self):
         self.disable = not self.disable
 
     def show(self):
-        return self.msg.exec_() == QtWidgets.QMessageBox.Ok, self.disable
+        return self.msg.exec_() == QtWidgets.QMessageBox.StandardButton.Ok, self.disable

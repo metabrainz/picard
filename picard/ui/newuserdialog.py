@@ -51,7 +51,7 @@ class NewUserDialog():
         show_again_text = _("Show this message again the next time you start Picard.")
 
         self.msg = QtWidgets.QMessageBox()
-        self.msg.setIcon(QtWidgets.QMessageBox.Warning)
+        self.msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
         self.msg.setText(dialog_text)
         self.msg.setWindowTitle(_("New User Information"))
 
@@ -60,7 +60,7 @@ class NewUserDialog():
         self.cb.toggled.connect(self._set_state)
 
         self.msg.setCheckBox(self.cb)
-        self.msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+        self.msg.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
 
     def _set_state(self):
         self.show_again = not self.show_again
