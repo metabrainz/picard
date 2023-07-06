@@ -706,507 +706,507 @@ msgstr "Maldyvai"
 #. iso.code:ML
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:131
 msgid "Mali"
-msgstr ""
+msgstr "Malis"
 
 #. iso.code:MT
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:132
 msgid "Malta"
-msgstr ""
+msgstr "Malta"
 
 #. iso.code:MH
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:133
 msgid "Marshall Islands"
-msgstr ""
+msgstr "Maršalų salos"
 
 #. iso.code:MQ
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:134
 msgid "Martinique"
-msgstr ""
+msgstr "Martinika"
 
 #. iso.code:MR
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:135
 msgid "Mauritania"
-msgstr ""
+msgstr "Mauritanija"
 
 #. iso.code:MU
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:136
 msgid "Mauritius"
-msgstr ""
+msgstr "Mauricijus"
 
 #. iso.code:YT
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:137
 msgid "Mayotte"
-msgstr ""
+msgstr "Majotas"
 
 #. iso.code:MX
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:138
 msgid "Mexico"
-msgstr ""
+msgstr "Meksika"
 
 #. iso.code:MD
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:140
 msgid "Moldova"
-msgstr ""
+msgstr "Moldova"
 
 #. iso.code:MC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:141
 msgid "Monaco"
-msgstr ""
+msgstr "Monakas"
 
 #. iso.code:MN
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:142
 msgid "Mongolia"
-msgstr ""
+msgstr "Mongolija"
 
 #. iso.code:ME
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:247
 msgid "Montenegro"
-msgstr ""
+msgstr "Juodkalnija"
 
 #. iso.code:MS
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:143
 msgid "Montserrat"
-msgstr ""
+msgstr "Montseratas"
 
 #. iso.code:MA
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:144
 msgid "Morocco"
-msgstr ""
+msgstr "Marokas"
 
 #. iso.code:MZ
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:145
 msgid "Mozambique"
-msgstr ""
+msgstr "Mozambikas"
 
 #. iso.code:MM
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:146
 msgid "Myanmar"
-msgstr ""
+msgstr "Mianmaras"
 
 #. iso.code:NA
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:147
 msgid "Namibia"
-msgstr ""
+msgstr "Namibija"
 
 #. iso.code:NR
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:148
 msgid "Nauru"
-msgstr ""
+msgstr "Nauru"
 
 #. iso.code:NP
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:149
 msgid "Nepal"
-msgstr ""
+msgstr "Nepalas"
 
 #. iso.code:NL
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:150
 msgid "Netherlands"
-msgstr ""
+msgstr "Nyderlandai"
 
 #. iso.code:AN
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:151
 msgid "Netherlands Antilles"
-msgstr ""
+msgstr "Nyderlandų Antilai"
 
 #. iso.code:NC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:152
 msgid "New Caledonia"
-msgstr ""
+msgstr "Naujoji Kaledonija"
 
 #. iso.code:NZ
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:153
 msgid "New Zealand"
-msgstr ""
+msgstr "Naujoji Zelandija"
 
 #. iso.code:NI
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:154
 msgid "Nicaragua"
-msgstr ""
+msgstr "Nikaragva"
 
 #. iso.code:NE
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:155
 msgid "Niger"
-msgstr ""
+msgstr "Nigeris"
 
 #. iso.code:NG
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:156
 msgid "Nigeria"
-msgstr ""
+msgstr "Nigerija"
 
 #. iso.code:NU
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:157
 msgid "Niue"
-msgstr ""
+msgstr "Niuė"
 
 #. iso.code:NF
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:158
 msgid "Norfolk Island"
-msgstr ""
+msgstr "Norfolko sala"
 
 #. iso.code:KP
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:112
 msgid "North Korea"
-msgstr ""
+msgstr "Šiaurės Korėja"
 
 #. iso.code:MP
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:159
 msgid "Northern Mariana Islands"
-msgstr ""
+msgstr "Šiaurės Marianų salos"
 
 #. iso.code:NO
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:160
 msgid "Norway"
-msgstr ""
+msgstr "Norvegija"
 
 #. iso.code:OM
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:161
 msgid "Oman"
-msgstr ""
+msgstr "Omanas"
 
 #. iso.code:PK
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:162
 msgid "Pakistan"
-msgstr ""
+msgstr "Pakistanas"
 
 #. iso.code:PW
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:163
 msgid "Palau"
-msgstr ""
+msgstr "Palausas"
 
 #. iso.code:PS
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:249
 msgid "Palestine"
-msgstr ""
+msgstr "Palestina"
 
 #. iso.code:PA
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:164
 msgid "Panama"
-msgstr ""
+msgstr "Panamas"
 
 #. iso.code:PG
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:165
 msgid "Papua New Guinea"
-msgstr ""
+msgstr "Papua Naujoji Gvinėja"
 
 #. iso.code:PY
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:166
 msgid "Paraguay"
-msgstr ""
+msgstr "Paragvajus"
 
 #. iso.code:PE
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:167
 msgid "Peru"
-msgstr ""
+msgstr "Peru"
 
 #. iso.code:PH
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:168
 msgid "Philippines"
-msgstr ""
+msgstr "Filipinai"
 
 #. iso.code:PN
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:169
 msgid "Pitcairn"
-msgstr ""
+msgstr "Pitkernas"
 
 #. iso.code:PL
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:170
 msgid "Poland"
-msgstr ""
+msgstr "Lenkija"
 
 #. iso.code:PT
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:171
 msgid "Portugal"
-msgstr ""
+msgstr "Portugalija"
 
 #. iso.code:PR
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:172
 msgid "Puerto Rico"
-msgstr ""
+msgstr "Puerto Rikas"
 
 #. iso.code:QA
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:173
 msgid "Qatar"
-msgstr ""
+msgstr "Kataras"
 
 #. iso.code:RO
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:175
 msgid "Romania"
-msgstr ""
+msgstr "Rumunija"
 
 #. iso.code:RU
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:176
 msgid "Russia"
-msgstr ""
+msgstr "Rusija"
 
 #. iso.code:RW
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:177
 msgid "Rwanda"
-msgstr ""
+msgstr "Ruanda"
 
 #. iso.code:RE
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:174
 msgid "Réunion"
-msgstr ""
+msgstr "Reunjonas"
 
 #. iso.code:BL
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:255
 msgid "Saint Barthélemy"
-msgstr ""
+msgstr "Sen Bartelemi"
 
 #. iso.code:SH
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:196
 msgid "Saint Helena, Ascension and Tristan da Cunha"
-msgstr ""
+msgstr "Šventosios Elenos, Įžengimo ir Tristano da Kunjos"
 
 #. iso.code:KN
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:178
 msgid "Saint Kitts and Nevis"
-msgstr ""
+msgstr "Sent Kitsas ir Nevis"
 
 #. iso.code:LC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:179
 msgid "Saint Lucia"
-msgstr ""
+msgstr "Sent Lusija"
 
 #. iso.code:MF
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:256
 msgid "Saint Martin (French part)"
-msgstr ""
+msgstr "Sen Martenas (Prancūzijos dalis)"
 
 #. iso.code:PM
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:197
 msgid "Saint Pierre and Miquelon"
-msgstr ""
+msgstr "Sen Pjeras ir Mikelonas"
 
 #. iso.code:VC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:180
 msgid "Saint Vincent and The Grenadines"
-msgstr ""
+msgstr "Sent Vinsentas ir Grenadinai"
 
 #. iso.code:WS
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:181
 msgid "Samoa"
-msgstr ""
+msgstr "Samoja"
 
 #. iso.code:SM
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:182
 msgid "San Marino"
-msgstr ""
+msgstr "San Marinas"
 
 #. iso.code:ST
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:183
 msgid "Sao Tome and Principe"
-msgstr ""
+msgstr "San Tomė ir Prinsipė"
 
 #. iso.code:SA
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:184
 msgid "Saudi Arabia"
-msgstr ""
+msgstr "Saudo Arabija"
 
 #. iso.code:SN
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:185
 msgid "Senegal"
-msgstr ""
+msgstr "Senegalas"
 
 #. iso.code:RS
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:254
 msgid "Serbia"
-msgstr ""
+msgstr "Serbija"
 
 #. iso.code:CS
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:242
 msgid "Serbia and Montenegro"
-msgstr ""
+msgstr "Serbija ir Juodkalnija"
 
 #. iso.code:SC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:186
 msgid "Seychelles"
-msgstr ""
+msgstr "Seišeliai"
 
 #. iso.code:SL
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:187
 msgid "Sierra Leone"
-msgstr ""
+msgstr "Siera Leonė"
 
 #. iso.code:SG
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:188
 msgid "Singapore"
-msgstr ""
+msgstr "Singapūras"
 
 #. iso.code:SX
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:260
 msgid "Sint Maarten (Dutch part)"
-msgstr ""
+msgstr "Sint Martenas (Olandijos dalis)"
 
 #. iso.code:SK
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:189
 msgid "Slovakia"
-msgstr ""
+msgstr "Slovakija"
 
 #. iso.code:SI
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:190
 msgid "Slovenia"
-msgstr ""
+msgstr "Slovėnija"
 
 #. iso.code:SB
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:191
 msgid "Solomon Islands"
-msgstr ""
+msgstr "Saliamono salos"
 
 #. iso.code:SO
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:192
 msgid "Somalia"
-msgstr ""
+msgstr "Somalis"
 
 #. iso.code:ZA
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:193
 msgid "South Africa"
-msgstr ""
+msgstr "Pietų Afrika"
 
 #. iso.code:GS
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:248
 msgid "South Georgia and the South Sandwich Islands"
-msgstr ""
+msgstr "Pietų Džordžija ir Pietų Sandvičo salos"
 
 #. iso.code:KR
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:113
 msgid "South Korea"
-msgstr ""
+msgstr "Pietų Korėja"
 
 #. iso.code:SS
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:257
 msgid "South Sudan"
-msgstr ""
+msgstr "Pietų Sudanas"
 
 #. iso.code:SU
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:243
 msgid "Soviet Union"
-msgstr ""
+msgstr "Sovietų Sąjunga"
 
 #. iso.code:ES
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:194
 msgid "Spain"
-msgstr ""
+msgstr "Ispanija"
 
 #. iso.code:LK
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:195
 msgid "Sri Lanka"
-msgstr ""
+msgstr "Šri Lanka"
 
 #. iso.code:SD
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:198
 msgid "Sudan"
-msgstr ""
+msgstr "Sudanas"
 
 #. iso.code:SR
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:199
 msgid "Suriname"
-msgstr ""
+msgstr "Surinamas"
 
 #. iso.code:SJ
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:200
 msgid "Svalbard and Jan Mayen"
-msgstr ""
+msgstr "Svalbardas ir Jan Majenas"
 
 #. iso.code:SZ
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:201
 msgid "Swaziland"
-msgstr ""
+msgstr "Svazilandas"
 
 #. iso.code:SE
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:202
 msgid "Sweden"
-msgstr ""
+msgstr "Švedija"
 
 #. iso.code:CH
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:203
 msgid "Switzerland"
-msgstr ""
+msgstr "Šveicarija"
 
 #. iso.code:SY
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:204
 msgid "Syria"
-msgstr ""
+msgstr "Sirija"
 
 #. iso.code:TW
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:205
 msgid "Taiwan"
-msgstr ""
+msgstr "Taivanas"
 
 #. iso.code:TJ
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:206
 msgid "Tajikistan"
-msgstr ""
+msgstr "Tadžikistanas"
 
 #. iso.code:TZ
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:207
 msgid "Tanzania"
-msgstr ""
+msgstr "Tanzanija"
 
 #. iso.code:TH
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:208
 msgid "Thailand"
-msgstr ""
+msgstr "Tailandas"
 
 #. iso.code:TL
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:61
 msgid "Timor-Leste"
-msgstr ""
+msgstr "Rytų Timoras"
 
 #. iso.code:TG
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:209
 msgid "Togo"
-msgstr ""
+msgstr "Togas"
 
 #. iso.code:TK
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:210
 msgid "Tokelau"
-msgstr ""
+msgstr "Tokelavas"
 
 #. iso.code:TO
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:211
 msgid "Tonga"
-msgstr ""
+msgstr "Tonga"
 
 #. iso.code:TT
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:212
 msgid "Trinidad and Tobago"
-msgstr ""
+msgstr "Trinidadas ir Tobagas"
 
 #. iso.code:TN
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:213
 msgid "Tunisia"
-msgstr ""
+msgstr "Tunisas"
 
 #. iso.code:TR
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:214
 msgid "Turkey"
-msgstr ""
+msgstr "Turkija"
 
 #. iso.code:TM
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:215
 msgid "Turkmenistan"
-msgstr ""
+msgstr "Turkmėnistanas"
 
 #. iso.code:TC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:216
 msgid "Turks and Caicos Islands"
-msgstr ""
+msgstr "Terkso ir Kaikoso salos"
 
 #. iso.code:TV
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:217
 msgid "Tuvalu"
-msgstr ""
+msgstr "Tuvalu"
 
 #. iso.code:VI
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:231
 msgid "U.S. Virgin Islands"
-msgstr ""
+msgstr "JAV Mergelių salos"
 
 #. iso.code:UG
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:218
 msgid "Uganda"
-msgstr ""
+msgstr "Uganda"
 
 #. iso.code:UA
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:219
