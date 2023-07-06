@@ -279,7 +279,10 @@ class AbstractPipe(metaclass=ABCMeta):
         log.debug("Stopping pipe")
         self.pipe_running = False
         self.send_to_pipe(self.MESSAGE_TO_IGNORE)
-        self.__thread_pool.shutdown(wait=True, cancel_futures=True)
+        try:
+            self.__thread_pool.shutdown(wait=True, cancel_futures=True)
+        except TypeError:  # cancel_futures is not supported on Python < 3.9
+            self.__thread_pool.shutdown(wait=True)
 
 
 class UnixPipe(AbstractPipe):
