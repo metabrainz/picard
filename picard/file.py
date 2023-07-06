@@ -697,13 +697,6 @@ class File(QtCore.QObject, Item):
             yield name
 
     def update(self, signal=True):
-        thread.run_task(
-            self._compare_metadata,
-            partial(self._compare_metadata_finished, signal),
-            thread_pool=self.tagger.priority_thread_pool
-        )
-
-    def _compare_metadata(self):
         if not (self.state == File.ERROR and self.errors):
             config = get_config()
             clear_existing_tags = config.setting["clear_existing_tags"]
@@ -731,10 +724,6 @@ class File(QtCore.QObject, Item):
                         self.state = File.CHANGED
                     else:
                         self.state = File.NORMAL
-
-    def _compare_metadata_finished(self, signal, result=None, error=None):
-        if error:
-            log.error("Comparing file metadata for %r failed: %s", self, error)
         if signal:
             log.debug("Updating file %r", self)
             self.update_item()
