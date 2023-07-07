@@ -35,11 +35,11 @@ class SaveWarningDialog():
         config = get_config()
 
         if not config.setting['dont_write_tags']:
-            actions.append(_("overwrite existing metadata in the files"))
+            actions.append(_("overwrite existing metadata (tags) within the files"))
         if config.setting['rename_files']:
             actions.append(_("rename the files"))
         if config.setting['move_files']:
-            actions.append(_("move the files"))
+            actions.append(_("move the files to a different location"))
 
         if actions:
             header = _("This action will:")
