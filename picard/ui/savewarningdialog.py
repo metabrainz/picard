@@ -42,6 +42,7 @@ class SaveWarningDialog():
             actions.append(_("move the files to a different location"))
 
         if actions:
+            actions[-1] += '.'  # Add a period to the end of the last action as per the style guide.
             header = _("This action will:")
             footer = _("<strong>This action cannot be undone.</strong> Do you want to continue?")
             list_of_actions = ''
