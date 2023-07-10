@@ -35,25 +35,45 @@ class SaveWarningDialog():
         config = get_config()
 
         if not config.setting['dont_write_tags']:
-            actions.append(_("overwrite existing metadata (tags) within the files"))
+            if file_count is None:  # Not provided -- use generic message
+                actions.append(_("overwrite existing metadata (tags) within the file(s)"))
+            else:
+                actions.append(ngettext(
+                    "overwrite existing metadata (tags) within the file",
+                    "overwrite existing metadata (tags) within the files",
+                    file_count))
         if config.setting['rename_files']:
-            actions.append(_("rename the files"))
+            if file_count is None:  # Not provided -- use generic message
+                actions.append(_("rename the file(s)"))
+            else:
+                actions.append(ngettext(
+                    "rename the file",
+                    "rename the files",
+                    file_count))
         if config.setting['move_files']:
-            actions.append(_("move the files to a different location"))
+            if file_count is None:  # Not provided -- use generic message
+                actions.append(_("move the file(s) to a different location"))
+            else:
+                actions.append(ngettext(
+                    "move the file to a different location",
+                    "move the files to a different location",
+                    file_count))
 
+        if file_count is None:
+            header = _("You are about to save the file(s) and this will:")
         if actions:
-            actions[-1] += '.'  # Add a period to the end of the last action as per the style guide.
-            header = _("This action will:")
             footer = _("<strong>This action cannot be undone.</strong> Do you want to continue?")
             list_of_actions = ''
             for action in actions:
                 list_of_actions += _('<li>{action}</li>').format(action=action)
-            if file_count:
-                count_text = _("The number of files to be processed is {file_count:,d}.").format(file_count=file_count)
-                warning_text = _('<p>{header}</p><ul>{list_of_actions}</ul><p>{count_text}</p><p>{footer}</p>').format(
-                    header=header, list_of_actions=list_of_actions, footer=footer, count_text=count_text)
+            if file_count is None:  # Not provided -- use generic message
+                header = _("You are about to save the file(s) and this will:")
             else:
-                warning_text = _('<p>{header}</p><ul>{list_of_actions}</ul><p>{footer}</p>').format(header=header, list_of_actions=list_of_actions, footer=footer)
+                header = ngettext(
+                    "You are about to save {file_count:,d} file and this will:",
+                    "You are about to save {file_count:,d} files and this will:",
+                    file_count).format(file_count=file_count)
+            warning_text = _('<p>{header}</p><ul>{list_of_actions}</ul><p>{footer}</p>').format(header=header, list_of_actions=list_of_actions, footer=footer)
         else:
             warning_text = _("There are no actions selected. No changes will be saved.")
 
@@ -72,6 +92,7 @@ class SaveWarningDialog():
 
         self.msg.setCheckBox(self.cb)
         self.msg.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.Cancel)
+        self.msg.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Cancel)
 
     def _set_state(self):
         self.disable = not self.disable
