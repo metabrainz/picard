@@ -32,21 +32,16 @@ class NewUserDialog():
     def __init__(self, parent):
 
         dialog_text = _(
-            "<h2 align=center>READ THIS BEFORE USING PICARD</h2>"
             "<p>"
-            "Picard is a very flexible music tagging tool, using MusicBrainz metadata for tags and file naming, "
-            "but if you don't understand how it works, what its limitations are, and how to configure it, "
-            "you can easily mess up your music library."
+            "<strong>Changes made by Picard are not reversible.</strong>"
             "</p><p>"
-            "We therefore <strong>STRONGLY</strong> recommend that you:"
-            "</p><ol>"
-            "<li>Read the Picard <a href='{documentation_url}'>documentation</a> "
-            "before you use this tool on your music collection. The link is also available from the Help menu.<br /></li>"
-            "<li>Work on copies of your music files and in small batches until you are fully confident that your music files will be handled the way "
-            "you want them to be. <strong>Once Picard has updated a file, there is no way to undo the changes</strong>.</li>"
-            "</ol><p>"
-            "Picard is open source software written by volunteers. It is provided as-is and with no warranty. "
-            "<strong>You use Picard at your own risk.</strong>"
+            "Picard is a very flexible music tagging tool which can rename your files and overwrite the tags. "
+            "We <strong>strongly recommend</strong> that you:"
+            "</p><ul>"
+            "<li>read the <a href='{documentation_url}'>User Guide</a> (also available from the Help menu)</li>"
+            "<li>test with copies of your music and work in small batches</li>"
+            "</ul><p>"
+            "Picard is open source software written by volunteers. It is provided as-is and with no warranty."
             "</p>"
         ).format(documentation_url=PICARD_URLS['documentation_server'])
 
@@ -56,7 +51,7 @@ class NewUserDialog():
         self.msg = QtWidgets.QMessageBox(parent)
         self.msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
         self.msg.setText(dialog_text)
-        self.msg.setWindowTitle(_("New User Information"))
+        self.msg.setWindowTitle(_("New User Warning"))
         self.msg.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
 
         self.cb = QtWidgets.QCheckBox(show_again_text)

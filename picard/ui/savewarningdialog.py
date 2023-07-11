@@ -29,30 +29,37 @@ from picard.config import get_config
 
 class SaveWarningDialog():
 
-    def __init__(self, parent, file_count=None):
+    def __init__(self, parent, file_count):
 
         actions = []
         config = get_config()
 
         if not config.setting['dont_write_tags']:
-            actions.append(_("overwrite existing metadata in the files"))
+            actions.append(ngettext(
+                "overwrite existing metadata (tags) within the file",
+                "overwrite existing metadata (tags) within the files",
+                file_count))
         if config.setting['rename_files']:
-            actions.append(_("rename the files"))
+            actions.append(ngettext(
+                "rename the file",
+                "rename the files",
+                file_count))
         if config.setting['move_files']:
-            actions.append(_("move the files"))
+            actions.append(ngettext(
+                "move the file to a different location",
+                "move the files to a different location",
+                file_count))
 
         if actions:
-            header = _("This action will:")
+            header = ngettext(
+                "You are about to save {file_count:,d} file and this will:",
+                "You are about to save {file_count:,d} files and this will:",
+                file_count).format(file_count=file_count)
             footer = _("<strong>This action cannot be undone.</strong> Do you want to continue?")
             list_of_actions = ''
             for action in actions:
                 list_of_actions += _('<li>{action}</li>').format(action=action)
-            if file_count:
-                count_text = _("The number of files to be processed is {file_count:,d}.").format(file_count=file_count)
-                warning_text = _('<p>{header}</p><ul>{list_of_actions}</ul><p>{count_text}</p><p>{footer}</p>').format(
-                    header=header, list_of_actions=list_of_actions, footer=footer, count_text=count_text)
-            else:
-                warning_text = _('<p>{header}</p><ul>{list_of_actions}</ul><p>{footer}</p>').format(header=header, list_of_actions=list_of_actions, footer=footer)
+            warning_text = _('<p>{header}</p><ul>{list_of_actions}</ul><p>{footer}</p>').format(header=header, list_of_actions=list_of_actions, footer=footer)
         else:
             warning_text = _("There are no actions selected. No changes will be saved.")
 
@@ -71,6 +78,7 @@ class SaveWarningDialog():
 
         self.msg.setCheckBox(self.cb)
         self.msg.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.Cancel)
+        self.msg.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Cancel)
 
     def _set_state(self):
         self.disable = not self.disable
