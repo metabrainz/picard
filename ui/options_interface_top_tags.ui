@@ -27,7 +27,7 @@
     <number>9</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="top_tags_groupBox">
      <property name="title">
       <string>Show the below tags above all other tags in the metadata view</string>
      </property>
