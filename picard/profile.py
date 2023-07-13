@@ -50,30 +50,59 @@ class UserProfileGroups():
             SettingDesc("analyze_new_files", N_("Automatically scan all new files"), ["analyze_new_files"]),
             SettingDesc("cluster_new_files", N_("Automatically cluster all new files"), ["cluster_new_files"]),
             SettingDesc("ignore_file_mbids", N_("Ignore MBIDs when loading new files"), ["ignore_file_mbids"]),
+            SettingDesc("check_for_updates", N_("Check for updates during startup"), ["check_for_updates"]),
+            SettingDesc("update_check_days", N_("Days between update checks"), ["update_check_days"]),
+            SettingDesc("update_level", N_("Updates to check"), ["update_level"]),
         ],
     }
 
     SETTINGS_GROUPS["metadata"] = {
         "title": N_("Metadata"),
         "settings": [
-            SettingDesc("va_name", N_("Various Artists name"), ["va_name"]),
-            SettingDesc("nat_name", N_("Standalone recordings name"), ["nat_name"]),
+            # Main Metadata Page
             SettingDesc("translate_artist_names", N_("Translate artist names"), ["translate_artist_names"]),
             SettingDesc("artist_locales", N_("Translation locales"), ["selected_locales"]),
             SettingDesc("translate_artist_names_script_exception", N_("Translate artist names exception"), ["translate_artist_names_script_exception"]),
             SettingDesc("script_exceptions", N_("Translation script exceptions"), ["selected_scripts"]),
-            SettingDesc("release_ars", N_("Use release relationships"), ["release_ars"]),
-            SettingDesc("track_ars", N_("Use track relationships"), ["track_ars"]),
-            SettingDesc("convert_punctuation", N_("Convert Unicode punctuation characters to ASCII"), ["convert_punctuation"]),
             SettingDesc("standardize_artists", N_("Use standardized artist names"), ["standardize_artists"]),
             SettingDesc("standardize_instruments", N_("Use standardized instrument and vocal credits"), ["standardize_instruments"]),
+            SettingDesc("convert_punctuation", N_("Convert Unicode punctuation characters to ASCII"), ["convert_punctuation"]),
+            SettingDesc("release_ars", N_("Use release relationships"), ["release_ars"]),
+            SettingDesc("track_ars", N_("Use track relationships"), ["track_ars"]),
             SettingDesc("guess_tracknumber_and_title", N_("Guess track number and title from filename if empty"), ["guess_tracknumber_and_title"]),
+            SettingDesc("va_name", N_("Various Artists name"), ["va_name"]),
+            SettingDesc("nat_name", N_("Standalone recordings name"), ["nat_name"]),
+
+            # Preferred Releases Page
+            SettingDesc("release_type_scores", N_("Release type preferences"), ["type_group"]),
+            SettingDesc("preferred_release_countries", N_("Preferred release countries"), ["country_group"]),
+            SettingDesc("preferred_release_formats", N_("Preferred release formats"), ["format_group"]),
+
+            # Genres Page
+            SettingDesc("use_genres", N_("Use genres from MusicBrainz"), []),   # No highlight specified because the "use_genres"
+                                                                                # object is a QGroupBox and it highlights all sub
+                                                                                # options, even if the sub options are not selected.
+            SettingDesc("only_my_genres", N_("Use only my genres"), ["only_my_genres"]),
+            SettingDesc("artists_genres", N_("Use album artist genres"), ["artists_genres"]),
+            SettingDesc("folksonomy_tags", N_("Use folksonomy tags as genre"), ["folksonomy_tags"]),
+            SettingDesc("min_genre_usage", N_("Minimal genre usage"), ["min_genre_usage"]),
+            SettingDesc("max_genres", N_("Maximum number of genres"), ["max_genres"]),
+            SettingDesc("join_genres", N_("Join multiple genres with"), ["join_genres"]),
+            SettingDesc("genres_filter", N_("Genres to include or exclude"), ["genres_filter"]),
+
+            # Ratings Page
+            SettingDesc("enable_ratings", N_("Enable track ratings"), []),  # No highlight specified because the "enable_ratings"
+                                                                            # object is a QGroupBox and it highlights all sub options,
+                                                                            # even if the sub options are not selected.
+            SettingDesc("rating_user_email", N_("Email to use when submitting ratings"), ["rating_user_email"]),
+            SettingDesc("submit_ratings", N_("Submit ratings to MusicBrainz"), ["submit_ratings"]),
         ],
     }
 
     SETTINGS_GROUPS["tags"] = {
         "title": N_("Tags"),
         "settings": [
+            # Main Tags Page
             SettingDesc("dont_write_tags", N_("Don't write tags"), ["write_tags"]),
             SettingDesc("preserve_timestamps", N_("Preserve timestamps of tagged files"), ["preserve_timestamps"]),
             SettingDesc("clear_existing_tags", N_("Clear existing tags"), ["clear_existing_tags"]),
@@ -82,15 +111,23 @@ class UserProfileGroups():
             SettingDesc("remove_ape_from_mp3", N_("Remove APEv2 tags from MP3 files"), ["remove_ape_from_mp3"]),
             SettingDesc("fix_missing_seekpoints_flac", N_("Fix missing seekpoints for FLAC files"), ["fix_missing_seekpoints_flac"]),
             SettingDesc("preserved_tags", N_("Preserved tags list"), ["preserved_tags"]),
-            SettingDesc("aac_save_ape", N_("Save APEv2 tags to AAC"), ["aac_save_ape", "aac_no_tags"]),
-            SettingDesc("remove_ape_from_aac", N_("Remove APEv2 tags from AAC files"), ["remove_ape_from_aac"]),
-            SettingDesc("ac3_save_ape", N_("Save APEv2 tags to AC3"), ["ac3_save_ape", "ac3_no_tags"]),
-            SettingDesc("remove_ape_from_ac3", N_("Remove APEv2 tags from AC3 files"), ["remove_ape_from_ac3"]),
-            SettingDesc("write_id3v1", N_("Write ID3v1 tags"), ["write_id3v1"]),
-            SettingDesc("write_id3v23", N_("Write ID3v2.3 tags"), ["write_id3v23", "write_id3v24"]),
+
+            # ID3 Tags Page
+            SettingDesc("write_id3v23", N_("ID3v2 version to write"), ["write_id3v23", "write_id3v24"]),
             SettingDesc("id3v2_encoding", N_("ID3v2 text encoding"), ["enc_utf8", "enc_utf16", "enc_iso88591"]),
             SettingDesc("id3v23_join_with", N_("ID3v2.3 join character"), ["id3v23_join_with"]),
             SettingDesc("itunes_compatible_grouping", N_("Save iTunes compatible grouping and work"), ["itunes_compatible_grouping"]),
+            SettingDesc("write_id3v1", N_("Write ID3v1 tags"), ["write_id3v1"]),
+
+            # AAC Tags Page
+            SettingDesc("aac_save_ape", N_("Save APEv2 tags to AAC"), ["aac_save_ape", "aac_no_tags"]),
+            SettingDesc("remove_ape_from_aac", N_("Remove APEv2 tags from AAC files"), ["remove_ape_from_aac"]),
+
+            # AC3 Tags Page
+            SettingDesc("ac3_save_ape", N_("Save APEv2 tags to AC3"), ["ac3_save_ape", "ac3_no_tags"]),
+            SettingDesc("remove_ape_from_ac3", N_("Remove APEv2 tags from AC3 files"), ["remove_ape_from_ac3"]),
+
+            # WAVE Tags Page
             SettingDesc("write_wave_riff_info", N_("Write RIFF INFO tags to WAVE files"), ["write_wave_riff_info"]),
             SettingDesc("remove_wave_riff_info", N_("Remove existing RIFF INFO tags from WAVE files"), ["remove_wave_riff_info"]),
             SettingDesc("wave_riff_info_encoding", N_("RIFF INFO text encoding"), ["wave_riff_info_enc_cp1252", "wave_riff_info_enc_utf8"]),
@@ -114,15 +151,22 @@ class UserProfileGroups():
     SETTINGS_GROUPS["filerenaming"] = {
         "title": N_("File Naming"),
         "settings": [
-            SettingDesc("windows_compatibility", N_("Windows compatibility"), ["windows_compatibility"]),
-            SettingDesc("ascii_filenames", N_("Replace non-ASCII characters"), ["ascii_filenames"]),
-            SettingDesc("rename_files", N_("Rename files"), ["rename_files"]),
+            # Main File Naming Page
             SettingDesc("move_files", N_("Move files"), ["move_files"]),
             SettingDesc("move_files_to", N_("Destination directory"), ["move_files_to"]),
             SettingDesc("move_additional_files", N_("Move additional files"), ["move_additional_files"]),
             SettingDesc("move_additional_files_pattern", N_("Additional file patterns"), ["move_additional_files_pattern"]),
             SettingDesc("delete_empty_dirs", N_("Delete empty directories"), ["delete_empty_dirs"]),
+            SettingDesc("rename_files", N_("Rename files"), ["rename_files"]),
             SettingDesc("selected_file_naming_script_id", N_("Selected file naming script"), ["naming_script_selector"]),
+
+            # File Naming Compatibility Page
+            SettingDesc("ascii_filenames", N_("Replace non-ASCII characters"), ["ascii_filenames"]),
+            SettingDesc("windows_compatibility", N_("Windows compatibility"), ["windows_compatibility"]),
+            SettingDesc("win_compat_replacements", N_("Replacement characters used for Windows compatibility"), ["win_compat_replacements"]),
+            SettingDesc("windows_long_paths", N_("Windows long path support"), ["windows_long_paths"]),
+            SettingDesc("replace_spaces_with_underscores", N_("Replace spaces with underscores"), ["replace_spaces_with_underscores"]),
+            SettingDesc("replace_dir_separator", N_("Replacement character to use for directory separators"), ["replace_dir_separator"]),
         ],
     }
 
@@ -137,19 +181,37 @@ class UserProfileGroups():
     SETTINGS_GROUPS["interface"] = {
         "title": N_("User Interface"),
         "settings": [
+            # Main User Interface Page
+            SettingDesc("toolbar_show_labels", N_("Show text labels under icons"), ["toolbar_show_labels"]),
+            SettingDesc("show_menu_icons", N_("Show icons in menus"), ["show_menu_icons"]),
+            SettingDesc("ui_language", N_("User interface language"), ["ui_language"]),
+            SettingDesc("ui_theme", N_("User interface color theme"), ["ui_theme"]),
             SettingDesc("toolbar_multiselect", N_("Allow selection of multiple directories"), ["toolbar_multiselect"]),
             SettingDesc("builtin_search", N_("Use builtin search rather than looking in browser"), ["builtin_search"]),
-            SettingDesc("use_adv_search_syntax", N_("Use builtin search rather than looking in browser"), ["use_adv_search_syntax"]),
+            SettingDesc("use_adv_search_syntax", N_("Use advanced search syntax"), ["use_adv_search_syntax"]),
+            SettingDesc("show_new_user_dialog", N_("Show a usage warning dialog when Picard starts"), ["new_user_dialog"]),
             SettingDesc("quit_confirmation", N_("Show a quit confirmation dialog for unsaved changes"), ["quit_confirmation"]),
+            SettingDesc("file_save_warning", N_("Show a confirmation dialog when saving files"), ["file_save_warning"]),
             SettingDesc("filebrowser_horizontal_autoscroll", N_("Adjust horizontal position in file browser automatically"), ["filebrowser_horizontal_autoscroll"]),
             SettingDesc("starting_directory", N_("Begin browsing in a specific directory"), ["starting_directory"]),
             SettingDesc("starting_directory_path", N_("Directory to begin browsing"), ["starting_directory_path"]),
+
+            # User Interface Colors Page
+            SettingDesc("interface_colors", N_("Colors to use for standard theme"), ["colors"]),
+            SettingDesc("interface_colors_dark", N_("Colors to use for dark theme"), ["colors"]),
+
+            # User Interface Top Tags Page
+            SettingDesc("metadatabox_top_tags", N_("Tags to show at the top"), ["top_tags_groupBox"]),
+
+            # User Interface Action Toolbar Page
+            SettingDesc("toolbar_layout", N_("Layout of the tool bar"), ["toolbar_layout_list"]),
         ],
     }
 
     SETTINGS_GROUPS["advanced"] = {
         "title": N_("Advanced"),
         "settings": [
+            # Main Advanced Options Page
             SettingDesc("ignore_regex", N_("Ignore file paths matching a regular expression"), ["ignore_regex"]),
             SettingDesc("ignore_hidden_files", N_("Ignore hidden files"), ["ignore_hidden_files"]),
             SettingDesc("recursively_add_files", N_("Include sub-folders when adding files from folder"), ["recursively_add_files"]),
@@ -168,6 +230,27 @@ class UserProfileGroups():
             SettingDesc("completeness_ignore_data", N_("Completeness check ignore: Data tracks"), ["completeness_ignore_data"]),
             SettingDesc("completeness_ignore_silence", N_("Completeness check ignore: Silent tracks"), ["completeness_ignore_silence"]),
             SettingDesc("compare_ignore_tags", N_("Tags to ignore for comparison"), ["groupBox_2"]),
+
+            # Network Options Page
+            SettingDesc("use_proxy", N_("Use a web proxy server"), []),     # No highlight specified because the "use_proxy"
+                                                                            # object is a QGroupBox and it highlights all sub
+                                                                            # options, even if the sub options are not selected.
+            SettingDesc("proxy_type", N_("type of proxy server"), ["proxy_type_socks", "proxy_type_http"]),
+            SettingDesc("proxy_server_host", N_("Proxy server address"), ["server_host"]),
+            SettingDesc("proxy_server_port", N_("Proxy server port"), ["server_port"]),
+            SettingDesc("proxy_username", N_("Proxy username"), ["username"]),
+            SettingDesc("proxy_password", N_("Proxy password"), ["password"]),
+            SettingDesc("network_transfer_timeout_seconds", N_("Request timeout in seconds"), ["transfer_timeout"]),
+            SettingDesc("browser_integration", N_("Browser integration"), []),  # No highlight specified because the "browser_integration"
+                                                                                # object is a QGroupBox and it highlights all sub options,
+                                                                                # even if the sub options are not selected.
+            SettingDesc("browser_integration_port", N_("Default listening port"), ["browser_integration_port"]),
+            SettingDesc("browser_integration_localhost_only", N_("Listen only on localhost"), ["browser_integration_localhost_only"]),
+
+            # Matching Options Page
+            SettingDesc("file_lookup_threshold", N_("Minimal similarity for file lookups"), ["file_lookup_threshold"]),
+            SettingDesc("cluster_lookup_threshold", N_("Minimal similarity for cluster lookups"), ["cluster_lookup_threshold"]),
+            SettingDesc("track_matching_threshold", N_("Minimal similarity for matching files to tracks"), ["track_matching_threshold"]),
         ],
     }
 
