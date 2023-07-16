@@ -96,8 +96,19 @@ WIN_LONGPATH_PREFIX = '\\\\?\\'
 class ReadWriteLockContext:
     """Context for releasing a locked QReadWriteLock
     """
-    def __init__(self, lock: QtCore.QReadWriteLock):
-        self.__lock = lock
+    def __init__(self):
+        self.__lock = QtCore.QReadWriteLock()
+
+    def lock_for_read(self):
+        self.__lock.lockForRead()
+        return self
+
+    def lock_for_write(self):
+        self.__lock.lockForWrite()
+        return self
+
+    def unlock(self):
+        self.__lock.unlock()
 
     def __enter__(self):
         pass
@@ -114,21 +125,21 @@ class LockableObject(QtCore.QObject):
 
     def __init__(self):
         super().__init__()
-        self.__lock = QtCore.QReadWriteLock()
+        self.__context = ReadWriteLockContext()
 
     def lock_for_read(self):
         """Lock the object for read operations."""
-        self.__lock.lockForRead()
-        return ReadWriteLockContext(self.__lock)
+        self.__context.lock_for_read()
+        return self.__context
 
     def lock_for_write(self):
         """Lock the object for write operations."""
-        self.__lock.lockForWrite()
-        return ReadWriteLockContext(self.__lock)
+        self.__context.lock_for_write()
+        return self.__context
 
     def unlock(self):
         """Unlock the object."""
-        self.__lock.unlock()
+        self.__context.unlock()
 
 
 def process_events_iter(iterable, interval=0.1):
