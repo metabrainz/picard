@@ -56,7 +56,7 @@ from picard.plugin import (
 )
 from picard.similarity import similarity2
 from picard.util import (
-    LockableObject,
+    ReadWriteLockContext,
     extract_year_from_date,
     linear_combination_of_weights,
 )
@@ -152,11 +152,7 @@ def trackcount_score(actual, expected):
     return 0.0 if actual > expected else 0.3 if actual < expected else 1.0
 
 
-class MetadataMeta(MutableMapping.__class__, LockableObject.__class__):
-    pass
-
-
-class Metadata(MutableMapping, LockableObject, metaclass=MetadataMeta):
+class Metadata(MutableMapping):
 
     """List of metadata items with dict-like access."""
 
@@ -182,8 +178,7 @@ class Metadata(MutableMapping, LockableObject, metaclass=MetadataMeta):
     multi_valued_joiner = MULTI_VALUED_JOINER
 
     def __init__(self, *args, deleted_tags=None, images=None, length=None, **kwargs):
-        super(MutableMapping, self).__init__()
-        super(LockableObject, self).__init__()
+        self._lock = ReadWriteLockContext()
         self._store = dict()
         self.deleted_tags = set()
         self.length = 0
@@ -217,7 +212,7 @@ class Metadata(MutableMapping, LockableObject, metaclass=MetadataMeta):
         if ignored is None:
             ignored = []
 
-        with self.lock_for_read():
+        with self._lock.lock_for_read():
             if self.length and other.length and '~length' not in ignored:
                 score = self.length_score(self.length, other.length)
                 parts.append((score, 8))
@@ -257,7 +252,7 @@ class Metadata(MutableMapping, LockableObject, metaclass=MetadataMeta):
     def compare_to_release_parts(self, release, weights):
         parts = []
 
-        with self.lock_for_read():
+        with self._lock.lock_for_read():
             if "album" in self and "album" in weights:
                 b = release['title']
                 parts.append((similarity2(self["album"], b), weights["album"]))
@@ -356,7 +351,7 @@ class Metadata(MutableMapping, LockableObject, metaclass=MetadataMeta):
         parts = []
         releases = []
 
-        with self.lock_for_read():
+        with self._lock.lock_for_read():
             if 'title' in self:
                 a = self['title']
                 b = track.get('title', '')
@@ -399,11 +394,11 @@ class Metadata(MutableMapping, LockableObject, metaclass=MetadataMeta):
 
     def copy(self, other, copy_images=True):
         self.clear()
-        with self.lock_for_write():
+        with self._lock.lock_for_write():
             self._update_from_metadata(other, copy_images)
 
     def update(self, *args, **kwargs):
-        with self.lock_for_write():
+        with self._lock.lock_for_write():
             one_arg = len(args) == 1
             if one_arg and (isinstance(args[0], self.__class__) or isinstance(args[0], MultiMetadataProxy)):
                 self._update_from_metadata(args[0])
@@ -421,7 +416,7 @@ class Metadata(MutableMapping, LockableObject, metaclass=MetadataMeta):
 
     def diff(self, other):
         """Returns a new Metadata object with only the tags that changed in self compared to other"""
-        with self.lock_for_read():
+        with self._lock.lock_for_read():
             m = Metadata()
             for tag, values in self.rawitems():
                 other_values = other.getall(tag)
@@ -443,7 +438,7 @@ class Metadata(MutableMapping, LockableObject, metaclass=MetadataMeta):
             self.length = other.length
 
     def clear(self):
-        with self.lock_for_write():
+        with self._lock.lock_for_write():
             self._store.clear()
             self.images = ImageList()
             self.length = 0
@@ -457,15 +452,15 @@ class Metadata(MutableMapping, LockableObject, metaclass=MetadataMeta):
         return name.rstrip(':')
 
     def getall(self, name):
-        with self.lock_for_read():
+        with self._lock.lock_for_read():
             return self._store.get(self.normalize_tag(name), [])
 
     def getraw(self, name):
-        with self.lock_for_read():
+        with self._lock.lock_for_read():
             return self._store[self.normalize_tag(name)]
 
     def get(self, key, default=None):
-        with self.lock_for_read():
+        with self._lock.lock_for_read():
             values = self._store.get(self.normalize_tag(key), None)
             if values:
                 return self.multi_valued_joiner.join(values)
@@ -488,14 +483,14 @@ class Metadata(MutableMapping, LockableObject, metaclass=MetadataMeta):
             self._del(name)
 
     def set(self, name, values):
-        with self.lock_for_write():
+        with self._lock.lock_for_write():
             self._set(name, values)
 
     def __setitem__(self, name, values):
         self.set(name, values)
 
     def __contains__(self, name):
-        with self.lock_for_read():
+        with self._lock.lock_for_read():
             return self._store.__contains__(self.normalize_tag(name))
 
     def _del(self, name):
@@ -508,7 +503,7 @@ class Metadata(MutableMapping, LockableObject, metaclass=MetadataMeta):
             self.deleted_tags.add(name)
 
     def __delitem__(self, name):
-        with self.lock_for_write():
+        with self._lock.lock_for_write():
             self._del(name)
 
     def delete(self, name):
@@ -516,7 +511,7 @@ class Metadata(MutableMapping, LockableObject, metaclass=MetadataMeta):
 
     def add(self, name, value):
         if value or value == 0:
-            with self.lock_for_write():
+            with self._lock.lock_for_write():
                 name = self.normalize_tag(name)
                 self._store.setdefault(name, []).append(str(value))
                 self.deleted_tags.discard(name)
@@ -532,7 +527,7 @@ class Metadata(MutableMapping, LockableObject, metaclass=MetadataMeta):
         Args:
             name: name of the tag to unset
         """
-        with self.lock_for_write():
+        with self._lock.lock_for_write():
             name = self.normalize_tag(name)
             try:
                 del self._store[name]
@@ -540,11 +535,11 @@ class Metadata(MutableMapping, LockableObject, metaclass=MetadataMeta):
                 pass
 
     def __iter__(self):
-        with self.lock_for_read():
+        with self._lock.lock_for_read():
             return iter(self._store)
 
     def items(self):
-        with self.lock_for_read():
+        with self._lock.lock_for_read():
             for name, values in self._store.items():
                 for value in values:
                     yield name, value
@@ -558,7 +553,7 @@ class Metadata(MutableMapping, LockableObject, metaclass=MetadataMeta):
         return self._store.items()
 
     def apply_func(self, func):
-        with self.lock_for_write():
+        with self._lock.lock_for_write():
             for name, values in list(self.rawitems()):
                 if name not in PRESERVED_TAGS:
                     self._set(name, (func(value) for value in values))
