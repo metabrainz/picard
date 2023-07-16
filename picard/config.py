@@ -89,7 +89,11 @@ class ConfigSection(QtCore.QObject):
         return self.__qt_config.contains(self.key(name))
 
     def as_dict(self):
-        return {key: self[key] for section, key in Option.registry if section == self.__name}
+        return {
+            key: self[key] for section, key
+            in list(Option.registry)
+            if section == self.__name
+        }
 
     def remove(self, name):
         key = self.key(name)
