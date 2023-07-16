@@ -93,8 +93,23 @@ WIN_MAX_NODE_LEN = 255
 WIN_LONGPATH_PREFIX = '\\\\?\\'
 
 
-class LockableObject(QtCore.QObject):
+class ReadWriteLockContext:
+    """Context for releasing a locked QReadWriteLock
+    """
+    def __init__(self, lock: QtCore.QReadWriteLock):
+        self.__lock = lock
 
+    def __enter__(self):
+        pass
+
+    def __exit__(self, type, value, tb):
+        self.__lock.unlock()
+
+    def __bool__(self):
+        return self._entered > 0
+
+
+class LockableObject(QtCore.QObject):
     """Read/write lockable object."""
 
     def __init__(self):
@@ -104,10 +119,12 @@ class LockableObject(QtCore.QObject):
     def lock_for_read(self):
         """Lock the object for read operations."""
         self.__lock.lockForRead()
+        return ReadWriteLockContext(self.__lock)
 
     def lock_for_write(self):
         """Lock the object for write operations."""
         self.__lock.lockForWrite()
+        return ReadWriteLockContext(self.__lock)
 
     def unlock(self):
         """Unlock the object."""
