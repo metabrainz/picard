@@ -29,7 +29,7 @@
       <item>
        <widget class="QCheckBox" name="only_my_genres">
         <property name="text">
-         <string>Only use my genres</string>
+         <string>Use only my genres</string>
         </property>
        </widget>
       </item>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.0b3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-17 08:01+0200\n"
+"POT-Creation-Date: 2023-07-17 08:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -287,15 +287,15 @@ msgstr ""
 msgid "Preferred release countries"
 msgstr ""
 
-#: picard/profile.py:79
-msgid "Preferred release formats"
+#: picard/profile.py:79 picard/ui/ui_options_releases.py:116
+msgid "Preferred medium formats"
 msgstr ""
 
 #: picard/profile.py:82 picard/ui/ui_options_genres.py:119
 msgid "Use genres from MusicBrainz"
 msgstr ""
 
-#: picard/profile.py:85
+#: picard/profile.py:85 picard/ui/ui_options_genres.py:120
 msgid "Use only my genres"
 msgstr ""
 
@@ -328,7 +328,7 @@ msgid "Enable track ratings"
 msgstr ""
 
 #: picard/profile.py:97
-msgid "Email to use when submitting ratings"
+msgid "Email to use when saving ratings"
 msgstr ""
 
 #: picard/profile.py:98 picard/ui/ui_options_ratings.py:50
@@ -8157,10 +8157,6 @@ msgstr ""
 msgid "Updates to check:"
 msgstr ""
 
-#: picard/ui/ui_options_genres.py:120
-msgid "Only use my genres"
-msgstr ""
-
 #: picard/ui/ui_options_genres.py:121
 msgid ""
 "Fall back on album's artists genres if no genres are found for the "
@@ -8427,10 +8423,6 @@ msgstr ""
 
 #: picard/ui/ui_options_releases.py:114 picard/ui/ui_options_releases.py:115
 msgid "Remove from preferred release countries"
-msgstr ""
-
-#: picard/ui/ui_options_releases.py:116
-msgid "Preferred medium formats"
 msgstr ""
 
 #: picard/ui/ui_options_releases.py:117 picard/ui/ui_options_releases.py:118

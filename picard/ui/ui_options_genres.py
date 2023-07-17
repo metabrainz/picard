@@ -117,7 +117,7 @@ class Ui_GenresOptionsPage(object):
     def retranslateUi(self, GenresOptionsPage):
         _translate = QtCore.QCoreApplication.translate
         self.use_genres.setTitle(_("Use genres from MusicBrainz"))
-        self.only_my_genres.setText(_("Only use my genres"))
+        self.only_my_genres.setText(_("Use only my genres"))
         self.artists_genres.setText(_("Fall back on album\'s artists genres if no genres are found for the release or release group"))
         self.folksonomy_tags.setText(_("Use folksonomy tags as genre"))
         self.label_5.setText(_("Minimal genre usage:"))

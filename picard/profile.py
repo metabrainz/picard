@@ -76,7 +76,7 @@ class UserProfileGroups():
             # Preferred Releases Page
             SettingDesc("release_type_scores", N_("Release type preferences"), ["type_group"]),
             SettingDesc("preferred_release_countries", N_("Preferred release countries"), ["country_group"]),
-            SettingDesc("preferred_release_formats", N_("Preferred release formats"), ["format_group"]),
+            SettingDesc("preferred_release_formats", N_("Preferred medium formats"), ["format_group"]),
 
             # Genres Page
             SettingDesc("use_genres", N_("Use genres from MusicBrainz"), []),   # No highlight specified because the "use_genres"
@@ -94,7 +94,7 @@ class UserProfileGroups():
             SettingDesc("enable_ratings", N_("Enable track ratings"), []),  # No highlight specified because the "enable_ratings"
                                                                             # object is a QGroupBox and it highlights all sub options,
                                                                             # even if the sub options are not selected.
-            SettingDesc("rating_user_email", N_("Email to use when submitting ratings"), ["rating_user_email"]),
+            SettingDesc("rating_user_email", N_("Email to use when saving ratings"), ["rating_user_email"]),
             SettingDesc("submit_ratings", N_("Submit ratings to MusicBrainz"), ["submit_ratings"]),
         ],
     }
