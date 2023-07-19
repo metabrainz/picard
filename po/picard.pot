@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.0b3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-17 08:54+0200\n"
+"POT-Creation-Date: 2023-07-19 18:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.10.3\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -1323,7 +1323,7 @@ msgid "Baluchi (Arabic)"
 msgstr ""
 
 #: picard/const/locales.py:98
-msgid "Baluchi Pakistan (Arabic)"
+msgid "Baluchi (Arabic) (Pakistan)"
 msgstr ""
 
 #: picard/const/locales.py:99
@@ -1439,7 +1439,7 @@ msgid "Bambara (N’Ko)"
 msgstr ""
 
 #: picard/const/locales.py:127
-msgid "Bambara Mali (N’Ko)"
+msgid "Bambara (N’Ko) (Mali)"
 msgstr ""
 
 #: picard/const/locales.py:128
@@ -1907,7 +1907,7 @@ msgid "English (Fiji)"
 msgstr ""
 
 #: picard/const/locales.py:253
-msgid "English (Falkland) Islands"
+msgid "English (Falkland Islands)"
 msgstr ""
 
 #: picard/const/locales.py:254
@@ -4579,7 +4579,7 @@ msgid "Tajik"
 msgstr ""
 
 #: picard/const/locales.py:945
-msgid "Tajik(Cyrillic)"
+msgid "Tajik (Cyrillic)"
 msgstr ""
 
 #: picard/const/locales.py:946
@@ -4959,7 +4959,7 @@ msgid "Standard Moroccan Tamazight"
 msgstr ""
 
 #: picard/const/locales.py:1042
-msgid "Standard Moroccan Tamazight Morocco"
+msgid "Standard Moroccan Tamazight (Morocco)"
 msgstr ""
 
 #: picard/const/locales.py:1043 picard/const/scripts.py:31
