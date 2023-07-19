@@ -179,7 +179,7 @@ ALIAS_LOCALES = {
     'cu': N_('Church Slavic'),
     'cu_RU': N_('Church Slavic (Russia)'),
     'cv': N_('Chuvash'),
-    'cv_RU': N_('Chuvash Russia'),
+    'cv_RU': N_('Chuvash (Russia)'),
     'cy': N_('Welsh'),
     'cy_GB': N_('Welsh (United Kingdom)'),
     'da': N_('Danish'),
