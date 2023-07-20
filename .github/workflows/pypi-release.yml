@@ -54,14 +54,12 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install gettext and openssl (macOS)
+    - name: Install gettext (macOS)
       if: runner.os == 'macOS'
       run: |
-        brew install gettext openssl@1.1
+        brew install gettext
         brew link gettext --force
-        brew link openssl@1.1 --force
         echo "/usr/local/opt/gettext/bin" >> $GITHUB_PATH
-        echo "/usr/local/opt/openssl@1.1/bin" >> $GITHUB_PATH
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
