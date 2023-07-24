@@ -614,3 +614,95 @@ class FileUpdateTest(PicardTestCase):
             self.assertEqual('val' + info, metadata[info])
         self.assertEqual('valb', metadata['b'])
         self.assertNotIn('a', metadata)
+
+
+class FileCopyMetadataTest(PicardTestCase):
+
+    def setUp(self):
+        super().setUp()
+        metadata = Metadata({
+            'album': 'somealbum',
+            'artist': 'someartist',
+            'title': 'sometitle',
+        })
+        del metadata['deletedtag']
+        metadata.images.append(create_image(b'a'))
+        self.file = File('/somepath/somefile.mp3')
+        self.file.metadata = metadata
+        self.file.orig_metadata = Metadata({
+            'album': 'origalbum',
+            'artist': 'origartist',
+            'title': 'origtitle',
+        })
+        self.INVALIDSIMVAL = 666
+        self.set_config_values({
+            'preserved_tags': [],
+        })
+
+    def test_copy_metadata_full(self):
+        new_metadata = Metadata({
+            'title': 'othertitle',
+            '~foo': 'bar',
+        })
+        del new_metadata['foo']
+        new_metadata.images.append(create_image(b'b'))
+        self.file.copy_metadata(new_metadata, preserve_deleted=False)
+        self.assertEqual(self.file.metadata, new_metadata)
+        self.assertEqual(self.file.metadata.images, new_metadata.images)
+        self.assertEqual(self.file.metadata.deleted_tags, new_metadata.deleted_tags)
+
+    def test_copy_metadata_must_preserve_deleted_tags_by_default(self):
+        new_metadata = Metadata({
+            'title': 'othertitle',
+            '~foo': 'bar',
+        })
+        del new_metadata['foo']
+        self.file.copy_metadata(new_metadata)
+        self.assertEqual(self.file.metadata, new_metadata)
+        self.assertEqual(self.file.metadata.deleted_tags, {'deletedtag', 'foo'})
+
+    def test_copy_metadata_do_not_preserve_deleted_tags(self):
+        new_metadata = Metadata({
+            'title': 'othertitle',
+            '~foo': 'bar',
+        })
+        del new_metadata['foo']
+        self.file.copy_metadata(new_metadata, preserve_deleted=False)
+        self.assertEqual(self.file.metadata, new_metadata)
+        self.assertEqual(self.file.metadata.deleted_tags, {'foo'})
+
+    def test_copy_metadata_must_not_clear_acoustid_id(self):
+        self.file.metadata['acoustid_id'] = 'foo'
+        new_metadata = Metadata()
+        self.file.copy_metadata(new_metadata)
+        self.assertEqual(self.file.metadata['acoustid_id'], 'foo')
+
+    def test_copy_metadata_must_remove_deleted_acoustid_id(self):
+        self.file.metadata['acoustid_id'] = 'foo'
+        new_metadata = Metadata()
+        new_metadata.delete('acoustid_id')
+        self.file.copy_metadata(new_metadata)
+        self.assertEqual(self.file.metadata['acoustid_id'], '')
+        self.assertIn('acoustid_id', self.file.metadata.deleted_tags)
+
+    def test_copy_metadata_with_preserved_tags(self):
+        self.set_config_values({
+            'preserved_tags': ['artist', 'title'],
+        })
+        new_metadata = Metadata({
+            'album': 'otheralbum',
+            'artist': 'otherartist',
+            'title': 'othertitle',
+        })
+        self.file.copy_metadata(new_metadata)
+        self.assertEqual(self.file.metadata['album'], 'otheralbum')
+        self.assertEqual(self.file.metadata['artist'], 'origartist')
+        self.assertEqual(self.file.metadata['title'], 'origtitle')
+
+    def test_copy_metadata_must_always_preserve_technical_variables(self):
+        self.file.orig_metadata['~filename'] = 'orig.flac'
+        new_metadata = Metadata({
+            '~filename': 'new.flac',
+        })
+        self.file.copy_metadata(new_metadata)
+        self.assertEqual(self.file.metadata['~filename'], 'orig.flac')
