@@ -38,6 +38,7 @@ from picard.const.sys import (
 )
 from picard.file import File
 from picard.metadata import Metadata
+from picard.util.tags import CALCULATED_TAGS
 
 
 class DataObjectTest(PicardTestCase):
@@ -671,11 +672,15 @@ class FileCopyMetadataTest(PicardTestCase):
         self.assertEqual(self.file.metadata, new_metadata)
         self.assertEqual(self.file.metadata.deleted_tags, {'foo'})
 
-    def test_copy_metadata_must_not_clear_acoustid_id(self):
-        self.file.metadata['acoustid_id'] = 'foo'
+    def test_copy_metadata_must_keep_file_content_specific_tags(self):
+        for tag in CALCULATED_TAGS:
+            self.file.metadata[tag] = 'foo'
         new_metadata = Metadata()
         self.file.copy_metadata(new_metadata)
-        self.assertEqual(self.file.metadata['acoustid_id'], 'foo')
+        for tag in CALCULATED_TAGS:
+            self.assertEqual(
+                self.file.metadata[tag], 'foo',
+                f'Tag {tag}: {self.file.metadata[tag]!r} != "foo"')
 
     def test_copy_metadata_must_remove_deleted_acoustid_id(self):
         self.file.metadata['acoustid_id'] = 'foo'

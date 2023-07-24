@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2007-2008, 2011 Lukáš Lalinský
-# Copyright (C) 2008-2009, 2018-2021 Philipp Wolfer
+# Copyright (C) 2008-2009, 2018-2021, 2023 Philipp Wolfer
 # Copyright (C) 2011 Johannes Weißl
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
@@ -143,6 +143,23 @@ PRESERVED_TAGS = (
     '~sample_rate',
     '~video',
 )
+
+# Tags that got generated in some way from the audio content.
+# Those can be set by Picard but the new values usually should be kept
+# when moving the file between tags.
+CALCULATED_TAGS = {
+    'acoustid_fingerprint',
+    'acoustid_id',
+    'replaygain_album_gain',
+    'replaygain_album_peak',
+    'replaygain_album_range',
+    'replaygain_reference_loudness',
+    'replaygain_track_gain',
+    'replaygain_track_peak',
+    'replaygain_track_range',
+    'r128_album_gain',
+    'r128_track_gain',
+}
 
 
 def display_tag_name(name):
