@@ -98,7 +98,10 @@ from picard.util.filenaming import (
 )
 from picard.util.preservedtags import PreservedTags
 from picard.util.scripttofilename import script_to_filename_with_metadata
-from picard.util.tags import PRESERVED_TAGS
+from picard.util.tags import (
+    CALCULATED_TAGS,
+    PRESERVED_TAGS,
+)
 
 from picard.ui.item import Item
 
@@ -305,9 +308,14 @@ class File(QtCore.QObject, Item):
             to_metadata[info] = from_metadata[info]
 
     def copy_metadata(self, metadata, preserve_deleted=True):
-        acoustid = self.metadata["acoustid_id"]
         saved_metadata = {}
 
+        # Keep current value for special tags that got calculated from audio content
+        for tag in CALCULATED_TAGS:
+            if tag not in metadata.deleted_tags and self.metadata[tag]:
+                saved_metadata[tag] = self.metadata[tag]
+
+        # Keep original values of preserved tags
         preserved_tags = PreservedTags()
         for tag, values in self.orig_metadata.rawitems():
             if tag in preserved_tags or tag in PRESERVED_TAGS:
@@ -321,8 +329,6 @@ class File(QtCore.QObject, Item):
                 del self.metadata[tag]
         self.metadata.update(saved_metadata)
 
-        if acoustid and "acoustid_id" not in metadata.deleted_tags:
-            self.metadata["acoustid_id"] = acoustid
         if images_changed:
             self.metadata_images_changed.emit()
 
