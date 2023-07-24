@@ -153,7 +153,10 @@ from picard.webservice.api_helpers import (
 
 import picard.resources  # noqa: F401 # pylint: disable=unused-import
 
-from picard.ui import theme
+from picard.ui import (
+    FONT_FAMILY_MONOSPACE,
+    theme,
+)
 from picard.ui.mainwindow import MainWindow
 from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.artist import ArtistSearchDialog
@@ -1340,23 +1343,91 @@ class Tagger(QtWidgets.QApplication):
         self.signalnotifier.setEnabled(True)
 
 
-def print_help_for_commands():
-    maxwidth = 80
-    helpcmd = []
-    for name in sorted(REMOTE_COMMANDS):
-        remcmd = REMOTE_COMMANDS[name]
-        s = "  - %-34s %s" % (name + " " + remcmd.help_args, remcmd.help_text)
-        helpcmd.append(fill(s, width=maxwidth, subsequent_indent=' '*39))
+class PicardArgumentParser(argparse.ArgumentParser):
+    def exit(self, status=0, message=None):
+        if is_windowed_app():
+            if message:
+                show_standalone_messagebox(message)
+            super().exit(status)
+        else:
+            super().exit(status, message)
 
-    print("""usage: picard -e [command] [arguments ...]
+    def error(self, message):
+        if is_windowed_app():
+            if message:
+                show_standalone_messagebox(message)
+            super().exit(2)
+        else:
+            super().error(message)
+
+    def print_help(self, file=None):
+        if is_windowed_app() and file is None:
+            from io import StringIO
+            file = StringIO()
+            super().print_help(file=file)
+            file.seek(0)
+            show_standalone_messagebox(file.read())
+        else:
+            return super().print_help(file)
+
+
+def is_windowed_app():
+    # Return True if this is a Windows windowed application without attached console
+    return IS_WIN and not sys.stdout
+
+
+def show_standalone_messagebox(message, informative_text=None):
+    app = QtCore.QCoreApplication.instance()
+    if not app:
+        app = QtWidgets.QApplication(sys.argv)
+    msgbox = QtWidgets.QMessageBox()
+    msgbox.setIcon(QtWidgets.QMessageBox.Icon.Information)
+    msgbox.setWindowTitle(f"{PICARD_ORG_NAME} {PICARD_APP_NAME}")
+    msgbox.setTextFormat(QtCore.Qt.TextFormat.PlainText)
+    font = msgbox.font()
+    font.setFamily(FONT_FAMILY_MONOSPACE)
+    msgbox.setFont(font)
+    msgbox.setText(message)
+    if informative_text:
+        msgbox.setInformativeText(informative_text)
+    msgbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+    msgbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+    msgbox.exec_()
+    app.quit()
+
+
+def print_message_and_exit(message, informative_text=None, status=0):
+    if is_windowed_app():
+        show_standalone_messagebox(message, informative_text)
+    else:
+        print(message)
+        if informative_text:
+            print(informative_text)
+    sys.exit(status)
+
+
+def print_help_for_commands():
+    if is_windowed_app():
+        maxwidth = 300
+    else:
+        maxwidth = 80
+    informative_text = []
+
+    message = """usage: picard -e [command] [arguments ...]
     or picard -e [command 1] [arguments ...] -e [command 2] [arguments ...]
 
 List of the commands available to execute in Picard from the command-line:
-""")
-    print("\n".join(helpcmd))
+"""
+
+    for name in sorted(REMOTE_COMMANDS):
+        remcmd = REMOTE_COMMANDS[name]
+        s = "  - %-34s %s" % (name + " " + remcmd.help_args, remcmd.help_text)
+        informative_text.append(fill(s, width=maxwidth, subsequent_indent=' '*39))
+
+    informative_text.append('')
 
     def fmt(s):
-        print(fill(s, width=maxwidth, initial_indent=' '*2))
+        informative_text.append(fill(s, width=maxwidth))
 
     fmt("Commands are case insensitive.")
     fmt("Picard will try to load all the positional arguments before processing commands.")
@@ -1365,9 +1436,11 @@ List of the commands available to execute in Picard from the command-line:
         "Picard instance")
     fmt("Arguments are optional, but some commands may require one or more arguments to actually do something.")
 
+    print_message_and_exit(message, "\n".join(informative_text))
+
 
 def process_picard_args():
-    parser = argparse.ArgumentParser(
+    parser = PicardArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""If one of the filenames begins with a hyphen, use -- to separate the options from the filenames.
 If a new instance will not be spawned files/directories will be passed to the existing instance"""
@@ -1451,11 +1524,11 @@ def main(localedir=None, autoupdate=True):
     picard_args = process_picard_args()
 
     if picard_args.long_version:
-        return print(versions.as_string())
+        print_message_and_exit(versions.as_string())
     if picard_args.version:
-        return print(f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}")
+        print_message_and_exit(f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}")
     if picard_args.remote_commands_help:
-        return print_help_for_commands()
+        print_help_for_commands()
 
     # any of the flags that change Picard's workflow significantly should trigger creation of a new instance
     if picard_args.stand_alone_instance:
