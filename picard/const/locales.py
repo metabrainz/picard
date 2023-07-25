@@ -735,7 +735,7 @@ ALIAS_LOCALES = {
     'nso': N_('Northern Sotho'),
     'nso_ZA': N_('Northern Sotho (South Africa)'),
     'nus': N_('Nuer'),
-    'nus_SS': N_('Nuer South (Sudan)'),
+    'nus_SS': N_('Nuer (South Sudan)'),
     'nv': N_('Navajo'),
     'nv_US': N_('Navajo (United States)'),
     'ny': N_('Nyanja'),

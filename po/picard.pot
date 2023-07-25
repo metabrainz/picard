@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.0b3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-25 09:35+0200\n"
+"POT-Creation-Date: 2023-07-25 12:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -119,28 +119,28 @@ msgstr ""
 msgid "Primary file naming script"
 msgstr ""
 
-#: picard/file.py:213
+#: picard/file.py:216
 msgid ""
 "The file failed to parse, either the file is damaged or has an "
 "unsupported file format."
 msgstr ""
 
-#: picard/file.py:844
+#: picard/file.py:850
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:846
+#: picard/file.py:852
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr ""
 
-#: picard/file.py:858
+#: picard/file.py:864
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:890
+#: picard/file.py:896
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr ""
@@ -3787,7 +3787,7 @@ msgid "Nuer"
 msgstr ""
 
 #: picard/const/locales.py:738
-msgid "Nuer South (Sudan)"
+msgid "Nuer (South Sudan)"
 msgstr ""
 
 #: picard/const/locales.py:739
