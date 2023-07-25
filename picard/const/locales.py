@@ -857,7 +857,7 @@ ALIAS_LOCALES = {
     'ses': N_('Koyraboro Senni'),
     'ses_ML': N_('Koyraboro Senni (Mali)'),
     'sg': N_('Sango'),
-    'sg_CF': N_('Sango Central (African Republic)'),
+    'sg_CF': N_('Sango (Central African Republic)'),
     'shi': N_('Tachelhit'),
     'shi_Latn': N_('Tachelhit (Latin)'),
     'shi_Latn_MA': N_('Tachelhit (Latin) (Morocco)'),

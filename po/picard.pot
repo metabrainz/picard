@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.0b3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-25 12:55+0200\n"
+"POT-Creation-Date: 2023-07-25 12:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4255,7 +4255,7 @@ msgid "Sango"
 msgstr ""
 
 #: picard/const/locales.py:860
-msgid "Sango Central (African Republic)"
+msgid "Sango (Central African Republic)"
 msgstr ""
 
 #: picard/const/locales.py:861
