@@ -74,7 +74,7 @@ class UserProfileGroups():
             SettingDesc("nat_name", N_("Standalone recordings name"), ["nat_name"]),
 
             # Preferred Releases Page
-            SettingDesc("release_type_scores", N_("Release type preferences"), ["type_group"]),
+            SettingDesc("release_type_scores", N_("Preferred release types"), ["type_group"]),
             SettingDesc("preferred_release_countries", N_("Preferred release countries"), ["country_group"]),
             SettingDesc("preferred_release_formats", N_("Preferred medium formats"), ["format_group"]),
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.0b3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-25 12:58+0200\n"
+"POT-Creation-Date: 2023-07-25 17:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -279,8 +279,8 @@ msgstr ""
 msgid "Standalone recordings name"
 msgstr ""
 
-#: picard/profile.py:77
-msgid "Release type preferences"
+#: picard/profile.py:77 picard/ui/ui_options_releases.py:110
+msgid "Preferred release types"
 msgstr ""
 
 #: picard/profile.py:78 picard/ui/ui_options_releases.py:111
@@ -8411,10 +8411,6 @@ msgstr ""
 
 #: picard/ui/ui_options_ratings.py:49
 msgid "E-mail:"
-msgstr ""
-
-#: picard/ui/ui_options_releases.py:110
-msgid "Preferred release types"
 msgstr ""
 
 #: picard/ui/ui_options_releases.py:112 picard/ui/ui_options_releases.py:113
