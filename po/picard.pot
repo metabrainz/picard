@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.0b3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-19 19:38+0200\n"
+"POT-Creation-Date: 2023-07-25 09:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.12.1\n"
+"Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -581,7 +581,7 @@ msgid "Directory to begin browsing"
 msgstr ""
 
 #: picard/profile.py:200
-msgid "Colors to use for standard theme"
+msgid "Colors to use for light theme"
 msgstr ""
 
 #: picard/profile.py:201
@@ -6721,71 +6721,71 @@ msgstr ""
 msgid "&Run scripts"
 msgstr ""
 
-#: picard/ui/itemviews.py:836
+#: picard/ui/itemviews.py:837
 msgid "file view"
 msgstr ""
 
-#: picard/ui/itemviews.py:837
+#: picard/ui/itemviews.py:838
 msgid "Contains unmatched files and clusters"
 msgstr ""
 
-#: picard/ui/itemviews.py:857
+#: picard/ui/itemviews.py:858
 msgid "Clusters"
 msgstr ""
 
-#: picard/ui/itemviews.py:867
+#: picard/ui/itemviews.py:868
 msgid "album view"
 msgstr ""
 
-#: picard/ui/itemviews.py:868
+#: picard/ui/itemviews.py:869
 msgid "Contains albums and matched files"
 msgstr ""
 
-#: picard/ui/itemviews.py:1014
+#: picard/ui/itemviews.py:1015
 msgid "Processing error(s): See the Errors tab in the Album Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1018
+#: picard/ui/itemviews.py:1019
 msgid "Album modified and complete"
 msgstr ""
 
-#: picard/ui/itemviews.py:1021
+#: picard/ui/itemviews.py:1022
 msgid "Album unchanged and complete"
 msgstr ""
 
-#: picard/ui/itemviews.py:1025
+#: picard/ui/itemviews.py:1026
 msgid "Album modified"
 msgstr ""
 
-#: picard/ui/itemviews.py:1028
+#: picard/ui/itemviews.py:1029
 msgid "Album unchanged"
 msgstr ""
 
-#: picard/ui/itemviews.py:1108
+#: picard/ui/itemviews.py:1109
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1136
+#: picard/ui/itemviews.py:1137
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1169
+#: picard/ui/itemviews.py:1170
 msgid "Track saved"
 msgstr ""
 
-#: picard/ui/itemviews.py:1171 picard/ui/itemviews.py:1175
+#: picard/ui/itemviews.py:1172 picard/ui/itemviews.py:1176
 msgid "Pending"
 msgstr ""
 
-#: picard/ui/itemviews.py:1182
+#: picard/ui/itemviews.py:1183
 msgid "Fingerprint has already been submitted"
 msgstr ""
 
-#: picard/ui/itemviews.py:1185
+#: picard/ui/itemviews.py:1186
 msgid "Unsubmitted fingerprint"
 msgstr ""
 
-#: picard/ui/itemviews.py:1188
+#: picard/ui/itemviews.py:1189
 msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
 "AcoustID Fingerprints\" to calculate the fingerprint."
@@ -9546,7 +9546,7 @@ msgid ""
 "unlock the table in the table header's context menu."
 msgstr ""
 
-#: picard/util/__init__.py:336
+#: picard/util/__init__.py:364
 msgid "No Title"
 msgstr ""
 

@@ -197,7 +197,7 @@ class UserProfileGroups():
             SettingDesc("starting_directory_path", N_("Directory to begin browsing"), ["starting_directory_path"]),
 
             # User Interface Colors Page
-            SettingDesc("interface_colors", N_("Colors to use for standard theme"), ["colors"]),
+            SettingDesc("interface_colors", N_("Colors to use for light theme"), ["colors"]),
             SettingDesc("interface_colors_dark", N_("Colors to use for dark theme"), ["colors"]),
 
             # User Interface Top Tags Page
