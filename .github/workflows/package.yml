@@ -91,9 +91,9 @@ jobs:
         python3 setup.py test
     - name: Prepare code signing certificate
       run: |
-        if [ -n "$CODESIGN_MACOS_PFX_URL" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
+        if [ -n "$CODESIGN_MACOS_P12_URL" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
           pip3 install awscli
-          aws s3 cp "$CODESIGN_MACOS_PFX_URL" ./scripts/package/appledev.p12
+          aws s3 cp "$CODESIGN_MACOS_P12_URL" ./scripts/package/appledev.p12
         else
           echo "::warning::No code signing certificate available, skipping code signing."
         fi
@@ -101,7 +101,7 @@ jobs:
         AWS_DEFAULT_REGION: eu-central-1
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        CODESIGN_MACOS_PFX_URL: ${{ secrets.CODESIGN_MACOS_PFX_URL }}
+        CODESIGN_MACOS_P12_URL: ${{ secrets.CODESIGN_MACOS_P12_URL }}
     - name: Build macOS app
       run: |
         ./scripts/package/macos-package-app.sh
@@ -174,9 +174,9 @@ jobs:
     - name: Prepare code signing certificate
       if: matrix.type != 'store-app'
       run: |
-        If ($Env:CODESIGN_PFX_URL -And $Env:AWS_ACCESS_KEY_ID) {
+        If ($Env:CODESIGN_P12_URL -And $Env:AWS_ACCESS_KEY_ID) {
           pip install awscli
-          aws s3 cp "$Env:CODESIGN_PFX_URL" .\codesign.pfx
+          aws s3 cp "$Env:CODESIGN_P12_URL" .\codesign.pfx
           Write-Output "CODESIGN=1" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8
         } Else {
           Write-Output "::warning::No code signing certificate available, skipping code signing."
@@ -185,7 +185,7 @@ jobs:
         AWS_DEFAULT_REGION: eu-central-1
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        CODESIGN_PFX_URL: ${{ secrets.CODESIGN_PFX_URL }}
+        CODESIGN_P12_URL: ${{ secrets.CODESIGN_P12_URL }}
     - name: Build Windows 10 store app package
       if: matrix.type == 'store-app'
       run: |
@@ -196,17 +196,17 @@ jobs:
     - name: Build Windows 10 signed app package
       if: matrix.type == 'signed-app' && env.CODESIGN == '1'
       run: |
-        $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_PFX_PASSWORD -Force -AsPlainText
+        $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_P12_PASSWORD -Force -AsPlainText
         & .\scripts\package\win-package-appx.ps1 -BuildNumber $Env:BUILD_NUMBER -CertificateFile .\codesign.pfx -CertificatePassword $CertPassword
         Move-Item .\dist\*.msix .\artifacts
       env:
-        CODESIGN_PFX_PASSWORD: ${{ secrets.CODESIGN_PFX_PASSWORD }}
+        CODESIGN_P12_PASSWORD: ${{ secrets.CODESIGN_P12_PASSWORD }}
     - name: Build Windows installer
       if: matrix.type == 'installer'
       run: |
         # choco install nsis
         If ($Env:CODESIGN) {
-          $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_PFX_PASSWORD -Force -AsPlainText
+          $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_P12_PASSWORD -Force -AsPlainText
           $Certificate = Get-PfxCertificate -FilePath .\codesign.pfx -Password $CertPassword
         } Else {
           $Certificate = $null
@@ -215,12 +215,12 @@ jobs:
         Move-Item .\installer\*.exe .\artifacts
         dist\picard\fpcalc -version
       env:
-        CODESIGN_PFX_PASSWORD: ${{ secrets.CODESIGN_PFX_PASSWORD }}
+        CODESIGN_P12_PASSWORD: ${{ secrets.CODESIGN_P12_PASSWORD }}
     - name: Build Windows portable app
       if: matrix.type == 'portable'
       run: |
         If ($Env:CODESIGN) {
-          $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_PFX_PASSWORD -Force -AsPlainText
+          $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_P12_PASSWORD -Force -AsPlainText
           $Certificate = Get-PfxCertificate -FilePath .\codesign.pfx -Password $CertPassword
         } Else {
           $Certificate = $null
@@ -228,7 +228,7 @@ jobs:
         & .\scripts\package\win-package-portable.ps1 -BuildNumber $Env:BUILD_NUMBER -Certificate $Certificate
         Move-Item .\dist\*.exe .\artifacts
       env:
-        CODESIGN_PFX_PASSWORD: ${{ secrets.CODESIGN_PFX_PASSWORD }}
+        CODESIGN_P12_PASSWORD: ${{ secrets.CODESIGN_P12_PASSWORD }}
     - name: Cleanup
       if: env.CODESIGN == '1'
       run: Remove-Item .\codesign.pfx
