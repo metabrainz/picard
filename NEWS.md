@@ -1,3 +1,15 @@
+# Version 2.9 - 2023-07-06
+
+## Bugfixes
+- [PICARD-2011](https://tickets.metabrainz.org/browse/PICARD-2011) - "RuntimeError: dictionary changed size during iteration" in metadatabox
+- [PICARD-2685](https://tickets.metabrainz.org/browse/PICARD-2685) - Moving files between tracks looses AcoustID fingerprint and ReplayGain tags
+- [PICARD-2689](https://tickets.metabrainz.org/browse/PICARD-2689) - If the first dragged element is not visible an empty rectangle is shown during drag
+
+## Improvements
+- [PICARD-2680](https://tickets.metabrainz.org/browse/PICARD-2680) - Modal first use and file save confirmation dialogs
+- [PICARD-2681](https://tickets.metabrainz.org/browse/PICARD-2681) - Revise wording of first use and file save confirmation dialogs
+
+
 # Version 2.9.0b3 - 2023-07-06
 
 ## Bugfixes
