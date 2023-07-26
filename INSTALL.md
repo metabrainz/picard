@@ -95,7 +95,7 @@ or want to develop, you need to follow those steps.
 
 On Debian-based systems:
 
-    apt install python3-pyqt5 python3-venv python3-dev
+    apt install python3-pyqt6 python3-venv python3-dev
 
 For discid support (optional):
 
@@ -103,7 +103,7 @@ For discid support (optional):
 
 For embedded multimedia player support (optional):
 
-    apt install python3-pyqt5.qtmultimedia libqt5multimedia5-plugins
+    apt install python3-pyqt6.qtmultimedia libqt6multimedia6
 
 For other distributions, check your distribution's documentation
 on how to install the packages for Qt6, PyQt6, Python3 C headers,
