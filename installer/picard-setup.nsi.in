@@ -253,11 +253,14 @@ Function .onInit
     silentUninstall:
     ExecWait '"$0" /S _?=$1' $2
   finalizeUninstall:
-    ; Delete the uninstaller if it finished with success (exit code 0)
-    IntCmp $2 0 "" endUninstall endUninstall
+    ; Delete the uninstaller if it finished with success (exit code 0),
+    ; otherwise abort
+    IntCmp $2 0 endUninstall "" ""
+    MessageBox MB_ICONSTOP|MB_OK "$(MsgUninstallFailed)" /SD IDOK
+    Abort
+  endUninstall:
     Delete "$0"
     RMDir "$1"  ; Try to delete installation dir
-  endUninstall:
 
   ; Check if previous install location was inside $PROGRAMFILES32
   ; If so, rewrite $INSTDIR to $PROGRAMFILES64
