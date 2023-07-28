@@ -2,7 +2,7 @@
     "MsgAlreadyInstalled": "${PRODUCT_NAME}经已安装，在升级至版本${PRODUCT_VERSION}前必须卸载。\n\n点击“确定”以示继续，或单击“取消”停止升级。",
     "MsgApplicationRunning": "应用程序${PRODUCT_NAME}正在运行，请关闭程序后重试。",
     "MsgRequires64Bit": "此版本的${PRODUCT_NAME}需要64位Windows系统。",
-    "MsgUninstallFailed": "Uninstall of previous version failed.",
+    "MsgUninstallFailed": "",
     "MuiDescriptionDesktop": "在桌面上创建快捷方式。",
     "MuiDescriptionLang": "安装${PRODUCT_NAME}不同语言的版本。",
     "MuiDescriptionRequired": "安装${PRODUCT_NAME}及其运行所需的文件。",

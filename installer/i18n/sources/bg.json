@@ -1,8 +1,8 @@
 {
-    "MsgAlreadyInstalled": "${PRODUCT_NAME} е вече инсталиран и трябва да бъде деинсталиран преди инсталиране на това надграждане до версия ${PRODUCT_VERSION}. \n\nЩракнете \"Добре\" да продължите или \"Прекрати\" да прекратите това надграждане.",
+    "MsgAlreadyInstalled": "${PRODUCT_NAME} е вече инсталиран и трябва да бъде деинсталиран преди инсталиране на това надграждане до версия ${PRODUCT_VERSION}.\n\nЩракнете \"Добре\" да продължите или \"Прекрати\" да прекратите това надграждане.",
     "MsgApplicationRunning": "Приложението ${PRODUCT_NAME} се изпълнява. Моля, затворете го и опитайте отново.",
     "MsgRequires64Bit": "Тази версия на ${PRODUCT_NAME} изисква 64-битова Windows система.",
-    "MsgUninstallFailed": "Uninstall of previous version failed.",
+    "MsgUninstallFailed": "",
     "MuiDescriptionDesktop": "Инсталира пряк път на работният плот.",
     "MuiDescriptionLang": "Инсталира преводи на ${PRODUCT_NAME} в различни езици.",
     "MuiDescriptionRequired": "Инсталира ${PRODUCT_NAME} заедно с необходимите му файлове за да се изпълни.",

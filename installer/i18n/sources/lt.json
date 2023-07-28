@@ -2,7 +2,7 @@
     "MsgAlreadyInstalled": "${PRODUCT_NAME} jau yra įdiegtas ir turi būti pašalinta prieš įdiegiant šį atnaujinimą į versiją ${PRODUCT_VERSION}.\n\nSpustelėkite \"Gerai\", kad tęstumėte, arba \"Atšaukti\", kad atšauktumėte šį atnaujinimą.",
     "MsgApplicationRunning": "Programa ${PRODUCT_NAME} veikia. Uždarykite ją ir bandykite dar kartą.",
     "MsgRequires64Bit": "Šiai ${PRODUCT_NAME} versijai reikia 64 bitų \"Windows\" sistemos.",
-    "MsgUninstallFailed": "Uninstall of previous version failed.",
+    "MsgUninstallFailed": "",
     "MuiDescriptionDesktop": "Įdiegia nuorodą darbalaukyje.",
     "MuiDescriptionLang": "Įdiegia ${PRODUCT_NAME} vertimus į įvairias kalbas.",
     "MuiDescriptionRequired": "Įdiegiama ${PRODUCT_NAME} kartu su jam paleisti reikalingais failais.",

@@ -2,7 +2,7 @@
     "MsgAlreadyInstalled": "${PRODUCT_NAME} telah pun terpasang serta harus dirombak sekiranya mahu memasang naik taraf ini ke edaran ${PRODUCT_VERSION}. \n\nMaju dengan menekan \"OK\" atau batal dengan menekan \"Batal\".",
     "MsgApplicationRunning": "Perisian ${PRODUCT_NAME} sedang berjalan. Sila tutup lalu cuba lagi.",
     "MsgRequires64Bit": "Edaran ${PRODUCT_NAME} ini memerlukan sistem Windows 64 bit.",
-    "MsgUninstallFailed": "Uninstall of previous version failed.",
+    "MsgUninstallFailed": "",
     "MuiDescriptionDesktop": "Pasang pintasan di paparan utama",
     "MuiDescriptionLang": "Pasang terjemahan ${PRODUCT_NAME} dalam pelbagai bahasa.",
     "MuiDescriptionRequired": "Pasang ${PRODUCT_NAME} bersama fail perlu untuk dijalankan.",

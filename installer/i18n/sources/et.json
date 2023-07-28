@@ -2,7 +2,7 @@
     "MsgAlreadyInstalled": "${PRODUCT_NAME} on juba paigaldatud. Versioonile ${PRODUCT_VERSION} uuendamiseks tuleb esmalt vana versioon eemaldada.\n\nJätkamiseks klõpsa \"OK\", uuendamisest loobumiseks klõpsa \"Loobu\".",
     "MsgApplicationRunning": "${PRODUCT_NAME} on praegu käivitatud. Palun sulge see ja proovi siis uuesti.",
     "MsgRequires64Bit": "See ${PRODUCT_NAME}i versioon vajab 64-bitist Windowsi-süsteemi.",
-    "MsgUninstallFailed": "Uninstall of previous version failed.",
+    "MsgUninstallFailed": "",
     "MuiDescriptionDesktop": "Lisab otsetee töölauale.",
     "MuiDescriptionLang": "Paigaldab ${PRODUCT_NAME}i eri keeltesse tõlgitud kasutajaliidese.",
     "MuiDescriptionRequired": "Paigaldab ${PRODUCT_NAME}i tööks vajalikud failid.",

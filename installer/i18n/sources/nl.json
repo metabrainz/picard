@@ -2,7 +2,7 @@
     "MsgAlreadyInstalled": "${PRODUCT_NAME} is al geïnstalleerd en moet eerst worden verwijderd voordat versie ${PRODUCT_VERSION} kan worden geïnstalleerd.\n\nKlik op “OK” om verder te gaan of op “Annuleren” om de installatie te annuleren.",
     "MsgApplicationRunning": "De applicatie ${PRODUCT_NAME} is nog actief. Sluit haar af en probeer het opnieuw.",
     "MsgRequires64Bit": "Voor deze versie van ${PRODUCT_NAME} heb je een 64 bitssysteem nodig.",
-    "MsgUninstallFailed": "Uninstall of previous version failed.",
+    "MsgUninstallFailed": "",
     "MuiDescriptionDesktop": "Installeert een snelkoppeling op het bureaublad.",
     "MuiDescriptionLang": "Installeert vertalingen van ${PRODUCT_NAME}.",
     "MuiDescriptionRequired": "Installeert ${PRODUCT_NAME} en de bestanden die het nodig heeft om te draaien.",

@@ -2,7 +2,7 @@
     "MsgAlreadyInstalled": "${PRODUCT_NAME} jest już zainstalowany i musi być odinstalowany przed instalacją aktualizacji do wersji ${PRODUCT_VERSION}.\n\nKliknij \"OK\" by kontynuować, lub \"Anuluj\" by przerwać aktualizację.",
     "MsgApplicationRunning": "Aplikacja ${PRODUCT_NAME} już działa. Zamknij ją i spróbuj ponownie.",
     "MsgRequires64Bit": "Ta wersja ${PRODUCT_NAME} wymaga 64-bitowej wersji systemu Windows.",
-    "MsgUninstallFailed": "Uninstall of previous version failed.",
+    "MsgUninstallFailed": "",
     "MuiDescriptionDesktop": "Instaluje skrót na pulpicie.",
     "MuiDescriptionLang": "Instaluje tłumaczenia ${PRODUCT_NAME} w innych językach.",
     "MuiDescriptionRequired": "Instaluje ${PRODUCT_NAME} wraz z wymaganymi do uruchomienia plikami.",

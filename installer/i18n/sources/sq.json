@@ -2,7 +2,7 @@
     "MsgAlreadyInstalled": "${PRODUCT_NAME} është i instaluar tashmë dhe duhet të çinstalohet, përpara se të instalohet ky përmirësim te versioni ${PRODUCT_VERSION}. \n\nKlikoni “OK” që të vazhdohet, ose “Anuloje”, që të anulohet ky përmirësim.",
     "MsgApplicationRunning": "Aplikacioni ${PRODUCT_NAME} është duke xhiruar. Ju lutemi, mbylleni dhe riprovoni.",
     "MsgRequires64Bit": "Ky version i ${PRODUCT_NAME} lyp një sistem Windows 64-bitësh.",
-    "MsgUninstallFailed": "Uninstall of previous version failed.",
+    "MsgUninstallFailed": "",
     "MuiDescriptionDesktop": "Instalon një shkurtore te desktopi.",
     "MuiDescriptionLang": "Instalon përkthime të ${PRODUCT_NAME} në gjuhë të ndryshme.",
     "MuiDescriptionRequired": "Instalon ${PRODUCT_NAME} tok me kartelat e nevojshme për xhirimin e tij.",

@@ -2,7 +2,7 @@
     "MsgAlreadyInstalled": "${PRODUCT_NAME}經已安装，在升級至版本${PRODUCT_VERSION}前必須解除安裝。\n\n點選「确定」以示繼續，或點選「取消」停止升級。",
     "MsgApplicationRunning": "應用程式${PRODUCT_NAME}正在執行，請關閉程式後重試。",
     "MsgRequires64Bit": "此版本的${PRODUCT_NAME}需要64位元的Windows作業系統。",
-    "MsgUninstallFailed": "Uninstall of previous version failed.",
+    "MsgUninstallFailed": "",
     "MuiDescriptionDesktop": "在桌面安裝捷徑。",
     "MuiDescriptionLang": "安裝${PRODUCT_NAME}的多種翻譯。",
     "MuiDescriptionRequired": "安裝${PRODUCT_NAME}及其執行所需的檔案。",
