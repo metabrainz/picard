@@ -1,4 +1,4 @@
-# Version 2.9 - 2023-07-06
+# Version 2.9 - 2023-07-26
 
 ## Bugfixes
 - [PICARD-2011](https://tickets.metabrainz.org/browse/PICARD-2011) - "RuntimeError: dictionary changed size during iteration" in metadatabox
