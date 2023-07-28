@@ -287,9 +287,12 @@ class UnicodeEscapeScriptToken(DocumentedScriptToken):
         if self.unicode_escape_sequence.match(text):
             codepoint = int(text[2:], 16)
             char = chr(codepoint)
-            tooltip = unicodedata.name(char)
+            try:
+                tooltip = unicodedata.name(char)
+            except ValueError:
+                tooltip = f'U+{text[2:].upper()}'
             if unicodedata.category(char)[0] != "C":
-                tooltip += ': "%s"' % char
+                tooltip += f': "{char}"'
             return tooltip
         return None
 
