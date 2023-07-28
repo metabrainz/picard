@@ -148,7 +148,7 @@ class SingletonDialog:
     def get_instance(cls, *args, **kwargs):
         if not cls._instance:
             cls._instance = cls(*args, **kwargs)
-            cls._instance.finished.connect(cls._on_dialog_finished)
+            cls._instance.destroyed.connect(cls._on_dialog_destroyed)
         return cls._instance
 
     @classmethod
@@ -171,7 +171,7 @@ class SingletonDialog:
         return instance
 
     @classmethod
-    def _on_dialog_finished(cls):
+    def _on_dialog_destroyed(cls):
         cls._instance = None
 
 
