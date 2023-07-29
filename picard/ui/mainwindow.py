@@ -302,6 +302,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.show_new_user_dialog()
         if self.tagger.autoupdate_enabled:
             self.auto_update_check()
+        self.check_for_plugin_update()
         self.metadata_box.restore_state()
 
     def showEvent(self, event):
@@ -1991,6 +1992,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if config.setting["show_new_user_dialog"]:
             msg = NewUserDialog(self)
             config.setting["show_new_user_dialog"] = msg.show()
+
+    def check_for_plugin_update(self):
+        config = get_config()
+        if config.setting['check_for_plugin_updates']:
+            self.tagger.pluginmanager.check_update(self)
 
 
 def update_last_check_date(is_success):

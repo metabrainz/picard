@@ -7,6 +7,7 @@
 # Copyright (C) 2015-2021 Laurent Monin
 # Copyright (C) 2019 Wieland Hoffmann
 # Copyright (C) 2019-2020, 2022-2023 Philipp Wolfer
+# Copyright (C) 2023 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -34,6 +35,7 @@ import zipfile
 import zipimport
 
 from PyQt5 import QtCore
+from PyQt5.QtWidgets import QMessageBox
 
 from picard import log
 from picard.const import (
@@ -445,3 +447,22 @@ class PluginManager(QtCore.QObject):
     # pylint: disable=no-self-use
     def enabled(self, name):
         return True
+
+    def check_update(self, parent=None):
+        if self.available_plugins is None:
+            self.query_available_plugins(partial(self._display_update, parent))
+        else:
+            self._display_update(parent)
+
+    def _display_update(self, parent):
+        if self.available_plugins is not None:
+            available_versions = {p.module_name: p.version for p in self.available_plugins}
+            for plugin in self.plugins:
+                if (plugin.module_name in available_versions and available_versions[plugin.module_name] > plugin.version):
+                    QMessageBox.information(
+                        parent,
+                        _("Picard Plugins Update"),
+                        _("There are updates available for your currently installed plugins."),
+                        QMessageBox.StandardButton.Ok, QMessageBox.StandardButton.Ok
+                    )
+                    break
