@@ -99,16 +99,15 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.analyze_new_files.setChecked(config.setting["analyze_new_files"])
         self.ui.cluster_new_files.setChecked(config.setting["cluster_new_files"])
         self.ui.ignore_file_mbids.setChecked(config.setting["ignore_file_mbids"])
-        if self.tagger.autoupdate_enabled:
-            self.ui.check_for_updates.setChecked(config.setting["check_for_updates"])
-            self.ui.update_level.clear()
-            for level, description in PROGRAM_UPDATE_LEVELS.items():
-                # TODO: Remove temporary workaround once https://github.com/python-babel/babel/issues/415 has been resolved.
-                babel_415_workaround = description['title']
-                self.ui.update_level.addItem(_(babel_415_workaround), level)
-            self.ui.update_level.setCurrentIndex(self.ui.update_level.findData(config.setting["update_level"]))
-            self.ui.update_check_days.setValue(config.setting["update_check_days"])
-        else:
+        self.ui.check_for_updates.setChecked(config.setting["check_for_updates"])
+        self.ui.update_level.clear()
+        for level, description in PROGRAM_UPDATE_LEVELS.items():
+            # TODO: Remove temporary workaround once https://github.com/python-babel/babel/issues/415 has been resolved.
+            babel_415_workaround = description['title']
+            self.ui.update_level.addItem(_(babel_415_workaround), level)
+        self.ui.update_level.setCurrentIndex(self.ui.update_level.findData(config.setting["update_level"]))
+        self.ui.update_check_days.setValue(config.setting["update_check_days"])
+        if not self.tagger.autoupdate_enabled:
             self.ui.update_check_groupbox.hide()
 
     def save(self):
@@ -119,10 +118,9 @@ class GeneralOptionsPage(OptionsPage):
         config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
         config.setting["cluster_new_files"] = self.ui.cluster_new_files.isChecked()
         config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
-        if self.tagger.autoupdate_enabled:
-            config.setting["check_for_updates"] = self.ui.check_for_updates.isChecked()
-            config.setting["update_level"] = self.ui.update_level.currentData(QtCore.Qt.ItemDataRole.UserRole)
-            config.setting["update_check_days"] = self.ui.update_check_days.value()
+        config.setting["check_for_updates"] = self.ui.check_for_updates.isChecked()
+        config.setting["update_level"] = self.ui.update_level.currentData(QtCore.Qt.ItemDataRole.UserRole)
+        config.setting["update_check_days"] = self.ui.update_check_days.value()
 
     def update_server_host(self):
         host = self.ui.server_host.currentText().strip()
