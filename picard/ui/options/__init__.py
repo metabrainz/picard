@@ -81,7 +81,7 @@ class OptionsPage(QtWidgets.QWidget):
         config = get_config()
         old_options = {}
         for option in options:
-            if option.section == 'setting':
+            if option.section == 'setting' and config.setting[option.name] != option.default:
                 old_options[option.name] = config.setting[option.name]
                 config.setting[option.name] = option.default
         self.load()
