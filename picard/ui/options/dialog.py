@@ -96,6 +96,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         ListOption("persist", "options_pages_tree_state", []),
     ]
 
+    suspend_signals = False
+
     def add_pages(self, parent, default_page, parent_item):
         pages = [(p.SORT_ORDER, p.NAME, p) for p in self.pages if p.PARENT == parent]
         items = []
@@ -243,7 +245,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         return _('Unknown profile')
 
     def update_from_profile_changes(self):
-        self.highlight_enabled_profile_options(load_settings=True)
+        if not self.suspend_signals:
+            self.highlight_enabled_profile_options(load_settings=True)
 
     def get_working_profile_data(self):
         profile_page = self.get_page('profiles')
@@ -411,6 +414,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 item.setExpanded(is_expanded)
 
     def restore_all_defaults(self):
+        self.suspend_signals = True
         for page in self.pages:
             try:
                 page.restore_defaults()
