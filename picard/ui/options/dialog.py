@@ -416,11 +416,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 page.restore_defaults()
             except Exception as e:
                 log.error('Failed restoring all defaults for page %r: %s', page, e)
-        self.highlight_enabled_profile_options()
+        self.highlight_enabled_profile_options(load_settings=False)
+        self.suspend_signals = False
 
     def restore_page_defaults(self):
         self.ui.pages_stack.currentWidget().restore_defaults()
-        self.highlight_enabled_profile_options()
+        self.highlight_enabled_profile_options(load_settings=False)
 
     def confirm_reset(self):
         msg = _("You are about to reset your options for this page.")
