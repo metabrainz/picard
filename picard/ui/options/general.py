@@ -37,6 +37,7 @@ from picard.config import (
     get_config,
 )
 from picard.const import (
+    DEFAULT_PROGRAM_UPDATE_LEVEL,
     MUSICBRAINZ_SERVERS,
     PROGRAM_UPDATE_LEVELS,
 )
@@ -72,7 +73,7 @@ class GeneralOptionsPage(OptionsPage):
         TextOption("persist", "oauth_username", ""),
         BoolOption("setting", "check_for_updates", True),
         IntOption("setting", "update_check_days", 7),
-        IntOption("setting", "update_level", 0),
+        IntOption("setting", "update_level", DEFAULT_PROGRAM_UPDATE_LEVEL),
         IntOption("persist", "last_update_check", 0),
     ]
 
@@ -100,15 +101,23 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.cluster_new_files.setChecked(config.setting["cluster_new_files"])
         self.ui.ignore_file_mbids.setChecked(config.setting["ignore_file_mbids"])
         self.ui.check_for_updates.setChecked(config.setting["check_for_updates"])
+        self.set_update_level(config.setting["update_level"])
+        self.ui.update_check_days.setValue(config.setting["update_check_days"])
+        if not self.tagger.autoupdate_enabled:
+            self.ui.update_check_groupbox.hide()
+
+    def set_update_level(self, value):
+        if value not in PROGRAM_UPDATE_LEVELS:
+            value = DEFAULT_PROGRAM_UPDATE_LEVEL
         self.ui.update_level.clear()
         for level, description in PROGRAM_UPDATE_LEVELS.items():
             # TODO: Remove temporary workaround once https://github.com/python-babel/babel/issues/415 has been resolved.
             babel_415_workaround = description['title']
             self.ui.update_level.addItem(_(babel_415_workaround), level)
-        self.ui.update_level.setCurrentIndex(self.ui.update_level.findData(config.setting["update_level"]))
-        self.ui.update_check_days.setValue(config.setting["update_check_days"])
-        if not self.tagger.autoupdate_enabled:
-            self.ui.update_check_groupbox.hide()
+        idx = self.ui.update_level.findData(value)
+        if idx == -1:
+            idx = self.ui.update_level.findData(DEFAULT_PROGRAM_UPDATE_LEVEL)
+        self.ui.update_level.setCurrentIndex(idx)
 
     def save(self):
         config = get_config()
