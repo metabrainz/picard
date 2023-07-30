@@ -412,7 +412,10 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def restore_all_defaults(self):
         for page in self.pages:
-            page.restore_defaults()
+            try:
+                page.restore_defaults()
+            except Exception as e:
+                log.error('Failed restoring all defaults for page %r: %s', page, e)
         self.highlight_enabled_profile_options()
 
     def restore_page_defaults(self):
