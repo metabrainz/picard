@@ -448,21 +448,30 @@ class PluginManager(QtCore.QObject):
     def enabled(self, name):
         return True
 
-    def check_update(self, parent=None):
-        if self.available_plugins is None:
-            self.query_available_plugins(partial(self._display_update, parent))
-        else:
-            self._display_update(parent)
-
-    def _display_update(self, parent):
+    def _plugins_have_new_versions(self):
+        """Compare available plugins versions with installed plugins ones and return True
+        if at least one needs to be updated, or False if no update is needed"""
         if self.available_plugins is not None:
             available_versions = {p.module_name: p.version for p in self.available_plugins}
             for plugin in self.plugins:
-                if (plugin.module_name in available_versions and available_versions[plugin.module_name] > plugin.version):
-                    QMessageBox.information(
-                        parent,
-                        _("Picard Plugins Update"),
-                        _("There are updates available for your currently installed plugins."),
-                        QMessageBox.StandardButton.Ok, QMessageBox.StandardButton.Ok
-                    )
-                    break
+                if plugin.module_name not in available_versions:
+                    continue
+                if available_versions[plugin.module_name] > plugin.version:
+                    return True
+        return False
+
+    def check_update(self, parent=None):
+        def _display_update():
+            if self._plugins_have_new_versions():
+                QMessageBox.information(
+                    parent,
+                    _("Picard Plugins Update"),
+                    _("There are updates available for your currently installed plugins."),
+                    QMessageBox.StandardButton.Ok, QMessageBox.StandardButton.Ok
+                )
+
+        if self.available_plugins is None:
+            self.query_available_plugins(_display_update)
+        else:
+            _display_update()
+
