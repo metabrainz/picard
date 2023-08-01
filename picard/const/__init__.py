@@ -185,6 +185,9 @@ PROGRAM_UPDATE_LEVELS = OrderedDict(
 )
 
 
+DEFAULT_PROGRAM_UPDATE_LEVEL = 0
+
+
 DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/\n" \
     "$if(%albumartist%,%album%/,)\n" \
     "$if($gt(%totaldiscs%,1),$if($gt(%totaldiscs%,9),$num(%discnumber%,2),%discnumber%)-,)" \

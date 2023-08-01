@@ -27,6 +27,7 @@ import re
 
 from PyQt5 import QtWidgets
 
+from picard import log
 from picard.config import get_config
 from picard.plugin import ExtensionPoint
 
@@ -81,7 +82,8 @@ class OptionsPage(QtWidgets.QWidget):
         config = get_config()
         old_options = {}
         for option in options:
-            if option.section == 'setting':
+            if option.section == 'setting' and config.setting[option.name] != option.default:
+                log.debug("Option %s %s: %r -> %r" % (self.NAME, option.name, config.setting[option.name], option.default))
                 old_options[option.name] = config.setting[option.name]
                 config.setting[option.name] = option.default
         self.load()
