@@ -474,4 +474,3 @@ class PluginManager(QtCore.QObject):
             self.query_available_plugins(_display_update)
         else:
             _display_update()
-
