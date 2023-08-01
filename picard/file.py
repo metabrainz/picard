@@ -260,7 +260,7 @@ class File(QtCore.QObject, Item):
 
             if alternative_file:
                 # Do not retry reloading exactly the same file format
-                if type(alternative_file) != type(self):  # pylint: disable=unidiomatic-typecheck
+                if type(alternative_file) != type(self):  # pylint: disable=unidiomatic-typecheck # noqa: E721
                     log.debug('Loading %r failed, retrying as %r', self, alternative_file)
                     self.remove()
                     alternative_file.load(callback)
