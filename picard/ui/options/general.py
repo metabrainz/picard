@@ -10,7 +10,7 @@
 # Copyright (C) 2013-2014, 2018, 2020-2021 Laurent Monin
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017 Frederik “Freso” S. Olesen
-# Copyright (C) 2018 Bob Swift
+# Copyright (C) 2018, 2023 Bob Swift
 # Copyright (C) 2018 virusMac
 #
 # This program is free software; you can redistribute it and/or
@@ -75,6 +75,7 @@ class GeneralOptionsPage(OptionsPage):
         IntOption("setting", "update_check_days", 7),
         IntOption("setting", "update_level", DEFAULT_PROGRAM_UPDATE_LEVEL),
         IntOption("persist", "last_update_check", 0),
+        BoolOption("setting", "check_for_plugin_updates", True),
     ]
 
     def __init__(self, parent=None):
@@ -100,6 +101,7 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.analyze_new_files.setChecked(config.setting["analyze_new_files"])
         self.ui.cluster_new_files.setChecked(config.setting["cluster_new_files"])
         self.ui.ignore_file_mbids.setChecked(config.setting["ignore_file_mbids"])
+        self.ui.check_for_plugin_updates.setChecked(config.setting["check_for_plugin_updates"])
         self.ui.check_for_updates.setChecked(config.setting["check_for_updates"])
         self.set_update_level(config.setting["update_level"])
         self.ui.update_check_days.setValue(config.setting["update_check_days"])
@@ -127,6 +129,7 @@ class GeneralOptionsPage(OptionsPage):
         config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
         config.setting["cluster_new_files"] = self.ui.cluster_new_files.isChecked()
         config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
+        config.setting["check_for_plugin_updates"] = self.ui.check_for_plugin_updates.isChecked()
         config.setting["check_for_updates"] = self.ui.check_for_updates.isChecked()
         config.setting["update_level"] = self.ui.update_level.currentData(QtCore.Qt.ItemDataRole.UserRole)
         config.setting["update_check_days"] = self.ui.update_check_days.value()
