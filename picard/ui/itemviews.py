@@ -695,8 +695,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         return ["text/uri-list", "application/picard.album-list"]
 
     def dragEnterEvent(self, event):
+        event.setDropAction(QtCore.Qt.DropAction.CopyAction)
         if event.mimeData().hasUrls():
-            event.setDropAction(QtCore.Qt.DropAction.CopyAction)
             event.accept()
         else:
             event.acceptProposedAction()
