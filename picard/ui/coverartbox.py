@@ -136,6 +136,7 @@ class CoverArtThumbnail(ActiveLabel):
         event.acceptProposedAction()
 
     def dropEvent(self, event):
+        event.setDropAction(QtCore.Qt.DropAction.CopyAction)
         accepted = False
         # Chromium includes the actual data of the dragged image in the drop event. This
         # is useful for Google Images, where the url links to the page that contains the image
