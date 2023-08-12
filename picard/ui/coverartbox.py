@@ -127,13 +127,9 @@ class CoverArtThumbnail(ActiveLabel):
         else:
             return True
 
-    @staticmethod
-    def dragEnterEvent(event):
-        event.acceptProposedAction()
-
-    @staticmethod
-    def dragMoveEvent(event):
-        event.acceptProposedAction()
+    def dragEnterEvent(self, event):
+        event.setDropAction(QtCore.Qt.DropAction.CopyAction)
+        event.accept()
 
     def dropEvent(self, event):
         accepted = False
@@ -170,7 +166,8 @@ class CoverArtThumbnail(ActiveLabel):
                 self.image_dropped.emit(QtCore.QUrl(''), dropped_data)
 
         if accepted:
-            event.acceptProposedAction()
+            event.setDropAction(QtCore.Qt.DropAction.CopyAction)
+            event.accept()
 
     def scaled(self, *dimensions):
         return (round(self.pixel_ratio * dimension) for dimension in dimensions)

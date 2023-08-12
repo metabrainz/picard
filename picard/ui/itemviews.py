@@ -6,7 +6,7 @@
 # Copyright (C) 2007 Robert Kaye
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008 Hendrik van Antwerpen
-# Copyright (C) 2008-2011, 2014-2015, 2018-2022 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014-2015, 2018-2023 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2009 Nikolai Prokoschenko
 # Copyright (C) 2011 Tim Blechmann
@@ -695,7 +695,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         return ["text/uri-list", "application/picard.album-list"]
 
     def dragEnterEvent(self, event):
-        if event.mimeData().hasUrls():
+        if not event.source() or event.mimeData().hasUrls():
             event.setDropAction(QtCore.Qt.DropAction.CopyAction)
             event.accept()
         else:
@@ -767,7 +767,13 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         # assigned to the same track.
         if event.keyboardModifiers() == QtCore.Qt.KeyboardModifier.AltModifier:
             self._move_to_multi_tracks = False
-        return QtWidgets.QTreeView.dropEvent(self, event)
+        QtWidgets.QTreeView.dropEvent(self, event)
+        # The parent dropEvent implementation automatically accepts the proposed
+        # action. Override this, for external drops we never support move (which
+        # can result in file deletion, e.g. on Windows).
+        if event.isAccepted() and (not event.source() or event.mimeData().hasUrls()):
+            event.setDropAction(QtCore.Qt.DropAction.CopyAction)
+            event.accept()
 
     def dropMimeData(self, parent, index, data, action):
         target = None
