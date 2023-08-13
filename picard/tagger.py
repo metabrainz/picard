@@ -269,17 +269,11 @@ class Tagger(QtWidgets.QApplication):
         if picard_args.debug or "PICARD_DEBUG" in os.environ:
             self.set_log_level(logging.DEBUG)
 
-        # FIXME: Figure out what's wrong with QThreadPool.globalInstance().
-        # It's a valid reference, but its start() method doesn't work.
+        # Main thread pool used for most background tasks
         self.thread_pool = QtCore.QThreadPool(self)
-
-        self.pipe_handler = pipe_handler
-
-        if self.pipe_handler:
-            self.pipe_handler.pipe_running = True
-            thread.run_task(self.pipe_server, self._pipe_server_finished)
-
-        self._init_remote_commands()
+        # Two threads are needed for the pipe handler and command processing.
+        # At least one thread is required to run other Picard background tasks.
+        self.thread_pool.setMaxThreadCount(max(3, QtCore.QThread.idealThreadCount()))
 
         # Provide a separate thread pool for operations that should not be
         # delayed by longer background processing tasks, e.g. because the user
@@ -292,6 +286,16 @@ class Tagger(QtWidgets.QApplication):
         # to avoid race conditions in File._save_and_rename.
         self.save_thread_pool = QtCore.QThreadPool(self)
         self.save_thread_pool.setMaxThreadCount(1)
+
+        # Setup pipe handler for managing single app instance and commands.
+        self.pipe_handler = pipe_handler
+
+        if self.pipe_handler:
+            self._command_thread_running = False
+            self.pipe_handler.pipe_running = True
+            thread.run_task(self.pipe_server, self._pipe_server_finished)
+
+        self._init_remote_commands()
 
         if not IS_WIN:
             # Set up signal handling
