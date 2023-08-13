@@ -294,7 +294,7 @@ class UnixPipe(AbstractPipe):
 
     def __init__(self, app_name: str, app_version: str, args: Optional[Iterable[str]] = None,
                  forced_path: Optional[str] = None, identifier: Optional[str] = None):
-        super().__init__(app_name, app_version, args, forced_path)
+        super().__init__(app_name, app_version, args, forced_path, identifier)
 
         if not self.path:
             raise PipeErrorNoPermission
@@ -391,7 +391,7 @@ class WinPipe(AbstractPipe):
             app_version = app_version.replace(".", "-")
         except AttributeError:
             pass
-        super().__init__(app_name, app_version, args, forced_path)
+        super().__init__(app_name, app_version, args, forced_path, identifier)
 
         self._remove_temp_attributes()
 
