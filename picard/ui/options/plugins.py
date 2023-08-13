@@ -247,6 +247,7 @@ class PluginsOptionsPage(OptionsPage):
         plugins.mimeTypes = self.mimeTypes
         plugins.dropEvent = self.dropEvent
         plugins.dragEnterEvent = self.dragEnterEvent
+        plugins.dragMoveEvent = self.dragMoveEvent
 
         self.ui.install_plugin.clicked.connect(self.open_plugins)
         self.ui.folder_open.clicked.connect(self.open_plugin_dir)
@@ -700,9 +701,20 @@ class PluginsOptionsPage(OptionsPage):
         event.setDropAction(QtCore.Qt.DropAction.CopyAction)
         event.accept()
 
+    def dragMoveEvent(self, event):
+        event.setDropAction(QtCore.Qt.DropAction.CopyAction)
+        event.accept()
+
     def dropEvent(self, event):
+        if event.proposedAction() == QtCore.Qt.DropAction.IgnoreAction:
+            event.acceptProposedAction()
+            return
+
         for path in (os.path.normpath(u.toLocalFile()) for u in event.mimeData().urls()):
             self.manager.install_plugin(path)
+
+        event.setDropAction(QtCore.Qt.DropAction.CopyAction)
+        event.accept()
 
 
 register_options_page(PluginsOptionsPage)

@@ -695,11 +695,16 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         return ["text/uri-list", "application/picard.album-list"]
 
     def dragEnterEvent(self, event):
-        if not event.source() or event.mimeData().hasUrls():
+        super().dragEnterEvent(event)
+        if event.isAccepted() and (not event.source() or event.mimeData().hasUrls()):
             event.setDropAction(QtCore.Qt.DropAction.CopyAction)
             event.accept()
-        else:
-            event.acceptProposedAction()
+
+    def dragMoveEvent(self, event):
+        super().dragMoveEvent(event)
+        if event.isAccepted() and (not event.source() or event.mimeData().hasUrls()):
+            event.setDropAction(QtCore.Qt.DropAction.CopyAction)
+            event.accept()
 
     def startDrag(self, supportedActions):
         """Start drag, *without* using pixmap."""
@@ -763,6 +768,9 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             tagger.add_paths(new_paths, target=target)
 
     def dropEvent(self, event):
+        if event.proposedAction() == QtCore.Qt.DropAction.IgnoreAction:
+            event.acceptProposedAction()
+            return
         # Dropping with Alt key pressed forces all dropped files being
         # assigned to the same track.
         if event.keyboardModifiers() == QtCore.Qt.KeyboardModifier.AltModifier:
