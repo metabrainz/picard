@@ -434,11 +434,12 @@ class WinPipe(AbstractPipe):
         return True
 
     def _reader(self) -> str:
-        response = ""  # type: ignore
+        exit_code = 0
+        message = None
 
         try:
             win32pipe.ConnectNamedPipe(self.__pipe, None)
-            response = win32file.ReadFile(self.__pipe, self.__BUFFER_SIZE)
+            (exit_code, message) = win32file.ReadFile(self.__pipe, self.__BUFFER_SIZE)
 
         except WinApiError as err:
             if err.winerror == self.__FILE_NOT_FOUND_ERROR_CODE:
@@ -454,12 +455,12 @@ class WinPipe(AbstractPipe):
             self.__close_pipe()
             self.__create_pipe()
 
-        # response[0] stores an exit code while response[1] an actual response
-        if response:
-            if response[0] == 0:
-                return str(response[1].decode("utf-8"))  # type: ignore
+        if message is not None:
+            message = message.decode("utf-8")
+            if exit_code == 0:
+                return message  # type: ignore
             else:
-                raise PipeErrorInvalidResponse(response[1].decode('utf-8'))  # type: ignore
+                raise PipeErrorInvalidResponse(message)  # type: ignore
         else:
             return self.NO_RESPONSE_MESSAGE
 
