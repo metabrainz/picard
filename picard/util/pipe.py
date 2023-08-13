@@ -392,21 +392,41 @@ class WinPipe(AbstractPipe):
         except AttributeError:
             pass
         super().__init__(app_name, app_version, args, forced_path, identifier)
-
+        self.__create_pipe()
         self._remove_temp_attributes()
 
-    def _sender(self, message: str) -> bool:
-        pipe = win32pipe.CreateNamedPipe(
-            self.path,
-            win32pipe.PIPE_ACCESS_DUPLEX,
-            win32pipe.PIPE_TYPE_MESSAGE | win32pipe.PIPE_WAIT,
-            self.__MAX_INSTANCES,
-            self.__BUFFER_SIZE,
-            self.__BUFFER_SIZE,
-            self.__DEFAULT_TIMEOUT,
-            None)
+    def __create_pipe(self):
         try:
-            win32pipe.ConnectNamedPipe(pipe, None)
+            self.__pipe = win32pipe.CreateNamedPipe(
+                self.path,
+                win32pipe.PIPE_ACCESS_DUPLEX,
+                win32pipe.PIPE_TYPE_MESSAGE | win32pipe.PIPE_WAIT,
+                self.__MAX_INSTANCES,
+                self.__BUFFER_SIZE,
+                self.__BUFFER_SIZE,
+                self.__DEFAULT_TIMEOUT,
+                None)
+            self.is_pipe_owner = True
+        except WinApiError:
+            self.__pipe = None
+            self.is_pipe_owner = False
+
+    def __close_pipe(self):
+        if self.__pipe:
+            win32file.CloseHandle(self.__pipe)
+            self.__pipe = None
+
+    def _sender(self, message: str) -> bool:
+        pipe = win32file.CreateFile(
+            self.path,
+            win32file.GENERIC_READ | win32file.GENERIC_WRITE,
+            self.__SHARE_MODE,
+            None,
+            win32file.OPEN_EXISTING,
+            self.__FLAGS_AND_ATTRIBUTES,
+            None
+        )
+        try:
             win32file.WriteFile(pipe, str.encode(message))
         finally:
             win32file.CloseHandle(pipe)
@@ -417,17 +437,8 @@ class WinPipe(AbstractPipe):
         response = ""  # type: ignore
 
         try:
-            pipe = win32file.CreateFile(
-                self.path,
-                win32file.GENERIC_READ | win32file.GENERIC_WRITE,
-                self.__SHARE_MODE,
-                None,
-                win32file.OPEN_EXISTING,
-                self.__FLAGS_AND_ATTRIBUTES,
-                None
-            )
-            while not response:
-                response = win32file.ReadFile(pipe, self.__BUFFER_SIZE)
+            win32pipe.ConnectNamedPipe(self.__pipe, None)
+            response = win32file.ReadFile(self.__pipe, self.__BUFFER_SIZE)
 
         except WinApiError as err:
             if err.winerror == self.__FILE_NOT_FOUND_ERROR_CODE:
@@ -438,6 +449,11 @@ class WinPipe(AbstractPipe):
             else:
                 raise PipeErrorWin(f"{err.winerror}; {err.funcname}; {err.strerror}") from None
 
+        finally:
+            # Pipe was closed when client disconnected, recreate
+            self.__close_pipe()
+            self.__create_pipe()
+
         # response[0] stores an exit code while response[1] an actual response
         if response:
             if response[0] == 0:
@@ -446,6 +462,11 @@ class WinPipe(AbstractPipe):
                 raise PipeErrorInvalidResponse(response[1].decode('utf-8'))  # type: ignore
         else:
             return self.NO_RESPONSE_MESSAGE
+
+    def stop(self):
+        super().stop()
+        if self.is_pipe_owner:
+            self.__close_pipe()
 
 
 if IS_WIN:
