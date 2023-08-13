@@ -385,8 +385,6 @@ class Tagger(QtWidgets.QApplication):
         if self.autoupdate_enabled:
             self.updatecheckmanager = UpdateCheckManager(parent=self.window)
 
-        thread.run_task(self.run_commands, self._run_commands_finished)
-
     @property
     def is_wayland(self):
         return self.platformName() == 'wayland'
@@ -404,6 +402,11 @@ class Tagger(QtWidgets.QApplication):
             log.error('pipe server failed: %r', error)
         else:
             log.debug('pipe server stopped')
+
+    def start_process_commands(self):
+        if not self._command_thread_running:
+            self._command_thread_running = True
+            thread.run_task(self.run_commands, self._run_commands_finished)
 
     def run_commands(self):
         while not self.stopping:
@@ -453,6 +456,10 @@ class Tagger(QtWidgets.QApplication):
                 else:
                     log.error("Unknown command: %r", cmd)
                 RemoteCommands.command_queue.task_done()
+            elif RemoteCommands.command_queue.empty():
+                # All commands finished, stop processing
+                self._command_thread_running = False
+                break
             time.sleep(.01)
 
     def _run_commands_finished(self, result=None, error=None):
@@ -461,13 +468,13 @@ class Tagger(QtWidgets.QApplication):
         else:
             log.debug('command executor stopped')
 
-    @staticmethod
-    def load_to_picard(items):
+    def load_to_picard(self, items):
         commands = []
         for item in items:
             parts = str(item).split(maxsplit=1)
             commands.append((parts[0], parts[1:] or ['']))
         RemoteCommands.parse_commands_to_queue(commands)
+        self.start_process_commands()
 
     def iter_album_files(self):
         for album in self.albums.values():
