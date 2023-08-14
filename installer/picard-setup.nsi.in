@@ -206,11 +206,62 @@ Section Uninstall
     DeleteRegKey HKCU "Software\MusicBrainz\Picard"
 SectionEnd
 
-; Checks whether program is running.
-!define WNDCLASS "Qt5QWindowIcon"
+; Find the Picard window
+!define WNDCLASS "Qt5"  ; full name is something like "Qt512QWindowIcon"
 !define WNDTITLE "${PRODUCT_NAME}"
+!macro FindPicardWindowFunc un
+Function ${un}FindPicardWindow
+  ; save variables
+  Push $0  ; part of the class name to search for
+  Push $1  ; starting offset
+  Push $2  ; length of $0
+  Push $3  ; window handle
+  Push $4  ; class name
+  Push $5  ; temp
+
+  ; set up the variables
+  StrCpy $0 "${WNDCLASS}"
+  StrCpy $1 0
+  StrCpy $4 0
+  StrLen $2 $0
+
+ ; loop to search for open windows
+ search_loop:
+  FindWindow $3 "" "${WNDTITLE}" 0 $3
+   IntCmp $3 0 search_failed
+    IsWindow $3 0 search_loop
+     System::Call 'user32.dll::GetClassName(i r3, t .r4, i ${NSIS_MAX_STRLEN}) i .n'
+     StrCmp $4 0 search_loop
+     StrCpy $5 $4 $2 $1
+     StrCmp $0 $5 search_end search_loop
+
+ ; no matching class-name found, return 0
+ search_failed:
+  StrCpy $3 0
+  StrCpy $4 0
+
+ ; search ended, output and restore variables
+ search_end:
+  StrCpy $1 $3
+  StrCpy $0 $4
+  Pop $5
+  Pop $4
+  Pop $3
+  Pop $2
+  Exch $1
+  Exch
+  Exch $0
+FunctionEnd
+!macroend
+
+!insertmacro FindPicardWindowFunc ""
+!insertmacro FindPicardWindowFunc "un."
+
 Function un.onInit
-  FindWindow $0 "${WNDCLASS}" "${WNDTITLE}"
+  ; Abort uninstallation if Picard is currently running
+  Call un.FindPicardWindow
+  Pop  $0   ; the full WNDCLASS
+  Pop  $1   ; window handle
   StrCmp $0 0 continueInstall
     MessageBox MB_ICONSTOP|MB_OK "$(MsgApplicationRunning)" /SD IDOK
     Abort
@@ -227,7 +278,9 @@ Function .onInit
   ${EndIf}
 
   ; Abort installation if Picard is currently running
-  FindWindow $0 "${WNDCLASS}" "${WNDTITLE}"
+  Call FindPicardWindow
+  Pop  $0   ; the full WNDCLASS
+  Pop  $1   ; window handle
   StrCmp $0 0 continueInstall
     MessageBox MB_ICONSTOP|MB_OK "$(MsgApplicationRunning)" /SD IDOK
     Abort
