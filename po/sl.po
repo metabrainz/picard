@@ -1,7 +1,7 @@
 # Translations template for picard.
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the picard project.
-# 
+#
 # Translators:
 # Alan Rener, 2012
 # Alan Rener, 2016,2021
@@ -8055,7 +8055,7 @@ msgid "Update Checking"
 msgstr ""
 
 #: picard/ui/ui_options_general.py:183
-msgid "Check for updates during start-up"
+msgid "Check for updates during startup"
 msgstr ""
 
 #: picard/ui/ui_options_general.py:184

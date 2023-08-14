@@ -203,6 +203,6 @@ class Ui_GeneralOptionsPage(object):
         self.ignore_file_mbids.setText(_("Ignore MBIDs when loading new files"))
         self.update_check_groupbox.setTitle(_("Update Checking"))
         self.check_for_plugin_updates.setText(_("Check for plugin updates during startup"))
-        self.check_for_updates.setText(_("Check for program updates during start-up"))
+        self.check_for_updates.setText(_("Check for program updates during startup"))
         self.label_2.setText(_("Days between checks:"))
         self.label_3.setText(_("Updates to check:"))

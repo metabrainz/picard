@@ -257,7 +257,7 @@ QCheckBox { color: black }</string>
          <item>
           <widget class="QCheckBox" name="check_for_updates">
            <property name="text">
-            <string>Check for program updates during start-up</string>
+            <string>Check for program updates during startup</string>
            </property>
           </widget>
          </item>

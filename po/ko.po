@@ -1,7 +1,7 @@
 # Translations template for picard.
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the picard project.
-# 
+#
 # Translators:
 # 6 0, 2022
 # Hyeon-ho Shin <crossxp64@gmail.com>, 2017
@@ -8013,7 +8013,7 @@ msgid "Update Checking"
 msgstr "업데이트 체크하기"
 
 #: picard/ui/ui_options_general.py:183
-msgid "Check for updates during start-up"
+msgid "Check for updates during startup"
 msgstr ""
 
 #: picard/ui/ui_options_general.py:184

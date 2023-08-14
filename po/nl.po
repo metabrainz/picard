@@ -1,7 +1,7 @@
 # Translations template for picard.
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the picard project.
-# 
+#
 # Translators:
 # reneweesp <bmom43@hotmail.com>, 2017-2019
 # Dogmatica <jeroendoggen@hotmail.com>, 2006
@@ -8030,7 +8030,7 @@ msgid "Update Checking"
 msgstr "Versiecontrole"
 
 #: picard/ui/ui_options_general.py:183
-msgid "Check for updates during start-up"
+msgid "Check for updates during startup"
 msgstr "Zoek tijdens het opstarten naar nieuwe versies"
 
 #: picard/ui/ui_options_general.py:184

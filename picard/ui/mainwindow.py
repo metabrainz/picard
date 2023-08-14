@@ -1779,7 +1779,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         update_level = config.setting['update_level']
         today = datetime.date.today().toordinal()
         do_auto_update_check = check_for_updates and update_check_days > 0 and today >= last_update_check + update_check_days
-        log.debug('%(check_status)s start-up check for program updates.  Today: %(today_date)s, Last check: %(last_check)s (Check interval: %(check_interval)s days), Update level: %(update_level)s (%(update_level_name)s)', {
+        log.debug('%(check_status)s startup check for program updates.  Today: %(today_date)s, Last check: %(last_check)s (Check interval: %(check_interval)s days), Update level: %(update_level)s (%(update_level_name)s)', {
             'check_status': 'Initiating' if do_auto_update_check else 'Skipping',
             'today_date': datetime.date.today(),
             'last_check': str(datetime.date.fromordinal(last_update_check)) if last_update_check > 0 else 'never',
