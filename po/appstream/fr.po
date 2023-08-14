@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # AO <ao@localizationlab.org>, 2020
 # Laurent Monin <i18n@norz.org>, 2020
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2022
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -16,12 +16,14 @@ msgstr ""
 "POT-Creation-Date: 2022-11-23 07:49+0100\n"
 "PO-Revision-Date: 2018-11-25 07:37+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2022\n"
-"Language-Team: French (https://app.transifex.com/musicbrainz/teams/13846/fr/)\n"
+"Language-Team: French (https://app.transifex.com/musicbrainz/teams/13846/"
+"fr/)\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
+"1000000 == 0 ? 1 : 2;\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6
 msgid "MusicBrainz Picard"
@@ -38,23 +40,23 @@ msgid ""
 "files even without any existing metadata."
 msgstr ""
 "Avez-vous besoin de nettoyer votre collection de musique ? Picard est un "
-"baliseur de fichiers musicaux libre et multi-plateformes par MusicBrainz. Il"
-" est capable d'identifier les fichiers audio même sans aucune métadonnée "
+"baliseur de fichiers musicaux libre et multi-plateformes par MusicBrainz. Il "
+"est capable d'identifier les fichiers audio même sans aucune métadonnée "
 "existante."
 
 #: org.musicbrainz.Picard.appdata.xml.in:15
 msgid ""
-"Picard helps you organize your music collection by renaming your music files"
-" and sorting them into a folder structure exactly the way you want it. A "
+"Picard helps you organize your music collection by renaming your music files "
+"and sorting them into a folder structure exactly the way you want it. A "
 "variety of plugins are available and you can even write your own. Picard "
 "supports a wide range of audio formats and can also lookup an entire CD for "
 "you."
 msgstr ""
 "Picard vous aide à organiser votre collection musicale en renommant vos "
-"fichiers audio et en les triant dans une structure de répertoires exactement"
-" comme vous le souhaitez. Différents greffons sont disponibles et vous "
-"pouvez même créer le vôtre. Picard supporte une grande variété de formats "
-"audio et peut aussi rechercher un CD entier pour vous."
+"fichiers audio et en les triant dans une structure de répertoires exactement "
+"comme vous le souhaitez. Différents greffons sont disponibles et vous pouvez "
+"même créer le vôtre. Picard supporte une grande variété de formats audio et "
+"peut aussi rechercher un CD entier pour vous."
 
 #: org.musicbrainz.Picard.appdata.xml.in:22
 msgid "Tagging audio files has never been easier."
@@ -69,8 +71,8 @@ msgid ""
 "Multiple formats: Picard supports all popular music formats, including MP3, "
 "FLAC, OGG, M4A, WMA, WAV, and more."
 msgstr ""
-"Formats multiples : Picard supporte la plupart des formats de fichiers audio"
-" courants, entre autres,  MP3, FLAC, OGG, M4A, WMA, WAV."
+"Formats multiples : Picard supporte la plupart des formats de fichiers audio "
+"courants, entre autres,  MP3, FLAC, OGG, M4A, WMA, WAV."
 
 #: org.musicbrainz.Picard.appdata.xml.in:31
 msgid ""
@@ -84,8 +86,8 @@ msgstr ""
 #: org.musicbrainz.Picard.appdata.xml.in:35
 msgid ""
 "Comprehensive database: Picard uses the open and community-maintained "
-"MusicBrainz database to provide accurate information about millions of music"
-" releases."
+"MusicBrainz database to provide accurate information about millions of music "
+"releases."
 msgstr ""
 "Base de données riche : Picard utilise la base de données ouverte et "
 "maintenue par une communauté de MusicBrainz, pour fournir des informations "
@@ -100,9 +102,9 @@ msgid ""
 "Plugin support: If you need a particular feature, you can choose from a "
 "selection of available plugins or write your own."
 msgstr ""
-"Support de greffons : si vous avez besoin d'une fonctionnalité particulière,"
-" vous pouvez choisir parmi une sélection de greffons disponibles ou écrire "
-"le vôtre."
+"Support de greffons : si vous avez besoin d'une fonctionnalité particulière, "
+"vous pouvez choisir parmi une sélection de greffons disponibles ou écrire le "
+"vôtre."
 
 #: org.musicbrainz.Picard.appdata.xml.in:47
 msgid ""
@@ -110,8 +112,8 @@ msgid ""
 "exactly specify how your music files will be named and how the tags will "
 "look like."
 msgstr ""
-"Langage de script : Un langage de script, souple et simple à apprendre, vous"
-" permet de spécifier exactement comment vous voulez que vos fichiers soient "
+"Langage de script : Un langage de script, souple et simple à apprendre, vous "
+"permet de spécifier exactement comment vous voulez que vos fichiers soient "
 "nommés et à quoi les balises doivent ressembler."
 
 #: org.musicbrainz.Picard.appdata.xml.in:52

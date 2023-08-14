@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Lukáš Lalinský <lalinsky@gmail.com>, 2020
 # Aleksandar Hadzhivelichkov <Raphaelo245@gmail.com>, 2021
 # Transifex Bot <>, 2023
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -16,11 +16,12 @@ msgstr ""
 "POT-Creation-Date: 2022-11-23 07:49+0100\n"
 "PO-Revision-Date: 2018-11-25 07:37+0000\n"
 "Last-Translator: Transifex Bot <>, 2023\n"
-"Language-Team: Bulgarian (https://app.transifex.com/musicbrainz/teams/13846/bg/)\n"
+"Language-Team: Bulgarian (https://app.transifex.com/musicbrainz/teams/13846/"
+"bg/)\n"
+"Language: bg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: bg\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6
@@ -44,8 +45,8 @@ msgstr ""
 
 #: org.musicbrainz.Picard.appdata.xml.in:15
 msgid ""
-"Picard helps you organize your music collection by renaming your music files"
-" and sorting them into a folder structure exactly the way you want it. A "
+"Picard helps you organize your music collection by renaming your music files "
+"and sorting them into a folder structure exactly the way you want it. A "
 "variety of plugins are available and you can even write your own. Picard "
 "supports a wide range of audio formats and can also lookup an entire CD for "
 "you."
@@ -77,15 +78,14 @@ msgid ""
 "AcoustID: Picard uses AcoustID audio fingerprints, allowing files to be "
 "identified by the actual music, even if they have no metadata."
 msgstr ""
-"AcoustID: Picard използва AcoustID аудио отпечатъци, позволявайки файлове да"
-" бъдат идентифицирани по действителната музика, дори и те да нямат "
-"метаданни."
+"AcoustID: Picard използва AcoustID аудио отпечатъци, позволявайки файлове да "
+"бъдат идентифицирани по действителната музика, дори и те да нямат метаданни."
 
 #: org.musicbrainz.Picard.appdata.xml.in:35
 msgid ""
 "Comprehensive database: Picard uses the open and community-maintained "
-"MusicBrainz database to provide accurate information about millions of music"
-" releases."
+"MusicBrainz database to provide accurate information about millions of music "
+"releases."
 msgstr ""
 "Изчерпателна база данни: Picard използва отворената и обществено "
 "поддържаната MusicBrainz база данни да осигури точна информация за милиони "
@@ -102,8 +102,8 @@ msgid ""
 "Plugin support: If you need a particular feature, you can choose from a "
 "selection of available plugins or write your own."
 msgstr ""
-"Поддръжка на приставки: Ако ви особено допълнение, вие можете да изберете от"
-" подбор на достъпни приставки или да напишете свои."
+"Поддръжка на приставки: Ако ви особено допълнение, вие можете да изберете от "
+"подбор на достъпни приставки или да напишете свои."
 
 #: org.musicbrainz.Picard.appdata.xml.in:47
 msgid ""
@@ -111,8 +111,8 @@ msgid ""
 "exactly specify how your music files will be named and how the tags will "
 "look like."
 msgstr ""
-"Скриптинг: Гъвкав, но лесен за научаване скриптов език ви позволява точно да"
-" уточните как вашите музикални файлове ще бъдат именувани как таговете ще "
+"Скриптинг: Гъвкав, но лесен за научаване скриптов език ви позволява точно да "
+"уточните как вашите музикални файлове ще бъдат именувани как таговете ще "
 "изглеждат."
 
 #: org.musicbrainz.Picard.appdata.xml.in:52

@@ -2,14 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # 和田篤 <entry@wa2c.com>, 2019
 # Nozomu KURASAWA <nabetaro@caldron.jp>, 2020
 # ffff23 <open_ffff23@protonmail.ch>, 2021
 # Masuda Sunatomo <sunatomo@gmail.com>, 2021
 # Transifex Bot <>, 2023
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -18,11 +18,12 @@ msgstr ""
 "POT-Creation-Date: 2022-11-23 07:49+0100\n"
 "PO-Revision-Date: 2018-11-25 07:37+0000\n"
 "Last-Translator: Transifex Bot <>, 2023\n"
-"Language-Team: Japanese (https://app.transifex.com/musicbrainz/teams/13846/ja/)\n"
+"Language-Team: Japanese (https://app.transifex.com/musicbrainz/teams/13846/"
+"ja/)\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6
@@ -40,19 +41,21 @@ msgid ""
 "files even without any existing metadata."
 msgstr ""
 "音楽ライブラリをクリーンアップする必要がありますか？ Picard は、 MusicBrainz "
-"によるオープンソースのクロスプラットフォーム音楽タグ付けソフトウエアです。 既存のメタデータがなくても、オーディオファイルを識別する機能があります。"
+"によるオープンソースのクロスプラットフォーム音楽タグ付けソフトウエアです。 既"
+"存のメタデータがなくても、オーディオファイルを識別する機能があります。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:15
 msgid ""
-"Picard helps you organize your music collection by renaming your music files"
-" and sorting them into a folder structure exactly the way you want it. A "
+"Picard helps you organize your music collection by renaming your music files "
+"and sorting them into a folder structure exactly the way you want it. A "
 "variety of plugins are available and you can even write your own. Picard "
 "supports a wide range of audio formats and can also lookup an entire CD for "
 "you."
 msgstr ""
-"Picard は、音楽ファイルの名前を変更し、それらを希望どおりにフォルダー構造に並べ替えることで、音楽コレクションを整理するのに役立ちます。 "
-"さまざまなプラグインが利用可能であり、独自のプラグインを作成することもできます。 Picard "
-"は、さまざまなオーディオ形式をサポートしており、CD全体を検索することもできます。"
+"Picard は、音楽ファイルの名前を変更し、それらを希望どおりにフォルダー構造に並"
+"べ替えることで、音楽コレクションを整理するのに役立ちます。 さまざまなプラグイ"
+"ンが利用可能であり、独自のプラグインを作成することもできます。 Picard は、さ"
+"まざまなオーディオ形式をサポートしており、CD全体を検索することもできます。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:22
 msgid "Tagging audio files has never been easier."
@@ -67,24 +70,26 @@ msgid ""
 "Multiple formats: Picard supports all popular music formats, including MP3, "
 "FLAC, OGG, M4A, WMA, WAV, and more."
 msgstr ""
-"複数の形式：Picard は MP3, FLAC, OGG, M4A, WMA, WAV などを含むすべての一般的な音楽形式をサポートしています。"
+"複数の形式：Picard は MP3, FLAC, OGG, M4A, WMA, WAV などを含むすべての一般的"
+"な音楽形式をサポートしています。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:31
 msgid ""
 "AcoustID: Picard uses AcoustID audio fingerprints, allowing files to be "
 "identified by the actual music, even if they have no metadata."
 msgstr ""
-"AcoustID：Picard は AcoustID "
-"オーディオフィンガープリントを使用して、メタデータがない場合でも、実際の音楽でファイルを識別できるようにします。"
+"AcoustID：Picard は AcoustID オーディオフィンガープリントを使用して、メタデー"
+"タがない場合でも、実際の音楽でファイルを識別できるようにします。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:35
 msgid ""
 "Comprehensive database: Picard uses the open and community-maintained "
-"MusicBrainz database to provide accurate information about millions of music"
-" releases."
+"MusicBrainz database to provide accurate information about millions of music "
+"releases."
 msgstr ""
-"包括的なデータベース： Picard は、オープンでコミュニティが管理する MusicBrainz "
-"データベースを使用して、何百万もの音楽リリースに関する正確な情報を提供します。"
+"包括的なデータベース： Picard は、オープンでコミュニティが管理する "
+"MusicBrainz データベースを使用して、何百万もの音楽リリースに関する正確な情報"
+"を提供します。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:40
 msgid "CD lookups: Picard can lookup entire music CDs with a click."
@@ -94,14 +99,18 @@ msgstr "CD の検索: Picard ではクリックするだけで音楽CD全体を�
 msgid ""
 "Plugin support: If you need a particular feature, you can choose from a "
 "selection of available plugins or write your own."
-msgstr "プラグインサポート: 特定の機能が必要な場合は、利用可能なプラグインからの選択か、独自のプラグインを作成できます。"
+msgstr ""
+"プラグインサポート: 特定の機能が必要な場合は、利用可能なプラグインからの選択"
+"か、独自のプラグインを作成できます。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:47
 msgid ""
 "Scripting: A flexible but easy to learn scripting language allows you to "
 "exactly specify how your music files will be named and how the tags will "
 "look like."
-msgstr "スクリプティング: 柔軟かつ容易に学習が可能なスクリプトにより、正確な楽曲ファイルの名前付けやタグの特定が可能になります。"
+msgstr ""
+"スクリプティング: 柔軟かつ容易に学習が可能なスクリプトにより、正確な楽曲ファ"
+"イルの名前付けやタグの特定が可能になります。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:52
 msgid ""
@@ -115,8 +124,9 @@ msgid ""
 "later, and is hosted on GitHub where it is actively developed by some "
 "awesome developers."
 msgstr ""
-"オープンソース: Picard は GNU 一般公衆ライセンス 2.0 以降が適用され、何人かの素晴らしい開発者によってアクティブに開発されている "
-"GitHub 上でホスティングされています。"
+"オープンソース: Picard は GNU 一般公衆ライセンス 2.0 以降が適用され、何人かの"
+"素晴らしい開発者によってアクティブに開発されている GitHub 上でホスティングさ"
+"れています。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:102
 msgid "MetaBrainz Foundation"

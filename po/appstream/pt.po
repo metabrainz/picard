@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Rui <xymarior@yandex.com>, 2019
 # Lukáš Lalinský <lalinsky@gmail.com>, 2020
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2022
 # Transifex Bot <>, 2023
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -17,12 +17,14 @@ msgstr ""
 "POT-Creation-Date: 2022-11-23 07:49+0100\n"
 "PO-Revision-Date: 2018-11-25 07:37+0000\n"
 "Last-Translator: Transifex Bot <>, 2023\n"
-"Language-Team: Portuguese (https://app.transifex.com/musicbrainz/teams/13846/pt/)\n"
+"Language-Team: Portuguese (https://app.transifex.com/musicbrainz/teams/13846/"
+"pt/)\n"
+"Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pt\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
+"1000000 == 0 ? 1 : 2;\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6
 msgid "MusicBrainz Picard"
@@ -44,14 +46,14 @@ msgstr ""
 
 #: org.musicbrainz.Picard.appdata.xml.in:15
 msgid ""
-"Picard helps you organize your music collection by renaming your music files"
-" and sorting them into a folder structure exactly the way you want it. A "
+"Picard helps you organize your music collection by renaming your music files "
+"and sorting them into a folder structure exactly the way you want it. A "
 "variety of plugins are available and you can even write your own. Picard "
 "supports a wide range of audio formats and can also lookup an entire CD for "
 "you."
 msgstr ""
-"Picard te ajuda a organizar sua coleção de músicas ao renomear seus arquivos"
-" e organizá-los em uma pasta estruturada do jeito que você preferir. Um "
+"Picard te ajuda a organizar sua coleção de músicas ao renomear seus arquivos "
+"e organizá-los em uma pasta estruturada do jeito que você preferir. Um "
 "variedade de plugins estão disponíveis e você até pode criar o seu. Picard "
 "suporta uma grande gama de formatos de áudio e pode também procurar um CD "
 "inteiro para você."
@@ -77,24 +79,23 @@ msgid ""
 "AcoustID: Picard uses AcoustID audio fingerprints, allowing files to be "
 "identified by the actual music, even if they have no metadata."
 msgstr ""
-"AcoustID: o Picard usar as impressões digitais de áudio AcoustID, permitindo"
-" que os ficheiros sejam identificados exatamente pela música, mesmo que não "
+"AcoustID: o Picard usar as impressões digitais de áudio AcoustID, permitindo "
+"que os ficheiros sejam identificados exatamente pela música, mesmo que não "
 "contenha metadados."
 
 #: org.musicbrainz.Picard.appdata.xml.in:35
 msgid ""
 "Comprehensive database: Picard uses the open and community-maintained "
-"MusicBrainz database to provide accurate information about millions of music"
-" releases."
+"MusicBrainz database to provide accurate information about millions of music "
+"releases."
 msgstr ""
 "Base de dados abrangente: o Picard usa a base de dados mantida pela "
-"comunidade para fornecer informação rigorosa sobre milhões de lançamentos de"
-" músicas."
+"comunidade para fornecer informação rigorosa sobre milhões de lançamentos de "
+"músicas."
 
 #: org.musicbrainz.Picard.appdata.xml.in:40
 msgid "CD lookups: Picard can lookup entire music CDs with a click."
-msgstr ""
-"Procuras de CD: o Picard pode pesquisar CDs inteiros só com um clique."
+msgstr "Procuras de CD: o Picard pode pesquisar CDs inteiros só com um clique."
 
 #: org.musicbrainz.Picard.appdata.xml.in:43
 msgid ""
@@ -110,8 +111,8 @@ msgid ""
 "exactly specify how your music files will be named and how the tags will "
 "look like."
 msgstr ""
-"Scripts: tem disponível uma linguagem de scripts, fácil de aprender, que lhe"
-" permite especificar com exatidão como é que serão os nomes dos seus "
+"Scripts: tem disponível uma linguagem de scripts, fácil de aprender, que lhe "
+"permite especificar com exatidão como é que serão os nomes dos seus "
 "ficheiros de música e como as etiquetas irão aparecer."
 
 #: org.musicbrainz.Picard.appdata.xml.in:52

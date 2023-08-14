@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Lukáš Lalinský <lalinsky@gmail.com>, 2020
 # DJ Sweder <djsweder@gmail.com>, 2020
 # Transifex Bot <>, 2023
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -16,12 +16,14 @@ msgstr ""
 "POT-Creation-Date: 2022-11-23 07:49+0100\n"
 "PO-Revision-Date: 2018-11-25 07:37+0000\n"
 "Last-Translator: Transifex Bot <>, 2023\n"
-"Language-Team: Czech (https://app.transifex.com/musicbrainz/teams/13846/cs/)\n"
+"Language-Team: Czech (https://app.transifex.com/musicbrainz/teams/13846/"
+"cs/)\n"
+"Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: cs\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
+"<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6
 msgid "MusicBrainz Picard"
@@ -44,8 +46,8 @@ msgstr ""
 
 #: org.musicbrainz.Picard.appdata.xml.in:15
 msgid ""
-"Picard helps you organize your music collection by renaming your music files"
-" and sorting them into a folder structure exactly the way you want it. A "
+"Picard helps you organize your music collection by renaming your music files "
+"and sorting them into a folder structure exactly the way you want it. A "
 "variety of plugins are available and you can even write your own. Picard "
 "supports a wide range of audio formats and can also lookup an entire CD for "
 "you."
@@ -53,8 +55,8 @@ msgstr ""
 "Přejmenováním souborů a jejich zařazením do struktury složek Vám Picard "
 "pomůže uspořádat Vaší hudební sbírku přesně tak, jak Vy budete chtít. K "
 "dispozici je celá řada doplňků a Vy máte možnost si vytvořit - napsat i "
-"svoje vlastní. Picard podporuje širokou škálu hudebních formátů a pokud máte"
-" nekompletní informace k Vašim CD, umí chybějící údaje dohledat."
+"svoje vlastní. Picard podporuje širokou škálu hudebních formátů a pokud máte "
+"nekompletní informace k Vašim CD, umí chybějící údaje dohledat."
 
 #: org.musicbrainz.Picard.appdata.xml.in:22
 msgid "Tagging audio files has never been easier."
@@ -80,24 +82,24 @@ msgid ""
 "identified by the actual music, even if they have no metadata."
 msgstr ""
 "AcoustID: Picard používá akustický otisk AcoustID, což umožňuje rozpoznat "
-"soubory podle jejich skutečného hudebního obsahu i v případě, že žádné údaje"
-" metadat neobsahují."
+"soubory podle jejich skutečného hudebního obsahu i v případě, že žádné údaje "
+"metadat neobsahují."
 
 #: org.musicbrainz.Picard.appdata.xml.in:35
 msgid ""
 "Comprehensive database: Picard uses the open and community-maintained "
-"MusicBrainz database to provide accurate information about millions of music"
-" releases."
+"MusicBrainz database to provide accurate information about millions of music "
+"releases."
 msgstr ""
-"Rozsáhlá databáze:  Picard používá otevřenou a komunitou udržovanou databázi"
-" MusicBrainz k poskytování přesných informací k miliónům vydání hudebních "
+"Rozsáhlá databáze:  Picard používá otevřenou a komunitou udržovanou databázi "
+"MusicBrainz k poskytování přesných informací k miliónům vydání hudebních "
 "děl. "
 
 #: org.musicbrainz.Picard.appdata.xml.in:40
 msgid "CD lookups: Picard can lookup entire music CDs with a click."
 msgstr ""
-"Dohledávání informací o CD: Picard umí dohledat informace o obsahu hudebního"
-" CD na jedno kliknutí."
+"Dohledávání informací o CD: Picard umí dohledat informace o obsahu hudebního "
+"CD na jedno kliknutí."
 
 #: org.musicbrainz.Picard.appdata.xml.in:43
 msgid ""
@@ -114,9 +116,9 @@ msgid ""
 "exactly specify how your music files will be named and how the tags will "
 "look like."
 msgstr ""
-"Skriptování: Přizpůsobivý a snadno pochopitelný skriptovací jazyk Vám umožní"
-" přesně určit, jak budou Vaše hudební soubory pojmenovány a jak budou "
-"uložená metadata - tagy."
+"Skriptování: Přizpůsobivý a snadno pochopitelný skriptovací jazyk Vám umožní "
+"přesně určit, jak budou Vaše hudební soubory pojmenovány a jak budou uložená "
+"metadata - tagy."
 
 #: org.musicbrainz.Picard.appdata.xml.in:52
 msgid ""

@@ -2,11 +2,11 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Besnik Bleta <besnik@programeshqip.org>, 2022
 # Transifex Bot <>, 2023
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -15,11 +15,12 @@ msgstr ""
 "POT-Creation-Date: 2022-11-23 07:49+0100\n"
 "PO-Revision-Date: 2018-11-25 07:37+0000\n"
 "Last-Translator: Transifex Bot <>, 2023\n"
-"Language-Team: Albanian (https://app.transifex.com/musicbrainz/teams/13846/sq/)\n"
+"Language-Team: Albanian (https://app.transifex.com/musicbrainz/teams/13846/"
+"sq/)\n"
+"Language: sq\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: sq\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6
@@ -42,14 +43,14 @@ msgstr ""
 
 #: org.musicbrainz.Picard.appdata.xml.in:15
 msgid ""
-"Picard helps you organize your music collection by renaming your music files"
-" and sorting them into a folder structure exactly the way you want it. A "
+"Picard helps you organize your music collection by renaming your music files "
+"and sorting them into a folder structure exactly the way you want it. A "
 "variety of plugins are available and you can even write your own. Picard "
 "supports a wide range of audio formats and can also lookup an entire CD for "
 "you."
 msgstr ""
-"Picard-i ju ndihmon të sistemoni koleksionin tuaj të muzikës duke riemërtuar"
-" kartelat tuaja muzikore dhe duke i renditur në një strukturë dosjeje "
+"Picard-i ju ndihmon të sistemoni koleksionin tuaj të muzikës duke riemërtuar "
+"kartelat tuaja muzikore dhe duke i renditur në një strukturë dosjeje "
 "saktësisht në mënyrën që doni. Ka një larmi shtojcash të gatshme dhe madje "
 "mund të shkruani tuajën. Picard-i mbulon një gamë të gjerë formatesh audio "
 "dhe mund të kërkojë për ju një CD të tërë."
@@ -82,18 +83,17 @@ msgstr ""
 #: org.musicbrainz.Picard.appdata.xml.in:35
 msgid ""
 "Comprehensive database: Picard uses the open and community-maintained "
-"MusicBrainz database to provide accurate information about millions of music"
-" releases."
+"MusicBrainz database to provide accurate information about millions of music "
+"releases."
 msgstr ""
-"Bazë e plotë të dhënash: për të furnizuar informacion të saktë rreth miliona"
-" hedhjesh muzikore në qarkullim, Picard-i përdor bazën e të dhënave "
+"Bazë e plotë të dhënash: për të furnizuar informacion të saktë rreth miliona "
+"hedhjesh muzikore në qarkullim, Picard-i përdor bazën e të dhënave "
 "MusicBrainz, të hapur dhe të mirëmbajtur nga bashkësia."
 
 #: org.musicbrainz.Picard.appdata.xml.in:40
 msgid "CD lookups: Picard can lookup entire music CDs with a click."
 msgstr ""
-"Kërkim CD-je: Picard-i mund të kërkojë me një klikim për CD të tëra "
-"muzikore."
+"Kërkim CD-je: Picard-i mund të kërkojë me një klikim për CD të tëra muzikore."
 
 #: org.musicbrainz.Picard.appdata.xml.in:43
 msgid ""
