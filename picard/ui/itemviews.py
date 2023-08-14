@@ -696,12 +696,13 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     def dragEnterEvent(self, event):
         super().dragEnterEvent(event)
-        if event.isAccepted() and (not event.source() or event.mimeData().hasUrls()):
-            event.setDropAction(QtCore.Qt.DropAction.CopyAction)
-            event.accept()
+        self._handle_external_drag(event)
 
     def dragMoveEvent(self, event):
         super().dragMoveEvent(event)
+        self._handle_external_drag(event)
+
+    def _handle_external_drag(self, event):
         if event.isAccepted() and (not event.source() or event.mimeData().hasUrls()):
             event.setDropAction(QtCore.Qt.DropAction.CopyAction)
             event.accept()
