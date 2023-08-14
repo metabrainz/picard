@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-12 18:55+0200\n"
+"POT-Creation-Date: 2023-08-14 18:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -226,7 +226,7 @@ msgstr ""
 msgid "Check for plugin updates during startup"
 msgstr ""
 
-#: picard/profile.py:54
+#: picard/profile.py:54 picard/ui/ui_options_general.py:206
 msgid "Check for program updates during startup"
 msgstr ""
 
@@ -737,24 +737,24 @@ msgstr ""
 msgid "[no release info]"
 msgstr ""
 
-#: picard/tagger.py:641 picard/ui/ui_options_general.py:197
+#: picard/tagger.py:652 picard/ui/ui_options_general.py:197
 msgid "MusicBrainz Account"
 msgstr ""
 
-#: picard/tagger.py:642
+#: picard/tagger.py:653
 msgid "Authorization code:"
 msgstr ""
 
-#: picard/tagger.py:1131
+#: picard/tagger.py:1142
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr ""
 
-#: picard/tagger.py:1149
+#: picard/tagger.py:1160
 msgid "CD Lookup Error"
 msgstr ""
 
-#: picard/tagger.py:1150
+#: picard/tagger.py:1161
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -762,25 +762,25 @@ msgid ""
 "%s"
 msgstr ""
 
-#: picard/tagger.py:1179
+#: picard/tagger.py:1190
 msgid "All supported log files"
 msgstr ""
 
-#: picard/tagger.py:1180
+#: picard/tagger.py:1191
 msgid "EAC / XLD / Whipper / fre:ac log files"
 msgstr ""
 
-#: picard/tagger.py:1181
+#: picard/tagger.py:1192
 msgid "dBpoweramp log files"
 msgstr ""
 
-#: picard/script/serializer.py:350 picard/tagger.py:1182
-#: picard/ui/coverartbox.py:609 picard/ui/mainwindow.py:1266
+#: picard/script/serializer.py:350 picard/tagger.py:1193
+#: picard/ui/coverartbox.py:606 picard/ui/mainwindow.py:1266
 #: picard/ui/options/maintenance.py:168 picard/ui/options/scripting.py:131
 msgid "All files"
 msgstr ""
 
-#: picard/tagger.py:1208
+#: picard/tagger.py:1219
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr ""
@@ -6377,51 +6377,51 @@ msgstr ""
 msgid "Tag removed"
 msgstr ""
 
-#: picard/ui/coverartbox.py:327
+#: picard/ui/coverartbox.py:324
 msgid "View release on MusicBrainz"
 msgstr ""
 
-#: picard/ui/coverartbox.py:333
+#: picard/ui/coverartbox.py:330
 msgid "Common images on all tracks"
 msgstr ""
 
-#: picard/ui/coverartbox.py:335
+#: picard/ui/coverartbox.py:332
 msgid "Tracks contain different images"
 msgstr ""
 
-#: picard/ui/coverartbox.py:391
+#: picard/ui/coverartbox.py:388
 msgid "Show more details"
 msgstr ""
 
-#: picard/ui/coverartbox.py:428
+#: picard/ui/coverartbox.py:425
 msgid "New Cover Art"
 msgstr ""
 
-#: picard/ui/coverartbox.py:429
+#: picard/ui/coverartbox.py:426
 msgid "Original Cover Art"
 msgstr ""
 
-#: picard/ui/coverartbox.py:608
+#: picard/ui/coverartbox.py:605
 msgid "All supported image formats"
 msgstr ""
 
-#: picard/ui/coverartbox.py:628
+#: picard/ui/coverartbox.py:625
 msgid "Show more details..."
 msgstr ""
 
-#: picard/ui/coverartbox.py:634
+#: picard/ui/coverartbox.py:631
 msgid "Keep original cover art"
 msgstr ""
 
-#: picard/ui/coverartbox.py:640
+#: picard/ui/coverartbox.py:637
 msgid "Choose local file..."
 msgstr ""
 
-#: picard/ui/coverartbox.py:649
+#: picard/ui/coverartbox.py:646
 msgid "Replace front cover art"
 msgstr ""
 
-#: picard/ui/coverartbox.py:658
+#: picard/ui/coverartbox.py:655
 msgid "Append front cover art"
 msgstr ""
 
@@ -6733,71 +6733,71 @@ msgstr ""
 msgid "&Run scripts"
 msgstr ""
 
-#: picard/ui/itemviews.py:836
+#: picard/ui/itemviews.py:842
 msgid "file view"
 msgstr ""
 
-#: picard/ui/itemviews.py:837
+#: picard/ui/itemviews.py:843
 msgid "Contains unmatched files and clusters"
 msgstr ""
 
-#: picard/ui/itemviews.py:857
+#: picard/ui/itemviews.py:863
 msgid "Clusters"
 msgstr ""
 
-#: picard/ui/itemviews.py:867
+#: picard/ui/itemviews.py:873
 msgid "album view"
 msgstr ""
 
-#: picard/ui/itemviews.py:868
+#: picard/ui/itemviews.py:874
 msgid "Contains albums and matched files"
 msgstr ""
 
-#: picard/ui/itemviews.py:1014
+#: picard/ui/itemviews.py:1020
 msgid "Processing error(s): See the Errors tab in the Album Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1018
+#: picard/ui/itemviews.py:1024
 msgid "Album modified and complete"
 msgstr ""
 
-#: picard/ui/itemviews.py:1021
+#: picard/ui/itemviews.py:1027
 msgid "Album unchanged and complete"
 msgstr ""
 
-#: picard/ui/itemviews.py:1025
+#: picard/ui/itemviews.py:1031
 msgid "Album modified"
 msgstr ""
 
-#: picard/ui/itemviews.py:1028
+#: picard/ui/itemviews.py:1034
 msgid "Album unchanged"
 msgstr ""
 
-#: picard/ui/itemviews.py:1108
+#: picard/ui/itemviews.py:1114
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1136
+#: picard/ui/itemviews.py:1142
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1169
+#: picard/ui/itemviews.py:1175
 msgid "Track saved"
 msgstr ""
 
-#: picard/ui/itemviews.py:1171 picard/ui/itemviews.py:1175
+#: picard/ui/itemviews.py:1177 picard/ui/itemviews.py:1181
 msgid "Pending"
 msgstr ""
 
-#: picard/ui/itemviews.py:1182
+#: picard/ui/itemviews.py:1188
 msgid "Fingerprint has already been submitted"
 msgstr ""
 
-#: picard/ui/itemviews.py:1185
+#: picard/ui/itemviews.py:1191
 msgid "Unsubmitted fingerprint"
 msgstr ""
 
-#: picard/ui/itemviews.py:1188
+#: picard/ui/itemviews.py:1194
 msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
 "AcoustID Fingerprints\" to calculate the fingerprint."
@@ -8155,10 +8155,6 @@ msgstr ""
 
 #: picard/ui/ui_options_general.py:204
 msgid "Update Checking"
-msgstr ""
-
-#: picard/ui/ui_options_general.py:206
-msgid "Check for program updates during startup"
 msgstr ""
 
 #: picard/ui/ui_options_general.py:207
@@ -9716,7 +9712,7 @@ msgid "Copyright"
 msgstr ""
 
 #: picard/util/tags.py:57
-msgid "Video Director"
+msgid "Director"
 msgstr ""
 
 #: picard/util/tags.py:58
