@@ -54,7 +54,7 @@ TAG_NAMES = {
     'conductor': N_('Conductor'),
     'copyright': N_('Copyright'),
     'date': N_('Date'),
-    'director': N_('Video Director'),
+    'director': N_('Director'),
     'discid': N_('Disc Id'),
     'discnumber': N_('Disc Number'),
     'discsubtitle': N_('Disc Subtitle'),

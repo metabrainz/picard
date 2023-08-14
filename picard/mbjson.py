@@ -66,6 +66,7 @@ _ARTIST_REL_TYPES = {
     # 'recording': 'engineer',
     'remixer': 'remixer',
     'sound': 'engineer',
+    'audio director': 'director',
     'video director': 'director',
     'vocal arranger': 'arranger',
     'writer': 'writer',
