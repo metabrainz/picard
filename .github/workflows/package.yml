@@ -41,6 +41,7 @@ jobs:
       PYTHON_VERSION: ${{ matrix.setup.python-version }}
       PYTHON_SHA256SUM: ${{ matrix.setup.python-sha256sum }}
       MACOSX_DEPLOYMENT_TARGET: ${{ matrix.setup.macos-deployment-version }}
+      CODESIGN: 0
     steps:
     - uses: actions/checkout@v3
       with:
@@ -128,6 +129,8 @@ jobs:
         - installer
         - portable
       fail-fast: false
+    env:
+      CODESIGN: 0
     steps:
     - uses: actions/checkout@v3
       with:
