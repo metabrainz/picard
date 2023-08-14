@@ -1,6 +1,6 @@
 name: Package for PyPI
 
-on: [push]
+on: [workflow_call]
 
 defaults:
   run:
@@ -9,6 +9,8 @@ defaults:
 jobs:
   pypi-sdist:
     runs-on: ubuntu-latest
+    env:
+      CODESIGN: 0
 
     steps:
     - uses: actions/checkout@v3
@@ -26,7 +28,37 @@ jobs:
         python setup.py test
     - name: Build Python source distribution
       run: |
-        python setup.py clean sdist
+        python setup.py clean sdist --formats=gztar,zip
+    - name: Prepare GPG signing key
+      run: |
+        if [ -n "$CODESIGN_GPG_URL" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
+          pip3 install awscli
+          aws s3 cp "$CODESIGN_GPG_URL" signkey.asc.enc
+          openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 -in signkey.asc.enc -out signkey.asc -k "$CODESIGN_GPG_PASSWORD"
+          gpg --import signkey.asc
+          rm signkey.asc*
+          echo "CODESIGN=1" >> $GITHUB_ENV
+        else
+          echo "::warning::No signing key available, skipping code signing."
+        fi
+      env:
+        AWS_DEFAULT_REGION: eu-central-1
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        CODESIGN_GPG_URL: ${{ secrets.CODESIGN_GPG_URL }}
+        CODESIGN_GPG_PASSWORD: ${{ secrets.CODESIGN_GPG_PASSWORD }}
+    - name: Sign source archives
+      if: env.CODESIGN == '1'
+      run: |
+        for f in dist/*.{zip,tar.gz}; do
+          gpg --armor --local-user "$CODESIGN_GPG_IDENTITY" --output "${f}.asc" --detach-sig "$f"
+        done
+      env:
+        CODESIGN_GPG_IDENTITY: 68990DD0B1EDC129B856958167997E14D563DA7C
+    - name: Cleanup
+      if: env.CODESIGN == '1'
+      run: |
+        rm -rf "$HOME/.gnupg"
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
@@ -36,7 +68,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       run: |
         pip install --upgrade twine
-        twine upload --non-interactive dist/*
+        twine upload --non-interactive dist/*.tar.gz
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_UPLOAD_TOKEN }}

@@ -4,6 +4,7 @@ on:
   push:
     paths:
     - '.github/workflows/package.yml'
+    - '.github/workflows/pypi-release.yml'
     - 'installer/**'
     - 'picard/**'
     - 'po/**.po'
@@ -239,12 +240,17 @@ jobs:
         name: windows-${{ matrix.type }}
         path: artifacts/
 
+  package-pypi:
+    uses: ./.github/workflows/pypi-release.yml
+    secrets: inherit
+
   github-release:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     needs:
       - package-macos
       - package-windows
+      - package-pypi
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v4
@@ -273,6 +279,10 @@ jobs:
     - uses: actions/download-artifact@v3
       with:
         name: windows-portable
+        path: artifacts/
+    - uses: actions/download-artifact@v3
+      with:
+        name: picard-sdist
         path: artifacts/
     - name: Generate checksums
       run: |
