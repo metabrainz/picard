@@ -65,7 +65,7 @@ jobs:
         name: picard-sdist
         path: dist/*
     - name: Publish Python distribution to PyPI
-      if: startsWith(github.ref, 'refs/tags/')
+      if: startsWith(github.ref, 'refs/tags/') && env.TWINE_PASSWORD
       run: |
         pip install --upgrade twine
         twine upload --non-interactive dist/*.tar.gz
@@ -110,7 +110,7 @@ jobs:
         name: picard-bdist-${{ runner.os }}
         path: dist/*.whl
     - name: Publish Python distribution to PyPI
-      if: startsWith(github.ref, 'refs/tags/')
+      if: startsWith(github.ref, 'refs/tags/') && env.TWINE_PASSWORD
       run: |
         pip install --upgrade twine>=3.0
         twine upload --non-interactive dist/*
