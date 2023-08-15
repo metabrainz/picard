@@ -525,12 +525,12 @@ class PluginManager(QtCore.QObject):
                 msg = PluginUpdatesDialog(parent, f'{header}<ul>{plugin_list}</ul>{extra_plugins}{footer}')
 
                 show_options_page, perform_check = msg.show()
-                if parent:
-                    config = get_config()
-                    config.setting['check_for_plugin_updates'] = perform_check
 
-                    if show_options_page:
-                        parent.show_plugins_options_page()
+                config = get_config()
+                config.setting['check_for_plugin_updates'] = perform_check
+
+                if parent and show_options_page:
+                    parent.show_plugins_options_page()
 
         if self.available_plugins is None:
             self.query_available_plugins(_display_update)
