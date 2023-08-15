@@ -1998,6 +1998,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if config.setting['check_for_plugin_updates']:
             self.tagger.pluginmanager.check_update(self)
 
+    def show_plugins_options_page(self):
+        self.show_options(page='plugins')
+
 
 def update_last_check_date(is_success):
     if is_success:
