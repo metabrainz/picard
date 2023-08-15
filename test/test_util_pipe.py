@@ -62,18 +62,19 @@ class TestPipe(PicardTestCase):
         for message in to_send:
             __pool = concurrent.futures.ThreadPoolExecutor()
             pipe_handler = pipe.Pipe(self.NAME, self.VERSION)
-            plistener = __pool.submit(pipe_listener, pipe_handler)
-            res = ""
-
-            # handle the write/read processes
             try:
-                pipe_handler.send_to_pipe(message)
-                res = plistener.result(timeout=6)
-            except concurrent.futures._base.TimeoutError:
-                pass
+                plistener = __pool.submit(pipe_listener, pipe_handler)
+                res = ""
+
+                # handle the write/read processes
+                try:
+                    pipe_handler.send_to_pipe(message)
+                    res = plistener.result(timeout=6)
+                except concurrent.futures._base.TimeoutError:
+                    pass
+
+                self.assertEqual(res, message,
+                                "Data is sent and read correctly")
             finally:
                 pipe_handler.stop()
                 __pool.shutdown()
-
-            self.assertEqual(res, message,
-                             "Data is sent and read correctly")
