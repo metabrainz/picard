@@ -482,22 +482,20 @@ class PluginManager(QtCore.QObject):
         return True
 
     def _plugins_have_new_versions(self):
-        """Compare available plugins versions with installed plugins ones and return True
-        if at least one needs to be updated, or False if no update is needed"""
-        plugins_with_updates = []
+        """Compare available plugins versions with installed plugins ones
+        and yield plugin names of plugins that have new versions"""
         if self.available_plugins is not None:
             available_versions = {p.module_name: p.version for p in self.available_plugins}
             for plugin in self.plugins:
                 if plugin.module_name not in available_versions:
                     continue
                 if available_versions[plugin.module_name] > plugin.version:
-                    plugins_with_updates.append(plugin.name)
-        return plugins_with_updates
+                    yield plugin.name
 
     def check_update(self, parent=None):
         def _display_update():
             update_lines_to_show = 3
-            plugins_with_updates = self._plugins_have_new_versions()
+            plugins_with_updates = sorted(self._plugins_have_new_versions())
             if plugins_with_updates:
                 file_count = len(plugins_with_updates)
                 extra_file_count = file_count - update_lines_to_show
