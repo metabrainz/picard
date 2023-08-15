@@ -59,9 +59,6 @@ To uninstall Picard run:
 
     pip3 uninstall picard
 
-The [official packages for Picard on PyPI](https://pypi.org/project/picard/)
-are signed using the GPG key [67997e14d563da7c](https://keyserver.ubuntu.com/pks/lookup?op=vindex&search=0x67997e14d563da7c).
-
 
 Installation using setup.py
 ---------------------------
@@ -150,6 +147,7 @@ the Source Tree".  Afterward you can run the tests using setup.py:
 
     python3 setup.py test
 
+
 Packaging
 ---------
 
@@ -159,3 +157,34 @@ To submit a package run:
 
     python3 setup.py sdist
     twine upload dist/*
+
+
+Code Signatures
+---------------
+
+The official software packages of MusicBrainz Picard for macOS and Windows as
+well as the official source archives are all digitally signed.
+
+If you are packaging Picard for an operating system (e.g. a Linux distribution)
+we recommend that you use the source archives from the
+[official file server](https://data.musicbrainz.org/pub/musicbrainz/picard/).
+The source archives are named `picard-x.y.z.tar.gz` and there is a corresponding
+GPG signature file `picard-x.y.z.tar.gz.asc` signed with the GPG key listed
+below.
+
+You can verify the signature with e.g.:
+
+```
+gpg --verify picard-2.9.tar.gz.asc
+```
+
+Make sure the key fingerprint in the output matches the fingerprint of the
+GPG key below.
+
+The signing certificates and keys currently in use are:
+
+| Certificate          | Expiration | Fingerprint                              |
+|----------------------|------------|------------------------------------------|
+| Windows Code Signing | 2024-10-25 | 4d0c868847e2a5e44ae734e1279a9c7007fd6d4c |
+| Apple Code Signing   | 2027-02-01 | deb351206f7dc9361e1cf3d864edce98a8d3302d |
+| MBP Developers GPG   | 2026-10-28 | [68990dd0b1edc129b856958167997e14d563da7c](https://keyserver.ubuntu.com/pks/lookup?op=vindex&search=0x67997e14d563da7c) |
