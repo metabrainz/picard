@@ -209,7 +209,7 @@ jobs:
       if: matrix.type == 'installer'
       run: |
         # choco install nsis
-        If ($Env:CODESIGN) {
+        If ($Env:CODESIGN -eq "1") {
           $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_P12_PASSWORD -Force -AsPlainText
           $Certificate = Get-PfxCertificate -FilePath .\codesign.pfx -Password $CertPassword
         } Else {
@@ -223,7 +223,7 @@ jobs:
     - name: Build Windows portable app
       if: matrix.type == 'portable'
       run: |
-        If ($Env:CODESIGN) {
+        If ($Env:CODESIGN -eq "1") {
           $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_P12_PASSWORD -Force -AsPlainText
           $Certificate = Get-PfxCertificate -FilePath .\codesign.pfx -Password $CertPassword
         } Else {
