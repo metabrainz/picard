@@ -494,11 +494,10 @@ class PluginManager(QtCore.QObject):
 
     def check_update(self, parent=None):
         def _display_update():
-            update_lines_to_show = 3
+            UPDATE_LINES_TO_SHOW = 3
             plugins_with_updates = sorted(self._plugins_have_new_versions())
             if plugins_with_updates:
                 file_count = len(plugins_with_updates)
-                extra_file_count = file_count - update_lines_to_show
                 header = '<p>There are updates available for your currently installed plugins:</p><ul>'
                 header = '<p>' + ngettext(
                     "There is an update available for one of your currently installed plugins:",
@@ -511,6 +510,7 @@ class PluginManager(QtCore.QObject):
                     file_count
                 ) + '</p>'
 
+                extra_file_count = file_count - UPDATE_LINES_TO_SHOW
                 if extra_file_count > 0:
                     extra_plugins = '<p>' + ngettext(
                         "plus {extra_file_count:,d} other plugin.",
@@ -519,7 +519,7 @@ class PluginManager(QtCore.QObject):
                 else:
                     extra_plugins = ''
                 plugin_list = ''
-                for plugin_name in plugins_with_updates[:min(len(plugins_with_updates), update_lines_to_show)]:
+                for plugin_name in plugins_with_updates[:UPDATE_LINES_TO_SHOW]:
                     plugin_list += f"<li>{plugin_name}</li>"
 
                 msg = PluginUpdatesDialog(parent, header + plugin_list + '</ul>' + extra_plugins + footer)
