@@ -75,7 +75,7 @@ class GeneralOptionsPage(OptionsPage):
         IntOption("setting", "update_check_days", 7),
         IntOption("setting", "update_level", DEFAULT_PROGRAM_UPDATE_LEVEL),
         IntOption("persist", "last_update_check", 0),
-        BoolOption("setting", "check_for_plugin_updates", True),
+        BoolOption("setting", "check_for_plugin_updates", False),
     ]
 
     def __init__(self, parent=None):
