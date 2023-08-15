@@ -90,6 +90,7 @@ class PluginUpdatesDialog():
 
         self.msg.setCheckBox(self.cb)
         self.msg.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel)
+        self.msg.setDefaultButton(QMessageBox.StandardButton.Cancel)
 
     def _set_state(self):
         self.show_again = not self.show_again
