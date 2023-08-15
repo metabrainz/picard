@@ -35,9 +35,13 @@ import zipfile
 import zipimport
 
 from PyQt5 import QtCore
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import (
+    QCheckBox,
+    QMessageBox,
+)
 
 from picard import log
+from picard.config import get_config
 from picard.const import (
     PLUGINS_API,
     USER_PLUGIN_DIR,
@@ -65,6 +69,34 @@ _UPDATE_SUFFIX_LEN = len(_UPDATE_SUFFIX)
 
 
 _extension_points = []
+
+
+class PluginUpdatesDialog():
+
+    def __init__(self, parent, dialog_text):
+
+        self.show_again = True
+        show_again_text = _("Perform this check again the next time you start Picard.")
+
+        self.msg = QMessageBox(parent)
+        self.msg.setIcon(QMessageBox.Icon.Information)
+        self.msg.setText(dialog_text)
+        self.msg.setWindowTitle(_("Picard Plugins Update"))
+        self.msg.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+
+        self.cb = QCheckBox(show_again_text)
+        self.cb.setChecked(self.show_again)
+        self.cb.toggled.connect(self._set_state)
+
+        self.msg.setCheckBox(self.cb)
+        self.msg.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel)
+
+    def _set_state(self):
+        self.show_again = not self.show_again
+
+    def show(self):
+        show_plugins_page = self.msg.exec() == QMessageBox.StandardButton.Yes
+        return show_plugins_page, self.show_again
 
 
 def is_update(path):
@@ -468,8 +500,9 @@ class PluginManager(QtCore.QObject):
             if plugins_with_updates:
                 file_count = len(plugins_with_updates)
                 extra_file_count = file_count - update_lines_to_show
+                header = '<p>There are updates available for your currently installed plugins:</p><ul>'
                 header = '<p>' + ngettext(
-                    "There are updates available for your currently installed plugin:",
+                    "There is an update available for one of your currently installed plugins:",
                     "There are updates available for your currently installed plugins:",
                     file_count
                 ) + '</p><ul>'
@@ -478,6 +511,7 @@ class PluginManager(QtCore.QObject):
                     "Do you want to update the plugins now?",
                     file_count
                 ) + '</p>'
+
                 if extra_file_count > 0:
                     extra_plugins = '<p>' + ngettext(
                         "plus {extra_file_count:,d} other plugin.",
@@ -488,14 +522,16 @@ class PluginManager(QtCore.QObject):
                 plugin_list = ''
                 for plugin_name in plugins_with_updates[:min(len(plugins_with_updates), update_lines_to_show)]:
                     plugin_list += f"<li>{plugin_name}</li>"
-                if QMessageBox.information(
-                    parent,
-                    _("Picard Plugins Update"),
-                    header + plugin_list + '</ul>' + extra_plugins + footer,
-                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel,
-                    QMessageBox.StandardButton.Cancel
-                ) == QMessageBox.StandardButton.Yes and parent:
-                    parent.show_plugins_options_page()
+
+                msg = PluginUpdatesDialog(parent, header + plugin_list + '</ul>' + extra_plugins + footer)
+
+                show_options_page, perform_check = msg.show()
+                if parent:
+                    config = get_config()
+                    config.setting['check_for_plugin_updates'] = perform_check
+
+                    if show_options_page:
+                        parent.show_plugins_options_page()
 
         if self.available_plugins is None:
             self.query_available_plugins(_display_update)
