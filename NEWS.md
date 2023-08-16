@@ -1,3 +1,28 @@
+# Version 2.9.1 - 2023-08-16
+
+## Bugfixes
+- [PICARD-2186](https://tickets.metabrainz.org/browse/PICARD-2186) - Windows installer fails to detect already running instance
+- [PICARD-2688](https://tickets.metabrainz.org/browse/PICARD-2688) - Windows: Portable version crashes when launched with `-h`
+- [PICARD-2692](https://tickets.metabrainz.org/browse/PICARD-2692) - Windows: Crash on startup after upgrade from 2.8 to 2.9
+- [PICARD-2693](https://tickets.metabrainz.org/browse/PICARD-2693) - Windows installer allows canceling the uninstaller
+- [PICARD-2694](https://tickets.metabrainz.org/browse/PICARD-2694) - Crash when re-opening options after closing without closing the scripting documentation dialog
+- [PICARD-2695](https://tickets.metabrainz.org/browse/PICARD-2695) - Crash in script editor when showing tooltips for some Unicode character codes
+- [PICARD-2696](https://tickets.metabrainz.org/browse/PICARD-2696) - Windows: Shift dragging files into Picard deletes the files on the filesystem
+- [PICARD-2697](https://tickets.metabrainz.org/browse/PICARD-2697) - Options "Restore Defaults" does not restore all defaults
+- [PICARD-2698](https://tickets.metabrainz.org/browse/PICARD-2698) - Windows: Permanent high CPU usage
+- [PICARD-2710](https://tickets.metabrainz.org/browse/PICARD-2710) - Files are not getting loaded on systems with 2 or less CPUs
+- [PICARD-2713](https://tickets.metabrainz.org/browse/PICARD-2713) - Stand alone instance mode does not work
+- [PICARD-2714](https://tickets.metabrainz.org/browse/PICARD-2714) - Windows: Portable installs should run as separate instances
+- [PICARD-2718](https://tickets.metabrainz.org/browse/PICARD-2718) - File selector for ripping log files does not show *.log files with the "All supported log files" filter
+
+## New Features
+- [PICARD-1815](https://tickets.metabrainz.org/browse/PICARD-1815) - Notification on plugin updates available
+- [PICARD-2705](https://tickets.metabrainz.org/browse/PICARD-2705) - Provide the new audio director relationship as tag
+
+## Improvements
+- [PICARD-2691](https://tickets.metabrainz.org/browse/PICARD-2691) - Provide code signed source archives
+
+
 # Version 2.9 - 2023-07-26
 
 ## Bugfixes
