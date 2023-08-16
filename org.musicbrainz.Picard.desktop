@@ -9,3 +9,8 @@ StartupWMClass=Picard
 Icon=org.musicbrainz.Picard
 Categories=AudioVideo;Audio;AudioVideoEditing;
 MimeType=application/ogg;application/x-flac;audio/aac;audio/ac3;audio/aiff;audio/ape;audio/dsf;audio/flac;audio/midi;audio/mp4;audio/mpeg;audio/mpeg4;audio/mpg;audio/ogg;audio/vorbis;audio/x-aac;audio/x-aiff;audio/x-ape;audio/x-flac;audio/x-flac+ogg;audio/x-m4a;audio/x-midi;audio/x-mp3;audio/x-mpc;audio/x-mpeg;audio/x-ms-wma;audio/x-ms-wmv;audio/x-musepack;audio/x-oggflac;audio/x-speex;audio/x-speex+ogg;audio/x-tak;audio/x-tta;audio/x-vorbis;audio/x-vorbis+ogg;audio/x-wav;audio/x-wavpack;audio/x-wma;video/x-ms-asf;video/x-theora;video/x-wmv;
+Actions=new-window;
+
+[Desktop Action new-window]
+Name=New Window
+Exec=picard --stand-alone-instance %F
