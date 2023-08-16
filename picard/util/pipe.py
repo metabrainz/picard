@@ -138,7 +138,7 @@ class AbstractPipe(metaclass=ABCMeta):
                 raise PipeErrorInvalidArgs(exc) from None
 
         if not self._args:
-            self._args = (self.MESSAGE_TO_IGNORE,)
+            self._args = ('SHOW',)
 
         if not isinstance(app_name, str) or not isinstance(app_version, str):
             raise PipeErrorInvalidAppData
