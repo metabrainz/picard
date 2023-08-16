@@ -8,6 +8,9 @@ include *.in
 include *.md
 include *.txt
 
+recursive-include resources *.py
+recursive-include resources/images *
+
 recursive-include test *.py
 recursive-include test/data *
 recursive-exclude test/data/testplugins/module/dummyplugin/__pycache__ *
