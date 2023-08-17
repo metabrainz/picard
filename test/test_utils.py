@@ -188,15 +188,26 @@ class ExtractYearTest(PicardTestCase):
 class SanitizeDateTest(PicardTestCase):
 
     def test_correct(self):
+        self.assertEqual(util.sanitize_date(""), "")
+        self.assertEqual(util.sanitize_date("0"), "")
+        self.assertEqual(util.sanitize_date("0000"), "")
+        self.assertEqual(util.sanitize_date("2006"), "2006")
         self.assertEqual(util.sanitize_date("2006--"), "2006")
-        self.assertEqual(util.sanitize_date("2006--02"), "2006")
+        self.assertEqual(util.sanitize_date("2006-00-02"), "2006-00-02")
         self.assertEqual(util.sanitize_date("2006   "), "2006")
         self.assertEqual(util.sanitize_date("2006 02"), "")
         self.assertEqual(util.sanitize_date("2006.02"), "")
         self.assertEqual(util.sanitize_date("2006-02"), "2006-02")
+        self.assertEqual(util.sanitize_date("2006-02-00"), "2006-02")
+        self.assertEqual(util.sanitize_date("2006-00-00"), "2006")
+        self.assertEqual(util.sanitize_date("2006-02-23"), "2006-02-23")
+        self.assertEqual(util.sanitize_date("2006-00-23"), "2006-00-23")
+        self.assertEqual(util.sanitize_date("0000-00-23"), "0000-00-23")
+        self.assertEqual(util.sanitize_date("0000-02"), "0000-02")
+        self.assertEqual(util.sanitize_date("--23"), "0000-00-23")
 
     def test_incorrect(self):
-        self.assertNotEqual(util.sanitize_date("2006--02"), "2006-02")
+        self.assertNotEqual(util.sanitize_date("2006--02"), "2006")
         self.assertNotEqual(util.sanitize_date("2006.03.02"), "2006-03-02")
 
 
