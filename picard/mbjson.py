@@ -246,11 +246,11 @@ def _locales_from_aliases(aliases):
     full_locales = {}
     root_locales = {}
     for alias in aliases:
-        if not alias['primary']:
+        if not alias.get('primary'):
             continue
-        if 'locale' not in alias:
+        full_locale = alias.get('locale')
+        if not full_locale:
             continue
-        full_locale = alias['locale']
         root_locale = full_locale.split('_')[0]
         full_parts = []
         root_parts = []
@@ -259,9 +259,10 @@ def _locales_from_aliases(aliases):
         if '_' in full_locale:
             score = 0.4
         root_parts.append((score, 5))
-        if alias['type-id'] == ALIAS_TYPE_ARTIST_NAME_ID:
+        type_id = alias.get('type-id')
+        if type_id == ALIAS_TYPE_ARTIST_NAME_ID:
             score = 0.8
-        elif alias['type-id'] == ALIAS_TYPE_LEGAL_NAME_ID:
+        elif type_id == ALIAS_TYPE_LEGAL_NAME_ID:
             score = 0.5
         else:
             # as 2014/09/19, only Artist or Legal names should have the
