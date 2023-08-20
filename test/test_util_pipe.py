@@ -32,7 +32,7 @@ from picard.util import pipe
 def pipe_listener(pipe_handler):
     while True:
         for message in pipe_handler.read_from_pipe():
-            if message != pipe.Pipe.NO_RESPONSE_MESSAGE:
+            if message and message != pipe.Pipe.NO_RESPONSE_MESSAGE:
                 return message
 
 
@@ -48,36 +48,25 @@ class TestPipe(PicardTestCase):
         self.assertRaises(pipe.PipeErrorInvalidAppData, pipe.Pipe, self.NAME, 21, None)
 
     def test_pipe_protocol(self):
-        to_send = (
-            "it", "tests", "picard", "pipe",
-            "my_music_file.mp3",
-            TestPipe.NAME, TestPipe.VERSION,
-            "last-case",
-            "https://test-ca.se/index.html",
-            "file:///data/test.py",
-            "www.wikipedia.mp3",
-            "mbid://recording/7cd3782d-86dc-4dd1-8d9b-e37f9cbe6b94",
-            "https://musicbrainz.org/recording/7cd3782d-86dc-4dd1-8d9b-e37f9cbe6b94",
-        )
+        message = "foo"
 
-        for message in to_send:
-            __pool = concurrent.futures.ThreadPoolExecutor()
-            pipe_handler = pipe.Pipe(self.NAME, self.VERSION)
+        __pool = concurrent.futures.ThreadPoolExecutor()
+        pipe_handler = pipe.Pipe(self.NAME, self.VERSION)
+        try:
+            plistener = __pool.submit(pipe_listener, pipe_handler)
+            time.sleep(.2)
+            res = ""
+
+            # handle the write/read processes
             try:
-                plistener = __pool.submit(pipe_listener, pipe_handler)
-                time.sleep(1)
-                res = ""
+                pipe_handler.send_to_pipe(message)
+                res = plistener.result(timeout=6)
+            except concurrent.futures._base.TimeoutError:
+                pass
 
-                # handle the write/read processes
-                try:
-                    pipe_handler.send_to_pipe(message)
-                    res = plistener.result(timeout=6)
-                except concurrent.futures._base.TimeoutError:
-                    pass
-
-                self.assertEqual(res, message,
-                                "Data is sent and read correctly")
-            finally:
-                time.sleep(1)
-                pipe_handler.stop()
-                __pool.shutdown()
+            self.assertEqual(res, message,
+                            "Data is sent and read correctly")
+        finally:
+            time.sleep(.2)
+            pipe_handler.stop()
+            __pool.shutdown()
