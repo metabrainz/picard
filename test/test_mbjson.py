@@ -206,6 +206,46 @@ class ReleaseTest(MBJSONTest):
         ])
         self.assertEqual(m.getall('~releasegroup_seriesnumber'), ['15', '291'])
 
+    def test_release_group_rels_double(self):
+        m = Metadata()
+        release_group_to_metadata(self.json_doc['release-group'], m)
+
+        # load it twice and check for duplicates
+        release_group_to_metadata(self.json_doc['release-group'], m)
+        self.assertEqual(m.getall('~releasegroup_series'), [
+            "Absolute Radio's The 100 Collection",
+            '1001 Albums You Must Hear Before You Die'
+        ])
+        self.assertEqual(m.getall('~releasegroup_seriesid'), [
+            '4bf41050-6fa9-41a6-8398-15bdab4b0352',
+            '4bc2a338-e1d8-4546-8a61-640da8aaf888'
+        ])
+        self.assertEqual(m.getall('~releasegroup_seriescomment'), [
+            '2005 edition'
+        ])
+        self.assertEqual(m.getall('~releasegroup_seriesnumber'), ['15', '291'])
+
+    def test_release_group_rels_removed(self):
+        m = Metadata()
+        release_group_to_metadata(self.json_doc['release-group'], m)
+
+        # remove one of the series from original metadata
+        for i, rel in enumerate(self.json_doc['release-group']['relations']):
+            if not rel['type'] == 'part of':
+                continue
+            if rel['series']['name'] == '1001 Albums You Must Hear Before You Die':
+                del self.json_doc['release-group']['relations'][i]
+                break
+        release_group_to_metadata(self.json_doc['release-group'], m)
+        self.assertEqual(m.getall('~releasegroup_series'), [
+            "Absolute Radio's The 100 Collection",
+        ])
+        self.assertEqual(m.getall('~releasegroup_seriesid'), [
+            '4bf41050-6fa9-41a6-8398-15bdab4b0352',
+        ])
+        self.assertEqual(m.getall('~releasegroup_seriescomment'), [])
+        self.assertEqual(m.getall('~releasegroup_seriesnumber'), ['15'])
+
 
 class NullReleaseTest(MBJSONTest):
 

@@ -27,7 +27,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import namedtuple
+from types import SimpleNamespace
 
 from picard import log
 from picard.config import get_config
@@ -205,38 +205,58 @@ def _relations_to_metadata_target_type_series(relation, m, context):
         entity = context.entity
         series = relation['series']
         var_prefix = f'~{entity}_' if entity else '~'
-        m.add(f'{var_prefix}series', series['name'])
-        m.add(f'{var_prefix}seriesid', series['id'])
-        m.add(f'{var_prefix}seriescomment', series['disambiguation'])
-        m.add(f'{var_prefix}seriesnumber', relation['attribute-values'].get('number', ''))
+        name = f'{var_prefix}series'
+        mbid = f'{var_prefix}seriesid'
+        comment = f'{var_prefix}seriescomment'
+        number = f'{var_prefix}seriesnumber'
+        if not context.metadata_was_cleared['series']:
+            # Clear related metadata first to prevent accumulation
+            # of identical value, see PICARD-2700 issue
+            m.unset(name)
+            m.unset(mbid)
+            m.unset(comment)
+            m.unset(number)
+            # That's to ensure it is done only once
+            context.metadata_was_cleared['series'] = True
+        m.add(name, series['name'])
+        m.add(mbid, series['id'])
+        m.add(comment, series['disambiguation'])
+        m.add(number, relation['attribute-values'].get('number', ''))
+
+
+class RelFunc(SimpleNamespace):
+    clear_metadata_first = False
+    func = None
 
 
 _RELATIONS_TO_METADATA_TARGET_TYPE_FUNC = {
-    'artist': _relations_to_metadata_target_type_artist,
-    'series': _relations_to_metadata_target_type_series,
-    'url': _relations_to_metadata_target_type_url,
-    'work': _relations_to_metadata_target_type_work,
+    'artist': RelFunc(func=_relations_to_metadata_target_type_artist),
+    'series': RelFunc(
+        func=_relations_to_metadata_target_type_series,
+        clear_metadata_first=True
+    ),
+    'url': RelFunc(func=_relations_to_metadata_target_type_url),
+    'work': RelFunc(func=_relations_to_metadata_target_type_work),
 }
-
-
-TargetTypeFuncContext = namedtuple(
-    'TargetTypeFuncContext',
-    'config entity instrumental use_credited_as use_instrument_credits'
-)
 
 
 def _relations_to_metadata(relations, m, instrumental=False, config=None, entity=None):
     config = config or get_config()
-    context = TargetTypeFuncContext(
-        config,
-        entity,
-        instrumental,
-        not config.setting['standardize_artists'],
-        not config.setting['standardize_instruments'],
+    context = SimpleNamespace(
+        config=config,
+        entity=entity,
+        instrumental=instrumental,
+        use_credited_as=not config.setting['standardize_artists'],
+        use_instrument_credits=not config.setting['standardize_instruments'],
+        metadata_was_cleared=dict(),
     )
     for relation in relations:
-        if relation['target-type'] in _RELATIONS_TO_METADATA_TARGET_TYPE_FUNC:
-            _RELATIONS_TO_METADATA_TARGET_TYPE_FUNC[relation['target-type']](relation, m, context)
+        target = relation['target-type']
+        if target in _RELATIONS_TO_METADATA_TARGET_TYPE_FUNC:
+            relfunc = _RELATIONS_TO_METADATA_TARGET_TYPE_FUNC[target]
+            if target not in context.metadata_was_cleared:
+                context.metadata_was_cleared[target] = not relfunc.clear_metadata_first
+            relfunc.func(relation, m, context)
 
 
 def _locales_from_aliases(aliases):
