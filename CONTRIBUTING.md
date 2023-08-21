@@ -74,6 +74,11 @@ We follow the "typical" GitHub workflow when contributing changes:
 See po/README.md for information about translations.
 
 
+## User Documentation
+
+See the [Picard Documentation](https://github.com/metabrainz/picard-docs/blob/master/.github/CONTRIBUTING.md) project for information about contributing to the documentation for MusicBrainz Picard (aka the [Picard User Guide](https://picard-docs.musicbrainz.org)).
+
+
 ## Audio Metadata Specifications
 
 The core functionality of Picard is the ability to read and write tags from / to files
@@ -123,8 +128,3 @@ Also relevant:
 ### Other specs
 
 - [ReplayGain 2.0 specification](http://wiki.hydrogenaud.io/index.php?title=ReplayGain_2.0_specification)
-
-
-## User Documentation
-
-See the [Picard Documentation](https://github.com/metabrainz/picard-docs/blob/master/.github/CONTRIBUTING.md) project for information about contributing to the documentation for MusicBrainz Picard (aka the [Picard User Guide](https://picard-docs.musicbrainz.org)).
