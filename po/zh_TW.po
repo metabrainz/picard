@@ -8172,7 +8172,7 @@ msgid "Cover Art Providers"
 msgstr "封面圖片提供者"
 
 #: picard/ui/ui_options_cover.py:103
-msgid "Reorder Priority: "
+msgid "Reorder Priority:"
 msgstr "調整優先度:"
 
 #: picard/ui/ui_options_cover.py:104

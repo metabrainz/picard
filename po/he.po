@@ -8672,7 +8672,7 @@ msgid "Cover Art Providers"
 msgstr "מקורות תמונת עטיפה"
 
 #: picard/ui/ui_options_cover.py:103
-msgid "Reorder Priority: "
+msgid "Reorder Priority:"
 msgstr "מיון עדיפות מחדש:"
 
 #: picard/ui/ui_options_cover.py:104

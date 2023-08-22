@@ -8112,7 +8112,7 @@ msgid "Cover Art Providers"
 msgstr ""
 
 #: picard/ui/ui_options_cover.py:103
-msgid "Reorder Priority: "
+msgid "Reorder Priority:"
 msgstr ""
 
 #: picard/ui/ui_options_cover.py:104

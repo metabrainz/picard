@@ -8892,7 +8892,7 @@ msgid "Cover Art Providers"
 msgstr "Fornitori di copertine"
 
 #: picard/ui/ui_options_cover.py:103
-msgid "Reorder Priority: "
+msgid "Reorder Priority:"
 msgstr "Priorità di riordino:"
 
 #: picard/ui/ui_options_cover.py:104

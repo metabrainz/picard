@@ -8553,7 +8553,7 @@ msgid "Cover Art Providers"
 msgstr "カバーアートプロバイダ"
 
 #: picard/ui/ui_options_cover.py:103
-msgid "Reorder Priority: "
+msgid "Reorder Priority:"
 msgstr "並べ替え優先度: "
 
 #: picard/ui/ui_options_cover.py:104

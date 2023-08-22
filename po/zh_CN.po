@@ -8688,7 +8688,7 @@ msgid "Cover Art Providers"
 msgstr "专辑封面来源"
 
 #: picard/ui/ui_options_cover.py:103
-msgid "Reorder Priority: "
+msgid "Reorder Priority:"
 msgstr "调整优先级: "
 
 #: picard/ui/ui_options_cover.py:104

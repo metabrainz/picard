@@ -8133,8 +8133,8 @@ msgid "Cover Art Providers"
 msgstr "Omslagsbildsleverantörer"
 
 #: picard/ui/ui_options_cover.py:103
-msgid "Reorder Priority: "
-msgstr "Ordna om prioritet: "
+msgid "Reorder Priority:"
+msgstr "Ordna om prioritet:"
 
 #: picard/ui/ui_options_cover.py:104
 #: picard/ui/ui_options_interface_toolbar.py:77
