@@ -46,7 +46,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-16 01:06+0200\n"
+"POT-Creation-Date: 2023-08-22 17:47+0200\n"
 "PO-Revision-Date: 2023-08-22 12:44+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/"
@@ -816,25 +816,24 @@ msgstr "[kein Strichcode]"
 msgid "[no release info]"
 msgstr "[keine Informationen zur Veröffentlichung]"
 
-#: picard/tagger.py:652 picard/ui/ui_options_general.py:197
-#: picard/tagger.py:655
+#: picard/tagger.py:655 picard/ui/ui_options_general.py:197
 msgid "MusicBrainz Account"
 msgstr "MusicBrainz Benutzerkonto"
 
-#: picard/tagger.py:653 picard/tagger.py:656
+#: picard/tagger.py:656
 msgid "Authorization code:"
 msgstr "Berechtigungscode:"
 
-#: picard/tagger.py:1142 picard/tagger.py:1145
+#: picard/tagger.py:1145
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Album %(id)s wird entfernt: %(artist)s - %(album)s"
 
-#: picard/tagger.py:1160 picard/tagger.py:1163
+#: picard/tagger.py:1163
 msgid "CD Lookup Error"
 msgstr "CD-Abfrage-Fehler"
 
-#: picard/tagger.py:1161 picard/tagger.py:1164
+#: picard/tagger.py:1164
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -845,26 +844,25 @@ msgstr ""
 "\n"
 "%s"
 
-#: picard/tagger.py:1190 picard/tagger.py:1193
+#: picard/tagger.py:1193
 msgid "All supported log files"
 msgstr "Alle unterstützten Protokolldateien"
 
-#: picard/tagger.py:1191 picard/tagger.py:1194
+#: picard/tagger.py:1194
 msgid "EAC / XLD / Whipper / fre:ac log files"
 msgstr "EAC- / XLD- / Whipper- / fre:ac-Protokolldateien"
 
-#: picard/tagger.py:1192 picard/tagger.py:1195
+#: picard/tagger.py:1195
 msgid "dBpoweramp log files"
 msgstr "dBpoweramp-Protokolldateien"
 
-#: picard/script/serializer.py:350 picard/tagger.py:1193
+#: picard/script/serializer.py:350 picard/tagger.py:1196
 #: picard/ui/coverartbox.py:610 picard/ui/mainwindow.py:1266
 #: picard/ui/options/maintenance.py:168 picard/ui/options/scripting.py:131
-#: picard/tagger.py:1196
 msgid "All files"
 msgstr "Alle Dateien"
 
-#: picard/tagger.py:1219 picard/tagger.py:1222
+#: picard/tagger.py:1222
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr "Fehler beim Parsen des Ripper-Protokolls \"%s\""
@@ -10531,7 +10529,7 @@ msgstr ""
 "Die Tabelle ist gesperrt. Um die Sortierung oder Spaltengrößen zu ändern,\n"
 "entsperren Sie die Tabelle über das Kontextmenü des Tabellenkopfs."
 
-#: picard/util/__init__.py:364 picard/util/__init__.py:369
+#: picard/util/__init__.py:369
 msgid "No Title"
 msgstr "Kein Titel"
 
@@ -10592,8 +10590,8 @@ msgstr "%s PiB"
 
 #: picard/util/bytes2human.py:89
 #, python-format
-msgid "%s "
-msgstr "%s"
+msgid "%(value)s %(unit)s"
+msgstr "%(value)s %(unit)s"
 
 #: picard/util/checkupdate.py:101
 msgid "Error loading Picard releases list: {error_message}"
@@ -11004,7 +11002,6 @@ msgstr ""
 "\n"
 "%s"
 
-#: picard/util/bytes2human.py:89
 #, python-format
-msgid "%(value)s %(unit)s"
-msgstr "%(value)s %(unit)s"
+#~ msgid "%s "
+#~ msgstr "%s"
