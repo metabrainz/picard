@@ -40,8 +40,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-22 15:43+0000\n"
-"Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
+"PO-Revision-Date: 2023-08-22 17:20+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/"
 "app/fr/>\n"
 "Language: fr\n"
@@ -8682,8 +8682,6 @@ msgid "Cover Art Providers"
 msgstr "Fournisseurs d’illustrations"
 
 #: picard/ui/ui_options_cover.py:103
-#, fuzzy
-#| msgid "Reorder Priority: "
 msgid "Reorder Priority:"
 msgstr "Ordonner par priorité :"
 
@@ -10387,7 +10385,7 @@ msgstr "%s Pio"
 #: picard/util/bytes2human.py:89
 #, python-format
 msgid "%(value)s %(unit)s"
-msgstr ""
+msgstr "%(value)s %(unit)s"
 
 #: picard/util/checkupdate.py:101
 msgid "Error loading Picard releases list: {error_message}"
