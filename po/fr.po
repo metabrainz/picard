@@ -34,22 +34,24 @@
 # yvanz, 2016-2019,2021
 # yvanz, 2016
 # Laurent Monin <i18n@norz.org>, 2013
+# Zas <Zas@users.noreply.translations.metabrainz.org>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 14:43+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021,2023\n"
-"Language-Team: French (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/fr/)\n"
+"PO-Revision-Date: 2023-08-22 15:19+0000\n"
+"Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
+"Language-Team: French <https://translations.metabrainz.org/projects/picard/"
+"app/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % "
+"1000000 == 0) ? 1 : 2);\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
-"1000000 == 0 ? 1 : 2;\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -441,7 +443,7 @@ msgstr "Ne pas écrire les balises"
 
 #: picard/profile.py:108 picard/ui/ui_options_tags.py:72
 msgid "Preserve timestamps of tagged files"
-msgstr "Ne pas modifier l’horodatage des fichiers balisés."
+msgstr "Ne pas modifier l’horodatage des fichiers balisés"
 
 #: picard/profile.py:109 picard/ui/ui_options_tags.py:74
 msgid "Clear existing tags"
@@ -821,7 +823,7 @@ msgstr "Label"
 
 #: picard/releasegroup.py:74
 msgid "Cat No"
-msgstr "N° de cat."
+msgstr "N° cat"
 
 #: picard/releasegroup.py:110
 msgid "[no barcode]"
@@ -837,7 +839,7 @@ msgstr "Compte MusicBrainz"
 
 #: picard/tagger.py:656
 msgid "Authorization code:"
-msgstr " Code d’autorisation : "
+msgstr "Code d’autorisation :"
 
 #: picard/tagger.py:1145
 #, python-format
@@ -5844,7 +5846,7 @@ msgstr ""
 #: picard/script/__init__.py:145
 #, python-format
 msgid "Preset %d: %s"
-msgstr "Préréglage %d: %s"
+msgstr "Préréglage %d : %s"
 
 #: picard/script/__init__.py:149
 msgid "Default file naming script"
@@ -5990,7 +5992,7 @@ msgstr ""
 "valeurs `name`.\n"
 "Les éléments vides sont automatiquement supprimés.\n"
 "\n"
-"Exemple:\n"
+"Exemple :\n"
 "\n"
 "    $replacemulti(%genre%,Idm,IDM)\n"
 
@@ -6090,7 +6092,7 @@ msgstr ""
 "\n"
 "Désinitialise la variable `nom` et marque la balise pour suppression.\n"
 "C'est similaire à `$unset(nom)` mais en plus marque la balise pour "
-"suppression. Exemple:\n"
+"suppression. Par exemple,\n"
 "    exécuter `$delete(genre)` supprimera la balise genre du fichier lors de "
 "la sauvegarde.\n"
 "\n"
@@ -6114,7 +6116,7 @@ msgstr ""
 "\n"
 "Initialise la variable `nom` à `valeur`.\n"
 "\n"
-"Note: Pour créer une variable qui peut être utilisée dans la chaîne de "
+"Note : Pour créer une variable qui peut être utilisée dans la chaîne de "
 "nommage de fichier, mais\n"
 "    qui ne sera pas écrite comme balise dans le fichier, préfixer le nom de "
 "la variable\n"
@@ -6148,9 +6150,10 @@ msgstr ""
 "    pour convertir la valeur en une balise multi-valeurs. Ceci peut être "
 "utilisé pour\n"
 "    agir sur des balises multi-valeurs en tant que chaîne de caractères puis "
-"la reconvertir en balise multi-valeurs\n"
+"la reconvertir en\n"
+"    balise multi-valeurs\n"
 "\n"
-"Exemple:\n"
+"Exemple :\n"
 "\n"
 "    $setmulti(genre,$lower(%genre%))\n"
 "\n"
@@ -6240,7 +6243,7 @@ msgstr ""
 "Ajoute `y` à `x`.\n"
 "Peut être utiliser avec un nombre arbitraire d'arguments.\n"
 "\n"
-"Exemple:\n"
+"Exemple :\n"
 "\n"
 "    $add(x,y,z) = ((x + y) + z)\n"
 
@@ -6260,7 +6263,7 @@ msgstr ""
 "Soustrait `y` de `x`.\n"
 "Peut être utiliser avec un nombre arbitraire d'arguments.\n"
 "\n"
-"Exemple:\n"
+"Exemple :\n"
 "\n"
 "    $sub(x,y,z) = ((x - y) - z)\n"
 
@@ -6280,7 +6283,7 @@ msgstr ""
 "Divise `x` par `y`.\n"
 "Peut être utiliser avec un nombre arbitraire d'arguments.\n"
 "\n"
-"Exemple:\n"
+"Exemple :\n"
 "\n"
 "    $div(x,y,z) = ((x / y) / z)\n"
 
@@ -6300,7 +6303,7 @@ msgstr ""
 "Retourne le reste de `x` divisé par `y`.\n"
 "Peut être utiliser avec un nombre arbitraire d'arguments.\n"
 "\n"
-"Exemple:\n"
+"Exemple :\n"
 "\n"
 "    $mod(x,y,z) = ((x % y) % z)\n"
 
@@ -6320,7 +6323,7 @@ msgstr ""
 "Multiplie `x` par `y`.\n"
 "Peut être utiliser avec un nombre arbitraire d'arguments.\n"
 "\n"
-"Exemple:\n"
+"Exemple :\n"
 "\n"
 "    $mul(x,y,z) = ((x * y) * z)\n"
 
@@ -6383,7 +6386,6 @@ msgstr ""
 "Retourne vrai si `x` n’est pas égal à `y`."
 
 #: picard/script/functions.py:716
-#, fuzzy
 msgid ""
 "`$lt(x,y[,type])`\n"
 "\n"
@@ -6401,21 +6403,6 @@ msgid ""
 "preference:\n"
 "\"int\", \"float\" and \"text\"."
 msgstr ""
-"`$lt(x,y[,type])`\n"
-"\n"
-"Returns true if `x` is less than `y` using the comparison specified in "
-"`type`.\n"
-"Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
-"\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
-"determine the type of arguments provided), with \"auto\" used as the "
-"default\n"
-"comparison method if `type` is not specified.  The \"auto\" type will use "
-"the\n"
-"first type that applies to both arguments in the following order of "
-"preference:\n"
-"\"int\", \"float\" and \"text\"."
 
 #: picard/script/functions.py:731
 #, fuzzy
@@ -7174,12 +7161,11 @@ msgstr ""
 "Retourne une copie de la balise multi-valeurs `name` avec les éléments triés "
 "dans l'ordre ascendant.\n"
 "\n"
-"Exemple:\n"
+"Exemple :\n"
 "\n"
 "    $sortmulti(B; A; C)\n"
 "\n"
 "Résultat: A; B; C\n"
-"\n"
 
 #: picard/script/functions.py:1365
 msgid ""
@@ -7205,12 +7191,11 @@ msgstr ""
 "pour trier\n"
 "    dans l'ordre descendant.\n"
 "\n"
-"Exemple:\n"
+"Exemple :\n"
 "\n"
 "    $reversemulti($sortmulti(B; A; C))\n"
 "\n"
 "Résultat: C; B; A\n"
-"\n"
 
 #: picard/script/functions.py:1384
 #, fuzzy, python-format
@@ -7695,7 +7680,7 @@ msgstr "Labels"
 
 #: picard/ui/cdlookup.py:73 picard/ui/searchdialog/album.py:159
 msgid "Catalog #s"
-msgstr "Nos de catalogue "
+msgstr "Nos de catalogue"
 
 #: picard/ui/cdlookup.py:73 picard/ui/itemviews.py:171
 #: picard/ui/searchdialog/album.py:160 picard/util/tags.py:47
@@ -7916,11 +7901,11 @@ msgstr "Canaux :"
 
 #: picard/ui/infodialog.py:310
 msgid "Album:"
-msgstr "Album : "
+msgstr "Album :"
 
 #: picard/ui/infodialog.py:311
 msgid "Artist:"
-msgstr "Artiste : "
+msgstr "Artiste :"
 
 #: picard/ui/infodialog.py:341
 #, python-format
@@ -8273,13 +8258,13 @@ msgid_plural ""
 "There are %d unsaved files. Closing Picard will lose all unsaved changes."
 msgstr[0] ""
 "Il y a %d fichier non sauvé. Si vous fermez Picard, vous perdrez les "
-"modifications non sauvées"
+"modifications non sauvées."
 msgstr[1] ""
 "Il y a %d fichiers non sauvés. Si vous fermez Picard, vous perdrez les "
-"modifications non sauvées"
+"modifications non sauvées."
 msgstr[2] ""
 "Il y a %d fichiers non sauvés. Si vous fermez Picard, vous perdrez les "
-"modifications non sauvées"
+"modifications non sauvées."
 
 #: picard/ui/mainwindow.py:357
 msgid "&Quit Picard"
@@ -8315,7 +8300,7 @@ msgid ""
 "fingerprints."
 msgstr ""
 "Vous devez configurer votre clef d’API AcoustID avant de pouvoir envoyer des "
-"empreintes"
+"empreintes."
 
 #: picard/ui/mainwindow.py:487
 msgid "Open AcoustID options"
@@ -8327,7 +8312,7 @@ msgstr "&Options..."
 
 #: picard/ui/mainwindow.py:505
 msgid "Open &file naming script editor..."
-msgstr "Ouvrir l'éditeur de script de nommage de &fichier "
+msgstr "Ouvrir l'éditeur de script de nommage de &fichier …"
 
 #: picard/ui/mainwindow.py:506
 msgid "Ctrl+Shift+S"
@@ -9239,7 +9224,7 @@ msgstr "Affiche la documentation de langage de script dans l'encart latéral"
 
 #: picard/ui/scripteditor.py:622
 msgid "&Scripting documentation..."
-msgstr "Documentation des &scripts"
+msgstr "Documentation des &scripts …"
 
 #: picard/ui/scripteditor.py:623
 msgid "Open the scripting documentation in your browser"
@@ -9692,7 +9677,7 @@ msgid ""
 "or release group"
 msgstr ""
 "Utiliser les genres des artistes en cas d’absence de genre de parution ou de "
-"groupe de parutions "
+"groupe de parutions"
 
 #: picard/ui/ui_options_genres.py:123
 msgid "Minimal genre usage:"
@@ -9757,7 +9742,7 @@ msgstr "Show the new user dialog when starting Picard"
 
 #: picard/ui/ui_options_interface.py:131
 msgid "Begin browsing in the following directory:"
-msgstr "Commencer la navigation dans le répertoire suivant"
+msgstr "Commencer la navigation dans le répertoire suivant :"
 
 #: picard/ui/options/interface_colors.py:92
 #: picard/ui/ui_options_interface_colors.py:49
@@ -10255,7 +10240,7 @@ msgstr "Sélectionne le script de nommage de fichier à charger dans l'éditeur"
 
 #: picard/ui/ui_scripteditor.py:210 picard/ui/ui_scripteditor_details.py:99
 msgid "Title:"
-msgstr "Titre : "
+msgstr "Titre :"
 
 #: picard/ui/ui_scripteditor_details.py:91
 msgid "File Naming Script Metadata"
@@ -10432,11 +10417,11 @@ msgstr "Option"
 #: picard/ui/options/dialog.py:484
 #, python-format
 msgid "Profiles Attached to Options in %s Section"
-msgstr "Profils associés aux options de la section %s "
+msgstr "Profils associés aux options de la section %s"
 
 #: picard/ui/options/dialog.py:494
 msgid " [Enabled]"
-msgstr "[Activé]"
+msgstr " [Activé]"
 
 #: picard/ui/options/dialog.py:495 picard/ui/options/profiles.py:281
 msgid "None"
@@ -10449,7 +10434,7 @@ msgstr "Prise d’empreinte"
 #: picard/ui/options/fingerprinting.py:171
 #: picard/ui/options/fingerprinting.py:175
 msgid "Please select a valid fpcalc executable."
-msgstr "Merci de choisir un exécutable fpcalc valide. "
+msgstr "Merci de choisir un exécutable fpcalc valide."
 
 #: picard/ui/options/fingerprinting.py:175
 msgid "Invalid fpcalc executable"
@@ -10656,7 +10641,7 @@ msgstr "Ajouter des fichiers"
 
 #: picard/ui/options/interface_toolbar.py:75
 msgid "Cluster"
-msgstr "Grappes"
+msgstr "Grappe"
 
 #: picard/ui/options/interface_toolbar.py:79
 msgid "Lookup"
@@ -10684,7 +10669,7 @@ msgstr "Ouvrir dans le lecteur"
 
 #: picard/ui/options/interface_toolbar.py:115
 msgid "Lookup CD..."
-msgstr "Rechercher le CD"
+msgstr "Rechercher le CD …"
 
 #: picard/ui/options/interface_toolbar.py:186
 msgid "Drag and Drop to re-order"
@@ -10738,7 +10723,7 @@ msgstr ""
 "cochant la case \"Supprimer les options sélectionnées\". Vous pouvez ensuite "
 "sélectionner les paramètres à supprimer en cochant la case à côté du "
 "paramètre. Lorsque vous choisissez \"Faites ainsi !\" pour enregistrer vos "
-"paramètres d'option, les éléments sélectionnés seront supprimés. "
+"paramètres d'option, les éléments sélectionnés seront supprimés."
 
 #: picard/ui/options/maintenance.py:93
 msgid "Value"
@@ -11046,7 +11031,7 @@ msgstr "Montrer la documentation des scripts dans une nouvelle fenêtre."
 
 #: picard/ui/options/scripting.py:126
 msgid "Import a script file as a new script."
-msgstr "Importe un fichier de script comme nouveau script"
+msgstr "Importe un fichier de script comme nouveau script."
 
 #: picard/ui/options/scripting.py:129
 msgid "Export the current script to a file."
@@ -11213,8 +11198,7 @@ msgstr "Retour automatique à la li&gne"
 #: picard/ui/widgets/scripttextedit.py:330
 msgid "Word wrap long lines in the editor"
 msgstr ""
-" Retour automatique à la ligne pour les lignes les plus longues dans "
-"l'éditeur"
+"Retour automatique à la ligne pour les lignes les plus longues dans l'éditeur"
 
 #: picard/ui/widgets/scripttextedit.py:332
 msgid "Ctrl+Shift+W"
@@ -11222,7 +11206,7 @@ msgstr "Ctrl+Shift+W"
 
 #: picard/ui/widgets/scripttextedit.py:338
 msgid "Show help &tooltips"
-msgstr "Mon&trer les info-bulles d'aide "
+msgstr "Mon&trer les info-bulles d'aide"
 
 #: picard/ui/widgets/scripttextedit.py:339
 msgid "Show tooltips for script elements"
@@ -11518,7 +11502,7 @@ msgstr "Id d’enregistrement MusicBrainz"
 
 #: picard/util/tags.py:89
 msgid "MusicBrainz Release Group Id"
-msgstr "Id MusicBrainz de groupe de parution "
+msgstr "Id MusicBrainz de groupe de parution"
 
 #: picard/util/tags.py:90
 msgid "MusicBrainz Track Id"
@@ -11650,7 +11634,7 @@ msgstr "Ordre de tri du titre"
 
 #: picard/util/tags.py:125
 msgid "Total Discs"
-msgstr "Nombre total de disques "
+msgstr "Nombre total de disques"
 
 #: picard/util/tags.py:126
 msgid "Total Tracks"
