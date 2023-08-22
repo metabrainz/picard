@@ -86,7 +86,7 @@ def short_string(number, multiple, scale=1, l10n=True):
         num = nr
     if l10n:
         fmtnum = locale.format_string(fmt, num)
-        return _("%s " + unit) % fmtnum
+        return _("%(value)s %(unit)s") % {"value": fmtnum, "unit": unit}
     else:
         return fmt % num + " " + unit
 
