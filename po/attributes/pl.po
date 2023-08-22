@@ -1,19 +1,19 @@
 # 
 # Translators:
-# czaja <krzysztof@czajkowski.edu.pl>, 2011
-# Dariusz Kowalski <darkow666@gmail.com>, 2019
-# Formbi Chiss <formbi@interia.pl>, 2017
-# Jarek . <jarek83@gmail.com>, 2018
-# Debeat <krystian4842@gmail.com>, 2014
-# Maksiu Piotrowski <maksiu@npng.pl>, 2016
-# Marcin Rataj <lidel@lidel.org>, 2011-2012,2014
-# Michał Furmański <ankhedonic@gmail.com>, 2022
-# Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
-# Piotr Myśliński <piotr.myslinski@gmail.com>, 2013
-# Rafał Nawrot <rafalnawrot49@gmail.com>, 2016
-# rawrower <rawrower@gmail.com>, 2019
-# szczepaxn pax <szczepaxn@gmail.com>, 2016
-#   Tobias Toedter <t.toedter@gmx.net>, 2007
+# czaja <email address hidden>, 2011
+# Dariusz Kowalski <email address hidden>, 2019
+# Formbi Chiss <email address hidden>, 2017
+# Jarek . <email address hidden>, 2018
+# Debeat <email address hidden>, 2014
+# Maksiu Piotrowski <email address hidden>, 2016
+# Marcin Rataj <email address hidden>, 2011-2012,2014
+# Michał Furmański <email address hidden>, 2022
+# Nikolai Prokoschenko <email address hidden>, 2011
+# Piotr Myśliński <email address hidden>, 2013
+# Rafał Nawrot <email address hidden>, 2016
+# rawrower <email address hidden>, 2019
+# szczepaxn pax <email address hidden>, 2016
+#   Tobias Toedter <email address hidden>, 2007
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

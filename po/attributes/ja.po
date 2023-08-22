@@ -1,29 +1,29 @@
 # 
 # Translators:
 # nikki, 2014
-# Alexis Jeandeau <alexis.jeandeau@gmail.com>, 2020
-# Atsushi Nakamura <r1990297@gmail.com>, 2020
+# Alexis Jeandeau <email address hidden>, 2020
+# Atsushi Nakamura <email address hidden>, 2020
 # john doe, 2018
-# Keshav Kini <keshav.kini@gmail.com>, 2013
+# Keshav Kini <email address hidden>, 2013
 # 532fd2f58e02ecfdf896ec90dcdd61a5_8e0e62b, 2017
 # mai inoue, 2015
 # mai inoue, 2015
-# Masuda Sunatomo <sunatomo@gmail.com>, 2021
+# Masuda Sunatomo <email address hidden>, 2021
 # Mitsuharu Kurita, 2016
 # nikki, 2013-2014
 # Nozomu Kurasawa <email address hidden>, 2012
-# Nozomu KURASAWA <nabetaro@caldron.jp>, 2012-2014
-# ffff23 <open_ffff23@protonmail.ch>, 2021
+# Nozomu KURASAWA <email address hidden>, 2012-2014
+# ffff23 <email address hidden>, 2021
 # Osamu Takahashi, 2014
 # Osamu Takahashi, 2014
 # PATATE12, 2014
-# 赤沼栄 <sakaeakanuma@gmail.com>, 2017
-# Shunsuke Shimizu <grafi@grafi.jp>, 2016-2017
+# 赤沼栄 <email address hidden>, 2017
+# Shunsuke Shimizu <email address hidden>, 2016-2017
 # th1rtyf0ur, 2013
 # th1rtyf0ur, 2013
-# 和田篤 <entry@wa2c.com>, 2019
-# 和田篤 <entry@wa2c.com>, 2019
-# 和田篤 <entry@wa2c.com>, 2018
+# 和田篤 <email address hidden>, 2019
+# 和田篤 <email address hidden>, 2019
+# 和田篤 <email address hidden>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

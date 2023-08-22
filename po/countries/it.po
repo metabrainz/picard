@@ -1,7 +1,7 @@
 # 
 # Translators:
-# Gioele <gioele@svario.it>, 2012
-# leofiore <leofiore@libero.it>, 2012
+# Gioele <email address hidden>, 2012
+# leofiore <email address hidden>, 2012
 # salo.rock, 2014-2015
 # salo.rock, 2012
 msgid ""

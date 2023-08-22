@@ -1,19 +1,19 @@
 # 
 # Translators:
 # Jaakko Perttilä <email address hidden>, 2012
-# Jaakko Perttilä <jormangeud@gmail.com>, 2012-2014,2017-2019
-# Jaakko Perttilä <jormangeud@gmail.com>, 2014
-# Juhana Uuttu <rexroom@sci.fi>, 2023
-# Kai Kasurinen <kai.kasurinen@iki.fi>, 2014
+# Jaakko Perttilä <email address hidden>, 2012-2014,2017-2019
+# Jaakko Perttilä <email address hidden>, 2014
+# Juhana Uuttu <email address hidden>, 2023
+# Kai Kasurinen <email address hidden>, 2014
 # ListMyCDs.com Martikainen <email address hidden>, 2012
-# Timo Martikainen <musicbrainz@listmycds.com>, 2012
+# Timo Martikainen <email address hidden>, 2012
 # phonebox, 2014
 # phonebox, 2014-2015,2018
 # Sami Korkalainen, 2017
 # Sami Korkalainen, 2017
 # Timo Martikainen <>, 2012
 # Timo Martikainen <email address hidden>, 2012
-# Timo Martikainen <musicbrainz@listmycds.com>, 2012-2014
+# Timo Martikainen <email address hidden>, 2012-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

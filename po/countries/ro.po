@@ -1,6 +1,6 @@
 # 
 # Translators:
-# viper666 <bruceradu@gmail.com>, 2013,2019
+# viper666 <email address hidden>, 2013,2019
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

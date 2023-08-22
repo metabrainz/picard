@@ -1,44 +1,44 @@
 # 
 # Translators:
-# Abby Zla <abby230492@gmail.com>, 2017
-# adeluna <adelunaddl@yahoo.com.mx>, 2012
-# Alexander Dupuy <alex.dupuy@mac.com>, 2012
+# Abby Zla <email address hidden>, 2017
+# adeluna <email address hidden>, 2012
 # Alexander Dupuy <email address hidden>, 2012
-# Alfredo Briones <alfredobriones@hotmail.com>, 2016
-# Antony Duran <hackshd2015@gmail.com>, 2017
-# Carlos Ernesto Lugo Mejia <Carlostrewher@gmail.com>, 2022
-# César Martín <cmartin.tradu@gmail.com>, 2019
+# Alexander Dupuy <email address hidden>, 2012
+# Alfredo Briones <email address hidden>, 2016
+# Antony Duran <email address hidden>, 2017
+# Carlos Ernesto Lugo Mejia <email address hidden>, 2022
+# César Martín <email address hidden>, 2019
 # Colectivo AlArte, 2021
-# Edson Armando <edsonarmando78@outlook.com>, 2021
+# Edson Armando <email address hidden>, 2021
 #   <email address hidden>, 2012
-# Fermin Rodriguez <cosmos.fermin@gmail.com>, 2018
-# Francisco Godoy <francisco.godoy@openmailbox.org>, 2018
-# Fran Martín <frankiepd@gmail.com>, 2016
+# Fermin Rodriguez <email address hidden>, 2018
+# Francisco Godoy <email address hidden>, 2018
+# Fran Martín <email address hidden>, 2016
 # gr0uch0mars <email address hidden>, 2011
 # 3b2b9b2970dff2223d07f096c7a072f3, 2011
-# Héctor Arroyo <churruka@hangar18.cc>, 2012,2015
+# Héctor Arroyo <email address hidden>, 2012,2015
 # Héctor Arroyo <email address hidden>, 2012
-# Ismael Olea <ismael@olea.org>, 2013-2015
+# Ismael Olea <email address hidden>, 2013-2015
 # Jaime Marquínez Ferrándiz, 2019
-# Jeremias Brown <comercialspam@gmail.com>, 2018
-# Juan Acuña <jmacuna0@gmail.com>, 2016
-# Kevin López Brante <kevin@kddlb.cl>, 2016
-# Kevin López Brante <kelopez.cl@gmail.com>, 2015
-# Luis zas <dalues@gmail.com>, 2017
-# Marta PD <marta_puerto_d@yahoo.com>, 2014
-# Mathias Gonzalez <mathiias.gonzalez@gmail.com>, 2015
-# Maurizio Corripio <perromaldo@outlook.com>, 2019
+# Jeremias Brown <email address hidden>, 2018
+# Juan Acuña <email address hidden>, 2016
+# Kevin López Brante <email address hidden>, 2016
+# Kevin López Brante <email address hidden>, 2015
+# Luis zas <email address hidden>, 2017
+# Marta PD <email address hidden>, 2014
+# Mathias Gonzalez <email address hidden>, 2015
+# Maurizio Corripio <email address hidden>, 2019
 # Nicolás Tamargo <email address hidden>, 2011-2012
-# Nicolás Tamargo <reosarevok@gmail.com>, 2011-2013,2015,2019
-# Pier Jose Gotta Perez <piegope@protonmail.com>, 2017
+# Nicolás Tamargo <email address hidden>, 2011-2013,2015,2019
+# Pier Jose Gotta Perez <email address hidden>, 2017
 # RepaNation Distributors, 2022
-# Robert Schneider <robertschv@gmail.com>, 2019
-# Kevin López Brante <kevin@kddlb.cl>, 2012
+# Robert Schneider <email address hidden>, 2019
+# Kevin López Brante <email address hidden>, 2012
 # Tiago Natale, 2022
 #   Tobias Quathamer <email address hidden>, 2007
-#   Tobias Quathamer <toddy@debian.org>, 2007
-# t0n3t <toni75@gmail.com>, 2012
-# Victor reaven <victoreaven@gmail.com>, 2016
+#   Tobias Quathamer <email address hidden>, 2007
+# t0n3t <email address hidden>, 2012
+# Victor reaven <email address hidden>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

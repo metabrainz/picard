@@ -1,24 +1,28 @@
-# 
+#
 # Translators:
-# reneweesp <bmom43@hotmail.com>, 2017
+# reneweesp <email address hidden>, 2017
 # Maurits Meulenbelt <email address hidden>, 2012
 # Maurits Meulenbelt, 2012
 # Maurits Meulenbelt, 2013-2022
 # Nikolai Prokoschenko <email address hidden>, 2011
-# Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
-# Niko Strijbol <strijbol.niko@gmail.com>, 2018
-# Remko de Keijzer <remko@remkodekeijzer.nl>, 2021
+# Nikolai Prokoschenko <email address hidden>, 2011
+# Niko Strijbol <email address hidden>, 2018
+# Remko de Keijzer <email address hidden>, 2021
+# RandomMushroom128 <RandomMushroom128@users.noreply.translations.metabrainz.org>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2012-05-24 18:52+0000\n"
-"Last-Translator: Maurits Meulenbelt, 2013-2022\n"
-"Language-Team: Dutch (http://app.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
+"PO-Revision-Date: 2023-08-20 10:27+0000\n"
+"Last-Translator: RandomMushroom128 <RandomMushroom128@users.noreply."
+"translations.metabrainz.org>\n"
+"Language-Team: Dutch <https://translations.metabrainz.org/projects/"
+"musicbrainz/attributes/nl/>\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: nl\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 
 #: DB:work_type/description:9
 msgctxt "work_type"
@@ -273,7 +277,7 @@ msgstr "Een longbox is een grote kartonnen doos die tot midden jaren ’90 in No
 #: DB:place_type/description:43
 msgctxt "place_type"
 msgid "A large, permanent outdoor stage, typically with a fixed seating area."
-msgstr ""
+msgstr "Een groot, permanent openlucht podium, meestal met vaste zitplekken."
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -478,7 +482,7 @@ msgstr "Een serie optredens van dezelfde show op dezelfde locatie."
 #: DB:series_type/description:48
 msgctxt "series_type"
 msgid "A series of recordings honoured by the same award."
-msgstr ""
+msgstr "Een serie van opnamen geëerd met dezelfde prijs."
 
 #: DB:series_type/description:3
 msgctxt "series_type"
@@ -498,7 +502,7 @@ msgstr "Een serie gerelateerde concerten van een artiest op dezelfde locatie."
 #: DB:series_type/description:47
 msgctxt "series_type"
 msgid "A series of release groups honoured by the same award."
-msgstr ""
+msgstr "Een serie van uitgavegroepen geëerd met dezelfde prijs."
 
 #: DB:series_type/description:1
 msgctxt "series_type"
@@ -513,7 +517,7 @@ msgstr "Een serie uitgaven."
 #: DB:series_type/description:46
 msgctxt "series_type"
 msgid "A series of works honoured by the same award."
-msgstr ""
+msgstr "Een serie van composities geëerd met dezelfde prijs."
 
 #: DB:series_type/description:5
 msgctxt "series_type"
@@ -601,6 +605,8 @@ msgid ""
 "A temporary outdoor stage erected for a music festival or other similar "
 "event."
 msgstr ""
+"Een tijdelijk openlucht podium opgericht voor een muziekfestival of een "
+"ander vergelijkbaar evenement."
 
 #: DB:release_packaging/description:2
 msgctxt "release_packaging"
@@ -833,7 +839,7 @@ msgstr "Ambikā"
 #: DB:place_type/name:43
 msgctxt "place_type"
 msgid "Amphitheatre"
-msgstr ""
+msgstr "Amfitheater"
 
 #: DB:work_attribute_type_allowed_value/value:855
 msgctxt "work_attribute_type_allowed_value"
@@ -1955,7 +1961,7 @@ msgstr "Concert"
 #: DB:place_type/name:44
 msgctxt "place_type"
 msgid "Concert hall / Theatre"
-msgstr ""
+msgstr "Concertgebouw / Theater"
 
 #: DB:work_type/name:4
 msgctxt "work_type"
@@ -7275,6 +7281,8 @@ msgid ""
 "The DVD (video) layer of a DVDplus. The CD layer should be added as a "
 "separate medium."
 msgstr ""
+"De dvd-video-laag van een DVDplus. De cd-laag moet als een apart medium "
+"worden toegevoegd."
 
 #: DB:medium_format/description:66
 msgctxt "medium_format"
@@ -7290,6 +7298,9 @@ msgid ""
 "Audio or DVD-Video (or it includes both). The CD layer should be added as a "
 "separate medium."
 msgstr ""
+"De dvd-laag van een DualDisc, wanneer het niet duidelijk is of het een dvd-"
+"audio of dvd-video is (of beiden). De cd-laag moet als een apart medium "
+"worden toegevoegd."
 
 #: DB:medium_format/description:80
 msgctxt "medium_format"

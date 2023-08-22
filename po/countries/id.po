@@ -1,6 +1,6 @@
 # 
 # Translators:
-# Ian Perdiansah <ianperdiansah05@gmail.com>, 2020
+# Ian Perdiansah <email address hidden>, 2020
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

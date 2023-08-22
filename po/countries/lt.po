@@ -1,6 +1,6 @@
 # 
 # Translators:
-# Vaclovas lntas (Vac.) <vaclovas1999@gmail.com>, 2023
+# Vaclovas lntas (Vac.) <email address hidden>, 2023
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

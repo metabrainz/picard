@@ -1,6 +1,6 @@
 # 
 # Translators:
-# Никола Крстевски <nikola.krstevski@gmail.com>, 2015
+# Никола Крстевски <email address hidden>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

@@ -1,8 +1,8 @@
 # 
 # Translators:
-# Alex Mauer <hawke@hawkesnest.net>, 2016
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2009
-# Ian McEwen <ianmcorvidae@ianmcorvidae.net>, 2012
+# Alex Mauer <email address hidden>, 2016
+# FIRST AUTHOR <email address hidden>, 2009
+# Ian McEwen <email address hidden>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

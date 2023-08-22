@@ -1,6 +1,6 @@
 # 
 # Translators:
-# Gurmeet Kochar <gomikochar@gmail.com>, 2015
+# Gurmeet Kochar <email address hidden>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

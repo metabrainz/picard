@@ -1,12 +1,12 @@
 # 
 # Translators:
-# A. Regnander <anton_r_3@hotmail.com>, 2017
+# A. Regnander <email address hidden>, 2017
 # Filip Bengtsson, 2018
 # efef6ec5b435a041fce803c7f8af77d2_2341d43, 2017
 # efef6ec5b435a041fce803c7f8af77d2_2341d43, 2020
-# Kristoffer Grundström <lovaren@gmail.com>, 2016
-# Killinstinct <myaku@msn.com>, 2015
-# Robin Björnsvik <robin@bjornsvik.se>, 2013
+# Kristoffer Grundström <email address hidden>, 2016
+# Killinstinct <email address hidden>, 2015
+# Robin Björnsvik <email address hidden>, 2013
 # Staffan Vilcans, 2015
 # Tom Sawyer, 2022
 msgid ""

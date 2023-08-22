@@ -1,11 +1,11 @@
 # 
 # Translators:
-# Anton Karpuzikov <karpuzikovanton@gmail.com>, 2020
-# derr84 <derr84@mail.ru>, 2013
-# greycat <greycat.na.kor@gmail.com>, 2012
-# Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
-# dubwai <o0wd8jx@lavabit.com>, 2012
-# Дмитрий <sema19689@gmail.com>, 2014
+# Anton Karpuzikov <email address hidden>, 2020
+# derr84 <email address hidden>, 2013
+# greycat <email address hidden>, 2012
+# Nikolai Prokoschenko <email address hidden>, 2011
+# dubwai <email address hidden>, 2012
+# Дмитрий <email address hidden>, 2014
 # Лёва, 2015
 msgid ""
 msgstr ""

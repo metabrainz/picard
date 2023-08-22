@@ -1,11 +1,11 @@
 # 
 # Translators:
-# Andrea Borio <andrybo6@gmail.com>, 2016
-# Dario Castellarin <req1348@gmail.com>, 2018
+# Andrea Borio <email address hidden>, 2016
+# Dario Castellarin <email address hidden>, 2018
 #   <email address hidden>, 2012
 # Gioele  <email address hidden>, 2012
-# Gioele <gioele@svario.it>, 2012
-# leofiore <leofiore@libero.it>, 2012
+# Gioele <email address hidden>, 2012
+# leofiore <email address hidden>, 2012
 # salo.rock, 2016-2022
 # salo.rock, 2013-2015
 # salo.rock, 2012

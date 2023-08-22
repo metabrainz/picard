@@ -1,62 +1,66 @@
-# 
+#
 # Translators:
 # nikki, 2014
-# nikki2 <b4931048@nwldx.com>, 2012
+# nikki2 <email address hidden>, 2012
 # Jonas S. Vogt (Baba Jones), 2022
-# Daniel Schury <Daniel.Schury@physik.uni-giessen.de>, 2011
 # Daniel Schury <email address hidden>, 2011
-# David Kellner <kellnerd@gmx.net>, 2019-2020
-# Eckhard Henkel <eckhard.henkel@t-online.de>, 2018
+# Daniel Schury <email address hidden>, 2011
+# David Kellner <email address hidden>, 2019-2020
+# Eckhard Henkel <email address hidden>, 2018
 # Elmar Stichnoth, 2017
 # Elmar Stichnoth, 2017
-#   <email address hidden>, 2012
-# Ettore Atalan <atalanttore@googlemail.com>, 2014
-# Felix Kugler <relgukxilef@gmail.com>, 2015
-# Frank Matthiae <senax79@gmail.com>, 2015
-# Frank Matthiae <senax79@gmail.com>, 2015
-# Hans-Peter Braun <hape.braun@icloud.com>, 2017
+# <email address hidden>, 2012
+# Ettore Atalan <email address hidden>, 2014
+# Felix Kugler <email address hidden>, 2015
+# Frank Matthiae <email address hidden>, 2015
+# Frank Matthiae <email address hidden>, 2015
+# Hans-Peter Braun <email address hidden>, 2017
 # happykraut, 2017
-# 871cf62ea721ffc486279ce0e5a0f34c_d3e66b3 <3d1fc2557ad8bc41db62b2fba21e9eae_680078>, 2018
-# 871cf62ea721ffc486279ce0e5a0f34c_d3e66b3 <3d1fc2557ad8bc41db62b2fba21e9eae_680078>, 2018
-# Jod isnotmyname <beebeebeethats3bees@aaathats3as.com>, 2017
+# 871cf62ea721ffc486279ce0e5a0f34c_d3e66b3 <email address hidden>, 2018
+# 871cf62ea721ffc486279ce0e5a0f34c_d3e66b3 <email address hidden>, 2018
+# Jod isnotmyname <email address hidden>, 2017
 # Jonas S. Vogt (Baba Jones), 2022
 # happykraut, 2017
-# Leo_Verto <leotheverto@googlemail.com>, 2017
-# Leo_Verto <leotheverto@googlemail.com>, 2017
-# Marc Rodrigues <info@sustain-release.de>, 2019
+# Leo_Verto <email address hidden>, 2017
+# Leo_Verto <email address hidden>, 2017
+# Marc Rodrigues <email address hidden>, 2019
 # Mark Spike, 2019
 # Mineo <email address hidden>, 2011
-# Wieland Hoffmann <themineo+transifex@googlemail.com>, 2011
+# Wieland Hoffmann <email address hidden>, 2011
 # nikki, 2013-2014
-# nikki2 <b4931048@nwldx.com>, 2012
+# nikki2 <email address hidden>, 2012
 # Nikolai Prokoschenko <email address hidden>, 2011
-# Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
+# Nikolai Prokoschenko <email address hidden>, 2011
 # nikki, 2013
-# Patrick <patrick.rein@gmail.com>, 2015
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2012,2018-2022
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2012
-# S.Brandt <s.brandt@mixxx.org>, 2014-2016
+# Patrick <email address hidden>, 2015
+# Philipp Wolfer <email address hidden>, 2012,2018-2022
+# Philipp Wolfer <email address hidden>, 2012
+# S.Brandt <email address hidden>, 2014-2016
 # Shepard, 2011
 # Shepard <email address hidden>, 2011
 # Shepard, 2011
 # Shepard, 2013-2014
 # TL, 2015-2016
 # Tobias Quathamer <email address hidden>, 2007
-# Tobias Quathamer <toddy@debian.org>, 2007
-# palim <ueblesurmeli-transifex@yahoo.de>, 2020
-# Ulrich Klauer <ulrich@chirlu.de>, 2015-2016
-# Wieland Hoffmann <themineo+transifex@googlemail.com>, 2011
+# Tobias Quathamer <email address hidden>, 2007
+# palim <email address hidden>, 2020
+# Ulrich Klauer <email address hidden>, 2015-2016
+# Wieland Hoffmann <email address hidden>, 2011
+# chaban <chaban@users.noreply.translations.metabrainz.org>, 2023.
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2012-05-24 18:52+0000\n"
-"Last-Translator: Jonas S. Vogt (Baba Jones), 2022\n"
-"Language-Team: German (http://app.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
+"PO-Revision-Date: 2023-08-22 17:14+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"Language-Team: German <https://translations.metabrainz.org/projects/"
+"musicbrainz/attributes/de/>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 
 #: DB:work_type/description:9
 msgctxt "work_type"
@@ -269,7 +273,8 @@ msgstr ""
 msgctxt "work_type"
 msgid ""
 "A concerto is a musical work for soloist(s) accompanied by an orchestra."
-msgstr "Concerto beschreibt eine Komposition für Solisten mit Orchesterbegleitung"
+msgstr ""
+"Concerto beschreibt eine Komposition für Solisten mit Orchesterbegleitung."
 
 #: DB:event_type/description:4
 msgctxt "event_type"
@@ -358,7 +363,9 @@ msgctxt "event_type"
 msgid ""
 "A party, reception or other event held specifically for the launch of a "
 "release."
-msgstr "Eine Party, ein Empfang oder eine andere Art von Veranstaltung, die anlässlich einer Veröffentlichung gegeben wird"
+msgstr ""
+"Eine Party, ein Empfang oder eine andere Art von Veranstaltung, die "
+"anlässlich einer Veröffentlichung gegeben wird."
 
 #: DB:release_packaging/description:17
 msgctxt "release_packaging"
@@ -400,7 +407,9 @@ msgctxt "place_type"
 msgid ""
 "A place that has live artistic performances as one of its primary functions,"
 " such as a concert hall."
-msgstr "Ein Ort, wie z. B. eine Konzerthalle, dessen wesentliche Funktion die Aufführung von künstlerischen Live-Auftritten ist. "
+msgstr ""
+"Ein Ort, wie z. B. eine Konzerthalle, dessen wesentliche Funktion die "
+"Aufführung von künstlerischen Live-Auftritten ist."
 
 #: DB:place_type/description:6
 msgctxt "place_type"
@@ -408,7 +417,10 @@ msgid ""
 "A place that has worship or religious studies as its main function. "
 "Religious buildings often host concerts and serve as recording locations, "
 "especially for classical music."
-msgstr "Ein Ort, der im Wesentlichen religiösen Gottesdiensten oder Studien vorbehalten ist. Religiöse Einrichtungen beherbergen oft Konzerte oder dienen als Aufnahmeorte, insbesonder für klassische Musik. "
+msgstr ""
+"Ein Ort, der im Wesentlichen religiösen Gottesdiensten oder Studien "
+"vorbehalten ist. Religiöse Einrichtungen beherbergen oft Konzerte oder "
+"dienen als Aufnahmeorte, insbesonder für klassische Musik."
 
 #: DB:place_type/description:4
 msgctxt "place_type"
@@ -416,7 +428,11 @@ msgid ""
 "A place whose main purpose is to host outdoor sport events, typically "
 "consisting of a pitch surrounded by a structure for spectators with no roof,"
 " or a roof which can be retracted."
-msgstr "Ein Ort, dessen wesentliche Bestimmung die Durchführung von outdoor Sportereignissen ist. Typischerweise bestehend aus einem Sportfeld umgeben von einer Infrastruktur für Zuschauer ohne Dach, oder einem Dach, das eingezogen werden kann. "
+msgstr ""
+"Ein Ort, dessen wesentliche Bestimmung die Durchführung von outdoor "
+"Sportereignissen ist. Typischerweise bestehend aus einem Sportfeld umgeben "
+"von einer Infrastruktur für Zuschauer ohne Dach, oder einem Dach, das "
+"eingezogen werden kann."
 
 #: DB:release_status/description:6
 msgctxt "release_status"
@@ -432,7 +448,9 @@ msgid ""
 "A play is a form of literature usually consisting of scripted dialogue "
 "between characters, and intended for theatrical performance rather than just"
 " reading."
-msgstr "Ein Bühnenwerk, auch Bühnenstück oder Theaterstück genannt, ist eine Dichtung, die auf der Bühne zur Aufführung gebracht wird. "
+msgstr ""
+"Ein Bühnenwerk, auch Bühnenstück oder Theaterstück genannt, ist eine "
+"Dichtung, die auf der Bühne zur Aufführung gebracht wird."
 
 #: DB:work_type/description:21
 msgctxt "work_type"
@@ -462,7 +480,9 @@ msgstr ""
 msgctxt "work_type"
 msgid ""
 "A quartet is a musical composition scored for four voices or instruments."
-msgstr "Ein Quartett ist eine musikalische Komposition, die für vier Stimmen oder Instrumente entworfen wurde"
+msgstr ""
+"Ein Quartett ist eine musikalische Komposition, die für vier Stimmen oder "
+"Instrumente entworfen wurde."
 
 #: DB:series_type/description:8
 msgctxt "series_type"
@@ -496,7 +516,7 @@ msgstr ""
 #: DB:series_type/description:13
 msgctxt "series_type"
 msgid "A series of artists."
-msgstr ""
+msgstr "Eine Reihe von Künstlern."
 
 #: DB:series_type/description:15
 msgctxt "series_type"
@@ -652,6 +672,9 @@ msgid ""
 "portable listening. It did not find commercial success, but a few albums "
 "were released in the format in the early 00s."
 msgstr ""
+"EIne sehr kleine optische Disc in einer Schutzhülle, die für mobile "
+"Abspielgeräte vorgesehen war. Sie hatte keinen kommerziellen Erfolg, aber in "
+"den frühen 00er Jahren wurden einige Alben in diesem Format veröffentlicht."
 
 #: DB:medium_format/description:131
 msgctxt "medium_format"
@@ -659,6 +682,8 @@ msgid ""
 "A video format used in the 1980s and 90s for professional work, including "
 "television and video archival."
 msgstr ""
+"Ein Videoformat, das in den 1980er und 90er Jahren für die professionelle "
+"Arbeit, einschließlich Fernsehen und Videoarchivierung, verwendet wurde."
 
 #: DB:work_type/description:19
 msgctxt "work_type"
@@ -716,7 +741,7 @@ msgstr "AGADU-ID"
 #: DB:work_attribute_type/name:63
 msgctxt "work_attribute_type"
 msgid "AKKA/LAA ID"
-msgstr ""
+msgstr "AKKA-/LAA-ID"
 
 #: DB:work_attribute_type/name:23
 msgctxt "work_attribute_type"
@@ -871,7 +896,7 @@ msgstr ""
 #: DB:place_type/name:43
 msgctxt "place_type"
 msgid "Amphitheatre"
-msgstr ""
+msgstr "Amphitheater"
 
 #: DB:work_attribute_type_allowed_value/value:855
 msgctxt "work_attribute_type_allowed_value"
@@ -913,7 +938,10 @@ msgid ""
 "An alternate version of a release where the titles have been changed. These "
 "don't correspond to any real release and should be linked to the original "
 "release using the transl(iter)ation relationship."
-msgstr "Eine alternative Version der Veröffentlichung, bei der die Titel verändert wurden. Diese entsprechen keiner echten Veröffentlichung und sollten mittel der Transl(iter)ationsbeziehung mit dem Original verknüpft werden. "
+msgstr ""
+"Eine alternative Version der Veröffentlichung, bei der die Titel verändert "
+"wurden. Diese entsprechen keiner echten Veröffentlichung und sollten mittel "
+"der Transl(iter)ationsbeziehung mit dem Original verknüpft werden."
 
 #: DB:work_type/description:1
 msgctxt "work_type"
@@ -928,7 +956,9 @@ msgctxt "work_type"
 msgid ""
 "An audio drama is a dramatized, purely acoustic performance, broadcast on "
 "radio or published on an audio medium (tape, CD, etc.)."
-msgstr "Ein Hörspiel ist eine dramatisierte, rein akkustische Aufführung, Radioübertragung oder Veröffentlichung auf einem Medium (Kassette, CD, etc.). "
+msgstr ""
+"Ein Hörspiel ist eine dramatisierte, rein akustische Aufführung, "
+"Radioübertragung oder Veröffentlichung auf einem Medium (Kassette, CD, etc.)."
 
 #: DB:release_group_secondary_type/description:11
 msgctxt "release_group_secondary_type"
@@ -987,7 +1017,7 @@ msgstr ""
 #: DB:release_packaging/description:54
 msgctxt "release_packaging"
 msgid "An often decorated metal tin containing one or more CDs."
-msgstr ""
+msgstr "Eine oftmals verzierte Metalldose für eine oder mehrere CDs."
 
 #: DB:work_type/description:10
 msgctxt "work_type"
@@ -1020,7 +1050,10 @@ msgid ""
 "An unofficial/underground release that was not sanctioned by the artist "
 "and/or the record company. This includes unofficial live recordings and "
 "pirated releases."
-msgstr "Eine inoffizielle bzw. Szene-Veröffentlichung, die nicht vom Künstler und/oder dem Label abgesegnet wurde. (Trifft auf inoffizielle Liveaufnahmen und raubkopierte Veröffentlichungen zu.)"
+msgstr ""
+"Eine inoffizielle bzw. Szene-Veröffentlichung, die nicht vom Künstler und/"
+"oder dem Label abgesegnet wurde. Trifft auf inoffizielle Liveaufnahmen und "
+"raubkopierte Veröffentlichungen zu."
 
 #: DB:work_type/description:20
 msgctxt "work_type"
@@ -1040,7 +1073,9 @@ msgctxt "release_status"
 msgid ""
 "Any release officially sanctioned by the artist and/or their record company."
 " Most releases will fit into this category."
-msgstr "Jegliche vom Künstler und/oder dem Label offiziell abgesegnete Veröffentlichung. (Trifft auf die meisten Veröffentlichungen zu.)"
+msgstr ""
+"Jegliche vom Künstler und/oder dem Label offiziell abgesegnete "
+"Veröffentlichung. Trifft auf die meisten Veröffentlichungen zu."
 
 #: DB:release_group_primary_type/description:11
 msgctxt "release_group_primary_type"
@@ -1102,7 +1137,7 @@ msgstr ""
 #: DB:editor_collection_type/name:7
 msgctxt "collection_type"
 msgid "Area collection"
-msgstr ""
+msgstr "Gebietssammlung"
 
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
@@ -1122,7 +1157,7 @@ msgstr ""
 #: DB:editor_collection_type/name:8
 msgctxt "collection_type"
 msgid "Artist collection"
-msgstr ""
+msgstr "Künstlersammlung"
 
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
@@ -1177,12 +1212,12 @@ msgstr "Automatisch"
 #: DB:event_type/name:7
 msgctxt "event_type"
 msgid "Award ceremony"
-msgstr ""
+msgstr "Preisverleihung"
 
 #: DB:series_type/name:15
 msgctxt "series_type"
 msgid "Award ceremony"
-msgstr ""
+msgstr "Preisverleihung"
 
 #: DB:work_attribute_type_allowed_value/value:694
 msgctxt "work_attribute_type_allowed_value"
@@ -1993,7 +2028,7 @@ msgstr "Konzert"
 #: DB:place_type/name:44
 msgctxt "place_type"
 msgid "Concert hall / Theatre"
-msgstr ""
+msgstr "Konzerthaus / Theater"
 
 #: DB:work_type/name:4
 msgctxt "work_type"
@@ -2706,7 +2741,7 @@ msgstr ""
 #: DB:editor_collection_type/name:4
 msgctxt "collection_type"
 msgid "Event collection"
-msgstr ""
+msgstr "Veranstaltungssammlung"
 
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
@@ -2928,7 +2963,7 @@ msgstr "Flache Scheiben mit Rillen für Phonographen/Grammophone. Für Schellack
 #: DB:medium_format/name:51
 msgctxt "medium_format"
 msgid "Flexi-disc"
-msgstr "Flexible Disc (Flexidisc, Schallfolie oder Flexi) "
+msgstr "Flexible Disc (Flexidisc, Schallfolie oder Flexi)"
 
 #: DB:medium_format/description:51
 msgctxt "medium_format"
@@ -3534,7 +3569,7 @@ msgstr "Hybrid SACD (SACD-Schicht, 2-Kanal)"
 #: DB:medium_format/name:86
 msgctxt "medium_format"
 msgid "Hybrid SACD (SACD layer, multichannel)"
-msgstr "Hybrid SACD (SACD-Schicht, Mehrkanal)    "
+msgstr "Hybrid SACD (SACD-Schicht, Mehrkanal)"
 
 #: DB:work_attribute_type_allowed_value/value:418
 msgctxt "work_attribute_type_allowed_value"
@@ -4985,7 +5020,7 @@ msgstr "Mikrokassette"
 #: DB:area_type/name:8
 msgctxt "area_type"
 msgid "Military base"
-msgstr ""
+msgstr "Militärbasis"
 
 #: DB:medium_format/name:6
 msgctxt "medium_format"
@@ -5610,7 +5645,7 @@ msgstr "Nişabureyn"
 #: DB:gender/name:5
 msgctxt "gender"
 msgid "Non-binary"
-msgstr ""
+msgstr "nichtbinär"
 
 #: DB:release_group_secondary_type/description:3
 msgctxt "release_group_secondary_type"
@@ -5835,7 +5870,7 @@ msgstr "Paras"
 #: DB:place_type/name:9
 msgctxt "place_type"
 msgid "Park"
-msgstr ""
+msgstr "Park"
 
 #: DB:work_type/name:13
 msgctxt "work_type"
@@ -6199,7 +6234,7 @@ msgstr ""
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
 msgid "Recording collection"
-msgstr ""
+msgstr "Aufnahmensammlung"
 
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"

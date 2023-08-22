@@ -1,29 +1,29 @@
 # 
 # Translators:
-# AO <ao@localizationlab.org>, 2013
-# AO <ao@localizationlab.org>, 2013,2015
-# murdos <aurelien.mino@gmail.com>, 2015
+# AO <email address hidden>, 2013
+# AO <email address hidden>, 2013,2015
+# murdos <email address hidden>, 2015
 # Benjamin <email address hidden>, 2011
-# Benjamin Sonntag <benjamin@octopuce.fr>, 2011-2012
-# Benjamin Sonntag <benjamin@sonntag.fr>, 2011
-# Dibou <doc@boudon.nom.fr>, 2012
+# Benjamin Sonntag <email address hidden>, 2011-2012
+# Benjamin Sonntag <email address hidden>, 2011
+# Dibou <email address hidden>, 2012
 # Dibou  <email address hidden>, 2012
 #   <email address hidden>, 2012
-# AO <ao@localizationlab.org>, 2013,2015
-# homersimpsons <guillaume.alabre@gmail.com>, 2023
-# kmartin <coldfuzion@ckoisa.net>, 2013
-# Laurent Monin <i18n@norz.org>, 2014,2018,2020
-# Lotheric <lotheric@gmail.com>, 2011-2012
-# murdos <aurelien.mino@gmail.com>, 2011-2012,2015
+# AO <email address hidden>, 2013,2015
+# homersimpsons <email address hidden>, 2023
+# kmartin <email address hidden>, 2013
+# Laurent Monin <email address hidden>, 2014,2018,2020
+# Lotheric <email address hidden>, 2011-2012
+# murdos <email address hidden>, 2011-2012,2015
 # murdos <email address hidden>, 2011
-# Nicolas <finetuningblog@gmail.com>, 2018
-# Nicolas HOUDELOT <nicolas.houdelot@free.fr>, 2015
-# Paul TREHIOU <paul.trehiou@gmail.com>, 2015
-# Paul Tremberth <agigaday@gmail.com>, 2013
-# Raphaël Fery <pask@kodu.fr>, 2019
-# Paul Tremberth <agigaday@gmail.com>, 2013
-# AO <ao@localizationlab.org>, 2015
-# AO <ao@localizationlab.org>, 2013-2015
+# Nicolas <email address hidden>, 2018
+# Nicolas HOUDELOT <email address hidden>, 2015
+# Paul TREHIOU <email address hidden>, 2015
+# Paul Tremberth <email address hidden>, 2013
+# Raphaël Fery <email address hidden>, 2019
+# Paul Tremberth <email address hidden>, 2013
+# AO <email address hidden>, 2015
+# AO <email address hidden>, 2013-2015
 # yvanz, 2016-2021,2023
 # yvanz, 2016,2018
 # yvanz, 2018

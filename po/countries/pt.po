@@ -1,6 +1,6 @@
 # 
 # Translators:
-# pingo.mister <joao.lnsa@netcabo.pt>, 2013
+# pingo.mister <email address hidden>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

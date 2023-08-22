@@ -1,27 +1,27 @@
 # 
 # Translators:
-# Anton Karpuzikov <karpuzikovanton@gmail.com>, 2015
+# Anton Karpuzikov <email address hidden>, 2015
 # Dmitr Y, 2017
-# Ekaterina <nawsikaya@bk.ru>, 2020
-# greycat <greycat.na.kor@gmail.com>, 2012
-# Ilya <wileyfoxyx@gmail.com>, 2023
-# Konstantin Artemev <konst.artemev@gmail.com>, 2021
-# MrClon . <MrClon2007@yandex.ru>, 2019
-# Nikita P <nik-p13@yandex.ru>, 2018
-# Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
-# dubwai <o0wd8jx@lavabit.com>, 2012
-# odinvolk <odinwolk@gmail.com>, 2018
-# Rashid R <rashidrama200@gmail.com>, 2021
-# Serg Green <serg.green@gmail.com>, 2016
-# Александр Жибарь <santer1986@gmail.com>, 2016
-# Алексеев Денис <happy.den89@gmail.com>, 2015
-# Дмитрий <sema19689@gmail.com>, 2014
-# Дмитрий Титов <gtdsocial@icloud.com>, 2018
-# Екатерина Тишина <ekaterina.tishina@gmail.com>, 2016
-# Иван Стасюк <brokeyourbike@gmail.com>, 2016
-# Петр Москвин <peter.moskvin@outlook.com>, 2017
-# Светлана Ширикалова <shirikalova@list.ru>, 2018
-# Хамит Фатхлисламов <khamit1986@gmail.com>, 2019
+# Ekaterina <email address hidden>, 2020
+# greycat <email address hidden>, 2012
+# Ilya <email address hidden>, 2023
+# Konstantin Artemev <email address hidden>, 2021
+# MrClon . <email address hidden>, 2019
+# Nikita P <email address hidden>, 2018
+# Nikolai Prokoschenko <email address hidden>, 2011
+# dubwai <email address hidden>, 2012
+# odinvolk <email address hidden>, 2018
+# Rashid R <email address hidden>, 2021
+# Serg Green <email address hidden>, 2016
+# Александр Жибарь <email address hidden>, 2016
+# Алексеев Денис <email address hidden>, 2015
+# Дмитрий <email address hidden>, 2014
+# Дмитрий Титов <email address hidden>, 2018
+# Екатерина Тишина <email address hidden>, 2016
+# Иван Стасюк <email address hidden>, 2016
+# Петр Москвин <email address hidden>, 2017
+# Светлана Ширикалова <email address hidden>, 2018
+# Хамит Фатхлисламов <email address hidden>, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

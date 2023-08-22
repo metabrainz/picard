@@ -1,7 +1,7 @@
 # 
 # Translators:
-# Mihkel Tõnnov <mihhkel@gmail.com>, 2008-2009,2011-2014
-# Mihkel Tõnnov <mihhkel@gmail.com>, 2015,2017-2018,2020
+# Mihkel Tõnnov <email address hidden>, 2008-2009,2011-2014
+# Mihkel Tõnnov <email address hidden>, 2015,2017-2018,2020
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

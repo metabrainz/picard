@@ -2,10 +2,10 @@
 # Translators:
 # Arto Astala, 2016
 # Arto Astala, 2016
-# Jaakko Perttilä <jormangeud@gmail.com>, 2012,2015
-# Kai Kasurinen <kai.kasurinen@iki.fi>, 2014
-# Muz <transifex@mustaqila.li>, 2012
-# Muz <transifex@mustaqila.li>, 2012
+# Jaakko Perttilä <email address hidden>, 2012,2015
+# Kai Kasurinen <email address hidden>, 2014
+# Muz <email address hidden>, 2012
+# Muz <email address hidden>, 2012
 # phonebox, 2014
 # phonebox, 2014
 # Timo Martikainen <>, 2012

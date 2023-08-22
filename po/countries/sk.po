@@ -1,7 +1,7 @@
 # 
 # Translators:
-# Lukáš Lalinský <lalinsky@gmail.com>, 2012
-# Pavol Babinčák <scroolik@gmail.com>, 2012
+# Lukáš Lalinský <email address hidden>, 2012
+# Pavol Babinčák <email address hidden>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

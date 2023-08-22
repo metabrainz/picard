@@ -1,6 +1,6 @@
 # 
 # Translators:
-# Anh Phan <vietnamesel10n@gmail.com>, 2013
+# Anh Phan <email address hidden>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

@@ -1,6 +1,6 @@
 # 
 # Translators:
-# Avi Markovitz <avi.markovitz@gmail.com>, 2018
+# Avi Markovitz <email address hidden>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

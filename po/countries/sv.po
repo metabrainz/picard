@@ -1,9 +1,9 @@
 # 
 # Translators:
-# Kebabpizza <alex_elle@hotmail.com>, 2017
-# A. Regnander <anton_r_3@hotmail.com>, 2017
-# Niklas Berglund <niklas.berglund@gmail.com>, 2016
-# Robin Björnsvik <robin@bjornsvik.se>, 2013
+# Kebabpizza <email address hidden>, 2017
+# A. Regnander <email address hidden>, 2017
+# Niklas Berglund <email address hidden>, 2016
+# Robin Björnsvik <email address hidden>, 2013
 # Staffan Vilcans, 2014
 msgid ""
 msgstr ""

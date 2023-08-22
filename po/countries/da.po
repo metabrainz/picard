@@ -1,10 +1,10 @@
 # 
 # Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2006
-# Michael Albertsen <culex@culex.dk>, 2019
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2020
-# Frederik “Freso” S. Olesen <transifex.net@freso.dk>, 2013
-# Frederik “Freso” S. Olesen <transifex.net@freso.dk>, 2012
+# FIRST AUTHOR <email address hidden>, 2006
+# Michael Albertsen <email address hidden>, 2019
+# Philipp Wolfer <email address hidden>, 2020
+# Frederik “Freso” S. Olesen <email address hidden>, 2013
+# Frederik “Freso” S. Olesen <email address hidden>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

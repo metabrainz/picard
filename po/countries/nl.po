@@ -2,7 +2,7 @@
 # Translators:
 # Maurits Meulenbelt, 2012
 # Maurits Meulenbelt, 2014-2015
-# Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
+# Nikolai Prokoschenko <email address hidden>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

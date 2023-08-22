@@ -1,20 +1,20 @@
 # 
 # Translators:
 # nikki, 2014
-# Daniel Schury <Daniel.Schury@physik.uni-giessen.de>, 2011
-# Ettore Atalan <atalanttore@googlemail.com>, 2014
-# lorenzpressler <lorenz.pressler@gmail.com>, 2012
-# lorenzpressler <lorenz.pressler@gmail.com>, 2012
-# Wieland Hoffmann <themineo+transifex@googlemail.com>, 2011
+# Daniel Schury <email address hidden>, 2011
+# Ettore Atalan <email address hidden>, 2014
+# lorenzpressler <email address hidden>, 2012
+# lorenzpressler <email address hidden>, 2012
+# Wieland Hoffmann <email address hidden>, 2011
 # nikki, 2013-2014
-# Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
+# Nikolai Prokoschenko <email address hidden>, 2011
 # nikki, 2013
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2022
-# S.Brandt <s.brandt@mixxx.org>, 2015
+# Philipp Wolfer <email address hidden>, 2022
+# S.Brandt <email address hidden>, 2015
 # Shepard, 2011
 # Shepard, 2011
-# Tobias Quathamer <toddy@debian.org>, 2007
-# Wieland Hoffmann <themineo+transifex@googlemail.com>, 2011
+# Tobias Quathamer <email address hidden>, 2007
+# Wieland Hoffmann <email address hidden>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

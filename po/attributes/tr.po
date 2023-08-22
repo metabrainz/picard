@@ -1,13 +1,13 @@
 # 
 # Translators:
 # Bora Atıcı, 2021,2023
-# ym syserror <cilek.kocak@gmail.com>, 2012
-# Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
-# Sertan Şentürk <sertan.senturk@upf.edu>, 2017
-# zeugma <sunder67@hotmail.com>, 2012
-# yerdemli <yerdemli@gmail.com>, 2018
-# portik <yetmisbeskere75@hotmail.com>, 2014
-# portik <yetmisbeskere75@hotmail.com>, 2012
+# ym syserror <email address hidden>, 2012
+# Nikolai Prokoschenko <email address hidden>, 2011
+# Sertan Şentürk <email address hidden>, 2017
+# zeugma <email address hidden>, 2012
+# yerdemli <email address hidden>, 2018
+# portik <email address hidden>, 2014
+# portik <email address hidden>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

@@ -1,12 +1,12 @@
 # 
 # Translators:
 # Kerem Kuralay, 2015
-# ym syserror <cilek.kocak@gmail.com>, 2012
-# Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
-# secgin <secgink.57@gmail.com>, 2014
-# zeugma <sunder67@hotmail.com>, 2012
-# portik <yetmisbeskere75@hotmail.com>, 2014
-# portik <yetmisbeskere75@hotmail.com>, 2012
+# ym syserror <email address hidden>, 2012
+# Nikolai Prokoschenko <email address hidden>, 2011
+# secgin <email address hidden>, 2014
+# zeugma <email address hidden>, 2012
+# portik <email address hidden>, 2014
+# portik <email address hidden>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
