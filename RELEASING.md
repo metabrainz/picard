@@ -49,12 +49,6 @@ This shouldn't be needed, but better to check before releasing
 git ls-tree --full-tree -r HEAD --name-only |while read f; do sed -i '1s/^\xEF\xBB\xBF//' "$f"; done && git diff --quiet || git commit -a -m 'Remove nasty BOM bytes'
 ```
 
-## Get latest translations from Transifex
-
-```bash
-python setup.py pull_translations && git diff --quiet || git commit -m 'Update .po files' -- po/
-```
-
 ## Synchronize generated consts
 
 ```bash
