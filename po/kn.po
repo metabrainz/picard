@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-14 18:10+0200\n"
+"POT-Creation-Date: 2023-08-16 01:06+0200\n"
 "PO-Revision-Date: 2012-08-29 08:53+0000\n"
 "Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -155,48 +155,65 @@ msgstr ""
 msgid "Unexpected request error (HTTP code %s)"
 msgstr ""
 
-#: picard/pluginmanager.py:228
+#: picard/pluginmanager.py:79
+msgid "Perform this check again the next time you start Picard."
+msgstr ""
+
+#: picard/pluginmanager.py:84
+msgid "Picard Plugins Update"
+msgstr ""
+
+#: picard/pluginmanager.py:261
 #, python-format
 msgid "Unable to load plugin '%s'"
 msgstr ""
 
-#: picard/pluginmanager.py:243
+#: picard/pluginmanager.py:276
 #, python-format
 msgid "Failed loading zipped plugin %r from %r"
 msgstr ""
 
-#: picard/pluginmanager.py:253
+#: picard/pluginmanager.py:286
 #, python-format
 msgid "Failed loading plugin %r in %r"
 msgstr ""
 
-#: picard/pluginmanager.py:289
+#: picard/pluginmanager.py:322
 #, python-format
 msgid "Plugin '%s' from '%s' is not compatible with this version of Picard."
 msgstr ""
 
-#: picard/pluginmanager.py:293
+#: picard/pluginmanager.py:326
 #, python-format
 msgid "Plugin %r has an invalid API version string : %s"
 msgstr ""
 
-#: picard/pluginmanager.py:296
+#: picard/pluginmanager.py:329
 #, python-format
 msgid "Plugin %r"
 msgstr ""
 
-#: picard/pluginmanager.py:432
+#: picard/pluginmanager.py:465
 #, python-format
 msgid "Error loading plugins list: %(error)s"
 msgstr ""
 
-#: picard/pluginmanager.py:468
-msgid "Picard Plugins Update"
-msgstr ""
+#: picard/pluginmanager.py:501
+msgid ""
+"There is an update available for one of your currently installed plugins:"
+msgid_plural ""
+"There are updates available for your currently installed plugins:"
+msgstr[0] ""
 
-#: picard/pluginmanager.py:469
-msgid "There are updates available for your currently installed plugins."
-msgstr ""
+#: picard/pluginmanager.py:506
+msgid "Do you want to update the plugin now?"
+msgid_plural "Do you want to update the plugins now?"
+msgstr[0] ""
+
+#: picard/pluginmanager.py:514
+msgid "plus {extra_file_count:,d} other plugin."
+msgid_plural "plus {extra_file_count:,d} other plugins."
+msgstr[0] ""
 
 #: picard/profile.py:46 picard/ui/options/general.py:56
 #: picard/ui/ui_options_general.py:200
@@ -777,7 +794,7 @@ msgid "dBpoweramp log files"
 msgstr ""
 
 #: picard/script/serializer.py:350 picard/tagger.py:1193
-#: picard/ui/coverartbox.py:606 picard/ui/mainwindow.py:1266
+#: picard/ui/coverartbox.py:610 picard/ui/mainwindow.py:1266
 #: picard/ui/options/maintenance.py:168 picard/ui/options/scripting.py:131
 msgid "All files"
 msgstr ""
@@ -6412,53 +6429,53 @@ msgstr ""
 msgid "Tag removed"
 msgstr ""
 
-#: picard/ui/coverartbox.py:324
+#: picard/ui/coverartbox.py:328
 msgid "View release on MusicBrainz"
 msgstr ""
 
-#: picard/ui/coverartbox.py:330
+#: picard/ui/coverartbox.py:334
 msgid "Common images on all tracks"
 msgstr ""
 
-#: picard/ui/coverartbox.py:332
+#: picard/ui/coverartbox.py:336
 msgid "Tracks contain different images"
 msgstr ""
 
-#: picard/ui/coverartbox.py:388
+#: picard/ui/coverartbox.py:392
 msgid "Show more details"
 msgstr ""
 
-#: picard/ui/coverartbox.py:425
+#: picard/ui/coverartbox.py:429
 #, fuzzy
 msgid "New Cover Art"
 msgstr "ಹೊರ ಚಿತ್ರ"
 
-#: picard/ui/coverartbox.py:426
+#: picard/ui/coverartbox.py:430
 #, fuzzy
 msgid "Original Cover Art"
 msgstr "ಹೊರ ಚಿತ್ರ"
 
-#: picard/ui/coverartbox.py:605
+#: picard/ui/coverartbox.py:609
 msgid "All supported image formats"
 msgstr ""
 
-#: picard/ui/coverartbox.py:625
+#: picard/ui/coverartbox.py:629
 msgid "Show more details..."
 msgstr ""
 
-#: picard/ui/coverartbox.py:631
+#: picard/ui/coverartbox.py:635
 msgid "Keep original cover art"
 msgstr ""
 
-#: picard/ui/coverartbox.py:637
+#: picard/ui/coverartbox.py:641
 msgid "Choose local file..."
 msgstr ""
 
-#: picard/ui/coverartbox.py:646
+#: picard/ui/coverartbox.py:650
 msgid "Replace front cover art"
 msgstr ""
 
-#: picard/ui/coverartbox.py:655
+#: picard/ui/coverartbox.py:659
 msgid "Append front cover art"
 msgstr ""
 
@@ -6612,7 +6629,7 @@ msgstr ""
 msgid "Estimated Time"
 msgstr ""
 
-#: picard/ui/infostatus.py:71 picard/ui/options/plugins.py:611
+#: picard/ui/infostatus.py:71 picard/ui/options/plugins.py:612
 msgid "Files"
 msgstr ""
 
@@ -6770,71 +6787,71 @@ msgstr ""
 msgid "&Run scripts"
 msgstr ""
 
-#: picard/ui/itemviews.py:842
+#: picard/ui/itemviews.py:851
 msgid "file view"
 msgstr ""
 
-#: picard/ui/itemviews.py:843
+#: picard/ui/itemviews.py:852
 msgid "Contains unmatched files and clusters"
 msgstr ""
 
-#: picard/ui/itemviews.py:863
+#: picard/ui/itemviews.py:872
 msgid "Clusters"
 msgstr ""
 
-#: picard/ui/itemviews.py:873
+#: picard/ui/itemviews.py:882
 msgid "album view"
 msgstr ""
 
-#: picard/ui/itemviews.py:874
+#: picard/ui/itemviews.py:883
 msgid "Contains albums and matched files"
 msgstr ""
 
-#: picard/ui/itemviews.py:1020
+#: picard/ui/itemviews.py:1029
 msgid "Processing error(s): See the Errors tab in the Album Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1024
+#: picard/ui/itemviews.py:1033
 msgid "Album modified and complete"
 msgstr ""
 
-#: picard/ui/itemviews.py:1027
+#: picard/ui/itemviews.py:1036
 msgid "Album unchanged and complete"
 msgstr ""
 
-#: picard/ui/itemviews.py:1031
+#: picard/ui/itemviews.py:1040
 msgid "Album modified"
 msgstr ""
 
-#: picard/ui/itemviews.py:1034
+#: picard/ui/itemviews.py:1043
 msgid "Album unchanged"
 msgstr ""
 
-#: picard/ui/itemviews.py:1114
+#: picard/ui/itemviews.py:1123
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1142
+#: picard/ui/itemviews.py:1151
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1175
+#: picard/ui/itemviews.py:1184
 msgid "Track saved"
 msgstr ""
 
-#: picard/ui/itemviews.py:1177 picard/ui/itemviews.py:1181
+#: picard/ui/itemviews.py:1186 picard/ui/itemviews.py:1190
 msgid "Pending"
 msgstr ""
 
-#: picard/ui/itemviews.py:1188
+#: picard/ui/itemviews.py:1197
 msgid "Fingerprint has already been submitted"
 msgstr ""
 
-#: picard/ui/itemviews.py:1191
+#: picard/ui/itemviews.py:1200
 msgid "Unsubmitted fingerprint"
 msgstr ""
 
-#: picard/ui/itemviews.py:1194
+#: picard/ui/itemviews.py:1203
 msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
 "AcoustID Fingerprints\" to calculate the fingerprint."
@@ -8415,7 +8432,7 @@ msgstr ""
 msgid "Plugins"
 msgstr ""
 
-#: picard/ui/options/plugins.py:608 picard/ui/searchdialog/album.py:152
+#: picard/ui/options/plugins.py:609 picard/ui/searchdialog/album.py:152
 #: picard/ui/searchdialog/artist.py:54 picard/ui/searchdialog/track.py:69
 #: picard/ui/ui_options_plugins.py:132
 msgid "Name"
@@ -9253,17 +9270,17 @@ msgstr ""
 msgid "Uninstall plugin"
 msgstr ""
 
-#: picard/ui/options/plugins.py:407
+#: picard/ui/options/plugins.py:408
 msgid "Reloading list of available plugins..."
 msgstr ""
 
-#: picard/ui/options/plugins.py:415 picard/ui/options/plugins.py:424
-#: picard/ui/options/plugins.py:445
+#: picard/ui/options/plugins.py:416 picard/ui/options/plugins.py:425
+#: picard/ui/options/plugins.py:446
 #, python-format
 msgid "Plugin '%s'"
 msgstr ""
 
-#: picard/ui/options/plugins.py:416
+#: picard/ui/options/plugins.py:417
 #, python-format
 msgid ""
 "An error occurred while loading the plugin '%s':\n"
@@ -9271,52 +9288,52 @@ msgid ""
 "%s"
 msgstr ""
 
-#: picard/ui/options/plugins.py:425
+#: picard/ui/options/plugins.py:426
 #, python-format
 msgid "The plugin '%s' is not compatible with this version of Picard."
 msgstr ""
 
-#: picard/ui/options/plugins.py:446
+#: picard/ui/options/plugins.py:447
 #, python-format
 msgid "The plugin '%s' will be upgraded to version %s on next run of Picard."
 msgstr ""
 
-#: picard/ui/options/plugins.py:467
+#: picard/ui/options/plugins.py:468
 #, python-format
 msgid "Uninstall plugin '%s'?"
 msgstr ""
 
-#: picard/ui/options/plugins.py:468
+#: picard/ui/options/plugins.py:469
 #, python-format
 msgid "Do you really want to uninstall the plugin '%s' ?"
 msgstr ""
 
-#: picard/ui/options/plugins.py:600
+#: picard/ui/options/plugins.py:601
 msgid "Restart Picard to upgrade to new version"
 msgstr ""
 
-#: picard/ui/options/plugins.py:602
+#: picard/ui/options/plugins.py:603
 msgid "New version available"
 msgstr ""
 
-#: picard/ui/options/plugins.py:609
+#: picard/ui/options/plugins.py:610
 msgid "Authors"
 msgstr ""
 
-#: picard/ui/options/plugins.py:610 picard/util/tags.py:73
+#: picard/ui/options/plugins.py:611 picard/util/tags.py:73
 msgid "License"
 msgstr ""
 
-#: picard/ui/options/plugins.py:612
+#: picard/ui/options/plugins.py:613
 msgid "User Guide"
 msgstr ""
 
-#: picard/ui/options/plugins.py:677
+#: picard/ui/options/plugins.py:678
 #, python-format
 msgid "The plugin '%s' could not be downloaded."
 msgstr ""
 
-#: picard/ui/options/plugins.py:678
+#: picard/ui/options/plugins.py:679
 msgid "Please try again later."
 msgstr ""
 
