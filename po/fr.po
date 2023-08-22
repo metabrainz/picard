@@ -168,13 +168,10 @@ msgid "Primary file naming script"
 msgstr "Script de nommage de fichier primaire"
 
 #: picard/file.py:216
-#, fuzzy
 msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
 msgstr ""
-"The file failed to parse, either the file is damaged or has an unsupported "
-"file format."
 
 #: picard/file.py:850
 #, python-format
@@ -264,20 +261,18 @@ msgstr[1] "Il y a des mises à jour disponibles pour vos greffons installés :"
 msgstr[2] "Il y a des mises à jour disponibles pour vos greffons installés :"
 
 #: picard/pluginmanager.py:506
-#, fuzzy
 msgid "Do you want to update the plugin now?"
 msgid_plural "Do you want to update the plugins now?"
-msgstr[0] "Do you want to update the plugin now?"
-msgstr[1] "Do you want to update the plugins now?"
-msgstr[2] "Do you want to update the plugins now?"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: picard/pluginmanager.py:514
-#, fuzzy
 msgid "plus {extra_file_count:,d} other plugin."
 msgid_plural "plus {extra_file_count:,d} other plugins."
-msgstr[0] "plus {extra_file_count:,d} other plugin."
-msgstr[1] "plus {extra_file_count:,d} other plugins."
-msgstr[2] "plus {extra_file_count:,d} other plugins."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: picard/profile.py:46 picard/ui/options/general.py:56
 #: picard/ui/ui_options_general.py:200
@@ -305,9 +300,8 @@ msgid "Ignore MBIDs when loading new files"
 msgstr "Ignorer les MBID au chargement de nouveaux fichiers"
 
 #: picard/profile.py:53 picard/ui/ui_options_general.py:205
-#, fuzzy
 msgid "Check for plugin updates during startup"
-msgstr "Check for plugin updates during startup"
+msgstr ""
 
 #: picard/profile.py:54 picard/ui/ui_options_general.py:206
 msgid "Check for program updates during startup"
@@ -335,14 +329,12 @@ msgid "Translation locales"
 msgstr "Locales de traduction"
 
 #: picard/profile.py:66
-#, fuzzy
 msgid "Translate artist names exception"
-msgstr "Translate artist names exception"
+msgstr ""
 
 #: picard/profile.py:67
-#, fuzzy
 msgid "Translation script exceptions"
-msgstr "Translation script exceptions"
+msgstr ""
 
 #: picard/profile.py:68 picard/ui/ui_options_metadata.py:134
 msgid "Use standardized artist names"
@@ -1203,14 +1195,12 @@ msgid "Afrikaans (South Africa)"
 msgstr "Afrikaans (Afrique du Sud)"
 
 #: picard/const/locales.py:37
-#, fuzzy
 msgid "Aghem"
-msgstr "Aghem"
+msgstr ""
 
 #: picard/const/locales.py:38
-#, fuzzy
 msgid "Aghem (Cameroon)"
-msgstr "Aghem (Cameroon)"
+msgstr ""
 
 #: picard/const/locales.py:39
 msgid "Akan"
@@ -1237,14 +1227,12 @@ msgid "Aragonese (Spain)"
 msgstr "Aragonais (Espagne)"
 
 #: picard/const/locales.py:45
-#, fuzzy
 msgid "Obolo"
-msgstr "Obolo"
+msgstr ""
 
 #: picard/const/locales.py:46
-#, fuzzy
 msgid "Obolo (Nigeria)"
-msgstr "Obolo (Nigeria)"
+msgstr ""
 
 #: picard/const/locales.py:47
 msgid "Syria"
@@ -1363,14 +1351,12 @@ msgid "Arabic (Yemen)"
 msgstr "Arabe (Yémen)"
 
 #: picard/const/locales.py:77
-#, fuzzy
 msgid "Mapuche"
-msgstr "Mapuche"
+msgstr ""
 
 #: picard/const/locales.py:78
-#, fuzzy
 msgid "Mapuche (Chile)"
-msgstr "Mapuche (Chile)"
+msgstr ""
 
 #: picard/const/locales.py:79
 msgid "Assamese"
@@ -1381,14 +1367,12 @@ msgid "Assamese (India)"
 msgstr "Assamais (Inde)"
 
 #: picard/const/locales.py:81
-#, fuzzy
 msgid "Asu"
-msgstr "Asu"
+msgstr ""
 
 #: picard/const/locales.py:82
-#, fuzzy
 msgid "Asu (Tanzania)"
-msgstr "Asu (Tanzania)"
+msgstr ""
 
 #: picard/const/locales.py:83
 msgid "Asturian"
@@ -1435,49 +1419,40 @@ msgid "Azerbaijani (Latin) (Azerbaijan)"
 msgstr "Azéri (Latin) (Azerbaïdjan)"
 
 #: picard/const/locales.py:94
-#, fuzzy
 msgid "Bashkir"
-msgstr "Bashkir"
+msgstr ""
 
 #: picard/const/locales.py:95
-#, fuzzy
 msgid "Bashkir (Russia)"
-msgstr "Bashkir (Russia)"
+msgstr ""
 
 #: picard/const/locales.py:96
-#, fuzzy
 msgid "Baluchi"
-msgstr "Baluchi"
+msgstr ""
 
 #: picard/const/locales.py:97
-#, fuzzy
 msgid "Baluchi (Arabic)"
-msgstr "Baluchi (Arabic)"
+msgstr ""
 
 #: picard/const/locales.py:98
-#, fuzzy
 msgid "Baluchi (Arabic) (Pakistan)"
-msgstr "Baluchi (Arabic) (Pakistan)"
+msgstr ""
 
 #: picard/const/locales.py:99
-#, fuzzy
 msgid "Baluchi (Latin)"
-msgstr "Baluchi (Latin)"
+msgstr ""
 
 #: picard/const/locales.py:100
-#, fuzzy
 msgid "Baluchi (Latin) (Pakistan)"
-msgstr "Baluchi (Latin) (Pakistan)"
+msgstr ""
 
 #: picard/const/locales.py:101
-#, fuzzy
 msgid "Basaa"
-msgstr "Basaa"
+msgstr ""
 
 #: picard/const/locales.py:102
-#, fuzzy
 msgid "Basaa (Cameroon)"
-msgstr "Basaa (Cameroon)"
+msgstr ""
 
 #: picard/const/locales.py:103
 msgid "Belarusian"
@@ -1488,29 +1463,24 @@ msgid "Belarusian (Belarus)"
 msgstr "Biélorusse (Biélorussie)"
 
 #: picard/const/locales.py:105
-#, fuzzy
 msgid "Belarusian (Taraskievica orthography)"
-msgstr "Belarusian (Taraskievica orthography)"
+msgstr ""
 
 #: picard/const/locales.py:106
-#, fuzzy
 msgid "Bemba"
-msgstr "Bemba"
+msgstr ""
 
 #: picard/const/locales.py:107
-#, fuzzy
 msgid "Bemba (Zambia)"
-msgstr "Bemba (Zambia)"
+msgstr ""
 
 #: picard/const/locales.py:108
-#, fuzzy
 msgid "Bena"
-msgstr "Bena"
+msgstr ""
 
 #: picard/const/locales.py:109
-#, fuzzy
 msgid "Bena (Tanzania)"
-msgstr "Bena (Tanzania)"
+msgstr ""
 
 #: picard/const/locales.py:110
 msgid "Bulgarian"
@@ -1521,99 +1491,80 @@ msgid "Bulgarian (Bulgaria)"
 msgstr "Bulgare (Bulgarie)"
 
 #: picard/const/locales.py:112
-#, fuzzy
 msgid "Haryanvi"
-msgstr "Haryanvi"
+msgstr ""
 
 #: picard/const/locales.py:113
-#, fuzzy
 msgid "Haryanvi (India)"
-msgstr "Haryanvi (India)"
+msgstr ""
 
 #: picard/const/locales.py:114
-#, fuzzy
 msgid "Western Balochi"
-msgstr "Western Balochi"
+msgstr ""
 
 #: picard/const/locales.py:115
-#, fuzzy
 msgid "Western Balochi (United Arab Emirates)"
-msgstr "Western Balochi (United Arab Emirates)"
+msgstr ""
 
 #: picard/const/locales.py:116
-#, fuzzy
 msgid "Western Balochi (Afghanistan)"
-msgstr "Western Balochi (Afghanistan)"
+msgstr ""
 
 #: picard/const/locales.py:117
-#, fuzzy
 msgid "Western Balochi (Iran)"
-msgstr "Western Balochi (Iran)"
+msgstr ""
 
 #: picard/const/locales.py:118
-#, fuzzy
 msgid "Western Balochi (Oman)"
-msgstr "Western Balochi (Oman)"
+msgstr ""
 
 #: picard/const/locales.py:119
-#, fuzzy
 msgid "Western Balochi (Pakistan)"
-msgstr "Western Balochi (Pakistan)"
+msgstr ""
 
 #: picard/const/locales.py:120
-#, fuzzy
 msgid "Bhojpuri"
-msgstr "Bhojpuri"
+msgstr ""
 
 #: picard/const/locales.py:121
-#, fuzzy
 msgid "Bhojpuri (India)"
-msgstr "Bhojpuri (India)"
+msgstr ""
 
 #: picard/const/locales.py:122
-#, fuzzy
 msgid "Tai Dam"
-msgstr "Tai Dam"
+msgstr ""
 
 #: picard/const/locales.py:123
-#, fuzzy
 msgid "Tai Dam (Vietnam)"
-msgstr "Tai Dam (Vietnam)"
+msgstr ""
 
 #: picard/const/locales.py:124
-#, fuzzy
 msgid "Bambara"
-msgstr "Bambara"
+msgstr ""
 
 #: picard/const/locales.py:125
-#, fuzzy
 msgid "Bambara (Mali)"
-msgstr "Bambara (Mali)"
+msgstr ""
 
 #: picard/const/locales.py:126
-#, fuzzy
 msgid "Bambara (N’Ko)"
-msgstr "Bambara (N’Ko)"
+msgstr ""
 
 #: picard/const/locales.py:127
-#, fuzzy
 msgid "Bambara (N’Ko) (Mali)"
-msgstr "Bambara (N’Ko) (Mali)"
+msgstr ""
 
 #: picard/const/locales.py:128
-#, fuzzy
 msgid "Bangla"
-msgstr "Bangla"
+msgstr ""
 
 #: picard/const/locales.py:129
-#, fuzzy
 msgid "Bangla (Bangladesh)"
-msgstr "Bangla (Bangladesh)"
+msgstr ""
 
 #: picard/const/locales.py:130
-#, fuzzy
 msgid "Bangla (India)"
-msgstr "Bangla (India)"
+msgstr ""
 
 #: picard/const/locales.py:131
 msgid "Tibetan"
@@ -1628,19 +1579,16 @@ msgid "Tibetan (India)"
 msgstr "Tibétain (Inde)"
 
 #: picard/const/locales.py:134
-#, fuzzy
 msgid "Breton"
-msgstr "Breton"
+msgstr ""
 
 #: picard/const/locales.py:135
-#, fuzzy
 msgid "Breton (France)"
-msgstr "Breton (France)"
+msgstr ""
 
 #: picard/const/locales.py:136
-#, fuzzy
 msgid "Bodo"
-msgstr "Bodo"
+msgstr ""
 
 #: picard/const/locales.py:137
 msgid "Bodo (India)"
@@ -1651,34 +1599,28 @@ msgid "Bosnian"
 msgstr "Bosniaque"
 
 #: picard/const/locales.py:139
-#, fuzzy
 msgid "Bosnian (Cyrillic)"
-msgstr "Bosnian (Cyrillic)"
+msgstr ""
 
 #: picard/const/locales.py:140
-#, fuzzy
 msgid "Bosnian (Cyrillic) (Bosnia & Herzegovina)"
-msgstr "Bosnian (Cyrillic) (Bosnia & Herzegovina)"
+msgstr ""
 
 #: picard/const/locales.py:141
-#, fuzzy
 msgid "Bosnian (Latin)"
-msgstr "Bosnian (Latin)"
+msgstr ""
 
 #: picard/const/locales.py:142
-#, fuzzy
 msgid "Bosnian (Latin) (Bosnia & Herzegovina)"
-msgstr "Bosnian (Latin) (Bosnia & Herzegovina)"
+msgstr ""
 
 #: picard/const/locales.py:143
-#, fuzzy
 msgid "Akoose"
-msgstr "Akoose"
+msgstr ""
 
 #: picard/const/locales.py:144
-#, fuzzy
 msgid "Akoose (Cameroon)"
-msgstr "Akoose (Cameroon)"
+msgstr ""
 
 #: picard/const/locales.py:145
 msgid "Blin"
@@ -1689,38 +1631,32 @@ msgid "Blin (Eritrea)"
 msgstr "Blin (Érythrée)"
 
 #: picard/const/locales.py:148
-#, fuzzy
 msgid "Catalan (Andorra)"
-msgstr "Catalan (Andorra)"
+msgstr ""
 
 #: picard/const/locales.py:149
 msgid "Catalan (Spain)"
 msgstr "Catalan (Espagne)"
 
 #: picard/const/locales.py:150
-#, fuzzy
 msgid "Catalan (Spain Valencian)"
-msgstr "Catalan (Spain Valencian)"
+msgstr ""
 
 #: picard/const/locales.py:151
-#, fuzzy
 msgid "Catalan (France)"
-msgstr "Catalan (France)"
+msgstr ""
 
 #: picard/const/locales.py:152
-#, fuzzy
 msgid "Catalan (Italy)"
-msgstr "Catalan (Italy)"
+msgstr ""
 
 #: picard/const/locales.py:153
-#, fuzzy
 msgid "Caddo"
-msgstr "Caddo"
+msgstr ""
 
 #: picard/const/locales.py:154
-#, fuzzy
 msgid "Caddo (United States)"
-msgstr "Caddo (United States)"
+msgstr ""
 
 #: picard/const/locales.py:155
 msgid "Atsam"
@@ -1731,129 +1667,104 @@ msgid "Atsam (Nigeria)"
 msgstr "Atsam (Nigeria)"
 
 #: picard/const/locales.py:157
-#, fuzzy
 msgid "Chakma"
-msgstr "Chakma"
+msgstr ""
 
 #: picard/const/locales.py:158
-#, fuzzy
 msgid "Chakma (Bangladesh)"
-msgstr "Chakma (Bangladesh)"
+msgstr ""
 
 #: picard/const/locales.py:159
-#, fuzzy
 msgid "Chakma (India)"
-msgstr "Chakma (India)"
+msgstr ""
 
 #: picard/const/locales.py:160
-#, fuzzy
 msgid "Chechen"
-msgstr "Chechen"
+msgstr ""
 
 #: picard/const/locales.py:161
-#, fuzzy
 msgid "Chechen (Russia)"
-msgstr "Chechen (Russia)"
+msgstr ""
 
 #: picard/const/locales.py:162
-#, fuzzy
 msgid "Cebuano"
-msgstr "Cebuano"
+msgstr ""
 
 #: picard/const/locales.py:163
-#, fuzzy
 msgid "Cebuano (Philippines)"
-msgstr "Cebuano (Philippines)"
+msgstr ""
 
 #: picard/const/locales.py:164
-#, fuzzy
 msgid "Chiga"
-msgstr "Chiga"
+msgstr ""
 
 #: picard/const/locales.py:165
-#, fuzzy
 msgid "Chiga (Uganda)"
-msgstr "Chiga (Uganda)"
+msgstr ""
 
 #: picard/const/locales.py:166
-#, fuzzy
 msgid "Choctaw"
-msgstr "Choctaw"
+msgstr ""
 
 #: picard/const/locales.py:167
-#, fuzzy
 msgid "Choctaw (United States)"
-msgstr "Choctaw (United States)"
+msgstr ""
 
 #: picard/const/locales.py:168
-#, fuzzy
 msgid "Cherokee"
-msgstr "Cherokee"
+msgstr ""
 
 #: picard/const/locales.py:169
-#, fuzzy
 msgid "Cherokee (United States)"
-msgstr "Cherokee (United States)"
+msgstr ""
 
 #: picard/const/locales.py:170
-#, fuzzy
 msgid "Chickasaw"
-msgstr "Chickasaw"
+msgstr ""
 
 #: picard/const/locales.py:171
-#, fuzzy
 msgid "Chickasaw (United States)"
-msgstr "Chickasaw (United States)"
+msgstr ""
 
 #: picard/const/locales.py:172
-#, fuzzy
 msgid "Central Kurdish"
-msgstr "Central Kurdish"
+msgstr ""
 
 #: picard/const/locales.py:173
-#, fuzzy
 msgid "Central Kurdish (Iraq)"
-msgstr "Central Kurdish (Iraq)"
+msgstr ""
 
 #: picard/const/locales.py:174
-#, fuzzy
 msgid "Central Kurdish (Iran)"
-msgstr "Central Kurdish (Iran)"
+msgstr ""
 
 #: picard/const/locales.py:175
-#, fuzzy
 msgid "Corsican"
-msgstr "Corsican"
+msgstr ""
 
 #: picard/const/locales.py:176
-#, fuzzy
 msgid "Corsican (France)"
-msgstr "Corsican (France)"
+msgstr ""
 
 #: picard/const/locales.py:178
-#, fuzzy
 msgid "Czech (Czechia)"
-msgstr "Czech (Czechia)"
+msgstr ""
 
 #: picard/const/locales.py:179
-#, fuzzy
 msgid "Church Slavic"
-msgstr "Church Slavic"
+msgstr ""
 
 #: picard/const/locales.py:180
-#, fuzzy
 msgid "Church Slavic (Russia)"
-msgstr "Church Slavic (Russia)"
+msgstr ""
 
 #: picard/const/locales.py:181
-#, fuzzy
 msgid "Chuvash"
-msgstr "Chuvash"
+msgstr ""
 
 #: picard/const/locales.py:182
-#, fuzzy
 msgid "Chuvash (Russia)"
-msgstr "Chuvash (Russia)"
+msgstr ""
 
 #: picard/const/locales.py:183
 msgid "Welsh"
@@ -1872,14 +1783,12 @@ msgid "Danish (Greenland)"
 msgstr "Danois (Groenland)"
 
 #: picard/const/locales.py:188
-#, fuzzy
 msgid "Taita"
-msgstr "Taita"
+msgstr ""
 
 #: picard/const/locales.py:189
-#, fuzzy
 msgid "Taita (Kenya)"
-msgstr "Taita (Kenya)"
+msgstr ""
 
 #: picard/const/locales.py:191
 msgid "German (Austria)"
@@ -1910,39 +1819,32 @@ msgid "Zarma"
 msgstr "Zarma"
 
 #: picard/const/locales.py:199
-#, fuzzy
 msgid "Zarma (Niger)"
-msgstr "Zarma (Niger)"
+msgstr ""
 
 #: picard/const/locales.py:200
-#, fuzzy
 msgid "Dogri"
-msgstr "Dogri"
+msgstr ""
 
 #: picard/const/locales.py:201
-#, fuzzy
 msgid "Dogri (India)"
-msgstr "Dogri (India)"
+msgstr ""
 
 #: picard/const/locales.py:202
-#, fuzzy
 msgid "Lower Sorbian"
-msgstr "Lower Sorbian"
+msgstr ""
 
 #: picard/const/locales.py:203
-#, fuzzy
 msgid "Lower Sorbian (Germany)"
-msgstr "Lower Sorbian (Germany)"
+msgstr ""
 
 #: picard/const/locales.py:204
-#, fuzzy
 msgid "Duala"
-msgstr "Duala"
+msgstr ""
 
 #: picard/const/locales.py:205
-#, fuzzy
 msgid "Duala (Cameroon)"
-msgstr "Duala (Cameroon)"
+msgstr ""
 
 #: picard/const/locales.py:206
 msgid "Divehi"
@@ -1953,14 +1855,12 @@ msgid "Divehi (Maldives)"
 msgstr "Divehi (Maldives)"
 
 #: picard/const/locales.py:208
-#, fuzzy
 msgid "Jola-Fonyi"
-msgstr "Jola-Fonyi"
+msgstr ""
 
 #: picard/const/locales.py:209
-#, fuzzy
 msgid "Jola-Fonyi (Senegal)"
-msgstr "Jola-Fonyi (Senegal)"
+msgstr ""
 
 #: picard/const/locales.py:210
 msgid "Dzongkha"
@@ -1971,14 +1871,12 @@ msgid "Dzongkha (Bhutan)"
 msgstr "Dzongkha (Bhoutan)"
 
 #: picard/const/locales.py:212
-#, fuzzy
 msgid "Embu"
-msgstr "Embu"
+msgstr ""
 
 #: picard/const/locales.py:213
-#, fuzzy
 msgid "Embu (Kenya)"
-msgstr "Embu (Kenya)"
+msgstr ""
 
 #: picard/const/locales.py:214
 msgid "Ewe"
@@ -2001,9 +1899,8 @@ msgid "Greek (Greece)"
 msgstr "Grec (Grèce)"
 
 #: picard/const/locales.py:220
-#, fuzzy
 msgid "Greek (Polytonic)"
-msgstr "Greek (Polytonic)"
+msgstr ""
 
 #: picard/const/locales.py:222
 msgid "English (world)"
@@ -2018,47 +1915,40 @@ msgid "English (United Arab Emirates)"
 msgstr "Anglais (Émirats Arabes Unis)"
 
 #: picard/const/locales.py:225
-#, fuzzy
 msgid "English (Antigua & Barbuda)"
-msgstr "English (Antigua & Barbuda)"
+msgstr ""
 
 #: picard/const/locales.py:226
-#, fuzzy
 msgid "English (Anguilla)"
-msgstr "English (Anguilla)"
+msgstr ""
 
 #: picard/const/locales.py:227
 msgid "English (American Samoa)"
 msgstr "Anglais (Samoa américaines)"
 
 #: picard/const/locales.py:228
-#, fuzzy
 msgid "English (Austria)"
-msgstr "English (Austria)"
+msgstr ""
 
 #: picard/const/locales.py:230
-#, fuzzy
 msgid "English (Barbados)"
-msgstr "English (Barbados)"
+msgstr ""
 
 #: picard/const/locales.py:231
 msgid "English (Belgium)"
 msgstr "Anglais (Belgique)"
 
 #: picard/const/locales.py:232
-#, fuzzy
 msgid "English (Burundi)"
-msgstr "English (Burundi)"
+msgstr ""
 
 #: picard/const/locales.py:233
-#, fuzzy
 msgid "English (Bermuda)"
-msgstr "English (Bermuda)"
+msgstr ""
 
 #: picard/const/locales.py:234
-#, fuzzy
 msgid "English (Bahamas)"
-msgstr "English (Bahamas)"
+msgstr ""
 
 #: picard/const/locales.py:235
 msgid "English (Botswana)"
@@ -2069,51 +1959,44 @@ msgid "English (Belize)"
 msgstr "Anglais (Belize)"
 
 #: picard/const/locales.py:238
-#, fuzzy
 msgid "English (Cocos (Keeling) Islands)"
-msgstr "English (Cocos (Keeling) Islands)"
+msgstr ""
 
 #: picard/const/locales.py:239
-#, fuzzy
 msgid "English (Switzerland)"
-msgstr "English (Switzerland)"
+msgstr ""
 
 #: picard/const/locales.py:240
-#, fuzzy
 msgid "English (Cook Islands)"
-msgstr "English (Cook Islands)"
+msgstr ""
 
 #: picard/const/locales.py:241
-#, fuzzy
 msgid "English (Cameroon)"
-msgstr "English (Cameroon)"
+msgstr ""
 
 #: picard/const/locales.py:242
-#, fuzzy
 msgid "English (Christmas Island)"
-msgstr "English (Christmas Island)"
+msgstr ""
 
 #: picard/const/locales.py:243
 msgid "English (Cyprus)"
-msgstr "Anglais (Chypre)"
+msgstr ""
 
 #: picard/const/locales.py:244
 msgid "English (Germany)"
-msgstr "Anglais (Allemagne)"
+msgstr ""
 
 #: picard/const/locales.py:245
-#, fuzzy
 msgid "English (Diego Garcia)"
-msgstr "English (Diego Garcia)"
+msgstr ""
 
 #: picard/const/locales.py:246
 msgid "English (Denmark)"
 msgstr "Anglais (Danemark)"
 
 #: picard/const/locales.py:247
-#, fuzzy
 msgid "English (Dominica)"
-msgstr "English (Dominica)"
+msgstr ""
 
 #: picard/const/locales.py:248
 msgid "English (Deseret)"
@@ -2132,56 +2015,48 @@ msgid "English (Finland)"
 msgstr "Anglais (Finland)"
 
 #: picard/const/locales.py:252
-#, fuzzy
 msgid "English (Fiji)"
-msgstr "English (Fiji)"
+msgstr ""
 
 #: picard/const/locales.py:253
-#, fuzzy
 msgid "English (Falkland Islands)"
-msgstr "English (Falkland Islands)"
+msgstr ""
 
 #: picard/const/locales.py:254
-#, fuzzy
 msgid "English (Micronesia)"
-msgstr "English (Micronesia)"
+msgstr ""
 
 #: picard/const/locales.py:255
 msgid "English (United Kingdom)"
 msgstr "Anglais (Royaume-Uni)"
 
 #: picard/const/locales.py:256
-#, fuzzy
 msgid "English (Grenada)"
-msgstr "English (Grenada)"
+msgstr ""
 
 #: picard/const/locales.py:257
-#, fuzzy
 msgid "English (Guernsey)"
-msgstr "English (Guernsey)"
+msgstr ""
 
 #: picard/const/locales.py:258
-#, fuzzy
 msgid "English (Ghana)"
-msgstr "English (Ghana)"
+msgstr ""
 
 #: picard/const/locales.py:259
 msgid "English (Gibraltar)"
 msgstr "Anglais (Gibraltar)"
 
 #: picard/const/locales.py:260
-#, fuzzy
 msgid "English (Gambia)"
-msgstr "English (Gambia)"
+msgstr ""
 
 #: picard/const/locales.py:261
 msgid "English (Guam)"
 msgstr "Anglais (Guam)"
 
 #: picard/const/locales.py:262
-#, fuzzy
 msgid "English (Guyana)"
-msgstr "English (Guyana)"
+msgstr ""
 
 #: picard/const/locales.py:263
 msgid "English (Hong Kong)"
@@ -2196,23 +2071,20 @@ msgid "English (Israel)"
 msgstr "Anglais (Israël)"
 
 #: picard/const/locales.py:266
-#, fuzzy
 msgid "English (Isle of Man)"
-msgstr "English (Isle of Man)"
+msgstr ""
 
 #: picard/const/locales.py:267
 msgid "English (India)"
 msgstr "Anglais (Inde)"
 
 #: picard/const/locales.py:268
-#, fuzzy
 msgid "English (British Indian Ocean Territory)"
-msgstr "English (British Indian Ocean Territory)"
+msgstr ""
 
 #: picard/const/locales.py:269
-#, fuzzy
 msgid "English (Jersey)"
-msgstr "English (Jersey)"
+msgstr ""
 
 #: picard/const/locales.py:270
 msgid "English (Jamaica)"
@@ -2223,34 +2095,28 @@ msgid "English (Kenya)"
 msgstr "Anglais (Kenya)"
 
 #: picard/const/locales.py:272
-#, fuzzy
 msgid "English (Kiribati)"
-msgstr "English (Kiribati)"
+msgstr ""
 
 #: picard/const/locales.py:273
-#, fuzzy
 msgid "English (St. Kitts & Nevis)"
-msgstr "English (St. Kitts & Nevis)"
+msgstr ""
 
 #: picard/const/locales.py:274
-#, fuzzy
 msgid "English (Cayman Islands)"
-msgstr "English (Cayman Islands)"
+msgstr ""
 
 #: picard/const/locales.py:275
-#, fuzzy
 msgid "English (St. Lucia)"
-msgstr "English (St. Lucia)"
+msgstr ""
 
 #: picard/const/locales.py:276
-#, fuzzy
 msgid "English (Liberia)"
-msgstr "English (Liberia)"
+msgstr ""
 
 #: picard/const/locales.py:277
-#, fuzzy
 msgid "English (Lesotho)"
-msgstr "English (Lesotho)"
+msgstr ""
 
 #: picard/const/locales.py:278
 msgid "English (Madagascar)"
@@ -2261,9 +2127,8 @@ msgid "English (Marshall Islands)"
 msgstr "Anglais (Îles Marshall)"
 
 #: picard/const/locales.py:280
-#, fuzzy
 msgid "English (Macao)"
-msgstr "English (Macao)"
+msgstr ""
 
 #: picard/const/locales.py:281
 msgid "English (Northern Mariana Islands)"
@@ -2300,9 +2165,8 @@ msgid "English (Namibia)"
 msgstr "Anglais (Namibie)"
 
 #: picard/const/locales.py:289
-#, fuzzy
 msgid "English (Norfolk Island)"
-msgstr "English (Norfolk Island)"
+msgstr ""
 
 #: picard/const/locales.py:290
 msgid "English (Nigeria)"
@@ -2313,23 +2177,20 @@ msgid "English (Netherlands)"
 msgstr "Anglais (Pays–Bas)"
 
 #: picard/const/locales.py:292
-#, fuzzy
 msgid "English (Nauru)"
-msgstr "English (Nauru)"
+msgstr ""
 
 #: picard/const/locales.py:293
-#, fuzzy
 msgid "English (Niue)"
-msgstr "English (Niue)"
+msgstr ""
 
 #: picard/const/locales.py:294
 msgid "English (New Zealand)"
 msgstr "Anglais (Nouvelle-Zélande)"
 
 #: picard/const/locales.py:295
-#, fuzzy
 msgid "English (Papua New Guinea)"
-msgstr "English (Papua New Guinea)"
+msgstr ""
 
 #: picard/const/locales.py:296
 msgid "English (Philippines)"
@@ -2340,34 +2201,28 @@ msgid "English (Pakistan)"
 msgstr "Anglais (Pakistan)"
 
 #: picard/const/locales.py:298
-#, fuzzy
 msgid "English (Pitcairn Islands)"
-msgstr "English (Pitcairn Islands)"
+msgstr ""
 
 #: picard/const/locales.py:299
-#, fuzzy
 msgid "English (Puerto Rico)"
-msgstr "English (Puerto Rico)"
+msgstr ""
 
 #: picard/const/locales.py:300
-#, fuzzy
 msgid "English (Palau)"
-msgstr "English (Palau)"
+msgstr ""
 
 #: picard/const/locales.py:301
-#, fuzzy
 msgid "English (Rwanda)"
-msgstr "English (Rwanda)"
+msgstr ""
 
 #: picard/const/locales.py:302
-#, fuzzy
 msgid "English (Solomon Islands)"
-msgstr "English (Solomon Islands)"
+msgstr ""
 
 #: picard/const/locales.py:303
-#, fuzzy
 msgid "English (Seychelles)"
-msgstr "English (Seychelles)"
+msgstr ""
 
 #: picard/const/locales.py:304
 msgid "English (Sudan)"
@@ -2382,66 +2237,56 @@ msgid "English (Singapore)"
 msgstr "Anglais (Singapour)"
 
 #: picard/const/locales.py:307
-#, fuzzy
 msgid "English (St. Helena)"
-msgstr "English (St. Helena)"
+msgstr ""
 
 #: picard/const/locales.py:308
 msgid "English (Slovenia)"
 msgstr "Anglais (Slovénie)"
 
 #: picard/const/locales.py:309
-#, fuzzy
 msgid "English (Sierra Leone)"
-msgstr "English (Sierra Leone)"
+msgstr ""
 
 #: picard/const/locales.py:310
 msgid "English (South Sudan)"
 msgstr "Anglais (Sud Soudan)"
 
 #: picard/const/locales.py:311
-#, fuzzy
 msgid "English (Sint Maarten)"
-msgstr "English (Sint Maarten)"
+msgstr ""
 
 #: picard/const/locales.py:312
-#, fuzzy
 msgid "English (Eswatini)"
-msgstr "English (Eswatini)"
+msgstr ""
 
 #: picard/const/locales.py:313
 msgid "English (Shavian)"
 msgstr "Anglais (Shavien)"
 
 #: picard/const/locales.py:314
-#, fuzzy
 msgid "English (Shavian) (United Kingdom)"
-msgstr "English (Shavian) (United Kingdom)"
+msgstr ""
 
 #: picard/const/locales.py:315
-#, fuzzy
 msgid "English (Turks & Caicos Islands)"
-msgstr "English (Turks & Caicos Islands)"
+msgstr ""
 
 #: picard/const/locales.py:316
-#, fuzzy
 msgid "English (Tokelau)"
-msgstr "English (Tokelau)"
+msgstr ""
 
 #: picard/const/locales.py:317
-#, fuzzy
 msgid "English (Tonga)"
-msgstr "English (Tonga)"
+msgstr ""
 
 #: picard/const/locales.py:318
-#, fuzzy
 msgid "English (Trinidad & Tobago)"
-msgstr "English (Trinidad & Tobago)"
+msgstr ""
 
 #: picard/const/locales.py:319
-#, fuzzy
 msgid "English (Tuvalu)"
-msgstr "English (Tuvalu)"
+msgstr ""
 
 #: picard/const/locales.py:320
 msgid "English (Tanzania)"
@@ -2452,46 +2297,40 @@ msgid "English (Uganda)"
 msgstr "Anglais (Ouganda)"
 
 #: picard/const/locales.py:322
-#, fuzzy
 msgid "English (U.S. Outlying Islands)"
-msgstr "English (U.S. Outlying Islands)"
+msgstr ""
 
 #: picard/const/locales.py:323
 msgid "English (United States)"
 msgstr "Anglais (États-Unis)"
 
 #: picard/const/locales.py:324
-#, fuzzy
 msgid "English (St. Vincent & Grenadines)"
-msgstr "English (St. Vincent & Grenadines)"
+msgstr ""
 
 #: picard/const/locales.py:325
-#, fuzzy
 msgid "English (British Virgin Islands)"
-msgstr "English (British Virgin Islands)"
+msgstr ""
 
 #: picard/const/locales.py:326
 msgid "English (U.S. Virgin Islands)"
 msgstr "Anglais (Îles Vierges des États-Unis)"
 
 #: picard/const/locales.py:327
-#, fuzzy
 msgid "English (Vanuatu)"
-msgstr "English (Vanuatu)"
+msgstr ""
 
 #: picard/const/locales.py:328
-#, fuzzy
 msgid "English (Samoa)"
-msgstr "English (Samoa)"
+msgstr ""
 
 #: picard/const/locales.py:329
 msgid "English (South Africa)"
 msgstr "Anglais (Afrique du Sud)"
 
 #: picard/const/locales.py:330
-#, fuzzy
 msgid "English (Zambia)"
-msgstr "English (Zambia)"
+msgstr ""
 
 #: picard/const/locales.py:331
 msgid "English (Zimbabwe)"
@@ -2502,14 +2341,12 @@ msgid "Esperanto"
 msgstr "Espéranto"
 
 #: picard/const/locales.py:333
-#, fuzzy
 msgid "Esperanto (world)"
-msgstr "Esperanto (world)"
+msgstr ""
 
 #: picard/const/locales.py:335
-#, fuzzy
 msgid "Spanish (Latin America)"
-msgstr "Spanish (Latin America)"
+msgstr ""
 
 #: picard/const/locales.py:336
 msgid "Spanish (Argentina)"
@@ -2520,14 +2357,12 @@ msgid "Spanish (Bolivia)"
 msgstr "Espagnol (Bolivie)"
 
 #: picard/const/locales.py:338
-#, fuzzy
 msgid "Spanish (Brazil)"
-msgstr "Spanish (Brazil)"
+msgstr ""
 
 #: picard/const/locales.py:339
-#, fuzzy
 msgid "Spanish (Belize)"
-msgstr "Spanish (Belize)"
+msgstr ""
 
 #: picard/const/locales.py:340
 msgid "Spanish (Chile)"
@@ -2542,18 +2377,16 @@ msgid "Spanish (Costa Rica)"
 msgstr "Espagnol (Costa Rica)"
 
 #: picard/const/locales.py:343
-#, fuzzy
 msgid "Spanish (Cuba)"
-msgstr "Spanish (Cuba)"
+msgstr ""
 
 #: picard/const/locales.py:344
 msgid "Spanish (Dominican Republic)"
 msgstr "Espagnol (République dominicaine)"
 
 #: picard/const/locales.py:345
-#, fuzzy
 msgid "Spanish (Ceuta & Melilla)"
-msgstr "Spanish (Ceuta & Melilla)"
+msgstr ""
 
 #: picard/const/locales.py:346
 msgid "Spanish (Ecuador)"
@@ -2564,9 +2397,8 @@ msgid "Spanish (Spain)"
 msgstr "Espagnol (Espagne)"
 
 #: picard/const/locales.py:348
-#, fuzzy
 msgid "Spanish (Equatorial Guinea)"
-msgstr "Spanish (Equatorial Guinea)"
+msgstr ""
 
 #: picard/const/locales.py:349
 msgid "Spanish (Guatemala)"
@@ -2577,9 +2409,8 @@ msgid "Spanish (Honduras)"
 msgstr "Espagnol (Honduras)"
 
 #: picard/const/locales.py:351
-#, fuzzy
 msgid "Spanish (Canary Islands)"
-msgstr "Spanish (Canary Islands)"
+msgstr ""
 
 #: picard/const/locales.py:352
 msgid "Spanish (Mexico)"
@@ -2598,9 +2429,8 @@ msgid "Spanish (Peru)"
 msgstr "Espagnol (Pérou)"
 
 #: picard/const/locales.py:356
-#, fuzzy
 msgid "Spanish (Philippines)"
-msgstr "Spanish (Philippines)"
+msgstr ""
 
 #: picard/const/locales.py:357
 msgid "Spanish (Puerto Rico)"
@@ -2639,14 +2469,12 @@ msgid "Basque (Spain)"
 msgstr "Basque (Espagne)"
 
 #: picard/const/locales.py:367
-#, fuzzy
 msgid "Ewondo"
-msgstr "Ewondo"
+msgstr ""
 
 #: picard/const/locales.py:368
-#, fuzzy
 msgid "Ewondo (Cameroon)"
-msgstr "Ewondo (Cameroon)"
+msgstr ""
 
 #: picard/const/locales.py:369
 msgid "Persian"
@@ -2661,139 +2489,112 @@ msgid "Persian (Iran)"
 msgstr "Persan (Iran)"
 
 #: picard/const/locales.py:372
-#, fuzzy
 msgid "Fula"
-msgstr "Fula"
+msgstr ""
 
 #: picard/const/locales.py:373
-#, fuzzy
 msgid "Fula (Adlam)"
-msgstr "Fula (Adlam)"
+msgstr ""
 
 #: picard/const/locales.py:374
-#, fuzzy
 msgid "Fula (Adlam) (Burkina Faso)"
-msgstr "Fula (Adlam) (Burkina Faso)"
+msgstr ""
 
 #: picard/const/locales.py:375
-#, fuzzy
 msgid "Fula (Adlam) (Cameroon)"
-msgstr "Fula (Adlam) (Cameroon)"
+msgstr ""
 
 #: picard/const/locales.py:376
-#, fuzzy
 msgid "Fula (Adlam) (Ghana)"
-msgstr "Fula (Adlam) (Ghana)"
+msgstr ""
 
 #: picard/const/locales.py:377
-#, fuzzy
 msgid "Fula (Adlam) (Gambia)"
-msgstr "Fula (Adlam) (Gambia)"
+msgstr ""
 
 #: picard/const/locales.py:378
-#, fuzzy
 msgid "Fula (Adlam) (Guinea)"
-msgstr "Fula (Adlam) (Guinea)"
+msgstr ""
 
 #: picard/const/locales.py:379
-#, fuzzy
 msgid "Fula (Adlam) (Guinea-Bissau)"
-msgstr "Fula (Adlam) (Guinea-Bissau)"
+msgstr ""
 
 #: picard/const/locales.py:380
-#, fuzzy
 msgid "Fula (Adlam) (Liberia)"
-msgstr "Fula (Adlam) (Liberia)"
+msgstr ""
 
 #: picard/const/locales.py:381
-#, fuzzy
 msgid "Fula (Adlam) (Mauritania)"
-msgstr "Fula (Adlam) (Mauritania)"
+msgstr ""
 
 #: picard/const/locales.py:382
-#, fuzzy
 msgid "Fula (Adlam) (Niger)"
-msgstr "Fula (Adlam) (Niger)"
+msgstr ""
 
 #: picard/const/locales.py:383
-#, fuzzy
 msgid "Fula (Adlam) (Nigeria)"
-msgstr "Fula (Adlam) (Nigeria)"
+msgstr ""
 
 #: picard/const/locales.py:384
-#, fuzzy
 msgid "Fula (Adlam) (Sierra Leone)"
-msgstr "Fula (Adlam) (Sierra Leone)"
+msgstr ""
 
 #: picard/const/locales.py:385
-#, fuzzy
 msgid "Fula (Adlam) (Senegal)"
-msgstr "Fula (Adlam) (Senegal)"
+msgstr ""
 
 #: picard/const/locales.py:386
-#, fuzzy
 msgid "Fula (Latin)"
-msgstr "Fula (Latin)"
+msgstr ""
 
 #: picard/const/locales.py:387
-#, fuzzy
 msgid "Fula (Latin) (Burkina Faso)"
-msgstr "Fula (Latin) (Burkina Faso)"
+msgstr ""
 
 #: picard/const/locales.py:388
-#, fuzzy
 msgid "Fula (Latin) (Cameroon)"
-msgstr "Fula (Latin) (Cameroon)"
+msgstr ""
 
 #: picard/const/locales.py:389
-#, fuzzy
 msgid "Fula (Latin) (Ghana)"
-msgstr "Fula (Latin) (Ghana)"
+msgstr ""
 
 #: picard/const/locales.py:390
-#, fuzzy
 msgid "Fula (Latin) (Gambia)"
-msgstr "Fula (Latin) (Gambia)"
+msgstr ""
 
 #: picard/const/locales.py:391
-#, fuzzy
 msgid "Fula (Latin) (Guinea)"
-msgstr "Fula (Latin) (Guinea)"
+msgstr ""
 
 #: picard/const/locales.py:392
-#, fuzzy
 msgid "Fula (Latin) (Guinea-Bissau)"
-msgstr "Fula (Latin) (Guinea-Bissau)"
+msgstr ""
 
 #: picard/const/locales.py:393
-#, fuzzy
 msgid "Fula (Latin) (Liberia)"
-msgstr "Fula (Latin) (Liberia)"
+msgstr ""
 
 #: picard/const/locales.py:394
-#, fuzzy
 msgid "Fula (Latin) (Mauritania)"
-msgstr "Fula (Latin) (Mauritania)"
+msgstr ""
 
 #: picard/const/locales.py:395
-#, fuzzy
 msgid "Fula (Latin) (Niger)"
-msgstr "Fula (Latin) (Niger)"
+msgstr ""
 
 #: picard/const/locales.py:396
-#, fuzzy
 msgid "Fula (Latin) (Nigeria)"
-msgstr "Fula (Latin) (Nigeria)"
+msgstr ""
 
 #: picard/const/locales.py:397
-#, fuzzy
 msgid "Fula (Latin) (Sierra Leone)"
-msgstr "Fula (Latin) (Sierra Leone)"
+msgstr ""
 
 #: picard/const/locales.py:398
-#, fuzzy
 msgid "Fula (Latin) (Senegal)"
-msgstr "Fula (Latin) (Senegal)"
+msgstr ""
 
 #: picard/const/locales.py:400
 msgid "Finnish (Finland)"
@@ -2812,9 +2613,8 @@ msgid "Faroese"
 msgstr "Féroïen"
 
 #: picard/const/locales.py:404
-#, fuzzy
 msgid "Faroese (Denmark)"
-msgstr "Faroese (Denmark)"
+msgstr ""
 
 #: picard/const/locales.py:405
 msgid "Faroese (Faroe Islands)"
@@ -2825,229 +2625,188 @@ msgid "French (Belgium)"
 msgstr "Français (Belgique)"
 
 #: picard/const/locales.py:408
-#, fuzzy
 msgid "French (Burkina Faso)"
-msgstr "French (Burkina Faso)"
+msgstr ""
 
 #: picard/const/locales.py:409
-#, fuzzy
 msgid "French (Burundi)"
-msgstr "French (Burundi)"
+msgstr ""
 
 #: picard/const/locales.py:410
-#, fuzzy
 msgid "French (Benin)"
-msgstr "French (Benin)"
+msgstr ""
 
 #: picard/const/locales.py:411
-#, fuzzy
 msgid "French (St. Barthélemy)"
-msgstr "French (St. Barthélemy)"
+msgstr ""
 
 #: picard/const/locales.py:413
-#, fuzzy
 msgid "French (Congo - Kinshasa)"
-msgstr "French (Congo - Kinshasa)"
+msgstr ""
 
 #: picard/const/locales.py:414
-#, fuzzy
 msgid "French (Central African Republic)"
-msgstr "French (Central African Republic)"
+msgstr ""
 
 #: picard/const/locales.py:415
-#, fuzzy
 msgid "French (Congo - Brazzaville)"
-msgstr "French (Congo - Brazzaville)"
+msgstr ""
 
 #: picard/const/locales.py:416
 msgid "French (Switzerland)"
 msgstr "Français (Suisse)"
 
 #: picard/const/locales.py:417
-#, fuzzy
 msgid "French (Côte d’Ivoire)"
-msgstr "French (Côte d’Ivoire)"
+msgstr ""
 
 #: picard/const/locales.py:418
-#, fuzzy
 msgid "French (Cameroon)"
-msgstr "French (Cameroon)"
+msgstr ""
 
 #: picard/const/locales.py:419
-#, fuzzy
 msgid "French (Djibouti)"
-msgstr "French (Djibouti)"
+msgstr ""
 
 #: picard/const/locales.py:420
-#, fuzzy
 msgid "French (Algeria)"
-msgstr "French (Algeria)"
+msgstr ""
 
 #: picard/const/locales.py:421
 msgid "French (France)"
 msgstr "Français (France)"
 
 #: picard/const/locales.py:422
-#, fuzzy
 msgid "French (Gabon)"
-msgstr "French (Gabon)"
+msgstr ""
 
 #: picard/const/locales.py:423
-#, fuzzy
 msgid "French (French Guiana)"
-msgstr "French (French Guiana)"
+msgstr ""
 
 #: picard/const/locales.py:424
-#, fuzzy
 msgid "French (Guinea)"
-msgstr "French (Guinea)"
+msgstr ""
 
 #: picard/const/locales.py:425
-#, fuzzy
 msgid "French (Guadeloupe)"
-msgstr "French (Guadeloupe)"
+msgstr ""
 
 #: picard/const/locales.py:426
-#, fuzzy
 msgid "French (Equatorial Guinea)"
-msgstr "French (Equatorial Guinea)"
+msgstr ""
 
 #: picard/const/locales.py:427
-#, fuzzy
 msgid "French (Haiti)"
-msgstr "French (Haiti)"
+msgstr ""
 
 #: picard/const/locales.py:428
-#, fuzzy
 msgid "French (Comoros)"
-msgstr "French (Comoros)"
+msgstr ""
 
 #: picard/const/locales.py:429
 msgid "French (Luxembourg)"
 msgstr "Français (Luxembourg)"
 
 #: picard/const/locales.py:430
-#, fuzzy
 msgid "French (Morocco)"
-msgstr "French (Morocco)"
+msgstr ""
 
 #: picard/const/locales.py:431
 msgid "French (Monaco)"
 msgstr "Français (Monaco)"
 
 #: picard/const/locales.py:432
-#, fuzzy
 msgid "French (St. Martin)"
-msgstr "French (St. Martin)"
+msgstr ""
 
 #: picard/const/locales.py:433
-#, fuzzy
 msgid "French (Madagascar)"
-msgstr "French (Madagascar)"
+msgstr ""
 
 #: picard/const/locales.py:434
-#, fuzzy
 msgid "French (Mali)"
-msgstr "French (Mali)"
+msgstr ""
 
 #: picard/const/locales.py:435
-#, fuzzy
 msgid "French (Martinique)"
-msgstr "French (Martinique)"
+msgstr ""
 
 #: picard/const/locales.py:436
-#, fuzzy
 msgid "French (Mauritania)"
-msgstr "French (Mauritania)"
+msgstr ""
 
 #: picard/const/locales.py:437
-#, fuzzy
 msgid "French (Mauritius)"
-msgstr "French (Mauritius)"
+msgstr ""
 
 #: picard/const/locales.py:438
-#, fuzzy
 msgid "French (New Caledonia)"
-msgstr "French (New Caledonia)"
+msgstr ""
 
 #: picard/const/locales.py:439
-#, fuzzy
 msgid "French (Niger)"
-msgstr "French (Niger)"
+msgstr ""
 
 #: picard/const/locales.py:440
-#, fuzzy
 msgid "French (French Polynesia)"
-msgstr "French (French Polynesia)"
+msgstr ""
 
 #: picard/const/locales.py:441
-#, fuzzy
 msgid "French (St. Pierre & Miquelon)"
-msgstr "French (St. Pierre & Miquelon)"
+msgstr ""
 
 #: picard/const/locales.py:442
-#, fuzzy
 msgid "French (Réunion)"
-msgstr "French (Réunion)"
+msgstr ""
 
 #: picard/const/locales.py:443
-#, fuzzy
 msgid "French (Rwanda)"
-msgstr "French (Rwanda)"
+msgstr ""
 
 #: picard/const/locales.py:444
-#, fuzzy
 msgid "French (Seychelles)"
-msgstr "French (Seychelles)"
+msgstr ""
 
 #: picard/const/locales.py:445
 msgid "French (Senegal)"
 msgstr "Français (Sénégal)"
 
 #: picard/const/locales.py:446
-#, fuzzy
 msgid "French (Syria)"
-msgstr "French (Syria)"
+msgstr ""
 
 #: picard/const/locales.py:447
-#, fuzzy
 msgid "French (Chad)"
-msgstr "French (Chad)"
+msgstr ""
 
 #: picard/const/locales.py:448
-#, fuzzy
 msgid "French (Togo)"
-msgstr "French (Togo)"
+msgstr ""
 
 #: picard/const/locales.py:449
-#, fuzzy
 msgid "French (Tunisia)"
-msgstr "French (Tunisia)"
+msgstr ""
 
 #: picard/const/locales.py:450
-#, fuzzy
 msgid "French (Vanuatu)"
-msgstr "French (Vanuatu)"
+msgstr ""
 
 #: picard/const/locales.py:451
-#, fuzzy
 msgid "French (Wallis & Futuna)"
-msgstr "French (Wallis & Futuna)"
+msgstr ""
 
 #: picard/const/locales.py:452
-#, fuzzy
 msgid "French (Mayotte)"
-msgstr "French (Mayotte)"
+msgstr ""
 
 #: picard/const/locales.py:453
-#, fuzzy
 msgid "Northern Frisian"
-msgstr "Northern Frisian"
+msgstr ""
 
 #: picard/const/locales.py:454
-#, fuzzy
 msgid "Northern Frisian (Germany)"
-msgstr "Northern Frisian (Germany)"
+msgstr ""
 
 #: picard/const/locales.py:455
 msgid "Friulian"
@@ -3058,23 +2817,20 @@ msgid "Friulian (Italy)"
 msgstr "Frioulan (Italie)"
 
 #: picard/const/locales.py:457
-#, fuzzy
 msgid "Western Frisian"
-msgstr "Western Frisian"
+msgstr ""
 
 #: picard/const/locales.py:458
-#, fuzzy
 msgid "Western Frisian (Netherlands)"
-msgstr "Western Frisian (Netherlands)"
+msgstr ""
 
 #: picard/const/locales.py:459
 msgid "Irish"
 msgstr "Irlandais"
 
 #: picard/const/locales.py:460
-#, fuzzy
 msgid "Irish (United Kingdom)"
-msgstr "Irish (United Kingdom)"
+msgstr ""
 
 #: picard/const/locales.py:461
 msgid "Irish (Ireland)"
@@ -3089,14 +2845,12 @@ msgid "Ga (Ghana)"
 msgstr "Ga (Ghana)"
 
 #: picard/const/locales.py:464
-#, fuzzy
 msgid "Scottish Gaelic"
-msgstr "Scottish Gaelic"
+msgstr ""
 
 #: picard/const/locales.py:465
-#, fuzzy
 msgid "Scottish Gaelic (United Kingdom)"
-msgstr "Scottish Gaelic (United Kingdom)"
+msgstr ""
 
 #: picard/const/locales.py:466
 msgid "Geez"
@@ -3115,14 +2869,12 @@ msgid "Galician (Spain)"
 msgstr "Galicien (Espagne)"
 
 #: picard/const/locales.py:471
-#, fuzzy
 msgid "Guarani"
-msgstr "Guarani"
+msgstr ""
 
 #: picard/const/locales.py:472
-#, fuzzy
 msgid "Guarani (Paraguay)"
-msgstr "Guarani (Paraguay)"
+msgstr ""
 
 #: picard/const/locales.py:473
 msgid "Swiss German"
@@ -3133,14 +2885,12 @@ msgid "Swiss German (Switzerland)"
 msgstr "Suisse allemand (Suisse)"
 
 #: picard/const/locales.py:475
-#, fuzzy
 msgid "Swiss German (France)"
-msgstr "Swiss German (France)"
+msgstr ""
 
 #: picard/const/locales.py:476
-#, fuzzy
 msgid "Swiss German (Liechtenstein)"
-msgstr "Swiss German (Liechtenstein)"
+msgstr ""
 
 #: picard/const/locales.py:477
 msgid "Gujarati"
@@ -3151,23 +2901,20 @@ msgid "Gujarati (India)"
 msgstr "Gujarati (Inde)"
 
 #: picard/const/locales.py:479
-#, fuzzy
 msgid "Gusii"
-msgstr "Gusii"
+msgstr ""
 
 #: picard/const/locales.py:480
-#, fuzzy
 msgid "Gusii (Kenya)"
-msgstr "Gusii (Kenya)"
+msgstr ""
 
 #: picard/const/locales.py:481
 msgid "Manx"
 msgstr "Mannois"
 
 #: picard/const/locales.py:482
-#, fuzzy
 msgid "Manx (Isle of Man)"
-msgstr "Manx (Isle of Man)"
+msgstr ""
 
 #: picard/const/locales.py:483
 msgid "Hausa"
@@ -3238,52 +2985,44 @@ msgid "Hindi (India)"
 msgstr "Hindi (Inde)"
 
 #: picard/const/locales.py:501
-#, fuzzy
 msgid "Hindi (Latin)"
-msgstr "Hindi (Latin)"
+msgstr ""
 
 #: picard/const/locales.py:502
-#, fuzzy
 msgid "Hindi (Latin) (India)"
-msgstr "Hindi (Latin) (India)"
+msgstr ""
 
 #: picard/const/locales.py:503
-#, fuzzy
 msgid "Hmong Njua"
-msgstr "Hmong Njua"
+msgstr ""
 
 #: picard/const/locales.py:504
-#, fuzzy
 msgid "Hmong Njua (Nyiakeng Puachue Hmong)"
-msgstr "Hmong Njua (Nyiakeng Puachue Hmong)"
+msgstr ""
 
 #: picard/const/locales.py:505
-#, fuzzy
 msgid "Hmong Njua (Nyiakeng Puachue Hmong) (United States)"
-msgstr "Hmong Njua (Nyiakeng Puachue Hmong) (United States)"
+msgstr ""
 
 #: picard/const/locales.py:506
 msgid "Croatian"
 msgstr "Croate"
 
 #: picard/const/locales.py:507
-#, fuzzy
 msgid "Croatian (Bosnia & Herzegovina)"
-msgstr "Croatian (Bosnia & Herzegovina)"
+msgstr ""
 
 #: picard/const/locales.py:508
 msgid "Croatian (Croatia)"
 msgstr "Croate (Croatie)"
 
 #: picard/const/locales.py:509
-#, fuzzy
 msgid "Upper Sorbian"
-msgstr "Upper Sorbian"
+msgstr ""
 
 #: picard/const/locales.py:510
-#, fuzzy
 msgid "Upper Sorbian (Germany)"
-msgstr "Upper Sorbian (Germany)"
+msgstr ""
 
 #: picard/const/locales.py:512
 msgid "Hungarian (Hungary)"
@@ -3306,9 +3045,8 @@ msgid "Interlingua"
 msgstr "Interlingua"
 
 #: picard/const/locales.py:517
-#, fuzzy
 msgid "Interlingua (world)"
-msgstr "Interlingua (world)"
+msgstr ""
 
 #: picard/const/locales.py:518
 msgid "Indonesian"
@@ -3335,14 +3073,12 @@ msgid "Sichuan Yi (China)"
 msgstr "Yi du Sichuan (Chine)"
 
 #: picard/const/locales.py:524
-#, fuzzy
 msgid "Ido"
-msgstr "Ido"
+msgstr ""
 
 #: picard/const/locales.py:525
-#, fuzzy
 msgid "Ido (world)"
-msgstr "Ido (world)"
+msgstr ""
 
 #: picard/const/locales.py:527
 msgid "Icelandic (Iceland)"
@@ -3357,77 +3093,64 @@ msgid "Italian (Italy)"
 msgstr "Italien (Italie)"
 
 #: picard/const/locales.py:531
-#, fuzzy
 msgid "Italian (San Marino)"
-msgstr "Italian (San Marino)"
+msgstr ""
 
 #: picard/const/locales.py:532
-#, fuzzy
 msgid "Italian (Vatican City)"
-msgstr "Italian (Vatican City)"
+msgstr ""
 
 #: picard/const/locales.py:533
 msgid "Inuktitut"
 msgstr "Inuktitut"
 
 #: picard/const/locales.py:534
-#, fuzzy
 msgid "Inuktitut (Canada)"
-msgstr "Inuktitut (Canada)"
+msgstr ""
 
 #: picard/const/locales.py:535
-#, fuzzy
 msgid "Inuktitut (Latin)"
-msgstr "Inuktitut (Latin)"
+msgstr ""
 
 #: picard/const/locales.py:536
-#, fuzzy
 msgid "Inuktitut (Latin) (Canada)"
-msgstr "Inuktitut (Latin) (Canada)"
+msgstr ""
 
 #: picard/const/locales.py:538
 msgid "Japanese (Japan)"
 msgstr "Japonais (Japon)"
 
 #: picard/const/locales.py:539
-#, fuzzy
 msgid "Lojban"
-msgstr "Lojban"
+msgstr ""
 
 #: picard/const/locales.py:540
-#, fuzzy
 msgid "Lojban (world)"
-msgstr "Lojban (world)"
+msgstr ""
 
 #: picard/const/locales.py:541
-#, fuzzy
 msgid "Ngomba"
-msgstr "Ngomba"
+msgstr ""
 
 #: picard/const/locales.py:542
-#, fuzzy
 msgid "Ngomba (Cameroon)"
-msgstr "Ngomba (Cameroon)"
+msgstr ""
 
 #: picard/const/locales.py:543
-#, fuzzy
 msgid "Machame"
-msgstr "Machame"
+msgstr ""
 
 #: picard/const/locales.py:544
-#, fuzzy
 msgid "Machame (Tanzania)"
-msgstr "Machame (Tanzania)"
+msgstr ""
 
 #: picard/const/locales.py:545
-#, fuzzy
 msgid "Javanese"
-msgstr "Javanese"
+msgstr ""
 
 #: picard/const/locales.py:546
-#, fuzzy
 msgid "Javanese (Indonesia)"
-msgstr "Javanese (Indonesia)"
+msgstr ""
 
 #: picard/const/locales.py:547
 msgid "Georgian"
@@ -3438,14 +3161,12 @@ msgid "Georgian (Georgia)"
 msgstr "Géorgien (Géorgie)"
 
 #: picard/const/locales.py:549
-#, fuzzy
 msgid "Kabyle"
-msgstr "Kabyle"
+msgstr ""
 
 #: picard/const/locales.py:550
-#, fuzzy
 msgid "Kabyle (Algeria)"
-msgstr "Kabyle (Algeria)"
+msgstr ""
 
 #: picard/const/locales.py:551
 msgid "Jju"
@@ -3472,33 +3193,28 @@ msgid "Tyap (Nigeria)"
 msgstr "Tyap (Nigeria)"
 
 #: picard/const/locales.py:557
-#, fuzzy
 msgid "Makonde"
-msgstr "Makonde"
+msgstr ""
 
 #: picard/const/locales.py:558
-#, fuzzy
 msgid "Makonde (Tanzania)"
-msgstr "Makonde (Tanzania)"
+msgstr ""
 
 #: picard/const/locales.py:559
 msgid "Kabuverdianu"
 msgstr "Créole du Cap-Vert"
 
 #: picard/const/locales.py:560
-#, fuzzy
 msgid "Kabuverdianu (Cape Verde)"
-msgstr "Kabuverdianu (Cape Verde)"
+msgstr ""
 
 #: picard/const/locales.py:561
-#, fuzzy
 msgid "Kenyang"
-msgstr "Kenyang"
+msgstr ""
 
 #: picard/const/locales.py:562
-#, fuzzy
 msgid "Kenyang (Cameroon)"
-msgstr "Kenyang (Cameroon)"
+msgstr ""
 
 #: picard/const/locales.py:563
 msgid "Koro"
@@ -3509,34 +3225,28 @@ msgid "Koro (Côte d’Ivoire)"
 msgstr "Koro (Côte d’Ivoire)"
 
 #: picard/const/locales.py:565
-#, fuzzy
 msgid "Kaingang"
-msgstr "Kaingang"
+msgstr ""
 
 #: picard/const/locales.py:566
-#, fuzzy
 msgid "Kaingang (Brazil)"
-msgstr "Kaingang (Brazil)"
+msgstr ""
 
 #: picard/const/locales.py:567
-#, fuzzy
 msgid "Koyra Chiini"
-msgstr "Koyra Chiini"
+msgstr ""
 
 #: picard/const/locales.py:568
-#, fuzzy
 msgid "Koyra Chiini (Mali)"
-msgstr "Koyra Chiini (Mali)"
+msgstr ""
 
 #: picard/const/locales.py:569
-#, fuzzy
 msgid "Kikuyu"
-msgstr "Kikuyu"
+msgstr ""
 
 #: picard/const/locales.py:570
-#, fuzzy
 msgid "Kikuyu (Kenya)"
-msgstr "Kikuyu (Kenya)"
+msgstr ""
 
 #: picard/const/locales.py:571
 msgid "Kazakh"
@@ -3555,14 +3265,12 @@ msgid "Kazakh (Kazakhstan)"
 msgstr "Kazakh (Kazakhstan)"
 
 #: picard/const/locales.py:575
-#, fuzzy
 msgid "Kako"
-msgstr "Kako"
+msgstr ""
 
 #: picard/const/locales.py:576
-#, fuzzy
 msgid "Kako (Cameroon)"
-msgstr "Kako (Cameroon)"
+msgstr ""
 
 #: picard/const/locales.py:577
 msgid "Kalaallisut"
@@ -3573,14 +3281,12 @@ msgid "Kalaallisut (Greenland)"
 msgstr "Kalaallisut (Groenland)"
 
 #: picard/const/locales.py:579
-#, fuzzy
 msgid "Kalenjin"
-msgstr "Kalenjin"
+msgstr ""
 
 #: picard/const/locales.py:580
-#, fuzzy
 msgid "Kalenjin (Kenya)"
-msgstr "Kalenjin (Kenya)"
+msgstr ""
 
 #: picard/const/locales.py:581
 msgid "Khmer"
@@ -3599,9 +3305,8 @@ msgid "Kannada (India)"
 msgstr "Kannada (Inde)"
 
 #: picard/const/locales.py:586
-#, fuzzy
 msgid "Korean (North Korea)"
-msgstr "Korean (North Korea)"
+msgstr ""
 
 #: picard/const/locales.py:587
 msgid "Korean (South Korea)"
@@ -3628,68 +3333,56 @@ msgid "Kpelle (Liberia)"
 msgstr "Kpèllé (Libéria)"
 
 #: picard/const/locales.py:593
-#, fuzzy
 msgid "Kashmiri"
-msgstr "Kashmiri"
+msgstr ""
 
 #: picard/const/locales.py:594
-#, fuzzy
 msgid "Kashmiri (Arabic)"
-msgstr "Kashmiri (Arabic)"
+msgstr ""
 
 #: picard/const/locales.py:595
-#, fuzzy
 msgid "Kashmiri (Arabic) (India)"
-msgstr "Kashmiri (Arabic) (India)"
+msgstr ""
 
 #: picard/const/locales.py:596
-#, fuzzy
 msgid "Kashmiri (Devanagari)"
-msgstr "Kashmiri (Devanagari)"
+msgstr ""
 
 #: picard/const/locales.py:597
-#, fuzzy
 msgid "Kashmiri (Devanagari) (India)"
-msgstr "Kashmiri (Devanagari) (India)"
+msgstr ""
 
 #: picard/const/locales.py:598
-#, fuzzy
 msgid "Shambala"
-msgstr "Shambala"
+msgstr ""
 
 #: picard/const/locales.py:599
-#, fuzzy
 msgid "Shambala (Tanzania)"
-msgstr "Shambala (Tanzania)"
+msgstr ""
 
 #: picard/const/locales.py:600
-#, fuzzy
 msgid "Bafia"
-msgstr "Bafia"
+msgstr ""
 
 #: picard/const/locales.py:601
-#, fuzzy
 msgid "Bafia (Cameroon)"
-msgstr "Bafia (Cameroon)"
+msgstr ""
 
 #: picard/const/locales.py:602
-#, fuzzy
 msgid "Colognian"
-msgstr "Colognian"
+msgstr ""
 
 #: picard/const/locales.py:603
-#, fuzzy
 msgid "Colognian (Germany)"
-msgstr "Colognian (Germany)"
+msgstr ""
 
 #: picard/const/locales.py:604
 msgid "Kurdish"
 msgstr "Kurde"
 
 #: picard/const/locales.py:605
-#, fuzzy
 msgid "Kurdish (Türkiye)"
-msgstr "Kurdish (Türkiye)"
+msgstr ""
 
 #: picard/const/locales.py:606
 msgid "Cornish"
@@ -3700,101 +3393,84 @@ msgid "Cornish (United Kingdom)"
 msgstr "Cornique (Royaume-Uni)"
 
 #: picard/const/locales.py:608
-#, fuzzy
 msgid "Kyrgyz"
-msgstr "Kyrgyz"
+msgstr ""
 
 #: picard/const/locales.py:609
-#, fuzzy
 msgid "Kyrgyz (Kyrgyzstan)"
-msgstr "Kyrgyz (Kyrgyzstan)"
+msgstr ""
 
 #: picard/const/locales.py:610 picard/const/scripts.py:28
 msgid "Latin"
 msgstr "Latin"
 
 #: picard/const/locales.py:611
-#, fuzzy
 msgid "Latin (Vatican City)"
-msgstr "Latin (Vatican City)"
+msgstr ""
 
 #: picard/const/locales.py:612
-#, fuzzy
 msgid "Langi"
-msgstr "Langi"
+msgstr ""
 
 #: picard/const/locales.py:613
-#, fuzzy
 msgid "Langi (Tanzania)"
-msgstr "Langi (Tanzania)"
+msgstr ""
 
 #: picard/const/locales.py:614
-#, fuzzy
 msgid "Luxembourgish"
-msgstr "Luxembourgish"
+msgstr ""
 
 #: picard/const/locales.py:615
-#, fuzzy
 msgid "Luxembourgish (Luxembourg)"
-msgstr "Luxembourgish (Luxembourg)"
+msgstr ""
 
 #: picard/const/locales.py:616
-#, fuzzy
 msgid "Ganda"
-msgstr "Ganda"
+msgstr ""
 
 #: picard/const/locales.py:617
-#, fuzzy
 msgid "Ganda (Uganda)"
-msgstr "Ganda (Uganda)"
+msgstr ""
 
 #: picard/const/locales.py:618
-#, fuzzy
 msgid "Ligurian"
-msgstr "Ligurian"
+msgstr ""
 
 #: picard/const/locales.py:619
-#, fuzzy
 msgid "Ligurian (Italy)"
-msgstr "Ligurian (Italy)"
+msgstr ""
 
 #: picard/const/locales.py:620
-#, fuzzy
 msgid "Lakota"
-msgstr "Lakota"
+msgstr ""
 
 #: picard/const/locales.py:621
-#, fuzzy
 msgid "Lakota (United States)"
-msgstr "Lakota (United States)"
+msgstr ""
 
 #: picard/const/locales.py:622
-#, fuzzy
 msgid "Lombard"
-msgstr "Lombard"
+msgstr ""
 
 #: picard/const/locales.py:623
-#, fuzzy
 msgid "Lombard (Italy)"
-msgstr "Lombard (Italy)"
+msgstr ""
 
 #: picard/const/locales.py:624
 msgid "Lingala"
 msgstr "Lingala"
 
 #: picard/const/locales.py:625
-#, fuzzy
 msgid "Lingala (Angola)"
-msgstr "Lingala (Angola)"
+msgstr ""
 
 #: picard/const/locales.py:626
 msgid "Lingala (Congo - Kinshasa)"
 msgstr "Lingala (Congo - Kinshasa)"
 
 #: picard/const/locales.py:627
-#, fuzzy
 msgid "Lingala (Central African Republic)"
-msgstr "Lingala (Central African Republic)"
+msgstr ""
 
 #: picard/const/locales.py:628
 msgid "Lingala (Congo - Brazzaville)"
@@ -3809,19 +3485,16 @@ msgid "Lao (Laos)"
 msgstr "Lao (Laos)"
 
 #: picard/const/locales.py:631
-#, fuzzy
 msgid "Northern Luri"
-msgstr "Northern Luri"
+msgstr ""
 
 #: picard/const/locales.py:632
-#, fuzzy
 msgid "Northern Luri (Iraq)"
-msgstr "Northern Luri (Iraq)"
+msgstr ""
 
 #: picard/const/locales.py:633
-#, fuzzy
 msgid "Northern Luri (Iran)"
-msgstr "Northern Luri (Iran)"
+msgstr ""
 
 #: picard/const/locales.py:634
 msgid "Lithuanian"
@@ -3832,33 +3505,28 @@ msgid "Lithuanian (Lithuania)"
 msgstr "Lithuanien (Lithuanie)"
 
 #: picard/const/locales.py:636
-#, fuzzy
 msgid "Luba-Katanga"
-msgstr "Luba-Katanga"
+msgstr ""
 
 #: picard/const/locales.py:637
-#, fuzzy
 msgid "Luba-Katanga (Congo - Kinshasa)"
-msgstr "Luba-Katanga (Congo - Kinshasa)"
+msgstr ""
 
 #: picard/const/locales.py:638
-#, fuzzy
 msgid "Luo"
-msgstr "Luo"
+msgstr ""
 
 #: picard/const/locales.py:639
-#, fuzzy
 msgid "Luo (Kenya)"
-msgstr "Luo (Kenya)"
+msgstr ""
 
 #: picard/const/locales.py:640
 msgid "Luyia"
 msgstr "Luyia"
 
 #: picard/const/locales.py:641
-#, fuzzy
 msgid "Luyia (Kenya)"
-msgstr "Luyia (Kenya)"
+msgstr ""
 
 #: picard/const/locales.py:642
 msgid "Latvian"
@@ -3869,108 +3537,88 @@ msgid "Latvian (Latvia)"
 msgstr "Letton (Lettonie)"
 
 #: picard/const/locales.py:644
-#, fuzzy
 msgid "Maithili"
-msgstr "Maithili"
+msgstr ""
 
 #: picard/const/locales.py:645
-#, fuzzy
 msgid "Maithili (India)"
-msgstr "Maithili (India)"
+msgstr ""
 
 #: picard/const/locales.py:646
-#, fuzzy
 msgid "Masai"
-msgstr "Masai"
+msgstr ""
 
 #: picard/const/locales.py:647
-#, fuzzy
 msgid "Masai (Kenya)"
-msgstr "Masai (Kenya)"
+msgstr ""
 
 #: picard/const/locales.py:648
-#, fuzzy
 msgid "Masai (Tanzania)"
-msgstr "Masai (Tanzania)"
+msgstr ""
 
 #: picard/const/locales.py:649
-#, fuzzy
 msgid "Moksha"
-msgstr "Moksha"
+msgstr ""
 
 #: picard/const/locales.py:650
-#, fuzzy
 msgid "Moksha (Russia)"
-msgstr "Moksha (Russia)"
+msgstr ""
 
 #: picard/const/locales.py:651
-#, fuzzy
 msgid "Meru"
-msgstr "Meru"
+msgstr ""
 
 #: picard/const/locales.py:652
-#, fuzzy
 msgid "Meru (Kenya)"
-msgstr "Meru (Kenya)"
+msgstr ""
 
 #: picard/const/locales.py:653
-#, fuzzy
 msgid "Morisyen"
-msgstr "Morisyen"
+msgstr ""
 
 #: picard/const/locales.py:654
-#, fuzzy
 msgid "Morisyen (Mauritius)"
-msgstr "Morisyen (Mauritius)"
+msgstr ""
 
 #: picard/const/locales.py:655
-#, fuzzy
 msgid "Malagasy"
-msgstr "Malagasy"
+msgstr ""
 
 #: picard/const/locales.py:656
-#, fuzzy
 msgid "Malagasy (Madagascar)"
-msgstr "Malagasy (Madagascar)"
+msgstr ""
 
 #: picard/const/locales.py:657
-#, fuzzy
 msgid "Makhuwa-Meetto"
-msgstr "Makhuwa-Meetto"
+msgstr ""
 
 #: picard/const/locales.py:658
-#, fuzzy
 msgid "Makhuwa-Meetto (Mozambique)"
-msgstr "Makhuwa-Meetto (Mozambique)"
+msgstr ""
 
 #: picard/const/locales.py:659
-#, fuzzy
 msgid "Metaʼ"
-msgstr "Metaʼ"
+msgstr ""
 
 #: picard/const/locales.py:660
-#, fuzzy
 msgid "Metaʼ (Cameroon)"
-msgstr "Metaʼ (Cameroon)"
+msgstr ""
 
 #: picard/const/locales.py:661
-#, fuzzy
 msgid "Māori"
-msgstr "Māori"
+msgstr ""
 
 #: picard/const/locales.py:662
-#, fuzzy
 msgid "Māori (New Zealand)"
-msgstr "Māori (New Zealand)"
+msgstr ""
 
 #: picard/const/locales.py:663
 msgid "Macedonian"
 msgstr "Macédonien"
 
 #: picard/const/locales.py:664
-#, fuzzy
 msgid "Macedonian (North Macedonia)"
-msgstr "Macedonian (North Macedonia)"
+msgstr ""
 
 #: picard/const/locales.py:665
 msgid "Malayalam"
@@ -4005,44 +3653,36 @@ msgid "Mongolian (Mongolian) (China)"
 msgstr "Mongol (Mongol) (Chine)"
 
 #: picard/const/locales.py:673
-#, fuzzy
 msgid "Mongolian (Mongolian) (Mongolia)"
-msgstr "Mongolian (Mongolian) (Mongolia)"
+msgstr ""
 
 #: picard/const/locales.py:674
-#, fuzzy
 msgid "Manipuri"
-msgstr "Manipuri"
+msgstr ""
 
 #: picard/const/locales.py:675
-#, fuzzy
 msgid "Manipuri (Bangla)"
-msgstr "Manipuri (Bangla)"
+msgstr ""
 
 #: picard/const/locales.py:676
-#, fuzzy
 msgid "Manipuri (Bangla) (India)"
-msgstr "Manipuri (Bangla) (India)"
+msgstr ""
 
 #: picard/const/locales.py:677
-#, fuzzy
 msgid "Manipuri (Meitei Mayek)"
-msgstr "Manipuri (Meitei Mayek)"
+msgstr ""
 
 #: picard/const/locales.py:678
-#, fuzzy
 msgid "Manipuri (Meitei Mayek) (India)"
-msgstr "Manipuri (Meitei Mayek) (India)"
+msgstr ""
 
 #: picard/const/locales.py:679
-#, fuzzy
 msgid "Mohawk"
-msgstr "Mohawk"
+msgstr ""
 
 #: picard/const/locales.py:680
-#, fuzzy
 msgid "Mohawk (Canada)"
-msgstr "Mohawk (Canada)"
+msgstr ""
 
 #: picard/const/locales.py:681
 msgid "Marathi"
@@ -4057,33 +3697,28 @@ msgid "Malay"
 msgstr "Malais"
 
 #: picard/const/locales.py:684
-#, fuzzy
 msgid "Malay (Arabic)"
-msgstr "Malay (Arabic)"
+msgstr ""
 
 #: picard/const/locales.py:685
-#, fuzzy
 msgid "Malay (Arabic) (Brunei)"
-msgstr "Malay (Arabic) (Brunei)"
+msgstr ""
 
 #: picard/const/locales.py:686
-#, fuzzy
 msgid "Malay (Arabic) (Malaysia)"
-msgstr "Malay (Arabic) (Malaysia)"
+msgstr ""
 
 #: picard/const/locales.py:687
 msgid "Malay (Brunei)"
 msgstr "Malais (Brunei)"
 
 #: picard/const/locales.py:688
-#, fuzzy
 msgid "Malay (Indonesia)"
-msgstr "Malay (Indonesia)"
+msgstr ""
 
 #: picard/const/locales.py:690
-#, fuzzy
 msgid "Malay (Singapore)"
-msgstr "Malay (Singapore)"
+msgstr ""
 
 #: picard/const/locales.py:691
 msgid "Maltese"
@@ -4094,82 +3729,68 @@ msgid "Maltese (Malta)"
 msgstr "Maltais (Malte)"
 
 #: picard/const/locales.py:693
-#, fuzzy
 msgid "Mundang"
-msgstr "Mundang"
+msgstr ""
 
 #: picard/const/locales.py:694
-#, fuzzy
 msgid "Mundang (Cameroon)"
-msgstr "Mundang (Cameroon)"
+msgstr ""
 
 #: picard/const/locales.py:695
-#, fuzzy
 msgid "Muscogee"
-msgstr "Muscogee"
+msgstr ""
 
 #: picard/const/locales.py:696
-#, fuzzy
 msgid "Muscogee (United States)"
-msgstr "Muscogee (United States)"
+msgstr ""
 
 #: picard/const/locales.py:697
 msgid "Burmese"
 msgstr "Birman"
 
 #: picard/const/locales.py:698
-#, fuzzy
 msgid "Burmese (Myanmar (Burma))"
-msgstr "Burmese (Myanmar (Burma))"
+msgstr ""
 
 #: picard/const/locales.py:699
-#, fuzzy
 msgid "Erzya"
-msgstr "Erzya"
+msgstr ""
 
 #: picard/const/locales.py:700
-#, fuzzy
 msgid "Erzya (Russia)"
-msgstr "Erzya (Russia)"
+msgstr ""
 
 #: picard/const/locales.py:701
-#, fuzzy
 msgid "Mazanderani"
-msgstr "Mazanderani"
+msgstr ""
 
 #: picard/const/locales.py:702
-#, fuzzy
 msgid "Mazanderani (Iran)"
-msgstr "Mazanderani (Iran)"
+msgstr ""
 
 #: picard/const/locales.py:703
-#, fuzzy
 msgid "Nama"
-msgstr "Nama"
+msgstr ""
 
 #: picard/const/locales.py:704
-#, fuzzy
 msgid "Nama (Namibia)"
-msgstr "Nama (Namibia)"
+msgstr ""
 
 #: picard/const/locales.py:706
 msgid "Norwegian Bokmål (Norway)"
 msgstr "Bokmål norvégien (Norvège)"
 
 #: picard/const/locales.py:707
-#, fuzzy
 msgid "Norwegian Bokmål (Svalbard & Jan Mayen)"
-msgstr "Norwegian Bokmål (Svalbard & Jan Mayen)"
+msgstr ""
 
 #: picard/const/locales.py:708
-#, fuzzy
 msgid "North Ndebele"
-msgstr "North Ndebele"
+msgstr ""
 
 #: picard/const/locales.py:709
-#, fuzzy
 msgid "North Ndebele (Zimbabwe)"
-msgstr "North Ndebele (Zimbabwe)"
+msgstr ""
 
 #: picard/const/locales.py:710
 msgid "Low German"
@@ -4180,9 +3801,8 @@ msgid "Low German (Germany)"
 msgstr "Bas allemand (Allemagne)"
 
 #: picard/const/locales.py:712
-#, fuzzy
 msgid "Low German (Netherlands)"
-msgstr "Low German (Netherlands)"
+msgstr ""
 
 #: picard/const/locales.py:713
 msgid "Nepali"
@@ -4197,47 +3817,40 @@ msgid "Nepali (Nepal)"
 msgstr "Népalais (Népal)"
 
 #: picard/const/locales.py:717
-#, fuzzy
 msgid "Dutch (Aruba)"
-msgstr "Dutch (Aruba)"
+msgstr ""
 
 #: picard/const/locales.py:718
 msgid "Dutch (Belgium)"
 msgstr "Néerlandais (Belgique)"
 
 #: picard/const/locales.py:719
-#, fuzzy
 msgid "Dutch (Caribbean Netherlands)"
-msgstr "Dutch (Caribbean Netherlands)"
+msgstr ""
 
 #: picard/const/locales.py:720
-#, fuzzy
 msgid "Dutch (Curaçao)"
-msgstr "Dutch (Curaçao)"
+msgstr ""
 
 #: picard/const/locales.py:721
 msgid "Dutch (Netherlands)"
 msgstr "Néerlandais (Pays-Bas)"
 
 #: picard/const/locales.py:722
-#, fuzzy
 msgid "Dutch (Suriname)"
-msgstr "Dutch (Suriname)"
+msgstr ""
 
 #: picard/const/locales.py:723
-#, fuzzy
 msgid "Dutch (Sint Maarten)"
-msgstr "Dutch (Sint Maarten)"
+msgstr ""
 
 #: picard/const/locales.py:724
-#, fuzzy
 msgid "Kwasio"
-msgstr "Kwasio"
+msgstr ""
 
 #: picard/const/locales.py:725
-#, fuzzy
 msgid "Kwasio (Cameroon)"
-msgstr "Kwasio (Cameroon)"
+msgstr ""
 
 #: picard/const/locales.py:726
 msgid "Norwegian Nynorsk"
@@ -4248,28 +3861,24 @@ msgid "Norwegian Nynorsk (Norway)"
 msgstr "Nynorsk (Norvège)"
 
 #: picard/const/locales.py:728
-#, fuzzy
 msgid "Ngiemboon"
-msgstr "Ngiemboon"
+msgstr ""
 
 #: picard/const/locales.py:729
-#, fuzzy
 msgid "Ngiemboon (Cameroon)"
-msgstr "Ngiemboon (Cameroon)"
+msgstr ""
 
 #: picard/const/locales.py:730
 msgid "Norwegian"
 msgstr "Norvégien"
 
 #: picard/const/locales.py:731
-#, fuzzy
 msgid "N’Ko"
-msgstr "N’Ko"
+msgstr ""
 
 #: picard/const/locales.py:732
-#, fuzzy
 msgid "N’Ko (Guinea)"
-msgstr "N’Ko (Guinea)"
+msgstr ""
 
 #: picard/const/locales.py:733
 msgid "South Ndebele"
@@ -4288,24 +3897,20 @@ msgid "Northern Sotho (South Africa)"
 msgstr "Sotho du Nord (Afrique du Sud)"
 
 #: picard/const/locales.py:737
-#, fuzzy
 msgid "Nuer"
-msgstr "Nuer"
+msgstr ""
 
 #: picard/const/locales.py:738
-#, fuzzy
 msgid "Nuer (South Sudan)"
-msgstr "Nuer (South Sudan)"
+msgstr ""
 
 #: picard/const/locales.py:739
-#, fuzzy
 msgid "Navajo"
-msgstr "Navajo"
+msgstr ""
 
 #: picard/const/locales.py:740
-#, fuzzy
 msgid "Navajo (United States)"
-msgstr "Navajo (United States)"
+msgstr ""
 
 #: picard/const/locales.py:741
 msgid "Nyanja"
@@ -4316,19 +3921,16 @@ msgid "Nyanja (Malawi)"
 msgstr "Nyanja (Malawi)"
 
 #: picard/const/locales.py:743
-#, fuzzy
 msgid "Nyankole"
-msgstr "Nyankole"
+msgstr ""
 
 #: picard/const/locales.py:744
-#, fuzzy
 msgid "Nyankole (Uganda)"
-msgstr "Nyankole (Uganda)"
+msgstr ""
 
 #: picard/const/locales.py:746
-#, fuzzy
 msgid "Occitan (Spain)"
-msgstr "Occitan (Spain)"
+msgstr ""
 
 #: picard/const/locales.py:747
 msgid "Occitan (France)"
@@ -4347,39 +3949,32 @@ msgid "Oromo (Kenya)"
 msgstr "Oromo (Kenya)"
 
 #: picard/const/locales.py:751
-#, fuzzy
 msgid "Odia"
-msgstr "Odia"
+msgstr ""
 
 #: picard/const/locales.py:752
-#, fuzzy
 msgid "Odia (India)"
-msgstr "Odia (India)"
+msgstr ""
 
 #: picard/const/locales.py:753
-#, fuzzy
 msgid "Ossetic"
-msgstr "Ossetic"
+msgstr ""
 
 #: picard/const/locales.py:754
-#, fuzzy
 msgid "Ossetic (Georgia)"
-msgstr "Ossetic (Georgia)"
+msgstr ""
 
 #: picard/const/locales.py:755
-#, fuzzy
 msgid "Ossetic (Russia)"
-msgstr "Ossetic (Russia)"
+msgstr ""
 
 #: picard/const/locales.py:756
-#, fuzzy
 msgid "Osage"
-msgstr "Osage"
+msgstr ""
 
 #: picard/const/locales.py:757
-#, fuzzy
 msgid "Osage (United States)"
-msgstr "Osage (United States)"
+msgstr ""
 
 #: picard/const/locales.py:758
 msgid "Punjabi"
@@ -4410,53 +4005,44 @@ msgid "Punjabi (Pakistan)"
 msgstr "Pendjabi (Pakistan)"
 
 #: picard/const/locales.py:765
-#, fuzzy
 msgid "Papiamento"
-msgstr "Papiamento"
+msgstr ""
 
 #: picard/const/locales.py:766
-#, fuzzy
 msgid "Papiamento (Aruba)"
-msgstr "Papiamento (Aruba)"
+msgstr ""
 
 #: picard/const/locales.py:767
-#, fuzzy
 msgid "Papiamento (Curaçao)"
-msgstr "Papiamento (Curaçao)"
+msgstr ""
 
 #: picard/const/locales.py:768
-#, fuzzy
 msgid "Nigerian Pidgin"
-msgstr "Nigerian Pidgin"
+msgstr ""
 
 #: picard/const/locales.py:769
-#, fuzzy
 msgid "Nigerian Pidgin (Nigeria)"
-msgstr "Nigerian Pidgin (Nigeria)"
+msgstr ""
 
 #: picard/const/locales.py:770
-#, fuzzy
 msgid "Pijin"
-msgstr "Pijin"
+msgstr ""
 
 #: picard/const/locales.py:771
-#, fuzzy
 msgid "Pijin (Solomon Islands)"
-msgstr "Pijin (Solomon Islands)"
+msgstr ""
 
 #: picard/const/locales.py:773
 msgid "Polish (Poland)"
 msgstr "Polonais (Pologne)"
 
 #: picard/const/locales.py:774
-#, fuzzy
 msgid "Prussian"
-msgstr "Prussian"
+msgstr ""
 
 #: picard/const/locales.py:775
-#, fuzzy
 msgid "Prussian (world)"
-msgstr "Prussian (world)"
+msgstr ""
 
 #: picard/const/locales.py:776
 msgid "Pashto"
@@ -4467,157 +4053,128 @@ msgid "Pashto (Afghanistan)"
 msgstr "Pachto (Afghanistan)"
 
 #: picard/const/locales.py:778
-#, fuzzy
 msgid "Pashto (Pakistan)"
-msgstr "Pashto (Pakistan)"
+msgstr ""
 
 #: picard/const/locales.py:780
-#, fuzzy
 msgid "Portuguese (Angola)"
-msgstr "Portuguese (Angola)"
+msgstr ""
 
 #: picard/const/locales.py:781
 msgid "Portuguese (Brazil)"
 msgstr "Portugais (Brésil)"
 
 #: picard/const/locales.py:782
-#, fuzzy
 msgid "Portuguese (Switzerland)"
-msgstr "Portuguese (Switzerland)"
+msgstr ""
 
 #: picard/const/locales.py:783
-#, fuzzy
 msgid "Portuguese (Cape Verde)"
-msgstr "Portuguese (Cape Verde)"
+msgstr ""
 
 #: picard/const/locales.py:784
-#, fuzzy
 msgid "Portuguese (Equatorial Guinea)"
-msgstr "Portuguese (Equatorial Guinea)"
+msgstr ""
 
 #: picard/const/locales.py:785
-#, fuzzy
 msgid "Portuguese (Guinea-Bissau)"
-msgstr "Portuguese (Guinea-Bissau)"
+msgstr ""
 
 #: picard/const/locales.py:786
-#, fuzzy
 msgid "Portuguese (Luxembourg)"
-msgstr "Portuguese (Luxembourg)"
+msgstr ""
 
 #: picard/const/locales.py:787
-#, fuzzy
 msgid "Portuguese (Macao)"
-msgstr "Portuguese (Macao)"
+msgstr ""
 
 #: picard/const/locales.py:788
-#, fuzzy
 msgid "Portuguese (Mozambique)"
-msgstr "Portuguese (Mozambique)"
+msgstr ""
 
 #: picard/const/locales.py:789
 msgid "Portuguese (Portugal)"
 msgstr "Portugais (Portugal)"
 
 #: picard/const/locales.py:790
-#, fuzzy
 msgid "Portuguese (São Tomé & Príncipe)"
-msgstr "Portuguese (São Tomé & Príncipe)"
+msgstr ""
 
 #: picard/const/locales.py:791
-#, fuzzy
 msgid "Portuguese (Timor-Leste)"
-msgstr "Portuguese (Timor-Leste)"
+msgstr ""
 
 #: picard/const/locales.py:792
-#, fuzzy
 msgid "Quechua"
-msgstr "Quechua"
+msgstr ""
 
 #: picard/const/locales.py:793
-#, fuzzy
 msgid "Quechua (Bolivia)"
-msgstr "Quechua (Bolivia)"
+msgstr ""
 
 #: picard/const/locales.py:794
-#, fuzzy
 msgid "Quechua (Ecuador)"
-msgstr "Quechua (Ecuador)"
+msgstr ""
 
 #: picard/const/locales.py:795
-#, fuzzy
 msgid "Quechua (Peru)"
-msgstr "Quechua (Peru)"
+msgstr ""
 
 #: picard/const/locales.py:796
-#, fuzzy
 msgid "Kʼicheʼ"
-msgstr "Kʼicheʼ"
+msgstr ""
 
 #: picard/const/locales.py:797
-#, fuzzy
 msgid "Kʼicheʼ (Guatemala)"
-msgstr "Kʼicheʼ (Guatemala)"
+msgstr ""
 
 #: picard/const/locales.py:798
-#, fuzzy
 msgid "Rajasthani"
-msgstr "Rajasthani"
+msgstr ""
 
 #: picard/const/locales.py:799
-#, fuzzy
 msgid "Rajasthani (India)"
-msgstr "Rajasthani (India)"
+msgstr ""
 
 #: picard/const/locales.py:800
-#, fuzzy
 msgid "Rohingya"
-msgstr "Rohingya"
+msgstr ""
 
 #: picard/const/locales.py:801
-#, fuzzy
 msgid "Rohingya (Hanifi)"
-msgstr "Rohingya (Hanifi)"
+msgstr ""
 
 #: picard/const/locales.py:802
-#, fuzzy
 msgid "Rohingya (Hanifi) (Bangladesh)"
-msgstr "Rohingya (Hanifi) (Bangladesh)"
+msgstr ""
 
 #: picard/const/locales.py:803
-#, fuzzy
 msgid "Rohingya (Hanifi) (Myanmar (Burma))"
-msgstr "Rohingya (Hanifi) (Myanmar (Burma))"
+msgstr ""
 
 #: picard/const/locales.py:804
-#, fuzzy
 msgid "Riffian"
-msgstr "Riffian"
+msgstr ""
 
 #: picard/const/locales.py:805
-#, fuzzy
 msgid "Riffian (Morocco)"
-msgstr "Riffian (Morocco)"
+msgstr ""
 
 #: picard/const/locales.py:806
-#, fuzzy
 msgid "Romansh"
-msgstr "Romansh"
+msgstr ""
 
 #: picard/const/locales.py:807
-#, fuzzy
 msgid "Romansh (Switzerland)"
-msgstr "Romansh (Switzerland)"
+msgstr ""
 
 #: picard/const/locales.py:808
-#, fuzzy
 msgid "Rundi"
-msgstr "Rundi"
+msgstr ""
 
 #: picard/const/locales.py:809
-#, fuzzy
 msgid "Rundi (Burundi)"
-msgstr "Rundi (Burundi)"
+msgstr ""
 
 #: picard/const/locales.py:811
 msgid "Romanian (Moldova)"
@@ -4628,34 +4185,28 @@ msgid "Romanian (Romania)"
 msgstr "Roumain (Roumanie)"
 
 #: picard/const/locales.py:813
-#, fuzzy
 msgid "Rombo"
-msgstr "Rombo"
+msgstr ""
 
 #: picard/const/locales.py:814
-#, fuzzy
 msgid "Rombo (Tanzania)"
-msgstr "Rombo (Tanzania)"
+msgstr ""
 
 #: picard/const/locales.py:816
-#, fuzzy
 msgid "Russian (Belarus)"
-msgstr "Russian (Belarus)"
+msgstr ""
 
 #: picard/const/locales.py:817
-#, fuzzy
 msgid "Russian (Kyrgyzstan)"
-msgstr "Russian (Kyrgyzstan)"
+msgstr ""
 
 #: picard/const/locales.py:818
-#, fuzzy
 msgid "Russian (Kazakhstan)"
-msgstr "Russian (Kazakhstan)"
+msgstr ""
 
 #: picard/const/locales.py:819
-#, fuzzy
 msgid "Russian (Moldova)"
-msgstr "Russian (Moldova)"
+msgstr ""
 
 #: picard/const/locales.py:820
 msgid "Russian (Russia)"
@@ -4674,14 +4225,12 @@ msgid "Kinyarwanda (Rwanda)"
 msgstr "Kinyarwanda (Rwanda)"
 
 #: picard/const/locales.py:824
-#, fuzzy
 msgid "Rwa"
-msgstr "Rwa"
+msgstr ""
 
 #: picard/const/locales.py:825
-#, fuzzy
 msgid "Rwa (Tanzania)"
-msgstr "Rwa (Tanzania)"
+msgstr ""
 
 #: picard/const/locales.py:826
 msgid "Sanskrit"
@@ -4692,119 +4241,96 @@ msgid "Sanskrit (India)"
 msgstr "Sanskrit (Inde)"
 
 #: picard/const/locales.py:828
-#, fuzzy
 msgid "Yakut"
-msgstr "Yakut"
+msgstr ""
 
 #: picard/const/locales.py:829
-#, fuzzy
 msgid "Yakut (Russia)"
-msgstr "Yakut (Russia)"
+msgstr ""
 
 #: picard/const/locales.py:830
-#, fuzzy
 msgid "Samburu"
-msgstr "Samburu"
+msgstr ""
 
 #: picard/const/locales.py:831
-#, fuzzy
 msgid "Samburu (Kenya)"
-msgstr "Samburu (Kenya)"
+msgstr ""
 
 #: picard/const/locales.py:832
-#, fuzzy
 msgid "Santali"
-msgstr "Santali"
+msgstr ""
 
 #: picard/const/locales.py:833
-#, fuzzy
 msgid "Santali (Devanagari)"
-msgstr "Santali (Devanagari)"
+msgstr ""
 
 #: picard/const/locales.py:834
-#, fuzzy
 msgid "Santali (Devanagari) (India)"
-msgstr "Santali (Devanagari) (India)"
+msgstr ""
 
 #: picard/const/locales.py:835
-#, fuzzy
 msgid "Santali (Ol Chiki)"
-msgstr "Santali (Ol Chiki)"
+msgstr ""
 
 #: picard/const/locales.py:836
-#, fuzzy
 msgid "Santali (Ol Chiki) (India)"
-msgstr "Santali (Ol Chiki) (India)"
+msgstr ""
 
 #: picard/const/locales.py:837
-#, fuzzy
 msgid "Sangu"
-msgstr "Sangu"
+msgstr ""
 
 #: picard/const/locales.py:838
-#, fuzzy
 msgid "Sangu (Tanzania)"
-msgstr "Sangu (Tanzania)"
+msgstr ""
 
 #: picard/const/locales.py:839
-#, fuzzy
 msgid "Sardinian"
-msgstr "Sardinian"
+msgstr ""
 
 #: picard/const/locales.py:840
-#, fuzzy
 msgid "Sardinian (Italy)"
-msgstr "Sardinian (Italy)"
+msgstr ""
 
 #: picard/const/locales.py:841
-#, fuzzy
 msgid "Sicilian"
-msgstr "Sicilian"
+msgstr ""
 
 #: picard/const/locales.py:842
-#, fuzzy
 msgid "Sicilian (Italy)"
-msgstr "Sicilian (Italy)"
+msgstr ""
 
 #: picard/const/locales.py:843
-#, fuzzy
 msgid "Sindhi"
-msgstr "Sindhi"
+msgstr ""
 
 #: picard/const/locales.py:844
-#, fuzzy
 msgid "Sindhi (Arabic)"
-msgstr "Sindhi (Arabic)"
+msgstr ""
 
 #: picard/const/locales.py:845
-#, fuzzy
 msgid "Sindhi (Arabic) (Pakistan)"
-msgstr "Sindhi (Arabic) (Pakistan)"
+msgstr ""
 
 #: picard/const/locales.py:846
-#, fuzzy
 msgid "Sindhi (Devanagari)"
-msgstr "Sindhi (Devanagari)"
+msgstr ""
 
 #: picard/const/locales.py:847
-#, fuzzy
 msgid "Sindhi (Devanagari) (India)"
-msgstr "Sindhi (Devanagari) (India)"
+msgstr ""
 
 #: picard/const/locales.py:848
-#, fuzzy
 msgid "Southern Kurdish"
-msgstr "Southern Kurdish"
+msgstr ""
 
 #: picard/const/locales.py:849
-#, fuzzy
 msgid "Southern Kurdish (Iraq)"
-msgstr "Southern Kurdish (Iraq)"
+msgstr ""
 
 #: picard/const/locales.py:850
-#, fuzzy
 msgid "Southern Kurdish (Iran)"
-msgstr "Southern Kurdish (Iran)"
+msgstr ""
 
 #: picard/const/locales.py:851
 msgid "Northern Sami"
@@ -4819,79 +4345,64 @@ msgid "Northern Sami (Norway)"
 msgstr "Same du Nord (Norvège)"
 
 #: picard/const/locales.py:854
-#, fuzzy
 msgid "Northern Sami (Sweden)"
-msgstr "Northern Sami (Sweden)"
+msgstr ""
 
 #: picard/const/locales.py:855
-#, fuzzy
 msgid "Sena"
-msgstr "Sena"
+msgstr ""
 
 #: picard/const/locales.py:856
-#, fuzzy
 msgid "Sena (Mozambique)"
-msgstr "Sena (Mozambique)"
+msgstr ""
 
 #: picard/const/locales.py:857
-#, fuzzy
 msgid "Koyraboro Senni"
-msgstr "Koyraboro Senni"
+msgstr ""
 
 #: picard/const/locales.py:858
-#, fuzzy
 msgid "Koyraboro Senni (Mali)"
-msgstr "Koyraboro Senni (Mali)"
+msgstr ""
 
 #: picard/const/locales.py:859
-#, fuzzy
 msgid "Sango"
-msgstr "Sango"
+msgstr ""
 
 #: picard/const/locales.py:860
-#, fuzzy
 msgid "Sango (Central African Republic)"
-msgstr "Sango (Central African Republic)"
+msgstr ""
 
 #: picard/const/locales.py:861
-#, fuzzy
 msgid "Tachelhit"
-msgstr "Tachelhit"
+msgstr ""
 
 #: picard/const/locales.py:862
-#, fuzzy
 msgid "Tachelhit (Latin)"
-msgstr "Tachelhit (Latin)"
+msgstr ""
 
 #: picard/const/locales.py:863
-#, fuzzy
 msgid "Tachelhit (Latin) (Morocco)"
-msgstr "Tachelhit (Latin) (Morocco)"
+msgstr ""
 
 #: picard/const/locales.py:864
-#, fuzzy
 msgid "Tachelhit (Tifinagh)"
-msgstr "Tachelhit (Tifinagh)"
+msgstr ""
 
 #: picard/const/locales.py:865
-#, fuzzy
 msgid "Tachelhit (Tifinagh) (Morocco)"
-msgstr "Tachelhit (Tifinagh) (Morocco)"
+msgstr ""
 
 #: picard/const/locales.py:866
-#, fuzzy
 msgid "Shan"
-msgstr "Shan"
+msgstr ""
 
 #: picard/const/locales.py:867
-#, fuzzy
 msgid "Shan (Myanmar (Burma))"
-msgstr "Shan (Myanmar (Burma))"
+msgstr ""
 
 #: picard/const/locales.py:868
-#, fuzzy
 msgid "Shan (Thailand)"
-msgstr "Shan (Thailand)"
+msgstr ""
 
 #: picard/const/locales.py:869
 msgid "Sinhala"
@@ -4918,64 +4429,52 @@ msgid "Slovenian (Slovenia)"
 msgstr "Slovène (Slovénie)"
 
 #: picard/const/locales.py:877
-#, fuzzy
 msgid "Southern Sami"
-msgstr "Southern Sami"
+msgstr ""
 
 #: picard/const/locales.py:878
-#, fuzzy
 msgid "Southern Sami (Norway)"
-msgstr "Southern Sami (Norway)"
+msgstr ""
 
 #: picard/const/locales.py:879
-#, fuzzy
 msgid "Southern Sami (Sweden)"
-msgstr "Southern Sami (Sweden)"
+msgstr ""
 
 #: picard/const/locales.py:880
-#, fuzzy
 msgid "Lule Sami"
-msgstr "Lule Sami"
+msgstr ""
 
 #: picard/const/locales.py:881
-#, fuzzy
 msgid "Lule Sami (Norway)"
-msgstr "Lule Sami (Norway)"
+msgstr ""
 
 #: picard/const/locales.py:882
-#, fuzzy
 msgid "Lule Sami (Sweden)"
-msgstr "Lule Sami (Sweden)"
+msgstr ""
 
 #: picard/const/locales.py:883
-#, fuzzy
 msgid "Inari Sami"
-msgstr "Inari Sami"
+msgstr ""
 
 #: picard/const/locales.py:884
-#, fuzzy
 msgid "Inari Sami (Finland)"
-msgstr "Inari Sami (Finland)"
+msgstr ""
 
 #: picard/const/locales.py:885
-#, fuzzy
 msgid "Skolt Sami"
-msgstr "Skolt Sami"
+msgstr ""
 
 #: picard/const/locales.py:886
-#, fuzzy
 msgid "Skolt Sami (Finland)"
-msgstr "Skolt Sami (Finland)"
+msgstr ""
 
 #: picard/const/locales.py:887
-#, fuzzy
 msgid "Shona"
-msgstr "Shona"
+msgstr ""
 
 #: picard/const/locales.py:888
-#, fuzzy
 msgid "Shona (Zimbabwe)"
-msgstr "Shona (Zimbabwe)"
+msgstr ""
 
 #: picard/const/locales.py:889
 msgid "Somali"
@@ -5002,14 +4501,12 @@ msgid "Albanian (Albania)"
 msgstr "Albanais (Albanie)"
 
 #: picard/const/locales.py:896
-#, fuzzy
 msgid "Albanian (North Macedonia)"
-msgstr "Albanian (North Macedonia)"
+msgstr ""
 
 #: picard/const/locales.py:897
-#, fuzzy
 msgid "Albanian (Kosovo)"
-msgstr "Albanian (Kosovo)"
+msgstr ""
 
 #: picard/const/locales.py:898
 msgid "Serbian"
@@ -5020,9 +4517,8 @@ msgid "Serbian (Cyrillic)"
 msgstr "Serbe (Cyrillique)"
 
 #: picard/const/locales.py:900
-#, fuzzy
 msgid "Serbian (Cyrillic) (Bosnia & Herzegovina)"
-msgstr "Serbian (Cyrillic) (Bosnia & Herzegovina)"
+msgstr ""
 
 #: picard/const/locales.py:901
 msgid "Serbian (Cyrillic) (Montenegro)"
@@ -5033,18 +4529,16 @@ msgid "Serbian (Cyrillic) (Serbia)"
 msgstr "Serbe (Cyrillique) (Serbie)"
 
 #: picard/const/locales.py:903
-#, fuzzy
 msgid "Serbian (Cyrillic) (Kosovo)"
-msgstr "Serbian (Cyrillic) (Kosovo)"
+msgstr ""
 
 #: picard/const/locales.py:904
 msgid "Serbian (Latin)"
 msgstr "Serbe (Latin)"
 
 #: picard/const/locales.py:905
-#, fuzzy
 msgid "Serbian (Latin) (Bosnia & Herzegovina)"
-msgstr "Serbian (Latin) (Bosnia & Herzegovina)"
+msgstr ""
 
 #: picard/const/locales.py:906
 msgid "Serbian (Latin) (Montenegro)"
@@ -5055,32 +4549,28 @@ msgid "Serbian (Latin) (Serbia)"
 msgstr "Serbe (Latin) (Serbie)"
 
 #: picard/const/locales.py:908
-#, fuzzy
 msgid "Serbian (Latin) (Kosovo)"
-msgstr "Serbian (Latin) (Kosovo)"
+msgstr ""
 
 #: picard/const/locales.py:909
 msgid "Swati"
 msgstr "Swati"
 
 #: picard/const/locales.py:910
-#, fuzzy
 msgid "Swati (Eswatini)"
-msgstr "Swati (Eswatini)"
+msgstr ""
 
 #: picard/const/locales.py:911
 msgid "Swati (South Africa)"
 msgstr "Swati (Afrique du Sud)"
 
 #: picard/const/locales.py:912
-#, fuzzy
 msgid "Saho"
-msgstr "Saho"
+msgstr ""
 
 #: picard/const/locales.py:913
-#, fuzzy
 msgid "Saho (Eritrea)"
-msgstr "Saho (Eritrea)"
+msgstr ""
 
 #: picard/const/locales.py:914
 msgid "Southern Sotho"
@@ -5095,24 +4585,20 @@ msgid "Southern Sotho (South Africa)"
 msgstr "Sotho du Sud (Afrique du Sud)"
 
 #: picard/const/locales.py:917
-#, fuzzy
 msgid "Sundanese"
-msgstr "Sundanese"
+msgstr ""
 
 #: picard/const/locales.py:918
-#, fuzzy
 msgid "Sundanese (Latin)"
-msgstr "Sundanese (Latin)"
+msgstr ""
 
 #: picard/const/locales.py:919
-#, fuzzy
 msgid "Sundanese (Latin) (Indonesia)"
-msgstr "Sundanese (Latin) (Indonesia)"
+msgstr ""
 
 #: picard/const/locales.py:921
-#, fuzzy
 msgid "Swedish (Åland Islands)"
-msgstr "Swedish (Åland Islands)"
+msgstr ""
 
 #: picard/const/locales.py:922
 msgid "Swedish (Finland)"
@@ -5127,9 +4613,8 @@ msgid "Swahili"
 msgstr "Swahili"
 
 #: picard/const/locales.py:925
-#, fuzzy
 msgid "Swahili (Congo - Kinshasa)"
-msgstr "Swahili (Congo - Kinshasa)"
+msgstr ""
 
 #: picard/const/locales.py:926
 msgid "Swahili (Kenya)"
@@ -5140,32 +4625,28 @@ msgid "Swahili (Tanzania)"
 msgstr "Swahili (Tanzanie)"
 
 #: picard/const/locales.py:928
-#, fuzzy
 msgid "Swahili (Uganda)"
-msgstr "Swahili (Uganda)"
+msgstr ""
 
 #: picard/const/locales.py:929
 msgid "Syriac"
 msgstr "Syriaque"
 
 #: picard/const/locales.py:930
-#, fuzzy
 msgid "Syriac (Iraq)"
-msgstr "Syriac (Iraq)"
+msgstr ""
 
 #: picard/const/locales.py:931
 msgid "Syriac (Syria)"
 msgstr "Syriaque (Syrie)"
 
 #: picard/const/locales.py:932
-#, fuzzy
 msgid "Silesian"
-msgstr "Silesian"
+msgstr ""
 
 #: picard/const/locales.py:933
-#, fuzzy
 msgid "Silesian (Poland)"
-msgstr "Silesian (Poland)"
+msgstr ""
 
 #: picard/const/locales.py:934
 msgid "Tamil"
@@ -5176,19 +4657,16 @@ msgid "Tamil (India)"
 msgstr "Tamoul (Inde)"
 
 #: picard/const/locales.py:936
-#, fuzzy
 msgid "Tamil (Sri Lanka)"
-msgstr "Tamil (Sri Lanka)"
+msgstr ""
 
 #: picard/const/locales.py:937
-#, fuzzy
 msgid "Tamil (Malaysia)"
-msgstr "Tamil (Malaysia)"
+msgstr ""
 
 #: picard/const/locales.py:938
-#, fuzzy
 msgid "Tamil (Singapore)"
-msgstr "Tamil (Singapore)"
+msgstr ""
 
 #: picard/const/locales.py:939
 msgid "Telugu"
@@ -5199,19 +4677,16 @@ msgid "Telugu (India)"
 msgstr "Télougou (Inde)"
 
 #: picard/const/locales.py:941
-#, fuzzy
 msgid "Teso"
-msgstr "Teso"
+msgstr ""
 
 #: picard/const/locales.py:942
-#, fuzzy
 msgid "Teso (Kenya)"
-msgstr "Teso (Kenya)"
+msgstr ""
 
 #: picard/const/locales.py:943
-#, fuzzy
 msgid "Teso (Uganda)"
-msgstr "Teso (Uganda)"
+msgstr ""
 
 #: picard/const/locales.py:944
 msgid "Tajik"
@@ -5258,66 +4733,56 @@ msgid "Tigre (Eritrea)"
 msgstr "Tigré (Érythrée)"
 
 #: picard/const/locales.py:955
-#, fuzzy
 msgid "Turkmen"
-msgstr "Turkmen"
+msgstr ""
 
 #: picard/const/locales.py:956
-#, fuzzy
 msgid "Turkmen (Turkmenistan)"
-msgstr "Turkmen (Turkmenistan)"
+msgstr ""
 
 #: picard/const/locales.py:957
 msgid "Tswana"
 msgstr "Tswana"
 
 #: picard/const/locales.py:958
-#, fuzzy
 msgid "Tswana (Botswana)"
-msgstr "Tswana (Botswana)"
+msgstr ""
 
 #: picard/const/locales.py:959
 msgid "Tswana (South Africa)"
 msgstr "Tswana (Afrique du Sud)"
 
 #: picard/const/locales.py:960
-#, fuzzy
 msgid "Tongan"
-msgstr "Tongan"
+msgstr ""
 
 #: picard/const/locales.py:961
-#, fuzzy
 msgid "Tongan (Tonga)"
-msgstr "Tongan (Tonga)"
+msgstr ""
 
 #: picard/const/locales.py:962
 msgid "Toki Pona"
 msgstr "Toki pona"
 
 #: picard/const/locales.py:963
-#, fuzzy
 msgid "Toki Pona (world)"
-msgstr "Toki Pona (world)"
+msgstr ""
 
 #: picard/const/locales.py:964
-#, fuzzy
 msgid "Tok Pisin"
-msgstr "Tok Pisin"
+msgstr ""
 
 #: picard/const/locales.py:965
-#, fuzzy
 msgid "Tok Pisin (Papua New Guinea)"
-msgstr "Tok Pisin (Papua New Guinea)"
+msgstr ""
 
 #: picard/const/locales.py:967
-#, fuzzy
 msgid "Turkish (Cyprus)"
-msgstr "Turkish (Cyprus)"
+msgstr ""
 
 #: picard/const/locales.py:968
-#, fuzzy
 msgid "Turkish (Türkiye)"
-msgstr "Turkish (Türkiye)"
+msgstr ""
 
 #: picard/const/locales.py:969
 msgid "Taroko"
@@ -5328,14 +4793,12 @@ msgid "Taroko (Taiwan)"
 msgstr "Taroko (Taïwan)"
 
 #: picard/const/locales.py:971
-#, fuzzy
 msgid "Torwali"
-msgstr "Torwali"
+msgstr ""
 
 #: picard/const/locales.py:972
-#, fuzzy
 msgid "Torwali (Pakistan)"
-msgstr "Torwali (Pakistan)"
+msgstr ""
 
 #: picard/const/locales.py:973
 msgid "Tsonga"
@@ -5354,43 +4817,36 @@ msgid "Tatar (Russia)"
 msgstr "Tatar (Russie)"
 
 #: picard/const/locales.py:977
-#, fuzzy
 msgid "Tasawaq"
-msgstr "Tasawaq"
+msgstr ""
 
 #: picard/const/locales.py:978
-#, fuzzy
 msgid "Tasawaq (Niger)"
-msgstr "Tasawaq (Niger)"
+msgstr ""
 
 #: picard/const/locales.py:979
-#, fuzzy
 msgid "Central Atlas Tamazight"
-msgstr "Central Atlas Tamazight"
+msgstr ""
 
 #: picard/const/locales.py:980
-#, fuzzy
 msgid "Central Atlas Tamazight (Morocco)"
-msgstr "Central Atlas Tamazight (Morocco)"
+msgstr ""
 
 #: picard/const/locales.py:981
-#, fuzzy
 msgid "Uyghur"
-msgstr "Uyghur"
+msgstr ""
 
 #: picard/const/locales.py:982
-#, fuzzy
 msgid "Uyghur (China)"
-msgstr "Uyghur (China)"
+msgstr ""
 
 #: picard/const/locales.py:984
 msgid "Ukrainian (Ukraine)"
 msgstr "Ukrainien (Ukraine)"
 
 #: picard/const/locales.py:985
-#, fuzzy
 msgid "Unknown language"
-msgstr "Unknown language"
+msgstr ""
 
 #: picard/const/locales.py:986
 msgid "Urdu"
@@ -5433,29 +4889,24 @@ msgid "Uzbek (Latin) (Uzbekistan)"
 msgstr "Ouzbek (Latin) (Ouzbékistan)"
 
 #: picard/const/locales.py:996
-#, fuzzy
 msgid "Vai"
-msgstr "Vai"
+msgstr ""
 
 #: picard/const/locales.py:997
-#, fuzzy
 msgid "Vai (Latin)"
-msgstr "Vai (Latin)"
+msgstr ""
 
 #: picard/const/locales.py:998
-#, fuzzy
 msgid "Vai (Latin) (Liberia)"
-msgstr "Vai (Latin) (Liberia)"
+msgstr ""
 
 #: picard/const/locales.py:999
-#, fuzzy
 msgid "Vai (Vai)"
-msgstr "Vai (Vai)"
+msgstr ""
 
 #: picard/const/locales.py:1000
-#, fuzzy
 msgid "Vai (Vai) (Liberia)"
-msgstr "Vai (Vai) (Liberia)"
+msgstr ""
 
 #: picard/const/locales.py:1001
 msgid "Venda"
@@ -5466,14 +4917,12 @@ msgid "Venda (South Africa)"
 msgstr "Venda (Afrique du Sud)"
 
 #: picard/const/locales.py:1003
-#, fuzzy
 msgid "Venetian"
-msgstr "Venetian"
+msgstr ""
 
 #: picard/const/locales.py:1004
-#, fuzzy
 msgid "Venetian (Italy)"
-msgstr "Venetian (Italy)"
+msgstr ""
 
 #: picard/const/locales.py:1005
 msgid "Vietnamese"
@@ -5484,62 +4933,52 @@ msgid "Vietnamese (Vietnam)"
 msgstr "Vietnamien (Viêt Nam)"
 
 #: picard/const/locales.py:1007
-#, fuzzy
 msgid "Volapük"
-msgstr "Volapük"
+msgstr ""
 
 #: picard/const/locales.py:1008
-#, fuzzy
 msgid "Volapük (world)"
-msgstr "Volapük (world)"
+msgstr ""
 
 #: picard/const/locales.py:1009
-#, fuzzy
 msgid "Vunjo"
-msgstr "Vunjo"
+msgstr ""
 
 #: picard/const/locales.py:1010
-#, fuzzy
 msgid "Vunjo (Tanzania)"
-msgstr "Vunjo (Tanzania)"
+msgstr ""
 
 #: picard/const/locales.py:1011
-#, fuzzy
 msgid "Walloon"
-msgstr "Walloon"
+msgstr ""
 
 #: picard/const/locales.py:1012
-#, fuzzy
 msgid "Walloon (Belgium)"
-msgstr "Walloon (Belgium)"
+msgstr ""
 
 #: picard/const/locales.py:1013
 msgid "Walser"
 msgstr "Haut-valaisan"
 
 #: picard/const/locales.py:1014
-#, fuzzy
 msgid "Walser (Switzerland)"
-msgstr "Walser (Switzerland)"
+msgstr ""
 
 #: picard/const/locales.py:1015
-#, fuzzy
 msgid "Wolaytta"
-msgstr "Wolaytta"
+msgstr ""
 
 #: picard/const/locales.py:1016
-#, fuzzy
 msgid "Wolaytta (Ethiopia)"
-msgstr "Wolaytta (Ethiopia)"
+msgstr ""
 
 #: picard/const/locales.py:1017
 msgid "Warlpiri"
 msgstr "Warlpiri"
 
 #: picard/const/locales.py:1018
-#, fuzzy
 msgid "Warlpiri (Australia)"
-msgstr "Warlpiri (Australia)"
+msgstr ""
 
 #: picard/const/locales.py:1019
 msgid "Wolof"
@@ -5558,151 +4997,124 @@ msgid "Xhosa (South Africa)"
 msgstr "Xhosa (Afrique du Sud)"
 
 #: picard/const/locales.py:1023
-#, fuzzy
 msgid "Soga"
-msgstr "Soga"
+msgstr ""
 
 #: picard/const/locales.py:1024
-#, fuzzy
 msgid "Soga (Uganda)"
-msgstr "Soga (Uganda)"
+msgstr ""
 
 #: picard/const/locales.py:1025
-#, fuzzy
 msgid "Yangben"
-msgstr "Yangben"
+msgstr ""
 
 #: picard/const/locales.py:1026
-#, fuzzy
 msgid "Yangben (Cameroon)"
-msgstr "Yangben (Cameroon)"
+msgstr ""
 
 #: picard/const/locales.py:1027
-#, fuzzy
 msgid "Yiddish"
-msgstr "Yiddish"
+msgstr ""
 
 #: picard/const/locales.py:1028
-#, fuzzy
 msgid "Yiddish (world)"
-msgstr "Yiddish (world)"
+msgstr ""
 
 #: picard/const/locales.py:1029
 msgid "Yoruba"
 msgstr "Yoruba"
 
 #: picard/const/locales.py:1030
-#, fuzzy
 msgid "Yoruba (Benin)"
-msgstr "Yoruba (Benin)"
+msgstr ""
 
 #: picard/const/locales.py:1031
 msgid "Yoruba (Nigeria)"
 msgstr "Yoruba (Nigeria)"
 
 #: picard/const/locales.py:1032
-#, fuzzy
 msgid "Nheengatu"
-msgstr "Nheengatu"
+msgstr ""
 
 #: picard/const/locales.py:1033
-#, fuzzy
 msgid "Nheengatu (Brazil)"
-msgstr "Nheengatu (Brazil)"
+msgstr ""
 
 #: picard/const/locales.py:1034
-#, fuzzy
 msgid "Nheengatu (Colombia)"
-msgstr "Nheengatu (Colombia)"
+msgstr ""
 
 #: picard/const/locales.py:1035
-#, fuzzy
 msgid "Nheengatu (Venezuela)"
-msgstr "Nheengatu (Venezuela)"
+msgstr ""
 
 #: picard/const/locales.py:1036
-#, fuzzy
 msgid "Cantonese"
-msgstr "Cantonese"
+msgstr ""
 
 #: picard/const/locales.py:1037
-#, fuzzy
 msgid "Cantonese (Simplified)"
-msgstr "Cantonese (Simplified)"
+msgstr ""
 
 #: picard/const/locales.py:1038
-#, fuzzy
 msgid "Cantonese (Simplified) (China)"
-msgstr "Cantonese (Simplified) (China)"
+msgstr ""
 
 #: picard/const/locales.py:1039
-#, fuzzy
 msgid "Cantonese (Traditional)"
-msgstr "Cantonese (Traditional)"
+msgstr ""
 
 #: picard/const/locales.py:1040
-#, fuzzy
 msgid "Cantonese (Traditional) (Hong Kong)"
-msgstr "Cantonese (Traditional) (Hong Kong)"
+msgstr ""
 
 #: picard/const/locales.py:1041
-#, fuzzy
 msgid "Standard Moroccan Tamazight"
-msgstr "Standard Moroccan Tamazight"
+msgstr ""
 
 #: picard/const/locales.py:1042
-#, fuzzy
 msgid "Standard Moroccan Tamazight (Morocco)"
-msgstr "Standard Moroccan Tamazight (Morocco)"
+msgstr ""
 
 #: picard/const/locales.py:1043 picard/const/scripts.py:31
 msgid "Chinese"
 msgstr "Chinois"
 
 #: picard/const/locales.py:1044
-#, fuzzy
 msgid "Chinese (Simplified)"
-msgstr "Chinese (Simplified)"
+msgstr ""
 
 #: picard/const/locales.py:1045
-#, fuzzy
 msgid "Chinese (Simplified) (China)"
-msgstr "Chinese (Simplified) (China)"
+msgstr ""
 
 #: picard/const/locales.py:1046
-#, fuzzy
 msgid "Chinese (Simplified) (Hong Kong)"
-msgstr "Chinese (Simplified) (Hong Kong)"
+msgstr ""
 
 #: picard/const/locales.py:1047
-#, fuzzy
 msgid "Chinese (Simplified) (Macao)"
-msgstr "Chinese (Simplified) (Macao)"
+msgstr ""
 
 #: picard/const/locales.py:1048
-#, fuzzy
 msgid "Chinese (Simplified) (Singapore)"
-msgstr "Chinese (Simplified) (Singapore)"
+msgstr ""
 
 #: picard/const/locales.py:1049
-#, fuzzy
 msgid "Chinese (Traditional)"
-msgstr "Chinese (Traditional)"
+msgstr ""
 
 #: picard/const/locales.py:1050
-#, fuzzy
 msgid "Chinese (Traditional) (Hong Kong)"
-msgstr "Chinese (Traditional) (Hong Kong)"
+msgstr ""
 
 #: picard/const/locales.py:1051
-#, fuzzy
 msgid "Chinese (Traditional) (Macao)"
-msgstr "Chinese (Traditional) (Macao)"
+msgstr ""
 
 #: picard/const/locales.py:1052
-#, fuzzy
 msgid "Chinese (Traditional) (Taiwan)"
-msgstr "Chinese (Traditional) (Taiwan)"
+msgstr ""
 
 #: picard/const/locales.py:1053
 msgid "Zulu"
@@ -6189,7 +5601,6 @@ msgstr ""
 "_Depuis Picard 0.9_"
 
 #: picard/script/functions.py:494
-#, fuzzy
 msgid ""
 "`$copymerge(new,old[,keep_duplicates])`\n"
 "\n"
@@ -6203,17 +5614,6 @@ msgid ""
 "\n"
 "_Since Picard 1.0_"
 msgstr ""
-"`$copymerge(new,old[,keep_duplicates])`\n"
-"\n"
-"Merges metadata from variable `old` into `new`, removing duplicates and\n"
-"    appending to the end, so retaining the original ordering. Like `$copy`, "
-"this\n"
-"    will also copy multi-valued variables without flattening them.\n"
-"\n"
-"If `keep_duplicates` is set, then the duplicates will not be removed from "
-"the result.\n"
-"\n"
-"_Since Picard 1.0_"
 
 #: picard/script/functions.py:514
 msgid ""
@@ -6386,7 +5786,6 @@ msgstr ""
 "Retourne vrai si `x` n’est pas égal à `y`."
 
 #: picard/script/functions.py:716
-#, fuzzy
 msgid ""
 "`$lt(x,y[,type])`\n"
 "\n"
@@ -6514,7 +5913,6 @@ msgstr ""
 "    $lenmulti(Un; Deux; Trois) = 3\n"
 
 #: picard/script/functions.py:802
-#, fuzzy
 msgid ""
 "`$performer(pattern=\"\",join=\", \")`\n"
 "\n"
@@ -6528,17 +5926,6 @@ msgid ""
 "\n"
 "_Since Picard 0.10_"
 msgstr ""
-"`$performer(pattern=\"\",join=\", \")`\n"
-"\n"
-"Returns the performers where the performance type (e.g. \"vocal\") matches "
-"`pattern`, joined by `join`.\n"
-"You can specify a regular expression in the format `/pattern/flags`. `flags` "
-"are optional. Currently\n"
-"the only supported flag is \"i\" (ignore case). For example `$performer(/"
-"^guitars?$/i)` matches the\n"
-"performance type \"guitar\" or \"Guitars\", but not e.g. \"bass guitar\".\n"
-"\n"
-"_Since Picard 0.10_"
 
 #: picard/script/functions.py:826
 msgid ""
@@ -6874,7 +6261,6 @@ msgstr ""
 "Retourne le `texte` à l’envers."
 
 #: picard/script/functions.py:1162
-#, fuzzy
 msgid ""
 "`$substr(text,start[,end])`\n"
 "\n"
@@ -6886,15 +6272,6 @@ msgid ""
 "default to\n"
 "    the start and end of the string respectively."
 msgstr ""
-"`$substr(text,start[,end])`\n"
-"\n"
-"Returns the substring beginning with the character at the `start` index, up "
-"to\n"
-"    (but not including) the character at the `end` index. Indexes are\n"
-"    zero-based. Negative numbers will be counted back from the end of the\n"
-"    string. If the `start` or `end` indexes are left blank, they will "
-"default to\n"
-"    the start and end of the string respectively."
 
 #: picard/script/functions.py:1183
 msgid ""
@@ -6942,7 +6319,6 @@ msgstr ""
 "    balise multi-valeurs."
 
 #: picard/script/functions.py:1224
-#, fuzzy
 msgid ""
 "`$while(condition,code)`\n"
 "\n"
@@ -7153,15 +6529,8 @@ msgid ""
 "If translate is not blank, the output will be translated into the current "
 "locale language.\n"
 msgstr ""
-"`$countryname(country_code,translate=\"\")`\n"
-"\n"
-"Returns the name of the country for the specified country code.  If the "
-"country code is invalid an empty string will be returned.\n"
-"If translate is not blank, the output will be translated into the current "
-"locale language.\n"
 
 #: picard/script/functions.py:1451
-#, fuzzy
 msgid ""
 "`$year(date,date_order=\"ymd\")`\n"
 "\n"
@@ -7172,17 +6541,8 @@ msgid ""
 "\n"
 "_Since Picard 2.7_"
 msgstr ""
-"`$year(date,date_order=\"ymd\")`\n"
-"\n"
-"Returns the year portion of the specified date.  The default order is \"ymd"
-"\".  This can be changed by specifying\n"
-"either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be "
-"returned.\n"
-"\n"
-"_Since Picard 2.7_"
 
 #: picard/script/functions.py:1463
-#, fuzzy
 msgid ""
 "`$month(date,date_order=\"ymd\")`\n"
 "\n"
@@ -7193,17 +6553,8 @@ msgid ""
 "\n"
 "_Since Picard 2.7_"
 msgstr ""
-"`$month(date,date_order=\"ymd\")`\n"
-"\n"
-"Returns the month portion of the specified date.  The default order is \"ymd"
-"\".  This can be changed by specifying\n"
-"either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be "
-"returned.\n"
-"\n"
-"_Since Picard 2.7_"
 
 #: picard/script/functions.py:1475
-#, fuzzy
 msgid ""
 "`$day(date,date_order=\"ymd\")`\n"
 "\n"
@@ -7842,9 +7193,8 @@ msgid "Original Release Date"
 msgstr "Date originale de parution"
 
 #: picard/ui/itemviews.py:177 picard/util/tags.py:107
-#, fuzzy
 msgid "Release Date"
-msgstr "Release Date"
+msgstr ""
 
 #: picard/ui/itemviews.py:280
 msgid "Bad match"
@@ -8259,21 +7609,17 @@ msgid "Submit file as a new release to MusicBrainz"
 msgstr "Soumettre le fichier comme une nouvelle parution à MusicBrainz"
 
 #: picard/ui/mainwindow.py:666
-#, fuzzy
 msgid "Search for similar items..."
-msgstr "Search for similar items..."
+msgstr ""
 
 #: picard/ui/mainwindow.py:667 picard/ui/options/interface_toolbar.py:123
-#, fuzzy
 msgid "Similar items"
-msgstr "Similar items"
+msgstr ""
 
 #: picard/ui/mainwindow.py:668
-#, fuzzy
 msgid ""
 "View similar releases or recordings and optionally choose a different one"
 msgstr ""
-"View similar releases or recordings and optionally choose a different one"
 
 #: picard/ui/mainwindow.py:670 picard/ui/mainwindow.py:679
 #: picard/ui/mainwindow.py:688
@@ -8504,9 +7850,8 @@ msgid "&Check for Update…"
 msgstr "&Consulter les mises à jour disponibles…"
 
 #: picard/ui/mainwindow.py:949
-#, fuzzy
 msgid "From CD ripper &log file..."
-msgstr "From CD ripper &log file..."
+msgstr ""
 
 #: picard/ui/mainwindow.py:1002 picard/ui/scripteditor.py:533
 msgid "&File"
@@ -8719,7 +8064,6 @@ msgid "&Copy"
 msgstr "&Copier"
 
 #: picard/ui/newuserdialog.py:34
-#, fuzzy
 msgid ""
 "<p><strong>Changes made by Picard are not reversible.</strong></p><p>Picard "
 "is a very flexible music tagging tool which can rename your files and "
@@ -8729,23 +8073,14 @@ msgid ""
 "work in small batches</li></ul><p>Picard is open source software written by "
 "volunteers. It is provided as-is and with no warranty.</p>"
 msgstr ""
-"<p><strong>Changes made by Picard are not reversible.</strong></p><p>Picard "
-"is a very flexible music tagging tool which can rename your files and "
-"overwrite the tags. We <strong>strongly recommend</strong> that you:</"
-"p><ul><li>read the <a href='{documentation_url}'>User Guide</a> (also "
-"available from the Help menu)</li><li>test with copies of your music and "
-"work in small batches</li></ul><p>Picard is open source software written by "
-"volunteers. It is provided as-is and with no warranty.</p>"
 
 #: picard/ui/newuserdialog.py:49
-#, fuzzy
 msgid "Show this message again the next time you start Picard."
-msgstr "Show this message again the next time you start Picard."
+msgstr ""
 
 #: picard/ui/newuserdialog.py:54
-#, fuzzy
 msgid "New User Warning"
-msgstr "New User Warning"
+msgstr ""
 
 #: picard/ui/passworddialog.py:43
 #, python-format
@@ -8837,76 +8172,63 @@ msgid "Audio volume"
 msgstr "Volume audio"
 
 #: picard/ui/ratingwidget.py:99
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Failed to submit rating for track '%(track_title)s' due to server error "
 "%(error)d"
 msgstr ""
-"Failed to submit rating for track '%(track_title)s' due to server error "
-"%(error)d"
 
 #: picard/ui/savewarningdialog.py:38
-#, fuzzy
 msgid "overwrite existing metadata (tags) within the file"
 msgid_plural "overwrite existing metadata (tags) within the files"
-msgstr[0] "overwrite existing metadata (tags) within the file"
-msgstr[1] "overwrite existing metadata (tags) within the files"
-msgstr[2] "overwrite existing metadata (tags) within the files"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: picard/ui/savewarningdialog.py:43
-#, fuzzy
 msgid "rename the file"
 msgid_plural "rename the files"
-msgstr[0] "rename the file"
-msgstr[1] "rename the files"
-msgstr[2] "rename the files"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: picard/ui/savewarningdialog.py:48
-#, fuzzy
 msgid "move the file to a different location"
 msgid_plural "move the files to a different location"
-msgstr[0] "move the file to a different location"
-msgstr[1] "move the files to a different location"
-msgstr[2] "move the files to a different location"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: picard/ui/savewarningdialog.py:54
-#, fuzzy
 msgid "You are about to save {file_count:,d} file and this will:"
 msgid_plural "You are about to save {file_count:,d} files and this will:"
-msgstr[0] "You are about to save {file_count:,d} file and this will:"
-msgstr[1] "You are about to save {file_count:,d} files and this will:"
-msgstr[2] "You are about to save {file_count:,d} files and this will:"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: picard/ui/savewarningdialog.py:58
-#, fuzzy
 msgid "<strong>This action cannot be undone.</strong> Do you want to continue?"
 msgstr ""
-"<strong>This action cannot be undone.</strong> Do you want to continue?"
 
 #: picard/ui/savewarningdialog.py:61
-#, fuzzy
 msgid "<li>{action}</li>"
-msgstr "<li>{action}</li>"
+msgstr ""
 
 #: picard/ui/savewarningdialog.py:62
-#, fuzzy
 msgid "<p>{header}</p><ul>{list_of_actions}</ul><p>{footer}</p>"
-msgstr "<p>{header}</p><ul>{list_of_actions}</ul><p>{footer}</p>"
+msgstr ""
 
 #: picard/ui/savewarningdialog.py:64
-#, fuzzy
 msgid "There are no actions selected. No changes will be saved."
-msgstr "There are no actions selected. No changes will be saved."
+msgstr ""
 
 #: picard/ui/savewarningdialog.py:66
-#, fuzzy
 msgid "Don't show this warning again."
-msgstr "Don't show this warning again."
+msgstr ""
 
 #: picard/ui/savewarningdialog.py:72
-#, fuzzy
 msgid "File Save Warning"
-msgstr "File Save Warning"
+msgstr ""
 
 #: picard/ui/scripteditor.py:145
 msgid "Renaming options are disabled"
@@ -9046,9 +8368,8 @@ msgid "Open the scripting documentation in your browser"
 msgstr "Ouvrir la documentation des scripts dans le navigateur"
 
 #: picard/ui/scripteditor.py:641
-#, fuzzy
 msgid "Empty / blank script"
-msgstr "Empty / blank script"
+msgstr ""
 
 #: picard/ui/scripteditor.py:734
 msgid ""
@@ -9082,9 +8403,8 @@ msgid "Error"
 msgstr "Erreur"
 
 #: picard/ui/scripteditor.py:857
-#, fuzzy
 msgid "There is already a script with that title."
-msgstr "There is already a script with that title."
+msgstr ""
 
 #: picard/ui/scripteditor.py:860 picard/ui/scripteditor.py:1166
 #: picard/ui/scripteditor.py:1395
@@ -9220,44 +8540,36 @@ msgid "Move selected value down"
 msgstr "Déplacer la valeur sélectionnée vers le bas"
 
 #: picard/ui/ui_exception_script_selector.py:105
-#, fuzzy
 msgid "Exception Language Script Selector"
-msgstr "Exception Language Script Selector"
+msgstr ""
 
 #: picard/ui/ui_exception_script_selector.py:106
-#, fuzzy
 msgid "Selected Scripts"
-msgstr "Selected Scripts"
+msgstr ""
 
 #: picard/ui/ui_exception_script_selector.py:107
-#, fuzzy
 msgid "Selected language script match threshold:"
-msgstr "Selected language script match threshold:"
+msgstr ""
 
 #: picard/ui/ui_exception_script_selector.py:108
-#, fuzzy
 msgid "Move selected language script up"
-msgstr "Move selected language script up"
+msgstr ""
 
 #: picard/ui/ui_exception_script_selector.py:109
-#, fuzzy
 msgid "Add to selected language scripts"
-msgstr "Add to selected language scripts"
+msgstr ""
 
 #: picard/ui/ui_exception_script_selector.py:110
-#, fuzzy
 msgid "Remove selected language script"
-msgstr "Remove selected language script"
+msgstr ""
 
 #: picard/ui/ui_exception_script_selector.py:111
-#, fuzzy
 msgid "Move selected language script down"
-msgstr "Move selected language script down"
+msgstr ""
 
 #: picard/ui/ui_exception_script_selector.py:112
-#, fuzzy
 msgid "Available Language Scripts"
-msgstr "Available Language Scripts"
+msgstr ""
 
 #: picard/ui/ui_infodialog.py:82
 msgid "&Error"
@@ -9274,39 +8586,32 @@ msgid "Form"
 msgstr "Formulaire"
 
 #: picard/ui/ui_multi_locale_selector.py:85
-#, fuzzy
 msgid "Locale Selector"
-msgstr "Locale Selector"
+msgstr ""
 
 #: picard/ui/ui_multi_locale_selector.py:86
-#, fuzzy
 msgid "Selected Locales"
-msgstr "Selected Locales"
+msgstr ""
 
 #: picard/ui/ui_multi_locale_selector.py:87
-#, fuzzy
 msgid "Move selected locale up"
-msgstr "Move selected locale up"
+msgstr ""
 
 #: picard/ui/ui_multi_locale_selector.py:88
-#, fuzzy
 msgid "Add to selected locales"
-msgstr "Add to selected locales"
+msgstr ""
 
 #: picard/ui/ui_multi_locale_selector.py:89
-#, fuzzy
 msgid "Remove selected locale"
-msgstr "Remove selected locale"
+msgstr ""
 
 #: picard/ui/ui_multi_locale_selector.py:90
-#, fuzzy
 msgid "Move selected locale down"
-msgstr "Move selected locale down"
+msgstr ""
 
 #: picard/ui/ui_multi_locale_selector.py:91
-#, fuzzy
 msgid "Available Locales"
-msgstr "Available Locales"
+msgstr ""
 
 #: picard/ui/ui_options.py:47
 msgid "Options"
@@ -9417,9 +8722,8 @@ msgid "Save AcoustID fingerprints to file tags"
 msgstr "Sauver les empreintes AcoustID dans les balises du fichier"
 
 #: picard/ui/ui_options_fingerprinting.py:103
-#, fuzzy
 msgid "Maximum threads to use for calculator:"
-msgstr "Maximum threads to use for calculator:"
+msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:104
 msgid "Fingerprint calculator:"
@@ -9553,9 +8857,8 @@ msgid "Use advanced query syntax"
 msgstr "Utiliser la syntaxe évoluée de requête"
 
 #: picard/ui/ui_options_interface.py:127
-#, fuzzy
 msgid "Show the new user dialog when starting Picard"
-msgstr "Show the new user dialog when starting Picard"
+msgstr ""
 
 #: picard/ui/ui_options_interface.py:131
 msgid "Begin browsing in the following directory:"
@@ -9816,18 +9119,16 @@ msgid "Reload examples"
 msgstr "Recharger les exemples"
 
 #: picard/ui/ui_options_renaming_compat.py:87
-#, fuzzy
 msgid "Customize..."
-msgstr "Customize..."
+msgstr ""
 
 #: picard/ui/ui_options_renaming_compat.py:88
 msgid "Allow paths longer than 259 characters"
 msgstr "Autoriser les chemins de plus de 259 caractères"
 
 #: picard/ui/ui_options_renaming_compat.py:90
-#, fuzzy
 msgid "Replace directory separators with:"
-msgstr "Replace directory separators with:"
+msgstr ""
 
 #: picard/ui/ui_options_script.py:119
 msgid "Enable Tagger Script(s)"
@@ -10155,9 +9456,8 @@ msgid "Character"
 msgstr "Personnage"
 
 #: picard/ui/ui_win_compat_dialog.py:193
-#, fuzzy
 msgid "Replacement"
-msgstr "Replacement"
+msgstr ""
 
 #: picard/ui/util.py:49
 msgid "&Ok"
@@ -10444,9 +9744,8 @@ msgstr ""
 "redémarrer Picard pour rendre les changements effectifs."
 
 #: picard/ui/options/interface_toolbar.py:59
-#, fuzzy
 msgid "Action Toolbar"
-msgstr "Action Toolbar"
+msgstr ""
 
 #: picard/ui/options/interface_toolbar.py:67
 msgid "Add Folder"
@@ -10627,7 +9926,6 @@ msgid "{indent}{locale}"
 msgstr "{indent}{locale}"
 
 #: picard/ui/options/metadata.py:278
-#, fuzzy
 msgid ""
 "Each selected script includes a matching threshold value used to determine "
 "if that script should be used. When an artist name is evaluated to determine "
@@ -10639,15 +9937,6 @@ msgid ""
 "threshold specified for the script, then the artist name will not be "
 "translated."
 msgstr ""
-"Each selected script includes a matching threshold value used to determine "
-"if that script should be used. When an artist name is evaluated to determine "
-"if it matches one of your selected scripts, it is first parsed to determine "
-"which scripts are represented in the name, and what weighted percentage of "
-"the name belongs to each script. Then each of your selected scripts are "
-"checked, and if the name contains characters belonging to the script and the "
-"percentage of script characters in the name meets or exceeds the match "
-"threshold specified for the script, then the artist name will not be "
-"translated."
 
 #: picard/ui/options/network.py:42
 msgid "Network"
@@ -10734,9 +10023,8 @@ msgid "License"
 msgstr "Licence"
 
 #: picard/ui/options/plugins.py:613
-#, fuzzy
 msgid "User Guide"
-msgstr "User Guide"
+msgstr ""
 
 #: picard/ui/options/plugins.py:678
 #, python-format
@@ -10827,9 +10115,8 @@ msgid "The location to move files to must not be empty."
 msgstr "La destination où déplacer les fichiers ne doit pas être vide."
 
 #: picard/ui/options/renaming_compat.py:68
-#, fuzzy
 msgid "Compatibility"
-msgstr "Compatibility"
+msgstr ""
 
 #: picard/ui/options/renaming_compat.py:134
 msgid ""
@@ -11098,9 +10385,9 @@ msgid "%s PiB"
 msgstr "%s Pio"
 
 #: picard/util/bytes2human.py:89
-#, fuzzy, python-format
+#, python-format
 msgid "%(value)s %(unit)s"
-msgstr "%(value)s %(unit)s"
+msgstr ""
 
 #: picard/util/checkupdate.py:101
 msgid "Error loading Picard releases list: {error_message}"
@@ -11213,9 +10500,8 @@ msgid "Copyright"
 msgstr "Tous droits réservés"
 
 #: picard/util/tags.py:57
-#, fuzzy
 msgid "Director"
-msgstr "Director"
+msgstr ""
 
 #: picard/util/tags.py:58
 msgid "Disc Id"
