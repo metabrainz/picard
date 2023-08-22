@@ -71,7 +71,7 @@ We follow the "typical" GitHub workflow when contributing changes:
 
 ## Translations
 
-See po/README.md for information about translations.
+See [po/README.md](./po/README.md) for information about translations.
 
 
 ## Audio Metadata Specifications
