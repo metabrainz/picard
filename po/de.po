@@ -47,16 +47,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-16 01:06+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2014,2017-2023\n"
-"Language-Team: German (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/de/)\n"
+"PO-Revision-Date: 2023-08-22 12:44+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"Language-Team: German <https://translations.metabrainz.org/projects/picard/"
+"app/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -117,7 +118,7 @@ msgstr[1] "%(count)i Veröffentlichungen von Sammlung „%(name)s“ entfernt"
 #: picard/collection.py:97
 #, python-format
 msgid "Error while modifying collections: %(error)s"
-msgstr "Fehler beim Laden von Sammlungen: %(error)s"
+msgstr "Fehler beim Ändern von Sammlungen: %(error)s"
 
 #: picard/collection.py:119
 #, python-format
@@ -306,7 +307,7 @@ msgstr "Beim Start nach Programm-Updates suchen"
 
 #: picard/profile.py:55
 msgid "Days between update checks"
-msgstr "Tage zwischen Update-Überprüfungen:"
+msgstr "Tage zwischen Update-Überprüfungen"
 
 #: picard/profile.py:56
 msgid "Updates to check"
@@ -816,23 +817,24 @@ msgid "[no release info]"
 msgstr "[keine Informationen zur Veröffentlichung]"
 
 #: picard/tagger.py:652 picard/ui/ui_options_general.py:197
+#: picard/tagger.py:655
 msgid "MusicBrainz Account"
 msgstr "MusicBrainz Benutzerkonto"
 
-#: picard/tagger.py:653
+#: picard/tagger.py:653 picard/tagger.py:656
 msgid "Authorization code:"
 msgstr "Berechtigungscode:"
 
-#: picard/tagger.py:1142
+#: picard/tagger.py:1142 picard/tagger.py:1145
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Album %(id)s wird entfernt: %(artist)s - %(album)s"
 
-#: picard/tagger.py:1160
+#: picard/tagger.py:1160 picard/tagger.py:1163
 msgid "CD Lookup Error"
 msgstr "CD-Abfrage-Fehler"
 
-#: picard/tagger.py:1161
+#: picard/tagger.py:1161 picard/tagger.py:1164
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -840,27 +842,29 @@ msgid ""
 "%s"
 msgstr ""
 "Fehler beim Lesen der CD:\n"
+"\n"
 "%s"
 
-#: picard/tagger.py:1190
+#: picard/tagger.py:1190 picard/tagger.py:1193
 msgid "All supported log files"
 msgstr "Alle unterstützten Protokolldateien"
 
-#: picard/tagger.py:1191
+#: picard/tagger.py:1191 picard/tagger.py:1194
 msgid "EAC / XLD / Whipper / fre:ac log files"
 msgstr "EAC- / XLD- / Whipper- / fre:ac-Protokolldateien"
 
-#: picard/tagger.py:1192
+#: picard/tagger.py:1192 picard/tagger.py:1195
 msgid "dBpoweramp log files"
 msgstr "dBpoweramp-Protokolldateien"
 
 #: picard/script/serializer.py:350 picard/tagger.py:1193
 #: picard/ui/coverartbox.py:610 picard/ui/mainwindow.py:1266
 #: picard/ui/options/maintenance.py:168 picard/ui/options/scripting.py:131
+#: picard/tagger.py:1196
 msgid "All files"
 msgstr "Alle Dateien"
 
-#: picard/tagger.py:1219
+#: picard/tagger.py:1219 picard/tagger.py:1222
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr "Fehler beim Parsen des Ripper-Protokolls \"%s\""
@@ -5266,6 +5270,7 @@ msgid ""
 "If `if` is not empty, it returns `then`, otherwise it returns `else`."
 msgstr ""
 "`$if(if,then,else)`\n"
+"\n"
 "Wenn `if` nicht leer ist, wird `then` zurückgegeben, andernfalls `else`."
 
 #: picard/script/functions.py:199
@@ -5399,6 +5404,7 @@ msgid ""
 "Returns true, if `x` contains `y`."
 msgstr ""
 "`$in(x,y)`\n"
+"\n"
 "Gibt wahr zurück, wenn `y` in `x` enthalten ist."
 
 #: picard/script/functions.py:332
@@ -5464,6 +5470,7 @@ msgid ""
 "For example `$unset(performer:*)` would unset all performer tags."
 msgstr ""
 "`$unset(Name)`\n"
+"\n"
 "Leert die Variable `Name`.\n"
 "Erlaubt die Angabe von Plattzhaltern, um bestimmte Tags zu leeren "
 "(funktioniert mit \"performer:\\*\", 'comment:\\*' und 'lyrics:\\*').\n"
@@ -5945,13 +5952,13 @@ msgid ""
 "\n"
 "_Since Picard 0.10_"
 msgstr ""
-"` $performer(Muster=\"\",Trenner=\", \")`\n"
+"`$performer(Muster=\"\",Trenner=\", \")`\n"
 "\n"
 "Liefert alle Interpreten zurück, bei denen die Art der Performance (z.B. "
 "\"vocal\") mit `Muster` übereinstimmt. Die Interpreten werden durch "
 "`Trenner` getrennt.\n"
 "Es können reguläre Ausdrücke im Format `/Muster/Flags` angegeben werden. "
-"`Flags`  sind optional. Aktuell ist das einzige unterstützte Flag \"i"
+"`Flags` sind optional. Aktuell ist das einzige unterstützte Flag \"i"
 "\" (Groß-/Kleinschreibung ignorieren). Zum Beispiel stimmt `$performer(/"
 "^guitars?$/i)` mit der Performance \"guitar\" oder \"Guitars\" überein, "
 "nicht aber mit z.B. \"bass guitar\".\n"
@@ -6203,7 +6210,9 @@ msgstr ""
 "`$ne_any(x,a1,a2,…)`\n"
 "\n"
 "Liefert wahr zurück, wenn `x` ungleich `a1` oder `a2` oder …\n"
-"Funktional gleichwertig zu `$or($ne(x,a1),$ne(x,a2) …)`.Beispiel:\n"
+"Funktional gleichwertig zu `$or($ne(x,a1),$ne(x,a2) …)`.\n"
+"\n"
+"Beispiel:\n"
 "\n"
 "    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,"
 "%composer%))\n"
@@ -6500,12 +6509,12 @@ msgid ""
 "    equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.\n"
 "    `%3Y`); and hanging '%' at the end of the format string."
 msgstr ""
-"`$datetime(format=\"%Y-%m- %H:%M:%S\")`\n"
+"`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
 "\n"
 "Gibt das aktuelle Datum und die Uhrzeit im angegebenen `format` zurück, das "
-"auf dem\n"
-"dem Python-Standard `strftime` [Formatcodes](https://strftime.org/). Wenn "
-"kein\n"
+"auf\n"
+"dem Python-Standard `strftime` [Formatcodes](https://strftime.org/) basiert. "
+"Wenn kein\n"
 "`format` angegeben wird, wird das Datum/die Uhrzeit in folgender Form "
 "zurückgegeben\n"
 "`2020-02-05 14:26:32`.\n"
@@ -6513,9 +6522,9 @@ msgstr ""
 "um die\n"
 "Portabilität von Skripten über die verschiedenen Plattformen hinweg zu "
 "gewährleisten. Diese Codes umfassen:\n"
-"Entfernen des Null-Musters (z. B. `` und `%-m` unter Linux oder macOS, und "
+"Entfernen des Null-Musters (z. B. %-d und `%-m` unter Linux oder macOS, und "
 "deren\n"
-"Äquivalent `` und `%#m` unter Windows); Elementlängenangaben (z. B.\n"
+"Äquivalent %#d und `%#m` unter Windows); Elementlängenangaben (z. B.\n"
 "`%3Y`); und das Hängen von '%' am Ende der Formatzeichenfolge."
 
 #: picard/script/functions.py:1348
@@ -7589,7 +7598,7 @@ msgstr "Fehler beim Speichern des Protokolls als Datei"
 #: picard/ui/logview.py:280
 #, python-format
 msgid "Something prevented data to be written to '%s'"
-msgstr "Etwas verhinderte, dass Daten nach „%s“  geschrieben werden konnten."
+msgstr "Etwas verhinderte, dass Daten nach „%s“ geschrieben werden konnten."
 
 #: picard/ui/logview.py:296
 msgid "Are you sure you want to clear the log?"
@@ -7700,7 +7709,7 @@ msgstr "Einen Fehler &melden …"
 
 #: picard/ui/mainwindow.py:554
 msgid "&Support Forum..."
-msgstr "Hilfe-&Forum"
+msgstr "Hilfe-&Forum …"
 
 #: picard/ui/mainwindow.py:560
 msgid "&Add Files..."
@@ -8283,7 +8292,7 @@ msgstr "Warnung für neue Benutzer"
 msgid ""
 "The server %s requires you to login. Please enter your username and password."
 msgstr ""
-"Der Server %s erfordert eine Authentifizierung. Bitte  Benutzernamen und "
+"Der Server %s erfordert eine Authentifizierung. Bitte Benutzernamen und "
 "Passwort eingeben."
 
 #: picard/ui/passworddialog.py:64
@@ -8373,7 +8382,7 @@ msgid ""
 "Failed to submit rating for track '%(track_title)s' due to server error "
 "%(error)d"
 msgstr ""
-"Bewertung für den Titel \"%(track_title)s\"  konnte aufgrund des "
+"Bewertung für den Titel \"%(track_title)s\" konnte aufgrund des "
 "Serverfehlers %(error)d nicht übermittelt werden."
 
 #: picard/ui/savewarningdialog.py:38
@@ -8402,7 +8411,9 @@ msgstr[1] "{file_count:,d} Dateien werden gespeichert. Das wird:"
 
 #: picard/ui/savewarningdialog.py:58
 msgid "<strong>This action cannot be undone.</strong> Do you want to continue?"
-msgstr "Diese Aktion kann nicht rückgängig gemacht werden. Fortfahren?"
+msgstr ""
+"<strong>Diese Aktion kann nicht rückgängig gemacht werden.</strong> "
+"Fortfahren?"
 
 #: picard/ui/savewarningdialog.py:61
 msgid "<li>{action}</li>"
@@ -8638,8 +8649,9 @@ msgid ""
 "\n"
 "Do you want to overwrite it, add as a copy or cancel?"
 msgstr ""
-"Ein Skript mit dem Namen „{script_name}“ existiert bereits. Skript "
-"überschreiben, als Kopie hinzufügen oder abbrechen?"
+"Ein Skript mit dem Namen „{script_name}“ existiert bereits.\n"
+"\n"
+"Skript überschreiben, als Kopie hinzufügen oder abbrechen?"
 
 #: picard/ui/scripteditor.py:1236
 msgid "Overwrite"
@@ -8921,7 +8933,7 @@ msgstr "Maximale Anzahl Threads für den Fingerabdruckerzeuger:"
 
 #: picard/ui/ui_options_fingerprinting.py:104
 msgid "Fingerprint calculator:"
-msgstr "Fingerabdruckerzeuger"
+msgstr "Fingerabdruckerzeuger:"
 
 #: picard/ui/ui_options_fingerprinting.py:105
 #: picard/ui/ui_options_interface.py:132 picard/ui/ui_options_renaming.py:152
@@ -9134,7 +9146,7 @@ msgstr "Minimale Ähnlichkeit für Gruppierungsabfragen:"
 
 #: picard/ui/ui_options_metadata.py:130
 msgid "Translate artist names to these locales where possible:"
-msgstr "Künstlernamen wenn möglich in diese Sprachen übersetzen"
+msgstr "Künstlernamen wenn möglich in diese Sprachen übersetzen:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select..."
@@ -9536,9 +9548,9 @@ msgid ""
 "it will default to Front type."
 msgstr ""
 "Die erste Gruppe im regulären Ausdruck, wenn vorhanden, wird als Typ "
-"genutzt, z. B. wird cover-back-spine.jpg als Typ  Hinten und Rücken "
+"genutzt, z. B. wird cover-back-spine.jpg als Typ Hinten und Rücken "
 "verwendet. Falls kein Typ gefunden werden kann, wird der voreingestellte Typ "
-"Vorne verwendet. "
+"Vorne verwendet."
 
 #: picard/ui/ui_scripteditor.py:209
 msgid "Select the file naming script to load into the editor"
@@ -9810,12 +9822,13 @@ msgstr ""
 "ein beliebiges Zeichen enden<br/>\n"
 "<b>+Wor[tk]</b>: alle Genres einschließen, die mit <i>Wor</i> beginnen und "
 "auf <i>t</i> oder <i>k</i> enden<br/>\n"
-"<b>-W*rt</b>: alle Genres ausschließen, die mit <i>W</i>  beginnen und auf "
+"<b>-W*rt</b>: alle Genres ausschließen, die mit <i>W</i> beginnen und auf "
 "<i>rt</i> enden\n"
 "</p>\n"
 "<p><u>Filtern mit regulären Ausdrücken (Python re Syntax):</u></p>\n"
-"<p>-/^w.rt+/: Genres ausschließen, die mit w beginnen, gefolgt von "
-"irgendeinem Zeichen, dann ein rund wenigstens ein t enthalten\n"
+"<p><b>-/^w.rt+/</b>: Genres ausschließen, die mit <i>w</i> beginnen, gefolgt "
+"von irgendeinem Zeichen, dann ein <i>r </i>und wenigstens ein <i>t</i> "
+"enthalten\n"
 "</p>\n"
 "</body></html>"
 
@@ -9977,7 +9990,7 @@ msgstr "Im Player öffnen"
 
 #: picard/ui/options/interface_toolbar.py:115
 msgid "Lookup CD..."
-msgstr "CD abfragen"
+msgstr "CD abfragen …"
 
 #: picard/ui/options/interface_toolbar.py:186
 msgid "Drag and Drop to re-order"
@@ -10518,7 +10531,7 @@ msgstr ""
 "Die Tabelle ist gesperrt. Um die Sortierung oder Spaltengrößen zu ändern,\n"
 "entsperren Sie die Tabelle über das Kontextmenü des Tabellenkopfs."
 
-#: picard/util/__init__.py:364
+#: picard/util/__init__.py:364 picard/util/__init__.py:369
 msgid "No Title"
 msgstr "Kein Titel"
 
@@ -10990,3 +11003,8 @@ msgstr ""
 "Fehler beim Öffnen des Webbrowsers:\n"
 "\n"
 "%s"
+
+#: picard/util/bytes2human.py:89
+#, python-format
+msgid "%(value)s %(unit)s"
+msgstr "%(value)s %(unit)s"
