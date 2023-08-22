@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-16 01:06+0200\n"
+"POT-Creation-Date: 2023-08-22 14:43+0200\n"
 "PO-Revision-Date: 2012-05-29 16:17+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021,2023\n"
 "Language-Team: Finnish (http://app.transifex.com/musicbrainz/musicbrainz/"
@@ -788,24 +788,24 @@ msgstr "[ei viivakoodia]"
 msgid "[no release info]"
 msgstr "[ei julkaisutietoja]"
 
-#: picard/tagger.py:652 picard/ui/ui_options_general.py:197
+#: picard/tagger.py:655 picard/ui/ui_options_general.py:197
 msgid "MusicBrainz Account"
 msgstr "MusicBrainz-tili"
 
-#: picard/tagger.py:653
+#: picard/tagger.py:656
 msgid "Authorization code:"
 msgstr "Valtuutusavain:"
 
-#: picard/tagger.py:1142
+#: picard/tagger.py:1145
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Poistetaan julkaisu %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:1160
+#: picard/tagger.py:1163
 msgid "CD Lookup Error"
 msgstr "Virhe CD-haussa"
 
-#: picard/tagger.py:1161
+#: picard/tagger.py:1164
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -816,25 +816,25 @@ msgstr ""
 "\n"
 "%s"
 
-#: picard/tagger.py:1190
+#: picard/tagger.py:1193
 msgid "All supported log files"
 msgstr "Kaikki tuetut lokitiedostot"
 
-#: picard/tagger.py:1191
+#: picard/tagger.py:1194
 msgid "EAC / XLD / Whipper / fre:ac log files"
 msgstr "EAC / XLD / Whipper / fre:ac -lokitiedostot"
 
-#: picard/tagger.py:1192
+#: picard/tagger.py:1195
 msgid "dBpoweramp log files"
 msgstr "dBpoweramp-lokitiedostot"
 
-#: picard/script/serializer.py:350 picard/tagger.py:1193
+#: picard/script/serializer.py:350 picard/tagger.py:1196
 #: picard/ui/coverartbox.py:610 picard/ui/mainwindow.py:1266
 #: picard/ui/options/maintenance.py:168 picard/ui/options/scripting.py:131
 msgid "All files"
 msgstr "Kaikki tiedostot"
 
-#: picard/tagger.py:1219
+#: picard/tagger.py:1222
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr "CD-kopioinnin lokitiedoston jäsentäminen epäonnistui"
@@ -10493,7 +10493,7 @@ msgstr ""
 "Taulukko on lukittu. Vapauta lukitus taulukon otsikkorivin\n"
 "alasvetovalikosta lajitellaksesi ja muuttaaksesi kokoa."
 
-#: picard/util/__init__.py:364
+#: picard/util/__init__.py:369
 msgid "No Title"
 msgstr "Ei nimeä"
 
@@ -10554,8 +10554,8 @@ msgstr "%s PiB"
 
 #: picard/util/bytes2human.py:89
 #, python-format
-msgid "%s "
-msgstr "%s "
+msgid "%(value)s %(unit)s"
+msgstr ""
 
 #: picard/util/checkupdate.py:101
 msgid "Error loading Picard releases list: {error_message}"
@@ -10963,3 +10963,7 @@ msgstr ""
 "Virhe käynnistettäessä verkkoselainta:\n"
 "\n"
 "%s"
+
+#, python-format
+#~ msgid "%s "
+#~ msgstr "%s "
