@@ -114,7 +114,7 @@
         <item>
          <widget class="QLabel" name="move_label">
           <property name="text">
-           <string>Reorder Priority: </string>
+           <string>Reorder Priority:</string>
           </property>
          </widget>
         </item>

@@ -100,6 +100,6 @@ class Ui_CoverOptionsPage(object):
         self.save_only_one_front_image.setText(_("Save only a single front image as separate file"))
         self.image_type_as_filename.setText(_("Always use the primary image type as the file name for non-front images"))
         self.ca_providers_groupbox.setTitle(_("Cover Art Providers"))
-        self.move_label.setText(_("Reorder Priority: "))
+        self.move_label.setText(_("Reorder Priority:"))
         self.up_button.setToolTip(_("Move selected item up"))
         self.down_button.setToolTip(_("Move selected item down"))
