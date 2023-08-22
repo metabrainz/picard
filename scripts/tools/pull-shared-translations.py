@@ -58,18 +58,22 @@ def fetch_translations(component_name: str, user_key: str = '', config: WeblateC
     output_dir = get_output_dir(component_name)
     logging.info('Output dir: %s', output_dir)
     for translation in translations:
-        # Skip source language and translation templates
+        # Skip incomplete translations and translation templates
         language_name = translation['language']['name']
         language_code = translation['language']['code']
-        if (language_code == source_language
-            or translation['translated_percent'] < MIN_TRANSLATED_PERCENT
+        if (translation['translated_percent'] < MIN_TRANSLATED_PERCENT
             or translation['is_template']):
             logging.info('Skipping translation file for %s.', language_name)
             continue
 
-        logging.info('Downloading translation file for %s...', language_name)
+        if language_code == source_language:
+            filename = f'{component_name}.pot'
+        else:
+            filename = f'{language_code}.po'
+
+        logging.info('Downloading translation file %s...', filename)
         data = translation.download()
-        output_path = os.path.join(output_dir, f'{language_code}.po')
+        output_path = os.path.join(output_dir, filename)
         with open(output_path, 'bw') as output_file:
             output_file.write(data)
 
