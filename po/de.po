@@ -47,8 +47,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 09:08+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/"
 "app/de/>\n"
 "Language: de\n"
@@ -889,7 +889,7 @@ msgstr "Nachschlagen von AcoustID fehlgeschlagen für „%(filename)s“!"
 #: picard/acoustid/__init__.py:176
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
-msgstr "Nachschlagen von AcoustID für „%(filename)s“ ergab kein Ergebnis!"
+msgstr "Nachschlagen von AcoustID für „%(filename)s“ ergab kein Ergebnis"
 
 #: picard/acoustid/__init__.py:187
 #, python-format
@@ -5043,7 +5043,7 @@ msgstr "Kantonesisch"
 
 #: picard/const/locales.py:1037
 msgid "Cantonese (Simplified)"
-msgstr "Kantonesisch (vereinfachtes)"
+msgstr "Kantonesisch (vereinfacht)"
 
 #: picard/const/locales.py:1038
 msgid "Cantonese (Simplified) (China)"
@@ -5071,7 +5071,7 @@ msgstr "Chinesisch"
 
 #: picard/const/locales.py:1044
 msgid "Chinese (Simplified)"
-msgstr "Chinesisch (vereinfachtes)"
+msgstr "Chinesisch (vereinfacht)"
 
 #: picard/const/locales.py:1045
 msgid "Chinese (Simplified) (China)"
@@ -5083,7 +5083,7 @@ msgstr "Chinesisch (vereinfacht) (Hongkong)"
 
 #: picard/const/locales.py:1047
 msgid "Chinese (Simplified) (Macao)"
-msgstr "Chinesisch (vereinfachte) (Macau)"
+msgstr "Chinesisch (vereinfacht) (Macau)"
 
 #: picard/const/locales.py:1048
 msgid "Chinese (Simplified) (Singapore)"
@@ -6107,7 +6107,8 @@ msgstr ""
 "Entfernt die angegebenen Präfixe vom Anfang von `Text` und hängt sie ans "
 "Ende an.\n"
 "Mehrere Präfixe können als separate Parameter angegeben werden. Falls kein "
-"Präfix angegeben wird, werden \"A\" und \"The\" verwendet.\n"
+"Präfix\n"
+"angegeben wird, werden \"A\" und \"The\" verwendet.\n"
 "\n"
 "Beispiel:\n"
 "\n"
