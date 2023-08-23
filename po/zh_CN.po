@@ -3,8 +3,8 @@
 # This file is distributed under the same license as the picard project.
 #
 # Translators:
-#  <>, 2002, 2001, Inc, 2003, 2007, 2008, 2009, 2010, 2011, 2000,�s�, 2012
-#   Alastair McKinstry <mckinstry@computer.org>, 2002
+# <>, 2002, 2001, Inc, 2003, 2007, 2008, 2009, 2010, 2011, 2000,�s�, 2012
+# Alastair McKinstry <mckinstry@computer.org>, 2002
 # Alastair McKinstry <mckinstry@computer.org>, 2001
 # Ander_Index <Ander_Index@outlook.com>, 2023
 # Antares, 2022
@@ -16,7 +16,7 @@
 # Erocan Lancon, 2017
 # Erwin Synth <kingdzy1996@gmail.com>, 2017
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2007
-#   Free Software Foundation, Inc., 2002-2003,2007-2008
+# Free Software Foundation, Inc., 2002-2003,2007-2008
 # Hantong Chen (陈寒彤), 2023
 # LI Daobing <lidaobing@gmail.com>, 2007-2011
 # LI Daobing <lidaobing@gmail.com>, 2007-2010
@@ -30,8 +30,8 @@
 # Shenhua Zhao, 2021
 # taxigps <taxigps@sina.com>, 2018
 # riotism, 2017-2018
-#   Tobias Toedter <t.toedter@gmx.net>, 2007
-#   - Wang Jian <lark@linux.net.cn>, 2000
+# Tobias Toedter <t.toedter@gmx.net>, 2007
+# - Wang Jian <lark@linux.net.cn>, 2000
 # Xia Zeyu <xiazeyu_2011@126.com>, 2018
 # Xie Yanbo <xieyanbo@gmail.com>, 2018
 # y941s, 2021
@@ -49,8 +49,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 07:19+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-08-23 19:10+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://translations.metabrainz.org/"
 "projects/picard/app/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -5415,7 +5415,7 @@ msgid ""
 msgstr ""
 "`$pad(text,length,char)`\n"
 "\n"
-"在`text`**开头**添加 `char` 填充至`length`参数决定的长度。 "
+"在`text`**开头**添加 `char` 填充至`length`参数决定的长度。"
 
 #: picard/script/functions.py:276
 msgid ""
@@ -6516,16 +6516,16 @@ msgid ""
 msgstr ""
 "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
 "\n"
-"以指定的 `format` 恢复当前日期和时间，该格式基于标准的 Python `strftime` [编"
-"码格式]（https://strftime.org/）。\n"
-"       若未指定 `format`，则日期/时间将以 `2020-02-05 14:26:32` 的格式恢"
-"复。\n"
-"注意：应避免使用特定于平台的格式代码，以帮助确保脚本在不同平台之间的兼容"
-"性。\n"
-"       这些代码包括：填充移除（例如，在 Linux 或 macOS 上为 `%-d` 和 `%-"
-"m`，\n"
-"       在Windows上为等效的  `%#d`  和 `%#m`）；元素长度说明符（例如 `"
-"%3Y`）；\n"
+"以指定的 `format` 恢复当前日期和时间，该格式基于标准的 Python `strftime` "
+"[编码格式](https://strftime.org/)。\n"
+"       若未指定 `format`，则日期/时间将以 `2020-02-05 14:26:32` 的格式恢复。"
+"\n"
+"注意：应避免使用特定于平台的格式代码，以帮助确保脚本在不同平台之间的兼容性。"
+"\n"
+"       这些代码包括：填充移除（例如，在 Linux 或 macOS 上为 `%-d` 和 `%-m`，"
+"\n"
+"       在Windows上为等效的  `%#d`  和 `%#m`）；元素长度说明符（例如 `%3Y`）；"
+"\n"
 "       并在格式字符串的末尾附上 '%'。"
 
 #: picard/script/functions.py:1348
@@ -8211,10 +8211,10 @@ msgid ""
 msgstr ""
 "<p><strong>Picard 进行的操作是不可撤销的。</strong></p><p>Picard 作为一款多功"
 "能音乐标签编辑软件，它能帮助你对音乐文件进行重命名，以及覆写音乐文件的标签。"
-"我们<strong>强烈推荐</strong>你：</p><ul><li>使用前阅读<a "
-"href='{documentation_url}'>用户指南</a>（帮助菜单也可找到）</li><li>对音乐文"
-"件进行批量操作前，务必复制小部分音乐文件进行小范围测试</li></ul><p>Picard 是"
-"由广大志愿者编写的一款开源软件，不承担任何担保责任。"
+"我们<strong>强烈推荐</strong>你：</p><ul><li>使用前阅读<a href='{documentatio"
+"n_url}'>用户指南</a>（帮助菜单也可找到）</li><li>对音乐文件进行批量操作前，务"
+"必复制小部分音乐文件进行小范围测试</li></ul><p>Picard "
+"是由广大志愿者编写的一款开源软件，不承担任何担保责任。</p>"
 
 #: picard/ui/newuserdialog.py:49
 msgid "Show this message again the next time you start Picard."
@@ -8437,7 +8437,7 @@ msgstr "脚本（&S）"
 
 #: picard/ui/scripteditor.py:569
 msgid "View/Edit Script &Metadata"
-msgstr "查看/编辑脚本元数据 (&M) "
+msgstr "查看/编辑脚本元数据 (&M)"
 
 #: picard/ui/scripteditor.py:570
 msgid "Display the details for the script"
@@ -8798,7 +8798,7 @@ msgstr "专辑封面来源"
 
 #: picard/ui/ui_options_cover.py:103
 msgid "Reorder Priority:"
-msgstr "调整优先级: "
+msgstr "调整优先级:"
 
 #: picard/ui/ui_options_cover.py:104
 #: picard/ui/ui_options_interface_toolbar.py:77
@@ -9619,7 +9619,7 @@ msgstr "附加于%s部分选项上的配置文件"
 
 #: picard/ui/options/dialog.py:494
 msgid " [Enabled]"
-msgstr "[可用]"
+msgstr " [可用]"
 
 #: picard/ui/options/dialog.py:495 picard/ui/options/profiles.py:281
 msgid "None"
