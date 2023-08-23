@@ -57,8 +57,8 @@ msgstr "Альбом %(id)s загружен: %(artist)s - %(album)s"
 
 #: picard/album.py:573
 #, python-format
-msgid "Loading album %(id)s ..."
-msgstr "Загрузка альбома %(id)s ..."
+msgid "Loading album %(id)s …"
+msgstr "Загрузка альбома %(id)s …"
 
 #: picard/album.py:790
 msgid "[loading album information]"
@@ -81,8 +81,8 @@ msgstr "Нет совпадения для кластера %(album)s"
 
 #: picard/cluster.py:281
 #, python-format
-msgid "Looking up the metadata for cluster %(album)s..."
-msgstr "Поиск метаданных для кластера %(album)s..."
+msgid "Looking up the metadata for cluster %(album)s…"
+msgstr "Поиск метаданных для кластера %(album)s…"
 
 #: picard/cluster.py:330
 msgid "Unclustered Files"
@@ -185,8 +185,8 @@ msgstr "Нет соответствующих треков для файла '%(
 
 #: picard/file.py:896
 #, python-format
-msgid "Looking up the metadata for file %(filename)s ..."
-msgstr "Просмотр метаданных для файла %(filename)s..."
+msgid "Looking up the metadata for file %(filename)s …"
+msgstr "Просмотр метаданных для файла %(filename)s…"
 
 #: picard/oauth.py:249 picard/oauth.py:276
 msgid "Unexpected authentication error"
@@ -894,8 +894,8 @@ msgstr "AcoustID поиск вернулся без результатов дл�
 
 #: picard/acoustid/__init__.py:187
 #, python-format
-msgid "Looking up the fingerprint for file '%(filename)s' ..."
-msgstr "Поиск отпечатка для файла '%(filename)s' ..."
+msgid "Looking up the fingerprint for file '%(filename)s' …"
+msgstr "Поиск отпечатка для файла '%(filename)s' …"
 
 #: picard/acoustid/manager.py:184
 msgid ""
@@ -916,8 +916,8 @@ msgid "AcoustID submission failed permanently, probably too many retries"
 msgstr ""
 
 #: picard/acoustid/manager.py:209
-msgid "Submitting AcoustIDs ..."
-msgstr "Отправка AcoustIDs ..."
+msgid "Submitting AcoustIDs …"
+msgstr "Отправка AcoustIDs …"
 
 #: picard/acoustid/manager.py:239
 #, python-format
@@ -929,24 +929,24 @@ msgid "Add cluster as release"
 msgstr "Добавить кластер как релиз"
 
 #: picard/browser/addrelease.py:146
-msgid "Add cluster as release..."
-msgstr "Добавить кластер как релиз..."
+msgid "Add cluster as release…"
+msgstr "Добавить кластер как релиз…"
 
 #: picard/browser/addrelease.py:154
 msgid "Add file as release"
 msgstr "Добавить файл как релиз"
 
 #: picard/browser/addrelease.py:156
-msgid "Add file as release..."
-msgstr "Добавить файл как релиз..."
+msgid "Add file as release…"
+msgstr "Добавить файл как релиз…"
 
 #: picard/browser/addrelease.py:164
 msgid "Add file as recording"
 msgstr "Добавить файл как запись"
 
 #: picard/browser/addrelease.py:166
-msgid "Add file as recording..."
-msgstr "Добавить файл как запись..."
+msgid "Add file as recording…"
+msgstr "Добавить файл как запись…"
 
 #: picard/const/__init__.py:169
 msgid "Stable releases only"
@@ -5203,8 +5203,8 @@ msgstr "Обложка типа '%(type)s' загружены %(albumid)s из %
 #: picard/coverart/__init__.py:189
 #, python-format
 msgid ""
-"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
-msgstr "Загрузка обложки типа  '%(type)s' для %(albumid)s с %(host)s ..."
+"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s …"
+msgstr "Загрузка обложки типа  '%(type)s' для %(albumid)s с %(host)s …"
 
 #: picard/coverart/utils.py:38
 msgid "Unknown"
@@ -5321,14 +5321,14 @@ msgstr ""
 
 #: picard/script/functions.py:199
 msgid ""
-"`$if2(a1,a2,a3,...)`\n"
+"`$if2(a1,a2,a3,…)`\n"
 "\n"
 "Returns first non empty argument."
 msgstr ""
 
 #: picard/script/functions.py:212
 msgid ""
-"`$noop(...)`\n"
+"`$noop(…)`\n"
 "\n"
 "Does nothing (useful for comments or disabling a block of code)."
 msgstr ""
@@ -5546,7 +5546,7 @@ msgstr ""
 
 #: picard/script/functions.py:527
 msgid ""
-"`$add(x,y,...)`\n"
+"`$add(x,y,…)`\n"
 "\n"
 "Add `y` to `x`.\n"
 "Can be used with an arbitrary number of arguments.\n"
@@ -5558,7 +5558,7 @@ msgstr ""
 
 #: picard/script/functions.py:545
 msgid ""
-"`$sub(x,y,...)`\n"
+"`$sub(x,y,…)`\n"
 "\n"
 "Subtracts `y` from `x`.\n"
 "Can be used with an arbitrary number of arguments.\n"
@@ -5570,7 +5570,7 @@ msgstr ""
 
 #: picard/script/functions.py:563
 msgid ""
-"`$div(x,y,...)`\n"
+"`$div(x,y,…)`\n"
 "\n"
 "Divides `x` by `y`.\n"
 "Can be used with an arbitrary number of arguments.\n"
@@ -5582,7 +5582,7 @@ msgstr ""
 
 #: picard/script/functions.py:583
 msgid ""
-"`$mod(x,y,...)`\n"
+"`$mod(x,y,…)`\n"
 "\n"
 "Returns the remainder of `x` divided by `y`.\n"
 "Can be used with an arbitrary number of arguments.\n"
@@ -5594,7 +5594,7 @@ msgstr ""
 
 #: picard/script/functions.py:601
 msgid ""
-"`$mul(x,y,...)`\n"
+"`$mul(x,y,…)`\n"
 "\n"
 "Multiplies `x` by `y`.\n"
 "Can be used with an arbitrary number of arguments.\n"
@@ -5606,7 +5606,7 @@ msgstr ""
 
 #: picard/script/functions.py:619
 msgid ""
-"`$or(x,y,...)`\n"
+"`$or(x,y,…)`\n"
 "\n"
 "Returns true if either `x` or `y` not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
@@ -5615,7 +5615,7 @@ msgstr ""
 
 #: picard/script/functions.py:633
 msgid ""
-"`$and(x,y,...)`\n"
+"`$and(x,y,…)`\n"
 "\n"
 "Returns true if both `x` and `y` are not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
@@ -5835,7 +5835,7 @@ msgstr ""
 
 #: picard/script/functions.py:951
 msgid ""
-"`$swapprefix(text,prefix1,prefix2,...)`\n"
+"`$swapprefix(text,prefix1,prefix2,…)`\n"
 "\n"
 "Moves the specified prefixes from the beginning to the end of `text`. "
 "Multiple\n"
@@ -5852,7 +5852,7 @@ msgstr ""
 
 #: picard/script/functions.py:973
 msgid ""
-"`$delprefix(text,prefix1,prefix2,...)`\n"
+"`$delprefix(text,prefix1,prefix2,…)`\n"
 "\n"
 "Deletes the specified prefixes from the beginning of `text`. Multiple\n"
 "prefixes can be specified as separate parameters.  If no prefix is specified "
@@ -5868,28 +5868,28 @@ msgstr ""
 
 #: picard/script/functions.py:1011
 msgid ""
-"`$eq_any(x,a1,a2,...)`\n"
+"`$eq_any(x,a1,a2,…)`\n"
 "\n"
-"Returns true if `x` equals `a1` or `a2` or ...\n"
-"Functionally equivalent to `$or($eq(x,a1),$eq(x,a2),...)`.\n"
+"Returns true if `x` equals `a1` or `a2` or …\n"
+"Functionally equivalent to `$or($eq(x,a1),$eq(x,a2),…)`.\n"
 "Functionally equivalent to the eq2 plugin."
 msgstr ""
 
 #: picard/script/functions.py:1023
 msgid ""
-"`$ne_all(x,a1,a2,...)`\n"
+"`$ne_all(x,a1,a2,…)`\n"
 "\n"
-"Returns true if `x` does not equal `a1` and `a2` and ...\n"
-"Functionally equivalent to `$and($ne(x,a1),$ne(x,a2),...)`.\n"
+"Returns true if `x` does not equal `a1` and `a2` and …\n"
+"Functionally equivalent to `$and($ne(x,a1),$ne(x,a2),…)`.\n"
 "Functionally equivalent to the ne2 plugin."
 msgstr ""
 
 #: picard/script/functions.py:1035
 msgid ""
-"`$eq_all(x,a1,a2,...)`\n"
+"`$eq_all(x,a1,a2,…)`\n"
 "\n"
-"Returns true if `x` equals `a1` and `a2` and ...\n"
-"Functionally equivalent to `$and($eq(x,a1),$eq(x,a2),...)`.\n"
+"Returns true if `x` equals `a1` and `a2` and …\n"
+"Functionally equivalent to `$and($eq(x,a1),$eq(x,a2),…)`.\n"
 "\n"
 "Example:\n"
 "\n"
@@ -5900,10 +5900,10 @@ msgstr ""
 #: picard/script/functions.py:1053
 #, python-format
 msgid ""
-"`$ne_any(x,a1,a2,...)`\n"
+"`$ne_any(x,a1,a2,…)`\n"
 "\n"
-"Returns true if `x` does not equal `a1` or `a2` or ...\n"
-"Functionally equivalent to `$or($ne(x,a1),$ne(x,a2),...)`.\n"
+"Returns true if `x` does not equal `a1` or `a2` or …\n"
+"Functionally equivalent to `$or($ne(x,a1),$ne(x,a2),…)`.\n"
 "\n"
 "Example:\n"
 "\n"
@@ -6255,7 +6255,7 @@ msgstr ""
 
 #: picard/script/functions.py:1608
 msgid ""
-"`$min(type,x,...)`\n"
+"`$min(type,x,…)`\n"
 "\n"
 "Returns the minimum value using the comparison specified in `type`.\n"
 "\n"
@@ -6279,7 +6279,7 @@ msgstr ""
 
 #: picard/script/functions.py:1629
 msgid ""
-"`$max(type,x,...)`\n"
+"`$max(type,x,…)`\n"
 "\n"
 "Returns the maximum value using the comparison specified in `type`.\n"
 "\n"
@@ -6564,15 +6564,15 @@ msgid "All supported image formats"
 msgstr ""
 
 #: picard/ui/coverartbox.py:629
-msgid "Show more details..."
-msgstr "Подробнее..."
+msgid "Show more details…"
+msgstr "Подробнее…"
 
 #: picard/ui/coverartbox.py:635
 msgid "Keep original cover art"
 msgstr "Сохранять оригинальную обложку"
 
 #: picard/ui/coverartbox.py:641
-msgid "Choose local file..."
+msgid "Choose local file…"
 msgstr ""
 
 #: picard/ui/coverartbox.py:650
@@ -6877,13 +6877,13 @@ msgid "&Other versions"
 msgstr "&Другии версии"
 
 #: picard/ui/itemviews.py:546
-msgid "Loading..."
-msgstr "Идёт загрузка..."
+msgid "Loading…"
+msgstr "Идёт загрузка…"
 
 #: picard/ui/itemviews.py:548
 #, fuzzy
-msgid "Show &more details..."
-msgstr "Подробнее..."
+msgid "Show &more details…"
+msgstr "Подробнее…"
 
 #: picard/ui/itemviews.py:601
 #, python-format
@@ -6997,8 +6997,8 @@ msgid "Clear Log"
 msgstr "Очистить журнал"
 
 #: picard/ui/logview.py:214
-msgid "Save As..."
-msgstr "Сохранить как..."
+msgid "Save As…"
+msgstr "Сохранить как…"
 
 #: picard/ui/logview.py:259 picard/ui/logview.py:266
 msgid "Save Log View to File"
@@ -7092,11 +7092,11 @@ msgid "Open AcoustID options"
 msgstr ""
 
 #: picard/ui/mainwindow.py:498
-msgid "&Options..."
+msgid "&Options…"
 msgstr "&Настройки…"
 
 #: picard/ui/mainwindow.py:505
-msgid "Open &file naming script editor..."
+msgid "Open &file naming script editor…"
 msgstr ""
 
 #: picard/ui/mainwindow.py:506
@@ -7112,27 +7112,27 @@ msgid "&Paste"
 msgstr "&Вставить"
 
 #: picard/ui/mainwindow.py:528 picard/ui/scripteditor.py:617
-msgid "&Help..."
+msgid "&Help…"
 msgstr "&Помощь…"
 
 #: picard/ui/mainwindow.py:535
-msgid "&About..."
+msgid "&About…"
 msgstr "&О программе…"
 
 #: picard/ui/mainwindow.py:542
-msgid "&Donate..."
-msgstr "&Пожертвовать..."
+msgid "&Donate…"
+msgstr "&Пожертвовать…"
 
 #: picard/ui/mainwindow.py:548
-msgid "&Report a Bug..."
+msgid "&Report a Bug…"
 msgstr "&Сообщить об ошибке…"
 
 #: picard/ui/mainwindow.py:554
-msgid "&Support Forum..."
+msgid "&Support Forum…"
 msgstr "&Форум поддержки…"
 
 #: picard/ui/mainwindow.py:560
-msgid "&Add Files..."
+msgid "&Add Files…"
 msgstr "&Добавить файлы…"
 
 #: picard/ui/mainwindow.py:561
@@ -7140,7 +7140,7 @@ msgid "Add files to the tagger"
 msgstr "Добавить файлы в теггер"
 
 #: picard/ui/mainwindow.py:569
-msgid "Add Fold&er..."
+msgid "Add Fold&er…"
 msgstr "Д&обавить папку…"
 
 #: picard/ui/mainwindow.py:570
@@ -7204,7 +7204,7 @@ msgid "Ctrl+Shift+L"
 msgstr "Ctrl+Shift+L"
 
 #: picard/ui/mainwindow.py:634
-msgid "Submit cluster as release..."
+msgid "Submit cluster as release…"
 msgstr ""
 
 #: picard/ui/mainwindow.py:635
@@ -7212,16 +7212,16 @@ msgid "Submit cluster as a new release to MusicBrainz"
 msgstr ""
 
 #: picard/ui/mainwindow.py:645
-msgid "Submit file as standalone recording..."
-msgstr "Отправить файл как отдельную запись..."
+msgid "Submit file as standalone recording…"
+msgstr "Отправить файл как отдельную запись…"
 
 #: picard/ui/mainwindow.py:646
 msgid "Submit file as a new recording to MusicBrainz"
 msgstr "Отправить файл как новую запись в MusicBrainz"
 
 #: picard/ui/mainwindow.py:656
-msgid "Submit file as release..."
-msgstr "Отправить файл как релиз..."
+msgid "Submit file as release…"
+msgstr "Отправить файл как релиз…"
 
 #: picard/ui/mainwindow.py:657
 #, fuzzy
@@ -7230,8 +7230,8 @@ msgstr "Отправить файл как новую запись в MusicBrain
 
 #: picard/ui/mainwindow.py:666
 #, fuzzy
-msgid "Search for similar items..."
-msgstr "Поиск похожих альбомов..."
+msgid "Search for similar items…"
+msgstr "Поиск похожих альбомов…"
 
 #: picard/ui/mainwindow.py:667 picard/ui/options/interface_toolbar.py:123
 msgid "Similar items"
@@ -7248,23 +7248,23 @@ msgid "Ctrl+T"
 msgstr "Ctrl+T"
 
 #: picard/ui/mainwindow.py:676
-msgid "Search for similar albums..."
-msgstr "Поиск похожих альбомов..."
+msgid "Search for similar albums…"
+msgstr "Поиск похожих альбомов…"
 
 #: picard/ui/mainwindow.py:677
 msgid "View similar releases and optionally choose a different release"
 msgstr "Просмотрите похоже релизы и, возможно, выберите другой релиз"
 
 #: picard/ui/mainwindow.py:685
-msgid "Search for similar tracks..."
-msgstr "Поиск похожих треков..."
+msgid "Search for similar tracks…"
+msgstr "Поиск похожих треков…"
 
 #: picard/ui/mainwindow.py:686
 msgid "View similar tracks and optionally choose a different release"
 msgstr "Просмотрите похожие треки и при необходимости выберите другой релиз"
 
 #: picard/ui/mainwindow.py:694
-msgid "Show &other album versions..."
+msgid "Show &other album versions…"
 msgstr ""
 
 #: picard/ui/mainwindow.py:695
@@ -7302,8 +7302,8 @@ msgid "Search"
 msgstr "Поиск"
 
 #: picard/ui/mainwindow.py:751 picard/ui/mainwindow.py:758
-msgid "Lookup &CD..."
-msgstr "Поиск &CD..."
+msgid "Lookup &CD…"
+msgstr "Поиск &CD…"
 
 #: picard/ui/mainwindow.py:752
 msgid "Lookup the details of the CD in your drive"
@@ -7380,8 +7380,8 @@ msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
 #: picard/ui/mainwindow.py:815
-msgid "&Info..."
-msgstr "&Информация..."
+msgid "&Info…"
+msgstr "&Информация…"
 
 #: picard/ui/mainwindow.py:818
 msgid "Ctrl+I"
@@ -7408,12 +7408,12 @@ msgid "Save &Tags"
 msgstr "Сохранять &теги"
 
 #: picard/ui/mainwindow.py:858
-msgid "Tags From &File Names..."
+msgid "Tags From &File Names…"
 msgstr "Теги из имён &файлов…"
 
 #: picard/ui/mainwindow.py:859 picard/ui/options/interface_toolbar.py:119
-msgid "Parse File Names..."
-msgstr "Сканирование имен файлов..."
+msgid "Parse File Names…"
+msgstr "Сканирование имен файлов…"
 
 #: picard/ui/mainwindow.py:860
 msgid "Set tags based on the file names"
@@ -7465,10 +7465,10 @@ msgstr "Откройте папку, содержащую файл в вашем
 
 #: picard/ui/mainwindow.py:910
 msgid "&Check for Update…"
-msgstr "&проверка обновлений..."
+msgstr "&проверка обновлений…"
 
 #: picard/ui/mainwindow.py:949
-msgid "From CD ripper &log file..."
+msgid "From CD ripper &log file…"
 msgstr ""
 
 #: picard/ui/mainwindow.py:1002 picard/ui/scripteditor.py:533
@@ -7527,13 +7527,13 @@ msgstr "Все поддерживаемые форматы"
 
 #: picard/ui/mainwindow.py:1294
 #, python-format
-msgid "Adding multiple directories from '%(directory)s' ..."
-msgstr "Добавление нескольких папок из '%(directory)s' ..."
+msgid "Adding multiple directories from '%(directory)s' …"
+msgstr "Добавление нескольких папок из '%(directory)s' …"
 
 #: picard/ui/mainwindow.py:1299
 #, python-format
-msgid "Adding directory: '%(directory)s' ..."
-msgstr "Добавление папки:'%(directory)s' ..."
+msgid "Adding directory: '%(directory)s' …"
+msgstr "Добавление папки:'%(directory)s' …"
 
 #: picard/ui/mainwindow.py:1411
 msgid "Configuration Required"
@@ -7638,8 +7638,8 @@ msgid "New Value"
 msgstr "Новое значение"
 
 #: picard/ui/metadatabox.py:241
-msgid "Add New Tag..."
-msgstr "Добавить новый тег..."
+msgid "Add New Tag…"
+msgstr "Добавить новый тег…"
 
 #: picard/ui/metadatabox.py:243
 msgid "Show Changes First"
@@ -7658,8 +7658,8 @@ msgid "Alt+Shift+R"
 msgstr "Alt+Shift+R"
 
 #: picard/ui/metadatabox.py:373
-msgid "Edit..."
-msgstr "Править..."
+msgid "Edit…"
+msgstr "Править…"
 
 #: picard/ui/metadatabox.py:379
 msgid "Add to 'Preserve Tags' List"
@@ -7975,7 +7975,7 @@ msgid "View the scripting documentation in a sidebar"
 msgstr ""
 
 #: picard/ui/scripteditor.py:622
-msgid "&Scripting documentation..."
+msgid "&Scripting documentation…"
 msgstr ""
 
 #: picard/ui/scripteditor.py:623
@@ -8323,20 +8323,20 @@ msgstr "Калькулятор слепка:"
 
 #: picard/ui/ui_options_fingerprinting.py:105
 #: picard/ui/ui_options_interface.py:132 picard/ui/ui_options_renaming.py:152
-msgid "Browse..."
+msgid "Browse…"
 msgstr "Обзор…"
 
 #: picard/ui/ui_options_fingerprinting.py:106
-msgid "Download..."
-msgstr "Загрузка..."
+msgid "Download…"
+msgstr "Загрузка…"
 
 #: picard/ui/ui_options_fingerprinting.py:107
 msgid "API key:"
 msgstr "Ключ API:"
 
 #: picard/ui/ui_options_fingerprinting.py:108
-msgid "Get API key..."
-msgstr "Получить API ключ..."
+msgid "Get API key…"
+msgstr "Получить API ключ…"
 
 #: picard/ui/ui_options_general.py:192
 msgid "MusicBrainz Server"
@@ -8529,7 +8529,7 @@ msgid "Translate artist names to these locales where possible:"
 msgstr "При возможности, переводить имена артистов на местный язык:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
-msgid "Select..."
+msgid "Select…"
 msgstr ""
 
 #: picard/ui/ui_options_metadata.py:132
@@ -8602,8 +8602,8 @@ msgid "Version"
 msgstr "Версия"
 
 #: picard/ui/ui_options_plugins.py:135
-msgid "Install plugin..."
-msgstr "Установка плагина..."
+msgid "Install plugin…"
+msgstr "Установка плагина…"
 
 #: picard/ui/ui_options_plugins.py:136
 msgid "Open plugin folder"
@@ -8685,7 +8685,7 @@ msgid "Selected file naming script:"
 msgstr "Выбранный скрипт именования файлов"
 
 #: picard/ui/ui_options_renaming.py:157
-msgid "Edit file naming script..."
+msgid "Edit file naming script…"
 msgstr ""
 
 #: picard/ui/ui_options_renaming.py:158 picard/ui/ui_scripteditor.py:211
@@ -8706,7 +8706,7 @@ msgid "Reload examples"
 msgstr ""
 
 #: picard/ui/ui_options_renaming_compat.py:87
-msgid "Customize..."
+msgid "Customize…"
 msgstr ""
 
 #: picard/ui/ui_options_renaming_compat.py:88
@@ -8893,8 +8893,8 @@ msgid "Download only cover art images matching selected types"
 msgstr "Загружать только обложки совпадающие выбранным типам"
 
 #: picard/ui/ui_provider_options_caa.py:70
-msgid "Select types..."
-msgstr "Выбор типов..."
+msgid "Select types…"
+msgstr "Выбор типов…"
 
 #: picard/ui/ui_provider_options_caa.py:71
 msgid "Only use images of the following size:"
@@ -9308,8 +9308,8 @@ msgid "Open in Player"
 msgstr "Открыть в проигрывателе"
 
 #: picard/ui/options/interface_toolbar.py:115
-msgid "Lookup CD..."
-msgstr "Поиск CD..."
+msgid "Lookup CD…"
+msgstr "Поиск CD…"
 
 #: picard/ui/options/interface_toolbar.py:186
 msgid "Drag and Drop to re-order"
@@ -9455,7 +9455,7 @@ msgid "Uninstall plugin"
 msgstr "Удалить плагин"
 
 #: picard/ui/options/plugins.py:408
-msgid "Reloading list of available plugins..."
+msgid "Reloading list of available plugins…"
 msgstr ""
 
 #: picard/ui/options/plugins.py:416 picard/ui/options/plugins.py:425
@@ -9661,8 +9661,8 @@ msgid "Search in browser"
 msgstr "Найти в браузере"
 
 #: picard/ui/searchdialog/__init__.py:210
-msgid "<strong>Loading...</strong>"
-msgstr "<strong>Загрузка...</strong>"
+msgid "<strong>Loading…</strong>"
+msgstr "<strong>Загрузка…</strong>"
 
 #: picard/ui/searchdialog/__init__.py:241
 msgid "Retry"

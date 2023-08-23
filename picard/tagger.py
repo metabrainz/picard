@@ -809,17 +809,17 @@ class Tagger(QtWidgets.QApplication):
             is_valid_albumid = mbid_validate(albumid)
 
             if is_valid_albumid and is_valid_recordingid:
-                log.debug("%r has release (%s) and recording (%s) MBIDs, moving to track...",
+                log.debug("%r has release (%s) and recording (%s) MBIDs, moving to track…",
                           file, albumid, recordingid)
                 self.move_file_to_track(file, albumid, recordingid)
                 file_moved = True
             elif is_valid_albumid:
-                log.debug("%r has only release MBID (%s), moving to album...",
+                log.debug("%r has only release MBID (%s), moving to album…",
                           file, albumid)
                 self.move_file_to_album(file, albumid)
                 file_moved = True
             elif is_valid_recordingid:
-                log.debug("%r has only recording MBID (%s), moving to non-album track...",
+                log.debug("%r has only recording MBID (%s), moving to non-album track…",
                           file, recordingid)
                 self.move_file_to_nat(file, recordingid)
                 file_moved = True
@@ -834,7 +834,7 @@ class Tagger(QtWidgets.QApplication):
 
         # fallback on analyze if nothing else worked
         if not file_moved and config.setting['analyze_new_files'] and file.can_analyze():
-            log.debug("Trying to analyze %r ...", file)
+            log.debug("Trying to analyze %r …", file)
             self.analyze([file])
 
         # Auto cluster newly added files if they are not explicitly moved elsewhere
@@ -1213,7 +1213,7 @@ class Tagger(QtWidgets.QApplication):
         for reader in log_readers:
             module_name = reader.__module__
             try:
-                log.debug('Trying to parse "%s" with %s...', path, module_name)
+                log.debug('Trying to parse "%s" with %s…', path, module_name)
                 toc = reader(path)
                 break
             except Exception:

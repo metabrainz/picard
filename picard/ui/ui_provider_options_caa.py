@@ -67,6 +67,6 @@ class Ui_CaaOptions(object):
         _translate = QtCore.QCoreApplication.translate
         CaaOptions.setWindowTitle(_("Form"))
         self.restrict_images_types.setText(_("Download only cover art images matching selected types"))
-        self.select_caa_types.setText(_("Select types..."))
+        self.select_caa_types.setText(_("Select types…"))
         self.label.setText(_("Only use images of the following size:"))
         self.cb_approved_only.setText(_("Download only approved images"))

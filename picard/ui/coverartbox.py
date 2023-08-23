@@ -626,7 +626,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         if self.show_details_button.isVisible():
-            name = _('Show more details...')
+            name = _('Show more details…')
             show_more_details_action = QtWidgets.QAction(name, self.parent)
             show_more_details_action.triggered.connect(self.show_cover_art_info)
             menu.addAction(show_more_details_action)
@@ -638,7 +638,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
             menu.addAction(use_orig_value_action)
 
         if self.item and self.item.can_show_coverart:
-            name = _('Choose local file...')
+            name = _('Choose local file…')
             choose_local_file_action = QtWidgets.QAction(name, self.parent)
             choose_local_file_action.triggered.connect(self.choose_local_file)
             menu.addAction(choose_local_file_action)

@@ -614,12 +614,12 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         help_menu = main_menu.addMenu(_('&Help'))
         help_menu.setToolTipsVisible(True)
 
-        self.help_action = QtWidgets.QAction(_("&Help..."), self)
+        self.help_action = QtWidgets.QAction(_("&Help…"), self)
         self.help_action.setShortcut(QtGui.QKeySequence.StandardKey.HelpContents)
         self.help_action.triggered.connect(self.show_help)
         help_menu.addAction(self.help_action)
 
-        self.scripting_docs_action = QtWidgets.QAction(_("&Scripting documentation..."), self)
+        self.scripting_docs_action = QtWidgets.QAction(_("&Scripting documentation…"), self)
         self.scripting_docs_action.setToolTip(_("Open the scripting documentation in your browser"))
         self.scripting_docs_action.triggered.connect(self.docs_browser)
         help_menu.addAction(self.scripting_docs_action)

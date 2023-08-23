@@ -278,7 +278,7 @@ class Cluster(FileList):
         if self.lookup_task:
             return
         self.tagger.window.set_statusbar_message(
-            N_("Looking up the metadata for cluster %(album)s..."),
+            N_("Looking up the metadata for cluster %(album)s…"),
             {'album': self.metadata['album']}
         )
         config = get_config()

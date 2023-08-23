@@ -405,7 +405,7 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.plugins_container.setEnabled(enabled)
 
     def reload_list_of_plugins(self):
-        self.ui.details.setText(_("Reloading list of available plugins..."))
+        self.ui.details.setText(_("Reloading list of available plugins…"))
         self._user_interaction(False)
         self._preserve_plugins_states()
         self.manager.query_available_plugins(callback=self._reload)

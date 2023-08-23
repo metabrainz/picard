@@ -129,4 +129,4 @@ class Ui_InterfaceOptionsPage(object):
         self.file_save_warning.setText(_("Show a confirmation dialog when saving files"))
         self.filebrowser_horizontal_autoscroll.setText(_("Adjust horizontal position in file browser automatically"))
         self.starting_directory.setText(_("Begin browsing in the following directory:"))
-        self.starting_directory_browse.setText(_("Browse..."))
+        self.starting_directory_browse.setText(_("Browse…"))

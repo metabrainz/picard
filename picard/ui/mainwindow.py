@@ -496,14 +496,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     @MainWindowActions.add()
     def _create_options_action(self):
-        action = QtWidgets.QAction(icontheme.lookup('preferences-desktop'), _("&Options..."), self)
+        action = QtWidgets.QAction(icontheme.lookup('preferences-desktop'), _("&Options…"), self)
         action.setMenuRole(QtWidgets.QAction.MenuRole.PreferencesRole)
         action.triggered.connect(self.show_options)
         self.options_action = action
 
     @MainWindowActions.add()
     def _create_show_script_editor_action(self):
-        action = QtWidgets.QAction(_("Open &file naming script editor..."))
+        action = QtWidgets.QAction(_("Open &file naming script editor…"))
         action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+S")))
         action.triggered.connect(self.open_file_naming_script_editor)
         self.show_script_editor_action = action
@@ -526,50 +526,50 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     @MainWindowActions.add()
     def _create_help_action(self):
-        action = QtWidgets.QAction(_("&Help..."), self)
+        action = QtWidgets.QAction(_("&Help…"), self)
         action.setShortcut(QtGui.QKeySequence.StandardKey.HelpContents)
         action.triggered.connect(self.show_help)
         self.help_action = action
 
     @MainWindowActions.add()
     def _create_about_action(self):
-        action = QtWidgets.QAction(_("&About..."), self)
+        action = QtWidgets.QAction(_("&About…"), self)
         action.setMenuRole(QtWidgets.QAction.MenuRole.AboutRole)
         action.triggered.connect(self.show_about)
         self.about_action = action
 
     @MainWindowActions.add()
     def _create_donate_action(self):
-        action = QtWidgets.QAction(_("&Donate..."), self)
+        action = QtWidgets.QAction(_("&Donate…"), self)
         action.triggered.connect(self.open_donation_page)
         self.donate_action = action
 
     @MainWindowActions.add()
     def _create_report_bug_action(self):
-        action = QtWidgets.QAction(_("&Report a Bug..."), self)
+        action = QtWidgets.QAction(_("&Report a Bug…"), self)
         action.triggered.connect(self.open_bug_report)
         self.report_bug_action = action
 
     @MainWindowActions.add()
     def _create_support_forum_action(self):
-        action = QtWidgets.QAction(_("&Support Forum..."), self)
+        action = QtWidgets.QAction(_("&Support Forum…"), self)
         action.triggered.connect(self.open_support_forum)
         self.support_forum_action = action
 
     @MainWindowActions.add()
     def _create_add_files_action(self):
-        action = QtWidgets.QAction(icontheme.lookup('document-open'), _("&Add Files..."), self)
+        action = QtWidgets.QAction(icontheme.lookup('document-open'), _("&Add Files…"), self)
         action.setStatusTip(_("Add files to the tagger"))
-        # TR: Keyboard shortcut for "Add Files..."
+        # TR: Keyboard shortcut for "Add Files…"
         action.setShortcut(QtGui.QKeySequence.StandardKey.Open)
         action.triggered.connect(self.add_files)
         self.add_files_action = action
 
     @MainWindowActions.add()
     def _create_add_directory_action(self):
-        action = QtWidgets.QAction(icontheme.lookup('folder'), _("Add Fold&er..."), self)
+        action = QtWidgets.QAction(icontheme.lookup('folder'), _("Add Fold&er…"), self)
         action.setStatusTip(_("Add a folder to the tagger"))
-        # TR: Keyboard shortcut for "Add Directory..."
+        # TR: Keyboard shortcut for "Add Directory…"
         action.setShortcut(QtGui.QKeySequence(_("Ctrl+E")))
         action.triggered.connect(self.add_directory)
         self.add_directory_action = action
@@ -632,7 +632,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     @MainWindowActions.add()
     def _create_submit_cluster_action(self):
         if addrelease.is_available():
-            action = QtWidgets.QAction(_("Submit cluster as release..."), self)
+            action = QtWidgets.QAction(_("Submit cluster as release…"), self)
             action.setStatusTip(_("Submit cluster as a new release to MusicBrainz"))
             action.setEnabled(False)
             action.triggered.connect(self.submit_cluster)
@@ -643,7 +643,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     @MainWindowActions.add()
     def _create_submit_file_as_recording_action(self):
         if addrelease.is_available():
-            action = QtWidgets.QAction(_("Submit file as standalone recording..."), self)
+            action = QtWidgets.QAction(_("Submit file as standalone recording…"), self)
             action.setStatusTip(_("Submit file as a new recording to MusicBrainz"))
             action.setEnabled(False)
             action.triggered.connect(self.submit_file)
@@ -654,7 +654,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     @MainWindowActions.add()
     def _create_submit_file_as_release_action(self):
         if addrelease.is_available():
-            action = QtWidgets.QAction(_("Submit file as release..."), self)
+            action = QtWidgets.QAction(_("Submit file as release…"), self)
             action.setStatusTip(_("Submit file as a new release to MusicBrainz"))
             action.setEnabled(False)
             action.triggered.connect(partial(self.submit_file, as_release=True))
@@ -664,7 +664,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     @MainWindowActions.add()
     def _create_similar_items_search_action(self):
-        action = QtWidgets.QAction(icontheme.lookup('system-search'), _("Search for similar items..."), self)
+        action = QtWidgets.QAction(icontheme.lookup('system-search'), _("Search for similar items…"), self)
         action.setIconText(_("Similar items"))
         action.setStatusTip(_("View similar releases or recordings and optionally choose a different one"))
         action.setEnabled(False)
@@ -674,7 +674,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     @MainWindowActions.add()
     def _create_album_search_action(self):
-        action = QtWidgets.QAction(icontheme.lookup('system-search'), _("Search for similar albums..."), self)
+        action = QtWidgets.QAction(icontheme.lookup('system-search'), _("Search for similar albums…"), self)
         action.setStatusTip(_("View similar releases and optionally choose a different release"))
         action.setEnabled(False)
         action.setShortcut(QtGui.QKeySequence(_("Ctrl+T")))
@@ -683,7 +683,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     @MainWindowActions.add()
     def _create_track_search_action(self):
-        action = QtWidgets.QAction(icontheme.lookup('system-search'), _("Search for similar tracks..."), self)
+        action = QtWidgets.QAction(icontheme.lookup('system-search'), _("Search for similar tracks…"), self)
         action.setStatusTip(_("View similar tracks and optionally choose a different release"))
         action.setEnabled(False)
         action.setShortcut(QtGui.QKeySequence(_("Ctrl+T")))
@@ -692,7 +692,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     @MainWindowActions.add()
     def _create_album_other_versions_action(self):
-        action = QtWidgets.QAction(_("Show &other album versions..."), self)
+        action = QtWidgets.QAction(_("Show &other album versions…"), self)
         action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+O")))
         action.triggered.connect(self.show_album_other_versions)
         self.album_other_versions_action = action
@@ -749,14 +749,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     @MainWindowActions.add()
     def _create_cd_lookup_action(self):
-        action = QtWidgets.QAction(icontheme.lookup('media-optical'), _("Lookup &CD..."), self)
+        action = QtWidgets.QAction(icontheme.lookup('media-optical'), _("Lookup &CD…"), self)
         action.setStatusTip(_("Lookup the details of the CD in your drive"))
         # TR: Keyboard shortcut for "Lookup CD"
         action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
         action.triggered.connect(self.tagger.lookup_cd)
         self.cd_lookup_action = action
 
-        menu = QtWidgets.QMenu(_("Lookup &CD..."))
+        menu = QtWidgets.QMenu(_("Lookup &CD…"))
         menu.setIcon(icontheme.lookup('media-optical'))
         menu.triggered.connect(self.tagger.lookup_cd)
         self.cd_lookup_menu = menu
@@ -813,7 +813,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     @MainWindowActions.add()
     def _create_view_info_action(self):
-        action = QtWidgets.QAction(icontheme.lookup('picard-edit-tags'), _("&Info..."), self)
+        action = QtWidgets.QAction(icontheme.lookup('picard-edit-tags'), _("&Info…"), self)
         action.setEnabled(False)
         # TR: Keyboard shortcut for "Info"
         action.setShortcut(QtGui.QKeySequence(_("Ctrl+I")))
@@ -856,8 +856,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     @MainWindowActions.add()
     def _create_tags_from_filenames_action(self):
-        action = QtWidgets.QAction(icontheme.lookup('picard-tags-from-filename'), _("Tags From &File Names..."), self)
-        action.setIconText(_("Parse File Names..."))
+        action = QtWidgets.QAction(icontheme.lookup('picard-tags-from-filename'), _("Tags From &File Names…"), self)
+        action.setIconText(_("Parse File Names…"))
         action.setToolTip(_('Set tags based on the file names'))
         action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+T")))
         action.setEnabled(False)
@@ -947,7 +947,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _set_cd_lookup_from_file_actions(self, drives):
         if self.cd_lookup_menu.actions():
             self.cd_lookup_menu.addSeparator()
-        action = self.cd_lookup_menu.addAction(_('From CD ripper &log file...'))
+        action = self.cd_lookup_menu.addAction(_('From CD ripper &log file…'))
         if not drives:
             self._update_cd_lookup_default_action(action)
         action.setData('logfile:eac')
@@ -1292,12 +1292,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             config.persist["current_directory"] = parent
             if dir_count > 1:
                 self.set_statusbar_message(
-                    N_("Adding multiple directories from '%(directory)s' ..."),
+                    N_("Adding multiple directories from '%(directory)s' …"),
                     {'directory': parent}
                 )
             else:
                 self.set_statusbar_message(
-                    N_("Adding directory: '%(directory)s' ..."),
+                    N_("Adding directory: '%(directory)s' …"),
                     {'directory': dir_list[0]}
                 )
 

@@ -270,7 +270,7 @@ class File(QtCore.QObject, Item):
             from picard.formats import supported_extensions
             file_name, file_extension = os.path.splitext(self.base_filename)
             if file_extension not in supported_extensions():
-                log.error('Unsupported media file %r wrongly loaded. Removing ...', self)
+                log.error('Unsupported media file %r wrongly loaded. Removing …', self)
                 callback(self, remove_file=True)
                 return
         else:
@@ -582,7 +582,7 @@ class File(QtCore.QObject, Item):
             image.save(dirname, metadata, counters)
 
     def _move_additional_files(self, old_filename, new_filename, config):
-        """Move extra files, like images, playlists..."""
+        """Move extra files, like images, playlists…"""
         if config.setting["move_files"] and config.setting["move_additional_files"]:
             new_path = os.path.dirname(new_filename)
             old_path = os.path.dirname(old_filename)
@@ -893,7 +893,7 @@ class File(QtCore.QObject, Item):
         if self.lookup_task:
             return
         self.tagger.window.set_statusbar_message(
-            N_("Looking up the metadata for file %(filename)s ..."),
+            N_("Looking up the metadata for file %(filename)s …"),
             {'filename': self.filename}
         )
         self.clear_lookup_task()

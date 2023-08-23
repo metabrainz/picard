@@ -115,14 +115,14 @@
         <item>
          <widget class="QPushButton" name="acoustid_fpcalc_browse">
           <property name="text">
-           <string>Browse...</string>
+           <string>Browse…</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="acoustid_fpcalc_download">
           <property name="text">
-           <string>Download...</string>
+           <string>Download…</string>
           </property>
          </widget>
         </item>
@@ -150,7 +150,7 @@
         <item>
          <widget class="QPushButton" name="acoustid_apikey_get">
           <property name="text">
-           <string>Get API key...</string>
+           <string>Get API key…</string>
           </property>
          </widget>
         </item>

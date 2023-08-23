@@ -84,7 +84,7 @@ class Ui_RenamingCompatOptionsPage(object):
         _translate = QtCore.QCoreApplication.translate
         self.ascii_filenames.setText(_("Replace non-ASCII characters"))
         self.windows_compatibility.setText(_("Windows compatibility"))
-        self.btn_windows_compatibility_change.setText(_("Customize..."))
+        self.btn_windows_compatibility_change.setText(_("Customize…"))
         self.windows_long_paths.setText(_("Allow paths longer than 259 characters"))
         self.replace_spaces_with_underscores.setText(_("Replace spaces with underscores"))
         self.label_replace_dir_separator.setText(_("Replace directory separators with:"))

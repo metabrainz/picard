@@ -207,7 +207,7 @@ class SearchDialog(TableBasedDialog):
         progress_widget = QtWidgets.QWidget(self)
         progress_widget.setObjectName("progress_widget")
         layout = QtWidgets.QVBoxLayout(progress_widget)
-        text_label = QtWidgets.QLabel(_('<strong>Loading...</strong>'), progress_widget)
+        text_label = QtWidgets.QLabel(_('<strong>Loading…</strong>'), progress_widget)
         text_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter | QtCore.Qt.AlignmentFlag.AlignBottom)
         gif_label = QtWidgets.QLabel(progress_widget)
         movie = QtGui.QMovie(":/images/loader.gif")

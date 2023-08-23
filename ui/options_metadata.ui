@@ -54,7 +54,7 @@
         <item>
          <widget class="QPushButton" name="select_locales">
           <property name="text">
-           <string>Select...</string>
+           <string>Select…</string>
           </property>
          </widget>
         </item>
@@ -82,7 +82,7 @@
         <item>
          <widget class="QPushButton" name="select_scripts">
           <property name="text">
-           <string>Select...</string>
+           <string>Select…</string>
           </property>
          </widget>
         </item>

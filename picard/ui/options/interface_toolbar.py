@@ -112,11 +112,11 @@ class InterfaceToolbarOptionsPage(OptionsPage):
             'icon': 'play-music'
         },
         'cd_lookup_action': {
-            'label': N_('Lookup CD...'),
+            'label': N_('Lookup CD…'),
             'icon': 'media-optical'
         },
         'tags_from_filenames_action': {
-            'label': N_('Parse File Names...'),
+            'label': N_('Parse File Names…'),
             'icon': 'picard-tags-from-filename'
         },
         'similar_items_search_action': {

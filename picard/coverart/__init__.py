@@ -142,10 +142,10 @@ class CoverArt:
                 try:
                     instance = provider.cls(self)
                     if provider.enabled and instance.enabled():
-                        log.debug("Trying cover art provider %s ...", provider.name)
+                        log.debug("Trying cover art provider %s …", provider.name)
                         ret = instance.queue_images()
                     else:
-                        log.debug("Skipping cover art provider %s ...", provider.name)
+                        log.debug("Skipping cover art provider %s …", provider.name)
                 except BaseException:
                     log.error(traceback.format_exc())
                     raise
@@ -186,7 +186,7 @@ class CoverArt:
 
         # on the web
         self._message(
-            N_("Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."),
+            N_("Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s …"),
             {
                 'type': coverartimage.types_as_string(),
                 'albumid': self.album.id,

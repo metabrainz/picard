@@ -184,7 +184,7 @@ class AcoustIDClient(QtCore.QObject):
             mparms
         )
         self.tagger.window.set_statusbar_message(
-            N_("Looking up the fingerprint for file '%(filename)s' ..."),
+            N_("Looking up the fingerprint for file '%(filename)s' …"),
             mparms,
             echo=None
         )

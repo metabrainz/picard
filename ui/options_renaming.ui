@@ -53,7 +53,7 @@
         <item>
          <widget class="QPushButton" name="move_files_to_browse">
           <property name="text">
-           <string>Browse...</string>
+           <string>Browse…</string>
           </property>
          </widget>
         </item>
@@ -111,7 +111,7 @@
      <item>
       <widget class="QPushButton" name="open_script_editor">
        <property name="text">
-        <string>Edit file naming script...</string>
+        <string>Edit file naming script…</string>
        </property>
       </widget>
      </item>

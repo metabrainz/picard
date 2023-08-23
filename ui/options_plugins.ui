@@ -83,7 +83,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Install plugin...</string>
+            <string>Install plugin…</string>
            </property>
           </widget>
          </item>

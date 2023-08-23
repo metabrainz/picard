@@ -207,7 +207,7 @@ class Album(DataObject, Item):
             self.error_append(traceback.format_exc())
 
     def _parse_release(self, release_node):
-        log.debug("Loading release %r ...", self.id)
+        log.debug("Loading release %r …", self.id)
         self._tracks_loaded = False
         release_id = release_node['id']
         if release_id != self.id:
@@ -570,7 +570,7 @@ class Album(DataObject, Item):
             log.info("Not reloading, some requests are still active.")
             return
         self.tagger.window.set_statusbar_message(
-            N_('Loading album %(id)s ...'),
+            N_('Loading album %(id)s …'),
             {'id': self.id}
         )
         self.loaded = False

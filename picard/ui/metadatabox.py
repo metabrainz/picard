@@ -238,16 +238,16 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.selection_dirty = False
         self.editing = None  # the QTableWidgetItem being edited
         self.clipboard = [""]
-        self.add_tag_action = QtWidgets.QAction(_("Add New Tag..."), parent)
+        self.add_tag_action = QtWidgets.QAction(_("Add New Tag…"), parent)
         self.add_tag_action.triggered.connect(partial(self.edit_tag, ""))
         self.changes_first_action = QtWidgets.QAction(_("Show Changes First"), parent)
         self.changes_first_action.setCheckable(True)
         self.changes_first_action.setChecked(config.persist["show_changes_first"])
         self.changes_first_action.toggled.connect(self.toggle_changes_first)
-        # TR: Keyboard shortcut for "Add New Tag..."
+        # TR: Keyboard shortcut for "Add New Tag…"
         self.add_tag_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence(_("Alt+Shift+A")), self, partial(self.edit_tag, ""))
         self.add_tag_action.setShortcut(self.add_tag_shortcut.key())
-        # TR: Keyboard shortcut for "Edit..." (tag)
+        # TR: Keyboard shortcut for "Edit…" (tag)
         self.edit_tag_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence(_("Alt+Shift+E")), self, partial(self.edit_selected_tag))
         # TR: Keyboard shortcut for "Remove" (tag)
         self.remove_tag_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence(_("Alt+Shift+R")), self, self.remove_selected_tags)
@@ -370,7 +370,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             if single_tag:
                 selected_tag = tags[0]
                 editable = self.tag_is_editable(selected_tag)
-                edit_tag_action = QtWidgets.QAction(_("Edit..."), self.parent)
+                edit_tag_action = QtWidgets.QAction(_("Edit…"), self.parent)
                 edit_tag_action.triggered.connect(partial(self.edit_tag, selected_tag))
                 edit_tag_action.setShortcut(self.edit_tag_shortcut.key())
                 edit_tag_action.setEnabled(editable)

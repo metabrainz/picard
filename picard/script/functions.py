@@ -197,7 +197,7 @@ def func_if(parser, _if, _then, _else=None):
 
 
 @script_function(eval_args=False, documentation=N_(
-    """`$if2(a1,a2,a3,...)`
+    """`$if2(a1,a2,a3,…)`
 
 Returns first non empty argument."""
 ))
@@ -210,7 +210,7 @@ def func_if2(parser, *args):
 
 
 @script_function(eval_args=False, documentation=N_(
-    """`$noop(...)`
+    """`$noop(…)`
 
 Does nothing (useful for comments or disabling a block of code)."""
 ))
@@ -525,7 +525,7 @@ def func_trim(parser, text, char=None):
 
 
 @script_function(documentation=N_(
-    """`$add(x,y,...)`
+    """`$add(x,y,…)`
 
 Add `y` to `x`.
 Can be used with an arbitrary number of arguments.
@@ -543,7 +543,7 @@ def func_add(parser, x, y, *args):
 
 
 @script_function(documentation=N_(
-    """`$sub(x,y,...)`
+    """`$sub(x,y,…)`
 
 Subtracts `y` from `x`.
 Can be used with an arbitrary number of arguments.
@@ -561,7 +561,7 @@ def func_sub(parser, x, y, *args):
 
 
 @script_function(documentation=N_(
-    """`$div(x,y,...)`
+    """`$div(x,y,…)`
 
 Divides `x` by `y`.
 Can be used with an arbitrary number of arguments.
@@ -581,7 +581,7 @@ def func_div(parser, x, y, *args):
 
 
 @script_function(documentation=N_(
-    """`$mod(x,y,...)`
+    """`$mod(x,y,…)`
 
 Returns the remainder of `x` divided by `y`.
 Can be used with an arbitrary number of arguments.
@@ -599,7 +599,7 @@ def func_mod(parser, x, y, *args):
 
 
 @script_function(documentation=N_(
-    """`$mul(x,y,...)`
+    """`$mul(x,y,…)`
 
 Multiplies `x` by `y`.
 Can be used with an arbitrary number of arguments.
@@ -617,7 +617,7 @@ def func_mul(parser, x, y, *args):
 
 
 @script_function(documentation=N_(
-    """`$or(x,y,...)`
+    """`$or(x,y,…)`
 
 Returns true if either `x` or `y` not empty.
     Can be used with an arbitrary number of arguments.
@@ -631,7 +631,7 @@ def func_or(parser, x, y, *args):
 
 
 @script_function(documentation=N_(
-    """`$and(x,y,...)`
+    """`$and(x,y,…)`
 
 Returns true if both `x` and `y` are not empty.
     Can be used with an arbitrary number of arguments.
@@ -949,7 +949,7 @@ def func_truncate(parser, text, length):
 
 
 @script_function(check_argcount=False, documentation=N_(
-    """`$swapprefix(text,prefix1,prefix2,...)`
+    """`$swapprefix(text,prefix1,prefix2,…)`
 
 Moves the specified prefixes from the beginning to the end of `text`. Multiple
 prefixes can be specified as separate parameters. If no prefix is specified 'A'
@@ -971,7 +971,7 @@ def func_swapprefix(parser, text, *prefixes):
 
 
 @script_function(check_argcount=False, documentation=N_(
-    """`$delprefix(text,prefix1,prefix2,...)`
+    """`$delprefix(text,prefix1,prefix2,…)`
 
 Deletes the specified prefixes from the beginning of `text`. Multiple
 prefixes can be specified as separate parameters.  If no prefix is specified 'A'
@@ -1009,10 +1009,10 @@ def _delete_prefix(parser, text, *prefixes):
 
 
 @script_function(check_argcount=False, documentation=N_(
-    """`$eq_any(x,a1,a2,...)`
+    """`$eq_any(x,a1,a2,…)`
 
-Returns true if `x` equals `a1` or `a2` or ...
-Functionally equivalent to `$or($eq(x,a1),$eq(x,a2),...)`.
+Returns true if `x` equals `a1` or `a2` or …
+Functionally equivalent to `$or($eq(x,a1),$eq(x,a2),…)`.
 Functionally equivalent to the eq2 plugin."""
 ))
 def func_eq_any(parser, x, *args):
@@ -1021,10 +1021,10 @@ def func_eq_any(parser, x, *args):
 
 
 @script_function(check_argcount=False, documentation=N_(
-    """`$ne_all(x,a1,a2,...)`
+    """`$ne_all(x,a1,a2,…)`
 
-Returns true if `x` does not equal `a1` and `a2` and ...
-Functionally equivalent to `$and($ne(x,a1),$ne(x,a2),...)`.
+Returns true if `x` does not equal `a1` and `a2` and …
+Functionally equivalent to `$and($ne(x,a1),$ne(x,a2),…)`.
 Functionally equivalent to the ne2 plugin."""
 ))
 def func_ne_all(parser, x, *args):
@@ -1033,10 +1033,10 @@ def func_ne_all(parser, x, *args):
 
 
 @script_function(check_argcount=False, documentation=N_(
-    """`$eq_all(x,a1,a2,...)`
+    """`$eq_all(x,a1,a2,…)`
 
-Returns true if `x` equals `a1` and `a2` and ...
-Functionally equivalent to `$and($eq(x,a1),$eq(x,a2),...)`.
+Returns true if `x` equals `a1` and `a2` and …
+Functionally equivalent to `$and($eq(x,a1),$eq(x,a2),…)`.
 
 Example:
 
@@ -1051,10 +1051,10 @@ def func_eq_all(parser, x, *args):
 
 
 @script_function(check_argcount=False, documentation=N_(
-    """`$ne_any(x,a1,a2,...)`
+    """`$ne_any(x,a1,a2,…)`
 
-Returns true if `x` does not equal `a1` or `a2` or ...
-Functionally equivalent to `$or($ne(x,a1),$ne(x,a2),...)`.
+Returns true if `x` does not equal `a1` or `a2` or …
+Functionally equivalent to `$or($ne(x,a1),$ne(x,a2),…)`.
 
 Example:
 
@@ -1606,7 +1606,7 @@ def _extract(_func, _type, *args):
 
 
 @script_function(documentation=N_(
-    """`$min(type,x,...)`
+    """`$min(type,x,…)`
 
 Returns the minimum value using the comparison specified in `type`.
 
@@ -1627,7 +1627,7 @@ def func_min(parser, _type, x, *args):
 
 
 @script_function(documentation=N_(
-    """`$max(type,x,...)`
+    """`$max(type,x,…)`
 
 Returns the maximum value using the comparison specified in `type`.
 

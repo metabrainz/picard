@@ -543,9 +543,9 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             releases_menu = QtWidgets.QMenu(_("&Other versions"), menu)
             menu.addSeparator()
             menu.addMenu(releases_menu)
-            loading = releases_menu.addAction(_('Loading...'))
+            loading = releases_menu.addAction(_('Loading…'))
             loading.setDisabled(True)
-            action_more = releases_menu.addAction(_('Show &more details...'))
+            action_more = releases_menu.addAction(_('Show &more details…'))
             action_more.triggered.connect(self.window.album_other_versions_action.trigger)
             bottom_separator = True
 

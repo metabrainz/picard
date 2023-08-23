@@ -211,7 +211,7 @@ class LogView(LogViewCommon):
         self.clear_log_button.clicked.connect(self._clear_log_do)
 
         # save as
-        self.save_log_as_button = QtWidgets.QPushButton(_("Save As..."))
+        self.save_log_as_button = QtWidgets.QPushButton(_("Save As…"))
         self.hbox.addWidget(self.save_log_as_button)
         self.save_log_as_button.clicked.connect(self._save_log_as_do)
 

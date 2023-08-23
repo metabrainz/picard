@@ -157,7 +157,7 @@ class AcoustIDManager(QtCore.QObject):
         if not submissions:
             self._check_unsubmitted()
             return
-        log.debug("AcoustID: submitting total of %d fingerprints...", len(submissions))
+        log.debug("AcoustID: submitting total of %d fingerprints…", len(submissions))
         self._batch_submit(submissions)
 
     def _batch(self, submissions):
@@ -203,10 +203,10 @@ class AcoustIDManager(QtCore.QObject):
             self._check_unsubmitted()
             return
 
-        log.debug("AcoustID: submitting batch of %d fingerprints (%d remaining)...",
+        log.debug("AcoustID: submitting batch of %d fingerprints (%d remaining)…",
             len(batch), len(submissions))
         self.tagger.window.set_statusbar_message(
-            N_('Submitting AcoustIDs ...'),
+            N_('Submitting AcoustIDs …'),
             echo=None
         )
         if not errors:
