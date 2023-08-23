@@ -48,8 +48,8 @@ msgstr "アルバム%(id)sを読み込みました: %(artist)s - %(album)s"
 
 #: picard/album.py:573
 #, python-format
-msgid "Loading album %(id)s ..."
-msgstr "アルバム%(id)sを読み込み中です..."
+msgid "Loading album %(id)s …"
+msgstr "アルバム%(id)sを読み込み中です…"
 
 #: picard/album.py:790
 msgid "[loading album information]"
@@ -72,8 +72,8 @@ msgstr "クラスタ%(album)sにマッチするリリースはありません"
 
 #: picard/cluster.py:281
 #, python-format
-msgid "Looking up the metadata for cluster %(album)s..."
-msgstr "クラスタ%(album)sのメタデータを検索しています..."
+msgid "Looking up the metadata for cluster %(album)s…"
+msgstr "クラスタ%(album)sのメタデータを検索しています…"
 
 #: picard/cluster.py:330
 msgid "Unclustered Files"
@@ -172,8 +172,8 @@ msgstr "ファイル「%(filename)s」にマッチするトラックはありま
 
 #: picard/file.py:896
 #, python-format
-msgid "Looking up the metadata for file %(filename)s ..."
-msgstr "ファイル「%(filename)s」のメタデータを検索しています..."
+msgid "Looking up the metadata for file %(filename)s …"
+msgstr "ファイル「%(filename)s」のメタデータを検索しています…"
 
 #: picard/oauth.py:249 picard/oauth.py:276
 msgid "Unexpected authentication error"
@@ -879,8 +879,8 @@ msgstr "ファイル「%(filename)s」のAcoustID検索結果はありません�
 
 #: picard/acoustid/__init__.py:187
 #, python-format
-msgid "Looking up the fingerprint for file '%(filename)s' ..."
-msgstr "ファイル「%(filename)s」のフィンガープリントを検索しています..."
+msgid "Looking up the fingerprint for file '%(filename)s' …"
+msgstr "ファイル「%(filename)s」のフィンガープリントを検索しています…"
 
 #: picard/acoustid/manager.py:184
 msgid ""
@@ -903,8 +903,8 @@ msgid "AcoustID submission failed permanently, probably too many retries"
 msgstr "再試行数が多く、AcoustID の送信が出来ません"
 
 #: picard/acoustid/manager.py:209
-msgid "Submitting AcoustIDs ..."
-msgstr "AcoustIDを送信しています..."
+msgid "Submitting AcoustIDs …"
+msgstr "AcoustIDを送信しています…"
 
 #: picard/acoustid/manager.py:239
 #, python-format
@@ -916,24 +916,24 @@ msgid "Add cluster as release"
 msgstr "クラスターをリリースとして追加"
 
 #: picard/browser/addrelease.py:146
-msgid "Add cluster as release..."
-msgstr "クラスターをリリースとして追加..."
+msgid "Add cluster as release…"
+msgstr "クラスターをリリースとして追加…"
 
 #: picard/browser/addrelease.py:154
 msgid "Add file as release"
 msgstr "ファイルをリリースとして追加"
 
 #: picard/browser/addrelease.py:156
-msgid "Add file as release..."
-msgstr "ファイルをリリースとして追加..."
+msgid "Add file as release…"
+msgstr "ファイルをリリースとして追加…"
 
 #: picard/browser/addrelease.py:164
 msgid "Add file as recording"
 msgstr "ファイルをレコーディングとして追加"
 
 #: picard/browser/addrelease.py:166
-msgid "Add file as recording..."
-msgstr "ファイルをレコーディングとして追加..."
+msgid "Add file as recording…"
+msgstr "ファイルをレコーディングとして追加…"
 
 #: picard/const/__init__.py:169
 msgid "Stable releases only"
@@ -5235,10 +5235,10 @@ msgstr ""
 #: picard/coverart/__init__.py:189
 #, python-format
 msgid ""
-"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
+"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s …"
 msgstr ""
 "%(albumid)s の '%(type)s' タイプのカバーアートを %(host)s からダウンロード"
-"中..."
+"中…"
 
 #: picard/coverart/utils.py:38
 msgid "Unknown"
@@ -5367,21 +5367,21 @@ msgstr ""
 
 #: picard/script/functions.py:199
 msgid ""
-"`$if2(a1,a2,a3,...)`\n"
+"`$if2(a1,a2,a3,…)`\n"
 "\n"
 "Returns first non empty argument."
 msgstr ""
-"`$if2(a1,a2,a3,...)`\n"
+"`$if2(a1,a2,a3,…)`\n"
 "\n"
 "最初に空ではなかった引数を返します。"
 
 #: picard/script/functions.py:212
 msgid ""
-"`$noop(...)`\n"
+"`$noop(…)`\n"
 "\n"
 "Does nothing (useful for comments or disabling a block of code)."
 msgstr ""
-"`$noop(...)`\n"
+"`$noop(…)`\n"
 "\n"
 "何もしません （コメントやコードの実行停止に有用です）。"
 
@@ -5702,7 +5702,7 @@ msgstr ""
 
 #: picard/script/functions.py:527
 msgid ""
-"`$add(x,y,...)`\n"
+"`$add(x,y,…)`\n"
 "\n"
 "Add `y` to `x`.\n"
 "Can be used with an arbitrary number of arguments.\n"
@@ -5711,7 +5711,7 @@ msgid ""
 "\n"
 "    $add(x,y,z) = ((x + y) + z)\n"
 msgstr ""
-"`$add(x,y,...)`\n"
+"`$add(x,y,…)`\n"
 "\n"
 "`y` を `x` に加算する。\n"
 "2個以上の任意の引数で使用可能である。\n"
@@ -5722,7 +5722,7 @@ msgstr ""
 
 #: picard/script/functions.py:545
 msgid ""
-"`$sub(x,y,...)`\n"
+"`$sub(x,y,…)`\n"
 "\n"
 "Subtracts `y` from `x`.\n"
 "Can be used with an arbitrary number of arguments.\n"
@@ -5731,7 +5731,7 @@ msgid ""
 "\n"
 "    $sub(x,y,z) = ((x - y) - z)\n"
 msgstr ""
-"`$sub(x,y,...)`\n"
+"`$sub(x,y,…)`\n"
 "\n"
 "`x` から `y` を除算する。\n"
 "2個以上の任意の引数で使用可能である。\n"
@@ -5742,7 +5742,7 @@ msgstr ""
 
 #: picard/script/functions.py:563
 msgid ""
-"`$div(x,y,...)`\n"
+"`$div(x,y,…)`\n"
 "\n"
 "Divides `x` by `y`.\n"
 "Can be used with an arbitrary number of arguments.\n"
@@ -5751,7 +5751,7 @@ msgid ""
 "\n"
 "    $div(x,y,z) = ((x / y) / z)\n"
 msgstr ""
-"`$div(x,y,...)`\n"
+"`$div(x,y,…)`\n"
 "\n"
 "`x` を `y` で除算する。\n"
 "2個以上の任意の引数で使用可能である。\n"
@@ -5762,7 +5762,7 @@ msgstr ""
 
 #: picard/script/functions.py:583
 msgid ""
-"`$mod(x,y,...)`\n"
+"`$mod(x,y,…)`\n"
 "\n"
 "Returns the remainder of `x` divided by `y`.\n"
 "Can be used with an arbitrary number of arguments.\n"
@@ -5771,7 +5771,7 @@ msgid ""
 "\n"
 "    $mod(x,y,z) = ((x % y) % z)\n"
 msgstr ""
-"`$mod(x,y,...)`\n"
+"`$mod(x,y,…)`\n"
 "\n"
 "`x` を `y` で除算した剰余を返す。\n"
 "2個以上の任意の引数で使用可能である。\n"
@@ -5782,7 +5782,7 @@ msgstr ""
 
 #: picard/script/functions.py:601
 msgid ""
-"`$mul(x,y,...)`\n"
+"`$mul(x,y,…)`\n"
 "\n"
 "Multiplies `x` by `y`.\n"
 "Can be used with an arbitrary number of arguments.\n"
@@ -5791,7 +5791,7 @@ msgid ""
 "\n"
 "    $mul(x,y,z) = ((x * y) * z)\n"
 msgstr ""
-"`$mul(x,y,...)`\n"
+"`$mul(x,y,…)`\n"
 "\n"
 "`x` を `y` で乗算する。\n"
 "2個以上の任意の引数で使用可能である。\n"
@@ -5802,13 +5802,13 @@ msgstr ""
 
 #: picard/script/functions.py:619
 msgid ""
-"`$or(x,y,...)`\n"
+"`$or(x,y,…)`\n"
 "\n"
 "Returns true if either `x` or `y` not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
 "    The result is true if ANY of the arguments is not empty."
 msgstr ""
-"`$or(x,y,...)`\n"
+"`$or(x,y,…)`\n"
 "\n"
 "`x` もしくは `y` が空ではない場合 true を返す。\n"
 "    2個以上の任意の引数で使用可能である。\n"
@@ -5816,13 +5816,13 @@ msgstr ""
 
 #: picard/script/functions.py:633
 msgid ""
-"`$and(x,y,...)`\n"
+"`$and(x,y,…)`\n"
 "\n"
 "Returns true if both `x` and `y` are not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
 "    The result is true if ALL of the arguments are not empty."
 msgstr ""
-"`$and(x,y,...)`\n"
+"`$and(x,y,…)`\n"
 "\n"
 "`x` と `y` 双方空ではない場合 true を返す。\n"
 "    2個以上の任意の引数で使用可能である。\n"
@@ -6117,7 +6117,7 @@ msgstr ""
 
 #: picard/script/functions.py:951
 msgid ""
-"`$swapprefix(text,prefix1,prefix2,...)`\n"
+"`$swapprefix(text,prefix1,prefix2,…)`\n"
 "\n"
 "Moves the specified prefixes from the beginning to the end of `text`. "
 "Multiple\n"
@@ -6131,7 +6131,7 @@ msgid ""
 "\n"
 "_Since Picard 1.3, previously as a plugin since Picard 0.13_"
 msgstr ""
-"`$swapprefix(text,prefix1,prefix2,...)`\n"
+"`$swapprefix(text,prefix1,prefix2,…)`\n"
 "\n"
 "指定されたプレフィックスを `text` の最初から最後に移動する。\n"
 "複数のプレフィックスを個別のパラメーターとして指定可能である。 \n"
@@ -6146,7 +6146,7 @@ msgstr ""
 
 #: picard/script/functions.py:973
 msgid ""
-"`$delprefix(text,prefix1,prefix2,...)`\n"
+"`$delprefix(text,prefix1,prefix2,…)`\n"
 "\n"
 "Deletes the specified prefixes from the beginning of `text`. Multiple\n"
 "prefixes can be specified as separate parameters.  If no prefix is specified "
@@ -6159,7 +6159,7 @@ msgid ""
 "\n"
 "_Since Picard 1.3_"
 msgstr ""
-"`$delprefix(text,prefix1,prefix2,...)`\n"
+"`$delprefix(text,prefix1,prefix2,…)`\n"
 "\n"
 "指定したプレフィックスを `text`の先頭から削除する。 複数プレフィックスを個別"
 "のパラメータとして指定可能である。 \n"
@@ -6174,48 +6174,48 @@ msgstr ""
 
 #: picard/script/functions.py:1011
 msgid ""
-"`$eq_any(x,a1,a2,...)`\n"
+"`$eq_any(x,a1,a2,…)`\n"
 "\n"
-"Returns true if `x` equals `a1` or `a2` or ...\n"
-"Functionally equivalent to `$or($eq(x,a1),$eq(x,a2),...)`.\n"
+"Returns true if `x` equals `a1` or `a2` or …\n"
+"Functionally equivalent to `$or($eq(x,a1),$eq(x,a2),…)`.\n"
 "Functionally equivalent to the eq2 plugin."
 msgstr ""
-"`$eq_any(x,a1,a2,...)`\n"
+"`$eq_any(x,a1,a2,…)`\n"
 "\n"
-"`x` が `a1` もしくは `a2` ... と等しい場合 true を返す。\n"
-"`$or($eq(x,a1),$eq(x,a2),...)` と機能的に同等である。\n"
+"`x` が `a1` もしくは `a2` … と等しい場合 true を返す。\n"
+"`$or($eq(x,a1),$eq(x,a2),…)` と機能的に同等である。\n"
 "eq2 プラグインと機能的に同等である。"
 
 #: picard/script/functions.py:1023
 msgid ""
-"`$ne_all(x,a1,a2,...)`\n"
+"`$ne_all(x,a1,a2,…)`\n"
 "\n"
-"Returns true if `x` does not equal `a1` and `a2` and ...\n"
-"Functionally equivalent to `$and($ne(x,a1),$ne(x,a2),...)`.\n"
+"Returns true if `x` does not equal `a1` and `a2` and …\n"
+"Functionally equivalent to `$and($ne(x,a1),$ne(x,a2),…)`.\n"
 "Functionally equivalent to the ne2 plugin."
 msgstr ""
-"`$ne_all(x,a1,a2,...)`\n"
+"`$ne_all(x,a1,a2,…)`\n"
 "\n"
-"`x` が `a1` や `a2` ... と等しくない場合 true を返す。\n"
-"`$and($ne(x,a1),$ne(x,a2),...)` と機能的に同等である。\n"
+"`x` が `a1` や `a2` … と等しくない場合 true を返す。\n"
+"`$and($ne(x,a1),$ne(x,a2),…)` と機能的に同等である。\n"
 "ne2 プラグインと機能的に同等である。"
 
 #: picard/script/functions.py:1035
 msgid ""
-"`$eq_all(x,a1,a2,...)`\n"
+"`$eq_all(x,a1,a2,…)`\n"
 "\n"
-"Returns true if `x` equals `a1` and `a2` and ...\n"
-"Functionally equivalent to `$and($eq(x,a1),$eq(x,a2),...)`.\n"
+"Returns true if `x` equals `a1` and `a2` and …\n"
+"Functionally equivalent to `$and($eq(x,a1),$eq(x,a2),…)`.\n"
 "\n"
 "Example:\n"
 "\n"
 "    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat "
 "Loaf))\n"
 msgstr ""
-"`$eq_all(x,a1,a2,...)`\n"
+"`$eq_all(x,a1,a2,…)`\n"
 "\n"
-"`x` が `a1` や `a2` ... と等しい場合、 true を返す。\n"
-"`$and($eq(x,a1),$eq(x,a2),...)` と機能的に同等である。\n"
+"`x` が `a1` や `a2` … と等しい場合、 true を返す。\n"
+"`$and($eq(x,a1),$eq(x,a2),…)` と機能的に同等である。\n"
 "\n"
 "例:\n"
 "\n"
@@ -6225,20 +6225,20 @@ msgstr ""
 #: picard/script/functions.py:1053
 #, python-format
 msgid ""
-"`$ne_any(x,a1,a2,...)`\n"
+"`$ne_any(x,a1,a2,…)`\n"
 "\n"
-"Returns true if `x` does not equal `a1` or `a2` or ...\n"
-"Functionally equivalent to `$or($ne(x,a1),$ne(x,a2),...)`.\n"
+"Returns true if `x` does not equal `a1` or `a2` or …\n"
+"Functionally equivalent to `$or($ne(x,a1),$ne(x,a2),…)`.\n"
 "\n"
 "Example:\n"
 "\n"
 "    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,"
 "%composer%))\n"
 msgstr ""
-"`$ne_any(x,a1,a2,...)`\n"
+"`$ne_any(x,a1,a2,…)`\n"
 "\n"
-"`x` が `a1` や `a2`  ... と等しくない場合、 true を返す。\n"
-"`$or($ne(x,a1),$ne(x,a2),...)` と機能的に同等である。\n"
+"`x` が `a1` や `a2`  … と等しくない場合、 true を返す。\n"
+"`$or($ne(x,a1),$ne(x,a2),…)` と機能的に同等である。\n"
 "\n"
 "例:\n"
 "\n"
@@ -6749,7 +6749,7 @@ msgstr ""
 
 #: picard/script/functions.py:1608
 msgid ""
-"`$min(type,x,...)`\n"
+"`$min(type,x,…)`\n"
 "\n"
 "Returns the minimum value using the comparison specified in `type`.\n"
 "\n"
@@ -6773,7 +6773,7 @@ msgstr ""
 
 #: picard/script/functions.py:1629
 msgid ""
-"`$max(type,x,...)`\n"
+"`$max(type,x,…)`\n"
 "\n"
 "Returns the maximum value using the comparison specified in `type`.\n"
 "\n"
@@ -7052,16 +7052,16 @@ msgid "All supported image formats"
 msgstr "サポートされているすべての画像フォーマット"
 
 #: picard/ui/coverartbox.py:629
-msgid "Show more details..."
-msgstr "詳細を表示..."
+msgid "Show more details…"
+msgstr "詳細を表示…"
 
 #: picard/ui/coverartbox.py:635
 msgid "Keep original cover art"
 msgstr "オリジナルカバーアートを保持"
 
 #: picard/ui/coverartbox.py:641
-msgid "Choose local file..."
-msgstr "ローカルファイルを選択..."
+msgid "Choose local file…"
+msgstr "ローカルファイルを選択…"
 
 #: picard/ui/coverartbox.py:650
 msgid "Replace front cover art"
@@ -7355,13 +7355,13 @@ msgid "&Other versions"
 msgstr "他バージョン(&O)"
 
 #: picard/ui/itemviews.py:546
-msgid "Loading..."
-msgstr "読み込み中..."
+msgid "Loading…"
+msgstr "読み込み中…"
 
 #: picard/ui/itemviews.py:548
 #, fuzzy
-msgid "Show &more details..."
-msgstr "詳細を表示..."
+msgid "Show &more details…"
+msgstr "詳細を表示…"
 
 #: picard/ui/itemviews.py:601
 #, python-format
@@ -7477,7 +7477,7 @@ msgid "Clear Log"
 msgstr "ログ削除"
 
 #: picard/ui/logview.py:214
-msgid "Save As..."
+msgid "Save As…"
 msgstr "名前を付けて保存"
 
 #: picard/ui/logview.py:259 picard/ui/logview.py:266
@@ -7565,12 +7565,12 @@ msgid "Open AcoustID options"
 msgstr "AcoustID オプションを開く"
 
 #: picard/ui/mainwindow.py:498
-msgid "&Options..."
-msgstr "オプション(&O)..."
+msgid "&Options…"
+msgstr "オプション(&O)…"
 
 #: picard/ui/mainwindow.py:505
-msgid "Open &file naming script editor..."
-msgstr "ファイル名生成スクリプトエディタを開く..."
+msgid "Open &file naming script editor…"
+msgstr "ファイル名生成スクリプトエディタを開く…"
 
 #: picard/ui/mainwindow.py:506
 msgid "Ctrl+Shift+S"
@@ -7585,36 +7585,36 @@ msgid "&Paste"
 msgstr "ペースト(&P)"
 
 #: picard/ui/mainwindow.py:528 picard/ui/scripteditor.py:617
-msgid "&Help..."
-msgstr "ヘルプ(&H)..."
+msgid "&Help…"
+msgstr "ヘルプ(&H)…"
 
 #: picard/ui/mainwindow.py:535
-msgid "&About..."
-msgstr "このソフトウェアについて(&A)..."
+msgid "&About…"
+msgstr "このソフトウェアについて(&A)…"
 
 #: picard/ui/mainwindow.py:542
-msgid "&Donate..."
-msgstr "寄付する(&D)..."
+msgid "&Donate…"
+msgstr "寄付する(&D)…"
 
 #: picard/ui/mainwindow.py:548
-msgid "&Report a Bug..."
-msgstr "バグを報告(&R)..."
+msgid "&Report a Bug…"
+msgstr "バグを報告(&R)…"
 
 #: picard/ui/mainwindow.py:554
-msgid "&Support Forum..."
-msgstr "サポートフォーラム(&S)..."
+msgid "&Support Forum…"
+msgstr "サポートフォーラム(&S)…"
 
 #: picard/ui/mainwindow.py:560
-msgid "&Add Files..."
-msgstr "ファイルを追加(&A)..."
+msgid "&Add Files…"
+msgstr "ファイルを追加(&A)…"
 
 #: picard/ui/mainwindow.py:561
 msgid "Add files to the tagger"
 msgstr "ファイルを追加します"
 
 #: picard/ui/mainwindow.py:569
-msgid "Add Fold&er..."
-msgstr "フォルダを追加(&D)..."
+msgid "Add Fold&er…"
+msgstr "フォルダを追加(&D)…"
 
 #: picard/ui/mainwindow.py:570
 msgid "Add a folder to the tagger"
@@ -7677,24 +7677,24 @@ msgid "Ctrl+Shift+L"
 msgstr "Ctrl+Shift+L"
 
 #: picard/ui/mainwindow.py:634
-msgid "Submit cluster as release..."
-msgstr "クラスターをリリースとして送信..."
+msgid "Submit cluster as release…"
+msgstr "クラスターをリリースとして送信…"
 
 #: picard/ui/mainwindow.py:635
 msgid "Submit cluster as a new release to MusicBrainz"
 msgstr "クラスターを新規リリースとしてMusicBrainzに送信"
 
 #: picard/ui/mainwindow.py:645
-msgid "Submit file as standalone recording..."
-msgstr "スタンドアロン録音としてファイルを送信..."
+msgid "Submit file as standalone recording…"
+msgstr "スタンドアロン録音としてファイルを送信…"
 
 #: picard/ui/mainwindow.py:646
 msgid "Submit file as a new recording to MusicBrainz"
 msgstr "新規録音としてファイルをMusicBrainzに送信"
 
 #: picard/ui/mainwindow.py:656
-msgid "Submit file as release..."
-msgstr "リリースとしてファイルを送信..."
+msgid "Submit file as release…"
+msgstr "リリースとしてファイルを送信…"
 
 #: picard/ui/mainwindow.py:657
 msgid "Submit file as a new release to MusicBrainz"
@@ -7702,7 +7702,7 @@ msgstr "新しいリリースとしてファイルを MusicBrainz に送信"
 
 #: picard/ui/mainwindow.py:666
 #, fuzzy
-msgid "Search for similar items..."
+msgid "Search for similar items…"
 msgstr "類似アルバムを検索"
 
 #: picard/ui/mainwindow.py:667 picard/ui/options/interface_toolbar.py:123
@@ -7720,7 +7720,7 @@ msgid "Ctrl+T"
 msgstr "Ctrl+T"
 
 #: picard/ui/mainwindow.py:676
-msgid "Search for similar albums..."
+msgid "Search for similar albums…"
 msgstr "類似アルバムを検索"
 
 #: picard/ui/mainwindow.py:677
@@ -7728,7 +7728,7 @@ msgid "View similar releases and optionally choose a different release"
 msgstr "類似関連を表示して別の関連を追加選択"
 
 #: picard/ui/mainwindow.py:685
-msgid "Search for similar tracks..."
+msgid "Search for similar tracks…"
 msgstr "類似トラックを検索"
 
 #: picard/ui/mainwindow.py:686
@@ -7736,7 +7736,7 @@ msgid "View similar tracks and optionally choose a different release"
 msgstr "類似トラックを表示して別のリリースを追加選択"
 
 #: picard/ui/mainwindow.py:694
-msgid "Show &other album versions..."
+msgid "Show &other album versions…"
 msgstr ""
 
 #: picard/ui/mainwindow.py:695
@@ -7773,7 +7773,7 @@ msgid "Search"
 msgstr "検索"
 
 #: picard/ui/mainwindow.py:751 picard/ui/mainwindow.py:758
-msgid "Lookup &CD..."
+msgid "Lookup &CD…"
 msgstr "CDを検索(&C)"
 
 #: picard/ui/mainwindow.py:752
@@ -7853,7 +7853,7 @@ msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
 #: picard/ui/mainwindow.py:815
-msgid "&Info..."
+msgid "&Info…"
 msgstr "情報(&I)"
 
 #: picard/ui/mainwindow.py:818
@@ -7881,12 +7881,12 @@ msgid "Save &Tags"
 msgstr "タグを保存(&T)"
 
 #: picard/ui/mainwindow.py:858
-msgid "Tags From &File Names..."
-msgstr "ファイル名からタグ付け(&F)..."
+msgid "Tags From &File Names…"
+msgstr "ファイル名からタグ付け(&F)…"
 
 #: picard/ui/mainwindow.py:859 picard/ui/options/interface_toolbar.py:119
-msgid "Parse File Names..."
-msgstr "ファイル名を解析..."
+msgid "Parse File Names…"
+msgstr "ファイル名を解析…"
 
 #: picard/ui/mainwindow.py:860
 msgid "Set tags based on the file names"
@@ -7938,10 +7938,10 @@ msgstr "含んでいるフォルダをエクスプローラで開く"
 
 #: picard/ui/mainwindow.py:910
 msgid "&Check for Update…"
-msgstr "アップデートの確認(&C)..."
+msgstr "アップデートの確認(&C)…"
 
 #: picard/ui/mainwindow.py:949
-msgid "From CD ripper &log file..."
+msgid "From CD ripper &log file…"
 msgstr ""
 
 #: picard/ui/mainwindow.py:1002 picard/ui/scripteditor.py:533
@@ -7999,13 +7999,13 @@ msgstr "サポートされているすべてのフォーマット"
 
 #: picard/ui/mainwindow.py:1294
 #, python-format
-msgid "Adding multiple directories from '%(directory)s' ..."
-msgstr "「%(directory)s」の中の複数のディレクトリを追加中..."
+msgid "Adding multiple directories from '%(directory)s' …"
+msgstr "「%(directory)s」の中の複数のディレクトリを追加中…"
 
 #: picard/ui/mainwindow.py:1299
 #, python-format
-msgid "Adding directory: '%(directory)s' ..."
-msgstr "ディレクトリ「%(directory)s」を追加中..."
+msgid "Adding directory: '%(directory)s' …"
+msgstr "ディレクトリ「%(directory)s」を追加中…"
 
 #: picard/ui/mainwindow.py:1411
 msgid "Configuration Required"
@@ -8103,8 +8103,8 @@ msgid "New Value"
 msgstr "新しい値"
 
 #: picard/ui/metadatabox.py:241
-msgid "Add New Tag..."
-msgstr "新しいタグを追加..."
+msgid "Add New Tag…"
+msgstr "新しいタグを追加…"
 
 #: picard/ui/metadatabox.py:243
 msgid "Show Changes First"
@@ -8123,8 +8123,8 @@ msgid "Alt+Shift+R"
 msgstr "Alt+Shift+R"
 
 #: picard/ui/metadatabox.py:373
-msgid "Edit..."
-msgstr "編集..."
+msgid "Edit…"
+msgstr "編集…"
 
 #: picard/ui/metadatabox.py:379
 msgid "Add to 'Preserve Tags' List"
@@ -8425,7 +8425,7 @@ msgstr "サイドバーにスクリプトドキュメントを表示"
 
 #: picard/ui/scripteditor.py:622
 #, fuzzy
-msgid "&Scripting documentation..."
+msgid "&Scripting documentation…"
 msgstr "スクリプトのドキュメント"
 
 #: picard/ui/scripteditor.py:623
@@ -8777,11 +8777,11 @@ msgstr "フィンガープリント計算手法:"
 
 #: picard/ui/ui_options_fingerprinting.py:105
 #: picard/ui/ui_options_interface.py:132 picard/ui/ui_options_renaming.py:152
-msgid "Browse..."
-msgstr "参照..."
+msgid "Browse…"
+msgstr "参照…"
 
 #: picard/ui/ui_options_fingerprinting.py:106
-msgid "Download..."
+msgid "Download…"
 msgstr "ダウンロード"
 
 #: picard/ui/ui_options_fingerprinting.py:107
@@ -8789,7 +8789,7 @@ msgid "API key:"
 msgstr "APIキー:"
 
 #: picard/ui/ui_options_fingerprinting.py:108
-msgid "Get API key..."
+msgid "Get API key…"
 msgstr "APIキーを取得…"
 
 #: picard/ui/ui_options_general.py:192
@@ -8988,7 +8988,7 @@ msgid "Translate artist names to these locales where possible:"
 msgstr "可能であればアーティスト名をこのロケールに翻訳する:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
-msgid "Select..."
+msgid "Select…"
 msgstr ""
 
 #: picard/ui/ui_options_metadata.py:132
@@ -9061,7 +9061,7 @@ msgid "Version"
 msgstr "バージョン"
 
 #: picard/ui/ui_options_plugins.py:135
-msgid "Install plugin..."
+msgid "Install plugin…"
 msgstr "プラグインをインストール…"
 
 #: picard/ui/ui_options_plugins.py:136
@@ -9142,7 +9142,7 @@ msgid "Selected file naming script:"
 msgstr "選択済ファイル名生成スクリプト："
 
 #: picard/ui/ui_options_renaming.py:157
-msgid "Edit file naming script..."
+msgid "Edit file naming script…"
 msgstr ""
 
 #: picard/ui/ui_options_renaming.py:158 picard/ui/ui_scripteditor.py:211
@@ -9162,7 +9162,7 @@ msgid "Reload examples"
 msgstr "サンプルの再読込"
 
 #: picard/ui/ui_options_renaming_compat.py:87
-msgid "Customize..."
+msgid "Customize…"
 msgstr ""
 
 #: picard/ui/ui_options_renaming_compat.py:88
@@ -9363,8 +9363,8 @@ msgid "Download only cover art images matching selected types"
 msgstr "カバーアートの選択した箇所のみをダウンロードする"
 
 #: picard/ui/ui_provider_options_caa.py:70
-msgid "Select types..."
-msgstr "形式を選択..."
+msgid "Select types…"
+msgstr "形式を選択…"
 
 #: picard/ui/ui_provider_options_caa.py:71
 msgid "Only use images of the following size:"
@@ -9785,7 +9785,7 @@ msgid "Open in Player"
 msgstr "プレイヤーで開く"
 
 #: picard/ui/options/interface_toolbar.py:115
-msgid "Lookup CD..."
+msgid "Lookup CD…"
 msgstr "CDを検索"
 
 #: picard/ui/options/interface_toolbar.py:186
@@ -9932,8 +9932,8 @@ msgid "Uninstall plugin"
 msgstr "プラグインのアンインストール"
 
 #: picard/ui/options/plugins.py:408
-msgid "Reloading list of available plugins..."
-msgstr "利用可能なプラグイン一覧を再読み込み中です..."
+msgid "Reloading list of available plugins…"
+msgstr "利用可能なプラグイン一覧を再読み込み中です…"
 
 #: picard/ui/options/plugins.py:416 picard/ui/options/plugins.py:425
 #: picard/ui/options/plugins.py:446
@@ -10144,7 +10144,7 @@ msgid "Search in browser"
 msgstr "ブラウザで検索"
 
 #: picard/ui/searchdialog/__init__.py:210
-msgid "<strong>Loading...</strong>"
+msgid "<strong>Loading…</strong>"
 msgstr "<strong>読み込み中…</strong>"
 
 #: picard/ui/searchdialog/__init__.py:241

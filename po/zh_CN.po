@@ -72,8 +72,8 @@ msgstr "已载入专辑 %(id)s: %(artist)s - %(album)s"
 
 #: picard/album.py:573
 #, python-format
-msgid "Loading album %(id)s ..."
-msgstr "正在载入专辑 %(id)s..."
+msgid "Loading album %(id)s …"
+msgstr "正在载入专辑 %(id)s…"
 
 #: picard/album.py:790
 msgid "[loading album information]"
@@ -96,8 +96,8 @@ msgstr "未找到与簇「%(album)s」相匹配的专辑"
 
 #: picard/cluster.py:281
 #, python-format
-msgid "Looking up the metadata for cluster %(album)s..."
-msgstr "正在查询簇「%(album)s」的元数据..."
+msgid "Looking up the metadata for cluster %(album)s…"
+msgstr "正在查询簇「%(album)s」的元数据…"
 
 #: picard/cluster.py:330
 msgid "Unclustered Files"
@@ -189,8 +189,8 @@ msgstr "没有与文件「%(filename)s」相匹配的音轨"
 
 #: picard/file.py:896
 #, python-format
-msgid "Looking up the metadata for file %(filename)s ..."
-msgstr "正在查询文件「%(filename)s」的元数据..."
+msgid "Looking up the metadata for file %(filename)s …"
+msgstr "正在查询文件「%(filename)s」的元数据…"
 
 #: picard/oauth.py:249 picard/oauth.py:276
 msgid "Unexpected authentication error"
@@ -891,8 +891,8 @@ msgstr "为文件「%(filename)s」查询 AcoustID 无任何结果"
 
 #: picard/acoustid/__init__.py:187
 #, python-format
-msgid "Looking up the fingerprint for file '%(filename)s' ..."
-msgstr "正在查询文件「%(filename)s」的指纹..."
+msgid "Looking up the fingerprint for file '%(filename)s' …"
+msgstr "正在查询文件「%(filename)s」的指纹…"
 
 #: picard/acoustid/manager.py:184
 msgid ""
@@ -913,8 +913,8 @@ msgid "AcoustID submission failed permanently, probably too many retries"
 msgstr "AcousticID提交永久失败，可能是重试次数太多"
 
 #: picard/acoustid/manager.py:209
-msgid "Submitting AcoustIDs ..."
-msgstr "正在提交 AcoustID..."
+msgid "Submitting AcoustIDs …"
+msgstr "正在提交 AcoustID…"
 
 #: picard/acoustid/manager.py:239
 #, python-format
@@ -926,24 +926,24 @@ msgid "Add cluster as release"
 msgstr "将簇添加为专辑"
 
 #: picard/browser/addrelease.py:146
-msgid "Add cluster as release..."
-msgstr "将簇添加为专辑..."
+msgid "Add cluster as release…"
+msgstr "将簇添加为专辑…"
 
 #: picard/browser/addrelease.py:154
 msgid "Add file as release"
 msgstr "将文件添加为专辑"
 
 #: picard/browser/addrelease.py:156
-msgid "Add file as release..."
-msgstr "将文件添加为专辑..."
+msgid "Add file as release…"
+msgstr "将文件添加为专辑…"
 
 #: picard/browser/addrelease.py:164
 msgid "Add file as recording"
 msgstr "将文件添加为录音"
 
 #: picard/browser/addrelease.py:166
-msgid "Add file as recording..."
-msgstr "将文件添加为录音..."
+msgid "Add file as recording…"
+msgstr "将文件添加为录音…"
 
 #: picard/const/__init__.py:169
 msgid "Stable releases only"
@@ -5223,8 +5223,8 @@ msgstr "%(albumid)s 的「%(type)s」类型的专辑封面已从 %(host)s 下载
 #: picard/coverart/__init__.py:189
 #, python-format
 msgid ""
-"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
-msgstr "正从 %(host)s 下载 %(albumid)s 的「%(type)s」类型专辑封面..."
+"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s …"
+msgstr "正从 %(host)s 下载 %(albumid)s 的「%(type)s」类型专辑封面…"
 
 #: picard/coverart/utils.py:38
 msgid "Unknown"
@@ -5347,21 +5347,21 @@ msgstr ""
 
 #: picard/script/functions.py:199
 msgid ""
-"`$if2(a1,a2,a3,...)`\n"
+"`$if2(a1,a2,a3,…)`\n"
 "\n"
 "Returns first non empty argument."
 msgstr ""
-"`$if2(a1,a2,a3,...)`\n"
+"`$if2(a1,a2,a3,…)`\n"
 "\n"
 "返回第一个非空参数。"
 
 #: picard/script/functions.py:212
 msgid ""
-"`$noop(...)`\n"
+"`$noop(…)`\n"
 "\n"
 "Does nothing (useful for comments or disabling a block of code)."
 msgstr ""
-"`$noop（...）`\n"
+"`$noop（…）`\n"
 "\n"
 "什么也不做（用于注释或停用一个代码块）。"
 
@@ -5683,7 +5683,7 @@ msgstr ""
 
 #: picard/script/functions.py:527
 msgid ""
-"`$add(x,y,...)`\n"
+"`$add(x,y,…)`\n"
 "\n"
 "Add `y` to `x`.\n"
 "Can be used with an arbitrary number of arguments.\n"
@@ -5692,7 +5692,7 @@ msgid ""
 "\n"
 "    $add(x,y,z) = ((x + y) + z)\n"
 msgstr ""
-"`$add(x,y,...)`\n"
+"`$add(x,y,…)`\n"
 "\n"
 "将 `y` 添加到 `x`，\n"
 "可与任意数量的参数一起使用。\n"
@@ -5703,7 +5703,7 @@ msgstr ""
 
 #: picard/script/functions.py:545
 msgid ""
-"`$sub(x,y,...)`\n"
+"`$sub(x,y,…)`\n"
 "\n"
 "Subtracts `y` from `x`.\n"
 "Can be used with an arbitrary number of arguments.\n"
@@ -5712,7 +5712,7 @@ msgid ""
 "\n"
 "    $sub(x,y,z) = ((x - y) - z)\n"
 msgstr ""
-"`$sub(x,y,...)`\n"
+"`$sub(x,y,…)`\n"
 "\n"
 "从 `x` 中删去 `y`。\n"
 "可与任意数量的参数一起使用。\n"
@@ -5723,7 +5723,7 @@ msgstr ""
 
 #: picard/script/functions.py:563
 msgid ""
-"`$div(x,y,...)`\n"
+"`$div(x,y,…)`\n"
 "\n"
 "Divides `x` by `y`.\n"
 "Can be used with an arbitrary number of arguments.\n"
@@ -5732,7 +5732,7 @@ msgid ""
 "\n"
 "    $div(x,y,z) = ((x / y) / z)\n"
 msgstr ""
-"`$div(x,y,...)`\n"
+"`$div(x,y,…)`\n"
 "\n"
 "用 `x` 除以 `y`。\n"
 "可与任意数量的参数一起使用。\n"
@@ -5743,7 +5743,7 @@ msgstr ""
 
 #: picard/script/functions.py:583
 msgid ""
-"`$mod(x,y,...)`\n"
+"`$mod(x,y,…)`\n"
 "\n"
 "Returns the remainder of `x` divided by `y`.\n"
 "Can be used with an arbitrary number of arguments.\n"
@@ -5763,7 +5763,7 @@ msgstr ""
 
 #: picard/script/functions.py:601
 msgid ""
-"`$mul(x,y,...)`\n"
+"`$mul(x,y,…)`\n"
 "\n"
 "Multiplies `x` by `y`.\n"
 "Can be used with an arbitrary number of arguments.\n"
@@ -5772,7 +5772,7 @@ msgid ""
 "\n"
 "    $mul(x,y,z) = ((x * y) * z)\n"
 msgstr ""
-"`$mul(x,y,...)`\n"
+"`$mul(x,y,…)`\n"
 "\n"
 "将 `x` 与 `y` 相乘。\n"
 "可与任意数量的参数一起使用。\n"
@@ -5783,13 +5783,13 @@ msgstr ""
 
 #: picard/script/functions.py:619
 msgid ""
-"`$or(x,y,...)`\n"
+"`$or(x,y,…)`\n"
 "\n"
 "Returns true if either `x` or `y` not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
 "    The result is true if ANY of the arguments is not empty."
 msgstr ""
-"`$or(x,y,...)`\n"
+"`$or(x,y,…)`\n"
 "\n"
 "若 `x` 或 `y` 不为空，则返回真。\n"
 "    可与任意数量的参数一起使用。\n"
@@ -5797,13 +5797,13 @@ msgstr ""
 
 #: picard/script/functions.py:633
 msgid ""
-"`$and(x,y,...)`\n"
+"`$and(x,y,…)`\n"
 "\n"
 "Returns true if both `x` and `y` are not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
 "    The result is true if ALL of the arguments are not empty."
 msgstr ""
-"`$and(x,y,...)`\n"
+"`$and(x,y,…)`\n"
 "\n"
 "若 `x` 和 `y` 都不为空，则返回真。\n"
 "    可与任意数量的参数一起使用。\n"
@@ -6124,7 +6124,7 @@ msgstr ""
 
 #: picard/script/functions.py:951
 msgid ""
-"`$swapprefix(text,prefix1,prefix2,...)`\n"
+"`$swapprefix(text,prefix1,prefix2,…)`\n"
 "\n"
 "Moves the specified prefixes from the beginning to the end of `text`. "
 "Multiple\n"
@@ -6138,7 +6138,7 @@ msgid ""
 "\n"
 "_Since Picard 1.3, previously as a plugin since Picard 0.13_"
 msgstr ""
-"`$swapprefix(text,prefix1,prefix2,...)`\n"
+"`$swapprefix(text,prefix1,prefix2,…)`\n"
 "\n"
 "将指定前缀从 `text ` 的开头移至结尾。可使用不同参数指定多个前缀。若未指定前"
 "缀，则默认使用 'A' 和 'The'。\n"
@@ -6151,7 +6151,7 @@ msgstr ""
 
 #: picard/script/functions.py:973
 msgid ""
-"`$delprefix(text,prefix1,prefix2,...)`\n"
+"`$delprefix(text,prefix1,prefix2,…)`\n"
 "\n"
 "Deletes the specified prefixes from the beginning of `text`. Multiple\n"
 "prefixes can be specified as separate parameters.  If no prefix is specified "
@@ -6164,7 +6164,7 @@ msgid ""
 "\n"
 "_Since Picard 1.3_"
 msgstr ""
-"`$delprefix(text,prefix1,prefix2,...)`\n"
+"`$delprefix(text,prefix1,prefix2,…)`\n"
 "\n"
 "从 `text `开头移除指定前缀。可使用不同参数指定多个前缀。若未指定前缀，则默认"
 "使用 'A' 和 'The'。\n"
@@ -6177,48 +6177,48 @@ msgstr ""
 
 #: picard/script/functions.py:1011
 msgid ""
-"`$eq_any(x,a1,a2,...)`\n"
+"`$eq_any(x,a1,a2,…)`\n"
 "\n"
-"Returns true if `x` equals `a1` or `a2` or ...\n"
-"Functionally equivalent to `$or($eq(x,a1),$eq(x,a2),...)`.\n"
+"Returns true if `x` equals `a1` or `a2` or …\n"
+"Functionally equivalent to `$or($eq(x,a1),$eq(x,a2),…)`.\n"
 "Functionally equivalent to the eq2 plugin."
 msgstr ""
-"`$eq_any(x,a1,a2,...)`\n"
+"`$eq_any(x,a1,a2,…)`\n"
 "\n"
-"若 `x` 等于 `a1` 或 `a2` 或...，则返回true。\n"
-"在功能上等同于 `$or($eq(x,a1),$eq(x,a2),...)`\n"
+"若 `x` 等于 `a1` 或 `a2` 或…，则返回true。\n"
+"在功能上等同于 `$or($eq(x,a1),$eq(x,a2),…)`\n"
 "在功能上等效于 eq2 插件。"
 
 #: picard/script/functions.py:1023
 msgid ""
-"`$ne_all(x,a1,a2,...)`\n"
+"`$ne_all(x,a1,a2,…)`\n"
 "\n"
-"Returns true if `x` does not equal `a1` and `a2` and ...\n"
-"Functionally equivalent to `$and($ne(x,a1),$ne(x,a2),...)`.\n"
+"Returns true if `x` does not equal `a1` and `a2` and …\n"
+"Functionally equivalent to `$and($ne(x,a1),$ne(x,a2),…)`.\n"
 "Functionally equivalent to the ne2 plugin."
 msgstr ""
-"`$ne_all(x,a1,a2,...)`\n"
+"`$ne_all(x,a1,a2,…)`\n"
 "\n"
-"若 `x` 不等于 `a1` 和 `a2` 和...，则返回true。\n"
-"在功能上等同于 `$and($ne(x,a1),$ne(x,a2),...)`\n"
+"若 `x` 不等于 `a1` 和 `a2` 和…，则返回true。\n"
+"在功能上等同于 `$and($ne(x,a1),$ne(x,a2),…)`\n"
 "在功能上等效于 ne2 插件。"
 
 #: picard/script/functions.py:1035
 msgid ""
-"`$eq_all(x,a1,a2,...)`\n"
+"`$eq_all(x,a1,a2,…)`\n"
 "\n"
-"Returns true if `x` equals `a1` and `a2` and ...\n"
-"Functionally equivalent to `$and($eq(x,a1),$eq(x,a2),...)`.\n"
+"Returns true if `x` equals `a1` and `a2` and …\n"
+"Functionally equivalent to `$and($eq(x,a1),$eq(x,a2),…)`.\n"
 "\n"
 "Example:\n"
 "\n"
 "    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat "
 "Loaf))\n"
 msgstr ""
-"`$eq_all(x,a1,a2,...)`\n"
+"`$eq_all(x,a1,a2,…)`\n"
 "\n"
-"若 `x` 等于 `a1` 和 `a2` 和...，则返回true。\n"
-"在功能上等同于 `$and($eq(x,a1),$eq(x,a2),...)`\n"
+"若 `x` 等于 `a1` 和 `a2` 和…，则返回true。\n"
+"在功能上等同于 `$and($eq(x,a1),$eq(x,a2),…)`\n"
 "\n"
 "例如：\n"
 "\n"
@@ -6228,20 +6228,20 @@ msgstr ""
 #: picard/script/functions.py:1053
 #, python-format
 msgid ""
-"`$ne_any(x,a1,a2,...)`\n"
+"`$ne_any(x,a1,a2,…)`\n"
 "\n"
-"Returns true if `x` does not equal `a1` or `a2` or ...\n"
-"Functionally equivalent to `$or($ne(x,a1),$ne(x,a2),...)`.\n"
+"Returns true if `x` does not equal `a1` or `a2` or …\n"
+"Functionally equivalent to `$or($ne(x,a1),$ne(x,a2),…)`.\n"
 "\n"
 "Example:\n"
 "\n"
 "    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,"
 "%composer%))\n"
 msgstr ""
-"`$ne_any(x,a1,a2,...)`\n"
+"`$ne_any(x,a1,a2,…)`\n"
 "\n"
-"若 `x` 不等于 `a1` 或 `a2` 或...，则返回true。\n"
-"在功能上等同于 `$or($ne(x,a1),$ne(x,a2),...)`\n"
+"若 `x` 不等于 `a1` 或 `a2` 或…，则返回true。\n"
+"在功能上等同于 `$or($ne(x,a1),$ne(x,a2),…)`\n"
 "\n"
 "例如：\n"
 "\n"
@@ -6784,7 +6784,7 @@ msgstr ""
 
 #: picard/script/functions.py:1608
 msgid ""
-"`$min(type,x,...)`\n"
+"`$min(type,x,…)`\n"
 "\n"
 "Returns the minimum value using the comparison specified in `type`.\n"
 "\n"
@@ -6805,7 +6805,7 @@ msgid ""
 "\n"
 "_Since Picard 2.9_"
 msgstr ""
-"`$min(type,x,...)`\n"
+"`$min(type,x,…)`\n"
 "\n"
 "按`type`中指定的比较方式返回最小值。\n"
 "\n"
@@ -6822,7 +6822,7 @@ msgstr ""
 
 #: picard/script/functions.py:1629
 msgid ""
-"`$max(type,x,...)`\n"
+"`$max(type,x,…)`\n"
 "\n"
 "Returns the maximum value using the comparison specified in `type`.\n"
 "\n"
@@ -6843,7 +6843,7 @@ msgid ""
 "\n"
 "_Since Picard 2.9_"
 msgstr ""
-"`$max(type,x,...)`\n"
+"`$max(type,x,…)`\n"
 "\n"
 "按`type`中指定的比较方式返回最大值。\n"
 "\n"
@@ -7118,15 +7118,15 @@ msgid "All supported image formats"
 msgstr "所有支持的图像格式"
 
 #: picard/ui/coverartbox.py:629
-msgid "Show more details..."
-msgstr "显示更多细节..."
+msgid "Show more details…"
+msgstr "显示更多细节…"
 
 #: picard/ui/coverartbox.py:635
 msgid "Keep original cover art"
 msgstr "保留原封面"
 
 #: picard/ui/coverartbox.py:641
-msgid "Choose local file..."
+msgid "Choose local file…"
 msgstr "选择本地文件…"
 
 #: picard/ui/coverartbox.py:650
@@ -7423,11 +7423,11 @@ msgid "&Other versions"
 msgstr "其他版本（&O）"
 
 #: picard/ui/itemviews.py:546
-msgid "Loading..."
-msgstr "正在载入..."
+msgid "Loading…"
+msgstr "正在载入…"
 
 #: picard/ui/itemviews.py:548
-msgid "Show &more details..."
+msgid "Show &more details…"
 msgstr "显示&详情……"
 
 #: picard/ui/itemviews.py:601
@@ -7542,8 +7542,8 @@ msgid "Clear Log"
 msgstr "清除日志"
 
 #: picard/ui/logview.py:214
-msgid "Save As..."
-msgstr "另存为..."
+msgid "Save As…"
+msgstr "另存为…"
 
 #: picard/ui/logview.py:259 picard/ui/logview.py:266
 msgid "Save Log View to File"
@@ -7626,12 +7626,12 @@ msgid "Open AcoustID options"
 msgstr "打开 AcoustID 选项"
 
 #: picard/ui/mainwindow.py:498
-msgid "&Options..."
-msgstr "选项（&O）..."
+msgid "&Options…"
+msgstr "选项（&O）…"
 
 #: picard/ui/mainwindow.py:505
-msgid "Open &file naming script editor..."
-msgstr "打开文件名脚本编辑器（&F）..."
+msgid "Open &file naming script editor…"
+msgstr "打开文件名脚本编辑器（&F）…"
 
 #: picard/ui/mainwindow.py:506
 msgid "Ctrl+Shift+S"
@@ -7646,36 +7646,36 @@ msgid "&Paste"
 msgstr "粘贴（&P）"
 
 #: picard/ui/mainwindow.py:528 picard/ui/scripteditor.py:617
-msgid "&Help..."
-msgstr "帮助（&H）..."
+msgid "&Help…"
+msgstr "帮助（&H）…"
 
 #: picard/ui/mainwindow.py:535
-msgid "&About..."
-msgstr "关于（&A）..."
+msgid "&About…"
+msgstr "关于（&A）…"
 
 #: picard/ui/mainwindow.py:542
-msgid "&Donate..."
-msgstr "捐赠（&D）..."
+msgid "&Donate…"
+msgstr "捐赠（&D）…"
 
 #: picard/ui/mainwindow.py:548
-msgid "&Report a Bug..."
-msgstr "报告错误（&R）..."
+msgid "&Report a Bug…"
+msgstr "报告错误（&R）…"
 
 #: picard/ui/mainwindow.py:554
-msgid "&Support Forum..."
-msgstr "支持论坛（&S）..."
+msgid "&Support Forum…"
+msgstr "支持论坛（&S）…"
 
 #: picard/ui/mainwindow.py:560
-msgid "&Add Files..."
-msgstr "添加文件（&A）..."
+msgid "&Add Files…"
+msgstr "添加文件（&A）…"
 
 #: picard/ui/mainwindow.py:561
 msgid "Add files to the tagger"
 msgstr "将文件添加到标签工具中"
 
 #: picard/ui/mainwindow.py:569
-msgid "Add Fold&er..."
-msgstr "添加文件夹（&D）..."
+msgid "Add Fold&er…"
+msgstr "添加文件夹（&D）…"
 
 #: picard/ui/mainwindow.py:570
 msgid "Add a folder to the tagger"
@@ -7738,31 +7738,31 @@ msgid "Ctrl+Shift+L"
 msgstr "Ctrl+Shift+L"
 
 #: picard/ui/mainwindow.py:634
-msgid "Submit cluster as release..."
-msgstr "将簇提交为专辑..."
+msgid "Submit cluster as release…"
+msgstr "将簇提交为专辑…"
 
 #: picard/ui/mainwindow.py:635
 msgid "Submit cluster as a new release to MusicBrainz"
 msgstr "将簇作为新专辑提交到 MusicBrainz"
 
 #: picard/ui/mainwindow.py:645
-msgid "Submit file as standalone recording..."
-msgstr "将文件提交为独立录音..."
+msgid "Submit file as standalone recording…"
+msgstr "将文件提交为独立录音…"
 
 #: picard/ui/mainwindow.py:646
 msgid "Submit file as a new recording to MusicBrainz"
 msgstr "将文件作为新录音提交到 MusicBrainz"
 
 #: picard/ui/mainwindow.py:656
-msgid "Submit file as release..."
-msgstr "将文件提交为专辑..."
+msgid "Submit file as release…"
+msgstr "将文件提交为专辑…"
 
 #: picard/ui/mainwindow.py:657
 msgid "Submit file as a new release to MusicBrainz"
 msgstr "将文件作为新专辑提交到 MusicBrainz"
 
 #: picard/ui/mainwindow.py:666
-msgid "Search for similar items..."
+msgid "Search for similar items…"
 msgstr "搜索相似的项目……"
 
 #: picard/ui/mainwindow.py:667 picard/ui/options/interface_toolbar.py:123
@@ -7780,23 +7780,23 @@ msgid "Ctrl+T"
 msgstr "Ctrl+T"
 
 #: picard/ui/mainwindow.py:676
-msgid "Search for similar albums..."
-msgstr "查找相似专辑..."
+msgid "Search for similar albums…"
+msgstr "查找相似专辑…"
 
 #: picard/ui/mainwindow.py:677
 msgid "View similar releases and optionally choose a different release"
 msgstr "查看相似的专辑，可以选用其他专辑"
 
 #: picard/ui/mainwindow.py:685
-msgid "Search for similar tracks..."
-msgstr "查找相似的音轨..."
+msgid "Search for similar tracks…"
+msgstr "查找相似的音轨…"
 
 #: picard/ui/mainwindow.py:686
 msgid "View similar tracks and optionally choose a different release"
 msgstr "查看相似的音轨，可以选用其他专辑"
 
 #: picard/ui/mainwindow.py:694
-msgid "Show &other album versions..."
+msgid "Show &other album versions…"
 msgstr "显示&其他专辑版本……"
 
 #: picard/ui/mainwindow.py:695
@@ -7833,8 +7833,8 @@ msgid "Search"
 msgstr "搜索"
 
 #: picard/ui/mainwindow.py:751 picard/ui/mainwindow.py:758
-msgid "Lookup &CD..."
-msgstr "查找 CD (&C)..."
+msgid "Lookup &CD…"
+msgstr "查找 CD (&C)…"
 
 #: picard/ui/mainwindow.py:752
 msgid "Lookup the details of the CD in your drive"
@@ -7910,8 +7910,8 @@ msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
 #: picard/ui/mainwindow.py:815
-msgid "&Info..."
-msgstr "信息（&I）..."
+msgid "&Info…"
+msgstr "信息（&I）…"
 
 #: picard/ui/mainwindow.py:818
 msgid "Ctrl+I"
@@ -7938,11 +7938,11 @@ msgid "Save &Tags"
 msgstr "保存标签（&T）"
 
 #: picard/ui/mainwindow.py:858
-msgid "Tags From &File Names..."
-msgstr "根据文件名获取标签（&F）..."
+msgid "Tags From &File Names…"
+msgstr "根据文件名获取标签（&F）…"
 
 #: picard/ui/mainwindow.py:859 picard/ui/options/interface_toolbar.py:119
-msgid "Parse File Names..."
+msgid "Parse File Names…"
 msgstr "解析文件名"
 
 #: picard/ui/mainwindow.py:860
@@ -7998,8 +7998,8 @@ msgid "&Check for Update…"
 msgstr "检查更新（&C）…"
 
 #: picard/ui/mainwindow.py:949
-msgid "From CD ripper &log file..."
-msgstr "从CD和日志文件..."
+msgid "From CD ripper &log file…"
+msgstr "从CD和日志文件…"
 
 #: picard/ui/mainwindow.py:1002 picard/ui/scripteditor.py:533
 msgid "&File"
@@ -8056,13 +8056,13 @@ msgstr "全部受支持格式"
 
 #: picard/ui/mainwindow.py:1294
 #, python-format
-msgid "Adding multiple directories from '%(directory)s' ..."
-msgstr "正在从「%(directory)s」添加多个目录..."
+msgid "Adding multiple directories from '%(directory)s' …"
+msgstr "正在从「%(directory)s」添加多个目录…"
 
 #: picard/ui/mainwindow.py:1299
 #, python-format
-msgid "Adding directory: '%(directory)s' ..."
-msgstr "正在添加目录: 「%(directory)s'」..."
+msgid "Adding directory: '%(directory)s' …"
+msgstr "正在添加目录: 「%(directory)s'」…"
 
 #: picard/ui/mainwindow.py:1411
 msgid "Configuration Required"
@@ -8159,8 +8159,8 @@ msgid "New Value"
 msgstr "新值"
 
 #: picard/ui/metadatabox.py:241
-msgid "Add New Tag..."
-msgstr "新增标签..."
+msgid "Add New Tag…"
+msgstr "新增标签…"
 
 #: picard/ui/metadatabox.py:243
 msgid "Show Changes First"
@@ -8179,8 +8179,8 @@ msgid "Alt+Shift+R"
 msgstr "Alt+Shift+R"
 
 #: picard/ui/metadatabox.py:373
-msgid "Edit..."
-msgstr "编辑..."
+msgid "Edit…"
+msgstr "编辑…"
 
 #: picard/ui/metadatabox.py:379
 msgid "Add to 'Preserve Tags' List"
@@ -8480,8 +8480,8 @@ msgid "View the scripting documentation in a sidebar"
 msgstr "在侧边栏中浏览脚本文档"
 
 #: picard/ui/scripteditor.py:622
-msgid "&Scripting documentation..."
-msgstr "脚本文档（&S）..."
+msgid "&Scripting documentation…"
+msgstr "脚本文档（&S）…"
 
 #: picard/ui/scripteditor.py:623
 msgid "Open the scripting documentation in your browser"
@@ -8844,20 +8844,20 @@ msgstr "指纹计算器:"
 
 #: picard/ui/ui_options_fingerprinting.py:105
 #: picard/ui/ui_options_interface.py:132 picard/ui/ui_options_renaming.py:152
-msgid "Browse..."
-msgstr "浏览..."
+msgid "Browse…"
+msgstr "浏览…"
 
 #: picard/ui/ui_options_fingerprinting.py:106
-msgid "Download..."
-msgstr "下载..."
+msgid "Download…"
+msgstr "下载…"
 
 #: picard/ui/ui_options_fingerprinting.py:107
 msgid "API key:"
 msgstr "API 密钥:"
 
 #: picard/ui/ui_options_fingerprinting.py:108
-msgid "Get API key..."
-msgstr "获取 API 密钥..."
+msgid "Get API key…"
+msgstr "获取 API 密钥…"
 
 #: picard/ui/ui_options_general.py:192
 msgid "MusicBrainz Server"
@@ -9049,8 +9049,8 @@ msgid "Translate artist names to these locales where possible:"
 msgstr "可能时，将艺术家名字翻译为下列语种:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
-msgid "Select..."
-msgstr "选择..."
+msgid "Select…"
+msgstr "选择…"
 
 #: picard/ui/ui_options_metadata.py:132
 msgid "Ignore artist name translation for these language scripts:"
@@ -9121,8 +9121,8 @@ msgid "Version"
 msgstr "版本"
 
 #: picard/ui/ui_options_plugins.py:135
-msgid "Install plugin..."
-msgstr "安装插件..."
+msgid "Install plugin…"
+msgstr "安装插件…"
 
 #: picard/ui/ui_options_plugins.py:136
 msgid "Open plugin folder"
@@ -9199,7 +9199,7 @@ msgid "Selected file naming script:"
 msgstr "选中的文件命名脚本："
 
 #: picard/ui/ui_options_renaming.py:157
-msgid "Edit file naming script..."
+msgid "Edit file naming script…"
 msgstr "编辑文件命名脚本："
 
 #: picard/ui/ui_options_renaming.py:158 picard/ui/ui_scripteditor.py:211
@@ -9219,8 +9219,8 @@ msgid "Reload examples"
 msgstr "重新加载示例"
 
 #: picard/ui/ui_options_renaming_compat.py:87
-msgid "Customize..."
-msgstr "自定义..."
+msgid "Customize…"
+msgstr "自定义…"
 
 #: picard/ui/ui_options_renaming_compat.py:88
 msgid "Allow paths longer than 259 characters"
@@ -9412,8 +9412,8 @@ msgid "Download only cover art images matching selected types"
 msgstr "仅下载符合所选类型的封面图像"
 
 #: picard/ui/ui_provider_options_caa.py:70
-msgid "Select types..."
-msgstr "选择类型..."
+msgid "Select types…"
+msgstr "选择类型…"
 
 #: picard/ui/ui_provider_options_caa.py:71
 msgid "Only use images of the following size:"
@@ -9852,8 +9852,8 @@ msgid "Open in Player"
 msgstr "在播放器中打开"
 
 #: picard/ui/options/interface_toolbar.py:115
-msgid "Lookup CD..."
-msgstr "查找 CD..."
+msgid "Lookup CD…"
+msgstr "查找 CD…"
 
 #: picard/ui/options/interface_toolbar.py:186
 msgid "Drag and Drop to re-order"
@@ -10016,8 +10016,8 @@ msgid "Uninstall plugin"
 msgstr "卸载插件"
 
 #: picard/ui/options/plugins.py:408
-msgid "Reloading list of available plugins..."
-msgstr "正在刷新可用插件列表..."
+msgid "Reloading list of available plugins…"
+msgstr "正在刷新可用插件列表…"
 
 #: picard/ui/options/plugins.py:416 picard/ui/options/plugins.py:425
 #: picard/ui/options/plugins.py:446
@@ -10227,8 +10227,8 @@ msgid "Search in browser"
 msgstr "在浏览器中搜索"
 
 #: picard/ui/searchdialog/__init__.py:210
-msgid "<strong>Loading...</strong>"
-msgstr "<strong>正在载入...</strong>"
+msgid "<strong>Loading…</strong>"
+msgstr "<strong>正在载入…</strong>"
 
 #: picard/ui/searchdialog/__init__.py:241
 msgid "Retry"
