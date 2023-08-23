@@ -1,8 +1,8 @@
 {
-    "MsgAlreadyInstalled": "${PRODUCT_NAME}  ইতিমধ্যে ইনস্টল করা আছে, ${PRODUCT_VERSION} এই আপগ্রেড ভার্সনটি ইনস্টল করতে আগে পুরোনো ভার্সনটি আনইনস্টল করতে হবে।\n\nএই আপগ্রেডটি করতে \"OK\"  অথবা বাতিল করতে \"Cancel\" ক্লিক করুন।",
+    "MsgAlreadyInstalled": "${PRODUCT_NAME} ইতিমধ্যে ইনস্টল করা আছে, ${PRODUCT_VERSION} এই আপগ্রেড ভার্সনটি ইনস্টল করতে আগে পুরোনো ভার্সনটি আনইনস্টল করতে হবে।\n\nএই আপগ্রেডটি করতে \"OK\" অথবা বাতিল করতে \"Cancel\" ক্লিক করুন।",
     "MsgApplicationRunning": "অ্যাপ্লিকেশনটি ${PRODUCT_NAME} চলছে। এটা বন্ধ করে আবার চেষ্টা করুন।",
     "MsgRequires64Bit": "এই ভার্সনটির জন্য ${PRODUCT_NAME} 64-bit উইন্ডোজ সিস্টেম প্রয়োজন।",
-    "MsgUninstallFailed": "Uninstall of previous version failed।",
+    "MsgUninstallFailed": "",
     "MuiDescriptionDesktop": "ডেস্কটপে শর্টকাট ইন্সটল করুন।",
     "MuiDescriptionLang": "বিভিন্ন ভাষার অনুবাদগুলি ইন্সটল করুন। ${PRODUCT_NAME}",
     "MuiDescriptionRequired": "এটি ইন্সটল ${PRODUCT_NAME} করুন প্রয়োজনীয় ফাইলসমূহ সহকারে।",
