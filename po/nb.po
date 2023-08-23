@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
 "PO-Revision-Date: 2023-08-23 19:09+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
 "projects/picard/app/nb_NO/>\n"
 "Language: nb\n"
@@ -243,8 +243,9 @@ msgid "General"
 msgstr "Generelt"
 
 #: picard/profile.py:48
+#, fuzzy
 msgid "Server address"
-msgstr ""
+msgstr "Tjeneradresse:"
 
 #: picard/profile.py:49
 msgid "Port"
@@ -516,8 +517,9 @@ msgid "Move files"
 msgstr ""
 
 #: picard/profile.py:157
+#, fuzzy
 msgid "Destination directory"
-msgstr ""
+msgstr "Destinasjonsmappe:"
 
 #: picard/profile.py:158
 msgid "Move additional files"
@@ -589,8 +591,9 @@ msgid "Show icons in menus"
 msgstr ""
 
 #: picard/profile.py:188
+#, fuzzy
 msgid "User interface language"
-msgstr ""
+msgstr "Brukergrensesnittsspråk"
 
 #: picard/profile.py:189
 msgid "User interface color theme"
@@ -721,28 +724,33 @@ msgid "Request timeout in seconds"
 msgstr ""
 
 #: picard/profile.py:245
+#, fuzzy
 msgid "Browser integration"
-msgstr ""
+msgstr "Nettleserintegrasjon"
 
 #: picard/profile.py:248
+#, fuzzy
 msgid "Default listening port"
-msgstr ""
+msgstr "Standard lytteport:"
 
 #: picard/profile.py:249 picard/ui/ui_options_network.py:141
 msgid "Listen only on localhost"
 msgstr "Lytt bare på lokalvert"
 
 #: picard/profile.py:252
+#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr ""
+msgstr "Minste likhet for filoppsøk:"
 
 #: picard/profile.py:253
+#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr ""
+msgstr "Minste likhet for filklyngeoppsøk:"
 
 #: picard/profile.py:254
+#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr ""
+msgstr "Minste likhet for å samsvare filer med spor:"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -4788,8 +4796,9 @@ msgid "Ukrainian (Ukraine)"
 msgstr ""
 
 #: picard/const/locales.py:985
+#, fuzzy
 msgid "Unknown language"
-msgstr ""
+msgstr "Ukjent språk"
 
 #: picard/const/locales.py:986
 msgid "Urdu"
@@ -6752,8 +6761,9 @@ msgid "Loading…"
 msgstr "Laster…"
 
 #: picard/ui/itemviews.py:548
+#, fuzzy
 msgid "Show &more details…"
-msgstr ""
+msgstr "Vis flere detaljer…"
 
 #: picard/ui/itemviews.py:601
 #, python-format
@@ -7933,8 +7943,9 @@ msgid "Submit disc ID"
 msgstr ""
 
 #: picard/ui/ui_cdlookup.py:89
+#, fuzzy
 msgid "&Load into Picard"
-msgstr ""
+msgstr "Last inn i Picard"
 
 #: picard/ui/ui_cdlookup.py:90
 msgid "&Submit disc ID"
@@ -8334,8 +8345,9 @@ msgid "Remove selected options"
 msgstr ""
 
 #: picard/ui/ui_options_maintenance.py:91
+#, fuzzy
 msgid "Select all"
-msgstr ""
+msgstr "Velg &alle"
 
 #: picard/ui/ui_options_matching.py:71
 msgid "Thresholds"
@@ -8354,8 +8366,9 @@ msgid "Minimal similarity for cluster lookups:"
 msgstr "Minste likhet for filklyngeoppsøk:"
 
 #: picard/ui/ui_options_metadata.py:130
+#, fuzzy
 msgid "Translate artist names to these locales where possible:"
-msgstr ""
+msgstr "Hvis mulig, bruk følgende region til oversetting av artistnavn:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select…"
@@ -8583,8 +8596,9 @@ msgid "Export"
 msgstr ""
 
 #: picard/ui/ui_options_script.py:130
+#, fuzzy
 msgid "Documentation"
-msgstr ""
+msgstr "Dokumentasjon"
 
 #: picard/ui/ui_options_tags.py:71
 msgid "Write tags to files"
@@ -8783,8 +8797,9 @@ msgid "License under which the file naming script is available."
 msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:101
+#, fuzzy
 msgid "Description:"
-msgstr ""
+msgstr "Beskrivelse"
 
 #: picard/ui/ui_scripteditor_details.py:102
 msgid ""
@@ -9701,8 +9716,9 @@ msgid ""
 msgstr ""
 
 #: picard/util/checkupdate.py:156
+#, fuzzy
 msgid "unknown"
-msgstr ""
+msgstr "ukjent"
 
 #: picard/util/checkupdate.py:160
 msgid ""
