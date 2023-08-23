@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2009, 2012 Lukáš Lalinský
 # Copyright (C) 2007 Javier Kohen
-# Copyright (C) 2008-2011, 2014-2015, 2018-2021 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014-2015, 2018-2021, 2023 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2009 Nikolai Prokoschenko
 # Copyright (C) 2011-2012 Michael Wiencek
@@ -142,7 +142,10 @@ def get_file_naming_script_presets():
     LICENSE = "GNU Public License version 2"
 
     def preset_title(number, title):
-        return _("Preset %d: %s") % (number, _(title))
+        return _("Preset %(number)d: %(title)s") % {
+            'number': number,
+            'title': _(title),
+        }
 
     yield FileNamingScript(
         id=DEFAULT_NAMING_PRESET_ID,

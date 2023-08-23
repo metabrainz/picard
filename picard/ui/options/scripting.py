@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2007, 2009 Lukáš Lalinský
 # Copyright (C) 2009 Nikolai Prokoschenko
-# Copyright (C) 2009-2010, 2019-2022 Philipp Wolfer
+# Copyright (C) 2009-2010, 2019-2023 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2013-2015, 2017-2022 Laurent Monin
 # Copyright (C) 2014 m42i
@@ -137,28 +137,30 @@ class ScriptingOptionsPage(OptionsPage):
     def show_scripting_documentation(self):
         ScriptingDocumentationDialog.show_instance(parent=self)
 
-    def output_error(self, title, fmt, filename, msg):
+    def output_error(self, title, fmt, params):
         """Log error and display error message dialog.
 
         Args:
             title (str): Title to display on the error dialog box
             fmt (str): Format for the error type being displayed
-            filename (str): Name of the file being imported or exported
-            msg (str): Error message to display
+            params: values used for substitution in fmt
         """
-        log.error(fmt, filename, msg)
-        error_message = _(fmt) % (filename, _(msg))
+        log.error(fmt, params)
+        error_message = _(fmt) % params
         self.display_error(ScriptFileError(_(title), error_message))
 
-    def output_file_error(self, fmt, filename, msg):
+    def output_file_error(self, error: ScriptImportExportError):
         """Log file error and display error message dialog.
 
         Args:
             fmt (str): Format for the error type being displayed
-            filename (str): Name of the file being imported or exported
-            msg (str): Error message to display
+            error (ScriptImportExportError): The error as a ScriptImportExportError instance
         """
-        self.output_error(_("File Error"), fmt, filename, msg)
+        params = {
+            'filename': error.filename,
+            'error': _(error.error_msg)
+        }
+        self.output_error(_("File Error"), error.format, params)
 
     def import_script(self):
         """Import from an external text file to a new script. Import can be either a plain text script or
@@ -167,7 +169,7 @@ class ScriptingOptionsPage(OptionsPage):
         try:
             script_item = TaggingScript().import_script(self)
         except ScriptImportExportError as error:
-            self.output_file_error(error.format, error.filename, error.error_msg)
+            self.output_file_error(error)
             return
         if script_item:
             title = _("%s (imported)") % script_item["title"]
@@ -192,7 +194,7 @@ class ScriptingOptionsPage(OptionsPage):
             try:
                 script_item.export_script(parent=self)
             except ScriptImportExportError as error:
-                self.output_file_error(error.format, error.filename, error.error_msg)
+                self.output_file_error(error)
 
     def enable_tagger_scripts_toggled(self, on):
         if on and self.ui.script_list.count() == 0:

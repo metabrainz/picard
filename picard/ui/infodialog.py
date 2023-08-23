@@ -11,7 +11,7 @@
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017-2019 Antonio Larrosa
 # Copyright (C) 2018 Vishal Choudhary
-# Copyright (C) 2018-2022 Philipp Wolfer
+# Copyright (C) 2018-2023 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -207,14 +207,20 @@ class InfoDialog(PicardDialog):
                     pixmap.loadFromData(data)
                     item.setToolTip(
                         _("Double-click to open in external viewer\n"
-                        "Temporary file: %s\n"
-                        "Source: %s") % (image.tempfile_filename, image.source))
+                        "Temporary file: %(tempfile)s\n"
+                        "Source: %(sourcefile)s") % {
+                            'tempfile': image.tempfile_filename,
+                            'sourcefile': image.source,
+                        })
             except CoverArtImageIOError:
                 log.error(traceback.format_exc())
                 pixmap = missing_pixmap
                 item.setToolTip(
-                    _("Missing temporary file: %s\n"
-                    "Source: %s") % (image.tempfile_filename, image.source))
+                    _("Missing temporary file: %(tempfile)s\n"
+                    "Source: %(sourcefile)s") % {
+                        'tempfile': image.tempfile_filename,
+                        'sourcefile': image.source,
+                    })
             infos = []
             if image.comment:
                 infos.append(image.comment)

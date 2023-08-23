@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2019 Timur Enikeev
 # Copyright (C) 2019-2022 Laurent Monin
-# Copyright (C) 2019-2022 Philipp Wolfer
+# Copyright (C) 2019-2023 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -176,7 +176,10 @@ class Player(QtCore.QObject):
         elif error == QtMultimedia.QMediaPlayer.Error.ServiceMissingError:
             msg = _("Internal player: A valid playback service was not found, playback cannot proceed")
         else:
-            msg = _("Internal player: error, code=%d, msg=%s") % (error, self._player.errorString())
+            msg = _("Internal player: error, code=%(code)d, msg=%(message)s") % {
+                'code': error,
+                'message': self._player.errorString(),
+            }
         self.error.emit(error, msg)
 
 

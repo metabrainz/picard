@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2008 Lukáš Lalinský
-# Copyright (C) 2018, 2020-2022 Philipp Wolfer
+# Copyright (C) 2018, 2020-2023 Philipp Wolfer
 # Copyright (C) 2019 Wieland Hoffmann
 # Copyright (C) 2019-2022 Laurent Monin
 #
@@ -153,7 +153,8 @@ class GenresOptionsPage(OptionsPage):
         # FIXME: very simple error reporting, improve
         self.ui.label_test_genres_filter_error.setText(
             "\n".join(
-                [_("Error line %d: %s") % (lineno + 1, error) for lineno, error in tagfilter.errors.items()]
+                _("Error line %(lineno)d: %(error)s") % {'lineno': lineno + 1, 'error': error}
+                for lineno, error in tagfilter.errors.items()
             )
         )
 

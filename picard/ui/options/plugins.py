@@ -413,17 +413,20 @@ class PluginsOptionsPage(OptionsPage):
     def plugin_loading_error(self, plugin_name, error):
         QtWidgets.QMessageBox.critical(
             self,
-            _("Plugin '%s'") % plugin_name,
-            _("An error occurred while loading the plugin '%s':\n\n%s") % (plugin_name, error)
-        )
+            _('Plugin "%(plugin)s"') % {'plugin': plugin_name},
+            _('An error occurred while loading the plugin "%(plugin)s":\n\n%(error)s') % {
+                'plugin': plugin_name,
+                'error': error,
+            })
 
     def plugin_installed(self, plugin):
         log.debug("Plugin %r installed", plugin.name)
         if not plugin.compatible:
+            params = {'plugin': plugin.name}
             QtWidgets.QMessageBox.warning(
                 self,
-                _("Plugin '%s'") % plugin.name,
-                _("The plugin '%s' is not compatible with this version of Picard.") % plugin.name
+                _('Plugin "%(plugin)s"') % params,
+                _('The plugin "%(plugin)s" is not compatible with this version of Picard.') % params
             )
             return
         item = self.find_item_by_plugin_name(plugin.module_name)
@@ -443,10 +446,11 @@ class PluginsOptionsPage(OptionsPage):
             plugin = item.plugin
             QtWidgets.QMessageBox.information(
                 self,
-                _("Plugin '%s'") % plugin_name,
-                _("The plugin '%s' will be upgraded to version %s on next run of Picard.")
-                % (plugin.name, item.new_version.to_string(short=True))
-            )
+                _('Plugin "%(plugin)s"') % {'plugin': plugin_name},
+                _('The plugin "%(plugin)s" will be upgraded to version %(version)s on next run of Picard.') % {
+                    'plugin': plugin.name,
+                    'version': item.new_version.to_string(short=True),
+                })
 
             item.upgrade_to_version = item.new_version
             self.update_plugin_item(item, plugin, make_current=True)
@@ -463,10 +467,11 @@ class PluginsOptionsPage(OptionsPage):
 
     def uninstall_plugin(self, item):
         plugin = item.plugin
+        params = {'plugin': plugin.name}
         buttonReply = QtWidgets.QMessageBox.question(
             self,
-            _("Uninstall plugin '%s'?") % plugin.name,
-            _("Do you really want to uninstall the plugin '%s' ?") % plugin.name,
+            _('Uninstall plugin "%(plugin)s"?') % params,
+            _('Do you really want to uninstall the plugin "%(plugin)s"?') % params,
             QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
             QtWidgets.QMessageBox.StandardButton.No
         )
@@ -674,13 +679,14 @@ class PluginsOptionsPage(OptionsPage):
         if self.deleted:
             return
         if error:
+            params = {'plugin': plugin.module_name}
             msgbox = QtWidgets.QMessageBox(self)
-            msgbox.setText(_("The plugin '%s' could not be downloaded.") % plugin.module_name)
+            msgbox.setText(_('The plugin "%(plugin)s" could not be downloaded.') % params)
             msgbox.setInformativeText(_("Please try again later."))
             msgbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
             msgbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
             msgbox.exec_()
-            log.error("Error occurred while trying to download the plugin: '%s'", plugin.module_name)
+            log.error('Error occurred while trying to download the plugin: "%(plugin)s"', params)
             return
 
         self.manager.install_plugin(
