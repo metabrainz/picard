@@ -6986,7 +6986,7 @@ msgstr "Picard прослушивает этот порт для интегра�
 
 #: picard/ui/mainwindow.py:424
 #, python-format
-msgid " Listening on port %(port)d "
+msgid "Listening on port %(port)d"
 msgstr "Слушать через порт %(port)d"
 
 #: picard/ui/mainwindow.py:483

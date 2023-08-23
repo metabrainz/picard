@@ -7597,7 +7597,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:424
 #, python-format
-msgid " Listening on port %(port)d "
+msgid "Listening on port %(port)d"
 msgstr "Luistert op poort %(port)d"
 
 #: picard/ui/mainwindow.py:483

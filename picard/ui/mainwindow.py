@@ -394,6 +394,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         infostatus = InfoStatus(self)
         self._progress = infostatus.get_progress
         self.listening_label = QtWidgets.QLabel()
+        self.listening_label.setStyleSheet("QLabel { margin: 0 4px 0 4px; }")
         self.listening_label.setVisible(False)
         self.listening_label.setToolTip("<qt/>" + _(
             "Picard listens on this port to integrate with your browser. When "
@@ -421,7 +422,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def update_statusbar_listen_port(self, listen_port):
         if listen_port:
             self.listening_label.setVisible(True)
-            self.listening_label.setText(_(" Listening on port %(port)d ") % {"port": listen_port})
+            self.listening_label.setText(("Listening on port %(port)d") % {"port": listen_port})
         else:
             self.listening_label.setVisible(False)
 
