@@ -1,28 +1,28 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-# Translators:
 # Avi Markovitz <avi.markovitz@gmail.com>, 2021
 # Transifex Bot <>, 2023
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 #
-#, fuzzy
+# Translators:
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-23 07:49+0100\n"
-"PO-Revision-Date: 2018-11-25 07:37+0000\n"
-"Last-Translator: Transifex Bot <>, 2023\n"
-"Language-Team: Hebrew (https://app.transifex.com/musicbrainz/teams/13846/"
-"he/)\n"
+"PO-Revision-Date: 2023-08-23 19:10+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"Language-Team: Hebrew <https://translations.metabrainz.org/projects/picard/"
+"appstream/he/>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % "
-"1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;\n"
+"Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
+"n % 10 == 0) ? 2 : 3));\n"
+"X-Generator: Weblate 4.18.2\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6
 msgid "MusicBrainz Picard"
@@ -105,7 +105,7 @@ msgid ""
 "exactly specify how your music files will be named and how the tags will "
 "look like."
 msgstr ""
-"תסרוט: שפת תסרוט גמישה אך קלה ללימוד מאפשרת להגדיר  כיצד בדיוק קובצי המוזיקה "
+"תסרוט: שפת תסרוט גמישה אך קלה ללימוד מאפשרת להגדיר כיצד בדיוק קובצי המוזיקה "
 "יכונו וכיצד התגים יראו."
 
 #: org.musicbrainz.Picard.appdata.xml.in:52
