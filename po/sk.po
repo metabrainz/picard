@@ -5,14 +5,14 @@
 # Translators:
 # Lukáš Lalinský <lalinsky@gmail.com>, 2012-2013
 # Pavol Babinčák <scroolik@gmail.com>, 2012
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 07:19+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-08-23 19:10+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Slovak <https://translations.metabrainz.org/projects/picard/"
 "app/sk/>\n"
 "Language: sk\n"
@@ -8722,7 +8722,7 @@ msgstr "UTF-16"
 
 #: picard/ui/ui_options_tags_compatibility_id3.py:122
 msgid "ISO-8859-1"
-msgstr "Copy text   \t ISO-8859-1"
+msgstr "ISO-8859-1"
 
 #: picard/ui/ui_options_tags_compatibility_id3.py:123
 msgid "Join multiple ID3v2.3 tags with:"
