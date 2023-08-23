@@ -19,8 +19,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
-" n % 1 != 0 ? 2: 3);\n"
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
+"1 : n % 1 != 0 ? 2: 3);\n"
 "X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.6.0\n"
 
@@ -7144,7 +7144,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:424
 #, python-format
-msgid " Listening on port %(port)d "
+msgid "Listening on port %(port)d"
 msgstr ""
 
 #: picard/ui/mainwindow.py:483

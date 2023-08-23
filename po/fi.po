@@ -7661,8 +7661,8 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:424
 #, python-format
-msgid " Listening on port %(port)d "
-msgstr ""
+msgid "Listening on port %(port)d"
+msgstr "Tarkkaillaan porttia %(port)d"
 
 #: picard/ui/mainwindow.py:483
 msgid "AcoustID submission not configured"
@@ -10978,10 +10978,6 @@ msgstr ""
 "Virhe käynnistettäessä verkkoselainta:\n"
 "\n"
 "%s"
-
-#, python-format
-#~ msgid "Listening on port %(port)d"
-#~ msgstr "Tarkkaillaan porttia %(port)d"
 
 #, python-format
 #~ msgid "%s "

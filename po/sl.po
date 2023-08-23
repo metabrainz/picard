@@ -6949,8 +6949,8 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:424
 #, python-format
-msgid " Listening on port %(port)d "
-msgstr ""
+msgid "Listening on port %(port)d"
+msgstr "Poslušam na vratih %(port)d"
 
 #: picard/ui/mainwindow.py:483
 msgid "AcoustID submission not configured"
@@ -10096,10 +10096,6 @@ msgstr ""
 "Napaka med zagonom spletnega brskalnika:\n"
 "\n"
 "%s"
-
-#, python-format
-#~ msgid "Listening on port %(port)d"
-#~ msgstr "Poslušam na vratih %(port)d"
 
 #, python-format
 #~ msgid "%s "

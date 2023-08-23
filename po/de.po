@@ -7655,9 +7655,9 @@ msgstr ""
 "„Tagger“-Button auf der Webseite die Veröffentlichung in Picard."
 
 #: picard/ui/mainwindow.py:424
-#, fuzzy, python-format
-msgid " Listening on port %(port)d "
-msgstr " Auf Port %(port)d wird gelauscht "
+#, python-format
+msgid "Listening on port %(port)d"
+msgstr "Auf Port %(port)d wird gelauscht"
 
 #: picard/ui/mainwindow.py:483
 msgid "AcoustID submission not configured"
@@ -11008,9 +11008,9 @@ msgstr ""
 "\n"
 "%s"
 
-#, python-format
-#~ msgid "Listening on port %(port)d"
-#~ msgstr "Auf Port %(port)d wird gelauscht"
+#, fuzzy, python-format
+#~ msgid " Listening on port %(port)d "
+#~ msgstr " Auf Port %(port)d wird gelauscht "
 
 #, python-format
 #~ msgid "%s "

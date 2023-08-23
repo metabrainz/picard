@@ -6957,8 +6957,8 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:424
 #, python-format
-msgid " Listening on port %(port)d "
-msgstr ""
+msgid "Listening on port %(port)d"
+msgstr "%(port)d 포트 수신 중"
 
 #: picard/ui/mainwindow.py:483
 msgid "AcoustID submission not configured"
@@ -10100,10 +10100,6 @@ msgstr ""
 "웹 브라우저 실행 오류:\n"
 "\n"
 "%s"
-
-#, python-format
-#~ msgid "Listening on port %(port)d"
-#~ msgstr "%(port)d 포트 수신 중"
 
 #, python-format
 #~ msgid "%s "
