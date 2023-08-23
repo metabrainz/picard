@@ -199,7 +199,7 @@ class PicardScript():
         """Export the script to a file.
         """
         # return _export_script_dialog(script_item=self, parent=parent)
-        FILE_ERROR_EXPORT = N_('Error exporting file "%s". %s.')
+        FILE_ERROR_EXPORT = N_('Error exporting file "%(filename)s": %(error)s.')
 
         default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
         default_script_extension = "ptsp"
@@ -240,8 +240,8 @@ class PicardScript():
     def import_script(cls, parent=None):
         """Import a script from a file.
         """
-        FILE_ERROR_IMPORT = N_('Error importing "%s". %s.')
-        FILE_ERROR_DECODE = N_('Error decoding "%s". %s.')
+        FILE_ERROR_IMPORT = N_('Error importing "%(filename)s": %(error)s.')
+        FILE_ERROR_DECODE = N_('Error decoding "%(filename)s": %(error)s.')
 
         dialog_title = _("Import Script File")
         dialog_file_types = cls._get_dialog_filetypes()

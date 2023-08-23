@@ -124,11 +124,10 @@ class MaintenanceOptionsPage(OptionsPage):
         orphan_options = file_options.difference(current_options)
 
         self.ui.option_counts.setText(
-            _("The configuration file currently contains %d option settings, %d which are unused.") % (
-                len(file_options),
-                len(orphan_options)
-            )
-        )
+            _("The configuration file currently contains %(totalcount)d option settings, %(unusedcount)d which are unused.") % {
+                'totalcount': len(file_options),
+                'unusedcount': len(orphan_options),
+            })
         self.ui.enable_cleanup.setChecked(False)
         self.ui.tableWidget.clearContents()
         self.ui.tableWidget.setRowCount(len(orphan_options))

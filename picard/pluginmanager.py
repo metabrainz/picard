@@ -214,7 +214,9 @@ class PluginManager(QtCore.QObject):
         passed to the function given via the `log_func` keyword argument
         (default: log.error) and as the error message to the `plugin_errored`
         signal."""
-        error = error % args
+        params = kwargs.get('params', args)
+        if params:
+            error = error % params
         log_func = kwargs.get('log_func', log.error)
         log_func(error)
         self.plugin_errored.emit(name, error, False)
@@ -273,8 +275,11 @@ class PluginManager(QtCore.QObject):
         if zip_importer:
             name = module_name
             if not zip_importer.find_module(name):
-                error = _("Failed loading zipped plugin %r from %r")
-                self.plugin_error(name, error, name, zipfilename)
+                error = _('Failed loading zipped plugin "%(plugin)s" from "%(filename)s"')
+                self.plugin_error(name, error, params={
+                    'plugin': name,
+                    'filename': zipfilename,
+                })
                 return None
             module_pathname = zip_importer.get_filename(name)
         else:
@@ -283,8 +288,11 @@ class PluginManager(QtCore.QObject):
                 module_file = info[0]
                 module_pathname = info[1]
             except ImportError:
-                error = _("Failed loading plugin %r in %r")
-                self.plugin_error(name, error, name, [plugindir])
+                error = _('Failed loading plugin "%(plugin)s" in "%(dirname)s"')
+                self.plugin_error(name, error, params={
+                    'plugin': name,
+                    'dirname': plugindir,
+                })
                 return None
 
         plugin = None
@@ -319,12 +327,16 @@ class PluginManager(QtCore.QObject):
                 else:
                     self.plugins.append(plugin)
             else:
-                error = _("Plugin '%s' from '%s' is not compatible with this "
-                          "version of Picard.") % (plugin.name, plugin.file)
-                self.plugin_error(plugin.name, error, log_func=log.warning)
+                error = _('Plugin "%(plugin)s" from "%(filename)s" is not '
+                          'compatible with this version of Picard.')
+                params = {'plugin': plugin.name, 'filename': plugin.file}
+                self.plugin_error(plugin.name, error, params=params, log_func=log.warning)
         except VersionError as e:
-            error = _("Plugin %r has an invalid API version string : %s")
-            self.plugin_error(name, error, name, e)
+            error = _('Plugin "%(plugin)s" has an invalid API version string : %(error)s')
+            self.plugin_error(name, error, params={
+                'plugins': name,
+                'error': e,
+            })
         except BaseException:
             error = _("Plugin %r")
             self.plugin_error(name, error, name, log_func=log.exception)

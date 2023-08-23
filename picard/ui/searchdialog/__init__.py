@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2018-2022 Laurent Monin
-# Copyright (C) 2018-2022 Philipp Wolfer
+# Copyright (C) 2018-2023 Philipp Wolfer
 # Copyright (C) 2020 Ray Bouchard
 #
 # This program is free software; you can redistribute it and/or
@@ -249,14 +249,15 @@ class SearchDialog(TableBasedDialog):
         self.add_widget_to_center_layout(error_widget)
 
     def network_error(self, reply, error):
+        params = {
+            'url': reply.request().url().toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo),
+            'error': reply.errorString(),
+            'qtcode': error,
+            'statuscode': reply.attribute(
+                QtNetwork.QNetworkRequest.Attribute.HttpStatusCodeAttribute)
+        }
         error_msg = _("<strong>Following error occurred while fetching results:<br><br></strong>"
-                      "Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>") % (
-                          reply.request().url().toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo),
-                          reply.errorString(),
-                          error,
-                          repr(reply.attribute(
-                              QtNetwork.QNetworkRequest.Attribute.HttpStatusCodeAttribute))
-        )
+                      "Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, HTTP code %(statuscode)r)<br>") % params
         self.show_error(error_msg, show_retry_button=True)
 
     def no_results_found(self):
