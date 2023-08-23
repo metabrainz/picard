@@ -4,7 +4,7 @@
 #
 # Translators:
 # Chris_Kay_083, 2014
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023.
 # 6fd7e0289e0c30343ba3ef95fad1ee4c_fa6ad96, 2017
 # 6fd7e0289e0c30343ba3ef95fad1ee4c_fa6ad96, 2017
 msgid ""
@@ -12,16 +12,16 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 08:24+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Croatian <https://translations.metabrainz.org/projects/picard/"
 "app/hr/>\n"
 "Language: hr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
 
@@ -1011,7 +1011,7 @@ msgstr "Islandski"
 
 #: picard/const/languages.py:58 picard/const/locales.py:528
 msgid "Italian"
-msgstr "Talijanski "
+msgstr "Talijanski"
 
 #: picard/const/languages.py:59 picard/const/locales.py:537
 msgid "Japanese"
@@ -1035,7 +1035,7 @@ msgstr "Nizozemski"
 
 #: picard/const/languages.py:67 picard/const/locales.py:745
 msgid "Occitan"
-msgstr "Gaskonjski jezik ili dijalekt "
+msgstr "Gaskonjski jezik ili dijalekt"
 
 #: picard/const/languages.py:68 picard/const/locales.py:772
 msgid "Polish"
@@ -3082,7 +3082,7 @@ msgstr ""
 
 #: picard/const/locales.py:545
 msgid "Javanese"
-msgstr "Javanski jezik "
+msgstr "Javanski jezik"
 
 #: picard/const/locales.py:546
 msgid "Javanese (Indonesia)"
