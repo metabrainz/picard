@@ -4,21 +4,23 @@
 #
 # Translators:
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2011
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2014-03-21 08:44+0000\n"
-"Last-Translator: nikki\n"
-"Language-Team: Asturian (http://www.transifex.com/projects/p/musicbrainz/"
-"language/ast/)\n"
+"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"Language-Team: Asturian <https://translations.metabrainz.org/projects/picard/"
+"app/ast/>\n"
 "Language: ast\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 1.3\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -46,17 +48,17 @@ msgstr "[nun se pudo cargar l'álbum %s]"
 #: picard/cluster.py:259
 #, fuzzy, python-format
 msgid "Cluster %(album)s identified!"
-msgstr "¡Identificáu el ficheru %s!"
+msgstr "¡Identificáu el ficheru %(album)s!"
 
 #: picard/cluster.py:262
 #, fuzzy, python-format
 msgid "No matching releases for cluster %(album)s"
-msgstr "Nun concasa pista denguna pal ficheru %s"
+msgstr "Nun concasa pista denguna pal ficheru %(album)s"
 
 #: picard/cluster.py:281
 #, fuzzy, python-format
 msgid "Looking up the metadata for cluster %(album)s…"
-msgstr "Guetando los metadatos del ficheru %s…"
+msgstr "Guetando los metadatos del ficheru %(album)s…"
 
 #: picard/cluster.py:330
 #, fuzzy
@@ -130,24 +132,24 @@ msgid ""
 msgstr ""
 
 #: picard/file.py:850
-#, fuzzy, python-format
+#, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
-msgstr "Nun concasa pista denguna perriba del umbral pal ficheru %s"
+msgstr "Nun concasa pista denguna perriba del umbral pal ficheru %(filename)s"
 
 #: picard/file.py:852
-#, fuzzy, python-format
+#, python-format
 msgid "File '%(filename)s' identified!"
-msgstr "¡Identificáu el ficheru %s!"
+msgstr "¡Identificáu el ficheru %(filename)s!"
 
 #: picard/file.py:864
-#, fuzzy, python-format
+#, python-format
 msgid "No matching tracks for file '%(filename)s'"
-msgstr "Nun concasa pista denguna pal ficheru %s"
+msgstr "Nun concasa pista denguna pal ficheru %(filename)s"
 
 #: picard/file.py:896
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the metadata for file %(filename)s …"
-msgstr "Guetando los metadatos del ficheru %s…"
+msgstr "Guetando los metadatos del ficheru %(filename)s…"
 
 #: picard/oauth.py:249 picard/oauth.py:276
 msgid "Unexpected authentication error"
@@ -835,9 +837,9 @@ msgid "AcoustID lookup returned no result for file '%(filename)s'"
 msgstr ""
 
 #: picard/acoustid/__init__.py:187
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' …"
-msgstr "Guetando los metadatos del ficheru %s…"
+msgstr "Guetando los metadatos del ficheru %(filename)s…"
 
 #: picard/acoustid/manager.py:184
 msgid ""
