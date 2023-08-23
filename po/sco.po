@@ -4,21 +4,23 @@
 #
 # Translators:
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-08-29 08:53+0000\n"
-"Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
-"Language-Team: Scots (http://www.transifex.com/projects/p/musicbrainz/"
-"language/sco/)\n"
+"PO-Revision-Date: 2023-08-23 19:10+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"Language-Team: Scots <https://translations.metabrainz.org/projects/picard/"
+"app/sco/>\n"
 "Language: sco\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 0.9.6\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -46,7 +48,7 @@ msgstr ""
 #: picard/cluster.py:259
 #, fuzzy, python-format
 msgid "Cluster %(album)s identified!"
-msgstr "[[Slump]] %s kannt!"
+msgstr "[[Slump]] %(album)s kannt!"
 
 #: picard/cluster.py:262
 #, python-format
@@ -56,7 +58,7 @@ msgstr ""
 #: picard/cluster.py:281
 #, fuzzy, python-format
 msgid "Looking up the metadata for cluster %(album)s…"
-msgstr "Speirin for metadata o the [[slump]] %s…"
+msgstr "Speirin for metadata o the [[slump]] %(album)s…"
 
 #: picard/cluster.py:330
 msgid "Unclustered Files"
@@ -134,9 +136,9 @@ msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr ""
 
 #: picard/file.py:852
-#, fuzzy, python-format
+#, python-format
 msgid "File '%(filename)s' identified!"
-msgstr "File %s kannt!"
+msgstr "File %(filename)s kannt!"
 
 #: picard/file.py:864
 #, python-format
@@ -144,9 +146,9 @@ msgid "No matching tracks for file '%(filename)s'"
 msgstr ""
 
 #: picard/file.py:896
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the metadata for file %(filename)s …"
-msgstr "Speirin for metadata o the file %s…"
+msgstr "Speirin for metadata o the file %(filename)s…"
 
 #: picard/oauth.py:249 picard/oauth.py:276
 msgid "Unexpected authentication error"
@@ -836,7 +838,7 @@ msgstr ""
 #: picard/acoustid/__init__.py:187
 #, fuzzy, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' …"
-msgstr "Speirin for metadata o the file %s…"
+msgstr "Speirin for metadata o the file %(filename)s…"
 
 #: picard/acoustid/manager.py:184
 msgid ""
