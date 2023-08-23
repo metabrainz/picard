@@ -32,17 +32,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 07:19+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-08-23 19:10+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/picard/"
 "app/ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
-"%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
+"n%100>=11 && n%100<=14)? 2 : 3);\n"
 "X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
 
@@ -338,7 +338,7 @@ msgstr ""
 
 #: picard/profile.py:70 picard/ui/ui_options_metadata.py:136
 msgid "Convert Unicode punctuation characters to ASCII"
-msgstr "Превращать знаки препинания Юникода в простой вариант ASCII "
+msgstr "Превращать знаки препинания Юникода в простой вариант ASCII"
 
 #: picard/profile.py:71 picard/ui/ui_options_metadata.py:137
 msgid "Use release relationships"
@@ -803,7 +803,7 @@ msgstr "Формат"
 
 #: picard/releasegroup.py:73
 msgid "Label"
-msgstr " Лейбл"
+msgstr "Лейбл"
 
 #: picard/releasegroup.py:74
 msgid "Cat No"
@@ -974,7 +974,7 @@ msgstr "(скопировать)"
 
 #: picard/const/__init__.py:203
 msgid "{title} ({count})"
-msgstr "{заголовок} ({количество})"
+msgstr "{title} ({count})"
 
 #: picard/const/languages.py:29 picard/const/locales.py:48
 #: picard/const/scripts.py:29
@@ -5204,7 +5204,7 @@ msgstr "Обложка типа '%(type)s' загружены %(albumid)s из %
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s …"
-msgstr "Загрузка обложки типа  '%(type)s' для %(albumid)s с %(host)s …"
+msgstr "Загрузка обложки типа '%(type)s' для %(albumid)s с %(host)s …"
 
 #: picard/coverart/utils.py:38
 msgid "Unknown"
@@ -7149,7 +7149,7 @@ msgstr "Добавить папку в теггер"
 
 #: picard/ui/mainwindow.py:572
 msgid "Ctrl+E"
-msgstr "Ctrl-E"
+msgstr "Ctrl+E"
 
 #: picard/ui/mainwindow.py:579
 msgid "Close Window"
@@ -7445,7 +7445,7 @@ msgstr "Ctrl+Shift+H"
 
 #: picard/ui/mainwindow.py:887 picard/ui/scripteditor.py:608
 msgid "Ctrl+H"
-msgstr "Ctrl-H"
+msgstr "Ctrl+H"
 
 #: picard/ui/mainwindow.py:893
 msgid "Open in &Player"
@@ -8277,7 +8277,7 @@ msgstr "Источники обложек"
 
 #: picard/ui/ui_options_cover.py:103
 msgid "Reorder Priority:"
-msgstr "Переупорядочить приоритет: "
+msgstr "Переупорядочить приоритет:"
 
 #: picard/ui/ui_options_cover.py:104
 #: picard/ui/ui_options_interface_toolbar.py:77
