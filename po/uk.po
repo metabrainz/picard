@@ -6,25 +6,25 @@
 # Artur Gorbahev <arttttur@gmail.com>, 2018
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010
 # Iurii Skipa <yuriskipa@gmail.com>, 2016
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023.
 # Антон Присяжный <aukrodotua@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 07:19+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-08-23 19:10+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/app/uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
-"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
-"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
-"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 "
+"? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > "
+"14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % "
+"100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 "X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
 
@@ -54,7 +54,7 @@ msgstr "[не вдалось завантажити альбом %s]"
 #: picard/cluster.py:259
 #, python-format
 msgid "Cluster %(album)s identified!"
-msgstr "Кластер %(album)sвиявлений! "
+msgstr "Кластер %(album)sвиявлений!"
 
 #: picard/cluster.py:262
 #, python-format
@@ -158,7 +158,7 @@ msgstr "Немає відповідних треків зверху для фа�
 #: picard/file.py:852
 #, python-format
 msgid "File '%(filename)s' identified!"
-msgstr "Файл '%(filename)s' виявлено! "
+msgstr "Файл '%(filename)s' виявлено!"
 
 #: picard/file.py:864
 #, python-format
@@ -678,7 +678,7 @@ msgstr ""
 
 #: picard/profile.py:217 picard/ui/ui_options_advanced.py:143
 msgid "Ignore hidden files"
-msgstr "Ігнорувати приховані файли "
+msgstr "Ігнорувати приховані файли"
 
 #: picard/profile.py:218 picard/ui/ui_options_advanced.py:142
 msgid "Include sub-folders when adding files from folder"
@@ -865,7 +865,7 @@ msgstr ""
 #: picard/acoustid/__init__.py:104
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
-msgstr "AcoustID пошукова помилка мережі  для '%(filename)s'!"
+msgstr "AcoustID пошукова помилка мережі для '%(filename)s'!"
 
 #: picard/acoustid/__init__.py:153
 #, python-format
@@ -5136,7 +5136,7 @@ msgstr "500 пікс"
 
 #: picard/coverart/providers/caa.py:80
 msgid "1200 px"
-msgstr "1200  пікс"
+msgstr "1200 пікс"
 
 #: picard/coverart/providers/caa.py:81
 msgid "Full size"
@@ -6893,7 +6893,7 @@ msgstr "Очистити виділення"
 
 #: picard/ui/logview.py:209 picard/ui/logview.py:295
 msgid "Clear Log"
-msgstr "Очистити журнал "
+msgstr "Очистити журнал"
 
 #: picard/ui/logview.py:214
 msgid "Save As…"
@@ -8122,7 +8122,7 @@ msgstr ""
 
 #: picard/ui/ui_options_advanced.py:146
 msgid "Data tracks"
-msgstr "Дата треків "
+msgstr "Дата треків"
 
 #: picard/ui/ui_options_advanced.py:147
 msgid "Pregap tracks"
@@ -8176,7 +8176,7 @@ msgstr "Перемістити вибраний елемент вниз"
 
 #: picard/ui/ui_options_fingerprinting.py:97
 msgid "Audio Fingerprinting"
-msgstr "Аудіо Відбиток "
+msgstr "Аудіо Відбиток"
 
 #: picard/ui/ui_options_fingerprinting.py:98
 msgid "Do not use audio fingerprinting"
@@ -8408,9 +8408,8 @@ msgid "Minimal similarity for cluster lookups:"
 msgstr "Мінімальна схожість для пошуків кластерів:"
 
 #: picard/ui/ui_options_metadata.py:130
-#, fuzzy
 msgid "Translate artist names to these locales where possible:"
-msgstr "Перекладіть імена виконавців на цю мову,  якщо це можливо:"
+msgstr "Перекладіть імена виконавців на цю мову, якщо це можливо:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select…"
@@ -8551,7 +8550,7 @@ msgstr "Перемістити файли під час збереження"
 
 #: picard/ui/ui_options_renaming.py:151
 msgid "Destination directory:"
-msgstr "Тека призначення: "
+msgstr "Тека призначення:"
 
 #: picard/ui/ui_options_renaming.py:153
 msgid "Move additional files (case insensitive):"
@@ -8781,7 +8780,7 @@ msgstr "Використовувати лише зображення таког�
 
 #: picard/ui/ui_provider_options_caa.py:72
 msgid "Download only approved images"
-msgstr "Завантажувати лише схвалені, підтверджені  зображення"
+msgstr "Завантажувати лише схвалені, підтверджені зображення"
 
 #: picard/ui/ui_provider_options_local.py:53
 msgid "Local cover art files match the following regular expression:"
@@ -9159,7 +9158,7 @@ msgstr "Додати Файли"
 
 #: picard/ui/options/interface_toolbar.py:75
 msgid "Cluster"
-msgstr "Кластер "
+msgstr "Кластер"
 
 #: picard/ui/options/interface_toolbar.py:79
 #, fuzzy
@@ -9378,7 +9377,7 @@ msgstr "Перезапустіть Picard для оновлення до нов�
 
 #: picard/ui/options/plugins.py:603
 msgid "New version available"
-msgstr "Доступна нова версія "
+msgstr "Доступна нова версія"
 
 #: picard/ui/options/plugins.py:610
 msgid "Authors"
@@ -9544,7 +9543,7 @@ msgstr "<strong>Завантадення…</strong>"
 
 #: picard/ui/searchdialog/__init__.py:241
 msgid "Retry"
-msgstr "Повторна спроба "
+msgstr "Повторна спроба"
 
 #: picard/ui/searchdialog/__init__.py:252
 #, python-format
@@ -9553,7 +9552,7 @@ msgid ""
 "strong>Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>"
 msgstr ""
 "<strong>Під час отримання результатів сталася помилка:<br><br></"
-"strong>Помилка запиту для %s:<br>%s (QT  код%d, HTTP код%s)<br>"
+"strong>Помилка запиту для %s:<br>%s (QT код%d, HTTP код%s)<br>"
 
 #: picard/ui/searchdialog/__init__.py:263
 msgid "<strong>No results found. Please try a different search query.</strong>"
@@ -9785,7 +9784,7 @@ msgstr ""
 
 #: picard/util/tags.py:36
 msgid "AcoustID Fingerprint"
-msgstr "AcoustID відбиток "
+msgstr "AcoustID відбиток"
 
 #: picard/util/tags.py:37
 msgid "AcoustID"
@@ -9975,7 +9974,7 @@ msgstr "Оригінальний альбом"
 
 #: picard/util/tags.py:95
 msgid "Original Artist"
-msgstr "Оригінальний виконавець "
+msgstr "Оригінальний виконавець"
 
 #: picard/util/tags.py:97
 msgid "Original Filename"
@@ -10095,7 +10094,7 @@ msgstr "Номер доріжки"
 
 #: picard/util/tags.py:128
 msgid "Artist Website"
-msgstr "Веб-сайт Виконавця "
+msgstr "Веб-сайт Виконавця"
 
 #: picard/util/tags.py:129
 msgid "Work"
