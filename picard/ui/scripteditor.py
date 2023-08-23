@@ -931,7 +931,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     def new_script_name(self, base_title=None):
         """Get new unique script name.
         """
-        default_title = base_title if base_title is not None else _(DEFAULT_SCRIPT_NAME)
+        default_title = base_title if base_title is not None else gettext_constants(DEFAULT_SCRIPT_NAME)
         existing_titles = set(script['title'] for script in self.naming_scripts.values())
         return unique_numbered_title(default_title, existing_titles)
 
@@ -949,7 +949,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         script_item = self.ui.preset_naming_scripts.itemData(selected)
         new_item = FileNamingScript.create_from_dict(script_dict=script_item).copy()
 
-        base_title = "%s %s" % (get_base_title(script_item['title']), _(DEFAULT_COPY_TEXT))
+        base_title = "%s %s" % (get_base_title(script_item['title']), gettext_constants(DEFAULT_COPY_TEXT))
         new_item.title = self.new_script_name(base_title)
 
         self._insert_item(new_item.to_dict())

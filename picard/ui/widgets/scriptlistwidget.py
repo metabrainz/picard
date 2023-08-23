@@ -69,7 +69,7 @@ class ScriptListWidget(QtWidgets.QListWidget):
 
     def unique_script_name(self):
         existing_titles = [self.item(i).name for i in range(self.count())]
-        return unique_numbered_title(_(DEFAULT_SCRIPT_NAME), existing_titles)
+        return unique_numbered_title(gettext_constants(DEFAULT_SCRIPT_NAME), existing_titles)
 
     def add_script(self):
         numbered_name = self.unique_script_name()
@@ -114,7 +114,7 @@ class ScriptListWidgetItem(HashableListWidgetItem):
         super().__init__(name)
         self.setFlags(self.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsEditable)
         if name is None:
-            name = _(DEFAULT_SCRIPT_NAME)
+            name = gettext_constants(DEFAULT_SCRIPT_NAME)
         self.setText(name)
         self.setCheckState(QtCore.Qt.CheckState.Checked if enabled else QtCore.Qt.CheckState.Unchecked)
         self.script = script

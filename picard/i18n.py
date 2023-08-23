@@ -172,12 +172,14 @@ def setup_gettext(localedir, ui_language=None, logger=None):
     QLocale.setDefault(QLocale(current_locale))
 
     trans = _load_translation('picard', localedir, language=current_locale)
-    trans_countries = _load_translation('picard-countries', localedir, language=current_locale)
     trans_attributes = _load_translation('picard-attributes', localedir, language=current_locale)
+    trans_constants = _load_translation('picard-constants', localedir, language=current_locale)
+    trans_countries = _load_translation('picard-countries', localedir, language=current_locale)
 
     trans.install(['ngettext'])
-    builtins.__dict__['gettext_countries'] = trans_countries.gettext
     builtins.__dict__['gettext_attributes'] = trans_attributes.gettext
+    builtins.__dict__['gettext_constants'] = trans_constants.gettext
+    builtins.__dict__['gettext_countries'] = trans_countries.gettext
 
     if hasattr(trans_attributes, 'pgettext'):
         builtins.__dict__['pgettext_attributes'] = trans_attributes.pgettext

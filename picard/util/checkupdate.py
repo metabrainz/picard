@@ -159,7 +159,7 @@ class UpdateCheckManager(QtCore.QObject):
                     _("Picard Update"),
                     _("There is no update currently available for your subscribed update level: {update_level}\n\n"
                       "Your version: {picard_old_version}\n").format(
-                        update_level=_(update_level),
+                        update_level=gettext_constants(update_level),
                         picard_old_version=PICARD_FANCY_VERSION_STR,
                     ),
                     QMessageBox.StandardButton.Ok, QMessageBox.StandardButton.Ok

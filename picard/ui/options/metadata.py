@@ -130,7 +130,7 @@ class MetadataOptionsPage(OptionsPage):
     def make_locales_text(self):
         def translated_locales():
             for locale in self.current_locales:
-                yield _(ALIAS_LOCALES[locale])
+                yield gettext_constants(ALIAS_LOCALES[locale])
 
         self.ui.selected_locales.setText('; '.join(translated_locales()))
 
@@ -205,7 +205,7 @@ class MultiLocaleSelector(PicardDialog):
             # Note that items in the selected locales list are not indented because
             # the root locale may not be in the list, or may not immediately precede
             # the specific locale.
-            label = _(ALIAS_LOCALES[locale])
+            label = gettext_constants(ALIAS_LOCALES[locale])
             item = QtWidgets.QListWidgetItem(label)
             item.setData(QtCore.Qt.ItemDataRole.UserRole, locale)
             self.ui.selected_locales.addItem(item)
@@ -214,7 +214,7 @@ class MultiLocaleSelector(PicardDialog):
         def indented_translated_locale(locale, level):
             return _("{indent}{locale}").format(
                 indent="    " * level,
-                locale=_(ALIAS_LOCALES[locale])
+                locale=gettext_constants(ALIAS_LOCALES[locale])
             )
 
         self.ui.available_locales.clear()
@@ -240,7 +240,7 @@ class MultiLocaleSelector(PicardDialog):
         # Note that items in the selected locales list are not indented because
         # the root locale may not be in the list, or may not immediately precede
         # the specific locale.
-        new_item.setText(_(ALIAS_LOCALES[locale]))
+        new_item.setText(gettext_constants(ALIAS_LOCALES[locale]))
         self.ui.selected_locales.addItem(new_item)
         self.ui.selected_locales.setCurrentRow(self.ui.selected_locales.count() - 1)
 
@@ -290,7 +290,7 @@ class ScriptExceptionSelector(PicardDialog):
     @staticmethod
     def make_label(script_id, script_weighting):
         return "{script} ({weighting}%)".format(
-            script=_(SCRIPTS[script_id]),
+            script=gettext_constants(SCRIPTS[script_id]),
             weighting=script_weighting,
         )
 
