@@ -15,17 +15,18 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022\n"
-"Language-Team: Czech (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/cs/)\n"
+"PO-Revision-Date: 2023-08-23 08:48+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Czech <https://translations.metabrainz.org/projects/picard/"
+"app/cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
 "<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
+"X-Generator: Weblate 4.18.2\n"
+"Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -255,8 +256,9 @@ msgid "General"
 msgstr "Obecné"
 
 #: picard/profile.py:48
+#, fuzzy
 msgid "Server address"
-msgstr ""
+msgstr "Adresa serveru:"
 
 #: picard/profile.py:49
 msgid "Port"
@@ -601,8 +603,9 @@ msgid "Show icons in menus"
 msgstr ""
 
 #: picard/profile.py:188
+#, fuzzy
 msgid "User interface language"
-msgstr ""
+msgstr "Jazyk uživatelského rozhraní:"
 
 #: picard/profile.py:189
 msgid "User interface color theme"
@@ -745,16 +748,19 @@ msgid "Listen only on localhost"
 msgstr ""
 
 #: picard/profile.py:252
+#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr ""
+msgstr "Minimální podobnost pro vyhledávní v souborech"
 
 #: picard/profile.py:253
+#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr ""
+msgstr "Minimální podobnost pro vyhledávní v klastrech"
 
 #: picard/profile.py:254
+#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr ""
+msgstr "Minimální podobnost k identifikaci skladeb"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -7459,8 +7465,9 @@ msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
 #: picard/ui/mainwindow.py:1722
+#, fuzzy
 msgid "Authentication Required"
-msgstr ""
+msgstr "Je vyžadována autentizace"
 
 #: picard/ui/mainwindow.py:1723
 msgid ""
@@ -7919,8 +7926,9 @@ msgid "Overwrite"
 msgstr ""
 
 #: picard/ui/options/profiles.py:119 picard/ui/scripteditor.py:1238
+#, fuzzy
 msgid "Copy"
-msgstr ""
+msgstr "Zkopírovat"
 
 #: picard/ui/options/renaming.py:266 picard/ui/scripteditor.py:1284
 msgid "The file naming format must not be empty."
@@ -8390,8 +8398,9 @@ msgid "Minimal similarity for cluster lookups:"
 msgstr "Minimální podobnost pro vyhledávní v klastrech"
 
 #: picard/ui/ui_options_metadata.py:130
+#, fuzzy
 msgid "Translate artist names to these locales where possible:"
-msgstr ""
+msgstr "Pokud je to možné, překládat jména umělců do této lokalizace:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select..."
@@ -9130,8 +9139,9 @@ msgid "Scan"
 msgstr "Prohledat"
 
 #: picard/ui/options/interface_toolbar.py:87
+#, fuzzy
 msgid "Lookup in Browser"
-msgstr ""
+msgstr "Vyhledat v &prohlížeči"
 
 #: picard/ui/options/interface_toolbar.py:91
 msgid "Save"
@@ -10048,8 +10058,9 @@ msgid "Artist Website"
 msgstr ""
 
 #: picard/util/tags.py:129
+#, fuzzy
 msgid "Work"
-msgstr ""
+msgstr "Dílo"
 
 #: picard/util/tags.py:130
 msgid "Writer"
