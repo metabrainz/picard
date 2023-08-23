@@ -5175,8 +5175,7 @@ msgstr ""
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s …"
 msgstr ""
-"Baixando arte de capa do tipo '%(type)s' para %(albumid)s do site "
-"%(host)s …"
+"Baixando arte de capa do tipo '%(type)s' para %(albumid)s do site %(host)s …"
 
 #: picard/coverart/utils.py:38
 msgid "Unknown"
@@ -7113,8 +7112,8 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:424
 #, python-format
-msgid "Listening on port %(port)d"
-msgstr "Escutando porta %(port)d"
+msgid " Listening on port %(port)d "
+msgstr ""
 
 #: picard/ui/mainwindow.py:483
 msgid "AcoustID submission not configured"
@@ -10326,6 +10325,10 @@ msgstr ""
 "Erro ao abrir o navegador web:\n"
 "\n"
 "%s"
+
+#, python-format
+#~ msgid "Listening on port %(port)d"
+#~ msgstr "Escutando porta %(port)d"
 
 #, python-format
 #~ msgid "%s "

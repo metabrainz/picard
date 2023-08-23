@@ -6926,8 +6926,8 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:424
 #, python-format
-msgid "Listening on port %(port)d"
-msgstr "Gwrando ar porth %(port)d"
+msgid " Listening on port %(port)d "
+msgstr ""
 
 #: picard/ui/mainwindow.py:483
 msgid "AcoustID submission not configured"
@@ -10051,3 +10051,7 @@ msgstr ""
 "Gwall dechrau porwr:\n"
 "\n"
 "%s"
+
+#, python-format
+#~ msgid "Listening on port %(port)d"
+#~ msgstr "Gwrando ar porth %(port)d"

@@ -6830,8 +6830,8 @@ msgstr ""
 "Gibt den unter der Verwendung des in `Typ` angegebenen Vergleichs kleinsten "
 "Wert zurück.\n"
 "\n"
-"Mögliche Werte von `Typ` sind „int“ (Ganzzahl), „float“ (Gleitkomma), „text“"
-"\n"
+"Mögliche Werte von `Typ` sind „int“ (Ganzzahl), „float“ (Gleitkomma), "
+"„text“\n"
 "(Groß-/Kleinschreibung beachtender Text), „nocase“ (Groß-/Kleinschreibung "
 "ignorierender Text) und\n"
 "„auto“ (den Typ automatisch anhand der Argumente festlegen), wobei „auto“ "
@@ -6874,8 +6874,8 @@ msgstr ""
 "Gibt den unter der Verwendung des in `Typ` angegebenen Vergleichs größten "
 "Wert zurück.\n"
 "\n"
-"Mögliche Werte von `Typ` sind „int“ (Ganzzahl), „float“ (Gleitkomma), „text“ "
-"(Groß-/Kleinschreibung\n"
+"Mögliche Werte von `Typ` sind „int“ (Ganzzahl), „float“ (Gleitkomma), "
+"„text“ (Groß-/Kleinschreibung\n"
 "beachtender Text), „nocase“ (Groß-/Kleinschreibung ignorierender Text) und "
 "„auto“ (den Typ automatisch\n"
 "anhand der Argumente festlegen), wobei „auto“ als "
@@ -7656,8 +7656,8 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:424
 #, python-format
-msgid "Listening on port %(port)d"
-msgstr "Auf Port %(port)d wird gelauscht"
+msgid " Listening on port %(port)d "
+msgstr ""
 
 #: picard/ui/mainwindow.py:483
 msgid "AcoustID submission not configured"
@@ -11007,6 +11007,10 @@ msgstr ""
 "Fehler beim Öffnen des Webbrowsers:\n"
 "\n"
 "%s"
+
+#, python-format
+#~ msgid "Listening on port %(port)d"
+#~ msgstr "Auf Port %(port)d wird gelauscht"
 
 #, python-format
 #~ msgid "%s "

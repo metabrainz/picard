@@ -5151,8 +5151,7 @@ msgstr ""
 #: picard/coverart/__init__.py:103
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
-msgstr ""
-"Κατέβηκε εξωφύλλου του τύπου '%(type)s' για %(albumid)s από %(host)s …"
+msgstr "Κατέβηκε εξωφύλλου του τύπου '%(type)s' για %(albumid)s από %(host)s …"
 
 #: picard/coverart/__init__.py:189
 #, python-format
@@ -7001,7 +7000,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:424
 #, python-format
-msgid "Listening on port %(port)d"
+msgid " Listening on port %(port)d "
 msgstr ""
 
 #: picard/ui/mainwindow.py:483

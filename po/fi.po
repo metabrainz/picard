@@ -5128,8 +5128,8 @@ msgstr ""
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s …"
 msgstr ""
-"Ladataan '%(type)s' kansitaidetta julkaisulle %(albumid)s kohteesta "
-"%(host)s …"
+"Ladataan '%(type)s' kansitaidetta julkaisulle %(albumid)s kohteesta %(host)s "
+"…"
 
 #: picard/coverart/utils.py:38
 msgid "Unknown"
@@ -7661,8 +7661,8 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:424
 #, python-format
-msgid "Listening on port %(port)d"
-msgstr "Tarkkaillaan porttia %(port)d"
+msgid " Listening on port %(port)d "
+msgstr ""
 
 #: picard/ui/mainwindow.py:483
 msgid "AcoustID submission not configured"
@@ -10978,6 +10978,10 @@ msgstr ""
 "Virhe käynnistettäessä verkkoselainta:\n"
 "\n"
 "%s"
+
+#, python-format
+#~ msgid "Listening on port %(port)d"
+#~ msgstr "Tarkkaillaan porttia %(port)d"
 
 #, python-format
 #~ msgid "%s "

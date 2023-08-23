@@ -6957,8 +6957,8 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:424
 #, python-format
-msgid "Listening on port %(port)d"
-msgstr "%(port)d 포트 수신 중"
+msgid " Listening on port %(port)d "
+msgstr ""
 
 #: picard/ui/mainwindow.py:483
 msgid "AcoustID submission not configured"
@@ -9067,8 +9067,9 @@ msgstr "바뀐 테마"
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
-msgstr "인터페이스 언어가 변경되었습니다. 변경사항을 적용하려면 Picard를 "
-"재시작하십시오."
+msgstr ""
+"인터페이스 언어가 변경되었습니다. 변경사항을 적용하려면 Picard를 재시작하십시"
+"오."
 
 #: picard/ui/options/interface.py:183
 msgid ""
@@ -9102,8 +9103,9 @@ msgstr "색이 변경된"
 msgid ""
 "You have changed the interface colors. You may have to restart Picard in "
 "order for the changes to take effect."
-msgstr "인터페이스 언어가 변경되었습니다. 변경사항을 적용하려면 Picard를 "
-"재시작하십시오."
+msgstr ""
+"인터페이스 언어가 변경되었습니다. 변경사항을 적용하려면 Picard를 재시작하십시"
+"오."
 
 #: picard/ui/options/interface_toolbar.py:59
 msgid "Action Toolbar"
@@ -10098,6 +10100,10 @@ msgstr ""
 "웹 브라우저 실행 오류:\n"
 "\n"
 "%s"
+
+#, python-format
+#~ msgid "Listening on port %(port)d"
+#~ msgstr "%(port)d 포트 수신 중"
 
 #, python-format
 #~ msgid "%s "
