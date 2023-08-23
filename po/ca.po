@@ -5,7 +5,7 @@
 # Translators:
 # Aniol, 2014-2015
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2008
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023.
 # t0n3t <toni75@gmail.com>, 2012-2013
 # t0n3t <toni75@gmail.com>, 2013
 # t0n3t <toni75@gmail.com>, 2012
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
 "PO-Revision-Date: 2023-08-23 19:09+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "app/ca/>\n"
 "Language: ca\n"
@@ -9714,7 +9714,7 @@ msgstr "Artistes"
 
 #: picard/util/tags.py:45
 msgid "Artist Sort Order"
-msgstr "Ordre de "
+msgstr "Ordre de"
 
 #: picard/util/tags.py:46
 msgid "ASIN"
