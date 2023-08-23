@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
 "PO-Revision-Date: 2023-08-23 19:09+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Malay <https://translations.metabrainz.org/projects/picard/"
 "app/ms/>\n"
 "Language: ms_MY\n"
@@ -5166,7 +5166,7 @@ msgid ""
 "types not appearing in the 'Include' or 'Exclude' lists will not be "
 "considered when determining whether or not to download and use a CAA image.\n"
 msgstr ""
-"Imej CAA dengan jenis yang didapati dalam senarai 'Terangkum'  akan dimuat "
+"Imej CAA dengan jenis yang didapati dalam senarai 'Terangkum' akan dimuat "
 "turun serta digunakan MELAINKAN imej tersebut juga didapati mempunyai jenis "
 "yang terdapat di senarai 'Dihalang'. Imej dengan jenis yang didapati di "
 "senarai 'Dihalang' TIDAK SAMA SEKALI digunakan. Jenis imej yang tidak "
@@ -6703,7 +6703,7 @@ msgstr "Ralat semasa menyimpan keluar \"%s\". %s."
 
 #: picard/script/serializer.py:209
 msgid "Export Script File"
-msgstr "Simpan Keluar Fail Skrip "
+msgstr "Simpan Keluar Fail Skrip"
 
 #: picard/script/serializer.py:231
 msgid "Export Script"
@@ -7657,7 +7657,7 @@ msgstr "&Data meta"
 
 #: picard/ui/mainwindow.py:717
 msgid "Ctrl+Shift+M"
-msgstr "Kwln+Anjak+M"
+msgstr "Ctrl+Shift+M"
 
 #: picard/ui/mainwindow.py:724
 msgid "&Cover Art"
@@ -9483,7 +9483,7 @@ msgstr ""
 
 #: picard/ui/options/dialog.py:494
 msgid " [Enabled]"
-msgstr "[Didayakan]"
+msgstr " [Didayakan]"
 
 #: picard/ui/options/dialog.py:495 picard/ui/options/profiles.py:281
 msgid "None"
