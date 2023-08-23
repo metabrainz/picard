@@ -5,13 +5,14 @@
 # Translators:
 # Babak <debat51@googlemail.com>, 2016
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2008
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 08:24+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Persian <https://translations.metabrainz.org/projects/picard/"
 "app/fa/>\n"
 "Language: fa\n"
@@ -133,7 +134,7 @@ msgstr ""
 #: picard/file.py:850
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
-msgstr "عنوان مناسب بالاتر از آستانه  برای پرونده „%(filename)s“ یافت نشد."
+msgstr "عنوان مناسب بالاتر از آستانه برای پرونده „%(filename)s“ یافت نشد."
 
 #: picard/file.py:852
 #, python-format
@@ -6842,7 +6843,7 @@ msgstr ""
 
 #: picard/ui/itemviews.py:851
 msgid "file view"
-msgstr "نمای پرونده "
+msgstr "نمای پرونده"
 
 #: picard/ui/itemviews.py:852
 msgid "Contains unmatched files and clusters"
@@ -7008,7 +7009,7 @@ msgstr ""
 #: picard/ui/mainwindow.py:424
 #, python-format
 msgid "Listening on port %(port)d"
-msgstr "استفاده از درگاه  %(port)d"
+msgstr "استفاده از درگاه %(port)d"
 
 #: picard/ui/mainwindow.py:483
 msgid "AcoustID submission not configured"
@@ -7018,8 +7019,7 @@ msgstr ""
 msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
-msgstr ""
-"قبل از ارسال اثر انگشت باید کلیدAPI  شناسه صوتی AcoustID را ارایه کنید."
+msgstr "قبل از ارسال اثر انگشت باید کلیدAPI شناسه صوتی AcoustID را ارایه کنید."
 
 #: picard/ui/mainwindow.py:487
 msgid "Open AcoustID options"
