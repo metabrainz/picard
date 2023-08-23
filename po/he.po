@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 08:24+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Hebrew <https://translations.metabrainz.org/projects/picard/"
 "app/he/>\n"
 "Language: he\n"
@@ -91,12 +91,12 @@ msgstr[3] "הוסרו %(count)i הוצאות מאוסף \"%(name)s\""
 #: picard/collection.py:97
 #, python-format
 msgid "Error while modifying collections: %(error)s"
-msgstr "%(error)sשגיאות בעת הסגלת אוספים: "
+msgstr "%(error)sשגיאות בעת הסגלת אוספים:"
 
 #: picard/collection.py:119
 #, python-format
 msgid "Error loading collections: %(error)s"
-msgstr "%(error)sשגיאות בטעינת אוספים: "
+msgstr "%(error)sשגיאות בטעינת אוספים:"
 
 #: picard/config_upgrade.py:82 picard/config_upgrade.py:95
 msgid "Various Artists file naming scheme removal"
@@ -160,12 +160,12 @@ msgstr "קובץ %(filename)s זוהה!"
 #: picard/file.py:864
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
-msgstr " אין רצועות תואמות לקובץ '%(filename)s'"
+msgstr "אין רצועות תואמות לקובץ '%(filename)s'"
 
 #: picard/file.py:896
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
-msgstr "חיפוש  קובץ %(filename)s בנתוני־על…"
+msgstr "חיפוש קובץ %(filename)s בנתוני־על…"
 
 #: picard/oauth.py:249 picard/oauth.py:276
 msgid "Unexpected authentication error"
@@ -192,12 +192,12 @@ msgstr "לא ניתן לטעון מִתְקָע '%s'?"
 #: picard/pluginmanager.py:276
 #, python-format
 msgid "Failed loading zipped plugin %r from %r"
-msgstr "טעינת מִתְקָע  %r  מ %r מכווץ ב־ZIP כשלה"
+msgstr "טעינת מִתְקָע %r מ %r מכווץ ב־ZIP כשלה"
 
 #: picard/pluginmanager.py:286
 #, python-format
 msgid "Failed loading plugin %r in %r"
-msgstr "טעינת מִתְקָע  %r כשלה ב %r"
+msgstr "טעינת מִתְקָע %r כשלה ב %r"
 
 #: picard/pluginmanager.py:322
 #, python-format
@@ -318,7 +318,7 @@ msgstr "שימוש בשמות כלים וקולות מְתוּקנָנים"
 
 #: picard/profile.py:70 picard/ui/ui_options_metadata.py:136
 msgid "Convert Unicode punctuation characters to ASCII"
-msgstr "‮המרת תווי פיסוק  ליוניקוד ASCII"
+msgstr "‮המרת תווי פיסוק ליוניקוד ASCII"
 
 #: picard/profile.py:71 picard/ui/ui_options_metadata.py:137
 msgid "Use release relationships"
@@ -560,7 +560,7 @@ msgstr "‮החלפת תווים שאינם ‭ASCII"
 #: picard/profile.py:166 picard/ui/ui_options_renaming_compat.py:86
 #: picard/ui/ui_win_compat_dialog.py:191
 msgid "Windows compatibility"
-msgstr "‮תאימות ל ‭וינדוס "
+msgstr "‮תאימות ל ‭וינדוס"
 
 #: picard/profile.py:167
 msgid "Replacement characters used for Windows compatibility"
@@ -580,7 +580,7 @@ msgstr ""
 
 #: picard/profile.py:175 picard/ui/options/scripting.py:99
 msgid "Scripting"
-msgstr " תַּסְרוט"
+msgstr "תַּסְרוט"
 
 #: picard/profile.py:177
 msgid "Enable tagger scripts"
@@ -588,7 +588,7 @@ msgstr "אפשור תַּסְרִיטי תיוג"
 
 #: picard/profile.py:178
 msgid "Tagger scripts"
-msgstr " תַּסְרִיטי תיוג"
+msgstr "תַּסְרִיטי תיוג"
 
 #: picard/profile.py:183 picard/ui/options/interface.py:67
 msgid "User Interface"
@@ -873,12 +873,12 @@ msgstr "חיפוש AcoustID נכשל עבור '%(filename)s'!"
 #: picard/acoustid/__init__.py:176
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
-msgstr " לא נמצאו תוצאות חיפוש AcoustID לקובץ '%(filename)s'"
+msgstr "לא נמצאו תוצאות חיפוש AcoustID לקובץ '%(filename)s'"
 
 #: picard/acoustid/__init__.py:187
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' …"
-msgstr " חיפוש טביעת אצבע לקובץ '%(filename)s'…"
+msgstr "חיפוש טביעת אצבע לקובץ '%(filename)s'…"
 
 #: picard/acoustid/manager.py:184
 msgid ""
@@ -900,7 +900,7 @@ msgstr "שגור AcoustID נכשל לצמיתות, כנראה עקב ניסיו�
 
 #: picard/acoustid/manager.py:209
 msgid "Submitting AcoustIDs …"
-msgstr " שגור AcoustIDs…"
+msgstr "שגור AcoustIDs…"
 
 #: picard/acoustid/manager.py:239
 #, python-format
@@ -1068,7 +1068,7 @@ msgstr "הולנדית"
 
 #: picard/const/languages.py:67 picard/const/locales.py:745
 msgid "Occitan"
-msgstr "אוקסיטנית "
+msgstr "אוקסיטנית"
 
 #: picard/const/languages.py:68 picard/const/locales.py:772
 msgid "Polish"
@@ -1116,11 +1116,11 @@ msgstr "אוקראינית"
 
 #: picard/const/languages.py:82
 msgid "Chinese (China)"
-msgstr "סינית  (סין)"
+msgstr "סינית (סין)"
 
 #: picard/const/languages.py:83
 msgid "Chinese (Taiwan)"
-msgstr "סינית  (טייוואן)"
+msgstr "סינית (טייוואן)"
 
 #: picard/const/locales.py:27
 msgid "Afar"
@@ -1377,7 +1377,7 @@ msgstr "אזרית (קירילית)"
 
 #: picard/const/locales.py:91
 msgid "Azerbaijani (Cyrillic) (Azerbaijan)"
-msgstr "אזרית  (קירילית) (אזרבייג'ן)"
+msgstr "אזרית (קירילית) (אזרבייג'ן)"
 
 #: picard/const/locales.py:92
 msgid "Azerbaijani (Latin)"
@@ -1385,7 +1385,7 @@ msgstr "אזרית (לטינית)"
 
 #: picard/const/locales.py:93
 msgid "Azerbaijani (Latin) (Azerbaijan)"
-msgstr "אזרית  (לטינית) (אזרבייג'ן)"
+msgstr "אזרית (לטינית) (אזרבייג'ן)"
 
 #: picard/const/locales.py:94
 msgid "Bashkir"
@@ -1543,11 +1543,11 @@ msgstr "טיבטית"
 
 #: picard/const/locales.py:132
 msgid "Tibetan (China)"
-msgstr "טיבתית  (סין)"
+msgstr "טיבתית (סין)"
 
 #: picard/const/locales.py:133
 msgid "Tibetan (India)"
-msgstr "טיבתית  (הודו)"
+msgstr "טיבתית (הודו)"
 
 #: picard/const/locales.py:134
 msgid "Breton"
@@ -4884,7 +4884,7 @@ msgstr "אוזבקית (קירילית)"
 
 #: picard/const/locales.py:993
 msgid "Uzbek (Cyrillic) (Uzbekistan)"
-msgstr "אזרית  (קירילית) (אוזבקיסטן)"
+msgstr "אזרית (קירילית) (אוזבקיסטן)"
 
 #: picard/const/locales.py:994
 msgid "Uzbek (Latin)"
@@ -4892,7 +4892,7 @@ msgstr "אוזבקית (לוינית)"
 
 #: picard/const/locales.py:995
 msgid "Uzbek (Latin) (Uzbekistan)"
-msgstr "אוזבקית  (לטינית) (אוזבקיסטן)"
+msgstr "אוזבקית (לטינית) (אוזבקיסטן)"
 
 #: picard/const/locales.py:996
 msgid "Vai"
@@ -5091,47 +5091,47 @@ msgstr "סינית"
 #: picard/const/locales.py:1044
 #, fuzzy
 msgid "Chinese (Simplified)"
-msgstr "סינית  (האן מפושטת)"
+msgstr "סינית (האן מפושטת)"
 
 #: picard/const/locales.py:1045
 #, fuzzy
 msgid "Chinese (Simplified) (China)"
-msgstr "סינית  (האן מפושטת) (סין)"
+msgstr "סינית (האן מפושטת) (סין)"
 
 #: picard/const/locales.py:1046
 #, fuzzy
 msgid "Chinese (Simplified) (Hong Kong)"
-msgstr "סינית  (האן מפושטת) (הונג קונג)"
+msgstr "סינית (האן מפושטת) (הונג קונג)"
 
 #: picard/const/locales.py:1047
 #, fuzzy
 msgid "Chinese (Simplified) (Macao)"
-msgstr "סינית  (האן מפושטת) (מקאו)"
+msgstr "סינית (האן מפושטת) (מקאו)"
 
 #: picard/const/locales.py:1048
 #, fuzzy
 msgid "Chinese (Simplified) (Singapore)"
-msgstr "סינית  (האן מפושטת) (סינגפור)"
+msgstr "סינית (האן מפושטת) (סינגפור)"
 
 #: picard/const/locales.py:1049
 #, fuzzy
 msgid "Chinese (Traditional)"
-msgstr "סינית  (האן מסורתית)"
+msgstr "סינית (האן מסורתית)"
 
 #: picard/const/locales.py:1050
 #, fuzzy
 msgid "Chinese (Traditional) (Hong Kong)"
-msgstr "סינית  (האן מסורתית) (הונג קונג)"
+msgstr "סינית (האן מסורתית) (הונג קונג)"
 
 #: picard/const/locales.py:1051
 #, fuzzy
 msgid "Chinese (Traditional) (Macao)"
-msgstr "סינית  (האן מסורתית) (מקאו)"
+msgstr "סינית (האן מסורתית) (מקאו)"
 
 #: picard/const/locales.py:1052
 #, fuzzy
 msgid "Chinese (Traditional) (Taiwan)"
-msgstr "סינית  (האן מסורתית) (טייוון)"
+msgstr "סינית (האן מסורתית) (טייוון)"
 
 #: picard/const/locales.py:1053
 msgid "Zulu"
@@ -5166,7 +5166,7 @@ msgstr "תמונת עטיפה מסוג '%(type)s' ירדה עבור %(albumid)s 
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s …"
-msgstr " הורדת תמונת עטיפה מסוג '%(type)s' עבור %(albumid)s מ־ %(host)s…"
+msgstr "הורדת תמונת עטיפה מסוג '%(type)s' עבור %(albumid)s מ־ %(host)s…"
 
 #: picard/coverart/utils.py:38
 msgid "Unknown"
@@ -5214,7 +5214,7 @@ msgid ""
 "considered when determining whether or not to download and use a CAA image.\n"
 msgstr ""
 "תמונות CAA בעלות סוג תמונה שברשימת 'הכללה' יורדו ויעשה בהן שימוש אלא אם, סוג "
-"התמונה מופיע גם ברשימת 'החרגה'. תמונות בעלות סוגים שנכללו ברשימת 'החרגה'  לא "
+"התמונה מופיע גם ברשימת 'החרגה'. תמונות בעלות סוגים שנכללו ברשימת 'החרגה' לא "
 "יעשה בהם שימש לעולם. סוגי תמונות שאינם נכללים ברשימות 'הכללה' או 'החרגה' לא "
 "ילקחו בחשבון בעת ההחלטה באם להוריד ולהשתמש בתמונת CAA.\n"
 
@@ -5297,6 +5297,7 @@ msgid ""
 "Returns first non empty argument."
 msgstr ""
 "`$if2(a1,a2,a3,…)`\n"
+"\n"
 "החזרת משתנה בלתי־תלוי לא־ריק ראשון."
 
 #: picard/script/functions.py:212
@@ -5402,11 +5403,11 @@ msgid ""
 msgstr ""
 "`$replacemulti(name,search,replace,separator=\"; \")`\n"
 "\n"
-"החלפת המופעים של 'search'  בערך 'replace'  במשתנה מרובה ערכים 'name'.\n"
+"החלפת המופעים של 'search' בערך 'replace' במשתנה מרובה ערכים 'name'.\n"
 "\n"
 "לדוגמה:\n"
 "\n"
-" $replacemulti(%genre%,Idm,IDM)\n"
+"    $replacemulti(%genre%,Idm,IDM)\n"
 
 #: picard/script/functions.py:320
 msgid ""
@@ -5430,7 +5431,6 @@ msgid ""
 msgstr ""
 "`$inmulti(%x%,y)`\n"
 "\n"
-"\n"
 "החזרת 'true' אם ערכי המשתנה הבלתי תלוי 'x' מכיל בדיוק את 'y' כאחד מערכיו.\n"
 "\n"
 "_החל מפיקארד 1.0 והלאה_"
@@ -5444,7 +5444,7 @@ msgid ""
 msgstr ""
 "`$rreplace(text,pattern,replace)`\n"
 "\n"
-"החלפת ביטוי סדיר (regex) https://docs.python.org/3/library/re.html#regular-"
+"החלפת ביטוי סדיר [regex](https://docs.python.org/3/library/re.html#regular-"
 "expression-syntax)."
 
 #: picard/script/functions.py:361
@@ -5457,7 +5457,7 @@ msgid ""
 msgstr ""
 "`$rsearch(text,pattern)`\n"
 "\n"
-"חיפוש [ביטוי סדיר (regex)] https://docs.python.org/3/library/re.html#regular-"
+"חיפוש [ביטוי סדיר (regex)](https://docs.python.org/3/library/re.html#regular-"
 "expression-syntax).\n"
 "פעולה זו מחזירה את הקבוצה המתאימה הראשונה."
 
@@ -5506,7 +5506,7 @@ msgstr ""
 "הפעלת `$delete(genre)` למעשה תסיר את תג הסוגה מקובץ בעת\n"
 "השמירה.\n"
 "\n"
-"החל מפיקארד 2.1_"
+"_החל מפיקארד 2.1_"
 
 #: picard/script/functions.py:432
 #, python-format
@@ -5571,7 +5571,7 @@ msgid ""
 msgstr ""
 "`$get(name)\n"
 "\n"
-"החזרת משתנה `name` (זהה ל  `ame%n%`)."
+"החזרת משתנה `name` (זהה ל `ame%n%`)."
 
 #: picard/script/functions.py:478
 #, python-format
@@ -6144,7 +6144,7 @@ msgid ""
 msgstr ""
 "`$eq_any(x,a1,a2,…)`\n"
 "\n"
-"החזרת 'אמת' אם 'x' שווה ל־ `a1`  או a2` או …\n"
+"החזרת 'אמת' אם 'x' שווה ל־ `a1` או a2` או …\n"
 "זהה ל־ `$or($eq(x,a1),$eq(x,a2) …)`.\n"
 "זהה למתקע eq2."
 
@@ -6158,7 +6158,7 @@ msgid ""
 msgstr ""
 "`$ne_all(x,a1,a2,…)`\n"
 "\n"
-"החזרת 'אמת' אם 'x' שונה מ־ `a1` ו־  a2` ו־  …\n"
+"החזרת 'אמת' אם 'x' שונה מ־ `a1` ו־ a2` ו־ …\n"
 "זהה ל־ $and($ne(x,a1),$ne(x,a2) …)`.\n"
 "זהה למתקע ne2."
 
@@ -6204,8 +6204,8 @@ msgstr ""
 "\n"
 "לדוגמה:\n"
 "\n"
-"    $if($ne_any(%albumartist%,%trackartist%%c,omposer%),$set(lyricist,"
-"%composer%))\n"
+"    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%compos"
+"er%))\n"
 
 #: picard/script/functions.py:1068
 msgid ""
@@ -6224,7 +6224,7 @@ msgstr ""
 "\n"
 "לדוגמה:\n"
 "\n"
-" $set(album,$title(%album%))\n"
+"    $set(album,$title(%album%))\n"
 "\n"
 "_החל מפיקארד 2.1_"
 
@@ -6415,7 +6415,7 @@ msgid ""
 msgstr ""
 "`$join(name,text,separator=\"; \")`\n"
 "\n"
-"צרוף כל האיברים ב־ 'name' והצבת 'text' בין כל איבר והחזרת  התוצאה כמחרוזת."
+"צרוף כל האיברים ב־ 'name' והצבת 'text' בין כל איבר והחזרת התוצאה כמחרוזת."
 
 #: picard/script/functions.py:1286
 msgid ""
@@ -6447,7 +6447,7 @@ msgstr ""
 "`$slice(name,start,end,separator=\"; \")`\n"
 "\n"
 "החזרת משתנה רב־ערכי המכיל במפתח את האברים שבין 'start' ל־'end'\n"
-" של תג רב־ערכי `name`.\n"
+"של תג רב־ערכי `name`.\n"
 "ניתן להחליף ערך מילולי המייצג ריבוי ערכים ב־name`,  על־ידי המפריד (או \";\" "
 "אם לא עובר) כדי לאלץ את הערך לתג רב ערכי תקין.\n"
 "המפתחים הם מבוססי אפס. מספרים שליליים נספרים מסוף הרשימה.\n"
@@ -6455,7 +6455,7 @@ msgstr ""
 "התחלה וסיום הרשימה בהתאמה.\n"
 "\n"
 "הדוגמה הבאה תיצור משתנה רב־ערכי של כל האמנים\n"
-"    ב־`%artists%` למעט הראשון, שניתן להשתמש בו כדי ליצור רשימת 'feat.'\n"
+"ב־`%artists%` למעט הראשון, שניתן להשתמש בו כדי ליצור רשימת 'feat.'\n"
 "\n"
 "דוגמאות:\n"
 "\n"
@@ -6750,6 +6750,7 @@ msgstr ""
 "\n"
 "    $setmulti(test,one; ; two; three)\n"
 "    $cleanmulti(test)\n"
+"\n"
 "תּוֹצָאָה: קביעת הערך 'test' ב־ [\"one\", \"two\", \"three\"].\n"
 "\n"
 "_החל מפיקארד 2.8_"
@@ -6818,7 +6819,7 @@ msgstr "יצוא תסריט"
 #: picard/script/serializer.py:232
 #, python-format
 msgid "Script successfully exported to %s"
-msgstr " ייצא תסריט ל־%s צלח"
+msgstr "ייצא תסריט ל־%s צלח"
 
 #: picard/script/serializer.py:243
 #, python-format
@@ -7001,19 +7002,19 @@ msgstr "ישות נשמרה"
 
 #: picard/ui/colors.py:40
 msgid "Log view text (debug)"
-msgstr "מצג מלל יומן (ניפוי תקלים) "
+msgstr "מצג מלל יומן (ניפוי תקלים)"
 
 #: picard/ui/colors.py:41
 msgid "Log view text (error)"
-msgstr "מצג מלל יומן (שגיאה) "
+msgstr "מצג מלל יומן (שגיאה)"
 
 #: picard/ui/colors.py:42
 msgid "Log view text (info)"
-msgstr "מצג מלל יומן (מידע) "
+msgstr "מצג מלל יומן (מידע)"
 
 #: picard/ui/colors.py:43
 msgid "Log view text (warning)"
-msgstr "מצג מלל יומן (אזהרה) "
+msgstr "מצג מלל יומן (אזהרה)"
 
 #: picard/ui/colors.py:44
 msgid "Tag added"
@@ -7049,7 +7050,7 @@ msgstr "תמונת עטיפה חדשה"
 
 #: picard/ui/coverartbox.py:430
 msgid "Original Cover Art"
-msgstr "תמונת עטיפה  מקורית"
+msgstr "תמונת עטיפה מקורית"
 
 #: picard/ui/coverartbox.py:609
 msgid "All supported image formats"
@@ -7073,7 +7074,7 @@ msgstr "החלפת תמונת עטיפה קדמית"
 
 #: picard/ui/coverartbox.py:659
 msgid "Append front cover art"
-msgstr "ספוח תמונת עטיפה קדמית "
+msgstr "ספוח תמונת עטיפה קדמית"
 
 #: picard/ui/edittagdialog.py:69
 msgid "YYYY-MM-DD"
@@ -7260,9 +7261,9 @@ msgstr[3] ";%i תמונות"
 msgid "%i image not in all tracks"
 msgid_plural "%i different images among tracks"
 msgstr[0] "תמונה %i לא בכל הרצועות"
-msgstr[1] " %i תמונות לא בכל הרצועות"
-msgstr[2] " %i תמונות לא בכל הרצועות"
-msgstr[3] " %i תמונות שונות לרצועות"
+msgstr[1] "%i תמונות לא בכל הרצועות"
+msgstr[2] "%i תמונות לא בכל הרצועות"
+msgstr[3] "%i תמונות שונות לרצועות"
 
 #: picard/ui/itemviews.py:161 picard/util/tags.py:123
 msgid "Title"
@@ -7456,7 +7457,7 @@ msgstr "טביעות האצבע שוגרו כבר"
 
 #: picard/ui/itemviews.py:1200
 msgid "Unsubmitted fingerprint"
-msgstr " טביעות-אצבע שטרם שוגרו"
+msgstr "טביעות-אצבע שטרם שוגרו"
 
 #: picard/ui/itemviews.py:1203
 msgid ""
@@ -7536,7 +7537,7 @@ msgstr "האם לצאת מפיקארד?"
 msgid "There is %d unsaved file. Closing Picard will lose all unsaved changes."
 msgid_plural ""
 "There are %d unsaved files. Closing Picard will lose all unsaved changes."
-msgstr[0] " %d קובץ לא נשמר. סגירת פיקארד יגרום לאבדן כל השינויים שלא נשמרו."
+msgstr[0] "%d קובץ לא נשמר. סגירת פיקארד יגרום לאבדן כל השינויים שלא נשמרו."
 msgstr[1] "%d קבצים לא נשמרו. סגירת פיקארד יגרום לאבדן כל השינויים שלא נשמרו."
 msgstr[2] "%d קבצים לא נשמרו. סגירת פיקארד יגרום לאבדן כל השינויים שלא נשמרו."
 msgstr[3] "%d קבצים לא נשמרו. סגירת פיקארד יגרום לאבדן כל השינויים שלא נשמרו."
@@ -7656,11 +7657,11 @@ msgstr "שמירת הקבצים שנבחרו"
 
 #: picard/ui/mainwindow.py:598
 msgid "S&ubmit AcoustIDs"
-msgstr "ש&יגור AcoustID "
+msgstr "ש&יגור AcoustID"
 
 #: picard/ui/mainwindow.py:599
 msgid "Submit acoustic fingerprints"
-msgstr " שגור טביעות-אצבע-שמע"
+msgstr "שגור טביעות-אצבע-שמע"
 
 #: picard/ui/mainwindow.py:606
 msgid "E&xit"
@@ -7812,7 +7813,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:774
 msgid "Identify the file using its AcoustID audio fingerprint"
-msgstr "זיהוי הקובץ בעזרת טביעת־אצבע־שמע  ‮AcoustID"
+msgstr "זיהוי הקובץ בעזרת טביעת־אצבע־שמע ‪AcoustID"
 
 #: picard/ui/mainwindow.py:776
 msgid "Ctrl+Y"
@@ -8017,7 +8018,7 @@ msgstr "הוספת מחיצות מרובות מ '%(directory)s'…"
 #: picard/ui/mainwindow.py:1299
 #, python-format
 msgid "Adding directory: '%(directory)s' …"
-msgstr "  הוספת מחיצה: '%(directory)s'…"
+msgstr "הוספת מחיצה: '%(directory)s'…"
 
 #: picard/ui/mainwindow.py:1411
 msgid "Configuration Required"
@@ -8465,6 +8466,7 @@ msgid "Empty / blank script"
 msgstr ""
 
 #: picard/ui/scripteditor.py:734
+#, fuzzy
 msgid ""
 "At least one unsaved script has been attached to an option profile.\n"
 "\n"
@@ -8721,7 +8723,7 @@ msgstr "להתעלם מפער באורך הרצועה במספר שניות של
 #: picard/ui/ui_options_advanced.py:144
 msgid ""
 "Ignore the following tracks when determining whether a release is complete"
-msgstr "בקביעה האם הוצאה הושלמה, להתעלם מהרצועות הבאות "
+msgstr "בקביעה האם הוצאה הושלמה, להתעלם מהרצועות הבאות"
 
 #: picard/ui/ui_options_advanced.py:145
 msgid "Video tracks"
@@ -8795,11 +8797,11 @@ msgstr "‮שימוש ב ‭AcoustID"
 
 #: picard/ui/ui_options_fingerprinting.py:100
 msgid "AcoustID Settings"
-msgstr " הגדרות AcoustID "
+msgstr "הגדרות AcoustID"
 
 #: picard/ui/ui_options_fingerprinting.py:101
 msgid "Ignore existing AcoustID fingerprints"
-msgstr "‮להתעלם מטביעות אצבע ‮קימות ב ‭     AcoustID"
+msgstr "‮להתעלם מטביעות אצבע ‮קימות ב ‭AcoustID"
 
 #: picard/ui/ui_options_fingerprinting.py:102
 msgid "Save AcoustID fingerprints to file tags"
@@ -8912,7 +8914,7 @@ msgstr "סוגות או תגים פולקסמוניים להחרגה, אחד ב�
 
 #: picard/ui/ui_options_genres.py:130
 msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
-msgstr "ארגז חול  למסנני לסוגות או תגים פולקסמוניים (תנקה ביציאה):"
+msgstr "ארגז חול למסנני לסוגות או תגים פולקסמוניים (תנקה ביציאה):"
 
 #: picard/ui/ui_options_interface.py:118
 msgid "Appearance"
@@ -9127,7 +9129,7 @@ msgid ""
 "your ratings."
 msgstr ""
 "פיקארד ‮שומר את הדירוג בצרוף כתובת דוא\"ל המשמש, לזיהוי המשתמש שביצע את "
-"הדירוג. בדרך זו, נשמרים דירוגים שונים עבור משתמשים שונים  בקבצים. נא לספק "
+"הדירוג. בדרך זו, נשמרים דירוגים שונים עבור משתמשים שונים בקבצים. נא לספק "
 "כתובת דוא\"ל לשמירת הדירוגים שלכם."
 
 #: picard/ui/ui_options_ratings.py:49
@@ -9347,9 +9349,9 @@ msgid ""
 "Picard releases.</p><p>New alternatives are ';_' or '_/_' or type your own. "
 "</p></body></html>"
 msgstr ""
-"</ h> <body> <body> <p> ברירת המחדל היא '/' בכדי לשמור על תאימות עם גרסאות "
-"קודמות של פיקארד. </ p> <p> חלופות חדשות הן '; _' או '_ / _' או להקליד . </ "
-"p> </ body> </ html>"
+"<html><head/><body><p>ברירת המחדל היא '/' בכדי לשמור על תאימות עם גרסאות "
+"קודמות של פיקארד.</p><p> חלופות חדשות הן '; _' או '_ / _' או להקליד.</p></"
+"body> </html>"
 
 #: picard/ui/ui_options_tags_compatibility_id3.py:126
 msgid "Also include ID3v1 tags in the files"
@@ -9366,9 +9368,9 @@ msgid ""
 "in WAVE files additional RIFF INFO tags can be written to the files. RIFF "
 "INFO has only limited support for tags and character encodings."
 msgstr ""
-"פיקארד יתייג קבצי WAVE באמצעות תגי ID3v2.  לא נתמך בכל התכנות. להתאמה עם "
-"תכנה שאינה תומכת בתגי ID3v2 בקבצי WAVE ניתן לכתוב תגי RIFF INFO נוספים "
-"לקבצים. ל־ RIFF INFO תמיכה מוגבלת רק בתגים ובקידודי תווים."
+"פיקארד יתייג קבצי WAVE באמצעות תגי ID3v2. לא נתמך בכל התכנות. להתאמה עם תכנה "
+"שאינה תומכת בתגי ID3v2 בקבצי WAVE ניתן לכתוב תגי RIFF INFO נוספים לקבצים. ל־ "
+"RIFF INFO תמיכה מוגבלת רק בתגים ובקידודי תווים."
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:58
 msgid "Also include RIFF INFO tags in the files"
@@ -9400,7 +9402,7 @@ msgstr "הורדת תמונות שאושרו בלבד"
 
 #: picard/ui/ui_provider_options_local.py:53
 msgid "Local cover art files match the following regular expression:"
-msgstr "קובצי תמונת עטיפה מקומיים תואמים את הביטוי הסדיר הבא: "
+msgstr "קובצי תמונת עטיפה מקומיים תואמים את הביטוי הסדיר הבא:"
 
 #: picard/ui/ui_provider_options_local.py:55
 msgid ""
@@ -9409,7 +9411,7 @@ msgid ""
 "it will default to Front type."
 msgstr ""
 "הקבוצה הראשונה בביטוי סדיר (regex), ככל שקיים, ישמש כסוג, כלומר, cover-back-"
-"spine.jpg יוגדר כסוגים Back + Spine. אם לא נמצא סוג, ברירת המחדל לסוג יהיה  "
+"spine.jpg יוגדר כסוגים Back + Spine. אם לא נמצא סוג, ברירת המחדל לסוג יהיה "
 "Front."
 
 #: picard/ui/ui_scripteditor.py:209
@@ -9595,7 +9597,7 @@ msgstr "פרופילים מצורפים לאפשרויות ב־%s מקטעים"
 
 #: picard/ui/options/dialog.py:494
 msgid " [Enabled]"
-msgstr "[מאופשר]"
+msgstr " [מאופשר]"
 
 #: picard/ui/options/dialog.py:495 picard/ui/options/profiles.py:281
 msgid "None"
@@ -9612,7 +9614,7 @@ msgstr "בחירת בקובץ הפעלה fpcalc תקין."
 
 #: picard/ui/options/fingerprinting.py:175
 msgid "Invalid fpcalc executable"
-msgstr " קובץ הפעלה fpcalc לא תקין"
+msgstr "קובץ הפעלה fpcalc לא תקין"
 
 #: picard/ui/options/general.py:149
 #, python-format
@@ -9745,7 +9747,7 @@ msgid ""
 "to use Picard's default theme again."
 msgstr ""
 "לתשומת לב, השימוש בערכת נושא של המערכת עלול לגרום לממשק המשתמש שלא יוצג "
-"כהלכה. במקרה זה יש לבחור  \"ערכת נושא ברירת מחדל\" על מנת לחזור לברירת המחדל "
+"כהלכה. במקרה זה יש לבחור \"ערכת נושא ברירת מחדל\" על מנת לחזור לברירת המחדל "
 "של פיקארד."
 
 #: picard/ui/options/interface.py:188
@@ -10194,7 +10196,7 @@ msgstr "חיפוש באמצעות דפדפן"
 
 #: picard/ui/searchdialog/__init__.py:210
 msgid "<strong>Loading…</strong>"
-msgstr "טעינה…</strong>"
+msgstr "<strong>טעינה…</strong>"
 
 #: picard/ui/searchdialog/__init__.py:241
 msgid "Retry"
@@ -10624,7 +10626,7 @@ msgstr "מזהה יצירה ‮מוזיקבריינז"
 
 #: picard/util/tags.py:92
 msgid "MusicIP Fingerprint"
-msgstr "טביעת אצבע  MusicIP"
+msgstr "טביעת אצבע MusicIP"
 
 #: picard/util/tags.py:93
 msgid "MusicIP PUID"
