@@ -8,15 +8,15 @@
 # dimits, 2016
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009
 # Panos Bouklis <panos@echidna-band.com>, 2012
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023.
 # Yannis Anthymidis, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 08:24+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Greek <https://translations.metabrainz.org/projects/picard/"
 "app/el/>\n"
 "Language: el\n"
@@ -6640,9 +6640,9 @@ msgid "Artist:"
 msgstr "Καλλιτέχνης:"
 
 #: picard/ui/infodialog.py:341
-#, fuzzy, python-format
+#, python-format
 msgid "Disc %d"
-msgstr "Disc Id"
+msgstr ""
 
 #: picard/ui/infodialog.py:343
 msgid "Tracklist:"
@@ -7379,7 +7379,7 @@ msgstr ""
 msgid "Play the file in your default media player"
 msgstr ""
 "Αναπαραγωγή του αρχείου στο προεπιλεγμένο σας πρόγραμμα αναπαραγωγής "
-"πολυμέσων "
+"πολυμέσων"
 
 #: picard/ui/mainwindow.py:901
 msgid "Open Containing &Folder"
@@ -8245,7 +8245,7 @@ msgstr "Λήψη κλεδιού API…"
 
 #: picard/ui/ui_options_general.py:192
 msgid "MusicBrainz Server"
-msgstr "Εξυπηρετητής MusicBrainz "
+msgstr "Εξυπηρετητής MusicBrainz"
 
 #: picard/ui/ui_options_general.py:193
 msgid ""
@@ -8903,7 +8903,7 @@ msgstr ""
 #: picard/ui/ui_widget_taglisteditor.py:73
 #, fuzzy
 msgid "Move tag down"
-msgstr "Μετακίνηση κομματιού προς τα  κάτω"
+msgstr "Μετακίνηση κομματιού προς τα κάτω"
 
 #: picard/ui/ui_widget_taglisteditor.py:74
 #: picard/ui/ui_widget_taglisteditor.py:75
@@ -9640,7 +9640,7 @@ msgstr ""
 
 #: picard/ui/searchdialog/track.py:72
 msgid "Release"
-msgstr "Κυκλοφορία "
+msgstr "Κυκλοφορία"
 
 #: picard/ui/searchdialog/track.py:175
 #, fuzzy
