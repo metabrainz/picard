@@ -10,16 +10,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2020-2023\n"
-"Language-Team: Malay (Malaysia) (http://app.transifex.com/musicbrainz/"
-"musicbrainz/language/ms_MY/)\n"
+"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Malay <https://translations.metabrainz.org/projects/picard/"
+"app/ms/>\n"
 "Language: ms_MY\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.18.2\n"
+"Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -232,8 +233,9 @@ msgid "General"
 msgstr "Umum"
 
 #: picard/profile.py:48
+#, fuzzy
 msgid "Server address"
-msgstr ""
+msgstr "Alamat pelayan:"
 
 #: picard/profile.py:49
 msgid "Port"
@@ -264,8 +266,9 @@ msgid "Days between update checks"
 msgstr ""
 
 #: picard/profile.py:56
+#, fuzzy
 msgid "Updates to check"
-msgstr ""
+msgstr "Kemas kini yang akan disemak:"
 
 #: picard/profile.py:61 picard/ui/options/metadata.py:78
 #: picard/ui/ui_options_metadata.py:129
@@ -277,8 +280,9 @@ msgid "Translate artist names"
 msgstr "Terjemahkan nama seniman"
 
 #: picard/profile.py:65
+#, fuzzy
 msgid "Translation locales"
-msgstr ""
+msgstr "Penempatan terjemahan"
 
 #: picard/profile.py:66
 msgid "Translate artist names exception"
@@ -349,16 +353,19 @@ msgid "Use folksonomy tags as genre"
 msgstr "Gunakan tanda susunama khalayak sebagai genre"
 
 #: picard/profile.py:89
+#, fuzzy
 msgid "Minimal genre usage"
-msgstr ""
+msgstr "Kegunaan genre terdikit:"
 
 #: picard/profile.py:90
+#, fuzzy
 msgid "Maximum number of genres"
-msgstr ""
+msgstr "Bilangan genre terbanyak:"
 
 #: picard/profile.py:91
+#, fuzzy
 msgid "Join multiple genres with"
-msgstr ""
+msgstr "Sambungkan berbilang genre dengan:"
 
 #: picard/profile.py:92
 msgid "Genres to include or exclude"
@@ -580,12 +587,14 @@ msgid "Show icons in menus"
 msgstr ""
 
 #: picard/profile.py:188
+#, fuzzy
 msgid "User interface language"
-msgstr ""
+msgstr "Bahasa antara muka pengguna:"
 
 #: picard/profile.py:189
+#, fuzzy
 msgid "User interface color theme"
-msgstr ""
+msgstr "Tema warna antara muka pengguna:"
 
 #: picard/profile.py:190 picard/ui/ui_options_interface.py:124
 msgid "Allow selection of multiple directories"
@@ -682,8 +691,9 @@ msgid "Completeness check ignore: Silent tracks"
 msgstr ""
 
 #: picard/profile.py:233
+#, fuzzy
 msgid "Tags to ignore for comparison"
-msgstr ""
+msgstr "Abaikan tanda ini dalam perbandingan:"
 
 #: picard/profile.py:236
 msgid "Use a web proxy server"
@@ -710,32 +720,38 @@ msgid "Proxy password"
 msgstr ""
 
 #: picard/profile.py:244
+#, fuzzy
 msgid "Request timeout in seconds"
-msgstr ""
+msgstr "Tempoh menghentikan permintaan sekiranya gagal (saat):"
 
 #: picard/profile.py:245
+#, fuzzy
 msgid "Browser integration"
-msgstr ""
+msgstr "Penyepaduan Penyemak Imbas"
 
 #: picard/profile.py:248
+#, fuzzy
 msgid "Default listening port"
-msgstr ""
+msgstr "Port mendengar lalai:"
 
 #: picard/profile.py:249 picard/ui/ui_options_network.py:141
 msgid "Listen only on localhost"
 msgstr "Dengar hanya pada penganjur setempat"
 
 #: picard/profile.py:252
+#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr ""
+msgstr "Keserupaan terdikit dalam pencarian fail:"
 
 #: picard/profile.py:253
+#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr ""
+msgstr "Keserupaan terdikit dalam pencarian kelompok:"
 
 #: picard/profile.py:254
+#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr ""
+msgstr "Keserupaan terdikit dalam pemadanan fail dan runut:"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -3691,8 +3707,9 @@ msgid "Burmese"
 msgstr "Bahasa Burma"
 
 #: picard/const/locales.py:698
+#, fuzzy
 msgid "Burmese (Myanmar (Burma))"
-msgstr ""
+msgstr "Bahasa Burma (Myanmar [Burma])"
 
 #: picard/const/locales.py:699
 msgid "Erzya"
@@ -4375,8 +4392,9 @@ msgid "Southern Sami"
 msgstr ""
 
 #: picard/const/locales.py:878
+#, fuzzy
 msgid "Southern Sami (Norway)"
-msgstr ""
+msgstr "Sami Utara (Norway)"
 
 #: picard/const/locales.py:879
 msgid "Southern Sami (Sweden)"
@@ -4459,8 +4477,9 @@ msgid "Serbian (Cyrillic)"
 msgstr "Bahasa Serbia (Tulisan Cyril)"
 
 #: picard/const/locales.py:900
+#, fuzzy
 msgid "Serbian (Cyrillic) (Bosnia & Herzegovina)"
-msgstr ""
+msgstr "Bahasa Serbia (Tulisan Cyril) (Bosnia dan Herzegovina)"
 
 #: picard/const/locales.py:901
 msgid "Serbian (Cyrillic) (Montenegro)"
@@ -4479,8 +4498,9 @@ msgid "Serbian (Latin)"
 msgstr "Bahasa Serbia (Tulisan Rumi)"
 
 #: picard/const/locales.py:905
+#, fuzzy
 msgid "Serbian (Latin) (Bosnia & Herzegovina)"
-msgstr ""
+msgstr "Bahasa Serbia (Tulisan Rumi) (Bosnia dan Herzegovina)"
 
 #: picard/const/locales.py:906
 msgid "Serbian (Latin) (Montenegro)"
@@ -4699,8 +4719,9 @@ msgid "Tongan"
 msgstr ""
 
 #: picard/const/locales.py:961
+#, fuzzy
 msgid "Tongan (Tonga)"
-msgstr ""
+msgstr "Bahasa Tonga (Tonga)"
 
 #: picard/const/locales.py:962
 msgid "Toki Pona"
@@ -4779,8 +4800,9 @@ msgid "Uyghur"
 msgstr ""
 
 #: picard/const/locales.py:982
+#, fuzzy
 msgid "Uyghur (China)"
-msgstr ""
+msgstr "Bahasa Uyghur (China)"
 
 #: picard/const/locales.py:984
 msgid "Ukrainian (Ukraine)"
@@ -6195,6 +6217,7 @@ msgstr ""
 "Kembalikan `text` dalam tertib terbalik."
 
 #: picard/script/functions.py:1162
+#, fuzzy
 msgid ""
 "`$substr(text,start[,end])`\n"
 "\n"
@@ -6206,6 +6229,16 @@ msgid ""
 "default to\n"
 "    the start and end of the string respectively."
 msgstr ""
+"`$substr(text,start,end)`\n"
+"\n"
+"Kembalikan potongan rentetan yang terangkum antara indeks `start` dan indeks "
+"`end`\n"
+"    tanpa megambil kira aksara di indeks `end`. Indeks ini berasaskan sifar."
+"\n"
+"    Angka negatif dikira secara terbalik dari penghujung rentetan. Indeks "
+"`start`\n"
+"    atau `end` yang dibiarkan kosong akan masing-masing menggunakan\n"
+"    permulaan atau penghujung rentetan tersebut."
 
 #: picard/script/functions.py:1183
 msgid ""
@@ -6325,6 +6358,7 @@ msgstr ""
 "setiap unsur. Hasilnya dikembalikan sebagai sebaris rentetan."
 
 #: picard/script/functions.py:1286
+#, fuzzy
 msgid ""
 "`$slice(name,start,end,separator=\"; \")`\n"
 "\n"
@@ -6351,6 +6385,29 @@ msgid ""
 "    $setmulti(supporting_artists,$slice(%artists%,1))\n"
 "    $setmulti(supporting_artists,$slice(%artists%,1,-1))\n"
 msgstr ""
+"`$slice(name,start,end,separator=\"; \")`\n"
+"\n"
+"Pemboleh ubah berbilang nilai yang mengandungi unsur yang terangkum antara\n"
+"    indeks `start` dan `end` dikembalikan daripada tanda `name` yang "
+"berbilang nilai.\n"
+"    Nilai harafiah boleh menggantikan `name` bagi mewakili berbilang nilai "
+"dengan\n"
+"    menggunakan `separator` (pemisah \"; \" digunakan secara lalai) bagi "
+"memisahkan\n"
+"    nilai terbabit menjadi tanda berbilang nilai. Indeks ini berasaskan "
+"sifar.\n"
+"    Angka negatif dikira secara terbalik dari penghujung senarai. Indeks "
+"`start` atau\n"
+"    `end` yang dibiarkan kosong akan masing-masing menggunakan permulaan\n"
+"    atau penghujung rentetan tersebut.\n"
+"\n"
+"Contoh berikut menghasilkan pemboleh ubah berbilang nilai dengan seluruh\n"
+"    seniman dalam `%aartists%` melainkan seniman pertama. Hal ini\n"
+"    membolehkan penciptaan senarai \"feat.\".\n"
+"\n"
+"Contoh:\n"
+"\n"
+"    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
 
 #: picard/script/functions.py:1319
 #, python-format
@@ -7199,8 +7256,9 @@ msgid "Loading…"
 msgstr "Sedang memuat…"
 
 #: picard/ui/itemviews.py:548
+#, fuzzy
 msgid "Show &more details…"
-msgstr ""
+msgstr "Paparkan perincian lanjutan…"
 
 #: picard/ui/itemviews.py:601
 #, python-format
@@ -8363,11 +8421,14 @@ msgid "Script Details"
 msgstr "Perincian Skrip"
 
 #: picard/ui/scripteditor.py:1374
+#, fuzzy
 msgid ""
 "There are unsaved changes to the current metadata.\n"
 "\n"
 "Do you want to continue and lose these changes?"
 msgstr ""
+"Terdapat perubahan yang belum disimpan bagi data meta semasa. Betulkah anda "
+"tidak mahu menyimpan dahulu perubahan ini sebelum maju?"
 
 #: picard/ui/scriptsmenu.py:62
 #, python-format
@@ -8809,8 +8870,9 @@ msgid "Remove selected options"
 msgstr ""
 
 #: picard/ui/ui_options_maintenance.py:91
+#, fuzzy
 msgid "Select all"
-msgstr ""
+msgstr "Pilih semu&anya"
 
 #: picard/ui/ui_options_matching.py:71
 msgid "Thresholds"
@@ -8829,8 +8891,9 @@ msgid "Minimal similarity for cluster lookups:"
 msgstr "Keserupaan terdikit dalam pencarian kelompok:"
 
 #: picard/ui/ui_options_metadata.py:130
+#, fuzzy
 msgid "Translate artist names to these locales where possible:"
-msgstr ""
+msgstr "Terjemahkan nama seniman kepada penempatan ini sekiranya boleh:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select…"
@@ -9284,9 +9347,11 @@ msgid "Description:"
 msgstr "Keterangan:"
 
 #: picard/ui/ui_scripteditor_details.py:102
+#, fuzzy
 msgid ""
 "Brief description of the file naming script, including any required plugins."
 msgstr ""
+"Keterangan ringkas skrip penamaan ini serta pemalam lain yang diperlukan."
 
 #: picard/ui/ui_scripteditor_details.py:103
 msgid "The author of the file naming script."
