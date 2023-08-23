@@ -21,17 +21,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 07:19+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/"
 "app/pl/>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
-"%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
-"%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && ("
+"n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
+"n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
 
@@ -966,8 +966,9 @@ msgid "(copy)"
 msgstr "(kopiuj)"
 
 #: picard/const/__init__.py:203
+#, fuzzy
 msgid "{title} ({count})"
-msgstr "{tytuł} {(licznik)}"
+msgstr "{title} ({count})"
 
 #: picard/const/languages.py:29 picard/const/locales.py:48
 #: picard/const/scripts.py:29
@@ -6511,7 +6512,7 @@ msgstr ""
 
 #: picard/ui/collectionmenu.py:60
 msgid "Refresh List"
-msgstr "Odśwież listę "
+msgstr "Odśwież listę"
 
 #: picard/ui/collectionmenu.py:173
 #, python-format
@@ -7070,8 +7071,8 @@ msgid "There is %d unsaved file. Closing Picard will lose all unsaved changes."
 msgid_plural ""
 "There are %d unsaved files. Closing Picard will lose all unsaved changes."
 msgstr[0] ""
-"%d plik posiada niezapisane zmiany. Zamykając program Picard  utracisz "
-"zmiany dokonane na tym pliku."
+"%d plik posiada niezapisane zmiany. Zamykając program Picard utracisz zmiany "
+"dokonane na tym pliku."
 msgstr[1] ""
 "%d pliki posiadają niezapisane zmiany. Zamykając program Picard utracisz "
 "zmiany dokonane na tych plikach."
@@ -7114,7 +7115,7 @@ msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
 msgstr ""
-"Przed wysłaniem odcisku audio musisz skonfigurować swój klucz  AcoustID API."
+"Przed wysłaniem odcisku audio musisz skonfigurować swój klucz AcoustID API."
 
 #: picard/ui/mainwindow.py:487
 msgid "Open AcoustID options"
@@ -8295,7 +8296,7 @@ msgstr "Nadpisz plik jeżeli istnieje"
 
 #: picard/ui/ui_options_cover.py:102
 msgid "Cover Art Providers"
-msgstr "Dostawcy okładek "
+msgstr "Dostawcy okładek"
 
 #: picard/ui/ui_options_cover.py:103
 msgid "Reorder Priority:"
@@ -10061,7 +10062,7 @@ msgstr "MusicBrainz ID wykonawcy wydania"
 
 #: picard/util/tags.py:83
 msgid "MusicBrainz Release Id"
-msgstr "MusicBrainz ID wydania "
+msgstr "MusicBrainz ID wydania"
 
 #: picard/util/tags.py:84
 msgid "MusicBrainz Artist Id"
@@ -10081,7 +10082,7 @@ msgstr ""
 
 #: picard/util/tags.py:88
 msgid "MusicBrainz Recording Id"
-msgstr "MusicBrainz ID nagrania "
+msgstr "MusicBrainz ID nagrania"
 
 #: picard/util/tags.py:89
 msgid "MusicBrainz Release Group Id"
