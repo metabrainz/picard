@@ -20,8 +20,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 08:24+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Finnish <https://translations.metabrainz.org/projects/picard/"
 "app/fi/>\n"
 "Language: fi\n"
@@ -837,7 +837,7 @@ msgid "All files"
 msgstr "Kaikki tiedostot"
 
 #: picard/tagger.py:1222
-#, python-format
+#, fuzzy, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr "CD-kopioinnin lokitiedoston jäsentäminen epäonnistui"
 
@@ -6912,7 +6912,7 @@ msgstr "Virhe tuotaessa \"%s\". %s."
 #: picard/script/serializer.py:244
 #, python-format
 msgid "Error decoding \"%s\". %s."
-msgstr "Virhe luettaessa \"s\". %s."
+msgstr "Virhe luettaessa \"%s\". %s."
 
 #: picard/script/serializer.py:246
 msgid "Import Script File"
@@ -7892,7 +7892,7 @@ msgstr "Haku"
 
 #: picard/ui/mainwindow.py:751 picard/ui/mainwindow.py:758
 msgid "Lookup &CD…"
-msgstr "&CD-haku"
+msgstr "&CD-haku…"
 
 #: picard/ui/mainwindow.py:752
 msgid "Lookup the details of the CD in your drive"
@@ -8408,12 +8408,12 @@ msgstr[1] "siirtää tiedostoja toiseen sijaintiin"
 #: picard/ui/savewarningdialog.py:54
 msgid "You are about to save {file_count:,d} file and this will:"
 msgid_plural "You are about to save {file_count:,d} files and this will:"
-msgstr[0] "Olet aikeissa muuttaa {file_count;d} tiedoston ja täten:"
-msgstr[1] "Olet aikeissa muuttaa {file_count;d} tiedostoa ja täten:"
+msgstr[0] "Olet aikeissa muuttaa {file_count:,d} tiedoston ja täten:"
+msgstr[1] "Olet aikeissa muuttaa {file_count:,d} tiedostoa ja täten:"
 
 #: picard/ui/savewarningdialog.py:58
 msgid "<strong>This action cannot be undone.</strong> Do you want to continue?"
-msgstr "<strong>Tätä toimenpidettä ei voi kumota.</strong> Haluatko jatkaa? "
+msgstr "<strong>Tätä toimenpidettä ei voi kumota.</strong> Haluatko jatkaa?"
 
 #: picard/ui/savewarningdialog.py:61
 msgid "<li>{action}</li>"
@@ -8885,7 +8885,7 @@ msgstr "Kansitaidepalvelut"
 
 #: picard/ui/ui_options_cover.py:103
 msgid "Reorder Priority:"
-msgstr "Muuta tärkeysjärjestystä: "
+msgstr "Muuta tärkeysjärjestystä:"
 
 #: picard/ui/ui_options_cover.py:104
 #: picard/ui/ui_options_interface_toolbar.py:77
@@ -9903,7 +9903,7 @@ msgid ""
 "to use Picard's default theme again."
 msgstr ""
 "Huomioi, että käytettäessä järjestelmän teemaa, käyttöliittymä ei "
-"välttämättä näy oikein.  Mikäli niin käy, vaihda oletusteema saadaksesi "
+"välttämättä näy oikein. Mikäli niin käy, vaihda oletusteema saadaksesi "
 "Picardin oletusväriasetukset takaisin käyttöön."
 
 #: picard/ui/options/interface.py:188
@@ -10076,7 +10076,7 @@ msgstr ""
 "Haluatko jatkaa?"
 
 #: picard/ui/options/maintenance.py:261
-#, python-format
+#, fuzzy, python-format
 msgid "Configuration successfully loaded from %s"
 msgstr "Asetukset tuotiin onnistuneesti tiedostosta"
 
