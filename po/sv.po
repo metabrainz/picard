@@ -21,8 +21,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 07:19+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-08-23 19:10+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Swedish <https://translations.metabrainz.org/projects/picard/"
 "app/sv/>\n"
 "Language: sv\n"
@@ -2817,7 +2817,7 @@ msgstr ""
 
 #: picard/const/locales.py:464
 msgid "Scottish Gaelic"
-msgstr " skotsk gäliska"
+msgstr "skotsk gäliska"
 
 #: picard/const/locales.py:465
 msgid "Scottish Gaelic (United Kingdom)"
@@ -7363,7 +7363,7 @@ msgstr "Öppna i &spelare"
 
 #: picard/ui/mainwindow.py:894
 msgid "Play the file in your default media player"
-msgstr "Spela filen i din standardmediaspelare "
+msgstr "Spela filen i din standardmediaspelare"
 
 #: picard/ui/mainwindow.py:901
 msgid "Open Containing &Folder"
@@ -8938,11 +8938,11 @@ msgstr "Regex fel"
 
 #: picard/ui/options/dialog.py:129
 msgid "&Restore all Defaults"
-msgstr "&Återställ alla standardvärden "
+msgstr "&Återställ alla standardvärden"
 
 #: picard/ui/options/dialog.py:130
 msgid "Reset all of Picard's settings"
-msgstr "Återställ alla Picards inställningar "
+msgstr "Återställ alla Picards inställningar"
 
 #: picard/ui/options/dialog.py:132
 msgid "Reset all settings for current option page"
