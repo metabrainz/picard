@@ -14,16 +14,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: t0n3t <toni75@gmail.com>, 2012-2013\n"
-"Language-Team: Catalan (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/ca/)\n"
+"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
+"app/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -231,8 +232,9 @@ msgid "General"
 msgstr "General"
 
 #: picard/profile.py:48
+#, fuzzy
 msgid "Server address"
-msgstr ""
+msgstr "Adreça del servidor:"
 
 #: picard/profile.py:49
 msgid "Port"
@@ -577,8 +579,9 @@ msgid "Show icons in menus"
 msgstr ""
 
 #: picard/profile.py:188
+#, fuzzy
 msgid "User interface language"
-msgstr ""
+msgstr "Llengua de l'interfície d'usuari:"
 
 #: picard/profile.py:189
 msgid "User interface color theme"
@@ -721,16 +724,19 @@ msgid "Listen only on localhost"
 msgstr ""
 
 #: picard/profile.py:252
+#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr ""
+msgstr "Mínima semblança per recerques de fitxers:"
 
 #: picard/profile.py:253
+#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr ""
+msgstr "Mínima similitud per les recerques de clúster:"
 
 #: picard/profile.py:254
+#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr ""
+msgstr "Mínima semblança per fer coincidir fitxers amb pistes:"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -2980,8 +2986,9 @@ msgid "Interlingua (world)"
 msgstr ""
 
 #: picard/const/locales.py:518
+#, fuzzy
 msgid "Indonesian"
-msgstr ""
+msgstr "Indonèsia"
 
 #: picard/const/locales.py:519
 msgid "Indonesian (Indonesia)"
@@ -3428,8 +3435,9 @@ msgid "Northern Luri (Iran)"
 msgstr ""
 
 #: picard/const/locales.py:634
+#, fuzzy
 msgid "Lithuanian"
-msgstr ""
+msgstr "Lituània"
 
 #: picard/const/locales.py:635
 msgid "Lithuanian (Lithuania)"
@@ -3544,8 +3552,9 @@ msgid "Māori (New Zealand)"
 msgstr ""
 
 #: picard/const/locales.py:663
+#, fuzzy
 msgid "Macedonian"
-msgstr ""
+msgstr "República de Macedònia"
 
 #: picard/const/locales.py:664
 msgid "Macedonian (North Macedonia)"
@@ -7415,8 +7424,9 @@ msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
 #: picard/ui/mainwindow.py:1722
+#, fuzzy
 msgid "Authentication Required"
-msgstr ""
+msgstr "Autentificació necessària"
 
 #: picard/ui/mainwindow.py:1723
 msgid ""
@@ -7863,8 +7873,9 @@ msgid "Overwrite"
 msgstr ""
 
 #: picard/ui/options/profiles.py:119 picard/ui/scripteditor.py:1238
+#, fuzzy
 msgid "Copy"
-msgstr ""
+msgstr "Copiar"
 
 #: picard/ui/options/renaming.py:266 picard/ui/scripteditor.py:1284
 msgid "The file naming format must not be empty."
@@ -8334,8 +8345,9 @@ msgid "Minimal similarity for cluster lookups:"
 msgstr "Mínima similitud per les recerques de clúster:"
 
 #: picard/ui/ui_options_metadata.py:130
+#, fuzzy
 msgid "Translate artist names to these locales where possible:"
-msgstr ""
+msgstr "Tradueix els noms d'artista a aquesta llengua quan sigui possible:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select…"
