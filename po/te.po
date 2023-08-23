@@ -10,16 +10,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2019-10-31 12:19+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
-"Language-Team: Telugu (http://www.transifex.com/musicbrainz/musicbrainz/"
-"language/te/)\n"
+"PO-Revision-Date: 2023-08-23 07:19+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Telugu <https://translations.metabrainz.org/projects/picard/"
+"app/te/>\n"
 "Language: te\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.6.0\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -7199,8 +7200,9 @@ msgid "Ctrl+Q"
 msgstr ""
 
 #: picard/ui/mainwindow.py:615
+#, fuzzy
 msgid "&Remove"
-msgstr ""
+msgstr "తీసివేయి"
 
 #: picard/ui/mainwindow.py:616
 msgid "Remove selected files/albums"
@@ -7494,8 +7496,9 @@ msgid "&View"
 msgstr ""
 
 #: picard/ui/mainwindow.py:1030
+#, fuzzy
 msgid "&Options"
-msgstr ""
+msgstr "ఎంపికలు"
 
 #: picard/ui/mainwindow.py:1036
 msgid "&Select file naming script"

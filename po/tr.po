@@ -17,16 +17,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Bora Atıcı, 2023\n"
-"Language-Team: Turkish (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/tr/)\n"
+"PO-Revision-Date: 2023-08-23 07:19+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Turkish <https://translations.metabrainz.org/projects/picard/"
+"app/tr/>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Weblate 4.18.2\n"
+"Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -234,20 +235,23 @@ msgid "General"
 msgstr "Genel"
 
 #: picard/profile.py:48
+#, fuzzy
 msgid "Server address"
-msgstr ""
+msgstr "Sunucu adresi:"
 
 #: picard/profile.py:49
+#, fuzzy
 msgid "Port"
-msgstr ""
+msgstr "Bağlantı Noktası:"
 
 #: picard/profile.py:50 picard/ui/ui_options_general.py:201
 msgid "Automatically scan all new files"
 msgstr "Bütün yeni dosyaları otomatik olarak tara"
 
 #: picard/profile.py:51 picard/ui/ui_options_general.py:202
+#, fuzzy
 msgid "Automatically cluster all new files"
-msgstr ""
+msgstr "Bütün yeni dosyaları otomatik olarak tara"
 
 #: picard/profile.py:52 picard/ui/ui_options_general.py:203
 msgid "Ignore MBIDs when loading new files"
@@ -503,8 +507,9 @@ msgid "File Naming"
 msgstr "Dosya İsimlendirme"
 
 #: picard/profile.py:156
+#, fuzzy
 msgid "Move files"
-msgstr ""
+msgstr "Dosyaları &Taşı"
 
 #: picard/profile.py:157
 msgid "Destination directory"
@@ -523,8 +528,9 @@ msgid "Delete empty directories"
 msgstr "Boş dizinleri sil"
 
 #: picard/profile.py:161
+#, fuzzy
 msgid "Rename files"
-msgstr ""
+msgstr "Dosyaları &Adlandır"
 
 #: picard/profile.py:162
 msgid "Selected file naming script"
@@ -580,8 +586,9 @@ msgid "Show icons in menus"
 msgstr ""
 
 #: picard/profile.py:188
+#, fuzzy
 msgid "User interface language"
-msgstr ""
+msgstr "Kullanıcı arayüzü dili:"
 
 #: picard/profile.py:189
 msgid "User interface color theme"
@@ -596,8 +603,9 @@ msgid "Use builtin search rather than looking in browser"
 msgstr ""
 
 #: picard/profile.py:192
+#, fuzzy
 msgid "Use advanced search syntax"
-msgstr ""
+msgstr "Gelişmiş sorgu biçimini kullan"
 
 #: picard/profile.py:193
 msgid "Show a usage warning dialog when Picard starts"
@@ -712,28 +720,33 @@ msgid "Request timeout in seconds"
 msgstr ""
 
 #: picard/profile.py:245
+#, fuzzy
 msgid "Browser integration"
-msgstr ""
+msgstr "Tarayıcı Entegrasyonu"
 
 #: picard/profile.py:248
+#, fuzzy
 msgid "Default listening port"
-msgstr ""
+msgstr "Varsayılan dinleme portu:"
 
 #: picard/profile.py:249 picard/ui/ui_options_network.py:141
 msgid "Listen only on localhost"
 msgstr ""
 
 #: picard/profile.py:252
+#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr ""
+msgstr "Dosya aramaları için gerekli olan minimum benzerlik"
 
 #: picard/profile.py:253
+#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr ""
+msgstr "Küme aramaları için minimum benzerlik:"
 
 #: picard/profile.py:254
+#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr ""
+msgstr "Dosyaları parçalarla eşlemek için gerekli olan minimum benzerlik:"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -1967,8 +1980,9 @@ msgid "English (United Kingdom)"
 msgstr ""
 
 #: picard/const/locales.py:256
+#, fuzzy
 msgid "English (Grenada)"
-msgstr ""
+msgstr "İngilizce (Kanada)"
 
 #: picard/const/locales.py:257
 msgid "English (Guernsey)"
@@ -3079,8 +3093,9 @@ msgid "Machame (Tanzania)"
 msgstr ""
 
 #: picard/const/locales.py:545
+#, fuzzy
 msgid "Javanese"
-msgstr ""
+msgstr "Japonca"
 
 #: picard/const/locales.py:546
 msgid "Javanese (Indonesia)"
@@ -3463,8 +3478,9 @@ msgid "Luyia (Kenya)"
 msgstr ""
 
 #: picard/const/locales.py:642
+#, fuzzy
 msgid "Latvian"
-msgstr ""
+msgstr "Letonya"
 
 #: picard/const/locales.py:643
 msgid "Latvian (Latvia)"
@@ -3739,8 +3755,9 @@ msgid "Low German (Netherlands)"
 msgstr ""
 
 #: picard/const/locales.py:713
+#, fuzzy
 msgid "Nepali"
-msgstr ""
+msgstr "Nepal"
 
 #: picard/const/locales.py:714
 msgid "Nepali (India)"
@@ -4411,8 +4428,9 @@ msgid "Shona (Zimbabwe)"
 msgstr ""
 
 #: picard/const/locales.py:889
+#, fuzzy
 msgid "Somali"
-msgstr ""
+msgstr "Somali"
 
 #: picard/const/locales.py:890
 msgid "Somali (Djibouti)"
@@ -4563,8 +4581,9 @@ msgid "Swahili (Uganda)"
 msgstr ""
 
 #: picard/const/locales.py:929
+#, fuzzy
 msgid "Syriac"
-msgstr ""
+msgstr "Suriye"
 
 #: picard/const/locales.py:930
 msgid "Syriac (Iraq)"
@@ -4667,8 +4686,9 @@ msgid "Tigre (Eritrea)"
 msgstr ""
 
 #: picard/const/locales.py:955
+#, fuzzy
 msgid "Turkmen"
-msgstr ""
+msgstr "Türkmen"
 
 #: picard/const/locales.py:956
 msgid "Turkmen (Turkmenistan)"
@@ -4687,8 +4707,9 @@ msgid "Tswana (South Africa)"
 msgstr ""
 
 #: picard/const/locales.py:960
+#, fuzzy
 msgid "Tongan"
-msgstr ""
+msgstr "Tonga"
 
 #: picard/const/locales.py:961
 msgid "Tongan (Tonga)"
@@ -6554,13 +6575,14 @@ msgid "Album:"
 msgstr "Albüm:"
 
 #: picard/ui/infodialog.py:311
+#, fuzzy
 msgid "Artist:"
-msgstr ""
+msgstr "Artist"
 
 #: picard/ui/infodialog.py:341
-#, python-format
+#, fuzzy, python-format
 msgid "Disc %d"
-msgstr ""
+msgstr "Disk Id"
 
 #: picard/ui/infodialog.py:343
 msgid "Tracklist:"
@@ -6734,8 +6756,9 @@ msgid "Loading..."
 msgstr "Yükleniyor..."
 
 #: picard/ui/itemviews.py:548
+#, fuzzy
 msgid "Show &more details..."
-msgstr ""
+msgstr "Daha fazla detay göster..."
 
 #: picard/ui/itemviews.py:601
 #, python-format
@@ -6747,8 +6770,9 @@ msgid "Collections"
 msgstr "Koleksiyonlar"
 
 #: picard/ui/itemviews.py:635
+#, fuzzy
 msgid "P&lugins"
-msgstr ""
+msgstr "Eklentiler"
 
 #: picard/ui/itemviews.py:651
 msgid "&Run scripts"
@@ -7068,8 +7092,9 @@ msgid "Submit file as a new release to MusicBrainz"
 msgstr ""
 
 #: picard/ui/mainwindow.py:666
+#, fuzzy
 msgid "Search for similar items..."
-msgstr ""
+msgstr "Benzer albümleri ara..."
 
 #: picard/ui/mainwindow.py:667 picard/ui/options/interface_toolbar.py:123
 msgid "Similar items"
@@ -7094,8 +7119,9 @@ msgid "View similar releases and optionally choose a different release"
 msgstr ""
 
 #: picard/ui/mainwindow.py:685
+#, fuzzy
 msgid "Search for similar tracks..."
-msgstr ""
+msgstr "Benzer albümleri ara..."
 
 #: picard/ui/mainwindow.py:686
 msgid "View similar tracks and optionally choose a different release"
@@ -7118,8 +7144,9 @@ msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:713
+#, fuzzy
 msgid "&Metadata"
-msgstr ""
+msgstr "Metadata"
 
 #: picard/ui/mainwindow.py:717
 msgid "Ctrl+Shift+M"
@@ -7130,8 +7157,9 @@ msgid "&Cover Art"
 msgstr "&Kapak Resmi"
 
 #: picard/ui/mainwindow.py:735
+#, fuzzy
 msgid "&Actions"
-msgstr ""
+msgstr "Eylemler"
 
 #: picard/ui/mainwindow.py:744 picard/ui/mainwindow.py:1139
 #: picard/ui/searchdialog/__init__.py:48
@@ -7410,8 +7438,9 @@ msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
 #: picard/ui/mainwindow.py:1722
+#, fuzzy
 msgid "Authentication Required"
-msgstr ""
+msgstr "Kimlik denetimi gerekli"
 
 #: picard/ui/mainwindow.py:1723
 msgid ""
@@ -7501,8 +7530,9 @@ msgstr[0] "Orijinal Değeri Kullan"
 msgstr[1] "Orijinal Değerleri Kullan"
 
 #: picard/ui/metadatabox.py:439
+#, fuzzy
 msgid "&Copy"
-msgstr ""
+msgstr "Kopyala"
 
 #: picard/ui/newuserdialog.py:34
 msgid ""
@@ -7737,8 +7767,9 @@ msgid "Close the script editor without saving changes"
 msgstr ""
 
 #: picard/ui/scripteditor.py:566
+#, fuzzy
 msgid "&Script"
-msgstr ""
+msgstr "Abece"
 
 #: picard/ui/scripteditor.py:569
 msgid "View/Edit Script &Metadata"
@@ -7976,8 +8007,9 @@ msgid "Available Language Scripts"
 msgstr ""
 
 #: picard/ui/ui_infodialog.py:82
+#, fuzzy
 msgid "&Error"
-msgstr ""
+msgstr "Hata"
 
 #: picard/ui/ui_infodialog.py:83
 msgid "A&rtwork"
@@ -8329,8 +8361,9 @@ msgid "Minimal similarity for cluster lookups:"
 msgstr "Küme aramaları için minimum benzerlik:"
 
 #: picard/ui/ui_options_metadata.py:130
+#, fuzzy
 msgid "Translate artist names to these locales where possible:"
-msgstr ""
+msgstr "Mümkünse sanatçı adlarını şu dile çevir:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select..."
@@ -8670,8 +8703,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:58
+#, fuzzy
 msgid "Also include RIFF INFO tags in the files"
-msgstr ""
+msgstr "Dosyalara ayrıca ID3v1 etiketlerinide yaz"
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:61
 msgid "Windows-1252"
@@ -8713,8 +8747,9 @@ msgid "Select the file naming script to load into the editor"
 msgstr ""
 
 #: picard/ui/ui_scripteditor.py:210 picard/ui/ui_scripteditor_details.py:99
+#, fuzzy
 msgid "Title:"
-msgstr ""
+msgstr "Parça Adı"
 
 #: picard/ui/ui_scripteditor_details.py:91
 msgid "File Naming Script Metadata"
@@ -8741,12 +8776,14 @@ msgid "Author:"
 msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:97
+#, fuzzy
 msgid "Version:"
-msgstr ""
+msgstr "Versiyon"
 
 #: picard/ui/ui_scripteditor_details.py:98
+#, fuzzy
 msgid "License:"
-msgstr ""
+msgstr "Lisans"
 
 #: picard/ui/ui_scripteditor_details.py:100
 msgid "License under which the file naming script is available."
@@ -8881,8 +8918,9 @@ msgid "Are you sure?"
 msgstr ""
 
 #: picard/ui/options/dialog.py:477 picard/ui/options/maintenance.py:93
+#, fuzzy
 msgid "Option"
-msgstr ""
+msgstr "Seçenekler"
 
 #: picard/ui/options/dialog.py:484
 #, python-format
@@ -8963,8 +9001,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/genres.py:87
+#, fuzzy
 msgid "Genres"
-msgstr ""
+msgstr "Tarz"
 
 #: picard/ui/options/genres.py:156
 #, python-format
@@ -9008,10 +9047,13 @@ msgid "Theme changed"
 msgstr ""
 
 #: picard/ui/options/interface.py:181
+#, fuzzy
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
 msgstr ""
+"Arayüz dilini değiştirdiniz. Değişikliklerin uygulanabilmesi için Picard'ı "
+"yeniden başlatmanız gerekmekte."
 
 #: picard/ui/options/interface.py:183
 msgid ""
@@ -9041,10 +9083,13 @@ msgid "Colors changed"
 msgstr ""
 
 #: picard/ui/options/interface_colors.py:147
+#, fuzzy
 msgid ""
 "You have changed the interface colors. You may have to restart Picard in "
 "order for the changes to take effect."
 msgstr ""
+"Arayüz dilini değiştirdiniz. Değişikliklerin uygulanabilmesi için Picard'ı "
+"yeniden başlatmanız gerekmekte."
 
 #: picard/ui/options/interface_toolbar.py:59
 msgid "Action Toolbar"
@@ -9059,8 +9104,9 @@ msgid "Add Files"
 msgstr "Dosya Ekle"
 
 #: picard/ui/options/interface_toolbar.py:75
+#, fuzzy
 msgid "Cluster"
-msgstr ""
+msgstr "&Kümele"
 
 #: picard/ui/options/interface_toolbar.py:79
 msgid "Lookup"
@@ -9317,8 +9363,9 @@ msgid "Copy to a new profile"
 msgstr ""
 
 #: picard/ui/options/profiles.py:124
+#, fuzzy
 msgid "Delete"
-msgstr ""
+msgstr "Sil"
 
 #: picard/ui/options/profiles.py:125
 msgid "Delete the profile"
@@ -9514,8 +9561,9 @@ msgid "Track Search Results"
 msgstr ""
 
 #: picard/ui/searchdialog/track.py:72
+#, fuzzy
 msgid "Release"
-msgstr ""
+msgstr "Sürüm"
 
 #: picard/ui/searchdialog/track.py:175
 msgid "Standalone Recording"
@@ -9665,8 +9713,9 @@ msgid ""
 msgstr ""
 
 #: picard/util/checkupdate.py:156
+#, fuzzy
 msgid "unknown"
-msgstr ""
+msgstr "bilinmeyen"
 
 #: picard/util/checkupdate.py:160
 msgid ""
@@ -9841,12 +9890,14 @@ msgid "MusicBrainz Recording Id"
 msgstr ""
 
 #: picard/util/tags.py:89
+#, fuzzy
 msgid "MusicBrainz Release Group Id"
-msgstr ""
+msgstr "MusicBrainz Albüm Sanatçısı Id"
 
 #: picard/util/tags.py:90
+#, fuzzy
 msgid "MusicBrainz Track Id"
-msgstr ""
+msgstr "MusicBrainz Disk Id"
 
 #: picard/util/tags.py:91
 msgid "MusicBrainz Work Id"

@@ -11,17 +11,18 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022\n"
-"Language-Team: Romanian (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/ro/)\n"
+"PO-Revision-Date: 2023-08-23 07:19+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Romanian <https://translations.metabrainz.org/projects/picard/"
+"app/ro/>\n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2;\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
-"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
-"2:1));\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -234,20 +235,23 @@ msgid "General"
 msgstr "Generale"
 
 #: picard/profile.py:48
+#, fuzzy
 msgid "Server address"
-msgstr ""
+msgstr "Adresa serverului:"
 
 #: picard/profile.py:49
+#, fuzzy
 msgid "Port"
-msgstr ""
+msgstr "Port:"
 
 #: picard/profile.py:50 picard/ui/ui_options_general.py:201
 msgid "Automatically scan all new files"
 msgstr "Analizează automat fișierele nou adăugate"
 
 #: picard/profile.py:51 picard/ui/ui_options_general.py:202
+#, fuzzy
 msgid "Automatically cluster all new files"
-msgstr ""
+msgstr "Analizează automat fișierele nou adăugate"
 
 #: picard/profile.py:52 picard/ui/ui_options_general.py:203
 msgid "Ignore MBIDs when loading new files"
@@ -503,8 +507,9 @@ msgid "File Naming"
 msgstr ""
 
 #: picard/profile.py:156
+#, fuzzy
 msgid "Move files"
-msgstr ""
+msgstr "&Mută fișierele"
 
 #: picard/profile.py:157
 msgid "Destination directory"
@@ -523,8 +528,9 @@ msgid "Delete empty directories"
 msgstr "Șterge dosarele rămase goale"
 
 #: picard/profile.py:161
+#, fuzzy
 msgid "Rename files"
-msgstr ""
+msgstr "&Redenumește fișierele"
 
 #: picard/profile.py:162
 msgid "Selected file naming script"
@@ -596,8 +602,9 @@ msgid "Use builtin search rather than looking in browser"
 msgstr ""
 
 #: picard/profile.py:192
+#, fuzzy
 msgid "Use advanced search syntax"
-msgstr ""
+msgstr "Folosește sintaxa avansată de căutare"
 
 #: picard/profile.py:193
 msgid "Show a usage warning dialog when Picard starts"
@@ -724,16 +731,19 @@ msgid "Listen only on localhost"
 msgstr ""
 
 #: picard/profile.py:252
+#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr ""
+msgstr "Similaritate minimă pentru căutare de fișiere"
 
 #: picard/profile.py:253
+#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr ""
+msgstr "Similaritate minimă pentru căutare de grupaje"
 
 #: picard/profile.py:254
+#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr ""
+msgstr "Similaritate minimă pentru asocierea fișierelor cu piese"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -753,8 +763,9 @@ msgid "Format"
 msgstr "Format"
 
 #: picard/releasegroup.py:73
+#, fuzzy
 msgid "Label"
-msgstr ""
+msgstr "Case de discuri"
 
 #: picard/releasegroup.py:74
 msgid "Cat No"
@@ -1111,8 +1122,9 @@ msgid "Afar (Ethiopia)"
 msgstr ""
 
 #: picard/const/locales.py:32
+#, fuzzy
 msgid "Abkhazian"
-msgstr ""
+msgstr "Abhază"
 
 #: picard/const/locales.py:33
 msgid "Abkhazian (Georgia)"
@@ -1155,8 +1167,9 @@ msgid "Amharic (Ethiopia)"
 msgstr ""
 
 #: picard/const/locales.py:43
+#, fuzzy
 msgid "Aragonese"
-msgstr ""
+msgstr "Aragoneză"
 
 #: picard/const/locales.py:44
 msgid "Aragonese (Spain)"
@@ -1967,8 +1980,9 @@ msgid "English (United Kingdom)"
 msgstr ""
 
 #: picard/const/locales.py:256
+#, fuzzy
 msgid "English (Grenada)"
-msgstr ""
+msgstr "Engleză (canadiană)"
 
 #: picard/const/locales.py:257
 msgid "English (Guernsey)"
@@ -3079,16 +3093,18 @@ msgid "Machame (Tanzania)"
 msgstr ""
 
 #: picard/const/locales.py:545
+#, fuzzy
 msgid "Javanese"
-msgstr ""
+msgstr "Japoneză"
 
 #: picard/const/locales.py:546
 msgid "Javanese (Indonesia)"
 msgstr ""
 
 #: picard/const/locales.py:547
+#, fuzzy
 msgid "Georgian"
-msgstr ""
+msgstr "Georgia"
 
 #: picard/const/locales.py:548
 msgid "Georgian (Georgia)"
@@ -3351,8 +3367,9 @@ msgid "Langi (Tanzania)"
 msgstr ""
 
 #: picard/const/locales.py:614
+#, fuzzy
 msgid "Luxembourgish"
-msgstr ""
+msgstr "Luxemburgheză"
 
 #: picard/const/locales.py:615
 msgid "Luxembourgish (Luxembourg)"
@@ -3463,8 +3480,9 @@ msgid "Luyia (Kenya)"
 msgstr ""
 
 #: picard/const/locales.py:642
+#, fuzzy
 msgid "Latvian"
-msgstr ""
+msgstr "Letonia"
 
 #: picard/const/locales.py:643
 msgid "Latvian (Latvia)"
@@ -3547,8 +3565,9 @@ msgid "Māori (New Zealand)"
 msgstr ""
 
 #: picard/const/locales.py:663
+#, fuzzy
 msgid "Macedonian"
-msgstr ""
+msgstr "Macedonia"
 
 #: picard/const/locales.py:664
 msgid "Macedonian (North Macedonia)"
@@ -3563,8 +3582,9 @@ msgid "Malayalam (India)"
 msgstr ""
 
 #: picard/const/locales.py:667
+#, fuzzy
 msgid "Mongolian"
-msgstr ""
+msgstr "Mongolia"
 
 #: picard/const/locales.py:668
 msgid "Mongolian (Cyrillic)"
@@ -3739,8 +3759,9 @@ msgid "Low German (Netherlands)"
 msgstr ""
 
 #: picard/const/locales.py:713
+#, fuzzy
 msgid "Nepali"
-msgstr ""
+msgstr "Nepal"
 
 #: picard/const/locales.py:714
 msgid "Nepali (India)"
@@ -4443,8 +4464,9 @@ msgid "Albanian (Kosovo)"
 msgstr ""
 
 #: picard/const/locales.py:898
+#, fuzzy
 msgid "Serbian"
-msgstr ""
+msgstr "Serbia"
 
 #: picard/const/locales.py:899
 msgid "Serbian (Cyrillic)"
@@ -4563,8 +4585,9 @@ msgid "Swahili (Uganda)"
 msgstr ""
 
 #: picard/const/locales.py:929
+#, fuzzy
 msgid "Syriac"
-msgstr ""
+msgstr "Siria"
 
 #: picard/const/locales.py:930
 msgid "Syriac (Iraq)"
@@ -4687,8 +4710,9 @@ msgid "Tswana (South Africa)"
 msgstr ""
 
 #: picard/const/locales.py:960
+#, fuzzy
 msgid "Tongan"
-msgstr ""
+msgstr "Tonga"
 
 #: picard/const/locales.py:961
 msgid "Tongan (Tonga)"
@@ -6598,8 +6622,9 @@ msgid "Files"
 msgstr ""
 
 #: picard/ui/infostatus.py:72
+#, fuzzy
 msgid "Albums"
-msgstr ""
+msgstr "Album"
 
 #: picard/ui/infostatus.py:73
 msgid "Pending files"
@@ -6748,8 +6773,9 @@ msgid "Collections"
 msgstr ""
 
 #: picard/ui/itemviews.py:635
+#, fuzzy
 msgid "P&lugins"
-msgstr ""
+msgstr "Module"
 
 #: picard/ui/itemviews.py:651
 msgid "&Run scripts"
@@ -7120,8 +7146,9 @@ msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:713
+#, fuzzy
 msgid "&Metadata"
-msgstr ""
+msgstr "Metadate"
 
 #: picard/ui/mainwindow.py:717
 msgid "Ctrl+Shift+M"
@@ -7132,8 +7159,9 @@ msgid "&Cover Art"
 msgstr "&Coperți"
 
 #: picard/ui/mainwindow.py:735
+#, fuzzy
 msgid "&Actions"
-msgstr ""
+msgstr "Acțiuni"
 
 #: picard/ui/mainwindow.py:744 picard/ui/mainwindow.py:1139
 #: picard/ui/searchdialog/__init__.py:48
@@ -7342,8 +7370,9 @@ msgid "&Help"
 msgstr "&Ajutor"
 
 #: picard/ui/mainwindow.py:1100 picard/ui/ui_options_plugins.py:134
+#, fuzzy
 msgid "Actions"
-msgstr ""
+msgstr "Acțiuni"
 
 #: picard/ui/mainwindow.py:1152
 msgid "Track"
@@ -7412,8 +7441,9 @@ msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
 #: picard/ui/mainwindow.py:1722
+#, fuzzy
 msgid "Authentication Required"
-msgstr ""
+msgstr "Autentificare necesară"
 
 #: picard/ui/mainwindow.py:1723
 msgid ""
@@ -7506,8 +7536,9 @@ msgstr[1] ""
 msgstr[2] ""
 
 #: picard/ui/metadatabox.py:439
+#, fuzzy
 msgid "&Copy"
-msgstr ""
+msgstr "Copiere"
 
 #: picard/ui/newuserdialog.py:34
 msgid ""
@@ -7746,8 +7777,9 @@ msgid "Close the script editor without saving changes"
 msgstr ""
 
 #: picard/ui/scripteditor.py:566
+#, fuzzy
 msgid "&Script"
-msgstr ""
+msgstr "Script"
 
 #: picard/ui/scripteditor.py:569
 msgid "View/Edit Script &Metadata"
@@ -7867,8 +7899,9 @@ msgid "Overwrite"
 msgstr ""
 
 #: picard/ui/options/profiles.py:119 picard/ui/scripteditor.py:1238
+#, fuzzy
 msgid "Copy"
-msgstr ""
+msgstr "Copiere"
 
 #: picard/ui/options/renaming.py:266 picard/ui/scripteditor.py:1284
 msgid "The file naming format must not be empty."
@@ -7985,8 +8018,9 @@ msgid "Available Language Scripts"
 msgstr ""
 
 #: picard/ui/ui_infodialog.py:82
+#, fuzzy
 msgid "&Error"
-msgstr ""
+msgstr "Eroare"
 
 #: picard/ui/ui_infodialog.py:83
 msgid "A&rtwork"
@@ -8338,8 +8372,10 @@ msgid "Minimal similarity for cluster lookups:"
 msgstr "Similaritate minimă pentru căutare de grupaje"
 
 #: picard/ui/ui_options_metadata.py:130
+#, fuzzy
 msgid "Translate artist names to these locales where possible:"
 msgstr ""
+"Traduceți numele artiștilor la această setare regională unde este posibil:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select..."
@@ -8717,8 +8753,9 @@ msgid "Select the file naming script to load into the editor"
 msgstr ""
 
 #: picard/ui/ui_scripteditor.py:210 picard/ui/ui_scripteditor_details.py:99
+#, fuzzy
 msgid "Title:"
-msgstr ""
+msgstr "Titlu"
 
 #: picard/ui/ui_scripteditor_details.py:91
 msgid "File Naming Script Metadata"
@@ -8745,12 +8782,14 @@ msgid "Author:"
 msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:97
+#, fuzzy
 msgid "Version:"
-msgstr ""
+msgstr "Versiune"
 
 #: picard/ui/ui_scripteditor_details.py:98
+#, fuzzy
 msgid "License:"
-msgstr ""
+msgstr "Licență"
 
 #: picard/ui/ui_scripteditor_details.py:100
 msgid "License under which the file naming script is available."
@@ -8885,8 +8924,9 @@ msgid "Are you sure?"
 msgstr ""
 
 #: picard/ui/options/dialog.py:477 picard/ui/options/maintenance.py:93
+#, fuzzy
 msgid "Option"
-msgstr ""
+msgstr "Opțiuni"
 
 #: picard/ui/options/dialog.py:484
 #, python-format
@@ -8967,8 +9007,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/genres.py:87
+#, fuzzy
 msgid "Genres"
-msgstr ""
+msgstr "Gen muzical"
 
 #: picard/ui/options/genres.py:156
 #, python-format
@@ -9012,10 +9053,13 @@ msgid "Theme changed"
 msgstr ""
 
 #: picard/ui/options/interface.py:181
+#, fuzzy
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
 msgstr ""
+"Ați schimbat limba interfeței. Trebuie să reporniți Picard pentru ca "
+"schimbarea să aibă efect."
 
 #: picard/ui/options/interface.py:183
 msgid ""
@@ -9045,10 +9089,13 @@ msgid "Colors changed"
 msgstr ""
 
 #: picard/ui/options/interface_colors.py:147
+#, fuzzy
 msgid ""
 "You have changed the interface colors. You may have to restart Picard in "
 "order for the changes to take effect."
 msgstr ""
+"Ați schimbat limba interfeței. Trebuie să reporniți Picard pentru ca "
+"schimbarea să aibă efect."
 
 #: picard/ui/options/interface_toolbar.py:59
 msgid "Action Toolbar"
@@ -9063,8 +9110,9 @@ msgid "Add Files"
 msgstr "Adaugă fișiere"
 
 #: picard/ui/options/interface_toolbar.py:75
+#, fuzzy
 msgid "Cluster"
-msgstr ""
+msgstr "Gr&upează"
 
 #: picard/ui/options/interface_toolbar.py:79
 msgid "Lookup"
@@ -9518,8 +9566,9 @@ msgid "Track Search Results"
 msgstr ""
 
 #: picard/ui/searchdialog/track.py:72
+#, fuzzy
 msgid "Release"
-msgstr ""
+msgstr "Album"
 
 #: picard/ui/searchdialog/track.py:175
 msgid "Standalone Recording"
@@ -9669,8 +9718,9 @@ msgid ""
 msgstr ""
 
 #: picard/util/checkupdate.py:156
+#, fuzzy
 msgid "unknown"
-msgstr ""
+msgstr "Necunoscut"
 
 #: picard/util/checkupdate.py:160
 msgid ""
@@ -9701,8 +9751,9 @@ msgid "Arranger"
 msgstr "Orchestrator"
 
 #: picard/util/tags.py:44
+#, fuzzy
 msgid "Artists"
-msgstr ""
+msgstr "Artiști"
 
 #: picard/util/tags.py:45
 msgid "Artist Sort Order"

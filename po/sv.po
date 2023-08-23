@@ -21,16 +21,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2023\n"
-"Language-Team: Swedish (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/sv/)\n"
+"PO-Revision-Date: 2023-08-23 07:19+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Swedish <https://translations.metabrainz.org/projects/picard/"
+"app/sv/>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -371,12 +372,14 @@ msgid "Minimal genre usage"
 msgstr ""
 
 #: picard/profile.py:90
+#, fuzzy
 msgid "Maximum number of genres"
-msgstr ""
+msgstr "Maximalt antal genrer:"
 
 #: picard/profile.py:91
+#, fuzzy
 msgid "Join multiple genres with"
-msgstr ""
+msgstr "Gå med i flera genrer med:"
 
 #: picard/profile.py:92
 msgid "Genres to include or exclude"
@@ -511,20 +514,23 @@ msgid "Always use the primary image type as the file name for non-front images"
 msgstr ""
 
 #: picard/profile.py:148
+#, fuzzy
 msgid "Cover art providers"
-msgstr ""
+msgstr "Omslagsbildsleverantörer"
 
 #: picard/profile.py:153 picard/ui/options/renaming.py:73
 msgid "File Naming"
 msgstr "Filnamngivning"
 
 #: picard/profile.py:156
+#, fuzzy
 msgid "Move files"
-msgstr ""
+msgstr "&Flytta filer"
 
 #: picard/profile.py:157
+#, fuzzy
 msgid "Destination directory"
-msgstr ""
+msgstr "Målmapp:"
 
 #: picard/profile.py:158
 msgid "Move additional files"
@@ -539,8 +545,9 @@ msgid "Delete empty directories"
 msgstr "Ta bort tomma mappar"
 
 #: picard/profile.py:161
+#, fuzzy
 msgid "Rename files"
-msgstr ""
+msgstr "&Döp om filer"
 
 #: picard/profile.py:162
 msgid "Selected file naming script"
@@ -580,8 +587,9 @@ msgid "Enable tagger scripts"
 msgstr ""
 
 #: picard/profile.py:178
+#, fuzzy
 msgid "Tagger scripts"
-msgstr ""
+msgstr "Taggningsskript"
 
 #: picard/profile.py:183 picard/ui/options/interface.py:67
 msgid "User Interface"
@@ -596,8 +604,9 @@ msgid "Show icons in menus"
 msgstr ""
 
 #: picard/profile.py:188
+#, fuzzy
 msgid "User interface language"
-msgstr ""
+msgstr "Språk för användargränssnitt:"
 
 #: picard/profile.py:189
 msgid "User interface color theme"
@@ -612,8 +621,9 @@ msgid "Use builtin search rather than looking in browser"
 msgstr "Använd inbyggd sökning i stället för att titta i webbläsaren"
 
 #: picard/profile.py:192
+#, fuzzy
 msgid "Use advanced search syntax"
-msgstr ""
+msgstr "Använd avancerad frågesyntax"
 
 #: picard/profile.py:193
 msgid "Show a usage warning dialog when Picard starts"
@@ -696,8 +706,9 @@ msgid "Completeness check ignore: Silent tracks"
 msgstr ""
 
 #: picard/profile.py:233
+#, fuzzy
 msgid "Tags to ignore for comparison"
-msgstr ""
+msgstr "Taggar att ignorera för jämförelse:"
 
 #: picard/profile.py:236
 msgid "Use a web proxy server"
@@ -728,28 +739,33 @@ msgid "Request timeout in seconds"
 msgstr ""
 
 #: picard/profile.py:245
+#, fuzzy
 msgid "Browser integration"
-msgstr ""
+msgstr "Webbläsarintegrering"
 
 #: picard/profile.py:248
+#, fuzzy
 msgid "Default listening port"
-msgstr ""
+msgstr "Standard lyssnarport:"
 
 #: picard/profile.py:249 picard/ui/ui_options_network.py:141
 msgid "Listen only on localhost"
 msgstr "Lyssna endast på localhost"
 
 #: picard/profile.py:252
+#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr ""
+msgstr "Minsta överensstämmelse för uppslagning av fil:"
 
 #: picard/profile.py:253
+#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr ""
+msgstr "Minsta överensstämmelse för uppslagning av kluster:"
 
 #: picard/profile.py:254
+#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr ""
+msgstr "Minsta överensstämmelse för matchning av filer till spår:"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -1276,8 +1292,9 @@ msgid "Arabic (Saudi Arabia)"
 msgstr ""
 
 #: picard/const/locales.py:70
+#, fuzzy
 msgid "Arabic (Sudan)"
-msgstr ""
+msgstr "Arabiska (Jordanien)"
 
 #: picard/const/locales.py:71
 msgid "Arabic (Somalia)"
@@ -1880,8 +1897,9 @@ msgid "English (American Samoa)"
 msgstr ""
 
 #: picard/const/locales.py:228
+#, fuzzy
 msgid "English (Austria)"
-msgstr ""
+msgstr "Engelska (Australien)"
 
 #: picard/const/locales.py:230
 msgid "English (Barbados)"
@@ -1984,8 +2002,9 @@ msgid "English (United Kingdom)"
 msgstr ""
 
 #: picard/const/locales.py:256
+#, fuzzy
 msgid "English (Grenada)"
-msgstr ""
+msgstr "Engelska (Kanada)"
 
 #: picard/const/locales.py:257
 msgid "English (Guernsey)"
@@ -2440,8 +2459,9 @@ msgid "Persian (Iran)"
 msgstr ""
 
 #: picard/const/locales.py:372
+#, fuzzy
 msgid "Fula"
-msgstr ""
+msgstr "fula"
 
 #: picard/const/locales.py:373
 msgid "Fula (Adlam)"
@@ -3756,8 +3776,9 @@ msgid "Low German (Netherlands)"
 msgstr ""
 
 #: picard/const/locales.py:713
+#, fuzzy
 msgid "Nepali"
-msgstr ""
+msgstr "Nepal"
 
 #: picard/const/locales.py:714
 msgid "Nepali (India)"
@@ -4704,8 +4725,9 @@ msgid "Tswana (South Africa)"
 msgstr ""
 
 #: picard/const/locales.py:960
+#, fuzzy
 msgid "Tongan"
-msgstr ""
+msgstr "Tonga"
 
 #: picard/const/locales.py:961
 msgid "Tongan (Tonga)"
@@ -6597,9 +6619,9 @@ msgid "Artist:"
 msgstr "Artist:"
 
 #: picard/ui/infodialog.py:341
-#, python-format
+#, fuzzy, python-format
 msgid "Disc %d"
-msgstr ""
+msgstr "Diskid"
 
 #: picard/ui/infodialog.py:343
 msgid "Tracklist:"
@@ -6773,8 +6795,9 @@ msgid "Loading..."
 msgstr "Läser in..."
 
 #: picard/ui/itemviews.py:548
+#, fuzzy
 msgid "Show &more details..."
-msgstr ""
+msgstr "Visa mer information..."
 
 #: picard/ui/itemviews.py:601
 #, python-format
@@ -7116,8 +7139,9 @@ msgid "Submit file as a new release to MusicBrainz"
 msgstr ""
 
 #: picard/ui/mainwindow.py:666
+#, fuzzy
 msgid "Search for similar items..."
-msgstr ""
+msgstr "Sök efter liknande album..."
 
 #: picard/ui/mainwindow.py:667 picard/ui/options/interface_toolbar.py:123
 msgid "Similar items"
@@ -7166,8 +7190,9 @@ msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:713
+#, fuzzy
 msgid "&Metadata"
-msgstr ""
+msgstr "Metadata"
 
 #: picard/ui/mainwindow.py:717
 msgid "Ctrl+Shift+M"
@@ -7731,16 +7756,18 @@ msgid ""
 msgstr ""
 
 #: picard/ui/scripteditor.py:319 picard/ui/scripteditor.py:1227
+#, fuzzy
 msgid "Confirm"
-msgstr ""
+msgstr "bekräfta"
 
 #: picard/ui/scripteditor.py:393
 msgid "File naming script editor"
 msgstr ""
 
 #: picard/ui/scripteditor.py:459
+#, fuzzy
 msgid "Reset"
-msgstr ""
+msgstr "Återställ:"
 
 #: picard/ui/options/dialog.py:135 picard/ui/scripteditor.py:464
 msgid "Make It So!"
@@ -7787,8 +7814,9 @@ msgid "Close the script editor without saving changes"
 msgstr ""
 
 #: picard/ui/scripteditor.py:566
+#, fuzzy
 msgid "&Script"
-msgstr ""
+msgstr "Skript"
 
 #: picard/ui/scripteditor.py:569
 msgid "View/Edit Script &Metadata"
@@ -7803,8 +7831,9 @@ msgid "Ctrl+M"
 msgstr "Ctrl+M"
 
 #: picard/ui/scripteditor.py:575
+#, fuzzy
 msgid "Add a &new script"
-msgstr ""
+msgstr "Lägg till nytt skript"
 
 #: picard/ui/scripteditor.py:580
 msgid "&Copy the current script"
@@ -8026,8 +8055,9 @@ msgid "Available Language Scripts"
 msgstr ""
 
 #: picard/ui/ui_infodialog.py:82
+#, fuzzy
 msgid "&Error"
-msgstr ""
+msgstr "Fel"
 
 #: picard/ui/ui_infodialog.py:83
 msgid "A&rtwork"
@@ -8281,8 +8311,9 @@ msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
 msgstr ""
 
 #: picard/ui/ui_options_interface.py:118
+#, fuzzy
 msgid "Appearance"
-msgstr ""
+msgstr "Utseenden"
 
 #: picard/ui/ui_options_interface.py:121
 msgid "User interface language:"
@@ -8362,8 +8393,9 @@ msgid "Remove selected options"
 msgstr ""
 
 #: picard/ui/ui_options_maintenance.py:91
+#, fuzzy
 msgid "Select all"
-msgstr ""
+msgstr "Välj &alla"
 
 #: picard/ui/ui_options_matching.py:71
 msgid "Thresholds"
@@ -8382,8 +8414,9 @@ msgid "Minimal similarity for cluster lookups:"
 msgstr "Minsta överensstämmelse för uppslagning av kluster:"
 
 #: picard/ui/ui_options_metadata.py:130
+#, fuzzy
 msgid "Translate artist names to these locales where possible:"
-msgstr ""
+msgstr "Översätt om möjligt artistnamn till lokalt språk:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select..."
@@ -8402,8 +8435,9 @@ msgid "Various artists:"
 msgstr "Blandade artister:"
 
 #: picard/ui/ui_options_metadata.py:142
+#, fuzzy
 msgid "Standalone recordings:"
-msgstr ""
+msgstr "Ensam inspelning"
 
 #: picard/ui/options/interface.py:93 picard/ui/ui_options_metadata.py:143
 #: picard/ui/ui_options_metadata.py:144
@@ -8478,12 +8512,14 @@ msgid "Option Profile(s)"
 msgstr ""
 
 #: picard/ui/ui_options_profiles.py:76
+#, fuzzy
 msgid "Move profile up"
-msgstr ""
+msgstr "Flytta fil upp"
 
 #: picard/ui/ui_options_profiles.py:77
+#, fuzzy
 msgid "Move profile down"
-msgstr ""
+msgstr "Flytta fil ner"
 
 #: picard/ui/ui_options_ratings.py:48
 msgid ""
@@ -8550,8 +8586,9 @@ msgid "Before"
 msgstr ""
 
 #: picard/ui/ui_options_renaming.py:160 picard/ui/ui_scripteditor.py:213
+#, fuzzy
 msgid "After"
-msgstr ""
+msgstr "efter"
 
 #: picard/ui/ui_options_renaming.py:161
 msgid "Reload examples"
@@ -8736,8 +8773,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:58
+#, fuzzy
 msgid "Also include RIFF INFO tags in the files"
-msgstr ""
+msgstr "Inkludera även ID3v1-taggar i filerna"
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:61
 msgid "Windows-1252"
@@ -8782,8 +8820,9 @@ msgid "Select the file naming script to load into the editor"
 msgstr ""
 
 #: picard/ui/ui_scripteditor.py:210 picard/ui/ui_scripteditor_details.py:99
+#, fuzzy
 msgid "Title:"
-msgstr ""
+msgstr "Titel"
 
 #: picard/ui/ui_scripteditor_details.py:91
 msgid "File Naming Script Metadata"
@@ -8794,8 +8833,9 @@ msgid "Version number of the file naming script."
 msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:93
+#, fuzzy
 msgid "Last Updated:"
-msgstr ""
+msgstr "Senast uppdaterad"
 
 #: picard/ui/ui_scripteditor_details.py:94
 msgid "Date and time the file naming script was last updated (UTC)."
@@ -8806,16 +8846,19 @@ msgid "Now"
 msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:96
+#, fuzzy
 msgid "Author:"
-msgstr ""
+msgstr "Författare"
 
 #: picard/ui/ui_scripteditor_details.py:97
+#, fuzzy
 msgid "Version:"
-msgstr ""
+msgstr "Version"
 
 #: picard/ui/ui_scripteditor_details.py:98
+#, fuzzy
 msgid "License:"
-msgstr ""
+msgstr "Licens"
 
 #: picard/ui/ui_scripteditor_details.py:100
 msgid "License under which the file naming script is available."
@@ -8950,8 +8993,9 @@ msgid "Are you sure?"
 msgstr "Är du säker?"
 
 #: picard/ui/options/dialog.py:477 picard/ui/options/maintenance.py:93
+#, fuzzy
 msgid "Option"
-msgstr ""
+msgstr "Alternativ"
 
 #: picard/ui/options/dialog.py:484
 #, python-format
@@ -9077,10 +9121,13 @@ msgid "Theme changed"
 msgstr "Tema har ändrats"
 
 #: picard/ui/options/interface.py:181
+#, fuzzy
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
 msgstr ""
+"Du har ändrat gränssnittsspråket. Du måste starta om Picard för att "
+"ändringen ska bli aktiverad."
 
 #: picard/ui/options/interface.py:183
 msgid ""
@@ -9610,8 +9657,9 @@ msgid "Remove profile"
 msgstr ""
 
 #: picard/ui/widgets/profilelistwidget.py:83
+#, fuzzy
 msgid "Are you sure you want to remove this profile?"
-msgstr ""
+msgstr "Är du säker på att du vill ta bort det här skriptet?"
 
 #: picard/ui/widgets/scriptdocumentation.py:109
 msgid "Open Scripting Documentation in your browser"
@@ -9909,8 +9957,9 @@ msgid "MusicBrainz Artist Id"
 msgstr "MusicBrainz artist-id"
 
 #: picard/util/tags.py:85
+#, fuzzy
 msgid "MusicBrainz Disc Id"
-msgstr ""
+msgstr "MusicBrainz spår-id"
 
 #: picard/util/tags.py:86
 msgid "MusicBrainz Original Release Id"
@@ -9925,8 +9974,9 @@ msgid "MusicBrainz Recording Id"
 msgstr "MusicBrainz inspelnings-id"
 
 #: picard/util/tags.py:89
+#, fuzzy
 msgid "MusicBrainz Release Group Id"
-msgstr ""
+msgstr "MusicBrainz utgivningsartist-id"
 
 #: picard/util/tags.py:90
 msgid "MusicBrainz Track Id"
@@ -9965,8 +10015,9 @@ msgid "Performer"
 msgstr "Uppträdande"
 
 #: picard/util/tags.py:100
+#, fuzzy
 msgid "Podcast"
-msgstr ""
+msgstr "Podcast||Podd"
 
 #: picard/util/tags.py:101
 msgid "Podcast URL"

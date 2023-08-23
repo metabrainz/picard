@@ -13,19 +13,20 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022\n"
-"Language-Team: Ukrainian (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/uk/)\n"
+"PO-Revision-Date: 2023-08-23 07:19+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
+"picard/app/uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 "
+"? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > "
+"14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % "
+"100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
-"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
-"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
-"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -253,20 +254,23 @@ msgid "General"
 msgstr "Загальне"
 
 #: picard/profile.py:48
+#, fuzzy
 msgid "Server address"
-msgstr ""
+msgstr "Адреса сервера:"
 
 #: picard/profile.py:49
+#, fuzzy
 msgid "Port"
-msgstr ""
+msgstr "Порт:"
 
 #: picard/profile.py:50 picard/ui/ui_options_general.py:201
 msgid "Automatically scan all new files"
 msgstr "Автоматично сканувати всі нові файли"
 
 #: picard/profile.py:51 picard/ui/ui_options_general.py:202
+#, fuzzy
 msgid "Automatically cluster all new files"
-msgstr ""
+msgstr "Автоматично сканувати всі нові файли"
 
 #: picard/profile.py:52 picard/ui/ui_options_general.py:203
 msgid "Ignore MBIDs when loading new files"
@@ -522,12 +526,14 @@ msgid "File Naming"
 msgstr "Назва файлів"
 
 #: picard/profile.py:156
+#, fuzzy
 msgid "Move files"
-msgstr ""
+msgstr "Пе&ремістити файли"
 
 #: picard/profile.py:157
+#, fuzzy
 msgid "Destination directory"
-msgstr ""
+msgstr "Тека призначення:"
 
 #: picard/profile.py:158
 msgid "Move additional files"
@@ -542,8 +548,9 @@ msgid "Delete empty directories"
 msgstr "Вилучити порожні каталоги"
 
 #: picard/profile.py:161
+#, fuzzy
 msgid "Rename files"
-msgstr ""
+msgstr "П&ерейменувати файли"
 
 #: picard/profile.py:162
 msgid "Selected file naming script"
@@ -583,8 +590,9 @@ msgid "Enable tagger scripts"
 msgstr ""
 
 #: picard/profile.py:178
+#, fuzzy
 msgid "Tagger scripts"
-msgstr ""
+msgstr "Сценарії тегів"
 
 #: picard/profile.py:183 picard/ui/options/interface.py:67
 msgid "User Interface"
@@ -599,8 +607,9 @@ msgid "Show icons in menus"
 msgstr ""
 
 #: picard/profile.py:188
+#, fuzzy
 msgid "User interface language"
-msgstr ""
+msgstr "Мова інтерфейсу:"
 
 #: picard/profile.py:189
 msgid "User interface color theme"
@@ -615,8 +624,9 @@ msgid "Use builtin search rather than looking in browser"
 msgstr "Використовуйте вбудований пошук, а не переглядайте в браузері"
 
 #: picard/profile.py:192
+#, fuzzy
 msgid "Use advanced search syntax"
-msgstr ""
+msgstr "Використовувати розширений синтаксис запитів"
 
 #: picard/profile.py:193
 msgid "Show a usage warning dialog when Picard starts"
@@ -731,28 +741,33 @@ msgid "Request timeout in seconds"
 msgstr ""
 
 #: picard/profile.py:245
+#, fuzzy
 msgid "Browser integration"
-msgstr ""
+msgstr "Інтеграція браузера"
 
 #: picard/profile.py:248
+#, fuzzy
 msgid "Default listening port"
-msgstr ""
+msgstr "Стандартний порт для прослуховування:"
 
 #: picard/profile.py:249 picard/ui/ui_options_network.py:141
 msgid "Listen only on localhost"
 msgstr "Слухати лише локальні"
 
 #: picard/profile.py:252
+#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr ""
+msgstr "Мінімальна схожість для пошуків файлів:"
 
 #: picard/profile.py:253
+#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr ""
+msgstr "Мінімальна схожість для пошуків кластерів:"
 
 #: picard/profile.py:254
+#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr ""
+msgstr "Мінімальна схожість відповідних файлів до доріжок:"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -1882,8 +1897,9 @@ msgid "English (American Samoa)"
 msgstr ""
 
 #: picard/const/locales.py:228
+#, fuzzy
 msgid "English (Austria)"
-msgstr ""
+msgstr "Англійська (Австралія)"
 
 #: picard/const/locales.py:230
 msgid "English (Barbados)"
@@ -1986,8 +2002,9 @@ msgid "English (United Kingdom)"
 msgstr ""
 
 #: picard/const/locales.py:256
+#, fuzzy
 msgid "English (Grenada)"
-msgstr ""
+msgstr "Англійська (Канада)"
 
 #: picard/const/locales.py:257
 msgid "English (Guernsey)"
@@ -4706,8 +4723,9 @@ msgid "Tswana (South Africa)"
 msgstr ""
 
 #: picard/const/locales.py:960
+#, fuzzy
 msgid "Tongan"
-msgstr ""
+msgstr "Тонґа"
 
 #: picard/const/locales.py:961
 msgid "Tongan (Tonga)"
@@ -6580,9 +6598,9 @@ msgid "Artist:"
 msgstr "Виконавець:"
 
 #: picard/ui/infodialog.py:341
-#, python-format
+#, fuzzy, python-format
 msgid "Disc %d"
-msgstr ""
+msgstr "Ідентифікатор диска"
 
 #: picard/ui/infodialog.py:343
 msgid "Tracklist:"
@@ -6762,8 +6780,9 @@ msgid "Loading..."
 msgstr "Завантаження..."
 
 #: picard/ui/itemviews.py:548
+#, fuzzy
 msgid "Show &more details..."
-msgstr ""
+msgstr "Побачити ще..."
 
 #: picard/ui/itemviews.py:601
 #, python-format
@@ -7071,8 +7090,9 @@ msgid "Remove selected files/albums"
 msgstr "Вилучити вибрані файли/альбоми"
 
 #: picard/ui/mainwindow.py:623 picard/ui/metadatabox.py:400
+#, fuzzy
 msgid "Lookup in &Browser"
-msgstr ""
+msgstr "Шукати в браузері"
 
 #: picard/ui/mainwindow.py:624
 msgid "Lookup selected item on MusicBrainz website"
@@ -7157,8 +7177,9 @@ msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:713
+#, fuzzy
 msgid "&Metadata"
-msgstr ""
+msgstr "Метадані"
 
 #: picard/ui/mainwindow.py:717
 msgid "Ctrl+Shift+M"
@@ -7169,8 +7190,9 @@ msgid "&Cover Art"
 msgstr "&Обкладинки"
 
 #: picard/ui/mainwindow.py:735
+#, fuzzy
 msgid "&Actions"
-msgstr ""
+msgstr "Actions"
 
 #: picard/ui/mainwindow.py:744 picard/ui/mainwindow.py:1139
 #: picard/ui/searchdialog/__init__.py:48
@@ -7322,8 +7344,9 @@ msgid "Ctrl+H"
 msgstr "Ctrl+H"
 
 #: picard/ui/mainwindow.py:893
+#, fuzzy
 msgid "Open in &Player"
-msgstr ""
+msgstr "Відкрити в програвачі"
 
 #: picard/ui/mainwindow.py:894
 msgid "Play the file in your default media player"
@@ -7449,8 +7472,9 @@ msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s(%(similarity)d%%)"
 
 #: picard/ui/mainwindow.py:1722
+#, fuzzy
 msgid "Authentication Required"
-msgstr ""
+msgstr "Потрібна автентифікація"
 
 #: picard/ui/mainwindow.py:1723
 msgid ""
@@ -7546,8 +7570,9 @@ msgstr[2] ""
 msgstr[3] ""
 
 #: picard/ui/metadatabox.py:439
+#, fuzzy
 msgid "&Copy"
-msgstr ""
+msgstr "Копіювати"
 
 #: picard/ui/newuserdialog.py:34
 msgid ""
@@ -7575,10 +7600,10 @@ msgid ""
 msgstr "Сервер %s вимагає авторизації. Введіть ім’я користувача та пароль."
 
 #: picard/ui/passworddialog.py:64
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "The proxy %s requires you to login. Please enter your username and password."
-msgstr ""
+msgstr "Сервер %s вимагає авторизації. Введіть ім’я користувача та пароль."
 
 #: picard/ui/playertoolbar.py:173
 msgid "Internal player: The format of a media resource isn't (fully) supported"
@@ -7786,8 +7811,9 @@ msgid "Close the script editor without saving changes"
 msgstr ""
 
 #: picard/ui/scripteditor.py:566
+#, fuzzy
 msgid "&Script"
-msgstr ""
+msgstr "Сценарій"
 
 #: picard/ui/scripteditor.py:569
 msgid "View/Edit Script &Metadata"
@@ -7802,8 +7828,9 @@ msgid "Ctrl+M"
 msgstr "Ctrl+M"
 
 #: picard/ui/scripteditor.py:575
+#, fuzzy
 msgid "Add a &new script"
-msgstr ""
+msgstr "Додати новий сценарій"
 
 #: picard/ui/scripteditor.py:580
 msgid "&Copy the current script"
@@ -7907,8 +7934,9 @@ msgid "Overwrite"
 msgstr ""
 
 #: picard/ui/options/profiles.py:119 picard/ui/scripteditor.py:1238
+#, fuzzy
 msgid "Copy"
-msgstr ""
+msgstr "Копіювати"
 
 #: picard/ui/options/renaming.py:266 picard/ui/scripteditor.py:1284
 msgid "The file naming format must not be empty."
@@ -8025,8 +8053,9 @@ msgid "Available Language Scripts"
 msgstr ""
 
 #: picard/ui/ui_infodialog.py:82
+#, fuzzy
 msgid "&Error"
-msgstr ""
+msgstr "Помилка"
 
 #: picard/ui/ui_infodialog.py:83
 msgid "A&rtwork"
@@ -8358,8 +8387,9 @@ msgid "Remove selected options"
 msgstr ""
 
 #: picard/ui/ui_options_maintenance.py:91
+#, fuzzy
 msgid "Select all"
-msgstr ""
+msgstr "Вибраний & всі"
 
 #: picard/ui/ui_options_matching.py:71
 msgid "Thresholds"
@@ -8378,8 +8408,9 @@ msgid "Minimal similarity for cluster lookups:"
 msgstr "Мінімальна схожість для пошуків кластерів:"
 
 #: picard/ui/ui_options_metadata.py:130
+#, fuzzy
 msgid "Translate artist names to these locales where possible:"
-msgstr ""
+msgstr "Перекладіть імена виконавців на цю мову,  якщо це можливо:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select..."
@@ -8398,8 +8429,9 @@ msgid "Various artists:"
 msgstr "Різні виконавці:"
 
 #: picard/ui/ui_options_metadata.py:142
+#, fuzzy
 msgid "Standalone recordings:"
-msgstr ""
+msgstr "Самостійний запис"
 
 #: picard/ui/options/interface.py:93 picard/ui/ui_options_metadata.py:143
 #: picard/ui/ui_options_metadata.py:144
@@ -8723,8 +8755,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:58
+#, fuzzy
 msgid "Also include RIFF INFO tags in the files"
-msgstr ""
+msgstr "Також охоплювати позначки ID3v1 в цих файлах"
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:61
 msgid "Windows-1252"
@@ -8769,8 +8802,9 @@ msgid "Select the file naming script to load into the editor"
 msgstr ""
 
 #: picard/ui/ui_scripteditor.py:210 picard/ui/ui_scripteditor_details.py:99
+#, fuzzy
 msgid "Title:"
-msgstr ""
+msgstr "Назва"
 
 #: picard/ui/ui_scripteditor_details.py:91
 msgid "File Naming Script Metadata"
@@ -8797,12 +8831,14 @@ msgid "Author:"
 msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:97
+#, fuzzy
 msgid "Version:"
-msgstr ""
+msgstr "Версія"
 
 #: picard/ui/ui_scripteditor_details.py:98
+#, fuzzy
 msgid "License:"
-msgstr ""
+msgstr "Ліцензія"
 
 #: picard/ui/ui_scripteditor_details.py:100
 msgid "License under which the file naming script is available."
@@ -8937,8 +8973,9 @@ msgid "Are you sure?"
 msgstr "Ти впевнений?"
 
 #: picard/ui/options/dialog.py:477 picard/ui/options/maintenance.py:93
+#, fuzzy
 msgid "Option"
-msgstr ""
+msgstr "Опії"
 
 #: picard/ui/options/dialog.py:484
 #, python-format
@@ -9064,10 +9101,13 @@ msgid "Theme changed"
 msgstr ""
 
 #: picard/ui/options/interface.py:181
+#, fuzzy
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
 msgstr ""
+"Ви змінили мову інтерфейсу. Потрібно перезавантажити Picard, щоб зміни "
+"вступили в силу."
 
 #: picard/ui/options/interface.py:183
 msgid ""
@@ -9097,10 +9137,13 @@ msgid "Colors changed"
 msgstr ""
 
 #: picard/ui/options/interface_colors.py:147
+#, fuzzy
 msgid ""
 "You have changed the interface colors. You may have to restart Picard in "
 "order for the changes to take effect."
 msgstr ""
+"Ви змінили мову інтерфейсу. Потрібно перезавантажити Picard, щоб зміни "
+"вступили в силу."
 
 #: picard/ui/options/interface_toolbar.py:59
 msgid "Action Toolbar"
@@ -9119,8 +9162,9 @@ msgid "Cluster"
 msgstr "Кластер "
 
 #: picard/ui/options/interface_toolbar.py:79
+#, fuzzy
 msgid "Lookup"
-msgstr ""
+msgstr "&Пошук"
 
 #: picard/ui/options/interface_toolbar.py:83
 msgid "Scan"
@@ -9591,8 +9635,9 @@ msgid "Remove profile"
 msgstr ""
 
 #: picard/ui/widgets/profilelistwidget.py:83
+#, fuzzy
 msgid "Are you sure you want to remove this profile?"
-msgstr ""
+msgstr "Ви впевнені, що хочете видалити цей сценарій?"
 
 #: picard/ui/widgets/scriptdocumentation.py:109
 msgid "Open Scripting Documentation in your browser"
@@ -9726,8 +9771,9 @@ msgid ""
 msgstr ""
 
 #: picard/util/checkupdate.py:156
+#, fuzzy
 msgid "unknown"
-msgstr ""
+msgstr "Невідоме"
 
 #: picard/util/checkupdate.py:160
 msgid ""
@@ -9902,12 +9948,14 @@ msgid "MusicBrainz Recording Id"
 msgstr ""
 
 #: picard/util/tags.py:89
+#, fuzzy
 msgid "MusicBrainz Release Group Id"
-msgstr ""
+msgstr "MusicBrainz ID автора випуску"
 
 #: picard/util/tags.py:90
+#, fuzzy
 msgid "MusicBrainz Track Id"
-msgstr ""
+msgstr "MusicBrainz ID диска"
 
 #: picard/util/tags.py:91
 msgid "MusicBrainz Work Id"

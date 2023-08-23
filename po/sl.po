@@ -12,17 +12,18 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022\n"
-"Language-Team: Slovenian (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/sl/)\n"
+"PO-Revision-Date: 2023-08-23 07:19+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Slovenian <https://translations.metabrainz.org/projects/"
+"picard/app/sl/>\n"
 "Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
+"n%100==4 ? 2 : 3;\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
-"%100==4 ? 2 : 3);\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -240,20 +241,23 @@ msgid "General"
 msgstr "Splošno"
 
 #: picard/profile.py:48
+#, fuzzy
 msgid "Server address"
-msgstr ""
+msgstr "Naslov strežnika:"
 
 #: picard/profile.py:49
+#, fuzzy
 msgid "Port"
-msgstr ""
+msgstr "Vrata:"
 
 #: picard/profile.py:50 picard/ui/ui_options_general.py:201
 msgid "Automatically scan all new files"
 msgstr "Samodejno skeniraj vse nove datoteke"
 
 #: picard/profile.py:51 picard/ui/ui_options_general.py:202
+#, fuzzy
 msgid "Automatically cluster all new files"
-msgstr ""
+msgstr "Samodejno skeniraj vse nove datoteke"
 
 #: picard/profile.py:52 picard/ui/ui_options_general.py:203
 msgid "Ignore MBIDs when loading new files"
@@ -509,8 +513,9 @@ msgid "File Naming"
 msgstr ""
 
 #: picard/profile.py:156
+#, fuzzy
 msgid "Move files"
-msgstr ""
+msgstr "Pre&makni datoteke"
 
 #: picard/profile.py:157
 msgid "Destination directory"
@@ -529,8 +534,9 @@ msgid "Delete empty directories"
 msgstr "Izbriši prazne imenike"
 
 #: picard/profile.py:161
+#, fuzzy
 msgid "Rename files"
-msgstr ""
+msgstr "P&reimenuj datoteke"
 
 #: picard/profile.py:162
 msgid "Selected file naming script"
@@ -586,8 +592,9 @@ msgid "Show icons in menus"
 msgstr ""
 
 #: picard/profile.py:188
+#, fuzzy
 msgid "User interface language"
-msgstr ""
+msgstr "Jezik uporabniškega vmesnika:"
 
 #: picard/profile.py:189
 msgid "User interface color theme"
@@ -602,8 +609,9 @@ msgid "Use builtin search rather than looking in browser"
 msgstr ""
 
 #: picard/profile.py:192
+#, fuzzy
 msgid "Use advanced search syntax"
-msgstr ""
+msgstr "Uporabi napredno sintakso za poizvedbo"
 
 #: picard/profile.py:193
 msgid "Show a usage warning dialog when Picard starts"
@@ -730,20 +738,24 @@ msgid "Listen only on localhost"
 msgstr ""
 
 #: picard/profile.py:252
+#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr ""
+msgstr "Minimalna podobnost za pregled datotek:"
 
 #: picard/profile.py:253
+#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr ""
+msgstr "Minimalna podobnost za pregled skupkov:"
 
 #: picard/profile.py:254
+#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr ""
+msgstr "Minimalna podobnost za ujemanje datotek s skladbami:"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
+#, fuzzy
 msgid "Tracks"
-msgstr ""
+msgstr "Skladba"
 
 #: picard/releasegroup.py:70
 msgid "Year"
@@ -1973,8 +1985,9 @@ msgid "English (United Kingdom)"
 msgstr ""
 
 #: picard/const/locales.py:256
+#, fuzzy
 msgid "English (Grenada)"
-msgstr ""
+msgstr "angleščina (Kanada)"
 
 #: picard/const/locales.py:257
 msgid "English (Guernsey)"
@@ -3085,16 +3098,18 @@ msgid "Machame (Tanzania)"
 msgstr ""
 
 #: picard/const/locales.py:545
+#, fuzzy
 msgid "Javanese"
-msgstr ""
+msgstr "japonščina"
 
 #: picard/const/locales.py:546
 msgid "Javanese (Indonesia)"
 msgstr ""
 
 #: picard/const/locales.py:547
+#, fuzzy
 msgid "Georgian"
-msgstr ""
+msgstr "Gruzija"
 
 #: picard/const/locales.py:548
 msgid "Georgian (Georgia)"
@@ -3469,8 +3484,9 @@ msgid "Luyia (Kenya)"
 msgstr ""
 
 #: picard/const/locales.py:642
+#, fuzzy
 msgid "Latvian"
-msgstr ""
+msgstr "Latvija"
 
 #: picard/const/locales.py:643
 msgid "Latvian (Latvia)"
@@ -3553,8 +3569,9 @@ msgid "Māori (New Zealand)"
 msgstr ""
 
 #: picard/const/locales.py:663
+#, fuzzy
 msgid "Macedonian"
-msgstr ""
+msgstr "Makedonija"
 
 #: picard/const/locales.py:664
 msgid "Macedonian (North Macedonia)"
@@ -3569,8 +3586,9 @@ msgid "Malayalam (India)"
 msgstr ""
 
 #: picard/const/locales.py:667
+#, fuzzy
 msgid "Mongolian"
-msgstr ""
+msgstr "Mongolija"
 
 #: picard/const/locales.py:668
 msgid "Mongolian (Cyrillic)"
@@ -3745,8 +3763,9 @@ msgid "Low German (Netherlands)"
 msgstr ""
 
 #: picard/const/locales.py:713
+#, fuzzy
 msgid "Nepali"
-msgstr ""
+msgstr "Nepal"
 
 #: picard/const/locales.py:714
 msgid "Nepali (India)"
@@ -4417,8 +4436,9 @@ msgid "Shona (Zimbabwe)"
 msgstr ""
 
 #: picard/const/locales.py:889
+#, fuzzy
 msgid "Somali"
-msgstr ""
+msgstr "Somalija"
 
 #: picard/const/locales.py:890
 msgid "Somali (Djibouti)"
@@ -4569,8 +4589,9 @@ msgid "Swahili (Uganda)"
 msgstr ""
 
 #: picard/const/locales.py:929
+#, fuzzy
 msgid "Syriac"
-msgstr ""
+msgstr "Sirija"
 
 #: picard/const/locales.py:930
 msgid "Syriac (Iraq)"
@@ -4693,8 +4714,9 @@ msgid "Tswana (South Africa)"
 msgstr ""
 
 #: picard/const/locales.py:960
+#, fuzzy
 msgid "Tongan"
-msgstr ""
+msgstr "Tonga"
 
 #: picard/const/locales.py:961
 msgid "Tongan (Tonga)"
@@ -6494,8 +6516,9 @@ msgstr ""
 
 #: picard/ui/infodialog.py:154 picard/ui/infodialog.py:359
 #: picard/ui/options/interface_toolbar.py:95
+#, fuzzy
 msgid "Info"
-msgstr ""
+msgstr "&Info"
 
 #: picard/ui/infodialog.py:209
 #, python-format
@@ -6561,9 +6584,9 @@ msgid "Artist:"
 msgstr "Izvajalec:"
 
 #: picard/ui/infodialog.py:341
-#, python-format
+#, fuzzy, python-format
 msgid "Disc %d"
-msgstr ""
+msgstr "ID diska"
 
 #: picard/ui/infodialog.py:343
 msgid "Tracklist:"
@@ -6756,8 +6779,9 @@ msgid "Collections"
 msgstr ""
 
 #: picard/ui/itemviews.py:635
+#, fuzzy
 msgid "P&lugins"
-msgstr ""
+msgstr "Vtičniki"
 
 #: picard/ui/itemviews.py:651
 msgid "&Run scripts"
@@ -7129,8 +7153,9 @@ msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:713
+#, fuzzy
 msgid "&Metadata"
-msgstr ""
+msgstr "Metapodatki"
 
 #: picard/ui/mainwindow.py:717
 msgid "Ctrl+Shift+M"
@@ -7421,8 +7446,9 @@ msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
 #: picard/ui/mainwindow.py:1722
+#, fuzzy
 msgid "Authentication Required"
-msgstr ""
+msgstr "Zahtevana je overitev"
 
 #: picard/ui/mainwindow.py:1723
 msgid ""
@@ -7549,10 +7575,12 @@ msgstr ""
 "in geslo."
 
 #: picard/ui/passworddialog.py:64
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "The proxy %s requires you to login. Please enter your username and password."
 msgstr ""
+"Strežnik %s zahteva, da se prijavite. Prosim, vnesite vaše uporabniško ime "
+"in geslo."
 
 #: picard/ui/playertoolbar.py:173
 msgid "Internal player: The format of a media resource isn't (fully) supported"
@@ -7760,8 +7788,9 @@ msgid "Close the script editor without saving changes"
 msgstr ""
 
 #: picard/ui/scripteditor.py:566
+#, fuzzy
 msgid "&Script"
-msgstr ""
+msgstr "Skripta"
 
 #: picard/ui/scripteditor.py:569
 msgid "View/Edit Script &Metadata"
@@ -7939,8 +7968,9 @@ msgid "&Submit disc ID"
 msgstr ""
 
 #: picard/ui/ui_cdlookup.py:91 picard/ui/util.py:50
+#, fuzzy
 msgid "&Cancel"
-msgstr ""
+msgstr "Prekliči"
 
 #: picard/ui/ui_edittagdialog.py:115
 msgid "Edit Tag"
@@ -7999,8 +8029,9 @@ msgid "Available Language Scripts"
 msgstr ""
 
 #: picard/ui/ui_infodialog.py:82
+#, fuzzy
 msgid "&Error"
-msgstr ""
+msgstr "Napaka"
 
 #: picard/ui/ui_infodialog.py:83
 msgid "A&rtwork"
@@ -8352,8 +8383,9 @@ msgid "Minimal similarity for cluster lookups:"
 msgstr "Minimalna podobnost za pregled skupkov:"
 
 #: picard/ui/ui_options_metadata.py:130
+#, fuzzy
 msgid "Translate artist names to these locales where possible:"
-msgstr ""
+msgstr "Kjer je mogoče, prevedi imena izvajalcev v ta lokalni jezik:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select..."
@@ -8731,8 +8763,9 @@ msgid "Select the file naming script to load into the editor"
 msgstr ""
 
 #: picard/ui/ui_scripteditor.py:210 picard/ui/ui_scripteditor_details.py:99
+#, fuzzy
 msgid "Title:"
-msgstr ""
+msgstr "Naslov"
 
 #: picard/ui/ui_scripteditor_details.py:91
 msgid "File Naming Script Metadata"
@@ -8759,12 +8792,14 @@ msgid "Author:"
 msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:97
+#, fuzzy
 msgid "Version:"
-msgstr ""
+msgstr "Različica"
 
 #: picard/ui/ui_scripteditor_details.py:98
+#, fuzzy
 msgid "License:"
-msgstr ""
+msgstr "Licenca"
 
 #: picard/ui/ui_scripteditor_details.py:100
 msgid "License under which the file naming script is available."
@@ -8899,8 +8934,9 @@ msgid "Are you sure?"
 msgstr ""
 
 #: picard/ui/options/dialog.py:477 picard/ui/options/maintenance.py:93
+#, fuzzy
 msgid "Option"
-msgstr ""
+msgstr "Možnosti"
 
 #: picard/ui/options/dialog.py:484
 #, python-format
@@ -8981,8 +9017,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/genres.py:87
+#, fuzzy
 msgid "Genres"
-msgstr ""
+msgstr "Žanr"
 
 #: picard/ui/options/genres.py:156
 #, python-format
@@ -9075,24 +9112,29 @@ msgid "Add Files"
 msgstr ""
 
 #: picard/ui/options/interface_toolbar.py:75
+#, fuzzy
 msgid "Cluster"
-msgstr ""
+msgstr "Zdr&uži v skupke"
 
 #: picard/ui/options/interface_toolbar.py:79
+#, fuzzy
 msgid "Lookup"
-msgstr ""
+msgstr "&Pregled"
 
 #: picard/ui/options/interface_toolbar.py:83
+#, fuzzy
 msgid "Scan"
-msgstr ""
+msgstr "&Skeniraj"
 
 #: picard/ui/options/interface_toolbar.py:87
+#, fuzzy
 msgid "Lookup in Browser"
-msgstr ""
+msgstr "Poglej v brskalniku"
 
 #: picard/ui/options/interface_toolbar.py:91
+#, fuzzy
 msgid "Save"
-msgstr ""
+msgstr "&Shrani"
 
 #: picard/ui/options/interface_toolbar.py:103
 msgid "Submit AcoustIDs"
@@ -9681,8 +9723,9 @@ msgid ""
 msgstr ""
 
 #: picard/util/checkupdate.py:156
+#, fuzzy
 msgid "unknown"
-msgstr ""
+msgstr "Neznano"
 
 #: picard/util/checkupdate.py:160
 msgid ""
@@ -9713,8 +9756,9 @@ msgid "Arranger"
 msgstr "Aranžer"
 
 #: picard/util/tags.py:44
+#, fuzzy
 msgid "Artists"
-msgstr ""
+msgstr "Izvajalec:"
 
 #: picard/util/tags.py:45
 msgid "Artist Sort Order"
@@ -9857,12 +9901,14 @@ msgid "MusicBrainz Recording Id"
 msgstr ""
 
 #: picard/util/tags.py:89
+#, fuzzy
 msgid "MusicBrainz Release Group Id"
-msgstr ""
+msgstr "MusicBrainz ID izvajalca izdaje"
 
 #: picard/util/tags.py:90
+#, fuzzy
 msgid "MusicBrainz Track Id"
-msgstr ""
+msgstr "MusicBrainz ID diska"
 
 #: picard/util/tags.py:91
 msgid "MusicBrainz Work Id"

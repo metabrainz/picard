@@ -13,17 +13,18 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2023\n"
-"Language-Team: Portuguese (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/pt/)\n"
+"PO-Revision-Date: 2023-08-23 07:19+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Portuguese <https://translations.metabrainz.org/projects/"
+"picard/app/pt/>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % "
+"1000000 == 0) ? 1 : 2);\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
-"1000000 == 0 ? 1 : 2;\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -247,20 +248,23 @@ msgid "General"
 msgstr "Geral"
 
 #: picard/profile.py:48
+#, fuzzy
 msgid "Server address"
-msgstr ""
+msgstr "Endereço do servidor:"
 
 #: picard/profile.py:49
+#, fuzzy
 msgid "Port"
-msgstr ""
+msgstr "Porta:"
 
 #: picard/profile.py:50 picard/ui/ui_options_general.py:201
 msgid "Automatically scan all new files"
 msgstr "Verificar todos os ficheiros novos automaticamente"
 
 #: picard/profile.py:51 picard/ui/ui_options_general.py:202
+#, fuzzy
 msgid "Automatically cluster all new files"
-msgstr ""
+msgstr "Verificar todos os ficheiros novos automaticamente"
 
 #: picard/profile.py:52 picard/ui/ui_options_general.py:203
 msgid "Ignore MBIDs when loading new files"
@@ -279,8 +283,9 @@ msgid "Days between update checks"
 msgstr ""
 
 #: picard/profile.py:56
+#, fuzzy
 msgid "Updates to check"
-msgstr ""
+msgstr "Atualizações a verificar:"
 
 #: picard/profile.py:61 picard/ui/options/metadata.py:78
 #: picard/ui/ui_options_metadata.py:129
@@ -368,12 +373,14 @@ msgid "Minimal genre usage"
 msgstr ""
 
 #: picard/profile.py:90
+#, fuzzy
 msgid "Maximum number of genres"
-msgstr ""
+msgstr "Número máximo de géneros:"
 
 #: picard/profile.py:91
+#, fuzzy
 msgid "Join multiple genres with"
-msgstr ""
+msgstr "Juntar vários géneros com:"
 
 #: picard/profile.py:92
 msgid "Genres to include or exclude"
@@ -508,20 +515,23 @@ msgid "Always use the primary image type as the file name for non-front images"
 msgstr ""
 
 #: picard/profile.py:148
+#, fuzzy
 msgid "Cover art providers"
-msgstr ""
+msgstr "Fornecedores de capas"
 
 #: picard/profile.py:153 picard/ui/options/renaming.py:73
 msgid "File Naming"
 msgstr "Nomes de ficheiros"
 
 #: picard/profile.py:156
+#, fuzzy
 msgid "Move files"
-msgstr ""
+msgstr "&Mover ficheiros"
 
 #: picard/profile.py:157
+#, fuzzy
 msgid "Destination directory"
-msgstr ""
+msgstr "Diretório de destino"
 
 #: picard/profile.py:158
 msgid "Move additional files"
@@ -536,8 +546,9 @@ msgid "Delete empty directories"
 msgstr "Eliminar diretórios vazios"
 
 #: picard/profile.py:161
+#, fuzzy
 msgid "Rename files"
-msgstr ""
+msgstr "Altera&r nomes dos ficheiros"
 
 #: picard/profile.py:162
 msgid "Selected file naming script"
@@ -593,8 +604,9 @@ msgid "Show icons in menus"
 msgstr ""
 
 #: picard/profile.py:188
+#, fuzzy
 msgid "User interface language"
-msgstr ""
+msgstr "Idioma da interface do utilizador:"
 
 #: picard/profile.py:189
 msgid "User interface color theme"
@@ -609,8 +621,9 @@ msgid "Use builtin search rather than looking in browser"
 msgstr ""
 
 #: picard/profile.py:192
+#, fuzzy
 msgid "Use advanced search syntax"
-msgstr ""
+msgstr "Utilizar consulta avançada"
 
 #: picard/profile.py:193
 msgid "Show a usage warning dialog when Picard starts"
@@ -726,28 +739,33 @@ msgid "Request timeout in seconds"
 msgstr ""
 
 #: picard/profile.py:245
+#, fuzzy
 msgid "Browser integration"
-msgstr ""
+msgstr "Integração com o navegador de Internet"
 
 #: picard/profile.py:248
+#, fuzzy
 msgid "Default listening port"
-msgstr ""
+msgstr "Porta de escuta padrão"
 
 #: picard/profile.py:249 picard/ui/ui_options_network.py:141
 msgid "Listen only on localhost"
 msgstr "Escutar apenas no host local"
 
 #: picard/profile.py:252
+#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr ""
+msgstr "Semelhança mínima para as pesquisas de ficheiros:"
 
 #: picard/profile.py:253
+#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr ""
+msgstr "Semelhança mínima para as pesquisas de grupos:"
 
 #: picard/profile.py:254
+#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr ""
+msgstr "Semelhança mínima para correspondência de ficheiros com faixas:"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -1082,8 +1100,9 @@ msgid "Slovenian"
 msgstr "Esloveno"
 
 #: picard/const/languages.py:76 picard/const/locales.py:894
+#, fuzzy
 msgid "Albanian"
-msgstr ""
+msgstr "Albânia"
 
 #: picard/const/languages.py:78 picard/const/locales.py:920
 msgid "Swedish"
@@ -1334,8 +1353,9 @@ msgid "Asturian (Spain)"
 msgstr ""
 
 #: picard/const/locales.py:85
+#, fuzzy
 msgid "Azerbaijani"
-msgstr ""
+msgstr "Azerbeijão"
 
 #: picard/const/locales.py:86
 msgid "Azerbaijani (Arabic)"
@@ -1982,8 +2002,9 @@ msgid "English (United Kingdom)"
 msgstr ""
 
 #: picard/const/locales.py:256
+#, fuzzy
 msgid "English (Grenada)"
-msgstr ""
+msgstr "Inglês (Canadá)"
 
 #: picard/const/locales.py:257
 msgid "English (Guernsey)"
@@ -2954,8 +2975,9 @@ msgid "Hmong Njua (Nyiakeng Puachue Hmong) (United States)"
 msgstr ""
 
 #: picard/const/locales.py:506
+#, fuzzy
 msgid "Croatian"
-msgstr ""
+msgstr "Croácia"
 
 #: picard/const/locales.py:507
 msgid "Croatian (Bosnia & Herzegovina)"
@@ -2978,8 +3000,9 @@ msgid "Hungarian (Hungary)"
 msgstr ""
 
 #: picard/const/locales.py:513
+#, fuzzy
 msgid "Armenian"
-msgstr ""
+msgstr "Arménia"
 
 #: picard/const/locales.py:514
 msgid "Armenian (Armenia)"
@@ -3094,8 +3117,9 @@ msgid "Machame (Tanzania)"
 msgstr ""
 
 #: picard/const/locales.py:545
+#, fuzzy
 msgid "Javanese"
-msgstr ""
+msgstr "Japonês"
 
 #: picard/const/locales.py:546
 msgid "Javanese (Indonesia)"
@@ -4702,8 +4726,9 @@ msgid "Tswana (South Africa)"
 msgstr ""
 
 #: picard/const/locales.py:960
+#, fuzzy
 msgid "Tongan"
-msgstr ""
+msgstr "Tonga"
 
 #: picard/const/locales.py:961
 msgid "Tongan (Tonga)"
@@ -6581,9 +6606,9 @@ msgid "Artist:"
 msgstr "Artista:"
 
 #: picard/ui/infodialog.py:341
-#, python-format
+#, fuzzy, python-format
 msgid "Disc %d"
-msgstr ""
+msgstr "ID do disco"
 
 #: picard/ui/infodialog.py:343
 msgid "Tracklist:"
@@ -6760,8 +6785,9 @@ msgid "Loading..."
 msgstr "A carregar..."
 
 #: picard/ui/itemviews.py:548
+#, fuzzy
 msgid "Show &more details..."
-msgstr ""
+msgstr "Mostrar mais detalhes..."
 
 #: picard/ui/itemviews.py:601
 #, python-format
@@ -7101,8 +7127,9 @@ msgid "Submit file as a new release to MusicBrainz"
 msgstr ""
 
 #: picard/ui/mainwindow.py:666
+#, fuzzy
 msgid "Search for similar items..."
-msgstr ""
+msgstr "Procurar por álbuns similares..."
 
 #: picard/ui/mainwindow.py:667 picard/ui/options/interface_toolbar.py:123
 msgid "Similar items"
@@ -7151,8 +7178,9 @@ msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:713
+#, fuzzy
 msgid "&Metadata"
-msgstr ""
+msgstr "Metadados"
 
 #: picard/ui/mainwindow.py:717
 msgid "Ctrl+Shift+M"
@@ -7783,8 +7811,9 @@ msgid "Close the script editor without saving changes"
 msgstr ""
 
 #: picard/ui/scripteditor.py:566
+#, fuzzy
 msgid "&Script"
-msgstr ""
+msgstr "Script"
 
 #: picard/ui/scripteditor.py:569
 msgid "View/Edit Script &Metadata"
@@ -7799,8 +7828,9 @@ msgid "Ctrl+M"
 msgstr "Ctrl+M"
 
 #: picard/ui/scripteditor.py:575
+#, fuzzy
 msgid "Add a &new script"
-msgstr ""
+msgstr "Adicionar novo script"
 
 #: picard/ui/scripteditor.py:580
 msgid "&Copy the current script"
@@ -8022,8 +8052,9 @@ msgid "Available Language Scripts"
 msgstr ""
 
 #: picard/ui/ui_infodialog.py:82
+#, fuzzy
 msgid "&Error"
-msgstr ""
+msgstr "Erro"
 
 #: picard/ui/ui_infodialog.py:83
 msgid "A&rtwork"
@@ -8355,8 +8386,9 @@ msgid "Remove selected options"
 msgstr ""
 
 #: picard/ui/ui_options_maintenance.py:91
+#, fuzzy
 msgid "Select all"
-msgstr ""
+msgstr "Selecionar &tudo"
 
 #: picard/ui/ui_options_matching.py:71
 msgid "Thresholds"
@@ -8605,8 +8637,9 @@ msgid "Export"
 msgstr ""
 
 #: picard/ui/ui_options_script.py:130
+#, fuzzy
 msgid "Documentation"
-msgstr ""
+msgstr "documentação"
 
 #: picard/ui/ui_options_tags.py:71
 msgid "Write tags to files"
@@ -8715,8 +8748,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:58
+#, fuzzy
 msgid "Also include RIFF INFO tags in the files"
-msgstr ""
+msgstr "Incluir também etiquetas ID3v1 nos ficheiros"
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:61
 msgid "Windows-1252"
@@ -8758,8 +8792,9 @@ msgid "Select the file naming script to load into the editor"
 msgstr ""
 
 #: picard/ui/ui_scripteditor.py:210 picard/ui/ui_scripteditor_details.py:99
+#, fuzzy
 msgid "Title:"
-msgstr ""
+msgstr "Título"
 
 #: picard/ui/ui_scripteditor_details.py:91
 msgid "File Naming Script Metadata"
@@ -8782,16 +8817,19 @@ msgid "Now"
 msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:96
+#, fuzzy
 msgid "Author:"
-msgstr ""
+msgstr "Autores"
 
 #: picard/ui/ui_scripteditor_details.py:97
+#, fuzzy
 msgid "Version:"
-msgstr ""
+msgstr "Versão"
 
 #: picard/ui/ui_scripteditor_details.py:98
+#, fuzzy
 msgid "License:"
-msgstr ""
+msgstr "Licença"
 
 #: picard/ui/ui_scripteditor_details.py:100
 msgid "License under which the file naming script is available."
@@ -8926,8 +8964,9 @@ msgid "Are you sure?"
 msgstr "Tem a certeza?"
 
 #: picard/ui/options/dialog.py:477 picard/ui/options/maintenance.py:93
+#, fuzzy
 msgid "Option"
-msgstr ""
+msgstr "Opções"
 
 #: picard/ui/options/dialog.py:484
 #, python-format
@@ -9008,8 +9047,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/genres.py:87
+#, fuzzy
 msgid "Genres"
-msgstr ""
+msgstr "Género"
 
 #: picard/ui/options/genres.py:156
 #, python-format
@@ -9053,10 +9093,13 @@ msgid "Theme changed"
 msgstr ""
 
 #: picard/ui/options/interface.py:181
+#, fuzzy
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
 msgstr ""
+"Alterou o idioma da interface. Deve reiniciar o Picard para que as "
+"alterações produzam efeito."
 
 #: picard/ui/options/interface.py:183
 msgid ""
@@ -9086,10 +9129,13 @@ msgid "Colors changed"
 msgstr ""
 
 #: picard/ui/options/interface_colors.py:147
+#, fuzzy
 msgid ""
 "You have changed the interface colors. You may have to restart Picard in "
 "order for the changes to take effect."
 msgstr ""
+"Alterou o idioma da interface. Deve reiniciar o Picard para que as "
+"alterações produzam efeito."
 
 #: picard/ui/options/interface_toolbar.py:59
 msgid "Action Toolbar"
@@ -9112,8 +9158,9 @@ msgid "Lookup"
 msgstr "Procurar"
 
 #: picard/ui/options/interface_toolbar.py:83
+#, fuzzy
 msgid "Scan"
-msgstr ""
+msgstr "Pe&squisar"
 
 #: picard/ui/options/interface_toolbar.py:87
 msgid "Lookup in Browser"
@@ -9502,8 +9549,9 @@ msgid "<strong>No results found. Please try a different search query.</strong>"
 msgstr ""
 
 #: picard/ui/searchdialog/album.py:145 picard/ui/searchdialog/track.py:63
+#, fuzzy
 msgid "Load into Picard"
-msgstr ""
+msgstr "&Carregar no Picard"
 
 #: picard/ui/searchdialog/album.py:150
 msgid "Album Search Results"
@@ -9563,8 +9611,9 @@ msgid "Release"
 msgstr ""
 
 #: picard/ui/searchdialog/track.py:175
+#, fuzzy
 msgid "Standalone Recording"
-msgstr ""
+msgstr "gravação independente"
 
 #: picard/ui/widgets/profilelistwidget.py:45
 msgid "Rename profile"
@@ -9575,8 +9624,9 @@ msgid "Remove profile"
 msgstr ""
 
 #: picard/ui/widgets/profilelistwidget.py:83
+#, fuzzy
 msgid "Are you sure you want to remove this profile?"
-msgstr ""
+msgstr "Tem certeza de que quer remover este script?"
 
 #: picard/ui/widgets/scriptdocumentation.py:109
 msgid "Open Scripting Documentation in your browser"
@@ -9712,8 +9762,9 @@ msgid ""
 msgstr ""
 
 #: picard/util/checkupdate.py:156
+#, fuzzy
 msgid "unknown"
-msgstr ""
+msgstr "Desconhecido"
 
 #: picard/util/checkupdate.py:160
 msgid ""

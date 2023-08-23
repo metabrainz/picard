@@ -9,16 +9,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022\n"
-"Language-Team: Albanian (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/sq/)\n"
+"PO-Revision-Date: 2023-08-23 07:19+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Albanian <https://translations.metabrainz.org/projects/picard/"
+"app/sq/>\n"
 "Language: sq\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -226,20 +227,23 @@ msgid "General"
 msgstr "Të përgjithshme"
 
 #: picard/profile.py:48
+#, fuzzy
 msgid "Server address"
-msgstr ""
+msgstr "Adresë shërbyesi:"
 
 #: picard/profile.py:49
+#, fuzzy
 msgid "Port"
-msgstr ""
+msgstr "Portë:"
 
 #: picard/profile.py:50 picard/ui/ui_options_general.py:201
 msgid "Automatically scan all new files"
 msgstr "Skano vetvetiu krejt kartelat e reja"
 
 #: picard/profile.py:51 picard/ui/ui_options_general.py:202
+#, fuzzy
 msgid "Automatically cluster all new files"
-msgstr ""
+msgstr "Skano vetvetiu krejt kartelat e reja"
 
 #: picard/profile.py:52 picard/ui/ui_options_general.py:203
 msgid "Ignore MBIDs when loading new files"
@@ -704,12 +708,14 @@ msgid "Request timeout in seconds"
 msgstr ""
 
 #: picard/profile.py:245
+#, fuzzy
 msgid "Browser integration"
-msgstr ""
+msgstr "Integrim Shfletuesi"
 
 #: picard/profile.py:248
+#, fuzzy
 msgid "Default listening port"
-msgstr ""
+msgstr "Portë parazgjedhje përgjimi:"
 
 #: picard/profile.py:249 picard/ui/ui_options_network.py:141
 msgid "Listen only on localhost"
@@ -1855,8 +1861,9 @@ msgid "English (American Samoa)"
 msgstr ""
 
 #: picard/const/locales.py:228
+#, fuzzy
 msgid "English (Austria)"
-msgstr ""
+msgstr "Anglisht (Australi)"
 
 #: picard/const/locales.py:230
 msgid "English (Barbados)"
@@ -1959,8 +1966,9 @@ msgid "English (United Kingdom)"
 msgstr ""
 
 #: picard/const/locales.py:256
+#, fuzzy
 msgid "English (Grenada)"
-msgstr ""
+msgstr "Anglisht (Kanada)"
 
 #: picard/const/locales.py:257
 msgid "English (Guernsey)"
@@ -3071,8 +3079,9 @@ msgid "Machame (Tanzania)"
 msgstr ""
 
 #: picard/const/locales.py:545
+#, fuzzy
 msgid "Javanese"
-msgstr ""
+msgstr "Japonisht"
 
 #: picard/const/locales.py:546
 msgid "Javanese (Indonesia)"
@@ -4679,8 +4688,9 @@ msgid "Tswana (South Africa)"
 msgstr ""
 
 #: picard/const/locales.py:960
+#, fuzzy
 msgid "Tongan"
-msgstr ""
+msgstr "Tonga"
 
 #: picard/const/locales.py:961
 msgid "Tongan (Tonga)"
@@ -6398,8 +6408,9 @@ msgid "Tracks contain different images"
 msgstr ""
 
 #: picard/ui/coverartbox.py:392
+#, fuzzy
 msgid "Show more details"
-msgstr ""
+msgstr "Shfaq më tepër hollësi…"
 
 #: picard/ui/coverartbox.py:429
 msgid "New Cover Art"
@@ -6545,9 +6556,9 @@ msgid "Artist:"
 msgstr "Artist:"
 
 #: picard/ui/infodialog.py:341
-#, python-format
+#, fuzzy, python-format
 msgid "Disc %d"
-msgstr ""
+msgstr "ID disku"
 
 #: picard/ui/infodialog.py:343
 msgid "Tracklist:"
@@ -6563,8 +6574,9 @@ msgstr ""
 
 #: picard/ui/infodialog.py:393 picard/ui/infodialog.py:397
 #: picard/ui/infodialog.py:415 picard/ui/ui_infodialog.py:81
+#, fuzzy
 msgid "&Info"
-msgstr ""
+msgstr "Info"
 
 #: picard/ui/infodialog.py:398
 #, python-format
@@ -6721,8 +6733,9 @@ msgid "Loading..."
 msgstr "Po ngarkohet…"
 
 #: picard/ui/itemviews.py:548
+#, fuzzy
 msgid "Show &more details..."
-msgstr ""
+msgstr "Shfaq më tepër hollësi…"
 
 #: picard/ui/itemviews.py:601
 #, python-format
@@ -6734,8 +6747,9 @@ msgid "Collections"
 msgstr "Koleksione"
 
 #: picard/ui/itemviews.py:635
+#, fuzzy
 msgid "P&lugins"
-msgstr ""
+msgstr "Shtojca"
 
 #: picard/ui/itemviews.py:651
 msgid "&Run scripts"
@@ -6987,8 +7001,9 @@ msgid "Ctrl+W"
 msgstr "Ctrl+W"
 
 #: picard/ui/mainwindow.py:588
+#, fuzzy
 msgid "&Save"
-msgstr ""
+msgstr "Ruaje"
 
 #: picard/ui/mainwindow.py:589
 msgid "Save selected files"
@@ -7011,8 +7026,9 @@ msgid "Ctrl+Q"
 msgstr "Ctrl+Q"
 
 #: picard/ui/mainwindow.py:615
+#, fuzzy
 msgid "&Remove"
-msgstr ""
+msgstr "Hiqe"
 
 #: picard/ui/mainwindow.py:616
 msgid "Remove selected files/albums"
@@ -7105,16 +7121,18 @@ msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:713
+#, fuzzy
 msgid "&Metadata"
-msgstr ""
+msgstr "Tejtëdhëna"
 
 #: picard/ui/mainwindow.py:717
 msgid "Ctrl+Shift+M"
 msgstr "Ctrl+Shift+M"
 
 #: picard/ui/mainwindow.py:724
+#, fuzzy
 msgid "&Cover Art"
-msgstr ""
+msgstr "Kopertinë"
 
 #: picard/ui/mainwindow.py:735
 msgid "&Actions"
@@ -7138,8 +7156,9 @@ msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
 #: picard/ui/mainwindow.py:771
+#, fuzzy
 msgid "&Scan"
-msgstr ""
+msgstr "Skanoje"
 
 #: picard/ui/mainwindow.py:772
 msgid ""
@@ -7190,8 +7209,9 @@ msgid "Ctrl+U"
 msgstr "Ctrl+U"
 
 #: picard/ui/mainwindow.py:803
+#, fuzzy
 msgid "&Lookup"
-msgstr ""
+msgstr "Kërkim"
 
 #: picard/ui/mainwindow.py:804
 msgid "Lookup selected items in MusicBrainz"
@@ -7298,16 +7318,18 @@ msgid "&File"
 msgstr ""
 
 #: picard/ui/mainwindow.py:1015
+#, fuzzy
 msgid "&Edit"
-msgstr ""
+msgstr "Përpunim"
 
 #: picard/ui/mainwindow.py:1021 picard/ui/scripteditor.py:593
 msgid "&View"
 msgstr ""
 
 #: picard/ui/mainwindow.py:1030
+#, fuzzy
 msgid "&Options"
-msgstr ""
+msgstr "Mundësi"
 
 #: picard/ui/mainwindow.py:1036
 msgid "&Select file naming script"
@@ -7720,8 +7742,9 @@ msgid "Close the script editor without saving changes"
 msgstr ""
 
 #: picard/ui/scripteditor.py:566
+#, fuzzy
 msgid "&Script"
-msgstr ""
+msgstr "Programth"
 
 #: picard/ui/scripteditor.py:569
 msgid "View/Edit Script &Metadata"
@@ -7959,8 +7982,9 @@ msgid "Available Language Scripts"
 msgstr ""
 
 #: picard/ui/ui_infodialog.py:82
+#, fuzzy
 msgid "&Error"
-msgstr ""
+msgstr "Gabim"
 
 #: picard/ui/ui_infodialog.py:83
 msgid "A&rtwork"
@@ -8211,8 +8235,9 @@ msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
 msgstr ""
 
 #: picard/ui/ui_options_interface.py:118
+#, fuzzy
 msgid "Appearance"
-msgstr ""
+msgstr "Dukje"
 
 #: picard/ui/ui_options_interface.py:121
 msgid "User interface language:"
@@ -8292,8 +8317,9 @@ msgid "Remove selected options"
 msgstr ""
 
 #: picard/ui/ui_options_maintenance.py:91
+#, fuzzy
 msgid "Select all"
-msgstr ""
+msgstr "Përzgjidhi &krejt"
 
 #: picard/ui/ui_options_matching.py:71
 msgid "Thresholds"
@@ -8472,12 +8498,14 @@ msgid "Files will be named like this:"
 msgstr ""
 
 #: picard/ui/ui_options_renaming.py:159 picard/ui/ui_scripteditor.py:212
+#, fuzzy
 msgid "Before"
-msgstr ""
+msgstr "para"
 
 #: picard/ui/ui_options_renaming.py:160 picard/ui/ui_scripteditor.py:213
+#, fuzzy
 msgid "After"
-msgstr ""
+msgstr "pas"
 
 #: picard/ui/ui_options_renaming.py:161
 msgid "Reload examples"
@@ -8703,8 +8731,9 @@ msgid "Version number of the file naming script."
 msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:93
+#, fuzzy
 msgid "Last Updated:"
-msgstr ""
+msgstr "Përditësuar së fundi më"
 
 #: picard/ui/ui_scripteditor_details.py:94
 msgid "Date and time the file naming script was last updated (UTC)."
@@ -8715,16 +8744,18 @@ msgid "Now"
 msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:96
+#, fuzzy
 msgid "Author:"
-msgstr ""
+msgstr "Autorë"
 
 #: picard/ui/ui_scripteditor_details.py:97
 msgid "Version:"
 msgstr "Version:"
 
 #: picard/ui/ui_scripteditor_details.py:98
+#, fuzzy
 msgid "License:"
-msgstr ""
+msgstr "Licencë"
 
 #: picard/ui/ui_scripteditor_details.py:100
 msgid "License under which the file naming script is available."
@@ -8756,8 +8787,9 @@ msgid "Replace underscores with spaces"
 msgstr ""
 
 #: picard/ui/ui_tagsfromfilenames.py:55
+#, fuzzy
 msgid "&Preview"
-msgstr ""
+msgstr "Paraparje"
 
 #: picard/ui/ui_widget_taglisteditor.py:69
 msgid "Add new tag"
@@ -8859,8 +8891,9 @@ msgid "Are you sure?"
 msgstr "A jeni i sigurt?"
 
 #: picard/ui/options/dialog.py:477 picard/ui/options/maintenance.py:93
+#, fuzzy
 msgid "Option"
-msgstr ""
+msgstr "Mundësi"
 
 #: picard/ui/options/dialog.py:484
 #, python-format
@@ -9494,8 +9527,9 @@ msgid "Release"
 msgstr "Hedhje Në Qarkullim"
 
 #: picard/ui/searchdialog/track.py:175
+#, fuzzy
 msgid "Standalone Recording"
-msgstr ""
+msgstr "Shtoni Incizim Më Vete"
 
 #: picard/ui/widgets/profilelistwidget.py:45
 msgid "Rename profile"
@@ -9506,8 +9540,9 @@ msgid "Remove profile"
 msgstr ""
 
 #: picard/ui/widgets/profilelistwidget.py:83
+#, fuzzy
 msgid "Are you sure you want to remove this profile?"
-msgstr ""
+msgstr "Jeni i sigurt se doni të hiqet ky aplikacion?"
 
 #: picard/ui/widgets/scriptdocumentation.py:109
 msgid "Open Scripting Documentation in your browser"
@@ -9522,8 +9557,9 @@ msgid "Remove script"
 msgstr ""
 
 #: picard/ui/widgets/scriptlistwidget.py:89
+#, fuzzy
 msgid "Are you sure you want to remove this script?"
-msgstr ""
+msgstr "Jeni i sigurt se doni të hiqet ky aplikacion?"
 
 #: picard/ui/widgets/scripttextedit.py:329
 msgid "&Word wrap script"
@@ -9669,8 +9705,9 @@ msgid "Album Sort Order"
 msgstr ""
 
 #: picard/util/tags.py:42
+#, fuzzy
 msgid "Arranger"
-msgstr ""
+msgstr "orkestrues"
 
 #: picard/util/tags.py:44
 msgid "Artists"
@@ -9793,12 +9830,14 @@ msgid "MusicBrainz Release Artist Id"
 msgstr ""
 
 #: picard/util/tags.py:83
+#, fuzzy
 msgid "MusicBrainz Release Id"
-msgstr ""
+msgstr "MusicBrainz: Hedhje në qarkullim"
 
 #: picard/util/tags.py:84
+#, fuzzy
 msgid "MusicBrainz Artist Id"
-msgstr ""
+msgstr "MusicBrainz: Artist"
 
 #: picard/util/tags.py:85
 msgid "MusicBrainz Disc Id"
@@ -9821,8 +9860,9 @@ msgid "MusicBrainz Release Group Id"
 msgstr ""
 
 #: picard/util/tags.py:90
+#, fuzzy
 msgid "MusicBrainz Track Id"
-msgstr ""
+msgstr "MusicBrainz: Pjesë"
 
 #: picard/util/tags.py:91
 msgid "MusicBrainz Work Id"
@@ -9969,8 +10009,9 @@ msgid "Work"
 msgstr "Vepër"
 
 #: picard/util/tags.py:130
+#, fuzzy
 msgid "Writer"
-msgstr ""
+msgstr "Shkrues"
 
 #: picard/util/time.py:43
 #, python-format
