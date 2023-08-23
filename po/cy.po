@@ -5,14 +5,14 @@
 # Translators:
 # cerdd83 <cerdd83@gmail.com>, 2013-2014
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2008
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 08:52+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Welsh <https://translations.metabrainz.org/projects/picard/"
 "app/cy/>\n"
 "Language: cy\n"
@@ -8238,11 +8238,11 @@ msgstr ""
 
 #: picard/ui/ui_options_genres.py:127
 msgid " / "
-msgstr "/ "
+msgstr " / "
 
 #: picard/ui/ui_options_genres.py:128
 msgid ", "
-msgstr ","
+msgstr ", "
 
 #: picard/ui/ui_options_genres.py:129
 msgid "Genres or folksonomy tags to include or exclude, one per line:"
