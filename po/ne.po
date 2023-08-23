@@ -4,13 +4,14 @@
 #
 # Translators:
 # ♔♔♔Srt Aryal♔♔♔ <surit_people@hotmail.com>, 2012
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
 "PO-Revision-Date: 2023-08-23 19:09+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Nepali <https://translations.metabrainz.org/projects/picard/"
 "app/ne/>\n"
 "Language: ne\n"
@@ -311,7 +312,7 @@ msgstr ""
 #: picard/profile.py:74
 #, fuzzy
 msgid "Various Artists name"
-msgstr "बिभिध कलाकार "
+msgstr "बिभिध कलाकार"
 
 #: picard/profile.py:75
 msgid "Standalone recordings name"
@@ -6619,7 +6620,7 @@ msgstr[1] ""
 
 #: picard/ui/itemviews.py:161 picard/util/tags.py:123
 msgid "Title"
-msgstr "शिर्षक "
+msgstr "शिर्षक"
 
 #: picard/ui/itemviews.py:162 picard/ui/searchdialog/track.py:70
 #: picard/util/tags.py:72
@@ -8338,7 +8339,7 @@ msgstr ""
 
 #: picard/ui/ui_options_metadata.py:141
 msgid "Various artists:"
-msgstr "बिभिध कलाकार "
+msgstr "बिभिध कलाकार"
 
 #: picard/ui/ui_options_metadata.py:142
 msgid "Standalone recordings:"
@@ -8702,7 +8703,7 @@ msgstr ""
 #: picard/ui/ui_scripteditor.py:210 picard/ui/ui_scripteditor_details.py:99
 #, fuzzy
 msgid "Title:"
-msgstr "शिर्षक "
+msgstr "शिर्षक"
 
 #: picard/ui/ui_scripteditor_details.py:91
 msgid "File Naming Script Metadata"
@@ -9571,7 +9572,7 @@ msgstr ""
 #: picard/util/__init__.py:369
 #, fuzzy
 msgid "No Title"
-msgstr "शिर्षक "
+msgstr "शिर्षक"
 
 #: picard/util/bytes2human.py:37
 #, python-format
