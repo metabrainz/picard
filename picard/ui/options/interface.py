@@ -122,7 +122,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(UiTheme.DEFAULT))
 
         self.ui.ui_language.addItem(_('System default'), '')
-        language_list = [(lang[0], lang[1], _(lang[2])) for lang in UI_LANGUAGES]
+        language_list = [(lang[0], lang[1], gettext_constants(lang[2])) for lang in UI_LANGUAGES]
 
         def fcmp(x):
             return strxfrm(x[2])

@@ -53,8 +53,9 @@ class TestI18n(PicardTestCase):
         self.assertEqual('Country', N_('Country'))
         self.assertEqual('%i image', ngettext('%i image', '%i images', 1))
         self.assertEqual('%i images', ngettext('%i image', '%i images', 2))
-        self.assertEqual('France', gettext_countries('France'))
         self.assertEqual('Cassette', pgettext_attributes('medium_format', 'Cassette'))
+        self.assertEqual('French', gettext_constants('French'))
+        self.assertEqual('France', gettext_countries('France'))
 
     @unittest.skipUnless(os.path.exists(os.path.join(localedir, 'de')),
         'Test requires locales to be built with "python setup.py build_locales -i"')
@@ -73,8 +74,9 @@ class TestI18n(PicardTestCase):
         self.assertEqual('Country', N_('Country'))
         self.assertEqual('%i Bild', ngettext('%i image', '%i images', 1))
         self.assertEqual('%i Bilder', ngettext('%i image', '%i images', 2))
-        self.assertEqual('Frankreich', gettext_countries('France'))
         self.assertEqual('Kassette', pgettext_attributes('medium_format', 'Cassette'))
+        # self.assertEqual('Französisch', gettext_constants('French'))
+        self.assertEqual('Frankreich', gettext_countries('France'))
 
 
 @patch('locale.getpreferredencoding', autospec=True)

@@ -60,7 +60,7 @@ class ProfileListWidget(QtWidgets.QListWidget):
 
     def unique_profile_name(self, base_name=None):
         if base_name is None:
-            base_name = _(DEFAULT_PROFILE_NAME)
+            base_name = gettext_constants(DEFAULT_PROFILE_NAME)
         existing_titles = [self.item(i).name for i in range(self.count())]
         return unique_numbered_title(base_name, existing_titles)
 
@@ -95,7 +95,7 @@ class ProfileListWidgetItem(HashableListWidgetItem):
         super().__init__(name)
         self.setFlags(self.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsEditable)
         if name is None:
-            name = _(DEFAULT_PROFILE_NAME)
+            name = gettext_constants(DEFAULT_PROFILE_NAME)
         self.setText(name)
         self.setCheckState(QtCore.Qt.CheckState.Checked if enabled else QtCore.Qt.CheckState.Unchecked)
         if not profile_id:

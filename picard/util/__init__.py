@@ -1093,7 +1093,7 @@ def unique_numbered_title(default_title, existing_titles, fmt=None):
        based on given default title and existing titles
     """
     if fmt is None:
-        fmt = _(DEFAULT_NUMBERED_TITLE_FORMAT)
+        fmt = gettext_constants(DEFAULT_NUMBERED_TITLE_FORMAT)
 
     escaped_title = re.escape(default_title)
     reg_count = r'(\d+)'
@@ -1116,7 +1116,7 @@ def get_base_title_with_suffix(title, suffix, fmt=None):
        removing the suffix and number portion from the end.
     """
     if fmt is None:
-        fmt = _(DEFAULT_NUMBERED_TITLE_FORMAT)
+        fmt = gettext_constants(DEFAULT_NUMBERED_TITLE_FORMAT)
 
     escaped_suffix = re.escape(suffix)
     reg_title = r'(?P<title>.*?)(?:\s*' + escaped_suffix + ')?'
@@ -1131,7 +1131,7 @@ def get_base_title_with_suffix(title, suffix, fmt=None):
 def get_base_title(title):
     """Extract the base portion of a title, using the standard suffix.
     """
-    suffix = _(DEFAULT_COPY_TEXT)
+    suffix = gettext_constants(DEFAULT_COPY_TEXT)
     return get_base_title_with_suffix(title, suffix)
 
 

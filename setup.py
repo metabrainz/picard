@@ -492,32 +492,26 @@ class picard_regen_appdata_pot_file(Command):
 
 
 _regen_pot_description = "Regenerate po/picard.pot, parsing source tree for new or updated strings"
+_regen_constants_pot_description = "Regenerate po/constants/constants.pot, parsing source tree for new or updated strings"
 try:
-    from babel import __version__ as babel_version
     from babel.messages import frontend as babel
-
-    def versiontuple(v):
-        return tuple(map(int, (v.split("."))))
-
-    # input_dirs are incorrectly handled in babel versions < 1.0
-    # https://web.archive.org/web/20150910064954/babel.edgewall.org/ticket/232
-    input_dirs_workaround = versiontuple(babel_version) < (1, 0, 0)
 
     class picard_regen_pot_file(babel.extract_messages):
         description = _regen_pot_description
 
         def initialize_options(self):
-            # cannot use super() with old-style parent class
-            babel.extract_messages.initialize_options(self)
+            super().initialize_options()
             self.output_file = 'po/picard.pot'
             self.input_dirs = 'picard'
-            if self.input_dirs and input_dirs_workaround:
-                self._input_dirs = self.input_dirs
+            self.ignore_dirs = ('const',)
 
-        def finalize_options(self):
-            babel.extract_messages.finalize_options(self)
-            if input_dirs_workaround and self._input_dirs:
-                self.input_dirs = re.split(r',\s*', self._input_dirs)
+    class picard_regen_constants_pot_file(babel.extract_messages):
+        description = _regen_constants_pot_description
+
+        def initialize_options(self):
+            super().initialize_options()
+            self.output_file = 'po/constants/constants.pot'
+            self.input_dirs = 'picard/const'
 
 except ImportError:
     class picard_regen_pot_file(Command):
@@ -532,6 +526,9 @@ except ImportError:
 
         def run(self):
             sys.exit("Babel is required to use this command (see po/README.md)")
+
+    class picard_regen_constants_pot_file(picard_regen_pot_file):
+        description = _regen_constants_pot_description
 
 
 def _get_option_name(obj):
@@ -688,8 +685,9 @@ def _picard_get_locale_files():
     locales = []
     path_domain = {
         'po': 'picard',
-        os.path.join('po', 'countries'): 'picard-countries',
         os.path.join('po', 'attributes'): 'picard-attributes',
+        os.path.join('po', 'constants'): 'picard-constants',
+        os.path.join('po', 'countries'): 'picard-countries',
     }
     for path, domain in path_domain.items():
         for filepath in glob.glob(os.path.join(path, '*.po')):
@@ -756,6 +754,7 @@ args = {
         'install_locales': picard_install_locales,
         'update_constants': picard_update_constants,
         'regen_pot_file': picard_regen_pot_file,
+        'regen_constants_pot_file': picard_regen_constants_pot_file,
         'patch_version': picard_patch_version,
     },
     'scripts': ['scripts/' + PACKAGE_NAME],

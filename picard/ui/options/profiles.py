@@ -424,7 +424,7 @@ class ProfilesOptionsPage(OptionsPage):
         id = str(uuid.uuid4())
         settings = deepcopy(self.profile_settings[self.current_profile_id])
         self.profile_settings[id] = settings
-        base_title = "%s %s" % (get_base_title(item.name), _(DEFAULT_COPY_TEXT))
+        base_title = "%s %s" % (get_base_title(item.name), gettext_constants(DEFAULT_COPY_TEXT))
         name = self.ui.profile_list.unique_profile_name(base_title)
         self.ui.profile_list.add_profile(name=name, profile_id=id)
         self.update_config_overrides()
