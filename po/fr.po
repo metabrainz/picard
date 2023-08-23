@@ -5534,8 +5534,8 @@ msgstr ""
 "nommage de fichier, mais\n"
 "    qui ne sera pas écrite comme balise dans le fichier, préfixer le nom de "
 "la variable\n"
-"    avec un caractère de soulignement. `%something%` créera une balise « "
-"something » ;\n"
+"    avec un caractère de soulignement. `%something%` créera une balise "
+"« something » ;\n"
 "    `%_something%` non."
 
 #: picard/script/functions.py:450
@@ -6498,7 +6498,6 @@ msgid ""
 msgstr ""
 
 #: picard/script/functions.py:1412
-#, fuzzy
 msgid ""
 "`$countryname(country_code,translate=\"\")`\n"
 "\n"
