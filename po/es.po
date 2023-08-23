@@ -29,16 +29,16 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 08:24+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Spanish <https://translations.metabrainz.org/projects/picard/"
 "app/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
-"0) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
+" ? 1 : 2);\n"
 "X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
 
@@ -49,7 +49,7 @@ msgstr "Archivos desagrupados"
 #: picard/album.py:516
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
-msgstr "Álbum %(id)s  cargado: %(artist)s - %(album)s"
+msgstr "Álbum %(id)s cargado: %(artist)s - %(album)s"
 
 #: picard/album.py:573
 #, python-format
@@ -5370,16 +5370,19 @@ msgid ""
 "\n"
 "Returns the first `number` characters from `text`."
 msgstr ""
-"`$left(text,number)`  Devuelve los primeros \"number\" caracteres de \"text\""
+"`$left(text,number)`\n"
+"\n"
+"Devuelve los primeros \"number\" caracteres de \"text\"."
 
 #: picard/script/functions.py:233
-#, fuzzy
 msgid ""
 "`$right(text,number)`\n"
 "\n"
 "Returns the last `number` characters from `text`."
 msgstr ""
-"`$left(text,number)`  Devuelve los primeros \"number\" caracteres de \"text\""
+"`$left(text,number)`\n"
+"\n"
+"Devuelve los primeros \"number\" caracteres de \"text\"."
 
 #: picard/script/functions.py:245
 msgid ""
@@ -7303,7 +7306,7 @@ msgstr "Buscar pistas similares…"
 
 #: picard/ui/mainwindow.py:686
 msgid "View similar tracks and optionally choose a different release"
-msgstr "Ver pistas similares y opcionalmente elegir un lanzamiento  diferente"
+msgstr "Ver pistas similares y opcionalmente elegir un lanzamiento diferente"
 
 #: picard/ui/mainwindow.py:694
 msgid "Show &other album versions…"
@@ -7474,7 +7477,7 @@ msgstr "&Abrir mis colecciones en el navegador"
 
 #: picard/ui/mainwindow.py:876
 msgid "View &Error/Debug Log"
-msgstr " Ver Error/Registro Debug"
+msgstr "Ver Error/Registro Debug"
 
 #: picard/ui/mainwindow.py:878
 msgid "Ctrl+G"
@@ -7577,7 +7580,7 @@ msgstr "Añadiendo múltiples carpetas desde '%(directory)s' …"
 #: picard/ui/mainwindow.py:1299
 #, python-format
 msgid "Adding directory: '%(directory)s' …"
-msgstr "Añadiendo carpeta  '%(directory)s'…"
+msgstr "Añadiendo carpeta '%(directory)s'…"
 
 #: picard/ui/mainwindow.py:1411
 msgid "Configuration Required"
@@ -7631,7 +7634,7 @@ msgid ""
 "server. Would you like to log in now?"
 msgstr ""
 "Picard necesita autorización para acceder a sus datos personales alojados en "
-"el servidor MusicBrainz. ¿Quiere conectar ahora? "
+"el servidor MusicBrainz. ¿Quiere conectar ahora?"
 
 #: picard/ui/mainwindow.py:1738
 msgid "Authentication failed"
@@ -7698,7 +7701,7 @@ msgstr "Alt+Shift+E"
 
 #: picard/ui/metadatabox.py:253
 msgid "Alt+Shift+R"
-msgstr "Alt+Mayús+R"
+msgstr "Alt+Shift+R"
 
 #: picard/ui/metadatabox.py:373
 msgid "Edit…"
@@ -8688,7 +8691,7 @@ msgid ""
 "your ratings."
 msgstr ""
 "Picard guarda las puntuaciones de forma conjunta con una dirección de correo-"
-"e identificando el usuario que hizo la puntuación.  De esa manera se "
+"e identificando el usuario que hizo la puntuación. De esa manera se "
 "almacenan en sitios separados las diferentes usuarios Indique el correo-e "
 "que quiere usar para guardar sus puntuaciones."
 
@@ -9165,7 +9168,7 @@ msgstr ""
 
 #: picard/ui/options/dialog.py:494
 msgid " [Enabled]"
-msgstr "[Habilitado]"
+msgstr " [Habilitado]"
 
 #: picard/ui/options/dialog.py:495 picard/ui/options/profiles.py:281
 msgid "None"
@@ -10067,7 +10070,7 @@ msgstr "Comentario"
 
 #: picard/util/tags.py:51
 msgid "Compilation (iTunes)"
-msgstr "Compilación  (iTunes)"
+msgstr "Compilación (iTunes)"
 
 #: picard/util/tags.py:53
 msgid "Composer Sort Order"
