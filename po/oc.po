@@ -10,16 +10,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022\n"
-"Language-Team: Occitan (post 1500) (http://app.transifex.com/musicbrainz/"
-"musicbrainz/language/oc/)\n"
+"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Occitan <https://translations.metabrainz.org/projects/picard/"
+"app/oc/>\n"
 "Language: oc\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -227,8 +228,9 @@ msgid "General"
 msgstr "General"
 
 #: picard/profile.py:48
+#, fuzzy
 msgid "Server address"
-msgstr ""
+msgstr "Adreça del servidor :"
 
 #: picard/profile.py:49
 msgid "Port"
@@ -573,8 +575,9 @@ msgid "Show icons in menus"
 msgstr ""
 
 #: picard/profile.py:188
+#, fuzzy
 msgid "User interface language"
-msgstr ""
+msgstr "Lenga de l'interfàcia d'utilizaire :"
 
 #: picard/profile.py:189
 msgid "User interface color theme"
@@ -717,16 +720,19 @@ msgid "Listen only on localhost"
 msgstr ""
 
 #: picard/profile.py:252
+#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr ""
+msgstr "Semblança minimala per cercar de fichièrs :"
 
 #: picard/profile.py:253
+#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr ""
+msgstr "Semblança minimala pel regropament d'albums"
 
 #: picard/profile.py:254
+#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr ""
+msgstr "Semblança minimala entre los fichièrs e la pista :"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -7522,10 +7528,12 @@ msgstr ""
 "senhal."
 
 #: picard/ui/passworddialog.py:64
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "The proxy %s requires you to login. Please enter your username and password."
 msgstr ""
+"Lo servidor %s requerís una connexion. Entratz vòstres nom d'utilizaire e "
+"senhal."
 
 #: picard/ui/playertoolbar.py:173
 msgid "Internal player: The format of a media resource isn't (fully) supported"
@@ -8793,8 +8801,9 @@ msgid "Remove tags"
 msgstr ""
 
 #: picard/ui/ui_win_compat_dialog.py:192
+#, fuzzy
 msgid "Character"
-msgstr ""
+msgstr "Personatges"
 
 #: picard/ui/ui_win_compat_dialog.py:193
 msgid "Replacement"
