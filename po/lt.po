@@ -10,18 +10,19 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2019-10-31 12:19+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
-"Language-Team: Lithuanian (http://www.transifex.com/musicbrainz/musicbrainz/"
-"language/lt/)\n"
+"PO-Revision-Date: 2023-08-23 09:08+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
+"picard/app/lt/>\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.6.0\n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
-"1 : n % 1 != 0 ? 2: 3);\n"
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
+" n % 1 != 0 ? 2: 3);\n"
+"X-Generator: Weblate 4.18.2\n"
+"Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -122,8 +123,9 @@ msgstr ""
 #: picard/config_upgrade.py:104 picard/ui/metadatabox.py:426
 #: picard/ui/options/interface_toolbar.py:99
 #: picard/ui/ui_options_interface_toolbar.py:80
+#, fuzzy
 msgid "Remove"
-msgstr ""
+msgstr "Pašalinti"
 
 #: picard/config_upgrade.py:417
 msgid "Primary file naming script"
@@ -384,8 +386,9 @@ msgid "Submit ratings to MusicBrainz"
 msgstr ""
 
 #: picard/profile.py:104 picard/ui/options/tags.py:47
+#, fuzzy
 msgid "Tags"
-msgstr ""
+msgstr "Žymės"
 
 #: picard/profile.py:107
 msgid "Don't write tags"
@@ -468,8 +471,9 @@ msgid "RIFF INFO text encoding"
 msgstr ""
 
 #: picard/profile.py:139 picard/ui/options/cover.py:51
+#, fuzzy
 msgid "Cover Art"
-msgstr ""
+msgstr "Viršelio paveikslėlis"
 
 #: picard/profile.py:141 picard/ui/ui_options_cover.py:95
 msgid "Embed cover images into tags"
@@ -742,8 +746,9 @@ msgid "Minimal similarity for matching files to tracks"
 msgstr ""
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
+#, fuzzy
 msgid "Tracks"
-msgstr ""
+msgstr "Takeliai"
 
 #: picard/releasegroup.py:70
 msgid "Year"
@@ -759,8 +764,9 @@ msgid "Format"
 msgstr ""
 
 #: picard/releasegroup.py:73
+#, fuzzy
 msgid "Label"
-msgstr ""
+msgstr "Leidykla"
 
 #: picard/releasegroup.py:74
 msgid "Cat No"
@@ -775,8 +781,9 @@ msgid "[no release info]"
 msgstr ""
 
 #: picard/tagger.py:655 picard/ui/ui_options_general.py:197
+#, fuzzy
 msgid "MusicBrainz Account"
-msgstr ""
+msgstr "„MusicBrainz“ paskyra"
 
 #: picard/tagger.py:656
 msgid "Authorization code:"
@@ -932,8 +939,9 @@ msgstr ""
 
 #: picard/const/languages.py:29 picard/const/locales.py:48
 #: picard/const/scripts.py:29
+#, fuzzy
 msgid "Arabic"
-msgstr ""
+msgstr "Arabų"
 
 #: picard/const/languages.py:32 picard/const/locales.py:147
 msgid "Catalan"
@@ -1070,8 +1078,9 @@ msgid "Slovenian"
 msgstr ""
 
 #: picard/const/languages.py:76 picard/const/locales.py:894
+#, fuzzy
 msgid "Albanian"
-msgstr ""
+msgstr "Albanų"
 
 #: picard/const/languages.py:78 picard/const/locales.py:920
 msgid "Swedish"
@@ -1094,8 +1103,9 @@ msgid "Chinese (Taiwan)"
 msgstr ""
 
 #: picard/const/locales.py:27
+#, fuzzy
 msgid "Afar"
-msgstr ""
+msgstr "Afarų"
 
 #: picard/const/locales.py:28
 msgid "Afar (Djibouti)"
@@ -1114,16 +1124,18 @@ msgid "Afar (Ethiopia)"
 msgstr ""
 
 #: picard/const/locales.py:32
+#, fuzzy
 msgid "Abkhazian"
-msgstr ""
+msgstr "Abchazų"
 
 #: picard/const/locales.py:33
 msgid "Abkhazian (Georgia)"
 msgstr ""
 
 #: picard/const/locales.py:34
+#, fuzzy
 msgid "Afrikaans"
-msgstr ""
+msgstr "Afrikanų"
 
 #: picard/const/locales.py:35
 msgid "Afrikaans (Namibia)"
@@ -1142,8 +1154,9 @@ msgid "Aghem (Cameroon)"
 msgstr ""
 
 #: picard/const/locales.py:39
+#, fuzzy
 msgid "Akan"
-msgstr ""
+msgstr "Akanų"
 
 #: picard/const/locales.py:40
 msgid "Akan (Ghana)"
@@ -1175,8 +1188,9 @@ msgid "Obolo (Nigeria)"
 msgstr ""
 
 #: picard/const/locales.py:47
+#, fuzzy
 msgid "Syria"
-msgstr ""
+msgstr "Sirija"
 
 #: picard/const/locales.py:49
 msgid "Arabic (world)"
@@ -1325,8 +1339,9 @@ msgid "Asturian (Spain)"
 msgstr "Ispanų kalba"
 
 #: picard/const/locales.py:85
+#, fuzzy
 msgid "Azerbaijani"
-msgstr ""
+msgstr "Azerbaidžanas"
 
 #: picard/const/locales.py:86
 msgid "Azerbaijani (Arabic)"
@@ -1772,8 +1787,9 @@ msgid "German (Luxembourg)"
 msgstr ""
 
 #: picard/const/locales.py:198
+#, fuzzy
 msgid "Zarma"
-msgstr ""
+msgstr "Zarmų"
 
 #: picard/const/locales.py:199
 msgid "Zarma (Niger)"
@@ -3117,8 +3133,9 @@ msgid "Hungarian (Hungary)"
 msgstr ""
 
 #: picard/const/locales.py:513
+#, fuzzy
 msgid "Armenian"
-msgstr ""
+msgstr "Armėnų"
 
 #: picard/const/locales.py:514
 msgid "Armenian (Armenia)"
@@ -3137,8 +3154,9 @@ msgid "Interlingua (world)"
 msgstr ""
 
 #: picard/const/locales.py:518
+#, fuzzy
 msgid "Indonesian"
-msgstr ""
+msgstr "Indonezija"
 
 #: picard/const/locales.py:519
 msgid "Indonesian (Indonesia)"
@@ -3494,8 +3512,9 @@ msgid "Kyrgyz (Kyrgyzstan)"
 msgstr ""
 
 #: picard/const/locales.py:610 picard/const/scripts.py:28
+#, fuzzy
 msgid "Latin"
-msgstr ""
+msgstr "Lotynų"
 
 #: picard/const/locales.py:611
 msgid "Latin (Vatican City)"
@@ -3594,8 +3613,9 @@ msgid "Northern Luri (Iran)"
 msgstr ""
 
 #: picard/const/locales.py:634
+#, fuzzy
 msgid "Lithuanian"
-msgstr ""
+msgstr "Lietuva"
 
 #: picard/const/locales.py:635
 msgid "Lithuanian (Lithuania)"
@@ -3712,8 +3732,9 @@ msgid "Māori (New Zealand)"
 msgstr "Anglų kalba (Kanadiečių)"
 
 #: picard/const/locales.py:663
+#, fuzzy
 msgid "Macedonian"
-msgstr ""
+msgstr "Makedonija"
 
 #: picard/const/locales.py:664
 msgid "Macedonian (North Macedonia)"
@@ -5150,8 +5171,9 @@ msgid "Yiddish (world)"
 msgstr "Anglų kalba (Kanadiečių)"
 
 #: picard/const/locales.py:1029
+#, fuzzy
 msgid "Yoruba"
-msgstr ""
+msgstr "Jorubų"
 
 #: picard/const/locales.py:1030
 msgid "Yoruba (Benin)"
@@ -5246,8 +5268,9 @@ msgid "Chinese (Traditional) (Taiwan)"
 msgstr ""
 
 #: picard/const/locales.py:1053
+#, fuzzy
 msgid "Zulu"
-msgstr ""
+msgstr "Zulusų"
 
 #: picard/const/locales.py:1054
 msgid "Zulu (South Africa)"
@@ -6946,8 +6969,9 @@ msgid "&Other versions (%d)"
 msgstr ""
 
 #: picard/ui/itemviews.py:627
+#, fuzzy
 msgid "Collections"
-msgstr ""
+msgstr "Kolekcijos"
 
 #: picard/ui/itemviews.py:635
 msgid "P&lugins"
@@ -7081,8 +7105,9 @@ msgid "Activity History"
 msgstr ""
 
 #: picard/ui/mainwindow.py:219 picard/ui/ui_aboutdialog.py:84
+#, fuzzy
 msgid "MusicBrainz Picard"
-msgstr ""
+msgstr "„MusicBrainz“ „Picard“"
 
 #: picard/ui/mainwindow.py:348
 msgid "Unsaved Changes"
@@ -7332,8 +7357,9 @@ msgid "Ctrl+Shift+M"
 msgstr ""
 
 #: picard/ui/mainwindow.py:724
+#, fuzzy
 msgid "&Cover Art"
-msgstr ""
+msgstr "Viršelio paveikslėlis"
 
 #: picard/ui/mainwindow.py:735
 msgid "&Actions"
@@ -7341,8 +7367,9 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:744 picard/ui/mainwindow.py:1139
 #: picard/ui/searchdialog/__init__.py:48
+#, fuzzy
 msgid "Search"
-msgstr ""
+msgstr "Ieškoti"
 
 #: picard/ui/mainwindow.py:751 picard/ui/mainwindow.py:758
 msgid "Lookup &CD…"
@@ -7661,8 +7688,9 @@ msgid "Displays original and new tags for the selected files"
 msgstr ""
 
 #: picard/ui/metadatabox.py:221
+#, fuzzy
 msgid "Tag"
-msgstr ""
+msgstr "Žymė"
 
 #: picard/ui/metadatabox.py:221
 msgid "Original Value"
@@ -8126,8 +8154,9 @@ msgid "Submit disc ID"
 msgstr ""
 
 #: picard/ui/ui_cdlookup.py:89
+#, fuzzy
 msgid "&Load into Picard"
-msgstr ""
+msgstr "Įkrauk į Picard"
 
 #: picard/ui/ui_cdlookup.py:90
 msgid "&Submit disc ID"
@@ -8387,8 +8416,9 @@ msgid "Server address:"
 msgstr ""
 
 #: picard/ui/ui_options_general.py:198
+#, fuzzy
 msgid "Log in"
-msgstr ""
+msgstr "Prisijungti"
 
 #: picard/ui/ui_options_general.py:199
 msgid "Log out"
@@ -9178,8 +9208,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/genres.py:87
+#, fuzzy
 msgid "Genres"
-msgstr ""
+msgstr "Žanrai"
 
 #: picard/ui/options/genres.py:156
 #, python-format
@@ -9289,8 +9320,9 @@ msgid "Lookup in Browser"
 msgstr ""
 
 #: picard/ui/options/interface_toolbar.py:91
+#, fuzzy
 msgid "Save"
-msgstr ""
+msgstr "Išsaugoti"
 
 #: picard/ui/options/interface_toolbar.py:103
 msgid "Submit AcoustIDs"
@@ -9730,8 +9762,9 @@ msgid "Track Search Results"
 msgstr ""
 
 #: picard/ui/searchdialog/track.py:72
+#, fuzzy
 msgid "Release"
-msgstr ""
+msgstr "Leidinys"
 
 #: picard/ui/searchdialog/track.py:175
 msgid "Standalone Recording"
@@ -9922,8 +9955,9 @@ msgid "Artist Sort Order"
 msgstr ""
 
 #: picard/util/tags.py:46
+#, fuzzy
 msgid "ASIN"
-msgstr ""
+msgstr "ASIN"
 
 #: picard/util/tags.py:48
 msgid "BPM"
@@ -9990,8 +10024,9 @@ msgid "Grouping"
 msgstr ""
 
 #: picard/util/tags.py:68
+#, fuzzy
 msgid "ISRC"
-msgstr ""
+msgstr "TSĮK"
 
 #: picard/util/tags.py:69
 msgid "Key"
@@ -10098,8 +10133,9 @@ msgid "Performer"
 msgstr ""
 
 #: picard/util/tags.py:100
+#, fuzzy
 msgid "Podcast"
-msgstr ""
+msgstr "Tinklalaidė"
 
 #: picard/util/tags.py:101
 msgid "Podcast URL"
@@ -10118,8 +10154,9 @@ msgid "R128 Track Gain"
 msgstr ""
 
 #: picard/util/tags.py:105
+#, fuzzy
 msgid "Rating"
-msgstr ""
+msgstr "Įvertinimas"
 
 #: picard/util/tags.py:106
 msgid "Release Country"

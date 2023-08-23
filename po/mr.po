@@ -10,16 +10,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2020-2022\n"
-"Language-Team: Marathi (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/mr/)\n"
+"PO-Revision-Date: 2023-08-23 09:08+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Marathi <https://translations.metabrainz.org/projects/picard/"
+"app/mr/>\n"
 "Language: mr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -227,8 +228,9 @@ msgid "General"
 msgstr "सामान्य"
 
 #: picard/profile.py:48
+#, fuzzy
 msgid "Server address"
-msgstr ""
+msgstr "सर्वरचा पत्ता:"
 
 #: picard/profile.py:49
 msgid "Port"
@@ -919,8 +921,9 @@ msgstr ""
 
 #: picard/const/languages.py:29 picard/const/locales.py:48
 #: picard/const/scripts.py:29
+#, fuzzy
 msgid "Arabic"
-msgstr ""
+msgstr "अरेबिक"
 
 #: picard/const/languages.py:32 picard/const/locales.py:147
 msgid "Catalan"
@@ -1101,8 +1104,9 @@ msgid "Afar (Ethiopia)"
 msgstr ""
 
 #: picard/const/locales.py:32
+#, fuzzy
 msgid "Abkhazian"
-msgstr ""
+msgstr "अब्खाझियन"
 
 #: picard/const/locales.py:33
 msgid "Abkhazian (Georgia)"
@@ -1145,8 +1149,9 @@ msgid "Amharic (Ethiopia)"
 msgstr ""
 
 #: picard/const/locales.py:43
+#, fuzzy
 msgid "Aragonese"
-msgstr ""
+msgstr "अर्गोनीज"
 
 #: picard/const/locales.py:44
 msgid "Aragonese (Spain)"
@@ -1301,8 +1306,9 @@ msgid "Asu (Tanzania)"
 msgstr ""
 
 #: picard/const/locales.py:83
+#, fuzzy
 msgid "Asturian"
-msgstr ""
+msgstr "अस्तुरियन"
 
 #: picard/const/locales.py:84
 msgid "Asturian (Spain)"
@@ -1353,8 +1359,9 @@ msgid "Bashkir (Russia)"
 msgstr ""
 
 #: picard/const/locales.py:96
+#, fuzzy
 msgid "Baluchi"
-msgstr ""
+msgstr "बलुची"
 
 #: picard/const/locales.py:97
 msgid "Baluchi (Arabic)"
@@ -1465,8 +1472,9 @@ msgid "Tai Dam (Vietnam)"
 msgstr ""
 
 #: picard/const/locales.py:124
+#, fuzzy
 msgid "Bambara"
-msgstr ""
+msgstr "बाम्बारा"
 
 #: picard/const/locales.py:125
 msgid "Bambara (Mali)"
@@ -2973,8 +2981,9 @@ msgid "Interlingua (world)"
 msgstr ""
 
 #: picard/const/locales.py:518
+#, fuzzy
 msgid "Indonesian"
-msgstr ""
+msgstr "इंडोनेशिया"
 
 #: picard/const/locales.py:519
 msgid "Indonesian (Indonesia)"
@@ -3365,8 +3374,9 @@ msgid "Ligurian (Italy)"
 msgstr ""
 
 #: picard/const/locales.py:620
+#, fuzzy
 msgid "Lakota"
-msgstr ""
+msgstr "लाकोटा"
 
 #: picard/const/locales.py:621
 msgid "Lakota (United States)"
@@ -3421,8 +3431,9 @@ msgid "Northern Luri (Iran)"
 msgstr ""
 
 #: picard/const/locales.py:634
+#, fuzzy
 msgid "Lithuanian"
-msgstr ""
+msgstr "लिथुआनिया"
 
 #: picard/const/locales.py:635
 msgid "Lithuanian (Lithuania)"
@@ -7395,8 +7406,9 @@ msgid "%(filename)s (%(similarity)d%%)"
 msgstr ""
 
 #: picard/ui/mainwindow.py:1722
+#, fuzzy
 msgid "Authentication Required"
-msgstr ""
+msgstr "अधिप्रमाणन जरुरी"
 
 #: picard/ui/mainwindow.py:1723
 msgid ""
