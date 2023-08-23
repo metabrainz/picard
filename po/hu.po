@@ -5,7 +5,7 @@
 # Translators:
 # Adrián Fülöp, 2022
 # Gavin James <theplayer1604@gmail.com>, 2020
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023.
 # Pintér Ádám <pinteradam2000@gmail.com>, 2016
 # Syp <http://musicbrainz.org/user/view.html?modname=syp>, 2005
 msgid ""
@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 08:24+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Hungarian <https://translations.metabrainz.org/projects/"
 "picard/app/hu/>\n"
 "Language: hu\n"
@@ -71,7 +71,7 @@ msgstr "Nem csoportosított fájlok"
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
-msgstr[0] "%(count)i kiadás hozzáaadva a  \"%(name)s\" gyűjteményhez"
+msgstr[0] "%(count)i kiadás hozzáaadva a \"%(name)s\" gyűjteményhez"
 msgstr[1] "%(count)i kiadások hozzáaadva a \"%(name)s\" gyűjteményhez"
 
 #: picard/collection.py:86
@@ -105,7 +105,7 @@ msgstr ""
 "A Picard ezen verziójában a különféle előadók albumainál használt különálló "
 "fájlnevezési rendszer el lett távolítva.\n"
 "A fájlnevezési rendszer automatikusan össze lett vonva a szólóművésznek az "
-"albumával. "
+"albumával."
 
 #: picard/config_upgrade.py:96
 msgid ""
@@ -121,7 +121,7 @@ msgstr ""
 "Jelenleg nem használod ezt az opciót, de külön fájlelnevezési rendszer van "
 "megadva.\n"
 "El akarod távolítani, vagy össze akarod vonni a fájlelnevezési rendszeredet "
-"a szólóművészi albumokhoz használttal? "
+"a szólóművészi albumokhoz használttal?"
 
 #: picard/config_upgrade.py:103
 msgid "Merge"
@@ -183,7 +183,7 @@ msgstr ""
 #: picard/pluginmanager.py:261
 #, python-format
 msgid "Unable to load plugin '%s'"
-msgstr "Nem sikerült betölteni a  '%s' plugint"
+msgstr "Nem sikerült betölteni a '%s' plugint"
 
 #: picard/pluginmanager.py:276
 #, python-format
@@ -198,7 +198,7 @@ msgstr "Nem sikerült betölteni a %r plugint itt: %r"
 #: picard/pluginmanager.py:322
 #, python-format
 msgid "Plugin '%s' from '%s' is not compatible with this version of Picard."
-msgstr "A  '%s' plugin innen: '%s' nem kompatibilis a Picard ezen verziójával."
+msgstr "A '%s' plugin innen: '%s' nem kompatibilis a Picard ezen verziójával."
 
 #: picard/pluginmanager.py:326
 #, python-format
@@ -851,17 +851,17 @@ msgstr "AcoustID-felkeresés hálózati hiba történt ennél: '%(filename)s'!"
 #: picard/acoustid/__init__.py:153
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
-msgstr "AcoustID-felkeresés sikertelen a következőnél:  '%(filename)s'!"
+msgstr "AcoustID-felkeresés sikertelen a következőnél: '%(filename)s'!"
 
 #: picard/acoustid/__init__.py:176
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
-msgstr "Az AcoustID-felkeresés nem hozott eredményt a  '%(filename)s' fájlhoz."
+msgstr "Az AcoustID-felkeresés nem hozott eredményt a '%(filename)s' fájlhoz."
 
 #: picard/acoustid/__init__.py:187
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' …"
-msgstr "A  '%(filename)s'  ujjlenyomatának felkeresése…"
+msgstr "A '%(filename)s' ujjlenyomatának felkeresése…"
 
 #: picard/acoustid/manager.py:184
 msgid ""
@@ -7561,14 +7561,14 @@ msgstr ""
 msgid ""
 "The server %s requires you to login. Please enter your username and password."
 msgstr ""
-"%s kiszolgálóra  be kell jelentkezni. Kérem adja meg a nevét és a kódszót."
+"%s kiszolgálóra be kell jelentkezni. Kérem adja meg a nevét és a kódszót."
 
 #: picard/ui/passworddialog.py:64
 #, fuzzy, python-format
 msgid ""
 "The proxy %s requires you to login. Please enter your username and password."
 msgstr ""
-"%s kiszolgálóra  be kell jelentkezni. Kérem adja meg a nevét és a kódszót."
+"%s kiszolgálóra be kell jelentkezni. Kérem adja meg a nevét és a kódszót."
 
 #: picard/ui/playertoolbar.py:173
 msgid "Internal player: The format of a media resource isn't (fully) supported"
