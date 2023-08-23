@@ -5,13 +5,14 @@
 # Translators:
 # dufferzafar <dufferzafar0@gmail.com>, 2014
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 08:24+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Hindi <https://translations.metabrainz.org/projects/picard/"
 "app/hi/>\n"
 "Language: hi\n"
@@ -38,7 +39,7 @@ msgstr ""
 
 #: picard/album.py:790
 msgid "[loading album information]"
-msgstr "[एल्बम जानकारी लोड हो रही है] "
+msgstr "[एल्बम जानकारी लोड हो रही है]"
 
 #: picard/album.py:792
 #, python-format
@@ -281,7 +282,7 @@ msgstr ""
 #: picard/profile.py:66
 #, fuzzy
 msgid "Translate artist names exception"
-msgstr "जब संभव हो कलाकार के नाम का अनुवाद करें  "
+msgstr "जब संभव हो कलाकार के नाम का अनुवाद करें"
 
 #: picard/profile.py:67
 msgid "Translation script exceptions"
@@ -306,7 +307,7 @@ msgstr "रिहाई के संबंधों का उपयोग क�
 
 #: picard/profile.py:72 picard/ui/ui_options_metadata.py:138
 msgid "Use track relationships"
-msgstr "ट्रैक संबंधों का उपयोग करें "
+msgstr "ट्रैक संबंधों का उपयोग करें"
 
 #: picard/profile.py:73 picard/ui/ui_options_metadata.py:139
 msgid "Guess track number and title from filename if empty"
@@ -785,7 +786,7 @@ msgstr ""
 
 #: picard/tagger.py:1163
 msgid "CD Lookup Error"
-msgstr "सीडी  देखने में दिक्कत"
+msgstr "सीडी देखने में दिक्कत"
 
 #: picard/tagger.py:1164
 #, python-format
@@ -824,7 +825,7 @@ msgstr ""
 #: picard/track.py:385
 #, fuzzy
 msgid "[loading recording information]"
-msgstr "[एल्बम जानकारी लोड हो रही है] "
+msgstr "[एल्बम जानकारी लोड हो रही है]"
 
 #: picard/track.py:433
 #, fuzzy, python-format
@@ -8429,7 +8430,7 @@ msgstr ""
 #: picard/ui/ui_options_metadata.py:130
 #, fuzzy
 msgid "Translate artist names to these locales where possible:"
-msgstr "जब संभव हो कलाकार के नाम का अनुवाद करें  "
+msgstr "जब संभव हो कलाकार के नाम का अनुवाद करें"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select…"
@@ -9167,7 +9168,7 @@ msgstr ""
 #: picard/ui/options/interface_toolbar.py:87
 #, fuzzy
 msgid "Lookup in Browser"
-msgstr "सीडी  देखने में दिक्कत"
+msgstr "सीडी देखने में दिक्कत"
 
 #: picard/ui/options/interface_toolbar.py:91
 msgid "Save"
