@@ -9,14 +9,14 @@
 # Ondřej Vodáček <ondrej.vodacek+transifex@gmail.com>, 2012-2013
 # pabouk <pabouk@gmail.com>, 2015
 # pabouk <pabouk@gmail.com>, 2012
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 08:48+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Czech <https://translations.metabrainz.org/projects/picard/"
 "app/cs/>\n"
 "Language: cs\n"
@@ -411,7 +411,7 @@ msgstr ""
 
 #: picard/profile.py:108 picard/ui/ui_options_tags.py:72
 msgid "Preserve timestamps of tagged files"
-msgstr "Zachovat časová razítka otagovaných souborů "
+msgstr "Zachovat časová razítka otagovaných souborů"
 
 #: picard/profile.py:109 picard/ui/ui_options_tags.py:74
 msgid "Clear existing tags"
@@ -869,7 +869,7 @@ msgstr "Selhalo vyhledávání AcoustID pro '%(filename)s'!"
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
 msgstr ""
-"Nebyl vrácen žádný výsledek vyhledávání AcoustID pro soubor  '%(filename)s'"
+"Nebyl vrácen žádný výsledek vyhledávání AcoustID pro soubor '%(filename)s'"
 
 #: picard/acoustid/__init__.py:187
 #, python-format
