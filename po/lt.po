@@ -5,13 +5,14 @@
 # Translators:
 # A B, 2017
 # Jonas Slivka <jonas.slivka@gmail.com>, 2006
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 09:08+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/app/lt/>\n"
 "Language: lt\n"
@@ -19,8 +20,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
-"1 : n % 1 != 0 ? 2: 3);\n"
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
+" n % 1 != 0 ? 2: 3);\n"
 "X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.6.0\n"
 
@@ -6567,7 +6568,7 @@ msgstr ""
 
 #: picard/ui/collectionmenu.py:60
 msgid "Refresh List"
-msgstr "Atnaujink Saraša "
+msgstr "Atnaujink Saraša"
 
 #: picard/ui/collectionmenu.py:173
 #, python-format
@@ -7115,7 +7116,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:349
 msgid "Are you sure you want to quit Picard?"
-msgstr "Ar tu esi įsitikinęs kad nori išjungti Picard? "
+msgstr "Ar tu esi įsitikinęs kad nori išjungti Picard?"
 
 #: picard/ui/mainwindow.py:350
 #, python-format
@@ -8085,7 +8086,7 @@ msgstr ""
 #: picard/ui/scripteditor.py:1122
 #, fuzzy
 msgid "Are you sure that you want to delete the script?"
-msgstr "Ar tu esi įsitikinęs kad nori išjungti Picard? "
+msgstr "Ar tu esi įsitikinęs kad nori išjungti Picard?"
 
 #: picard/ui/options/scripting.py:161 picard/ui/scripteditor.py:1208
 msgid "File Error"
@@ -9432,7 +9433,7 @@ msgstr ""
 #: picard/ui/options/maintenance.py:296
 #, fuzzy
 msgid "Are you sure you want to remove the selected option settings?"
-msgstr "Ar tu esi įsitikinęs kad nori išjungti Picard? "
+msgstr "Ar tu esi įsitikinęs kad nori išjungti Picard?"
 
 #: picard/ui/options/matching.py:40
 msgid "Matching"
@@ -9781,7 +9782,7 @@ msgstr ""
 #: picard/ui/widgets/profilelistwidget.py:83
 #, fuzzy
 msgid "Are you sure you want to remove this profile?"
-msgstr "Ar tu esi įsitikinęs kad nori išjungti Picard? "
+msgstr "Ar tu esi įsitikinęs kad nori išjungti Picard?"
 
 #: picard/ui/widgets/scriptdocumentation.py:109
 msgid "Open Scripting Documentation in your browser"
