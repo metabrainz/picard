@@ -9,15 +9,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-08-29 08:53+0000\n"
-"Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2023-08-23 08:24+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Kannada <https://translations.metabrainz.org/projects/picard/"
+"app/kn/>\n"
 "Language: kn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 0.9.6\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.18.2\n"
+"Generated-By: Babel 0.9.6\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -6557,8 +6559,9 @@ msgid "Size:"
 msgstr ""
 
 #: picard/ui/infodialog.py:290
+#, fuzzy
 msgid "Length:"
-msgstr ""
+msgstr "ಕಾಲಾವಧಿ"
 
 #: picard/ui/infodialog.py:292
 msgid "Bitrate:"
@@ -7017,8 +7020,9 @@ msgid "Add Fold&er..."
 msgstr "&ಕಡತಗಳನ್ನು ಸೇರಿಸು"
 
 #: picard/ui/mainwindow.py:570
+#, fuzzy
 msgid "Add a folder to the tagger"
-msgstr ""
+msgstr "ಟ್ಯಾಗ್ಗರ್ ಗೆ ಕಡತಗಳನ್ನು ಸೇರಿಸು"
 
 #: picard/ui/mainwindow.py:572
 msgid "Ctrl+E"
@@ -7159,8 +7163,9 @@ msgid "Ctrl+Shift+M"
 msgstr ""
 
 #: picard/ui/mainwindow.py:724
+#, fuzzy
 msgid "&Cover Art"
-msgstr ""
+msgstr "ಹೊರ ಚಿತ್ರ"
 
 #: picard/ui/mainwindow.py:735
 msgid "&Actions"

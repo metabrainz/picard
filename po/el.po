@@ -15,16 +15,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022\n"
-"Language-Team: Greek (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/el/)\n"
+"PO-Revision-Date: 2023-08-23 08:24+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Greek <https://translations.metabrainz.org/projects/picard/"
+"app/el/>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -245,20 +246,23 @@ msgid "General"
 msgstr "Γενικά"
 
 #: picard/profile.py:48
+#, fuzzy
 msgid "Server address"
-msgstr ""
+msgstr "Διεύθυνση εξυπηρετητή"
 
 #: picard/profile.py:49
+#, fuzzy
 msgid "Port"
-msgstr ""
+msgstr "Θύρα:"
 
 #: picard/profile.py:50 picard/ui/ui_options_general.py:201
 msgid "Automatically scan all new files"
 msgstr "Αυτόματη σάρωση όλων των νέων αρχείων"
 
 #: picard/profile.py:51 picard/ui/ui_options_general.py:202
+#, fuzzy
 msgid "Automatically cluster all new files"
-msgstr ""
+msgstr "Αυτόματη σάρωση όλων των νέων αρχείων"
 
 #: picard/profile.py:52 picard/ui/ui_options_general.py:203
 msgid "Ignore MBIDs when loading new files"
@@ -514,8 +518,9 @@ msgid "File Naming"
 msgstr "Ονομασία αρχείων"
 
 #: picard/profile.py:156
+#, fuzzy
 msgid "Move files"
-msgstr ""
+msgstr "&Μετακίνηση αρχείων"
 
 #: picard/profile.py:157
 msgid "Destination directory"
@@ -534,8 +539,9 @@ msgid "Delete empty directories"
 msgstr "Διαγραφή κενών καταλόγων"
 
 #: picard/profile.py:161
+#, fuzzy
 msgid "Rename files"
-msgstr ""
+msgstr "&Μετονομασία αρχείων"
 
 #: picard/profile.py:162
 msgid "Selected file naming script"
@@ -591,8 +597,9 @@ msgid "Show icons in menus"
 msgstr ""
 
 #: picard/profile.py:188
+#, fuzzy
 msgid "User interface language"
-msgstr ""
+msgstr "Γλώσσα διεπαφής χρήστη:"
 
 #: picard/profile.py:189
 msgid "User interface color theme"
@@ -607,8 +614,9 @@ msgid "Use builtin search rather than looking in browser"
 msgstr ""
 
 #: picard/profile.py:192
+#, fuzzy
 msgid "Use advanced search syntax"
-msgstr ""
+msgstr "Χρήση προχωρημένης σύνταξης ερωτήματος"
 
 #: picard/profile.py:193
 msgid "Show a usage warning dialog when Picard starts"
@@ -723,8 +731,9 @@ msgid "Request timeout in seconds"
 msgstr ""
 
 #: picard/profile.py:245
+#, fuzzy
 msgid "Browser integration"
-msgstr ""
+msgstr "Ενσωμάτωση με πρόγραμμα περιήγησης"
 
 #: picard/profile.py:248
 msgid "Default listening port"
@@ -735,16 +744,19 @@ msgid "Listen only on localhost"
 msgstr ""
 
 #: picard/profile.py:252
+#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr ""
+msgstr "Ελάχιστη ομοιότητα για τις αναζητήσεις αρχείων:"
 
 #: picard/profile.py:253
+#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr ""
+msgstr "Ελάχιστη ομοιότητα για τις αναζητήσεις ομάδων:"
 
 #: picard/profile.py:254
+#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr ""
+msgstr "Ελάχιστη ομοιότητα για τα αρχεία που ταιριάζουν με τα κομμάτια:"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -941,16 +953,19 @@ msgstr ""
 
 #: picard/const/languages.py:29 picard/const/locales.py:48
 #: picard/const/scripts.py:29
+#, fuzzy
 msgid "Arabic"
-msgstr ""
+msgstr "Αραβική"
 
 #: picard/const/languages.py:32 picard/const/locales.py:147
+#, fuzzy
 msgid "Catalan"
-msgstr ""
+msgstr "Καταλανικά"
 
 #: picard/const/languages.py:33 picard/const/locales.py:177
+#, fuzzy
 msgid "Czech"
-msgstr ""
+msgstr "Τσέχικα"
 
 #: picard/const/languages.py:35 picard/const/locales.py:185
 msgid "Danish"
@@ -966,8 +981,9 @@ msgstr ""
 
 #: picard/const/languages.py:38 picard/const/locales.py:217
 #: picard/const/scripts.py:26
+#, fuzzy
 msgid "Greek"
-msgstr ""
+msgstr "Ελληνική"
 
 #: picard/const/languages.py:39 picard/const/locales.py:221
 msgid "English"
@@ -1011,8 +1027,9 @@ msgstr "Γαλικιανά"
 
 #: picard/const/languages.py:53 picard/const/locales.py:497
 #: picard/const/scripts.py:30
+#, fuzzy
 msgid "Hebrew"
-msgstr ""
+msgstr "Εβραϊκή"
 
 #: picard/const/languages.py:55 picard/const/locales.py:511
 msgid "Hungarian"
@@ -1027,12 +1044,14 @@ msgid "Italian"
 msgstr "Ιταλικά"
 
 #: picard/const/languages.py:59 picard/const/locales.py:537
+#, fuzzy
 msgid "Japanese"
-msgstr ""
+msgstr "Ιαπωνική"
 
 #: picard/const/languages.py:61 picard/const/locales.py:585
+#, fuzzy
 msgid "Korean"
-msgstr ""
+msgstr "Κορεάτικη"
 
 #: picard/const/languages.py:63 picard/const/locales.py:689
 msgid "Malay (Malaysia)"
@@ -1055,8 +1074,9 @@ msgid "Polish"
 msgstr "Πολωνικά"
 
 #: picard/const/languages.py:69 picard/const/locales.py:779
+#, fuzzy
 msgid "Portuguese"
-msgstr ""
+msgstr "Πορτογαλικά"
 
 #: picard/const/languages.py:70
 msgid "Brazilian Portuguese"
@@ -1067,16 +1087,19 @@ msgid "Romanian"
 msgstr "Ρουμάνικα"
 
 #: picard/const/languages.py:72 picard/const/locales.py:815
+#, fuzzy
 msgid "Russian"
-msgstr ""
+msgstr "Ρώσικα"
 
 #: picard/const/languages.py:74 picard/const/locales.py:873
+#, fuzzy
 msgid "Slovak"
-msgstr ""
+msgstr "Σλοβακικά"
 
 #: picard/const/languages.py:75 picard/const/locales.py:875
+#, fuzzy
 msgid "Slovenian"
-msgstr ""
+msgstr "Σλοβενικά"
 
 #: picard/const/languages.py:76 picard/const/locales.py:894
 msgid "Albanian"
@@ -1087,12 +1110,14 @@ msgid "Swedish"
 msgstr "Σουηδικά"
 
 #: picard/const/languages.py:80 picard/const/locales.py:966
+#, fuzzy
 msgid "Turkish"
-msgstr ""
+msgstr "Τούρκικα"
 
 #: picard/const/languages.py:81 picard/const/locales.py:983
+#, fuzzy
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ουκρανικά"
 
 #: picard/const/languages.py:82
 msgid "Chinese (China)"
@@ -1123,8 +1148,9 @@ msgid "Afar (Ethiopia)"
 msgstr ""
 
 #: picard/const/locales.py:32
+#, fuzzy
 msgid "Abkhazian"
-msgstr ""
+msgstr "Αμπχαζικά"
 
 #: picard/const/locales.py:33
 msgid "Abkhazian (Georgia)"
@@ -1167,8 +1193,9 @@ msgid "Amharic (Ethiopia)"
 msgstr ""
 
 #: picard/const/locales.py:43
+#, fuzzy
 msgid "Aragonese"
-msgstr ""
+msgstr "Αραγκονικά"
 
 #: picard/const/locales.py:44
 msgid "Aragonese (Spain)"
@@ -1323,8 +1350,9 @@ msgid "Asu (Tanzania)"
 msgstr ""
 
 #: picard/const/locales.py:83
+#, fuzzy
 msgid "Asturian"
-msgstr ""
+msgstr "Αστουριανά"
 
 #: picard/const/locales.py:84
 msgid "Asturian (Spain)"
@@ -1367,8 +1395,9 @@ msgid "Azerbaijani (Latin) (Azerbaijan)"
 msgstr ""
 
 #: picard/const/locales.py:94
+#, fuzzy
 msgid "Bashkir"
-msgstr ""
+msgstr "Μπασκίρ"
 
 #: picard/const/locales.py:95
 msgid "Bashkir (Russia)"
@@ -1415,8 +1444,9 @@ msgid "Belarusian (Taraskievica orthography)"
 msgstr ""
 
 #: picard/const/locales.py:106
+#, fuzzy
 msgid "Bemba"
-msgstr ""
+msgstr "Μπέμπα"
 
 #: picard/const/locales.py:107
 msgid "Bemba (Zambia)"
@@ -1487,8 +1517,9 @@ msgid "Tai Dam (Vietnam)"
 msgstr ""
 
 #: picard/const/locales.py:124
+#, fuzzy
 msgid "Bambara"
-msgstr ""
+msgstr "Μπαμπάρα"
 
 #: picard/const/locales.py:125
 msgid "Bambara (Mali)"
@@ -1527,8 +1558,9 @@ msgid "Tibetan (India)"
 msgstr ""
 
 #: picard/const/locales.py:134
+#, fuzzy
 msgid "Breton"
-msgstr ""
+msgstr "Βρετονικά"
 
 #: picard/const/locales.py:135
 msgid "Breton (France)"
@@ -1635,8 +1667,9 @@ msgid "Chechen (Russia)"
 msgstr ""
 
 #: picard/const/locales.py:162
+#, fuzzy
 msgid "Cebuano"
-msgstr ""
+msgstr "Σεμπουάνο"
 
 #: picard/const/locales.py:163
 msgid "Cebuano (Philippines)"
@@ -1659,8 +1692,9 @@ msgid "Choctaw (United States)"
 msgstr ""
 
 #: picard/const/locales.py:168
+#, fuzzy
 msgid "Cherokee"
-msgstr ""
+msgstr "Τσερόκι"
 
 #: picard/const/locales.py:169
 msgid "Cherokee (United States)"
@@ -1687,8 +1721,9 @@ msgid "Central Kurdish (Iran)"
 msgstr ""
 
 #: picard/const/locales.py:175
+#, fuzzy
 msgid "Corsican"
-msgstr ""
+msgstr "Κορσικανικά"
 
 #: picard/const/locales.py:176
 msgid "Corsican (France)"
@@ -1699,16 +1734,18 @@ msgid "Czech (Czechia)"
 msgstr ""
 
 #: picard/const/locales.py:179
+#, fuzzy
 msgid "Church Slavic"
-msgstr ""
+msgstr "Εκκλησιαστικά σλαβονικά"
 
 #: picard/const/locales.py:180
 msgid "Church Slavic (Russia)"
 msgstr ""
 
 #: picard/const/locales.py:181
+#, fuzzy
 msgid "Chuvash"
-msgstr ""
+msgstr "Τσουβασικά"
 
 #: picard/const/locales.py:182
 msgid "Chuvash (Russia)"
@@ -1979,8 +2016,9 @@ msgid "English (United Kingdom)"
 msgstr ""
 
 #: picard/const/locales.py:256
+#, fuzzy
 msgid "English (Grenada)"
-msgstr ""
+msgstr "Αγγλικά (Καναδάς)"
 
 #: picard/const/locales.py:257
 msgid "English (Guernsey)"
@@ -2815,8 +2853,9 @@ msgid "Galician (Spain)"
 msgstr ""
 
 #: picard/const/locales.py:471
+#, fuzzy
 msgid "Guarani"
-msgstr ""
+msgstr "Γκουαρανί"
 
 #: picard/const/locales.py:472
 msgid "Guarani (Paraguay)"
@@ -3019,8 +3058,9 @@ msgid "Sichuan Yi (China)"
 msgstr ""
 
 #: picard/const/locales.py:524
+#, fuzzy
 msgid "Ido"
-msgstr ""
+msgstr "Ίντο"
 
 #: picard/const/locales.py:525
 msgid "Ido (world)"
@@ -3067,8 +3107,9 @@ msgid "Japanese (Japan)"
 msgstr ""
 
 #: picard/const/locales.py:539
+#, fuzzy
 msgid "Lojban"
-msgstr ""
+msgstr "Λοτζμπάν"
 
 #: picard/const/locales.py:540
 msgid "Lojban (world)"
@@ -3091,8 +3132,9 @@ msgid "Machame (Tanzania)"
 msgstr ""
 
 #: picard/const/locales.py:545
+#, fuzzy
 msgid "Javanese"
-msgstr ""
+msgstr "Ιαβαϊκή"
 
 #: picard/const/locales.py:546
 msgid "Javanese (Indonesia)"
@@ -3279,8 +3321,9 @@ msgid "Kpelle (Liberia)"
 msgstr ""
 
 #: picard/const/locales.py:593
+#, fuzzy
 msgid "Kashmiri"
-msgstr ""
+msgstr "Κασμιρικά"
 
 #: picard/const/locales.py:594
 msgid "Kashmiri (Arabic)"
@@ -3363,8 +3406,9 @@ msgid "Langi (Tanzania)"
 msgstr ""
 
 #: picard/const/locales.py:614
+#, fuzzy
 msgid "Luxembourgish"
-msgstr ""
+msgstr "Λουξεμβουργιανά"
 
 #: picard/const/locales.py:615
 msgid "Luxembourgish (Luxembourg)"
@@ -3491,8 +3535,9 @@ msgid "Maithili (India)"
 msgstr ""
 
 #: picard/const/locales.py:646
+#, fuzzy
 msgid "Masai"
-msgstr ""
+msgstr "Μασάι"
 
 #: picard/const/locales.py:647
 msgid "Masai (Kenya)"
@@ -3527,8 +3572,9 @@ msgid "Morisyen (Mauritius)"
 msgstr ""
 
 #: picard/const/locales.py:655
+#, fuzzy
 msgid "Malagasy"
-msgstr ""
+msgstr "Μαλγασικά"
 
 #: picard/const/locales.py:656
 msgid "Malagasy (Madagascar)"
@@ -3851,8 +3897,9 @@ msgid "Nuer (South Sudan)"
 msgstr ""
 
 #: picard/const/locales.py:739
+#, fuzzy
 msgid "Navajo"
-msgstr ""
+msgstr "Ναβάχο"
 
 #: picard/const/locales.py:740
 msgid "Navajo (United States)"
@@ -3951,8 +3998,9 @@ msgid "Punjabi (Pakistan)"
 msgstr ""
 
 #: picard/const/locales.py:765
+#, fuzzy
 msgid "Papiamento"
-msgstr ""
+msgstr "Παπιαμέντο"
 
 #: picard/const/locales.py:766
 msgid "Papiamento (Aruba)"
@@ -4051,8 +4099,9 @@ msgid "Portuguese (Timor-Leste)"
 msgstr ""
 
 #: picard/const/locales.py:792
+#, fuzzy
 msgid "Quechua"
-msgstr ""
+msgstr "Κέτσουα"
 
 #: picard/const/locales.py:793
 msgid "Quechua (Bolivia)"
@@ -4107,8 +4156,9 @@ msgid "Riffian (Morocco)"
 msgstr ""
 
 #: picard/const/locales.py:806
+#, fuzzy
 msgid "Romansh"
-msgstr ""
+msgstr "Ραιτορομανικά"
 
 #: picard/const/locales.py:807
 msgid "Romansh (Switzerland)"
@@ -4187,8 +4237,9 @@ msgid "Sanskrit (India)"
 msgstr ""
 
 #: picard/const/locales.py:828
+#, fuzzy
 msgid "Yakut"
-msgstr ""
+msgstr "Γιακουτικά"
 
 #: picard/const/locales.py:829
 msgid "Yakut (Russia)"
@@ -4231,16 +4282,18 @@ msgid "Sangu (Tanzania)"
 msgstr ""
 
 #: picard/const/locales.py:839
+#, fuzzy
 msgid "Sardinian"
-msgstr ""
+msgstr "Σαρδηνιακά"
 
 #: picard/const/locales.py:840
 msgid "Sardinian (Italy)"
 msgstr ""
 
 #: picard/const/locales.py:841
+#, fuzzy
 msgid "Sicilian"
-msgstr ""
+msgstr "Σικελικά"
 
 #: picard/const/locales.py:842
 msgid "Sicilian (Italy)"
@@ -4415,8 +4468,9 @@ msgid "Skolt Sami (Finland)"
 msgstr ""
 
 #: picard/const/locales.py:887
+#, fuzzy
 msgid "Shona"
-msgstr ""
+msgstr "Σόνα"
 
 #: picard/const/locales.py:888
 msgid "Shona (Zimbabwe)"
@@ -4531,8 +4585,9 @@ msgid "Southern Sotho (South Africa)"
 msgstr ""
 
 #: picard/const/locales.py:917
+#, fuzzy
 msgid "Sundanese"
-msgstr ""
+msgstr "Σουνδανέζικα"
 
 #: picard/const/locales.py:918
 msgid "Sundanese (Latin)"
@@ -4679,8 +4734,9 @@ msgid "Tigre (Eritrea)"
 msgstr ""
 
 #: picard/const/locales.py:955
+#, fuzzy
 msgid "Turkmen"
-msgstr ""
+msgstr "Τουρκμενικά"
 
 #: picard/const/locales.py:956
 msgid "Turkmen (Turkmenistan)"
@@ -4699,8 +4755,9 @@ msgid "Tswana (South Africa)"
 msgstr ""
 
 #: picard/const/locales.py:960
+#, fuzzy
 msgid "Tongan"
-msgstr ""
+msgstr "Τόνγκα"
 
 #: picard/const/locales.py:961
 msgid "Tongan (Tonga)"
@@ -4715,8 +4772,9 @@ msgid "Toki Pona (world)"
 msgstr ""
 
 #: picard/const/locales.py:964
+#, fuzzy
 msgid "Tok Pisin"
-msgstr ""
+msgstr "Τοκ πίσιν"
 
 #: picard/const/locales.py:965
 msgid "Tok Pisin (Papua New Guinea)"
@@ -4791,8 +4849,9 @@ msgid "Ukrainian (Ukraine)"
 msgstr ""
 
 #: picard/const/locales.py:985
+#, fuzzy
 msgid "Unknown language"
-msgstr ""
+msgstr "Άγνωστη γλώσσα"
 
 #: picard/const/locales.py:986
 msgid "Urdu"
@@ -4879,8 +4938,9 @@ msgid "Vietnamese (Vietnam)"
 msgstr ""
 
 #: picard/const/locales.py:1007
+#, fuzzy
 msgid "Volapük"
-msgstr ""
+msgstr "Βολαπούκ"
 
 #: picard/const/locales.py:1008
 msgid "Volapük (world)"
@@ -4895,8 +4955,9 @@ msgid "Vunjo (Tanzania)"
 msgstr ""
 
 #: picard/const/locales.py:1011
+#, fuzzy
 msgid "Walloon"
-msgstr ""
+msgstr "Βαλλονικά"
 
 #: picard/const/locales.py:1012
 msgid "Walloon (Belgium)"
@@ -4959,8 +5020,9 @@ msgid "Yangben (Cameroon)"
 msgstr ""
 
 #: picard/const/locales.py:1027
+#, fuzzy
 msgid "Yiddish"
-msgstr ""
+msgstr "Γίντις"
 
 #: picard/const/locales.py:1028
 msgid "Yiddish (world)"
@@ -6493,8 +6555,9 @@ msgstr ""
 #: picard/ui/infodialog.py:105 picard/ui/infodialog.py:110
 #: picard/ui/searchdialog/album.py:162 picard/ui/searchdialog/artist.py:55
 #: picard/ui/searchdialog/track.py:75
+#, fuzzy
 msgid "Type"
-msgstr ""
+msgstr "Τύπος"
 
 #: picard/ui/infodialog.py:106
 msgid "New Cover"
@@ -6502,8 +6565,9 @@ msgstr ""
 
 #: picard/ui/infodialog.py:110 picard/ui/itemviews.py:178
 #: picard/ui/searchdialog/album.py:164
+#, fuzzy
 msgid "Cover"
-msgstr ""
+msgstr "εξώφυλλο"
 
 #: picard/ui/infodialog.py:154 picard/ui/infodialog.py:359
 #: picard/ui/options/interface_toolbar.py:95
@@ -6577,9 +6641,9 @@ msgid "Artist:"
 msgstr "Καλλιτέχνης:"
 
 #: picard/ui/infodialog.py:341
-#, python-format
+#, fuzzy, python-format
 msgid "Disc %d"
-msgstr ""
+msgstr "Disc Id"
 
 #: picard/ui/infodialog.py:343
 msgid "Tracklist:"
@@ -7142,8 +7206,9 @@ msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:713
+#, fuzzy
 msgid "&Metadata"
-msgstr ""
+msgstr "Μεταδεδομένα"
 
 #: picard/ui/mainwindow.py:717
 msgid "Ctrl+Shift+M"
@@ -7154,8 +7219,9 @@ msgid "&Cover Art"
 msgstr "&Εξώφυλλο"
 
 #: picard/ui/mainwindow.py:735
+#, fuzzy
 msgid "&Actions"
-msgstr ""
+msgstr "Ενέργειες"
 
 #: picard/ui/mainwindow.py:744 picard/ui/mainwindow.py:1139
 #: picard/ui/searchdialog/__init__.py:48
@@ -7530,8 +7596,9 @@ msgstr[0] "Χρήση αρχική τιμής"
 msgstr[1] "Χρήση αρχικών τιμών"
 
 #: picard/ui/metadatabox.py:439
+#, fuzzy
 msgid "&Copy"
-msgstr ""
+msgstr "Αντιγραφή"
 
 #: picard/ui/newuserdialog.py:34
 msgid ""
@@ -7718,8 +7785,9 @@ msgid "File naming script editor"
 msgstr ""
 
 #: picard/ui/scripteditor.py:459
+#, fuzzy
 msgid "Reset"
-msgstr ""
+msgstr "Επαναφορά:"
 
 #: picard/ui/options/dialog.py:135 picard/ui/scripteditor.py:464
 msgid "Make It So!"
@@ -7766,8 +7834,9 @@ msgid "Close the script editor without saving changes"
 msgstr ""
 
 #: picard/ui/scripteditor.py:566
+#, fuzzy
 msgid "&Script"
-msgstr ""
+msgstr "Γραφή"
 
 #: picard/ui/scripteditor.py:569
 msgid "View/Edit Script &Metadata"
@@ -8005,8 +8074,9 @@ msgid "Available Language Scripts"
 msgstr ""
 
 #: picard/ui/ui_infodialog.py:82
+#, fuzzy
 msgid "&Error"
-msgstr ""
+msgstr "Σφάλμα"
 
 #: picard/ui/ui_infodialog.py:83
 msgid "A&rtwork"
@@ -8257,8 +8327,9 @@ msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
 msgstr ""
 
 #: picard/ui/ui_options_interface.py:118
+#, fuzzy
 msgid "Appearance"
-msgstr ""
+msgstr "Εμφανίσεις"
 
 #: picard/ui/ui_options_interface.py:121
 msgid "User interface language:"
@@ -8358,8 +8429,10 @@ msgid "Minimal similarity for cluster lookups:"
 msgstr "Ελάχιστη ομοιότητα για τις αναζητήσεις ομάδων:"
 
 #: picard/ui/ui_options_metadata.py:130
+#, fuzzy
 msgid "Translate artist names to these locales where possible:"
 msgstr ""
+"Μετάφραση των ονομάτων καλλιτεχνών σε αυτήν την τοπικότητα όπου είναι δυνατό:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select..."
@@ -8378,8 +8451,9 @@ msgid "Various artists:"
 msgstr "Διάφοροι καλλιτέχνες:"
 
 #: picard/ui/ui_options_metadata.py:142
+#, fuzzy
 msgid "Standalone recordings:"
-msgstr ""
+msgstr "(αυτόνομη ηχογράφηση)"
 
 #: picard/ui/options/interface.py:93 picard/ui/ui_options_metadata.py:143
 #: picard/ui/ui_options_metadata.py:144
@@ -8523,12 +8597,14 @@ msgid "Files will be named like this:"
 msgstr ""
 
 #: picard/ui/ui_options_renaming.py:159 picard/ui/ui_scripteditor.py:212
+#, fuzzy
 msgid "Before"
-msgstr ""
+msgstr "πριν από"
 
 #: picard/ui/ui_options_renaming.py:160 picard/ui/ui_scripteditor.py:213
+#, fuzzy
 msgid "After"
-msgstr ""
+msgstr "μετά από"
 
 #: picard/ui/ui_options_renaming.py:161
 msgid "Reload examples"
@@ -8589,8 +8665,9 @@ msgid "Export"
 msgstr ""
 
 #: picard/ui/ui_options_script.py:130
+#, fuzzy
 msgid "Documentation"
-msgstr ""
+msgstr "Τεκμηρίωση"
 
 #: picard/ui/ui_options_tags.py:71
 msgid "Write tags to files"
@@ -8701,8 +8778,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:58
+#, fuzzy
 msgid "Also include RIFF INFO tags in the files"
-msgstr ""
+msgstr "Συμπερίληψη ετικετών ID3v1 στα αρχεία"
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:61
 msgid "Windows-1252"
@@ -8776,8 +8854,9 @@ msgid "Version:"
 msgstr "Έκδοση:"
 
 #: picard/ui/ui_scripteditor_details.py:98
+#, fuzzy
 msgid "License:"
-msgstr ""
+msgstr "Άδεια χρήσης"
 
 #: picard/ui/ui_scripteditor_details.py:100
 msgid "License under which the file naming script is available."
@@ -8823,8 +8902,9 @@ msgstr ""
 
 #: picard/ui/ui_widget_taglisteditor.py:72
 #: picard/ui/ui_widget_taglisteditor.py:73
+#, fuzzy
 msgid "Move tag down"
-msgstr ""
+msgstr "Μετακίνηση κομματιού προς τα  κάτω"
 
 #: picard/ui/ui_widget_taglisteditor.py:74
 #: picard/ui/ui_widget_taglisteditor.py:75
@@ -8912,8 +8992,9 @@ msgid "Are you sure?"
 msgstr ""
 
 #: picard/ui/options/dialog.py:477 picard/ui/options/maintenance.py:93
+#, fuzzy
 msgid "Option"
-msgstr ""
+msgstr "Επιλογές"
 
 #: picard/ui/options/dialog.py:484
 #, python-format
@@ -9039,10 +9120,13 @@ msgid "Theme changed"
 msgstr ""
 
 #: picard/ui/options/interface.py:181
+#, fuzzy
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
 msgstr ""
+"Αλλάξατε τη γλώσσα διεπαφής. Πρέπει να επανεκκινήσετε το Picard για να έχουν "
+"αποτέλεσμα οι αλλαγές."
 
 #: picard/ui/options/interface.py:183
 msgid ""
@@ -9072,10 +9156,13 @@ msgid "Colors changed"
 msgstr ""
 
 #: picard/ui/options/interface_colors.py:147
+#, fuzzy
 msgid ""
 "You have changed the interface colors. You may have to restart Picard in "
 "order for the changes to take effect."
 msgstr ""
+"Αλλάξατε τη γλώσσα διεπαφής. Πρέπει να επανεκκινήσετε το Picard για να έχουν "
+"αποτέλεσμα οι αλλαγές."
 
 #: picard/ui/options/interface_toolbar.py:59
 msgid "Action Toolbar"
@@ -9090,20 +9177,23 @@ msgid "Add Files"
 msgstr ""
 
 #: picard/ui/options/interface_toolbar.py:75
+#, fuzzy
 msgid "Cluster"
-msgstr ""
+msgstr "Ομ&άδες"
 
 #: picard/ui/options/interface_toolbar.py:79
+#, fuzzy
 msgid "Lookup"
-msgstr ""
+msgstr "&Αναζήτηση"
 
 #: picard/ui/options/interface_toolbar.py:83
 msgid "Scan"
 msgstr "Σάρωση"
 
 #: picard/ui/options/interface_toolbar.py:87
+#, fuzzy
 msgid "Lookup in Browser"
-msgstr ""
+msgstr "Αναζήτηση στον &περιηγητή"
 
 #: picard/ui/options/interface_toolbar.py:91
 msgid "Save"
@@ -9118,8 +9208,9 @@ msgid "Open in Player"
 msgstr ""
 
 #: picard/ui/options/interface_toolbar.py:115
+#, fuzzy
 msgid "Lookup CD..."
-msgstr ""
+msgstr "Αναζήτηση &CD..."
 
 #: picard/ui/options/interface_toolbar.py:186
 msgid "Drag and Drop to re-order"
@@ -9500,8 +9591,9 @@ msgid "Language"
 msgstr "Γλώσσα"
 
 #: picard/ui/searchdialog/album.py:163
+#, fuzzy
 msgid "Status"
-msgstr ""
+msgstr "Κατάσταση"
 
 #: picard/ui/searchdialog/album.py:165 picard/ui/searchdialog/artist.py:62
 #: picard/ui/searchdialog/track.py:76
@@ -9517,24 +9609,27 @@ msgid "Artist Search Dialog"
 msgstr ""
 
 #: picard/ui/searchdialog/artist.py:56
+#, fuzzy
 msgid "Gender"
-msgstr ""
+msgstr "Φύλο:"
 
 #: picard/ui/searchdialog/artist.py:57
 msgid "Area"
 msgstr ""
 
 #: picard/ui/searchdialog/artist.py:58
+#, fuzzy
 msgid "Begin"
-msgstr ""
+msgstr "Αρχή"
 
 #: picard/ui/searchdialog/artist.py:59
 msgid "Begin Area"
 msgstr ""
 
 #: picard/ui/searchdialog/artist.py:60
+#, fuzzy
 msgid "End"
-msgstr ""
+msgstr "Λήξη"
 
 #: picard/ui/searchdialog/artist.py:61
 msgid "End Area"
@@ -9549,8 +9644,9 @@ msgid "Release"
 msgstr "Κυκλοφορία "
 
 #: picard/ui/searchdialog/track.py:175
+#, fuzzy
 msgid "Standalone Recording"
-msgstr ""
+msgstr "Προσθήκη μεμονωμένης ηχογράφησης"
 
 #: picard/ui/widgets/profilelistwidget.py:45
 msgid "Rename profile"
@@ -9696,8 +9792,9 @@ msgid ""
 msgstr ""
 
 #: picard/util/checkupdate.py:156
+#, fuzzy
 msgid "unknown"
-msgstr ""
+msgstr "Άγνωστο"
 
 #: picard/util/checkupdate.py:160
 msgid ""

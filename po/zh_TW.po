@@ -16,16 +16,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2023\n"
-"Language-Team: Chinese (Taiwan) (http://app.transifex.com/musicbrainz/"
-"musicbrainz/language/zh_TW/)\n"
+"PO-Revision-Date: 2023-08-23 08:24+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Chinese (Traditional) <https://translations.metabrainz.org/"
+"projects/picard/app/zh_Hant/>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.18.2\n"
+"Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -265,8 +266,9 @@ msgid "Days between update checks"
 msgstr ""
 
 #: picard/profile.py:56
+#, fuzzy
 msgid "Updates to check"
-msgstr ""
+msgstr "要檢查的更新:"
 
 #: picard/profile.py:61 picard/ui/options/metadata.py:78
 #: picard/ui/ui_options_metadata.py:129
@@ -350,16 +352,19 @@ msgid "Use folksonomy tags as genre"
 msgstr "將使用者定義標籤視為曲風"
 
 #: picard/profile.py:89
+#, fuzzy
 msgid "Minimal genre usage"
-msgstr ""
+msgstr "最低曲風利用:"
 
 #: picard/profile.py:90
+#, fuzzy
 msgid "Maximum number of genres"
-msgstr ""
+msgstr "曲風總數上限:"
 
 #: picard/profile.py:91
+#, fuzzy
 msgid "Join multiple genres with"
-msgstr ""
+msgstr "串接曲風用的分隔符號:"
 
 #: picard/profile.py:92
 msgid "Genres to include or exclude"
@@ -418,8 +423,9 @@ msgid "ID3v2 version to write"
 msgstr ""
 
 #: picard/profile.py:118 picard/ui/ui_options_tags_compatibility_id3.py:119
+#, fuzzy
 msgid "ID3v2 text encoding"
-msgstr ""
+msgstr "ID3v2 文字編碼"
 
 #: picard/profile.py:119
 msgid "ID3v2.3 join character"
@@ -458,8 +464,9 @@ msgid "Remove existing RIFF INFO tags from WAVE files"
 msgstr "從 WAVE 檔案內移除既有的 RIFF INFO 標籤"
 
 #: picard/profile.py:134 picard/ui/ui_options_tags_compatibility_wave.py:60
+#, fuzzy
 msgid "RIFF INFO text encoding"
-msgstr ""
+msgstr "RIFF INFO 文字編碼"
 
 #: picard/profile.py:139 picard/ui/options/cover.py:51
 msgid "Cover Art"
@@ -494,8 +501,9 @@ msgid "Always use the primary image type as the file name for non-front images"
 msgstr "總是將主要圖片類型作為非正面圖片的檔案名稱"
 
 #: picard/profile.py:148
+#, fuzzy
 msgid "Cover art providers"
-msgstr ""
+msgstr "封面圖片提供者"
 
 #: picard/profile.py:153 picard/ui/options/renaming.py:73
 msgid "File Naming"
@@ -579,12 +587,14 @@ msgid "Show icons in menus"
 msgstr "在選單顯示圖示"
 
 #: picard/profile.py:188
+#, fuzzy
 msgid "User interface language"
-msgstr ""
+msgstr "使用者介面語言:"
 
 #: picard/profile.py:189
+#, fuzzy
 msgid "User interface color theme"
-msgstr ""
+msgstr "使用者介面配色方案:"
 
 #: picard/profile.py:190 picard/ui/ui_options_interface.py:124
 msgid "Allow selection of multiple directories"
@@ -595,8 +605,9 @@ msgid "Use builtin search rather than looking in browser"
 msgstr "使用內建搜尋來代替瀏覽器查詢"
 
 #: picard/profile.py:192
+#, fuzzy
 msgid "Use advanced search syntax"
-msgstr ""
+msgstr "使用進階查詢語法"
 
 #: picard/profile.py:193
 msgid "Show a usage warning dialog when Picard starts"
@@ -679,8 +690,9 @@ msgid "Completeness check ignore: Silent tracks"
 msgstr ""
 
 #: picard/profile.py:233
+#, fuzzy
 msgid "Tags to ignore for comparison"
-msgstr ""
+msgstr "比較時忽略以下標籤:"
 
 #: picard/profile.py:236
 msgid "Use a web proxy server"
@@ -711,28 +723,33 @@ msgid "Request timeout in seconds"
 msgstr ""
 
 #: picard/profile.py:245
+#, fuzzy
 msgid "Browser integration"
-msgstr ""
+msgstr "瀏覽器整合"
 
 #: picard/profile.py:248
+#, fuzzy
 msgid "Default listening port"
-msgstr ""
+msgstr "預設的聆聽連接埠:"
 
 #: picard/profile.py:249 picard/ui/ui_options_network.py:141
 msgid "Listen only on localhost"
 msgstr "只在本機端的連接埠聆聽"
 
 #: picard/profile.py:252
+#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr ""
+msgstr "檔案查找的最小相似度:"
 
 #: picard/profile.py:253
+#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr ""
+msgstr "叢集查找的最小相似度:"
 
 #: picard/profile.py:254
+#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr ""
+msgstr "檔案配對音軌的最小相似度:"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -1322,8 +1339,9 @@ msgid "Azerbaijani"
 msgstr "亞塞拜然語"
 
 #: picard/const/locales.py:86
+#, fuzzy
 msgid "Azerbaijani (Arabic)"
-msgstr ""
+msgstr "亞塞拜然語 (拉丁字母)"
 
 #: picard/const/locales.py:87
 msgid "Azerbaijani (Arabic) (Iraq)"
@@ -1494,8 +1512,9 @@ msgid "Bangla"
 msgstr ""
 
 #: picard/const/locales.py:129
+#, fuzzy
 msgid "Bangla (Bangladesh)"
-msgstr ""
+msgstr "孟加拉語 (孟加拉)"
 
 #: picard/const/locales.py:130
 msgid "Bangla (India)"
@@ -1538,16 +1557,18 @@ msgid "Bosnian (Cyrillic)"
 msgstr ""
 
 #: picard/const/locales.py:140
+#, fuzzy
 msgid "Bosnian (Cyrillic) (Bosnia & Herzegovina)"
-msgstr ""
+msgstr "塞爾維亞語 (西里爾字母) (波士尼亞與赫塞哥維納)"
 
 #: picard/const/locales.py:141
 msgid "Bosnian (Latin)"
 msgstr ""
 
 #: picard/const/locales.py:142
+#, fuzzy
 msgid "Bosnian (Latin) (Bosnia & Herzegovina)"
-msgstr ""
+msgstr "塞爾維亞語 (拉丁字母) (波士尼亞與赫塞哥維納)"
 
 #: picard/const/locales.py:143
 msgid "Akoose"
@@ -1846,8 +1867,9 @@ msgid "English (Europe)"
 msgstr ""
 
 #: picard/const/locales.py:224
+#, fuzzy
 msgid "English (United Arab Emirates)"
-msgstr ""
+msgstr "阿拉伯語 (阿拉伯聯合大公國)"
 
 #: picard/const/locales.py:225
 msgid "English (Antigua & Barbuda)"
@@ -1862,8 +1884,9 @@ msgid "English (American Samoa)"
 msgstr "英語 (美屬薩摩亞)"
 
 #: picard/const/locales.py:228
+#, fuzzy
 msgid "English (Austria)"
-msgstr ""
+msgstr "英語 (澳大利亞)"
 
 #: picard/const/locales.py:230
 msgid "English (Barbados)"
@@ -1946,8 +1969,9 @@ msgid "English (Eritrea)"
 msgstr ""
 
 #: picard/const/locales.py:251
+#, fuzzy
 msgid "English (Finland)"
-msgstr ""
+msgstr "英語 (愛爾蘭)"
 
 #: picard/const/locales.py:252
 msgid "English (Fiji)"
@@ -1966,16 +1990,18 @@ msgid "English (United Kingdom)"
 msgstr "英語 (英國)"
 
 #: picard/const/locales.py:256
+#, fuzzy
 msgid "English (Grenada)"
-msgstr ""
+msgstr "英語 (加拿大)"
 
 #: picard/const/locales.py:257
 msgid "English (Guernsey)"
 msgstr ""
 
 #: picard/const/locales.py:258
+#, fuzzy
 msgid "English (Ghana)"
-msgstr ""
+msgstr "英語 (關島)"
 
 #: picard/const/locales.py:259
 msgid "English (Gibraltar)"
@@ -1990,8 +2016,9 @@ msgid "English (Guam)"
 msgstr "英語 (關島)"
 
 #: picard/const/locales.py:262
+#, fuzzy
 msgid "English (Guyana)"
-msgstr ""
+msgstr "英語 (關島)"
 
 #: picard/const/locales.py:263
 msgid "English (Hong Kong)"
@@ -2062,8 +2089,9 @@ msgid "English (Marshall Islands)"
 msgstr "英語 (馬紹爾群島)"
 
 #: picard/const/locales.py:280
+#, fuzzy
 msgid "English (Macao)"
-msgstr ""
+msgstr "英語 (馬爾他)"
 
 #: picard/const/locales.py:281
 msgid "English (Northern Mariana Islands)"
@@ -2086,8 +2114,9 @@ msgid "English (Maldives)"
 msgstr ""
 
 #: picard/const/locales.py:286
+#, fuzzy
 msgid "English (Malawi)"
-msgstr ""
+msgstr "英語 (馬爾他)"
 
 #: picard/const/locales.py:287
 msgid "English (Malaysia)"
@@ -2138,8 +2167,9 @@ msgid "English (Pitcairn Islands)"
 msgstr ""
 
 #: picard/const/locales.py:299
+#, fuzzy
 msgid "English (Puerto Rico)"
-msgstr ""
+msgstr "西班牙語 (波多黎各)"
 
 #: picard/const/locales.py:300
 msgid "English (Palau)"
@@ -2214,8 +2244,9 @@ msgid "English (Tonga)"
 msgstr ""
 
 #: picard/const/locales.py:318
+#, fuzzy
 msgid "English (Trinidad & Tobago)"
-msgstr ""
+msgstr "英語 (千里達及托貝哥)"
 
 #: picard/const/locales.py:319
 msgid "English (Tuvalu)"
@@ -2230,8 +2261,9 @@ msgid "English (Uganda)"
 msgstr ""
 
 #: picard/const/locales.py:322
+#, fuzzy
 msgid "English (U.S. Outlying Islands)"
-msgstr ""
+msgstr "英語 (美屬邊疆群島)"
 
 #: picard/const/locales.py:323
 msgid "English (United States)"
@@ -2362,8 +2394,9 @@ msgid "Spanish (Peru)"
 msgstr "西班牙語 (秘魯)"
 
 #: picard/const/locales.py:356
+#, fuzzy
 msgid "Spanish (Philippines)"
-msgstr ""
+msgstr "英語 (菲律賓)"
 
 #: picard/const/locales.py:357
 msgid "Spanish (Puerto Rico)"
@@ -2490,8 +2523,9 @@ msgid "Fula (Latin) (Cameroon)"
 msgstr ""
 
 #: picard/const/locales.py:389
+#, fuzzy
 msgid "Fula (Latin) (Ghana)"
-msgstr ""
+msgstr "豪撒語 (拉丁字母) (迦納)"
 
 #: picard/const/locales.py:390
 msgid "Fula (Latin) (Gambia)"
@@ -2514,20 +2548,23 @@ msgid "Fula (Latin) (Mauritania)"
 msgstr ""
 
 #: picard/const/locales.py:395
+#, fuzzy
 msgid "Fula (Latin) (Niger)"
-msgstr ""
+msgstr "豪撒語 (拉丁字母) (尼日)"
 
 #: picard/const/locales.py:396
+#, fuzzy
 msgid "Fula (Latin) (Nigeria)"
-msgstr ""
+msgstr "豪撒語 (拉丁字母) (奈及利亞)"
 
 #: picard/const/locales.py:397
 msgid "Fula (Latin) (Sierra Leone)"
 msgstr ""
 
 #: picard/const/locales.py:398
+#, fuzzy
 msgid "Fula (Latin) (Senegal)"
-msgstr ""
+msgstr "沃洛夫語 (拉丁字母) (塞內加爾)"
 
 #: picard/const/locales.py:400
 msgid "Finnish (Finland)"
@@ -2642,8 +2679,9 @@ msgid "French (Luxembourg)"
 msgstr "法語 (盧森堡)"
 
 #: picard/const/locales.py:430
+#, fuzzy
 msgid "French (Morocco)"
-msgstr ""
+msgstr "法語 (摩納哥)"
 
 #: picard/const/locales.py:431
 msgid "French (Monaco)"
@@ -2762,8 +2800,9 @@ msgid "Irish"
 msgstr "愛爾蘭語"
 
 #: picard/const/locales.py:460
+#, fuzzy
 msgid "Irish (United Kingdom)"
-msgstr ""
+msgstr "康瓦爾語 (英國)"
 
 #: picard/const/locales.py:461
 msgid "Irish (Ireland)"
@@ -3330,8 +3369,9 @@ msgid "Kyrgyz"
 msgstr ""
 
 #: picard/const/locales.py:609
+#, fuzzy
 msgid "Kyrgyz (Kyrgyzstan)"
-msgstr ""
+msgstr "吉爾吉斯語 (吉爾吉斯)"
 
 #: picard/const/locales.py:610 picard/const/scripts.py:28
 msgid "Latin"
@@ -3586,8 +3626,9 @@ msgid "Mongolian (Mongolian) (China)"
 msgstr "蒙古語 (蒙古字母) (中國)"
 
 #: picard/const/locales.py:673
+#, fuzzy
 msgid "Mongolian (Mongolian) (Mongolia)"
-msgstr ""
+msgstr "蒙古語 (蒙古字母) (中國)"
 
 #: picard/const/locales.py:674
 msgid "Manipuri"
@@ -3682,8 +3723,9 @@ msgid "Burmese"
 msgstr "緬甸語"
 
 #: picard/const/locales.py:698
+#, fuzzy
 msgid "Burmese (Myanmar (Burma))"
-msgstr ""
+msgstr "緬甸語 (緬甸)"
 
 #: picard/const/locales.py:699
 msgid "Erzya"
@@ -3718,8 +3760,9 @@ msgid "Norwegian Bokmål (Svalbard & Jan Mayen)"
 msgstr ""
 
 #: picard/const/locales.py:708
+#, fuzzy
 msgid "North Ndebele"
-msgstr ""
+msgstr "南地畢列語"
 
 #: picard/const/locales.py:709
 msgid "North Ndebele (Zimbabwe)"
@@ -3886,8 +3929,9 @@ msgid "Odia"
 msgstr ""
 
 #: picard/const/locales.py:752
+#, fuzzy
 msgid "Odia (India)"
-msgstr ""
+msgstr "歐迪亞語 (印度)"
 
 #: picard/const/locales.py:753
 msgid "Ossetic"
@@ -4210,8 +4254,9 @@ msgid "Santali (Ol Chiki) (India)"
 msgstr ""
 
 #: picard/const/locales.py:837
+#, fuzzy
 msgid "Sangu"
-msgstr ""
+msgstr "桑戈語"
 
 #: picard/const/locales.py:838
 msgid "Sangu (Tanzania)"
@@ -4242,8 +4287,9 @@ msgid "Sindhi (Arabic)"
 msgstr ""
 
 #: picard/const/locales.py:845
+#, fuzzy
 msgid "Sindhi (Arabic) (Pakistan)"
-msgstr ""
+msgstr "旁遮普語 (阿拉伯字母) (巴基斯坦)"
 
 #: picard/const/locales.py:846
 msgid "Sindhi (Devanagari)"
@@ -4334,8 +4380,9 @@ msgid "Shan (Myanmar (Burma))"
 msgstr ""
 
 #: picard/const/locales.py:868
+#, fuzzy
 msgid "Shan (Thailand)"
-msgstr ""
+msgstr "泰語 (泰國)"
 
 #: picard/const/locales.py:869
 msgid "Sinhala"
@@ -4362,12 +4409,14 @@ msgid "Slovenian (Slovenia)"
 msgstr "斯洛維尼亞語 (斯洛維尼亞)"
 
 #: picard/const/locales.py:877
+#, fuzzy
 msgid "Southern Sami"
-msgstr ""
+msgstr "北薩米語"
 
 #: picard/const/locales.py:878
+#, fuzzy
 msgid "Southern Sami (Norway)"
-msgstr ""
+msgstr "北薩米語 (挪威)"
 
 #: picard/const/locales.py:879
 msgid "Southern Sami (Sweden)"
@@ -4450,8 +4499,9 @@ msgid "Serbian (Cyrillic)"
 msgstr "塞爾維亞語 (西里爾字母)"
 
 #: picard/const/locales.py:900
+#, fuzzy
 msgid "Serbian (Cyrillic) (Bosnia & Herzegovina)"
-msgstr ""
+msgstr "塞爾維亞語 (西里爾字母) (波士尼亞與赫塞哥維納)"
 
 #: picard/const/locales.py:901
 msgid "Serbian (Cyrillic) (Montenegro)"
@@ -4470,8 +4520,9 @@ msgid "Serbian (Latin)"
 msgstr "塞爾維亞語 (拉丁字母)"
 
 #: picard/const/locales.py:905
+#, fuzzy
 msgid "Serbian (Latin) (Bosnia & Herzegovina)"
-msgstr ""
+msgstr "塞爾維亞語 (拉丁字母) (波士尼亞與赫塞哥維納)"
 
 #: picard/const/locales.py:906
 msgid "Serbian (Latin) (Montenegro)"
@@ -4686,12 +4737,14 @@ msgid "Tswana (South Africa)"
 msgstr "塞茲瓦納語 (南非)"
 
 #: picard/const/locales.py:960
+#, fuzzy
 msgid "Tongan"
-msgstr ""
+msgstr "東加"
 
 #: picard/const/locales.py:961
+#, fuzzy
 msgid "Tongan (Tonga)"
-msgstr ""
+msgstr "東加語 (東加)"
 
 #: picard/const/locales.py:962
 msgid "Toki Pona"
@@ -4770,8 +4823,9 @@ msgid "Uyghur"
 msgstr ""
 
 #: picard/const/locales.py:982
+#, fuzzy
 msgid "Uyghur (China)"
-msgstr ""
+msgstr "維吾爾語 (中國)"
 
 #: picard/const/locales.py:984
 msgid "Ukrainian (Ukraine)"
@@ -5014,40 +5068,49 @@ msgid "Chinese"
 msgstr "漢語"
 
 #: picard/const/locales.py:1044
+#, fuzzy
 msgid "Chinese (Simplified)"
-msgstr ""
+msgstr "漢語 (簡體漢文)"
 
 #: picard/const/locales.py:1045
+#, fuzzy
 msgid "Chinese (Simplified) (China)"
-msgstr ""
+msgstr "漢語 (簡體漢文) (中國)"
 
 #: picard/const/locales.py:1046
+#, fuzzy
 msgid "Chinese (Simplified) (Hong Kong)"
-msgstr ""
+msgstr "漢語 (簡體漢文) (香港)"
 
 #: picard/const/locales.py:1047
+#, fuzzy
 msgid "Chinese (Simplified) (Macao)"
-msgstr ""
+msgstr "漢語 (簡體漢文) (澳門)"
 
 #: picard/const/locales.py:1048
+#, fuzzy
 msgid "Chinese (Simplified) (Singapore)"
-msgstr ""
+msgstr "漢語 (簡體漢文) (新加坡)"
 
 #: picard/const/locales.py:1049
+#, fuzzy
 msgid "Chinese (Traditional)"
-msgstr ""
+msgstr "漢語 (傳統漢文)"
 
 #: picard/const/locales.py:1050
+#, fuzzy
 msgid "Chinese (Traditional) (Hong Kong)"
-msgstr ""
+msgstr "漢語 (傳統漢文) (香港)"
 
 #: picard/const/locales.py:1051
+#, fuzzy
 msgid "Chinese (Traditional) (Macao)"
-msgstr ""
+msgstr "漢語 (傳統漢文) (澳門)"
 
 #: picard/const/locales.py:1052
+#, fuzzy
 msgid "Chinese (Traditional) (Taiwan)"
-msgstr ""
+msgstr "漢語 (傳統漢文) (台灣)"
 
 #: picard/const/locales.py:1053
 msgid "Zulu"
@@ -5587,11 +5650,15 @@ msgid ""
 msgstr ""
 
 #: picard/script/functions.py:659
+#, fuzzy
 msgid ""
 "`$eq(x,y)`\n"
 "\n"
 "Returns true if `x` equals `y`."
 msgstr ""
+"`$in(x,y)`\n"
+"\n"
+"如果`x`內包含`y`，回傳真值。"
 
 #: picard/script/functions.py:671
 msgid ""
@@ -7155,8 +7222,9 @@ msgid "Submit file as a new release to MusicBrainz"
 msgstr "將檔案作為新的發行品提交至 MusicBrainz"
 
 #: picard/ui/mainwindow.py:666
+#, fuzzy
 msgid "Search for similar items..."
-msgstr ""
+msgstr "搜尋類似的專輯…"
 
 #: picard/ui/mainwindow.py:667 picard/ui/options/interface_toolbar.py:123
 msgid "Similar items"
@@ -8053,8 +8121,9 @@ msgid "Add to selected language scripts"
 msgstr "新增至選取的語言文字"
 
 #: picard/ui/ui_exception_script_selector.py:110
+#, fuzzy
 msgid "Remove selected language script"
-msgstr ""
+msgstr "向上移動已選語言文字"
 
 #: picard/ui/ui_exception_script_selector.py:111
 msgid "Move selected language script down"
@@ -8420,8 +8489,9 @@ msgid "Minimal similarity for cluster lookups:"
 msgstr "叢集查找的最小相似度:"
 
 #: picard/ui/ui_options_metadata.py:130
+#, fuzzy
 msgid "Translate artist names to these locales where possible:"
-msgstr ""
+msgstr "可能的話翻譯創作者名稱到此語系:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select..."
@@ -9148,10 +9218,11 @@ msgid "Theme changed"
 msgstr "主題已更換"
 
 #: picard/ui/options/interface.py:181
+#, fuzzy
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
-msgstr ""
+msgstr "您已更改了介面語言。您必須重新啟動 Picard 來使更改生效。"
 
 #: picard/ui/options/interface.py:183
 msgid ""
@@ -9695,8 +9766,9 @@ msgid "Are you sure you want to remove this profile?"
 msgstr "您確定要移除此設定檔嗎？"
 
 #: picard/ui/widgets/scriptdocumentation.py:109
+#, fuzzy
 msgid "Open Scripting Documentation in your browser"
-msgstr ""
+msgstr "在您的瀏覽器開啟腳本撰寫說明文件"
 
 #: picard/ui/widgets/scriptlistwidget.py:54
 msgid "Rename script"
@@ -9810,10 +9882,13 @@ msgid "Picard Update"
 msgstr "Picard 更新"
 
 #: picard/util/checkupdate.py:106
+#, fuzzy
 msgid ""
 "Unable to retrieve the latest version information from the website.\n"
 "({url})"
 msgstr ""
+"無法從網頁取得新版本資訊。\n"
+"(https://{url}{endpoint})"
 
 #: picard/util/checkupdate.py:140
 msgid ""

@@ -9,16 +9,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2018-03-07 00:40+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
-"Language-Team: Western Frisian (http://www.transifex.com/musicbrainz/"
-"musicbrainz/language/fy/)\n"
+"PO-Revision-Date: 2023-08-23 08:24+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Frisian <https://translations.metabrainz.org/projects/picard/"
+"app/fy/>\n"
 "Language: fy\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.5.3\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -728,8 +729,9 @@ msgid "Minimal similarity for matching files to tracks"
 msgstr ""
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
+#, fuzzy
 msgid "Tracks"
-msgstr ""
+msgstr "Nûmer"
 
 #: picard/releasegroup.py:70
 msgid "Year"
@@ -6714,12 +6716,14 @@ msgid "Channels:"
 msgstr ""
 
 #: picard/ui/infodialog.py:310
+#, fuzzy
 msgid "Album:"
-msgstr ""
+msgstr "Album"
 
 #: picard/ui/infodialog.py:311
+#, fuzzy
 msgid "Artist:"
-msgstr ""
+msgstr "Artyst"
 
 #: picard/ui/infodialog.py:341
 #, python-format
@@ -6763,8 +6767,9 @@ msgid "Files"
 msgstr ""
 
 #: picard/ui/infostatus.py:72
+#, fuzzy
 msgid "Albums"
-msgstr ""
+msgstr "Album"
 
 #: picard/ui/infostatus.py:73
 msgid "Pending files"
@@ -8077,8 +8082,9 @@ msgid "&Submit disc ID"
 msgstr ""
 
 #: picard/ui/ui_cdlookup.py:91 picard/ui/util.py:50
+#, fuzzy
 msgid "&Cancel"
-msgstr ""
+msgstr "Ofbrekke"
 
 #: picard/ui/ui_edittagdialog.py:115
 msgid "Edit Tag"
@@ -9853,8 +9859,9 @@ msgid "Arranger"
 msgstr ""
 
 #: picard/util/tags.py:44
+#, fuzzy
 msgid "Artists"
-msgstr ""
+msgstr "Artyst"
 
 #: picard/util/tags.py:45
 msgid "Artist Sort Order"

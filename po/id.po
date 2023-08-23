@@ -12,16 +12,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2021-2022\n"
-"Language-Team: Indonesian (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/id/)\n"
+"PO-Revision-Date: 2023-08-23 08:24+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Indonesian <https://translations.metabrainz.org/projects/"
+"picard/app/id/>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.18.2\n"
+"Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -224,20 +225,23 @@ msgid "General"
 msgstr "Umum"
 
 #: picard/profile.py:48
+#, fuzzy
 msgid "Server address"
-msgstr ""
+msgstr "Alamat server:"
 
 #: picard/profile.py:49
+#, fuzzy
 msgid "Port"
-msgstr ""
+msgstr "Port:"
 
 #: picard/profile.py:50 picard/ui/ui_options_general.py:201
 msgid "Automatically scan all new files"
 msgstr "Memindai otomatis semua berkas baru"
 
 #: picard/profile.py:51 picard/ui/ui_options_general.py:202
+#, fuzzy
 msgid "Automatically cluster all new files"
-msgstr ""
+msgstr "Memindai otomatis semua berkas baru"
 
 #: picard/profile.py:52 picard/ui/ui_options_general.py:203
 msgid "Ignore MBIDs when loading new files"
@@ -570,8 +574,9 @@ msgid "Show icons in menus"
 msgstr ""
 
 #: picard/profile.py:188
+#, fuzzy
 msgid "User interface language"
-msgstr ""
+msgstr "Bahasa antarmuka pengguna:"
 
 #: picard/profile.py:189
 msgid "User interface color theme"
@@ -759,8 +764,9 @@ msgid "[no release info]"
 msgstr "[tidak ada release info]"
 
 #: picard/tagger.py:655 picard/ui/ui_options_general.py:197
+#, fuzzy
 msgid "MusicBrainz Account"
-msgstr ""
+msgstr "Akun MusicBrainz"
 
 #: picard/tagger.py:656
 msgid "Authorization code:"
@@ -1045,16 +1051,18 @@ msgid "Romanian"
 msgstr "Bahasa Rumania"
 
 #: picard/const/languages.py:72 picard/const/locales.py:815
+#, fuzzy
 msgid "Russian"
-msgstr ""
+msgstr "Rusia"
 
 #: picard/const/languages.py:74 picard/const/locales.py:873
 msgid "Slovak"
 msgstr ""
 
 #: picard/const/languages.py:75 picard/const/locales.py:875
+#, fuzzy
 msgid "Slovenian"
-msgstr ""
+msgstr "Slovenia"
 
 #: picard/const/languages.py:76 picard/const/locales.py:894
 msgid "Albanian"
@@ -1373,8 +1381,9 @@ msgid "Baluchi (Latin) (Pakistan)"
 msgstr ""
 
 #: picard/const/locales.py:101
+#, fuzzy
 msgid "Basaa"
-msgstr ""
+msgstr "Basa"
 
 #: picard/const/locales.py:102
 msgid "Basaa (Cameroon)"
@@ -1957,8 +1966,9 @@ msgid "English (United Kingdom)"
 msgstr ""
 
 #: picard/const/locales.py:256
+#, fuzzy
 msgid "English (Grenada)"
-msgstr ""
+msgstr "Bahasa Inggris (Kanada)"
 
 #: picard/const/locales.py:257
 msgid "English (Guernsey)"
@@ -2929,8 +2939,9 @@ msgid "Hmong Njua (Nyiakeng Puachue Hmong) (United States)"
 msgstr ""
 
 #: picard/const/locales.py:506
+#, fuzzy
 msgid "Croatian"
-msgstr ""
+msgstr "Kroasia"
 
 #: picard/const/locales.py:507
 msgid "Croatian (Bosnia & Herzegovina)"
@@ -2973,8 +2984,9 @@ msgid "Interlingua (world)"
 msgstr ""
 
 #: picard/const/locales.py:518
+#, fuzzy
 msgid "Indonesian"
-msgstr ""
+msgstr "Indonesia"
 
 #: picard/const/locales.py:519
 msgid "Indonesian (Indonesia)"
@@ -3077,8 +3089,9 @@ msgid "Javanese (Indonesia)"
 msgstr ""
 
 #: picard/const/locales.py:547
+#, fuzzy
 msgid "Georgian"
-msgstr ""
+msgstr "Georgia"
 
 #: picard/const/locales.py:548
 msgid "Georgian (Georgia)"
@@ -3453,8 +3466,9 @@ msgid "Luyia (Kenya)"
 msgstr ""
 
 #: picard/const/locales.py:642
+#, fuzzy
 msgid "Latvian"
-msgstr ""
+msgstr "Latvia"
 
 #: picard/const/locales.py:643
 msgid "Latvian (Latvia)"
@@ -3537,8 +3551,9 @@ msgid "Māori (New Zealand)"
 msgstr ""
 
 #: picard/const/locales.py:663
+#, fuzzy
 msgid "Macedonian"
-msgstr ""
+msgstr "Makedonia"
 
 #: picard/const/locales.py:664
 msgid "Macedonian (North Macedonia)"
@@ -3553,8 +3568,9 @@ msgid "Malayalam (India)"
 msgstr ""
 
 #: picard/const/locales.py:667
+#, fuzzy
 msgid "Mongolian"
-msgstr ""
+msgstr "Mongolia"
 
 #: picard/const/locales.py:668
 msgid "Mongolian (Cyrillic)"
@@ -3729,8 +3745,9 @@ msgid "Low German (Netherlands)"
 msgstr ""
 
 #: picard/const/locales.py:713
+#, fuzzy
 msgid "Nepali"
-msgstr ""
+msgstr "Nepal"
 
 #: picard/const/locales.py:714
 msgid "Nepali (India)"
@@ -4401,8 +4418,9 @@ msgid "Shona (Zimbabwe)"
 msgstr ""
 
 #: picard/const/locales.py:889
+#, fuzzy
 msgid "Somali"
-msgstr ""
+msgstr "Somalia"
 
 #: picard/const/locales.py:890
 msgid "Somali (Djibouti)"
@@ -4553,8 +4571,9 @@ msgid "Swahili (Uganda)"
 msgstr ""
 
 #: picard/const/locales.py:929
+#, fuzzy
 msgid "Syriac"
-msgstr ""
+msgstr "Suriah"
 
 #: picard/const/locales.py:930
 msgid "Syriac (Iraq)"
@@ -4677,8 +4696,9 @@ msgid "Tswana (South Africa)"
 msgstr ""
 
 #: picard/const/locales.py:960
+#, fuzzy
 msgid "Tongan"
-msgstr ""
+msgstr "Tonga"
 
 #: picard/const/locales.py:961
 msgid "Tongan (Tonga)"
@@ -5139,8 +5159,9 @@ msgid "Restore &Defaults"
 msgstr ""
 
 #: picard/coverart/providers/caa.py:435
+#, fuzzy
 msgid "Cover Art Archive"
-msgstr ""
+msgstr "Arsip Sampul Seni"
 
 #: picard/coverart/providers/caa.py:505
 msgid "Cover Art Archive: Release"
@@ -6544,9 +6565,9 @@ msgid "Artist:"
 msgstr "Artis:"
 
 #: picard/ui/infodialog.py:341
-#, python-format
+#, fuzzy, python-format
 msgid "Disc %d"
-msgstr ""
+msgstr "Id Cakram"
 
 #: picard/ui/infodialog.py:343
 msgid "Tracklist:"
@@ -7006,8 +7027,9 @@ msgid "Ctrl+Q"
 msgstr "Ctrl+Q"
 
 #: picard/ui/mainwindow.py:615
+#, fuzzy
 msgid "&Remove"
-msgstr ""
+msgstr "Hilangkan"
 
 #: picard/ui/mainwindow.py:616
 msgid "Remove selected files/albums"
@@ -7100,16 +7122,18 @@ msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:713
+#, fuzzy
 msgid "&Metadata"
-msgstr ""
+msgstr "Metadata"
 
 #: picard/ui/mainwindow.py:717
 msgid "Ctrl+Shift+M"
 msgstr "Ctrl+Shift+M"
 
 #: picard/ui/mainwindow.py:724
+#, fuzzy
 msgid "&Cover Art"
-msgstr ""
+msgstr "Seni Sampul"
 
 #: picard/ui/mainwindow.py:735
 msgid "&Actions"
@@ -7133,8 +7157,9 @@ msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
 #: picard/ui/mainwindow.py:771
+#, fuzzy
 msgid "&Scan"
-msgstr ""
+msgstr "Pindai"
 
 #: picard/ui/mainwindow.py:772
 msgid ""
@@ -7301,8 +7326,9 @@ msgid "&View"
 msgstr ""
 
 #: picard/ui/mainwindow.py:1030
+#, fuzzy
 msgid "&Options"
-msgstr ""
+msgstr "Pilihan"
 
 #: picard/ui/mainwindow.py:1036
 msgid "&Select file naming script"
@@ -7708,8 +7734,9 @@ msgid "Close the script editor without saving changes"
 msgstr ""
 
 #: picard/ui/scripteditor.py:566
+#, fuzzy
 msgid "&Script"
-msgstr ""
+msgstr "Skrip"
 
 #: picard/ui/scripteditor.py:569
 msgid "View/Edit Script &Metadata"
@@ -7887,8 +7914,9 @@ msgid "&Submit disc ID"
 msgstr ""
 
 #: picard/ui/ui_cdlookup.py:91 picard/ui/util.py:50
+#, fuzzy
 msgid "&Cancel"
-msgstr ""
+msgstr "Batal"
 
 #: picard/ui/ui_edittagdialog.py:115
 msgid "Edit Tag"
@@ -8140,12 +8168,14 @@ msgid "Server address:"
 msgstr "Alamat server:"
 
 #: picard/ui/ui_options_general.py:198
+#, fuzzy
 msgid "Log in"
-msgstr ""
+msgstr "Masuk"
 
 #: picard/ui/ui_options_general.py:199
+#, fuzzy
 msgid "Log out"
-msgstr ""
+msgstr "Keluar"
 
 #: picard/ui/ui_options_general.py:204
 msgid "Update Checking"
@@ -8679,8 +8709,9 @@ msgid "Select the file naming script to load into the editor"
 msgstr ""
 
 #: picard/ui/ui_scripteditor.py:210 picard/ui/ui_scripteditor_details.py:99
+#, fuzzy
 msgid "Title:"
-msgstr ""
+msgstr "Judul"
 
 #: picard/ui/ui_scripteditor_details.py:91
 msgid "File Naming Script Metadata"
@@ -8707,8 +8738,9 @@ msgid "Author:"
 msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:97
+#, fuzzy
 msgid "Version:"
-msgstr ""
+msgstr "Versi"
 
 #: picard/ui/ui_scripteditor_details.py:98
 msgid "License:"
@@ -8847,8 +8879,9 @@ msgid "Are you sure?"
 msgstr ""
 
 #: picard/ui/options/dialog.py:477 picard/ui/options/maintenance.py:93
+#, fuzzy
 msgid "Option"
-msgstr ""
+msgstr "Pilihan"
 
 #: picard/ui/options/dialog.py:484
 #, python-format
@@ -9023,8 +9056,9 @@ msgid "Add Files"
 msgstr ""
 
 #: picard/ui/options/interface_toolbar.py:75
+#, fuzzy
 msgid "Cluster"
-msgstr ""
+msgstr "Clusters"
 
 #: picard/ui/options/interface_toolbar.py:79
 msgid "Lookup"
@@ -9328,8 +9362,9 @@ msgid "The profile title cannot be blank."
 msgstr ""
 
 #: picard/ui/options/ratings.py:41
+#, fuzzy
 msgid "Ratings"
-msgstr ""
+msgstr "Peringkat"
 
 #: picard/ui/options/releases.py:157
 msgid "Preferred Releases"
@@ -9629,8 +9664,9 @@ msgid ""
 msgstr ""
 
 #: picard/util/checkupdate.py:156
+#, fuzzy
 msgid "unknown"
-msgstr ""
+msgstr "Tidak Diketahui"
 
 #: picard/util/checkupdate.py:160
 msgid ""
@@ -9661,8 +9697,9 @@ msgid "Arranger"
 msgstr "Penyusun"
 
 #: picard/util/tags.py:44
+#, fuzzy
 msgid "Artists"
-msgstr ""
+msgstr "Artis:"
 
 #: picard/util/tags.py:45
 msgid "Artist Sort Order"
@@ -9809,8 +9846,9 @@ msgid "MusicBrainz Release Group Id"
 msgstr ""
 
 #: picard/util/tags.py:90
+#, fuzzy
 msgid "MusicBrainz Track Id"
-msgstr ""
+msgstr "Id Cakram MusicBrainz"
 
 #: picard/util/tags.py:91
 msgid "MusicBrainz Work Id"

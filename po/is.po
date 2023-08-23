@@ -10,16 +10,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022\n"
-"Language-Team: Icelandic (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/is/)\n"
+"PO-Revision-Date: 2023-08-23 08:24+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Icelandic <https://translations.metabrainz.org/projects/"
+"picard/app/is/>\n"
 "Language: is\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n % 10 != 1 || n % 100 == 11;\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
-"Plural-Forms: nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -227,20 +228,23 @@ msgid "General"
 msgstr "Almennt"
 
 #: picard/profile.py:48
+#, fuzzy
 msgid "Server address"
-msgstr ""
+msgstr "Vistfang miðlara:"
 
 #: picard/profile.py:49
+#, fuzzy
 msgid "Port"
-msgstr ""
+msgstr "Gátt:"
 
 #: picard/profile.py:50 picard/ui/ui_options_general.py:201
 msgid "Automatically scan all new files"
 msgstr "Sjálfkrafa hljóð-kanna allar nýjar skrár"
 
 #: picard/profile.py:51 picard/ui/ui_options_general.py:202
+#, fuzzy
 msgid "Automatically cluster all new files"
-msgstr ""
+msgstr "Sjálfkrafa hljóð-kanna allar nýjar skrár"
 
 #: picard/profile.py:52 picard/ui/ui_options_general.py:203
 msgid "Ignore MBIDs when loading new files"
@@ -496,8 +500,9 @@ msgid "File Naming"
 msgstr ""
 
 #: picard/profile.py:156
+#, fuzzy
 msgid "Move files"
-msgstr ""
+msgstr "&Færa skrár"
 
 #: picard/profile.py:157
 msgid "Destination directory"
@@ -516,8 +521,9 @@ msgid "Delete empty directories"
 msgstr "Eyða tómum möppum"
 
 #: picard/profile.py:161
+#, fuzzy
 msgid "Rename files"
-msgstr ""
+msgstr "Endu&rnefna skrár"
 
 #: picard/profile.py:162
 msgid "Selected file naming script"
@@ -573,8 +579,9 @@ msgid "Show icons in menus"
 msgstr ""
 
 #: picard/profile.py:188
+#, fuzzy
 msgid "User interface language"
-msgstr ""
+msgstr "Tungumál viðmóts:"
 
 #: picard/profile.py:189
 msgid "User interface color theme"
@@ -717,20 +724,24 @@ msgid "Listen only on localhost"
 msgstr ""
 
 #: picard/profile.py:252
+#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr ""
+msgstr "Lágmarks skyldleiki við fundnar skrár:"
 
 #: picard/profile.py:253
+#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr ""
+msgstr "Lágmarks skyldleiki við fundna klasa:"
 
 #: picard/profile.py:254
+#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr ""
+msgstr "Lágmarks skyldleiki við fundnar hljóðskrár:"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
+#, fuzzy
 msgid "Tracks"
-msgstr ""
+msgstr "Lag"
 
 #: picard/releasegroup.py:70
 msgid "Year"
@@ -1856,8 +1867,9 @@ msgid "English (American Samoa)"
 msgstr ""
 
 #: picard/const/locales.py:228
+#, fuzzy
 msgid "English (Austria)"
-msgstr ""
+msgstr "Enska (Ástralía)"
 
 #: picard/const/locales.py:230
 msgid "English (Barbados)"
@@ -1960,8 +1972,9 @@ msgid "English (United Kingdom)"
 msgstr ""
 
 #: picard/const/locales.py:256
+#, fuzzy
 msgid "English (Grenada)"
-msgstr ""
+msgstr "Enska (Kanada)"
 
 #: picard/const/locales.py:257
 msgid "English (Guernsey)"
@@ -4680,8 +4693,9 @@ msgid "Tswana (South Africa)"
 msgstr ""
 
 #: picard/const/locales.py:960
+#, fuzzy
 msgid "Tongan"
-msgstr ""
+msgstr "Tonga"
 
 #: picard/const/locales.py:961
 msgid "Tongan (Tonga)"
@@ -6548,9 +6562,9 @@ msgid "Artist:"
 msgstr "Listamaður:"
 
 #: picard/ui/infodialog.py:341
-#, python-format
+#, fuzzy, python-format
 msgid "Disc %d"
-msgstr ""
+msgstr "Diskauðkenni"
 
 #: picard/ui/infodialog.py:343
 msgid "Tracklist:"
@@ -6589,8 +6603,9 @@ msgid "Files"
 msgstr ""
 
 #: picard/ui/infostatus.py:72
+#, fuzzy
 msgid "Albums"
-msgstr ""
+msgstr "Plata:"
 
 #: picard/ui/infostatus.py:73
 msgid "Pending files"
@@ -6737,8 +6752,9 @@ msgid "Collections"
 msgstr ""
 
 #: picard/ui/itemviews.py:635
+#, fuzzy
 msgid "P&lugins"
-msgstr ""
+msgstr "Íforrit"
 
 #: picard/ui/itemviews.py:651
 msgid "&Run scripts"
@@ -7108,8 +7124,9 @@ msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:713
+#, fuzzy
 msgid "&Metadata"
-msgstr ""
+msgstr "Lýsigögn"
 
 #: picard/ui/mainwindow.py:717
 msgid "Ctrl+Shift+M"
@@ -7521,10 +7538,11 @@ msgstr ""
 "Þú verður að skrá þig inn á miðlarann %s. Sláðu inn notandanafn og lykilorð."
 
 #: picard/ui/passworddialog.py:64
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "The proxy %s requires you to login. Please enter your username and password."
 msgstr ""
+"Þú verður að skrá þig inn á miðlarann %s. Sláðu inn notandanafn og lykilorð."
 
 #: picard/ui/playertoolbar.py:173
 msgid "Internal player: The format of a media resource isn't (fully) supported"
@@ -7724,8 +7742,9 @@ msgid "Close the script editor without saving changes"
 msgstr ""
 
 #: picard/ui/scripteditor.py:566
+#, fuzzy
 msgid "&Script"
-msgstr ""
+msgstr "Skrift"
 
 #: picard/ui/scripteditor.py:569
 msgid "View/Edit Script &Metadata"
@@ -7963,8 +7982,9 @@ msgid "Available Language Scripts"
 msgstr ""
 
 #: picard/ui/ui_infodialog.py:82
+#, fuzzy
 msgid "&Error"
-msgstr ""
+msgstr "Villa"
 
 #: picard/ui/ui_infodialog.py:83
 msgid "A&rtwork"
@@ -8652,8 +8672,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:58
+#, fuzzy
 msgid "Also include RIFF INFO tags in the files"
-msgstr ""
+msgstr "Skrifa einnig ID3v1 tög í skrár"
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:61
 msgid "Windows-1252"
@@ -8695,8 +8716,9 @@ msgid "Select the file naming script to load into the editor"
 msgstr ""
 
 #: picard/ui/ui_scripteditor.py:210 picard/ui/ui_scripteditor_details.py:99
+#, fuzzy
 msgid "Title:"
-msgstr ""
+msgstr "Titill"
 
 #: picard/ui/ui_scripteditor_details.py:91
 msgid "File Naming Script Metadata"
@@ -8723,8 +8745,9 @@ msgid "Author:"
 msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:97
+#, fuzzy
 msgid "Version:"
-msgstr ""
+msgstr "Útgáfa"
 
 #: picard/ui/ui_scripteditor_details.py:98
 msgid "License:"
@@ -8863,8 +8886,9 @@ msgid "Are you sure?"
 msgstr ""
 
 #: picard/ui/options/dialog.py:477 picard/ui/options/maintenance.py:93
+#, fuzzy
 msgid "Option"
-msgstr ""
+msgstr "Valkostir"
 
 #: picard/ui/options/dialog.py:484
 #, python-format
@@ -8945,8 +8969,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/genres.py:87
+#, fuzzy
 msgid "Genres"
-msgstr ""
+msgstr "Tegund"
 
 #: picard/ui/options/genres.py:156
 #, python-format
@@ -8990,10 +9015,13 @@ msgid "Theme changed"
 msgstr ""
 
 #: picard/ui/options/interface.py:181
+#, fuzzy
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
 msgstr ""
+"Þú hefur skipt um tungumál viðmóts. Þú verður að endurræsa Picard til að "
+"virkja breytinguna."
 
 #: picard/ui/options/interface.py:183
 msgid ""
@@ -9023,10 +9051,13 @@ msgid "Colors changed"
 msgstr ""
 
 #: picard/ui/options/interface_colors.py:147
+#, fuzzy
 msgid ""
 "You have changed the interface colors. You may have to restart Picard in "
 "order for the changes to take effect."
 msgstr ""
+"Þú hefur skipt um tungumál viðmóts. Þú verður að endurræsa Picard til að "
+"virkja breytinguna."
 
 #: picard/ui/options/interface_toolbar.py:59
 msgid "Action Toolbar"
@@ -9041,8 +9072,9 @@ msgid "Add Files"
 msgstr "Bæta við skrám"
 
 #: picard/ui/options/interface_toolbar.py:75
+#, fuzzy
 msgid "Cluster"
-msgstr ""
+msgstr "Hó&pa saman"
 
 #: picard/ui/options/interface_toolbar.py:79
 msgid "Lookup"
@@ -9679,8 +9711,9 @@ msgid "Arranger"
 msgstr "Útsetjari"
 
 #: picard/util/tags.py:44
+#, fuzzy
 msgid "Artists"
-msgstr ""
+msgstr "Listamaður:"
 
 #: picard/util/tags.py:45
 msgid "Artist Sort Order"
@@ -9823,12 +9856,14 @@ msgid "MusicBrainz Recording Id"
 msgstr ""
 
 #: picard/util/tags.py:89
+#, fuzzy
 msgid "MusicBrainz Release Group Id"
-msgstr ""
+msgstr "Auðkenni útgáfulistamanns hjá MusicBrainz"
 
 #: picard/util/tags.py:90
+#, fuzzy
 msgid "MusicBrainz Track Id"
-msgstr ""
+msgstr "Diskauðkenni MusicBrainz"
 
 #: picard/util/tags.py:91
 msgid "MusicBrainz Work Id"

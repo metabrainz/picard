@@ -18,17 +18,18 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: AO <ao@localizationlab.org>, 2013\n"
-"Language-Team: French (Canada) (http://app.transifex.com/musicbrainz/"
-"musicbrainz/language/fr_CA/)\n"
+"PO-Revision-Date: 2023-08-23 08:24+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: French (Canada) <https://translations.metabrainz.org/projects/"
+"picard/app/fr_CA/>\n"
 "Language: fr_CA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % "
+"1000000 == 0) ? 1 : 2);\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
-"1000000 == 0 ? 1 : 2;\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -4691,8 +4692,9 @@ msgid "Tswana (South Africa)"
 msgstr ""
 
 #: picard/const/locales.py:960
+#, fuzzy
 msgid "Tongan"
-msgstr ""
+msgstr "Tonga"
 
 #: picard/const/locales.py:961
 msgid "Tongan (Tonga)"
@@ -6550,8 +6552,9 @@ msgid "Channels:"
 msgstr ""
 
 #: picard/ui/infodialog.py:310
+#, fuzzy
 msgid "Album:"
-msgstr ""
+msgstr "Album"
 
 #: picard/ui/infodialog.py:311
 msgid "Artist:"
@@ -6600,8 +6603,9 @@ msgid "Files"
 msgstr ""
 
 #: picard/ui/infostatus.py:72
+#, fuzzy
 msgid "Albums"
-msgstr ""
+msgstr "Album"
 
 #: picard/ui/infostatus.py:73
 msgid "Pending files"
@@ -7004,8 +7008,9 @@ msgid "Ctrl+W"
 msgstr ""
 
 #: picard/ui/mainwindow.py:588
+#, fuzzy
 msgid "&Save"
-msgstr ""
+msgstr "Enregistrer"
 
 #: picard/ui/mainwindow.py:589
 msgid "Save selected files"
@@ -7028,8 +7033,9 @@ msgid "Ctrl+Q"
 msgstr ""
 
 #: picard/ui/mainwindow.py:615
+#, fuzzy
 msgid "&Remove"
-msgstr ""
+msgstr "Enlever"
 
 #: picard/ui/mainwindow.py:616
 msgid "Remove selected files/albums"
@@ -7130,12 +7136,14 @@ msgid "Ctrl+Shift+M"
 msgstr ""
 
 #: picard/ui/mainwindow.py:724
+#, fuzzy
 msgid "&Cover Art"
-msgstr ""
+msgstr "Illustration"
 
 #: picard/ui/mainwindow.py:735
+#, fuzzy
 msgid "&Actions"
-msgstr ""
+msgstr "Actions"
 
 #: picard/ui/mainwindow.py:744 picard/ui/mainwindow.py:1139
 #: picard/ui/searchdialog/__init__.py:48
@@ -7323,8 +7331,9 @@ msgid "&View"
 msgstr ""
 
 #: picard/ui/mainwindow.py:1030
+#, fuzzy
 msgid "&Options"
-msgstr ""
+msgstr "Options"
 
 #: picard/ui/mainwindow.py:1036
 msgid "&Select file naming script"
@@ -7508,8 +7517,9 @@ msgstr[1] ""
 msgstr[2] ""
 
 #: picard/ui/metadatabox.py:439
+#, fuzzy
 msgid "&Copy"
-msgstr ""
+msgstr "Copier"
 
 #: picard/ui/newuserdialog.py:34
 msgid ""
@@ -7744,8 +7754,9 @@ msgid "Close the script editor without saving changes"
 msgstr ""
 
 #: picard/ui/scripteditor.py:566
+#, fuzzy
 msgid "&Script"
-msgstr ""
+msgstr "Système d'écriture"
 
 #: picard/ui/scripteditor.py:569
 msgid "View/Edit Script &Metadata"
@@ -7923,8 +7934,9 @@ msgid "&Submit disc ID"
 msgstr ""
 
 #: picard/ui/ui_cdlookup.py:91 picard/ui/util.py:50
+#, fuzzy
 msgid "&Cancel"
-msgstr ""
+msgstr "Annuler"
 
 #: picard/ui/ui_edittagdialog.py:115
 msgid "Edit Tag"
@@ -7983,8 +7995,9 @@ msgid "Available Language Scripts"
 msgstr ""
 
 #: picard/ui/ui_infodialog.py:82
+#, fuzzy
 msgid "&Error"
-msgstr ""
+msgstr "Erreur"
 
 #: picard/ui/ui_infodialog.py:83
 msgid "A&rtwork"
@@ -8180,8 +8193,9 @@ msgid "Log in"
 msgstr "Se connecter"
 
 #: picard/ui/ui_options_general.py:199
+#, fuzzy
 msgid "Log out"
-msgstr ""
+msgstr "Se déconnecter"
 
 #: picard/ui/ui_options_general.py:204
 msgid "Update Checking"
@@ -8408,8 +8422,9 @@ msgid "Name"
 msgstr "Nom"
 
 #: picard/ui/ui_options_plugins.py:133
+#, fuzzy
 msgid "Version"
-msgstr ""
+msgstr "Version :"
 
 #: picard/ui/ui_options_plugins.py:135
 msgid "Install plugin..."
@@ -8747,8 +8762,9 @@ msgid "Version:"
 msgstr "Version :"
 
 #: picard/ui/ui_scripteditor_details.py:98
+#, fuzzy
 msgid "License:"
-msgstr ""
+msgstr "Licence"
 
 #: picard/ui/ui_scripteditor_details.py:100
 msgid "License under which the file naming script is available."
@@ -8883,8 +8899,9 @@ msgid "Are you sure?"
 msgstr ""
 
 #: picard/ui/options/dialog.py:477 picard/ui/options/maintenance.py:93
+#, fuzzy
 msgid "Option"
-msgstr ""
+msgstr "Options"
 
 #: picard/ui/options/dialog.py:484
 #, python-format
@@ -9665,8 +9682,9 @@ msgid ""
 msgstr ""
 
 #: picard/util/checkupdate.py:156
+#, fuzzy
 msgid "unknown"
-msgstr ""
+msgstr "Inconnu"
 
 #: picard/util/checkupdate.py:160
 msgid ""

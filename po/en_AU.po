@@ -10,16 +10,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Ivan Dobsky, 2019-2020,2022\n"
-"Language-Team: English (Australia) (http://app.transifex.com/musicbrainz/"
-"musicbrainz/language/en_AU/)\n"
+"PO-Revision-Date: 2023-08-23 08:24+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: English (Australia) <https://translations.metabrainz.org/"
+"projects/picard/app/en_AU/>\n"
 "Language: en_AU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -577,8 +578,9 @@ msgid "User interface language"
 msgstr ""
 
 #: picard/profile.py:189
+#, fuzzy
 msgid "User interface color theme"
-msgstr ""
+msgstr "User interface colour theme:"
 
 #: picard/profile.py:190 picard/ui/ui_options_interface.py:124
 msgid "Allow selection of multiple directories"
@@ -7448,8 +7450,9 @@ msgid "Displays original and new tags for the selected files"
 msgstr ""
 
 #: picard/ui/metadatabox.py:221
+#, fuzzy
 msgid "Tag"
-msgstr ""
+msgstr "Tag"
 
 #: picard/ui/metadatabox.py:221
 msgid "Original Value"
@@ -8997,10 +9000,13 @@ msgid "Theme changed"
 msgstr ""
 
 #: picard/ui/options/interface.py:181
+#, fuzzy
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
 msgstr ""
+"You have changed the interface colours. You may have to restart Picard in "
+"order for the changes to take effect."
 
 #: picard/ui/options/interface.py:183
 msgid ""
@@ -9014,10 +9020,13 @@ msgid "Language changed"
 msgstr ""
 
 #: picard/ui/options/interface.py:189
+#, fuzzy
 msgid ""
 "You have changed the interface language. You have to restart Picard in order "
 "for the change to take effect."
 msgstr ""
+"You have changed the interface colours. You may have to restart Picard in "
+"order for the changes to take effect."
 
 #: picard/ui/options/interface_colors.py:67
 msgid "Choose a color"

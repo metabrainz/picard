@@ -13,16 +13,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Adrián Fülöp, 2022\n"
-"Language-Team: Hungarian (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/hu/)\n"
+"PO-Revision-Date: 2023-08-23 08:24+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Hungarian <https://translations.metabrainz.org/projects/"
+"picard/app/hu/>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -244,16 +245,18 @@ msgid "Server address"
 msgstr "Szervercím"
 
 #: picard/profile.py:49
+#, fuzzy
 msgid "Port"
-msgstr ""
+msgstr "Port:"
 
 #: picard/profile.py:50 picard/ui/ui_options_general.py:201
 msgid "Automatically scan all new files"
 msgstr "Új fájlok automatikus keresése"
 
 #: picard/profile.py:51 picard/ui/ui_options_general.py:202
+#, fuzzy
 msgid "Automatically cluster all new files"
-msgstr ""
+msgstr "Új fájlok automatikus keresése"
 
 #: picard/profile.py:52 picard/ui/ui_options_general.py:203
 msgid "Ignore MBIDs when loading new files"
@@ -509,8 +512,9 @@ msgid "File Naming"
 msgstr ""
 
 #: picard/profile.py:156
+#, fuzzy
 msgid "Move files"
-msgstr ""
+msgstr "&Fájlok mozgatása"
 
 #: picard/profile.py:157
 msgid "Destination directory"
@@ -529,8 +533,9 @@ msgid "Delete empty directories"
 msgstr "Üres mappák törlése"
 
 #: picard/profile.py:161
+#, fuzzy
 msgid "Rename files"
-msgstr ""
+msgstr "&Fájlok átnevezése"
 
 #: picard/profile.py:162
 msgid "Selected file naming script"
@@ -586,8 +591,9 @@ msgid "Show icons in menus"
 msgstr ""
 
 #: picard/profile.py:188
+#, fuzzy
 msgid "User interface language"
-msgstr ""
+msgstr "Felhasználói felület nyelve:"
 
 #: picard/profile.py:189
 msgid "User interface color theme"
@@ -602,8 +608,9 @@ msgid "Use builtin search rather than looking in browser"
 msgstr ""
 
 #: picard/profile.py:192
+#, fuzzy
 msgid "Use advanced search syntax"
-msgstr ""
+msgstr "Összetett lekérdezés használata"
 
 #: picard/profile.py:193
 msgid "Show a usage warning dialog when Picard starts"
@@ -730,12 +737,14 @@ msgid "Listen only on localhost"
 msgstr ""
 
 #: picard/profile.py:252
+#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr ""
+msgstr "Minimális hasonlóság fájl lekérdezésénél:"
 
 #: picard/profile.py:253
+#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr ""
+msgstr "Minimális hasonlóság csoport-lekérdezésnél:"
 
 #: picard/profile.py:254
 msgid "Minimal similarity for matching files to tracks"
@@ -1179,8 +1188,9 @@ msgid "Obolo (Nigeria)"
 msgstr ""
 
 #: picard/const/locales.py:47
+#, fuzzy
 msgid "Syria"
-msgstr ""
+msgstr "Szír"
 
 #: picard/const/locales.py:49
 msgid "Arabic (world)"
@@ -1975,8 +1985,9 @@ msgid "English (United Kingdom)"
 msgstr ""
 
 #: picard/const/locales.py:256
+#, fuzzy
 msgid "English (Grenada)"
-msgstr ""
+msgstr "Angol (Kanadai)"
 
 #: picard/const/locales.py:257
 msgid "English (Guernsey)"
@@ -2431,8 +2442,9 @@ msgid "Persian (Iran)"
 msgstr ""
 
 #: picard/const/locales.py:372
+#, fuzzy
 msgid "Fula"
-msgstr ""
+msgstr "Ful"
 
 #: picard/const/locales.py:373
 msgid "Fula (Adlam)"
@@ -4219,8 +4231,9 @@ msgid "Santali (Ol Chiki) (India)"
 msgstr ""
 
 #: picard/const/locales.py:837
+#, fuzzy
 msgid "Sangu"
-msgstr ""
+msgstr "Szangó"
 
 #: picard/const/locales.py:838
 msgid "Sangu (Tanzania)"
@@ -4695,8 +4708,9 @@ msgid "Tswana (South Africa)"
 msgstr ""
 
 #: picard/const/locales.py:960
+#, fuzzy
 msgid "Tongan"
-msgstr ""
+msgstr "Tonga"
 
 #: picard/const/locales.py:961
 msgid "Tongan (Tonga)"
@@ -6342,8 +6356,9 @@ msgid "Date"
 msgstr "Dátum"
 
 #: picard/ui/cdlookup.py:73 picard/ui/searchdialog/album.py:158
+#, fuzzy
 msgid "Labels"
-msgstr ""
+msgstr "Kiadó"
 
 #: picard/ui/cdlookup.py:73 picard/ui/searchdialog/album.py:159
 msgid "Catalog #s"
@@ -6561,17 +6576,19 @@ msgid "Channels:"
 msgstr "Csatornák:"
 
 #: picard/ui/infodialog.py:310
+#, fuzzy
 msgid "Album:"
-msgstr ""
+msgstr "Album"
 
 #: picard/ui/infodialog.py:311
+#, fuzzy
 msgid "Artist:"
-msgstr ""
+msgstr "Előadó"
 
 #: picard/ui/infodialog.py:341
-#, python-format
+#, fuzzy, python-format
 msgid "Disc %d"
-msgstr ""
+msgstr "lemez azonosító"
 
 #: picard/ui/infodialog.py:343
 msgid "Tracklist:"
@@ -6610,8 +6627,9 @@ msgid "Files"
 msgstr ""
 
 #: picard/ui/infostatus.py:72
+#, fuzzy
 msgid "Albums"
-msgstr ""
+msgstr "Album"
 
 #: picard/ui/infostatus.py:73
 msgid "Pending files"
@@ -6758,8 +6776,9 @@ msgid "Collections"
 msgstr "Gyüjtemény"
 
 #: picard/ui/itemviews.py:635
+#, fuzzy
 msgid "P&lugins"
-msgstr ""
+msgstr "Bővítmények"
 
 #: picard/ui/itemviews.py:651
 msgid "&Run scripts"
@@ -7129,8 +7148,9 @@ msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:713
+#, fuzzy
 msgid "&Metadata"
-msgstr ""
+msgstr "Metaadat"
 
 #: picard/ui/mainwindow.py:717
 msgid "Ctrl+Shift+M"
@@ -7150,8 +7170,9 @@ msgid "Search"
 msgstr "Keresés"
 
 #: picard/ui/mainwindow.py:751 picard/ui/mainwindow.py:758
+#, fuzzy
 msgid "Lookup &CD..."
-msgstr ""
+msgstr "CD keresés"
 
 #: picard/ui/mainwindow.py:752
 msgid "Lookup the details of the CD in your drive"
@@ -7421,8 +7442,9 @@ msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
 #: picard/ui/mainwindow.py:1722
+#, fuzzy
 msgid "Authentication Required"
-msgstr ""
+msgstr "Hitelesítés szükséges"
 
 #: picard/ui/mainwindow.py:1723
 msgid ""
@@ -7542,10 +7564,11 @@ msgstr ""
 "%s kiszolgálóra  be kell jelentkezni. Kérem adja meg a nevét és a kódszót."
 
 #: picard/ui/passworddialog.py:64
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "The proxy %s requires you to login. Please enter your username and password."
 msgstr ""
+"%s kiszolgálóra  be kell jelentkezni. Kérem adja meg a nevét és a kódszót."
 
 #: picard/ui/playertoolbar.py:173
 msgid "Internal player: The format of a media resource isn't (fully) supported"
@@ -7745,8 +7768,9 @@ msgid "Close the script editor without saving changes"
 msgstr ""
 
 #: picard/ui/scripteditor.py:566
+#, fuzzy
 msgid "&Script"
-msgstr ""
+msgstr "Szkript"
 
 #: picard/ui/scripteditor.py:569
 msgid "View/Edit Script &Metadata"
@@ -7984,8 +8008,9 @@ msgid "Available Language Scripts"
 msgstr ""
 
 #: picard/ui/ui_infodialog.py:82
+#, fuzzy
 msgid "&Error"
-msgstr ""
+msgstr "Hiba"
 
 #: picard/ui/ui_infodialog.py:83
 msgid "A&rtwork"
@@ -8026,8 +8051,9 @@ msgid "Available Locales"
 msgstr ""
 
 #: picard/ui/ui_options.py:47
+#, fuzzy
 msgid "Options"
-msgstr ""
+msgstr "&Beállítások"
 
 #: picard/ui/ui_options_advanced.py:138
 msgid "Advanced options"
@@ -8177,8 +8203,9 @@ msgid "Server address:"
 msgstr "A kiszolgáló címe:"
 
 #: picard/ui/ui_options_general.py:198
+#, fuzzy
 msgid "Log in"
-msgstr ""
+msgstr "Bejelentkezés"
 
 #: picard/ui/ui_options_general.py:199
 msgid "Log out"
@@ -8716,8 +8743,9 @@ msgid "Select the file naming script to load into the editor"
 msgstr ""
 
 #: picard/ui/ui_scripteditor.py:210 picard/ui/ui_scripteditor_details.py:99
+#, fuzzy
 msgid "Title:"
-msgstr ""
+msgstr "Cím"
 
 #: picard/ui/ui_scripteditor_details.py:91
 msgid "File Naming Script Metadata"
@@ -8744,8 +8772,9 @@ msgid "Author:"
 msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:97
+#, fuzzy
 msgid "Version:"
-msgstr ""
+msgstr "Verzió"
 
 #: picard/ui/ui_scripteditor_details.py:98
 msgid "License:"
@@ -8966,8 +8995,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/genres.py:87
+#, fuzzy
 msgid "Genres"
-msgstr ""
+msgstr "Műfaj"
 
 #: picard/ui/options/genres.py:156
 #, python-format
@@ -9011,10 +9041,13 @@ msgid "Theme changed"
 msgstr ""
 
 #: picard/ui/options/interface.py:181
+#, fuzzy
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
 msgstr ""
+"Megváltoztatta a kezelőfelület nyelvét. Ahhoz hogy a változás életbe lépjen, "
+"indítsa újra a Picard-ot."
 
 #: picard/ui/options/interface.py:183
 msgid ""
@@ -9044,10 +9077,13 @@ msgid "Colors changed"
 msgstr ""
 
 #: picard/ui/options/interface_colors.py:147
+#, fuzzy
 msgid ""
 "You have changed the interface colors. You may have to restart Picard in "
 "order for the changes to take effect."
 msgstr ""
+"Megváltoztatta a kezelőfelület nyelvét. Ahhoz hogy a változás életbe lépjen, "
+"indítsa újra a Picard-ot."
 
 #: picard/ui/options/interface_toolbar.py:59
 msgid "Action Toolbar"
@@ -9062,8 +9098,9 @@ msgid "Add Files"
 msgstr "Fájlok hozzáadása"
 
 #: picard/ui/options/interface_toolbar.py:75
+#, fuzzy
 msgid "Cluster"
-msgstr ""
+msgstr "&Csoport"
 
 #: picard/ui/options/interface_toolbar.py:79
 msgid "Lookup"
@@ -9517,8 +9554,9 @@ msgid "Track Search Results"
 msgstr ""
 
 #: picard/ui/searchdialog/track.py:72
+#, fuzzy
 msgid "Release"
-msgstr ""
+msgstr "Kiadások"
 
 #: picard/ui/searchdialog/track.py:175
 msgid "Standalone Recording"
@@ -9700,8 +9738,9 @@ msgid "Arranger"
 msgstr "Átíró"
 
 #: picard/util/tags.py:44
+#, fuzzy
 msgid "Artists"
-msgstr ""
+msgstr "Előadó"
 
 #: picard/util/tags.py:45
 msgid "Artist Sort Order"
@@ -9848,8 +9887,9 @@ msgid "MusicBrainz Release Group Id"
 msgstr ""
 
 #: picard/util/tags.py:90
+#, fuzzy
 msgid "MusicBrainz Track Id"
-msgstr ""
+msgstr "MusicBrainz lemez azonosító"
 
 #: picard/util/tags.py:91
 msgid "MusicBrainz Work Id"

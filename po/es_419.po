@@ -8,16 +8,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2020-02-07 12:46+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
-"Language-Team: Spanish (Latin America) (http://www.transifex.com/musicbrainz/"
-"musicbrainz/language/es_419/)\n"
+"PO-Revision-Date: 2023-08-23 08:24+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Spanish (Latin America) <https://translations.metabrainz.org/"
+"projects/picard/app/es_419/>\n"
 "Language: es_419\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.6.0\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -6301,8 +6302,9 @@ msgstr ""
 
 #: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:166
 #: picard/ui/mainwindow.py:1150 picard/util/tags.py:40
+#, fuzzy
 msgid "Album"
-msgstr ""
+msgstr "album"
 
 #: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:163
 #: picard/ui/mainwindow.py:1151 picard/ui/searchdialog/album.py:153
@@ -6317,8 +6319,9 @@ msgid "Date"
 msgstr ""
 
 #: picard/ui/cdlookup.py:73 picard/ui/searchdialog/album.py:158
+#, fuzzy
 msgid "Labels"
-msgstr ""
+msgstr "Etiqueta"
 
 #: picard/ui/cdlookup.py:73 picard/ui/searchdialog/album.py:159
 msgid "Catalog #s"
@@ -6326,8 +6329,9 @@ msgstr ""
 
 #: picard/ui/cdlookup.py:73 picard/ui/itemviews.py:171
 #: picard/ui/searchdialog/album.py:160 picard/util/tags.py:47
+#, fuzzy
 msgid "Barcode"
-msgstr ""
+msgstr "codigo de barras"
 
 #: picard/ui/cdlookup.py:74
 msgid "Disambiguation"
@@ -6472,8 +6476,9 @@ msgstr ""
 
 #: picard/ui/infodialog.py:110 picard/ui/itemviews.py:178
 #: picard/ui/searchdialog/album.py:164
+#, fuzzy
 msgid "Cover"
-msgstr ""
+msgstr "cubierta"
 
 #: picard/ui/infodialog.py:154 picard/ui/infodialog.py:359
 #: picard/ui/options/interface_toolbar.py:95
@@ -6540,8 +6545,9 @@ msgid "Album:"
 msgstr ""
 
 #: picard/ui/infodialog.py:311
+#, fuzzy
 msgid "Artist:"
-msgstr ""
+msgstr "Artista"
 
 #: picard/ui/infodialog.py:341
 #, python-format
@@ -6581,12 +6587,14 @@ msgid "Estimated Time"
 msgstr ""
 
 #: picard/ui/infostatus.py:71 picard/ui/options/plugins.py:612
+#, fuzzy
 msgid "Files"
-msgstr ""
+msgstr "archivos"
 
 #: picard/ui/infostatus.py:72
+#, fuzzy
 msgid "Albums"
-msgstr ""
+msgstr "albumes"
 
 #: picard/ui/infostatus.py:73
 msgid "Pending files"
@@ -6624,8 +6632,9 @@ msgid "Album Artist"
 msgstr ""
 
 #: picard/ui/itemviews.py:165 picard/util/tags.py:52
+#, fuzzy
 msgid "Composer"
-msgstr ""
+msgstr "compositor"
 
 #: picard/ui/itemviews.py:167 picard/util/tags.py:60
 msgid "Disc Subtitle"
@@ -7138,8 +7147,9 @@ msgid "Ctrl+K"
 msgstr ""
 
 #: picard/ui/mainwindow.py:771
+#, fuzzy
 msgid "&Scan"
-msgstr ""
+msgstr "Escanear"
 
 #: picard/ui/mainwindow.py:772
 msgid ""
@@ -7331,8 +7341,9 @@ msgid "Actions"
 msgstr ""
 
 #: picard/ui/mainwindow.py:1152
+#, fuzzy
 msgid "Track"
-msgstr ""
+msgstr "Pistas"
 
 #: picard/ui/mainwindow.py:1169
 msgid "&Advanced search"
@@ -7664,8 +7675,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/scripteditor.py:319 picard/ui/scripteditor.py:1227
+#, fuzzy
 msgid "Confirm"
-msgstr ""
+msgstr "confirmar"
 
 #: picard/ui/scripteditor.py:393
 msgid "File naming script editor"
@@ -7796,8 +7808,9 @@ msgstr ""
 #: picard/ui/options/renaming.py:256 picard/ui/scripteditor.py:857
 #: picard/ui/scripteditor.py:860 picard/ui/scripteditor.py:1166
 #: picard/ui/scripteditor.py:1394
+#, fuzzy
 msgid "Error"
-msgstr ""
+msgstr "error"
 
 #: picard/ui/scripteditor.py:857
 msgid "There is already a script with that title."
@@ -8026,8 +8039,9 @@ msgid "Video tracks"
 msgstr ""
 
 #: picard/ui/ui_options_advanced.py:146
+#, fuzzy
 msgid "Data tracks"
-msgstr ""
+msgstr "pista de datos"
 
 #: picard/ui/ui_options_advanced.py:147
 msgid "Pregap tracks"
@@ -8227,8 +8241,9 @@ msgid "Miscellaneous"
 msgstr ""
 
 #: picard/ui/searchdialog/__init__.py:95 picard/ui/ui_options_interface.py:126
+#, fuzzy
 msgid "Use advanced query syntax"
-msgstr ""
+msgstr "sintaxis avanzada de consulta"
 
 #: picard/ui/ui_options_interface.py:127
 msgid "Show the new user dialog when starting Picard"
@@ -8338,8 +8353,9 @@ msgstr ""
 #: picard/ui/options/interface.py:93 picard/ui/ui_options_metadata.py:143
 #: picard/ui/ui_options_metadata.py:144
 #: picard/ui/ui_provider_options_local.py:54
+#, fuzzy
 msgid "Default"
-msgstr ""
+msgstr "predefinido"
 
 #: picard/ui/ui_options_network.py:131
 msgid "Web Proxy"
@@ -8400,8 +8416,9 @@ msgid "Reload List of Plugins"
 msgstr ""
 
 #: picard/ui/ui_options_plugins.py:138
+#, fuzzy
 msgid "Details"
-msgstr ""
+msgstr "detalles"
 
 #: picard/ui/ui_options_profiles.py:75
 msgid "Option Profile(s)"
@@ -8538,8 +8555,9 @@ msgid "Export"
 msgstr ""
 
 #: picard/ui/ui_options_script.py:130
+#, fuzzy
 msgid "Documentation"
-msgstr ""
+msgstr "documentacion"
 
 #: picard/ui/ui_options_tags.py:71
 msgid "Write tags to files"
@@ -9294,8 +9312,9 @@ msgid "Copy to a new profile"
 msgstr ""
 
 #: picard/ui/options/profiles.py:124
+#, fuzzy
 msgid "Delete"
-msgstr ""
+msgstr "Borrar"
 
 #: picard/ui/options/profiles.py:125
 msgid "Delete the profile"
@@ -9341,8 +9360,9 @@ msgid "The profile title cannot be blank."
 msgstr ""
 
 #: picard/ui/options/ratings.py:41
+#, fuzzy
 msgid "Ratings"
-msgstr ""
+msgstr "Clasificación"
 
 #: picard/ui/options/releases.py:157
 msgid "Preferred Releases"
@@ -9442,8 +9462,9 @@ msgid "Album Search Results"
 msgstr ""
 
 #: picard/ui/searchdialog/album.py:161 picard/util/tags.py:71
+#, fuzzy
 msgid "Language"
-msgstr ""
+msgstr "Languages"
 
 #: picard/ui/searchdialog/album.py:163
 msgid "Status"
@@ -9670,12 +9691,14 @@ msgid "Album Sort Order"
 msgstr ""
 
 #: picard/util/tags.py:42
+#, fuzzy
 msgid "Arranger"
-msgstr ""
+msgstr "arreglista"
 
 #: picard/util/tags.py:44
+#, fuzzy
 msgid "Artists"
-msgstr ""
+msgstr "artistas"
 
 #: picard/util/tags.py:45
 msgid "Artist Sort Order"
@@ -9706,8 +9729,9 @@ msgid "Composer Sort Order"
 msgstr ""
 
 #: picard/util/tags.py:54
+#, fuzzy
 msgid "Conductor"
-msgstr ""
+msgstr "conductor"
 
 #: picard/util/tags.py:55
 msgid "Copyright"

@@ -12,16 +12,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2023\n"
-"Language-Team: Korean (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/ko/)\n"
+"PO-Revision-Date: 2023-08-23 08:24+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Korean <https://translations.metabrainz.org/projects/picard/"
+"app/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.18.2\n"
+"Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -263,8 +264,9 @@ msgid "Days between update checks"
 msgstr ""
 
 #: picard/profile.py:56
+#, fuzzy
 msgid "Updates to check"
-msgstr ""
+msgstr "업데이트 체크"
 
 #: picard/profile.py:61 picard/ui/options/metadata.py:78
 #: picard/ui/ui_options_metadata.py:129
@@ -504,8 +506,9 @@ msgid "Move files"
 msgstr "파일들을 옮기시오."
 
 #: picard/profile.py:157
+#, fuzzy
 msgid "Destination directory"
-msgstr ""
+msgstr "대상 디렉토리:"
 
 #: picard/profile.py:158
 msgid "Move additional files"
@@ -577,8 +580,9 @@ msgid "Show icons in menus"
 msgstr ""
 
 #: picard/profile.py:188
+#, fuzzy
 msgid "User interface language"
-msgstr ""
+msgstr "사용자 인터페이스 언어:"
 
 #: picard/profile.py:189
 msgid "User interface color theme"
@@ -593,8 +597,9 @@ msgid "Use builtin search rather than looking in browser"
 msgstr "브라우저로 찾기 대신 내장 검색 사용"
 
 #: picard/profile.py:192
+#, fuzzy
 msgid "Use advanced search syntax"
-msgstr ""
+msgstr "고급 쿼리 구문 사용"
 
 #: picard/profile.py:193
 msgid "Show a usage warning dialog when Picard starts"
@@ -709,28 +714,33 @@ msgid "Request timeout in seconds"
 msgstr ""
 
 #: picard/profile.py:245
+#, fuzzy
 msgid "Browser integration"
-msgstr ""
+msgstr "브라우저 통합"
 
 #: picard/profile.py:248
+#, fuzzy
 msgid "Default listening port"
-msgstr ""
+msgstr "기본 수신 포트:"
 
 #: picard/profile.py:249 picard/ui/ui_options_network.py:141
 msgid "Listen only on localhost"
 msgstr "내부서버에서만 수신"
 
 #: picard/profile.py:252
+#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr ""
+msgstr "파일 조회에 대한 최소한의 유사성:"
 
 #: picard/profile.py:253
+#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr ""
+msgstr "클러스터 조회에 대한 최소한의 유사성:"
 
 #: picard/profile.py:254
+#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr ""
+msgstr "파일을 트랙과 일치시키는 최소한의 유사성:"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -873,8 +883,9 @@ msgid "AcoustID submission failed with error '%(error)s': %(message)s"
 msgstr "AcoustID '%(error)s' 오류로 등록실패: %(message)s"
 
 #: picard/browser/addrelease.py:144
+#, fuzzy
 msgid "Add cluster as release"
-msgstr ""
+msgstr "파일을 클러스터로 추가하기"
 
 #: picard/browser/addrelease.py:146
 msgid "Add cluster as release..."
@@ -1380,8 +1391,9 @@ msgid "Baluchi (Latin) (Pakistan)"
 msgstr ""
 
 #: picard/const/locales.py:101
+#, fuzzy
 msgid "Basaa"
-msgstr ""
+msgstr "자와어"
 
 #: picard/const/locales.py:102
 msgid "Basaa (Cameroon)"
@@ -1704,8 +1716,9 @@ msgid "Welsh"
 msgstr ""
 
 #: picard/const/locales.py:184
+#, fuzzy
 msgid "Welsh (United Kingdom)"
-msgstr ""
+msgstr "영어(영국)"
 
 #: picard/const/locales.py:186
 msgid "Danish (Denmark)"
@@ -1844,8 +1857,9 @@ msgid "English (Europe)"
 msgstr ""
 
 #: picard/const/locales.py:224
+#, fuzzy
 msgid "English (United Arab Emirates)"
-msgstr ""
+msgstr "아랍어(아랍 에미리트)"
 
 #: picard/const/locales.py:225
 msgid "English (Antigua & Barbuda)"
@@ -1860,8 +1874,9 @@ msgid "English (American Samoa)"
 msgstr "영어(미국 사모아)"
 
 #: picard/const/locales.py:228
+#, fuzzy
 msgid "English (Austria)"
-msgstr ""
+msgstr "영어(호주)"
 
 #: picard/const/locales.py:230
 msgid "English (Barbados)"
@@ -1944,8 +1959,9 @@ msgid "English (Eritrea)"
 msgstr ""
 
 #: picard/const/locales.py:251
+#, fuzzy
 msgid "English (Finland)"
-msgstr ""
+msgstr "영어(아일랜드)"
 
 #: picard/const/locales.py:252
 msgid "English (Fiji)"
@@ -1964,16 +1980,18 @@ msgid "English (United Kingdom)"
 msgstr "영어(영국)"
 
 #: picard/const/locales.py:256
+#, fuzzy
 msgid "English (Grenada)"
-msgstr ""
+msgstr "영어 (캐나다)"
 
 #: picard/const/locales.py:257
 msgid "English (Guernsey)"
 msgstr ""
 
 #: picard/const/locales.py:258
+#, fuzzy
 msgid "English (Ghana)"
-msgstr ""
+msgstr "영어(괌)"
 
 #: picard/const/locales.py:259
 msgid "English (Gibraltar)"
@@ -1988,8 +2006,9 @@ msgid "English (Guam)"
 msgstr "영어(괌)"
 
 #: picard/const/locales.py:262
+#, fuzzy
 msgid "English (Guyana)"
-msgstr ""
+msgstr "영어(괌)"
 
 #: picard/const/locales.py:263
 msgid "English (Hong Kong)"
@@ -2360,8 +2379,9 @@ msgid "Spanish (Peru)"
 msgstr "스페인어(페루)"
 
 #: picard/const/locales.py:356
+#, fuzzy
 msgid "Spanish (Philippines)"
-msgstr ""
+msgstr "영어(필리핀)"
 
 #: picard/const/locales.py:357
 msgid "Spanish (Puerto Rico)"
@@ -2376,8 +2396,9 @@ msgid "Spanish (El Salvador)"
 msgstr ""
 
 #: picard/const/locales.py:360
+#, fuzzy
 msgid "Spanish (United States)"
-msgstr ""
+msgstr "영어(미국)"
 
 #: picard/const/locales.py:361
 msgid "Spanish (Uruguay)"
@@ -2420,8 +2441,9 @@ msgid "Persian (Iran)"
 msgstr ""
 
 #: picard/const/locales.py:372
+#, fuzzy
 msgid "Fula"
-msgstr ""
+msgstr "풀라어"
 
 #: picard/const/locales.py:373
 msgid "Fula (Adlam)"
@@ -2640,8 +2662,9 @@ msgid "French (Luxembourg)"
 msgstr "프랑스어(룩셈부르크)"
 
 #: picard/const/locales.py:430
+#, fuzzy
 msgid "French (Morocco)"
-msgstr ""
+msgstr "프랑스어(모나코)"
 
 #: picard/const/locales.py:431
 msgid "French (Monaco)"
@@ -2760,8 +2783,9 @@ msgid "Irish"
 msgstr "아일랜드"
 
 #: picard/const/locales.py:460
+#, fuzzy
 msgid "Irish (United Kingdom)"
-msgstr ""
+msgstr "영어(영국)"
 
 #: picard/const/locales.py:461
 msgid "Irish (Ireland)"
@@ -3076,8 +3100,9 @@ msgid "Machame (Tanzania)"
 msgstr ""
 
 #: picard/const/locales.py:545
+#, fuzzy
 msgid "Javanese"
-msgstr ""
+msgstr "일본어"
 
 #: picard/const/locales.py:546
 msgid "Javanese (Indonesia)"
@@ -3320,8 +3345,9 @@ msgid "Cornish"
 msgstr "콘월어"
 
 #: picard/const/locales.py:607
+#, fuzzy
 msgid "Cornish (United Kingdom)"
-msgstr ""
+msgstr "영어(영국)"
 
 #: picard/const/locales.py:608
 msgid "Kyrgyz"
@@ -3460,8 +3486,9 @@ msgid "Luyia (Kenya)"
 msgstr ""
 
 #: picard/const/locales.py:642
+#, fuzzy
 msgid "Latvian"
-msgstr ""
+msgstr "라트비아"
 
 #: picard/const/locales.py:643
 msgid "Latvian (Latvia)"
@@ -3544,8 +3571,9 @@ msgid "Māori (New Zealand)"
 msgstr ""
 
 #: picard/const/locales.py:663
+#, fuzzy
 msgid "Macedonian"
-msgstr ""
+msgstr "마케도니아"
 
 #: picard/const/locales.py:664
 msgid "Macedonian (North Macedonia)"
@@ -3728,16 +3756,18 @@ msgid "Low German"
 msgstr ""
 
 #: picard/const/locales.py:711
+#, fuzzy
 msgid "Low German (Germany)"
-msgstr ""
+msgstr "독일어(독일)"
 
 #: picard/const/locales.py:712
 msgid "Low German (Netherlands)"
 msgstr ""
 
 #: picard/const/locales.py:713
+#, fuzzy
 msgid "Nepali"
-msgstr ""
+msgstr "네팔"
 
 #: picard/const/locales.py:714
 msgid "Nepali (India)"
@@ -4408,8 +4438,9 @@ msgid "Shona (Zimbabwe)"
 msgstr ""
 
 #: picard/const/locales.py:889
+#, fuzzy
 msgid "Somali"
-msgstr ""
+msgstr "소말리아"
 
 #: picard/const/locales.py:890
 msgid "Somali (Djibouti)"
@@ -4440,8 +4471,9 @@ msgid "Albanian (Kosovo)"
 msgstr ""
 
 #: picard/const/locales.py:898
+#, fuzzy
 msgid "Serbian"
-msgstr ""
+msgstr "세르비아"
 
 #: picard/const/locales.py:899
 msgid "Serbian (Cyrillic)"
@@ -4560,8 +4592,9 @@ msgid "Swahili (Uganda)"
 msgstr ""
 
 #: picard/const/locales.py:929
+#, fuzzy
 msgid "Syriac"
-msgstr ""
+msgstr "시리아"
 
 #: picard/const/locales.py:930
 msgid "Syriac (Iraq)"
@@ -4684,8 +4717,9 @@ msgid "Tswana (South Africa)"
 msgstr ""
 
 #: picard/const/locales.py:960
+#, fuzzy
 msgid "Tongan"
-msgstr ""
+msgstr "통가"
 
 #: picard/const/locales.py:961
 msgid "Tongan (Tonga)"
@@ -5012,40 +5046,49 @@ msgid "Chinese"
 msgstr "중국어"
 
 #: picard/const/locales.py:1044
+#, fuzzy
 msgid "Chinese (Simplified)"
-msgstr ""
+msgstr "중국어(간체자)"
 
 #: picard/const/locales.py:1045
+#, fuzzy
 msgid "Chinese (Simplified) (China)"
-msgstr ""
+msgstr "중국어(간체자)(중국)"
 
 #: picard/const/locales.py:1046
+#, fuzzy
 msgid "Chinese (Simplified) (Hong Kong)"
-msgstr ""
+msgstr "중국어(간체자)(홍콩)"
 
 #: picard/const/locales.py:1047
+#, fuzzy
 msgid "Chinese (Simplified) (Macao)"
-msgstr ""
+msgstr "중국어(간체자)(마카오)"
 
 #: picard/const/locales.py:1048
+#, fuzzy
 msgid "Chinese (Simplified) (Singapore)"
-msgstr ""
+msgstr "중국어(간체자)(싱가포르)"
 
 #: picard/const/locales.py:1049
+#, fuzzy
 msgid "Chinese (Traditional)"
-msgstr ""
+msgstr "중국어(번체자)"
 
 #: picard/const/locales.py:1050
+#, fuzzy
 msgid "Chinese (Traditional) (Hong Kong)"
-msgstr ""
+msgstr "중국어(번체자)(홍콩)"
 
 #: picard/const/locales.py:1051
+#, fuzzy
 msgid "Chinese (Traditional) (Macao)"
-msgstr ""
+msgstr "중국어(번체자)(마카오)"
 
 #: picard/const/locales.py:1052
+#, fuzzy
 msgid "Chinese (Traditional) (Taiwan)"
-msgstr ""
+msgstr "중국어(번체자)(대만)"
 
 #: picard/const/locales.py:1053
 msgid "Zulu"
@@ -6449,8 +6492,9 @@ msgid "YYYY"
 msgstr ""
 
 #: picard/ui/filebrowser.py:88
+#, fuzzy
 msgid "&Load selected files"
-msgstr ""
+msgstr "선택된 파일 다시 틀기"
 
 #: picard/ui/filebrowser.py:91
 msgid "&Move tagged files here"
@@ -6555,9 +6599,9 @@ msgid "Artist:"
 msgstr "아티스트:"
 
 #: picard/ui/infodialog.py:341
-#, python-format
+#, fuzzy, python-format
 msgid "Disc %d"
-msgstr ""
+msgstr "디스크 ID"
 
 #: picard/ui/infodialog.py:343
 msgid "Tracklist:"
@@ -6728,8 +6772,9 @@ msgid "Loading..."
 msgstr "로딩중..."
 
 #: picard/ui/itemviews.py:548
+#, fuzzy
 msgid "Show &more details..."
-msgstr ""
+msgstr "상세보기..."
 
 #: picard/ui/itemviews.py:601
 #, python-format
@@ -7066,8 +7111,9 @@ msgid "Submit file as a new release to MusicBrainz"
 msgstr ""
 
 #: picard/ui/mainwindow.py:666
+#, fuzzy
 msgid "Search for similar items..."
-msgstr ""
+msgstr "유사한 앨범 검색..."
 
 #: picard/ui/mainwindow.py:667 picard/ui/options/interface_toolbar.py:123
 msgid "Similar items"
@@ -7116,8 +7162,9 @@ msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:713
+#, fuzzy
 msgid "&Metadata"
-msgstr ""
+msgstr "메타데이터"
 
 #: picard/ui/mainwindow.py:717
 msgid "Ctrl+Shift+M"
@@ -7323,8 +7370,9 @@ msgid "&Options"
 msgstr "옵션(&O)"
 
 #: picard/ui/mainwindow.py:1036
+#, fuzzy
 msgid "&Select file naming script"
-msgstr ""
+msgstr "선택된 파일 이름 스크립트"
 
 #: picard/ui/mainwindow.py:1044
 msgid "&Enable/disable profiles"
@@ -7500,8 +7548,9 @@ msgid_plural "Use Original Values"
 msgstr[0] "원본 값 사용"
 
 #: picard/ui/metadatabox.py:439
+#, fuzzy
 msgid "&Copy"
-msgstr ""
+msgstr "복사하기"
 
 #: picard/ui/newuserdialog.py:34
 msgid ""
@@ -7728,8 +7777,9 @@ msgid "Close the script editor without saving changes"
 msgstr ""
 
 #: picard/ui/scripteditor.py:566
+#, fuzzy
 msgid "&Script"
-msgstr ""
+msgstr "스크립트"
 
 #: picard/ui/scripteditor.py:569
 msgid "View/Edit Script &Metadata"
@@ -7744,8 +7794,9 @@ msgid "Ctrl+M"
 msgstr "Ctrl+M"
 
 #: picard/ui/scripteditor.py:575
+#, fuzzy
 msgid "Add a &new script"
-msgstr ""
+msgstr "새 스크립트 추가"
 
 #: picard/ui/scripteditor.py:580
 msgid "&Copy the current script"
@@ -7776,12 +7827,14 @@ msgid "View the scripting documentation in a sidebar"
 msgstr ""
 
 #: picard/ui/scripteditor.py:622
+#, fuzzy
 msgid "&Scripting documentation..."
-msgstr ""
+msgstr "스크립팅 다큐먼트"
 
 #: picard/ui/scripteditor.py:623
+#, fuzzy
 msgid "Open the scripting documentation in your browser"
-msgstr ""
+msgstr "브라우저에서 스크립팅 다큐먼트 열기"
 
 #: picard/ui/scripteditor.py:641
 msgid "Empty / blank script"
@@ -7899,8 +7952,9 @@ msgid "Submit disc ID"
 msgstr ""
 
 #: picard/ui/ui_cdlookup.py:89
+#, fuzzy
 msgid "&Load into Picard"
-msgstr ""
+msgstr "Picard로 로드"
 
 #: picard/ui/ui_cdlookup.py:90
 msgid "&Submit disc ID"
@@ -7967,8 +8021,9 @@ msgid "Available Language Scripts"
 msgstr "이용할 수 있는 언어 스크립트들"
 
 #: picard/ui/ui_infodialog.py:82
+#, fuzzy
 msgid "&Error"
-msgstr ""
+msgstr "오류"
 
 #: picard/ui/ui_infodialog.py:83
 msgid "A&rtwork"
@@ -8046,8 +8101,9 @@ msgid "Silent tracks"
 msgstr "사일런트 트랙"
 
 #: picard/ui/ui_options_advanced.py:149
+#, fuzzy
 msgid "Tags to ignore for comparison:"
-msgstr ""
+msgstr "비교 무시 태그"
 
 #: picard/ui/options/dialog.py:214 picard/ui/ui_options_attached_profiles.py:34
 msgid "Profiles Attached to Options"
@@ -8280,8 +8336,9 @@ msgid "Show the below tags above all other tags in the metadata view"
 msgstr ""
 
 #: picard/ui/ui_options_maintenance.py:86
+#, fuzzy
 msgid "Configuration File:"
-msgstr ""
+msgstr "구성 파일들"
 
 #: picard/ui/ui_options_maintenance.py:87
 msgid "Open folder"
@@ -8320,8 +8377,9 @@ msgid "Minimal similarity for cluster lookups:"
 msgstr "클러스터 조회에 대한 최소한의 유사성:"
 
 #: picard/ui/ui_options_metadata.py:130
+#, fuzzy
 msgid "Translate artist names to these locales where possible:"
-msgstr ""
+msgstr "가능하면 아티스트명을 이 언어로 번역:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select..."
@@ -8340,8 +8398,9 @@ msgid "Various artists:"
 msgstr "알 수 없는 아티스트:"
 
 #: picard/ui/ui_options_metadata.py:142
+#, fuzzy
 msgid "Standalone recordings:"
-msgstr ""
+msgstr "독립형 레코딩"
 
 #: picard/ui/options/interface.py:93 picard/ui/ui_options_metadata.py:143
 #: picard/ui/ui_options_metadata.py:144
@@ -8412,8 +8471,9 @@ msgid "Details"
 msgstr "상세내용"
 
 #: picard/ui/ui_options_profiles.py:75
+#, fuzzy
 msgid "Option Profile(s)"
-msgstr ""
+msgstr "옵션 프로필"
 
 #: picard/ui/ui_options_profiles.py:76
 msgid "Move profile up"
@@ -9003,10 +9063,12 @@ msgid "Theme changed"
 msgstr "바뀐 테마"
 
 #: picard/ui/options/interface.py:181
+#, fuzzy
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
-msgstr ""
+msgstr "인터페이스 언어가 변경되었습니다. 변경사항을 적용하려면 Picard를 "
+"재시작하십시오."
 
 #: picard/ui/options/interface.py:183
 msgid ""
@@ -9036,10 +9098,12 @@ msgid "Colors changed"
 msgstr "색이 변경된"
 
 #: picard/ui/options/interface_colors.py:147
+#, fuzzy
 msgid ""
 "You have changed the interface colors. You may have to restart Picard in "
 "order for the changes to take effect."
-msgstr ""
+msgstr "인터페이스 언어가 변경되었습니다. 변경사항을 적용하려면 Picard를 "
+"재시작하십시오."
 
 #: picard/ui/options/interface_toolbar.py:59
 msgid "Action Toolbar"

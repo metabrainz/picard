@@ -10,16 +10,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Babak <debat51@googlemail.com>, 2016\n"
-"Language-Team: Persian (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/fa/)\n"
+"PO-Revision-Date: 2023-08-23 08:24+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Persian <https://translations.metabrainz.org/projects/picard/"
+"app/fa/>\n"
 "Language: fa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.12.1\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -6746,8 +6747,9 @@ msgid "Media"
 msgstr ""
 
 #: picard/ui/itemviews.py:173 picard/util/tags.py:66
+#, fuzzy
 msgid "Genre"
-msgstr ""
+msgstr "Genres"
 
 #: picard/ui/itemviews.py:174
 msgid "Fingerprint status"
@@ -7210,8 +7212,9 @@ msgid "Ctrl+B"
 msgstr ""
 
 #: picard/ui/mainwindow.py:713
+#, fuzzy
 msgid "&Metadata"
-msgstr ""
+msgstr "Metadata"
 
 #: picard/ui/mainwindow.py:717
 msgid "Ctrl+Shift+M"
@@ -7243,8 +7246,9 @@ msgid "Ctrl+K"
 msgstr ""
 
 #: picard/ui/mainwindow.py:771
+#, fuzzy
 msgid "&Scan"
-msgstr ""
+msgstr "Scan"
 
 #: picard/ui/mainwindow.py:772
 msgid ""
@@ -8106,8 +8110,9 @@ msgid "Available Locales"
 msgstr ""
 
 #: picard/ui/ui_options.py:47
+#, fuzzy
 msgid "Options"
-msgstr ""
+msgstr "&گزینه‌ها‌"
 
 #: picard/ui/ui_options_advanced.py:138
 msgid "Advanced options"
@@ -8479,8 +8484,9 @@ msgid "Default listening port:"
 msgstr ""
 
 #: picard/ui/options/plugins.py:224 picard/ui/ui_options_plugins.py:131
+#, fuzzy
 msgid "Plugins"
-msgstr ""
+msgstr "&افزونه ها"
 
 #: picard/ui/options/plugins.py:609 picard/ui/searchdialog/album.py:152
 #: picard/ui/searchdialog/artist.py:54 picard/ui/searchdialog/track.py:69
@@ -8796,8 +8802,9 @@ msgid "Select the file naming script to load into the editor"
 msgstr ""
 
 #: picard/ui/ui_scripteditor.py:210 picard/ui/ui_scripteditor_details.py:99
+#, fuzzy
 msgid "Title:"
-msgstr ""
+msgstr "عنوان"
 
 #: picard/ui/ui_scripteditor_details.py:91
 msgid "File Naming Script Metadata"
@@ -8824,8 +8831,9 @@ msgid "Author:"
 msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:97
+#, fuzzy
 msgid "Version:"
-msgstr ""
+msgstr "Version"
 
 #: picard/ui/ui_scripteditor_details.py:98
 msgid "License:"
@@ -9140,8 +9148,9 @@ msgid "Add Files"
 msgstr ""
 
 #: picard/ui/options/interface_toolbar.py:75
+#, fuzzy
 msgid "Cluster"
-msgstr ""
+msgstr "گروه بندی ها"
 
 #: picard/ui/options/interface_toolbar.py:79
 msgid "Lookup"
@@ -9445,8 +9454,9 @@ msgid "The profile title cannot be blank."
 msgstr ""
 
 #: picard/ui/options/ratings.py:41
+#, fuzzy
 msgid "Ratings"
-msgstr ""
+msgstr "Rating"
 
 #: picard/ui/options/releases.py:157
 msgid "Preferred Releases"
@@ -9746,8 +9756,9 @@ msgid ""
 msgstr ""
 
 #: picard/util/checkupdate.py:156
+#, fuzzy
 msgid "unknown"
-msgstr ""
+msgstr "ناشناس"
 
 #: picard/util/checkupdate.py:160
 msgid ""
@@ -9778,8 +9789,9 @@ msgid "Arranger"
 msgstr ""
 
 #: picard/util/tags.py:44
+#, fuzzy
 msgid "Artists"
-msgstr ""
+msgstr "هنرمند:"
 
 #: picard/util/tags.py:45
 msgid "Artist Sort Order"
