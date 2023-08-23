@@ -4,13 +4,14 @@
 #
 # Translators:
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 08:24+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Kannada <https://translations.metabrainz.org/projects/picard/"
 "app/kn/>\n"
 "Language: kn\n"
@@ -47,17 +48,17 @@ msgstr ""
 #: picard/cluster.py:259
 #, fuzzy, python-format
 msgid "Cluster %(album)s identified!"
-msgstr "%s ಕಡತವನ್ನು ಗುರುತಿಸಲಾಗಿದೆ"
+msgstr "%(album)s ಕಡತವನ್ನು ಗುರುತಿಸಲಾಗಿದೆ"
 
 #: picard/cluster.py:262
 #, fuzzy, python-format
 msgid "No matching releases for cluster %(album)s"
-msgstr "%s ಕಡತವು ಯಾವುದೇ ಸಂಗೀತ ಕೃತಿಯನ್ನು ಹೊಲುತ್ತಿಲ್ಲ"
+msgstr "%(album)s ಕಡತವು ಯಾವುದೇ ಸಂಗೀತ ಕೃತಿಯನ್ನು ಹೊಲುತ್ತಿಲ್ಲ"
 
 #: picard/cluster.py:281
 #, fuzzy, python-format
 msgid "Looking up the metadata for cluster %(album)s…"
-msgstr "%s ಕಡತದ ಮೆಟಾಡಾಟಾವನ್ನು ಹುಡುಕಲಾಗುತ್ತಿದೆ"
+msgstr "%(album)s ಕಡತದ ಮೆಟಾಡಾಟಾವನ್ನು ಹುಡುಕಲಾಗುತ್ತಿದೆ"
 
 #: picard/cluster.py:330
 #, fuzzy
@@ -129,24 +130,24 @@ msgid ""
 msgstr ""
 
 #: picard/file.py:850
-#, fuzzy, python-format
+#, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
-msgstr "%s ಕಡತವು ಯಾವುದೇ ಸಂಗೀತ ಕೃತಿಯನ್ನು ಹೊಲುತ್ತಿಲ್ಲ"
+msgstr "%(filename)s ಕಡತವು ಯಾವುದೇ ಸಂಗೀತ ಕೃತಿಯನ್ನು ಹೊಲುತ್ತಿಲ್ಲ"
 
 #: picard/file.py:852
-#, fuzzy, python-format
+#, python-format
 msgid "File '%(filename)s' identified!"
-msgstr "%s ಕಡತವನ್ನು ಗುರುತಿಸಲಾಗಿದೆ"
+msgstr "%(filename)s ಕಡತವನ್ನು ಗುರುತಿಸಲಾಗಿದೆ"
 
 #: picard/file.py:864
-#, fuzzy, python-format
+#, python-format
 msgid "No matching tracks for file '%(filename)s'"
-msgstr "%s ಕಡತವು ಯಾವುದೇ ಸಂಗೀತ ಕೃತಿಯನ್ನು ಹೊಲುತ್ತಿಲ್ಲ"
+msgstr "%(filename)s ಕಡತವು ಯಾವುದೇ ಸಂಗೀತ ಕೃತಿಯನ್ನು ಹೊಲುತ್ತಿಲ್ಲ"
 
 #: picard/file.py:896
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the metadata for file %(filename)s …"
-msgstr "%s ಕಡತದ ಮೆಟಾಡಾಟಾವನ್ನು ಹುಡುಕಲಾಗುತ್ತಿದೆ"
+msgstr "%(filename)s ಕಡತದ ಮೆಟಾಡಾಟಾವನ್ನು ಹುಡುಕಲಾಗುತ್ತಿದೆ"
 
 #: picard/oauth.py:249 picard/oauth.py:276
 msgid "Unexpected authentication error"
@@ -831,9 +832,9 @@ msgid "AcoustID lookup returned no result for file '%(filename)s'"
 msgstr ""
 
 #: picard/acoustid/__init__.py:187
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' …"
-msgstr "%s ಕಡತದ ಮೆಟಾಡಾಟಾವನ್ನು ಹುಡುಕಲಾಗುತ್ತಿದೆ"
+msgstr "%(filename)s ಕಡತದ ಮೆಟಾಡಾಟಾವನ್ನು ಹುಡುಕಲಾಗುತ್ತಿದೆ"
 
 #: picard/acoustid/manager.py:184
 msgid ""
