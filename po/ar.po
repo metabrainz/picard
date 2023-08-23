@@ -11,17 +11,18 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: صفا الفليج <safaalfulaij@hotmail.com>, 2018\n"
-"Language-Team: Arabic (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/ar/)\n"
+"PO-Revision-Date: 2023-08-23 08:46+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Arabic <https://translations.metabrainz.org/projects/picard/"
+"app/ar/>\n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+"X-Generator: Weblate 4.18.2\n"
+"Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -249,8 +250,9 @@ msgid "General"
 msgstr "عام"
 
 #: picard/profile.py:48
+#, fuzzy
 msgid "Server address"
-msgstr ""
+msgstr "عنوان الخادوم:"
 
 #: picard/profile.py:49
 msgid "Port"
@@ -522,8 +524,9 @@ msgid "Move files"
 msgstr ""
 
 #: picard/profile.py:157
+#, fuzzy
 msgid "Destination directory"
-msgstr ""
+msgstr "الدليل المقصد:"
 
 #: picard/profile.py:158
 msgid "Move additional files"
@@ -595,8 +598,9 @@ msgid "Show icons in menus"
 msgstr ""
 
 #: picard/profile.py:188
+#, fuzzy
 msgid "User interface language"
-msgstr ""
+msgstr "لغة واجهة المستخدم:"
 
 #: picard/profile.py:189
 msgid "User interface color theme"
@@ -727,12 +731,14 @@ msgid "Request timeout in seconds"
 msgstr ""
 
 #: picard/profile.py:245
+#, fuzzy
 msgid "Browser integration"
-msgstr ""
+msgstr "التكامل مع المتصفّح"
 
 #: picard/profile.py:248
+#, fuzzy
 msgid "Default listening port"
-msgstr ""
+msgstr "منفذ الاستماع المبدئي:"
 
 #: picard/profile.py:249 picard/ui/ui_options_network.py:141
 msgid "Listen only on localhost"
@@ -6760,8 +6766,9 @@ msgid "Loading…"
 msgstr "يحمّل…"
 
 #: picard/ui/itemviews.py:548
+#, fuzzy
 msgid "Show &more details…"
-msgstr ""
+msgstr "اعرض تفاصيل أكثر…"
 
 #: picard/ui/itemviews.py:601
 #, python-format
@@ -7062,8 +7069,9 @@ msgid "Remove selected files/albums"
 msgstr "أزِل الملفات/الألبومات المحددة"
 
 #: picard/ui/mainwindow.py:623 picard/ui/metadatabox.py:400
+#, fuzzy
 msgid "Lookup in &Browser"
-msgstr ""
+msgstr "ابحث في المتصفّح"
 
 #: picard/ui/mainwindow.py:624
 msgid "Lookup selected item on MusicBrainz website"
@@ -7914,8 +7922,9 @@ msgid "Overwrite"
 msgstr ""
 
 #: picard/ui/options/profiles.py:119 picard/ui/scripteditor.py:1238
+#, fuzzy
 msgid "Copy"
-msgstr ""
+msgstr "نسخ"
 
 #: picard/ui/options/renaming.py:266 picard/ui/scripteditor.py:1284
 msgid "The file naming format must not be empty."
@@ -7964,8 +7973,9 @@ msgid "Submit disc ID"
 msgstr ""
 
 #: picard/ui/ui_cdlookup.py:89
+#, fuzzy
 msgid "&Load into Picard"
-msgstr ""
+msgstr "حمّل في Picard"
 
 #: picard/ui/ui_cdlookup.py:90
 msgid "&Submit disc ID"
@@ -8365,8 +8375,9 @@ msgid "Remove selected options"
 msgstr ""
 
 #: picard/ui/ui_options_maintenance.py:91
+#, fuzzy
 msgid "Select all"
-msgstr ""
+msgstr "حدّد ال&كل"
 
 #: picard/ui/ui_options_matching.py:71
 msgid "Thresholds"
@@ -8385,8 +8396,9 @@ msgid "Minimal similarity for cluster lookups:"
 msgstr ""
 
 #: picard/ui/ui_options_metadata.py:130
+#, fuzzy
 msgid "Translate artist names to these locales where possible:"
-msgstr ""
+msgstr "ترجم أسماء الفنّانين إلى هذه اللغة إن أمكن:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select…"

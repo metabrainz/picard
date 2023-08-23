@@ -16,17 +16,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2012-05-29 16:17+0000\n"
-"Last-Translator: Frederik “Freso” S. Olesen <transifex.net@freso.dk>, "
-"2012,2017,2020\n"
-"Language-Team: Danish (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/da/)\n"
+"PO-Revision-Date: 2023-08-23 08:46+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Danish <https://translations.metabrainz.org/projects/picard/"
+"app/da/>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
@@ -235,20 +235,23 @@ msgid "General"
 msgstr "Generelt"
 
 #: picard/profile.py:48
+#, fuzzy
 msgid "Server address"
-msgstr ""
+msgstr "Serveradresse:"
 
 #: picard/profile.py:49
+#, fuzzy
 msgid "Port"
-msgstr ""
+msgstr "Port:"
 
 #: picard/profile.py:50 picard/ui/ui_options_general.py:201
 msgid "Automatically scan all new files"
 msgstr "Skan automatisk alle nye filer"
 
 #: picard/profile.py:51 picard/ui/ui_options_general.py:202
+#, fuzzy
 msgid "Automatically cluster all new files"
-msgstr ""
+msgstr "Skan automatisk alle nye filer"
 
 #: picard/profile.py:52 picard/ui/ui_options_general.py:203
 msgid "Ignore MBIDs when loading new files"
@@ -504,8 +507,9 @@ msgid "File Naming"
 msgstr "Navngivning af filer"
 
 #: picard/profile.py:156
+#, fuzzy
 msgid "Move files"
-msgstr ""
+msgstr "Flyt filer"
 
 #: picard/profile.py:157
 msgid "Destination directory"
@@ -524,8 +528,9 @@ msgid "Delete empty directories"
 msgstr "Slet tomme mapper"
 
 #: picard/profile.py:161
+#, fuzzy
 msgid "Rename files"
-msgstr ""
+msgstr "Omdøb filer"
 
 #: picard/profile.py:162
 msgid "Selected file naming script"
@@ -581,8 +586,9 @@ msgid "Show icons in menus"
 msgstr ""
 
 #: picard/profile.py:188
+#, fuzzy
 msgid "User interface language"
-msgstr ""
+msgstr "Sprog for brugerfladen:"
 
 #: picard/profile.py:189
 msgid "User interface color theme"
@@ -597,8 +603,9 @@ msgid "Use builtin search rather than looking in browser"
 msgstr ""
 
 #: picard/profile.py:192
+#, fuzzy
 msgid "Use advanced search syntax"
-msgstr ""
+msgstr "Brug avanceret forespørgselssyntaks"
 
 #: picard/profile.py:193
 msgid "Show a usage warning dialog when Picard starts"
@@ -714,8 +721,9 @@ msgid "Request timeout in seconds"
 msgstr ""
 
 #: picard/profile.py:245
+#, fuzzy
 msgid "Browser integration"
-msgstr ""
+msgstr "Browserintegration"
 
 #: picard/profile.py:248
 msgid "Default listening port"
@@ -726,16 +734,19 @@ msgid "Listen only on localhost"
 msgstr ""
 
 #: picard/profile.py:252
+#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr ""
+msgstr "Mindste lighed for filopslag:"
 
 #: picard/profile.py:253
+#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr ""
+msgstr "Mindste lighed for klyngeopslag:"
 
 #: picard/profile.py:254
+#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr ""
+msgstr "Mindste lighed for matchning af filer til skæringer:"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -1113,8 +1124,9 @@ msgid "Afar (Ethiopia)"
 msgstr ""
 
 #: picard/const/locales.py:32
+#, fuzzy
 msgid "Abkhazian"
-msgstr ""
+msgstr "Abkhazian"
 
 #: picard/const/locales.py:33
 msgid "Abkhazian (Georgia)"
@@ -1357,16 +1369,18 @@ msgid "Azerbaijani (Latin) (Azerbaijan)"
 msgstr ""
 
 #: picard/const/locales.py:94
+#, fuzzy
 msgid "Bashkir"
-msgstr ""
+msgstr "Bajkirsk"
 
 #: picard/const/locales.py:95
 msgid "Bashkir (Russia)"
 msgstr ""
 
 #: picard/const/locales.py:96
+#, fuzzy
 msgid "Baluchi"
-msgstr ""
+msgstr "Baluchi"
 
 #: picard/const/locales.py:97
 msgid "Baluchi (Arabic)"
@@ -1461,8 +1475,9 @@ msgid "Western Balochi (Pakistan)"
 msgstr ""
 
 #: picard/const/locales.py:120
+#, fuzzy
 msgid "Bhojpuri"
-msgstr ""
+msgstr "Bhojpuri"
 
 #: picard/const/locales.py:121
 msgid "Bhojpuri (India)"
@@ -1477,8 +1492,9 @@ msgid "Tai Dam (Vietnam)"
 msgstr ""
 
 #: picard/const/locales.py:124
+#, fuzzy
 msgid "Bambara"
-msgstr ""
+msgstr "Bambara"
 
 #: picard/const/locales.py:125
 msgid "Bambara (Mali)"
@@ -1517,8 +1533,9 @@ msgid "Tibetan (India)"
 msgstr ""
 
 #: picard/const/locales.py:134
+#, fuzzy
 msgid "Breton"
-msgstr ""
+msgstr "Bretonsk"
 
 #: picard/const/locales.py:135
 msgid "Breton (France)"
@@ -1589,8 +1606,9 @@ msgid "Catalan (Italy)"
 msgstr ""
 
 #: picard/const/locales.py:153
+#, fuzzy
 msgid "Caddo"
-msgstr ""
+msgstr "Caddo"
 
 #: picard/const/locales.py:154
 msgid "Caddo (United States)"
@@ -1617,16 +1635,18 @@ msgid "Chakma (India)"
 msgstr ""
 
 #: picard/const/locales.py:160
+#, fuzzy
 msgid "Chechen"
-msgstr ""
+msgstr "Tjetjensk"
 
 #: picard/const/locales.py:161
 msgid "Chechen (Russia)"
 msgstr ""
 
 #: picard/const/locales.py:162
+#, fuzzy
 msgid "Cebuano"
-msgstr ""
+msgstr "Cebuano"
 
 #: picard/const/locales.py:163
 msgid "Cebuano (Philippines)"
@@ -1641,16 +1661,18 @@ msgid "Chiga (Uganda)"
 msgstr ""
 
 #: picard/const/locales.py:166
+#, fuzzy
 msgid "Choctaw"
-msgstr ""
+msgstr "Choctaw"
 
 #: picard/const/locales.py:167
 msgid "Choctaw (United States)"
 msgstr ""
 
 #: picard/const/locales.py:168
+#, fuzzy
 msgid "Cherokee"
-msgstr ""
+msgstr "Cherokee"
 
 #: picard/const/locales.py:169
 msgid "Cherokee (United States)"
@@ -1677,8 +1699,9 @@ msgid "Central Kurdish (Iran)"
 msgstr ""
 
 #: picard/const/locales.py:175
+#, fuzzy
 msgid "Corsican"
-msgstr ""
+msgstr "Korsikansk"
 
 #: picard/const/locales.py:176
 msgid "Corsican (France)"
@@ -1697,8 +1720,9 @@ msgid "Church Slavic (Russia)"
 msgstr ""
 
 #: picard/const/locales.py:181
+#, fuzzy
 msgid "Chuvash"
-msgstr ""
+msgstr "Tjuvaskisk"
 
 #: picard/const/locales.py:182
 msgid "Chuvash (Russia)"
@@ -1761,8 +1785,9 @@ msgid "Zarma (Niger)"
 msgstr ""
 
 #: picard/const/locales.py:200
+#, fuzzy
 msgid "Dogri"
-msgstr ""
+msgstr "Dogrib"
 
 #: picard/const/locales.py:201
 msgid "Dogri (India)"
@@ -1777,8 +1802,9 @@ msgid "Lower Sorbian (Germany)"
 msgstr ""
 
 #: picard/const/locales.py:204
+#, fuzzy
 msgid "Duala"
-msgstr ""
+msgstr "Duala"
 
 #: picard/const/locales.py:205
 msgid "Duala (Cameroon)"
@@ -1865,8 +1891,9 @@ msgid "English (American Samoa)"
 msgstr ""
 
 #: picard/const/locales.py:228
+#, fuzzy
 msgid "English (Austria)"
-msgstr ""
+msgstr "Engelsk (Australien)"
 
 #: picard/const/locales.py:230
 msgid "English (Barbados)"
@@ -1969,8 +1996,9 @@ msgid "English (United Kingdom)"
 msgstr ""
 
 #: picard/const/locales.py:256
+#, fuzzy
 msgid "English (Grenada)"
-msgstr ""
+msgstr "Engelsk (Canada)"
 
 #: picard/const/locales.py:257
 msgid "English (Guernsey)"
@@ -2405,8 +2433,9 @@ msgid "Basque (Spain)"
 msgstr ""
 
 #: picard/const/locales.py:367
+#, fuzzy
 msgid "Ewondo"
-msgstr ""
+msgstr "Ewondo"
 
 #: picard/const/locales.py:368
 msgid "Ewondo (Cameroon)"
@@ -2425,8 +2454,9 @@ msgid "Persian (Iran)"
 msgstr ""
 
 #: picard/const/locales.py:372
+#, fuzzy
 msgid "Fula"
-msgstr ""
+msgstr "Fulah"
 
 #: picard/const/locales.py:373
 msgid "Fula (Adlam)"
@@ -2805,8 +2835,9 @@ msgid "Galician (Spain)"
 msgstr ""
 
 #: picard/const/locales.py:471
+#, fuzzy
 msgid "Guarani"
-msgstr ""
+msgstr "Guarani"
 
 #: picard/const/locales.py:472
 msgid "Guarani (Paraguay)"
@@ -2977,8 +3008,9 @@ msgid "Armenian (Armenia) (Revised Orthography)"
 msgstr ""
 
 #: picard/const/locales.py:516
+#, fuzzy
 msgid "Interlingua"
-msgstr ""
+msgstr "Interlingue"
 
 #: picard/const/locales.py:517
 msgid "Interlingua (world)"
@@ -3009,8 +3041,9 @@ msgid "Sichuan Yi (China)"
 msgstr ""
 
 #: picard/const/locales.py:524
+#, fuzzy
 msgid "Ido"
-msgstr ""
+msgstr "Ido"
 
 #: picard/const/locales.py:525
 msgid "Ido (world)"
@@ -3057,8 +3090,9 @@ msgid "Japanese (Japan)"
 msgstr ""
 
 #: picard/const/locales.py:539
+#, fuzzy
 msgid "Lojban"
-msgstr ""
+msgstr "Lojban"
 
 #: picard/const/locales.py:540
 msgid "Lojban (world)"
@@ -3081,8 +3115,9 @@ msgid "Machame (Tanzania)"
 msgstr ""
 
 #: picard/const/locales.py:545
+#, fuzzy
 msgid "Javanese"
-msgstr ""
+msgstr "Javanesisk"
 
 #: picard/const/locales.py:546
 msgid "Javanese (Indonesia)"
@@ -3097,8 +3132,9 @@ msgid "Georgian (Georgia)"
 msgstr ""
 
 #: picard/const/locales.py:549
+#, fuzzy
 msgid "Kabyle"
-msgstr ""
+msgstr "Kabyle"
 
 #: picard/const/locales.py:550
 msgid "Kabyle (Algeria)"
@@ -3177,8 +3213,9 @@ msgid "Koyra Chiini (Mali)"
 msgstr ""
 
 #: picard/const/locales.py:569
+#, fuzzy
 msgid "Kikuyu"
-msgstr ""
+msgstr "Kikuyu"
 
 #: picard/const/locales.py:570
 msgid "Kikuyu (Kenya)"
@@ -3269,8 +3306,9 @@ msgid "Kpelle (Liberia)"
 msgstr ""
 
 #: picard/const/locales.py:593
+#, fuzzy
 msgid "Kashmiri"
-msgstr ""
+msgstr "Kashmirsk"
 
 #: picard/const/locales.py:594
 msgid "Kashmiri (Arabic)"
@@ -3361,8 +3399,9 @@ msgid "Luxembourgish (Luxembourg)"
 msgstr ""
 
 #: picard/const/locales.py:616
+#, fuzzy
 msgid "Ganda"
-msgstr ""
+msgstr "Luganda"
 
 #: picard/const/locales.py:617
 msgid "Ganda (Uganda)"
@@ -3441,8 +3480,9 @@ msgid "Lithuanian (Lithuania)"
 msgstr ""
 
 #: picard/const/locales.py:636
+#, fuzzy
 msgid "Luba-Katanga"
-msgstr ""
+msgstr "Luba-Katanga"
 
 #: picard/const/locales.py:637
 msgid "Luba-Katanga (Congo - Kinshasa)"
@@ -3473,16 +3513,18 @@ msgid "Latvian (Latvia)"
 msgstr ""
 
 #: picard/const/locales.py:644
+#, fuzzy
 msgid "Maithili"
-msgstr ""
+msgstr "Maithili"
 
 #: picard/const/locales.py:645
 msgid "Maithili (India)"
 msgstr ""
 
 #: picard/const/locales.py:646
+#, fuzzy
 msgid "Masai"
-msgstr ""
+msgstr "Masai"
 
 #: picard/const/locales.py:647
 msgid "Masai (Kenya)"
@@ -3493,8 +3535,9 @@ msgid "Masai (Tanzania)"
 msgstr ""
 
 #: picard/const/locales.py:649
+#, fuzzy
 msgid "Moksha"
-msgstr ""
+msgstr "Moksha"
 
 #: picard/const/locales.py:650
 msgid "Moksha (Russia)"
@@ -3517,8 +3560,9 @@ msgid "Morisyen (Mauritius)"
 msgstr ""
 
 #: picard/const/locales.py:655
+#, fuzzy
 msgid "Malagasy"
-msgstr ""
+msgstr "Malagasy"
 
 #: picard/const/locales.py:656
 msgid "Malagasy (Madagascar)"
@@ -3613,8 +3657,9 @@ msgid "Manipuri (Meitei Mayek) (India)"
 msgstr ""
 
 #: picard/const/locales.py:679
+#, fuzzy
 msgid "Mohawk"
-msgstr ""
+msgstr "Mohawk"
 
 #: picard/const/locales.py:680
 msgid "Mohawk (Canada)"
@@ -3689,8 +3734,9 @@ msgid "Burmese (Myanmar (Burma))"
 msgstr ""
 
 #: picard/const/locales.py:699
+#, fuzzy
 msgid "Erzya"
-msgstr ""
+msgstr "Erza"
 
 #: picard/const/locales.py:700
 msgid "Erzya (Russia)"
@@ -3857,8 +3903,9 @@ msgid "Nyanja (Malawi)"
 msgstr ""
 
 #: picard/const/locales.py:743
+#, fuzzy
 msgid "Nyankole"
-msgstr ""
+msgstr "Nyankole"
 
 #: picard/const/locales.py:744
 msgid "Nyankole (Uganda)"
@@ -3905,8 +3952,9 @@ msgid "Ossetic (Russia)"
 msgstr ""
 
 #: picard/const/locales.py:756
+#, fuzzy
 msgid "Osage"
-msgstr ""
+msgstr "Osage"
 
 #: picard/const/locales.py:757
 msgid "Osage (United States)"
@@ -3941,8 +3989,9 @@ msgid "Punjabi (Pakistan)"
 msgstr ""
 
 #: picard/const/locales.py:765
+#, fuzzy
 msgid "Papiamento"
-msgstr ""
+msgstr "Papiamento"
 
 #: picard/const/locales.py:766
 msgid "Papiamento (Aruba)"
@@ -4041,8 +4090,9 @@ msgid "Portuguese (Timor-Leste)"
 msgstr ""
 
 #: picard/const/locales.py:792
+#, fuzzy
 msgid "Quechua"
-msgstr ""
+msgstr "Kechua"
 
 #: picard/const/locales.py:793
 msgid "Quechua (Bolivia)"
@@ -4065,8 +4115,9 @@ msgid "Kʼicheʼ (Guatemala)"
 msgstr ""
 
 #: picard/const/locales.py:798
+#, fuzzy
 msgid "Rajasthani"
-msgstr ""
+msgstr "Rajasthani"
 
 #: picard/const/locales.py:799
 msgid "Rajasthani (India)"
@@ -4105,8 +4156,9 @@ msgid "Romansh (Switzerland)"
 msgstr ""
 
 #: picard/const/locales.py:808
+#, fuzzy
 msgid "Rundi"
-msgstr ""
+msgstr "Rundi"
 
 #: picard/const/locales.py:809
 msgid "Rundi (Burundi)"
@@ -4177,8 +4229,9 @@ msgid "Sanskrit (India)"
 msgstr ""
 
 #: picard/const/locales.py:828
+#, fuzzy
 msgid "Yakut"
-msgstr ""
+msgstr "Yakut"
 
 #: picard/const/locales.py:829
 msgid "Yakut (Russia)"
@@ -4193,8 +4246,9 @@ msgid "Samburu (Kenya)"
 msgstr ""
 
 #: picard/const/locales.py:832
+#, fuzzy
 msgid "Santali"
-msgstr ""
+msgstr "Santali"
 
 #: picard/const/locales.py:833
 msgid "Santali (Devanagari)"
@@ -4213,32 +4267,36 @@ msgid "Santali (Ol Chiki) (India)"
 msgstr ""
 
 #: picard/const/locales.py:837
+#, fuzzy
 msgid "Sangu"
-msgstr ""
+msgstr "Sango"
 
 #: picard/const/locales.py:838
 msgid "Sangu (Tanzania)"
 msgstr ""
 
 #: picard/const/locales.py:839
+#, fuzzy
 msgid "Sardinian"
-msgstr ""
+msgstr "Sardinsk"
 
 #: picard/const/locales.py:840
 msgid "Sardinian (Italy)"
 msgstr ""
 
 #: picard/const/locales.py:841
+#, fuzzy
 msgid "Sicilian"
-msgstr ""
+msgstr "Siciliansk"
 
 #: picard/const/locales.py:842
 msgid "Sicilian (Italy)"
 msgstr ""
 
 #: picard/const/locales.py:843
+#, fuzzy
 msgid "Sindhi"
-msgstr ""
+msgstr "Sindhi"
 
 #: picard/const/locales.py:844
 msgid "Sindhi (Arabic)"
@@ -4301,8 +4359,9 @@ msgid "Koyraboro Senni (Mali)"
 msgstr ""
 
 #: picard/const/locales.py:859
+#, fuzzy
 msgid "Sango"
-msgstr ""
+msgstr "Sango"
 
 #: picard/const/locales.py:860
 msgid "Sango (Central African Republic)"
@@ -4329,8 +4388,9 @@ msgid "Tachelhit (Tifinagh) (Morocco)"
 msgstr ""
 
 #: picard/const/locales.py:866
+#, fuzzy
 msgid "Shan"
-msgstr ""
+msgstr "Shan"
 
 #: picard/const/locales.py:867
 msgid "Shan (Myanmar (Burma))"
@@ -4405,8 +4465,9 @@ msgid "Skolt Sami (Finland)"
 msgstr ""
 
 #: picard/const/locales.py:887
+#, fuzzy
 msgid "Shona"
-msgstr ""
+msgstr "Shona"
 
 #: picard/const/locales.py:888
 msgid "Shona (Zimbabwe)"
@@ -4521,8 +4582,9 @@ msgid "Southern Sotho (South Africa)"
 msgstr ""
 
 #: picard/const/locales.py:917
+#, fuzzy
 msgid "Sundanese"
-msgstr ""
+msgstr "Sundanesisk"
 
 #: picard/const/locales.py:918
 msgid "Sundanese (Latin)"
@@ -4669,8 +4731,9 @@ msgid "Tigre (Eritrea)"
 msgstr ""
 
 #: picard/const/locales.py:955
+#, fuzzy
 msgid "Turkmen"
-msgstr ""
+msgstr "Turkmensk"
 
 #: picard/const/locales.py:956
 msgid "Turkmen (Turkmenistan)"
@@ -4689,8 +4752,9 @@ msgid "Tswana (South Africa)"
 msgstr ""
 
 #: picard/const/locales.py:960
+#, fuzzy
 msgid "Tongan"
-msgstr ""
+msgstr "Tonga"
 
 #: picard/const/locales.py:961
 msgid "Tongan (Tonga)"
@@ -4705,8 +4769,9 @@ msgid "Toki Pona (world)"
 msgstr ""
 
 #: picard/const/locales.py:964
+#, fuzzy
 msgid "Tok Pisin"
-msgstr ""
+msgstr "Tok Pisin"
 
 #: picard/const/locales.py:965
 msgid "Tok Pisin (Papua New Guinea)"
@@ -4825,8 +4890,9 @@ msgid "Uzbek (Latin) (Uzbekistan)"
 msgstr ""
 
 #: picard/const/locales.py:996
+#, fuzzy
 msgid "Vai"
-msgstr ""
+msgstr "Vai"
 
 #: picard/const/locales.py:997
 msgid "Vai (Latin)"
@@ -4869,8 +4935,9 @@ msgid "Vietnamese (Vietnam)"
 msgstr ""
 
 #: picard/const/locales.py:1007
+#, fuzzy
 msgid "Volapük"
-msgstr ""
+msgstr "Volapyk"
 
 #: picard/const/locales.py:1008
 msgid "Volapük (world)"
@@ -4885,8 +4952,9 @@ msgid "Vunjo (Tanzania)"
 msgstr ""
 
 #: picard/const/locales.py:1011
+#, fuzzy
 msgid "Walloon"
-msgstr ""
+msgstr "Wallonsk"
 
 #: picard/const/locales.py:1012
 msgid "Walloon (Belgium)"
@@ -4949,8 +5017,9 @@ msgid "Yangben (Cameroon)"
 msgstr ""
 
 #: picard/const/locales.py:1027
+#, fuzzy
 msgid "Yiddish"
-msgstr ""
+msgstr "Jiddish"
 
 #: picard/const/locales.py:1028
 msgid "Yiddish (world)"
@@ -6564,9 +6633,9 @@ msgid "Artist:"
 msgstr "Kunstner:"
 
 #: picard/ui/infodialog.py:341
-#, python-format
+#, fuzzy, python-format
 msgid "Disc %d"
-msgstr ""
+msgstr "Disk-id"
 
 #: picard/ui/infodialog.py:343
 msgid "Tracklist:"
@@ -6753,8 +6822,9 @@ msgid "Collections"
 msgstr "Samlinger"
 
 #: picard/ui/itemviews.py:635
+#, fuzzy
 msgid "P&lugins"
-msgstr ""
+msgstr "Udvidelsesmoduler"
 
 #: picard/ui/itemviews.py:651
 msgid "&Run scripts"
@@ -7127,8 +7197,9 @@ msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:713
+#, fuzzy
 msgid "&Metadata"
-msgstr ""
+msgstr "Metadata"
 
 #: picard/ui/mainwindow.py:717
 msgid "Ctrl+Shift+M"
@@ -7139,8 +7210,9 @@ msgid "&Cover Art"
 msgstr "Omslag"
 
 #: picard/ui/mainwindow.py:735
+#, fuzzy
 msgid "&Actions"
-msgstr ""
+msgstr "Handlinger"
 
 #: picard/ui/mainwindow.py:744 picard/ui/mainwindow.py:1139
 #: picard/ui/searchdialog/__init__.py:48
@@ -7419,8 +7491,9 @@ msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
 #: picard/ui/mainwindow.py:1722
+#, fuzzy
 msgid "Authentication Required"
-msgstr ""
+msgstr "Autentifikation påkrævet"
 
 #: picard/ui/mainwindow.py:1723
 msgid ""
@@ -7746,8 +7819,9 @@ msgid "Close the script editor without saving changes"
 msgstr ""
 
 #: picard/ui/scripteditor.py:566
+#, fuzzy
 msgid "&Script"
-msgstr ""
+msgstr "Skriftsystem"
 
 #: picard/ui/scripteditor.py:569
 msgid "View/Edit Script &Metadata"
@@ -7985,8 +8059,9 @@ msgid "Available Language Scripts"
 msgstr ""
 
 #: picard/ui/ui_infodialog.py:82
+#, fuzzy
 msgid "&Error"
-msgstr ""
+msgstr "Fejl"
 
 #: picard/ui/ui_infodialog.py:83
 msgid "A&rtwork"
@@ -8318,8 +8393,9 @@ msgid "Remove selected options"
 msgstr ""
 
 #: picard/ui/ui_options_maintenance.py:91
+#, fuzzy
 msgid "Select all"
-msgstr ""
+msgstr "Marker &alt"
 
 #: picard/ui/ui_options_matching.py:71
 msgid "Thresholds"
@@ -8338,8 +8414,9 @@ msgid "Minimal similarity for cluster lookups:"
 msgstr "Mindste lighed for klyngeopslag:"
 
 #: picard/ui/ui_options_metadata.py:130
+#, fuzzy
 msgid "Translate artist names to these locales where possible:"
-msgstr ""
+msgstr "Oversæt kunstnernavne til denne lokalitet hvor det er muligt:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select…"
@@ -8682,8 +8759,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:58
+#, fuzzy
 msgid "Also include RIFF INFO tags in the files"
-msgstr ""
+msgstr "Inkluder også ID3v1-tags i filerne"
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:61
 msgid "Windows-1252"
@@ -8725,8 +8803,9 @@ msgid "Select the file naming script to load into the editor"
 msgstr ""
 
 #: picard/ui/ui_scripteditor.py:210 picard/ui/ui_scripteditor_details.py:99
+#, fuzzy
 msgid "Title:"
-msgstr ""
+msgstr "Titel"
 
 #: picard/ui/ui_scripteditor_details.py:91
 msgid "File Naming Script Metadata"
@@ -8753,12 +8832,14 @@ msgid "Author:"
 msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:97
+#, fuzzy
 msgid "Version:"
-msgstr ""
+msgstr "Version"
 
 #: picard/ui/ui_scripteditor_details.py:98
+#, fuzzy
 msgid "License:"
-msgstr ""
+msgstr "Licens"
 
 #: picard/ui/ui_scripteditor_details.py:100
 msgid "License under which the file naming script is available."
@@ -8893,8 +8974,9 @@ msgid "Are you sure?"
 msgstr "Er du sikker?"
 
 #: picard/ui/options/dialog.py:477 picard/ui/options/maintenance.py:93
+#, fuzzy
 msgid "Option"
-msgstr ""
+msgstr "Indstillinger"
 
 #: picard/ui/options/dialog.py:484
 #, python-format
@@ -8975,8 +9057,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/genres.py:87
+#, fuzzy
 msgid "Genres"
-msgstr ""
+msgstr "Genre"
 
 #: picard/ui/options/genres.py:156
 #, python-format
@@ -9020,10 +9103,13 @@ msgid "Theme changed"
 msgstr ""
 
 #: picard/ui/options/interface.py:181
+#, fuzzy
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
 msgstr ""
+"Du har ændret sproget for brugerfladen. Du skal genstarte Picard for at "
+"ændringer træder i kraft."
 
 #: picard/ui/options/interface.py:183
 msgid ""
@@ -9053,10 +9139,13 @@ msgid "Colors changed"
 msgstr ""
 
 #: picard/ui/options/interface_colors.py:147
+#, fuzzy
 msgid ""
 "You have changed the interface colors. You may have to restart Picard in "
 "order for the changes to take effect."
 msgstr ""
+"Du har ændret sproget for brugerfladen. Du skal genstarte Picard for at "
+"ændringer træder i kraft."
 
 #: picard/ui/options/interface_toolbar.py:59
 msgid "Action Toolbar"
@@ -9071,8 +9160,9 @@ msgid "Add Files"
 msgstr "Tilføj filer"
 
 #: picard/ui/options/interface_toolbar.py:75
+#, fuzzy
 msgid "Cluster"
-msgstr ""
+msgstr "Klynger"
 
 #: picard/ui/options/interface_toolbar.py:79
 msgid "Lookup"
@@ -9481,8 +9571,9 @@ msgid "Language"
 msgstr "Sprog"
 
 #: picard/ui/searchdialog/album.py:163
+#, fuzzy
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: picard/ui/searchdialog/album.py:165 picard/ui/searchdialog/artist.py:62
 #: picard/ui/searchdialog/track.py:76
@@ -9526,8 +9617,9 @@ msgid "Track Search Results"
 msgstr ""
 
 #: picard/ui/searchdialog/track.py:72
+#, fuzzy
 msgid "Release"
-msgstr ""
+msgstr "Udgivelse"
 
 #: picard/ui/searchdialog/track.py:175
 msgid "Standalone Recording"
@@ -9677,8 +9769,9 @@ msgid ""
 msgstr ""
 
 #: picard/util/checkupdate.py:156
+#, fuzzy
 msgid "unknown"
-msgstr ""
+msgstr "Ukendt"
 
 #: picard/util/checkupdate.py:160
 msgid ""
