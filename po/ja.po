@@ -25,7 +25,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-24 13:50+0000\n"
+"PO-Revision-Date: 2023-08-24 15:36+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Japanese <https://translations.metabrainz.org/projects/picard/"
 "app/ja/>\n"
@@ -282,9 +282,8 @@ msgid "Days between update checks"
 msgstr ""
 
 #: picard/profile.py:56
-#, fuzzy
 msgid "Updates to check"
-msgstr "更新確認対象:"
+msgstr "更新確認対象"
 
 #: picard/profile.py:61 picard/ui/options/metadata.py:78
 #: picard/ui/ui_options_metadata.py:129
@@ -369,19 +368,16 @@ msgid "Use folksonomy tags as genre"
 msgstr "フォークソノミーのタグをジャンルとして使用する"
 
 #: picard/profile.py:89
-#, fuzzy
 msgid "Minimal genre usage"
-msgstr "最小限のジャンル使用："
+msgstr "最小限のジャンル使用"
 
 #: picard/profile.py:90
-#, fuzzy
 msgid "Maximum number of genres"
-msgstr "ジャンルの最大数:"
+msgstr "ジャンルの最大数"
 
 #: picard/profile.py:91
-#, fuzzy
 msgid "Join multiple genres with"
-msgstr "複数ジャンルの区切り文字:"
+msgstr "複数ジャンルの区切り文字"
 
 #: picard/profile.py:92
 msgid "Genres to include or exclude"
@@ -602,14 +598,12 @@ msgid "Show icons in menus"
 msgstr ""
 
 #: picard/profile.py:188
-#, fuzzy
 msgid "User interface language"
-msgstr "ユーザインタフェースの言語:"
+msgstr "ユーザインタフェースの言語"
 
 #: picard/profile.py:189
-#, fuzzy
 msgid "User interface color theme"
-msgstr "ユーザーインターフェースのテーマカラー:"
+msgstr "ユーザーインターフェースのテーマカラー"
 
 #: picard/profile.py:190 picard/ui/ui_options_interface.py:124
 msgid "Allow selection of multiple directories"
@@ -620,7 +614,6 @@ msgid "Use builtin search rather than looking in browser"
 msgstr "ブラウザよりも内蔵検索を優先する"
 
 #: picard/profile.py:192
-#, fuzzy
 msgid "Use advanced search syntax"
 msgstr "高度なクエリ構文を使う"
 
@@ -707,9 +700,8 @@ msgid "Completeness check ignore: Silent tracks"
 msgstr "完全度確認から除外する: 映像トラック"
 
 #: picard/profile.py:233
-#, fuzzy
 msgid "Tags to ignore for comparison"
-msgstr "比較するために無視するタグ:"
+msgstr "比較するために無視するタグ"
 
 #: picard/profile.py:236
 msgid "Use a web proxy server"
@@ -736,38 +728,32 @@ msgid "Proxy password"
 msgstr ""
 
 #: picard/profile.py:244
-#, fuzzy
 msgid "Request timeout in seconds"
-msgstr "リクエストのタイムアウト秒数:"
+msgstr "リクエストのタイムアウト秒数"
 
 #: picard/profile.py:245
-#, fuzzy
 msgid "Browser integration"
 msgstr "ブラウザとの連携"
 
 #: picard/profile.py:248
-#, fuzzy
 msgid "Default listening port"
-msgstr "標準の待ち受けポート:"
+msgstr "標準の待ち受けポート"
 
 #: picard/profile.py:249 picard/ui/ui_options_network.py:141
 msgid "Listen only on localhost"
 msgstr "localhostの接続のみを受け付ける"
 
 #: picard/profile.py:252
-#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr "ファイル検索の際の類似性の下限値:"
+msgstr "ファイル検索の際の類似性の下限値"
 
 #: picard/profile.py:253
-#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr "クラスタ検索の際の類似性の下限値:"
+msgstr "クラスタ検索の際の類似性の下限値"
 
 #: picard/profile.py:254
-#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr "トラックにマッチするファイルの類似性の下限値:"
+msgstr "トラックにマッチするファイルの類似性の下限値"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -1364,7 +1350,7 @@ msgstr "アゼルバイジャン語"
 #: picard/const/locales.py:86
 #, fuzzy
 msgid "Azerbaijani (Arabic)"
-msgstr "アゼルバイジャン語 (ラテン文字)"
+msgstr "アゼルバイジャン語 (アラビア文字)"
 
 #: picard/const/locales.py:87
 msgid "Azerbaijani (Arabic) (Iraq)"
@@ -6493,23 +6479,25 @@ msgid ""
 msgstr ""
 "`$slice(name,start,end,separator=\"; \")`\n"
 "\n"
-"複数値タグ `name` から` start` インデックスと `end` インデックスの間の要素を"
-"含む\n"
+"複数値タグ `name` から` start` インデックスと `end` "
+"インデックスの間の要素を含む\n"
 "複数値変数を返す。 複数値を表すリテラル値は、区切り文字（渡されない場合は”; "
 "”）を\n"
-"使用して値を適切な複数値タグに強制変換することにより、 `name`の代わりに使用さ"
-"れる。\n"
-"インデックスはゼロベース。 負数指定時はリストの最後からカウントされる。"
-"`start` または\n"
-"` end` インデックスが空白の場合、デフォルトでそれぞれリストの開始と終了と判断"
-"する。\n"
+"使用して値を適切な複数値タグに強制変換することにより、 "
+"`name`の代わりに使用される。\n"
+"インデックスはゼロベース。 "
+"負数指定時はリストの最後からカウントされる。`start` または\n"
+"` end` "
+"インデックスが空白の場合、デフォルトでそれぞれリストの開始と終了と判断する。"
 "\n"
-"次の例では、\"feat.\" リストの作成に使用可能な最初のアーティストを除く、 `"
-"%artists%` 内のすべてのアーティストを含む複数値変数を作成する。\n"
+"\n"
+"次の例では、\"feat.\" リストの作成に使用可能な最初のアーティストを除く、 "
+"`%artists%` 内のすべてのアーティストを含む複数値変数を作成する。\n"
 "\n"
 "例:\n"
 "\n"
 "    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
+"    $setmulti(supporting_artists,$slice(%artists%,1,-1))\n"
 
 #: picard/script/functions.py:1319
 #, python-format
@@ -8959,9 +8947,8 @@ msgid "Remove selected options"
 msgstr ""
 
 #: picard/ui/ui_options_maintenance.py:91
-#, fuzzy
 msgid "Select all"
-msgstr "すべて選択(&A)"
+msgstr "すべて選択"
 
 #: picard/ui/ui_options_matching.py:71
 msgid "Thresholds"
@@ -8980,7 +8967,6 @@ msgid "Minimal similarity for cluster lookups:"
 msgstr "クラスタ検索の際の類似性の下限値:"
 
 #: picard/ui/ui_options_metadata.py:130
-#, fuzzy
 msgid "Translate artist names to these locales where possible:"
 msgstr "可能であればアーティスト名をこのロケールに翻訳する:"
 
@@ -9559,7 +9545,6 @@ msgid "Are you sure?"
 msgstr "よろしいですか？"
 
 #: picard/ui/options/dialog.py:477 picard/ui/options/maintenance.py:93
-#, fuzzy
 msgid "Option"
 msgstr "オプション"
 
