@@ -9,14 +9,14 @@
 # Ivan Dobsky, 2019-2022
 # Luke Hollins <luke@farcry.ca>, 2015
 # navap <pavan@chander.ca>, 2012
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2020
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2020, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 08:24+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-08-24 13:50+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: English (Canada) <https://translations.metabrainz.org/"
 "projects/picard/app/en_CA/>\n"
 "Language: en_CA\n"
@@ -6908,7 +6908,6 @@ msgid "Activity History"
 msgstr ""
 
 #: picard/ui/mainwindow.py:219 picard/ui/ui_aboutdialog.py:84
-#, fuzzy
 msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 

@@ -25,7 +25,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"PO-Revision-Date: 2023-08-24 13:50+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Japanese <https://translations.metabrainz.org/projects/picard/"
 "app/ja/>\n"
@@ -7476,7 +7476,7 @@ msgstr "ログ削除"
 
 #: picard/ui/logview.py:214
 msgid "Save As…"
-msgstr "名前を付けて保存"
+msgstr "名前を付けて保存…"
 
 #: picard/ui/logview.py:259 picard/ui/logview.py:266
 msgid "Save Log View to File"
@@ -7699,9 +7699,8 @@ msgid "Submit file as a new release to MusicBrainz"
 msgstr "新しいリリースとしてファイルを MusicBrainz に送信"
 
 #: picard/ui/mainwindow.py:666
-#, fuzzy
 msgid "Search for similar items…"
-msgstr "類似アルバムを検索"
+msgstr "類似アルバムを検索…"
 
 #: picard/ui/mainwindow.py:667 picard/ui/options/interface_toolbar.py:123
 msgid "Similar items"
@@ -7719,7 +7718,7 @@ msgstr "Ctrl+T"
 
 #: picard/ui/mainwindow.py:676
 msgid "Search for similar albums…"
-msgstr "類似アルバムを検索"
+msgstr "類似アルバムを検索…"
 
 #: picard/ui/mainwindow.py:677
 msgid "View similar releases and optionally choose a different release"
@@ -7727,7 +7726,7 @@ msgstr "類似関連を表示して別の関連を追加選択"
 
 #: picard/ui/mainwindow.py:685
 msgid "Search for similar tracks…"
-msgstr "類似トラックを検索"
+msgstr "類似トラックを検索…"
 
 #: picard/ui/mainwindow.py:686
 msgid "View similar tracks and optionally choose a different release"
@@ -7772,7 +7771,7 @@ msgstr "検索"
 
 #: picard/ui/mainwindow.py:751 picard/ui/mainwindow.py:758
 msgid "Lookup &CD…"
-msgstr "CDを検索(&C)"
+msgstr "CDを検索(&C)…"
 
 #: picard/ui/mainwindow.py:752
 msgid "Lookup the details of the CD in your drive"
@@ -7852,7 +7851,7 @@ msgstr "Ctrl+L"
 
 #: picard/ui/mainwindow.py:815
 msgid "&Info…"
-msgstr "情報(&I)"
+msgstr "情報(&I)…"
 
 #: picard/ui/mainwindow.py:818
 msgid "Ctrl+I"
@@ -8422,9 +8421,8 @@ msgid "View the scripting documentation in a sidebar"
 msgstr "サイドバーにスクリプトドキュメントを表示"
 
 #: picard/ui/scripteditor.py:622
-#, fuzzy
 msgid "&Scripting documentation…"
-msgstr "スクリプトのドキュメント"
+msgstr "スクリプトのドキュメント(&S)…"
 
 #: picard/ui/scripteditor.py:623
 msgid "Open the scripting documentation in your browser"

@@ -4,7 +4,7 @@
     "MsgRequires64Bit": "এই ভার্সনটির জন্য ${PRODUCT_NAME} 64-bit উইন্ডোজ সিস্টেম প্রয়োজন।",
     "MsgUninstallFailed": "",
     "MuiDescriptionDesktop": "ডেস্কটপে শর্টকাট ইন্সটল করুন।",
-    "MuiDescriptionLang": "বিভিন্ন ভাষার অনুবাদগুলি ইন্সটল করুন। ${PRODUCT_NAME}",
+    "MuiDescriptionLang": "বিভিন্ন ভাষার অনুবাদগুলি ইন্সটল করুন ${PRODUCT_NAME}।",
     "MuiDescriptionRequired": "এটি ইন্সটল ${PRODUCT_NAME} করুন প্রয়োজনীয় ফাইলসমূহ সহকারে।",
     "MuiDescriptionShortcuts": "দ্রুত চালু করবার জন্য শর্টকাট ইন্সটল করুন ${PRODUCT_NAME}।",
     "MuiDescriptionStartMenu": "স্টার্ট মিনুতে শর্টকাট ইন্সটল করুন।",
