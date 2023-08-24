@@ -683,13 +683,13 @@ def cflags_to_include_dirs(cflags):
 
 def _picard_get_locale_files():
     locales = []
-    path_domain = {
-        'po': 'picard',
-        os.path.join('po', 'attributes'): 'picard-attributes',
-        os.path.join('po', 'constants'): 'picard-constants',
-        os.path.join('po', 'countries'): 'picard-countries',
+    domain_path = {
+        'picard': 'po',
+        'picard-attributes': os.path.join('po', 'attributes'),
+        'picard-constants': os.path.join('po', 'constants'),
+        'picard-countries': os.path.join('po', 'countries'),
     }
-    for path, domain in path_domain.items():
+    for domain, path in domain_path.items():
         for filepath in glob.glob(os.path.join(path, '*.po')):
             filename = os.path.basename(filepath)
             locale = os.path.splitext(filename)[0]
