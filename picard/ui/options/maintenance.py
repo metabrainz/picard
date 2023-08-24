@@ -124,7 +124,8 @@ class MaintenanceOptionsPage(OptionsPage):
         orphan_options = file_options.difference(current_options)
 
         self.ui.option_counts.setText(
-            _("The configuration file currently contains %(totalcount)d option settings, %(unusedcount)d which are unused.") % {
+            _("The configuration file currently contains %(totalcount)d option "
+              "settings, %(unusedcount)d which are unused.") % {
                 'totalcount': len(file_options),
                 'unusedcount': len(orphan_options),
             })

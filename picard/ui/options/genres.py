@@ -152,10 +152,7 @@ class GenresOptionsPage(OptionsPage):
 
         # FIXME: very simple error reporting, improve
         self.ui.label_test_genres_filter_error.setText(
-            "\n".join(
-                _("Error line %(lineno)d: %(error)s") % {'lineno': lineno + 1, 'error': error}
-                for lineno, error in tagfilter.errors.items()
-            )
+            "\n".join(tagfilter.format_errors())
         )
 
         def set_line_fmt(lineno, textformat):
