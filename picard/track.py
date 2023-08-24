@@ -117,6 +117,11 @@ class TagGenreFilter:
             if not self.skip(name):
                 yield (name, count)
 
+    def format_errors(self):
+        fmt = _("Error line %(lineno)d: %(error)s")
+        for lineno, error in self.errors.items():
+            yield fmt % {'lineno': lineno + 1, 'error': error}
+
 
 class TrackArtist(DataObject):
     def __init__(self, ta_id):
