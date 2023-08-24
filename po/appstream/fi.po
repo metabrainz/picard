@@ -1,28 +1,28 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-# Translators:
 # Timo Martikainen <musicbrainz@listmycds.com>, 2020
 # Jaakko Perttilä <jormangeud@gmail.com>, 2020
 # Transifex Bot <>, 2023
+# zer0bitz <zer0bitz@protonmail.com>, 2023.
 #
-#, fuzzy
+# Translators:
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-23 07:49+0100\n"
-"PO-Revision-Date: 2018-11-25 07:37+0000\n"
-"Last-Translator: Transifex Bot <>, 2023\n"
-"Language-Team: Finnish (https://app.transifex.com/musicbrainz/teams/13846/"
-"fi/)\n"
+"PO-Revision-Date: 2023-08-24 13:50+0000\n"
+"Last-Translator: zer0bitz <zer0bitz@protonmail.com>\n"
+"Language-Team: Finnish <https://translations.metabrainz.org/projects/picard/"
+"appstream/fi/>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6
 msgid "MusicBrainz Picard"
@@ -119,7 +119,7 @@ msgstr ""
 msgid ""
 "Cover Art: Picard can find and download the correct cover art for your "
 "albums."
-msgstr ""
+msgstr "Levynkansi: Picard voi etsiä ja ladata oikean levynkannen albumeillesi."
 
 #: org.musicbrainz.Picard.appdata.xml.in:56
 msgid ""
@@ -128,8 +128,8 @@ msgid ""
 "awesome developers."
 msgstr ""
 "Avoin lähdekoodi: Picard on lisensoitu GNU General Public License 2.0 tai "
-"uudempi lisenssillä, ja se on saatavilla GitHubista, jossa sitä aktiivisesti "
-"kehitetään."
+"uudemmalla lisenssillä, ja se on saatavilla GitHubista, jossa sitä "
+"aktiivisesti kehitetään."
 
 #: org.musicbrainz.Picard.appdata.xml.in:102
 msgid "MetaBrainz Foundation"

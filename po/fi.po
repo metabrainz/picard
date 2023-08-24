@@ -15,13 +15,14 @@
 # Sami Korkalainen, 2017
 # Timo Martikainen <>, 2012
 # Timo Martikainen <musicbrainz@listmycds.com>, 2012,2014
+# zer0bitz <zer0bitz@protonmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 19:09+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2023-08-24 13:50+0000\n"
+"Last-Translator: zer0bitz <zer0bitz@protonmail.com>\n"
 "Language-Team: Finnish <https://translations.metabrainz.org/projects/picard/"
 "app/fi/>\n"
 "Language: fi\n"
@@ -185,10 +186,11 @@ msgstr "Odottamaton virhe pyynnössä (HTTP koodi %s)"
 #: picard/pluginmanager.py:79
 msgid "Perform this check again the next time you start Picard."
 msgstr ""
+"Suorita tämä tarkistus uudelleen seuraavan kerran kun käynnistät Picardin."
 
 #: picard/pluginmanager.py:84
 msgid "Picard Plugins Update"
-msgstr ""
+msgstr "Picard Plugineiden Päivitys"
 
 #: picard/pluginmanager.py:261
 #, python-format
@@ -232,14 +234,14 @@ msgid ""
 "There is an update available for one of your currently installed plugins:"
 msgid_plural ""
 "There are updates available for your currently installed plugins:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Yhdelle asentamallesi pluginille löytyi päivitys:"
+msgstr[1] "Useammalle asentamallesi pluginille löytyi päivitys:"
 
 #: picard/pluginmanager.py:506
 msgid "Do you want to update the plugin now?"
 msgid_plural "Do you want to update the plugins now?"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Haluatko päivittää pluginin nyt?"
+msgstr[1] "Haluatko päivittää pluginit nyt?"
 
 #: picard/pluginmanager.py:514
 msgid "plus {extra_file_count:,d} other plugin."
@@ -274,11 +276,11 @@ msgstr "Ohita uusien tiedostojen MBID-tunnisteet"
 
 #: picard/profile.py:53 picard/ui/ui_options_general.py:205
 msgid "Check for plugin updates during startup"
-msgstr ""
+msgstr "Tarkista päivitykset plugineille käynnistyksen aikana"
 
 #: picard/profile.py:54 picard/ui/ui_options_general.py:206
 msgid "Check for program updates during startup"
-msgstr ""
+msgstr "Tarkista päivitykset ohjelmalle käynnistyksen aikana"
 
 #: picard/profile.py:55
 msgid "Days between update checks"
@@ -1403,7 +1405,7 @@ msgstr "belutši (arabialainen)"
 #: picard/const/locales.py:98
 #, fuzzy
 msgid "Baluchi (Arabic) (Pakistan)"
-msgstr "belutši (latinalainen) (Pakistan)"
+msgstr "belutši (Arabialainen) (Pakistan)"
 
 #: picard/const/locales.py:99
 msgid "Baluchi (Latin)"
@@ -1519,7 +1521,7 @@ msgstr "bambara (n'ko)"
 
 #: picard/const/locales.py:127
 msgid "Bambara (N’Ko) (Mali)"
-msgstr ""
+msgstr "Bambaran kieli (N'Ko) (Mali)"
 
 #: picard/const/locales.py:128
 msgid "Bangla"
@@ -1687,12 +1689,11 @@ msgstr "cherokee (Yhdysvallat)"
 
 #: picard/const/locales.py:170
 msgid "Chickasaw"
-msgstr ""
+msgstr "Chickasaw"
 
 #: picard/const/locales.py:171
-#, fuzzy
 msgid "Chickasaw (United States)"
-msgstr "choctaw (Yhdysvallat)"
+msgstr "Chickasaw (Yhdysvallat)"
 
 #: picard/const/locales.py:172
 msgid "Central Kurdish"
@@ -2455,118 +2456,112 @@ msgid "Persian (Iran)"
 msgstr "persia (Iran)"
 
 #: picard/const/locales.py:372
-#, fuzzy
 msgid "Fula"
-msgstr "fulani"
+msgstr "Fulani"
 
 #: picard/const/locales.py:373
 msgid "Fula (Adlam)"
-msgstr ""
+msgstr "Fulani (Adlam)"
 
 #: picard/const/locales.py:374
 msgid "Fula (Adlam) (Burkina Faso)"
-msgstr ""
+msgstr "Fulani (Adlam) (Burkina Faso)"
 
 #: picard/const/locales.py:375
 msgid "Fula (Adlam) (Cameroon)"
-msgstr ""
+msgstr "Fulani (Adlam) (Cameroon)"
 
 #: picard/const/locales.py:376
 msgid "Fula (Adlam) (Ghana)"
-msgstr ""
+msgstr "Fulani (Adlam) (Ghana)"
 
 #: picard/const/locales.py:377
 msgid "Fula (Adlam) (Gambia)"
-msgstr ""
+msgstr "Fulani (Adlam) (Gambia)"
 
 #: picard/const/locales.py:378
 msgid "Fula (Adlam) (Guinea)"
-msgstr ""
+msgstr "Fulani (Adlam) (Guinea)"
 
 #: picard/const/locales.py:379
 msgid "Fula (Adlam) (Guinea-Bissau)"
-msgstr ""
+msgstr "Fulani (Adlam) (Guinea-Bissau)"
 
 #: picard/const/locales.py:380
 msgid "Fula (Adlam) (Liberia)"
-msgstr ""
+msgstr "Fulani (Adlam) (Liberia)"
 
 #: picard/const/locales.py:381
 msgid "Fula (Adlam) (Mauritania)"
-msgstr ""
+msgstr "Fulani (Adlam) (Mauritania)"
 
 #: picard/const/locales.py:382
 msgid "Fula (Adlam) (Niger)"
-msgstr ""
+msgstr "Fulani (Adlam) (Niger)"
 
 #: picard/const/locales.py:383
 msgid "Fula (Adlam) (Nigeria)"
-msgstr ""
+msgstr "Fulani (Adlam) (Nigeria)"
 
 #: picard/const/locales.py:384
 msgid "Fula (Adlam) (Sierra Leone)"
-msgstr ""
+msgstr "Fulani (Adlam) (Sierra Leone)"
 
 #: picard/const/locales.py:385
 msgid "Fula (Adlam) (Senegal)"
-msgstr ""
+msgstr "Fulani (Adlam) (Senegal)"
 
 #: picard/const/locales.py:386
 msgid "Fula (Latin)"
-msgstr ""
+msgstr "Fulani (Latina)"
 
 #: picard/const/locales.py:387
 msgid "Fula (Latin) (Burkina Faso)"
-msgstr ""
+msgstr "Fulani (Latina) (Burkina Faso)"
 
 #: picard/const/locales.py:388
 msgid "Fula (Latin) (Cameroon)"
-msgstr ""
+msgstr "Fulani (Latina) (Cameroon)"
 
 #: picard/const/locales.py:389
-#, fuzzy
 msgid "Fula (Latin) (Ghana)"
-msgstr "hausa (latinalainen, Ghana)"
+msgstr "Fulani (latinalainen, Ghana)"
 
 #: picard/const/locales.py:390
 msgid "Fula (Latin) (Gambia)"
-msgstr ""
+msgstr "Fulani (Latina) (Gambia)"
 
 #: picard/const/locales.py:391
 msgid "Fula (Latin) (Guinea)"
-msgstr ""
+msgstr "Fulani (Latina) (Guinea)"
 
 #: picard/const/locales.py:392
 msgid "Fula (Latin) (Guinea-Bissau)"
-msgstr ""
+msgstr "Fulani (Latina) (Guinea-Bissau)"
 
 #: picard/const/locales.py:393
-#, fuzzy
 msgid "Fula (Latin) (Liberia)"
-msgstr "vai (latinalainen, Liberia)"
+msgstr "Fula (latinalainen, Liberia)"
 
 #: picard/const/locales.py:394
 msgid "Fula (Latin) (Mauritania)"
 msgstr ""
 
 #: picard/const/locales.py:395
-#, fuzzy
 msgid "Fula (Latin) (Niger)"
-msgstr "hausa (latinalainen, Niger)"
+msgstr "Fula (latinalainen, Niger)"
 
 #: picard/const/locales.py:396
-#, fuzzy
 msgid "Fula (Latin) (Nigeria)"
-msgstr "hausa (latinalainen, Nigeria)"
+msgstr "Fula (latinalainen, Nigeria)"
 
 #: picard/const/locales.py:397
 msgid "Fula (Latin) (Sierra Leone)"
 msgstr ""
 
 #: picard/const/locales.py:398
-#, fuzzy
 msgid "Fula (Latin) (Senegal)"
-msgstr "wolof (latinalainen, Senegal)"
+msgstr "Fula (latinalainen, Senegal)"
 
 #: picard/const/locales.py:400
 msgid "Finnish (Finland)"
@@ -3873,9 +3868,8 @@ msgid "Nuer"
 msgstr "nuer"
 
 #: picard/const/locales.py:738
-#, fuzzy
 msgid "Nuer (South Sudan)"
-msgstr "nuer (Etelä-Sudan)"
+msgstr "Nuer (Etelä-Sudan)"
 
 #: picard/const/locales.py:739
 msgid "Navajo"
@@ -4282,9 +4276,8 @@ msgid "Sindhi (Arabic)"
 msgstr ""
 
 #: picard/const/locales.py:845
-#, fuzzy
 msgid "Sindhi (Arabic) (Pakistan)"
-msgstr "pandžabi (arabialainen, Pakistan)"
+msgstr "Sindhi (arabialainen, Pakistan)"
 
 #: picard/const/locales.py:846
 msgid "Sindhi (Devanagari)"
@@ -4343,9 +4336,8 @@ msgid "Sango"
 msgstr "sango"
 
 #: picard/const/locales.py:860
-#, fuzzy
 msgid "Sango (Central African Republic)"
-msgstr "sango (Keski-Afrikan tasavalta)"
+msgstr "Sango (Keski-Afrikan tasavalta)"
 
 #: picard/const/locales.py:861
 msgid "Tachelhit"
@@ -4376,9 +4368,8 @@ msgid "Shan (Myanmar (Burma))"
 msgstr ""
 
 #: picard/const/locales.py:868
-#, fuzzy
 msgid "Shan (Thailand)"
-msgstr "thai (Thaimaa)"
+msgstr "Shan (Thaimaa)"
 
 #: picard/const/locales.py:869
 msgid "Sinhala"
@@ -10076,7 +10067,7 @@ msgstr ""
 "Haluatko jatkaa?"
 
 #: picard/ui/options/maintenance.py:261
-#, fuzzy, python-format
+#, python-format
 msgid "Configuration successfully loaded from %s"
 msgstr "Asetukset tuotiin onnistuneesti tiedostosta"
 
