@@ -2,7 +2,7 @@
     "MsgAlreadyInstalled": "${PRODUCT_NAME} è già installato e deve essere disinstallato prima di poter aggiornare il programma alla versione ${PRODUCT_VERSION}. \n\nSeleziona \"OK\" per proseguire o \"Annulla\" per annullare questo aggiornamento.",
     "MsgApplicationRunning": "L'applicazione ${PRODUCT_NAME} è in esecuzione. Chiudi l'applicazione e riprova.",
     "MsgRequires64Bit": "Questa versione di ${PRODUCT_NAME} richiede un sistema Windows a 64bit.",
-    "MsgUninstallFailed": "",
+    "MsgUninstallFailed": "Disinstallazione della versione precedente fallita.",
     "MuiDescriptionDesktop": "Installa collegamento sul desktop.",
     "MuiDescriptionLang": "Installa le traduzioni di ${PRODUCT_NAME} per le differenti lingue.",
     "MuiDescriptionRequired": "Installa ${PRODUCT_NAME} e i relativi file necessari alla sua esecuzione.",
