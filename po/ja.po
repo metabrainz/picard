@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-23 18:23+0200\n"
+"POT-Creation-Date: 2023-08-22 17:47+0200\n"
 "PO-Revision-Date: 2023-08-24 15:36+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Japanese <https://translations.metabrainz.org/projects/picard/"
@@ -192,56 +192,54 @@ msgstr ""
 msgid "Picard Plugins Update"
 msgstr ""
 
-#: picard/pluginmanager.py:263
+#: picard/pluginmanager.py:261
 #, python-format
 msgid "Unable to load plugin '%s'"
 msgstr "プラグイン「%s」を読み込めません"
 
-#: picard/pluginmanager.py:278
+#: picard/pluginmanager.py:276
 #, python-format
-msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
-msgstr ""
+msgid "Failed loading zipped plugin %r from %r"
+msgstr "%r から %r 圧縮プラグインの読み込みに失敗しました"
 
-#: picard/pluginmanager.py:291
+#: picard/pluginmanager.py:286
 #, python-format
-msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
-msgstr ""
+msgid "Failed loading plugin %r in %r"
+msgstr "プラグイン %r を %r 内での読み込みに失敗しました"
 
-#: picard/pluginmanager.py:330
+#: picard/pluginmanager.py:322
 #, python-format
-msgid ""
-"Plugin \"%(plugin)s\" from \"%(filename)s\" is not compatible with this "
-"version of Picard."
-msgstr ""
+msgid "Plugin '%s' from '%s' is not compatible with this version of Picard."
+msgstr "プラグイン「%s」（%s）は、このバージョンのPicardと互換性がありません。"
 
-#: picard/pluginmanager.py:335
+#: picard/pluginmanager.py:326
 #, python-format
-msgid "Plugin \"%(plugin)s\" has an invalid API version string : %(error)s"
-msgstr ""
+msgid "Plugin %r has an invalid API version string : %s"
+msgstr "プラグイン %r に無効なAPIバージョン文字列があります : %s"
 
-#: picard/pluginmanager.py:341
+#: picard/pluginmanager.py:329
 #, python-format
 msgid "Plugin %r"
 msgstr "プラグイン %r"
 
-#: picard/pluginmanager.py:477
+#: picard/pluginmanager.py:465
 #, python-format
 msgid "Error loading plugins list: %(error)s"
 msgstr "プラグイン一覧の読み込み中にエラーが発生しました: %(error)s"
 
-#: picard/pluginmanager.py:513
+#: picard/pluginmanager.py:501
 msgid ""
 "There is an update available for one of your currently installed plugins:"
 msgid_plural ""
 "There are updates available for your currently installed plugins:"
 msgstr[0] ""
 
-#: picard/pluginmanager.py:518
+#: picard/pluginmanager.py:506
 msgid "Do you want to update the plugin now?"
 msgid_plural "Do you want to update the plugins now?"
 msgstr[0] ""
 
-#: picard/pluginmanager.py:526
+#: picard/pluginmanager.py:514
 msgid "plus {extra_file_count:,d} other plugin."
 msgid_plural "plus {extra_file_count:,d} other plugins."
 msgstr[0] ""
@@ -831,8 +829,8 @@ msgid "dBpoweramp log files"
 msgstr ""
 
 #: picard/script/serializer.py:350 picard/tagger.py:1196
-#: picard/ui/coverartbox.py:610 picard/ui/mainwindow.py:1267
-#: picard/ui/options/maintenance.py:167 picard/ui/options/scripting.py:131
+#: picard/ui/coverartbox.py:610 picard/ui/mainwindow.py:1266
+#: picard/ui/options/maintenance.py:168 picard/ui/options/scripting.py:131
 msgid "All files"
 msgstr "すべてのファイル"
 
@@ -922,6 +920,4994 @@ msgstr "ファイルをレコーディングとして追加"
 #: picard/browser/addrelease.py:166
 msgid "Add file as recording…"
 msgstr "ファイルをレコーディングとして追加…"
+
+#: picard/const/__init__.py:169
+msgid "Stable releases only"
+msgstr "安定版のみ"
+
+#: picard/const/__init__.py:175
+msgid "Stable and Beta releases"
+msgstr "安定版とベータ版"
+
+#: picard/const/__init__.py:181
+msgid "Stable, Beta and Dev releases"
+msgstr "安定版、ベータ版、開発版"
+
+#: picard/const/__init__.py:199
+msgid "My script"
+msgstr "マイスクリプト"
+
+#: picard/const/__init__.py:201
+msgid "My profile"
+msgstr "マイプロファイル"
+
+#: picard/const/__init__.py:202
+msgid "(copy)"
+msgstr "(コピー)"
+
+#: picard/const/__init__.py:203
+msgid "{title} ({count})"
+msgstr "{title} ({count})"
+
+#: picard/const/languages.py:29 picard/const/locales.py:48
+#: picard/const/scripts.py:29
+msgid "Arabic"
+msgstr "アラビア語"
+
+#: picard/const/languages.py:32 picard/const/locales.py:147
+msgid "Catalan"
+msgstr "カタルーニャ語"
+
+#: picard/const/languages.py:33 picard/const/locales.py:177
+msgid "Czech"
+msgstr "チェコ語"
+
+#: picard/const/languages.py:35 picard/const/locales.py:185
+msgid "Danish"
+msgstr "デンマーク語"
+
+#: picard/const/languages.py:36 picard/const/locales.py:190
+msgid "German"
+msgstr "ドイツ語"
+
+#: picard/const/languages.py:37 picard/const/locales.py:193
+msgid "German (Switzerland)"
+msgstr "ドイツ語 (スイス)"
+
+#: picard/const/languages.py:38 picard/const/locales.py:217
+#: picard/const/scripts.py:26
+msgid "Greek"
+msgstr "現代ギリシア語"
+
+#: picard/const/languages.py:39 picard/const/locales.py:221
+msgid "English"
+msgstr "英語"
+
+#: picard/const/languages.py:40 picard/const/locales.py:229
+msgid "English (Australia)"
+msgstr "英語（オーストラリア）"
+
+#: picard/const/languages.py:41 picard/const/locales.py:237
+msgid "English (Canada)"
+msgstr "英語（カナダ）"
+
+#: picard/const/languages.py:42
+msgid "English (UK)"
+msgstr "英語（イギリス）"
+
+#: picard/const/languages.py:44 picard/const/locales.py:334
+msgid "Spanish"
+msgstr "スペイン語"
+
+#: picard/const/languages.py:45 picard/const/locales.py:363
+msgid "Estonian"
+msgstr "エストニア語"
+
+#: picard/const/languages.py:47 picard/const/locales.py:399
+msgid "Finnish"
+msgstr "フィンランド語"
+
+#: picard/const/languages.py:49 picard/const/locales.py:406
+msgid "French"
+msgstr "フランス語"
+
+#: picard/const/languages.py:50 picard/const/locales.py:412
+msgid "French (Canada)"
+msgstr "フランス語（カナダ）"
+
+#: picard/const/languages.py:52 picard/const/locales.py:469
+msgid "Galician"
+msgstr "ガリシア語"
+
+#: picard/const/languages.py:53 picard/const/locales.py:497
+#: picard/const/scripts.py:30
+msgid "Hebrew"
+msgstr "ヘブライ語"
+
+#: picard/const/languages.py:55 picard/const/locales.py:511
+msgid "Hungarian"
+msgstr "ハンガリー語"
+
+#: picard/const/languages.py:57 picard/const/locales.py:526
+msgid "Icelandic"
+msgstr "アイスランド語"
+
+#: picard/const/languages.py:58 picard/const/locales.py:528
+msgid "Italian"
+msgstr "イタリア語"
+
+#: picard/const/languages.py:59 picard/const/locales.py:537
+msgid "Japanese"
+msgstr "日本語"
+
+#: picard/const/languages.py:61 picard/const/locales.py:585
+msgid "Korean"
+msgstr "韓国語"
+
+#: picard/const/languages.py:63 picard/const/locales.py:689
+msgid "Malay (Malaysia)"
+msgstr "マレー語 (マレーシア)"
+
+#: picard/const/languages.py:64 picard/const/locales.py:705
+msgid "Norwegian Bokmål"
+msgstr "ブークモール（ノルウェー語）"
+
+#: picard/const/languages.py:66 picard/const/locales.py:716
+msgid "Dutch"
+msgstr "オランダ語"
+
+#: picard/const/languages.py:67 picard/const/locales.py:745
+msgid "Occitan"
+msgstr "オック語"
+
+#: picard/const/languages.py:68 picard/const/locales.py:772
+msgid "Polish"
+msgstr "ポーランド語"
+
+#: picard/const/languages.py:69 picard/const/locales.py:779
+msgid "Portuguese"
+msgstr "ポルトガル語"
+
+#: picard/const/languages.py:70
+msgid "Brazilian Portuguese"
+msgstr "ブラジルポルトガル語"
+
+#: picard/const/languages.py:71 picard/const/locales.py:810
+msgid "Romanian"
+msgstr "ルーマニア語"
+
+#: picard/const/languages.py:72 picard/const/locales.py:815
+msgid "Russian"
+msgstr "ロシア語"
+
+#: picard/const/languages.py:74 picard/const/locales.py:873
+msgid "Slovak"
+msgstr "スロバキア語"
+
+#: picard/const/languages.py:75 picard/const/locales.py:875
+msgid "Slovenian"
+msgstr "スロベニア語"
+
+#: picard/const/languages.py:76 picard/const/locales.py:894
+msgid "Albanian"
+msgstr "アルバニア語"
+
+#: picard/const/languages.py:78 picard/const/locales.py:920
+msgid "Swedish"
+msgstr "スウェーデン語"
+
+#: picard/const/languages.py:80 picard/const/locales.py:966
+msgid "Turkish"
+msgstr "トルコ語"
+
+#: picard/const/languages.py:81 picard/const/locales.py:983
+msgid "Ukrainian"
+msgstr "ウクライナ語"
+
+#: picard/const/languages.py:82
+msgid "Chinese (China)"
+msgstr "中国語 (中国)"
+
+#: picard/const/languages.py:83
+msgid "Chinese (Taiwan)"
+msgstr "中国語 (台湾)"
+
+#: picard/const/locales.py:27
+msgid "Afar"
+msgstr "アファル語"
+
+#: picard/const/locales.py:28
+msgid "Afar (Djibouti)"
+msgstr "アファル語 (ジブチ)"
+
+#: picard/const/locales.py:29
+msgid "Afar (Eritrea)"
+msgstr "アファル語 (エリトリア)"
+
+#: picard/const/locales.py:30
+msgid "Afar (Eritrea) (Saho)"
+msgstr "アファル語 (エリトリア) (サホ語)"
+
+#: picard/const/locales.py:31
+msgid "Afar (Ethiopia)"
+msgstr "アファル語 (エチオピア)"
+
+#: picard/const/locales.py:32
+#, fuzzy
+msgid "Abkhazian"
+msgstr "アブハズ語"
+
+#: picard/const/locales.py:33
+#, fuzzy
+#| msgid "Georgian (Georgia)"
+msgid "Abkhazian (Georgia)"
+msgstr "グルジア語 (ジョージア)"
+
+#: picard/const/locales.py:34
+msgid "Afrikaans"
+msgstr "アフリカーンス語"
+
+#: picard/const/locales.py:35
+msgid "Afrikaans (Namibia)"
+msgstr "アフリカーンス語 (ナミビア)"
+
+#: picard/const/locales.py:36
+msgid "Afrikaans (South Africa)"
+msgstr "アフリカーンス語 (南アフリカ)"
+
+#: picard/const/locales.py:37
+msgid "Aghem"
+msgstr ""
+
+#: picard/const/locales.py:38
+#, fuzzy
+msgid "Aghem (Cameroon)"
+msgstr "ミナ語 (カメルーン)"
+
+#: picard/const/locales.py:39
+msgid "Akan"
+msgstr "アカン語"
+
+#: picard/const/locales.py:40
+msgid "Akan (Ghana)"
+msgstr "アカン語 (ガーナ)"
+
+#: picard/const/locales.py:41
+msgid "Amharic"
+msgstr "アムハラ語"
+
+#: picard/const/locales.py:42
+msgid "Amharic (Ethiopia)"
+msgstr "アムハラ語 (エチオピア)"
+
+#: picard/const/locales.py:43
+#, fuzzy
+msgid "Aragonese"
+msgstr "アラゴン語"
+
+#: picard/const/locales.py:44
+#, fuzzy
+#| msgid "Basque (Spain)"
+msgid "Aragonese (Spain)"
+msgstr "バスク語 (スペイン)"
+
+#: picard/const/locales.py:45
+msgid "Obolo"
+msgstr ""
+
+#: picard/const/locales.py:46
+#, fuzzy
+#| msgid "Igbo (Nigeria)"
+msgid "Obolo (Nigeria)"
+msgstr "イボ語 (ナイジェリア)"
+
+#: picard/const/locales.py:47
+msgid "Syria"
+msgstr "シリア"
+
+#: picard/const/locales.py:49
+#, fuzzy
+#| msgid "Arabic (Jordan)"
+msgid "Arabic (world)"
+msgstr "アラビア語 (ヨルダン)"
+
+#: picard/const/locales.py:50
+msgid "Arabic (United Arab Emirates)"
+msgstr "アラビア語 (UAE)"
+
+#: picard/const/locales.py:51
+msgid "Arabic (Bahrain)"
+msgstr "アラビア語 (バーレーン)"
+
+#: picard/const/locales.py:52
+#, fuzzy
+#| msgid "Afar (Djibouti)"
+msgid "Arabic (Djibouti)"
+msgstr "アファル語 (ジブチ)"
+
+#: picard/const/locales.py:53
+msgid "Arabic (Algeria)"
+msgstr "アラビア語 (アルジェリア)"
+
+#: picard/const/locales.py:54
+msgid "Arabic (Egypt)"
+msgstr "アラビア語 (エジプト)"
+
+#: picard/const/locales.py:55
+#, fuzzy
+#| msgid "Arabic (Bahrain)"
+msgid "Arabic (Western Sahara)"
+msgstr "アラビア語 (バーレーン)"
+
+#: picard/const/locales.py:56
+#, fuzzy
+#| msgid "Afar (Eritrea)"
+msgid "Arabic (Eritrea)"
+msgstr "アファル語 (エリトリア)"
+
+#: picard/const/locales.py:57
+#, fuzzy
+#| msgid "Arabic (Iraq)"
+msgid "Arabic (Israel)"
+msgstr "アラビア語 (イラク)"
+
+#: picard/const/locales.py:58
+msgid "Arabic (Iraq)"
+msgstr "アラビア語 (イラク)"
+
+#: picard/const/locales.py:59
+msgid "Arabic (Jordan)"
+msgstr "アラビア語 (ヨルダン)"
+
+#: picard/const/locales.py:60
+#, fuzzy
+#| msgid "Arabic (Morocco)"
+msgid "Arabic (Comoros)"
+msgstr "アラビア語 (モロッコ)"
+
+#: picard/const/locales.py:61
+msgid "Arabic (Kuwait)"
+msgstr "アラビア語 (クウェート)"
+
+#: picard/const/locales.py:62
+msgid "Arabic (Lebanon)"
+msgstr "アラビア語 (レバノン)"
+
+#: picard/const/locales.py:63
+msgid "Arabic (Libya)"
+msgstr "アラビア語 (リビア)"
+
+#: picard/const/locales.py:64
+msgid "Arabic (Morocco)"
+msgstr "アラビア語 (モロッコ)"
+
+#: picard/const/locales.py:65
+#, fuzzy
+#| msgid "Arabic (Saudi Arabia)"
+msgid "Arabic (Mauritania)"
+msgstr "アラビア語 (サウジアラビア)"
+
+#: picard/const/locales.py:66
+msgid "Arabic (Oman)"
+msgstr "アラビア語 (オマーン)"
+
+#: picard/const/locales.py:67
+msgid "Arabic (Palestinian Territories)"
+msgstr ""
+
+#: picard/const/locales.py:68
+msgid "Arabic (Qatar)"
+msgstr "アラビア語 (カタール)"
+
+#: picard/const/locales.py:69
+msgid "Arabic (Saudi Arabia)"
+msgstr "アラビア語 (サウジアラビア)"
+
+#: picard/const/locales.py:70
+msgid "Arabic (Sudan)"
+msgstr "アラビア語 (スーダン)"
+
+#: picard/const/locales.py:71
+#, fuzzy
+#| msgid "Arabic (Syria)"
+msgid "Arabic (Somalia)"
+msgstr "アラビア語 (シリア)"
+
+#: picard/const/locales.py:72
+#, fuzzy
+#| msgid "Arabic (Sudan)"
+msgid "Arabic (South Sudan)"
+msgstr "アラビア語 (スーダン)"
+
+#: picard/const/locales.py:73
+msgid "Arabic (Syria)"
+msgstr "アラビア語 (シリア)"
+
+#: picard/const/locales.py:74
+#, fuzzy
+#| msgid "Arabic (Iraq)"
+msgid "Arabic (Chad)"
+msgstr "アラビア語 (イラク)"
+
+#: picard/const/locales.py:75
+msgid "Arabic (Tunisia)"
+msgstr "アラビア語 (チュニジア)"
+
+#: picard/const/locales.py:76
+msgid "Arabic (Yemen)"
+msgstr "アラビア語 (イエメン)"
+
+#: picard/const/locales.py:77
+msgid "Mapuche"
+msgstr ""
+
+#: picard/const/locales.py:78
+#, fuzzy
+#| msgid "Spanish (Chile)"
+msgid "Mapuche (Chile)"
+msgstr "スペイン語 (チリ)"
+
+#: picard/const/locales.py:79
+msgid "Assamese"
+msgstr "アッサム語"
+
+#: picard/const/locales.py:80
+msgid "Assamese (India)"
+msgstr "アッサム語 (インド)"
+
+#: picard/const/locales.py:81
+msgid "Asu"
+msgstr ""
+
+#: picard/const/locales.py:82
+#, fuzzy
+#| msgid "Swahili (Tanzania)"
+msgid "Asu (Tanzania)"
+msgstr "スワヒリ語 (タンザニア)"
+
+#: picard/const/locales.py:83
+#, fuzzy
+msgid "Asturian"
+msgstr "アストゥリアス語"
+
+#: picard/const/locales.py:84
+#, fuzzy
+#| msgid "Catalan (Spain)"
+msgid "Asturian (Spain)"
+msgstr "カタルーニャ語 (スペイン)"
+
+#: picard/const/locales.py:85
+msgid "Azerbaijani"
+msgstr "アゼルバイジャン語"
+
+#: picard/const/locales.py:86
+#, fuzzy
+msgid "Azerbaijani (Arabic)"
+msgstr "アゼルバイジャン語 (アラビア文字)"
+
+#: picard/const/locales.py:87
+#, fuzzy
+msgid "Azerbaijani (Arabic) (Iraq)"
+msgstr "アゼルバイジャン語 (アラビア文字)"
+
+#: picard/const/locales.py:88
+#, fuzzy
+msgid "Azerbaijani (Arabic) (Iran)"
+msgstr "アゼルバイジャン語 (アラビア文字)"
+
+#: picard/const/locales.py:89
+#, fuzzy
+msgid "Azerbaijani (Arabic) (Türkiye)"
+msgstr "アゼルバイジャン語 (アラビア文字)"
+
+#: picard/const/locales.py:90
+msgid "Azerbaijani (Cyrillic)"
+msgstr "アゼルバイジャン語 (キリル文字)"
+
+#: picard/const/locales.py:91
+msgid "Azerbaijani (Cyrillic) (Azerbaijan)"
+msgstr "アゼルバイジャン語 (キリル文字) (アゼルバイジャン)"
+
+#: picard/const/locales.py:92
+msgid "Azerbaijani (Latin)"
+msgstr "アゼルバイジャン語 (ラテン文字)"
+
+#: picard/const/locales.py:93
+msgid "Azerbaijani (Latin) (Azerbaijan)"
+msgstr "アゼルバイジャン語 (ラテン文字) (アゼルバイジャン)"
+
+#: picard/const/locales.py:94
+#, fuzzy
+msgid "Bashkir"
+msgstr "バシキール語"
+
+#: picard/const/locales.py:95
+#, fuzzy
+#| msgid "Tatar (Russia)"
+msgid "Bashkir (Russia)"
+msgstr "タタール語 (ロシア)"
+
+#: picard/const/locales.py:96
+#, fuzzy
+msgid "Baluchi"
+msgstr "バルーチー語"
+
+#: picard/const/locales.py:97
+#, fuzzy
+#| msgid "Hausa (Arabic)"
+msgid "Baluchi (Arabic)"
+msgstr "ハウサ語 (アラビア文字)"
+
+#: picard/const/locales.py:98
+#, fuzzy
+msgid "Baluchi (Arabic) (Pakistan)"
+msgstr "パンジャーブ語 (アラビア文字) (パキスタン)"
+
+#: picard/const/locales.py:99
+#, fuzzy
+#| msgid "Hausa (Latin)"
+msgid "Baluchi (Latin)"
+msgstr "ハウサ語 (ラテン文字)"
+
+#: picard/const/locales.py:100
+#, fuzzy
+msgid "Baluchi (Latin) (Pakistan)"
+msgstr "パンジャーブ語 (アラビア文字) (パキスタン)"
+
+#: picard/const/locales.py:101
+#, fuzzy
+msgid "Basaa"
+msgstr "バサ語"
+
+#: picard/const/locales.py:102
+#, fuzzy
+msgid "Basaa (Cameroon)"
+msgstr "ミナ語 (カメルーン)"
+
+#: picard/const/locales.py:103
+msgid "Belarusian"
+msgstr "ベラルーシ語"
+
+#: picard/const/locales.py:104
+msgid "Belarusian (Belarus)"
+msgstr "ベラルーシ語 (ベラルーシ)"
+
+#: picard/const/locales.py:105
+msgid "Belarusian (Taraskievica orthography)"
+msgstr ""
+
+#: picard/const/locales.py:106
+#, fuzzy
+msgid "Bemba"
+msgstr "ベンバ語"
+
+#: picard/const/locales.py:107
+msgid "Bemba (Zambia)"
+msgstr ""
+
+#: picard/const/locales.py:108
+msgid "Bena"
+msgstr ""
+
+#: picard/const/locales.py:109
+#, fuzzy
+#| msgid "Swahili (Tanzania)"
+msgid "Bena (Tanzania)"
+msgstr "スワヒリ語 (タンザニア)"
+
+#: picard/const/locales.py:110
+msgid "Bulgarian"
+msgstr "ブルガリア語"
+
+#: picard/const/locales.py:111
+msgid "Bulgarian (Bulgaria)"
+msgstr "ブルガリア語 (ブルガリア)"
+
+#: picard/const/locales.py:112
+msgid "Haryanvi"
+msgstr ""
+
+#: picard/const/locales.py:113
+#, fuzzy
+#| msgid "Marathi (India)"
+msgid "Haryanvi (India)"
+msgstr "マラーティー語 (インド)"
+
+#: picard/const/locales.py:114
+msgid "Western Balochi"
+msgstr ""
+
+#: picard/const/locales.py:115
+#, fuzzy
+#| msgid "Arabic (United Arab Emirates)"
+msgid "Western Balochi (United Arab Emirates)"
+msgstr "アラビア語 (UAE)"
+
+#: picard/const/locales.py:116
+#, fuzzy
+#| msgid "Pashto (Afghanistan)"
+msgid "Western Balochi (Afghanistan)"
+msgstr "パシュトー語 (アフガニスタン)"
+
+#: picard/const/locales.py:117
+msgid "Western Balochi (Iran)"
+msgstr ""
+
+#: picard/const/locales.py:118
+msgid "Western Balochi (Oman)"
+msgstr ""
+
+#: picard/const/locales.py:119
+#, fuzzy
+#| msgid "Punjabi (Pakistan)"
+msgid "Western Balochi (Pakistan)"
+msgstr "パンジャーブ語 (パキスタン)"
+
+#: picard/const/locales.py:120
+#, fuzzy
+msgid "Bhojpuri"
+msgstr "ボージプリー語"
+
+#: picard/const/locales.py:121
+#, fuzzy
+#| msgid "Bodo (India)"
+msgid "Bhojpuri (India)"
+msgstr "ボド語 (インド)"
+
+#: picard/const/locales.py:122
+msgid "Tai Dam"
+msgstr ""
+
+#: picard/const/locales.py:123
+#, fuzzy
+#| msgid "Vietnamese (Vietnam)"
+msgid "Tai Dam (Vietnam)"
+msgstr "ベトナム語 (ベトナム)"
+
+#: picard/const/locales.py:124
+#, fuzzy
+msgid "Bambara"
+msgstr "バンバラ語"
+
+#: picard/const/locales.py:125
+#, fuzzy
+msgid "Bambara (Mali)"
+msgstr "バンバラ語"
+
+#: picard/const/locales.py:126
+#, fuzzy
+msgid "Bambara (N’Ko)"
+msgstr "バンバラ語"
+
+#: picard/const/locales.py:127
+msgid "Bambara (N’Ko) (Mali)"
+msgstr ""
+
+#: picard/const/locales.py:128
+msgid "Bangla"
+msgstr ""
+
+#: picard/const/locales.py:129
+#, fuzzy
+msgid "Bangla (Bangladesh)"
+msgstr "ベンガル語 (バングラデシュ)"
+
+#: picard/const/locales.py:130
+#, fuzzy
+#| msgid "Kannada (India)"
+msgid "Bangla (India)"
+msgstr "カンナダ語 (インド)"
+
+#: picard/const/locales.py:131
+msgid "Tibetan"
+msgstr "チベット文字"
+
+#: picard/const/locales.py:132
+msgid "Tibetan (China)"
+msgstr "チベット語 (中国)"
+
+#: picard/const/locales.py:133
+msgid "Tibetan (India)"
+msgstr "チベット語 (インド)"
+
+#: picard/const/locales.py:134
+#, fuzzy
+msgid "Breton"
+msgstr "ブルトン語"
+
+#: picard/const/locales.py:135
+#, fuzzy
+#| msgid "French (France)"
+msgid "Breton (France)"
+msgstr "フランス語 (フランス)"
+
+#: picard/const/locales.py:136
+msgid "Bodo"
+msgstr ""
+
+#: picard/const/locales.py:137
+msgid "Bodo (India)"
+msgstr "ボド語 (インド)"
+
+#: picard/const/locales.py:138
+msgid "Bosnian"
+msgstr "ボスニア語"
+
+#: picard/const/locales.py:139
+#, fuzzy
+#| msgid "Mongolian (Cyrillic)"
+msgid "Bosnian (Cyrillic)"
+msgstr "モンゴル語 (キリル文字)"
+
+#: picard/const/locales.py:140
+#, fuzzy
+msgid "Bosnian (Cyrillic) (Bosnia & Herzegovina)"
+msgstr "セルビア語 (キリル文字) (ボスニア・ヘルツェゴビナ)"
+
+#: picard/const/locales.py:141
+#, fuzzy
+#| msgid "Serbian (Latin)"
+msgid "Bosnian (Latin)"
+msgstr "セルビア語 (ラテン文字)"
+
+#: picard/const/locales.py:142
+#, fuzzy
+msgid "Bosnian (Latin) (Bosnia & Herzegovina)"
+msgstr "セルビア語 (ラテン文字) (ボスニア・ヘルツェゴビナ)"
+
+#: picard/const/locales.py:143
+msgid "Akoose"
+msgstr ""
+
+#: picard/const/locales.py:144
+#, fuzzy
+msgid "Akoose (Cameroon)"
+msgstr "ミナ語 (カメルーン)"
+
+#: picard/const/locales.py:145
+msgid "Blin"
+msgstr "ビリン語"
+
+#: picard/const/locales.py:146
+msgid "Blin (Eritrea)"
+msgstr "ビリン語 (エリトリア)"
+
+#: picard/const/locales.py:148
+#, fuzzy
+#| msgid "Catalan (Spain)"
+msgid "Catalan (Andorra)"
+msgstr "カタルーニャ語 (スペイン)"
+
+#: picard/const/locales.py:149
+msgid "Catalan (Spain)"
+msgstr "カタルーニャ語 (スペイン)"
+
+#: picard/const/locales.py:150
+#, fuzzy
+#| msgid "Catalan (Spain)"
+msgid "Catalan (Spain Valencian)"
+msgstr "カタルーニャ語 (スペイン)"
+
+#: picard/const/locales.py:151
+#, fuzzy
+#| msgid "Catalan (Spain)"
+msgid "Catalan (France)"
+msgstr "カタルーニャ語 (スペイン)"
+
+#: picard/const/locales.py:152
+#, fuzzy
+#| msgid "Italian (Italy)"
+msgid "Catalan (Italy)"
+msgstr "イタリア語 (イタリア)"
+
+#: picard/const/locales.py:153
+#, fuzzy
+msgid "Caddo"
+msgstr "カドー語"
+
+#: picard/const/locales.py:154
+#, fuzzy
+#| msgid "Spanish (United States)"
+msgid "Caddo (United States)"
+msgstr "スペイン語 (アメリカ)"
+
+#: picard/const/locales.py:155
+msgid "Atsam"
+msgstr "チャワイ語"
+
+#: picard/const/locales.py:156
+msgid "Atsam (Nigeria)"
+msgstr "チャワイ語 (ナイジェリア)"
+
+#: picard/const/locales.py:157
+#, fuzzy
+msgid "Chakma"
+msgstr "チャクマ文字"
+
+#: picard/const/locales.py:158
+#, fuzzy
+msgid "Chakma (Bangladesh)"
+msgstr "ベンガル語 (バングラデシュ)"
+
+#: picard/const/locales.py:159
+#, fuzzy
+#| msgid "Tamil (India)"
+msgid "Chakma (India)"
+msgstr "タミル語 (インド)"
+
+#: picard/const/locales.py:160
+#, fuzzy
+msgid "Chechen"
+msgstr "チェチェン語"
+
+#: picard/const/locales.py:161
+#, fuzzy
+#| msgid "Russian (Russia)"
+msgid "Chechen (Russia)"
+msgstr "ロシア語 (ロシア)"
+
+#: picard/const/locales.py:162
+#, fuzzy
+msgid "Cebuano"
+msgstr "セブアノ語"
+
+#: picard/const/locales.py:163
+#, fuzzy
+msgid "Cebuano (Philippines)"
+msgstr "英語 (フィリピン)"
+
+#: picard/const/locales.py:164
+msgid "Chiga"
+msgstr ""
+
+#: picard/const/locales.py:165
+msgid "Chiga (Uganda)"
+msgstr ""
+
+#: picard/const/locales.py:166
+#, fuzzy
+msgid "Choctaw"
+msgstr "チョクトー語"
+
+#: picard/const/locales.py:167
+#, fuzzy
+#| msgid "Hawaiian (United States)"
+msgid "Choctaw (United States)"
+msgstr "ハワイ語 (アメリカ)"
+
+#: picard/const/locales.py:168
+#, fuzzy
+msgid "Cherokee"
+msgstr "チェロキー文字"
+
+#: picard/const/locales.py:169
+#, fuzzy
+#| msgid "English (United States)"
+msgid "Cherokee (United States)"
+msgstr "英語 (アメリカ)"
+
+#: picard/const/locales.py:170
+msgid "Chickasaw"
+msgstr ""
+
+#: picard/const/locales.py:171
+#, fuzzy
+#| msgid "English (United States)"
+msgid "Chickasaw (United States)"
+msgstr "英語 (アメリカ)"
+
+#: picard/const/locales.py:172
+#, fuzzy
+#| msgid "Kurdish"
+msgid "Central Kurdish"
+msgstr "クルド語"
+
+#: picard/const/locales.py:173
+msgid "Central Kurdish (Iraq)"
+msgstr ""
+
+#: picard/const/locales.py:174
+#, fuzzy
+#| msgid "English (Ireland)"
+msgid "Central Kurdish (Iran)"
+msgstr "英語 (アイルランド)"
+
+#: picard/const/locales.py:175
+#, fuzzy
+msgid "Corsican"
+msgstr "コルシカ語"
+
+#: picard/const/locales.py:176
+#, fuzzy
+#| msgid "Occitan (France)"
+msgid "Corsican (France)"
+msgstr "オック語 (フランス)"
+
+#: picard/const/locales.py:178
+msgid "Czech (Czechia)"
+msgstr ""
+
+#: picard/const/locales.py:179
+#, fuzzy
+msgid "Church Slavic"
+msgstr "古代教会スラヴ語"
+
+#: picard/const/locales.py:180
+#, fuzzy
+msgid "Church Slavic (Russia)"
+msgstr "古代教会スラヴ語"
+
+#: picard/const/locales.py:181
+#, fuzzy
+msgid "Chuvash"
+msgstr "チュヴァシ語"
+
+#: picard/const/locales.py:182
+#, fuzzy
+#| msgid "Russian (Russia)"
+msgid "Chuvash (Russia)"
+msgstr "ロシア語 (ロシア)"
+
+#: picard/const/locales.py:183
+msgid "Welsh"
+msgstr "ウェールズ語"
+
+#: picard/const/locales.py:184
+msgid "Welsh (United Kingdom)"
+msgstr "ウェールズ語 (イギリス)"
+
+#: picard/const/locales.py:186
+msgid "Danish (Denmark)"
+msgstr "デンマーク語 (デンマーク)"
+
+#: picard/const/locales.py:187
+#, fuzzy
+msgid "Danish (Greenland)"
+msgstr "英語（カナダ）"
+
+#: picard/const/locales.py:188
+msgid "Taita"
+msgstr ""
+
+#: picard/const/locales.py:189
+#, fuzzy
+#| msgid "Kamba (Kenya)"
+msgid "Taita (Kenya)"
+msgstr "カンバ語 (ケニア)"
+
+#: picard/const/locales.py:191
+msgid "German (Austria)"
+msgstr "ドイツ語 (オーストリア)"
+
+#: picard/const/locales.py:192
+msgid "German (Belgium)"
+msgstr "ドイツ語 (ベルギー)"
+
+#: picard/const/locales.py:194
+msgid "German (Germany)"
+msgstr "ドイツ語 (ドイツ)"
+
+#: picard/const/locales.py:195
+#, fuzzy
+#| msgid "Friulian (Italy)"
+msgid "German (Italy)"
+msgstr "フリウリ語 (イタリア)"
+
+#: picard/const/locales.py:196
+msgid "German (Liechtenstein)"
+msgstr "ドイツ語 (リヒテンシュタイン)"
+
+#: picard/const/locales.py:197
+msgid "German (Luxembourg)"
+msgstr "ドイツ語 (ルクセンブルク)"
+
+#: picard/const/locales.py:198
+msgid "Zarma"
+msgstr "ザルマ語"
+
+#: picard/const/locales.py:199
+#, fuzzy
+#| msgid "Hausa (Niger)"
+msgid "Zarma (Niger)"
+msgstr "ハウサ語 (ニジェール)"
+
+#: picard/const/locales.py:200
+#, fuzzy
+msgid "Dogri"
+msgstr "ドグリー語"
+
+#: picard/const/locales.py:201
+#, fuzzy
+#| msgid "Bodo (India)"
+msgid "Dogri (India)"
+msgstr "ボド語 (インド)"
+
+#: picard/const/locales.py:202
+#, fuzzy
+#| msgid "Serbian"
+msgid "Lower Sorbian"
+msgstr "セルビア語"
+
+#: picard/const/locales.py:203
+#, fuzzy
+#| msgid "Low German (Germany)"
+msgid "Lower Sorbian (Germany)"
+msgstr "低地ドイツ語 (ドイツ)"
+
+#: picard/const/locales.py:204
+#, fuzzy
+msgid "Duala"
+msgstr "デゥアラ語"
+
+#: picard/const/locales.py:205
+#, fuzzy
+msgid "Duala (Cameroon)"
+msgstr "ミナ語 (カメルーン)"
+
+#: picard/const/locales.py:206
+msgid "Divehi"
+msgstr "ディベヒ語"
+
+#: picard/const/locales.py:207
+msgid "Divehi (Maldives)"
+msgstr "ディベヒ語 (モルディブ)"
+
+#: picard/const/locales.py:208
+msgid "Jola-Fonyi"
+msgstr ""
+
+#: picard/const/locales.py:209
+#, fuzzy
+#| msgid "Wolof (Senegal)"
+msgid "Jola-Fonyi (Senegal)"
+msgstr "ウォロフ語 (セネガル)"
+
+#: picard/const/locales.py:210
+msgid "Dzongkha"
+msgstr "ゾンカ語"
+
+#: picard/const/locales.py:211
+msgid "Dzongkha (Bhutan)"
+msgstr "ゾンカ語 (ブータン)"
+
+#: picard/const/locales.py:212
+msgid "Embu"
+msgstr ""
+
+#: picard/const/locales.py:213
+#, fuzzy
+#| msgid "Kamba (Kenya)"
+msgid "Embu (Kenya)"
+msgstr "カンバ語 (ケニア)"
+
+#: picard/const/locales.py:214
+msgid "Ewe"
+msgstr "エウェ語"
+
+#: picard/const/locales.py:215
+msgid "Ewe (Ghana)"
+msgstr "エウェ語 (ガーナ)"
+
+#: picard/const/locales.py:216
+msgid "Ewe (Togo)"
+msgstr "エウェ語 (トーゴ)"
+
+#: picard/const/locales.py:218
+msgid "Greek (Cyprus)"
+msgstr "ギリシア語 (キプロス)"
+
+#: picard/const/locales.py:219
+msgid "Greek (Greece)"
+msgstr "ギリシア語 (ギリシャ)"
+
+#: picard/const/locales.py:220
+msgid "Greek (Polytonic)"
+msgstr ""
+
+#: picard/const/locales.py:222
+#, fuzzy
+#| msgid "English (Ireland)"
+msgid "English (world)"
+msgstr "英語 (アイルランド)"
+
+#: picard/const/locales.py:223
+#, fuzzy
+#| msgid "English (Guam)"
+msgid "English (Europe)"
+msgstr "英語 (グアム)"
+
+#: picard/const/locales.py:224
+#, fuzzy
+msgid "English (United Arab Emirates)"
+msgstr "アラビア語 (UAE)"
+
+#: picard/const/locales.py:225
+#, fuzzy
+msgid "English (Antigua & Barbuda)"
+msgstr "英語 (トリニダード・トバゴ)"
+
+#: picard/const/locales.py:226
+#, fuzzy
+msgid "English (Anguilla)"
+msgstr "英語（オーストラリア）"
+
+#: picard/const/locales.py:227
+msgid "English (American Samoa)"
+msgstr "英語 (アメリカ領サモア)"
+
+#: picard/const/locales.py:228
+#, fuzzy
+msgid "English (Austria)"
+msgstr "英語（オーストラリア）"
+
+#: picard/const/locales.py:230
+#, fuzzy
+msgid "English (Barbados)"
+msgstr "英語 (マルタ)"
+
+#: picard/const/locales.py:231
+msgid "English (Belgium)"
+msgstr "英語 (ベルギー)"
+
+#: picard/const/locales.py:232
+#, fuzzy
+#| msgid "English (India)"
+msgid "English (Burundi)"
+msgstr "英語 (インド)"
+
+#: picard/const/locales.py:233
+#, fuzzy
+#| msgid "English (Guam)"
+msgid "English (Bermuda)"
+msgstr "英語 (グアム)"
+
+#: picard/const/locales.py:234
+#, fuzzy
+msgid "English (Bahamas)"
+msgstr "英語 (グアム)"
+
+#: picard/const/locales.py:235
+msgid "English (Botswana)"
+msgstr "英語 (ボツワナ)"
+
+#: picard/const/locales.py:236
+msgid "English (Belize)"
+msgstr "英語 (ベリーズ)"
+
+#: picard/const/locales.py:238
+#, fuzzy
+msgid "English (Cocos (Keeling) Islands)"
+msgstr "英語 (合衆国領有小離島)"
+
+#: picard/const/locales.py:239
+#, fuzzy
+msgid "English (Switzerland)"
+msgstr "英語 (アイルランド)"
+
+#: picard/const/locales.py:240
+#, fuzzy
+#| msgid "English (Ireland)"
+msgid "English (Cook Islands)"
+msgstr "英語 (アイルランド)"
+
+#: picard/const/locales.py:241
+#, fuzzy
+#| msgid "English (Canada)"
+msgid "English (Cameroon)"
+msgstr "英語（カナダ）"
+
+#: picard/const/locales.py:242
+#, fuzzy
+#| msgid "English (Marshall Islands)"
+msgid "English (Christmas Island)"
+msgstr "英語 (マーシャル諸島)"
+
+#: picard/const/locales.py:243
+#, fuzzy
+#| msgid "English (Guam)"
+msgid "English (Cyprus)"
+msgstr "英語 (グアム)"
+
+#: picard/const/locales.py:244
+#, fuzzy
+msgid "English (Germany)"
+msgstr "英語 (グアム)"
+
+#: picard/const/locales.py:245
+#, fuzzy
+msgid "English (Diego Garcia)"
+msgstr "英語 (グアム)"
+
+#: picard/const/locales.py:246
+#, fuzzy
+#| msgid "Danish (Denmark)"
+msgid "English (Denmark)"
+msgstr "デンマーク語 (デンマーク)"
+
+#: picard/const/locales.py:247
+#, fuzzy
+#| msgid "English (Jamaica)"
+msgid "English (Dominica)"
+msgstr "英語 (ジャマイカ)"
+
+#: picard/const/locales.py:248
+msgid "English (Deseret)"
+msgstr "英語 (デザレット文字)"
+
+#: picard/const/locales.py:249
+msgid "English (Deseret) (United States)"
+msgstr "英語 (デザレット文字) (アメリカ)"
+
+#: picard/const/locales.py:250
+#, fuzzy
+#| msgid "Blin (Eritrea)"
+msgid "English (Eritrea)"
+msgstr "ビリン語 (エリトリア)"
+
+#: picard/const/locales.py:251
+#, fuzzy
+msgid "English (Finland)"
+msgstr "英語 (アイルランド)"
+
+#: picard/const/locales.py:252
+#, fuzzy
+msgid "English (Fiji)"
+msgstr "英語 (アイルランド)"
+
+#: picard/const/locales.py:253
+#, fuzzy
+#| msgid "English (Marshall Islands)"
+msgid "English (Falkland Islands)"
+msgstr "英語 (マーシャル諸島)"
+
+#: picard/const/locales.py:254
+#, fuzzy
+msgid "English (Micronesia)"
+msgstr "英語 (マルタ)"
+
+#: picard/const/locales.py:255
+msgid "English (United Kingdom)"
+msgstr "英語 (イギリス)"
+
+#: picard/const/locales.py:256
+#, fuzzy
+msgid "English (Grenada)"
+msgstr "英語（カナダ）"
+
+#: picard/const/locales.py:257
+#, fuzzy
+msgid "English (Guernsey)"
+msgstr "英語 (グアム)"
+
+#: picard/const/locales.py:258
+#, fuzzy
+msgid "English (Ghana)"
+msgstr "英語 (グアム)"
+
+#: picard/const/locales.py:259
+#, fuzzy
+#| msgid "English (Malta)"
+msgid "English (Gibraltar)"
+msgstr "英語 (マルタ)"
+
+#: picard/const/locales.py:260
+#, fuzzy
+#| msgid "English (Namibia)"
+msgid "English (Gambia)"
+msgstr "英語 (ナミビア)"
+
+#: picard/const/locales.py:261
+msgid "English (Guam)"
+msgstr "英語 (グアム)"
+
+#: picard/const/locales.py:262
+#, fuzzy
+msgid "English (Guyana)"
+msgstr "英語 (グアム)"
+
+#: picard/const/locales.py:263
+msgid "English (Hong Kong)"
+msgstr "英語 (香港)"
+
+#: picard/const/locales.py:264
+msgid "English (Ireland)"
+msgstr "英語 (アイルランド)"
+
+#: picard/const/locales.py:265
+#, fuzzy
+#| msgid "English (Ireland)"
+msgid "English (Israel)"
+msgstr "英語 (アイルランド)"
+
+#: picard/const/locales.py:266
+#, fuzzy
+#| msgid "English (Ireland)"
+msgid "English (Isle of Man)"
+msgstr "英語 (アイルランド)"
+
+#: picard/const/locales.py:267
+msgid "English (India)"
+msgstr "英語 (インド)"
+
+#: picard/const/locales.py:268
+msgid "English (British Indian Ocean Territory)"
+msgstr ""
+
+#: picard/const/locales.py:269
+#, fuzzy
+#| msgid "English (Deseret)"
+msgid "English (Jersey)"
+msgstr "英語 (デザレット文字)"
+
+#: picard/const/locales.py:270
+msgid "English (Jamaica)"
+msgstr "英語 (ジャマイカ)"
+
+#: picard/const/locales.py:271
+#, fuzzy
+#| msgid "English (UK)"
+msgid "English (Kenya)"
+msgstr "英語（イギリス）"
+
+#: picard/const/locales.py:272
+#, fuzzy
+msgid "English (Kiribati)"
+msgstr "英語（オーストラリア）"
+
+#: picard/const/locales.py:273
+#, fuzzy
+#| msgid "English (United States)"
+msgid "English (St. Kitts & Nevis)"
+msgstr "英語 (アメリカ)"
+
+#: picard/const/locales.py:274
+#, fuzzy
+#| msgid "English (Marshall Islands)"
+msgid "English (Cayman Islands)"
+msgstr "英語 (マーシャル諸島)"
+
+#: picard/const/locales.py:275
+#, fuzzy
+#| msgid "English (South Africa)"
+msgid "English (St. Lucia)"
+msgstr "英語 (南アフリカ)"
+
+#: picard/const/locales.py:276
+#, fuzzy
+#| msgid "English (Namibia)"
+msgid "English (Liberia)"
+msgstr "英語 (ナミビア)"
+
+#: picard/const/locales.py:277
+#, fuzzy
+#| msgid "English (Deseret)"
+msgid "English (Lesotho)"
+msgstr "英語 (デザレット文字)"
+
+#: picard/const/locales.py:278
+#, fuzzy
+msgid "English (Madagascar)"
+msgstr "英語 (マルタ)"
+
+#: picard/const/locales.py:279
+msgid "English (Marshall Islands)"
+msgstr "英語 (マーシャル諸島)"
+
+#: picard/const/locales.py:280
+#, fuzzy
+msgid "English (Macao)"
+msgstr "英語 (マルタ)"
+
+#: picard/const/locales.py:281
+msgid "English (Northern Mariana Islands)"
+msgstr "英語 (北マリアナ諸島)"
+
+#: picard/const/locales.py:282
+#, fuzzy
+#| msgid "English (Deseret)"
+msgid "English (Montserrat)"
+msgstr "英語 (デザレット文字)"
+
+#: picard/const/locales.py:283
+msgid "English (Malta)"
+msgstr "英語 (マルタ)"
+
+#: picard/const/locales.py:284
+#, fuzzy
+#| msgid "English (Malta)"
+msgid "English (Mauritius)"
+msgstr "英語 (マルタ)"
+
+#: picard/const/locales.py:285
+#, fuzzy
+msgid "English (Maldives)"
+msgstr "英語 (マルタ)"
+
+#: picard/const/locales.py:286
+#, fuzzy
+msgid "English (Malawi)"
+msgstr "英語 (マルタ)"
+
+#: picard/const/locales.py:287
+#, fuzzy
+msgid "English (Malaysia)"
+msgstr "英語 (マルタ)"
+
+#: picard/const/locales.py:288
+msgid "English (Namibia)"
+msgstr "英語 (ナミビア)"
+
+#: picard/const/locales.py:289
+#, fuzzy
+#| msgid "English (Marshall Islands)"
+msgid "English (Norfolk Island)"
+msgstr "英語 (マーシャル諸島)"
+
+#: picard/const/locales.py:290
+#, fuzzy
+#| msgid "English (Namibia)"
+msgid "English (Nigeria)"
+msgstr "英語 (ナミビア)"
+
+#: picard/const/locales.py:291
+#, fuzzy
+#| msgid "English (New Zealand)"
+msgid "English (Netherlands)"
+msgstr "英語 (ニュージーランド)"
+
+#: picard/const/locales.py:292
+#, fuzzy
+#| msgid "English (Guam)"
+msgid "English (Nauru)"
+msgstr "英語 (グアム)"
+
+#: picard/const/locales.py:293
+#, fuzzy
+#| msgid "English (Belize)"
+msgid "English (Niue)"
+msgstr "英語 (ベリーズ)"
+
+#: picard/const/locales.py:294
+msgid "English (New Zealand)"
+msgstr "英語 (ニュージーランド)"
+
+#: picard/const/locales.py:295
+#, fuzzy
+#| msgid "English (New Zealand)"
+msgid "English (Papua New Guinea)"
+msgstr "英語 (ニュージーランド)"
+
+#: picard/const/locales.py:296
+msgid "English (Philippines)"
+msgstr "英語 (フィリピン)"
+
+#: picard/const/locales.py:297
+msgid "English (Pakistan)"
+msgstr "英語 (パキスタン)"
+
+#: picard/const/locales.py:298
+#, fuzzy
+#| msgid "English (Marshall Islands)"
+msgid "English (Pitcairn Islands)"
+msgstr "英語 (マーシャル諸島)"
+
+#: picard/const/locales.py:299
+#, fuzzy
+msgid "English (Puerto Rico)"
+msgstr "スペイン語 (プエルトリコ)"
+
+#: picard/const/locales.py:300
+#, fuzzy
+#| msgid "English (Malta)"
+msgid "English (Palau)"
+msgstr "英語 (マルタ)"
+
+#: picard/const/locales.py:301
+#, fuzzy
+#| msgid "English (Canada)"
+msgid "English (Rwanda)"
+msgstr "英語（カナダ）"
+
+#: picard/const/locales.py:302
+#, fuzzy
+msgid "English (Solomon Islands)"
+msgstr "英語 (合衆国領有小離島)"
+
+#: picard/const/locales.py:303
+#, fuzzy
+#| msgid "English (Belize)"
+msgid "English (Seychelles)"
+msgstr "英語 (ベリーズ)"
+
+#: picard/const/locales.py:304
+#, fuzzy
+msgid "English (Sudan)"
+msgstr "英語 (グアム)"
+
+#: picard/const/locales.py:305
+#, fuzzy
+#| msgid "Swedish (Sweden)"
+msgid "English (Sweden)"
+msgstr "スウェーデン語 (スウェーデン)"
+
+#: picard/const/locales.py:306
+msgid "English (Singapore)"
+msgstr "英語 (シンガポール)"
+
+#: picard/const/locales.py:307
+#, fuzzy
+#| msgid "English (Belize)"
+msgid "English (St. Helena)"
+msgstr "英語 (ベリーズ)"
+
+#: picard/const/locales.py:308
+#, fuzzy
+#| msgid "English (Shavian)"
+msgid "English (Slovenia)"
+msgstr "英語 (ショー文字)"
+
+#: picard/const/locales.py:309
+#, fuzzy
+#| msgid "English (Singapore)"
+msgid "English (Sierra Leone)"
+msgstr "英語 (シンガポール)"
+
+#: picard/const/locales.py:310
+#, fuzzy
+#| msgid "English (South Africa)"
+msgid "English (South Sudan)"
+msgstr "英語 (南アフリカ)"
+
+#: picard/const/locales.py:311
+#, fuzzy
+#| msgid "English (Singapore)"
+msgid "English (Sint Maarten)"
+msgstr "英語 (シンガポール)"
+
+#: picard/const/locales.py:312
+#, fuzzy
+#| msgid "English (Botswana)"
+msgid "English (Eswatini)"
+msgstr "英語 (ボツワナ)"
+
+#: picard/const/locales.py:313
+msgid "English (Shavian)"
+msgstr "英語 (ショー文字)"
+
+#: picard/const/locales.py:314
+#, fuzzy
+#| msgid "English (United Kingdom)"
+msgid "English (Shavian) (United Kingdom)"
+msgstr "英語 (イギリス)"
+
+#: picard/const/locales.py:315
+#, fuzzy
+#| msgid "English (Marshall Islands)"
+msgid "English (Turks & Caicos Islands)"
+msgstr "英語 (マーシャル諸島)"
+
+#: picard/const/locales.py:316
+#, fuzzy
+#| msgid "English (Belgium)"
+msgid "English (Tokelau)"
+msgstr "英語 (ベルギー)"
+
+#: picard/const/locales.py:317
+#, fuzzy
+msgid "English (Tonga)"
+msgstr "英語 (グアム)"
+
+#: picard/const/locales.py:318
+#, fuzzy
+msgid "English (Trinidad & Tobago)"
+msgstr "英語 (トリニダード・トバゴ)"
+
+#: picard/const/locales.py:319
+#, fuzzy
+#| msgid "English (Guam)"
+msgid "English (Tuvalu)"
+msgstr "英語 (グアム)"
+
+#: picard/const/locales.py:320
+#, fuzzy
+#| msgid "English (Canada)"
+msgid "English (Tanzania)"
+msgstr "英語（カナダ）"
+
+#: picard/const/locales.py:321
+#, fuzzy
+#| msgid "English (Canada)"
+msgid "English (Uganda)"
+msgstr "英語（カナダ）"
+
+#: picard/const/locales.py:322
+#, fuzzy
+msgid "English (U.S. Outlying Islands)"
+msgstr "英語 (合衆国領有小離島)"
+
+#: picard/const/locales.py:323
+msgid "English (United States)"
+msgstr "英語 (アメリカ)"
+
+#: picard/const/locales.py:324
+#, fuzzy
+#| msgid "English (U.S. Virgin Islands)"
+msgid "English (St. Vincent & Grenadines)"
+msgstr "英語 (アメリカ領ヴァージン諸島)"
+
+#: picard/const/locales.py:325
+#, fuzzy
+#| msgid "English (U.S. Virgin Islands)"
+msgid "English (British Virgin Islands)"
+msgstr "英語 (アメリカ領ヴァージン諸島)"
+
+#: picard/const/locales.py:326
+msgid "English (U.S. Virgin Islands)"
+msgstr "英語 (アメリカ領ヴァージン諸島)"
+
+#: picard/const/locales.py:327
+#, fuzzy
+msgid "English (Vanuatu)"
+msgstr "英語 (グアム)"
+
+#: picard/const/locales.py:328
+#, fuzzy
+#| msgid "English (Guam)"
+msgid "English (Samoa)"
+msgstr "英語 (グアム)"
+
+#: picard/const/locales.py:329
+msgid "English (South Africa)"
+msgstr "英語 (南アフリカ)"
+
+#: picard/const/locales.py:330
+#, fuzzy
+#| msgid "English (Namibia)"
+msgid "English (Zambia)"
+msgstr "英語 (ナミビア)"
+
+#: picard/const/locales.py:331
+msgid "English (Zimbabwe)"
+msgstr "英語 (ジンバブエ)"
+
+#: picard/const/locales.py:332
+msgid "Esperanto"
+msgstr "エスペラント"
+
+#: picard/const/locales.py:333
+#, fuzzy
+#| msgid "Esperanto"
+msgid "Esperanto (world)"
+msgstr "エスペラント"
+
+#: picard/const/locales.py:335
+#, fuzzy
+#| msgid "Spanish (Panama)"
+msgid "Spanish (Latin America)"
+msgstr "スペイン語 (パナマ)"
+
+#: picard/const/locales.py:336
+msgid "Spanish (Argentina)"
+msgstr "スペイン語 (アルゼンチン)"
+
+#: picard/const/locales.py:337
+msgid "Spanish (Bolivia)"
+msgstr "スペイン語 (ボリビア)"
+
+#: picard/const/locales.py:338
+#, fuzzy
+#| msgid "Spanish (Chile)"
+msgid "Spanish (Brazil)"
+msgstr "スペイン語 (チリ)"
+
+#: picard/const/locales.py:339
+#, fuzzy
+#| msgid "English (Belize)"
+msgid "Spanish (Belize)"
+msgstr "英語 (ベリーズ)"
+
+#: picard/const/locales.py:340
+msgid "Spanish (Chile)"
+msgstr "スペイン語 (チリ)"
+
+#: picard/const/locales.py:341
+msgid "Spanish (Colombia)"
+msgstr "スペイン語 (コロンビア)"
+
+#: picard/const/locales.py:342
+msgid "Spanish (Costa Rica)"
+msgstr "スペイン語 (コスタリカ)"
+
+#: picard/const/locales.py:343
+#, fuzzy
+#| msgid "Spanish (Colombia)"
+msgid "Spanish (Cuba)"
+msgstr "スペイン語 (コロンビア)"
+
+#: picard/const/locales.py:344
+msgid "Spanish (Dominican Republic)"
+msgstr "スペイン語 (ドミニカ)"
+
+#: picard/const/locales.py:345
+#, fuzzy
+#| msgid "Spanish (Costa Rica)"
+msgid "Spanish (Ceuta & Melilla)"
+msgstr "スペイン語 (コスタリカ)"
+
+#: picard/const/locales.py:346
+msgid "Spanish (Ecuador)"
+msgstr "スペイン語 (エクアドル)"
+
+#: picard/const/locales.py:347
+msgid "Spanish (Spain)"
+msgstr "スペイン語 (スペイン)"
+
+#: picard/const/locales.py:348
+#, fuzzy
+#| msgid "Spanish (Guatemala)"
+msgid "Spanish (Equatorial Guinea)"
+msgstr "スペイン語 (グアテマラ)"
+
+#: picard/const/locales.py:349
+msgid "Spanish (Guatemala)"
+msgstr "スペイン語 (グアテマラ)"
+
+#: picard/const/locales.py:350
+msgid "Spanish (Honduras)"
+msgstr "スペイン語 (ホンジュラス)"
+
+#: picard/const/locales.py:351
+#, fuzzy
+#| msgid "Spanish (Panama)"
+msgid "Spanish (Canary Islands)"
+msgstr "スペイン語 (パナマ)"
+
+#: picard/const/locales.py:352
+msgid "Spanish (Mexico)"
+msgstr "スペイン語 (メキシコ)"
+
+#: picard/const/locales.py:353
+msgid "Spanish (Nicaragua)"
+msgstr "スペイン語 (ニカラグア)"
+
+#: picard/const/locales.py:354
+msgid "Spanish (Panama)"
+msgstr "スペイン語 (パナマ)"
+
+#: picard/const/locales.py:355
+msgid "Spanish (Peru)"
+msgstr "スペイン語 (ペルー)"
+
+#: picard/const/locales.py:356
+#, fuzzy
+msgid "Spanish (Philippines)"
+msgstr "英語 (フィリピン)"
+
+#: picard/const/locales.py:357
+msgid "Spanish (Puerto Rico)"
+msgstr "スペイン語 (プエルトリコ)"
+
+#: picard/const/locales.py:358
+msgid "Spanish (Paraguay)"
+msgstr "スペイン語 (パラグアイ)"
+
+#: picard/const/locales.py:359
+msgid "Spanish (El Salvador)"
+msgstr "スペイン語 (エルサルバドル)"
+
+#: picard/const/locales.py:360
+msgid "Spanish (United States)"
+msgstr "スペイン語 (アメリカ)"
+
+#: picard/const/locales.py:361
+msgid "Spanish (Uruguay)"
+msgstr "スペイン語 (ウルグアイ)"
+
+#: picard/const/locales.py:362
+msgid "Spanish (Venezuela)"
+msgstr "スペイン語 (ベネズエラ)"
+
+#: picard/const/locales.py:364
+msgid "Estonian (Estonia)"
+msgstr "英語 (エストニア)"
+
+#: picard/const/locales.py:365
+msgid "Basque"
+msgstr "バスク語"
+
+#: picard/const/locales.py:366
+msgid "Basque (Spain)"
+msgstr "バスク語 (スペイン)"
+
+#: picard/const/locales.py:367
+#, fuzzy
+msgid "Ewondo"
+msgstr "エウォンド語"
+
+#: picard/const/locales.py:368
+#, fuzzy
+msgid "Ewondo (Cameroon)"
+msgstr "ミナ語 (カメルーン)"
+
+#: picard/const/locales.py:369
+msgid "Persian"
+msgstr "ペルシア語"
+
+#: picard/const/locales.py:370
+msgid "Persian (Afghanistan)"
+msgstr "ペルシア語 (アフガニスタン)"
+
+#: picard/const/locales.py:371
+msgid "Persian (Iran)"
+msgstr "ペルシア語 (イラン)"
+
+#: picard/const/locales.py:372
+#, fuzzy
+msgid "Fula"
+msgstr "フラ語"
+
+#: picard/const/locales.py:373
+msgid "Fula (Adlam)"
+msgstr ""
+
+#: picard/const/locales.py:374
+msgid "Fula (Adlam) (Burkina Faso)"
+msgstr ""
+
+#: picard/const/locales.py:375
+#, fuzzy
+msgid "Fula (Adlam) (Cameroon)"
+msgstr "ハウサ語 (ラテン文字) (ガーナ)"
+
+#: picard/const/locales.py:376
+#, fuzzy
+msgid "Fula (Adlam) (Ghana)"
+msgstr "ハウサ語 (ラテン文字) (ガーナ)"
+
+#: picard/const/locales.py:377
+#, fuzzy
+msgid "Fula (Adlam) (Gambia)"
+msgstr "ハウサ語 (ラテン文字) (ガーナ)"
+
+#: picard/const/locales.py:378
+#, fuzzy
+msgid "Fula (Adlam) (Guinea)"
+msgstr "ハウサ語 (ラテン文字) (ガーナ)"
+
+#: picard/const/locales.py:379
+#, fuzzy
+msgid "Fula (Adlam) (Guinea-Bissau)"
+msgstr "ハウサ語 (ラテン文字) (ナイジェリア)"
+
+#: picard/const/locales.py:380
+#, fuzzy
+msgid "Fula (Adlam) (Liberia)"
+msgstr "ハウサ語 (ラテン文字) (ナイジェリア)"
+
+#: picard/const/locales.py:381
+#, fuzzy
+msgid "Fula (Adlam) (Mauritania)"
+msgstr "ハウサ語 (ラテン文字) (ガーナ)"
+
+#: picard/const/locales.py:382
+#, fuzzy
+msgid "Fula (Adlam) (Niger)"
+msgstr "ハウサ語 (ラテン文字) (ニジェール)"
+
+#: picard/const/locales.py:383
+#, fuzzy
+msgid "Fula (Adlam) (Nigeria)"
+msgstr "ハウサ語 (ラテン文字) (ナイジェリア)"
+
+#: picard/const/locales.py:384
+#, fuzzy
+msgid "Fula (Adlam) (Sierra Leone)"
+msgstr "ウォロフ語 (ラテン文字) (セネガル)"
+
+#: picard/const/locales.py:385
+#, fuzzy
+msgid "Fula (Adlam) (Senegal)"
+msgstr "ウォロフ語 (ラテン文字) (セネガル)"
+
+#: picard/const/locales.py:386
+#, fuzzy
+#| msgid "Hausa (Latin)"
+msgid "Fula (Latin)"
+msgstr "ハウサ語 (ラテン文字)"
+
+#: picard/const/locales.py:387
+#, fuzzy
+msgid "Fula (Latin) (Burkina Faso)"
+msgstr "ハウサ語 (ラテン文字) (ナイジェリア)"
+
+#: picard/const/locales.py:388
+#, fuzzy
+msgid "Fula (Latin) (Cameroon)"
+msgstr "ハウサ語 (ラテン文字) (ガーナ)"
+
+#: picard/const/locales.py:389
+#, fuzzy
+msgid "Fula (Latin) (Ghana)"
+msgstr "ハウサ語 (ラテン文字) (ガーナ)"
+
+#: picard/const/locales.py:390
+#, fuzzy
+msgid "Fula (Latin) (Gambia)"
+msgstr "ハウサ語 (ラテン文字) (ガーナ)"
+
+#: picard/const/locales.py:391
+#, fuzzy
+msgid "Fula (Latin) (Guinea)"
+msgstr "ハウサ語 (ラテン文字) (ガーナ)"
+
+#: picard/const/locales.py:392
+#, fuzzy
+msgid "Fula (Latin) (Guinea-Bissau)"
+msgstr "ハウサ語 (ラテン文字) (ナイジェリア)"
+
+#: picard/const/locales.py:393
+#, fuzzy
+msgid "Fula (Latin) (Liberia)"
+msgstr "ハウサ語 (ラテン文字) (ナイジェリア)"
+
+#: picard/const/locales.py:394
+#, fuzzy
+msgid "Fula (Latin) (Mauritania)"
+msgstr "ハウサ語 (ラテン文字) (ガーナ)"
+
+#: picard/const/locales.py:395
+#, fuzzy
+msgid "Fula (Latin) (Niger)"
+msgstr "ハウサ語 (ラテン文字) (ニジェール)"
+
+#: picard/const/locales.py:396
+#, fuzzy
+msgid "Fula (Latin) (Nigeria)"
+msgstr "ハウサ語 (ラテン文字) (ナイジェリア)"
+
+#: picard/const/locales.py:397
+#, fuzzy
+msgid "Fula (Latin) (Sierra Leone)"
+msgstr "ウォロフ語 (ラテン文字) (セネガル)"
+
+#: picard/const/locales.py:398
+#, fuzzy
+msgid "Fula (Latin) (Senegal)"
+msgstr "ウォロフ語 (ラテン文字) (セネガル)"
+
+#: picard/const/locales.py:400
+msgid "Finnish (Finland)"
+msgstr "フィンランド語 (フィンランド)"
+
+#: picard/const/locales.py:401
+msgid "Filipino"
+msgstr "フィリピン語"
+
+#: picard/const/locales.py:402
+msgid "Filipino (Philippines)"
+msgstr "フィリピン語 (フィリピン)"
+
+#: picard/const/locales.py:403
+msgid "Faroese"
+msgstr "フェロー語"
+
+#: picard/const/locales.py:404
+#, fuzzy
+#| msgid "Danish (Denmark)"
+msgid "Faroese (Denmark)"
+msgstr "デンマーク語 (デンマーク)"
+
+#: picard/const/locales.py:405
+msgid "Faroese (Faroe Islands)"
+msgstr "フェロー語 (フェロー諸島)"
+
+#: picard/const/locales.py:407
+msgid "French (Belgium)"
+msgstr "フランス語 (ベルギー)"
+
+#: picard/const/locales.py:408
+#, fuzzy
+#| msgid "French (Canada)"
+msgid "French (Burkina Faso)"
+msgstr "フランス語（カナダ）"
+
+#: picard/const/locales.py:409
+#, fuzzy
+#| msgid "French (Canada)"
+msgid "French (Burundi)"
+msgstr "フランス語（カナダ）"
+
+#: picard/const/locales.py:410
+#, fuzzy
+#| msgid "French (Belgium)"
+msgid "French (Benin)"
+msgstr "フランス語 (ベルギー)"
+
+#: picard/const/locales.py:411
+#, fuzzy
+#| msgid "French (Senegal)"
+msgid "French (St. Barthélemy)"
+msgstr "フランス語 (セネガル)"
+
+#: picard/const/locales.py:413
+#, fuzzy
+#| msgid "Lingala (Congo - Kinshasa)"
+msgid "French (Congo - Kinshasa)"
+msgstr "リンガラ語 (コンゴ - キンシャサ方言)"
+
+#: picard/const/locales.py:414
+#, fuzzy
+#| msgid "Spanish (Dominican Republic)"
+msgid "French (Central African Republic)"
+msgstr "スペイン語 (ドミニカ)"
+
+#: picard/const/locales.py:415
+#, fuzzy
+#| msgid "Lingala (Congo - Brazzaville)"
+msgid "French (Congo - Brazzaville)"
+msgstr "リンガラ語 (コンゴ - ブラザヴィル方言)"
+
+#: picard/const/locales.py:416
+msgid "French (Switzerland)"
+msgstr "フランス語 (スイス)"
+
+#: picard/const/locales.py:417
+#, fuzzy
+#| msgid "Koro (Côte d’Ivoire)"
+msgid "French (Côte d’Ivoire)"
+msgstr "コロ語 (コートジボワール)"
+
+#: picard/const/locales.py:418
+#, fuzzy
+#| msgid "French (Canada)"
+msgid "French (Cameroon)"
+msgstr "フランス語（カナダ）"
+
+#: picard/const/locales.py:419
+#, fuzzy
+#| msgid "Afar (Djibouti)"
+msgid "French (Djibouti)"
+msgstr "アファル語 (ジブチ)"
+
+#: picard/const/locales.py:420
+#, fuzzy
+#| msgid "Arabic (Algeria)"
+msgid "French (Algeria)"
+msgstr "アラビア語 (アルジェリア)"
+
+#: picard/const/locales.py:421
+msgid "French (France)"
+msgstr "フランス語 (フランス)"
+
+#: picard/const/locales.py:422
+#, fuzzy
+#| msgid "French (Canada)"
+msgid "French (Gabon)"
+msgstr "フランス語（カナダ）"
+
+#: picard/const/locales.py:423
+#, fuzzy
+#| msgid "French (France)"
+msgid "French (French Guiana)"
+msgstr "フランス語 (フランス)"
+
+#: picard/const/locales.py:424
+#, fuzzy
+#| msgid "French (Senegal)"
+msgid "French (Guinea)"
+msgstr "フランス語 (セネガル)"
+
+#: picard/const/locales.py:425
+#, fuzzy
+#| msgid "French (Belgium)"
+msgid "French (Guadeloupe)"
+msgstr "フランス語 (ベルギー)"
+
+#: picard/const/locales.py:426
+#, fuzzy
+#| msgid "French (France)"
+msgid "French (Equatorial Guinea)"
+msgstr "フランス語 (フランス)"
+
+#: picard/const/locales.py:427
+#, fuzzy
+#| msgid "French (Canada)"
+msgid "French (Haiti)"
+msgstr "フランス語（カナダ）"
+
+#: picard/const/locales.py:428
+#, fuzzy
+msgid "French (Comoros)"
+msgstr "フランス語 (モナコ)"
+
+#: picard/const/locales.py:429
+msgid "French (Luxembourg)"
+msgstr "フランス語 (ルクセンブルク)"
+
+#: picard/const/locales.py:430
+#, fuzzy
+msgid "French (Morocco)"
+msgstr "フランス語 (モナコ)"
+
+#: picard/const/locales.py:431
+msgid "French (Monaco)"
+msgstr "フランス語 (モナコ)"
+
+#: picard/const/locales.py:432
+#, fuzzy
+#| msgid "French (Switzerland)"
+msgid "French (St. Martin)"
+msgstr "フランス語 (スイス)"
+
+#: picard/const/locales.py:433
+#, fuzzy
+#| msgid "French (Monaco)"
+msgid "French (Madagascar)"
+msgstr "フランス語 (モナコ)"
+
+#: picard/const/locales.py:434
+#, fuzzy
+#| msgid "French (Monaco)"
+msgid "French (Mali)"
+msgstr "フランス語 (モナコ)"
+
+#: picard/const/locales.py:435
+#, fuzzy
+#| msgid "French (France)"
+msgid "French (Martinique)"
+msgstr "フランス語 (フランス)"
+
+#: picard/const/locales.py:436
+#, fuzzy
+#| msgid "French (Monaco)"
+msgid "French (Mauritania)"
+msgstr "フランス語 (モナコ)"
+
+#: picard/const/locales.py:437
+#, fuzzy
+#| msgid "French (Monaco)"
+msgid "French (Mauritius)"
+msgstr "フランス語 (モナコ)"
+
+#: picard/const/locales.py:438
+#, fuzzy
+#| msgid "French (Canada)"
+msgid "French (New Caledonia)"
+msgstr "フランス語（カナダ）"
+
+#: picard/const/locales.py:439
+#, fuzzy
+#| msgid "French (Switzerland)"
+msgid "French (Niger)"
+msgstr "フランス語 (スイス)"
+
+#: picard/const/locales.py:440
+#, fuzzy
+#| msgid "French (France)"
+msgid "French (French Polynesia)"
+msgstr "フランス語 (フランス)"
+
+#: picard/const/locales.py:441
+#, fuzzy
+#| msgid "French (Switzerland)"
+msgid "French (St. Pierre & Miquelon)"
+msgstr "フランス語 (スイス)"
+
+#: picard/const/locales.py:442
+#, fuzzy
+#| msgid "French (Monaco)"
+msgid "French (Réunion)"
+msgstr "フランス語 (モナコ)"
+
+#: picard/const/locales.py:443
+#, fuzzy
+#| msgid "French (Canada)"
+msgid "French (Rwanda)"
+msgstr "フランス語（カナダ）"
+
+#: picard/const/locales.py:444
+#, fuzzy
+#| msgid "French (Senegal)"
+msgid "French (Seychelles)"
+msgstr "フランス語 (セネガル)"
+
+#: picard/const/locales.py:445
+msgid "French (Senegal)"
+msgstr "フランス語 (セネガル)"
+
+#: picard/const/locales.py:446
+#, fuzzy
+#| msgid "French (France)"
+msgid "French (Syria)"
+msgstr "フランス語 (フランス)"
+
+#: picard/const/locales.py:447
+#, fuzzy
+#| msgid "French (Canada)"
+msgid "French (Chad)"
+msgstr "フランス語（カナダ）"
+
+#: picard/const/locales.py:448
+#, fuzzy
+#| msgid "French (Monaco)"
+msgid "French (Togo)"
+msgstr "フランス語 (モナコ)"
+
+#: picard/const/locales.py:449
+#, fuzzy
+#| msgid "Arabic (Tunisia)"
+msgid "French (Tunisia)"
+msgstr "アラビア語 (チュニジア)"
+
+#: picard/const/locales.py:450
+#, fuzzy
+#| msgid "French (Canada)"
+msgid "French (Vanuatu)"
+msgstr "フランス語（カナダ）"
+
+#: picard/const/locales.py:451
+#, fuzzy
+#| msgid "French (Canada)"
+msgid "French (Wallis & Futuna)"
+msgstr "フランス語（カナダ）"
+
+#: picard/const/locales.py:452
+#, fuzzy
+#| msgid "French (Monaco)"
+msgid "French (Mayotte)"
+msgstr "フランス語 (モナコ)"
+
+#: picard/const/locales.py:453
+#, fuzzy
+#| msgid "Northern Sami"
+msgid "Northern Frisian"
+msgstr "北部サーミ語"
+
+#: picard/const/locales.py:454
+#, fuzzy
+#| msgid "German (Germany)"
+msgid "Northern Frisian (Germany)"
+msgstr "ドイツ語 (ドイツ)"
+
+#: picard/const/locales.py:455
+msgid "Friulian"
+msgstr "フリウリ語"
+
+#: picard/const/locales.py:456
+msgid "Friulian (Italy)"
+msgstr "フリウリ語 (イタリア)"
+
+#: picard/const/locales.py:457
+msgid "Western Frisian"
+msgstr ""
+
+#: picard/const/locales.py:458
+#, fuzzy
+#| msgid "Dutch (Netherlands)"
+msgid "Western Frisian (Netherlands)"
+msgstr "オランダ語 (オランダ)"
+
+#: picard/const/locales.py:459
+msgid "Irish"
+msgstr "アイルランド語"
+
+#: picard/const/locales.py:460
+#, fuzzy
+msgid "Irish (United Kingdom)"
+msgstr "コーンウォール語 (イギリス)"
+
+#: picard/const/locales.py:461
+msgid "Irish (Ireland)"
+msgstr "アイルランド語 (アイルランド)"
+
+#: picard/const/locales.py:462
+msgid "Ga"
+msgstr "ガー語"
+
+#: picard/const/locales.py:463
+msgid "Ga (Ghana)"
+msgstr "ガ語 (ガーナ)"
+
+#: picard/const/locales.py:464
+#, fuzzy
+msgid "Scottish Gaelic"
+msgstr "スコットランド・ゲール語"
+
+#: picard/const/locales.py:465
+#, fuzzy
+#| msgid "Cornish (United Kingdom)"
+msgid "Scottish Gaelic (United Kingdom)"
+msgstr "コーンウォール語 (イギリス)"
+
+#: picard/const/locales.py:466
+msgid "Geez"
+msgstr "ゲエズ語"
+
+#: picard/const/locales.py:467
+msgid "Geez (Eritrea)"
+msgstr "ゲエズ語 (エリトリア)"
+
+#: picard/const/locales.py:468
+msgid "Geez (Ethiopia)"
+msgstr "ゲエズ語 (エチオピア)"
+
+#: picard/const/locales.py:470
+msgid "Galician (Spain)"
+msgstr "ガリシア語 (スペイン)"
+
+#: picard/const/locales.py:471
+#, fuzzy
+msgid "Guarani"
+msgstr "グアラニー語"
+
+#: picard/const/locales.py:472
+#, fuzzy
+#| msgid "Spanish (Paraguay)"
+msgid "Guarani (Paraguay)"
+msgstr "スペイン語 (パラグアイ)"
+
+#: picard/const/locales.py:473
+msgid "Swiss German"
+msgstr "スイスドイツ語"
+
+#: picard/const/locales.py:474
+msgid "Swiss German (Switzerland)"
+msgstr "スイスドイツ語 (スイス)"
+
+#: picard/const/locales.py:475
+#, fuzzy
+#| msgid "Swiss German (Switzerland)"
+msgid "Swiss German (France)"
+msgstr "スイスドイツ語 (スイス)"
+
+#: picard/const/locales.py:476
+#, fuzzy
+#| msgid "German (Liechtenstein)"
+msgid "Swiss German (Liechtenstein)"
+msgstr "ドイツ語 (リヒテンシュタイン)"
+
+#: picard/const/locales.py:477
+msgid "Gujarati"
+msgstr "グジャラーティー文字"
+
+#: picard/const/locales.py:478
+msgid "Gujarati (India)"
+msgstr "クジャラート語 (インド)"
+
+#: picard/const/locales.py:479
+msgid "Gusii"
+msgstr ""
+
+#: picard/const/locales.py:480
+#, fuzzy
+#| msgid "Swahili (Kenya)"
+msgid "Gusii (Kenya)"
+msgstr "スワヒリ語 (ケニア)"
+
+#: picard/const/locales.py:481
+msgid "Manx"
+msgstr "マン島語"
+
+#: picard/const/locales.py:482
+msgid "Manx (Isle of Man)"
+msgstr ""
+
+#: picard/const/locales.py:483
+msgid "Hausa"
+msgstr "ハウサ語"
+
+#: picard/const/locales.py:484
+msgid "Hausa (Arabic)"
+msgstr "ハウサ語 (アラビア文字)"
+
+#: picard/const/locales.py:485
+msgid "Hausa (Arabic) (Nigeria)"
+msgstr "ハウサ語 (アラビア文字) (ナイジェリア)"
+
+#: picard/const/locales.py:486
+msgid "Hausa (Arabic) (Sudan)"
+msgstr "ハウサ語 (アラビア文字) (スーダン)"
+
+#: picard/const/locales.py:487
+msgid "Hausa (Ghana)"
+msgstr "ハウサ語 (ガーナ)"
+
+#: picard/const/locales.py:488
+msgid "Hausa (Latin)"
+msgstr "ハウサ語 (ラテン文字)"
+
+#: picard/const/locales.py:489
+msgid "Hausa (Latin) (Ghana)"
+msgstr "ハウサ語 (ラテン文字) (ガーナ)"
+
+#: picard/const/locales.py:490
+msgid "Hausa (Latin) (Niger)"
+msgstr "ハウサ語 (ラテン文字) (ニジェール)"
+
+#: picard/const/locales.py:491
+msgid "Hausa (Latin) (Nigeria)"
+msgstr "ハウサ語 (ラテン文字) (ナイジェリア)"
+
+#: picard/const/locales.py:492
+msgid "Hausa (Niger)"
+msgstr "ハウサ語 (ニジェール)"
+
+#: picard/const/locales.py:493
+msgid "Hausa (Nigeria)"
+msgstr "ハウサ語 (ナイジェリア)"
+
+#: picard/const/locales.py:494
+msgid "Hausa (Sudan)"
+msgstr "ハウサ語 (スーダン)"
+
+#: picard/const/locales.py:495
+msgid "Hawaiian"
+msgstr "ハワイ語"
+
+#: picard/const/locales.py:496
+msgid "Hawaiian (United States)"
+msgstr "ハワイ語 (アメリカ)"
+
+#: picard/const/locales.py:498
+msgid "Hebrew (Israel)"
+msgstr "ヘブライ語 (イスラエル)"
+
+#: picard/const/locales.py:499
+msgid "Hindi"
+msgstr "ヒンディー語"
+
+#: picard/const/locales.py:500
+msgid "Hindi (India)"
+msgstr "ヒンディー語 (インド)"
+
+#: picard/const/locales.py:501
+#, fuzzy
+#| msgid "Serbian (Latin)"
+msgid "Hindi (Latin)"
+msgstr "セルビア語 (ラテン文字)"
+
+#: picard/const/locales.py:502
+#, fuzzy
+#| msgid "Hindi (India)"
+msgid "Hindi (Latin) (India)"
+msgstr "ヒンディー語 (インド)"
+
+#: picard/const/locales.py:503
+msgid "Hmong Njua"
+msgstr ""
+
+#: picard/const/locales.py:504
+msgid "Hmong Njua (Nyiakeng Puachue Hmong)"
+msgstr ""
+
+#: picard/const/locales.py:505
+msgid "Hmong Njua (Nyiakeng Puachue Hmong) (United States)"
+msgstr ""
+
+#: picard/const/locales.py:506
+msgid "Croatian"
+msgstr "クロアチア語"
+
+#: picard/const/locales.py:507
+#, fuzzy
+msgid "Croatian (Bosnia & Herzegovina)"
+msgstr "セルビア語 (ラテン文字) (ボスニア・ヘルツェゴビナ)"
+
+#: picard/const/locales.py:508
+msgid "Croatian (Croatia)"
+msgstr "クロアチア語 (クロアチア)"
+
+#: picard/const/locales.py:509
+#, fuzzy
+#| msgid "Serbian"
+msgid "Upper Sorbian"
+msgstr "セルビア語"
+
+#: picard/const/locales.py:510
+#, fuzzy
+#| msgid "German (Germany)"
+msgid "Upper Sorbian (Germany)"
+msgstr "ドイツ語 (ドイツ)"
+
+#: picard/const/locales.py:512
+msgid "Hungarian (Hungary)"
+msgstr "ハンガリー語 (ハンガリー)"
+
+#: picard/const/locales.py:513
+msgid "Armenian"
+msgstr "アルメニア文字"
+
+#: picard/const/locales.py:514
+msgid "Armenian (Armenia)"
+msgstr "アルメニア語 (アルメニア)"
+
+#: picard/const/locales.py:515
+msgid "Armenian (Armenia) (Revised Orthography)"
+msgstr "アルメニア語 (アルメニア) (新正書法)"
+
+#: picard/const/locales.py:516
+msgid "Interlingua"
+msgstr "インターリングア"
+
+#: picard/const/locales.py:517
+#, fuzzy
+#| msgid "Interlingua"
+msgid "Interlingua (world)"
+msgstr "インターリングア"
+
+#: picard/const/locales.py:518
+msgid "Indonesian"
+msgstr "インドネシア語"
+
+#: picard/const/locales.py:519
+msgid "Indonesian (Indonesia)"
+msgstr "インドネシア語 (インドネシア)"
+
+#: picard/const/locales.py:520
+msgid "Igbo"
+msgstr "イボ語"
+
+#: picard/const/locales.py:521
+msgid "Igbo (Nigeria)"
+msgstr "イボ語 (ナイジェリア)"
+
+#: picard/const/locales.py:522
+msgid "Sichuan Yi"
+msgstr "彝語"
+
+#: picard/const/locales.py:523
+msgid "Sichuan Yi (China)"
+msgstr "四川彝語 (中国)"
+
+#: picard/const/locales.py:524
+#, fuzzy
+msgid "Ido"
+msgstr "イド語"
+
+#: picard/const/locales.py:525
+msgid "Ido (world)"
+msgstr ""
+
+#: picard/const/locales.py:527
+msgid "Icelandic (Iceland)"
+msgstr "アイスランド語 (アイスランド)"
+
+#: picard/const/locales.py:529
+msgid "Italian (Switzerland)"
+msgstr "イタリア語 (スイス)"
+
+#: picard/const/locales.py:530
+msgid "Italian (Italy)"
+msgstr "イタリア語 (イタリア)"
+
+#: picard/const/locales.py:531
+#, fuzzy
+#| msgid "Catalan (Spain)"
+msgid "Italian (San Marino)"
+msgstr "カタルーニャ語 (スペイン)"
+
+#: picard/const/locales.py:532
+#, fuzzy
+#| msgid "Italian (Italy)"
+msgid "Italian (Vatican City)"
+msgstr "イタリア語 (イタリア)"
+
+#: picard/const/locales.py:533
+msgid "Inuktitut"
+msgstr "イヌイット語"
+
+#: picard/const/locales.py:534
+#, fuzzy
+#| msgid "Inuktitut"
+msgid "Inuktitut (Canada)"
+msgstr "イヌイット語"
+
+#: picard/const/locales.py:535
+#, fuzzy
+#| msgid "Inuktitut"
+msgid "Inuktitut (Latin)"
+msgstr "イヌイット語"
+
+#: picard/const/locales.py:536
+#, fuzzy
+msgid "Inuktitut (Latin) (Canada)"
+msgstr "ハウサ語 (ラテン文字) (ガーナ)"
+
+#: picard/const/locales.py:538
+msgid "Japanese (Japan)"
+msgstr "日本語 (日本)"
+
+#: picard/const/locales.py:539
+#, fuzzy
+msgid "Lojban"
+msgstr "ロジバン"
+
+#: picard/const/locales.py:540
+#, fuzzy
+msgid "Lojban (world)"
+msgstr "ロジバン"
+
+#: picard/const/locales.py:541
+msgid "Ngomba"
+msgstr ""
+
+#: picard/const/locales.py:542
+#, fuzzy
+msgid "Ngomba (Cameroon)"
+msgstr "ミナ語 (カメルーン)"
+
+#: picard/const/locales.py:543
+msgid "Machame"
+msgstr ""
+
+#: picard/const/locales.py:544
+#, fuzzy
+#| msgid "Swahili (Tanzania)"
+msgid "Machame (Tanzania)"
+msgstr "スワヒリ語 (タンザニア)"
+
+#: picard/const/locales.py:545
+#, fuzzy
+msgid "Javanese"
+msgstr "ジャワ文字"
+
+#: picard/const/locales.py:546
+#, fuzzy
+#| msgid "Indonesian (Indonesia)"
+msgid "Javanese (Indonesia)"
+msgstr "インドネシア語 (インドネシア)"
+
+#: picard/const/locales.py:547
+msgid "Georgian"
+msgstr "グルジア文字"
+
+#: picard/const/locales.py:548
+msgid "Georgian (Georgia)"
+msgstr "グルジア語 (ジョージア)"
+
+#: picard/const/locales.py:549
+#, fuzzy
+msgid "Kabyle"
+msgstr "カビル語"
+
+#: picard/const/locales.py:550
+#, fuzzy
+#| msgid "Arabic (Algeria)"
+msgid "Kabyle (Algeria)"
+msgstr "アラビア語 (アルジェリア)"
+
+#: picard/const/locales.py:551
+msgid "Jju"
+msgstr "カジェ語"
+
+#: picard/const/locales.py:552
+msgid "Jju (Nigeria)"
+msgstr "カジェ語 (ナイジェリア)"
+
+#: picard/const/locales.py:553
+msgid "Kamba"
+msgstr "カンバ語"
+
+#: picard/const/locales.py:554
+msgid "Kamba (Kenya)"
+msgstr "カンバ語 (ケニア)"
+
+#: picard/const/locales.py:555
+msgid "Tyap"
+msgstr "カタブ語"
+
+#: picard/const/locales.py:556
+msgid "Tyap (Nigeria)"
+msgstr "カタブ語 (ナイジェリア)"
+
+#: picard/const/locales.py:557
+msgid "Makonde"
+msgstr ""
+
+#: picard/const/locales.py:558
+#, fuzzy
+#| msgid "Swahili (Tanzania)"
+msgid "Makonde (Tanzania)"
+msgstr "スワヒリ語 (タンザニア)"
+
+#: picard/const/locales.py:559
+msgid "Kabuverdianu"
+msgstr "カーボベルデ語"
+
+#: picard/const/locales.py:560
+#, fuzzy
+#| msgid "Kabuverdianu"
+msgid "Kabuverdianu (Cape Verde)"
+msgstr "カーボベルデ語"
+
+#: picard/const/locales.py:561
+msgid "Kenyang"
+msgstr ""
+
+#: picard/const/locales.py:562
+#, fuzzy
+msgid "Kenyang (Cameroon)"
+msgstr "ミナ語 (カメルーン)"
+
+#: picard/const/locales.py:563
+msgid "Koro"
+msgstr "コロ語"
+
+#: picard/const/locales.py:564
+msgid "Koro (Côte d’Ivoire)"
+msgstr "コロ語 (コートジボワール)"
+
+#: picard/const/locales.py:565
+msgid "Kaingang"
+msgstr ""
+
+#: picard/const/locales.py:566
+#, fuzzy
+#| msgid "Lingala (Congo - Brazzaville)"
+msgid "Kaingang (Brazil)"
+msgstr "リンガラ語 (コンゴ - ブラザヴィル方言)"
+
+#: picard/const/locales.py:567
+msgid "Koyra Chiini"
+msgstr ""
+
+#: picard/const/locales.py:568
+msgid "Koyra Chiini (Mali)"
+msgstr ""
+
+#: picard/const/locales.py:569
+#, fuzzy
+msgid "Kikuyu"
+msgstr "キクユ語"
+
+#: picard/const/locales.py:570
+#, fuzzy
+#| msgid "Kamba (Kenya)"
+msgid "Kikuyu (Kenya)"
+msgstr "カンバ語 (ケニア)"
+
+#: picard/const/locales.py:571
+msgid "Kazakh"
+msgstr "カザフ語"
+
+#: picard/const/locales.py:572
+msgid "Kazakh (Cyrillic)"
+msgstr "カザフ語 (キリル文字)"
+
+#: picard/const/locales.py:573
+msgid "Kazakh (Cyrillic) (Kazakhstan)"
+msgstr "カザフ語 (キリル文字) (カザフスタン)"
+
+#: picard/const/locales.py:574
+msgid "Kazakh (Kazakhstan)"
+msgstr "カザフ語 (カザフスタン)"
+
+#: picard/const/locales.py:575
+msgid "Kako"
+msgstr ""
+
+#: picard/const/locales.py:576
+#, fuzzy
+msgid "Kako (Cameroon)"
+msgstr "ミナ語 (カメルーン)"
+
+#: picard/const/locales.py:577
+msgid "Kalaallisut"
+msgstr "カラーリット語"
+
+#: picard/const/locales.py:578
+msgid "Kalaallisut (Greenland)"
+msgstr "カラーリット語 (グリーンランド)"
+
+#: picard/const/locales.py:579
+msgid "Kalenjin"
+msgstr ""
+
+#: picard/const/locales.py:580
+#, fuzzy
+#| msgid "Somali (Kenya)"
+msgid "Kalenjin (Kenya)"
+msgstr "ソマリ語 (ケニア)"
+
+#: picard/const/locales.py:581
+msgid "Khmer"
+msgstr "クメール文字"
+
+#: picard/const/locales.py:582
+msgid "Khmer (Cambodia)"
+msgstr "クメール語 (カンボジア)"
+
+#: picard/const/locales.py:583
+msgid "Kannada"
+msgstr "カンナダ文字"
+
+#: picard/const/locales.py:584
+msgid "Kannada (India)"
+msgstr "カンナダ語 (インド)"
+
+#: picard/const/locales.py:586
+#, fuzzy
+#| msgid "Korean (South Korea)"
+msgid "Korean (North Korea)"
+msgstr "韓国語 (韓国)"
+
+#: picard/const/locales.py:587
+msgid "Korean (South Korea)"
+msgstr "韓国語 (韓国)"
+
+#: picard/const/locales.py:588
+msgid "Konkani"
+msgstr "コンカニー語"
+
+#: picard/const/locales.py:589
+msgid "Konkani (India)"
+msgstr "コンカニ語 (インド)"
+
+#: picard/const/locales.py:590
+msgid "Kpelle"
+msgstr "クペレ文字"
+
+#: picard/const/locales.py:591
+msgid "Kpelle (Guinea)"
+msgstr "クペレ語 (ギニア)"
+
+#: picard/const/locales.py:592
+msgid "Kpelle (Liberia)"
+msgstr "クペレ語 (リベリア)"
+
+#: picard/const/locales.py:593
+#, fuzzy
+msgid "Kashmiri"
+msgstr "カシミール語"
+
+#: picard/const/locales.py:594
+#, fuzzy
+#| msgid "Hausa (Arabic)"
+msgid "Kashmiri (Arabic)"
+msgstr "ハウサ語 (アラビア文字)"
+
+#: picard/const/locales.py:595
+#, fuzzy
+#| msgid "Hausa (Arabic) (Sudan)"
+msgid "Kashmiri (Arabic) (India)"
+msgstr "ハウサ語 (アラビア文字) (スーダン)"
+
+#: picard/const/locales.py:596
+msgid "Kashmiri (Devanagari)"
+msgstr ""
+
+#: picard/const/locales.py:597
+msgid "Kashmiri (Devanagari) (India)"
+msgstr ""
+
+#: picard/const/locales.py:598
+#, fuzzy
+msgid "Shambala"
+msgstr "バンバラ語"
+
+#: picard/const/locales.py:599
+#, fuzzy
+#| msgid "Swahili (Tanzania)"
+msgid "Shambala (Tanzania)"
+msgstr "スワヒリ語 (タンザニア)"
+
+#: picard/const/locales.py:600
+msgid "Bafia"
+msgstr ""
+
+#: picard/const/locales.py:601
+#, fuzzy
+msgid "Bafia (Cameroon)"
+msgstr "ミナ語 (カメルーン)"
+
+#: picard/const/locales.py:602
+#, fuzzy
+#| msgid "Slovenian"
+msgid "Colognian"
+msgstr "スロベニア語"
+
+#: picard/const/locales.py:603
+#, fuzzy
+#| msgid "German (Germany)"
+msgid "Colognian (Germany)"
+msgstr "ドイツ語 (ドイツ)"
+
+#: picard/const/locales.py:604
+msgid "Kurdish"
+msgstr "クルド語"
+
+#: picard/const/locales.py:605
+msgid "Kurdish (Türkiye)"
+msgstr ""
+
+#: picard/const/locales.py:606
+msgid "Cornish"
+msgstr "コーンウォル語"
+
+#: picard/const/locales.py:607
+msgid "Cornish (United Kingdom)"
+msgstr "コーンウォール語 (イギリス)"
+
+#: picard/const/locales.py:608
+msgid "Kyrgyz"
+msgstr ""
+
+#: picard/const/locales.py:609
+#, fuzzy
+msgid "Kyrgyz (Kyrgyzstan)"
+msgstr "キルギス語 (キルギスタン)"
+
+#: picard/const/locales.py:610 picard/const/scripts.py:28
+msgid "Latin"
+msgstr "ラテン文字"
+
+#: picard/const/locales.py:611
+msgid "Latin (Vatican City)"
+msgstr ""
+
+#: picard/const/locales.py:612
+#, fuzzy
+#| msgid "Language"
+msgid "Langi"
+msgstr "言語"
+
+#: picard/const/locales.py:613
+#, fuzzy
+#| msgid "Swahili (Tanzania)"
+msgid "Langi (Tanzania)"
+msgstr "スワヒリ語 (タンザニア)"
+
+#: picard/const/locales.py:614
+#, fuzzy
+msgid "Luxembourgish"
+msgstr "ルクセンブルク語"
+
+#: picard/const/locales.py:615
+#, fuzzy
+#| msgid "French (Luxembourg)"
+msgid "Luxembourgish (Luxembourg)"
+msgstr "フランス語 (ルクセンブルク)"
+
+#: picard/const/locales.py:616
+#, fuzzy
+msgid "Ganda"
+msgstr "ガンダ語"
+
+#: picard/const/locales.py:617
+#, fuzzy
+#| msgid "Kannada (India)"
+msgid "Ganda (Uganda)"
+msgstr "カンナダ語 (インド)"
+
+#: picard/const/locales.py:618
+#, fuzzy
+msgid "Ligurian"
+msgstr "アストゥリアス語"
+
+#: picard/const/locales.py:619
+#, fuzzy
+#| msgid "Friulian (Italy)"
+msgid "Ligurian (Italy)"
+msgstr "フリウリ語 (イタリア)"
+
+#: picard/const/locales.py:620
+#, fuzzy
+msgid "Lakota"
+msgstr "ラコタ"
+
+#: picard/const/locales.py:621
+#, fuzzy
+#| msgid "Hawaiian (United States)"
+msgid "Lakota (United States)"
+msgstr "ハワイ語 (アメリカ)"
+
+#: picard/const/locales.py:622
+msgid "Lombard"
+msgstr ""
+
+#: picard/const/locales.py:623
+#, fuzzy
+#| msgid "Italian (Italy)"
+msgid "Lombard (Italy)"
+msgstr "イタリア語 (イタリア)"
+
+#: picard/const/locales.py:624
+msgid "Lingala"
+msgstr "リンガラ語"
+
+#: picard/const/locales.py:625
+#, fuzzy
+#| msgid "Lingala (Congo - Kinshasa)"
+msgid "Lingala (Angola)"
+msgstr "リンガラ語 (コンゴ - キンシャサ方言)"
+
+#: picard/const/locales.py:626
+msgid "Lingala (Congo - Kinshasa)"
+msgstr "リンガラ語 (コンゴ - キンシャサ方言)"
+
+#: picard/const/locales.py:627
+msgid "Lingala (Central African Republic)"
+msgstr ""
+
+#: picard/const/locales.py:628
+msgid "Lingala (Congo - Brazzaville)"
+msgstr "リンガラ語 (コンゴ - ブラザヴィル方言)"
+
+#: picard/const/locales.py:629
+msgid "Lao"
+msgstr "ラーオ文字"
+
+#: picard/const/locales.py:630
+msgid "Lao (Laos)"
+msgstr "ラーオ語 (ラオス)"
+
+#: picard/const/locales.py:631
+#, fuzzy
+#| msgid "Northern Sami"
+msgid "Northern Luri"
+msgstr "北部サーミ語"
+
+#: picard/const/locales.py:632
+#, fuzzy
+#| msgid "Northern Sami (Norway)"
+msgid "Northern Luri (Iraq)"
+msgstr "北部サーミ語 (ノルウェー)"
+
+#: picard/const/locales.py:633
+#, fuzzy
+#| msgid "Northern Sami (Norway)"
+msgid "Northern Luri (Iran)"
+msgstr "北部サーミ語 (ノルウェー)"
+
+#: picard/const/locales.py:634
+msgid "Lithuanian"
+msgstr "リトアニア語"
+
+#: picard/const/locales.py:635
+msgid "Lithuanian (Lithuania)"
+msgstr "リトアニア語 (リトアニア)"
+
+#: picard/const/locales.py:636
+#, fuzzy
+msgid "Luba-Katanga"
+msgstr "ルバ語"
+
+#: picard/const/locales.py:637
+#, fuzzy
+#| msgid "Lingala (Congo - Kinshasa)"
+msgid "Luba-Katanga (Congo - Kinshasa)"
+msgstr "リンガラ語 (コンゴ - キンシャサ方言)"
+
+#: picard/const/locales.py:638
+#, fuzzy
+msgid "Luo"
+msgstr "ルオ語"
+
+#: picard/const/locales.py:639
+#, fuzzy
+#| msgid "Oromo (Kenya)"
+msgid "Luo (Kenya)"
+msgstr "オロモ語 (ケニア)"
+
+#: picard/const/locales.py:640
+msgid "Luyia"
+msgstr "ルヒヤ語"
+
+#: picard/const/locales.py:641
+#, fuzzy
+#| msgid "Kamba (Kenya)"
+msgid "Luyia (Kenya)"
+msgstr "カンバ語 (ケニア)"
+
+#: picard/const/locales.py:642
+msgid "Latvian"
+msgstr "ラトビア語"
+
+#: picard/const/locales.py:643
+msgid "Latvian (Latvia)"
+msgstr "ラトビア語 (ラトビア)"
+
+#: picard/const/locales.py:644
+#, fuzzy
+msgid "Maithili"
+msgstr "マイティリー語"
+
+#: picard/const/locales.py:645
+#, fuzzy
+#| msgid "Marathi (India)"
+msgid "Maithili (India)"
+msgstr "マラーティー語 (インド)"
+
+#: picard/const/locales.py:646
+#, fuzzy
+msgid "Masai"
+msgstr "マサイ語"
+
+#: picard/const/locales.py:647
+#, fuzzy
+#| msgid "Kamba (Kenya)"
+msgid "Masai (Kenya)"
+msgstr "カンバ語 (ケニア)"
+
+#: picard/const/locales.py:648
+#, fuzzy
+#| msgid "Swahili (Tanzania)"
+msgid "Masai (Tanzania)"
+msgstr "スワヒリ語 (タンザニア)"
+
+#: picard/const/locales.py:649
+#, fuzzy
+msgid "Moksha"
+msgstr "モクシャ語"
+
+#: picard/const/locales.py:650
+#, fuzzy
+#| msgid "Russian (Russia)"
+msgid "Moksha (Russia)"
+msgstr "ロシア語 (ロシア)"
+
+#: picard/const/locales.py:651
+msgid "Meru"
+msgstr ""
+
+#: picard/const/locales.py:652
+#, fuzzy
+#| msgid "Oromo (Kenya)"
+msgid "Meru (Kenya)"
+msgstr "オロモ語 (ケニア)"
+
+#: picard/const/locales.py:653
+msgid "Morisyen"
+msgstr ""
+
+#: picard/const/locales.py:654
+msgid "Morisyen (Mauritius)"
+msgstr ""
+
+#: picard/const/locales.py:655
+#, fuzzy
+msgid "Malagasy"
+msgstr "マダガスカル語"
+
+#: picard/const/locales.py:656
+#, fuzzy
+#| msgid "Malay (Malaysia)"
+msgid "Malagasy (Madagascar)"
+msgstr "マレー語 (マレーシア)"
+
+#: picard/const/locales.py:657
+msgid "Makhuwa-Meetto"
+msgstr ""
+
+#: picard/const/locales.py:658
+msgid "Makhuwa-Meetto (Mozambique)"
+msgstr ""
+
+#: picard/const/locales.py:659
+msgid "Metaʼ"
+msgstr ""
+
+#: picard/const/locales.py:660
+#, fuzzy
+msgid "Metaʼ (Cameroon)"
+msgstr "ミナ語 (カメルーン)"
+
+#: picard/const/locales.py:661
+msgid "Māori"
+msgstr ""
+
+#: picard/const/locales.py:662
+#, fuzzy
+#| msgid "English (New Zealand)"
+msgid "Māori (New Zealand)"
+msgstr "英語 (ニュージーランド)"
+
+#: picard/const/locales.py:663
+msgid "Macedonian"
+msgstr "マケドニア語"
+
+#: picard/const/locales.py:664
+msgid "Macedonian (North Macedonia)"
+msgstr ""
+
+#: picard/const/locales.py:665
+msgid "Malayalam"
+msgstr "マラヤーラム文字"
+
+#: picard/const/locales.py:666
+msgid "Malayalam (India)"
+msgstr "マラヤーラム語 (インド)"
+
+#: picard/const/locales.py:667
+msgid "Mongolian"
+msgstr "モンゴル文字"
+
+#: picard/const/locales.py:668
+msgid "Mongolian (Cyrillic)"
+msgstr "モンゴル語 (キリル文字)"
+
+#: picard/const/locales.py:669
+msgid "Mongolian (Cyrillic) (Mongolia)"
+msgstr "モンゴル語 (キリル文字) (モンゴル)"
+
+#: picard/const/locales.py:670
+msgid "Mongolian (Mongolia)"
+msgstr "モンゴル語 (モンゴル)"
+
+#: picard/const/locales.py:671
+msgid "Mongolian (Mongolian)"
+msgstr "モンゴル語 (モンゴル文字)"
+
+#: picard/const/locales.py:672
+msgid "Mongolian (Mongolian) (China)"
+msgstr "モンゴル語 (モンゴル文字) (中国)"
+
+#: picard/const/locales.py:673
+#, fuzzy
+msgid "Mongolian (Mongolian) (Mongolia)"
+msgstr "モンゴル語 (モンゴル文字) (中国)"
+
+#: picard/const/locales.py:674
+#, fuzzy
+msgid "Manipuri"
+msgstr "マニプリ語"
+
+#: picard/const/locales.py:675
+#, fuzzy
+msgid "Manipuri (Bangla)"
+msgstr "マニプリ語"
+
+#: picard/const/locales.py:676
+#, fuzzy
+#| msgid "Malayalam (India)"
+msgid "Manipuri (Bangla) (India)"
+msgstr "マラヤーラム語 (インド)"
+
+#: picard/const/locales.py:677
+msgid "Manipuri (Meitei Mayek)"
+msgstr ""
+
+#: picard/const/locales.py:678
+msgid "Manipuri (Meitei Mayek) (India)"
+msgstr ""
+
+#: picard/const/locales.py:679
+#, fuzzy
+msgid "Mohawk"
+msgstr "モーホーク語"
+
+#: picard/const/locales.py:680
+#, fuzzy
+#| msgid "French (Canada)"
+msgid "Mohawk (Canada)"
+msgstr "フランス語（カナダ）"
+
+#: picard/const/locales.py:681
+msgid "Marathi"
+msgstr "マラッタ語"
+
+#: picard/const/locales.py:682
+msgid "Marathi (India)"
+msgstr "マラーティー語 (インド)"
+
+#: picard/const/locales.py:683
+msgid "Malay"
+msgstr "マレー語"
+
+#: picard/const/locales.py:684
+#, fuzzy
+#| msgid "Hausa (Arabic)"
+msgid "Malay (Arabic)"
+msgstr "ハウサ語 (アラビア文字)"
+
+#: picard/const/locales.py:685
+#, fuzzy
+#| msgid "Malay (Brunei)"
+msgid "Malay (Arabic) (Brunei)"
+msgstr "マレー語 (ブルネイ)"
+
+#: picard/const/locales.py:686
+#, fuzzy
+#| msgid "Malay (Malaysia)"
+msgid "Malay (Arabic) (Malaysia)"
+msgstr "マレー語 (マレーシア)"
+
+#: picard/const/locales.py:687
+msgid "Malay (Brunei)"
+msgstr "マレー語 (ブルネイ)"
+
+#: picard/const/locales.py:688
+#, fuzzy
+#| msgid "Malayalam (India)"
+msgid "Malay (Indonesia)"
+msgstr "マラヤーラム語 (インド)"
+
+#: picard/const/locales.py:690
+#, fuzzy
+#| msgid "English (Singapore)"
+msgid "Malay (Singapore)"
+msgstr "英語 (シンガポール)"
+
+#: picard/const/locales.py:691
+msgid "Maltese"
+msgstr "マルタ語"
+
+#: picard/const/locales.py:692
+msgid "Maltese (Malta)"
+msgstr "マルタ語 (マルタ)"
+
+#: picard/const/locales.py:693
+#, fuzzy
+msgid "Mundang"
+msgstr "スンダ文字"
+
+#: picard/const/locales.py:694
+#, fuzzy
+msgid "Mundang (Cameroon)"
+msgstr "ミナ語 (カメルーン)"
+
+#: picard/const/locales.py:695
+msgid "Muscogee"
+msgstr ""
+
+#: picard/const/locales.py:696
+#, fuzzy
+#| msgid "English (United States)"
+msgid "Muscogee (United States)"
+msgstr "英語 (アメリカ)"
+
+#: picard/const/locales.py:697
+msgid "Burmese"
+msgstr "ビルマ語"
+
+#: picard/const/locales.py:698
+#, fuzzy
+msgid "Burmese (Myanmar (Burma))"
+msgstr "ビルマ語 (ミャンマー)"
+
+#: picard/const/locales.py:699
+#, fuzzy
+msgid "Erzya"
+msgstr "エルジャ語"
+
+#: picard/const/locales.py:700
+#, fuzzy
+#| msgid "Tatar (Russia)"
+msgid "Erzya (Russia)"
+msgstr "タタール語 (ロシア)"
+
+#: picard/const/locales.py:701
+msgid "Mazanderani"
+msgstr ""
+
+#: picard/const/locales.py:702
+#, fuzzy
+#| msgid "Persian (Iran)"
+msgid "Mazanderani (Iran)"
+msgstr "ペルシア語 (イラン)"
+
+#: picard/const/locales.py:703
+msgid "Nama"
+msgstr ""
+
+#: picard/const/locales.py:704
+#, fuzzy
+#| msgid "Afrikaans (Namibia)"
+msgid "Nama (Namibia)"
+msgstr "アフリカーンス語 (ナミビア)"
+
+#: picard/const/locales.py:706
+msgid "Norwegian Bokmål (Norway)"
+msgstr "ノルウェー語ブークモール (ノルウェー)"
+
+#: picard/const/locales.py:707
+#, fuzzy
+#| msgid "Norwegian Bokmål (Norway)"
+msgid "Norwegian Bokmål (Svalbard & Jan Mayen)"
+msgstr "ノルウェー語ブークモール (ノルウェー)"
+
+#: picard/const/locales.py:708
+#, fuzzy
+msgid "North Ndebele"
+msgstr "南ンデベレ語"
+
+#: picard/const/locales.py:709
+#, fuzzy
+msgid "North Ndebele (Zimbabwe)"
+msgstr "南ンデベレ語"
+
+#: picard/const/locales.py:710
+msgid "Low German"
+msgstr "低地ドイツ語"
+
+#: picard/const/locales.py:711
+msgid "Low German (Germany)"
+msgstr "低地ドイツ語 (ドイツ)"
+
+#: picard/const/locales.py:712
+#, fuzzy
+#| msgid "Low German (Germany)"
+msgid "Low German (Netherlands)"
+msgstr "低地ドイツ語 (ドイツ)"
+
+#: picard/const/locales.py:713
+msgid "Nepali"
+msgstr "ネパール語"
+
+#: picard/const/locales.py:714
+msgid "Nepali (India)"
+msgstr "ネパール語 (インド)"
+
+#: picard/const/locales.py:715
+msgid "Nepali (Nepal)"
+msgstr "ネパール語 (ネパール)"
+
+#: picard/const/locales.py:717
+#, fuzzy
+#| msgid "Dutch (Belgium)"
+msgid "Dutch (Aruba)"
+msgstr "オランダ語 (ベルギー)"
+
+#: picard/const/locales.py:718
+msgid "Dutch (Belgium)"
+msgstr "オランダ語 (ベルギー)"
+
+#: picard/const/locales.py:719
+#, fuzzy
+#| msgid "Dutch (Netherlands)"
+msgid "Dutch (Caribbean Netherlands)"
+msgstr "オランダ語 (オランダ)"
+
+#: picard/const/locales.py:720
+msgid "Dutch (Curaçao)"
+msgstr ""
+
+#: picard/const/locales.py:721
+msgid "Dutch (Netherlands)"
+msgstr "オランダ語 (オランダ)"
+
+#: picard/const/locales.py:722
+#, fuzzy
+#| msgid "Dutch (Belgium)"
+msgid "Dutch (Suriname)"
+msgstr "オランダ語 (ベルギー)"
+
+#: picard/const/locales.py:723
+msgid "Dutch (Sint Maarten)"
+msgstr ""
+
+#: picard/const/locales.py:724
+msgid "Kwasio"
+msgstr ""
+
+#: picard/const/locales.py:725
+#, fuzzy
+msgid "Kwasio (Cameroon)"
+msgstr "ミナ語 (カメルーン)"
+
+#: picard/const/locales.py:726
+msgid "Norwegian Nynorsk"
+msgstr "ニーノシュク（ノルウェー語）"
+
+#: picard/const/locales.py:727
+msgid "Norwegian Nynorsk (Norway)"
+msgstr "ノルウェー語ニーノシュク (ノルウェー)"
+
+#: picard/const/locales.py:728
+msgid "Ngiemboon"
+msgstr ""
+
+#: picard/const/locales.py:729
+#, fuzzy
+msgid "Ngiemboon (Cameroon)"
+msgstr "ミナ語 (カメルーン)"
+
+#: picard/const/locales.py:730
+msgid "Norwegian"
+msgstr "ノルウェー語"
+
+#: picard/const/locales.py:731
+msgid "N’Ko"
+msgstr ""
+
+#: picard/const/locales.py:732
+#, fuzzy
+#| msgid "Kpelle (Guinea)"
+msgid "N’Ko (Guinea)"
+msgstr "クペレ語 (ギニア)"
+
+#: picard/const/locales.py:733
+msgid "South Ndebele"
+msgstr "南ンデベレ語"
+
+#: picard/const/locales.py:734
+msgid "South Ndebele (South Africa)"
+msgstr "南ンデベレ語 (南アフリカ)"
+
+#: picard/const/locales.py:735
+msgid "Northern Sotho"
+msgstr "北ソト語"
+
+#: picard/const/locales.py:736
+msgid "Northern Sotho (South Africa)"
+msgstr "北ソト語 (南アフリカ)"
+
+#: picard/const/locales.py:737
+msgid "Nuer"
+msgstr ""
+
+#: picard/const/locales.py:738
+msgid "Nuer (South Sudan)"
+msgstr ""
+
+#: picard/const/locales.py:739
+#, fuzzy
+msgid "Navajo"
+msgstr "ナヴァホ語"
+
+#: picard/const/locales.py:740
+#, fuzzy
+#| msgid "Hawaiian (United States)"
+msgid "Navajo (United States)"
+msgstr "ハワイ語 (アメリカ)"
+
+#: picard/const/locales.py:741
+msgid "Nyanja"
+msgstr "ニャンジャ語"
+
+#: picard/const/locales.py:742
+msgid "Nyanja (Malawi)"
+msgstr "ニャンジャ語 (マラウイ)"
+
+#: picard/const/locales.py:743
+#, fuzzy
+msgid "Nyankole"
+msgstr "ニャンコレ語"
+
+#: picard/const/locales.py:744
+#, fuzzy
+msgid "Nyankole (Uganda)"
+msgstr "ニャンコレ語"
+
+#: picard/const/locales.py:746
+#, fuzzy
+#| msgid "Galician (Spain)"
+msgid "Occitan (Spain)"
+msgstr "ガリシア語 (スペイン)"
+
+#: picard/const/locales.py:747
+msgid "Occitan (France)"
+msgstr "オック語 (フランス)"
+
+#: picard/const/locales.py:748
+msgid "Oromo"
+msgstr "オロモ語"
+
+#: picard/const/locales.py:749
+msgid "Oromo (Ethiopia)"
+msgstr "オロモ語 (エチオピア)"
+
+#: picard/const/locales.py:750
+msgid "Oromo (Kenya)"
+msgstr "オロモ語 (ケニア)"
+
+#: picard/const/locales.py:751
+msgid "Odia"
+msgstr ""
+
+#: picard/const/locales.py:752
+#, fuzzy
+msgid "Odia (India)"
+msgstr "オリヤー語 (インド)"
+
+#: picard/const/locales.py:753
+msgid "Ossetic"
+msgstr ""
+
+#: picard/const/locales.py:754
+#, fuzzy
+#| msgid "Georgian (Georgia)"
+msgid "Ossetic (Georgia)"
+msgstr "グルジア語 (ジョージア)"
+
+#: picard/const/locales.py:755
+#, fuzzy
+#| msgid "Russian (Russia)"
+msgid "Ossetic (Russia)"
+msgstr "ロシア語 (ロシア)"
+
+#: picard/const/locales.py:756
+#, fuzzy
+msgid "Osage"
+msgstr "オーセージ語"
+
+#: picard/const/locales.py:757
+#, fuzzy
+#| msgid "English (United States)"
+msgid "Osage (United States)"
+msgstr "英語 (アメリカ)"
+
+#: picard/const/locales.py:758
+msgid "Punjabi"
+msgstr "パンジャーブ語"
+
+#: picard/const/locales.py:759
+msgid "Punjabi (Arabic)"
+msgstr "パンジャーブ語 (アラビア文字)"
+
+#: picard/const/locales.py:760
+msgid "Punjabi (Arabic) (Pakistan)"
+msgstr "パンジャーブ語 (アラビア文字) (パキスタン)"
+
+#: picard/const/locales.py:761
+msgid "Punjabi (Gurmukhi)"
+msgstr "パンジャーブ語 (グルムキー文字)"
+
+#: picard/const/locales.py:762
+msgid "Punjabi (Gurmukhi) (India)"
+msgstr "パンジャーブ語 (グルムキー文字) (インド)"
+
+#: picard/const/locales.py:763
+msgid "Punjabi (India)"
+msgstr "パンジャーブ語 (インド)"
+
+#: picard/const/locales.py:764
+msgid "Punjabi (Pakistan)"
+msgstr "パンジャーブ語 (パキスタン)"
+
+#: picard/const/locales.py:765
+#, fuzzy
+msgid "Papiamento"
+msgstr "パピアメント"
+
+#: picard/const/locales.py:766
+#, fuzzy
+msgid "Papiamento (Aruba)"
+msgstr "パピアメント"
+
+#: picard/const/locales.py:767
+#, fuzzy
+msgid "Papiamento (Curaçao)"
+msgstr "パピアメント"
+
+#: picard/const/locales.py:768
+msgid "Nigerian Pidgin"
+msgstr ""
+
+#: picard/const/locales.py:769
+#, fuzzy
+#| msgid "Serbian (Latin) (Serbia)"
+msgid "Nigerian Pidgin (Nigeria)"
+msgstr "セルビア語 (ラテン文字) (セルビア)"
+
+#: picard/const/locales.py:770
+msgid "Pijin"
+msgstr ""
+
+#: picard/const/locales.py:771
+msgid "Pijin (Solomon Islands)"
+msgstr ""
+
+#: picard/const/locales.py:773
+msgid "Polish (Poland)"
+msgstr "ポーランド語 (ポーランド)"
+
+#: picard/const/locales.py:774
+#, fuzzy
+#| msgid "Russian"
+msgid "Prussian"
+msgstr "ロシア語"
+
+#: picard/const/locales.py:775
+#, fuzzy
+#| msgid "Persian (Iran)"
+msgid "Prussian (world)"
+msgstr "ペルシア語 (イラン)"
+
+#: picard/const/locales.py:776
+msgid "Pashto"
+msgstr "パシュトー語"
+
+#: picard/const/locales.py:777
+msgid "Pashto (Afghanistan)"
+msgstr "パシュトー語 (アフガニスタン)"
+
+#: picard/const/locales.py:778
+#, fuzzy
+#| msgid "Pashto (Afghanistan)"
+msgid "Pashto (Pakistan)"
+msgstr "パシュトー語 (アフガニスタン)"
+
+#: picard/const/locales.py:780
+#, fuzzy
+#| msgid "Portuguese (Portugal)"
+msgid "Portuguese (Angola)"
+msgstr "ポルトガル語 (ポルトガル)"
+
+#: picard/const/locales.py:781
+msgid "Portuguese (Brazil)"
+msgstr "ポルトガル語 (ブラジル)"
+
+#: picard/const/locales.py:782
+#, fuzzy
+#| msgid "French (Switzerland)"
+msgid "Portuguese (Switzerland)"
+msgstr "フランス語 (スイス)"
+
+#: picard/const/locales.py:783
+#, fuzzy
+#| msgid "Portuguese (Brazil)"
+msgid "Portuguese (Cape Verde)"
+msgstr "ポルトガル語 (ブラジル)"
+
+#: picard/const/locales.py:784
+#, fuzzy
+#| msgid "Portuguese (Portugal)"
+msgid "Portuguese (Equatorial Guinea)"
+msgstr "ポルトガル語 (ポルトガル)"
+
+#: picard/const/locales.py:785
+#, fuzzy
+#| msgid "Portuguese (Brazil)"
+msgid "Portuguese (Guinea-Bissau)"
+msgstr "ポルトガル語 (ブラジル)"
+
+#: picard/const/locales.py:786
+#, fuzzy
+#| msgid "Portuguese (Portugal)"
+msgid "Portuguese (Luxembourg)"
+msgstr "ポルトガル語 (ポルトガル)"
+
+#: picard/const/locales.py:787
+#, fuzzy
+#| msgid "Portuguese (Brazil)"
+msgid "Portuguese (Macao)"
+msgstr "ポルトガル語 (ブラジル)"
+
+#: picard/const/locales.py:788
+#, fuzzy
+#| msgid "Portuguese (Brazil)"
+msgid "Portuguese (Mozambique)"
+msgstr "ポルトガル語 (ブラジル)"
+
+#: picard/const/locales.py:789
+msgid "Portuguese (Portugal)"
+msgstr "ポルトガル語 (ポルトガル)"
+
+#: picard/const/locales.py:790
+msgid "Portuguese (São Tomé & Príncipe)"
+msgstr ""
+
+#: picard/const/locales.py:791
+#, fuzzy
+#| msgid "Portuguese (Portugal)"
+msgid "Portuguese (Timor-Leste)"
+msgstr "ポルトガル語 (ポルトガル)"
+
+#: picard/const/locales.py:792
+#, fuzzy
+msgid "Quechua"
+msgstr "ケチュア語"
+
+#: picard/const/locales.py:793
+#, fuzzy
+#| msgid "Spanish (Bolivia)"
+msgid "Quechua (Bolivia)"
+msgstr "スペイン語 (ボリビア)"
+
+#: picard/const/locales.py:794
+#, fuzzy
+#| msgid "Spanish (Ecuador)"
+msgid "Quechua (Ecuador)"
+msgstr "スペイン語 (エクアドル)"
+
+#: picard/const/locales.py:795
+#, fuzzy
+msgid "Quechua (Peru)"
+msgstr "ケチュア語"
+
+#: picard/const/locales.py:796
+msgid "Kʼicheʼ"
+msgstr ""
+
+#: picard/const/locales.py:797
+#, fuzzy
+#| msgid "Spanish (Guatemala)"
+msgid "Kʼicheʼ (Guatemala)"
+msgstr "スペイン語 (グアテマラ)"
+
+#: picard/const/locales.py:798
+#, fuzzy
+msgid "Rajasthani"
+msgstr "ラージャスターニー語"
+
+#: picard/const/locales.py:799
+#, fuzzy
+#| msgid "Marathi (India)"
+msgid "Rajasthani (India)"
+msgstr "マラーティー語 (インド)"
+
+#: picard/const/locales.py:800
+msgid "Rohingya"
+msgstr ""
+
+#: picard/const/locales.py:801
+msgid "Rohingya (Hanifi)"
+msgstr ""
+
+#: picard/const/locales.py:802
+#, fuzzy
+msgid "Rohingya (Hanifi) (Bangladesh)"
+msgstr "ベンガル語 (バングラデシュ)"
+
+#: picard/const/locales.py:803
+#, fuzzy
+msgid "Rohingya (Hanifi) (Myanmar (Burma))"
+msgstr "ビルマ語 (ミャンマー)"
+
+#: picard/const/locales.py:804
+msgid "Riffian"
+msgstr ""
+
+#: picard/const/locales.py:805
+#, fuzzy
+#| msgid "Arabic (Morocco)"
+msgid "Riffian (Morocco)"
+msgstr "アラビア語 (モロッコ)"
+
+#: picard/const/locales.py:806
+#, fuzzy
+msgid "Romansh"
+msgstr "レト・ロマン語"
+
+#: picard/const/locales.py:807
+#, fuzzy
+#| msgid "German (Switzerland)"
+msgid "Romansh (Switzerland)"
+msgstr "ドイツ語 (スイス)"
+
+#: picard/const/locales.py:808
+#, fuzzy
+msgid "Rundi"
+msgstr "ルンディ語"
+
+#: picard/const/locales.py:809
+#, fuzzy
+#| msgid "Hindi (India)"
+msgid "Rundi (Burundi)"
+msgstr "ヒンディー語 (インド)"
+
+#: picard/const/locales.py:811
+msgid "Romanian (Moldova)"
+msgstr "ルーマニア語 (モルドバ)"
+
+#: picard/const/locales.py:812
+msgid "Romanian (Romania)"
+msgstr "ルーマニア語 (ルーマニア)"
+
+#: picard/const/locales.py:813
+msgid "Rombo"
+msgstr ""
+
+#: picard/const/locales.py:814
+#, fuzzy
+#| msgid "Swahili (Tanzania)"
+msgid "Rombo (Tanzania)"
+msgstr "スワヒリ語 (タンザニア)"
+
+#: picard/const/locales.py:816
+#, fuzzy
+#| msgid "Belarusian (Belarus)"
+msgid "Russian (Belarus)"
+msgstr "ベラルーシ語 (ベラルーシ)"
+
+#: picard/const/locales.py:817
+#, fuzzy
+#| msgid "Russian (Ukraine)"
+msgid "Russian (Kyrgyzstan)"
+msgstr "ロシア語 (ウクライナ)"
+
+#: picard/const/locales.py:818
+#, fuzzy
+#| msgid "Kazakh (Kazakhstan)"
+msgid "Russian (Kazakhstan)"
+msgstr "カザフ語 (カザフスタン)"
+
+#: picard/const/locales.py:819
+#, fuzzy
+#| msgid "Romanian (Moldova)"
+msgid "Russian (Moldova)"
+msgstr "ルーマニア語 (モルドバ)"
+
+#: picard/const/locales.py:820
+msgid "Russian (Russia)"
+msgstr "ロシア語 (ロシア)"
+
+#: picard/const/locales.py:821
+msgid "Russian (Ukraine)"
+msgstr "ロシア語 (ウクライナ)"
+
+#: picard/const/locales.py:822
+msgid "Kinyarwanda"
+msgstr "ルワンダ語"
+
+#: picard/const/locales.py:823
+msgid "Kinyarwanda (Rwanda)"
+msgstr "ルワンダ語 (ルワンダ)"
+
+#: picard/const/locales.py:824
+msgid "Rwa"
+msgstr ""
+
+#: picard/const/locales.py:825
+#, fuzzy
+#| msgid "Swahili (Tanzania)"
+msgid "Rwa (Tanzania)"
+msgstr "スワヒリ語 (タンザニア)"
+
+#: picard/const/locales.py:826
+msgid "Sanskrit"
+msgstr "サンスクリット"
+
+#: picard/const/locales.py:827
+msgid "Sanskrit (India)"
+msgstr "サンスクリット語 (インド)"
+
+#: picard/const/locales.py:828
+#, fuzzy
+msgid "Yakut"
+msgstr "サハ語"
+
+#: picard/const/locales.py:829
+#, fuzzy
+#| msgid "Tatar (Russia)"
+msgid "Yakut (Russia)"
+msgstr "タタール語 (ロシア)"
+
+#: picard/const/locales.py:830
+msgid "Samburu"
+msgstr ""
+
+#: picard/const/locales.py:831
+#, fuzzy
+#| msgid "Kamba (Kenya)"
+msgid "Samburu (Kenya)"
+msgstr "カンバ語 (ケニア)"
+
+#: picard/const/locales.py:832
+#, fuzzy
+msgid "Santali"
+msgstr "サンタル語"
+
+#: picard/const/locales.py:833
+#, fuzzy
+#| msgid "Danish (Denmark)"
+msgid "Santali (Devanagari)"
+msgstr "デンマーク語 (デンマーク)"
+
+#: picard/const/locales.py:834
+#, fuzzy
+#| msgid "Kannada (India)"
+msgid "Santali (Devanagari) (India)"
+msgstr "カンナダ語 (インド)"
+
+#: picard/const/locales.py:835
+msgid "Santali (Ol Chiki)"
+msgstr ""
+
+#: picard/const/locales.py:836
+#, fuzzy
+#| msgid "Sanskrit (India)"
+msgid "Santali (Ol Chiki) (India)"
+msgstr "サンスクリット語 (インド)"
+
+#: picard/const/locales.py:837
+#, fuzzy
+msgid "Sangu"
+msgstr "サンゴ語"
+
+#: picard/const/locales.py:838
+#, fuzzy
+#| msgid "Swahili (Tanzania)"
+msgid "Sangu (Tanzania)"
+msgstr "スワヒリ語 (タンザニア)"
+
+#: picard/const/locales.py:839
+#, fuzzy
+msgid "Sardinian"
+msgstr "サルデーニャ語"
+
+#: picard/const/locales.py:840
+#, fuzzy
+#| msgid "Friulian (Italy)"
+msgid "Sardinian (Italy)"
+msgstr "フリウリ語 (イタリア)"
+
+#: picard/const/locales.py:841
+#, fuzzy
+msgid "Sicilian"
+msgstr "シチリア語"
+
+#: picard/const/locales.py:842
+#, fuzzy
+#| msgid "Friulian (Italy)"
+msgid "Sicilian (Italy)"
+msgstr "フリウリ語 (イタリア)"
+
+#: picard/const/locales.py:843
+#, fuzzy
+msgid "Sindhi"
+msgstr "シンディー語"
+
+#: picard/const/locales.py:844
+#, fuzzy
+msgid "Sindhi (Arabic)"
+msgstr "パンジャーブ語 (アラビア文字) (パキスタン)"
+
+#: picard/const/locales.py:845
+#, fuzzy
+msgid "Sindhi (Arabic) (Pakistan)"
+msgstr "パンジャーブ語 (アラビア文字) (パキスタン)"
+
+#: picard/const/locales.py:846
+msgid "Sindhi (Devanagari)"
+msgstr ""
+
+#: picard/const/locales.py:847
+#, fuzzy
+#| msgid "Sanskrit (India)"
+msgid "Sindhi (Devanagari) (India)"
+msgstr "サンスクリット語 (インド)"
+
+#: picard/const/locales.py:848
+#, fuzzy
+msgid "Southern Kurdish"
+msgstr "北部サーミ語"
+
+#: picard/const/locales.py:849
+#, fuzzy
+msgid "Southern Kurdish (Iraq)"
+msgstr "北部サーミ語 (ノルウェー)"
+
+#: picard/const/locales.py:850
+#, fuzzy
+msgid "Southern Kurdish (Iran)"
+msgstr "北部サーミ語 (ノルウェー)"
+
+#: picard/const/locales.py:851
+msgid "Northern Sami"
+msgstr "北部サーミ語"
+
+#: picard/const/locales.py:852
+msgid "Northern Sami (Finland)"
+msgstr "北部サーミ語 (フィンランド)"
+
+#: picard/const/locales.py:853
+msgid "Northern Sami (Norway)"
+msgstr "北部サーミ語 (ノルウェー)"
+
+#: picard/const/locales.py:854
+#, fuzzy
+#| msgid "Northern Sami (Norway)"
+msgid "Northern Sami (Sweden)"
+msgstr "北部サーミ語 (ノルウェー)"
+
+#: picard/const/locales.py:855
+msgid "Sena"
+msgstr ""
+
+#: picard/const/locales.py:856
+msgid "Sena (Mozambique)"
+msgstr ""
+
+#: picard/const/locales.py:857
+msgid "Koyraboro Senni"
+msgstr ""
+
+#: picard/const/locales.py:858
+msgid "Koyraboro Senni (Mali)"
+msgstr ""
+
+#: picard/const/locales.py:859
+#, fuzzy
+msgid "Sango"
+msgstr "サンゴ語"
+
+#: picard/const/locales.py:860
+#, fuzzy
+#| msgid "Spanish (Dominican Republic)"
+msgid "Sango (Central African Republic)"
+msgstr "スペイン語 (ドミニカ)"
+
+#: picard/const/locales.py:861
+msgid "Tachelhit"
+msgstr ""
+
+#: picard/const/locales.py:862
+#, fuzzy
+#| msgid "Serbian (Latin)"
+msgid "Tachelhit (Latin)"
+msgstr "セルビア語 (ラテン文字)"
+
+#: picard/const/locales.py:863
+#, fuzzy
+#| msgid "Serbian (Latin) (Montenegro)"
+msgid "Tachelhit (Latin) (Morocco)"
+msgstr "セルビア語 (ラテン文字) (モンテネグロ)"
+
+#: picard/const/locales.py:864
+msgid "Tachelhit (Tifinagh)"
+msgstr ""
+
+#: picard/const/locales.py:865
+msgid "Tachelhit (Tifinagh) (Morocco)"
+msgstr ""
+
+#: picard/const/locales.py:866
+#, fuzzy
+msgid "Shan"
+msgstr "シャン語"
+
+#: picard/const/locales.py:867
+#, fuzzy
+msgid "Shan (Myanmar (Burma))"
+msgstr "ビルマ語 (ミャンマー)"
+
+#: picard/const/locales.py:868
+#, fuzzy
+msgid "Shan (Thailand)"
+msgstr "タイ語 (タイ)"
+
+#: picard/const/locales.py:869
+msgid "Sinhala"
+msgstr "シンハラ文字"
+
+#: picard/const/locales.py:870
+msgid "Sinhala (Sri Lanka)"
+msgstr "シンハラ語 (スリランカ)"
+
+#: picard/const/locales.py:871
+msgid "Sidamo"
+msgstr "シダモ語"
+
+#: picard/const/locales.py:872
+msgid "Sidamo (Ethiopia)"
+msgstr "シダモ語 (エチオピア)"
+
+#: picard/const/locales.py:874
+msgid "Slovak (Slovakia)"
+msgstr "スロバキア語 (スロバキア)"
+
+#: picard/const/locales.py:876
+msgid "Slovenian (Slovenia)"
+msgstr "スロベニア語 (スロベニア)"
+
+#: picard/const/locales.py:877
+#, fuzzy
+msgid "Southern Sami"
+msgstr "北部サーミ語"
+
+#: picard/const/locales.py:878
+#, fuzzy
+msgid "Southern Sami (Norway)"
+msgstr "北部サーミ語 (ノルウェー)"
+
+#: picard/const/locales.py:879
+#, fuzzy
+msgid "Southern Sami (Sweden)"
+msgstr "北部サーミ語 (ノルウェー)"
+
+#: picard/const/locales.py:880
+#, fuzzy
+msgid "Lule Sami"
+msgstr "北部サーミ語"
+
+#: picard/const/locales.py:881
+#, fuzzy
+msgid "Lule Sami (Norway)"
+msgstr "北部サーミ語 (ノルウェー)"
+
+#: picard/const/locales.py:882
+#, fuzzy
+#| msgid "Swedish (Sweden)"
+msgid "Lule Sami (Sweden)"
+msgstr "スウェーデン語 (スウェーデン)"
+
+#: picard/const/locales.py:883
+msgid "Inari Sami"
+msgstr ""
+
+#: picard/const/locales.py:884
+#, fuzzy
+#| msgid "Northern Sami (Finland)"
+msgid "Inari Sami (Finland)"
+msgstr "北部サーミ語 (フィンランド)"
+
+#: picard/const/locales.py:885
+#, fuzzy
+msgid "Skolt Sami"
+msgstr "北部サーミ語"
+
+#: picard/const/locales.py:886
+#, fuzzy
+#| msgid "Northern Sami (Finland)"
+msgid "Skolt Sami (Finland)"
+msgstr "北部サーミ語 (フィンランド)"
+
+#: picard/const/locales.py:887
+#, fuzzy
+msgid "Shona"
+msgstr "ショナ語"
+
+#: picard/const/locales.py:888
+#, fuzzy
+#| msgid "English (Zimbabwe)"
+msgid "Shona (Zimbabwe)"
+msgstr "英語 (ジンバブエ)"
+
+#: picard/const/locales.py:889
+msgid "Somali"
+msgstr "ソマリ語"
+
+#: picard/const/locales.py:890
+msgid "Somali (Djibouti)"
+msgstr "ソマリ語 (ジブチ)"
+
+#: picard/const/locales.py:891
+msgid "Somali (Ethiopia)"
+msgstr "ソマリ語 (エチオピア)"
+
+#: picard/const/locales.py:892
+msgid "Somali (Kenya)"
+msgstr "ソマリ語 (ケニア)"
+
+#: picard/const/locales.py:893
+msgid "Somali (Somalia)"
+msgstr "ソマリ語 (ソマリア)"
+
+#: picard/const/locales.py:895
+msgid "Albanian (Albania)"
+msgstr "アルバニア語 (アルバニア)"
+
+#: picard/const/locales.py:896
+#, fuzzy
+#| msgid "Albanian (Albania)"
+msgid "Albanian (North Macedonia)"
+msgstr "アルバニア語 (アルバニア)"
+
+#: picard/const/locales.py:897
+#, fuzzy
+#| msgid "Albanian"
+msgid "Albanian (Kosovo)"
+msgstr "アルバニア語"
+
+#: picard/const/locales.py:898
+msgid "Serbian"
+msgstr "セルビア語"
+
+#: picard/const/locales.py:899
+msgid "Serbian (Cyrillic)"
+msgstr "セルビア語 (キリル文字)"
+
+#: picard/const/locales.py:900
+#, fuzzy
+msgid "Serbian (Cyrillic) (Bosnia & Herzegovina)"
+msgstr "セルビア語 (キリル文字) (ボスニア・ヘルツェゴビナ)"
+
+#: picard/const/locales.py:901
+msgid "Serbian (Cyrillic) (Montenegro)"
+msgstr "セルビア語 (キリル文字) (モンテネグロ)"
+
+#: picard/const/locales.py:902
+msgid "Serbian (Cyrillic) (Serbia)"
+msgstr "セルビア語 (キリル文字) (セルビア)"
+
+#: picard/const/locales.py:903
+#, fuzzy
+#| msgid "Serbian (Cyrillic)"
+msgid "Serbian (Cyrillic) (Kosovo)"
+msgstr "セルビア語 (キリル文字)"
+
+#: picard/const/locales.py:904
+msgid "Serbian (Latin)"
+msgstr "セルビア語 (ラテン文字)"
+
+#: picard/const/locales.py:905
+#, fuzzy
+msgid "Serbian (Latin) (Bosnia & Herzegovina)"
+msgstr "セルビア語 (ラテン文字) (ボスニア・ヘルツェゴビナ)"
+
+#: picard/const/locales.py:906
+msgid "Serbian (Latin) (Montenegro)"
+msgstr "セルビア語 (ラテン文字) (モンテネグロ)"
+
+#: picard/const/locales.py:907
+msgid "Serbian (Latin) (Serbia)"
+msgstr "セルビア語 (ラテン文字) (セルビア)"
+
+#: picard/const/locales.py:908
+#, fuzzy
+#| msgid "Serbian (Latin) (Montenegro)"
+msgid "Serbian (Latin) (Kosovo)"
+msgstr "セルビア語 (ラテン文字) (モンテネグロ)"
+
+#: picard/const/locales.py:909
+msgid "Swati"
+msgstr "スワジ語"
+
+#: picard/const/locales.py:910
+#, fuzzy
+#| msgid "Somali (Ethiopia)"
+msgid "Swati (Eswatini)"
+msgstr "ソマリ語 (エチオピア)"
+
+#: picard/const/locales.py:911
+msgid "Swati (South Africa)"
+msgstr "スワジ語 (南アフリカ)"
+
+#: picard/const/locales.py:912
+msgid "Saho"
+msgstr ""
+
+#: picard/const/locales.py:913
+#, fuzzy
+#| msgid "Afar (Eritrea)"
+msgid "Saho (Eritrea)"
+msgstr "アファル語 (エリトリア)"
+
+#: picard/const/locales.py:914
+msgid "Southern Sotho"
+msgstr "南ソト語"
+
+#: picard/const/locales.py:915
+msgid "Southern Sotho (Lesotho)"
+msgstr "南ソト語 (レソト)"
+
+#: picard/const/locales.py:916
+msgid "Southern Sotho (South Africa)"
+msgstr "南ソト語 (南アフリカ)"
+
+#: picard/const/locales.py:917
+#, fuzzy
+msgid "Sundanese"
+msgstr "スンダ文字"
+
+#: picard/const/locales.py:918
+#, fuzzy
+msgid "Sundanese (Latin)"
+msgstr "スンダ文字"
+
+#: picard/const/locales.py:919
+#, fuzzy
+#| msgid "Indonesian (Indonesia)"
+msgid "Sundanese (Latin) (Indonesia)"
+msgstr "インドネシア語 (インドネシア)"
+
+#: picard/const/locales.py:921
+#, fuzzy
+#| msgid "Swedish (Finland)"
+msgid "Swedish (Åland Islands)"
+msgstr "スウェーデン語 (フィンランド)"
+
+#: picard/const/locales.py:922
+msgid "Swedish (Finland)"
+msgstr "スウェーデン語 (フィンランド)"
+
+#: picard/const/locales.py:923
+msgid "Swedish (Sweden)"
+msgstr "スウェーデン語 (スウェーデン)"
+
+#: picard/const/locales.py:924
+msgid "Swahili"
+msgstr "スワヒリ語"
+
+#: picard/const/locales.py:925
+#, fuzzy
+#| msgid "Lingala (Congo - Kinshasa)"
+msgid "Swahili (Congo - Kinshasa)"
+msgstr "リンガラ語 (コンゴ - キンシャサ方言)"
+
+#: picard/const/locales.py:926
+msgid "Swahili (Kenya)"
+msgstr "スワヒリ語 (ケニア)"
+
+#: picard/const/locales.py:927
+msgid "Swahili (Tanzania)"
+msgstr "スワヒリ語 (タンザニア)"
+
+#: picard/const/locales.py:928
+#, fuzzy
+#| msgid "Swahili (Kenya)"
+msgid "Swahili (Uganda)"
+msgstr "スワヒリ語 (ケニア)"
+
+#: picard/const/locales.py:929
+msgid "Syriac"
+msgstr "シリア文字"
+
+#: picard/const/locales.py:930
+#, fuzzy
+#| msgid "Syriac (Syria)"
+msgid "Syriac (Iraq)"
+msgstr "シリア語 (シリア)"
+
+#: picard/const/locales.py:931
+msgid "Syriac (Syria)"
+msgstr "シリア語 (シリア)"
+
+#: picard/const/locales.py:932
+#, fuzzy
+#| msgid "Persian"
+msgid "Silesian"
+msgstr "ペルシア語"
+
+#: picard/const/locales.py:933
+#, fuzzy
+#| msgid "Polish (Poland)"
+msgid "Silesian (Poland)"
+msgstr "ポーランド語 (ポーランド)"
+
+#: picard/const/locales.py:934
+msgid "Tamil"
+msgstr "タミル文字"
+
+#: picard/const/locales.py:935
+msgid "Tamil (India)"
+msgstr "タミル語 (インド)"
+
+#: picard/const/locales.py:936
+#, fuzzy
+#| msgid "Sinhala (Sri Lanka)"
+msgid "Tamil (Sri Lanka)"
+msgstr "シンハラ語 (スリランカ)"
+
+#: picard/const/locales.py:937
+#, fuzzy
+#| msgid "Malay (Malaysia)"
+msgid "Tamil (Malaysia)"
+msgstr "マレー語 (マレーシア)"
+
+#: picard/const/locales.py:938
+#, fuzzy
+#| msgid "English (Singapore)"
+msgid "Tamil (Singapore)"
+msgstr "英語 (シンガポール)"
+
+#: picard/const/locales.py:939
+msgid "Telugu"
+msgstr "テルグ文字"
+
+#: picard/const/locales.py:940
+msgid "Telugu (India)"
+msgstr "テルグ語 (インド)"
+
+#: picard/const/locales.py:941
+msgid "Teso"
+msgstr ""
+
+#: picard/const/locales.py:942
+#, fuzzy
+#| msgid "Oromo (Kenya)"
+msgid "Teso (Kenya)"
+msgstr "オロモ語 (ケニア)"
+
+#: picard/const/locales.py:943
+msgid "Teso (Uganda)"
+msgstr ""
+
+#: picard/const/locales.py:944
+msgid "Tajik"
+msgstr "タジク語"
+
+#: picard/const/locales.py:945
+msgid "Tajik (Cyrillic)"
+msgstr "タジク語 (キリル文字)"
+
+#: picard/const/locales.py:946
+msgid "Tajik (Cyrillic) (Tajikistan)"
+msgstr "タジク語 (キリル文字) (タジキスタン)"
+
+#: picard/const/locales.py:947
+msgid "Tajik (Tajikistan)"
+msgstr "タジク語 (タジキスタン)"
+
+#: picard/const/locales.py:948 picard/const/scripts.py:35
+msgid "Thai"
+msgstr "タイ文字"
+
+#: picard/const/locales.py:949
+msgid "Thai (Thailand)"
+msgstr "タイ語 (タイ)"
+
+#: picard/const/locales.py:950
+msgid "Tigrinya"
+msgstr "ティグリニャ語"
+
+#: picard/const/locales.py:951
+msgid "Tigrinya (Eritrea)"
+msgstr "ティグリニャ語 (エリトリア)"
+
+#: picard/const/locales.py:952
+msgid "Tigrinya (Ethiopia)"
+msgstr "ティグリニャ語 (エチオピア)"
+
+#: picard/const/locales.py:953
+msgid "Tigre"
+msgstr "ティグレ語"
+
+#: picard/const/locales.py:954
+msgid "Tigre (Eritrea)"
+msgstr "ティグレ語 (エリトリア)"
+
+#: picard/const/locales.py:955
+#, fuzzy
+msgid "Turkmen"
+msgstr "トルクメン語"
+
+#: picard/const/locales.py:956
+#, fuzzy
+#| msgid "Armenian (Armenia)"
+msgid "Turkmen (Turkmenistan)"
+msgstr "アルメニア語 (アルメニア)"
+
+#: picard/const/locales.py:957
+msgid "Tswana"
+msgstr "ツワナ語"
+
+#: picard/const/locales.py:958
+#, fuzzy
+#| msgid "English (Botswana)"
+msgid "Tswana (Botswana)"
+msgstr "英語 (ボツワナ)"
+
+#: picard/const/locales.py:959
+msgid "Tswana (South Africa)"
+msgstr "ツワナ語 (南アフリカ)"
+
+#: picard/const/locales.py:960
+#, fuzzy
+msgid "Tongan"
+msgstr "トンガ"
+
+#: picard/const/locales.py:961
+#, fuzzy
+msgid "Tongan (Tonga)"
+msgstr "トンガ語 (トンガ)"
+
+#: picard/const/locales.py:962
+msgid "Toki Pona"
+msgstr ""
+
+#: picard/const/locales.py:963
+msgid "Toki Pona (world)"
+msgstr ""
+
+#: picard/const/locales.py:964
+#, fuzzy
+msgid "Tok Pisin"
+msgstr "トク・ピジン語"
+
+#: picard/const/locales.py:965
+msgid "Tok Pisin (Papua New Guinea)"
+msgstr ""
+
+#: picard/const/locales.py:967
+#, fuzzy
+#| msgid "Greek (Cyprus)"
+msgid "Turkish (Cyprus)"
+msgstr "ギリシア語 (キプロス)"
+
+#: picard/const/locales.py:968
+msgid "Turkish (Türkiye)"
+msgstr ""
+
+#: picard/const/locales.py:969
+msgid "Taroko"
+msgstr "タロコ語"
+
+#: picard/const/locales.py:970
+msgid "Taroko (Taiwan)"
+msgstr "タロコ語 (台湾)"
+
+#: picard/const/locales.py:971
+msgid "Torwali"
+msgstr ""
+
+#: picard/const/locales.py:972
+#, fuzzy
+#| msgid "Urdu (Pakistan)"
+msgid "Torwali (Pakistan)"
+msgstr "ウルドゥー語 (パキスタン)"
+
+#: picard/const/locales.py:973
+msgid "Tsonga"
+msgstr "ツォンガ語"
+
+#: picard/const/locales.py:974
+msgid "Tsonga (South Africa)"
+msgstr "ツォンガ語 (南アフリカ)"
+
+#: picard/const/locales.py:975
+msgid "Tatar"
+msgstr "タタール語"
+
+#: picard/const/locales.py:976
+msgid "Tatar (Russia)"
+msgstr "タタール語 (ロシア)"
+
+#: picard/const/locales.py:977
+msgid "Tasawaq"
+msgstr ""
+
+#: picard/const/locales.py:978
+#, fuzzy
+#| msgid "Hausa (Niger)"
+msgid "Tasawaq (Niger)"
+msgstr "ハウサ語 (ニジェール)"
+
+#: picard/const/locales.py:979
+msgid "Central Atlas Tamazight"
+msgstr ""
+
+#: picard/const/locales.py:980
+msgid "Central Atlas Tamazight (Morocco)"
+msgstr ""
+
+#: picard/const/locales.py:981
+#, fuzzy
+msgid "Uyghur"
+msgstr "ウイグル語 (中国)"
+
+#: picard/const/locales.py:982
+#, fuzzy
+msgid "Uyghur (China)"
+msgstr "ウイグル語 (中国)"
+
+#: picard/const/locales.py:984
+msgid "Ukrainian (Ukraine)"
+msgstr "ウクライナ語 (ウクライナ)"
+
+#: picard/const/locales.py:985
+msgid "Unknown language"
+msgstr "不明な言語"
+
+#: picard/const/locales.py:986
+msgid "Urdu"
+msgstr "ウルドゥー語"
+
+#: picard/const/locales.py:987
+msgid "Urdu (India)"
+msgstr "ウルドゥー語 (インド)"
+
+#: picard/const/locales.py:988
+msgid "Urdu (Pakistan)"
+msgstr "ウルドゥー語 (パキスタン)"
+
+#: picard/const/locales.py:989
+msgid "Uzbek"
+msgstr "ウズベク語"
+
+#: picard/const/locales.py:990
+msgid "Uzbek (Arabic)"
+msgstr "ウズベク語 (アラビア文字)"
+
+#: picard/const/locales.py:991
+msgid "Uzbek (Arabic) (Afghanistan)"
+msgstr "ウズベク語 (アラビア文字) (アフガニスタン)"
+
+#: picard/const/locales.py:992
+msgid "Uzbek (Cyrillic)"
+msgstr "ウズベク語 (キリル文字)"
+
+#: picard/const/locales.py:993
+msgid "Uzbek (Cyrillic) (Uzbekistan)"
+msgstr "ウズベク語 (キリル文字) (ウズベキスタン)"
+
+#: picard/const/locales.py:994
+msgid "Uzbek (Latin)"
+msgstr "ウズベク語 (ラテン文字)"
+
+#: picard/const/locales.py:995
+msgid "Uzbek (Latin) (Uzbekistan)"
+msgstr "ウズベク語 (ラテン文字) (ウズベキスタン)"
+
+#: picard/const/locales.py:996
+#, fuzzy
+msgid "Vai"
+msgstr "ヴァイ文字"
+
+#: picard/const/locales.py:997
+#, fuzzy
+#| msgid "Hausa (Latin)"
+msgid "Vai (Latin)"
+msgstr "ハウサ語 (ラテン文字)"
+
+#: picard/const/locales.py:998
+#, fuzzy
+msgid "Vai (Latin) (Liberia)"
+msgstr "ハウサ語 (ラテン文字) (ナイジェリア)"
+
+#: picard/const/locales.py:999
+msgid "Vai (Vai)"
+msgstr ""
+
+#: picard/const/locales.py:1000
+#, fuzzy
+msgid "Vai (Vai) (Liberia)"
+msgstr "ハウサ語 (ラテン文字) (ナイジェリア)"
+
+#: picard/const/locales.py:1001
+msgid "Venda"
+msgstr "ベンダ語"
+
+#: picard/const/locales.py:1002
+msgid "Venda (South Africa)"
+msgstr "ヴェンダ語 (南アフリカ)"
+
+#: picard/const/locales.py:1003
+msgid "Venetian"
+msgstr ""
+
+#: picard/const/locales.py:1004
+#, fuzzy
+#| msgid "Italian (Italy)"
+msgid "Venetian (Italy)"
+msgstr "イタリア語 (イタリア)"
+
+#: picard/const/locales.py:1005
+msgid "Vietnamese"
+msgstr "ベトナム語"
+
+#: picard/const/locales.py:1006
+msgid "Vietnamese (Vietnam)"
+msgstr "ベトナム語 (ベトナム)"
+
+#: picard/const/locales.py:1007
+#, fuzzy
+msgid "Volapük"
+msgstr "ヴォラピュク"
+
+#: picard/const/locales.py:1008
+#, fuzzy
+msgid "Volapük (world)"
+msgstr "ヴォラピュク"
+
+#: picard/const/locales.py:1009
+msgid "Vunjo"
+msgstr ""
+
+#: picard/const/locales.py:1010
+#, fuzzy
+#| msgid "Swahili (Tanzania)"
+msgid "Vunjo (Tanzania)"
+msgstr "スワヒリ語 (タンザニア)"
+
+#: picard/const/locales.py:1011
+#, fuzzy
+msgid "Walloon"
+msgstr "ワロン語"
+
+#: picard/const/locales.py:1012
+#, fuzzy
+#| msgid "German (Belgium)"
+msgid "Walloon (Belgium)"
+msgstr "ドイツ語 (ベルギー)"
+
+#: picard/const/locales.py:1013
+msgid "Walser"
+msgstr "ヴァリス語"
+
+#: picard/const/locales.py:1014
+#, fuzzy
+#| msgid "German (Switzerland)"
+msgid "Walser (Switzerland)"
+msgstr "ドイツ語 (スイス)"
+
+#: picard/const/locales.py:1015
+#, fuzzy
+msgid "Wolaytta"
+msgstr "ワッラモ語"
+
+#: picard/const/locales.py:1016
+#, fuzzy
+#| msgid "Somali (Ethiopia)"
+msgid "Wolaytta (Ethiopia)"
+msgstr "ソマリ語 (エチオピア)"
+
+#: picard/const/locales.py:1017
+msgid "Warlpiri"
+msgstr "ワルビリ語"
+
+#: picard/const/locales.py:1018
+#, fuzzy
+#| msgid "English (Australia)"
+msgid "Warlpiri (Australia)"
+msgstr "英語（オーストラリア）"
+
+#: picard/const/locales.py:1019
+msgid "Wolof"
+msgstr "ウォロフ語"
+
+#: picard/const/locales.py:1020
+msgid "Wolof (Senegal)"
+msgstr "ウォロフ語 (セネガル)"
+
+#: picard/const/locales.py:1021
+msgid "Xhosa"
+msgstr "コサ語"
+
+#: picard/const/locales.py:1022
+msgid "Xhosa (South Africa)"
+msgstr "コサ語 (南アフリカ)"
+
+#: picard/const/locales.py:1023
+msgid "Soga"
+msgstr ""
+
+#: picard/const/locales.py:1024
+msgid "Soga (Uganda)"
+msgstr ""
+
+#: picard/const/locales.py:1025
+msgid "Yangben"
+msgstr ""
+
+#: picard/const/locales.py:1026
+#, fuzzy
+msgid "Yangben (Cameroon)"
+msgstr "ミナ語 (カメルーン)"
+
+#: picard/const/locales.py:1027
+#, fuzzy
+msgid "Yiddish"
+msgstr "イディッシュ語"
+
+#: picard/const/locales.py:1028
+#, fuzzy
+msgid "Yiddish (world)"
+msgstr "イディッシュ語"
+
+#: picard/const/locales.py:1029
+msgid "Yoruba"
+msgstr "ヨルバ語"
+
+#: picard/const/locales.py:1030
+#, fuzzy
+#| msgid "Yoruba (Nigeria)"
+msgid "Yoruba (Benin)"
+msgstr "ヨルバ語 (ナイジェリア)"
+
+#: picard/const/locales.py:1031
+msgid "Yoruba (Nigeria)"
+msgstr "ヨルバ語 (ナイジェリア)"
+
+#: picard/const/locales.py:1032
+#, fuzzy
+msgid "Nheengatu"
+msgstr "ニェエンガトゥ語"
+
+#: picard/const/locales.py:1033
+#, fuzzy
+msgid "Nheengatu (Brazil)"
+msgstr "ニェエンガトゥ語"
+
+#: picard/const/locales.py:1034
+#, fuzzy
+#| msgid "Spanish (Colombia)"
+msgid "Nheengatu (Colombia)"
+msgstr "スペイン語 (コロンビア)"
+
+#: picard/const/locales.py:1035
+#, fuzzy
+#| msgid "Spanish (Venezuela)"
+msgid "Nheengatu (Venezuela)"
+msgstr "スペイン語 (ベネズエラ)"
+
+#: picard/const/locales.py:1036
+#, fuzzy
+msgid "Cantonese"
+msgstr "アラゴン語"
+
+#: picard/const/locales.py:1037
+#, fuzzy
+msgid "Cantonese (Simplified)"
+msgstr "中国語 (簡体字)"
+
+#: picard/const/locales.py:1038
+#, fuzzy
+msgid "Cantonese (Simplified) (China)"
+msgstr "中国語 (簡体字) (中国)"
+
+#: picard/const/locales.py:1039
+#, fuzzy
+msgid "Cantonese (Traditional)"
+msgstr "中国語 (繁体字)"
+
+#: picard/const/locales.py:1040
+#, fuzzy
+msgid "Cantonese (Traditional) (Hong Kong)"
+msgstr "中国語 (繁体字) (香港)"
+
+#: picard/const/locales.py:1041
+msgid "Standard Moroccan Tamazight"
+msgstr ""
+
+#: picard/const/locales.py:1042
+msgid "Standard Moroccan Tamazight (Morocco)"
+msgstr ""
+
+#: picard/const/locales.py:1043 picard/const/scripts.py:31
+msgid "Chinese"
+msgstr "中国語"
+
+#: picard/const/locales.py:1044
+#, fuzzy
+msgid "Chinese (Simplified)"
+msgstr "中国語 (簡体字)"
+
+#: picard/const/locales.py:1045
+#, fuzzy
+msgid "Chinese (Simplified) (China)"
+msgstr "中国語 (簡体字) (中国)"
+
+#: picard/const/locales.py:1046
+#, fuzzy
+msgid "Chinese (Simplified) (Hong Kong)"
+msgstr "中国語 (簡体字) (香港)"
+
+#: picard/const/locales.py:1047
+#, fuzzy
+msgid "Chinese (Simplified) (Macao)"
+msgstr "中国語 (簡体字) (マカオ)"
+
+#: picard/const/locales.py:1048
+#, fuzzy
+msgid "Chinese (Simplified) (Singapore)"
+msgstr "中国語 (簡体字) (シンガポール)"
+
+#: picard/const/locales.py:1049
+#, fuzzy
+msgid "Chinese (Traditional)"
+msgstr "中国語 (繁体字)"
+
+#: picard/const/locales.py:1050
+#, fuzzy
+msgid "Chinese (Traditional) (Hong Kong)"
+msgstr "中国語 (繁体字) (香港)"
+
+#: picard/const/locales.py:1051
+#, fuzzy
+msgid "Chinese (Traditional) (Macao)"
+msgstr "中国語 (繁体字) (マカオ)"
+
+#: picard/const/locales.py:1052
+#, fuzzy
+msgid "Chinese (Traditional) (Taiwan)"
+msgstr "中国語 (繁体字) (台湾)"
+
+#: picard/const/locales.py:1053
+msgid "Zulu"
+msgstr "ズールー語"
+
+#: picard/const/locales.py:1054
+msgid "Zulu (South Africa)"
+msgstr "ズールー語 (南アフリカ)"
+
+#: picard/const/scripts.py:27
+msgid "Cyrillic"
+msgstr "キリル文字"
+
+#: picard/const/scripts.py:32
+msgid "Hangul"
+msgstr "ハングル"
+
+#: picard/const/scripts.py:33
+msgid "Hiragana"
+msgstr "平仮名"
+
+#: picard/const/scripts.py:34
+msgid "Katakana"
+msgstr "片仮名"
 
 #: picard/coverart/__init__.py:103
 #, python-format
@@ -1035,18 +6021,18 @@ msgstr ""
 
 #: picard/script/__init__.py:145
 #, python-format
-msgid "Preset %(number)d: %(title)s"
-msgstr ""
+msgid "Preset %d: %s"
+msgstr "プリセット %d: %s"
 
-#: picard/script/__init__.py:152
+#: picard/script/__init__.py:149
 msgid "Default file naming script"
 msgstr "デフォルトのファイル名生成スクリプト"
 
-#: picard/script/__init__.py:164
+#: picard/script/__init__.py:161
 msgid "[album artist]/[album]/[track #]. [title]"
 msgstr "[アルバムアーティスト]/[アルバム]/[トラック番号]. [タイトル]"
 
-#: picard/script/__init__.py:178
+#: picard/script/__init__.py:175
 msgid "[album artist]/[album]/[disc and track #] [artist] - [title]"
 msgstr ""
 "[アルバムアーティスト]/[アルバム]/[ディスク トラック番号] [アーティスト] - "
@@ -2494,8 +7480,8 @@ msgstr ""
 
 #: picard/script/serializer.py:202
 #, python-format
-msgid "Error exporting file \"%(filename)s\": %(error)s."
-msgstr ""
+msgid "Error exporting file \"%s\". %s."
+msgstr "ファイルのエクスポート中にエラー \"%s\"。 %s。"
 
 #: picard/script/serializer.py:209
 msgid "Export Script File"
@@ -2512,13 +7498,13 @@ msgstr "%s へスクリプトをエクスポートしました"
 
 #: picard/script/serializer.py:243
 #, python-format
-msgid "Error importing \"%(filename)s\": %(error)s."
-msgstr ""
+msgid "Error importing \"%s\". %s."
+msgstr "インポート中にエラー \"%s\"。 %s。"
 
 #: picard/script/serializer.py:244
 #, python-format
-msgid "Error decoding \"%(filename)s\": %(error)s."
-msgstr ""
+msgid "Error decoding \"%s\". %s."
+msgstr "デコード中にエラー \"%s\"。 %s。"
 
 #: picard/script/serializer.py:246
 msgid "Import Script File"
@@ -2550,7 +7536,7 @@ msgstr "%s (コピー)"
 msgid "File content not a dictionary"
 msgstr "辞書ではなくファイルの内容"
 
-#: picard/script/serializer.py:340 picard/ui/options/scripting.py:191
+#: picard/script/serializer.py:340 picard/ui/options/scripting.py:188
 msgid "Unnamed Script"
 msgstr "名前のないスクリプト"
 
@@ -2637,12 +7623,12 @@ msgid "Official website"
 msgstr "公式サイト"
 
 #: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:166
-#: picard/ui/mainwindow.py:1151 picard/util/tags.py:40
+#: picard/ui/mainwindow.py:1150 picard/util/tags.py:40
 msgid "Album"
 msgstr "アルバム"
 
 #: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:163
-#: picard/ui/mainwindow.py:1152 picard/ui/searchdialog/album.py:153
+#: picard/ui/mainwindow.py:1151 picard/ui/searchdialog/album.py:153
 #: picard/ui/searchdialog/track.py:71 picard/util/tags.py:43
 msgid "Artist"
 msgstr "アーティスト"
@@ -2676,9 +7662,9 @@ msgstr "リストを更新"
 
 #: picard/ui/collectionmenu.py:173
 #, python-format
-msgid "%(name)s (%(count)i release)"
-msgid_plural "%(name)s (%(count)i releases)"
-msgstr[0] ""
+msgid "%s (%i release)"
+msgid_plural "%s (%i releases)"
+msgstr[0] "%s (%i リリース)"
 
 #: picard/ui/colors.py:37
 msgid "Errored entity"
@@ -2811,7 +7797,7 @@ msgstr "新しいカバー"
 msgid "Cover"
 msgstr "カバー"
 
-#: picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
+#: picard/ui/infodialog.py:154 picard/ui/infodialog.py:359
 #: picard/ui/options/interface_toolbar.py:95
 msgid "Info"
 msgstr "情報"
@@ -2820,94 +7806,104 @@ msgstr "情報"
 #, python-format
 msgid ""
 "Double-click to open in external viewer\n"
-"Temporary file: %(tempfile)s\n"
-"Source: %(sourcefile)s"
+"Temporary file: %s\n"
+"Source: %s"
 msgstr ""
+"外部ビューアで表示するにはダブルクリック\n"
+"一時ファイル: %s\n"
+"ソース: %s"
 
-#: picard/ui/infodialog.py:219
-#, python-format
+#: picard/ui/infodialog.py:216
+#, fuzzy, python-format
+#| msgid ""
+#| "Double-click to open in external viewer\n"
+#| "Temporary file: %s\n"
+#| "Source: %s"
 msgid ""
-"Missing temporary file: %(tempfile)s\n"
-"Source: %(sourcefile)s"
+"Missing temporary file: %s\n"
+"Source: %s"
 msgstr ""
+"外部ビューアで表示するにはダブルクリック\n"
+"一時ファイル: %s\n"
+"ソース: %s"
 
-#: picard/ui/infodialog.py:286
+#: picard/ui/infodialog.py:280
 msgid "Filename:"
 msgstr "ファイル名:"
 
-#: picard/ui/infodialog.py:288
+#: picard/ui/infodialog.py:282
 msgid "Format:"
 msgstr "フォーマット:"
 
-#: picard/ui/infodialog.py:292
+#: picard/ui/infodialog.py:286
 msgid "Size:"
 msgstr "サイズ:"
 
-#: picard/ui/infodialog.py:296
+#: picard/ui/infodialog.py:290
 msgid "Length:"
 msgstr "演奏時間:"
 
-#: picard/ui/infodialog.py:298
+#: picard/ui/infodialog.py:292
 msgid "Bitrate:"
 msgstr "ビットレート:"
 
-#: picard/ui/infodialog.py:300
+#: picard/ui/infodialog.py:294
 msgid "Sample rate:"
 msgstr "サンプルレート:"
 
-#: picard/ui/infodialog.py:302
+#: picard/ui/infodialog.py:296
 msgid "Bits per sample:"
 msgstr "サンプルあたりのビット数:"
 
-#: picard/ui/infodialog.py:306
+#: picard/ui/infodialog.py:300
 msgid "Mono"
 msgstr "モノラル"
 
-#: picard/ui/infodialog.py:308
+#: picard/ui/infodialog.py:302
 msgid "Stereo"
 msgstr "ステレオ"
 
-#: picard/ui/infodialog.py:309
+#: picard/ui/infodialog.py:303
 msgid "Channels:"
 msgstr "チャンネル:"
 
-#: picard/ui/infodialog.py:316
+#: picard/ui/infodialog.py:310
 msgid "Album:"
 msgstr "アルバム:"
 
-#: picard/ui/infodialog.py:317
+#: picard/ui/infodialog.py:311
 msgid "Artist:"
 msgstr "アーティスト:"
 
-#: picard/ui/infodialog.py:347
+#: picard/ui/infodialog.py:341
 #, python-format
 msgid "Disc %d"
 msgstr "ディスク %d"
 
-#: picard/ui/infodialog.py:349
+#: picard/ui/infodialog.py:343
 msgid "Tracklist:"
 msgstr "トラックリスト:"
 
-#: picard/ui/infodialog.py:377
+#: picard/ui/infodialog.py:371
 msgid "Album Info"
 msgstr "アルバム情報"
 
-#: picard/ui/infodialog.py:391
+#: picard/ui/infodialog.py:385
 msgid "Track Info"
 msgstr "トラック情報"
 
-#: picard/ui/infodialog.py:399 picard/ui/infodialog.py:403
-#: picard/ui/infodialog.py:421 picard/ui/ui_infodialog.py:81
+#: picard/ui/infodialog.py:393 picard/ui/infodialog.py:397
+#: picard/ui/infodialog.py:415 picard/ui/ui_infodialog.py:81
 msgid "&Info"
 msgstr "情報(&I)"
 
-#: picard/ui/infodialog.py:404
+#: picard/ui/infodialog.py:398
 #, python-format
 msgid "%i file in this track"
 msgid_plural "%i files in this track"
 msgstr[0] "トラック内ファイル: %i"
 
-#: picard/ui/infodialog.py:415
+#: picard/ui/infodialog.py:409
 msgid "Cluster Info"
 msgstr "クラスタ情報"
 
@@ -2915,7 +7911,7 @@ msgstr "クラスタ情報"
 msgid "Estimated Time"
 msgstr "推定時間"
 
-#: picard/ui/infostatus.py:71 picard/ui/options/plugins.py:617
+#: picard/ui/infostatus.py:71 picard/ui/options/plugins.py:612
 msgid "Files"
 msgstr "ファイル"
 
@@ -3228,7 +8224,7 @@ msgstr "Picardを終了(&Q)"
 msgid "Ready"
 msgstr "準備完了"
 
-#: picard/ui/mainwindow.py:399
+#: picard/ui/mainwindow.py:398
 msgid ""
 "Picard listens on this port to integrate with your browser. When you \"Search"
 "\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" button on the "
@@ -3238,245 +8234,250 @@ msgstr ""
 "索」または「ブラウザを開く」を実行したなら、ウェブページで\"Tagger\"ボタンを"
 "クリックするとリリースがPicardに読み込まれます。"
 
-#: picard/ui/mainwindow.py:484
+#: picard/ui/mainwindow.py:424
+#, python-format
+msgid "Listening on port %(port)d"
+msgstr "ポート %(port)d で待機"
+
+#: picard/ui/mainwindow.py:483
 msgid "AcoustID submission not configured"
 msgstr "AcoustID サブミッションが未設定"
 
-#: picard/ui/mainwindow.py:485
+#: picard/ui/mainwindow.py:484
 msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
 msgstr ""
 "フィンガープリントを送信するにはAcoustIDのAPIキーを設定する必要があります。"
 
-#: picard/ui/mainwindow.py:488
+#: picard/ui/mainwindow.py:487
 msgid "Open AcoustID options"
 msgstr "AcoustID オプションを開く"
 
-#: picard/ui/mainwindow.py:499
+#: picard/ui/mainwindow.py:498
 msgid "&Options…"
 msgstr "オプション(&O)…"
 
-#: picard/ui/mainwindow.py:506
+#: picard/ui/mainwindow.py:505
 msgid "Open &file naming script editor…"
 msgstr "ファイル名生成スクリプトエディタを開く…"
 
-#: picard/ui/mainwindow.py:507
+#: picard/ui/mainwindow.py:506
 msgid "Ctrl+Shift+S"
 msgstr "Ctrl+Shift+S"
 
-#: picard/ui/mainwindow.py:513
+#: picard/ui/mainwindow.py:512
 msgid "&Cut"
 msgstr "カット(&C)"
 
-#: picard/ui/mainwindow.py:521 picard/ui/metadatabox.py:443
+#: picard/ui/mainwindow.py:520 picard/ui/metadatabox.py:443
 msgid "&Paste"
 msgstr "ペースト(&P)"
 
-#: picard/ui/mainwindow.py:529 picard/ui/scripteditor.py:617
+#: picard/ui/mainwindow.py:528 picard/ui/scripteditor.py:617
 msgid "&Help…"
 msgstr "ヘルプ(&H)…"
 
-#: picard/ui/mainwindow.py:536
+#: picard/ui/mainwindow.py:535
 msgid "&About…"
 msgstr "このソフトウェアについて(&A)…"
 
-#: picard/ui/mainwindow.py:543
+#: picard/ui/mainwindow.py:542
 msgid "&Donate…"
 msgstr "寄付する(&D)…"
 
-#: picard/ui/mainwindow.py:549
+#: picard/ui/mainwindow.py:548
 msgid "&Report a Bug…"
 msgstr "バグを報告(&R)…"
 
-#: picard/ui/mainwindow.py:555
+#: picard/ui/mainwindow.py:554
 msgid "&Support Forum…"
 msgstr "サポートフォーラム(&S)…"
 
-#: picard/ui/mainwindow.py:561
+#: picard/ui/mainwindow.py:560
 msgid "&Add Files…"
 msgstr "ファイルを追加(&A)…"
 
-#: picard/ui/mainwindow.py:562
+#: picard/ui/mainwindow.py:561
 msgid "Add files to the tagger"
 msgstr "ファイルを追加します"
 
-#: picard/ui/mainwindow.py:570
+#: picard/ui/mainwindow.py:569
 msgid "Add Fold&er…"
 msgstr "フォルダを追加(&D)…"
 
-#: picard/ui/mainwindow.py:571
+#: picard/ui/mainwindow.py:570
 msgid "Add a folder to the tagger"
 msgstr "フォルダを追加します"
 
-#: picard/ui/mainwindow.py:573
+#: picard/ui/mainwindow.py:572
 msgid "Ctrl+E"
 msgstr "Ctrl+E"
 
-#: picard/ui/mainwindow.py:580
+#: picard/ui/mainwindow.py:579
 msgid "Close Window"
 msgstr "ウィンドウを閉じる"
 
-#: picard/ui/mainwindow.py:581
+#: picard/ui/mainwindow.py:580
 msgid "Ctrl+W"
 msgstr "Ctrl+W"
 
-#: picard/ui/mainwindow.py:589
+#: picard/ui/mainwindow.py:588
 msgid "&Save"
 msgstr "保存(&S)"
 
-#: picard/ui/mainwindow.py:590
+#: picard/ui/mainwindow.py:589
 msgid "Save selected files"
 msgstr "選択したファイルを保存"
 
-#: picard/ui/mainwindow.py:599
+#: picard/ui/mainwindow.py:598
 msgid "S&ubmit AcoustIDs"
 msgstr "AcoustID を送信 (&U)"
 
-#: picard/ui/mainwindow.py:600
+#: picard/ui/mainwindow.py:599
 msgid "Submit acoustic fingerprints"
 msgstr "音声フィンガープリントを送信"
 
-#: picard/ui/mainwindow.py:607
+#: picard/ui/mainwindow.py:606
 msgid "E&xit"
 msgstr "終了(&X)"
 
-#: picard/ui/mainwindow.py:610
+#: picard/ui/mainwindow.py:609
 msgid "Ctrl+Q"
 msgstr "Ctrl+Q"
 
-#: picard/ui/mainwindow.py:616
+#: picard/ui/mainwindow.py:615
 msgid "&Remove"
 msgstr "削除(&R)"
 
-#: picard/ui/mainwindow.py:617
+#: picard/ui/mainwindow.py:616
 msgid "Remove selected files/albums"
 msgstr "選択したファイルやアルバムを削除"
 
-#: picard/ui/mainwindow.py:624 picard/ui/metadatabox.py:400
+#: picard/ui/mainwindow.py:623 picard/ui/metadatabox.py:400
 msgid "Lookup in &Browser"
 msgstr "ブラウザで検索 (&B)"
 
-#: picard/ui/mainwindow.py:625
+#: picard/ui/mainwindow.py:624
 msgid "Lookup selected item on MusicBrainz website"
 msgstr "MusicBrainzサイトで選択されたアイテムを検索"
 
-#: picard/ui/mainwindow.py:628
+#: picard/ui/mainwindow.py:627
 msgid "Ctrl+Shift+L"
 msgstr "Ctrl+Shift+L"
 
-#: picard/ui/mainwindow.py:635
+#: picard/ui/mainwindow.py:634
 msgid "Submit cluster as release…"
 msgstr "クラスターをリリースとして送信…"
 
-#: picard/ui/mainwindow.py:636
+#: picard/ui/mainwindow.py:635
 msgid "Submit cluster as a new release to MusicBrainz"
 msgstr "クラスターを新規リリースとしてMusicBrainzに送信"
 
-#: picard/ui/mainwindow.py:646
+#: picard/ui/mainwindow.py:645
 msgid "Submit file as standalone recording…"
 msgstr "スタンドアロン録音としてファイルを送信…"
 
-#: picard/ui/mainwindow.py:647
+#: picard/ui/mainwindow.py:646
 msgid "Submit file as a new recording to MusicBrainz"
 msgstr "新規録音としてファイルをMusicBrainzに送信"
 
-#: picard/ui/mainwindow.py:657
+#: picard/ui/mainwindow.py:656
 msgid "Submit file as release…"
 msgstr "リリースとしてファイルを送信…"
 
-#: picard/ui/mainwindow.py:658
+#: picard/ui/mainwindow.py:657
 msgid "Submit file as a new release to MusicBrainz"
 msgstr "新しいリリースとしてファイルを MusicBrainz に送信"
 
-#: picard/ui/mainwindow.py:667
+#: picard/ui/mainwindow.py:666
 msgid "Search for similar items…"
 msgstr "類似アルバムを検索…"
 
-#: picard/ui/mainwindow.py:668 picard/ui/options/interface_toolbar.py:123
+#: picard/ui/mainwindow.py:667 picard/ui/options/interface_toolbar.py:123
 msgid "Similar items"
 msgstr ""
 
-#: picard/ui/mainwindow.py:669
+#: picard/ui/mainwindow.py:668
 msgid ""
 "View similar releases or recordings and optionally choose a different one"
 msgstr ""
 
-#: picard/ui/mainwindow.py:671 picard/ui/mainwindow.py:680
-#: picard/ui/mainwindow.py:689
+#: picard/ui/mainwindow.py:670 picard/ui/mainwindow.py:679
+#: picard/ui/mainwindow.py:688
 msgid "Ctrl+T"
 msgstr "Ctrl+T"
 
-#: picard/ui/mainwindow.py:677
+#: picard/ui/mainwindow.py:676
 msgid "Search for similar albums…"
 msgstr "類似アルバムを検索…"
 
-#: picard/ui/mainwindow.py:678
+#: picard/ui/mainwindow.py:677
 msgid "View similar releases and optionally choose a different release"
 msgstr "類似関連を表示して別の関連を追加選択"
 
-#: picard/ui/mainwindow.py:686
+#: picard/ui/mainwindow.py:685
 msgid "Search for similar tracks…"
 msgstr "類似トラックを検索…"
 
-#: picard/ui/mainwindow.py:687
+#: picard/ui/mainwindow.py:686
 msgid "View similar tracks and optionally choose a different release"
 msgstr "類似トラックを表示して別のリリースを追加選択"
 
-#: picard/ui/mainwindow.py:695
+#: picard/ui/mainwindow.py:694
 msgid "Show &other album versions…"
 msgstr ""
 
-#: picard/ui/mainwindow.py:696
+#: picard/ui/mainwindow.py:695
 msgid "Ctrl+Shift+O"
 msgstr "Ctrl+Shift+O"
 
-#: picard/ui/mainwindow.py:703
+#: picard/ui/mainwindow.py:702
 msgid "File &Browser"
 msgstr "ファイルブラウザ(&B)"
 
-#: picard/ui/mainwindow.py:707
+#: picard/ui/mainwindow.py:706
 msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
-#: picard/ui/mainwindow.py:714
+#: picard/ui/mainwindow.py:713
 msgid "&Metadata"
 msgstr "メタデータ(&M)"
 
-#: picard/ui/mainwindow.py:718
+#: picard/ui/mainwindow.py:717
 msgid "Ctrl+Shift+M"
 msgstr "Ctrl+Shift+M"
 
-#: picard/ui/mainwindow.py:725
+#: picard/ui/mainwindow.py:724
 msgid "&Cover Art"
 msgstr "カバーアート(&C)"
 
-#: picard/ui/mainwindow.py:736
+#: picard/ui/mainwindow.py:735
 msgid "&Actions"
 msgstr "アクション(&A)"
 
-#: picard/ui/mainwindow.py:745 picard/ui/mainwindow.py:1140
+#: picard/ui/mainwindow.py:744 picard/ui/mainwindow.py:1139
 #: picard/ui/searchdialog/__init__.py:48
 msgid "Search"
 msgstr "検索"
 
-#: picard/ui/mainwindow.py:752 picard/ui/mainwindow.py:759
+#: picard/ui/mainwindow.py:751 picard/ui/mainwindow.py:758
 msgid "Lookup &CD…"
 msgstr "CDを検索(&C)…"
 
-#: picard/ui/mainwindow.py:753
+#: picard/ui/mainwindow.py:752
 msgid "Lookup the details of the CD in your drive"
 msgstr "ドライブ内のCDの詳細を検索"
 
-#: picard/ui/mainwindow.py:755
+#: picard/ui/mainwindow.py:754
 msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
-#: picard/ui/mainwindow.py:772
+#: picard/ui/mainwindow.py:771
 msgid "&Scan"
 msgstr "スキャン(&S)"
 
-#: picard/ui/mainwindow.py:773
+#: picard/ui/mainwindow.py:772
 msgid ""
 "Use AcoustID audio fingerprint to identify the files by the actual music, "
 "even if they have no metadata"
@@ -3484,23 +8485,23 @@ msgstr ""
 "メタデータがない場合でも、AcoustID 音声フィンガープリントを使用することで実際"
 "の音楽からファイルを識別します"
 
-#: picard/ui/mainwindow.py:775
+#: picard/ui/mainwindow.py:774
 msgid "Identify the file using its AcoustID audio fingerprint"
 msgstr "AcoustID 音声フィンガープリントを使用してファイルを識別する"
 
-#: picard/ui/mainwindow.py:777
+#: picard/ui/mainwindow.py:776
 msgid "Ctrl+Y"
 msgstr "Ctrl+Y"
 
-#: picard/ui/mainwindow.py:783
+#: picard/ui/mainwindow.py:782
 msgid "&Generate AcoustID Fingerprints"
 msgstr "AcoustIDフィンガープリントを生成 (&G)"
 
-#: picard/ui/mainwindow.py:784 picard/ui/options/interface_toolbar.py:107
+#: picard/ui/mainwindow.py:783 picard/ui/options/interface_toolbar.py:107
 msgid "Generate Fingerprints"
 msgstr "フィンガープリントを生成"
 
-#: picard/ui/mainwindow.py:785
+#: picard/ui/mainwindow.py:784
 msgid ""
 "Generate the AcoustID audio fingerprints for the selected files without "
 "doing a lookup"
@@ -3508,208 +8509,208 @@ msgstr ""
 "ルックアップを行わず、選択ファイルの AcoustID オーディオフィンガープリントを"
 "生成"
 
-#: picard/ui/mainwindow.py:787
+#: picard/ui/mainwindow.py:786
 msgid "Generate the AcoustID audio fingerprints for the selected files"
 msgstr "選択ファイルの AcoustID オーディオフィンガープリントを生成"
 
-#: picard/ui/mainwindow.py:788
+#: picard/ui/mainwindow.py:787
 msgid "Ctrl+Shift+Y"
 msgstr "Ctrl+Shift+Y"
 
-#: picard/ui/mainwindow.py:794
+#: picard/ui/mainwindow.py:793
 msgid "Cl&uster"
 msgstr "クラスタ(&U)"
 
-#: picard/ui/mainwindow.py:795
+#: picard/ui/mainwindow.py:794
 msgid "Cluster files into album clusters"
 msgstr "ファイルをアルバムクラスタでクラスタ化する"
 
-#: picard/ui/mainwindow.py:798
+#: picard/ui/mainwindow.py:797
 msgid "Ctrl+U"
 msgstr "Ctrl+U"
 
-#: picard/ui/mainwindow.py:804
+#: picard/ui/mainwindow.py:803
 msgid "&Lookup"
 msgstr "検索(&L)"
 
-#: picard/ui/mainwindow.py:805
+#: picard/ui/mainwindow.py:804
 msgid "Lookup selected items in MusicBrainz"
 msgstr "選択したアイテムをMusicBrainzで検索"
 
-#: picard/ui/mainwindow.py:810
+#: picard/ui/mainwindow.py:809
 msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
-#: picard/ui/mainwindow.py:816
+#: picard/ui/mainwindow.py:815
 msgid "&Info…"
 msgstr "情報(&I)…"
 
-#: picard/ui/mainwindow.py:819
+#: picard/ui/mainwindow.py:818
 msgid "Ctrl+I"
 msgstr "Ctrl+I"
 
-#: picard/ui/mainwindow.py:825
+#: picard/ui/mainwindow.py:824
 msgid "&Refresh"
 msgstr "更新(&R)"
 
-#: picard/ui/mainwindow.py:826
+#: picard/ui/mainwindow.py:825
 msgid "Ctrl+R"
 msgstr "Ctrl+R"
 
-#: picard/ui/mainwindow.py:833
+#: picard/ui/mainwindow.py:832
 msgid "&Rename Files"
 msgstr "ファイル名を変更(&R)"
 
-#: picard/ui/mainwindow.py:842
+#: picard/ui/mainwindow.py:841
 msgid "&Move Files"
 msgstr "ファイルを移動(&M)"
 
-#: picard/ui/mainwindow.py:851
+#: picard/ui/mainwindow.py:850
 msgid "Save &Tags"
 msgstr "タグを保存(&T)"
 
-#: picard/ui/mainwindow.py:859
+#: picard/ui/mainwindow.py:858
 msgid "Tags From &File Names…"
 msgstr "ファイル名からタグ付け(&F)…"
 
-#: picard/ui/mainwindow.py:860 picard/ui/options/interface_toolbar.py:119
+#: picard/ui/mainwindow.py:859 picard/ui/options/interface_toolbar.py:119
 msgid "Parse File Names…"
 msgstr "ファイル名を解析…"
 
-#: picard/ui/mainwindow.py:861
+#: picard/ui/mainwindow.py:860
 msgid "Set tags based on the file names"
 msgstr "ファイル名に基づきタグを設定"
 
-#: picard/ui/mainwindow.py:862 picard/ui/widgets/scripttextedit.py:341
+#: picard/ui/mainwindow.py:861 picard/ui/widgets/scripttextedit.py:341
 msgid "Ctrl+Shift+T"
 msgstr "Ctrl+Shift+T"
 
-#: picard/ui/mainwindow.py:870
+#: picard/ui/mainwindow.py:869
 msgid "&Open My Collections in Browser"
 msgstr "自分のコレクションをブラウザで開く(&O)"
 
-#: picard/ui/mainwindow.py:877
+#: picard/ui/mainwindow.py:876
 msgid "View &Error/Debug Log"
 msgstr "エラー/デバッグログを表示(&E)"
 
-#: picard/ui/mainwindow.py:879
+#: picard/ui/mainwindow.py:878
 msgid "Ctrl+G"
 msgstr "Ctrl+G"
 
-#: picard/ui/mainwindow.py:885
+#: picard/ui/mainwindow.py:884
 msgid "View Activity &History"
 msgstr "動作履歴を表示(&H)"
 
-#: picard/ui/mainwindow.py:888
+#: picard/ui/mainwindow.py:887
 msgid "Ctrl+Shift+H"
 msgstr "Ctrl+Shift+H"
 
-#: picard/ui/mainwindow.py:888 picard/ui/scripteditor.py:608
+#: picard/ui/mainwindow.py:887 picard/ui/scripteditor.py:608
 msgid "Ctrl+H"
 msgstr "Ctrl+H"
 
-#: picard/ui/mainwindow.py:894
+#: picard/ui/mainwindow.py:893
 msgid "Open in &Player"
 msgstr "プレイヤーで開く(&P)"
 
-#: picard/ui/mainwindow.py:895
+#: picard/ui/mainwindow.py:894
 msgid "Play the file in your default media player"
 msgstr "ファイルを既定のメディアプレイヤーで再生"
 
-#: picard/ui/mainwindow.py:902
+#: picard/ui/mainwindow.py:901
 msgid "Open Containing &Folder"
 msgstr "フォルダを開く(&F)"
 
-#: picard/ui/mainwindow.py:903
+#: picard/ui/mainwindow.py:902
 msgid "Open the containing folder in your file explorer"
 msgstr "含んでいるフォルダをエクスプローラで開く"
 
-#: picard/ui/mainwindow.py:911
+#: picard/ui/mainwindow.py:910
 msgid "&Check for Update…"
 msgstr "アップデートの確認(&C)…"
 
-#: picard/ui/mainwindow.py:950
+#: picard/ui/mainwindow.py:949
 msgid "From CD ripper &log file…"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1003 picard/ui/scripteditor.py:533
+#: picard/ui/mainwindow.py:1002 picard/ui/scripteditor.py:533
 msgid "&File"
 msgstr "ファイル(&F)"
 
-#: picard/ui/mainwindow.py:1016
+#: picard/ui/mainwindow.py:1015
 msgid "&Edit"
 msgstr "編集(&E)"
 
-#: picard/ui/mainwindow.py:1022 picard/ui/scripteditor.py:593
+#: picard/ui/mainwindow.py:1021 picard/ui/scripteditor.py:593
 msgid "&View"
 msgstr "表示(&V)"
 
-#: picard/ui/mainwindow.py:1031
+#: picard/ui/mainwindow.py:1030
 msgid "&Options"
 msgstr "オプション(&O)"
 
-#: picard/ui/mainwindow.py:1037
+#: picard/ui/mainwindow.py:1036
 msgid "&Select file naming script"
 msgstr "ファイル命名スクリプトを選択"
 
-#: picard/ui/mainwindow.py:1045
+#: picard/ui/mainwindow.py:1044
 msgid "&Enable/disable profiles"
 msgstr ""
 
-#: picard/ui/mainwindow.py:1052
+#: picard/ui/mainwindow.py:1051
 msgid "&Tools"
 msgstr "ツール(&T)"
 
-#: picard/ui/mainwindow.py:1066 picard/ui/scripteditor.py:614
+#: picard/ui/mainwindow.py:1065 picard/ui/scripteditor.py:614
 #: picard/ui/util.py:51
 msgid "&Help"
 msgstr "ヘルプ(&H)"
 
-#: picard/ui/mainwindow.py:1101 picard/ui/ui_options_plugins.py:134
+#: picard/ui/mainwindow.py:1100 picard/ui/ui_options_plugins.py:134
 msgid "Actions"
 msgstr "アクション"
 
-#: picard/ui/mainwindow.py:1153
+#: picard/ui/mainwindow.py:1152
 msgid "Track"
 msgstr "トラック"
 
-#: picard/ui/mainwindow.py:1170
+#: picard/ui/mainwindow.py:1169
 msgid "&Advanced search"
 msgstr "高度な検索(&A)"
 
-#: picard/ui/mainwindow.py:1171
+#: picard/ui/mainwindow.py:1170
 msgid "&Builtin search"
 msgstr "内蔵検索(&B)"
 
-#: picard/ui/mainwindow.py:1266
+#: picard/ui/mainwindow.py:1265
 msgid "All supported formats"
 msgstr "サポートされているすべてのフォーマット"
 
-#: picard/ui/mainwindow.py:1295
+#: picard/ui/mainwindow.py:1294
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' …"
 msgstr "「%(directory)s」の中の複数のディレクトリを追加中…"
 
-#: picard/ui/mainwindow.py:1300
+#: picard/ui/mainwindow.py:1299
 #, python-format
 msgid "Adding directory: '%(directory)s' …"
 msgstr "ディレクトリ「%(directory)s」を追加中…"
 
-#: picard/ui/mainwindow.py:1412
+#: picard/ui/mainwindow.py:1411
 msgid "Configuration Required"
 msgstr "設定必須"
 
-#: picard/ui/mainwindow.py:1413
+#: picard/ui/mainwindow.py:1412
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
 msgstr "音声フィンガープリント計算はまだ設定していません。今設定しますか？"
 
-#: picard/ui/mainwindow.py:1526
+#: picard/ui/mainwindow.py:1525
 msgid "Browser integration not enabled"
 msgstr "ブラウザ統合は無効です"
 
-#: picard/ui/mainwindow.py:1527
+#: picard/ui/mainwindow.py:1526
 msgid ""
 "Submitting releases to MusicBrainz requires the browser integration to be "
 "enabled. Do you want to enable the browser integration now?"
@@ -3717,31 +8718,31 @@ msgstr ""
 "MusicBrainzにリリースを送信するには、ブラウザー統合を有効にする必要がありま"
 "す。 今すぐブラウザ統合を有効にしますか？"
 
-#: picard/ui/mainwindow.py:1638
+#: picard/ui/mainwindow.py:1637
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
 msgstr "%(filename)s (エラー: %(error)s)"
 
-#: picard/ui/mainwindow.py:1644
+#: picard/ui/mainwindow.py:1643
 #, python-format
 msgid "%(filename)s"
 msgstr "%(filename)s"
 
-#: picard/ui/mainwindow.py:1653
+#: picard/ui/mainwindow.py:1652
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
 msgstr "%(filename)s (%(similarity)d%%) (エラー: %(error)s)"
 
-#: picard/ui/mainwindow.py:1660
+#: picard/ui/mainwindow.py:1659
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
-#: picard/ui/mainwindow.py:1723
+#: picard/ui/mainwindow.py:1722
 msgid "Authentication Required"
 msgstr "認証が必要です"
 
-#: picard/ui/mainwindow.py:1724
+#: picard/ui/mainwindow.py:1723
 msgid ""
 "Picard needs authorization to access your personal data on the MusicBrainz "
 "server. Would you like to log in now?"
@@ -3749,11 +8750,11 @@ msgstr ""
 "MusicBrainzサーバー上の個人情報にPicardからアクセスするためには認証が必要で"
 "す。ログインしますか？"
 
-#: picard/ui/mainwindow.py:1739
+#: picard/ui/mainwindow.py:1738
 msgid "Authentication failed"
 msgstr "認証失敗"
 
-#: picard/ui/mainwindow.py:1740 picard/ui/options/general.py:156
+#: picard/ui/mainwindow.py:1739 picard/ui/options/general.py:156
 #, python-format
 msgid "Login failed: %s"
 msgstr "ログイン失敗: %s"
@@ -3882,52 +8883,52 @@ msgstr "内部プレーヤ: 適切な再生サービスを見当たらないた�
 
 #: picard/ui/playertoolbar.py:179
 #, python-format
-msgid "Internal player: error, code=%(code)d, msg=%(message)s"
-msgstr ""
+msgid "Internal player: error, code=%d, msg=%s"
+msgstr "内部プレイヤー: エラー, コード=%d, msg=%s"
 
-#: picard/ui/playertoolbar.py:188
+#: picard/ui/playertoolbar.py:185
 msgid "Player"
 msgstr "プレイヤー"
 
-#: picard/ui/playertoolbar.py:196
+#: picard/ui/playertoolbar.py:193
 msgid "Play"
 msgstr "演奏"
 
-#: picard/ui/playertoolbar.py:197
+#: picard/ui/playertoolbar.py:194
 msgid "Play selected files"
 msgstr "選択したファイルを再生します"
 
-#: picard/ui/playertoolbar.py:203
+#: picard/ui/playertoolbar.py:200
 msgid "Pause"
 msgstr "一時停止"
 
-#: picard/ui/playertoolbar.py:204
+#: picard/ui/playertoolbar.py:201
 msgid "Pause or resume current playback"
 msgstr "現在再生中の曲を一時停止または再開します"
 
-#: picard/ui/playertoolbar.py:342
+#: picard/ui/playertoolbar.py:339
 #, python-format
 msgid "%1.1f ×"
 msgstr "%1.1f ×"
 
-#: picard/ui/playertoolbar.py:348
+#: picard/ui/playertoolbar.py:345
 msgid "Change playback speed"
 msgstr "再生速度を変更します"
 
-#: picard/ui/playertoolbar.py:355
+#: picard/ui/playertoolbar.py:352
 msgid "Playback speed"
 msgstr "再生速度"
 
-#: picard/ui/playertoolbar.py:398
+#: picard/ui/playertoolbar.py:395
 #, python-format
 msgid "%d%%"
 msgstr "%d%%"
 
-#: picard/ui/playertoolbar.py:404
+#: picard/ui/playertoolbar.py:401
 msgid "Change audio volume"
 msgstr "再生音量を変更します"
 
-#: picard/ui/playertoolbar.py:410
+#: picard/ui/playertoolbar.py:407
 msgid "Audio volume"
 msgstr "再生音量"
 
@@ -4172,7 +9173,7 @@ msgstr ""
 msgid "Are you sure that you want to delete the script?"
 msgstr "本当にスクリプトを削除しますか?"
 
-#: picard/ui/options/scripting.py:164 picard/ui/scripteditor.py:1208
+#: picard/ui/options/scripting.py:161 picard/ui/scripteditor.py:1208
 msgid "File Error"
 msgstr "ファイルエラー"
 
@@ -4736,7 +9737,7 @@ msgstr "標準の待ち受けポート:"
 msgid "Plugins"
 msgstr "プラグイン"
 
-#: picard/ui/options/plugins.py:614 picard/ui/searchdialog/album.py:152
+#: picard/ui/options/plugins.py:609 picard/ui/searchdialog/album.py:152
 #: picard/ui/searchdialog/artist.py:54 picard/ui/searchdialog/track.py:69
 #: picard/ui/ui_options_plugins.py:132
 msgid "Name"
@@ -5344,8 +10345,8 @@ msgstr "ジャンル"
 
 #: picard/ui/options/genres.py:156
 #, python-format
-msgid "Error line %(lineno)d: %(error)s"
-msgstr ""
+msgid "Error line %d: %s"
+msgstr "エラー行 %d: %s"
 
 #: picard/ui/options/interface.py:94
 msgid "The default color scheme based on the operating system display settings"
@@ -5515,34 +10516,34 @@ msgstr "値"
 #: picard/ui/options/maintenance.py:127
 #, python-format
 msgid ""
-"The configuration file currently contains %(totalcount)d option settings, "
-"%(unusedcount)d which are unused."
+"The configuration file currently contains %d option settings, %d which are "
+"unused."
 msgstr ""
 
-#: picard/ui/options/maintenance.py:166
+#: picard/ui/options/maintenance.py:167
 msgid "Configuration files"
 msgstr ""
 
-#: picard/ui/options/maintenance.py:183 picard/ui/options/maintenance.py:200
+#: picard/ui/options/maintenance.py:184 picard/ui/options/maintenance.py:201
 msgid "Backup Configuration File"
 msgstr ""
 
-#: picard/ui/options/maintenance.py:187
+#: picard/ui/options/maintenance.py:188
 msgid ""
 "There was a problem backing up the configuration file. Please see the logs "
 "for more details."
 msgstr ""
 
-#: picard/ui/options/maintenance.py:215
+#: picard/ui/options/maintenance.py:216
 #, python-format
 msgid "Configuration successfully backed up to %s"
 msgstr ""
 
-#: picard/ui/options/maintenance.py:224
+#: picard/ui/options/maintenance.py:225
 msgid "Load Backup Configuration File"
 msgstr ""
 
-#: picard/ui/options/maintenance.py:228
+#: picard/ui/options/maintenance.py:229
 msgid ""
 "Loading a backup configuration file will replace the current configuration "
 "settings. A backup copy of the current file will be saved automatically.\n"
@@ -5550,24 +10551,24 @@ msgid ""
 "Do you want to continue?"
 msgstr ""
 
-#: picard/ui/options/maintenance.py:260
+#: picard/ui/options/maintenance.py:261
 #, python-format
 msgid "Configuration successfully loaded from %s"
 msgstr ""
 
-#: picard/ui/options/maintenance.py:268
+#: picard/ui/options/maintenance.py:269
 msgid ""
 "There was a problem restoring the configuration file. Please see the logs "
 "for more details."
 msgstr ""
 
-#: picard/ui/options/maintenance.py:294
+#: picard/ui/options/maintenance.py:295
 #: picard/ui/widgets/profilelistwidget.py:84
 #: picard/ui/widgets/scriptlistwidget.py:90
 msgid "Confirm Remove"
 msgstr "削除の確認"
 
-#: picard/ui/options/maintenance.py:295
+#: picard/ui/options/maintenance.py:296
 msgid "Are you sure you want to remove the selected option settings?"
 msgstr ""
 
@@ -5621,69 +10622,71 @@ msgstr "プラグインのアンインストール"
 msgid "Reloading list of available plugins…"
 msgstr "利用可能なプラグイン一覧を再読み込み中です…"
 
-#: picard/ui/options/plugins.py:416 picard/ui/options/plugins.py:428
-#: picard/ui/options/plugins.py:449
+#: picard/ui/options/plugins.py:416 picard/ui/options/plugins.py:425
+#: picard/ui/options/plugins.py:446
 #, python-format
-msgid "Plugin \"%(plugin)s\""
-msgstr ""
+msgid "Plugin '%s'"
+msgstr "プラグイン「%s」"
 
 #: picard/ui/options/plugins.py:417
 #, python-format
 msgid ""
-"An error occurred while loading the plugin \"%(plugin)s\":\n"
+"An error occurred while loading the plugin '%s':\n"
 "\n"
-"%(error)s"
+"%s"
 msgstr ""
+"プラグイン「%s」の読み込み中にエラーが発生しました:\n"
+"\n"
+"%s"
 
-#: picard/ui/options/plugins.py:429
+#: picard/ui/options/plugins.py:426
 #, python-format
-msgid ""
-"The plugin \"%(plugin)s\" is not compatible with this version of Picard."
-msgstr ""
+msgid "The plugin '%s' is not compatible with this version of Picard."
+msgstr "プラグイン「%s」は、このバージョンのPicardと互換性がありません。"
 
-#: picard/ui/options/plugins.py:450
+#: picard/ui/options/plugins.py:447
 #, python-format
-msgid ""
-"The plugin \"%(plugin)s\" will be upgraded to version %(version)s on next "
-"run of Picard."
+msgid "The plugin '%s' will be upgraded to version %s on next run of Picard."
 msgstr ""
+"プラグイン '%s' は次回の Picard 起動時にバージョン %s にアップグレードされま"
+"す"
 
-#: picard/ui/options/plugins.py:473
+#: picard/ui/options/plugins.py:468
 #, python-format
-msgid "Uninstall plugin \"%(plugin)s\"?"
-msgstr ""
+msgid "Uninstall plugin '%s'?"
+msgstr "プラグイン「%s」をアンインストールしますか？"
 
-#: picard/ui/options/plugins.py:474
+#: picard/ui/options/plugins.py:469
 #, python-format
-msgid "Do you really want to uninstall the plugin \"%(plugin)s\"?"
-msgstr ""
+msgid "Do you really want to uninstall the plugin '%s' ?"
+msgstr "'%s' プラグインをアンインストールしますか？"
 
-#: picard/ui/options/plugins.py:606
+#: picard/ui/options/plugins.py:601
 msgid "Restart Picard to upgrade to new version"
 msgstr "新バージョンへのアップグレードをリセットします"
 
-#: picard/ui/options/plugins.py:608
+#: picard/ui/options/plugins.py:603
 msgid "New version available"
 msgstr "新しいバージョンが利用可能です"
 
-#: picard/ui/options/plugins.py:615
+#: picard/ui/options/plugins.py:610
 msgid "Authors"
 msgstr "作者"
 
-#: picard/ui/options/plugins.py:616 picard/util/tags.py:73
+#: picard/ui/options/plugins.py:611 picard/util/tags.py:73
 msgid "License"
 msgstr "ライセンス"
 
-#: picard/ui/options/plugins.py:618
+#: picard/ui/options/plugins.py:613
 msgid "User Guide"
 msgstr ""
 
-#: picard/ui/options/plugins.py:684
+#: picard/ui/options/plugins.py:678
 #, python-format
-msgid "The plugin \"%(plugin)s\" could not be downloaded."
-msgstr ""
+msgid "The plugin '%s' could not be downloaded."
+msgstr "'%s' プラグインがダウンロードできません"
 
-#: picard/ui/options/plugins.py:685
+#: picard/ui/options/plugins.py:679
 msgid "Please try again later."
 msgstr "時間をおいて再度実行してください"
 
@@ -5794,12 +10797,12 @@ msgstr ""
 msgid "Picard tagging script package"
 msgstr "Picard Naming Script Package"
 
-#: picard/ui/options/scripting.py:176
+#: picard/ui/options/scripting.py:173
 #, python-format
 msgid "%s (imported)"
 msgstr ""
 
-#: picard/ui/options/scripting.py:243
+#: picard/ui/options/scripting.py:240
 msgid "Script Error"
 msgstr "スクリプトのエラー"
 
@@ -5835,15 +10838,16 @@ msgstr "<strong>読み込み中…</strong>"
 msgid "Retry"
 msgstr "再試行"
 
-#: picard/ui/searchdialog/__init__.py:259
+#: picard/ui/searchdialog/__init__.py:252
 #, python-format
 msgid ""
 "<strong>Following error occurred while fetching results:<br><br></"
-"strong>Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, "
-"HTTP code %(statuscode)r)<br>"
+"strong>Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>"
 msgstr ""
+"<strong>結果の取得中に次のエラーが発生しました: <br><br></strong> %sのネット"
+"ワーク要求エラー: <br> %s (QT code %d, HTTP code %s) <br>"
 
-#: picard/ui/searchdialog/__init__.py:264
+#: picard/ui/searchdialog/__init__.py:263
 msgid "<strong>No results found. Please try a different search query.</strong>"
 msgstr "<strong>結果がありません。検索条件を変更してください。</strong>"
 
@@ -6438,1816 +11442,6 @@ msgstr ""
 "ウェブブラウザを起動する際にエラーが発生しました：\n"
 "\n"
 "%s"
-
-#, python-format
-#~ msgid "Failed loading zipped plugin %r from %r"
-#~ msgstr "%r から %r 圧縮プラグインの読み込みに失敗しました"
-
-#, python-format
-#~ msgid "Failed loading plugin %r in %r"
-#~ msgstr "プラグイン %r を %r 内での読み込みに失敗しました"
-
-#, python-format
-#~ msgid "Plugin '%s' from '%s' is not compatible with this version of Picard."
-#~ msgstr ""
-#~ "プラグイン「%s」（%s）は、このバージョンのPicardと互換性がありません。"
-
-#, python-format
-#~ msgid "Plugin %r has an invalid API version string : %s"
-#~ msgstr "プラグイン %r に無効なAPIバージョン文字列があります : %s"
-
-#~ msgid "Stable releases only"
-#~ msgstr "安定版のみ"
-
-#~ msgid "Stable and Beta releases"
-#~ msgstr "安定版とベータ版"
-
-#~ msgid "Stable, Beta and Dev releases"
-#~ msgstr "安定版、ベータ版、開発版"
-
-#~ msgid "My script"
-#~ msgstr "マイスクリプト"
-
-#~ msgid "My profile"
-#~ msgstr "マイプロファイル"
-
-#~ msgid "(copy)"
-#~ msgstr "(コピー)"
-
-#~ msgid "{title} ({count})"
-#~ msgstr "{title} ({count})"
-
-#~ msgid "Arabic"
-#~ msgstr "アラビア語"
-
-#~ msgid "Catalan"
-#~ msgstr "カタルーニャ語"
-
-#~ msgid "Czech"
-#~ msgstr "チェコ語"
-
-#~ msgid "Danish"
-#~ msgstr "デンマーク語"
-
-#~ msgid "German"
-#~ msgstr "ドイツ語"
-
-#~ msgid "German (Switzerland)"
-#~ msgstr "ドイツ語 (スイス)"
-
-#~ msgid "Greek"
-#~ msgstr "現代ギリシア語"
-
-#~ msgid "English"
-#~ msgstr "英語"
-
-#~ msgid "English (Australia)"
-#~ msgstr "英語（オーストラリア）"
-
-#~ msgid "English (Canada)"
-#~ msgstr "英語（カナダ）"
-
-#~ msgid "English (UK)"
-#~ msgstr "英語（イギリス）"
-
-#~ msgid "Spanish"
-#~ msgstr "スペイン語"
-
-#~ msgid "Estonian"
-#~ msgstr "エストニア語"
-
-#~ msgid "Finnish"
-#~ msgstr "フィンランド語"
-
-#~ msgid "French"
-#~ msgstr "フランス語"
-
-#~ msgid "French (Canada)"
-#~ msgstr "フランス語（カナダ）"
-
-#~ msgid "Galician"
-#~ msgstr "ガリシア語"
-
-#~ msgid "Hebrew"
-#~ msgstr "ヘブライ語"
-
-#~ msgid "Hungarian"
-#~ msgstr "ハンガリー語"
-
-#~ msgid "Icelandic"
-#~ msgstr "アイスランド語"
-
-#~ msgid "Italian"
-#~ msgstr "イタリア語"
-
-#~ msgid "Japanese"
-#~ msgstr "日本語"
-
-#~ msgid "Korean"
-#~ msgstr "韓国語"
-
-#~ msgid "Malay (Malaysia)"
-#~ msgstr "マレー語 (マレーシア)"
-
-#~ msgid "Norwegian Bokmål"
-#~ msgstr "ブークモール（ノルウェー語）"
-
-#~ msgid "Dutch"
-#~ msgstr "オランダ語"
-
-#~ msgid "Occitan"
-#~ msgstr "オック語"
-
-#~ msgid "Polish"
-#~ msgstr "ポーランド語"
-
-#~ msgid "Portuguese"
-#~ msgstr "ポルトガル語"
-
-#~ msgid "Brazilian Portuguese"
-#~ msgstr "ブラジルポルトガル語"
-
-#~ msgid "Romanian"
-#~ msgstr "ルーマニア語"
-
-#~ msgid "Russian"
-#~ msgstr "ロシア語"
-
-#~ msgid "Slovak"
-#~ msgstr "スロバキア語"
-
-#~ msgid "Slovenian"
-#~ msgstr "スロベニア語"
-
-#~ msgid "Albanian"
-#~ msgstr "アルバニア語"
-
-#~ msgid "Swedish"
-#~ msgstr "スウェーデン語"
-
-#~ msgid "Turkish"
-#~ msgstr "トルコ語"
-
-#~ msgid "Ukrainian"
-#~ msgstr "ウクライナ語"
-
-#~ msgid "Chinese (China)"
-#~ msgstr "中国語 (中国)"
-
-#~ msgid "Chinese (Taiwan)"
-#~ msgstr "中国語 (台湾)"
-
-#~ msgid "Afar"
-#~ msgstr "アファル語"
-
-#~ msgid "Afar (Djibouti)"
-#~ msgstr "アファル語 (ジブチ)"
-
-#~ msgid "Afar (Eritrea)"
-#~ msgstr "アファル語 (エリトリア)"
-
-#~ msgid "Afar (Eritrea) (Saho)"
-#~ msgstr "アファル語 (エリトリア) (サホ語)"
-
-#~ msgid "Afar (Ethiopia)"
-#~ msgstr "アファル語 (エチオピア)"
-
-#, fuzzy
-#~ msgid "Abkhazian"
-#~ msgstr "アブハズ語"
-
-#~ msgid "Afrikaans"
-#~ msgstr "アフリカーンス語"
-
-#~ msgid "Afrikaans (Namibia)"
-#~ msgstr "アフリカーンス語 (ナミビア)"
-
-#~ msgid "Afrikaans (South Africa)"
-#~ msgstr "アフリカーンス語 (南アフリカ)"
-
-#~ msgid "Akan"
-#~ msgstr "アカン語"
-
-#~ msgid "Akan (Ghana)"
-#~ msgstr "アカン語 (ガーナ)"
-
-#~ msgid "Amharic"
-#~ msgstr "アムハラ語"
-
-#~ msgid "Amharic (Ethiopia)"
-#~ msgstr "アムハラ語 (エチオピア)"
-
-#, fuzzy
-#~ msgid "Aragonese"
-#~ msgstr "アラゴン語"
-
-#~ msgid "Syria"
-#~ msgstr "シリア"
-
-#~ msgid "Arabic (United Arab Emirates)"
-#~ msgstr "アラビア語 (UAE)"
-
-#~ msgid "Arabic (Bahrain)"
-#~ msgstr "アラビア語 (バーレーン)"
-
-#~ msgid "Arabic (Algeria)"
-#~ msgstr "アラビア語 (アルジェリア)"
-
-#~ msgid "Arabic (Egypt)"
-#~ msgstr "アラビア語 (エジプト)"
-
-#~ msgid "Arabic (Iraq)"
-#~ msgstr "アラビア語 (イラク)"
-
-#~ msgid "Arabic (Jordan)"
-#~ msgstr "アラビア語 (ヨルダン)"
-
-#~ msgid "Arabic (Kuwait)"
-#~ msgstr "アラビア語 (クウェート)"
-
-#~ msgid "Arabic (Lebanon)"
-#~ msgstr "アラビア語 (レバノン)"
-
-#~ msgid "Arabic (Libya)"
-#~ msgstr "アラビア語 (リビア)"
-
-#~ msgid "Arabic (Morocco)"
-#~ msgstr "アラビア語 (モロッコ)"
-
-#~ msgid "Arabic (Oman)"
-#~ msgstr "アラビア語 (オマーン)"
-
-#~ msgid "Arabic (Qatar)"
-#~ msgstr "アラビア語 (カタール)"
-
-#~ msgid "Arabic (Saudi Arabia)"
-#~ msgstr "アラビア語 (サウジアラビア)"
-
-#~ msgid "Arabic (Sudan)"
-#~ msgstr "アラビア語 (スーダン)"
-
-#~ msgid "Arabic (Syria)"
-#~ msgstr "アラビア語 (シリア)"
-
-#~ msgid "Arabic (Tunisia)"
-#~ msgstr "アラビア語 (チュニジア)"
-
-#~ msgid "Arabic (Yemen)"
-#~ msgstr "アラビア語 (イエメン)"
-
-#~ msgid "Assamese"
-#~ msgstr "アッサム語"
-
-#~ msgid "Assamese (India)"
-#~ msgstr "アッサム語 (インド)"
-
-#, fuzzy
-#~ msgid "Asturian"
-#~ msgstr "アストゥリアス語"
-
-#~ msgid "Azerbaijani"
-#~ msgstr "アゼルバイジャン語"
-
-#, fuzzy
-#~ msgid "Azerbaijani (Arabic)"
-#~ msgstr "アゼルバイジャン語 (アラビア文字)"
-
-#~ msgid "Azerbaijani (Cyrillic)"
-#~ msgstr "アゼルバイジャン語 (キリル文字)"
-
-#~ msgid "Azerbaijani (Cyrillic) (Azerbaijan)"
-#~ msgstr "アゼルバイジャン語 (キリル文字) (アゼルバイジャン)"
-
-#~ msgid "Azerbaijani (Latin)"
-#~ msgstr "アゼルバイジャン語 (ラテン文字)"
-
-#~ msgid "Azerbaijani (Latin) (Azerbaijan)"
-#~ msgstr "アゼルバイジャン語 (ラテン文字) (アゼルバイジャン)"
-
-#, fuzzy
-#~ msgid "Bashkir"
-#~ msgstr "バシキール語"
-
-#, fuzzy
-#~ msgid "Baluchi"
-#~ msgstr "バルーチー語"
-
-#, fuzzy
-#~ msgid "Basaa"
-#~ msgstr "バサ語"
-
-#~ msgid "Belarusian"
-#~ msgstr "ベラルーシ語"
-
-#~ msgid "Belarusian (Belarus)"
-#~ msgstr "ベラルーシ語 (ベラルーシ)"
-
-#, fuzzy
-#~ msgid "Bemba"
-#~ msgstr "ベンバ語"
-
-#~ msgid "Bulgarian"
-#~ msgstr "ブルガリア語"
-
-#~ msgid "Bulgarian (Bulgaria)"
-#~ msgstr "ブルガリア語 (ブルガリア)"
-
-#, fuzzy
-#~ msgid "Bhojpuri"
-#~ msgstr "ボージプリー語"
-
-#, fuzzy
-#~ msgid "Bambara"
-#~ msgstr "バンバラ語"
-
-#, fuzzy
-#~ msgid "Bangla (Bangladesh)"
-#~ msgstr "ベンガル語 (バングラデシュ)"
-
-#~ msgid "Tibetan"
-#~ msgstr "チベット文字"
-
-#~ msgid "Tibetan (China)"
-#~ msgstr "チベット語 (中国)"
-
-#~ msgid "Tibetan (India)"
-#~ msgstr "チベット語 (インド)"
-
-#, fuzzy
-#~ msgid "Breton"
-#~ msgstr "ブルトン語"
-
-#~ msgid "Bodo (India)"
-#~ msgstr "ボド語 (インド)"
-
-#~ msgid "Bosnian"
-#~ msgstr "ボスニア語"
-
-#, fuzzy
-#~ msgid "Bosnian (Cyrillic) (Bosnia & Herzegovina)"
-#~ msgstr "セルビア語 (キリル文字) (ボスニア・ヘルツェゴビナ)"
-
-#, fuzzy
-#~ msgid "Bosnian (Latin) (Bosnia & Herzegovina)"
-#~ msgstr "セルビア語 (ラテン文字) (ボスニア・ヘルツェゴビナ)"
-
-#~ msgid "Blin"
-#~ msgstr "ビリン語"
-
-#~ msgid "Blin (Eritrea)"
-#~ msgstr "ビリン語 (エリトリア)"
-
-#~ msgid "Catalan (Spain)"
-#~ msgstr "カタルーニャ語 (スペイン)"
-
-#, fuzzy
-#~ msgid "Caddo"
-#~ msgstr "カドー語"
-
-#~ msgid "Atsam"
-#~ msgstr "チャワイ語"
-
-#~ msgid "Atsam (Nigeria)"
-#~ msgstr "チャワイ語 (ナイジェリア)"
-
-#, fuzzy
-#~ msgid "Chakma"
-#~ msgstr "チャクマ文字"
-
-#, fuzzy
-#~ msgid "Chechen"
-#~ msgstr "チェチェン語"
-
-#, fuzzy
-#~ msgid "Cebuano"
-#~ msgstr "セブアノ語"
-
-#, fuzzy
-#~ msgid "Choctaw"
-#~ msgstr "チョクトー語"
-
-#, fuzzy
-#~ msgid "Cherokee"
-#~ msgstr "チェロキー文字"
-
-#, fuzzy
-#~ msgid "Corsican"
-#~ msgstr "コルシカ語"
-
-#, fuzzy
-#~ msgid "Church Slavic"
-#~ msgstr "古代教会スラヴ語"
-
-#, fuzzy
-#~ msgid "Chuvash"
-#~ msgstr "チュヴァシ語"
-
-#~ msgid "Welsh"
-#~ msgstr "ウェールズ語"
-
-#~ msgid "Welsh (United Kingdom)"
-#~ msgstr "ウェールズ語 (イギリス)"
-
-#~ msgid "Danish (Denmark)"
-#~ msgstr "デンマーク語 (デンマーク)"
-
-#~ msgid "German (Austria)"
-#~ msgstr "ドイツ語 (オーストリア)"
-
-#~ msgid "German (Belgium)"
-#~ msgstr "ドイツ語 (ベルギー)"
-
-#~ msgid "German (Germany)"
-#~ msgstr "ドイツ語 (ドイツ)"
-
-#~ msgid "German (Liechtenstein)"
-#~ msgstr "ドイツ語 (リヒテンシュタイン)"
-
-#~ msgid "German (Luxembourg)"
-#~ msgstr "ドイツ語 (ルクセンブルク)"
-
-#~ msgid "Zarma"
-#~ msgstr "ザルマ語"
-
-#, fuzzy
-#~ msgid "Dogri"
-#~ msgstr "ドグリー語"
-
-#, fuzzy
-#~ msgid "Duala"
-#~ msgstr "デゥアラ語"
-
-#~ msgid "Divehi"
-#~ msgstr "ディベヒ語"
-
-#~ msgid "Divehi (Maldives)"
-#~ msgstr "ディベヒ語 (モルディブ)"
-
-#~ msgid "Dzongkha"
-#~ msgstr "ゾンカ語"
-
-#~ msgid "Dzongkha (Bhutan)"
-#~ msgstr "ゾンカ語 (ブータン)"
-
-#~ msgid "Ewe"
-#~ msgstr "エウェ語"
-
-#~ msgid "Ewe (Ghana)"
-#~ msgstr "エウェ語 (ガーナ)"
-
-#~ msgid "Ewe (Togo)"
-#~ msgstr "エウェ語 (トーゴ)"
-
-#~ msgid "Greek (Cyprus)"
-#~ msgstr "ギリシア語 (キプロス)"
-
-#~ msgid "Greek (Greece)"
-#~ msgstr "ギリシア語 (ギリシャ)"
-
-#, fuzzy
-#~ msgid "English (United Arab Emirates)"
-#~ msgstr "アラビア語 (UAE)"
-
-#~ msgid "English (American Samoa)"
-#~ msgstr "英語 (アメリカ領サモア)"
-
-#, fuzzy
-#~ msgid "English (Austria)"
-#~ msgstr "英語（オーストラリア）"
-
-#~ msgid "English (Belgium)"
-#~ msgstr "英語 (ベルギー)"
-
-#~ msgid "English (Botswana)"
-#~ msgstr "英語 (ボツワナ)"
-
-#~ msgid "English (Belize)"
-#~ msgstr "英語 (ベリーズ)"
-
-#~ msgid "English (Deseret)"
-#~ msgstr "英語 (デザレット文字)"
-
-#~ msgid "English (Deseret) (United States)"
-#~ msgstr "英語 (デザレット文字) (アメリカ)"
-
-#, fuzzy
-#~ msgid "English (Finland)"
-#~ msgstr "英語 (アイルランド)"
-
-#~ msgid "English (United Kingdom)"
-#~ msgstr "英語 (イギリス)"
-
-#, fuzzy
-#~ msgid "English (Grenada)"
-#~ msgstr "英語（カナダ）"
-
-#, fuzzy
-#~ msgid "English (Ghana)"
-#~ msgstr "英語 (グアム)"
-
-#~ msgid "English (Guam)"
-#~ msgstr "英語 (グアム)"
-
-#, fuzzy
-#~ msgid "English (Guyana)"
-#~ msgstr "英語 (グアム)"
-
-#~ msgid "English (Hong Kong)"
-#~ msgstr "英語 (香港)"
-
-#~ msgid "English (Ireland)"
-#~ msgstr "英語 (アイルランド)"
-
-#~ msgid "English (India)"
-#~ msgstr "英語 (インド)"
-
-#~ msgid "English (Jamaica)"
-#~ msgstr "英語 (ジャマイカ)"
-
-#~ msgid "English (Marshall Islands)"
-#~ msgstr "英語 (マーシャル諸島)"
-
-#, fuzzy
-#~ msgid "English (Macao)"
-#~ msgstr "英語 (マルタ)"
-
-#~ msgid "English (Northern Mariana Islands)"
-#~ msgstr "英語 (北マリアナ諸島)"
-
-#~ msgid "English (Malta)"
-#~ msgstr "英語 (マルタ)"
-
-#, fuzzy
-#~ msgid "English (Malawi)"
-#~ msgstr "英語 (マルタ)"
-
-#~ msgid "English (Namibia)"
-#~ msgstr "英語 (ナミビア)"
-
-#~ msgid "English (New Zealand)"
-#~ msgstr "英語 (ニュージーランド)"
-
-#~ msgid "English (Philippines)"
-#~ msgstr "英語 (フィリピン)"
-
-#~ msgid "English (Pakistan)"
-#~ msgstr "英語 (パキスタン)"
-
-#, fuzzy
-#~ msgid "English (Puerto Rico)"
-#~ msgstr "スペイン語 (プエルトリコ)"
-
-#~ msgid "English (Singapore)"
-#~ msgstr "英語 (シンガポール)"
-
-#~ msgid "English (Shavian)"
-#~ msgstr "英語 (ショー文字)"
-
-#, fuzzy
-#~ msgid "English (Trinidad & Tobago)"
-#~ msgstr "英語 (トリニダード・トバゴ)"
-
-#, fuzzy
-#~ msgid "English (U.S. Outlying Islands)"
-#~ msgstr "英語 (合衆国領有小離島)"
-
-#~ msgid "English (United States)"
-#~ msgstr "英語 (アメリカ)"
-
-#~ msgid "English (U.S. Virgin Islands)"
-#~ msgstr "英語 (アメリカ領ヴァージン諸島)"
-
-#~ msgid "English (South Africa)"
-#~ msgstr "英語 (南アフリカ)"
-
-#~ msgid "English (Zimbabwe)"
-#~ msgstr "英語 (ジンバブエ)"
-
-#~ msgid "Esperanto"
-#~ msgstr "エスペラント"
-
-#~ msgid "Spanish (Argentina)"
-#~ msgstr "スペイン語 (アルゼンチン)"
-
-#~ msgid "Spanish (Bolivia)"
-#~ msgstr "スペイン語 (ボリビア)"
-
-#~ msgid "Spanish (Chile)"
-#~ msgstr "スペイン語 (チリ)"
-
-#~ msgid "Spanish (Colombia)"
-#~ msgstr "スペイン語 (コロンビア)"
-
-#~ msgid "Spanish (Costa Rica)"
-#~ msgstr "スペイン語 (コスタリカ)"
-
-#~ msgid "Spanish (Dominican Republic)"
-#~ msgstr "スペイン語 (ドミニカ)"
-
-#~ msgid "Spanish (Ecuador)"
-#~ msgstr "スペイン語 (エクアドル)"
-
-#~ msgid "Spanish (Spain)"
-#~ msgstr "スペイン語 (スペイン)"
-
-#~ msgid "Spanish (Guatemala)"
-#~ msgstr "スペイン語 (グアテマラ)"
-
-#~ msgid "Spanish (Honduras)"
-#~ msgstr "スペイン語 (ホンジュラス)"
-
-#~ msgid "Spanish (Mexico)"
-#~ msgstr "スペイン語 (メキシコ)"
-
-#~ msgid "Spanish (Nicaragua)"
-#~ msgstr "スペイン語 (ニカラグア)"
-
-#~ msgid "Spanish (Panama)"
-#~ msgstr "スペイン語 (パナマ)"
-
-#~ msgid "Spanish (Peru)"
-#~ msgstr "スペイン語 (ペルー)"
-
-#, fuzzy
-#~ msgid "Spanish (Philippines)"
-#~ msgstr "英語 (フィリピン)"
-
-#~ msgid "Spanish (Puerto Rico)"
-#~ msgstr "スペイン語 (プエルトリコ)"
-
-#~ msgid "Spanish (Paraguay)"
-#~ msgstr "スペイン語 (パラグアイ)"
-
-#~ msgid "Spanish (El Salvador)"
-#~ msgstr "スペイン語 (エルサルバドル)"
-
-#~ msgid "Spanish (United States)"
-#~ msgstr "スペイン語 (アメリカ)"
-
-#~ msgid "Spanish (Uruguay)"
-#~ msgstr "スペイン語 (ウルグアイ)"
-
-#~ msgid "Spanish (Venezuela)"
-#~ msgstr "スペイン語 (ベネズエラ)"
-
-#~ msgid "Estonian (Estonia)"
-#~ msgstr "英語 (エストニア)"
-
-#~ msgid "Basque"
-#~ msgstr "バスク語"
-
-#~ msgid "Basque (Spain)"
-#~ msgstr "バスク語 (スペイン)"
-
-#, fuzzy
-#~ msgid "Ewondo"
-#~ msgstr "エウォンド語"
-
-#~ msgid "Persian"
-#~ msgstr "ペルシア語"
-
-#~ msgid "Persian (Afghanistan)"
-#~ msgstr "ペルシア語 (アフガニスタン)"
-
-#~ msgid "Persian (Iran)"
-#~ msgstr "ペルシア語 (イラン)"
-
-#, fuzzy
-#~ msgid "Fula"
-#~ msgstr "フラ語"
-
-#, fuzzy
-#~ msgid "Fula (Latin) (Ghana)"
-#~ msgstr "ハウサ語 (ラテン文字) (ガーナ)"
-
-#, fuzzy
-#~ msgid "Fula (Latin) (Niger)"
-#~ msgstr "ハウサ語 (ラテン文字) (ニジェール)"
-
-#, fuzzy
-#~ msgid "Fula (Latin) (Nigeria)"
-#~ msgstr "ハウサ語 (ラテン文字) (ナイジェリア)"
-
-#, fuzzy
-#~ msgid "Fula (Latin) (Senegal)"
-#~ msgstr "ウォロフ語 (ラテン文字) (セネガル)"
-
-#~ msgid "Finnish (Finland)"
-#~ msgstr "フィンランド語 (フィンランド)"
-
-#~ msgid "Filipino"
-#~ msgstr "フィリピン語"
-
-#~ msgid "Filipino (Philippines)"
-#~ msgstr "フィリピン語 (フィリピン)"
-
-#~ msgid "Faroese"
-#~ msgstr "フェロー語"
-
-#~ msgid "Faroese (Faroe Islands)"
-#~ msgstr "フェロー語 (フェロー諸島)"
-
-#~ msgid "French (Belgium)"
-#~ msgstr "フランス語 (ベルギー)"
-
-#~ msgid "French (Switzerland)"
-#~ msgstr "フランス語 (スイス)"
-
-#~ msgid "French (France)"
-#~ msgstr "フランス語 (フランス)"
-
-#~ msgid "French (Luxembourg)"
-#~ msgstr "フランス語 (ルクセンブルク)"
-
-#, fuzzy
-#~ msgid "French (Morocco)"
-#~ msgstr "フランス語 (モナコ)"
-
-#~ msgid "French (Monaco)"
-#~ msgstr "フランス語 (モナコ)"
-
-#~ msgid "French (Senegal)"
-#~ msgstr "フランス語 (セネガル)"
-
-#~ msgid "Friulian"
-#~ msgstr "フリウリ語"
-
-#~ msgid "Friulian (Italy)"
-#~ msgstr "フリウリ語 (イタリア)"
-
-#~ msgid "Irish"
-#~ msgstr "アイルランド語"
-
-#, fuzzy
-#~ msgid "Irish (United Kingdom)"
-#~ msgstr "コーンウォール語 (イギリス)"
-
-#~ msgid "Irish (Ireland)"
-#~ msgstr "アイルランド語 (アイルランド)"
-
-#~ msgid "Ga"
-#~ msgstr "ガー語"
-
-#~ msgid "Ga (Ghana)"
-#~ msgstr "ガ語 (ガーナ)"
-
-#, fuzzy
-#~ msgid "Scottish Gaelic"
-#~ msgstr "スコットランド・ゲール語"
-
-#~ msgid "Geez"
-#~ msgstr "ゲエズ語"
-
-#~ msgid "Geez (Eritrea)"
-#~ msgstr "ゲエズ語 (エリトリア)"
-
-#~ msgid "Geez (Ethiopia)"
-#~ msgstr "ゲエズ語 (エチオピア)"
-
-#~ msgid "Galician (Spain)"
-#~ msgstr "ガリシア語 (スペイン)"
-
-#, fuzzy
-#~ msgid "Guarani"
-#~ msgstr "グアラニー語"
-
-#~ msgid "Swiss German"
-#~ msgstr "スイスドイツ語"
-
-#~ msgid "Swiss German (Switzerland)"
-#~ msgstr "スイスドイツ語 (スイス)"
-
-#~ msgid "Gujarati"
-#~ msgstr "グジャラーティー文字"
-
-#~ msgid "Gujarati (India)"
-#~ msgstr "クジャラート語 (インド)"
-
-#~ msgid "Manx"
-#~ msgstr "マン島語"
-
-#~ msgid "Hausa"
-#~ msgstr "ハウサ語"
-
-#~ msgid "Hausa (Arabic)"
-#~ msgstr "ハウサ語 (アラビア文字)"
-
-#~ msgid "Hausa (Arabic) (Nigeria)"
-#~ msgstr "ハウサ語 (アラビア文字) (ナイジェリア)"
-
-#~ msgid "Hausa (Arabic) (Sudan)"
-#~ msgstr "ハウサ語 (アラビア文字) (スーダン)"
-
-#~ msgid "Hausa (Ghana)"
-#~ msgstr "ハウサ語 (ガーナ)"
-
-#~ msgid "Hausa (Latin)"
-#~ msgstr "ハウサ語 (ラテン文字)"
-
-#~ msgid "Hausa (Latin) (Ghana)"
-#~ msgstr "ハウサ語 (ラテン文字) (ガーナ)"
-
-#~ msgid "Hausa (Latin) (Niger)"
-#~ msgstr "ハウサ語 (ラテン文字) (ニジェール)"
-
-#~ msgid "Hausa (Latin) (Nigeria)"
-#~ msgstr "ハウサ語 (ラテン文字) (ナイジェリア)"
-
-#~ msgid "Hausa (Niger)"
-#~ msgstr "ハウサ語 (ニジェール)"
-
-#~ msgid "Hausa (Nigeria)"
-#~ msgstr "ハウサ語 (ナイジェリア)"
-
-#~ msgid "Hausa (Sudan)"
-#~ msgstr "ハウサ語 (スーダン)"
-
-#~ msgid "Hawaiian"
-#~ msgstr "ハワイ語"
-
-#~ msgid "Hawaiian (United States)"
-#~ msgstr "ハワイ語 (アメリカ)"
-
-#~ msgid "Hebrew (Israel)"
-#~ msgstr "ヘブライ語 (イスラエル)"
-
-#~ msgid "Hindi"
-#~ msgstr "ヒンディー語"
-
-#~ msgid "Hindi (India)"
-#~ msgstr "ヒンディー語 (インド)"
-
-#~ msgid "Croatian"
-#~ msgstr "クロアチア語"
-
-#~ msgid "Croatian (Croatia)"
-#~ msgstr "クロアチア語 (クロアチア)"
-
-#~ msgid "Hungarian (Hungary)"
-#~ msgstr "ハンガリー語 (ハンガリー)"
-
-#~ msgid "Armenian"
-#~ msgstr "アルメニア文字"
-
-#~ msgid "Armenian (Armenia)"
-#~ msgstr "アルメニア語 (アルメニア)"
-
-#~ msgid "Armenian (Armenia) (Revised Orthography)"
-#~ msgstr "アルメニア語 (アルメニア) (新正書法)"
-
-#~ msgid "Interlingua"
-#~ msgstr "インターリングア"
-
-#~ msgid "Indonesian"
-#~ msgstr "インドネシア語"
-
-#~ msgid "Indonesian (Indonesia)"
-#~ msgstr "インドネシア語 (インドネシア)"
-
-#~ msgid "Igbo"
-#~ msgstr "イボ語"
-
-#~ msgid "Igbo (Nigeria)"
-#~ msgstr "イボ語 (ナイジェリア)"
-
-#~ msgid "Sichuan Yi"
-#~ msgstr "彝語"
-
-#~ msgid "Sichuan Yi (China)"
-#~ msgstr "四川彝語 (中国)"
-
-#, fuzzy
-#~ msgid "Ido"
-#~ msgstr "イド語"
-
-#~ msgid "Icelandic (Iceland)"
-#~ msgstr "アイスランド語 (アイスランド)"
-
-#~ msgid "Italian (Switzerland)"
-#~ msgstr "イタリア語 (スイス)"
-
-#~ msgid "Italian (Italy)"
-#~ msgstr "イタリア語 (イタリア)"
-
-#~ msgid "Inuktitut"
-#~ msgstr "イヌイット語"
-
-#~ msgid "Japanese (Japan)"
-#~ msgstr "日本語 (日本)"
-
-#, fuzzy
-#~ msgid "Lojban"
-#~ msgstr "ロジバン"
-
-#, fuzzy
-#~ msgid "Javanese"
-#~ msgstr "ジャワ文字"
-
-#~ msgid "Georgian"
-#~ msgstr "グルジア文字"
-
-#~ msgid "Georgian (Georgia)"
-#~ msgstr "グルジア語 (ジョージア)"
-
-#, fuzzy
-#~ msgid "Kabyle"
-#~ msgstr "カビル語"
-
-#~ msgid "Jju"
-#~ msgstr "カジェ語"
-
-#~ msgid "Jju (Nigeria)"
-#~ msgstr "カジェ語 (ナイジェリア)"
-
-#~ msgid "Kamba"
-#~ msgstr "カンバ語"
-
-#~ msgid "Kamba (Kenya)"
-#~ msgstr "カンバ語 (ケニア)"
-
-#~ msgid "Tyap"
-#~ msgstr "カタブ語"
-
-#~ msgid "Tyap (Nigeria)"
-#~ msgstr "カタブ語 (ナイジェリア)"
-
-#~ msgid "Kabuverdianu"
-#~ msgstr "カーボベルデ語"
-
-#~ msgid "Koro"
-#~ msgstr "コロ語"
-
-#~ msgid "Koro (Côte d’Ivoire)"
-#~ msgstr "コロ語 (コートジボワール)"
-
-#, fuzzy
-#~ msgid "Kikuyu"
-#~ msgstr "キクユ語"
-
-#~ msgid "Kazakh"
-#~ msgstr "カザフ語"
-
-#~ msgid "Kazakh (Cyrillic)"
-#~ msgstr "カザフ語 (キリル文字)"
-
-#~ msgid "Kazakh (Cyrillic) (Kazakhstan)"
-#~ msgstr "カザフ語 (キリル文字) (カザフスタン)"
-
-#~ msgid "Kazakh (Kazakhstan)"
-#~ msgstr "カザフ語 (カザフスタン)"
-
-#~ msgid "Kalaallisut"
-#~ msgstr "カラーリット語"
-
-#~ msgid "Kalaallisut (Greenland)"
-#~ msgstr "カラーリット語 (グリーンランド)"
-
-#~ msgid "Khmer"
-#~ msgstr "クメール文字"
-
-#~ msgid "Khmer (Cambodia)"
-#~ msgstr "クメール語 (カンボジア)"
-
-#~ msgid "Kannada"
-#~ msgstr "カンナダ文字"
-
-#~ msgid "Kannada (India)"
-#~ msgstr "カンナダ語 (インド)"
-
-#~ msgid "Korean (South Korea)"
-#~ msgstr "韓国語 (韓国)"
-
-#~ msgid "Konkani"
-#~ msgstr "コンカニー語"
-
-#~ msgid "Konkani (India)"
-#~ msgstr "コンカニ語 (インド)"
-
-#~ msgid "Kpelle"
-#~ msgstr "クペレ文字"
-
-#~ msgid "Kpelle (Guinea)"
-#~ msgstr "クペレ語 (ギニア)"
-
-#~ msgid "Kpelle (Liberia)"
-#~ msgstr "クペレ語 (リベリア)"
-
-#, fuzzy
-#~ msgid "Kashmiri"
-#~ msgstr "カシミール語"
-
-#~ msgid "Kurdish"
-#~ msgstr "クルド語"
-
-#~ msgid "Cornish"
-#~ msgstr "コーンウォル語"
-
-#~ msgid "Cornish (United Kingdom)"
-#~ msgstr "コーンウォール語 (イギリス)"
-
-#, fuzzy
-#~ msgid "Kyrgyz (Kyrgyzstan)"
-#~ msgstr "キルギス語 (キルギスタン)"
-
-#~ msgid "Latin"
-#~ msgstr "ラテン文字"
-
-#, fuzzy
-#~ msgid "Luxembourgish"
-#~ msgstr "ルクセンブルク語"
-
-#, fuzzy
-#~ msgid "Ganda"
-#~ msgstr "ガンダ語"
-
-#, fuzzy
-#~ msgid "Lakota"
-#~ msgstr "ラコタ"
-
-#~ msgid "Lingala"
-#~ msgstr "リンガラ語"
-
-#~ msgid "Lingala (Congo - Kinshasa)"
-#~ msgstr "リンガラ語 (コンゴ - キンシャサ方言)"
-
-#~ msgid "Lingala (Congo - Brazzaville)"
-#~ msgstr "リンガラ語 (コンゴ - ブラザヴィル方言)"
-
-#~ msgid "Lao"
-#~ msgstr "ラーオ文字"
-
-#~ msgid "Lao (Laos)"
-#~ msgstr "ラーオ語 (ラオス)"
-
-#~ msgid "Lithuanian"
-#~ msgstr "リトアニア語"
-
-#~ msgid "Lithuanian (Lithuania)"
-#~ msgstr "リトアニア語 (リトアニア)"
-
-#, fuzzy
-#~ msgid "Luba-Katanga"
-#~ msgstr "ルバ語"
-
-#, fuzzy
-#~ msgid "Luo"
-#~ msgstr "ルオ語"
-
-#~ msgid "Luyia"
-#~ msgstr "ルヒヤ語"
-
-#~ msgid "Latvian"
-#~ msgstr "ラトビア語"
-
-#~ msgid "Latvian (Latvia)"
-#~ msgstr "ラトビア語 (ラトビア)"
-
-#, fuzzy
-#~ msgid "Maithili"
-#~ msgstr "マイティリー語"
-
-#, fuzzy
-#~ msgid "Masai"
-#~ msgstr "マサイ語"
-
-#, fuzzy
-#~ msgid "Moksha"
-#~ msgstr "モクシャ語"
-
-#, fuzzy
-#~ msgid "Malagasy"
-#~ msgstr "マダガスカル語"
-
-#, fuzzy
-#~ msgid "Metaʼ (Cameroon)"
-#~ msgstr "ミナ語 (カメルーン)"
-
-#~ msgid "Macedonian"
-#~ msgstr "マケドニア語"
-
-#~ msgid "Malayalam"
-#~ msgstr "マラヤーラム文字"
-
-#~ msgid "Malayalam (India)"
-#~ msgstr "マラヤーラム語 (インド)"
-
-#~ msgid "Mongolian"
-#~ msgstr "モンゴル文字"
-
-#~ msgid "Mongolian (Cyrillic)"
-#~ msgstr "モンゴル語 (キリル文字)"
-
-#~ msgid "Mongolian (Cyrillic) (Mongolia)"
-#~ msgstr "モンゴル語 (キリル文字) (モンゴル)"
-
-#~ msgid "Mongolian (Mongolia)"
-#~ msgstr "モンゴル語 (モンゴル)"
-
-#~ msgid "Mongolian (Mongolian)"
-#~ msgstr "モンゴル語 (モンゴル文字)"
-
-#~ msgid "Mongolian (Mongolian) (China)"
-#~ msgstr "モンゴル語 (モンゴル文字) (中国)"
-
-#, fuzzy
-#~ msgid "Mongolian (Mongolian) (Mongolia)"
-#~ msgstr "モンゴル語 (モンゴル文字) (中国)"
-
-#, fuzzy
-#~ msgid "Manipuri"
-#~ msgstr "マニプリ語"
-
-#, fuzzy
-#~ msgid "Mohawk"
-#~ msgstr "モーホーク語"
-
-#~ msgid "Marathi"
-#~ msgstr "マラッタ語"
-
-#~ msgid "Marathi (India)"
-#~ msgstr "マラーティー語 (インド)"
-
-#~ msgid "Malay"
-#~ msgstr "マレー語"
-
-#~ msgid "Malay (Brunei)"
-#~ msgstr "マレー語 (ブルネイ)"
-
-#~ msgid "Maltese"
-#~ msgstr "マルタ語"
-
-#~ msgid "Maltese (Malta)"
-#~ msgstr "マルタ語 (マルタ)"
-
-#~ msgid "Burmese"
-#~ msgstr "ビルマ語"
-
-#, fuzzy
-#~ msgid "Burmese (Myanmar (Burma))"
-#~ msgstr "ビルマ語 (ミャンマー)"
-
-#, fuzzy
-#~ msgid "Erzya"
-#~ msgstr "エルジャ語"
-
-#~ msgid "Norwegian Bokmål (Norway)"
-#~ msgstr "ノルウェー語ブークモール (ノルウェー)"
-
-#, fuzzy
-#~ msgid "North Ndebele"
-#~ msgstr "南ンデベレ語"
-
-#~ msgid "Low German"
-#~ msgstr "低地ドイツ語"
-
-#~ msgid "Low German (Germany)"
-#~ msgstr "低地ドイツ語 (ドイツ)"
-
-#~ msgid "Nepali"
-#~ msgstr "ネパール語"
-
-#~ msgid "Nepali (India)"
-#~ msgstr "ネパール語 (インド)"
-
-#~ msgid "Nepali (Nepal)"
-#~ msgstr "ネパール語 (ネパール)"
-
-#~ msgid "Dutch (Belgium)"
-#~ msgstr "オランダ語 (ベルギー)"
-
-#~ msgid "Dutch (Netherlands)"
-#~ msgstr "オランダ語 (オランダ)"
-
-#~ msgid "Norwegian Nynorsk"
-#~ msgstr "ニーノシュク（ノルウェー語）"
-
-#~ msgid "Norwegian Nynorsk (Norway)"
-#~ msgstr "ノルウェー語ニーノシュク (ノルウェー)"
-
-#~ msgid "Norwegian"
-#~ msgstr "ノルウェー語"
-
-#~ msgid "South Ndebele"
-#~ msgstr "南ンデベレ語"
-
-#~ msgid "South Ndebele (South Africa)"
-#~ msgstr "南ンデベレ語 (南アフリカ)"
-
-#~ msgid "Northern Sotho"
-#~ msgstr "北ソト語"
-
-#~ msgid "Northern Sotho (South Africa)"
-#~ msgstr "北ソト語 (南アフリカ)"
-
-#, fuzzy
-#~ msgid "Navajo"
-#~ msgstr "ナヴァホ語"
-
-#~ msgid "Nyanja"
-#~ msgstr "ニャンジャ語"
-
-#~ msgid "Nyanja (Malawi)"
-#~ msgstr "ニャンジャ語 (マラウイ)"
-
-#, fuzzy
-#~ msgid "Nyankole"
-#~ msgstr "ニャンコレ語"
-
-#~ msgid "Occitan (France)"
-#~ msgstr "オック語 (フランス)"
-
-#~ msgid "Oromo"
-#~ msgstr "オロモ語"
-
-#~ msgid "Oromo (Ethiopia)"
-#~ msgstr "オロモ語 (エチオピア)"
-
-#~ msgid "Oromo (Kenya)"
-#~ msgstr "オロモ語 (ケニア)"
-
-#, fuzzy
-#~ msgid "Odia (India)"
-#~ msgstr "オリヤー語 (インド)"
-
-#, fuzzy
-#~ msgid "Osage"
-#~ msgstr "オーセージ語"
-
-#~ msgid "Punjabi"
-#~ msgstr "パンジャーブ語"
-
-#~ msgid "Punjabi (Arabic)"
-#~ msgstr "パンジャーブ語 (アラビア文字)"
-
-#~ msgid "Punjabi (Arabic) (Pakistan)"
-#~ msgstr "パンジャーブ語 (アラビア文字) (パキスタン)"
-
-#~ msgid "Punjabi (Gurmukhi)"
-#~ msgstr "パンジャーブ語 (グルムキー文字)"
-
-#~ msgid "Punjabi (Gurmukhi) (India)"
-#~ msgstr "パンジャーブ語 (グルムキー文字) (インド)"
-
-#~ msgid "Punjabi (India)"
-#~ msgstr "パンジャーブ語 (インド)"
-
-#~ msgid "Punjabi (Pakistan)"
-#~ msgstr "パンジャーブ語 (パキスタン)"
-
-#, fuzzy
-#~ msgid "Papiamento"
-#~ msgstr "パピアメント"
-
-#~ msgid "Polish (Poland)"
-#~ msgstr "ポーランド語 (ポーランド)"
-
-#~ msgid "Pashto"
-#~ msgstr "パシュトー語"
-
-#~ msgid "Pashto (Afghanistan)"
-#~ msgstr "パシュトー語 (アフガニスタン)"
-
-#~ msgid "Portuguese (Brazil)"
-#~ msgstr "ポルトガル語 (ブラジル)"
-
-#~ msgid "Portuguese (Portugal)"
-#~ msgstr "ポルトガル語 (ポルトガル)"
-
-#, fuzzy
-#~ msgid "Quechua"
-#~ msgstr "ケチュア語"
-
-#, fuzzy
-#~ msgid "Rajasthani"
-#~ msgstr "ラージャスターニー語"
-
-#, fuzzy
-#~ msgid "Romansh"
-#~ msgstr "レト・ロマン語"
-
-#, fuzzy
-#~ msgid "Rundi"
-#~ msgstr "ルンディ語"
-
-#~ msgid "Romanian (Moldova)"
-#~ msgstr "ルーマニア語 (モルドバ)"
-
-#~ msgid "Romanian (Romania)"
-#~ msgstr "ルーマニア語 (ルーマニア)"
-
-#~ msgid "Russian (Russia)"
-#~ msgstr "ロシア語 (ロシア)"
-
-#~ msgid "Russian (Ukraine)"
-#~ msgstr "ロシア語 (ウクライナ)"
-
-#~ msgid "Kinyarwanda"
-#~ msgstr "ルワンダ語"
-
-#~ msgid "Kinyarwanda (Rwanda)"
-#~ msgstr "ルワンダ語 (ルワンダ)"
-
-#~ msgid "Sanskrit"
-#~ msgstr "サンスクリット"
-
-#~ msgid "Sanskrit (India)"
-#~ msgstr "サンスクリット語 (インド)"
-
-#, fuzzy
-#~ msgid "Yakut"
-#~ msgstr "サハ語"
-
-#, fuzzy
-#~ msgid "Santali"
-#~ msgstr "サンタル語"
-
-#, fuzzy
-#~ msgid "Sangu"
-#~ msgstr "サンゴ語"
-
-#, fuzzy
-#~ msgid "Sardinian"
-#~ msgstr "サルデーニャ語"
-
-#, fuzzy
-#~ msgid "Sicilian"
-#~ msgstr "シチリア語"
-
-#, fuzzy
-#~ msgid "Sindhi"
-#~ msgstr "シンディー語"
-
-#, fuzzy
-#~ msgid "Sindhi (Arabic) (Pakistan)"
-#~ msgstr "パンジャーブ語 (アラビア文字) (パキスタン)"
-
-#~ msgid "Northern Sami"
-#~ msgstr "北部サーミ語"
-
-#~ msgid "Northern Sami (Finland)"
-#~ msgstr "北部サーミ語 (フィンランド)"
-
-#~ msgid "Northern Sami (Norway)"
-#~ msgstr "北部サーミ語 (ノルウェー)"
-
-#, fuzzy
-#~ msgid "Sango"
-#~ msgstr "サンゴ語"
-
-#, fuzzy
-#~ msgid "Shan"
-#~ msgstr "シャン語"
-
-#, fuzzy
-#~ msgid "Shan (Thailand)"
-#~ msgstr "タイ語 (タイ)"
-
-#~ msgid "Sinhala"
-#~ msgstr "シンハラ文字"
-
-#~ msgid "Sinhala (Sri Lanka)"
-#~ msgstr "シンハラ語 (スリランカ)"
-
-#~ msgid "Sidamo"
-#~ msgstr "シダモ語"
-
-#~ msgid "Sidamo (Ethiopia)"
-#~ msgstr "シダモ語 (エチオピア)"
-
-#~ msgid "Slovak (Slovakia)"
-#~ msgstr "スロバキア語 (スロバキア)"
-
-#~ msgid "Slovenian (Slovenia)"
-#~ msgstr "スロベニア語 (スロベニア)"
-
-#, fuzzy
-#~ msgid "Southern Sami"
-#~ msgstr "北部サーミ語"
-
-#, fuzzy
-#~ msgid "Southern Sami (Norway)"
-#~ msgstr "北部サーミ語 (ノルウェー)"
-
-#, fuzzy
-#~ msgid "Shona"
-#~ msgstr "ショナ語"
-
-#~ msgid "Somali"
-#~ msgstr "ソマリ語"
-
-#~ msgid "Somali (Djibouti)"
-#~ msgstr "ソマリ語 (ジブチ)"
-
-#~ msgid "Somali (Ethiopia)"
-#~ msgstr "ソマリ語 (エチオピア)"
-
-#~ msgid "Somali (Kenya)"
-#~ msgstr "ソマリ語 (ケニア)"
-
-#~ msgid "Somali (Somalia)"
-#~ msgstr "ソマリ語 (ソマリア)"
-
-#~ msgid "Albanian (Albania)"
-#~ msgstr "アルバニア語 (アルバニア)"
-
-#~ msgid "Serbian"
-#~ msgstr "セルビア語"
-
-#~ msgid "Serbian (Cyrillic)"
-#~ msgstr "セルビア語 (キリル文字)"
-
-#, fuzzy
-#~ msgid "Serbian (Cyrillic) (Bosnia & Herzegovina)"
-#~ msgstr "セルビア語 (キリル文字) (ボスニア・ヘルツェゴビナ)"
-
-#~ msgid "Serbian (Cyrillic) (Montenegro)"
-#~ msgstr "セルビア語 (キリル文字) (モンテネグロ)"
-
-#~ msgid "Serbian (Cyrillic) (Serbia)"
-#~ msgstr "セルビア語 (キリル文字) (セルビア)"
-
-#~ msgid "Serbian (Latin)"
-#~ msgstr "セルビア語 (ラテン文字)"
-
-#, fuzzy
-#~ msgid "Serbian (Latin) (Bosnia & Herzegovina)"
-#~ msgstr "セルビア語 (ラテン文字) (ボスニア・ヘルツェゴビナ)"
-
-#~ msgid "Serbian (Latin) (Montenegro)"
-#~ msgstr "セルビア語 (ラテン文字) (モンテネグロ)"
-
-#~ msgid "Serbian (Latin) (Serbia)"
-#~ msgstr "セルビア語 (ラテン文字) (セルビア)"
-
-#~ msgid "Swati"
-#~ msgstr "スワジ語"
-
-#~ msgid "Swati (South Africa)"
-#~ msgstr "スワジ語 (南アフリカ)"
-
-#~ msgid "Southern Sotho"
-#~ msgstr "南ソト語"
-
-#~ msgid "Southern Sotho (Lesotho)"
-#~ msgstr "南ソト語 (レソト)"
-
-#~ msgid "Southern Sotho (South Africa)"
-#~ msgstr "南ソト語 (南アフリカ)"
-
-#, fuzzy
-#~ msgid "Sundanese"
-#~ msgstr "スンダ文字"
-
-#~ msgid "Swedish (Finland)"
-#~ msgstr "スウェーデン語 (フィンランド)"
-
-#~ msgid "Swedish (Sweden)"
-#~ msgstr "スウェーデン語 (スウェーデン)"
-
-#~ msgid "Swahili"
-#~ msgstr "スワヒリ語"
-
-#~ msgid "Swahili (Kenya)"
-#~ msgstr "スワヒリ語 (ケニア)"
-
-#~ msgid "Swahili (Tanzania)"
-#~ msgstr "スワヒリ語 (タンザニア)"
-
-#~ msgid "Syriac"
-#~ msgstr "シリア文字"
-
-#~ msgid "Syriac (Syria)"
-#~ msgstr "シリア語 (シリア)"
-
-#~ msgid "Tamil"
-#~ msgstr "タミル文字"
-
-#~ msgid "Tamil (India)"
-#~ msgstr "タミル語 (インド)"
-
-#~ msgid "Telugu"
-#~ msgstr "テルグ文字"
-
-#~ msgid "Telugu (India)"
-#~ msgstr "テルグ語 (インド)"
-
-#~ msgid "Tajik"
-#~ msgstr "タジク語"
-
-#~ msgid "Tajik (Cyrillic)"
-#~ msgstr "タジク語 (キリル文字)"
-
-#~ msgid "Tajik (Cyrillic) (Tajikistan)"
-#~ msgstr "タジク語 (キリル文字) (タジキスタン)"
-
-#~ msgid "Tajik (Tajikistan)"
-#~ msgstr "タジク語 (タジキスタン)"
-
-#~ msgid "Thai"
-#~ msgstr "タイ文字"
-
-#~ msgid "Thai (Thailand)"
-#~ msgstr "タイ語 (タイ)"
-
-#~ msgid "Tigrinya"
-#~ msgstr "ティグリニャ語"
-
-#~ msgid "Tigrinya (Eritrea)"
-#~ msgstr "ティグリニャ語 (エリトリア)"
-
-#~ msgid "Tigrinya (Ethiopia)"
-#~ msgstr "ティグリニャ語 (エチオピア)"
-
-#~ msgid "Tigre"
-#~ msgstr "ティグレ語"
-
-#~ msgid "Tigre (Eritrea)"
-#~ msgstr "ティグレ語 (エリトリア)"
-
-#, fuzzy
-#~ msgid "Turkmen"
-#~ msgstr "トルクメン語"
-
-#~ msgid "Tswana"
-#~ msgstr "ツワナ語"
-
-#~ msgid "Tswana (South Africa)"
-#~ msgstr "ツワナ語 (南アフリカ)"
-
-#, fuzzy
-#~ msgid "Tongan"
-#~ msgstr "トンガ"
-
-#, fuzzy
-#~ msgid "Tongan (Tonga)"
-#~ msgstr "トンガ語 (トンガ)"
-
-#, fuzzy
-#~ msgid "Tok Pisin"
-#~ msgstr "トク・ピジン語"
-
-#~ msgid "Taroko"
-#~ msgstr "タロコ語"
-
-#~ msgid "Taroko (Taiwan)"
-#~ msgstr "タロコ語 (台湾)"
-
-#~ msgid "Tsonga"
-#~ msgstr "ツォンガ語"
-
-#~ msgid "Tsonga (South Africa)"
-#~ msgstr "ツォンガ語 (南アフリカ)"
-
-#~ msgid "Tatar"
-#~ msgstr "タタール語"
-
-#~ msgid "Tatar (Russia)"
-#~ msgstr "タタール語 (ロシア)"
-
-#, fuzzy
-#~ msgid "Uyghur (China)"
-#~ msgstr "ウイグル語 (中国)"
-
-#~ msgid "Ukrainian (Ukraine)"
-#~ msgstr "ウクライナ語 (ウクライナ)"
-
-#~ msgid "Unknown language"
-#~ msgstr "不明な言語"
-
-#~ msgid "Urdu"
-#~ msgstr "ウルドゥー語"
-
-#~ msgid "Urdu (India)"
-#~ msgstr "ウルドゥー語 (インド)"
-
-#~ msgid "Urdu (Pakistan)"
-#~ msgstr "ウルドゥー語 (パキスタン)"
-
-#~ msgid "Uzbek"
-#~ msgstr "ウズベク語"
-
-#~ msgid "Uzbek (Arabic)"
-#~ msgstr "ウズベク語 (アラビア文字)"
-
-#~ msgid "Uzbek (Arabic) (Afghanistan)"
-#~ msgstr "ウズベク語 (アラビア文字) (アフガニスタン)"
-
-#~ msgid "Uzbek (Cyrillic)"
-#~ msgstr "ウズベク語 (キリル文字)"
-
-#~ msgid "Uzbek (Cyrillic) (Uzbekistan)"
-#~ msgstr "ウズベク語 (キリル文字) (ウズベキスタン)"
-
-#~ msgid "Uzbek (Latin)"
-#~ msgstr "ウズベク語 (ラテン文字)"
-
-#~ msgid "Uzbek (Latin) (Uzbekistan)"
-#~ msgstr "ウズベク語 (ラテン文字) (ウズベキスタン)"
-
-#, fuzzy
-#~ msgid "Vai"
-#~ msgstr "ヴァイ文字"
-
-#~ msgid "Venda"
-#~ msgstr "ベンダ語"
-
-#~ msgid "Venda (South Africa)"
-#~ msgstr "ヴェンダ語 (南アフリカ)"
-
-#~ msgid "Vietnamese"
-#~ msgstr "ベトナム語"
-
-#~ msgid "Vietnamese (Vietnam)"
-#~ msgstr "ベトナム語 (ベトナム)"
-
-#, fuzzy
-#~ msgid "Volapük"
-#~ msgstr "ヴォラピュク"
-
-#, fuzzy
-#~ msgid "Walloon"
-#~ msgstr "ワロン語"
-
-#~ msgid "Walser"
-#~ msgstr "ヴァリス語"
-
-#, fuzzy
-#~ msgid "Wolaytta"
-#~ msgstr "ワッラモ語"
-
-#~ msgid "Warlpiri"
-#~ msgstr "ワルビリ語"
-
-#~ msgid "Wolof"
-#~ msgstr "ウォロフ語"
-
-#~ msgid "Wolof (Senegal)"
-#~ msgstr "ウォロフ語 (セネガル)"
-
-#~ msgid "Xhosa"
-#~ msgstr "コサ語"
-
-#~ msgid "Xhosa (South Africa)"
-#~ msgstr "コサ語 (南アフリカ)"
-
-#, fuzzy
-#~ msgid "Yiddish"
-#~ msgstr "イディッシュ語"
-
-#~ msgid "Yoruba"
-#~ msgstr "ヨルバ語"
-
-#~ msgid "Yoruba (Nigeria)"
-#~ msgstr "ヨルバ語 (ナイジェリア)"
-
-#, fuzzy
-#~ msgid "Nheengatu"
-#~ msgstr "ニェエンガトゥ語"
-
-#~ msgid "Chinese"
-#~ msgstr "中国語"
-
-#, fuzzy
-#~ msgid "Chinese (Simplified)"
-#~ msgstr "中国語 (簡体字)"
-
-#, fuzzy
-#~ msgid "Chinese (Simplified) (China)"
-#~ msgstr "中国語 (簡体字) (中国)"
-
-#, fuzzy
-#~ msgid "Chinese (Simplified) (Hong Kong)"
-#~ msgstr "中国語 (簡体字) (香港)"
-
-#, fuzzy
-#~ msgid "Chinese (Simplified) (Macao)"
-#~ msgstr "中国語 (簡体字) (マカオ)"
-
-#, fuzzy
-#~ msgid "Chinese (Simplified) (Singapore)"
-#~ msgstr "中国語 (簡体字) (シンガポール)"
-
-#, fuzzy
-#~ msgid "Chinese (Traditional)"
-#~ msgstr "中国語 (繁体字)"
-
-#, fuzzy
-#~ msgid "Chinese (Traditional) (Hong Kong)"
-#~ msgstr "中国語 (繁体字) (香港)"
-
-#, fuzzy
-#~ msgid "Chinese (Traditional) (Macao)"
-#~ msgstr "中国語 (繁体字) (マカオ)"
-
-#, fuzzy
-#~ msgid "Chinese (Traditional) (Taiwan)"
-#~ msgstr "中国語 (繁体字) (台湾)"
-
-#~ msgid "Zulu"
-#~ msgstr "ズールー語"
-
-#~ msgid "Zulu (South Africa)"
-#~ msgstr "ズールー語 (南アフリカ)"
-
-#~ msgid "Cyrillic"
-#~ msgstr "キリル文字"
-
-#~ msgid "Hangul"
-#~ msgstr "ハングル"
-
-#~ msgid "Hiragana"
-#~ msgstr "平仮名"
-
-#~ msgid "Katakana"
-#~ msgstr "片仮名"
-
-#, python-format
-#~ msgid "Preset %d: %s"
-#~ msgstr "プリセット %d: %s"
-
-#, python-format
-#~ msgid "Error exporting file \"%s\". %s."
-#~ msgstr "ファイルのエクスポート中にエラー \"%s\"。 %s。"
-
-#, python-format
-#~ msgid "Error importing \"%s\". %s."
-#~ msgstr "インポート中にエラー \"%s\"。 %s。"
-
-#, python-format
-#~ msgid "Error decoding \"%s\". %s."
-#~ msgstr "デコード中にエラー \"%s\"。 %s。"
-
-#, python-format
-#~ msgid "%s (%i release)"
-#~ msgid_plural "%s (%i releases)"
-#~ msgstr[0] "%s (%i リリース)"
-
-#, python-format
-#~ msgid ""
-#~ "Double-click to open in external viewer\n"
-#~ "Temporary file: %s\n"
-#~ "Source: %s"
-#~ msgstr ""
-#~ "外部ビューアで表示するにはダブルクリック\n"
-#~ "一時ファイル: %s\n"
-#~ "ソース: %s"
-
-#, python-format
-#~ msgid "Listening on port %(port)d"
-#~ msgstr "ポート %(port)d で待機"
-
-#, python-format
-#~ msgid "Internal player: error, code=%d, msg=%s"
-#~ msgstr "内部プレイヤー: エラー, コード=%d, msg=%s"
-
-#, python-format
-#~ msgid "Error line %d: %s"
-#~ msgstr "エラー行 %d: %s"
-
-#, python-format
-#~ msgid "Plugin '%s'"
-#~ msgstr "プラグイン「%s」"
-
-#, python-format
-#~ msgid ""
-#~ "An error occurred while loading the plugin '%s':\n"
-#~ "\n"
-#~ "%s"
-#~ msgstr ""
-#~ "プラグイン「%s」の読み込み中にエラーが発生しました:\n"
-#~ "\n"
-#~ "%s"
-
-#, python-format
-#~ msgid "The plugin '%s' is not compatible with this version of Picard."
-#~ msgstr "プラグイン「%s」は、このバージョンのPicardと互換性がありません。"
-
-#, python-format
-#~ msgid ""
-#~ "The plugin '%s' will be upgraded to version %s on next run of Picard."
-#~ msgstr ""
-#~ "プラグイン '%s' は次回の Picard 起動時にバージョン %s にアップグレードされ"
-#~ "ます"
-
-#, python-format
-#~ msgid "Uninstall plugin '%s'?"
-#~ msgstr "プラグイン「%s」をアンインストールしますか？"
-
-#, python-format
-#~ msgid "Do you really want to uninstall the plugin '%s' ?"
-#~ msgstr "'%s' プラグインをアンインストールしますか？"
-
-#, python-format
-#~ msgid "The plugin '%s' could not be downloaded."
-#~ msgstr "'%s' プラグインがダウンロードできません"
-
-#, python-format
-#~ msgid ""
-#~ "<strong>Following error occurred while fetching results:<br><br></"
-#~ "strong>Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>"
-#~ msgstr ""
-#~ "<strong>結果の取得中に次のエラーが発生しました: <br><br></strong> %sのネッ"
-#~ "トワーク要求エラー: <br> %s (QT code %d, HTTP code %s) <br>"
 
 #, python-format
 #~ msgid "%s "
