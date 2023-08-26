@@ -17,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-26 21:19+0200\n"
 "PO-Revision-Date: 2023-08-27 13:05+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"Last-Translator: \"salo.rock\" <salo.rock+musicbrainz@gmail.com>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
 "app/it/>\n"
 "Language: it\n"
@@ -2716,10 +2716,9 @@ msgstr ""
 "_Da Picard 2.9_"
 
 #: picard/script/serializer.py:202
-#, fuzzy, python-format
-#| msgid "Error exporting file \"%(filename)s\": %(error)s"
+#, python-format
 msgid "Error exporting file \"%(filename)s\": %(error)s."
-msgstr "Errore nell'esportazione del file \"%(filename)s\": %(error)s"
+msgstr "Errore nell'esportazione del file \"%(filename)s\": %(error)s."
 
 #: picard/script/serializer.py:209
 msgid "Export Script File"
