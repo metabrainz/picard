@@ -222,30 +222,25 @@ msgstr "Impossible de charger le greffon « %s  »"
 
 #: picard/pluginmanager.py:276
 #, python-format
-msgid "Failed loading zipped plugin %r from %r"
-msgstr "Échec du chargement du greffon zippé %r à partir de %r"
+msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
+msgstr "Échec du chargement du greffon zippé « %(plugin)s » à partir de « %(filename)s »"
 
 #: picard/pluginmanager.py:286
 #, python-format
-msgid "Failed loading plugin %r in %r"
-msgstr "Échec de chargement du greffon %r vers %r"
+msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+msgstr "Échec de chargement du greffon « %(plugin)s » vers « %(dirname)s »"
 
 #: picard/pluginmanager.py:322
 #, python-format
-msgid "Plugin '%s' from '%s' is not compatible with this version of Picard."
+msgid "Plugin \"%(plugin)s\" from \"%(filename)s\" is not compatible with this version of Picard."
 msgstr ""
-"Le greffon « %s » venant de « %s » n’est pas compatible avec cette version "
+"Le greffon « %(plugin)s » venant de « %(filename)s » n’est pas compatible avec cette version "
 "de Picard."
 
 #: picard/pluginmanager.py:326
 #, python-format
-msgid "Plugin %r has an invalid API version string : %s"
-msgstr "Le greffon %r a une version d’API invalide : %s"
-
-#: picard/pluginmanager.py:329
-#, python-format
-msgid "Plugin %r"
-msgstr "Greffon %r"
+msgid "Plugin \"%(plugin)s\" has an invalid API version string: %(error)s"
+msgstr "Le greffon « %(plugin)s » a une version d’API invalide : %(error)s"
 
 #: picard/pluginmanager.py:465
 #, python-format
@@ -5557,8 +5552,8 @@ msgstr ""
 
 #: picard/script/__init__.py:145
 #, python-format
-msgid "Preset %d: %s"
-msgstr "Préréglage %d : %s"
+msgid "Preset %(number)d: %(title)s"
+msgstr "Préréglage %(number)d : %(title)s"
 
 #: picard/script/__init__.py:149
 msgid "Default file naming script"
@@ -7050,8 +7045,8 @@ msgstr ""
 
 #: picard/script/serializer.py:202
 #, python-format
-msgid "Error exporting file \"%s\". %s."
-msgstr "Erreur lors de l'exportation du fichier « %s ». %s."
+msgid "Error exporting file \"%(filename)s\": %(error)s"
+msgstr "Erreur lors de l'exportation du fichier « %(filename)s » : %(error)s"
 
 #: picard/script/serializer.py:209
 msgid "Export Script File"
@@ -7068,13 +7063,13 @@ msgstr "Script exporté avec succès vers %s"
 
 #: picard/script/serializer.py:243
 #, python-format
-msgid "Error importing \"%s\". %s."
-msgstr "Erreur lors de l'importation de « %s ». %s."
+msgid "Error importing \"%(filename)s\": %(error)s"
+msgstr "Erreur lors de l'importation de « %(filename)s » : %(error)s"
 
 #: picard/script/serializer.py:244
 #, python-format
-msgid "Error decoding \"%s\". %s."
-msgstr "Erreur lors du décodage de « %s ». %s."
+msgid "Error decoding \"%(filename)s\": %(error)s"
+msgstr "Erreur lors du décodage de « %(filename)s » : %(error)s"
 
 #: picard/script/serializer.py:246
 msgid "Import Script File"
@@ -7230,11 +7225,11 @@ msgstr "Rafraîchir la liste"
 
 #: picard/ui/collectionmenu.py:173
 #, python-format
-msgid "%s (%i release)"
-msgid_plural "%s (%i releases)"
-msgstr[0] "%s (%i parution)"
-msgstr[1] "%s (%i parutions)"
-msgstr[2] "%s (%i parutions)"
+msgid "%(name)s (%(count)i release)"
+msgid_plural "%(name)s (%(count)i releases)"
+msgstr[0] "%(name)s (%(count)i parution)"
+msgstr[1] "%(name)s (%(count)i parutions)"
+msgstr[2] "%(name)s (%(count)i parutions)"
 
 #: picard/ui/colors.py:37
 msgid "Errored entity"
@@ -7376,21 +7371,21 @@ msgstr "Information"
 #, python-format
 msgid ""
 "Double-click to open in external viewer\n"
-"Temporary file: %s\n"
-"Source: %s"
+"Temporary file: %(tempfile)s\n"
+"Source: %(sourcefile)s"
 msgstr ""
 "Double-cliquer pour ouvrir dans le visualiseur externe\n"
-"Fichier temporaire : %s\n"
-"Source : %s"
+"Fichier temporaire : %(tempfile)s\n"
+"Source : %(sourcefile)s"
 
 #: picard/ui/infodialog.py:216
 #, python-format
 msgid ""
-"Missing temporary file: %s\n"
-"Source: %s"
+"Missing temporary file: %(tempfile)s\n"
+"Source: %(sourcefile)s"
 msgstr ""
-"Fichier temporaire manquant : %s\n"
-"Source : %s"
+"Fichier temporaire manquant : %(tempfile)s\n"
+"Source : %(sourcefile)s"
 
 #: picard/ui/infodialog.py:280
 msgid "Filename:"
@@ -8491,8 +8486,8 @@ msgstr ""
 
 #: picard/ui/playertoolbar.py:179
 #, python-format
-msgid "Internal player: error, code=%d, msg=%s"
-msgstr "Lecteur interne : erreur, code=%d, msg=%s"
+msgid "Internal player: error, code=%(code)d, msg=%(message)s"
+msgstr "Lecteur interne : erreur, code=%(code)d, msg=%(message)s"
 
 #: picard/ui/playertoolbar.py:185
 msgid "Player"
@@ -10032,8 +10027,8 @@ msgstr "Genres"
 
 #: picard/ui/options/genres.py:156
 #, python-format
-msgid "Error line %d: %s"
-msgstr "Erreur ligne %d : %s"
+msgid "Error line %(lineno)d: %(error)s"
+msgstr "Erreur ligne %(lineno)d : %(error)s"
 
 #: picard/ui/options/interface.py:94
 msgid "The default color scheme based on the operating system display settings"
@@ -10223,10 +10218,10 @@ msgstr "Valeur"
 #: picard/ui/options/maintenance.py:127
 #, python-format
 msgid ""
-"The configuration file currently contains %d option settings, %d which are "
+"The configuration file currently contains %(totalcount)d option settings, %(unusedcount)d which are "
 "unused."
 msgstr ""
-"La configuration contient actuellement %d paramètres d'options, %d sont "
+"La configuration contient actuellement %(totalcount)d paramètres d'options, %(unusedcount)d sont "
 "inutilisés."
 
 #: picard/ui/options/maintenance.py:167
@@ -10356,41 +10351,41 @@ msgstr "Rechargement de la liste des greffons disponibles…"
 #: picard/ui/options/plugins.py:416 picard/ui/options/plugins.py:425
 #: picard/ui/options/plugins.py:446
 #, python-format
-msgid "Plugin '%s'"
-msgstr "Greffon « %s »"
+msgid "Plugin \"%(plugin)s\""
+msgstr "Greffon « %(plugin)s »"
 
 #: picard/ui/options/plugins.py:417
 #, python-format
 msgid ""
-"An error occurred while loading the plugin '%s':\n"
+"An error occurred while loading the plugin \"%(plugin)s\":\n"
 "\n"
-"%s"
+"%(error)s"
 msgstr ""
-"Une erreur est survenue lors du chargement du greffon « %s » :\n"
+"Une erreur est survenue lors du chargement du greffon « %(plugin)s » :\n"
 "\n"
-"%s"
+"%(error)s"
 
 #: picard/ui/options/plugins.py:426
 #, python-format
-msgid "The plugin '%s' is not compatible with this version of Picard."
-msgstr "Le greffon « %s » n’est pas compatible avec cette version de Picard."
+msgid "The plugin \"%(plugin)s\" is not compatible with this version of Picard."
+msgstr "Le greffon « %(plugin)s » n’est pas compatible avec cette version de Picard."
 
 #: picard/ui/options/plugins.py:447
 #, python-format
-msgid "The plugin '%s' will be upgraded to version %s on next run of Picard."
+msgid "The plugin \"%(plugin)s\" will be upgraded to version %(version)s on next run of Picard."
 msgstr ""
-"Le greffon « %s » sera mis à jour vers la version %s au prochain démarrage "
+"Le greffon « %(plugin)s » sera mis à jour vers la version %(version)s au prochain démarrage "
 "de Picard."
 
 #: picard/ui/options/plugins.py:468
 #, python-format
-msgid "Uninstall plugin '%s'?"
-msgstr "Désinstaller le greffon « %s » ?"
+msgid "Uninstall plugin \"%(plugin)s\"?"
+msgstr "Désinstaller le greffon « %(plugin)s » ?"
 
 #: picard/ui/options/plugins.py:469
 #, python-format
-msgid "Do you really want to uninstall the plugin '%s' ?"
-msgstr "Voulez-vous vraiment désinstaller le greffon « %s » ?"
+msgid "Do you really want to uninstall the plugin \"%(plugin)s\"?"
+msgstr "Voulez-vous vraiment désinstaller le greffon « %(plugin)s » ?"
 
 #: picard/ui/options/plugins.py:601
 msgid "Restart Picard to upgrade to new version"
@@ -10414,8 +10409,8 @@ msgstr "Guide utilisateur"
 
 #: picard/ui/options/plugins.py:678
 #, python-format
-msgid "The plugin '%s' could not be downloaded."
-msgstr "Le greffon « %s » n’a pu être téléchargé."
+msgid "The plugin \"%(plugin)s\" could not be downloaded."
+msgstr "Le greffon « %(plugin)s » n’a pu être téléchargé."
 
 #: picard/ui/options/plugins.py:679
 msgid "Please try again later."
@@ -10576,11 +10571,11 @@ msgstr "Essayer à nouveau"
 #, python-format
 msgid ""
 "<strong>Following error occurred while fetching results:<br><br></"
-"strong>Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>"
+"strong>Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, HTTP code %(statuscode)r)<br>"
 msgstr ""
 "<strong>L’erreur suivante s’est produite pendant la récupération des "
-"résultats :<br><br></strong>Erreur de requête réseau pour %s :<br>%s (code "
-"QT %d, code HTTP %s)<br>"
+"résultats :<br><br></strong>Erreur de requête réseau pour %(url)s :<br>%(error)s (code "
+"QT %(qtcode)d, code HTTP %(statuscode)s)<br>"
 
 #: picard/ui/searchdialog/__init__.py:263
 msgid "<strong>No results found. Please try a different search query.</strong>"

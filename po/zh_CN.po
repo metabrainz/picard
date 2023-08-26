@@ -216,23 +216,23 @@ msgstr "无法加载插件「%s」"
 
 #: picard/pluginmanager.py:276
 #, python-format
-msgid "Failed loading zipped plugin %r from %r"
-msgstr "无法从 %r 中载入压缩版插件 %r"
+msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
+msgstr "无法从「%(plugin)s」中载入压缩版插件「%(filename)s」"
 
 #: picard/pluginmanager.py:286
 #, python-format
-msgid "Failed loading plugin %r in %r"
-msgstr "在 %r 里加载插件 %r 失败"
+msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+msgstr "在「%(plugin)s」里加载插件「%(dirname)s」失败"
 
 #: picard/pluginmanager.py:322
 #, python-format
-msgid "Plugin '%s' from '%s' is not compatible with this version of Picard."
-msgstr "来自 %s 的插件 %s 与当前版本的 Picard 不兼容。"
+msgid "Plugin \"%(plugin)s\" from \"%(filename)s\" is not compatible with this version of Picard."
+msgstr "来自「%(plugin)s」的插件「%(filename)s」与当前版本的 Picard 不兼容。"
 
 #: picard/pluginmanager.py:326
 #, python-format
-msgid "Plugin %r has an invalid API version string : %s"
-msgstr "插件「%r」的 API 版本字符串无效: %s"
+msgid "Plugin \"%(plugin)s\" has an invalid API version string: %(error)s"
+msgstr "插件「%(plugin)s」的 API 版本字符串无效: %(error)s"
 
 #: picard/pluginmanager.py:329
 #, python-format
@@ -6016,8 +6016,8 @@ msgstr "此预设的示例文件命名脚本不需要任何特殊设置、标签
 
 #: picard/script/__init__.py:145
 #, python-format
-msgid "Preset %d: %s"
-msgstr "预设 %d: %s"
+msgid "Preset %(number)d: %(title)s"
+msgstr "预设 %(number)d: %(title)s"
 
 #: picard/script/__init__.py:149
 msgid "Default file naming script"
@@ -7556,8 +7556,8 @@ msgstr ""
 
 #: picard/script/serializer.py:202
 #, python-format
-msgid "Error exporting file \"%s\". %s."
-msgstr "导出文件 \"%s\" 时发生了错误。%s。"
+msgid "Error exporting file \"%(filename)s\": %(error)s"
+msgstr "导出文件 \"%(filename)s\" 时发生了错误。%(error)s。"
 
 #: picard/script/serializer.py:209
 msgid "Export Script File"
@@ -7574,13 +7574,13 @@ msgstr "脚本已成功导出到%s"
 
 #: picard/script/serializer.py:243
 #, python-format
-msgid "Error importing \"%s\". %s."
-msgstr "导入 \"%s\" 时发生了错误。%s。"
+msgid "Error importing \"%(filename)s\": %(error)s"
+msgstr "导入 \"%(filename)s\" 时发生了错误。%(error)s。"
 
 #: picard/script/serializer.py:244
 #, python-format
-msgid "Error decoding \"%s\". %s."
-msgstr "解码 \"%s\" 时发生了错误。%s。"
+msgid "Error decoding \"%(filename)s\": %(error)s"
+msgstr "解码 \"%(filename)s\" 时发生了错误。%(error)s。"
 
 #: picard/script/serializer.py:246
 msgid "Import Script File"
@@ -7741,9 +7741,9 @@ msgstr "刷新列表"
 
 #: picard/ui/collectionmenu.py:173
 #, python-format
-msgid "%s (%i release)"
-msgid_plural "%s (%i releases)"
-msgstr[0] "%s（%i 张专辑）"
+msgid "%(name)s (%(count)i release)"
+msgid_plural "%(name)s (%(count)i releases)"
+msgstr[0] "%(name)s（%(count)i 张专辑）"
 
 #: picard/ui/colors.py:37
 msgid "Errored entity"
@@ -7885,21 +7885,21 @@ msgstr "信息"
 #, python-format
 msgid ""
 "Double-click to open in external viewer\n"
-"Temporary file: %s\n"
-"Source: %s"
+"Temporary file: %(tempfile)s\n"
+"Source: %(sourcefile)s"
 msgstr ""
 "双击可在外部查看器中打开\n"
-"临时文件: %s\n"
-"来源: %s"
+"临时文件: %(tempfile)s\n"
+"来源: %(sourcefile)s"
 
 #: picard/ui/infodialog.py:216
 #, python-format
 msgid ""
-"Missing temporary file: %s\n"
-"Source: %s"
+"Missing temporary file: %(tempfile)s\n"
+"Source: %(sourcefile)s"
 msgstr ""
-"找不到暂时性文件：%s\n"
-"来源：%s"
+"找不到暂时性文件：%(tempfile)s\n"
+"来源：%(sourcefile)s"
 
 #: picard/ui/infodialog.py:280
 msgid "Filename:"
@@ -8950,8 +8950,8 @@ msgstr "内部播放器: 未找到有效的回放服务，回放无法继续"
 
 #: picard/ui/playertoolbar.py:179
 #, python-format
-msgid "Internal player: error, code=%d, msg=%s"
-msgstr "内部播放器: 错误, 代码=%d, 信息=%s"
+msgid "Internal player: error, code=%(code)d, msg=%(message)s"
+msgstr "内部播放器: 错误, 代码=%(code)d, 信息=%(message)s"
 
 #: picard/ui/playertoolbar.py:185
 msgid "Player"
@@ -10429,8 +10429,8 @@ msgstr "流派"
 
 #: picard/ui/options/genres.py:156
 #, python-format
-msgid "Error line %d: %s"
-msgstr "错误行 %d: %s"
+msgid "Error line %(lineno)d: %(error)s"
+msgstr "错误行 %(lineno)d: %(error)s"
 
 #: picard/ui/options/interface.py:94
 msgid "The default color scheme based on the operating system display settings"
@@ -10602,9 +10602,9 @@ msgstr "值"
 #: picard/ui/options/maintenance.py:127
 #, python-format
 msgid ""
-"The configuration file currently contains %d option settings, %d which are "
+"The configuration file currently contains %(totalcount)d option settings, %(unusedcount)d which are "
 "unused."
-msgstr "配置文件含有%d个设置项，%d个未使用。"
+msgstr "配置文件含有%(totalcount)d个设置项，%(unusedcount)d个未使用。"
 
 #: picard/ui/options/maintenance.py:167
 msgid "Configuration files"
@@ -10718,39 +10718,39 @@ msgstr "正在刷新可用插件列表…"
 #: picard/ui/options/plugins.py:416 picard/ui/options/plugins.py:425
 #: picard/ui/options/plugins.py:446
 #, python-format
-msgid "Plugin '%s'"
-msgstr "插件「%s」"
+msgid "Plugin \"%(plugin)s\""
+msgstr "插件「%(plugin)s」"
 
 #: picard/ui/options/plugins.py:417
 #, python-format
 msgid ""
-"An error occurred while loading the plugin '%s':\n"
+"An error occurred while loading the plugin \"%(plugin)s\":\n"
 "\n"
-"%s"
+"%(error)s"
 msgstr ""
-"载入插件「%s」时出错:\n"
+"载入插件「%(plugin)s」时出错:\n"
 "\n"
-"%s"
+"%(error)s"
 
 #: picard/ui/options/plugins.py:426
 #, python-format
-msgid "The plugin '%s' is not compatible with this version of Picard."
-msgstr "插件「%s」与当前版本的 Picard 不兼容。"
+msgid "The plugin \"%(plugin)s\" is not compatible with this version of Picard."
+msgstr "插件「%(plugin)s」与当前版本的 Picard 不兼容。"
 
 #: picard/ui/options/plugins.py:447
 #, python-format
-msgid "The plugin '%s' will be upgraded to version %s on next run of Picard."
-msgstr "插件「%s」在 Picard 下次启动时会被更新到 %s 版本。"
+msgid "The plugin \"%(plugin)s\" will be upgraded to version %(version)s on next run of Picard."
+msgstr "插件「%(plugin)s」在 Picard 下次启动时会被更新到 %(version)s 版本。"
 
 #: picard/ui/options/plugins.py:468
 #, python-format
-msgid "Uninstall plugin '%s'?"
-msgstr "是否卸载插件「%s」?"
+msgid "Uninstall plugin \"%(plugin)s\"?"
+msgstr "是否卸载插件「%(plugin)s」?"
 
 #: picard/ui/options/plugins.py:469
 #, python-format
-msgid "Do you really want to uninstall the plugin '%s' ?"
-msgstr "是否确定要卸载插件「%s」?"
+msgid "Do you really want to uninstall the plugin \"%(plugin)s\"?"
+msgstr "是否确定要卸载插件「%(plugin)s」?"
 
 #: picard/ui/options/plugins.py:601
 msgid "Restart Picard to upgrade to new version"
@@ -10774,8 +10774,8 @@ msgstr "用户指南"
 
 #: picard/ui/options/plugins.py:678
 #, python-format
-msgid "The plugin '%s' could not be downloaded."
-msgstr "无法下载插件「%s」。"
+msgid "The plugin \"%(plugin)s\" could not be downloaded."
+msgstr "无法下载插件「%(plugin)s」。"
 
 #: picard/ui/options/plugins.py:679
 msgid "Please try again later."
@@ -10934,10 +10934,10 @@ msgstr "重试"
 #, python-format
 msgid ""
 "<strong>Following error occurred while fetching results:<br><br></"
-"strong>Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>"
+"strong>Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, HTTP code %(statuscode)r)<br>"
 msgstr ""
-"<strong>装取结果时出现下述错误:<br><br></strong> %s的网络请求失败:<br>%s（QT "
-"代码 %d, HTTP 代码 %s）<br>"
+"<strong>装取结果时出现下述错误:<br><br></strong> %(url)s的网络请求失败:<br>%(error)s（QT "
+"代码 %(qtcode)d, HTTP 代码 %(statuscode)s）<br>"
 
 #: picard/ui/searchdialog/__init__.py:263
 msgid "<strong>No results found. Please try a different search query.</strong>"

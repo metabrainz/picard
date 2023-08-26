@@ -224,28 +224,23 @@ msgstr "Plugin „%s“ konnte nicht geladen werden"
 
 #: picard/pluginmanager.py:276
 #, python-format
-msgid "Failed loading zipped plugin %r from %r"
-msgstr "Fehler beim Laden des gezippten Plugins %r von %r"
+msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
+msgstr "Fehler beim Laden des gezippten Plugins „%(plugin)s“ von „%(filename)s“"
 
 #: picard/pluginmanager.py:286
 #, python-format
-msgid "Failed loading plugin %r in %r"
-msgstr "Fehler beim Laden des Plugins %r in %r"
+msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+msgstr "Fehler beim Laden des Plugins „%(plugin)s“ in „%(dirname)s“"
 
 #: picard/pluginmanager.py:322
 #, python-format
-msgid "Plugin '%s' from '%s' is not compatible with this version of Picard."
-msgstr "Das Plugin „%s“ (%s) ist nicht mit dieser Picard-Version kompatibel."
+msgid "Plugin \"%(plugin)s\" from \"%(filename)s\" is not compatible with this version of Picard."
+msgstr "Das Plugin „%(plugin)s“ (%(filename)s) ist nicht mit dieser Picard-Version kompatibel."
 
 #: picard/pluginmanager.py:326
 #, python-format
-msgid "Plugin %r has an invalid API version string : %s"
-msgstr "Das Plugin %r hat einen ungültigen API-Version-String: %s"
-
-#: picard/pluginmanager.py:329
-#, python-format
-msgid "Plugin %r"
-msgstr "Plugin %r"
+msgid "Plugin \"%(plugin)s\" has an invalid API version string: %(error)s"
+msgstr "Das Plugin „%(plugin)s“ hat einen ungültigen API-Version-String: %(error)s"
 
 #: picard/pluginmanager.py:465
 #, python-format
@@ -5245,8 +5240,8 @@ msgstr ""
 
 #: picard/script/__init__.py:145
 #, python-format
-msgid "Preset %d: %s"
-msgstr "Voreinstellung %d: %s"
+msgid "Preset %(number)d: %(title)s"
+msgstr "Voreinstellung %(number)d: %(title)s"
 
 #: picard/script/__init__.py:149
 msgid "Default file naming script"
@@ -6892,8 +6887,8 @@ msgstr ""
 
 #: picard/script/serializer.py:202
 #, python-format
-msgid "Error exporting file \"%s\". %s."
-msgstr "Fehler beim Exportieren der Datei \"%s\". %s."
+msgid "Error exporting file \"%(filename)s\": %(error)s"
+msgstr "Fehler beim Exportieren der Datei \"%(filename)s\": %(error)s"
 
 #: picard/script/serializer.py:209
 msgid "Export Script File"
@@ -6910,13 +6905,13 @@ msgstr "Skript erfolgreich nach %s exportiert"
 
 #: picard/script/serializer.py:243
 #, python-format
-msgid "Error importing \"%s\". %s."
-msgstr "Fehler beim Importieren \"%s\". %s."
+msgid "Error importing \"%(filename)s\": %(error)s"
+msgstr "Fehler beim Importieren \"%(filename)s\": %(error)s"
 
 #: picard/script/serializer.py:244
 #, python-format
-msgid "Error decoding \"%s\". %s."
-msgstr "Fehler beim Decodieren \"%s\". %s."
+msgid "Error decoding \"%(filename)s\": %(error)s"
+msgstr "Fehler beim Decodieren \"%(filename)s\": %(error)s"
 
 #: picard/script/serializer.py:246
 msgid "Import Script File"
@@ -7080,10 +7075,10 @@ msgstr "Liste aktualisieren"
 
 #: picard/ui/collectionmenu.py:173
 #, python-format
-msgid "%s (%i release)"
-msgid_plural "%s (%i releases)"
-msgstr[0] "%s (%i Veröffentlichung)"
-msgstr[1] "%s (%i Veröffentlichungen)"
+msgid "%(name)s (%(count)i release)"
+msgid_plural "%(name)s (%(count)i releases)"
+msgstr[0] "%(name)s (%(count)i Veröffentlichung)"
+msgstr[1] "%(name)s (%(count)i Veröffentlichungen)"
 
 #: picard/ui/colors.py:37
 msgid "Errored entity"
@@ -7225,21 +7220,21 @@ msgstr "Info"
 #, python-format
 msgid ""
 "Double-click to open in external viewer\n"
-"Temporary file: %s\n"
-"Source: %s"
+"Temporary file: %(tempfile)s\n"
+"Source: %(sourcefile)s"
 msgstr ""
 "Doppelklicken, um in externem Betrachter zu öffnen\n"
-"Temporäre Datei: %s\n"
-"Quelle: %s"
+"Temporäre Datei: %(tempfile)s\n"
+"Quelle: %(sourcefile)s"
 
 #: picard/ui/infodialog.py:216
 #, python-format
 msgid ""
-"Missing temporary file: %s\n"
-"Source: %s"
+"Missing temporary file: %(tempfile)s\n"
+"Source: %(sourcefile)s"
 msgstr ""
-"Fehlende temporäre Datei: %s\n"
-"Quelle: %s"
+"Fehlende temporäre Datei: %(tempfile)s\n"
+"Quelle: %(sourcefile)s"
 
 #: picard/ui/infodialog.py:280
 msgid "Filename:"
@@ -8332,8 +8327,8 @@ msgstr ""
 
 #: picard/ui/playertoolbar.py:179
 #, python-format
-msgid "Internal player: error, code=%d, msg=%s"
-msgstr "Interne Wiedergabe: Fehler, code=%d, msg=%s"
+msgid "Internal player: error, code=%(code)d, msg=%(message)s"
+msgstr "Interne Wiedergabe: Fehler, code=%(code)d, msg=%(message)s"
 
 #: picard/ui/playertoolbar.py:185
 msgid "Player"
@@ -9865,8 +9860,8 @@ msgstr "Genres"
 
 #: picard/ui/options/genres.py:156
 #, python-format
-msgid "Error line %d: %s"
-msgstr "Fehler Zeile %d: %s"
+msgid "Error line %(lineno)d: %(error)s"
+msgstr "Fehler Zeile %(lineno)d: %(error)s"
 
 #: picard/ui/options/interface.py:94
 msgid "The default color scheme based on the operating system display settings"
@@ -10057,10 +10052,10 @@ msgstr "Wert"
 #: picard/ui/options/maintenance.py:127
 #, python-format
 msgid ""
-"The configuration file currently contains %d option settings, %d which are "
+"The configuration file currently contains %(totalcount)d option settings, %(unusedcount)d which are "
 "unused."
 msgstr ""
-"Die Konfigurationsdatei enthält momentan %d Einstellungen, von denen %d "
+"Die Konfigurationsdatei enthält momentan %(totalcount)d Einstellungen, von denen %(unusedcount)d "
 "nicht verwendet werden."
 
 #: picard/ui/options/maintenance.py:167
@@ -10185,41 +10180,41 @@ msgstr "Liste der Plugins neu laden …"
 #: picard/ui/options/plugins.py:416 picard/ui/options/plugins.py:425
 #: picard/ui/options/plugins.py:446
 #, python-format
-msgid "Plugin '%s'"
-msgstr "Plugin „%s“"
+msgid "Plugin \"%(plugin)s\""
+msgstr "Plugin „%(plugin)s“"
 
 #: picard/ui/options/plugins.py:417
 #, python-format
 msgid ""
-"An error occurred while loading the plugin '%s':\n"
+"An error occurred while loading the plugin \"%(plugin)s\":\n"
 "\n"
-"%s"
+"%(error)s"
 msgstr ""
-"Beim Laden des Plugins „%s“ ist ein Fehler aufgetreten:\n"
+"Beim Laden des Plugins „%(plugin)s“ ist ein Fehler aufgetreten:\n"
 "\n"
-"%s"
+"%(error)s"
 
 #: picard/ui/options/plugins.py:426
 #, python-format
-msgid "The plugin '%s' is not compatible with this version of Picard."
-msgstr "Das Plugin „%s“ ist mit dieser Version von Picard nicht kompatibel."
+msgid "The plugin \"%(plugin)s\" is not compatible with this version of Picard."
+msgstr "Das Plugin „%(plugin)s“ ist mit dieser Version von Picard nicht kompatibel."
 
 #: picard/ui/options/plugins.py:447
 #, python-format
-msgid "The plugin '%s' will be upgraded to version %s on next run of Picard."
+msgid "The plugin \"%(plugin)s\" will be upgraded to version %(version)s on next run of Picard."
 msgstr ""
-"Das Plugin „%s“ wird beim nächsten Start von Picard auf die Version %s "
+"Das Plugin „%(plugin)s“ wird beim nächsten Start von Picard auf die Version %(version)s "
 "aktualisiert."
 
 #: picard/ui/options/plugins.py:468
 #, python-format
-msgid "Uninstall plugin '%s'?"
-msgstr "Plugin „%s“ deinstallieren?"
+msgid "Uninstall plugin \"%(plugin)s\"?"
+msgstr "Plugin „%(plugin)s“ deinstallieren?"
 
 #: picard/ui/options/plugins.py:469
 #, python-format
-msgid "Do you really want to uninstall the plugin '%s' ?"
-msgstr "Soll das Plugin „%s“ wirklich deinstalliert werden?"
+msgid "Do you really want to uninstall the plugin \"%(plugin)s\"?"
+msgstr "Soll das Plugin „%(plugin)s“ wirklich deinstalliert werden?"
 
 #: picard/ui/options/plugins.py:601
 msgid "Restart Picard to upgrade to new version"
@@ -10243,8 +10238,8 @@ msgstr "Benutzerhandbuch"
 
 #: picard/ui/options/plugins.py:678
 #, python-format
-msgid "The plugin '%s' could not be downloaded."
-msgstr "Das Plugin „%s“ konnte nicht heruntergeladen werden."
+msgid "The plugin \"%(plugin)s\" could not be downloaded."
+msgstr "Das Plugin „%(plugin)s“ konnte nicht heruntergeladen werden."
 
 #: picard/ui/options/plugins.py:679
 msgid "Please try again later."
@@ -10404,10 +10399,10 @@ msgstr "Nochmal versuchen"
 #, python-format
 msgid ""
 "<strong>Following error occurred while fetching results:<br><br></"
-"strong>Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>"
+"strong>Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, HTTP code %(statuscode)r)<br>"
 msgstr ""
 "<strong>Folgender Fehler ist beim Laden der Ergebnisse aufgetreten:<br><br></"
-"strong>Netzwerkanfrage-Fehler für %s:<br>%s (QT-Code %d, HTTP-Code %s)<br>"
+"strong>Netzwerkanfrage-Fehler für %(url)s:<br>%(error)s (QT-Code %(qtcode)d, HTTP-Code %(statuscode)s)<br>"
 
 #: picard/ui/searchdialog/__init__.py:263
 msgid "<strong>No results found. Please try a different search query.</strong>"

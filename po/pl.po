@@ -201,23 +201,23 @@ msgstr "Niezdolny do wczytania wtyczki '%s'"
 
 #: picard/pluginmanager.py:276
 #, python-format
-msgid "Failed loading zipped plugin %r from %r"
-msgstr "Nie udało się wczytać skompresowanej wtyczki %r z %r"
+msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
+msgstr "Nie udało się wczytać skompresowanej wtyczki „%(plugin)s” z „%(filename)s”"
 
 #: picard/pluginmanager.py:286
 #, python-format
-msgid "Failed loading plugin %r in %r"
-msgstr "Nie udało się wczytać wtyczki %r w %r"
+msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+msgstr "Nie udało się wczytać wtyczki „%(plugin)s” w „%(dirname)s”"
 
 #: picard/pluginmanager.py:322
 #, python-format
-msgid "Plugin '%s' from '%s' is not compatible with this version of Picard."
-msgstr "Wtyczka '%s' z '%s' nie jest kompatybilna z tą wersją Picarda."
+msgid "Plugin \"%(plugin)s\" from \"%(filename)s\" is not compatible with this version of Picard."
+msgstr "Wtyczka „%(plugin)s” z „%(filename)s” nie jest kompatybilna z tą wersją Picarda."
 
 #: picard/pluginmanager.py:326
 #, python-format
-msgid "Plugin %r has an invalid API version string : %s"
-msgstr "Nieprawidłowa wersja API wtyczki %r : %s"
+msgid "Plugin \"%(plugin)s\" has an invalid API version string: %(error)s"
+msgstr "Nieprawidłowa wersja API wtyczki „%(plugin)s”: %(error)s"
 
 #: picard/pluginmanager.py:329
 #, python-format
@@ -6031,7 +6031,7 @@ msgstr ""
 
 #: picard/script/__init__.py:145
 #, python-format
-msgid "Preset %d: %s"
+msgid "Preset %(number)d: %(title)s"
 msgstr ""
 
 #: picard/script/__init__.py:149
@@ -7037,7 +7037,7 @@ msgstr ""
 
 #: picard/script/serializer.py:202
 #, python-format
-msgid "Error exporting file \"%s\". %s."
+msgid "Error exporting file \"%(filename)s\": %(error)s"
 msgstr ""
 
 #: picard/script/serializer.py:209
@@ -7055,12 +7055,12 @@ msgstr ""
 
 #: picard/script/serializer.py:243
 #, python-format
-msgid "Error importing \"%s\". %s."
+msgid "Error importing \"%(filename)s\": %(error)s"
 msgstr ""
 
 #: picard/script/serializer.py:244
 #, python-format
-msgid "Error decoding \"%s\". %s."
+msgid "Error decoding \"%(filename)s\": %(error)s"
 msgstr ""
 
 #: picard/script/serializer.py:246
@@ -7217,12 +7217,12 @@ msgstr "Odśwież listę"
 
 #: picard/ui/collectionmenu.py:173
 #, python-format
-msgid "%s (%i release)"
-msgid_plural "%s (%i releases)"
-msgstr[0] "%s (%i wydanie)"
-msgstr[1] "%s (%i wydania)"
-msgstr[2] "%s (%i wydań)"
-msgstr[3] "%s (%i wydań)"
+msgid "%(name)s (%(count)i release)"
+msgid_plural "%(name)s (%(count)i releases)"
+msgstr[0] "%(name)s (%(count)i wydanie)"
+msgstr[1] "%(name)s (%(count)i wydania)"
+msgstr[2] "%(name)s (%(count)i wydań)"
+msgstr[3] "%(name)s (%(count)i wydań)"
 
 #: picard/ui/colors.py:37
 msgid "Errored entity"
@@ -7365,26 +7365,19 @@ msgstr "Info"
 #, python-format
 msgid ""
 "Double-click to open in external viewer\n"
-"Temporary file: %s\n"
-"Source: %s"
+"Temporary file: %(tempfile)s\n"
+"Source: %(sourcefile)s"
 msgstr ""
 "Kliknij dwukrotnie, aby otworzyć w zewnętrznej przeglądarce\n"
-"Plik tymczasowy: %s\n"
-"Źródło: %s"
+"Plik tymczasowy: %(tempfile)s\n"
+"Źródło: %(sourcefile)s"
 
 #: picard/ui/infodialog.py:216
-#, fuzzy, python-format
-#| msgid ""
-#| "Double-click to open in external viewer\n"
-#| "Temporary file: %s\n"
-#| "Source: %s"
+#, python-format
 msgid ""
-"Missing temporary file: %s\n"
-"Source: %s"
+"Missing temporary file: %(tempfile)s\n"
+"Source: %(sourcefile)s"
 msgstr ""
-"Kliknij dwukrotnie, aby otworzyć w zewnętrznej przeglądarce\n"
-"Plik tymczasowy: %s\n"
-"Źródło: %s"
 
 #: picard/ui/infodialog.py:280
 msgid "Filename:"
@@ -8467,7 +8460,7 @@ msgstr ""
 
 #: picard/ui/playertoolbar.py:179
 #, python-format
-msgid "Internal player: error, code=%d, msg=%s"
+msgid "Internal player: error, code=%(code)d, msg=%(message)s"
 msgstr ""
 
 #: picard/ui/playertoolbar.py:185
@@ -9906,7 +9899,7 @@ msgstr "Gatunki"
 
 #: picard/ui/options/genres.py:156
 #, python-format
-msgid "Error line %d: %s"
+msgid "Error line %(lineno)d: %(error)s"
 msgstr ""
 
 #: picard/ui/options/interface.py:94
@@ -10075,7 +10068,7 @@ msgstr "Wartość"
 #: picard/ui/options/maintenance.py:127
 #, python-format
 msgid ""
-"The configuration file currently contains %d option settings, %d which are "
+"The configuration file currently contains %(totalcount)d option settings, %(unusedcount)d which are "
 "unused."
 msgstr ""
 
@@ -10184,41 +10177,41 @@ msgstr "Ponowne wczytywanie listy dostępnych wtyczek…"
 #: picard/ui/options/plugins.py:416 picard/ui/options/plugins.py:425
 #: picard/ui/options/plugins.py:446
 #, python-format
-msgid "Plugin '%s'"
-msgstr "Wtyczka '%s'"
+msgid "Plugin \"%(plugin)s\""
+msgstr "Wtyczka „%(plugin)s”"
 
 #: picard/ui/options/plugins.py:417
 #, python-format
 msgid ""
-"An error occurred while loading the plugin '%s':\n"
+"An error occurred while loading the plugin \"%(plugin)s\":\n"
 "\n"
-"%s"
+"%(error)s"
 msgstr ""
-"Wystąpił błąd podczas wczytywania wtyczki '%s':\n"
+"Wystąpił błąd podczas wczytywania wtyczki „%(plugin)s”:\n"
 "\n"
-"%s"
+"%(error)s"
 
 #: picard/ui/options/plugins.py:426
 #, python-format
-msgid "The plugin '%s' is not compatible with this version of Picard."
-msgstr "Wtyczka '%s' nie jest kompatybilna z tą wersją Picarda."
+msgid "The plugin \"%(plugin)s\" is not compatible with this version of Picard."
+msgstr "Wtyczka „%(plugin)s” nie jest kompatybilna z tą wersją Picarda."
 
 #: picard/ui/options/plugins.py:447
 #, python-format
-msgid "The plugin '%s' will be upgraded to version %s on next run of Picard."
+msgid "The plugin \"%(plugin)s\" will be upgraded to version %(version)s on next run of Picard."
 msgstr ""
-"Wtyczka '%s' zostanie uaktualniona do wersji %s przy następnym uruchomieniu "
+"Wtyczka „%(plugin)s” zostanie uaktualniona do wersji %s przy następnym uruchomieniu "
 "Picarda."
 
 #: picard/ui/options/plugins.py:468
 #, python-format
-msgid "Uninstall plugin '%s'?"
-msgstr "Czy odinstalować wtyczkę '%s'?"
+msgid "Uninstall plugin \"%(plugin)s\"?"
+msgstr "Czy odinstalować wtyczkę „%(plugin)s”?"
 
 #: picard/ui/options/plugins.py:469
 #, python-format
-msgid "Do you really want to uninstall the plugin '%s' ?"
-msgstr "Czy na pewno chcesz odinstalować wtyczkę „%s”?"
+msgid "Do you really want to uninstall the plugin \"%(plugin)s\"?"
+msgstr "Czy na pewno chcesz odinstalować wtyczkę „%(plugin)s”?"
 
 #: picard/ui/options/plugins.py:601
 msgid "Restart Picard to upgrade to new version"
@@ -10242,8 +10235,8 @@ msgstr ""
 
 #: picard/ui/options/plugins.py:678
 #, python-format
-msgid "The plugin '%s' could not be downloaded."
-msgstr "Wtyczka '%s' nie mogła zostać pobrana."
+msgid "The plugin \"%(plugin)s\" could not be downloaded."
+msgstr "Wtyczka „%(plugin)s” nie mogła zostać pobrana."
 
 #: picard/ui/options/plugins.py:679
 msgid "Please try again later."
@@ -10398,7 +10391,7 @@ msgstr "Spróbuj ponownie"
 #, python-format
 msgid ""
 "<strong>Following error occurred while fetching results:<br><br></"
-"strong>Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>"
+"strong>Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, HTTP code %(statuscode)r)<br>"
 msgstr ""
 
 #: picard/ui/searchdialog/__init__.py:263

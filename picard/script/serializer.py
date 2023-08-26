@@ -240,8 +240,8 @@ class PicardScript():
     def import_script(cls, parent=None):
         """Import a script from a file.
         """
-        FILE_ERROR_IMPORT = N_('Error importing "%(filename)s": %(error)s.')
-        FILE_ERROR_DECODE = N_('Error decoding "%(filename)s": %(error)s.')
+        FILE_ERROR_IMPORT = N_('Error importing "%(filename)s": %(error)s')
+        FILE_ERROR_DECODE = N_('Error decoding "%(filename)s": %(error)s')
 
         dialog_title = _("Import Script File")
         dialog_file_types = cls._get_dialog_filetypes()

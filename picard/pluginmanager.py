@@ -336,14 +336,15 @@ class PluginManager(QtCore.QObject):
                 params = {'plugin': plugin.name, 'filename': plugin.file}
                 self.plugin_error(plugin.name, errorfmt, params=params, log_func=log.warning)
         except VersionError as e:
-            errorfmt = _('Plugin "%(plugin)s" has an invalid API version string : %(error)s')
+            errorfmt = _('Plugin "%(plugin)s" has an invalid API version string: %(error)s')
             self.plugin_error(name, errorfmt, params={
-                'plugins': name,
+                'plugin': name,
                 'error': e,
             })
         except BaseException:
-            errorfmt = _("Plugin %r")
-            self.plugin_error(name, errorfmt, name, log_func=log.exception)
+            errorfmt = _('Plugin "%(plugin)s"')
+            self.plugin_error(name, errorfmt, log_func=log.exception,
+                              params={'plugin': name})
         if module_file is not None:
             module_file.close()
         return plugin

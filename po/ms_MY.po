@@ -182,23 +182,23 @@ msgstr "Pemalam '%s' gagal dimuat"
 
 #: picard/pluginmanager.py:276
 #, python-format
-msgid "Failed loading zipped plugin %r from %r"
-msgstr "Gagal memuat pemalam berzip %r daripada %r"
+msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
+msgstr "Gagal memuat pemalam berzip '%(plugin)s' daripada '%(filename)s'"
 
 #: picard/pluginmanager.py:286
 #, python-format
-msgid "Failed loading plugin %r in %r"
-msgstr "Gagal memuat pemalam %r dalam %r"
+msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+msgstr "Gagal memuat pemalam '%(plugin)s' dalam '%(dirname)s'"
 
 #: picard/pluginmanager.py:322
 #, python-format
-msgid "Plugin '%s' from '%s' is not compatible with this version of Picard."
-msgstr "Pemalam '%s' daripada '%s' tidak serasi dengan versi Picard ini."
+msgid "Plugin \"%(plugin)s\" from \"%(filename)s\" is not compatible with this version of Picard."
+msgstr "Pemalam '%(plugin)s' daripada '%(filename)s' tidak serasi dengan versi Picard ini."
 
 #: picard/pluginmanager.py:326
 #, python-format
-msgid "Plugin %r has an invalid API version string : %s"
-msgstr "Pemalam %r mempunyai rentetan versi API yang tak sah : %s"
+msgid "Plugin \"%(plugin)s\" has an invalid API version string: %(error)s"
+msgstr "Pemalam '%(plugin)s' mempunyai rentetan versi API yang tak sah : %s"
 
 #: picard/pluginmanager.py:329
 #, python-format
@@ -6026,8 +6026,8 @@ msgstr ""
 
 #: picard/script/__init__.py:145
 #, python-format
-msgid "Preset %d: %s"
-msgstr "Pratetap %d: %s"
+msgid "Preset %(number)d: %(title)s"
+msgstr "Pratetap %(number)d: %(title)s"
 
 #: picard/script/__init__.py:149
 msgid "Default file naming script"
@@ -7505,8 +7505,8 @@ msgstr ""
 
 #: picard/script/serializer.py:202
 #, python-format
-msgid "Error exporting file \"%s\". %s."
-msgstr "Ralat semasa menyimpan keluar \"%s\". %s."
+msgid "Error exporting file \"%(filename)s\": %(error)s"
+msgstr "Ralat semasa menyimpan keluar \"%(filename)s\": %(error)s"
 
 #: picard/script/serializer.py:209
 msgid "Export Script File"
@@ -7523,13 +7523,13 @@ msgstr "Skrip selesai disimpan keluar ke %s"
 
 #: picard/script/serializer.py:243
 #, python-format
-msgid "Error importing \"%s\". %s."
-msgstr "Ralat semasa memuat masuk \"%s\". %s."
+msgid "Error importing \"%(filename)s\": %(error)s"
+msgstr "Ralat semasa memuat masuk \"%(filename)s\": %(error)s"
 
 #: picard/script/serializer.py:244
 #, python-format
-msgid "Error decoding \"%s\". %s."
-msgstr "Ralat semasa menyahkod \"%s\". %s."
+msgid "Error decoding \"%(filename)s\": %(error)s"
+msgstr "Ralat semasa menyahkod \"%(filename)s\": %(error)s"
 
 #: picard/script/serializer.py:246
 msgid "Import Script File"
@@ -7683,9 +7683,9 @@ msgstr "Senarai Segar Semula"
 
 #: picard/ui/collectionmenu.py:173
 #, python-format
-msgid "%s (%i release)"
-msgid_plural "%s (%i releases)"
-msgstr[0] "%s (%i keluaran)"
+msgid "%(name)s (%(count)i release)"
+msgid_plural "%(name)s (%(count)i releases)"
+msgstr[0] "%(name)s (%(count)i keluaran)"
 
 #: picard/ui/colors.py:37
 msgid "Errored entity"
@@ -7827,26 +7827,19 @@ msgstr "Maklumat"
 #, python-format
 msgid ""
 "Double-click to open in external viewer\n"
-"Temporary file: %s\n"
-"Source: %s"
+"Temporary file: %(tempfile)s\n"
+"Source: %(sourcefile)s"
 msgstr ""
 "Ketik dua kali untuk membuka fail di penilik luar\n"
-"Fail sementara: %s\n"
-"Sumber: %s"
+"Fail sementara: %(tempfile)s\n"
+"Sumber: %(sourcefile)s"
 
 #: picard/ui/infodialog.py:216
-#, fuzzy, python-format
-#| msgid ""
-#| "Double-click to open in external viewer\n"
-#| "Temporary file: %s\n"
-#| "Source: %s"
+#, python-format
 msgid ""
-"Missing temporary file: %s\n"
-"Source: %s"
+"Missing temporary file: %(tempfile)s\n"
+"Source: %(sourcefile)s"
 msgstr ""
-"Ketik dua kali untuk membuka fail di penilik luar\n"
-"Fail sementara: %s\n"
-"Sumber: %s"
 
 #: picard/ui/infodialog.py:280
 msgid "Filename:"
@@ -8916,8 +8909,8 @@ msgstr ""
 
 #: picard/ui/playertoolbar.py:179
 #, python-format
-msgid "Internal player: error, code=%d, msg=%s"
-msgstr "Pemain dalaman: ralat, kod=%d, msj=%s"
+msgid "Internal player: error, code=%(code)d, msg=%(message)s"
+msgstr "Pemain dalaman: ralat, kod=%(code)d, msj=%(message)s"
 
 #: picard/ui/playertoolbar.py:185
 msgid "Player"
@@ -10384,8 +10377,8 @@ msgstr "Genre"
 
 #: picard/ui/options/genres.py:156
 #, python-format
-msgid "Error line %d: %s"
-msgstr "Baris ralat %d: %s"
+msgid "Error line %(lineno)d: %(error)s"
+msgstr "Baris ralat %(lineno)d: %(error)s"
 
 #: picard/ui/options/interface.py:94
 msgid "The default color scheme based on the operating system display settings"
@@ -10554,7 +10547,7 @@ msgstr ""
 #: picard/ui/options/maintenance.py:127
 #, python-format
 msgid ""
-"The configuration file currently contains %d option settings, %d which are "
+"The configuration file currently contains %(totalcount)d option settings, %(unusedcount)d which are "
 "unused."
 msgstr ""
 
@@ -10663,41 +10656,41 @@ msgstr "Sedang memuat semula senarai pemalam yang tersedia…"
 #: picard/ui/options/plugins.py:416 picard/ui/options/plugins.py:425
 #: picard/ui/options/plugins.py:446
 #, python-format
-msgid "Plugin '%s'"
-msgstr "Pemalam '%s'"
+msgid "Plugin \"%(plugin)s\""
+msgstr "Pemalam \"%(plugin)s\""
 
 #: picard/ui/options/plugins.py:417
 #, python-format
 msgid ""
-"An error occurred while loading the plugin '%s':\n"
+"An error occurred while loading the plugin \"%(plugin)s\":\n"
 "\n"
-"%s"
+"%(error)s"
 msgstr ""
-"Sebuah ralat berlaku ketika memuat pemalam '%s':\n"
+"Sebuah ralat berlaku ketika memuat pemalam '%(plugin)s':\n"
 "\n"
-"%s"
+"%(error)s"
 
 #: picard/ui/options/plugins.py:426
 #, python-format
-msgid "The plugin '%s' is not compatible with this version of Picard."
-msgstr "Pemalam '%s' tidak serasi dengan versi Picard ini."
+msgid "The plugin \"%(plugin)s\" is not compatible with this version of Picard."
+msgstr "Pemalam '%(plugin)s' tidak serasi dengan versi Picard ini."
 
 #: picard/ui/options/plugins.py:447
 #, python-format
-msgid "The plugin '%s' will be upgraded to version %s on next run of Picard."
+msgid "The plugin \"%(plugin)s\" will be upgraded to version %(version)s on next run of Picard."
 msgstr ""
-"Pemalam '%s' akan dinaik taraf ke versi %s apabila Picard dijalankan semula "
+"Pemalam '%(plugin)s' akan dinaik taraf ke versi %(version)s apabila Picard dijalankan semula "
 "kelak."
 
 #: picard/ui/options/plugins.py:468
 #, python-format
-msgid "Uninstall plugin '%s'?"
-msgstr "Rombak pemalam '%s'?"
+msgid "Uninstall plugin \"%(plugin)s\"?"
+msgstr "Rombak pemalam '%(plugin)s'?"
 
 #: picard/ui/options/plugins.py:469
 #, python-format
-msgid "Do you really want to uninstall the plugin '%s' ?"
-msgstr "Anda pasti ingin merombak pemalam '%s'?"
+msgid "Do you really want to uninstall the plugin \"%(plugin)s\"?"
+msgstr "Anda pasti ingin merombak pemalam '%(plugin)s'?"
 
 #: picard/ui/options/plugins.py:601
 msgid "Restart Picard to upgrade to new version"
@@ -10721,8 +10714,8 @@ msgstr ""
 
 #: picard/ui/options/plugins.py:678
 #, python-format
-msgid "The plugin '%s' could not be downloaded."
-msgstr "Pemalam '%s' tidak boleh dimuat turun."
+msgid "The plugin \"%(plugin)s\" could not be downloaded."
+msgstr "Pemalam '%(plugin)s' tidak boleh dimuat turun."
 
 #: picard/ui/options/plugins.py:679
 msgid "Please try again later."
@@ -10879,10 +10872,10 @@ msgstr "Cuba semula"
 #, python-format
 msgid ""
 "<strong>Following error occurred while fetching results:<br><br></"
-"strong>Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>"
+"strong>Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, HTTP code %(statuscode)r)<br>"
 msgstr ""
 "<strong>Ralat berikut terjadi ketika mengambil hasil:<br><br></strong>Ralat "
-"permintaan rangkaian bagi %s:<br>%s (kod QT %d, kod HTTP %s)<br>"
+"permintaan rangkaian bagi %(url)s:<br>%(error)s (kod QT %(qtcode)d, kod HTTP %(statuscode)s)<br>"
 
 #: picard/ui/searchdialog/__init__.py:263
 msgid "<strong>No results found. Please try a different search query.</strong>"

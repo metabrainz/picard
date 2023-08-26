@@ -191,23 +191,23 @@ msgstr "לא ניתן לטעון מִתְקָע '%s'?"
 
 #: picard/pluginmanager.py:276
 #, python-format
-msgid "Failed loading zipped plugin %r from %r"
-msgstr "טעינת מִתְקָע %r מ %r מכווץ ב־ZIP כשלה"
+msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
+msgstr "טעינת מִתְקָע \"%(plugin)s\" מ \"%(filename)s\" מכווץ ב־ZIP כשלה"
 
 #: picard/pluginmanager.py:286
 #, python-format
-msgid "Failed loading plugin %r in %r"
-msgstr "טעינת מִתְקָע %r כשלה ב %r"
+msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+msgstr "טעינת מִתְקָע '%(plugin)s' כשלה ב '%(dirname)s'"
 
 #: picard/pluginmanager.py:322
 #, python-format
-msgid "Plugin '%s' from '%s' is not compatible with this version of Picard."
-msgstr "מִתְקָע '%s' מ '%s' אינו תואם לגרסה זו של פיקארד."
+msgid "Plugin \"%(plugin)s\" from \"%(filename)s\" is not compatible with this version of Picard."
+msgstr "מִתְקָע \"%(plugin)s\" מ \"%(filename)s\" אינו תואם לגרסה זו של פיקארד."
 
 #: picard/pluginmanager.py:326
 #, python-format
-msgid "Plugin %r has an invalid API version string : %s"
-msgstr "למִתְקָע %r מחרוזת API לא תקינה:%s"
+msgid "Plugin \"%(plugin)s\" has an invalid API version string: %(error)s"
+msgstr "‮שגיאה בטעינת רשימת מִתְקָעים: %(error)s"
 
 #: picard/pluginmanager.py:329
 #, python-format
@@ -5979,8 +5979,8 @@ msgstr ""
 
 #: picard/script/__init__.py:145
 #, python-format
-msgid "Preset %d: %s"
-msgstr "הגדרה מראש %d %s"
+msgid "Preset %(number)d: %(title)s"
+msgstr "הגדרה מראש %(number)d %(title)s"
 
 #: picard/script/__init__.py:149
 msgid "Default file naming script"
@@ -7520,8 +7520,8 @@ msgstr ""
 
 #: picard/script/serializer.py:202
 #, python-format
-msgid "Error exporting file \"%s\". %s."
-msgstr "שגיאה ביצוא קובץ \"%s. %s\""
+msgid "Error exporting file \"%(filename)s\": %(error)s"
+msgstr "שגיאה ביצוא קובץ \"%(filename)s\": %(error)s"
 
 #: picard/script/serializer.py:209
 msgid "Export Script File"
@@ -7538,13 +7538,13 @@ msgstr "ייצא תסריט ל־%s צלח"
 
 #: picard/script/serializer.py:243
 #, python-format
-msgid "Error importing \"%s\". %s."
-msgstr "שגיאה ביבוא \"%s. %s\""
+msgid "Error importing \"%(filename)s\": %(error)s"
+msgstr "שגיאה ביבוא \"%(filename)s\": %(error)s"
 
 #: picard/script/serializer.py:244
 #, python-format
-msgid "Error decoding \"%s\". %s."
-msgstr "שגיאה בפענוח \"%s. %s\""
+msgid "Error decoding \"%(filename)s\": %(error)s"
+msgstr "שגיאה בפענוח \"%(filename)s\": %(error)s"
 
 #: picard/script/serializer.py:246
 msgid "Import Script File"
@@ -7696,12 +7696,12 @@ msgstr "רענון רשימה"
 
 #: picard/ui/collectionmenu.py:173
 #, python-format
-msgid "%s (%i release)"
-msgid_plural "%s (%i releases)"
-msgstr[0] "%s (%i הוצאה)"
-msgstr[1] "%s (%i הוצאות)"
-msgstr[2] "%s (%i הוצאות)"
-msgstr[3] "%s (%i הוצאות)"
+msgid "%(name)s (%(count)i release)"
+msgid_plural "%(name)s (%(count)i releases)"
+msgstr[0] "%(name)s (%(count)i הוצאה)"
+msgstr[1] "%(name)s (%(count)i הוצאות)"
+msgstr[2] "%(name)s (%(count)i הוצאות)"
+msgstr[3] "%(name)s (%(count)i הוצאות)"
 
 #: picard/ui/colors.py:37
 msgid "Errored entity"
@@ -7843,21 +7843,21 @@ msgstr "פרטים"
 #, python-format
 msgid ""
 "Double-click to open in external viewer\n"
-"Temporary file: %s\n"
-"Source: %s"
+"Temporary file: %(tempfile)s\n"
+"Source: %(sourcefile)s"
 msgstr ""
 "לחץ לחיצה כפולה לפתיחה במציג חיצוני\n"
-"קובץ זמני: %s\n"
-"מקור: %s"
+"קובץ זמני: %(tempfile)s\n"
+"מקור: %(sourcefile)s"
 
 #: picard/ui/infodialog.py:216
 #, python-format
 msgid ""
-"Missing temporary file: %s\n"
-"Source: %s"
+"Missing temporary file: %(tempfile)s\n"
+"Source: %(sourcefile)s"
 msgstr ""
-"קובץ זמני חסר: %s\n"
-"מקור: %s"
+"קובץ זמני חסר: %(tempfile)s\n"
+"מקור: %(sourcefile)s"
 
 #: picard/ui/infodialog.py:280
 msgid "Filename:"
@@ -8929,8 +8929,8 @@ msgstr "נגן פנימי: לא נמצא שרות השמעה תקין .לא ני
 
 #: picard/ui/playertoolbar.py:179
 #, python-format
-msgid "Internal player: error, code=%d, msg=%s"
-msgstr "נגן פנימי: שגיאה, קוד=%d, הודעה=%s"
+msgid "Internal player: error, code=%(code)d, msg=%(message)s"
+msgstr "נגן פנימי: שגיאה, קוד=%(code)d, הודעה=%(message)s"
 
 #: picard/ui/playertoolbar.py:185
 msgid "Player"
@@ -10409,8 +10409,8 @@ msgstr "סוגה"
 
 #: picard/ui/options/genres.py:156
 #, python-format
-msgid "Error line %d: %s"
-msgstr "שורת שגיאה %d:%s"
+msgid "Error line %(lineno)d: %(error)s"
+msgstr "שורת שגיאה %(lineno)d:%(error)s"
 
 #: picard/ui/options/interface.py:94
 msgid "The default color scheme based on the operating system display settings"
@@ -10586,9 +10586,9 @@ msgstr "ערך"
 #: picard/ui/options/maintenance.py:127
 #, python-format
 msgid ""
-"The configuration file currently contains %d option settings, %d which are "
+"The configuration file currently contains %(totalcount)d option settings, %(unusedcount)d which are "
 "unused."
-msgstr "קובץ התצורה מכיל כעת %d הגדרות אפשרויות, %d שאינן בשימוש."
+msgstr "קובץ התצורה מכיל כעת %(totalcount)d הגדרות אפשרויות, %(unusedcount)d שאינן בשימוש."
 
 #: picard/ui/options/maintenance.py:167
 msgid "Configuration files"
@@ -10704,39 +10704,39 @@ msgstr "טעינה מחדש של רשימת מִתְקָעים זמינים…"
 #: picard/ui/options/plugins.py:416 picard/ui/options/plugins.py:425
 #: picard/ui/options/plugins.py:446
 #, python-format
-msgid "Plugin '%s'"
-msgstr "מִתְקָע '%s'"
+msgid "Plugin \"%(plugin)s\""
+msgstr "מִתְקָע \"%(plugin)s\""
 
 #: picard/ui/options/plugins.py:417
 #, python-format
 msgid ""
-"An error occurred while loading the plugin '%s':\n"
+"An error occurred while loading the plugin \"%(plugin)s\":\n"
 "\n"
-"%s"
+"%(error)s"
 msgstr ""
-"ארעה שגיאה בעת טעינת מִתְקָע '%s':\n"
+"ארעה שגיאה בעת טעינת מִתְקָע \"%(plugin)s\":\n"
 "\n"
-"%s"
+"%(error)s"
 
 #: picard/ui/options/plugins.py:426
 #, python-format
-msgid "The plugin '%s' is not compatible with this version of Picard."
-msgstr "מִתְקָע '%s' אינו תואם לגרסה נוכחית של פיקארד."
+msgid "The plugin \"%(plugin)s\" is not compatible with this version of Picard."
+msgstr "מִתְקָע \"%(plugin)s\" אינו תואם לגרסה נוכחית של פיקארד."
 
 #: picard/ui/options/plugins.py:447
 #, python-format
-msgid "The plugin '%s' will be upgraded to version %s on next run of Picard."
-msgstr "המִתְקָע '%s' ישודרג לגרסה %s בהפעלה הבאה של פיקארד."
+msgid "The plugin \"%(plugin)s\" will be upgraded to version %(version)s on next run of Picard."
+msgstr "המִתְקָע \"%(plugin)s\" ישודרג לגרסה %s בהפעלה הבאה של פיקארד."
 
 #: picard/ui/options/plugins.py:468
 #, python-format
-msgid "Uninstall plugin '%s'?"
-msgstr "הסרת מִתְקָע '%s'?"
+msgid "Uninstall plugin \"%(plugin)s\"?"
+msgstr "הסרת מִתְקָע \"%(plugin)s\"?"
 
 #: picard/ui/options/plugins.py:469
 #, python-format
-msgid "Do you really want to uninstall the plugin '%s' ?"
-msgstr "האם להסיר מִתְקָע '%s' ?"
+msgid "Do you really want to uninstall the plugin \"%(plugin)s\"?"
+msgstr "האם להסיר מִתְקָע \"%(plugin)s\" ?"
 
 #: picard/ui/options/plugins.py:601
 msgid "Restart Picard to upgrade to new version"
@@ -10760,8 +10760,8 @@ msgstr ""
 
 #: picard/ui/options/plugins.py:678
 #, python-format
-msgid "The plugin '%s' could not be downloaded."
-msgstr "לא ניתן להוריד את מִתְקָע '%s'."
+msgid "The plugin \"%(plugin)s\" could not be downloaded."
+msgstr "לא ניתן להוריד את מִתְקָע \"%(plugin)s\"."
 
 #: picard/ui/options/plugins.py:679
 msgid "Please try again later."
@@ -10921,10 +10921,10 @@ msgstr "נסיון חוזר"
 #, python-format
 msgid ""
 "<strong>Following error occurred while fetching results:<br><br></"
-"strong>Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>"
+"strong>Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, HTTP code %(statuscode)r)<br>"
 msgstr ""
 "<strong> בעקבות השגיאה בעת משיכת התוצאות: <br> <br> </ strong> שגיאת בקשת "
-"רשת עבור %s: <br>%s <br> (קוד QT %d, קוד %s HTTP) <br>"
+"רשת עבור %(url)s: <br>%(error)s <br> (קוד QT %(qtcode)d, קוד %(statuscode)s HTTP)<br>"
 
 #: picard/ui/searchdialog/__init__.py:263
 msgid "<strong>No results found. Please try a different search query.</strong>"

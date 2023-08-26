@@ -212,23 +212,23 @@ msgstr "Не удалось загрузить плагин '%s'"
 
 #: picard/pluginmanager.py:276
 #, python-format
-msgid "Failed loading zipped plugin %r from %r"
-msgstr "Не удалось скачать сжатый плагин %r from %r"
+msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
+msgstr "Не удалось скачать сжатый плагин '%(plugin)s' from '%(filename)s'"
 
 #: picard/pluginmanager.py:286
 #, python-format
-msgid "Failed loading plugin %r in %r"
-msgstr "Не удалось загрузить плагин %r из %r"
+msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+msgstr "Не удалось загрузить плагин '%(plugin)s' из '%(dirname)s'"
 
 #: picard/pluginmanager.py:322
 #, python-format
-msgid "Plugin '%s' from '%s' is not compatible with this version of Picard."
-msgstr "Плагин '%s' из '%s' несовместим с текущей версией Picard."
+msgid "Plugin \"%(plugin)s\" from \"%(filename)s\" is not compatible with this version of Picard."
+msgstr "Плагин '%(plugin)s' из '%(filename)s' несовместим с текущей версией Picard."
 
 #: picard/pluginmanager.py:326
 #, python-format
-msgid "Plugin %r has an invalid API version string : %s"
-msgstr "Плагин %r имеет неверную строку версии API : %s"
+msgid "Plugin \"%(plugin)s\" has an invalid API version string: %(error)s"
+msgstr "Плагин '%(plugin)s' имеет неверную строку версии API : %(error)s"
 
 #: picard/pluginmanager.py:329
 #, python-format
@@ -6007,8 +6007,8 @@ msgstr ""
 
 #: picard/script/__init__.py:145
 #, python-format
-msgid "Preset %d: %s"
-msgstr "Предустановка 1%d: 2%s"
+msgid "Preset %(number)d: %(title)s"
+msgstr "Предустановка %(number)d: %(title)s"
 
 #: picard/script/__init__.py:149
 msgid "Default file naming script"
@@ -7013,7 +7013,7 @@ msgstr ""
 
 #: picard/script/serializer.py:202
 #, python-format
-msgid "Error exporting file \"%s\". %s."
+msgid "Error exporting file \"%(filename)s\": %(error)s"
 msgstr ""
 
 #: picard/script/serializer.py:209
@@ -7031,12 +7031,12 @@ msgstr ""
 
 #: picard/script/serializer.py:243
 #, python-format
-msgid "Error importing \"%s\". %s."
+msgid "Error importing \"%(filename)s\": %(error)s"
 msgstr ""
 
 #: picard/script/serializer.py:244
 #, python-format
-msgid "Error decoding \"%s\". %s."
+msgid "Error decoding \"%(filename)s\": %(error)s"
 msgstr ""
 
 #: picard/script/serializer.py:246
@@ -7197,12 +7197,12 @@ msgstr "Обновить список"
 
 #: picard/ui/collectionmenu.py:173
 #, python-format
-msgid "%s (%i release)"
-msgid_plural "%s (%i releases)"
-msgstr[0] "%s (%i альбом)"
-msgstr[1] "%s (%i альбома)"
-msgstr[2] "%s (%i альбомов)"
-msgstr[3] "%s (%i альбомов)"
+msgid "%(name)s (%(count)i release)"
+msgid_plural "%(name)s (%(count)i releases)"
+msgstr[0] "%(name)s (%(count)i альбом)"
+msgstr[1] "%(name)s (%(count)i альбома)"
+msgstr[2] "%(name)s (%(count)i альбомов)"
+msgstr[3] "%(name)s (%(count)i альбомов)"
 
 #: picard/ui/colors.py:37
 msgid "Errored entity"
@@ -7346,26 +7346,19 @@ msgstr "Информация"
 #, python-format
 msgid ""
 "Double-click to open in external viewer\n"
-"Temporary file: %s\n"
-"Source: %s"
+"Temporary file: %(tempfile)s\n"
+"Source: %(sourcefile)s"
 msgstr ""
 "Дважды щелкните, чтобы открыть во внешнем средстве просмотра\n"
-"Временный файл: %s\n"
-"Источник: %s"
+"Временный файл: %(tempfile)s\n"
+"Источник: %(sourcefile)s"
 
 #: picard/ui/infodialog.py:216
-#, fuzzy, python-format
-#| msgid ""
-#| "Double-click to open in external viewer\n"
-#| "Temporary file: %s\n"
-#| "Source: %s"
+#, python-format
 msgid ""
-"Missing temporary file: %s\n"
-"Source: %s"
+"Missing temporary file: %(tempfile)s\n"
+"Source: %(sourcefile)s"
 msgstr ""
-"Дважды щелкните, чтобы открыть во внешнем средстве просмотра\n"
-"Временный файл: %s\n"
-"Источник: %s"
 
 #: picard/ui/infodialog.py:280
 msgid "Filename:"
@@ -8452,8 +8445,8 @@ msgstr ""
 
 #: picard/ui/playertoolbar.py:179
 #, python-format
-msgid "Internal player: error, code=%d, msg=%s"
-msgstr "Встроенный плеер: ошибка, код=%d, сообщение=%s"
+msgid "Internal player: error, code=%(code)d, msg=%(message)s"
+msgstr "Встроенный плеер: ошибка, код=%(code)d, сообщение=%(message)s"
 
 #: picard/ui/playertoolbar.py:185
 msgid "Player"
@@ -9899,10 +9892,9 @@ msgid "Genres"
 msgstr "Жанры"
 
 #: picard/ui/options/genres.py:156
-#, fuzzy, python-format
-#| msgid "Preset %d: %s"
-msgid "Error line %d: %s"
-msgstr "Предустановка 1%d: 2%s"
+#, python-format
+msgid "Error line %(lineno)d: %(error)s"
+msgstr ""
 
 #: picard/ui/options/interface.py:94
 msgid "The default color scheme based on the operating system display settings"
@@ -10070,7 +10062,7 @@ msgstr "Значение"
 #: picard/ui/options/maintenance.py:127
 #, python-format
 msgid ""
-"The configuration file currently contains %d option settings, %d which are "
+"The configuration file currently contains %(totalcount)d option settings, %(unusedcount)d which are "
 "unused."
 msgstr ""
 
@@ -10180,37 +10172,37 @@ msgstr ""
 #: picard/ui/options/plugins.py:446
 #, fuzzy, python-format
 #| msgid "Plugin %r"
-msgid "Plugin '%s'"
-msgstr "Плагин %r"
+msgid "Plugin \"%(plugin)s\""
+msgstr "Плагин %(plugin)s"
 
 #: picard/ui/options/plugins.py:417
 #, python-format
 msgid ""
-"An error occurred while loading the plugin '%s':\n"
+"An error occurred while loading the plugin \"%(plugin)s\":\n"
 "\n"
-"%s"
+"%(error)s"
 msgstr ""
 
 #: picard/ui/options/plugins.py:426
 #, python-format
-msgid "The plugin '%s' is not compatible with this version of Picard."
-msgstr "Плагин '%s' несовместим с текущей версией Picard."
+msgid "The plugin \"%(plugin)s\" is not compatible with this version of Picard."
+msgstr "Плагин '%(plugin)s' несовместим с текущей версией Picard."
 
 #: picard/ui/options/plugins.py:447
 #, python-format
-msgid "The plugin '%s' will be upgraded to version %s on next run of Picard."
-msgstr "Плагин '%s' будет обновлён до версии %s при следующем запуске Picard."
+msgid "The plugin \"%(plugin)s\" will be upgraded to version %(version)s on next run of Picard."
+msgstr "Плагин '%(plugin)s' будет обновлён до версии %s при следующем запуске Picard."
 
 #: picard/ui/options/plugins.py:468
 #, fuzzy, python-format
 #| msgid "Uninstall plugin"
-msgid "Uninstall plugin '%s'?"
+msgid "Uninstall plugin \"%(plugin)s\"?"
 msgstr "Удалить плагин"
 
 #: picard/ui/options/plugins.py:469
 #, python-format
-msgid "Do you really want to uninstall the plugin '%s' ?"
-msgstr "Вы действительно хотите удалить плагин %s?"
+msgid "Do you really want to uninstall the plugin \"%(plugin)s\"?"
+msgstr "Вы действительно хотите удалить плагин '%(plugin)s'?"
 
 #: picard/ui/options/plugins.py:601
 msgid "Restart Picard to upgrade to new version"
@@ -10234,8 +10226,8 @@ msgstr ""
 
 #: picard/ui/options/plugins.py:678
 #, python-format
-msgid "The plugin '%s' could not be downloaded."
-msgstr "Плагин '%s' не может быть скачан."
+msgid "The plugin \"%(plugin)s\" could not be downloaded."
+msgstr "Плагин '%(plugin)s' не может быть скачан."
 
 #: picard/ui/options/plugins.py:679
 msgid "Please try again later."
@@ -10392,10 +10384,10 @@ msgstr "Повтор"
 #, python-format
 msgid ""
 "<strong>Following error occurred while fetching results:<br><br></"
-"strong>Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>"
+"strong>Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, HTTP code %(statuscode)r)<br>"
 msgstr ""
 "<strong>Произошла ошибка при получении результатов:<br><br></strong>Ошибка "
-"сетевого запроса для %s:<br>%s (QT-код %d, HTTP-код %s)<br>"
+"сетевого запроса для %(url)s:<br>%(error)s (QT-код %(qtcode)d, HTTP-код %(statuscode)s)<br>"
 
 #: picard/ui/searchdialog/__init__.py:263
 msgid "<strong>No results found. Please try a different search query.</strong>"

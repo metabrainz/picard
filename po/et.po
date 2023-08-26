@@ -185,28 +185,23 @@ msgstr "Plugina \"%s\" laadimine nurjus"
 
 #: picard/pluginmanager.py:276
 #, python-format
-msgid "Failed loading zipped plugin %r from %r"
-msgstr "Pakitud plugina \"%r\" laadimine asukohast \"%r\" nurjus"
+msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
+msgstr "Pakitud plugina \"%(plugin)s\" laadimine asukohast \"%(filename)s\" nurjus"
 
 #: picard/pluginmanager.py:286
 #, python-format
-msgid "Failed loading plugin %r in %r"
-msgstr "Plugina \"%r\" laadimine asukohast \"%r\" nurjus"
+msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+msgstr "Plugina \"%(plugin)s\" laadimine asukohast \"%(dirname)s\" nurjus"
 
 #: picard/pluginmanager.py:322
 #, python-format
-msgid "Plugin '%s' from '%s' is not compatible with this version of Picard."
-msgstr "Plugin \"%s\" (%s) ei ühildu Picardi praeguse versiooniga."
+msgid "Plugin \"%(plugin)s\" from \"%(filename)s\" is not compatible with this version of Picard."
+msgstr "Plugin \"%(plugin)s\" (%(filename)s) ei ühildu Picardi praeguse versiooniga."
 
 #: picard/pluginmanager.py:326
 #, python-format
-msgid "Plugin %r has an invalid API version string : %s"
-msgstr "Pluginal \"%r\" on vigane API versioonistring: %s"
-
-#: picard/pluginmanager.py:329
-#, python-format
-msgid "Plugin %r"
-msgstr "Plugin \"%r\""
+msgid "Plugin \"%(plugin)s\" has an invalid API version string: %(error)s"
+msgstr "Pluginal \"%(plugin)s\" on vigane API versioonistring: %(error)s"
 
 #: picard/pluginmanager.py:465
 #, python-format
@@ -6025,10 +6020,9 @@ msgid ""
 msgstr ""
 
 #: picard/script/__init__.py:145
-#, fuzzy, python-format
-#| msgid "Error line %d: %s"
-msgid "Preset %d: %s"
-msgstr "Viga real %d: %s"
+#, python-format
+msgid "Preset %(number)d: %(title)s"
+msgstr ""
 
 #: picard/script/__init__.py:149
 msgid "Default file naming script"
@@ -7124,7 +7118,7 @@ msgstr ""
 
 #: picard/script/serializer.py:202
 #, python-format
-msgid "Error exporting file \"%s\". %s."
+msgid "Error exporting file \"%(filename)s\": %(error)s"
 msgstr ""
 
 #: picard/script/serializer.py:209
@@ -7141,16 +7135,14 @@ msgid "Script successfully exported to %s"
 msgstr ""
 
 #: picard/script/serializer.py:243
-#, fuzzy, python-format
-#| msgid "Error line %d: %s"
-msgid "Error importing \"%s\". %s."
-msgstr "Viga real %d: %s"
+#, python-format
+msgid "Error importing \"%(filename)s\": %(error)s"
+msgstr ""
 
 #: picard/script/serializer.py:244
-#, fuzzy, python-format
-#| msgid "Error line %d: %s"
-msgid "Error decoding \"%s\". %s."
-msgstr "Viga real %d: %s"
+#, python-format
+msgid "Error decoding \"%(filename)s\": %(error)s"
+msgstr ""
 
 #: picard/script/serializer.py:246
 msgid "Import Script File"
@@ -7303,10 +7295,10 @@ msgstr "Värskenda loendit"
 
 #: picard/ui/collectionmenu.py:173
 #, python-format
-msgid "%s (%i release)"
-msgid_plural "%s (%i releases)"
-msgstr[0] "%s (%i väljalase)"
-msgstr[1] "%s (%i väljalaset)"
+msgid "%(name)s (%(count)i release)"
+msgid_plural "%(name)s (%(count)i releases)"
+msgstr[0] "%(name)s (%(count)i väljalase)"
+msgstr[1] "%(name)s (%(count)i väljalaset)"
 
 #: picard/ui/colors.py:37
 msgid "Errored entity"
@@ -7449,26 +7441,19 @@ msgstr "Info"
 #, python-format
 msgid ""
 "Double-click to open in external viewer\n"
-"Temporary file: %s\n"
-"Source: %s"
+"Temporary file: %(tempfile)s\n"
+"Source: %(sourcefile)s"
 msgstr ""
 "Välises vaatajas avamiseks tee topeltklõps\n"
-"Ajutine fail: %s\n"
-"Allikas: %s"
+"Ajutine fail: %(tempfile)s\n"
+"Allikas: %(sourcefile)s"
 
 #: picard/ui/infodialog.py:216
-#, fuzzy, python-format
-#| msgid ""
-#| "Double-click to open in external viewer\n"
-#| "Temporary file: %s\n"
-#| "Source: %s"
+#, python-format
 msgid ""
-"Missing temporary file: %s\n"
-"Source: %s"
+"Missing temporary file: %(tempfile)s\n"
+"Source: %(sourcefile)s"
 msgstr ""
-"Välises vaatajas avamiseks tee topeltklõps\n"
-"Ajutine fail: %s\n"
-"Allikas: %s"
 
 #: picard/ui/infodialog.py:280
 msgid "Filename:"
@@ -8541,8 +8526,8 @@ msgstr ""
 
 #: picard/ui/playertoolbar.py:179
 #, python-format
-msgid "Internal player: error, code=%d, msg=%s"
-msgstr "Sisemine muusikamängija: viga, kood = %d, sõnum = %s"
+msgid "Internal player: error, code=%(code)d, msg=%(message)s"
+msgstr "Sisemine muusikamängija: viga, kood = %(code)d, sõnum = %(message)s"
 
 #: picard/ui/playertoolbar.py:185
 msgid "Player"
@@ -9990,8 +9975,8 @@ msgstr "Muusikastiilid"
 
 #: picard/ui/options/genres.py:156
 #, python-format
-msgid "Error line %d: %s"
-msgstr "Viga real %d: %s"
+msgid "Error line %(lineno)d: %(error)s"
+msgstr "Viga real %(lineno)d: %(error)s"
 
 #: picard/ui/options/interface.py:94
 msgid "The default color scheme based on the operating system display settings"
@@ -10158,7 +10143,7 @@ msgstr "Väärtus"
 #: picard/ui/options/maintenance.py:127
 #, python-format
 msgid ""
-"The configuration file currently contains %d option settings, %d which are "
+"The configuration file currently contains %(totalcount)d option settings, %(unusedcount)d which are "
 "unused."
 msgstr ""
 
@@ -10267,40 +10252,40 @@ msgstr "Saadaolevate pluginate loendi uuendamine…"
 #: picard/ui/options/plugins.py:416 picard/ui/options/plugins.py:425
 #: picard/ui/options/plugins.py:446
 #, python-format
-msgid "Plugin '%s'"
-msgstr "Plugin \"%s\""
+msgid "Plugin \"%(plugin)s\""
+msgstr "Plugin \"%(plugin)s\""
 
 #: picard/ui/options/plugins.py:417
 #, python-format
 msgid ""
-"An error occurred while loading the plugin '%s':\n"
+"An error occurred while loading the plugin \"%(plugin)s\":\n"
 "\n"
-"%s"
+"%(error)s"
 msgstr ""
-"Plugina \"%s\" laadimisel ilmnes viga:\n"
+"Plugina \"%(plugin)s\" laadimisel ilmnes viga:\n"
 "\n"
-"%s"
+"%(error)s"
 
 #: picard/ui/options/plugins.py:426
 #, python-format
-msgid "The plugin '%s' is not compatible with this version of Picard."
-msgstr "Plugin \"%s\" ei ühildu Picardi praeguse versiooniga."
+msgid "The plugin \"%(plugin)s\" is not compatible with this version of Picard."
+msgstr "Plugin \"%(plugin)s\" ei ühildu Picardi praeguse versiooniga."
 
 #: picard/ui/options/plugins.py:447
 #, python-format
-msgid "The plugin '%s' will be upgraded to version %s on next run of Picard."
+msgid "The plugin \"%(plugin)s\" will be upgraded to version %(version)s on next run of Picard."
 msgstr ""
-"Picardi järgmisel käivitamisel uuendatakse plugin \"%s\" versioonile %s."
+"Picardi järgmisel käivitamisel uuendatakse plugin \"%(plugin)s\" versioonile %(version)s."
 
 #: picard/ui/options/plugins.py:468
 #, python-format
-msgid "Uninstall plugin '%s'?"
-msgstr "Plugina \"%s\" eemaldamine"
+msgid "Uninstall plugin \"%(plugin)s\"?"
+msgstr "Plugina \"%(plugin)s\" eemaldamine"
 
 #: picard/ui/options/plugins.py:469
 #, python-format
-msgid "Do you really want to uninstall the plugin '%s' ?"
-msgstr "Kas soovid kindlasti plugina \"%s\" eemaldada?"
+msgid "Do you really want to uninstall the plugin \"%(plugin)s\"?"
+msgstr "Kas soovid kindlasti plugina \"%(plugin)s\" eemaldada?"
 
 #: picard/ui/options/plugins.py:601
 msgid "Restart Picard to upgrade to new version"
@@ -10324,8 +10309,8 @@ msgstr ""
 
 #: picard/ui/options/plugins.py:678
 #, python-format
-msgid "The plugin '%s' could not be downloaded."
-msgstr "Pluginat \"%s\" polnud võimalik alla laadida."
+msgid "The plugin \"%(plugin)s\" could not be downloaded."
+msgstr "Pluginat \"%(plugin)s\" polnud võimalik alla laadida."
 
 #: picard/ui/options/plugins.py:679
 msgid "Please try again later."
@@ -10482,10 +10467,10 @@ msgstr "Proovi uuesti"
 #, python-format
 msgid ""
 "<strong>Following error occurred while fetching results:<br><br></"
-"strong>Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>"
+"strong>Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, HTTP code %(statuscode)r)<br>"
 msgstr ""
 "<strong>Tulemuste hankimisel ilmnes viga:<br><br></strong>võrgupäringu viga "
-"%s jaoks:<br>%s (QT-kood %d, HTTP-kood %s)<br>"
+"%(url)s jaoks:<br>%(error)s (QT-kood %(qtcode)d, HTTP-kood %(statuscode)s)<br>"
 
 #: picard/ui/searchdialog/__init__.py:263
 msgid "<strong>No results found. Please try a different search query.</strong>"
