@@ -1,6 +1,6 @@
 {
     "MsgAlreadyInstalled": "",
-    "MsgApplicationRunning": "The application ${PRODUCT_NAME} is running. Please close it and try again.",
+    "MsgApplicationRunning": "",
     "MsgRequires64Bit": "",
     "MsgUninstallFailed": "",
     "MuiDescriptionDesktop": "",
