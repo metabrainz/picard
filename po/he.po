@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-26 21:19+0200\n"
-"PO-Revision-Date: 2023-08-24 15:36+0000\n"
+"PO-Revision-Date: 2023-08-27 13:05+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Hebrew <https://translations.metabrainz.org/projects/picard/"
 "app/he/>\n"
@@ -209,7 +209,7 @@ msgstr "מִתְקָע \"%(plugin)s\" מ \"%(filename)s\" אינו תואם לג
 #: picard/pluginmanager.py:339
 #, python-format
 msgid "Plugin \"%(plugin)s\" has an invalid API version string: %(error)s"
-msgstr "‮שגיאה בטעינת רשימת מִתְקָעים: %(error)s"
+msgstr "למִתְקָע %(plugin)s מחרוזת API לא תקינה:‪ %(error)s"
 
 #: picard/pluginmanager.py:345 picard/ui/options/plugins.py:416
 #: picard/ui/options/plugins.py:428 picard/ui/options/plugins.py:449
@@ -5784,7 +5784,7 @@ msgstr "מִתְקָע \"%(plugin)s\" אינו תואם לגרסה נוכחית 
 msgid ""
 "The plugin \"%(plugin)s\" will be upgraded to version %(version)s on next "
 "run of Picard."
-msgstr "המִתְקָע \"%(plugin)s\" ישודרג לגרסה %s בהפעלה הבאה של פיקארד."
+msgstr "המִתְקָע \"%(plugin)s\" ישודרג לגרסה %(version)s בהפעלה הבאה של פיקארד."
 
 #: picard/ui/options/plugins.py:473
 #, python-format
@@ -5983,7 +5983,7 @@ msgid ""
 "HTTP code %(statuscode)r)<br>"
 msgstr ""
 "<strong> בעקבות השגיאה בעת משיכת התוצאות: <br> <br> </ strong> שגיאת בקשת "
-"רשת עבור %(url)s: <br>%(error)s <br> (קוד QT %(qtcode)d, קוד %(statuscode)s "
+"רשת עבור %(url)s: <br>%(error)s <br> (קוד QT %(qtcode)d, קוד %(statuscode)r "
 "HTTP)<br>"
 
 #: picard/ui/searchdialog/__init__.py:264
