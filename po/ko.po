@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-26 21:19+0200\n"
-"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"PO-Revision-Date: 2023-08-27 13:05+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Korean <https://translations.metabrainz.org/projects/picard/"
 "app/ko/>\n"
@@ -5111,9 +5111,8 @@ msgstr "\"%(plugin)s\" 플러그인은 현재 버전의 Picard와 호환되지 �
 msgid ""
 "The plugin \"%(plugin)s\" will be upgraded to version %(version)s on next "
 "run of Picard."
-msgstr ""
-"\"%(plugin)s\" 플러그인은 다음번에 Picard를 실행할 때 %s 버전으로 업그레이드 "
-"됩니다."
+msgstr "\"%(plugin)s\" 플러그인은 다음번에 Picard를 실행할 때 %(version)s 버전으로 "
+"업그레이드 됩니다."
 
 #: picard/ui/options/plugins.py:473
 #, fuzzy, python-format
@@ -5309,9 +5308,9 @@ msgid ""
 "strong>Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, "
 "HTTP code %(statuscode)r)<br>"
 msgstr ""
-"<strong>결과를 불러 오는 중 다음과 같은 오류가 발생하였습니다: <br><br></"
-"strong>%(url)s 네트워크 요청 오류:<br>%(error)s (QT 코드 %(qtcode)d, HTTP 코"
-"드 %(statuscode)s)<br>"
+"<strong>결과를 불러 오는 중 다음과 같은 오류가 발생하였습니다: "
+"<br><br></strong>%(url)s 네트워크 요청 오류:<br>%(error)s (QT 코드 %(qtcode)"
+"d, HTTP 코드 %(statuscode)r)<br>"
 
 #: picard/ui/searchdialog/__init__.py:264
 msgid "<strong>No results found. Please try a different search query.</strong>"
