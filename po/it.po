@@ -10,21 +10,22 @@
 # salo.rock, 2013-2015
 # salo.rock, 2012
 # salo.rock, 2021-2023
+# "salo.rock" <salo.rock+musicbrainz@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-22 17:47+0200\n"
-"PO-Revision-Date: 2023-08-23 19:09+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2023-08-26 11:21+0000\n"
+"Last-Translator: \"salo.rock\" <salo.rock+musicbrainz@gmail.com>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
 "app/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
-"0) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
+" ? 1 : 2);\n"
 "X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
 
@@ -181,11 +182,11 @@ msgstr "Errore inatteso nella richiesta (codice HTTP %s)"
 
 #: picard/pluginmanager.py:79
 msgid "Perform this check again the next time you start Picard."
-msgstr ""
+msgstr "Esegui di nuovo questo controllo al prossimo avvio di Picard."
 
 #: picard/pluginmanager.py:84
 msgid "Picard Plugins Update"
-msgstr ""
+msgstr "Aggiornamento dei plugin di Picard"
 
 #: picard/pluginmanager.py:261
 #, python-format
@@ -228,23 +229,25 @@ msgid ""
 "There is an update available for one of your currently installed plugins:"
 msgid_plural ""
 "There are updates available for your currently installed plugins:"
-msgstr[0] ""
+msgstr[0] "C'è un aggiornamento disponibile per uno dei plugin che hai installato:"
 msgstr[1] ""
+"Ci sono degli aggiornamenti disponibili per i plugin che hai installato:"
 msgstr[2] ""
+"Ci sono degli aggiornamenti disponibili per i plugin che hai installato:"
 
 #: picard/pluginmanager.py:506
 msgid "Do you want to update the plugin now?"
 msgid_plural "Do you want to update the plugins now?"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Vuoi aggiornare il plugin adesso?"
+msgstr[1] "Vuoi aggiornare i plugin adesso?"
+msgstr[2] "Vuoi aggiornare i plugin adesso?"
 
 #: picard/pluginmanager.py:514
 msgid "plus {extra_file_count:,d} other plugin."
 msgid_plural "plus {extra_file_count:,d} other plugins."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "più {extra_file_count:,d} altro plugin."
+msgstr[1] "più {extra_file_count:,d} altri plugin."
+msgstr[2] "più {extra_file_count:,d} altri plugin."
 
 #: picard/profile.py:46 picard/ui/options/general.py:56
 #: picard/ui/ui_options_general.py:200
@@ -272,14 +275,12 @@ msgid "Ignore MBIDs when loading new files"
 msgstr "Ignora MBID al caricamento di nuovi file"
 
 #: picard/profile.py:53 picard/ui/ui_options_general.py:205
-#, fuzzy
 msgid "Check for plugin updates during startup"
-msgstr "Controlla aggiornamenti all'avvio"
+msgstr "Controlla gli aggiornamenti dei plugin all'avvio"
 
 #: picard/profile.py:54 picard/ui/ui_options_general.py:206
-#, fuzzy
 msgid "Check for program updates during startup"
-msgstr "Controlla aggiornamenti all'avvio"
+msgstr "Controlla gli aggiornamenti del programma all'avvio"
 
 #: picard/profile.py:55
 msgid "Days between update checks"
@@ -514,7 +515,7 @@ msgstr "Salva una sola immagine di copertina frontale come file separato"
 msgid "Always use the primary image type as the file name for non-front images"
 msgstr ""
 "Usa sempre il tipo principale di immagine come nome del file per le immagini "
-"di copertina non frontali."
+"di copertina non frontali"
 
 #: picard/profile.py:148
 msgid "Cover art providers"
@@ -670,7 +671,7 @@ msgstr "Avanzate"
 
 #: picard/profile.py:216
 msgid "Ignore file paths matching a regular expression"
-msgstr "Ignora percorsi file che corrispondono ad un'espressione regolare:"
+msgstr "Ignora percorsi file che corrispondono ad un'espressione regolare"
 
 #: picard/profile.py:217 picard/ui/ui_options_advanced.py:143
 msgid "Ignore hidden files"
@@ -5331,8 +5332,8 @@ msgid ""
 msgstr ""
 "`$strip(text)`\n"
 "\n"
-"Sostituisce tutto lo spazio vuoto in `text` con un singolo spazio\n"
-"e rimuove spazi iniziali e finali.\n"
+"Sostituisce tutto lo spazio vuoto in `text` con un singolo spazio e rimuove "
+"spazi iniziali e finali.\n"
 "I caratteri considerati come spazio vuoto includono spazi consecutivi "
 "multipli e vari altri caratteri unicode."
 
@@ -6098,8 +6099,9 @@ msgstr ""
 "`$swapprefix(text,prefix1,prefix2,…)`\n"
 "\n"
 "Sposta i prefissi specificati dall'inizio alla fine di `text`.\n"
-"È possibile specificare più prefissi come parametri distinti. Se nessun "
-"prefisso è specificato, 'A' e 'The' sono usati come valori predefiniti.\n"
+"È possibile specificare più prefissi come parametri distinti.\n"
+"Se nessun prefisso è specificato, 'A' e 'The' sono usati come valori "
+"predefiniti.\n"
 "\n"
 "Esempio:\n"
 "\n"
@@ -6125,8 +6127,9 @@ msgstr ""
 "`$delprefix(text,prefix1,prefix2,…)`\n"
 "\n"
 "Elimina i prefissi specificati dall'inizio di `text`.\n"
-"È possibile specificare più prefissi come parametri distinti. Se nessun "
-"prefisso è specificato, 'A' e 'The' sono usati come valori predefiniti.\n"
+"È possibile specificare più prefissi come parametri distinti.\n"
+"Se nessun prefisso è specificato, 'A' e 'The' sono usati come valori "
+"predefiniti.\n"
 "\n"
 "Esempio:\n"
 "\n"
@@ -6226,7 +6229,6 @@ msgstr ""
 "Esempio:\n"
 "\n"
 "    $set(album,$title(%album%))\n"
-"\n"
 "_Da Picard 2.1_"
 
 #: picard/script/functions.py:1108
@@ -6810,23 +6812,23 @@ msgid ""
 msgstr ""
 "`$min(type,x,…)`\n"
 "\n"
-"Restituisce il valore minimo sulla base del confronto specificato in "
-"`type`.\n"
+"Restituisce il valore minimo sulla base del confronto specificato in `type`."
+"\n"
 "\n"
 "I valori possibili di `type` sono \"int\" (intero), \"float\" (virgola "
-"mobile), \"text\"\n"
-"(testo che distingue maiuscole/minuscole), \"nocase\" (testo che non "
-"distingue maiuscole/minuscole) e \"auto\" (determina\n"
-"automaticamente il tipo di argomenti forniti), con \"auto\" usato come "
-"metodo\n"
-"di confronto predefinito se `type` non è specificato. Il tipo \"auto\" "
-"userà\n"
-"il primo tipo che si applica a entrambi gli argomenti nel seguente ordine di "
-"preferenza:\n"
-"\"int\", \"float\" e \"text\".\n"
+"mobile),\n"
+"\"text\" (testo che distingue maiuscole/minuscole), \"nocase\" (testo che "
+"non distingue\n"
+"maiuscole/minuscole) e \"auto\" (determina automaticamente il tipo di "
+"argomenti forniti),\n"
+"con \"auto\" usato come metodo di confronto predefinito se `type` non è "
+"specificato.\n"
+"Il tipo \"auto\" userà il primo tipo che si applica a entrambi gli "
+"argomenti\n"
+"nel seguente ordine di preferenza: \"int\", \"float\" e \"text\".\n"
 "\n"
-"Può essere usato con un numero arbitrario di argomenti. Gli argomenti multi-"
-"valore saranno espansi automaticamente.\n"
+"Può essere usato con un numero arbitrario di argomenti.\n"
+"Gli argomenti multi-valore saranno espansi automaticamente.\n"
 "\n"
 "_Da Picard 2.9_"
 
@@ -6855,23 +6857,23 @@ msgid ""
 msgstr ""
 "`$max(type,x,…)`\n"
 "\n"
-"Restituisce il valore massimo sulla base del confronto specificato in "
-"`type`.\n"
+"Restituisce il valore massimo sulla base del confronto specificato in `type`."
+"\n"
 "\n"
 "I valori possibili di `type` sono \"int\" (intero), \"float\" (virgola "
-"mobile), \"text\"\n"
-"(testo che distingue maiuscole/minuscole), \"nocase\" (testo che non "
-"distingue maiuscole/minuscole) e \"auto\" (determina\n"
-"automaticamente il tipo di argomenti forniti), con \"auto\" usato come "
-"metodo\n"
-"di confronto predefinito se `type` non è specificato. Il tipo \"auto\" "
-"userà\n"
-"il primo tipo che si applica a entrambi gli argomenti nel seguente ordine di "
-"preferenza:\n"
-"\"int\", \"float\" e \"text\".\n"
+"mobile),\n"
+"\"text\" (testo che distingue maiuscole/minuscole), \"nocase\" (testo che "
+"non distingue\n"
+"maiuscole/minuscole) e \"auto\" (determina automaticamente il tipo di "
+"argomenti forniti),\n"
+"con \"auto\" usato come metodo di confronto predefinito se `type` non è "
+"specificato.\n"
+"Il tipo \"auto\" userà il primo tipo che si applica a entrambi gli "
+"argomenti\n"
+"nel seguente ordine di preferenza: \"int\", \"float\" e \"text\".\n"
 "\n"
-"Può essere usato con un numero arbitrario di argomenti. Gli argomenti multi-"
-"valore saranno espansi automaticamente.\n"
+"Può essere usato con un numero arbitrario di argomenti.\n"
+"Gli argomenti multi-valore saranno espansi automaticamente.\n"
 "\n"
 "_Da Picard 2.9_"
 
@@ -7016,7 +7018,7 @@ msgstr ""
 
 #: picard/ui/aboutdialog.py:109
 msgid "Donate now!"
-msgstr "Riconoscimenti"
+msgstr "Fai una donazione adesso!"
 
 #: picard/ui/aboutdialog.py:110
 msgid "Credits"
@@ -7374,15 +7376,15 @@ msgstr "Sottotitolo disco"
 
 #: picard/ui/itemviews.py:168
 msgid "Track No."
-msgstr "N. traccia"
+msgstr "Nº di traccia"
 
 #: picard/ui/itemviews.py:169
 msgid "Disc No."
-msgstr "N. disco"
+msgstr "Nº del disco"
 
 #: picard/ui/itemviews.py:170
 msgid "Catalog No."
-msgstr "N. catalogo"
+msgstr "Nº di catalogo"
 
 #: picard/ui/itemviews.py:172 picard/util/tags.py:76
 msgid "Media"
@@ -8482,7 +8484,7 @@ msgstr "Reimposta"
 
 #: picard/ui/options/dialog.py:135 picard/ui/scripteditor.py:464
 msgid "Make It So!"
-msgstr "Applica"
+msgstr "Applica!"
 
 #: picard/ui/scripteditor.py:536
 msgid "&Import a script file"
