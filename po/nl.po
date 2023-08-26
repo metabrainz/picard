@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-26 21:19+0200\n"
-"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"PO-Revision-Date: 2023-08-27 13:05+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/"
 "app/nl/>\n"
@@ -186,7 +186,7 @@ msgstr ""
 #: picard/pluginmanager.py:267
 #, python-format
 msgid "Unable to load plugin '%s'"
-msgstr "De plug-in ‘%(plugin)s’ kon niet worden geladen"
+msgstr "De plug-in ‘%s’ kon niet worden geladen"
 
 #: picard/pluginmanager.py:282
 #, python-format
@@ -2679,12 +2679,12 @@ msgstr "Script met succes naar %s geëxporteerd"
 #: picard/script/serializer.py:243
 #, python-format
 msgid "Error importing \"%(filename)s\": %(error)s"
-msgstr "Fout bij importeren van bestand “%s(filename)”: %(error)s"
+msgstr "Fout bij importeren van bestand “%(filename)s”: %(error)s"
 
 #: picard/script/serializer.py:244
 #, python-format
 msgid "Error decoding \"%(filename)s\": %(error)s"
-msgstr "Fout bij het decoderen van “%s(filename)”: %(error)s"
+msgstr "Fout bij het decoderen van “%(filename)s”: %(error)s"
 
 #: picard/script/serializer.py:246
 msgid "Import Script File"
@@ -6159,9 +6159,9 @@ msgid ""
 "strong>Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, "
 "HTTP code %(statuscode)r)<br>"
 msgstr ""
-"<strong>Tijdens het laden van de resultaten trad de volgende fout op:"
-"<br><br></strong>Fout bij de netwerkaanvraag voor %(url)s:<br>%(error)s (QT-"
-"code %(qtcode)d, HTTP-code %(statuscode)s)<br>"
+"<strong>Tijdens het laden van de resultaten trad de volgende fout "
+"op:<br><br></strong>Fout bij de netwerkaanvraag voor %(url)s:<br>%(error)s "
+"(QT-code %(qtcode)d, HTTP-code %(statuscode)r)<br>"
 
 #: picard/ui/searchdialog/__init__.py:264
 msgid "<strong>No results found. Please try a different search query.</strong>"
