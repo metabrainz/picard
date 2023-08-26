@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-26 21:19+0200\n"
-"PO-Revision-Date: 2023-08-24 15:36+0000\n"
+"PO-Revision-Date: 2023-08-27 13:05+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Malay <https://translations.metabrainz.org/projects/picard/"
 "app/ms/>\n"
@@ -202,7 +202,8 @@ msgstr ""
 #: picard/pluginmanager.py:339
 #, python-format
 msgid "Plugin \"%(plugin)s\" has an invalid API version string: %(error)s"
-msgstr "Pemalam '%(plugin)s' mempunyai rentetan versi API yang tak sah : %s"
+msgstr ""
+"Pemalam '%(plugin)s' mempunyai rentetan versi API yang tak sah : %(error)s"
 
 #: picard/pluginmanager.py:345 picard/ui/options/plugins.py:416
 #: picard/ui/options/plugins.py:428 picard/ui/options/plugins.py:449
@@ -5888,7 +5889,7 @@ msgid ""
 msgstr ""
 "<strong>Ralat berikut terjadi ketika mengambil hasil:<br><br></strong>Ralat "
 "permintaan rangkaian bagi %(url)s:<br>%(error)s (kod QT %(qtcode)d, kod HTTP "
-"%(statuscode)s)<br>"
+"%(statuscode)r)<br>"
 
 #: picard/ui/searchdialog/__init__.py:264
 msgid "<strong>No results found. Please try a different search query.</strong>"
