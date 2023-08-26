@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-26 21:19+0200\n"
-"PO-Revision-Date: 2023-08-23 19:10+0000\n"
+"PO-Revision-Date: 2023-08-27 13:05+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://translations.metabrainz.org/"
 "projects/picard/app/zh_Hant/>\n"
@@ -5459,8 +5459,8 @@ msgid ""
 "strong>Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, "
 "HTTP code %(statuscode)r)<br>"
 msgstr ""
-"<strong>取得結果時發生已下錯誤：<br><br></strong>網路請求錯誤於%(url)s: <br>"
-"%(error)s(QT 代碼 %(qtcode)d，HTTP代碼 %(statuscode)s)<br>"
+"<strong>取得結果時發生已下錯誤：<br><br></strong>網路請求錯誤於%(url)s: "
+"<br>%(error)s(QT 代碼 %(qtcode)d，HTTP代碼 %(statuscode)r)<br>"
 
 #: picard/ui/searchdialog/__init__.py:264
 msgid "<strong>No results found. Please try a different search query.</strong>"
@@ -5660,13 +5660,12 @@ msgid "Picard Update"
 msgstr "Picard 更新"
 
 #: picard/util/checkupdate.py:106
-#, fuzzy
 msgid ""
 "Unable to retrieve the latest version information from the website.\n"
 "({url})"
 msgstr ""
 "無法從網頁取得新版本資訊。\n"
-"(https://{url}{endpoint})"
+"({url})"
 
 #: picard/util/checkupdate.py:140
 msgid ""
