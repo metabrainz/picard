@@ -40,7 +40,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-26 21:19+0200\n"
-"PO-Revision-Date: 2023-08-26 11:21+0000\n"
+"PO-Revision-Date: 2023-08-27 13:05+0000\n"
 "Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/"
 "app/fr/>\n"
@@ -2122,7 +2122,6 @@ msgstr ""
 "Retourne le `texte` à l’envers."
 
 #: picard/script/functions.py:1162
-#, fuzzy
 msgid ""
 "`$substr(text,start[,end])`\n"
 "\n"
@@ -2134,15 +2133,15 @@ msgid ""
 "default to\n"
 "    the start and end of the string respectively."
 msgstr ""
-"`$substr(texte,début,fin)`\n"
+"`$substr(texte,début[,fin])`\n"
 "\n"
-"Retourne la sous-chaîne commençant par le caractère à l’index `début` "
-"jusqu’au caractère\n"
+"Retourne la sous-chaîne commençant par le caractère à l’index `début` jusqu’"
+"au caractère\n"
 "    situé à l’index `fin` (mais sans l’inclure). Les indexes commencent à "
 "zéro.\n"
 "    Les nombres négatifs sont comptés à partir de la fin de la chaîne.\n"
 "    Si les indexes `début` et `fin` sont laissés vides, ils correspondront "
-"respectivemennt au début et la fin de la chaîne."
+"respectivement au début et la fin de la chaîne."
 
 #: picard/script/functions.py:1183
 msgid ""
@@ -2190,7 +2189,6 @@ msgstr ""
 "    balise multi-valeurs."
 
 #: picard/script/functions.py:1224
-#, fuzzy
 msgid ""
 "`$while(condition,code)`\n"
 "\n"
@@ -2205,9 +2203,9 @@ msgid ""
 msgstr ""
 "`$while(condition,code)`\n"
 "\n"
-"Boucle 'while' standard. Exécute le `code` jusqu’à ce que la `condition` ne "
-"soit plus\n"
-"    évaluée à `True`. A chaque itération, le numéro de l’itération est "
+"Boucle 'while' standard. Exécute le `code` répétitivement jusqu’à ce que la "
+"`condition` ne soit plus\n"
+"    évaluée à `True`. À chaque itération, le numéro de l’itération est "
 "stocké dans la variable\n"
 "    `_loop_count`. Cela permet d’accéder au numéro de l’itération dans le "
 "`code`.\n"
@@ -2584,10 +2582,9 @@ msgid ""
 msgstr ""
 
 #: picard/script/serializer.py:202
-#, fuzzy, python-format
-#| msgid "Error exporting file \"%(filename)s\": %(error)s"
+#, python-format
 msgid "Error exporting file \"%(filename)s\": %(error)s."
-msgstr "Erreur lors de l'exportation du fichier « %(filename)s » : %(error)s"
+msgstr "Erreur lors de l'exportation du fichier « %(filename)s » : %(error)s."
 
 #: picard/script/serializer.py:209
 msgid "Export Script File"
@@ -3973,6 +3970,15 @@ msgid ""
 "work in small batches</li></ul><p>Picard is open source software written by "
 "volunteers. It is provided as-is and with no warranty.</p>"
 msgstr ""
+"<p><strong>Les modifications apportées par Picard ne sont pas "
+"réversibles.</strong></p><p>Picard est un outil de balisage musical très "
+"flexible qui peut renommer vos fichiers et écraser les balises. Nous vous "
+"<strong>recommandons fortement</strong> de :</p><ul><li>lire le <a "
+"href='{documentation_url}'>Guide de l'utilisateur</a> (également disponible "
+"dans le menu Aide)</li><li>Testez avec des copies de vos fichiers musicaux "
+"et travaillez par petits lots</li></ul><p>Picard est un logiciel libre en "
+"source ouverte écrit par des bénévoles. Il est fourni tel quel et sans "
+"garantie.</p>"
 
 #: picard/ui/newuserdialog.py:49
 msgid "Show this message again the next time you start Picard."
@@ -4077,6 +4083,8 @@ msgid ""
 "Failed to submit rating for track '%(track_title)s' due to server error "
 "%(error)d"
 msgstr ""
+"Échec de la soumission des notes pour la piste « %(track_title)s » en raison "
+"d'une erreur serveur %(error)d"
 
 #: picard/ui/savewarningdialog.py:38
 msgid "overwrite existing metadata (tags) within the file"
@@ -4513,13 +4521,12 @@ msgid "Remove selected locale"
 msgstr ""
 
 #: picard/ui/ui_multi_locale_selector.py:90
-#, fuzzy
 msgid "Move selected locale down"
-msgstr "Déplacer la valeur sélectionnée vers le bas"
+msgstr "Déplacer la locale sélectionnée vers le bas"
 
 #: picard/ui/ui_multi_locale_selector.py:91
 msgid "Available Locales"
-msgstr ""
+msgstr "Locales disponibles"
 
 #: picard/ui/ui_options.py:47
 msgid "Options"
