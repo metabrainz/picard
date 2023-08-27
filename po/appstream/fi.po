@@ -119,7 +119,8 @@ msgstr ""
 msgid ""
 "Cover Art: Picard can find and download the correct cover art for your "
 "albums."
-msgstr "Levynkansi: Picard voi etsiä ja ladata oikean levynkannen albumeillesi."
+msgstr ""
+"Levynkansi: Picard voi etsiä ja ladata oikean levynkannen albumeillesi."
 
 #: org.musicbrainz.Picard.appdata.xml.in:56
 msgid ""
