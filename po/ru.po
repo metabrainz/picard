@@ -31,7 +31,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-26 21:19+0200\n"
+"POT-Creation-Date: 2023-08-27 15:03+0200\n"
 "PO-Revision-Date: 2023-08-27 13:05+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/picard/"
@@ -40,9 +40,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
-"n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
 "X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
 
@@ -2833,6 +2833,11 @@ msgid ""
 "\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" button on the "
 "web page loads the release into Picard."
 msgstr "Picard прослушивает этот порт для интеграции с браузером."
+
+#: picard/ui/mainwindow.py:425
+#, python-format
+msgid "Listening on port %(port)d"
+msgstr "Слушать через порт %(port)d"
 
 #: picard/ui/mainwindow.py:484
 msgid "AcoustID submission not configured"
@@ -9596,10 +9601,6 @@ msgstr ""
 
 #~ msgid "Katakana"
 #~ msgstr "Катакана"
-
-#, python-format
-#~ msgid "Listening on port %(port)d"
-#~ msgstr "Слушать через порт %(port)d"
 
 #, python-format
 #~ msgid "%s "

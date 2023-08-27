@@ -28,7 +28,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-26 21:19+0200\n"
+"POT-Creation-Date: 2023-08-27 15:03+0200\n"
 "PO-Revision-Date: 2023-08-27 13:05+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Spanish <https://translations.metabrainz.org/projects/picard/"
@@ -37,8 +37,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
-" ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
+"0) ? 1 : 2);\n"
 "X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.9.1\n"
 
@@ -209,8 +209,8 @@ msgstr "Incapaz de cargar el complemento '%s'"
 #, python-format
 msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
 msgstr ""
-"Fallo al cargar el complemento comprimido \"%(plugin)s\" desde \"%(filename)"
-"s\""
+"Fallo al cargar el complemento comprimido \"%(plugin)s\" desde \"%(filename)s"
+"\""
 
 #: picard/pluginmanager.py:295
 #, python-format
@@ -2875,6 +2875,11 @@ msgstr ""
 "al abrir en el navegador desde Picard. pinchando en el botón «tagger» de la "
 "página de MusicBrainz cargará los datos elegidos en Picard."
 
+#: picard/ui/mainwindow.py:425
+#, python-format
+msgid "Listening on port %(port)d"
+msgstr "Escuchando en el puerto %(port)d"
+
 #: picard/ui/mainwindow.py:484
 msgid "AcoustID submission not configured"
 msgstr ""
@@ -5532,8 +5537,8 @@ msgid ""
 "HTTP code %(statuscode)r)<br>"
 msgstr ""
 "<strong>Se produjo el siguiente error al obtener los resultados:<br><br></"
-"strong>Error de solicitud de red para Network request error for "
-"%(url)s:<br>%(error)s (código QT %(qtcode)d, código HTTP %(statuscode)r) <br>"
+"strong>Error de solicitud de red para Network request error for %(url)s:<br>"
+"%(error)s (código QT %(qtcode)d, código HTTP %(statuscode)r) <br>"
 
 #: picard/ui/searchdialog/__init__.py:264
 msgid "<strong>No results found. Please try a different search query.</strong>"
@@ -9141,10 +9146,6 @@ msgstr ""
 
 #~ msgid "Katakana"
 #~ msgstr "Katakana"
-
-#, python-format
-#~ msgid "Listening on port %(port)d"
-#~ msgstr "Escuchando en el puerto %(port)d"
 
 #, python-format
 #~ msgid "%s "

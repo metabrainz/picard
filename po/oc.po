@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-26 21:19+0200\n"
+"POT-Creation-Date: 2023-08-27 15:03+0200\n"
 "PO-Revision-Date: 2023-08-23 19:09+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Occitan <https://translations.metabrainz.org/projects/picard/"
@@ -2739,6 +2739,11 @@ msgid ""
 "Picard listens on this port to integrate with your browser. When you \"Search"
 "\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" button on the "
 "web page loads the release into Picard."
+msgstr ""
+
+#: picard/ui/mainwindow.py:425
+#, python-format
+msgid "Listening on port %(port)d"
 msgstr ""
 
 #: picard/ui/mainwindow.py:484

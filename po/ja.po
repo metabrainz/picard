@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-26 21:19+0200\n"
+"POT-Creation-Date: 2023-08-27 15:03+0200\n"
 "PO-Revision-Date: 2023-08-27 13:05+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Japanese <https://translations.metabrainz.org/projects/picard/"
@@ -3252,6 +3252,11 @@ msgstr ""
 "索」または「ブラウザを開く」を実行したなら、ウェブページで\"Tagger\"ボタンを"
 "クリックするとリリースがPicardに読み込まれます。"
 
+#: picard/ui/mainwindow.py:425
+#, python-format
+msgid "Listening on port %(port)d"
+msgstr "ポート %(port)d で待機"
+
 #: picard/ui/mainwindow.py:484
 msgid "AcoustID submission not configured"
 msgstr "AcoustID サブミッションが未設定"
@@ -5851,8 +5856,8 @@ msgid ""
 "strong>Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, "
 "HTTP code %(statuscode)r)<br>"
 msgstr ""
-"<strong>結果の取得中に次のエラーが発生しました: <br><br></strong> "
-"%(url)sのネットワーク要求エラー:<br>%(error)s (QT code %(qtcode)d, HTTP code "
+"<strong>結果の取得中に次のエラーが発生しました: <br><br></strong> %(url)sの"
+"ネットワーク要求エラー:<br>%(error)s (QT code %(qtcode)d, HTTP code "
 "%(statuscode)r)<br>"
 
 #: picard/ui/searchdialog/__init__.py:264
@@ -10051,10 +10056,6 @@ msgstr ""
 
 #~ msgid "Katakana"
 #~ msgstr "片仮名"
-
-#, python-format
-#~ msgid "Listening on port %(port)d"
-#~ msgstr "ポート %(port)d で待機"
 
 #, python-format
 #~ msgid "%s "

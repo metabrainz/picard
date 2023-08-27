@@ -31,7 +31,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-26 21:19+0200\n"
+"POT-Creation-Date: 2023-08-27 15:03+0200\n"
 "PO-Revision-Date: 2023-08-27 13:05+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://translations.metabrainz.org/"
@@ -2913,6 +2913,11 @@ msgstr ""
 "O Picard usa esta porta para integrar-se com o seu navegador. Quando você "
 "seleciona \"Buscar\" ou \"Abrir no navegador\" no Picard, clicar no botão "
 "\"Etiquetar\" na página da web carregará o lançamento no Picard."
+
+#: picard/ui/mainwindow.py:425
+#, python-format
+msgid "Listening on port %(port)d"
+msgstr "Escutando porta %(port)d"
 
 #: picard/ui/mainwindow.py:484
 msgid "AcoustID submission not configured"
@@ -9403,10 +9408,6 @@ msgstr ""
 
 #~ msgid "Katakana"
 #~ msgstr "Katakana"
-
-#, python-format
-#~ msgid "Listening on port %(port)d"
-#~ msgstr "Escutando porta %(port)d"
 
 #, python-format
 #~ msgid "%s "

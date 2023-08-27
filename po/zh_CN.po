@@ -48,7 +48,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-26 21:19+0200\n"
+"POT-Creation-Date: 2023-08-27 15:03+0200\n"
 "PO-Revision-Date: 2023-08-27 13:05+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://translations.metabrainz.org/"
@@ -3345,6 +3345,11 @@ msgstr ""
 "Picard 通过监听该端口实现与浏览器的交互。当您在 Picard 中执行「搜索」或「在浏"
 "览器中打开」操作时，点击网页中的「标签工具」按钮可将专辑载入 Picard。"
 
+#: picard/ui/mainwindow.py:425
+#, python-format
+msgid "Listening on port %(port)d"
+msgstr "正在监听端口 %(port)d"
+
 #: picard/ui/mainwindow.py:484
 msgid "AcoustID submission not configured"
 msgstr "未配置 AcoustID 提交"
@@ -5967,9 +5972,8 @@ msgid ""
 "strong>Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, "
 "HTTP code %(statuscode)r)<br>"
 msgstr ""
-"<strong>装取结果时出现下述错误:<br><br></strong> "
-"%(url)s的网络请求失败:<br>%(error)s（QT 代码 %(qtcode)d, HTTP 代码 "
-"%(statuscode)r）<br>"
+"<strong>装取结果时出现下述错误:<br><br></strong> %(url)s的网络请求失败:<br>"
+"%(error)s（QT 代码 %(qtcode)d, HTTP 代码 %(statuscode)r）<br>"
 
 #: picard/ui/searchdialog/__init__.py:264
 msgid "<strong>No results found. Please try a different search query.</strong>"
@@ -10151,10 +10155,6 @@ msgstr ""
 
 #~ msgid "Katakana"
 #~ msgstr "片假名"
-
-#, python-format
-#~ msgid "Listening on port %(port)d"
-#~ msgstr "正在监听端口 %(port)d"
 
 #, python-format
 #~ msgid "%s "

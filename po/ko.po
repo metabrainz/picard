@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-26 21:19+0200\n"
+"POT-Creation-Date: 2023-08-27 15:03+0200\n"
 "PO-Revision-Date: 2023-08-27 13:05+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Korean <https://translations.metabrainz.org/projects/picard/"
@@ -2759,6 +2759,11 @@ msgstr ""
 "\"브라우저에서 열기\" 시 웹페이지의 \"Tagger\" 버튼을 클릭하면 Picard에 릴리"
 "즈가 로드됩니다."
 
+#: picard/ui/mainwindow.py:425
+#, python-format
+msgid "Listening on port %(port)d"
+msgstr "%(port)d 포트 수신 중"
+
 #: picard/ui/mainwindow.py:484
 msgid "AcoustID submission not configured"
 msgstr ""
@@ -5111,8 +5116,9 @@ msgstr "\"%(plugin)s\" 플러그인은 현재 버전의 Picard와 호환되지 �
 msgid ""
 "The plugin \"%(plugin)s\" will be upgraded to version %(version)s on next "
 "run of Picard."
-msgstr "\"%(plugin)s\" 플러그인은 다음번에 Picard를 실행할 때 %(version)s 버전으로 "
-"업그레이드 됩니다."
+msgstr ""
+"\"%(plugin)s\" 플러그인은 다음번에 Picard를 실행할 때 %(version)s 버전으로 업"
+"그레이드 됩니다."
 
 #: picard/ui/options/plugins.py:473
 #, fuzzy, python-format
@@ -5308,9 +5314,9 @@ msgid ""
 "strong>Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, "
 "HTTP code %(statuscode)r)<br>"
 msgstr ""
-"<strong>결과를 불러 오는 중 다음과 같은 오류가 발생하였습니다: "
-"<br><br></strong>%(url)s 네트워크 요청 오류:<br>%(error)s (QT 코드 %(qtcode)"
-"d, HTTP 코드 %(statuscode)r)<br>"
+"<strong>결과를 불러 오는 중 다음과 같은 오류가 발생하였습니다: <br><br></"
+"strong>%(url)s 네트워크 요청 오류:<br>%(error)s (QT 코드 %(qtcode)d, HTTP 코"
+"드 %(statuscode)r)<br>"
 
 #: picard/ui/searchdialog/__init__.py:264
 msgid "<strong>No results found. Please try a different search query.</strong>"
@@ -8404,10 +8410,6 @@ msgstr ""
 #~| msgid "English (South Africa)"
 #~ msgid "Zulu (South Africa)"
 #~ msgstr "영어(남아프리카공화국)"
-
-#, python-format
-#~ msgid "Listening on port %(port)d"
-#~ msgstr "%(port)d 포트 수신 중"
 
 #, python-format
 #~ msgid "%s "

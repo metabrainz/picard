@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-26 21:19+0200\n"
+"POT-Creation-Date: 2023-08-27 15:03+0200\n"
 "PO-Revision-Date: 2023-08-27 13:05+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://translations.metabrainz.org/"
@@ -2854,6 +2854,11 @@ msgstr ""
 "Picard 透過此連接埠來與您的瀏覽器整合。當您使用 Picard 中的「搜尋」或「在瀏覽"
 "器中開啟」的功能時，在網頁中按下「Tagger」按鈕會將該發行品載入至 Picard 。"
 
+#: picard/ui/mainwindow.py:425
+#, python-format
+msgid "Listening on port %(port)d"
+msgstr "開啟連接埠 %(port)d"
+
 #: picard/ui/mainwindow.py:484
 msgid "AcoustID submission not configured"
 msgstr ""
@@ -5459,8 +5464,8 @@ msgid ""
 "strong>Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, "
 "HTTP code %(statuscode)r)<br>"
 msgstr ""
-"<strong>取得結果時發生已下錯誤：<br><br></strong>網路請求錯誤於%(url)s: "
-"<br>%(error)s(QT 代碼 %(qtcode)d，HTTP代碼 %(statuscode)r)<br>"
+"<strong>取得結果時發生已下錯誤：<br><br></strong>網路請求錯誤於%(url)s: <br>"
+"%(error)s(QT 代碼 %(qtcode)d，HTTP代碼 %(statuscode)r)<br>"
 
 #: picard/ui/searchdialog/__init__.py:264
 msgid "<strong>No results found. Please try a different search query.</strong>"
@@ -9527,10 +9532,6 @@ msgstr ""
 
 #~ msgid "Katakana"
 #~ msgstr "片假名"
-
-#, python-format
-#~ msgid "Listening on port %(port)d"
-#~ msgstr "開啟連接埠 %(port)d"
 
 #, python-format
 #~ msgid "%s "

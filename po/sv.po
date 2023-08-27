@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-26 21:19+0200\n"
+"POT-Creation-Date: 2023-08-27 15:03+0200\n"
 "PO-Revision-Date: 2023-08-27 13:05+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Swedish <https://translations.metabrainz.org/projects/picard/"
@@ -2811,6 +2811,11 @@ msgstr ""
 "Picard lyssnar på den här porten för att integreras med din webbläsare. När "
 "du använder \"Sök\" eller \"Öppna i webbläsare\" från Picard, klickar du på "
 "knappen \"Taggare\" på webbplatsen och släpper utgåvan till Picard."
+
+#: picard/ui/mainwindow.py:425
+#, python-format
+msgid "Listening on port %(port)d"
+msgstr "Lyssnar på port %(port)d"
 
 #: picard/ui/mainwindow.py:484
 msgid "AcoustID submission not configured"
@@ -8040,10 +8045,6 @@ msgstr ""
 #~| msgid "Afrikaans (South Africa)"
 #~ msgid "Zulu (South Africa)"
 #~ msgstr "Afrikaans (Sydafrika)"
-
-#, python-format
-#~ msgid "Listening on port %(port)d"
-#~ msgstr "Lyssnar på port %(port)d"
 
 #, python-format
 #~ msgid "%s "
