@@ -34,17 +34,17 @@ import locale
 
 # used to force gettextization
 _BYTES_STRINGS_I18N = (
-    N_('%s B'),
-    N_('%s kB'),
-    N_('%s KiB'),
-    N_('%s MB'),
-    N_('%s MiB'),
-    N_('%s GB'),
-    N_('%s GiB'),
-    N_('%s TB'),
-    N_('%s TiB'),
-    N_('%s PB'),
-    N_('%s PiB'),
+    N_('%(value)s B'),
+    N_('%(value)s kB'),
+    N_('%(value)s KiB'),
+    N_('%(value)s MB'),
+    N_('%(value)s MiB'),
+    N_('%(value)s GB'),
+    N_('%(value)s GiB'),
+    N_('%(value)s TB'),
+    N_('%(value)s TiB'),
+    N_('%(value)s PB'),
+    N_('%(value)s PiB'),
 )
 
 
@@ -86,7 +86,8 @@ def short_string(number, multiple, scale=1, l10n=True):
         num = nr
     if l10n:
         fmtnum = locale.format_string(fmt, num)
-        return _("%(value)s %(unit)s") % {"value": fmtnum, "unit": unit}
+        fmt = "%(value)s " + unit
+        return _(fmt) % {"value": fmtnum}
     else:
         return fmt % num + " " + unit
 
