@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2021 Gabriel Ferreira
 # Copyright (C) 2021 Laurent Monin
-# Copyright (C) 2021 Philipp Wolfer
+# Copyright (C) 2021, 2023 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,10 +20,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import namedtuple
+
 
 SECS_IN_DAY = 86400
 SECS_IN_HOUR = 3600
 SECS_IN_MINUTE = 60
+
+
+Duration = namedtuple('Duration', 'days hours minutes seconds')
 
 
 def euclidian_div(a, b):
@@ -34,17 +39,17 @@ def seconds_to_dhms(seconds):
     days, seconds = euclidian_div(seconds, SECS_IN_DAY)
     hours, seconds = euclidian_div(seconds, SECS_IN_HOUR)
     minutes, seconds = euclidian_div(seconds, SECS_IN_MINUTE)
-    return days, hours, minutes, seconds
+    return Duration(days=days, hours=hours, minutes=minutes, seconds=seconds)
 
 
 def get_timestamp(seconds):
-    d, h, m, s = seconds_to_dhms(seconds)
-    if d > 0:
-        return _("%.2dd %.2dh") % (d, h)
-    if h > 0:
-        return _("%.2dh %.2dm") % (h, m)
-    if m > 0:
-        return _("%.2dm %.2ds") % (m, s)
-    if s > 0:
-        return _("%.2ds") % s
+    time = seconds_to_dhms(seconds)
+    if time.days > 0:
+        return _("%(days).2dd %(hours).2dh") % time._asdict()
+    if time.hours > 0:
+        return _("%(hours).2dh %(minutes).2dm") % time._asdict()
+    if time.minutes > 0:
+        return _("%(minutes).2dm %(seconds).2ds") % time._asdict()
+    if time.seconds > 0:
+        return _("%(seconds).2ds") % time._asdict()
     return ''
