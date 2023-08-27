@@ -5512,58 +5512,58 @@ msgstr ""
 
 #: picard/util/bytes2human.py:37
 #, python-format
-msgid "%s B"
-msgstr "%sБайт"
+msgid "%(value)s B"
+msgstr "%(value)sБайт"
 
 #: picard/util/bytes2human.py:38
 #, python-format
-msgid "%s kB"
-msgstr "%sкБ"
+msgid "%(value)s kB"
+msgstr "%(value)sкБ"
 
 #: picard/util/bytes2human.py:39
 #, python-format
-msgid "%s KiB"
-msgstr "%sКіБ"
+msgid "%(value)s KiB"
+msgstr "%(value)sКіБ"
 
 #: picard/util/bytes2human.py:40
 #, python-format
-msgid "%s MB"
-msgstr "%sМБ"
+msgid "%(value)s MB"
+msgstr "%(value)sМБ"
 
 #: picard/util/bytes2human.py:41
 #, python-format
-msgid "%s MiB"
-msgstr "%sМіБ"
+msgid "%(value)s MiB"
+msgstr "%(value)sМіБ"
 
 #: picard/util/bytes2human.py:42
 #, python-format
-msgid "%s GB"
-msgstr "%sГБ"
+msgid "%(value)s GB"
+msgstr "%(value)sГБ"
 
 #: picard/util/bytes2human.py:43
 #, python-format
-msgid "%s GiB"
-msgstr "%sГіБ"
+msgid "%(value)s GiB"
+msgstr "%(value)sГіБ"
 
 #: picard/util/bytes2human.py:44
 #, python-format
-msgid "%s TB"
-msgstr "%sТБ"
+msgid "%(value)s TB"
+msgstr "%(value)sТБ"
 
 #: picard/util/bytes2human.py:45
 #, python-format
-msgid "%s TiB"
-msgstr "%sТіБ"
+msgid "%(value)s TiB"
+msgstr "%(value)sТіБ"
 
 #: picard/util/bytes2human.py:46
 #, python-format
-msgid "%s PB"
-msgstr "%s ПБ"
+msgid "%(value)s PB"
+msgstr "%(value)sПБ"
 
 #: picard/util/bytes2human.py:47
 #, python-format
-msgid "%s PiB"
-msgstr "%sПіБ"
+msgid "%(value)s PiB"
+msgstr "%(value)sПіБ"
 
 #: picard/util/bytes2human.py:89
 #, python-format
@@ -5932,22 +5932,22 @@ msgstr "Письменник"
 
 #: picard/util/time.py:43
 #, python-format
-msgid "%.2dd %.2dh"
+msgid "%(days).2dd %(hours).2dh"
 msgstr ""
 
 #: picard/util/time.py:45
 #, python-format
-msgid "%.2dh %.2dm"
+msgid "%(hours).2dh %(minutes).2dm"
 msgstr ""
 
 #: picard/util/time.py:47
 #, python-format
-msgid "%.2dm %.2ds"
+msgid "%(minutes).2dm %(seconds).2ds"
 msgstr ""
 
 #: picard/util/time.py:49
 #, python-format
-msgid "%.2ds"
+msgid "%(seconds).2ds"
 msgstr ""
 
 #: picard/util/versions.py:66

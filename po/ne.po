@@ -5397,57 +5397,57 @@ msgstr "शिर्षक"
 
 #: picard/util/bytes2human.py:37
 #, python-format
-msgid "%s B"
+msgid "%(value)s B"
 msgstr ""
 
 #: picard/util/bytes2human.py:38
 #, python-format
-msgid "%s kB"
+msgid "%(value)s kB"
 msgstr ""
 
 #: picard/util/bytes2human.py:39
 #, python-format
-msgid "%s KiB"
+msgid "%(value)s KiB"
 msgstr ""
 
 #: picard/util/bytes2human.py:40
 #, python-format
-msgid "%s MB"
+msgid "%(value)s MB"
 msgstr ""
 
 #: picard/util/bytes2human.py:41
 #, python-format
-msgid "%s MiB"
+msgid "%(value)s MiB"
 msgstr ""
 
 #: picard/util/bytes2human.py:42
 #, python-format
-msgid "%s GB"
+msgid "%(value)s GB"
 msgstr ""
 
 #: picard/util/bytes2human.py:43
 #, python-format
-msgid "%s GiB"
+msgid "%(value)s GiB"
 msgstr ""
 
 #: picard/util/bytes2human.py:44
 #, python-format
-msgid "%s TB"
+msgid "%(value)s TB"
 msgstr ""
 
 #: picard/util/bytes2human.py:45
 #, python-format
-msgid "%s TiB"
+msgid "%(value)s TiB"
 msgstr ""
 
 #: picard/util/bytes2human.py:46
 #, python-format
-msgid "%s PB"
+msgid "%(value)s PB"
 msgstr ""
 
 #: picard/util/bytes2human.py:47
 #, python-format
-msgid "%s PiB"
+msgid "%(value)s PiB"
 msgstr ""
 
 #: picard/util/bytes2human.py:89
@@ -5815,22 +5815,22 @@ msgstr ""
 
 #: picard/util/time.py:43
 #, python-format
-msgid "%.2dd %.2dh"
+msgid "%(days).2dd %(hours).2dh"
 msgstr ""
 
 #: picard/util/time.py:45
 #, python-format
-msgid "%.2dh %.2dm"
+msgid "%(hours).2dh %(minutes).2dm"
 msgstr ""
 
 #: picard/util/time.py:47
 #, python-format
-msgid "%.2dm %.2ds"
+msgid "%(minutes).2dm %(seconds).2ds"
 msgstr ""
 
 #: picard/util/time.py:49
 #, python-format
-msgid "%.2ds"
+msgid "%(seconds).2ds"
 msgstr ""
 
 #: picard/util/versions.py:66

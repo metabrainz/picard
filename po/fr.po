@@ -6254,58 +6254,58 @@ msgstr "Sans titre"
 
 #: picard/util/bytes2human.py:37
 #, python-format
-msgid "%s B"
-msgstr "%s B"
+msgid "%(value)s B"
+msgstr "%(value)s B"
 
 #: picard/util/bytes2human.py:38
 #, python-format
-msgid "%s kB"
-msgstr "%s ko"
+msgid "%(value)s kB"
+msgstr "%(value)s ko"
 
 #: picard/util/bytes2human.py:39
 #, python-format
-msgid "%s KiB"
-msgstr "%s Kio"
+msgid "%(value)s KiB"
+msgstr "%(value)s Kio"
 
 #: picard/util/bytes2human.py:40
 #, python-format
-msgid "%s MB"
-msgstr "%s Mo"
+msgid "%(value)s MB"
+msgstr "%(value)s Mo"
 
 #: picard/util/bytes2human.py:41
 #, python-format
-msgid "%s MiB"
-msgstr "%s Mio"
+msgid "%(value)s MiB"
+msgstr "%(value)s Mio"
 
 #: picard/util/bytes2human.py:42
 #, python-format
-msgid "%s GB"
-msgstr "%s Go"
+msgid "%(value)s GB"
+msgstr "%(value)s Go"
 
 #: picard/util/bytes2human.py:43
 #, python-format
-msgid "%s GiB"
-msgstr "%s Gio"
+msgid "%(value)s GiB"
+msgstr "%(value)s Gio"
 
 #: picard/util/bytes2human.py:44
 #, python-format
-msgid "%s TB"
-msgstr "%s To"
+msgid "%(value)s TB"
+msgstr "%(value)s To"
 
 #: picard/util/bytes2human.py:45
 #, python-format
-msgid "%s TiB"
-msgstr "%s Tio"
+msgid "%(value)s TiB"
+msgstr "%(value)s Tio"
 
 #: picard/util/bytes2human.py:46
 #, python-format
-msgid "%s PB"
-msgstr "%s Po"
+msgid "%(value)s PB"
+msgstr "%(value)s Po"
 
 #: picard/util/bytes2human.py:47
 #, python-format
-msgid "%s PiB"
-msgstr "%s Pio"
+msgid "%(value)s PiB"
+msgstr "%(value)s Pio"
 
 #: picard/util/bytes2human.py:89
 #, python-format
@@ -6685,23 +6685,23 @@ msgstr "Écrivain"
 
 #: picard/util/time.py:43
 #, python-format
-msgid "%.2dd %.2dh"
-msgstr "%.2dj %.2dh"
+msgid "%(days).2dd %(hours).2dh"
+msgstr "%(days).2dj %(hours).2dh"
 
 #: picard/util/time.py:45
 #, python-format
-msgid "%.2dh %.2dm"
-msgstr "%.2dh %.2dm"
+msgid "%(hours).2dh %(minutes).2dm"
+msgstr "%(hours).2dh %(minutes).2dm"
 
 #: picard/util/time.py:47
 #, python-format
-msgid "%.2dm %.2ds"
-msgstr "%.2dm %.2ds"
+msgid "%(minutes).2dm %(seconds).2ds"
+msgstr "%(minutes).2dm %(seconds).2ds"
 
 #: picard/util/time.py:49
 #, python-format
-msgid "%.2ds"
-msgstr "%.2ds"
+msgid "%(seconds).2ds"
+msgstr "%(seconds).2ds"
 
 #: picard/util/versions.py:66
 msgid "is not installed"
