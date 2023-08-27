@@ -422,7 +422,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def update_statusbar_listen_port(self, listen_port):
         if listen_port:
             self.listening_label.setVisible(True)
-            self.listening_label.setText(("Listening on port %(port)d") % {"port": listen_port})
+            self.listening_label.setText(_("Listening on port %(port)d") % {"port": listen_port})
         else:
             self.listening_label.setVisible(False)
 
