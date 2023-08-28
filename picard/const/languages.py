@@ -39,7 +39,7 @@ UI_LANGUAGES = [
     ('en', 'English', N_('English')),
     ('en_AU', 'English (Australia)', N_('English (Australia)')),
     ('en_CA', 'English (Canada)', N_('English (Canada)')),
-    ('en_GB', 'English (UK)', N_('English (UK)')),
+    ('en_GB', 'English (United Kingdom)', N_('English (United Kingdom)')),
     # ('eo', 'Esperanto', N_('Esperanto')),
     ('es', 'Español', N_('Spanish')),
     ('et', 'Eesti', N_('Estonian')),
