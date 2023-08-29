@@ -613,7 +613,7 @@ msgstr "Bambara (N’Ko) (Mali)"
 
 #: picard/const/locales.py:128
 msgid "Bangla"
-msgstr ""
+msgstr "Bangla"
 
 #: picard/const/locales.py:129
 msgid "Bangla (Bangladesh)"
@@ -1737,7 +1737,7 @@ msgstr "Français (Guyane française)"
 
 #: picard/const/locales.py:424
 msgid "French (Guinea)"
-msgstr "Français (Gabon)"
+msgstr "Français (Guinée)"
 
 #: picard/const/locales.py:425
 msgid "French (Guadeloupe)"
@@ -2277,7 +2277,7 @@ msgstr "Koro (Côte d’Ivoire)"
 
 #: picard/const/locales.py:565
 msgid "Kaingang"
-msgstr ""
+msgstr "Kaingang"
 
 #: picard/const/locales.py:566
 msgid "Kaingang (Brazil)"
@@ -2613,23 +2613,23 @@ msgstr "Moksa"
 
 #: picard/const/locales.py:650
 msgid "Moksha (Russia)"
-msgstr ""
+msgstr "Mokcha (Russie)"
 
 #: picard/const/locales.py:651
 msgid "Meru"
-msgstr ""
+msgstr "Meru"
 
 #: picard/const/locales.py:652
 msgid "Meru (Kenya)"
-msgstr ""
+msgstr "Meru (Kenya)"
 
 #: picard/const/locales.py:653
 msgid "Morisyen"
-msgstr ""
+msgstr "Créole mauricien"
 
 #: picard/const/locales.py:654
 msgid "Morisyen (Mauritius)"
-msgstr ""
+msgstr "Créole mauricien (Île Maurice)"
 
 #: picard/const/locales.py:655
 msgid "Malagasy"
@@ -2637,7 +2637,7 @@ msgstr "Malgache"
 
 #: picard/const/locales.py:656
 msgid "Malagasy (Madagascar)"
-msgstr ""
+msgstr "Malgache (Madagascar)"
 
 #: picard/const/locales.py:657
 msgid "Makhuwa-Meetto"

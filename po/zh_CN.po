@@ -49,7 +49,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-27 18:30+0200\n"
-"PO-Revision-Date: 2023-08-27 13:05+0000\n"
+"PO-Revision-Date: 2023-08-28 19:08+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://translations.metabrainz.org/"
 "projects/picard/app/zh_Hans/>\n"
@@ -5927,7 +5927,7 @@ msgstr "Picard标签脚本包"
 #: picard/ui/options/scripting.py:175
 #, python-format
 msgid "%s (imported)"
-msgstr "%s(已导入)"
+msgstr "%s（已导入）"
 
 #: picard/ui/options/scripting.py:242
 msgid "Script Error"
