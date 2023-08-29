@@ -40,8 +40,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-27 18:30+0200\n"
-"PO-Revision-Date: 2023-08-27 13:05+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2023-08-28 19:08+0000\n"
+"Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/"
 "app/fr/>\n"
 "Language: fr\n"
@@ -1449,6 +1449,18 @@ msgid ""
 "\n"
 "_Since Picard 1.0_"
 msgstr ""
+"`$copymerge(new,old[,keep_duplicates])`\n"
+"\n"
+"Fusionne les métadonnées de la variable `old` dans `new`, supprimant les "
+"doublons et\n"
+"    en ajoutant à la fin, donc préservant l'ordre initial. Comme `$copy`, "
+"cela\n"
+"    copiera aussi les variables multi-valeurs sans les aplatir.\n"
+"\n"
+"Si `keep_duplicates` est défini, alors les doublons ne seront pas supprimés "
+"du résultat.\n"
+"\n"
+"_Depuis Picard 1.0_"
 
 #: picard/script/functions.py:514
 msgid ""
@@ -2427,6 +2439,26 @@ msgid ""
 "\n"
 "Result: A; B; a; b; cd\n"
 msgstr ""
+"`$unique(name,case_sensitive=\"\",separator=\"; \")`\n"
+"\n"
+"Retourne une copie de la balise multi-valeurs `name` sans aucun élément en "
+"double.\n"
+"    Par défaut, une comparaison insensible à la casse des éléments est "
+"utilisée.\n"
+"\n"
+"Exemple 1 :\n"
+"\n"
+"    $setmulti(foo,a; A; B; b; cd; Cd; cD; CD; a; A; b)\n"
+"    $unique(%foo%)\n"
+"\n"
+"Résultat : A; CD; b\n"
+"\n"
+"Exemple 2 :\n"
+"\n"
+"    $setmulti(foo,a; A; B; b; a; b; A; B, cd)\n"
+"    $unique(%foo%,True)\n"
+"\n"
+"Résultat : A; B; a; b; cd\n"
 
 #: picard/script/functions.py:1412
 msgid ""
@@ -2437,6 +2469,12 @@ msgid ""
 "If translate is not blank, the output will be translated into the current "
 "locale language.\n"
 msgstr ""
+"`$countryname(country_code,translate=\"\")`\n"
+"\n"
+"Retourne le nom du pays pour le code de pays spécifié. Si le code du pays "
+"est invalide, une chaîne vide sera retournée.\n"
+"Si `translate` n'est pas vide, la sortie sera traduite dans la langue de la "
+"locale courante.\n"
 
 #: picard/script/functions.py:1451
 msgid ""
@@ -2449,6 +2487,14 @@ msgid ""
 "\n"
 "_Since Picard 2.7_"
 msgstr ""
+"`$year(date,date_order=\"ymd\")`\n"
+"\n"
+"Retourne l'année de la date spécifiée. L'ordre par défaut est « ymd » (année "
+"mois jour). Cela peut être modifié\n"
+"pour « dmy » ou « mdy ». Si la date est invalide, une chaîne vide sera "
+"retournée.\n"
+"\n"
+"_Depuis Picard 2.7_"
 
 #: picard/script/functions.py:1463
 msgid ""
@@ -2461,6 +2507,14 @@ msgid ""
 "\n"
 "_Since Picard 2.7_"
 msgstr ""
+"`$month(date,date_order=\"ymd\")`\n"
+"\n"
+"Retourne le mois de la date spécifiée. L'ordre par défaut est « ymd » (année "
+"mois jour). Cela peut être modifié pour \n"
+"« dmy » ou « mdy ». Si la date est invalide, une chaîne vide sera retournée."
+"\n"
+"\n"
+"_Depuis Picard 2.7_"
 
 #: picard/script/functions.py:1475
 msgid ""
@@ -2473,6 +2527,14 @@ msgid ""
 "\n"
 "_Since Picard 2.7_"
 msgstr ""
+"`$day(date,date_order=\"ymd\")`\n"
+"\n"
+"Retourne le jour de la date spécifiée. L'ordre par défaut est « ymd » (année "
+"mois jour). Cela peut être modifié \n"
+"pour « dmy » ou « mdy ». Si la date est invalide, une chaîne vide sera "
+"retournée.\n"
+"\n"
+"_Depuis Picard 2.7_"
 
 #: picard/script/functions.py:1487
 #, python-format
@@ -2516,6 +2578,18 @@ msgid ""
 "\n"
 "_Since Picard 2.7_"
 msgstr ""
+"`$is_multi(name)`\n"
+"\n"
+"Retoune '1' si l'argument est une balise multi-valeurs et qu'il y a plus "
+"d'un élément, sinon retourne une chaîne vide.\n"
+"\n"
+"Exemple :\n"
+"\n"
+"    $is_multi(%artists%)\n"
+"\n"
+"Résultat : 1 s'il y a plus d'un artiste, sinon \"\".\n"
+"\n"
+"_Depuis Picard 2.7_"
 
 #: picard/script/functions.py:1538
 msgid ""
@@ -2532,6 +2606,18 @@ msgid ""
 "\n"
 "_Since Picard 2.8_"
 msgstr ""
+"`$cleanmulti(name)`\n"
+"\n"
+"Supprime tous les éléments vides de la variable multi-valeurs.\n"
+"\n"
+"Exemple :\n"
+"\n"
+"    $setmulti(test,one; ; two; three)\n"
+"    $cleanmulti(test)\n"
+"\n"
+"Résultat : Définit la valeur de 'test' à [\"one\", \"two\", \"three\"].\n"
+"\n"
+"_Depuis Picard 2.8_"
 
 #: picard/script/functions.py:1608
 msgid ""
@@ -2556,6 +2642,27 @@ msgid ""
 "\n"
 "_Since Picard 2.9_"
 msgstr ""
+"`$min(type,x,…)`\n"
+"\n"
+"Retourne la valeur minimale en utilisant la comparaison définie par `type`.\n"
+"\n"
+"Les valeurs possibles pour `type` sont \"int\" (entier), \"float\" (flottant)"
+", \"text\"\n"
+"(texte sensible à la casse), \"nocase\" (texte insensible à la casse) et "
+"\"auto\" (détermination\n"
+"automatique du type des arguments fournis), avec \"auto\" utilisé comme "
+"méthode de\n"
+"comparaison par défaut si `type` n'est pas spécifié.  Le type \"auto\" "
+"utilisera le\n"
+"premier type qui convient aux arguments dans l'ordre de préférence suivant :"
+"\n"
+"\"int\", \"float\" et \"text\".\n"
+"\n"
+"Peut être utilisé avec un nombre arbitraire d'arguments. Les arguments multi-"
+"valeurs\n"
+"seront expansés automatiquement.\n"
+"\n"
+"_Depuis Picard 2.9_"
 
 #: picard/script/functions.py:1629
 msgid ""
@@ -2580,6 +2687,27 @@ msgid ""
 "\n"
 "_Since Picard 2.9_"
 msgstr ""
+"`$max(type,x,…)`\n"
+"\n"
+"Retourne la valeur maximale en utilisant la comparaison définie par `type`.\n"
+"\n"
+"Les valeurs possibles pour `type` sont \"int\" (entier), \"float\" (flottant)"
+", \"text\"\n"
+"(texte sensible à la casse), \"nocase\" (texte insensible à la casse) et "
+"\"auto\" (détermination\n"
+"automatique du type des arguments fournis), avec \"auto\" utilisé comme "
+"méthode de\n"
+"comparaison par défaut si `type` n'est pas spécifié.  Le type \"auto\" "
+"utilisera le\n"
+"premier type qui convient aux arguments dans l'ordre de préférence suivant :"
+"\n"
+"\"int\", \"float\" et \"text\".\n"
+"\n"
+"Peut être utilisé avec un nombre arbitraire d'arguments. Les arguments multi-"
+"valeurs\n"
+"seront expansés automatiquement.\n"
+"\n"
+"_Depuis Picard 2.9_"
 
 #: picard/script/serializer.py:202
 #, python-format
@@ -2867,7 +2995,7 @@ msgstr "AAAA"
 
 #: picard/ui/filebrowser.py:88
 msgid "&Load selected files"
-msgstr "Charger les fichiers sélectionnés"
+msgstr "Charger &les fichiers sélectionnés"
 
 #: picard/ui/filebrowser.py:91
 msgid "&Move tagged files here"
@@ -3753,7 +3881,7 @@ msgstr "&Consulter les mises à jour disponibles…"
 
 #: picard/ui/mainwindow.py:950
 msgid "From CD ripper &log file…"
-msgstr ""
+msgstr "Depuis un &log d'extracteur de CD…"
 
 #: picard/ui/mainwindow.py:1003 picard/ui/scripteditor.py:533
 msgid "&File"
@@ -4236,7 +4364,7 @@ msgstr "&Script"
 
 #: picard/ui/scripteditor.py:569
 msgid "View/Edit Script &Metadata"
-msgstr "Voir / éditer les métadonnées du script"
+msgstr "Voir / éditer les &métadonnées du script"
 
 #: picard/ui/scripteditor.py:570
 msgid "Display the details for the script"
@@ -4468,27 +4596,27 @@ msgstr "Scripts sélectionnés"
 
 #: picard/ui/ui_exception_script_selector.py:107
 msgid "Selected language script match threshold:"
-msgstr ""
+msgstr "Seuil de correspondance pour le système d'écriture sélectionné :"
 
 #: picard/ui/ui_exception_script_selector.py:108
 msgid "Move selected language script up"
-msgstr ""
+msgstr "Déplacer le système d'écriture sélectionné vers le haut"
 
 #: picard/ui/ui_exception_script_selector.py:109
 msgid "Add to selected language scripts"
-msgstr ""
+msgstr "Ajouter aux systèmes d'écriture sélectionnés"
 
 #: picard/ui/ui_exception_script_selector.py:110
 msgid "Remove selected language script"
-msgstr ""
+msgstr "Supprimer le système d'écriture sélectionné"
 
 #: picard/ui/ui_exception_script_selector.py:111
 msgid "Move selected language script down"
-msgstr ""
+msgstr "Déplacer le système d'écriture sélectionné vers le bas"
 
 #: picard/ui/ui_exception_script_selector.py:112
 msgid "Available Language Scripts"
-msgstr ""
+msgstr "Systèmes d'écriture disponibles"
 
 #: picard/ui/ui_infodialog.py:82
 msgid "&Error"
@@ -4506,24 +4634,23 @@ msgstr "Formulaire"
 
 #: picard/ui/ui_multi_locale_selector.py:85
 msgid "Locale Selector"
-msgstr ""
+msgstr "Sélecteur de locale"
 
 #: picard/ui/ui_multi_locale_selector.py:86
 msgid "Selected Locales"
-msgstr ""
+msgstr "Locales sélectionnées"
 
 #: picard/ui/ui_multi_locale_selector.py:87
-#, fuzzy
 msgid "Move selected locale up"
-msgstr "Déplacer la valeur sélectionnée vers le haut"
+msgstr "Déplacer la locale sélectionnée vers le haut"
 
 #: picard/ui/ui_multi_locale_selector.py:88
 msgid "Add to selected locales"
-msgstr ""
+msgstr "Ajouter aux locales sélectionnées"
 
 #: picard/ui/ui_multi_locale_selector.py:89
 msgid "Remove selected locale"
-msgstr ""
+msgstr "Supprimer la locale sélectionnée"
 
 #: picard/ui/ui_multi_locale_selector.py:90
 msgid "Move selected locale down"
@@ -5658,7 +5785,7 @@ msgstr ""
 
 #: picard/ui/options/interface_toolbar.py:59
 msgid "Action Toolbar"
-msgstr ""
+msgstr "Barre d'outils des actions"
 
 #: picard/ui/options/interface_toolbar.py:67
 msgid "Add Folder"
@@ -5839,7 +5966,6 @@ msgid "{indent}{locale}"
 msgstr "{indent}{locale}"
 
 #: picard/ui/options/metadata.py:278
-#, fuzzy
 msgid ""
 "Each selected script includes a matching threshold value used to determine "
 "if that script should be used. When an artist name is evaluated to determine "
@@ -5851,16 +5977,17 @@ msgid ""
 "threshold specified for the script, then the artist name will not be "
 "translated."
 msgstr ""
-"Chaque script sélectionné comprend une valeur seuil de correspondance "
-"utilisée pour déterminer si ce script doit être utilisé. Lorsqu'un nom "
-"d'artiste est évalué pour déterminer s'il correspond à l'un de vos scripts "
-"sélectionnés, il est d'abord analysé pour déterminer quels scripts sont "
-"représentés dans le nom, et quel pourcentage pondéré du nom appartient à "
-"chaque script. Ensuite, chacun des scripts sélectionnés est vérifié et si le "
-"nom contient des caractères appartenant au script et que le pourcentage de "
-"caractères du script dans le nom atteint ou dépasse le seuil de "
-"correspondance spécifié pour le script, alors le nom d'artiste ne sera pas "
-"traduit."
+"Chaque système d'écriture sélectionné comprend une valeur seuil de "
+"correspondance utilisée pour déterminer si ce système d'écriture doit être "
+"utilisé. Lorsqu'un nom d'artiste est évalué pour déterminer s'il correspond "
+"à l'un de vos systèmes d'écriture sélectionnés, il est d'abord analysé pour "
+"déterminer quels systèmes d'écriture sont représentés dans le nom, et quel "
+"pourcentage pondéré du nom appartient à chaque système d'écriture. Ensuite, "
+"chacun des systèmes d'écriture sélectionnés est vérifié et si le nom "
+"contient des caractères appartenant au système d'écriture et que le "
+"pourcentage de caractères du système d'écriture dans le nom atteint ou "
+"dépasse le seuil de correspondance spécifié pour le système d'écriture, "
+"alors le nom d'artiste ne sera pas traduit."
 
 #: picard/ui/options/network.py:42
 msgid "Network"
@@ -6418,7 +6545,6 @@ msgid "Copyright"
 msgstr "Tous droits réservés"
 
 #: picard/util/tags.py:57
-#, fuzzy
 msgid "Director"
 msgstr "Réalisateur"
 
