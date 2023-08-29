@@ -10,13 +10,14 @@
 # Maurits Meulenbelt, 2012
 # Maurits Meulenbelt, 2012-2023
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021,2023
+# mfmeulenbelt <mfmeulenbelt@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-27 18:30+0200\n"
-"PO-Revision-Date: 2023-08-27 13:05+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2023-08-29 06:46+0000\n"
+"Last-Translator: mfmeulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/"
 "app/nl/>\n"
 "Language: nl\n"
@@ -177,11 +178,11 @@ msgstr "Onverwachte aanvraagfout (http-code %s)"
 
 #: picard/pluginmanager.py:79
 msgid "Perform this check again the next time you start Picard."
-msgstr ""
+msgstr "Voer deze controle de volgende keer dat je Picard start weer uit."
 
 #: picard/pluginmanager.py:84
 msgid "Picard Plugins Update"
-msgstr ""
+msgstr "Plug-ins bijwerken"
 
 #: picard/pluginmanager.py:267
 #, python-format
@@ -230,20 +231,20 @@ msgid ""
 "There is an update available for one of your currently installed plugins:"
 msgid_plural ""
 "There are updates available for your currently installed plugins:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Een van je geïnstalleerde plug-ins kan worden bijgewerkt:"
+msgstr[1] "Een paar van je geïnstalleerde plug-ins kunnen worden bijgewerkt:"
 
 #: picard/pluginmanager.py:523
 msgid "Do you want to update the plugin now?"
 msgid_plural "Do you want to update the plugins now?"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Wil je de plug-in nu bijwerken?"
+msgstr[1] "Wil je de plug-ins nu bijwerken?"
 
 #: picard/pluginmanager.py:531
 msgid "plus {extra_file_count:,d} other plugin."
 msgid_plural "plus {extra_file_count:,d} other plugins."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "inclusief nog {extra_file_count:,d} plug-in."
+msgstr[1] "inclusief nog {extra_file_count:,d} plug-ins."
 
 #: picard/profile.py:46 picard/ui/options/general.py:56
 #: picard/ui/ui_options_general.py:200
@@ -272,11 +273,11 @@ msgstr "MBID’s bij het laden van nieuwe bestanden negeren"
 
 #: picard/profile.py:53 picard/ui/ui_options_general.py:205
 msgid "Check for plugin updates during startup"
-msgstr ""
+msgstr "Zoek tijdens het opstarten naar nieuwe plug-inversies"
 
 #: picard/profile.py:54 picard/ui/ui_options_general.py:206
 msgid "Check for program updates during startup"
-msgstr ""
+msgstr "Zoek tijdens het opstarten naar nieuwe programmaversies"
 
 #: picard/profile.py:55
 msgid "Days between update checks"
@@ -1015,7 +1016,7 @@ msgstr "A&lles wissen"
 #: picard/coverart/providers/caa.py:327 picard/ui/options/dialog.py:131
 #: picard/ui/options/renaming_compat.py:189
 msgid "Restore &Defaults"
-msgstr "Instellingen herstellen"
+msgstr "&Instellingen herstellen"
 
 #: picard/coverart/providers/caa.py:435
 msgid "Cover Art Archive"
@@ -2661,7 +2662,7 @@ msgstr ""
 #, fuzzy, python-format
 #| msgid "Error exporting file \"%(filename)s\": %(error)s"
 msgid "Error exporting file \"%(filename)s\": %(error)s."
-msgstr "Fout bij exporteren van bestand “%s(filename)”: %(error)s"
+msgstr "Fout bij exporteren van bestand “%s(filename)”: %(error)s."
 
 #: picard/script/serializer.py:209
 msgid "Export Script File"
@@ -5446,7 +5447,7 @@ msgstr "Regex-fout"
 
 #: picard/ui/options/dialog.py:129
 msgid "&Restore all Defaults"
-msgstr "Alle instellingen &herstellen"
+msgstr "&Alle instellingen herstellen"
 
 #: picard/ui/options/dialog.py:130
 msgid "Reset all of Picard's settings"
