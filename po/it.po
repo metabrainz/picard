@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-27 15:03+0200\n"
+"POT-Creation-Date: 2023-08-27 18:30+0200\n"
 "PO-Revision-Date: 2023-08-27 13:05+0000\n"
 "Last-Translator: \"salo.rock\" <salo.rock+musicbrainz@gmail.com>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
@@ -6432,11 +6432,6 @@ msgstr "%(value)s PB"
 msgid "%(value)s PiB"
 msgstr "%(value)s PiB"
 
-#: picard/util/bytes2human.py:89
-#, python-format
-msgid "%(value)s %(unit)s"
-msgstr "%(value)s %(unit)s"
-
 #: picard/util/checkupdate.py:101
 msgid "Error loading Picard releases list: {error_message}"
 msgstr ""
@@ -6807,22 +6802,22 @@ msgstr "Opera"
 msgid "Writer"
 msgstr "Autore"
 
-#: picard/util/time.py:43
+#: picard/util/time.py:48
 #, python-format
 msgid "%(days).2dd %(hours).2dh"
 msgstr "%(days).2dg %(hours).2do"
 
-#: picard/util/time.py:45
+#: picard/util/time.py:50
 #, python-format
 msgid "%(hours).2dh %(minutes).2dm"
 msgstr "%(hours).2do %(minutes).2dm"
 
-#: picard/util/time.py:47
+#: picard/util/time.py:52
 #, python-format
 msgid "%(minutes).2dm %(seconds).2ds"
 msgstr "%(minutes).2dm %(seconds).2ds"
 
-#: picard/util/time.py:49
+#: picard/util/time.py:54
 #, python-format
 msgid "%(seconds).2ds"
 msgstr "%(seconds).2ds"
@@ -6845,6 +6840,10 @@ msgstr ""
 "Errore nell'avvio del browser:\n"
 "\n"
 "%s"
+
+#, python-format
+#~ msgid "%(value)s %(unit)s"
+#~ msgstr "%(value)s %(unit)s"
 
 #~ msgid "Stable releases only"
 #~ msgstr "Solo versioni stabili"
