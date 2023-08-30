@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-27 18:30+0200\n"
-"PO-Revision-Date: 2023-08-29 06:46+0000\n"
+"PO-Revision-Date: 2023-08-30 09:27+0000\n"
 "Last-Translator: mfmeulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/"
 "app/nl/>\n"
@@ -105,9 +105,9 @@ msgid ""
 "Your file naming scheme has automatically been merged with that of single "
 "artist albums."
 msgstr ""
-"Het aparte stelsel om albums van diverse artiesten te hernoemen, is in deze "
-"versie van Picard verwijderd.\n"
-"Je stelsel is automatisch samengevoegd met het stelsel voor albums van één "
+"Het aparte stelsel om uitgaven van diverse artiesten te hernoemen, is in "
+"deze versie van Picard verwijderd.\n"
+"Je stelsel is automatisch samengevoegd met het stelsel voor uitgaven van één "
 "artiest."
 
 #: picard/config_upgrade.py:96
@@ -119,11 +119,11 @@ msgid ""
 "Do you want to remove it or merge it with your file naming scheme for single "
 "artist albums?"
 msgstr ""
-"Het aparte stelsel om albums van diverse artiesten te hernoemen, is in deze "
-"versie van Picard verwijderd.\n"
+"Het aparte stelsel om uitgaven van diverse artiesten te hernoemen, is in "
+"deze versie van Picard verwijderd.\n"
 "Je gebruikt deze optie nu niet, maar je hebt wel een apart stelsel "
-"gedefinieerd. Wil je deze verwijderen of samenvoegen met je stelsel voor het "
-"hernoemen van albums van één artiest?"
+"gedefinieerd. Wil je het verwijderen of samenvoegen met je stelsel voor het "
+"hernoemen van uitgaven van één artiest?"
 
 #: picard/config_upgrade.py:103
 msgid "Merge"
@@ -150,7 +150,7 @@ msgstr ""
 #: picard/file.py:850
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
-msgstr "Geen bijpassende tracks boven de limiet voor bestand ‘%(filename)s’"
+msgstr "Geen bijpassende nummers boven de limiet voor bestand ‘%(filename)s’"
 
 #: picard/file.py:852
 #, python-format
@@ -1404,8 +1404,7 @@ msgstr ""
 "Voegt metadata uit de variabele `oud` toe aan de variabele `nieuw`. Dubbele "
 "informatie wordt verwijderd en nieuwe informatie achteraan toegevoegd, "
 "waarbij de oorspronkelijke volgorde behouden blijft.Net als bij `$copy` "
-"worden meervoudige variabelen gekopieerd zonder ze enkelvoudig te maken."
-"_Sinds Picard 1.0_\n"
+"worden meervoudige variabelen gekopieerd zonder ze enkelvoudig te maken.\n"
 "\n"
 "Als `keep_duplicates` is ingesteld, worden dubbele waarden niet verwijderd.\n"
 "\n"
@@ -2107,7 +2106,7 @@ msgstr ""
 "Retourneert de tekenreeks vanaf (en inclusief) het teken op de positie "
 "`begin` tot (maar exclusief) het teken op de positie `eind`. Het tellen "
 "begint bij nul. Negatieve getallen worden vanaf het einde van de tekenreeks "
-"terug geteld. Als `begin` of `eind` leeg wordt gelaten, wordt het begin "
+"teruggeteld. Als `begin` of `eind` leeg wordt gelaten, wordt het begin "
 "respectievelijk het einde van de lijst gebruikt."
 
 #: picard/script/functions.py:1183
@@ -2261,7 +2260,7 @@ msgstr ""
 "voor deze tekenreeks opgeven met de derde parameter (als je deze parameter "
 "niet opgeeft, wordt “; ” gebruikt).\n"
 "Het tellen begint bij nul. Negatieve getallen worden vanaf het einde van de "
-"tekenreeks terug geteld. Als `begin` of `eind` leeg wordt gelaten, wordt het "
+"tekenreeks teruggeteld. Als `begin` of `eind` leeg wordt gelaten, wordt het "
 "begin respectievelijk het einde van de lijst gebruikt.\n"
 "\n"
 "De functie uit het volgende voorbeeld creëert een meervoudige tag met alle "
@@ -2269,8 +2268,8 @@ msgstr ""
 "\n"
 "Voorbeelden:\n"
 "\n"
-"    $setmulti(supporting_artists,$slice(rtists%,1))\n"
-"    $setmulti(supporting_artists,$slice(rtists%,1,-1)\n"
+"    $setmulti(supporting_artists,$slice(%artists%,1))\n"
+"    $setmulti(supporting_artists,$slice(%artists%,1,-1)\n"
 
 #: picard/script/functions.py:1319
 #, python-format
@@ -2659,10 +2658,9 @@ msgstr ""
 "_Sinds Picard 2.9_"
 
 #: picard/script/serializer.py:202
-#, fuzzy, python-format
-#| msgid "Error exporting file \"%(filename)s\": %(error)s"
+#, python-format
 msgid "Error exporting file \"%(filename)s\": %(error)s."
-msgstr "Fout bij exporteren van bestand “%s(filename)”: %(error)s."
+msgstr "Fout bij exporteren van bestand “%(filename)s”: %(error)s."
 
 #: picard/script/serializer.py:209
 msgid "Export Script File"
@@ -3227,7 +3225,7 @@ msgstr "Alles &inklappen"
 
 #: picard/ui/itemviews.py:460
 msgid "Select &all"
-msgstr "Alles selecteren"
+msgstr "&Alles selecteren"
 
 #: picard/ui/itemviews.py:462
 msgid "Ctrl+A"
@@ -3256,7 +3254,7 @@ msgstr "Collecties"
 
 #: picard/ui/itemviews.py:635
 msgid "P&lugins"
-msgstr "P&lugins"
+msgstr "P&lug-ins"
 
 #: picard/ui/itemviews.py:651
 msgid "&Run scripts"
@@ -3280,7 +3278,7 @@ msgstr "uitgave-overzicht"
 
 #: picard/ui/itemviews.py:883
 msgid "Contains albums and matched files"
-msgstr "Bevat albums en overeenkomende bestanden"
+msgstr "Bevat uitgaven en overeenkomende bestanden"
 
 #: picard/ui/itemviews.py:1029
 msgid "Processing error(s): See the Errors tab in the Album Info dialog"
@@ -3418,7 +3416,7 @@ msgstr[1] ""
 
 #: picard/ui/mainwindow.py:357
 msgid "&Quit Picard"
-msgstr "Picard &Afsluiten"
+msgstr "Picard &afsluiten"
 
 #: picard/ui/mainwindow.py:393
 msgid "Ready"
@@ -3908,7 +3906,7 @@ msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
 msgstr ""
-"Het gebruik van audiovingerafdrukken is nog niet ingesteld. Wil je het nu "
+"Het gebruik van audiovingerafdrukken is nog niet ingesteld. Wil je dat nu "
 "instellen?"
 
 #: picard/ui/mainwindow.py:1526
@@ -3975,7 +3973,7 @@ msgstr[1] "(verschilt bij %d nummers)"
 #, python-format
 msgid "(missing from %d item)"
 msgid_plural "(missing from %d items)"
-msgstr[0] "(ontbreekt bij bij %d nummer)"
+msgstr[0] "(ontbreekt bij %d nummer)"
 msgstr[1] "(ontbreekt bij %d nummers)"
 
 #: picard/ui/metadatabox.py:218
@@ -4034,7 +4032,7 @@ msgstr "Deze tag niet meer behouden"
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] "Gebruik de originele waarde"
-msgstr[1] "Originele waardes gebruiken"
+msgstr[1] "Originele waarden gebruiken"
 
 #: picard/ui/metadatabox.py:439
 msgid "&Copy"
@@ -4072,7 +4070,7 @@ msgstr "Waarschuwing voor nieuwe gebruikers"
 msgid ""
 "The server %s requires you to login. Please enter your username and password."
 msgstr ""
-"Server %s vereist dat je bent ingelogd. Voor je gebruikersnaam en wachtwoord "
+"Server %s vereist dat je bent ingelogd. Voer je gebruikersnaam en wachtwoord "
 "in."
 
 #: picard/ui/passworddialog.py:64
@@ -4416,7 +4414,7 @@ msgstr ""
 
 #: picard/ui/scripteditor.py:1122
 msgid "Are you sure that you want to delete the script?"
-msgstr "Weet je zeker dat het het script wil verwijderen?"
+msgstr "Weet je zeker dat je het script wil verwijderen?"
 
 #: picard/ui/options/scripting.py:163 picard/ui/scripteditor.py:1208
 msgid "File Error"
@@ -4483,7 +4481,7 @@ msgstr "De volgende uitgaven op MusicBrainz komen met de cd overeen:"
 
 #: picard/ui/ui_cdlookup.py:87
 msgid "No matching releases found for this disc."
-msgstr "Geen overeenkomende uitgaven gevonden voor deze schijf."
+msgstr "Geen overeenkomende uitgaven gevonden voor dit medium."
 
 #: picard/ui/ui_cdlookup.py:88
 msgid "Submit disc ID"
@@ -5187,10 +5185,10 @@ msgid ""
 "to those files."
 msgstr ""
 "Picard kan APEv2-tags opslaan in pure AAC-bestanden, die normaal geen tags "
-"ondersteunen. APEv2-tags in AAC-bestanden worden door een aantal spelers "
-"ondersteund, maar andere spelers kunnen problemen met het laden en afspelen "
-"van dit soort bestanden hebben. Daarom kan je kiezen of Picard tags in deze "
-"bestanden opslaat."
+"ondersteunen. Een aantal spelers ondersteunt APEv2-tags in AAC-bestanden, "
+"maar andere spelers kunnen problemen met het laden en afspelen van dit soort "
+"bestanden hebben. Daarom kan je kiezen of Picard tags in deze bestanden "
+"opslaat."
 
 #: picard/ui/ui_options_tags_compatibility_aac.py:47
 #: picard/ui/ui_options_tags_compatibility_ac3.py:47
@@ -5215,10 +5213,10 @@ msgid ""
 "to those files."
 msgstr ""
 "Picard kan APEv2-tags opslaan in pure AC3-bestanden, die normaal geen tags "
-"ondersteunen. APEv2-tags in AC3-bestanden worden door een aantal spelers "
-"ondersteund, maar andere spelers kunnen problemen met het laden en afspelen "
-"van dit soort bestanden hebben. Daarom kan je kiezen of Picard tags in deze "
-"bestanden opslaat."
+"ondersteunen. Een aantal spelers ondersteunt APEv2-tags in AC3-bestanden, "
+"maar andere spelers kunnen problemen met het laden en afspelen van dit soort "
+"bestanden hebben. Daarom kan je kiezen of Picard tags in deze bestanden "
+"opslaat."
 
 #: picard/ui/options/tags_compatibility_id3.py:44
 #: picard/ui/ui_options_tags_compatibility_id3.py:115
@@ -5489,13 +5487,13 @@ msgstr "Onverwachte fout"
 #: picard/ui/options/dialog.py:431
 msgid "You are about to reset your options for this page."
 msgstr ""
-"Je staat op het punt de instellingen op deze pagina naar de standaardwaardes "
+"Je staat op het punt de instellingen op deze pagina naar de standaardwaarden "
 "te herstellen."
 
 #: picard/ui/options/dialog.py:435
 msgid "Warning! This will reset all of your settings."
 msgstr ""
-"Waarschuwing! Dit zet al je instellingen terug naar de standaardwaardes."
+"Waarschuwing! Dit zet al je instellingen terug naar de standaardwaarden."
 
 #: picard/ui/options/dialog.py:442
 msgid "Confirm Reset"
@@ -5538,7 +5536,7 @@ msgstr "Ongeldig uitvoerbaar bestand voor fpcalc"
 #: picard/ui/options/general.py:149
 #, python-format
 msgid "Logged in as <b>%s</b>."
-msgstr "Aangemeld als <b>%s</b>"
+msgstr "Aangemeld als <b>%s</b>."
 
 #: picard/ui/options/genres.py:46
 msgid ""
@@ -5622,7 +5620,7 @@ msgstr ""
 "De speelplaats wordt niet opgeslagen als de instellingen worden verlaten.\n"
 "</p>\n"
 "<p>\n"
-"<br/>Een rode achtergrond betekent dat de tag wordt overgeslagen.\n"
+"Een rode achtergrond betekent dat de tag wordt overgeslagen.<br/>\n"
 "Een groene achtergrond betekent dat de tag wordt bewaard.\n"
 "</p>\n"
 "</body></html>"
