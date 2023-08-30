@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-24 09:20+0200\n"
-"PO-Revision-Date: 2023-08-29 06:46+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2023-08-30 09:27+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Romanian <https://translations.metabrainz.org/projects/picard/"
 "constants/ro/>\n"
 "Language: ro\n"
@@ -234,7 +234,7 @@ msgstr ""
 
 #: picard/const/locales.py:32
 msgid "Abkhazian"
-msgstr ""
+msgstr "Abhază"
 
 #: picard/const/locales.py:33
 msgid "Abkhazian (Georgia)"
@@ -278,7 +278,7 @@ msgstr ""
 
 #: picard/const/locales.py:43
 msgid "Aragonese"
-msgstr ""
+msgstr "Aragoneză"
 
 #: picard/const/locales.py:44
 msgid "Aragonese (Spain)"
@@ -2470,7 +2470,7 @@ msgstr ""
 
 #: picard/const/locales.py:614
 msgid "Luxembourgish"
-msgstr ""
+msgstr "Luxemburgheză"
 
 #: picard/const/locales.py:615
 msgid "Luxembourgish (Luxembourg)"
