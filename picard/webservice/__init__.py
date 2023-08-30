@@ -43,7 +43,10 @@ from PyQt5 import (
     QtNetwork,
 )
 from PyQt5.QtCore import QUrl
-from PyQt5.QtNetwork import QNetworkRequest
+from PyQt5.QtNetwork import (
+    QNetworkRequest,
+    QSslError,
+)
 
 from picard import (
     PICARD_APP_NAME,
@@ -165,6 +168,11 @@ class WSRequest(QNetworkRequest):
             url.setQuery(query)
 
         super().__init__(url)
+
+        # To simulate an ssl error, uncomment following lines
+        # ssl = self.sslConfiguration()
+        # ssl.setCaCertificates(list())
+        # self.setSslConfiguration(ssl)
 
         # optional parameters
         self.parse_response_type = parse_response_type
@@ -326,6 +334,7 @@ class WebService(QtCore.QObject):
         self.manager = QtNetwork.QNetworkAccessManager()
         self._network_accessible_changed(self.manager.networkAccessible())
         self.manager.networkAccessibleChanged.connect(self._network_accessible_changed)
+        self.manager.sslErrors.connect(self.ssl_errors)
         self.oauth_manager = OAuthManager(self)
         self.set_cache()
         self.setup_proxy()
@@ -340,6 +349,20 @@ class WebService(QtCore.QObject):
         }
         self._init_queues()
         self._init_timers()
+
+    def ssl_errors(self, reply, errors):
+        # According to forums, sometimes sslErrors is triggered with errors set to NoError
+        # This can also be used to ignore others if needed
+        ignored_errors = {
+            QSslError.NoError,
+        }
+        has_errors = False
+        for error in errors:
+            if error not in ignored_errors:
+                has_errors = True
+                log.error("SSL error: %s" % error.errorString())
+        if not has_errors:
+            reply.ignoreSslErrors()
 
     @staticmethod
     def http_response_code(reply):
