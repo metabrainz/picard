@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-27 18:30+0200\n"
-"PO-Revision-Date: 2023-08-23 19:10+0000\n"
+"PO-Revision-Date: 2023-08-30 09:27+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Portuguese <https://translations.metabrainz.org/projects/"
 "picard/app/pt/>\n"
@@ -2131,7 +2131,7 @@ msgstr ""
 "  for4saken https://launchpad.net/~for4saken"
 
 #: picard/ui/aboutdialog.py:77
-#, python-format
+#, fuzzy, python-format
 msgid "<br/>Translated to LANG by %s"
 msgstr "<br/>Traduzido para LANG por %s"
 

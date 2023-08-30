@@ -47,7 +47,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-27 18:30+0200\n"
-"PO-Revision-Date: 2023-08-27 13:12+0000\n"
+"PO-Revision-Date: 2023-08-30 09:27+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/"
 "app/de/>\n"
@@ -1104,9 +1104,10 @@ msgid ""
 "\n"
 "If `if` is not empty, it returns `then`, otherwise it returns `else`."
 msgstr ""
-"`$if(if,then,else)`\n"
+"`$if(bedingung,wenn,dann)`\n"
 "\n"
-"Wenn `if` nicht leer ist, wird `then` zurückgegeben, andernfalls `else`."
+"Wenn `bedingung` nicht leer ist, wird `wenn` zurückgegeben, andernfalls "
+"`dann`."
 
 #: picard/script/functions.py:199
 msgid ""
@@ -1568,7 +1569,7 @@ msgid ""
 "    Can be used with an arbitrary number of arguments.\n"
 "    The result is true if ANY of the arguments is not empty."
 msgstr ""
-"`$and(x,y,…)`\n"
+"`$or(x,y,…)`\n"
 "\n"
 "Gibt wahr zurück, wenn entweder `x` oder `y` nicht leer sind.\n"
 "Kann mit beliebig vielen Argumenten verwendet werden.\n"
@@ -1789,14 +1790,14 @@ msgid ""
 msgstr ""
 "`$performer(Muster=\"\",Trenner=\", \")`\n"
 "\n"
-"Liefert alle Interpreten zurück, bei denen die Art der Performance (z.B. "
-"\"vocal\") mit `Muster` übereinstimmt. Die Interpreten werden durch "
-"`Trenner` getrennt.\n"
+"Liefert alle Interpreten zurück, bei denen die Art der Performance (z. B. "
+"\"vocal\") mit `Muster` übereinstimmt. Die Interpreten werden durch `Trenner`"
+" getrennt.\n"
 "Es können reguläre Ausdrücke im Format `/Muster/Flags` angegeben werden. "
-"`Flags` sind optional. Aktuell ist das einzige unterstützte Flag \"i"
-"\" (Groß-/Kleinschreibung ignorieren). Zum Beispiel stimmt `$performer(/"
-"^guitars?$/i)` mit der Performance „guitar“ oder „Guitars“ überein, nicht "
-"aber mit z.B. „bass guitar“.\n"
+"`Flags` sind optional. Aktuell ist das einzige unterstützte Flag \"i\" (Groß"
+"-/Kleinschreibung ignorieren). Zum Beispiel stimmt "
+"`$performer(/^guitars?$/i)` mit der Performance „guitar“ oder „Guitars“ "
+"überein, nicht aber mit z. B. „bass guitar“.\n"
 "\n"
 "_Ab Picard 0.10_"
 
@@ -2474,7 +2475,7 @@ msgstr ""
 "\n"
 "Gibt den Ländernamen für den angegebenen Ländercode zurück. Falls der "
 "Ländercode ungültig ist, wird eine leere Zeichenkette zurückgegeben.\n"
-"Falls \"übersetzen\" nicht leer ist, wird die Ausgabe in die aktuelle "
+"Falls `übersetzen` nicht leer ist, wird die Ausgabe in die aktuelle "
 "Anzeigesprache übersetzt.\n"
 
 #: picard/script/functions.py:1451
@@ -2571,16 +2572,15 @@ msgstr ""
 "Falls das Datum oder das Format ungültig sind, wird eine leere Zeichenkette "
 "zurückgegeben.\n"
 "\n"
-" Die Standardreihenfolge ist \"ymd\" (Jahr-Monat-Tag). Dies kann geändert "
+"Die Standardreihenfolge ist \"ymd\" (Jahr-Monat-Tag). Dies kann geändert "
 "werden, in dem als `Reihenfolge` entweder \"dmy\" oder \"mdy\" angegeben "
 "wird.\n"
 "Hinweis: Plattformspezifische Formatangaben sollten vermieden werden, um die "
 "Portabilität von Skripten zwischen verschiedenen Plattformen zu "
-"gewährleisten. Zu diesen Formatangaben zählen:\n"
-"    Angaben ohne führende Nullen (z.B. `%-d` und `%-m` unter Linux oder "
-"macOS, und die gleichartige Angaben `%#d` und `%#m` unter Windows); Angaben "
-"zur Elementlänge (z.B.\n"
-"    `%3Y`); und '%' am Ende der Formats-Zeichenkette.\n"
+"gewährleisten. Zu diesen Formatangaben zählen: Angaben ohne führende Nullen ("
+"z. B. `%-d` und `%-m` unter Linux oder macOS, und die gleichartige Angaben "
+"`%#d` und `%#m` unter Windows); Angaben zur Elementlänge (z. B. `%3Y`); und "
+"'%' am Ende der Formats-Zeichenkette.\n"
 "\n"
 "_Ab Picard 2.7_"
 
@@ -6374,57 +6374,57 @@ msgstr "Kein Titel"
 #: picard/util/bytes2human.py:37
 #, python-format
 msgid "%(value)s B"
-msgstr "%(value)s B"
+msgstr "%(value)s B"
 
 #: picard/util/bytes2human.py:38
 #, python-format
 msgid "%(value)s kB"
-msgstr "%(value)s kB"
+msgstr "%(value)s kB"
 
 #: picard/util/bytes2human.py:39
 #, python-format
 msgid "%(value)s KiB"
-msgstr "%(value)s KiB"
+msgstr "%(value)s KiB"
 
 #: picard/util/bytes2human.py:40
 #, python-format
 msgid "%(value)s MB"
-msgstr "%(value)s MB"
+msgstr "%(value)s MB"
 
 #: picard/util/bytes2human.py:41
 #, python-format
 msgid "%(value)s MiB"
-msgstr "%(value)s MiB"
+msgstr "%(value)s MiB"
 
 #: picard/util/bytes2human.py:42
 #, python-format
 msgid "%(value)s GB"
-msgstr "%(value)s GB"
+msgstr "%(value)s GB"
 
 #: picard/util/bytes2human.py:43
 #, python-format
 msgid "%(value)s GiB"
-msgstr "%(value)s GiB"
+msgstr "%(value)s GiB"
 
 #: picard/util/bytes2human.py:44
 #, python-format
 msgid "%(value)s TB"
-msgstr "%(value)s TB"
+msgstr "%(value)s TB"
 
 #: picard/util/bytes2human.py:45
 #, python-format
 msgid "%(value)s TiB"
-msgstr "%(value)s TiB"
+msgstr "%(value)s TiB"
 
 #: picard/util/bytes2human.py:46
 #, python-format
 msgid "%(value)s PB"
-msgstr "%(value)s PB"
+msgstr "%(value)s PB"
 
 #: picard/util/bytes2human.py:47
 #, python-format
 msgid "%(value)s PiB"
-msgstr "%(value)s PiB"
+msgstr "%(value)s PiB"
 
 #: picard/util/checkupdate.py:101
 msgid "Error loading Picard releases list: {error_message}"
