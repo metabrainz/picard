@@ -3,7 +3,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2020 Philipp Wolfer
+# Copyright (C) 2020, 2023 Philipp Wolfer
 # Copyright (C) 2020-2021 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -30,7 +30,9 @@ if len(sys.argv) == 1:
     sys.exit(1)
 
 version = sys.argv[1]
-re_changes = re.compile(r'^# Version ' + re.escape(version) + '.*?\n(.*?)# Version',
+re_changes = re.compile(
+    '^# Version ' + re.escape(version) + ' - \d{4}-\d{2}-\d{2}\s*?\n'
+    '(?P<changes>.*?)(?=# Version)',
     re.DOTALL | re.MULTILINE)
 
 with open('NEWS.md', 'r') as newsfile:
@@ -39,4 +41,4 @@ with open('NEWS.md', 'r') as newsfile:
     if not result:
         print("No changelog found for version %s" % version, file=sys.stderr)
         sys.exit(1)
-    print(result[1].strip())
+    print(result.group('changes').strip())
