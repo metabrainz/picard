@@ -421,15 +421,23 @@ class WinPipe(AbstractPipe):
                 log.error('Error closing pipe', exc_info=True)
 
     def _sender(self, message: str) -> bool:
-        pipe = win32file.CreateFile(
-            self.path,
-            win32file.GENERIC_READ | win32file.GENERIC_WRITE,
-            self.__SHARE_MODE,
-            None,
-            win32file.OPEN_EXISTING,
-            self.__FLAGS_AND_ATTRIBUTES,
-            None
-        )
+        try:
+            pipe = win32file.CreateFile(
+                self.path,
+                win32file.GENERIC_READ | win32file.GENERIC_WRITE,
+                self.__SHARE_MODE,
+                None,
+                win32file.OPEN_EXISTING,
+                self.__FLAGS_AND_ATTRIBUTES,
+                None
+            )
+        except WinApiError as err:
+            # File did not exist, no existing pipe to write to
+            if err.winerror == self.__FILE_NOT_FOUND_ERROR_CODE:
+                return False
+            else:
+                raise
+
         try:
             win32file.WriteFile(pipe, str.encode(message))
         finally:
