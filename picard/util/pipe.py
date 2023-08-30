@@ -413,8 +413,12 @@ class WinPipe(AbstractPipe):
 
     def __close_pipe(self):
         if self.__pipe:
-            win32file.CloseHandle(self.__pipe)
+            handle = self.__pipe
             self.__pipe = None
+            try:
+                win32file.CloseHandle(handle)
+            except WinApiError:
+                log.error('Error closing pipe', exc_info=True)
 
     def _sender(self, message: str) -> bool:
         pipe = win32file.CreateFile(
@@ -440,7 +444,6 @@ class WinPipe(AbstractPipe):
         try:
             win32pipe.ConnectNamedPipe(self.__pipe, None)
             (exit_code, message) = win32file.ReadFile(self.__pipe, self.__BUFFER_SIZE)
-
         except WinApiError as err:
             if err.winerror == self.__FILE_NOT_FOUND_ERROR_CODE:
                 # we just keep reopening the pipe, nothing wrong is happening
@@ -453,7 +456,8 @@ class WinPipe(AbstractPipe):
         finally:
             # Pipe was closed when client disconnected, recreate
             self.__close_pipe()
-            self.__create_pipe()
+            if self.pipe_running:
+                self.__create_pipe()
 
         if message is not None:
             message = message.decode("utf-8")
