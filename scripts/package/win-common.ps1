@@ -36,8 +36,4 @@ Function FinalizePackage {
   CodeSignBinary (Join-Path $Path picard.exe)
   CodeSignBinary (Join-Path $Path fpcalc.exe)
   CodeSignBinary (Join-Path $Path discid.dll)
-
-  # Delete unused files
-  Remove-Item -Path (Join-Path $Path libcrypto-1_1.dll)
-  Remove-Item -Path (Join-Path $Path libssl-1_1.dll)
 }
