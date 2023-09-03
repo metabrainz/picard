@@ -52,6 +52,7 @@ except ImportError as e:
     qt_multimedia_errmsg = e.msg
 else:
     qt_multimedia_available = True
+    qt_multimedia_errmsg = None
 
 
 def get_logarithmic_volume(player_value):
