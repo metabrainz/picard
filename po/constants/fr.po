@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-24 09:20+0200\n"
-"PO-Revision-Date: 2023-09-01 10:27+0000\n"
+"PO-Revision-Date: 2023-09-03 06:27+0000\n"
 "Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/"
 "constants/fr/>\n"
@@ -4009,7 +4009,7 @@ msgstr "Haut-valaisan"
 
 #: picard/const/locales.py:1014
 msgid "Walser (Switzerland)"
-msgstr "Walser (Suisse)"
+msgstr "Haut-valaisan (Suisse)"
 
 #: picard/const/locales.py:1015
 msgid "Wolaytta"
