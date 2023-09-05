@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-23 07:49+0100\n"
+"POT-Creation-Date: 2023-09-05 22:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: org.musicbrainz.Picard.appdata.xml.in:6
+#: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
 msgstr ""
 
@@ -98,6 +98,14 @@ msgid ""
 "awesome developers."
 msgstr ""
 
-#: org.musicbrainz.Picard.appdata.xml.in:102
+#: org.musicbrainz.Picard.appdata.xml.in:109
 msgid "MetaBrainz Foundation"
+msgstr ""
+
+#: org.musicbrainz.Picard.desktop.in:4
+msgid "Tag your music with the next generation MusicBrainz tagger"
+msgstr ""
+
+#: org.musicbrainz.Picard.desktop.in:16
+msgid "New Window"
 msgstr ""

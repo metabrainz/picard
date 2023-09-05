@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-23 07:49+0100\n"
+"POT-Creation-Date: 2023-09-05 22:58+0200\n"
 "PO-Revision-Date: 2018-11-25 07:37+0000\n"
 "Last-Translator: Transifex Bot <>, 2023\n"
 "Language-Team: Chinese (Taiwan) (https://app.transifex.com/musicbrainz/"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: org.musicbrainz.Picard.appdata.xml.in:6
+#: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
@@ -121,6 +121,14 @@ msgstr ""
 "開放源代碼: Picard 基於 GNU 通用公共授權條款 2.0 或其之後的版本，且在有優秀開"
 "發者所開發的 GitHub 上託管。"
 
-#: org.musicbrainz.Picard.appdata.xml.in:102
+#: org.musicbrainz.Picard.appdata.xml.in:109
 msgid "MetaBrainz Foundation"
 msgstr "MetaBrainz 基金會"
+
+#: org.musicbrainz.Picard.desktop.in:4
+msgid "Tag your music with the next generation MusicBrainz tagger"
+msgstr ""
+
+#: org.musicbrainz.Picard.desktop.in:16
+msgid "New Window"
+msgstr ""

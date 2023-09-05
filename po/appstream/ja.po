@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-23 07:49+0100\n"
+"POT-Creation-Date: 2023-09-05 22:58+0200\n"
 "PO-Revision-Date: 2018-11-25 07:37+0000\n"
 "Last-Translator: Transifex Bot <>, 2023\n"
 "Language-Team: Japanese (https://app.transifex.com/musicbrainz/teams/13846/"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: org.musicbrainz.Picard.appdata.xml.in:6
+#: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
@@ -128,6 +128,14 @@ msgstr ""
 "素晴らしい開発者によってアクティブに開発されている GitHub 上でホスティングさ"
 "れています。"
 
-#: org.musicbrainz.Picard.appdata.xml.in:102
+#: org.musicbrainz.Picard.appdata.xml.in:109
 msgid "MetaBrainz Foundation"
 msgstr "MetaBrainz Foundation"
+
+#: org.musicbrainz.Picard.desktop.in:4
+msgid "Tag your music with the next generation MusicBrainz tagger"
+msgstr ""
+
+#: org.musicbrainz.Picard.desktop.in:16
+msgid "New Window"
+msgstr ""

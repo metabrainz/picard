@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-23 07:49+0100\n"
+"POT-Creation-Date: 2023-09-05 22:58+0200\n"
 "PO-Revision-Date: 2023-08-23 19:10+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Hebrew <https://translations.metabrainz.org/projects/picard/"
@@ -24,7 +24,7 @@ msgstr ""
 "n % 10 == 0) ? 2 : 3));\n"
 "X-Generator: Weblate 4.18.2\n"
 
-#: org.musicbrainz.Picard.appdata.xml.in:6
+#: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
 msgstr "מוזיקבריינז פיקארד"
 
@@ -75,8 +75,8 @@ msgid ""
 "AcoustID: Picard uses AcoustID audio fingerprints, allowing files to be "
 "identified by the actual music, even if they have no metadata."
 msgstr ""
-"AcoustID: פיקארד עושה שימוש טביעת אצבע אודיו AcoustID כדי לזהות את הקבצים על־"
-"ידי המוזיקה עצמה, גם אם אין להם מטא-נתונים."
+"AcoustID: פיקארד עושה שימוש טביעת אצבע אודיו AcoustID כדי לזהות את הקבצים "
+"על־ידי המוזיקה עצמה, גם אם אין להם מטא-נתונים."
 
 #: org.musicbrainz.Picard.appdata.xml.in:35
 msgid ""
@@ -123,6 +123,14 @@ msgstr ""
 "קוד פתוח: פיקארד מרושה תחת הרישיון הציבורי הכללי של GNU 2.0 ואילך, ומתארח ב־ "
 "GitHub, שם הוא מפותח באופן פעיל על־ידי כמה מפתחים מדהימים."
 
-#: org.musicbrainz.Picard.appdata.xml.in:102
+#: org.musicbrainz.Picard.appdata.xml.in:109
 msgid "MetaBrainz Foundation"
 msgstr "קרן מטהבריינז"
+
+#: org.musicbrainz.Picard.desktop.in:4
+msgid "Tag your music with the next generation MusicBrainz tagger"
+msgstr ""
+
+#: org.musicbrainz.Picard.desktop.in:16
+msgid "New Window"
+msgstr ""
