@@ -31,6 +31,7 @@ installer/picard-setup.nsi
 installer/i18n/out/*.nsh
 locale/
 org.musicbrainz.Picard.appdata.xml
+org.musicbrainz.Picard.desktop
 picard.egg-info
 po/attributes/attributes.pot
 po/countries/countries.pot

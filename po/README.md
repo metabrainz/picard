@@ -29,10 +29,10 @@ $ python setup.py regen_pot_file
 Weblate will _automatically_ sync the changed `picard.pot` and update the translation files (`*.po`) with msgmerge.
 
 
-AppStream metadata translations
--------------------------------
+AppStream metadata and XDG desktop file translations
+----------------------------------------------------
 
-Translations for the strings from `org.musicbrainz.Picard.appdata.xml.in` are handled at <https://translations.metabrainz.org/projects/picard/appstream/>.
+Translations for the strings from `org.musicbrainz.Picard.appdata.xml.in` and `org.musicbrainz.Picard.desktop.in` are handled at <https://translations.metabrainz.org/projects/picard/appstream/>.
 
 One can update `appstream/picard-appstream.pot` using:
 

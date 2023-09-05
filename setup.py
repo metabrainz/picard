@@ -81,6 +81,8 @@ if sys.version_info < (3, 7):
 PACKAGE_NAME = "picard"
 APPDATA_FILE = PICARD_APP_ID + '.appdata.xml'
 APPDATA_FILE_TEMPLATE = APPDATA_FILE + '.in'
+DESKTOP_FILE = PICARD_APP_ID + '.desktop'
+DESKTOP_FILE_TEMPLATE = DESKTOP_FILE + '.in'
 
 ext_modules = [
     Extension('picard.util._astrcmp', sources=['picard/util/_astrcmp.c']),
@@ -313,6 +315,7 @@ class picard_build(build):
             })
         elif sys.platform not in {'darwin', 'haiku1', 'win32'}:
             self.run_command('build_appdata')
+            self.run_command('build_desktop_file')
         super().run()
 
 
@@ -463,8 +466,27 @@ class picard_build_appdata(Command):
             generate_file(source_file, APPDATA_FILE, args)
 
 
+class picard_build_desktop_file(Command):
+    description = 'Build XDG desktop file'
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        self.spawn([
+            'msgfmt', '--desktop',
+            '--template=%s' % DESKTOP_FILE_TEMPLATE,
+            '-d', 'po/appstream',
+            '-o', DESKTOP_FILE,
+        ])
+
+
 class picard_regen_appdata_pot_file(Command):
-    description = 'Regenerate translations from appdata metadata template'
+    description = 'Regenerate translations from appdata metadata and XDG desktop file templates'
     user_options = []
 
     def initialize_options(self):
@@ -481,6 +503,13 @@ class picard_regen_appdata_pot_file(Command):
             '--output', pot_file,
             '--language=appdata',
             APPDATA_FILE_TEMPLATE,
+        ])
+        self.spawn([
+            'xgettext',
+            '--output', pot_file,
+            '--language=desktop',
+            '--join-existing',
+            DESKTOP_FILE_TEMPLATE,
         ])
         for filepath in glob.glob(os.path.join(output_dir, '*.po')):
             self.spawn([
@@ -750,6 +779,7 @@ args = {
         'clean_ui': picard_clean_ui,
         'build_appdata': picard_build_appdata,
         'regen_appdata_pot_file': picard_regen_appdata_pot_file,
+        'build_desktop_file': picard_build_desktop_file,
         'install': picard_install,
         'install_locales': picard_install_locales,
         'update_constants': picard_update_constants,
