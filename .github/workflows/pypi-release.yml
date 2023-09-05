@@ -28,6 +28,7 @@ jobs:
         python setup.py test
     - name: Build Python source distribution
       run: |
+        git clean -dfx
         python setup.py clean sdist --formats=gztar,zip
     - name: Prepare GPG signing key
       run: |
