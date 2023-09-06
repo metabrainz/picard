@@ -22,6 +22,8 @@ on:
     - 'win.version-info.txt.in'
   pull_request:
 
+permissions: {}
+
 jobs:
   package-macos:
     runs-on: macos-11
@@ -240,6 +242,8 @@ jobs:
       - package-macos
       - package-windows
       - package-pypi
+    permissions:
+      contents: write
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v4

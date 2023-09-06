@@ -17,6 +17,11 @@ on:
   schedule:
     - cron: '32 4 * * 0'
 
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+
 jobs:
   codacy-security-scan:
     name: Codacy Security Scan

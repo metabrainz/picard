@@ -2,6 +2,7 @@ name: Package for PyPI
 
 on: [workflow_call]
 
+permissions: {}
 defaults:
   run:
     shell: bash
