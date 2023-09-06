@@ -157,9 +157,9 @@ class ProfilesOptionsPage(OptionsPage):
         if last_selected_profile:
             self.ui.profile_list.setCurrentItem(last_selected_profile)
             last_selected_profile.setSelected(True)
-            id = last_selected_profile.profile_id
-            self.current_profile_id = id
-            settings = self.get_settings_for_profile(id)
+            profile_id = last_selected_profile.profile_id
+            self.current_profile_id = profile_id
+            settings = self.get_settings_for_profile(profile_id)
         self.make_setting_tree(settings=settings)
         self.update_config_overrides()
         self.loading = False
@@ -179,21 +179,21 @@ class ProfilesOptionsPage(OptionsPage):
             config.setting.set_profiles_override(self._clean_and_get_all_profiles())
             config.setting.set_settings_override(self.profile_settings)
 
-    def get_settings_for_profile(self, id):
+    def get_settings_for_profile(self, profile_id):
         """Get the settings for the specified profile ID.  Automatically adds an empty
         settings dictionary if there is no settings dictionary found for the ID.
 
         Args:
-            id (str): ID of the profile
+            profile_id (str): ID of the profile
 
         Returns:
             dict: Profile settings
         """
         # Add empty settings dictionary if no dictionary found for the profile.
         # This happens when a new profile is created.
-        if id not in self.profile_settings:
-            self.profile_settings[id] = {}
-        return self.profile_settings[id]
+        if profile_id not in self.profile_settings:
+            self.profile_settings[profile_id] = {}
+        return self.profile_settings[profile_id]
 
     def _all_profiles(self):
         """Get all profiles from the profiles list in order from top to bottom.
@@ -219,7 +219,7 @@ class ProfilesOptionsPage(OptionsPage):
         if settings is None:
             return
         self.building_tree = True
-        for id, group in UserProfileGroups.SETTINGS_GROUPS.items():
+        for group in UserProfileGroups.SETTINGS_GROUPS.values():
             title = group["title"]
             group_settings = group["settings"]
             widget_item = QtWidgets.QTreeWidgetItem([title])
@@ -326,10 +326,10 @@ class ProfilesOptionsPage(OptionsPage):
         """
         item = self.get_current_selected_item()
         if item:
-            id = item.profile_id
-            self.current_profile_id = id
+            profile_id = item.profile_id
+            self.current_profile_id = profile_id
             if update_settings:
-                settings = self.get_settings_for_profile(id)
+                settings = self.get_settings_for_profile(profile_id)
                 self.make_setting_tree(settings=settings)
         else:
             self.current_profile_id = None
@@ -421,12 +421,12 @@ class ProfilesOptionsPage(OptionsPage):
         """Make a copy of the currently selected profile.
         """
         item = self.get_current_selected_item()
-        id = str(uuid.uuid4())
+        profile_id = str(uuid.uuid4())
         settings = deepcopy(self.profile_settings[self.current_profile_id])
-        self.profile_settings[id] = settings
+        self.profile_settings[profile_id] = settings
         base_title = "%s %s" % (get_base_title(item.name), gettext_constants(DEFAULT_COPY_TEXT))
         name = self.ui.profile_list.unique_profile_name(base_title)
-        self.ui.profile_list.add_profile(name=name, profile_id=id)
+        self.ui.profile_list.add_profile(name=name, profile_id=profile_id)
         self.update_config_overrides()
         self.reload_all_page_settings()
 
@@ -456,11 +456,11 @@ class ProfilesOptionsPage(OptionsPage):
         all_profile_ids = set(x['id'] for x in all_profiles)
         keys = set(self.profile_settings.keys())
         # Add any missing profile settings
-        for id in all_profile_ids.difference(keys):
-            self.profile_settings[id] = {}
+        for profile_id in all_profile_ids.difference(keys):
+            self.profile_settings[profile_id] = {}
         # Remove any "orphan" profile settings
-        for id in keys.difference(all_profile_ids):
-            del self.profile_settings[id]
+        for profile_id in keys.difference(all_profile_ids):
+            del self.profile_settings[profile_id]
         return all_profiles
 
     def save(self):

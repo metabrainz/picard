@@ -168,23 +168,23 @@ class SettingConfigSection(ConfigSection):
                 yield profile["id"]
 
     def _get_active_profile_settings(self):
-        for id in self._get_active_profile_ids():
-            yield id, self._get_profile_settings(id)
+        for profile_id in self._get_active_profile_ids():
+            yield profile_id, self._get_profile_settings(profile_id)
 
-    def _get_profile_settings(self, id):
+    def _get_profile_settings(self, profile_id):
         if self.settings_override is None:
-            profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY][id]
+            profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY][profile_id]
         else:
-            profile_settings = self.settings_override[id]
+            profile_settings = self.settings_override[profile_id]
         if profile_settings is None:
-            log.error("Unable to find settings for user profile '%s'", id)
+            log.error("Unable to find settings for user profile '%s'", profile_id)
             return {}
         return profile_settings
 
     def __getitem__(self, name):
         # Don't process settings that are not profile-specific
         if name in UserProfileGroups.ALL_SETTINGS:
-            for id, settings in self._get_active_profile_settings():
+            for profile_id, settings in self._get_active_profile_settings():
                 if name in settings and settings[name] is not None:
                     return settings[name]
         opt = Option.get(self.__name, name)
@@ -195,9 +195,9 @@ class SettingConfigSection(ConfigSection):
     def __setitem__(self, name, value):
         # Don't process settings that are not profile-specific
         if name in UserProfileGroups.ALL_SETTINGS:
-            for id, settings in self._get_active_profile_settings():
+            for profile_id, settings in self._get_active_profile_settings():
                 if name in settings:
-                    self._save_profile_setting(id, name, value)
+                    self._save_profile_setting(profile_id, name, value)
                     return
         key = self.key(name)
         self.__qt_config.setValue(key, value)
