@@ -107,11 +107,9 @@ class CoverOptionsPage(OptionsPage):
         self.update_ca_providers_groupbox_state()
 
     def _ca_providers(self):
-        items = []
         for i in range(self.ui.ca_providers_list.count()):
             item = self.ui.ca_providers_list.item(i)
-            items.append((item.data, item.checked))
-        return items
+            yield (item.data, item.checked)
 
     def save(self):
         config = get_config()
@@ -122,7 +120,7 @@ class CoverOptionsPage(OptionsPage):
         config.setting["save_images_overwrite"] = self.ui.save_images_overwrite.isChecked()
         config.setting["save_only_one_front_image"] = self.ui.save_only_one_front_image.isChecked()
         config.setting["image_type_as_filename"] = self.ui.image_type_as_filename.isChecked()
-        config.setting["ca_providers"] = self._ca_providers()
+        config.setting["ca_providers"] = list(self._ca_providers())
 
     def update_ca_providers_groupbox_state(self):
         files_enabled = self.ui.save_images_to_files.isChecked()
