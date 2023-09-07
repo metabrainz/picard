@@ -88,3 +88,9 @@ class MultiDirsSelectDialog(QtWidgets.QFileDialog):
         for view in self.findChildren((QtWidgets.QListView, QtWidgets.QTreeView)):
             if isinstance(view.model(), QtWidgets.QFileSystemModel):
                 view.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
+
+
+def qlistwidget_items(qlistwidget):
+    """Yield all items from a QListWidget"""
+    for i in range(qlistwidget.count()):
+        yield qlistwidget.item(i)
