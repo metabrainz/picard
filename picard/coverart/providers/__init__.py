@@ -61,21 +61,15 @@ def register_cover_art_provider(provider):
 # named tuples used by cover_art_providers()
 ProviderTuple = namedtuple('ProviderTuple', 'name title enabled cls')
 PInfoTuple = namedtuple('PInfoTuple', 'position enabled')
-POrderTuple = namedtuple('OrderTuple', 'name position enabled')
 
 
 def cover_art_providers():
     config = get_config()
 
-    def from_ca_providers_option():
-        """Iterate through ca_providers option and yield name, position and enabled"""
-        for pos, (name, enabled) in enumerate(config.setting['ca_providers']):
-            yield POrderTuple(name=name, position=pos, enabled=enabled)
-
     # build a defaultdict with provider name as key, and PInfoTuple as value
     order = defaultdict(lambda: PInfoTuple(position=666, enabled=False))
-    for o in from_ca_providers_option():
-        order[o.name] = PInfoTuple(position=o.position, enabled=o.enabled)
+    for position, (name, enabled) in enumerate(config.setting['ca_providers']):
+        order[name] = PInfoTuple(position=position, enabled=enabled)
 
     # use previously built dict to order providers, according to current ca_providers
     # (yet) unknown providers are placed at the end, disabled
