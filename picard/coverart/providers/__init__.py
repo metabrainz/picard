@@ -29,7 +29,6 @@ from collections import (
     namedtuple,
 )
 
-from picard import log
 from picard.config import get_config
 from picard.coverart.providers.caa import CoverArtProviderCaa
 from picard.coverart.providers.caa_release_group import (
@@ -80,12 +79,6 @@ def cover_art_providers():
     # use previously built dict to order providers, according to current ca_providers
     # (yet) unknown providers are placed at the end, disabled
     ordered_providers = sorted(_cover_art_providers, key=lambda p: order[p.name].position)
-
-    def label(p):
-        checked = 'x' if order[p.name].enabled else ' '
-        return "%s [%s]" % (p.name, checked)
-
-    log.debug("CA Providers order: %s", ' > '.join(label(p) for p in ordered_providers))
 
     for p in ordered_providers:
         yield ProviderTuple(name=p.name, title=p.title, enabled=order[p.name].enabled, cls=p)
