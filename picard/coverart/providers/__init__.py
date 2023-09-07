@@ -73,9 +73,7 @@ def cover_art_providers():
 
     # use previously built dict to order providers, according to current ca_providers
     # (yet) unknown providers are placed at the end, disabled
-    ordered_providers = sorted(_cover_art_providers, key=lambda p: order[p.name].position)
-
-    for p in ordered_providers:
+    for p in sorted(_cover_art_providers, key=lambda p: order[p.name].position):
         yield ProviderTuple(name=p.name, title=p.title, enabled=order[p.name].enabled, cls=p)
 
 
