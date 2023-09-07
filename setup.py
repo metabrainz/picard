@@ -57,6 +57,7 @@ from setuptools import (
 from setuptools.command.install import install
 from setuptools.dist import Distribution
 
+
 try:
     from setuptools.command.build import build
 except ImportError:
@@ -401,7 +402,10 @@ class picard_build_ui(Command):
                 if newer(uifile, pyfile):
                     compile_ui(uifile, pyfile)
 
-        from resources import compile, makeqrc
+        from resources import (
+            compile,
+            makeqrc,
+        )
         makeqrc.main()
         compile.main()
 
