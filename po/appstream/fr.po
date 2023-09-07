@@ -5,6 +5,7 @@
 # Laurent Monin <i18n@norz.org>, 2020
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2022
 # Zas <sonvideo@norz.org>, 2023.
+# Zas <Zas@users.noreply.translations.metabrainz.org>, 2023.
 #
 # Translators:
 #
@@ -13,8 +14,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-05 22:58+0200\n"
-"PO-Revision-Date: 2023-08-22 12:04+0000\n"
-"Last-Translator: Zas <sonvideo@norz.org>\n"
+"PO-Revision-Date: 2023-09-07 04:15+0000\n"
+"Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/"
 "appstream/fr/>\n"
 "Language: fr\n"
@@ -141,7 +142,8 @@ msgstr "Fondation MetaBrainz"
 #: org.musicbrainz.Picard.desktop.in:4
 msgid "Tag your music with the next generation MusicBrainz tagger"
 msgstr ""
+"Taguer votre musique avec le baliseur MusicBrainz de nouvelle génération"
 
 #: org.musicbrainz.Picard.desktop.in:16
 msgid "New Window"
-msgstr ""
+msgstr "Nouvelle fenêtre"
