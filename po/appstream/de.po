@@ -1,29 +1,28 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-# Translators:
 # Laurent Monin <i18n@norz.org>, 2018
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2019
 # Lukáš Lalinský <lalinsky@gmail.com>, 2020
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2022
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2022, 2023.
 #
-#, fuzzy
+# Translators:
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-05 22:58+0200\n"
-"PO-Revision-Date: 2018-11-25 07:37+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>, 2022\n"
-"Language-Team: German (https://app.transifex.com/musicbrainz/teams/13846/"
-"de/)\n"
+"PO-Revision-Date: 2023-09-07 04:15+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"Language-Team: German <https://translations.metabrainz.org/projects/picard/"
+"appstream/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
@@ -139,8 +138,8 @@ msgstr "MetaBrainz Foundation"
 
 #: org.musicbrainz.Picard.desktop.in:4
 msgid "Tag your music with the next generation MusicBrainz tagger"
-msgstr ""
+msgstr "Tagge deine Musik mit dem MusicBrainz-Tagger der nächsten Generation"
 
 #: org.musicbrainz.Picard.desktop.in:16
 msgid "New Window"
-msgstr ""
+msgstr "Neues Fenster"
