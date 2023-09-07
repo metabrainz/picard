@@ -81,13 +81,6 @@ class CoverOptionsPage(OptionsPage):
         self.move_view = MoveableListView(self.ui.ca_providers_list, self.ui.up_button,
                                           self.ui.down_button)
 
-    def load_cover_art_providers(self):
-        """Load available providers, initialize provider-specific options, restore state of each
-        """
-        self.ui.ca_providers_list.clear()
-        for p in cover_art_providers():
-            self.ui.ca_providers_list.addItem(CheckboxListItem(_(p.title), checked=p.enabled, data=p.name))
-
     def restore_defaults(self):
         # Remove previous entries
         self.ui.ca_providers_list.clear()
@@ -100,6 +93,13 @@ class CoverOptionsPage(OptionsPage):
             items.append((item.data, item.checked))
         return items
 
+    def _load_cover_art_providers(self):
+        """Load available providers, initialize provider-specific options, restore state of each
+        """
+        self.ui.ca_providers_list.clear()
+        for p in cover_art_providers():
+            self.ui.ca_providers_list.addItem(CheckboxListItem(_(p.title), checked=p.enabled, data=p.name))
+
     def load(self):
         config = get_config()
         self.ui.save_images_to_tags.setChecked(config.setting["save_images_to_tags"])
@@ -109,7 +109,7 @@ class CoverOptionsPage(OptionsPage):
         self.ui.save_images_overwrite.setChecked(config.setting["save_images_overwrite"])
         self.ui.save_only_one_front_image.setChecked(config.setting["save_only_one_front_image"])
         self.ui.image_type_as_filename.setChecked(config.setting["image_type_as_filename"])
-        self.load_cover_art_providers()
+        self._load_cover_art_providers()
         self.ui.ca_providers_list.setCurrentRow(0)
         self.update_ca_providers_groupbox_state()
 
