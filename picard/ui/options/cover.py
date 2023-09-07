@@ -43,6 +43,7 @@ from picard.ui.options import (
     register_options_page,
 )
 from picard.ui.ui_options_cover import Ui_CoverOptionsPage
+from picard.ui.util import qlistwidget_items
 
 
 class CoverOptionsPage(OptionsPage):
@@ -108,8 +109,7 @@ class CoverOptionsPage(OptionsPage):
         self.update_ca_providers_groupbox_state()
 
     def _ca_providers(self):
-        for i in range(self.ui.ca_providers_list.count()):
-            item = self.ui.ca_providers_list.item(i)
+        for item in qlistwidget_items(self.ui.ca_providers_list):
             yield (item.data, item.checked)
 
     def save(self):

@@ -69,7 +69,10 @@ from picard.webservice import ratecontrol
 
 from picard.ui import PicardDialog
 from picard.ui.ui_provider_options_caa import Ui_CaaOptions
-from picard.ui.util import StandardButton
+from picard.ui.util import (
+    StandardButton,
+    qlistwidget_items,
+)
 
 
 CaaSizeItem = namedtuple('CaaSizeItem', ['thumbnail', 'label'])
@@ -215,8 +218,8 @@ class ListBox(QtWidgets.QListWidget):
             callback()
 
     def all_items_data(self, role=QtCore.Qt.ItemDataRole.UserRole):
-        for index in range(self.count()):
-            yield self.item(index).data(role)
+        for item in qlistwidget_items(self):
+            yield item.data(role)
 
 
 class CAATypesSelectorDialog(PicardDialog):

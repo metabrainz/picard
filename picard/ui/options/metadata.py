@@ -53,6 +53,7 @@ from picard.ui.options import (
 from picard.ui.ui_exception_script_selector import Ui_ExceptionScriptSelector
 from picard.ui.ui_multi_locale_selector import Ui_MultiLocaleSelector
 from picard.ui.ui_options_metadata import Ui_MetadataOptionsPage
+from picard.ui.util import qlistwidget_items
 
 
 def iter_sorted_locales(locales):
@@ -232,8 +233,7 @@ class MultiLocaleSelector(PicardDialog):
         if item is None:
             return
         locale = item.data(QtCore.Qt.ItemDataRole.UserRole)
-        for row in range(self.ui.selected_locales.count()):
-            selected_item = self.ui.selected_locales.item(row)
+        for selected_item in qlistwidget_items(self.ui.selected_locales):
             if selected_item.data(QtCore.Qt.ItemDataRole.UserRole) == locale:
                 return
         new_item = item.clone()
@@ -253,10 +253,10 @@ class MultiLocaleSelector(PicardDialog):
         self.ui.remove_locale.setEnabled(enabled)
 
     def save_changes(self):
-        locales = []
-        for row in range(self.ui.selected_locales.count()):
-            selected_item = self.ui.selected_locales.item(row)
-            locales.append(selected_item.data(QtCore.Qt.ItemDataRole.UserRole))
+        locales = [
+            item.data(QtCore.Qt.ItemDataRole.UserRole)
+            for item in qlistwidget_items(self.ui.selected_locales)
+        ]
         self.parent().current_locales = locales
         self.parent().make_locales_text()
         self.accept()
@@ -319,8 +319,7 @@ class ScriptExceptionSelector(PicardDialog):
         if item is None:
             return
         script_id = item.data(QtCore.Qt.ItemDataRole.UserRole)
-        for row in range(self.ui.selected_scripts.count()):
-            selected_item = self.ui.selected_scripts.item(row)
+        for selected_item in qlistwidget_items(self.ui.selected_scripts):
             if selected_item.data(QtCore.Qt.ItemDataRole.UserRole)[0] == script_id:
                 return
         new_item = QtWidgets.QListWidgetItem(self.make_label(script_id, 0))
@@ -366,10 +365,10 @@ class ScriptExceptionSelector(PicardDialog):
             selected_item.setText(label)
 
     def save_changes(self):
-        scripts = []
-        for row in range(self.ui.selected_scripts.count()):
-            selected_item = self.ui.selected_scripts.item(row)
-            scripts.append(selected_item.data(QtCore.Qt.ItemDataRole.UserRole))
+        scripts = [
+            item.data(QtCore.Qt.ItemDataRole.UserRole)
+            for item in qlistwidget_items(self.ui.selected_scripts)
+        ]
         self.parent().current_scripts = scripts
         self.parent().make_scripts_text()
         self.accept()
