@@ -86,13 +86,6 @@ class CoverOptionsPage(OptionsPage):
         self.ui.ca_providers_list.clear()
         super().restore_defaults()
 
-    def ca_providers(self):
-        items = []
-        for i in range(self.ui.ca_providers_list.count()):
-            item = self.ui.ca_providers_list.item(i)
-            items.append((item.data, item.checked))
-        return items
-
     def _load_cover_art_providers(self):
         """Load available providers, initialize provider-specific options, restore state of each
         """
@@ -113,6 +106,13 @@ class CoverOptionsPage(OptionsPage):
         self.ui.ca_providers_list.setCurrentRow(0)
         self.update_ca_providers_groupbox_state()
 
+    def _ca_providers(self):
+        items = []
+        for i in range(self.ui.ca_providers_list.count()):
+            item = self.ui.ca_providers_list.item(i)
+            items.append((item.data, item.checked))
+        return items
+
     def save(self):
         config = get_config()
         config.setting["save_images_to_tags"] = self.ui.save_images_to_tags.isChecked()
@@ -122,7 +122,7 @@ class CoverOptionsPage(OptionsPage):
         config.setting["save_images_overwrite"] = self.ui.save_images_overwrite.isChecked()
         config.setting["save_only_one_front_image"] = self.ui.save_only_one_front_image.isChecked()
         config.setting["image_type_as_filename"] = self.ui.image_type_as_filename.isChecked()
-        config.setting["ca_providers"] = self.ca_providers()
+        config.setting["ca_providers"] = self._ca_providers()
 
     def update_ca_providers_groupbox_state(self):
         files_enabled = self.ui.save_images_to_files.isChecked()
