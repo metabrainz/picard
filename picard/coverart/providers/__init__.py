@@ -65,9 +65,10 @@ POrderTuple = namedtuple('OrderTuple', 'name position enabled')
 
 
 def cover_art_providers():
+    config = get_config()
+
     def from_ca_providers_option():
         """Iterate through ca_providers option and yield name, position and enabled"""
-        config = get_config()
         for pos, (name, enabled) in enumerate(config.setting['ca_providers']):
             yield POrderTuple(name=name, position=pos, enabled=enabled)
 
