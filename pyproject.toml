@@ -4,10 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [tool.isort]
 sections = [
-    "FUTURE", "STDLIB", "THIRDPARTY", "QT", "TEST", "PICARD", "LOCALFOLDER",
+    "FUTURE", "STDLIB", "FIRSTPARTY", "THIRDPARTY", "QT", "TEST", "PICARD", "LOCALFOLDER",
     "RESOURCES", "PICARD_UI"
 ]
 default_section = "LOCALFOLDER"
+known_first_party = []
 known_picard = ["picard"]
 known_picard_ui = ["picard.ui"]
 known_qt = ["PyQt5"]
