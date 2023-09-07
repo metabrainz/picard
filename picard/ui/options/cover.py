@@ -91,7 +91,8 @@ class CoverOptionsPage(OptionsPage):
         """
         self.ui.ca_providers_list.clear()
         for p in cover_art_providers():
-            self.ui.ca_providers_list.addItem(CheckboxListItem(_(p.title), checked=p.enabled, data=p.name))
+            item = CheckboxListItem(_(p.title), checked=p.enabled, data=p.name)
+            self.ui.ca_providers_list.addItem(item)
 
     def load(self):
         config = get_config()
