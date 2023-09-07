@@ -60,6 +60,7 @@ from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
 from picard.ui.ui_scripting_documentation_dialog import (
     Ui_ScriptingDocumentationDialog,
 )
+from picard.ui.util import qlistwidget_items
 from picard.ui.widgets.scriptdocumentation import ScriptingDocumentationWidget
 from picard.ui.widgets.scriptlistwidget import ScriptListWidgetItem
 
@@ -263,8 +264,7 @@ class ScriptingOptionsPage(OptionsPage):
             last_selected_script.setSelected(True)
 
     def _all_scripts(self):
-        for row in range(0, self.ui.script_list.count()):
-            item = self.ui.script_list.item(row)
+        for item in qlistwidget_items(self.ui.script_list):
             yield item.get_all()
 
     def save(self):

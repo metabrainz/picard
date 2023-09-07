@@ -51,6 +51,7 @@ from picard.ui.options import (
 from picard.ui.ui_options_interface_toolbar import (
     Ui_InterfaceToolbarOptionsPage,
 )
+from picard.ui.util import qlistwidget_items
 
 
 class InterfaceToolbarOptionsPage(OptionsPage):
@@ -198,8 +199,8 @@ class InterfaceToolbarOptionsPage(OptionsPage):
         return list_item
 
     def _all_list_items(self):
-        return [self.ui.toolbar_layout_list.item(i).action_name
-                for i in range(self.ui.toolbar_layout_list.count())]
+        for item in qlistwidget_items(self.ui.toolbar_layout_list):
+            yield item.action_name
 
     def _added_actions(self):
         actions = self._all_list_items()
@@ -234,7 +235,7 @@ class InterfaceToolbarOptionsPage(OptionsPage):
 
     def update_layout_config(self):
         config = get_config()
-        config.setting['toolbar_layout'] = self._all_list_items()
+        config.setting['toolbar_layout'] = list(self._all_list_items())
         self._update_toolbar()
 
     def _update_toolbar(self):

@@ -50,6 +50,7 @@ from picard.ui.options import (
     register_options_page,
 )
 from picard.ui.ui_options_releases import Ui_ReleasesOptionsPage
+from picard.ui.util import qlistwidget_items
 from picard.ui.widgets import ClickableSlider
 
 
@@ -302,10 +303,10 @@ class ReleasesOptionsPage(OptionsPage):
             list2.addItem(item)
 
     def _save_list_items(self, setting, list1):
-        data = []
-        for i in range(list1.count()):
-            item = list1.item(i)
-            data.append(item.data(QtCore.Qt.ItemDataRole.UserRole))
+        data = [
+            item.data(QtCore.Qt.ItemDataRole.UserRole)
+            for item in qlistwidget_items(list1)
+        ]
         config = get_config()
         config.setting[setting] = data
 

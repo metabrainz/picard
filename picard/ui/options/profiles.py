@@ -46,6 +46,7 @@ from picard.ui.options import (
     register_options_page,
 )
 from picard.ui.ui_options_profiles import Ui_ProfileEditorDialog
+from picard.ui.util import qlistwidget_items
 from picard.ui.widgets.profilelistwidget import ProfileListWidgetItem
 
 
@@ -201,8 +202,7 @@ class ProfilesOptionsPage(OptionsPage):
         Yields:
             dict: Profile information in a format for saving to the user settings
         """
-        for row in range(self.ui.profile_list.count()):
-            item = self.ui.profile_list.item(row)
+        for item in qlistwidget_items(self.ui.profile_list):
             yield item.get_dict()
 
     def make_setting_tree(self, settings=None):
