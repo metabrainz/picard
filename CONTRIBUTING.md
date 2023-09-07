@@ -16,7 +16,7 @@ Developers may install few extra tools using:
 pip install -r requirements-dev.txt
 ```
 
-To fix or preserve imports style, one can use `isort -rc .` command (requires the [isort](https://github.com/timothycrosley/isort) tool, see `.isort.cfg`).
+To fix or preserve imports style, one can use `isort .` command (requires the [isort](https://github.com/PyCQA/isort) tool, see `.isort.cfg`).
 
 It is recommended to add a pre-commit hook to check whether imports in changed code
 follow the conventions. Add a file `.git/hooks/pre-commit` with the following content
