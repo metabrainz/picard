@@ -48,7 +48,7 @@ from picard.const.sys import (
 if IS_FROZEN:
     picard_module_path = Path(FROZEN_TEMP_PATH).joinpath('picard').resolve()
 else:
-    picard_module_path = Path(PathFinder().find_module('picard').get_filename()).resolve()
+    picard_module_path = Path(PathFinder().find_spec('picard').origin).resolve()
 
 _MAX_TAIL_LEN = 10**6
 
