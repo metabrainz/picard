@@ -81,7 +81,6 @@ from picard.ui.options.scripting import (
 )
 from picard.ui.ui_scripteditor import Ui_ScriptEditor
 from picard.ui.ui_scripteditor_details import Ui_ScriptDetails
-from picard.ui.util import qlistwidget_items
 from picard.ui.widgets.scriptdocumentation import ScriptingDocumentationWidget
 
 
@@ -972,10 +971,11 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         Returns:
             dict: Dictionary of scripts
         """
-        return {
-            item['id']: item
-            for item in qlistwidget_items(self.ui.preset_naming_scripts)
-        }
+        naming_scripts = {}
+        for idx in range(self.ui.preset_naming_scripts.count()):
+            script_item = self.ui.preset_naming_scripts.itemData(idx)
+            naming_scripts[script_item["id"]] = script_item
+        return naming_scripts
 
     def get_selected_item(self, idx=None):
         """Get the specified item from the script selection combo box.
