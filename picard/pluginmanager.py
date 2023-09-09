@@ -598,17 +598,17 @@ class PluginMetaPathFinder(MetaPathFinder):
         if not fullname.startswith(_PLUGIN_MODULE_PREFIX):
             return None
         plugin_name = fullname[len(_PLUGIN_MODULE_PREFIX):]
-        for plugin_dir in _plugin_dirs:
-            spec = None
-            if hasattr(zipimport.zipimporter, 'find_spec'):  # Python >= 3.10
+        spec = None
+        if hasattr(zipimport.zipimporter, 'find_spec'):  # Python >= 3.10
+            for plugin_dir in _plugin_dirs:
                 zipfilename = os.path.join(plugin_dir, plugin_name + '.zip')
                 zip_importer = zip_import(zipfilename)
                 if zip_importer:
                     spec = zip_importer.find_spec(fullname)
-            if not spec:
-                spec = importlib.machinery.PathFinder().find_spec(fullname, [plugin_dir])
-            if spec and spec.loader:
-                return spec
+                    break
+        if not spec:
+            spec = importlib.machinery.PathFinder().find_spec(fullname, _plugin_dirs)
+        return spec if spec and spec.loader else None
 
 
 sys.meta_path.append(PluginMetaPathFinder())
