@@ -26,9 +26,11 @@
 
 from functools import partial
 import importlib
+from importlib.abc import MetaPathFinder
 import json
 import os.path
 import shutil
+import sys
 import tempfile
 import zipfile
 import zipimport
@@ -45,6 +47,7 @@ from picard.const import (
     PLUGINS_API,
     USER_PLUGIN_DIR,
 )
+from picard.const.sys import IS_FROZEN
 from picard.plugin import (
     _PLUGIN_MODULE_PREFIX,
     PluginData,
@@ -184,6 +187,35 @@ def _compatible_api_versions(api_versions):
     return set(versions) & set(picard.api_versions_tuple)
 
 
+_plugin_dirs = []
+
+
+def plugin_dirs():
+    yield from _plugin_dirs
+
+
+def init_default_plugin_dirs():
+    # Add user plugin dir first
+    if not os.path.exists(USER_PLUGIN_DIR):
+        os.makedirs(USER_PLUGIN_DIR)
+    register_plugin_dir(USER_PLUGIN_DIR)
+
+    # Register system wide plugin dir
+    if IS_FROZEN:
+        toppath = sys.argv[0]
+    else:
+        toppath = os.path.abspath(__file__)
+
+    topdir = os.path.dirname(toppath)
+    plugin_dir = os.path.join(topdir, "plugins")
+    register_plugin_dir(plugin_dir)
+
+
+def register_plugin_dir(path):
+    if path not in _plugin_dirs:
+        _plugin_dirs.append(path)
+
+
 class PluginManager(QtCore.QObject):
 
     plugin_installed = QtCore.pyqtSignal(PluginWrapper, bool)
@@ -198,6 +230,7 @@ class PluginManager(QtCore.QObject):
         if plugins_directory is None:
             plugins_directory = USER_PLUGIN_DIR
         self.plugins_directory = os.path.normpath(plugins_directory)
+        init_default_plugin_dirs()
 
     @property
     def available_plugins(self):
@@ -291,8 +324,9 @@ class PluginManager(QtCore.QObject):
             # deprecated since 3.4
             #
             # comment to be deleted, just for the PR purposes
-            info = importlib.machinery.PathFinder().find_spec(name, [plugindir])
-            if not info.loader:
+            # info = importlib.machinery.PathFinder().find_spec(name, [plugindir])
+            info = PluginMetaPathFinder().find_spec(_PLUGIN_MODULE_PREFIX + name, [plugindir])
+            if not info or not info.loader:
                 errorfmt = _('Failed loading plugin "%(plugin)s" in "%(dirname)s"')
                 self.plugin_error(name, errorfmt, params={
                     'plugin': name,
@@ -558,3 +592,15 @@ class PluginManager(QtCore.QObject):
             self.query_available_plugins(_display_update)
         else:
             _display_update()
+
+
+class PluginMetaPathFinder(MetaPathFinder):
+    def find_spec(self, fullname, path, target=None):
+        if not fullname.startswith(_PLUGIN_MODULE_PREFIX):
+            return None
+        info = importlib.machinery.PathFinder().find_spec(fullname, _plugin_dirs)
+        if info and info.loader:
+            return info
+
+
+sys.meta_path.append(PluginMetaPathFinder())
