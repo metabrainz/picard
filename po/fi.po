@@ -1,7 +1,7 @@
 # Translations template for picard.
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the picard project.
-# 
+#
 # Translators:
 # Jaakko Perttilä <jormangeud@gmail.com>, 2012-2015,2017-2023
 # Jaakko Perttilä <jormangeud@gmail.com>, 2018
@@ -7518,8 +7518,8 @@ msgstr[1] "siirtää tiedostoja toiseen sijaintiin"
 #: picard/ui/savewarningdialog.py:54
 msgid "You are about to save {file_count:,d} file and this will:"
 msgid_plural "You are about to save {file_count:,d} files and this will:"
-msgstr[0] "Olet aikeissa muuttaa {file_count;d} tiedoston ja täten:"
-msgstr[1] "Olet aikeissa muuttaa {file_count;d} tiedostoa ja täten:"
+msgstr[0] "Olet aikeissa muuttaa {file_count:,d} tiedoston ja täten:"
+msgstr[1] "Olet aikeissa muuttaa {file_count:,d} tiedostoa ja täten:"
 
 #: picard/ui/savewarningdialog.py:58
 msgid ""
