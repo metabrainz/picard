@@ -353,6 +353,12 @@ class PluginManager(QtCore.QObject):
                 plugin_module = zip_importer.load_module(full_module_name)
             else:
                 plugin_module = importlib.util.module_from_spec(spec)
+                # This is kind of a hack. The module will be in sys.modules
+                # after exec_module has run. But if inside of the loaded plugin
+                # there are relative imports it would load the same plugin
+                # module twice. This executes the plugins code twice and leads
+                # to potential side effects.
+                sys.modules[full_module_name] = plugin_module
                 spec.loader.exec_module(plugin_module)
 
             plugin = PluginWrapper(plugin_module, plugindir,
