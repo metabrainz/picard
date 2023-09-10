@@ -598,17 +598,30 @@ class PluginMetaPathFinder(MetaPathFinder):
         if not fullname.startswith(_PLUGIN_MODULE_PREFIX):
             return None
         plugin_name = fullname[len(_PLUGIN_MODULE_PREFIX):]
-        spec = None
+        for plugin_dir in plugin_dirs():
+            for file_path in self._plugin_file_paths(plugin_dir, plugin_name):
+                if os.path.exists(file_path):
+                    spec = self._spec_from_path(fullname, file_path)
+                    if spec and spec.loader:
+                        return spec
+
+    def _spec_from_path(self, fullname, file_path):
+        if file_path.endswith('.zip'):
+            return self._spec_from_zip(fullname, file_path)
+        else:
+            return importlib.util.spec_from_file_location(fullname, file_path)
+
+    def _spec_from_zip(self, fullname, file_path):
+        zip_importer = zip_import(file_path)
+        if zip_importer:
+            return zip_importer.find_spec(fullname)
+
+    @staticmethod
+    def _plugin_file_paths(plugin_dir, plugin_name):
+        yield os.path.join(plugin_dir, plugin_name, '__init__.py')
+        yield os.path.join(plugin_dir, plugin_name + '.py')
         if hasattr(zipimport.zipimporter, 'find_spec'):  # Python >= 3.10
-            for plugin_dir in _plugin_dirs:
-                zipfilename = os.path.join(plugin_dir, plugin_name + '.zip')
-                zip_importer = zip_import(zipfilename)
-                if zip_importer:
-                    spec = zip_importer.find_spec(fullname)
-                    break
-        if not spec:
-            spec = importlib.machinery.PathFinder().find_spec(fullname, _plugin_dirs)
-        return spec if spec and spec.loader else None
+            yield os.path.join(plugin_dir, plugin_name + '.zip')
 
 
 sys.meta_path.append(PluginMetaPathFinder())
