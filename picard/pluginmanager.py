@@ -215,8 +215,11 @@ def register_plugin_dir(path):
 
 def plugin_dir_for_path(path):
     for plugin_dir in plugin_dirs():
-        if path.startswith(plugin_dir):
-            return plugin_dir
+        try:
+            if os.path.commonpath((path, plugin_dir)) == plugin_dir:
+                return plugin_dir
+        except ValueError:
+            pass
     return path
 
 
@@ -338,7 +341,7 @@ class PluginManager(QtCore.QObject):
             module_pathname = spec.origin
             if isinstance(spec.loader, zipimport.zipimporter):
                 manifest_data = load_zip_manifest(spec.loader.archive)
-            if module_pathname.endswith("__init__.py"):
+            if os.path.basename(module_pathname) == '__init__.py':
                 module_pathname = os.path.dirname(module_pathname)
             plugin_dir = plugin_dir_for_path(module_pathname)
 
