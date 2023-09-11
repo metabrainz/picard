@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2019-2021 Laurent Monin
-# Copyright (C) 2019-2021 Philipp Wolfer
+# Copyright (C) 2019-2021, 2023 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,14 +30,15 @@ from test.picardtestcase import PicardTestCase
 import picard
 from picard.const import USER_PLUGIN_DIR
 from picard.plugin import (
-    _PLUGIN_MODULE_PREFIX,
     PluginWrapper,
     _unregister_module_extensions,
 )
 from picard.pluginmanager import (
     PluginManager,
     _compatible_api_versions,
+    _plugin_dirs,
     _plugin_name_from_path,
+    register_plugin_dir,
 )
 from picard.version import (
     Version,
@@ -92,9 +93,8 @@ def unload_plugin(plugin_name):
     _unregister_module_extensions(plugin_name)
     if hasattr(picard.plugins, plugin_name):
         delattr(picard.plugins, plugin_name)
-    key = _PLUGIN_MODULE_PREFIX + plugin_name
-    if key in sys.modules:
-        del sys.modules[key]
+    if plugin_name in sys.modules:
+        del sys.modules[plugin_name]
 
 
 class TestPicardPluginsCommon(PicardTestCase):
@@ -112,6 +112,7 @@ class TestPicardPluginsCommonTmpDir(TestPicardPluginsCommon):
     def setUp(self):
         super().setUp()
         self.tmp_directory = self.mktmpdir()
+        register_plugin_dir(self.tmp_directory)
 
 
 class TestPicardPluginManager(TestPicardPluginsCommon):
@@ -146,10 +147,6 @@ class TestPicardPluginManager(TestPicardPluginsCommon):
 class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
 
     def _test_plugin_install(self, name):
-        unload_plugin('dummyplugin')
-        with self.assertRaises(ImportError):
-            from picard.plugins.dummyplugin import DummyPlugin
-
         plugin_path = _testplugins[name]
         pm = PluginManager(plugins_directory=self.tmp_directory)
 
@@ -159,14 +156,18 @@ class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
         self.assertEqual(pm.plugins[0].name, 'Dummy plugin', msg)
 
         # if module is properly loaded, this should work
-        from picard.plugins.dummyplugin import DummyPlugin  # noqa: F811
+        from picard.plugins.dummyplugin import DummyPlugin
         DummyPlugin()
 
-    def _test_plugin_install_data(self, name):
-        unload_plugin('dummyplugin')
+        # Remove plugin again
+        pm.remove_plugin('dummyplugin')
+        unload_plugin('picard.plugins.dummyplugin')
         with self.assertRaises(ImportError):
-            from picard.plugins.dummyplugin import DummyPlugin
+            from picard.plugins.dummyplugin import (  # noqa: F811 # pylint: disable=reimported
+                DummyPlugin,
+            )
 
+    def _test_plugin_install_data(self, name):
         # simulate installation from UI using data from picard plugins api web service
         with open(_testplugins[name], 'rb') as f:
             data = f.read()
@@ -179,8 +180,16 @@ class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
         self.assertEqual(pm.plugins[0].name, 'Dummy plugin', msg)
 
         # if module is properly loaded, this should work
-        from picard.plugins.dummyplugin import DummyPlugin  # noqa: F811
+        from picard.plugins.dummyplugin import DummyPlugin
         DummyPlugin()
+
+        # Remove plugin again
+        pm.remove_plugin('dummyplugin')
+        unload_plugin('picard.plugins.dummyplugin')
+        with self.assertRaises(ImportError):
+            from picard.plugins.dummyplugin import (  # noqa: F811 # pylint: disable=reimported
+                DummyPlugin,
+            )
 
     # module
     def test_plugin_install_module(self):
@@ -221,13 +230,10 @@ class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
 class TestPicardPluginsLoad(TestPicardPluginsCommonTmpDir):
 
     def _test_plugin_load_from_directory(self, name):
-        unload_plugin('dummyplugin')
-        with self.assertRaises(ImportError):
-            from picard.plugins.dummyplugin import DummyPlugin
-
         pm = PluginManager(plugins_directory=self.tmp_directory)
 
         src_dir = os.path.dirname(_testplugins[name])
+        register_plugin_dir(src_dir)
 
         msg = "plugins_load_from_directory: %s %r" % (name, src_dir)
         pm.load_plugins_from_directory(src_dir)
@@ -235,8 +241,10 @@ class TestPicardPluginsLoad(TestPicardPluginsCommonTmpDir):
         self.assertEqual(pm.plugins[0].name, 'Dummy plugin', msg)
 
         # if module is properly loaded, this should work
-        from picard.plugins.dummyplugin import DummyPlugin  # noqa: F811
+        from picard.plugins.dummyplugin import DummyPlugin
         DummyPlugin()
+
+        _plugin_dirs.remove(src_dir)
 
     # singlefile
     def test_plugin_load_from_directory_singlefile(self):

@@ -25,11 +25,12 @@
 
 
 from functools import partial
-import imp
 import importlib
+from importlib.abc import MetaPathFinder
 import json
 import os.path
 import shutil
+import sys
 import tempfile
 import zipfile
 import zipimport
@@ -46,6 +47,7 @@ from picard.const import (
     PLUGINS_API,
     USER_PLUGIN_DIR,
 )
+from picard.const.sys import IS_FROZEN
 from picard.plugin import (
     _PLUGIN_MODULE_PREFIX,
     PluginData,
@@ -156,35 +158,69 @@ def _plugin_name_from_path(path):
         return None
 
 
-def load_manifest(archive_path):
-    archive = zipfile.ZipFile(archive_path)
-    manifest_data = None
-    with archive.open('MANIFEST.json') as f:
-        manifest_data = json.loads(str(f.read().decode()))
-    return manifest_data
+def load_zip_manifest(archive_path):
+    if is_zipped_package(archive_path):
+        try:
+            archive = zipfile.ZipFile(archive_path)
+            with archive.open('MANIFEST.json') as f:
+                return json.loads(str(f.read().decode()))
+        except Exception as why:
+            log.warning("Failed to load manifest data from json: %s", why)
+            return None
 
 
 def zip_import(path):
     if (not is_zip(path) or not os.path.isfile(path)):
-        return (None, None, None)
+        return None
     try:
-        zip_importer = zipimport.zipimporter(path)
-        plugin_name = _plugin_name_from_path(path)
-        manifest_data = None
-        if is_zipped_package(path):
-            try:
-                manifest_data = load_manifest(path)
-            except Exception as why:
-                log.warning("Failed to load manifest data from json: %s", why)
-        return (zip_importer, plugin_name, manifest_data)
+        return zipimport.zipimporter(path)
     except zipimport.ZipImportError as why:
         log.error("ZIP import error: %s", why)
-        return (None, None, None)
+        return None
 
 
 def _compatible_api_versions(api_versions):
     versions = [Version.from_string(v) for v in list(api_versions)]
     return set(versions) & set(picard.api_versions_tuple)
+
+
+_plugin_dirs = []
+
+
+def plugin_dirs():
+    yield from _plugin_dirs
+
+
+def init_default_plugin_dirs():
+    # Add user plugin dir first
+    if not os.path.exists(USER_PLUGIN_DIR):
+        os.makedirs(USER_PLUGIN_DIR)
+    register_plugin_dir(USER_PLUGIN_DIR)
+
+    # Register system wide plugin dir
+    if IS_FROZEN:
+        toppath = sys.argv[0]
+    else:
+        toppath = os.path.abspath(__file__)
+
+    topdir = os.path.dirname(toppath)
+    plugin_dir = os.path.join(topdir, "plugins")
+    register_plugin_dir(plugin_dir)
+
+
+def register_plugin_dir(path):
+    if path not in _plugin_dirs:
+        _plugin_dirs.append(path)
+
+
+def plugin_dir_for_path(path):
+    for plugin_dir in plugin_dirs():
+        try:
+            if os.path.commonpath((path, plugin_dir)) == plugin_dir:
+                return plugin_dir
+        except ValueError:
+            pass
+    return path
 
 
 class PluginManager(QtCore.QObject):
@@ -201,6 +237,7 @@ class PluginManager(QtCore.QObject):
         if plugins_directory is None:
             plugins_directory = USER_PLUGIN_DIR
         self.plugins_directory = os.path.normpath(plugins_directory)
+        init_default_plugin_dirs()
 
     @property
     def available_plugins(self):
@@ -262,7 +299,7 @@ class PluginManager(QtCore.QObject):
                   len(names))
         for name in sorted(names):
             try:
-                self._load_plugin_from_directory(name, plugindir)
+                self._load_plugin(name)
             except Exception:
                 self.plugin_error(name, _("Unable to load plugin '%s'"), name, log_func=log.exception)
 
@@ -272,50 +309,57 @@ class PluginManager(QtCore.QObject):
                 return (plugin, index)
         return (None, None)
 
-    def _load_plugin_from_directory(self, name, plugindir):
-        module_file = None
-        zipfilename = os.path.join(plugindir, name + '.zip')
-        (zip_importer, module_name, manifest_data) = zip_import(zipfilename)
-        if zip_importer:
-            name = module_name
-            if not zip_importer.find_module(name):
-                errorfmt = _('Failed loading zipped plugin "%(plugin)s" from "%(filename)s"')
+    def _load_plugin(self, name):
+        existing_plugin, existing_plugin_index = self._get_plugin_index_by_name(name)
+        if existing_plugin:
+            log.debug("Ignoring already loaded plugin %r (version %r at %r)",
+                existing_plugin.module_name,
+                existing_plugin.version,
+                existing_plugin.file)
+            return
+
+        spec = None
+        module_pathname = None
+        zip_importer = None
+        manifest_data = None
+        full_module_name = _PLUGIN_MODULE_PREFIX + name
+
+        # Legacy loading of ZIP plugins. In Python >= 3.10 this is all handled
+        # by PluginMetaPathFinder. Remove once Python 3.9 is no longer supported.
+        if not hasattr(zipimport.zipimporter, 'find_spec'):
+            (zip_importer, plugin_dir, module_pathname, manifest_data) = self._legacy_load_zip_plugin(name)
+
+        if not module_pathname:
+            spec = PluginMetaPathFinder().find_spec(full_module_name, [])
+            if not spec or not spec.loader:
+                errorfmt = _('Failed loading plugin "%(plugin)s"')
                 self.plugin_error(name, errorfmt, params={
                     'plugin': name,
-                    'filename': zipfilename,
-                })
-                return None
-            module_pathname = zip_importer.get_filename(name)
-        else:
-            try:
-                info = imp.find_module(name, [plugindir])
-                module_file = info[0]
-                module_pathname = info[1]
-            except ImportError:
-                errorfmt = _('Failed loading plugin "%(plugin)s" in "%(dirname)s"')
-                self.plugin_error(name, errorfmt, params={
-                    'plugin': name,
-                    'dirname': plugindir,
                 })
                 return None
 
+            module_pathname = spec.origin
+            if isinstance(spec.loader, zipimport.zipimporter):
+                manifest_data = load_zip_manifest(spec.loader.archive)
+            if os.path.basename(module_pathname) == '__init__.py':
+                module_pathname = os.path.dirname(module_pathname)
+            plugin_dir = plugin_dir_for_path(module_pathname)
+
         plugin = None
         try:
-            existing_plugin, existing_plugin_index = self._get_plugin_index_by_name(name)
-            if existing_plugin:
-                log.warning("Module %r conflict: unregistering previously"
-                            " loaded %r version %s from %r",
-                            existing_plugin.module_name,
-                            existing_plugin.name,
-                            existing_plugin.version,
-                            existing_plugin.file)
-                _unregister_module_extensions(name)
-            full_module_name = _PLUGIN_MODULE_PREFIX + name
-            if zip_importer:
+            if zip_importer:  # Legacy ZIP import for Python < 3.10
                 plugin_module = zip_importer.load_module(full_module_name)
             else:
-                plugin_module = imp.load_module(full_module_name, *info)
-            plugin = PluginWrapper(plugin_module, plugindir,
+                plugin_module = importlib.util.module_from_spec(spec)
+                # This is kind of a hack. The module will be in sys.modules
+                # after exec_module has run. But if inside of the loaded plugin
+                # there are relative imports it would load the same plugin
+                # module twice. This executes the plugins code twice and leads
+                # to potential side effects.
+                sys.modules[full_module_name] = plugin_module
+                spec.loader.exec_module(plugin_module)
+
+            plugin = PluginWrapper(plugin_module, plugin_dir,
                                    file=module_pathname, manifest_data=manifest_data)
             compatible_versions = _compatible_api_versions(plugin.api_versions)
             if compatible_versions:
@@ -345,9 +389,24 @@ class PluginManager(QtCore.QObject):
             errorfmt = _('Plugin "%(plugin)s"')
             self.plugin_error(name, errorfmt, log_func=log.exception,
                               params={'plugin': name})
-        if module_file is not None:
-            module_file.close()
         return plugin
+
+    def _legacy_load_zip_plugin(self, name):
+        for plugin_dir in plugin_dirs():
+            zipfilename = os.path.join(plugin_dir, name + '.zip')
+            zip_importer = zip_import(zipfilename)
+            if zip_importer:
+                if not zip_importer.find_module(name):
+                    errorfmt = _('Failed loading zipped plugin "%(plugin)s" from "%(filename)s"')
+                    self.plugin_error(name, errorfmt, params={
+                        'plugin': name,
+                        'filename': zipfilename,
+                    })
+                    return (None, None, None, None)
+                module_pathname = zip_importer.get_filename(name)
+                manifest_data = load_zip_manifest(zip_importer.archive)
+                return (zip_importer, plugin_dir, module_pathname, manifest_data)
+        return (None, None, None, None)
 
     def _get_existing_paths(self, plugin_name, fileexts):
         dirpath = os.path.join(self.plugins_directory, plugin_name)
@@ -454,7 +513,7 @@ class PluginManager(QtCore.QObject):
 
             if not update:
                 try:
-                    installed_plugin = self._load_plugin_from_directory(plugin_name, self.plugins_directory)
+                    installed_plugin = self._load_plugin(plugin_name)
                     if not installed_plugin:
                         raise RuntimeError("Failed loading newly installed plugin %s" % plugin_name)
                 except Exception as e:
@@ -553,3 +612,37 @@ class PluginManager(QtCore.QObject):
             self.query_available_plugins(_display_update)
         else:
             _display_update()
+
+
+class PluginMetaPathFinder(MetaPathFinder):
+    def find_spec(self, fullname, path, target=None):
+        if not fullname.startswith(_PLUGIN_MODULE_PREFIX):
+            return None
+        plugin_name = fullname[len(_PLUGIN_MODULE_PREFIX):]
+        for plugin_dir in plugin_dirs():
+            for file_path in self._plugin_file_paths(plugin_dir, plugin_name):
+                if os.path.exists(file_path):
+                    spec = self._spec_from_path(fullname, file_path)
+                    if spec and spec.loader:
+                        return spec
+
+    def _spec_from_path(self, fullname, file_path):
+        if file_path.endswith('.zip'):
+            return self._spec_from_zip(fullname, file_path)
+        else:
+            return importlib.util.spec_from_file_location(fullname, file_path)
+
+    def _spec_from_zip(self, fullname, file_path):
+        zip_importer = zip_import(file_path)
+        if zip_importer:
+            return zip_importer.find_spec(fullname)
+
+    @staticmethod
+    def _plugin_file_paths(plugin_dir, plugin_name):
+        yield os.path.join(plugin_dir, plugin_name, '__init__.py')
+        yield os.path.join(plugin_dir, plugin_name + '.py')
+        if hasattr(zipimport.zipimporter, 'find_spec'):  # Python >= 3.10
+            yield os.path.join(plugin_dir, plugin_name + '.zip')
+
+
+sys.meta_path.append(PluginMetaPathFinder())

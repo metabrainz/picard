@@ -94,12 +94,8 @@ from picard.config import (
     setup_config,
 )
 from picard.config_upgrade import upgrade_config
-from picard.const import (
-    USER_DIR,
-    USER_PLUGIN_DIR,
-)
+from picard.const import USER_DIR
 from picard.const.sys import (
-    IS_FROZEN,
     IS_HAIKU,
     IS_MACOS,
     IS_WIN,
@@ -114,7 +110,10 @@ from picard.disc import (
 from picard.file import File
 from picard.formats import open_ as open_file
 from picard.i18n import setup_gettext
-from picard.pluginmanager import PluginManager
+from picard.pluginmanager import (
+    PluginManager,
+    plugin_dirs,
+)
 from picard.releasegroup import ReleaseGroup
 from picard.track import (
     NonAlbumTrack,
@@ -173,21 +172,6 @@ def _patched_shutil_copystat(src, dst, *, follow_symlinks=True):
 
 _orig_shutil_copystat = shutil.copystat
 shutil.copystat = _patched_shutil_copystat
-
-
-def plugin_dirs():
-    if IS_FROZEN:
-        toppath = sys.argv[0]
-    else:
-        toppath = os.path.abspath(__file__)
-
-    topdir = os.path.dirname(toppath)
-    plugin_dir = os.path.join(topdir, "plugins")
-    yield plugin_dir
-
-    if not os.path.exists(USER_PLUGIN_DIR):
-        os.makedirs(USER_PLUGIN_DIR)
-    yield USER_PLUGIN_DIR
 
 
 class ParseItemsToLoad:
