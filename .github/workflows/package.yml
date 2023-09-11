@@ -34,8 +34,8 @@ jobs:
           python-version: 3.9.12-macosx10.9
           python-sha256sum: 7888174c6fe441b00448c7ab3e9cbf0e6c3c7dea0750577baf09e1383fc44656
         - macos-deployment-version: 10.14
-          python-version: 3.11.1-macos11
-          python-sha256sum: f4de33ad3ef09c3e31196b296aec761eabab4564fc8c25e50ea99edd01969819
+          python-version: 3.11.5-macos11
+          python-sha256sum: c6cd76659bfb364c2ac63bc57f6b10c1e131a20170359c5d65e2d41fdc674a4f
     env:
       DISCID_VERSION: 0.6.3
       DISCID_SHA256SUM: 8bca27e2f621c7813a6a9951fd573b31754a6fb51551a373c1acea1aa188adeb
