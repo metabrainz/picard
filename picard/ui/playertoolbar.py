@@ -20,7 +20,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+import locale
 import os
 
 from PyQt5 import (
@@ -371,7 +371,7 @@ class PlaybackRateButton(QtWidgets.QToolButton):
 
     def set_playback_rate(self, playback_rate):
         self.playback_rate = playback_rate
-        label = _(self.rate_fmt) % playback_rate
+        label = locale.format_string(_(self.rate_fmt), playback_rate)
         self.setText(label)
 
     def wheelEvent(self, event):
