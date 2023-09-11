@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-27 18:30+0200\n"
+"POT-Creation-Date: 2023-09-11 09:16+0200\n"
 "PO-Revision-Date: 2023-08-30 09:27+0000\n"
 "Last-Translator: mfmeulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/"
@@ -130,7 +130,7 @@ msgid "Merge"
 msgstr "Samenvoegen"
 
 #: picard/config_upgrade.py:104 picard/ui/metadatabox.py:426
-#: picard/ui/options/interface_toolbar.py:99
+#: picard/ui/options/interface_toolbar.py:100
 #: picard/ui/ui_options_interface_toolbar.py:80
 msgid "Remove"
 msgstr "Verwijderen"
@@ -176,32 +176,26 @@ msgstr "Onverwachte fout bij het aanmelden"
 msgid "Unexpected request error (HTTP code %s)"
 msgstr "Onverwachte aanvraagfout (http-code %s)"
 
-#: picard/pluginmanager.py:79
+#: picard/pluginmanager.py:81
 msgid "Perform this check again the next time you start Picard."
 msgstr "Voer deze controle de volgende keer dat je Picard start weer uit."
 
-#: picard/pluginmanager.py:84
+#: picard/pluginmanager.py:86
 msgid "Picard Plugins Update"
 msgstr "Plug-ins bijwerken"
 
-#: picard/pluginmanager.py:267
+#: picard/pluginmanager.py:304
 #, python-format
 msgid "Unable to load plugin '%s'"
 msgstr "De plug-in ‘%s’ kon niet worden geladen"
 
-#: picard/pluginmanager.py:282
-#, python-format
-msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
-msgstr ""
-"De plug-in ‘%(plugin)s’ uit het zip-bestand ‘%(filename)s’ kon niet worden "
-"geladen"
-
-#: picard/pluginmanager.py:295
-#, python-format
-msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+#: picard/pluginmanager.py:335
+#, fuzzy, python-format
+#| msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+msgid "Failed loading plugin \"%(plugin)s\""
 msgstr "De plug-in ‘%(plugin)s’ in ‘%(dirname)s’ kon niet worden geladen"
 
-#: picard/pluginmanager.py:334
+#: picard/pluginmanager.py:378
 #, python-format
 msgid ""
 "Plugin \"%(plugin)s\" from \"%(filename)s\" is not compatible with this "
@@ -210,23 +204,30 @@ msgstr ""
 "Plug-in ‘%(plugin)s’ van ‘%(filename)s’ is niet geschikt voor deze versie "
 "van Picard."
 
-#: picard/pluginmanager.py:339
+#: picard/pluginmanager.py:383
 #, python-format
 msgid "Plugin \"%(plugin)s\" has an invalid API version string: %(error)s"
 msgstr "De plug-in ‘%(plugin)s’ heeft een ongeldige API-versie: %(error)s"
 
-#: picard/pluginmanager.py:345 picard/ui/options/plugins.py:416
+#: picard/pluginmanager.py:389 picard/ui/options/plugins.py:416
 #: picard/ui/options/plugins.py:428 picard/ui/options/plugins.py:449
 #, python-format
 msgid "Plugin \"%(plugin)s\""
 msgstr "Plug-in ‘%(plugin)s’"
 
-#: picard/pluginmanager.py:482
+#: picard/pluginmanager.py:400
+#, python-format
+msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
+msgstr ""
+"De plug-in ‘%(plugin)s’ uit het zip-bestand ‘%(filename)s’ kon niet worden "
+"geladen"
+
+#: picard/pluginmanager.py:541
 #, python-format
 msgid "Error loading plugins list: %(error)s"
 msgstr "Fout bij het laden van de lijst met plug-ins: %(error)s"
 
-#: picard/pluginmanager.py:518
+#: picard/pluginmanager.py:577
 msgid ""
 "There is an update available for one of your currently installed plugins:"
 msgid_plural ""
@@ -234,13 +235,13 @@ msgid_plural ""
 msgstr[0] "Een van je geïnstalleerde plug-ins kan worden bijgewerkt:"
 msgstr[1] "Een paar van je geïnstalleerde plug-ins kunnen worden bijgewerkt:"
 
-#: picard/pluginmanager.py:523
+#: picard/pluginmanager.py:582
 msgid "Do you want to update the plugin now?"
 msgid_plural "Do you want to update the plugins now?"
 msgstr[0] "Wil je de plug-in nu bijwerken?"
 msgstr[1] "Wil je de plug-ins nu bijwerken?"
 
-#: picard/pluginmanager.py:531
+#: picard/pluginmanager.py:590
 msgid "plus {extra_file_count:,d} other plugin."
 msgid_plural "plus {extra_file_count:,d} other plugins."
 msgstr[0] "inclusief nog {extra_file_count:,d} plug-in."
@@ -287,7 +288,7 @@ msgstr "Aantal dagen tussen controles"
 msgid "Updates to check"
 msgstr "Te zoeken versies"
 
-#: picard/profile.py:61 picard/ui/options/metadata.py:78
+#: picard/profile.py:61 picard/ui/options/metadata.py:79
 #: picard/ui/ui_options_metadata.py:129
 msgid "Metadata"
 msgstr "Metadata"
@@ -482,7 +483,7 @@ msgstr "Bestaande RIFF INFO-tags uit WAVE-bestanden verwijderen"
 msgid "RIFF INFO text encoding"
 msgstr "RIFF INFO-tekencodering"
 
-#: picard/profile.py:139 picard/ui/options/cover.py:51
+#: picard/profile.py:139 picard/ui/options/cover.py:52
 msgid "Cover Art"
 msgstr "Hoesafbeeldingen"
 
@@ -577,7 +578,7 @@ msgstr "Spaties door lage streepjes vervangen"
 msgid "Replacement character to use for directory separators"
 msgstr "Vervangend teken voor mapscheidingstekens"
 
-#: picard/profile.py:175 picard/ui/options/scripting.py:99
+#: picard/profile.py:175 picard/ui/options/scripting.py:100
 msgid "Scripting"
 msgstr "Scripting"
 
@@ -793,24 +794,24 @@ msgstr "[geen streepjescode]"
 msgid "[no release info]"
 msgstr "[geen uitgave-informatie]"
 
-#: picard/tagger.py:655 picard/ui/ui_options_general.py:197
+#: picard/tagger.py:639 picard/ui/ui_options_general.py:197
 msgid "MusicBrainz Account"
 msgstr "MusicBrainz-account"
 
-#: picard/tagger.py:656
+#: picard/tagger.py:640
 msgid "Authorization code:"
 msgstr "Machtigingscode:"
 
-#: picard/tagger.py:1145
+#: picard/tagger.py:1129
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Verwijdert album %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:1163
+#: picard/tagger.py:1147
 msgid "CD Lookup Error"
 msgstr "Fout bij opzoeken van de cd"
 
-#: picard/tagger.py:1164
+#: picard/tagger.py:1148
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -821,25 +822,25 @@ msgstr ""
 "\n"
 "%s"
 
-#: picard/tagger.py:1193
+#: picard/tagger.py:1177
 msgid "All supported log files"
 msgstr "Alle ondersteunde logboekbestanden"
 
-#: picard/tagger.py:1194
+#: picard/tagger.py:1178
 msgid "EAC / XLD / Whipper / fre:ac log files"
 msgstr "EAC-/XLD-/Whipper-/fre:ac-logboekbestanden"
 
-#: picard/tagger.py:1195
+#: picard/tagger.py:1179
 msgid "dBpoweramp log files"
 msgstr "dBpoweramp-logboekbestanden"
 
-#: picard/script/serializer.py:350 picard/tagger.py:1196
+#: picard/script/serializer.py:350 picard/tagger.py:1180
 #: picard/ui/coverartbox.py:610 picard/ui/mainwindow.py:1267
-#: picard/ui/options/maintenance.py:168 picard/ui/options/scripting.py:131
+#: picard/ui/options/maintenance.py:168 picard/ui/options/scripting.py:132
 msgid "All files"
 msgstr "Alle bestanden"
 
-#: picard/tagger.py:1222
+#: picard/tagger.py:1206
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr "Het logboek ‘%s’ kon niet worden gelezen"
@@ -953,40 +954,40 @@ msgstr ""
 msgid "Unknown"
 msgstr "Onbekend"
 
-#: picard/coverart/providers/caa.py:78
+#: picard/coverart/providers/caa.py:81
 msgid "250 px"
 msgstr "250 px"
 
-#: picard/coverart/providers/caa.py:79
+#: picard/coverart/providers/caa.py:82
 msgid "500 px"
 msgstr "500 px"
 
-#: picard/coverart/providers/caa.py:80
+#: picard/coverart/providers/caa.py:83
 msgid "1200 px"
 msgstr "1200 px"
 
-#: picard/coverart/providers/caa.py:81
+#: picard/coverart/providers/caa.py:84
 msgid "Full size"
 msgstr "Grootste formaat"
 
-#: picard/coverart/providers/caa.py:240
+#: picard/coverart/providers/caa.py:243
 msgid "Cover art types"
 msgstr "Afbeeldingtypes"
 
-#: picard/coverart/providers/caa.py:260
+#: picard/coverart/providers/caa.py:263
 msgid ""
 "Please select the contents of the image type 'Include' and 'Exclude' lists."
 msgstr "Selecteer welke types afbeeldingen wel en niet moeten worden gebruikt."
 
-#: picard/coverart/providers/caa.py:281
+#: picard/coverart/providers/caa.py:284
 msgid "Include types list"
 msgstr "Wel gebruiken"
 
-#: picard/coverart/providers/caa.py:295
+#: picard/coverart/providers/caa.py:298
 msgid "Exclude types list"
 msgstr "Niet gebruiken"
 
-#: picard/coverart/providers/caa.py:303
+#: picard/coverart/providers/caa.py:306
 msgid ""
 "CAA images with an image type found in the 'Include' list will be downloaded "
 "and used UNLESS they also have an image type found in the 'Exclude' list. "
@@ -1001,28 +1002,28 @@ msgstr ""
 "types in geen van beide lijsten worden niet meegenomen bij het bepalen of de "
 "afbeelding wordt gedownload of gebruikt.\n"
 
-#: picard/coverart/providers/caa.py:324
+#: picard/coverart/providers/caa.py:327
 msgid "I&nclude all"
 msgstr "&Alles gebruiken"
 
-#: picard/coverart/providers/caa.py:325
+#: picard/coverart/providers/caa.py:328
 msgid "E&xclude all"
 msgstr "&Niets gebruiken"
 
-#: picard/coverart/providers/caa.py:326
+#: picard/coverart/providers/caa.py:329
 msgid "C&lear all"
 msgstr "A&lles wissen"
 
-#: picard/coverart/providers/caa.py:327 picard/ui/options/dialog.py:131
+#: picard/coverart/providers/caa.py:330 picard/ui/options/dialog.py:131
 #: picard/ui/options/renaming_compat.py:189
 msgid "Restore &Defaults"
 msgstr "&Instellingen herstellen"
 
-#: picard/coverart/providers/caa.py:435
+#: picard/coverart/providers/caa.py:438
 msgid "Cover Art Archive"
 msgstr "Cover Art Archive"
 
-#: picard/coverart/providers/caa.py:505
+#: picard/coverart/providers/caa.py:508
 msgid "Cover Art Archive: Release"
 msgstr "Cover Art Archive: uitgave"
 
@@ -2715,11 +2716,11 @@ msgstr "%s (Kopiëren)"
 msgid "File content not a dictionary"
 msgstr "Inhoud van bestand is geen woordenboek"
 
-#: picard/script/serializer.py:340 picard/ui/options/scripting.py:190
+#: picard/script/serializer.py:340 picard/ui/options/scripting.py:191
 msgid "Unnamed Script"
 msgstr "Script zonder naam"
 
-#: picard/script/serializer.py:351 picard/ui/options/scripting.py:132
+#: picard/script/serializer.py:351 picard/ui/options/scripting.py:133
 msgid "Picard script files"
 msgstr "Picard-scriptbestanden"
 
@@ -2991,7 +2992,7 @@ msgid "Cover"
 msgstr "Afbeelding"
 
 #: picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
-#: picard/ui/options/interface_toolbar.py:95
+#: picard/ui/options/interface_toolbar.py:96
 msgid "Info"
 msgstr "Info"
 
@@ -3593,7 +3594,7 @@ msgstr "Bestand als nieuwe uitgave aan MusicBrainz toevoegen"
 msgid "Search for similar items…"
 msgstr "Naar soortgelijke objecten zoeken …"
 
-#: picard/ui/mainwindow.py:668 picard/ui/options/interface_toolbar.py:123
+#: picard/ui/mainwindow.py:668 picard/ui/options/interface_toolbar.py:124
 msgid "Similar items"
 msgstr "Soortgelijke objecten"
 
@@ -3698,7 +3699,7 @@ msgstr "Ctrl+Y"
 msgid "&Generate AcoustID Fingerprints"
 msgstr "AcoustID-&vingerafdrukken aanmaken"
 
-#: picard/ui/mainwindow.py:784 picard/ui/options/interface_toolbar.py:107
+#: picard/ui/mainwindow.py:784 picard/ui/options/interface_toolbar.py:108
 msgid "Generate Fingerprints"
 msgstr "Vingerafdrukken aanmaken"
 
@@ -3774,7 +3775,7 @@ msgstr "&Tags opslaan"
 msgid "Tags From &File Names…"
 msgstr "&Tags uit bestandsnamen halen …"
 
-#: picard/ui/mainwindow.py:860 picard/ui/options/interface_toolbar.py:119
+#: picard/ui/mainwindow.py:860 picard/ui/options/interface_toolbar.py:120
 msgid "Parse File Names…"
 msgstr "Bestandsnamen gebruiken …"
 
@@ -4081,13 +4082,13 @@ msgstr ""
 "Proxy %s vereist dat je bent ingelogd. Voer je gebruikersnaam en wachtwoord "
 "in."
 
-#: picard/ui/playertoolbar.py:173
+#: picard/ui/playertoolbar.py:174
 msgid "Internal player: The format of a media resource isn't (fully) supported"
 msgstr ""
 "Interne speler: de indeling van de mediabron wordt niet (volledig) "
 "ondersteund"
 
-#: picard/ui/playertoolbar.py:175
+#: picard/ui/playertoolbar.py:176
 msgid ""
 "Internal player: There are not the appropriate permissions to play a media "
 "resource"
@@ -4095,7 +4096,7 @@ msgstr ""
 "Interne speler: de juiste machtigingen voor het afspelen van een mediabron "
 "ontbreken"
 
-#: picard/ui/playertoolbar.py:177
+#: picard/ui/playertoolbar.py:178
 msgid ""
 "Internal player: A valid playback service was not found, playback cannot "
 "proceed"
@@ -4103,54 +4104,54 @@ msgstr ""
 "Interne speler: geen geldige afspeeldienst gevonden, het medium kan niet "
 "worden afgespeeld"
 
-#: picard/ui/playertoolbar.py:179
+#: picard/ui/playertoolbar.py:180
 #, python-format
 msgid "Internal player: error, code=%(code)d, msg=%(message)s"
 msgstr "Interne speler: fout, code=%(code)d, msg=%(message)s"
 
-#: picard/ui/playertoolbar.py:188
+#: picard/ui/playertoolbar.py:189
 msgid "Player"
 msgstr "Speler"
 
-#: picard/ui/playertoolbar.py:196
+#: picard/ui/playertoolbar.py:197
 msgid "Play"
 msgstr "Afspelen"
 
-#: picard/ui/playertoolbar.py:197
+#: picard/ui/playertoolbar.py:198
 msgid "Play selected files"
 msgstr "Geselecteerde bestanden afspelen"
 
-#: picard/ui/playertoolbar.py:203
+#: picard/ui/playertoolbar.py:204
 msgid "Pause"
 msgstr "Pauzeren"
 
-#: picard/ui/playertoolbar.py:204
+#: picard/ui/playertoolbar.py:205
 msgid "Pause or resume current playback"
 msgstr "Afspelen pauzeren of hervatten"
 
-#: picard/ui/playertoolbar.py:342
+#: picard/ui/playertoolbar.py:343
 #, python-format
 msgid "%1.1f ×"
 msgstr "%1.1f ×"
 
-#: picard/ui/playertoolbar.py:348
+#: picard/ui/playertoolbar.py:349
 msgid "Change playback speed"
 msgstr "Afspeelsnelheid veranderen"
 
-#: picard/ui/playertoolbar.py:355
+#: picard/ui/playertoolbar.py:356
 msgid "Playback speed"
 msgstr "Afspeelsnelheid"
 
-#: picard/ui/playertoolbar.py:398
+#: picard/ui/playertoolbar.py:399
 #, python-format
 msgid "%d%%"
 msgstr "%d%%"
 
-#: picard/ui/playertoolbar.py:404
+#: picard/ui/playertoolbar.py:405
 msgid "Change audio volume"
 msgstr "Volume veranderen"
 
-#: picard/ui/playertoolbar.py:410
+#: picard/ui/playertoolbar.py:411
 msgid "Audio volume"
 msgstr "Volume"
 
@@ -4416,7 +4417,7 @@ msgstr ""
 msgid "Are you sure that you want to delete the script?"
 msgstr "Weet je zeker dat je het script wil verwijderen?"
 
-#: picard/ui/options/scripting.py:163 picard/ui/scripteditor.py:1208
+#: picard/ui/options/scripting.py:164 picard/ui/scripteditor.py:1208
 msgid "File Error"
 msgstr "Bestandsfout"
 
@@ -4434,7 +4435,7 @@ msgstr ""
 msgid "Overwrite"
 msgstr "Overschrijven"
 
-#: picard/ui/options/profiles.py:119 picard/ui/scripteditor.py:1238
+#: picard/ui/options/profiles.py:120 picard/ui/scripteditor.py:1238
 msgid "Copy"
 msgstr "Kopiëren"
 
@@ -5714,51 +5715,51 @@ msgstr ""
 "Je hebt de interfacekleuren gewijzigd. Misschien moet je Picard herstarten "
 "om de veranderingen te zien."
 
-#: picard/ui/options/interface_toolbar.py:59
+#: picard/ui/options/interface_toolbar.py:60
 msgid "Action Toolbar"
 msgstr "Actiewerkbalk"
 
-#: picard/ui/options/interface_toolbar.py:67
+#: picard/ui/options/interface_toolbar.py:68
 msgid "Add Folder"
 msgstr "Map toevoegen"
 
-#: picard/ui/options/interface_toolbar.py:71
+#: picard/ui/options/interface_toolbar.py:72
 msgid "Add Files"
 msgstr "Bestanden toevoegen"
 
-#: picard/ui/options/interface_toolbar.py:75
+#: picard/ui/options/interface_toolbar.py:76
 msgid "Cluster"
 msgstr "Clusteren"
 
-#: picard/ui/options/interface_toolbar.py:79
+#: picard/ui/options/interface_toolbar.py:80
 msgid "Lookup"
 msgstr "Opzoeken"
 
-#: picard/ui/options/interface_toolbar.py:83
+#: picard/ui/options/interface_toolbar.py:84
 msgid "Scan"
 msgstr "Scannen"
 
-#: picard/ui/options/interface_toolbar.py:87
+#: picard/ui/options/interface_toolbar.py:88
 msgid "Lookup in Browser"
 msgstr "In de browser opzoeken"
 
-#: picard/ui/options/interface_toolbar.py:91
+#: picard/ui/options/interface_toolbar.py:92
 msgid "Save"
 msgstr "Opslaan"
 
-#: picard/ui/options/interface_toolbar.py:103
+#: picard/ui/options/interface_toolbar.py:104
 msgid "Submit AcoustIDs"
 msgstr "AcoustID’s versturen"
 
-#: picard/ui/options/interface_toolbar.py:111
+#: picard/ui/options/interface_toolbar.py:112
 msgid "Open in Player"
 msgstr "Nummer luisteren"
 
-#: picard/ui/options/interface_toolbar.py:115
+#: picard/ui/options/interface_toolbar.py:116
 msgid "Lookup CD…"
 msgstr "Cd opzoeken …"
 
-#: picard/ui/options/interface_toolbar.py:186
+#: picard/ui/options/interface_toolbar.py:187
 msgid "Drag and Drop to re-order"
 msgstr "Je kan elementen slepen om de volgorde te veranderen"
 
@@ -5887,7 +5888,7 @@ msgstr ""
 msgid "Matching"
 msgstr "Overeenkomsten"
 
-#: picard/ui/options/metadata.py:215
+#: picard/ui/options/metadata.py:216
 msgid "{indent}{locale}"
 msgstr "{indent}{locale}"
 
@@ -6006,27 +6007,27 @@ msgstr "De plug-in ‘%(plugin)s’ kon niet worden gedownload."
 msgid "Please try again later."
 msgstr "Probeer het later nog eens."
 
-#: picard/ui/options/profiles.py:55
+#: picard/ui/options/profiles.py:56
 msgid "Option Profiles"
 msgstr "Optieprofielen"
 
-#: picard/ui/options/profiles.py:114
+#: picard/ui/options/profiles.py:115
 msgid "New"
 msgstr "Nieuw"
 
-#: picard/ui/options/profiles.py:115
+#: picard/ui/options/profiles.py:116
 msgid "Create a new profile"
 msgstr "Een nieuw profiel maken"
 
-#: picard/ui/options/profiles.py:120
+#: picard/ui/options/profiles.py:121
 msgid "Copy to a new profile"
 msgstr "Naar een nieuw profiel kopiëren"
 
-#: picard/ui/options/profiles.py:124
+#: picard/ui/options/profiles.py:125
 msgid "Delete"
 msgstr "Verwijderen"
 
-#: picard/ui/options/profiles.py:125
+#: picard/ui/options/profiles.py:126
 msgid "Delete the profile"
 msgstr "Het profiel verwijderen"
 
@@ -6073,11 +6074,11 @@ msgstr "De naam van het profiel kan niet leeg zijn."
 msgid "Ratings"
 msgstr "Waarderingen"
 
-#: picard/ui/options/releases.py:157
+#: picard/ui/options/releases.py:158
 msgid "Preferred Releases"
 msgstr "Uitgavevoorkeuren"
 
-#: picard/ui/options/releases.py:194
+#: picard/ui/options/releases.py:195
 msgid "Reset all"
 msgstr "Alles terugzetten"
 
@@ -6099,28 +6100,28 @@ msgstr ""
 "langer pad dan de traditionele limiet van 259 tekens worden opgeslagen. "
 "Sommige software kan deze bestanden mogelijk niet goed openen."
 
-#: picard/ui/options/scripting.py:123
+#: picard/ui/options/scripting.py:124
 msgid "Show scripting documentation in new window."
 msgstr "Documentatie over scripts in een nieuw venster weergeven"
 
-#: picard/ui/options/scripting.py:126
+#: picard/ui/options/scripting.py:127
 msgid "Import a script file as a new script."
 msgstr "Een scriptbestand als nieuw script importeren"
 
-#: picard/ui/options/scripting.py:129
+#: picard/ui/options/scripting.py:130
 msgid "Export the current script to a file."
 msgstr "Het huidige script naar een bestand exporteren"
 
-#: picard/ui/options/scripting.py:133
+#: picard/ui/options/scripting.py:134
 msgid "Picard tagging script package"
 msgstr "Picard-tagscriptpakket"
 
-#: picard/ui/options/scripting.py:175
+#: picard/ui/options/scripting.py:176
 #, python-format
 msgid "%s (imported)"
 msgstr "%s (geïmporteerd)"
 
-#: picard/ui/options/scripting.py:242
+#: picard/ui/options/scripting.py:243
 msgid "Script Error"
 msgstr "Scriptfout"
 

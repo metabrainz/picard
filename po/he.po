@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-27 18:30+0200\n"
+"POT-Creation-Date: 2023-09-11 09:16+0200\n"
 "PO-Revision-Date: 2023-09-01 10:27+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Hebrew <https://translations.metabrainz.org/projects/picard/"
@@ -132,7 +132,7 @@ msgid "Merge"
 msgstr "מיזוג"
 
 #: picard/config_upgrade.py:104 picard/ui/metadatabox.py:426
-#: picard/ui/options/interface_toolbar.py:99
+#: picard/ui/options/interface_toolbar.py:100
 #: picard/ui/ui_options_interface_toolbar.py:80
 msgid "Remove"
 msgstr "הסרה"
@@ -176,53 +176,54 @@ msgstr "שגיאת אימות לא צפויה"
 msgid "Unexpected request error (HTTP code %s)"
 msgstr "שגיאת בקשה (קוד HTTP %s) בלתי צפויה"
 
-#: picard/pluginmanager.py:79
+#: picard/pluginmanager.py:81
 msgid "Perform this check again the next time you start Picard."
 msgstr ""
 
-#: picard/pluginmanager.py:84
+#: picard/pluginmanager.py:86
 msgid "Picard Plugins Update"
 msgstr ""
 
-#: picard/pluginmanager.py:267
+#: picard/pluginmanager.py:304
 #, python-format
 msgid "Unable to load plugin '%s'"
 msgstr "לא ניתן לטעון מִתְקָע '%s'?"
 
-#: picard/pluginmanager.py:282
-#, python-format
-msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
-msgstr "טעינת מִתְקָע \"%(plugin)s\" מ \"%(filename)s\" מכווץ ב־ZIP כשלה"
-
-#: picard/pluginmanager.py:295
-#, python-format
-msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+#: picard/pluginmanager.py:335
+#, fuzzy, python-format
+#| msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+msgid "Failed loading plugin \"%(plugin)s\""
 msgstr "טעינת מִתְקָע '%(plugin)s' כשלה ב '%(dirname)s'"
 
-#: picard/pluginmanager.py:334
+#: picard/pluginmanager.py:378
 #, python-format
 msgid ""
 "Plugin \"%(plugin)s\" from \"%(filename)s\" is not compatible with this "
 "version of Picard."
 msgstr "מִתְקָע \"%(plugin)s\" מ \"%(filename)s\" אינו תואם לגרסה זו של פיקארד."
 
-#: picard/pluginmanager.py:339
+#: picard/pluginmanager.py:383
 #, python-format
 msgid "Plugin \"%(plugin)s\" has an invalid API version string: %(error)s"
 msgstr "למִתְקָע %(plugin)s מחרוזת API לא תקינה:‪ %(error)s"
 
-#: picard/pluginmanager.py:345 picard/ui/options/plugins.py:416
+#: picard/pluginmanager.py:389 picard/ui/options/plugins.py:416
 #: picard/ui/options/plugins.py:428 picard/ui/options/plugins.py:449
 #, python-format
 msgid "Plugin \"%(plugin)s\""
 msgstr "מִתְקָע \"%(plugin)s\""
 
-#: picard/pluginmanager.py:482
+#: picard/pluginmanager.py:400
+#, python-format
+msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
+msgstr "טעינת מִתְקָע \"%(plugin)s\" מ \"%(filename)s\" מכווץ ב־ZIP כשלה"
+
+#: picard/pluginmanager.py:541
 #, python-format
 msgid "Error loading plugins list: %(error)s"
 msgstr "‮שגיאה בטעינת רשימת מִתְקָעים: %(error)s"
 
-#: picard/pluginmanager.py:518
+#: picard/pluginmanager.py:577
 msgid ""
 "There is an update available for one of your currently installed plugins:"
 msgid_plural ""
@@ -232,7 +233,7 @@ msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
 
-#: picard/pluginmanager.py:523
+#: picard/pluginmanager.py:582
 msgid "Do you want to update the plugin now?"
 msgid_plural "Do you want to update the plugins now?"
 msgstr[0] ""
@@ -240,7 +241,7 @@ msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
 
-#: picard/pluginmanager.py:531
+#: picard/pluginmanager.py:590
 msgid "plus {extra_file_count:,d} other plugin."
 msgid_plural "plus {extra_file_count:,d} other plugins."
 msgstr[0] ""
@@ -290,7 +291,7 @@ msgstr ""
 msgid "Updates to check"
 msgstr "עדכונים לבדיקה:"
 
-#: picard/profile.py:61 picard/ui/options/metadata.py:78
+#: picard/profile.py:61 picard/ui/options/metadata.py:79
 #: picard/ui/ui_options_metadata.py:129
 msgid "Metadata"
 msgstr "נתוני־על"
@@ -486,7 +487,7 @@ msgstr "‮הסרת תגי RIFF INFO מקבצי WAVE"
 msgid "RIFF INFO text encoding"
 msgstr "‮קידוד מלל RIFF INFO"
 
-#: picard/profile.py:139 picard/ui/options/cover.py:51
+#: picard/profile.py:139 picard/ui/options/cover.py:52
 msgid "Cover Art"
 msgstr "תמונת עטיפה"
 
@@ -581,7 +582,7 @@ msgstr "החלפת רווחים בקו תחתון"
 msgid "Replacement character to use for directory separators"
 msgstr ""
 
-#: picard/profile.py:175 picard/ui/options/scripting.py:99
+#: picard/profile.py:175 picard/ui/options/scripting.py:100
 msgid "Scripting"
 msgstr "תַּסְרוט"
 
@@ -803,24 +804,24 @@ msgstr "[אין ברקוד]"
 msgid "[no release info]"
 msgstr "[אין פרטי הוצאה]"
 
-#: picard/tagger.py:655 picard/ui/ui_options_general.py:197
+#: picard/tagger.py:639 picard/ui/ui_options_general.py:197
 msgid "MusicBrainz Account"
 msgstr "‮חשבון מוזיקבריינז"
 
-#: picard/tagger.py:656
+#: picard/tagger.py:640
 msgid "Authorization code:"
 msgstr "קוד אישור:"
 
-#: picard/tagger.py:1145
+#: picard/tagger.py:1129
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "הסרת אלבום/ים %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:1163
+#: picard/tagger.py:1147
 msgid "CD Lookup Error"
 msgstr "שגיאת חיפוש תקליטור"
 
-#: picard/tagger.py:1164
+#: picard/tagger.py:1148
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -831,25 +832,25 @@ msgstr ""
 "\n"
 "%s"
 
-#: picard/tagger.py:1193
+#: picard/tagger.py:1177
 msgid "All supported log files"
 msgstr "כול סוגי קובצי יומן־רישום"
 
-#: picard/tagger.py:1194
+#: picard/tagger.py:1178
 msgid "EAC / XLD / Whipper / fre:ac log files"
 msgstr "קובצי יומן־רישום ac:EAC / XLD / Whipper / fre"
 
-#: picard/tagger.py:1195
+#: picard/tagger.py:1179
 msgid "dBpoweramp log files"
 msgstr "קובצי יומן־רישום dBpoweramp"
 
-#: picard/script/serializer.py:350 picard/tagger.py:1196
+#: picard/script/serializer.py:350 picard/tagger.py:1180
 #: picard/ui/coverartbox.py:610 picard/ui/mainwindow.py:1267
-#: picard/ui/options/maintenance.py:168 picard/ui/options/scripting.py:131
+#: picard/ui/options/maintenance.py:168 picard/ui/options/scripting.py:132
 msgid "All files"
 msgstr "כל הקבצים"
 
-#: picard/tagger.py:1222
+#: picard/tagger.py:1206
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr ""
@@ -954,40 +955,40 @@ msgstr "הורדת תמונת עטיפה מסוג '%(type)s' עבור %(albumid)
 msgid "Unknown"
 msgstr "לא ידוע"
 
-#: picard/coverart/providers/caa.py:78
+#: picard/coverart/providers/caa.py:81
 msgid "250 px"
 msgstr "250 px"
 
-#: picard/coverart/providers/caa.py:79
+#: picard/coverart/providers/caa.py:82
 msgid "500 px"
 msgstr "500 px"
 
-#: picard/coverart/providers/caa.py:80
+#: picard/coverart/providers/caa.py:83
 msgid "1200 px"
 msgstr "1200 px"
 
-#: picard/coverart/providers/caa.py:81
+#: picard/coverart/providers/caa.py:84
 msgid "Full size"
 msgstr "גודל קובץ"
 
-#: picard/coverart/providers/caa.py:240
+#: picard/coverart/providers/caa.py:243
 msgid "Cover art types"
 msgstr "סוגי תמונת עטיפה"
 
-#: picard/coverart/providers/caa.py:260
+#: picard/coverart/providers/caa.py:263
 msgid ""
 "Please select the contents of the image type 'Include' and 'Exclude' lists."
 msgstr "נא לבחור באיזו רשימה לכלול את סוג התמונה, רשימות 'הכללה' ו/או 'החרגה'."
 
-#: picard/coverart/providers/caa.py:281
+#: picard/coverart/providers/caa.py:284
 msgid "Include types list"
 msgstr "הכללת רשימת סוגים"
 
-#: picard/coverart/providers/caa.py:295
+#: picard/coverart/providers/caa.py:298
 msgid "Exclude types list"
 msgstr "החרגת רשימת סוגים"
 
-#: picard/coverart/providers/caa.py:303
+#: picard/coverart/providers/caa.py:306
 msgid ""
 "CAA images with an image type found in the 'Include' list will be downloaded "
 "and used UNLESS they also have an image type found in the 'Exclude' list. "
@@ -1000,28 +1001,28 @@ msgstr ""
 "יעשה בהם שימש לעולם. סוגי תמונות שאינם נכללים ברשימות 'הכללה' או 'החרגה' לא "
 "ילקחו בחשבון בעת ההחלטה באם להוריד ולהשתמש בתמונת CAA.\n"
 
-#: picard/coverart/providers/caa.py:324
+#: picard/coverart/providers/caa.py:327
 msgid "I&nclude all"
 msgstr "ה&כללת הכל"
 
-#: picard/coverart/providers/caa.py:325
+#: picard/coverart/providers/caa.py:328
 msgid "E&xclude all"
 msgstr "ה&חרגת הכל"
 
-#: picard/coverart/providers/caa.py:326
+#: picard/coverart/providers/caa.py:329
 msgid "C&lear all"
 msgstr "נ&יקוי הכל"
 
-#: picard/coverart/providers/caa.py:327 picard/ui/options/dialog.py:131
+#: picard/coverart/providers/caa.py:330 picard/ui/options/dialog.py:131
 #: picard/ui/options/renaming_compat.py:189
 msgid "Restore &Defaults"
 msgstr "שחזור &ברירת מחדל"
 
-#: picard/coverart/providers/caa.py:435
+#: picard/coverart/providers/caa.py:438
 msgid "Cover Art Archive"
 msgstr "ארכיון תמונות עטיפה"
 
-#: picard/coverart/providers/caa.py:505
+#: picard/coverart/providers/caa.py:508
 msgid "Cover Art Archive: Release"
 msgstr "ארכיון תמונות עטיפה: הוצאה"
 
@@ -1987,8 +1988,8 @@ msgstr ""
 "\n"
 "לדוגמה:\n"
 "\n"
-"    ‎$if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%compo"
-"ser%))\n"
+"    ‎$if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,"
+"%composer%))\n"
 
 #: picard/script/functions.py:1068
 msgid ""
@@ -2266,13 +2267,13 @@ msgid ""
 msgstr ""
 "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
 "\n"
-"החזרת התאריך והשעה הנוכחיים ב־ 'format' שהוגדרו, המבוססים על פייתון סטנדרטי  "
-"‎`strftime` [format codes](https://strftime.org/). אם 'format' לא הוגדר,  "
+"החזרת התאריך והשעה הנוכחיים ב־ 'format' שהוגדרו, המבוססים על פייתון סטנדרטי  ‎"
+"`strftime` [format codes](https://strftime.org/). אם 'format' לא הוגדר,  "
 "התאריך / השעה יוחזרו בצורת '2020-02-05 14: 26: 32'.\n"
 "הערה: יש להימנע מקודי עיצוב יחודיים למסדת כדי להבטיח את ניידות התסריטים בין "
 "המסדות שונות. \n"
-"קודים אלה כוללים: הסרת ריפוד אפס (למשל '% -d' ו־ '‎%-m' ב־ Linux או ב־ "
-"macOS, והמקבילה שלהם '‎%#d' ו־ '‎%#m' ב־ וינדוס); \n"
+"קודים אלה כוללים: הסרת ריפוד אפס (למשל '% -d' ו־ '‎%-m' ב־ Linux או ב־ macOS, "
+"והמקבילה שלהם '‎%#d' ו־ '‎%#m' ב־ וינדוס); \n"
 "מפרט אורך הרכיבים (למשל '‎%3Y'); ותליית '%' בסוף מחרוזת התבנית."
 
 #: picard/script/functions.py:1348
@@ -2467,8 +2468,8 @@ msgid ""
 msgstr ""
 "`$dateformat(date,format=\"%Y-%m-%d\",date_order=\"ymd\")`\n"
 "\n"
-"החזרת התאריך והשעה הנוכחיים ב־'format' שהוגדר, המבוסס על פייתון תקני "
-"‎`strftime` ‎[format codes](https://strftime.org/). אם לא הוגדר 'format', "
+"החזרת התאריך והשעה הנוכחיים ב־'format' שהוגדר, המבוסס על פייתון תקני ‎"
+"`strftime` ‎[format codes](https://strftime.org/). אם לא הוגדר 'format', "
 "התאריך יוחזר כ־'2020-02-05'. את התאריך או התבנית לא תקינים, תוחזר מחרוזת "
 "ריקה.\n"
 "\n"
@@ -2476,8 +2477,8 @@ msgstr ""
 "\"dmy\", או \"mdy\".\n"
 "הערה: יש להימנע מקודי עיצוב יחודיים למסדת כדי להבטיח את ניידות התסריטים בין "
 "המסדות שונות. \n"
-"קודים אלה כוללים: הסרת ריפוד אפס (למשל '‎%-d' ו־ '‎%-m' ב־ Linux או ב־ "
-"macOS, והמקבילה שלהם  '‎%#d' ו־'‎%#m' בוינדוס); \n"
+"קודים אלה כוללים: הסרת ריפוד אפס (למשל '‎%-d' ו־ '‎%-m' ב־ Linux או ב־ macOS, "
+"והמקבילה שלהם  '‎%#d' ו־'‎%#m' בוינדוס); \n"
 "מפרט אורך הרכיבים (לדוגמה '%3Y'); ותליית '%' בסוף מחרוזת התבנית.\n"
 "\n"
 "_החל מפיקארד 2.7_"
@@ -2645,11 +2646,11 @@ msgstr "%s (העתקה)"
 msgid "File content not a dictionary"
 msgstr "תכולת קובץ אינה מילון"
 
-#: picard/script/serializer.py:340 picard/ui/options/scripting.py:190
+#: picard/script/serializer.py:340 picard/ui/options/scripting.py:191
 msgid "Unnamed Script"
 msgstr "תַּסְרִיט ללא שם"
 
-#: picard/script/serializer.py:351 picard/ui/options/scripting.py:132
+#: picard/script/serializer.py:351 picard/ui/options/scripting.py:133
 msgid "Picard script files"
 msgstr "קובצי תסריט פיקארד"
 
@@ -2904,7 +2905,7 @@ msgid "Cover"
 msgstr "עטיפה"
 
 #: picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
-#: picard/ui/options/interface_toolbar.py:95
+#: picard/ui/options/interface_toolbar.py:96
 msgid "Info"
 msgstr "פרטים"
 
@@ -3504,7 +3505,7 @@ msgstr "שיגור קובץ למוזיקבריינז כהוצאה חדשה"
 msgid "Search for similar items…"
 msgstr "חיפוש אלבומים דומים‮…"
 
-#: picard/ui/mainwindow.py:668 picard/ui/options/interface_toolbar.py:123
+#: picard/ui/mainwindow.py:668 picard/ui/options/interface_toolbar.py:124
 msgid "Similar items"
 msgstr ""
 
@@ -3607,7 +3608,7 @@ msgstr "Ctrl+Y"
 msgid "&Generate AcoustID Fingerprints"
 msgstr "&חילול טביעת אצבע AcoustID"
 
-#: picard/ui/mainwindow.py:784 picard/ui/options/interface_toolbar.py:107
+#: picard/ui/mainwindow.py:784 picard/ui/options/interface_toolbar.py:108
 msgid "Generate Fingerprints"
 msgstr "חילול טביעות אצבע"
 
@@ -3681,7 +3682,7 @@ msgstr "שמירת &תגים"
 msgid "Tags From &File Names…"
 msgstr "תגים מ&שמות קבצים‮…"
 
-#: picard/ui/mainwindow.py:860 picard/ui/options/interface_toolbar.py:119
+#: picard/ui/mainwindow.py:860 picard/ui/options/interface_toolbar.py:120
 msgid "Parse File Names…"
 msgstr "נתוח שמות קבצים…"
 
@@ -3980,70 +3981,70 @@ msgid ""
 "The proxy %s requires you to login. Please enter your username and password."
 msgstr "מתווך הרשת %s מבקש להתחבר. הזן שם המשתמש וסיסמה."
 
-#: picard/ui/playertoolbar.py:173
+#: picard/ui/playertoolbar.py:174
 msgid "Internal player: The format of a media resource isn't (fully) supported"
 msgstr "נגן פנימי: תבנית משאב המדיה אינה נתמכת (במלואה)"
 
-#: picard/ui/playertoolbar.py:175
+#: picard/ui/playertoolbar.py:176
 msgid ""
 "Internal player: There are not the appropriate permissions to play a media "
 "resource"
 msgstr "נגן פנימי: חסרות ההרשאות המתאמות להשמעת משאב מדיה"
 
-#: picard/ui/playertoolbar.py:177
+#: picard/ui/playertoolbar.py:178
 msgid ""
 "Internal player: A valid playback service was not found, playback cannot "
 "proceed"
 msgstr "נגן פנימי: לא נמצא שרות השמעה תקין .לא ניתן להמשיך בהשמעה"
 
-#: picard/ui/playertoolbar.py:179
+#: picard/ui/playertoolbar.py:180
 #, python-format
 msgid "Internal player: error, code=%(code)d, msg=%(message)s"
 msgstr "נגן פנימי: שגיאה, קוד=%(code)d, הודעה=%(message)s"
 
-#: picard/ui/playertoolbar.py:188
+#: picard/ui/playertoolbar.py:189
 msgid "Player"
 msgstr "נגן"
 
-#: picard/ui/playertoolbar.py:196
+#: picard/ui/playertoolbar.py:197
 msgid "Play"
 msgstr "השמעה"
 
-#: picard/ui/playertoolbar.py:197
+#: picard/ui/playertoolbar.py:198
 msgid "Play selected files"
 msgstr "השמעת הקבצים שנבחרו"
 
-#: picard/ui/playertoolbar.py:203
+#: picard/ui/playertoolbar.py:204
 msgid "Pause"
 msgstr "השהיה"
 
-#: picard/ui/playertoolbar.py:204
+#: picard/ui/playertoolbar.py:205
 msgid "Pause or resume current playback"
 msgstr "השהיית או המשך השמעת רצועה נוכחית"
 
-#: picard/ui/playertoolbar.py:342
+#: picard/ui/playertoolbar.py:343
 #, python-format
 msgid "%1.1f ×"
 msgstr "%1.1f ×"
 
-#: picard/ui/playertoolbar.py:348
+#: picard/ui/playertoolbar.py:349
 msgid "Change playback speed"
 msgstr "שינוי מהירות השמעה"
 
-#: picard/ui/playertoolbar.py:355
+#: picard/ui/playertoolbar.py:356
 msgid "Playback speed"
 msgstr "מהירות השמעה"
 
-#: picard/ui/playertoolbar.py:398
+#: picard/ui/playertoolbar.py:399
 #, python-format
 msgid "%d%%"
 msgstr "%d%%"
 
-#: picard/ui/playertoolbar.py:404
+#: picard/ui/playertoolbar.py:405
 msgid "Change audio volume"
 msgstr "שינוי עוצמת שמע"
 
-#: picard/ui/playertoolbar.py:410
+#: picard/ui/playertoolbar.py:411
 msgid "Audio volume"
 msgstr "עוצמת שמע"
 
@@ -4307,7 +4308,7 @@ msgstr ""
 msgid "Are you sure that you want to delete the script?"
 msgstr "האם למחוק תַּסְרִיט זה?"
 
-#: picard/ui/options/scripting.py:163 picard/ui/scripteditor.py:1208
+#: picard/ui/options/scripting.py:164 picard/ui/scripteditor.py:1208
 msgid "File Error"
 msgstr "שגיאת קובץ"
 
@@ -4325,7 +4326,7 @@ msgstr ""
 msgid "Overwrite"
 msgstr "כתיבה־על"
 
-#: picard/ui/options/profiles.py:119 picard/ui/scripteditor.py:1238
+#: picard/ui/options/profiles.py:120 picard/ui/scripteditor.py:1238
 msgid "Copy"
 msgstr "העתקה"
 
@@ -5555,51 +5556,51 @@ msgid ""
 msgstr ""
 "צבע מנשק המשתמש השתנתה, על מנת שהשנויים יכנסו לתוקף, יש לאתחל את פיקארד."
 
-#: picard/ui/options/interface_toolbar.py:59
+#: picard/ui/options/interface_toolbar.py:60
 msgid "Action Toolbar"
 msgstr "סרגל־כלים פעולה"
 
-#: picard/ui/options/interface_toolbar.py:67
+#: picard/ui/options/interface_toolbar.py:68
 msgid "Add Folder"
 msgstr "הוספת תיקיה"
 
-#: picard/ui/options/interface_toolbar.py:71
+#: picard/ui/options/interface_toolbar.py:72
 msgid "Add Files"
 msgstr "הוספת קבצים"
 
-#: picard/ui/options/interface_toolbar.py:75
+#: picard/ui/options/interface_toolbar.py:76
 msgid "Cluster"
 msgstr "אשכול"
 
-#: picard/ui/options/interface_toolbar.py:79
+#: picard/ui/options/interface_toolbar.py:80
 msgid "Lookup"
 msgstr "חפוש"
 
-#: picard/ui/options/interface_toolbar.py:83
+#: picard/ui/options/interface_toolbar.py:84
 msgid "Scan"
 msgstr "סריקה"
 
-#: picard/ui/options/interface_toolbar.py:87
+#: picard/ui/options/interface_toolbar.py:88
 msgid "Lookup in Browser"
 msgstr "חפוש בדפדפן"
 
-#: picard/ui/options/interface_toolbar.py:91
+#: picard/ui/options/interface_toolbar.py:92
 msgid "Save"
 msgstr "שמירה"
 
-#: picard/ui/options/interface_toolbar.py:103
+#: picard/ui/options/interface_toolbar.py:104
 msgid "Submit AcoustIDs"
 msgstr "‮שגור ‭AcoustIDs"
 
-#: picard/ui/options/interface_toolbar.py:111
+#: picard/ui/options/interface_toolbar.py:112
 msgid "Open in Player"
 msgstr "פתיחה בנגן"
 
-#: picard/ui/options/interface_toolbar.py:115
+#: picard/ui/options/interface_toolbar.py:116
 msgid "Lookup CD…"
 msgstr "איתור תקליטור‮…"
 
-#: picard/ui/options/interface_toolbar.py:186
+#: picard/ui/options/interface_toolbar.py:187
 msgid "Drag and Drop to re-order"
 msgstr "גרור ושחרר למיון"
 
@@ -5716,7 +5717,7 @@ msgstr "האם להסיר הגדרות אפשרויות שנבחרו?"
 msgid "Matching"
 msgstr "התאמה"
 
-#: picard/ui/options/metadata.py:215
+#: picard/ui/options/metadata.py:216
 msgid "{indent}{locale}"
 msgstr "{indent}{locale}"
 
@@ -5830,27 +5831,27 @@ msgstr "לא ניתן להוריד את מִתְקָע \"%(plugin)s\"."
 msgid "Please try again later."
 msgstr "נסו שוב מאוחר יותר."
 
-#: picard/ui/options/profiles.py:55
+#: picard/ui/options/profiles.py:56
 msgid "Option Profiles"
 msgstr "פרופילי אפשרויות"
 
-#: picard/ui/options/profiles.py:114
+#: picard/ui/options/profiles.py:115
 msgid "New"
 msgstr "חדש"
 
-#: picard/ui/options/profiles.py:115
+#: picard/ui/options/profiles.py:116
 msgid "Create a new profile"
 msgstr "יצירת פרופיל חדש"
 
-#: picard/ui/options/profiles.py:120
+#: picard/ui/options/profiles.py:121
 msgid "Copy to a new profile"
 msgstr "העתקה לפרופיל חדש"
 
-#: picard/ui/options/profiles.py:124
+#: picard/ui/options/profiles.py:125
 msgid "Delete"
 msgstr "מחיקה"
 
-#: picard/ui/options/profiles.py:125
+#: picard/ui/options/profiles.py:126
 msgid "Delete the profile"
 msgstr "מחיקת הפרופיל"
 
@@ -5897,11 +5898,11 @@ msgstr "כותרת הפרופיל לא יכולה להיות ריקה"
 msgid "Ratings"
 msgstr "דֵּרוּגים"
 
-#: picard/ui/options/releases.py:157
+#: picard/ui/options/releases.py:158
 msgid "Preferred Releases"
 msgstr "הוצאות מועדפות"
 
-#: picard/ui/options/releases.py:194
+#: picard/ui/options/releases.py:195
 msgid "Reset all"
 msgstr "שיצוב הכל"
 
@@ -5923,28 +5924,28 @@ msgstr ""
 "החורגים ממגבלת 259 התווים שהוכתבה באופן מסורתי על ידי ה־API של וינדוס. ייתכן "
 "שתוכנות מסוימות לא יוכלו לגשת כראוי לקבצים הללו."
 
-#: picard/ui/options/scripting.py:123
+#: picard/ui/options/scripting.py:124
 msgid "Show scripting documentation in new window."
 msgstr "הצגת תיעוד התסרוט בחלון חדש."
 
-#: picard/ui/options/scripting.py:126
+#: picard/ui/options/scripting.py:127
 msgid "Import a script file as a new script."
 msgstr "יבוא קובץ כתסריט חדש"
 
-#: picard/ui/options/scripting.py:129
+#: picard/ui/options/scripting.py:130
 msgid "Export the current script to a file."
 msgstr "יצוא תסריט נוכחי לקובץ"
 
-#: picard/ui/options/scripting.py:133
+#: picard/ui/options/scripting.py:134
 msgid "Picard tagging script package"
 msgstr "חבילת תיוג תסריט פיקארד"
 
-#: picard/ui/options/scripting.py:175
+#: picard/ui/options/scripting.py:176
 #, python-format
 msgid "%s (imported)"
 msgstr "%s (יובאו)"
 
-#: picard/ui/options/scripting.py:242
+#: picard/ui/options/scripting.py:243
 msgid "Script Error"
 msgstr "שגיאת תַּסְרִיט"
 

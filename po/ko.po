@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-27 18:30+0200\n"
+"POT-Creation-Date: 2023-09-11 09:16+0200\n"
 "PO-Revision-Date: 2023-08-30 09:27+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Korean <https://translations.metabrainz.org/projects/picard/"
@@ -122,7 +122,7 @@ msgid "Merge"
 msgstr "병합"
 
 #: picard/config_upgrade.py:104 picard/ui/metadatabox.py:426
-#: picard/ui/options/interface_toolbar.py:99
+#: picard/ui/options/interface_toolbar.py:100
 #: picard/ui/ui_options_interface_toolbar.py:80
 msgid "Remove"
 msgstr "제거"
@@ -166,30 +166,25 @@ msgstr "예상치 못한 인증 에러"
 msgid "Unexpected request error (HTTP code %s)"
 msgstr "(HTTP 코드 %s ) 예상치 못한 리뭬스트 에러"
 
-#: picard/pluginmanager.py:79
+#: picard/pluginmanager.py:81
 msgid "Perform this check again the next time you start Picard."
 msgstr ""
 
-#: picard/pluginmanager.py:84
+#: picard/pluginmanager.py:86
 msgid "Picard Plugins Update"
 msgstr ""
 
-#: picard/pluginmanager.py:267
+#: picard/pluginmanager.py:304
 #, python-format
 msgid "Unable to load plugin '%s'"
 msgstr "%s플러그인을 로딩 할 수 없습니다."
 
-#: picard/pluginmanager.py:282
+#: picard/pluginmanager.py:335
 #, fuzzy, python-format
-msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
-msgstr "\"%(plugin)s\" 에 있는 압축된 플러그인 %r 로딩 하는데 실패함"
-
-#: picard/pluginmanager.py:295
-#, fuzzy, python-format
-msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+msgid "Failed loading plugin \"%(plugin)s\""
 msgstr "\"%(plugin)s\" 에 있는 플러그인 %r 로딩 하는데 실패함"
 
-#: picard/pluginmanager.py:334
+#: picard/pluginmanager.py:378
 #, fuzzy, python-format
 #| msgid ""
 #| "The plugin \"%(plugin)s\" is not compatible with this version of Picard."
@@ -198,35 +193,40 @@ msgid ""
 "version of Picard."
 msgstr "\"%(plugin)s\" 플러그인은 현재 버전의 Picard와 호환되지 않습니다."
 
-#: picard/pluginmanager.py:339
+#: picard/pluginmanager.py:383
 #, python-format
 msgid "Plugin \"%(plugin)s\" has an invalid API version string: %(error)s"
 msgstr ""
 
-#: picard/pluginmanager.py:345 picard/ui/options/plugins.py:416
+#: picard/pluginmanager.py:389 picard/ui/options/plugins.py:416
 #: picard/ui/options/plugins.py:428 picard/ui/options/plugins.py:449
 #, python-format
 msgid "Plugin \"%(plugin)s\""
 msgstr "플러그인 %(plugin)s"
 
-#: picard/pluginmanager.py:482
+#: picard/pluginmanager.py:400
+#, fuzzy, python-format
+msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
+msgstr "\"%(plugin)s\" 에 있는 압축된 플러그인 %r 로딩 하는데 실패함"
+
+#: picard/pluginmanager.py:541
 #, python-format
 msgid "Error loading plugins list: %(error)s"
 msgstr "플러그인 목록 로드 중 오류 발생: %(error)s"
 
-#: picard/pluginmanager.py:518
+#: picard/pluginmanager.py:577
 msgid ""
 "There is an update available for one of your currently installed plugins:"
 msgid_plural ""
 "There are updates available for your currently installed plugins:"
 msgstr[0] ""
 
-#: picard/pluginmanager.py:523
+#: picard/pluginmanager.py:582
 msgid "Do you want to update the plugin now?"
 msgid_plural "Do you want to update the plugins now?"
 msgstr[0] ""
 
-#: picard/pluginmanager.py:531
+#: picard/pluginmanager.py:590
 msgid "plus {extra_file_count:,d} other plugin."
 msgid_plural "plus {extra_file_count:,d} other plugins."
 msgstr[0] ""
@@ -273,7 +273,7 @@ msgstr ""
 msgid "Updates to check"
 msgstr "업데이트 체크"
 
-#: picard/profile.py:61 picard/ui/options/metadata.py:78
+#: picard/profile.py:61 picard/ui/options/metadata.py:79
 #: picard/ui/ui_options_metadata.py:129
 msgid "Metadata"
 msgstr "메타데이터"
@@ -466,7 +466,7 @@ msgstr "존재하는 RIFF INFO태그를 WAVE파일에서 제거하기"
 msgid "RIFF INFO text encoding"
 msgstr "RIFF INFO 텍스트 암호화"
 
-#: picard/profile.py:139 picard/ui/options/cover.py:51
+#: picard/profile.py:139 picard/ui/options/cover.py:52
 msgid "Cover Art"
 msgstr "커버 아트"
 
@@ -560,7 +560,7 @@ msgstr ""
 msgid "Replacement character to use for directory separators"
 msgstr ""
 
-#: picard/profile.py:175 picard/ui/options/scripting.py:99
+#: picard/profile.py:175 picard/ui/options/scripting.py:100
 msgid "Scripting"
 msgstr "스크립트 작성"
 
@@ -780,24 +780,24 @@ msgstr "[바코드 없음]"
 msgid "[no release info]"
 msgstr "[릴리즈 정보 없음]"
 
-#: picard/tagger.py:655 picard/ui/ui_options_general.py:197
+#: picard/tagger.py:639 picard/ui/ui_options_general.py:197
 msgid "MusicBrainz Account"
 msgstr "MusicBrainz 계정"
 
-#: picard/tagger.py:656
+#: picard/tagger.py:640
 msgid "Authorization code:"
 msgstr "인증 코드:"
 
-#: picard/tagger.py:1145
+#: picard/tagger.py:1129
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "%(id)s 앨범 제거중: %(artist)s - %(album)s"
 
-#: picard/tagger.py:1163
+#: picard/tagger.py:1147
 msgid "CD Lookup Error"
 msgstr "CD 검색 실패"
 
-#: picard/tagger.py:1164
+#: picard/tagger.py:1148
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -808,25 +808,25 @@ msgstr ""
 "\n"
 "%s"
 
-#: picard/tagger.py:1193
+#: picard/tagger.py:1177
 msgid "All supported log files"
 msgstr ""
 
-#: picard/tagger.py:1194
+#: picard/tagger.py:1178
 msgid "EAC / XLD / Whipper / fre:ac log files"
 msgstr ""
 
-#: picard/tagger.py:1195
+#: picard/tagger.py:1179
 msgid "dBpoweramp log files"
 msgstr ""
 
-#: picard/script/serializer.py:350 picard/tagger.py:1196
+#: picard/script/serializer.py:350 picard/tagger.py:1180
 #: picard/ui/coverartbox.py:610 picard/ui/mainwindow.py:1267
-#: picard/ui/options/maintenance.py:168 picard/ui/options/scripting.py:131
+#: picard/ui/options/maintenance.py:168 picard/ui/options/scripting.py:132
 msgid "All files"
 msgstr "모든 파일들"
 
-#: picard/tagger.py:1222
+#: picard/tagger.py:1206
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr ""
@@ -932,40 +932,40 @@ msgstr "%(host)s 에서 %(albumid)s 의 '%(type)s' 형식 커버 아트 다운�
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: picard/coverart/providers/caa.py:78
+#: picard/coverart/providers/caa.py:81
 msgid "250 px"
 msgstr "250 픽셀"
 
-#: picard/coverart/providers/caa.py:79
+#: picard/coverart/providers/caa.py:82
 msgid "500 px"
 msgstr "500 픽셀"
 
-#: picard/coverart/providers/caa.py:80
+#: picard/coverart/providers/caa.py:83
 msgid "1200 px"
 msgstr ""
 
-#: picard/coverart/providers/caa.py:81
+#: picard/coverart/providers/caa.py:84
 msgid "Full size"
 msgstr "풀 사이즈"
 
-#: picard/coverart/providers/caa.py:240
+#: picard/coverart/providers/caa.py:243
 msgid "Cover art types"
 msgstr "커버 아트 형식"
 
-#: picard/coverart/providers/caa.py:260
+#: picard/coverart/providers/caa.py:263
 msgid ""
 "Please select the contents of the image type 'Include' and 'Exclude' lists."
 msgstr ""
 
-#: picard/coverart/providers/caa.py:281
+#: picard/coverart/providers/caa.py:284
 msgid "Include types list"
 msgstr ""
 
-#: picard/coverart/providers/caa.py:295
+#: picard/coverart/providers/caa.py:298
 msgid "Exclude types list"
 msgstr ""
 
-#: picard/coverart/providers/caa.py:303
+#: picard/coverart/providers/caa.py:306
 msgid ""
 "CAA images with an image type found in the 'Include' list will be downloaded "
 "and used UNLESS they also have an image type found in the 'Exclude' list. "
@@ -974,28 +974,28 @@ msgid ""
 "considered when determining whether or not to download and use a CAA image.\n"
 msgstr ""
 
-#: picard/coverart/providers/caa.py:324
+#: picard/coverart/providers/caa.py:327
 msgid "I&nclude all"
 msgstr ""
 
-#: picard/coverart/providers/caa.py:325
+#: picard/coverart/providers/caa.py:328
 msgid "E&xclude all"
 msgstr ""
 
-#: picard/coverart/providers/caa.py:326
+#: picard/coverart/providers/caa.py:329
 msgid "C&lear all"
 msgstr ""
 
-#: picard/coverart/providers/caa.py:327 picard/ui/options/dialog.py:131
+#: picard/coverart/providers/caa.py:330 picard/ui/options/dialog.py:131
 #: picard/ui/options/renaming_compat.py:189
 msgid "Restore &Defaults"
 msgstr "기본값 복원(&D)"
 
-#: picard/coverart/providers/caa.py:435
+#: picard/coverart/providers/caa.py:438
 msgid "Cover Art Archive"
 msgstr "커버 아트 보관함"
 
-#: picard/coverart/providers/caa.py:505
+#: picard/coverart/providers/caa.py:508
 msgid "Cover Art Archive: Release"
 msgstr ""
 
@@ -2082,11 +2082,11 @@ msgstr ""
 msgid "File content not a dictionary"
 msgstr ""
 
-#: picard/script/serializer.py:340 picard/ui/options/scripting.py:190
+#: picard/script/serializer.py:340 picard/ui/options/scripting.py:191
 msgid "Unnamed Script"
 msgstr "이름 없는 스크립트"
 
-#: picard/script/serializer.py:351 picard/ui/options/scripting.py:132
+#: picard/script/serializer.py:351 picard/ui/options/scripting.py:133
 msgid "Picard script files"
 msgstr "파이카드 스크립트 파일들"
 
@@ -2332,7 +2332,7 @@ msgid "Cover"
 msgstr "커버"
 
 #: picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
-#: picard/ui/options/interface_toolbar.py:95
+#: picard/ui/options/interface_toolbar.py:96
 msgid "Info"
 msgstr "정보"
 
@@ -2919,7 +2919,7 @@ msgstr ""
 msgid "Search for similar items…"
 msgstr "유사한 앨범 검색…"
 
-#: picard/ui/mainwindow.py:668 picard/ui/options/interface_toolbar.py:123
+#: picard/ui/mainwindow.py:668 picard/ui/options/interface_toolbar.py:124
 msgid "Similar items"
 msgstr ""
 
@@ -3023,7 +3023,7 @@ msgstr "Ctrl+Y"
 msgid "&Generate AcoustID Fingerprints"
 msgstr ""
 
-#: picard/ui/mainwindow.py:784 picard/ui/options/interface_toolbar.py:107
+#: picard/ui/mainwindow.py:784 picard/ui/options/interface_toolbar.py:108
 msgid "Generate Fingerprints"
 msgstr ""
 
@@ -3097,7 +3097,7 @@ msgstr "태그 저장(&T)"
 msgid "Tags From &File Names…"
 msgstr "파일 이름으로 태그 작성하기(&F)…"
 
-#: picard/ui/mainwindow.py:860 picard/ui/options/interface_toolbar.py:119
+#: picard/ui/mainwindow.py:860 picard/ui/options/interface_toolbar.py:120
 msgid "Parse File Names…"
 msgstr ""
 
@@ -3387,70 +3387,70 @@ msgid ""
 "The proxy %s requires you to login. Please enter your username and password."
 msgstr "%s 프록시에 로그인해야합니다. 사용자명과 비밀번호를 입력하여 주십시오."
 
-#: picard/ui/playertoolbar.py:173
+#: picard/ui/playertoolbar.py:174
 msgid "Internal player: The format of a media resource isn't (fully) supported"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:175
+#: picard/ui/playertoolbar.py:176
 msgid ""
 "Internal player: There are not the appropriate permissions to play a media "
 "resource"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:177
+#: picard/ui/playertoolbar.py:178
 msgid ""
 "Internal player: A valid playback service was not found, playback cannot "
 "proceed"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:179
+#: picard/ui/playertoolbar.py:180
 #, python-format
 msgid "Internal player: error, code=%(code)d, msg=%(message)s"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:188
+#: picard/ui/playertoolbar.py:189
 msgid "Player"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:196
+#: picard/ui/playertoolbar.py:197
 msgid "Play"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:197
+#: picard/ui/playertoolbar.py:198
 msgid "Play selected files"
 msgstr "선택된 파일 다시 틀기"
 
-#: picard/ui/playertoolbar.py:203
+#: picard/ui/playertoolbar.py:204
 msgid "Pause"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:204
+#: picard/ui/playertoolbar.py:205
 msgid "Pause or resume current playback"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:342
+#: picard/ui/playertoolbar.py:343
 #, python-format
 msgid "%1.1f ×"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:348
+#: picard/ui/playertoolbar.py:349
 msgid "Change playback speed"
 msgstr "플레이백 스피드 바꾸기"
 
-#: picard/ui/playertoolbar.py:355
+#: picard/ui/playertoolbar.py:356
 msgid "Playback speed"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:398
+#: picard/ui/playertoolbar.py:399
 #, python-format
 msgid "%d%%"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:404
+#: picard/ui/playertoolbar.py:405
 msgid "Change audio volume"
 msgstr "오디오 볼륨 바꾸기"
 
-#: picard/ui/playertoolbar.py:410
+#: picard/ui/playertoolbar.py:411
 msgid "Audio volume"
 msgstr "오디오 볼륨"
 
@@ -3690,7 +3690,7 @@ msgstr ""
 msgid "Are you sure that you want to delete the script?"
 msgstr ""
 
-#: picard/ui/options/scripting.py:163 picard/ui/scripteditor.py:1208
+#: picard/ui/options/scripting.py:164 picard/ui/scripteditor.py:1208
 msgid "File Error"
 msgstr "파일 에러"
 
@@ -3705,7 +3705,7 @@ msgstr ""
 msgid "Overwrite"
 msgstr "덮어씌기"
 
-#: picard/ui/options/profiles.py:119 picard/ui/scripteditor.py:1238
+#: picard/ui/options/profiles.py:120 picard/ui/scripteditor.py:1238
 msgid "Copy"
 msgstr "복사하기"
 
@@ -4906,51 +4906,51 @@ msgstr ""
 "인터페이스 언어가 변경되었습니다. 변경사항을 적용하려면 Picard를 재시작하십시"
 "오."
 
-#: picard/ui/options/interface_toolbar.py:59
+#: picard/ui/options/interface_toolbar.py:60
 msgid "Action Toolbar"
 msgstr ""
 
-#: picard/ui/options/interface_toolbar.py:67
+#: picard/ui/options/interface_toolbar.py:68
 msgid "Add Folder"
 msgstr "폴더 추가"
 
-#: picard/ui/options/interface_toolbar.py:71
+#: picard/ui/options/interface_toolbar.py:72
 msgid "Add Files"
 msgstr "파일 추가"
 
-#: picard/ui/options/interface_toolbar.py:75
+#: picard/ui/options/interface_toolbar.py:76
 msgid "Cluster"
 msgstr "클러스터"
 
-#: picard/ui/options/interface_toolbar.py:79
+#: picard/ui/options/interface_toolbar.py:80
 msgid "Lookup"
 msgstr "조회"
 
-#: picard/ui/options/interface_toolbar.py:83
+#: picard/ui/options/interface_toolbar.py:84
 msgid "Scan"
 msgstr "검사"
 
-#: picard/ui/options/interface_toolbar.py:87
+#: picard/ui/options/interface_toolbar.py:88
 msgid "Lookup in Browser"
 msgstr "브라우저로 조회"
 
-#: picard/ui/options/interface_toolbar.py:91
+#: picard/ui/options/interface_toolbar.py:92
 msgid "Save"
 msgstr "저장"
 
-#: picard/ui/options/interface_toolbar.py:103
+#: picard/ui/options/interface_toolbar.py:104
 msgid "Submit AcoustIDs"
 msgstr "AcoustID 등록"
 
-#: picard/ui/options/interface_toolbar.py:111
+#: picard/ui/options/interface_toolbar.py:112
 msgid "Open in Player"
 msgstr "플레이어로 열기"
 
-#: picard/ui/options/interface_toolbar.py:115
+#: picard/ui/options/interface_toolbar.py:116
 msgid "Lookup CD…"
 msgstr "CD 조회…"
 
-#: picard/ui/options/interface_toolbar.py:186
+#: picard/ui/options/interface_toolbar.py:187
 msgid "Drag and Drop to re-order"
 msgstr "드래그 앤 드롭으로 순서를 바꿀 수 있습니다"
 
@@ -5051,7 +5051,7 @@ msgstr "선택된 옵션 세팅들을 정말로 지우기 싶습니까?"
 msgid "Matching"
 msgstr "일치"
 
-#: picard/ui/options/metadata.py:215
+#: picard/ui/options/metadata.py:216
 msgid "{indent}{locale}"
 msgstr ""
 
@@ -5160,27 +5160,27 @@ msgstr "\"%(plugin)s\" 플러그인을 다운로드 할 수 없습니다."
 msgid "Please try again later."
 msgstr "나중에 다시 시도하십시오"
 
-#: picard/ui/options/profiles.py:55
+#: picard/ui/options/profiles.py:56
 msgid "Option Profiles"
 msgstr "옵션 프로필"
 
-#: picard/ui/options/profiles.py:114
+#: picard/ui/options/profiles.py:115
 msgid "New"
 msgstr "새로운"
 
-#: picard/ui/options/profiles.py:115
+#: picard/ui/options/profiles.py:116
 msgid "Create a new profile"
 msgstr "새 프로필을 만들기"
 
-#: picard/ui/options/profiles.py:120
+#: picard/ui/options/profiles.py:121
 msgid "Copy to a new profile"
 msgstr "새 프로필로 복사하기"
 
-#: picard/ui/options/profiles.py:124
+#: picard/ui/options/profiles.py:125
 msgid "Delete"
 msgstr "삭제"
 
-#: picard/ui/options/profiles.py:125
+#: picard/ui/options/profiles.py:126
 msgid "Delete the profile"
 msgstr "프로필을 지우시오"
 
@@ -5227,11 +5227,11 @@ msgstr "프로필 타이틀이 빈칸 일수 없습니다."
 msgid "Ratings"
 msgstr "등급"
 
-#: picard/ui/options/releases.py:157
+#: picard/ui/options/releases.py:158
 msgid "Preferred Releases"
 msgstr "선호하는 릴리즈"
 
-#: picard/ui/options/releases.py:194
+#: picard/ui/options/releases.py:195
 msgid "Reset all"
 msgstr "모두 초기화"
 
@@ -5250,28 +5250,28 @@ msgid ""
 "Some software might not be able to properly access those files."
 msgstr ""
 
-#: picard/ui/options/scripting.py:123
+#: picard/ui/options/scripting.py:124
 msgid "Show scripting documentation in new window."
 msgstr ""
 
-#: picard/ui/options/scripting.py:126
+#: picard/ui/options/scripting.py:127
 msgid "Import a script file as a new script."
 msgstr ""
 
-#: picard/ui/options/scripting.py:129
+#: picard/ui/options/scripting.py:130
 msgid "Export the current script to a file."
 msgstr ""
 
-#: picard/ui/options/scripting.py:133
+#: picard/ui/options/scripting.py:134
 msgid "Picard tagging script package"
 msgstr ""
 
-#: picard/ui/options/scripting.py:175
+#: picard/ui/options/scripting.py:176
 #, python-format
 msgid "%s (imported)"
 msgstr ""
 
-#: picard/ui/options/scripting.py:242
+#: picard/ui/options/scripting.py:243
 msgid "Script Error"
 msgstr "스크립트 오류"
 
