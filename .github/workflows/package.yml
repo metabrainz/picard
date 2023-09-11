@@ -73,7 +73,7 @@ jobs:
         cd ..
         pip3 install .
       env:
-        PYINSTALLER_VERSION: v5.12.0
+        PYINSTALLER_VERSION: v5.13.2
         CFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-version }}
         CPPFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-version }}
         LDFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-version }}
