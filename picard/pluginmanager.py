@@ -36,10 +36,6 @@ import zipfile
 import zipimport
 
 from PyQt5 import QtCore
-from PyQt5.QtWidgets import (
-    QCheckBox,
-    QMessageBox,
-)
 
 from picard import log
 from picard.config import get_config
@@ -60,6 +56,8 @@ from picard.version import (
     VersionError,
 )
 
+from picard.ui.pluginupdatedialog import PluginUpdatesDialog
+
 
 _SUFFIXES = tuple(importlib.machinery.all_suffixes())
 _PACKAGE_ENTRIES = ("__init__.py", "__init__.pyc", "__init__.pyo")
@@ -71,35 +69,6 @@ _UPDATE_SUFFIX_LEN = len(_UPDATE_SUFFIX)
 
 
 _extension_points = []
-
-
-class PluginUpdatesDialog():
-
-    def __init__(self, parent, dialog_text):
-
-        self.show_again = True
-        show_again_text = _("Perform this check again the next time you start Picard.")
-
-        self.msg = QMessageBox(parent)
-        self.msg.setIcon(QMessageBox.Icon.Information)
-        self.msg.setText(dialog_text)
-        self.msg.setWindowTitle(_("Picard Plugins Update"))
-        self.msg.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
-
-        self.cb = QCheckBox(show_again_text)
-        self.cb.setChecked(self.show_again)
-        self.cb.toggled.connect(self._set_state)
-
-        self.msg.setCheckBox(self.cb)
-        self.msg.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel)
-        self.msg.setDefaultButton(QMessageBox.StandardButton.Cancel)
-
-    def _set_state(self):
-        self.show_again = not self.show_again
-
-    def show(self):
-        show_plugins_page = self.msg.exec() == QMessageBox.StandardButton.Yes
-        return show_plugins_page, self.show_again
 
 
 def is_update(path):
@@ -570,35 +539,9 @@ class PluginManager(QtCore.QObject):
 
     def check_update(self, parent=None):
         def _display_update():
-            UPDATE_LINES_TO_SHOW = 3
-            plugins_with_updates = sorted(self._plugins_have_new_versions())
+            plugins_with_updates = self._plugins_have_new_versions()
             if plugins_with_updates:
-                file_count = len(plugins_with_updates)
-                header = '<p>' + ngettext(
-                    "There is an update available for one of your currently installed plugins:",
-                    "There are updates available for your currently installed plugins:",
-                    file_count
-                ) + '</p>'
-                footer = '<p>' + ngettext(
-                    "Do you want to update the plugin now?",
-                    "Do you want to update the plugins now?",
-                    file_count
-                ) + '</p>'
-
-                extra_file_count = file_count - UPDATE_LINES_TO_SHOW
-                if extra_file_count > 0:
-                    extra_plugins = '<p>' + ngettext(
-                        "plus {extra_file_count:,d} other plugin.",
-                        "plus {extra_file_count:,d} other plugins.",
-                        extra_file_count).format(extra_file_count=extra_file_count) + '</p>'
-                else:
-                    extra_plugins = ''
-
-                plugin_list = ''
-                for plugin_name in plugins_with_updates[:UPDATE_LINES_TO_SHOW]:
-                    plugin_list += f"<li>{plugin_name}</li>"
-
-                msg = PluginUpdatesDialog(parent, f'{header}<ul>{plugin_list}</ul>{extra_plugins}{footer}')
+                msg = PluginUpdatesDialog(parent, plugins_with_updates)
 
                 show_options_page, perform_check = msg.show()
 
