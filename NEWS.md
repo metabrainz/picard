@@ -1,3 +1,20 @@
+# Version 2.9.2 - 2023-09-12
+
+## Bugfixes
+- [PICARD-2700](https://tickets.metabrainz.org/browse/PICARD-2700) - Content of series variables gets duplicated on each refresh
+- [PICARD-2712](https://tickets.metabrainz.org/browse/PICARD-2712) - "00" is always stripped from DATE tag on save
+- [PICARD-2722](https://tickets.metabrainz.org/browse/PICARD-2722) - Windows version can crash on exit and prevent restart of Picard
+- [PICARD-2724](https://tickets.metabrainz.org/browse/PICARD-2724) - Crash in track search dialog if artist name translation is enabled
+- [PICARD-2733](https://tickets.metabrainz.org/browse/PICARD-2733) - Crash when saving files with UI language set to Finnish
+- [PICARD-2736](https://tickets.metabrainz.org/browse/PICARD-2736) - Windows: SSL errors if conflicting libssl is installed system wide
+
+## Tasks
+- [PICARD-2752](https://tickets.metabrainz.org/browse/PICARD-2752) - Include resource/images in source archive
+
+## Improvements
+- [PICARD-2720](https://tickets.metabrainz.org/browse/PICARD-2720) - Linux: Allow opening new instance via XDG desktop entry application action
+
+
 # Version 2.9.1 - 2023-08-16
 
 ## Bugfixes
