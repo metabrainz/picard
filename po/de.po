@@ -47,7 +47,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-09-11 09:16+0200\n"
-"PO-Revision-Date: 2023-09-01 10:27+0000\n"
+"PO-Revision-Date: 2023-09-12 07:27+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/"
 "app/de/>\n"
@@ -56,7 +56,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.0.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -223,10 +223,9 @@ msgid "Unable to load plugin '%s'"
 msgstr "Plugin „%s“ konnte nicht geladen werden"
 
 #: picard/pluginmanager.py:335
-#, fuzzy, python-format
-#| msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+#, python-format
 msgid "Failed loading plugin \"%(plugin)s\""
-msgstr "Fehler beim Laden des Plugins „%(plugin)s“ in „%(dirname)s“"
+msgstr "Fehler beim Laden des Plugins „%(plugin)s“"
 
 #: picard/pluginmanager.py:378
 #, python-format
