@@ -639,10 +639,13 @@ class PluginMetaPathFinder(MetaPathFinder):
 
     @staticmethod
     def _plugin_file_paths(plugin_dir, plugin_name):
-        yield os.path.join(plugin_dir, plugin_name, '__init__.py')
-        yield os.path.join(plugin_dir, plugin_name + '.py')
-        if hasattr(zipimport.zipimporter, 'find_spec'):  # Python >= 3.10
-            yield os.path.join(plugin_dir, plugin_name + '.zip')
+        for entry in _PACKAGE_ENTRIES:
+            yield os.path.join(plugin_dir, plugin_name, entry)
+        for ext in _FILEEXTS:
+            # On Python < 3.10 ZIP file loading is handled in PluginManager._load_plugin
+            if ext == '.zip' and not hasattr(zipimport.zipimporter, 'find_spec'):
+                continue
+            yield os.path.join(plugin_dir, plugin_name + ext)
 
 
 sys.meta_path.append(PluginMetaPathFinder())
