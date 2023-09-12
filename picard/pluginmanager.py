@@ -38,7 +38,6 @@ import zipimport
 from PyQt5 import QtCore
 
 from picard import log
-from picard.config import get_config
 from picard.const import (
     PLUGINS_API,
     USER_PLUGIN_DIR,
@@ -55,8 +54,6 @@ from picard.version import (
     Version,
     VersionError,
 )
-
-from picard.ui.pluginupdatedialog import PluginUpdatesDialog
 
 
 _SUFFIXES = tuple(importlib.machinery.all_suffixes())
@@ -198,6 +195,7 @@ class PluginManager(QtCore.QObject):
     plugin_updated = QtCore.pyqtSignal(str, bool)
     plugin_removed = QtCore.pyqtSignal(str, bool)
     plugin_errored = QtCore.pyqtSignal(str, str, bool)
+    updates_available = QtCore.pyqtSignal(list)
 
     def __init__(self, plugins_directory=None):
         super().__init__()
@@ -537,24 +535,16 @@ class PluginManager(QtCore.QObject):
                 if available_versions[plugin.module_name] > plugin.version:
                     yield plugin.name
 
-    def check_update(self, parent=None):
-        def _display_update():
-            plugins_with_updates = self._plugins_have_new_versions()
-            if plugins_with_updates:
-                msg = PluginUpdatesDialog(parent, plugins_with_updates)
-
-                show_options_page, perform_check = msg.show()
-
-                config = get_config()
-                config.setting['check_for_plugin_updates'] = perform_check
-
-                if parent and show_options_page:
-                    parent.show_plugins_options_page()
-
+    def check_update(self):
         if self.available_plugins is None:
-            self.query_available_plugins(_display_update)
+            self.query_available_plugins(self._notify_updates)
         else:
-            _display_update()
+            self._notify_updates()
+
+    def _notify_updates(self):
+        plugins_with_updates = list(self._plugins_have_new_versions())
+        if plugins_with_updates:
+            self.updates_available.emit(plugins_with_updates)
 
 
 class PluginMetaPathFinder(MetaPathFinder):
