@@ -312,10 +312,12 @@ class CAATypesSelectorDialog(PicardDialog):
             else:
                 self.list_ignore.addItem(item)
 
-    def get_selected_types_include(self):
+    @property
+    def included(self):
         return list(self.list_include.all_items_data()) or ['front']
 
-    def get_selected_types_exclude(self):
+    @property
+    def excluded(self):
         return list(self.list_exclude.all_items_data()) or ['none']
 
     def clear_focus(self, lists):
@@ -352,4 +354,4 @@ class CAATypesSelectorDialog(PicardDialog):
 def display_caa_types_selector(**kwargs):
     dialog = CAATypesSelectorDialog(**kwargs)
     result = dialog.exec_()
-    return (dialog.get_selected_types_include(), dialog.get_selected_types_exclude(), result == QtWidgets.QDialog.DialogCode.Accepted)
+    return (dialog.included, dialog.excluded, result == QtWidgets.QDialog.DialogCode.Accepted)
