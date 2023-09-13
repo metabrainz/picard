@@ -516,7 +516,7 @@ class CoverArtProviderCaa(CoverArtProvider):
         super().__init__(coverart)
         config = get_config()
         self.caa_types = list(map(str.lower, config.setting["caa_image_types"]))
-        self.caa_types_to_omit = list(map(str.lower, config.setting["caa_image_types_to_omit"]))
+        self.excluded_types = list(map(str.lower, config.setting["caa_image_types_to_omit"]))
         self.len_caa_types = len(self.caa_types)
         self.restrict_types = config.setting["caa_restrict_image_types"]
 
@@ -600,7 +600,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                 self.error('CAA JSON error: %s' % (http.errorString()))
         else:
             if self.restrict_types:
-                log.debug('CAA types: included: %s, excluded: %s', self.caa_types, self.caa_types_to_omit)
+                log.debug('CAA types: included: %s, excluded: %s', self.caa_types, self.excluded_types)
             try:
                 config = get_config()
                 for image in data["images"]:
@@ -620,9 +620,9 @@ class CoverArtProviderCaa(CoverArtProvider):
                         # only keep enabled caa types
                         types = set(image["types"]).intersection(
                             set(self.caa_types))
-                        if types and self.caa_types_to_omit:
+                        if types and self.excluded_types:
                             types = not set(image["types"]).intersection(
-                                set(self.caa_types_to_omit))
+                                set(self.excluded_types))
                         log.debug('CAA image %s: %s  %s',
                             ('accepted' if types else 'rejected'),
                             image['image'],
