@@ -7,6 +7,7 @@
 # virtualenv
 .venv
 venv/
+.python-version
 
 # OS generated files
 .DS_Store
