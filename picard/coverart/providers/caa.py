@@ -229,6 +229,9 @@ class CAATypesSelectorDialog(PicardDialog):
         parent {[type]} -- Parent of the QDialog object being created (default: {None})
         types_include {[string]} -- List of CAA image types to include (default: {None})
         types_exclude {[string]} -- List of CAA image types to exclude (default: {None})
+        default_include {[string]} -- List of CAA image types to include by default (default: {None})
+        default_exclude {[string]} -- List of CAA image types to exclude by default (default: {None})
+        known_types {[string]} -- List of all known CAA image types (default: {None})
     """
 
     help_url = 'doc_cover_art_types'
@@ -426,11 +429,16 @@ class CAATypesSelectorDialog(PicardDialog):
         self.arrows_exclude.button_remove_all.setEnabled(has_items_exclude)
 
     @staticmethod
-    def run(parent=None, types_include=None, types_exclude=None):
+    def run(
+            parent=None,
+            types_include=None, types_exclude=None,
+            default_include=None, default_exclude=None,
+            known_types=None):
         dialog = CAATypesSelectorDialog(
-            parent, types_include=types_include, types_exclude=types_exclude,
-            default_include=_CAA_IMAGE_TYPE_DEFAULT_INCLUDE, default_exclude=_CAA_IMAGE_TYPE_DEFAULT_EXCLUDE,
-            known_types=CAA_TYPES
+            parent,
+            types_include=types_include, types_exclude=types_exclude,
+            default_include=default_include, default_exclude=default_exclude,
+            known_types=known_types
         )
         result = dialog.exec_()
         return (dialog.get_selected_types_include(), dialog.get_selected_types_exclude(), result == QtWidgets.QDialog.DialogCode.Accepted)
@@ -500,7 +508,11 @@ class ProviderOptionsCaa(ProviderOptions):
 
     def select_caa_types(self):
         (types, types_to_omit, ok) = CAATypesSelectorDialog.run(
-            self, self.caa_image_types, self.caa_image_types_to_omit)
+            self,
+            types_include=self.caa_image_types, types_exclude=self.caa_image_types_to_omit,
+            default_include=_CAA_IMAGE_TYPE_DEFAULT_INCLUDE, default_exclude=_CAA_IMAGE_TYPE_DEFAULT_EXCLUDE,
+            known_types=CAA_TYPES
+        )
         if ok:
             self.caa_image_types = types
             self.caa_image_types_to_omit = types_to_omit
