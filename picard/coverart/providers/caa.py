@@ -617,19 +617,19 @@ class CoverArtProviderCaa(CoverArtProvider):
                         image['types'] = ['unknown']
                     else:
                         image['types'] = [t.lower() for t in image['types']]
+
                     if self.restrict_types:
-                        # only keep enabled caa types
-                        types = set(image['types']).intersection(self.included_types)
-                        if types and self.excluded_types:
-                            types = not set(image['types']).intersection(self.excluded_types)
+                        # accept only if image types matches according to included/excluded types
+                        accepted = bool(set(image['types']).intersection(self.included_types).difference(self.excluded_types))
                         log.debug('CAA image %s: %s  %s',
-                            ('accepted' if types else 'rejected'),
+                            ('accepted' if accepted else 'rejected'),
                             image['image'],
                             image['types']
                         )
                     else:
-                        types = True
-                    if types:
+                        accepted = True
+
+                    if accepted:
                         urls = caa_url_fallback_list(config.setting['caa_image_size'], image['thumbnails'])
                         if not urls or is_pdf:
                             url = image['image']
