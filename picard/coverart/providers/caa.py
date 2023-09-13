@@ -517,8 +517,8 @@ class CoverArtProviderCaa(CoverArtProvider):
         config = get_config()
         self.restrict_types = config.setting['caa_restrict_image_types']
         if self.restrict_types:
-            self.included_types = [t.lower() for t in config.setting['caa_image_types']]
-            self.excluded_types = [t.lower() for t in config.setting['caa_image_types_to_omit']]
+            self.included_types = {t.lower() for t in config.setting['caa_image_types']}
+            self.excluded_types = {t.lower() for t in config.setting['caa_image_types_to_omit']}
             self.len_included_types = len(self.included_types)
 
     @property
@@ -619,11 +619,9 @@ class CoverArtProviderCaa(CoverArtProvider):
                         image['types'] = [t.lower() for t in image['types']]
                     if self.restrict_types:
                         # only keep enabled caa types
-                        types = set(image['types']).intersection(
-                            set(self.included_types))
+                        types = set(image['types']).intersection(self.included_types)
                         if types and self.excluded_types:
-                            types = not set(image['types']).intersection(
-                                set(self.excluded_types))
+                            types = not set(image['types']).intersection(self.excluded_types)
                         log.debug('CAA image %s: %s  %s',
                             ('accepted' if types else 'rejected'),
                             image['image'],
