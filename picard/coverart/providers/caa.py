@@ -515,10 +515,11 @@ class CoverArtProviderCaa(CoverArtProvider):
     def __init__(self, coverart):
         super().__init__(coverart)
         config = get_config()
-        self.included_types = list(map(str.lower, config.setting["caa_image_types"]))
-        self.excluded_types = list(map(str.lower, config.setting["caa_image_types_to_omit"]))
-        self.len_included_types = len(self.included_types)
         self.restrict_types = config.setting["caa_restrict_image_types"]
+        if self.restrict_types:
+            self.included_types = list(map(str.lower, config.setting["caa_image_types"]))
+            self.excluded_types = list(map(str.lower, config.setting["caa_image_types_to_omit"]))
+            self.len_included_types = len(self.included_types)
 
     @property
     def _has_suitable_artwork(self):
