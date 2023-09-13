@@ -324,7 +324,11 @@ class PluginManager(QtCore.QObject):
                 # module twice. This executes the plugins code twice and leads
                 # to potential side effects.
                 sys.modules[full_module_name] = plugin_module
-                spec.loader.exec_module(plugin_module)
+                try:
+                    spec.loader.exec_module(plugin_module)
+                except:  # noqa: E722
+                    del sys.modules[full_module_name]
+                    raise
 
             plugin = PluginWrapper(plugin_module, plugin_dir,
                                    file=module_pathname, manifest_data=manifest_data)
