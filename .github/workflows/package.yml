@@ -287,12 +287,19 @@ jobs:
       run: |
         PICARD_VERSION=$(python -c "import picard; print(picard.__version__)")
         echo "version=$PICARD_VERSION" >> $GITHUB_OUTPUT
+        if [[ "$PICARD_VERSION" =~ (a|b|rc|dev) ]]; then
+          echo "::notice::Releasing pre-release $PICARD_VERSION"
+          echo "prerelease=true" >> $GITHUB_OUTPUT
+        else
+          echo "::notice::Releasing production release $PICARD_VERSION"
+        fi
         ./scripts/tools/changelog-for-version.py $PICARD_VERSION > changes-$PICARD_VERSION.txt
     - name: Create release
       uses: softprops/action-gh-release@v1
       with:
         name: MusicBrainz Picard ${{ steps.changelog.outputs.version }}
         body_path: changes-${{ steps.changelog.outputs.version }}.txt
+        prerelease: ${{ steps.changelog.outputs.prerelease }}
         files: artifacts/*
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
