@@ -515,10 +515,11 @@ class CoverArtProviderCaa(CoverArtProvider):
     def __init__(self, coverart):
         super().__init__(coverart)
         config = get_config()
-        self.caa_types = list(map(str.lower, config.setting["caa_image_types"]))
-        self.caa_types_to_omit = list(map(str.lower, config.setting["caa_image_types_to_omit"]))
-        self.len_caa_types = len(self.caa_types)
-        self.restrict_types = config.setting["caa_restrict_image_types"]
+        self.restrict_types = config.setting['caa_restrict_image_types']
+        if self.restrict_types:
+            self.included_types = {t.lower() for t in config.setting['caa_image_types']}
+            self.excluded_types = {t.lower() for t in config.setting['caa_image_types_to_omit']}
+            self.included_types_count = len(self.included_types)
 
     @property
     def _has_suitable_artwork(self):
@@ -536,12 +537,12 @@ class CoverArtProviderCaa(CoverArtProvider):
             return False
 
         if self.restrict_types:
-            want_front = 'front' in self.caa_types
-            want_back = 'back' in self.caa_types
+            want_front = 'front' in self.included_types
+            want_back = 'back' in self.included_types
             caa_has_front = caa_node['front']
             caa_has_back = caa_node['back']
 
-            if self.len_caa_types == 2 and (want_front or want_back):
+            if self.included_types_count == 2 and (want_front or want_back):
                 # The OR cases are there to still download and process the CAA
                 # JSON file if front or back is enabled but not in the CAA and
                 # another type (that's neither front nor back) is enabled.
@@ -555,7 +556,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                 back_in_caa = caa_has_back or not want_back
                 caa_has_suitable_artwork = front_in_caa or back_in_caa
 
-            elif self.len_caa_types == 1 and (want_front or want_back):
+            elif self.included_types_count == 1 and (want_front or want_back):
                 front_in_caa = caa_has_front and want_front
                 back_in_caa = caa_has_back and want_back
                 caa_has_suitable_artwork = front_in_caa or back_in_caa
@@ -571,7 +572,7 @@ class CoverArtProviderCaa(CoverArtProvider):
         """Check if CAA artwork has to be downloaded"""
         if not super().enabled():
             return False
-        if self.restrict_types and not self.len_caa_types:
+        if self.restrict_types and not self.included_types_count:
             log.debug('User disabled all Cover Art Archive types')
             return False
         return self._has_suitable_artwork
@@ -600,66 +601,64 @@ class CoverArtProviderCaa(CoverArtProvider):
                 self.error('CAA JSON error: %s' % (http.errorString()))
         else:
             if self.restrict_types:
-                log.debug('CAA types: included: %s, excluded: %s', self.caa_types, self.caa_types_to_omit)
+                log.debug('CAA types: included: %s, excluded: %s', self.included_types, self.excluded_types)
             try:
                 config = get_config()
-                for image in data["images"]:
-                    if config.setting["caa_approved_only"] and not image["approved"]:
+                for image in data['images']:
+                    if config.setting['caa_approved_only'] and not image['approved']:
                         continue
-                    is_pdf = image["image"].endswith('.pdf')
-                    if is_pdf and not config.setting["save_images_to_files"]:
+                    is_pdf = image['image'].endswith('.pdf')
+                    if is_pdf and not config.setting['save_images_to_files']:
                         log.debug("Skipping pdf cover art : %s", image["image"])
                         continue
                     # if image has no type set, we still want it to match
                     # pseudo type 'unknown'
-                    if not image["types"]:
-                        image["types"] = ["unknown"]
+                    if not image['types']:
+                        image['types'] = ['unknown']
                     else:
-                        image["types"] = list(map(str.lower, image["types"]))
+                        image['types'] = [t.lower() for t in image['types']]
+
                     if self.restrict_types:
-                        # only keep enabled caa types
-                        types = set(image["types"]).intersection(
-                            set(self.caa_types))
-                        if types and self.caa_types_to_omit:
-                            types = not set(image["types"]).intersection(
-                                set(self.caa_types_to_omit))
+                        # accept only if image types matches according to included/excluded types
+                        accepted = bool(set(image['types']).intersection(self.included_types).difference(self.excluded_types))
                         log.debug('CAA image %s: %s  %s',
-                            ('accepted' if types else 'rejected'),
+                            ('accepted' if accepted else 'rejected'),
                             image['image'],
                             image['types']
                         )
                     else:
-                        types = True
-                    if types:
-                        urls = caa_url_fallback_list(config.setting["caa_image_size"], image["thumbnails"])
+                        accepted = True
+
+                    if accepted:
+                        urls = caa_url_fallback_list(config.setting['caa_image_size'], image['thumbnails'])
                         if not urls or is_pdf:
-                            url = image["image"]
+                            url = image['image']
                         else:
                             # FIXME: try other urls in case of 404
                             url = urls[0]
                         coverartimage = self.coverartimage_class(
                             url,
-                            types=image["types"],
+                            types=image['types'],
                             is_front=image['front'],
-                            comment=image["comment"],
+                            comment=image['comment'],
                         )
                         if urls and is_pdf:
                             # thumbnail will be used to "display" PDF in info
                             # dialog
                             thumbnail = self.coverartimage_thumbnail_class(
                                 url=urls[0],
-                                types=image["types"],
+                                types=image['types'],
                                 is_front=image['front'],
-                                comment=image["comment"],
+                                comment=image['comment'],
                             )
                             self.queue_put(thumbnail)
                             coverartimage.thumbnail = thumbnail
                             # PDFs cannot be saved to tags (as 2014/05/29)
                             coverartimage.can_be_saved_to_tags = False
                         self.queue_put(coverartimage)
-                        if config.setting["save_only_one_front_image"] and \
-                                config.setting["save_images_to_files"] and \
-                                image["front"]:
+                        if config.setting['save_only_one_front_image'] and \
+                                config.setting['save_images_to_files'] and \
+                                image['front']:
                             break
             except (AttributeError, KeyError, TypeError) as e:
                 self.error('CAA JSON error: %s' % e)
