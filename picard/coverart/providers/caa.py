@@ -61,7 +61,7 @@ from picard.coverart.utils import (
 )
 from picard.webservice import ratecontrol
 
-from picard.ui.caa_types_selector import CAATypesSelectorDialog
+from picard.ui.caa_types_selector import display_caa_types_selector
 from picard.ui.ui_provider_options_caa import Ui_CaaOptions
 
 
@@ -176,11 +176,13 @@ class ProviderOptionsCaa(ProviderOptions):
 
     def select_caa_types(self):
         known_types = {t['name']: translate_caa_type(t['name']) for t in CAA_TYPES}
-        (types, types_to_omit, ok) = CAATypesSelectorDialog.run(
-            self,
-            types_include=self.caa_image_types, types_exclude=self.caa_image_types_to_omit,
-            default_include=_CAA_IMAGE_TYPE_DEFAULT_INCLUDE, default_exclude=_CAA_IMAGE_TYPE_DEFAULT_EXCLUDE,
-            known_types=known_types
+        (types, types_to_omit, ok) = display_caa_types_selector(
+            parent=self,
+            types_include=self.caa_image_types,
+            types_exclude=self.caa_image_types_to_omit,
+            default_include=_CAA_IMAGE_TYPE_DEFAULT_INCLUDE,
+            default_exclude=_CAA_IMAGE_TYPE_DEFAULT_EXCLUDE,
+            known_types=known_types,
         )
         if ok:
             self.caa_image_types = types

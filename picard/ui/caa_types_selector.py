@@ -169,7 +169,7 @@ class CAATypesSelectorDialog(PicardDialog):
             types_exclude = []
         self._default_include = default_include or []
         self._default_exclude = default_exclude or []
-        self._known_types = known_types or []
+        self._known_types = known_types or {}
 
         self.setWindowTitle(_("Cover art types"))
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
@@ -348,17 +348,8 @@ class CAATypesSelectorDialog(PicardDialog):
         self.arrows_exclude.button_remove.setEnabled(has_items_exclude and has_selected_exclude)
         self.arrows_exclude.button_remove_all.setEnabled(has_items_exclude)
 
-    @staticmethod
-    def run(
-            parent=None,
-            types_include=None, types_exclude=None,
-            default_include=None, default_exclude=None,
-            known_types=None):
-        dialog = CAATypesSelectorDialog(
-            parent,
-            types_include=types_include, types_exclude=types_exclude,
-            default_include=default_include, default_exclude=default_exclude,
-            known_types=known_types
-        )
-        result = dialog.exec_()
-        return (dialog.get_selected_types_include(), dialog.get_selected_types_exclude(), result == QtWidgets.QDialog.DialogCode.Accepted)
+
+def display_caa_types_selector(**kwargs):
+    dialog = CAATypesSelectorDialog(**kwargs)
+    result = dialog.exec_()
+    return (dialog.get_selected_types_include(), dialog.get_selected_types_exclude(), result == QtWidgets.QDialog.DialogCode.Accepted)
