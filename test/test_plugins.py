@@ -229,22 +229,31 @@ class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
 
 class TestPicardPluginsLoad(TestPicardPluginsCommonTmpDir):
 
+    def setUp(self):
+        super().setUp()
+        self.pm = PluginManager(plugins_directory=self.tmp_directory)
+        self.src_dir = None
+
+    def tearDown(self):
+        super().tearDown()
+        unload_plugin('picard.plugins.dummyplugin')
+        if self.src_dir:
+            _plugin_dirs.remove(self.src_dir)
+
+    def _register_plugin_dir(self, name):
+        self.src_dir = os.path.dirname(_testplugins[name])
+        register_plugin_dir(self.src_dir)
+
     def _test_plugin_load_from_directory(self, name):
-        pm = PluginManager(plugins_directory=self.tmp_directory)
-
-        src_dir = os.path.dirname(_testplugins[name])
-        register_plugin_dir(src_dir)
-
-        msg = "plugins_load_from_directory: %s %r" % (name, src_dir)
-        pm.load_plugins_from_directory(src_dir)
-        self.assertEqual(len(pm.plugins), 1, msg)
-        self.assertEqual(pm.plugins[0].name, 'Dummy plugin', msg)
+        self._register_plugin_dir(name)
+        msg = "plugins_load_from_directory: %s %r" % (name, self.src_dir)
+        self.pm.load_plugins_from_directory(self.src_dir)
+        self.assertEqual(len(self.pm.plugins), 1, msg)
+        self.assertEqual(self.pm.plugins[0].name, 'Dummy plugin', msg)
 
         # if module is properly loaded, this should work
         from picard.plugins.dummyplugin import DummyPlugin
         DummyPlugin()
-
-        _plugin_dirs.remove(src_dir)
 
     # singlefile
     def test_plugin_load_from_directory_singlefile(self):
@@ -261,6 +270,13 @@ class TestPicardPluginsLoad(TestPicardPluginsCommonTmpDir):
     # module
     def test_plugin_load_from_directory_module(self):
         self._test_plugin_load_from_directory('module')
+
+    def test_plugin_import_error(self):
+        module_name = 'picard.plugins.dummyplugin'
+        self.assertIsNone(sys.modules.get(module_name))
+        self._register_plugin_dir('importerror')
+        self.pm.load_plugins_from_directory(self.src_dir)
+        self.assertIsNone(sys.modules.get(module_name))
 
 
 class TestPluginWrapper(PicardTestCase):
