@@ -233,12 +233,18 @@ class CAATypesSelectorDialog(PicardDialog):
 
     help_url = 'doc_cover_art_types'
 
-    def __init__(self, parent=None, types_include=None, types_exclude=None):
+    def __init__(
+        self, parent=None, types_include=None, types_exclude=None,
+        default_include=None, default_exclude=None, known_types=None
+    ):
         super().__init__(parent)
         if types_include is None:
             types_include = []
         if types_exclude is None:
             types_exclude = []
+        self._default_include = default_include or []
+        self._default_exclude = default_exclude or []
+        self._known_types = known_types or []
 
         self.setWindowTitle(_("Cover art types"))
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
@@ -371,7 +377,7 @@ class CAATypesSelectorDialog(PicardDialog):
         self.list_include.clear()
         self.list_exclude.clear()
         self.list_ignore.clear()
-        for caa_type in CAA_TYPES:
+        for caa_type in self._known_types:
             name = caa_type['name']
             title = translate_caa_type(name)
             item = QtWidgets.QListWidgetItem(title)
@@ -395,7 +401,7 @@ class CAATypesSelectorDialog(PicardDialog):
         self.set_buttons_enabled_state()
 
     def reset_to_defaults(self):
-        self.fill_lists(_CAA_IMAGE_TYPE_DEFAULT_INCLUDE, _CAA_IMAGE_TYPE_DEFAULT_EXCLUDE)
+        self.fill_lists(self._default_include, self._default_exclude)
         self.set_buttons_enabled_state()
 
     def set_buttons_enabled_state(self):
@@ -421,7 +427,11 @@ class CAATypesSelectorDialog(PicardDialog):
 
     @staticmethod
     def run(parent=None, types_include=None, types_exclude=None):
-        dialog = CAATypesSelectorDialog(parent, types_include=types_include, types_exclude=types_exclude)
+        dialog = CAATypesSelectorDialog(
+            parent, types_include=types_include, types_exclude=types_exclude,
+            default_include=_CAA_IMAGE_TYPE_DEFAULT_INCLUDE, default_exclude=_CAA_IMAGE_TYPE_DEFAULT_EXCLUDE,
+            known_types=CAA_TYPES
+        )
         result = dialog.exec_()
         return (dialog.get_selected_types_include(), dialog.get_selected_types_exclude(), result == QtWidgets.QDialog.DialogCode.Accepted)
 
