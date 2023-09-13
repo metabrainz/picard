@@ -515,9 +515,9 @@ class CoverArtProviderCaa(CoverArtProvider):
     def __init__(self, coverart):
         super().__init__(coverart)
         config = get_config()
-        self.caa_types = list(map(str.lower, config.setting["caa_image_types"]))
+        self.included_types = list(map(str.lower, config.setting["caa_image_types"]))
         self.excluded_types = list(map(str.lower, config.setting["caa_image_types_to_omit"]))
-        self.len_caa_types = len(self.caa_types)
+        self.len_included_types = len(self.included_types)
         self.restrict_types = config.setting["caa_restrict_image_types"]
 
     @property
@@ -536,12 +536,12 @@ class CoverArtProviderCaa(CoverArtProvider):
             return False
 
         if self.restrict_types:
-            want_front = 'front' in self.caa_types
-            want_back = 'back' in self.caa_types
+            want_front = 'front' in self.included_types
+            want_back = 'back' in self.included_types
             caa_has_front = caa_node['front']
             caa_has_back = caa_node['back']
 
-            if self.len_caa_types == 2 and (want_front or want_back):
+            if self.len_included_types == 2 and (want_front or want_back):
                 # The OR cases are there to still download and process the CAA
                 # JSON file if front or back is enabled but not in the CAA and
                 # another type (that's neither front nor back) is enabled.
@@ -555,7 +555,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                 back_in_caa = caa_has_back or not want_back
                 caa_has_suitable_artwork = front_in_caa or back_in_caa
 
-            elif self.len_caa_types == 1 and (want_front or want_back):
+            elif self.len_included_types == 1 and (want_front or want_back):
                 front_in_caa = caa_has_front and want_front
                 back_in_caa = caa_has_back and want_back
                 caa_has_suitable_artwork = front_in_caa or back_in_caa
@@ -571,7 +571,7 @@ class CoverArtProviderCaa(CoverArtProvider):
         """Check if CAA artwork has to be downloaded"""
         if not super().enabled():
             return False
-        if self.restrict_types and not self.len_caa_types:
+        if self.restrict_types and not self.len_included_types:
             log.debug('User disabled all Cover Art Archive types')
             return False
         return self._has_suitable_artwork
@@ -600,7 +600,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                 self.error('CAA JSON error: %s' % (http.errorString()))
         else:
             if self.restrict_types:
-                log.debug('CAA types: included: %s, excluded: %s', self.caa_types, self.excluded_types)
+                log.debug('CAA types: included: %s, excluded: %s', self.included_types, self.excluded_types)
             try:
                 config = get_config()
                 for image in data["images"]:
@@ -619,7 +619,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                     if self.restrict_types:
                         # only keep enabled caa types
                         types = set(image["types"]).intersection(
-                            set(self.caa_types))
+                            set(self.included_types))
                         if types and self.excluded_types:
                             types = not set(image["types"]).intersection(
                                 set(self.excluded_types))
