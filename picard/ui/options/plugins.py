@@ -55,6 +55,7 @@ from picard.const import (
     USER_PLUGIN_DIR,
 )
 from picard.util import (
+    icontheme,
     open_local_path,
     reconnect,
 )
@@ -92,6 +93,13 @@ class PluginActionButton(QtWidgets.QToolButton):
         if self.switch_method is not None:
             self.switch_method(self, mode)
 
+    def set_icon(self, icon_name):
+        icon = icontheme.lookup(icon_name, icontheme.ICON_SIZE_MENU)
+        self.setIcon(icon)
+        # Workaround for Qt sometimes not updating the icon.
+        # See https://tickets.metabrainz.org/browse/PICARD-1647
+        self.repaint()
+
 
 class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
@@ -128,20 +136,13 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         self.treeWidget().setItemWidget(self, COLUMN_ACTIONS,
                                         self.buttons_widget)
 
-    @staticmethod
-    def set_icon(button, stdicon):
-        button.setIcon(button.style().standardIcon(getattr(QtWidgets.QStyle, stdicon)))
-        # Workaround for Qt sometimes not updating the icon.
-        # See https://tickets.metabrainz.org/browse/PICARD-1647
-        button.repaint()
-
     def show_install(self, button, mode):
         if mode == 'hide':
             button.hide()
         else:
             button.show()
             button.setToolTip(_("Download and install plugin"))
-            self.set_icon(button, 'SP_ArrowDown')
+            button.set_icon('plugin-download')
 
     def show_update(self, button, mode):
         if mode == 'hide':
@@ -149,17 +150,17 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         else:
             button.show()
             button.setToolTip(_("Download and upgrade plugin to version %s") % self.new_version.to_string(short=True))
-            self.set_icon(button, 'SP_BrowserReload')
+            button.set_icon('plugin-update')
 
     def show_enable(self, button, mode):
         if mode == 'enabled':
             button.show()
             button.setToolTip(_("Enabled"))
-            self.set_icon(button, 'SP_DialogApplyButton')
+            button.set_icon('plugin-enabled')
         elif mode == 'disabled':
             button.show()
             button.setToolTip(_("Disabled"))
-            self.set_icon(button, 'SP_DialogCancelButton')
+            button.set_icon('plugin-disabled')
         else:
             button.hide()
 
@@ -169,7 +170,7 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         else:
             button.show()
             button.setToolTip(_("Uninstall plugin"))
-            self.set_icon(button, 'SP_TrashIcon')
+            button.set_icon('plugin-uninstall')
 
     def save_state(self):
         return {
