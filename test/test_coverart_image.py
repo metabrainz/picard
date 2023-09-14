@@ -55,6 +55,23 @@ def create_image(extra_data, types=None, support_types=False,
 
 
 class CoverArtImageTest(PicardTestCase):
+    def test_repr_str_1(self):
+        image = CoverArtImage(
+            url='url', types=["booklet", "front"],
+            comment='comment', support_types=True,
+            support_multi_types=True
+        )
+        expected = "CoverArtImage(url='url', types=['booklet', 'front'], support_types=True, support_multi_types=True, comment='comment')"
+        self.assertEqual(expected, repr(image))
+        expected = "Image from url of type booklet,front and comment 'comment'"
+        self.assertEqual(expected, str(image))
+
+    def test_repr_str_2(self):
+        image = CoverArtImage()
+        expected = "CoverArtImage(support_types=False, support_multi_types=False)"
+        self.assertEqual(expected, repr(image))
+        expected = "Image"
+        self.assertEqual(expected, str(image))
 
     def test_is_front_image_no_types(self):
         image = create_image(b'a')

@@ -214,29 +214,32 @@ class CoverArtImage:
                                                                 self.datalength,
                                                                 self.tempfile_filename)
 
-    def __repr__(self):
-        p = []
+    def _repr(self):
         if self.url is not None:
-            p.append("url=%r" % self.url.toString())
+            yield "url=%r" % self.url.toString()
         if self.types:
-            p.append("types=%r" % self.types)
-        p.append('support_types=%r' % self.support_types)
-        p.append('support_multi_types=%r' % self.support_types)
+            yield "types=%r" % self.types
+        yield 'support_types=%r' % self.support_types
+        yield 'support_multi_types=%r' % self.support_multi_types
         if self.is_front is not None:
-            p.append("is_front=%r" % self.is_front)
+            yield "is_front=%r" % self.is_front
         if self.comment:
-            p.append("comment=%r" % self.comment)
-        return "%s(%s)" % (self.__class__.__name__, ", ".join(p))
+            yield "comment=%r" % self.comment
+
+    def __repr__(self):
+        return "%s(%s)" % (self.__class__.__name__, ", ".join(self._repr()))
+
+    def _str(self):
+        yield 'Image'
+        if self.url is not None:
+            yield "from %s" % self.url.toString()
+        if self.types:
+            yield "of type %s" % ','.join(self.types)
+        if self.comment:
+            yield "and comment '%s'" % self.comment
 
     def __str__(self):
-        p = ['Image']
-        if self.url is not None:
-            p.append("from %s" % self.url.toString())
-        if self.types:
-            p.append("of type %s" % ','.join(self.types))
-        if self.comment:
-            p.append("and comment '%s'" % self.comment)
-        return ' '.join(p)
+        return ' '.join(self._str())
 
     def __eq__(self, other):
         if self and other:
