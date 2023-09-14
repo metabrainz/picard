@@ -221,7 +221,7 @@ class CoverArtImage:
         if self.types:
             p.append("types=%r" % self.types)
         p.append('support_types=%r' % self.support_types)
-        p.append('support_multi_types=%r' % self.support_types)
+        p.append('support_multi_types=%r' % self.support_multi_types)
         if self.is_front is not None:
             p.append("is_front=%r" % self.is_front)
         if self.comment:
