@@ -1467,10 +1467,16 @@ If a new instance will not be spawned files/directories will be passed to the ex
     args.remote_commands_help = False
 
     args.processable = []
-    for x in args.FILE_OR_URL:
-        if not urlparse(x).netloc:
-            x = os.path.abspath(x)
-        args.processable.append(f"LOAD {x}")
+    for path in args.FILE_OR_URL:
+        if not urlparse(path).netloc:
+            try:
+                path = os.path.abspath(path)
+            except FileNotFoundError:
+                # os.path.abspath raises if path is relative and cwd doesn't
+                # exist anymore. Just pass the path as it is and leave
+                # the error handling to Picard's file loading.
+                pass
+        args.processable.append(f"LOAD {path}")
 
     if args.exec:
         for e in args.exec:
