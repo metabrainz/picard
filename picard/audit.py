@@ -20,6 +20,8 @@
 
 from collections import defaultdict
 import sys
+import threading
+import time
 
 
 def setup_audit(prefixes_string):
@@ -36,12 +38,16 @@ def setup_audit(prefixes_string):
         def event_match(event):
             return event_match_prefixes(event, PREFIXES_DICT)
 
+    start_time = time.time()
+
     def audit(event, args):
         # we can't use log here, as it generates events
         matched = event_match(event)
         if matched:
             matched = '.'.join(matched)
-            print(f'audit:{matched}: {event} args={args}')
+            tid = threading.get_native_id()
+            secs = time.time() - start_time
+            print(f'audit:{matched}:{tid}:{secs} {event} args={args}')
 
     sys.addaudithook(audit)
 
