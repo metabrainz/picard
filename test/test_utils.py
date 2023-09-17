@@ -809,6 +809,10 @@ class WinPrefixLongpathTest(PicardTestCase):
         path = 'C:\\foo\\' + (252 * 'a')
         self.assertEqual(path, win_prefix_longpath(path))
 
+    def test_win_prefix_longpath_unc(self):
+        path = '\\\\server\\' + (251 * 'a')
+        self.assertEqual('\\\\?\\UNC' + path[1:], win_prefix_longpath(path))
+
 
 class StrxfrmTest(PicardTestCase):
 

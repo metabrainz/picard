@@ -267,8 +267,16 @@ def normpath(path):
 
 
 def win_prefix_longpath(path):
+    """
+    For paths longer then WIN_MAX_FILEPATH_LEN enable long path support by prefixing with WIN_LONGPATH_PREFIX.
+
+    See https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation
+    """
     if len(path) > WIN_MAX_FILEPATH_LEN and not path.startswith(WIN_LONGPATH_PREFIX):
-        path = WIN_LONGPATH_PREFIX + path
+        if path.startswith('\\\\'):  # UNC path
+            path = WIN_LONGPATH_PREFIX + 'UNC' + path[1:]
+        else:
+            path = WIN_LONGPATH_PREFIX + path
     return path
 
 
