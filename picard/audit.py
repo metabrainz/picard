@@ -52,11 +52,20 @@ def setup_audit(prefixes_string):
     sys.addaudithook(audit)
 
 
+def list_from_prefixes_string(prefixes_string):
+    """Generate a sorted list of prefixes tuples
+       A prefixes string is a comma-separated list of dot-separated keys
+       "a,b.c,d.e.f,,g" would result in following sorted list:
+       [('a',), ('b', 'c'), ('d', 'e', 'f'), ('g',)]
+    """
+    yield from sorted(set(tuple(e.split('.')) for e in prefixes_string.split(',') if e))
+
+
 def make_prefixes_dict(prefixes_string):
     """Build a dict with keys = length of prefix"""
     d = defaultdict(list)
-    for p in sorted(set(tuple(e.split('.')) for e in prefixes_string.split(',') if e)):
-        d[len(p)].append(p)
+    for prefix_tuple in list_from_prefixes_string(prefixes_string):
+        d[len(prefix_tuple)].append(prefix_tuple)
     return dict(d)
 
 

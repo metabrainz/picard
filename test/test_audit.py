@@ -26,6 +26,7 @@ from test.picardtestcase import PicardTestCase
 
 from picard.audit import (
     is_matching_a_prefix,
+    list_from_prefixes_string,
     make_prefixes_dict,
     prefixes_candidates_for_length,
     setup_audit,
@@ -33,6 +34,17 @@ from picard.audit import (
 
 
 class AuditTest(PicardTestCase):
+    def test_list_from_prefixes_string(self):
+        def f(s):
+            return list(list_from_prefixes_string(s))
+
+        self.assertEqual(f(''), [])
+        self.assertEqual(f('a'), [('a',)])
+        self.assertEqual(f('a,b'), [('a',), ('b',)])
+        self.assertEqual(f('a,,b'), [('a',), ('b',)])
+        self.assertEqual(f('a.c,,b.d.f'), [('a', 'c'), ('b', 'd', 'f')])
+        self.assertEqual(f('b.d.f,a.c,'), [('a', 'c'), ('b', 'd', 'f')])
+
     def test_make_prefixes_dict(self):
         d = dict(make_prefixes_dict(''))
         self.assertEqual(d, {})
