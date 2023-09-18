@@ -26,27 +26,27 @@ from test.picardtestcase import PicardTestCase
 
 from picard.audit import (
     event_match_prefixes,
-    make_events_prefixes,
+    make_prefixes_dict,
     prefixes_candidates_for_length,
     setup_audit,
 )
 
 
 class AuditTest(PicardTestCase):
-    def test_make_events_prefixes(self):
-        d = dict(make_events_prefixes(''))
+    def test_make_prefixes_dict(self):
+        d = dict(make_prefixes_dict(''))
         self.assertEqual(d, {})
-        d = dict(make_events_prefixes('a'))
+        d = dict(make_prefixes_dict('a'))
         self.assertEqual(d, {1: [('a',)]})
-        d = dict(make_events_prefixes('a.b'))
+        d = dict(make_prefixes_dict('a.b'))
         self.assertEqual(d, {2: [('a', 'b')]})
-        d = dict(make_events_prefixes('a.b,c.d,a.b'))
+        d = dict(make_prefixes_dict('a.b,c.d,a.b'))
         self.assertEqual(d, {2: [('a', 'b'), ('c', 'd')]})
-        d = dict(make_events_prefixes('a,a.b,,a.b.c'))
+        d = dict(make_prefixes_dict('a,a.b,,a.b.c'))
         self.assertEqual(d, {1: [('a',)], 2: [('a', 'b')], 3: [('a', 'b', 'c')]})
 
     def test_prefixes_candidates_for_length(self):
-        d = make_events_prefixes('a,a.b,c.d,a.b.c,d.e.f,g.h.i')
+        d = make_prefixes_dict('a,a.b,c.d,a.b.c,d.e.f,g.h.i')
         self.assertEqual(list(prefixes_candidates_for_length(0, d)), [])
         self.assertEqual(list(prefixes_candidates_for_length(1, d)), [('a',)])
         self.assertEqual(list(prefixes_candidates_for_length(2, d)), [('a',), ('a', 'b'), ('c', 'd')])
@@ -55,7 +55,7 @@ class AuditTest(PicardTestCase):
         self.assertEqual(list(prefixes_candidates_for_length(4, d)), expected)
 
     def test_event_match_prefixes(self):
-        d = make_events_prefixes('a.b')
+        d = make_prefixes_dict('a.b')
         self.assertEqual(event_match_prefixes('a', d), False)
         self.assertEqual(event_match_prefixes('a.b', d), ('a', 'b'))
         self.assertEqual(event_match_prefixes('a.b.c', d), ('a', 'b'))

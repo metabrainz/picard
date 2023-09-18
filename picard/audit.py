@@ -33,7 +33,7 @@ def setup_audit(prefixes_string):
             return ('all', )
     else:
         # prebuild the dict, constant
-        PREFIXES_DICT = make_events_prefixes(prefixes_string)
+        PREFIXES_DICT = make_prefixes_dict(prefixes_string)
 
         def event_match(event):
             return event_match_prefixes(event, PREFIXES_DICT)
@@ -52,7 +52,7 @@ def setup_audit(prefixes_string):
     sys.addaudithook(audit)
 
 
-def make_events_prefixes(prefixes_string):
+def make_prefixes_dict(prefixes_string):
     """Build a dict with keys = length of prefix"""
     d = defaultdict(list)
     for p in sorted(set(tuple(e.split('.')) for e in prefixes_string.split(',') if e)):
