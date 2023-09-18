@@ -57,7 +57,7 @@ def make_prefixes_dict(prefixes_string):
     d = defaultdict(list)
     for p in sorted(set(tuple(e.split('.')) for e in prefixes_string.split(',') if e)):
         d[len(p)].append(p)
-    return d
+    return dict(d)
 
 
 def prefixes_candidates_for_length(length, prefixes_dict):
