@@ -260,6 +260,8 @@ class AcoustIDClient(QtCore.QObject):
         process.finished.connect(partial(self._on_fpcalc_finished, task))
         process.error.connect(partial(self._on_fpcalc_error, task))
         file_path = task.file.filename
+        # On Windows fpcalc.exe does not handle long paths, even if system wide
+        # long path support is enabled. Ensure the path is properly prefixed.
         if IS_WIN:
             file_path = win_prefix_longpath(file_path)
         process.start(self._fpcalc, ["-json", "-length", "120", file_path])
