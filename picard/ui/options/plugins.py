@@ -119,7 +119,7 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         self.buttons_widget = QtWidgets.QWidget()
 
         layout = QtWidgets.QHBoxLayout()
-        layout.setContentsMargins(0, 0, 5, 0)
+        layout.setContentsMargins(0, 2, 5, 2)
         layout.addStretch(1)
         self.buttons_widget.setLayout(layout)
 
