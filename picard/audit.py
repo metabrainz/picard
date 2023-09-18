@@ -41,12 +41,12 @@ def setup_audit(prefixes_string):
     start_time = time.time()
 
     def audit(event, args):
-        # we can't use log here, as it generates events
         matched = event_match(event)
         if matched:
             matched = '.'.join(matched)
             tid = threading.get_native_id()
             secs = time.time() - start_time
+            # we can't use log here, as it generates events
             print(f'audit:{matched}:{tid}:{secs} {event} args={args}')
 
     try:
