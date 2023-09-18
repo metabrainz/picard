@@ -36,7 +36,7 @@ def setup_audit(prefixes_string):
         PREFIXES_DICT = make_prefixes_dict(prefixes_string)
 
         def event_match(event):
-            return event_match_prefixes(event, PREFIXES_DICT)
+            return is_matching_a_prefix(event, PREFIXES_DICT)
 
     start_time = time.time()
 
@@ -67,17 +67,17 @@ def prefixes_candidates_for_length(length, prefixes_dict):
             yield from v
 
 
-def event_match_prefixes(event, prefixes_dict):
-    """Matches event against prefixes
+def is_matching_a_prefix(key, prefixes_dict):
+    """Matches dot-separated key against prefixes
        Typical case: we want to match `os.mkdir` if prefix is `os` or `os.mkdir`
-       but not the reverse: if prefix is `os.mkdir` we don't want to match an event named `os`
+       but not the reverse: if prefix is `os.mkdir` we don't want to match a key named `os`
        It returns False, or the matched prefix
     """
-    ev = tuple(event.split('.'))
-    ev_len = len(ev)
+    skey = tuple(key.split('.'))
+    skey_len = len(skey)
     # only use candidates that may have a chance to match
-    for p in prefixes_candidates_for_length(ev_len, prefixes_dict):
+    for p in prefixes_candidates_for_length(skey_len, prefixes_dict):
         # check that all elements of ev are in p
-        if all(v == ev[i] for i, v in enumerate(p)):
+        if all(v == skey[i] for i, v in enumerate(p)):
             return p
     return False

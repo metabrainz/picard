@@ -25,7 +25,7 @@ from unittest.mock import patch
 from test.picardtestcase import PicardTestCase
 
 from picard.audit import (
-    event_match_prefixes,
+    is_matching_a_prefix,
     make_prefixes_dict,
     prefixes_candidates_for_length,
     setup_audit,
@@ -54,12 +54,12 @@ class AuditTest(PicardTestCase):
         self.assertEqual(list(prefixes_candidates_for_length(3, d)), expected)
         self.assertEqual(list(prefixes_candidates_for_length(4, d)), expected)
 
-    def test_event_match_prefixes(self):
+    def test_is_matching_a_prefix(self):
         d = make_prefixes_dict('a.b')
-        self.assertEqual(event_match_prefixes('a', d), False)
-        self.assertEqual(event_match_prefixes('a.b', d), ('a', 'b'))
-        self.assertEqual(event_match_prefixes('a.b.c', d), ('a', 'b'))
-        self.assertEqual(event_match_prefixes('b.c', d), False)
+        self.assertEqual(is_matching_a_prefix('a', d), False)
+        self.assertEqual(is_matching_a_prefix('a.b', d), ('a', 'b'))
+        self.assertEqual(is_matching_a_prefix('a.b.c', d), ('a', 'b'))
+        self.assertEqual(is_matching_a_prefix('b.c', d), False)
 
 
 @unittest.skipUnless(sys.version_info[:3] > (3, 8), "sys.addaudithook() available since Python 3.8")
