@@ -273,7 +273,7 @@ def win_prefix_longpath(path):
     See https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation
     """
     if len(path) > WIN_MAX_FILEPATH_LEN and not path.startswith(WIN_LONGPATH_PREFIX):
-        if path.startswith('\\\\'):  # UNC path
+        if path.startswith(r'\\'):  # UNC path
             path = WIN_LONGPATH_PREFIX + 'UNC' + path[1:]
         else:
             path = WIN_LONGPATH_PREFIX + path

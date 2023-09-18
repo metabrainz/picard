@@ -786,32 +786,32 @@ class NormpathTest(PicardTestCase):
 
     @unittest.skipUnless(IS_WIN, "windows test")
     def test_normpath_windows(self):
-        self.assertEqual('C:\\Foo\\Bar.baz', normpath('C:/Foo/Bar.baz'))
-        self.assertEqual('C:\\Bar.baz', normpath('C:/Foo/../Bar.baz'))
+        self.assertEqual(r'C:\Foo\Bar.baz', normpath('C:/Foo/Bar.baz'))
+        self.assertEqual(r'C:\Bar.baz', normpath('C:/Foo/../Bar.baz'))
 
     @unittest.skipUnless(IS_WIN, "windows test")
     @patch.object(util, 'system_supports_long_paths')
     def test_normpath_windows_longpath(self, mock_system_supports_long_paths):
         mock_system_supports_long_paths.return_value = False
-        path = 'C:\\foo\\' + (252 * 'a')
+        path = rf'C:\foo\{252 * "a"}'
         self.assertEqual(path, normpath(path))
         path += 'a'
-        self.assertEqual('\\\\?\\' + path, normpath(path))
+        self.assertEqual(rf'\\?\{path}', normpath(path))
 
 
 class WinPrefixLongpathTest(PicardTestCase):
 
     def test_win_prefix_longpath_is_long(self):
-        path = 'C:\\foo\\' + (253 * 'a')
-        self.assertEqual('\\\\?\\' + path, win_prefix_longpath(path))
+        path = rf'C:\foo\{253 * "a"}'
+        self.assertEqual(rf'\\?\{path}', win_prefix_longpath(path))
 
     def test_win_prefix_longpath_is_short(self):
-        path = 'C:\\foo\\' + (252 * 'a')
+        path = rf'C:\foo\{252 * "a"}'
         self.assertEqual(path, win_prefix_longpath(path))
 
     def test_win_prefix_longpath_unc(self):
-        path = '\\\\server\\' + (251 * 'a')
-        self.assertEqual('\\\\?\\UNC' + path[1:], win_prefix_longpath(path))
+        path = rf'\\server\{251 * "a"}'
+        self.assertEqual(rf'\\?\UNC{path[1:]}', win_prefix_longpath(path))
 
 
 class StrxfrmTest(PicardTestCase):
