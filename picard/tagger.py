@@ -257,9 +257,8 @@ class Tagger(QtWidgets.QApplication):
         if picard_args.debug or "PICARD_DEBUG" in os.environ:
             self.set_log_level(logging.DEBUG)
 
-        if sys.version_info[:3] > (3, 8):
-            if picard_args.audit:
-                setup_audit(picard_args.audit)
+        if picard_args.audit:
+            setup_audit(picard_args.audit)
 
         # Main thread pool used for most background tasks
         self.thread_pool = QtCore.QThreadPool(self)
@@ -1442,11 +1441,10 @@ If a new instance will not be spawned files/directories will be passed to the ex
     parser.add_argument("-display", nargs=1, help=argparse.SUPPRESS)
 
     # Picard specific arguments
-    if sys.version_info[:3] > (3, 8):
-        parser.add_argument("-a", "--audit", action='store',
-                            default=None,
-                            help="audit events passed as a comma-separated list, prefixes supported, "
-                            "use all to match any (see https://docs.python.org/3/library/audit_events.html#audit-events)")
+    parser.add_argument("-a", "--audit", action='store',
+                        default=None,
+                        help="audit events passed as a comma-separated list, prefixes supported, "
+                        "use all to match any (see https://docs.python.org/3/library/audit_events.html#audit-events)")
     parser.add_argument("-c", "--config-file", action='store',
                         default=None,
                         help="location of the configuration file")

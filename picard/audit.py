@@ -49,7 +49,11 @@ def setup_audit(prefixes_string):
             secs = time.time() - start_time
             print(f'audit:{matched}:{tid}:{secs} {event} args={args}')
 
-    sys.addaudithook(audit)
+    try:
+        sys.addaudithook(audit)
+    except AttributeError:
+        # sys.addaudithook() appeared in Python 3.8
+        pass
 
 
 def list_from_prefixes_string(prefixes_string):
