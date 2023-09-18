@@ -71,9 +71,9 @@ def make_prefixes_dict(prefixes_string):
 
 def prefixes_candidates_for_length(length, prefixes_dict):
     """Generate prefixes that may match this length"""
-    for plen, v in prefixes_dict.items():
-        if length >= plen:
-            yield from v
+    for prefix_len, prefixes in prefixes_dict.items():
+        if length >= prefix_len:
+            yield from prefixes
 
 
 def is_matching_a_prefix(key, prefixes_dict):
