@@ -82,11 +82,11 @@ def is_matching_a_prefix(key, prefixes_dict):
        but not the reverse: if prefix is `os.mkdir` we don't want to match a key named `os`
        It returns False, or the matched prefix
     """
-    skey = tuple(key.split('.'))
-    skey_len = len(skey)
+    key_tuple = tuple(key.split('.'))
+    key_tuple_len = len(key_tuple)
     # only use candidates that may have a chance to match
-    for p in prefixes_candidates_for_length(skey_len, prefixes_dict):
-        # check that all elements of ev are in p
-        if all(v == skey[i] for i, v in enumerate(p)):
-            return p
+    for prefix_tuple in prefixes_candidates_for_length(key_tuple_len, prefixes_dict):
+        # check that all elements of the key are in prefix tuple
+        if all(prefix_part == key_tuple[i] for i, prefix_part in enumerate(prefix_tuple)):
+            return prefix_tuple
     return False
