@@ -77,6 +77,26 @@
     <file>images/16x16/play-music@2x.png</file>
     <file>images/16x16/play.png</file>
     <file>images/16x16/play@2x.png</file>
+    <file>images/16x16/plugin-disabled-dark.png</file>
+    <file>images/16x16/plugin-disabled-dark@2x.png</file>
+    <file>images/16x16/plugin-disabled.png</file>
+    <file>images/16x16/plugin-disabled@2x.png</file>
+    <file>images/16x16/plugin-download-dark.png</file>
+    <file>images/16x16/plugin-download-dark@2x.png</file>
+    <file>images/16x16/plugin-download.png</file>
+    <file>images/16x16/plugin-download@2x.png</file>
+    <file>images/16x16/plugin-enabled-dark.png</file>
+    <file>images/16x16/plugin-enabled-dark@2x.png</file>
+    <file>images/16x16/plugin-enabled.png</file>
+    <file>images/16x16/plugin-enabled@2x.png</file>
+    <file>images/16x16/plugin-uninstall-dark.png</file>
+    <file>images/16x16/plugin-uninstall-dark@2x.png</file>
+    <file>images/16x16/plugin-uninstall.png</file>
+    <file>images/16x16/plugin-uninstall@2x.png</file>
+    <file>images/16x16/plugin-update-dark.png</file>
+    <file>images/16x16/plugin-update-dark@2x.png</file>
+    <file>images/16x16/plugin-update.png</file>
+    <file>images/16x16/plugin-update@2x.png</file>
     <file>images/16x16/preferences-desktop.png</file>
     <file>images/16x16/preferences-desktop@2x.png</file>
     <file>images/16x16/remove-item.png</file>
@@ -143,6 +163,26 @@
     <file>images/22x22/play-music@2x.png</file>
     <file>images/22x22/play.png</file>
     <file>images/22x22/play@2x.png</file>
+    <file>images/22x22/plugin-disabled-dark.png</file>
+    <file>images/22x22/plugin-disabled-dark@2x.png</file>
+    <file>images/22x22/plugin-disabled.png</file>
+    <file>images/22x22/plugin-disabled@2x.png</file>
+    <file>images/22x22/plugin-download-dark.png</file>
+    <file>images/22x22/plugin-download-dark@2x.png</file>
+    <file>images/22x22/plugin-download.png</file>
+    <file>images/22x22/plugin-download@2x.png</file>
+    <file>images/22x22/plugin-enabled-dark.png</file>
+    <file>images/22x22/plugin-enabled-dark@2x.png</file>
+    <file>images/22x22/plugin-enabled.png</file>
+    <file>images/22x22/plugin-enabled@2x.png</file>
+    <file>images/22x22/plugin-uninstall-dark.png</file>
+    <file>images/22x22/plugin-uninstall-dark@2x.png</file>
+    <file>images/22x22/plugin-uninstall.png</file>
+    <file>images/22x22/plugin-uninstall@2x.png</file>
+    <file>images/22x22/plugin-update-dark.png</file>
+    <file>images/22x22/plugin-update-dark@2x.png</file>
+    <file>images/22x22/plugin-update.png</file>
+    <file>images/22x22/plugin-update@2x.png</file>
     <file>images/22x22/preferences-desktop.png</file>
     <file>images/22x22/preferences-desktop@2x.png</file>
     <file>images/22x22/speaker-0.png</file>

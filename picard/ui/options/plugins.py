@@ -55,6 +55,7 @@ from picard.const import (
     USER_PLUGIN_DIR,
 )
 from picard.util import (
+    icontheme,
     open_local_path,
     reconnect,
 )
@@ -64,6 +65,7 @@ from picard.ui.options import (
     OptionsPage,
     register_options_page,
 )
+from picard.ui.theme import theme
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 
 
@@ -79,7 +81,7 @@ class PluginActionButton(QtWidgets.QToolButton):
             self.setToolTip(tooltip)
 
         if icon is not None:
-            self.set_icon(self, icon)
+            self.setIcon(self, icon)
 
         if retain_space is True:
             sp_retain = self.sizePolicy()
@@ -92,11 +94,18 @@ class PluginActionButton(QtWidgets.QToolButton):
         if self.switch_method is not None:
             self.switch_method(self, mode)
 
+    def setIcon(self, icon):
+        super().setIcon(icon)
+        # Workaround for Qt sometimes not updating the icon.
+        # See https://tickets.metabrainz.org/browse/PICARD-1647
+        self.repaint()
+
 
 class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, icons, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self._icons = icons
         self._sortData = {}
         self.upgrade_to_version = None
         self.new_version = None
@@ -110,7 +119,7 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         self.buttons_widget = QtWidgets.QWidget()
 
         layout = QtWidgets.QHBoxLayout()
-        layout.setContentsMargins(0, 0, 5, 0)
+        layout.setContentsMargins(0, 2, 5, 2)
         layout.addStretch(1)
         self.buttons_widget.setLayout(layout)
 
@@ -128,20 +137,13 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         self.treeWidget().setItemWidget(self, COLUMN_ACTIONS,
                                         self.buttons_widget)
 
-    @staticmethod
-    def set_icon(button, stdicon):
-        button.setIcon(button.style().standardIcon(getattr(QtWidgets.QStyle, stdicon)))
-        # Workaround for Qt sometimes not updating the icon.
-        # See https://tickets.metabrainz.org/browse/PICARD-1647
-        button.repaint()
-
     def show_install(self, button, mode):
         if mode == 'hide':
             button.hide()
         else:
             button.show()
             button.setToolTip(_("Download and install plugin"))
-            self.set_icon(button, 'SP_ArrowDown')
+            button.setIcon(self._icons['download'])
 
     def show_update(self, button, mode):
         if mode == 'hide':
@@ -149,17 +151,17 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         else:
             button.show()
             button.setToolTip(_("Download and upgrade plugin to version %s") % self.new_version.to_string(short=True))
-            self.set_icon(button, 'SP_BrowserReload')
+            button.setIcon(self._icons['update'])
 
     def show_enable(self, button, mode):
         if mode == 'enabled':
             button.show()
             button.setToolTip(_("Enabled"))
-            self.set_icon(button, 'SP_DialogApplyButton')
+            button.setIcon(self._icons['enabled'])
         elif mode == 'disabled':
             button.show()
             button.setToolTip(_("Disabled"))
-            self.set_icon(button, 'SP_DialogCancelButton')
+            button.setIcon(self._icons['disabled'])
         else:
             button.hide()
 
@@ -169,7 +171,7 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         else:
             button.show()
             button.setToolTip(_("Uninstall plugin"))
-            self.set_icon(button, 'SP_TrashIcon')
+            button.setIcon(self._icons['uninstall'])
 
     def save_state(self):
         return {
@@ -261,6 +263,19 @@ class PluginsOptionsPage(OptionsPage):
 
         self._preserve = {}
         self._preserve_selected = None
+
+        self.icons = {
+            'download': self.create_icon('plugin-download'),
+            'update': self.create_icon('plugin-update'),
+            'uninstall': self.create_icon('plugin-uninstall'),
+            'enabled': self.create_icon('plugin-enabled'),
+            'disabled': self.create_icon('plugin-disabled'),
+        }
+
+    def create_icon(self, icon_name):
+        if theme.is_dark_theme:
+            icon_name += '-dark'
+        return icontheme.lookup(icon_name, icontheme.ICON_SIZE_MENU)
 
     def items(self):
         iterator = QTreeWidgetItemIterator(self.ui.plugins, QTreeWidgetItemIterator.IteratorFlag.All)
@@ -485,7 +500,7 @@ class PluginsOptionsPage(OptionsPage):
                            is_installed=None
                            ):
         if item is None:
-            item = PluginTreeWidgetItem(self.ui.plugins)
+            item = PluginTreeWidgetItem(self.icons, self.ui.plugins)
         if plugin is not None:
             item.setData(COLUMN_NAME, QtCore.Qt.ItemDataRole.UserRole, plugin)
         else:
