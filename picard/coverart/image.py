@@ -28,7 +28,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from hashlib import md5
+from hashlib import blake2b
 import os
 import shutil
 import tempfile
@@ -77,9 +77,7 @@ class DataHash:
         self._filename = None
         _datafile_mutex.lock()
         try:
-            m = md5()  # nosec
-            m.update(data)
-            self._hash = m.hexdigest()
+            self._hash = blake2b(data).hexdigest()
             if self._hash not in _datafiles:
                 (fd, self._filename) = tempfile.mkstemp(prefix=prefix, suffix=suffix)
                 QObject.tagger.register_cleanup(self.delete_file)

@@ -47,7 +47,7 @@
 
 import argparse
 from functools import partial
-from hashlib import md5
+from hashlib import blake2b
 import logging
 import os
 import platform
@@ -1532,8 +1532,12 @@ def main(localedir=None, autoupdate=True):
     if picard_args.stand_alone_instance:
         identifier = uuid4().hex
     else:
-        identifier = md5(picard_args.config_file.encode('utf8')).hexdigest() if picard_args.config_file else 'main'  # nosec: B303
-        identifier += '_NP' if picard_args.no_plugins else ''
+        if picard_args.config_file:
+            identifier = blake2b(picard_args.config_file.encode('utf8'), digest_size=16).hexdigest()
+        else:
+            identifier = 'main'
+        if picard_args.no_plugins:
+            identifier += '_NP'
 
     if picard_args.processable:
         log.info("Sending messages to main instance: %r", picard_args.processable)
