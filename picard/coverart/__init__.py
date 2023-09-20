@@ -49,7 +49,7 @@ class CoverArt:
         self._queue_new()
         self.album = album
         self.metadata = metadata
-        self.release = release
+        self.release = release  # not used in this class, but used by providers
         self.front_image_found = False
 
     def __repr__(self):
