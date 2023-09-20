@@ -58,13 +58,11 @@ class CoverArt:
     def retrieve(self):
         """Retrieve available cover art images for the release"""
         config = get_config()
-        if (not config.setting["save_images_to_tags"] and not
-                config.setting["save_images_to_files"]):
+        if config.setting['save_images_to_tags'] or config.setting['save_images_to_files']:
+            self.providers = cover_art_providers()
+            self.next_in_queue()
+        else:
             log.debug("Cover art disabled by user options.")
-            return
-
-        self.providers = cover_art_providers()
-        self.next_in_queue()
 
     def _set_metadata(self, coverartimage, data):
         try:
