@@ -35,8 +35,12 @@ from picard.const.sys import IS_WIN
 from picard.coverart.image import (
     CoverArtImage,
     LocalFileCoverArtImage,
+    TagCoverArtImage,
 )
-from picard.coverart.utils import Id3ImageType
+from picard.coverart.utils import (
+    Id3ImageType,
+    types_from_id3,
+)
 from picard.metadata import Metadata
 from picard.util import encode_filename
 from picard.util.filenaming import WinPathTooLong
@@ -54,6 +58,25 @@ def create_image(extra_data, types=None, support_types=False,
     )
 
 
+class TagCoverArtImageTest(PicardTestCase):
+    def test_repr_str_1(self):
+        image_type = Id3ImageType.COVER_FRONT
+        image = TagCoverArtImage(
+            file='testfilename',
+            tag='tag',
+            types=types_from_id3(image_type),
+            comment='description',
+            support_types=True,
+            data=None,
+            id3_type=image_type,
+            is_front=True,
+        )
+        expected = "TagCoverArtImage('testfilename', tag='tag', types=['front'], support_types=True, support_multi_types=False, is_front=True, comment='description')"
+        self.assertEqual(expected, repr(image))
+        expected = "TagCoverArtImage from 'testfilename' of type front and comment 'description'"
+        self.assertEqual(expected, str(image))
+
+
 class CoverArtImageTest(PicardTestCase):
     def test_repr_str_1(self):
         image = CoverArtImage(
@@ -63,14 +86,14 @@ class CoverArtImageTest(PicardTestCase):
         )
         expected = "CoverArtImage(url='url', types=['booklet', 'front'], support_types=True, support_multi_types=True, comment='comment')"
         self.assertEqual(expected, repr(image))
-        expected = "Image from url of type booklet,front and comment 'comment'"
+        expected = "CoverArtImage from url of type booklet,front and comment 'comment'"
         self.assertEqual(expected, str(image))
 
     def test_repr_str_2(self):
         image = CoverArtImage()
         expected = "CoverArtImage(support_types=False, support_multi_types=False)"
         self.assertEqual(expected, repr(image))
-        expected = "Image"
+        expected = "CoverArtImage"
         self.assertEqual(expected, str(image))
 
     def test_is_front_image_no_types(self):
