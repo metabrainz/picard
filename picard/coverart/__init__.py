@@ -53,7 +53,7 @@ class CoverArt:
         self.front_image_found = False
 
     def __repr__(self):
-        return "CoverArt for %r" % (self.album)
+        return "%s for %r" % (self.__class__.__name__, self.album)
 
     def retrieve(self):
         """Retrieve available cover art images for the release"""
@@ -70,7 +70,7 @@ class CoverArt:
         try:
             coverartimage.set_data(data)
             if coverartimage.can_be_saved_to_metadata:
-                log.debug("Cover art image stored to metadata: %r [%s]",
+                log.debug("Storing to metadata: %r [%s]",
                     coverartimage, coverartimage.imageinfo_as_string())
                 self.metadata.images.append(coverartimage)
                 for track in self.album._new_tracks:
@@ -81,7 +81,7 @@ class CoverArt:
                 if not self.front_image_found:
                     self.front_image_found = coverartimage.is_front_image()
             else:
-                log.debug("Thumbnail for cover art image: %r [%s]",
+                log.debug("Not storing to metadata: %r [%s]",
                     coverartimage, coverartimage.imageinfo_as_string())
         except CoverArtImageIOError as e:
             self.album.error_append(e)
