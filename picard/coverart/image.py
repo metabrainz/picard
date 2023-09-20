@@ -228,7 +228,6 @@ class CoverArtImage:
         return "%s(%s)" % (self.__class__.__name__, ", ".join(self._repr()))
 
     def _str(self):
-        yield 'Image'
         if self.url is not None:
             yield "from %s" % self.url.toString()
         if self.types:
@@ -237,7 +236,11 @@ class CoverArtImage:
             yield "and comment '%s'" % self.comment
 
     def __str__(self):
-        return ' '.join(self._str())
+        output = self.__class__.__name__
+        s = tuple(self._str())
+        if s:
+            output += ' ' + ' '.join(s)
+        return output
 
     def __eq__(self, other):
         if self and other:
@@ -469,19 +472,15 @@ class TagCoverArtImage(CoverArtImage):
         else:
             return 'File %s' % (self.sourcefile)
 
-    def __repr__(self):
-        p = []
-        p.append('%r' % self.sourcefile)
+    def _repr(self):
+        yield '%r' % self.sourcefile
         if self.tag is not None:
-            p.append("tag=%r" % self.tag)
-        if self.types:
-            p.append("types=%r" % self.types)
-        if self.is_front is not None:
-            p.append("is_front=%r" % self.is_front)
-        p.append('support_types=%r' % self.support_types)
-        if self.comment:
-            p.append("comment=%r" % self.comment)
-        return "%s(%s)" % (self.__class__.__name__, ", ".join(p))
+            yield 'tag=%r' % self.tag
+        yield from super()._repr()
+
+    def _str(self):
+        yield 'from %r' % self.sourcefile
+        yield from super()._str()
 
 
 class LocalFileCoverArtImage(CoverArtImage):
