@@ -93,7 +93,7 @@ class CoverArt:
         self.album._requests -= 1
 
         if error:
-            self.album.error_append('Coverart error: %s' % http.errorString())
+            self.album.error_append("Coverart error: %s" % http.errorString())
         elif len(data) < 1000:
             log.warning("Not enough data, skipping %s", coverartimage)
         else:
@@ -125,9 +125,9 @@ class CoverArt:
 
         config = get_config()
         if (self.front_image_found
-            and config.setting["save_images_to_tags"]
-            and not config.setting["save_images_to_files"]
-            and config.setting["embed_only_one_front_image"]):
+            and config.setting['save_images_to_tags']
+            and not config.setting['save_images_to_files']
+            and config.setting['embed_only_one_front_image']):
             # no need to continue
             self.album._finalize_loading(None)
             return
