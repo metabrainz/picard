@@ -41,9 +41,9 @@ Function FinalizePackage {
     $Path
   )
 
-  CodeSignBinary (Join-Path -Path $Path -ChildPath picard.exe)
-  CodeSignBinary (Join-Path -Path $Path -ChildPath fpcalc.exe)
-  CodeSignBinary (Join-Path -Path $Path -ChildPath discid.dll)
+  CodeSignBinary -BinaryPath (Join-Path -Path $Path -ChildPath picard.exe) -ErrorAction Stop
+  CodeSignBinary -BinaryPath (Join-Path -Path $Path -ChildPath fpcalc.exe) -ErrorAction Stop
+  CodeSignBinary -BinaryPath (Join-Path -Path $Path -ChildPath discid.dll) -ErrorAction Stop
 
   # Move all Qt5 DLLs into the main folder to avoid conflicts with system wide
   # versions of those dependencies. Since some version PyInstaller tries to

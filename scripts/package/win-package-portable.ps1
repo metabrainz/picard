@@ -36,4 +36,4 @@ ThrowOnExeError "setup.py build_ext -i failed"
 $env:PICARD_BUILD_PORTABLE = '1'
 pyinstaller --noconfirm --clean picard.spec 2>&1 | %{ "$_" }
 ThrowOnExeError "PyInstaller failed"
-CodeSignBinary dist\MusicBrainz-Picard-*.exe
+CodeSignBinary -BinaryPath dist\MusicBrainz-Picard-*.exe -ErrorAction Stop

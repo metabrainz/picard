@@ -40,4 +40,4 @@ FinalizePackage dist\picard
 # Build the installer
 makensis.exe /INPUTCHARSET UTF8 installer\picard-setup.nsi 2>&1 | %{ "$_" }
 ThrowOnExeError "NSIS failed"
-CodeSignBinary installer\picard-setup-*.exe
+CodeSignBinary -BinaryPath installer\picard-setup-*.exe -ErrorAction Stop

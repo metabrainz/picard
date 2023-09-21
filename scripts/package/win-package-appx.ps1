@@ -12,6 +12,7 @@ Param(
 
 # Errors are handled explicitly. Otherwise any output to stderr when
 # calling classic Windows exes causes a script error.
+# TODO: For PowerShell >= 7.3 use $PSNativeCommandUseErrorActionPreference = $true
 $ErrorActionPreference = 'Continue'
 
 If (-Not $BuildNumber) {
@@ -68,4 +69,4 @@ If ($CertificateFile -or $Certificate) {
 MakeAppx pack /o /h SHA256 /d $PackageDir /p $PackageFile
 ThrowOnExeError "MakeAppx failed"
 
-CodeSignBinary $PackageFile
+CodeSignBinary -BinaryPath $PackageFile -ErrorAction Stop
