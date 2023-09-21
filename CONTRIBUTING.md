@@ -56,6 +56,49 @@ We use snake-case to name all functions and variables except for the pre-generat
 
 `gettext` and `gettext-noop` have been built-in the Picard code as `_` and `N_` respectively to provide support for internationalization/localization. You can use them without imports across all of Picard code. Make sure to mark all displayable strings for translation using `_` or `N_` as applicable. You can read more about python-gettext [here](https://docs.python.org/2/library/gettext.html).
 
+### Strings quoting: single or double quotes?
+
+As a general guideline, we tend to use double quotes for translatable strings and/or English phrases; or anything that may contain one or more single quotes.
+We use single quotes for identifiers and keys (those are unlikely to contain a single quote; and usually no special character or space).
+Of course, it all depends on context and those are just hints, rather than rules.
+
+Examples:
+
+```python
+print("It is red")
+```
+
+Because changing it to `print("It's red")` would not require changing quotes.
+
+```python
+d = dict()
+d['key'] = "It's red"
+
+if 'key' in d:
+    print(_("The value for 'key' is {key}.").format(**d))
+
+```
+
+In above example, 'key' is an identifier, usually using characters from `[a-z0-9_]` set.
+But the printed string is translatable (English phrase).
+
+```python
+l1 = ['big', 'small']
+l2 = ["It's a big city", "Small is the village"]
+l3 = ["The city is big", "That's a small village"]
+
+d = {
+    'big': "The City",
+    'small': "The Village",
+}
+print(d['small'])
+```
+
+In above example, `l1` contains identifiers (keys of dict `d`) while others are English words/phrases.
+In the dict declaration, keys are single-quoted but values are double-quoted.
+
+Otherwise, choose whichever limit the number of escaped characters.
+
 
 ## Git Work-flow
 
