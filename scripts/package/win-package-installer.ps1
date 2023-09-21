@@ -1,8 +1,11 @@
 # Build a Windows installer
 
 Param(
-  [System.Security.Cryptography.X509Certificates.X509Certificate]
-  $Certificate,
+  [ValidateScript({ (Test-Path $_ -PathType Leaf) -or (-not $_) })]
+  [String]
+  $CertificateFile,
+  [SecureString]
+  $CertificatePassword,
   [Int]
   $BuildNumber
 )
@@ -16,7 +19,7 @@ If (-Not $BuildNumber) {
 }
 
 $ScriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
-. $ScriptDirectory\win-common.ps1 -Certificate $Certificate
+. $ScriptDirectory\win-common.ps1 -CertificateFile $CertificateFile -CertificatePassword $CertificatePassword
 
 Write-Output "Building Windows installer..."
 
