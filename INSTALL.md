@@ -174,9 +174,7 @@ below.
 
 You can verify the signature with e.g.:
 
-```
-gpg --verify picard-2.9.tar.gz.asc
-```
+    gpg --verify picard-2.9.tar.gz.asc
 
 Make sure the key fingerprint in the output matches the fingerprint of the
 GPG key below.
