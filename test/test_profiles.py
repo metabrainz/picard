@@ -291,6 +291,22 @@ class TestUserProfiles(TestPicardProfilesCommon):
         self.assertEqual(self.config.setting[self.test_setting_1], False)
         self.assertEqual(self.config.setting[self.test_setting_2], 99)
 
+        # Re-enable profile overrides and check that the saved settings still exist
+        # with invalid profile id in profile list
+        profiles = [
+            {
+                "position": 4,
+                "title": "Test Profile 4",
+                "enabled": True,
+                "id": "test_key_4",
+            }
+        ]
+        profiles.extend(self.get_profiles(enabled=True))
+        self.config.setting.set_profiles_override(profiles)
+        self.assertEqual(self.config.setting[self.test_setting_0], "def")
+        self.assertEqual(self.config.setting[self.test_setting_1], False)
+        self.assertEqual(self.config.setting[self.test_setting_2], 99)
+
     def test_config_option_rename(self):
         from picard.config_upgrade import rename_option
         self.config.setting[self.test_setting_0] = "abc"

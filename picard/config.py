@@ -173,9 +173,11 @@ class SettingConfigSection(ConfigSection):
 
     def _get_profile_settings(self, profile_id):
         if self.settings_override is None:
-            profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY][profile_id]
+            # Set to None if profile_id not in profile settings
+            profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY][profile_id] if profile_id in self.__qt_config.profiles[self.SETTINGS_KEY] else None
         else:
-            profile_settings = self.settings_override[profile_id]
+            # Set to None if profile_id not in settings_override
+            profile_settings = self.settings_override[profile_id] if profile_id in self.settings_override else None
         if profile_settings is None:
             log.error("Unable to find settings for user profile '%s'", profile_id)
             return {}
