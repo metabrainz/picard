@@ -1,8 +1,11 @@
 # Common functions for Windows packaging scripts
 
 Param(
-  [System.Security.Cryptography.X509Certificates.X509Certificate]
-  $Certificate
+  [ValidateScript({ (Test-Path $_ -PathType Leaf) -or (-not $_) })]
+  [String]
+  $CertificateFile,
+  [SecureString]
+  $CertificatePassword
 )
 
 # RFC 3161 timestamp server for code signing
@@ -14,9 +17,11 @@ Function CodeSignBinary {
     [String]
     $BinaryPath
   )
-  If ($Certificate) {
-    Set-AuthenticodeSignature -FilePath $BinaryPath -Certificate $Certificate `
-      -TimestampServer $TimeStampServer -ErrorAction Stop
+  If ($CertificateFile) {
+    SignTool sign /v /fd SHA256 /tr "$TimeStampServer" /td sha256 `
+      /f "$CertificateFile" /p (ConvertFrom-SecureString -AsPlainText $CertificatePassword) `
+      $BinaryPath
+    ThrowOnExeError "SignTool failed"
   } Else {
     Write-Output "Skip signing $BinaryPath"
   }

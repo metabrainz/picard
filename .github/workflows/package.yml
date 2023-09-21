@@ -188,8 +188,10 @@ jobs:
     - name: Build Windows 10 signed app package
       if: matrix.type == 'signed-app' && env.CODESIGN == '1'
       run: |
-        $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_P12_PASSWORD -Force -AsPlainText
-        & .\scripts\package\win-package-appx.ps1 -BuildNumber $Env:BUILD_NUMBER -CertificateFile .\codesign.pfx -CertificatePassword $CertPassword
+        $CertificateFile = ".\codesign.pfx"
+        $CertificatePassword = ConvertTo-SecureString -String $Env:CODESIGN_P12_PASSWORD -Force -AsPlainText
+        & .\scripts\package\win-package-appx.ps1 -BuildNumber $Env:BUILD_NUMBER `
+          -CertificateFile $CertificateFile -CertificatePassword $CertificatePassword
         Move-Item .\dist\*.msix .\artifacts
       env:
         CODESIGN_P12_PASSWORD: ${{ secrets.CODESIGN_P12_PASSWORD }}
@@ -198,12 +200,14 @@ jobs:
       run: |
         # choco install nsis
         If ($Env:CODESIGN -eq "1") {
-          $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_P12_PASSWORD -Force -AsPlainText
-          $Certificate = Get-PfxCertificate -FilePath .\codesign.pfx -Password $CertPassword
+          $CertificateFile = ".\codesign.pfx"
+          $CertificatePassword = ConvertTo-SecureString -String $Env:CODESIGN_P12_PASSWORD -Force -AsPlainText
         } Else {
-          $Certificate = $null
+          $CertificateFile = $null
+          $CertificatePassword = $null
         }
-        & .\scripts\package\win-package-installer.ps1 -BuildNumber $Env:BUILD_NUMBER -Certificate $Certificate
+        & .\scripts\package\win-package-installer.ps1 -BuildNumber $Env:BUILD_NUMBER `
+          -CertificateFile $CertificateFile -CertificatePassword $CertificatePassword
         Move-Item .\installer\*.exe .\artifacts
         dist\picard\fpcalc -version
       env:
@@ -212,12 +216,14 @@ jobs:
       if: matrix.type == 'portable'
       run: |
         If ($Env:CODESIGN -eq "1") {
-          $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_P12_PASSWORD -Force -AsPlainText
-          $Certificate = Get-PfxCertificate -FilePath .\codesign.pfx -Password $CertPassword
+          $CertificateFile = ".\codesign.pfx"
+          $CertificatePassword = ConvertTo-SecureString -String $Env:CODESIGN_P12_PASSWORD -Force -AsPlainText
         } Else {
-          $Certificate = $null
+          $CertificateFile = $null
+          $CertificatePassword = $null
         }
-        & .\scripts\package\win-package-portable.ps1 -BuildNumber $Env:BUILD_NUMBER -Certificate $Certificate
+        & .\scripts\package\win-package-portable.ps1 -BuildNumber $Env:BUILD_NUMBER `
+          -CertificateFile $CertificateFile -CertificatePassword $CertificatePassword
         Move-Item .\dist\*.exe .\artifacts
       env:
         CODESIGN_P12_PASSWORD: ${{ secrets.CODESIGN_P12_PASSWORD }}

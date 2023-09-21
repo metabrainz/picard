@@ -1,9 +1,7 @@
 # Build a MSIX app package for Windows 10
 
 Param(
-  [System.Security.Cryptography.X509Certificates.X509Certificate]
-  $Certificate,
-  [ValidateScript({Test-Path $_ -PathType Leaf})]
+  [ValidateScript({ (Test-Path $_ -PathType Leaf) -or (-not $_) })]
   [String]
   $CertificateFile,
   [SecureString]
@@ -11,9 +9,6 @@ Param(
   [Int]
   $BuildNumber
 )
-
-# RFC 3161 timestamp server for code signing
-$TimeStampServer = 'http://ts.ssl.com'
 
 # Errors are handled explicitly. Otherwise any output to stderr when
 # calling classic Windows exes causes a script error.
@@ -28,7 +23,7 @@ If (-Not $Certificate -And $CertificateFile) {
 }
 
 $ScriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
-. $ScriptDirectory\win-common.ps1 -Certificate $Certificate
+. $ScriptDirectory\win-common.ps1 -CertificateFile $CertificateFile -CertificatePassword $CertificatePassword
 
 Write-Output "Building Windows 10 app package..."
 
@@ -73,11 +68,4 @@ If ($CertificateFile -or $Certificate) {
 MakeAppx pack /o /h SHA256 /d $PackageDir /p $PackageFile
 ThrowOnExeError "MakeAppx failed"
 
-# Sign package
-If ($CertificateFile) {
-  SignTool sign /v /fd SHA256 /tr "$TimeStampServer" /td sha256 /f "$CertificateFile" /p (ConvertFrom-SecureString -AsPlainText $CertificatePassword) $PackageFile
-  ThrowOnExeError "SignTool failed"
-} ElseIf ($Certificate) {
-  SignTool sign /v /fd SHA256 /tr "$TimeStampServer" /td sha256 /sha1 $Certificate.Thumbprint $PackageFile
-  ThrowOnExeError "SignTool failed"
-}
+CodeSignBinary $PackageFile
