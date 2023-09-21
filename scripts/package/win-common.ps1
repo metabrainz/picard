@@ -5,6 +5,9 @@ Param(
   $Certificate
 )
 
+# RFC 3161 timestamp server for code signing
+$TimeStampServer = 'http://ts.ssl.com'
+
 Function CodeSignBinary {
   Param(
     [ValidateScript({Test-Path $_ -PathType Leaf})]
@@ -13,7 +16,7 @@ Function CodeSignBinary {
   )
   If ($Certificate) {
     Set-AuthenticodeSignature -FilePath $BinaryPath -Certificate $Certificate `
-      -ErrorAction Stop
+      -TimestampServer $TimeStampServer -ErrorAction Stop
   } Else {
     Write-Output "Skip signing $BinaryPath"
   }

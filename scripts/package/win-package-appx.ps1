@@ -12,6 +12,9 @@ Param(
   $BuildNumber
 )
 
+# RFC 3161 timestamp server for code signing
+$TimeStampServer = 'http://ts.ssl.com'
+
 # Errors are handled explicitly. Otherwise any output to stderr when
 # calling classic Windows exes causes a script error.
 $ErrorActionPreference = 'Continue'
@@ -72,9 +75,9 @@ ThrowOnExeError "MakeAppx failed"
 
 # Sign package
 If ($CertificateFile) {
-  SignTool sign /fd SHA256 /f "$CertificateFile" /p (ConvertFrom-SecureString -AsPlainText $CertificatePassword) $PackageFile
+  SignTool sign /v /fd SHA256 /tr "$TimeStampServer" /td sha256 /f "$CertificateFile" /p (ConvertFrom-SecureString -AsPlainText $CertificatePassword) $PackageFile
   ThrowOnExeError "SignTool failed"
 } ElseIf ($Certificate) {
-  SignTool sign /fd SHA256 /sha1 $Certificate.Thumbprint $PackageFile
+  SignTool sign /v /fd SHA256 /tr "$TimeStampServer" /td sha256 /sha1 $Certificate.Thumbprint $PackageFile
   ThrowOnExeError "SignTool failed"
 }
