@@ -49,28 +49,26 @@ class CoverArt:
         self._queue_new()
         self.album = album
         self.metadata = metadata
-        self.release = release
+        self.release = release  # not used in this class, but used by providers
         self.front_image_found = False
 
     def __repr__(self):
-        return "CoverArt for %r" % (self.album)
+        return "%s for %r" % (self.__class__.__name__, self.album)
 
     def retrieve(self):
         """Retrieve available cover art images for the release"""
         config = get_config()
-        if (not config.setting["save_images_to_tags"] and not
-                config.setting["save_images_to_files"]):
+        if config.setting['save_images_to_tags'] or config.setting['save_images_to_files']:
+            self.providers = cover_art_providers()
+            self.next_in_queue()
+        else:
             log.debug("Cover art disabled by user options.")
-            return
-
-        self.providers = cover_art_providers()
-        self.next_in_queue()
 
     def _set_metadata(self, coverartimage, data):
         try:
             coverartimage.set_data(data)
             if coverartimage.can_be_saved_to_metadata:
-                log.debug("Cover art image stored to metadata: %r [%s]",
+                log.debug("Storing to metadata: %r [%s]",
                     coverartimage, coverartimage.imageinfo_as_string())
                 self.metadata.images.append(coverartimage)
                 for track in self.album._new_tracks:
@@ -81,7 +79,7 @@ class CoverArt:
                 if not self.front_image_found:
                     self.front_image_found = coverartimage.is_front_image()
             else:
-                log.debug("Thumbnail for cover art image: %r [%s]",
+                log.debug("Not storing to metadata: %r [%s]",
                     coverartimage, coverartimage.imageinfo_as_string())
         except CoverArtImageIOError as e:
             self.album.error_append(e)
@@ -95,7 +93,7 @@ class CoverArt:
         self.album._requests -= 1
 
         if error:
-            self.album.error_append('Coverart error: %s' % http.errorString())
+            self.album.error_append("Coverart error: %s" % http.errorString())
         elif len(data) < 1000:
             log.warning("Not enough data, skipping %s", coverartimage)
         else:
@@ -127,9 +125,9 @@ class CoverArt:
 
         config = get_config()
         if (self.front_image_found
-            and config.setting["save_images_to_tags"]
-            and not config.setting["save_images_to_files"]
-            and config.setting["embed_only_one_front_image"]):
+            and config.setting['save_images_to_tags']
+            and not config.setting['save_images_to_files']
+            and config.setting['embed_only_one_front_image']):
             # no need to continue
             self.album._finalize_loading(None)
             return
