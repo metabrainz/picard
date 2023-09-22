@@ -117,13 +117,13 @@ for i in $(seq $ATTEMPTS); do
     hdiutil create -verbose -volname "MusicBrainz Picard $VERSION" \
       -srcfolder staging -ov -format UDBZ "$DMG"
     ret=$?
-    [ $ret -eq 0 ] && break
+    [ "$ret" -eq 0 ] && break
     echo "hdutil failed with exit code $ret ($i/$ATTEMPTS), retrying in $DELAY seconds"
     sleep $DELAY
 done
-if [ $ret -ne 0 ]; then
+if [ "$ret" -ne 0 ]; then
   echo "hdiutil failed too many times, exiting..."
-  exit $ret
+  exit "$ret"
 fi
 set -e
 
