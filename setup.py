@@ -44,7 +44,6 @@ from io import StringIO
 import logging as log
 import os
 import re
-from shutil import which
 import stat
 import sys
 import tempfile
