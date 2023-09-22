@@ -37,8 +37,8 @@ jobs:
           python-version: 3.11.5-macos11
           python-sha256sum: c6cd76659bfb364c2ac63bc57f6b10c1e131a20170359c5d65e2d41fdc674a4f
     env:
-      DISCID_VERSION: 0.6.3
-      DISCID_SHA256SUM: 8bca27e2f621c7813a6a9951fd573b31754a6fb51551a373c1acea1aa188adeb
+      DISCID_VERSION: 0.6.4
+      DISCID_SHA256SUM: 829133dd38acbdaa2b989de59e256c8d139ac34cb4dd4b8fd3c9d55a97c824f3
       FPCALC_VERSION: 1.5.1
       FPCALC_SHA256SUM: d4d8faff4b5f7c558d9be053da47804f9501eaa6c2f87906a9f040f38d61c860
       PYTHON_VERSION: ${{ matrix.setup.python-version }}
@@ -147,8 +147,8 @@ jobs:
         Write-Output "BUILD_NUMBER=$BuildNumber" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8
         New-Item -Name .\artifacts -ItemType Directory
       env:
-        DISCID_VERSION: 0.6.3
-        DISCID_SHA256SUM: c9486ece9796584a5ce5cf49efe88ada4454c24fa6f028c8bde1aaef28e99853
+        DISCID_VERSION: 0.6.4
+        DISCID_SHA256SUM: 330199495d71f71251e91eb0b4e3103b6c663fea09ffc9fd3e5108d48e0452c8
         FPCALC_VERSION: 1.5.1
         FPCALC_SHA256SUM: 36b478e16aa69f757f376645db0d436073a42c0097b6bb2677109e7835b59bbc
     - name: Install dependencies
