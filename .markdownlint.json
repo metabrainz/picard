@@ -1,0 +1,10 @@
+{
+    "no-multiple-blanks": false,
+    "line-length": false,
+    "blanks-around-headers": false,
+    "no-duplicate-header": {
+        "allow_different_nesting": true
+    },
+    "single-h1": false,
+    "blanks-around-lists": false
+}
