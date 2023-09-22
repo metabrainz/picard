@@ -106,7 +106,7 @@ class GeneralOptionsPage(OptionsPage):
         self.set_update_level(config.setting["update_level"])
         self.ui.update_check_days.setValue(config.setting["update_check_days"])
         if not self.tagger.autoupdate_enabled:
-            self.ui.update_check_groupbox.hide()
+            self.ui.program_update_check_group.hide()
 
     def set_update_level(self, value):
         if value not in PROGRAM_UPDATE_LEVELS:
