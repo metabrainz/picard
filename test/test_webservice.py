@@ -490,7 +490,7 @@ class WSRequestTest(PicardTestCase):
         self.assertFalse(request.has_auth)
 
         # setter
-        request.access_token = 'token'
+        request.access_token = 'token'  # nosec
         # getter
         self.assertEqual(request.access_token, 'token')
 
