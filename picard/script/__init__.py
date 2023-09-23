@@ -104,9 +104,9 @@ def enabled_tagger_scripts_texts():
     """Returns an iterator over the enabled tagger scripts.
     For each script, you'll get a tuple consisting of the script name and text"""
     config = get_config()
-    if not config.setting["enable_tagger_scripts"]:
+    if not config.setting['enable_tagger_scripts']:
         return []
-    return [(s_name, s_text) for _s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"] if s_enabled and s_text]
+    return [(s_name, s_text) for _s_pos, s_name, s_enabled, s_text in config.setting['list_of_scripts'] if s_enabled and s_text]
 
 
 def get_file_naming_script(settings):
@@ -119,14 +119,14 @@ def get_file_naming_script(settings):
         str: The text of the file naming script if available, otherwise None
     """
     from picard.script import get_file_naming_script_presets
-    scripts = settings["file_renaming_scripts"]
-    selected_id = settings["selected_file_naming_script_id"]
+    scripts = settings['file_renaming_scripts']
+    selected_id = settings['selected_file_naming_script_id']
     if selected_id:
         if scripts and selected_id in scripts:
-            return scripts[selected_id]["script"]
+            return scripts[selected_id]['script']
         for item in get_file_naming_script_presets():
-            if item["id"] == selected_id:
-                return str(item["script"])
+            if item['id'] == selected_id:
+                return str(item['script'])
     log.error("Unable to retrieve the file naming script '%s'", selected_id)
     return None
 

@@ -38,24 +38,24 @@ from picard.ui.ui_options_network import Ui_NetworkOptionsPage
 
 class NetworkOptionsPage(OptionsPage):
 
-    NAME = "network"
+    NAME = 'network'
     TITLE = N_("Network")
-    PARENT = "advanced"
+    PARENT = 'advanced'
     SORT_ORDER = 10
     ACTIVE = True
-    HELP_URL = '/config/options_network.html'
+    HELP_URL = "/config/options_network.html"
 
     options = [
-        BoolOption("setting", "use_proxy", False),
-        TextOption("setting", "proxy_type", "http"),
-        TextOption("setting", "proxy_server_host", ""),
-        IntOption("setting", "proxy_server_port", 80),
-        TextOption("setting", "proxy_username", ""),
-        TextOption("setting", "proxy_password", ""),
-        BoolOption("setting", "browser_integration", True),
-        IntOption("setting", "browser_integration_port", 8000),
-        BoolOption("setting", "browser_integration_localhost_only", True),
-        IntOption("setting", "network_transfer_timeout_seconds", 30),
+        BoolOption('setting', 'use_proxy', False),
+        TextOption('setting', 'proxy_type', 'http'),
+        TextOption('setting', 'proxy_server_host', ''),
+        IntOption('setting', 'proxy_server_port', 80),
+        TextOption('setting', 'proxy_username', ''),
+        TextOption('setting', 'proxy_password', ''),
+        BoolOption('setting', 'browser_integration', True),
+        IntOption('setting', 'browser_integration_port', 8000),
+        BoolOption('setting', 'browser_integration_localhost_only', True),
+        IntOption('setting', 'network_transfer_timeout_seconds', 30),
     ]
 
     def __init__(self, parent=None):
@@ -65,39 +65,39 @@ class NetworkOptionsPage(OptionsPage):
 
     def load(self):
         config = get_config()
-        self.ui.web_proxy.setChecked(config.setting["use_proxy"])
-        if config.setting["proxy_type"] == 'socks':
+        self.ui.web_proxy.setChecked(config.setting['use_proxy'])
+        if config.setting['proxy_type'] == 'socks':
             self.ui.proxy_type_socks.setChecked(True)
         else:
             self.ui.proxy_type_http.setChecked(True)
-        self.ui.server_host.setText(config.setting["proxy_server_host"])
-        self.ui.server_port.setValue(config.setting["proxy_server_port"])
-        self.ui.username.setText(config.setting["proxy_username"])
-        self.ui.password.setText(config.setting["proxy_password"])
-        self.ui.transfer_timeout.setValue(config.setting["network_transfer_timeout_seconds"])
-        self.ui.browser_integration.setChecked(config.setting["browser_integration"])
-        self.ui.browser_integration_port.setValue(config.setting["browser_integration_port"])
+        self.ui.server_host.setText(config.setting['proxy_server_host'])
+        self.ui.server_port.setValue(config.setting['proxy_server_port'])
+        self.ui.username.setText(config.setting['proxy_username'])
+        self.ui.password.setText(config.setting['proxy_password'])
+        self.ui.transfer_timeout.setValue(config.setting['network_transfer_timeout_seconds'])
+        self.ui.browser_integration.setChecked(config.setting['browser_integration'])
+        self.ui.browser_integration_port.setValue(config.setting['browser_integration_port'])
         self.ui.browser_integration_localhost_only.setChecked(
-            config.setting["browser_integration_localhost_only"])
+            config.setting['browser_integration_localhost_only'])
 
     def save(self):
         config = get_config()
-        config.setting["use_proxy"] = self.ui.web_proxy.isChecked()
+        config.setting['use_proxy'] = self.ui.web_proxy.isChecked()
         if self.ui.proxy_type_socks.isChecked():
-            config.setting["proxy_type"] = 'socks'
+            config.setting['proxy_type'] = 'socks'
         else:
-            config.setting["proxy_type"] = 'http'
-        config.setting["proxy_server_host"] = self.ui.server_host.text()
-        config.setting["proxy_server_port"] = self.ui.server_port.value()
-        config.setting["proxy_username"] = self.ui.username.text()
-        config.setting["proxy_password"] = self.ui.password.text()
+            config.setting['proxy_type'] = 'http'
+        config.setting['proxy_server_host'] = self.ui.server_host.text()
+        config.setting['proxy_server_port'] = self.ui.server_port.value()
+        config.setting['proxy_username'] = self.ui.username.text()
+        config.setting['proxy_password'] = self.ui.password.text()
         self.tagger.webservice.setup_proxy()
         transfer_timeout = self.ui.transfer_timeout.value()
-        config.setting["network_transfer_timeout_seconds"] = transfer_timeout
+        config.setting['network_transfer_timeout_seconds'] = transfer_timeout
         self.tagger.webservice.set_transfer_timeout(transfer_timeout)
-        config.setting["browser_integration"] = self.ui.browser_integration.isChecked()
-        config.setting["browser_integration_port"] = self.ui.browser_integration_port.value()
-        config.setting["browser_integration_localhost_only"] = \
+        config.setting['browser_integration'] = self.ui.browser_integration.isChecked()
+        config.setting['browser_integration_port'] = self.ui.browser_integration_port.value()
+        config.setting['browser_integration_localhost_only'] = \
             self.ui.browser_integration_localhost_only.isChecked()
         self.tagger.update_browser_integration()
 

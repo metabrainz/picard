@@ -120,7 +120,7 @@ class Cluster(FileList):
         if self.related_album:
             return '<Cluster %s %r>' % (
                 self.related_album.id,
-                self.related_album.metadata["album"] + '/' + self.metadata['album']
+                self.related_album.metadata['album'] + '/' + self.metadata['album']
             )
         return '<Cluster %r>' % self.metadata['album']
 
@@ -308,8 +308,8 @@ class Cluster(FileList):
 
         cluster_list = defaultdict(FileCluster)
         for file in files:
-            artist = file.metadata["albumartist"] or file.metadata["artist"]
-            album = file.metadata["album"]
+            artist = file.metadata['albumartist'] or file.metadata['artist']
+            album = file.metadata['album']
 
             # Improve clustering from directory structure if no existing tags
             # Only used for grouping and to provide cluster title / artist - not added to file tags.

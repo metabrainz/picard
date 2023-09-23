@@ -63,18 +63,18 @@ def upgrade_to_v1_0_0_final_0(config, interactive=True, merge=True):
 
     def remove_va_file_naming_format(merge=True):
         if merge:
-            _s["file_naming_format"] = (
+            _s['file_naming_format'] = (
                 "$if($eq(%%compilation%%,1),\n$noop(Various Artist "
                 "albums)\n%s,\n$noop(Single Artist Albums)\n%s)" % (
-                    _s.value("va_file_naming_format", TextOption),
-                    _s["file_naming_format"]
+                    _s.value('va_file_naming_format', TextOption),
+                    _s['file_naming_format']
                 ))
-        _s.remove("va_file_naming_format")
-        _s.remove("use_va_format")
+        _s.remove('va_file_naming_format')
+        _s.remove('use_va_format')
 
-    if "va_file_naming_format" in _s and "use_va_format" in _s:
+    if 'va_file_naming_format' in _s and 'use_va_format' in _s:
 
-        if _s.value("use_va_format", BoolOption):
+        if _s.value('use_va_format', BoolOption):
             remove_va_file_naming_format()
             if interactive:
                 msgbox = QtWidgets.QMessageBox()
@@ -86,7 +86,7 @@ def upgrade_to_v1_0_0_final_0(config, interactive=True, merge=True):
                         "merged with that of single artist albums."),
                     QtWidgets.QMessageBox.StandardButton.Ok)
 
-        elif (_s.value("va_file_naming_format", TextOption)
+        elif (_s.value('va_file_naming_format', TextOption)
               != r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldis"
                  "cs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - "
                  "%title%"):
@@ -100,8 +100,8 @@ def upgrade_to_v1_0_0_final_0(config, interactive=True, merge=True):
                     "Do you want to remove it or merge it with your file "
                     "naming scheme for single artist albums?"))
                 msgbox.setIcon(QtWidgets.QMessageBox.Icon.Question)
-                merge_button = msgbox.addButton(_('Merge'), QtWidgets.QMessageBox.ButtonRole.AcceptRole)
-                msgbox.addButton(_('Remove'), QtWidgets.QMessageBox.ButtonRole.DestructiveRole)
+                merge_button = msgbox.addButton(_("Merge"), QtWidgets.QMessageBox.ButtonRole.AcceptRole)
+                msgbox.addButton(_("Remove"), QtWidgets.QMessageBox.ButtonRole.DestructiveRole)
                 msgbox.exec_()
                 merge = msgbox.clickedButton() == merge_button
             remove_va_file_naming_format(merge=merge)
@@ -113,8 +113,8 @@ def upgrade_to_v1_0_0_final_0(config, interactive=True, merge=True):
 def upgrade_to_v1_3_0_dev_1(config):
     """Option "windows_compatible_filenames" was renamed "windows_compatibility" (PICARD-110).
     """
-    old_opt = "windows_compatible_filenames"
-    new_opt = "windows_compatibility"
+    old_opt = 'windows_compatible_filenames'
+    new_opt = 'windows_compatibility'
     rename_option(config, old_opt, new_opt, BoolOption, True)
 
 
@@ -122,7 +122,7 @@ def upgrade_to_v1_3_0_dev_2(config):
     """Option "preserved_tags" is now using comma instead of spaces as tag separator (PICARD-536)
     """
     _s = config.setting
-    opt = "preserved_tags"
+    opt = 'preserved_tags'
     if opt in _s and isinstance(_s[opt], str):
         _s[opt] = re.sub(r"\s+", ",", _s[opt].strip())
 
@@ -132,11 +132,11 @@ def upgrade_to_v1_3_0_dev_3(config):
     """
     _s = config.setting
     option_separators = {
-        "preferred_release_countries": "  ",
-        "preferred_release_formats": "  ",
-        "enabled_plugins": None,
-        "caa_image_types": None,
-        "metadata_box_sizes": None,
+        'preferred_release_countries': '  ',
+        'preferred_release_formats': '  ',
+        'enabled_plugins': None,
+        'caa_image_types': None,
+        'metadata_box_sizes': None,
     }
     for (opt, sep) in option_separators.items():
         if opt in _s:
@@ -162,7 +162,7 @@ def upgrade_to_v1_3_0_dev_4(config):
             scores.append((values[i], score))
         return scores
 
-    opt = "release_type_scores"
+    opt = 'release_type_scores'
     if opt in _s:
         try:
             _s[opt] = load_release_type_scores(_s.raw_value(opt, qtype='QString'))
@@ -176,7 +176,7 @@ def upgrade_to_v1_4_0_dev_2(config):
     """
 
     _s = config.setting
-    opts = ["username", "password"]
+    opts = ['username', 'password']
     for opt in opts:
         _s.remove(opt)
 
@@ -209,8 +209,8 @@ OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3 = "$if2(%albumartist%,%artist%)/" \
 def upgrade_to_v1_4_0_dev_4(config):
     """Adds trailing comma to default file names for scripts"""
     _s = config.setting
-    if _s["file_naming_format"] == OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3:
-        _s["file_naming_format"] = DEFAULT_FILE_NAMING_FORMAT
+    if _s['file_naming_format'] == OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3:
+        _s['file_naming_format'] = DEFAULT_FILE_NAMING_FORMAT
 
 
 def upgrade_to_v1_4_0_dev_5(config):
@@ -221,37 +221,37 @@ def upgrade_to_v1_4_0_dev_5(config):
 def upgrade_to_v1_4_0_dev_6(config):
     """Adds support for multiple and selective tagger scripts"""
     _s = config.setting
-    old_enabled_option = "enable_tagger_script"
-    old_script_text_option = "tagger_script"
+    old_enabled_option = 'enable_tagger_script'
+    old_script_text_option = 'tagger_script'
     list_of_scripts = []
     if old_enabled_option in _s:
-        _s["enable_tagger_scripts"] = _s.value(old_enabled_option, BoolOption, False)
+        _s['enable_tagger_scripts'] = _s.value(old_enabled_option, BoolOption, False)
     if old_script_text_option in _s:
         old_script_text = _s.value(old_script_text_option, TextOption, "")
         if old_script_text:
             old_script = (
                 0,
                 unique_numbered_title(gettext_constants(DEFAULT_SCRIPT_NAME), list_of_scripts),
-                _s["enable_tagger_scripts"],
+                _s['enable_tagger_scripts'],
                 old_script_text,
             )
             list_of_scripts.append(old_script)
-    _s["list_of_scripts"] = list_of_scripts
+    _s['list_of_scripts'] = list_of_scripts
     _s.remove(old_enabled_option)
     _s.remove(old_script_text_option)
 
 
 def upgrade_to_v1_4_0_dev_7(config):
     """Option "save_only_front_images_to_tags" was renamed to "embed_only_one_front_image"."""
-    old_opt = "save_only_front_images_to_tags"
-    new_opt = "embed_only_one_front_image"
+    old_opt = 'save_only_front_images_to_tags'
+    new_opt = 'embed_only_one_front_image'
     rename_option(config, old_opt, new_opt, BoolOption, True)
 
 
 def upgrade_to_v2_0_0_dev_3(config):
     """Option "caa_image_size" value has different meaning."""
     _s = config.setting
-    opt = "caa_image_size"
+    opt = 'caa_image_size'
     if opt in _s:
         # caa_image_size option was storing index of a combobox item as size
         # therefore it depends on items order and/or number, which is bad
@@ -270,25 +270,25 @@ def upgrade_to_v2_0_0_dev_3(config):
 def upgrade_to_v2_1_0_dev_1(config):
     """Upgrade genre related options"""
     _s = config.setting
-    if "folksonomy_tags" in _s and _s["folksonomy_tags"]:
-        _s["use_genres"] = True
-    rename_option(config, "max_tags",      "max_genres",      IntOption,  5)
-    rename_option(config, "min_tag_usage", "min_genre_usage", IntOption,  90)
-    rename_option(config, "ignore_tags",   "ignore_genres",   TextOption, "")
-    rename_option(config, "join_tags",     "join_genres",     TextOption, "")
-    rename_option(config, "only_my_tags",  "only_my_genres",  BoolOption, False)
-    rename_option(config, "artists_tags",  "artists_genres",  BoolOption, False)
+    if 'folksonomy_tags' in _s and _s['folksonomy_tags']:
+        _s['use_genres'] = True
+    rename_option(config, 'max_tags',      'max_genres',      IntOption,  5)
+    rename_option(config, 'min_tag_usage', 'min_genre_usage', IntOption,  90)
+    rename_option(config, 'ignore_tags',   'ignore_genres',   TextOption, '')
+    rename_option(config, 'join_tags',     'join_genres',     TextOption, '')
+    rename_option(config, 'only_my_tags',  'only_my_genres',  BoolOption, False)
+    rename_option(config, 'artists_tags',  'artists_genres',  BoolOption, False)
 
 
 def upgrade_to_v2_2_0_dev_3(config):
     """Option ignore_genres was replaced by option genres_filter"""
     _s = config.setting
-    old_opt = "ignore_genres"
+    old_opt = 'ignore_genres'
     if old_opt in _s:
         if _s[old_opt]:
-            new_opt = "genres_filter"
-            tags = ["-" + e.strip().lower() for e in _s[old_opt].split(',')]
-            _s[new_opt] = "\n".join(tags)
+            new_opt = 'genres_filter'
+            tags = ['-' + e.strip().lower() for e in _s[old_opt].split(',')]
+            _s[new_opt] = '\n'.join(tags)
         _s.remove(old_opt)
 
 
@@ -303,8 +303,8 @@ OLD_DEFAULT_FILE_NAMING_FORMAT_v2_1 = "$if2(%albumartist%,%artist%)/" \
 def upgrade_to_v2_2_0_dev_4(config):
     """Improved default file naming script"""
     _s = config.setting
-    if _s["file_naming_format"] == OLD_DEFAULT_FILE_NAMING_FORMAT_v2_1:
-        _s["file_naming_format"] = DEFAULT_FILE_NAMING_FORMAT
+    if _s['file_naming_format'] == OLD_DEFAULT_FILE_NAMING_FORMAT_v2_1:
+        _s['file_naming_format'] = DEFAULT_FILE_NAMING_FORMAT
 
 
 def upgrade_to_v2_4_0_beta_3(config):
@@ -327,8 +327,8 @@ def upgrade_to_v2_5_0_dev_1(config):
 
 def upgrade_to_v2_5_0_dev_2(config):
     """Reset main view splitter states"""
-    config.persist["splitter_state"] = b''
-    config.persist["bottom_splitter_state"] = b''
+    config.persist['splitter_state'] = b''
+    config.persist['bottom_splitter_state'] = b''
 
 
 def upgrade_to_v2_6_0_dev_1(config):
@@ -339,18 +339,18 @@ def upgrade_to_v2_6_0_dev_1(config):
 
 def upgrade_to_v2_6_0_beta_2(config):
     """Rename caa_image_type_as_filename and caa_save_single_front_image options"""
-    rename_option(config, "caa_image_type_as_filename", "image_type_as_filename", BoolOption, False)
-    rename_option(config, "caa_save_single_front_image", "save_only_one_front_image", BoolOption, False)
+    rename_option(config, 'caa_image_type_as_filename', 'image_type_as_filename', BoolOption, False)
+    rename_option(config, 'caa_save_single_front_image', 'save_only_one_front_image', BoolOption, False)
 
 
 def upgrade_to_v2_6_0_beta_3(config):
     """Replace use_system_theme with ui_theme options"""
     from picard.ui.theme import UiTheme
     _s = config.setting
-    TextOption("setting", "ui_theme", str(UiTheme.DEFAULT))
-    if _s["use_system_theme"]:
-        _s["ui_theme"] = str(UiTheme.SYSTEM)
-    _s.remove("use_system_theme")
+    TextOption('setting', 'ui_theme', str(UiTheme.DEFAULT))
+    if _s['use_system_theme']:
+        _s['ui_theme'] = str(UiTheme.SYSTEM)
+    _s.remove('use_system_theme')
 
 
 def upgrade_to_v2_7_0_dev_2(config):
@@ -364,12 +364,12 @@ def upgrade_to_v2_7_0_dev_2(config):
                 if _p[old_splitter_key] is not None:
                     splitter_dict[new_splitter_key] = bytearray(_p[old_splitter_key])
                 _p.remove(old_splitter_key)
-        Option("persist", new_persist_key, {})
+        Option('persist', new_persist_key, {})
         _p[new_persist_key] = splitter_dict
 
     # MainWindow splitters
     upgrade_persisted_splitter(
-        new_persist_key="splitters_MainWindow",
+        new_persist_key='splitters_MainWindow',
         key_map=[
             ('bottom_splitter_state', 'main_window_bottom_splitter'),
             ('splitter_state', 'main_panel_splitter'),
@@ -378,7 +378,7 @@ def upgrade_to_v2_7_0_dev_2(config):
 
     # ScriptEditorDialog splitters
     upgrade_persisted_splitter(
-        new_persist_key="splitters_ScriptEditorDialog",
+        new_persist_key='splitters_ScriptEditorDialog',
         key_map=[
             ('script_editor_splitter_samples', 'splitter_between_editor_and_examples'),
             ('script_editor_splitter_samples_before_after', 'splitter_between_before_and_after'),
@@ -388,7 +388,7 @@ def upgrade_to_v2_7_0_dev_2(config):
 
     # OptionsDialog splitters
     upgrade_persisted_splitter(
-        new_persist_key="splitters_OptionsDialog",
+        new_persist_key='splitters_OptionsDialog',
         key_map=[
             ('options_splitter', 'dialog_splitter'),
             ('scripting_splitter', 'scripting_options_splitter'),
@@ -404,54 +404,54 @@ def upgrade_to_v2_7_0_dev_3(config):
         FileNamingScript,
         ScriptImportError,
     )
-    Option("setting", "file_renaming_scripts", {})
-    ListOption("setting", "file_naming_scripts", [])
-    TextOption("setting", "file_naming_format", DEFAULT_FILE_NAMING_FORMAT)
-    TextOption("setting", "selected_file_naming_script_id", "")
+    Option('setting', 'file_renaming_scripts', {})
+    ListOption('setting', 'file_naming_scripts', [])
+    TextOption('setting', 'file_naming_format', DEFAULT_FILE_NAMING_FORMAT)
+    TextOption('setting', 'selected_file_naming_script_id', '')
     scripts = {}
-    for item in config.setting["file_naming_scripts"]:
+    for item in config.setting['file_naming_scripts']:
         try:
             script_item = FileNamingScript().create_from_yaml(item, create_new_id=False)
-            scripts[script_item["id"]] = script_item.to_dict()
+            scripts[script_item['id']] = script_item.to_dict()
         except ScriptImportError:
             log.error("Error converting file naming script")
-    script_list = set(scripts.keys()) | set(map(lambda item: item["id"], get_file_naming_script_presets()))
-    if config.setting["selected_file_naming_script_id"] not in script_list:
+    script_list = set(scripts.keys()) | set(map(lambda item: item['id'], get_file_naming_script_presets()))
+    if config.setting['selected_file_naming_script_id'] not in script_list:
         script_item = FileNamingScript(
-            script=config.setting["file_naming_format"],
+            script=config.setting['file_naming_format'],
             title=_("Primary file naming script"),
             readonly=False,
             deletable=True,
         )
-        scripts[script_item["id"]] = script_item.to_dict()
-        config.setting["selected_file_naming_script_id"] = script_item["id"]
-    config.setting["file_renaming_scripts"] = scripts
-    config.setting.remove("file_naming_scripts")
-    config.setting.remove("file_naming_format")
+        scripts[script_item['id']] = script_item.to_dict()
+        config.setting['selected_file_naming_script_id'] = script_item['id']
+    config.setting['file_renaming_scripts'] = scripts
+    config.setting.remove('file_naming_scripts')
+    config.setting.remove('file_naming_format')
 
 
 def upgrade_to_v2_7_0_dev_4(config):
     """Replace artist_script_exception with artist_script_exceptions"""
     _s = config.setting
-    ListOption("setting", "artist_script_exceptions", [])
-    if _s["artist_script_exception"]:
-        _s["artist_script_exceptions"] = [_s["artist_script_exception"]]
-    _s.remove("artist_script_exception")
-    ListOption("setting", "artist_locales", ['en'])
-    if _s["artist_locale"]:
-        _s["artist_locales"] = [_s["artist_locale"]]
-    _s.remove("artist_locale")
+    ListOption('setting', 'artist_script_exceptions', [])
+    if _s['artist_script_exception']:
+        _s['artist_script_exceptions'] = [_s['artist_script_exception']]
+    _s.remove('artist_script_exception')
+    ListOption('setting', 'artist_locales', ['en'])
+    if _s['artist_locale']:
+        _s['artist_locales'] = [_s['artist_locale']]
+    _s.remove('artist_locale')
 
 
 def upgrade_to_v2_7_0_dev_5(config):
     """Replace artist_script_exceptions with script_exceptions and remove artist_script_exception_weighting"""
     _s = config.setting
-    ListOption("setting", "script_exceptions", [])
-    weighting = _s["artist_script_exception_weighting"] or 0
-    artist_script_exceptions = _s["artist_script_exceptions"] or []
-    _s["script_exceptions"] = [(script_exception, weighting) for script_exception in artist_script_exceptions]
-    _s.remove("artist_script_exceptions")
-    _s.remove("artist_script_exception_weighting")
+    ListOption('setting', 'script_exceptions', [])
+    weighting = _s['artist_script_exception_weighting'] or 0
+    artist_script_exceptions = _s['artist_script_exceptions'] or []
+    _s['script_exceptions'] = [(script_exception, weighting) for script_exception in artist_script_exceptions]
+    _s.remove('artist_script_exceptions')
+    _s.remove('artist_script_exception_weighting')
 
 
 def upgrade_to_v2_8_0_dev_2(config):
@@ -467,10 +467,10 @@ def upgrade_to_v2_8_0_dev_2(config):
 def upgrade_to_v2_9_0_alpha_2(config):
     """Add preset file naming scripts to editable user scripts disctionary"""
     from picard.script import get_file_naming_script_presets
-    scripts = config.setting["file_renaming_scripts"]
+    scripts = config.setting['file_renaming_scripts']
     for item in get_file_naming_script_presets():
-        scripts[item["id"]] = item.to_dict()
-    config.setting["file_renaming_scripts"] = scripts
+        scripts[item['id']] = item.to_dict()
+    config.setting['file_renaming_scripts'] = scripts
 
 
 def rename_option(config, old_opt, new_opt, option_type, default):
@@ -481,13 +481,13 @@ def rename_option(config, old_opt, new_opt, option_type, default):
 
         _p = config.profiles
         _s.init_profile_options()
-        all_settings = _p["user_profile_settings"]
-        for profile in _p["user_profiles"]:
-            id = profile["id"]
+        all_settings = _p['user_profile_settings']
+        for profile in _p['user_profiles']:
+            id = profile['id']
             if id in all_settings and old_opt in all_settings[id]:
                 all_settings[id][new_opt] = all_settings[id][old_opt]
                 all_settings[id].pop(old_opt)
-        _p["user_profile_settings"] = all_settings
+        _p['user_profile_settings'] = all_settings
 
 
 def upgrade_config(config):

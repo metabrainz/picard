@@ -48,7 +48,7 @@ class ProviderOptionsLocal(ProviderOptions):
     _DEFAULT_LOCAL_COVER_ART_REGEX = r'^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|gif|tiff?|webp)$'
 
     options = [
-        TextOption("setting", "local_cover_regex", _DEFAULT_LOCAL_COVER_ART_REGEX),
+        TextOption('setting', 'local_cover_regex', _DEFAULT_LOCAL_COVER_ART_REGEX),
     ]
 
     _options_ui = Ui_LocalOptions
@@ -63,11 +63,11 @@ class ProviderOptionsLocal(ProviderOptions):
 
     def load(self):
         config = get_config()
-        self.ui.local_cover_regex_edit.setText(config.setting["local_cover_regex"])
+        self.ui.local_cover_regex_edit.setText(config.setting['local_cover_regex'])
 
     def save(self):
         config = get_config()
-        config.setting["local_cover_regex"] = self.ui.local_cover_regex_edit.text()
+        config.setting['local_cover_regex'] = self.ui.local_cover_regex_edit.text()
 
 
 class CoverArtProviderLocal(CoverArtProvider):

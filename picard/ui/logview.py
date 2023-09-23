@@ -162,7 +162,7 @@ class VerbosityMenu(QtWidgets.QMenu):
 class LogView(LogViewCommon):
 
     options = [
-        IntOption("setting", "log_verbosity", logging.WARNING),
+        IntOption('setting', 'log_verbosity', logging.WARNING),
     ]
 
     def __init__(self, parent=None):
@@ -271,7 +271,7 @@ class LogView(LogViewCommon):
                     return
 
             writer = QtGui.QTextDocumentWriter(path)
-            writer.setFormat(b"plaintext")
+            writer.setFormat(b'plaintext')
             success = writer.write(self.doc)
             if not success:
                 QtWidgets.QMessageBox.critical(

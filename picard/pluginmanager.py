@@ -244,7 +244,7 @@ class PluginManager(QtCore.QObject):
         for source_path, target_path, plugin_name in self._marked_for_update():
             self._remove_plugin(plugin_name)
             os.rename(source_path, target_path)
-            log.debug('Updating plugin %r (%r))', plugin_name, target_path)
+            log.debug("Updating plugin %r (%r))", plugin_name, target_path)
 
     def load_plugins_from_directory(self, plugindir):
         plugindir = os.path.normpath(plugindir)

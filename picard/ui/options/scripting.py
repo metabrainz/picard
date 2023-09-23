@@ -96,17 +96,17 @@ class ScriptingDocumentationDialog(PicardDialog, SingletonDialog):
 
 class ScriptingOptionsPage(OptionsPage):
 
-    NAME = "scripting"
+    NAME = 'scripting'
     TITLE = N_("Scripting")
     PARENT = None
     SORT_ORDER = 75
     ACTIVE = True
-    HELP_URL = '/config/options_scripting.html'
+    HELP_URL = "/config/options_scripting.html"
 
     options = [
-        BoolOption("setting", "enable_tagger_scripts", False),
-        ListOption("setting", "list_of_scripts", []),
-        IntOption("persist", "last_selected_script_pos", 0),
+        BoolOption('setting', 'enable_tagger_scripts', False),
+        ListOption('setting', 'list_of_scripts', []),
+        IntOption('persist', 'last_selected_script_pos', 0),
     ]
 
     default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
@@ -173,8 +173,8 @@ class ScriptingOptionsPage(OptionsPage):
             self.output_file_error(error)
             return
         if script_item:
-            title = _("%s (imported)") % script_item["title"]
-            list_item = ScriptListWidgetItem(title, False, script_item["script"])
+            title = _("%s (imported)") % script_item['title']
+            list_item = ScriptListWidgetItem(title, False, script_item['script'])
             self.ui.script_list.addItem(list_item)
             self.ui.script_list.setCurrentRow(self.ui.script_list.count() - 1)
 
@@ -250,14 +250,14 @@ class ScriptingOptionsPage(OptionsPage):
 
     def load(self):
         config = get_config()
-        self.ui.enable_tagger_scripts.setChecked(config.setting["enable_tagger_scripts"])
+        self.ui.enable_tagger_scripts.setChecked(config.setting['enable_tagger_scripts'])
         self.ui.script_list.clear()
-        for pos, name, enabled, text in config.setting["list_of_scripts"]:
+        for pos, name, enabled, text in config.setting['list_of_scripts']:
             list_item = ScriptListWidgetItem(name, enabled, text)
             self.ui.script_list.addItem(list_item)
 
         # Select the last selected script item
-        last_selected_script_pos = config.persist["last_selected_script_pos"]
+        last_selected_script_pos = config.persist['last_selected_script_pos']
         last_selected_script = self.ui.script_list.item(last_selected_script_pos)
         if last_selected_script:
             self.ui.script_list.setCurrentItem(last_selected_script)
@@ -269,9 +269,9 @@ class ScriptingOptionsPage(OptionsPage):
 
     def save(self):
         config = get_config()
-        config.setting["enable_tagger_scripts"] = self.ui.enable_tagger_scripts.isChecked()
-        config.setting["list_of_scripts"] = list(self._all_scripts())
-        config.persist["last_selected_script_pos"] = self.ui.script_list.currentRow()
+        config.setting['enable_tagger_scripts'] = self.ui.enable_tagger_scripts.isChecked()
+        config.setting['list_of_scripts'] = list(self._all_scripts())
+        config.persist['last_selected_script_pos'] = self.ui.script_list.currentRow()
 
     def display_error(self, error):
         # Ignore scripting errors, those are handled inline

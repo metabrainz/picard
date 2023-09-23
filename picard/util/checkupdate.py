@@ -128,7 +128,7 @@ class UpdateCheckManager(QtCore.QObject):
             try:
                 test_version = Version(*version_tuple)
             except (TypeError, VersionError):
-                log.error('Invalid version %r for update level %s.', version_tuple, update_level)
+                log.error("Invalid version %r for update level %s.", version_tuple, update_level)
                 continue
             if self._update_level >= test_key and test_version > high_version:
                 key = PROGRAM_UPDATE_LEVELS[test_key]['name']
@@ -153,7 +153,7 @@ class UpdateCheckManager(QtCore.QObject):
                 if self._update_level in PROGRAM_UPDATE_LEVELS:
                     update_level = PROGRAM_UPDATE_LEVELS[self._update_level]['title']
                 else:
-                    update_level = N_('unknown')
+                    update_level = N_("unknown")
                 QMessageBox.information(
                     self._parent,
                     _("Picard Update"),

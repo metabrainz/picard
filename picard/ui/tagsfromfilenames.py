@@ -101,7 +101,7 @@ class TagsFromFileNamesDialog(PicardDialog):
     help_url = 'doc_tags_from_filenames'
 
     options = [
-        TextOption("persist", "tags_from_filenames_format", ""),
+        TextOption('persist', 'tags_from_filenames_format', ''),
     ]
 
     def __init__(self, files, parent=None):
@@ -118,7 +118,7 @@ class TagsFromFileNamesDialog(PicardDialog):
             "%artist% - %album%/%tracknumber% - %title%",
         ]
         config = get_config()
-        tff_format = config.persist["tags_from_filenames_format"]
+        tff_format = config.persist['tags_from_filenames_format']
         if tff_format not in items:
             selected_index = 0
             if tff_format:
@@ -163,5 +163,5 @@ class TagsFromFileNamesDialog(PicardDialog):
             file.metadata.update(metadata)
             file.update()
         config = get_config()
-        config.persist["tags_from_filenames_format"] = self.ui.format.currentText()
+        config.persist['tags_from_filenames_format'] = self.ui.format.currentText()
         super().accept()

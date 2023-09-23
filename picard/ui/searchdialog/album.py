@@ -133,17 +133,17 @@ class CoverCell:
 
 class AlbumSearchDialog(SearchDialog):
 
-    dialog_header_state = "albumsearchdialog_header_state"
+    dialog_header_state = 'albumsearchdialog_header_state'
 
     options = [
-        Option("persist", dialog_header_state, QtCore.QByteArray())
+        Option('persist', dialog_header_state, QtCore.QByteArray())
     ]
 
     def __init__(self, parent, force_advanced_search=None, existing_album=None):
         super().__init__(
             parent,
             accept_button_title=_("Load into Picard"),
-            search_type="album",
+            search_type='album',
             force_advanced_search=force_advanced_search)
         self.cluster = None
         self.existing_album = existing_album
@@ -206,7 +206,7 @@ class AlbumSearchDialog(SearchDialog):
         if self.use_advanced_search:
             query_str = build_lucene_query(query)
         else:
-            query_str = query["release"]
+            query_str = query['release']
         self.search(query_str)
 
     def retry(self):
@@ -245,7 +245,7 @@ class AlbumSearchDialog(SearchDialog):
         if not cell.is_visible():
             return
         cell.fetched = True
-        mbid = cell.release["musicbrainz_albumid"]
+        mbid = cell.release['musicbrainz_albumid']
         cell.fetch_task = self.tagger.webservice.get_url(
             url=f'{CAA_URL}/release/{mbid}',
             handler=partial(self._caa_json_downloaded, cell),
@@ -264,14 +264,14 @@ class AlbumSearchDialog(SearchDialog):
 
         front = None
         try:
-            for image in data["images"]:
-                if image["front"]:
+            for image in data['images']:
+                if image['front']:
                     front = image
                     break
 
             if front:
                 cover_cell.fetch_task = self.tagger.webservice.download_url(
-                    url=front["thumbnails"]["small"],
+                    url=front['thumbnails']['small'],
                     handler=partial(self._cover_downloaded, cover_cell)
                 )
             else:
@@ -320,13 +320,13 @@ class AlbumSearchDialog(SearchDialog):
             release['score'] = node['score']
             rg_node = node['release-group']
             release_group_to_metadata(rg_node, release)
-            if "media" in node:
+            if 'media' in node:
                 media = node['media']
-                release["format"] = media_formats_from_node(media)
-                release["tracks"] = node['track-count']
+                release['format'] = media_formats_from_node(media)
+                release['tracks'] = node['track-count']
             countries = countries_from_node(node)
             if countries:
-                release["country"] = countries_shortlist(countries)
+                release['country'] = countries_shortlist(countries)
             self.search_results.append(release)
 
     def display_results(self):
@@ -335,19 +335,19 @@ class AlbumSearchDialog(SearchDialog):
         column = self.colpos('cover')
         for row, release in enumerate(self.search_results):
             self.table.insertRow(row)
-            self.set_table_item(row, 'name',     release, "album")
-            self.set_table_item(row, 'artist',   release, "albumartist")
-            self.set_table_item(row, 'format',   release, "format")
-            self.set_table_item(row, 'tracks',   release, "tracks")
-            self.set_table_item(row, 'date',     release, "date")
-            self.set_table_item(row, 'country',  release, "country")
-            self.set_table_item(row, 'labels',   release, "label")
-            self.set_table_item(row, 'catnums',  release, "catalognumber")
-            self.set_table_item(row, 'barcode',  release, "barcode")
-            self.set_table_item(row, 'language', release, "~releaselanguage")
-            self.set_table_item(row, 'type',     release, "releasetype")
-            self.set_table_item(row, 'status',   release, "releasestatus")
-            self.set_table_item(row, 'score',    release, "score")
+            self.set_table_item(row, 'name',     release, 'album')
+            self.set_table_item(row, 'artist',   release, 'albumartist')
+            self.set_table_item(row, 'format',   release, 'format')
+            self.set_table_item(row, 'tracks',   release, 'tracks')
+            self.set_table_item(row, 'date',     release, 'date')
+            self.set_table_item(row, 'country',  release, 'country')
+            self.set_table_item(row, 'labels',   release, 'label')
+            self.set_table_item(row, 'catnums',  release, 'catalognumber')
+            self.set_table_item(row, 'barcode',  release, 'barcode')
+            self.set_table_item(row, 'language', release, '~releaselanguage')
+            self.set_table_item(row, 'type',     release, 'releasetype')
+            self.set_table_item(row, 'status',   release, 'releasestatus')
+            self.set_table_item(row, 'score',    release, 'score')
             self.cover_cells.append(CoverCell(self.table, release, row, column,
                                               on_show=self.fetch_coverart))
             if self.existing_album and release['musicbrainz_albumid'] == self.existing_album.id:
@@ -360,12 +360,12 @@ class AlbumSearchDialog(SearchDialog):
 
     def load_selection(self, row):
         release = self.search_results[row]
-        release_mbid = release["musicbrainz_albumid"]
+        release_mbid = release['musicbrainz_albumid']
         if self.existing_album:
             self.existing_album.switch_release_version(release_mbid)
         else:
             self.tagger.get_release_group_by_id(
-                release["musicbrainz_releasegroupid"]).loaded_albums.add(
+                release['musicbrainz_releasegroupid']).loaded_albums.add(
                     release_mbid)
             album = self.tagger.load_album(release_mbid)
             if self.cluster:

@@ -89,7 +89,7 @@ def id3text(text, encoding):
     """
 
     if encoding == Id3Encoding.LATIN1:
-        return text.encode("latin1", "replace").decode("latin1")
+        return text.encode('latin1', 'replace').decode('latin1')
     return text
 
 
@@ -220,9 +220,9 @@ class ID3File(File):
     }
     _rtipl_roles = {v: k for k, v in _tipl_roles.items()}
 
-    __other_supported_tags = ("discnumber", "tracknumber",
-                              "totaldiscs", "totaltracks",
-                              "movementnumber", "movementtotal")
+    __other_supported_tags = ('discnumber', 'tracknumber',
+                              'totaldiscs', 'totaltracks',
+                              'movementnumber', 'movementtotal')
     __tag_re_parse = {
         'TRCK': re.compile(r'^(?P<tracknumber>\d+)(?:/(?P<totaltracks>\d+))?$'),
         'TPOS': re.compile(r'^(?P<discnumber>\d+)(?:/(?P<totaldiscs>\d+))?$'),
@@ -262,7 +262,7 @@ class ID3File(File):
             frameid = frame.FrameID
             if frameid in self.__translate:
                 name = self.__translate[frameid]
-                if frameid.startswith('T') or frameid in {"GRP1", "MVNM"}:
+                if frameid.startswith('T') or frameid in {'GRP1', 'MVNM'}:
                     for text in frame.text:
                         if text:
                             metadata.add(name, text)
@@ -281,7 +281,7 @@ class ID3File(File):
                 for text in frame.text:
                     if text:
                         metadata.add(name, text)
-            elif frameid == "TMCL":
+            elif frameid == 'TMCL':
                 for role, name in frame.people:
                     if role == 'performer':
                         role = ''
@@ -289,7 +289,7 @@ class ID3File(File):
                         metadata.add('performer:%s' % role, name)
                     else:
                         metadata.add('performer', name)
-            elif frameid == "TIPL":
+            elif frameid == 'TIPL':
                 # If file is ID3v2.3, TIPL tag could contain TMCL
                 # so we will test for TMCL values and add to TIPL if not TMCL
                 for role, name in frame.people:
@@ -330,7 +330,7 @@ class ID3File(File):
                 if frame.desc:
                     name += ':%s' % frame.desc
                 metadata.add(name, frame.text)
-            elif frameid == 'UFID' and frame.owner == 'http://musicbrainz.org':
+            elif frameid == 'UFID' and frame.owner == "http://musicbrainz.org":
                 metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
             elif frameid in self.__tag_re_parse.keys():
                 m = self.__tag_re_parse[frameid].search(frame.text[0])
@@ -352,7 +352,7 @@ class ID3File(File):
                         id3_type=frame.type,
                     )
                 except CoverArtImageError as e:
-                    log.error('Cannot load image from %r: %s', filename, e)
+                    log.error("Cannot load image from %r: %s", filename, e)
                 else:
                     metadata.images.append(coverartimage)
             elif frameid == 'POPM':
@@ -375,7 +375,7 @@ class ID3File(File):
         tags = self._get_tags(filename)
         config = get_config()
         if config.setting['clear_existing_tags']:
-            cover = tags.getall('APIC') if config.setting["preserve_images"] else None
+            cover = tags.getall('APIC') if config.setting['preserve_images'] else None
             tags.clear()
             if cover:
                 tags.setall('APIC', cover)
@@ -463,7 +463,7 @@ class ID3File(File):
                 for value in values:
                     tipl.people.append([self._rtipl_roles[name], value])
             elif name == 'musicbrainz_recordingid':
-                tags.add(id3.UFID(owner='http://musicbrainz.org', data=bytes(values[0], 'ascii')))
+                tags.add(id3.UFID(owner="http://musicbrainz.org", data=bytes(values[0], 'ascii')))
             elif name == '~rating':
                 rating_user_email = id3text(config.setting['rating_user_email'], Id3Encoding.LATIN1)
                 # Search for an existing POPM frame to get the current playcount
@@ -538,7 +538,7 @@ class ID3File(File):
                     if frameclass:
                         tags.add(frameclass(encoding=encoding, text=values))
             # don't save private / already stored tags
-            elif not name.startswith("~") and name not in self.__other_supported_tags:
+            elif not name.startswith('~') and name not in self.__other_supported_tags:
                 tags.add(self.build_TXXX(encoding, name, values))
 
         if tmcl.people:
@@ -550,7 +550,7 @@ class ID3File(File):
 
         self._save_tags(tags, encode_filename(filename))
 
-        if self._IsMP3 and config.setting["remove_ape_from_mp3"]:
+        if self._IsMP3 and config.setting['remove_ape_from_mp3']:
             try:
                 mutagen.apev2.delete(encode_filename(filename))
             except BaseException:
@@ -585,7 +585,7 @@ class ID3File(File):
                     _remove_people_with_role(tags, ['TIPL', 'IPLS'], role)
                 elif name == 'musicbrainz_recordingid':
                     for key, frame in list(tags.items()):
-                        if frame.FrameID == 'UFID' and frame.owner == 'http://musicbrainz.org':
+                        if frame.FrameID == 'UFID' and frame.owner == "http://musicbrainz.org":
                             del tags[key]
                 elif name == 'license':
                     tags.delall(real_name)
@@ -603,9 +603,9 @@ class ID3File(File):
                     tags.delall('TXXX:' + real_name)
                     if real_name in self.__rrename_freetext:
                         tags.delall('TXXX:' + self.__rrename_freetext[real_name])
-                elif not name.startswith("~id3:") and name not in self.__other_supported_tags:
+                elif not name.startswith('~id3:') and name not in self.__other_supported_tags:
                     tags.delall('TXXX:' + name)
-                elif name.startswith("~id3:"):
+                elif name.startswith('~id3:'):
                     frameid = name[5:]
                     tags.delall(frameid)
                 elif name in self.__other_supported_tags:
@@ -615,9 +615,9 @@ class ID3File(File):
 
     @classmethod
     def supports_tag(cls, name):
-        return ((name and not name.startswith("~") and name not in UNSUPPORTED_TAGS)
-                or name == "~rating"
-                or name.startswith("~id3"))
+        return ((name and not name.startswith('~') and name not in UNSUPPORTED_TAGS)
+                or name == '~rating'
+                or name.startswith('~id3'))
 
     def _get_tag_name(self, name):
         if name in self.__rtranslate:
@@ -663,23 +663,23 @@ class ID3File(File):
         if not settings:
             settings = get_config().setting
 
-        if not settings["write_id3v23"]:
+        if not settings['write_id3v23']:
             return super().format_specific_metadata(metadata, tag, settings)
 
         values = metadata.getall(tag)
         if not values:
             return values
 
-        if tag == "originaldate":
+        if tag == 'originaldate':
             values = [v[:4] for v in values]
-        elif tag == "date":
+        elif tag == 'date':
             values = [(v[:4] if len(v) < 10 else v) for v in values]
 
         # If this is a multi-valued field, then it needs to be flattened,
         # unless it's TIPL or TMCL which can still be multi-valued.
         if (len(values) > 1 and tag not in ID3File._rtipl_roles
-                and not tag.startswith("performer:")):
-            join_with = settings["id3v23_join_with"]
+                and not tag.startswith('performer:')):
+            join_with = settings['id3v23_join_with']
             values = [join_with.join(values)]
 
         return values

@@ -59,32 +59,32 @@ def unpack_image(data):
     The image data in the given length
     """
     try:
-        (type_, size) = struct.unpack_from("<bi", data)
+        (type_, size) = struct.unpack_from('<bi', data)
     except struct.error as e:
         raise ValueError(e)
     data = data[5:]
 
-    mime = b""
+    mime = b''
     while data:
         char, data = data[:2], data[2:]
-        if char == b"\x00\x00":
+        if char == b'\x00\x00':
             break
         mime += char
     else:
         raise ValueError("mime: missing data")
 
-    mime = mime.decode("utf-16-le")
+    mime = mime.decode('utf-16-le')
 
-    description = b""
+    description = b''
     while data:
         char, data = data[:2], data[2:]
-        if char == b"\x00\x00":
+        if char == b'\x00\x00':
             break
         description += char
     else:
         raise ValueError("desc: missing data")
 
-    description = description.decode("utf-16-le")
+    description = description.decode('utf-16-le')
 
     if size != len(data):
         raise ValueError("image data size mismatch")
@@ -97,9 +97,9 @@ def pack_image(mime, data, image_type=3, description=""):
     Helper function to pack image data for a WM/Picture tag.
     See unpack_image for a description of the data format.
     """
-    tag_data = struct.pack("<bi", image_type, len(data))
-    tag_data += mime.encode("utf-16-le") + b"\x00\x00"
-    tag_data += description.encode("utf-16-le") + b"\x00\x00"
+    tag_data = struct.pack('<bi', image_type, len(data))
+    tag_data += mime.encode('utf-16-le') + b'\x00\x00'
+    tag_data += description.encode('utf-16-le') + b'\x00\x00'
     tag_data += data
     return tag_data
 
@@ -215,7 +215,7 @@ class ASFFile(File):
                     try:
                         (mime, data, image_type, description) = unpack_image(image.value)
                     except ValueError as e:
-                        log.warning('Cannot unpack image from %r: %s',
+                        log.warning("Cannot unpack image from %r: %s",
                                     filename, e)
                         continue
                     try:
@@ -229,7 +229,7 @@ class ASFFile(File):
                             id3_type=image_type,
                         )
                     except CoverArtImageError as e:
-                        log.error('Cannot load image from %r: %s', filename, e)
+                        log.error("Cannot load image from %r: %s", filename, e)
                     else:
                         metadata.images.append(coverartimage)
 
@@ -240,7 +240,7 @@ class ASFFile(File):
             elif name == 'WM/PartOfSet':
                 disc = str(values[0]).split("/")
                 if len(disc) > 1:
-                    metadata["totaldiscs"] = disc[1]
+                    metadata['totaldiscs'] = disc[1]
                     values[0] = disc[0]
             name_lower = name.lower()
             if name in self.__RTRANS:

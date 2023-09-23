@@ -96,7 +96,7 @@ class CoverArtThumbnail(ActiveLabel):
 
     def screen_changed(self, screen):
         pixel_ratio = screen.devicePixelRatio()
-        log.debug('screen changed, pixel ratio %s', pixel_ratio)
+        log.debug("screen changed, pixel ratio %s", pixel_ratio)
         if pixel_ratio != self.pixel_ratio:
             self.pixel_ratio = pixel_ratio
             self._update_default_pixmaps()
@@ -107,8 +107,8 @@ class CoverArtThumbnail(ActiveLabel):
 
     def _update_default_pixmaps(self):
         w, h = self.scaled(THUMBNAIL_WIDTH, THUMBNAIL_WIDTH)
-        self.shadow = self._load_cached_default_pixmap(':/images/CoverArtShadow.png', w, h)
-        self.file_missing_pixmap = self._load_cached_default_pixmap(':/images/image-missing.png', w, h)
+        self.shadow = self._load_cached_default_pixmap(":/images/CoverArtShadow.png", w, h)
+        self.file_missing_pixmap = self._load_cached_default_pixmap(":/images/image-missing.png", w, h)
 
     def _load_cached_default_pixmap(self, pixmap_path, w, h):
         key = hash((pixmap_path, self.pixel_ratio))
@@ -291,7 +291,7 @@ class CoverArtThumbnail(ActiveLabel):
         if not has_common_images:
             # Draw a golden highlight around the first cover to indicate that
             # images are not common to all selected items
-            color = QtGui.QColor("darkgoldenrod")
+            color = QtGui.QColor('darkgoldenrod')
             border_length = 10
             for k in range(border_length):
                 color.setAlpha(255 - k * 255 // border_length)
@@ -322,7 +322,7 @@ class CoverArtThumbnail(ActiveLabel):
         self.set_data(data, has_common_images=has_common_images)
         release = None
         if metadata:
-            release = metadata.get("musicbrainz_albumid", None)
+            release = metadata.get('musicbrainz_albumid', None)
         if release:
             self.setActive(True)
             text = _("View release on MusicBrainz")
@@ -550,7 +550,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         )
 
         config = get_config()
-        if config.setting["load_image_behavior"] == 'replace':
+        if config.setting['load_image_behavior'] == 'replace':
             set_image = set_image_replace
             debug_info = "Replacing with dropped %r in %r"
         else:
@@ -616,7 +616,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
 
     def set_load_image_behavior(self, behavior):
         config = get_config()
-        config.setting["load_image_behavior"] = behavior
+        config.setting['load_image_behavior'] = behavior
 
     def keep_original_images(self):
         self.item.keep_original_images()
@@ -626,19 +626,19 @@ class CoverArtBox(QtWidgets.QGroupBox):
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         if self.show_details_button.isVisible():
-            name = _('Show more details…')
+            name = _("Show more details…")
             show_more_details_action = QtWidgets.QAction(name, self.parent)
             show_more_details_action.triggered.connect(self.show_cover_art_info)
             menu.addAction(show_more_details_action)
 
         if self.orig_cover_art.isVisible():
-            name = _('Keep original cover art')
+            name = _("Keep original cover art")
             use_orig_value_action = QtWidgets.QAction(name, self.parent)
             use_orig_value_action.triggered.connect(self.keep_original_images)
             menu.addAction(use_orig_value_action)
 
         if self.item and self.item.can_show_coverart:
-            name = _('Choose local file…')
+            name = _("Choose local file…")
             choose_local_file_action = QtWidgets.QAction(name, self.parent)
             choose_local_file_action.triggered.connect(self.choose_local_file)
             menu.addAction(choose_local_file_action)
@@ -647,20 +647,20 @@ class CoverArtBox(QtWidgets.QGroupBox):
             menu.addSeparator()
 
         load_image_behavior_group = QtWidgets.QActionGroup(self.parent)
-        action = QtWidgets.QAction(_('Replace front cover art'), self.parent)
+        action = QtWidgets.QAction(_("Replace front cover art"), self.parent)
         action.setCheckable(True)
         action.triggered.connect(partial(self.set_load_image_behavior, behavior='replace'))
         load_image_behavior_group.addAction(action)
         config = get_config()
-        if config.setting["load_image_behavior"] == 'replace':
+        if config.setting['load_image_behavior'] == 'replace':
             action.setChecked(True)
         menu.addAction(action)
 
-        action = QtWidgets.QAction(_('Append front cover art'), self.parent)
+        action = QtWidgets.QAction(_("Append front cover art"), self.parent)
         action.setCheckable(True)
         action.triggered.connect(partial(self.set_load_image_behavior, behavior='append'))
         load_image_behavior_group.addAction(action)
-        if config.setting["load_image_behavior"] == 'append':
+        if config.setting['load_image_behavior'] == 'append':
             action.setChecked(True)
         menu.addAction(action)
 

@@ -36,21 +36,21 @@ from picard.ui.ui_options_interface_top_tags import (
 
 class InterfaceTopTagsOptionsPage(OptionsPage):
 
-    NAME = "interface_top_tags"
+    NAME = 'interface_top_tags'
     TITLE = N_("Top Tags")
-    PARENT = "interface"
+    PARENT = 'interface'
     SORT_ORDER = 30
     ACTIVE = True
-    HELP_URL = '/config/options_interface_top_tags.html'
+    HELP_URL = "/config/options_interface_top_tags.html"
 
     options = [
-        ListOption("setting", "metadatabox_top_tags", [
-            "title",
-            "artist",
-            "album",
-            "tracknumber",
-            "~length",
-            "date",
+        ListOption('setting', 'metadatabox_top_tags', [
+            'title',
+            'artist',
+            'album',
+            'tracknumber',
+            '~length',
+            'date',
         ]),
     ]
 
@@ -61,14 +61,14 @@ class InterfaceTopTagsOptionsPage(OptionsPage):
 
     def load(self):
         config = get_config()
-        tags = config.setting["metadatabox_top_tags"]
+        tags = config.setting['metadatabox_top_tags']
         self.ui.top_tags_list.update(tags)
 
     def save(self):
         config = get_config()
         tags = list(self.ui.top_tags_list.tags)
-        if tags != config.setting["metadatabox_top_tags"]:
-            config.setting["metadatabox_top_tags"] = tags
+        if tags != config.setting['metadatabox_top_tags']:
+            config.setting['metadatabox_top_tags'] = tags
             self.tagger.window.metadata_box.update()
 
     def restore_defaults(self):

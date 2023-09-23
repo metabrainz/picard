@@ -206,7 +206,7 @@ class AcoustIDManager(QtCore.QObject):
         log.debug("AcoustID: submitting batch of %d fingerprints (%d remaining)…",
             len(batch), len(submissions))
         self.tagger.window.set_statusbar_message(
-            N_('Submitting AcoustIDs …'),
+            N_("Submitting AcoustIDs …"),
             echo=None
         )
         if not errors:
@@ -228,7 +228,7 @@ class AcoustIDManager(QtCore.QObject):
             else:
                 try:
                     errordoc = load_json(document)
-                    message = errordoc["error"]["message"]
+                    message = errordoc['error']['message']
                 except BaseException:
                     message = ""
                 mparms = {
@@ -241,7 +241,7 @@ class AcoustIDManager(QtCore.QObject):
                 self.tagger.window.set_statusbar_message(
                     log_msg, mparms, echo=None, timeout=3000)
         else:
-            log.debug('AcoustID: %d fingerprints successfully submitted', len(batch))
+            log.debug("AcoustID: %d fingerprints successfully submitted", len(batch))
             for file, submission in batch:
                 submission.orig_recordingid = submission.recordingid
                 file.update()

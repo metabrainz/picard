@@ -56,25 +56,25 @@ def script_to_filename_with_metadata(naming_format, metadata, file=None, setting
         config = get_config()
         settings = config.setting
     # make sure every metadata can safely be used in a path name
-    win_compat = IS_WIN or settings["windows_compatibility"]
+    win_compat = IS_WIN or settings['windows_compatibility']
     new_metadata = Metadata()
-    replace_dir_separator = settings["replace_dir_separator"]
+    replace_dir_separator = settings['replace_dir_separator']
     for name in metadata:
         new_metadata[name] = [
             sanitize_filename(str(v), repl=replace_dir_separator, win_compat=win_compat)
             for v in metadata.getall(name)
         ]
-    naming_format = naming_format.replace("\t", "").replace("\n", "")
+    naming_format = naming_format.replace('\t', '').replace('\n', '')
     filename = ScriptParser().eval(naming_format, new_metadata, file)
-    if settings["ascii_filenames"]:
+    if settings['ascii_filenames']:
         filename = replace_non_ascii(filename, pathsave=True, win_compat=win_compat)
     # replace incompatible characters
     if win_compat:
-        filename = replace_win32_incompat(filename, replacements=settings["win_compat_replacements"])
-    if settings["replace_spaces_with_underscores"]:
+        filename = replace_win32_incompat(filename, replacements=settings['win_compat_replacements'])
+    if settings['replace_spaces_with_underscores']:
         filename = _re_replace_underscores.sub('_', filename.strip())
     # remove null characters
-    filename = filename.replace("\x00", "")
+    filename = filename.replace('\x00', '')
     return (filename, new_metadata)
 
 

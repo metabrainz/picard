@@ -52,23 +52,23 @@ from picard.ui.widgets.profilelistwidget import ProfileListWidgetItem
 
 class ProfilesOptionsPage(OptionsPage):
 
-    NAME = "profiles"
+    NAME = 'profiles'
     TITLE = N_("Option Profiles")
     PARENT = None
     SORT_ORDER = 10
     ACTIVE = True
-    HELP_URL = '/config/options_profiles.html'
+    HELP_URL = "/config/options_profiles.html"
 
     PROFILES_KEY = SettingConfigSection.PROFILES_KEY
     SETTINGS_KEY = SettingConfigSection.SETTINGS_KEY
-    POSITION_KEY = "last_selected_profile_pos"
-    EXPANDED_KEY = "profile_settings_tree_expanded_list"
+    POSITION_KEY = 'last_selected_profile_pos'
+    EXPANDED_KEY = 'profile_settings_tree_expanded_list'
 
     TREEWIDGETITEM_COLUMN = 0
 
     options = [
-        IntOption("persist", POSITION_KEY, 0),
-        ListOption("persist", EXPANDED_KEY, [])
+        IntOption('persist', POSITION_KEY, 0),
+        ListOption('persist', EXPANDED_KEY, [])
     ]
 
     signal_refresh = QtCore.pyqtSignal()
@@ -112,17 +112,17 @@ class ProfilesOptionsPage(OptionsPage):
     def make_buttons(self):
         """Make buttons and add them to the button bars.
         """
-        self.new_profile_button = QtWidgets.QPushButton(_('New'))
+        self.new_profile_button = QtWidgets.QPushButton(_("New"))
         self.new_profile_button.setToolTip(_("Create a new profile"))
         self.new_profile_button.clicked.connect(self.new_profile)
         self.ui.profile_list_buttonbox.addButton(self.new_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
 
-        self.copy_profile_button = QtWidgets.QPushButton(_('Copy'))
+        self.copy_profile_button = QtWidgets.QPushButton(_("Copy"))
         self.copy_profile_button.setToolTip(_("Copy to a new profile"))
         self.copy_profile_button.clicked.connect(self.copy_profile)
         self.ui.profile_list_buttonbox.addButton(self.copy_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
 
-        self.delete_profile_button = QtWidgets.QPushButton(_('Delete'))
+        self.delete_profile_button = QtWidgets.QPushButton(_("Delete"))
         self.delete_profile_button.setToolTip(_("Delete the profile"))
         self.delete_profile_button.clicked.connect(self.delete_profile)
         self.ui.profile_list_buttonbox.addButton(self.delete_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
@@ -220,8 +220,8 @@ class ProfilesOptionsPage(OptionsPage):
             return
         self.building_tree = True
         for group in UserProfileGroups.SETTINGS_GROUPS.values():
-            title = group["title"]
-            group_settings = group["settings"]
+            title = group['title']
+            group_settings = group['settings']
             widget_item = QtWidgets.QTreeWidgetItem([title])
             widget_item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsAutoTristate)
             widget_item.setCheckState(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.CheckState.Unchecked)
@@ -243,9 +243,9 @@ class ProfilesOptionsPage(OptionsPage):
         self.building_tree = False
 
     def _get_naming_script(self, config, value):
-        if value in config.setting["file_renaming_scripts"]:
-            return config.setting["file_renaming_scripts"][value]["title"]
-        presets = {x["id"]: x["title"] for x in get_file_naming_script_presets()}
+        if value in config.setting['file_renaming_scripts']:
+            return config.setting['file_renaming_scripts'][value]['title']
+        presets = {x['id']: x['title'] for x in get_file_naming_script_presets()}
         if value in presets:
             return presets[value]
         return _("Unknown script")
@@ -282,11 +282,11 @@ class ProfilesOptionsPage(OptionsPage):
         config = get_config()
         if value is None:
             return NONE_TEXT
-        if key == "selected_file_naming_script_id":
+        if key == 'selected_file_naming_script_id':
             return self._get_naming_script(config, value)
-        if key == "list_of_scripts":
+        if key == 'list_of_scripts':
             return self._get_scripts_list(config, key, ITEMS_TEMPLATE, NONE_TEXT)
-        if key == "ca_providers":
+        if key == 'ca_providers':
             return self._get_ca_providers_list(config, key, ITEMS_TEMPLATE, NONE_TEXT)
         if isinstance(value, str):
             return '"%s"' % value

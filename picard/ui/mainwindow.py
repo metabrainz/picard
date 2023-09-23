@@ -177,15 +177,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     ready_for_display = QtCore.pyqtSignal()
 
     options = [
-        Option("persist", "window_state", QtCore.QByteArray()),
-        BoolOption("persist", "window_maximized", False),
-        BoolOption("persist", "view_metadata_view", True),
-        BoolOption("persist", "view_cover_art", True),
-        BoolOption("persist", "view_toolbar", True),
-        BoolOption("persist", "view_file_browser", False),
-        TextOption("persist", "current_directory", ""),
-        FloatOption("persist", "mediaplayer_playback_rate", 1.0),
-        IntOption("persist", "mediaplayer_volume", 50),
+        Option('persist', 'window_state', QtCore.QByteArray()),
+        BoolOption('persist', 'window_maximized', False),
+        BoolOption('persist', 'view_metadata_view', True),
+        BoolOption('persist', 'view_cover_art', True),
+        BoolOption('persist', 'view_toolbar', True),
+        BoolOption('persist', 'view_file_browser', False),
+        TextOption('persist', 'current_directory', ""),
+        FloatOption('persist', 'mediaplayer_playback_rate', 1.0),
+        IntOption('persist', 'mediaplayer_volume', 50),
     ]
 
     def __init__(self, parent=None, disable_player=False):
@@ -316,7 +316,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def closeEvent(self, event):
         config = get_config()
-        if config.setting["quit_confirmation"] and not self.show_quit_confirmation():
+        if config.setting['quit_confirmation'] and not self.show_quit_confirmation():
             event.ignore()
             return
         if self.player:
@@ -367,14 +367,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def saveWindowState(self):
         config = get_config()
-        config.persist["window_state"] = self.saveState()
+        config.persist['window_state'] = self.saveState()
         isMaximized = int(self.windowState()) & QtCore.Qt.WindowState.WindowMaximized != 0
         self.save_geometry()
-        config.persist["window_maximized"] = isMaximized
-        config.persist["view_metadata_view"] = self.show_metadata_view_action.isChecked()
-        config.persist["view_cover_art"] = self.show_cover_art_action.isChecked()
-        config.persist["view_toolbar"] = self.show_toolbar_action.isChecked()
-        config.persist["view_file_browser"] = self.show_file_browser_action.isChecked()
+        config.persist['window_maximized'] = isMaximized
+        config.persist['view_metadata_view'] = self.show_metadata_view_action.isChecked()
+        config.persist['view_cover_art'] = self.show_cover_art_action.isChecked()
+        config.persist['view_toolbar'] = self.show_toolbar_action.isChecked()
+        config.persist['view_file_browser'] = self.show_file_browser_action.isChecked()
         self.file_browser.save_state()
         self.panel.save_state()
         self.metadata_box.save_state()
@@ -382,11 +382,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     @restore_method
     def restoreWindowState(self):
         config = get_config()
-        self.restoreState(config.persist["window_state"])
+        self.restoreState(config.persist['window_state'])
         self.restore_geometry()
-        if config.persist["window_maximized"]:
+        if config.persist['window_maximized']:
             self.setWindowState(QtCore.Qt.WindowState.WindowMaximized)
-        splitters = config.persist["splitters_MainWindow"]
+        splitters = config.persist['splitters_MainWindow']
         if splitters is None or 'main_window_bottom_splitter' not in splitters:
             self.centralWidget().setSizes([366, 194])
         self.file_browser.restore_state()
@@ -480,7 +480,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _on_submit_acoustid(self):
         if self.tagger.use_acoustid:
             config = get_config()
-            if not config.setting["acoustid_apikey"]:
+            if not config.setting['acoustid_apikey']:
                 msg = QtWidgets.QMessageBox(self)
                 msg.setIcon(QtWidgets.QMessageBox.Icon.Information)
                 msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
@@ -493,7 +493,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 msg.addButton(open_options, QtWidgets.QMessageBox.ButtonRole.YesRole)
                 msg.exec_()
                 if msg.clickedButton() == open_options:
-                    self.show_options("fingerprinting")
+                    self.show_options('fingerprinting')
             else:
                 self.tagger.acoustidmanager.submit()
 
@@ -705,7 +705,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         action = QtWidgets.QAction(_("File &Browser"), self)
         action.setCheckable(True)
-        if config.persist["view_file_browser"]:
+        if config.persist['view_file_browser']:
             action.setChecked(True)
         action.setShortcut(QtGui.QKeySequence(_("Ctrl+B")))
         action.triggered.connect(self.show_file_browser)
@@ -716,7 +716,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         action = QtWidgets.QAction(_("&Metadata"), self)
         action.setCheckable(True)
-        if config.persist["view_metadata_view"]:
+        if config.persist['view_metadata_view']:
             action.setChecked(True)
         action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+M")))
         action.triggered.connect(self.show_metadata_view)
@@ -727,7 +727,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         action = QtWidgets.QAction(_("&Cover Art"), self)
         action.setCheckable(True)
-        if config.persist["view_cover_art"]:
+        if config.persist['view_cover_art']:
             action.setChecked(True)
         action.setEnabled(self.show_metadata_view_action.isChecked())
         action.triggered.connect(self.show_cover_art)
@@ -738,7 +738,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         action = QtWidgets.QAction(_("&Actions"), self)
         action.setCheckable(True)
-        if config.persist["view_toolbar"]:
+        if config.persist['view_toolbar']:
             action.setChecked(True)
         action.triggered.connect(self.show_toolbar)
         self.show_toolbar_action = action
@@ -775,7 +775,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         action = QtWidgets.QAction(icontheme.lookup('picard-analyze'), _("&Scan"), self)
         action.setStatusTip(_("Use AcoustID audio fingerprint to identify the files by the actual music, even if they have no metadata"))
         action.setEnabled(False)
-        action.setToolTip(_('Identify the file using its AcoustID audio fingerprint'))
+        action.setToolTip(_("Identify the file using its AcoustID audio fingerprint"))
         # TR: Keyboard shortcut for "Analyze"
         action.setShortcut(QtGui.QKeySequence(_("Ctrl+Y")))
         action.triggered.connect(self.analyze)
@@ -787,7 +787,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         action.setIconText(_("Generate Fingerprints"))
         action.setStatusTip(_("Generate the AcoustID audio fingerprints for the selected files without doing a lookup"))
         action.setEnabled(False)
-        action.setToolTip(_('Generate the AcoustID audio fingerprints for the selected files'))
+        action.setToolTip(_("Generate the AcoustID audio fingerprints for the selected files"))
         action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+Y")))
         action.triggered.connect(self.generate_fingerprints)
         self.generate_fingerprints_action = action
@@ -835,7 +835,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         action = QtWidgets.QAction(_("&Rename Files"), self)
         action.setCheckable(True)
-        action.setChecked(config.setting["rename_files"])
+        action.setChecked(config.setting['rename_files'])
         action.triggered.connect(self.toggle_rename_files)
         self.enable_renaming_action = action
 
@@ -844,7 +844,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         action = QtWidgets.QAction(_("&Move Files"), self)
         action.setCheckable(True)
-        action.setChecked(config.setting["move_files"])
+        action.setChecked(config.setting['move_files'])
         action.triggered.connect(self.toggle_move_files)
         self.enable_moving_action = action
 
@@ -853,7 +853,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         action = QtWidgets.QAction(_("Save &Tags"), self)
         action.setCheckable(True)
-        action.setChecked(not config.setting["dont_write_tags"])
+        action.setChecked(not config.setting['dont_write_tags'])
         action.triggered.connect(self.toggle_tag_saving)
         self.enable_tag_saving_action = action
 
@@ -861,7 +861,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _create_tags_from_filenames_action(self):
         action = QtWidgets.QAction(icontheme.lookup('picard-tags-from-filename'), _("Tags From &File Names…"), self)
         action.setIconText(_("Parse File Names…"))
-        action.setToolTip(_('Set tags based on the file names'))
+        action.setToolTip(_("Set tags based on the file names"))
         action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+T")))
         action.setEnabled(False)
         action.triggered.connect(self.open_tags_from_filenames)
@@ -871,7 +871,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _create_open_collection_in_browser_action(self):
         config = get_config()
         action = QtWidgets.QAction(_("&Open My Collections in Browser"), self)
-        action.setEnabled(config.setting["username"] != '')
+        action.setEnabled(config.setting['username'] != '')
         action.triggered.connect(self.open_collection_in_browser)
         self.open_collection_in_browser_action = action
 
@@ -938,7 +938,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             log.warning(DISCID_NOT_LOADED_MESSAGE)
         else:
             config = get_config()
-            shortcut_drive = config.setting["cd_lookup_device"].split(",")[0] if len(drives) > 1 else ""
+            shortcut_drive = config.setting['cd_lookup_device'].split(",")[0] if len(drives) > 1 else ""
             for drive in drives:
                 action = self.cd_lookup_menu.addAction(drive)
                 action.setData(drive)
@@ -950,7 +950,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _set_cd_lookup_from_file_actions(self, drives):
         if self.cd_lookup_menu.actions():
             self.cd_lookup_menu.addSeparator()
-        action = self.cd_lookup_menu.addAction(_('From CD ripper &log file…'))
+        action = self.cd_lookup_menu.addAction(_("From CD ripper &log file…"))
         if not drives:
             self._update_cd_lookup_default_action(action)
         action.setData('logfile:eac')
@@ -974,17 +974,17 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def toggle_rename_files(self, checked):
         config = get_config()
-        config.setting["rename_files"] = checked
+        config.setting['rename_files'] = checked
         self.update_script_editor_examples()
 
     def toggle_move_files(self, checked):
         config = get_config()
-        config.setting["move_files"] = checked
+        config.setting['move_files'] = checked
         self.update_script_editor_examples()
 
     def toggle_tag_saving(self, checked):
         config = get_config()
-        config.setting["dont_write_tags"] = not checked
+        config.setting['dont_write_tags'] = not checked
 
     def get_selected_or_unmatched_files(self):
         if self.selected_objects:
@@ -1084,7 +1084,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def update_toolbar_style(self):
         config = get_config()
         style = QtCore.Qt.ToolButtonStyle.ToolButtonIconOnly
-        if config.setting["toolbar_show_labels"]:
+        if config.setting['toolbar_show_labels']:
             style = QtCore.Qt.ToolButtonStyle.ToolButtonTextUnderIcon
         self.toolbar.setToolButtonStyle(style)
         if self.player:
@@ -1103,7 +1103,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.removeToolBar(self.toolbar)
         self.toolbar = toolbar = QtWidgets.QToolBar(_("Actions"))
         self.insertToolBar(self.search_toolbar, self.toolbar)
-        toolbar.setObjectName("main_toolbar")
+        toolbar.setObjectName('main_toolbar')
         if self._is_wayland:
             toolbar.setFloatable(False)  # https://bugreports.qt.io/browse/QTBUG-92191
         if IS_MACOS:
@@ -1126,7 +1126,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 try:
                     add_toolbar_action(getattr(self, action))
                 except AttributeError:
-                    log.warning('Warning: Unknown action name "%r" found in config. Ignored.', action)
+                    log.warning("Warning: Unknown action name '%r' found in config. Ignored.", action)
         self.show_toolbar()
 
     def create_player_toolbar(self):
@@ -1142,7 +1142,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         self.search_toolbar = toolbar = self.addToolBar(_("Search"))
         self.search_toolbar_toggle_action = self.search_toolbar.toggleViewAction()
-        toolbar.setObjectName("search_toolbar")
+        toolbar.setObjectName('search_toolbar')
         if self._is_wayland:
             toolbar.setFloatable(False)  # https://bugreports.qt.io/browse/QTBUG-92191
         if IS_MACOS:
@@ -1151,9 +1151,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         search_panel = QtWidgets.QWidget(toolbar)
         hbox = QtWidgets.QHBoxLayout(search_panel)
         self.search_combo = QtWidgets.QComboBox(search_panel)
-        self.search_combo.addItem(_("Album"), "album")
-        self.search_combo.addItem(_("Artist"), "artist")
-        self.search_combo.addItem(_("Track"), "track")
+        self.search_combo.addItem(_("Album"), 'album')
+        self.search_combo.addItem(_("Artist"), 'artist')
+        self.search_combo.addItem(_("Track"), 'track')
         hbox.addWidget(self.search_combo, 0)
         self.search_edit = QtWidgets.QLineEdit(search_panel)
         self.search_edit.setClearButtonEnabled(True)
@@ -1243,7 +1243,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         entity = self.search_combo.itemData(self.search_combo.currentIndex())
         config = get_config()
         self.tagger.search(text, entity,
-                           config.setting["use_adv_search_syntax"],
+                           config.setting['use_adv_search_syntax'],
                            mbid_matched_callback=self.search_mbid_found)
 
     def add_files(self):
@@ -1271,7 +1271,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         files, _filter = QtWidgets.QFileDialog.getOpenFileNames(self, "", current_directory, ";;".join(formats))
         if files:
             config = get_config()
-            config.persist["current_directory"] = os.path.dirname(files[0])
+            config.persist['current_directory'] = os.path.dirname(files[0])
             self.tagger.add_files(files)
 
     def add_directory(self):
@@ -1280,7 +1280,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         dir_list = []
         config = get_config()
-        if not config.setting["toolbar_multiselect"]:
+        if not config.setting['toolbar_multiselect']:
             directory = QtWidgets.QFileDialog.getExistingDirectory(self, "", current_directory)
             if directory:
                 dir_list.append(directory)
@@ -1292,7 +1292,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         dir_count = len(dir_list)
         if dir_count:
             parent = os.path.dirname(dir_list[0]) if dir_count > 1 else dir_list[0]
-            config.persist["current_directory"] = parent
+            config.persist['current_directory'] = parent
             if dir_count > 1:
                 self.set_statusbar_message(
                     N_("Adding multiple directories from '%(directory)s' …"),
@@ -1357,11 +1357,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def save(self):
         """Tell the tagger to save the selected objects."""
         config = get_config()
-        if config.setting["file_save_warning"]:
+        if config.setting['file_save_warning']:
             count = len(self.tagger.get_files_from_objects(self.selected_objects))
             msg = SaveWarningDialog(self, count)
             proceed_with_save, disable_warning = msg.show()
-            config.setting["file_save_warning"] = not disable_warning
+            config.setting['file_save_warning'] = not disable_warning
         else:
             proceed_with_save = True
         if proceed_with_save:
@@ -1405,7 +1405,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 def on_finished(result):
                     callback(config.setting['fingerprinting_system'])
 
-                dialog = self.show_options("fingerprinting")
+                dialog = self.show_options('fingerprinting')
                 dialog.finished.connect(on_finished)
         else:
             callback(config.setting['fingerprinting_system'])
@@ -1438,7 +1438,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if isinstance(obj, Track) and obj.files:
             obj = obj.files[0]
         if not isinstance(obj, File):
-            log.debug('show_more_tracks expected a File, got %r', obj)
+            log.debug("show_more_tracks expected a File, got %r", obj)
             return
         dialog = TrackSearchDialog(self, force_advanced_search=True)
         dialog.show_similar_tracks(obj)
@@ -1447,7 +1447,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show_more_albums(self):
         obj = self.get_first_obj_with_type(Cluster)
         if not obj:
-            log.debug('show_more_albums expected a Cluster, got %r', obj)
+            log.debug("show_more_albums expected a Cluster, got %r", obj)
             return
         dialog = AlbumSearchDialog(self, force_advanced_search=True)
         dialog.show_similar_albums(obj)
@@ -1532,13 +1532,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             QtWidgets.QMessageBox.StandardButton.Yes)
         if ret == QtWidgets.QMessageBox.StandardButton.Yes:
             config = get_config()
-            config.setting["browser_integration"] = True
+            config.setting['browser_integration'] = True
             self.tagger.update_browser_integration()
             if addrelease.is_enabled():
                 return True
             else:
                 # Something went wrong, let the user configure browser integration manually
-                self.show_options("network")
+                self.show_options('network')
                 return False
         else:
             return False
@@ -1735,12 +1735,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def on_mb_login_finished(self, successful, error_msg):
         if successful:
-            log.debug('MusicBrainz authentication finished successfully')
+            log.debug("MusicBrainz authentication finished successfully")
         else:
-            log.info('MusicBrainz authentication failed: %s', error_msg)
+            log.info("MusicBrainz authentication failed: %s", error_msg)
             QtWidgets.QMessageBox.critical(self,
                 _("Authentication failed"),
-                _('Login failed: %s') % error_msg)
+                _("Login failed: %s") % error_msg)
 
     def show_proxy_dialog(self, proxy, authenticator):
         dialog = ProxyDialog(authenticator, proxy, parent=self)
@@ -1783,7 +1783,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         update_level = config.setting['update_level']
         today = datetime.date.today().toordinal()
         do_auto_update_check = check_for_updates and update_check_days > 0 and today >= last_update_check + update_check_days
-        log.debug('%(check_status)s startup check for program updates.  Today: %(today_date)s, Last check: %(last_check)s (Check interval: %(check_interval)s days), Update level: %(update_level)s (%(update_level_name)s)', {
+        log.debug("%(check_status)s startup check for program updates.  Today: %(today_date)s, Last check: %(last_check)s (Check interval: %(check_interval)s days), Update level: %(update_level)s (%(update_level_name)s)", {
             'check_status': 'Initiating' if do_auto_update_check else 'Skipping',
             'today_date': datetime.date.today(),
             'last_check': str(datetime.date.fromordinal(last_update_check)) if last_update_check > 0 else 'never',
@@ -1824,29 +1824,29 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         Checks that there is a settings dictionary for each profile, and that no profiles
         reference a non-existant file naming script.
         """
-        script_id_key = "selected_file_naming_script_id"
+        script_id_key = 'selected_file_naming_script_id'
         config = get_config()
-        naming_scripts = config.setting["file_renaming_scripts"]
+        naming_scripts = config.setting['file_renaming_scripts']
         naming_script_ids = set(naming_scripts.keys())
         profile_settings = deepcopy(config.profiles[SettingConfigSection.SETTINGS_KEY])
         for profile in config.profiles[SettingConfigSection.PROFILES_KEY]:
-            p_id = profile["id"]
+            p_id = profile['id']
             # Add empty settings if none found for a profile
             if p_id not in profile_settings:
                 log.warning(
-                    "No settings dict found for profile '%s' (\"%s\").  Adding empty dict.",
+                    "No settings dict found for profile '%s' ('%s'). Adding empty dict.",
                     p_id,
-                    profile["title"],
+                    profile['title'],
                 )
                 profile_settings[p_id] = {}
             # Remove any invalid naming script ids from profiles
             if script_id_key in profile_settings[p_id]:
                 if profile_settings[p_id][script_id_key] not in naming_script_ids:
                     log.warning(
-                        "Removing invalid naming script id '%s' from profile '%s' (\"%s\")",
+                        "Removing invalid naming script id '%s' from profile '%s' ('%s')",
                         profile_settings[p_id][script_id_key],
                         p_id,
-                        profile["title"],
+                        profile['title'],
                     )
                     profile_settings[p_id][script_id_key] = None
         config.profiles[SettingConfigSection.SETTINGS_KEY] = profile_settings
@@ -1856,8 +1856,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """
         if self.script_editor_dialog is None or not isinstance(self.script_editor_dialog, ScriptEditorDialog):
             config = get_config()
-            naming_scripts = config.setting["file_renaming_scripts"]
-            selected_script_id = config.setting["selected_file_naming_script_id"]
+            naming_scripts = config.setting['file_renaming_scripts']
+            selected_script_id = config.setting['selected_file_naming_script_id']
         else:
             naming_scripts = self.script_editor_dialog.naming_scripts
             selected_script_id = self.script_editor_dialog.selected_script_id
@@ -1886,7 +1886,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """
         config = get_config()
         log.debug("Setting naming script to: %s", id)
-        config.setting["selected_file_naming_script_id"] = id
+        config.setting['selected_file_naming_script_id'] = id
         self.make_script_selector_menu()
         if self.script_editor_dialog:
             self.script_editor_dialog.set_selected_script_id(id)
@@ -1993,9 +1993,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def show_new_user_dialog(self):
         config = get_config()
-        if config.setting["show_new_user_dialog"]:
+        if config.setting['show_new_user_dialog']:
             msg = NewUserDialog(self)
-            config.setting["show_new_user_dialog"] = msg.show()
+            config.setting['show_new_user_dialog'] = msg.show()
 
     def check_for_plugin_update(self):
         config = get_config()

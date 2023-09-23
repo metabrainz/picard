@@ -40,16 +40,16 @@ class ScriptSelectionOrder(IntEnum):
 # characters to convey the same information as other characters sets.  The factor is generally
 # based on the relative number of characters in the alphabet compared with the LATIN alphabet.
 SCRIPT_WEIGHTING_FACTORS = {
-    "LATIN": 1.0,
-    "CYRILLIC": 1.02,
-    "GREEK": 0.92,
-    "ARABIC": 1.08,
-    "HEBREW": 0.85,
-    "CJK": 2.5,
-    "HANGUL": 0.92,
-    "HIRAGANA": 1.77,
-    "KATAKANA": 1.77,
-    "THAI": 1.69,
+    'LATIN': 1.0,
+    'CYRILLIC': 1.02,
+    'GREEK': 0.92,
+    'ARABIC': 1.08,
+    'HEBREW': 0.85,
+    'CJK': 2.5,
+    'HANGUL': 0.92,
+    'HIRAGANA': 1.77,
+    'KATAKANA': 1.77,
+    'THAI': 1.69,
 }
 
 

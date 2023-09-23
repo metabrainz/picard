@@ -60,12 +60,12 @@ OPTIONS_NOT_IN_PAGES = {
 
 class MaintenanceOptionsPage(OptionsPage):
 
-    NAME = "maintenance"
+    NAME = 'maintenance'
     TITLE = N_("Maintenance")
-    PARENT = "advanced"
+    PARENT = 'advanced'
     SORT_ORDER = 99
     ACTIVE = True
-    HELP_URL = '/config/options_maintenance.html'
+    HELP_URL = "/config/options_maintenance.html"
 
     options = []
 
@@ -117,7 +117,7 @@ class MaintenanceOptionsPage(OptionsPage):
         current_options = OPTIONS_NOT_IN_PAGES.union(key_options)
 
         # All setting options included in the INI file.
-        config.beginGroup("setting")
+        config.beginGroup('setting')
         file_options = set(config.childKeys())
         config.endGroup()
 
@@ -249,7 +249,7 @@ class MaintenanceOptionsPage(OptionsPage):
         filename, file_type = QtWidgets.QFileDialog.getOpenFileName(self, dialog_title, directory, dialog_file_types, options=options)
         if not filename:
             return
-        log.warning('Loading configuration from %s', filename)
+        log.warning("Loading configuration from %s", filename)
         if load_new_config(filename):
             config = get_config()
             upgrade_config(config)
@@ -292,7 +292,7 @@ class MaintenanceOptionsPage(OptionsPage):
         to_remove = set(self.selected_options())
         if to_remove and QtWidgets.QMessageBox.question(
             self,
-            _('Confirm Remove'),
+            _("Confirm Remove"),
             _("Are you sure you want to remove the selected option settings?"),
         ) == QtWidgets.QMessageBox.StandardButton.Yes:
             config = get_config()

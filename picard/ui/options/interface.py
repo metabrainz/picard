@@ -63,47 +63,47 @@ _default_starting_dir = QStandardPaths.writableLocation(QStandardPaths.StandardL
 
 class InterfaceOptionsPage(OptionsPage):
 
-    NAME = "interface"
+    NAME = 'interface'
     TITLE = N_("User Interface")
     PARENT = None
     SORT_ORDER = 80
     ACTIVE = True
-    HELP_URL = '/config/options_interface.html'
+    HELP_URL = "/config/options_interface.html"
 
     options = [
-        BoolOption("setting", "toolbar_show_labels", True),
-        BoolOption("setting", "toolbar_multiselect", False),
-        BoolOption("setting", "show_menu_icons", True if not IS_MACOS else False),  # On macOS it is not common that the global menu shows icons
-        BoolOption("setting", "builtin_search", True),
-        BoolOption("setting", "use_adv_search_syntax", False),
-        BoolOption("setting", "show_new_user_dialog", True),
-        BoolOption("setting", "quit_confirmation", True),
-        BoolOption("setting", "file_save_warning", True),
-        TextOption("setting", "ui_language", ""),
-        TextOption("setting", "ui_theme", str(UiTheme.DEFAULT)),
-        BoolOption("setting", "filebrowser_horizontal_autoscroll", True),
-        BoolOption("setting", "starting_directory", False),
-        TextOption("setting", "starting_directory_path", _default_starting_dir),
-        TextOption("setting", "load_image_behavior", "append"),
+        BoolOption('setting', 'toolbar_show_labels', True),
+        BoolOption('setting', 'toolbar_multiselect', False),
+        BoolOption('setting', 'show_menu_icons', True if not IS_MACOS else False),  # On macOS it is not common that the global menu shows icons
+        BoolOption('setting', 'builtin_search', True),
+        BoolOption('setting', 'use_adv_search_syntax', False),
+        BoolOption('setting', 'show_new_user_dialog', True),
+        BoolOption('setting', 'quit_confirmation', True),
+        BoolOption('setting', 'file_save_warning', True),
+        TextOption('setting', 'ui_language', ''),
+        TextOption('setting', 'ui_theme', str(UiTheme.DEFAULT)),
+        BoolOption('setting', 'filebrowser_horizontal_autoscroll', True),
+        BoolOption('setting', 'starting_directory', False),
+        TextOption('setting', 'starting_directory_path', _default_starting_dir),
+        TextOption('setting', 'load_image_behavior', 'append'),
     ]
 
     # Those are labels for theme display
     _UI_THEME_LABELS = {
         UiTheme.DEFAULT: {
-            'label': N_('Default'),
-            'desc': N_('The default color scheme based on the operating system display settings'),
+            'label': N_("Default"),
+            'desc': N_("The default color scheme based on the operating system display settings"),
         },
         UiTheme.DARK: {
-            'label': N_('Dark'),
-            'desc': N_('A dark display theme'),
+            'label': N_("Dark"),
+            'desc': N_("A dark display theme"),
         },
         UiTheme.LIGHT: {
-            'label': N_('Light'),
-            'desc': N_('A light display theme'),
+            'label': N_("Light"),
+            'desc': N_("A light display theme"),
         },
         UiTheme.SYSTEM: {
-            'label': N_('System'),
-            'desc': N_('The Qt5 theme configured in the desktop environment'),
+            'label': N_("System"),
+            'desc': N_("The Qt5 theme configured in the desktop environment"),
         },
     }
 
@@ -121,7 +121,7 @@ class InterfaceOptionsPage(OptionsPage):
             self.ui.ui_theme.setItemData(idx, _(desc), QtCore.Qt.ItemDataRole.ToolTipRole)
         self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(UiTheme.DEFAULT))
 
-        self.ui.ui_language.addItem(_('System default'), '')
+        self.ui.ui_language.addItem(_("System default"), '')
         language_list = [(lang[0], lang[1], gettext_constants(lang[2])) for lang in UI_LANGUAGES]
 
         def fcmp(x):
@@ -145,48 +145,48 @@ class InterfaceOptionsPage(OptionsPage):
 
     def load(self):
         config = get_config()
-        self.ui.toolbar_show_labels.setChecked(config.setting["toolbar_show_labels"])
-        self.ui.toolbar_multiselect.setChecked(config.setting["toolbar_multiselect"])
-        self.ui.show_menu_icons.setChecked(config.setting["show_menu_icons"])
-        self.ui.builtin_search.setChecked(config.setting["builtin_search"])
-        self.ui.use_adv_search_syntax.setChecked(config.setting["use_adv_search_syntax"])
-        self.ui.new_user_dialog.setChecked(config.setting["show_new_user_dialog"])
-        self.ui.quit_confirmation.setChecked(config.setting["quit_confirmation"])
-        self.ui.file_save_warning.setChecked(config.setting["file_save_warning"])
-        current_ui_language = config.setting["ui_language"]
+        self.ui.toolbar_show_labels.setChecked(config.setting['toolbar_show_labels'])
+        self.ui.toolbar_multiselect.setChecked(config.setting['toolbar_multiselect'])
+        self.ui.show_menu_icons.setChecked(config.setting['show_menu_icons'])
+        self.ui.builtin_search.setChecked(config.setting['builtin_search'])
+        self.ui.use_adv_search_syntax.setChecked(config.setting['use_adv_search_syntax'])
+        self.ui.new_user_dialog.setChecked(config.setting['show_new_user_dialog'])
+        self.ui.quit_confirmation.setChecked(config.setting['quit_confirmation'])
+        self.ui.file_save_warning.setChecked(config.setting['file_save_warning'])
+        current_ui_language = config.setting['ui_language']
         self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
-        self.ui.filebrowser_horizontal_autoscroll.setChecked(config.setting["filebrowser_horizontal_autoscroll"])
-        self.ui.starting_directory.setChecked(config.setting["starting_directory"])
-        self.ui.starting_directory_path.setText(config.setting["starting_directory_path"])
-        current_theme = UiTheme(config.setting["ui_theme"])
+        self.ui.filebrowser_horizontal_autoscroll.setChecked(config.setting['filebrowser_horizontal_autoscroll'])
+        self.ui.starting_directory.setChecked(config.setting['starting_directory'])
+        self.ui.starting_directory_path.setText(config.setting['starting_directory_path'])
+        current_theme = UiTheme(config.setting['ui_theme'])
         self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(current_theme))
 
     def save(self):
         config = get_config()
-        config.setting["toolbar_show_labels"] = self.ui.toolbar_show_labels.isChecked()
-        config.setting["toolbar_multiselect"] = self.ui.toolbar_multiselect.isChecked()
-        config.setting["show_menu_icons"] = self.ui.show_menu_icons.isChecked()
-        self.tagger.enable_menu_icons(config.setting["show_menu_icons"])
-        config.setting["builtin_search"] = self.ui.builtin_search.isChecked()
-        config.setting["use_adv_search_syntax"] = self.ui.use_adv_search_syntax.isChecked()
-        config.setting["show_new_user_dialog"] = self.ui.new_user_dialog.isChecked()
-        config.setting["quit_confirmation"] = self.ui.quit_confirmation.isChecked()
-        config.setting["file_save_warning"] = self.ui.file_save_warning.isChecked()
+        config.setting['toolbar_show_labels'] = self.ui.toolbar_show_labels.isChecked()
+        config.setting['toolbar_multiselect'] = self.ui.toolbar_multiselect.isChecked()
+        config.setting['show_menu_icons'] = self.ui.show_menu_icons.isChecked()
+        self.tagger.enable_menu_icons(config.setting['show_menu_icons'])
+        config.setting['builtin_search'] = self.ui.builtin_search.isChecked()
+        config.setting['use_adv_search_syntax'] = self.ui.use_adv_search_syntax.isChecked()
+        config.setting['show_new_user_dialog'] = self.ui.new_user_dialog.isChecked()
+        config.setting['quit_confirmation'] = self.ui.quit_confirmation.isChecked()
+        config.setting['file_save_warning'] = self.ui.file_save_warning.isChecked()
         self.tagger.window.update_toolbar_style()
         new_theme_setting = str(self.ui.ui_theme.itemData(self.ui.ui_theme.currentIndex()))
         new_language = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
         restart_warning = None
-        if new_theme_setting != config.setting["ui_theme"]:
-            restart_warning_title = _('Theme changed')
-            restart_warning = _('You have changed the application theme. You have to restart Picard in order for the change to take effect.')
+        if new_theme_setting != config.setting['ui_theme']:
+            restart_warning_title = _("Theme changed")
+            restart_warning = _("You have changed the application theme. You have to restart Picard in order for the change to take effect.")
             if new_theme_setting == str(UiTheme.SYSTEM):
                 restart_warning += '\n\n' + _(
-                    'Please note that using the system theme might cause the user interface to be not shown correctly. '
-                    'If this is the case select the "Default" theme option to use Picard\'s default theme again.'
+                    "Please note that using the system theme might cause the user interface to be not shown correctly. "
+                    "If this is the case select the `Default` theme option to use Picard's default theme again."
                 )
-        elif new_language != config.setting["ui_language"]:
-            restart_warning_title = _('Language changed')
-            restart_warning = _('You have changed the interface language. You have to restart Picard in order for the change to take effect.')
+        elif new_language != config.setting['ui_language']:
+            restart_warning_title = _("Language changed")
+            restart_warning = _("You have changed the interface language. You have to restart Picard in order for the change to take effect.")
         if restart_warning:
             dialog = QtWidgets.QMessageBox(
                 QtWidgets.QMessageBox.Icon.Information,
@@ -195,11 +195,11 @@ class InterfaceOptionsPage(OptionsPage):
                 QtWidgets.QMessageBox.StandardButton.Ok,
                 self)
             dialog.exec_()
-        config.setting["ui_theme"] = new_theme_setting
-        config.setting["ui_language"] = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
-        config.setting["filebrowser_horizontal_autoscroll"] = self.ui.filebrowser_horizontal_autoscroll.isChecked()
-        config.setting["starting_directory"] = self.ui.starting_directory.isChecked()
-        config.setting["starting_directory_path"] = os.path.normpath(self.ui.starting_directory_path.text())
+        config.setting['ui_theme'] = new_theme_setting
+        config.setting['ui_language'] = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
+        config.setting['filebrowser_horizontal_autoscroll'] = self.ui.filebrowser_horizontal_autoscroll.isChecked()
+        config.setting['starting_directory'] = self.ui.starting_directory.isChecked()
+        config.setting['starting_directory_path'] = os.path.normpath(self.ui.starting_directory_path.text())
 
     def starting_directory_browse(self):
         item = self.ui.starting_directory_path

@@ -44,19 +44,19 @@ def unregister_file(filepath):
 
 
 def enable_timer():
-    log.debug('Setup timer for touching files every %i seconds', TOUCH_FILES_DELAY_SECONDS)
+    log.debug("Setup timer for touching files every %i seconds", TOUCH_FILES_DELAY_SECONDS)
     _touch_timer.timeout.connect(_touch_files)
     _touch_timer.start(TOUCH_FILES_DELAY_SECONDS * 1000)
 
 
 def _touch_files():
-    log.debug('Touching %i files', len(_files_to_touch))
+    log.debug("Touching %i files", len(_files_to_touch))
     for filepath in _files_to_touch.copy():
         path = Path(filepath)
         if path.exists():
             try:
                 path.touch()
             except OSError:
-                log.error('error touching file "%s"', filepath, exc_info=True)
+                log.error("error touching file `%s`", filepath, exc_info=True)
         else:
             unregister_file(filepath)

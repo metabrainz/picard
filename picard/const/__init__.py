@@ -78,12 +78,12 @@ PICARD_URLS = {
     'home':                    "https://picard.musicbrainz.org/",
     'license':                 "https://www.gnu.org/licenses/gpl-2.0.html",
     'documentation_server':    DOCS_SERVER_URL,     # Shows latest version and tries to match the user's language if available.
-    'documentation':           DOCS_BASE_URL + '/',
-    'troubleshooting':         DOCS_BASE_URL + '/troubleshooting/troubleshooting.html',
-    'doc_options':             DOCS_BASE_URL + '/config/configuration.html',
-    'doc_scripting':           DOCS_BASE_URL + '/extending/scripting.html',
-    'doc_tags_from_filenames': DOCS_BASE_URL + '/usage/tags_from_file_names.html',
-    'doc_naming_script_edit':  DOCS_BASE_URL + '/config/options_filerenaming_editor.html',
+    'documentation':           DOCS_BASE_URL + "/",
+    'troubleshooting':         DOCS_BASE_URL + "/troubleshooting/troubleshooting.html",
+    'doc_options':             DOCS_BASE_URL + "/config/configuration.html",
+    'doc_scripting':           DOCS_BASE_URL + "/extending/scripting.html",
+    'doc_tags_from_filenames': DOCS_BASE_URL + "/usage/tags_from_file_names.html",
+    'doc_naming_script_edit':  DOCS_BASE_URL + "/config/options_filerenaming_editor.html",
     'doc_cover_art_types':     "https://musicbrainz.org/doc/Cover_Art/Types",
     'plugins':                 "https://picard.musicbrainz.org/plugins/",
     'forum':                   "https://community.metabrainz.org/c/picard",
@@ -166,19 +166,19 @@ PROGRAM_UPDATE_LEVELS = OrderedDict(
         (
             0, {
                 'name': 'stable',
-                'title': N_('Stable releases only'),
+                'title': N_("Stable releases only"),
             }
         ),
         (
             1, {
                 'name': 'beta',
-                'title': N_('Stable and Beta releases'),
+                'title': N_("Stable and Beta releases"),
             }
         ),
         (
             2, {
                 'name': 'dev',
-                'title': N_('Stable, Beta and Dev releases'),
+                'title': N_("Stable, Beta and Dev releases"),
             }
         ),
     ]
@@ -197,7 +197,7 @@ DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/\n" \
 
 
 DEFAULT_SCRIPT_NAME = N_("My script")
-DEFAULT_COVER_IMAGE_FILENAME = "cover"
+DEFAULT_COVER_IMAGE_FILENAME = 'cover'
 DEFAULT_PROFILE_NAME = N_("My profile")
 DEFAULT_COPY_TEXT = N_("(copy)")
 DEFAULT_NUMBERED_TITLE_FORMAT = N_("{title} ({count})")

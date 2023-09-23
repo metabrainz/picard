@@ -60,7 +60,7 @@ if IS_WIN:
         import pywintypes
         import win32api
     except ImportError as e:
-        log.warning('pywin32 not available: %s', e)
+        log.warning("pywin32 not available: %s", e)
 
 
 def _get_utf16_length(text):

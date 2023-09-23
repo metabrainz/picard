@@ -133,7 +133,7 @@ class FileLookup(object):
         id = m.group('id')
         if entity != 'cdtoc':
             id = id.lower()
-        log.debug('Lookup for %s:%s', entity, id)
+        log.debug("Lookup for %s:%s", entity, id)
         if mbid_matched_callback:
             mbid_matched_callback(entity, id)
         if entity == 'release':
@@ -162,10 +162,10 @@ class FileLookup(object):
             'duration': duration,
             'filename': os.path.basename(filename),
         }
-        return self._build_launch('/taglookup', params)
+        return self._build_launch("/taglookup", params)
 
     def collection_lookup(self, userid):
-        return self._build_launch('/user/%s/collections' % userid)
+        return self._build_launch("/user/%s/collections" % userid)
 
     def search_entity(self, type_, query, adv=False, mbid_matched_callback=None, force_browser=False):
         if not force_browser and self.mbid_lookup(query, type_, mbid_matched_callback=mbid_matched_callback):
@@ -178,4 +178,4 @@ class FileLookup(object):
         }
         if adv:
             params['adv'] = 'on'
-        return self._build_launch('/search/textsearch', params)
+        return self._build_launch("/search/textsearch", params)

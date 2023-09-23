@@ -56,7 +56,7 @@ class ReleaseGroup(DataObject):
         self.refcount = 0
 
     def load_versions(self, callback):
-        kwargs = {"release-group": self.id, "limit": 100}
+        kwargs = {'release-group': self.id, 'limit': 100}
         self.tagger.mb_api.browse_releases(partial(self._request_finished, callback), **kwargs)
 
     def _parse_versions(self, document):
@@ -64,17 +64,17 @@ class ReleaseGroup(DataObject):
         del self.versions[:]
         data = []
 
-        namekeys = ("tracks", "year", "country", "format", "label", "catnum")
+        namekeys = ('tracks', 'year', 'country', 'format', 'label', 'catnum')
         headings = {
-            "tracks":   N_('Tracks'),
-            "year":     N_('Year'),
-            "country":  N_('Country'),
-            "format":   N_('Format'),
-            "label":    N_('Label'),
-            "catnum":   N_('Cat No'),
+            'tracks':   N_("Tracks"),
+            'year':     N_("Year"),
+            'country':  N_("Country"),
+            'format':   N_("Format"),
+            'label':    N_("Label"),
+            'catnum':   N_("Cat No"),
         }
         # additional keys displayed only for disambiguation
-        extrakeys = ("packaging", "barcode", "disambiguation")
+        extrakeys = ('packaging', 'barcode', 'disambiguation')
 
         try:
             releases = document['releases']
@@ -97,23 +97,23 @@ class ReleaseGroup(DataObject):
                 tracks = "+".join(str(m['track-count']) for m in node['media'])
             formats = []
             for medium in node['media']:
-                if "format" in medium:
+                if 'format' in medium:
                     formats.append(medium['format'])
             release = {
-                "id":      node['id'],
-                "year":    node['date'][:4] if "date" in node else "????",
-                "country": country_label,
-                "format":  media_formats_from_node(node['media']),
-                "label":  ", ".join(' '.join(x.split(' ')[:2]) for x in set(labels)),
-                "catnum": ", ".join(set(catnums)),
-                "tracks": tracks,
-                "barcode": node.get('barcode', '') or _('[no barcode]'),
-                "packaging": node.get('packaging', '') or '??',
-                "disambiguation": node.get('disambiguation', ''),
-                "_disambiguate_name": list(),
-                "totaltracks": sum(m['track-count'] for m in node['media']),
-                "countries": countries,
-                "formats": formats,
+                'id':      node['id'],
+                'year':    node['date'][:4] if 'date' in node else '????',
+                'country': country_label,
+                'format':  media_formats_from_node(node['media']),
+                'label':  ', '.join(' '.join(x.split(' ')[:2]) for x in set(labels)),
+                'catnum': ', '.join(set(catnums)),
+                'tracks': tracks,
+                'barcode': node.get('barcode', '') or _('[no barcode]'),
+                'packaging': node.get('packaging', '') or '??',
+                'disambiguation': node.get('disambiguation', ''),
+                '_disambiguate_name': list(),
+                'totaltracks': sum(m['track-count'] for m in node['media']),
+                'countries': countries,
+                'formats': formats,
             }
             data.append(release)
 
@@ -122,7 +122,7 @@ class ReleaseGroup(DataObject):
         # Group versions by same display name
         for release in data:
             name = " / ".join(release[k] for k in namekeys)
-            if name == release["tracks"]:
+            if name == release['tracks']:
                 name = "%s / %s" % (_('[no release info]'), name)
             versions[name].append(release)
 

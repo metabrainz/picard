@@ -102,7 +102,7 @@ class ExtensionPoint(object):
 
     def __iter__(self):
         config = get_config()
-        enabled_plugins = config.setting["enabled_plugins"] if config else []
+        enabled_plugins = config.setting['enabled_plugins'] if config else []
         for name in self.__dict:
             if name is None or name in enabled_plugins:
                 yield from self.__dict[name]
@@ -216,7 +216,7 @@ class PluginData(PluginShared):
         try:
             return super().__getattribute__(name)
         except AttributeError:
-            log.debug('Attribute %r not found for plugin %r', name, self.module_name)
+            log.debug("Attribute %r not found for plugin %r", name, self.module_name)
             return None
 
     @property

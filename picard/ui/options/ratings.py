@@ -37,18 +37,18 @@ from picard.ui.ui_options_ratings import Ui_RatingsOptionsPage
 
 class RatingsOptionsPage(OptionsPage):
 
-    NAME = "ratings"
+    NAME = 'ratings'
     TITLE = N_("Ratings")
-    PARENT = "metadata"
+    PARENT = 'metadata'
     SORT_ORDER = 20
     ACTIVE = True
-    HELP_URL = '/config/options_ratings.html'
+    HELP_URL = "/config/options_ratings.html"
 
     options = [
-        BoolOption("setting", "enable_ratings", False),
-        TextOption("setting", "rating_user_email", "users@musicbrainz.org"),
-        BoolOption("setting", "submit_ratings", True),
-        IntOption("setting", "rating_steps", 6),
+        BoolOption('setting', 'enable_ratings', False),
+        TextOption('setting', 'rating_user_email', 'users@musicbrainz.org'),
+        BoolOption('setting', 'submit_ratings', True),
+        IntOption('setting', 'rating_steps', 6),
     ]
 
     def __init__(self, parent=None):
@@ -58,15 +58,15 @@ class RatingsOptionsPage(OptionsPage):
 
     def load(self):
         config = get_config()
-        self.ui.enable_ratings.setChecked(config.setting["enable_ratings"])
-        self.ui.rating_user_email.setText(config.setting["rating_user_email"])
-        self.ui.submit_ratings.setChecked(config.setting["submit_ratings"])
+        self.ui.enable_ratings.setChecked(config.setting['enable_ratings'])
+        self.ui.rating_user_email.setText(config.setting['rating_user_email'])
+        self.ui.submit_ratings.setChecked(config.setting['submit_ratings'])
 
     def save(self):
         config = get_config()
-        config.setting["enable_ratings"] = self.ui.enable_ratings.isChecked()
-        config.setting["rating_user_email"] = self.ui.rating_user_email.text()
-        config.setting["submit_ratings"] = self.ui.submit_ratings.isChecked()
+        config.setting['enable_ratings'] = self.ui.enable_ratings.isChecked()
+        config.setting['rating_user_email'] = self.ui.rating_user_email.text()
+        config.setting['submit_ratings'] = self.ui.submit_ratings.isChecked()
 
 
 register_options_page(RatingsOptionsPage)

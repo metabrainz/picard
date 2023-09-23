@@ -121,12 +121,12 @@ def load_user_collections(callback=None):
                 echo=log.error
             )
             return
-        if document and "collections" in document:
+        if document and 'collections' in document:
             collection_list = document['collections']
             new_collections = set()
 
             for node in collection_list:
-                if node["entity-type"] != "release":
+                if node['entity-type'] != 'release':
                     continue
                 col_id = node['id']
                 col_name = node['name']
@@ -152,10 +152,10 @@ def load_user_collections(callback=None):
 def add_release_to_user_collections(release_node):
     """Add album to collections"""
     # Check for empy collection list
-    if "collections" in release_node:
+    if 'collections' in release_node:
         release_id = release_node['id']
         config = get_config()
-        username = config.persist["oauth_username"].lower()
+        username = config.persist['oauth_username'].lower()
         for node in release_node['collections']:
             if node['editor'].lower() == username:
                 col_id = node['id']

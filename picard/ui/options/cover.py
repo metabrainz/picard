@@ -48,22 +48,22 @@ from picard.ui.util import qlistwidget_items
 
 class CoverOptionsPage(OptionsPage):
 
-    NAME = "cover"
+    NAME = 'cover'
     TITLE = N_("Cover Art")
     PARENT = None
     SORT_ORDER = 35
     ACTIVE = True
-    HELP_URL = '/config/options_cover.html'
+    HELP_URL = "/config/options_cover.html"
 
     options = [
-        BoolOption("setting", "save_images_to_tags", True),
-        BoolOption("setting", "embed_only_one_front_image", True),
-        BoolOption("setting", "save_images_to_files", False),
-        TextOption("setting", "cover_image_filename", DEFAULT_COVER_IMAGE_FILENAME),
-        BoolOption("setting", "save_images_overwrite", False),
-        BoolOption("setting", "save_only_one_front_image", False),
-        BoolOption("setting", "image_type_as_filename", False),
-        ListOption("setting", "ca_providers", [
+        BoolOption('setting', 'save_images_to_tags', True),
+        BoolOption('setting', 'embed_only_one_front_image', True),
+        BoolOption('setting', 'save_images_to_files', False),
+        TextOption('setting', 'cover_image_filename', DEFAULT_COVER_IMAGE_FILENAME),
+        BoolOption('setting', 'save_images_overwrite', False),
+        BoolOption('setting', 'save_only_one_front_image', False),
+        BoolOption('setting', 'image_type_as_filename', False),
+        ListOption('setting', 'ca_providers', [
             ('Cover Art Archive', True),
             ('UrlRelationships', True),
             ('CaaReleaseGroup', True),
@@ -97,13 +97,13 @@ class CoverOptionsPage(OptionsPage):
 
     def load(self):
         config = get_config()
-        self.ui.save_images_to_tags.setChecked(config.setting["save_images_to_tags"])
-        self.ui.cb_embed_front_only.setChecked(config.setting["embed_only_one_front_image"])
-        self.ui.save_images_to_files.setChecked(config.setting["save_images_to_files"])
-        self.ui.cover_image_filename.setText(config.setting["cover_image_filename"])
-        self.ui.save_images_overwrite.setChecked(config.setting["save_images_overwrite"])
-        self.ui.save_only_one_front_image.setChecked(config.setting["save_only_one_front_image"])
-        self.ui.image_type_as_filename.setChecked(config.setting["image_type_as_filename"])
+        self.ui.save_images_to_tags.setChecked(config.setting['save_images_to_tags'])
+        self.ui.cb_embed_front_only.setChecked(config.setting['embed_only_one_front_image'])
+        self.ui.save_images_to_files.setChecked(config.setting['save_images_to_files'])
+        self.ui.cover_image_filename.setText(config.setting['cover_image_filename'])
+        self.ui.save_images_overwrite.setChecked(config.setting['save_images_overwrite'])
+        self.ui.save_only_one_front_image.setChecked(config.setting['save_only_one_front_image'])
+        self.ui.image_type_as_filename.setChecked(config.setting['image_type_as_filename'])
         self._load_cover_art_providers()
         self.ui.ca_providers_list.setCurrentRow(0)
         self.update_ca_providers_groupbox_state()
@@ -114,14 +114,14 @@ class CoverOptionsPage(OptionsPage):
 
     def save(self):
         config = get_config()
-        config.setting["save_images_to_tags"] = self.ui.save_images_to_tags.isChecked()
-        config.setting["embed_only_one_front_image"] = self.ui.cb_embed_front_only.isChecked()
-        config.setting["save_images_to_files"] = self.ui.save_images_to_files.isChecked()
-        config.setting["cover_image_filename"] = self.ui.cover_image_filename.text()
-        config.setting["save_images_overwrite"] = self.ui.save_images_overwrite.isChecked()
-        config.setting["save_only_one_front_image"] = self.ui.save_only_one_front_image.isChecked()
-        config.setting["image_type_as_filename"] = self.ui.image_type_as_filename.isChecked()
-        config.setting["ca_providers"] = list(self._ca_providers())
+        config.setting['save_images_to_tags'] = self.ui.save_images_to_tags.isChecked()
+        config.setting['embed_only_one_front_image'] = self.ui.cb_embed_front_only.isChecked()
+        config.setting['save_images_to_files'] = self.ui.save_images_to_files.isChecked()
+        config.setting['cover_image_filename'] = self.ui.cover_image_filename.text()
+        config.setting['save_images_overwrite'] = self.ui.save_images_overwrite.isChecked()
+        config.setting['save_only_one_front_image'] = self.ui.save_only_one_front_image.isChecked()
+        config.setting['image_type_as_filename'] = self.ui.image_type_as_filename.isChecked()
+        config.setting['ca_providers'] = list(self._ca_providers())
 
     def update_ca_providers_groupbox_state(self):
         files_enabled = self.ui.save_images_to_files.isChecked()

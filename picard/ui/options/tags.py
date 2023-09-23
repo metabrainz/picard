@@ -43,22 +43,22 @@ from picard.ui.ui_options_tags import Ui_TagsOptionsPage
 
 class TagsOptionsPage(OptionsPage):
 
-    NAME = "tags"
+    NAME = 'tags'
     TITLE = N_("Tags")
     PARENT = None
     SORT_ORDER = 30
     ACTIVE = True
-    HELP_URL = '/config/options_tags.html'
+    HELP_URL = "/config/options_tags.html"
 
     options = [
-        BoolOption("setting", "dont_write_tags", False),
-        BoolOption("setting", "preserve_timestamps", False),
-        BoolOption("setting", "clear_existing_tags", False),
-        BoolOption("setting", "preserve_images", False),
-        BoolOption("setting", "remove_id3_from_flac", False),
-        BoolOption("setting", "remove_ape_from_mp3", False),
-        BoolOption("setting", "fix_missing_seekpoints_flac", False),
-        ListOption("setting", "preserved_tags", []),
+        BoolOption('setting', 'dont_write_tags', False),
+        BoolOption('setting', 'preserve_timestamps', False),
+        BoolOption('setting', 'clear_existing_tags', False),
+        BoolOption('setting', 'preserve_images', False),
+        BoolOption('setting', 'remove_id3_from_flac', False),
+        BoolOption('setting', 'remove_ape_from_mp3', False),
+        BoolOption('setting', 'fix_missing_seekpoints_flac', False),
+        ListOption('setting', 'preserved_tags', []),
     ]
 
     def __init__(self, parent=None):
@@ -68,30 +68,30 @@ class TagsOptionsPage(OptionsPage):
 
     def load(self):
         config = get_config()
-        self.ui.write_tags.setChecked(not config.setting["dont_write_tags"])
-        self.ui.preserve_timestamps.setChecked(config.setting["preserve_timestamps"])
-        self.ui.clear_existing_tags.setChecked(config.setting["clear_existing_tags"])
-        self.ui.preserve_images.setChecked(config.setting["preserve_images"])
-        self.ui.remove_ape_from_mp3.setChecked(config.setting["remove_ape_from_mp3"])
-        self.ui.remove_id3_from_flac.setChecked(config.setting["remove_id3_from_flac"])
-        self.ui.fix_missing_seekpoints_flac.setChecked(config.setting["fix_missing_seekpoints_flac"])
-        self.ui.preserved_tags.update(config.setting["preserved_tags"])
+        self.ui.write_tags.setChecked(not config.setting['dont_write_tags'])
+        self.ui.preserve_timestamps.setChecked(config.setting['preserve_timestamps'])
+        self.ui.clear_existing_tags.setChecked(config.setting['clear_existing_tags'])
+        self.ui.preserve_images.setChecked(config.setting['preserve_images'])
+        self.ui.remove_ape_from_mp3.setChecked(config.setting['remove_ape_from_mp3'])
+        self.ui.remove_id3_from_flac.setChecked(config.setting['remove_id3_from_flac'])
+        self.ui.fix_missing_seekpoints_flac.setChecked(config.setting['fix_missing_seekpoints_flac'])
+        self.ui.preserved_tags.update(config.setting['preserved_tags'])
         self.ui.preserved_tags.set_user_sortable(False)
 
     def save(self):
         config = get_config()
-        config.setting["dont_write_tags"] = not self.ui.write_tags.isChecked()
-        config.setting["preserve_timestamps"] = self.ui.preserve_timestamps.isChecked()
+        config.setting['dont_write_tags'] = not self.ui.write_tags.isChecked()
+        config.setting['preserve_timestamps'] = self.ui.preserve_timestamps.isChecked()
         clear_existing_tags = self.ui.clear_existing_tags.isChecked()
-        if clear_existing_tags != config.setting["clear_existing_tags"]:
-            config.setting["clear_existing_tags"] = clear_existing_tags
+        if clear_existing_tags != config.setting['clear_existing_tags']:
+            config.setting['clear_existing_tags'] = clear_existing_tags
             self.tagger.window.metadata_box.update()
-        config.setting["preserve_images"] = self.ui.preserve_images.isChecked()
-        config.setting["remove_ape_from_mp3"] = self.ui.remove_ape_from_mp3.isChecked()
-        config.setting["remove_id3_from_flac"] = self.ui.remove_id3_from_flac.isChecked()
-        config.setting["fix_missing_seekpoints_flac"] = self.ui.fix_missing_seekpoints_flac.isChecked()
-        config.setting["preserved_tags"] = list(self.ui.preserved_tags.tags)
-        self.tagger.window.enable_tag_saving_action.setChecked(not config.setting["dont_write_tags"])
+        config.setting['preserve_images'] = self.ui.preserve_images.isChecked()
+        config.setting['remove_ape_from_mp3'] = self.ui.remove_ape_from_mp3.isChecked()
+        config.setting['remove_id3_from_flac'] = self.ui.remove_id3_from_flac.isChecked()
+        config.setting['fix_missing_seekpoints_flac'] = self.ui.fix_missing_seekpoints_flac.isChecked()
+        config.setting['preserved_tags'] = list(self.ui.preserved_tags.tags)
+        self.tagger.window.enable_tag_saving_action.setChecked(not config.setting['dont_write_tags'])
 
 
 register_options_page(TagsOptionsPage)

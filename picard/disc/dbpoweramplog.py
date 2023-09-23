@@ -43,7 +43,7 @@ def filter_toc_entries(lines):
         if m:
             track_num = int(m['num'])
             if last_track_num + 1 != track_num:
-                raise NotSupportedTOCError(f'Non consecutive track numbers ({last_track_num} => {track_num}) in dBPoweramp log. Likely a partial rip, disc ID cannot be calculated')
+                raise NotSupportedTOCError(f"Non consecutive track numbers ({last_track_num} => {track_num}) in dBPoweramp log. Likely a partial rip, disc ID cannot be calculated")
             last_track_num = track_num
             yield TocEntry(track_num, int(m['start_sector']), int(m['end_sector'])-1)
 

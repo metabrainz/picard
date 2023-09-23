@@ -146,7 +146,7 @@ class InfoDialog(PicardDialog):
 
         # Add the ArtworkTable to the ui
         self.ui.artwork_table = ArtworkTable(self.display_existing_artwork)
-        self.ui.artwork_table.setObjectName("artwork_table")
+        self.ui.artwork_table.setObjectName('artwork_table')
         self.ui.artwork_tab.layout().addWidget(self.ui.artwork_table)
         self.setTabOrder(self.ui.tabWidget, self.ui.artwork_table)
         self.setTabOrder(self.ui.artwork_table, self.ui.buttonBox)
@@ -168,7 +168,7 @@ class InfoDialog(PicardDialog):
 
     def _show_errors(self, errors):
         if errors:
-            color = interface_colors.get_color("log_error")
+            color = interface_colors.get_color('log_error')
             text = '<br />'.join(map(
                 lambda s: '<font color="%s">%s</font>' % (color, text_as_html(s)), errors))
             self.ui.error.setText(text + '<hr />')
@@ -283,38 +283,38 @@ class InfoDialog(PicardDialog):
 
 def format_file_info(file_):
     info = []
-    info.append((_('Filename:'), file_.filename))
+    info.append((_("Filename:"), file_.filename))
     if '~format' in file_.orig_metadata:
-        info.append((_('Format:'), file_.orig_metadata['~format']))
+        info.append((_("Format:"), file_.orig_metadata['~format']))
     try:
         size = os.path.getsize(encode_filename(file_.filename))
         sizestr = "%s (%s)" % (bytes2human.decimal(size), bytes2human.binary(size))
-        info.append((_('Size:'), sizestr))
+        info.append((_("Size:"), sizestr))
     except BaseException:
         pass
     if file_.orig_metadata.length:
-        info.append((_('Length:'), format_time(file_.orig_metadata.length)))
+        info.append((_("Length:"), format_time(file_.orig_metadata.length)))
     if '~bitrate' in file_.orig_metadata:
-        info.append((_('Bitrate:'), '%s kbps' % file_.orig_metadata['~bitrate']))
+        info.append((_("Bitrate:"), "%s kbps" % file_.orig_metadata['~bitrate']))
     if '~sample_rate' in file_.orig_metadata:
-        info.append((_('Sample rate:'), '%s Hz' % file_.orig_metadata['~sample_rate']))
+        info.append((_("Sample rate:"), "%s Hz" % file_.orig_metadata['~sample_rate']))
     if '~bits_per_sample' in file_.orig_metadata:
-        info.append((_('Bits per sample:'), str(file_.orig_metadata['~bits_per_sample'])))
+        info.append((_("Bits per sample:"), str(file_.orig_metadata['~bits_per_sample'])))
     if '~channels' in file_.orig_metadata:
         ch = file_.orig_metadata['~channels']
         if ch == '1':
-            ch = _('Mono')
+            ch = _("Mono")
         elif ch == '2':
-            ch = _('Stereo')
-        info.append((_('Channels:'), ch))
+            ch = _("Stereo")
+        info.append((_("Channels:"), ch))
     return '<br/>'.join(map(lambda i: '<b>%s</b> %s' %
                             (escape(i[0]), escape(i[1])), info))
 
 
 def format_tracklist(cluster):
     info = []
-    info.append("<b>%s</b> %s" % (_('Album:'), escape(cluster.metadata["album"])))
-    info.append("<b>%s</b> %s" % (_('Artist:'), escape(cluster.metadata["albumartist"])))
+    info.append('<b>%s</b> %s' % (_("Album:"), escape(cluster.metadata['album'])))
+    info.append('<b>%s</b> %s' % (_("Artist:"), escape(cluster.metadata['albumartist'])))
     info.append("")
     TrackListItem = namedtuple('TrackListItem', 'number, title, artist, length')
     tracklists = defaultdict(list)
@@ -324,9 +324,9 @@ def format_tracklist(cluster):
         objlist = cluster.iterfiles(False)
     for obj_ in objlist:
         m = obj_.metadata
-        artist = m["artist"] or m["albumartist"] or cluster.metadata["albumartist"]
-        track = TrackListItem(m["tracknumber"], m["title"], artist,
-                              m["~length"])
+        artist = m['artist'] or m['albumartist'] or cluster.metadata['albumartist']
+        track = TrackListItem(m['tracknumber'], m['title'], artist,
+                              m['~length'])
         tracklists[obj_.discnumber].append(track)
 
     def sorttracknum(track):
@@ -344,9 +344,9 @@ def format_tracklist(cluster):
     for discnumber in sorted(tracklists):
         tracklist = tracklists[discnumber]
         if ndiscs > 1:
-            info.append("<b>%s</b>" % (_('Disc %d') % discnumber))
-        lines = ["%s %s - %s (%s)" % item for item in sorted(tracklist, key=sorttracknum)]
-        info.append("<b>%s</b><br />%s<br />" % (_('Tracklist:'),
+            info.append('<b>%s</b>' % (_("Disc %d") % discnumber))
+        lines = ['%s %s - %s (%s)' % item for item in sorted(tracklist, key=sorttracknum)]
+        info.append('<b>%s</b><br />%s<br />' % (_("Tracklist:"),
                     '<br />'.join(escape(s).replace(' ', '&nbsp;') for s in lines)))
     return '<br/>'.join(info)
 

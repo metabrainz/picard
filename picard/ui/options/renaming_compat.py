@@ -64,19 +64,19 @@ DEFAULT_REPLACEMENT = '_'
 
 class RenamingCompatOptionsPage(OptionsPage):
 
-    NAME = "filerenaming_compat"
+    NAME = 'filerenaming_compat'
     TITLE = N_("Compatibility")
-    PARENT = "filerenaming"
+    PARENT = 'filerenaming'
     ACTIVE = True
-    HELP_URL = '/config/options_filerenaming_compat.html'
+    HELP_URL = "/config/options_filerenaming_compat.html"
 
     options = [
-        BoolOption("setting", "windows_compatibility", True),
-        BoolOption("setting", "windows_long_paths", system_supports_long_paths() if IS_WIN else False),
-        BoolOption("setting", "ascii_filenames", False),
-        BoolOption("setting", "replace_spaces_with_underscores", False),
-        TextOption("setting", "replace_dir_separator", DEFAULT_REPLACEMENT),
-        Option("setting", "win_compat_replacements", {
+        BoolOption('setting', 'windows_compatibility', True),
+        BoolOption('setting', 'windows_long_paths', system_supports_long_paths() if IS_WIN else False),
+        BoolOption('setting', 'ascii_filenames', False),
+        BoolOption('setting', 'replace_spaces_with_underscores', False),
+        TextOption('setting', 'replace_dir_separator', DEFAULT_REPLACEMENT),
+        Option('setting', 'win_compat_replacements', {
             '*': DEFAULT_REPLACEMENT,
             ':': DEFAULT_REPLACEMENT,
             '<': DEFAULT_REPLACEMENT,
@@ -92,7 +92,7 @@ class RenamingCompatOptionsPage(OptionsPage):
     def __init__(self, parent=None):
         super().__init__(parent)
         config = get_config()
-        self.win_compat_replacements = config.setting["win_compat_replacements"]
+        self.win_compat_replacements = config.setting['win_compat_replacements']
         self.ui = Ui_RenamingCompatOptionsPage()
         self.ui.setupUi(self)
         self.ui.ascii_filenames.toggled.connect(self.on_options_changed)
@@ -104,7 +104,7 @@ class RenamingCompatOptionsPage(OptionsPage):
 
     def load(self):
         config = get_config()
-        self.win_compat_replacements = config.setting["win_compat_replacements"]
+        self.win_compat_replacements = config.setting['win_compat_replacements']
         try:
             self.ui.windows_long_paths.toggled.disconnect(self.toggle_windows_long_paths)
         except TypeError:
@@ -113,11 +113,11 @@ class RenamingCompatOptionsPage(OptionsPage):
             self.ui.windows_compatibility.setChecked(True)
             self.ui.windows_compatibility.setEnabled(False)
         else:
-            self.ui.windows_compatibility.setChecked(config.setting["windows_compatibility"])
-        self.ui.windows_long_paths.setChecked(config.setting["windows_long_paths"])
-        self.ui.ascii_filenames.setChecked(config.setting["ascii_filenames"])
-        self.ui.replace_spaces_with_underscores.setChecked(config.setting["replace_spaces_with_underscores"])
-        self.ui.replace_dir_separator.setText(config.setting["replace_dir_separator"])
+            self.ui.windows_compatibility.setChecked(config.setting['windows_compatibility'])
+        self.ui.windows_long_paths.setChecked(config.setting['windows_long_paths'])
+        self.ui.ascii_filenames.setChecked(config.setting['ascii_filenames'])
+        self.ui.replace_spaces_with_underscores.setChecked(config.setting['replace_spaces_with_underscores'])
+        self.ui.replace_dir_separator.setText(config.setting['replace_dir_separator'])
         self.ui.windows_long_paths.toggled.connect(self.toggle_windows_long_paths)
 
     def save(self):
@@ -130,11 +130,11 @@ class RenamingCompatOptionsPage(OptionsPage):
         if state and not system_supports_long_paths():
             dialog = QtWidgets.QMessageBox(
                 QtWidgets.QMessageBox.Icon.Information,
-                _('Windows long path support'),
+                _("Windows long path support"),
                 _(
-                    'Enabling long paths on Windows might cause files being saved with path names '
-                    'exceeding the 259 character limit traditionally imposed by the Windows API. '
-                    'Some software might not be able to properly access those files.'
+                    "Enabling long paths on Windows might cause files being saved with path names "
+                    "exceeding the 259 character limit traditionally imposed by the Windows API. "
+                    "Some software might not be able to properly access those files."
                 ),
                 QtWidgets.QMessageBox.StandardButton.Ok,
                 self)

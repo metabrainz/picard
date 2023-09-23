@@ -264,7 +264,7 @@ class AcoustIDClient(QtCore.QObject):
         # long path support is enabled. Ensure the path is properly prefixed.
         if IS_WIN:
             file_path = win_prefix_longpath(file_path)
-        process.start(self._fpcalc, ["-json", "-length", "120", file_path])
+        process.start(self._fpcalc, ['-json', '-length', '120', file_path])
         log.debug("Starting fingerprint calculator %r %r", self._fpcalc, task.file.filename)
 
     def analyze(self, file, next_func):
@@ -273,7 +273,7 @@ class AcoustIDClient(QtCore.QObject):
 
         config = get_config()
         fingerprint = task.file.acoustid_fingerprint
-        if not fingerprint and not config.setting["ignore_existing_acoustid_fingerprints"]:
+        if not fingerprint and not config.setting['ignore_existing_acoustid_fingerprints']:
             # use cached fingerprint from file metadata
             fingerprints = task.file.metadata.getall('acoustid_fingerprint')
             if fingerprints:

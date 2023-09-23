@@ -93,7 +93,7 @@ class Disc(QtCore.QObject):
     @property
     def submission_url(self):
         if self.id and self.tracks and self.toc_string:
-            return build_submission_url('/cdtoc/attach', query_args={
+            return build_submission_url("/cdtoc/attach", query_args={
                 'id': self.id,
                 'tracks': self.tracks,
                 'toc': self.toc_string.replace(' ', '+'),

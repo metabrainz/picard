@@ -39,17 +39,17 @@ from picard.ui.ui_options_tags_compatibility_wave import (
 
 class TagsCompatibilityWaveOptionsPage(OptionsPage):
 
-    NAME = "tags_compatibility_wave"
+    NAME = 'tags_compatibility_wave'
     TITLE = N_("WAVE")
-    PARENT = "tags"
+    PARENT = 'tags'
     SORT_ORDER = 60
     ACTIVE = True
-    HELP_URL = '/config/options_tags_compatibility_wave.html'
+    HELP_URL = "/config/options_tags_compatibility_wave.html"
 
     options = [
-        BoolOption("setting", "write_wave_riff_info", True),
-        BoolOption("setting", "remove_wave_riff_info", False),
-        TextOption("setting", "wave_riff_info_encoding", "windows-1252"),
+        BoolOption('setting', 'write_wave_riff_info', True),
+        BoolOption('setting', 'remove_wave_riff_info', False),
+        TextOption('setting', 'wave_riff_info_encoding', 'windows-1252'),
     ]
 
     def __init__(self, parent=None):
@@ -59,21 +59,21 @@ class TagsCompatibilityWaveOptionsPage(OptionsPage):
 
     def load(self):
         config = get_config()
-        self.ui.write_wave_riff_info.setChecked(config.setting["write_wave_riff_info"])
-        self.ui.remove_wave_riff_info.setChecked(config.setting["remove_wave_riff_info"])
-        if config.setting["wave_riff_info_encoding"] == "utf-8":
+        self.ui.write_wave_riff_info.setChecked(config.setting['write_wave_riff_info'])
+        self.ui.remove_wave_riff_info.setChecked(config.setting['remove_wave_riff_info'])
+        if config.setting['wave_riff_info_encoding'] == 'utf-8':
             self.ui.wave_riff_info_enc_utf8.setChecked(True)
         else:
             self.ui.wave_riff_info_enc_cp1252.setChecked(True)
 
     def save(self):
         config = get_config()
-        config.setting["write_wave_riff_info"] = self.ui.write_wave_riff_info.isChecked()
-        config.setting["remove_wave_riff_info"] = self.ui.remove_wave_riff_info.isChecked()
+        config.setting['write_wave_riff_info'] = self.ui.write_wave_riff_info.isChecked()
+        config.setting['remove_wave_riff_info'] = self.ui.remove_wave_riff_info.isChecked()
         if self.ui.wave_riff_info_enc_utf8.isChecked():
-            config.setting["wave_riff_info_encoding"] = "utf-8"
+            config.setting['wave_riff_info_encoding'] = 'utf-8'
         else:
-            config.setting["wave_riff_info_encoding"] = "windows-1252"
+            config.setting['wave_riff_info_encoding'] = 'windows-1252'
 
 
 if WAVFile.supports_tag('artist'):

@@ -129,8 +129,8 @@ elif not (IS_MACOS or IS_HAIKU):
             @property
             def current_progress(self):
                 return {
-                    "progress": self._progress,
-                    "progress-visible": self._visible,
+                    'progress': self._progress,
+                    'progress-visible': self._visible,
                 }
 
             @property

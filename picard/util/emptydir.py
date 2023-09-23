@@ -84,8 +84,8 @@ def rm_empty_dir(path):
                        or considered a special directory.
     """
     if os.path.realpath(path) in PROTECTED_DIRECTORIES:
-        raise SkipRemoveDir('%s is a protected directory' % path)
+        raise SkipRemoveDir("%s is a protected directory" % path)
     elif not is_empty_dir(path):
-        raise SkipRemoveDir('%s is not empty' % path)
+        raise SkipRemoveDir("%s is not empty" % path)
     else:
         shutil.rmtree(path)

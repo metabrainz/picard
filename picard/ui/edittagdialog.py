@@ -66,9 +66,9 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
             editor = super().createEditor(parent, option, index)
         completer = None
         if tag in {'date', 'originaldate', 'releasedate'}:
-            editor.setPlaceholderText(_('YYYY-MM-DD'))
+            editor.setPlaceholderText(_("YYYY-MM-DD"))
         elif tag == 'originalyear':
-            editor.setPlaceholderText(_('YYYY'))
+            editor.setPlaceholderText(_("YYYY"))
         elif tag == 'releasetype':
             completer = QtWidgets.QCompleter(AUTOCOMPLETE_RELEASE_TYPES, editor)
         elif tag == 'releasestatus':

@@ -253,18 +253,18 @@ class Metadata(MutableMapping):
         parts = []
 
         with self._lock.lock_for_read():
-            if "album" in self and "album" in weights:
+            if 'album' in self and 'album' in weights:
                 b = release['title']
-                parts.append((similarity2(self["album"], b), weights["album"]))
+                parts.append((similarity2(self['album'], b), weights['album']))
 
-            if "albumartist" in self and "albumartist" in weights:
-                a = self["albumartist"]
+            if 'albumartist' in self and 'albumartist' in weights:
+                a = self['albumartist']
                 b = artist_credit_from_node(release['artist-credit'])[0]
-                parts.append((similarity2(a, b), weights["albumartist"]))
+                parts.append((similarity2(a, b), weights['albumartist']))
 
-            if "totaltracks" in weights:
+            if 'totaltracks' in weights:
                 try:
-                    a = int(self["totaltracks"])
+                    a = int(self['totaltracks'])
                     if 'media' in release:
                         score = 0.0
                         for media in release['media']:
@@ -275,25 +275,25 @@ class Metadata(MutableMapping):
                     else:
                         b = release['track-count']
                         score = trackcount_score(a, b)
-                    parts.append((score, weights["totaltracks"]))
+                    parts.append((score, weights['totaltracks']))
                 except (ValueError, KeyError):
                     pass
 
-            if "totalalbumtracks" in weights:
+            if 'totalalbumtracks' in weights:
                 try:
-                    a = int(self["~totalalbumtracks"] or self["totaltracks"])
+                    a = int(self['~totalalbumtracks'] or self['totaltracks'])
                     b = release['track-count']
                     score = trackcount_score(a, b)
-                    parts.append((score, weights["totalalbumtracks"]))
+                    parts.append((score, weights['totalalbumtracks']))
                 except (ValueError, KeyError):
                     pass
 
             # Date Logic
             date_match_factor = 0.0
-            if "date" in weights:
-                if "date" in release and release['date'] != '':
+            if 'date' in weights:
+                if 'date' in release and release['date'] != '':
                     release_date = release['date']
-                    if "date" in self:
+                    if 'date' in self:
                         metadata_date = self['date']
                         if release_date == metadata_date:
                             # release has a date and it matches what our metadata had exactly.
@@ -326,20 +326,20 @@ class Metadata(MutableMapping):
                 parts.append((date_match_factor, weights['date']))
 
         config = get_config()
-        if "releasecountry" in weights:
+        if 'releasecountry' in weights:
             weights_from_preferred_countries(parts, release,
-                                             config.setting["preferred_release_countries"],
-                                             weights["releasecountry"])
+                                             config.setting['preferred_release_countries'],
+                                             weights['releasecountry'])
 
-        if "format" in weights:
+        if 'format' in weights:
             weights_from_preferred_formats(parts, release,
-                                           config.setting["preferred_release_formats"],
-                                           weights["format"])
+                                           config.setting['preferred_release_formats'],
+                                           weights['format'])
 
-        if "releasetype" in weights:
+        if 'releasetype' in weights:
             weights_from_release_type_scores(parts, release,
-                                             config.setting["release_type_scores"],
-                                             weights["releasetype"])
+                                             config.setting['release_type_scores'],
+                                             weights['releasetype'])
 
         rg = QObject.tagger.get_release_group_by_id(release['release-group']['id'])
         if release['id'] in rg.loaded_albums:

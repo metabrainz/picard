@@ -83,7 +83,7 @@ _CAA_IMAGE_TYPE_DEFAULT_INCLUDE = ['front']
 _CAA_IMAGE_TYPE_DEFAULT_EXCLUDE = ['matrix/runout', 'raw/unedited', 'watermark']
 
 ratecontrol.set_minimum_delay_for_url(CAA_URL, 0)
-ratecontrol.set_minimum_delay_for_url('https://archive.org', 0)
+ratecontrol.set_minimum_delay_for_url("https://archive.org", 0)
 
 
 def caa_url_fallback_list(desired_size, thumbnails):
@@ -118,14 +118,14 @@ class ProviderOptionsCaa(ProviderOptions):
     """
 
     TITLE = N_("Cover Art Archive")
-    HELP_URL = '/config/options_cover_art_archive.html'
+    HELP_URL = "/config/options_cover_art_archive.html"
 
     options = [
-        BoolOption("setting", "caa_approved_only", False),
-        IntOption("setting", "caa_image_size", _CAA_IMAGE_SIZE_DEFAULT),
-        ListOption("setting", "caa_image_types", _CAA_IMAGE_TYPE_DEFAULT_INCLUDE),
-        BoolOption("setting", "caa_restrict_image_types", True),
-        ListOption("setting", "caa_image_types_to_omit", _CAA_IMAGE_TYPE_DEFAULT_EXCLUDE),
+        BoolOption('setting', 'caa_approved_only', False),
+        IntOption('setting', 'caa_image_size', _CAA_IMAGE_SIZE_DEFAULT),
+        ListOption('setting', 'caa_image_types', _CAA_IMAGE_TYPE_DEFAULT_INCLUDE),
+        BoolOption('setting', 'caa_restrict_image_types', True),
+        ListOption('setting', 'caa_image_types_to_omit', _CAA_IMAGE_TYPE_DEFAULT_EXCLUDE),
     ]
 
     _options_ui = Ui_CaaOptions
@@ -146,29 +146,29 @@ class ProviderOptionsCaa(ProviderOptions):
             self.ui.cb_image_size.addItem(_(item.label), userData=item_id)
 
         config = get_config()
-        size = config.setting["caa_image_size"]
+        size = config.setting['caa_image_size']
         index = self.ui.cb_image_size.findData(size)
         if index < 0:
             index = self.ui.cb_image_size.findData(_CAA_IMAGE_SIZE_DEFAULT)
         self.ui.cb_image_size.setCurrentIndex(index)
 
-        self.ui.cb_approved_only.setChecked(config.setting["caa_approved_only"])
+        self.ui.cb_approved_only.setChecked(config.setting['caa_approved_only'])
         self.ui.restrict_images_types.setChecked(
-            config.setting["caa_restrict_image_types"])
-        self.caa_image_types = config.setting["caa_image_types"]
-        self.caa_image_types_to_omit = config.setting["caa_image_types_to_omit"]
+            config.setting['caa_restrict_image_types'])
+        self.caa_image_types = config.setting['caa_image_types']
+        self.caa_image_types_to_omit = config.setting['caa_image_types_to_omit']
         self.update_caa_types()
 
     def save(self):
         config = get_config()
         size = self.ui.cb_image_size.currentData()
-        config.setting["caa_image_size"] = size
-        config.setting["caa_approved_only"] = \
+        config.setting['caa_image_size'] = size
+        config.setting['caa_approved_only'] = \
             self.ui.cb_approved_only.isChecked()
-        config.setting["caa_restrict_image_types"] = \
+        config.setting['caa_restrict_image_types'] = \
             self.ui.restrict_images_types.isChecked()
-        config.setting["caa_image_types"] = self.caa_image_types
-        config.setting["caa_image_types_to_omit"] = self.caa_image_types_to_omit
+        config.setting['caa_image_types'] = self.caa_image_types
+        config.setting['caa_image_types_to_omit'] = self.caa_image_types_to_omit
 
     def update_caa_types(self):
         enabled = self.ui.restrict_images_types.isChecked()
@@ -194,7 +194,7 @@ class CoverArtProviderCaa(CoverArtProvider):
     """Get cover art from Cover Art Archive using release mbid"""
 
     NAME = "Cover Art Archive"
-    TITLE = N_('Cover Art Archive: Release')
+    TITLE = N_("Cover Art Archive: Release")
     OPTIONS = ProviderOptionsCaa
 
     ignore_json_not_found_error = False
@@ -215,14 +215,14 @@ class CoverArtProviderCaa(CoverArtProvider):
         # MB web service indicates if CAA has artwork
         # https://tickets.metabrainz.org/browse/MBS-4536
         if 'cover-art-archive' not in self.release:
-            log.debug('No Cover Art Archive information for %s', self.release['id'])
+            log.debug("No Cover Art Archive information for %s", self.release['id'])
             return False
 
         caa_node = self.release['cover-art-archive']
         caa_has_suitable_artwork = caa_node['artwork']
 
         if not caa_has_suitable_artwork:
-            log.debug('There are no images in the Cover Art Archive for %s', self.release['id'])
+            log.debug("There are no images in the Cover Art Archive for %s", self.release['id'])
             return False
 
         if self.restrict_types:
@@ -251,9 +251,9 @@ class CoverArtProviderCaa(CoverArtProvider):
                 caa_has_suitable_artwork = front_in_caa or back_in_caa
 
         if not caa_has_suitable_artwork:
-            log.debug('There are no suitable images in the Cover Art Archive for %s', self.release['id'])
+            log.debug("There are no suitable images in the Cover Art Archive for %s", self.release['id'])
         else:
-            log.debug('There are suitable images in the Cover Art Archive for %s', self.release['id'])
+            log.debug("There are suitable images in the Cover Art Archive for %s", self.release['id'])
 
         return caa_has_suitable_artwork
 
@@ -262,13 +262,13 @@ class CoverArtProviderCaa(CoverArtProvider):
         if not super().enabled():
             return False
         if self.restrict_types and not self.included_types_count:
-            log.debug('User disabled all Cover Art Archive types')
+            log.debug("User disabled all Cover Art Archive types")
             return False
         return self._has_suitable_artwork
 
     @property
     def _caa_path(self):
-        return "/release/%s/" % self.metadata["musicbrainz_albumid"]
+        return "/release/%s/" % self.metadata['musicbrainz_albumid']
 
     def queue_images(self):
         self.album.tagger.webservice.get_url(
@@ -287,10 +287,10 @@ class CoverArtProviderCaa(CoverArtProvider):
         self.album._requests -= 1
         if error:
             if not (error == QNetworkReply.NetworkError.ContentNotFoundError and self.ignore_json_not_found_error):
-                self.error('CAA JSON error: %s' % (http.errorString()))
+                self.error("CAA JSON error: %s" % (http.errorString()))
         else:
             if self.restrict_types:
-                log.debug('CAA types: included: %s, excluded: %s', self.included_types, self.excluded_types)
+                log.debug("CAA types: included: %s, excluded: %s", self.included_types, self.excluded_types)
             try:
                 config = get_config()
                 for image in data['images']:
@@ -298,7 +298,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                         continue
                     is_pdf = image['image'].endswith('.pdf')
                     if is_pdf and not config.setting['save_images_to_files']:
-                        log.debug("Skipping pdf cover art : %s", image["image"])
+                        log.debug("Skipping pdf cover art : %s", image['image'])
                         continue
                     # if image has no type set, we still want it to match
                     # pseudo type 'unknown'
@@ -310,7 +310,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                     if self.restrict_types:
                         # accept only if image types matches according to included/excluded types
                         accepted = bool(set(image['types']).intersection(self.included_types).difference(self.excluded_types))
-                        log.debug('CAA image %s: %s  %s',
+                        log.debug("CAA image %s: %s  %s",
                             ('accepted' if accepted else 'rejected'),
                             image['image'],
                             image['types']
@@ -350,6 +350,6 @@ class CoverArtProviderCaa(CoverArtProvider):
                                 image['front']:
                             break
             except (AttributeError, KeyError, TypeError) as e:
-                self.error('CAA JSON error: %s' % e)
+                self.error("CAA JSON error: %s" % e)
 
         self.next_in_queue()

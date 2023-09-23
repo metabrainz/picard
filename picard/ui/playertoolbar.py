@@ -88,14 +88,14 @@ class Player(QtCore.QObject):
         self._toolbar = None
         self._selected_objects = []
         if qt_multimedia_available:
-            log.debug('Internal player: QtMultimedia available, initializing QMediaPlayer')
+            log.debug("Internal player: QtMultimedia available, initializing QMediaPlayer")
             player = QtMultimedia.QMediaPlayer(parent)
             player.setAudioRole(QtMultimedia.QAudio.Role.MusicRole)
             self.state_changed = player.stateChanged
             self._logarithmic_volume = get_logarithmic_volume(player.volume())
             availability = player.availability()
             if availability == QtMultimedia.QMultimedia.AvailabilityStatus.Available:
-                log.debug('Internal player: available, QMediaPlayer set up')
+                log.debug("Internal player: available, QMediaPlayer set up")
                 self._player = player
                 self._player.error.connect(self._on_error)
             elif availability == QtMultimedia.QMultimedia.AvailabilityStatus.ServiceMissing:
@@ -187,7 +187,7 @@ class Player(QtCore.QObject):
 class PlayerToolbar(QtWidgets.QToolBar):
     def __init__(self, parent, player):
         super().__init__(_("Player"), parent)
-        self.setObjectName("player_toolbar")
+        self.setObjectName('player_toolbar')
         self.setAllowedAreas(QtCore.Qt.ToolBarArea.TopToolBarArea
             | QtCore.Qt.ToolBarArea.BottomToolBarArea
             | QtCore.Qt.ToolBarArea.NoToolBarArea)
@@ -218,14 +218,14 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.addWidget(self.progress_widget)
 
         config = get_config()
-        volume = config.persist["mediaplayer_volume"]
+        volume = config.persist['mediaplayer_volume']
         self.player.set_volume(volume)
         self.volume_button = VolumeControlButton(self, volume)
         self.volume_button.volume_changed.connect(self.player.set_volume)
         self.volume_button.setToolButtonStyle(self.toolButtonStyle())
         self.addWidget(self.volume_button)
 
-        playback_rate = config.persist["mediaplayer_playback_rate"]
+        playback_rate = config.persist['mediaplayer_playback_rate']
         self.player.set_playback_rate(playback_rate)
         self.playback_rate_button = PlaybackRateButton(self, playback_rate)
         self.playback_rate_button.playback_rate_changed.connect(self.player.set_playback_rate)
@@ -273,7 +273,7 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
         self.player = player
         self._position_update = False
 
-        tool_font = QtWidgets.QApplication.font("QToolButton")
+        tool_font = QtWidgets.QApplication.font('QToolButton')
 
         self.progress_slider = ClickableSlider(self)
         self.progress_slider.setOrientation(QtCore.Qt.Orientation.Horizontal)
@@ -340,20 +340,20 @@ class PlaybackRateButton(QtWidgets.QToolButton):
     def __init__(self, parent, playback_rate):
         super().__init__(parent)
         self.popover_position = 'bottom'
-        self.rate_fmt = N_('%1.1f ×')
+        self.rate_fmt = N_("%1.1f ×")
         button_margin = self.style().pixelMetric(QtWidgets.QStyle.PixelMetric.PM_ButtonMargin)
         min_width = get_text_width(self.font(), _(self.rate_fmt) % 8.8)
         self.setMinimumWidth(min_width + (2 * button_margin) + 2)
         self.set_playback_rate(playback_rate)
         self.clicked.connect(self.show_popover)
-        tooltip = _('Change playback speed')
+        tooltip = _("Change playback speed")
         self.setToolTip(tooltip)
         self.setStatusTip(tooltip)
 
     def show_popover(self):
         slider_value = self.playback_rate * self.multiplier
         popover = SliderPopover(
-            self, self.popover_position, _('Playback speed'), slider_value)
+            self, self.popover_position, _("Playback speed"), slider_value)
         # In 0.1 steps from 0.5 to 1.5
         popover.slider.setMinimum(5)
         popover.slider.setMaximum(15)
@@ -396,19 +396,19 @@ class VolumeControlButton(QtWidgets.QToolButton):
         super().__init__(parent)
         self.popover_position = 'bottom'
         self.step = 3
-        self.volume_fmt = N_('%d%%')
+        self.volume_fmt = N_("%d%%")
         self.set_volume(volume)
         button_margin = self.style().pixelMetric(QtWidgets.QStyle.PixelMetric.PM_ButtonMargin)
         min_width = get_text_width(self.font(), _(self.volume_fmt) % 888)
         self.setMinimumWidth(min_width + (2 * button_margin) + 2)
         self.clicked.connect(self.show_popover)
-        tooltip = _('Change audio volume')
+        tooltip = _("Change audio volume")
         self.setToolTip(tooltip)
         self.setStatusTip(tooltip)
 
     def show_popover(self):
         popover = SliderPopover(
-            self, self.popover_position, _('Audio volume'), self.volume)
+            self, self.popover_position, _("Audio volume"), self.volume)
         popover.slider.setMinimum(0)
         popover.slider.setMaximum(100)
         popover.slider.setPageStep(self.step)

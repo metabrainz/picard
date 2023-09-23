@@ -37,7 +37,7 @@ try:
     import jwt
     import jwt.exceptions
 except ImportError:
-    log.debug('PyJWT not available, addrelease functionality disabled')
+    log.debug("PyJWT not available, addrelease functionality disabled")
     jwt = None
 
 __key = token_bytes()  # Generating a new secret on each startup
@@ -89,18 +89,18 @@ def submit_file(file, as_release=False):
 def serve_form(token):
     try:
         payload = jwt.decode(token, __key, algorithms=__algorithm)
-        log.debug('received JWT token %r', payload)
+        log.debug("received JWT token %r", payload)
         tagger = QCoreApplication.instance()
         tport = tagger.browser_integration.port
         if 'cluster' in payload:
             cluster = _find_cluster(tagger, payload['cluster'])
             if not cluster:
-                raise NotFoundError('Cluster not found')
+                raise NotFoundError("Cluster not found")
             return _get_cluster_form(cluster, tport)
         elif 'file' in payload:
             file = _find_file(tagger, payload['file'])
             if not file:
-                raise NotFoundError('File not found')
+                raise NotFoundError("File not found")
             if payload.get('as_release', False):
                 return _get_file_as_release_form(file, tport)
             else:
@@ -141,9 +141,9 @@ def _find_file(tagger, path):
 
 def _get_cluster_form(cluster, tport):
     return _get_form(
-        _('Add cluster as release'),
+        _("Add cluster as release"),
         '/release/add',
-        _('Add cluster as release…'),
+        _("Add cluster as release…"),
         _get_cluster_data(cluster),
         {'tport': tport}
     )
@@ -151,9 +151,9 @@ def _get_cluster_form(cluster, tport):
 
 def _get_file_as_release_form(file, tport):
     return _get_form(
-        _('Add file as release'),
+        _("Add file as release"),
         '/release/add',
-        _('Add file as release…'),
+        _("Add file as release…"),
         _get_file_as_release_data(file),
         {'tport': tport}
     )
@@ -161,9 +161,9 @@ def _get_file_as_release_form(file, tport):
 
 def _get_file_as_recording_form(file, tport):
     return _get_form(
-        _('Add file as recording'),
+        _("Add file as recording"),
         '/recording/create',
-        _('Add file as recording…'),
+        _("Add file as recording…"),
         _get_file_as_recording_data(file),
         {'tport': tport}
     )

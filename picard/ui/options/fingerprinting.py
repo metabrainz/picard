@@ -59,20 +59,20 @@ class ApiKeyValidator(QtGui.QValidator):
 
 class FingerprintingOptionsPage(OptionsPage):
 
-    NAME = "fingerprinting"
+    NAME = 'fingerprinting'
     TITLE = N_("Fingerprinting")
     PARENT = None
     SORT_ORDER = 45
     ACTIVE = True
-    HELP_URL = '/config/options_fingerprinting.html'
+    HELP_URL = "/config/options_fingerprinting.html"
 
     options = [
-        BoolOption("setting", "ignore_existing_acoustid_fingerprints", False),
-        BoolOption("setting", "save_acoustid_fingerprints", False),
-        TextOption("setting", "fingerprinting_system", "acoustid"),
-        TextOption("setting", "acoustid_fpcalc", ""),
-        TextOption("setting", "acoustid_apikey", ""),
-        IntOption("setting", "fpcalc_threads", DEFAULT_FPCALC_THREADS),
+        BoolOption('setting', 'ignore_existing_acoustid_fingerprints', False),
+        BoolOption('setting', 'save_acoustid_fingerprints', False),
+        TextOption('setting', 'fingerprinting_system', 'acoustid'),
+        TextOption('setting', 'acoustid_fpcalc', ''),
+        TextOption('setting', 'acoustid_apikey', ''),
+        IntOption('setting', 'fpcalc_threads', DEFAULT_FPCALC_THREADS),
     ]
 
     def __init__(self, parent=None):
@@ -90,29 +90,29 @@ class FingerprintingOptionsPage(OptionsPage):
 
     def load(self):
         config = get_config()
-        if config.setting["fingerprinting_system"] == "acoustid":
+        if config.setting['fingerprinting_system'] == 'acoustid':
             self.ui.use_acoustid.setChecked(True)
         else:
             self.ui.disable_fingerprinting.setChecked(True)
         self.ui.acoustid_fpcalc.setPlaceholderText(find_fpcalc())
-        self.ui.acoustid_fpcalc.setText(config.setting["acoustid_fpcalc"])
-        self.ui.acoustid_apikey.setText(config.setting["acoustid_apikey"])
-        self.ui.ignore_existing_acoustid_fingerprints.setChecked(config.setting["ignore_existing_acoustid_fingerprints"])
-        self.ui.save_acoustid_fingerprints.setChecked(config.setting["save_acoustid_fingerprints"])
-        self.ui.fpcalc_threads.setValue(config.setting["fpcalc_threads"])
+        self.ui.acoustid_fpcalc.setText(config.setting['acoustid_fpcalc'])
+        self.ui.acoustid_apikey.setText(config.setting['acoustid_apikey'])
+        self.ui.ignore_existing_acoustid_fingerprints.setChecked(config.setting['ignore_existing_acoustid_fingerprints'])
+        self.ui.save_acoustid_fingerprints.setChecked(config.setting['save_acoustid_fingerprints'])
+        self.ui.fpcalc_threads.setValue(config.setting['fpcalc_threads'])
         self.update_groupboxes()
 
     def save(self):
         config = get_config()
         if self.ui.use_acoustid.isChecked():
-            config.setting["fingerprinting_system"] = "acoustid"
+            config.setting['fingerprinting_system'] = 'acoustid'
         else:
-            config.setting["fingerprinting_system"] = ""
-        config.setting["acoustid_fpcalc"] = self.ui.acoustid_fpcalc.text()
-        config.setting["acoustid_apikey"] = self.ui.acoustid_apikey.text()
-        config.setting["ignore_existing_acoustid_fingerprints"] = self.ui.ignore_existing_acoustid_fingerprints.isChecked()
-        config.setting["save_acoustid_fingerprints"] = self.ui.save_acoustid_fingerprints.isChecked()
-        config.setting["fpcalc_threads"] = self.ui.fpcalc_threads.value()
+            config.setting['fingerprinting_system'] = ''
+        config.setting['acoustid_fpcalc'] = self.ui.acoustid_fpcalc.text()
+        config.setting['acoustid_apikey'] = self.ui.acoustid_apikey.text()
+        config.setting['ignore_existing_acoustid_fingerprints'] = self.ui.ignore_existing_acoustid_fingerprints.isChecked()
+        config.setting['save_acoustid_fingerprints'] = self.ui.save_acoustid_fingerprints.isChecked()
+        config.setting['fpcalc_threads'] = self.ui.fpcalc_threads.value()
 
     def update_groupboxes(self):
         if self.ui.use_acoustid.isChecked():

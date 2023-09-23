@@ -67,59 +67,59 @@ class OAuthManager(object):
 
     @property
     def refresh_token(self):
-        return self.persist["oauth_refresh_token"]
+        return self.persist['oauth_refresh_token']
 
     @refresh_token.setter
     def refresh_token(self, value):
-        self.persist["oauth_refresh_token"] = value
+        self.persist['oauth_refresh_token'] = value
 
     @refresh_token.deleter
     def refresh_token(self):
-        self.persist.remove("oauth_refresh_token")
+        self.persist.remove('oauth_refresh_token')
 
     @property
     def refresh_token_scopes(self):
-        return self.persist["oauth_refresh_token_scopes"]
+        return self.persist['oauth_refresh_token_scopes']
 
     @refresh_token_scopes.setter
     def refresh_token_scopes(self, value):
-        self.persist["oauth_refresh_token_scopes"] = value
+        self.persist['oauth_refresh_token_scopes'] = value
 
     @refresh_token_scopes.deleter
     def refresh_token_scopes(self):
-        self.persist.remove("oauth_refresh_token_scopes")
+        self.persist.remove('oauth_refresh_token_scopes')
 
     @property
     def access_token(self):
-        return self.persist["oauth_access_token"]
+        return self.persist['oauth_access_token']
 
     @access_token.setter
     def access_token(self, value):
-        self.persist["oauth_access_token"] = value
+        self.persist['oauth_access_token'] = value
 
     @access_token.deleter
     def access_token(self):
-        self.persist.remove("oauth_access_token")
+        self.persist.remove('oauth_access_token')
 
     @property
     def access_token_expires(self):
-        return self.persist["oauth_access_token_expires"]
+        return self.persist['oauth_access_token_expires']
 
     @access_token_expires.setter
     def access_token_expires(self, value):
-        self.persist["oauth_access_token_expires"] = value
+        self.persist['oauth_access_token_expires'] = value
 
     @access_token_expires.deleter
     def access_token_expires(self):
-        self.persist.remove("oauth_access_token_expires")
+        self.persist.remove('oauth_access_token_expires')
 
     @property
     def username(self):
-        return self.persist["oauth_username"]
+        return self.persist['oauth_username']
 
     @username.setter
     def username(self, value):
-        self.persist["oauth_username"] = value
+        self.persist['oauth_username'] = value
 
     def is_authorized(self):
         return bool(self.refresh_token and self.refresh_token_scopes)
@@ -158,10 +158,10 @@ class OAuthManager(object):
 
     def get_authorization_url(self, scopes):
         params = {
-            "response_type": "code",
-            "client_id": MUSICBRAINZ_OAUTH_CLIENT_ID,
-            "redirect_uri": "urn:ietf:wg:oauth:2.0:oob",
-            "scope": scopes,
+            'response_type': 'code',
+            'client_id': MUSICBRAINZ_OAUTH_CLIENT_ID,
+            'redirect_uri': "urn:ietf:wg:oauth:2.0:oob",
+            'scope': scopes,
         }
         return bytes(self.url(path="/oauth2/authorize", params=params).toEncoded()).decode()
 
@@ -182,10 +182,10 @@ class OAuthManager(object):
     def refresh_access_token(self, callback):
         log.debug("OAuth: refreshing access_token with a refresh_token %s", self.refresh_token)
         params = {
-            "grant_type": "refresh_token",
-            "refresh_token": self.refresh_token,
-            "client_id": MUSICBRAINZ_OAUTH_CLIENT_ID,
-            "client_secret": MUSICBRAINZ_OAUTH_CLIENT_SECRET,
+            'grant_type': 'refresh_token',
+            'refresh_token': self.refresh_token,
+            'client_id': MUSICBRAINZ_OAUTH_CLIENT_ID,
+            'client_secret': MUSICBRAINZ_OAUTH_CLIENT_SECRET,
         }
         self.webservice.post_url(
             url=self.url(path="/oauth2/token"),
@@ -194,7 +194,7 @@ class OAuthManager(object):
             mblogin=True,
             priority=True,
             important=True,
-            request_mimetype="application/x-www-form-urlencoded",
+            request_mimetype='application/x-www-form-urlencoded',
         )
 
     def on_refresh_access_token_finished(self, callback, data, http, error):
@@ -204,24 +204,24 @@ class OAuthManager(object):
                 log.error("OAuth: access_token refresh failed: %s", data)
                 if self._http_code(http) == 400:
                     response = load_json(data)
-                    if response["error"] == "invalid_grant":
+                    if response['error'] == 'invalid_grant':
                         self.forget_refresh_token()
             else:
-                access_token = data["access_token"]
-                self.set_access_token(access_token, data["expires_in"])
+                access_token = data['access_token']
+                self.set_access_token(access_token, data['expires_in'])
         except Exception as e:
-            log.error('OAuth: Unexpected error handling access token response: %r', e)
+            log.error("OAuth: Unexpected error handling access token response: %r", e)
         finally:
             callback(access_token=access_token)
 
     def exchange_authorization_code(self, authorization_code, scopes, callback):
         log.debug("OAuth: exchanging authorization_code %s for an access_token", authorization_code)
         params = {
-            "grant_type": "authorization_code",
-            "code": authorization_code,
-            "client_id": MUSICBRAINZ_OAUTH_CLIENT_ID,
-            "client_secret": MUSICBRAINZ_OAUTH_CLIENT_SECRET,
-            "redirect_uri": "urn:ietf:wg:oauth:2.0:oob",
+            'grant_type': 'authorization_code',
+            'code': authorization_code,
+            'client_id': MUSICBRAINZ_OAUTH_CLIENT_ID,
+            'client_secret': MUSICBRAINZ_OAUTH_CLIENT_SECRET,
+            'redirect_uri': "urn:ietf:wg:oauth:2.0:oob",
         }
         self.webservice.post_url(
             url=self.url(path="/oauth2/token"),
@@ -230,7 +230,7 @@ class OAuthManager(object):
             mblogin=True,
             priority=True,
             important=True,
-            request_mimetype="application/x-www-form-urlencoded",
+            request_mimetype='application/x-www-form-urlencoded',
         )
 
     def on_exchange_authorization_code_finished(self, scopes, callback, data, http, error):
@@ -241,12 +241,12 @@ class OAuthManager(object):
                 log.error("OAuth: authorization_code exchange failed: %s", data)
                 error_msg = self._extract_error_description(http, data)
             else:
-                self.set_refresh_token(data["refresh_token"], scopes)
-                self.set_access_token(data["access_token"], data["expires_in"])
+                self.set_refresh_token(data['refresh_token'], scopes)
+                self.set_access_token(data['access_token'], data['expires_in'])
                 successful = True
         except Exception as e:
-            log.error('OAuth: Unexpected error handling authorization code response: %r', e)
-            error_msg = _('Unexpected authentication error')
+            log.error("OAuth: Unexpected error handling authorization code response: %r", e)
+            error_msg = _("Unexpected authentication error")
         finally:
             callback(successful=successful, error_msg=error_msg)
 
@@ -268,12 +268,12 @@ class OAuthManager(object):
                 log.error("OAuth: username fetching failed: %s", data)
                 error_msg = self._extract_error_description(http, data)
             else:
-                self.username = data["sub"]
+                self.username = data['sub']
                 log.debug("OAuth: got username %s", self.username)
                 successful = True
         except Exception as e:
-            log.error('OAuth: Unexpected error handling username fetch response: %r', e)
-            error_msg = _('Unexpected authentication error')
+            log.error("OAuth: Unexpected error handling username fetch response: %r", e)
+            error_msg = _("Unexpected authentication error")
         finally:
             callback(successful=successful, error_msg=error_msg)
 
@@ -285,4 +285,4 @@ class OAuthManager(object):
             response = load_json(data)
             return response['error_description']
         except (JSONDecodeError, KeyError, TypeError):
-            return _('Unexpected request error (HTTP code %s)') % self._http_code(http)
+            return _("Unexpected request error (HTTP code %s)") % self._http_code(http)

@@ -51,17 +51,17 @@ from picard.ui.searchdialog import (
 
 class TrackSearchDialog(SearchDialog):
 
-    dialog_header_state = "tracksearchdialog_header_state"
+    dialog_header_state = 'tracksearchdialog_header_state'
 
     options = [
-        Option("persist", dialog_header_state, QtCore.QByteArray())
+        Option('persist', dialog_header_state, QtCore.QByteArray())
     ]
 
     def __init__(self, parent, force_advanced_search=None):
         super().__init__(
             parent,
             accept_button_title=_("Load into Picard"),
-            search_type="track",
+            search_type='track',
             force_advanced_search=force_advanced_search)
         self.file_ = None
         self.setWindowTitle(_("Track Search Results"))
@@ -108,7 +108,7 @@ class TrackSearchDialog(SearchDialog):
         if self.use_advanced_search:
             query_str = build_lucene_query(query)
         else:
-            query_str = query["track"]
+            query_str = query['track']
         self.search(query_str)
 
     def retry(self):
@@ -142,19 +142,19 @@ class TrackSearchDialog(SearchDialog):
         for row, obj in enumerate(self.search_results):
             track = obj[0]
             self.table.insertRow(row)
-            self.set_table_item(row, 'name',    track, "title")
-            self.set_table_item(row, 'length',  track, "~length", sortkey=track.length)
-            self.set_table_item(row, 'artist',  track, "artist")
-            self.set_table_item(row, 'release', track, "album")
-            self.set_table_item(row, 'date',    track, "date")
-            self.set_table_item(row, 'country', track, "country")
-            self.set_table_item(row, 'type',    track, "releasetype")
-            self.set_table_item(row, 'score',   track, "score")
+            self.set_table_item(row, 'name',    track, 'title')
+            self.set_table_item(row, 'length',  track, '~length', sortkey=track.length)
+            self.set_table_item(row, 'artist',  track, 'artist')
+            self.set_table_item(row, 'release', track, 'album')
+            self.set_table_item(row, 'date',    track, 'date')
+            self.set_table_item(row, 'country', track, 'country')
+            self.set_table_item(row, 'type',    track, 'releasetype')
+            self.set_table_item(row, 'score',   track, 'score')
         self.show_table(sort_column='score')
 
     def parse_tracks(self, tracks):
         for node in tracks:
-            if "releases" in node:
+            if 'releases' in node:
                 for rel_node in node['releases']:
                     track = Metadata()
                     recording_to_metadata(node, track)
@@ -164,7 +164,7 @@ class TrackSearchDialog(SearchDialog):
                     release_group_to_metadata(rg_node, track)
                     countries = countries_from_node(rel_node)
                     if countries:
-                        track["country"] = countries_shortlist(countries)
+                        track['country'] = countries_shortlist(countries)
                     self.search_results.append((track, node))
             else:
                 # This handles the case when no release is associated with a track
@@ -186,30 +186,30 @@ class TrackSearchDialog(SearchDialog):
         """
 
         track, node = self.search_results[row]
-        if track.get("musicbrainz_albumid"):
+        if track.get('musicbrainz_albumid'):
             # The track is not an NAT
-            self.tagger.get_release_group_by_id(track["musicbrainz_releasegroupid"]).loaded_albums.add(
-                track["musicbrainz_albumid"])
+            self.tagger.get_release_group_by_id(track['musicbrainz_releasegroupid']).loaded_albums.add(
+                track['musicbrainz_albumid'])
             if self.file_:
                 # Search is performed for a file.
                 # Have to move that file from its existing album to the new one.
                 if isinstance(self.file_.parent, Track):
                     album = self.file_.parent.album
-                    self.tagger.move_file_to_track(self.file_, track["musicbrainz_albumid"], track["musicbrainz_recordingid"])
+                    self.tagger.move_file_to_track(self.file_, track['musicbrainz_albumid'], track['musicbrainz_recordingid'])
                     if album.get_num_total_files() == 0:
                         # Remove album if it has no more files associated
                         self.tagger.remove_album(album)
                 else:
-                    self.tagger.move_file_to_track(self.file_, track["musicbrainz_albumid"], track["musicbrainz_recordingid"])
+                    self.tagger.move_file_to_track(self.file_, track['musicbrainz_albumid'], track['musicbrainz_recordingid'])
             else:
                 # No files associated. Just a normal search.
-                self.tagger.load_album(track["musicbrainz_albumid"])
+                self.tagger.load_album(track['musicbrainz_albumid'])
         else:
             if self.file_ and getattr(self.file_.parent, 'album', None):
                 album = self.file_.parent.album
-                self.tagger.move_file_to_nat(self.file_, track["musicbrainz_recordingid"], node)
+                self.tagger.move_file_to_nat(self.file_, track['musicbrainz_recordingid'], node)
                 if album.get_num_total_files() == 0:
                     self.tagger.remove_album(album)
             else:
-                self.tagger.load_nat(track["musicbrainz_recordingid"], node)
-                self.tagger.move_file_to_nat(self.file_, track["musicbrainz_recordingid"], node)
+                self.tagger.load_nat(track['musicbrainz_recordingid'], node)
+                self.tagger.move_file_to_nat(self.file_, track['musicbrainz_recordingid'], node)

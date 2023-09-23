@@ -83,22 +83,22 @@ Green background means the tag will be kept.
 
 class GenresOptionsPage(OptionsPage):
 
-    NAME = "genres"
+    NAME = 'genres'
     TITLE = N_("Genres")
-    PARENT = "metadata"
+    PARENT = 'metadata'
     SORT_ORDER = 20
     ACTIVE = True
-    HELP_URL = '/config/options_genres.html'
+    HELP_URL = "/config/options_genres.html"
 
     options = [
-        BoolOption("setting", "use_genres", False),
-        IntOption("setting", "max_genres", 5),
-        IntOption("setting", "min_genre_usage", 90),
-        TextOption("setting", "genres_filter", "-seen live\n-favorites\n-fixme\n-owned"),
-        TextOption("setting", "join_genres", ""),
-        BoolOption("setting", "only_my_genres", False),
-        BoolOption("setting", "artists_genres", False),
-        BoolOption("setting", "folksonomy_tags", False),
+        BoolOption('setting', 'use_genres', False),
+        IntOption('setting', 'max_genres', 5),
+        IntOption('setting', 'min_genre_usage', 90),
+        TextOption('setting', 'genres_filter', '-seen live\n-favorites\n-fixme\n-owned'),
+        TextOption('setting', 'join_genres', ''),
+        BoolOption('setting', 'only_my_genres', False),
+        BoolOption('setting', 'artists_genres', False),
+        BoolOption('setting', 'folksonomy_tags', False),
     ]
 
     def __init__(self, parent=None):
@@ -124,7 +124,7 @@ class GenresOptionsPage(OptionsPage):
 
     def load(self):
         config = get_config()
-        self.ui.use_genres.setChecked(config.setting["use_genres"])
+        self.ui.use_genres.setChecked(config.setting['use_genres'])
         self.ui.max_genres.setValue(config.setting["max_genres"])
         self.ui.min_genre_usage.setValue(config.setting["min_genre_usage"])
         self.ui.join_genres.setEditText(config.setting["join_genres"])
@@ -135,14 +135,14 @@ class GenresOptionsPage(OptionsPage):
 
     def save(self):
         config = get_config()
-        config.setting["use_genres"] = self.ui.use_genres.isChecked()
-        config.setting["max_genres"] = self.ui.max_genres.value()
-        config.setting["min_genre_usage"] = self.ui.min_genre_usage.value()
-        config.setting["join_genres"] = self.ui.join_genres.currentText()
-        config.setting["genres_filter"] = self.ui.genres_filter.toPlainText()
-        config.setting["only_my_genres"] = self.ui.only_my_genres.isChecked()
-        config.setting["artists_genres"] = self.ui.artists_genres.isChecked()
-        config.setting["folksonomy_tags"] = self.ui.folksonomy_tags.isChecked()
+        config.setting['use_genres'] = self.ui.use_genres.isChecked()
+        config.setting['max_genres'] = self.ui.max_genres.value()
+        config.setting['min_genre_usage'] = self.ui.min_genre_usage.value()
+        config.setting['join_genres'] = self.ui.join_genres.currentText()
+        config.setting['genres_filter'] = self.ui.genres_filter.toPlainText()
+        config.setting['only_my_genres'] = self.ui.only_my_genres.isChecked()
+        config.setting['artists_genres'] = self.ui.artists_genres.isChecked()
+        config.setting['folksonomy_tags'] = self.ui.folksonomy_tags.isChecked()
 
     def update_test_genres_filter(self):
         test_text = self.ui.test_genres_filter.toPlainText()

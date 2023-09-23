@@ -72,7 +72,7 @@ class MultilineLiteral(str):
     def yaml_presenter(dumper, data):
         if data:
             data = data.rstrip() + '\n'
-        return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
+        return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='|')
 
 
 yaml.add_representer(MultilineLiteral, MultilineLiteral.yaml_presenter)
@@ -191,8 +191,8 @@ class PicardScript():
             dict: Dictionary of the object's OUTPUT_FIELDS
         """
         items = {key: getattr(self, key) for key in self.OUTPUT_FIELDS}
-        items["description"] = str(items["description"])
-        items["script"] = str(items["script"])
+        items['description'] = str(items['description'])
+        items['script'] = str(items['script'])
         return items
 
     def export_script(self, parent=None):
@@ -216,7 +216,7 @@ class PicardScript():
         (name, ext) = os.path.splitext(filename)
         if ext and str(name).endswith('.' + ext):
             filename = name
-        log.debug('Exporting script file: %s', filename)
+        log.debug("Exporting script file: %s", filename)
         if file_type == self._file_types()['package']:
             script_text = self.to_yaml()
         else:
@@ -250,14 +250,14 @@ class PicardScript():
         filename, file_type = QtWidgets.QFileDialog.getOpenFileName(parent, dialog_title, default_script_directory, dialog_file_types, options=options)
         if not filename:
             return None
-        log.debug('Importing script file: %s', filename)
+        log.debug("Importing script file: %s", filename)
         try:
             with open(filename, 'r', encoding='utf8') as i_file:
                 file_content = i_file.read()
         except OSError as error:
             raise ScriptImportExportError(format=FILE_ERROR_IMPORT, filename=filename, error_msg=error.strerror)
         if not file_content.strip():
-            raise ScriptImportExportError(format=FILE_ERROR_IMPORT, filename=filename, error_msg=N_('The file was empty'))
+            raise ScriptImportExportError(format=FILE_ERROR_IMPORT, filename=filename, error_msg=N_("The file was empty"))
         if file_type == cls._file_types()['package']:
             try:
                 return cls().create_from_yaml(file_content)
@@ -285,7 +285,7 @@ class PicardScript():
         if not isinstance(script_dict, Mapping):
             raise ScriptImportError(N_("Argument is not a dictionary"))
         if 'title' not in script_dict or 'script' not in script_dict:
-            raise ScriptImportError(N_('Invalid script package'))
+            raise ScriptImportError(N_("Invalid script package"))
         new_object.update_from_dict(script_dict)
         if create_new_id or not new_object['id']:
             new_object._set_new_id()
@@ -329,7 +329,7 @@ class PicardScript():
         if not isinstance(yaml_dict, dict):
             raise ScriptImportError(N_("File content not a dictionary"))
         if 'title' not in yaml_dict or 'script' not in yaml_dict:
-            raise ScriptImportError(N_('Invalid script package'))
+            raise ScriptImportError(N_("Invalid script package"))
         new_object.update_from_dict(yaml_dict)
         if create_new_id or not new_object['id']:
             new_object._set_new_id()

@@ -52,30 +52,30 @@ from picard.ui.ui_options_general import Ui_GeneralOptionsPage
 
 class GeneralOptionsPage(OptionsPage):
 
-    NAME = "general"
+    NAME = 'general'
     TITLE = N_("General")
     PARENT = None
     SORT_ORDER = 1
     ACTIVE = True
-    HELP_URL = '/config/options_general.html'
+    HELP_URL = "/config/options_general.html"
 
     options = [
-        TextOption("setting", "server_host", MUSICBRAINZ_SERVERS[0]),
-        IntOption("setting", "server_port", 443),
-        BoolOption("setting", "use_server_for_submission", False),
-        BoolOption("setting", "analyze_new_files", False),
-        BoolOption("setting", "cluster_new_files", False),
-        BoolOption("setting", "ignore_file_mbids", False),
-        TextOption("persist", "oauth_refresh_token", ""),
-        TextOption("persist", "oauth_refresh_token_scopes", ""),
-        TextOption("persist", "oauth_access_token", ""),
-        IntOption("persist", "oauth_access_token_expires", 0),
-        TextOption("persist", "oauth_username", ""),
-        BoolOption("setting", "check_for_updates", True),
-        IntOption("setting", "update_check_days", 7),
-        IntOption("setting", "update_level", DEFAULT_PROGRAM_UPDATE_LEVEL),
-        IntOption("persist", "last_update_check", 0),
-        BoolOption("setting", "check_for_plugin_updates", False),
+        TextOption('setting', 'server_host', MUSICBRAINZ_SERVERS[0]),
+        IntOption('setting', 'server_port', 443),
+        BoolOption('setting', 'use_server_for_submission', False),
+        BoolOption('setting', 'analyze_new_files', False),
+        BoolOption('setting', 'cluster_new_files', False),
+        BoolOption('setting', 'ignore_file_mbids', False),
+        TextOption('persist', 'oauth_refresh_token', ''),
+        TextOption('persist', 'oauth_refresh_token_scopes', ''),
+        TextOption('persist', 'oauth_access_token', ''),
+        IntOption('persist', 'oauth_access_token_expires', 0),
+        TextOption('persist', 'oauth_username', ''),
+        BoolOption('setting', 'check_for_updates', True),
+        IntOption('setting', 'update_check_days', 7),
+        IntOption('setting', 'update_level', DEFAULT_PROGRAM_UPDATE_LEVEL),
+        IntOption('persist', 'last_update_check', 0),
+        BoolOption('setting', 'check_for_plugin_updates', False),
     ]
 
     def __init__(self, parent=None):
@@ -94,17 +94,17 @@ class GeneralOptionsPage(OptionsPage):
 
     def load(self):
         config = get_config()
-        self.ui.server_host.setEditText(config.setting["server_host"])
-        self.ui.server_port.setValue(config.setting["server_port"])
-        self.ui.use_server_for_submission.setChecked(config.setting["use_server_for_submission"])
+        self.ui.server_host.setEditText(config.setting['server_host'])
+        self.ui.server_port.setValue(config.setting['server_port'])
+        self.ui.use_server_for_submission.setChecked(config.setting['use_server_for_submission'])
         self.update_server_host()
-        self.ui.analyze_new_files.setChecked(config.setting["analyze_new_files"])
-        self.ui.cluster_new_files.setChecked(config.setting["cluster_new_files"])
-        self.ui.ignore_file_mbids.setChecked(config.setting["ignore_file_mbids"])
-        self.ui.check_for_plugin_updates.setChecked(config.setting["check_for_plugin_updates"])
-        self.ui.check_for_updates.setChecked(config.setting["check_for_updates"])
-        self.set_update_level(config.setting["update_level"])
-        self.ui.update_check_days.setValue(config.setting["update_check_days"])
+        self.ui.analyze_new_files.setChecked(config.setting['analyze_new_files'])
+        self.ui.cluster_new_files.setChecked(config.setting['cluster_new_files'])
+        self.ui.ignore_file_mbids.setChecked(config.setting['ignore_file_mbids'])
+        self.ui.check_for_plugin_updates.setChecked(config.setting['check_for_plugin_updates'])
+        self.ui.check_for_updates.setChecked(config.setting['check_for_updates'])
+        self.set_update_level(config.setting['update_level'])
+        self.ui.update_check_days.setValue(config.setting['update_check_days'])
         if not self.tagger.autoupdate_enabled:
             self.ui.program_update_check_group.hide()
 
@@ -123,16 +123,16 @@ class GeneralOptionsPage(OptionsPage):
 
     def save(self):
         config = get_config()
-        config.setting["server_host"] = self.ui.server_host.currentText().strip()
-        config.setting["server_port"] = self.ui.server_port.value()
-        config.setting["use_server_for_submission"] = self.ui.use_server_for_submission.isChecked()
-        config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
-        config.setting["cluster_new_files"] = self.ui.cluster_new_files.isChecked()
-        config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
-        config.setting["check_for_plugin_updates"] = self.ui.check_for_plugin_updates.isChecked()
-        config.setting["check_for_updates"] = self.ui.check_for_updates.isChecked()
-        config.setting["update_level"] = self.ui.update_level.currentData(QtCore.Qt.ItemDataRole.UserRole)
-        config.setting["update_check_days"] = self.ui.update_check_days.value()
+        config.setting['server_host'] = self.ui.server_host.currentText().strip()
+        config.setting['server_port'] = self.ui.server_port.value()
+        config.setting['use_server_for_submission'] = self.ui.use_server_for_submission.isChecked()
+        config.setting['analyze_new_files'] = self.ui.analyze_new_files.isChecked()
+        config.setting['cluster_new_files'] = self.ui.cluster_new_files.isChecked()
+        config.setting['ignore_file_mbids'] = self.ui.ignore_file_mbids.isChecked()
+        config.setting['check_for_plugin_updates'] = self.ui.check_for_plugin_updates.isChecked()
+        config.setting['check_for_updates'] = self.ui.check_for_updates.isChecked()
+        config.setting['update_level'] = self.ui.update_level.currentData(QtCore.Qt.ItemDataRole.UserRole)
+        config.setting['update_check_days'] = self.ui.update_check_days.value()
 
     def update_server_host(self):
         host = self.ui.server_host.currentText().strip()
@@ -146,14 +146,14 @@ class GeneralOptionsPage(OptionsPage):
             return
         if self.tagger.webservice.oauth_manager.is_logged_in():
             config = get_config()
-            self.ui.logged_in.setText(_("Logged in as <b>%s</b>.") % config.persist["oauth_username"])
+            self.ui.logged_in.setText(_("Logged in as <b>%s</b>.") % config.persist['oauth_username'])
             self.ui.logged_in.show()
             self.ui.login_error.hide()
             self.ui.login.hide()
             self.ui.logout.show()
         elif error_msg:
             self.ui.logged_in.hide()
-            self.ui.login_error.setText(_('Login failed: %s') % error_msg)
+            self.ui.login_error.setText(_("Login failed: %s") % error_msg)
             self.ui.login_error.show()
             self.ui.login.show()
             self.ui.logout.hide()

@@ -35,7 +35,7 @@ for k, v in sorted(MB_ATTRIBUTES.items(), key=lambda k_v: k_v[0]):
         CAA_TYPES.append({'name': v.lower(), 'title': v})
 
 # pseudo type, used for the no type case
-CAA_TYPES.append({'name': "unknown", 'title': N_("Unknown")})
+CAA_TYPES.append({'name': 'unknown', 'title': N_("Unknown")})
 
 CAA_TYPES_TR = {}
 for t in CAA_TYPES:
@@ -76,23 +76,23 @@ class Id3ImageType(IntEnum):
 
 
 __ID3_IMAGE_TYPE_MAP = {
-    "obi": Id3ImageType.OTHER,
-    "tray": Id3ImageType.OTHER,
-    "spine": Id3ImageType.OTHER,
-    "sticker": Id3ImageType.OTHER,
-    "other": Id3ImageType.OTHER,
-    "front": Id3ImageType.COVER_FRONT,
-    "back": Id3ImageType.COVER_BACK,
-    "booklet": Id3ImageType.LEAFLET_PAGE,
-    "track": Id3ImageType.MEDIA,
-    "medium": Id3ImageType.MEDIA,
+    'obi': Id3ImageType.OTHER,
+    'tray': Id3ImageType.OTHER,
+    'spine': Id3ImageType.OTHER,
+    'sticker': Id3ImageType.OTHER,
+    'other': Id3ImageType.OTHER,
+    'front': Id3ImageType.COVER_FRONT,
+    'back': Id3ImageType.COVER_BACK,
+    'booklet': Id3ImageType.LEAFLET_PAGE,
+    'track': Id3ImageType.MEDIA,
+    'medium': Id3ImageType.MEDIA,
 }
 
 __ID3_REVERSE_IMAGE_TYPE_MAP = {v: k for k, v in __ID3_IMAGE_TYPE_MAP.items()}
 
 
 def image_type_from_id3_num(id3type):
-    return __ID3_REVERSE_IMAGE_TYPE_MAP.get(id3type, "other")
+    return __ID3_REVERSE_IMAGE_TYPE_MAP.get(id3type, 'other')
 
 
 def image_type_as_id3_num(texttype):
