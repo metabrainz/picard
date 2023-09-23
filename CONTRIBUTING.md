@@ -97,7 +97,15 @@ print(d['small'])
 In above example, `l1` contains identifiers (keys of dict `d`) while others are English words/phrases.
 In the dict declaration, keys are single-quoted but values are double-quoted.
 
-Otherwise, choose whichever limit the number of escaped characters.
+URIs (and paths used in URIs) should be, in general, enclosed in double quotes,
+mainly because single quotes can appear in URI, unencoded, as sub-delimiters as specified
+by [RFC3986](https://www.rfc-editor.org/rfc/rfc3986#section-2.2).
+
+HTML/XML code often contains attributes that are enclosed by double quotes, so in this case,
+better use single quotes, e.g. `html = '<a href="someurl">text</a>'`.
+
+In doubt, choose whichever limit the number of escaped characters.
+Typically single quote strings that are meant to contain double quotes (e.g. `'The file is "{file}"'`).
 
 
 ## Git Work-flow
