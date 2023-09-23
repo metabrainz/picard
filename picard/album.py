@@ -154,7 +154,7 @@ class Album(DataObject, Item):
         self.update_metadata_images_enabled = True
 
     def __repr__(self):
-        return '<Album %s %r>' % (self.id, self.metadata["album"])
+        return '<Album %s %r>' % (self.id, self.metadata['album'])
 
     def iterfiles(self, save=False):
         for track in self.tracks:
@@ -288,11 +288,11 @@ class Album(DataObject, Item):
                 if error == QtNetwork.QNetworkReply.NetworkError.ContentNotFoundError:
                     config = get_config()
                     nats = False
-                    nat_name = config.setting["nat_name"]
+                    nat_name = config.setting['nat_name']
                     files = list(self.unmatched_files.files)
                     for file in files:
-                        recordingid = file.metadata["musicbrainz_recordingid"]
-                        if mbid_validate(recordingid) and file.metadata["album"] == nat_name:
+                        recordingid = file.metadata['musicbrainz_recordingid']
+                        if mbid_validate(recordingid) and file.metadata['album'] == nat_name:
                             nats = True
                             self.tagger.move_file_to_nat(file, recordingid)
                             self.tagger.nats.update()
@@ -304,7 +304,7 @@ class Album(DataObject, Item):
                     parse_result = self._parse_release(document)
                     config = get_config()
                     if parse_result == ParseResult.MISSING_TRACK_RELS:
-                        log.debug('Recording relationships not loaded in initial request for %r, issuing separate requests', self)
+                        log.debug("Recording relationships not loaded in initial request for %r, issuing separate requests", self)
                         self._request_recording_relationships()
                     elif parse_result == ParseResult.PARSED:
                         self._run_album_metadata_processors()
@@ -327,7 +327,7 @@ class Album(DataObject, Item):
             'work-rels',
             'work-level-rels',
         )
-        log.debug('Loading recording relationships for %r (offset=%i, limit=%i)', self, offset, limit)
+        log.debug("Loading recording relationships for %r (offset=%i, limit=%i)", self, offset, limit)
         self._requests += 1
         self.load_task = self.tagger.mb_api.browse_recordings(
             self._recordings_request_finished,
@@ -400,7 +400,7 @@ class Album(DataObject, Item):
         track._customize_metadata()
 
         self._new_metadata.length += tm.length
-        artists.add(tm["artist"])
+        artists.add(tm['artist'])
         if extra_metadata:
             tm.update(extra_metadata)
 
@@ -426,7 +426,7 @@ class Album(DataObject, Item):
         va = self._new_metadata['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID
 
         djmix_ars = {}
-        if hasattr(self._new_metadata, "_djmix_ars"):
+        if hasattr(self._new_metadata, '_djmix_ars'):
             djmix_ars = self._new_metadata._djmix_ars
 
         for medium_node in self._release_node['media']:
@@ -437,13 +437,13 @@ class Album(DataObject, Item):
             if fmt:
                 all_media.append(fmt)
 
-            for dj in djmix_ars.get(mm["discnumber"], []):
-                mm.add("djmixer", dj)
+            for dj in djmix_ars.get(mm['discnumber'], []):
+                mm.add('djmixer', dj)
 
             if va:
-                mm["compilation"] = "1"
+                mm['compilation'] = '1'
             else:
-                del mm["compilation"]
+                del mm['compilation']
 
             if 'discs' in medium_node:
                 discids = [disc.get('id') for disc in medium_node['discs']]
@@ -468,9 +468,9 @@ class Album(DataObject, Item):
 
         multiartists = len(artists) > 1
         for track in self._new_tracks:
-            track.metadata["~totalalbumtracks"] = totalalbumtracks
+            track.metadata['~totalalbumtracks'] = totalalbumtracks
             if multiartists:
-                track.metadata["~multiartist"] = "1"
+                track.metadata['~multiartist'] = '1'
         del self._release_node
         del self._release_artist_nodes
         self._tracks_loaded = True
@@ -535,10 +535,10 @@ class Album(DataObject, Item):
             import inspect
             stack = inspect.stack()
             args = [self]
-            msg = 'Album._finalize_loading called for already loaded album %r'
+            msg = "Album._finalize_loading called for already loaded album %r"
             if len(stack) > 1:
                 f = stack[1]
-                msg += ' at %s:%d in %s'
+                msg += " at %s:%d in %s"
                 args.extend((f.filename, f.lineno, f.function))
             log.warning(msg, *args)
             return
@@ -570,7 +570,7 @@ class Album(DataObject, Item):
             log.info("Not reloading, some requests are still active.")
             return
         self.tagger.window.set_statusbar_message(
-            N_('Loading album %(id)s …'),
+            N_("Loading album %(id)s …"),
             {'id': self.id}
         )
         self.loaded = False
@@ -863,18 +863,18 @@ class Album(DataObject, Item):
 class NatAlbum(Album):
 
     def __init__(self):
-        super().__init__("NATS")
+        super().__init__('NATS')
         self.loaded = True
         self.update()
 
     def update(self, update_tracks=True, update_selection=True):
         config = get_config()
         self.enable_update_metadata_images(False)
-        old_album_title = self.metadata["album"]
-        self.metadata["album"] = config.setting["nat_name"]
+        old_album_title = self.metadata['album']
+        self.metadata['album'] = config.setting['nat_name']
         for track in self.tracks:
-            if old_album_title == track.metadata["album"]:
-                track.metadata["album"] = self.metadata["album"]
+            if old_album_title == track.metadata['album']:
+                track.metadata['album'] = self.metadata['album']
             for file in track.files:
                 track.update_file_metadata(file)
         self.enable_update_metadata_images(True)

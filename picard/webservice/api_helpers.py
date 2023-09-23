@@ -143,24 +143,24 @@ class MBAPIHelper(APIHelper):
 
     def lookup_discid(self, discid, handler, priority=True, important=True, refresh=False):
         inc = ('artist-credits', 'labels')
-        return self._get_by_id('discid', discid, handler, inc, queryargs={"cdstubs": "no"},
+        return self._get_by_id('discid', discid, handler, inc, queryargs={'cdstubs': 'no'},
                                priority=priority, important=important, refresh=refresh)
 
     def _find(self, entitytype, handler, **kwargs):
         filters = {}
 
-        limit = kwargs.pop("limit")
+        limit = kwargs.pop('limit')
         if limit:
             filters['limit'] = limit
 
-        is_search = kwargs.pop("search", False)
+        is_search = kwargs.pop('search', False)
         if is_search:
             config = get_config()
-            use_advanced_search = kwargs.pop("advanced_search", config.setting["use_adv_search_syntax"])
+            use_advanced_search = kwargs.pop('advanced_search', config.setting['use_adv_search_syntax'])
             if use_advanced_search:
-                query = kwargs["query"]
+                query = kwargs['query']
             else:
-                query = escape_lucene_query(kwargs["query"]).strip().lower()
+                query = escape_lucene_query(kwargs['query']).strip().lower()
                 filters['dismax'] = 'true'
         else:
             query = build_lucene_query(kwargs)
@@ -195,14 +195,14 @@ class MBAPIHelper(APIHelper):
         if queryargs is None:
             queryargs = {}
         if inc:
-            queryargs["inc"] = self._make_inc_arg(inc)
+            queryargs['inc'] = self._make_inc_arg(inc)
         return self.get(f"/{entitytype}", handler, unencoded_queryargs=queryargs,
                         priority=True, important=True, mblogin=mblogin,
                         refresh=False)
 
     def browse_releases(self, handler, **kwargs):
-        inc = ("media", "labels")
-        return self._browse("release", handler, inc, queryargs=kwargs)
+        inc = ('media', 'labels')
+        return self._browse('release', handler, inc, queryargs=kwargs)
 
     def browse_recordings(self, handler, inc, **kwargs):
         return self._browse('recording', handler, inc, queryargs=kwargs)
@@ -216,20 +216,20 @@ class MBAPIHelper(APIHelper):
         return _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
 
     def submit_ratings(self, ratings, handler):
-        params = {"client": CLIENT_STRING}
+        params = {'client': CLIENT_STRING}
         data = self._xml_ratings(ratings)
         return self.post("/rating", data, handler, priority=True,
-                         unencoded_queryargs=params, parse_response_type="xml",
-                         request_mimetype="application/xml; charset=utf-8")
+                         unencoded_queryargs=params, parse_response_type='xml',
+                         request_mimetype='application/xml; charset=utf-8')
 
     def get_collection(self, collection_id, handler, limit=100, offset=0):
         if collection_id is not None:
-            inc = ("releases", "artist-credits", "media")
+            inc = ('releases', 'artist-credits', 'media')
             path = f"/collection/{collection_id}/releases"
             queryargs = {
-                "inc": self._make_inc_arg(inc),
-                "limit": limit,
-                "offset": offset,
+                'inc': self._make_inc_arg(inc),
+                'limit': limit,
+                'offset': offset,
             }
         else:
             path = '/collection'
@@ -243,12 +243,12 @@ class MBAPIHelper(APIHelper):
     @staticmethod
     def _collection_request(collection_id, releases, batchsize=400):
         for i in range(0, len(releases), batchsize):
-            ids = ";".join(releases[i:i+batchsize])
+            ids = ';'.join(releases[i:i+batchsize])
             yield f"/collection/{collection_id}/releases/{ids}"
 
     @staticmethod
     def _get_client_queryarg():
-        return {"client": CLIENT_STRING}
+        return {'client': CLIENT_STRING}
 
     def put_to_collection(self, collection_id, releases, handler):
         for path in self._collection_request(collection_id, releases):
@@ -279,13 +279,13 @@ class AcoustIdAPIHelper(APIHelper):
         body = self._encode_acoustid_args(args)
         return self.post(
             "/lookup", body, handler, priority=False, important=False,
-            mblogin=False, request_mimetype="application/x-www-form-urlencoded"
+            mblogin=False, request_mimetype='application/x-www-form-urlencoded'
         )
 
     @staticmethod
     def _submissions_to_args(submissions):
         config = get_config()
-        args = {'user': config.setting["acoustid_apikey"]}
+        args = {'user': config.setting['acoustid_apikey']}
         for i, submission in enumerate(submissions):
             for key, value in submission.args.items():
                 if value:
@@ -297,5 +297,5 @@ class AcoustIdAPIHelper(APIHelper):
         body = self._encode_acoustid_args(args)
         return self.post(
             "/submit", body, handler, priority=True, important=False,
-            mblogin=False, request_mimetype="application/x-www-form-urlencoded"
+            mblogin=False, request_mimetype='application/x-www-form-urlencoded'
         )

@@ -245,7 +245,7 @@ def system_supports_long_paths():
         system_supports_long_paths._supported = supported
         return supported
     except OSError:
-        log.info('Failed reading LongPathsEnabled from registry')
+        log.info("Failed reading LongPathsEnabled from registry")
         return False
 
 
@@ -257,7 +257,7 @@ def normpath(path):
         # realpath can fail if path does not exist or is not accessible
         # or on Windows if drives are mounted without mount manager
         # (see https://tickets.metabrainz.org/browse/PICARD-2425).
-        log.warning('Failed getting realpath for "%s": %s', path, why)
+        log.warning("Failed getting realpath for `%s`: %s", path, why)
     # If the path is longer than 259 characters on Windows, prepend the \\?\
     # prefix. This enables access to long paths using the Windows API. See
     # https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation
@@ -400,7 +400,7 @@ def translate_from_sortname(name, sortname):
     """'Translate' the artist name by reversing the sortname."""
     for c in name:
         ctg = unicodedata.category(c)
-        if ctg[0] == "L" and unicodedata.name(c).find("LATIN") == -1:
+        if ctg[0] == "L" and unicodedata.name(c).find('LATIN') == -1:
             for separator in (" & ", "; ", " and ", " vs. ", " with ", " y "):
                 if separator in sortname:
                     parts = sortname.split(separator)
@@ -749,11 +749,11 @@ def build_qurl(host, port=80, path=None, queryargs=None):
     url.setHost(host)
 
     if port == 443 or host in MUSICBRAINZ_SERVERS:
-        url.setScheme("https")
+        url.setScheme('https')
     elif port == 80:
-        url.setScheme("http")
+        url.setScheme('http')
     else:
-        url.setScheme("http")
+        url.setScheme('http')
         url.setPort(port)
 
     if path is not None:

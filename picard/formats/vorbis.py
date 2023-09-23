@@ -122,11 +122,11 @@ class VCommentFile(File):
     _File = None
 
     __translate = {
-        "movement": "movementnumber",
-        "movementname": "movement",
-        "musicbrainz_releasetrackid": "musicbrainz_trackid",
-        "musicbrainz_trackid": "musicbrainz_recordingid",
-        "waveformatextensible_channel_mask": "~waveformatextensible_channel_mask",
+        'movement': 'movementnumber',
+        'movementname': 'movement',
+        'musicbrainz_releasetrackid': 'musicbrainz_trackid',
+        'musicbrainz_trackid': 'musicbrainz_recordingid',
+        'waveformatextensible_channel_mask': '~waveformatextensible_channel_mask',
     }
     __rtranslate = {v: k for k, v in __translate.items()}
 
@@ -170,18 +170,18 @@ class VCommentFile(File):
                         value = str(round((float(value) * (config.setting['rating_steps'] - 1))))
                     except ValueError:
                         log.warning('Invalid rating value in %r: %s', filename, value)
-                elif name == "fingerprint" and value.startswith("MusicMagic Fingerprint"):
-                    name = "musicip_fingerprint"
+                elif name == 'fingerprint' and value.startswith('MusicMagic Fingerprint'):
+                    name = 'musicip_fingerprint'
                     value = value[22:]
-                elif name == "tracktotal":
-                    if "totaltracks" in file.tags:
+                elif name == 'tracktotal':
+                    if 'totaltracks' in file.tags:
                         continue
-                    name = "totaltracks"
-                elif name == "disctotal":
-                    if "totaldiscs" in file.tags:
+                    name = 'totaltracks'
+                elif name == 'disctotal':
+                    if 'totaldiscs' in file.tags:
                         continue
-                    name = "totaldiscs"
-                elif name == "metadata_block_picture":
+                    name = 'totaldiscs'
+                elif name == 'metadata_block_picture':
                     try:
                         image = mutagen.flac.Picture(base64.standard_b64decode(value))
                         coverartimage = TagCoverArtImage(
@@ -194,7 +194,7 @@ class VCommentFile(File):
                             id3_type=image.type
                         )
                     except (CoverArtImageError, TypeError, ValueError, mutagen.flac.error) as e:
-                        log.error('Cannot load image from %r: %s', filename, e)
+                        log.error("Cannot load image from %r: %s", filename, e)
                     else:
                         metadata.images.append(coverartimage)
                     continue
@@ -214,14 +214,14 @@ class VCommentFile(File):
                         id3_type=image.type
                     )
                 except CoverArtImageError as e:
-                    log.error('Cannot load image from %r: %s', filename, e)
+                    log.error("Cannot load image from %r: %s", filename, e)
                 else:
                     metadata.images.append(coverartimage)
 
         # Read the unofficial COVERART tags, for backward compatibility only
-        if "metadata_block_picture" not in file.tags:
+        if 'metadata_block_picture' not in file.tags:
             try:
-                for data in file["COVERART"]:
+                for data in file['COVERART']:
                     try:
                         coverartimage = TagCoverArtImage(
                             file=filename,
@@ -229,7 +229,7 @@ class VCommentFile(File):
                             data=base64.standard_b64decode(data)
                         )
                     except (CoverArtImageError, TypeError, ValueError) as e:
-                        log.error('Cannot load image from %r: %s', filename, e)
+                        log.error("Cannot load image from %r: %s", filename, e)
                     else:
                         metadata.images.append(coverartimage)
             except KeyError:
@@ -245,9 +245,9 @@ class VCommentFile(File):
         file = self._File(encode_filename(filename))
         if file.tags is None:
             file.add_tags()
-        if config.setting["clear_existing_tags"]:
+        if config.setting['clear_existing_tags']:
             preserve_tags = ['waveformatextensible_channel_mask']
-            if not is_flac and config.setting["preserve_images"]:
+            if not is_flac and config.setting['preserve_images']:
                 preserve_tags.append('metadata_block_picture')
                 preserve_tags.append('coverart')
             preserved_values = {}
@@ -259,8 +259,8 @@ class VCommentFile(File):
                 file.tags[name] = value
         images_to_save = list(metadata.images.to_be_saved_to_tags())
         if is_flac and (images_to_save
-                or (config.setting["clear_existing_tags"]
-                    and not config.setting["preserve_images"])):
+                or (config.setting['clear_existing_tags']
+                    and not config.setting['preserve_images'])):
             file.clear_pictures()
         tags = {}
 
@@ -293,10 +293,10 @@ class VCommentFile(File):
                 name = self.__rtranslate[name]
             tags.setdefault(name.upper(), []).append(value.rstrip('\0'))
 
-        if "totaltracks" in metadata:
-            tags.setdefault("TRACKTOTAL", []).append(metadata["totaltracks"])
-        if "totaldiscs" in metadata:
-            tags.setdefault("DISCTOTAL", []).append(metadata["totaldiscs"])
+        if 'totaltracks' in metadata:
+            tags.setdefault('TRACKTOTAL', []).append(metadata['totaltracks'])
+        if 'totaldiscs' in metadata:
+            tags.setdefault('DISCTOTAL', []).append(metadata['totaldiscs'])
 
         for image in images_to_save:
             picture = mutagen.flac.Picture()
@@ -312,12 +312,12 @@ class VCommentFile(File):
                     + len(picture.mime)
                     + len(picture.desc.encode('UTF-8')))
                 if expected_block_size > FLAC_MAX_BLOCK_SIZE:
-                    log.error('Failed saving image to %r: Image size of %d bytes exceeds maximum FLAC block size of %d bytes',
+                    log.error("Failed saving image to %r: Image size of %d bytes exceeds maximum FLAC block size of %d bytes",
                         filename, expected_block_size, FLAC_MAX_BLOCK_SIZE)
                     continue
                 file.add_picture(picture)
             else:
-                tags.setdefault("METADATA_BLOCK_PICTURE", []).append(
+                tags.setdefault('METADATA_BLOCK_PICTURE', []).append(
                     base64.b64encode(picture.write()).decode('ascii'))
 
         file.tags.update(tags)
@@ -327,10 +327,10 @@ class VCommentFile(File):
         kwargs = {}
         if is_flac:
             flac_sort_pics_after_tags(file.metadata_blocks)
-            if config.setting["fix_missing_seekpoints_flac"]:
+            if config.setting['fix_missing_seekpoints_flac']:
                 flac_remove_empty_seektable(file)
-            if config.setting["remove_id3_from_flac"]:
-                kwargs["deleteid3"] = True
+            if config.setting['remove_id3_from_flac']:
+                kwargs['deleteid3'] = True
         try:
             file.save(**kwargs)
         except TypeError:

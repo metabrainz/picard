@@ -53,10 +53,10 @@ from picard.ui.ui_cdlookup import Ui_Dialog
 
 class CDLookupDialog(PicardDialog):
 
-    dialog_header_state = "cdlookupdialog_header_state"
+    dialog_header_state = 'cdlookupdialog_header_state'
 
     options = [
-        Option("persist", dialog_header_state, QtCore.QByteArray())
+        Option('persist', dialog_header_state, QtCore.QByteArray())
     ]
 
     def __init__(self, releases, disc, parent=None):
@@ -126,7 +126,7 @@ class CDLookupDialog(PicardDialog):
             lookup = self.tagger.get_file_lookup()
             lookup.discid_submission(submission_url)
         else:
-            log.error('No submission URL for disc ID "%s"', self.disc.id)
+            log.error("No submission URL for disc ID %s", self.disc.id)
         super().accept()
 
     @restore_method

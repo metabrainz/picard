@@ -92,8 +92,8 @@ from picard.ui.util import StandardButton
 class OptionsDialog(PicardDialog, SingletonDialog):
 
     options = [
-        TextOption("persist", "options_last_active_page", ""),
-        ListOption("persist", "options_pages_tree_state", []),
+        TextOption('persist', 'options_last_active_page', ''),
+        ListOption('persist', 'options_pages_tree_state', []),
     ]
 
     suspend_signals = False
@@ -159,12 +159,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 page.set_dialog(self)
                 self.pages.append(page)
             except Exception:
-                log.exception('Failed initializing options page %r', Page)
+                log.exception("Failed initializing options page %r", Page)
         self.item_to_page = {}
         self.page_to_item = {}
         self.default_item = None
         if not default_page:
-            default_page = config.persist["options_last_active_page"]
+            default_page = config.persist['options_last_active_page']
         self.add_pages(None, default_page, self.ui.pages_tree)
 
         # work-around to set optimal option pane width
@@ -200,7 +200,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             try:
                 page.load()
             except Exception:
-                log.exception('Failed loading options page %r', page)
+                log.exception("Failed loading options page %r", page)
                 self.disable_page(page.NAME)
 
     def page_has_profile_options(self, page):
@@ -241,8 +241,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     def _get_profile_title_from_id(self, profile_id):
         config = get_config()
         for item in config.profiles[SettingConfigSection.PROFILES_KEY]:
-            if item["id"] == profile_id:
-                return item["title"]
+            if item['id'] == profile_id:
+                return item['title']
         return _('Unknown profile')
 
     def update_from_profile_changes(self):
@@ -285,9 +285,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         obj.setStyleSheet(None)
         obj.setToolTip(None)
         for item in working_profiles:
-            if item["enabled"]:
-                profile_id = item["id"]
-                profile_title = item["title"]
+            if item['enabled']:
+                profile_id = item['id']
+                profile_title = item['title']
                 if profile_id in working_settings:
                     profile_settings = working_settings[profile_id]
                 else:
@@ -325,7 +325,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             for item in working_profiles:
                 if enabled_profiles_only and not item["enabled"]:
                     continue
-                profile_id = item["id"]
+                profile_id = item['id']
                 if opt.name in working_settings[profile_id]:
                     return True
         return False
@@ -342,7 +342,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         if items:
             config = get_config()
             page = self.item_to_page[items[0]]
-            config.persist["options_last_active_page"] = page.NAME
+            config.persist['options_last_active_page'] = page.NAME
             self.set_profiles_button_and_highlight(page)
 
     def disable_page(self, name):
@@ -369,7 +369,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 self._show_page_error(page, e)
                 return
             except Exception as e:
-                log.exception('Failed checking options page %r', page)
+                log.exception("Failed checking options page %r", page)
                 self._show_page_error(page, e)
                 return
         self.profile_page.save()
@@ -378,14 +378,14 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 if page != self.profile_page:
                     page.save()
             except Exception as e:
-                log.exception('Failed saving options page %r', page)
+                log.exception("Failed saving options page %r", page)
                 self._show_page_error(page, e)
                 return
         super().accept()
 
     def _show_page_error(self, page, error):
         if not isinstance(error, OptionsCheckError):
-            error = OptionsCheckError(_('Unexpected error'), str(error))
+            error = OptionsCheckError(_("Unexpected error"), str(error))
         self.ui.pages_tree.setCurrentItem(self.page_to_item[page.NAME])
         page.display_error(error)
 
@@ -396,14 +396,14 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             is_expanded = self.ui.pages_tree.isExpanded(index)
             expanded_pages.append((page, is_expanded))
         config = get_config()
-        config.persist["options_pages_tree_state"] = expanded_pages
+        config.persist['options_pages_tree_state'] = expanded_pages
         config.setting.set_profiles_override()
         config.setting.set_settings_override()
 
     @restore_method
     def restoreWindowState(self):
         config = get_config()
-        pages_tree_state = config.persist["options_pages_tree_state"]
+        pages_tree_state = config.persist['options_pages_tree_state']
         if not pages_tree_state:
             self.ui.pages_tree.expandAll()
         else:
@@ -420,7 +420,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             try:
                 page.restore_defaults()
             except Exception as e:
-                log.error('Failed restoring all defaults for page %r: %s', page, e)
+                log.error("Failed restoring all defaults for page %r: %s", page, e)
         self.highlight_enabled_profile_options(load_settings=False)
         self.suspend_signals = False
 
@@ -449,7 +449,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
 class AttachedProfilesDialog(PicardDialog):
     NAME = 'attachedprofiles'
-    TITLE = N_('Attached Profiles')
+    TITLE = N_("Attached Profiles")
 
     def __init__(self, parent=None, option_group=None, override_profiles=None, override_settings=None):
         super().__init__(parent=parent)
@@ -479,8 +479,8 @@ class AttachedProfilesDialog(PicardDialog):
         model.setHorizontalHeaderLabels(header_names)
 
         group = UserProfileGroups.SETTINGS_GROUPS[self.option_group]
-        group_title = group["title"]
-        group_options = group["settings"]
+        group_title = group['title']
+        group_options = group['settings']
 
         window_title = _("Profiles Attached to Options in %s Section") % group_title
         self.setWindowTitle(window_title)
@@ -491,8 +491,8 @@ class AttachedProfilesDialog(PicardDialog):
             row = [option_item]
             attached = []
             for profile in self.profiles:
-                if name in self.settings[profile["id"]]:
-                    attached.append("{0}{1}".format(profile["title"], _(" [Enabled]") if profile["enabled"] else "",))
+                if name in self.settings[profile['id']]:
+                    attached.append("{0}{1}".format(profile['title'], _(" [Enabled]") if profile['enabled'] else "",))
             attached_profiles = "\n".join(attached) if attached else _("None")
             profile_item = QtGui.QStandardItem(attached_profiles)
             profile_item.setEditable(False)

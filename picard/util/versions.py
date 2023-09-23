@@ -39,25 +39,25 @@ from picard.util.astrcmp import astrcmp_implementation
 
 
 _versions = OrderedDict([
-    ("version", PICARD_FANCY_VERSION_STR),
-    ("python-version", python_version()),
-    ("pyqt-version", pyqt_version),
-    ("qt-version", qVersion()),
-    ("mutagen-version", mutagen_version),
-    ("discid-version", discid_version),
-    ("astrcmp", astrcmp_implementation),
-    ("ssl-version", QSslSocket.sslLibraryVersionString())
+    ('version', PICARD_FANCY_VERSION_STR),
+    ('python-version', python_version()),
+    ('pyqt-version', pyqt_version),
+    ('qt-version', qVersion()),
+    ('mutagen-version', mutagen_version),
+    ('discid-version', discid_version),
+    ('astrcmp', astrcmp_implementation),
+    ('ssl-version', QSslSocket.sslLibraryVersionString())
 ])
 
 _names = {
-    "version": "Picard",
-    "python-version": "Python",
-    "pyqt-version": "PyQt",
-    "qt-version": "Qt",
-    "mutagen-version": "Mutagen",
-    "discid-version": "Discid",
-    "astrcmp": "astrcmp",
-    "ssl-version": "SSL",
+    'version': "Picard",
+    'python-version': "Python",
+    'pyqt-version': "PyQt",
+    'qt-version': "Qt",
+    'mutagen-version': "Mutagen",
+    'discid-version': "Discid",
+    'astrcmp': "astrcmp",
+    'ssl-version': "SSL",
 }
 
 

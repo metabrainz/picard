@@ -71,12 +71,12 @@ class AboutDialog(PicardDialog, SingletonDialog):
         ])
 
         # TR: Replace this with your name to have it appear in the "About" dialog.
-        args["translator_credits"] = _("translator-credits")
-        if args["translator_credits"] != "translator-credits":
+        args['translator_credits'] = _('translator-credits')
+        if args['translator_credits'] != 'translator-credits':
             # TR: Replace LANG with language you are translating to.
-            args["translator_credits"] = _("<br/>Translated to LANG by %s") % args["translator_credits"].replace("\n", "<br/>")
+            args['translator_credits'] = _("<br/>Translated to LANG by %s") % args['translator_credits'].replace("\n", "<br/>")
         else:
-            args["translator_credits"] = ""
+            args['translator_credits'] = ""
         args['icons_credits'] = _(
             'Icons made by Sambhav Kothari <sambhavs.email@gmail.com> '
             'and <a href="http://www.flaticon.com/authors/madebyoliver">Madebyoliver</a>, '

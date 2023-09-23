@@ -36,7 +36,7 @@ class CoverArtProviderUrlRelationships(CoverArtProvider):
     cover art"""
 
     NAME = "UrlRelationships"
-    TITLE = N_('Allowed Cover Art URLs')
+    TITLE = N_("Allowed Cover Art URLs")
 
     def queue_images(self):
         self.match_url_relations(('cover art link', 'has_cover_art_at'),

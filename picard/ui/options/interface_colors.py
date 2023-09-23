@@ -54,7 +54,7 @@ class ColorButton(QtWidgets.QPushButton):
             self.setStyle(QtWidgets.QStyleFactory.create('macintosh'))
         color = QtGui.QColor(initial_color)
         if not color.isValid():
-            color = QtGui.QColor("black")
+            color = QtGui.QColor('black')
         self.color = color
         self.clicked.connect(self.open_color_dialog)
         self.update_color()
@@ -88,16 +88,16 @@ def delete_items_of_layout(layout):
 
 class InterfaceColorsOptionsPage(OptionsPage):
 
-    NAME = "interface_colors"
+    NAME = 'interface_colors'
     TITLE = N_("Colors")
-    PARENT = "interface"
+    PARENT = 'interface'
     SORT_ORDER = 30
     ACTIVE = True
-    HELP_URL = '/config/options_interface_colors.html'
+    HELP_URL = "/config/options_interface_colors.html"
 
     options = [
-        Option("setting", "interface_colors", InterfaceColors(dark_theme=False).get_colors()),
-        Option("setting", "interface_colors_dark", InterfaceColors(dark_theme=True).get_colors()),
+        Option('setting', 'interface_colors', InterfaceColors(dark_theme=False).get_colors()),
+        Option('setting', 'interface_colors_dark', InterfaceColors(dark_theme=True).get_colors()),
     ]
 
     def __init__(self, parent=None):
@@ -143,8 +143,8 @@ class InterfaceColorsOptionsPage(OptionsPage):
         if interface_colors.save_to_config():
             dialog = QtWidgets.QMessageBox(
                 QtWidgets.QMessageBox.Icon.Information,
-                _('Colors changed'),
-                _('You have changed the interface colors. You may have to restart Picard in order for the changes to take effect.'),
+                _("Colors changed"),
+                _("You have changed the interface colors. You may have to restart Picard in order for the changes to take effect."),
                 QtWidgets.QMessageBox.StandardButton.Ok,
                 self)
             dialog.exec_()

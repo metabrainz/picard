@@ -210,7 +210,7 @@ class WSRequest(QNetworkRequest):
 
         if self.data:
             if not self.request_mimetype:
-                self.request_mimetype = self.response_mimetype or "application/x-www-form-urlencoded"
+                self.request_mimetype = self.response_mimetype or 'application/x-www-form-urlencoded'
             self.setHeader(QNetworkRequest.KnownHeaders.ContentTypeHeader, self.request_mimetype)
 
     @property
@@ -218,8 +218,8 @@ class WSRequest(QNetworkRequest):
         return self.mblogin and self.access_token
 
     def _update_authorization_header(self):
-        auth = "Bearer " + self.access_token if self.has_auth else ""
-        self.setRawHeader(b"Authorization", auth.encode('utf-8'))
+        auth = 'Bearer ' + self.access_token if self.has_auth else ''
+        self.setRawHeader(b'Authorization', auth.encode('utf-8'))
 
     @property
     def host(self):
@@ -342,10 +342,10 @@ class WebService(QtCore.QObject):
         self.set_transfer_timeout(config.setting['network_transfer_timeout_seconds'])
         self.manager.finished.connect(self._process_reply)
         self._request_methods = {
-            "GET": self.manager.get,
-            "POST": self.manager.post,
-            "PUT": self.manager.put,
-            "DELETE": self.manager.deleteResource
+            'GET': self.manager.get,
+            'POST': self.manager.post,
+            'PUT': self.manager.put,
+            'DELETE': self.manager.deleteResource
         }
         self._init_queues()
         self._init_timers()
@@ -414,17 +414,17 @@ class WebService(QtCore.QObject):
     def setup_proxy(self):
         proxy = QtNetwork.QNetworkProxy()
         config = get_config()
-        if config.setting["use_proxy"]:
-            if config.setting["proxy_type"] == 'socks':
+        if config.setting['use_proxy']:
+            if config.setting['proxy_type'] == 'socks':
                 proxy.setType(QtNetwork.QNetworkProxy.ProxyType.Socks5Proxy)
             else:
                 proxy.setType(QtNetwork.QNetworkProxy.ProxyType.HttpProxy)
-            proxy.setHostName(config.setting["proxy_server_host"])
-            proxy.setPort(config.setting["proxy_server_port"])
-            if config.setting["proxy_username"]:
-                proxy.setUser(config.setting["proxy_username"])
-            if config.setting["proxy_password"]:
-                proxy.setPassword(config.setting["proxy_password"])
+            proxy.setHostName(config.setting['proxy_server_host'])
+            proxy.setPort(config.setting['proxy_server_port'])
+            if config.setting['proxy_username']:
+                proxy.setUser(config.setting['proxy_username'])
+            if config.setting['proxy_password']:
+                proxy.setPassword(config.setting['proxy_password'])
         self.manager.setProxy(proxy)
 
     def set_transfer_timeout(self, timeout):

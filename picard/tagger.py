@@ -189,12 +189,12 @@ class ParseItemsToLoad:
             log.debug(f"Parsed: {repr(parsed)}")
             if not parsed.scheme:
                 self.files.add(item)
-            if parsed.scheme == "file":
+            if parsed.scheme == 'file':
                 # remove file:// prefix safely
                 self.files.add(item[7:])
-            elif parsed.scheme == "mbid":
+            elif parsed.scheme == 'mbid':
                 self.mbids.add(parsed.netloc + parsed.path)
-            elif parsed.scheme in {"http", "https"}:
+            elif parsed.scheme in {'http', 'https'}:
                 # .path returns / before actual link
                 self.urls.add(parsed.path[1:])
             elif IS_WIN and self.WINDOWS_DRIVE_TEST.match(item):
@@ -254,7 +254,7 @@ class Tagger(QtWidgets.QApplication):
 
         self.set_log_level(config.setting['log_verbosity'])
 
-        if picard_args.debug or "PICARD_DEBUG" in os.environ:
+        if picard_args.debug or 'PICARD_DEBUG' in os.environ:
             self.set_log_level(logging.DEBUG)
 
         if picard_args.audit:
@@ -330,7 +330,7 @@ class Tagger(QtWidgets.QApplication):
 
         # Must be before config upgrade because upgrade dialogs need to be
         # translated
-        setup_gettext(localedir, config.setting["ui_language"], log.debug)
+        setup_gettext(localedir, config.setting['ui_language'], log.debug)
 
         upgrade_config(config)
 
@@ -390,9 +390,9 @@ class Tagger(QtWidgets.QApplication):
 
     def _pipe_server_finished(self, result=None, error=None):
         if error:
-            log.error('pipe server failed: %r', error)
+            log.error("pipe server failed: %r", error)
         else:
-            log.debug('pipe server stopped')
+            log.debug("pipe server stopped")
 
     def start_process_commands(self):
         if not self._command_thread_running:
@@ -455,9 +455,9 @@ class Tagger(QtWidgets.QApplication):
 
     def _run_commands_finished(self, result=None, error=None):
         if error:
-            log.error('command executor failed: %r', error)
+            log.error("command executor failed: %r", error)
         else:
-            log.debug('command executor stopped')
+            log.debug("command executor stopped")
 
     def load_to_picard(self, items):
         commands = []
@@ -649,7 +649,7 @@ class Tagger(QtWidgets.QApplication):
             return None
 
     def mb_login(self, callback, parent=None):
-        scopes = "profile tag rating collection submit_isrc submit_barcode"
+        scopes = 'profile tag rating collection submit_isrc submit_barcode'
         authorization_url = self.webservice.oauth_manager.get_authorization_url(scopes)
         webbrowser2.open(authorization_url)
         authorization_code = self._mb_login_dialog(parent)
@@ -696,7 +696,7 @@ class Tagger(QtWidgets.QApplication):
     def create_nats(self):
         if self.nats is None:
             self.nats = NatAlbum()
-            self.albums["NATS"] = self.nats
+            self.albums['NATS'] = self.nats
             self.album_added.emit(self.nats)
             self.nats.item.setExpanded(True)
         return self.nats
@@ -750,7 +750,7 @@ class Tagger(QtWidgets.QApplication):
 
     def update_browser_integration(self):
         config = get_config()
-        if config.setting["browser_integration"]:
+        if config.setting['browser_integration']:
             self.browser_integration.start()
         else:
             self.browser_integration.stop()
@@ -787,7 +787,7 @@ class Tagger(QtWidgets.QApplication):
             return
 
         file_moved = False
-        if not config.setting["ignore_file_mbids"]:
+        if not config.setting['ignore_file_mbids']:
             recordingid = file.metadata.getall('musicbrainz_recordingid')
             recordingid = recordingid[0] if recordingid else ''
             is_valid_recordingid = mbid_validate(recordingid)
@@ -826,7 +826,7 @@ class Tagger(QtWidgets.QApplication):
             self.analyze([file])
 
         # Auto cluster newly added files if they are not explicitly moved elsewhere
-        if self._pending_files_count == 0 and unmatched_files and config.setting["cluster_new_files"]:
+        if self._pending_files_count == 0 and unmatched_files and config.setting['cluster_new_files']:
             self.cluster(unmatched_files)
 
     def move_file(self, file, target):
@@ -948,8 +948,8 @@ class Tagger(QtWidgets.QApplication):
     def get_file_lookup(self):
         """Return a FileLookup object."""
         config = get_config()
-        return FileLookup(self, config.setting["server_host"],
-                          config.setting["server_port"],
+        return FileLookup(self, config.setting['server_host'],
+                          config.setting['server_port'],
                           self.browser_integration.port)
 
     def search(self, text, search_type, adv=False, mbid_matched_callback=None, force_browser=False):
@@ -988,7 +988,7 @@ class Tagger(QtWidgets.QApplication):
         """Lookup the users collections on the MusicBrainz website."""
         lookup = self.get_file_lookup()
         config = get_config()
-        lookup.collection_lookup(config.persist["oauth_username"])
+        lookup.collection_lookup(config.persist['oauth_username'])
 
     def browser_lookup(self, item):
         """Lookup the object's metadata on the MusicBrainz website."""
@@ -1003,10 +1003,10 @@ class Tagger(QtWidgets.QApplication):
                 lookup.album_lookup(itemid)
         else:
             lookup.tag_lookup(
-                metadata["albumartist"] if item.is_album_like() else metadata["artist"],
-                metadata["album"],
-                metadata["title"],
-                metadata["tracknumber"],
+                metadata['albumartist'] if item.is_album_like() else metadata['artist'],
+                metadata['album'],
+                metadata['title'],
+                metadata['tracknumber'],
                 '' if item.is_album_like() else str(metadata.length),
                 item.filename if isinstance(item, File) else '')
 
@@ -1029,7 +1029,7 @@ class Tagger(QtWidgets.QApplication):
         elif type == 'nat':
             self.load_nat(mbid)
         else:
-            log.warning('Unknown type to load: %s', type)
+            log.warning("Unknown type to load: %s", type)
 
     def load_album(self, album_id, discid=None):
         album_id = self.mbid_redirects.get(album_id, album_id)
@@ -1162,8 +1162,8 @@ class Tagger(QtWidgets.QApplication):
                 return self.lookup_discid_from_logfile()
             else:
                 device = data
-        elif config.setting["cd_lookup_device"] != '':
-            device = config.setting["cd_lookup_device"].split(",", 1)[0]
+        elif config.setting['cd_lookup_device'] != '':
+            device = config.setting['cd_lookup_device'].split(',', 1)[0]
         else:
             # rely on python-discid auto detection
             device = None
@@ -1215,7 +1215,7 @@ class Tagger(QtWidgets.QApplication):
     @property
     def use_acoustid(self):
         config = get_config()
-        return config.setting["fingerprinting_system"] == "acoustid"
+        return config.setting['fingerprinting_system'] == 'acoustid'
 
     def analyze(self, objs):
         """Analyze the file(s)."""
@@ -1266,7 +1266,7 @@ class Tagger(QtWidgets.QApplication):
 
     def _clustering_finished(self, callback, result=None, error=None):
         if error:
-            log.error('Error while clustering: %r', error)
+            log.error("Error while clustering: %r", error)
             return
 
         self.window.set_sorting(False)
@@ -1285,7 +1285,7 @@ class Tagger(QtWidgets.QApplication):
     def load_cluster(self, name, artist):
         for cluster in self.clusters:
             cm = cluster.metadata
-            if name == cm["album"] and artist == cm["albumartist"]:
+            if name == cm['album'] and artist == cm['albumartist']:
                 return cluster
         cluster = Cluster(name, artist)
         self.clusters.append(cluster)
@@ -1401,7 +1401,7 @@ def print_help_for_commands():
         maxwidth = 80
     informative_text = []
 
-    message = """usage: picard -e [command] [arguments ...]
+    message = """Usage: picard -e [command] [arguments ...]
     or picard -e [command 1] [arguments ...] -e [command 2] [arguments ...]
 
 List of the commands available to execute in Picard from the command-line:
@@ -1435,38 +1435,38 @@ If a new instance will not be spawned files/directories will be passed to the ex
     )
     # Qt default arguments. Parse them so Picard does not interpret the
     # arguments as file names to load.
-    parser.add_argument("-style", nargs=1, help=argparse.SUPPRESS)
-    parser.add_argument("-stylesheet", nargs=1, help=argparse.SUPPRESS)
+    parser.add_argument('-style', nargs=1, help=argparse.SUPPRESS)
+    parser.add_argument('-stylesheet', nargs=1, help=argparse.SUPPRESS)
     # Same for default X arguments
-    parser.add_argument("-display", nargs=1, help=argparse.SUPPRESS)
+    parser.add_argument('-display', nargs=1, help=argparse.SUPPRESS)
 
     # Picard specific arguments
-    parser.add_argument("-a", "--audit", action='store',
+    parser.add_argument('-a', '--audit', action='store',
                         default=None,
                         help="audit events passed as a comma-separated list, prefixes supported, "
                         "use all to match any (see https://docs.python.org/3/library/audit_events.html#audit-events)")
-    parser.add_argument("-c", "--config-file", action='store',
+    parser.add_argument('-c', '--config-file', action='store',
                         default=None,
                         help="location of the configuration file")
-    parser.add_argument("-d", "--debug", action='store_true',
+    parser.add_argument('-d', '--debug', action='store_true',
                         help="enable debug-level logging")
-    parser.add_argument("-e", "--exec", nargs="+", action='append',
+    parser.add_argument('-e', '--exec', nargs='+', action='append',
                         help="send command (arguments can be entered after space) to a running instance "
                         "(use `-e help` for a list of the available commands)",
-                        metavar="COMMAND")
-    parser.add_argument("-M", "--no-player", action='store_true',
+                        metavar='COMMAND')
+    parser.add_argument('-M', '--no-player', action='store_true',
                         help="disable built-in media player")
-    parser.add_argument("-N", "--no-restore", action='store_true',
+    parser.add_argument('-N', '--no-restore', action='store_true',
                         help="do not restore positions and/or sizes")
-    parser.add_argument("-P", "--no-plugins", action='store_true',
+    parser.add_argument('-P', '--no-plugins', action='store_true',
                         help="do not load any plugins")
-    parser.add_argument("--no-crash-dialog", action='store_true',
+    parser.add_argument('--no-crash-dialog', action='store_true',
                         help="disable the crash dialog")
-    parser.add_argument("-s", "--stand-alone-instance", action='store_true',
+    parser.add_argument('-s', '--stand-alone-instance', action='store_true',
                         help="force Picard to create a new, stand-alone instance")
     parser.add_argument('-v', '--version', action='store_true',
                         help="display version information and exit")
-    parser.add_argument("-V", "--long-version", action='store_true',
+    parser.add_argument('-V', '--long-version', action='store_true',
                         help="display long version information and exit")
     parser.add_argument('FILE_OR_URL', nargs='*',
                         help="the file(s), URL(s) and MBID(s) to load")
@@ -1488,7 +1488,7 @@ If a new instance will not be spawned files/directories will be passed to the ex
 
     if args.exec:
         for e in args.exec:
-            args.remote_commands_help = args.remote_commands_help or "HELP" in {x.upper().strip() for x in e}
+            args.remote_commands_help = args.remote_commands_help or 'HELP' in {x.upper().strip() for x in e}
             remote_command_args = e[1:] or ['']
             for arg in remote_command_args:
                 args.processable.append(f"{e[0]} {arg}")
@@ -1571,10 +1571,10 @@ def main(localedir=None, autoupdate=True):
     locale = QtCore.QLocale()
     translation_path = QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.LibraryLocation.TranslationsPath)
     log.debug("Looking for Qt locale %s in %s", locale.name(), translation_path)
-    if translator.load(locale, "qtbase_", directory=translation_path):
+    if translator.load(locale, 'qtbase_', directory=translation_path):
         tagger.installTranslator(translator)
     else:
-        log.debug('Qt locale %s not available', locale.name())
+        log.debug("Qt locale %s not available", locale.name())
 
     tagger.startTimer(1000)
     exit_code = tagger.run()

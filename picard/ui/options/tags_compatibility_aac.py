@@ -37,16 +37,16 @@ from picard.ui.ui_options_tags_compatibility_aac import (
 
 class TagsCompatibilityAACOptionsPage(OptionsPage):
 
-    NAME = "tags_compatibility_aac"
+    NAME = 'tags_compatibility_aac'
     TITLE = N_("AAC")
-    PARENT = "tags"
+    PARENT = 'tags'
     SORT_ORDER = 40
     ACTIVE = True
-    HELP_URL = '/config/options_tags_compatibility_aac.html'
+    HELP_URL = "/config/options_tags_compatibility_aac.html"
 
     options = [
-        BoolOption("setting", "aac_save_ape", True),
-        BoolOption("setting", "remove_ape_from_aac", False),
+        BoolOption('setting', 'aac_save_ape', True),
+        BoolOption('setting', 'remove_ape_from_aac', False),
     ]
 
     def __init__(self, parent=None):
@@ -57,17 +57,17 @@ class TagsCompatibilityAACOptionsPage(OptionsPage):
 
     def load(self):
         config = get_config()
-        if config.setting["aac_save_ape"]:
+        if config.setting['aac_save_ape']:
             self.ui.aac_save_ape.setChecked(True)
         else:
             self.ui.aac_no_tags.setChecked(True)
-        self.ui.remove_ape_from_aac.setChecked(config.setting["remove_ape_from_aac"])
-        self.ui.remove_ape_from_aac.setEnabled(not config.setting["aac_save_ape"])
+        self.ui.remove_ape_from_aac.setChecked(config.setting['remove_ape_from_aac'])
+        self.ui.remove_ape_from_aac.setEnabled(not config.setting['aac_save_ape'])
 
     def save(self):
         config = get_config()
-        config.setting["aac_save_ape"] = self.ui.aac_save_ape.isChecked()
-        config.setting["remove_ape_from_aac"] = self.ui.remove_ape_from_aac.isChecked()
+        config.setting['aac_save_ape'] = self.ui.aac_save_ape.isChecked()
+        config.setting['remove_ape_from_aac'] = self.ui.remove_ape_from_aac.isChecked()
 
 
 register_options_page(TagsCompatibilityAACOptionsPage)

@@ -154,17 +154,17 @@ class RowColIter:
 
 class ReleasesOptionsPage(OptionsPage):
 
-    NAME = "releases"
+    NAME = 'releases'
     TITLE = N_("Preferred Releases")
-    PARENT = "metadata"
+    PARENT = 'metadata'
     SORT_ORDER = 10
     ACTIVE = True
-    HELP_URL = '/config/options_releases.html'
+    HELP_URL = "/config/options_releases.html"
 
     options = [
-        ListOption("setting", "release_type_scores", _release_type_scores),
-        ListOption("setting", "preferred_release_countries", []),
-        ListOption("setting", "preferred_release_formats", []),
+        ListOption('setting', 'release_type_scores', _release_type_scores),
+        ListOption('setting', 'preferred_release_countries', []),
+        ListOption('setting', 'preferred_release_formats', []),
     ]
 
     def __init__(self, parent=None):
@@ -230,14 +230,14 @@ class ReleasesOptionsPage(OptionsPage):
 
     def load(self):
         config = get_config()
-        scores = dict(config.setting["release_type_scores"])
+        scores = dict(config.setting['release_type_scores'])
         for (release_type, release_type_slider) in self._release_type_sliders.items():
             release_type_slider.setValue(scores.get(release_type,
                                                     _DEFAULT_SCORE))
 
-        self._load_list_items("preferred_release_countries", RELEASE_COUNTRIES,
+        self._load_list_items('preferred_release_countries', RELEASE_COUNTRIES,
                               self.ui.country_list, self.ui.preferred_country_list)
-        self._load_list_items("preferred_release_formats", RELEASE_FORMATS,
+        self._load_list_items('preferred_release_formats', RELEASE_FORMATS,
                               self.ui.format_list, self.ui.preferred_format_list)
 
     def save(self):
@@ -245,10 +245,10 @@ class ReleasesOptionsPage(OptionsPage):
         scores = []
         for (release_type, release_type_slider) in self._release_type_sliders.items():
             scores.append((release_type, release_type_slider.value()))
-        config.setting["release_type_scores"] = scores
+        config.setting['release_type_scores'] = scores
 
-        self._save_list_items("preferred_release_countries", self.ui.preferred_country_list)
-        self._save_list_items("preferred_release_formats", self.ui.preferred_format_list)
+        self._save_list_items('preferred_release_countries', self.ui.preferred_country_list)
+        self._save_list_items('preferred_release_formats', self.ui.preferred_format_list)
 
     def reset_preferred_types(self):
         for release_type_slider in self._release_type_sliders.values():
@@ -275,11 +275,11 @@ class ReleasesOptionsPage(OptionsPage):
             list1.takeItem(list1.row(item))
 
     def _load_list_items(self, setting, source, list1, list2):
-        if setting == "preferred_release_countries":
+        if setting == 'preferred_release_countries':
             source_list = [(c[0], gettext_countries(c[1])) for c in
                            source.items()]
-        elif setting == "preferred_release_formats":
-            source_list = [(c[0], pgettext_attributes("medium_format", c[1])) for c
+        elif setting == 'preferred_release_formats':
+            source_list = [(c[0], pgettext_attributes('medium_format', c[1])) for c
                            in source.items()]
         else:
             source_list = [(c[0], _(c[1])) for c in source.items()]

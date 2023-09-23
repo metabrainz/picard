@@ -63,7 +63,7 @@ def _generic_iter_drives():
     config = get_config()
     yield from (
         device.strip() for device
-        in config.setting["cd_lookup_device"].split(",")
+        in config.setting['cd_lookup_device'].split(',')
         if device and not device.isspace()
     )
 
@@ -97,7 +97,7 @@ if IS_WIN:
         mask = GetLogicalDrives()
         for i in range(26):
             if mask >> i & 1:
-                drive = chr(i + ord("A")) + ":"
+                drive = chr(i + ord('A')) + ':'
                 if GetDriveType(drive) == DRIVE_TYPE_CDROM:
                     yield drive
 

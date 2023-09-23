@@ -86,7 +86,7 @@ class Item(object):
     def tracknumber(self):
         """The track number as an int."""
         try:
-            return int(self.metadata["tracknumber"])
+            return int(self.metadata['tracknumber'])
         except BaseException:
             return 0
 
@@ -94,7 +94,7 @@ class Item(object):
     def discnumber(self):
         """The disc number as an int."""
         try:
-            return int(self.metadata["discnumber"])
+            return int(self.metadata['discnumber'])
         except BaseException:
             return 0
 
@@ -105,7 +105,7 @@ class Item(object):
         return self._errors
 
     def error_append(self, msg):
-        log.error('%r: %s', self, msg)
+        log.error("%r: %s", self, msg)
         self.errors.append(msg)
 
     def clear_errors(self):

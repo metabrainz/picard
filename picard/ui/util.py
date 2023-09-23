@@ -46,10 +46,10 @@ class StandardButton(QtWidgets.QPushButton):
     CLOSE = 4
 
     __types = {
-        OK: (N_('&Ok'), 'SP_DialogOkButton'),
-        CANCEL: (N_('&Cancel'), 'SP_DialogCancelButton'),
-        HELP: (N_('&Help'), 'SP_DialogHelpButton'),
-        CLOSE: (N_('Clos&e'), 'SP_DialogCloseButton'),
+        OK: (N_("&Ok"), 'SP_DialogOkButton'),
+        CANCEL: (N_("&Cancel"), 'SP_DialogCancelButton'),
+        HELP: (N_("&Help"), 'SP_DialogHelpButton'),
+        CLOSE: (N_("Clos&e"), 'SP_DialogCloseButton'),
     }
 
     def __init__(self, btntype):
@@ -65,10 +65,10 @@ class StandardButton(QtWidgets.QPushButton):
 
 def find_starting_directory():
     config = get_config()
-    if config.setting["starting_directory"]:
-        path = config.setting["starting_directory_path"]
+    if config.setting['starting_directory']:
+        path = config.setting['starting_directory_path']
     else:
-        path = config.persist["current_directory"] or QtCore.QDir.homePath()
+        path = config.persist['current_directory'] or QtCore.QDir.homePath()
     return find_existing_path(path)
 
 

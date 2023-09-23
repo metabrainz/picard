@@ -143,8 +143,8 @@ class SettingConfigSection(ConfigSection):
 
     @classmethod
     def init_profile_options(cls):
-        ListOption.add_if_missing("profiles", cls.PROFILES_KEY, [])
-        Option.add_if_missing("profiles", cls.SETTINGS_KEY, {})
+        ListOption.add_if_missing('profiles', cls.PROFILES_KEY, [])
+        Option.add_if_missing('profiles', cls.SETTINGS_KEY, {})
 
     def __init__(self, config, name):
         super().__init__(config, name)
@@ -165,7 +165,7 @@ class SettingConfigSection(ConfigSection):
             return
         for profile in profiles:
             if profile['enabled']:
-                yield profile["id"]
+                yield profile['id']
 
     def _get_active_profile_settings(self):
         for profile_id in self._get_active_profile_ids():
@@ -242,14 +242,14 @@ class Config(QtCore.QSettings):
         :meth:`from_file`."""
 
         self.setAtomicSyncRequired(False)  # See comment in event()
-        self.application = ConfigSection(self, "application")
-        self.profiles = ConfigSection(self, "profiles")
-        self.setting = SettingConfigSection(self, "setting")
-        self.persist = ConfigSection(self, "persist")
+        self.application = ConfigSection(self, 'application')
+        self.profiles = ConfigSection(self, 'profiles')
+        self.setting = SettingConfigSection(self, 'setting')
+        self.persist = ConfigSection(self, 'persist')
 
         if 'version' not in self.application or not self.application['version']:
-            TextOption("application", "version", '0.0.0dev0')
-        self._version = Version.from_string(self.application["version"])
+            TextOption('application', 'version', '0.0.0dev0')
+        self._version = Version.from_string(self.application['version'])
         self._upgrade_hooks = dict()
 
     def event(self, event):
@@ -258,7 +258,7 @@ class Config(QtCore.QSettings):
             # the Python GIL in PyQt up to 5.15.2. Workaround this by handling this ourselves
             # with custom file locking.
             # See also https: // tickets.metabrainz.org/browse/PICARD-2088
-            log.debug('Config file update requested on thread %r', threading.get_ident())
+            log.debug("Config file update requested on thread %r", threading.get_ident())
             self.sync()
             return True
         else:
@@ -367,7 +367,7 @@ class Config(QtCore.QSettings):
                 # hook is not applicable, mark as done
                 hook['done'] = True
 
-        if all(map(itemgetter("done"), self._upgrade_hooks.values())):
+        if all(map(itemgetter('done'), self._upgrade_hooks.values())):
             # all hooks were executed, ensure config is marked with latest version
             self._version = PICARD_VERSION
             self._write_version()
@@ -378,16 +378,16 @@ class Config(QtCore.QSettings):
             self._save_backup(backup_path)
 
     def _save_backup(self, backup_path):
-        log.info('Backing up config file to %s', backup_path)
+        log.info("Backing up config file to %s", backup_path)
         try:
             shutil.copyfile(self.fileName(), backup_path)
         except OSError:
-            log.error('Failed backing up config file to %s', backup_path)
+            log.error("Failed backing up config file to %s", backup_path)
             return False
         return True
 
     def _write_version(self):
-        self.application["version"] = self._version.to_string()
+        self.application['version'] = self._version.to_string()
         self.sync()
 
     def _versioned_config_filename(self, version=None):
@@ -505,7 +505,7 @@ def load_new_config(filename=None):
     try:
         shutil.copy(filename, config_file)
     except OSError:
-        log.error('Failed restoring config file from %s', filename)
+        log.error("Failed restoring config file from %s", filename)
         return False
     setup_config(QtCore.QObject.tagger, config_file)
     return True

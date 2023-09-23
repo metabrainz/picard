@@ -39,9 +39,9 @@ class RatingWidget(QtWidgets.QWidget):
         super().__init__(parent)
         self._track = track
         config = get_config()
-        self._maximum = config.setting["rating_steps"] - 1
+        self._maximum = config.setting['rating_steps'] - 1
         try:
-            self._rating = int(track.metadata["~rating"] or 0)
+            self._rating = int(track.metadata['~rating'] or 0)
         except ValueError:
             self._rating = 0
         self._highlight = 0
@@ -105,12 +105,12 @@ class RatingWidget(QtWidgets.QWidget):
     def _update_track(self):
         track = self._track
         rating = str(self._rating)
-        track.metadata["~rating"] = rating
+        track.metadata['~rating'] = rating
         for file in track.files:
-            file.metadata["~rating"] = rating
+            file.metadata['~rating'] = rating
         config = get_config()
-        if config.setting["submit_ratings"]:
-            ratings = {("recording", track.id): self._rating}
+        if config.setting['submit_ratings']:
+            ratings = {('recording', track.id): self._rating}
             try:
                 self.tagger.mb_api.submit_ratings(ratings, self._submitted)
             except ValueError:  # This should never happen as self._rating is always an integer

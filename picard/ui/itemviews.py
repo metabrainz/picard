@@ -158,24 +158,24 @@ class MainPanel(QtWidgets.QSplitter):
     options = []
 
     columns = [
-        (N_('Title'), 'title'),
-        (N_('Length'), '~length'),
-        (N_('Artist'), 'artist'),
-        (N_('Album Artist'), 'albumartist'),
-        (N_('Composer'), 'composer'),
-        (N_('Album'), 'album'),
-        (N_('Disc Subtitle'), 'discsubtitle'),
-        (N_('Track No.'), 'tracknumber'),
-        (N_('Disc No.'), 'discnumber'),
-        (N_('Catalog No.'), 'catalognumber'),
-        (N_('Barcode'), 'barcode'),
-        (N_('Media'), 'media'),
-        (N_('Genre'), 'genre'),
-        (N_('Fingerprint status'), '~fingerprint'),
-        (N_('Date'), 'date'),
-        (N_('Original Release Date'), 'originaldate'),
-        (N_('Release Date'), 'releasedate'),
-        (N_('Cover'), 'covercount'),
+        (N_("Title"), 'title'),
+        (N_("Length"), '~length'),
+        (N_("Artist"), 'artist'),
+        (N_("Album Artist"), 'albumartist'),
+        (N_("Composer"), 'composer'),
+        (N_("Album"), 'album'),
+        (N_("Disc Subtitle"), 'discsubtitle'),
+        (N_("Track No."), 'tracknumber'),
+        (N_("Disc No."), 'discnumber'),
+        (N_("Catalog No."), 'catalognumber'),
+        (N_("Barcode"), 'barcode'),
+        (N_("Media"), 'media'),
+        (N_("Genre"), 'genre'),
+        (N_("Fingerprint status"), '~fingerprint'),
+        (N_("Date"), 'date'),
+        (N_("Original Release Date"), 'originaldate'),
+        (N_("Release Date"), 'releasedate'),
+        (N_("Cover"), 'covercount'),
     ]
 
     _column_indexes = {column[1]: i for i, column in enumerate(columns)}
@@ -396,12 +396,12 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
             menu.addAction(action)
 
         menu.addSeparator()
-        restore_action = QtWidgets.QAction(_('Restore default columns'), parent)
+        restore_action = QtWidgets.QAction(_("Restore default columns"), parent)
         restore_action.setEnabled(not self.is_locked)
         restore_action.triggered.connect(self.restore_defaults)
         menu.addAction(restore_action)
 
-        lock_action = QtWidgets.QAction(_('Lock columns'), parent)
+        lock_action = QtWidgets.QAction(_("Lock columns"), parent)
         lock_action.setCheckable(True)
         lock_action.setChecked(self.is_locked)
         lock_action.toggled.connect(self.lock)
@@ -543,9 +543,9 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             releases_menu = QtWidgets.QMenu(_("&Other versions"), menu)
             menu.addSeparator()
             menu.addMenu(releases_menu)
-            loading = releases_menu.addAction(_('Loading…'))
+            loading = releases_menu.addAction(_("Loading…"))
             loading.setDisabled(True)
-            action_more = releases_menu.addAction(_('Show &more details…'))
+            action_more = releases_menu.addAction(_("Show &more details…"))
             action_more.triggered.connect(self.window.album_other_versions_action.trigger)
             bottom_separator = True
 
@@ -562,8 +562,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                     versions = obj.release_group.versions
 
                     album_tracks_count = obj.get_num_total_files() or len(obj.tracks)
-                    preferred_countries = set(config.setting["preferred_release_countries"])
-                    preferred_formats = set(config.setting["preferred_release_formats"])
+                    preferred_countries = set(config.setting['preferred_release_countries'])
+                    preferred_formats = set(config.setting['preferred_release_formats'])
                     ORDER_BEFORE, ORDER_AFTER = 0, 1
 
                     alternatives = []
@@ -610,7 +610,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             else:
                 releases_menu.setEnabled(False)
 
-        if config.setting["enable_ratings"] and \
+        if config.setting['enable_ratings'] and \
            len(self.window.selected_objects) == 1 and isinstance(obj, Track):
             menu.addSeparator()
             action = QtWidgets.QWidgetAction(menu)
@@ -626,7 +626,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 menu.addSeparator()
             menu.addMenu(CollectionMenu(selected_albums, _("Collections"), menu))
 
-        scripts = config.setting["list_of_scripts"]
+        scripts = config.setting['list_of_scripts']
 
         if plugin_actions or scripts:
             menu.addSeparator()
@@ -692,7 +692,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     def mimeTypes(self):
         """List of MIME types accepted by this view."""
-        return ["text/uri-list", "application/picard.album-list"]
+        return ['text/uri-list', 'application/picard.album-list']
 
     def dragEnterEvent(self, event):
         super().dragEnterEvent(event)
@@ -733,7 +733,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             elif obj.iterfiles:
                 files.extend([url(f.filename) for f in obj.iterfiles()])
         mimeData = QtCore.QMimeData()
-        mimeData.setData("application/picard.album-list", "\n".join(album_ids).encode())
+        mimeData.setData('application/picard.album-list', '\n'.join(album_ids).encode())
         if files:
             mimeData.setUrls(files)
         return mimeData
@@ -753,14 +753,14 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         tagger = QtCore.QObject.tagger
         for url in urls:
             log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo))
-            if url.scheme() == "file" or not url.scheme():
-                filename = normpath(url.toLocalFile().rstrip("\0"))
+            if url.scheme() == 'file' or not url.scheme():
+                filename = normpath(url.toLocalFile().rstrip('\0'))
                 file = tagger.files.get(filename)
                 if file:
                     files.append(file)
                 else:
                     new_paths.append(filename)
-            elif url.scheme() in {"http", "https"}:
+            elif url.scheme() in {'http', 'https'}:
                 file_lookup = tagger.get_file_lookup()
                 file_lookup.mbid_lookup(url.path(), browser_fallback=False)
         if files:
@@ -804,7 +804,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             QtCore.QTimer.singleShot(0, partial(self.drop_urls, urls, target, self._move_to_multi_tracks))
             handled = True
         # application/picard.album-list
-        albums = data.data("application/picard.album-list")
+        albums = data.data('application/picard.album-list')
         if albums:
             album_ids = bytes(albums).decode().split("\n")
             log.debug("Dropped albums = %r", album_ids)
@@ -843,8 +843,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
 class FileTreeView(BaseTreeView):
 
-    header_state = Option("persist", "file_view_header_state", QtCore.QByteArray())
-    header_locked = BoolOption("persist", "file_view_header_locked", False)
+    header_state = Option('persist', 'file_view_header_state', QtCore.QByteArray())
+    header_locked = BoolOption('persist', 'file_view_header_locked', False)
 
     def __init__(self, window, parent=None):
         super().__init__(window, parent)
@@ -869,13 +869,13 @@ class FileTreeView(BaseTreeView):
         self.set_clusters_text()
 
     def set_clusters_text(self):
-        self.clusters.setText(MainPanel.TITLE_COLUMN, '%s (%d)' % (_("Clusters"), len(self.tagger.clusters)))
+        self.clusters.setText(MainPanel.TITLE_COLUMN, "%s (%d)" % (_("Clusters"), len(self.tagger.clusters)))
 
 
 class AlbumTreeView(BaseTreeView):
 
-    header_state = Option("persist", "album_view_header_state", QtCore.QByteArray())
-    header_locked = BoolOption("persist", "album_view_header_locked", False)
+    header_state = Option('persist', 'album_view_header_state', QtCore.QByteArray())
+    header_locked = BoolOption('persist', 'album_view_header_locked', False)
 
     def __init__(self, window, parent=None):
         super().__init__(window, parent)
@@ -1194,10 +1194,10 @@ class FileItem(TreeItem):
         if getattr(file, 'acoustid_fingerprint', None):
             if QtCore.QObject.tagger.acoustidmanager.is_submitted(file):
                 icon = FileItem.icon_fingerprint_gray
-                tooltip = _('Fingerprint has already been submitted')
+                tooltip = _("Fingerprint has already been submitted")
             else:
                 icon = FileItem.icon_fingerprint
-                tooltip = _('Unsubmitted fingerprint')
+                tooltip = _("Unsubmitted fingerprint")
         else:
             icon = QtGui.QIcon()
             tooltip = _('No fingerprint was calculated for this file, use "Scan" or "Generate AcoustID Fingerprints" to calculate the fingerprint.')

@@ -95,33 +95,33 @@ class APEv2File(File):
     _File = None
 
     __translate = {
-        "albumartist": "Album Artist",
-        "remixer": "MixArtist",
-        "director": "Director",
-        "website": "Weblink",
-        "discsubtitle": "DiscSubtitle",
-        "bpm": "BPM",
-        "isrc": "ISRC",
-        "catalognumber": "CatalogNumber",
-        "barcode": "Barcode",
-        "encodedby": "EncodedBy",
-        "language": "Language",
-        "movementnumber": "MOVEMENT",
-        "movement": "MOVEMENTNAME",
-        "movementtotal": "MOVEMENTTOTAL",
-        "showmovement": "SHOWMOVEMENT",
-        "releasestatus": "MUSICBRAINZ_ALBUMSTATUS",
-        "releasetype": "MUSICBRAINZ_ALBUMTYPE",
-        "musicbrainz_recordingid": "musicbrainz_trackid",
-        "musicbrainz_trackid": "musicbrainz_releasetrackid",
-        "originalartist": "Original Artist",
-        "replaygain_album_gain": "REPLAYGAIN_ALBUM_GAIN",
-        "replaygain_album_peak": "REPLAYGAIN_ALBUM_PEAK",
-        "replaygain_album_range": "REPLAYGAIN_ALBUM_RANGE",
-        "replaygain_track_gain": "REPLAYGAIN_TRACK_GAIN",
-        "replaygain_track_peak": "REPLAYGAIN_TRACK_PEAK",
-        "replaygain_track_range": "REPLAYGAIN_TRACK_RANGE",
-        "replaygain_reference_loudness": "REPLAYGAIN_REFERENCE_LOUDNESS",
+        'albumartist': 'Album Artist',
+        'remixer': 'MixArtist',
+        'director': 'Director',
+        'website': 'Weblink',
+        'discsubtitle': 'DiscSubtitle',
+        'bpm': 'BPM',
+        'isrc': 'ISRC',
+        'catalognumber': 'CatalogNumber',
+        'barcode': 'Barcode',
+        'encodedby': 'EncodedBy',
+        'language': 'Language',
+        'movementnumber': 'MOVEMENT',
+        'movement': 'MOVEMENTNAME',
+        'movementtotal': 'MOVEMENTTOTAL',
+        'showmovement': 'SHOWMOVEMENT',
+        'releasestatus': 'MUSICBRAINZ_ALBUMSTATUS',
+        'releasetype': 'MUSICBRAINZ_ALBUMTYPE',
+        'musicbrainz_recordingid': 'musicbrainz_trackid',
+        'musicbrainz_trackid': 'musicbrainz_releasetrackid',
+        'originalartist': 'Original Artist',
+        'replaygain_album_gain': 'REPLAYGAIN_ALBUM_GAIN',
+        'replaygain_album_peak': 'REPLAYGAIN_ALBUM_PEAK',
+        'replaygain_album_range': 'REPLAYGAIN_ALBUM_RANGE',
+        'replaygain_track_gain': 'REPLAYGAIN_TRACK_GAIN',
+        'replaygain_track_peak': 'REPLAYGAIN_TRACK_PEAK',
+        'replaygain_track_range': 'REPLAYGAIN_TRACK_RANGE',
+        'replaygain_reference_loudness': 'REPLAYGAIN_REFERENCE_LOUDNESS',
     }
     __rtranslate = {v.lower(): k for k, v in __translate.items()}
 
@@ -138,7 +138,7 @@ class APEv2File(File):
             for origname, values in file.tags.items():
                 name_lower = origname.lower()
                 if (values.kind == mutagen.apev2.BINARY
-                    and name_lower.startswith("cover art")):
+                    and name_lower.startswith('cover art')):
                     if b'\0' in values.value:
                         descr, data = values.value.split(b'\0', 1)
                         try:
@@ -148,7 +148,7 @@ class APEv2File(File):
                                 data=data,
                             )
                         except CoverArtImageError as e:
-                            log.error('Cannot load image from %r: %s', filename, e)
+                            log.error("Cannot load image from %r: %s", filename, e)
                         else:
                             metadata.images.append(coverartimage)
 
@@ -157,20 +157,20 @@ class APEv2File(File):
                     continue
                 for value in values:
                     name = name_lower
-                    if name == "year":
-                        name = "date"
+                    if name == 'year':
+                        name = 'date'
                         value = sanitize_date(value)
-                    elif name == "track":
-                        name = "tracknumber"
-                        track = value.split("/")
+                    elif name == 'track':
+                        name = 'tracknumber'
+                        track = value.split('/')
                         if len(track) > 1:
-                            metadata["totaltracks"] = track[1]
+                            metadata['totaltracks'] = track[1]
                             value = track[0]
-                    elif name == "disc":
-                        name = "discnumber"
-                        disc = value.split("/")
+                    elif name == 'disc':
+                        name = 'discnumber'
+                        disc = value.split('/')
                         if len(disc) > 1:
-                            metadata["totaldiscs"] = disc[1]
+                            metadata['totaldiscs'] = disc[1]
                             value = disc[0]
                     elif name in {'performer', 'comment'}:
                         if value.endswith(')'):
@@ -194,7 +194,7 @@ class APEv2File(File):
         except mutagen.apev2.APENoHeaderError:
             tags = mutagen.apev2.APEv2()
         images_to_save = list(metadata.images.to_be_saved_to_tags())
-        if config.setting["clear_existing_tags"]:
+        if config.setting['clear_existing_tags']:
             preserved = []
             if config.setting['preserve_images']:
                 preserved = list(self._iter_cover_art_tags(tags))
@@ -206,7 +206,7 @@ class APEv2File(File):
                 del tags[name]
         temp = {}
         for name, value in metadata.items():
-            if name.startswith("~") or not self.supports_tag(name):
+            if name.startswith('~') or not self.supports_tag(name):
                 continue
             real_name = self._get_tag_name(name)
             # tracknumber/totaltracks => Track
@@ -326,7 +326,7 @@ class WavPackFile(APEv2File):
 
     def _move_additional_files(self, old_filename, new_filename, config):
         """Includes an additional check for WavPack correction files"""
-        if config.setting["rename_files"] or config.setting["move_files"]:
+        if config.setting['rename_files'] or config.setting['move_files']:
             self._move_or_rename_wvc(old_filename, new_filename)
         return super()._move_additional_files(old_filename, new_filename, config)
 
@@ -384,7 +384,7 @@ class AACFile(APEv2File):
             try:
                 mutagen.apev2.delete(encode_filename(filename))
             except BaseException:
-                log.exception('Error removing APEv2 tags from %s', filename)
+                log.exception("Error removing APEv2 tags from %s", filename)
 
     @classmethod
     def supports_tag(cls, name):

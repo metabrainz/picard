@@ -85,7 +85,7 @@ class TagStatus:
 
 class TagCounter(dict):
 
-    __slots__ = ("parent", "counts", "different")
+    __slots__ = ('parent', 'counts', 'different')
 
     def __init__(self, parent):
         self.parent = parent
@@ -111,7 +111,7 @@ class TagCounter(dict):
         if tag in self.different:
             return (ngettext("(different across %d item)", "(different across %d items)", count) % count, True)
         else:
-            if tag == "~length":
+            if tag == '~length':
                 msg = format_time(self.get(tag, 0))
             else:
                 msg = MULTI_VALUED_JOINER.join(self[tag])
@@ -124,7 +124,7 @@ class TagCounter(dict):
 
 class TagDiff(object):
 
-    __slots__ = ("tag_names", "new", "orig", "status", "objects", "max_length_delta_ms")
+    __slots__ = ('tag_names', 'new', 'orig', 'status', 'objects', 'max_length_delta_ms')
 
     def __init__(self, max_length_diff=2):
         self.tag_names = []
@@ -135,7 +135,7 @@ class TagDiff(object):
         self.max_length_delta_ms = max_length_diff * 1000
 
     def __tag_ne(self, tag, orig, new):
-        if tag == "~length":
+        if tag == '~length':
             return abs(float(orig) - float(new)) > self.max_length_delta_ms
         else:
             return orig != new
@@ -204,8 +204,8 @@ class TableTagEditorDelegate(TagEditorDelegate):
 class MetadataBox(QtWidgets.QTableWidget):
 
     options = (
-        Option("persist", "metadatabox_header_state", QtCore.QByteArray()),
-        BoolOption("persist", "show_changes_first", False)
+        Option('persist', 'metadatabox_header_state', QtCore.QByteArray()),
+        BoolOption('persist', 'show_changes_first', False)
     )
 
     COLUMN_ORIG = 1
@@ -242,7 +242,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.add_tag_action.triggered.connect(partial(self.edit_tag, ""))
         self.changes_first_action = QtWidgets.QAction(_("Show Changes First"), parent)
         self.changes_first_action.setCheckable(True)
-        self.changes_first_action.setChecked(config.persist["show_changes_first"])
+        self.changes_first_action.setChecked(config.persist['show_changes_first'])
         self.changes_first_action.toggled.connect(self.toggle_changes_first)
         # TR: Keyboard shortcut for "Add New Tag…"
         self.add_tag_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence(_("Alt+Shift+A")), self, partial(self.edit_tag, ""))
@@ -260,22 +260,22 @@ class MetadataBox(QtWidgets.QTableWidget):
     def get_file_lookup(self):
         """Return a FileLookup object."""
         config = get_config()
-        return FileLookup(self, config.setting["server_host"],
-                          config.setting["server_port"],
+        return FileLookup(self, config.setting['server_host'],
+                          config.setting['server_port'],
                           self.tagger.browser_integration.port)
 
     def lookup_tags(self):
         lookup = self.get_file_lookup()
         LOOKUP_TAGS = {
-            "musicbrainz_recordingid": lookup.recording_lookup,
-            "musicbrainz_trackid": lookup.track_lookup,
-            "musicbrainz_albumid": lookup.album_lookup,
-            "musicbrainz_workid": lookup.work_lookup,
-            "musicbrainz_artistid": lookup.artist_lookup,
-            "musicbrainz_albumartistid": lookup.artist_lookup,
-            "musicbrainz_releasegroupid": lookup.release_group_lookup,
-            "musicbrainz_discid": lookup.discid_lookup,
-            "acoustid_id": lookup.acoust_lookup
+            'musicbrainz_recordingid': lookup.recording_lookup,
+            'musicbrainz_trackid': lookup.track_lookup,
+            'musicbrainz_albumid': lookup.album_lookup,
+            'musicbrainz_workid': lookup.work_lookup,
+            'musicbrainz_artistid': lookup.artist_lookup,
+            'musicbrainz_albumartistid': lookup.artist_lookup,
+            'musicbrainz_releasegroupid': lookup.release_group_lookup,
+            'musicbrainz_discid': lookup.discid_lookup,
+            'acoustid_id': lookup.acoust_lookup
         }
         return LOOKUP_TAGS
 
@@ -469,7 +469,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     def toggle_changes_first(self, checked):
         config = get_config()
-        config.persist["show_changes_first"] = checked
+        config.persist['show_changes_first'] = checked
         self.update()
 
     def set_tag_values(self, tag, values, objects=None):
@@ -557,8 +557,8 @@ class MetadataBox(QtWidgets.QTableWidget):
             return None
 
         if new_selection or drop_album_caches:
-            self._single_file_album = len({file.metadata["album"] for file in files}) == 1
-            self._single_track_album = len({track.metadata["album"] for track in tracks}) == 1
+            self._single_file_album = len({file.metadata['album'] for file in files}) == 1
+            self._single_track_album = len({track.metadata['album'] for track in tracks}) == 1
 
         while not new_selection:  # Just an if with multiple exit points
             # If we are dealing with the same selection
@@ -582,12 +582,12 @@ class MetadataBox(QtWidgets.QTableWidget):
         }
 
         config = get_config()
-        tag_diff = TagDiff(max_length_diff=config.setting["ignore_track_duration_difference_under"])
+        tag_diff = TagDiff(max_length_diff=config.setting['ignore_track_duration_difference_under'])
         orig_tags = tag_diff.orig
         new_tags = tag_diff.new
         tag_diff.objects = len(files)
 
-        clear_existing_tags = config.setting["clear_existing_tags"]
+        clear_existing_tags = config.setting['clear_existing_tags']
         top_tags = config.setting['metadatabox_top_tags']
         top_tags_set = set(top_tags)
 
@@ -608,7 +608,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 removed = name in new_metadata.deleted_tags
                 tag_diff.add(name, orig_values, new_values, True, removed, top_tags=top_tags_set)
 
-            tag_diff.add("~length", str(orig_metadata.length), str(new_metadata.length),
+            tag_diff.add('~length', str(orig_metadata.length), str(new_metadata.length),
                          removable=False, readonly=True)
 
         for track in tracks:
@@ -622,7 +622,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                         tag_diff.add(name, orig_values, new_values, True)
 
                 length = str(track.metadata.length)
-                tag_diff.add("~length", length, length, removable=False, readonly=True)
+                tag_diff.add('~length', length, length, removable=False, readonly=True)
 
                 tag_diff.objects += 1
 
@@ -631,7 +631,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         tag_names = common_tags + sorted(all_tags.difference(common_tags),
                                          key=lambda x: display_tag_name(x).lower())
 
-        if config.persist["show_changes_first"]:
+        if config.persist['show_changes_first']:
             tags_by_status = {}
 
             for tag in tag_names:
@@ -685,7 +685,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 self.setItem(i, 2, new_item)
             tag_item.setText(display_tag_name(name))
             self.set_item_value(orig_item, self.tag_diff.orig, name)
-            if name == "~length":
+            if name == '~length':
                 new_item.setFlags(orig_flags)
             else:
                 new_item.setFlags(new_flags)
@@ -723,7 +723,7 @@ class MetadataBox(QtWidgets.QTableWidget):
     @restore_method
     def restore_state(self):
         config = get_config()
-        state = config.persist["metadatabox_header_state"]
+        state = config.persist['metadatabox_header_state']
         header = self.horizontalHeader()
         header.restoreState(state)
         header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Interactive)
@@ -732,4 +732,4 @@ class MetadataBox(QtWidgets.QTableWidget):
         config = get_config()
         header = self.horizontalHeader()
         state = header.saveState()
-        config.persist["metadatabox_header_state"] = state
+        config.persist['metadatabox_header_state'] = state

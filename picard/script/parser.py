@@ -104,12 +104,12 @@ class StackItem:
 
     def __str__(self):
         if self.name is None:
-            return '{line:d}:{column:d}'.format(
+            return "{line:d}:{column:d}".format(
                 line=self.line,
                 column=self.column
             )
         else:
-            return '{line:d}:{column:d}:{name}'.format(
+            return "{line:d}:{column:d}:{name}".format(
                 line=self.line,
                 column=self.column,
                 name=self.name
@@ -124,7 +124,7 @@ class ScriptText(str):
 
 def normalize_tagname(name):
     if name.startswith('_'):
-        return "~" + name[1:]
+        return '~' + name[1:]
     return name
 
 
@@ -134,7 +134,7 @@ class ScriptVariable(object):
         self.name = name
 
     def __repr__(self):
-        return '<ScriptVariable %%%s%%>' % self.name
+        return "<ScriptVariable %%%s%%>" % self.name
 
     def eval(self, state):
         return state.context.get(normalize_tagname(self.name), "")
@@ -427,7 +427,7 @@ class MultiValue(MutableSequence):
         return self._multi.insert(index, value)
 
     def __repr__(self):
-        return '%s(%r, %r, %r)' % (self.__class__.__name__, self.parser, self._multi, self.separator)
+        return "%s(%r, %r, %r)" % (self.__class__.__name__, self.parser, self._multi, self.separator)
 
     def __str__(self):
         return self.separator.join(x for x in self if x)

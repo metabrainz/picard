@@ -38,17 +38,17 @@ from picard.ui.searchdialog import (
 
 class ArtistSearchDialog(SearchDialog):
 
-    dialog_header_state = "artistsearchdialog_header_state"
+    dialog_header_state = 'artistsearchdialog_header_state'
 
     options = [
-        Option("persist", dialog_header_state, QtCore.QByteArray())
+        Option('persist', dialog_header_state, QtCore.QByteArray())
     ]
 
     def __init__(self, parent):
         super().__init__(
             parent,
             accept_button_title=_("Show in browser"),
-            search_type="artist")
+            search_type='artist')
         self.setWindowTitle(_("Artist Search Dialog"))
         self.columns = [
             ('name',        _("Name")),
@@ -102,15 +102,15 @@ class ArtistSearchDialog(SearchDialog):
         self.prepare_table()
         for row, artist in enumerate(self.search_results):
             self.table.insertRow(row)
-            self.set_table_item(row, 'name',      artist, "name")
-            self.set_table_item(row, 'type',      artist, "type")
-            self.set_table_item(row, 'gender',    artist, "gender")
-            self.set_table_item(row, 'area',      artist, "area")
-            self.set_table_item(row, 'begindate', artist, "begindate")
-            self.set_table_item(row, 'beginarea', artist, "beginarea")
-            self.set_table_item(row, 'enddate',   artist, "enddate")
-            self.set_table_item(row, 'endarea',   artist, "endarea")
-            self.set_table_item(row, 'score',     artist, "score")
+            self.set_table_item(row, 'name',      artist, 'name')
+            self.set_table_item(row, 'type',      artist, 'type')
+            self.set_table_item(row, 'gender',    artist, 'gender')
+            self.set_table_item(row, 'area',      artist, 'area')
+            self.set_table_item(row, 'begindate', artist, 'begindate')
+            self.set_table_item(row, 'beginarea', artist, 'beginarea')
+            self.set_table_item(row, 'enddate',   artist, 'enddate')
+            self.set_table_item(row, 'endarea',   artist, 'endarea')
+            self.set_table_item(row, 'score',     artist, 'score')
         self.show_table(sort_column='score')
 
     def accept_event(self, rows):
@@ -118,4 +118,4 @@ class ArtistSearchDialog(SearchDialog):
             self.load_in_browser(row)
 
     def load_in_browser(self, row):
-        self.tagger.search(self.search_results[row]["musicbrainz_artistid"], "artist")
+        self.tagger.search(self.search_results[row]['musicbrainz_artistid'], 'artist')

@@ -135,16 +135,16 @@ class File(QtCore.QObject, Item):
     FILE_INFO_TAGS = ('~bitrate', '~sample_rate', '~channels', '~bits_per_sample', '~format')
 
     comparison_weights = {
-        "title": 13,
-        "artist": 4,
-        "album": 5,
-        "length": 10,
-        "totaltracks": 4,
-        "releasetype": 14,
-        "releasecountry": 2,
-        "format": 2,
-        "isvideo": 2,
-        "date": 4,
+        'title': 13,
+        'artist': 4,
+        'album': 5,
+        'length': 10,
+        'totaltracks': 4,
+        'releasetype': 14,
+        'releasecountry': 2,
+        'format': 2,
+        'isvideo': 2,
+        'date': 4,
     }
 
     class PreserveTimesStatError(Exception):
@@ -213,7 +213,7 @@ class File(QtCore.QObject, Item):
         self.state = File.ERROR
         if any_exception_isinstance(error, MutagenError):
             self.error_type = FileErrorType.PARSER
-            self.error_append(_('The file failed to parse, either the file is damaged or has an unsupported file format.'))
+            self.error_append(_("The file failed to parse, either the file is damaged or has an unsupported file format."))
         elif any_exception_isinstance(error, FileNotFoundError):
             self.error_type = FileErrorType.NOTFOUND
         elif any_exception_isinstance(error, PermissionError):
@@ -261,7 +261,7 @@ class File(QtCore.QObject, Item):
             if alternative_file:
                 # Do not retry reloading exactly the same file format
                 if type(alternative_file) != type(self):  # pylint: disable=unidiomatic-typecheck # noqa: E721
-                    log.debug('Loading %r failed, retrying as %r', self, alternative_file)
+                    log.debug("Loading %r failed, retrying as %r", self, alternative_file)
                     self.remove()
                     alternative_file.load(callback)
                     return
@@ -270,18 +270,18 @@ class File(QtCore.QObject, Item):
             from picard.formats import supported_extensions
             file_name, file_extension = os.path.splitext(self.base_filename)
             if file_extension not in supported_extensions():
-                log.error('Unsupported media file %r wrongly loaded. Removing …', self)
+                log.error("Unsupported media file %r wrongly loaded. Removing …", self)
                 callback(self, remove_file=True)
                 return
         else:
             self.clear_errors()
             self.state = self.NORMAL
             postprocessors = []
-            if config.setting["guess_tracknumber_and_title"]:
+            if config.setting['guess_tracknumber_and_title']:
                 postprocessors.append(self._guess_tracknumber_and_title)
             self._copy_loaded_metadata(result, postprocessors)
         # use cached fingerprint from file metadata
-        if not config.setting["ignore_existing_acoustid_fingerprints"]:
+        if not config.setting['ignore_existing_acoustid_fingerprints']:
             fingerprints = self.metadata.getall('acoustid_fingerprint')
             if fingerprints:
                 self.set_acoustid_fingerprint(fingerprints[0])
@@ -382,9 +382,9 @@ class File(QtCore.QObject, Item):
             log.debug("File not saved because %s is stopping: %r", PICARD_APP_NAME, self.filename)
             return None
         new_filename = old_filename
-        if not config.setting["dont_write_tags"]:
+        if not config.setting['dont_write_tags']:
             save = partial(self._save, old_filename, metadata)
-            if config.setting["preserve_timestamps"]:
+            if config.setting['preserve_timestamps']:
                 try:
                     self._preserve_times(old_filename, save)
                 except self.PreserveTimesUtimeError as why:
@@ -392,12 +392,12 @@ class File(QtCore.QObject, Item):
             else:
                 save()
         # Rename files
-        if config.setting["rename_files"] or config.setting["move_files"]:
+        if config.setting['rename_files'] or config.setting['move_files']:
             new_filename = self._rename(old_filename, metadata, config.setting)
         # Move extra files (images, playlists, etc.)
         self._move_additional_files(old_filename, new_filename, config)
         # Delete empty directories
-        if config.setting["delete_empty_dirs"]:
+        if config.setting['delete_empty_dirs']:
             dirname = os.path.dirname(old_filename)
             try:
                 emptydir.rm_empty_dir(dirname)
@@ -412,7 +412,7 @@ class File(QtCore.QObject, Item):
             except emptydir.SkipRemoveDir as why:
                 log.debug("Not removing empty directory: %s", why)
         # Save cover art images
-        if config.setting["save_images_to_files"]:
+        if config.setting['save_images_to_files']:
             self._save_images(os.path.dirname(new_filename), metadata)
         return new_filename
 
@@ -436,7 +436,7 @@ class File(QtCore.QObject, Item):
             # conversions (e.g. for ID3v2.3)
             config = get_config()
             new_metadata = self._format_specific_copy(self.metadata, config.setting)
-            if config.setting["clear_existing_tags"]:
+            if config.setting['clear_existing_tags']:
                 self.orig_metadata = new_metadata
             else:
                 self.orig_metadata.update(new_metadata)
@@ -474,7 +474,7 @@ class File(QtCore.QObject, Item):
             config = get_config()
             settings = config.setting
         metadata = Metadata()
-        if settings["clear_existing_tags"]:
+        if settings['clear_existing_tags']:
             # script_to_filename_with_metadata guarantees this is not modified
             metadata = file_metadata
         else:
@@ -538,15 +538,15 @@ class File(QtCore.QObject, Item):
             settings = config.setting
         if naming_format is None:
             naming_format = get_file_naming_script(settings)
-        if settings["move_files"]:
-            new_dirname = settings["move_files_to"]
+        if settings['move_files']:
+            new_dirname = settings['move_files_to']
             if not is_absolute_path(new_dirname):
                 new_dirname = os.path.join(os.path.dirname(filename), new_dirname)
         else:
             new_dirname = os.path.dirname(filename)
         new_filename = os.path.basename(filename)
 
-        if settings["rename_files"] or settings["move_files"]:
+        if settings['rename_files'] or settings['move_files']:
             new_filename = self._format_filename(new_dirname, new_filename, metadata, settings, naming_format)
 
         new_path = os.path.join(new_dirname, new_filename)
@@ -572,7 +572,7 @@ class File(QtCore.QObject, Item):
         counters = Counter()
         images = []
         config = get_config()
-        if config.setting["save_only_one_front_image"]:
+        if config.setting['save_only_one_front_image']:
             front = metadata.images.get_front_image()
             if front:
                 images.append(front)
@@ -583,11 +583,11 @@ class File(QtCore.QObject, Item):
 
     def _move_additional_files(self, old_filename, new_filename, config):
         """Move extra files, like images, playlists…"""
-        if config.setting["move_files"] and config.setting["move_additional_files"]:
+        if config.setting['move_files'] and config.setting['move_additional_files']:
             new_path = os.path.dirname(new_filename)
             old_path = os.path.dirname(old_filename)
             if new_path != old_path:
-                patterns_string = config.setting["move_additional_files_pattern"]
+                patterns_string = config.setting['move_additional_files_pattern']
                 patterns = self._compile_move_additional_files_pattern(patterns_string)
                 try:
                     moves = self._get_additional_files_moves(old_path, new_path, patterns)
@@ -705,8 +705,8 @@ class File(QtCore.QObject, Item):
     def update(self, signal=True):
         if not (self.state == File.ERROR and self.errors):
             config = get_config()
-            clear_existing_tags = config.setting["clear_existing_tags"]
-            ignored_tags = set(config.setting["compare_ignore_tags"])
+            clear_existing_tags = config.setting['clear_existing_tags']
+            ignored_tags = set(config.setting['compare_ignore_tags'])
 
             for name in self._tags_to_update(ignored_tags):
                 new_values = self.format_specific_metadata(self.metadata, name, config.setting)
@@ -812,9 +812,9 @@ class File(QtCore.QObject, Item):
 
     def column(self, column):
         m = self.metadata
-        if column == "title" and not m["title"]:
+        if column == 'title' and not m['title']:
             return self.base_filename
-        elif column == "covercount":
+        elif column == 'covercount':
             return self.cover_art_description()
         return m[column]
 

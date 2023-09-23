@@ -176,7 +176,7 @@ class Track(DataObject, FileListItem):
         # Run the scripts for the file to allow usage of
         # file specific metadata and variables
         config = get_config()
-        if config.setting["clear_existing_tags"]:
+        if config.setting['clear_existing_tags']:
             metadata = Metadata(self.orig_metadata)
             metadata_proxy = MultiMetadataProxy(metadata, file.metadata)
             self.run_scripts(metadata_proxy)
@@ -394,22 +394,22 @@ class NonAlbumTrack(Track):
         config = get_config()
         require_authentication = False
         inc = {
-            "aliases",
-            "artist-credits",
-            "artists",
+            'aliases',
+            'artist-credits',
+            'artists',
         }
-        if config.setting["track_ars"]:
+        if config.setting['track_ars']:
             inc |= {
-                "artist-rels",
-                "recording-rels",
-                "url-rels",
-                "work-level-rels",
-                "work-rels",
+                'artist-rels',
+                'recording-rels',
+                'url-rels',
+                'work-level-rels',
+                'work-rels',
             }
         require_authentication = self.set_genre_inc_params(inc, config) or require_authentication
-        if config.setting["enable_ratings"]:
+        if config.setting['enable_ratings']:
             require_authentication = True
-            inc |= {"user-ratings"}
+            inc |= {'user-ratings'}
         self.tagger.mb_api.get_track_by_id(
             self.id,
             self._recording_request_finished,

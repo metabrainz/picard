@@ -75,26 +75,26 @@ def iter_sorted_locales(locales):
 
 class MetadataOptionsPage(OptionsPage):
 
-    NAME = "metadata"
+    NAME = 'metadata'
     TITLE = N_("Metadata")
     PARENT = None
     SORT_ORDER = 20
     ACTIVE = True
-    HELP_URL = '/config/options_metadata.html'
+    HELP_URL = "/config/options_metadata.html"
 
     options = [
-        TextOption("setting", "va_name", "Various Artists"),
-        TextOption("setting", "nat_name", "[standalone recordings]"),
-        ListOption("setting", "artist_locales", ["en"]),
-        BoolOption("setting", "translate_artist_names", False),
-        BoolOption("setting", "translate_artist_names_script_exception", False),
-        ListOption("setting", "script_exceptions", []),
-        BoolOption("setting", "release_ars", True),
-        BoolOption("setting", "track_ars", False),
-        BoolOption("setting", "convert_punctuation", False),
-        BoolOption("setting", "standardize_artists", False),
-        BoolOption("setting", "standardize_instruments", True),
-        BoolOption("setting", "guess_tracknumber_and_title", True),
+        TextOption('setting', 'va_name', "Various Artists"),
+        TextOption('setting', 'nat_name', '[standalone recordings]'),
+        ListOption('setting', 'artist_locales', ['en']),
+        BoolOption('setting', 'translate_artist_names', False),
+        BoolOption('setting', 'translate_artist_names_script_exception', False),
+        ListOption('setting', 'script_exceptions', []),
+        BoolOption('setting', 'release_ars', True),
+        BoolOption('setting', 'track_ars', False),
+        BoolOption('setting', 'convert_punctuation', False),
+        BoolOption('setting', 'standardize_artists', False),
+        BoolOption('setting', 'standardize_instruments', True),
+        BoolOption('setting', 'guess_tracknumber_and_title', True),
     ]
 
     def __init__(self, parent=None):
@@ -110,21 +110,21 @@ class MetadataOptionsPage(OptionsPage):
 
     def load(self):
         config = get_config()
-        self.ui.translate_artist_names.setChecked(config.setting["translate_artist_names"])
-        self.current_locales = config.setting["artist_locales"]
+        self.ui.translate_artist_names.setChecked(config.setting['translate_artist_names'])
+        self.current_locales = config.setting['artist_locales']
         self.make_locales_text()
-        self.current_scripts = config.setting["script_exceptions"]
+        self.current_scripts = config.setting['script_exceptions']
         self.make_scripts_text()
-        self.ui.translate_artist_names_script_exception.setChecked(config.setting["translate_artist_names_script_exception"])
+        self.ui.translate_artist_names_script_exception.setChecked(config.setting['translate_artist_names_script_exception'])
 
-        self.ui.convert_punctuation.setChecked(config.setting["convert_punctuation"])
-        self.ui.release_ars.setChecked(config.setting["release_ars"])
-        self.ui.track_ars.setChecked(config.setting["track_ars"])
-        self.ui.va_name.setText(config.setting["va_name"])
-        self.ui.nat_name.setText(config.setting["nat_name"])
-        self.ui.standardize_artists.setChecked(config.setting["standardize_artists"])
-        self.ui.standardize_instruments.setChecked(config.setting["standardize_instruments"])
-        self.ui.guess_tracknumber_and_title.setChecked(config.setting["guess_tracknumber_and_title"])
+        self.ui.convert_punctuation.setChecked(config.setting['convert_punctuation'])
+        self.ui.release_ars.setChecked(config.setting['release_ars'])
+        self.ui.track_ars.setChecked(config.setting['track_ars'])
+        self.ui.va_name.setText(config.setting['va_name'])
+        self.ui.nat_name.setText(config.setting['nat_name'])
+        self.ui.standardize_artists.setChecked(config.setting['standardize_artists'])
+        self.ui.standardize_instruments.setChecked(config.setting['standardize_instruments'])
+        self.ui.guess_tracknumber_and_title.setChecked(config.setting['guess_tracknumber_and_title'])
 
         self.set_enabled_states()
 
@@ -144,22 +144,22 @@ class MetadataOptionsPage(OptionsPage):
 
     def save(self):
         config = get_config()
-        config.setting["translate_artist_names"] = self.ui.translate_artist_names.isChecked()
-        config.setting["artist_locales"] = self.current_locales
-        config.setting["translate_artist_names_script_exception"] = self.ui.translate_artist_names_script_exception.isChecked()
-        config.setting["script_exceptions"] = self.current_scripts
-        config.setting["convert_punctuation"] = self.ui.convert_punctuation.isChecked()
-        config.setting["release_ars"] = self.ui.release_ars.isChecked()
-        config.setting["track_ars"] = self.ui.track_ars.isChecked()
-        config.setting["va_name"] = self.ui.va_name.text()
+        config.setting['translate_artist_names'] = self.ui.translate_artist_names.isChecked()
+        config.setting['artist_locales'] = self.current_locales
+        config.setting['translate_artist_names_script_exception'] = self.ui.translate_artist_names_script_exception.isChecked()
+        config.setting['script_exceptions'] = self.current_scripts
+        config.setting['convert_punctuation'] = self.ui.convert_punctuation.isChecked()
+        config.setting['release_ars'] = self.ui.release_ars.isChecked()
+        config.setting['track_ars'] = self.ui.track_ars.isChecked()
+        config.setting['va_name'] = self.ui.va_name.text()
         nat_name = self.ui.nat_name.text()
-        if nat_name != config.setting["nat_name"]:
-            config.setting["nat_name"] = nat_name
+        if nat_name != config.setting['nat_name']:
+            config.setting['nat_name'] = nat_name
             if self.tagger.nats is not None:
                 self.tagger.nats.update()
-        config.setting["standardize_artists"] = self.ui.standardize_artists.isChecked()
-        config.setting["standardize_instruments"] = self.ui.standardize_instruments.isChecked()
-        config.setting["guess_tracknumber_and_title"] = self.ui.guess_tracknumber_and_title.isChecked()
+        config.setting['standardize_artists'] = self.ui.standardize_artists.isChecked()
+        config.setting['standardize_instruments'] = self.ui.standardize_instruments.isChecked()
+        config.setting['guess_tracknumber_and_title'] = self.ui.guess_tracknumber_and_title.isChecked()
 
     def set_va_name_default(self):
         self.ui.va_name.setText(self.options[0].default)

@@ -178,7 +178,7 @@ if IS_WIN:
                                     r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize") as key:
                     dark_theme = winreg.QueryValueEx(key, "AppsUseLightTheme")[0] == 0
             except OSError:
-                log.warning('Failed reading AppsUseLightTheme from registry')
+                log.warning("Failed reading AppsUseLightTheme from registry")
             return dark_theme
 
         @property
@@ -190,7 +190,7 @@ if IS_WIN:
                     accent_color_hex = '#{:06x}'.format(accent_color_dword & 0xffffff)
                     accent_color = QtGui.QColor(accent_color_hex)
             except OSError:
-                log.warning('Failed reading ColorizationColor from registry')
+                log.warning("Failed reading ColorizationColor from registry")
             return accent_color
 
         def update_palette(self, palette, dark_theme, accent_color):

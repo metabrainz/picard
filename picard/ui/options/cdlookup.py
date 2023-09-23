@@ -48,15 +48,15 @@ else:
 
 class CDLookupOptionsPage(OptionsPage):
 
-    NAME = "cdlookup"
+    NAME = 'cdlookup'
     TITLE = N_("CD Lookup")
     PARENT = None
     SORT_ORDER = 50
     ACTIVE = True
-    HELP_URL = '/config/options_cdlookup.html'
+    HELP_URL = "/config/options_cdlookup.html"
 
     options = [
-        TextOption("setting", "cd_lookup_device", ",".join(DEFAULT_DRIVES)),
+        TextOption('setting', 'cd_lookup_device', ','.join(DEFAULT_DRIVES)),
     ]
 
     def __init__(self, parent=None):
@@ -69,7 +69,7 @@ class CDLookupOptionsPage(OptionsPage):
 
     def load(self):
         config = get_config()
-        device = config.setting["cd_lookup_device"]
+        device = config.setting['cd_lookup_device']
         if AUTO_DETECT_DRIVES:
             try:
                 self.ui.cd_lookup_device.setCurrentIndex(self._device_list.index(device))
@@ -86,7 +86,7 @@ class CDLookupOptionsPage(OptionsPage):
         else:
             device = self.ui.cd_lookup_device.text()
             device_list = [device]
-        config.setting["cd_lookup_device"] = device
+        config.setting['cd_lookup_device'] = device
         self.tagger.window.update_cd_lookup_drives(device_list)
 
 

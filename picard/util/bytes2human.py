@@ -34,17 +34,17 @@ import locale
 
 # used to force gettextization
 _BYTES_STRINGS_I18N = (
-    N_('%(value)s B'),
-    N_('%(value)s kB'),
-    N_('%(value)s KiB'),
-    N_('%(value)s MB'),
-    N_('%(value)s MiB'),
-    N_('%(value)s GB'),
-    N_('%(value)s GiB'),
-    N_('%(value)s TB'),
-    N_('%(value)s TiB'),
-    N_('%(value)s PB'),
-    N_('%(value)s PiB'),
+    N_("%(value)s B"),
+    N_("%(value)s kB"),
+    N_("%(value)s KiB"),
+    N_("%(value)s MB"),
+    N_("%(value)s MiB"),
+    N_("%(value)s GB"),
+    N_("%(value)s GiB"),
+    N_("%(value)s TB"),
+    N_("%(value)s TiB"),
+    N_("%(value)s PB"),
+    N_("%(value)s PiB"),
 )
 
 
@@ -116,9 +116,9 @@ def calc_unit(number, multiple=1000):
     elif multiple == 1024:
         k, b = 'K', 'iB'
     else:
-        raise ValueError('multiple parameter has to be 1000 or 1024')
+        raise ValueError("multiple parameter has to be 1000 or 1024")
 
-    suffixes = ["B"] + [i + b for i in k + "MGTP"]
+    suffixes = ['B'] + [i + b for i in k + 'MGTP']
     for suffix in suffixes:
         if n < multiple or suffix == suffixes[-1]:
             return (sign * n, suffix)

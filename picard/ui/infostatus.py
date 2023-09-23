@@ -60,7 +60,7 @@ class InfoStatus(QtWidgets.QWidget, Ui_InfoStatus):
         self._init_tooltips()
 
     def _create_icons(self):
-        self.icon_eta = QtGui.QIcon(':/images/22x22/hourglass.png')
+        self.icon_eta = QtGui.QIcon(":/images/22x22/hourglass.png")
         self.icon_cd = icontheme.lookup('media-optical')
         self.icon_file = QtGui.QIcon(":/images/file.png")
         self.icon_file_pending = QtGui.QIcon(":/images/file-pending.png")

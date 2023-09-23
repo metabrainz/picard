@@ -81,7 +81,7 @@ class DataHash:
             if self._hash not in _datafiles:
                 (fd, self._filename) = tempfile.mkstemp(prefix=prefix, suffix=suffix)
                 QObject.tagger.register_cleanup(self.delete_file)
-                with os.fdopen(fd, "wb") as imagefile:
+                with os.fdopen(fd, 'wb') as imagefile:
                     imagefile.write(data)
                 _datafiles[self._hash] = self._filename
                 periodictouch.register_file(self._filename)
@@ -116,7 +116,7 @@ class DataHash:
     @property
     def data(self):
         if self._filename:
-            with open(self._filename, "rb") as imagefile:
+            with open(self._filename, 'rb') as imagefile:
                 return imagefile.read()
         return None
 
@@ -148,7 +148,7 @@ class CoverArtImage:
     # `is_front` has to be explicitly set, it is used to handle CAA is_front
     # indicator
     is_front = None
-    sourceprefix = "URL"
+    sourceprefix = 'URL'
 
     def __init__(self, url=None, types=None, comment='', data=None, support_types=None,
                  support_multi_types=None, id3_type=None):
@@ -310,12 +310,12 @@ class CoverArtImage:
     def _make_image_filename(self, filename, dirname, _metadata, win_compat, win_shorten_path):
         metadata = Metadata()
         metadata.copy(_metadata)
-        metadata["coverart_maintype"] = self.maintype
-        metadata["coverart_comment"] = self.comment
+        metadata['coverart_maintype'] = self.maintype
+        metadata['coverart_comment'] = self.comment
         if self.is_front:
-            metadata.add_unique("coverart_types", "front")
+            metadata.add_unique('coverart_types', 'front')
         for cover_type in self.types:
-            metadata.add_unique("coverart_types", cover_type)
+            metadata.add_unique('coverart_types', cover_type)
         filename = script_to_filename(filename, metadata)
         if not filename:
             filename = DEFAULT_COVER_IMAGE_FILENAME
@@ -344,19 +344,19 @@ class CoverArtImage:
         if not self.can_be_saved_to_disk:
             return
         config = get_config()
-        win_compat = IS_WIN or config.setting["windows_compatibility"]
+        win_compat = IS_WIN or config.setting['windows_compatibility']
         win_shorten_path = win_compat and not config.setting['windows_long_paths']
-        if config.setting["image_type_as_filename"] and not self.is_front_image():
+        if config.setting['image_type_as_filename'] and not self.is_front_image():
             filename = sanitize_filename(self.maintype, win_compat=win_compat)
             log.debug("Make cover filename from types: %r -> %r",
                       self.types, filename)
         else:
-            filename = config.setting["cover_image_filename"]
+            filename = config.setting['cover_image_filename']
             log.debug("Using default cover image filename %r", filename)
         filename = self._make_image_filename(
             filename, dirname, metadata, win_compat, win_shorten_path)
 
-        overwrite = config.setting["save_images_overwrite"]
+        overwrite = config.setting['save_images_overwrite']
         ext = encode_filename(self.extension)
         image_filename = self._next_filename(filename, counters)
         while os.path.exists(image_filename + ext) and not overwrite:
@@ -430,7 +430,7 @@ class CaaCoverArtImage(CoverArtImage):
 
     support_types = True
     support_multi_types = True
-    sourceprefix = "CAA"
+    sourceprefix = 'CAA'
 
     def __init__(self, url, types=None, is_front=False, comment='', data=None):
         super().__init__(url=url, types=types, comment=comment, data=data)

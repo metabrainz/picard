@@ -56,52 +56,52 @@ from picard.ui.util import qlistwidget_items
 
 class InterfaceToolbarOptionsPage(OptionsPage):
 
-    NAME = "interface_toolbar"
+    NAME = 'interface_toolbar'
     TITLE = N_("Action Toolbar")
     PARENT = 'interface'
     SORT_ORDER = 60
     ACTIVE = True
-    HELP_URL = '/config/options_interface_toolbar.html'
+    HELP_URL = "/config/options_interface_toolbar.html"
     SEPARATOR = '—' * 5
     TOOLBAR_BUTTONS = {
         'add_directory_action': {
-            'label': N_('Add Folder'),
+            'label': N_("Add Folder"),
             'icon': 'folder'
         },
         'add_files_action': {
-            'label': N_('Add Files'),
+            'label': N_("Add Files"),
             'icon': 'document-open'
         },
         'cluster_action': {
-            'label': N_('Cluster'),
+            'label': N_("Cluster"),
             'icon': 'picard-cluster'
         },
         'autotag_action': {
-            'label': N_('Lookup'),
+            'label': N_("Lookup"),
             'icon': 'picard-auto-tag'
         },
         'analyze_action': {
-            'label': N_('Scan'),
+            'label': N_("Scan"),
             'icon': 'picard-analyze'
         },
         'browser_lookup_action': {
-            'label': N_('Lookup in Browser'),
+            'label': N_("Lookup in Browser"),
             'icon': 'lookup-musicbrainz'
         },
         'save_action': {
-            'label': N_('Save'),
+            'label': N_("Save"),
             'icon': 'document-save'
         },
         'view_info_action': {
-            'label': N_('Info'),
+            'label': N_("Info"),
             'icon': 'picard-edit-tags'
         },
         'remove_action': {
-            'label': N_('Remove'),
+            'label': N_("Remove"),
             'icon': 'list-remove'
         },
         'submit_acoustid_action': {
-            'label': N_('Submit AcoustIDs'),
+            'label': N_("Submit AcoustIDs"),
             'icon': 'acoustid-fingerprinter'
         },
         'generate_fingerprints_action': {
@@ -109,25 +109,25 @@ class InterfaceToolbarOptionsPage(OptionsPage):
             'icon': 'fingerprint'
         },
         'play_file_action': {
-            'label': N_('Open in Player'),
+            'label': N_("Open in Player"),
             'icon': 'play-music'
         },
         'cd_lookup_action': {
-            'label': N_('Lookup CD…'),
+            'label': N_("Lookup CD…"),
             'icon': 'media-optical'
         },
         'tags_from_filenames_action': {
-            'label': N_('Parse File Names…'),
+            'label': N_("Parse File Names…"),
             'icon': 'picard-tags-from-filename'
         },
         'similar_items_search_action': {
-            'label': N_('Similar items'),
+            'label': N_("Similar items"),
             'icon': 'system-search'
         },
     }
     ACTION_NAMES = set(TOOLBAR_BUTTONS.keys())
     options = [
-        ListOption("setting", "toolbar_layout", [
+        ListOption('setting', 'toolbar_layout', [
             'add_directory_action',
             'add_files_action',
             'separator',
@@ -184,7 +184,7 @@ class InterfaceToolbarOptionsPage(OptionsPage):
 
     def _insert_item(self, action, index=None):
         list_item = ToolbarListItem(action)
-        list_item.setToolTip(_('Drag and Drop to re-order'))
+        list_item.setToolTip(_("Drag and Drop to re-order"))
         if action in self.TOOLBAR_BUTTONS:
             # TODO: Remove temporary workaround once https://github.com/python-babel/babel/issues/415 has been resolved.
             babel_415_workaround = self.TOOLBAR_BUTTONS[action]['label']

@@ -51,7 +51,7 @@ from picard.util import encode_filename
 
 def _add_text_values_to_metadata(metadata, name, values):
     for value in values:
-        metadata.add(name, value.decode("utf-8", "replace").strip("\x00"))
+        metadata.add(name, value.decode('utf-8', 'replace').strip('\x00'))
 
 
 _VALID_KEY_CHARS = re.compile('^[\x00-\xff]+$')
@@ -71,106 +71,106 @@ class MP4File(File):
     _File = MP4
 
     __text_tags = {
-        "\xa9ART": "artist",
-        "\xa9nam": "title",
-        "\xa9alb": "album",
-        "\xa9wrt": "composer",
-        "aART": "albumartist",
-        "\xa9grp": "grouping",
-        "\xa9day": "date",
-        "\xa9gen": "genre",
-        "\xa9lyr": "lyrics",
-        "\xa9cmt": "comment",
-        "\xa9too": "encodedby",
-        "\xa9dir": "director",
-        "cprt": "copyright",
-        "soal": "albumsort",
-        "soaa": "albumartistsort",
-        "soar": "artistsort",
-        "sonm": "titlesort",
-        "soco": "composersort",
-        "sosn": "showsort",
-        "tvsh": "show",
-        "purl": "podcasturl",
-        "\xa9mvn": "movement",
-        "\xa9wrk": "work",
+        '\xa9ART': 'artist',
+        '\xa9nam': 'title',
+        '\xa9alb': 'album',
+        '\xa9wrt': 'composer',
+        'aART': 'albumartist',
+        '\xa9grp': 'grouping',
+        '\xa9day': 'date',
+        '\xa9gen': 'genre',
+        '\xa9lyr': 'lyrics',
+        '\xa9cmt': 'comment',
+        '\xa9too': 'encodedby',
+        '\xa9dir': 'director',
+        'cprt': 'copyright',
+        'soal': 'albumsort',
+        'soaa': 'albumartistsort',
+        'soar': 'artistsort',
+        'sonm': 'titlesort',
+        'soco': 'composersort',
+        'sosn': 'showsort',
+        'tvsh': 'show',
+        'purl': 'podcasturl',
+        '\xa9mvn': 'movement',
+        '\xa9wrk': 'work',
     }
     __r_text_tags = {v: k for k, v in __text_tags.items()}
 
     __bool_tags = {
-        "pcst": "podcast",
-        "cpil": "compilation",
-        "pgap": "gapless",
+        'pcst': 'podcast',
+        'cpil': 'compilation',
+        'pgap': 'gapless',
     }
     __r_bool_tags = {v: k for k, v in __bool_tags.items()}
 
     __int_tags = {
-        "tmpo": "bpm",
-        "\xa9mvi": "movementnumber",
-        "\xa9mvc": "movementtotal",
-        "shwm": "showmovement",
+        'tmpo': 'bpm',
+        '\xa9mvi': 'movementnumber',
+        '\xa9mvc': 'movementtotal',
+        'shwm': 'showmovement',
     }
     __r_int_tags = {v: k for k, v in __int_tags.items()}
 
     __freeform_tags = {
-        "----:com.apple.iTunes:MusicBrainz Track Id": "musicbrainz_recordingid",
-        "----:com.apple.iTunes:MusicBrainz Artist Id": "musicbrainz_artistid",
-        "----:com.apple.iTunes:MusicBrainz Album Id": "musicbrainz_albumid",
-        "----:com.apple.iTunes:MusicBrainz Album Artist Id": "musicbrainz_albumartistid",
-        "----:com.apple.iTunes:MusicIP PUID": "musicip_puid",
-        "----:com.apple.iTunes:MusicBrainz Album Status": "releasestatus",
-        "----:com.apple.iTunes:MusicBrainz Album Release Country": "releasecountry",
-        "----:com.apple.iTunes:MusicBrainz Album Type": "releasetype",
-        "----:com.apple.iTunes:MusicBrainz Disc Id": "musicbrainz_discid",
-        "----:com.apple.iTunes:MusicBrainz TRM Id": "musicbrainz_trmid",
-        "----:com.apple.iTunes:MusicBrainz Work Id": "musicbrainz_workid",
-        "----:com.apple.iTunes:MusicBrainz Release Group Id": "musicbrainz_releasegroupid",
-        "----:com.apple.iTunes:MusicBrainz Release Track Id": "musicbrainz_trackid",
-        "----:com.apple.iTunes:MusicBrainz Original Album Id": "musicbrainz_originalalbumid",
-        "----:com.apple.iTunes:MusicBrainz Original Artist Id": "musicbrainz_originalartistid",
-        "----:com.apple.iTunes:Acoustid Fingerprint": "acoustid_fingerprint",
-        "----:com.apple.iTunes:Acoustid Id": "acoustid_id",
-        "----:com.apple.iTunes:ASIN": "asin",
-        "----:com.apple.iTunes:BARCODE": "barcode",
-        "----:com.apple.iTunes:PRODUCER": "producer",
-        "----:com.apple.iTunes:LYRICIST": "lyricist",
-        "----:com.apple.iTunes:CONDUCTOR": "conductor",
-        "----:com.apple.iTunes:ENGINEER": "engineer",
-        "----:com.apple.iTunes:MIXER": "mixer",
-        "----:com.apple.iTunes:DJMIXER": "djmixer",
-        "----:com.apple.iTunes:REMIXER": "remixer",
-        "----:com.apple.iTunes:ISRC": "isrc",
-        "----:com.apple.iTunes:MEDIA": "media",
-        "----:com.apple.iTunes:LABEL": "label",
-        "----:com.apple.iTunes:LICENSE": "license",
-        "----:com.apple.iTunes:CATALOGNUMBER": "catalognumber",
-        "----:com.apple.iTunes:SUBTITLE": "subtitle",
-        "----:com.apple.iTunes:DISCSUBTITLE": "discsubtitle",
-        "----:com.apple.iTunes:MOOD": "mood",
-        "----:com.apple.iTunes:SCRIPT": "script",
-        "----:com.apple.iTunes:LANGUAGE": "language",
-        "----:com.apple.iTunes:ARTISTS": "artists",
-        "----:com.apple.iTunes:WORK": "work",
-        "----:com.apple.iTunes:initialkey": "key",
+        '----:com.apple.iTunes:MusicBrainz Track Id': 'musicbrainz_recordingid',
+        '----:com.apple.iTunes:MusicBrainz Artist Id': 'musicbrainz_artistid',
+        '----:com.apple.iTunes:MusicBrainz Album Id': 'musicbrainz_albumid',
+        '----:com.apple.iTunes:MusicBrainz Album Artist Id': 'musicbrainz_albumartistid',
+        '----:com.apple.iTunes:MusicIP PUID': 'musicip_puid',
+        '----:com.apple.iTunes:MusicBrainz Album Status': 'releasestatus',
+        '----:com.apple.iTunes:MusicBrainz Album Release Country': 'releasecountry',
+        '----:com.apple.iTunes:MusicBrainz Album Type': 'releasetype',
+        '----:com.apple.iTunes:MusicBrainz Disc Id': 'musicbrainz_discid',
+        '----:com.apple.iTunes:MusicBrainz TRM Id': 'musicbrainz_trmid',
+        '----:com.apple.iTunes:MusicBrainz Work Id': 'musicbrainz_workid',
+        '----:com.apple.iTunes:MusicBrainz Release Group Id': 'musicbrainz_releasegroupid',
+        '----:com.apple.iTunes:MusicBrainz Release Track Id': 'musicbrainz_trackid',
+        '----:com.apple.iTunes:MusicBrainz Original Album Id': 'musicbrainz_originalalbumid',
+        '----:com.apple.iTunes:MusicBrainz Original Artist Id': 'musicbrainz_originalartistid',
+        '----:com.apple.iTunes:Acoustid Fingerprint': 'acoustid_fingerprint',
+        '----:com.apple.iTunes:Acoustid Id': 'acoustid_id',
+        '----:com.apple.iTunes:ASIN': 'asin',
+        '----:com.apple.iTunes:BARCODE': 'barcode',
+        '----:com.apple.iTunes:PRODUCER': 'producer',
+        '----:com.apple.iTunes:LYRICIST': 'lyricist',
+        '----:com.apple.iTunes:CONDUCTOR': 'conductor',
+        '----:com.apple.iTunes:ENGINEER': 'engineer',
+        '----:com.apple.iTunes:MIXER': 'mixer',
+        '----:com.apple.iTunes:DJMIXER': 'djmixer',
+        '----:com.apple.iTunes:REMIXER': 'remixer',
+        '----:com.apple.iTunes:ISRC': 'isrc',
+        '----:com.apple.iTunes:MEDIA': 'media',
+        '----:com.apple.iTunes:LABEL': 'label',
+        '----:com.apple.iTunes:LICENSE': 'license',
+        '----:com.apple.iTunes:CATALOGNUMBER': 'catalognumber',
+        '----:com.apple.iTunes:SUBTITLE': 'subtitle',
+        '----:com.apple.iTunes:DISCSUBTITLE': 'discsubtitle',
+        '----:com.apple.iTunes:MOOD': 'mood',
+        '----:com.apple.iTunes:SCRIPT': 'script',
+        '----:com.apple.iTunes:LANGUAGE': 'language',
+        '----:com.apple.iTunes:ARTISTS': 'artists',
+        '----:com.apple.iTunes:WORK': 'work',
+        '----:com.apple.iTunes:initialkey': 'key',
     }
     __r_freeform_tags = {v: k for k, v in __freeform_tags.items()}
 
     # Tags to load case insensitive. Case is preserved, but the specified case
     # is written if it is unset.
     __r_freeform_tags_ci = {
-        "replaygain_album_gain": "----:com.apple.iTunes:REPLAYGAIN_ALBUM_GAIN",
-        "replaygain_album_peak": "----:com.apple.iTunes:REPLAYGAIN_ALBUM_PEAK",
-        "replaygain_album_range": "----:com.apple.iTunes:REPLAYGAIN_ALBUM_RANGE",
-        "replaygain_track_gain": "----:com.apple.iTunes:REPLAYGAIN_TRACK_GAIN",
-        "replaygain_track_peak": "----:com.apple.iTunes:REPLAYGAIN_TRACK_PEAK",
-        "replaygain_track_range": "----:com.apple.iTunes:REPLAYGAIN_TRACK_RANGE",
-        "replaygain_reference_loudness": "----:com.apple.iTunes:REPLAYGAIN_REFERENCE_LOUDNESS",
-        "releasedate": "----:com.apple.iTunes:RELEASEDATE",
+        'replaygain_album_gain': '----:com.apple.iTunes:REPLAYGAIN_ALBUM_GAIN',
+        'replaygain_album_peak': '----:com.apple.iTunes:REPLAYGAIN_ALBUM_PEAK',
+        'replaygain_album_range': '----:com.apple.iTunes:REPLAYGAIN_ALBUM_RANGE',
+        'replaygain_track_gain': '----:com.apple.iTunes:REPLAYGAIN_TRACK_GAIN',
+        'replaygain_track_peak': '----:com.apple.iTunes:REPLAYGAIN_TRACK_PEAK',
+        'replaygain_track_range': '----:com.apple.iTunes:REPLAYGAIN_TRACK_RANGE',
+        'replaygain_reference_loudness': '----:com.apple.iTunes:REPLAYGAIN_REFERENCE_LOUDNESS',
+        'releasedate': '----:com.apple.iTunes:RELEASEDATE',
     }
     __freeform_tags_ci = {b.lower(): a for a, b in __r_freeform_tags_ci.items()}
 
-    __other_supported_tags = ("discnumber", "tracknumber",
-                              "totaldiscs", "totaltracks")
+    __other_supported_tags = ('discnumber', 'tracknumber',
+                              'totaldiscs', 'totaltracks')
 
     def __init__(self, filename):
         super().__init__(filename)
@@ -199,24 +199,24 @@ class MP4File(File):
                 tag_name = self.__freeform_tags_ci[name_lower]
                 self.__casemap[tag_name] = name
                 _add_text_values_to_metadata(metadata, tag_name, values)
-            elif name == "----:com.apple.iTunes:fingerprint":
+            elif name == '----:com.apple.iTunes:fingerprint':
                 for value in values:
-                    value = value.decode("utf-8", "replace").strip("\x00")
-                    if value.startswith("MusicMagic Fingerprint"):
-                        metadata.add("musicip_fingerprint", value[22:])
-            elif name == "trkn":
+                    value = value.decode('utf-8', 'replace').strip('\x00')
+                    if value.startswith('MusicMagic Fingerprint'):
+                        metadata.add('musicip_fingerprint', value[22:])
+            elif name == 'trkn':
                 try:
-                    metadata["tracknumber"] = values[0][0]
-                    metadata["totaltracks"] = values[0][1]
+                    metadata['tracknumber'] = values[0][0]
+                    metadata['totaltracks'] = values[0][1]
                 except IndexError:
-                    log.debug('trkn is invalid, ignoring')
-            elif name == "disk":
+                    log.debug("trkn is invalid, ignoring")
+            elif name == 'disk':
                 try:
-                    metadata["discnumber"] = values[0][0]
-                    metadata["totaldiscs"] = values[0][1]
+                    metadata['discnumber'] = values[0][0]
+                    metadata['totaldiscs'] = values[0][1]
                 except IndexError:
-                    log.debug('disk is invalid, ignoring')
-            elif name == "covr":
+                    log.debug("disk is invalid, ignoring")
+            elif name == 'covr':
                 for value in values:
                     if value.imageformat not in {value.FORMAT_JPEG, value.FORMAT_PNG}:
                         continue
@@ -227,7 +227,7 @@ class MP4File(File):
                             data=value,
                         )
                     except CoverArtImageError as e:
-                        log.error('Cannot load image from %r: %s', filename, e)
+                        log.error("Cannot load image from %r: %s", filename, e)
                     else:
                         metadata.images.append(coverartimage)
             # Read other freeform tags always case insensitive
@@ -253,7 +253,7 @@ class MP4File(File):
             file.add_tags()
         tags = file.tags
 
-        if config.setting["clear_existing_tags"]:
+        if config.setting['clear_existing_tags']:
             cover = tags.get('covr') if config.setting['preserve_images'] else None
             tags.clear()
             if cover:
@@ -274,59 +274,59 @@ class MP4File(File):
                 except ValueError:
                     pass
             elif name in self.__r_freeform_tags:
-                values = [v.encode("utf-8") for v in values]
+                values = [v.encode('utf-8') for v in values]
                 tags[self.__r_freeform_tags[name]] = values
             elif name in self.__r_freeform_tags_ci:
-                values = [v.encode("utf-8") for v in values]
+                values = [v.encode('utf-8') for v in values]
                 delall_ci(tags, self.__r_freeform_tags_ci[name])
                 if name in self.__casemap:
                     name = self.__casemap[name]
                 else:
                     name = self.__r_freeform_tags_ci[name]
                 tags[name] = values
-            elif name == "musicip_fingerprint":
-                tags["----:com.apple.iTunes:fingerprint"] = [b"MusicMagic Fingerprint%s" % v.encode('ascii') for v in values]
+            elif name == 'musicip_fingerprint':
+                tags['----:com.apple.iTunes:fingerprint'] = [b'MusicMagic Fingerprint%s' % v.encode('ascii') for v in values]
             elif self.supports_tag(name) and name not in self.__other_supported_tags:
-                values = [v.encode("utf-8") for v in values]
+                values = [v.encode('utf-8') for v in values]
                 name = self.__casemap.get(name, name)
                 tags['----:com.apple.iTunes:' + name] = values
 
-        if "tracknumber" in metadata:
+        if 'tracknumber' in metadata:
             try:
-                tracknumber = int(metadata["tracknumber"])
+                tracknumber = int(metadata['tracknumber'])
             except ValueError:
                 pass
             else:
                 totaltracks = 0
-                if "totaltracks" in metadata:
+                if 'totaltracks' in metadata:
                     try:
-                        totaltracks = int(metadata["totaltracks"])
+                        totaltracks = int(metadata['totaltracks'])
                     except ValueError:
                         pass
-                tags["trkn"] = [(tracknumber, totaltracks)]
+                tags['trkn'] = [(tracknumber, totaltracks)]
 
-        if "discnumber" in metadata:
+        if 'discnumber' in metadata:
             try:
-                discnumber = int(metadata["discnumber"])
+                discnumber = int(metadata['discnumber'])
             except ValueError:
                 pass
             else:
                 totaldiscs = 0
-                if "totaldiscs" in metadata:
+                if 'totaldiscs' in metadata:
                     try:
-                        totaldiscs = int(metadata["totaldiscs"])
+                        totaldiscs = int(metadata['totaldiscs'])
                     except ValueError:
                         pass
-                tags["disk"] = [(discnumber, totaldiscs)]
+                tags['disk'] = [(discnumber, totaldiscs)]
 
         covr = []
         for image in metadata.images.to_be_saved_to_tags():
-            if image.mimetype == "image/jpeg":
+            if image.mimetype == 'image/jpeg':
                 covr.append(MP4Cover(image.data, MP4Cover.FORMAT_JPEG))
-            elif image.mimetype == "image/png":
+            elif image.mimetype == 'image/png':
                 covr.append(MP4Cover(image.data, MP4Cover.FORMAT_PNG))
         if covr:
-            tags["covr"] = covr
+            tags['covr'] = covr
 
         self._remove_deleted_tags(metadata, tags)
 
@@ -337,13 +337,13 @@ class MP4File(File):
         for tag in metadata.deleted_tags:
             real_name = self._get_tag_name(tag)
             if real_name and real_name in tags:
-                if tag not in {"totaltracks", "totaldiscs"}:
+                if tag not in {'totaltracks', 'totaldiscs'}:
                     del tags[real_name]
 
     @classmethod
     def supports_tag(cls, name):
         return (name
-                and not name.startswith("~")
+                and not name.startswith('~')
                 and name not in UNSUPPORTED_TAGS
                 and not (name.startswith('comment:') and len(name) > 9)
                 and not name.startswith('performer:')
@@ -362,12 +362,12 @@ class MP4File(File):
             return self.__r_freeform_tags[name]
         elif name in self.__r_freeform_tags_ci:
             return self.__r_freeform_tags_ci[name]
-        elif name == "musicip_fingerprint":
-            return "----:com.apple.iTunes:fingerprint"
-        elif name in {"tracknumber", "totaltracks"}:
-            return "trkn"
-        elif name in {"discnumber", "totaldiscs"}:
-            return "disk"
+        elif name == 'musicip_fingerprint':
+            return '----:com.apple.iTunes:fingerprint'
+        elif name in {'tracknumber', 'totaltracks'}:
+            return 'trkn'
+        elif name in {'discnumber', 'totaldiscs'}:
+            return 'disk'
         elif self.supports_tag(name) and name not in self.__other_supported_tags:
             name = self.__casemap.get(name, name)
             return '----:com.apple.iTunes:' + name
