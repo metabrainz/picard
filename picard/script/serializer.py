@@ -222,7 +222,7 @@ class PicardScript():
         else:
             script_text = self.script + "\n"
         try:
-            with open(filename, 'w', encoding='utf8') as o_file:
+            with open(filename, 'w', encoding='utf-8') as o_file:
                 o_file.write(script_text)
         except OSError as error:
             raise ScriptImportExportError(format=FILE_ERROR_EXPORT, filename=filename, error_msg=error.strerror)
@@ -252,7 +252,7 @@ class PicardScript():
             return None
         log.debug("Importing script file: %s", filename)
         try:
-            with open(filename, 'r', encoding='utf8') as i_file:
+            with open(filename, 'r', encoding='utf-8') as i_file:
                 file_content = i_file.read()
         except OSError as error:
             raise ScriptImportExportError(format=FILE_ERROR_IMPORT, filename=filename, error_msg=error.strerror)

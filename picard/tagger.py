@@ -615,7 +615,7 @@ class Tagger(QtWidgets.QApplication):
 
     def handle_command_write_logs(self, argstring):
         try:
-            with open(argstring, 'w', encoding='utf8') as f:
+            with open(argstring, 'w', encoding='utf-8') as f:
                 for x in self.window.log_dialog.log_tail.contents():
                     f.write(f"{x.message}\n")
         except Exception as e:
@@ -1533,7 +1533,7 @@ def main(localedir=None, autoupdate=True):
         identifier = uuid4().hex
     else:
         if picard_args.config_file:
-            identifier = blake2b(picard_args.config_file.encode('utf8'), digest_size=16).hexdigest()
+            identifier = blake2b(picard_args.config_file.encode('utf-8'), digest_size=16).hexdigest()
         else:
             identifier = 'main'
         if picard_args.no_plugins:
