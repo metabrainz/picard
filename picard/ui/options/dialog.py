@@ -225,11 +225,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             message_box.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
             return message_box.exec_()
 
+        option_group = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
         override_profiles = self.profile_page._clean_and_get_all_profiles()
         override_settings = self.profile_page.profile_settings
         profile_dialog = AttachedProfilesDialog(
             parent=self,
-            option_group=page.NAME,
+            option_group=option_group,
             override_profiles=override_profiles,
             override_settings=override_settings
         )
