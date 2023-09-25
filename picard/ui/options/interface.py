@@ -181,8 +181,8 @@ class InterfaceOptionsPage(OptionsPage):
             restart_warning = _("You have changed the application theme. You have to restart Picard in order for the change to take effect.")
             if new_theme_setting == str(UiTheme.SYSTEM):
                 restart_warning += '\n\n' + _(
-                    "Please note that using the system theme might cause the user interface to be not shown correctly. "
-                    "If this is the case select the `Default` theme option to use Picard's default theme again."
+                    'Please note that using the system theme might cause the user interface to be not shown correctly. '
+                    'If this is the case select the "Default" theme option to use Picard\'s default theme again.'
                 )
         elif new_language != config.setting['ui_language']:
             restart_warning_title = _("Language changed")
