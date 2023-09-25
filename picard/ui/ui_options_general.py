@@ -10,7 +10,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_GeneralOptionsPage(object):
     def setupUi(self, GeneralOptionsPage):
         GeneralOptionsPage.setObjectName("GeneralOptionsPage")
-        GeneralOptionsPage.resize(403, 599)
+        GeneralOptionsPage.resize(403, 640)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -190,7 +190,8 @@ class Ui_GeneralOptionsPage(object):
         GeneralOptionsPage.setTabOrder(self.analyze_new_files, self.cluster_new_files)
         GeneralOptionsPage.setTabOrder(self.cluster_new_files, self.ignore_file_mbids)
         GeneralOptionsPage.setTabOrder(self.ignore_file_mbids, self.check_for_plugin_updates)
-        GeneralOptionsPage.setTabOrder(self.check_for_plugin_updates, self.update_check_days)
+        GeneralOptionsPage.setTabOrder(self.check_for_plugin_updates, self.check_for_updates)
+        GeneralOptionsPage.setTabOrder(self.check_for_updates, self.update_check_days)
         GeneralOptionsPage.setTabOrder(self.update_check_days, self.update_level)
 
     def retranslateUi(self, GeneralOptionsPage):

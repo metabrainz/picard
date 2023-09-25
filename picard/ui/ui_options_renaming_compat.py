@@ -78,7 +78,11 @@ class Ui_RenamingCompatOptionsPage(object):
         self.windows_compatibility.toggled['bool'].connect(self.windows_long_paths.setEnabled) # type: ignore
         self.windows_compatibility.toggled['bool'].connect(self.btn_windows_compatibility_change.setEnabled) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(RenamingCompatOptionsPage)
-        RenamingCompatOptionsPage.setTabOrder(self.ascii_filenames, self.windows_long_paths)
+        RenamingCompatOptionsPage.setTabOrder(self.ascii_filenames, self.windows_compatibility)
+        RenamingCompatOptionsPage.setTabOrder(self.windows_compatibility, self.btn_windows_compatibility_change)
+        RenamingCompatOptionsPage.setTabOrder(self.btn_windows_compatibility_change, self.windows_long_paths)
+        RenamingCompatOptionsPage.setTabOrder(self.windows_long_paths, self.replace_spaces_with_underscores)
+        RenamingCompatOptionsPage.setTabOrder(self.replace_spaces_with_underscores, self.replace_dir_separator)
 
     def retranslateUi(self, RenamingCompatOptionsPage):
         _translate = QtCore.QCoreApplication.translate

@@ -137,7 +137,11 @@
  </widget>
  <tabstops>
   <tabstop>ascii_filenames</tabstop>
+  <tabstop>windows_compatibility</tabstop>
+  <tabstop>btn_windows_compatibility_change</tabstop>
   <tabstop>windows_long_paths</tabstop>
+  <tabstop>replace_spaces_with_underscores</tabstop>
+  <tabstop>replace_dir_separator</tabstop>
  </tabstops>
  <resources/>
  <connections>

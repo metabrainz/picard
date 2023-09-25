@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>453</width>
-    <height>468</height>
+    <height>489</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -289,8 +289,8 @@
   <tabstop>naming_script_selector</tabstop>
   <tabstop>open_script_editor</tabstop>
   <tabstop>example_filename_before</tabstop>
-  <tabstop>example_filename_sample_files_button</tabstop>
   <tabstop>example_filename_after</tabstop>
+  <tabstop>example_filename_sample_files_button</tabstop>
  </tabstops>
  <resources/>
  <connections/>

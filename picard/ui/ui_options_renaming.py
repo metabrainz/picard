@@ -11,7 +11,7 @@ class Ui_RenamingOptionsPage(object):
     def setupUi(self, RenamingOptionsPage):
         RenamingOptionsPage.setObjectName("RenamingOptionsPage")
         RenamingOptionsPage.setEnabled(True)
-        RenamingOptionsPage.resize(453, 468)
+        RenamingOptionsPage.resize(453, 489)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -142,8 +142,8 @@ class Ui_RenamingOptionsPage(object):
         RenamingOptionsPage.setTabOrder(self.rename_files, self.naming_script_selector)
         RenamingOptionsPage.setTabOrder(self.naming_script_selector, self.open_script_editor)
         RenamingOptionsPage.setTabOrder(self.open_script_editor, self.example_filename_before)
-        RenamingOptionsPage.setTabOrder(self.example_filename_before, self.example_filename_sample_files_button)
-        RenamingOptionsPage.setTabOrder(self.example_filename_sample_files_button, self.example_filename_after)
+        RenamingOptionsPage.setTabOrder(self.example_filename_before, self.example_filename_after)
+        RenamingOptionsPage.setTabOrder(self.example_filename_after, self.example_filename_sample_files_button)
 
     def retranslateUi(self, RenamingOptionsPage):
         _translate = QtCore.QCoreApplication.translate
