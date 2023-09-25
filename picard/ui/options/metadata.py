@@ -38,9 +38,11 @@ from picard.config import (
     TextOption,
     get_config,
 )
-from picard.const import SCRIPTS
 from picard.const.locales import ALIAS_LOCALES
-from picard.const.scripts import scripts_sorted_by_localized_name
+from picard.const.scripts import (
+    SCRIPTS,
+    scripts_sorted_by_localized_name,
+)
 
 from picard.ui import PicardDialog
 from picard.ui.moveable_list_view import MoveableListView

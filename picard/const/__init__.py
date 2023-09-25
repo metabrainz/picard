@@ -120,12 +120,6 @@ for k, v in MB_ATTRIBUTES.items():
     elif k.startswith('DB:release_status/name:'):
         RELEASE_STATUS[v] = v
 
-# List of available charsets
-from picard.const.scripts import (  # noqa: F401,E402 # pylint: disable=unused-import
-    SCRIPTS,
-)
-
-
 # List of official musicbrainz servers - must support SSL for mblogin requests (such as collections).
 MUSICBRAINZ_SERVERS = [
     'musicbrainz.org',
