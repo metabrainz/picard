@@ -33,12 +33,12 @@ from PyQt5 import (
 )
 
 from picard.const import (
-    RELEASE_COUNTRIES,
     RELEASE_FORMATS,
     RELEASE_PRIMARY_GROUPS,
     RELEASE_SECONDARY_GROUPS,
     RELEASE_STATUS,
 )
+from picard.const.countries import RELEASE_COUNTRIES
 from picard.util.tags import TAG_NAMES
 
 from picard.ui import PicardDialog
