@@ -37,11 +37,11 @@ from picard.config import (
     get_config,
 )
 from picard.const import (
-    RELEASE_COUNTRIES,
     RELEASE_FORMATS,
     RELEASE_PRIMARY_GROUPS,
     RELEASE_SECONDARY_GROUPS,
 )
+from picard.const.countries import RELEASE_COUNTRIES
 from picard.const.sys import IS_WIN
 from picard.util import strxfrm
 
