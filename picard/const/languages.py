@@ -34,7 +34,7 @@ UI_LANGUAGES = [
     # ('cy', 'Cymraeg', N_('Welsh')),
     ('da', 'Dansk', N_('Danish')),
     ('de', 'Deutsch', N_('German')),
-    ('de_CH', 'Deutsch (Schweiz)', N_('German (Switzerland)')),
+    # ('de_CH', 'Deutsch (Schweiz)', N_('German (Switzerland)')),
     ('el', 'ελληνικά', N_('Greek')),
     ('en', 'English', N_('English')),
     ('en_AU', 'English (Australia)', N_('English (Australia)')),
