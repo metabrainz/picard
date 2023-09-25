@@ -185,8 +185,8 @@ class UserProfileGroups():
             # Main User Interface Page
             SettingDesc('toolbar_show_labels', N_("Show text labels under icons"), ['toolbar_show_labels']),
             SettingDesc('show_menu_icons', N_("Show icons in menus"), ['show_menu_icons']),
-            SettingDesc('ui_language', N_("User interface language"), ['ui_language']),
-            SettingDesc('ui_theme', N_("User interface color theme"), ['ui_theme']),
+            SettingDesc('ui_language', N_("User interface language"), ['ui_language', 'label']),
+            SettingDesc('ui_theme', N_("User interface color theme"), ['ui_theme', 'label_theme']),
             SettingDesc('toolbar_multiselect', N_("Allow selection of multiple directories"), ['toolbar_multiselect']),
             SettingDesc('builtin_search', N_("Use builtin search rather than looking in browser"), ['builtin_search']),
             SettingDesc('use_adv_search_syntax', N_("Use advanced search syntax"), ['use_adv_search_syntax']),
