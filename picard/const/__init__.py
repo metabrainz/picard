@@ -120,10 +120,6 @@ for k, v in MB_ATTRIBUTES.items():
     elif k.startswith('DB:release_status/name:'):
         RELEASE_STATUS[v] = v
 
-# List of available user interface languages
-from picard.const.languages import (  # noqa: F401,E402 # pylint: disable=unused-import
-    UI_LANGUAGES,
-)
 # List of alias locales
 from picard.const.locales import (  # noqa: F401,E402 # pylint: disable=unused-import
     ALIAS_LOCALES,

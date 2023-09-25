@@ -42,7 +42,7 @@ from picard.config import (
     TextOption,
     get_config,
 )
-from picard.const import UI_LANGUAGES
+from picard.const.languages import UI_LANGUAGES
 from picard.const.sys import IS_MACOS
 from picard.util import strxfrm
 
