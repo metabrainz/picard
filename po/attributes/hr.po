@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 # Chris_Kay_083, 2014
 # 6fd7e0289e0c30343ba3ef95fad1ee4c_fa6ad96, 2017
@@ -9,12 +9,14 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2012-05-24 18:52+0000\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>, 2019\n"
-"Language-Team: Croatian (http://app.transifex.com/musicbrainz/musicbrainz/language/hr/)\n"
+"Language-Team: Croatian (http://app.transifex.com/musicbrainz/musicbrainz/"
+"language/hr/)\n"
+"Language: hr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: hr\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
 #: DB:work_type/description:9
 msgctxt "work_type"
@@ -101,55 +103,93 @@ msgctxt "medium_format"
 msgid "8cm CD+G"
 msgstr "8cm CD+G"
 
+#: DB:medium_format/description:166
+msgctxt "medium_format"
+msgid "8cm DVD disc, often used for video singles."
+msgstr ""
+
 #: DB:medium_format/description:58
 msgctxt "medium_format"
 msgid ""
-"90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
-" 1932."
+"90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to "
+"1932."
 msgstr ""
 
 #: DB:release_group_secondary_type/description:1
 msgctxt "release_group_secondary_type"
 msgid ""
-"<p>A compilation, for the purposes of the MusicBrainz database, covers the following types of releases:</p>\n"
+"<p>A compilation, for the purposes of the MusicBrainz database, covers the "
+"following types of releases:</p>\n"
 "\n"
 "<ul>\n"
-"<li>a collection of recordings from various old sources (not necessarily released) combined together. For example a \"best of\", retrospective or rarities type release.</li>\n"
-"<li>a various artists song collection, usually based on a general theme (\"Songs for Lovers\"), a particular time period (\"Hits of 1998\"), or some other kind of grouping (\"Songs From the Movies\", the \"Café del Mar\" series, etc).</li>\n"
+"<li>a collection of recordings from various old sources (not necessarily "
+"released) combined together. For example a \"best of\", retrospective or "
+"rarities type release.</li>\n"
+"<li>a various artists song collection, usually based on a general theme "
+"(\"Songs for Lovers\"), a particular time period (\"Hits of 1998\"), or some "
+"other kind of grouping (\"Songs From the Movies\", the \"Café del Mar\" "
+"series, etc).</li>\n"
 "</ul>\n"
 "\n"
-"<p>The MusicBrainz project does not generally consider the following to be compilations:</p>\n"
+"<p>The MusicBrainz project does not generally consider the following to be "
+"compilations:</p>\n"
 "\n"
 "<ul>\n"
 "<li>a reissue of an album, even if it includes bonus tracks.</li>\n"
 "<li>a tribute release containing covers of music by another artist.</li>\n"
-"<li>a classical release containing new recordings of works by a classical artist.</li>\n"
+"<li>a classical release containing new recordings of works by a classical "
+"artist.</li>\n"
 "<li>a split release containing new music by several artists</li>\n"
 "</ul>\n"
 "\n"
-"<p>Compilation should be used in addition to, not instead of, other types: for example, a various artists soundtrack using pre-released music should be marked as both a soundtrack and a compilation.</p>"
+"<p>Compilation should be used in addition to, not instead of, other types: "
+"for example, a various artists soundtrack using pre-released music should be "
+"marked as both a soundtrack and a compilation.</p>"
 msgstr ""
 
 #: DB:release_group_primary_type/description:2
 msgctxt "release_group_primary_type"
 msgid ""
-"<p>A single has different definitions depending on the market it is released for.</p>\n"
+"<p>A single has different definitions depending on the market it is released "
+"for.</p>\n"
 "\n"
 "<ul>\n"
-"<li>In the US market, a single typically has one main song and possibly a handful of additional tracks or remixes of the main track; the single is usually named after its main song; the single is primarily released to get radio play and to promote release sales.</li>\n"
-"<li>The U.K. market (also Australia and Europe) is similar to the US market, however singles are often released as a two disc set, with each disc sold separately. They also sometimes have a longer version of the single (often combining the tracks from the two disc version) which is very similar to the US style single, and this is referred to as a \"maxi-single\". (In some cases the maxi-single is longer than the release the single comes from!)</li>\n"
-"<li>The Japanese market is much more single driven. The defining factor is typically the length of the single and the price it is sold at. Up until 1995 it was common that these singles would be released using a mini-cd format, which is basically a much smaller CD typically 8 cm in diameter. Around 1995 the 8cm single was phased out, and the standard 12cm CD single is more common now; generally re-releases of singles from pre-1995 will be released on the 12cm format, even if they were originally released on the 8cm format. Japanese singles often come with instrumental versions of the songs and also have maxi-singles like the UK with remixed versions of the songs. Sometimes a maxi-single will have more tracks than an EP but as it's all alternate versions of the same 2-3 songs it is still classified as a single.</li>\n"
+"<li>In the US market, a single typically has one main song and possibly a "
+"handful of additional tracks or remixes of the main track; the single is "
+"usually named after its main song; the single is primarily released to get "
+"radio play and to promote release sales.</li>\n"
+"<li>The U.K. market (also Australia and Europe) is similar to the US market, "
+"however singles are often released as a two disc set, with each disc sold "
+"separately. They also sometimes have a longer version of the single (often "
+"combining the tracks from the two disc version) which is very similar to the "
+"US style single, and this is referred to as a \"maxi-single\". (In some "
+"cases the maxi-single is longer than the release the single comes from!)</"
+"li>\n"
+"<li>The Japanese market is much more single driven. The defining factor is "
+"typically the length of the single and the price it is sold at. Up until "
+"1995 it was common that these singles would be released using a mini-cd "
+"format, which is basically a much smaller CD typically 8 cm in diameter. "
+"Around 1995 the 8cm single was phased out, and the standard 12cm CD single "
+"is more common now; generally re-releases of singles from pre-1995 will be "
+"released on the 12cm format, even if they were originally released on the "
+"8cm format. Japanese singles often come with instrumental versions of the "
+"songs and also have maxi-singles like the UK with remixed versions of the "
+"songs. Sometimes a maxi-single will have more tracks than an EP but as it's "
+"all alternate versions of the same 2-3 songs it is still classified as a "
+"single.</li>\n"
 "</ul>\n"
 "\n"
-"<p>There are other variations of the single called a \"split single\" where songs by two different artists are released on the one disc, typically vinyl.</p>"
+"<p>There are other variations of the single called a \"split single\" where "
+"songs by two different artists are released on the one disc, typically vinyl."
+"</p>"
 msgstr ""
 
 #: DB:medium_format/description:95
 msgctxt "medium_format"
 msgid ""
 "A \"digital collectible\" device, mostly used for k-pop music, that is "
-"connected to a phone via Bluetooth or headphone jack and unlocks the release"
-" for listening in a companion app for a limited period of time."
+"connected to a phone via Bluetooth or headphone jack and unlocks the release "
+"for listening in a companion app for a limited period of time."
 msgstr ""
 
 #: DB:place_type/description:9
@@ -218,8 +258,8 @@ msgstr ""
 msgctxt "medium_format"
 msgid ""
 "A card (or other similar physical support) that doesn't contain the music "
-"itself directly, but provides a code to download it digitally. Often bundled"
-" with physical releases but sometimes sold as a standalone item (especially "
+"itself directly, but provides a code to download it digitally. Often bundled "
+"with physical releases but sometimes sold as a standalone item (especially "
 "in Asia)."
 msgstr ""
 
@@ -280,16 +320,16 @@ msgstr "A -dur"
 msgctxt "work_type"
 msgid ""
 "A mass is a choral composition that sets the invariable portions of the "
-"Christian Eucharistic liturgy (Kyrie - Gloria - Credo - Sanctus - Benedictus"
-" - Agnus Dei, with other portions sometimes added) to music."
+"Christian Eucharistic liturgy (Kyrie - Gloria - Credo - Sanctus - Benedictus "
+"- Agnus Dei, with other portions sometimes added) to music."
 msgstr ""
 
 #: DB:event_type/description:5
 msgctxt "event_type"
 msgid ""
 "A masterclass or clinic is an event where an artist meets with a small to "
-"medium-sized audience and instructs them individually and/or takes questions"
-" intended to improve the audience members' playing skills."
+"medium-sized audience and instructs them individually and/or takes questions "
+"intended to improve the audience members' playing skills."
 msgstr ""
 
 #: DB:release_packaging/description:56
@@ -327,15 +367,14 @@ msgstr ""
 msgctxt "event_type"
 msgid ""
 "A performance of one or more plays, musicals, operas, ballets or other "
-"similar works for the stage in their staged form (as opposed to a <a "
-"href=\"https://en.wikipedia.org/wiki/Concert_performance\">concert "
-"performance</a> without staging)."
+"similar works for the stage in their staged form (as opposed to a <a href="
+"\"https://en.wikipedia.org/wiki/Concert_performance\">concert performance</"
+"a> without staging)."
 msgstr ""
 
 #: DB:place_type/description:8
 msgctxt "place_type"
-msgid ""
-"A place (generally a factory) at which physical media are manufactured."
+msgid "A place (generally a factory) at which physical media are manufactured."
 msgstr ""
 
 #: DB:place_type/description:5
@@ -356,8 +395,8 @@ msgstr ""
 #: DB:place_type/description:2
 msgctxt "place_type"
 msgid ""
-"A place that has live artistic performances as one of its primary functions,"
-" such as a concert hall."
+"A place that has live artistic performances as one of its primary functions, "
+"such as a concert hall."
 msgstr ""
 
 #: DB:place_type/description:6
@@ -372,15 +411,15 @@ msgstr ""
 msgctxt "place_type"
 msgid ""
 "A place whose main purpose is to host outdoor sport events, typically "
-"consisting of a pitch surrounded by a structure for spectators with no roof,"
-" or a roof which can be retracted."
+"consisting of a pitch surrounded by a structure for spectators with no roof, "
+"or a roof which can be retracted."
 msgstr ""
 
 #: DB:release_status/description:6
 msgctxt "release_status"
 msgid ""
-"A planned official release that was cancelled before being released, but for"
-" which enough info is known to still confidently list it (e.g. it was "
+"A planned official release that was cancelled before being released, but for "
+"which enough info is known to still confidently list it (e.g. it was "
 "available for preorder)."
 msgstr ""
 
@@ -388,8 +427,8 @@ msgstr ""
 msgctxt "work_type"
 msgid ""
 "A play is a form of literature usually consisting of scripted dialogue "
-"between characters, and intended for theatrical performance rather than just"
-" reading."
+"between characters, and intended for theatrical performance rather than just "
+"reading."
 msgstr ""
 
 #: DB:work_type/description:21
@@ -427,6 +466,13 @@ msgctxt "series_type"
 msgid "A recurring festival, usually happening annually in the same location."
 msgstr ""
 
+#: DB:release_group_secondary_type/description:12
+msgctxt "release_group_secondary_type"
+msgid ""
+"A release mostly consisting of field recordings (such as nature sounds or "
+"city/industrial noise)."
+msgstr ""
+
 #: DB:release_group_secondary_type/description:7
 msgctxt "release_group_secondary_type"
 msgid "A release that primarily contains remixed material."
@@ -435,8 +481,8 @@ msgstr ""
 #: DB:release_group_secondary_type/description:6
 msgctxt "release_group_secondary_type"
 msgid ""
-"A release that was recorded live. Generally this means \"with an audience\","
-" be it in person, through the radio or in another similar way."
+"A release that was recorded live. Generally this means \"with an audience\", "
+"be it in person, through the radio or in another similar way."
 msgstr ""
 
 #: DB:place_type/description:7
@@ -491,6 +537,12 @@ msgctxt "series_type"
 msgid "A series of related concerts by an artist in the same location."
 msgstr ""
 
+#: DB:series_type/description:80
+msgctxt "series_type"
+msgid ""
+"A series of release groups containing episodes of the same podcast series."
+msgstr ""
+
 #: DB:series_type/description:47
 msgctxt "series_type"
 msgid "A series of release groups honoured by the same award."
@@ -531,9 +583,9 @@ msgstr ""
 #: DB:work_type/description:15
 msgctxt "work_type"
 msgid ""
-"A song cycle is a group of songs designed to be performed in a sequence as a"
-" single entity. In most cases, all of the songs are by the same composer, "
-"and often use words from the same poet or lyricist."
+"A song cycle is a group of songs designed to be performed in a sequence as a "
+"single entity. In most cases, all of the songs are by the same composer, and "
+"often use words from the same poet or lyricist."
 msgstr ""
 
 #: DB:work_type/description:17
@@ -541,23 +593,23 @@ msgctxt "work_type"
 msgid ""
 "A song is in its origin (and still in most cases) a composition for voice, "
 "with or without instruments, performed by singing. This is the most common "
-"form by far in folk and popular music, but also fairly common in a classical"
-" context (\"art songs\")."
+"form by far in folk and popular music, but also fairly common in a classical "
+"context (\"art songs\")."
 msgstr ""
 
 #: DB:work_type/description:22
 msgctxt "work_type"
 msgid ""
-"A soundtrack is the music that accompanies a film, TV program, videogame, or"
-" even book."
+"A soundtrack is the music that accompanies a film, TV program, videogame, or "
+"even book."
 msgstr ""
 
 #: DB:release_group_secondary_type/description:2
 msgctxt "release_group_secondary_type"
 msgid ""
 "A soundtrack is the musical score to a movie, TV series, stage show, video "
-"game, or other medium. Video game CDs with audio tracks should be classified"
-" as soundtracks because the musical properties of the CDs are more "
+"game, or other medium. Video game CDs with audio tracks should be classified "
+"as soundtracks because the musical properties of the CDs are more "
 "interesting to MusicBrainz than their data properties."
 msgstr ""
 
@@ -568,20 +620,34 @@ msgid ""
 "quartet"
 msgstr ""
 
+#: DB:medium_format/description:165
+msgctxt "medium_format"
+msgid ""
+"A standard size CD with the playing/data area of a 8cm CD; the remaining "
+"area is empty clear/translucent plastic, sometimes printed."
+msgstr ""
+
+#: DB:medium_format/description:167
+msgctxt "medium_format"
+msgid ""
+"A standard size DVD with the playing/data area of a 8cm MiniDVD; the "
+"remaining area is empty clear/translucent plastic, sometimes printed."
+msgstr ""
+
 #: DB:work_type/description:6
 msgctxt "work_type"
 msgid ""
 "A suite is an ordered set of instrumental or orchestral pieces normally "
-"performed in a concert setting. They may be extracts from a ballet or opera,"
-" or entirely original movements."
+"performed in a concert setting. They may be extracts from a ballet or opera, "
+"or entirely original movements."
 msgstr ""
 
 #: DB:work_type/description:18
 msgctxt "work_type"
 msgid ""
 "A symphonic poem is a piece of programmatic orchestral music, usually in a "
-"single movement, that evokes a painting, a landscape, the content of a poem,"
-" a story or novel, or other non-musical source."
+"single movement, that evokes a painting, a landscape, the content of a poem, "
+"a story or novel, or other non-musical source."
 msgstr ""
 
 #: DB:work_type/description:16
@@ -622,8 +688,8 @@ msgstr ""
 msgctxt "work_type"
 msgid ""
 "A zarzuela is a Spanish lyric-dramatic work that alternates between spoken "
-"and sung scenes, the latter incorporating operatic and popular song, as well"
-" as dance."
+"and sung scenes, the latter incorporating operatic and popular song, as well "
+"as dance."
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:26
@@ -851,8 +917,8 @@ msgctxt "release_group_primary_type"
 msgid ""
 "An EP is a so-called \"Extended Play\" release and often contains the "
 "letters EP in the title. Generally an EP will be shorter than a full length "
-"release (an LP or \"Long Play\") and the tracks are usually exclusive to the"
-" EP, in other words the tracks don't come from a previously issued release. "
+"release (an LP or \"Long Play\") and the tracks are usually exclusive to the "
+"EP, in other words the tracks don't come from a previously issued release. "
 "EP is fairly difficult to define; usually it should only be assumed that a "
 "release is an EP if the artist defines it as such."
 msgstr ""
@@ -964,6 +1030,11 @@ msgid ""
 "character interaction)."
 msgstr ""
 
+#: DB:label_type/description:8
+msgctxt "label_type"
+msgid "An organization which collects royalties on behalf of artists."
+msgstr ""
+
 #: DB:work_type/description:12
 msgctxt "work_type"
 msgid ""
@@ -975,9 +1046,9 @@ msgstr ""
 #: DB:release_status/description:3
 msgctxt "release_status"
 msgid ""
-"An unofficial/underground release that was not sanctioned by the artist "
-"and/or the record company. This includes unofficial live recordings and "
-"pirated releases."
+"An unofficial/underground release that was not sanctioned by the artist and/"
+"or the record company. This includes unofficial live recordings and pirated "
+"releases."
 msgstr ""
 
 #: DB:work_type/description:20
@@ -996,8 +1067,8 @@ msgstr ""
 #: DB:release_status/description:1
 msgctxt "release_status"
 msgid ""
-"Any release officially sanctioned by the artist and/or their record company."
-" Most releases will fit into this category."
+"Any release officially sanctioned by the artist and/or their record company. "
+"Most releases will fit into this category."
 msgstr ""
 
 #: DB:release_group_primary_type/description:11
@@ -1365,8 +1436,8 @@ msgstr "Pekinška opera"
 #: DB:work_type/description:26
 msgctxt "work_type"
 msgid ""
-"Beijing opera is a form of traditional Chinese theatre which combines music,"
-" vocal performance, mime, dance, and acrobatics."
+"Beijing opera is a form of traditional Chinese theatre which combines music, "
+"vocal performance, mime, dance, and acrobatics."
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:697
@@ -1924,8 +1995,7 @@ msgstr "Grad"
 
 #: DB:area_type/description:3
 msgctxt "area_type"
-msgid ""
-"City is used for settlements of any size, including towns and villages."
+msgid "City is used for settlements of any size, including towns and villages."
 msgstr ""
 
 #: DB:release_packaging/name:56
@@ -1972,8 +2042,8 @@ msgstr ""
 msgctxt "medium_format"
 msgid ""
 "Copy Control CD (CCCD) is an umbrella term for CDs released circa 2001-2006 "
-"containing software that is ostensibly designed to prevent the CD from being"
-" ripped. There are a number of software variants: the most well-known are "
+"containing software that is ostensibly designed to prevent the CD from being "
+"ripped. There are a number of software variants: the most well-known are "
 "Macrovision's Cactus Data Shield (CDS) and SunnComm's MediaMax."
 msgstr ""
 
@@ -1985,8 +2055,8 @@ msgstr "Država"
 #: DB:area_type/description:1
 msgctxt "area_type"
 msgid ""
-"Country is used for areas included (or previously included) in ISO 3166-1, "
-"e.g. United States."
+"Country is used for areas included (or previously included) in ISO 3166-1, e."
+"g. United States."
 msgstr ""
 
 #: DB:area_type/name:7
@@ -2871,6 +2941,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Feth-i Hicaz"
 msgstr ""
 
+#: DB:release_group_secondary_type/name:12
+msgctxt "release_group_secondary_type"
+msgid "Field recording"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:734
 msgctxt "work_attribute_type_allowed_value"
 msgid "Fireng-i Fer"
@@ -2891,9 +2966,8 @@ msgstr ""
 #: DB:medium_format/description:51
 msgctxt "medium_format"
 msgid ""
-"Flexi-discs are phonograph records made of a thin, flexible vinyl sheet with"
-" a molded-in groove, designed to be playable on a normal phonograph "
-"turntable."
+"Flexi-discs are phonograph records made of a thin, flexible vinyl sheet with "
+"a molded-in groove, designed to be playable on a normal phonograph turntable."
 msgstr ""
 
 #: DB:medium_format/name:76
@@ -3619,6 +3693,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SODRAC"
 msgstr ""
 
+#: DB:work_attribute_type/description:173
+msgctxt "work_attribute_type"
+msgid "ID for the Chilean rights society SCD"
+msgstr ""
+
 #: DB:work_attribute_type/description:71
 msgctxt "work_attribute_type"
 msgid "ID for the Chinese rights society MCSC"
@@ -3932,8 +4011,7 @@ msgstr ""
 #: DB:work_type/description:30
 msgctxt "work_type"
 msgid ""
-"Incidental music is music written as background for (usually) a theatre "
-"play."
+"Incidental music is music written as background for (usually) a theatre play."
 msgstr ""
 
 #: DB:area_type/name:9
@@ -4019,8 +4097,8 @@ msgstr ""
 #: DB:area_type/description:6
 msgctxt "area_type"
 msgid ""
-"Island is used for islands and atolls which don't form subdivisions of their"
-" own, e.g. Skye. These are not considered when displaying the parent areas "
+"Island is used for islands and atolls which don't form subdivisions of their "
+"own, e.g. Skye. These are not considered when displaying the parent areas "
 "for a given area."
 msgstr ""
 
@@ -4945,10 +5023,45 @@ msgctxt "area_type"
 msgid "Military base"
 msgstr ""
 
+#: DB:medium_format/name:166
+msgctxt "medium_format"
+msgid "MiniDVD"
+msgstr ""
+
+#: DB:medium_format/name:168
+msgctxt "medium_format"
+msgid "MiniDVD-Audio"
+msgstr ""
+
+#: DB:medium_format/name:169
+msgctxt "medium_format"
+msgid "MiniDVD-Video"
+msgstr ""
+
 #: DB:medium_format/name:6
 msgctxt "medium_format"
 msgid "MiniDisc"
 msgstr "Minidisk"
+
+#: DB:medium_format/name:165
+msgctxt "medium_format"
+msgid "Minimax CD"
+msgstr ""
+
+#: DB:medium_format/name:167
+msgctxt "medium_format"
+msgid "Minimax DVD"
+msgstr ""
+
+#: DB:medium_format/name:170
+msgctxt "medium_format"
+msgid "Minimax DVD-Audio"
+msgstr ""
+
+#: DB:medium_format/name:171
+msgctxt "medium_format"
+msgid "Minimax DVD-Video"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:644
 msgctxt "work_attribute_type_allowed_value"
@@ -5916,6 +6029,11 @@ msgctxt "medium_format"
 msgid "Playbutton"
 msgstr ""
 
+#: DB:series_type/name:80
+msgctxt "series_type"
+msgid "Podcast"
+msgstr ""
+
 #: DB:work_type/name:21
 msgctxt "work_type"
 msgid "Poem"
@@ -5954,17 +6072,17 @@ msgstr "Promocija"
 #: DB:release_group_secondary_type/description:9
 msgctxt "release_group_secondary_type"
 msgid ""
-"Promotional in nature (but not necessarily free), mixtapes and street albums"
-" are often released by artists to promote new artists, or upcoming studio "
+"Promotional in nature (but not necessarily free), mixtapes and street albums "
+"are often released by artists to promote new artists, or upcoming studio "
 "albums by prominent artists. They are also sometimes used to keep fans' "
 "attention between studio releases and are most common in rap & hip hop "
-"genres. They are often not sanctioned by the artist's label, may lack proper"
-" sample or song clearances and vary widely in production and recording "
+"genres. They are often not sanctioned by the artist's label, may lack proper "
+"sample or song clearances and vary widely in production and recording "
 "quality. While mixtapes are generally DJ-mixed, they are distinct from "
 "commercial DJ-mixes (which are usually deemed compilations) and are defined "
 "by having a significant proportion of new material, including original "
-"production or original vocals over top of other artists' instrumentals. They"
-" are distinct from demos in that they are designed for release directly to "
+"production or original vocals over top of other artists' instrumentals. They "
+"are distinct from demos in that they are designed for release directly to "
 "the public and fans; not to labels."
 msgstr ""
 
@@ -6445,6 +6563,11 @@ msgctxt "work_attribute_type"
 msgid "SAZAS ID"
 msgstr ""
 
+#: DB:work_attribute_type/name:173
+msgctxt "work_attribute_type"
+msgid "SCD ID"
+msgstr ""
+
 #: DB:medium_format/name:62
 msgctxt "medium_format"
 msgid "SD Card"
@@ -6889,8 +7012,8 @@ msgstr "Potpodjela"
 #: DB:area_type/description:2
 msgctxt "area_type"
 msgid ""
-"Subdivision is used for the main administrative divisions of a country, e.g."
-" California, Ontario, Okinawa. These are considered when displaying the "
+"Subdivision is used for the main administrative divisions of a country, e.g. "
+"California, Ontario, Okinawa. These are considered when displaying the "
 "parent areas for a given area."
 msgstr ""
 
@@ -7290,8 +7413,8 @@ msgstr ""
 #: DB:medium_format/description:80
 msgctxt "medium_format"
 msgid ""
-"The DVD side of a vinyl + DVD VinylDisc. The vinyl side should be added as a"
-" separate medium."
+"The DVD side of a vinyl + DVD VinylDisc. The vinyl side should be added as a "
+"separate medium."
 msgstr ""
 
 #: DB:medium_format/description:64
@@ -7584,9 +7707,9 @@ msgstr ""
 #: DB:area_type/description:9
 msgctxt "area_type"
 msgid ""
-"Used for semi-autonomous territories governed by indigenous peoples, such as"
-" Indian reserves/reservations in North America and indigenous territories in"
-" Central and South America."
+"Used for semi-autonomous territories governed by indigenous peoples, such as "
+"Indian reserves/reservations in North America and indigenous territories in "
+"Central and South America."
 msgstr ""
 
 #: DB:work_attribute_type/name:17
@@ -7963,6 +8086,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:681
 msgctxt "work_attribute_type_allowed_value"
 msgid "ambiguous"
+msgstr ""
+
+#: DB:medium_format/name:164
+msgctxt "medium_format"
+msgid "microSD"
 msgstr ""
 
 #: DB:medium_format/name:27
