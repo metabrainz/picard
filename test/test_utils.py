@@ -813,6 +813,14 @@ class WinPrefixLongpathTest(PicardTestCase):
         path = rf'\\server\{251 * "a"}'
         self.assertEqual(rf'\\?\UNC{path[1:]}', win_prefix_longpath(path))
 
+    def test_win_prefix_longpath_already_prefixed(self):
+        path = r'\\?\C:\foo'
+        self.assertEqual(path, win_prefix_longpath(path))
+
+    def test_win_prefix_longpath_already_prefixed_unc(self):
+        path = r'\\?\server\someshare'
+        self.assertEqual(path, win_prefix_longpath(path))
+
 
 class StrxfrmTest(PicardTestCase):
 
