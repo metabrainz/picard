@@ -1,3 +1,29 @@
+# Version 2.10.0rc1 - 2023-09-26
+
+## Bugfixes
+- [PICARD-2748](https://tickets.metabrainz.org/browse/PICARD-2748) - KeyError when saving options with removed profile
+- [PICARD-2749](https://tickets.metabrainz.org/browse/PICARD-2749) - Python 3.12: AttributeError: 'PathFinder' object has no attribute 'find_module'
+- [PICARD-2751](https://tickets.metabrainz.org/browse/PICARD-2751) - The plugin system uses deprecated APIs, incompatible with Python 3.12
+- [PICARD-2754](https://tickets.metabrainz.org/browse/PICARD-2754) - Picard crashes in non-existing working directory on start
+- [PICARD-2756](https://tickets.metabrainz.org/browse/PICARD-2756) - Windows long path support does not work for network drives
+- [PICARD-2762](https://tickets.metabrainz.org/browse/PICARD-2762) - Linux packaged version does not show the "check for new plugins" option setting
+- [PICARD-2764](https://tickets.metabrainz.org/browse/PICARD-2764) - Attached profiles dialog does not display on option sub-pages
+
+## New Features
+- [PICARD-2757](https://tickets.metabrainz.org/browse/PICARD-2757) - Add command-line option `--audit` making use of `sys.addaudithook()`
+
+## Tasks
+- [PICARD-2690](https://tickets.metabrainz.org/browse/PICARD-2690) - Move locale name translations into separate translation resource
+- [PICARD-2731](https://tickets.metabrainz.org/browse/PICARD-2731) - Move translations to Weblate
+
+## Improvements
+- [PICARD-1377](https://tickets.metabrainz.org/browse/PICARD-1377) - New icons for plugin options
+- [PICARD-2717](https://tickets.metabrainz.org/browse/PICARD-2717) - Starting a second instance with no commands should change to the running instance
+- [PICARD-2740](https://tickets.metabrainz.org/browse/PICARD-2740) - Improve SSL error logging
+- [PICARD-2746](https://tickets.metabrainz.org/browse/PICARD-2746) - Localize XDG desktop file
+- [PICARD-2760](https://tickets.metabrainz.org/browse/PICARD-2760) - Windows: Timestamp the code signed packages
+
+
 # Version 2.9.2 - 2023-09-12
 
 ## Bugfixes
