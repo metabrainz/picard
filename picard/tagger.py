@@ -69,7 +69,6 @@ from PyQt6 import (
 from picard import (
     PICARD_APP_ID,
     PICARD_APP_NAME,
-    PICARD_DESKTOP_NAME,
     PICARD_FANCY_VERSION_STR,
     PICARD_ORG_NAME,
     acoustid,
@@ -1505,7 +1504,7 @@ def main(localedir=None, autoupdate=True):
     # Some libs (ie. Phonon) require those to be set
     QtWidgets.QApplication.setApplicationName(PICARD_APP_NAME)
     QtWidgets.QApplication.setOrganizationName(PICARD_ORG_NAME)
-    QtWidgets.QApplication.setDesktopFileName(PICARD_DESKTOP_NAME)
+    QtWidgets.QApplication.setDesktopFileName(PICARD_APP_NAME)
 
     # HighDpiScaleFactorRoundingPolicy is available since Qt 5.14. This is
     # required to support fractional scaling on Windows properly.
