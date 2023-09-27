@@ -321,6 +321,9 @@ class Tagger(QtWidgets.QApplication):
         log.debug("User directory: %r", os.path.abspath(USER_DIR))
         log.debug("System long path support: %r", system_supports_long_paths())
 
+        # log interesting environment variables
+        log.debug("Qt Env.: %s", " ".join("%s=%r" % (k, v) for k, v in os.environ.items() if k.startswith('QT_')))
+
         # for compatibility with pre-1.3 plugins
         QtCore.QObject.tagger = self
         QtCore.QObject.config = config
