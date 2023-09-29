@@ -402,6 +402,7 @@ class NonAlbumTrack(Track):
             inc |= {
                 'artist-rels',
                 'recording-rels',
+                'series-rels',
                 'url-rels',
                 'work-level-rels',
                 'work-rels',
