@@ -492,10 +492,46 @@ class GetQtEnum(PicardTestCase):
 
     def test_get_qt_enum(self):
         from PyQt5.QtCore import QStandardPaths
-        values = util.get_qt_enum(QStandardPaths, QStandardPaths.LocateOption)
-        self.assertIn('LocateFile', values)
-        self.assertIn('LocateDirectory', values)
-        self.assertNotIn('DesktopLocation', values)
+        keys = set(util.get_qt_enum(QStandardPaths, QStandardPaths.LocateOption))
+        self.assertIn('LocateFile', keys)
+        self.assertIn('LocateDirectory', keys)
+        self.assertNotIn('DesktopLocation', keys)
+
+    def test_get_qt_enum_no_match(self):
+        class EmptyClass:
+            pass
+
+        class SomeAttrClass(list):
+            pass
+
+        keys = set(util.get_qt_enum(EmptyClass, SomeAttrClass))
+        self.assertEqual(keys, set())
+
+    def test_get_qt_enum_match_keys(self):
+        class SomeAttrClass(list):
+            pass
+
+        class SomeOtherClass:
+            a = SomeAttrClass([1, 2, 3])
+            b = SomeAttrClass([4, 5, 6])
+
+        keys = set(util.get_qt_enum(SomeOtherClass, SomeAttrClass))
+        self.assertIn('a', keys)
+        self.assertIn('b', keys)
+
+    def test_get_qt_enum_match_values_subclass(self):
+        class SomeAttrClass(list):
+            pass
+
+        class SomeOtherClass:
+            a = SomeAttrClass([1, 2, 3])
+            b = SomeAttrClass([4, 5, 6])
+
+        obj = SomeOtherClass()
+        res = []
+        for attr in sorted(util.get_qt_enum(SomeOtherClass, list)):
+            res.append(getattr(obj, attr))
+        self.assertEqual(res, [[1, 2, 3], [4, 5, 6]])
 
 
 class LimitedJoin(PicardTestCase):
