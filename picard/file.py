@@ -816,7 +816,10 @@ class File(QtCore.QObject, Item):
             return self.base_filename
         elif column == 'covercount':
             return self.cover_art_description()
-        return m[column]
+        value = m[column]
+        if not value and not get_config().setting['clear_existing_tags']:
+            value = self.orig_metadata[column]
+        return value
 
     def _lookup_finished(self, lookuptype, document, http, error):
         self.lookup_task = None
