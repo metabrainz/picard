@@ -191,6 +191,8 @@ class AsciiPunctTest(PicardTestCase):
         self.assertEqual(util.textencoding.asciipunct("“Test”"), "\"Test\"")  # Quotations
         self.assertEqual(util.textencoding.asciipunct("1′6″"), "1'6\"")  # Quotations
         self.assertEqual(util.textencoding.asciipunct("…"), "...")  # Ellipses
+        self.assertEqual(util.textencoding.asciipunct("\u2024"), ".")  # ONE DOT LEADER
+        self.assertEqual(util.textencoding.asciipunct("\u2025"), "..")  # TWO DOT LEADER
 
     def test_incorrect(self):
         pass
