@@ -2,15 +2,15 @@
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
-#
+# "Vac31." <gateway_31@protonmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-24 09:20+0200\n"
-"PO-Revision-Date: 2023-08-26 13:00+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
-"Language-Team: Lithuanian <https://translate.uploadedlobster.com/projects/"
+"PO-Revision-Date: 2023-10-04 17:27+0000\n"
+"Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
+"Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/constants/lt/>\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
@@ -19,32 +19,32 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n % 10 == 1 && (n % 100 < 11 || n % 100 > "
 "19)) ? 0 : ((n % 10 >= 2 && n % 10 <= 9 && (n % 100 < 11 || n % 100 > 19)) ? "
 "1 : 2);\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.0.2\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:169
 msgid "Stable releases only"
-msgstr ""
+msgstr "Tik stabilios versijos"
 
 #: picard/const/__init__.py:175
 msgid "Stable and Beta releases"
-msgstr ""
+msgstr "Stabilios ir Beta versijos"
 
 #: picard/const/__init__.py:181
 msgid "Stable, Beta and Dev releases"
-msgstr ""
+msgstr "Stabilios, Beta ir Dev versijos"
 
 #: picard/const/__init__.py:199
 msgid "My script"
-msgstr ""
+msgstr "Mano skriptas"
 
 #: picard/const/__init__.py:201
 msgid "My profile"
-msgstr ""
+msgstr "Mano profilis"
 
 #: picard/const/__init__.py:202
 msgid "(copy)"
-msgstr ""
+msgstr "(kopijuoti)"
 
 #: picard/const/__init__.py:203
 msgid "{title} ({count})"
@@ -69,7 +69,7 @@ msgstr ""
 
 #: picard/const/languages.py:36 picard/const/locales.py:190
 msgid "German"
-msgstr "Vokiečių kalba"
+msgstr "Vokiečių k."
 
 #: picard/const/languages.py:37 picard/const/locales.py:193
 msgid "German (Switzerland)"
@@ -82,31 +82,31 @@ msgstr ""
 
 #: picard/const/languages.py:39 picard/const/locales.py:221
 msgid "English"
-msgstr "Anglų kalba"
+msgstr "Anglų k."
 
 #: picard/const/languages.py:40 picard/const/locales.py:229
 msgid "English (Australia)"
-msgstr ""
+msgstr "Anglų k. (Australija)"
 
 #: picard/const/languages.py:41 picard/const/locales.py:237
 msgid "English (Canada)"
-msgstr "Anglų kalba (Kanadiečių)"
+msgstr "Anglų k. (Kanada)"
 
 #: picard/const/languages.py:42 picard/const/locales.py:255
 msgid "English (United Kingdom)"
-msgstr ""
+msgstr "Anglų k. (Jungtinė Karalystė)"
 
 #: picard/const/languages.py:44 picard/const/locales.py:334
 msgid "Spanish"
-msgstr "Ispanų kalba"
+msgstr "Ispanų k."
 
 #: picard/const/languages.py:45 picard/const/locales.py:363
 msgid "Estonian"
-msgstr "Estų kalba"
+msgstr "Estų k."
 
 #: picard/const/languages.py:47 picard/const/locales.py:399
 msgid "Finnish"
-msgstr "Suomių kalba"
+msgstr "Suomių"
 
 #: picard/const/languages.py:49 picard/const/locales.py:406
 msgid "French"
@@ -4175,11 +4175,11 @@ msgstr ""
 
 #: picard/const/scripts.py:27
 msgid "Cyrillic"
-msgstr ""
+msgstr "Kirilica"
 
 #: picard/const/scripts.py:32
 msgid "Hangul"
-msgstr ""
+msgstr "Hangul"
 
 #: picard/const/scripts.py:33
 msgid "Hiragana"
