@@ -369,6 +369,12 @@ class Metadata(MutableMapping):
                 score = self.length_score(a, b)
                 parts.append((score, weights["length"]))
 
+            if 'isvideo' in weights:
+                metadata_is_video = self['~video'] == '1'
+                track_is_video = track.get('video', False)
+                score = 1 if metadata_is_video == track_is_video else 0
+                parts.append((score, weights['isvideo']))
+
             if "releases" in track:
                 releases = track['releases']
 
@@ -376,12 +382,6 @@ class Metadata(MutableMapping):
             if not releases:
                 sim = linear_combination_of_weights(parts) * search_score
                 return SimMatchTrack(similarity=sim, releasegroup=None, release=None, track=track)
-
-            if 'isvideo' in weights:
-                metadata_is_video = self['~video'] == '1'
-                track_is_video = track.get('video', False)
-                score = 1 if metadata_is_video == track_is_video else 0
-                parts.append((score, weights['isvideo']))
 
         result = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
         for release in releases:
