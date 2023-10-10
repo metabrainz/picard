@@ -69,6 +69,10 @@ pushd "$APP_BUNDLE/Contents/MacOS/PyQt5/$QT5_DIR/"
 ln -s "../../../Resources/$QT5_DIR/translations" .
 popd
 
+# Mitigate libwebp vulnerability allowing for arbitrary code execution (CVE-2023-4863).
+# Disable the Qt webp imageformat plugin.
+rm "$APP_BUNDLE/Contents/MacOS/PyQt5/$QT5_DIR/plugins/imageformats/libqwebp.dylib"
+
 if [ "$CODESIGN" = '1' ]; then
     # Enable hardened runtime if app will get notarized
     if [ "$NOTARIZE" = "1" ]; then
