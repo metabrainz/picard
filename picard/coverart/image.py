@@ -170,13 +170,17 @@ class CoverArtImage:
         self.can_be_saved_to_tags = True
         self.can_be_saved_to_disk = True
         self.can_be_saved_to_metadata = True
-        self.id3_type = id3_type
         if support_types is not None:
             self.support_types = support_types
         if support_multi_types is not None:
             self.support_multi_types = support_multi_types
         if data is not None:
             self.set_data(data)
+        try:
+            self.id3_type = id3_type
+        except ValueError:
+            log.warning("Invalid ID3 image type %r in %r", type, self)
+            self.id3_type = Id3ImageType.OTHER
 
     @property
     def source(self):
