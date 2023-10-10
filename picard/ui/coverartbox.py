@@ -204,8 +204,10 @@ class CoverArtThumbnail(ActiveLabel):
             if len(self.data) == 1:
                 pixmap = QtGui.QPixmap()
                 try:
-                    pixmap.loadFromData(self.data[0].data)
-                    pixmap = self.decorate_cover(pixmap)
+                    if pixmap.loadFromData(self.data[0].data):
+                        pixmap = self.decorate_cover(pixmap)
+                    else:
+                        pixmap = self.file_missing_pixmap
                 except CoverArtImageIOError:
                     pixmap = self.file_missing_pixmap
             else:
@@ -280,7 +282,8 @@ class CoverArtThumbnail(ActiveLabel):
             else:
                 thumb = QtGui.QPixmap()
                 try:
-                    thumb.loadFromData(image.data)
+                    if not thumb.loadFromData(image.data):
+                        thumb = self.file_missing_pixmap
                 except CoverArtImageIOError:
                     thumb = self.file_missing_pixmap
             thumb = self.decorate_cover(thumb)
