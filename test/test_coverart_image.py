@@ -148,6 +148,10 @@ class CoverArtImageTest(PicardTestCase):
             with self.assertRaises(ValueError):
                 image.id3_type = invalid_value
 
+    def test_init_invalid_id3_type(self):
+        image = CoverArtImage(id3_type=255)
+        self.assertEqual(image.id3_type, Id3ImageType.OTHER)
+
     def test_compare_without_type(self):
         image1 = create_image(b'a', types=["front"])
         image2 = create_image(b'a', types=["back"])
