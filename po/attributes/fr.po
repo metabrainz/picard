@@ -28,11 +28,12 @@
 # yvanz, 2016,2018
 # yvanz, 2018
 # Zas <Zas@users.noreply.translations.metabrainz.org>, 2023.
+# yvanzo <yvanzo@users.noreply.translations.metabrainz.org>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2023-08-31 20:27+0000\n"
-"Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
+"PO-Revision-Date: 2023-09-28 12:27+0000\n"
+"Last-Translator: yvanzo <yvanzo@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/fr/>\n"
 "Language: fr\n"
@@ -41,7 +42,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % "
 "1000000 == 0) ? 1 : 2);\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.0.2\n"
 
 #: DB:work_type/description:9
 msgctxt "work_type"
@@ -390,6 +391,15 @@ msgstr ""
 "numériquement. Souvent fournie avec des versions physiques mais parfois "
 "vendue comme un article indépendant (surtout en Asie)."
 
+#: DB:label_type/description:10
+msgctxt "label_type"
+msgid ""
+"A company that manufactures physical releases (such as pressing CDs or vinyl "
+"records)."
+msgstr ""
+"Une société qui fabrique des parutions physiques (telles que des CD ou des "
+"vinyles)."
+
 #: DB:work_type/description:4
 msgctxt "work_type"
 msgid ""
@@ -437,6 +447,12 @@ msgid ""
 "like instruments"
 msgstr ""
 "Un groupe d’instruments par similarité, par exemple la famille des violons"
+
+#: DB:label_type/description:5
+msgctxt "label_type"
+msgid "A label that primarily puts out unsanctioned (bootleg) releases."
+msgstr ""
+"Un label qui publie principalement des parutions non autorisées (pirates)."
 
 #: DB:release_packaging/description:55
 msgctxt "release_packaging"
@@ -744,6 +760,8 @@ msgctxt "series_type"
 msgid ""
 "A series of release groups containing episodes of the same podcast series."
 msgstr ""
+"Une série de groupes de parution contenant les épisodes d’une même série de "
+"podcasts."
 
 #: DB:series_type/description:47
 msgctxt "series_type"
@@ -1327,7 +1345,7 @@ msgstr ""
 #: DB:label_type/description:8
 msgctxt "label_type"
 msgid "An organization which collects royalties on behalf of artists."
-msgstr ""
+msgstr "Une organisation qui collecte des redevances au nom des artistes."
 
 #: DB:work_type/description:12
 msgctxt "work_type"
@@ -6389,7 +6407,7 @@ msgstr "Bouton de lecture"
 #: DB:series_type/name:80
 msgctxt "series_type"
 msgid "Podcast"
-msgstr ""
+msgstr "Podcast"
 
 #: DB:work_type/name:21
 msgctxt "work_type"

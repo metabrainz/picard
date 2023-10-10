@@ -41,11 +41,12 @@
 # Victor reaven <email address hidden>, 2016
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 # emiguel1960 <msanchezg.correo@gmail.com>, 2023.
+# Yllelder <yllelder@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2023-09-22 12:27+0000\n"
-"Last-Translator: emiguel1960 <msanchezg.correo@gmail.com>\n"
+"PO-Revision-Date: 2023-10-01 20:27+0000\n"
+"Last-Translator: Yllelder <yllelder@gmail.com>\n"
 "Language-Team: Spanish <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/es/>\n"
 "Language: es\n"
@@ -398,6 +399,13 @@ msgstr ""
 "A menudo se incluye con lanzamientos físicos, pero a veces se vende como un "
 "artículo independiente (especialmente en Asia)."
 
+#: DB:label_type/description:10
+msgctxt "label_type"
+msgid ""
+"A company that manufactures physical releases (such as pressing CDs or vinyl "
+"records)."
+msgstr "Empresa que fabrica ediciones físicas (como CD o discos de vinilo)."
+
 #: DB:work_type/description:4
 msgctxt "work_type"
 msgid ""
@@ -446,6 +454,11 @@ msgid ""
 msgstr ""
 "Una agrupación de instrumentos relacionados pero diferentes, como los "
 "diferentes instrumentos similares al violín"
+
+#: DB:label_type/description:5
+msgctxt "label_type"
+msgid "A label that primarily puts out unsanctioned (bootleg) releases."
+msgstr "Sello que publica principalmente ediciones no autorizadas (piratas)."
 
 #: DB:release_packaging/description:55
 msgctxt "release_packaging"
@@ -4287,7 +4300,8 @@ msgstr "Identificación para la sociedad de derechos humanos GMR de EEUU"
 #: DB:work_attribute_type/description:8
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society SESAC"
-msgstr "dentificación para la sociedad de derechos humanos estadounidense SESAC"
+msgstr ""
+"dentificación para la sociedad de derechos humanos estadounidense SESAC"
 
 #: DB:work_attribute_type/description:43
 msgctxt "work_attribute_type"

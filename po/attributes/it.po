@@ -15,7 +15,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2023-09-23 15:27+0000\n"
+"PO-Revision-Date: 2023-10-04 03:27+0000\n"
 "Last-Translator: \"salo.rock\" <salo.rock@users.noreply.translations."
 "metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/"
@@ -372,6 +372,15 @@ msgstr ""
 "digitale. Spesso accompagna una pubblicazione fisica, ma talvolta è venduto "
 "anche come articolo a sé stante (in modo particolare in Asia)."
 
+#: DB:label_type/description:10
+msgctxt "label_type"
+msgid ""
+"A company that manufactures physical releases (such as pressing CDs or vinyl "
+"records)."
+msgstr ""
+"Una società che fabbrica pubblicazioni fisiche (come la pressatura di CD o "
+"dischi in vinile)."
+
 #: DB:work_type/description:4
 msgctxt "work_type"
 msgid ""
@@ -419,6 +428,13 @@ msgid ""
 msgstr ""
 "Un raggruppamento di strumenti imparentati ma distinti, come i diversi "
 "strumenti della famiglia del violino"
+
+#: DB:label_type/description:5
+msgctxt "label_type"
+msgid "A label that primarily puts out unsanctioned (bootleg) releases."
+msgstr ""
+"Un'etichetta che pubblica principalmente pubblicazioni non autorizzate "
+"(bootleg)."
 
 #: DB:release_packaging/description:55
 msgctxt "release_packaging"
