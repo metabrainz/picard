@@ -1,3 +1,15 @@
+# Version 2.10 - 2023-10-12
+
+# Bugfixes
+- [PICARD-2768](https://tickets.metabrainz.org/browse/PICARD-2768) - Series relationships are not loaded for standalone recordings
+- [PICARD-2774](https://tickets.metabrainz.org/browse/PICARD-2774) - Error: 255 is not a valid Id3ImageType
+- [PICARD-2775](https://tickets.metabrainz.org/browse/PICARD-2775) - Disable Qt WebP plugin for Windows and macOS binary builds to mitigate libwebp vulnerability ([CVE-2023-4863](https://github.com/advisories/GHSA-j7hp-h8jx-5ppr))
+- [PICARD-2776](https://tickets.metabrainz.org/browse/PICARD-2776) - Track metadata compare ignores video flag check if there is no release
+
+# Improvements
+- [PICARD-2769](https://tickets.metabrainz.org/browse/PICARD-2769) - If a tag got unset by scripting display a file's original tag value in the columns
+
+
 # Version 2.10.0rc1 - 2023-09-26
 
 ## Bugfixes
