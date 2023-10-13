@@ -82,6 +82,7 @@ fi
 # Only test the app if it was codesigned, otherwise execution likely fails
 if [ "$CODESIGN" = '1' ]; then
   echo "Verify Picard executable works and required dependencies are bundled..."
+  "$APP_BUNDLE/Contents/MacOS/picard-run" --long-version --no-crash-dialog || echo "Failed running picard-run"
   VERSIONS=$("$APP_BUNDLE/Contents/MacOS/picard-run" --long-version --no-crash-dialog)
   echo "$VERSIONS"
   ASTRCMP_REGEX="astrcmp C"
