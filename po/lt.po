@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-09-25 16:00+0200\n"
-"PO-Revision-Date: 2023-10-15 15:27+0000\n"
+"PO-Revision-Date: 2023-10-18 19:27+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/app/lt/>\n"
@@ -378,7 +378,7 @@ msgstr "Nerašyti žymų"
 
 #: picard/profile.py:108 picard/ui/ui_options_tags.py:72
 msgid "Preserve timestamps of tagged files"
-msgstr "Išsaugoti žymėtų failų laiko žymas"
+msgstr "Išlaikyti žymėtų failų laiko žymas"
 
 #: picard/profile.py:109 picard/ui/ui_options_tags.py:74
 msgid "Clear existing tags"
@@ -402,7 +402,7 @@ msgstr "Ištaisyti trūkstamus FLAC failų siektinus taškus"
 
 #: picard/profile.py:114
 msgid "Preserved tags list"
-msgstr "Išsaugotų žymų sąrašas"
+msgstr "Išlaikytų žymų sąrašas"
 
 #: picard/profile.py:117
 msgid "ID3v2 version to write"
@@ -442,15 +442,15 @@ msgstr "Pašalinti APEv2 žymas iš AC3 failų"
 
 #: picard/profile.py:132
 msgid "Write RIFF INFO tags to WAVE files"
-msgstr ""
+msgstr "Įrašyti RIFF INFO žymas į WAVE failus"
 
 #: picard/profile.py:133 picard/ui/ui_options_tags_compatibility_wave.py:59
 msgid "Remove existing RIFF INFO tags from WAVE files"
-msgstr ""
+msgstr "Pašalinti esamas RIFF INFO žymas iš WAVE failų"
 
 #: picard/profile.py:134 picard/ui/ui_options_tags_compatibility_wave.py:60
 msgid "RIFF INFO text encoding"
-msgstr ""
+msgstr "RIFF INFO teksto kodavimas"
 
 #: picard/profile.py:139 picard/ui/options/cover.py:52
 msgid "Cover Art"
@@ -462,27 +462,29 @@ msgstr "Įterpti viršelio vaizdus į žymas"
 
 #: picard/profile.py:142 picard/ui/ui_options_cover.py:96
 msgid "Embed only a single front image"
-msgstr ""
+msgstr "Įterpti tik vieną priekinį vaizdą"
 
 #: picard/profile.py:143 picard/ui/ui_options_cover.py:97
 msgid "Save cover images as separate files"
-msgstr ""
+msgstr "Išsaugoti viršelio vaizdus kaip atskirus failus"
 
 #: picard/profile.py:144
 msgid "File name for images"
-msgstr ""
+msgstr "Vaizdų failo pavadinimas"
 
 #: picard/profile.py:145
 msgid "Overwrite existing image files"
-msgstr ""
+msgstr "Perrašyti esamus vaizdų failus"
 
 #: picard/profile.py:146 picard/ui/ui_options_cover.py:100
 msgid "Save only a single front image as separate file"
-msgstr ""
+msgstr "Išsaugoti tik vieną priekinį vaizdą kaip atskirą failą"
 
 #: picard/profile.py:147 picard/ui/ui_options_cover.py:101
 msgid "Always use the primary image type as the file name for non-front images"
 msgstr ""
+"Visada naudoti pagrindinį vaizdo tipą kaip failo pavadinimą ne priekyje "
+"esantiems vaizdams"
 
 #: picard/profile.py:148
 msgid "Cover art providers"
@@ -498,48 +500,48 @@ msgstr "Perkelti failus"
 
 #: picard/profile.py:157
 msgid "Destination directory"
-msgstr ""
+msgstr "Paskirties žinynas"
 
 #: picard/profile.py:158
 msgid "Move additional files"
-msgstr ""
+msgstr "Perkelti papildomus failus"
 
 #: picard/profile.py:159
 msgid "Additional file patterns"
-msgstr ""
+msgstr "Papildomi failo raštai"
 
 #: picard/profile.py:160 picard/ui/ui_options_renaming.py:154
 msgid "Delete empty directories"
-msgstr ""
+msgstr "Ištrinti tuščius žinynus"
 
 #: picard/profile.py:161
 msgid "Rename files"
-msgstr ""
+msgstr "Pervadinti failus"
 
 #: picard/profile.py:162
 msgid "Selected file naming script"
-msgstr ""
+msgstr "Pasirinktas failų pavadinimų skriptas"
 
 #: picard/profile.py:165 picard/ui/ui_options_renaming_compat.py:89
 msgid "Replace non-ASCII characters"
-msgstr ""
+msgstr "Pakeisti ne ASCII simbolius"
 
 #: picard/profile.py:166 picard/ui/ui_options_renaming_compat.py:90
 #: picard/ui/ui_win_compat_dialog.py:191
 msgid "Windows compatibility"
-msgstr ""
+msgstr "Windows suderinamumas"
 
 #: picard/profile.py:167
 msgid "Replacement characters used for Windows compatibility"
-msgstr ""
+msgstr "Keičiamieji simboliai, naudojami Windows suderinamumui užtikrinti"
 
 #: picard/profile.py:168 picard/ui/options/renaming_compat.py:133
 msgid "Windows long path support"
-msgstr ""
+msgstr "Windows ilgo adreso palaikymas"
 
 #: picard/profile.py:169 picard/ui/ui_options_renaming_compat.py:93
 msgid "Replace spaces with underscores"
-msgstr ""
+msgstr "Pakeisti tarpelius su pabraukimais"
 
 #: picard/profile.py:170
 msgid "Replacement character to use for directory separators"
@@ -655,23 +657,23 @@ msgstr ""
 
 #: picard/profile.py:229
 msgid "Completeness check ignore: Video tracks"
-msgstr ""
+msgstr "Išbaigtumo patikros ignoruoti: Vaizdo įrašo takelius"
 
 #: picard/profile.py:230
 msgid "Completeness check ignore: Pregap tracks"
-msgstr ""
+msgstr "Išbaigtumo patikros ignoruoti: Išankstiniai takeliai"
 
 #: picard/profile.py:231
 msgid "Completeness check ignore: Data tracks"
-msgstr ""
+msgstr "Išbaigtumo patikros ignoruoti: Duomenų takeliai"
 
 #: picard/profile.py:232
 msgid "Completeness check ignore: Silent tracks"
-msgstr ""
+msgstr "Išbaigtumo patikros ignoruoti: Tylieji takeliai"
 
 #: picard/profile.py:233
 msgid "Tags to ignore for comparison"
-msgstr ""
+msgstr "Žymos, kurias ignoruoti palyginimui"
 
 #: picard/profile.py:236
 msgid "Use a web proxy server"
@@ -687,39 +689,39 @@ msgstr "Tarpinio serverio adresas"
 
 #: picard/profile.py:241
 msgid "Proxy server port"
-msgstr ""
+msgstr "Tarpinio serverio prievadas"
 
 #: picard/profile.py:242
 msgid "Proxy username"
-msgstr ""
+msgstr "Tarpinio serverio naudotojo vardas"
 
 #: picard/profile.py:243
 msgid "Proxy password"
-msgstr ""
+msgstr "Tarpinio serverio slaptažodis"
 
 #: picard/profile.py:244
 msgid "Request timeout in seconds"
-msgstr ""
+msgstr "Užklausos laiko limitas sekundėmis"
 
 #: picard/profile.py:245
 msgid "Browser integration"
-msgstr ""
+msgstr "Naršyklės integracija"
 
 #: picard/profile.py:248
 msgid "Default listening port"
-msgstr ""
+msgstr "Numatytasis klausymo prievadas"
 
 #: picard/profile.py:249 picard/ui/ui_options_network.py:141
 msgid "Listen only on localhost"
-msgstr ""
+msgstr "Klausyti tik vietinėje serverę"
 
 #: picard/profile.py:252
 msgid "Minimal similarity for file lookups"
-msgstr ""
+msgstr "Minimalus failų peržiūros panašumas"
 
 #: picard/profile.py:253
 msgid "Minimal similarity for cluster lookups"
-msgstr ""
+msgstr "Minimalus klasterio peržiūros panašumas"
 
 #: picard/profile.py:254
 msgid "Minimal similarity for matching files to tracks"
@@ -3254,15 +3256,17 @@ msgid ""
 "Picard needs authorization to access your personal data on the MusicBrainz "
 "server. Would you like to log in now?"
 msgstr ""
+"Picard reikia autorizavimo, kad galėtų pasiekti tavo asmeninius duomeni "
+"MusicBrainz serveryje. Ar norėtum prisijungti dabar?"
 
 #: picard/ui/mainwindow.py:1742
 msgid "Authentication failed"
-msgstr ""
+msgstr "Autentifikavimas nepavyko"
 
 #: picard/ui/mainwindow.py:1743 picard/ui/options/general.py:156
 #, python-format
 msgid "Login failed: %s"
-msgstr ""
+msgstr "Prisijungimas nepavyko: %s"
 
 #: picard/ui/metadatabox.py:112
 #, python-format
@@ -3284,20 +3288,19 @@ msgstr[3] ""
 
 #: picard/ui/metadatabox.py:218
 msgid "metadata view"
-msgstr ""
+msgstr "metaduomenų peržiūra"
 
 #: picard/ui/metadatabox.py:219
 msgid "Displays original and new tags for the selected files"
 msgstr ""
 
 #: picard/ui/metadatabox.py:221
-#, fuzzy
 msgid "Tag"
-msgstr "Žymė"
+msgstr "Žyma"
 
 #: picard/ui/metadatabox.py:221
 msgid "Original Value"
-msgstr ""
+msgstr "Originali vertė"
 
 #: picard/ui/metadatabox.py:221
 msgid "New Value"
@@ -3338,10 +3341,10 @@ msgstr ""
 #: picard/ui/metadatabox.py:432
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Naudoti originalią vertę"
+msgstr[1] "Naudoti originalias vertes"
+msgstr[2] "Naudoti originalios vertės"
+msgstr[3] "Naudoti originalių verčių"
 
 #: picard/ui/metadatabox.py:439
 msgid "&Copy"
@@ -4448,9 +4451,8 @@ msgid "Export"
 msgstr ""
 
 #: picard/ui/ui_options_script.py:130
-#, fuzzy
 msgid "Documentation"
-msgstr "Vietą"
+msgstr "Dokumentacija"
 
 #: picard/ui/ui_options_tags.py:71
 msgid "Write tags to files"
