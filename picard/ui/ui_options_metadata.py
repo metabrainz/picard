@@ -134,7 +134,7 @@ class Ui_MetadataOptionsPage(object):
         self.standardize_artists.setText(_("Use standardized artist names"))
         self.standardize_instruments.setText(_("Use standardized instrument and vocal credits"))
         self.convert_punctuation.setText(_("Convert Unicode punctuation characters to ASCII"))
-        self.track_ars.setText(_("Use track relationships (includes release relationships)"))
+        self.track_ars.setText(_("Use track and release relationships"))
         self.release_ars.setText(_("Use release relationships"))
         self.guess_tracknumber_and_title.setText(_("Guess track number and title from filename if empty"))
         self.custom_fields_groupbox.setTitle(_("Custom Fields"))
