@@ -112,7 +112,7 @@
       <item>
        <widget class="QCheckBox" name="track_ars">
         <property name="text">
-         <string>Use track relationships (includes release relationships)</string>
+         <string>Use track and release relationships</string>
         </property>
        </widget>
       </item>
