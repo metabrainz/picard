@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-09-25 16:00+0200\n"
-"PO-Revision-Date: 2023-10-18 19:27+0000\n"
+"PO-Revision-Date: 2023-10-20 08:27+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/app/lt/>\n"
@@ -633,7 +633,7 @@ msgstr ""
 
 #: picard/profile.py:213 picard/ui/options/advanced.py:44
 msgid "Advanced"
-msgstr ""
+msgstr "Išplėstinis"
 
 #: picard/profile.py:216
 msgid "Ignore file paths matching a regular expression"
@@ -641,7 +641,7 @@ msgstr ""
 
 #: picard/profile.py:217 picard/ui/ui_options_advanced.py:143
 msgid "Ignore hidden files"
-msgstr ""
+msgstr "Ignoruoti paslėptus failus"
 
 #: picard/profile.py:218 picard/ui/ui_options_advanced.py:142
 msgid "Include sub-folders when adding files from folder"
@@ -649,7 +649,7 @@ msgstr "Įtraukti subaplankus pridedant failus iš aplanko"
 
 #: picard/profile.py:221
 msgid "Ignore track duration difference under x seconds"
-msgstr ""
+msgstr "Ignoruoti takelio trukmės skirtumą iki x sekundžių"
 
 #: picard/profile.py:226 picard/ui/ui_options_advanced.py:140
 msgid "Maximum number of entities to return per MusicBrainz query"
