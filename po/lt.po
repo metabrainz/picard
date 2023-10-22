@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-09-25 16:00+0200\n"
-"PO-Revision-Date: 2023-10-20 08:27+0000\n"
+"PO-Revision-Date: 2023-10-22 11:27+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/app/lt/>\n"
@@ -545,7 +545,7 @@ msgstr "Pakeisti tarpelius su pabraukimais"
 
 #: picard/profile.py:170
 msgid "Replacement character to use for directory separators"
-msgstr ""
+msgstr "Keičiamasis simbolis, naudojamas žinyno skirtukams"
 
 #: picard/profile.py:175 picard/ui/options/scripting.py:100
 msgid "Scripting"
@@ -625,11 +625,11 @@ msgstr "Spalvas naudoti tamsios temai"
 
 #: picard/profile.py:205
 msgid "Tags to show at the top"
-msgstr ""
+msgstr "Žymos rodyti viršuje"
 
 #: picard/profile.py:208
 msgid "Layout of the tool bar"
-msgstr ""
+msgstr "Įrankių juostos išdėstymas"
 
 #: picard/profile.py:213 picard/ui/options/advanced.py:44
 msgid "Advanced"
