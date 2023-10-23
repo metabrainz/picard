@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-09-25 16:00+0200\n"
-"PO-Revision-Date: 2023-10-22 11:27+0000\n"
+"PO-Revision-Date: 2023-10-23 13:27+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/app/lt/>\n"
@@ -637,7 +637,7 @@ msgstr "Išplėstinis"
 
 #: picard/profile.py:216
 msgid "Ignore file paths matching a regular expression"
-msgstr ""
+msgstr "Ignoruoti failo adresus, atitinkančius reguliariąją išraišką"
 
 #: picard/profile.py:217 picard/ui/ui_options_advanced.py:143
 msgid "Ignore hidden files"
@@ -653,7 +653,7 @@ msgstr "Ignoruoti takelio trukmės skirtumą iki x sekundžių"
 
 #: picard/profile.py:226 picard/ui/ui_options_advanced.py:140
 msgid "Maximum number of entities to return per MusicBrainz query"
-msgstr ""
+msgstr "Didžiausias grąžintinų subjektų skaičius per MusicBrainz užklausą"
 
 #: picard/profile.py:229
 msgid "Completeness check ignore: Video tracks"
@@ -717,7 +717,7 @@ msgstr "Klausyti tik vietinėje serverę"
 
 #: picard/profile.py:252
 msgid "Minimal similarity for file lookups"
-msgstr "Minimalus failų peržiūros panašumas"
+msgstr "Minimalus failo peržiūros panašumas"
 
 #: picard/profile.py:253
 msgid "Minimal similarity for cluster lookups"
