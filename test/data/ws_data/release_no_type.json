@@ -1,0 +1,54 @@
+{
+    "id": "af96cd94-f759-4f9f-8c63-75404d4853dc",
+    "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+    "count": 1,
+    "title": "Eastbound Silhouette",
+    "status": "Official",
+    "artist-credit": [
+        {
+            "name": "Tim Green",
+            "artist": {
+                "id": "5103b22e-514f-46b1-afdf-c99517c791e2",
+                "name": "Tim Green",
+                "sort-name": "Tim Green",
+                "disambiguation": "UK House artist aka \"TG\", started activity in the 2000s"
+            }
+        }
+    ],
+    "release-group": {
+        "id": "275f2ad4-a506-4ab1-8ae2-ff7f203cbf6b",
+        "title": "Eastbound Silhouette"
+    },
+    "date": "2022-10-28",
+    "country": "XW",
+    "release-events": [
+        {
+            "date": "2022-10-28",
+            "area": {
+                "id": "525d4e18-3d00-31b9-a58b-a146a916de8f",
+                "name": "[Worldwide]",
+                "sort-name": "[Worldwide]",
+                "iso-3166-1-codes": [
+                    "XW"
+                ]
+            }
+        }
+    ],
+    "track-count": 6,
+    "media": [
+        {
+            "position": 1,
+            "format": "Digital Media",
+            "track": [
+                {
+                    "id": "2d321de5-c84e-4b39-85d1-f375b1af1f7c",
+                    "number": "4",
+                    "title": "Lune",
+                    "length": 567032
+                }
+            ],
+            "track-count": 6,
+            "track-offset": 3
+        }
+    ]
+}

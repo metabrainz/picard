@@ -619,11 +619,19 @@ class CommonTests:
                 parts[1],
                 (0.5, 666)
             )
-            del release['release-group']
-            weights_from_release_type_scores(parts, release, {}, 777)
+
+        def test_weights_from_release_type_scores_no_type(self):
+            release = load_test_json('release_no_type.json')
+            parts = []
+            weights_from_release_type_scores(parts, release, {'Other': 0.75}, 123)
             self.assertEqual(
-                parts[2],
-                (0.0, 777)
+                parts[0],
+                (0.75, 123)
+            )
+            weights_from_release_type_scores(parts, release, {}, 123)
+            self.assertEqual(
+                parts[1],
+                (0.5, 123)
             )
 
         def test_preferred_countries(self):
