@@ -373,7 +373,7 @@ class Metadata(MutableMapping):
 
             if 'isvideo' in weights:
                 metadata_is_video = self['~video'] == '1'
-                track_is_video = track.get('video', False)
+                track_is_video = bool(track.get('video'))
                 score = 1 if metadata_is_video == track_is_video else 0
                 parts.append((score, weights['isvideo']))
 
