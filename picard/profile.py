@@ -69,7 +69,7 @@ class UserProfileGroups():
             SettingDesc('standardize_instruments', N_("Use standardized instrument and vocal credits"), ['standardize_instruments']),
             SettingDesc('convert_punctuation', N_("Convert Unicode punctuation characters to ASCII"), ['convert_punctuation']),
             SettingDesc('release_ars', N_("Use release relationships"), ['release_ars']),
-            SettingDesc('track_ars', N_("Use track relationships"), ['track_ars']),
+            SettingDesc('track_ars', N_("Use track and release relationships"), ['track_ars']),
             SettingDesc('guess_tracknumber_and_title', N_("Guess track number and title from filename if empty"), ['guess_tracknumber_and_title']),
             SettingDesc('va_name', N_("Various Artists name"), ['va_name']),
             SettingDesc('nat_name', N_("Standalone recordings name"), ['nat_name']),
