@@ -97,17 +97,19 @@ def weights_from_release_type_scores(parts, release, release_type_scores,
 
     type_scores = dict(release_type_scores)
     score = 0.0
+    other_score = type_scores.get('Other', 0.5)
     if 'release-group' in release and 'primary-type' in release['release-group']:
         types_found = [release['release-group']['primary-type']]
         if 'secondary-types' in release['release-group']:
             types_found += release['release-group']['secondary-types']
-        other_score = type_scores.get('Other', 0.5)
         for release_type in types_found:
             type_score = type_scores.get(release_type, other_score)
             if type_score == 0:
                 skip_release = True
             score += type_score
         score /= len(types_found)
+    else:
+        score = other_score
 
     if skip_release:
         parts.append((0, 9999))
