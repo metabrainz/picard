@@ -671,6 +671,18 @@ class CommonTests:
                 match = track.metadata.compare_to_track(track_json, File.comparison_weights)
                 self.assertEqual(sim, match.similarity)
 
+        def test_compare_to_track_is_video(self):
+            recording = load_test_json('recording_video_null.json')
+            m = Metadata()
+            match = m.compare_to_track(recording, {'isvideo': 1})
+            self.assertEqual(1.0, match.similarity)
+            m['~video'] = '1'
+            match = m.compare_to_track(recording, {'isvideo': 1})
+            self.assertEqual(0.0, match.similarity)
+            recording['video'] = True
+            match = m.compare_to_track(recording, {'isvideo': 1})
+            self.assertEqual(1.0, match.similarity)
+
 
 class MetadataTest(CommonTests.CommonMetadataTestCase):
     @staticmethod
