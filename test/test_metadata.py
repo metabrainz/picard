@@ -683,6 +683,22 @@ class CommonTests:
             match = m.compare_to_track(recording, {'isvideo': 1})
             self.assertEqual(1.0, match.similarity)
 
+        def test_compare_to_track_full(self):
+            recording = load_test_json('recording_video_null.json')
+            m = Metadata({
+                'artist': 'Tim Green',
+                'release': 'Eastbound Silhouette',
+                'date': '2022',
+                'title': 'Lune',
+                'totaltracks': '6',
+                'albumartist': 'Tim Green',
+                'tracknumber': '4',
+            })
+            match = m.compare_to_track(recording, File.comparison_weights)
+            self.assertGreaterEqual(match.similarity, 0.8)
+            self.assertEqual(recording, match.track)
+            self.assertEqual(recording['releases'][0], match.release)
+
 
 class MetadataTest(CommonTests.CommonMetadataTestCase):
     @staticmethod
