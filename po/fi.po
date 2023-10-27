@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-10-26 15:40+0200\n"
-"PO-Revision-Date: 2023-08-28 19:08+0000\n"
+"PO-Revision-Date: 2023-10-27 22:50+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Finnish <https://translations.metabrainz.org/projects/picard/"
 "app/fi/>\n"
@@ -30,7 +30,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -2635,10 +2635,9 @@ msgstr ""
 "_Picardin versiosta 2.9_"
 
 #: picard/script/serializer.py:202
-#, fuzzy, python-format
-#| msgid "Error exporting file \"%(filename)s\": %(error)s"
+#, python-format
 msgid "Error exporting file \"%(filename)s\": %(error)s."
-msgstr "Virhe vietäessä tiedostoon \"%(filename)s\": %(error)s"
+msgstr "Virhe vietäessä tiedostoon \"%(filename)s\": %(error)s."
 
 #: picard/script/serializer.py:209
 msgid "Export Script File"
