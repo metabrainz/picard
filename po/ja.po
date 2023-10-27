@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-25 16:00+0200\n"
+"POT-Creation-Date: 2023-10-26 15:40+0200\n"
 "PO-Revision-Date: 2023-08-30 09:27+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Japanese <https://translations.metabrainz.org/projects/picard/"
@@ -154,23 +154,23 @@ msgid ""
 "file format."
 msgstr ""
 
-#: picard/file.py:850
+#: picard/file.py:853
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr ""
 "ファイル「%(filename)s」にしきい値を超えてマッチするトラックはありません"
 
-#: picard/file.py:852
+#: picard/file.py:855
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "ファイル「%(filename)s」を同定しました！"
 
-#: picard/file.py:864
+#: picard/file.py:867
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "ファイル「%(filename)s」にマッチするトラックはありません"
 
-#: picard/file.py:896
+#: picard/file.py:899
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
 msgstr "ファイル「%(filename)s」のメタデータを検索しています…"
@@ -302,13 +302,15 @@ msgstr "標準の楽器やヴォーカルクレジットを使用する"
 msgid "Convert Unicode punctuation characters to ASCII"
 msgstr "ユニコード句読点をASCIIに変換する"
 
-#: picard/profile.py:71 picard/ui/ui_options_metadata.py:137
+#: picard/profile.py:71 picard/ui/ui_options_metadata.py:138
 msgid "Use release relationships"
 msgstr "リリースの関連性を使用する"
 
-#: picard/profile.py:72 picard/ui/ui_options_metadata.py:138
-msgid "Use track relationships"
-msgstr "トラックの関連性を使用する"
+#: picard/profile.py:72 picard/ui/ui_options_metadata.py:137
+#, fuzzy
+#| msgid "Use release relationships"
+msgid "Use track and release relationships"
+msgstr "リリースの関連性を使用する"
 
 #: picard/profile.py:73 picard/ui/ui_options_metadata.py:139
 msgid "Guess track number and title from filename if empty"
@@ -771,24 +773,24 @@ msgstr "[バーコードなし]"
 msgid "[no release info]"
 msgstr "[リリース情報なし]"
 
-#: picard/tagger.py:643 picard/ui/ui_options_general.py:204
+#: picard/tagger.py:646 picard/ui/ui_options_general.py:204
 msgid "MusicBrainz Account"
 msgstr "MusicBrainzアカウント"
 
-#: picard/tagger.py:644
+#: picard/tagger.py:647
 msgid "Authorization code:"
 msgstr "認証コード:"
 
-#: picard/tagger.py:1133
+#: picard/tagger.py:1136
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "アルバム%(id)sを削除しています: %(artist)s - %(album)s"
 
-#: picard/tagger.py:1151
+#: picard/tagger.py:1154
 msgid "CD Lookup Error"
 msgstr "CD読み込みのエラー"
 
-#: picard/tagger.py:1152
+#: picard/tagger.py:1155
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -799,25 +801,25 @@ msgstr ""
 "\n"
 "%s"
 
-#: picard/tagger.py:1181
+#: picard/tagger.py:1184
 msgid "All supported log files"
 msgstr ""
 
-#: picard/tagger.py:1182
+#: picard/tagger.py:1185
 msgid "EAC / XLD / Whipper / fre:ac log files"
 msgstr ""
 
-#: picard/tagger.py:1183
+#: picard/tagger.py:1186
 msgid "dBpoweramp log files"
 msgstr ""
 
-#: picard/script/serializer.py:350 picard/tagger.py:1184
-#: picard/ui/coverartbox.py:610 picard/ui/mainwindow.py:1270
+#: picard/script/serializer.py:350 picard/tagger.py:1187
+#: picard/ui/coverartbox.py:613 picard/ui/mainwindow.py:1270
 #: picard/ui/options/maintenance.py:168 picard/ui/options/scripting.py:132
 msgid "All files"
 msgstr "すべてのファイル"
 
-#: picard/tagger.py:1210
+#: picard/tagger.py:1213
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr ""
@@ -831,7 +833,7 @@ msgstr "エラー行 %(lineno)d: %(error)s"
 msgid "[loading recording information]"
 msgstr "[レコーディング情報読み込み中]"
 
-#: picard/track.py:438
+#: picard/track.py:439
 #, python-format
 msgid "[could not load recording %s]"
 msgstr "[レコーディング%s を読み込めませんでした]"
@@ -1196,8 +1198,8 @@ msgstr ""
 "`$unset(name)`\n"
 "\n"
 "変数 `name` を開放する。\n"
-"ワイルドカードで特定のタグの設定を開放する （\"performer:\\*\", \"comment:\\*"
-"\", and \"lyrics:\\*\" で有効）。\n"
+"ワイルドカードで特定のタグの設定を開放する （\"performer:\\*\", \"comment:"
+"\\*\", and \"lyrics:\\*\" で有効）。\n"
 "例: `$unset(performer:*)` で performer タグを開放する。"
 
 #: picard/script/functions.py:417
@@ -1501,8 +1503,8 @@ msgid ""
 "`type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -1520,8 +1522,8 @@ msgid ""
 "specified in `type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -1539,8 +1541,8 @@ msgid ""
 "`type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -1558,8 +1560,8 @@ msgid ""
 "specified in `type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -2140,8 +2142,8 @@ msgstr ""
 "` end` インデックスが空白の場合、デフォルトでそれぞれリストの開始と終了と判断"
 "する。\n"
 "\n"
-"次の例では、\"feat.\" リストの作成に使用可能な最初のアーティストを除く、 `"
-"%artists%` 内のすべてのアーティストを含む複数値変数を作成する。\n"
+"次の例では、\"feat.\" リストの作成に使用可能な最初のアーティストを除く、 "
+"`%artists%` 内のすべてのアーティストを含む複数値変数を作成する。\n"
 "\n"
 "例:\n"
 "\n"
@@ -2291,8 +2293,8 @@ msgstr ""
 msgid ""
 "`$year(date,date_order=\"ymd\")`\n"
 "\n"
-"Returns the year portion of the specified date.  The default order is \"ymd"
-"\".  This can be changed by specifying\n"
+"Returns the year portion of the specified date.  The default order is "
+"\"ymd\".  This can be changed by specifying\n"
 "either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be "
 "returned.\n"
 "\n"
@@ -2303,8 +2305,8 @@ msgstr ""
 msgid ""
 "`$month(date,date_order=\"ymd\")`\n"
 "\n"
-"Returns the month portion of the specified date.  The default order is \"ymd"
-"\".  This can be changed by specifying\n"
+"Returns the month portion of the specified date.  The default order is "
+"\"ymd\".  This can be changed by specifying\n"
 "either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be "
 "returned.\n"
 "\n"
@@ -2315,8 +2317,8 @@ msgstr ""
 msgid ""
 "`$day(date,date_order=\"ymd\")`\n"
 "\n"
-"Returns the day portion of the specified date.  The default order is \"ymd"
-"\".  This can be changed by specifying\n"
+"Returns the day portion of the specified date.  The default order is "
+"\"ymd\".  This can be changed by specifying\n"
 "either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be "
 "returned.\n"
 "\n"
@@ -2390,8 +2392,8 @@ msgid ""
 "\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -2414,8 +2416,8 @@ msgid ""
 "\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -2517,21 +2519,21 @@ msgstr "<br/>Translated to Japanese by %s"
 
 #: picard/ui/aboutdialog.py:80
 msgid ""
-"Icons made by Sambhav Kothari <sambhavs.email@gmail.com> and <a href="
-"\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a href="
-"\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a href="
-"\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, <a "
-"href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</a>, "
-"<a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> from "
-"<a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
+"Icons made by Sambhav Kothari <sambhavs.email@gmail.com> and <a "
+"href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a "
+"href=\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a "
+"href=\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, "
+"<a href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</"
+"a>, <a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> "
+"from <a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
 msgstr ""
-"アイコン作成：Sambhav Kothari <sambhavs.email@gmail.com> and <a href="
-"\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>，<a href="
-"\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>，<a href="
-"\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>，<a "
-"href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</a>，"
-"<a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a>(<a "
-"href=\"https://www.flaticon.com\">www.flaticon.com</a>より)"
+"アイコン作成：Sambhav Kothari <sambhavs.email@gmail.com> and <a "
+"href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>，<a "
+"href=\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>，<a "
+"href=\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>，"
+"<a href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</"
+"a>，<a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</"
+"a>(<a href=\"https://www.flaticon.com\">www.flaticon.com</a>より)"
 
 #: picard/ui/aboutdialog.py:101
 #, python-format
@@ -2707,51 +2709,51 @@ msgstr "タグが変更されました"
 msgid "Tag removed"
 msgstr "タグが削除されました"
 
-#: picard/ui/coverartbox.py:328
+#: picard/ui/coverartbox.py:331
 msgid "View release on MusicBrainz"
 msgstr "MusicBrainzでリリースを表示する"
 
-#: picard/ui/coverartbox.py:334
+#: picard/ui/coverartbox.py:337
 msgid "Common images on all tracks"
 msgstr "全トラック共通画像"
 
-#: picard/ui/coverartbox.py:336
+#: picard/ui/coverartbox.py:339
 msgid "Tracks contain different images"
 msgstr "トラックが異なる画像を含む"
 
-#: picard/ui/coverartbox.py:392
+#: picard/ui/coverartbox.py:395
 msgid "Show more details"
 msgstr "詳細を表示"
 
-#: picard/ui/coverartbox.py:429
+#: picard/ui/coverartbox.py:432
 msgid "New Cover Art"
 msgstr "新しいカバーアート"
 
-#: picard/ui/coverartbox.py:430
+#: picard/ui/coverartbox.py:433
 msgid "Original Cover Art"
 msgstr "オリジナルカバーアート"
 
-#: picard/ui/coverartbox.py:609
+#: picard/ui/coverartbox.py:612
 msgid "All supported image formats"
 msgstr "サポートされているすべての画像フォーマット"
 
-#: picard/ui/coverartbox.py:629
+#: picard/ui/coverartbox.py:632
 msgid "Show more details…"
 msgstr "詳細を表示…"
 
-#: picard/ui/coverartbox.py:635
+#: picard/ui/coverartbox.py:638
 msgid "Keep original cover art"
 msgstr "オリジナルカバーアートを保持"
 
-#: picard/ui/coverartbox.py:641
+#: picard/ui/coverartbox.py:644
 msgid "Choose local file…"
 msgstr "ローカルファイルを選択…"
 
-#: picard/ui/coverartbox.py:650
+#: picard/ui/coverartbox.py:653
 msgid "Replace front cover art"
 msgstr "前面カバーアートを置き換える"
 
-#: picard/ui/coverartbox.py:659
+#: picard/ui/coverartbox.py:662
 msgid "Append front cover art"
 msgstr "前面カバーアートを追加"
 
@@ -3220,9 +3222,9 @@ msgstr "準備完了"
 
 #: picard/ui/mainwindow.py:402
 msgid ""
-"Picard listens on this port to integrate with your browser. When you \"Search"
-"\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" button on the "
-"web page loads the release into Picard."
+"Picard listens on this port to integrate with your browser. When you "
+"\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
+"button on the web page loads the release into Picard."
 msgstr ""
 "Picardはブラウザと連携するためにこのポートで待ち受けています。Picardから「検"
 "索」または「ブラウザを開く」を実行したなら、ウェブページで\"Tagger\"ボタンを"
@@ -5590,11 +5592,11 @@ msgstr ""
 msgid "Matching"
 msgstr "マッチング"
 
-#: picard/ui/options/metadata.py:216
+#: picard/ui/options/metadata.py:229
 msgid "{indent}{locale}"
 msgstr ""
 
-#: picard/ui/options/metadata.py:278
+#: picard/ui/options/metadata.py:291
 msgid ""
 "Each selected script includes a matching threshold value used to determine "
 "if that script should be used. When an artist name is evaluated to determine "
@@ -6451,6 +6453,9 @@ msgstr ""
 "ウェブブラウザを起動する際にエラーが発生しました：\n"
 "\n"
 "%s"
+
+#~ msgid "Use track relationships"
+#~ msgstr "トラックの関連性を使用する"
 
 #, python-format
 #~ msgid "Plugin %r"

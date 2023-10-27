@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-25 16:00+0200\n"
+"POT-Creation-Date: 2023-10-26 15:40+0200\n"
 "PO-Revision-Date: 2023-10-26 13:41+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
@@ -21,8 +21,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
-" n % 1 != 0 ? 2: 3);\n"
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
+"1 : n % 1 != 0 ? 2: 3);\n"
 "X-Generator: Weblate 5.1\n"
 "Generated-By: Babel 2.6.0\n"
 
@@ -150,22 +150,22 @@ msgstr ""
 "Failo nepavyko išanalizuoti, nes failas yra pažeistas arba jo formatas "
 "nepalaikomas."
 
-#: picard/file.py:850
+#: picard/file.py:853
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "Nėra atitikmenų takelių, viršijančių ribą failui „%(filename)s“"
 
-#: picard/file.py:852
+#: picard/file.py:855
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "Failas „%(filename)s“ identifikuotas!"
 
-#: picard/file.py:864
+#: picard/file.py:867
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "Nėra atitinkamų takelių failui „%(filename)s“"
 
-#: picard/file.py:896
+#: picard/file.py:899
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
 msgstr "Ieškoma metaduomenų failui %(filename)s …"
@@ -292,13 +292,15 @@ msgstr "Naudoti standartizuotus instrumentų ir vokalo kreditus"
 msgid "Convert Unicode punctuation characters to ASCII"
 msgstr "Konvertuoti Unicode skyrybos ženklus į ASCII"
 
-#: picard/profile.py:71 picard/ui/ui_options_metadata.py:137
+#: picard/profile.py:71 picard/ui/ui_options_metadata.py:138
 msgid "Use release relationships"
 msgstr "Naudoti leidinio santykius"
 
-#: picard/profile.py:72 picard/ui/ui_options_metadata.py:138
-msgid "Use track relationships"
-msgstr "Naudoti takelio santykius"
+#: picard/profile.py:72 picard/ui/ui_options_metadata.py:137
+#, fuzzy
+#| msgid "Use release relationships"
+msgid "Use track and release relationships"
+msgstr "Naudoti leidinio santykius"
 
 #: picard/profile.py:73 picard/ui/ui_options_metadata.py:139
 msgid "Guess track number and title from filename if empty"
@@ -760,24 +762,24 @@ msgstr "[nėra brūkšninio kodo]"
 msgid "[no release info]"
 msgstr "[nėra leidinio informacijos]"
 
-#: picard/tagger.py:643 picard/ui/ui_options_general.py:204
+#: picard/tagger.py:646 picard/ui/ui_options_general.py:204
 msgid "MusicBrainz Account"
 msgstr "MusicBrainz paskyra"
 
-#: picard/tagger.py:644
+#: picard/tagger.py:647
 msgid "Authorization code:"
 msgstr "Autorizavimo kodas:"
 
-#: picard/tagger.py:1133
+#: picard/tagger.py:1136
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Pašalinamas albumas %(id)s: %(artist)s – %(album)s"
 
-#: picard/tagger.py:1151
+#: picard/tagger.py:1154
 msgid "CD Lookup Error"
 msgstr "CD peržiūros klaida"
 
-#: picard/tagger.py:1152
+#: picard/tagger.py:1155
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -788,25 +790,25 @@ msgstr ""
 "\n"
 "%s"
 
-#: picard/tagger.py:1181
+#: picard/tagger.py:1184
 msgid "All supported log files"
 msgstr "Visi palaikomi žurnalo failai"
 
-#: picard/tagger.py:1182
+#: picard/tagger.py:1185
 msgid "EAC / XLD / Whipper / fre:ac log files"
 msgstr "EAC / XLD / Whipper / fre:ac žurnalo failai"
 
-#: picard/tagger.py:1183
+#: picard/tagger.py:1186
 msgid "dBpoweramp log files"
 msgstr "dBpoweramp žurnalo failai"
 
-#: picard/script/serializer.py:350 picard/tagger.py:1184
-#: picard/ui/coverartbox.py:610 picard/ui/mainwindow.py:1270
+#: picard/script/serializer.py:350 picard/tagger.py:1187
+#: picard/ui/coverartbox.py:613 picard/ui/mainwindow.py:1270
 #: picard/ui/options/maintenance.py:168 picard/ui/options/scripting.py:132
 msgid "All files"
 msgstr "Visi failai"
 
-#: picard/tagger.py:1210
+#: picard/tagger.py:1213
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr "Nepavyko analizuoti perrašymo žurnalo „%s“"
@@ -820,7 +822,7 @@ msgstr "Klaidos eilutė %(lineno)d: %(error)s"
 msgid "[loading recording information]"
 msgstr "[kraunama įrašo informacija]"
 
-#: picard/track.py:438
+#: picard/track.py:439
 #, python-format
 msgid "[could not load recording %s]"
 msgstr "[nepavyko užkrauti įrašo %s]"
@@ -863,7 +865,8 @@ msgstr ""
 
 #: picard/acoustid/manager.py:199
 msgid "AcoustID submission failed permanently, probably too many retries"
-msgstr "AcoustID pateikimas nepavyko visam laikui, tikriausiai per daug bandymų"
+msgstr ""
+"AcoustID pateikimas nepavyko visam laikui, tikriausiai per daug bandymų"
 
 #: picard/acoustid/manager.py:209
 msgid "Submitting AcoustIDs …"
@@ -1347,8 +1350,8 @@ msgid ""
 "`type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -1366,8 +1369,8 @@ msgid ""
 "specified in `type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -1385,8 +1388,8 @@ msgid ""
 "`type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -1404,8 +1407,8 @@ msgid ""
 "specified in `type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -1858,8 +1861,8 @@ msgstr ""
 msgid ""
 "`$year(date,date_order=\"ymd\")`\n"
 "\n"
-"Returns the year portion of the specified date.  The default order is \"ymd"
-"\".  This can be changed by specifying\n"
+"Returns the year portion of the specified date.  The default order is "
+"\"ymd\".  This can be changed by specifying\n"
 "either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be "
 "returned.\n"
 "\n"
@@ -1870,8 +1873,8 @@ msgstr ""
 msgid ""
 "`$month(date,date_order=\"ymd\")`\n"
 "\n"
-"Returns the month portion of the specified date.  The default order is \"ymd"
-"\".  This can be changed by specifying\n"
+"Returns the month portion of the specified date.  The default order is "
+"\"ymd\".  This can be changed by specifying\n"
 "either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be "
 "returned.\n"
 "\n"
@@ -1882,8 +1885,8 @@ msgstr ""
 msgid ""
 "`$day(date,date_order=\"ymd\")`\n"
 "\n"
-"Returns the day portion of the specified date.  The default order is \"ymd"
-"\".  This can be changed by specifying\n"
+"Returns the day portion of the specified date.  The default order is "
+"\"ymd\".  This can be changed by specifying\n"
 "either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be "
 "returned.\n"
 "\n"
@@ -1957,8 +1960,8 @@ msgid ""
 "\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -1981,8 +1984,8 @@ msgid ""
 "\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -2081,13 +2084,13 @@ msgstr ""
 
 #: picard/ui/aboutdialog.py:80
 msgid ""
-"Icons made by Sambhav Kothari <sambhavs.email@gmail.com> and <a href="
-"\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a href="
-"\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a href="
-"\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, <a "
-"href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</a>, "
-"<a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> from "
-"<a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
+"Icons made by Sambhav Kothari <sambhavs.email@gmail.com> and <a "
+"href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a "
+"href=\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a "
+"href=\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, "
+"<a href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</"
+"a>, <a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> "
+"from <a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
 msgstr ""
 
 #: picard/ui/aboutdialog.py:101
@@ -2263,51 +2266,51 @@ msgstr ""
 msgid "Tag removed"
 msgstr ""
 
-#: picard/ui/coverartbox.py:328
+#: picard/ui/coverartbox.py:331
 msgid "View release on MusicBrainz"
 msgstr ""
 
-#: picard/ui/coverartbox.py:334
+#: picard/ui/coverartbox.py:337
 msgid "Common images on all tracks"
 msgstr ""
 
-#: picard/ui/coverartbox.py:336
+#: picard/ui/coverartbox.py:339
 msgid "Tracks contain different images"
 msgstr ""
 
-#: picard/ui/coverartbox.py:392
+#: picard/ui/coverartbox.py:395
 msgid "Show more details"
 msgstr ""
 
-#: picard/ui/coverartbox.py:429
+#: picard/ui/coverartbox.py:432
 msgid "New Cover Art"
 msgstr "Naujas viršelis"
 
-#: picard/ui/coverartbox.py:430
+#: picard/ui/coverartbox.py:433
 msgid "Original Cover Art"
 msgstr "Originalus viršelis"
 
-#: picard/ui/coverartbox.py:609
+#: picard/ui/coverartbox.py:612
 msgid "All supported image formats"
 msgstr "Visi palaikomi vaizdų formatai"
 
-#: picard/ui/coverartbox.py:629
+#: picard/ui/coverartbox.py:632
 msgid "Show more details…"
 msgstr "Rodyti daugiau informacijos…"
 
-#: picard/ui/coverartbox.py:635
+#: picard/ui/coverartbox.py:638
 msgid "Keep original cover art"
 msgstr "Palikti originalinį viršelį"
 
-#: picard/ui/coverartbox.py:641
+#: picard/ui/coverartbox.py:644
 msgid "Choose local file…"
 msgstr ""
 
-#: picard/ui/coverartbox.py:650
+#: picard/ui/coverartbox.py:653
 msgid "Replace front cover art"
 msgstr ""
 
-#: picard/ui/coverartbox.py:659
+#: picard/ui/coverartbox.py:662
 msgid "Append front cover art"
 msgstr ""
 
@@ -2783,9 +2786,9 @@ msgstr "Pasiruošęs"
 
 #: picard/ui/mainwindow.py:402
 msgid ""
-"Picard listens on this port to integrate with your browser. When you \"Search"
-"\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" button on the "
-"web page loads the release into Picard."
+"Picard listens on this port to integrate with your browser. When you "
+"\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
+"button on the web page loads the release into Picard."
 msgstr ""
 
 #: picard/ui/mainwindow.py:428
@@ -3404,11 +3407,12 @@ msgstr ""
 "<p><strong>Pakeitimai, kuriuos atliko Picard, yra negrįžtami.</strong></"
 "p><p>Picard – labai lankstus muzikos žymėjimo įrankis, kuriuo galima "
 "pervadinti failus ir perrašyti žymas. <strong>Primygtinai rekomenduojame</"
-"strong>, kad: </p><ul><li>perskaitytum <a href='{documentation_url}"
-"'>naudotojo vadovą</a> (jį taip pat galima rasti pagalbos meniu)</"
-"li><li>išbandytum su savo muzikos kopijomis ir veiktum nedidelėmis "
-"partijomis</li></ul><p>Picard yra atvirojo kodo programinė įranga, parašyta "
-"savanorių. Ji teikiama tokia, kokia yra, ir be jokių garantijų.</p>"
+"strong>, kad: </p><ul><li>perskaitytum <a "
+"href='{documentation_url}'>naudotojo vadovą</a> (jį taip pat galima rasti "
+"pagalbos meniu)</li><li>išbandytum su savo muzikos kopijomis ir veiktum "
+"nedidelėmis partijomis</li></ul><p>Picard yra atvirojo kodo programinė "
+"įranga, parašyta savanorių. Ji teikiama tokia, kokia yra, ir be jokių "
+"garantijų.</p>"
 
 #: picard/ui/newuserdialog.py:49
 msgid "Show this message again the next time you start Picard."
@@ -5121,11 +5125,11 @@ msgstr "Ar tu esi įsitikinęs kad nori išjungti Picard?"
 msgid "Matching"
 msgstr ""
 
-#: picard/ui/options/metadata.py:216
+#: picard/ui/options/metadata.py:229
 msgid "{indent}{locale}"
 msgstr "{indent}{locale}"
 
-#: picard/ui/options/metadata.py:278
+#: picard/ui/options/metadata.py:291
 msgid ""
 "Each selected script includes a matching threshold value used to determine "
 "if that script should be used. When an artist name is evaluated to determine "
@@ -5962,6 +5966,9 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+
+#~ msgid "Use track relationships"
+#~ msgstr "Naudoti takelio santykius"
 
 #, fuzzy
 #~ msgid "My script"

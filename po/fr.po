@@ -39,7 +39,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-25 16:00+0200\n"
+"POT-Creation-Date: 2023-10-26 15:40+0200\n"
 "PO-Revision-Date: 2023-10-11 17:27+0000\n"
 "Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/"
@@ -175,24 +175,24 @@ msgstr ""
 "L'interprétation du fichier a échouée, soit parce que le fichier est "
 "endommagé, soit parce que le format de fichier n'est pas supporté."
 
-#: picard/file.py:850
+#: picard/file.py:853
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr ""
 "Aucune piste correspondante au-dessus du seuil pour le fichier "
 "« %(filename)s »"
 
-#: picard/file.py:852
+#: picard/file.py:855
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "Le fichier « %(filename)s » a été identifié !"
 
-#: picard/file.py:864
+#: picard/file.py:867
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "Aucune piste correspondante pour le fichier « %(filename)s »"
 
-#: picard/file.py:896
+#: picard/file.py:899
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
 msgstr "Recherche des métadonnées pour le fichier « %(filename)s »…"
@@ -322,13 +322,15 @@ msgstr "Utiliser les crédits d’instruments et de voix normalisés"
 msgid "Convert Unicode punctuation characters to ASCII"
 msgstr "Convertir les caractères de ponctuation Unicode en ASCII"
 
-#: picard/profile.py:71 picard/ui/ui_options_metadata.py:137
+#: picard/profile.py:71 picard/ui/ui_options_metadata.py:138
 msgid "Use release relationships"
 msgstr "Utiliser les relations de parution"
 
-#: picard/profile.py:72 picard/ui/ui_options_metadata.py:138
-msgid "Use track relationships"
-msgstr "Utiliser les relations de piste"
+#: picard/profile.py:72 picard/ui/ui_options_metadata.py:137
+#, fuzzy
+#| msgid "Use release relationships"
+msgid "Use track and release relationships"
+msgstr "Utiliser les relations de parution"
 
 #: picard/profile.py:73 picard/ui/ui_options_metadata.py:139
 msgid "Guess track number and title from filename if empty"
@@ -799,24 +801,24 @@ msgstr "[pas de code-barres]"
 msgid "[no release info]"
 msgstr "[aucune information de parution]"
 
-#: picard/tagger.py:643 picard/ui/ui_options_general.py:204
+#: picard/tagger.py:646 picard/ui/ui_options_general.py:204
 msgid "MusicBrainz Account"
 msgstr "Compte MusicBrainz"
 
-#: picard/tagger.py:644
+#: picard/tagger.py:647
 msgid "Authorization code:"
 msgstr "Code d’autorisation :"
 
-#: picard/tagger.py:1133
+#: picard/tagger.py:1136
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Suppression de l’album %(id)s : %(artist)s - %(album)s"
 
-#: picard/tagger.py:1151
+#: picard/tagger.py:1154
 msgid "CD Lookup Error"
 msgstr "Erreur lors de la recherche du CD"
 
-#: picard/tagger.py:1152
+#: picard/tagger.py:1155
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -827,25 +829,25 @@ msgstr ""
 "\n"
 "%s"
 
-#: picard/tagger.py:1181
+#: picard/tagger.py:1184
 msgid "All supported log files"
 msgstr "Tous les fichiers log supportés"
 
-#: picard/tagger.py:1182
+#: picard/tagger.py:1185
 msgid "EAC / XLD / Whipper / fre:ac log files"
 msgstr "Fichiers log EAC / XLD / Whipper / fre:ac"
 
-#: picard/tagger.py:1183
+#: picard/tagger.py:1186
 msgid "dBpoweramp log files"
 msgstr "Fichiers log dBpoweramp"
 
-#: picard/script/serializer.py:350 picard/tagger.py:1184
-#: picard/ui/coverartbox.py:610 picard/ui/mainwindow.py:1270
+#: picard/script/serializer.py:350 picard/tagger.py:1187
+#: picard/ui/coverartbox.py:613 picard/ui/mainwindow.py:1270
 #: picard/ui/options/maintenance.py:168 picard/ui/options/scripting.py:132
 msgid "All files"
 msgstr "Tous les fichiers"
 
-#: picard/tagger.py:1210
+#: picard/tagger.py:1213
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr "Échec d'interprétation du log « %s »"
@@ -859,7 +861,7 @@ msgstr "Erreur ligne %(lineno)d : %(error)s"
 msgid "[loading recording information]"
 msgstr "[chargement des informations d’enregistrement]"
 
-#: picard/track.py:438
+#: picard/track.py:439
 #, python-format
 msgid "[could not load recording %s]"
 msgstr "[impossible de charger l’enregistrement %s]"
@@ -1555,8 +1557,8 @@ msgid ""
 "`type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -1568,9 +1570,9 @@ msgstr ""
 "`$lt(x,y[,type])`\n"
 "\n"
 "Renvoie \"1\" (Vrai) si `x` est inférieur à `y` en utilisant la comparaison "
-"spécifiée dans `type`. Les valeurs possibles de `type` sont \"int"
-"\" (entier), \"float\" (virgule flottante), \"text\" (texte sensible à la "
-"casse), \"nocase\" (texte insensible à la casse) et \"auto\" (détermine "
+"spécifiée dans `type`. Les valeurs possibles de `type` sont "
+"\"int\" (entier), \"float\" (virgule flottante), \"text\" (texte sensible à "
+"la casse), \"nocase\" (texte insensible à la casse) et \"auto\" (détermine "
 "automatiquement le type des arguments fournis), avec \"auto\" utilisé comme "
 "méthode de comparaison par défaut si `type` n'est pas spécifié.  Le type "
 "\"auto\" utilisera le premier type qui s'applique aux deux arguments dans "
@@ -1584,8 +1586,8 @@ msgid ""
 "specified in `type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -1597,9 +1599,9 @@ msgstr ""
 "`$lte(x,y[,type])`\n"
 "\n"
 "Renvoie \"1\" (Vrai) si `x` est inférieur ou égal à `y` en utilisant la "
-"comparaison spécifiée dans `type`. Les valeurs possibles de `type` sont \"int"
-"\" (entier), \"float\" (virgule flottante), \"text\" (texte sensible à la "
-"casse), \"nocase\" (texte insensible à la casse) et \"auto\" (détermine "
+"comparaison spécifiée dans `type`. Les valeurs possibles de `type` sont "
+"\"int\" (entier), \"float\" (virgule flottante), \"text\" (texte sensible à "
+"la casse), \"nocase\" (texte insensible à la casse) et \"auto\" (détermine "
 "automatiquement le type des arguments fournis), avec \"auto\" utilisé comme "
 "méthode de comparaison par défaut si `type` n'est pas spécifié.  Le type "
 "\"auto\" utilisera le premier type qui s'applique aux deux arguments dans "
@@ -1613,8 +1615,8 @@ msgid ""
 "`type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -1626,9 +1628,9 @@ msgstr ""
 "`$gt(x,y[,type])`\n"
 "\n"
 "Renvoie \"1\" (Vrai) si `x` est supérieur à `y` en utilisant la comparaison "
-"spécifiée dans `type`. Les valeurs possibles de `type` sont \"int"
-"\" (entier), \"float\" (virgule flottante), \"text\" (texte sensible à la "
-"casse), \"nocase\" (texte insensible à la casse) et \"auto\" (détermine "
+"spécifiée dans `type`. Les valeurs possibles de `type` sont "
+"\"int\" (entier), \"float\" (virgule flottante), \"text\" (texte sensible à "
+"la casse), \"nocase\" (texte insensible à la casse) et \"auto\" (détermine "
 "automatiquement le type des arguments fournis), avec \"auto\" utilisé comme "
 "méthode de comparaison par défaut si `type` n'est pas spécifié.  Le type "
 "\"auto\" utilisera le premier type qui s'applique aux deux arguments dans "
@@ -1642,8 +1644,8 @@ msgid ""
 "specified in `type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -1655,9 +1657,9 @@ msgstr ""
 "`$gte(x,y[,type])`\n"
 "\n"
 "Renvoie \"1\" (Vrai) si `x` est supérieur ou égal à `y` en utilisant la "
-"comparaison spécifiée dans `type`. Les valeurs possibles de `type` sont \"int"
-"\" (entier), \"float\" (virgule flottante), \"text\" (texte sensible à la "
-"casse), \"nocase\" (texte insensible à la casse) et \"auto\" (détermine "
+"comparaison spécifiée dans `type`. Les valeurs possibles de `type` sont "
+"\"int\" (entier), \"float\" (virgule flottante), \"text\" (texte sensible à "
+"la casse), \"nocase\" (texte insensible à la casse) et \"auto\" (détermine "
 "automatiquement le type des arguments fournis), avec \"auto\" utilisé comme "
 "méthode de comparaison par défaut si `type` n'est pas spécifié.  Le type "
 "\"auto\" utilisera le premier type qui s'applique aux deux arguments dans "
@@ -1720,10 +1722,10 @@ msgstr ""
 "correspond à « pattern », lié par « join ».\n"
 "Vous pouvez spécifier une expression régulière au format `/pattern/flags`. "
 "Les « drapeaux » sont facultatifs. Actuellement\n"
-"le seul indicateur pris en charge est « i » (ignorer la casse). Par exemple `"
-"$performer(/^guitars?$/i)` correspond au\n"
-"type de performance \"guitar\" ou \"Guitars\", mais pas par ex. \"bass guitar"
-"\".\n"
+"le seul indicateur pris en charge est « i » (ignorer la casse). Par exemple "
+"`$performer(/^guitars?$/i)` correspond au\n"
+"type de performance \"guitar\" ou \"Guitars\", mais pas par ex. \"bass "
+"guitar\".\n"
 "\n"
 "_Depuis Picard 0.10_"
 
@@ -2407,8 +2409,8 @@ msgstr ""
 msgid ""
 "`$year(date,date_order=\"ymd\")`\n"
 "\n"
-"Returns the year portion of the specified date.  The default order is \"ymd"
-"\".  This can be changed by specifying\n"
+"Returns the year portion of the specified date.  The default order is "
+"\"ymd\".  This can be changed by specifying\n"
 "either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be "
 "returned.\n"
 "\n"
@@ -2427,8 +2429,8 @@ msgstr ""
 msgid ""
 "`$month(date,date_order=\"ymd\")`\n"
 "\n"
-"Returns the month portion of the specified date.  The default order is \"ymd"
-"\".  This can be changed by specifying\n"
+"Returns the month portion of the specified date.  The default order is "
+"\"ymd\".  This can be changed by specifying\n"
 "either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be "
 "returned.\n"
 "\n"
@@ -2447,8 +2449,8 @@ msgstr ""
 msgid ""
 "`$day(date,date_order=\"ymd\")`\n"
 "\n"
-"Returns the day portion of the specified date.  The default order is \"ymd"
-"\".  This can be changed by specifying\n"
+"Returns the day portion of the specified date.  The default order is "
+"\"ymd\".  This can be changed by specifying\n"
 "either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be "
 "returned.\n"
 "\n"
@@ -2577,8 +2579,8 @@ msgid ""
 "\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -2596,8 +2598,8 @@ msgstr ""
 "\n"
 "Retourne la valeur minimale en utilisant la comparaison définie par `type`.\n"
 "\n"
-"Les valeurs possibles pour `type` sont \"int\" (entier), \"float"
-"\" (flottant), \"text\"\n"
+"Les valeurs possibles pour `type` sont \"int\" (entier), "
+"\"float\" (flottant), \"text\"\n"
 "(texte sensible à la casse), \"nocase\" (texte insensible à la casse) et "
 "\"auto\" (détermination\n"
 "automatique du type des arguments fournis), avec \"auto\" utilisé comme "
@@ -2622,8 +2624,8 @@ msgid ""
 "\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -2641,8 +2643,8 @@ msgstr ""
 "\n"
 "Retourne la valeur maximale en utilisant la comparaison définie par `type`.\n"
 "\n"
-"Les valeurs possibles pour `type` sont \"int\" (entier), \"float"
-"\" (flottant), \"text\"\n"
+"Les valeurs possibles pour `type` sont \"int\" (entier), "
+"\"float\" (flottant), \"text\"\n"
 "(texte sensible à la casse), \"nocase\" (texte insensible à la casse) et "
 "\"auto\" (détermination\n"
 "automatique du type des arguments fournis), avec \"auto\" utilisé comme "
@@ -2742,21 +2744,21 @@ msgstr "<br/>Traduit en Français par %s"
 
 #: picard/ui/aboutdialog.py:80
 msgid ""
-"Icons made by Sambhav Kothari <sambhavs.email@gmail.com> and <a href="
-"\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a href="
-"\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a href="
-"\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, <a "
-"href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</a>, "
-"<a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> from "
-"<a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
+"Icons made by Sambhav Kothari <sambhavs.email@gmail.com> and <a "
+"href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a "
+"href=\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a "
+"href=\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, "
+"<a href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</"
+"a>, <a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> "
+"from <a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
 msgstr ""
-"Icônes réalisées par Sambhav Kothari <sambhavs.email@gmail.com> and <a href="
-"\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a href="
-"\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a href="
-"\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, <a "
-"href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</a>, "
-"<a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> de <a "
-"href=\"https://www.flaticon.com\">www.flaticon.com</a>"
+"Icônes réalisées par Sambhav Kothari <sambhavs.email@gmail.com> and <a "
+"href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a "
+"href=\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a "
+"href=\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, "
+"<a href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</"
+"a>, <a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> "
+"de <a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
 
 #: picard/ui/aboutdialog.py:101
 #, python-format
@@ -2939,51 +2941,51 @@ msgstr "Balise modifiée"
 msgid "Tag removed"
 msgstr "Balise supprimée"
 
-#: picard/ui/coverartbox.py:328
+#: picard/ui/coverartbox.py:331
 msgid "View release on MusicBrainz"
 msgstr "Voir la parution sur MusicBrainz"
 
-#: picard/ui/coverartbox.py:334
+#: picard/ui/coverartbox.py:337
 msgid "Common images on all tracks"
 msgstr "Images communes à toutes les pistes"
 
-#: picard/ui/coverartbox.py:336
+#: picard/ui/coverartbox.py:339
 msgid "Tracks contain different images"
 msgstr "Les pistes contiennent des images différentes"
 
-#: picard/ui/coverartbox.py:392
+#: picard/ui/coverartbox.py:395
 msgid "Show more details"
 msgstr "Plus de détails"
 
-#: picard/ui/coverartbox.py:429
+#: picard/ui/coverartbox.py:432
 msgid "New Cover Art"
 msgstr "Nouvelle illustration"
 
-#: picard/ui/coverartbox.py:430
+#: picard/ui/coverartbox.py:433
 msgid "Original Cover Art"
 msgstr "Illustration initiale"
 
-#: picard/ui/coverartbox.py:609
+#: picard/ui/coverartbox.py:612
 msgid "All supported image formats"
 msgstr "Tous les formats d’image pris en charge"
 
-#: picard/ui/coverartbox.py:629
+#: picard/ui/coverartbox.py:632
 msgid "Show more details…"
 msgstr "Plus de détails…"
 
-#: picard/ui/coverartbox.py:635
+#: picard/ui/coverartbox.py:638
 msgid "Keep original cover art"
 msgstr "Conserver les illustrations originales"
 
-#: picard/ui/coverartbox.py:641
+#: picard/ui/coverartbox.py:644
 msgid "Choose local file…"
 msgstr "Choisir un fichier local…"
 
-#: picard/ui/coverartbox.py:650
+#: picard/ui/coverartbox.py:653
 msgid "Replace front cover art"
 msgstr "Remplacer l’illustration de couverture"
 
-#: picard/ui/coverartbox.py:659
+#: picard/ui/coverartbox.py:662
 msgid "Append front cover art"
 msgstr "Ajouter l’illustration de couverture"
 
@@ -3471,9 +3473,9 @@ msgstr "Prêt"
 
 #: picard/ui/mainwindow.py:402
 msgid ""
-"Picard listens on this port to integrate with your browser. When you \"Search"
-"\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" button on the "
-"web page loads the release into Picard."
+"Picard listens on this port to integrate with your browser. When you "
+"\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
+"button on the web page loads the release into Picard."
 msgstr ""
 "Picard écoute ce port pour s’intégrer à votre navigateur. Quand vous "
 "utilisez les actions de Picard « Rechercher » ou « Ouvrir dans le "
@@ -5996,11 +5998,11 @@ msgstr ""
 msgid "Matching"
 msgstr "Correspondance"
 
-#: picard/ui/options/metadata.py:216
+#: picard/ui/options/metadata.py:229
 msgid "{indent}{locale}"
 msgstr "{indent}{locale}"
 
-#: picard/ui/options/metadata.py:278
+#: picard/ui/options/metadata.py:291
 msgid ""
 "Each selected script includes a matching threshold value used to determine "
 "if that script should be used. When an artist name is evaluated to determine "
@@ -6278,8 +6280,8 @@ msgid ""
 "HTTP code %(statuscode)r)<br>"
 msgstr ""
 "<strong>L’erreur suivante s’est produite pendant la récupération des "
-"résultats :<br><br></strong>Erreur de requête réseau pour %(url)s :<br>"
-"%(error)s (code QT %(qtcode)d, code HTTP %(statuscode)r)<br>"
+"résultats :<br><br></strong>Erreur de requête réseau pour %(url)s :"
+"<br>%(error)s (code QT %(qtcode)d, code HTTP %(statuscode)r)<br>"
 
 #: picard/ui/searchdialog/__init__.py:264
 msgid "<strong>No results found. Please try a different search query.</strong>"
@@ -6877,6 +6879,9 @@ msgstr ""
 "Erreur en lançant un navigateur web :\n"
 "\n"
 "%s"
+
+#~ msgid "Use track relationships"
+#~ msgstr "Utiliser les relations de piste"
 
 #, python-format
 #~ msgid "%(value)s %(unit)s"

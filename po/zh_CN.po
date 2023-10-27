@@ -48,7 +48,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-25 16:00+0200\n"
+"POT-Creation-Date: 2023-10-26 15:40+0200\n"
 "PO-Revision-Date: 2023-08-30 09:27+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://translations.metabrainz.org/"
@@ -172,22 +172,22 @@ msgid ""
 "file format."
 msgstr "解析文件失败，文件已损坏或不支持的文件格式。"
 
-#: picard/file.py:850
+#: picard/file.py:853
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "文件「%(filename)s」没有符合相似度要求的匹配音轨"
 
-#: picard/file.py:852
+#: picard/file.py:855
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "文件「%(filename)s」已识别!"
 
-#: picard/file.py:864
+#: picard/file.py:867
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "没有与文件「%(filename)s」相匹配的音轨"
 
-#: picard/file.py:896
+#: picard/file.py:899
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
 msgstr "正在查询文件「%(filename)s」的元数据…"
@@ -315,13 +315,15 @@ msgstr "使用标准化的乐器与人声署名"
 msgid "Convert Unicode punctuation characters to ASCII"
 msgstr "将 Unicode 标点符号转换为 ASCII 字符"
 
-#: picard/profile.py:71 picard/ui/ui_options_metadata.py:137
+#: picard/profile.py:71 picard/ui/ui_options_metadata.py:138
 msgid "Use release relationships"
 msgstr "使用专辑关系"
 
-#: picard/profile.py:72 picard/ui/ui_options_metadata.py:138
-msgid "Use track relationships"
-msgstr "使用曲目关系"
+#: picard/profile.py:72 picard/ui/ui_options_metadata.py:137
+#, fuzzy
+#| msgid "Use release relationships"
+msgid "Use track and release relationships"
+msgstr "使用专辑关系"
 
 #: picard/profile.py:73 picard/ui/ui_options_metadata.py:139
 msgid "Guess track number and title from filename if empty"
@@ -793,24 +795,24 @@ msgstr "[无条形码]"
 msgid "[no release info]"
 msgstr "[无专辑信息]"
 
-#: picard/tagger.py:643 picard/ui/ui_options_general.py:204
+#: picard/tagger.py:646 picard/ui/ui_options_general.py:204
 msgid "MusicBrainz Account"
 msgstr "MusicBrainz 账号"
 
-#: picard/tagger.py:644
+#: picard/tagger.py:647
 msgid "Authorization code:"
 msgstr "授权码:"
 
-#: picard/tagger.py:1133
+#: picard/tagger.py:1136
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "正在移除专辑 %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:1151
+#: picard/tagger.py:1154
 msgid "CD Lookup Error"
 msgstr "CD 查询错误"
 
-#: picard/tagger.py:1152
+#: picard/tagger.py:1155
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -821,25 +823,25 @@ msgstr ""
 "\n"
 "%s"
 
-#: picard/tagger.py:1181
+#: picard/tagger.py:1184
 msgid "All supported log files"
 msgstr "所有支持的日志文件"
 
-#: picard/tagger.py:1182
+#: picard/tagger.py:1185
 msgid "EAC / XLD / Whipper / fre:ac log files"
 msgstr "EAC / XLD / Whipper / fre:ac 日志文件"
 
-#: picard/tagger.py:1183
+#: picard/tagger.py:1186
 msgid "dBpoweramp log files"
 msgstr "dBpoweramp 日志文件"
 
-#: picard/script/serializer.py:350 picard/tagger.py:1184
-#: picard/ui/coverartbox.py:610 picard/ui/mainwindow.py:1270
+#: picard/script/serializer.py:350 picard/tagger.py:1187
+#: picard/ui/coverartbox.py:613 picard/ui/mainwindow.py:1270
 #: picard/ui/options/maintenance.py:168 picard/ui/options/scripting.py:132
 msgid "All files"
 msgstr "全部文件"
 
-#: picard/tagger.py:1210
+#: picard/tagger.py:1213
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr "解析翻录日志\"%s\"失败"
@@ -853,7 +855,7 @@ msgstr "错误行 %(lineno)d: %(error)s"
 msgid "[loading recording information]"
 msgstr "[正在载入录音信息]"
 
-#: picard/track.py:438
+#: picard/track.py:439
 #, python-format
 msgid "[could not load recording %s]"
 msgstr "[无法载入录音 %s]"
@@ -1515,8 +1517,8 @@ msgid ""
 "`type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -1542,8 +1544,8 @@ msgid ""
 "specified in `type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -1569,8 +1571,8 @@ msgid ""
 "`type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -1596,8 +1598,8 @@ msgid ""
 "specified in `type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -2192,8 +2194,8 @@ msgstr ""
 "性。\n"
 "       这些代码包括：填充移除（例如，在 Linux 或 macOS 上为 `%-d` 和 `%-"
 "m`，\n"
-"       在Windows上为等效的  `%#d`  和 `%#m`）；元素长度说明符（例如 `"
-"%3Y`）；\n"
+"       在Windows上为等效的  `%#d`  和 `%#m`）；元素长度说明符（例如 "
+"`%3Y`）；\n"
 "       并在格式字符串的末尾附上 '%'。"
 
 #: picard/script/functions.py:1348
@@ -2304,8 +2306,8 @@ msgstr ""
 msgid ""
 "`$year(date,date_order=\"ymd\")`\n"
 "\n"
-"Returns the year portion of the specified date.  The default order is \"ymd"
-"\".  This can be changed by specifying\n"
+"Returns the year portion of the specified date.  The default order is "
+"\"ymd\".  This can be changed by specifying\n"
 "either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be "
 "returned.\n"
 "\n"
@@ -2322,8 +2324,8 @@ msgstr ""
 msgid ""
 "`$month(date,date_order=\"ymd\")`\n"
 "\n"
-"Returns the month portion of the specified date.  The default order is \"ymd"
-"\".  This can be changed by specifying\n"
+"Returns the month portion of the specified date.  The default order is "
+"\"ymd\".  This can be changed by specifying\n"
 "either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be "
 "returned.\n"
 "\n"
@@ -2340,8 +2342,8 @@ msgstr ""
 msgid ""
 "`$day(date,date_order=\"ymd\")`\n"
 "\n"
-"Returns the day portion of the specified date.  The default order is \"ymd"
-"\".  This can be changed by specifying\n"
+"Returns the day portion of the specified date.  The default order is "
+"\"ymd\".  This can be changed by specifying\n"
 "either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be "
 "returned.\n"
 "\n"
@@ -2349,8 +2351,8 @@ msgid ""
 msgstr ""
 "`$day(date,date_order=\"ymd\")`\n"
 "\n"
-"返回特定日期为一个月中的哪一日。默认顺序为“ymd”，可以指定为\"dmy\"或者\"mdy"
-"\"。如为无效日期会返回空字符串。\n"
+"返回特定日期为一个月中的哪一日。默认顺序为“ymd”，可以指定为\"dmy\"或者"
+"\"mdy\"。如为无效日期会返回空字符串。\n"
 "\n"
 "_Picard 2.7起_"
 
@@ -2458,8 +2460,8 @@ msgid ""
 "\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -2496,8 +2498,8 @@ msgid ""
 "\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto"
-"\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and "
+"\"auto\" (automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -2617,21 +2619,21 @@ msgstr "<br/>Translated to simplified Chinese by %s"
 
 #: picard/ui/aboutdialog.py:80
 msgid ""
-"Icons made by Sambhav Kothari <sambhavs.email@gmail.com> and <a href="
-"\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a href="
-"\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a href="
-"\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, <a "
-"href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</a>, "
-"<a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> from "
-"<a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
+"Icons made by Sambhav Kothari <sambhavs.email@gmail.com> and <a "
+"href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a "
+"href=\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a "
+"href=\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, "
+"<a href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</"
+"a>, <a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> "
+"from <a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
 msgstr ""
-"图标创作者: Sambhav Kothari <sambhavs.email@gmail.com> 以及来自 <a href="
-"\"https://www.flaticon.com\">www.flaticon.com</a> 的 <a href=\"http://www."
-"flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a href=\"http://www."
-"flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a href=\"http://www."
-"flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, <a href=\"http://"
-"www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</a>, <a href="
-"\"https://www.flaticon.com/authors/smashicons\">Smashicons</a>"
+"图标创作者: Sambhav Kothari <sambhavs.email@gmail.com> 以及来自 <a "
+"href=\"https://www.flaticon.com\">www.flaticon.com</a> 的 <a href=\"http://"
+"www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a href=\"http://"
+"www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a href=\"http://"
+"www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, <a "
+"href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</a>, "
+"<a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a>"
 
 #: picard/ui/aboutdialog.py:101
 #, python-format
@@ -2804,51 +2806,51 @@ msgstr "标签已修改"
 msgid "Tag removed"
 msgstr "标签已移除"
 
-#: picard/ui/coverartbox.py:328
+#: picard/ui/coverartbox.py:331
 msgid "View release on MusicBrainz"
 msgstr "在 MusicBrainz 查看专辑"
 
-#: picard/ui/coverartbox.py:334
+#: picard/ui/coverartbox.py:337
 msgid "Common images on all tracks"
 msgstr "所有音轨的图像一致"
 
-#: picard/ui/coverartbox.py:336
+#: picard/ui/coverartbox.py:339
 msgid "Tracks contain different images"
 msgstr "音轨图像不同"
 
-#: picard/ui/coverartbox.py:392
+#: picard/ui/coverartbox.py:395
 msgid "Show more details"
 msgstr "显示更多细节"
 
-#: picard/ui/coverartbox.py:429
+#: picard/ui/coverartbox.py:432
 msgid "New Cover Art"
 msgstr "新封面"
 
-#: picard/ui/coverartbox.py:430
+#: picard/ui/coverartbox.py:433
 msgid "Original Cover Art"
 msgstr "原封面"
 
-#: picard/ui/coverartbox.py:609
+#: picard/ui/coverartbox.py:612
 msgid "All supported image formats"
 msgstr "所有支持的图像格式"
 
-#: picard/ui/coverartbox.py:629
+#: picard/ui/coverartbox.py:632
 msgid "Show more details…"
 msgstr "显示更多细节…"
 
-#: picard/ui/coverartbox.py:635
+#: picard/ui/coverartbox.py:638
 msgid "Keep original cover art"
 msgstr "保留原封面"
 
-#: picard/ui/coverartbox.py:641
+#: picard/ui/coverartbox.py:644
 msgid "Choose local file…"
 msgstr "选择本地文件…"
 
-#: picard/ui/coverartbox.py:650
+#: picard/ui/coverartbox.py:653
 msgid "Replace front cover art"
 msgstr "更换为正面封面"
 
-#: picard/ui/coverartbox.py:659
+#: picard/ui/coverartbox.py:662
 msgid "Append front cover art"
 msgstr "附加为正面封面"
 
@@ -3314,9 +3316,9 @@ msgstr "就绪"
 
 #: picard/ui/mainwindow.py:402
 msgid ""
-"Picard listens on this port to integrate with your browser. When you \"Search"
-"\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" button on the "
-"web page loads the release into Picard."
+"Picard listens on this port to integrate with your browser. When you "
+"\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
+"button on the web page loads the release into Picard."
 msgstr ""
 "Picard 通过监听该端口实现与浏览器的交互。当您在 Picard 中执行「搜索」或「在浏"
 "览器中打开」操作时，点击网页中的「标签工具」按钮可将专辑载入 Picard。"
@@ -5704,11 +5706,11 @@ msgstr "确认移除所选设置选项？"
 msgid "Matching"
 msgstr "匹配"
 
-#: picard/ui/options/metadata.py:216
+#: picard/ui/options/metadata.py:229
 msgid "{indent}{locale}"
 msgstr "{indent}{locale}"
 
-#: picard/ui/options/metadata.py:278
+#: picard/ui/options/metadata.py:291
 msgid ""
 "Each selected script includes a matching threshold value used to determine "
 "if that script should be used. When an artist name is evaluated to determine "
@@ -5973,8 +5975,8 @@ msgid ""
 "strong>Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, "
 "HTTP code %(statuscode)r)<br>"
 msgstr ""
-"<strong>装取结果时出现下述错误:<br><br></strong> %(url)s的网络请求失败:<br>"
-"%(error)s（QT 代码 %(qtcode)d, HTTP 代码 %(statuscode)r）<br>"
+"<strong>装取结果时出现下述错误:<br><br></strong> %(url)s的网络请求失败:"
+"<br>%(error)s（QT 代码 %(qtcode)d, HTTP 代码 %(statuscode)r）<br>"
 
 #: picard/ui/searchdialog/__init__.py:264
 msgid "<strong>No results found. Please try a different search query.</strong>"
@@ -6566,6 +6568,9 @@ msgstr ""
 "启动 web 浏览器时出错:\n"
 "\n"
 "%s"
+
+#~ msgid "Use track relationships"
+#~ msgstr "使用曲目关系"
 
 #, python-format
 #~ msgid "Plugin %r"
