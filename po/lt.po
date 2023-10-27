@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-09-25 16:00+0200\n"
-"PO-Revision-Date: 2023-10-23 13:27+0000\n"
+"PO-Revision-Date: 2023-10-26 13:41+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/app/lt/>\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
 " n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.0.2\n"
+"X-Generator: Weblate 5.1\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:150
@@ -809,36 +809,36 @@ msgstr "Visi failai"
 #: picard/tagger.py:1210
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
-msgstr ""
+msgstr "Nepavyko analizuoti perrašymo žurnalo „%s“"
 
 #: picard/track.py:121
 #, python-format
 msgid "Error line %(lineno)d: %(error)s"
-msgstr ""
+msgstr "Klaidos eilutė %(lineno)d: %(error)s"
 
 #: picard/track.py:390
 msgid "[loading recording information]"
-msgstr ""
+msgstr "[kraunama įrašo informacija]"
 
 #: picard/track.py:438
 #, python-format
 msgid "[could not load recording %s]"
-msgstr ""
+msgstr "[nepavyko užkrauti įrašo %s]"
 
 #: picard/acoustid/__init__.py:104
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
-msgstr ""
+msgstr "AcoustID peržiūros tinklo klaida dėl „%(filename)s“."
 
 #: picard/acoustid/__init__.py:153
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
-msgstr ""
+msgstr "AcoustID peržiūra nepavyko dėl „%(filename)s“."
 
 #: picard/acoustid/__init__.py:176
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
-msgstr ""
+msgstr "AcoustID peržiūra negrąžino jokio rezultato failui „%(filename)s“."
 
 #: picard/acoustid/__init__.py:187
 #, python-format
@@ -872,7 +872,7 @@ msgstr "Teikimi AcoustID …"
 #: picard/acoustid/manager.py:239
 #, python-format
 msgid "AcoustID submission failed with error '%(error)s': %(message)s"
-msgstr "AcoustID pateikimas nepavyko su klaida „%(error)s“: %(message)s"
+msgstr "AcoustID pateikimas nepavyko su klaida „%(error)s“: %(message)s."
 
 #: picard/browser/addrelease.py:144
 msgid "Add cluster as release"
@@ -896,18 +896,18 @@ msgstr "Pridėti failą kaip įrašą"
 
 #: picard/browser/addrelease.py:166
 msgid "Add file as recording…"
-msgstr ""
+msgstr "Pridėti failą kaip įrašą…"
 
 #: picard/coverart/__init__.py:101
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
-msgstr ""
+msgstr "Viršelio tipas „%(type)s“ atsisiųstas %(albumid)s iš %(host)s."
 
 #: picard/coverart/__init__.py:187
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s …"
-msgstr ""
+msgstr "Atsisiunčiamas %(albumid)s viršelio tipas „%(type)s“ iš %(host)s …"
 
 #: picard/coverart/utils.py:38
 msgid "Unknown"
@@ -915,64 +915,66 @@ msgstr "Nežinoma"
 
 #: picard/coverart/providers/caa.py:71
 msgid "250 px"
-msgstr ""
+msgstr "250 tšk."
 
 #: picard/coverart/providers/caa.py:72
 msgid "500 px"
-msgstr ""
+msgstr "500 tšk."
 
 #: picard/coverart/providers/caa.py:73
 msgid "1200 px"
-msgstr ""
+msgstr "1200 tšk."
 
 #: picard/coverart/providers/caa.py:74
 msgid "Full size"
-msgstr ""
+msgstr "Pilnas dydis"
 
 #: picard/coverart/providers/caa.py:120
 msgid "Cover Art Archive"
 msgstr "Cover Art Archive"
 
 #: picard/coverart/providers/caa.py:197
-#, fuzzy
 msgid "Cover Art Archive: Release"
-msgstr "Cover Art Archive"
+msgstr "Cover Art Archive: leidinys"
 
 #: picard/coverart/providers/caa_release_group.py:44
-#, fuzzy
 msgid "Cover Art Archive: Release Group"
-msgstr "Cover Art Archive"
+msgstr "Cover Art Archive: leidinio grupė"
 
 #: picard/coverart/providers/local.py:78
 msgid "Local Files"
-msgstr ""
+msgstr "Vietiniai failai"
 
 #: picard/coverart/providers/urlrels.py:39
 msgid "Allowed Cover Art URLs"
-msgstr ""
+msgstr "Leidžiami viršelio URL adresai"
 
 #: picard/script/__init__.py:141
 msgid ""
 "This preset example file naming script does not require any special "
 "settings, tagging scripts or plugins."
 msgstr ""
+"Šis iš anksto nustatytas failo pavadinimo skripto pavyzdys nereikalauja "
+"jokių specialių nustatymų, žymėjimo skriptų ar įskiepių."
 
 #: picard/script/__init__.py:145
 #, python-format
 msgid "Preset %(number)d: %(title)s"
-msgstr ""
+msgstr "Išankstinis nustatymas %(number)d: %(title)s"
 
 #: picard/script/__init__.py:152
 msgid "Default file naming script"
-msgstr ""
+msgstr "Numatytasis failo pavadinimo skriptas"
 
 #: picard/script/__init__.py:164
 msgid "[album artist]/[album]/[track #]. [title]"
-msgstr ""
+msgstr "[albumo atlikėjas (-a)]/[albumas]/[takelis #]. [pavadinimas]"
 
 #: picard/script/__init__.py:178
 msgid "[album artist]/[album]/[disc and track #] [artist] - [title]"
 msgstr ""
+"[albumo atlikėjas (-a)]/[albumas]/[disko ir takelio #] [atlikėjas (-a)] – "
+"[pavadinimas]"
 
 #: picard/script/functions.py:186
 msgid ""
@@ -980,6 +982,10 @@ msgid ""
 "\n"
 "If `if` is not empty, it returns `then`, otherwise it returns `else`."
 msgstr ""
+"`$if(jei,tada,kitaip)`\n"
+"\n"
+"Jeigu `jei` nėra tuščias, jis grąžina `tada`, priešingu atveju grąžina "
+"`kitaip`."
 
 #: picard/script/functions.py:199
 msgid ""
@@ -987,6 +993,9 @@ msgid ""
 "\n"
 "Returns first non empty argument."
 msgstr ""
+"`$if2(a1,a2,a3,...)`\n"
+"\n"
+"Grąžina pirmąjį ne tuščią argumentą."
 
 #: picard/script/functions.py:212
 msgid ""
@@ -994,6 +1003,9 @@ msgid ""
 "\n"
 "Does nothing (useful for comments or disabling a block of code)."
 msgstr ""
+"`$noop(…)`\n"
+"\n"
+"Nieko nedaro (naudinga komentarams arba kodo blokui išjungti)."
 
 #: picard/script/functions.py:221
 msgid ""
@@ -1001,6 +1013,9 @@ msgid ""
 "\n"
 "Returns the first `number` characters from `text`."
 msgstr ""
+"`$left(tekstas,numeris)`\n"
+"\n"
+"Grąžina pirmąjį `numeris` simbolius iš `tekstas`."
 
 #: picard/script/functions.py:233
 msgid ""
@@ -1008,6 +1023,9 @@ msgid ""
 "\n"
 "Returns the last `number` characters from `text`."
 msgstr ""
+"`$right(tekstas,numeris)`\n"
+"\n"
+"Grąžina paskutinį `numeris` simbolius iš `tekstas`."
 
 #: picard/script/functions.py:245
 msgid ""
@@ -1015,6 +1033,9 @@ msgid ""
 "\n"
 "Returns `text` in lower case."
 msgstr ""
+"`$lower(tekstas)`\n"
+"\n"
+"Grąžina `tekstas` mažosiomis raidėmis."
 
 #: picard/script/functions.py:254
 msgid ""
@@ -1022,6 +1043,9 @@ msgid ""
 "\n"
 "Returns `text` in upper case."
 msgstr ""
+"`$upper(tekstas)`\n"
+"\n"
+"Grąžina `tekstas` didžiosiomis raidėmis."
 
 #: picard/script/functions.py:263
 msgid ""
@@ -1031,6 +1055,10 @@ msgid ""
 "as\n"
 "    needed to the **beginning** of the string."
 msgstr ""
+"`$pad(tekstas,ilgis,simb.)`\n"
+"\n"
+"Paduoda `tekstas` iki nurodyto `ilgis`, pridedant tiek `simb.` kopijų, kiek\n"
+"    reikia prie eilutės **pradžios**."
 
 #: picard/script/functions.py:276
 msgid ""
@@ -1041,6 +1069,12 @@ msgid ""
 "Whitespace characters include multiple consecutive spaces, and various other "
 "unicode characters."
 msgstr ""
+"`$strip(tekstas)`\n"
+"\n"
+"Pakeičia visus baltuosius tarpus `tekstas` su vienu tarpu ir pašalina "
+"pradinius ir galinius tarpus.\n"
+"Baltųjų tarpų simboliai įtraukia kelis iš eilės einančius tarpus ir įvairius "
+"kitus unikodo simbolius."
 
 #: picard/script/functions.py:286
 msgid ""
@@ -1966,51 +2000,51 @@ msgstr ""
 #: picard/script/serializer.py:202
 #, python-format
 msgid "Error exporting file \"%(filename)s\": %(error)s."
-msgstr ""
+msgstr "Klaida eksportuojant failą „%(filename)s“: %(error)s."
 
 #: picard/script/serializer.py:209
 msgid "Export Script File"
-msgstr ""
+msgstr "Eksportuoti skripo failą"
 
 #: picard/script/serializer.py:231
 msgid "Export Script"
-msgstr ""
+msgstr "Eksportuoti skriptą"
 
 #: picard/script/serializer.py:232
 #, python-format
 msgid "Script successfully exported to %s"
-msgstr ""
+msgstr "Skriptas sėkmingai eksportuotas į %s."
 
 #: picard/script/serializer.py:243
 #, python-format
 msgid "Error importing \"%(filename)s\": %(error)s"
-msgstr ""
+msgstr "Klaida importuojant „%(filename)s“: %(error)s."
 
 #: picard/script/serializer.py:244
 #, python-format
 msgid "Error decoding \"%(filename)s\": %(error)s"
-msgstr ""
+msgstr "Klaida iškoduojant „%(filename)s“: %(error)s."
 
 #: picard/script/serializer.py:246
 msgid "Import Script File"
-msgstr ""
+msgstr "Importuoti skripto failą"
 
 #: picard/script/serializer.py:260
 msgid "The file was empty"
-msgstr ""
+msgstr "Failas buvo tuščias."
 
 #: picard/script/serializer.py:268
 #, python-format
 msgid "Imported from %s"
-msgstr ""
+msgstr "Importuota iš %s"
 
 #: picard/script/serializer.py:286
 msgid "Argument is not a dictionary"
-msgstr ""
+msgstr "Argumentas nėra žinynas"
 
 #: picard/script/serializer.py:288 picard/script/serializer.py:332
 msgid "Invalid script package"
-msgstr ""
+msgstr "Netinkamas scenarijaus paketas"
 
 #: picard/script/serializer.py:299
 #, python-format
@@ -2119,10 +2153,15 @@ msgid ""
 "types not appearing in the 'Include' or 'Exclude' lists will not be "
 "considered when determining whether or not to download and use a CAA image.\n"
 msgstr ""
+"CAA vaizdai su vaizdo tipu, esančiu sąraše „Įtraukti“, bus atsisiunčiami ir "
+"naudojami, NEBENT jie taip pat turi vaizdo tipą, esantį sąraše „Neįtraukti“. "
+"Vaizdai su tipais, esančiais sąraše „Neįtraukti“, NIEKADA nebus naudojami. "
+"Vaizdų tipai nepateikti sąrašuose „Įtraukti“ arba „Neįtraukti“ nebus "
+"vertinami nustatant, ar atsisiųsti ir naudoti CAA vaizdą, ar ne.\n"
 
 #: picard/ui/caa_types_selector.py:258
 msgid "I&nclude all"
-msgstr ""
+msgstr "Į&ntraukti visus"
 
 #: picard/ui/caa_types_selector.py:259
 msgid "E&xclude all"
@@ -2146,34 +2185,34 @@ msgstr "Albumas"
 #: picard/ui/mainwindow.py:1155 picard/ui/searchdialog/album.py:153
 #: picard/ui/searchdialog/track.py:71 picard/util/tags.py:43
 msgid "Artist"
-msgstr "Artistas"
+msgstr "Atlikėjas (-a)"
 
 #: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:175
 #: picard/ui/searchdialog/album.py:156 picard/ui/searchdialog/track.py:73
 #: picard/util/tags.py:56
 msgid "Date"
-msgstr "Datą"
+msgstr "Data"
 
 #: picard/ui/cdlookup.py:73 picard/ui/searchdialog/album.py:158
 msgid "Labels"
-msgstr "Įrašai"
+msgstr "Leidyklos"
 
 #: picard/ui/cdlookup.py:73 picard/ui/searchdialog/album.py:159
 msgid "Catalog #s"
-msgstr ""
+msgstr "Katalogo Nr."
 
 #: picard/ui/cdlookup.py:73 picard/ui/itemviews.py:171
 #: picard/ui/searchdialog/album.py:160 picard/util/tags.py:47
 msgid "Barcode"
-msgstr ""
+msgstr "Brūkšninis kodas"
 
 #: picard/ui/cdlookup.py:74
 msgid "Disambiguation"
-msgstr ""
+msgstr "Išskyrimas"
 
 #: picard/ui/collectionmenu.py:60
 msgid "Refresh List"
-msgstr "Atnaujink Saraša"
+msgstr "Atnaujinti sąrašą"
 
 #: picard/ui/collectionmenu.py:173
 #, python-format
@@ -2242,23 +2281,23 @@ msgstr ""
 
 #: picard/ui/coverartbox.py:429
 msgid "New Cover Art"
-msgstr ""
+msgstr "Naujas viršelis"
 
 #: picard/ui/coverartbox.py:430
 msgid "Original Cover Art"
-msgstr ""
+msgstr "Originalus viršelis"
 
 #: picard/ui/coverartbox.py:609
 msgid "All supported image formats"
-msgstr ""
+msgstr "Visi palaikomi vaizdų formatai"
 
 #: picard/ui/coverartbox.py:629
 msgid "Show more details…"
-msgstr ""
+msgstr "Rodyti daugiau informacijos…"
 
 #: picard/ui/coverartbox.py:635
 msgid "Keep original cover art"
-msgstr ""
+msgstr "Palikti originalinį viršelį"
 
 #: picard/ui/coverartbox.py:641
 msgid "Choose local file…"
@@ -2334,14 +2373,16 @@ msgid ""
 "Missing temporary file: %(tempfile)s\n"
 "Source: %(sourcefile)s"
 msgstr ""
+"Trūksta laikinojo failo: %(tempfile)s.\n"
+"Šaltinis: %(sourcefile)s."
 
 #: picard/ui/infodialog.py:286
 msgid "Filename:"
-msgstr ""
+msgstr "Failo pavadinimas:"
 
 #: picard/ui/infodialog.py:288
 msgid "Format:"
-msgstr ""
+msgstr "Formatas:"
 
 #: picard/ui/infodialog.py:292
 msgid "Size:"
@@ -2353,27 +2394,27 @@ msgstr "Ilgis:"
 
 #: picard/ui/infodialog.py:298
 msgid "Bitrate:"
-msgstr ""
+msgstr "Praleidumas:"
 
 #: picard/ui/infodialog.py:300
 msgid "Sample rate:"
-msgstr ""
+msgstr "Skaitmeninimo dažnis:"
 
 #: picard/ui/infodialog.py:302
 msgid "Bits per sample:"
-msgstr ""
+msgstr "Bitų per skaitmeninį:"
 
 #: picard/ui/infodialog.py:306
 msgid "Mono"
-msgstr ""
+msgstr "Vieninis"
 
 #: picard/ui/infodialog.py:308
 msgid "Stereo"
-msgstr ""
+msgstr "Stereofoninis"
 
 #: picard/ui/infodialog.py:309
 msgid "Channels:"
-msgstr ""
+msgstr "Kanalai:"
 
 #: picard/ui/infodialog.py:316
 msgid "Album:"
@@ -2394,37 +2435,37 @@ msgstr ""
 
 #: picard/ui/infodialog.py:377
 msgid "Album Info"
-msgstr "Albumo Informacija"
+msgstr "Albumo informacija"
 
 #: picard/ui/infodialog.py:391
 msgid "Track Info"
-msgstr ""
+msgstr "Takelio informacija"
 
 #: picard/ui/infodialog.py:399 picard/ui/infodialog.py:403
 #: picard/ui/infodialog.py:421 picard/ui/ui_infodialog.py:81
 msgid "&Info"
-msgstr ""
+msgstr "&Informacija"
 
 #: picard/ui/infodialog.py:404
 #, python-format
 msgid "%i file in this track"
 msgid_plural "%i files in this track"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%i failas šiame takelyje"
+msgstr[1] "%i failai šiame takelyje"
+msgstr[2] "%i failo šiame takelyje"
+msgstr[3] "%i failų šiame takelyje"
 
 #: picard/ui/infodialog.py:415
 msgid "Cluster Info"
-msgstr ""
+msgstr "Klasterio informacija"
 
 #: picard/ui/infostatus.py:70
 msgid "Estimated Time"
-msgstr ""
+msgstr "Numatomas laikas"
 
 #: picard/ui/infostatus.py:71 picard/ui/options/plugins.py:632
 msgid "Files"
-msgstr ""
+msgstr "Failai"
 
 #: picard/ui/infostatus.py:72
 msgid "Albums"
@@ -2432,33 +2473,33 @@ msgstr "Albumai"
 
 #: picard/ui/infostatus.py:73
 msgid "Pending files"
-msgstr ""
+msgstr "Laukiantys failai"
 
 #: picard/ui/infostatus.py:74
 msgid "Pending requests"
-msgstr ""
+msgstr "Laukiantys užklausimai"
 
 #: picard/ui/item.py:141
 #, python-format
 msgid "%i image"
 msgid_plural "%i images"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%i vaizdas"
+msgstr[1] "%i vaizdai"
+msgstr[2] "%i vaizdo"
+msgstr[3] "%i vaizdų"
 
 #: picard/ui/item.py:144
 #, python-format
 msgid "%i image not in all tracks"
 msgid_plural "%i different images among tracks"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%i vaizdas ne visuose takeliuose"
+msgstr[1] "%i skirtingi vaizdai tarp takelių"
+msgstr[2] "%i skirtingo vaizdo tarp takelių"
+msgstr[3] "%i skirtingų vaizdų tarp takelių"
 
 #: picard/ui/itemviews.py:161 picard/util/tags.py:123
 msgid "Title"
-msgstr ""
+msgstr "Pavadinimas"
 
 #: picard/ui/itemviews.py:162 picard/ui/searchdialog/track.py:70
 #: picard/util/tags.py:72
