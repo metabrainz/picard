@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006 Lukáš Lalinský
-# Copyright (C) 2019, 2021 Philipp Wolfer
+# Copyright (C) 2019, 2021-2022 Philipp Wolfer
 # Copyright (C) 2020-2021 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -25,9 +25,7 @@ import os
 import os.path
 import shutil
 
-from PyQt5.QtCore import QStandardPaths
-
-from picard.util import get_qt_enum
+from PyQt6.QtCore import QStandardPaths
 
 
 # Files not considered relevant for a directory. If a directory has only
@@ -36,9 +34,8 @@ JUNK_FILES = {".DS_Store", "desktop.ini", "Desktop.ini", "Thumbs.db"}
 
 # Special file system locations Picard should never delete.
 PROTECTED_DIRECTORIES = set()
-for location in get_qt_enum(QStandardPaths, QStandardPaths.StandardLocation):
-    value = getattr(QStandardPaths, location)
-    for path in QStandardPaths.standardLocations(value):
+for location in QStandardPaths.StandardLocation:
+    for path in QStandardPaths.standardLocations(location):
         try:
             PROTECTED_DIRECTORIES.add(os.path.realpath(path))
         except OSError:  # Path might no longer exist, skip it

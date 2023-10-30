@@ -23,8 +23,8 @@
 
 from functools import partial
 
-from PyQt5 import QtCore
-from PyQt5.QtWidgets import QMessageBox
+from PyQt6 import QtCore
+from PyQt6.QtWidgets import QMessageBox
 
 from picard import (
     PICARD_FANCY_VERSION_STR,

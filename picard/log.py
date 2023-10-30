@@ -36,7 +36,7 @@ import logging
 from pathlib import Path
 from threading import Lock
 
-from PyQt5 import QtCore
+from PyQt6 import QtCore
 
 from picard.const.sys import (
     FROZEN_TEMP_PATH,

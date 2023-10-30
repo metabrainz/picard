@@ -26,18 +26,18 @@
 import re
 import unicodedata
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtGui,
 )
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import (
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import (
+    QAction,
     QCursor,
     QKeySequence,
     QTextCursor,
 )
-from PyQt5.QtWidgets import (
-    QAction,
+from PyQt6.QtWidgets import (
     QCompleter,
     QTextEdit,
     QToolTip,
@@ -349,7 +349,7 @@ class ScriptTextEdit(QTextEdit):
         menu.addSeparator()
         menu.addAction(self.wordwrap_action)
         menu.addAction(self.show_tooltips_action)
-        menu.exec_(event.globalPos())
+        menu.exec(event.globalPos())
 
     def mouseMoveEvent(self, event):
         if self._show_tooltips:

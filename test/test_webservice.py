@@ -28,8 +28,8 @@ from unittest.mock import (
     patch,
 )
 
-from PyQt5.QtCore import QUrl
-from PyQt5.QtNetwork import (
+from PyQt6.QtCore import QUrl
+from PyQt6.QtNetwork import (
     QNetworkProxy,
     QNetworkRequest,
 )

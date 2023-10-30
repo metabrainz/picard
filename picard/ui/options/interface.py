@@ -31,11 +31,11 @@
 
 import os.path
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtWidgets,
 )
-from PyQt5.QtCore import QStandardPaths
+from PyQt6.QtCore import QStandardPaths
 
 from picard.config import (
     BoolOption,
@@ -103,7 +103,7 @@ class InterfaceOptionsPage(OptionsPage):
         },
         UiTheme.SYSTEM: {
             'label': N_("System"),
-            'desc': N_("The Qt5 theme configured in the desktop environment"),
+            'desc': N_("The Qt6 theme configured in the desktop environment"),
         },
     }
 
@@ -194,7 +194,7 @@ class InterfaceOptionsPage(OptionsPage):
                 restart_warning,
                 QtWidgets.QMessageBox.StandardButton.Ok,
                 self)
-            dialog.exec_()
+            dialog.exec()
         config.setting['ui_theme'] = new_theme_setting
         config.setting['ui_language'] = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
         config.setting['filebrowser_horizontal_autoscroll'] = self.ui.filebrowser_horizontal_autoscroll.isChecked()

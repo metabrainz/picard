@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -42,7 +42,8 @@ class EditableListView(QtWidgets.QListView):
             super().keyPressEvent(event)
 
     def mouseDoubleClickEvent(self, event):
-        index = self.indexAt(QtCore.QPoint(event.x(), event.y()))
+        pos = event.pos()
+        index = self.indexAt(QtCore.QPoint(pos.x(), pos.y()))
         if index.isValid():
             super().mouseDoubleClickEvent(event)
         else:

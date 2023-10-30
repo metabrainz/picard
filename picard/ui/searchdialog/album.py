@@ -23,12 +23,12 @@
 
 from functools import partial
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtGui,
     QtWidgets,
 )
-from PyQt5.QtCore import pyqtSignal
+from PyQt6.QtCore import pyqtSignal
 
 from picard import log
 from picard.config import (
@@ -175,7 +175,7 @@ class AlbumSearchDialog(SearchDialog):
             force_advanced_search=True,
             existing_album=existing_album)
         dialog.search("rgid:{0}".format(releasegroup_id))
-        dialog.exec_()
+        dialog.exec()
         return dialog
 
     def search(self, text):

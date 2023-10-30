@@ -28,7 +28,7 @@
 Asynchronous web service utilities.
 """
 
-from PyQt5.QtCore import QUrl
+from PyQt6.QtCore import QUrl
 
 
 def port_from_qurl(qurl):

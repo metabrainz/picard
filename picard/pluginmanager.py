@@ -35,7 +35,7 @@ import tempfile
 import zipfile
 import zipimport
 
-from PyQt5 import QtCore
+from PyQt6 import QtCore
 
 from picard import log
 from picard.const import (

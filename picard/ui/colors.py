@@ -22,7 +22,7 @@
 
 from collections import defaultdict
 
-from PyQt5 import QtGui
+from PyQt6 import QtGui
 
 from picard.config import get_config
 

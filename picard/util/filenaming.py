@@ -35,7 +35,7 @@ import struct
 import sys
 import unicodedata
 
-from PyQt5.QtCore import QStandardPaths
+from PyQt6.QtCore import QStandardPaths
 
 from picard import log
 from picard.const.sys import (

@@ -27,11 +27,11 @@ from platform import python_version
 
 from mutagen import version_string as mutagen_version
 
-from PyQt5.QtCore import (
+from PyQt6.QtCore import (
     PYQT_VERSION_STR as pyqt_version,
     qVersion,
 )
-from PyQt5.QtNetwork import QSslSocket
+from PyQt6.QtNetwork import QSslSocket
 
 from picard import PICARD_FANCY_VERSION_STR
 from picard.disc import discid_version

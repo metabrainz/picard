@@ -25,7 +25,7 @@
 
 import re
 
-from PyQt5.QtCore import QXmlStreamReader
+from PyQt6.QtCore import QXmlStreamReader
 
 
 _node_name_re = re.compile('[^a-zA-Z0-9]')

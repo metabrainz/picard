@@ -7,6 +7,7 @@
 # Copyright (C) 2013-2014, 2018 Laurent Monin
 # Copyright (C) 2014 Shadab Zafar
 # Copyright (C) 2016 Sambhav Kothari
+# Copyright (C) 2022 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -33,20 +34,29 @@ from distutils.spawn import (
 import os.path
 
 
+def fix_qtcore_import(path):
+    with open(path, 'r') as f:
+        data = f.read()
+    data = data.replace('PySide6', 'PyQt6')
+    with open(path, 'w') as f:
+        f.write(data)
+
+
 def main():
     scriptdir = os.path.dirname(os.path.abspath(__file__))
     topdir = os.path.abspath(os.path.join(scriptdir, ".."))
     pyfile = os.path.join(topdir, "picard", "resources.py")
     qrcfile = os.path.join(topdir, "resources", "picard.qrc")
     if newer(qrcfile, pyfile):
-        pyrcc = 'pyrcc5'
-        pyrcc_path = find_executable(pyrcc)
-        if pyrcc_path is None:
-            log.error("%s command not found, cannot build resource file !", pyrcc)
+        rcc = 'rcc'
+        rcc_path = find_executable(rcc, path='/usr/lib/qt6/libexec/') or find_executable(rcc)
+        if rcc_path is None:
+            log.error("%s command not found, cannot build resource file !", rcc)
         else:
-            cmd = [pyrcc_path, qrcfile, "-o", pyfile]
+            cmd = [rcc_path, '-g', 'python', '-o', pyfile, qrcfile]
             try:
                 spawn(cmd, search_path=0)
+                fix_qtcore_import(pyfile)
             except DistutilsExecError as e:
                 log.error(e)
 

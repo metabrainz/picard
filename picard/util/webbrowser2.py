@@ -32,7 +32,7 @@ It handles and displays errors in PyQt and also adds a utility function for open
 from sys import version_info
 import webbrowser
 
-from PyQt5 import QtWidgets
+from PyQt6 import QtWidgets
 
 from picard import log
 from picard.const import PICARD_URLS

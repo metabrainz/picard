@@ -33,7 +33,7 @@ import os
 import shutil
 import tempfile
 
-from PyQt5.QtCore import (
+from PyQt6.QtCore import (
     QMutex,
     QObject,
     QUrl,
@@ -68,7 +68,7 @@ from picard.util.scripttofilename import script_to_filename
 
 
 _datafiles = dict()
-_datafile_mutex = QMutex(QMutex.RecursionMode.Recursive)
+_datafile_mutex = QMutex()
 
 
 class DataHash:

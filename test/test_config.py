@@ -298,10 +298,9 @@ class TestPicardConfigFloatOption(TestPicardConfigCommon):
 
 class TestPicardConfigListOption(TestPicardConfigCommon):
 
-    # ListOption
     def test_list_opt_convert(self):
         opt = ListOption("setting", "list_option", [])
-        self.assertEqual(opt.convert("123"), ['1', '2', '3'])
+        self.assertEqual(opt.convert(('1', '2', '3')), ['1', '2', '3'])
 
     def test_list_opt_no_config(self):
         ListOption("setting", "list_option", ["a", "b"])

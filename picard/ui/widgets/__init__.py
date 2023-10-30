@@ -21,7 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -89,7 +89,7 @@ class ClickableSlider(QtWidgets.QSlider):
 
     def _set_position_from_mouse_event(self, event):
         value = QtWidgets.QStyle.sliderValueFromPosition(
-            self.minimum(), self.maximum(), event.x(), self.width())
+            self.minimum(), self.maximum(), event.pos().x(), self.width())
         self.setValue(value)
 
 
@@ -128,9 +128,8 @@ class Popover(QtWidgets.QFrame):
         if not self._is_wayland:
             # Attempt to keep the popover fully visible on screen.
             min_pos = QtCore.QPoint(0, 0)
-            screen_number = QtWidgets.QApplication.desktop().screenNumber()
-            screen = QtGui.QGuiApplication.screens()[screen_number]
-            screen_size = screen.availableVirtualSize()
+            screen = self._main_window.screen()
+            screen_size = screen.size()
         else:
             # The full screen size is not known on Wayland, but we can ensure
             # the popover stays inside the app window boundary.

@@ -3,9 +3,8 @@ Updating Resources
 
 This directory contains all external resources, like icons, used by Picard.
 
-Picard utilizes the PyQt5 Resource System for using these resources in
-application. For more information about the PyQt5 Resource System see this
-[documentation](http://pyqt.sourceforge.net/Docs/PyQt5/resources.html).
+Picard utilizes the Qt6 Resource Compiler rcc for using these resources in
+application. For more information see the [documentation](https://doc.qt.io/qt-6/rcc.html).
 
 For adding a new image into existing resources, follow these steps:
 

@@ -30,10 +30,7 @@ jobs:
     strategy:
       matrix:
         setup:
-        - macos-deployment-version: 10.12
-          python-version: 3.9.12-macosx10.9
-          python-sha256sum: 7888174c6fe441b00448c7ab3e9cbf0e6c3c7dea0750577baf09e1383fc44656
-        - macos-deployment-version: 10.14
+        - macos-deployment-version: 11
           python-version: 3.11.5-macos11
           python-sha256sum: c6cd76659bfb364c2ac63bc57f6b10c1e131a20170359c5d65e2d41fdc674a4f
     env:
@@ -132,10 +129,10 @@ jobs:
       with:
         fetch-depth: 0  # Fetch entire history, needed for setting the build number
     - run: git fetch --depth=1 origin +refs/tags/release-*:refs/tags/release-*
-    - name: Set up Python 3.8
+    - name: Set up Python 3.11
       uses: actions/setup-python@v4
       with:
-        python-version: 3.8
+        python-version: 3.11
     - name: Setup Windows build environment
       run: |
         & .\scripts\package\win-setup.ps1 `
@@ -255,10 +252,6 @@ jobs:
     - uses: actions/setup-python@v4
       with:
         python-version: 3.9
-    - uses: actions/download-artifact@v3
-      with:
-        name: macos-app-10.12
-        path: artifacts/
     - uses: actions/download-artifact@v3
       with:
         name: macos-app-10.14

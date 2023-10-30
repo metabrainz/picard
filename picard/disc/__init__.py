@@ -31,7 +31,7 @@
 
 import traceback
 
-from PyQt5 import QtCore
+from PyQt6 import QtCore
 
 from picard import log
 from picard.util.mbserver import build_submission_url
@@ -116,7 +116,7 @@ class Disc(QtCore.QObject):
                 log.error(traceback.format_exc())
 
         dialog = CDLookupDialog(releases, self, parent=self.tagger.window)
-        dialog.exec_()
+        dialog.exec()
 
 
 if discid is not None:

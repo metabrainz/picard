@@ -60,7 +60,7 @@ import time
 from urllib.parse import urlparse
 from uuid import uuid4
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -69,7 +69,6 @@ from PyQt5 import (
 from picard import (
     PICARD_APP_ID,
     PICARD_APP_NAME,
-    PICARD_DESKTOP_NAME,
     PICARD_FANCY_VERSION_STR,
     PICARD_ORG_NAME,
     acoustid,
@@ -645,7 +644,7 @@ class Tagger(QtWidgets.QApplication):
         dialog.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         dialog.setWindowTitle(_("MusicBrainz Account"))
         dialog.setLabelText(_("Authorization code:"))
-        status = dialog.exec_()
+        status = dialog.exec()
         if status == QtWidgets.QDialog.DialogCode.Accepted:
             return dialog.textValue()
         else:
@@ -747,7 +746,7 @@ class Tagger(QtWidgets.QApplication):
         self.update_browser_integration()
         self.window.show()
         QtCore.QTimer.singleShot(0, self._run_init)
-        res = self.exec_()
+        res = self.exec()
         self.exit()
         return res
 
@@ -981,7 +980,7 @@ class Tagger(QtWidgets.QApplication):
                                       mbid_matched_callback=mbid_matched_callback):
                 dialog = search['dialog'](self.window)
                 dialog.search(text)
-                dialog.exec_()
+                dialog.exec()
         else:
             lookup.search_entity(search['entity'], text, adv,
                                  mbid_matched_callback=mbid_matched_callback,
@@ -1159,7 +1158,7 @@ class Tagger(QtWidgets.QApplication):
     def lookup_cd(self, action):
         """Reads CD from the selected drive and tries to lookup the DiscID on MusicBrainz."""
         config = get_config()
-        if isinstance(action, QtWidgets.QAction):
+        if isinstance(action, QtGui.QAction):
             data = action.data()
             if data == 'logfile:eac':
                 return self.lookup_discid_from_logfile()
@@ -1186,7 +1185,7 @@ class Tagger(QtWidgets.QApplication):
             _("dBpoweramp log files") + " (*.txt)",
             _("All files") + " (*)",
         ])
-        if file_chooser.exec_():
+        if file_chooser.exec():
             files = file_chooser.selectedFiles()
             disc = Disc()
             self.set_wait_cursor()
@@ -1383,7 +1382,7 @@ def show_standalone_messagebox(message, informative_text=None):
         msgbox.setInformativeText(informative_text)
     msgbox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
     msgbox.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
-    msgbox.exec_()
+    msgbox.exec()
     app.quit()
 
 
@@ -1505,15 +1504,12 @@ def main(localedir=None, autoupdate=True):
     # Some libs (ie. Phonon) require those to be set
     QtWidgets.QApplication.setApplicationName(PICARD_APP_NAME)
     QtWidgets.QApplication.setOrganizationName(PICARD_ORG_NAME)
-    QtWidgets.QApplication.setDesktopFileName(PICARD_DESKTOP_NAME)
+    QtWidgets.QApplication.setDesktopFileName(PICARD_APP_NAME)
 
-    # Allow High DPI Support
-    QtWidgets.QApplication.setAttribute(QtCore.Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
-    QtWidgets.QApplication.setAttribute(QtCore.Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
     # HighDpiScaleFactorRoundingPolicy is available since Qt 5.14. This is
     # required to support fractional scaling on Windows properly.
     # It causes issues without scaling on Linux, see https://tickets.metabrainz.org/browse/PICARD-1948
-    if IS_WIN and hasattr(QtGui.QGuiApplication, 'setHighDpiScaleFactorRoundingPolicy'):
+    if IS_WIN:
         QtGui.QGuiApplication.setHighDpiScaleFactorRoundingPolicy(
             QtCore.Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
 
@@ -1561,7 +1557,7 @@ def main(localedir=None, autoupdate=True):
         sys.exit(EXIT_NO_NEW_INSTANCE)
 
     try:
-        from PyQt5.QtDBus import QDBusConnection
+        from PyQt6.QtDBus import QDBusConnection
         dbus = QDBusConnection.sessionBus()
         dbus.registerService(PICARD_APP_ID)
     except ImportError:
@@ -1572,7 +1568,7 @@ def main(localedir=None, autoupdate=True):
     # Initialize Qt default translations
     translator = QtCore.QTranslator()
     locale = QtCore.QLocale()
-    translation_path = QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.LibraryLocation.TranslationsPath)
+    translation_path = QtCore.QLibraryInfo.path(QtCore.QLibraryInfo.LibraryPath.TranslationsPath)
     log.debug("Looking for Qt locale %s in %s", locale.name(), translation_path)
     if translator.load(locale, 'qtbase_', directory=translation_path):
         tagger.installTranslator(translator)

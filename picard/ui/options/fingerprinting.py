@@ -26,7 +26,7 @@
 
 import os
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -143,12 +143,12 @@ class FingerprintingOptionsPage(OptionsPage):
         self._fpcalc_valid = False
         process = QtCore.QProcess(self)
         process.finished.connect(self._on_acoustid_fpcalc_check_finished)
-        process.error.connect(self._on_acoustid_fpcalc_check_error)
+        process.errorOccurred.connect(self._on_acoustid_fpcalc_check_error)
         process.start(fpcalc, ["-v"])
 
     def _on_acoustid_fpcalc_check_finished(self, exit_code, exit_status):
         process = self.sender()
-        if exit_code == 0 and exit_status == 0:
+        if exit_code == 0 and exit_status == QtCore.QProcess.ExitStatus.NormalExit:
             output = bytes(process.readAllStandardOutput()).decode()
             if output.startswith("fpcalc version"):
                 self._acoustid_fpcalc_set_success(output.strip())

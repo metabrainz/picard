@@ -23,7 +23,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -68,7 +68,7 @@ class RatingWidget(QtWidgets.QWidget):
 
     def mousePressEvent(self, event):
         if event.button() == QtCore.Qt.MouseButton.LeftButton:
-            x = event.x()
+            x = event.pos().x()
             if x < self._offset:
                 return
             rating = self._getRatingFromPosition(x)
@@ -80,7 +80,7 @@ class RatingWidget(QtWidgets.QWidget):
             event.accept()
 
     def mouseMoveEvent(self, event):
-        self._setHighlight(self._getRatingFromPosition(event.x()))
+        self._setHighlight(self._getRatingFromPosition(event.pos().x()))
         event.accept()
 
     def leaveEvent(self, event):

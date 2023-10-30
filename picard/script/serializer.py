@@ -33,7 +33,7 @@ import uuid
 
 import yaml
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtWidgets,
 )
@@ -233,7 +233,7 @@ class PicardScript():
             QtWidgets.QMessageBox.StandardButton.Ok,
             parent
         )
-        dialog.exec_()
+        dialog.exec()
         return True
 
     @classmethod

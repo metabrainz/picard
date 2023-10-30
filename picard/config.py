@@ -34,11 +34,8 @@ import inspect
 from operator import itemgetter
 import os
 import shutil
-import threading
 
-import fasteners
-
-from PyQt5 import QtCore
+from PyQt6 import QtCore
 
 from picard import (
     PICARD_APP_NAME,
@@ -252,30 +249,6 @@ class Config(QtCore.QSettings):
         self._version = Version.from_string(self.application['version'])
         self._upgrade_hooks = dict()
 
-    def event(self, event):
-        if event.type() == QtCore.QEvent.Type.UpdateRequest:
-            # Syncing the config file can trigger a deadlock between QSettings internal mutex and
-            # the Python GIL in PyQt up to 5.15.2. Workaround this by handling this ourselves
-            # with custom file locking.
-            # See also https: // tickets.metabrainz.org/browse/PICARD-2088
-            log.debug("Config file update requested on thread %r", threading.get_ident())
-            self.sync()
-            return True
-        else:
-            return super().event(event)
-
-    def sync(self):
-        # Custom file locking for save multi process syncing of the config file. This is needed
-        # as we have atomicSyncRequired disabled.
-        with fasteners.InterProcessLock(self.get_lockfile_name()):
-            super().sync()
-
-    def get_lockfile_name(self):
-        filename = self.fileName()
-        directory = os.path.dirname(filename)
-        filename = '.' + os.path.basename(filename) + '.synclock'
-        return os.path.join(directory, filename)
-
     @classmethod
     def from_app(cls, parent):
         """Build a Config object using the default configuration file
@@ -471,8 +444,12 @@ class FloatOption(Option):
 
 class ListOption(Option):
 
-    convert = list
-    qtype = 'QVariantList'
+    def convert(self, value):
+        if value is None:
+            return []
+        elif isinstance(value, str):
+            raise ValueError('Expected list or list like object, got "%r"' % value)
+        return list(value)
 
 
 config = None

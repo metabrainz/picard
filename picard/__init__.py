@@ -40,7 +40,7 @@ PICARD_APP_NAME = "Picard"
 PICARD_DISPLAY_NAME = "MusicBrainz Picard"
 PICARD_APP_ID = "org.musicbrainz.Picard"
 PICARD_DESKTOP_NAME = PICARD_APP_ID + ".desktop"
-PICARD_VERSION = Version(2, 10, 0, 'final', 0)
+PICARD_VERSION = Version(3, 0, 0, 'dev', 1)
 
 
 # optional build version
@@ -61,17 +61,7 @@ else:
 
 # Keep those ordered
 api_versions = [
-    "2.0",
-    "2.1",
-    "2.2",
-    "2.3",
-    "2.4",
-    "2.5",
-    "2.6",
-    "2.7",
-    "2.8",
-    "2.9",
-    "2.10",
+    "3.0",
 ]
 
 api_versions_tuple = [Version.from_string(v) for v in api_versions]
@@ -104,13 +94,13 @@ def crash_handler():
         logfile = None
 
     # Display the crash information to the user as a dialog. This requires
-    # importing Qt5 and has some potential to fail if things are broken.
-    from PyQt5.QtCore import (
+    # importing Qt6 and has some potential to fail if things are broken.
+    from PyQt6.QtCore import (
         QCoreApplication,
         Qt,
         QUrl,
     )
-    from PyQt5.QtWidgets import (
+    from PyQt6.QtWidgets import (
         QApplication,
         QMessageBox,
     )
@@ -132,5 +122,5 @@ def crash_handler():
     msgbox.setDetailedText(trace)
     msgbox.setStandardButtons(QMessageBox.StandardButton.Close)
     msgbox.setDefaultButton(QMessageBox.StandardButton.Close)
-    msgbox.exec_()
+    msgbox.exec()
     app.quit()

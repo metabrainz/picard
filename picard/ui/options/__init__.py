@@ -25,7 +25,7 @@
 
 import re
 
-from PyQt5 import QtWidgets
+from PyQt6 import QtWidgets
 
 from picard import log
 from picard.config import get_config
@@ -93,7 +93,7 @@ class OptionsPage(QtWidgets.QWidget):
 
     def display_error(self, error):
         dialog = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Icon.Warning, error.title, error.info, QtWidgets.QMessageBox.StandardButton.Ok, self)
-        dialog.exec_()
+        dialog.exec()
 
     def init_regex_checker(self, regex_edit, regex_error):
         """

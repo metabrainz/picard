@@ -22,6 +22,11 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Install dependencies (Linux)
+      if: runner.os == 'linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install libegl1
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -73,10 +78,7 @@ jobs:
         os: [ubuntu-latest]
         python-version: ['3.7']
         dependencies: [
-          "PyQt5==5.14.2",
-          "PyQt5==5.13.2",
-          "PyQt5==5.12.3",
-          "PyQt5==5.11.3 sip==4.19.8 mutagen==1.37",
+          "PyQt6==6.2.3 mutagen==1.37",
         ]
 
     steps:
@@ -85,6 +87,11 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Install dependencies (Linux)
+      if: runner.os == 'linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install libegl1
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -111,11 +118,11 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install gettext (Linux)
+    - name: Install gettext and libegl1 (Linux)
       if: runner.os == 'Linux'
       run: |
         sudo apt-get update
-        sudo apt-get install gettext
+        sudo apt-get install gettext libegl1
     - name: Install gettext (macOS)
       if: runner.os == 'macOS'
       run: |

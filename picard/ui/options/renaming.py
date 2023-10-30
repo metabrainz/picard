@@ -35,9 +35,9 @@
 
 import os.path
 
-from PyQt5 import QtWidgets
-from PyQt5.QtCore import QStandardPaths
-from PyQt5.QtGui import QPalette
+from PyQt6 import QtWidgets
+from PyQt6.QtCore import QStandardPaths
+from PyQt6.QtGui import QPalette
 
 from picard.config import (
     BoolOption,

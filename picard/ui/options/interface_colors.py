@@ -22,7 +22,7 @@
 
 from functools import partial
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -147,7 +147,7 @@ class InterfaceColorsOptionsPage(OptionsPage):
                 _("You have changed the interface colors. You may have to restart Picard in order for the changes to take effect."),
                 QtWidgets.QMessageBox.StandardButton.Ok,
                 self)
-            dialog.exec_()
+            dialog.exec()
 
     def restore_defaults(self):
         interface_colors.set_default_colors()

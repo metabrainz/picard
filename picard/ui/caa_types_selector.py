@@ -31,7 +31,7 @@
 
 from functools import partial
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -353,5 +353,5 @@ class CAATypesSelectorDialog(PicardDialog):
 
 def display_caa_types_selector(**kwargs):
     dialog = CAATypesSelectorDialog(**kwargs)
-    result = dialog.exec_()
+    result = dialog.exec()
     return (dialog.included, dialog.excluded, result == QtWidgets.QDialog.DialogCode.Accepted)

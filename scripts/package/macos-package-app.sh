@@ -54,45 +54,35 @@ ditto -rsrc --arch x86_64 "$APP_BUNDLE" "$APP_BUNDLE.tmp"
 rm -r "$APP_BUNDLE"
 mv "$APP_BUNDLE.tmp" "$APP_BUNDLE"
 
-# Fix placing text files in Resources instead of Contents to avoid signatures ending up in extended attributes.
-# This fixes the signature breaking if extended attributes get removed or modified.
-# Fixes https://tickets.metabrainz.org/browse/PICARD-1943 and related issues.
-echo "Fixing location of Qt5 translation resources for code signing..."
-if [[ -d "$APP_BUNDLE/Contents/MacOS/PyQt5/Qt5/" ]]; then
-  QT5_DIR=Qt5
-else  # For older PyQt5 installs
-  QT5_DIR=Qt
-fi
-mkdir "$APP_BUNDLE/Contents/Resources/$QT5_DIR/"
-mv "$APP_BUNDLE/Contents/MacOS/PyQt5/$QT5_DIR/translations" "$APP_BUNDLE/Contents/Resources/$QT5_DIR/"
-pushd "$APP_BUNDLE/Contents/MacOS/PyQt5/$QT5_DIR/"
-ln -s "../../../Resources/$QT5_DIR/translations" .
-popd
-
 # Mitigate libwebp vulnerability allowing for arbitrary code execution (CVE-2023-4863).
 # Disable the Qt webp imageformat plugin.
-rm "$APP_BUNDLE/Contents/MacOS/PyQt5/$QT5_DIR/plugins/imageformats/libqwebp.dylib"
+rm "$APP_BUNDLE/Contents/MacOS/PyQt6/Qt6/plugins/imageformats/libqwebp.dylib"
 
 if [ "$CODESIGN" = '1' ]; then
-    # Enable hardened runtime if app will get notarized
+    echo "Code signing app bundle ${APP_BUNDLE}..."
     if [ "$NOTARIZE" = "1" ]; then
+      # Enable hardened runtime if app will get notarized
       codesign --verbose --deep --force \
         --options runtime \
         --entitlements ../scripts/package/entitlements.plist \
         --keychain "$KEYCHAIN_PATH" --sign "$CERTIFICATE_NAME" \
         "$APP_BUNDLE"
       ../scripts/package/macos-notarize-app.sh "$APP_BUNDLE"
-      codesign --verbose --deep --verbose --strict=all --check-notarization "$APP_BUNDLE"
+      echo "Verifying signature and notarization for app bundle ${APP_BUNDLE}..."
+      codesign --verify --verbose --deep --strict=symlinks --check-notarization  "$APP_BUNDLE"
     else
-      codesign --verify --verbose --deep --force \
+      codesign --verbose --deep --force \
         --keychain "$KEYCHAIN_PATH" --sign "$CERTIFICATE_NAME" \
         "$APP_BUNDLE"
+      echo "Verifying signature for app bundle ${APP_BUNDLE}..."
+      codesign --verify --verbose --deep --strict=all "$APP_BUNDLE"
     fi
 fi
 
 # Only test the app if it was codesigned, otherwise execution likely fails
 if [ "$CODESIGN" = '1' ]; then
   echo "Verify Picard executable works and required dependencies are bundled..."
+  "$APP_BUNDLE/Contents/MacOS/picard-run" --long-version --no-crash-dialog || echo "Failed running picard-run"
   VERSIONS=$("$APP_BUNDLE/Contents/MacOS/picard-run" --long-version --no-crash-dialog)
   echo "$VERSIONS"
   ASTRCMP_REGEX="astrcmp C"

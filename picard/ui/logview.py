@@ -32,7 +32,7 @@ import logging
 import os
 import re
 
-from PyQt5 import (
+from PyQt6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -145,10 +145,10 @@ class VerbosityMenu(QtWidgets.QMenu):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
 
-        self.action_group = QtWidgets.QActionGroup(self)
+        self.action_group = QtGui.QActionGroup(self)
         self.actions = {}
         for level, feat in log.levels_features.items():
-            action = QtWidgets.QAction(_(feat.name), self)
+            action = QtGui.QAction(_(feat.name), self)
             action.setCheckable(True)
             action.triggered.connect(partial(self.verbosity_changed.emit, level))
             self.action_group.addAction(action)

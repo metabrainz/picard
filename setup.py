@@ -368,7 +368,7 @@ class picard_build_ui(Command):
             self.files = files
 
     def run(self):
-        from PyQt5 import uic
+        from PyQt6 import uic
         _translate_re = (
             re.compile(
                 r'QtGui\.QApplication.translate\(.*?, (.*?), None, '

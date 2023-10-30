@@ -36,6 +36,6 @@ if windll.kernel32.AttachConsole(-1):
 # Ensure bundled DLLs are loaded
 os.environ['PATH'] = os.pathsep.join((
     os.path.normpath(sys._MEIPASS),
-    os.path.normpath(os.path.join(sys._MEIPASS, 'PyQt5\\Qt5\\bin')),
+    os.path.normpath(os.path.join(sys._MEIPASS, 'PyQt6\\Qt6\\bin')),
     os.environ['PATH'],
 ))

@@ -122,21 +122,21 @@ class BrowserLookupTest(PicardTestCase):
         url = mock_open.call_args[0][0]
         self.assert_mb_entity_url_matches(url, 'area', 'f03d09b3-39dc-4083-afd6-159e3f0d462f')
 
-    @patch('PyQt5.QtCore.QObject.tagger')
+    @patch('PyQt6.QtCore.QObject.tagger')
     def test_mbid_lookup_release(self, mock_tagger):
         url = 'https://musicbrainz.org/release/60dbf818-3058-41b9-bb53-25dbdb9d9bad'
         result = self.lookup.mbid_lookup(url)
         self.assertTrue(result)
         mock_tagger.load_album.assert_called_once_with('60dbf818-3058-41b9-bb53-25dbdb9d9bad')
 
-    @patch('PyQt5.QtCore.QObject.tagger')
+    @patch('PyQt6.QtCore.QObject.tagger')
     def test_mbid_lookup_recording(self, mock_tagger):
         url = 'https://musicbrainz.org/recording/511f3a33-ded8-4dc7-92d2-b913ec420dfc'
         result = self.lookup.mbid_lookup(url)
         self.assertTrue(result)
         mock_tagger.load_nat.assert_called_once_with('511f3a33-ded8-4dc7-92d2-b913ec420dfc')
 
-    @patch('PyQt5.QtCore.QObject.tagger')
+    @patch('PyQt6.QtCore.QObject.tagger')
     @patch('picard.browser.filelookup.AlbumSearchDialog')
     def test_mbid_lookup_release_group(self, mock_dialog, mock_tagger):
         url = 'https://musicbrainz.org/release-group/168615bf-f841-49f7-ac98-36a4eb25479c'
