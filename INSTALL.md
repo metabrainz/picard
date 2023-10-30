@@ -8,7 +8,7 @@ Before installing Picard from source, you need to check you have the following d
 
 Required:
 
-* [Python 3.7 or newer](https://python.org/download)
+* [Python 3.8 or newer](https://python.org/download)
 * [PyQt 6.5 or newer](https://riverbankcomputing.com/software/pyqt/download)
 * [Mutagen 1.37 or newer](https://mutagen.readthedocs.io/)
 * [PyYAML 5.1 or newer](https://pyyaml.org/)
