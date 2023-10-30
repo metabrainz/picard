@@ -263,10 +263,10 @@ jobs:
       with:
         name: macos-app-10.14
         path: artifacts/
-    - uses: actions/download-artifact@v3
-      with:
-        name: windows-signed-app
-        path: artifacts/
+    # - uses: actions/download-artifact@v3
+    #   with:
+    #     name: windows-signed-app
+    #     path: artifacts/
     - uses: actions/download-artifact@v3
       with:
         name: windows-store-app
