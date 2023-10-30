@@ -19,11 +19,12 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
+        python-version: '3.12'
     - name: Install utils
       run: |
         sudo apt-get update
         sudo apt-get install appstream-util desktop-file-utils gettext
+        pip install setuptools
     - name: Validate AppStream metadata
       run: |
         python setup.py build_appdata
