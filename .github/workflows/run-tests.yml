@@ -9,10 +9,10 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-2019]
-        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12.0-rc.1']
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
         include:
         - os: macos-11
-          python-version: '3.7'
+          python-version: '3.8'
     env:
       CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
@@ -76,7 +76,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        python-version: ['3.7']
+        python-version: ['3.8']
         dependencies: [
           "PyQt6==6.2.3 mutagen==1.37",
         ]

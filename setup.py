@@ -75,8 +75,8 @@ from picard import (
 )
 
 
-if sys.version_info < (3, 7):
-    sys.exit("ERROR: You need Python 3.7 or higher to use Picard.")
+if sys.version_info < (3, 8):
+    sys.exit("ERROR: You need Python 3.8 or higher to use Picard.")
 
 PACKAGE_NAME = "picard"
 APPDATA_FILE = PICARD_APP_ID + '.appdata.xml'
@@ -792,7 +792,7 @@ args = {
     },
     'scripts': ['scripts/' + PACKAGE_NAME],
     'install_requires': _get_requirements(),
-    'python_requires': '~=3.7',
+    'python_requires': '~=3.8',
     'classifiers': [
         'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
         'Development Status :: 5 - Production/Stable',
@@ -801,7 +801,6 @@ args = {
         'Environment :: X11 Applications :: Qt',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
