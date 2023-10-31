@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-10-26 15:40+0200\n"
-"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"PO-Revision-Date: 2023-10-31 20:27+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Danish <https://translations.metabrainz.org/projects/picard/"
 "app/da/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -210,14 +210,12 @@ msgid "General"
 msgstr "Generelt"
 
 #: picard/profile.py:48
-#, fuzzy
 msgid "Server address"
-msgstr "Serveradresse:"
+msgstr "Serveradresse"
 
 #: picard/profile.py:49
-#, fuzzy
 msgid "Port"
-msgstr "Port:"
+msgstr "Port"
 
 #: picard/profile.py:50 picard/ui/ui_options_general.py:208
 msgid "Automatically scan all new files"
@@ -563,9 +561,8 @@ msgid "Show icons in menus"
 msgstr ""
 
 #: picard/profile.py:188
-#, fuzzy
 msgid "User interface language"
-msgstr "Sprog for brugerfladen:"
+msgstr "Sprog for brugerfladen"
 
 #: picard/profile.py:189
 msgid "User interface color theme"
@@ -711,19 +708,16 @@ msgid "Listen only on localhost"
 msgstr ""
 
 #: picard/profile.py:252
-#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr "Mindste lighed for filopslag:"
+msgstr "Mindste lighed for filopslag"
 
 #: picard/profile.py:253
-#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr "Mindste lighed for klyngeopslag:"
+msgstr "Mindste lighed for klyngeopslag"
 
 #: picard/profile.py:254
-#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr "Mindste lighed for matchning af filer til skæringer:"
+msgstr "Mindste lighed for matchning af filer til skæringer"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -4580,9 +4574,8 @@ msgid "Select the file naming script to load into the editor"
 msgstr ""
 
 #: picard/ui/ui_scripteditor.py:210 picard/ui/ui_scripteditor_details.py:99
-#, fuzzy
 msgid "Title:"
-msgstr "Titel"
+msgstr "Titel:"
 
 #: picard/ui/ui_scripteditor_details.py:91
 msgid "File Naming Script Metadata"
@@ -4609,14 +4602,12 @@ msgid "Author:"
 msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:97
-#, fuzzy
 msgid "Version:"
-msgstr "Version"
+msgstr "Version:"
 
 #: picard/ui/ui_scripteditor_details.py:98
-#, fuzzy
 msgid "License:"
-msgstr "Licens"
+msgstr "Licens:"
 
 #: picard/ui/ui_scripteditor_details.py:100
 msgid "License under which the file naming script is available."
