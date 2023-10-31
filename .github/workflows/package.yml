@@ -3,7 +3,7 @@ name: Package and release
 on:
   push:
     paths:
-    - '.github/workflows/package.yml'
+    - '.github/workflows/package*.yml'
     - '.github/workflows/pypi-release.yml'
     - 'installer/**'
     - 'picard/**'
@@ -26,205 +26,21 @@ permissions: {}
 
 jobs:
   package-macos:
-    runs-on: macos-11
+    uses: ./.github/workflows/package-macos.yml
     strategy:
-      matrix:
-        setup:
-        - macos-deployment-version: 11
-          python-version: 3.11.5-macos11
-          python-sha256sum: c6cd76659bfb364c2ac63bc57f6b10c1e131a20170359c5d65e2d41fdc674a4f
-    env:
-      DISCID_VERSION: 0.6.4
-      DISCID_SHA256SUM: 829133dd38acbdaa2b989de59e256c8d139ac34cb4dd4b8fd3c9d55a97c824f3
-      FPCALC_VERSION: 1.5.1
-      FPCALC_SHA256SUM: d4d8faff4b5f7c558d9be053da47804f9501eaa6c2f87906a9f040f38d61c860
-      PYTHON_VERSION: ${{ matrix.setup.python-version }}
-      PYTHON_SHA256SUM: ${{ matrix.setup.python-sha256sum }}
-      MACOSX_DEPLOYMENT_TARGET: ${{ matrix.setup.macos-deployment-version }}
-      CODESIGN: 0
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0  # Fetch entire history, needed for setting the build number
-    - run: git fetch --depth=1 origin +refs/tags/release-*:refs/tags/release-*
-    - name: Setup macOS build environment
-      run: |
-        ./scripts/package/macos-setup.sh
-        PYTHON_BASE_VERSION=$(echo $PYTHON_VERSION | sed -e "s/\.[0-9]\{1,\}$//")
-        echo "/Library/Frameworks/Python.framework/Versions/$PYTHON_BASE_VERSION/bin" >> $GITHUB_PATH
-        echo "/usr/local/opt/gettext/bin" >> $GITHUB_PATH
-        RELEASE_TAG=$(git describe --match "release-*" --abbrev=0 --always HEAD)
-        BUILD_NUMBER=$(git rev-list --count $RELEASE_TAG..HEAD)
-        echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
-        mkdir artifacts
-        python3 -m pip install --upgrade pip setuptools wheel
-    - name: Patch build version
-      if: startsWith(github.ref, 'refs/tags/') != true
-      run: |
-        python3 setup.py patch_version --platform=$BUILD_NUMBER.$(git rev-parse --short HEAD)
-    - name: Install dependencies
-      run: |
-        pip3 install -r requirements-build.txt
-        pip3 install -r requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt
-      env:
-        PYINSTALLER_COMPILE_BOOTLOADER: "1"
-    - name: Run tests
-      timeout-minutes: 30
-      run: |
-        python3 setup.py test
-    - name: Prepare code signing certificate
-      run: |
-        if [ -n "$CODESIGN_MACOS_P12_URL" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
-          pip3 install awscli
-          aws s3 cp "$CODESIGN_MACOS_P12_URL" ./scripts/package/appledev.p12
-        else
-          echo "::warning::No code signing certificate available, skipping code signing."
-        fi
-      env:
-        AWS_DEFAULT_REGION: eu-central-1
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        CODESIGN_MACOS_P12_URL: ${{ secrets.CODESIGN_MACOS_P12_URL }}
-    - name: Build macOS app
-      run: |
-        ./scripts/package/macos-package-app.sh
-        rm -f ./scripts/package/appledev.p12
-        mv dist/*.dmg artifacts/
-      env:
-        APPLE_ID_USER: ${{ secrets.APPLE_ID_USER }}
-        APPLE_ID_TEAM: ${{ secrets.APPLE_ID_TEAM }}
-        APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
-        CODESIGN_MACOS_P12_PASSWORD: ${{ secrets.CODESIGN_MACOS_P12_PASSWORD }}
-    - name: Archive production artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: macos-app-${{ matrix.setup.macos-deployment-version }}
-        path: artifacts/
+      fail-fast: false
+    secrets: inherit
 
   package-windows:
-    runs-on: windows-2019
+    uses: ./.github/workflows/package-windows.yml
     strategy:
-      matrix:
-        type:
-        - store-app
-        - signed-app
-        - installer
-        - portable
       fail-fast: false
-    env:
-      CODESIGN: 0
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0  # Fetch entire history, needed for setting the build number
-    - run: git fetch --depth=1 origin +refs/tags/release-*:refs/tags/release-*
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.11
-    - name: Setup Windows build environment
-      run: |
-        & .\scripts\package\win-setup.ps1 `
-          -DiscidVersion $Env:DISCID_VERSION -DiscidSha256Sum $Env:DISCID_SHA256SUM `
-          -FpcalcVersion $Env:FPCALC_VERSION -FpcalcSha256Sum $Env:FPCALC_SHA256SUM
-        Write-Output "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
-        $ReleaseTag = $(git describe --match "release-*" --abbrev=0 --always HEAD)
-        $BuildNumber = $(git rev-list --count "$ReleaseTag..HEAD")
-        Write-Output "BUILD_NUMBER=$BuildNumber" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8
-        New-Item -Name .\artifacts -ItemType Directory
-      env:
-        DISCID_VERSION: 0.6.4
-        DISCID_SHA256SUM: 330199495d71f71251e91eb0b4e3103b6c663fea09ffc9fd3e5108d48e0452c8
-        FPCALC_VERSION: 1.5.1
-        FPCALC_SHA256SUM: 36b478e16aa69f757f376645db0d436073a42c0097b6bb2677109e7835b59bbc
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements-build.txt
-        pip install -r requirements-win.txt
-    - name: Patch build version
-      if: startsWith(github.ref, 'refs/tags/') != true
-      run: |
-        python setup.py patch_version --platform=$Env:BUILD_NUMBER.$(git rev-parse --short HEAD)
-    - name: Run tests
-      timeout-minutes: 30
-      run: python setup.py test
-    - name: Prepare code signing certificate
-      if: matrix.type != 'store-app'
-      run: |
-        If ($Env:CODESIGN_P12_URL -And $Env:AWS_ACCESS_KEY_ID) {
-          pip install awscli
-          aws s3 cp "$Env:CODESIGN_P12_URL" .\codesign.pfx
-          Write-Output "CODESIGN=1" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8
-        } Else {
-          Write-Output "::warning::No code signing certificate available, skipping code signing."
-        }
-      env:
-        AWS_DEFAULT_REGION: eu-central-1
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        CODESIGN_P12_URL: ${{ secrets.CODESIGN_P12_URL }}
-    - name: Build Windows 10 store app package
-      if: matrix.type == 'store-app'
-      run: |
-        & .\scripts\package\win-package-appx.ps1 -BuildNumber $Env:BUILD_NUMBER
-        Move-Item .\dist\*.msix .\artifacts
-      env:
-        PICARD_APPX_PUBLISHER: CN=0A9169B7-05A3-4ED9-8876-830F17846709
-    - name: Build Windows 10 signed app package
-      if: matrix.type == 'signed-app' && env.CODESIGN == '1'
-      run: |
-        $CertificateFile = ".\codesign.pfx"
-        $CertificatePassword = ConvertTo-SecureString -String $Env:CODESIGN_P12_PASSWORD -Force -AsPlainText
-        & .\scripts\package\win-package-appx.ps1 -BuildNumber $Env:BUILD_NUMBER `
-          -CertificateFile $CertificateFile -CertificatePassword $CertificatePassword
-        Move-Item .\dist\*.msix .\artifacts
-      env:
-        CODESIGN_P12_PASSWORD: ${{ secrets.CODESIGN_P12_PASSWORD }}
-    - name: Build Windows installer
-      if: matrix.type == 'installer'
-      run: |
-        # choco install nsis
-        If ($Env:CODESIGN -eq "1") {
-          $CertificateFile = ".\codesign.pfx"
-          $CertificatePassword = ConvertTo-SecureString -String $Env:CODESIGN_P12_PASSWORD -Force -AsPlainText
-        } Else {
-          $CertificateFile = $null
-          $CertificatePassword = $null
-        }
-        & .\scripts\package\win-package-installer.ps1 -BuildNumber $Env:BUILD_NUMBER `
-          -CertificateFile $CertificateFile -CertificatePassword $CertificatePassword
-        Move-Item .\installer\*.exe .\artifacts
-        dist\picard\_internal\fpcalc -version
-      env:
-        CODESIGN_P12_PASSWORD: ${{ secrets.CODESIGN_P12_PASSWORD }}
-    - name: Build Windows portable app
-      if: matrix.type == 'portable'
-      run: |
-        If ($Env:CODESIGN -eq "1") {
-          $CertificateFile = ".\codesign.pfx"
-          $CertificatePassword = ConvertTo-SecureString -String $Env:CODESIGN_P12_PASSWORD -Force -AsPlainText
-        } Else {
-          $CertificateFile = $null
-          $CertificatePassword = $null
-        }
-        & .\scripts\package\win-package-portable.ps1 -BuildNumber $Env:BUILD_NUMBER `
-          -CertificateFile $CertificateFile -CertificatePassword $CertificatePassword
-        Move-Item .\dist\*.exe .\artifacts
-      env:
-        CODESIGN_P12_PASSWORD: ${{ secrets.CODESIGN_P12_PASSWORD }}
-    - name: Cleanup
-      if: env.CODESIGN == '1'
-      run: Remove-Item .\codesign.pfx
-    - name: Archive production artifacts
-      uses: actions/upload-artifact@v3
-      if: matrix.type != 'signed-app' || env.CODESIGN == '1'
-      with:
-        name: windows-${{ matrix.type }}
-        path: artifacts/
+    secrets: inherit
 
   package-pypi:
-    uses: ./.github/workflows/pypi-release.yml
+    uses: ./.github/workflows/package-pypi.yml
+    strategy:
+      fail-fast: false
     secrets: inherit
 
   github-release:
