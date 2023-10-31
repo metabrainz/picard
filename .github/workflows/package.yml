@@ -62,23 +62,12 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/') != true
       run: |
         python3 setup.py patch_version --platform=$BUILD_NUMBER.$(git rev-parse --short HEAD)
-    - name: Compile and install PyInstaller
-      run: |
-        git clone --depth 1 --branch "$PYINSTALLER_VERSION" https://github.com/pyinstaller/pyinstaller.git pyinstaller
-        cd pyinstaller/bootloader
-        python3 ./waf --verbose all
-        cd ..
-        pip3 install .
-      env:
-        PYINSTALLER_VERSION: v5.13.2
-        CFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-version }}
-        CPPFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-version }}
-        LDFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-version }}
-        LINKFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-version }}
     - name: Install dependencies
       run: |
         pip3 install -r requirements-build.txt
         pip3 install -r requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt
+      env:
+        PYINSTALLER_COMPILE_BOOTLOADER: "1"
     - name: Run tests
       timeout-minutes: 30
       run: |
@@ -206,7 +195,7 @@ jobs:
         & .\scripts\package\win-package-installer.ps1 -BuildNumber $Env:BUILD_NUMBER `
           -CertificateFile $CertificateFile -CertificatePassword $CertificatePassword
         Move-Item .\installer\*.exe .\artifacts
-        dist\picard\fpcalc -version
+        dist\picard\_internal\fpcalc -version
       env:
         CODESIGN_P12_PASSWORD: ${{ secrets.CODESIGN_P12_PASSWORD }}
     - name: Build Windows portable app
