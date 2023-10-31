@@ -263,8 +263,8 @@
                   <property name="lineWrapMode">
                    <enum>QTextEdit::NoWrap</enum>
                   </property>
-                  <property name="tabStopWidth">
-                   <number>20</number>
+                  <property name="tabStopDistance">
+                   <double>20.000000000000000</double>
                   </property>
                   <property name="acceptRichText">
                    <bool>false</bool>
