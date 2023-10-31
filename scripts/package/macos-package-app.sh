@@ -56,7 +56,7 @@ mv "$APP_BUNDLE.tmp" "$APP_BUNDLE"
 
 # Mitigate libwebp vulnerability allowing for arbitrary code execution (CVE-2023-4863).
 # Disable the Qt webp imageformat plugin.
-rm "$APP_BUNDLE/Contents/MacOS/PyQt6/Qt6/plugins/imageformats/libqwebp.dylib"
+rm "$APP_BUNDLE/Contents/Frameworks/PyQt6/Qt6/plugins/imageformats/libqwebp.dylib"
 
 if [ "$CODESIGN" = '1' ]; then
     echo "Code signing app bundle ${APP_BUNDLE}..."
@@ -81,7 +81,6 @@ fi
 
 # Only test the app if it was codesigned, otherwise execution likely fails
 if [ "$CODESIGN" = '1' ]; then
-  echo "Verify Picard executable works and required dependencies are bundled..."
   "$APP_BUNDLE/Contents/MacOS/picard-run" --long-version --no-crash-dialog || echo "Failed running picard-run"
   VERSIONS=$("$APP_BUNDLE/Contents/MacOS/picard-run" --long-version --no-crash-dialog)
   echo "$VERSIONS"
@@ -89,7 +88,7 @@ if [ "$CODESIGN" = '1' ]; then
   [[ $VERSIONS =~ $ASTRCMP_REGEX ]] || (echo "Failed: Build does not include astrcmp C" && false)
   LIBDISCID_REGEX="libdiscid [0-9]+\.[0-9]+\.[0-9]+"
   [[ $VERSIONS =~ $LIBDISCID_REGEX ]] || (echo "Failed: Build does not include libdiscid" && false)
-  "$APP_BUNDLE/Contents/MacOS/fpcalc" -version
+  "$APP_BUNDLE/Contents/Frameworks/fpcalc" -version
 fi
 
 echo "Package app bundle into DMG image..."
