@@ -51,7 +51,7 @@ class ColorButton(QtWidgets.QPushButton):
         # On macOS the style override in picard.ui.theme breaks styling these
         # buttons. Explicitly reset the style for this widget only.
         if IS_MACOS:
-            self.setStyle(QtWidgets.QStyleFactory.create('macintosh'))
+            self.setStyle(QtWidgets.QStyleFactory.create('macos'))
         color = QtGui.QColor(initial_color)
         if not color.isValid():
             color = QtGui.QColor('black')
