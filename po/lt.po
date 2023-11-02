@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-10-26 15:40+0200\n"
-"PO-Revision-Date: 2023-10-26 13:41+0000\n"
+"PO-Revision-Date: 2023-11-02 14:27+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/app/lt/>\n"
@@ -21,8 +21,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
-"1 : n % 1 != 0 ? 2: 3);\n"
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
+" n % 1 != 0 ? 2: 3);\n"
 "X-Generator: Weblate 5.1\n"
 "Generated-By: Babel 2.6.0\n"
 
@@ -2511,7 +2511,7 @@ msgstr "Ilgis"
 
 #: picard/ui/itemviews.py:164 picard/util/tags.py:38
 msgid "Album Artist"
-msgstr ""
+msgstr "Albumo atlikėjas (-a)"
 
 #: picard/ui/itemviews.py:165 picard/util/tags.py:52
 msgid "Composer"
@@ -2523,7 +2523,7 @@ msgstr ""
 
 #: picard/ui/itemviews.py:168
 msgid "Track No."
-msgstr ""
+msgstr "Takelio Nr."
 
 #: picard/ui/itemviews.py:169
 msgid "Disc No."
@@ -2571,7 +2571,7 @@ msgstr ""
 
 #: picard/ui/itemviews.py:284
 msgid "Great match"
-msgstr ""
+msgstr "Puikus atitikimas"
 
 #: picard/ui/itemviews.py:285
 msgid "Excellent match"
@@ -2579,7 +2579,7 @@ msgstr ""
 
 #: picard/ui/itemviews.py:399
 msgid "Restore default columns"
-msgstr ""
+msgstr "Atkurti numatytuosius stulpelius"
 
 #: picard/ui/itemviews.py:404
 msgid "Lock columns"
