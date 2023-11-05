@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-10-26 15:40+0200\n"
-"PO-Revision-Date: 2023-11-02 14:27+0000\n"
+"PO-Revision-Date: 2023-11-05 13:27+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/app/lt/>\n"
@@ -28,7 +28,7 @@ msgstr ""
 
 #: picard/album.py:150
 msgid "Unmatched Files"
-msgstr "Nesutampantys failai"
+msgstr "Neatitinkantys failai"
 
 #: picard/album.py:516
 #, python-format
@@ -297,10 +297,8 @@ msgid "Use release relationships"
 msgstr "Naudoti leidinio santykius"
 
 #: picard/profile.py:72 picard/ui/ui_options_metadata.py:137
-#, fuzzy
-#| msgid "Use release relationships"
 msgid "Use track and release relationships"
-msgstr "Naudoti leidinio santykius"
+msgstr "Naudoti takelio ir leidinio santykius"
 
 #: picard/profile.py:73 picard/ui/ui_options_metadata.py:139
 msgid "Guess track number and title from filename if empty"
@@ -567,7 +565,7 @@ msgstr "Naudotojo sąsaja"
 
 #: picard/profile.py:186 picard/ui/ui_options_interface.py:119
 msgid "Show text labels under icons"
-msgstr ""
+msgstr "Rodyti teksto antraštes po piktogramomis"
 
 #: picard/profile.py:187 picard/ui/ui_options_interface.py:120
 msgid "Show icons in menus"
@@ -727,7 +725,7 @@ msgstr "Minimalus klasterio peržiūros panašumas"
 
 #: picard/profile.py:254
 msgid "Minimal similarity for matching files to tracks"
-msgstr ""
+msgstr "Minimalus panašumas failų atitikimui su takeliais"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -845,7 +843,7 @@ msgstr "AcoustID peržiūra negrąžino jokio rezultato failui „%(filename)s�
 #: picard/acoustid/__init__.py:187
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' …"
-msgstr ""
+msgstr "Ieškoma failo „%(filename)s“ atspaudų …"
 
 #: picard/acoustid/manager.py:184
 msgid ""
@@ -1086,6 +1084,10 @@ msgid ""
 "Replaces occurrences of `search` in `text` with value of `replace` and "
 "returns the resulting string."
 msgstr ""
+"`$replace(tekstas,ieškoti,pakeisti)`\n"
+"\n"
+"Pakeičia `ieškoti` pasikartojimus `tekstas` reikšme `pakeisti` ir grąžina "
+"gautą eilutę."
 
 #: picard/script/functions.py:295
 #, python-format
@@ -2007,7 +2009,7 @@ msgstr "Klaida eksportuojant failą „%(filename)s“: %(error)s."
 
 #: picard/script/serializer.py:209
 msgid "Export Script File"
-msgstr "Eksportuoti skripo failą"
+msgstr "Eksportuoti skripto failą"
 
 #: picard/script/serializer.py:231
 msgid "Export Script"
@@ -2060,15 +2062,15 @@ msgstr ""
 
 #: picard/script/serializer.py:340 picard/ui/options/scripting.py:191
 msgid "Unnamed Script"
-msgstr ""
+msgstr "Nepavadintas skriptas"
 
 #: picard/script/serializer.py:351 picard/ui/options/scripting.py:133
 msgid "Picard script files"
-msgstr ""
+msgstr "Picard skriptų failai"
 
 #: picard/script/serializer.py:352
 msgid "Picard script package"
-msgstr ""
+msgstr "Picard skripto paketas"
 
 #: picard/ui/aboutdialog.py:74
 msgid "translator-credits"
@@ -2080,7 +2082,7 @@ msgstr ""
 #: picard/ui/aboutdialog.py:77
 #, python-format
 msgid "<br/>Translated to LANG by %s"
-msgstr ""
+msgstr "<br/>Į lietuvių kalbą išvertė %s"
 
 #: picard/ui/aboutdialog.py:80
 msgid ""
@@ -2092,19 +2094,26 @@ msgid ""
 "a>, <a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> "
 "from <a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
 msgstr ""
+"Piktogramus sukūrė Sambhav Kothari <sambhavs.email@gmail.com> ir <a href="
+"\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a href="
+"\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a href="
+"\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, <a "
+"href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</a>, "
+"<a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> iš <a "
+"href=\"https://www.flaticon.com\">www.flaticon.com</a>"
 
 #: picard/ui/aboutdialog.py:101
 #, python-format
 msgid "Version %(version)s"
-msgstr ""
+msgstr "Versija %(version)s"
 
 #: picard/ui/aboutdialog.py:103
 msgid "Supported formats"
-msgstr ""
+msgstr "Palaikomieji formatai"
 
 #: picard/ui/aboutdialog.py:105
 msgid "Please donate"
-msgstr ""
+msgstr "Paaukok"
 
 #: picard/ui/aboutdialog.py:106
 msgid ""
@@ -2113,40 +2122,44 @@ msgid ""
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running."
 msgstr ""
+"Ačiū, kad naudoji Picard. Picard remiasi MusicBrainz duomenų baze, kurią "
+"valdo MetaBrainz fondas, padedant tūkstančiams savanorių. Jei tau patinka ši "
+"programėlė, apsvarstyk galimybę paaukoti MetaBrainz Fondui, kad ši paslauga "
+"veiktų toliau."
 
 #: picard/ui/aboutdialog.py:109
 msgid "Donate now!"
-msgstr ""
+msgstr "Aukoti dabar!"
 
 #: picard/ui/aboutdialog.py:110
 msgid "Credits"
-msgstr ""
+msgstr "Padėkos"
 
 #: picard/ui/aboutdialog.py:111
 #, python-format
 msgid "Copyright © %(copyright_years)s %(authors_credits)s and others"
-msgstr ""
+msgstr "Autorinės teisės © %(copyright_years)s %(authors_credits)s ir kiti"
 
 #: picard/ui/aboutdialog.py:113
 msgid "Official website"
-msgstr ""
+msgstr "Oficialioji svetainė"
 
 #: picard/ui/caa_types_selector.py:174
 msgid "Cover art types"
-msgstr ""
+msgstr "Viršelio tipai"
 
 #: picard/ui/caa_types_selector.py:194
 msgid ""
 "Please select the contents of the image type 'Include' and 'Exclude' lists."
-msgstr ""
+msgstr "Pasirink vaizdo tipo sąrašų Įtraukti ir Neįtraukti turinius."
 
 #: picard/ui/caa_types_selector.py:215
 msgid "Include types list"
-msgstr ""
+msgstr "Įtraukti tipų sąrašas"
 
 #: picard/ui/caa_types_selector.py:229
 msgid "Exclude types list"
-msgstr ""
+msgstr "Neįtraukti tipų sąrašas"
 
 #: picard/ui/caa_types_selector.py:237
 msgid ""
@@ -2164,20 +2177,20 @@ msgstr ""
 
 #: picard/ui/caa_types_selector.py:258
 msgid "I&nclude all"
-msgstr "Į&ntraukti visus"
+msgstr "Į&traukti visus"
 
 #: picard/ui/caa_types_selector.py:259
 msgid "E&xclude all"
-msgstr ""
+msgstr "Neį&traukti visus"
 
 #: picard/ui/caa_types_selector.py:260
 msgid "C&lear all"
-msgstr ""
+msgstr "Iš&valyti visus"
 
 #: picard/ui/caa_types_selector.py:261 picard/ui/options/dialog.py:131
 #: picard/ui/options/renaming_compat.py:189
 msgid "Restore &Defaults"
-msgstr ""
+msgstr "Atkurti &num. tys. nustys."
 
 #: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:166
 #: picard/ui/mainwindow.py:1154 picard/util/tags.py:40
@@ -2256,31 +2269,31 @@ msgstr ""
 
 #: picard/ui/colors.py:44
 msgid "Tag added"
-msgstr ""
+msgstr "Pridėta žymė"
 
 #: picard/ui/colors.py:45
 msgid "Tag changed"
-msgstr ""
+msgstr "Žymė pasikeitė"
 
 #: picard/ui/colors.py:46
 msgid "Tag removed"
-msgstr ""
+msgstr "Žymė pašalinta"
 
 #: picard/ui/coverartbox.py:331
 msgid "View release on MusicBrainz"
-msgstr ""
+msgstr "Peržiūrėti leidinį MusicBrainz"
 
 #: picard/ui/coverartbox.py:337
 msgid "Common images on all tracks"
-msgstr ""
+msgstr "Bendri vaizdai visuose takeliuose"
 
 #: picard/ui/coverartbox.py:339
 msgid "Tracks contain different images"
-msgstr ""
+msgstr "Takeliuose yra skirtingų vaizdų"
 
 #: picard/ui/coverartbox.py:395
 msgid "Show more details"
-msgstr ""
+msgstr "Rodyti daugiau informacijos"
 
 #: picard/ui/coverartbox.py:432
 msgid "New Cover Art"
@@ -2308,7 +2321,7 @@ msgstr ""
 
 #: picard/ui/coverartbox.py:653
 msgid "Replace front cover art"
-msgstr ""
+msgstr "Pakeisti priekinį viršelį"
 
 #: picard/ui/coverartbox.py:662
 msgid "Append front cover art"
@@ -2340,17 +2353,17 @@ msgstr ""
 
 #: picard/ui/infodialog.py:105
 msgid "Existing Cover"
-msgstr ""
+msgstr "Esamas viršelis"
 
 #: picard/ui/infodialog.py:105 picard/ui/infodialog.py:110
 #: picard/ui/searchdialog/album.py:162 picard/ui/searchdialog/artist.py:55
 #: picard/ui/searchdialog/track.py:75
 msgid "Type"
-msgstr ""
+msgstr "Tipas"
 
 #: picard/ui/infodialog.py:106
 msgid "New Cover"
-msgstr ""
+msgstr "Naujas viršelis"
 
 #: picard/ui/infodialog.py:110 picard/ui/itemviews.py:178
 #: picard/ui/searchdialog/album.py:164
@@ -2425,16 +2438,16 @@ msgstr "Albumas:"
 
 #: picard/ui/infodialog.py:317
 msgid "Artist:"
-msgstr "Artistas:"
+msgstr "Atlikėjas (-a):"
 
 #: picard/ui/infodialog.py:347
 #, python-format
 msgid "Disc %d"
-msgstr ""
+msgstr "%d diskas"
 
 #: picard/ui/infodialog.py:349
 msgid "Tracklist:"
-msgstr ""
+msgstr "Takelių sąrašas:"
 
 #: picard/ui/infodialog.py:377
 msgid "Album Info"
@@ -2607,29 +2620,28 @@ msgstr ""
 
 #: picard/ui/itemviews.py:546
 msgid "Loading…"
-msgstr "Kraunam…"
+msgstr "Kraunama…"
 
 #: picard/ui/itemviews.py:548
 msgid "Show &more details…"
-msgstr ""
+msgstr "Rodyti &daugiau informacijos…"
 
 #: picard/ui/itemviews.py:601
 #, python-format
 msgid "&Other versions (%d)"
-msgstr ""
+msgstr "&Kitos versijos (%d)"
 
 #: picard/ui/itemviews.py:627
-#, fuzzy
 msgid "Collections"
 msgstr "Kolekcijos"
 
 #: picard/ui/itemviews.py:635
 msgid "P&lugins"
-msgstr ""
+msgstr "Į&skiepiai"
 
 #: picard/ui/itemviews.py:651
 msgid "&Run scripts"
-msgstr ""
+msgstr "&Paleisti skriptus"
 
 #: picard/ui/itemviews.py:851
 msgid "file view"
@@ -2674,6 +2686,8 @@ msgstr ""
 #: picard/ui/itemviews.py:1123
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
 msgstr ""
+"Apdorojimo klaida (-os): žiūrėk dialogo lango Takelio informacija kortelę "
+"Klaidos."
 
 #: picard/ui/itemviews.py:1151
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
@@ -3631,7 +3645,7 @@ msgstr ""
 
 #: picard/ui/options/dialog.py:135 picard/ui/scripteditor.py:464
 msgid "Make It So!"
-msgstr ""
+msgstr "Padaryti taip!"
 
 #: picard/ui/scripteditor.py:536
 msgid "&Import a script file"
@@ -4807,7 +4821,7 @@ msgstr ""
 
 #: picard/ui/options/dialog.py:436
 msgid "Warning! This will reset all of your settings."
-msgstr ""
+msgstr "Įspėjimas! Taip iš naujo nustatys visus tavo nustatymus."
 
 #: picard/ui/options/dialog.py:443
 msgid "Confirm Reset"
@@ -5056,6 +5070,25 @@ msgid ""
 "by checking the box next to the setting. When you choose \"Make It So!\" to "
 "save your option settings, the selected items will be removed."
 msgstr ""
+"Tai leidžia iš konfigūracijos INI failo pašalinti nenaudojamus parinkčių "
+"nustatymus.\n"
+"\n"
+"Nustatymai, kurie yra konfigūracijos faile ir kurių nėra nė viename "
+"parinkčių nustatymų puslapyje, bus išvardyti toliau. Jei konfigūracijos "
+"faile nėra nenaudojamų parinkčių nustatymų, sąrašas bus tuščias, o "
+"pašalinimo žymimasis langelis bus išjungtas.\n"
+"\n"
+"Atkreipk dėmesį, kad nenaudojami parinkčių nustatymai gali būti iš pašalintų "
+"įskiepių, todėl būk atsargus (-i) ir nepašalink nustatymų, kuriuos galbūt "
+"norėsi naudoti vėliau, kai įskiepis bus iš naujo įdiegtas. Parinktys, "
+"priklausančios įskiepiams, kurie yra įdiegti, bet šiuo metu išjungti, nebus "
+"išvardytos, kad jas būtų galima pašalinti.\n"
+"\n"
+"Norėdamas (-a) pašalinti vieną ar daugiau nustatymų, pirmiausia įjunk "
+"pašalinimą pažymėdamas (-a) langelį „Pašalinti pasirinktas parinktis“. Tada "
+"gali pasirinkti nustatymus, kuriuos nori pašalinti, pažymėdamas (-a) šalia "
+"nustatymų esantį langelį. Pasirinkus (-usi) „ Padaryti taip!“, kad "
+"išsaugotum parinkčių nustatymus, pasirinktos parinktys bus pašalintos."
 
 #: picard/ui/options/maintenance.py:93
 msgid "Value"
