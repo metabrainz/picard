@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-10-26 15:40+0200\n"
-"PO-Revision-Date: 2023-11-10 18:27+0000\n"
+"PO-Revision-Date: 2023-11-12 20:27+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/app/lt/>\n"
@@ -2123,8 +2123,8 @@ msgid ""
 "MetaBrainz Foundation to keep the service running."
 msgstr ""
 "Ačiū, kad naudoji Picard. Picard remiasi MusicBrainz duomenų baze, kurią "
-"valdo MetaBrainz fondas, padedant tūkstančiams savanorių. Jei tau patinka ši "
-"programėlė, apsvarstyk galimybę paaukoti MetaBrainz Fondui, kad ši paslauga "
+"valdo MetaBrainz Fondas, padedant tūkstančiams savanorių. Jei tau patinka ši "
+"programa, apsvarstyk galimybę paaukoti MetaBrainz Fondui, kad ši paslauga "
 "veiktų toliau."
 
 #: picard/ui/aboutdialog.py:109
@@ -2612,7 +2612,7 @@ msgstr ""
 
 #: picard/ui/itemviews.py:462
 msgid "Ctrl+A"
-msgstr ""
+msgstr "Ctrl+A"
 
 #: picard/ui/itemviews.py:543
 msgid "&Other versions"
@@ -2894,7 +2894,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:576
 msgid "Ctrl+E"
-msgstr ""
+msgstr "Ctrl+E"
 
 #: picard/ui/mainwindow.py:583
 msgid "Close Window"
@@ -2902,7 +2902,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:584
 msgid "Ctrl+W"
-msgstr ""
+msgstr "Ctrl+W"
 
 #: picard/ui/mainwindow.py:592
 msgid "&Save"
@@ -2926,7 +2926,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:613
 msgid "Ctrl+Q"
-msgstr ""
+msgstr "Ctrl+Q"
 
 #: picard/ui/mainwindow.py:619
 msgid "&Remove"
@@ -2946,7 +2946,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:631
 msgid "Ctrl+Shift+L"
-msgstr ""
+msgstr "Ctrl+Shift+L"
 
 #: picard/ui/mainwindow.py:638
 msgid "Submit cluster as release…"
@@ -2988,7 +2988,7 @@ msgstr ""
 #: picard/ui/mainwindow.py:674 picard/ui/mainwindow.py:683
 #: picard/ui/mainwindow.py:692
 msgid "Ctrl+T"
-msgstr ""
+msgstr "Ctrl+T"
 
 #: picard/ui/mainwindow.py:680
 msgid "Search for similar albums…"
@@ -3012,7 +3012,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:699
 msgid "Ctrl+Shift+O"
-msgstr ""
+msgstr "Ctrl+Shift+O"
 
 #: picard/ui/mainwindow.py:706
 msgid "File &Browser"
@@ -3020,7 +3020,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:710
 msgid "Ctrl+B"
-msgstr ""
+msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:717
 msgid "&Metadata"
@@ -3028,7 +3028,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:721
 msgid "Ctrl+Shift+M"
-msgstr ""
+msgstr "Ctrl+Shift+M"
 
 #: picard/ui/mainwindow.py:728
 #, fuzzy
@@ -3055,7 +3055,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:758
 msgid "Ctrl+K"
-msgstr ""
+msgstr "Ctrl+K"
 
 #: picard/ui/mainwindow.py:775
 msgid "&Scan"
@@ -3073,7 +3073,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:780
 msgid "Ctrl+Y"
-msgstr ""
+msgstr "Ctrl+Y"
 
 #: picard/ui/mainwindow.py:786
 msgid "&Generate AcoustID Fingerprints"
@@ -3095,7 +3095,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:791
 msgid "Ctrl+Shift+Y"
-msgstr ""
+msgstr "Ctrl+Shift+Y"
 
 #: picard/ui/mainwindow.py:797
 msgid "Cl&uster"
@@ -3107,7 +3107,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:801
 msgid "Ctrl+U"
-msgstr ""
+msgstr "Ctrl+U"
 
 #: picard/ui/mainwindow.py:807
 msgid "&Lookup"
@@ -3119,7 +3119,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:813
 msgid "Ctrl+L"
-msgstr ""
+msgstr "Ctrl+L"
 
 #: picard/ui/mainwindow.py:819
 msgid "&Info…"
@@ -3127,7 +3127,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:822
 msgid "Ctrl+I"
-msgstr ""
+msgstr "Ctrl+I"
 
 #: picard/ui/mainwindow.py:828
 msgid "&Refresh"
@@ -3135,7 +3135,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:829
 msgid "Ctrl+R"
-msgstr ""
+msgstr "Ctrl+R"
 
 #: picard/ui/mainwindow.py:836
 msgid "&Rename Files"
@@ -3163,7 +3163,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:865 picard/ui/widgets/scripttextedit.py:341
 msgid "Ctrl+Shift+T"
-msgstr ""
+msgstr "Ctrl+Shift+T"
 
 #: picard/ui/mainwindow.py:873
 msgid "&Open My Collections in Browser"
@@ -3175,7 +3175,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:882
 msgid "Ctrl+G"
-msgstr ""
+msgstr "Ctrl+G"
 
 #: picard/ui/mainwindow.py:888
 msgid "View Activity &History"
@@ -3183,11 +3183,11 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:891
 msgid "Ctrl+Shift+H"
-msgstr ""
+msgstr "Ctrl+Shift+H"
 
 #: picard/ui/mainwindow.py:891 picard/ui/scripteditor.py:608
 msgid "Ctrl+H"
-msgstr ""
+msgstr "Ctrl+H"
 
 #: picard/ui/mainwindow.py:897
 msgid "Open in &Player"
@@ -3401,11 +3401,11 @@ msgstr ""
 
 #: picard/ui/metadatabox.py:379
 msgid "Add to 'Preserve Tags' List"
-msgstr ""
+msgstr "Pridėti į Išlaikyti žymas sąrašą"
 
 #: picard/ui/metadatabox.py:384
 msgid "Remove from 'Preserve Tags' List"
-msgstr ""
+msgstr "Pašalinti iš Išlaikyti žymas sąrašo"
 
 #: picard/ui/metadatabox.py:432
 msgid "Use Original Value"
@@ -4510,15 +4510,15 @@ msgstr ""
 
 #: picard/ui/ui_options_script.py:127
 msgid "Remove tagger script"
-msgstr ""
+msgstr "Pašalinti žymeklio skriptą"
 
 #: picard/ui/ui_options_script.py:128
 msgid "Import"
-msgstr ""
+msgstr "Importuoti"
 
 #: picard/ui/ui_options_script.py:129
 msgid "Export"
-msgstr ""
+msgstr "Eksportuoti"
 
 #: picard/ui/ui_options_script.py:130
 msgid "Documentation"
@@ -4526,16 +4526,18 @@ msgstr "Dokumentacija"
 
 #: picard/ui/ui_options_tags.py:71
 msgid "Write tags to files"
-msgstr ""
+msgstr "Įrašyti žymas į failus"
 
 #: picard/ui/ui_options_tags.py:73
 msgid "Before Tagging"
-msgstr ""
+msgstr "Prieš žymint"
 
 #: picard/ui/ui_options_tags.py:79
 msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz data:"
 msgstr ""
+"Išlaikyti šias žymas, kad jos nebūtų ištrintos arba perrašytos MusicBrainz "
+"duomenimis:"
 
 #: picard/ui/ui_options_tags_compatibility_aac.py:45
 msgid "AAC files"
@@ -4923,6 +4925,16 @@ msgid ""
 "</p>\n"
 "</body></html>"
 msgstr ""
+"<html><head/><body>\n"
+"<p>Gali pridėti žanrų, pagal kuriuos testuojami filtrai, po vieną "
+"kiekvienoje eilutėje.<br/>\n"
+"Ši žaidimų aikštelė nebus išlaikyta Parinkčių išėjime.\n"
+"</p>\n"
+"<p>\n"
+"Raudonas fonas reiškia, kad žyma bus praleista.<br/>\n"
+"Žalias fonas reiškia, kad žyma bus palikta.\n"
+"</p>\n"
+"</body></html>"
 
 #: picard/ui/options/genres.py:87
 #, fuzzy
@@ -4971,6 +4983,8 @@ msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
 msgstr ""
+"Pakeitei programos temą. Kad pakeitimas veiktų, turi iš naujo paleisti "
+"Picard."
 
 #: picard/ui/options/interface.py:183
 msgid ""
@@ -5501,36 +5515,35 @@ msgstr ""
 
 #: picard/ui/widgets/profilelistwidget.py:45
 msgid "Rename profile"
-msgstr ""
+msgstr "Pervadinti profilį"
 
 #: picard/ui/widgets/profilelistwidget.py:48
 msgid "Remove profile"
-msgstr ""
+msgstr "Pašalinti profilį"
 
 #: picard/ui/widgets/profilelistwidget.py:83
-#, fuzzy
 msgid "Are you sure you want to remove this profile?"
-msgstr "Ar tu esi įsitikinęs kad nori išjungti Picard?"
+msgstr "Ar tikrai nori pašalinti šį profilį?"
 
 #: picard/ui/widgets/scriptdocumentation.py:109
 msgid "Open Scripting Documentation in your browser"
-msgstr ""
+msgstr "Atidaryti skriptavimo dokumentaciją naršyklėje"
 
 #: picard/ui/widgets/scriptlistwidget.py:54
 msgid "Rename script"
-msgstr ""
+msgstr "Pervardyti skriptą"
 
 #: picard/ui/widgets/scriptlistwidget.py:57
 msgid "Remove script"
-msgstr ""
+msgstr "Pašalinti skriptą"
 
 #: picard/ui/widgets/scriptlistwidget.py:89
 msgid "Are you sure you want to remove this script?"
-msgstr ""
+msgstr "Ar tikrai nori pašalinti šį skriptą?"
 
 #: picard/ui/widgets/scripttextedit.py:329
 msgid "&Word wrap script"
-msgstr ""
+msgstr "&Žodžio skaidymas į eilutes skriptas"
 
 #: picard/ui/widgets/scripttextedit.py:330
 msgid "Word wrap long lines in the editor"
@@ -5542,91 +5555,96 @@ msgstr "Ctrl+Shift+W"
 
 #: picard/ui/widgets/scripttextedit.py:338
 msgid "Show help &tooltips"
-msgstr ""
+msgstr "Rodyti pagalbos &mygtuko etiketes"
 
 #: picard/ui/widgets/scripttextedit.py:339
 msgid "Show tooltips for script elements"
-msgstr ""
+msgstr "Rodyti mygtuko etiketes skripto elementams"
 
 #: picard/ui/widgets/tristatesortheaderview.py:54
 msgid ""
 "The table is locked. To enable sorting and column resizing\n"
 "unlock the table in the table header's context menu."
 msgstr ""
+"Lentelė užrakinta. Norėdamas (-a) įjungti rūšiavimą ir stulpelių dydžio "
+"keitimą,\n"
+" atrakink lentelę lentelių antraštėje esančiame kontekstiniame meniu."
 
 #: picard/util/__init__.py:377
 msgid "No Title"
-msgstr ""
+msgstr "Nėra pavadinimo"
 
 #: picard/util/bytes2human.py:37
 #, python-format
 msgid "%(value)s B"
-msgstr ""
+msgstr "%(value)s B"
 
 #: picard/util/bytes2human.py:38
 #, python-format
 msgid "%(value)s kB"
-msgstr ""
+msgstr "%(value)s kB"
 
 #: picard/util/bytes2human.py:39
 #, python-format
 msgid "%(value)s KiB"
-msgstr ""
+msgstr "%(value)s KiB"
 
 #: picard/util/bytes2human.py:40
 #, python-format
 msgid "%(value)s MB"
-msgstr ""
+msgstr "%(value)s MB"
 
 #: picard/util/bytes2human.py:41
 #, python-format
 msgid "%(value)s MiB"
-msgstr ""
+msgstr "%(value)s MiB"
 
 #: picard/util/bytes2human.py:42
 #, python-format
 msgid "%(value)s GB"
-msgstr ""
+msgstr "%(value)s GB"
 
 #: picard/util/bytes2human.py:43
 #, python-format
 msgid "%(value)s GiB"
-msgstr ""
+msgstr "%(value)s GiB"
 
 #: picard/util/bytes2human.py:44
 #, python-format
 msgid "%(value)s TB"
-msgstr ""
+msgstr "%(value)s TB"
 
 #: picard/util/bytes2human.py:45
 #, python-format
 msgid "%(value)s TiB"
-msgstr ""
+msgstr "%(value)s TiB"
 
 #: picard/util/bytes2human.py:46
 #, python-format
 msgid "%(value)s PB"
-msgstr ""
+msgstr "%(value)s PB"
 
 #: picard/util/bytes2human.py:47
 #, python-format
 msgid "%(value)s PiB"
-msgstr ""
+msgstr "%(value)s PiB"
 
 #: picard/util/checkupdate.py:101
 msgid "Error loading Picard releases list: {error_message}"
-msgstr ""
+msgstr "Klaida kraunant Picard leidinių sąrašą: {error_message}."
 
 #: picard/util/checkupdate.py:105 picard/util/checkupdate.py:139
 #: picard/util/checkupdate.py:159
 msgid "Picard Update"
-msgstr ""
+msgstr "Picard atnaujinimas"
 
 #: picard/util/checkupdate.py:106
 msgid ""
 "Unable to retrieve the latest version information from the website.\n"
 "({url})"
 msgstr ""
+"Nepavyksta iš svetainės gauti naujausios versijos informacijos\n"
+"({url})."
 
 #: picard/util/checkupdate.py:140
 msgid ""
@@ -5637,10 +5655,16 @@ msgid ""
 "\n"
 "Would you like to download the new version?"
 msgstr ""
+"Yra nauja Picard versija.\n"
+"\n"
+"Ši versija: {picard_old_version}\n"
+"Nauja versija: {picard_new_version}\n"
+"\n"
+"Ar nori atsisiųsti naująją versiją?"
 
 #: picard/util/checkupdate.py:156
 msgid "unknown"
-msgstr ""
+msgstr "nežinoma"
 
 #: picard/util/checkupdate.py:160
 msgid ""
@@ -5649,148 +5673,150 @@ msgid ""
 "\n"
 "Your version: {picard_old_version}\n"
 msgstr ""
+"Šiuo metu nėra jokio atnaujinimo tavo prenumeruojamam naujinimo lygiui: "
+"{update_level}\n"
+"\n"
+"Tavo versija: {picard_old_version}\n"
 
 #: picard/util/tags.py:36
 msgid "AcoustID Fingerprint"
-msgstr ""
+msgstr "AcoustID atspaudas"
 
 #: picard/util/tags.py:37
 msgid "AcoustID"
-msgstr ""
+msgstr "AcoustID"
 
 #: picard/util/tags.py:39
 msgid "Album Artist Sort Order"
-msgstr ""
+msgstr "Albumo atlikėjo rūšiavimo tvarka"
 
 #: picard/util/tags.py:41
 msgid "Album Sort Order"
-msgstr ""
+msgstr "Albumo rūšiavimo tvarka"
 
 #: picard/util/tags.py:42
 msgid "Arranger"
-msgstr ""
+msgstr "Aranžuotojas (-a)"
 
 #: picard/util/tags.py:44
 msgid "Artists"
-msgstr ""
+msgstr "Atlikėjai"
 
 #: picard/util/tags.py:45
 msgid "Artist Sort Order"
-msgstr ""
+msgstr "Atlikėjo rūšiavimo tvarka"
 
 #: picard/util/tags.py:46
-#, fuzzy
 msgid "ASIN"
 msgstr "ASIN"
 
 #: picard/util/tags.py:48
 msgid "BPM"
-msgstr ""
+msgstr "BPM"
 
 #: picard/util/tags.py:49
 msgid "Catalog Number"
-msgstr ""
+msgstr "Katalogo numeris"
 
 #: picard/util/tags.py:50
 msgid "Comment"
-msgstr ""
+msgstr "Komentaras"
 
 #: picard/util/tags.py:51
 msgid "Compilation (iTunes)"
-msgstr ""
+msgstr "Rinkinys (iTunes)"
 
 #: picard/util/tags.py:53
 msgid "Composer Sort Order"
-msgstr ""
+msgstr "Kompozitorių rūšiavimo tvarka"
 
 #: picard/util/tags.py:54
 msgid "Conductor"
-msgstr ""
+msgstr "Dirigentas (-ė)"
 
 #: picard/util/tags.py:55
 msgid "Copyright"
-msgstr ""
+msgstr "Autorinės teisės"
 
 #: picard/util/tags.py:57
 msgid "Director"
-msgstr ""
+msgstr "Režisierius (-ė)"
 
 #: picard/util/tags.py:58
 msgid "Disc Id"
-msgstr ""
+msgstr "Disko ID"
 
 #: picard/util/tags.py:59
 msgid "Disc Number"
-msgstr ""
+msgstr "Disko numeris"
 
 #: picard/util/tags.py:61
 msgid "DJ-Mixer"
-msgstr ""
+msgstr "DJ mikseris (-ė)"
 
 #: picard/util/tags.py:62
 msgid "Encoded By"
-msgstr ""
+msgstr "Užkoduota pagal"
 
 #: picard/util/tags.py:63
 msgid "Encoder Settings"
-msgstr ""
+msgstr "Koderio nustatymai"
 
 #: picard/util/tags.py:64
 msgid "Engineer"
-msgstr ""
+msgstr "Inžinierius (-ė)"
 
 #: picard/util/tags.py:65
 msgid "Gapless Playback"
-msgstr ""
+msgstr "Be tarpų grojimas"
 
 #: picard/util/tags.py:67
 msgid "Grouping"
-msgstr ""
+msgstr "Grupavimas"
 
 #: picard/util/tags.py:68
-#, fuzzy
 msgid "ISRC"
-msgstr "TSĮK"
+msgstr "ISRC"
 
 #: picard/util/tags.py:69
 msgid "Key"
-msgstr ""
+msgstr "Klavišas"
 
 #: picard/util/tags.py:70
 msgid "Record Label"
-msgstr ""
+msgstr "Įrašų leidykla"
 
 #: picard/util/tags.py:74
 msgid "Lyricist"
-msgstr ""
+msgstr "Dainų tekstų autorius (-ė)"
 
 #: picard/util/tags.py:75
 msgid "Lyrics"
-msgstr ""
+msgstr "Dainų tekstai"
 
 #: picard/util/tags.py:77
 msgid "Mixer"
-msgstr ""
+msgstr "Suvedėjas (-a)"
 
 #: picard/util/tags.py:78
 msgid "Mood"
-msgstr ""
+msgstr "Nuotaika"
 
 #: picard/util/tags.py:79
 msgid "Movement"
-msgstr ""
+msgstr "Judesys"
 
 #: picard/util/tags.py:80
 msgid "Movement Number"
-msgstr ""
+msgstr "Judesio numeris"
 
 #: picard/util/tags.py:81
 msgid "Movement Count"
-msgstr ""
+msgstr "Judesio skaičius"
 
 #: picard/util/tags.py:82
 msgid "MusicBrainz Release Artist Id"
-msgstr ""
+msgstr "MusicBrainz leidinio atlikėjas (-a) ID"
 
 #: picard/util/tags.py:83
 msgid "MusicBrainz Release Id"
@@ -5826,48 +5852,47 @@ msgstr ""
 
 #: picard/util/tags.py:91
 msgid "MusicBrainz Work Id"
-msgstr ""
+msgstr "MusicBrainz kūrinio ID"
 
 #: picard/util/tags.py:92
 msgid "MusicIP Fingerprint"
-msgstr ""
+msgstr "MusicIP atspaudas"
 
 #: picard/util/tags.py:93
 msgid "MusicIP PUID"
-msgstr ""
+msgstr "MusicIP PUID"
 
 #: picard/util/tags.py:94
 msgid "Original Album"
-msgstr ""
+msgstr "Originalus albumas"
 
 #: picard/util/tags.py:95
 msgid "Original Artist"
-msgstr ""
+msgstr "Originalus atlikėjas (-a)"
 
 #: picard/util/tags.py:97
 msgid "Original Filename"
-msgstr ""
+msgstr "Originalus failo pavadinimas"
 
 #: picard/util/tags.py:98
 msgid "Original Year"
-msgstr ""
+msgstr "Originalūs metai"
 
 #: picard/util/tags.py:99
 msgid "Performer"
 msgstr ""
 
 #: picard/util/tags.py:100
-#, fuzzy
 msgid "Podcast"
 msgstr "Tinklalaidė"
 
 #: picard/util/tags.py:101
 msgid "Podcast URL"
-msgstr ""
+msgstr "Tinklalaidės URL"
 
 #: picard/util/tags.py:102
 msgid "Producer"
-msgstr ""
+msgstr "Prodiuseris (-ė)"
 
 #: picard/util/tags.py:103
 msgid "R128 Album Gain"
@@ -5878,7 +5903,6 @@ msgid "R128 Track Gain"
 msgstr ""
 
 #: picard/util/tags.py:105
-#, fuzzy
 msgid "Rating"
 msgstr "Įvertinimas"
 
@@ -5928,7 +5952,7 @@ msgstr ""
 
 #: picard/util/tags.py:118
 msgid "Script"
-msgstr ""
+msgstr "Raštas"
 
 #: picard/util/tags.py:119
 #, fuzzy
@@ -5969,39 +5993,39 @@ msgstr ""
 
 #: picard/util/tags.py:129
 msgid "Work"
-msgstr ""
+msgstr "Kūrinys"
 
 #: picard/util/tags.py:130
 msgid "Writer"
-msgstr ""
+msgstr "Rašytojas (-a)"
 
 #: picard/util/time.py:48
 #, python-format
 msgid "%(days).2dd %(hours).2dh"
-msgstr ""
+msgstr "%(days).2d d. %(hours).2d val."
 
 #: picard/util/time.py:50
 #, python-format
 msgid "%(hours).2dh %(minutes).2dm"
-msgstr ""
+msgstr "%(hours).2d val. %(minutes).2d min."
 
 #: picard/util/time.py:52
 #, python-format
 msgid "%(minutes).2dm %(seconds).2ds"
-msgstr ""
+msgstr "%(minutes).2d min. %(seconds).2d sek."
 
 #: picard/util/time.py:54
 #, python-format
 msgid "%(seconds).2ds"
-msgstr ""
+msgstr "%(seconds).2d sek."
 
 #: picard/util/versions.py:66
 msgid "is not installed"
-msgstr ""
+msgstr "nėra įdiegta."
 
 #: picard/util/webbrowser2.py:47
 msgid "Web Browser Error"
-msgstr ""
+msgstr "Žiniatinklio naršyklės klaida"
 
 #: picard/util/webbrowser2.py:47
 #, python-format
@@ -6010,6 +6034,9 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"Klaida paleidžiant internetinę naršyklę:\n"
+"\n"
+"%s"
 
 #~ msgid "Use track relationships"
 #~ msgstr "Naudoti takelio santykius"
