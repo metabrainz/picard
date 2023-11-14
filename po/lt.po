@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-10-26 15:40+0200\n"
-"PO-Revision-Date: 2023-11-12 20:27+0000\n"
+"PO-Revision-Date: 2023-11-14 08:27+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/app/lt/>\n"
@@ -370,7 +370,7 @@ msgstr "Siųsti įvertinimus į MusicBrainz"
 
 #: picard/profile.py:104 picard/ui/options/tags.py:47
 msgid "Tags"
-msgstr "Žymos"
+msgstr "Žymės"
 
 #: picard/profile.py:107
 msgid "Don't write tags"
@@ -2552,7 +2552,7 @@ msgstr ""
 
 #: picard/ui/itemviews.py:173 picard/util/tags.py:66
 msgid "Genre"
-msgstr ""
+msgstr "Žanras"
 
 #: picard/ui/itemviews.py:174
 msgid "Fingerprint status"
@@ -2906,7 +2906,7 @@ msgstr "Ctrl+W"
 
 #: picard/ui/mainwindow.py:592
 msgid "&Save"
-msgstr ""
+msgstr "&Išsaugoti"
 
 #: picard/ui/mainwindow.py:593
 msgid "Save selected files"
@@ -2930,7 +2930,7 @@ msgstr "Ctrl+Q"
 
 #: picard/ui/mainwindow.py:619
 msgid "&Remove"
-msgstr ""
+msgstr "&Pašalinti"
 
 #: picard/ui/mainwindow.py:620
 msgid "Remove selected files/albums"
@@ -3031,9 +3031,8 @@ msgid "Ctrl+Shift+M"
 msgstr "Ctrl+Shift+M"
 
 #: picard/ui/mainwindow.py:728
-#, fuzzy
 msgid "&Cover Art"
-msgstr "Viršelio paveikslėlis"
+msgstr "&Viršelis"
 
 #: picard/ui/mainwindow.py:739
 msgid "&Actions"
@@ -3041,9 +3040,8 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:748 picard/ui/mainwindow.py:1143
 #: picard/ui/searchdialog/__init__.py:48
-#, fuzzy
 msgid "Search"
-msgstr "Ieškoti"
+msgstr "Paieška"
 
 #: picard/ui/mainwindow.py:755 picard/ui/mainwindow.py:762
 msgid "Lookup &CD…"
@@ -3252,7 +3250,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:1156
 msgid "Track"
-msgstr ""
+msgstr "&Takelis"
 
 #: picard/ui/mainwindow.py:1173
 msgid "&Advanced search"
@@ -3872,9 +3870,8 @@ msgid "Submit disc ID"
 msgstr ""
 
 #: picard/ui/ui_cdlookup.py:89
-#, fuzzy
 msgid "&Load into Picard"
-msgstr "Įkrauk į Picard"
+msgstr "Į&krauti į Picard"
 
 #: picard/ui/ui_cdlookup.py:90
 msgid "&Submit disc ID"
@@ -3882,7 +3879,7 @@ msgstr ""
 
 #: picard/ui/ui_cdlookup.py:91 picard/ui/util.py:50
 msgid "&Cancel"
-msgstr ""
+msgstr "&Atšaukti"
 
 #: picard/ui/ui_edittagdialog.py:115
 msgid "Edit Tag"
@@ -4140,7 +4137,7 @@ msgstr "Prisijungti"
 
 #: picard/ui/ui_options_general.py:206
 msgid "Log out"
-msgstr ""
+msgstr "Atsijungti"
 
 #: picard/ui/ui_options_general.py:211
 msgid "Update Checking"
@@ -4312,7 +4309,7 @@ msgstr ""
 
 #: picard/ui/ui_options_metadata.py:141
 msgid "Various artists:"
-msgstr ""
+msgstr "Įvairūs atlikėjai:"
 
 #: picard/ui/ui_options_metadata.py:142
 msgid "Standalone recordings:"
@@ -4937,7 +4934,6 @@ msgstr ""
 "</body></html>"
 
 #: picard/ui/options/genres.py:87
-#, fuzzy
 msgid "Genres"
 msgstr "Žanrai"
 
@@ -5046,7 +5042,6 @@ msgid "Lookup in Browser"
 msgstr ""
 
 #: picard/ui/options/interface_toolbar.py:92
-#, fuzzy
 msgid "Save"
 msgstr "Išsaugoti"
 
@@ -5355,7 +5350,7 @@ msgstr ""
 
 #: picard/ui/options/ratings.py:41
 msgid "Ratings"
-msgstr ""
+msgstr "Įvertinimai"
 
 #: picard/ui/options/releases.py:158
 msgid "Preferred Releases"
@@ -5505,7 +5500,6 @@ msgid "Track Search Results"
 msgstr ""
 
 #: picard/ui/searchdialog/track.py:72
-#, fuzzy
 msgid "Release"
 msgstr "Leidinys"
 
