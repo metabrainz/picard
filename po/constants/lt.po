@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-24 09:20+0200\n"
-"PO-Revision-Date: 2023-10-15 15:27+0000\n"
+"PO-Revision-Date: 2023-12-13 18:28+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/constants/lt/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n % 10 == 1 && (n % 100 < 11 || n % 100 > "
 "19)) ? 0 : ((n % 10 >= 2 && n % 10 <= 9 && (n % 100 < 11 || n % 100 > 19)) ? "
 "1 : 2);\n"
-"X-Generator: Weblate 5.0.2\n"
+"X-Generator: Weblate 5.2.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:169
@@ -167,55 +167,55 @@ msgstr "Lenkų k."
 
 #: picard/const/languages.py:69 picard/const/locales.py:779
 msgid "Portuguese"
-msgstr ""
+msgstr "Portugalų k."
 
 #: picard/const/languages.py:70 picard/const/locales.py:781
 msgid "Portuguese (Brazil)"
-msgstr ""
+msgstr "Portugalų k. (Brazilija)"
 
 #: picard/const/languages.py:71 picard/const/locales.py:810
 msgid "Romanian"
-msgstr ""
+msgstr "Rumunų k."
 
 #: picard/const/languages.py:72 picard/const/locales.py:815
 msgid "Russian"
-msgstr ""
+msgstr "Rusų k."
 
 #: picard/const/languages.py:74 picard/const/locales.py:873
 msgid "Slovak"
-msgstr ""
+msgstr "Slovakų k."
 
 #: picard/const/languages.py:75 picard/const/locales.py:875
 msgid "Slovenian"
-msgstr ""
+msgstr "Slovėnų k."
 
 #: picard/const/languages.py:76 picard/const/locales.py:894
 msgid "Albanian"
-msgstr ""
+msgstr "Albanų k."
 
 #: picard/const/languages.py:78 picard/const/locales.py:920
 msgid "Swedish"
-msgstr "Švedų kalba"
+msgstr "Švedų k."
 
 #: picard/const/languages.py:80 picard/const/locales.py:966
 msgid "Turkish"
-msgstr ""
+msgstr "Turkų k."
 
 #: picard/const/languages.py:81 picard/const/locales.py:983
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrainiečių k."
 
 #: picard/const/languages.py:82
 msgid "Chinese (China)"
-msgstr ""
+msgstr "Kinų k. (Kinija)"
 
 #: picard/const/languages.py:83
 msgid "Chinese (Taiwan)"
-msgstr ""
+msgstr "Kinų k. (Taivanas)"
 
 #: picard/const/locales.py:27
 msgid "Afar"
-msgstr ""
+msgstr "Afarų k."
 
 #: picard/const/locales.py:28
 msgid "Afar (Djibouti)"
