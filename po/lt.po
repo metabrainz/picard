@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-10-26 15:40+0200\n"
-"PO-Revision-Date: 2023-11-14 08:27+0000\n"
+"PO-Revision-Date: 2023-12-08 08:28+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/app/lt/>\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
 " n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.1\n"
+"X-Generator: Weblate 5.2.1\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:150
@@ -3250,7 +3250,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:1156
 msgid "Track"
-msgstr "&Takelis"
+msgstr "Takelis"
 
 #: picard/ui/mainwindow.py:1173
 msgid "&Advanced search"
@@ -4131,7 +4131,6 @@ msgid "Server address:"
 msgstr ""
 
 #: picard/ui/ui_options_general.py:205
-#, fuzzy
 msgid "Log in"
 msgstr "Prisijungti"
 
