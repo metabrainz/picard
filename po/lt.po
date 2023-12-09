@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-10-26 15:40+0200\n"
-"PO-Revision-Date: 2023-12-08 08:28+0000\n"
+"PO-Revision-Date: 2023-12-09 13:28+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/app/lt/>\n"
@@ -2846,7 +2846,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:510
 msgid "Ctrl+Shift+S"
-msgstr ""
+msgstr "Ctrl+Shift+S"
 
 #: picard/ui/mainwindow.py:516
 msgid "&Cut"
@@ -5913,7 +5913,7 @@ msgstr ""
 
 #: picard/util/tags.py:110
 msgid "Remixer"
-msgstr ""
+msgstr "Remiksuotojas"
 
 #: picard/util/tags.py:111
 msgid "ReplayGain Album Gain"
@@ -5970,19 +5970,19 @@ msgstr ""
 
 #: picard/util/tags.py:125
 msgid "Total Discs"
-msgstr ""
+msgstr "Iš viso diskų"
 
 #: picard/util/tags.py:126
 msgid "Total Tracks"
-msgstr ""
+msgstr "Iš viso takelių"
 
 #: picard/util/tags.py:127
 msgid "Track Number"
-msgstr ""
+msgstr "Takelio numeris"
 
 #: picard/util/tags.py:128
 msgid "Artist Website"
-msgstr ""
+msgstr "Atlikėjo svetainė"
 
 #: picard/util/tags.py:129
 msgid "Work"
