@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-10-26 15:40+0200\n"
-"PO-Revision-Date: 2023-12-09 15:28+0000\n"
+"PO-Revision-Date: 2023-12-11 17:28+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/app/lt/>\n"
@@ -3969,44 +3969,45 @@ msgstr ""
 
 #: picard/ui/ui_multi_locale_selector.py:89
 msgid "Remove selected locale"
-msgstr ""
+msgstr "Pašalinti pasirinktą lokalę"
 
 #: picard/ui/ui_multi_locale_selector.py:90
 msgid "Move selected locale down"
-msgstr ""
+msgstr "Perkelti pasirinktą lokalę žemyn"
 
 #: picard/ui/ui_multi_locale_selector.py:91
 msgid "Available Locales"
-msgstr ""
+msgstr "Galimos lokalės"
 
 #: picard/ui/ui_options.py:47
 msgid "Options"
-msgstr ""
+msgstr "Parinktys"
 
 #: picard/ui/ui_options_advanced.py:138
 msgid "Advanced options"
-msgstr ""
+msgstr "Išplėstinės parinktys"
 
 #: picard/ui/ui_options_advanced.py:139
 msgid "Ignore file paths matching the following regular expression:"
-msgstr ""
+msgstr "Ignoruoti failų kelius, atitinkančius šią reguliariąją išraišką:"
 
 #: picard/ui/ui_options_advanced.py:141
 msgid "Ignore track duration difference under this number of seconds"
 msgstr ""
+"Ignoruoti takelio trukmės skirtumą, neviršijantį šio sekundžių skaičiaus"
 
 #: picard/ui/ui_options_advanced.py:144
 msgid ""
 "Ignore the following tracks when determining whether a release is complete"
-msgstr ""
+msgstr "Ignoruoti toliau nurodytus takelius nustatant, ar leidinys užbaigtas"
 
 #: picard/ui/ui_options_advanced.py:145
 msgid "Video tracks"
-msgstr ""
+msgstr "Vaizdo įrašų takeliai"
 
 #: picard/ui/ui_options_advanced.py:146
 msgid "Data tracks"
-msgstr ""
+msgstr "Duomenų takeliai"
 
 #: picard/ui/ui_options_advanced.py:147
 msgid "Pregap tracks"
@@ -4014,23 +4015,23 @@ msgstr ""
 
 #: picard/ui/ui_options_advanced.py:148
 msgid "Silent tracks"
-msgstr ""
+msgstr "Tylūs takeliai"
 
 #: picard/ui/ui_options_advanced.py:149
 msgid "Tags to ignore for comparison:"
-msgstr ""
+msgstr "Žymės, kurias ignoruoti palyginimui:"
 
 #: picard/ui/options/dialog.py:214 picard/ui/ui_options_attached_profiles.py:34
 msgid "Profiles Attached to Options"
-msgstr ""
+msgstr "Profiliai pridėti prie parinktys"
 
 #: picard/ui/ui_options_cdlookup.py:41
 msgid "CD-ROM device to use for lookups:"
-msgstr ""
+msgstr "CD-ROM įrenginys, skirtas naudoti peržiūroms:"
 
 #: picard/ui/ui_options_cdlookup_select.py:48
 msgid "Default CD-ROM drive to use for lookups:"
-msgstr ""
+msgstr "Numatytasis CD-ROM diskas, skirtas naudoti peržiūroms:"
 
 #: picard/ui/ui_options_cover.py:98
 msgid "Use the following file name for images:"
@@ -4997,6 +4998,7 @@ msgid ""
 "You have changed the interface language. You have to restart Picard in order "
 "for the change to take effect."
 msgstr ""
+"Pakeitei sąsajos kalbą. Kad pakeitimas veiktų, turi iš naujo paleisti Picard."
 
 #: picard/ui/options/interface_colors.py:67
 msgid "Choose a color"
@@ -5011,6 +5013,8 @@ msgid ""
 "You have changed the interface colors. You may have to restart Picard in "
 "order for the changes to take effect."
 msgstr ""
+"Pakeitei sąsajos spalvas. Kad pakeitimai veiktų, gali tekti iš naujo "
+"paleisti Picard."
 
 #: picard/ui/options/interface_toolbar.py:60
 msgid "Action Toolbar"
@@ -5058,7 +5062,7 @@ msgstr ""
 
 #: picard/ui/options/interface_toolbar.py:187
 msgid "Drag and Drop to re-order"
-msgstr ""
+msgstr "Nutemti, kad pakeisti tvarką"
 
 #: picard/ui/options/interface_top_tags.py:40
 msgid "Top Tags"
@@ -5721,7 +5725,7 @@ msgstr "Rinkinys (iTunes)"
 
 #: picard/util/tags.py:53
 msgid "Composer Sort Order"
-msgstr "Kompozitorių rūšiavimo tvarka"
+msgstr "Kompozitoriaus (-ės) rūšiavimo tvarka"
 
 #: picard/util/tags.py:54
 msgid "Conductor"
@@ -5813,31 +5817,31 @@ msgstr "MusicBrainz leidinio atlikėjo ID"
 
 #: picard/util/tags.py:83
 msgid "MusicBrainz Release Id"
-msgstr ""
+msgstr "MusicBrainz leidinio ID"
 
 #: picard/util/tags.py:84
 msgid "MusicBrainz Artist Id"
-msgstr ""
+msgstr "MusicBrainz atlikėjo ID"
 
 #: picard/util/tags.py:85
 msgid "MusicBrainz Disc Id"
-msgstr ""
+msgstr "MusicBrainz disko ID"
 
 #: picard/util/tags.py:86
 msgid "MusicBrainz Original Release Id"
-msgstr ""
+msgstr "MusicBrainz originalus leidinio ID"
 
 #: picard/util/tags.py:87
 msgid "MusicBrainz Original Artist Id"
-msgstr ""
+msgstr "MusicBrainz originalus atlikėjo ID"
 
 #: picard/util/tags.py:88
 msgid "MusicBrainz Recording Id"
-msgstr ""
+msgstr "MusicBrainz įrašo ID"
 
 #: picard/util/tags.py:89
 msgid "MusicBrainz Release Group Id"
-msgstr ""
+msgstr "MusicBrainz leidinių grupės ID"
 
 #: picard/util/tags.py:90
 msgid "MusicBrainz Track Id"
@@ -5889,59 +5893,59 @@ msgstr "Prodiuseris (-ė)"
 
 #: picard/util/tags.py:103
 msgid "R128 Album Gain"
-msgstr ""
+msgstr "R128 albumo stiprinimas"
 
 #: picard/util/tags.py:104
 msgid "R128 Track Gain"
-msgstr ""
+msgstr "R128 takelio stiprinimas"
 
 #: picard/util/tags.py:105
 msgid "Rating"
-msgstr "Įvertinimas"
+msgstr "Vertinimas"
 
 #: picard/util/tags.py:106
 msgid "Release Country"
-msgstr ""
+msgstr "Leidinio šalis"
 
 #: picard/util/tags.py:108
 msgid "Release Status"
-msgstr ""
+msgstr "Leidinio būsena"
 
 #: picard/util/tags.py:109
 msgid "Release Type"
-msgstr ""
+msgstr "Leidinio tipas"
 
 #: picard/util/tags.py:110
 msgid "Remixer"
-msgstr "Remiksuotojas"
+msgstr "Remiksuotojas (-a)"
 
 #: picard/util/tags.py:111
 msgid "ReplayGain Album Gain"
-msgstr ""
+msgstr "ReplayGain albumo stiprinimas"
 
 #: picard/util/tags.py:112
 msgid "ReplayGain Album Peak"
-msgstr ""
+msgstr "ReplayGain albumo pikas"
 
 #: picard/util/tags.py:113
 msgid "ReplayGain Album Range"
-msgstr ""
+msgstr "ReplayGain albumo rėžis"
 
 #: picard/util/tags.py:114
 msgid "ReplayGain Reference Loudness"
-msgstr ""
+msgstr "ReplayGain patariamojo garsumas"
 
 #: picard/util/tags.py:115
 msgid "ReplayGain Track Gain"
-msgstr ""
+msgstr "ReplayGain takelio stiprinimas"
 
 #: picard/util/tags.py:116
 msgid "ReplayGain Track Peak"
-msgstr ""
+msgstr "ReplayGain takelio pikas"
 
 #: picard/util/tags.py:117
 msgid "ReplayGain Track Range"
-msgstr ""
+msgstr "ReplayGain takelio rėžis"
 
 #: picard/util/tags.py:118
 msgid "Script"
@@ -5966,7 +5970,7 @@ msgstr ""
 
 #: picard/util/tags.py:124
 msgid "Title Sort Order"
-msgstr ""
+msgstr "Pavadinimo rūšiavimo tvarka"
 
 #: picard/util/tags.py:125
 msgid "Total Discs"
