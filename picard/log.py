@@ -64,10 +64,10 @@ def get_effective_level():
 _feat = namedtuple('_feat', ['name', 'prefix', 'color_key'])
 
 levels_features = OrderedDict([
-    (logging.ERROR,   _feat('Error',   'E', 'log_error')),
-    (logging.WARNING, _feat('Warning', 'W', 'log_warning')),
-    (logging.INFO,    _feat('Info',    'I', 'log_info')),
-    (logging.DEBUG,   _feat('Debug',   'D', 'log_debug')),
+    (logging.ERROR,   _feat(N_('Error'),   'E', 'log_error')),
+    (logging.WARNING, _feat(N_('Warning'), 'W', 'log_warning')),
+    (logging.INFO,    _feat(N_('Info'),    'I', 'log_info')),
+    (logging.DEBUG,   _feat(N_('Debug'),   'D', 'log_debug')),
 ])
 
 
