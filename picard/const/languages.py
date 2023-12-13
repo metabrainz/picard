@@ -59,7 +59,7 @@ UI_LANGUAGES = [
     ('ja', '日本語', N_('Japanese')),
     # ('kn', 'ಕನ್ನಡ', N_('Kannada')),
     ('ko', '한국어', N_('Korean')),
-    # ('lt', 'Lietuvių', N_('Lithuanian')),
+    ('lt', 'Lietuvių', N_('Lithuanian')),
     ('ms_MY', 'Bahasa Melayu (Malaysia)', N_('Malay (Malaysia)')),
     ('nb', 'Norsk bokmål', N_('Norwegian Bokmål')),
     # ('nds', 'Plattdüütsch', N_('Low German')),
