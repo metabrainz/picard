@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-10-26 15:40+0200\n"
-"PO-Revision-Date: 2023-12-11 17:28+0000\n"
+"PO-Revision-Date: 2023-12-13 17:28+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/app/lt/>\n"
@@ -3568,10 +3568,10 @@ msgstr ""
 #: picard/ui/savewarningdialog.py:38
 msgid "overwrite existing metadata (tags) within the file"
 msgid_plural "overwrite existing metadata (tags) within the files"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "perrašymą esamą failo metaduomenis (žymes)"
+msgstr[1] "perrašymą esamus failus metaduomenis (žymes)"
+msgstr[2] "perrašymą esamo failų metaduomenis (žymes)"
+msgstr[3] "perrašymą esamų failų metaduomenis (žymes)"
 
 #: picard/ui/savewarningdialog.py:43
 msgid "rename the file"
@@ -3592,10 +3592,10 @@ msgstr[3] ""
 #: picard/ui/savewarningdialog.py:54
 msgid "You are about to save {file_count:,d} file and this will:"
 msgid_plural "You are about to save {file_count:,d} files and this will:"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Ruošiamasi išsaugoti {file_count:,d} failą ir tai atliks:"
+msgstr[1] "Ruošiamasi išsaugoti {file_count:,d} failus ir tai atliks:"
+msgstr[2] "Ruošiamasi išsaugoti {file_count:,d} failo ir tai atliks:"
+msgstr[3] "Ruošiamasi išsaugoti {file_count:,d} failų ir tai atliks:"
 
 #: picard/ui/savewarningdialog.py:58
 msgid "<strong>This action cannot be undone.</strong> Do you want to continue?"
@@ -3611,7 +3611,7 @@ msgstr "<p>{header}</p><ul>{list_of_actions}</ul><p>{footer}</p>"
 
 #: picard/ui/savewarningdialog.py:64
 msgid "There are no actions selected. No changes will be saved."
-msgstr ""
+msgstr "Nėra pasirinktų veiksmų. Pakeitimai nebus išsaugoti."
 
 #: picard/ui/savewarningdialog.py:66
 msgid "Don't show this warning again."
@@ -3619,7 +3619,7 @@ msgstr ""
 
 #: picard/ui/savewarningdialog.py:72
 msgid "File Save Warning"
-msgstr ""
+msgstr "Failo išsaugojimo įspėjimas"
 
 #: picard/ui/scripteditor.py:145
 msgid "Renaming options are disabled"
@@ -3678,15 +3678,15 @@ msgstr ""
 
 #: picard/ui/scripteditor.py:549
 msgid "Reset all scripts to the saved values"
-msgstr ""
+msgstr "Atkurti visų skriptų išsaugotas reikšmes"
 
 #: picard/ui/scripteditor.py:554
 msgid "&Save and exit"
-msgstr ""
+msgstr "&Išsaugoti ir išeiti"
 
 #: picard/ui/scripteditor.py:555
 msgid "Save changes to the script settings and exit"
-msgstr ""
+msgstr "Išsaugoti skripto nustatymų pakeitimus ir išeiti"
 
 #: picard/ui/scripteditor.py:560
 msgid "E&xit without saving"
@@ -3722,7 +3722,7 @@ msgstr ""
 
 #: picard/ui/scripteditor.py:581
 msgid "Save a copy of the script as a new script"
-msgstr ""
+msgstr "Išsaugoti skriptos kopiją kaip naują skriptą"
 
 #: picard/ui/scripteditor.py:586
 msgid "&Delete the current script"
@@ -3813,10 +3813,13 @@ msgid ""
 "\n"
 "Do you want to overwrite it, add as a copy or cancel?"
 msgstr ""
+"Skriptas pavadinimu „{script_name}“ jau egzistuoja.\n"
+"\n"
+"Ar nori jį perrašyti, pridėti kaip kopiją, ar atšaukti?"
 
 #: picard/ui/scripteditor.py:1236
 msgid "Overwrite"
-msgstr ""
+msgstr "Perrašyti"
 
 #: picard/ui/options/profiles.py:120 picard/ui/scripteditor.py:1238
 msgid "Copy"
@@ -3836,6 +3839,9 @@ msgid ""
 "\n"
 "Do you want to continue and lose these changes?"
 msgstr ""
+"Yra neišsaugotų dabartinių metaduomenų pakeitimų.\n"
+"\n"
+"Ar nori tęsti ir prarasti šiuos pakeitimus?"
 
 #: picard/ui/scriptsmenu.py:62
 #, python-format
@@ -4035,82 +4041,83 @@ msgstr "Numatytasis CD-ROM diskas, skirtas naudoti peržiūroms:"
 
 #: picard/ui/ui_options_cover.py:98
 msgid "Use the following file name for images:"
-msgstr ""
+msgstr "Naudoti toliau nurodytą failo pavadinimą vaizdams:"
 
 #: picard/ui/ui_options_cover.py:99
 msgid "Overwrite the file if it already exists"
-msgstr ""
+msgstr "Perrašyti failą, jei jis jau egzistuoja"
 
 #: picard/ui/ui_options_cover.py:102
 msgid "Cover Art Providers"
-msgstr ""
+msgstr "Viršelio teikėjai"
 
 #: picard/ui/ui_options_cover.py:103
 msgid "Reorder Priority:"
-msgstr ""
+msgstr "Pertvarkymo prioritetas:"
 
 #: picard/ui/ui_options_cover.py:104
 #: picard/ui/ui_options_interface_toolbar.py:77
 msgid "Move selected item up"
-msgstr ""
+msgstr "Pakelti pasirinktą elementą"
 
 #: picard/ui/ui_options_cover.py:105
 #: picard/ui/ui_options_interface_toolbar.py:78
 msgid "Move selected item down"
-msgstr ""
+msgstr "Nuleisti pasirinktą elementą"
 
 #: picard/ui/ui_options_fingerprinting.py:97
+#, fuzzy
 msgid "Audio Fingerprinting"
-msgstr ""
+msgstr "Garso atspaudai"
 
 #: picard/ui/ui_options_fingerprinting.py:98
 msgid "Do not use audio fingerprinting"
-msgstr ""
+msgstr "Nenaudoti garso atspaudų"
 
 #: picard/ui/ui_options_fingerprinting.py:99
 msgid "Use AcoustID"
-msgstr "Naudok AcoustID"
+msgstr "Naudoti AcoustID"
 
 #: picard/ui/ui_options_fingerprinting.py:100
 msgid "AcoustID Settings"
-msgstr "AcoustID Nustatymai"
+msgstr "AcoustID nustatymai"
 
 #: picard/ui/ui_options_fingerprinting.py:101
 msgid "Ignore existing AcoustID fingerprints"
-msgstr ""
+msgstr "Ignoruoti egzistuojančius AcoustID atspaudus"
 
 #: picard/ui/ui_options_fingerprinting.py:102
 msgid "Save AcoustID fingerprints to file tags"
-msgstr ""
+msgstr "Išsaugoti AcoustID atspaudus į failo žymes"
 
 #: picard/ui/ui_options_fingerprinting.py:103
 msgid "Maximum threads to use for calculator:"
-msgstr ""
+msgstr "Maksimalus loginiai procesoriai naudoti skaičiuotuvui:"
 
 #: picard/ui/ui_options_fingerprinting.py:104
 msgid "Fingerprint calculator:"
-msgstr ""
+msgstr "Atspaudų skaičiuotuvas:"
 
 #: picard/ui/ui_options_fingerprinting.py:105
 #: picard/ui/ui_options_interface.py:132 picard/ui/ui_options_renaming.py:152
 msgid "Browse…"
-msgstr ""
+msgstr "Naršyti…"
 
 #: picard/ui/ui_options_fingerprinting.py:106
 msgid "Download…"
-msgstr ""
+msgstr "Atsisiųsti…"
 
 #: picard/ui/ui_options_fingerprinting.py:107
 msgid "API key:"
-msgstr ""
+msgstr "API raktas:"
 
 #: picard/ui/ui_options_fingerprinting.py:108
 msgid "Get API key…"
-msgstr ""
+msgstr "Gauti API raktą…"
 
 #: picard/ui/ui_options_general.py:199
 msgid "MusicBrainz Server"
-msgstr ""
+msgstr "MusicBrainz serveris"
 
 #: picard/ui/ui_options_general.py:200
 msgid ""
@@ -4118,18 +4125,21 @@ msgid ""
 "of releases, recordings and disc IDs will go to the primary database on "
 "musicbrainz.org."
 msgstr ""
+"Sukonfigūravai neoficialų MusicBrainz serverį. Pagal numatytuosius "
+"nustatymus leidiniai, įrašai ir diskų ID bus pateikiami į pagrindinę duomenų "
+"bazę musicbrainz.org."
 
 #: picard/ui/ui_options_general.py:201
 msgid "Submit data to the configured server"
-msgstr ""
+msgstr "Pateikti duomenis į sukonfigūruotą serverį"
 
 #: picard/ui/ui_options_general.py:202 picard/ui/ui_options_network.py:135
 msgid "Port:"
-msgstr ""
+msgstr "Prievadas:"
 
 #: picard/ui/ui_options_general.py:203 picard/ui/ui_options_network.py:137
 msgid "Server address:"
-msgstr ""
+msgstr "Serverio adresas:"
 
 #: picard/ui/ui_options_general.py:205
 msgid "Log in"
@@ -4141,131 +4151,138 @@ msgstr "Atsijungti"
 
 #: picard/ui/ui_options_general.py:211
 msgid "Update Checking"
-msgstr ""
+msgstr "Naujinimo tikrinimas"
 
 #: picard/ui/ui_options_general.py:214
 msgid "Days between checks:"
-msgstr ""
+msgstr "Dienos tarp patikrinimų:"
 
 #: picard/ui/ui_options_general.py:215
 msgid "Updates to check:"
-msgstr ""
+msgstr "Naujinimus tikrinti:"
 
 #: picard/ui/ui_options_genres.py:121
 msgid ""
 "Fall back on album's artists genres if no genres are found for the release "
 "or release group"
 msgstr ""
+"Grįžti prie atsarginių albumo atlikėjų žanrų, jei nerandama leidinio ar "
+"leidinių grupės žanrų"
 
 #: picard/ui/ui_options_genres.py:123
 msgid "Minimal genre usage:"
-msgstr ""
+msgstr "Minimalus žanro naudojimas:"
 
 #: picard/ui/ui_options_genres.py:124 picard/ui/ui_options_matching.py:73
 #: picard/ui/ui_options_matching.py:74 picard/ui/ui_options_matching.py:75
 msgid " %"
-msgstr ""
+msgstr " %"
 
 #: picard/ui/ui_options_genres.py:125
 msgid "Maximum number of genres:"
-msgstr ""
+msgstr "Maksimalus žanrų skaičius:"
 
 #: picard/ui/ui_options_genres.py:126
 msgid "Join multiple genres with:"
-msgstr ""
+msgstr "Jungti kelis žanrus su:"
 
 #: picard/ui/ui_options_genres.py:127
 msgid " / "
-msgstr ""
+msgstr " / "
 
 #: picard/ui/ui_options_genres.py:128
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: picard/ui/ui_options_genres.py:129
 msgid "Genres or folksonomy tags to include or exclude, one per line:"
 msgstr ""
+"Žanrai arba folksonomijos žymės, kurias įtraukti arba neįtraukti, po vieną "
+"kiekvienoje eilutėje:"
 
 #: picard/ui/ui_options_genres.py:130
 msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
 msgstr ""
+"Žanrų arba folksonomijos žymių filtrų žaidimų aikštelė (išvaloma išeinant):"
 
 #: picard/ui/ui_options_interface.py:118
 msgid "Appearance"
-msgstr ""
+msgstr "Išvaizda"
 
 #: picard/ui/ui_options_interface.py:121
 msgid "User interface language:"
-msgstr ""
+msgstr "Naudotojo sąsajos kalba:"
 
 #: picard/ui/ui_options_interface.py:122
 msgid "User interface color theme:"
-msgstr ""
+msgstr "Naudotojo sąsajos spalvų tema:"
 
 #: picard/ui/ui_options_interface.py:123
 msgid "Miscellaneous"
-msgstr ""
+msgstr "Kita"
 
 #: picard/ui/searchdialog/__init__.py:95 picard/ui/ui_options_interface.py:126
 msgid "Use advanced query syntax"
-msgstr ""
+msgstr "Naudoti patikslintoji užklausos sintaksė"
 
 #: picard/ui/ui_options_interface.py:127
 msgid "Show the new user dialog when starting Picard"
-msgstr ""
+msgstr "Rodyti naujo naudotojo dialogo langą paleidžiant Picard"
 
 #: picard/ui/ui_options_interface.py:131
 msgid "Begin browsing in the following directory:"
-msgstr ""
+msgstr "Pradėti naršyti toliau nurodytame kataloge:"
 
 #: picard/ui/options/interface_colors.py:92
 #: picard/ui/ui_options_interface_colors.py:49
 msgid "Colors"
-msgstr ""
+msgstr "Spalvos"
 
 #: picard/ui/ui_options_interface_toolbar.py:72
 msgid "Customize Action Toolbar"
-msgstr ""
+msgstr "Pritaikyti veiksmų įrankių juostą"
 
 #: picard/ui/ui_options_interface_toolbar.py:73
 msgid "Add a new button to Toolbar"
-msgstr ""
+msgstr "Pridėti naują mygtuką į įrankių juostą"
 
 #: picard/ui/ui_options_interface_toolbar.py:74
 msgid "Add Action"
-msgstr ""
+msgstr "Pridėti veiksmą"
 
 #: picard/ui/ui_options_interface_toolbar.py:75
 msgid "Insert a separator"
-msgstr ""
+msgstr "Įterpti skirtuką"
 
 #: picard/ui/ui_options_interface_toolbar.py:76
 msgid "Add Separator"
-msgstr ""
+msgstr "Pridėti skirtuką"
 
 #: picard/ui/ui_options_interface_toolbar.py:79
 msgid "Remove button from toolbar"
-msgstr ""
+msgstr "Pašalinti mygtuką iš įrankių juostos"
 
 #: picard/ui/ui_options_interface_top_tags.py:37
 msgid "Show the below tags above all other tags in the metadata view"
 msgstr ""
+"Rodyti žemiau nurodytas žymes virš visų kitų metaduomenų rodinyje esančių "
+"žymų"
 
 #: picard/ui/ui_options_maintenance.py:86
 msgid "Configuration File:"
-msgstr ""
+msgstr "Konfigūracijos failas:"
 
 #: picard/ui/ui_options_maintenance.py:87
 msgid "Open folder"
-msgstr ""
+msgstr "Atidaryti aplanką"
 
 #: picard/ui/ui_options_maintenance.py:88
 msgid "Load Backup"
-msgstr ""
+msgstr "Pakrauti atsarginė kopija"
 
 #: picard/ui/ui_options_maintenance.py:89
 msgid "Save Backup"
-msgstr ""
+msgstr "Išsaugoti atsarginę kopiją"
 
 #: picard/ui/ui_options_maintenance.py:90
 msgid "Remove selected options"
@@ -4402,6 +4419,10 @@ msgid ""
 "be stored in the files. Please specify the e-mail you want to use to save "
 "your ratings."
 msgstr ""
+"Picard išsaugo įvertinimus kartu su el. pašto adresu, identifikuojančiu "
+"įvertinimą atlikusį naudotoją. Tokiu būdu failuose gali būti saugomi "
+"skirtingi skirtingų naudotojų įvertinimai. Nurodyk el. pašto adresą, kurį "
+"nori naudoti išsaugant įvertinimus."
 
 #: picard/ui/ui_options_ratings.py:49
 msgid "E-mail:"
@@ -4548,16 +4569,21 @@ msgid ""
 "playing those files. To deal with this you can choose whether to save tags "
 "to those files."
 msgstr ""
+"Picard gali išsaugoti APEv2 žymes į grynus AAC failus, kurie pagal "
+"numatytuosius nustatymus nepalaiko žymėjimo. Kai kurie leistuvai palaiko AAC "
+"APEv2 žymes, bet leistuvams, kurie nepalaiko AAC failų su APEv2 žymėmis, "
+"gali kilti problemų su šių failų pakrovimu ir paleidimu. Norėdamas (-a) tai "
+"išspręsti, gali pasirinkti, ar išsaugoti žymes į tuos failus."
 
 #: picard/ui/ui_options_tags_compatibility_aac.py:47
 #: picard/ui/ui_options_tags_compatibility_ac3.py:47
 msgid "Save APEv2 tags"
-msgstr ""
+msgstr "Išsaugoti APEv2 žymes"
 
 #: picard/ui/ui_options_tags_compatibility_aac.py:48
 #: picard/ui/ui_options_tags_compatibility_ac3.py:48
 msgid "Do not save tags"
-msgstr ""
+msgstr "Neišsaugoti žymių"
 
 #: picard/ui/ui_options_tags_compatibility_ac3.py:45
 msgid "AC3 files"
@@ -4571,6 +4597,11 @@ msgid ""
 "playing those files. To deal with this you can choose whether to save tags "
 "to those files."
 msgstr ""
+"Picard gali išsaugoti APEv2 žymes į grynus AC3 failus, kurie pagal "
+"numatytuosius nustatymus nepalaiko žymėjimo. Kai kurie leistuvai palaiko AC3 "
+"APEv2 žymes, bet leistuvams, kurie nepalaiko AC3 failų su APEv2 žymėmis, "
+"gali kilti problemų su šių failų pakrovimu ir paleidimu. Norėdamas (-a) tai "
+"išspręsti, gali pasirinkti, ar išsaugoti žymes į tuos failus."
 
 #: picard/ui/options/tags_compatibility_id3.py:44
 #: picard/ui/ui_options_tags_compatibility_id3.py:115
@@ -4667,6 +4698,10 @@ msgid ""
 "cover-back-spine.jpg will be set as types Back + Spine. If no type is found, "
 "it will default to Front type."
 msgstr ""
+"Pirmoji reguliariosios išraiškos grupė, jei tokia yra, bus naudojama kaip "
+"tipas, t. y. cover-back-spine.jpg bus nustatyta kaip tipas Galinis+Knygos "
+"nugarėlė. Jei tipas nerastas, pagal numatytuosius nustatymus bus pasirinktas "
+"tipas Priekinis."
 
 #: picard/ui/ui_scripteditor.py:209
 msgid "Select the file naming script to load into the editor"
@@ -4819,7 +4854,7 @@ msgstr "Nežinoma"
 #: picard/ui/options/dialog.py:296
 #, python-format
 msgid "This option will be saved to profile: %s"
-msgstr ""
+msgstr "Ši parinktis bus išsaugota į profilį: %s"
 
 #: picard/ui/options/dialog.py:388
 msgid "Unexpected error"
@@ -5110,8 +5145,8 @@ msgstr ""
 "Norėdamas (-a) pašalinti vieną ar daugiau nustatymų, pirmiausia įjunk "
 "pašalinimą pažymėdamas (-a) langelį „Pašalinti pasirinktas parinktis“. Tada "
 "gali pasirinkti nustatymus, kuriuos nori pašalinti, pažymėdamas (-a) šalia "
-"nustatymų esantį langelį. Pasirinkus (-usi) „ Padaryti taip!“, kad "
-"išsaugotum parinkčių nustatymus, pasirinktos parinktys bus pašalintos."
+"nustatymų esantį langelį. Pasirinkus (-usi) „Padaryti taip!“, kad išsaugotum "
+"parinkčių nustatymus, pasirinktos parinktys bus pašalintos."
 
 #: picard/ui/options/maintenance.py:93
 msgid "Value"
@@ -5154,6 +5189,11 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
+"Kraunant atsarginę konfigūracijos failo kopiją bus pakeisti dabartiniai "
+"konfigūracijos nustatymai. Atsarginė dabartinio failo kopija bus išsaugota "
+"automatiškai.\n"
+"\n"
+"Ar nori tęsti?"
 
 #: picard/ui/options/maintenance.py:261
 #, python-format
@@ -5377,6 +5417,10 @@ msgid ""
 "exceeding the 259 character limit traditionally imposed by the Windows API. "
 "Some software might not be able to properly access those files."
 msgstr ""
+"Įjungus ilgus kelius Windows sistemoje, failai gali būti išsaugomi su kelio "
+"pavadinimais, viršijančiais 259 simbolių ribą, kurią tradiciškai nustato "
+"Windows API. Kai kuri programinė įranga gali negalėti tinkamai prieiti prie "
+"šių failų."
 
 #: picard/ui/options/scripting.py:124
 msgid "Show scripting documentation in new window."
