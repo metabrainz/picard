@@ -176,11 +176,12 @@ class LogView(LogViewCommon):
         self.hbox = QtWidgets.QHBoxLayout()
         self.vbox.addLayout(self.hbox)
 
-        self.verbosity_menu_button = QtWidgets.QPushButton(_("Verbosity"))
+        self.verbosity_menu_button = QtWidgets.QPushButton()
+        self.verbosity_menu_button.setAccessibleName(_("Verbosity"))
         self.hbox.addWidget(self.verbosity_menu_button)
 
         self.verbosity_menu = VerbosityMenu()
-        self.verbosity_menu.set_verbosity(self.verbosity)
+        self._set_verbosity(self.verbosity)
         self.verbosity_menu.verbosity_changed.connect(self._verbosity_changed)
         self.verbosity_menu_button.setMenu(self.verbosity_menu)
 
@@ -315,14 +316,21 @@ class LogView(LogViewCommon):
     def _set_verbosity(self, level):
         self.verbosity = level
         self.verbosity_menu.set_verbosity(self.verbosity)
+        self._update_verbosity_label()
 
     def _verbosity_changed(self, level):
         if level != self.verbosity:
             config = get_config()
             config.setting['log_verbosity'] = level
-            QtCore.QObject.tagger.set_log_level(level)
             self.verbosity = level
+            self._update_verbosity_label()
+            QtCore.QObject.tagger.set_log_level(level)
             self.display(clear=True)
+
+    def _update_verbosity_label(self):
+        feat = log.levels_features.get(self.verbosity)
+        label = _(feat.name) if feat else _("Verbosity")
+        self.verbosity_menu_button.setText(label)
 
 
 class HistoryView(LogViewCommon):
