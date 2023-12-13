@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-24 09:20+0200\n"
-"PO-Revision-Date: 2023-12-13 17:28+0000\n"
+"PO-Revision-Date: 2023-12-13 18:28+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/constants/lt/>\n"
@@ -203,19 +203,19 @@ msgstr "Turkų k."
 
 #: picard/const/languages.py:81 picard/const/locales.py:983
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrainiečių k."
 
 #: picard/const/languages.py:82
 msgid "Chinese (China)"
-msgstr ""
+msgstr "Kinų k. (Kinija)"
 
 #: picard/const/languages.py:83
 msgid "Chinese (Taiwan)"
-msgstr ""
+msgstr "Kinų k. (Taivanas)"
 
 #: picard/const/locales.py:27
 msgid "Afar"
-msgstr ""
+msgstr "Afarų k."
 
 #: picard/const/locales.py:28
 msgid "Afar (Djibouti)"
