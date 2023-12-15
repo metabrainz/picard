@@ -7,44 +7,44 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-24 09:20+0200\n"
+"POT-Creation-Date: 2023-12-13 22:31+0100\n"
 "PO-Revision-Date: 2023-09-03 06:27+0000\n"
 "Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/"
 "constants/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 4.18.2\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: picard/const/__init__.py:169
+#: picard/const/__init__.py:171
 msgid "Stable releases only"
 msgstr "Versions stables uniquement"
 
-#: picard/const/__init__.py:175
+#: picard/const/__init__.py:177
 msgid "Stable and Beta releases"
 msgstr "Versions stables et bêta"
 
-#: picard/const/__init__.py:181
+#: picard/const/__init__.py:183
 msgid "Stable, Beta and Dev releases"
 msgstr "Versions stables, bêta et dev"
 
-#: picard/const/__init__.py:199
+#: picard/const/__init__.py:201
 msgid "My script"
 msgstr "Mon script"
 
-#: picard/const/__init__.py:201
+#: picard/const/__init__.py:203
 msgid "My profile"
 msgstr "Mon profil"
 
-#: picard/const/__init__.py:202
+#: picard/const/__init__.py:204
 msgid "(copy)"
 msgstr "(copie)"
 
-#: picard/const/__init__.py:203
+#: picard/const/__init__.py:205
 msgid "{title} ({count})"
 msgstr "{title} ({count})"
 
@@ -68,10 +68,6 @@ msgstr "Danois"
 #: picard/const/languages.py:36 picard/const/locales.py:190
 msgid "German"
 msgstr "Allemand"
-
-#: picard/const/languages.py:37 picard/const/locales.py:193
-msgid "German (Switzerland)"
-msgstr "Allemand (Suisse)"
 
 #: picard/const/languages.py:38 picard/const/locales.py:217
 #: picard/const/scripts.py:26
@@ -142,6 +138,10 @@ msgstr "Japonais"
 #: picard/const/languages.py:61 picard/const/locales.py:585
 msgid "Korean"
 msgstr "Coréen"
+
+#: picard/const/languages.py:62 picard/const/locales.py:634
+msgid "Lithuanian"
+msgstr "Lituanien"
 
 #: picard/const/languages.py:63 picard/const/locales.py:689
 msgid "Malay (Malaysia)"
@@ -854,6 +854,10 @@ msgstr "Allemand (Autriche)"
 #: picard/const/locales.py:192
 msgid "German (Belgium)"
 msgstr "Allemand (Belgique)"
+
+#: picard/const/locales.py:193
+msgid "German (Switzerland)"
+msgstr "Allemand (Suisse)"
 
 #: picard/const/locales.py:194
 msgid "German (Germany)"
@@ -2546,10 +2550,6 @@ msgstr "Lori du Nord (Iraq)"
 #: picard/const/locales.py:633
 msgid "Northern Luri (Iran)"
 msgstr "Lori du Nord (Iran)"
-
-#: picard/const/locales.py:634
-msgid "Lithuanian"
-msgstr "Lituanien"
 
 #: picard/const/locales.py:635
 msgid "Lithuanian (Lithuania)"
