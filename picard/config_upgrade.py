@@ -473,6 +473,11 @@ def upgrade_to_v2_9_0_alpha_2(config):
     config.setting['file_renaming_scripts'] = scripts
 
 
+def upgrade_to_v2_10_1_dev_2(config):
+    """Reset option dialog splitter states"""
+    config.persist['splitters_OptionsDialog'] = b''
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
@@ -518,4 +523,5 @@ def upgrade_config(config):
     cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_5)
     cfg.register_upgrade_hook(upgrade_to_v2_8_0_dev_2)
     cfg.register_upgrade_hook(upgrade_to_v2_9_0_alpha_2)
+    cfg.register_upgrade_hook(upgrade_to_v2_10_1_dev_2)
     cfg.run_upgrade_hooks(log.debug)
