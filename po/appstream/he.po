@@ -75,8 +75,8 @@ msgid ""
 "AcoustID: Picard uses AcoustID audio fingerprints, allowing files to be "
 "identified by the actual music, even if they have no metadata."
 msgstr ""
-"AcoustID: פיקארד עושה שימוש טביעת אצבע אודיו AcoustID כדי לזהות את הקבצים על־"
-"ידי המוזיקה עצמה, גם אם אין להם מטא-נתונים."
+"AcoustID: פיקארד עושה שימוש טביעת אצבע אודיו AcoustID כדי לזהות את הקבצים "
+"על־ידי המוזיקה עצמה, גם אם אין להם מטא-נתונים."
 
 #: org.musicbrainz.Picard.appdata.xml.in:35
 msgid ""
