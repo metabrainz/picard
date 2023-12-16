@@ -10,16 +10,16 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-10-26 15:40+0200\n"
-"PO-Revision-Date: 2023-08-23 19:09+0000\n"
+"PO-Revision-Date: 2023-12-15 17:38+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Bulgarian <https://translations.metabrainz.org/projects/"
-"picard/app/bg/>\n"
+"picard/2/app/bg/>\n"
 "Language: bg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -5230,7 +5230,7 @@ msgstr "Грешка в скрипта"
 
 #: picard/ui/options/tags_compatibility_aac.py:41
 msgid "AAC"
-msgstr ""
+msgstr "AAC"
 
 #: picard/ui/options/tags_compatibility_ac3.py:41
 msgid "AC3"
