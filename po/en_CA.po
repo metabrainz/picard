@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-10-26 15:40+0200\n"
+"POT-Creation-Date: 2023-12-15 18:23+0100\n"
 "PO-Revision-Date: 2023-12-15 17:38+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: English (Canada) <https://translations.metabrainz.org/"
@@ -153,6 +153,25 @@ msgstr ""
 #: picard/file.py:899
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
+msgstr ""
+
+#: picard/log.py:67 picard/ui/options/renaming.py:256
+#: picard/ui/scripteditor.py:857 picard/ui/scripteditor.py:860
+#: picard/ui/scripteditor.py:1166 picard/ui/scripteditor.py:1394
+msgid "Error"
+msgstr ""
+
+#: picard/log.py:68
+msgid "Warning"
+msgstr ""
+
+#: picard/log.py:69 picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
+#: picard/ui/options/interface_toolbar.py:96
+msgid "Info"
+msgstr ""
+
+#: picard/log.py:70
+msgid "Debug"
 msgstr ""
 
 #: picard/oauth.py:249 picard/oauth.py:276
@@ -2308,11 +2327,6 @@ msgstr ""
 msgid "Cover"
 msgstr ""
 
-#: picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
-#: picard/ui/options/interface_toolbar.py:96
-msgid "Info"
-msgstr ""
-
 #: picard/ui/infodialog.py:209
 #, python-format
 msgid ""
@@ -2647,52 +2661,52 @@ msgstr ""
 msgid "Log"
 msgstr ""
 
-#: picard/ui/logview.py:179
+#: picard/ui/logview.py:180 picard/ui/logview.py:332
 msgid "Verbosity"
 msgstr ""
 
-#: picard/ui/logview.py:189
+#: picard/ui/logview.py:190
 msgid "String to highlight"
 msgstr ""
 
-#: picard/ui/logview.py:194
+#: picard/ui/logview.py:195
 msgid "Highlight"
 msgstr ""
 
-#: picard/ui/logview.py:203
+#: picard/ui/logview.py:204
 msgid "Clear Highlight"
 msgstr ""
 
-#: picard/ui/logview.py:209 picard/ui/logview.py:295
+#: picard/ui/logview.py:210 picard/ui/logview.py:296
 msgid "Clear Log"
 msgstr ""
 
-#: picard/ui/logview.py:214
+#: picard/ui/logview.py:215
 msgid "Save As…"
 msgstr ""
 
-#: picard/ui/logview.py:259 picard/ui/logview.py:266
+#: picard/ui/logview.py:260 picard/ui/logview.py:267
 msgid "Save Log View to File"
 msgstr ""
 
-#: picard/ui/logview.py:267
+#: picard/ui/logview.py:268
 msgid "File already exists, do you really want to save to this file?"
 msgstr ""
 
-#: picard/ui/logview.py:279
+#: picard/ui/logview.py:280
 msgid "Failed to save Log View to file"
 msgstr ""
 
-#: picard/ui/logview.py:280
+#: picard/ui/logview.py:281
 #, python-format
 msgid "Something prevented data to be written to '%s'"
 msgstr ""
 
-#: picard/ui/logview.py:296
+#: picard/ui/logview.py:297
 msgid "Are you sure you want to clear the log?"
 msgstr ""
 
-#: picard/ui/logview.py:331
+#: picard/ui/logview.py:339
 msgid "Activity History"
 msgstr ""
 
@@ -3646,6 +3660,10 @@ msgstr ""
 msgid "Empty / blank script"
 msgstr ""
 
+#: picard/ui/scripteditor.py:641
+msgid "New Script"
+msgstr ""
+
 #: picard/ui/scripteditor.py:734
 msgid ""
 "At least one unsaved script has been attached to an option profile.\n"
@@ -3658,12 +3676,6 @@ msgid ""
 "   {new_script_title}\n"
 "\n"
 "Are you sure that you want to continue?"
-msgstr ""
-
-#: picard/ui/options/renaming.py:256 picard/ui/scripteditor.py:857
-#: picard/ui/scripteditor.py:860 picard/ui/scripteditor.py:1166
-#: picard/ui/scripteditor.py:1394
-msgid "Error"
 msgstr ""
 
 #: picard/ui/scripteditor.py:857

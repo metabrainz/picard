@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-10-26 15:40+0200\n"
+"POT-Creation-Date: 2023-12-15 18:23+0100\n"
 "PO-Revision-Date: 2023-08-30 09:27+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Malay <https://translations.metabrainz.org/projects/picard/"
@@ -157,6 +157,25 @@ msgstr "Tiada runut yang berpadanan bagi fail '%(filename)s'"
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
 msgstr "Data meta fail %(filename)s sedang dicari…"
+
+#: picard/log.py:67 picard/ui/options/renaming.py:256
+#: picard/ui/scripteditor.py:857 picard/ui/scripteditor.py:860
+#: picard/ui/scripteditor.py:1166 picard/ui/scripteditor.py:1394
+msgid "Error"
+msgstr "Ralat"
+
+#: picard/log.py:68
+msgid "Warning"
+msgstr ""
+
+#: picard/log.py:69 picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
+#: picard/ui/options/interface_toolbar.py:96
+msgid "Info"
+msgstr "Maklumat"
+
+#: picard/log.py:70
+msgid "Debug"
+msgstr ""
 
 #: picard/oauth.py:249 picard/oauth.py:276
 msgid "Unexpected authentication error"
@@ -2821,11 +2840,6 @@ msgstr "Kulit Baharu"
 msgid "Cover"
 msgstr "Kulit"
 
-#: picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
-#: picard/ui/options/interface_toolbar.py:96
-msgid "Info"
-msgstr "Maklumat"
-
 #: picard/ui/infodialog.py:209
 #, python-format
 msgid ""
@@ -3163,52 +3177,52 @@ msgstr ""
 msgid "Log"
 msgstr "Log"
 
-#: picard/ui/logview.py:179
+#: picard/ui/logview.py:180 picard/ui/logview.py:332
 msgid "Verbosity"
 msgstr "Bahasa boros"
 
-#: picard/ui/logview.py:189
+#: picard/ui/logview.py:190
 msgid "String to highlight"
 msgstr "Rentetan yang akan ditonjolkan"
 
-#: picard/ui/logview.py:194
+#: picard/ui/logview.py:195
 msgid "Highlight"
 msgstr "Tonjolkan"
 
-#: picard/ui/logview.py:203
+#: picard/ui/logview.py:204
 msgid "Clear Highlight"
 msgstr "Hapuskan Tonjolan"
 
-#: picard/ui/logview.py:209 picard/ui/logview.py:295
+#: picard/ui/logview.py:210 picard/ui/logview.py:296
 msgid "Clear Log"
 msgstr "Hapuskan Log"
 
-#: picard/ui/logview.py:214
+#: picard/ui/logview.py:215
 msgid "Save As…"
 msgstr "Simpan Sebagai…"
 
-#: picard/ui/logview.py:259 picard/ui/logview.py:266
+#: picard/ui/logview.py:260 picard/ui/logview.py:267
 msgid "Save Log View to File"
 msgstr "Simpan Pandangan Log kepada Fail"
 
-#: picard/ui/logview.py:267
+#: picard/ui/logview.py:268
 msgid "File already exists, do you really want to save to this file?"
 msgstr "Fail sudah wujud. Adakah anda betul-betul mahu menyimpan di fail ini?"
 
-#: picard/ui/logview.py:279
+#: picard/ui/logview.py:280
 msgid "Failed to save Log View to file"
 msgstr "Gagal menyimpan Pandangan Log di fail"
 
-#: picard/ui/logview.py:280
+#: picard/ui/logview.py:281
 #, python-format
 msgid "Something prevented data to be written to '%s'"
 msgstr "Terdapat sesuatu yang mencegah penulisan data di '%s'"
 
-#: picard/ui/logview.py:296
+#: picard/ui/logview.py:297
 msgid "Are you sure you want to clear the log?"
 msgstr "Adakah anda pasti mahu mengosongkan log?"
 
-#: picard/ui/logview.py:331
+#: picard/ui/logview.py:339
 msgid "Activity History"
 msgstr "Sejarah Kegiatan"
 
@@ -4178,6 +4192,12 @@ msgstr "Buka pendokumenan penskripan di penyemak imbas"
 msgid "Empty / blank script"
 msgstr ""
 
+#: picard/ui/scripteditor.py:641
+#, fuzzy
+#| msgid "Script"
+msgid "New Script"
+msgstr "Skrip"
+
 #: picard/ui/scripteditor.py:734
 msgid ""
 "At least one unsaved script has been attached to an option profile.\n"
@@ -4191,12 +4211,6 @@ msgid ""
 "\n"
 "Are you sure that you want to continue?"
 msgstr ""
-
-#: picard/ui/options/renaming.py:256 picard/ui/scripteditor.py:857
-#: picard/ui/scripteditor.py:860 picard/ui/scripteditor.py:1166
-#: picard/ui/scripteditor.py:1394
-msgid "Error"
-msgstr "Ralat"
 
 #: picard/ui/scripteditor.py:857
 msgid "There is already a script with that title."
