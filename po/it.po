@@ -175,10 +175,8 @@ msgid "Error"
 msgstr "Errore"
 
 #: picard/log.py:68
-#, fuzzy
-#| msgid "New User Warning"
 msgid "Warning"
-msgstr "Avvertimento per nuovi utenti"
+msgstr "Avvertenza"
 
 #: picard/log.py:69 picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
 #: picard/ui/options/interface_toolbar.py:96
@@ -187,7 +185,7 @@ msgstr "Informazioni"
 
 #: picard/log.py:70
 msgid "Debug"
-msgstr ""
+msgstr "Debug"
 
 #: picard/oauth.py:249 picard/oauth.py:276
 msgid "Unexpected authentication error"
@@ -4143,10 +4141,9 @@ msgstr ""
 "risorsa multimediale"
 
 #: picard/ui/playertoolbar.py:193
-#, fuzzy, python-format
-#| msgid "Internal player: error, code=%(code)d, msg=%(message)s"
+#, python-format
 msgid "Internal player: %(error)s, %(message)s"
-msgstr "Riproduttore interno: errore, codice=%(code)d, messaggio=%(message)s"
+msgstr "Riproduttore interno: %(error)s, %(message)s"
 
 #: picard/ui/playertoolbar.py:202
 msgid "Player"
@@ -4432,10 +4429,8 @@ msgid "Empty / blank script"
 msgstr "Script vuoto"
 
 #: picard/ui/scripteditor.py:641
-#, fuzzy
-#| msgid "Script"
 msgid "New Script"
-msgstr "Sistema di scrittura"
+msgstr "Nuovo script"
 
 #: picard/ui/scripteditor.py:734
 msgid ""
@@ -5735,10 +5730,8 @@ msgid "System"
 msgstr "Sistema"
 
 #: picard/ui/options/interface.py:106
-#, fuzzy
-#| msgid "The Qt5 theme configured in the desktop environment"
 msgid "The Qt6 theme configured in the desktop environment"
-msgstr "Il tema Qt5 configurato nell'ambiente desktop"
+msgstr "Il tema Qt6 configurato nell'ambiente desktop"
 
 #: picard/ui/options/interface.py:124
 msgid "System default"
