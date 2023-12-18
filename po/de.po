@@ -3,11 +3,8 @@
 # This file is distributed under the same license as the picard project.
 #
 # Translators:
-# nikki, 2014-2015
-# nikki2 <b4931048@nwldx.com>, 2012
 # Björn Krombholz <fox.box@gmail.com>, 2006
 # c8ba6e46576070595b2ba64068f9a431_0cfbcb2, 2012,2015
-# Daniel Theis <daniel@theis-internet.de>, 2017
 # Daniel Theis <daniel@theis-internet.de>, 2017
 # David Kellner <kellnerd@gmx.net>, 2019-2020
 # Eckhard Henkel <eckhard.henkel@t-online.de>, 2018
@@ -18,30 +15,18 @@
 # happykraut, 2017
 # HumHumXX, 2012,2015
 # ix5, 2017
-# ix5, 2017
-# ix5, 2017
-# happykraut, 2017
 # Marc Rodrigues <info@sustain-release.de>, 2019
 # Mark Spike, 2019
-# Mark Spike, 2019
 # Matthias W. <abudunx@gmail.com>, 2018
-# nikki, 2013
+# nikki, 2013-2015
 # nikki2 <b4931048@nwldx.com>, 2012
-# nikki, 2013
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2014,2017-2023
 # S.Brandt <s.brandt@mixxx.org>, 2014-2015,2017-2018
-# Shepard, 2012
+# Shepard, 2012-2014
 # Simon Legner <simon.legner@gmail.com>, 2018
-# Shepard, 2013-2014
-# Shepard, 2012
-# Wieland Hoffmann <themineo+transifex@googlemail.com>, 2012
-# TL, 2019
 # TL, 2019
 # Tobias Sarner <Tobias.Sarner@googlemail.com>, 2020
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2012-2013,2015,2017
-# Daniel Theis <daniel@theis-internet.de>, 2017
-# c8ba6e46576070595b2ba64068f9a431_0cfbcb2, 2015
-# c8ba6e46576070595b2ba64068f9a431_0cfbcb2, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
