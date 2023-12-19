@@ -1,0 +1,1522 @@
+{
+  "results": [
+    {
+      "id": "38338eff-b530-498c-a2ef-07e01d642187",
+      "recordings": [
+        {
+          "artists": [
+            {
+              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+              "name": "Focus"
+            }
+          ],
+          "duration": 200,
+          "id": "308d6e5a-52ff-41ca-aae8-7881e92472be",
+          "releasegroups": [
+            {
+              "artists": [
+                {
+                  "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+                  "name": "Various Artists"
+                }
+              ],
+              "id": "71b5e81c-e951-45a0-9554-8599ad1b52e9",
+              "releases": [
+                {
+                  "country": "NL",
+                  "date": {
+                    "year": 2008
+                  },
+                  "id": "f0b647ce-8db2-4682-ac34-50d0cfd390fd",
+                  "medium_count": 15,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 2,
+                      "title": "\u201971",
+                      "track_count": 20,
+                      "tracks": [
+                        {
+                          "artists": [
+                            {
+                              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                              "name": "Focus"
+                            }
+                          ],
+                          "id": "1147bf65-bb79-39dd-bcfa-e16569ee8fa3",
+                          "position": 11
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "NL",
+                      "date": {
+                        "year": 2008
+                      }
+                    }
+                  ],
+                  "track_count": 301
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "Testament van de Seventies",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+                  "name": "Various Artists"
+                }
+              ],
+              "id": "97c03161-7b75-4108-9797-bf95f873e7dc",
+              "releases": [
+                {
+                  "country": "NL",
+                  "date": {
+                    "year": 1989
+                  },
+                  "id": "ed3c7767-ea90-4070-8c47-cbe47780130d",
+                  "medium_count": 2,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 2,
+                      "track_count": 20,
+                      "tracks": [
+                        {
+                          "artists": [
+                            {
+                              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                              "name": "Focus"
+                            }
+                          ],
+                          "id": "0f26f8ed-b746-3c99-8888-2158817c05a4",
+                          "position": 7
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "NL",
+                      "date": {
+                        "year": 1989
+                      }
+                    }
+                  ],
+                  "track_count": 40
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "25 jaar Top 40 Hits, deel 2: \u201969\u2013\u201972",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+                  "name": "Various Artists"
+                }
+              ],
+              "id": "2a2b8925-d819-476c-bcf8-8e9a523f3d38",
+              "releases": [
+                {
+                  "country": "NL",
+                  "date": {
+                    "year": 1996
+                  },
+                  "id": "4aadc99c-a165-4f25-9426-71c41087326f",
+                  "medium_count": 4,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 3,
+                      "track_count": 20,
+                      "tracks": [
+                        {
+                          "artists": [
+                            {
+                              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                              "name": "Focus"
+                            }
+                          ],
+                          "id": "e555d7c6-bcdf-4910-905f-5d4b86853cbd",
+                          "position": 3
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "NL",
+                      "date": {
+                        "year": 1996
+                      }
+                    }
+                  ],
+                  "track_count": 80
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "Classic Pop Songs",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+                  "name": "Various Artists"
+                }
+              ],
+              "id": "b7a5ba18-0f62-47e2-a4f2-760cfddbe6fa",
+              "releases": [
+                {
+                  "country": "NL",
+                  "date": {
+                    "year": 1995
+                  },
+                  "id": "ba58ab3a-2bc7-49eb-b187-df4229cf9b21",
+                  "medium_count": 3,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 2,
+                      "track_count": 19,
+                      "tracks": [
+                        {
+                          "artists": [
+                            {
+                              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                              "name": "Focus"
+                            }
+                          ],
+                          "id": "d76a3e60-cdda-4b50-9808-352ac8f45ca2",
+                          "position": 16
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "NL",
+                      "date": {
+                        "year": 1995
+                      }
+                    }
+                  ],
+                  "track_count": 57
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "Greatest Hits Of The '70's - The Definitive Singles Collection 1970-1979",
+              "type": "Album"
+            }
+          ],
+          "sources": 1,
+          "title": "Hocus Pocus"
+        },
+        {
+          "id": "8855169b-b148-4896-9ed3-a1065dc60cf4",
+          "sources": 94
+        },
+        {
+          "artists": [
+            {
+              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+              "name": "Focus"
+            }
+          ],
+          "duration": 204,
+          "id": "af578913-c456-4d27-bb69-612c8cea0799",
+          "releasegroups": [
+            {
+              "artists": [
+                {
+                  "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+                  "name": "Various Artists"
+                }
+              ],
+              "id": "3e0fa0db-d167-4b37-8567-2df76035cec9",
+              "releases": [
+                {
+                  "country": "GB",
+                  "date": {
+                    "year": 2010
+                  },
+                  "id": "6d754580-0c14-433e-9256-463f211ad9f3",
+                  "medium_count": 2,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 2,
+                      "track_count": 17,
+                      "tracks": [
+                        {
+                          "artists": [
+                            {
+                              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                              "name": "Focus"
+                            }
+                          ],
+                          "id": "13e8e402-25a4-4fbd-894e-68a5c004d583",
+                          "position": 1
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "GB",
+                      "date": {
+                        "year": 2010
+                      }
+                    }
+                  ],
+                  "track_count": 34
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "Wondrous Stories: 34 Artists That Shaped the Prog Rock Era",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                  "name": "Focus"
+                }
+              ],
+              "id": "a57fe353-7abe-47d6-8f9d-e90d16d9fda3",
+              "releases": [
+                {
+                  "country": "NL",
+                  "date": {
+                    "year": 2015
+                  },
+                  "id": "a3f5396e-7059-42f0-9085-d81d7eb8d028",
+                  "medium_count": 2,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 2,
+                      "track_count": 9,
+                      "tracks": [
+                        {
+                          "id": "24e3e837-3fab-49da-83b7-d711047022f0",
+                          "position": 9,
+                          "title": "Hocus Pocus U.S. Version"
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "NL",
+                      "date": {
+                        "year": 2015
+                      }
+                    }
+                  ],
+                  "track_count": 30
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "The Golden Years of Dutch Pop Music (A&B Sides and More)",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                  "name": "Focus"
+                }
+              ],
+              "id": "4ee2ab34-692f-4e34-b5f9-a1d5854fc9b3",
+              "releases": [
+                {
+                  "date": {
+                    "month": 7,
+                    "year": 2017
+                  },
+                  "id": "a7ef6356-0b43-4986-978e-887b26f33445",
+                  "medium_count": 13,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 7,
+                      "title": "Ship of Memories",
+                      "track_count": 10,
+                      "tracks": [
+                        {
+                          "id": "998c87d0-4b33-40d0-b487-b787cbdab64d",
+                          "position": 10,
+                          "title": "Hocus Pocus (US single version)"
+                        }
+                      ]
+                    },
+                    {
+                      "format": "CD",
+                      "position": 13,
+                      "title": "The Best of Focus: Hocus Pocus",
+                      "track_count": 16,
+                      "tracks": [
+                        {
+                          "id": "b636e3b9-d916-4204-816a-6c5468b84134",
+                          "position": 16,
+                          "title": "Hocus Pocus (U.S. single version)"
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "date": {
+                        "month": 7,
+                        "year": 2017
+                      }
+                    }
+                  ],
+                  "track_count": 124
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "Hocus Pocus Box",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "e36f6749-cf76-469e-9dd9-f9195c326928",
+                  "name": "Jan Akkerman"
+                }
+              ],
+              "id": "1994d1b8-6b5e-411e-90fc-c44674dfcbc5",
+              "releases": [
+                {
+                  "country": "NL",
+                  "date": {
+                    "day": 7,
+                    "month": 4,
+                    "year": 2017
+                  },
+                  "id": "a8ecc767-e239-480d-bb68-11c43fca90d9",
+                  "medium_count": 2,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 1,
+                      "track_count": 23,
+                      "tracks": [
+                        {
+                          "artists": [
+                            {
+                              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                              "name": "Focus"
+                            }
+                          ],
+                          "id": "eedba674-c22f-4a7c-b6c2-696be1bd4516",
+                          "position": 10,
+                          "title": "Hocus Pocus (Us single version)"
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "NL",
+                      "date": {
+                        "day": 7,
+                        "month": 4,
+                        "year": 2017
+                      }
+                    }
+                  ],
+                  "track_count": 42
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "The Golden Years of Dutch Pop Music - Solo & Groups",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                  "name": "Focus"
+                }
+              ],
+              "id": "4b90822a-2e4b-4985-b0ff-693bf9e3ced8",
+              "releases": [
+                {
+                  "country": "NL",
+                  "date": {
+                    "year": 1976
+                  },
+                  "id": "6a8a03db-4c08-4aa0-9a50-9727f9e96fb0",
+                  "medium_count": 1,
+                  "mediums": [
+                    {
+                      "format": "12\" Vinyl",
+                      "position": 1,
+                      "track_count": 9,
+                      "tracks": [
+                        {
+                          "id": "a29a8c7d-6f07-4a8b-8fc1-76d02efd5d68",
+                          "position": 1
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "NL",
+                      "date": {
+                        "year": 1976
+                      }
+                    }
+                  ],
+                  "track_count": 9
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "House of the King",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                  "name": "Focus"
+                }
+              ],
+              "id": "bc0ae552-897d-3db6-a667-b1b90334063d",
+              "releases": [
+                {
+                  "country": "NL",
+                  "date": {
+                    "year": 1993
+                  },
+                  "id": "13afa320-030e-44f8-a258-9df1466056ac",
+                  "medium_count": 1,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 1,
+                      "track_count": 16,
+                      "tracks": [
+                        {
+                          "id": "2fe521d1-0f31-3b35-8296-597020e360d1",
+                          "position": 16,
+                          "title": "Hocus Pocus (U.S. Single version)"
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "NL",
+                      "date": {
+                        "year": 1993
+                      }
+                    }
+                  ],
+                  "track_count": 16
+                },
+                {
+                  "country": "XE",
+                  "date": {
+                    "year": 2001
+                  },
+                  "id": "e8857505-db03-4296-8ae3-86b008d552cc",
+                  "medium_count": 1,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 1,
+                      "track_count": 16,
+                      "tracks": [
+                        {
+                          "id": "f3c4b647-1646-4438-80e8-3e5dca84d619",
+                          "position": 16,
+                          "title": "Hocus Pocus (U.S. single version)"
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "XE",
+                      "date": {
+                        "year": 2001
+                      }
+                    }
+                  ],
+                  "track_count": 16
+                },
+                {
+                  "country": "US",
+                  "date": {
+                    "year": 1993
+                  },
+                  "id": "90e6c726-4886-4e59-b3fd-5e4aab873188",
+                  "medium_count": 1,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 1,
+                      "track_count": 16,
+                      "tracks": [
+                        {
+                          "id": "7031bb86-4575-491b-b27e-b0ff2ab1002e",
+                          "position": 16,
+                          "title": "Hocus Pocus (U.S. Single version)"
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "US",
+                      "date": {
+                        "year": 1993
+                      }
+                    }
+                  ],
+                  "track_count": 16
+                },
+                {
+                  "country": "XE",
+                  "date": {
+                    "year": 2020
+                  },
+                  "id": "382e13e0-ef4c-4290-8519-a3dc2f80efe7",
+                  "medium_count": 1,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 1,
+                      "track_count": 16,
+                      "tracks": [
+                        {
+                          "id": "84e7cd4a-dd07-4c1d-952b-11595fd6863d",
+                          "position": 16,
+                          "title": "Hocus Pocus (U.S. single version)"
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "XE",
+                      "date": {
+                        "year": 2020
+                      }
+                    }
+                  ],
+                  "track_count": 16
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "The Best of Focus: Hocus Pocus",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+                  "name": "Various Artists"
+                }
+              ],
+              "id": "e3a473b9-140f-4328-a417-dae0ae90331d",
+              "releases": [
+                {
+                  "country": "US",
+                  "date": {
+                    "day": 27,
+                    "month": 10,
+                    "year": 2017
+                  },
+                  "id": "5eb13c9e-d613-45ae-9566-e80a394016fe",
+                  "medium_count": 1,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 1,
+                      "track_count": 21,
+                      "tracks": [
+                        {
+                          "artists": [
+                            {
+                              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                              "name": "Focus"
+                            }
+                          ],
+                          "id": "4192f56a-a563-4897-b91a-e6e6f45f9a8d",
+                          "position": 3
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "US",
+                      "date": {
+                        "day": 27,
+                        "month": 10,
+                        "year": 2017
+                      }
+                    }
+                  ],
+                  "track_count": 21
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "Hard to Find 45s on CD, Volume 18: 70s Essentials",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+                  "name": "Various Artists"
+                }
+              ],
+              "id": "b9aa5125-0703-4186-afa5-cb51eaeff29d",
+              "releases": [
+                {
+                  "country": "AU",
+                  "date": {
+                    "year": 1997
+                  },
+                  "id": "89b14dc9-5665-4257-8ad8-f9707c28f7ac",
+                  "medium_count": 2,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 2,
+                      "track_count": 17,
+                      "tracks": [
+                        {
+                          "artists": [
+                            {
+                              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                              "name": "Focus"
+                            }
+                          ],
+                          "id": "d9f8cd02-d0d0-4cf7-b081-947ce1f718c7",
+                          "position": 16
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "AU",
+                      "date": {
+                        "year": 1997
+                      }
+                    }
+                  ],
+                  "track_count": 34
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "Retro Rarities of the 70's & 80's",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+                  "name": "Various Artists"
+                }
+              ],
+              "id": "af2140b4-aea3-3bcb-a1ea-a3a80e6c4298",
+              "releases": [
+                {
+                  "country": "US",
+                  "date": {
+                    "day": 26,
+                    "month": 3,
+                    "year": 1996
+                  },
+                  "id": "38e96797-941e-4062-88ed-27f1422718b7",
+                  "medium_count": 1,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 1,
+                      "track_count": 12,
+                      "tracks": [
+                        {
+                          "artists": [
+                            {
+                              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                              "name": "Focus"
+                            }
+                          ],
+                          "id": "43722609-9f1f-3726-9f8a-5f08a07997e3",
+                          "position": 1
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "US",
+                      "date": {
+                        "day": 26,
+                        "month": 3,
+                        "year": 1996
+                      }
+                    }
+                  ],
+                  "track_count": 12
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "Super Hits of the '70s: Have a Nice Day, Vol. 23",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+                  "name": "Various Artists"
+                }
+              ],
+              "id": "9491ee85-cb53-3537-b1a1-0396b90ea974",
+              "releases": [
+                {
+                  "id": "8e432b18-b9cb-46e1-a0d0-1653cf3d4fcc",
+                  "medium_count": 1,
+                  "mediums": [
+                    {
+                      "position": 1,
+                      "track_count": 14,
+                      "tracks": [
+                        {
+                          "artists": [
+                            {
+                              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                              "name": "Focus"
+                            }
+                          ],
+                          "id": "c4d7bf4c-b2cd-334d-8071-8dd2152acc96",
+                          "position": 12
+                        }
+                      ]
+                    }
+                  ],
+                  "track_count": 14
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "Power Chords, Volume 1",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                  "name": "Focus"
+                }
+              ],
+              "id": "819b26b4-019b-4157-93aa-96a3311262fb",
+              "releases": [
+                {
+                  "country": "NL",
+                  "date": {
+                    "month": 7,
+                    "year": 1971
+                  },
+                  "id": "f92d6ea1-e412-403c-be03-953715ef872c",
+                  "medium_count": 1,
+                  "mediums": [
+                    {
+                      "format": "7\" Vinyl",
+                      "position": 1,
+                      "track_count": 2,
+                      "tracks": [
+                        {
+                          "id": "2e426de4-398d-4b3f-bb44-1dd07dbbe4f4",
+                          "position": 1
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "NL",
+                      "date": {
+                        "month": 7,
+                        "year": 1971
+                      }
+                    }
+                  ],
+                  "track_count": 2
+                }
+              ],
+              "title": "Hocus Pocus / Janis",
+              "type": "Single"
+            },
+            {
+              "artists": [
+                {
+                  "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                  "name": "Focus"
+                }
+              ],
+              "id": "fb49f2e7-3390-3eac-9040-69feb4e81be4",
+              "releases": [
+                {
+                  "country": "NL",
+                  "date": {
+                    "year": 1983
+                  },
+                  "id": "0959de0b-e633-4be0-bee4-eae66af3a375",
+                  "medium_count": 1,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 1,
+                      "track_count": 14,
+                      "tracks": [
+                        {
+                          "id": "bc13e5f9-e5c5-3f09-966d-3293274e16da",
+                          "position": 11
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "NL",
+                      "date": {
+                        "year": 1983
+                      }
+                    }
+                  ],
+                  "track_count": 14
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "Best Of",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+                  "name": "Various Artists"
+                }
+              ],
+              "id": "037994ae-21c9-328e-82f7-dfe6a2ca7e33",
+              "releases": [
+                {
+                  "country": "GB",
+                  "date": {
+                    "year": 1988
+                  },
+                  "id": "ae2f755f-a667-449c-a6c7-922b26eff633",
+                  "medium_count": 2,
+                  "mediums": [
+                    {
+                      "format": "Cassette",
+                      "position": 1,
+                      "track_count": 16,
+                      "tracks": [
+                        {
+                          "artists": [
+                            {
+                              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                              "name": "Focus"
+                            }
+                          ],
+                          "id": "d853c93b-3300-4e32-93ed-17229fdf1949",
+                          "position": 4
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "GB",
+                      "date": {
+                        "year": 1988
+                      }
+                    }
+                  ],
+                  "track_count": 32
+                },
+                {
+                  "country": "GB",
+                  "date": {
+                    "year": 1988
+                  },
+                  "id": "33d52b29-443e-42d9-90e5-a0b04ffc6d5d",
+                  "medium_count": 2,
+                  "mediums": [
+                    {
+                      "format": "12\" Vinyl",
+                      "position": 1,
+                      "track_count": 16,
+                      "tracks": [
+                        {
+                          "artists": [
+                            {
+                              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                              "name": "Focus"
+                            }
+                          ],
+                          "id": "2e2dc6aa-c00f-4453-9bc1-7b3803124ed5",
+                          "position": 4
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "GB",
+                      "date": {
+                        "year": 1988
+                      }
+                    }
+                  ],
+                  "track_count": 32
+                },
+                {
+                  "country": "GB",
+                  "date": {
+                    "year": 1988
+                  },
+                  "id": "b3af7981-21d1-4b23-b189-b9c5411e5775",
+                  "medium_count": 1,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 1,
+                      "track_count": 18,
+                      "tracks": [
+                        {
+                          "artists": [
+                            {
+                              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                              "name": "Focus"
+                            }
+                          ],
+                          "id": "5351ffac-6834-36b7-8fde-8223ed0e99e5",
+                          "position": 6
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "GB",
+                      "date": {
+                        "year": 1988
+                      }
+                    }
+                  ],
+                  "track_count": 18
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "Back on the Road",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+                  "name": "Various Artists"
+                }
+              ],
+              "id": "ff3e27e8-4655-48e4-ba9b-d3d631a1c2b0",
+              "releases": [
+                {
+                  "country": "NL",
+                  "date": {
+                    "year": 2008
+                  },
+                  "id": "3a31b1d3-3b62-45b4-8e04-b4daff8aa5db",
+                  "medium_count": 5,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 2,
+                      "title": "70's",
+                      "track_count": 22,
+                      "tracks": [
+                        {
+                          "artists": [
+                            {
+                              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                              "name": "Focus"
+                            }
+                          ],
+                          "id": "232ae1d3-71e9-3df8-9b77-3ee20d915aac",
+                          "position": 4
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "NL",
+                      "date": {
+                        "year": 2008
+                      }
+                    }
+                  ],
+                  "track_count": 103
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "50 jaar nederpop",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+                  "name": "Various Artists"
+                }
+              ],
+              "id": "daa32df7-56af-490f-9ae7-1306a9be9802",
+              "releases": [
+                {
+                  "country": "NL",
+                  "date": {
+                    "year": 1996
+                  },
+                  "id": "4454dbe2-745a-4148-91d5-8db7043e1e37",
+                  "medium_count": 3,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 1,
+                      "track_count": 25,
+                      "tracks": [
+                        {
+                          "artists": [
+                            {
+                              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                              "name": "Focus"
+                            }
+                          ],
+                          "id": "570ff779-58f7-3808-a46c-1e32a602ed28",
+                          "position": 12
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "NL",
+                      "date": {
+                        "year": 1996
+                      }
+                    }
+                  ],
+                  "track_count": 75
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "De 75 Beste Nederpop Hits",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+                  "name": "Various Artists"
+                }
+              ],
+              "id": "f0d011be-94e2-3313-a973-9cb42bdb8021",
+              "releases": [
+                {
+                  "country": "US",
+                  "date": {
+                    "year": 1988
+                  },
+                  "id": "50c893a8-b4d3-451a-8ded-554be7b98977",
+                  "medium_count": 1,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 1,
+                      "track_count": 12,
+                      "tracks": [
+                        {
+                          "artists": [
+                            {
+                              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                              "name": "Focus"
+                            }
+                          ],
+                          "id": "aec0ae14-0ff1-3293-b7d3-220fe7616ca9",
+                          "position": 12
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "US",
+                      "date": {
+                        "year": 1988
+                      }
+                    }
+                  ],
+                  "track_count": 12
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "Electric Seventies",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+                  "name": "Various Artists"
+                }
+              ],
+              "id": "54ad8a66-18c6-3977-a833-3eac08fa0892",
+              "releases": [
+                {
+                  "id": "75f2c2b1-201c-4055-a554-ebee5a2cab8b",
+                  "medium_count": 1,
+                  "mediums": [
+                    {
+                      "position": 1,
+                      "track_count": 20,
+                      "tracks": [
+                        {
+                          "artists": [
+                            {
+                              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                              "name": "Focus"
+                            }
+                          ],
+                          "id": "549c7c0b-42a1-3390-aea8-5418f5e93458",
+                          "position": 18
+                        }
+                      ]
+                    }
+                  ],
+                  "track_count": 20
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "Millennium Classic Rock Party",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+                  "name": "Various Artists"
+                }
+              ],
+              "id": "d80b61c0-d4ea-3632-a5fc-0ef85389eabe",
+              "releases": [
+                {
+                  "country": "GB",
+                  "date": {
+                    "day": 6,
+                    "month": 6,
+                    "year": 2005
+                  },
+                  "id": "10832769-0788-4d6e-859b-5931e4767554",
+                  "medium_count": 2,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 2,
+                      "track_count": 19,
+                      "tracks": [
+                        {
+                          "artists": [
+                            {
+                              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                              "name": "Focus"
+                            }
+                          ],
+                          "id": "7018de94-4633-3453-879d-c1bd993abfe0",
+                          "position": 11
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "GB",
+                      "date": {
+                        "day": 6,
+                        "month": 6,
+                        "year": 2005
+                      }
+                    }
+                  ],
+                  "track_count": 37
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "Driving Rock: 37 Classic Anthems for the Open Road",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+                  "name": "Various Artists"
+                }
+              ],
+              "id": "ba8afc07-2a75-4d89-9880-48e9482b9550",
+              "releases": [
+                {
+                  "country": "BE",
+                  "date": {
+                    "year": 2013
+                  },
+                  "id": "f7cf6c60-054e-4c76-9876-37bfe4ea8d51",
+                  "medium_count": 5,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 4,
+                      "track_count": 20,
+                      "tracks": [
+                        {
+                          "artists": [
+                            {
+                              "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                              "name": "Focus"
+                            }
+                          ],
+                          "id": "d0f7dd20-2b88-4dfb-960b-daf456c6fab9",
+                          "position": 6
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "BE",
+                      "date": {
+                        "year": 2013
+                      }
+                    }
+                  ],
+                  "track_count": 100
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "De topcollectie: Rock klassiekers",
+              "type": "Album"
+            },
+            {
+              "artists": [
+                {
+                  "id": "821e11d6-cfec-44a7-9615-06a4e631c975",
+                  "name": "Focus"
+                }
+              ],
+              "id": "4a9fc107-02b4-3bb6-9206-4e1d74db4357",
+              "releases": [
+                {
+                  "country": "NL",
+                  "date": {
+                    "year": 1988
+                  },
+                  "id": "2dc17dca-01ca-4148-be56-cb3bf1ba1616",
+                  "medium_count": 1,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 1,
+                      "track_count": 10,
+                      "tracks": [
+                        {
+                          "id": "139ccd0b-b19f-4535-91a1-dc671bbd9e46",
+                          "position": 10,
+                          "title": "Hocus Pocus (US single version)"
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "NL",
+                      "date": {
+                        "year": 1988
+                      }
+                    }
+                  ],
+                  "track_count": 10
+                },
+                {
+                  "country": "JP",
+                  "date": {
+                    "year": 2006
+                  },
+                  "id": "968b0d26-9603-48b0-86da-c4f3cc4de821",
+                  "medium_count": 1,
+                  "mediums": [
+                    {
+                      "format": "CD",
+                      "position": 1,
+                      "track_count": 10,
+                      "tracks": [
+                        {
+                          "id": "914758b6-c8cf-32c0-b14d-22a7cd528c6c",
+                          "position": 10,
+                          "title": "Hocus Pocus (US single version)"
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "JP",
+                      "date": {
+                        "year": 2006
+                      }
+                    }
+                  ],
+                  "track_count": 10
+                }
+              ],
+              "title": "Ship of Memories",
+              "type": "Album"
+            },
+            {
+              "id": "060a1a33-532d-479c-9c06-42868000c49b",
+              "releases": [
+                {
+                  "country": "CL",
+                  "date": {
+                    "year": 2013
+                  },
+                  "id": "00617296-b431-4d0c-91cf-75099c858ac3",
+                  "medium_count": 1,
+                  "mediums": [
+                    {
+                      "position": 1,
+                      "track_count": 11,
+                      "tracks": [
+                        {
+                          "id": "72fdb429-fbfd-40e3-a9ed-89d9e0e30500",
+                          "position": 1
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "CL",
+                      "date": {
+                        "year": 2013
+                      }
+                    }
+                  ],
+                  "track_count": 11
+                },
+                {
+                  "country": "AR",
+                  "date": {
+                    "year": 1983
+                  },
+                  "id": "5441fe4e-1bd8-49ee-bba3-638ca4748925",
+                  "medium_count": 1,
+                  "mediums": [
+                    {
+                      "format": "12\" Vinyl",
+                      "position": 1,
+                      "track_count": 11,
+                      "tracks": [
+                        {
+                          "id": "8955c75f-2583-46c3-981a-c41bbcde201f",
+                          "position": 1
+                        }
+                      ]
+                    }
+                  ],
+                  "releaseevents": [
+                    {
+                      "country": "AR",
+                      "date": {
+                        "year": 1983
+                      }
+                    }
+                  ],
+                  "title": "Grandes exitos",
+                  "track_count": 11
+                }
+              ],
+              "secondarytypes": [
+                "Compilation"
+              ],
+              "title": "Grandes \u00e9xitos",
+              "type": "Album"
+            }
+          ],
+          "sources": 13,
+          "title": "Hocus Pocus"
+        }
+      ],
+      "score": 0.946796
+    }
+  ],
+  "status": "ok"
+}
