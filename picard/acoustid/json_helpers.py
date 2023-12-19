@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2017 Sambhav Kothari
-# Copyright (C) 2018-2020 Philipp Wolfer
+# Copyright (C) 2018-2020, 2023 Philipp Wolfer
 # Copyright (C) 2020 Ray Bouchard
 # Copyright (C) 2020-2021 Laurent Monin
 #
@@ -142,3 +142,15 @@ def parse_recording(recording):
         recording_mb['sources'] = recording['sources']
 
     return recording_mb
+
+
+def max_source_count(recordings):
+    """Given a list of recordings return the highest number of sources.
+    This ignores recordings without metadata.
+    """
+    sources = [
+        r.get('sources', 1)
+        for r in recordings
+        if r.get('title')
+    ]
+    return max(sources + [1])

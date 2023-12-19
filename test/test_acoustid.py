@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2018 Wieland Hoffmann
-# Copyright (C) 2019-2020 Philipp Wolfer
+# Copyright (C) 2019-2020, 2023 Philipp Wolfer
 # Copyright (C) 2020 Ray Bouchard
 # Copyright (C) 2020-2021 Laurent Monin
 # Copyright (C) 2021 Bob Swift
@@ -30,7 +30,10 @@ import os
 
 from test.picardtestcase import PicardTestCase
 
-from picard.acoustid.json_helpers import parse_recording
+from picard.acoustid.json_helpers import (
+    max_source_count,
+    parse_recording,
+)
 from picard.mbjson import recording_to_metadata
 from picard.metadata import Metadata
 from picard.track import Track
@@ -95,3 +98,19 @@ class NullRecordingTest(AcoustIDTest):
         parsed_recording = parse_recording(self.json_doc)
         recording_to_metadata(parsed_recording, m, t)
         self.assertEqual(m, {})
+
+
+class MaxSourceCountTest(AcoustIDTest):
+    filename = 'acoustid_no_metadata.json'
+
+    def test_max_source_count(self):
+        c = max_source_count(self.json_doc['results'][0]['recordings'])
+        self.assertEqual(13, c)
+
+    def test_max_source_count_no_recordings(self):
+        c = max_source_count([])
+        self.assertEqual(1, c)
+
+    def test_max_source_count_no_value(self):
+        c = max_source_count([{'title': 'foo', 'sources': 42}, {'title': 'foo'}])
+        self.assertEqual(42, c)

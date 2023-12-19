@@ -6,7 +6,7 @@
 # Copyright (C) 2017-2018 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2018-2021 Laurent Monin
-# Copyright (C) 2018-2022 Philipp Wolfer
+# Copyright (C) 2018-2023 Philipp Wolfer
 # Copyright (C) 2023 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
@@ -34,7 +34,10 @@ import json
 from PyQt5 import QtCore
 
 from picard import log
-from picard.acoustid.json_helpers import parse_recording
+from picard.acoustid.json_helpers import (
+    max_source_count,
+    parse_recording,
+)
 from picard.config import get_config
 from picard.const import (
     DEFAULT_FPCALC_THREADS,
@@ -113,14 +116,14 @@ class AcoustIDClient(QtCore.QObject):
                     results = document.get('results') or []
                     for result in results:
                         recordings = result.get('recordings') or []
-                        max_sources = max([r.get('sources', 1) for r in recordings] + [1])
+                        max_sources = max_source_count(recordings)
                         result_score = get_score(result)
                         for recording in recordings:
                             parsed_recording = parse_recording(recording)
                             if parsed_recording is not None:
                                 # Calculate a score based on result score and sources for this
                                 # recording relative to other recordings in this result
-                                score = recording.get('sources', 1) / max_sources * 100
+                                score = min(recording.get('sources', 1) / max_sources, 1.0) * 100
                                 parsed_recording['score'] = score * result_score
                                 parsed_recording['acoustid'] = result['id']
                                 recording_list.append(parsed_recording)
