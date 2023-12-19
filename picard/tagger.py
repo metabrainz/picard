@@ -1521,6 +1521,7 @@ def main(localedir=None, autoupdate=True):
     picard_args = process_picard_args()
 
     if picard_args.long_version:
+        _ = QtCore.QCoreApplication(sys.argv)
         print_message_and_exit(versions.as_string())
     if picard_args.version:
         print_message_and_exit(f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}")
