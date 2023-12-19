@@ -382,6 +382,9 @@ class Metadata(MutableMapping):
 
             search_score = get_score(track)
             if not releases:
+                config = get_config()
+                score = dict(config.setting['release_type_scores']).get('Other', 0.5)
+                parts.append((score, _get_total_release_weight(weights)))
                 sim = linear_combination_of_weights(parts) * search_score
                 return SimMatchTrack(similarity=sim, releasegroup=None, release=None, track=track)
 
@@ -661,6 +664,12 @@ class MultiMetadataProxy:
 
     def __repr__(self):
         return self.__read('__repr__')
+
+
+def _get_total_release_weight(weights):
+    release_weights = ('album', 'totaltracks', 'totalalbumtracks', 'releasetype',
+                       'releasecountry', 'format', 'date')
+    return sum(weights[w] for w in release_weights if w in weights)
 
 
 _album_metadata_processors = PluginFunctions(label='album_metadata_processors')

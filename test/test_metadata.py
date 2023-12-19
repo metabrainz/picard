@@ -5,7 +5,7 @@
 # Copyright (C) 2017 Sophist-UK
 # Copyright (C) 2018, 2020 Wieland Hoffmann
 # Copyright (C) 2018-2021 Laurent Monin
-# Copyright (C) 2018-2021 Philipp Wolfer
+# Copyright (C) 2018-2021, 2023 Philipp Wolfer
 # Copyright (C) 2020 dukeyin
 #
 # This program is free software; you can redistribute it and/or
@@ -30,6 +30,9 @@ from test.picardtestcase import (
 )
 from test.test_coverart_image import create_image
 
+from picard.acoustid.json_helpers import (
+    parse_recording as acoustid_parse_recording,
+)
 from picard.cluster import Cluster
 from picard.coverart.image import CoverArtImage
 from picard.file import File
@@ -61,7 +64,8 @@ settings = {
     'translate_artist_names': False,
     'release_ars': True,
     'release_type_scores': [
-        ('Album', 1.0)
+        ('Album', 1.0),
+        ('Other', 1.0),
     ],
 }
 
@@ -698,6 +702,24 @@ class CommonTests:
             self.assertGreaterEqual(match.similarity, 0.8)
             self.assertEqual(recording, match.track)
             self.assertEqual(recording['releases'][0], match.release)
+
+        def test_compare_to_track_without_releases(self):
+            self.set_config_values({
+                'release_type_scores': [('Compilation', 0.6), ('Other', 0.6)]
+            })
+            track_json = acoustid_parse_recording(load_test_json('acoustid.json'))
+            track = Track(track_json['id'])
+            track.metadata.update({
+                'album': 'x',
+                'artist': 'Ed Sheeran',
+                'title': 'Nina',
+            })
+            track.metadata.length = 225000
+            m1 = track.metadata.compare_to_track(track_json, File.comparison_weights)
+            del track_json['releases']
+            m2 = track.metadata.compare_to_track(track_json, File.comparison_weights)
+            self.assertGreater(m1.similarity, m2.similarity,
+                               'Matching score for release with recordings must be higher then for release without')
 
 
 class MetadataTest(CommonTests.CommonMetadataTestCase):
