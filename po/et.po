@@ -14,16 +14,16 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-15 17:44+0100\n"
-"PO-Revision-Date: 2023-08-30 09:27+0000\n"
+"PO-Revision-Date: 2023-12-20 14:28+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Estonian <https://translations.metabrainz.org/projects/picard/"
-"app/et/>\n"
+"3/app/et/>\n"
 "Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -3532,10 +3532,9 @@ msgstr ""
 "õigused"
 
 #: picard/ui/playertoolbar.py:193
-#, fuzzy, python-format
-#| msgid "Internal player: error, code=%(code)d, msg=%(message)s"
+#, python-format
 msgid "Internal player: %(error)s, %(message)s"
-msgstr "Sisemine muusikamängija: viga, kood = %(code)d, sõnum = %(message)s"
+msgstr "Sisemine muusikamängija: %(error)s, %(message)s"
 
 #: picard/ui/playertoolbar.py:202
 msgid "Player"

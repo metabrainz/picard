@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-15 17:44+0100\n"
-"PO-Revision-Date: 2023-12-18 06:54+0000\n"
+"PO-Revision-Date: 2023-12-20 14:28+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Hebrew <https://translations.metabrainz.org/projects/picard/3/"
 "app/he/>\n"
@@ -3974,10 +3974,9 @@ msgid ""
 msgstr "נגן פנימי: חסרות ההרשאות המתאמות להשמעת משאב מדיה"
 
 #: picard/ui/playertoolbar.py:193
-#, fuzzy, python-format
-#| msgid "Internal player: error, code=%(code)d, msg=%(message)s"
+#, python-format
 msgid "Internal player: %(error)s, %(message)s"
-msgstr "נגן פנימי: שגיאה, קוד=%(code)d, הודעה=%(message)s"
+msgstr "נגן פנימי: ‎%(error)s, %(message)s"
 
 #: picard/ui/playertoolbar.py:202
 msgid "Player"
@@ -5514,10 +5513,8 @@ msgid "System"
 msgstr "מערכת"
 
 #: picard/ui/options/interface.py:106
-#, fuzzy
-#| msgid "The Qt5 theme configured in the desktop environment"
 msgid "The Qt6 theme configured in the desktop environment"
-msgstr "ערכת הנושא Qt5 מוגדרת בסביבת שולחן העבודה"
+msgstr "ערכת הנושא Qt6 מוגדרת בסביבת שולחן העבודה"
 
 #: picard/ui/options/interface.py:124
 msgid "System default"

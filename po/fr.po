@@ -40,9 +40,9 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-15 17:44+0100\n"
-"PO-Revision-Date: 2023-10-11 17:27+0000\n"
-"Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
-"Language-Team: French <https://translations.metabrainz.org/projects/picard/"
+"PO-Revision-Date: 2023-12-20 14:28+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"Language-Team: French <https://translations.metabrainz.org/projects/picard/3/"
 "app/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -50,7 +50,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % "
 "1000000 == 0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.0.2\n"
+"X-Generator: Weblate 5.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -4172,10 +4172,9 @@ msgstr ""
 "ressource media"
 
 #: picard/ui/playertoolbar.py:193
-#, fuzzy, python-format
-#| msgid "Internal player: error, code=%(code)d, msg=%(message)s"
+#, python-format
 msgid "Internal player: %(error)s, %(message)s"
-msgstr "Lecteur interne : erreur, code=%(code)d, msg=%(message)s"
+msgstr "Lecteur interne : %(error)s, %(message)s"
 
 #: picard/ui/playertoolbar.py:202
 msgid "Player"
@@ -5772,10 +5771,8 @@ msgid "System"
 msgstr "Système"
 
 #: picard/ui/options/interface.py:106
-#, fuzzy
-#| msgid "The Qt5 theme configured in the desktop environment"
 msgid "The Qt6 theme configured in the desktop environment"
-msgstr "Le thème Qt5 configuré dans l’environnement de bureau"
+msgstr "Le thème Qt6 configuré dans l’environnement de bureau"
 
 #: picard/ui/options/interface.py:124
 msgid "System default"

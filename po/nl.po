@@ -16,16 +16,16 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-15 17:44+0100\n"
-"PO-Revision-Date: 2023-10-27 22:50+0000\n"
+"PO-Revision-Date: 2023-12-20 14:28+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
-"Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/"
+"Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/3/"
 "app/nl/>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.1\n"
+"X-Generator: Weblate 5.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -4086,10 +4086,9 @@ msgstr ""
 "ontbreken"
 
 #: picard/ui/playertoolbar.py:193
-#, fuzzy, python-format
-#| msgid "Internal player: error, code=%(code)d, msg=%(message)s"
+#, python-format
 msgid "Internal player: %(error)s, %(message)s"
-msgstr "Interne speler: fout, code=%(code)d, msg=%(message)s"
+msgstr "Interne speler: %(error)s, %(message)s"
 
 #: picard/ui/playertoolbar.py:202
 msgid "Player"
@@ -5667,10 +5666,8 @@ msgid "System"
 msgstr "Systeem"
 
 #: picard/ui/options/interface.py:106
-#, fuzzy
-#| msgid "The Qt5 theme configured in the desktop environment"
 msgid "The Qt6 theme configured in the desktop environment"
-msgstr "Het thema van Qt 5, zoals dat in de bureaubladomgeving is ingesteld"
+msgstr "Het thema van Qt 6, zoals dat in de bureaubladomgeving is ingesteld"
 
 #: picard/ui/options/interface.py:124
 msgid "System default"
