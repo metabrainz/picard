@@ -7,23 +7,24 @@
 # Matte <piotto@gmail.com>, 2006
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2023
 # "salo.rock" <salo.rock+musicbrainz@gmail.com>, 2012-2015,2017-2023.
+# "salo.rock" <salo.rock@users.noreply.translations.metabrainz.org>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-15 17:44+0100\n"
-"PO-Revision-Date: 2023-11-15 21:27+0000\n"
+"PO-Revision-Date: 2023-12-20 14:28+0000\n"
 "Last-Translator: \"salo.rock\" <salo.rock@users.noreply.translations."
 "metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
-"app/it/>\n"
+"3/app/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
-"0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.1\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
+" ? 1 : 2);\n"
+"X-Generator: Weblate 5.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -614,8 +615,7 @@ msgstr "Usa la sintassi di ricerca avanzata"
 
 #: picard/profile.py:193
 msgid "Show a usage warning dialog when Picard starts"
-msgstr ""
-"Mostra una finestra di dialogo di avvertimento utenti all'avvio di Picard"
+msgstr "Mostra una finestra di dialogo di avvertenza utenti all'avvio di Picard"
 
 #: picard/profile.py:194 picard/ui/ui_options_interface.py:130
 msgid "Show a quit confirmation dialog for unsaved changes"
@@ -2925,7 +2925,7 @@ msgstr "Testo visualizzazione registro (informazioni)"
 
 #: picard/ui/colors.py:43
 msgid "Log view text (warning)"
-msgstr "Testo visualizzazione registro (avviso)"
+msgstr "Testo visualizzazione registro (avvertenza)"
 
 #: picard/ui/colors.py:44
 msgid "Tag added"
@@ -4108,7 +4108,7 @@ msgstr "Mostra di nuovo questo messaggio al prossimo avvio di Picard."
 
 #: picard/ui/newuserdialog.py:54
 msgid "New User Warning"
-msgstr "Avvertimento per nuovi utenti"
+msgstr "Avvertenza per nuovi utenti"
 
 #: picard/ui/passworddialog.py:43
 #, python-format
@@ -4281,11 +4281,11 @@ msgstr "Nessuna azione selezionata. Nessun cambiamento verrà salvato."
 
 #: picard/ui/savewarningdialog.py:66
 msgid "Don't show this warning again."
-msgstr "Non mostrare più questo avvertimento."
+msgstr "Non mostrare più questa avvertenza."
 
 #: picard/ui/savewarningdialog.py:72
 msgid "File Save Warning"
-msgstr "Avvertimento sul salvataggio di file"
+msgstr "Avvertenza sul salvataggio di file"
 
 #: picard/ui/scripteditor.py:145
 msgid "Renaming options are disabled"
