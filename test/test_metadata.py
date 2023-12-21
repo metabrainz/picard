@@ -311,7 +311,10 @@ class CommonTests:
                        (20000, 20000, 1.0),
                        (20000, 30000, 0.666666666667),
                        (20000, 40000, 0.333333333333),
-                       (20000, 50000, 0.0)]
+                       (20000, 50000, 0.0),
+                       (20000, None, 0.0),
+                       (None, 2000, 0.0),
+                       (None, None, 0.0)]
             for (a, b, expected) in results:
                 actual = Metadata.length_score(a, b)
                 self.assertAlmostEqual(expected, actual,
