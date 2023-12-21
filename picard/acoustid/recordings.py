@@ -65,6 +65,7 @@ class RecordingResolver:
         self._doc = doc
         self._callback = callback
         self._recording_map = defaultdict(dict)
+        self._recording_cache = dict()
         self._missing_metadata = deque()
 
     def resolve(self) -> None:
@@ -74,16 +75,19 @@ class RecordingResolver:
             result_score = get_score(result)
             acoustid = result.get('id')
             for recording in recordings:
+                mbid = recording.get('id')
                 sources = recording.get('sources', 1)
                 if recording_has_metadata(recording):
+                    mb_recording = parse_recording(recording)
+                    self._recording_cache[mbid] = mb_recording
                     self._recording_map[acoustid][recording['id']] = Recording(
-                        recording=parse_recording(recording),
+                        recording=mb_recording,
                         result_score=result_score,
                         sources=sources,
                     )
                 else:
                     self._missing_metadata.append(IncompleteRecording(
-                        mbid=recording.get('id'),
+                        mbid=mbid,
                         acoustid=acoustid,
                         result_score=result_score,
                         sources=sources,
@@ -99,11 +103,16 @@ class RecordingResolver:
             self._send_results()
             return
 
-        self._mbapi.get_track_by_id(
-            self._missing_metadata[0].mbid,
-            self._recording_request_finished,
-            inc=['release-groups', 'releases'],
-        )
+        mbid = self._missing_metadata[0].mbid
+        if mbid in self._recording_cache:
+            mb_recording = self._recording_cache[mbid]
+            self._recording_request_finished(mb_recording, None, None)
+        else:
+            self._mbapi.get_track_by_id(
+                self._missing_metadata[0].mbid,
+                self._recording_request_finished,
+                inc=['release-groups', 'releases'],
+            )
 
     def _recording_request_finished(self, mb_recording, http, error):
         recording = self._missing_metadata.popleft()
@@ -118,6 +127,7 @@ class RecordingResolver:
         mbid = mb_recording.get('id')
         recording_dict = self._recording_map[recording.acoustid]
         if mbid:
+            self._recording_cache[mbid] = mb_recording
             if mbid not in recording_dict:
                 recording_dict[mbid] = Recording(
                     recording=mb_recording,
