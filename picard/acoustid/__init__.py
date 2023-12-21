@@ -111,10 +111,11 @@ class AcoustIDClient(QtCore.QObject):
             try:
                 status = document['status']
                 if status == 'ok':
-                    resolver = RecordingResolver(self._acoustid_api.webservice)
-                    resolver.resolve(
+                    resolver = RecordingResolver(
+                        self._acoustid_api.webservice,
                         document,
-                        partial(self._on_recording_resolve_finish, task, document, http))
+                        callback=partial(self._on_recording_resolve_finish, task, document, http))
+                    resolver.resolve()
                 else:
                     mparms = {
                         'error': document['error']['message'],
@@ -134,17 +135,18 @@ class AcoustIDClient(QtCore.QObject):
                 task.next_func(doc, http, e)
 
     def _on_recording_resolve_finish(self, task, document, http, result=None, error=None):
-        recording_list = document['recordings'] = result
+        document['recordings'] = recording_list = result
         if not recording_list:
             results = document.get('results')
             if results:
                 # Set AcoustID in tags if there was no matching recording
-                task.file.metadata['acoustid_id'] = results[0]['id']
+                acoustid = results[0].get('id')
+                task.file.metadata['acoustid_id'] = acoustid
                 task.file.update()
                 log.debug(
                     "AcoustID: Found no matching recordings for '%s',"
                     " setting acoustid_id tag to %r",
-                    task.file.filename, results[0]['id']
+                    task.file.filename, acoustid
                 )
         else:
             log.debug(

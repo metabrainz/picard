@@ -144,13 +144,5 @@ def parse_recording(recording):
     return recording_mb
 
 
-def max_source_count(recordings):
-    """Given a list of recordings return the highest number of sources.
-    This ignores recordings without metadata.
-    """
-    sources = [
-        r.get('sources', 1)
-        for r in recordings
-        if r.get('title')
-    ]
-    return max(sources + [1])
+def recording_has_metadata(recording):
+    return 'id' in recording and recording.get('title') is not None

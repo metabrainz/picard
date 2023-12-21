@@ -18,38 +18,118 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import (
+    defaultdict,
+    deque,
+    namedtuple,
+)
+from typing import (
+    Dict,
+    List,
+)
+
+from PyQt6.QtNetwork import QNetworkReply
+
 from picard.acoustid.json_helpers import (
-    max_source_count,
     parse_recording,
+    recording_has_metadata,
 )
 from picard.webservice import WebService
 from picard.webservice.api_helpers import MBAPIHelper
 
 
+class Recording:
+    recording: dict
+    result_score: float
+    sources: int
+
+    def __init__(self, recording, result_score=1.0, sources=1):
+        self.recording = recording
+        self.result_score = result_score
+        self.sources = sources
+
+
+IncompleteRecording = namedtuple('Recording', 'mbid acoustid result_score sources')
+
+
 class RecordingResolver:
+    """Given an AcoustID lookup result returns a list of MB recordings.
+    The recordings are either directly taken from the AcoustID result or, if the
+    results return only the MBID without metadata, loaded via the MB web service.
+    """
 
-    def __init__(self, ws: WebService) -> None:
-        self.mbapi = MBAPIHelper(ws)
+    _recording_map: Dict[str, Dict[str, Recording]]
 
-    def resolve(self, doc: dict, callback: callable) -> None:
-        recording_map = {}
-        results = doc.get('results') or []
+    def __init__(self, ws: WebService, doc: dict, callback: callable) -> None:
+        self._mbapi = MBAPIHelper(ws)
+        self._doc = doc
+        self._callback = callback
+        self._recording_map = defaultdict(dict)
+        self._missing_metadata = deque()
+
+    def resolve(self) -> None:
+        results = self._doc.get('results') or []
         for result in results:
             recordings = result.get('recordings') or []
-            max_sources = max_source_count(recordings)
             result_score = get_score(result)
+            acoustid = result.get('id')
             for recording in recordings:
-                parsed_recording = parse_recording(recording)
-                if parsed_recording is not None:
-                    # Calculate a score based on result score and sources for this
-                    # recording relative to other recordings in this result
-                    score = min(recording.get('sources', 1) / max_sources, 1.0) * 100
-                    parsed_recording['score'] = score * result_score
-                    parsed_recording['acoustid'] = result.get('id')
-                    recording_map[parsed_recording['id']] = parsed_recording
+                sources = recording.get('sources', 1)
+                if recording_has_metadata(recording):
+                    self._recording_map[acoustid][recording['id']] = Recording(
+                        recording=parse_recording(recording),
+                        result_score=result_score,
+                        sources=sources,
+                    )
+                else:
+                    self._missing_metadata.append(IncompleteRecording(
+                        mbid=recording.get('id'),
+                        acoustid=acoustid,
+                        result_score=result_score,
+                        sources=sources,
+                    ))
 
-        # TODO: Load recording details for recordings without metadata
-        callback(recording_map.values())
+        if self._missing_metadata:
+            self._load_recordings()
+        else:
+            self._send_results()
+
+    def _load_recordings(self):
+        if not self._missing_metadata:
+            self._send_results()
+            return
+
+        self._mbapi.get_track_by_id(
+            self._missing_metadata[0].mbid,
+            self._recording_request_finished,
+            inc=['release-groups', 'releases'],
+        )
+
+    def _recording_request_finished(self, mb_recording, http, error):
+        recording = self._missing_metadata.popleft()
+        if error:
+            if error == QNetworkReply.NetworkError.ContentNotFoundError:
+                # Recording does not exist, ignore and move on
+                self._load_recordings()
+            else:
+                self._send_results(error)
+            return
+
+        mbid = mb_recording.get('id')
+        recording_dict = self._recording_map[recording.acoustid]
+        if mbid:
+            if mbid not in recording_dict:
+                recording_dict[mbid] = Recording(
+                    recording=mb_recording,
+                    result_score=recording.result_score,
+                    sources=recording.sources,
+                )
+            else:
+                recording_dict[mbid].sources += recording.sources
+        self._load_recordings()
+
+    def _send_results(self, error=None):
+        self._callback(list(parse_recording_map(self._recording_map)), error)
 
 
 def get_score(node):
@@ -57,3 +137,28 @@ def get_score(node):
         return float(node.get('score', 1.0))
     except (TypeError, ValueError):
         return 1.0
+
+
+def parse_recording_map(recording_map: Dict[str, Dict[str, Recording]]):
+    for acoustid, recordings in recording_map.items():
+        recording_list = recordings.values()
+        max_sources = max_source_count(recording_list)
+        for recording in recording_list:
+            parsed_recording = recording.recording
+            if parsed_recording is not None:
+                # Calculate a score based on result score and sources for this
+                # recording relative to other recordings in this result
+                score = min(recording.sources / max_sources, 1.0) * 100
+                parsed_recording['score'] = score * recording.result_score
+                parsed_recording['acoustid'] = acoustid
+                parsed_recording['sources'] = recording.sources
+            yield parsed_recording
+
+
+def max_source_count(recordings: List[Recording]):
+    """Given a list of recordings return the highest number of sources.
+    This ignores recordings without metadata.
+    """
+    sources = {r.sources for r in recordings}
+    sources.add(1)
+    return max(sources)
