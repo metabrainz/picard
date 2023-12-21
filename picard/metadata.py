@@ -206,6 +206,8 @@ class Metadata(MutableMapping):
 
     @staticmethod
     def length_score(a, b):
+        if a is None or b is None:
+            return 0.0
         return (1.0 - min(abs(a - b),
                 LENGTH_SCORE_THRES_MS) / float(LENGTH_SCORE_THRES_MS))
 
