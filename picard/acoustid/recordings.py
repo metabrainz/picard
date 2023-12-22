@@ -111,7 +111,7 @@ class RecordingResolver:
             self._mbapi.get_track_by_id(
                 self._missing_metadata[0].mbid,
                 self._recording_request_finished,
-                inc=['release-groups', 'releases'],
+                inc=('artists', 'release-groups', 'releases', 'media'),
             )
 
     def _recording_request_finished(self, mb_recording, http, error):
