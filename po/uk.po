@@ -8,24 +8,25 @@
 # Iurii Skipa <yuriskipa@gmail.com>, 2016
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023.
 # Антон Присяжный <aukrodotua@gmail.com>, 2018
+# Nerten <alex@nerten.info>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-15 17:44+0100\n"
-"PO-Revision-Date: 2023-08-27 13:05+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2023-12-22 09:28+0000\n"
+"Last-Translator: Nerten <alex@nerten.info>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
-"picard/app/uk/>\n"
+"picard/3/app/uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
-"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
-"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
-"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
-"X-Generator: Weblate 4.18.2\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 "
+"? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > "
+"14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % "
+"100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+"X-Generator: Weblate 5.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -54,7 +55,7 @@ msgstr "[не вдалось завантажити альбом %s]"
 #: picard/cluster.py:259
 #, python-format
 msgid "Cluster %(album)s identified!"
-msgstr "Кластер %(album)sвиявлений!"
+msgstr "Кластер %(album)s виявлений!"
 
 #: picard/cluster.py:262
 #, python-format
@@ -75,7 +76,7 @@ msgstr "Не згуртовані файли"
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
 msgstr[0] "Додано %(count)i реліз до колекції \"%(name)s\""
-msgstr[1] "Додано %(count)i релізів до колекції \"%(name)s\""
+msgstr[1] "Додано %(count)i релізи до колекції \"%(name)s\""
 msgstr[2] "Додано %(count)i релізів до колекції \"%(name)s\""
 msgstr[3] "Додані %(count)i релізи до колекції \"%(name)s\""
 
@@ -83,15 +84,15 @@ msgstr[3] "Додані %(count)i релізи до колекції \"%(name)s\
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Видалено %(count)i реліз з колекції \"%(name)s\""
+msgstr[1] "Видалено %(count)i релізи з колекції \"%(name)s\""
+msgstr[2] "Видалено %(count)i релізів з колекції \"%(name)s\""
+msgstr[3] "Видалено %(count)i релізи з колекції \"%(name)s\""
 
 #: picard/collection.py:97
 #, python-format
 msgid "Error while modifying collections: %(error)s"
-msgstr ""
+msgstr "Помилка під час зміни колекцій: %(error)s"
 
 #: picard/collection.py:119
 #, python-format
