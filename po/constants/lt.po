@@ -8,10 +8,10 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-24 09:20+0200\n"
-"PO-Revision-Date: 2023-12-13 21:32+0000\n"
+"PO-Revision-Date: 2023-12-22 09:28+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
-"picard/constants/lt/>\n"
+"picard/3/constants/lt/>\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n % 10 == 1 && (n % 100 < 11 || n % 100 > "
 "19)) ? 0 : ((n % 10 >= 2 && n % 10 <= 9 && (n % 100 < 11 || n % 100 > 19)) ? "
 "1 : 2);\n"
-"X-Generator: Weblate 5.2.1\n"
+"X-Generator: Weblate 5.3\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:169 picard/const/__init__.py:171
@@ -2551,7 +2551,7 @@ msgstr ""
 
 #: picard/const/locales.py:634 picard/const/languages.py:62
 msgid "Lithuanian"
-msgstr ""
+msgstr "Lietuvių k."
 
 #: picard/const/locales.py:635
 msgid "Lithuanian (Lithuania)"
