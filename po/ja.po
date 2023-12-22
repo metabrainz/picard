@@ -20,21 +20,22 @@
 # 和田篤 <entry@wa2c.com>, 2018-2019
 # 和田篤 <entry@wa2c.com>, 2018
 # 和田篤 <entry@wa2c.com>, 2018
+# shuuji3 <shuuji3@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-15 18:23+0100\n"
-"PO-Revision-Date: 2023-08-30 09:27+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2023-12-22 09:28+0000\n"
+"Last-Translator: shuuji3 <shuuji3@gmail.com>\n"
 "Language-Team: Japanese <https://translations.metabrainz.org/projects/picard/"
-"app/ja/>\n"
+"2/app/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -152,7 +153,8 @@ msgstr "プライマリ ファイル名生成スクリプト"
 msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
-msgstr ""
+msgstr "ファイルのパースに失敗しました。ファイルが破損しているか、ファイル形式が未対"
+"応です。"
 
 #: picard/file.py:853
 #, python-format
@@ -183,7 +185,7 @@ msgstr "エラー"
 
 #: picard/log.py:68
 msgid "Warning"
-msgstr ""
+msgstr "警告"
 
 #: picard/log.py:69 picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
 #: picard/ui/options/interface_toolbar.py:96
@@ -192,7 +194,7 @@ msgstr "情報"
 
 #: picard/log.py:70
 msgid "Debug"
-msgstr ""
+msgstr "デバッグ"
 
 #: picard/oauth.py:249 picard/oauth.py:276
 msgid "Unexpected authentication error"
@@ -209,10 +211,9 @@ msgid "Unable to load plugin '%s'"
 msgstr "プラグイン「%s」を読み込めません"
 
 #: picard/pluginmanager.py:302
-#, fuzzy, python-format
-#| msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+#, python-format
 msgid "Failed loading plugin \"%(plugin)s\""
-msgstr "プラグイン「%(plugin)s」を「%(dirname)s」内での読み込みに失敗しました"
+msgstr "プラグイン「%(plugin)s」の読み込みに失敗しました"
 
 #: picard/pluginmanager.py:349
 #, python-format
@@ -273,15 +274,15 @@ msgstr "新たなファイルを読み込む際にMBIDを無視する"
 
 #: picard/profile.py:53 picard/ui/ui_options_general.py:212
 msgid "Check for plugin updates during startup"
-msgstr ""
+msgstr "起動時にプラグインの更新を確認する"
 
 #: picard/profile.py:54 picard/ui/ui_options_general.py:213
 msgid "Check for program updates during startup"
-msgstr ""
+msgstr "起動時にプログラムの更新を確認する"
 
 #: picard/profile.py:55
 msgid "Days between update checks"
-msgstr ""
+msgstr "更新確認の間隔 (日)"
 
 #: picard/profile.py:56
 msgid "Updates to check"
