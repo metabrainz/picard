@@ -11,13 +11,15 @@
 # Maurits Meulenbelt, 2012-2023
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021,2023
 # mfmeulenbelt <mfmeulenbelt@gmail.com>, 2023.
+# RandomMushroom128 <RandomMushroom128@users.noreply.translations.metabrainz.org>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-15 17:44+0100\n"
-"PO-Revision-Date: 2023-12-20 14:28+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2023-12-22 09:28+0000\n"
+"Last-Translator: RandomMushroom128 <RandomMushroom128@users.noreply."
+"translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/3/"
 "app/nl/>\n"
 "Language: nl\n"
@@ -174,10 +176,8 @@ msgid "Error"
 msgstr "Fout"
 
 #: picard/log.py:68
-#, fuzzy
-#| msgid "New User Warning"
 msgid "Warning"
-msgstr "Waarschuwing voor nieuwe gebruikers"
+msgstr "Waarschuwing"
 
 #: picard/log.py:69 picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
 #: picard/ui/options/interface_toolbar.py:96
