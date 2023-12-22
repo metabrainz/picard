@@ -345,9 +345,10 @@ class Metadata(MutableMapping):
                                              config.setting['release_type_scores'],
                                              weights['releasetype'])
 
-        rg = QObject.tagger.get_release_group_by_id(release['release-group']['id'])
-        if release['id'] in rg.loaded_albums:
-            parts.append((1.0, 6))
+        if 'release-group' in release:
+            rg = QObject.tagger.get_release_group_by_id(release['release-group']['id'])
+            if release['id'] in rg.loaded_albums:
+                parts.append((1.0, 6))
 
         return parts
 
