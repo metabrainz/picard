@@ -91,7 +91,6 @@ class AcoustIDClient(QtCore.QObject):
         return config.setting['fpcalc_threads'] or DEFAULT_FPCALC_THREADS
 
     def _on_lookup_finished(self, task, document, http, error):
-        doc = {}
         if error:
             mparms = {
                 'error': http.errorString(),
@@ -106,7 +105,7 @@ class AcoustIDClient(QtCore.QObject):
                 mparms,
                 echo=None
             )
-            task.next_func(doc, http, error)
+            task.next_func({}, http, error)
         else:
             try:
                 status = document['status']
@@ -129,13 +128,13 @@ class AcoustIDClient(QtCore.QObject):
                         mparms,
                         echo=None
                     )
-                    task.next_func(doc, http, error)
+                    task.next_func({}, http, error)
             except (AttributeError, KeyError, TypeError) as e:
                 log.error("AcoustID: Error reading response", exc_info=True)
-                task.next_func(doc, http, e)
+                task.next_func({}, http, e)
 
     def _on_recording_resolve_finish(self, task, document, http, result=None, error=None):
-        document['recordings'] = recording_list = result
+        recording_list = result
         if not recording_list:
             results = document.get('results')
             if results:
@@ -154,7 +153,7 @@ class AcoustIDClient(QtCore.QObject):
                 task.file.filename,
                 len(recording_list)
             )
-        task.next_func(document, http, error)
+        task.next_func({'recordings': recording_list}, http, error)
 
     def _lookup_fingerprint(self, task, result=None, error=None):
         if task.file.state == File.REMOVED:
