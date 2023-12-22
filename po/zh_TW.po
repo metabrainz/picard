@@ -11,13 +11,14 @@
 # Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2014,2016-2020,2022
 # riotism, 2017-2018,2020
 # 如月飛羽 <flyingfeather1501@gmail.com>, 2023
+# Iceman1415 <iceman1415@protonmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-15 17:44+0100\n"
-"PO-Revision-Date: 2023-12-20 14:28+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2023-12-22 09:28+0000\n"
+"Last-Translator: Iceman1415 <iceman1415@protonmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://translations.metabrainz.org/"
 "projects/picard/3/app/zh_Hant/>\n"
 "Language: zh_TW\n"
@@ -193,10 +194,9 @@ msgid "Unable to load plugin '%s'"
 msgstr "無法載入插件「%s」"
 
 #: picard/pluginmanager.py:302
-#, fuzzy, python-format
-#| msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+#, python-format
 msgid "Failed loading plugin \"%(plugin)s\""
-msgstr "載入插件「%(plugin)s」於「%(dirname)s」時失敗"
+msgstr "載入插件「%(plugin)s」時失敗"
 
 #: picard/pluginmanager.py:349
 #, python-format
@@ -264,9 +264,8 @@ msgid "Days between update checks"
 msgstr ""
 
 #: picard/profile.py:56
-#, fuzzy
 msgid "Updates to check"
-msgstr "要檢查的更新:"
+msgstr "要檢查的更新"
 
 #: picard/profile.py:61 picard/ui/options/metadata.py:79
 #: picard/ui/ui_options_metadata.py:131
