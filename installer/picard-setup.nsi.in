@@ -136,7 +136,7 @@ Section "!$(SectionRequired)" required
     SetOverwrite on
 
     ; Files
-    File /r /x "locale" "${PROJECT_PATH}\dist\picard\_internal\"
+    File /r /x "locale" "${PROJECT_PATH}\dist\picard\"
 
     ; Write the installation path into the registry
     WriteRegStr HKLM "Software\MusicBrainz\${PRODUCT_NAME}" "InstallDir" "$INSTDIR"
