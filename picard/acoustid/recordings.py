@@ -38,6 +38,11 @@ from picard.webservice import WebService
 from picard.webservice.api_helpers import MBAPIHelper
 
 
+# Only do extra lookup for recordings without metadata, if they have at least
+# this percentage of sources compared to the recording with most sources.
+SOURCE_THRESHOLD_NO_METADATA = 0.25
+
+
 class Recording:
     recording: dict
     result_score: float
@@ -74,6 +79,7 @@ class RecordingResolver:
             recordings = result.get('recordings') or []
             result_score = get_score(result)
             acoustid = result.get('id')
+            max_sources = max_source_count_raw_recording(recordings)
             for recording in recordings:
                 mbid = recording.get('id')
                 sources = recording.get('sources', 1)
@@ -86,12 +92,13 @@ class RecordingResolver:
                         sources=sources,
                     )
                 else:
-                    self._missing_metadata.append(IncompleteRecording(
-                        mbid=mbid,
-                        acoustid=acoustid,
-                        result_score=result_score,
-                        sources=sources,
-                    ))
+                    if sources / max_sources > SOURCE_THRESHOLD_NO_METADATA:
+                        self._missing_metadata.append(IncompleteRecording(
+                            mbid=mbid,
+                            acoustid=acoustid,
+                            result_score=result_score,
+                            sources=sources,
+                        ))
 
         if self._missing_metadata:
             self._load_recordings()
@@ -170,5 +177,14 @@ def max_source_count(recordings: List[Recording]):
     This ignores recordings without metadata.
     """
     sources = {r.sources for r in recordings}
+    sources.add(1)
+    return max(sources)
+
+
+def max_source_count_raw_recording(recordings: List[dict]):
+    """Given a list of recordings return the highest number of sources.
+    This ignores recordings without metadata.
+    """
+    sources = {r.get('sources', 1) for r in recordings}
     sources.add(1)
     return max(sources)
