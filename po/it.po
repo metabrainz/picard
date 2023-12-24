@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-15 18:23+0100\n"
-"PO-Revision-Date: 2023-12-19 07:28+0000\n"
+"PO-Revision-Date: 2023-12-24 01:28+0000\n"
 "Last-Translator: \"salo.rock\" <salo.rock@users.noreply.translations."
 "metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
@@ -296,7 +296,7 @@ msgstr "Traduci nomi degli artisti"
 
 #: picard/profile.py:65
 msgid "Translation locales"
-msgstr "Localizzazioni per traduzioni"
+msgstr "Ambienti linguistici per traduzioni"
 
 #: picard/profile.py:66
 msgid "Translate artist names exception"
@@ -384,7 +384,7 @@ msgstr "Generi da includere o escludere"
 
 #: picard/profile.py:95 picard/ui/ui_options_ratings.py:47
 msgid "Enable track ratings"
-msgstr "Abilita voto alle tracce"
+msgstr "Abilita valutazioni delle tracce"
 
 #: picard/profile.py:98
 msgid "Email to use when saving ratings"
@@ -392,7 +392,7 @@ msgstr "Email da utilizzare quando si salvano le valutazioni"
 
 #: picard/profile.py:99 picard/ui/ui_options_ratings.py:50
 msgid "Submit ratings to MusicBrainz"
-msgstr "Invia voti a MusicBrainz"
+msgstr "Invia valutazioni a MusicBrainz"
 
 #: picard/profile.py:104 picard/ui/options/tags.py:47
 msgid "Tags"
@@ -1718,10 +1718,10 @@ msgid ""
 msgstr ""
 "`$performer(pattern=\"\",join=\", \")`\n"
 "\n"
-"Restituisce gli esecutori se il tipo di esecuzione (per es. \"vocale\") "
+"Restituisce gli esecutori se il tipo di esecuzione (per es. \"voce\") "
 "corrisponde a `pattern`, con `join` come connettore.\n"
-"È possibile specificare un'espressione regolare nel formato `/pattern/"
-"flags`. `flags` sono opzionali. Al momento\n"
+"È possibile specificare un'espressione regolare nel formato `/pattern/flags`"
+". `flags` sono opzionali. Al momento\n"
 "la sola flag supportata è \"i\" (ignora maiuscolo/minuscolo). Per esempio, "
 "`$performer(/^guitars?$/i)` corrisponde\n"
 "al tipo di esecuzione \"guitar\" o \"Guitars\", ma non per es. \"bass "
@@ -2399,8 +2399,8 @@ msgstr ""
 "\n"
 "Restituisce il nome del paese per il codice paese specificato. Se il codice "
 "paese non è valido, restituisce una stringa vuota.\n"
-"Se translate non è vuoto, il risultato sarà tradotto nella lingua di "
-"localizzazione attuale.\n"
+"Se translate non è vuoto, il risultato sarà tradotto nella lingua "
+"dell'ambiente linguistico attuale.\n"
 
 #: picard/script/functions.py:1451
 msgid ""
@@ -4654,31 +4654,31 @@ msgstr "Modulo"
 
 #: picard/ui/ui_multi_locale_selector.py:85
 msgid "Locale Selector"
-msgstr "Selettore localizzazione"
+msgstr "Selettore ambiente linguistico"
 
 #: picard/ui/ui_multi_locale_selector.py:86
 msgid "Selected Locales"
-msgstr "Localizzazioni selezionate"
+msgstr "Ambienti linguistici selezionati"
 
 #: picard/ui/ui_multi_locale_selector.py:87
 msgid "Move selected locale up"
-msgstr "Sposta la localizzazione selezionata verso l'alto"
+msgstr "Sposta l'ambiente linguistico selezionato verso l'alto"
 
 #: picard/ui/ui_multi_locale_selector.py:88
 msgid "Add to selected locales"
-msgstr "Aggiungi alle localizzazioni selezionate"
+msgstr "Aggiungi agli ambienti linguistici selezionati"
 
 #: picard/ui/ui_multi_locale_selector.py:89
 msgid "Remove selected locale"
-msgstr "Rimuovi la localizzazione selezionata"
+msgstr "Rimuovi l'ambiente linguistico selezionato"
 
 #: picard/ui/ui_multi_locale_selector.py:90
 msgid "Move selected locale down"
-msgstr "Sposta la localizzazione selezionata verso il basso"
+msgstr "Sposta l'ambiente linguistico selezionato verso il basso"
 
 #: picard/ui/ui_multi_locale_selector.py:91
 msgid "Available Locales"
-msgstr "Localizzazioni disponibili"
+msgstr "Ambienti linguistici disponibili"
 
 #: picard/ui/ui_options.py:47
 msgid "Options"
@@ -4843,7 +4843,7 @@ msgstr "Accedi"
 
 #: picard/ui/ui_options_general.py:206
 msgid "Log out"
-msgstr "Disconnetti"
+msgstr "Disconnettiti"
 
 #: picard/ui/ui_options_general.py:211
 msgid "Update Checking"
@@ -5005,7 +5005,8 @@ msgstr "Somiglianza minima per ricerca raggruppamento:"
 
 #: picard/ui/ui_options_metadata.py:130
 msgid "Translate artist names to these locales where possible:"
-msgstr "Traduci nomi degli artisti in queste localizzazioni ove possibile:"
+msgstr ""
+"Traduci nomi degli artisti in questi ambienti linguistici ove possibile:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select…"
@@ -5115,10 +5116,10 @@ msgid ""
 "be stored in the files. Please specify the e-mail you want to use to save "
 "your ratings."
 msgstr ""
-"Picard salva i voti insieme all'indirizzo e-mail che identifica l'utente che "
-"li ha creati. In questo modo si possono salvare nei file voti differenti per "
-"ogni utente. Per favore, inserisci l'e-mail che vuoi usare per salvare i "
-"tuoi voti."
+"Picard salva le valutazioni insieme all'indirizzo email che identifica "
+"l'utente che le ha create. In questo modo è possibile salvare nei file "
+"valutazioni differenti per ogni utente. Specifica l'email che vuoi usare per "
+"salvare le tue valutazioni."
 
 #: picard/ui/ui_options_ratings.py:49
 msgid "E-mail:"
@@ -6162,7 +6163,7 @@ msgstr "Il titolo del profilo non può essere vuoto."
 
 #: picard/ui/options/ratings.py:41
 msgid "Ratings"
-msgstr "Voti"
+msgstr "Valutazioni"
 
 #: picard/ui/options/releases.py:158
 msgid "Preferred Releases"
