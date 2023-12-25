@@ -154,9 +154,9 @@ Section "!$(SectionRequired)" required
 SectionEnd
 
 Section "$(SectionLanguages)" lang
-  RMDir "$INSTDIR\locale"
-  CreateDirectory "$INSTDIR\locale"
-  SetOutPath "$INSTDIR\locale"
+  RMDir "$INSTDIR\_internal\locale"
+  CreateDirectory "$INSTDIR\_internal\locale"
+  SetOutPath "$INSTDIR\_internal\locale"
   File /r "${PROJECT_PATH}\dist\picard\_internal\locale\"
 SectionEnd
 
