@@ -12,18 +12,18 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-15 18:23+0100\n"
-"PO-Revision-Date: 2023-12-13 17:28+0000\n"
+"PO-Revision-Date: 2023-12-26 09:28+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
-"picard/app/lt/>\n"
+"picard/2/app/lt/>\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
-"1 : n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.2.1\n"
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
+" n % 1 != 0 ? 2: 3);\n"
+"X-Generator: Weblate 5.3\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:150
@@ -94,7 +94,7 @@ msgstr "Klaida modifikuojant kolekcijas: %(error)s"
 #: picard/collection.py:119
 #, python-format
 msgid "Error loading collections: %(error)s"
-msgstr "Klaida pakraunant kolekcijas: %(error)s"
+msgstr "Klaida kraunant kolekcijas: %(error)s"
 
 #: picard/config_upgrade.py:82 picard/config_upgrade.py:95
 msgid "Various Artists file naming scheme removal"
@@ -174,13 +174,11 @@ msgstr "Ieškoma metaduomenų failui %(filename)s …"
 #: picard/ui/scripteditor.py:857 picard/ui/scripteditor.py:860
 #: picard/ui/scripteditor.py:1166 picard/ui/scripteditor.py:1394
 msgid "Error"
-msgstr ""
+msgstr "Klaida"
 
 #: picard/log.py:68
-#, fuzzy
-#| msgid "New User Warning"
 msgid "Warning"
-msgstr "Naujo naudotojo įspėjimas"
+msgstr "Įspėjimas"
 
 #: picard/log.py:69 picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
 #: picard/ui/options/interface_toolbar.py:96
@@ -5177,7 +5175,7 @@ msgstr ""
 
 #: picard/ui/options/maintenance.py:167
 msgid "Configuration files"
-msgstr ""
+msgstr "Konfigūracijos failai"
 
 #: picard/ui/options/maintenance.py:184 picard/ui/options/maintenance.py:201
 msgid "Backup Configuration File"
@@ -5256,11 +5254,11 @@ msgstr ""
 
 #: picard/ui/options/network.py:42
 msgid "Network"
-msgstr ""
+msgstr "Tinklas"
 
 #: picard/ui/options/plugins.py:145
 msgid "Download and install plugin"
-msgstr ""
+msgstr "Atsisiųsti ir įdiegti įskiepį"
 
 #: picard/ui/options/plugins.py:153
 #, python-format
@@ -5269,19 +5267,19 @@ msgstr ""
 
 #: picard/ui/options/plugins.py:159
 msgid "Enabled"
-msgstr ""
+msgstr "Įjungta"
 
 #: picard/ui/options/plugins.py:163
 msgid "Disabled"
-msgstr ""
+msgstr "Neįjungta"
 
 #: picard/ui/options/plugins.py:173
 msgid "Uninstall plugin"
-msgstr ""
+msgstr "Išdiegti įskiepį"
 
 #: picard/ui/options/plugins.py:423
 msgid "Reloading list of available plugins…"
-msgstr ""
+msgstr "Perkraunama pasiekiamų įskiepių sąrašas…"
 
 #: picard/ui/options/plugins.py:432
 #, python-format
@@ -5290,12 +5288,15 @@ msgid ""
 "\n"
 "%(error)s"
 msgstr ""
+"Kraunant įskiepį „%(plugin)s“ įvyko klaida:\n"
+"\n"
+"%(error)s."
 
 #: picard/ui/options/plugins.py:444
 #, python-format
 msgid ""
 "The plugin \"%(plugin)s\" is not compatible with this version of Picard."
-msgstr ""
+msgstr "Įskiepis „%(plugin)s“ nesuderinamas su šia Picard versija."
 
 #: picard/ui/options/plugins.py:465
 #, python-format
@@ -5303,69 +5304,71 @@ msgid ""
 "The plugin \"%(plugin)s\" will be upgraded to version %(version)s on next "
 "run of Picard."
 msgstr ""
+"Įskiepis „%(plugin)s“ bus atnaujintas į versiją %(version)s kito Picard "
+"paleidimo metu."
 
 #: picard/ui/options/plugins.py:488
 #, python-format
 msgid "Uninstall plugin \"%(plugin)s\"?"
-msgstr ""
+msgstr "Išdiegti įskiepį „%(plugin)s“?"
 
 #: picard/ui/options/plugins.py:489
 #, python-format
 msgid "Do you really want to uninstall the plugin \"%(plugin)s\"?"
-msgstr ""
+msgstr "Ar tikrai nori išdiegti įskiepį „%(plugin)s“?"
 
 #: picard/ui/options/plugins.py:621
 msgid "Restart Picard to upgrade to new version"
-msgstr ""
+msgstr "Paleisk Picard iš naujo, kad galėtum atnaujinti į naują versiją"
 
 #: picard/ui/options/plugins.py:623
 msgid "New version available"
-msgstr ""
+msgstr "Nauja versija pasiekiama"
 
 #: picard/ui/options/plugins.py:630
 msgid "Authors"
-msgstr ""
+msgstr "Autoriai"
 
 #: picard/ui/options/plugins.py:631 picard/util/tags.py:73
 msgid "License"
-msgstr ""
+msgstr "Licencija"
 
 #: picard/ui/options/plugins.py:633
 msgid "User Guide"
-msgstr ""
+msgstr "Naudotojo vadovas"
 
 #: picard/ui/options/plugins.py:699
 #, python-format
 msgid "The plugin \"%(plugin)s\" could not be downloaded."
-msgstr ""
+msgstr "Nepavyko atsisiųsti įskiepio „%(plugin)s“."
 
 #: picard/ui/options/plugins.py:700
 msgid "Please try again later."
-msgstr ""
+msgstr "Bandyk dar kartą vėliau."
 
 #: picard/ui/options/profiles.py:56
 msgid "Option Profiles"
-msgstr ""
+msgstr "Parinkčių profiliai"
 
 #: picard/ui/options/profiles.py:115
 msgid "New"
-msgstr ""
+msgstr "Naujas"
 
 #: picard/ui/options/profiles.py:116
 msgid "Create a new profile"
-msgstr ""
+msgstr "Kurti naują profilį"
 
 #: picard/ui/options/profiles.py:121
 msgid "Copy to a new profile"
-msgstr ""
+msgstr "Kopijuoti į naują profilį"
 
 #: picard/ui/options/profiles.py:125
 msgid "Delete"
-msgstr ""
+msgstr "Ištrinti"
 
 #: picard/ui/options/profiles.py:126
 msgid "Delete the profile"
-msgstr ""
+msgstr "Ištrinti profilį"
 
 #: picard/ui/options/profiles.py:218
 msgid "Settings to include in profile"
@@ -5401,11 +5404,11 @@ msgstr ""
 
 #: picard/ui/options/profiles.py:373
 msgid "Invalid Title"
-msgstr ""
+msgstr "Netinkamas pavadinimas"
 
 #: picard/ui/options/profiles.py:374
 msgid "The profile title cannot be blank."
-msgstr ""
+msgstr "Profilio pavadinimas negali būti tuščias."
 
 #: picard/ui/options/ratings.py:41
 msgid "Ratings"
@@ -5425,7 +5428,7 @@ msgstr ""
 
 #: picard/ui/options/renaming_compat.py:68
 msgid "Compatibility"
-msgstr ""
+msgstr "Suderinamumas"
 
 #: picard/ui/options/renaming_compat.py:134
 msgid ""
@@ -5461,19 +5464,19 @@ msgstr ""
 
 #: picard/ui/options/scripting.py:243
 msgid "Script Error"
-msgstr ""
+msgstr "Skripto klaida"
 
 #: picard/ui/options/tags_compatibility_aac.py:41
 msgid "AAC"
-msgstr ""
+msgstr "AAC"
 
 #: picard/ui/options/tags_compatibility_ac3.py:41
 msgid "AC3"
-msgstr ""
+msgstr "AC3"
 
 #: picard/ui/options/tags_compatibility_wave.py:43
 msgid "WAVE"
-msgstr ""
+msgstr "WAVE"
 
 #: picard/ui/searchdialog/__init__.py:101
 msgid ""
@@ -5507,11 +5510,11 @@ msgstr ""
 
 #: picard/ui/searchdialog/album.py:145 picard/ui/searchdialog/track.py:63
 msgid "Load into Picard"
-msgstr "Įkrauk į Picard"
+msgstr "Įkrauti į Picard"
 
 #: picard/ui/searchdialog/album.py:150
 msgid "Album Search Results"
-msgstr ""
+msgstr "Albumo paieškos rezultatai"
 
 #: picard/ui/searchdialog/album.py:161 picard/util/tags.py:71
 msgid "Language"
@@ -5548,7 +5551,7 @@ msgstr ""
 
 #: picard/ui/searchdialog/artist.py:59
 msgid "Begin Area"
-msgstr ""
+msgstr "Pradžios teritorija"
 
 #: picard/ui/searchdialog/artist.py:60
 msgid "End"
