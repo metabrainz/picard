@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-15 18:23+0100\n"
-"PO-Revision-Date: 2023-12-26 09:28+0000\n"
+"PO-Revision-Date: 2023-12-27 14:28+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/app/lt/>\n"
@@ -140,7 +140,7 @@ msgstr "Pašalinti"
 
 #: picard/config_upgrade.py:422
 msgid "Primary file naming script"
-msgstr "Pagrindinis failo pavadinimo skriptas"
+msgstr "Pagrindinis failų pavadinimų skriptas"
 
 #: picard/file.py:216
 msgid ""
@@ -187,16 +187,16 @@ msgstr "Informacija"
 
 #: picard/log.py:70
 msgid "Debug"
-msgstr ""
+msgstr "Derinimas"
 
 #: picard/oauth.py:249 picard/oauth.py:276
 msgid "Unexpected authentication error"
-msgstr "Netikėta autentifikavimo klaida"
+msgstr "Netikėta tapatybės nustatymo klaida."
 
 #: picard/oauth.py:288
 #, python-format
 msgid "Unexpected request error (HTTP code %s)"
-msgstr "Netikėta užklausos klaida (HTTP kodas %s)"
+msgstr "Netikėta užklausos klaida (HTTP kodas %s)."
 
 #: picard/pluginmanager.py:271
 #, python-format
@@ -2846,9 +2846,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/mainwindow.py:491
-#, fuzzy
 msgid "Open AcoustID options"
-msgstr "AcoustID Nustatymai"
+msgstr "Atidaryti AcoustID parinktis"
 
 #: picard/ui/mainwindow.py:502
 msgid "&Options…"
@@ -3712,15 +3711,15 @@ msgstr ""
 
 #: picard/ui/scripteditor.py:566
 msgid "&Script"
-msgstr ""
+msgstr "&Skriptas"
 
 #: picard/ui/scripteditor.py:569
 msgid "View/Edit Script &Metadata"
-msgstr ""
+msgstr "Peržiūrėti / redaguoti skripto &metaduomenis"
 
 #: picard/ui/scripteditor.py:570
 msgid "Display the details for the script"
-msgstr ""
+msgstr "Rodyti išsamią skripto informaciją"
 
 #: picard/ui/scripteditor.py:572
 msgid "Ctrl+M"
@@ -3728,11 +3727,11 @@ msgstr "Ctrl+M"
 
 #: picard/ui/scripteditor.py:575
 msgid "Add a &new script"
-msgstr ""
+msgstr "Pridėti &naują skriptą"
 
 #: picard/ui/scripteditor.py:580
 msgid "&Copy the current script"
-msgstr ""
+msgstr "&Kopijuoti dabartinį skriptą"
 
 #: picard/ui/scripteditor.py:581
 msgid "Save a copy of the script as a new script"
@@ -3740,41 +3739,39 @@ msgstr "Išsaugoti skriptos kopiją kaip naują skriptą"
 
 #: picard/ui/scripteditor.py:586
 msgid "&Delete the current script"
-msgstr ""
+msgstr "&Ištrinti dabartinį skriptą"
 
 #: picard/ui/scripteditor.py:587
 msgid "Delete the script"
-msgstr ""
+msgstr "Ištrinti skriptą"
 
 #: picard/ui/scripteditor.py:596
 msgid "&Reload random example files"
-msgstr ""
+msgstr "&Perkrauti atsitiktinius pavyzdžių failus"
 
 #: picard/ui/scripteditor.py:605
 msgid "&Show documentation"
-msgstr ""
+msgstr "&Rodyti dokumentaciją"
 
 #: picard/ui/scripteditor.py:606
 msgid "View the scripting documentation in a sidebar"
-msgstr ""
+msgstr "Peržiūrėti skriptų dokumentaciją šoninėje juostoje"
 
 #: picard/ui/scripteditor.py:622
 msgid "&Scripting documentation…"
-msgstr ""
+msgstr "&Skriptavimo dokumentacija…"
 
 #: picard/ui/scripteditor.py:623
 msgid "Open the scripting documentation in your browser"
-msgstr ""
+msgstr "Atidaryti skriptavimo dokumentaciją naršyklėje"
 
 #: picard/ui/scripteditor.py:641
 msgid "Empty / blank script"
-msgstr ""
+msgstr "Tuščias skriptas"
 
 #: picard/ui/scripteditor.py:641
-#, fuzzy
-#| msgid "Script"
 msgid "New Script"
-msgstr "Raštas"
+msgstr "Naujas skriptas"
 
 #: picard/ui/scripteditor.py:734
 msgid ""
@@ -3789,6 +3786,16 @@ msgid ""
 "\n"
 "Are you sure that you want to continue?"
 msgstr ""
+"Prie parinkčių profilio buvo prisegtas bent vienas neišsaugotas skriptas.\n"
+"\n"
+"   Profilis: {profile_title}\n"
+"   Skriptas: {old_script_title}\n"
+"\n"
+"Tęsiant be išsaugojimo, pasirinktas profilio skriptas bus atstatytas į:\n"
+"\n"
+"   {new_script_title}\n"
+"\n"
+"Ar tikrai nori tęsti?"
 
 #: picard/ui/scripteditor.py:857
 msgid "There is already a script with that title."
@@ -3837,7 +3844,7 @@ msgstr "Perrašyti"
 
 #: picard/ui/options/profiles.py:120 picard/ui/scripteditor.py:1238
 msgid "Copy"
-msgstr ""
+msgstr "Kopijuoti"
 
 #: picard/ui/options/renaming.py:266 picard/ui/scripteditor.py:1284
 msgid "The file naming format must not be empty."
@@ -3895,7 +3902,7 @@ msgstr "Į&krauti į Picard"
 
 #: picard/ui/ui_cdlookup.py:90
 msgid "&Submit disc ID"
-msgstr ""
+msgstr "&Pateikti disko ID"
 
 #: picard/ui/ui_cdlookup.py:91 picard/ui/util.py:50
 msgid "&Cancel"
@@ -3959,11 +3966,11 @@ msgstr ""
 
 #: picard/ui/ui_infodialog.py:82
 msgid "&Error"
-msgstr ""
+msgstr "&Klaida"
 
 #: picard/ui/ui_infodialog.py:83
 msgid "A&rtwork"
-msgstr ""
+msgstr "Meno &kūrinys"
 
 #: picard/ui/ui_infostatus.py:106 picard/ui/ui_provider_options_caa.py:68
 #: picard/ui/ui_provider_options_local.py:52
@@ -3973,19 +3980,19 @@ msgstr ""
 
 #: picard/ui/ui_multi_locale_selector.py:85
 msgid "Locale Selector"
-msgstr ""
+msgstr "Lokalės parinkiklis"
 
 #: picard/ui/ui_multi_locale_selector.py:86
 msgid "Selected Locales"
-msgstr ""
+msgstr "Pasirinktos lokalės"
 
 #: picard/ui/ui_multi_locale_selector.py:87
 msgid "Move selected locale up"
-msgstr ""
+msgstr "Perkelti pasirinktą lokalę aukščiau"
 
 #: picard/ui/ui_multi_locale_selector.py:88
 msgid "Add to selected locales"
-msgstr ""
+msgstr "Pridėti prie pasirinktų lokalių"
 
 #: picard/ui/ui_multi_locale_selector.py:89
 msgid "Remove selected locale"
@@ -6029,7 +6036,7 @@ msgstr ""
 
 #: picard/util/tags.py:122
 msgid "Subtitle"
-msgstr ""
+msgstr "Paantraštė"
 
 #: picard/util/tags.py:124
 msgid "Title Sort Order"
