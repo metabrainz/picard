@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2023-12-22 09:28+0000\n"
+"PO-Revision-Date: 2023-12-29 16:28+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/constants/lt/>\n"
@@ -219,7 +219,7 @@ msgstr "Afarų k."
 
 #: picard/const/locales.py:28
 msgid "Afar (Djibouti)"
-msgstr "Afarų (Džibutis)"
+msgstr "Afarų k. (Džibutis)"
 
 #: picard/const/locales.py:29
 msgid "Afar (Eritrea)"
@@ -235,47 +235,47 @@ msgstr "Afarų k. (Etiopija)"
 
 #: picard/const/locales.py:32
 msgid "Abkhazian"
-msgstr ""
+msgstr "Abchazų k."
 
 #: picard/const/locales.py:33
 msgid "Abkhazian (Georgia)"
-msgstr ""
+msgstr "Abchazų k. (Gruzija)"
 
 #: picard/const/locales.py:34
 msgid "Afrikaans"
-msgstr ""
+msgstr "Afrikanų k."
 
 #: picard/const/locales.py:35
 msgid "Afrikaans (Namibia)"
-msgstr ""
+msgstr "Afrikanų k. (Namibija)"
 
 #: picard/const/locales.py:36
 msgid "Afrikaans (South Africa)"
-msgstr ""
+msgstr "Afrikanų k. (Pietų Afrika)"
 
 #: picard/const/locales.py:37
 msgid "Aghem"
-msgstr ""
+msgstr "Agemų k."
 
 #: picard/const/locales.py:38
 msgid "Aghem (Cameroon)"
-msgstr ""
+msgstr "Agemų k. (Kamerūnas)"
 
 #: picard/const/locales.py:39
 msgid "Akan"
-msgstr ""
+msgstr "Akanų k."
 
 #: picard/const/locales.py:40
 msgid "Akan (Ghana)"
-msgstr ""
+msgstr "Akanų k. (Gana)"
 
 #: picard/const/locales.py:41
 msgid "Amharic"
-msgstr ""
+msgstr "Amharų k."
 
 #: picard/const/locales.py:42
 msgid "Amharic (Ethiopia)"
-msgstr ""
+msgstr "Amharų k. (Etiopija)"
 
 #: picard/const/locales.py:43
 msgid "Aragonese"
@@ -295,15 +295,15 @@ msgstr ""
 
 #: picard/const/locales.py:47
 msgid "Syria"
-msgstr ""
+msgstr "Sirija"
 
 #: picard/const/locales.py:49
 msgid "Arabic (world)"
-msgstr ""
+msgstr "Arabų k. (pasaulinė)"
 
 #: picard/const/locales.py:50
 msgid "Arabic (United Arab Emirates)"
-msgstr ""
+msgstr "Arabų k. (Jungtiniai Arabų Emyratai)"
 
 #: picard/const/locales.py:51
 msgid "Arabic (Bahrain)"
@@ -367,7 +367,7 @@ msgstr ""
 
 #: picard/const/locales.py:66
 msgid "Arabic (Oman)"
-msgstr ""
+msgstr "Arabų k. (Omanas)"
 
 #: picard/const/locales.py:67
 msgid "Arabic (Palestinian Territories)"
@@ -515,11 +515,11 @@ msgstr ""
 
 #: picard/const/locales.py:103
 msgid "Belarusian"
-msgstr ""
+msgstr "Baltarusių k."
 
 #: picard/const/locales.py:104
 msgid "Belarusian (Belarus)"
-msgstr ""
+msgstr "Baltarusių k. (Baltarusija)"
 
 #: picard/const/locales.py:105
 msgid "Belarusian (Taraskievica orthography)"
@@ -4187,4 +4187,4 @@ msgstr ""
 
 #: picard/const/scripts.py:34
 msgid "Katakana"
-msgstr ""
+msgstr "Katakana"
