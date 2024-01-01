@@ -67,7 +67,7 @@ jobs:
       run: |
         rm -rf "$HOME/.gnupg"
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: picard-sdist
         path: dist/*
@@ -117,7 +117,7 @@ jobs:
       run: |
         python setup.py clean bdist_wheel
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: picard-bdist-${{ runner.os }}
         path: dist/*.whl
