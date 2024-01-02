@@ -57,27 +57,27 @@ jobs:
     - uses: actions/setup-python@v5
       with:
         python-version: 3.12
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: macos-app-10.14
         path: artifacts/
-    # - uses: actions/download-artifact@v3
+    # - uses: actions/download-artifact@v4
     #   with:
     #     name: windows-signed-app
     #     path: artifacts/
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: windows-store-app
         path: artifacts/
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: windows-installer
         path: artifacts/
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: windows-portable
         path: artifacts/
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: picard-sdist
         path: artifacts/
