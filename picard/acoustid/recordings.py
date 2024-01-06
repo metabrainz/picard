@@ -42,6 +42,9 @@ from picard.webservice.api_helpers import MBAPIHelper
 # this percentage of sources compared to the recording with most sources.
 SOURCE_THRESHOLD_NO_METADATA = 0.25
 
+# Load max. this number of recordings without metadata per AcoustID
+MAX_NO_METADATA_RECORDINGS = 3
+
 
 class Recording:
     recording: dict
@@ -75,12 +78,13 @@ class RecordingResolver:
 
     def resolve(self) -> None:
         results = self._doc.get('results') or []
+        incomplete_counts = defaultdict(lambda: 0)
         for result in results:
             recordings = result.get('recordings') or []
             result_score = get_score(result)
             acoustid = result.get('id')
             max_sources = max_source_count_raw_recording(recordings)
-            for recording in recordings:
+            for recording in sorted(recordings, key=lambda r: r.get('sources', 1), reverse=True):
                 mbid = recording.get('id')
                 sources = recording.get('sources', 1)
                 if recording_has_metadata(recording):
@@ -92,13 +96,15 @@ class RecordingResolver:
                         sources=sources,
                     )
                 else:
-                    if sources / max_sources > SOURCE_THRESHOLD_NO_METADATA:
+                    if (sources / max_sources > SOURCE_THRESHOLD_NO_METADATA
+                        and incomplete_counts[acoustid] < MAX_NO_METADATA_RECORDINGS):
                         self._missing_metadata.append(IncompleteRecording(
                             mbid=mbid,
                             acoustid=acoustid,
                             result_score=result_score,
                             sources=sources,
                         ))
+                        incomplete_counts[acoustid] += 1
 
         if self._missing_metadata:
             self._load_recordings()
