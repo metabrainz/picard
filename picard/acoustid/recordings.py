@@ -23,6 +23,7 @@ from collections import (
     deque,
     namedtuple,
 )
+from functools import partial
 from typing import (
     Dict,
     List,
@@ -106,10 +107,7 @@ class RecordingResolver:
                         ))
                         incomplete_counts[acoustid] += 1
 
-        if self._missing_metadata:
-            self._load_recordings()
-        else:
-            self._send_results()
+        self._load_recordings()
 
     def _load_recordings(self):
         if not self._missing_metadata:
@@ -119,15 +117,15 @@ class RecordingResolver:
         mbid = self._missing_metadata[0].mbid
         if mbid in self._recording_cache:
             mb_recording = self._recording_cache[mbid]
-            self._recording_request_finished(mb_recording, None, None)
+            self._recording_request_finished(mbid, mb_recording, None, None)
         else:
             self._mbapi.get_track_by_id(
                 self._missing_metadata[0].mbid,
-                self._recording_request_finished,
+                partial(self._recording_request_finished, mbid),
                 inc=('artists', 'release-groups', 'releases', 'media'),
             )
 
-    def _recording_request_finished(self, mb_recording, http, error):
+    def _recording_request_finished(self, original_mbid, mb_recording, http, error):
         recording = self._missing_metadata.popleft()
         if error:
             if error == QNetworkReply.NetworkError.ContentNotFoundError:
@@ -141,6 +139,9 @@ class RecordingResolver:
         recording_dict = self._recording_map[recording.acoustid]
         if mbid:
             self._recording_cache[mbid] = mb_recording
+            # This was a redirect, cache the old MBID as well
+            if original_mbid != mbid:
+                self._recording_cache[original_mbid] = mb_recording
             if mbid not in recording_dict:
                 recording_dict[mbid] = Recording(
                     recording=mb_recording,
