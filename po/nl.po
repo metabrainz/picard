@@ -12,14 +12,15 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021,2023
 # mfmeulenbelt <mfmeulenbelt@gmail.com>, 2023.
 # RandomMushroom128 <RandomMushroom128@users.noreply.translations.metabrainz.org>, 2023.
+# mfmeulenbelt <mfmeulenbelt@users.noreply.translations.metabrainz.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-15 17:44+0100\n"
-"PO-Revision-Date: 2023-12-22 09:28+0000\n"
-"Last-Translator: RandomMushroom128 <RandomMushroom128@users.noreply."
-"translations.metabrainz.org>\n"
+"PO-Revision-Date: 2024-01-07 12:28+0000\n"
+"Last-Translator: mfmeulenbelt <mfmeulenbelt@users.noreply.translations."
+"metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/3/"
 "app/nl/>\n"
 "Language: nl\n"
@@ -186,7 +187,7 @@ msgstr "Info"
 
 #: picard/log.py:70
 msgid "Debug"
-msgstr ""
+msgstr "Foutopsporing"
 
 #: picard/oauth.py:249 picard/oauth.py:276
 msgid "Unexpected authentication error"
@@ -318,10 +319,8 @@ msgid "Use release relationships"
 msgstr "Uitgaverelaties gebruiken"
 
 #: picard/profile.py:72 picard/ui/ui_options_metadata.py:139
-#, fuzzy
-#| msgid "Use release relationships"
 msgid "Use track and release relationships"
-msgstr "Uitgaverelaties gebruiken"
+msgstr "Nummer- en uitgaverelaties gebruiken"
 
 #: picard/profile.py:73 picard/ui/ui_options_metadata.py:141
 msgid "Guess track number and title from filename if empty"
@@ -335,7 +334,7 @@ msgstr "Naam voor diverse artiesten"
 
 #: picard/profile.py:75
 msgid "Standalone recordings name"
-msgstr "Naam voor losse opnames"
+msgstr "Naam voor losse opnamen"
 
 #: picard/profile.py:78 picard/ui/ui_options_releases.py:112
 msgid "Preferred release types"
@@ -545,7 +544,7 @@ msgstr "Bestanden hernoemen"
 
 #: picard/profile.py:162
 msgid "Selected file naming script"
-msgstr "Geselecteerde bestandsnamenscript"
+msgstr "Geselecteerd bestandsnamenscript"
 
 #: picard/profile.py:165 picard/ui/ui_options_renaming_compat.py:91
 msgid "Replace non-ASCII characters"
@@ -1866,7 +1865,7 @@ msgid ""
 "\n"
 "_Since Picard 1.3_"
 msgstr ""
-"`$delrefix(tekst,prefix1,prefix2,…)`\n"
+"`$delprefix(tekst,prefix1,prefix2,…)`\n"
 "\n"
 "Verwijdert de opgegeven prefixen van het begin van `tekst`.\n"
 "Er kunnen meerdere prefixen worden opgegeven in de vorm van verschillende "
@@ -2452,7 +2451,7 @@ msgstr ""
 "`$dateformat(datum,[notatie],[datumvolgorde])`\n"
 "\n"
 "Retourneert de opgegeven datum in de opgegeven `notatie`, die is gebaseerd "
-"op de standaard [strftime-codes](https://strftime.org/) van Python.  Als de "
+"op de standaard [strftime-codes](https://strftime.org/) van Python. Als de "
 "notatie niet wordt opgegeven, wordt de notatie `2020-02-05` gebruikt. Als de "
 "datum of notatie ongeldig is, wordt een lege tekenreeks geretourneerd.\n"
 "\n"
@@ -2460,8 +2459,8 @@ msgstr ""
 "worden veranderd door voor de `datumvolgorde` “dmy” of “mdy” op te geven.\n"
 "\n"
 "Opmerking: het gebruik van platformspecifieke codes wordt afgeraden, zodat "
-"scripts op meerdere platformen kunnen worden gebruikt. Dit zijn "
-"bijvoorbeeld:\n"
+"scripts op meerdere platformen kunnen worden gebruikt. Dit zijn bijvoorbeeld:"
+"\n"
 "Het verwijderen van voorloopnullen (bijv. `%-d` en `%-m% op Linux of macOS "
 "en `%#d` en `%#m` op Windows).\n"
 "Aanwijzers voor de lengte van elementen (bijvoorbeeld `%3Y`)\n"
@@ -3278,19 +3277,19 @@ msgstr ""
 
 #: picard/ui/itemviews.py:1033
 msgid "Album modified and complete"
-msgstr "De uitgave is compleet en heeft wijzigingen."
+msgstr "De uitgave is compleet en heeft wijzigingen"
 
 #: picard/ui/itemviews.py:1036
 msgid "Album unchanged and complete"
-msgstr "De uitgave is compleet en heeft geen wijzigingen."
+msgstr "De uitgave is compleet en heeft geen wijzigingen"
 
 #: picard/ui/itemviews.py:1040
 msgid "Album modified"
-msgstr "De uitgave heeft wijzigingen."
+msgstr "De uitgave heeft wijzigingen"
 
 #: picard/ui/itemviews.py:1043
 msgid "Album unchanged"
-msgstr "De uitgave heeft geen wijzigingen."
+msgstr "De uitgave heeft geen wijzigingen"
 
 #: picard/ui/itemviews.py:1123
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
@@ -3617,7 +3616,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:698
 msgid "Show &other album versions…"
-msgstr "Andere versies van de uitgave zoeken …"
+msgstr "&Andere versies van de uitgave zoeken …"
 
 #: picard/ui/mainwindow.py:699
 msgid "Ctrl+Shift+O"
@@ -3822,7 +3821,7 @@ msgstr "&Zoek naar nieuwe versies …"
 
 #: picard/ui/mainwindow.py:953
 msgid "From CD ripper &log file…"
-msgstr "Met logboekbestand van cd-ripper …"
+msgstr "Met &logboekbestand van cd-ripper …"
 
 #: picard/ui/mainwindow.py:1006 picard/ui/scripteditor.py:533
 msgid "&File"
@@ -4263,7 +4262,7 @@ msgstr "Terugzetten"
 
 #: picard/ui/options/dialog.py:135 picard/ui/scripteditor.py:464
 msgid "Make It So!"
-msgstr "Ok"
+msgstr "Oké"
 
 #: picard/ui/scripteditor.py:536
 msgid "&Import a script file"
@@ -4366,10 +4365,8 @@ msgid "Empty / blank script"
 msgstr "Leeg/blanco script"
 
 #: picard/ui/scripteditor.py:641
-#, fuzzy
-#| msgid "Script"
 msgid "New Script"
-msgstr "Schrift"
+msgstr "Nieuw script"
 
 #: picard/ui/scripteditor.py:734
 msgid ""
@@ -4953,7 +4950,7 @@ msgstr "Diverse artiesten:"
 
 #: picard/ui/ui_options_metadata.py:144
 msgid "Standalone recordings:"
-msgstr "Losse opnames:"
+msgstr "Losse opnamen:"
 
 #: picard/ui/options/interface.py:93 picard/ui/ui_options_metadata.py:145
 #: picard/ui/ui_options_metadata.py:146
