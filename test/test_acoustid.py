@@ -31,8 +31,13 @@ import os
 from test.picardtestcase import PicardTestCase
 
 from picard.acoustid.json_helpers import (
-    max_source_count,
     parse_recording,
+    recording_has_metadata,
+)
+from picard.acoustid.recordings import (
+    Recording,
+    max_source_count,
+    parse_recording_map,
 )
 from picard.mbjson import recording_to_metadata
 from picard.metadata import Metadata
@@ -100,17 +105,66 @@ class NullRecordingTest(AcoustIDTest):
         self.assertEqual(m, {})
 
 
-class MaxSourceCountTest(AcoustIDTest):
-    filename = 'acoustid_no_metadata.json'
-
+class MaxSourceCountTest(PicardTestCase):
     def test_max_source_count(self):
-        c = max_source_count(self.json_doc['results'][0]['recordings'])
-        self.assertEqual(13, c)
+        recordings = (
+            Recording({}, sources=5),
+            Recording({}, sources=13),
+            Recording({}, sources=12),
+        )
+        self.assertEqual(13, max_source_count(recordings))
 
     def test_max_source_count_no_recordings(self):
-        c = max_source_count([])
-        self.assertEqual(1, c)
+        self.assertEqual(1, max_source_count([]))
 
-    def test_max_source_count_no_value(self):
-        c = max_source_count([{'title': 'foo', 'sources': 42}, {'title': 'foo'}])
-        self.assertEqual(42, c)
+    def test_max_source_count_smaller_1(self):
+        recordings = (
+            Recording({}, sources=0),
+        )
+        self.assertEqual(1, max_source_count(recordings))
+
+
+class ParseRecordingMapTest(PicardTestCase):
+    def test_parse_recording_map(self):
+        recordings = {
+            "cb127606-8e3d-4dcf-9902-69c7a9b59bc9": {
+                "d12e0535-3b2f-4987-8b03-63d85ef57fdd": Recording({
+                    "id": "d12e0535-3b2f-4987-8b03-63d85ef57fdd",
+                }),
+                "e8a313ee-b723-4b48-9395-6c8e026fc9e0": Recording(
+                    {"id": "e8a313ee-b723-4b48-9395-6c8e026fc9e0"},
+                    sources=4,
+                    result_score=0.5,
+                ),
+            }
+        }
+        expected = [
+            {
+                "id": "d12e0535-3b2f-4987-8b03-63d85ef57fdd",
+                "acoustid": "cb127606-8e3d-4dcf-9902-69c7a9b59bc9",
+                "score": 25,
+                "sources": 1,
+            },
+            {
+                "id": "e8a313ee-b723-4b48-9395-6c8e026fc9e0",
+                "acoustid": "cb127606-8e3d-4dcf-9902-69c7a9b59bc9",
+                "score": 50,
+                "sources": 4,
+            }
+        ]
+        self.assertEqual(expected, list(parse_recording_map(recordings)))
+
+
+class RecordingHasMetadataTest(PicardTestCase):
+    filename = 'acoustid_no_metadata.json'
+
+    def test_recording_has_metadata(self):
+        recording = {
+            'id': '8855169b-b148-4896-9ed3-a1065dc60cf4',
+            'sources': 94,
+        }
+        self.assertFalse(recording_has_metadata(recording))
+        recording['title'] = 'Foo'
+        self.assertTrue(recording_has_metadata(recording))
+        del recording['id']
+        self.assertFalse(recording_has_metadata(recording))

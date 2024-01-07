@@ -34,10 +34,7 @@ import json
 from PyQt6 import QtCore
 
 from picard import log
-from picard.acoustid.json_helpers import (
-    max_source_count,
-    parse_recording,
-)
+from picard.acoustid.recordings import RecordingResolver
 from picard.config import get_config
 from picard.const import (
     DEFAULT_FPCALC_THREADS,
@@ -49,6 +46,7 @@ from picard.util import (
     find_executable,
     win_prefix_longpath,
 )
+from picard.webservice.api_helpers import AcoustIdAPIHelper
 
 
 def get_score(node):
@@ -76,7 +74,7 @@ AcoustIDTask = namedtuple('AcoustIDTask', ('file', 'next_func'))
 
 class AcoustIDClient(QtCore.QObject):
 
-    def __init__(self, acoustid_api):
+    def __init__(self, acoustid_api: AcoustIdAPIHelper):
         super().__init__()
         self._queue = deque()
         self._running = 0
@@ -93,7 +91,6 @@ class AcoustIDClient(QtCore.QObject):
         return config.setting['fpcalc_threads'] or DEFAULT_FPCALC_THREADS
 
     def _on_lookup_finished(self, task, document, http, error):
-        doc = {}
         if error:
             mparms = {
                 'error': http.errorString(),
@@ -108,42 +105,16 @@ class AcoustIDClient(QtCore.QObject):
                 mparms,
                 echo=None
             )
+            task.next_func({}, http, error)
         else:
             try:
-                recording_list = doc['recordings'] = []
                 status = document['status']
                 if status == 'ok':
-                    results = document.get('results') or []
-                    for result in results:
-                        recordings = result.get('recordings') or []
-                        max_sources = max_source_count(recordings)
-                        result_score = get_score(result)
-                        for recording in recordings:
-                            parsed_recording = parse_recording(recording)
-                            if parsed_recording is not None:
-                                # Calculate a score based on result score and sources for this
-                                # recording relative to other recordings in this result
-                                score = min(recording.get('sources', 1) / max_sources, 1.0) * 100
-                                parsed_recording['score'] = score * result_score
-                                parsed_recording['acoustid'] = result['id']
-                                recording_list.append(parsed_recording)
-
-                    if results:
-                        if not recording_list:
-                            # Set AcoustID in tags if there was no matching recording
-                            task.file.metadata['acoustid_id'] = results[0]['id']
-                            task.file.update()
-                            log.debug(
-                                "AcoustID: Found no matching recordings for '%s',"
-                                " setting acoustid_id tag to %r",
-                                task.file.filename, results[0]['id']
-                            )
-                        else:
-                            log.debug(
-                                "AcoustID: Lookup successful for '%s' (recordings: %d)",
-                                task.file.filename,
-                                len(recording_list)
-                            )
+                    resolver = RecordingResolver(
+                        self._acoustid_api.webservice,
+                        document,
+                        callback=partial(self._on_recording_resolve_finish, task, document, http))
+                    resolver.resolve()
                 else:
                     mparms = {
                         'error': document['error']['message'],
@@ -157,11 +128,32 @@ class AcoustIDClient(QtCore.QObject):
                         mparms,
                         echo=None
                     )
+                    task.next_func({}, http, error)
             except (AttributeError, KeyError, TypeError) as e:
                 log.error("AcoustID: Error reading response", exc_info=True)
-                error = e
+                task.next_func({}, http, e)
 
-        task.next_func(doc, http, error)
+    def _on_recording_resolve_finish(self, task, document, http, result=None, error=None):
+        recording_list = result
+        if not recording_list:
+            results = document.get('results')
+            if results:
+                # Set AcoustID in tags if there was no matching recording
+                acoustid = results[0].get('id')
+                task.file.metadata['acoustid_id'] = acoustid
+                task.file.update()
+                log.debug(
+                    "AcoustID: Found no matching recordings for '%s',"
+                    " setting acoustid_id tag to %r",
+                    task.file.filename, acoustid
+                )
+        else:
+            log.debug(
+                "AcoustID: Lookup successful for '%s' (recordings: %d)",
+                task.file.filename,
+                len(recording_list)
+            )
+        task.next_func({'recordings': recording_list}, http, error)
 
     def _lookup_fingerprint(self, task, result=None, error=None):
         if task.file.state == File.REMOVED:
