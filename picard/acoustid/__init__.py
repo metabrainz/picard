@@ -6,7 +6,7 @@
 # Copyright (C) 2017-2018 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2018-2021 Laurent Monin
-# Copyright (C) 2018-2023 Philipp Wolfer
+# Copyright (C) 2018-2024 Philipp Wolfer
 # Copyright (C) 2023 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
@@ -28,6 +28,7 @@ from collections import (
     deque,
     namedtuple,
 )
+from enum import IntEnum
 from functools import partial
 import json
 
@@ -47,6 +48,13 @@ from picard.util import (
     win_prefix_longpath,
 )
 from picard.webservice.api_helpers import AcoustIdAPIHelper
+
+
+class FpcalcExit(IntEnum):
+    # fpcalc returned successfully
+    NOERROR = 0
+    # fpcalc encountered errors during decoding, but could still generate a fingerprint
+    DECODING_ERROR = 3
 
 
 def get_score(node):
@@ -203,7 +211,12 @@ class AcoustIDClient(QtCore.QObject):
         try:
             self._running -= 1
             self._run_next_task()
-            if exit_code == 0 and exit_status == QtCore.QProcess.ExitStatus.NormalExit:
+            # fpcalc returns the exit code 3 in case of decoding errors that
+            # still allowed it to calculate a result.
+            if exit_code in {FpcalcExit.NOERROR, FpcalcExit.DECODING_ERROR} and exit_status == QtCore.QProcess.ExitStatus.NormalExit:
+                if exit_code == FpcalcExit.DECODING_ERROR:
+                    error = bytes(process.readAllStandardError()).decode()
+                    log.warning("fpcalc non-critical decoding errors for %s: %s", task.file, error)
                 output = bytes(process.readAllStandardOutput()).decode()
                 jsondata = json.loads(output)
                 # Use only integer part of duration, floats are not allowed in lookup
@@ -222,7 +235,11 @@ class AcoustIDClient(QtCore.QObject):
         finally:
             if result and result[0] == 'fingerprint':
                 fp_type, fingerprint, length = result
-                task.file.set_acoustid_fingerprint(fingerprint, length)
+                # Only set the fingerprint if it was calculated without
+                # decoding errors. Otherwise fingerprints for broken files
+                # might get submitted.
+                if exit_code == FpcalcExit.NOERROR:
+                    task.file.set_acoustid_fingerprint(fingerprint, length)
             task.next_func(result)
 
     def _on_fpcalc_error(self, task, error):
