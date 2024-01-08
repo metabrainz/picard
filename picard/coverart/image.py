@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2007 Oliver Charles
 # Copyright (C) 2007, 2010-2011 Lukáš Lalinský
-# Copyright (C) 2007-2011, 2014, 2018-2023 Philipp Wolfer
+# Copyright (C) 2007-2011, 2014, 2018-2024 Philipp Wolfer
 # Copyright (C) 2011 Michael Wiencek
 # Copyright (C) 2011-2012, 2015 Wieland Hoffmann
 # Copyright (C) 2013-2015, 2018-2022 Laurent Monin
@@ -461,9 +461,9 @@ class TagCoverArtImage(CoverArtImage):
     def __init__(self, file, tag=None, types=None, is_front=None,
                  support_types=False, comment='', data=None,
                  support_multi_types=False, id3_type=None):
-        super().__init__(url=None, types=types, comment=comment, data=data, id3_type=id3_type)
         self.sourcefile = file
         self.tag = tag
+        super().__init__(url=None, types=types, comment=comment, data=data, id3_type=id3_type)
         self.support_types = support_types
         self.support_multi_types = support_multi_types
         if is_front is not None:
