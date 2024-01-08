@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019, 2021-2022 Philipp Wolfer
+# Copyright (C) 2019, 2021-2024 Philipp Wolfer
 # Copyright (C) 2019-2021 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -41,6 +41,7 @@ from picard.coverart.utils import (
     Id3ImageType,
     types_from_id3,
 )
+from picard.file import File
 from picard.metadata import Metadata
 from picard.util import encode_filename
 from picard.util.filenaming import WinPathTooLong
@@ -149,8 +150,13 @@ class CoverArtImageTest(PicardTestCase):
                 image.id3_type = invalid_value
 
     def test_init_invalid_id3_type(self):
-        image = CoverArtImage(id3_type=255)
-        self.assertEqual(image.id3_type, Id3ImageType.OTHER)
+        cases = (
+            (CoverArtImage, []),
+            (TagCoverArtImage, [File('test.mp3')]),
+        )
+        for image_class, args in cases:
+            image = image_class(*args, id3_type=255)
+            self.assertEqual(image.id3_type, Id3ImageType.OTHER)
 
     def test_compare_without_type(self):
         image1 = create_image(b'a', types=["front"])
