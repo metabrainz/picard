@@ -28,6 +28,7 @@ from collections import (
     deque,
     namedtuple,
 )
+from enum import IntEnum
 from functools import partial
 import json
 
@@ -49,6 +50,13 @@ from picard.util import (
     find_executable,
     win_prefix_longpath,
 )
+
+
+class FpcalcExit(IntEnum):
+    # fpcalc returned successfully
+    NOERROR = 0
+    # fpcalc encountered errors during decoding, but could still generate a fingerprint
+    DECODING_ERROR = 3
 
 
 def get_score(node):
@@ -213,7 +221,7 @@ class AcoustIDClient(QtCore.QObject):
             self._run_next_task()
             # fpcalc returns the exit code 3 in case of decoding errors that
             # still allowed it to calculate a result.
-            if exit_code in {0, 3} and exit_status == QtCore.QProcess.ExitStatus.NormalExit:
+            if exit_code in {FpcalcExit.NOERROR, FpcalcExit.DECODING_ERROR} and exit_status == QtCore.QProcess.ExitStatus.NormalExit:
                 output = bytes(process.readAllStandardOutput()).decode()
                 jsondata = json.loads(output)
                 # Use only integer part of duration, floats are not allowed in lookup
@@ -235,7 +243,7 @@ class AcoustIDClient(QtCore.QObject):
                 # Only set the fingerprint if it was calculated without
                 # decoding errors. Otherwise fingerprints for broken files
                 # might get submitted.
-                if exit_code == 0:
+                if exit_code == FpcalcExit.NOERROR:
                     task.file.set_acoustid_fingerprint(fingerprint, length)
             task.next_func(result)
 
