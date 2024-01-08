@@ -222,6 +222,9 @@ class AcoustIDClient(QtCore.QObject):
             # fpcalc returns the exit code 3 in case of decoding errors that
             # still allowed it to calculate a result.
             if exit_code in {FpcalcExit.NOERROR, FpcalcExit.DECODING_ERROR} and exit_status == QtCore.QProcess.ExitStatus.NormalExit:
+                if exit_code == FpcalcExit.DECODING_ERROR:
+                    error = bytes(process.readAllStandardError()).decode()
+                    log.warning("fpcalc non-critical decoding errors for %s: %s", task.file, error)
                 output = bytes(process.readAllStandardOutput()).decode()
                 jsondata = json.loads(output)
                 # Use only integer part of duration, floats are not allowed in lookup
