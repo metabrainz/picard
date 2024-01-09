@@ -238,8 +238,10 @@ jobs:
         path: artifacts/
 
   package-pypi:
-    uses: ./.github/workflows/pypi-release.yml
+    uses: ./.github/workflows/package-pypi.yml
     secrets: inherit
+    permissions:
+      id-token: write
 
   github-release:
     runs-on: ubuntu-latest

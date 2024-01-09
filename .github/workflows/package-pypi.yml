@@ -12,10 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CODESIGN: 0
-
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v4
+    - uses: actions/setup-python@v5
       with:
         python-version: 3.8
     - name: Install dependencies
@@ -62,18 +61,10 @@ jobs:
       run: |
         rm -rf "$HOME/.gnupg"
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: picard-sdist
         path: dist/*
-    - name: Publish Python distribution to PyPI
-      if: startsWith(github.ref, 'refs/tags/') && env.TWINE_PASSWORD
-      run: |
-        pip install --upgrade twine
-        twine upload --non-interactive dist/*.tar.gz
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.PYPI_UPLOAD_TOKEN }}
 
   pypi-bdist:
     runs-on: ${{ matrix.os }}
@@ -85,7 +76,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install gettext (macOS)
@@ -107,15 +98,30 @@ jobs:
       run: |
         python setup.py clean bdist_wheel
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: picard-bdist-${{ runner.os }}
+        name: picard-bdist-${{ runner.os }}-${{ matrix.python-version }}
         path: dist/*.whl
-    - name: Publish Python distribution to PyPI
-      if: startsWith(github.ref, 'refs/tags/') && env.TWINE_PASSWORD
+
+  pypi-release:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    needs:
+      - pypi-bdist
+      - pypi-sdist
+    environment:
+      name: pypi
+      url: https://pypi.org/p/picard
+    permissions:
+      id-token: write  # required for PyPI upload
+    steps:
+    - uses: actions/download-artifact@v4
+      with:
+        pattern: picard-?dist*
+        path: dist/
+        merge-multiple: true
+    - name: Verify distributions
       run: |
-        pip install --upgrade twine>=3.0
-        twine upload --non-interactive dist/*
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.PYPI_UPLOAD_TOKEN }}
+        ls -l dist/
+    - name: Publish package distributions to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
