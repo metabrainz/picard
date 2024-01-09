@@ -9,7 +9,7 @@
 # Maurits Meulenbelt, 2012
 # Maurits Meulenbelt, 2012
 # Maurits Meulenbelt, 2012-2023
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021,2023
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021,2023, 2024.
 # mfmeulenbelt <mfmeulenbelt@gmail.com>, 2023.
 # RandomMushroom128 <RandomMushroom128@users.noreply.translations.metabrainz.org>, 2023.
 # mfmeulenbelt <mfmeulenbelt@users.noreply.translations.metabrainz.org>, 2024.
@@ -18,9 +18,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-15 17:44+0100\n"
-"PO-Revision-Date: 2024-01-07 12:28+0000\n"
-"Last-Translator: mfmeulenbelt <mfmeulenbelt@users.noreply.translations."
-"metabrainz.org>\n"
+"PO-Revision-Date: 2024-01-09 07:28+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/3/"
 "app/nl/>\n"
 "Language: nl\n"
@@ -2153,7 +2152,7 @@ msgstr ""
 "\n"
 "Voorbeeld:\n"
 "\n"
-" $map(First:A; Second:B,$upper(%_loop_count%=%_loop_value%))\n"
+"    $map(First:A; Second:B,$upper(%_loop_count%=%_loop_value%))\n"
 "\n"
 "Resultaat: 1=FIRST:A; 2=SECOND:B\n"
 
