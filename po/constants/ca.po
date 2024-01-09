@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2023-08-29 06:46+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2024-01-09 07:28+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
-"constants/ca/>\n"
+"2/constants/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.3\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:171
@@ -63,7 +63,7 @@ msgstr "Txec"
 
 #: picard/const/languages.py:35 picard/const/locales.py:185
 msgid "Danish"
-msgstr ""
+msgstr "Danès"
 
 #: picard/const/languages.py:36 picard/const/locales.py:190
 msgid "German"
@@ -649,7 +649,7 @@ msgstr ""
 
 #: picard/const/locales.py:137
 msgid "Bodo (India)"
-msgstr ""
+msgstr "Bodo (India)"
 
 #: picard/const/locales.py:138
 msgid "Bosnian"
@@ -885,7 +885,7 @@ msgstr ""
 
 #: picard/const/locales.py:200
 msgid "Dogri"
-msgstr ""
+msgstr "Dogri"
 
 #: picard/const/locales.py:201
 msgid "Dogri (India)"
@@ -909,7 +909,7 @@ msgstr ""
 
 #: picard/const/locales.py:206
 msgid "Divehi"
-msgstr ""
+msgstr "Divehi"
 
 #: picard/const/locales.py:207
 msgid "Divehi (Maldives)"
