@@ -115,6 +115,7 @@ jobs:
 
   pypi-release:
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
     needs:
       - pypi-bdist
       - pypi-sdist
@@ -134,4 +135,3 @@ jobs:
         ls -l dist/
     - name: Publish package distributions to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
-      if: startsWith(github.ref, 'refs/tags/')
