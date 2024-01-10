@@ -208,6 +208,7 @@ class FLACTest(CommonVorbisTests.VorbisTestCase):
         '~channels': '2',
         '~sample_rate': '44100',
         '~format': 'FLAC',
+        '~filesize':'6546'
     }
     unexpected_info = ['~video']
 

@@ -89,6 +89,7 @@ from picard.util import (
     normpath,
     thread,
     tracknum_and_title_from_filename,
+    encode_filename,
 )
 from picard.util.filenaming import (
     get_available_filename,
@@ -132,7 +133,7 @@ class File(QtCore.QObject, Item):
 
     EXTENSIONS = []
 
-    FILE_INFO_TAGS = ('~bitrate', '~sample_rate', '~channels', '~bits_per_sample', '~format')
+    FILE_INFO_TAGS = ('~bitrate', '~sample_rate', '~channels', '~bits_per_sample', '~format', '~filesize')
 
     comparison_weights = {
         'title': 13,
@@ -760,6 +761,11 @@ class File(QtCore.QObject, Item):
         return True
 
     def _info(self, metadata, file):
+        try:
+            size = os.path.getsize(encode_filename(self.filename))
+            metadata['~filesize'] = size
+        except BaseException:
+            pass
         if hasattr(file.info, 'length'):
             metadata.length = int(file.info.length * 1000)
         if hasattr(file.info, 'bitrate') and file.info.bitrate:

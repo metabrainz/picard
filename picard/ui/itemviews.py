@@ -170,6 +170,7 @@ class MainPanel(QtWidgets.QSplitter):
         (N_("Catalog No."), 'catalognumber'),
         (N_("Barcode"), 'barcode'),
         (N_("Media"), 'media'),
+        (N_("Size"), '~filesize'),
         (N_("Genre"), 'genre'),
         (N_("Fingerprint status"), '~fingerprint'),
         (N_("Date"), 'date'),
