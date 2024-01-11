@@ -107,8 +107,6 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.select_scripts.clicked.connect(self.open_script_selector)
         self.ui.translate_artist_names.stateChanged.connect(self.set_enabled_states)
         self.ui.translate_artist_names_script_exception.stateChanged.connect(self.set_enabled_states)
-        self.ui.track_ars.stateChanged.connect(self._fix_ars_options)
-        self.saved_release_ars = True
 
     def load(self):
         config = get_config()
@@ -129,8 +127,6 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.guess_tracknumber_and_title.setChecked(config.setting['guess_tracknumber_and_title'])
 
         self.set_enabled_states()
-        self.saved_release_ars = config.setting['release_ars']
-        self._fix_ars_options()
 
     def make_locales_text(self):
         def translated_locales():
@@ -153,7 +149,7 @@ class MetadataOptionsPage(OptionsPage):
         config.setting['translate_artist_names_script_exception'] = self.ui.translate_artist_names_script_exception.isChecked()
         config.setting['script_exceptions'] = self.current_scripts
         config.setting['convert_punctuation'] = self.ui.convert_punctuation.isChecked()
-        config.setting['release_ars'] = self.ui.release_ars.isChecked() if not self.ui.track_ars.isChecked() else self.saved_release_ars
+        config.setting['release_ars'] = self.ui.release_ars.isChecked()
         config.setting['track_ars'] = self.ui.track_ars.isChecked()
         config.setting['va_name'] = self.ui.va_name.text()
         nat_name = self.ui.nat_name.text()
@@ -190,15 +186,6 @@ class MetadataOptionsPage(OptionsPage):
     def open_script_selector(self):
         dialog = ScriptExceptionSelector(self)
         dialog.show()
-
-    def _fix_ars_options(self):
-        if self.ui.track_ars.isChecked():
-            self.ui.release_ars.setEnabled(False)
-            self.saved_release_ars = self.ui.release_ars.isChecked()
-            self.ui.release_ars.setChecked(True)
-        else:
-            self.ui.release_ars.setChecked(self.saved_release_ars)
-            self.ui.release_ars.setEnabled(True)
 
 
 class MultiLocaleSelector(PicardDialog):

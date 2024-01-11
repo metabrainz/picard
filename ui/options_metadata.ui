@@ -110,16 +110,16 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="track_ars">
+       <widget class="QCheckBox" name="release_ars">
         <property name="text">
-         <string>Use track relationships (includes release relationships)</string>
+         <string>Use release relationships</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="release_ars">
+       <widget class="QCheckBox" name="track_ars">
         <property name="text">
-         <string>Use release relationships</string>
+         <string>Use track relationships</string>
         </property>
        </widget>
       </item>
@@ -222,8 +222,8 @@
   <tabstop>standardize_artists</tabstop>
   <tabstop>standardize_instruments</tabstop>
   <tabstop>convert_punctuation</tabstop>
-  <tabstop>track_ars</tabstop>
   <tabstop>release_ars</tabstop>
+  <tabstop>track_ars</tabstop>
   <tabstop>guess_tracknumber_and_title</tabstop>
   <tabstop>va_name</tabstop>
   <tabstop>va_name_default</tabstop>
