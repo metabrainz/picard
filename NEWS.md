@@ -1,3 +1,21 @@
+# Version 2.11.0rc1 - 2024-01-11
+
+## Bugfixes
+- [PICARD-2602](https://tickets.metabrainz.org/browse/PICARD-2602) - macOS: Spaces not visible between items after comma use
+- [PICARD-2780](https://tickets.metabrainz.org/browse/PICARD-2780) - Weighting search results does match non-video tracks incorrectly
+- [PICARD-2781](https://tickets.metabrainz.org/browse/PICARD-2781) - Weighting search results does apply extremely low matching if a release on MB has no release types at all
+- [PICARD-2791](https://tickets.metabrainz.org/browse/PICARD-2791) - Navigation tree in options dialog can be completely hidden
+- [PICARD-2792](https://tickets.metabrainz.org/browse/PICARD-2792) - Unlinked AcoustID results are preferred over results with metadata
+- [PICARD-2805](https://tickets.metabrainz.org/browse/PICARD-2805) - Metadata comparison for recordings raises exception if length is None
+- [PICARD-2814](https://tickets.metabrainz.org/browse/PICARD-2814) - Error loading files with invalid / unknown ID3 cover art type
+
+## Improvements
+- [PICARD-2584](https://tickets.metabrainz.org/browse/PICARD-2584) - Handle AcoustID missing metadata
+- [PICARD-2777](https://tickets.metabrainz.org/browse/PICARD-2777) - Options indicate that enabling track relationships automatically includes release relationships
+- [PICARD-2795](https://tickets.metabrainz.org/browse/PICARD-2795) - Display currently selected verbosity in log view verbosity selection
+- [PICARD-2813](https://tickets.metabrainz.org/browse/PICARD-2813) - AcoustID lookup on recoverable decoding errors
+
+
 # Version 2.10 - 2023-10-12
 
 # Bugfixes
