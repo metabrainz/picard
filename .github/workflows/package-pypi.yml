@@ -120,8 +120,12 @@ jobs:
         pattern: picard-?dist*
         path: dist/
         merge-multiple: true
-    - name: Verify distributions
+    - name: Prepare distributions
       run: |
         ls -l dist/
+        # Remove zip source distribution (only a single sdist is allowed)
+        rm dist/picard-*.zip*
     - name: Publish package distributions to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        skip-existing: true
