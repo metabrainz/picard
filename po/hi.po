@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-15 17:44+0100\n"
+"POT-Creation-Date: 2024-01-11 23:13+0100\n"
 "PO-Revision-Date: 2023-08-23 19:09+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Hindi <https://translations.metabrainz.org/projects/picard/"
@@ -295,11 +295,11 @@ msgstr "मानकीकृत कलाकार के नाम का प�
 msgid "Convert Unicode punctuation characters to ASCII"
 msgstr "यूनिकोड चिह्नों को ASCII में बदलें"
 
-#: picard/profile.py:71 picard/ui/ui_options_metadata.py:140
+#: picard/profile.py:71 picard/ui/ui_options_metadata.py:139
 msgid "Use release relationships"
 msgstr "रिहाई के संबंधों का उपयोग करें"
 
-#: picard/profile.py:72 picard/ui/ui_options_metadata.py:139
+#: picard/profile.py:72
 #, fuzzy
 #| msgid "Use release relationships"
 msgid "Use track and release relationships"
@@ -833,22 +833,22 @@ msgstr "[एल्बम जानकारी लोड हो रही है
 msgid "[could not load recording %s]"
 msgstr "[एलबम नहीं किया जा सका %s]"
 
-#: picard/acoustid/__init__.py:104
+#: picard/acoustid/__init__.py:112
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
 msgstr ""
 
-#: picard/acoustid/__init__.py:153
+#: picard/acoustid/__init__.py:135
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
 msgstr ""
 
-#: picard/acoustid/__init__.py:176
+#: picard/acoustid/__init__.py:179
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
 msgstr ""
 
-#: picard/acoustid/__init__.py:187
+#: picard/acoustid/__init__.py:190
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' …"
 msgstr ""
@@ -3644,10 +3644,6 @@ msgstr ""
 msgid "Empty / blank script"
 msgstr ""
 
-#: picard/ui/scripteditor.py:641
-msgid "New Script"
-msgstr ""
-
 #: picard/ui/scripteditor.py:734
 msgid ""
 "At least one unsaved script has been attached to an option profile.\n"
@@ -3863,7 +3859,7 @@ msgstr ""
 msgid "Available Locales"
 msgstr ""
 
-#: picard/ui/ui_options.py:49
+#: picard/ui/ui_options.py:52
 msgid "Options"
 msgstr ""
 
@@ -4186,6 +4182,10 @@ msgstr ""
 #: picard/ui/ui_options_metadata.py:134
 msgid "Ignore artist name translation for these language scripts:"
 msgstr ""
+
+#: picard/ui/ui_options_metadata.py:140
+msgid "Use track relationships"
+msgstr "ट्रैक संबंधों का उपयोग करें"
 
 #: picard/ui/ui_options_metadata.py:142
 msgid "Custom Fields"
@@ -5029,11 +5029,11 @@ msgstr ""
 msgid "Matching"
 msgstr ""
 
-#: picard/ui/options/metadata.py:229
+#: picard/ui/options/metadata.py:216
 msgid "{indent}{locale}"
 msgstr ""
 
-#: picard/ui/options/metadata.py:291
+#: picard/ui/options/metadata.py:278
 msgid ""
 "Each selected script includes a matching threshold value used to determine "
 "if that script should be used. When an artist name is evaluated to determine "
@@ -5847,7 +5847,7 @@ msgstr ""
 msgid "%(seconds).2ds"
 msgstr ""
 
-#: picard/util/versions.py:66
+#: picard/util/versions.py:71
 msgid "is not installed"
 msgstr ""
 
@@ -5862,9 +5862,6 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-
-#~ msgid "Use track relationships"
-#~ msgstr "ट्रैक संबंधों का उपयोग करें"
 
 #~ msgid "German"
 #~ msgstr "जर्मन"

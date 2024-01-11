@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-15 17:44+0100\n"
+"POT-Creation-Date: 2024-01-11 23:13+0100\n"
 "PO-Revision-Date: 2024-01-05 19:28+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
@@ -21,8 +21,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
-" n % 1 != 0 ? 2: 3);\n"
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
+"1 : n % 1 != 0 ? 2: 3);\n"
 "X-Generator: Weblate 5.3\n"
 "Generated-By: Babel 2.6.0\n"
 
@@ -311,11 +311,11 @@ msgstr "Naudoti standartizuotus instrumentų ir vokalo kūrėjus"
 msgid "Convert Unicode punctuation characters to ASCII"
 msgstr "Konvertuoti Unicode skyrybos ženklus į ASCII"
 
-#: picard/profile.py:71 picard/ui/ui_options_metadata.py:140
+#: picard/profile.py:71 picard/ui/ui_options_metadata.py:139
 msgid "Use release relationships"
 msgstr "Naudoti leidinio santykius"
 
-#: picard/profile.py:72 picard/ui/ui_options_metadata.py:139
+#: picard/profile.py:72
 msgid "Use track and release relationships"
 msgstr "Naudoti takelio ir leidinio santykius"
 
@@ -844,22 +844,22 @@ msgstr "[kraunama įrašo informacija]"
 msgid "[could not load recording %s]"
 msgstr "[nepavyko pakrauti įrašo %s.]"
 
-#: picard/acoustid/__init__.py:104
+#: picard/acoustid/__init__.py:112
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
 msgstr "AcoustID paieškos tinklo klaida dėl „%(filename)s“."
 
-#: picard/acoustid/__init__.py:153
+#: picard/acoustid/__init__.py:135
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
 msgstr "AcoustID paieška nepavyko dėl „%(filename)s“."
 
-#: picard/acoustid/__init__.py:176
+#: picard/acoustid/__init__.py:179
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
 msgstr "AcoustID paieška negrąžino jokio rezultato failui „%(filename)s“."
 
-#: picard/acoustid/__init__.py:187
+#: picard/acoustid/__init__.py:190
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' …"
 msgstr "Ieškoma failo „%(filename)s“ atspaudų…"
@@ -1310,8 +1310,8 @@ msgstr ""
 "    funkcija taip pat nukopijuos daugiareikšmius kintamuosius jų "
 "nesulygindama.\n"
 "\n"
-"Jei yra nustatyta `keep_duplicates`, dublikatai iš rezultato nebus pašalinti."
-"\n"
+"Jei yra nustatyta `keep_duplicates`, dublikatai iš rezultato nebus "
+"pašalinti.\n"
 "\n"
 "_Nuo Picard 1.0_"
 
@@ -3842,10 +3842,6 @@ msgstr "Atidaryti skriptavimo dokumentaciją naršyklėje"
 msgid "Empty / blank script"
 msgstr "Tuščias skriptas"
 
-#: picard/ui/scripteditor.py:641
-msgid "New Script"
-msgstr "Naujas skriptas"
-
 #: picard/ui/scripteditor.py:734
 msgid ""
 "At least one unsaved script has been attached to an option profile.\n"
@@ -4079,7 +4075,7 @@ msgstr "Perkelti pasirinktą lokalę žemyn"
 msgid "Available Locales"
 msgstr "Galimos lokalės"
 
-#: picard/ui/ui_options.py:49
+#: picard/ui/ui_options.py:52
 msgid "Options"
 msgstr "Parinktys"
 
@@ -4413,6 +4409,10 @@ msgstr ""
 #: picard/ui/ui_options_metadata.py:134
 msgid "Ignore artist name translation for these language scripts:"
 msgstr ""
+
+#: picard/ui/ui_options_metadata.py:140
+msgid "Use track relationships"
+msgstr "Naudoti takelio santykius"
 
 #: picard/ui/ui_options_metadata.py:142
 msgid "Custom Fields"
@@ -5315,11 +5315,11 @@ msgstr "Ar tu esi įsitikinęs kad nori išjungti Picard?"
 msgid "Matching"
 msgstr ""
 
-#: picard/ui/options/metadata.py:229
+#: picard/ui/options/metadata.py:216
 msgid "{indent}{locale}"
 msgstr "{indent}{locale}"
 
-#: picard/ui/options/metadata.py:291
+#: picard/ui/options/metadata.py:278
 msgid ""
 "Each selected script includes a matching threshold value used to determine "
 "if that script should be used. When an artist name is evaluated to determine "
@@ -6159,7 +6159,7 @@ msgstr "%(minutes).2d min. %(seconds).2d sek."
 msgid "%(seconds).2ds"
 msgstr "%(seconds).2d sek."
 
-#: picard/util/versions.py:66
+#: picard/util/versions.py:71
 msgid "is not installed"
 msgstr "nėra įdiegta."
 
@@ -6178,8 +6178,8 @@ msgstr ""
 "\n"
 "%s"
 
-#~ msgid "Use track relationships"
-#~ msgstr "Naudoti takelio santykius"
+#~ msgid "New Script"
+#~ msgstr "Naujas skriptas"
 
 #, fuzzy
 #~ msgid "My script"

@@ -28,17 +28,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-15 17:44+0100\n"
+"POT-Creation-Date: 2024-01-11 23:13+0100\n"
 "PO-Revision-Date: 2023-12-20 14:28+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
-"Language-Team: Spanish <https://translations.metabrainz.org/projects/picard/"
-"3/app/es/>\n"
+"Language-Team: Spanish <https://translations.metabrainz.org/projects/"
+"picard/3/app/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
-" ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
+"0) ? 1 : 2);\n"
 "X-Generator: Weblate 5.3\n"
 "Generated-By: Babel 2.9.1\n"
 
@@ -331,11 +331,11 @@ msgstr "Utilizar instrumentos estandarizados y créditos vocales"
 msgid "Convert Unicode punctuation characters to ASCII"
 msgstr "Convertir caracteres de puntuación Unicode a ASCII"
 
-#: picard/profile.py:71 picard/ui/ui_options_metadata.py:140
+#: picard/profile.py:71 picard/ui/ui_options_metadata.py:139
 msgid "Use release relationships"
 msgstr "Usar las relaciones de publicaciones"
 
-#: picard/profile.py:72 picard/ui/ui_options_metadata.py:139
+#: picard/profile.py:72
 #, fuzzy
 #| msgid "Use release relationships"
 msgid "Use track and release relationships"
@@ -879,22 +879,22 @@ msgstr "[cargando información de la grabación]"
 msgid "[could not load recording %s]"
 msgstr "[no se puede cargar la grabación %s]"
 
-#: picard/acoustid/__init__.py:104
+#: picard/acoustid/__init__.py:112
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
 msgstr "Error de red en la búsqueda AcoustID para '%(filename)s'"
 
-#: picard/acoustid/__init__.py:153
+#: picard/acoustid/__init__.py:135
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
 msgstr "La búsqueda AcoustID para '%(filename)s' ha fallado"
 
-#: picard/acoustid/__init__.py:176
+#: picard/acoustid/__init__.py:179
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
 msgstr "La búsqueda AcoustID no ofrece resultados para '%(filename)s'"
 
-#: picard/acoustid/__init__.py:187
+#: picard/acoustid/__init__.py:190
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' …"
 msgstr "Buscando huella digital para el archivo '%(filename)s'…"
@@ -3797,12 +3797,6 @@ msgstr ""
 msgid "Empty / blank script"
 msgstr ""
 
-#: picard/ui/scripteditor.py:641
-#, fuzzy
-#| msgid "Script"
-msgid "New Script"
-msgstr "Script"
-
 #: picard/ui/scripteditor.py:734
 msgid ""
 "At least one unsaved script has been attached to an option profile.\n"
@@ -4020,7 +4014,7 @@ msgstr "Mover el valor seleccionado hacia abajo"
 msgid "Available Locales"
 msgstr ""
 
-#: picard/ui/ui_options.py:49
+#: picard/ui/ui_options.py:52
 msgid "Options"
 msgstr "Opciones"
 
@@ -4356,6 +4350,10 @@ msgstr "Seleccionar…"
 #: picard/ui/ui_options_metadata.py:134
 msgid "Ignore artist name translation for these language scripts:"
 msgstr ""
+
+#: picard/ui/ui_options_metadata.py:140
+msgid "Use track relationships"
+msgstr "Usar las relaciones de pistas"
 
 #: picard/ui/ui_options_metadata.py:142
 msgid "Custom Fields"
@@ -5275,11 +5273,11 @@ msgstr "¿Seguro que quieres eliminar las opciones de ajustes seleccionadas?"
 msgid "Matching"
 msgstr "Emparejamiento"
 
-#: picard/ui/options/metadata.py:229
+#: picard/ui/options/metadata.py:216
 msgid "{indent}{locale}"
 msgstr ""
 
-#: picard/ui/options/metadata.py:291
+#: picard/ui/options/metadata.py:278
 msgid ""
 "Each selected script includes a matching threshold value used to determine "
 "if that script should be used. When an artist name is evaluated to determine "
@@ -6122,7 +6120,7 @@ msgstr "%(minutes).2dm %(seconds).2ds"
 msgid "%(seconds).2ds"
 msgstr "%(seconds).2ds"
 
-#: picard/util/versions.py:66
+#: picard/util/versions.py:71
 msgid "is not installed"
 msgstr "no está instalado"
 
@@ -6141,15 +6139,17 @@ msgstr ""
 "\n"
 "%s"
 
+#, fuzzy
+#~| msgid "Script"
+#~ msgid "New Script"
+#~ msgstr "Script"
+
 #~ msgid ""
 #~ "Internal player: A valid playback service was not found, playback cannot "
 #~ "proceed"
 #~ msgstr ""
 #~ "Reproductor interno: No se encontró un servicio de reproducción válido, "
 #~ "la reproducción no puede proceder"
-
-#~ msgid "Use track relationships"
-#~ msgstr "Usar las relaciones de pistas"
 
 #~ msgid "Stable releases only"
 #~ msgstr "Solo lanzamientos Estables"

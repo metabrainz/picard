@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-15 17:44+0100\n"
+"POT-Creation-Date: 2024-01-11 23:13+0100\n"
 "PO-Revision-Date: 2023-10-31 20:27+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Danish <https://translations.metabrainz.org/projects/picard/"
@@ -298,11 +298,11 @@ msgstr ""
 msgid "Convert Unicode punctuation characters to ASCII"
 msgstr "Omdan Unicode-tegnsætning til ASCII"
 
-#: picard/profile.py:71 picard/ui/ui_options_metadata.py:140
+#: picard/profile.py:71 picard/ui/ui_options_metadata.py:139
 msgid "Use release relationships"
 msgstr "Brug udgivelsessammenhænge"
 
-#: picard/profile.py:72 picard/ui/ui_options_metadata.py:139
+#: picard/profile.py:72
 #, fuzzy
 #| msgid "Use release relationships"
 msgid "Use track and release relationships"
@@ -836,22 +836,22 @@ msgstr ""
 msgid "[could not load recording %s]"
 msgstr ""
 
-#: picard/acoustid/__init__.py:104
+#: picard/acoustid/__init__.py:112
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
 msgstr "AcoustID-opslagsnetværksfejl for \"%(filename)s\"!"
 
-#: picard/acoustid/__init__.py:153
+#: picard/acoustid/__init__.py:135
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
 msgstr "AcoustID-opslag mislykkedes for \"%(filename)s\"!"
 
-#: picard/acoustid/__init__.py:176
+#: picard/acoustid/__init__.py:179
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
 msgstr "AcoustID-opslag gav ingen resultater for filen \"%(filename)s\""
 
-#: picard/acoustid/__init__.py:187
+#: picard/acoustid/__init__.py:190
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' …"
 msgstr "Slår fingeraftryk for filen \"%(filename)s\" op…"
@@ -3658,12 +3658,6 @@ msgstr ""
 msgid "Empty / blank script"
 msgstr ""
 
-#: picard/ui/scripteditor.py:641
-#, fuzzy
-#| msgid "Script"
-msgid "New Script"
-msgstr "Skriftsystem"
-
 #: picard/ui/scripteditor.py:734
 msgid ""
 "At least one unsaved script has been attached to an option profile.\n"
@@ -3880,7 +3874,7 @@ msgstr ""
 msgid "Available Locales"
 msgstr ""
 
-#: picard/ui/ui_options.py:49
+#: picard/ui/ui_options.py:52
 msgid "Options"
 msgstr "Indstillinger"
 
@@ -4204,6 +4198,10 @@ msgstr ""
 #: picard/ui/ui_options_metadata.py:134
 msgid "Ignore artist name translation for these language scripts:"
 msgstr ""
+
+#: picard/ui/ui_options_metadata.py:140
+msgid "Use track relationships"
+msgstr "Brug skæringsforbindelser"
 
 #: picard/ui/ui_options_metadata.py:142
 msgid "Custom Fields"
@@ -5064,11 +5062,11 @@ msgstr ""
 msgid "Matching"
 msgstr "Matchning"
 
-#: picard/ui/options/metadata.py:229
+#: picard/ui/options/metadata.py:216
 msgid "{indent}{locale}"
 msgstr ""
 
-#: picard/ui/options/metadata.py:291
+#: picard/ui/options/metadata.py:278
 msgid ""
 "Each selected script includes a matching threshold value used to determine "
 "if that script should be used. When an artist name is evaluated to determine "
@@ -5885,7 +5883,7 @@ msgstr ""
 msgid "%(seconds).2ds"
 msgstr ""
 
-#: picard/util/versions.py:66
+#: picard/util/versions.py:71
 msgid "is not installed"
 msgstr "er ikke installeret"
 
@@ -5904,8 +5902,10 @@ msgstr ""
 "\n"
 "%s"
 
-#~ msgid "Use track relationships"
-#~ msgstr "Brug skæringsforbindelser"
+#, fuzzy
+#~| msgid "Script"
+#~ msgid "New Script"
+#~ msgstr "Skriftsystem"
 
 #, fuzzy
 #~| msgid "Script"
