@@ -99,12 +99,13 @@ jobs:
         else
           echo "::notice::Releasing production release $PICARD_VERSION"
         fi
-        ./scripts/tools/changelog-for-version.py $PICARD_VERSION > changes-$PICARD_VERSION.txt
+        echo "*Please refer to the [download page](https://picard.musicbrainz.org/downloads/) for official download locations.*\n" > changes-$PICARD_VERSION.md
+        ./scripts/tools/changelog-for-version.py $PICARD_VERSION >> changes-$PICARD_VERSION.md
     - name: Create release
       uses: softprops/action-gh-release@v1
       with:
         name: MusicBrainz Picard ${{ steps.changelog.outputs.version }}
-        body_path: changes-${{ steps.changelog.outputs.version }}.txt
+        body_path: changes-${{ steps.changelog.outputs.version }}.md
         prerelease: ${{ steps.changelog.outputs.prerelease }}
         files: artifacts/*
       env:
