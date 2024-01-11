@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-15 18:23+0100\n"
+"POT-Creation-Date: 2024-01-11 23:12+0100\n"
 "PO-Revision-Date: 2023-08-30 09:27+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Estonian <https://translations.metabrainz.org/projects/picard/"
@@ -308,11 +308,11 @@ msgstr "Kasutatakse standardiseeritud instrumendi- ja hääleteavet"
 msgid "Convert Unicode punctuation characters to ASCII"
 msgstr "Unicode'i kirjavahemärgid teisendatakse ASCII-sse"
 
-#: picard/profile.py:71 picard/ui/ui_options_metadata.py:138
+#: picard/profile.py:71 picard/ui/ui_options_metadata.py:137
 msgid "Use release relationships"
 msgstr "Kasutatakse väljalasete seoseid"
 
-#: picard/profile.py:72 picard/ui/ui_options_metadata.py:137
+#: picard/profile.py:72
 #, fuzzy
 #| msgid "Use release relationships"
 msgid "Use track and release relationships"
@@ -858,22 +858,22 @@ msgstr "[salvestise teabe laadimine…]"
 msgid "[could not load recording %s]"
 msgstr "[salvestise \"%s\" laadimine polnud võimalik]"
 
-#: picard/acoustid/__init__.py:104
+#: picard/acoustid/__init__.py:112
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
 msgstr "Faili \"%(filename)s\" AcoustID päringul ilmnes võrguviga."
 
-#: picard/acoustid/__init__.py:153
+#: picard/acoustid/__init__.py:135
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
 msgstr "Faili \"%(filename)s\" AcoustID päring nurjus."
 
-#: picard/acoustid/__init__.py:176
+#: picard/acoustid/__init__.py:179
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
 msgstr "Faili \"%(filename)s\" AcoustID päringule ei saadud vastust."
 
-#: picard/acoustid/__init__.py:187
+#: picard/acoustid/__init__.py:190
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' …"
 msgstr "Faili \"%(filename)s\" sõrmejälje otsimine…"
@@ -3812,12 +3812,6 @@ msgstr ""
 msgid "Empty / blank script"
 msgstr ""
 
-#: picard/ui/scripteditor.py:641
-#, fuzzy
-#| msgid "Script"
-msgid "New Script"
-msgstr "Kirjasüsteem"
-
 #: picard/ui/scripteditor.py:734
 msgid ""
 "At least one unsaved script has been attached to an option profile.\n"
@@ -4036,7 +4030,7 @@ msgstr "Liiguta valitud väärtus allapoole"
 msgid "Available Locales"
 msgstr ""
 
-#: picard/ui/ui_options.py:47
+#: picard/ui/ui_options.py:50
 msgid "Options"
 msgstr "Seaded"
 
@@ -4366,6 +4360,10 @@ msgstr ""
 #: picard/ui/ui_options_metadata.py:132
 msgid "Ignore artist name translation for these language scripts:"
 msgstr ""
+
+#: picard/ui/ui_options_metadata.py:138
+msgid "Use track relationships"
+msgstr "Kasutatakse lugude seoseid"
 
 #: picard/ui/ui_options_metadata.py:140
 msgid "Custom Fields"
@@ -5241,11 +5239,11 @@ msgstr ""
 msgid "Matching"
 msgstr "Sobitamine"
 
-#: picard/ui/options/metadata.py:229
+#: picard/ui/options/metadata.py:216
 msgid "{indent}{locale}"
 msgstr ""
 
-#: picard/ui/options/metadata.py:291
+#: picard/ui/options/metadata.py:278
 msgid ""
 "Each selected script includes a matching threshold value used to determine "
 "if that script should be used. When an artist name is evaluated to determine "
@@ -6100,8 +6098,10 @@ msgstr ""
 "\n"
 "%s"
 
-#~ msgid "Use track relationships"
-#~ msgstr "Kasutatakse lugude seoseid"
+#, fuzzy
+#~| msgid "Script"
+#~ msgid "New Script"
+#~ msgstr "Kirjasüsteem"
 
 #~ msgid "Stable releases only"
 #~ msgstr "Ainult stabiilsed väljalasked"

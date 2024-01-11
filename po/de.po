@@ -46,7 +46,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-15 18:23+0100\n"
+"POT-Creation-Date: 2024-01-11 23:12+0100\n"
 "PO-Revision-Date: 2023-12-16 18:28+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/2/"
@@ -344,11 +344,11 @@ msgstr "Standardisierte Instrumentalisten- oder Gesangsnennungen verwenden"
 msgid "Convert Unicode punctuation characters to ASCII"
 msgstr "Unicode-Interpunktionszeichen zu ASCII umwandeln"
 
-#: picard/profile.py:71 picard/ui/ui_options_metadata.py:138
+#: picard/profile.py:71 picard/ui/ui_options_metadata.py:137
 msgid "Use release relationships"
 msgstr "Veröffentlichungsbeziehungen verwenden"
 
-#: picard/profile.py:72 picard/ui/ui_options_metadata.py:137
+#: picard/profile.py:72
 msgid "Use track and release relationships"
 msgstr "Titel- und Veröffentlichungsbeziehungen verwenden"
 
@@ -879,22 +879,22 @@ msgstr "[Aufnahmeinformationen werden geladen]"
 msgid "[could not load recording %s]"
 msgstr "[Aufnahme %s wurde nicht geladen]"
 
-#: picard/acoustid/__init__.py:104
+#: picard/acoustid/__init__.py:112
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
 msgstr "Netzwerkfehler beim Nachschlagen von AcoustID für „%(filename)s“!"
 
-#: picard/acoustid/__init__.py:153
+#: picard/acoustid/__init__.py:135
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
 msgstr "Nachschlagen von AcoustID fehlgeschlagen für „%(filename)s“!"
 
-#: picard/acoustid/__init__.py:176
+#: picard/acoustid/__init__.py:179
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
 msgstr "Nachschlagen von AcoustID für „%(filename)s“ ergab kein Ergebnis"
 
-#: picard/acoustid/__init__.py:187
+#: picard/acoustid/__init__.py:190
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' …"
 msgstr "Fingerabdruck der Datei „%(filename)s“ wird abgefragt …"
@@ -4430,10 +4430,6 @@ msgstr "Skript-Dokumentation im Browser öffnen"
 msgid "Empty / blank script"
 msgstr "Leeres Skript"
 
-#: picard/ui/scripteditor.py:641
-msgid "New Script"
-msgstr "Neues Skript"
-
 #: picard/ui/scripteditor.py:734
 msgid ""
 "At least one unsaved script has been attached to an option profile.\n"
@@ -4672,7 +4668,7 @@ msgstr "Ausgewählte Sprache nach unten verschieben"
 msgid "Available Locales"
 msgstr "Verfügbare Sprachen"
 
-#: picard/ui/ui_options.py:47
+#: picard/ui/ui_options.py:50
 msgid "Options"
 msgstr "Einstellungen"
 
@@ -5006,6 +5002,10 @@ msgstr "Auswählen …"
 #: picard/ui/ui_options_metadata.py:132
 msgid "Ignore artist name translation for these language scripts:"
 msgstr "Übersetzung des Künsternamens für folgende Schriften ignorieren:"
+
+#: picard/ui/ui_options_metadata.py:138
+msgid "Use track relationships"
+msgstr "Titelbeziehungen verwenden"
 
 #: picard/ui/ui_options_metadata.py:140
 msgid "Custom Fields"
@@ -5969,11 +5969,11 @@ msgstr "Soll diese Options-Einstellung wirklich entfernt werden?"
 msgid "Matching"
 msgstr "Abgleich"
 
-#: picard/ui/options/metadata.py:229
+#: picard/ui/options/metadata.py:216
 msgid "{indent}{locale}"
 msgstr "{indent}{locale}"
 
-#: picard/ui/options/metadata.py:291
+#: picard/ui/options/metadata.py:278
 msgid ""
 "Each selected script includes a matching threshold value used to determine "
 "if that script should be used. When an artist name is evaluated to determine "
@@ -6845,8 +6845,8 @@ msgstr ""
 "\n"
 "%s"
 
-#~ msgid "Use track relationships"
-#~ msgstr "Titelbeziehungen verwenden"
+#~ msgid "New Script"
+#~ msgstr "Neues Skript"
 
 #, python-format
 #~ msgid "%(value)s %(unit)s"

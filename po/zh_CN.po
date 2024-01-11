@@ -48,7 +48,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-15 18:23+0100\n"
+"POT-Creation-Date: 2024-01-11 23:12+0100\n"
 "PO-Revision-Date: 2023-08-30 09:27+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://translations.metabrainz.org/"
@@ -336,11 +336,11 @@ msgstr "使用标准化的乐器与人声署名"
 msgid "Convert Unicode punctuation characters to ASCII"
 msgstr "将 Unicode 标点符号转换为 ASCII 字符"
 
-#: picard/profile.py:71 picard/ui/ui_options_metadata.py:138
+#: picard/profile.py:71 picard/ui/ui_options_metadata.py:137
 msgid "Use release relationships"
 msgstr "使用专辑关系"
 
-#: picard/profile.py:72 picard/ui/ui_options_metadata.py:137
+#: picard/profile.py:72
 #, fuzzy
 #| msgid "Use release relationships"
 msgid "Use track and release relationships"
@@ -881,22 +881,22 @@ msgstr "[正在载入录音信息]"
 msgid "[could not load recording %s]"
 msgstr "[无法载入录音 %s]"
 
-#: picard/acoustid/__init__.py:104
+#: picard/acoustid/__init__.py:112
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
 msgstr "为「%(filename)s」查询 AcoustID 时出现网络错误!"
 
-#: picard/acoustid/__init__.py:153
+#: picard/acoustid/__init__.py:135
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
 msgstr "为「%(filename)s」查询 AcoustID 失败!"
 
-#: picard/acoustid/__init__.py:176
+#: picard/acoustid/__init__.py:179
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
 msgstr "为文件「%(filename)s」查询 AcoustID 无任何结果"
 
-#: picard/acoustid/__init__.py:187
+#: picard/acoustid/__init__.py:190
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' …"
 msgstr "正在查询文件「%(filename)s」的指纹…"
@@ -4249,12 +4249,6 @@ msgstr "在浏览器中打开脚本文档"
 msgid "Empty / blank script"
 msgstr "空白脚本"
 
-#: picard/ui/scripteditor.py:641
-#, fuzzy
-#| msgid "Script"
-msgid "New Script"
-msgstr "文字"
-
 #: picard/ui/scripteditor.py:734
 msgid ""
 "At least one unsaved script has been attached to an option profile.\n"
@@ -4489,7 +4483,7 @@ msgstr "下移所选语种"
 msgid "Available Locales"
 msgstr "可用语种"
 
-#: picard/ui/ui_options.py:47
+#: picard/ui/ui_options.py:50
 msgid "Options"
 msgstr "选项"
 
@@ -4813,6 +4807,10 @@ msgstr "选择…"
 #: picard/ui/ui_options_metadata.py:132
 msgid "Ignore artist name translation for these language scripts:"
 msgstr "对下列语言文字忽略艺术家名称翻译："
+
+#: picard/ui/ui_options_metadata.py:138
+msgid "Use track relationships"
+msgstr "使用曲目关系"
 
 #: picard/ui/ui_options_metadata.py:140
 msgid "Custom Fields"
@@ -5722,11 +5720,11 @@ msgstr "确认移除所选设置选项？"
 msgid "Matching"
 msgstr "匹配"
 
-#: picard/ui/options/metadata.py:229
+#: picard/ui/options/metadata.py:216
 msgid "{indent}{locale}"
 msgstr "{indent}{locale}"
 
-#: picard/ui/options/metadata.py:291
+#: picard/ui/options/metadata.py:278
 msgid ""
 "Each selected script includes a matching threshold value used to determine "
 "if that script should be used. When an artist name is evaluated to determine "
@@ -6585,8 +6583,10 @@ msgstr ""
 "\n"
 "%s"
 
-#~ msgid "Use track relationships"
-#~ msgstr "使用曲目关系"
+#, fuzzy
+#~| msgid "Script"
+#~ msgid "New Script"
+#~ msgstr "文字"
 
 #, python-format
 #~ msgid "Plugin %r"
