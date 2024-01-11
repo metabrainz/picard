@@ -110,7 +110,7 @@ jobs:
         APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
         CODESIGN_MACOS_P12_PASSWORD: ${{ secrets.CODESIGN_MACOS_P12_PASSWORD }}
     - name: Archive production artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: macos-app-${{ matrix.setup.macos-deployment-version }}
         path: artifacts/
@@ -133,7 +133,7 @@ jobs:
         fetch-depth: 0  # Fetch entire history, needed for setting the build number
     - run: git fetch --depth=1 origin +refs/tags/release-*:refs/tags/release-*
     - name: Set up Python 3.8
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: 3.8
     - name: Setup Windows build environment
@@ -231,7 +231,7 @@ jobs:
       if: env.CODESIGN == '1'
       run: Remove-Item .\codesign.pfx
     - name: Archive production artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: matrix.type != 'signed-app' || env.CODESIGN == '1'
       with:
         name: windows-${{ matrix.type }}
@@ -254,34 +254,34 @@ jobs:
       contents: write
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v4
+    - uses: actions/setup-python@v5
       with:
         python-version: 3.9
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: macos-app-10.12
         path: artifacts/
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: macos-app-10.14
         path: artifacts/
-    # - uses: actions/download-artifact@v3
+    # - uses: actions/download-artifact@v4
     #   with:
     #     name: windows-signed-app
     #     path: artifacts/
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: windows-store-app
         path: artifacts/
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: windows-installer
         path: artifacts/
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: windows-portable
         path: artifacts/
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: picard-sdist
         path: artifacts/
