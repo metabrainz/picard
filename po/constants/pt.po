@@ -3,21 +3,22 @@
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
+# evarfino <evarfino@gmail.com>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2023-08-29 06:46+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2024-01-14 16:28+0000\n"
+"Last-Translator: evarfino <evarfino@gmail.com>\n"
 "Language-Team: Portuguese <https://translations.metabrainz.org/projects/"
-"picard/constants/pt/>\n"
+"picard/3/constants/pt/>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.3\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:171
@@ -38,15 +39,15 @@ msgstr "Meu script"
 
 #: picard/const/__init__.py:203
 msgid "My profile"
-msgstr ""
+msgstr "Meu perfil"
 
 #: picard/const/__init__.py:204
 msgid "(copy)"
-msgstr ""
+msgstr "(copiado)"
 
 #: picard/const/__init__.py:205
 msgid "{title} ({count})"
-msgstr ""
+msgstr "{titulo} ({numero})"
 
 #: picard/const/languages.py:29 picard/const/locales.py:48
 #: picard/const/scripts.py:29
