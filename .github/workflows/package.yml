@@ -42,6 +42,8 @@ jobs:
     strategy:
       fail-fast: false
     secrets: inherit
+    permissions:
+      id-token: write
 
   github-release:
     runs-on: ubuntu-latest
