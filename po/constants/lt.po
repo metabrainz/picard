@@ -2,13 +2,13 @@
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
-# "Vac31." <gateway_31@protonmail.com>, 2023.
+# "Vac31." <gateway_31@protonmail.com>, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-24 09:20+0200\n"
-"PO-Revision-Date: 2023-12-29 16:28+0000\n"
+"PO-Revision-Date: 2024-01-16 07:28+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/constants/lt/>\n"
@@ -307,7 +307,7 @@ msgstr "Arabų k. (Jungtiniai Arabų Emyratai)"
 
 #: picard/const/locales.py:51
 msgid "Arabic (Bahrain)"
-msgstr ""
+msgstr "Arabų k. (Bahreinas)"
 
 #: picard/const/locales.py:52
 msgid "Arabic (Djibouti)"
@@ -371,7 +371,7 @@ msgstr "Arabų k. (Omanas)"
 
 #: picard/const/locales.py:67
 msgid "Arabic (Palestinian Territories)"
-msgstr ""
+msgstr "Arabų k. (Palestinos teritorijos)"
 
 #: picard/const/locales.py:68
 msgid "Arabic (Qatar)"
@@ -443,11 +443,11 @@ msgstr ""
 
 #: picard/const/locales.py:85
 msgid "Azerbaijani"
-msgstr ""
+msgstr "Azerbaidžanas"
 
 #: picard/const/locales.py:86
 msgid "Azerbaijani (Arabic)"
-msgstr ""
+msgstr "Azerbaidžanas (arabų k.)"
 
 #: picard/const/locales.py:87
 msgid "Azerbaijani (Arabic) (Iraq)"
@@ -851,27 +851,27 @@ msgstr ""
 
 #: picard/const/locales.py:191
 msgid "German (Austria)"
-msgstr ""
+msgstr "Vokiečių k. (Austrija)"
 
 #: picard/const/locales.py:192
 msgid "German (Belgium)"
-msgstr ""
+msgstr "Vokiečių k. (Belgija)"
 
 #: picard/const/locales.py:194
 msgid "German (Germany)"
-msgstr ""
+msgstr "Vokiečių k. (Vokietija)"
 
 #: picard/const/locales.py:195
 msgid "German (Italy)"
-msgstr ""
+msgstr "Vokiečių k. (Italija)"
 
 #: picard/const/locales.py:196
 msgid "German (Liechtenstein)"
-msgstr ""
+msgstr "Vokiečių k. (Lichtenšteinas)"
 
 #: picard/const/locales.py:197
 msgid "German (Luxembourg)"
-msgstr ""
+msgstr "Vokiečių k. (Liuksemburgas)"
 
 #: picard/const/locales.py:198
 msgid "Zarma"
@@ -963,23 +963,23 @@ msgstr ""
 
 #: picard/const/locales.py:222
 msgid "English (world)"
-msgstr ""
+msgstr "Anglų k. (pasaulinė)"
 
 #: picard/const/locales.py:223
 msgid "English (Europe)"
-msgstr ""
+msgstr "Anglų k. (Europa)"
 
 #: picard/const/locales.py:224
 msgid "English (United Arab Emirates)"
-msgstr ""
+msgstr "Anglų k. (Jungtiniai Arabų Emyratai)"
 
 #: picard/const/locales.py:225
 msgid "English (Antigua & Barbuda)"
-msgstr ""
+msgstr "Anglų k. (Antigva ir Barbuda)"
 
 #: picard/const/locales.py:226
 msgid "English (Anguilla)"
-msgstr ""
+msgstr "Anglų k. (Angilija)"
 
 #: picard/const/locales.py:227
 msgid "English (American Samoa)"
@@ -1283,7 +1283,7 @@ msgstr ""
 
 #: picard/const/locales.py:305
 msgid "English (Sweden)"
-msgstr ""
+msgstr "Anglų k. (Švedija)"
 
 #: picard/const/locales.py:306
 msgid "English (Singapore)"
@@ -1355,7 +1355,7 @@ msgstr ""
 
 #: picard/const/locales.py:323
 msgid "English (United States)"
-msgstr ""
+msgstr "Anglų k. (Jungtinės Valstijos)"
 
 #: picard/const/locales.py:324
 msgid "English (St. Vincent & Grenadines)"
@@ -1419,7 +1419,7 @@ msgstr ""
 
 #: picard/const/locales.py:340
 msgid "Spanish (Chile)"
-msgstr ""
+msgstr "Ispanų k. (Čilė)"
 
 #: picard/const/locales.py:341
 msgid "Spanish (Colombia)"
@@ -1483,7 +1483,7 @@ msgstr ""
 
 #: picard/const/locales.py:356
 msgid "Spanish (Philippines)"
-msgstr ""
+msgstr "Ispanų k. (Filipinai)"
 
 #: picard/const/locales.py:357
 msgid "Spanish (Puerto Rico)"
