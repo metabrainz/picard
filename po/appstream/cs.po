@@ -5,6 +5,7 @@
 # DJ Sweder <djsweder@gmail.com>, 2020
 # Transifex Bot <>, 2023
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
+# Fjuro <ifjuro@proton.me>, 2024.
 #
 # Translators:
 #
@@ -13,9 +14,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-05 22:58+0200\n"
-"PO-Revision-Date: 2023-08-23 19:10+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
-"Language-Team: Czech <https://translations.metabrainz.org/projects/picard/"
+"PO-Revision-Date: 2024-01-16 07:28+0000\n"
+"Last-Translator: Fjuro <ifjuro@proton.me>\n"
+"Language-Team: Czech <https://translations.metabrainz.org/projects/picard/3/"
 "appstream/cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +24,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
 "<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.3\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
@@ -123,7 +124,7 @@ msgstr ""
 msgid ""
 "Cover Art: Picard can find and download the correct cover art for your "
 "albums."
-msgstr ""
+msgstr "Obaly alb: Picard umí nalézt a stáhnout správný obal pro vaše alba."
 
 #: org.musicbrainz.Picard.appdata.xml.in:56
 msgid ""
@@ -141,8 +142,8 @@ msgstr "Sdružení MetaBrainz"
 
 #: org.musicbrainz.Picard.desktop.in:4
 msgid "Tag your music with the next generation MusicBrainz tagger"
-msgstr ""
+msgstr "Označte svou hudbu s označovačem další generace MusicBrainz"
 
 #: org.musicbrainz.Picard.desktop.in:16
 msgid "New Window"
-msgstr ""
+msgstr "Nové okno"
