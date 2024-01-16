@@ -762,7 +762,7 @@ class File(QtCore.QObject, Item):
 
     def _info(self, metadata, file):
         try:
-            metadata['~filesize'] = os.path.getsize(encode_filename(self.filename))
+            metadata['~filesize'] = os.path.getsize(encode_filename(file.filename))
         except BaseException:
             pass
         if hasattr(file.info, 'length'):
