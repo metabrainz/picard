@@ -146,6 +146,7 @@ class M4ATest(CommonMP4Tests.MP4TestCase):
         '~sample_rate': '44100',
         '~bitrate': '14.376',
         '~bits_per_sample': '16',
+        '~filesize': '3591',
     }
     unexpected_info = ['~video']
 
@@ -168,6 +169,7 @@ class M4VTest(CommonMP4Tests.MP4TestCase):
         '~bitrate': '108.043',
         '~bits_per_sample': '16',
         '~video': '1',
+        '~filesize': '5097',
     }
 
 

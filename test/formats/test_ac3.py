@@ -44,6 +44,7 @@ class AC3WithAPETest(CommonApeTests.ApeTestCase):
         '~bitrate': '192.0',
         '~sample_rate': '44100',
         '~channels': '2',
+        '~filesize': '2570',
     }
     unexpected_info = ['~video']
 
@@ -109,6 +110,7 @@ class EAC3Test(CommonTests.SimpleFormatsTestCase):
         'length': 107,
         '~sample_rate': '44100',
         '~channels': '2',
+        '~filesize': '2570',
     }
     unexpected_info = ['~video']
 

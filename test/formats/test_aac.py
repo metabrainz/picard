@@ -41,6 +41,7 @@ class AACTest(CommonTests.SimpleFormatsTestCase):
         '~channels': '2',
         '~sample_rate': '44100',
         '~bitrate': '123.824',
+        '~filesize': '1896',
     }
     unexpected_info = ['~video']
 
@@ -53,6 +54,7 @@ class AACWithAPETest(CommonApeTests.ApeTestCase):
         '~channels': '2',
         '~sample_rate': '44100',
         '~bitrate': '123.824',
+        '~filesize': '1974',
     }
     unexpected_info = ['~video']
 

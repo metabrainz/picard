@@ -208,7 +208,7 @@ class FLACTest(CommonVorbisTests.VorbisTestCase):
         '~channels': '2',
         '~sample_rate': '44100',
         '~format': 'FLAC',
-        '~filesize':'6546'
+        '~filesize': '6546',
     }
     unexpected_info = ['~video']
 
@@ -302,6 +302,7 @@ class OggVorbisTest(CommonVorbisTests.VorbisTestCase):
         'length': 82,
         '~channels': '2',
         '~sample_rate': '44100',
+        '~filesize': '5221',
     }
 
 
@@ -312,6 +313,7 @@ class OggSpxTest(CommonVorbisTests.VorbisTestCase):
         'length': 89,
         '~channels': '2',
         '~bitrate': '29.6',
+        '~filesize': '608',
     }
     unexpected_info = ['~video']
 
@@ -322,6 +324,7 @@ class OggOpusTest(CommonVorbisTests.VorbisTestCase):
     expected_info = {
         'length': 82,
         '~channels': '2',
+        '~filesize': '1637',
     }
     unexpected_info = ['~video']
 
@@ -341,6 +344,7 @@ class OggTheoraTest(CommonVorbisTests.VorbisTestCase):
         'length': 520,
         '~bitrate': '200.0',
         '~video': '1',
+        '~filesize': '5298',
     }
 
 
@@ -350,6 +354,7 @@ class OggFlacTest(CommonVorbisTests.VorbisTestCase):
     expected_info = {
         'length': 82,
         '~channels': '2',
+        '~filesize': '2573',
     }
     unexpected_info = ['~video']
 

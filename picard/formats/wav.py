@@ -25,6 +25,7 @@
 
 
 from collections.abc import MutableMapping
+import os
 
 import mutagen
 
@@ -33,6 +34,7 @@ from picard.config import get_config
 from picard.file import File
 from picard.formats.id3 import NonCompatID3File
 from picard.metadata import Metadata
+from picard.util import encode_filename
 
 
 try:
@@ -235,6 +237,7 @@ except ImportError:
             metadata['~sample_rate'] = f.getframerate()
             metadata.length = 1000 * f.getnframes() // f.getframerate()
             metadata['~format'] = self.NAME
+            metadata['~filesize'] = os.path.getsize(encode_filename(self.filename))
             self._add_path_to_metadata(metadata)
             return metadata
 

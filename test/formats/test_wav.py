@@ -41,6 +41,7 @@ expected_info = {
     '~channels': '2',
     '~sample_rate': '44100',
     '~bits_per_sample': '16',
+    '~filesize': '15706',
 }
 
 if WAVFile.supports_tag('artist'):
