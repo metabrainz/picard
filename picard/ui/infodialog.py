@@ -33,7 +33,6 @@ from collections import (
     namedtuple,
 )
 from html import escape
-import os.path
 import re
 import traceback
 
