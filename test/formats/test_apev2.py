@@ -172,7 +172,7 @@ class MonkeysAudioTest(CommonApeTests.ApeTestCase):
         '~channels': '2',
         '~sample_rate': '44100',
         '~bits_per_sample': '16',
-        '~filesize': '2496',
+        '~filesize': '2432',
     }
     unexpected_info = ['~video']
 
@@ -184,7 +184,7 @@ class WavPackTest(CommonApeTests.ApeTestCase):
         'length': 82,
         '~channels': '2',
         '~sample_rate': '44100',
-        '~filesize': '2542',
+        '~filesize': '2478',
     }
     unexpected_info = ['~video']
 
@@ -261,7 +261,7 @@ class MusepackSV8Test(CommonApeTests.ApeTestCase):
         'length': 82,
         '~channels': '2',
         '~sample_rate': '44100',
-        '~filesize': '1633',
+        '~filesize': '1569',
     }
     unexpected_info = ['~video']
 
@@ -279,7 +279,7 @@ class TAKTest(CommonApeTests.ApeTestCase):
                 '~channels': '2',
                 '~sample_rate': '44100',
                 '~bits_per_sample': '16',
-                '~filesize': '2144',
+                '~filesize': '2080',
             }
 
 
@@ -290,7 +290,7 @@ class OptimFROGLosslessTest(CommonApeTests.ApeTestCase):
         'length': 0,
         '~channels': '2',
         '~sample_rate': '48000',
-        '~filesize': '181',
+        '~filesize': '117',
     }
     unexpected_info = ['~video']
 
@@ -306,7 +306,7 @@ class OptimFROGDUalStreamTest(CommonApeTests.ApeTestCase):
         'length': 0,
         '~channels': '2',
         '~sample_rate': '48000',
-        '~filesize': '181',
+        '~filesize': '117',
     }
     unexpected_info = ['~video']
 

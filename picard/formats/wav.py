@@ -237,7 +237,7 @@ except ImportError:
             metadata['~sample_rate'] = f.getframerate()
             metadata.length = 1000 * f.getnframes() // f.getframerate()
             metadata['~format'] = self.NAME
-            metadata['~filesize'] = os.path.getsize(encode_filename(self.filename))
+            metadata['~filesize'] = os.path.getsize(encode_filename(filename))
             self._add_path_to_metadata(metadata)
             return metadata
 

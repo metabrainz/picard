@@ -105,7 +105,7 @@ class ASFTest(CommonAsfTests.AsfTestCase):
         '~channels': '2',
         '~sample_rate': '44100',
         '~bitrate': '128.0',
-        '~filesize': '4881',
+        '~filesize': '3744',
     }
 
 
@@ -131,7 +131,7 @@ class WMVTest(CommonAsfTests.AsfTestCase):
         '~sample_rate': '44100',
         '~bitrate': '128.0',
         '~video': '1',
-        '~filesize': '8453',
+        '~filesize': '7373',
     }
 
 

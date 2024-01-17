@@ -40,11 +40,11 @@ class AC3WithAPETest(CommonApeTests.ApeTestCase):
     testfile = 'test.ac3'
     supports_ratings = False
     expected_info = {
-        'length': 106,
+        'length': 104,
         '~bitrate': '192.0',
         '~sample_rate': '44100',
         '~channels': '2',
-        '~filesize': '2570',
+        '~filesize': '2506',
     }
     unexpected_info = ['~video']
 
@@ -107,10 +107,10 @@ class EAC3Test(CommonTests.SimpleFormatsTestCase):
     testfile = 'test.eac3'
     expected_info = {
         '~format': 'Enhanced AC-3',
-        'length': 107,
+        'length': 104,
         '~sample_rate': '44100',
         '~channels': '2',
-        '~filesize': '2570',
+        '~filesize': '2506',
     }
     unexpected_info = ['~video']
 
