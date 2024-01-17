@@ -83,13 +83,13 @@ from picard.util import (
     any_exception_isinstance,
     decode_filename,
     emptydir,
+    encode_filename,
     find_best_match,
     format_time,
     is_absolute_path,
     normpath,
     thread,
     tracknum_and_title_from_filename,
-    encode_filename,
 )
 from picard.util.filenaming import (
     get_available_filename,
