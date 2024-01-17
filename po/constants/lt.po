@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2024-01-16 07:28+0000\n"
+"PO-Revision-Date: 2024-01-17 20:28+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/constants/lt/>\n"
@@ -3895,7 +3895,7 @@ msgstr ""
 
 #: picard/const/locales.py:985
 msgid "Unknown language"
-msgstr ""
+msgstr "Nežinoma kalba"
 
 #: picard/const/locales.py:986
 msgid "Urdu"
@@ -3939,7 +3939,7 @@ msgstr ""
 
 #: picard/const/locales.py:996
 msgid "Vai"
-msgstr ""
+msgstr "Vai"
 
 #: picard/const/locales.py:997
 msgid "Vai (Latin)"
@@ -3975,11 +3975,11 @@ msgstr ""
 
 #: picard/const/locales.py:1005
 msgid "Vietnamese"
-msgstr ""
+msgstr "Vietnamiečių k."
 
 #: picard/const/locales.py:1006
 msgid "Vietnamese (Vietnam)"
-msgstr ""
+msgstr "Vietnamiečių k. (Vietnamas)"
 
 #: picard/const/locales.py:1007
 msgid "Volapük"
@@ -4063,11 +4063,11 @@ msgstr ""
 
 #: picard/const/locales.py:1027
 msgid "Yiddish"
-msgstr ""
+msgstr "Jidiš"
 
 #: picard/const/locales.py:1028
 msgid "Yiddish (world)"
-msgstr ""
+msgstr "Jidiš (pasaulinė)"
 
 #: picard/const/locales.py:1029
 msgid "Yoruba"
@@ -4099,7 +4099,7 @@ msgstr ""
 
 #: picard/const/locales.py:1036
 msgid "Cantonese"
-msgstr ""
+msgstr "Kantoniečių k."
 
 #: picard/const/locales.py:1037
 msgid "Cantonese (Simplified)"
@@ -4127,7 +4127,7 @@ msgstr ""
 
 #: picard/const/locales.py:1043 picard/const/scripts.py:31
 msgid "Chinese"
-msgstr ""
+msgstr "Kinų"
 
 #: picard/const/locales.py:1044
 msgid "Chinese (Simplified)"
@@ -4167,7 +4167,7 @@ msgstr ""
 
 #: picard/const/locales.py:1053
 msgid "Zulu"
-msgstr ""
+msgstr "Zulų k."
 
 #: picard/const/locales.py:1054
 msgid "Zulu (South Africa)"
@@ -4183,7 +4183,7 @@ msgstr "Hangul"
 
 #: picard/const/scripts.py:33
 msgid "Hiragana"
-msgstr ""
+msgstr "Hiragana"
 
 #: picard/const/scripts.py:34
 msgid "Katakana"
