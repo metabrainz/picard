@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:13+0100\n"
-"PO-Revision-Date: 2024-01-05 19:28+0000\n"
+"PO-Revision-Date: 2024-01-17 20:28+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -21,8 +21,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
-"1 : n % 1 != 0 ? 2: 3);\n"
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
+" n % 1 != 0 ? 2: 3);\n"
 "X-Generator: Weblate 5.3\n"
 "Generated-By: Babel 2.6.0\n"
 
@@ -5771,12 +5771,12 @@ msgstr "%(value)s PiB"
 
 #: picard/util/checkupdate.py:101
 msgid "Error loading Picard releases list: {error_message}"
-msgstr "Klaida kraunant Picard leidinių sąrašą: {error_message}."
+msgstr "Klaida kraunant Picard leidimų sąrašą: {error_message}."
 
 #: picard/util/checkupdate.py:105 picard/util/checkupdate.py:139
 #: picard/util/checkupdate.py:159
 msgid "Picard Update"
-msgstr "Picard atnaujinimas"
+msgstr "Picard naujinimas"
 
 #: picard/util/checkupdate.py:106
 msgid ""
@@ -5813,7 +5813,7 @@ msgid ""
 "\n"
 "Your version: {picard_old_version}\n"
 msgstr ""
-"Šiuo metu nėra jokio atnaujinimo tavo prenumeruojamam naujinimo lygiui: "
+"Šiuo metu nėra jokio naujinimo tavo prenumeruojamam naujinimo lygiui: "
 "{update_level}\n"
 "\n"
 "Tavo versija: {picard_old_version}\n"
@@ -5836,7 +5836,7 @@ msgstr "Albumo rūšiavimo tvarka"
 
 #: picard/util/tags.py:42
 msgid "Arranger"
-msgstr "Aranžuotojas (-a)"
+msgstr "Aranžuotojas"
 
 #: picard/util/tags.py:44
 msgid "Artists"
@@ -5868,11 +5868,11 @@ msgstr "Rinkinys (iTunes)"
 
 #: picard/util/tags.py:53
 msgid "Composer Sort Order"
-msgstr "Kompozitoriaus (-ės) rūšiavimo tvarka"
+msgstr "Kompozitoriaus rūšiavimo tvarka"
 
 #: picard/util/tags.py:54
 msgid "Conductor"
-msgstr "Dirigentas (-ė)"
+msgstr "Dirigentas"
 
 #: picard/util/tags.py:55
 msgid "Copyright"
@@ -5880,7 +5880,7 @@ msgstr "Autorinės teisės"
 
 #: picard/util/tags.py:57
 msgid "Director"
-msgstr "Režisierius (-ė)"
+msgstr "Režisierius"
 
 #: picard/util/tags.py:58
 msgid "Disc Id"
@@ -5892,7 +5892,7 @@ msgstr "Disko numeris"
 
 #: picard/util/tags.py:61
 msgid "DJ-Mixer"
-msgstr "DJ mikseris (-ė)"
+msgstr "DJ mikseris"
 
 #: picard/util/tags.py:62
 msgid "Encoded By"
@@ -5904,7 +5904,7 @@ msgstr "Koderio nustatymai"
 
 #: picard/util/tags.py:64
 msgid "Engineer"
-msgstr "Inžinierius (-ė)"
+msgstr "Inžinierius"
 
 #: picard/util/tags.py:65
 msgid "Gapless Playback"
@@ -5924,11 +5924,11 @@ msgstr "Klavišas"
 
 #: picard/util/tags.py:70
 msgid "Record Label"
-msgstr "Įrašų leidykla"
+msgstr "Įrašų kompanija"
 
 #: picard/util/tags.py:74
 msgid "Lyricist"
-msgstr "Dainų tekstų autorius (-ė)"
+msgstr "Dainų tekstų autorius"
 
 #: picard/util/tags.py:75
 msgid "Lyrics"
@@ -5936,7 +5936,7 @@ msgstr "Dainų tekstai"
 
 #: picard/util/tags.py:77
 msgid "Mixer"
-msgstr "Suvedėjas (-a)"
+msgstr "Suvedėjas"
 
 #: picard/util/tags.py:78
 msgid "Mood"
@@ -6008,7 +6008,7 @@ msgstr "Originalus albumas"
 
 #: picard/util/tags.py:95
 msgid "Original Artist"
-msgstr "Originalus atlikėjas (-a)"
+msgstr "Originalus atlikėjas"
 
 #: picard/util/tags.py:97
 msgid "Original Filename"
@@ -6020,7 +6020,7 @@ msgstr "Originalūs metai"
 
 #: picard/util/tags.py:99
 msgid "Performer"
-msgstr "Atlikėjas (-a)"
+msgstr "Atlikėjas"
 
 #: picard/util/tags.py:100
 msgid "Podcast"
@@ -6032,7 +6032,7 @@ msgstr "Tinklalaidės URL"
 
 #: picard/util/tags.py:102
 msgid "Producer"
-msgstr "Prodiuseris (-ė)"
+msgstr "Prodiuseris"
 
 #: picard/util/tags.py:103
 msgid "R128 Album Gain"
@@ -6060,7 +6060,7 @@ msgstr "Leidinio tipas"
 
 #: picard/util/tags.py:110
 msgid "Remixer"
-msgstr "Remiksuotojas (-a)"
+msgstr "Remiksuotojas"
 
 #: picard/util/tags.py:111
 msgid "ReplayGain Album Gain"
@@ -6137,7 +6137,7 @@ msgstr "Kūrinys"
 
 #: picard/util/tags.py:130
 msgid "Writer"
-msgstr "Rašytojas (-a)"
+msgstr "Rašytojas"
 
 #: picard/util/time.py:48
 #, python-format
@@ -6161,7 +6161,7 @@ msgstr "%(seconds).2d sek."
 
 #: picard/util/versions.py:71
 msgid "is not installed"
-msgstr "nėra įdiegta."
+msgstr "nėra įdiegta"
 
 #: picard/util/webbrowser2.py:45
 msgid "Web Browser Error"
@@ -6174,9 +6174,9 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-"Klaida paleidžiant internetinę naršyklę:\n"
+"Klaida paleidžiant žiniatinklio naršyklę:\n"
 "\n"
-"%s"
+"%s."
 
 #~ msgid "New Script"
 #~ msgstr "Naujas skriptas"
