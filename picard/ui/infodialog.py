@@ -49,7 +49,6 @@ from picard.file import File
 from picard.track import Track
 from picard.util import (
     bytes2human,
-    encode_filename,
     format_time,
     open_local_path,
     union_sorted_lists,
