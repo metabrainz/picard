@@ -6,11 +6,11 @@
 # Copyright (C) 2006-2007, 2012 Lukáš Lalinský
 # Copyright (C) 2011-2014 Michael Wiencek
 # Copyright (C) 2012 Nikolai Prokoschenko
-# Copyright (C) 2013-2014, 2017-2022 Laurent Monin
+# Copyright (C) 2013-2014, 2017-2024 Laurent Monin
 # Copyright (C) 2013-2014, 2021 Sophist-UK
 # Copyright (C) 2015 Ohm Patel
 # Copyright (C) 2015 Wieland Hoffmann
-# Copyright (C) 2015, 2018-2022 Philipp Wolfer
+# Copyright (C) 2015, 2018-2023 Philipp Wolfer
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2020 Felix Schwarz

@@ -4,9 +4,10 @@
 #
 # Copyright (C) 2007 Lukáš Lalinský
 # Copyright (C) 2014 Shadab Zafar
-# Copyright (C) 2015-2021 Laurent Monin
+# Copyright (C) 2015-2021, 2023-2024 Laurent Monin
 # Copyright (C) 2019 Wieland Hoffmann
 # Copyright (C) 2019-2020, 2022-2023 Philipp Wolfer
+# Copyright (C) 2022 skelly37
 # Copyright (C) 2023 Bob Swift
 #
 # This program is free software; you can redistribute it and/or

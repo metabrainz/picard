@@ -10,7 +10,7 @@
 # Copyright (C) 2012-2013 Michael Wiencek
 # Copyright (C) 2013, 2017 Sophist-UK
 # Copyright (C) 2016-2017 Sambhav Kothari
-# Copyright (C) 2017-2018, 2020-2022 Laurent Monin
+# Copyright (C) 2017-2018, 2020-2024 Laurent Monin
 # Copyright (C) 2022 Marcin Szalowicz
 #
 # This program is free software; you can redistribute it and/or

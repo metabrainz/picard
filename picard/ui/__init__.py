@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008 Lukáš Lalinský
 # Copyright (C) 2014 Sophist-UK
-# Copyright (C) 2014, 2018, 2020-2022 Laurent Monin
+# Copyright (C) 2014, 2018, 2020-2024 Laurent Monin
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2019-2023 Philipp Wolfer

@@ -6,7 +6,7 @@
 # Copyright (C) 2010, 2018-2021 Philipp Wolfer
 # Copyright (C) 2012, 2014 Wieland Hoffmann
 # Copyright (C) 2012-2014 Michael Wiencek
-# Copyright (C) 2013-2015, 2018-2021 Laurent Monin
+# Copyright (C) 2013-2015, 2018-2021, 2023-2024 Laurent Monin
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017 Suhas
 # Copyright (C) 2021 Bob Swift

@@ -8,7 +8,7 @@
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2012 Johannes Weißl
 # Copyright (C) 2012-2014, 2018, 2020 Wieland Hoffmann
-# Copyright (C) 2013-2014, 2016, 2018-2022 Laurent Monin
+# Copyright (C) 2013-2014, 2016, 2018-2024 Laurent Monin
 # Copyright (C) 2013-2014, 2017 Sophist-UK
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2016-2017 Sambhav Kothari

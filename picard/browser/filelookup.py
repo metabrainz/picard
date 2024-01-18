@@ -6,7 +6,7 @@
 # Copyright (C) 2006-2008, 2011-2012 Lukáš Lalinský
 # Copyright (C) 2011 Pavan Chander
 # Copyright (C) 2013 Calvin Walton
-# Copyright (C) 2013, 2018, 2020-2021 Laurent Monin
+# Copyright (C) 2013, 2018, 2020-2021, 2023-2024 Laurent Monin
 # Copyright (C) 2014-2015 Sophist-UK
 # Copyright (C) 2015 Ohm Patel
 # Copyright (C) 2015-2016 Wieland Hoffmann

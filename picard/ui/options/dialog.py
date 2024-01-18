@@ -8,13 +8,13 @@
 # Copyright (C) 2011 Pavan Chander
 # Copyright (C) 2011-2012, 2019 Wieland Hoffmann
 # Copyright (C) 2011-2013 Michael Wiencek
-# Copyright (C) 2013, 2017-2022 Laurent Monin
+# Copyright (C) 2013, 2017-2024 Laurent Monin
 # Copyright (C) 2014 Sophist-UK
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017 Suhas
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2021 Gabriel Ferreira
-# Copyright (C) 2021-2022 Bob Swift
+# Copyright (C) 2021-2023 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

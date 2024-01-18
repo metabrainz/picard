@@ -16,7 +16,7 @@
 # Copyright (C) 2013 Ionuț Ciocîrlan
 # Copyright (C) 2013 brainz34
 # Copyright (C) 2013-2014, 2017 Sophist-UK
-# Copyright (C) 2013-2015, 2017-2022 Laurent Monin
+# Copyright (C) 2013-2015, 2017-2024 Laurent Monin
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2016 Simon Legner
 # Copyright (C) 2016 Suhas

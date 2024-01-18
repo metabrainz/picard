@@ -7,7 +7,7 @@
 # Copyright (C) 2011-2014 Wieland Hoffmann
 # Copyright (C) 2012-2013 Michael Wiencek
 # Copyright (C) 2013 Calvin Walton
-# Copyright (C) 2013-2014, 2018-2021 Laurent Monin
+# Copyright (C) 2013-2014, 2018-2021, 2023-2024 Laurent Monin
 # Copyright (C) 2014-2015, 2017 Sophist-UK
 # Copyright (C) 2016-2018 Sambhav Kothari
 #
