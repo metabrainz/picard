@@ -763,8 +763,8 @@ class File(QtCore.QObject, Item):
     def _info(self, metadata, file):
         try:
             metadata['~filesize'] = os.path.getsize(encode_filename(file.filename))
-        except BaseException:
-            pass
+        except BaseException as e:
+            log.error(e)
         if hasattr(file.info, 'length'):
             metadata.length = int(file.info.length * 1000)
         if hasattr(file.info, 'bitrate') and file.info.bitrate:
