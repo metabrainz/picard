@@ -105,6 +105,7 @@ class ASFTest(CommonAsfTests.AsfTestCase):
         '~channels': '2',
         '~sample_rate': '44100',
         '~bitrate': '128.0',
+        '~filesize': '3744',
     }
 
 
@@ -116,6 +117,7 @@ class WMATest(CommonAsfTests.AsfTestCase):
         '~channels': '2',
         '~sample_rate': '44100',
         '~bitrate': '64.0',
+        '~filesize': '8164',
     }
     unexpected_info = ['~video']
 
@@ -129,6 +131,7 @@ class WMVTest(CommonAsfTests.AsfTestCase):
         '~sample_rate': '44100',
         '~bitrate': '128.0',
         '~video': '1',
+        '~filesize': '7373',
     }
 
 

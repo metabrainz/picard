@@ -33,7 +33,6 @@ from collections import (
     namedtuple,
 )
 from html import escape
-import os.path
 import re
 import traceback
 
@@ -50,7 +49,6 @@ from picard.file import File
 from picard.track import Track
 from picard.util import (
     bytes2human,
-    encode_filename,
     format_time,
     open_local_path,
     union_sorted_lists,
@@ -286,12 +284,10 @@ def format_file_info(file_):
     info.append((_("Filename:"), file_.filename))
     if '~format' in file_.orig_metadata:
         info.append((_("Format:"), file_.orig_metadata['~format']))
-    try:
-        size = os.path.getsize(encode_filename(file_.filename))
+    if '~filesize' in file_.orig_metadata:
+        size = file_.orig_metadata['~filesize']
         sizestr = "%s (%s)" % (bytes2human.decimal(size), bytes2human.binary(size))
         info.append((_("Size:"), sizestr))
-    except BaseException:
-        pass
     if file_.orig_metadata.length:
         info.append((_("Length:"), format_time(file_.orig_metadata.length)))
     if '~bitrate' in file_.orig_metadata:

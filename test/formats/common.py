@@ -235,7 +235,7 @@ class CommonTests:
         def test_info(self):
             if not self.expected_info:
                 raise unittest.SkipTest("Ratings not supported for %s" % self.format.NAME)
-            metadata = save_and_load_metadata(self.filename, Metadata())
+            metadata = load_metadata(self.filename)
             for key, expected_value in self.expected_info.items():
                 value = metadata.length if key == 'length' else metadata[key]
                 self.assertEqual(expected_value, value, '%s: %r != %r' % (key, expected_value, value))

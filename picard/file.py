@@ -83,6 +83,7 @@ from picard.util import (
     any_exception_isinstance,
     decode_filename,
     emptydir,
+    encode_filename,
     find_best_match,
     format_time,
     is_absolute_path,
@@ -132,7 +133,7 @@ class File(QtCore.QObject, Item):
 
     EXTENSIONS = []
 
-    FILE_INFO_TAGS = ('~bitrate', '~sample_rate', '~channels', '~bits_per_sample', '~format')
+    FILE_INFO_TAGS = ('~bitrate', '~sample_rate', '~channels', '~bits_per_sample', '~format', '~filesize')
 
     comparison_weights = {
         'title': 13,
@@ -760,6 +761,10 @@ class File(QtCore.QObject, Item):
         return True
 
     def _info(self, metadata, file):
+        try:
+            metadata['~filesize'] = os.path.getsize(encode_filename(file.filename))
+        except BaseException as e:
+            log.error(e)
         if hasattr(file.info, 'length'):
             metadata.length = int(file.info.length * 1000)
         if hasattr(file.info, 'bitrate') and file.info.bitrate:

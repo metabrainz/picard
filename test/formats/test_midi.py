@@ -32,7 +32,8 @@ class MIDITest(CommonTests.SimpleFormatsTestCase):
     testfile = 'test.mid'
     expected_info = {
         'length': 127997,
-        '~format': 'Standard MIDI File'
+        '~format': 'Standard MIDI File',
+        '~filesize': '8444',
     }
     unexpected_info = ['~video']
 
