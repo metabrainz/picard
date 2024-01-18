@@ -6,7 +6,7 @@
 # Copyright (C) 2009, 2018-2023 Philipp Wolfer
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2012-2013 Michael Wiencek
-# Copyright (C) 2013-2022 Laurent Monin
+# Copyright (C) 2013-2024 Laurent Monin
 # Copyright (C) 2015 Ohm Patel
 # Copyright (C) 2015 Sophist-UK
 # Copyright (C) 2016 Suhas

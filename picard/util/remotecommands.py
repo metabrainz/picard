@@ -4,6 +4,7 @@
 #
 # Copyright (C) 2022-2023 Bob Swift
 # Copyright (C) 2023 Philipp Wolfer
+# Copyright (C) 2023-2024 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

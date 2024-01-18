@@ -14,7 +14,7 @@
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Your Name
 # Copyright (C) 2012-2013 Wieland Hoffmann
-# Copyright (C) 2013-2014, 2016, 2018-2022 Laurent Monin
+# Copyright (C) 2013-2014, 2016, 2018-2024 Laurent Monin
 # Copyright (C) 2013-2014, 2017, 2020 Sophist-UK
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2016 Simon Legner
@@ -26,6 +26,7 @@
 # Copyright (C) 2021 Louis Sautier
 # Copyright (C) 2021 Petit Minion
 # Copyright (C) 2023 certuna
+# Copyright (C) 2024 Suryansh Shakya
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

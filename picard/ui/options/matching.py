@@ -5,7 +5,7 @@
 # Copyright (C) 2006-2008, 2011 Lukáš Lalinský
 # Copyright (C) 2009, 2011, 2019-2021 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
-# Copyright (C) 2018, 2020-2021 Laurent Monin
+# Copyright (C) 2018, 2020-2021, 2023-2024 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2016 Rahul Raturi
-# Copyright (C) 2018, 2021-2022 Laurent Monin
+# Copyright (C) 2018, 2021-2024 Laurent Monin
 # Copyright (C) 2019, 2021-2022 Philipp Wolfer
 # Copyright (C) 2020 Ray Bouchard
 #

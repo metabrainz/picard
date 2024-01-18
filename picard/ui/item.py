@@ -6,7 +6,7 @@
 # Copyright (C) 2010, 2018, 2020-2022 Philipp Wolfer
 # Copyright (C) 2011-2012 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
-# Copyright (C) 2013, 2020-2021 Laurent Monin
+# Copyright (C) 2013, 2020-2021, 2023-2024 Laurent Monin
 # Copyright (C) 2014 Sophist-UK
 # Copyright (C) 2021 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion
