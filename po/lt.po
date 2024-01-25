@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-01-17 20:28+0000\n"
+"PO-Revision-Date: 2024-01-25 09:28+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/app/lt/>\n"
@@ -967,14 +967,14 @@ msgstr "Vietiniai failai"
 
 #: picard/coverart/providers/urlrels.py:39
 msgid "Allowed Cover Art URLs"
-msgstr "Leidžiami viršelio URL adresai"
+msgstr "Leidžiami viršelio apipavidalinimų URL adresai"
 
 #: picard/script/__init__.py:141
 msgid ""
 "This preset example file naming script does not require any special "
 "settings, tagging scripts or plugins."
 msgstr ""
-"Šis iš anksto nustatytas failo pavadinimo skripto pavyzdys nereikalauja "
+"Šis iš anksto nustatytas failų pavadinimų skripto pavyzdys nereikalauja "
 "jokių specialių nustatymų, žymėjimo skriptų ar įskiepių."
 
 #: picard/script/__init__.py:145
@@ -984,16 +984,16 @@ msgstr "Išankstinis nustatymas %(number)d: %(title)s"
 
 #: picard/script/__init__.py:152
 msgid "Default file naming script"
-msgstr "Numatytasis failo pavadinimo skriptas"
+msgstr "Numatytasis failų pavadinimų skriptas"
 
 #: picard/script/__init__.py:164
 msgid "[album artist]/[album]/[track #]. [title]"
-msgstr "[albumo atlikėjas (-a)]/[albumas]/[takelis #]. [pavadinimas]"
+msgstr "[albumo atlikėjas]/[albumas]/[takelis #]. [pavadinimas]"
 
 #: picard/script/__init__.py:178
 msgid "[album artist]/[album]/[disc and track #] [artist] - [title]"
 msgstr ""
-"[albumo atlikėjas (-a)]/[albumas]/[disko ir takelio #] [atlikėjas (-a)] – "
+"[albumo atlikėjas]/[albumas]/[diskas ir takelis #] [atlikėjas] – "
 "[pavadinimas]"
 
 #: picard/script/functions.py:186
@@ -2175,7 +2175,9 @@ msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
 "  Jonas Slivka https://launchpad.net/~jonas-slivka\n"
-"  Philipp Wolfer https://launchpad.net/~phw"
+"  Philipp Wolfer https://launchpad.net/~phw\n"
+"\n"
+"Vaclovas Intas (Vac31.)"
 
 #: picard/ui/aboutdialog.py:77
 #, python-format
@@ -2221,8 +2223,8 @@ msgid ""
 "MetaBrainz Foundation to keep the service running."
 msgstr ""
 "Ačiū, kad naudoji Picard. Picard remiasi MusicBrainz duomenų baze, kurią "
-"valdo MetaBrainz Fondas, padedant tūkstančiams savanorių. Jei tau patinka ši "
-"programa, apsvarstyk galimybę paaukoti MetaBrainz Fondui, kad ši paslauga "
+"valdo MetaBrainz fondas, padedant tūkstančiams savanorių. Jei tau patinka ši "
+"programa, apsvarstyk galimybę paaukoti MetaBrainz fondui, kad ši paslauga "
 "veiktų toliau."
 
 #: picard/ui/aboutdialog.py:109
@@ -2244,7 +2246,7 @@ msgstr "Oficialioji svetainė"
 
 #: picard/ui/caa_types_selector.py:174
 msgid "Cover art types"
-msgstr "Viršelio tipai"
+msgstr "Viršelio apipavidalinimų tipai"
 
 #: picard/ui/caa_types_selector.py:194
 msgid ""
@@ -2267,11 +2269,11 @@ msgid ""
 "types not appearing in the 'Include' or 'Exclude' lists will not be "
 "considered when determining whether or not to download and use a CAA image.\n"
 msgstr ""
-"CAA vaizdai su vaizdo tipu, esančiu sąraše „Įtraukti“, bus atsisiunčiami ir "
-"naudojami, NEBENT jie taip pat turi vaizdo tipą, esantį sąraše „Neįtraukti“. "
-"Vaizdai su tipais, esančiais sąraše „Neįtraukti“, NIEKADA nebus naudojami. "
-"Vaizdų tipai nepateikti sąrašuose „Įtraukti“ arba „Neįtraukti“ nebus "
-"vertinami nustatant, ar atsisiųsti ir naudoti CAA vaizdą, ar ne.\n"
+"CAA vaizdai su vaizdo tipu, esančiu sąraše Įtraukti, bus atsisiunčiami ir "
+"naudojami, NEBENT jie taip pat turi vaizdo tipą, esantį sąraše Neįtraukti. "
+"Vaizdai su tipais, esančiais sąraše Neįtraukti, NIEKADA nebus naudojami. "
+"Vaizdų tipai nepateikti sąrašuose Įtraukti arba Neįtraukti nebus vertinami "
+"nustatant, ar atsisiųsti ir naudoti CAA vaizdą, ar ne.\n"
 
 #: picard/ui/caa_types_selector.py:258
 msgid "I&nclude all"
@@ -2299,7 +2301,7 @@ msgstr "Albumas"
 #: picard/ui/mainwindow.py:1155 picard/ui/searchdialog/album.py:153
 #: picard/ui/searchdialog/track.py:71 picard/util/tags.py:43
 msgid "Artist"
-msgstr "Atlikėjas (-a)"
+msgstr "Atlikėjas"
 
 #: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:175
 #: picard/ui/searchdialog/album.py:156 picard/ui/searchdialog/track.py:73
@@ -2309,11 +2311,11 @@ msgstr "Data"
 
 #: picard/ui/cdlookup.py:73 picard/ui/searchdialog/album.py:158
 msgid "Labels"
-msgstr "Leidyklos"
+msgstr "Įrašų kompanijos"
 
 #: picard/ui/cdlookup.py:73 picard/ui/searchdialog/album.py:159
 msgid "Catalog #s"
-msgstr "Katalogo Nr."
+msgstr "Katalogo #s"
 
 #: picard/ui/cdlookup.py:73 picard/ui/itemviews.py:171
 #: picard/ui/searchdialog/album.py:160 picard/util/tags.py:47
@@ -2332,38 +2334,38 @@ msgstr "Atnaujinti sąrašą"
 #, python-format
 msgid "%(name)s (%(count)i release)"
 msgid_plural "%(name)s (%(count)i releases)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%(name)s (%(count)i leidinys)"
+msgstr[1] "%(name)s (%(count)i leidiniai)"
+msgstr[2] "%(name)s (%(count)i leidinio)"
+msgstr[3] "%(name)s (%(count)i leidinių)"
 
 #: picard/ui/colors.py:37
 msgid "Errored entity"
-msgstr ""
+msgstr "Klaidingas subjektas"
 
 #: picard/ui/colors.py:38
 msgid "Pending entity"
-msgstr ""
+msgstr "Laukiantis subjektas"
 
 #: picard/ui/colors.py:39
 msgid "Saved entity"
-msgstr ""
+msgstr "Išsaugotas subjektas"
 
 #: picard/ui/colors.py:40
 msgid "Log view text (debug)"
-msgstr ""
+msgstr "Žurnalo peržiūros tekstas (derinimas)"
 
 #: picard/ui/colors.py:41
 msgid "Log view text (error)"
-msgstr ""
+msgstr "Žurnalo peržiūros tekstas (klaida)"
 
 #: picard/ui/colors.py:42
 msgid "Log view text (info)"
-msgstr ""
+msgstr "Žurnalo peržiūros tekstas (informacija)"
 
 #: picard/ui/colors.py:43
 msgid "Log view text (warning)"
-msgstr ""
+msgstr "Žurnalo peržiūros tekstas (įspėjimas)"
 
 #: picard/ui/colors.py:44
 msgid "Tag added"
@@ -2395,11 +2397,11 @@ msgstr "Rodyti daugiau informacijos"
 
 #: picard/ui/coverartbox.py:432
 msgid "New Cover Art"
-msgstr "Naujas viršelis"
+msgstr "Naujas viršelio apipavidalinimas"
 
 #: picard/ui/coverartbox.py:433
 msgid "Original Cover Art"
-msgstr "Originalus viršelis"
+msgstr "Originalus viršelio apipavidalinimas"
 
 #: picard/ui/coverartbox.py:612
 msgid "All supported image formats"
@@ -2411,15 +2413,15 @@ msgstr "Rodyti daugiau informacijos…"
 
 #: picard/ui/coverartbox.py:638
 msgid "Keep original cover art"
-msgstr "Palikti originalinį viršelį"
+msgstr "Palikti originalinį viršelio apipavidalinimą"
 
 #: picard/ui/coverartbox.py:644
 msgid "Choose local file…"
-msgstr ""
+msgstr "Pasirinkti vietinį failą…"
 
 #: picard/ui/coverartbox.py:653
 msgid "Replace front cover art"
-msgstr "Pakeisti priekinį viršelį"
+msgstr "Pakeisti priekinį viršelio apipavidalinimą"
 
 #: picard/ui/coverartbox.py:662
 msgid "Append front cover art"
@@ -2427,11 +2429,11 @@ msgstr ""
 
 #: picard/ui/edittagdialog.py:69
 msgid "YYYY-MM-DD"
-msgstr ""
+msgstr "MMMM-MM-DD"
 
 #: picard/ui/edittagdialog.py:71
 msgid "YYYY"
-msgstr ""
+msgstr "MMMM"
 
 #: picard/ui/filebrowser.py:88
 msgid "&Load selected files"
@@ -2466,7 +2468,7 @@ msgstr "Naujas viršelis"
 #: picard/ui/infodialog.py:110 picard/ui/itemviews.py:178
 #: picard/ui/searchdialog/album.py:164
 msgid "Cover"
-msgstr ""
+msgstr "Viršelis"
 
 #: picard/ui/infodialog.py:209
 #, python-format
@@ -2475,6 +2477,9 @@ msgid ""
 "Temporary file: %(tempfile)s\n"
 "Source: %(sourcefile)s"
 msgstr ""
+"Dukart spustelėk, kad atidarytum išorinėje peržiūros programoje.\n"
+"Laikinasis failas: %(tempfile)s\n"
+"Šaltinis: %(sourcefile)s"
 
 #: picard/ui/infodialog.py:219
 #, python-format
@@ -2531,7 +2536,7 @@ msgstr "Albumas:"
 
 #: picard/ui/infodialog.py:317
 msgid "Artist:"
-msgstr "Atlikėjas (-a):"
+msgstr "Atlikėjas:"
 
 #: picard/ui/infodialog.py:347
 #, python-format
@@ -2617,11 +2622,11 @@ msgstr "Ilgis"
 
 #: picard/ui/itemviews.py:164 picard/util/tags.py:38
 msgid "Album Artist"
-msgstr "Albumo atlikėjas (-a)"
+msgstr "Albumo atlikėjas"
 
 #: picard/ui/itemviews.py:165 picard/util/tags.py:52
 msgid "Composer"
-msgstr ""
+msgstr "Kompozitorius"
 
 #: picard/ui/itemviews.py:167 picard/util/tags.py:60
 msgid "Disc Subtitle"
@@ -2629,19 +2634,19 @@ msgstr ""
 
 #: picard/ui/itemviews.py:168
 msgid "Track No."
-msgstr "Takelio Nr."
+msgstr "Takelio nr."
 
 #: picard/ui/itemviews.py:169
 msgid "Disc No."
-msgstr ""
+msgstr "Disko nr."
 
 #: picard/ui/itemviews.py:170
 msgid "Catalog No."
-msgstr ""
+msgstr "Katalogo nr."
 
 #: picard/ui/itemviews.py:172 picard/util/tags.py:76
 msgid "Media"
-msgstr ""
+msgstr "Medija"
 
 #: picard/ui/itemviews.py:173 picard/util/tags.py:66
 msgid "Genre"
@@ -2689,7 +2694,7 @@ msgstr "Atkurti numatytuosius stulpelius"
 
 #: picard/ui/itemviews.py:404
 msgid "Lock columns"
-msgstr ""
+msgstr "Užrakinti stulpelius"
 
 #: picard/ui/itemviews.py:456
 msgid "&Expand all"
@@ -2738,7 +2743,7 @@ msgstr "&Paleisti skriptus"
 
 #: picard/ui/itemviews.py:851
 msgid "file view"
-msgstr ""
+msgstr "failo peržiūra"
 
 #: picard/ui/itemviews.py:852
 msgid "Contains unmatched files and clusters"
@@ -2788,11 +2793,11 @@ msgstr ""
 
 #: picard/ui/itemviews.py:1184
 msgid "Track saved"
-msgstr ""
+msgstr "Išsaugotas takelis"
 
 #: picard/ui/itemviews.py:1186 picard/ui/itemviews.py:1190
 msgid "Pending"
-msgstr ""
+msgstr "Laukiama"
 
 #: picard/ui/itemviews.py:1197
 msgid "Fingerprint has already been submitted"
@@ -2855,11 +2860,11 @@ msgstr ""
 
 #: picard/ui/logview.py:297
 msgid "Are you sure you want to clear the log?"
-msgstr ""
+msgstr "Ar tikrai nori išvalyti žurnalą?"
 
 #: picard/ui/logview.py:339
 msgid "Activity History"
-msgstr ""
+msgstr "Veiklos istorija"
 
 #: picard/ui/mainwindow.py:222 picard/ui/ui_aboutdialog.py:84
 msgid "MusicBrainz Picard"
@@ -2907,7 +2912,7 @@ msgid ""
 msgstr ""
 "Picard klausosi šio prievado, kad integruotų su tavo naršykle. Kai iš Picard "
 "atlieki Paieška arba Atidaryti naršyklėje, spustelėjus tinklalapyje esantį "
-"mygtuką Žymeklis, leidinys pakraunamas į Picard."
+"mygtuką Žymeklis, leidinys kraunamas į Picard."
 
 #: picard/ui/mainwindow.py:428
 #, python-format
@@ -2930,7 +2935,7 @@ msgstr "Atidaryti AcoustID parinktis"
 
 #: picard/ui/mainwindow.py:502
 msgid "&Options…"
-msgstr ""
+msgstr "&Parinktys…"
 
 #: picard/ui/mainwindow.py:509
 msgid "Open &file naming script editor…"
@@ -3022,7 +3027,7 @@ msgstr "Ctrl+Q"
 
 #: picard/ui/mainwindow.py:619
 msgid "&Remove"
-msgstr "&Pašalinti"
+msgstr "Š&alinti"
 
 #: picard/ui/mainwindow.py:620
 msgid "Remove selected files/albums"
@@ -3042,7 +3047,7 @@ msgstr "Ctrl+Shift+L"
 
 #: picard/ui/mainwindow.py:638
 msgid "Submit cluster as release…"
-msgstr ""
+msgstr "Pateikti klasterį kaip leidinį…"
 
 #: picard/ui/mainwindow.py:639
 msgid "Submit cluster as a new release to MusicBrainz"
@@ -3167,7 +3172,7 @@ msgstr "Ctrl+Y"
 
 #: picard/ui/mainwindow.py:786
 msgid "&Generate AcoustID Fingerprints"
-msgstr ""
+msgstr "&Generuoti AcoustID atspaudus"
 
 #: picard/ui/mainwindow.py:787 picard/ui/options/interface_toolbar.py:108
 msgid "Generate Fingerprints"
@@ -3338,7 +3343,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:1104 picard/ui/ui_options_plugins.py:134
 msgid "Actions"
-msgstr ""
+msgstr "Veiksmai"
 
 #: picard/ui/mainwindow.py:1156
 msgid "Track"
@@ -3385,6 +3390,8 @@ msgid ""
 "Submitting releases to MusicBrainz requires the browser integration to be "
 "enabled. Do you want to enable the browser integration now?"
 msgstr ""
+"Norint pateikti leidinius MusicBrainz, reikia įjungti naršyklės integraciją. "
+"Ar nori įjungti naršyklės integraciją dabar?"
 
 #: picard/ui/mainwindow.py:1641
 #, python-format
@@ -3455,11 +3462,11 @@ msgstr ""
 
 #: picard/ui/metadatabox.py:221
 msgid "Tag"
-msgstr "Žyma"
+msgstr "Žymė"
 
 #: picard/ui/metadatabox.py:221
 msgid "Original Value"
-msgstr "Originali vertė"
+msgstr "Originali reikšmė"
 
 #: picard/ui/metadatabox.py:221
 msgid "New Value"
@@ -3487,7 +3494,7 @@ msgstr "Alt+Shift+R"
 
 #: picard/ui/metadatabox.py:373
 msgid "Edit…"
-msgstr ""
+msgstr "Redaguoti…"
 
 #: picard/ui/metadatabox.py:379
 msgid "Add to 'Preserve Tags' List"
@@ -3572,7 +3579,7 @@ msgstr ""
 
 #: picard/ui/playertoolbar.py:189
 msgid "Player"
-msgstr ""
+msgstr "Leistuvas"
 
 #: picard/ui/playertoolbar.py:197
 msgid "Play"
@@ -3622,7 +3629,7 @@ msgstr ""
 
 #: picard/ui/pluginupdatedialog.py:43
 msgid "Picard Plugins Update"
-msgstr ""
+msgstr "Picard įskiepių naujinimas"
 
 #: picard/ui/pluginupdatedialog.py:60
 msgid ""
@@ -3734,7 +3741,7 @@ msgstr ""
 
 #: picard/ui/scripteditor.py:319 picard/ui/scripteditor.py:1227
 msgid "Confirm"
-msgstr ""
+msgstr "Patvirtinti"
 
 #: picard/ui/scripteditor.py:393
 msgid "File naming script editor"
@@ -3742,7 +3749,7 @@ msgstr ""
 
 #: picard/ui/scripteditor.py:459
 msgid "Reset"
-msgstr ""
+msgstr "Nustatyti iš naujo"
 
 #: picard/ui/options/dialog.py:135 picard/ui/scripteditor.py:464
 msgid "Make It So!"
@@ -3750,7 +3757,7 @@ msgstr "Padaryti taip!"
 
 #: picard/ui/scripteditor.py:536
 msgid "&Import a script file"
-msgstr ""
+msgstr "&Importuoti skripto failą"
 
 #: picard/ui/scripteditor.py:537
 msgid "Import a file as a new script"
@@ -3901,7 +3908,7 @@ msgstr "Ar tu esi įsitikinęs kad nori išjungti Picard?"
 
 #: picard/ui/options/scripting.py:164 picard/ui/scripteditor.py:1208
 msgid "File Error"
-msgstr ""
+msgstr "Failo klaida"
 
 #: picard/ui/scripteditor.py:1229
 msgid ""
@@ -3949,15 +3956,14 @@ msgid "File Name"
 msgstr ""
 
 #: picard/ui/ui_aboutdialog.py:83
-#, fuzzy
 msgid "About Picard"
-msgstr "Įkrauk į Picard"
+msgstr "Apie Picard"
 
 #: picard/ui/options/cdlookup.py:52 picard/ui/ui_cdlookup.py:85
 #: picard/ui/ui_options_cdlookup.py:40
 #: picard/ui/ui_options_cdlookup_select.py:47
 msgid "CD Lookup"
-msgstr ""
+msgstr "CD peržiūra"
 
 #: picard/ui/ui_cdlookup.py:86
 msgid "The following releases on MusicBrainz match the CD:"
@@ -3973,7 +3979,7 @@ msgstr ""
 
 #: picard/ui/ui_cdlookup.py:89
 msgid "&Load into Picard"
-msgstr "Į&krauti į Picard"
+msgstr "Į&kraukti į Picard"
 
 #: picard/ui/ui_cdlookup.py:90
 msgid "&Submit disc ID"
@@ -4013,7 +4019,7 @@ msgstr ""
 
 #: picard/ui/ui_exception_script_selector.py:106
 msgid "Selected Scripts"
-msgstr ""
+msgstr "Pasirinkti raštai"
 
 #: picard/ui/ui_exception_script_selector.py:107
 msgid "Selected language script match threshold:"
