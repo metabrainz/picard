@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-08-24 09:20+0200\n"
-"PO-Revision-Date: 2024-01-17 20:28+0000\n"
+"PO-Revision-Date: 2024-01-25 09:28+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/constants/lt/>\n"
@@ -279,19 +279,19 @@ msgstr "Amharų k. (Etiopija)"
 
 #: picard/const/locales.py:43
 msgid "Aragonese"
-msgstr ""
+msgstr "Aragoniečių k."
 
 #: picard/const/locales.py:44
 msgid "Aragonese (Spain)"
-msgstr ""
+msgstr "Aragoniečių k. (Ispanija)"
 
 #: picard/const/locales.py:45
 msgid "Obolo"
-msgstr ""
+msgstr "Obolų k."
 
 #: picard/const/locales.py:46
 msgid "Obolo (Nigeria)"
-msgstr ""
+msgstr "Obolų k. (Nigerija)"
 
 #: picard/const/locales.py:47
 msgid "Syria"
@@ -311,39 +311,39 @@ msgstr "Arabų k. (Bahreinas)"
 
 #: picard/const/locales.py:52
 msgid "Arabic (Djibouti)"
-msgstr ""
+msgstr "Arabų k. (Džibutis)"
 
 #: picard/const/locales.py:53
 msgid "Arabic (Algeria)"
-msgstr ""
+msgstr "Arabų k. (Alžyras)"
 
 #: picard/const/locales.py:54
 msgid "Arabic (Egypt)"
-msgstr ""
+msgstr "Arabų k. (Egiptas)"
 
 #: picard/const/locales.py:55
 msgid "Arabic (Western Sahara)"
-msgstr ""
+msgstr "Arabų k. (Vakarų Sachara)"
 
 #: picard/const/locales.py:56
 msgid "Arabic (Eritrea)"
-msgstr ""
+msgstr "Arabų k. (Eritrėja)"
 
 #: picard/const/locales.py:57
 msgid "Arabic (Israel)"
-msgstr ""
+msgstr "Arabų k. (Izraelis)"
 
 #: picard/const/locales.py:58
 msgid "Arabic (Iraq)"
-msgstr ""
+msgstr "Arabų k. (Irakas)"
 
 #: picard/const/locales.py:59
 msgid "Arabic (Jordan)"
-msgstr ""
+msgstr "Arabų k. (Jordanija)"
 
 #: picard/const/locales.py:60
 msgid "Arabic (Comoros)"
-msgstr ""
+msgstr "Arabų k. (Komorai)"
 
 #: picard/const/locales.py:61
 msgid "Arabic (Kuwait)"
@@ -379,7 +379,7 @@ msgstr ""
 
 #: picard/const/locales.py:69
 msgid "Arabic (Saudi Arabia)"
-msgstr ""
+msgstr "Arabų k. (Saudo Arabija)"
 
 #: picard/const/locales.py:70
 msgid "Arabic (Sudan)"
@@ -483,7 +483,7 @@ msgstr ""
 
 #: picard/const/locales.py:95
 msgid "Bashkir (Russia)"
-msgstr ""
+msgstr "Baškirų k. (Rusija)"
 
 #: picard/const/locales.py:96
 msgid "Baluchi"
