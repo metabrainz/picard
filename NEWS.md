@@ -1,3 +1,9 @@
+# Version 2.11 - 2024-01-25
+
+## Bugfixes
+- [PICARD-2819](https://tickets.metabrainz.org/browse/PICARD-2819) - Track/release relationship settings not being respected as described
+
+
 # Version 2.11.0rc1 - 2024-01-11
 
 ## Bugfixes
