@@ -25,7 +25,7 @@ RequestExecutionLevel admin
 InstallDir "$PROGRAMFILES64\${PRODUCT_NAME}"
 
 ; The default installation directory
-InstallDirRegKey HKLM "Software\MusicBrainz\${PRODUCT_NAME}" "InstallDir"
+InstallDirRegKey HKLM "Software\${PRODUCT_PUBLISHER}\${PRODUCT_NAME}" "InstallDir"
 
 !include "MUI2.nsh"
 !include "InstallOptions.nsh"
@@ -140,7 +140,7 @@ Section "!$(SectionRequired)" required
     File /r /x "locale" "${PROJECT_PATH}\dist\picard\"
 
     ; Write the installation path into the registry
-    WriteRegStr HKLM "Software\MusicBrainz\${PRODUCT_NAME}" "InstallDir" "$INSTDIR"
+    WriteRegStr HKLM "Software\${PRODUCT_PUBLISHER}\${PRODUCT_NAME}" "InstallDir" "$INSTDIR"
 
     ; Create uninstaller
     WriteUninstaller "$INSTDIR\uninst.exe"
@@ -198,7 +198,7 @@ Section Uninstall
   Delete "$QUICKLAUNCH\${PRODUCT_NAME}.lnk"
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
-  DeleteRegKey HKLM "Software\MusicBrainz\${PRODUCT_NAME}"
+  DeleteRegKey HKLM "Software\${PRODUCT_PUBLISHER}\${PRODUCT_NAME}"
 
   !insertmacro INSTALLOPTIONS_READ $R0 "removeSettings.ini" "Field 1" "State"
   StrCmp $R0 "1" 0 +2
