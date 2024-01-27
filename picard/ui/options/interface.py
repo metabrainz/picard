@@ -11,7 +11,7 @@
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017 Antonio Larrosa
-# Copyright (C) 2018, 2023 Bob Swift
+# Copyright (C) 2018, 2023-2024 Bob Swift
 # Copyright (C) 2021 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
@@ -143,6 +143,8 @@ class InterfaceOptionsPage(OptionsPage):
         if not OS_SUPPORTS_THEMES:
             self.ui.ui_theme_container.hide()
 
+        self.ui.toolbar_multiselect.clicked.connect(self.multi_selection_warning)
+
     def load(self):
         config = get_config()
         self.ui.toolbar_show_labels.setChecked(config.setting['toolbar_show_labels'])
@@ -207,6 +209,20 @@ class InterfaceOptionsPage(OptionsPage):
         if path:
             path = os.path.normpath(path)
             item.setText(path)
+
+    def multi_selection_warning(self):
+        if self.ui.toolbar_multiselect.isChecked():
+            dialog = QtWidgets.QMessageBox(
+                QtWidgets.QMessageBox.Icon.Warning,
+                _('Option Setting Warning'),
+                _(
+                    'Enabling the multiple directories option setting may result in external drives not being recognized by Picard.\n\n'
+                    'Are you sure that you want to enable this setting?'
+                ),
+                QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+                self)
+            if dialog.exec() == QtWidgets.QMessageBox.StandardButton.No:
+                self.ui.toolbar_multiselect.setChecked(False)
 
 
 register_options_page(InterfaceOptionsPage)
