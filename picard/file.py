@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2004 Robert Kaye
 # Copyright (C) 2006-2009, 2011-2013, 2017 Lukáš Lalinský
-# Copyright (C) 2007-2011, 2015, 2018-2023 Philipp Wolfer
+# Copyright (C) 2007-2011, 2015, 2018-2024 Philipp Wolfer
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008-2009 Nikolai Prokoschenko
 # Copyright (C) 2009 Carlin Mangar
@@ -450,7 +450,7 @@ class File(QtCore.QObject, Item):
             self.orig_metadata.update(temp_info)
             self.clear_errors()
             self.clear_pending(signal=False)
-            self._add_path_to_metadata(self.orig_metadata)
+            self._update_filesystem_metadata(self.orig_metadata)
             if images_changed:
                 self.metadata_images_changed.emit()
 
@@ -762,10 +762,6 @@ class File(QtCore.QObject, Item):
         return True
 
     def _info(self, metadata, file):
-        try:
-            metadata['~filesize'] = os.path.getsize(encode_filename(file.filename))
-        except BaseException as e:
-            log.error(e)
         if hasattr(file.info, 'length'):
             metadata.length = int(file.info.length * 1000)
         if hasattr(file.info, 'bitrate') and file.info.bitrate:
@@ -780,20 +776,26 @@ class File(QtCore.QObject, Item):
             metadata['~format'] = self.NAME
         else:
             metadata['~format'] = self.__class__.__name__.replace('File', '')
-        self._add_path_to_metadata(metadata)
+        self._update_filesystem_metadata(metadata)
 
-    def _add_path_to_metadata(self, metadata):
+    def _update_filesystem_metadata(self, metadata):
         metadata['~dirname'] = os.path.dirname(self.filename)
-        filename, extension = os.path.splitext(os.path.basename(self.filename))
-        metadata['~filename'] = filename
+        filename_no_ext, extension = os.path.splitext(os.path.basename(self.filename))
+        metadata['~filename'] = filename_no_ext
         metadata['~extension'] = extension.lower()[1:]
 
+        filename_encoded = encode_filename(self.filename)
         try:
-            created = os.path.getctime(self.filename)
+            metadata['~filesize'] = os.path.getsize(filename_encoded)
+        except OSError as ex:
+            log.error(f"File Size Error: {ex}")
+
+        try:
+            created = os.path.getctime(filename_encoded)
             created_timestamp = time.strftime(DEFAULT_TIME_FORMAT, time.localtime(created))
             metadata['~file_created_timestamp'] = created_timestamp
 
-            modified = os.path.getmtime(self.filename)
+            modified = os.path.getmtime(filename_encoded)
             modified_timestamp = time.strftime(DEFAULT_TIME_FORMAT, time.localtime(modified))
             metadata['~file_modified_timestamp'] = modified_timestamp
         except OSError as ex:
