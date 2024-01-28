@@ -787,10 +787,7 @@ class File(QtCore.QObject, Item):
         filename_encoded = encode_filename(self.filename)
         try:
             metadata['~filesize'] = os.path.getsize(filename_encoded)
-        except OSError as ex:
-            log.error(f"File Size Error: {ex}")
 
-        try:
             created = os.path.getctime(filename_encoded)
             created_timestamp = time.strftime(DEFAULT_TIME_FORMAT, time.localtime(created))
             metadata['~file_created_timestamp'] = created_timestamp
@@ -799,7 +796,7 @@ class File(QtCore.QObject, Item):
             modified_timestamp = time.strftime(DEFAULT_TIME_FORMAT, time.localtime(modified))
             metadata['~file_modified_timestamp'] = modified_timestamp
         except OSError as ex:
-            log.error(f"File Timestamps Error: {ex}")
+            log.error(f"File access error: {ex}")
 
     @property
     def state(self):
