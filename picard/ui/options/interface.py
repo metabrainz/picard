@@ -143,10 +143,13 @@ class InterfaceOptionsPage(OptionsPage):
         if not OS_SUPPORTS_THEMES:
             self.ui.ui_theme_container.hide()
 
-        self.ui.toolbar_multiselect.clicked.connect(self.multi_selection_warning)
+        self.loading = False
+        self.warning_displayed = False
+        self.ui.toolbar_multiselect.stateChanged.connect(self.multi_selection_warning)
 
     def load(self):
         config = get_config()
+        self.loading = True
         self.ui.toolbar_show_labels.setChecked(config.setting['toolbar_show_labels'])
         self.ui.toolbar_multiselect.setChecked(config.setting['toolbar_multiselect'])
         self.ui.show_menu_icons.setChecked(config.setting['show_menu_icons'])
@@ -162,9 +165,13 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.starting_directory_path.setText(config.setting['starting_directory_path'])
         current_theme = UiTheme(config.setting['ui_theme'])
         self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(current_theme))
+        self.loading = False
 
     def save(self):
         config = get_config()
+        # Only display warning dialog if it has not been displayed during this Options session.
+        if not self.warning_displayed:
+            self.multi_selection_warning()
         config.setting['toolbar_show_labels'] = self.ui.toolbar_show_labels.isChecked()
         config.setting['toolbar_multiselect'] = self.ui.toolbar_multiselect.isChecked()
         config.setting['show_menu_icons'] = self.ui.show_menu_icons.isChecked()
@@ -211,18 +218,22 @@ class InterfaceOptionsPage(OptionsPage):
             item.setText(path)
 
     def multi_selection_warning(self):
-        if self.ui.toolbar_multiselect.isChecked():
-            dialog = QtWidgets.QMessageBox(
-                QtWidgets.QMessageBox.Icon.Warning,
-                _('Option Setting Warning'),
-                _(
-                    'Enabling the multiple directories option setting may result in external drives not being recognized by Picard.\n\n'
-                    'Are you sure that you want to enable this setting?'
-                ),
-                QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
-                self)
-            if dialog.exec() == QtWidgets.QMessageBox.StandardButton.No:
-                self.ui.toolbar_multiselect.setChecked(False)
+        if self.loading or not self.ui.toolbar_multiselect.isChecked():
+            return
+
+        self.warning_displayed = True
+        dialog = QtWidgets.QMessageBox(
+            QtWidgets.QMessageBox.Icon.Warning,
+            _('Option Setting Warning'),
+            _(
+                'When enabling the multiple directories option setting Picard will no longer use the system '
+                'file picker for selecting directories. This may result in reduced functionality.\n\n'
+                'Are you sure that you want to enable this setting?'
+            ),
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            self)
+        if dialog.exec() == QtWidgets.QMessageBox.StandardButton.No:
+            self.ui.toolbar_multiselect.setCheckState(QtCore.Qt.CheckState.Unchecked)
 
 
 register_options_page(InterfaceOptionsPage)
