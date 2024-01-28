@@ -143,13 +143,14 @@ class InterfaceOptionsPage(OptionsPage):
         if not OS_SUPPORTS_THEMES:
             self.ui.ui_theme_container.hide()
 
-        self.loading = False
-        self.warning_displayed = False
         self.ui.toolbar_multiselect.stateChanged.connect(self.multi_selection_warning)
 
     def load(self):
+        # Don't display the multi-selection warning when loading values.
+        # This is required because loading a different option profile could trigger the warning.
+        self.ui.toolbar_multiselect.blockSignals(True)
+
         config = get_config()
-        self.loading = True
         self.ui.toolbar_show_labels.setChecked(config.setting['toolbar_show_labels'])
         self.ui.toolbar_multiselect.setChecked(config.setting['toolbar_multiselect'])
         self.ui.show_menu_icons.setChecked(config.setting['show_menu_icons'])
@@ -165,13 +166,12 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.starting_directory_path.setText(config.setting['starting_directory_path'])
         current_theme = UiTheme(config.setting['ui_theme'])
         self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(current_theme))
-        self.loading = False
+
+        # re-enable the multi-selection warning
+        self.ui.toolbar_multiselect.blockSignals(False)
 
     def save(self):
         config = get_config()
-        # Only display warning dialog if it has not been displayed during this Options session.
-        if not self.warning_displayed:
-            self.multi_selection_warning()
         config.setting['toolbar_show_labels'] = self.ui.toolbar_show_labels.isChecked()
         config.setting['toolbar_multiselect'] = self.ui.toolbar_multiselect.isChecked()
         config.setting['show_menu_icons'] = self.ui.show_menu_icons.isChecked()
@@ -218,10 +218,9 @@ class InterfaceOptionsPage(OptionsPage):
             item.setText(path)
 
     def multi_selection_warning(self):
-        if self.loading or not self.ui.toolbar_multiselect.isChecked():
+        if not self.ui.toolbar_multiselect.isChecked():
             return
 
-        self.warning_displayed = True
         dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Icon.Warning,
             _('Option Setting Warning'),
