@@ -34,6 +34,11 @@ msgstr ""
 "instrumentale të një shkalle të vogël (shumë shpesh solo ose solo + "
 "tastierë), fillimisht të muzikës baroke."
 
+#: DB:medium_format/name:205
+msgctxt "medium_format"
+msgid "10\" Acetate"
+msgstr ""
+
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
@@ -43,6 +48,11 @@ msgstr "Shellak 10\""
 msgctxt "medium_format"
 msgid "10\" Vinyl"
 msgstr "Vinil 10\""
+
+#: DB:medium_format/name:206
+msgctxt "medium_format"
+msgid "12\" Acetate"
+msgstr ""
 
 #: DB:medium_format/name:72
 msgctxt "medium_format"
@@ -67,6 +77,11 @@ msgstr "Disketë 3.5\""
 #: DB:medium_format/name:91
 msgctxt "medium_format"
 msgid "5.25\" Floppy Disk"
+msgstr ""
+
+#: DB:medium_format/name:204
+msgctxt "medium_format"
+msgid "7\" Acetate"
 msgstr ""
 
 #: DB:medium_format/name:52
@@ -106,7 +121,7 @@ msgstr "CD+G 8cm"
 
 #: DB:medium_format/description:166
 msgctxt "medium_format"
-msgid "8cm DVD disc, often used for video singles."
+msgid "8cm DVD, often used for video singles."
 msgstr ""
 
 #: DB:medium_format/description:58
@@ -409,9 +424,9 @@ msgstr ""
 msgctxt "event_type"
 msgid ""
 "A performance of one or more plays, musicals, operas, ballets or other "
-"similar works for the stage in their staged form (as opposed to a <a href="
-"\"https://en.wikipedia.org/wiki/Concert_performance\">concert performance</"
-"a> without staging)."
+"similar works for the stage in their staged form (as opposed to a <a "
+"href=\"https://en.wikipedia.org/wiki/Concert_performance\">concert "
+"performance</a> without staging)."
 msgstr ""
 
 #: DB:place_type/description:8
@@ -818,6 +833,14 @@ msgctxt "work_attribute_type"
 msgid "ACDAM ID"
 msgstr ""
 
+#: DB:work_attribute_type/name:206
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "SACM ID"
+msgctxt "work_attribute_type"
+msgid "ACUM ID"
+msgstr "ID SACM"
+
 #: DB:work_attribute_type/name:58
 msgctxt "work_attribute_type"
 msgid "AEI ID"
@@ -911,6 +934,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:307
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acemtarab"
+msgstr ""
+
+#: DB:medium_format/name:203
+msgctxt "medium_format"
+msgid "Acetate"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:848
@@ -3091,10 +3119,15 @@ msgid "Fireng-i Fer"
 msgstr ""
 
 #: DB:medium_format/description:73
+#, fuzzy
+#| msgctxt "medium_format"
+#| msgid ""
+#| "Flat discs with grooves used in phonographs/gramophones. For shellac and "
+#| "vinyl records, use that specifically"
 msgctxt "medium_format"
 msgid ""
 "Flat discs with grooves used in phonographs/gramophones. For shellac and "
-"vinyl records, use that specifically"
+"vinyl records, use that specifically."
 msgstr ""
 "Disqe të sheshtë me hulli, të përdorur në fonografë/gramafona. Për incizime "
 "në shellak dhe vinil, përdorni në mënyrë specifike këtë"
@@ -3943,6 +3976,14 @@ msgstr "ID për International Copyright Enterprise"
 msgctxt "work_attribute_type"
 msgid "ID for the Irish rights society IMRO"
 msgstr ""
+
+#: DB:work_attribute_type/description:206
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Mexican rights society SACM"
+msgctxt "work_attribute_type"
+msgid "ID for the Israeli rights society ACUM"
+msgstr "ID për shoqërinë meksikane të të drejtave, SACM"
 
 #: DB:work_attribute_type/description:36
 msgctxt "work_attribute_type"

@@ -14,11 +14,12 @@
 # - Wang Jian <email address hidden>, 2000
 # YunQiang Su <email address hidden>, 2011
 # claybiockiller <clay0305@hotmail.com>, 2023.
+# xuanqidongjim <xuanqidongjim@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2023-09-11 18:27+0000\n"
-"Last-Translator: claybiockiller <clay0305@hotmail.com>\n"
+"PO-Revision-Date: 2023-12-29 21:28+0000\n"
+"Last-Translator: xuanqidongjim <xuanqidongjim@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://translations.metabrainz.org/"
 "projects/musicbrainz/countries/zh_Hans/>\n"
 "Language: zh\n"
@@ -26,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.0.1\n"
+"X-Generator: Weblate 5.3\n"
 
 #. iso.code:AF 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:1
@@ -796,7 +797,7 @@ msgstr "莫桑比克"
 #. iso.code:MM 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:146
 msgid "Myanmar"
-msgstr "缅甸"
+msgstr "缅文"
 
 #. iso.code:NA 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:147

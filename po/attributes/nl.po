@@ -10,11 +10,13 @@
 # Remko de Keijzer <email address hidden>, 2021
 # RandomMushroom128 <RandomMushroom128@users.noreply.translations.metabrainz.org>, 2023.
 # mfmeulenbelt <mfmeulenbelt@gmail.com>, 2023.
+# mfmeulenbelt <mfmeulenbelt@users.noreply.translations.metabrainz.org>, 2023, 2024.
+# yvanzo <yvanzo@users.noreply.translations.metabrainz.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2023-08-29 13:27+0000\n"
-"Last-Translator: mfmeulenbelt <mfmeulenbelt@gmail.com>\n"
+"PO-Revision-Date: 2024-01-17 09:58+0000\n"
+"Last-Translator: yvanzo <yvanzo@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/nl/>\n"
 "Language: nl\n"
@@ -22,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.3\n"
 
 #: DB:work_type/description:9
 msgctxt "work_type"
@@ -45,6 +47,11 @@ msgstr ""
 "composities (vaak voor een solo-instrument of een solo-instrument samen met "
 "piano). De sonate is ontstaan in de barok."
 
+#: DB:medium_format/name:205
+msgctxt "medium_format"
+msgid "10\" Acetate"
+msgstr "10″-lakplaat"
+
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
@@ -54,6 +61,11 @@ msgstr "10″-schellak"
 msgctxt "medium_format"
 msgid "10\" Vinyl"
 msgstr "10″-vinyl"
+
+#: DB:medium_format/name:206
+msgctxt "medium_format"
+msgid "12\" Acetate"
+msgstr "12″-lakplaat"
 
 #: DB:medium_format/name:72
 msgctxt "medium_format"
@@ -79,6 +91,11 @@ msgstr "3,5″-floppy"
 msgctxt "medium_format"
 msgid "5.25\" Floppy Disk"
 msgstr "5,25″-floppy"
+
+#: DB:medium_format/name:204
+msgctxt "medium_format"
+msgid "7\" Acetate"
+msgstr "7″-lakplaat"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
@@ -117,7 +134,7 @@ msgstr "8cm-cd+g"
 
 #: DB:medium_format/description:166
 msgctxt "medium_format"
-msgid "8cm DVD disc, often used for video singles."
+msgid "8cm DVD, often used for video singles."
 msgstr "8cm-dvd, vaak gebruikt voor videosingles."
 
 #: DB:medium_format/description:58
@@ -165,11 +182,11 @@ msgstr ""
 "\n"
 "<ul>\n"
 "<li>Een verzameling opnamen afkomstig uit verschillende oude bronnen (die "
-"hoeven niet per se eerder te zijn uitgebracht). Bijvoorbeeld iemands "
-"‘grootste hits’, een terugblik of verzameling zeldzame opnamen.</li>\n"
+"hoeven niet per se eerder te zijn uitgebracht). Bijvoorbeeld iemands ‘"
+"grootste hits’, een terugblik of verzameling zeldzame opnamen.</li>\n"
 "<li>Een verzameling nummers van verschillende artiesten, meestal rond een "
-"bepaald thema (“Songs for Lovers”), een bepaalde periode (“De hits van "
-"1998”) of een bepaalde serie (“Café del Mar”).\n"
+"bepaald thema (“Songs for Lovers”), een bepaalde periode (“De hits van 1998”)"
+" of een bepaalde serie (“Café del Mar”).\n"
 "</li>\n"
 "</ul>\n"
 "\n"
@@ -178,10 +195,10 @@ msgstr ""
 "<ul>\n"
 "<li>Een heruitgave, zelfs als er bonusnummers op staan.</li>\n"
 "<li>Een hommage-uitgave met covers door een andere artiest.</li>\n"
-"<li>Een klassieke uitgave met nieuwe opnamen van composities een componist.</"
-"li>\n"
-"<li>Een gedeelde uitgave met nieuwe muziek van verschillende artiesten.</"
-"li>\n"
+"<li>Een klassieke uitgave met nieuwe opnamen van composities van een "
+"componist.</li>\n"
+"<li>Een gedeelde uitgave met nieuwe muziek van verschillende artiesten.</li>"
+"\n"
 "</ul>\n"
 "\n"
 "<p>Compilatie kan samen met andere types worden gebruikt. Een soundtrack met "
@@ -231,8 +248,8 @@ msgstr ""
 "<li>In de VS staat er op een single meestal één hoofdnummer, met mogelijk "
 "een aantal extra nummers of remixes van het hoofdnummer. De single is "
 "meestal genoemd naar het hoofdnummer. De single wordt vooral uitgegeven om "
-"op de radio te worden gedraaid en de verkoop van het album te stimuleren.</"
-"li>\n"
+"op de radio te worden gedraaid en de verkoop van het album te "
+"stimuleren.</li>\n"
 "<li>In het Verenigd Koninkrijk, Europa en Australië zijn singles "
 "vergelijkbaar met de VS, maar worden singles soms ook als een set van twee "
 "afzonderlijke singles verkocht. Ook is er vaak een langere versie van de "
@@ -307,8 +324,8 @@ msgid ""
 msgstr ""
 "Een dj-mix bestaat uit een aantal opnamen die zijn aangepast om in elkaar "
 "over te vloeien, zodat ze als één continu stuk muziek klinken. Voor een dj-"
-"mix moeten de opnamen worden aangepast, en de dj die dit doet wordt meestal "
-"(maar niet altijd) prominent op de uitgave genoemd."
+"mix moeten de opnamen worden aangepast, en de dj die dit doet wordt meestal ("
+"maar niet altijd) prominent op de uitgave genoemd."
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
@@ -361,6 +378,8 @@ msgid ""
 "A company that manufactures physical releases (such as pressing CDs or vinyl "
 "records)."
 msgstr ""
+"Een bedrijf dat fysieke uitgaven produceert (zoals het persen van cd’s of "
+"vinylplaten)."
 
 #: DB:work_type/description:4
 msgctxt "work_type"
@@ -414,6 +433,7 @@ msgstr ""
 msgctxt "label_type"
 msgid "A label that primarily puts out unsanctioned (bootleg) releases."
 msgstr ""
+"Een platenmaatschappij die vooral onofficiële (bootleg)uitgaven uitbrengt."
 
 #: DB:release_packaging/description:55
 msgctxt "release_packaging"
@@ -493,15 +513,15 @@ msgstr ""
 #: DB:release_packaging/description:17
 msgctxt "release_packaging"
 msgid "A perfect bound book with a sleeve at the end to hold a CD"
-msgstr "Een gelijmd gebonden boek met achterin een hoesje voor een cd."
+msgstr "Een boek met achterin een hoesje voor een cd."
 
 #: DB:event_type/description:6
 msgctxt "event_type"
 msgid ""
 "A performance of one or more plays, musicals, operas, ballets or other "
-"similar works for the stage in their staged form (as opposed to a <a href="
-"\"https://en.wikipedia.org/wiki/Concert_performance\">concert performance</"
-"a> without staging)."
+"similar works for the stage in their staged form (as opposed to a <a "
+"href=\"https://en.wikipedia.org/wiki/Concert_performance\">concert "
+"performance</a> without staging)."
 msgstr ""
 "Een uitvoering van een of meer toneelstukken, musicals, opera’s, balletten "
 "of soortgelijke composities met de bijbehorende voorstelling (in "
@@ -718,7 +738,7 @@ msgstr "Een serie gerelateerde concerten van een artiest op dezelfde locatie."
 msgctxt "series_type"
 msgid ""
 "A series of release groups containing episodes of the same podcast series."
-msgstr ""
+msgstr "Een serie uitgavegroepen met afleveringen van dezelfde podcastserie."
 
 #: DB:series_type/description:47
 msgctxt "series_type"
@@ -946,6 +966,11 @@ msgctxt "work_attribute_type"
 msgid "ACDAM ID"
 msgstr "ACDAM-ID"
 
+#: DB:work_attribute_type/name:206
+msgctxt "work_attribute_type"
+msgid "ACUM ID"
+msgstr "ACUM-ID"
+
 #: DB:work_attribute_type/name:58
 msgctxt "work_attribute_type"
 msgid "AEI ID"
@@ -1040,6 +1065,11 @@ msgstr "Acemli Yegah"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acemtarab"
 msgstr "Acemtarab"
+
+#: DB:medium_format/name:203
+msgctxt "medium_format"
+msgid "Acetate"
+msgstr "Lakplaat"
 
 #: DB:work_attribute_type_allowed_value/value:848
 msgctxt "work_attribute_type_allowed_value"
@@ -1290,14 +1320,14 @@ msgid ""
 "character interaction)."
 msgstr ""
 "Een oratorium is een grote, vaak religieuze, compositie voor een orkest, "
-"koor en solisten. Hoewel een oratorium karakters en een plot heeft, wordt "
+"koor en solisten. Hoewel een oratorium personages en een plot heeft, wordt "
 "het meestal niet theatraal opgevoerd, dus zonder kostuums, decor en veel "
-"interactie tussen de karakters."
+"interactie tussen de personages."
 
 #: DB:label_type/description:8
 msgctxt "label_type"
 msgid "An organization which collects royalties on behalf of artists."
-msgstr ""
+msgstr "Een organisatie die namens artiesten royalty’s int."
 
 #: DB:work_type/description:12
 msgctxt "work_type"
@@ -2241,7 +2271,7 @@ msgstr "Cevher"
 #: DB:artist_type/name:4
 msgctxt "artist_type"
 msgid "Character"
-msgstr "Karakter"
+msgstr "Personage"
 
 #: DB:artist_type/name:6
 msgctxt "artist_type"
@@ -2342,8 +2372,8 @@ msgid ""
 "Country is used for areas included (or previously included) in ISO 3166-1, e."
 "g. United States."
 msgstr ""
-"Land wordt gebruikt voor gebieden die zijn of waren opgenomen in de ISO "
-"3166-1, bijvoorbeeld Nederland."
+"Land wordt gebruikt voor gebieden die zijn of waren opgenomen in de ISO 3166-"
+"1, bijvoorbeeld Nederland."
 
 #: DB:area_type/name:7
 msgctxt "area_type"
@@ -3247,7 +3277,7 @@ msgstr "Fireng-i Fer"
 msgctxt "medium_format"
 msgid ""
 "Flat discs with grooves used in phonographs/gramophones. For shellac and "
-"vinyl records, use that specifically"
+"vinyl records, use that specifically."
 msgstr ""
 "Platte schijven met groeven die met een platenspeler worden afgespeeld. "
 "Gebruik een specifieker medium, zoals schellak of vinyl, als je weet wat het "
@@ -3279,8 +3309,8 @@ msgid ""
 "For cases where gender just doesn't apply at all (like companies entered as "
 "artists)."
 msgstr ""
-"Bedoeld voor gevallen waarbij het geslacht helemaal niet van toepassing is "
-"(zoals bedrijven die als artiest worden toegevoegd)."
+"Bedoeld voor gevallen waarbij het geslacht helemaal niet van toepassing is ("
+"zoals bedrijven die als artiest worden toegevoegd)."
 
 #: DB:work_attribute_type/name:16
 msgctxt "work_attribute_type"
@@ -3949,147 +3979,147 @@ msgstr "ICE-ID"
 #: DB:work_attribute_type/description:24
 msgctxt "work_attribute_type"
 msgid "ID for the Argentinean rights society SADAIC"
-msgstr "Een ID van de Argentijnse auteursrechtenorganisatie SADAIC"
+msgstr "Een ID van de Argentijnse rechtenorganisatie SADAIC"
 
 #: DB:work_attribute_type/description:13
 msgctxt "work_attribute_type"
 msgid "ID for the Australasian rights society APRA"
-msgstr "Een ID van de Australisch-Aziatische auteursrechtenorganisatie APRA"
+msgstr "Een ID van de Australisch-Aziatische rechtenorganisatie APRA"
 
 #: DB:work_attribute_type/description:23
 msgctxt "work_attribute_type"
 msgid "ID for the Austrian rights society AKM"
-msgstr "Een ID van de Oostenrijkse auteursrechtenorganisatie AKM"
+msgstr "Een ID van de Oostenrijkse rechtenorganisatie AKM"
 
 #: DB:work_attribute_type/description:73
 msgctxt "work_attribute_type"
 msgid "ID for the Barbadian rights society COSCAP"
-msgstr "Een ID van de Barbadiaanse auteursrechtenorganisatie COSCAP"
+msgstr "Een ID van de Barbadiaanse rechtenorganisatie COSCAP"
 
 #: DB:work_attribute_type/description:28
 msgctxt "work_attribute_type"
 msgid "ID for the Belgian rights society SABAM"
-msgstr "Een ID van de Belgische auteursrechtenorganisatie SABAM"
+msgstr "Een ID van de Belgische rechtenorganisatie SABAM"
 
 #: DB:work_attribute_type/description:61
 msgctxt "work_attribute_type"
 msgid "ID for the Bolivian rights society SOBODAYCOM"
-msgstr "Een ID van de Boliviaanse auteursrechtenorganisatie SOBODAYCOM"
+msgstr "Een ID van de Boliviaanse rechtenorganisatie SOBODAYCOM"
 
 #: DB:work_attribute_type/description:37
 msgctxt "work_attribute_type"
 msgid "ID for the Brazilian rights society ECAD"
-msgstr "Een ID van de Braziliaanse auteursrechtenorganisatie ECAD"
+msgstr "Een ID van de Braziliaanse rechtenorganisatie ECAD"
 
 #: DB:work_attribute_type/description:34
 msgctxt "work_attribute_type"
 msgid "ID for the British rights society PRS for Music"
-msgstr "Een ID van de Britse auteursrechtenorganisatie PRS for Music"
+msgstr "Een ID van de Britse rechtenorganisatie PRS for Music"
 
 #: DB:work_attribute_type/description:10
 msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SOCAN"
-msgstr "Een ID van de Canadese auteursrechtenorganisatie SOCAN"
+msgstr "Een ID van de Canadese rechtenorganisatie SOCAN"
 
 #: DB:work_attribute_type/description:53
 msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SODRAC"
-msgstr "Een ID van de Canadese auteursrechtenorganisatie SODRAC"
+msgstr "Een ID van de Canadese rechtenorganisatie SODRAC"
 
 #: DB:work_attribute_type/description:173
 msgctxt "work_attribute_type"
 msgid "ID for the Chilean rights society SCD"
-msgstr "Een ID van de Chileense auteursrechtenorganisatie SCD"
+msgstr "Een ID van de Chileense rechtenorganisatie SCD"
 
 #: DB:work_attribute_type/description:71
 msgctxt "work_attribute_type"
 msgid "ID for the Chinese rights society MCSC"
-msgstr "Een ID van de Chinese auteursrechtenorganisatie MCSC"
+msgstr "Een ID van de Chinese rechtenorganisatie MCSC"
 
 #: DB:work_attribute_type/description:39
 msgctxt "work_attribute_type"
 msgid "ID for the Colombian rights society SAYCO"
-msgstr "Een ID van de Colombiaanse auteursrechtenorganisatie SAYCO"
+msgstr "Een ID van de Colombiaanse rechtenorganisatie SAYCO"
 
 #: DB:work_attribute_type/description:44
 msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
-msgstr "Een ID van de Costa Ricaanse auteursrechtenorganisatie ACAM"
+msgstr "Een ID van de Costa Ricaanse rechtenorganisatie ACAM"
 
 #: DB:work_attribute_type/description:47
 msgctxt "work_attribute_type"
 msgid "ID for the Cuban rights society ACDAM"
-msgstr "Een ID van de Cubaanse auteursrechtenorganisatie ACDAM"
+msgstr "Een ID van de Cubaanse rechtenorganisatie ACDAM"
 
 #: DB:work_attribute_type/description:25
 msgctxt "work_attribute_type"
 msgid "ID for the Czech rights society OSA"
-msgstr "Een ID van de Tsjechische auteursrechtenorganisatie OSA"
+msgstr "Een ID van de Tsjechische rechtenorganisatie OSA"
 
 #: DB:work_attribute_type/description:51
 msgctxt "work_attribute_type"
 msgid "ID for the Danish rights society KODA"
-msgstr "Een ID van de Deense auteursrechtenorganisatie KODA"
+msgstr "Een ID van de Deense rechtenorganisatie KODA"
 
 #: DB:work_attribute_type/description:60
 msgctxt "work_attribute_type"
 msgid "ID for the Dominican rights society SGACEDOM"
-msgstr "Een ID van de Dominicaanse auteursrechtenorganisatie SGACEDOM"
+msgstr "Een ID van de Dominicaanse rechtenorganisatie SGACEDOM"
 
 #: DB:work_attribute_type/description:26
 msgctxt "work_attribute_type"
 msgid "ID for the Dutch rights society BUMA/STEMRA"
-msgstr "Een ID van de Nederlandse auteursrechtenorganisatie BUMA/STEMRA"
+msgstr "Een ID van de Nederlandse rechtenorganisatie BUMA/STEMRA"
 
 #: DB:work_attribute_type/description:40
 msgctxt "work_attribute_type"
 msgid "ID for the Ecuadorian rights society SAYCE"
-msgstr "Een ID van de Ecuadoraanse auteursrechtenorganisatie SAYCE"
+msgstr "Een ID van de Ecuadoraanse rechtenorganisatie SAYCE"
 
 #: DB:work_attribute_type/description:66
 msgctxt "work_attribute_type"
 msgid "ID for the Finnish rights society TEOSTO"
-msgstr "Een ID van de Finse auteursrechtenorganisatie TEOSTO"
+msgstr "Een ID van de Finse rechtenorganisatie TEOSTO"
 
 #: DB:work_attribute_type/description:21
 msgctxt "work_attribute_type"
 msgid "ID for the French rights society Sacem"
-msgstr "Een ID van de Franse auteursrechtenorganisatie Sacem"
+msgstr "Een ID van de Franse rechtenorganisatie Sacem"
 
 #: DB:work_attribute_type/description:9
 msgctxt "work_attribute_type"
 msgid "ID for the German rights society GEMA"
-msgstr "Een ID van de Duitse auteursrechtenorganisatie GEMA"
+msgstr "Een ID van de Duitse rechtenorganisatie GEMA"
 
 #: DB:work_attribute_type/description:58
 msgctxt "work_attribute_type"
 msgid "ID for the Guatemalan rights society AEI"
-msgstr "Een ID van de Guatemalaanse auteursrechtenorganisatie AEI"
+msgstr "Een ID van de Guatemalaanse rechtenorganisatie AEI"
 
 #: DB:work_attribute_type/description:57
 msgctxt "work_attribute_type"
 msgid "ID for the Honduran rights society AACIMH"
-msgstr "Een ID van de Hondurese auteursrechtenorganisatie AACIMH"
+msgstr "Een ID van de Hondurese rechtenorganisatie AACIMH"
 
 #: DB:work_attribute_type/description:19
 msgctxt "work_attribute_type"
 msgid "ID for the Hong Kong rights society CASH"
-msgstr "Een ID van de Hongkongse auteursrechtenorganisatie CASH"
+msgstr "Een ID van de Hongkongse rechtenorganisatie CASH"
 
 #: DB:work_attribute_type/description:48
 msgctxt "work_attribute_type"
 msgid "ID for the Hungarian rights society ARTISJUS"
-msgstr "Een ID van de Hongaarse auteursrechtenorganisatie ARTISJUS"
+msgstr "Een ID van de Hongaarse rechtenorganisatie ARTISJUS"
 
 #: DB:work_attribute_type/description:54
 msgctxt "work_attribute_type"
 msgid "ID for the Icelandic rights society STEF"
-msgstr "Een ID van de IJslandse auteursrechtenorganisatie STEF"
+msgstr "Een ID van de IJslandse rechtenorganisatie STEF"
 
 #: DB:work_attribute_type/description:70
 msgctxt "work_attribute_type"
 msgid "ID for the Indian rights society IPRS"
-msgstr "Een ID van de Indiase auteursrechtenorganisatie IPRS"
+msgstr "Een ID van de Indiase rechtenorganisatie IPRS"
 
 #: DB:work_attribute_type/description:29
 msgctxt "work_attribute_type"
@@ -4099,174 +4129,178 @@ msgstr "Een ID van de International Copyright Enterprise"
 #: DB:work_attribute_type/description:52
 msgctxt "work_attribute_type"
 msgid "ID for the Irish rights society IMRO"
-msgstr "Een ID van de Ierse auteursrechtenorganisatie IMRO"
+msgstr "Een ID van de Ierse rechtenorganisatie IMRO"
+
+#: DB:work_attribute_type/description:206
+msgctxt "work_attribute_type"
+msgid "ID for the Israeli rights society ACUM"
+msgstr "Een ID van de Israëlische rechtenorganisatie ACUM"
 
 #: DB:work_attribute_type/description:36
 msgctxt "work_attribute_type"
 msgid "ID for the Italian rights society SIAE"
-msgstr "Een ID van de Italiaanse auteursrechtenorganisatie SIAE"
+msgstr "Een ID van de Italiaanse rechtenorganisatie SIAE"
 
 #: DB:work_attribute_type/description:69
 msgctxt "work_attribute_type"
 msgid "ID for the Jamaican rights society JACAP"
-msgstr "Een ID van de Jamaicaanse auteursrechtenorganisatie JACAP"
+msgstr "Een ID van de Jamaicaanse rechtenorganisatie JACAP"
 
 #: DB:work_attribute_type/description:3
 msgctxt "work_attribute_type"
 msgid "ID for the Japanese rights society JASRAC"
-msgstr "Een ID van de Japanse auteursrechtenorganisatie JASRAC"
+msgstr "Een ID van de Japanse rechtenorganisatie JASRAC"
 
 #: DB:work_attribute_type/description:33
 msgctxt "work_attribute_type"
 msgid "ID for the Japanese rights society NexTone"
-msgstr "Een ID van de Japanse auteursrechtenorganisatie NexTone"
+msgstr "Een ID van de Japanse rechtenorganisatie NexTone"
 
 #: DB:work_attribute_type/description:11
 msgctxt "work_attribute_type"
 msgid "ID for the Korean rights society KOMCA"
-msgstr "Een ID van de Koreaanse auteursrechtenorganisatie KOMCA"
+msgstr "Een ID van de Koreaanse rechtenorganisatie KOMCA"
 
 #: DB:work_attribute_type/description:63
 msgctxt "work_attribute_type"
 msgid "ID for the Latvian rights society AKKA/LAA"
-msgstr "Een ID van de Letse auteursrechtenorganisatie AKKA/LAA"
+msgstr "Een ID van de Letse rechtenorganisatie AKKA/LAA"
 
 #: DB:work_attribute_type/description:49
 msgctxt "work_attribute_type"
 msgid "ID for the Malaysian rights society MACP"
-msgstr "Een ID van de Maleisische auteursrechtenorganisatie MACP"
+msgstr "Een ID van de Maleisische rechtenorganisatie MACP"
 
 #: DB:work_attribute_type/description:27
 msgctxt "work_attribute_type"
 msgid "ID for the Mexican rights society SACM"
-msgstr "Een ID van de Mexicaanse auteursrechtenorganisatie SACM"
+msgstr "Een ID van de Mexicaanse rechtenorganisatie SACM"
 
 #: DB:work_attribute_type/description:59
 msgctxt "work_attribute_type"
 msgid "ID for the Nicaraguan rights society NICAUTOR"
-msgstr "Een ID van de Nicaraguaanse auteursrechtenorganisatie NICAUTOR"
+msgstr "Een ID van de Nicaraguaanse rechtenorganisatie NICAUTOR"
 
 #: DB:work_attribute_type/description:67
 msgctxt "work_attribute_type"
 msgid "ID for the Norwegian rights society TONO"
-msgstr "Een ID van de Noorse auteursrechtenorganisatie TONO"
+msgstr "Een ID van de Noorse rechtenorganisatie TONO"
 
 #: DB:work_attribute_type/description:62
 msgctxt "work_attribute_type"
 msgid "ID for the Panamanian rights society SPAC"
-msgstr "Een ID van de Panamese auteursrechtenorganisatie SPAC"
+msgstr "Een ID van de Panamese rechtenorganisatie SPAC"
 
 #: DB:work_attribute_type/description:46
 msgctxt "work_attribute_type"
 msgid "ID for the Paraguayan rights society APA"
-msgstr "Een ID van de Paraguayaanse auteursrechtenorganisatie APA"
+msgstr "Een ID van de Paraguayaanse rechtenorganisatie APA"
 
 #: DB:work_attribute_type/description:41
 msgctxt "work_attribute_type"
 msgid "ID for the Peruvian rights society APDAYC"
-msgstr "Een ID van de Peruviaanse auteursrechtenorganisatie APDAYC"
+msgstr "Een ID van de Peruviaanse rechtenorganisatie APDAYC"
 
 #: DB:work_attribute_type/description:30
 msgctxt "work_attribute_type"
 msgid "ID for the Polish rights society ZAiKS"
-msgstr "Een ID van de Poolse auteursrechtenorganisatie ZAiKS"
+msgstr "Een ID van de Poolse rechtenorganisatie ZAiKS"
 
 #: DB:work_attribute_type/description:35
 msgctxt "work_attribute_type"
 msgid "ID for the Portuguese rights society SPA"
-msgstr "Een ID van de Portugese auteursrechtenorganisatie SPA"
+msgstr "Een ID van de Portugese rechtenorganisatie SPA"
 
 #: DB:work_attribute_type/description:56
 msgctxt "work_attribute_type"
 msgid "ID for the Salvadoran rights society SACIM"
-msgstr "Een ID van de Salvadoraanse auteursrechtenorganisatie SACIM"
+msgstr "Een ID van de Salvadoraanse rechtenorganisatie SACIM"
 
 #: DB:work_attribute_type/description:45
 msgctxt "work_attribute_type"
 msgid "ID for the Singaporean rights society COMPASS"
-msgstr "Een ID van de Singaporese auteursrechtenorganisatie COMPASS"
+msgstr "Een ID van de Singaporese rechtenorganisatie COMPASS"
 
 #: DB:work_attribute_type/description:140
 msgctxt "work_attribute_type"
 msgid "ID for the Slovenian rights society SAZAS"
-msgstr "Een ID van de Sloveense auteursrechtenorganisatie SAZAS"
+msgstr "Een ID van de Sloveense rechtenorganisatie SAZAS"
 
 #: DB:work_attribute_type/description:68
 msgctxt "work_attribute_type"
 msgid "ID for the South African rights society SAMRO"
-msgstr "Een ID van de Zuid-Afrikaanse auteursrechtenorganisatie SAMRO"
+msgstr "Een ID van de Zuid-Afrikaanse rechtenorganisatie SAMRO"
 
 #: DB:work_attribute_type/description:20
 msgctxt "work_attribute_type"
 msgid "ID for the Spanish rights society SGAE"
-msgstr "Een ID van de Spaanse auteursrechtenorganisatie SGAE"
+msgstr "Een ID van de Spaanse rechtenorganisatie SGAE"
 
 #: DB:work_attribute_type/description:50
 msgctxt "work_attribute_type"
 msgid "ID for the Swedish rights society STIM"
-msgstr "Een ID van de Zweedse auteursrechtenorganisatie STIM"
+msgstr "Een ID van de Zweedse rechtenorganisatie STIM"
 
 #: DB:work_attribute_type/description:18
 msgctxt "work_attribute_type"
 msgid "ID for the Swiss rights society SUISA"
-msgstr "Een ID van de Zwitserse auteursrechtenorganisatie SUISA"
+msgstr "Een ID van de Zwitserse rechtenorganisatie SUISA"
 
 #: DB:work_attribute_type/description:12
 msgctxt "work_attribute_type"
 msgid "ID for the Taiwanese rights society MÜST"
-msgstr "Een ID van de Taiwanese auteursrechtenorganisatie MÜST"
+msgstr "Een ID van de Taiwanese rechtenorganisatie MÜST"
 
 #: DB:work_attribute_type/description:72
 msgctxt "work_attribute_type"
 msgid "ID for the Thai rights society MCT"
-msgstr "Een ID van de Thaise auteursrechtenorganisatie MCT"
+msgstr "Een ID van de Thaise rechtenorganisatie MCT"
 
 #: DB:work_attribute_type/description:65
 msgctxt "work_attribute_type"
 msgid "ID for the Trinidadian and Tobagonian rights society COTT"
-msgstr "Een ID van de Trinidadaanse auteursrechtenorganisatie COTT"
+msgstr "Een ID van de Trinidadaanse rechtenorganisatie COTT"
 
 #: DB:work_attribute_type/description:6
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society ASCAP"
-msgstr "Een ID van de Amerikaanse auteursrechtenorganisatie ASCAP"
+msgstr "Een ID van de Amerikaanse rechtenorganisatie ASCAP"
 
 #: DB:work_attribute_type/description:7
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society BMI"
-msgstr "Een ID van de Amerikaanse auteursrechtenorganisatie BMI"
+msgstr "Een ID van de Amerikaanse rechtenorganisatie BMI"
 
 #: DB:work_attribute_type/description:106
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society GMR"
-msgstr "Een ID van de Amerikaanse auteursrechtenorganisatie GMR"
+msgstr "Een ID van de Amerikaanse rechtenorganisatie GMR"
 
 #: DB:work_attribute_type/description:8
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society SESAC"
-msgstr "Een ID van de Amerikaanse auteursrechtenorganisatie SESAC"
+msgstr "Een ID van de Amerikaanse rechtenorganisatie SESAC"
 
 #: DB:work_attribute_type/description:43
 msgctxt "work_attribute_type"
 msgid "ID for the Uruguayan rights society AGADU"
-msgstr "Een ID van de Uruguayaanse auteursrechtenorganisatie AGADU"
+msgstr "Een ID van de Uruguayaanse rechtenorganisatie AGADU"
 
 #: DB:work_attribute_type/description:42
 msgctxt "work_attribute_type"
 msgid "ID for the Venezuelan rights society SACVEN"
-msgstr "Een ID van de Venezolaanse auteursrechtenorganisatie SACVEN"
+msgstr "Een ID van de Venezolaanse rechtenorganisatie SACVEN"
 
 #: DB:work_attribute_type/description:107
 msgctxt "work_attribute_type"
 msgid "ID for the Vietnamese rights society VCPMC"
-msgstr "Een ID van de Vietnamese auteursrechtenorganisatie VCPMC"
+msgstr "Een ID van de Vietnamese rechtenorganisatie VCPMC"
 
 #: DB:work_attribute_type/description:38
 msgctxt "work_attribute_type"
 msgid "ID for the international (formerly US) rights society AMRA"
 msgstr ""
-"Een ID van de internationale (vroeger Amerikaanse) auteursrechtenorganisatie "
-"AMRA"
+"Een ID van de internationale (vroeger Amerikaanse) rechtenorganisatie AMRA"
 
 #: DB:work_attribute_type/description:55
 msgctxt "work_attribute_type"
@@ -6349,7 +6383,7 @@ msgstr "playbutton"
 #: DB:series_type/name:80
 msgctxt "series_type"
 msgid "Podcast"
-msgstr ""
+msgstr "Podcast"
 
 #: DB:work_type/name:21
 msgctxt "work_type"
@@ -6711,7 +6745,7 @@ msgstr "Reyya"
 #: DB:label_type/name:8
 msgctxt "label_type"
 msgid "Rights Society"
-msgstr "Auteursrechtenorganisatie"
+msgstr "Rechtenorganisatie"
 
 #: DB:work_attribute_type_allowed_value/value:222
 msgctxt "work_attribute_type_allowed_value"
@@ -7913,8 +7947,7 @@ msgstr ""
 msgctxt "medium_format"
 msgid ""
 "This represents the 2 channel (stereo/mono) table of contents on a SACD."
-msgstr ""
-"Dit geeft een tweekanaals-inhoudsopgave (stereo/mono) van een SACD aan."
+msgstr "Dit geeft een tweekanaals-inhoudsopgave (stereo/mono) van een SACD aan."
 
 #: DB:medium_format/description:89
 msgctxt "medium_format"

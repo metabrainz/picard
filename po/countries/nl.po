@@ -4,11 +4,12 @@
 # Maurits Meulenbelt, 2014-2015
 # Nikolai Prokoschenko <email address hidden>, 2011
 # mfmeulenbelt <mfmeulenbelt@gmail.com>, 2023.
+# yvanzo <yvanzo@users.noreply.translations.metabrainz.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2023-08-29 06:59+0000\n"
-"Last-Translator: mfmeulenbelt <mfmeulenbelt@gmail.com>\n"
+"PO-Revision-Date: 2024-01-17 09:58+0000\n"
+"Last-Translator: yvanzo <yvanzo@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/"
 "musicbrainz/countries/nl/>\n"
 "Language: nl\n"
@@ -16,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.3\n"
 
 #. iso.code:AF 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:1

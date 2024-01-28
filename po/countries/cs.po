@@ -2,19 +2,21 @@
 # Translators:
 # DJ Sweder <email address hidden>, 2020
 # Jiří Hofman <email address hidden>, 2019
+# Fjuro <ifjuro@proton.me>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2012-05-24 19:20+0000\n"
-"Last-Translator: DJ Sweder <djsweder@gmail.com>, 2020\n"
-"Language-Team: Czech (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/cs/)\n"
+"PO-Revision-Date: 2024-01-15 11:28+0000\n"
+"Last-Translator: Fjuro <ifjuro@proton.me>\n"
+"Language-Team: Czech <https://translations.metabrainz.org/projects/"
+"musicbrainz/countries/cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
 "<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
+"X-Generator: Weblate 5.3\n"
 
 #. iso.code:AF 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:1
@@ -304,7 +306,7 @@ msgstr "Kypr"
 #. iso.code:CZ 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:56
 msgid "Czechia"
-msgstr ""
+msgstr "Česko"
 
 #. iso.code:XC 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:245
@@ -379,7 +381,7 @@ msgstr "Estonsko"
 #. iso.code:SZ 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:201
 msgid "Eswatini"
-msgstr ""
+msgstr "Svazijsko"
 
 #. iso.code:ET 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:68
@@ -854,7 +856,7 @@ msgstr "Severní Korea"
 #. iso.code:MK 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:126
 msgid "North Macedonia"
-msgstr ""
+msgstr "Severní Makedonie"
 
 #. iso.code:MP 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:159
@@ -1199,7 +1201,7 @@ msgstr "Tuvalu"
 #. iso.code:TR 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:214
 msgid "Türkiye"
-msgstr ""
+msgstr "Turecko"
 
 #. iso.code:VI 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:231

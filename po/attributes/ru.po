@@ -22,20 +22,22 @@
 # Петр Москвин <email address hidden>, 2017
 # Светлана Ширикалова <email address hidden>, 2018
 # Хамит Фатхлисламов <email address hidden>, 2019
+# wileyfoxyx <wileyfoxyx@inbox.ru>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2012-05-24 18:52+0000\n"
-"Last-Translator: Ilya <wileyfoxyx@gmail.com>, 2023\n"
-"Language-Team: Russian (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/ru/)\n"
+"PO-Revision-Date: 2023-12-22 12:28+0000\n"
+"Last-Translator: wileyfoxyx <wileyfoxyx@inbox.ru>\n"
+"Language-Team: Russian <https://translations.metabrainz.org/projects/"
+"musicbrainz/attributes/ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
-"%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+"X-Generator: Weblate 5.3\n"
 
 #: DB:work_type/description:9
 msgctxt "work_type"
@@ -46,7 +48,7 @@ msgid ""
 msgstr ""
 "Мотет – термин, который применяется к различным типам хоровых произведений "
 "(обычно без аккомпанемента). Музыкальная формата мотета меняется в разные "
-"временные эпохи. "
+"временные эпохи."
 
 #: DB:work_type/description:5
 msgctxt "work_type"
@@ -58,6 +60,11 @@ msgstr ""
 "или соло + клавишные) инструментальных работ, изначально в музыке эпохи "
 "барокко."
 
+#: DB:medium_format/name:205
+msgctxt "medium_format"
+msgid "10\" Acetate"
+msgstr ""
+
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
@@ -67,6 +74,11 @@ msgstr "10-дюймовая грампластинка"
 msgctxt "medium_format"
 msgid "10\" Vinyl"
 msgstr "10-дюймовый винил"
+
+#: DB:medium_format/name:206
+msgctxt "medium_format"
+msgid "12\" Acetate"
+msgstr ""
 
 #: DB:medium_format/name:72
 msgctxt "medium_format"
@@ -81,16 +93,21 @@ msgstr "12-дюймовая грампластинка"
 #: DB:medium_format/name:31
 msgctxt "medium_format"
 msgid "12\" Vinyl"
-msgstr "12-дюймовый Винил"
+msgstr "12-дюймовый винил"
 
 #: DB:medium_format/name:49
 msgctxt "medium_format"
 msgid "3.5\" Floppy Disk"
-msgstr "3.5-дюймовая Дискета"
+msgstr "3.5-дюймовая дискета"
 
 #: DB:medium_format/name:91
 msgctxt "medium_format"
 msgid "5.25\" Floppy Disk"
+msgstr ""
+
+#: DB:medium_format/name:204
+msgctxt "medium_format"
+msgid "7\" Acetate"
 msgstr ""
 
 #: DB:medium_format/name:52
@@ -130,7 +147,7 @@ msgstr "8-см CD+G"
 
 #: DB:medium_format/description:166
 msgctxt "medium_format"
-msgid "8cm DVD disc, often used for video singles."
+msgid "8cm DVD, often used for video singles."
 msgstr ""
 
 #: DB:medium_format/description:58
@@ -433,9 +450,9 @@ msgstr "Книга с рукавом в конце для компакт-дис�
 msgctxt "event_type"
 msgid ""
 "A performance of one or more plays, musicals, operas, ballets or other "
-"similar works for the stage in their staged form (as opposed to a <a href="
-"\"https://en.wikipedia.org/wiki/Concert_performance\">concert performance</"
-"a> without staging)."
+"similar works for the stage in their staged form (as opposed to a <a "
+"href=\"https://en.wikipedia.org/wiki/Concert_performance\">concert "
+"performance</a> without staging)."
 msgstr ""
 
 #: DB:place_type/description:8
@@ -858,6 +875,14 @@ msgctxt "work_attribute_type"
 msgid "ACDAM ID"
 msgstr ""
 
+#: DB:work_attribute_type/name:206
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "SACM ID"
+msgctxt "work_attribute_type"
+msgid "ACUM ID"
+msgstr "SACM ID"
+
 #: DB:work_attribute_type/name:58
 msgctxt "work_attribute_type"
 msgid "AEI ID"
@@ -951,6 +976,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:307
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acemtarab"
+msgstr ""
+
+#: DB:medium_format/name:203
+msgctxt "medium_format"
+msgid "Acetate"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:848
@@ -3131,7 +3161,7 @@ msgstr ""
 msgctxt "medium_format"
 msgid ""
 "Flat discs with grooves used in phonographs/gramophones. For shellac and "
-"vinyl records, use that specifically"
+"vinyl records, use that specifically."
 msgstr ""
 
 #: DB:medium_format/name:51
@@ -3973,6 +4003,14 @@ msgstr "ID Международного авторского права"
 msgctxt "work_attribute_type"
 msgid "ID for the Irish rights society IMRO"
 msgstr ""
+
+#: DB:work_attribute_type/description:206
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Mexican rights society SACM"
+msgctxt "work_attribute_type"
+msgid "ID for the Israeli rights society ACUM"
+msgstr "ID Мексиканского правового общества SACM"
 
 #: DB:work_attribute_type/description:36
 msgctxt "work_attribute_type"

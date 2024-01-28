@@ -4,11 +4,13 @@
 # Kurt-Håkon Eilertsen <email address hidden>, 2014
 # CatQuest, The Endeavouring Cat, 2012-2013
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
+# "ApeKattQuest, MonkeyPython" <ApeKattQuestMonkeyPython@users.noreply.translations.metabrainz.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2023-08-24 09:59+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2024-01-04 14:54+0000\n"
+"Last-Translator: \"ApeKattQuest, MonkeyPython\" "
+"<ApeKattQuestMonkeyPython@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
 "projects/musicbrainz/countries/nb_NO/>\n"
 "Language: nb\n"
@@ -16,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.3\n"
 
 #. iso.code:AF 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:1
@@ -286,7 +288,7 @@ msgstr "Costa Rica"
 #. iso.code:HR 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:53
 msgid "Croatia"
-msgstr "Cookøyene"
+msgstr "Kroatia"
 
 #. iso.code:CU 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:54
@@ -306,12 +308,12 @@ msgstr "Kypros"
 #. iso.code:CZ 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:56
 msgid "Czechia"
-msgstr ""
+msgstr "Tsjekkia"
 
 #. iso.code:XC 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:245
 msgid "Czechoslovakia"
-msgstr "Tsjekoslovakia"
+msgstr "Tsjekkoslovakia"
 
 #. iso.code:CI 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:52
@@ -381,7 +383,7 @@ msgstr "Estland"
 #. iso.code:SZ 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:201
 msgid "Eswatini"
-msgstr ""
+msgstr "Eswatini"
 
 #. iso.code:ET 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:68
@@ -806,7 +808,7 @@ msgstr "Nepal"
 #. iso.code:NL 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:150
 msgid "Netherlands"
-msgstr "Netherlands"
+msgstr "Nederland"
 
 #. iso.code:AN 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:151
@@ -856,7 +858,7 @@ msgstr "Nord Korea"
 #. iso.code:MK 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:126
 msgid "North Macedonia"
-msgstr ""
+msgstr "Nordmakedonia"
 
 #. iso.code:MP 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:159
@@ -1201,7 +1203,7 @@ msgstr "Tuvalu"
 #. iso.code:TR 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:214
 msgid "Türkiye"
-msgstr ""
+msgstr "Tyrkia"
 
 #. iso.code:VI 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:231
