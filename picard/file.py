@@ -82,6 +82,7 @@ from picard.plugin import (
 from picard.script import get_file_naming_script
 from picard.util import (
     any_exception_isinstance,
+    bytes2human,
     decode_filename,
     emptydir,
     encode_filename,
@@ -824,6 +825,8 @@ class File(QtCore.QObject, Item):
         value = m[column]
         if not value and not get_config().setting['clear_existing_tags']:
             value = self.orig_metadata[column]
+        if column == '~filesize':
+            value = bytes2human.binary(value)
         return value
 
     def _lookup_finished(self, lookuptype, document, http, error):

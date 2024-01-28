@@ -6,7 +6,7 @@
 # Copyright (C) 2007 Robert Kaye
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008 Hendrik van Antwerpen
-# Copyright (C) 2008-2011, 2014-2015, 2018-2023 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014-2015, 2018-2024 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2009 Nikolai Prokoschenko
 # Copyright (C) 2011 Tim Blechmann
@@ -186,6 +186,7 @@ class MainPanel(QtWidgets.QSplitter):
     TRACKNUMBER_COLUMN = _column_indexes['tracknumber']
     DISCNUMBER_COLUMN = _column_indexes['discnumber']
     LENGTH_COLUMN = _column_indexes['~length']
+    FILESIZE_COLUMN = _column_indexes['~filesize']
     FINGERPRINT_COLUMN = _column_indexes['~fingerprint']
 
     NAT_SORT_COLUMNS = [
@@ -916,6 +917,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         self._sortkeys = {}
         for column in (
             MainPanel.LENGTH_COLUMN,
+            MainPanel.FILESIZE_COLUMN,
             MainPanel.TRACKNUMBER_COLUMN,
             MainPanel.DISCNUMBER_COLUMN,
         ):
@@ -940,6 +942,11 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
 
         if column == MainPanel.LENGTH_COLUMN:
             sortkey = self.obj.metadata.length or 0
+        elif column == MainPanel.FILESIZE_COLUMN:
+            try:
+                sortkey = int(self.obj.metadata['~filesize'] or self.obj.orig_metadata['~filesize'])
+            except ValueError:
+                sortkey = 0
         elif column in MainPanel.NAT_SORT_COLUMNS:
             sortkey = natsort.natkey(self.text(column))
         else:
