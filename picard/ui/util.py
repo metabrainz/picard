@@ -82,10 +82,10 @@ class MultiDirsSelectDialog(QtWidgets.QFileDialog):
 
     def __init__(self, *args):
         super().__init__(*args)
-        self.setFileMode(self.Directory)
-        self.setOption(self.ShowDirsOnly)
+        self.setFileMode(QtWidgets.QFileDialog.FileMode.Directory)
+        self.setOption(QtWidgets.QFileDialog.Option.ShowDirsOnly)
         # The native dialog doesn't allow selecting >1 directory
-        self.setOption(self.DontUseNativeDialog)
+        self.setOption(QtWidgets.QFileDialog.Option.DontUseNativeDialog)
         for view in self.findChildren((QtWidgets.QListView, QtWidgets.QTreeView)):
             if isinstance(view.model(), QtGui.QFileSystemModel):
                 view.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
