@@ -99,7 +99,7 @@ jobs:
         else
           echo "::notice::Releasing production release $PICARD_VERSION"
         fi
-        echo "*Please refer to the [download page](https://picard.musicbrainz.org/downloads/) for official download locations.*\n" > changes-$PICARD_VERSION.md
+        echo -e "*Please refer to the [download page](https://picard.musicbrainz.org/downloads/) for official download locations.*\n" > changes-$PICARD_VERSION.md
         ./scripts/tools/changelog-for-version.py $PICARD_VERSION >> changes-$PICARD_VERSION.md
     - name: Create release
       uses: softprops/action-gh-release@v1
