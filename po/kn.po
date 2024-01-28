@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-01-11 23:13+0100\n"
+"POT-Creation-Date: 2024-01-28 21:36+0100\n"
 "PO-Revision-Date: 2023-08-23 19:09+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Kannada <https://translations.metabrainz.org/projects/picard/"
@@ -123,28 +123,28 @@ msgstr ""
 msgid "Primary file naming script"
 msgstr ""
 
-#: picard/file.py:216
+#: picard/file.py:218
 msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
 msgstr ""
 
-#: picard/file.py:853
+#: picard/file.py:858
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "%(filename)s ಕಡತವು ಯಾವುದೇ ಸಂಗೀತ ಕೃತಿಯನ್ನು ಹೊಲುತ್ತಿಲ್ಲ"
 
-#: picard/file.py:855
+#: picard/file.py:860
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "%(filename)s ಕಡತವನ್ನು ಗುರುತಿಸಲಾಗಿದೆ"
 
-#: picard/file.py:867
+#: picard/file.py:872
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "%(filename)s ಕಡತವು ಯಾವುದೇ ಸಂಗೀತ ಕೃತಿಯನ್ನು ಹೊಲುತ್ತಿಲ್ಲ"
 
-#: picard/file.py:899
+#: picard/file.py:904
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
 msgstr "%(filename)s ಕಡತದ ಮೆಟಾಡಾಟಾವನ್ನು ಹುಡುಕಲಾಗುತ್ತಿದೆ"
@@ -159,7 +159,7 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
-#: picard/log.py:69 picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
+#: picard/log.py:69 picard/ui/infodialog.py:153 picard/ui/infodialog.py:362
 #: picard/ui/options/interface_toolbar.py:96
 msgid "Info"
 msgstr ""
@@ -177,40 +177,40 @@ msgstr ""
 msgid "Unexpected request error (HTTP code %s)"
 msgstr ""
 
-#: picard/pluginmanager.py:271
+#: picard/pluginmanager.py:272
 #, python-format
 msgid "Unable to load plugin '%s'"
 msgstr ""
 
-#: picard/pluginmanager.py:302
+#: picard/pluginmanager.py:303
 #, python-format
 msgid "Failed loading plugin \"%(plugin)s\""
 msgstr ""
 
-#: picard/pluginmanager.py:349
+#: picard/pluginmanager.py:350
 #, python-format
 msgid ""
 "Plugin \"%(plugin)s\" from \"%(filename)s\" is not compatible with this "
 "version of Picard."
 msgstr ""
 
-#: picard/pluginmanager.py:354
+#: picard/pluginmanager.py:355
 #, python-format
 msgid "Plugin \"%(plugin)s\" has an invalid API version string: %(error)s"
 msgstr ""
 
-#: picard/pluginmanager.py:360 picard/ui/options/plugins.py:431
+#: picard/pluginmanager.py:361 picard/ui/options/plugins.py:431
 #: picard/ui/options/plugins.py:443 picard/ui/options/plugins.py:464
 #, python-format
 msgid "Plugin \"%(plugin)s\""
 msgstr ""
 
-#: picard/pluginmanager.py:371
+#: picard/pluginmanager.py:372
 #, python-format
 msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
 msgstr ""
 
-#: picard/pluginmanager.py:512
+#: picard/pluginmanager.py:513
 #, python-format
 msgid "Error loading plugins list: %(error)s"
 msgstr ""
@@ -2132,18 +2132,18 @@ msgstr ""
 msgid "Restore &Defaults"
 msgstr ""
 
-#: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:166
+#: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:167
 #: picard/ui/mainwindow.py:1154 picard/util/tags.py:40
 msgid "Album"
 msgstr ""
 
-#: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:163
+#: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:164
 #: picard/ui/mainwindow.py:1155 picard/ui/searchdialog/album.py:153
 #: picard/ui/searchdialog/track.py:71 picard/util/tags.py:43
 msgid "Artist"
 msgstr "ಕಲಾವಿದ"
 
-#: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:175
+#: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:177
 #: picard/ui/searchdialog/album.py:156 picard/ui/searchdialog/track.py:73
 #: picard/util/tags.py:56
 msgid "Date"
@@ -2157,7 +2157,7 @@ msgstr ""
 msgid "Catalog #s"
 msgstr ""
 
-#: picard/ui/cdlookup.py:73 picard/ui/itemviews.py:171
+#: picard/ui/cdlookup.py:73 picard/ui/itemviews.py:172
 #: picard/ui/searchdialog/album.py:160 picard/util/tags.py:47
 msgid "Barcode"
 msgstr ""
@@ -2291,27 +2291,27 @@ msgstr ""
 msgid "&Set as starting directory"
 msgstr ""
 
-#: picard/ui/infodialog.py:105
+#: picard/ui/infodialog.py:104
 msgid "Existing Cover"
 msgstr ""
 
-#: picard/ui/infodialog.py:105 picard/ui/infodialog.py:110
+#: picard/ui/infodialog.py:104 picard/ui/infodialog.py:109
 #: picard/ui/searchdialog/album.py:162 picard/ui/searchdialog/artist.py:55
 #: picard/ui/searchdialog/track.py:75
 msgid "Type"
 msgstr ""
 
-#: picard/ui/infodialog.py:106
+#: picard/ui/infodialog.py:105
 msgid "New Cover"
 msgstr ""
 
-#: picard/ui/infodialog.py:110 picard/ui/itemviews.py:178
+#: picard/ui/infodialog.py:109 picard/ui/itemviews.py:180
 #: picard/ui/searchdialog/album.py:164
 #, fuzzy
 msgid "Cover"
 msgstr "ಹೊರ ಚಿತ್ರ"
 
-#: picard/ui/infodialog.py:209
+#: picard/ui/infodialog.py:208
 #, python-format
 msgid ""
 "Double-click to open in external viewer\n"
@@ -2319,92 +2319,92 @@ msgid ""
 "Source: %(sourcefile)s"
 msgstr ""
 
-#: picard/ui/infodialog.py:219
+#: picard/ui/infodialog.py:218
 #, python-format
 msgid ""
 "Missing temporary file: %(tempfile)s\n"
 "Source: %(sourcefile)s"
 msgstr ""
 
-#: picard/ui/infodialog.py:286
+#: picard/ui/infodialog.py:285
 msgid "Filename:"
 msgstr ""
 
-#: picard/ui/infodialog.py:288
+#: picard/ui/infodialog.py:287
 msgid "Format:"
 msgstr ""
 
-#: picard/ui/infodialog.py:292
+#: picard/ui/infodialog.py:291
 msgid "Size:"
 msgstr ""
 
-#: picard/ui/infodialog.py:296
+#: picard/ui/infodialog.py:293
 #, fuzzy
 msgid "Length:"
 msgstr "ಕಾಲಾವಧಿ"
 
-#: picard/ui/infodialog.py:298
+#: picard/ui/infodialog.py:295
 msgid "Bitrate:"
 msgstr ""
 
-#: picard/ui/infodialog.py:300
+#: picard/ui/infodialog.py:297
 msgid "Sample rate:"
 msgstr ""
 
-#: picard/ui/infodialog.py:302
+#: picard/ui/infodialog.py:299
 msgid "Bits per sample:"
 msgstr ""
 
-#: picard/ui/infodialog.py:306
+#: picard/ui/infodialog.py:303
 msgid "Mono"
 msgstr ""
 
-#: picard/ui/infodialog.py:308
+#: picard/ui/infodialog.py:305
 msgid "Stereo"
 msgstr ""
 
-#: picard/ui/infodialog.py:309
+#: picard/ui/infodialog.py:306
 msgid "Channels:"
 msgstr ""
 
-#: picard/ui/infodialog.py:316
+#: picard/ui/infodialog.py:313
 msgid "Album:"
 msgstr ""
 
-#: picard/ui/infodialog.py:317
+#: picard/ui/infodialog.py:314
 #, fuzzy
 msgid "Artist:"
 msgstr "ಕಲಾವಿದ"
 
-#: picard/ui/infodialog.py:347
+#: picard/ui/infodialog.py:344
 #, python-format
 msgid "Disc %d"
 msgstr ""
 
-#: picard/ui/infodialog.py:349
+#: picard/ui/infodialog.py:346
 msgid "Tracklist:"
 msgstr ""
 
-#: picard/ui/infodialog.py:377
+#: picard/ui/infodialog.py:374
 msgid "Album Info"
 msgstr ""
 
-#: picard/ui/infodialog.py:391
+#: picard/ui/infodialog.py:388
 msgid "Track Info"
 msgstr ""
 
-#: picard/ui/infodialog.py:399 picard/ui/infodialog.py:403
-#: picard/ui/infodialog.py:421 picard/ui/ui_infodialog.py:83
+#: picard/ui/infodialog.py:396 picard/ui/infodialog.py:400
+#: picard/ui/infodialog.py:418 picard/ui/ui_infodialog.py:83
 msgid "&Info"
 msgstr ""
 
-#: picard/ui/infodialog.py:404
+#: picard/ui/infodialog.py:401
 #, python-format
 msgid "%i file in this track"
 msgid_plural "%i files in this track"
 msgstr[0] ""
 
-#: picard/ui/infodialog.py:415
+#: picard/ui/infodialog.py:412
 msgid "Cluster Info"
 msgstr ""
 
@@ -2440,201 +2440,205 @@ msgid "%i image not in all tracks"
 msgid_plural "%i different images among tracks"
 msgstr[0] ""
 
-#: picard/ui/itemviews.py:161 picard/util/tags.py:123
+#: picard/ui/itemviews.py:162 picard/util/tags.py:123
 msgid "Title"
 msgstr "ಶೀರ್ಷಿಕೆ"
 
-#: picard/ui/itemviews.py:162 picard/ui/searchdialog/track.py:70
+#: picard/ui/itemviews.py:163 picard/ui/searchdialog/track.py:70
 #: picard/util/tags.py:72
 msgid "Length"
 msgstr "ಕಾಲಾವಧಿ"
 
-#: picard/ui/itemviews.py:164 picard/util/tags.py:38
+#: picard/ui/itemviews.py:165 picard/util/tags.py:38
 msgid "Album Artist"
 msgstr ""
 
-#: picard/ui/itemviews.py:165 picard/util/tags.py:52
+#: picard/ui/itemviews.py:166 picard/util/tags.py:52
 msgid "Composer"
 msgstr ""
 
-#: picard/ui/itemviews.py:167 picard/util/tags.py:60
+#: picard/ui/itemviews.py:168 picard/util/tags.py:60
 msgid "Disc Subtitle"
 msgstr ""
 
-#: picard/ui/itemviews.py:168
+#: picard/ui/itemviews.py:169
 msgid "Track No."
 msgstr ""
 
-#: picard/ui/itemviews.py:169
+#: picard/ui/itemviews.py:170
 msgid "Disc No."
 msgstr ""
 
-#: picard/ui/itemviews.py:170
+#: picard/ui/itemviews.py:171
 msgid "Catalog No."
 msgstr ""
 
-#: picard/ui/itemviews.py:172 picard/util/tags.py:76
+#: picard/ui/itemviews.py:173 picard/util/tags.py:76
 msgid "Media"
 msgstr ""
 
-#: picard/ui/itemviews.py:173 picard/util/tags.py:66
+#: picard/ui/itemviews.py:174
+msgid "Size"
+msgstr ""
+
+#: picard/ui/itemviews.py:175 picard/util/tags.py:66
 msgid "Genre"
 msgstr ""
 
-#: picard/ui/itemviews.py:174
+#: picard/ui/itemviews.py:176
 msgid "Fingerprint status"
 msgstr ""
 
-#: picard/ui/itemviews.py:176 picard/util/tags.py:96
+#: picard/ui/itemviews.py:178 picard/util/tags.py:96
 msgid "Original Release Date"
 msgstr ""
 
-#: picard/ui/itemviews.py:177 picard/util/tags.py:107
+#: picard/ui/itemviews.py:179 picard/util/tags.py:107
 msgid "Release Date"
 msgstr ""
 
-#: picard/ui/itemviews.py:280
+#: picard/ui/itemviews.py:282
 msgid "Bad match"
 msgstr ""
 
-#: picard/ui/itemviews.py:281
+#: picard/ui/itemviews.py:283
 msgid "Poor match"
 msgstr ""
 
-#: picard/ui/itemviews.py:282
+#: picard/ui/itemviews.py:284
 msgid "Ok match"
 msgstr ""
 
-#: picard/ui/itemviews.py:283
+#: picard/ui/itemviews.py:285
 msgid "Good match"
 msgstr ""
 
-#: picard/ui/itemviews.py:284
+#: picard/ui/itemviews.py:286
 msgid "Great match"
 msgstr ""
 
-#: picard/ui/itemviews.py:285
+#: picard/ui/itemviews.py:287
 msgid "Excellent match"
 msgstr ""
 
-#: picard/ui/itemviews.py:399
+#: picard/ui/itemviews.py:401
 msgid "Restore default columns"
 msgstr ""
 
-#: picard/ui/itemviews.py:404
+#: picard/ui/itemviews.py:406
 msgid "Lock columns"
 msgstr ""
 
-#: picard/ui/itemviews.py:456
+#: picard/ui/itemviews.py:458
 msgid "&Expand all"
 msgstr ""
 
-#: picard/ui/itemviews.py:458
+#: picard/ui/itemviews.py:460
 msgid "&Collapse all"
 msgstr ""
 
-#: picard/ui/itemviews.py:460
+#: picard/ui/itemviews.py:462
 msgid "Select &all"
 msgstr ""
 
-#: picard/ui/itemviews.py:462
+#: picard/ui/itemviews.py:464
 msgid "Ctrl+A"
 msgstr ""
 
-#: picard/ui/itemviews.py:543
+#: picard/ui/itemviews.py:545
 msgid "&Other versions"
 msgstr ""
 
-#: picard/ui/itemviews.py:546
+#: picard/ui/itemviews.py:548
 msgid "Loading…"
 msgstr ""
 
-#: picard/ui/itemviews.py:548
+#: picard/ui/itemviews.py:550
 msgid "Show &more details…"
 msgstr ""
 
-#: picard/ui/itemviews.py:601
+#: picard/ui/itemviews.py:603
 #, python-format
 msgid "&Other versions (%d)"
 msgstr ""
 
-#: picard/ui/itemviews.py:627
+#: picard/ui/itemviews.py:629
 msgid "Collections"
 msgstr ""
 
-#: picard/ui/itemviews.py:635
+#: picard/ui/itemviews.py:637
 msgid "P&lugins"
 msgstr ""
 
-#: picard/ui/itemviews.py:651
+#: picard/ui/itemviews.py:653
 msgid "&Run scripts"
 msgstr ""
 
-#: picard/ui/itemviews.py:851
+#: picard/ui/itemviews.py:853
 msgid "file view"
 msgstr ""
 
-#: picard/ui/itemviews.py:852
+#: picard/ui/itemviews.py:854
 msgid "Contains unmatched files and clusters"
 msgstr ""
 
-#: picard/ui/itemviews.py:872
+#: picard/ui/itemviews.py:874
 msgid "Clusters"
 msgstr ""
 
-#: picard/ui/itemviews.py:882
+#: picard/ui/itemviews.py:884
 msgid "album view"
 msgstr ""
 
-#: picard/ui/itemviews.py:883
+#: picard/ui/itemviews.py:885
 msgid "Contains albums and matched files"
 msgstr ""
 
-#: picard/ui/itemviews.py:1029
+#: picard/ui/itemviews.py:1031
 msgid "Processing error(s): See the Errors tab in the Album Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1033
+#: picard/ui/itemviews.py:1035
 msgid "Album modified and complete"
 msgstr ""
 
-#: picard/ui/itemviews.py:1036
+#: picard/ui/itemviews.py:1038
 msgid "Album unchanged and complete"
 msgstr ""
 
-#: picard/ui/itemviews.py:1040
+#: picard/ui/itemviews.py:1042
 msgid "Album modified"
 msgstr ""
 
-#: picard/ui/itemviews.py:1043
+#: picard/ui/itemviews.py:1045
 msgid "Album unchanged"
 msgstr ""
 
-#: picard/ui/itemviews.py:1123
+#: picard/ui/itemviews.py:1125
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1151
+#: picard/ui/itemviews.py:1153
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1184
+#: picard/ui/itemviews.py:1186
 msgid "Track saved"
 msgstr ""
 
-#: picard/ui/itemviews.py:1186 picard/ui/itemviews.py:1190
+#: picard/ui/itemviews.py:1188 picard/ui/itemviews.py:1192
 msgid "Pending"
 msgstr ""
 
-#: picard/ui/itemviews.py:1197
+#: picard/ui/itemviews.py:1199
 msgid "Fingerprint has already been submitted"
 msgstr ""
 
-#: picard/ui/itemviews.py:1200
+#: picard/ui/itemviews.py:1202
 msgid "Unsubmitted fingerprint"
 msgstr ""
 
-#: picard/ui/itemviews.py:1203
+#: picard/ui/itemviews.py:1205
 msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
 "AcoustID Fingerprints\" to calculate the fingerprint."
@@ -3319,7 +3323,7 @@ msgstr[0] ""
 msgid "&Copy"
 msgstr ""
 
-#: picard/ui/newuserdialog.py:34
+#: picard/ui/newuserdialog.py:36
 msgid ""
 "<p><strong>Changes made by Picard are not reversible.</strong></p><p>Picard "
 "is a very flexible music tagging tool which can rename your files and "
@@ -3330,11 +3334,11 @@ msgid ""
 "volunteers. It is provided as-is and with no warranty.</p>"
 msgstr ""
 
-#: picard/ui/newuserdialog.py:49
+#: picard/ui/newuserdialog.py:51
 msgid "Show this message again the next time you start Picard."
 msgstr ""
 
-#: picard/ui/newuserdialog.py:54
+#: picard/ui/newuserdialog.py:56
 msgid "New User Warning"
 msgstr ""
 
@@ -3350,89 +3354,89 @@ msgid ""
 "The proxy %s requires you to login. Please enter your username and password."
 msgstr ""
 
-#: picard/ui/playertoolbar.py:189
+#: picard/ui/playertoolbar.py:190
 msgid "Internal player: The format of a media resource isn't (fully) supported"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:191
+#: picard/ui/playertoolbar.py:192
 msgid ""
 "Internal player: There are not the appropriate permissions to play a media "
 "resource"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:193
+#: picard/ui/playertoolbar.py:194
 #, python-format
 msgid "Internal player: %(error)s, %(message)s"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:202
+#: picard/ui/playertoolbar.py:203
 msgid "Player"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:210
+#: picard/ui/playertoolbar.py:211
 msgid "Play"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:211
+#: picard/ui/playertoolbar.py:212
 #, fuzzy
 msgid "Play selected files"
 msgstr "ಆರಿಸಿದ ಕಡತಗಳನ್ನು ಉಳಿಸು"
 
-#: picard/ui/playertoolbar.py:217
+#: picard/ui/playertoolbar.py:218
 msgid "Pause"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:218
+#: picard/ui/playertoolbar.py:219
 msgid "Pause or resume current playback"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:360
+#: picard/ui/playertoolbar.py:361
 #, python-format
 msgid "%1.1f ×"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:366
+#: picard/ui/playertoolbar.py:367
 msgid "Change playback speed"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:373
+#: picard/ui/playertoolbar.py:374
 msgid "Playback speed"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:416
+#: picard/ui/playertoolbar.py:417
 #, python-format
 msgid "%d%%"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:422
+#: picard/ui/playertoolbar.py:423
 msgid "Change audio volume"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:428
+#: picard/ui/playertoolbar.py:429
 msgid "Audio volume"
 msgstr ""
 
-#: picard/ui/pluginupdatedialog.py:38
+#: picard/ui/pluginupdatedialog.py:40
 msgid "Perform this check again the next time you start Picard."
 msgstr ""
 
-#: picard/ui/pluginupdatedialog.py:43
+#: picard/ui/pluginupdatedialog.py:45
 msgid "Picard Plugins Update"
 msgstr ""
 
-#: picard/ui/pluginupdatedialog.py:60
+#: picard/ui/pluginupdatedialog.py:62
 msgid ""
 "There is an update available for one of your currently installed plugins:"
 msgid_plural ""
 "There are updates available for your currently installed plugins:"
 msgstr[0] ""
 
-#: picard/ui/pluginupdatedialog.py:65
+#: picard/ui/pluginupdatedialog.py:67
 msgid "Do you want to update the plugin now?"
 msgid_plural "Do you want to update the plugins now?"
 msgstr[0] ""
 
-#: picard/ui/pluginupdatedialog.py:73
+#: picard/ui/pluginupdatedialog.py:75
 msgid "plus {extra_file_count:,d} other plugin."
 msgid_plural "plus {extra_file_count:,d} other plugins."
 msgstr[0] ""
@@ -3444,47 +3448,47 @@ msgid ""
 "%(error)d"
 msgstr ""
 
-#: picard/ui/savewarningdialog.py:38
+#: picard/ui/savewarningdialog.py:40
 msgid "overwrite existing metadata (tags) within the file"
 msgid_plural "overwrite existing metadata (tags) within the files"
 msgstr[0] ""
 
-#: picard/ui/savewarningdialog.py:43
+#: picard/ui/savewarningdialog.py:45
 msgid "rename the file"
 msgid_plural "rename the files"
 msgstr[0] ""
 
-#: picard/ui/savewarningdialog.py:48
+#: picard/ui/savewarningdialog.py:50
 msgid "move the file to a different location"
 msgid_plural "move the files to a different location"
 msgstr[0] ""
 
-#: picard/ui/savewarningdialog.py:54
+#: picard/ui/savewarningdialog.py:56
 msgid "You are about to save {file_count:,d} file and this will:"
 msgid_plural "You are about to save {file_count:,d} files and this will:"
 msgstr[0] ""
 
-#: picard/ui/savewarningdialog.py:58
+#: picard/ui/savewarningdialog.py:60
 msgid "<strong>This action cannot be undone.</strong> Do you want to continue?"
 msgstr ""
 
-#: picard/ui/savewarningdialog.py:61
+#: picard/ui/savewarningdialog.py:63
 msgid "<li>{action}</li>"
 msgstr ""
 
-#: picard/ui/savewarningdialog.py:62
+#: picard/ui/savewarningdialog.py:64
 msgid "<p>{header}</p><ul>{list_of_actions}</ul><p>{footer}</p>"
 msgstr ""
 
-#: picard/ui/savewarningdialog.py:64
+#: picard/ui/savewarningdialog.py:66
 msgid "There are no actions selected. No changes will be saved."
 msgstr ""
 
-#: picard/ui/savewarningdialog.py:66
+#: picard/ui/savewarningdialog.py:68
 msgid "Don't show this warning again."
 msgstr ""
 
-#: picard/ui/savewarningdialog.py:72
+#: picard/ui/savewarningdialog.py:74
 msgid "File Save Warning"
 msgstr ""
 
@@ -4836,31 +4840,44 @@ msgstr ""
 msgid "System default"
 msgstr ""
 
-#: picard/ui/options/interface.py:180
+#: picard/ui/options/interface.py:189
 msgid "Theme changed"
 msgstr ""
 
-#: picard/ui/options/interface.py:181
+#: picard/ui/options/interface.py:190
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
 msgstr ""
 
-#: picard/ui/options/interface.py:183
+#: picard/ui/options/interface.py:192
 msgid ""
 "Please note that using the system theme might cause the user interface to be "
 "not shown correctly. If this is the case select the \"Default\" theme option "
 "to use Picard's default theme again."
 msgstr ""
 
-#: picard/ui/options/interface.py:188
+#: picard/ui/options/interface.py:197
 msgid "Language changed"
 msgstr ""
 
-#: picard/ui/options/interface.py:189
+#: picard/ui/options/interface.py:198
 msgid ""
 "You have changed the interface language. You have to restart Picard in order "
 "for the change to take effect."
+msgstr ""
+
+#: picard/ui/options/interface.py:226
+msgid "Option Setting Warning"
+msgstr ""
+
+#: picard/ui/options/interface.py:227
+msgid ""
+"When enabling the multiple directories option setting Picard will no longer "
+"use the system file picker for selecting directories. This may result in "
+"reduced functionality.\n"
+"\n"
+"Are you sure that you want to enable this setting?"
 msgstr ""
 
 #: picard/ui/options/interface_colors.py:67
@@ -5412,57 +5429,57 @@ msgstr ""
 msgid "No Title"
 msgstr "ಶೀರ್ಷಿಕೆ"
 
-#: picard/util/bytes2human.py:37
+#: picard/util/bytes2human.py:38
 #, python-format
 msgid "%(value)s B"
 msgstr ""
 
-#: picard/util/bytes2human.py:38
+#: picard/util/bytes2human.py:39
 #, python-format
 msgid "%(value)s kB"
 msgstr ""
 
-#: picard/util/bytes2human.py:39
+#: picard/util/bytes2human.py:40
 #, python-format
 msgid "%(value)s KiB"
 msgstr ""
 
-#: picard/util/bytes2human.py:40
+#: picard/util/bytes2human.py:41
 #, python-format
 msgid "%(value)s MB"
 msgstr ""
 
-#: picard/util/bytes2human.py:41
+#: picard/util/bytes2human.py:42
 #, python-format
 msgid "%(value)s MiB"
 msgstr ""
 
-#: picard/util/bytes2human.py:42
+#: picard/util/bytes2human.py:43
 #, python-format
 msgid "%(value)s GB"
 msgstr ""
 
-#: picard/util/bytes2human.py:43
+#: picard/util/bytes2human.py:44
 #, python-format
 msgid "%(value)s GiB"
 msgstr ""
 
-#: picard/util/bytes2human.py:44
+#: picard/util/bytes2human.py:45
 #, python-format
 msgid "%(value)s TB"
 msgstr ""
 
-#: picard/util/bytes2human.py:45
+#: picard/util/bytes2human.py:46
 #, python-format
 msgid "%(value)s TiB"
 msgstr ""
 
-#: picard/util/bytes2human.py:46
+#: picard/util/bytes2human.py:47
 #, python-format
 msgid "%(value)s PB"
 msgstr ""
 
-#: picard/util/bytes2human.py:47
+#: picard/util/bytes2human.py:48
 #, python-format
 msgid "%(value)s PiB"
 msgstr ""
@@ -5826,22 +5843,22 @@ msgstr ""
 msgid "Writer"
 msgstr ""
 
-#: picard/util/time.py:48
+#: picard/util/time.py:49
 #, python-format
 msgid "%(days).2dd %(hours).2dh"
 msgstr ""
 
-#: picard/util/time.py:50
+#: picard/util/time.py:51
 #, python-format
 msgid "%(hours).2dh %(minutes).2dm"
 msgstr ""
 
-#: picard/util/time.py:52
+#: picard/util/time.py:53
 #, python-format
 msgid "%(minutes).2dm %(seconds).2ds"
 msgstr ""
 
-#: picard/util/time.py:54
+#: picard/util/time.py:55
 #, python-format
 msgid "%(seconds).2ds"
 msgstr ""
