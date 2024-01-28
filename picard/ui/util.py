@@ -8,7 +8,7 @@
 # Copyright (C) 2017 Frederik “Freso” S. Olesen
 # Copyright (C) 2017 Sophist-UK
 # Copyright (C) 2018 Vishal Choudhary
-# Copyright (C) 2019, 2021-2022 Philipp Wolfer
+# Copyright (C) 2019, 2021-2022, 2024 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,7 +24,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
 from PyQt6 import (
     QtCore,
     QtGui,
@@ -33,6 +32,7 @@ from PyQt6 import (
 
 from picard.config import get_config
 from picard.const.sys import (
+    IS_LINUX,
     IS_MACOS,
     IS_WIN,
 )
@@ -89,6 +89,29 @@ class MultiDirsSelectDialog(QtWidgets.QFileDialog):
         for view in self.findChildren((QtWidgets.QListView, QtWidgets.QTreeView)):
             if isinstance(view.model(), QtGui.QFileSystemModel):
                 view.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
+        self.set_sidebar_locations()
+
+    def set_sidebar_locations(self):
+        # Allow access to all mounted drives in the sidebar
+        root_volume = "/"
+        volume_paths = []
+        for volume in QtCore.QStorageInfo.mountedVolumes():
+            if volume.isValid() and volume.isReady():
+                path = volume.rootPath()
+                if volume.isRoot():
+                    root_volume = path
+                else:
+                    if not IS_LINUX or (path.startswith("/media/") or path.startswith("/mnt/")):
+                        volume_paths.append(path)
+        sidebar_urls = [
+            QtCore.QUrl.fromLocalFile(root_volume),
+            QtCore.QUrl.fromLocalFile(QtCore.QDir.homePath()),
+            QtCore.QUrl.fromLocalFile(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.MusicLocation))
+        ]
+
+        for path in sorted(volume_paths):
+            sidebar_urls.append(QtCore.QUrl.fromLocalFile(path))
+        self.setSidebarUrls(sidebar_urls)
 
 
 def qlistwidget_items(qlistwidget):
