@@ -103,15 +103,12 @@ class MultiDirsSelectDialog(QtWidgets.QFileDialog):
                 else:
                     if not IS_LINUX or (path.startswith("/media/") or path.startswith("/mnt/")):
                         volume_paths.append(path)
-        sidebar_urls = [
-            QtCore.QUrl.fromLocalFile(root_volume),
-            QtCore.QUrl.fromLocalFile(QtCore.QDir.homePath()),
-            QtCore.QUrl.fromLocalFile(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.MusicLocation))
+        paths = [
+            root_volume,
+            QtCore.QDir.homePath(),
+            QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.MusicLocation),
         ]
-
-        for path in sorted(volume_paths):
-            sidebar_urls.append(QtCore.QUrl.fromLocalFile(path))
-        self.setSidebarUrls(sidebar_urls)
+        self.setSidebarUrls(QtCore.QUrl.fromLocalFile(p) for p in paths + sorted(volume_paths) if p)
 
 
 def qlistwidget_items(qlistwidget):
