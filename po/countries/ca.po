@@ -1,18 +1,20 @@
 #
 # Translators:
 # Aniol, 2015
+# 0x1026 <me@hugovidafe.dev>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2012-05-24 19:20+0000\n"
-"Last-Translator: Aniol, 2015\n"
-"Language-Team: Catalan (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/ca/)\n"
+"PO-Revision-Date: 2024-01-01 11:28+0000\n"
+"Last-Translator: 0x1026 <me@hugovidafe.dev>\n"
+"Language-Team: Catalan <https://translations.metabrainz.org/projects/"
+"musicbrainz/countries/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.3\n"
 
 #. iso.code:AF 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:1
@@ -302,7 +304,7 @@ msgstr "Xipre"
 #. iso.code:CZ 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:56
 msgid "Czechia"
-msgstr ""
+msgstr "Txèquia"
 
 #. iso.code:XC 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:245
@@ -377,7 +379,7 @@ msgstr "Estònia"
 #. iso.code:SZ 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:201
 msgid "Eswatini"
-msgstr ""
+msgstr "Eswatini"
 
 #. iso.code:ET 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:68
@@ -852,7 +854,7 @@ msgstr "Corea del Nord"
 #. iso.code:MK 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:126
 msgid "North Macedonia"
-msgstr ""
+msgstr "Macedònia del Nord"
 
 #. iso.code:MP 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:159
@@ -1197,7 +1199,7 @@ msgstr "Tuvalu"
 #. iso.code:TR 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:214
 msgid "Türkiye"
-msgstr ""
+msgstr "Turquia"
 
 #. iso.code:VI 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:231

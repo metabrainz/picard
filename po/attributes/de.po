@@ -48,11 +48,13 @@
 # Wieland Hoffmann <email address hidden>, 2011
 # chaban <chaban@users.noreply.translations.metabrainz.org>, 2023.
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
+# kellnerd <kellnerd@users.noreply.translations.metabrainz.org>, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2023-08-31 20:27+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2024-01-10 19:28+0000\n"
+"Last-Translator: kellnerd <kellnerd@users.noreply.translations.metabrainz."
+"org>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/de/>\n"
 "Language: de\n"
@@ -60,7 +62,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.3\n"
 
 #: DB:work_type/description:9
 msgctxt "work_type"
@@ -82,6 +84,11 @@ msgstr ""
 "„Sonate“ ist ein allgemeiner Begriff für Instrumentalstücke in kleiner "
 "Besetzung (meist Solo oder Solo + Tasten), ursprünglich in der Barockmusik."
 
+#: DB:medium_format/name:205
+msgctxt "medium_format"
+msgid "10\" Acetate"
+msgstr "10\" Azetat"
+
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
@@ -91,6 +98,11 @@ msgstr "10″-Schellack"
 msgctxt "medium_format"
 msgid "10\" Vinyl"
 msgstr "10″-Vinyl"
+
+#: DB:medium_format/name:206
+msgctxt "medium_format"
+msgid "12\" Acetate"
+msgstr "12\" Azetat"
 
 #: DB:medium_format/name:72
 msgctxt "medium_format"
@@ -116,6 +128,11 @@ msgstr "3,5″-Diskette"
 msgctxt "medium_format"
 msgid "5.25\" Floppy Disk"
 msgstr "5,25″-Diskette"
+
+#: DB:medium_format/name:204
+msgctxt "medium_format"
+msgid "7\" Acetate"
+msgstr "7\" Azetat"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
@@ -154,7 +171,7 @@ msgstr "8-cm-CD+G"
 
 #: DB:medium_format/description:166
 msgctxt "medium_format"
-msgid "8cm DVD disc, often used for video singles."
+msgid "8cm DVD, often used for video singles."
 msgstr "8cm-DVD, häufig für Video-Singles verwendet."
 
 #: DB:medium_format/description:58
@@ -462,9 +479,9 @@ msgstr "Ein gebundes Buch mit einem Umschlag am Ende der eine CD beherbergt"
 msgctxt "event_type"
 msgid ""
 "A performance of one or more plays, musicals, operas, ballets or other "
-"similar works for the stage in their staged form (as opposed to a <a href="
-"\"https://en.wikipedia.org/wiki/Concert_performance\">concert performance</"
-"a> without staging)."
+"similar works for the stage in their staged form (as opposed to a <a "
+"href=\"https://en.wikipedia.org/wiki/Concert_performance\">concert "
+"performance</a> without staging)."
 msgstr ""
 "Eine Aufführung eines oder mehrerer Theaterstücke, Musicals, Opern, Ballette "
 "oder anderer ähnlicher Werke für die Bühne in ihrer inszenierten Form (im "
@@ -895,6 +912,14 @@ msgctxt "work_attribute_type"
 msgid "ACDAM ID"
 msgstr "ACDAM-ID"
 
+#: DB:work_attribute_type/name:206
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ACAM ID"
+msgctxt "work_attribute_type"
+msgid "ACUM ID"
+msgstr "ACAM-ID"
+
 #: DB:work_attribute_type/name:58
 msgctxt "work_attribute_type"
 msgid "AEI ID"
@@ -988,6 +1013,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:307
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acemtarab"
+msgstr ""
+
+#: DB:medium_format/name:203
+msgctxt "medium_format"
+msgid "Acetate"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:848
@@ -2092,7 +2122,7 @@ msgstr ""
 #: DB:release_status/name:6
 msgctxt "release_status"
 msgid "Cancelled"
-msgstr ""
+msgstr "Abgesagt"
 
 #: DB:work_attribute_type_allowed_value/value:64
 msgctxt "work_attribute_type_allowed_value"
@@ -3182,10 +3212,10 @@ msgstr "Fireng-i Fer"
 msgctxt "medium_format"
 msgid ""
 "Flat discs with grooves used in phonographs/gramophones. For shellac and "
-"vinyl records, use that specifically"
+"vinyl records, use that specifically."
 msgstr ""
 "Flache Scheiben mit Rillen für Phonographen/Grammophone. Für Schellack- und "
-"Vinylplatten das Spezifische verwenden"
+"Vinylplatten das Spezifische verwenden."
 
 #: DB:medium_format/name:51
 msgctxt "medium_format"
@@ -4033,6 +4063,14 @@ msgstr "ID für das International Copyright Enterprise"
 msgctxt "work_attribute_type"
 msgid "ID for the Irish rights society IMRO"
 msgstr "ID für die irische Verwertungsgesellschaft IMRO"
+
+#: DB:work_attribute_type/description:206
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Austrian rights society AKM"
+msgctxt "work_attribute_type"
+msgid "ID for the Israeli rights society ACUM"
+msgstr "ID für die österreichische Verwertungsgesellschaft AKM"
 
 #: DB:work_attribute_type/description:36
 msgctxt "work_attribute_type"
@@ -6057,12 +6095,12 @@ msgstr "Originalproduktion"
 #: DB:artist_type/name:3
 msgctxt "artist_type"
 msgid "Other"
-msgstr "Anderes"
+msgstr "Sonstiger"
 
 #: DB:cover_art_archive.art_type/name:8
 msgctxt "cover_art_type"
 msgid "Other"
-msgstr "Anderes"
+msgstr "Sonstiges"
 
 #: DB:gender/name:3
 msgctxt "gender"
@@ -6077,17 +6115,17 @@ msgstr "Anderes"
 #: DB:place_type/name:3
 msgctxt "place_type"
 msgid "Other"
-msgstr "Anderes"
+msgstr "Sonstiges"
 
 #: DB:release_group_primary_type/name:11
 msgctxt "release_group_primary_type"
 msgid "Other"
-msgstr "Anderes"
+msgstr "Sonstiges"
 
 #: DB:release_packaging/name:5
 msgctxt "release_packaging"
 msgid "Other"
-msgstr "Anderes"
+msgstr "Sonstige"
 
 #: DB:instrument_type/name:5
 msgctxt "instrument_type"

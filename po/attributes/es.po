@@ -42,11 +42,13 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 # emiguel1960 <msanchezg.correo@gmail.com>, 2023.
 # Yllelder <yllelder@gmail.com>, 2023.
+# reosarevok <reosarevok@users.noreply.translations.metabrainz.org>, 2023.
+# yvanzo <yvanzo@users.noreply.translations.metabrainz.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2023-10-01 20:27+0000\n"
-"Last-Translator: Yllelder <yllelder@gmail.com>\n"
+"PO-Revision-Date: 2024-01-12 09:57+0000\n"
+"Last-Translator: yvanzo <yvanzo@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Spanish <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/es/>\n"
 "Language: es\n"
@@ -55,7 +57,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
 " ? 1 : 2);\n"
-"X-Generator: Weblate 5.0.2\n"
+"X-Generator: Weblate 5.3\n"
 
 #: DB:work_type/description:9
 msgctxt "work_type"
@@ -78,6 +80,11 @@ msgstr ""
 "instrumentales (muy a menudo en solitario o en solitario + teclado), "
 "inicialmente en la música barroca."
 
+#: DB:medium_format/name:205
+msgctxt "medium_format"
+msgid "10\" Acetate"
+msgstr "Acetato de 10\""
+
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
@@ -87,6 +94,11 @@ msgstr "Disco de acetato de 10\""
 msgctxt "medium_format"
 msgid "10\" Vinyl"
 msgstr "Disco de vinilo de 10\""
+
+#: DB:medium_format/name:206
+msgctxt "medium_format"
+msgid "12\" Acetate"
+msgstr "Acetato de 12\""
 
 #: DB:medium_format/name:72
 msgctxt "medium_format"
@@ -112,6 +124,11 @@ msgstr "Disquete de 3,5\""
 msgctxt "medium_format"
 msgid "5.25\" Floppy Disk"
 msgstr "Disquete de 5.25\""
+
+#: DB:medium_format/name:204
+msgctxt "medium_format"
+msgid "7\" Acetate"
+msgstr "Acetato de 7\""
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
@@ -150,8 +167,8 @@ msgstr "CD+G de 8cm"
 
 #: DB:medium_format/description:166
 msgctxt "medium_format"
-msgid "8cm DVD disc, often used for video singles."
-msgstr "Disco DVD de 8 cm, utilizado a menudo para vídeos de sencillos."
+msgid "8cm DVD, often used for video singles."
+msgstr "DVD de 8 cm, utilizado a menudo para sencillos de vídeo."
 
 #: DB:medium_format/description:58
 msgctxt "medium_format"
@@ -279,9 +296,9 @@ msgstr ""
 "definitorio suele ser la duración del single y el precio al que se vende. "
 "Hasta 1995 era común que estos singles fueran lanzados usando un formato "
 "mini-cd, que es básicamente un CD mucho más pequeño típicamente de 8 cm de "
-"diámetro. ‎ Alrededor de 1995, el sencillo de 8 cm fue eliminado, y el ‎‎"
-"sencillo‎‎ estándar de ‎‎CD‎‎ de 12 cm es más común ahora; En general, los ‎‎"
-"relanzamientos‎‎ de singles anteriores a 1995 se lanzarán en el formato de 12 "
+"diámetro. ‎ Alrededor de 1995, el sencillo de 8 cm fue eliminado, y el "
+"‎‎sencillo‎‎ estándar de ‎‎CD‎‎ de 12 cm es más común ahora; En general, los "
+"‎‎relanzamientos‎‎ de singles anteriores a 1995 se lanzarán en el formato de 12 "
 "cm, incluso si se lanzaron originalmente en el ‎‎formato‎‎ de 8 cm.‎ ‎ Los singles "
 "japoneses a menudo vienen con versiones instrumentales de las canciones y "
 "también tienen maxi-singles como en UK con versiones remezcladas de las "
@@ -312,8 +329,8 @@ msgid ""
 "A (usually green) space kept available for recreation in an otherwise built "
 "and populated area."
 msgstr ""
-"Un espacio (usualmente verde) se mantiene libre para la recreación en un "
-"área construida y poblada."
+"Un espacio abierto (habitualmente un espacio verde) destinado al "
+"esparcimiento en un asentamiento humano."
 
 #: DB:medium_format/description:129
 msgctxt "medium_format"
@@ -322,10 +339,10 @@ msgid ""
 "often in the first track, that will have to be skipped in many audio "
 "players. Relatively common in old video game CDs."
 msgstr ""
-"Un CD contiene tanto audio como datos en la misma sesión. Los datos a menudo "
-"se encuentran en la primera pista, estos tendrán que ser omitidos por los "
-"reproductores de audio. Esto es relativamente común en los CDs de "
-"videojuegos viejos."
+"Un CD que contiene tanto audio como datos en la misma sesión. Los datos a "
+"menudo se encuentran en la primera pista, que debe ser omitida al leer el CD "
+"en un reproductor de audio. Relativamente común en los CDs de videojuegos "
+"viejos."
 
 #: DB:medium_format/description:42
 msgctxt "medium_format"
@@ -334,9 +351,9 @@ msgid ""
 "they are properly separated, audio players will not try to play the data "
 "session and it won't be part of the disc ID for the CD."
 msgstr ""
-"Un CD que contiene dos sesiones, una con audio y la otra con datos. Dado que "
-"están propiamente separadas, reproductores de audio no van a intentar "
-"reproducir la sesión de datos y no formará parte del ID del disco para el CD."
+"Un CD que contiene dos sesiones, una con audio y la otra con datos. Al estar "
+"separada adecuadamente, los reproductores de audio no intentan reproducir la "
+"sesión de datos, por lo que no formará parte del ID del disco para el CD."
 
 #: DB:release_group_secondary_type/description:8
 msgctxt "release_group_secondary_type"
@@ -361,7 +378,7 @@ msgstr "la dórico"
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
-msgstr "Modo mixolidio"
+msgstr "la mixolidio"
 
 #: DB:work_type/description:2
 msgctxt "work_type"
@@ -548,9 +565,9 @@ msgstr ""
 msgctxt "event_type"
 msgid ""
 "A performance of one or more plays, musicals, operas, ballets or other "
-"similar works for the stage in their staged form (as opposed to a <a href="
-"\"https://en.wikipedia.org/wiki/Concert_performance\">concert performance</"
-"a> without staging)."
+"similar works for the stage in their staged form (as opposed to a <a "
+"href=\"https://en.wikipedia.org/wiki/Concert_performance\">concert "
+"performance</a> without staging)."
 msgstr ""
 "Una interpretación de una o más obras, musicales, óperas, ballets u otras "
 "piezas de escenario similares en su forma escenificada (a diferencia de una "
@@ -979,7 +996,7 @@ msgstr "la bemol menor"
 #: DB:work_attribute_type_allowed_value/value:817
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp major"
-msgstr "La sostenido mayor"
+msgstr "la sostenido mayor"
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
@@ -989,67 +1006,75 @@ msgstr "la sostenido menor"
 #: DB:work_attribute_type/name:57
 msgctxt "work_attribute_type"
 msgid "AACIMH ID"
-msgstr "AACIMH ID"
+msgstr "ID de AACIMH"
 
 #: DB:work_attribute_type/name:44
 msgctxt "work_attribute_type"
 msgid "ACAM ID"
-msgstr "ACAM ID"
+msgstr "ID de ACAM"
 
 #: DB:work_attribute_type/name:47
 msgctxt "work_attribute_type"
 msgid "ACDAM ID"
-msgstr "ACDAM ID"
+msgstr "ID de ACDAM"
+
+#: DB:work_attribute_type/name:206
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ACAM ID"
+msgctxt "work_attribute_type"
+msgid "ACUM ID"
+msgstr "ID de ACAM"
 
 #: DB:work_attribute_type/name:58
 msgctxt "work_attribute_type"
 msgid "AEI ID"
-msgstr "AEI ID"
+msgstr "ID de AEI"
 
 #: DB:work_attribute_type/name:43
 msgctxt "work_attribute_type"
 msgid "AGADU ID"
-msgstr "AGADU ID"
+msgstr "ID de AGADU"
 
 #: DB:work_attribute_type/name:63
 msgctxt "work_attribute_type"
 msgid "AKKA/LAA ID"
-msgstr "AKKA/LAA ID"
+msgstr "ID de AKKA/LAA"
 
 #: DB:work_attribute_type/name:23
 msgctxt "work_attribute_type"
 msgid "AKM ID"
-msgstr "AKM ID"
+msgstr "ID de AKM"
 
 #: DB:work_attribute_type/name:38
 msgctxt "work_attribute_type"
 msgid "AMRA ID"
-msgstr "AMRA ID"
+msgstr "ID de AMRA"
 
 #: DB:work_attribute_type/name:46
 msgctxt "work_attribute_type"
 msgid "APA ID"
-msgstr "APA ID"
+msgstr "ID de APA"
 
 #: DB:work_attribute_type/name:41
 msgctxt "work_attribute_type"
 msgid "APDAYC ID"
-msgstr "APDAYC ID"
+msgstr "ID de APDAYC"
 
 #: DB:work_attribute_type/name:13
 msgctxt "work_attribute_type"
 msgid "APRA ID"
-msgstr "Identificador APRA"
+msgstr "ID de APRA"
 
 #: DB:work_attribute_type/name:48
 msgctxt "work_attribute_type"
 msgid "ARTISJUS ID"
-msgstr "ARTISJUS ID"
+msgstr "ID de ARTISJUS"
 
 #: DB:work_attribute_type/name:6
 msgctxt "work_attribute_type"
 msgid "ASCAP ID"
-msgstr "Identificador ASCAP"
+msgstr "ID de ASCAP"
 
 #: DB:work_attribute_type_allowed_value/value:299
 msgctxt "work_attribute_type_allowed_value"
@@ -1095,6 +1120,11 @@ msgstr "Acemli Yegah"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acemtarab"
 msgstr "Acemtarab"
+
+#: DB:medium_format/name:203
+msgctxt "medium_format"
+msgid "Acetate"
+msgstr "Acetato"
 
 #: DB:work_attribute_type_allowed_value/value:848
 msgctxt "work_attribute_type_allowed_value"
@@ -1212,9 +1242,9 @@ msgid ""
 "consists of previously unreleased material (unless this type is combined "
 "with secondary types which change that, such as \"Compilation\")."
 msgstr ""
-"Un álbum, quizás mejor definido como un lanzamiento de \"larga duración"
-"\" (LP), generalmente consta de material inédito (a menos que este tipo se "
-"combine con tipos secundarios que cambien eso, como \"Compilación\")."
+"Un álbum, quizás mejor definido como un lanzamiento de \"larga "
+"duración\" (LP), generalmente consta de material inédito (a menos que este "
+"tipo se combine con tipos secundarios que cambien eso, como \"Compilación\")."
 
 #: DB:release_status/description:4
 msgctxt "release_status"
@@ -1649,7 +1679,7 @@ msgstr "si dórico"
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
-msgstr "Modo mixolidio en Si"
+msgstr "si mixolidio"
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
@@ -1674,22 +1704,22 @@ msgstr "si bemol menor"
 #: DB:work_attribute_type_allowed_value/value:818
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-sharp major"
-msgstr "Si sostenido mayor"
+msgstr "si sostenido mayor"
 
 #: DB:work_attribute_type_allowed_value/value:819
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-sharp minor"
-msgstr "Si sostenido menor"
+msgstr "si sostenido menor"
 
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
 msgid "BMI ID"
-msgstr "Identificador BMI"
+msgstr "ID de BMI"
 
 #: DB:work_attribute_type/name:26
 msgctxt "work_attribute_type"
 msgid "BUMA/STEMRA ID"
-msgstr "ID BUMA/STEMRA"
+msgstr "ID de BUMA/STEMRA"
 
 #: DB:cover_art_archive.art_type/name:2
 msgctxt "cover_art_type"
@@ -2115,7 +2145,7 @@ msgstr "do dórico"
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Mixolydian"
-msgstr "Modo mixolidio en Do"
+msgstr "do mixolidio"
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
@@ -2135,7 +2165,7 @@ msgstr "do bemol mayor"
 #: DB:work_attribute_type_allowed_value/value:812
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat minor"
-msgstr "Do bemol menor"
+msgstr "do bemol menor"
 
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
@@ -2150,12 +2180,12 @@ msgstr "do sostenido menor"
 #: DB:work_attribute_type/name:19
 msgctxt "work_attribute_type"
 msgid "CASH ID"
-msgstr "CASH ID"
+msgstr "ID de CASH"
 
 #: DB:work_attribute_type/name:22
 msgctxt "work_attribute_type"
 msgid "CCLI ID"
-msgstr "Identificador CCLI"
+msgstr "ID de CCLI"
 
 #: DB:medium_format/name:1
 msgctxt "medium_format"
@@ -2185,12 +2215,12 @@ msgstr "CED"
 #: DB:work_attribute_type/name:45
 msgctxt "work_attribute_type"
 msgid "COMPASS ID"
-msgstr "ID DE BRÚJULA"
+msgstr "ID de COMPASS"
 
 #: DB:work_attribute_type/name:73
 msgctxt "work_attribute_type"
 msgid "COSCAP ID"
-msgstr "ID COSCAP"
+msgstr "ID de COSCAP"
 
 #: DB:work_attribute_type/name:65
 msgctxt "work_attribute_type"
@@ -2470,7 +2500,7 @@ msgstr "re dórico"
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
-msgstr "Modo mixolidio en Re"
+msgstr "re mixolidio"
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
@@ -2495,7 +2525,7 @@ msgstr "re bemol menor"
 #: DB:work_attribute_type_allowed_value/value:813
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-sharp major"
-msgstr "Re sostenido mayor"
+msgstr "re sostenido mayor"
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
@@ -2999,7 +3029,7 @@ msgstr "mi dórico"
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
-msgstr "Modo mixolidio en Mi"
+msgstr "mi mixolidio"
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
@@ -3014,7 +3044,7 @@ msgstr "mi menor"
 #: DB:work_attribute_type_allowed_value/value:11
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat major"
-msgstr "mi bemol major"
+msgstr "mi bemol mayor"
 
 #: DB:work_attribute_type_allowed_value/value:12
 msgctxt "work_attribute_type_allowed_value"
@@ -3024,7 +3054,7 @@ msgstr "mi bemol menor"
 #: DB:work_attribute_type_allowed_value/value:814
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp major"
-msgstr "Mi sostenido mayor"
+msgstr "mi sostenido mayor"
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
@@ -3034,7 +3064,7 @@ msgstr "mi sostenido menor"
 #: DB:work_attribute_type/name:37
 msgctxt "work_attribute_type"
 msgid "ECAD ID"
-msgstr "ECAD ID"
+msgstr "ID de ECAD"
 
 #: DB:release_group_primary_type/name:3
 msgctxt "release_group_primary_type"
@@ -3164,7 +3194,7 @@ msgstr "fa dórico"
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Mixolydian"
-msgstr "Modo mixolidio en Fa"
+msgstr "fa mixolidio"
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -3184,7 +3214,7 @@ msgstr "fa bemol mayor"
 #: DB:work_attribute_type_allowed_value/value:815
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-flat minor"
-msgstr "F-flat menor"
+msgstr "fa bemol menor"
 
 #: DB:work_attribute_type_allowed_value/value:19
 msgctxt "work_attribute_type_allowed_value"
@@ -3305,10 +3335,10 @@ msgstr "Fireng-i Fer"
 msgctxt "medium_format"
 msgid ""
 "Flat discs with grooves used in phonographs/gramophones. For shellac and "
-"vinyl records, use that specifically"
+"vinyl records, use that specifically."
 msgstr ""
 "Discos planos con surcos utilizados en fonógrafos/gramófonos. Para discos de "
-"goma laca y vinilo, use eso específicamente"
+"goma laca y vinilo, usa los formatos específicos."
 
 #: DB:medium_format/name:51
 msgctxt "medium_format"
@@ -3367,7 +3397,7 @@ msgstr "sol dórico"
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Mixolydian"
-msgstr "Modo mixolidio en Sol"
+msgstr "sol mixolidio"
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
@@ -3387,7 +3417,7 @@ msgstr "sol bemol mayor"
 #: DB:work_attribute_type_allowed_value/value:816
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat minor"
-msgstr "Sol bemol menor"
+msgstr "sol bemol menor"
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
@@ -3402,12 +3432,12 @@ msgstr "sol sostenido menor"
 #: DB:work_attribute_type/name:9
 msgctxt "work_attribute_type"
 msgid "GEMA ID"
-msgstr "Identificador GEMA"
+msgstr "ID de GEMA"
 
 #: DB:work_attribute_type/name:106
 msgctxt "work_attribute_type"
 msgid "GMR ID"
-msgstr "GMR ID"
+msgstr "ID de GMR"
 
 #: DB:work_attribute_type_allowed_value/value:88
 msgctxt "work_attribute_type_allowed_value"
@@ -3635,7 +3665,7 @@ msgstr "HDCD"
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
 msgid "HFA ID"
-msgstr "HFA ID"
+msgstr "ID de HFA"
 
 #: DB:medium_format/name:37
 msgctxt "medium_format"
@@ -4157,6 +4187,14 @@ msgctxt "work_attribute_type"
 msgid "ID for the Irish rights society IMRO"
 msgstr "ID para la sociedad irlandesa de derechos IMRO"
 
+#: DB:work_attribute_type/description:206
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Austrian rights society AKM"
+msgctxt "work_attribute_type"
+msgid "ID for the Israeli rights society ACUM"
+msgstr "ID de la sociedad austriaca de derechos AKM"
+
 #: DB:work_attribute_type/description:36
 msgctxt "work_attribute_type"
 msgid "ID for the Italian rights society SIAE"
@@ -4344,12 +4382,12 @@ msgstr ""
 #: DB:work_attribute_type/name:52
 msgctxt "work_attribute_type"
 msgid "IMRO ID"
-msgstr "IMRO ID"
+msgstr "ID de IMRO"
 
 #: DB:work_attribute_type/name:70
 msgctxt "work_attribute_type"
 msgid "IPRS ID"
-msgstr "IPRS ID"
+msgstr "ID de IPRS"
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
@@ -4473,12 +4511,12 @@ msgstr ""
 #: DB:work_attribute_type/name:69
 msgctxt "work_attribute_type"
 msgid "JACAP ID"
-msgstr "JACAP ID"
+msgstr "ID de JACAP"
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
 msgid "JASRAC ID"
-msgstr "Identificador JASRAC"
+msgstr "ID de JASRAC"
 
 #: DB:work_attribute_type_allowed_value/value:114
 msgctxt "work_attribute_type_allowed_value"
@@ -4613,12 +4651,12 @@ msgstr "Jōnpuri"
 #: DB:work_attribute_type/name:51
 msgctxt "work_attribute_type"
 msgid "KODA ID"
-msgstr "KODA ID"
+msgstr "ID de KODA"
 
 #: DB:work_attribute_type/name:11
 msgctxt "work_attribute_type"
 msgid "KOMCA ID"
-msgstr "Identificador KOMCA"
+msgstr "ID de KOMCA"
 
 #: DB:work_attribute_type_allowed_value/value:621
 msgctxt "work_attribute_type_allowed_value"
@@ -5091,7 +5129,7 @@ msgstr "LaserDisc"
 #: DB:work_attribute_type/name:55
 msgctxt "work_attribute_type"
 msgid "LatinNet ID"
-msgstr "LatinNet ID"
+msgstr "ID de LatinNet"
 
 #: DB:work_attribute_type_allowed_value/value:159
 msgctxt "work_attribute_type_allowed_value"
@@ -5146,17 +5184,17 @@ msgstr "Caja larga"
 #: DB:work_attribute_type/name:49
 msgctxt "work_attribute_type"
 msgid "MACP ID"
-msgstr "MACP ID"
+msgstr "ID de MACP"
 
 #: DB:work_attribute_type/name:71
 msgctxt "work_attribute_type"
 msgid "MCSC ID"
-msgstr "MCSC ID"
+msgstr "ID de MCSC"
 
 #: DB:work_attribute_type/name:72
 msgctxt "work_attribute_type"
 msgid "MCT ID"
-msgstr "MCT ID"
+msgstr "ID de MCT"
 
 #: DB:work_attribute_type_allowed_value/value:963
 msgctxt "work_attribute_type_allowed_value"
@@ -5632,7 +5670,7 @@ msgstr "Muzaaf Devr-i Kebir"
 #: DB:work_attribute_type/name:12
 msgctxt "work_attribute_type"
 msgid "MÜST ID"
-msgstr "Identificador MÜST"
+msgstr "ID de MÜST"
 
 #: DB:work_attribute_type_allowed_value/value:463
 msgctxt "work_attribute_type_allowed_value"
@@ -5782,7 +5820,7 @@ msgstr "Mōhanaṁ"
 #: DB:work_attribute_type/name:59
 msgctxt "work_attribute_type"
 msgid "NICAUTOR ID"
-msgstr "NICAUTOR ID"
+msgstr "ID de NICAUTOR"
 
 #: DB:work_attribute_type_allowed_value/value:647
 msgctxt "work_attribute_type_allowed_value"
@@ -5962,7 +6000,7 @@ msgstr "Nevruzi Rumi"
 #: DB:work_attribute_type/name:33
 msgctxt "work_attribute_type"
 msgid "NexTone ID"
-msgstr "ID de Nextone"
+msgstr "ID de NexTone"
 
 #: DB:work_attribute_type_allowed_value/value:471
 msgctxt "work_attribute_type_allowed_value"
@@ -6147,7 +6185,7 @@ msgstr "Nīlāṁbari"
 #: DB:work_attribute_type/name:25
 msgctxt "work_attribute_type"
 msgid "OSA ID"
-msgstr "ID OSA"
+msgstr "ID de OSA"
 
 #: DB:cover_art_archive.art_type/name:5
 msgctxt "cover_art_type"
@@ -6393,7 +6431,7 @@ msgstr "Funda de Plástico"
 #: DB:work_type/name:28
 msgctxt "work_type"
 msgid "Play"
-msgstr "Tocar"
+msgstr "Obra de teatro"
 
 #: DB:medium_format/name:74
 msgctxt "medium_format"
@@ -6911,12 +6949,12 @@ msgstr "SACD (multicanal) (Súper Audio CD)"
 #: DB:work_attribute_type/name:21
 msgctxt "work_attribute_type"
 msgid "SACEM ID"
-msgstr "SACEM ID"
+msgstr "ID de SACEM"
 
 #: DB:work_attribute_type/name:56
 msgctxt "work_attribute_type"
 msgid "SACIM ID"
-msgstr "SACIM ID"
+msgstr "ID de SACIM"
 
 #: DB:work_attribute_type/name:27
 msgctxt "work_attribute_type"
@@ -6926,37 +6964,37 @@ msgstr "ID de SACM"
 #: DB:work_attribute_type/name:42
 msgctxt "work_attribute_type"
 msgid "SACVEN ID"
-msgstr "SACVEN ID"
+msgstr "ID de SACVEN"
 
 #: DB:work_attribute_type/name:24
 msgctxt "work_attribute_type"
 msgid "SADAIC ID"
-msgstr "Identificador SADAIC"
+msgstr "ID de SADAIC"
 
 #: DB:work_attribute_type/name:68
 msgctxt "work_attribute_type"
 msgid "SAMRO ID"
-msgstr "SAMRO ID"
+msgstr "ID de SAMRO"
 
 #: DB:work_attribute_type/name:40
 msgctxt "work_attribute_type"
 msgid "SAYCE ID"
-msgstr "SAYCE ID"
+msgstr "ID de SAYCE"
 
 #: DB:work_attribute_type/name:39
 msgctxt "work_attribute_type"
 msgid "SAYCO ID"
-msgstr "SAYCO ID"
+msgstr "ID de SAYCO"
 
 #: DB:work_attribute_type/name:140
 msgctxt "work_attribute_type"
 msgid "SAZAS ID"
-msgstr "SAZAS ID"
+msgstr "ID de SAZAS"
 
 #: DB:work_attribute_type/name:173
 msgctxt "work_attribute_type"
 msgid "SCD ID"
-msgstr "SCD ID"
+msgstr "ID de SCD"
 
 #: DB:medium_format/name:62
 msgctxt "medium_format"
@@ -6966,17 +7004,17 @@ msgstr "Tarjeta SD"
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
 msgid "SESAC ID"
-msgstr "Identificador SESAC"
+msgstr "ID de SESAC"
 
 #: DB:work_attribute_type/name:60
 msgctxt "work_attribute_type"
 msgid "SGACEDOM ID"
-msgstr "SGACEDOM ID"
+msgstr "ID de SGACEDOM"
 
 #: DB:work_attribute_type/name:20
 msgctxt "work_attribute_type"
 msgid "SGAE ID"
-msgstr "SGAE ID"
+msgstr "ID de SGAE"
 
 #: DB:medium_format/name:36
 msgctxt "medium_format"
@@ -7001,47 +7039,47 @@ msgstr "SHM-SACD (multicanal)"
 #: DB:work_attribute_type/name:36
 msgctxt "work_attribute_type"
 msgid "SIAE ID"
-msgstr "SIAE ID"
+msgstr "ID de SIAE"
 
 #: DB:work_attribute_type/name:61
 msgctxt "work_attribute_type"
 msgid "SOBODAYCOM ID"
-msgstr "SOBODAYCOM ID"
+msgstr "ID de SOBODAYCOM"
 
 #: DB:work_attribute_type/name:10
 msgctxt "work_attribute_type"
 msgid "SOCAN ID"
-msgstr "Identificador SOCAN"
+msgstr "ID de SOCAN"
 
 #: DB:work_attribute_type/name:53
 msgctxt "work_attribute_type"
 msgid "SODRAC ID"
-msgstr "SODRAC ID"
+msgstr "ID de SODRAC"
 
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
-msgstr "SPA ID"
+msgstr "ID de SPA"
 
 #: DB:work_attribute_type/name:62
 msgctxt "work_attribute_type"
 msgid "SPAC ID"
-msgstr "SPAC ID"
+msgstr "ID de SPAC"
 
 #: DB:work_attribute_type/name:54
 msgctxt "work_attribute_type"
 msgid "STEF ID"
-msgstr "STEF ID"
+msgstr "ID de STEF"
 
 #: DB:work_attribute_type/name:50
 msgctxt "work_attribute_type"
 msgid "STIM ID"
-msgstr "STIM ID"
+msgstr "ID de STIM"
 
 #: DB:work_attribute_type/name:18
 msgctxt "work_attribute_type"
 msgid "SUISA ID"
-msgstr "SUISA ID"
+msgstr "ID de SUISA"
 
 #: DB:medium_format/name:23
 msgctxt "medium_format"
@@ -7627,12 +7665,12 @@ msgstr "Sūltāl"
 #: DB:work_attribute_type/name:66
 msgctxt "work_attribute_type"
 msgid "TEOSTO ID"
-msgstr "TEOSTO ID"
+msgstr "ID de TEOSTO"
 
 #: DB:work_attribute_type/name:67
 msgctxt "work_attribute_type"
 msgid "TONO ID"
-msgstr "TONO ID"
+msgstr "ID de TONO"
 
 #: DB:work_attribute_type_allowed_value/value:573
 msgctxt "work_attribute_type_allowed_value"

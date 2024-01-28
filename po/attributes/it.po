@@ -11,13 +11,13 @@
 # salo.rock, 2012
 # salo.rock, 2022-2023
 # "salo.rock" <salo.rock+musicbrainz@gmail.com>, 2023.
-# "salo.rock" <salo.rock@users.noreply.translations.metabrainz.org>, 2023.
+# "salo.rock" <salo.rock@users.noreply.translations.metabrainz.org>, 2023, 2024.
+# yvanzo <yvanzo@users.noreply.translations.metabrainz.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2023-10-04 03:27+0000\n"
-"Last-Translator: \"salo.rock\" <salo.rock@users.noreply.translations."
-"metabrainz.org>\n"
+"PO-Revision-Date: 2024-01-03 15:48+0000\n"
+"Last-Translator: yvanzo <yvanzo@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/it/>\n"
 "Language: it\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
 " ? 1 : 2);\n"
-"X-Generator: Weblate 5.0.2\n"
+"X-Generator: Weblate 5.3\n"
 
 #: DB:work_type/description:9
 msgctxt "work_type"
@@ -46,63 +46,78 @@ msgid ""
 "or solo + keyboard) instrumental works, initially in baroque music."
 msgstr ""
 "\"Sonata\" è un termine generale usato per descrivere composizioni "
-"strumentali in scala ridotta (molto spesso per solisti o solisti + "
-"tastiera), inizialmente usate nella musica barocca."
+"strumentali in scala ridotta (molto spesso per solisti o solisti + tastiera)"
+", inizialmente usate nella musica barocca."
+
+#: DB:medium_format/name:205
+msgctxt "medium_format"
+msgid "10\" Acetate"
+msgstr "Acetato 10\" (25 cm)"
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
-msgstr "Gommalacca 10\""
+msgstr "Gommalacca 10\" (25 cm)"
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr "Vinile 10\""
+msgstr "Vinile 10\" (25 cm)"
+
+#: DB:medium_format/name:206
+msgctxt "medium_format"
+msgid "12\" Acetate"
+msgstr "Acetato 12\" (30 cm)"
 
 #: DB:medium_format/name:72
 msgctxt "medium_format"
 msgid "12\" LaserDisc"
-msgstr "LaserDisc 12\""
+msgstr "LaserDisc 12\" (30 cm)"
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
-msgstr "Gommalacca 12\""
+msgstr "Gommalacca 12\" (30 cm)"
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
 msgid "12\" Vinyl"
-msgstr "Vinile 12\""
+msgstr "Vinile 12\" (30 cm)"
 
 #: DB:medium_format/name:49
 msgctxt "medium_format"
 msgid "3.5\" Floppy Disk"
-msgstr "Floppy disk 3,5\""
+msgstr "Floppy disk 3,5\" (9 cm)"
 
 #: DB:medium_format/name:91
 msgctxt "medium_format"
 msgid "5.25\" Floppy Disk"
-msgstr "Floppy disk 5,25\""
+msgstr "Floppy disk 5,25\" (13.3 cm)"
+
+#: DB:medium_format/name:204
+msgctxt "medium_format"
+msgid "7\" Acetate"
+msgstr "Acetato 7\" (17,5 cm)"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
 msgid "7\" Flexi-disc"
-msgstr "Flexi-disc 7\""
+msgstr "Flexi-disc 7\" (17,5 cm)"
 
 #: DB:medium_format/name:56
 msgctxt "medium_format"
 msgid "7\" Shellac"
-msgstr "Gommalacca 7\""
+msgstr "Gommalacca 7\" (17,5 cm)"
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
-msgstr "Vinile 7\""
+msgstr "Vinile 7\" (17,5 cm)"
 
 #: DB:medium_format/name:71
 msgctxt "medium_format"
 msgid "8\" LaserDisc"
-msgstr "LaserDisc 8\""
+msgstr "LaserDisc 8\" (20 cm)"
 
 #: DB:medium_format/name:78
 msgctxt "medium_format"
@@ -121,8 +136,8 @@ msgstr "CD+G 8cm"
 
 #: DB:medium_format/description:166
 msgctxt "medium_format"
-msgid "8cm DVD disc, often used for video singles."
-msgstr "Disco DVD di 8 cm, usato spesso per singoli video."
+msgid "8cm DVD, often used for video singles."
+msgstr "DVD di 8 cm, usato spesso per singoli video."
 
 #: DB:medium_format/description:58
 msgctxt "medium_format"
@@ -177,8 +192,8 @@ msgstr ""
 "\"Café del Mar\", ecc).</li>\n"
 "</ul>\n"
 "\n"
-"<p>Il progetto MusicBrainz non considera in genere le seguenti come raccolte:"
-"</p>\n"
+"<p>Il progetto MusicBrainz non considera in genere le seguenti come "
+"raccolte:</p>\n"
 "\n"
 "<ul>\n"
 "<li>una riedizione di un album, anche se contiene tracce bonus.</li>\n"
@@ -186,14 +201,14 @@ msgstr ""
 "artista.</li>\n"
 "<li>una pubblicazione di musica classica che contiene nuove registrazioni "
 "delle opere di un artista di musica classica.</li>\n"
-"<li>una pubblicazione \"split\" che contiene nuova musica di più artisti</"
-"li>\n"
+"<li>una pubblicazione \"split\" che contiene nuova musica di più artisti</li>"
+"\n"
 "</ul>\n"
 "\n"
 "<p>Il tipo \"raccolta\" va utilizzato in aggiunta e non in sostituzione di "
 "altri tipi: per esempio, una colonna sonora di artisti vari che contiene "
-"musica già edita va contrassegnata sia come colonna sonora che come raccolta."
-"</p>"
+"musica già edita va contrassegnata sia come colonna sonora che come "
+"raccolta.</p>"
 
 #: DB:release_group_primary_type/description:2
 msgctxt "release_group_primary_type"
@@ -524,13 +539,13 @@ msgstr ""
 msgctxt "event_type"
 msgid ""
 "A performance of one or more plays, musicals, operas, ballets or other "
-"similar works for the stage in their staged form (as opposed to a <a href="
-"\"https://en.wikipedia.org/wiki/Concert_performance\">concert performance</"
-"a> without staging)."
+"similar works for the stage in their staged form (as opposed to a <a "
+"href=\"https://en.wikipedia.org/wiki/Concert_performance\">concert "
+"performance</a> without staging)."
 msgstr ""
 "Un'esibizione di uno o più spettacoli, musical, opere, balletti o altre "
-"rappresentazioni simili per il palcoscenico nella loro forma messa in scena "
-"(in opposizione a un'<a href=\"https://en.wikipedia.org/wiki/"
+"rappresentazioni simili per il palcoscenico nella loro forma messa in scena ("
+"in opposizione a un'<a href=\"https://en.wikipedia.org/wiki/"
 "Concert_performance\">esibizione in concerto</a> senza messa in scena)."
 
 #: DB:place_type/description:8
@@ -979,6 +994,11 @@ msgctxt "work_attribute_type"
 msgid "ACDAM ID"
 msgstr "ID ACDAM"
 
+#: DB:work_attribute_type/name:206
+msgctxt "work_attribute_type"
+msgid "ACUM ID"
+msgstr "ID ACUM"
+
 #: DB:work_attribute_type/name:58
 msgctxt "work_attribute_type"
 msgid "AEI ID"
@@ -1073,6 +1093,11 @@ msgstr "Acemli Yegah"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acemtarab"
 msgstr "Acemtarab"
+
+#: DB:medium_format/name:203
+msgctxt "medium_format"
+msgid "Acetate"
+msgstr "Acetato"
 
 #: DB:work_attribute_type_allowed_value/value:848
 msgctxt "work_attribute_type_allowed_value"
@@ -3282,10 +3307,10 @@ msgstr "Fireng-i Fer"
 msgctxt "medium_format"
 msgid ""
 "Flat discs with grooves used in phonographs/gramophones. For shellac and "
-"vinyl records, use that specifically"
+"vinyl records, use that specifically."
 msgstr ""
 "Dischi piatti con solchi utilizzati in fonografi/grammofoni. Per i dischi in "
-"gommalacca e vinile, utilizza specificamente quei tipi"
+"gommalacca e vinile, utilizza specificamente quei tipi."
 
 #: DB:medium_format/name:51
 msgctxt "medium_format"
@@ -4133,6 +4158,11 @@ msgstr "ID per l'International Copyright Enterprise"
 msgctxt "work_attribute_type"
 msgid "ID for the Irish rights society IMRO"
 msgstr "ID per la società di diritti irlandese IMRO"
+
+#: DB:work_attribute_type/description:206
+msgctxt "work_attribute_type"
+msgid "ID for the Israeli rights society ACUM"
+msgstr "ID per la società di diritti israeliana ACUM"
 
 #: DB:work_attribute_type/description:36
 msgctxt "work_attribute_type"
