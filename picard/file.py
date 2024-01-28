@@ -826,7 +826,10 @@ class File(QtCore.QObject, Item):
         if not value and not get_config().setting['clear_existing_tags']:
             value = self.orig_metadata[column]
         if column == '~filesize':
-            value = bytes2human.binary(value)
+            try:
+                value = bytes2human.binary(value)
+            except ValueError:
+                pass
         return value
 
     def _lookup_finished(self, lookuptype, document, http, error):
