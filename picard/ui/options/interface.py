@@ -11,7 +11,7 @@
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017 Antonio Larrosa
-# Copyright (C) 2018, 2023 Bob Swift
+# Copyright (C) 2018, 2023-2024 Bob Swift
 # Copyright (C) 2021 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
@@ -143,7 +143,13 @@ class InterfaceOptionsPage(OptionsPage):
         if not OS_SUPPORTS_THEMES:
             self.ui.ui_theme_container.hide()
 
+        self.ui.toolbar_multiselect.stateChanged.connect(self.multi_selection_warning)
+
     def load(self):
+        # Don't display the multi-selection warning when loading values.
+        # This is required because loading a different option profile could trigger the warning.
+        self.ui.toolbar_multiselect.blockSignals(True)
+
         config = get_config()
         self.ui.toolbar_show_labels.setChecked(config.setting['toolbar_show_labels'])
         self.ui.toolbar_multiselect.setChecked(config.setting['toolbar_multiselect'])
@@ -160,6 +166,9 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.starting_directory_path.setText(config.setting['starting_directory_path'])
         current_theme = UiTheme(config.setting['ui_theme'])
         self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(current_theme))
+
+        # re-enable the multi-selection warning
+        self.ui.toolbar_multiselect.blockSignals(False)
 
     def save(self):
         config = get_config()
@@ -207,6 +216,23 @@ class InterfaceOptionsPage(OptionsPage):
         if path:
             path = os.path.normpath(path)
             item.setText(path)
+
+    def multi_selection_warning(self):
+        if not self.ui.toolbar_multiselect.isChecked():
+            return
+
+        dialog = QtWidgets.QMessageBox(
+            QtWidgets.QMessageBox.Icon.Warning,
+            _('Option Setting Warning'),
+            _(
+                'When enabling the multiple directories option setting Picard will no longer use the system '
+                'file picker for selecting directories. This may result in reduced functionality.\n\n'
+                'Are you sure that you want to enable this setting?'
+            ),
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            self)
+        if dialog.exec() == QtWidgets.QMessageBox.StandardButton.No:
+            self.ui.toolbar_multiselect.setCheckState(QtCore.Qt.CheckState.Unchecked)
 
 
 register_options_page(InterfaceOptionsPage)
