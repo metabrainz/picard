@@ -94,15 +94,8 @@ class TipSlider(ClickableSlider):
     def show_tip(self, value):
         self.round_value(value)
         self.initStyleOption(self.opt)
-        try:
-            cc_slider = self.style.CC_Slider
-        except AttributeError:
-            cc_slider = self.style.ComplexControl.CC_Slider
-
-        try:
-            sc_slider_handle = self.style.SC_SliderHandle
-        except AttributeError:
-            sc_slider_handle = self.style.SubControl.SC_ScrollBarSlider
+        cc_slider = self.style.ComplexControl.CC_Slider
+        sc_slider_handle = self.style.SubControl.SC_ScrollBarSlider
         rectHandle = self.style.subControlRect(cc_slider, self.opt, sc_slider_handle)
 
         offset = self._offset * self.tagger.primaryScreen().devicePixelRatio()
