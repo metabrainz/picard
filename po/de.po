@@ -20,7 +20,7 @@
 # Matthias W. <abudunx@gmail.com>, 2018
 # nikki, 2013-2015
 # nikki2 <b4931048@nwldx.com>, 2012
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2014,2017-2023
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2014,2017-2023, 2024.
 # S.Brandt <s.brandt@mixxx.org>, 2014-2015,2017-2018
 # Shepard, 2012-2014
 # Simon Legner <simon.legner@gmail.com>, 2018
@@ -32,7 +32,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-28 21:36+0100\n"
-"PO-Revision-Date: 2023-12-16 17:28+0000\n"
+"PO-Revision-Date: 2024-01-29 22:28+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
@@ -3200,10 +3200,8 @@ msgid "Media"
 msgstr "Medien"
 
 #: picard/ui/itemviews.py:174
-#, fuzzy
-#| msgid "Size:"
 msgid "Size"
-msgstr "Dateigröße:"
+msgstr "Größe"
 
 #: picard/ui/itemviews.py:175 picard/util/tags.py:66
 msgid "Genre"
