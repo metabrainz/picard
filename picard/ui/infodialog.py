@@ -287,7 +287,10 @@ def format_file_info(file_):
         info.append((_("Format:"), file_.orig_metadata['~format']))
     if '~filesize' in file_.orig_metadata:
         size = file_.orig_metadata['~filesize']
-        sizestr = "%s (%s)" % (bytes2human.decimal(size), bytes2human.binary(size))
+        try:
+            sizestr = "%s (%s)" % (bytes2human.decimal(size), bytes2human.binary(size))
+        except ValueError:
+            sizestr = _("unknown")
         info.append((_("Size:"), sizestr))
     if file_.orig_metadata.length:
         info.append((_("Length:"), format_time(file_.orig_metadata.length)))
