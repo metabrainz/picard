@@ -32,7 +32,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-28 21:36+0100\n"
-"PO-Revision-Date: 2024-01-29 22:28+0000\n"
+"PO-Revision-Date: 2024-02-01 08:28+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
@@ -41,7 +41,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3\n"
+"X-Generator: Weblate 5.3.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -5760,10 +5760,8 @@ msgstr ""
 "wirksam wird, muss Picard neu gestartet werden."
 
 #: picard/ui/options/interface.py:226
-#, fuzzy
-#| msgid "File Save Warning"
 msgid "Option Setting Warning"
-msgstr "Dateispeicher-Warnung"
+msgstr "Einstellungs-Warnung"
 
 #: picard/ui/options/interface.py:227
 msgid ""
@@ -5773,6 +5771,11 @@ msgid ""
 "\n"
 "Are you sure that you want to enable this setting?"
 msgstr ""
+"Beim Aktivieren der Einstellung für mehrere Verzeichnisse wird Picard nicht "
+"mehr den systemeigenen Dateiauswahl-Dialog zur Auswahl von Verzeichnissen "
+"verwenden. Dies kann zu einer reduzierten Funktionalität führen.\n"
+"\n"
+"Diese Einstellung aktivieren?"
 
 #: picard/ui/options/interface_colors.py:67
 msgid "Choose a color"
