@@ -7,24 +7,24 @@
 # Matte <piotto@gmail.com>, 2006
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2023
 # "salo.rock" <salo.rock+musicbrainz@gmail.com>, 2012-2015,2017-2023.
-# "salo.rock" <salo.rock@users.noreply.translations.metabrainz.org>, 2023.
+# "salo.rock" <salo.rock@users.noreply.translations.metabrainz.org>, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-28 21:36+0100\n"
-"PO-Revision-Date: 2023-12-24 01:28+0000\n"
+"PO-Revision-Date: 2024-02-02 20:28+0000\n"
 "Last-Translator: \"salo.rock\" <salo.rock@users.noreply.translations."
 "metabrainz.org>\n"
-"Language-Team: Italian <https://translations.metabrainz.org/projects/"
-"picard/3/app/it/>\n"
+"Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
+"3/app/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
-"0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.3\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
+" ? 1 : 2);\n"
+"X-Generator: Weblate 5.3.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -3207,10 +3207,8 @@ msgid "Media"
 msgstr "Supporti"
 
 #: picard/ui/itemviews.py:174
-#, fuzzy
-#| msgid "Size:"
 msgid "Size"
-msgstr "Dimensione:"
+msgstr "Dimensione"
 
 #: picard/ui/itemviews.py:175 picard/util/tags.py:66
 msgid "Genre"
@@ -5780,10 +5778,8 @@ msgstr ""
 "abbia effetto."
 
 #: picard/ui/options/interface.py:226
-#, fuzzy
-#| msgid "File Save Warning"
 msgid "Option Setting Warning"
-msgstr "Avvertenza sul salvataggio di file"
+msgstr "Avvertenza sull'impostazione dell'opzione"
 
 #: picard/ui/options/interface.py:227
 msgid ""
@@ -5793,6 +5789,11 @@ msgid ""
 "\n"
 "Are you sure that you want to enable this setting?"
 msgstr ""
+"Quando si abilita l'impostazione di più cartelle, Picard non userà più il "
+"selettore di file di sistema per selezionare le cartelle. Questo potrebbe "
+"portare a una riduzione delle funzionalità disponibili.\n"
+"\n"
+"Sei sicuro di voler abilitare questa impostazione?"
 
 #: picard/ui/options/interface_colors.py:67
 msgid "Choose a color"
