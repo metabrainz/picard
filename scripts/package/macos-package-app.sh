@@ -54,10 +54,6 @@ ditto -rsrc --arch x86_64 "$APP_BUNDLE" "$APP_BUNDLE.tmp"
 rm -r "$APP_BUNDLE"
 mv "$APP_BUNDLE.tmp" "$APP_BUNDLE"
 
-# Mitigate libwebp vulnerability allowing for arbitrary code execution (CVE-2023-4863).
-# Disable the Qt webp imageformat plugin.
-rm "$APP_BUNDLE/Contents/Frameworks/PyQt6/Qt6/plugins/imageformats/libqwebp.dylib"
-
 if [ "$CODESIGN" = '1' ]; then
     echo "Code signing app bundle ${APP_BUNDLE}..."
     if [ "$NOTARIZE" = "1" ]; then

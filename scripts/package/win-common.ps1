@@ -55,8 +55,4 @@ Function FinalizePackage {
   $Qt6Dir = (Join-Path -Path $InternalPath -ChildPath PyQt6\Qt6)
   Move-Item -Path (Join-Path -Path $Qt6Dir -ChildPath bin\*.dll) -Destination $Path -Force
   Remove-Item -Path (Join-Path -Path $Qt6Dir -ChildPath bin)
-
-  # Mitigate libwebp vulnerability allowing for arbitrary code execution (CVE-2023-4863).
-  # Disable the Qt webp imageformat plugin.
-  Remove-Item -Path (Join-Path -Path $Qt6Dir -ChildPath plugins\imageformats\qwebp.dll)
 }
