@@ -53,8 +53,4 @@ Function FinalizePackage {
   $Qt5BinDir = (Join-Path -Path $Path -ChildPath PyQt5\Qt5\bin)
   Move-Item -Path (Join-Path -Path $Qt5BinDir -ChildPath *.dll) -Destination $Path -Force
   Remove-Item -Path $Qt5BinDir
-
-  # Mitigate libwebp vulnerability allowing for arbitrary code execution (CVE-2023-4863).
-  # Disable the Qt webp imageformat plugin.
-  Remove-Item -Path (Join-Path -Path $Path -ChildPath PyQt5\Qt5\plugins\imageformats\qwebp.dll)
 }
