@@ -6,14 +6,15 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022
 # صفا الفليج <safaalfulaij@hotmail.com>, 2018
+# "alaishaq@gmail.com" <alaishaq@gmail.com>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2023-08-23 08:46+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
-"Language-Team: Arabic <https://translations.metabrainz.org/projects/picard/"
+"PO-Revision-Date: 2024-02-07 02:28+0000\n"
+"Last-Translator: \"alaishaq@gmail.com\" <alaishaq@gmail.com>\n"
+"Language-Team: Arabic <https://translations.metabrainz.org/projects/picard/2/"
 "app/ar/>\n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +22,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.3.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -50,32 +51,32 @@ msgstr "[تعذّر تحميل الألبوم %s]"
 #: picard/cluster.py:259
 #, python-format
 msgid "Cluster %(album)s identified!"
-msgstr ""
+msgstr "تم التعرف على مجموعة تحت عنوان %(album)s!"
 
 #: picard/cluster.py:262
 #, python-format
 msgid "No matching releases for cluster %(album)s"
-msgstr ""
+msgstr "لم يتم التعرف على إصدارات لمجموعة %(album)s"
 
 #: picard/cluster.py:281
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s…"
-msgstr ""
+msgstr "يتم الآن البحث عن بيانات مجموعة %(album)s…"
 
 #: picard/cluster.py:330
 msgid "Unclustered Files"
-msgstr ""
+msgstr "ملفات غير مجمعة"
 
 #: picard/collection.py:78
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لم يتم إضافة أي إصدار لمجموعة \"%(name)s\""
+msgstr[1] "تم إضافة إصدار واحد لمجموعة \"%(name)s\""
+msgstr[2] "تم إضافة إصداران إثنين لمجموعة \"%(name)s\""
+msgstr[3] "تم إضافة عدد %(count)i من الإصدارات لمجموعة \"%(name)s\""
+msgstr[4] "تم إضافة عدد %(count)i من الإصدارات لمجموعة \"%(name)s\""
+msgstr[5] "تم إضافة عدد %(count)i من الإصدارات لمجموعة \"%(name)s\""
 
 #: picard/collection.py:86
 #, python-format
