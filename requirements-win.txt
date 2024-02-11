@@ -8,3 +8,4 @@ python-dateutil==2.9.0.post0
 pywin32==310
 PyYAML==6.0.2
 charset-normalizer==3.4.2
+tomlkit==0.13.2; python_version < '3.11'
