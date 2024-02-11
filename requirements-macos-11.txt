@@ -9,3 +9,4 @@ PyQt6-Qt6==6.5.3
 python-dateutil==2.8.2
 PyYAML==6.0.1
 charset-normalizer==3.3.2
+tomlkit==0.12.3; python_version < '3.11'
