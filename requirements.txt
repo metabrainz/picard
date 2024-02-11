@@ -10,3 +10,4 @@ python-dateutil~=2.7
 pywin32; sys_platform == 'win32'
 PyYAML>=5.1, <7
 charset-normalizer~=3.3
+tomlkit~=0.12; python_version < '3.11'
