@@ -1,6 +1,7 @@
 discid==1.2.0
 Markdown==3.8
 mutagen==1.47.0
+pygit2==1.18.0
 PyJWT==2.10.1
 PyQt6==6.9.0
 PyQt6-Qt6==6.9.0

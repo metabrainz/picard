@@ -1,6 +1,7 @@
 discid~=1.0
 Markdown~=3.2
 mutagen~=1.43
+pygit2~=1.17
 PyJWT~=2.0
 pyobjc-core>=6.2, <12; sys_platform == 'darwin'
 pyobjc-framework-Cocoa>=6.2, <12; sys_platform == 'darwin'
