@@ -1,11 +1,12 @@
 name        = "Example plugin"
 author      = "Philipp Wolfer"
-description = """
-This is an example plugin showcasing the new **Picard 3 plugin** API.
-
-You can use [Markdown](https://daringfireball.net/projects/markdown/) for formatting."""
 version     = "1.0.0"
 api         = ["3.0", "3.1"]
 license     = "CC0-1.0"
 license-url = "https://creativecommons.org/publicdomain/zero/1.0/"
 user-guide-url = "https://example.com/"
+
+[description]
+en = "This is an example plugin"
+de = "Dies ist ein Beispiel-Plugin"
+fr = "Ceci est un exemple de plugin"
