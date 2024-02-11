@@ -61,10 +61,6 @@ example/
   MANIFEST.toml
 ```
 
-The plugin package MAY be put into a ZIP archive. In this case the filename
-must be the same as the plugin package name followed by `.picard.zip`, e.g.
-`example.picard.zip`.
-
 
 ### File system locations
 TBD
@@ -119,7 +115,7 @@ The file MUST define the following mandatory metadata fields:
 |----------------|--------|------------------------------------------------------------------|
 | name           | string | The plugin's full name                                           |
 | author         | string | The plugin author                                                |
-| description    | string | Detailed description of the plugin. Supports Markdown formatting |
+| description    | table  | Table of multi-lingual detailed plugin descriptions. The keys are locale names. At least an English description is mandatory. Supports Markdown formatting. |
 | version        | string | Plugin version. Use semantic versioning in the format "x.y.z"    |
 | api            | list   | The Picard API versions supported by the plugin                  |
 | license        | string | License, should be a [SPDX license name](https://spdx.org/licenses/) and GPLv2 compatible |
@@ -128,7 +124,6 @@ The file MAY define any of the following optional fields:
 
 | Field name     | Type   | Description                                                      |
 |----------------|--------|------------------------------------------------------------------|
-| extract        | bool   | If set to `true` the plugin must be extracted on installation (to be discussed)   |
 | license-url    | string | URL to the full license text                                     |
 | user-guide-url | string | URL to the plugin's documentation                                |
 
@@ -138,16 +133,27 @@ Example `MANIFEST.toml`:
 ```toml
 name        = "Example plugin"
 author      = "Philipp Wolfer"
-description = """
-This is an example plugin showcasing the new **Picard 3 plugin** API.
-
-You can use [Markdown](https://daringfireball.net/projects/markdown/) for formatting."""
 version     = "1.0.0"
 api         = ["3.0", "3.1"]
-extract     = true
 license     = "CC0-1.0"
 license-url = "https://creativecommons.org/publicdomain/zero/1.0/"
 user-guide-url = "https://example.com/"
+
+[description]
+en = """
+This is an example plugin showcasing the new **Picard 3** plugin API.
+
+You can use [Markdown](https://daringfireball.net/projects/markdown/) for formatting."""
+de = """
+Dies ist ein Beispiel-Plugin, das die neue **Picard 3** Plugin-API vorstellt.
+
+Du kannst [Markdown](https://daringfireball.net/projects/markdown/) für die Formatierung verwenden.
+"""
+fr = """
+Ceci est un exemple de plugin présentant la nouvelle API de plugin **Picard 3**.
+
+Vous pouvez utiliser [Markdown](https://daringfireball.net/projects/markdown/) pour la mise en forme.
+"""
 ```
 
 
@@ -281,16 +287,55 @@ class PluginApi:
 TBD
 
 
-### Plugin live cycle
+### Plugin life cycle
 TBD
 
 
 ### To be discussed
 
-- Localization?
-- Categorization? [PW-12](https://tickets.metabrainz.org/browse/PW-12)
-- Extra data files?
-- Additional extension points?
+#### Localization
+Existing plugins in Picard 2 cannot be localized. The new plugin system should
+allow plugins to provide translations for user facing strings.
+
+Plugins could provide gettext `.mo` files that will be loaded under a plugin
+specific translation domain.
+
+Also the description from `MANIFEST.json` should be localizable.
+
+
+#### Categorization
+See [PW-12](https://tickets.metabrainz.org/browse/PW-12)
+
+
+#### Extra data files
+Does the Plugin API need to expose functions to allow plugins to easily load
+additional data files shipped as part of the plugins? E.g. for loading
+configuration from JSON files.
+
+
+#### Additional extension points
+Which additional extension points should be supported?
+
+
+#### Support for ZIP compressed plugins:
+As before plugins in a single ZIP archive could also be supported. The "Format"
+section above could be extended with:
+
+> The plugin package MAY be put into a ZIP archive. In this case the filename
+> must be the same as the plugin package name followed by `.picard.zip`, e.g.
+> `example.picard.zip`.
+
+It needs to be discussed whether such plugins should be extracted by default
+or whether module loading from ZIP should be retained.
+
+The advantage of loading directly from ZIP is the simplicity of plugin handling,
+as the user can move around a single plugin file.
+
+Disadvantages are:
+
+- Additional complexity in the module loader
+- Inability of accessing shared libraries shipped as part of the plugin
+- No bytecode caching
 
 
 ## Implementation considerations
