@@ -47,9 +47,10 @@ class TestPluginManifest(PicardTestCase):
         self.assertEqual(manifest.module_name, 'example')
         self.assertEqual(manifest.name, 'Example plugin')
         self.assertEqual(manifest.author, 'Philipp Wolfer')
-        self.assertEqual(
-            manifest.description.replace('\r\n', '\n'),
-            "This is an example plugin showcasing the new **Picard 3 plugin** API.\n\nYou can use [Markdown](https://daringfireball.net/projects/markdown/) for formatting.")
+        self.assertEqual(manifest.description(), "This is an example plugin")
+        self.assertEqual(manifest.description('en'), "This is an example plugin")
+        self.assertEqual(manifest.description('fr'), "Ceci est un exemple de plugin")
+        self.assertEqual(manifest.description('it'), "This is an example plugin")
         self.assertEqual(manifest.version, Version(1, 0, 0))
         self.assertEqual(manifest.api_versions, (Version(3, 0, 0), Version(3, 1, 0)))
         self.assertEqual(manifest.license, 'CC0-1.0')
