@@ -50,9 +50,9 @@ class PluginManifest:
     def author(self) -> str:
         return self._data.get('author')
 
-    @property
-    def description(self) -> str:
-        return self._data.get('description')
+    def description(self, preferred_language: str = 'en') -> str:
+        descriptions = self._data.get('description') or {}
+        return descriptions.get(preferred_language, descriptions.get('en', ''))
 
     @property
     def version(self) -> Version:
