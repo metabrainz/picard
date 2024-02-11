@@ -93,7 +93,7 @@ The package MAY define the following top-level functions:
 A basic plugin structure could be:
 
 ```python
-from picard.plugin import PluginApi
+from picard.plugin3.api import PluginApi
 
 def enable(api: PluginApi) -> None:
     # api can be used to register plugin hooks and to access essential Picard APIs.
@@ -128,7 +128,7 @@ The file MAY define any of the following optional fields:
 
 | Field name     | Type   | Description                                                      |
 |----------------|--------|------------------------------------------------------------------|
-| extract        | bool   | If set to `true` the plugin must be extracted on installation    |
+| extract        | bool   | If set to `true` the plugin must be extracted on installation (to be discussed)   |
 | license-url    | string | URL to the full license text                                     |
 | user-guide-url | string | URL to the plugin's documentation                                |
 
