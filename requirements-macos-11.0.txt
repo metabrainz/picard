@@ -1,6 +1,7 @@
 discid==1.2.0
 Markdown==3.7
 mutagen==1.47.0
+pygit2==1.17.0
 PyJWT==2.10.1
 pyobjc-core==10.3.2
 pyobjc-framework-Cocoa==10.3.2
