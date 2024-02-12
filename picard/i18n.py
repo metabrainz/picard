@@ -180,13 +180,7 @@ def setup_gettext(localedir, ui_language=None, logger=None):
     builtins.__dict__['gettext_attributes'] = trans_attributes.gettext
     builtins.__dict__['gettext_constants'] = trans_constants.gettext
     builtins.__dict__['gettext_countries'] = trans_countries.gettext
-
-    if hasattr(trans_attributes, 'pgettext'):
-        builtins.__dict__['pgettext_attributes'] = trans_attributes.pgettext
-    else:
-        def pgettext(context, message):
-            return gettext_ctxt(trans_attributes.gettext, message, context)
-        builtins.__dict__['pgettext_attributes'] = pgettext
+    builtins.__dict__['pgettext_attributes'] = trans_attributes.pgettext
 
     _logger("_ = %r", _)
     _logger("N_ = %r", N_)
@@ -194,23 +188,3 @@ def setup_gettext(localedir, ui_language=None, logger=None):
     _logger("gettext_countries = %r", gettext_countries)
     _logger("gettext_attributes = %r", gettext_attributes)
     _logger("pgettext_attributes = %r", pgettext_attributes)
-
-
-# Workaround for po files with msgctxt which isn't supported by Python < 3.8
-# gettext
-# msgctxt are used within attributes.po, and gettext is failing to translate
-# strings due to that
-# This workaround is a hack until we get proper msgctxt support
-_CONTEXT_SEPARATOR = "\x04"
-
-
-def gettext_ctxt(gettext_, message, context=None):
-    if context is None:
-        return gettext_(message)
-
-    msg_with_ctxt = "%s%s%s" % (context, _CONTEXT_SEPARATOR, message)
-    translated = gettext_(msg_with_ctxt)
-    if _CONTEXT_SEPARATOR in translated:
-        # no translation found, return original message
-        return message
-    return translated
