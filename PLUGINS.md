@@ -39,6 +39,14 @@ basics of distributing, installing and updating plugins.
   system that is logical if you are familiar with Picard's code base, this is not
   transparent to plugin developers.
 
+- **Plugin configuration conflicts:** Plugins only have access to Picard's global
+  configuration. Plugins that need to store their own configuration usually try
+  to avoid conflicts by adding a prefix to the configuration. Yet there is no
+  way to remove a specific plugin's configuration.
+
+- **No localization:** There is no standardized way how plugins can provide
+  localized user interface strings.
+
 - **Many supported plugin formats:** The old system allowed multiple ways how a
   plugin can be structured. The following formats where supported:
   - A single Python module (`example.py`)
@@ -47,10 +55,15 @@ basics of distributing, installing and updating plugins.
   - A ZIP archive (`example.zip`) containing a Python package
   - A ZIP archive (`example.picard.zip`) with either a Python module or package
     and an additional metadata file `MANIFEST.json`.
+
   This variation leeds to extra complexity in the implementation and increases
   maintenance and testing effort. It also increased complexity for users, as they
   needed to decide whether a plugin file needs to be placed at the top level
   or inside a directory.
+
+- **Difficult to ship additional data files:** As ZIPs are most of the time
+  installed as ZIP archives there is no easy and consistent way to access
+  additional data files the plugin might want to provide.
 
 - **Single central repository:** All official plugins must be located in the
   official [picard-plugins](https://github.com/metabrainz/picard-plugins) git
