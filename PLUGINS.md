@@ -11,10 +11,14 @@ proposes a new plugin system for Picard 3 to address those shortcomings.
 
 ## Scope
 
-This document only discusses the structure and API for Picard plugins. It does not
-discuss distribution of plugins or the maintenance of a plugins repository. See
-[the wiki](https://github.com/rdswift/picard-plugins/wiki/Picard-Plugins-System-Proposal)
-for and extended discussion of distribution and maintenance.
+This document discusses the structure and API for Picard plugins and the
+basics of distributing, installing and updating plugins.
+
+> ***Note:** This document builds upon the extended discussion of requirements
+> for a new plugin system on
+> [the wiki](https://github.com/rdswift/picard-plugins/wiki/Picard-Plugins-System-Proposal).
+> It proposes a specific implementation which tries to address the various ideas
+> brought up in the above discussion.*
 
 
 ## Limitations of the old plugin system
@@ -47,6 +51,13 @@ for and extended discussion of distribution and maintenance.
   maintenance and testing effort. It also increased complexity for users, as they
   needed to decide whether a plugin file needs to be placed at the top level
   or inside a directory.
+
+- **Single central repository:** All official plugins must be located in the
+  official [picard-plugins](https://github.com/metabrainz/picard-plugins) git
+  repository. Only plugins located there can be installed directly from the UI
+  and can receive automated updates. This makes it difficult for third-party
+  developers to provide plugins and keep them updated. It also adds additional
+  work on the Picard developers to maintain and update all submitted plugins.
 
 
 ## Format
@@ -310,9 +321,62 @@ TBD
 TBD
 
 
-### To be discussed
+## Distribution
 
-#### Localization
+In order to both simplify third-party development of plugins and distribute
+the maintenance work there will no longer be a single plugin repository. Instead
+each plugin SHOULD be provided in a separate git repository. Plugins also CAN
+be installed locally without a git repository by placing the plugin package
+inside the plugin directory.
+
+
+### Repository structure
+
+A Picard plugin repository MUST be a git repository containing exactly one
+plugin. The content of the git repository MUST match the plugin file structure
+as described above, containing at least the `__init__.py` and `MANIFEST.toml`
+files.
+
+
+### Installation and upgrade
+
+Plugin installation is performed directly from git by cloning the git repository.
+Likewise updates are performed by updating the repository and checking out the
+requested git ref.
+
+For plugins installed from git the version will be shown as a combination of
+the version from the manifest and the git ref (`{VERSION}-{GITREF}`).
+
+
+### Official plugins
+
+The Picard website will provide a list of officially supported plugins and their
+git location. Those plugins will be offered in the Picard user interface for
+installation. Plugins can be added to the official list after a review. The
+Picard website must provide an API endpoint for querying the metadata for all
+the plugins. The metadata consists of both the information from the plugin
+manifests and the git URL for each plugin.
+
+The exact implementation for submitting plugins for the Picard website is
+outside the scope of this document and will be discussed separately. It could
+e.g. both be handled by opening tickets on the MetaBrainz Jira or by
+implementing an actual plugin submission interface directly on the Picard
+website.
+
+
+### Installing plugins from unofficial sources
+
+Picard must provide a user interface for installing third-party plugins which
+are not provided in the official plugin list. The user needs to enter the
+plugin's git URL and Picard will verify the manifest and offer to install and
+activate the plugin. The UI must make it clear that the user is installing the
+plugin at their own risk and that the plugin can execute arbitrary code.
+
+
+## To be discussed
+
+### Localization
+
 Existing plugins in Picard 2 cannot be localized. The new plugin system should
 allow plugins to provide translations for user facing strings.
 
@@ -322,21 +386,25 @@ specific translation domain.
 Also the description from `MANIFEST.json` should be localizable.
 
 
-#### Categorization
+### Categorization
+
 See [PW-12](https://tickets.metabrainz.org/browse/PW-12)
 
 
-#### Extra data files
+### Extra data files
+
 Does the Plugin API need to expose functions to allow plugins to easily load
 additional data files shipped as part of the plugins? E.g. for loading
 configuration from JSON files.
 
 
-#### Additional extension points
+### Additional extension points
+
 Which additional extension points should be supported?
 
 
-#### Support for ZIP compressed plugins:
+### Support for ZIP compressed plugins:
+
 As before plugins in a single ZIP archive could also be supported. The "Format"
 section above could be extended with:
 
