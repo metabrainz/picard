@@ -1,7 +1,12 @@
 # Picard Plugin API v3 (Proposal)
 
 ## Introduction / Motivation
-TBD
+
+Picard's plugin system has made Picard very extensible and there exist many
+plugins that extend Picard's functionality in various ways.
+
+However, the current plugin system has multiple shortcomings. This document
+proposes a new plugin system for Picard 3 to address those shortcomings.
 
 
 ## Scope
@@ -63,7 +68,17 @@ example/
 
 
 ### File system locations
-TBD
+
+User plugins will be stored in a system specific location for application data
+inside the `MusicBrainz/Picard/plugins3` directory. On the primary operating
+systems those are:
+
+- **Linux:** `~/.local/share/MusicBrainz/Picard/plugins3`
+- **macOS:** `~/Library/Application Support/MusicBrainz/Picard/plugins3`
+- **Windows:** `~/AppData/Roaming/MusicBrainz/Picard/plugins3`
+
+System wide plugins will be loaded from Picard's install location from the
+`plugins3` directory.
 
 
 ### Package structure and implemented API
@@ -113,7 +128,8 @@ The file MUST define the following mandatory metadata fields:
 
 | Field name     | Type   | Description                                                      |
 |----------------|--------|------------------------------------------------------------------|
-| name           | string | The plugin's full name                                           |
+| id             | string | The plugin's unique name. Must be a valid Python package name and only consist of the characters `[a-z0-9_]` |
+| name           | table  | Table of multi-lingual display names. The keys are locale names. At least an English description is mandatory. |
 | author         | string | The plugin author                                                |
 | description    | table  | Table of multi-lingual detailed plugin descriptions. The keys are locale names. At least an English description is mandatory. Supports Markdown formatting. |
 | version        | string | Plugin version. Use semantic versioning in the format "x.y.z"    |
@@ -131,7 +147,10 @@ The file MAY define any of the following optional fields:
 Example `MANIFEST.toml`:
 
 ```toml
-name        = "Example plugin"
+id          = "example"
+name.en     = "Example plugin"
+name.de     = "Beispiel-Plugin"
+name.fr     = "Exemple de plugin"
 author      = "Philipp Wolfer"
 version     = "1.0.0"
 api         = ["3.0", "3.1"]
