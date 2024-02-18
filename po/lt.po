@@ -7,13 +7,15 @@
 # Jonas Slivka <jonas.slivka@gmail.com>, 2006
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 # "Vac31." <gateway_31@protonmail.com>, 2023, 2024.
+# "Vac31." <Vaclovas@users.noreply.translations.metabrainz.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-01-25 09:28+0000\n"
-"Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
+"PO-Revision-Date: 2024-02-18 14:28+0000\n"
+"Last-Translator: \"Vac31.\" <Vaclovas@users.noreply.translations.metabrainz."
+"org>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/app/lt/>\n"
 "Language: lt\n"
@@ -23,7 +25,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
 " n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.3\n"
+"X-Generator: Weblate 5.4\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:150
@@ -1221,6 +1223,17 @@ msgid ""
 "\n"
 "_Since Picard 2.1_"
 msgstr ""
+"`$delete(pavadinimas)`\n"
+"\n"
+"Panaikina kintamojo `pavadinimas` nustatymą ir pažymi, kad žymė bus ištrinta."
+"\n"
+"Tai panašu į `$$unset(pavadinimas)`, bet taip pat žymi žymę ištrynimui. Pvz.,"
+"\n"
+"    paleidus `$delete(žanras)` iš tikrųjų bus pašalinta žanro žymė iš failo, "
+"kai\n"
+"    jis bus išsaugotas.\n"
+"\n"
+"_Nuo Picard 2.1_"
 
 #: picard/script/functions.py:432
 #, python-format
@@ -1236,6 +1249,16 @@ msgid ""
 "    with an underscore. `%something%` will create a \"something\" tag;\n"
 "    `%_something%` will not."
 msgstr ""
+"`$set(pavadinimas,reikšmė)`\n"
+"\n"
+"Nustato kintamąjį `pavadinimas` į `reikšmė`.\n"
+"\n"
+"Pastaba: norint sukurti kintamąjį, kuris gali būti naudojamas failo "
+"pavadinimo eilutei, bet\n"
+"    kuris nebus įrašytas į failą kaip žymė, priešdėlėk kintamojo pavadinimą "
+"\n"
+"    su pabrauktuku. `%kažkas%` sukurs žymę „kažkas“, o\n"
+"    `%_kažkas%` to nepadarys."
 
 #: picard/script/functions.py:450
 #, python-format
@@ -1256,6 +1279,21 @@ msgid ""
 "\n"
 "_Since Picard 1.0_"
 msgstr ""
+"`$setmulti(pavadinimas,reikšmė,skirtukas=\"; \")`\n"
+"\n"
+"Nustato kintamąjį `pavadinimas` į `reikšmė` naudojant skirtuką (arba „; “, "
+"jei jis neperduotas),\n"
+"    kad reikšmė vėl taptų tinkama daugiareikšme žyme. Tai gali būti "
+"naudojama\n"
+"    veikti su daugiareikšmėmis žymėmis kaip eilutėmis, o paskui jas vėl "
+"nustatyti kaip tinkamas\n"
+"   daugiareikšmes žymes.\n"
+"\n"
+"Pavyzdys:\n"
+"\n"
+"    $setmulti(genre,$lower(%genre%))\n"
+"\n"
+"_Nuo Picard 1.0_"
 
 #: picard/script/functions.py:468
 msgid ""
@@ -1721,6 +1759,15 @@ msgid ""
 "    $set(album,$title(%album%))\n"
 "_Since Picard 2.1_"
 msgstr ""
+"`$title(tekstas)`\n"
+"\n"
+"Grąžina `tekstas` pavadinimo raidžių lygiu (pirmasis kiekvieno žodžio "
+"simbolis rašomas didžiąja raide).\n"
+"\n"
+"Pavyzdys:\n"
+"\n"
+"    $set(album,$title(%album%))\n"
+"_Nuo Picard 2.1_"
 
 #: picard/script/functions.py:1108
 msgid ""
@@ -2630,7 +2677,7 @@ msgstr "Kompozitorius"
 
 #: picard/ui/itemviews.py:167 picard/util/tags.py:60
 msgid "Disc Subtitle"
-msgstr ""
+msgstr "Disko popavadinimas"
 
 #: picard/ui/itemviews.py:168
 msgid "Track No."
@@ -3663,6 +3710,8 @@ msgid ""
 "Failed to submit rating for track '%(track_title)s' due to server error "
 "%(error)d"
 msgstr ""
+"Nepavyko pateikti takelio „%(track_title)s“ įvertinimo dėl serverio klaidos "
+"%(error)d."
 
 #: picard/ui/savewarningdialog.py:38
 msgid "overwrite existing metadata (tags) within the file"
@@ -3881,12 +3930,12 @@ msgstr ""
 
 #: picard/ui/scripteditor.py:857
 msgid "There is already a script with that title."
-msgstr ""
+msgstr "Jau yra skriptas su tokiu pavadinimu."
 
 #: picard/ui/scripteditor.py:860 picard/ui/scripteditor.py:1166
 #: picard/ui/scripteditor.py:1395
 msgid "The script title must not be empty."
-msgstr ""
+msgstr "Skripto pavadinimas neturi būti tuščias."
 
 #: picard/ui/scripteditor.py:1111
 msgid "Error Deleting Script"
@@ -4815,7 +4864,7 @@ msgstr ""
 
 #: picard/ui/ui_scripteditor.py:210 picard/ui/ui_scripteditor_details.py:99
 msgid "Title:"
-msgstr ""
+msgstr "Pavadinimas:"
 
 #: picard/ui/ui_scripteditor_details.py:91
 msgid "File Naming Script Metadata"
@@ -6121,7 +6170,7 @@ msgstr ""
 
 #: picard/util/tags.py:122
 msgid "Subtitle"
-msgstr "Paantraštė"
+msgstr "Popavadinimas"
 
 #: picard/util/tags.py:124
 msgid "Title Sort Order"
