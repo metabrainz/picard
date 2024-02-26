@@ -177,13 +177,22 @@ def parse_comment_tag(name):  # noqa: E302
     If language is not set ("comment:desc") "eng" is assumed as default.
     Returns a (lang, desc) tuple.
     """
-    try:
-        desc = name.split(':', 1)[1]
-    except IndexError:
-        desc = ''
     lang = 'eng'
+    desc = ''
+
+    split = name.split(':', 1)
+    if len(split) > 1:
+        desc = split[1]
+
     match = RE_COMMENT_LANG.match(desc)
     if match:
         lang = match.group(1)
         desc = desc[4:]
-    return (lang, desc)
+        return lang, desc
+
+    # Special case for unspecified language + empty description
+    if desc == 'XXX':
+        lang = 'XXX'
+        desc = ''
+
+    return lang, desc
