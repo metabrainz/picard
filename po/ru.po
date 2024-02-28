@@ -27,23 +27,25 @@
 # Владислав Горский, 2023
 # Дмитрий <sema19689@gmail.com>, 2014-2015
 # Дмитрий Суворов, 2023
+# Dimlbur <Dimlbur@users.noreply.translations.metabrainz.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2023-08-27 13:05+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2024-02-28 19:28+0000\n"
+"Last-Translator: Dimlbur <Dimlbur@users.noreply.translations.metabrainz.org>"
+"\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/picard/"
-"app/ru/>\n"
+"2/app/ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
-"(n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 4.18.2\n"
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
+"n%100>=11 && n%100<=14)? 2 : 3);\n"
+"X-Generator: Weblate 5.4\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -196,7 +198,7 @@ msgstr "Ошибка"
 
 #: picard/log.py:68
 msgid "Warning"
-msgstr ""
+msgstr "Предупреждение"
 
 #: picard/log.py:69 picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
 #: picard/ui/options/interface_toolbar.py:96
@@ -222,10 +224,9 @@ msgid "Unable to load plugin '%s'"
 msgstr "Не удалось загрузить плагин '%s'"
 
 #: picard/pluginmanager.py:302
-#, fuzzy, python-format
-#| msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+#, python-format
 msgid "Failed loading plugin \"%(plugin)s\""
-msgstr "Не удалось загрузить плагин '%(plugin)s' из '%(dirname)s'"
+msgstr "Не удалось загрузить плагин '%(plugin)s'"
 
 #: picard/pluginmanager.py:349
 #, python-format
