@@ -85,6 +85,16 @@ jobs:
         brew install gettext
         brew link gettext --force
         echo "/usr/local/opt/gettext/bin" >> $GITHUB_PATH
+    - name: Install gettext (Windows)
+      if: runner.os == 'Windows'
+      run: |
+        & .\scripts\package\win-setup-gettext.ps1 `
+          -GettextVersion $Env:GETTEXT_VERSION -GettextSha256Sum $Env:GETTEXT_SHA256SUM
+        Add-Content $env:GITHUB_PATH (Join-Path -Path (Resolve-Path .) -ChildPath gettext\bin)
+      shell: pwsh
+      env:
+        GETTEXT_VERSION: 0.22.4
+        GETTEXT_SHA256SUM: 220068ac0b9e7aedda03534a3088e584640ac1e639800b3a0baa9410aa6d012a
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip

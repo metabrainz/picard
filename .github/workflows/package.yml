@@ -154,6 +154,14 @@ jobs:
         DISCID_SHA256SUM: 330199495d71f71251e91eb0b4e3103b6c663fea09ffc9fd3e5108d48e0452c8
         FPCALC_VERSION: 1.5.1
         FPCALC_SHA256SUM: 36b478e16aa69f757f376645db0d436073a42c0097b6bb2677109e7835b59bbc
+    - name: Install gettext
+      run: |
+        & .\scripts\package\win-setup-gettext.ps1 `
+          -GettextVersion $Env:GETTEXT_VERSION -GettextSha256Sum $Env:GETTEXT_SHA256SUM
+        Add-Content $env:GITHUB_PATH (Join-Path -Path (Resolve-Path .) -ChildPath gettext\bin)
+      env:
+        GETTEXT_VERSION: 0.22.4
+        GETTEXT_SHA256SUM: 220068ac0b9e7aedda03534a3088e584640ac1e639800b3a0baa9410aa6d012a
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip

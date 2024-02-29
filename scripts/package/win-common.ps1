@@ -54,3 +54,30 @@ Function FinalizePackage {
   Move-Item -Path (Join-Path -Path $Qt5BinDir -ChildPath *.dll) -Destination $Path -Force
   Remove-Item -Path $Qt5BinDir
 }
+
+Function DownloadFile {
+  Param(
+    [Parameter(Mandatory = $true)]
+    [String]
+    $FileName,
+    [Parameter(Mandatory = $true)]
+    [String]
+    $Url
+  )
+  $OutputPath = (Join-Path (Resolve-Path .) $FileName)
+  (New-Object System.Net.WebClient).DownloadFile($Url, "$OutputPath")
+}
+
+Function VerifyHash {
+  Param(
+    [Parameter(Mandatory = $true)]
+    [String]
+    $FileName,
+    [Parameter(Mandatory = $true)]
+    [String]
+    $Sha256Sum
+  )
+  If ((Get-FileHash "$FileName").hash -ne "$Sha256Sum") {
+    Throw "Invalid SHA256 hash for $FileName"
+  }
+}
