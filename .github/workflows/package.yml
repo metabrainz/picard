@@ -144,10 +144,10 @@ jobs:
         & .\scripts\package\win-setup.ps1 `
           -DiscidVersion $Env:DISCID_VERSION -DiscidSha256Sum $Env:DISCID_SHA256SUM `
           -FpcalcVersion $Env:FPCALC_VERSION -FpcalcSha256Sum $Env:FPCALC_SHA256SUM
-        Write-Output "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
+        Add-Content $env:GITHUB_PATH "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64"
         $ReleaseTag = $(git describe --match "release-*" --abbrev=0 --always HEAD)
         $BuildNumber = $(git rev-list --count "$ReleaseTag..HEAD")
-        Write-Output "BUILD_NUMBER=$BuildNumber" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8
+        Add-Content $env:GITHUB_ENV "BUILD_NUMBER=$BuildNumber"
         New-Item -Name .\artifacts -ItemType Directory
       env:
         DISCID_VERSION: 0.6.4
@@ -172,7 +172,7 @@ jobs:
         If ($Env:CODESIGN_P12_URL -And $Env:AWS_ACCESS_KEY_ID) {
           pip install awscli
           aws s3 cp "$Env:CODESIGN_P12_URL" .\codesign.pfx
-          Write-Output "CODESIGN=1" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8
+          Add-Content $env:GITHUB_ENV "CODESIGN=1"
         } Else {
           Write-Output "::warning::No code signing certificate available, skipping code signing."
         }
