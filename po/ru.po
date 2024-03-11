@@ -33,7 +33,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-28 21:36+0100\n"
-"PO-Revision-Date: 2024-02-28 19:28+0000\n"
+"PO-Revision-Date: 2024-03-11 19:28+0000\n"
 "Last-Translator: Dimlbur <Dimlbur@users.noreply.translations.metabrainz.org>"
 "\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/picard/"
@@ -285,11 +285,11 @@ msgstr "Игнорировать MBIDs при загрузке новых фай
 
 #: picard/profile.py:53 picard/ui/ui_options_general.py:214
 msgid "Check for plugin updates during startup"
-msgstr ""
+msgstr "Проверка обновлений плагинов при запуске"
 
 #: picard/profile.py:54 picard/ui/ui_options_general.py:215
 msgid "Check for program updates during startup"
-msgstr ""
+msgstr "Проверка обновлений программы при запуске"
 
 #: picard/profile.py:55
 msgid "Days between update checks"
@@ -337,8 +337,6 @@ msgid "Use release relationships"
 msgstr "Использовать взаимосвязи альбомов"
 
 #: picard/profile.py:72
-#, fuzzy
-#| msgid "Use release relationships"
 msgid "Use track and release relationships"
 msgstr "Использовать взаимосвязи альбомов"
 
@@ -364,11 +362,11 @@ msgstr "Предпочтительные страны выпуска альбо�
 
 #: picard/profile.py:80 picard/ui/ui_options_releases.py:118
 msgid "Preferred medium formats"
-msgstr ""
+msgstr "Предпочтительные форматы носителей"
 
 #: picard/profile.py:83 picard/ui/ui_options_genres.py:121
 msgid "Use genres from MusicBrainz"
-msgstr ""
+msgstr "Использовать жанры из MusicBrainz"
 
 #: picard/profile.py:86 picard/ui/ui_options_genres.py:122
 msgid "Use only my genres"
@@ -3219,7 +3217,7 @@ msgstr "Откройте папку, содержащую файл в вашем
 
 #: picard/ui/mainwindow.py:914
 msgid "&Check for Update…"
-msgstr "&проверка обновлений…"
+msgstr "&Проверка обновлений…"
 
 #: picard/ui/mainwindow.py:953
 msgid "From CD ripper &log file…"
