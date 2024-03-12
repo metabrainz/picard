@@ -40,7 +40,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+try:
+    from charset_normalizer import detect
+except ImportError:
+    try:
+        from chardet import detect
+    except ImportError:
+        detect = None
 from collections import (
     defaultdict,
     namedtuple,
@@ -1168,13 +1174,16 @@ ENCODING_BOMS = {
 }
 
 
-def detect_unicode_encoding(path):
-    """Attempts to guess the unicode encoding of a file based on the BOM.
+def detect_file_encoding(path, max_bytes_to_read=1024*256):
+    """Attempts to guess the unicode encoding of a file based on the BOM, and
+    depending on avalibility, using a charset detection method.
 
-    Assumes UTF-8 by default if there is no BOM.
+    Assumes UTF-8 by default if no other encoding is detected.
 
     Args:
         path: The path to the file
+        max_bytes_to_read: Maximum bytes to read from the file during encoding
+        detection.
 
     Returns: The encoding as a string, e.g. "utf-16-le" or "utf-8"
     """
@@ -1183,4 +1192,14 @@ def detect_unicode_encoding(path):
         for bom, encoding in ENCODING_BOMS.items():
             if first_bytes.startswith(bom):
                 return encoding
-        return 'utf-8'
+
+        if detect is None:
+            return 'utf-8'
+
+        f.seek(0)
+        result = detect(f.read(max_bytes_to_read))
+        if result['encoding'] is None:
+            log.warning("Couldn't detect encoding for file %r", path)
+            result['encoding'] = 'UTF-8'
+
+        return result['encoding'].lower()
