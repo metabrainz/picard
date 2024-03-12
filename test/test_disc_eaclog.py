@@ -72,6 +72,9 @@ class TestTocFromFile(PicardTestCase):
         toc = toc_from_file(test_log)
         self.assertEqual((1, 8, 149323, 150, 25064, 43611, 60890, 83090, 100000, 115057, 135558), toc)
 
+    def test_toc_from_file_eac_windows1251(self):
+        self._test_toc_from_file('eac-windows1251.log')
+
     def test_toc_from_file_eac_utf8(self):
         self._test_toc_from_file('eac-utf8.log')
 
