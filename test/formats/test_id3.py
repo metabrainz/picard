@@ -371,6 +371,13 @@ class CommonId3Tests:
             self.assertEqual(metadata['lyrics:foo'], loaded_metadata['lyrics:foo'])
 
         @skipUnlessTestfile
+        def test_syncedlyrics_converting_to_and_from_lrc(self):
+            syncedlyrics = "[00:00.00]first bar\n[00:01.00]second bar"
+            metadata = Metadata({'syncedlyrics': syncedlyrics})
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(metadata['syncedlyrics'], loaded_metadata['syncedlyrics'])
+
+        @skipUnlessTestfile
         def test_invalid_track_and_discnumber(self):
             metadata = Metadata({
                 'discnumber': 'notanumber',
