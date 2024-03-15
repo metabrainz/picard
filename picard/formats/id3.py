@@ -35,6 +35,7 @@
 
 from collections import Counter
 from enum import IntEnum
+from itertools import batched
 import re
 from urllib.parse import urlparse
 
@@ -229,6 +230,8 @@ class ID3File(File):
         'MVIN': re.compile(r'^(?P<movementnumber>\d+)(?:/(?P<movementtotal>\d+))?$')
     }
 
+    __lrc_re_parse = re.compile(r'(\[\d\d:\d\d\.\d\d])')
+
     def __init__(self, filename):
         super().__init__(filename)
         self.__casemap = {}
@@ -330,6 +333,20 @@ class ID3File(File):
                 if frame.desc:
                     name += ':%s' % frame.desc
                 metadata.add(name, frame.text)
+            elif frameid == 'SYLT':
+                name = 'syncedlyrics'
+                if frame.desc:
+                    name += ':%s' % frame.desc
+
+                lrc_lyrics = []
+                for lyrics, milliseconds in frame.text:
+                    minutes = milliseconds // (60 * 1000)
+                    seconds = (milliseconds % (60 * 1000)) // 1000
+                    hundredths = (milliseconds % 1000) // 10
+                    lrc_lyrics.append(f"[{minutes:02d}:{seconds:02d}.{hundredths:02d}]{lyrics.strip()}")
+                lrc_lyrics = "\n".join(lrc_lyrics)
+
+                metadata.add(name, lrc_lyrics)
             elif frameid == 'UFID' and frame.owner == "http://musicbrainz.org":
                 metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
             elif frameid in self.__tag_re_parse.keys():
@@ -459,6 +476,21 @@ class ID3File(File):
                     desc = ''
                 for value in values:
                     tags.add(id3.USLT(encoding=encoding, desc=desc, text=value))
+            elif name.startswith('syncedlyrics:') or name == 'syncedlyrics':
+                if ':' in name:
+                    desc = name.split(':', 1)[1]
+                else:
+                    desc = ''
+                for value in values:
+
+                    sylt_lyrics = []
+                    timestamp_and_lyrics = batched(re.split(self.__lrc_re_parse, value)[1:], 2)
+                    for timestamp, lyrics in timestamp_and_lyrics:
+                        minutes, seconds, hundredths = timestamp[1:-1].replace(".", ":").split(':')
+                        milliseconds = int(minutes) * 60 * 1000 + int(seconds) * 1000 + int(hundredths) * 10
+                        sylt_lyrics.append((lyrics, milliseconds))
+
+                    tags.add(id3.SYLT(encoding=encoding, desc=desc, text=sylt_lyrics))
             elif name in self._rtipl_roles:
                 for value in values:
                     tipl.people.append([self._rtipl_roles[name], value])
@@ -579,6 +611,14 @@ class ID3File(File):
                         desc = ''
                     for key, frame in list(tags.items()):
                         if frame.FrameID == 'USLT' and frame.desc == desc:
+                            del tags[key]
+                elif name.startswith('syncedlyrics:') or name == 'syncedlyrics':
+                    if ':' in name:
+                        desc = name.split(':', 1)[1]
+                    else:
+                        desc = ''
+                    for key, frame in list(tags.items()):
+                        if frame.FrameID == 'SYLT' and frame.desc == desc:
                             del tags[key]
                 elif name in self._rtipl_roles:
                     role = self._rtipl_roles[name]

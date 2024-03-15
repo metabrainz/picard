@@ -120,6 +120,7 @@ TAG_NAMES = {
     'showsort': N_('Show Name Sort Order'),
     'showmovement': N_('Show Work & Movement'),
     'subtitle': N_('Subtitle'),
+    'syncedlyrics': N_('Synced Lyrics'),
     'title': N_('Title'),
     'titlesort': N_('Title Sort Order'),
     'totaldiscs': N_('Total Discs'),
