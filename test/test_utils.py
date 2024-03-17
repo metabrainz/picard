@@ -44,7 +44,10 @@ from unittest.mock import (
     patch,
 )
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    get_test_data_path,
+)
 
 from picard import util
 from picard.const import MUSICBRAINZ_SERVERS
@@ -57,7 +60,7 @@ from picard.util import (
     album_artist_from_path,
     any_exception_isinstance,
     build_qurl,
-    detect_unicode_encoding,
+    detect_file_encoding,
     encoded_queryargs,
     extract_year_from_date,
     find_best_match,
@@ -988,13 +991,13 @@ class IgnoreUpdatesContextTest(PicardTestCase):
 
 class DetectUnicodeEncodingTest(PicardTestCase):
 
-    def test_detect_encoding(self):
+    def test_detect_file_encoding_bom(self):
         boms = {
             b'\xff\xfe': 'utf-16-le',
             b'\xfe\xff': 'utf-16-be',
             b'\00\00\xff\xfe': 'utf-32-le',
             b'\00\00\xfe\xff': 'utf-32-be',
-            b'\xef\xbb\xbf': 'utf-8',
+            b'\xef\xbb\xbf': 'utf-8-sig',
             b'': 'utf-8',
             b'\00': 'utf-8',
         }
@@ -1003,7 +1006,17 @@ class DetectUnicodeEncodingTest(PicardTestCase):
                 f = NamedTemporaryFile(delete=False)
                 f.write(bom)
                 f.close()
-                self.assertEqual(expected_encoding, detect_unicode_encoding(f.name))
+                self.assertEqual(expected_encoding, detect_file_encoding(f.name))
             finally:
                 f.close()
                 os.remove(f.name)
+
+    def test_detect_file_encoding_eac_utf_16_le(self):
+        expected_encoding = 'utf-16-le'
+        file_path = get_test_data_path('eac-utf16le.log')
+        self.assertEqual(expected_encoding, detect_file_encoding(file_path))
+
+    def test_detect_file_encoding_eac_windows_1251(self):
+        expected_encoding = 'windows-1251'
+        file_path = get_test_data_path('eac-windows1251.log')
+        self.assertEqual(expected_encoding, detect_file_encoding(file_path))

@@ -8,3 +8,4 @@ pyobjc-framework-Cocoa==9.0.1
 PyQt5==5.13.1
 python-dateutil==2.8.2
 PyYAML==6.0.1
+charset-normalizer==3.3.2

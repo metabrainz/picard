@@ -31,7 +31,7 @@ from picard.disc.utils import (
     TocEntry,
     calculate_mb_toc_numbers,
 )
-from picard.util import detect_unicode_encoding
+from picard.util import detect_file_encoding
 
 
 RE_TOC_TABLE_HEADER = re.compile(r""" \s*
@@ -82,6 +82,6 @@ def toc_from_file(path):
 
     Warning: may work wrong for discs having data tracks. May generate wrong
     results on other non-standard cases."""
-    encoding = detect_unicode_encoding(path)
+    encoding = detect_file_encoding(path)
     with open(path, 'r', encoding=encoding) as f:
         return calculate_mb_toc_numbers(filter_toc_entries(f))
