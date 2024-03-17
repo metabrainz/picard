@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-03-15 09:28+0000\n"
+"PO-Revision-Date: 2024-03-17 21:28+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/app/lt/>\n"
@@ -5031,7 +5031,7 @@ msgstr "Ar esi įsitikinęs (-usi)?"
 
 #: picard/ui/options/dialog.py:478 picard/ui/options/maintenance.py:93
 msgid "Option"
-msgstr ""
+msgstr "Parinktis"
 
 #: picard/ui/options/dialog.py:485
 #, python-format
