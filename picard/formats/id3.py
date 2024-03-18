@@ -35,7 +35,6 @@
 
 from collections import Counter
 from enum import IntEnum
-from itertools import batched
 import re
 from urllib.parse import urlparse
 
@@ -63,8 +62,24 @@ from picard.util import (
     encode_filename,
     sanitize_date,
 )
-from picard.util.tags import parse_comment_tag
+from picard.util.tags import (
+    parse_comment_tag,
+    parse_lyrics_tag,
+)
 
+
+try:
+    from itertools import batched
+except ImportError:
+    # itertools.batched is only available in Python >= 3.12
+    from itertools import islice
+
+    def batched(iterable, n):
+        if n < 1:
+            raise ValueError('n must be at least one')
+        it = iter(iterable)
+        while batch := tuple(islice(it, n)):
+            yield batch
 
 UNSUPPORTED_TAGS = {'r128_album_gain', 'r128_track_gain'}
 
@@ -230,7 +245,8 @@ class ID3File(File):
         'MVIN': re.compile(r'^(?P<movementnumber>\d+)(?:/(?P<movementtotal>\d+))?$')
     }
 
-    __lrc_re_parse = re.compile(r'(\[\d\d:\d\d\.\d\d])')
+    __lrc_line_re_parse = re.compile(r'(\[\d\d:\d\d\.\d\d\])')
+    __lrc_syllable_re_parse = re.compile(r'(\[\d\d:\d\d\.\d\d\]|<\d\d:\d\d\.\d\d>)')
 
     def __init__(self, filename):
         super().__init__(filename)
@@ -333,19 +349,17 @@ class ID3File(File):
                 if frame.desc:
                     name += ':%s' % frame.desc
                 metadata.add(name, frame.text)
-            elif frameid == 'SYLT':
+            elif frameid == 'SYLT' and frame.type == 1:
+                if frame.format == 0:
+                    raise NotImplementedError("SYLT format 0 is not supported")
                 name = 'syncedlyrics'
-                if frame.desc:
-                    name += ':%s' % frame.desc
-
-                lrc_lyrics = []
-                for lyrics, milliseconds in frame.text:
-                    minutes = milliseconds // (60 * 1000)
-                    seconds = (milliseconds % (60 * 1000)) // 1000
-                    hundredths = (milliseconds % 1000) // 10
-                    lrc_lyrics.append(f"[{minutes:02d}:{seconds:02d}.{hundredths:02d}]{lyrics.strip()}")
-                lrc_lyrics = "\n".join(lrc_lyrics)
-
+                if frame.lang:
+                    name += ':%s' % frame.lang
+                    if frame.desc:
+                        name += ':%s' % frame.desc
+                elif frame.desc:
+                    name += '::%s' % frame.desc
+                lrc_lyrics = self._parse_sylt_text(frame.text)
                 metadata.add(name, lrc_lyrics)
             elif frameid == 'UFID' and frame.owner == "http://musicbrainz.org":
                 metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
@@ -476,21 +490,13 @@ class ID3File(File):
                     desc = ''
                 for value in values:
                     tags.add(id3.USLT(encoding=encoding, desc=desc, text=value))
-            elif name.startswith('syncedlyrics:') or name == 'syncedlyrics':
-                if ':' in name:
-                    desc = name.split(':', 1)[1]
-                else:
-                    desc = ''
+            elif name == 'syncedlyrics' or name.startswith('syncedlyrics:'):
+                (lang, desc) = parse_lyrics_tag(name)
                 for value in values:
-
-                    sylt_lyrics = []
-                    timestamp_and_lyrics = batched(re.split(self.__lrc_re_parse, value)[1:], 2)
-                    for timestamp, lyrics in timestamp_and_lyrics:
-                        minutes, seconds, hundredths = timestamp[1:-1].replace(".", ":").split(':')
-                        milliseconds = int(minutes) * 60 * 1000 + int(seconds) * 1000 + int(hundredths) * 10
-                        sylt_lyrics.append((lyrics, milliseconds))
-
-                    tags.add(id3.SYLT(encoding=encoding, desc=desc, text=sylt_lyrics))
+                    sylt_lyrics = self._parse_lrc_text(value)
+                    # If the text does not contain any timestamps, the tag is not added
+                    if sylt_lyrics:
+                        tags.add(id3.SYLT(encoding=encoding, lang=lang, format=2, type=1, desc=desc, text=sylt_lyrics))
             elif name in self._rtipl_roles:
                 for value in values:
                     tipl.people.append([self._rtipl_roles[name], value])
@@ -612,13 +618,11 @@ class ID3File(File):
                     for key, frame in list(tags.items()):
                         if frame.FrameID == 'USLT' and frame.desc == desc:
                             del tags[key]
-                elif name.startswith('syncedlyrics:') or name == 'syncedlyrics':
-                    if ':' in name:
-                        desc = name.split(':', 1)[1]
-                    else:
-                        desc = ''
+                elif name == 'syncedlyrics' or name.startswith('syncedlyrics:'):
+                    (lang, desc) = parse_lyrics_tag(name)
                     for key, frame in list(tags.items()):
-                        if frame.FrameID == 'SYLT' and frame.desc == desc:
+                        if frame.FrameID == 'SYLT' and frame.desc == desc and frame.lang == lang \
+                                and frame.type == 1 and frame.format == 2:
                             del tags[key]
                 elif name in self._rtipl_roles:
                     role = self._rtipl_roles[name]
@@ -723,6 +727,31 @@ class ID3File(File):
             values = [join_with.join(values)]
 
         return values
+
+    def _parse_sylt_text(self, text):
+        lrc_lyrics = []
+        previous_line_ended = True
+        for lyrics, milliseconds in text:
+            minutes = milliseconds // (60 * 1000)
+            seconds = (milliseconds % (60 * 1000)) // 1000
+            hundredths = (milliseconds % 1000) // 10
+            if previous_line_ended:
+                lrc_lyrics.append(f"[{minutes:02d}:{seconds:02d}.{hundredths:02d}]{lyrics}")
+                previous_line_ended = False
+            else:
+                lrc_lyrics.append(f"<{minutes:02d}:{seconds:02d}.{hundredths:02d}>{lyrics}")
+            if '\n' in lyrics:
+                previous_line_ended = True
+        return "".join(lrc_lyrics)
+
+    def _parse_lrc_text(self, text):
+        sylt_lyrics = []
+        timestamp_and_lyrics = batched(self.__lrc_syllable_re_parse.split(text)[1:], 2)
+        for timestamp, lyrics in timestamp_and_lyrics:
+            minutes, seconds, hundredths = timestamp[1:-1].replace(".", ":").split(':')
+            milliseconds = int(minutes) * 60 * 1000 + int(seconds) * 1000 + int(hundredths) * 10
+            sylt_lyrics.append((lyrics, milliseconds))
+        return sylt_lyrics
 
 
 class MP3File(ID3File):

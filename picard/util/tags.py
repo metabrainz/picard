@@ -197,3 +197,23 @@ def parse_comment_tag(name):  # noqa: E302
         desc = ''
 
     return lang, desc
+
+
+def parse_lyrics_tag(name):
+    """
+    Parses a tag name like "lyrics:XXX:desc", where XXX is the language.
+    If language is not set, the colons are still mandatory, and "eng" is
+    assumed by default.
+    """
+    split = name.split(':')
+    if len(split) > 1 and split[1]:
+        lang = split[1]
+    else:
+        lang = 'eng'
+
+    if len(split) > 2:
+        desc = split[2]
+    else:
+        desc = ''
+
+    return lang, desc
