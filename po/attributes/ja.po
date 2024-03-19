@@ -4018,6 +4018,14 @@ msgctxt "work_attribute_type"
 msgid "ID for the Latvian rights society AKKA/LAA"
 msgstr " ラトビアの権利者団体AKKA/LAAのID"
 
+#: DB:work_attribute_type/description:207
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Latvian rights society AKKA/LAA"
+msgctxt "work_attribute_type"
+msgid "ID for the Lithuanian rights society LATGA"
+msgstr " ラトビアの権利者団体AKKA/LAAのID"
+
 #: DB:work_attribute_type/description:49
 msgctxt "work_attribute_type"
 msgid "ID for the Malaysian rights society MACP"
@@ -4851,6 +4859,14 @@ msgstr ""
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kōmal riṣabh asāvēri"
 msgstr ""
+
+#: DB:work_attribute_type/name:207
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "APA ID"
+msgctxt "work_attribute_type"
+msgid "LATGA ID"
+msgstr "APA ID"
 
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"

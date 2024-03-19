@@ -42,13 +42,14 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 # emiguel1960 <msanchezg.correo@gmail.com>, 2023.
 # Yllelder <yllelder@gmail.com>, 2023.
-# reosarevok <reosarevok@users.noreply.translations.metabrainz.org>, 2023.
+# reosarevok <reosarevok@users.noreply.translations.metabrainz.org>, 2023, 2024.
 # yvanzo <yvanzo@users.noreply.translations.metabrainz.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2024-01-12 09:57+0000\n"
-"Last-Translator: yvanzo <yvanzo@users.noreply.translations.metabrainz.org>\n"
+"PO-Revision-Date: 2024-03-07 14:28+0000\n"
+"Last-Translator: reosarevok <reosarevok@users.noreply.translations.metabrainz"
+".org>\n"
 "Language-Team: Spanish <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/es/>\n"
 "Language: es\n"
@@ -57,7 +58,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
 " ? 1 : 2);\n"
-"X-Generator: Weblate 5.3\n"
+"X-Generator: Weblate 5.4\n"
 
 #: DB:work_type/description:9
 msgctxt "work_type"
@@ -88,7 +89,7 @@ msgstr "Acetato de 10\""
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
-msgstr "Disco de acetato de 10\""
+msgstr "Disco de goma laca de 10\""
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
@@ -108,7 +109,7 @@ msgstr "LaserDisc de 12\""
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
-msgstr "Disco de acetato de 12\""
+msgstr "Disco de goma laca de 12\""
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
@@ -138,7 +139,7 @@ msgstr "Flexi disco de 7\""
 #: DB:medium_format/name:56
 msgctxt "medium_format"
 msgid "7\" Shellac"
-msgstr "Disco de acetato de 7\""
+msgstr "Disco de goma laca de 7\""
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
@@ -2868,7 +2869,7 @@ msgstr "Dolap"
 #: DB:medium_format/name:46
 msgctxt "medium_format"
 msgid "Download Card"
-msgstr "Tarjeta de Descarga"
+msgstr "Tarjeta de descarga"
 
 #: DB:medium_format/name:4
 msgctxt "medium_format"
@@ -4225,6 +4226,14 @@ msgctxt "work_attribute_type"
 msgid "ID for the Latvian rights society AKKA/LAA"
 msgstr "ID para la sociedad letona de derechos AKKA/LAA"
 
+#: DB:work_attribute_type/description:207
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Latvian rights society AKKA/LAA"
+msgctxt "work_attribute_type"
+msgid "ID for the Lithuanian rights society LATGA"
+msgstr "ID para la sociedad letona de derechos AKKA/LAA"
+
 #: DB:work_attribute_type/description:49
 msgctxt "work_attribute_type"
 msgid "ID for the Malaysian rights society MACP"
@@ -5065,6 +5074,14 @@ msgstr "Kokilapriya"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kōmal riṣabh asāvēri"
 msgstr "Kōmal riṣabh asāvēri"
+
+#: DB:work_attribute_type/name:207
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "APA ID"
+msgctxt "work_attribute_type"
+msgid "LATGA ID"
+msgstr "ID de APA"
 
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
@@ -7280,7 +7297,7 @@ msgstr "Seyir"
 #: DB:medium_format/name:53
 msgctxt "medium_format"
 msgid "Shellac"
-msgstr "Goma laca"
+msgstr "Disco de goma laca"
 
 #: DB:medium_format/description:53
 msgctxt "medium_format"

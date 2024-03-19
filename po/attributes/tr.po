@@ -8,18 +8,20 @@
 # yerdemli <email address hidden>, 2018
 # portik <email address hidden>, 2014
 # portik <email address hidden>, 2012
+# brtc <boratici@gmail.com>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2012-05-24 18:52+0000\n"
-"Last-Translator: Bora Atıcı, 2021,2023\n"
-"Language-Team: Turkish (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/tr/)\n"
+"PO-Revision-Date: 2024-03-18 23:28+0000\n"
+"Last-Translator: brtc <boratici@gmail.com>\n"
+"Language-Team: Turkish <https://translations.metabrainz.org/projects/"
+"musicbrainz/attributes/tr/>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Weblate 5.4\n"
 
 #: DB:work_type/description:9
 msgctxt "work_type"
@@ -272,6 +274,7 @@ msgstr ""
 msgctxt "release_packaging"
 msgid "A box usually containing multiple discs as part of a boxed set."
 msgstr ""
+"Genellikle kutulu bir setin parçası olarak birden fazla disk içeren bir kutu."
 
 #: DB:work_type/description:3
 msgctxt "work_type"
@@ -1179,12 +1182,12 @@ msgstr "Arazbarek"
 #: DB:editor_collection_type/name:7
 msgctxt "collection_type"
 msgid "Area collection"
-msgstr ""
+msgstr "Bölge koleksiyonu"
 
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
 msgid "Area name"
-msgstr ""
+msgstr "Bölge adı"
 
 #: DB:work_type/name:1
 msgctxt "work_type"
@@ -1194,12 +1197,12 @@ msgstr "Arya"
 #: DB:series_type/name:14
 msgctxt "series_type"
 msgid "Artist award"
-msgstr ""
+msgstr "Sanatçı ödülü"
 
 #: DB:editor_collection_type/name:8
 msgctxt "collection_type"
 msgid "Artist collection"
-msgstr ""
+msgstr "Sanatçı koleksiyonu"
 
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
@@ -1254,12 +1257,12 @@ msgstr "Otomatik"
 #: DB:event_type/name:7
 msgctxt "event_type"
 msgid "Award ceremony"
-msgstr ""
+msgstr "Ödül töreni"
 
 #: DB:series_type/name:15
 msgctxt "series_type"
 msgid "Award ceremony"
-msgstr ""
+msgstr "Ödül töreni"
 
 #: DB:work_attribute_type_allowed_value/value:694
 msgctxt "work_attribute_type_allowed_value"
@@ -1707,7 +1710,7 @@ msgstr "Blu-ray"
 #: DB:medium_format/name:79
 msgctxt "medium_format"
 msgid "Blu-ray-R"
-msgstr ""
+msgstr "Blu-ray-R"
 
 #: DB:medium_format/name:35
 msgctxt "medium_format"
@@ -1752,7 +1755,7 @@ msgstr "Bozlak"
 #: DB:instrument_alias_type/name:3
 msgctxt "alias_type"
 msgid "Brand name"
-msgstr ""
+msgstr "Marka adı"
 
 #: DB:release_group_primary_type/name:12
 msgctxt "release_group_primary_type"
@@ -1878,7 +1881,7 @@ msgstr "CD"
 #: DB:medium_format/name:39
 msgctxt "medium_format"
 msgid "CD+G"
-msgstr ""
+msgstr "CD+G"
 
 #: DB:medium_format/name:33
 msgctxt "medium_format"
@@ -1888,12 +1891,12 @@ msgstr "CD-R"
 #: DB:medium_format/name:41
 msgctxt "medium_format"
 msgid "CDV"
-msgstr ""
+msgstr "CDV"
 
 #: DB:medium_format/name:60
 msgctxt "medium_format"
 msgid "CED"
-msgstr ""
+msgstr "CED"
 
 #: DB:work_attribute_type/name:45
 msgctxt "work_attribute_type"
@@ -3881,6 +3884,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Latvian rights society AKKA/LAA"
 msgstr ""
 
+#: DB:work_attribute_type/description:207
+msgctxt "work_attribute_type"
+msgid "ID for the Lithuanian rights society LATGA"
+msgstr ""
+
 #: DB:work_attribute_type/description:49
 msgctxt "work_attribute_type"
 msgid "ID for the Malaysian rights society MACP"
@@ -4709,6 +4717,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:954
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kōmal riṣabh asāvēri"
+msgstr ""
+
+#: DB:work_attribute_type/name:207
+msgctxt "work_attribute_type"
+msgid "LATGA ID"
 msgstr ""
 
 #: DB:editor_collection_type/name:10
