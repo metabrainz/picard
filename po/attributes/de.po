@@ -47,14 +47,13 @@
 # Ulrich Klauer <email address hidden>, 2015-2016
 # Wieland Hoffmann <email address hidden>, 2011
 # chaban <chaban@users.noreply.translations.metabrainz.org>, 2023.
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2023, 2024.
 # kellnerd <kellnerd@users.noreply.translations.metabrainz.org>, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2024-01-10 19:28+0000\n"
-"Last-Translator: kellnerd <kellnerd@users.noreply.translations.metabrainz."
-"org>\n"
+"PO-Revision-Date: 2024-01-31 12:28+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/de/>\n"
 "Language: de\n"
@@ -585,6 +584,10 @@ msgid ""
 "replace it with a new version with some changes or to just retire it "
 "altogether (e.g. because of legal issues)."
 msgstr ""
+"Eine zuvor offizielle Veröffentlichung, die vom Künstler und/oder seiner "
+"Plattenfirma nach der Veröffentlichung aktiv aus dem Verkehr gezogen wurde, "
+"sei es, um sie durch eine neue Version mit einigen Änderungen zu ersetzen "
+"oder sie ganz aus dem Programm zu nehmen (z. B. wegen rechtlicher Probleme)."
 
 #: DB:release_group_secondary_type/description:10
 msgctxt "release_group_secondary_type"
@@ -839,6 +842,8 @@ msgid ""
 "A temporary outdoor stage erected for a music festival or other similar "
 "event."
 msgstr ""
+"Eine temporär errichtete Freiluftbühne für ein Musikfestival oder eine "
+"ähnliche Veranstaltung."
 
 #: DB:release_packaging/description:2
 msgctxt "release_packaging"
@@ -913,12 +918,9 @@ msgid "ACDAM ID"
 msgstr "ACDAM-ID"
 
 #: DB:work_attribute_type/name:206
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ACAM ID"
 msgctxt "work_attribute_type"
 msgid "ACUM ID"
-msgstr "ACAM-ID"
+msgstr "ACUM-ID"
 
 #: DB:work_attribute_type/name:58
 msgctxt "work_attribute_type"
@@ -1018,7 +1020,7 @@ msgstr ""
 #: DB:medium_format/name:203
 msgctxt "medium_format"
 msgid "Acetate"
-msgstr ""
+msgstr "Azetat"
 
 #: DB:work_attribute_type_allowed_value/value:848
 msgctxt "work_attribute_type_allowed_value"
@@ -1182,6 +1184,9 @@ msgid ""
 "but often includes musical performances in between the awarding of said "
 "prizes, especially for musical awards."
 msgstr ""
+"Eine Preisverleihung ist eine Veranstaltung, die sich auf die Vergabe von "
+"Preisen konzentriert, aber oft musikalische Auftritte zwischen der "
+"Verleihung der genannten Preise umfasst, insbesondere bei Musikpreisen."
 
 #: DB:release_group_primary_type/description:12
 msgctxt "release_group_primary_type"
@@ -3176,7 +3181,7 @@ msgstr "Festival"
 #: DB:place_type/name:45
 msgctxt "place_type"
 msgid "Festival stage"
-msgstr ""
+msgstr "Festivalbühne"
 
 #: DB:work_attribute_type_allowed_value/value:372
 msgctxt "work_attribute_type_allowed_value"
@@ -4065,12 +4070,9 @@ msgid "ID for the Irish rights society IMRO"
 msgstr "ID für die irische Verwertungsgesellschaft IMRO"
 
 #: DB:work_attribute_type/description:206
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Austrian rights society AKM"
 msgctxt "work_attribute_type"
 msgid "ID for the Israeli rights society ACUM"
-msgstr "ID für die österreichische Verwertungsgesellschaft AKM"
+msgstr "ID für die israelische Verwertungsgesellschaft ACUM"
 
 #: DB:work_attribute_type/description:36
 msgctxt "work_attribute_type"
@@ -4101,6 +4103,14 @@ msgstr "ID für die koreanische Verwertungsgesellschaft KOMCA"
 msgctxt "work_attribute_type"
 msgid "ID for the Latvian rights society AKKA/LAA"
 msgstr ""
+
+#: DB:work_attribute_type/description:207
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Italian rights society SIAE"
+msgctxt "work_attribute_type"
+msgid "ID for the Lithuanian rights society LATGA"
+msgstr "ID für die italienische Verwertungsgesellschaft SIAE"
 
 #: DB:work_attribute_type/description:49
 msgctxt "work_attribute_type"
@@ -4293,7 +4303,7 @@ msgstr ""
 #: DB:area_type/name:9
 msgctxt "area_type"
 msgid "Indigenous territory / reserve"
-msgstr ""
+msgstr "Indigenes Territorium / Reservat"
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -4936,6 +4946,14 @@ msgstr "Kōkilapriya"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kōmal riṣabh asāvēri"
 msgstr ""
+
+#: DB:work_attribute_type/name:207
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "APA ID"
+msgctxt "work_attribute_type"
+msgid "LATGA ID"
+msgstr "APA-ID"
 
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
@@ -8300,7 +8318,7 @@ msgstr "Wunschliste"
 #: DB:release_status/name:5
 msgctxt "release_status"
 msgid "Withdrawn"
-msgstr ""
+msgstr "Zurückgezogen"
 
 #: DB:series_type/name:46
 msgctxt "series_type"

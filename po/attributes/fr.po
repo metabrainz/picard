@@ -28,11 +28,11 @@
 # yvanz, 2016,2018
 # yvanz, 2018
 # Zas <Zas@users.noreply.translations.metabrainz.org>, 2023.
-# yvanzo <yvanzo@users.noreply.translations.metabrainz.org>, 2023.
+# yvanzo <yvanzo@users.noreply.translations.metabrainz.org>, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2023-12-14 16:28+0000\n"
+"PO-Revision-Date: 2024-03-11 11:05+0000\n"
 "Last-Translator: yvanzo <yvanzo@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/fr/>\n"
@@ -42,7 +42,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % "
 "1000000 == 0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.2.1\n"
+"X-Generator: Weblate 5.4\n"
 
 #: DB:work_type/description:9
 msgctxt "work_type"
@@ -1011,12 +1011,9 @@ msgid "ACDAM ID"
 msgstr "ID ACDAM"
 
 #: DB:work_attribute_type/name:206
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ACAM ID"
 msgctxt "work_attribute_type"
 msgid "ACUM ID"
-msgstr "ID ACAM"
+msgstr "ID ACUM"
 
 #: DB:work_attribute_type/name:58
 msgctxt "work_attribute_type"
@@ -4184,12 +4181,9 @@ msgid "ID for the Irish rights society IMRO"
 msgstr "ID pour l’IMRO, société irlandaise de gestion des droits"
 
 #: DB:work_attribute_type/description:206
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Austrian rights society AKM"
 msgctxt "work_attribute_type"
 msgid "ID for the Israeli rights society ACUM"
-msgstr "ID pour l’AKM, société autrichienne de gestion des droits"
+msgstr "ID pour l’ACUM, société israélienne de gestion des droits"
 
 #: DB:work_attribute_type/description:36
 msgctxt "work_attribute_type"
@@ -4220,6 +4214,11 @@ msgstr "ID pour la KOMCA, société coréenne de gestion des droits"
 msgctxt "work_attribute_type"
 msgid "ID for the Latvian rights society AKKA/LAA"
 msgstr "ID pour l’AKKA/LAA, société lettone de gestion des droits"
+
+#: DB:work_attribute_type/description:207
+msgctxt "work_attribute_type"
+msgid "ID for the Lithuanian rights society LATGA"
+msgstr "ID pour la LATGA, société lituanienne de gestion des droits"
 
 #: DB:work_attribute_type/description:49
 msgctxt "work_attribute_type"
@@ -5063,6 +5062,11 @@ msgstr "Kôkilapriya"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kōmal riṣabh asāvēri"
 msgstr "Kômal rishabh asâvêri"
+
+#: DB:work_attribute_type/name:207
+msgctxt "work_attribute_type"
+msgid "LATGA ID"
+msgstr "ID LATGA"
 
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"

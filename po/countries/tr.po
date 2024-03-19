@@ -8,11 +8,12 @@
 # portik <email address hidden>, 2014
 # portik <email address hidden>, 2012
 # portik <tutkuayata@gmail.com>, 2023.
+# brtc <boratici@gmail.com>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2023-10-31 17:27+0000\n"
-"Last-Translator: portik <tutkuayata@gmail.com>\n"
+"PO-Revision-Date: 2024-02-25 19:28+0000\n"
+"Last-Translator: brtc <boratici@gmail.com>\n"
 "Language-Team: Turkish <https://translations.metabrainz.org/projects/"
 "musicbrainz/countries/tr/>\n"
 "Language: tr\n"
@@ -20,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Weblate 5.1\n"
+"X-Generator: Weblate 5.4\n"
 
 #. iso.code:AF 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:1
@@ -385,7 +386,7 @@ msgstr "Estonya"
 #. iso.code:SZ 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:201
 msgid "Eswatini"
-msgstr ""
+msgstr "Esvatini"
 
 #. iso.code:ET 
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:68
