@@ -31,6 +31,8 @@ Optional but recommended:
   * Required for the complete scripting documentation
 * [PyJWT 1.7 or newer](https://pyjwt.readthedocs.io/)
   * Required for the add cluster as release / add file as recording functionality
+* [charset_normalizer](https://pypi.org/project/charset-normalizer/) or [chardet](https://pypi.org/project/chardet/)
+  * Required for character encoding detection in CD ripping log files
 
 We recommend you use [pip](https://pip.pypa.io/en/stable/) to install the Python
 dependencies:
