@@ -199,7 +199,7 @@ def parse_comment_tag(name):  # noqa: E302
     return lang, desc
 
 
-def parse_lyrics_tag(name):
+def parse_subtag(name):
     """
     Parses a tag name like "lyrics:XXX:desc", where XXX is the language.
     If language is not set, the colons are still mandatory, and "eng" is
