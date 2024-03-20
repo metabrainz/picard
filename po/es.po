@@ -18,7 +18,6 @@
 # Jefferson Alejandro Neira Rodriguez <alejo.conejo27@hotmail.com>, 2020
 # Jeremias Brown <comercialspam@gmail.com>, 2018,2020
 # Jesús Heriberto López Cisneros, 2019
-# Maurizio Corripio <perromaldo@outlook.com>, 2019
 # Nicolás Tamargo <reosarevok@gmail.com>, 2012
 # Olivernio Silva <diegoozzysh@gmail.com>, 2020
 # Peter Cuevas <peter.cuevas6@gmail.com>, 2017,2020

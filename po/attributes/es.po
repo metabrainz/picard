@@ -27,7 +27,6 @@
 # Luis zas <email address hidden>, 2017
 # Marta PD <email address hidden>, 2014
 # Mathias Gonzalez <email address hidden>, 2015
-# Maurizio Corripio <email address hidden>, 2019
 # Nicolás Tamargo <email address hidden>, 2011-2012
 # Nicolás Tamargo <email address hidden>, 2011-2013,2015,2019
 # Pier Jose Gotta Perez <email address hidden>, 2017
