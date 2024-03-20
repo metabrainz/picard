@@ -64,7 +64,7 @@ from picard.util import (
 )
 from picard.util.tags import (
     parse_comment_tag,
-    parse_lyrics_tag,
+    parse_subtag,
 )
 
 
@@ -245,8 +245,10 @@ class ID3File(File):
         'MVIN': re.compile(r'^(?P<movementnumber>\d+)(?:/(?P<movementtotal>\d+))?$')
     }
 
-    __lrc_line_re_parse = re.compile(r'(\[\d\d:\d\d\.\d\d\])')
-    __lrc_syllable_re_parse = re.compile(r'(\[\d\d:\d\d\.\d\d\]|<\d\d:\d\d\.\d\d>)')
+    __lrc_line_re_parse = re.compile(r'(\[\d\d:\d\d\.\d\d\d\])')
+    __lrc_syllable_re_parse = re.compile(r'(<\d\d:\d\d\.\d\d\d>)')
+    __lrc_syllable_at_the_end_re_parse = re.compile(r'(<\d\d:\d\d\.\d\d\d>$)')
+    __lrc_both_re_parse = re.compile(r'(\[\d\d:\d\d\.\d\d\d\]|<\d\d:\d\d\.\d\d\d>)')
 
     def __init__(self, filename):
         super().__init__(filename)
@@ -491,7 +493,7 @@ class ID3File(File):
                 for value in values:
                     tags.add(id3.USLT(encoding=encoding, desc=desc, text=value))
             elif name == 'syncedlyrics' or name.startswith('syncedlyrics:'):
-                (lang, desc) = parse_lyrics_tag(name)
+                (lang, desc) = parse_subtag(name)
                 for value in values:
                     sylt_lyrics = self._parse_lrc_text(value)
                     # If the text does not contain any timestamps, the tag is not added
@@ -619,7 +621,7 @@ class ID3File(File):
                         if frame.FrameID == 'USLT' and frame.desc == desc:
                             del tags[key]
                 elif name == 'syncedlyrics' or name.startswith('syncedlyrics:'):
-                    (lang, desc) = parse_lyrics_tag(name)
+                    (lang, desc) = parse_subtag(name)
                     for key, frame in list(tags.items()):
                         if frame.FrameID == 'SYLT' and frame.desc == desc and frame.lang == lang \
                                 and frame.type == 1 and frame.format == 2:
@@ -729,27 +731,50 @@ class ID3File(File):
         return values
 
     def _parse_sylt_text(self, text):
-        lrc_lyrics = []
-        previous_line_ended = True
-        for lyrics, milliseconds in text:
-            minutes = milliseconds // (60 * 1000)
-            seconds = (milliseconds % (60 * 1000)) // 1000
-            hundredths = (milliseconds % 1000) // 10
-            if previous_line_ended:
-                lrc_lyrics.append(f"[{minutes:02d}:{seconds:02d}.{hundredths:02d}]{lyrics}")
-                previous_line_ended = False
-            else:
-                lrc_lyrics.append(f"<{minutes:02d}:{seconds:02d}.{hundredths:02d}>{lyrics}")
+
+        def milliseconds_to_timestamp(ms):
+            minutes = ms // (60 * 1000)
+            seconds = (ms % (60 * 1000)) // 1000
+            remaining_ms = ms % 1000
+            return f"{minutes:02d}:{seconds:02d}.{remaining_ms:03d}"
+
+        lyrics, milliseconds = zip(*text)
+        first_timestamp = milliseconds_to_timestamp(milliseconds[0])
+        lrc_lyrics = [f"[{first_timestamp}]"]
+        for i, lyrics in enumerate(lyrics):
+            timestamp = milliseconds_to_timestamp(milliseconds[i])
             if '\n' in lyrics:
-                previous_line_ended = True
+                split = lyrics.split('\n')
+                lrc_lyrics.append(f"<{timestamp}>{split[0]}")
+                for line in split[1:]:
+                    if i + 1 < len(milliseconds):
+                        estimation = (milliseconds[i] + milliseconds[i + 1]) // 2
+                    else:
+                        estimation = milliseconds[i]
+                    timestamp = milliseconds_to_timestamp(estimation)
+                    lrc_lyrics.append(f"\n[{timestamp}]{line}")
+            else:
+                lrc_lyrics.append(f"<{timestamp}>{lyrics}")
         return "".join(lrc_lyrics)
 
     def _parse_lrc_text(self, text):
         sylt_lyrics = []
-        timestamp_and_lyrics = batched(self.__lrc_syllable_re_parse.split(text)[1:], 2)
+
+        # If the text is in a2 enhanced lrc
+        if self.__lrc_syllable_re_parse.search(text):
+            lines = []
+            split = text.split("\n")
+            for line in split:
+                if self.__lrc_line_re_parse.match(line):
+                    line = self.__lrc_line_re_parse.sub("", line)
+                line = self.__lrc_syllable_at_the_end_re_parse.sub("", line.rstrip())
+                lines.append(line)
+            text = "\n".join(lines)
+
+        timestamp_and_lyrics = batched(self.__lrc_both_re_parse.split(text)[1:], 2)
         for timestamp, lyrics in timestamp_and_lyrics:
-            minutes, seconds, hundredths = timestamp[1:-1].replace(".", ":").split(':')
-            milliseconds = int(minutes) * 60 * 1000 + int(seconds) * 1000 + int(hundredths) * 10
+            minutes, seconds, ms = timestamp[1:-1].replace(".", ":").split(':')
+            milliseconds = int(minutes) * 60 * 1000 + int(float('%s.%s' % (seconds, ms)) * 1000)
             sylt_lyrics.append((lyrics, milliseconds))
         return sylt_lyrics
 

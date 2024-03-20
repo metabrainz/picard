@@ -372,9 +372,10 @@ class CommonId3Tests:
 
         @skipUnlessTestfile
         def test_syncedlyrics_preserve_language_and_description(self):
-            metadata = Metadata({'syncedlyrics:ita': '[00:00.00]foo3'})
-            metadata.add('syncedlyrics:deu:desc', '[00:00.00]foo1')
-            metadata.add('syncedlyrics::desc', '[00:00.00]foo4')
+            metadata = Metadata({'syncedlyrics': '[00:00.000]<00:00.000>foo1'})
+            metadata.add('syncedlyrics:deu:desc', '[00:00.000]<00:00.000>foo2')
+            metadata.add('syncedlyrics:ita', '[00:00.000]<00:00.000>foo3')
+            metadata.add('syncedlyrics::desc', '[00:00.000]<00:00.000>foo4')
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertEqual(metadata['syncedlyrics'], loaded_metadata['syncedlyrics:eng'])
             self.assertEqual(metadata['syncedlyrics:deu:desc'], loaded_metadata['syncedlyrics:deu:desc'])
@@ -383,7 +384,7 @@ class CommonId3Tests:
 
         @skipUnlessTestfile
         def test_syncedlyrics_delete(self):
-            metadata = Metadata({'syncedlyrics': '[00:00.00]foo3'})
+            metadata = Metadata({'syncedlyrics': '[00:00.000]<00:00.000>foo1'})
             metadata.delete('syncedlyrics:eng')
             save_metadata(self.filename, metadata)
             raw_metadata = load_raw(self.filename)
@@ -777,31 +778,35 @@ class ID3FileTest(PicardTestCase):
 
     def test_syncedlyrics_converting_to_lrc(self):
         sylt = (
-            [("first", 0), ("bar\n", 500), ("second", 1000), ("bar", 1500)],
-            [("test", 0), ("syl", 10), ("la", 20), ("bles", 30)],
-            [("test lyrics with\n", 0), ("only line time stamps", 5000)])
+            [("Test", 0), ("normal\n", 500), ("behaviour", 1000)],
+            [("Test", 0), ("syl", 10), ("la", 20), ("bles", 30)],
+            [("Test newline\nin the middle", 0), ("of the text", 1000)],
+            [("Test empty lyrics at the end\n", 0), ("", 1000)],
+            [("Test timestamp estimation", 0), ("in the\nlast phrase", 1000)])
         correct_lrc = (
-            "[00:00.00]first<00:00.50>bar\n[00:01.00]second<00:01.50>bar",
-            "[00:00.00]test<00:00.01>syl<00:00.02>la<00:00.03>bles",
-            "[00:00.00]test lyrics with\n[00:05.00]only line time stamps")
-        for sylt, correct_sylt in zip(sylt, correct_lrc):
-            sylt = self.file._parse_sylt_text(sylt)
-            self.assertEqual(sylt, correct_sylt)
+            "[00:00.000]<00:00.000>Test<00:00.500>normal\n[00:00.750]<00:01.000>behaviour",
+            "[00:00.000]<00:00.000>Test<00:00.010>syl<00:00.020>la<00:00.030>bles",
+            "[00:00.000]<00:00.000>Test newline\n[00:00.500]in the middle<00:01.000>of the text",
+            "[00:00.000]<00:00.000>Test empty lyrics at the end\n[00:00.500]<00:01.000>",
+            "[00:00.000]<00:00.000>Test timestamp estimation<00:01.000>in the\n[00:01.000]last phrase")
+        for sylt, correct_lrc in zip(sylt, correct_lrc):
+            lrc = self.file._parse_sylt_text(sylt)
+            self.assertEqual(lrc, correct_lrc)
 
     def test_syncedlyrics_converting_to_sylt(self):
         lrc = (
-            "[00:00.00]first<00:00.50>bar\n[00:01.00]second<00:01.50>bar",
-            "[00:00.00]test lyrics with\n[01:00.00]only line time stamps",
-            "[00:00.00]test lyrics with no[00:01.00]new lines",
-            "first invalid[00:00.00]input\nsecond invalid[00:01.00]input",
-            "[00:02.00]test out of order[00:01.00]timestamps",
+            "[00:00.000]<00:00.000>Test<00:00.500>normal\n[00:00.750]<00:01.000>behaviour",
+            "[00:00.000]Test lyrics with\n[01:00.000]only line time stamps",
+            "<00:00.000>Test lyrics with<01:00.000>only syllable time stamps",
+            "[00:00.000]<00:00.000>Test extra<00:00.500>\n[00:00.750]<00:00.750>timestamp<00:01.500>",
+            "Test invalid[00:00.000]input\nTest invalid[00:01.000]input",
             "Test lyrics with no timestamps")
         correct_sylt = (
-            [("first", 0), ("bar\n", 500), ("second", 1000), ("bar", 1500)],
-            [("test lyrics with\n", 0), ("only line time stamps", 60 * 1000)],
-            [("test lyrics with no", 0), ("new lines", 1000)],
-            [("input\nsecond invalid", 0), ("input", 1000)],
-            [("test out of order", 2000), ("timestamps", 1000)],
+            [("Test", 0), ("normal\n", 500), ("behaviour", 1000)],
+            [("Test lyrics with\n", 0), ("only line time stamps", 60 * 1000)],
+            [("Test lyrics with", 0), ("only syllable time stamps", 60 * 1000)],
+            [("Test extra\n", 0), ("timestamp", 750)],
+            [("input\nTest invalid", 0), ("input", 1000)],
             [])
         for lrc, correct_sylt in zip(lrc, correct_sylt):
             sylt = self.file._parse_lrc_text(lrc)
