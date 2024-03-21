@@ -784,13 +784,13 @@ class ID3FileTest(PicardTestCase):
             [("Test empty lyrics at the end\n", 0), ("", 1000)],
             [("Test timestamp estimation", 0), ("in the\nlast phrase", 1000)])
         correct_lrc = (
-            "[00:00.000]<00:00.000>Test<00:00.500>normal\n[00:00.750]<00:01.000>behaviour",
+            "[00:00.000]<00:00.000>Test<00:00.500>normal\n[00:01.000]<00:01.000>behaviour",
             "[00:00.000]<00:00.000>Test<00:00.010>syl<00:00.020>la<00:00.030>bles",
-            "[00:00.000]<00:00.000>Test newline\n[00:00.500]in the middle<00:01.000>of the text",
-            "[00:00.000]<00:00.000>Test empty lyrics at the end\n[00:00.500]<00:01.000>",
-            "[00:00.000]<00:00.000>Test timestamp estimation<00:01.000>in the\n[00:01.000]last phrase")
+            "[00:00.000]<00:00.000>Test newline\n[00:00.480]in the middle<00:01.000>of the text",
+            "[00:00.000]<00:00.000>Test empty lyrics at the end\n[00:01.000]<00:01.000>",
+            "[00:00.000]<00:00.000>Test timestamp estimation<00:01.000>in the\n[00:01.352]last phrase")
         for sylt, correct_lrc in zip(sylt, correct_lrc):
-            lrc = self.file._parse_sylt_text(sylt)
+            lrc = self.file._parse_sylt_text(sylt, 2)
             self.assertEqual(lrc, correct_lrc)
 
     def test_syncedlyrics_converting_to_sylt(self):
@@ -798,14 +798,14 @@ class ID3FileTest(PicardTestCase):
             "[00:00.000]<00:00.000>Test<00:00.500>normal\n[00:00.750]<00:01.000>behaviour",
             "[00:00.000]Test lyrics with\n[01:00.000]only line time stamps",
             "<00:00.000>Test lyrics with<01:00.000>only syllable time stamps",
-            "[00:00.000]<00:00.000>Test extra<00:00.500>\n[00:00.750]<00:00.750>timestamp<00:01.500>",
+            "[00:00.000]<00:00.000>Test extra\n<00:00.750>[00:00.750]<00:00.750>timestamp<00:01.500>",
             "Test invalid[00:00.000]input\nTest invalid[00:01.000]input",
             "Test lyrics with no timestamps")
         correct_sylt = (
             [("Test", 0), ("normal\n", 500), ("behaviour", 1000)],
             [("Test lyrics with\n", 0), ("only line time stamps", 60 * 1000)],
             [("Test lyrics with", 0), ("only syllable time stamps", 60 * 1000)],
-            [("Test extra\n", 0), ("timestamp", 750)],
+            [("Test extra\n", 0), ("timestamp", 750), ("", 1500)],
             [("input\nTest invalid", 0), ("input", 1000)],
             [])
         for lrc, correct_sylt in zip(lrc, correct_sylt):
