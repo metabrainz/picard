@@ -70,6 +70,7 @@ UNSUPPORTED_TAGS = {
     'podcasturl',
     'show',
     'showsort',
+    'syncedlyrics',
     'r128_album_gain',
     'r128_track_gain',
 }
