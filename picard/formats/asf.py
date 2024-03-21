@@ -304,6 +304,8 @@ class ASFFile(File):
             real_name = self._get_tag_name(tag)
             if real_name and real_name in tags:
                 del tags[real_name]
+        if self.metadata.images.deleted:
+            del tags['WM/Picture']
 
     @classmethod
     def supports_tag(cls, name):
