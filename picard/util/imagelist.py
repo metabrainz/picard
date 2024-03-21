@@ -33,6 +33,7 @@ class ImageList(MutableSequence):
         self._images = list(iterable)
         self._hash_dict = {}
         self._changed = True
+        self._deleted = False
 
     def __len__(self):
         return len(self._images)
@@ -95,12 +96,19 @@ class ImageList(MutableSequence):
         self._images = [image for image in self._images if not image.is_front_image()]
         self._changed = True
 
+    def strip_selected_image(self, image_index):
+        if len(self._images) == 0:
+            self._deleted = True
+        elif len(self._images) > image_index:
+            del self._images[image_index]
+        else:
+            raise IndexError("Invalid image index")
+
     def hash_dict(self):
         if self._changed:
             self._hash_dict = {img.datahash.hash(): img for img in self._images}
             self._changed = False
         return self._hash_dict
-
 
 class ImageListState:
     def __init__(self):

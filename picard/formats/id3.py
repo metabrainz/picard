@@ -613,6 +613,12 @@ class ID3File(File):
             except KeyError:
                 pass
 
+        if metadata.images._deleted == True:
+            # tags.delall('APIC')
+            for key, frame in list(tags.items()):
+                if frame.FrameID == 'APIC':
+                    del tags[key]
+
     @classmethod
     def supports_tag(cls, name):
         return ((name and not name.startswith('~') and name not in UNSUPPORTED_TAGS)

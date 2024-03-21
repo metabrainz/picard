@@ -262,6 +262,11 @@ class APEv2File(File):
                 if real_name in tags:
                     del tags[real_name]
 
+        if metadata.images._deleted == True:
+            for tag in tags:
+                if tag.lower().startswith('cover art'):
+                    del tags[tag]
+
     def _get_tag_name(self, name):
         if name in self.__casemap:
             return self.__casemap[name]

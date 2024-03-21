@@ -352,6 +352,8 @@ class VCommentFile(File):
                         if re.search(tag_type_regex, item):
                             existing_tags.remove(item)
                     tags[real_name] = existing_tags
+                elif real_name and real_name.lower().startswith('metadata_block_picture'):
+                    del tags[real_name]
                 else:
                     if tag in {'totaldiscs', 'totaltracks'} and tag in tags:
                         # both tag and real_name are to be deleted in this case

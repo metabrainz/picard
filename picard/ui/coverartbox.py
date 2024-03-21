@@ -347,6 +347,9 @@ class CoverArtThumbnail(ActiveLabel):
         lookup = self.tagger.get_file_lookup()
         lookup.album_lookup(self.release)
 
+def image_delete(obj, image_index):
+    obj.metadata.images.strip_selected_image(image_index)
+    obj.metadata_images_changed.emit()
 
 def set_image_replace(obj, coverartimage):
     obj.metadata.images.strip_front_images()
@@ -545,6 +548,14 @@ class CoverArtBox(QtWidgets.QGroupBox):
             log.warning("Can't load image: %s", e)
             return
 
+    ## Temporary
+    def delete_cover_art(self):
+        file = self.item
+        metadata = self.item.metadata
+        image_delete(file, len(metadata.images)-1)
+                
+        self.update_display(force=True)
+
     def _try_load_remote_image(self, url, data):
         coverartimage = CoverArtImage(
             url=url.toString(),
@@ -633,6 +644,12 @@ class CoverArtBox(QtWidgets.QGroupBox):
             show_more_details_action = QtGui.QAction(name, self.parent)
             show_more_details_action.triggered.connect(self.show_cover_art_info)
             menu.addAction(show_more_details_action)
+
+        if self.item and self.item.can_show_coverart:
+            name = _("Delete cover art")
+            delete_cover_art_action = QtGui.QAction(name, self.parent)
+            delete_cover_art_action.triggered.connect(self.delete_cover_art)
+            menu.addAction(delete_cover_art_action)
 
         if self.orig_cover_art.isVisible():
             name = _("Keep original cover art")
