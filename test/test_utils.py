@@ -60,6 +60,7 @@ from picard.util import (
     album_artist_from_path,
     any_exception_isinstance,
     build_qurl,
+    detect as charset_detect,
     detect_file_encoding,
     encoded_queryargs,
     extract_year_from_date,
@@ -1006,7 +1007,9 @@ class DetectUnicodeEncodingTest(PicardTestCase):
                 f = NamedTemporaryFile(delete=False)
                 f.write(bom)
                 f.close()
-                self.assertEqual(expected_encoding, detect_file_encoding(f.name))
+                encoding = detect_file_encoding(f.name)
+                self.assertEqual(expected_encoding, encoding,
+                                 f'BOM {bom!r} detected as {encoding}, expected {expected_encoding}')
             finally:
                 f.close()
                 os.remove(f.name)
@@ -1021,6 +1024,7 @@ class DetectUnicodeEncodingTest(PicardTestCase):
         file_path = get_test_data_path('eac-utf32le.log')
         self.assertEqual(expected_encoding, detect_file_encoding(file_path))
 
+    @unittest.skipUnless(charset_detect, "test requires charset-normalizer or chardet package")
     def test_detect_file_encoding_eac_windows_1251(self):
         expected_encoding = 'windows-1251'
         file_path = get_test_data_path('eac-windows1251.log')
