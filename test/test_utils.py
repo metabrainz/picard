@@ -949,8 +949,8 @@ class DetectUnicodeEncodingTest(PicardTestCase):
         boms = {
             b'\xff\xfe': 'utf-16-le',
             b'\xfe\xff': 'utf-16-be',
-            b'\00\00\xff\xfe': 'utf-32-le',
-            b'\00\00\xfe\xff': 'utf-32-be',
+            b'\xff\xfe\x00\x00': 'utf-32-le',
+            b'\x00\x00\xfe\xff': 'utf-32-be',
             b'\xef\xbb\xbf': 'utf-8-sig',
             b'': 'utf-8',
             b'\00': 'utf-8',
@@ -968,6 +968,11 @@ class DetectUnicodeEncodingTest(PicardTestCase):
     def test_detect_file_encoding_eac_utf_16_le(self):
         expected_encoding = 'utf-16-le'
         file_path = get_test_data_path('eac-utf16le.log')
+        self.assertEqual(expected_encoding, detect_file_encoding(file_path))
+
+    def test_detect_file_encoding_eac_utf_32_le(self):
+        expected_encoding = 'utf-32-le'
+        file_path = get_test_data_path('eac-utf32le.log')
         self.assertEqual(expected_encoding, detect_file_encoding(file_path))
 
     def test_detect_file_encoding_eac_windows_1251(self):
