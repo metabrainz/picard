@@ -1185,10 +1185,11 @@ def strxfrm(string):
 
 
 ENCODING_BOMS = {
+    b'\xff\xfe\x00\x00': 'utf-32-le',
+    b'\x00\x00\xfe\xff': 'utf-32-be',
+    b'\xef\xbb\xbf': 'utf-8-sig',
     b'\xff\xfe': 'utf-16-le',
     b'\xfe\xff': 'utf-16-be',
-    b'\00\00\xff\xfe': 'utf-32-le',
-    b'\00\00\xfe\xff': 'utf-32-be',
 }
 
 
