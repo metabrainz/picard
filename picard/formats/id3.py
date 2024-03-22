@@ -351,8 +351,9 @@ class ID3File(File):
                     name += ':%s' % frame.desc
                 metadata.add(name, frame.text)
             elif frameid == 'SYLT' and frame.type == 1:
-                if frame.format == 0:
-                    raise NotImplementedError("SYLT format 0 is not supported")
+                if frame.format != 2:
+                    log.warning("SYLT formats other than 2 are not supported")
+                    continue
                 name = 'syncedlyrics'
                 if frame.lang:
                     name += ':%s' % frame.lang
@@ -623,7 +624,7 @@ class ID3File(File):
                     (lang, desc) = parse_subtag(name)
                     for key, frame in list(tags.items()):
                         if frame.FrameID == 'SYLT' and frame.desc == desc and frame.lang == lang \
-                                and frame.type == 1 and frame.format == 2:
+                                and frame.type == 1:
                             del tags[key]
                 elif name in self._rtipl_roles:
                     role = self._rtipl_roles[name]
