@@ -352,7 +352,7 @@ class ID3File(File):
                 metadata.add(name, frame.text)
             elif frameid == 'SYLT' and frame.type == 1:
                 if frame.format != 2:
-                    log.warning("SYLT formats other than 2 are not supported")
+                    log.warning("Unsupported SYLT format %d in %r, only 2 is supported", frame.format, filename)
                     continue
                 name = 'syncedlyrics'
                 if frame.lang:
