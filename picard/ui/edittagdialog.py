@@ -51,6 +51,8 @@ AUTOCOMPLETE_RELEASE_STATUS = sorted(s.lower() for s in RELEASE_STATUS)
 AUTOCOMPLETE_RELEASE_COUNTRIES = sorted(RELEASE_COUNTRIES, key=str.casefold)
 AUTOCOMPLETE_RELEASE_FORMATS = sorted(RELEASE_FORMATS, key=str.casefold)
 
+MULTILINE_TAGS = {'comment', 'lyrics', 'syncedlyrics'}
+
 
 class TagEditorDelegate(QtWidgets.QItemDelegate):
 
@@ -58,7 +60,7 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
         if not index.isValid():
             return None
         tag = self.get_tag_name(index)
-        if tag.partition(':')[0] in {'comment', 'lyrics'}:
+        if tag.partition(':')[0] in MULTILINE_TAGS:
             editor = QtWidgets.QPlainTextEdit(parent)
             editor.setFrameStyle(editor.style().styleHint(QtWidgets.QStyle.StyleHint.SH_ItemView_DrawDelegateFrame, None, editor))
             editor.setMinimumSize(QtCore.QSize(0, 80))
