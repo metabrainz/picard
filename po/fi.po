@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-01-28 21:36+0100\n"
+"POT-Creation-Date: 2024-03-23 19:27+0100\n"
 "PO-Revision-Date: 2023-12-20 14:28+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Finnish <https://translations.metabrainz.org/projects/"
@@ -144,7 +144,7 @@ msgstr "Poista"
 msgid "Primary file naming script"
 msgstr "Ensisijainen tiedostonnimeämiskomentosarja"
 
-#: picard/file.py:218
+#: picard/file.py:219
 msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
@@ -152,24 +152,24 @@ msgstr ""
 "Tiedostoa ei voitu jäsentää. Tiedosto on joko vahingoittunut tai sen "
 "tiedostomuotoa ei tueta."
 
-#: picard/file.py:858
+#: picard/file.py:864
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr ""
 "Tiedostolle '%(filename)s' ei löytynyt vastaavia kappaleita kynnysarvon "
 "yläpuolella"
 
-#: picard/file.py:860
+#: picard/file.py:866
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "Tiedosto '%(filename)s' tunnistettu!"
 
-#: picard/file.py:872
+#: picard/file.py:878
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "Tiedostolle '%(filename)s' ei löytynyt vastaavia kappaleita"
 
-#: picard/file.py:904
+#: picard/file.py:910
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
 msgstr "Haetaan metatietoja tiedostolle %(filename)s …"
@@ -186,7 +186,7 @@ msgstr "Virhe"
 msgid "Warning"
 msgstr "Varoitus uudelle käyttäjälle"
 
-#: picard/log.py:69 picard/ui/infodialog.py:153 picard/ui/infodialog.py:362
+#: picard/log.py:69 picard/ui/infodialog.py:153 picard/ui/infodialog.py:365
 #: picard/ui/options/interface_toolbar.py:96
 msgid "Info"
 msgstr "Lisätietoja"
@@ -3062,76 +3062,80 @@ msgstr "Tiedostonimi:"
 msgid "Format:"
 msgstr "Tiedostomuoto:"
 
-#: picard/ui/infodialog.py:291
+#: picard/ui/infodialog.py:293 picard/util/checkupdate.py:156
+msgid "unknown"
+msgstr "tuntematon"
+
+#: picard/ui/infodialog.py:294
 msgid "Size:"
 msgstr "Koko:"
 
-#: picard/ui/infodialog.py:293
+#: picard/ui/infodialog.py:296
 msgid "Length:"
 msgstr "Kesto:"
 
-#: picard/ui/infodialog.py:295
+#: picard/ui/infodialog.py:298
 msgid "Bitrate:"
 msgstr "Bittinopeus:"
 
-#: picard/ui/infodialog.py:297
+#: picard/ui/infodialog.py:300
 msgid "Sample rate:"
 msgstr "Näytteenottotaajuus:"
 
-#: picard/ui/infodialog.py:299
+#: picard/ui/infodialog.py:302
 msgid "Bits per sample:"
 msgstr "Bittisyvyys:"
 
-#: picard/ui/infodialog.py:303
+#: picard/ui/infodialog.py:306
 msgid "Mono"
 msgstr "Mono"
 
-#: picard/ui/infodialog.py:305
+#: picard/ui/infodialog.py:308
 msgid "Stereo"
 msgstr "Stereo"
 
-#: picard/ui/infodialog.py:306
+#: picard/ui/infodialog.py:309
 msgid "Channels:"
 msgstr "Kanavia:"
 
-#: picard/ui/infodialog.py:313
+#: picard/ui/infodialog.py:316
 msgid "Album:"
 msgstr "Julkaisu:"
 
-#: picard/ui/infodialog.py:314
+#: picard/ui/infodialog.py:317
 msgid "Artist:"
 msgstr "Artisti:"
 
-#: picard/ui/infodialog.py:344
+#: picard/ui/infodialog.py:347
 #, python-format
 msgid "Disc %d"
 msgstr "Levy %d"
 
-#: picard/ui/infodialog.py:346
+#: picard/ui/infodialog.py:349
 msgid "Tracklist:"
 msgstr "Kappalelista:"
 
-#: picard/ui/infodialog.py:374
+#: picard/ui/infodialog.py:377
 msgid "Album Info"
 msgstr "Julkaisun tiedot"
 
-#: picard/ui/infodialog.py:388
+#: picard/ui/infodialog.py:391
 msgid "Track Info"
 msgstr "Kappaleen tiedot"
 
-#: picard/ui/infodialog.py:396 picard/ui/infodialog.py:400
-#: picard/ui/infodialog.py:418 picard/ui/ui_infodialog.py:83
+#: picard/ui/infodialog.py:399 picard/ui/infodialog.py:403
+#: picard/ui/infodialog.py:421 picard/ui/ui_infodialog.py:83
 msgid "&Info"
 msgstr "&Tiedot"
 
-#: picard/ui/infodialog.py:401
+#: picard/ui/infodialog.py:404
 #, python-format
 msgid "%i file in this track"
 msgid_plural "%i files in this track"
 msgstr[0] "%i tiedosto tässä kappaleessa"
 msgstr[1] "%i tiedostoa tässä kappaleessa"
 
-#: picard/ui/infodialog.py:412
+#: picard/ui/infodialog.py:415
 msgid "Cluster Info"
 msgstr "Ryhmän tiedot"
 
@@ -3169,7 +3173,7 @@ msgid_plural "%i different images among tracks"
 msgstr[0] "%i kuva ei kaikissa kappaleissa"
 msgstr[1] "%i erilaista kuvaa kappaleille"
 
-#: picard/ui/itemviews.py:162 picard/util/tags.py:123
+#: picard/ui/itemviews.py:162 picard/util/tags.py:124
 msgid "Title"
 msgstr "Nimi"
 
@@ -3228,154 +3232,154 @@ msgstr "Alkuperäinen julkaisupäiväys"
 msgid "Release Date"
 msgstr "Julkaisupäivä"
 
-#: picard/ui/itemviews.py:282
+#: picard/ui/itemviews.py:283
 msgid "Bad match"
 msgstr "Huono yhteensopivuus"
 
-#: picard/ui/itemviews.py:283
+#: picard/ui/itemviews.py:284
 msgid "Poor match"
 msgstr "Heikko yhteensopivuus"
 
-#: picard/ui/itemviews.py:284
+#: picard/ui/itemviews.py:285
 msgid "Ok match"
 msgstr "Ok yhteensopivuus"
 
-#: picard/ui/itemviews.py:285
+#: picard/ui/itemviews.py:286
 msgid "Good match"
 msgstr "Hyvä yhteensopivuus"
 
-#: picard/ui/itemviews.py:286
+#: picard/ui/itemviews.py:287
 msgid "Great match"
 msgstr "Mahtava yhteensopivuus"
 
-#: picard/ui/itemviews.py:287
+#: picard/ui/itemviews.py:288
 msgid "Excellent match"
 msgstr "Erittäin hyvä yhteensopivuus"
 
-#: picard/ui/itemviews.py:401
+#: picard/ui/itemviews.py:402
 msgid "Restore default columns"
 msgstr "Palauta sarakkeet oletusasetuksiin"
 
-#: picard/ui/itemviews.py:406
+#: picard/ui/itemviews.py:407
 msgid "Lock columns"
 msgstr "Lukitse sarakkeet"
 
-#: picard/ui/itemviews.py:458
+#: picard/ui/itemviews.py:459
 msgid "&Expand all"
 msgstr "&Laajenna kaikki"
 
-#: picard/ui/itemviews.py:460
+#: picard/ui/itemviews.py:461
 msgid "&Collapse all"
 msgstr "&Kokoa kaikki"
 
-#: picard/ui/itemviews.py:462
+#: picard/ui/itemviews.py:463
 msgid "Select &all"
 msgstr "&Valitse kaikki"
 
-#: picard/ui/itemviews.py:464
+#: picard/ui/itemviews.py:465
 msgid "Ctrl+A"
 msgstr "Ctrl+A"
 
-#: picard/ui/itemviews.py:545
+#: picard/ui/itemviews.py:546
 msgid "&Other versions"
 msgstr "&Muut versiot"
 
-#: picard/ui/itemviews.py:548
+#: picard/ui/itemviews.py:549
 msgid "Loading…"
 msgstr "Ladataan…"
 
-#: picard/ui/itemviews.py:550
+#: picard/ui/itemviews.py:551
 msgid "Show &more details…"
 msgstr "Näytä &enemmän tietoja…"
 
-#: picard/ui/itemviews.py:603
+#: picard/ui/itemviews.py:604
 #, python-format
 msgid "&Other versions (%d)"
 msgstr "&Muut versiot (%d)"
 
-#: picard/ui/itemviews.py:629
+#: picard/ui/itemviews.py:630
 msgid "Collections"
 msgstr "Kokoelmat"
 
-#: picard/ui/itemviews.py:637
+#: picard/ui/itemviews.py:638
 msgid "P&lugins"
 msgstr "L&iitännäiset"
 
-#: picard/ui/itemviews.py:653
+#: picard/ui/itemviews.py:654
 msgid "&Run scripts"
 msgstr "Suo&rita komentosarjoja"
 
-#: picard/ui/itemviews.py:853
+#: picard/ui/itemviews.py:854
 msgid "file view"
 msgstr "tiedostonäkymä"
 
-#: picard/ui/itemviews.py:854
+#: picard/ui/itemviews.py:855
 msgid "Contains unmatched files and clusters"
 msgstr "Sisältää täsmäämättömiä tiedostoja sekä ryhmiä"
 
-#: picard/ui/itemviews.py:874
+#: picard/ui/itemviews.py:875
 msgid "Clusters"
 msgstr "Ryhmät"
 
-#: picard/ui/itemviews.py:884
+#: picard/ui/itemviews.py:885
 msgid "album view"
 msgstr "julkaisunäkymä"
 
-#: picard/ui/itemviews.py:885
+#: picard/ui/itemviews.py:886
 msgid "Contains albums and matched files"
 msgstr "Sisältää julkaisuja ja täsmääviä tiedostoja"
 
-#: picard/ui/itemviews.py:1031
+#: picard/ui/itemviews.py:1038
 msgid "Processing error(s): See the Errors tab in the Album Info dialog"
 msgstr ""
 "Käsittelyvirhe(et): katso julkaisun tiedot -valintaikkunan virheet-"
 "välilehdeltä"
 
-#: picard/ui/itemviews.py:1035
+#: picard/ui/itemviews.py:1042
 msgid "Album modified and complete"
 msgstr "Julkaisu muokattu ja täydellinen"
 
-#: picard/ui/itemviews.py:1038
+#: picard/ui/itemviews.py:1045
 msgid "Album unchanged and complete"
 msgstr "Julkaisu muuttumaton ja täydellinen"
 
-#: picard/ui/itemviews.py:1042
+#: picard/ui/itemviews.py:1049
 msgid "Album modified"
 msgstr "Julkaisu muokattu"
 
-#: picard/ui/itemviews.py:1045
+#: picard/ui/itemviews.py:1052
 msgid "Album unchanged"
 msgstr "Julkaisu muuttumaton"
 
-#: picard/ui/itemviews.py:1125
+#: picard/ui/itemviews.py:1132
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
 msgstr ""
 "Käsittelyvirhe(et): katso kappaleen tiedot -valintaikkunan virheet-"
 "välilehdeltä"
 
-#: picard/ui/itemviews.py:1153
+#: picard/ui/itemviews.py:1160
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
 msgstr ""
 "Käsittelyvirhe(et): katso tiedoston tiedot -valintaikkunan virheet-"
 "välilehdeltä"
 
-#: picard/ui/itemviews.py:1186
+#: picard/ui/itemviews.py:1193
 msgid "Track saved"
 msgstr "Kappale tallennettu"
 
-#: picard/ui/itemviews.py:1188 picard/ui/itemviews.py:1192
+#: picard/ui/itemviews.py:1195 picard/ui/itemviews.py:1199
 msgid "Pending"
 msgstr "Odottaa"
 
-#: picard/ui/itemviews.py:1199
+#: picard/ui/itemviews.py:1206
 msgid "Fingerprint has already been submitted"
 msgstr "Äänitunniste on jo lähetetty"
 
-#: picard/ui/itemviews.py:1202
+#: picard/ui/itemviews.py:1209
 msgid "Unsubmitted fingerprint"
 msgstr "Lähettämätön äänitunniste"
 
-#: picard/ui/itemviews.py:1205
+#: picard/ui/itemviews.py:1212
 msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
 "AcoustID Fingerprints\" to calculate the fingerprint."
@@ -6139,11 +6143,11 @@ msgstr "Profiilin nimi ei voi olla tyhjä."
 msgid "Ratings"
 msgstr "Arvostelut"
 
-#: picard/ui/options/releases.py:158
+#: picard/ui/options/releases.py:160
 msgid "Preferred Releases"
 msgstr "Julkaisujen suosiminen"
 
-#: picard/ui/options/releases.py:195
+#: picard/ui/options/releases.py:197
 msgid "Reset all"
 msgstr "Oletusasetukset"
 
@@ -6359,7 +6363,7 @@ msgstr ""
 "Taulukko on lukittu. Vapauta lukitus taulukon otsikkorivin\n"
 "alasvetovalikosta lajitellaksesi ja muuttaaksesi kokoa."
 
-#: picard/util/__init__.py:377
+#: picard/util/__init__.py:383
 msgid "No Title"
 msgstr "Ei nimeä"
 
@@ -6450,10 +6454,6 @@ msgstr ""
 "Uusi versio: {picard_new_version}\n"
 "\n"
 "Ladataanko uusi versio?"
-
-#: picard/util/checkupdate.py:156
-msgid "unknown"
-msgstr "tuntematon"
 
 #: picard/util/checkupdate.py:160
 msgid ""
@@ -6758,31 +6758,37 @@ msgstr "Näytä teokset ja osat"
 msgid "Subtitle"
 msgstr "Alaotsikko"
 
-#: picard/util/tags.py:124
+#: picard/util/tags.py:123
+#, fuzzy
+#| msgid "Lyrics"
+msgid "Synced Lyrics"
+msgstr "Sanoitus"
+
+#: picard/util/tags.py:125
 msgid "Title Sort Order"
 msgstr "Nimen lajittelujärjestys"
 
-#: picard/util/tags.py:125
+#: picard/util/tags.py:126
 msgid "Total Discs"
 msgstr "Levymäärä"
 
-#: picard/util/tags.py:126
+#: picard/util/tags.py:127
 msgid "Total Tracks"
 msgstr "Kappalemäärä"
 
-#: picard/util/tags.py:127
+#: picard/util/tags.py:128
 msgid "Track Number"
 msgstr "Kappalenumero"
 
-#: picard/util/tags.py:128
+#: picard/util/tags.py:129
 msgid "Artist Website"
 msgstr "Artistin verkkosivu"
 
-#: picard/util/tags.py:129
+#: picard/util/tags.py:130
 msgid "Work"
 msgstr "Teos"
 
-#: picard/util/tags.py:130
+#: picard/util/tags.py:131
 msgid "Writer"
 msgstr "Tekijä"
 

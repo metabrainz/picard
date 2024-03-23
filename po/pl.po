@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-01-28 21:36+0100\n"
+"POT-Creation-Date: 2024-03-23 19:27+0100\n"
 "PO-Revision-Date: 2023-08-27 13:05+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/"
@@ -150,29 +150,29 @@ msgstr "Usuń"
 msgid "Primary file naming script"
 msgstr "Główny skrypt nazywania plików"
 
-#: picard/file.py:218
+#: picard/file.py:219
 msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
 msgstr ""
 
-#: picard/file.py:858
+#: picard/file.py:864
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr ""
 "Nie znaleziono pasujących ścieżek powyżej progu dla pliku '%(filename)s'"
 
-#: picard/file.py:860
+#: picard/file.py:866
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "Plik '%(filename)s' zidentyfikowany!"
 
-#: picard/file.py:872
+#: picard/file.py:878
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "Brak pasujących utworów dla pliku '%(filename)s'"
 
-#: picard/file.py:904
+#: picard/file.py:910
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
 msgstr "Sprawdzanie metadanych dla pliku %(filename)s …"
@@ -187,7 +187,7 @@ msgstr "Błąd"
 msgid "Warning"
 msgstr ""
 
-#: picard/log.py:69 picard/ui/infodialog.py:153 picard/ui/infodialog.py:362
+#: picard/log.py:69 picard/ui/infodialog.py:153 picard/ui/infodialog.py:365
 #: picard/ui/options/interface_toolbar.py:96
 msgid "Info"
 msgstr "Info"
@@ -2394,69 +2394,73 @@ msgstr "Nazwa pliku:"
 msgid "Format:"
 msgstr "Format:"
 
-#: picard/ui/infodialog.py:291
+#: picard/ui/infodialog.py:293 picard/util/checkupdate.py:156
+msgid "unknown"
+msgstr "brak danych"
+
+#: picard/ui/infodialog.py:294
 msgid "Size:"
 msgstr "Rozmiar:"
 
-#: picard/ui/infodialog.py:293
+#: picard/ui/infodialog.py:296
 msgid "Length:"
 msgstr "Długość:"
 
-#: picard/ui/infodialog.py:295
+#: picard/ui/infodialog.py:298
 msgid "Bitrate:"
 msgstr "Szybkość transmisji:"
 
-#: picard/ui/infodialog.py:297
+#: picard/ui/infodialog.py:300
 msgid "Sample rate:"
 msgstr "Próbkowanie:"
 
-#: picard/ui/infodialog.py:299
+#: picard/ui/infodialog.py:302
 msgid "Bits per sample:"
 msgstr "Bitów na próbkę:"
 
-#: picard/ui/infodialog.py:303
+#: picard/ui/infodialog.py:306
 msgid "Mono"
 msgstr "Mono"
 
-#: picard/ui/infodialog.py:305
+#: picard/ui/infodialog.py:308
 msgid "Stereo"
 msgstr "Stereo"
 
-#: picard/ui/infodialog.py:306
+#: picard/ui/infodialog.py:309
 msgid "Channels:"
 msgstr "Kanały:"
 
-#: picard/ui/infodialog.py:313
+#: picard/ui/infodialog.py:316
 msgid "Album:"
 msgstr "Album:"
 
-#: picard/ui/infodialog.py:314
+#: picard/ui/infodialog.py:317
 msgid "Artist:"
 msgstr "Wykonawca:"
 
-#: picard/ui/infodialog.py:344
+#: picard/ui/infodialog.py:347
 #, fuzzy, python-format
 msgid "Disc %d"
 msgstr "Id dysku"
 
-#: picard/ui/infodialog.py:346
+#: picard/ui/infodialog.py:349
 msgid "Tracklist:"
 msgstr "Lista utworów:"
 
-#: picard/ui/infodialog.py:374
+#: picard/ui/infodialog.py:377
 msgid "Album Info"
 msgstr "Informacje o albumie"
 
-#: picard/ui/infodialog.py:388
+#: picard/ui/infodialog.py:391
 msgid "Track Info"
 msgstr "Informacje o ścieżce"
 
-#: picard/ui/infodialog.py:396 picard/ui/infodialog.py:400
-#: picard/ui/infodialog.py:418 picard/ui/ui_infodialog.py:83
+#: picard/ui/infodialog.py:399 picard/ui/infodialog.py:403
+#: picard/ui/infodialog.py:421 picard/ui/ui_infodialog.py:83
 msgid "&Info"
 msgstr "&Informacje"
 
-#: picard/ui/infodialog.py:401
+#: picard/ui/infodialog.py:404
 #, python-format
 msgid "%i file in this track"
 msgid_plural "%i files in this track"
@@ -2465,7 +2469,7 @@ msgstr[1] "%i pliki w tej ścieżce"
 msgstr[2] "%i plików w tej ścieżce"
 msgstr[3] "%i inne pliki w tej ścieżce"
 
-#: picard/ui/infodialog.py:412
+#: picard/ui/infodialog.py:415
 msgid "Cluster Info"
 msgstr "Informacja o zbiorze"
 
@@ -2507,7 +2511,7 @@ msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
 
-#: picard/ui/itemviews.py:162 picard/util/tags.py:123
+#: picard/ui/itemviews.py:162 picard/util/tags.py:124
 msgid "Title"
 msgstr "Tytuł"
 
@@ -2566,149 +2570,149 @@ msgstr "Data pierwszego wydania"
 msgid "Release Date"
 msgstr ""
 
-#: picard/ui/itemviews.py:282
+#: picard/ui/itemviews.py:283
 msgid "Bad match"
 msgstr "Złe dopasowanie"
 
-#: picard/ui/itemviews.py:283
+#: picard/ui/itemviews.py:284
 msgid "Poor match"
 msgstr "Kiepskie dopasowanie"
 
-#: picard/ui/itemviews.py:284
+#: picard/ui/itemviews.py:285
 msgid "Ok match"
 msgstr "Niezłe dopasowanie"
 
-#: picard/ui/itemviews.py:285
+#: picard/ui/itemviews.py:286
 msgid "Good match"
 msgstr "Dobre dopasowanie"
 
-#: picard/ui/itemviews.py:286
+#: picard/ui/itemviews.py:287
 msgid "Great match"
 msgstr "Świetne dopasowanie"
 
-#: picard/ui/itemviews.py:287
+#: picard/ui/itemviews.py:288
 msgid "Excellent match"
 msgstr "Wyśmienite dopasowanie"
 
-#: picard/ui/itemviews.py:401
+#: picard/ui/itemviews.py:402
 msgid "Restore default columns"
 msgstr ""
 
-#: picard/ui/itemviews.py:406
+#: picard/ui/itemviews.py:407
 msgid "Lock columns"
 msgstr ""
 
-#: picard/ui/itemviews.py:458
+#: picard/ui/itemviews.py:459
 msgid "&Expand all"
 msgstr "&Rozwiń wszystkie"
 
-#: picard/ui/itemviews.py:460
+#: picard/ui/itemviews.py:461
 msgid "&Collapse all"
 msgstr "&Zwiń wszystkie"
 
-#: picard/ui/itemviews.py:462
+#: picard/ui/itemviews.py:463
 msgid "Select &all"
 msgstr "Wybierz &all"
 
-#: picard/ui/itemviews.py:464
+#: picard/ui/itemviews.py:465
 msgid "Ctrl+A"
 msgstr "Ctrl+A"
 
-#: picard/ui/itemviews.py:545
+#: picard/ui/itemviews.py:546
 msgid "&Other versions"
 msgstr "&Inne wersje"
 
-#: picard/ui/itemviews.py:548
+#: picard/ui/itemviews.py:549
 msgid "Loading…"
 msgstr "Wczytywanie…"
 
-#: picard/ui/itemviews.py:550
+#: picard/ui/itemviews.py:551
 #, fuzzy
 msgid "Show &more details…"
 msgstr "Pokaż więcej…."
 
-#: picard/ui/itemviews.py:603
+#: picard/ui/itemviews.py:604
 #, python-format
 msgid "&Other versions (%d)"
 msgstr ""
 
-#: picard/ui/itemviews.py:629
+#: picard/ui/itemviews.py:630
 msgid "Collections"
 msgstr "Kolekcje"
 
-#: picard/ui/itemviews.py:637
+#: picard/ui/itemviews.py:638
 msgid "P&lugins"
 msgstr "W&tyczki"
 
-#: picard/ui/itemviews.py:653
+#: picard/ui/itemviews.py:654
 msgid "&Run scripts"
 msgstr "U&ruchom skrypty"
 
-#: picard/ui/itemviews.py:853
+#: picard/ui/itemviews.py:854
 msgid "file view"
 msgstr "widok plików"
 
-#: picard/ui/itemviews.py:854
+#: picard/ui/itemviews.py:855
 msgid "Contains unmatched files and clusters"
 msgstr "Zawiera niedopasowane pliki i grupy"
 
-#: picard/ui/itemviews.py:874
+#: picard/ui/itemviews.py:875
 msgid "Clusters"
 msgstr "Zbiór"
 
-#: picard/ui/itemviews.py:884
+#: picard/ui/itemviews.py:885
 msgid "album view"
 msgstr "widok albumów"
 
-#: picard/ui/itemviews.py:885
+#: picard/ui/itemviews.py:886
 msgid "Contains albums and matched files"
 msgstr "Zawiera albumy i niedopasowane pliki"
 
-#: picard/ui/itemviews.py:1031
+#: picard/ui/itemviews.py:1038
 msgid "Processing error(s): See the Errors tab in the Album Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1035
+#: picard/ui/itemviews.py:1042
 msgid "Album modified and complete"
 msgstr "Album zmodyfikowany i kompletny"
 
-#: picard/ui/itemviews.py:1038
+#: picard/ui/itemviews.py:1045
 msgid "Album unchanged and complete"
 msgstr "Album niezmieniony i kompletny"
 
-#: picard/ui/itemviews.py:1042
+#: picard/ui/itemviews.py:1049
 msgid "Album modified"
 msgstr "Album zmodyfikowany"
 
-#: picard/ui/itemviews.py:1045
+#: picard/ui/itemviews.py:1052
 msgid "Album unchanged"
 msgstr "Album niezmieniony"
 
-#: picard/ui/itemviews.py:1125
+#: picard/ui/itemviews.py:1132
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1153
+#: picard/ui/itemviews.py:1160
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1186
+#: picard/ui/itemviews.py:1193
 msgid "Track saved"
 msgstr "Ścieżka zapisana"
 
-#: picard/ui/itemviews.py:1188 picard/ui/itemviews.py:1192
+#: picard/ui/itemviews.py:1195 picard/ui/itemviews.py:1199
 msgid "Pending"
 msgstr "Oczekujące"
 
-#: picard/ui/itemviews.py:1199
+#: picard/ui/itemviews.py:1206
 msgid "Fingerprint has already been submitted"
 msgstr ""
 
-#: picard/ui/itemviews.py:1202
+#: picard/ui/itemviews.py:1209
 msgid "Unsubmitted fingerprint"
 msgstr ""
 
-#: picard/ui/itemviews.py:1205
+#: picard/ui/itemviews.py:1212
 msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
 "AcoustID Fingerprints\" to calculate the fingerprint."
@@ -5353,11 +5357,11 @@ msgstr ""
 msgid "Ratings"
 msgstr "Oceny"
 
-#: picard/ui/options/releases.py:158
+#: picard/ui/options/releases.py:160
 msgid "Preferred Releases"
 msgstr "Preferowane wydania"
 
-#: picard/ui/options/releases.py:195
+#: picard/ui/options/releases.py:197
 msgid "Reset all"
 msgstr "Resetuj wszystko"
 
@@ -5565,7 +5569,7 @@ msgid ""
 "unlock the table in the table header's context menu."
 msgstr ""
 
-#: picard/util/__init__.py:377
+#: picard/util/__init__.py:383
 msgid "No Title"
 msgstr ""
 
@@ -5648,10 +5652,6 @@ msgid ""
 "\n"
 "Would you like to download the new version?"
 msgstr ""
-
-#: picard/util/checkupdate.py:156
-msgid "unknown"
-msgstr "brak danych"
 
 #: picard/util/checkupdate.py:160
 msgid ""
@@ -5953,31 +5953,37 @@ msgstr ""
 msgid "Subtitle"
 msgstr "Podtytuł"
 
-#: picard/util/tags.py:124
+#: picard/util/tags.py:123
+#, fuzzy
+#| msgid "Lyrics"
+msgid "Synced Lyrics"
+msgstr "Tekst utworu"
+
+#: picard/util/tags.py:125
 msgid "Title Sort Order"
 msgstr "Sortowanie według tytułów"
 
-#: picard/util/tags.py:125
+#: picard/util/tags.py:126
 msgid "Total Discs"
 msgstr "Łącznie płyt"
 
-#: picard/util/tags.py:126
+#: picard/util/tags.py:127
 msgid "Total Tracks"
 msgstr "Łącznie utworów"
 
-#: picard/util/tags.py:127
+#: picard/util/tags.py:128
 msgid "Track Number"
 msgstr "Numer utworu"
 
-#: picard/util/tags.py:128
+#: picard/util/tags.py:129
 msgid "Artist Website"
 msgstr "Strona wykonawcy"
 
-#: picard/util/tags.py:129
+#: picard/util/tags.py:130
 msgid "Work"
 msgstr "Praca"
 
-#: picard/util/tags.py:130
+#: picard/util/tags.py:131
 msgid "Writer"
 msgstr "Autor"
 

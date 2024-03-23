@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-01-28 21:36+0100\n"
+"POT-Creation-Date: 2024-03-23 19:27+0100\n"
 "PO-Revision-Date: 2023-12-22 09:28+0000\n"
 "Last-Translator: Iceman1415 <iceman1415@protonmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://translations.metabrainz.org/"
@@ -134,28 +134,28 @@ msgstr "移除"
 msgid "Primary file naming script"
 msgstr "主要檔案命名腳本"
 
-#: picard/file.py:218
+#: picard/file.py:219
 msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
 msgstr ""
 
-#: picard/file.py:858
+#: picard/file.py:864
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "檔案「%(filename)s」沒有符合程度超過閥值的音軌"
 
-#: picard/file.py:860
+#: picard/file.py:866
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "檔案「%(filename)s」已辨識！"
 
-#: picard/file.py:872
+#: picard/file.py:878
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "檔案「%(filename)s」沒有任何符合的音軌"
 
-#: picard/file.py:904
+#: picard/file.py:910
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
 msgstr "正在查找檔案「%(filename)s」的後設資料…"
@@ -170,7 +170,7 @@ msgstr "錯誤"
 msgid "Warning"
 msgstr ""
 
-#: picard/log.py:69 picard/ui/infodialog.py:153 picard/ui/infodialog.py:362
+#: picard/log.py:69 picard/ui/infodialog.py:153 picard/ui/infodialog.py:365
 #: picard/ui/options/interface_toolbar.py:96
 msgid "Info"
 msgstr "資訊"
@@ -2450,75 +2450,79 @@ msgstr "檔名:"
 msgid "Format:"
 msgstr "格式:"
 
-#: picard/ui/infodialog.py:291
+#: picard/ui/infodialog.py:293 picard/util/checkupdate.py:156
+msgid "unknown"
+msgstr "未知"
+
+#: picard/ui/infodialog.py:294
 msgid "Size:"
 msgstr "大小:"
 
-#: picard/ui/infodialog.py:293
+#: picard/ui/infodialog.py:296
 msgid "Length:"
 msgstr "長度:"
 
-#: picard/ui/infodialog.py:295
+#: picard/ui/infodialog.py:298
 msgid "Bitrate:"
 msgstr "位元率:"
 
-#: picard/ui/infodialog.py:297
+#: picard/ui/infodialog.py:300
 msgid "Sample rate:"
 msgstr "取樣率:"
 
-#: picard/ui/infodialog.py:299
+#: picard/ui/infodialog.py:302
 msgid "Bits per sample:"
 msgstr "樣本位元數:"
 
-#: picard/ui/infodialog.py:303
+#: picard/ui/infodialog.py:306
 msgid "Mono"
 msgstr "單聲道"
 
-#: picard/ui/infodialog.py:305
+#: picard/ui/infodialog.py:308
 msgid "Stereo"
 msgstr "雙聲道"
 
-#: picard/ui/infodialog.py:306
+#: picard/ui/infodialog.py:309
 msgid "Channels:"
 msgstr "聲道:"
 
-#: picard/ui/infodialog.py:313
+#: picard/ui/infodialog.py:316
 msgid "Album:"
 msgstr "專輯:"
 
-#: picard/ui/infodialog.py:314
+#: picard/ui/infodialog.py:317
 msgid "Artist:"
 msgstr "創作者:"
 
-#: picard/ui/infodialog.py:344
+#: picard/ui/infodialog.py:347
 #, python-format
 msgid "Disc %d"
 msgstr "碟片%d"
 
-#: picard/ui/infodialog.py:346
+#: picard/ui/infodialog.py:349
 msgid "Tracklist:"
 msgstr "音軌清單"
 
-#: picard/ui/infodialog.py:374
+#: picard/ui/infodialog.py:377
 msgid "Album Info"
 msgstr "專輯資訊"
 
-#: picard/ui/infodialog.py:388
+#: picard/ui/infodialog.py:391
 msgid "Track Info"
 msgstr "音軌資料"
 
-#: picard/ui/infodialog.py:396 picard/ui/infodialog.py:400
-#: picard/ui/infodialog.py:418 picard/ui/ui_infodialog.py:83
+#: picard/ui/infodialog.py:399 picard/ui/infodialog.py:403
+#: picard/ui/infodialog.py:421 picard/ui/ui_infodialog.py:83
 msgid "&Info"
 msgstr "資訊(&I)"
 
-#: picard/ui/infodialog.py:401
+#: picard/ui/infodialog.py:404
 #, python-format
 msgid "%i file in this track"
 msgid_plural "%i files in this track"
 msgstr[0] "在此音軌內有 %i 個檔案"
 
-#: picard/ui/infodialog.py:412
+#: picard/ui/infodialog.py:415
 msgid "Cluster Info"
 msgstr "叢集資訊"
 
@@ -2554,7 +2558,7 @@ msgid "%i image not in all tracks"
 msgid_plural "%i different images among tracks"
 msgstr[0] "各音軌間共有 %i 個不同的圖片"
 
-#: picard/ui/itemviews.py:162 picard/util/tags.py:123
+#: picard/ui/itemviews.py:162 picard/util/tags.py:124
 msgid "Title"
 msgstr "標題"
 
@@ -2613,148 +2617,148 @@ msgstr "原始發售日"
 msgid "Release Date"
 msgstr ""
 
-#: picard/ui/itemviews.py:282
+#: picard/ui/itemviews.py:283
 msgid "Bad match"
 msgstr "不符合"
 
-#: picard/ui/itemviews.py:283
+#: picard/ui/itemviews.py:284
 msgid "Poor match"
 msgstr "勉強符合"
 
-#: picard/ui/itemviews.py:284
+#: picard/ui/itemviews.py:285
 msgid "Ok match"
 msgstr "大約符合"
 
-#: picard/ui/itemviews.py:285
+#: picard/ui/itemviews.py:286
 msgid "Good match"
 msgstr "符合"
 
-#: picard/ui/itemviews.py:286
+#: picard/ui/itemviews.py:287
 msgid "Great match"
 msgstr "非常符合"
 
-#: picard/ui/itemviews.py:287
+#: picard/ui/itemviews.py:288
 msgid "Excellent match"
 msgstr "完美符合"
 
-#: picard/ui/itemviews.py:401
+#: picard/ui/itemviews.py:402
 msgid "Restore default columns"
 msgstr "還原為預設欄位"
 
-#: picard/ui/itemviews.py:406
+#: picard/ui/itemviews.py:407
 msgid "Lock columns"
 msgstr "鎖定欄位"
 
-#: picard/ui/itemviews.py:458
+#: picard/ui/itemviews.py:459
 msgid "&Expand all"
 msgstr "全部展開(&E)"
 
-#: picard/ui/itemviews.py:460
+#: picard/ui/itemviews.py:461
 msgid "&Collapse all"
 msgstr "全部收合(&C)"
 
-#: picard/ui/itemviews.py:462
+#: picard/ui/itemviews.py:463
 msgid "Select &all"
 msgstr "全選(&A)"
 
-#: picard/ui/itemviews.py:464
+#: picard/ui/itemviews.py:465
 msgid "Ctrl+A"
 msgstr "Ctrl+A"
 
-#: picard/ui/itemviews.py:545
+#: picard/ui/itemviews.py:546
 msgid "&Other versions"
 msgstr "其他版本(&O)"
 
-#: picard/ui/itemviews.py:548
+#: picard/ui/itemviews.py:549
 msgid "Loading…"
 msgstr "載入中…"
 
-#: picard/ui/itemviews.py:550
+#: picard/ui/itemviews.py:551
 msgid "Show &more details…"
 msgstr "顯示更多資訊(&M)…"
 
-#: picard/ui/itemviews.py:603
+#: picard/ui/itemviews.py:604
 #, python-format
 msgid "&Other versions (%d)"
 msgstr "其他版本 (%d)(&O)"
 
-#: picard/ui/itemviews.py:629
+#: picard/ui/itemviews.py:630
 msgid "Collections"
 msgstr "收藏"
 
-#: picard/ui/itemviews.py:637
+#: picard/ui/itemviews.py:638
 msgid "P&lugins"
 msgstr "插件(&L)"
 
-#: picard/ui/itemviews.py:653
+#: picard/ui/itemviews.py:654
 msgid "&Run scripts"
 msgstr "執行腳本(&R)"
 
-#: picard/ui/itemviews.py:853
+#: picard/ui/itemviews.py:854
 msgid "file view"
 msgstr "檔案檢視模式"
 
-#: picard/ui/itemviews.py:854
+#: picard/ui/itemviews.py:855
 msgid "Contains unmatched files and clusters"
 msgstr "包含未配對的檔案與叢集"
 
-#: picard/ui/itemviews.py:874
+#: picard/ui/itemviews.py:875
 msgid "Clusters"
 msgstr "叢集"
 
-#: picard/ui/itemviews.py:884
+#: picard/ui/itemviews.py:885
 msgid "album view"
 msgstr "專輯檢視"
 
-#: picard/ui/itemviews.py:885
+#: picard/ui/itemviews.py:886
 msgid "Contains albums and matched files"
 msgstr "包含專輯與已配對的檔案"
 
-#: picard/ui/itemviews.py:1031
+#: picard/ui/itemviews.py:1038
 msgid "Processing error(s): See the Errors tab in the Album Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1035
+#: picard/ui/itemviews.py:1042
 msgid "Album modified and complete"
 msgstr "已修改且已儲存的專輯"
 
-#: picard/ui/itemviews.py:1038
+#: picard/ui/itemviews.py:1045
 msgid "Album unchanged and complete"
 msgstr "未修改且已儲存的專輯"
 
-#: picard/ui/itemviews.py:1042
+#: picard/ui/itemviews.py:1049
 msgid "Album modified"
 msgstr "已修改專輯"
 
-#: picard/ui/itemviews.py:1045
+#: picard/ui/itemviews.py:1052
 msgid "Album unchanged"
 msgstr "未修改專輯"
 
-#: picard/ui/itemviews.py:1125
+#: picard/ui/itemviews.py:1132
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1153
+#: picard/ui/itemviews.py:1160
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
 msgstr ""
 
-#: picard/ui/itemviews.py:1186
+#: picard/ui/itemviews.py:1193
 msgid "Track saved"
 msgstr "音軌已儲存"
 
-#: picard/ui/itemviews.py:1188 picard/ui/itemviews.py:1192
+#: picard/ui/itemviews.py:1195 picard/ui/itemviews.py:1199
 msgid "Pending"
 msgstr "等待中"
 
-#: picard/ui/itemviews.py:1199
+#: picard/ui/itemviews.py:1206
 msgid "Fingerprint has already been submitted"
 msgstr "特徵碼已經被提交"
 
-#: picard/ui/itemviews.py:1202
+#: picard/ui/itemviews.py:1209
 msgid "Unsubmitted fingerprint"
 msgstr "未提交的特徵碼"
 
-#: picard/ui/itemviews.py:1205
+#: picard/ui/itemviews.py:1212
 msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
 "AcoustID Fingerprints\" to calculate the fingerprint."
@@ -5404,11 +5408,11 @@ msgstr "設定檔標題不能是空白的。"
 msgid "Ratings"
 msgstr "評分"
 
-#: picard/ui/options/releases.py:158
+#: picard/ui/options/releases.py:160
 msgid "Preferred Releases"
 msgstr "偏好的發行品"
 
-#: picard/ui/options/releases.py:195
+#: picard/ui/options/releases.py:197
 msgid "Reset all"
 msgstr "全部重設"
 
@@ -5618,7 +5622,7 @@ msgid ""
 "unlock the table in the table header's context menu."
 msgstr ""
 
-#: picard/util/__init__.py:377
+#: picard/util/__init__.py:383
 msgid "No Title"
 msgstr "無標題"
 
@@ -5709,10 +5713,6 @@ msgstr ""
 "最新版本: {picard_new_version}\n"
 "\n"
 "請問您是否想要下載新版本？"
-
-#: picard/util/checkupdate.py:156
-msgid "unknown"
-msgstr "未知"
 
 #: picard/util/checkupdate.py:160
 msgid ""
@@ -6017,31 +6017,37 @@ msgstr "顯示作品與樂章"
 msgid "Subtitle"
 msgstr "標題"
 
-#: picard/util/tags.py:124
+#: picard/util/tags.py:123
+#, fuzzy
+#| msgid "Lyrics"
+msgid "Synced Lyrics"
+msgstr "歌詞"
+
+#: picard/util/tags.py:125
 msgid "Title Sort Order"
 msgstr "標題排序方式"
 
-#: picard/util/tags.py:125
+#: picard/util/tags.py:126
 msgid "Total Discs"
 msgstr "總光碟數"
 
-#: picard/util/tags.py:126
+#: picard/util/tags.py:127
 msgid "Total Tracks"
 msgstr "總音軌數"
 
-#: picard/util/tags.py:127
+#: picard/util/tags.py:128
 msgid "Track Number"
 msgstr "音軌編號"
 
-#: picard/util/tags.py:128
+#: picard/util/tags.py:129
 msgid "Artist Website"
 msgstr "創作者的網站"
 
-#: picard/util/tags.py:129
+#: picard/util/tags.py:130
 msgid "Work"
 msgstr "作品"
 
-#: picard/util/tags.py:130
+#: picard/util/tags.py:131
 msgid "Writer"
 msgstr "作者"
 
