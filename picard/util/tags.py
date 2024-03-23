@@ -120,6 +120,7 @@ TAG_NAMES = {
     'showsort': N_('Show Name Sort Order'),
     'showmovement': N_('Show Work & Movement'),
     'subtitle': N_('Subtitle'),
+    'syncedlyrics': N_('Synced Lyrics'),
     'title': N_('Title'),
     'titlesort': N_('Title Sort Order'),
     'totaldiscs': N_('Total Discs'),
@@ -193,6 +194,26 @@ def parse_comment_tag(name):  # noqa: E302
     # Special case for unspecified language + empty description
     if desc == 'XXX':
         lang = 'XXX'
+        desc = ''
+
+    return lang, desc
+
+
+def parse_subtag(name):
+    """
+    Parses a tag name like "lyrics:XXX:desc", where XXX is the language.
+    If language is not set, the colons are still mandatory, and "eng" is
+    assumed by default.
+    """
+    split = name.split(':')
+    if len(split) > 1 and split[1]:
+        lang = split[1]
+    else:
+        lang = 'eng'
+
+    if len(split) > 2:
+        desc = split[2]
+    else:
         desc = ''
 
     return lang, desc
