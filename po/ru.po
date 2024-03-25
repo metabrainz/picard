@@ -28,14 +28,15 @@
 # Дмитрий <sema19689@gmail.com>, 2014-2015
 # Дмитрий Суворов, 2023
 # Dimlbur <Dimlbur@users.noreply.translations.metabrainz.org>, 2024.
+# wileyfoxyx <wileyfoxyx@users.noreply.translations.metabrainz.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-03-11 19:28+0000\n"
-"Last-Translator: Dimlbur <Dimlbur@users.noreply.translations.metabrainz.org>"
-"\n"
+"PO-Revision-Date: 2024-03-25 12:28+0000\n"
+"Last-Translator: wileyfoxyx <wileyfoxyx@users.noreply.translations.metabrainz"
+".org>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/picard/"
 "2/app/ru/>\n"
 "Language: ru\n"
@@ -94,10 +95,10 @@ msgstr "Некластеризованные файлы"
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
-msgstr[0] "Добавлен %(count)i релиз в коллекцию \"%(name)s\""
-msgstr[1] "Добавлены %(count)i релизы в коллекцию \"%(name)s\""
-msgstr[2] "Добавлен %(count)i релиза в коллекцию \"%(name)s\""
-msgstr[3] "Добавлен %(count)i релиза в коллекцию \"%(name)s\""
+msgstr[0] "%(count)i релиз добавлен в коллекцию \"%(name)s\""
+msgstr[1] "%(count)i релиза добавлено в коллекцию \"%(name)s\""
+msgstr[2] "%(count)i релизов добавлено в коллекцию \"%(name)s\""
+msgstr[3] "%(count)i релизов добавлено в коллекцию \"%(name)s\""
 
 #: picard/collection.py:86
 #, python-format
@@ -129,10 +130,10 @@ msgid ""
 "Your file naming scheme has automatically been merged with that of single "
 "artist albums."
 msgstr ""
-"Отдельная схема обозначения файлов различных альбомов исполнителя была "
+"Отдельная схема обозначения файлов альбомов с разными исполнителями была "
 "удалена в этой версии Picard.\n"
 "Ваша схема обозначения файлов была автоматически объединена с единственным "
-"исполнителем альбома"
+"исполнителем альбома."
 
 #: picard/config_upgrade.py:96
 msgid ""
