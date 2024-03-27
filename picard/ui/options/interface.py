@@ -72,7 +72,7 @@ class InterfaceOptionsPage(OptionsPage):
 
     options = [
         BoolOption('setting', 'toolbar_show_labels', True),
-        BoolOption('setting', 'toolbar_multiselect', False),
+        BoolOption('setting', 'allow_multi_dirs_selection', False),
         BoolOption('setting', 'show_menu_icons', True if not IS_MACOS else False),  # On macOS it is not common that the global menu shows icons
         BoolOption('setting', 'builtin_search', True),
         BoolOption('setting', 'use_adv_search_syntax', False),
@@ -143,16 +143,16 @@ class InterfaceOptionsPage(OptionsPage):
         if not OS_SUPPORTS_THEMES:
             self.ui.ui_theme_container.hide()
 
-        self.ui.toolbar_multiselect.stateChanged.connect(self.multi_selection_warning)
+        self.ui.allow_multi_dirs_selection.stateChanged.connect(self.multi_selection_warning)
 
     def load(self):
         # Don't display the multi-selection warning when loading values.
         # This is required because loading a different option profile could trigger the warning.
-        self.ui.toolbar_multiselect.blockSignals(True)
+        self.ui.allow_multi_dirs_selection.blockSignals(True)
 
         config = get_config()
         self.ui.toolbar_show_labels.setChecked(config.setting['toolbar_show_labels'])
-        self.ui.toolbar_multiselect.setChecked(config.setting['toolbar_multiselect'])
+        self.ui.allow_multi_dirs_selection.setChecked(config.setting['allow_multi_dirs_selection'])
         self.ui.show_menu_icons.setChecked(config.setting['show_menu_icons'])
         self.ui.builtin_search.setChecked(config.setting['builtin_search'])
         self.ui.use_adv_search_syntax.setChecked(config.setting['use_adv_search_syntax'])
@@ -168,12 +168,12 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(current_theme))
 
         # re-enable the multi-selection warning
-        self.ui.toolbar_multiselect.blockSignals(False)
+        self.ui.allow_multi_dirs_selection.blockSignals(False)
 
     def save(self):
         config = get_config()
         config.setting['toolbar_show_labels'] = self.ui.toolbar_show_labels.isChecked()
-        config.setting['toolbar_multiselect'] = self.ui.toolbar_multiselect.isChecked()
+        config.setting['allow_multi_dirs_selection'] = self.ui.allow_multi_dirs_selection.isChecked()
         config.setting['show_menu_icons'] = self.ui.show_menu_icons.isChecked()
         self.tagger.enable_menu_icons(config.setting['show_menu_icons'])
         config.setting['builtin_search'] = self.ui.builtin_search.isChecked()
@@ -218,7 +218,7 @@ class InterfaceOptionsPage(OptionsPage):
             item.setText(path)
 
     def multi_selection_warning(self):
-        if not self.ui.toolbar_multiselect.isChecked():
+        if not self.ui.allow_multi_dirs_selection.isChecked():
             return
 
         dialog = QtWidgets.QMessageBox(
@@ -232,7 +232,7 @@ class InterfaceOptionsPage(OptionsPage):
             QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
             self)
         if dialog.exec() == QtWidgets.QMessageBox.StandardButton.No:
-            self.ui.toolbar_multiselect.setCheckState(QtCore.Qt.CheckState.Unchecked)
+            self.ui.allow_multi_dirs_selection.setCheckState(QtCore.Qt.CheckState.Unchecked)
 
 
 register_options_page(InterfaceOptionsPage)
