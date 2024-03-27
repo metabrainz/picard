@@ -95,7 +95,7 @@
      </property>
      <layout class="QVBoxLayout">
       <item>
-       <widget class="QCheckBox" name="toolbar_multiselect">
+       <widget class="QCheckBox" name="allow_multi_dirs_selection">
         <property name="text">
          <string>Allow selection of multiple directories</string>
         </property>
@@ -218,7 +218,7 @@
   <tabstop>show_menu_icons</tabstop>
   <tabstop>ui_language</tabstop>
   <tabstop>ui_theme</tabstop>
-  <tabstop>toolbar_multiselect</tabstop>
+  <tabstop>allow_multi_dirs_selection</tabstop>
   <tabstop>builtin_search</tabstop>
   <tabstop>use_adv_search_syntax</tabstop>
   <tabstop>new_user_dialog</tabstop>
