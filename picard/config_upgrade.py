@@ -556,10 +556,7 @@ def upgrade_config(config):
         for name, hook in getmembers(sys.modules[__name__], predicate=is_upgrade_hook)
     }
 
-    # Ensure hooks are sorted by version
-    hooks = dict(sorted(hooks.items()))
-
-    for v, hook in hooks.items():
-        cfg.register_upgrade_hook(v, hook)
+    for to_version, hook in hooks.items():
+        cfg.register_upgrade_hook(to_version, hook)
 
     cfg.run_upgrade_hooks(log.debug)
