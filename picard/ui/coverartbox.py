@@ -348,6 +348,11 @@ class CoverArtThumbnail(ActiveLabel):
         lookup.album_lookup(self.release)
 
 
+def image_delete(obj, image_index):
+    obj.metadata.images.strip_selected_image(image_index)
+    obj.metadata_images_changed.emit()
+
+
 def set_image_replace(obj, coverartimage):
     obj.metadata.images.strip_front_images()
     obj.metadata.images.append(coverartimage)
@@ -545,6 +550,28 @@ class CoverArtBox(QtWidgets.QGroupBox):
             log.warning("Can't load image: %s", e)
             return
 
+    def delete_cover_art(self):
+        if not self.item or not self.item.can_show_coverart:
+            return
+
+        metadata = self.item.metadata
+        if not metadata or not metadata.images:
+            return
+
+        cover_art_list = [image.source or _("Unnamed Cover Art") for image in metadata.images]
+
+        selected_item, ok_pressed = QtWidgets.QInputDialog.getItem(self, _("Delete Cover Art"),
+            _("Select the cover art image to delete:"), cover_art_list, 0, False)
+
+        if ok_pressed:
+            selected_index = cover_art_list.index(selected_item)
+            if selected_index < len(metadata.images):
+                image_delete(self.item, selected_index)
+                self.update_display(force=True)
+            else:
+                QtWidgets.QMessageBox.warning(self, _("Invalid Selection"),
+                    _("Please select a valid cover art image."))
+
     def _try_load_remote_image(self, url, data):
         coverartimage = CoverArtImage(
             url=url.toString(),
@@ -633,6 +660,12 @@ class CoverArtBox(QtWidgets.QGroupBox):
             show_more_details_action = QtGui.QAction(name, self.parent)
             show_more_details_action.triggered.connect(self.show_cover_art_info)
             menu.addAction(show_more_details_action)
+
+        if self.item and self.item.can_show_coverart:
+            name = _("Delete cover art")
+            delete_cover_art_action = QtGui.QAction(name, self.parent)
+            delete_cover_art_action.triggered.connect(self.delete_cover_art)
+            menu.addAction(delete_cover_art_action)
 
         if self.orig_cover_art.isVisible():
             name = _("Keep original cover art")
