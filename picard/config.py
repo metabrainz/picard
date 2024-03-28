@@ -31,7 +31,6 @@
 
 from collections import defaultdict
 import inspect
-from operator import itemgetter
 import os
 import shutil
 
@@ -285,15 +284,10 @@ class Config(QtCore.QSettings):
         this.__initialize()
         return this
 
-    def register_upgrade_hook(self, func, *args):
+    def register_upgrade_hook(self, to_version, func):
         """Register a function to upgrade from one config version to another"""
-        to_version = Version.from_string(func.__name__)
         assert to_version <= PICARD_VERSION, "%r > %r !!!" % (to_version, PICARD_VERSION)
-        self._upgrade_hooks[to_version] = {
-            'func': func,
-            'args': args,
-            'done': False
-        }
+        self._upgrade_hooks[to_version] = func
 
     def run_upgrade_hooks(self, outputfunc=None):
         """Executes registered functions to upgrade config version to the latest"""
@@ -312,16 +306,18 @@ class Config(QtCore.QSettings):
                           PICARD_VERSION.to_string()
                       ))
             return
+        done = dict()
         for version in sorted(self._upgrade_hooks):
             hook = self._upgrade_hooks[version]
+            done[version] = False
             if self._version < version:
                 try:
-                    if outputfunc and hook['func'].__doc__:
+                    if outputfunc and hook.__doc__:
                         outputfunc("Config upgrade %s -> %s: %s" % (
                                    self._version.to_string(),
                                    version.to_string(),
-                                   hook['func'].__doc__.strip()))
-                    hook['func'](self, *hook['args'])
+                                   hook.__doc__.strip()))
+                    hook(self)
                 except BaseException:
                     import traceback
                     raise ConfigUpgradeError(
@@ -329,18 +325,18 @@ class Config(QtCore.QSettings):
                         "using %s():\n%s" % (
                             self._version.to_string(),
                             version.to_string(),
-                            hook['func'].__name__,
+                            hook.__name__,
                             traceback.format_exc()
                         ))
                 else:
-                    hook['done'] = True
+                    done[version] = True
                     self._version = version
                     self._write_version()
             else:
                 # hook is not applicable, mark as done
-                hook['done'] = True
+                done[version] = True
 
-        if all(map(itemgetter('done'), self._upgrade_hooks.values())):
+        if all(done.values()):
             # all hooks were executed, ensure config is marked with latest version
             self._version = PICARD_VERSION
             self._write_version()
