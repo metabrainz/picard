@@ -27,7 +27,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from inspect import (
+    getmembers,
+    isfunction,
+)
 import re
+import sys
 
 from PyQt6 import QtWidgets
 
@@ -45,6 +50,11 @@ from picard.const import (
 )
 from picard.const.sys import IS_FROZEN
 from picard.util import unique_numbered_title
+from picard.version import Version
+
+
+# All upgrade functions have to start with following prefix
+UPGRADE_FUNCTION_PREFIX = 'upgrade_to_v'
 
 
 # TO ADD AN UPGRADE HOOK:
@@ -528,34 +538,28 @@ def rename_option(config, old_opt, new_opt, option_type, default):
         _p['user_profile_settings'] = all_settings
 
 
+def is_upgrade_hook(f):
+    """Check if passed function is an upgrade hook"""
+    return (
+        isfunction(f)
+        and f.__module__ == __name__
+        and f.__name__.startswith(UPGRADE_FUNCTION_PREFIX)
+    )
+
+
 def upgrade_config(config):
     cfg = config
-    cfg.register_upgrade_hook(upgrade_to_v1_0_0_final_0)
-    cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_1)
-    cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_2)
-    cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_3)
-    cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_4)
-    cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_2)
-    cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_3)
-    cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_4)
-    cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_5)
-    cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_6)
-    cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_7)
-    cfg.register_upgrade_hook(upgrade_to_v2_0_0_dev_3)
-    cfg.register_upgrade_hook(upgrade_to_v2_1_0_dev_1)
-    cfg.register_upgrade_hook(upgrade_to_v2_2_0_dev_3)
-    cfg.register_upgrade_hook(upgrade_to_v2_4_0_beta_3)
-    cfg.register_upgrade_hook(upgrade_to_v2_5_0_dev_1)
-    cfg.register_upgrade_hook(upgrade_to_v2_5_0_dev_2)
-    cfg.register_upgrade_hook(upgrade_to_v2_6_0_dev_1)
-    cfg.register_upgrade_hook(upgrade_to_v2_6_0_beta_2)
-    cfg.register_upgrade_hook(upgrade_to_v2_6_0_beta_3)
-    cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_2)
-    cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_3)
-    cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_4)
-    cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_5)
-    cfg.register_upgrade_hook(upgrade_to_v2_8_0_dev_2)
-    cfg.register_upgrade_hook(upgrade_to_v2_9_0_alpha_2)
-    cfg.register_upgrade_hook(upgrade_to_v3_0_0_dev_1)
-    cfg.register_upgrade_hook(upgrade_to_v3_0_0_dev_2)
+
+    # Build a dict with version as key and function as value
+    hooks = {
+        Version.from_string(name[len(UPGRADE_FUNCTION_PREFIX):]): hook
+        for name, hook in getmembers(sys.modules[__name__], predicate=is_upgrade_hook)
+    }
+
+    # Ensure hooks are sorted by version
+    hooks = dict(sorted(hooks.items()))
+
+    for v, hook in hooks.items():
+        cfg.register_upgrade_hook(v, hook)
+
     cfg.run_upgrade_hooks(log.debug)
