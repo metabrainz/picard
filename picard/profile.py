@@ -187,7 +187,7 @@ class UserProfileGroups():
             SettingDesc('show_menu_icons', N_("Show icons in menus"), ['show_menu_icons']),
             SettingDesc('ui_language', N_("User interface language"), ['ui_language', 'label']),
             SettingDesc('ui_theme', N_("User interface color theme"), ['ui_theme', 'label_theme']),
-            SettingDesc('toolbar_multiselect', N_("Allow selection of multiple directories"), ['toolbar_multiselect']),
+            SettingDesc('allow_multi_dirs_selection', N_("Allow selection of multiple directories"), ['allow_multi_dirs_selection']),
             SettingDesc('builtin_search', N_("Use builtin search rather than looking in browser"), ['builtin_search']),
             SettingDesc('use_adv_search_syntax', N_("Use advanced search syntax"), ['use_adv_search_syntax']),
             SettingDesc('show_new_user_dialog', N_("Show a usage warning dialog when Picard starts"), ['new_user_dialog']),

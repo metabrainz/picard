@@ -1280,7 +1280,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         dir_list = []
         config = get_config()
-        if not config.setting['toolbar_multiselect']:
+        if not config.setting['allow_multi_dirs_selection']:
             directory = QtWidgets.QFileDialog.getExistingDirectory(self, "", current_directory)
             if directory:
                 dir_list.append(directory)
