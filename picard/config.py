@@ -306,10 +306,8 @@ class Config(QtCore.QSettings):
                           PICARD_VERSION.to_string()
                       ))
             return
-        done = dict()
         for version in sorted(self._upgrade_hooks):
             hook = self._upgrade_hooks[version]
-            done[version] = False
             if self._version < version:
                 try:
                     if outputfunc and hook.__doc__:
@@ -329,14 +327,14 @@ class Config(QtCore.QSettings):
                             traceback.format_exc()
                         ))
                 else:
-                    done[version] = True
+                    del self._upgrade_hooks[version]
                     self._version = version
                     self._write_version()
             else:
                 # hook is not applicable, mark as done
-                done[version] = True
+                del self._upgrade_hooks[version]
 
-        if all(done.values()):
+        if not self._upgrade_hooks:
             # all hooks were executed, ensure config is marked with latest version
             self._version = PICARD_VERSION
             self._write_version()
