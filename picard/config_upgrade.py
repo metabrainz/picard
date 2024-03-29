@@ -558,8 +558,6 @@ def is_upgrade_hook(f):
 
 
 def upgrade_config(config):
-    cfg = config
-
     # Build a dict with version as key and function as value
     hooks = {
         Version.from_string(name[len(UPGRADE_FUNCTION_PREFIX):]): hook
@@ -567,6 +565,6 @@ def upgrade_config(config):
     }
 
     for to_version, hook in hooks.items():
-        cfg.register_upgrade_hook(to_version, hook)
+        config.register_upgrade_hook(to_version, hook)
 
-    cfg.run_upgrade_hooks(log.debug)
+    config.run_upgrade_hooks(log.debug)
