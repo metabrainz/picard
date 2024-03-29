@@ -69,7 +69,9 @@ UPGRADE_FUNCTION_PREFIX = 'upgrade_to_v'
 # It will be automatically detected and registered by `upgrade_config()`.
 # After adding an upgrade hook you have to update `PICARD_VERSION` to match it.
 #
-# The only parameter passed is `config`.
+# The only parameter passed is when hooks are executed at startup is `config`,
+# but extra parameters might be needed for tests.
+#
 # To rename old option to new one, use helper method `rename_option()`.
 #
 # Note: it is important to describe changes made by the method using a docstring.
