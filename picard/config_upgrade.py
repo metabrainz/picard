@@ -558,6 +558,8 @@ def is_upgrade_hook(f):
 
 
 def upgrade_config(config):
+    """Detect upgrade hooks methods and register them"""
+
     # Build a dict with version as key and function as value
     hooks = {
         Version.from_string(name[len(UPGRADE_FUNCTION_PREFIX):]): hook
