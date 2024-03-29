@@ -71,6 +71,9 @@ UPGRADE_FUNCTION_PREFIX = 'upgrade_to_v'
 #
 # The only parameter passed is `config`.
 # To rename old option to new one, use helper method `rename_option()`.
+#
+# Note: it is important to describe changes made by the method using a docstring.
+# The text can be logged when the hook is executed.
 
 
 def upgrade_to_v1_0_0final0(config, interactive=True, merge=True):
