@@ -59,11 +59,18 @@ UPGRADE_FUNCTION_PREFIX = 'upgrade_to_v'
 
 # TO ADD AN UPGRADE HOOK:
 # ----------------------
-# add a function here, named after the version you want upgrade to
-# ie. upgrade_to_v1_0_0_dev_1() for 1.0.0dev1
-# register it in upgrade_config()
-# and modify PICARD_VERSION to match it
 #
+# Add a new method here, named using the following scheme:
+# UPGRADE_FUNCTION_PREFIX + version with dots replaced by underscores
+#
+# For example:
+# `upgrade_to_v1_0_0dev1()` for an upgrade hook upgrading to 1.0.0dev1
+#
+# It will be automatically detected and registered by `upgrade_config()`.
+# After adding an upgrade hook you have to update `PICARD_VERSION` to match it.
+#
+# The only parameter passed is `config`.
+# To rename old option to new one, use helper method `rename_option()`.
 
 
 def upgrade_to_v1_0_0final0(config, interactive=True, merge=True):
