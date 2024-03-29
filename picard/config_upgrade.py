@@ -548,17 +548,16 @@ def rename_option(config, old_opt, new_opt, option_type, default):
         _p['user_profile_settings'] = all_settings
 
 
-def is_upgrade_hook(f):
-    """Check if passed function is an upgrade hook"""
-    return (
-        isfunction(f)
-        and f.__module__ == __name__
-        and f.__name__.startswith(UPGRADE_FUNCTION_PREFIX)
-    )
-
-
 def upgrade_config(config):
     """Detect upgrade hooks methods and register them"""
+
+    def is_upgrade_hook(f):
+        """Check if passed function is an upgrade hook"""
+        return (
+            isfunction(f)
+            and f.__module__ == __name__
+            and f.__name__.startswith(UPGRADE_FUNCTION_PREFIX)
+        )
 
     # Build a dict with version as key and function as value
     hooks = {
