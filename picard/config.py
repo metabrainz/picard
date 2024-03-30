@@ -246,7 +246,6 @@ class Config(QtCore.QSettings):
         if 'version' not in self.application or not self.application['version']:
             TextOption('application', 'version', '0.0.0dev0')
         self._version = Version.from_string(self.application['version'])
-        self._upgrade_hooks = dict()
 
     @classmethod
     def from_app(cls, parent):
@@ -284,18 +283,13 @@ class Config(QtCore.QSettings):
         this.__initialize()
         return this
 
-    def register_upgrade_hook(self, to_version, func):
-        """Register a function to upgrade from one config version to another"""
-        assert to_version <= PICARD_VERSION, "%r > %r !!!" % (to_version, PICARD_VERSION)
-        self._upgrade_hooks[to_version] = func
-
-    def run_upgrade_hooks(self):
-        """Executes registered functions to upgrade config version to the latest"""
+    def run_upgrade_hooks(self, hooks):
+        """Executes passed hooks to upgrade config version to the latest"""
         if self._version == Version(0, 0, 0, 'dev', 0):
             # This is a freshly created config
             self._write_version(PICARD_VERSION)
             return
-        if not self._upgrade_hooks:
+        if not hooks:
             return
         if self._version >= PICARD_VERSION:
             if self._version > PICARD_VERSION:
@@ -305,8 +299,14 @@ class Config(QtCore.QSettings):
                           PICARD_VERSION.to_string()
                       ))
             return
-        for version in sorted(self._upgrade_hooks):
-            hook = self._upgrade_hooks[version]
+        for version in sorted(hooks):
+            hook = hooks[version]
+            if version > PICARD_VERSION:
+                raise ConfigUpgradeError(
+                    "Upgrade hook %s has version %s > Picard version %s"
+                    % (hook.__name__, version, PICARD_VERSION)
+                )
+
             if self._version < version:
                 try:
                     if hook.__doc__:
@@ -324,13 +324,13 @@ class Config(QtCore.QSettings):
                             hook.__name__,
                         )) from e
                 else:
-                    del self._upgrade_hooks[version]
+                    del hooks[version]
                     self._write_version(version)
             else:
                 # hook is not applicable, mark as done
-                del self._upgrade_hooks[version]
+                del hooks[version]
 
-        if not self._upgrade_hooks:
+        if not hooks:
             # all hooks were executed, ensure config is marked with latest version
             self._write_version(PICARD_VERSION)
 

@@ -562,12 +562,7 @@ def upgrade_config(config):
         )
 
     # Build a dict with version as key and function as value
-    hooks = {
+    config.run_upgrade_hooks({
         Version.from_string(name[len(UPGRADE_FUNCTION_PREFIX):]): hook
         for name, hook in getmembers(sys.modules[__name__], predicate=is_upgrade_hook)
-    }
-
-    for to_version, hook in hooks.items():
-        config.register_upgrade_hook(to_version, hook)
-
-    config.run_upgrade_hooks()
+    })
