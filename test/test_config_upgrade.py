@@ -58,6 +58,7 @@ from picard.config_upgrade import (
     upgrade_to_v2_6_0beta3,
     upgrade_to_v2_6_0dev1,
     upgrade_to_v2_8_0dev2,
+    upgrade_to_v3_0_0dev3,
 )
 from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -364,3 +365,11 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual(expected, self.config.setting['toolbar_layout'])
         upgrade_to_v2_8_0dev2(self.config)
         self.assertEqual(expected, self.config.setting['toolbar_layout'])
+
+    def test_upgrade_to_v3_0_0dev3(self):
+        BoolOption('setting', 'allow_multi_dirs_selection', False)
+
+        self.config.setting['toolbar_multiselect'] = True
+        upgrade_to_v3_0_0dev3(self.config)
+        self.assertNotIn('toolbar_multiselect', self.config.setting)
+        self.assertTrue(self.config.setting['allow_multi_dirs_selection'])

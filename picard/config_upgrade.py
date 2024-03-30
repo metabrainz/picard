@@ -533,6 +533,13 @@ def upgrade_to_v3_0_0dev2(config):
     config.persist['splitters_OptionsDialog'] = b''
 
 
+def upgrade_to_v3_0_0dev3(config):
+    """Option "toolbar_multiselect" was renamed to "allow_multi_dirs_selection"."""
+    old_opt = 'toolbar_multiselect'
+    new_opt = 'allow_multi_dirs_selection'
+    rename_option(config, old_opt, new_opt, BoolOption, False)
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
