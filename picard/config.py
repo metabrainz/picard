@@ -289,7 +289,7 @@ class Config(QtCore.QSettings):
         assert to_version <= PICARD_VERSION, "%r > %r !!!" % (to_version, PICARD_VERSION)
         self._upgrade_hooks[to_version] = func
 
-    def run_upgrade_hooks(self, outputfunc=None):
+    def run_upgrade_hooks(self):
         """Executes registered functions to upgrade config version to the latest"""
         if self._version == Version(0, 0, 0, 'dev', 0):
             # This is a freshly created config
@@ -310,11 +310,11 @@ class Config(QtCore.QSettings):
             hook = self._upgrade_hooks[version]
             if self._version < version:
                 try:
-                    if outputfunc and hook.__doc__:
-                        outputfunc("Config upgrade %s -> %s: %s" % (
-                                   self._version.to_string(),
-                                   version.to_string(),
-                                   hook.__doc__.strip()))
+                    if hook.__doc__:
+                        log.debug("Config upgrade %s -> %s: %s" % (
+                                  self._version.to_string(),
+                                  version.to_string(),
+                                  hook.__doc__.strip()))
                     hook(self)
                 except BaseException as e:
                     raise ConfigUpgradeError(

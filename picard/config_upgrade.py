@@ -570,4 +570,4 @@ def upgrade_config(config):
     for to_version, hook in hooks.items():
         config.register_upgrade_hook(to_version, hook)
 
-    config.run_upgrade_hooks(log.debug)
+    config.run_upgrade_hooks()
