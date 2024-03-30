@@ -24,6 +24,7 @@
 
 from PyQt6.QtCore import QByteArray
 
+from test.picardtestcase import PicardTestCase
 from test.test_config import TestPicardConfigCommon
 
 from picard.config import (
@@ -37,6 +38,7 @@ import picard.config_upgrade
 from picard.config_upgrade import (
     OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3,
     OLD_DEFAULT_FILE_NAMING_FORMAT_v2_1,
+    autodetect_upgrade_hooks,
     upgrade_to_v1_0_0final0,
     upgrade_to_v1_3_0dev1,
     upgrade_to_v1_3_0dev2,
@@ -65,6 +67,32 @@ from picard.const import (
     DEFAULT_SCRIPT_NAME,
 )
 from picard.util import unique_numbered_title
+from picard.version import (
+    Version,
+    VersionError,
+)
+
+
+def _upgrade_hook_ok_1_2_3_dev_1(config):
+    pass
+
+
+def _upgrade_hook_not_ok_xxx(config):
+    pass
+
+
+class TestPicardConfigUpgradesAutodetect(PicardTestCase):
+
+    def test_upgrade_hook_autodetect_ok(self):
+        hooks = autodetect_upgrade_hooks(module_name=__name__, prefix='_upgrade_hook_ok_')
+        expected_version = Version(major=1, minor=2, patch=3, identifier='dev', revision=1)
+        self.assertIn(expected_version, hooks)
+        self.assertEqual(hooks[expected_version], _upgrade_hook_ok_1_2_3_dev_1)
+        self.assertEqual(len(hooks), 1)
+
+    def test_upgrade_hook_autodetect_not_ok(self):
+        with self.assertRaises(VersionError):
+            autodetect_upgrade_hooks(module_name=__name__, prefix='_upgrade_hook_not_ok_')
 
 
 class TestPicardConfigUpgrades(TestPicardConfigCommon):

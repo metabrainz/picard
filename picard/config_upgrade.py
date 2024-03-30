@@ -557,19 +557,28 @@ def rename_option(config, old_opt, new_opt, option_type, default):
         _p['user_profile_settings'] = all_settings
 
 
-def upgrade_config(config):
-    """Detect upgrade hooks methods, register and execute them"""
+def autodetect_upgrade_hooks(module_name=None, prefix=UPGRADE_FUNCTION_PREFIX):
+    """Detect upgrade hooks methods"""
+
+    if module_name is None:
+        module_name = __name__
 
     def is_upgrade_hook(f):
         """Check if passed function is an upgrade hook"""
         return (
             isfunction(f)
-            and f.__module__ == __name__
-            and f.__name__.startswith(UPGRADE_FUNCTION_PREFIX)
+            and f.__module__ == module_name
+            and f.__name__.startswith(prefix)
         )
 
     # Build a dict with version as key and function as value
-    config.run_upgrade_hooks({
-        Version.from_string(name[len(UPGRADE_FUNCTION_PREFIX):]): hook
-        for name, hook in getmembers(sys.modules[__name__], predicate=is_upgrade_hook)
-    })
+    return {
+        Version.from_string(name[len(prefix):]): hook
+        for name, hook in getmembers(sys.modules[module_name], predicate=is_upgrade_hook)
+    }
+
+
+def upgrade_config(config):
+    """Execute detected upgrade hooks"""
+
+    config.run_upgrade_hooks(autodetect_upgrade_hooks())
