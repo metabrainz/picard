@@ -81,6 +81,14 @@ def _upgrade_hook_not_ok_xxx(config):
     pass
 
 
+def _upgrade_hook_tricky_1(config):
+    pass
+
+
+def _upgrade_hook_tricky__1(config):
+    pass
+
+
 class TestPicardConfigUpgradesAutodetect(PicardTestCase):
 
     def test_upgrade_hook_autodetect_ok(self):
@@ -93,6 +101,13 @@ class TestPicardConfigUpgradesAutodetect(PicardTestCase):
     def test_upgrade_hook_autodetect_not_ok(self):
         with self.assertRaises(VersionError):
             autodetect_upgrade_hooks(module_name=__name__, prefix='_upgrade_hook_not_ok_')
+
+    def test_upgrade_hook_autodetect_tricky(self):
+        hooks = autodetect_upgrade_hooks(module_name=__name__, prefix='_upgrade_hook_tricky_')
+        expected_version = Version(major=1, minor=0, patch=0, identifier='final', revision=0)
+        self.assertIn(expected_version, hooks)
+        self.assertEqual(hooks[expected_version], _upgrade_hook_tricky__1)
+        self.assertEqual(len(hooks), 1)
 
 
 class TestPicardConfigUpgrades(TestPicardConfigCommon):
