@@ -293,8 +293,7 @@ class Config(QtCore.QSettings):
         """Executes registered functions to upgrade config version to the latest"""
         if self._version == Version(0, 0, 0, 'dev', 0):
             # This is a freshly created config
-            self._version = PICARD_VERSION
-            self._write_version()
+            self._write_version(PICARD_VERSION)
             return
         if not self._upgrade_hooks:
             return
@@ -326,16 +325,14 @@ class Config(QtCore.QSettings):
                         )) from e
                 else:
                     del self._upgrade_hooks[version]
-                    self._version = version
-                    self._write_version()
+                    self._write_version(version)
             else:
                 # hook is not applicable, mark as done
                 del self._upgrade_hooks[version]
 
         if not self._upgrade_hooks:
             # all hooks were executed, ensure config is marked with latest version
-            self._version = PICARD_VERSION
-            self._write_version()
+            self._write_version(PICARD_VERSION)
 
     def _backup_settings(self):
         if Version(0, 0, 0) < self._version < PICARD_VERSION:
@@ -351,7 +348,8 @@ class Config(QtCore.QSettings):
             return False
         return True
 
-    def _write_version(self):
+    def _write_version(self, new_version):
+        self._version = new_version
         self.application['version'] = self._version.to_string()
         self.sync()
 
