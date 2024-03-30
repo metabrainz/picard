@@ -316,16 +316,14 @@ class Config(QtCore.QSettings):
                                    version.to_string(),
                                    hook.__doc__.strip()))
                     hook(self)
-                except BaseException:
-                    import traceback
+                except BaseException as e:
                     raise ConfigUpgradeError(
                         "Error during config upgrade from version %s to %s "
-                        "using %s():\n%s" % (
+                        "using %s()" % (
                             self._version.to_string(),
                             version.to_string(),
                             hook.__name__,
-                            traceback.format_exc()
-                        ))
+                        )) from e
                 else:
                     del self._upgrade_hooks[version]
                     self._version = version
