@@ -551,7 +551,7 @@ def rename_option(config, old_opt, new_opt, option_type, default):
 
 
 def upgrade_config(config):
-    """Detect upgrade hooks methods and register them"""
+    """Detect upgrade hooks methods, register and execute them"""
 
     def is_upgrade_hook(f):
         """Check if passed function is an upgrade hook"""
