@@ -572,10 +572,16 @@ def autodetect_upgrade_hooks(module_name=None, prefix=UPGRADE_FUNCTION_PREFIX):
         )
 
     # Build a dict with version as key and function as value
-    return {
-        Version.from_string(name[len(prefix):]): hook
-        for name, hook in getmembers(sys.modules[module_name], predicate=is_upgrade_hook)
-    }
+    hooks = dict()
+    for name, hook in getmembers(sys.modules[module_name], predicate=is_upgrade_hook):
+        version = Version.from_string(name[len(prefix):])
+        if version in hooks:
+            raise Exception(
+                "Conflicting functions for version %s: %s vs %s" % (version, hooks[version], hook)
+            )
+        hooks[version] = hook
+
+    return hooks
 
 
 def upgrade_config(config):
