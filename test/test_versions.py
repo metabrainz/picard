@@ -74,18 +74,22 @@ class VersionsTest(PicardTestCase):
         l, s = (1, 1, 0, 'dev', 0), '1_1_0_dev_0'
         self.assertEqual(l, Version.from_string(s))
 
-    def test_version_from_string_prefixed(self):
-        l, s = (1, 1, 0, 'dev', 0), 'anything_28_1_1_0_dev_0'
-        self.assertEqual(l, Version.from_string(s))
+    def test_version_from_string_prefixed_with_num(self):
+        self.assertRaises(VersionError, Version.from_string, '8_1_1_0_dev_0')
+
+    def test_version_from_string_suffixed_with_num(self):
+        self.assertRaises(VersionError, Version.from_string, '1_1_0_dev_0_8')
+
+    def test_version_from_string_prefixed_with_alpha(self):
+        self.assertRaises(VersionError, Version.from_string, 'a_1_1_0_dev_0')
+
+    def test_version_from_string_suffixed_with_alpha(self):
+        self.assertRaises(VersionError, Version.from_string, '1_1_0_dev_0_a')
 
     def test_version_single_digit(self):
         l, s = (2, 0, 0, 'final', 0), '2'
         self.assertEqual(l, Version.from_string(s))
         self.assertEqual(l, Version(2))
-
-    def test_version_from_string_prefixed_final(self):
-        l, s = (1, 1, 0, 'final', 0), 'anything_28_1_1_0'
-        self.assertEqual(l, Version.from_string(s))
 
     def test_from_string_invalid_identifier(self):
         self.assertRaises(VersionError, Version.from_string, '1.1.0dev')

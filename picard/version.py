@@ -29,7 +29,7 @@ class VersionError(Exception):
 
 
 class Version(namedtuple('VersionBase', 'major minor patch identifier revision')):
-    _version_re = re.compile(r"(\d+)(?:[._](\d+)(?:[._](\d+)[._]?(?:(dev|a|alpha|b|beta|rc|final)[._]?(\d+))?)?)?$")
+    _version_re = re.compile(r"^(\d+)(?:[._](\d+)(?:[._](\d+)[._]?(?:(dev|a|alpha|b|beta|rc|final)[._]?(\d+))?)?)?$")
 
     _identifiers = {
         'dev': 0,
