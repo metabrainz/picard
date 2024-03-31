@@ -38,6 +38,7 @@ import picard.config_upgrade
 from picard.config_upgrade import (
     OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3,
     OLD_DEFAULT_FILE_NAMING_FORMAT_v2_1,
+    UpgradeHooksAutodetectError,
     autodetect_upgrade_hooks,
     upgrade_to_v1_0_0final0,
     upgrade_to_v1_3_0dev1,
@@ -67,10 +68,7 @@ from picard.const import (
     DEFAULT_SCRIPT_NAME,
 )
 from picard.util import unique_numbered_title
-from picard.version import (
-    Version,
-    VersionError,
-)
+from picard.version import Version
 
 
 def _upgrade_hook_ok_1_2_3_dev_1(config):
@@ -99,11 +97,17 @@ class TestPicardConfigUpgradesAutodetect(PicardTestCase):
         self.assertEqual(len(hooks), 1)
 
     def test_upgrade_hook_autodetect_not_ok(self):
-        with self.assertRaises(VersionError):
+        with self.assertRaisesRegex(
+            UpgradeHooksAutodetectError,
+            r'^Failed to extract version from _upgrade_hook_not_ok_xxx'
+        ):
             autodetect_upgrade_hooks(module_name=__name__, prefix='_upgrade_hook_not_ok_')
 
     def test_upgrade_hook_autodetect_tricky(self):
-        with self.assertRaisesRegex(Exception, r"^Conflicting functions for version 1\.2\.3\.alpha1"):
+        with self.assertRaisesRegex(
+            UpgradeHooksAutodetectError,
+            r"^Conflicting functions for version 1\.2\.3\.alpha1"
+        ):
             autodetect_upgrade_hooks(module_name=__name__, prefix='_upgrade_hook_tricky_')
 
 

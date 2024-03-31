@@ -50,7 +50,10 @@ from picard.const import (
 )
 from picard.const.sys import IS_FROZEN
 from picard.util import unique_numbered_title
-from picard.version import Version
+from picard.version import (
+    Version,
+    VersionError,
+)
 
 
 # All upgrade functions have to start with following prefix
@@ -557,6 +560,10 @@ def rename_option(config, old_opt, new_opt, option_type, default):
         _p['user_profile_settings'] = all_settings
 
 
+class UpgradeHooksAutodetectError(Exception):
+    pass
+
+
 def autodetect_upgrade_hooks(module_name=None, prefix=UPGRADE_FUNCTION_PREFIX):
     """Detect upgrade hooks methods"""
 
@@ -574,9 +581,14 @@ def autodetect_upgrade_hooks(module_name=None, prefix=UPGRADE_FUNCTION_PREFIX):
     # Build a dict with version as key and function as value
     hooks = dict()
     for name, hook in getmembers(sys.modules[module_name], predicate=is_upgrade_hook):
-        version = Version.from_string(name[len(prefix):])
+        try:
+            version = Version.from_string(name[len(prefix):])
+        except VersionError as e:
+            raise UpgradeHooksAutodetectError(
+                "Failed to extract version from %s()" % hook.__name__
+            ) from e
         if version in hooks:
-            raise Exception(
+            raise UpgradeHooksAutodetectError(
                 "Conflicting functions for version %s: %s vs %s" % (version, hooks[version], hook)
             )
         hooks[version] = hook
