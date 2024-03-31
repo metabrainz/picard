@@ -301,12 +301,6 @@ class Config(QtCore.QSettings):
             return
         for version in sorted(hooks):
             hook = hooks[version]
-            if version > PICARD_VERSION:
-                raise ConfigUpgradeError(
-                    "Upgrade hook %s has version %s > Picard version %s"
-                    % (hook.__name__, version, PICARD_VERSION)
-                )
-
             if self._version < version:
                 try:
                     if hook.__doc__:

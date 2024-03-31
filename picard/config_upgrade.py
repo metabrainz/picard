@@ -36,7 +36,10 @@ import sys
 
 from PyQt6 import QtWidgets
 
-from picard import log
+from picard import (
+    PICARD_VERSION,
+    log,
+)
 from picard.config import (
     BoolOption,
     IntOption,
@@ -590,6 +593,11 @@ def autodetect_upgrade_hooks(module_name=None, prefix=UPGRADE_FUNCTION_PREFIX):
         if version in hooks:
             raise UpgradeHooksAutodetectError(
                 "Conflicting functions for version %s: %s vs %s" % (version, hooks[version], hook)
+            )
+        if version > PICARD_VERSION:
+            raise UpgradeHooksAutodetectError(
+                "Upgrade hook %s has version %s > Picard version %s"
+                % (hook.__name__, version, PICARD_VERSION)
             )
         hooks[version] = hook
 

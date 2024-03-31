@@ -87,6 +87,10 @@ def _upgrade_hook_tricky_1_2_3_alpha1(config):
     pass
 
 
+def _upgrade_hook_future_9999(config):
+    pass
+
+
 class TestPicardConfigUpgradesAutodetect(PicardTestCase):
 
     def test_upgrade_hook_autodetect_ok(self):
@@ -109,6 +113,13 @@ class TestPicardConfigUpgradesAutodetect(PicardTestCase):
             r"^Conflicting functions for version 1\.2\.3\.alpha1"
         ):
             autodetect_upgrade_hooks(module_name=__name__, prefix='_upgrade_hook_tricky_')
+
+    def test_upgrade_hook_autodetect_future(self):
+        with self.assertRaisesRegex(
+            UpgradeHooksAutodetectError,
+            r"^Upgrade hook _upgrade_hook_future_9999 has version 9999\.0\.0\.final0 > Picard version"
+        ):
+            autodetect_upgrade_hooks(module_name=__name__, prefix='_upgrade_hook_future_')
 
 
 class TestPicardConfigUpgrades(TestPicardConfigCommon):
