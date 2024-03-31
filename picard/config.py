@@ -299,7 +299,7 @@ class Config(QtCore.QSettings):
                           PICARD_VERSION.to_string()
                       ))
             return
-        for version in sorted(hooks):
+        for version in hooks:
             hook = hooks[version]
             if self._version < version:
                 try:

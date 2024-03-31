@@ -91,6 +91,20 @@ def _upgrade_hook_future_9999(config):
     pass
 
 
+# WARNING: order of _upgrade_hook_sort_*() functions is important for tests
+
+def _upgrade_hook_sort_2(config):
+    pass
+
+
+def _upgrade_hook_sort_1(config):
+    pass
+
+
+def _upgrade_hook_sort_2_0_0dev1(config):
+    pass
+
+
 class TestPicardConfigUpgradesAutodetect(PicardTestCase):
 
     def test_upgrade_hook_autodetect_ok(self):
@@ -120,6 +134,15 @@ class TestPicardConfigUpgradesAutodetect(PicardTestCase):
             r"^Upgrade hook _upgrade_hook_future_9999 has version 9999\.0\.0\.final0 > Picard version"
         ):
             autodetect_upgrade_hooks(module_name=__name__, prefix='_upgrade_hook_future_')
+
+    def test_upgrade_hook_autodetect_sort(self):
+        hooks = autodetect_upgrade_hooks(module_name=__name__, prefix='_upgrade_hook_sort_')
+        expected_keys = (
+            Version(major=1, minor=0, patch=0, identifier='final', revision=0),
+            Version(major=2, minor=0, patch=0, identifier='dev', revision=1),
+            Version(major=2, minor=0, patch=0, identifier='final', revision=0),
+        )
+        self.assertEqual(tuple(hooks), expected_keys)
 
 
 class TestPicardConfigUpgrades(TestPicardConfigCommon):

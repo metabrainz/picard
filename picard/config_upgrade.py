@@ -601,7 +601,7 @@ def autodetect_upgrade_hooks(module_name=None, prefix=UPGRADE_FUNCTION_PREFIX):
             )
         hooks[version] = hook
 
-    return hooks
+    return dict(sorted(hooks.items()))
 
 
 def upgrade_config(config):
