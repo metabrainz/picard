@@ -27,11 +27,19 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from inspect import (
+    getmembers,
+    isfunction,
+)
 import re
+import sys
 
 from PyQt6 import QtWidgets
 
-from picard import log
+from picard import (
+    PICARD_VERSION,
+    log,
+)
 from picard.config import (
     BoolOption,
     IntOption,
@@ -45,18 +53,38 @@ from picard.const import (
 )
 from picard.const.sys import IS_FROZEN
 from picard.util import unique_numbered_title
+from picard.version import (
+    Version,
+    VersionError,
+)
+
+
+# All upgrade functions have to start with following prefix
+UPGRADE_FUNCTION_PREFIX = 'upgrade_to_v'
 
 
 # TO ADD AN UPGRADE HOOK:
 # ----------------------
-# add a function here, named after the version you want upgrade to
-# ie. upgrade_to_v1_0_0_dev_1() for 1.0.0dev1
-# register it in upgrade_config()
-# and modify PICARD_VERSION to match it
 #
+# Add a new method here, named using the following scheme:
+# UPGRADE_FUNCTION_PREFIX + version with dots replaced by underscores
+#
+# For example:
+# `upgrade_to_v1_0_0dev1()` for an upgrade hook upgrading to 1.0.0dev1
+#
+# It will be automatically detected and registered by `upgrade_config()`.
+# After adding an upgrade hook you have to update `PICARD_VERSION` to match it.
+#
+# The only parameter passed is when hooks are executed at startup is `config`,
+# but extra parameters might be needed for tests.
+#
+# To rename old option to new one, use helper method `rename_option()`.
+#
+# Note: it is important to describe changes made by the method using a docstring.
+# The text can be logged when the hook is executed.
 
 
-def upgrade_to_v1_0_0_final_0(config, interactive=True, merge=True):
+def upgrade_to_v1_0_0final0(config, interactive=True, merge=True):
     """In version 1.0, the file naming formats for single and various artist releases were merged.
     """
     _s = config.setting
@@ -110,7 +138,7 @@ def upgrade_to_v1_0_0_final_0(config, interactive=True, merge=True):
             remove_va_file_naming_format(merge=False)
 
 
-def upgrade_to_v1_3_0_dev_1(config):
+def upgrade_to_v1_3_0dev1(config):
     """Option "windows_compatible_filenames" was renamed "windows_compatibility" (PICARD-110).
     """
     old_opt = 'windows_compatible_filenames'
@@ -118,7 +146,7 @@ def upgrade_to_v1_3_0_dev_1(config):
     rename_option(config, old_opt, new_opt, BoolOption, True)
 
 
-def upgrade_to_v1_3_0_dev_2(config):
+def upgrade_to_v1_3_0dev2(config):
     """Option "preserved_tags" is now using comma instead of spaces as tag separator (PICARD-536)
     """
     _s = config.setting
@@ -127,7 +155,7 @@ def upgrade_to_v1_3_0_dev_2(config):
         _s[opt] = re.sub(r"\s+", ",", _s[opt].strip())
 
 
-def upgrade_to_v1_3_0_dev_3(config):
+def upgrade_to_v1_3_0dev3(config):
     """Options were made to support lists (solving PICARD-144 and others)
     """
     _s = config.setting
@@ -146,7 +174,7 @@ def upgrade_to_v1_3_0_dev_3(config):
                 pass
 
 
-def upgrade_to_v1_3_0_dev_4(config):
+def upgrade_to_v1_3_0dev4(config):
     """Option "release_type_scores" is now a list of tuples
     """
     _s = config.setting
@@ -170,7 +198,7 @@ def upgrade_to_v1_3_0_dev_4(config):
             pass
 
 
-def upgrade_to_v1_4_0_dev_2(config):
+def upgrade_to_v1_4_0dev2(config):
     """Options "username" and "password" are removed and
     replaced with OAuth tokens
     """
@@ -181,7 +209,7 @@ def upgrade_to_v1_4_0_dev_2(config):
         _s.remove(opt)
 
 
-def upgrade_to_v1_4_0_dev_3(config):
+def upgrade_to_v1_4_0dev3(config):
     """Cover art providers options were moved to a list of tuples"""
     _s = config.setting
     map_ca_provider = [
@@ -206,19 +234,19 @@ OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3 = "$if2(%albumartist%,%artist%)/" \
     "%title%"
 
 
-def upgrade_to_v1_4_0_dev_4(config):
+def upgrade_to_v1_4_0dev4(config):
     """Adds trailing comma to default file names for scripts"""
     _s = config.setting
     if _s['file_naming_format'] == OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3:
         _s['file_naming_format'] = DEFAULT_FILE_NAMING_FORMAT
 
 
-def upgrade_to_v1_4_0_dev_5(config):
+def upgrade_to_v1_4_0dev5(config):
     """Using Picard.ini configuration file on all platforms"""
     # this is done in Config.__init__()
 
 
-def upgrade_to_v1_4_0_dev_6(config):
+def upgrade_to_v1_4_0dev6(config):
     """Adds support for multiple and selective tagger scripts"""
     _s = config.setting
     old_enabled_option = 'enable_tagger_script'
@@ -241,14 +269,14 @@ def upgrade_to_v1_4_0_dev_6(config):
     _s.remove(old_script_text_option)
 
 
-def upgrade_to_v1_4_0_dev_7(config):
+def upgrade_to_v1_4_0dev7(config):
     """Option "save_only_front_images_to_tags" was renamed to "embed_only_one_front_image"."""
     old_opt = 'save_only_front_images_to_tags'
     new_opt = 'embed_only_one_front_image'
     rename_option(config, old_opt, new_opt, BoolOption, True)
 
 
-def upgrade_to_v2_0_0_dev_3(config):
+def upgrade_to_v2_0_0dev3(config):
     """Option "caa_image_size" value has different meaning."""
     _s = config.setting
     opt = 'caa_image_size'
@@ -267,7 +295,7 @@ def upgrade_to_v2_0_0_dev_3(config):
             _s[opt] = _CAA_SIZE_COMPAT[value]
 
 
-def upgrade_to_v2_1_0_dev_1(config):
+def upgrade_to_v2_1_0dev1(config):
     """Upgrade genre related options"""
     _s = config.setting
     if 'folksonomy_tags' in _s and _s['folksonomy_tags']:
@@ -280,7 +308,7 @@ def upgrade_to_v2_1_0_dev_1(config):
     rename_option(config, 'artists_tags',  'artists_genres',  BoolOption, False)
 
 
-def upgrade_to_v2_2_0_dev_3(config):
+def upgrade_to_v2_2_0dev3(config):
     """Option ignore_genres was replaced by option genres_filter"""
     _s = config.setting
     old_opt = 'ignore_genres'
@@ -300,14 +328,14 @@ OLD_DEFAULT_FILE_NAMING_FORMAT_v2_1 = "$if2(%albumartist%,%artist%)/" \
     "%title%"
 
 
-def upgrade_to_v2_2_0_dev_4(config):
+def upgrade_to_v2_2_0dev4(config):
     """Improved default file naming script"""
     _s = config.setting
     if _s['file_naming_format'] == OLD_DEFAULT_FILE_NAMING_FORMAT_v2_1:
         _s['file_naming_format'] = DEFAULT_FILE_NAMING_FORMAT
 
 
-def upgrade_to_v2_4_0_beta_3(config):
+def upgrade_to_v2_4_0beta3(config):
     """Convert preserved tags to list"""
     _s = config.setting
     opt = 'preserved_tags'
@@ -316,7 +344,7 @@ def upgrade_to_v2_4_0_beta_3(config):
         _s[opt] = [t.strip() for t in value.split(',')]
 
 
-def upgrade_to_v2_5_0_dev_1(config):
+def upgrade_to_v2_5_0dev1(config):
     """Rename whitelist cover art provider"""
     _s = config.setting
     _s['ca_providers'] = [
@@ -325,25 +353,25 @@ def upgrade_to_v2_5_0_dev_1(config):
     ]
 
 
-def upgrade_to_v2_5_0_dev_2(config):
+def upgrade_to_v2_5_0dev2(config):
     """Reset main view splitter states"""
     config.persist['splitter_state'] = b''
     config.persist['bottom_splitter_state'] = b''
 
 
-def upgrade_to_v2_6_0_dev_1(config):
+def upgrade_to_v2_6_0dev1(config):
     """Unset fpcalc path in environments where auto detection is preferred."""
     if IS_FROZEN or config.setting['acoustid_fpcalc'].startswith('/snap/picard/'):
         config.setting['acoustid_fpcalc'] = ''
 
 
-def upgrade_to_v2_6_0_beta_2(config):
+def upgrade_to_v2_6_0beta2(config):
     """Rename caa_image_type_as_filename and caa_save_single_front_image options"""
     rename_option(config, 'caa_image_type_as_filename', 'image_type_as_filename', BoolOption, False)
     rename_option(config, 'caa_save_single_front_image', 'save_only_one_front_image', BoolOption, False)
 
 
-def upgrade_to_v2_6_0_beta_3(config):
+def upgrade_to_v2_6_0beta3(config):
     """Replace use_system_theme with ui_theme options"""
     from picard.ui.theme import UiTheme
     _s = config.setting
@@ -353,7 +381,7 @@ def upgrade_to_v2_6_0_beta_3(config):
     _s.remove('use_system_theme')
 
 
-def upgrade_to_v2_7_0_dev_2(config):
+def upgrade_to_v2_7_0dev2(config):
     """Replace manually set persistent splitter settings with automated system.
     """
     def upgrade_persisted_splitter(new_persist_key, key_map):
@@ -396,7 +424,7 @@ def upgrade_to_v2_7_0_dev_2(config):
     )
 
 
-def upgrade_to_v2_7_0_dev_3(config):
+def upgrade_to_v2_7_0dev3(config):
     """Save file naming scripts to dictionary.
     """
     from picard.script import get_file_naming_script_presets
@@ -430,7 +458,7 @@ def upgrade_to_v2_7_0_dev_3(config):
     config.setting.remove('file_naming_format')
 
 
-def upgrade_to_v2_7_0_dev_4(config):
+def upgrade_to_v2_7_0dev4(config):
     """Replace artist_script_exception with artist_script_exceptions"""
     _s = config.setting
     ListOption('setting', 'artist_script_exceptions', [])
@@ -443,7 +471,7 @@ def upgrade_to_v2_7_0_dev_4(config):
     _s.remove('artist_locale')
 
 
-def upgrade_to_v2_7_0_dev_5(config):
+def upgrade_to_v2_7_0dev5(config):
     """Replace artist_script_exceptions with script_exceptions and remove artist_script_exception_weighting"""
     _s = config.setting
     ListOption('setting', 'script_exceptions', [])
@@ -454,7 +482,7 @@ def upgrade_to_v2_7_0_dev_5(config):
     _s.remove('artist_script_exception_weighting')
 
 
-def upgrade_to_v2_8_0_dev_2(config):
+def upgrade_to_v2_8_0dev2(config):
     """Remove AcousticBrainz settings from options"""
     toolbar_layout = config.setting['toolbar_layout']
     try:
@@ -464,7 +492,7 @@ def upgrade_to_v2_8_0_dev_2(config):
         pass
 
 
-def upgrade_to_v2_9_0_alpha_2(config):
+def upgrade_to_v2_9_0alpha2(config):
     """Add preset file naming scripts to editable user scripts disctionary"""
     from picard.script import get_file_naming_script_presets
     scripts = config.setting['file_renaming_scripts']
@@ -473,7 +501,7 @@ def upgrade_to_v2_9_0_alpha_2(config):
     config.setting['file_renaming_scripts'] = scripts
 
 
-def upgrade_to_v3_0_0_dev_1(config):
+def upgrade_to_v3_0_0dev1(config):
     """Clear Qt5 state config"""
     # A lot of persisted data is serialized Qt5 data that is not compatible with Qt6.
     # Keep only the data that is still useful and definitely supported.
@@ -506,12 +534,12 @@ def upgrade_to_v3_0_0_dev_1(config):
             config.remove(key)
 
 
-def upgrade_to_v3_0_0_dev_2(config):
+def upgrade_to_v3_0_0dev2(config):
     """Reset option dialog splitter states"""
     config.persist['splitters_OptionsDialog'] = b''
 
 
-def upgrade_to_v3_0_0_dev_3(config):
+def upgrade_to_v3_0_0dev3(config):
     """Option "toolbar_multiselect" was renamed to "allow_multi_dirs_selection"."""
     old_opt = 'toolbar_multiselect'
     new_opt = 'allow_multi_dirs_selection'
@@ -535,35 +563,48 @@ def rename_option(config, old_opt, new_opt, option_type, default):
         _p['user_profile_settings'] = all_settings
 
 
+class UpgradeHooksAutodetectError(Exception):
+    pass
+
+
+def autodetect_upgrade_hooks(module_name=None, prefix=UPGRADE_FUNCTION_PREFIX):
+    """Detect upgrade hooks methods"""
+
+    if module_name is None:
+        module_name = __name__
+
+    def is_upgrade_hook(f):
+        """Check if passed function is an upgrade hook"""
+        return (
+            isfunction(f)
+            and f.__module__ == module_name
+            and f.__name__.startswith(prefix)
+        )
+
+    # Build a dict with version as key and function as value
+    hooks = dict()
+    for name, hook in getmembers(sys.modules[module_name], predicate=is_upgrade_hook):
+        try:
+            version = Version.from_string(name[len(prefix):])
+        except VersionError as e:
+            raise UpgradeHooksAutodetectError(
+                "Failed to extract version from %s()" % hook.__name__
+            ) from e
+        if version in hooks:
+            raise UpgradeHooksAutodetectError(
+                "Conflicting functions for version %s: %s vs %s" % (version, hooks[version], hook)
+            )
+        if version > PICARD_VERSION:
+            raise UpgradeHooksAutodetectError(
+                "Upgrade hook %s has version %s > Picard version %s"
+                % (hook.__name__, version, PICARD_VERSION)
+            )
+        hooks[version] = hook
+
+    return dict(sorted(hooks.items()))
+
+
 def upgrade_config(config):
-    cfg = config
-    cfg.register_upgrade_hook(upgrade_to_v1_0_0_final_0)
-    cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_1)
-    cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_2)
-    cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_3)
-    cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_4)
-    cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_2)
-    cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_3)
-    cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_4)
-    cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_5)
-    cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_6)
-    cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_7)
-    cfg.register_upgrade_hook(upgrade_to_v2_0_0_dev_3)
-    cfg.register_upgrade_hook(upgrade_to_v2_1_0_dev_1)
-    cfg.register_upgrade_hook(upgrade_to_v2_2_0_dev_3)
-    cfg.register_upgrade_hook(upgrade_to_v2_4_0_beta_3)
-    cfg.register_upgrade_hook(upgrade_to_v2_5_0_dev_1)
-    cfg.register_upgrade_hook(upgrade_to_v2_5_0_dev_2)
-    cfg.register_upgrade_hook(upgrade_to_v2_6_0_dev_1)
-    cfg.register_upgrade_hook(upgrade_to_v2_6_0_beta_2)
-    cfg.register_upgrade_hook(upgrade_to_v2_6_0_beta_3)
-    cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_2)
-    cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_3)
-    cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_4)
-    cfg.register_upgrade_hook(upgrade_to_v2_7_0_dev_5)
-    cfg.register_upgrade_hook(upgrade_to_v2_8_0_dev_2)
-    cfg.register_upgrade_hook(upgrade_to_v2_9_0_alpha_2)
-    cfg.register_upgrade_hook(upgrade_to_v3_0_0_dev_1)
-    cfg.register_upgrade_hook(upgrade_to_v3_0_0_dev_2)
-    cfg.register_upgrade_hook(upgrade_to_v3_0_0_dev_3)
-    cfg.run_upgrade_hooks(log.debug)
+    """Execute detected upgrade hooks"""
+
+    config.run_upgrade_hooks(autodetect_upgrade_hooks())

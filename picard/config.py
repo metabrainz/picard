@@ -31,7 +31,6 @@
 
 from collections import defaultdict
 import inspect
-from operator import itemgetter
 import os
 import shutil
 
@@ -247,7 +246,6 @@ class Config(QtCore.QSettings):
         if 'version' not in self.application or not self.application['version']:
             TextOption('application', 'version', '0.0.0dev0')
         self._version = Version.from_string(self.application['version'])
-        self._upgrade_hooks = dict()
 
     @classmethod
     def from_app(cls, parent):
@@ -285,24 +283,13 @@ class Config(QtCore.QSettings):
         this.__initialize()
         return this
 
-    def register_upgrade_hook(self, func, *args):
-        """Register a function to upgrade from one config version to another"""
-        to_version = Version.from_string(func.__name__)
-        assert to_version <= PICARD_VERSION, "%r > %r !!!" % (to_version, PICARD_VERSION)
-        self._upgrade_hooks[to_version] = {
-            'func': func,
-            'args': args,
-            'done': False
-        }
-
-    def run_upgrade_hooks(self, outputfunc=None):
-        """Executes registered functions to upgrade config version to the latest"""
+    def run_upgrade_hooks(self, hooks):
+        """Executes passed hooks to upgrade config version to the latest"""
         if self._version == Version(0, 0, 0, 'dev', 0):
             # This is a freshly created config
-            self._version = PICARD_VERSION
-            self._write_version()
+            self._write_version(PICARD_VERSION)
             return
-        if not self._upgrade_hooks:
+        if not hooks:
             return
         if self._version >= PICARD_VERSION:
             if self._version > PICARD_VERSION:
@@ -312,38 +299,34 @@ class Config(QtCore.QSettings):
                           PICARD_VERSION.to_string()
                       ))
             return
-        for version in sorted(self._upgrade_hooks):
-            hook = self._upgrade_hooks[version]
+        for version in hooks:
+            hook = hooks[version]
             if self._version < version:
                 try:
-                    if outputfunc and hook['func'].__doc__:
-                        outputfunc("Config upgrade %s -> %s: %s" % (
-                                   self._version.to_string(),
-                                   version.to_string(),
-                                   hook['func'].__doc__.strip()))
-                    hook['func'](self, *hook['args'])
-                except BaseException:
-                    import traceback
+                    if hook.__doc__:
+                        log.debug("Config upgrade %s -> %s: %s" % (
+                                  self._version.to_string(),
+                                  version.to_string(),
+                                  hook.__doc__.strip()))
+                    hook(self)
+                except BaseException as e:
                     raise ConfigUpgradeError(
                         "Error during config upgrade from version %s to %s "
-                        "using %s():\n%s" % (
+                        "using %s()" % (
                             self._version.to_string(),
                             version.to_string(),
-                            hook['func'].__name__,
-                            traceback.format_exc()
-                        ))
+                            hook.__name__,
+                        )) from e
                 else:
-                    hook['done'] = True
-                    self._version = version
-                    self._write_version()
+                    del hooks[version]
+                    self._write_version(version)
             else:
                 # hook is not applicable, mark as done
-                hook['done'] = True
+                del hooks[version]
 
-        if all(map(itemgetter('done'), self._upgrade_hooks.values())):
+        if not hooks:
             # all hooks were executed, ensure config is marked with latest version
-            self._version = PICARD_VERSION
-            self._write_version()
+            self._write_version(PICARD_VERSION)
 
     def _backup_settings(self):
         if Version(0, 0, 0) < self._version < PICARD_VERSION:
@@ -359,7 +342,8 @@ class Config(QtCore.QSettings):
             return False
         return True
 
-    def _write_version(self):
+    def _write_version(self, new_version):
+        self._version = new_version
         self.application['version'] = self._version.to_string()
         self.sync()
 
