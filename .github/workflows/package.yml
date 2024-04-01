@@ -315,7 +315,7 @@ jobs:
         echo -e "*Please refer to the [download page](https://picard.musicbrainz.org/downloads/) for official download locations.*\n" > changes-$PICARD_VERSION.md
         ./scripts/tools/changelog-for-version.py $PICARD_VERSION >> changes-$PICARD_VERSION.md
     - name: Create release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         name: MusicBrainz Picard ${{ steps.changelog.outputs.version }}
         body_path: changes-${{ steps.changelog.outputs.version }}.md
