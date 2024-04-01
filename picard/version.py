@@ -77,12 +77,6 @@ class Version(namedtuple('VersionBase', 'major minor patch identifier revision')
     def valid_identifiers(cls):
         return set(cls._identifiers.keys())
 
-    def to_string(self, short=False):
-        if short:
-            return self.short_str()
-        else:
-            return str(self)
-
     def short_str(self):
         if self.identifier in {'alpha', 'beta'}:
             version = self._replace(identifier=self.identifier[0])

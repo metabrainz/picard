@@ -52,7 +52,6 @@ class VersionsTest(PicardTestCase):
         )
         for v, s in versions:
             self.assertEqual(str(v), s)
-            self.assertEqual(v.to_string(), s)
             self.assertEqual(v, Version.from_string(s))
 
     def test_version_conversion_short(self):
