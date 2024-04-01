@@ -30,7 +30,6 @@ import mutagen
 from test.picardtestcase import PicardTestCase
 
 from picard import config
-from picard.file import File
 import picard.formats
 from picard.formats import ext_to_format
 from picard.formats.mutagenext.aac import AACAPEv2
@@ -38,6 +37,7 @@ from picard.formats.mutagenext.ac3 import AC3APEv2
 from picard.formats.mutagenext.tak import TAK
 from picard.formats.util import guess_format
 from picard.metadata import Metadata
+from picard.util.tags import FILE_INFO_TAGS
 
 
 settings = {
@@ -318,7 +318,7 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_unsupported_tags_info_tags(self):
-            for tag in File.FILE_INFO_TAGS:
+            for tag in FILE_INFO_TAGS:
                 self.assertFalse(self.format.supports_tag(tag), 'Tag "%s" must not be supported' % tag)
 
         @skipUnlessTestfile
