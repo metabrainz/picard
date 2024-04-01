@@ -162,6 +162,16 @@ CALCULATED_TAGS = {
     'r128_track_gain',
 }
 
+# Tags that contains infos related to files
+FILE_INFO_TAGS = {
+    '~bitrate',
+    '~bits_per_sample',
+    '~channels',
+    '~filesize',
+    '~format',
+    '~sample_rate',
+}
+
 
 def display_tag_name(name):
     if ':' in name:

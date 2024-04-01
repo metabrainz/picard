@@ -103,6 +103,7 @@ from picard.util.preservedtags import PreservedTags
 from picard.util.scripttofilename import script_to_filename_with_metadata
 from picard.util.tags import (
     CALCULATED_TAGS,
+    FILE_INFO_TAGS,
     PRESERVED_TAGS,
 )
 
@@ -134,8 +135,6 @@ class File(QtCore.QObject, Item):
     LOOKUP_ACOUSTID = 2
 
     EXTENSIONS = []
-
-    FILE_INFO_TAGS = ('~bitrate', '~sample_rate', '~channels', '~bits_per_sample', '~format', '~filesize')
 
     comparison_weights = {
         'title': 13,
@@ -307,8 +306,8 @@ class File(QtCore.QObject, Item):
                 metadata[m] = getattr(guessed, m)
 
     def _copy_file_info_tags(self, to_metadata, from_metadata):
-        for info in self.FILE_INFO_TAGS:
-            to_metadata[info] = from_metadata[info]
+        for tag in FILE_INFO_TAGS:
+            to_metadata[tag] = from_metadata[tag]
 
     def copy_metadata(self, metadata, preserve_deleted=True):
         saved_metadata = {}
