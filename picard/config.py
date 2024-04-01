@@ -295,8 +295,8 @@ class Config(QtCore.QSettings):
             if self._version > PICARD_VERSION:
                 print("Warning: config file %s was created by a more recent "
                       "version of Picard (current is %s)" % (
-                          self._version.to_string(),
-                          PICARD_VERSION.to_string()
+                          self._version,
+                          PICARD_VERSION
                       ))
             return
         for version in hooks:
@@ -305,16 +305,16 @@ class Config(QtCore.QSettings):
                 try:
                     if hook.__doc__:
                         log.debug("Config upgrade %s -> %s: %s" % (
-                                  self._version.to_string(),
-                                  version.to_string(),
+                                  self._version,
+                                  version,
                                   hook.__doc__.strip()))
                     hook(self)
                 except BaseException as e:
                     raise ConfigUpgradeError(
                         "Error during config upgrade from version %s to %s "
                         "using %s()" % (
-                            self._version.to_string(),
-                            version.to_string(),
+                            self._version,
+                            version,
                             hook.__name__,
                         )) from e
                 else:
@@ -344,14 +344,14 @@ class Config(QtCore.QSettings):
 
     def _write_version(self, new_version):
         self._version = new_version
-        self.application['version'] = self._version.to_string()
+        self.application['version'] = str(self._version)
         self.sync()
 
     def _versioned_config_filename(self, version=None):
         if not version:
             version = self._version
         return os.path.join(os.path.dirname(self.fileName()), '%s-%s.ini' % (
-            self.applicationName(), version.to_string(short=True)))
+            self.applicationName(), version.short_str()))
 
     def save_user_backup(self, backup_path):
         if backup_path == self.fileName():

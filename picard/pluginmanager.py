@@ -338,7 +338,7 @@ class PluginManager(QtCore.QObject):
                 log.debug("Loading plugin %r version %s, compatible with API: %s",
                           plugin.name,
                           plugin.version,
-                          ", ".join([v.to_string(short=True) for v in
+                          ", ".join([v.short_str() for v in
                                      sorted(compatible_versions)]))
                 plugin.compatible = True
                 setattr(picard.plugins, name, plugin_module)

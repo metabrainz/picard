@@ -67,7 +67,7 @@ class VersionsTest(PicardTestCase):
             (Version(1, 1, 2, 'rc', 2), '1.1.2rc2'),
         )
         for v, s in versions:
-            self.assertEqual(v.to_string(short=True), s)
+            self.assertEqual(v.short_str(), s)
             self.assertEqual(v, Version.from_string(s))
 
     def test_version_from_string_underscores(self):
