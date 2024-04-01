@@ -150,7 +150,7 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
             button.hide()
         else:
             button.show()
-            button.setToolTip(_("Download and upgrade plugin to version %s") % self.new_version.to_string(short=True))
+            button.setToolTip(_("Download and upgrade plugin to version %s") % self.new_version.short_str())
             button.setIcon(self._icons['update'])
 
     def show_enable(self, button, mode):
@@ -464,7 +464,7 @@ class PluginsOptionsPage(OptionsPage):
                 _('Plugin "%(plugin)s"') % {'plugin': plugin_name},
                 _('The plugin "%(plugin)s" will be upgraded to version %(version)s on next run of Picard.') % {
                     'plugin': plugin.name,
-                    'version': item.new_version.to_string(short=True),
+                    'version': item.new_version.short_str(),
                 })
 
             item.upgrade_to_version = item.new_version
@@ -514,10 +514,10 @@ class PluginsOptionsPage(OptionsPage):
 
         def update_text():
             if item.new_version is not None:
-                version = "%s → %s" % (plugin.version.to_string(short=True),
-                                       item.new_version.to_string(short=True))
+                version = "%s → %s" % (plugin.version.short_str(),
+                                       item.new_version.short_str())
             else:
-                version = plugin.version.to_string(short=True)
+                version = plugin.version.short_str()
 
             if item.installed_font is None:
                 item.installed_font = item.font(COLUMN_NAME)
@@ -621,7 +621,7 @@ class PluginsOptionsPage(OptionsPage):
                 label = _("Restart Picard to upgrade to new version")
             else:
                 label = _("New version available")
-            version_str = item.new_version.to_string(short=True)
+            version_str = item.new_version.short_str()
             text.append("<b>{0}: {1}</b>".format(label, version_str))
         if plugin.description:
             text.append(plugin.description + "<hr width='90%'/>")
@@ -687,7 +687,7 @@ class PluginsOptionsPage(OptionsPage):
             parse_response_type=None,
             priority=True,
             important=True,
-            unencoded_queryargs={'id': plugin.module_name, 'version': plugin.version.to_string(short=True)},
+            unencoded_queryargs={'id': plugin.module_name, 'version': plugin.version.short_str()},
         )
 
     def download_handler(self, update, response, reply, error, plugin):

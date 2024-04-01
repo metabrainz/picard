@@ -130,7 +130,7 @@ else:
             'CFBundleDisplayName': PICARD_DISPLAY_NAME,
             'CFBundleIdentifier': PICARD_APP_ID,
             'CFBundleVersion': '%d.%d.%d' % PICARD_VERSION[:3],
-            'CFBundleShortVersionString': PICARD_VERSION.to_string(short=True),
+            'CFBundleShortVersionString': PICARD_VERSION.short_str(),
             'LSApplicationCategoryType': 'public.app-category.music',
             'LSMinimumSystemVersion': os.environ.get('MACOSX_DEPLOYMENT_TARGET', '10.14'),
             'NSHighResolutionCapable': True,

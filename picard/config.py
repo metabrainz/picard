@@ -351,7 +351,7 @@ class Config(QtCore.QSettings):
         if not version:
             version = self._version
         return os.path.join(os.path.dirname(self.fileName()), '%s-%s.ini' % (
-            self.applicationName(), version.to_string(short=True)))
+            self.applicationName(), version.short_str()))
 
     def save_user_backup(self, backup_path):
         if backup_path == self.fileName():
