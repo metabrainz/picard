@@ -108,6 +108,12 @@ class TestPicardConfigOption(TestPicardConfigCommon):
         with self.assertRaisesRegex(OptionError, r"^Option setting/option: Already declared"):
             Option("setting", "option", "def")
 
+    def test_get_default(self):
+        Option("setting", "option", "abc")
+        self.assertEqual(Option.get_default("setting", "option"), "abc")
+        with self.assertRaisesRegex(OptionError, "^Option setting/unknown_option: No such option"):
+            Option.get_default("setting", "unknown_option")
+
 
 class TestPicardConfigSection(TestPicardConfigCommon):
 

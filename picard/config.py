@@ -386,6 +386,13 @@ class Option(QtCore.QObject):
         return cls.registry.get((section, name))
 
     @classmethod
+    def get_default(cls, section, name):
+        opt = cls.get(section, name)
+        if opt is None:
+            raise OptionError("No such option", section, name)
+        return opt.default
+
+    @classmethod
     def add_if_missing(cls, section, name, default):
         if not cls.exists(section, name):
             cls(section, name, default)
