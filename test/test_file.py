@@ -261,6 +261,13 @@ class FileNamingTest(PicardTestCase):
         filename = self.file.make_filename(self.file.filename, self.metadata)
         self.assertEqual(os.path.realpath('/somepath/somefile.mp3'), filename)
 
+    def test_make_filename_empty_basename(self):
+        config.setting['move_files'] = True
+        config.setting['rename_files'] = True
+        config.setting['file_renaming_scripts'] = {'test_id': {'script': '/somedir/$noop()'}}
+        filename = self.file.make_filename(self.file.filename, self.metadata)
+        self.assertEqual(os.path.realpath('/media/music/somedir/somefile.mp3'), filename)
+
     def test_make_filename_no_extension(self):
         config.setting['rename_files'] = True
         file_ = FakeMp3File('/somepath/_')
