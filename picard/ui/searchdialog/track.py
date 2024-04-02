@@ -28,7 +28,7 @@ from picard.config import (
     Option,
     get_config,
 )
-from picard.file import File
+from picard.file import FILE_COMPARISON_WEIGHTS
 from picard.mbjson import (
     countries_from_node,
     recording_to_metadata,
@@ -128,7 +128,7 @@ class TrackSearchDialog(SearchDialog):
         if self.file_:
             metadata = self.file_.orig_metadata
             candidates = (
-                metadata.compare_to_track(track, File.comparison_weights)
+                metadata.compare_to_track(track, FILE_COMPARISON_WEIGHTS)
                 for track in tracks
             )
             tracks = (result.track for result in sort_by_similarity(candidates))

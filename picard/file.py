@@ -110,6 +110,20 @@ from picard.util.tags import (
 from picard.ui.item import Item
 
 
+FILE_COMPARISON_WEIGHTS = {
+    'album': 5,
+    'artist': 4,
+    'date': 4,
+    'format': 2,
+    'isvideo': 2,
+    'length': 10,
+    'releasecountry': 2,
+    'releasetype': 14,
+    'title': 13,
+    'totaltracks': 4,
+}
+
+
 class FileErrorType(Enum):
 
     UNKNOWN = auto()
@@ -135,19 +149,6 @@ class File(QtCore.QObject, Item):
     LOOKUP_ACOUSTID = 2
 
     EXTENSIONS = []
-
-    comparison_weights = {
-        'title': 13,
-        'artist': 4,
-        'album': 5,
-        'length': 10,
-        'totaltracks': 4,
-        'releasetype': 14,
-        'releasecountry': 2,
-        'format': 2,
-        'isvideo': 2,
-        'date': 4,
-    }
 
     class PreserveTimesStatError(Exception):
         pass
@@ -881,7 +882,7 @@ class File(QtCore.QObject, Item):
     def _match_to_track(self, tracks, threshold=0):
         # multiple matches -- calculate similarities to each of them
         candidates = (
-            self.metadata.compare_to_track(track, self.comparison_weights)
+            self.metadata.compare_to_track(track, FILE_COMPARISON_WEIGHTS)
             for track in tracks
         )
         no_match = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
