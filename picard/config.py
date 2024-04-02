@@ -30,7 +30,6 @@
 
 
 from collections import defaultdict
-import inspect
 import os
 import shutil
 
@@ -360,6 +359,11 @@ class Config(QtCore.QSettings):
         return self._save_backup(backup_path)
 
 
+class OptionError(Exception):
+    def __init__(self, message, section, name):
+        super().__init__("Option %s/%s: %s" % (section, name, message))
+
+
 class Option(QtCore.QObject):
 
     """Generic option."""
@@ -370,17 +374,7 @@ class Option(QtCore.QObject):
     def __init__(self, section, name, default):
         key = (section, name)
         if key in self.registry:
-            stack = inspect.stack()
-            fmt = "Option %s/%s already declared"
-            args = [section, name]
-            if len(stack) > 1:
-                f = stack[1]
-                fmt += "\nat %s:%d: in %s"
-                args.extend((f.filename, f.lineno, f.function))
-                if f.code_context:
-                    fmt += "\n%s"
-                    args.append("\n".join(f.code_context).rstrip())
-            log.error(fmt, *args)
+            raise OptionError("Already declared", section, name)
         super().__init__()
         self.section = section
         self.name = name
@@ -390,6 +384,13 @@ class Option(QtCore.QObject):
     @classmethod
     def get(cls, section, name):
         return cls.registry.get((section, name))
+
+    @classmethod
+    def get_default(cls, section, name):
+        opt = cls.get(section, name)
+        if opt is None:
+            raise OptionError("No such option", section, name)
+        return opt.default
 
     @classmethod
     def add_if_missing(cls, section, name, default):
