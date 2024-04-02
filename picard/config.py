@@ -360,6 +360,11 @@ class Config(QtCore.QSettings):
         return self._save_backup(backup_path)
 
 
+class OptionError(Exception):
+    def __init__(self, message, section, name):
+        super().__init__("Option %s/%s: %s" % (section, name, message))
+
+
 class Option(QtCore.QObject):
 
     """Generic option."""
