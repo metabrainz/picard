@@ -35,6 +35,7 @@ from PyQt6 import (
 from picard.config import (
     BoolOption,
     ListOption,
+    Option,
     TextOption,
     get_config,
 )
@@ -162,11 +163,11 @@ class MetadataOptionsPage(OptionsPage):
         config.setting['guess_tracknumber_and_title'] = self.ui.guess_tracknumber_and_title.isChecked()
 
     def set_va_name_default(self):
-        self.ui.va_name.setText(self.options[0].default)
+        self.ui.va_name.setText(Option.get_default('setting', 'va_name'))
         self.ui.va_name.setCursorPosition(0)
 
     def set_nat_name_default(self):
-        self.ui.nat_name.setText(self.options[1].default)
+        self.ui.nat_name.setText(Option.get_default('setting', 'nat_name'))
         self.ui.nat_name.setCursorPosition(0)
 
     def set_enabled_states(self):
