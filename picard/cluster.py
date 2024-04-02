@@ -67,6 +67,18 @@ from picard.ui.item import (
 )
 
 
+# Weights for different elements when comparing a cluster to a release
+CLUSTER_COMPARISON_WEIGHTS = {
+    'album': 17,
+    'albumartist': 6,
+    'date': 4,
+    'format': 2,
+    'releasecountry': 2,
+    'releasetype': 10,
+    'totalalbumtracks': 5,
+}
+
+
 class FileList(QtCore.QObject, FileListItem):
 
     metadata_images_changed = QtCore.pyqtSignal()
@@ -93,17 +105,6 @@ class FileList(QtCore.QObject, FileListItem):
 
 
 class Cluster(FileList):
-
-    # Weights for different elements when comparing a cluster to a release
-    comparison_weights = {
-        'album': 17,
-        'albumartist': 6,
-        'totalalbumtracks': 5,
-        'releasetype': 10,
-        'releasecountry': 2,
-        'format': 2,
-        'date': 4,
-    }
 
     def __init__(self, name, artist="", special=False, related_album=None, hide_if_empty=False):
         super().__init__()
@@ -265,7 +266,7 @@ class Cluster(FileList):
         # multiple matches -- calculate similarities to each of them
         def candidates():
             for release in releases:
-                match = self.metadata.compare_to_release(release, Cluster.comparison_weights)
+                match = self.metadata.compare_to_release(release, CLUSTER_COMPARISON_WEIGHTS)
                 if match.similarity >= threshold:
                     yield match
 

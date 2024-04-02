@@ -33,9 +33,9 @@ from test.test_coverart_image import create_image
 from picard.acoustid.json_helpers import (
     parse_recording as acoustid_parse_recording,
 )
-from picard.cluster import Cluster
+from picard.cluster import CLUSTER_COMPARISON_WEIGHTS
 from picard.coverart.image import CoverArtImage
-from picard.file import File
+from picard.file import FILE_COMPARISON_WEIGHTS
 from picard.mbjson import (
     release_to_metadata,
     track_to_metadata,
@@ -567,7 +567,7 @@ class CommonTests:
             release = load_test_json('release.json')
             metadata = Metadata()
             release_to_metadata(release, metadata)
-            match = metadata.compare_to_release(release, Cluster.comparison_weights)
+            match = metadata.compare_to_release(release, CLUSTER_COMPARISON_WEIGHTS)
             self.assertEqual(1.0, match.similarity)
             self.assertEqual(release, match.release)
 
@@ -577,7 +577,7 @@ class CommonTests:
             release_to_metadata(release, metadata)
             for score, sim in ((42, 0.42), ('42', 0.42), ('foo', 1.0), (None, 1.0)):
                 release['score'] = score
-                match = metadata.compare_to_release(release, Cluster.comparison_weights)
+                match = metadata.compare_to_release(release, CLUSTER_COMPARISON_WEIGHTS)
                 self.assertEqual(sim, match.similarity)
 
         def test_compare_to_release_parts_totaltracks(self):
@@ -667,7 +667,7 @@ class CommonTests:
             track_json = load_test_json('track.json')
             track = Track(track_json['id'])
             track_to_metadata(track_json, track)
-            match = track.metadata.compare_to_track(track_json, File.comparison_weights)
+            match = track.metadata.compare_to_track(track_json, FILE_COMPARISON_WEIGHTS)
             self.assertEqual(1.0, match.similarity)
             self.assertEqual(track_json, match.track)
 
@@ -677,7 +677,7 @@ class CommonTests:
             track_to_metadata(track_json, track)
             for score, sim in ((42, 0.42), ('42', 0.42), ('foo', 1.0), (None, 1.0)):
                 track_json['score'] = score
-                match = track.metadata.compare_to_track(track_json, File.comparison_weights)
+                match = track.metadata.compare_to_track(track_json, FILE_COMPARISON_WEIGHTS)
                 self.assertEqual(sim, match.similarity)
 
         def test_compare_to_track_is_video(self):
@@ -703,7 +703,7 @@ class CommonTests:
                 'albumartist': 'Tim Green',
                 'tracknumber': '4',
             })
-            match = m.compare_to_track(recording, File.comparison_weights)
+            match = m.compare_to_track(recording, FILE_COMPARISON_WEIGHTS)
             self.assertGreaterEqual(match.similarity, 0.8)
             self.assertEqual(recording, match.track)
             self.assertEqual(recording['releases'][0], match.release)
@@ -720,9 +720,9 @@ class CommonTests:
                 'title': 'Nina',
             })
             track.metadata.length = 225000
-            m1 = track.metadata.compare_to_track(track_json, File.comparison_weights)
+            m1 = track.metadata.compare_to_track(track_json, FILE_COMPARISON_WEIGHTS)
             del track_json['releases']
-            m2 = track.metadata.compare_to_track(track_json, File.comparison_weights)
+            m2 = track.metadata.compare_to_track(track_json, FILE_COMPARISON_WEIGHTS)
             self.assertGreater(m1.similarity, m2.similarity,
                                'Matching score for release with recordings must be higher then for release without')
 
