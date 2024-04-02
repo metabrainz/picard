@@ -30,7 +30,6 @@
 
 
 from collections import defaultdict
-import inspect
 import os
 import shutil
 
@@ -375,17 +374,7 @@ class Option(QtCore.QObject):
     def __init__(self, section, name, default):
         key = (section, name)
         if key in self.registry:
-            stack = inspect.stack()
-            fmt = "Option %s/%s already declared"
-            args = [section, name]
-            if len(stack) > 1:
-                f = stack[1]
-                fmt += "\nat %s:%d: in %s"
-                args.extend((f.filename, f.lineno, f.function))
-                if f.code_context:
-                    fmt += "\n%s"
-                    args.append("\n".join(f.code_context).rstrip())
-            log.error(fmt, *args)
+            raise OptionError("Already declared", section, name)
         super().__init__()
         self.section = section
         self.name = name
