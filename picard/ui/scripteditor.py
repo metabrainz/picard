@@ -259,18 +259,37 @@ class ScriptEditorExamples():
             '~secondaryreleasetype': ['soundtrack'],
             'releasestatus': 'official',
             'releasecountry': 'US',
+            'barcode': '602537825745',
+            'catalognumber': 'PMC 1255',
+            'genre': 'Rock',
+            'isrc': 'GBAYE0900666',
+            'label': 'Parlophone',
+            'language': 'eng',
+            'media': '12″ Vinyl',
+            'script': 'Latn',
+            'engineer': ['Ken Scott', 'Norman Smith'],
+            'producer': 'George Martin',
+            'writer': ['John Lennon', 'Paul McCartney'],
+            '~bitrate': '192.0',
+            '~channels': '2',
             '~extension': 'mp3',
+            '~filename': 'ticket_to_ride',
+            '~filesize': '3563068',
+            '~format': 'MPEG-1 Layer 3 - ID3v2.4',
+            '~length': '3:13',
+            '~sample_rate': '44100',
             'musicbrainz_albumid': 'd7fbbb0a-1348-40ad-8eef-cd438d4cd203',
             'musicbrainz_albumartistid': 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d',
             'musicbrainz_artistid': 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d',
             'musicbrainz_recordingid': 'ed052ae1-c950-47f2-8d2b-46e1b58ab76c',
             'musicbrainz_trackid': '392639f5-5629-477e-b04b-93bffa703405',
+            'musicbrainz_releasegroupid': '0d44e1cb-c6e0-3453-8b68-4d2082f05421',
         })
         yield efile
 
         # example 2
         config = get_config()
-        efile = File("track05.mp3")
+        efile = File("track05.flac")
         efile.state = File.NORMAL
         efile.metadata.update({
             'album': "Coup d'État, Volume 1: Ku De Ta / Prologue",
@@ -292,14 +311,26 @@ class ScriptEditorExamples():
             '~secondaryreleasetype': 'compilation',
             'releasestatus': 'official',
             'releasecountry': 'AU',
+            'barcode': '5021456128754',
+            'catalognumber': 'FM001',
+            'label': 'Filter Music',
+            'media': 'CD',
+            'script': 'Latn',
             'compilation': '1',
             '~multiartist': '1',
-            '~extension': 'mp3',
+            '~bitrate': '1609.038',
+            '~channels': '2',
+            '~extension': 'flac',
+            '~filename': 'track05',
+            '~filesize': '9237672',
+            '~format': 'FLAC',
+            '~sample_rate': '44100',
             'musicbrainz_albumid': '4b50c71e-0a07-46ac-82e4-cb85dc0c9bdd',
             'musicbrainz_recordingid': 'b3c487cb-0e55-477d-8df3-01ec6590f099',
             'musicbrainz_trackid': 'f8649a05-da39-39ba-957c-7abf8f9012be',
             'musicbrainz_albumartistid': '89ad4ac3-39f7-470e-963a-56509c546377',
             'musicbrainz_artistid': ['7b593455-d207-482c-8c6f-19ce22c94679', '9e082466-2390-40d1-891e-4803531f43fd'],
+            'musicbrainz_releasegroupid': 'fa90225d-1810-347c-ae5f-f051a760b623',
         })
         yield efile
 
