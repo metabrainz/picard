@@ -44,8 +44,10 @@ from picard.util import (
 )
 
 
+VERSIONS_MAX_TRACKS = 10
+
+
 def prepare_releases_for_versions(releases):
-    max_tracks = 10
     for node in releases:
         labels, catnums = label_info_from_node(node['label-info'])
 
@@ -55,8 +57,8 @@ def prepare_releases_for_versions(releases):
         else:
             country_label = node.get('country', '') or '??'
 
-        if len(node['media']) > max_tracks:
-            tracks = "+".join(str(m['track-count']) for m in node['media'][:max_tracks]) + '+…'
+        if len(node['media']) > VERSIONS_MAX_TRACKS:
+            tracks = "+".join(str(m['track-count']) for m in node['media'][:VERSIONS_MAX_TRACKS]) + '+…'
         else:
             tracks = "+".join(str(m['track-count']) for m in node['media'])
         formats = []
