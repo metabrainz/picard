@@ -81,6 +81,19 @@ def prepare_releases_for_versions(releases):
         }
 
 
+VERSIONS_NAME_KEYS = ('tracks', 'year', 'country', 'format', 'label', 'catnum')
+VERSIONS_HEADINGS = {
+    'tracks':   N_("Tracks"),
+    'year':     N_("Year"),
+    'country':  N_("Country"),
+    'format':   N_("Format"),
+    'label':    N_("Label"),
+    'catnum':   N_("Cat No"),
+}
+# additional keys displayed only for disambiguation
+VERSIONS_EXTRA_KEYS = ('packaging', 'barcode', 'disambiguation')
+
+
 class ReleaseGroup(DataObject):
 
     def __init__(self, rg_id):
@@ -100,18 +113,6 @@ class ReleaseGroup(DataObject):
         """Parse document and return a list of releases"""
         del self.versions[:]
 
-        namekeys = ('tracks', 'year', 'country', 'format', 'label', 'catnum')
-        headings = {
-            'tracks':   N_("Tracks"),
-            'year':     N_("Year"),
-            'country':  N_("Country"),
-            'format':   N_("Format"),
-            'label':    N_("Label"),
-            'catnum':   N_("Cat No"),
-        }
-        # additional keys displayed only for disambiguation
-        extrakeys = ('packaging', 'barcode', 'disambiguation')
-
         try:
             releases = document['releases']
         except (TypeError, KeyError):
@@ -121,7 +122,7 @@ class ReleaseGroup(DataObject):
 
         # Group versions by same display name
         for release in prepare_releases_for_versions(releases):
-            name = " / ".join(release[k] for k in namekeys)
+            name = " / ".join(release[k] for k in VERSIONS_NAME_KEYS)
             if name == release['tracks']:
                 name = "%s / %s" % (_('[no release info]'), name)
             versions[name].append(release)
@@ -129,7 +130,7 @@ class ReleaseGroup(DataObject):
         # de-duplicate names if possible
         for name, releases in versions.items():
             for a, b in combinations(releases, 2):
-                for key in extrakeys:
+                for key in VERSIONS_EXTRA_KEYS:
                     (value1, value2) = (a[key], b[key])
                     if value1 != value2:
                         a['_disambiguate_name'].append(value1)
@@ -148,7 +149,7 @@ class ReleaseGroup(DataObject):
                     'formats': release['formats'],
                 }
                 self.versions.append(version)
-        self.version_headings = " / ".join(_(headings[k]) for k in namekeys)
+        self.version_headings = " / ".join(_(VERSIONS_HEADINGS[k]) for k in VERSIONS_NAME_KEYS)
 
     def _request_finished(self, callback, document, http, error):
         try:
