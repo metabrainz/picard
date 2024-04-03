@@ -44,6 +44,56 @@ from picard.util import (
 )
 
 
+VERSIONS_MAX_TRACKS = 10
+VERSIONS_NAME_KEYS = ('tracks', 'year', 'country', 'format', 'label', 'catnum')
+VERSIONS_HEADINGS = {
+    'tracks':   N_("Tracks"),
+    'year':     N_("Year"),
+    'country':  N_("Country"),
+    'format':   N_("Format"),
+    'label':    N_("Label"),
+    'catnum':   N_("Cat No"),
+}
+# additional keys displayed only for disambiguation
+VERSIONS_EXTRA_KEYS = ('packaging', 'barcode', 'disambiguation')
+
+
+def prepare_releases_for_versions(releases):
+    for node in releases:
+        labels, catnums = label_info_from_node(node['label-info'])
+
+        countries = countries_from_node(node)
+        if countries:
+            country_label = countries_shortlist(countries)
+        else:
+            country_label = node.get('country', '') or '??'
+
+        if len(node['media']) > VERSIONS_MAX_TRACKS:
+            tracks = "+".join(str(m['track-count']) for m in node['media'][:VERSIONS_MAX_TRACKS]) + '+…'
+        else:
+            tracks = "+".join(str(m['track-count']) for m in node['media'])
+        formats = []
+        for medium in node['media']:
+            if 'format' in medium:
+                formats.append(medium['format'])
+        yield {
+            'id':      node['id'],
+            'year':    node['date'][:4] if 'date' in node else '????',
+            'country': country_label,
+            'format':  media_formats_from_node(node['media']),
+            'label':  ', '.join(' '.join(x.split(' ')[:2]) for x in set(labels)),
+            'catnum': ', '.join(set(catnums)),
+            'tracks': tracks,
+            'barcode': node.get('barcode', '') or _('[no barcode]'),
+            'packaging': node.get('packaging', '') or '??',
+            'disambiguation': node.get('disambiguation', ''),
+            '_disambiguate_name': list(),
+            'totaltracks': sum(m['track-count'] for m in node['media']),
+            'countries': countries,
+            'formats': formats,
+        }
+
+
 class ReleaseGroup(DataObject):
 
     def __init__(self, rg_id):
@@ -51,7 +101,7 @@ class ReleaseGroup(DataObject):
         self.metadata = Metadata()
         self.loaded = False
         self.versions = []
-        self.version_headings = ''
+        self.version_headings = " / ".join(_(VERSIONS_HEADINGS[k]) for k in VERSIONS_NAME_KEYS)
         self.loaded_albums = set()
         self.refcount = 0
 
@@ -62,82 +112,33 @@ class ReleaseGroup(DataObject):
     def _parse_versions(self, document):
         """Parse document and return a list of releases"""
         del self.versions[:]
-        data = []
-
-        namekeys = ('tracks', 'year', 'country', 'format', 'label', 'catnum')
-        headings = {
-            'tracks':   N_("Tracks"),
-            'year':     N_("Year"),
-            'country':  N_("Country"),
-            'format':   N_("Format"),
-            'label':    N_("Label"),
-            'catnum':   N_("Cat No"),
-        }
-        # additional keys displayed only for disambiguation
-        extrakeys = ('packaging', 'barcode', 'disambiguation')
 
         try:
             releases = document['releases']
         except (TypeError, KeyError):
-            releases = []
-
-        max_tracks = 10
-        for node in releases:
-            labels, catnums = label_info_from_node(node['label-info'])
-
-            countries = countries_from_node(node)
-            if countries:
-                country_label = countries_shortlist(countries)
-            else:
-                country_label = node.get('country', '') or '??'
-
-            if len(node['media']) > max_tracks:
-                tracks = "+".join(str(m['track-count']) for m in node['media'][:max_tracks]) + '+…'
-            else:
-                tracks = "+".join(str(m['track-count']) for m in node['media'])
-            formats = []
-            for medium in node['media']:
-                if 'format' in medium:
-                    formats.append(medium['format'])
-            release = {
-                'id':      node['id'],
-                'year':    node['date'][:4] if 'date' in node else '????',
-                'country': country_label,
-                'format':  media_formats_from_node(node['media']),
-                'label':  ', '.join(' '.join(x.split(' ')[:2]) for x in set(labels)),
-                'catnum': ', '.join(set(catnums)),
-                'tracks': tracks,
-                'barcode': node.get('barcode', '') or _('[no barcode]'),
-                'packaging': node.get('packaging', '') or '??',
-                'disambiguation': node.get('disambiguation', ''),
-                '_disambiguate_name': list(),
-                'totaltracks': sum(m['track-count'] for m in node['media']),
-                'countries': countries,
-                'formats': formats,
-            }
-            data.append(release)
+            return
 
         versions = defaultdict(list)
 
         # Group versions by same display name
-        for release in data:
-            name = " / ".join(release[k] for k in namekeys)
+        for release in prepare_releases_for_versions(releases):
+            name = " / ".join(release[k] for k in VERSIONS_NAME_KEYS)
             if name == release['tracks']:
                 name = "%s / %s" % (_('[no release info]'), name)
             versions[name].append(release)
 
         # de-duplicate names if possible
-        for name, releases in versions.items():
-            for a, b in combinations(releases, 2):
-                for key in extrakeys:
+        for name in versions:
+            for a, b in combinations(versions[name], 2):
+                for key in VERSIONS_EXTRA_KEYS:
                     (value1, value2) = (a[key], b[key])
                     if value1 != value2:
                         a['_disambiguate_name'].append(value1)
                         b['_disambiguate_name'].append(value2)
 
         # build the final list of versions, using the disambiguation if needed
-        for name, releases in versions.items():
-            for release in releases:
+        for name in versions:
+            for release in versions[name]:
                 dis = " / ".join(filter(None, uniqify(release['_disambiguate_name'])))
                 disname = name if not dis else name + ' / ' + dis
                 version = {
@@ -148,7 +149,6 @@ class ReleaseGroup(DataObject):
                     'formats': release['formats'],
                 }
                 self.versions.append(version)
-        self.version_headings = " / ".join(_(headings[k]) for k in namekeys)
 
     def _request_finished(self, callback, document, http, error):
         try:

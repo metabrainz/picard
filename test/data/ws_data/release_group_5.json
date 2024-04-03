@@ -1,0 +1,46 @@
+{
+    "release-offset": 0,
+    "releases": [
+        {
+            "id": "789",
+            "title": "Foox",
+            "status": "Official",
+            "country": "FR",
+            "date": "2009-08-07",
+            "barcode": "0123456789",
+            "text-representation": {
+                "language": "eng",
+                "script": "Latn"
+            },
+            "media": [
+                {
+                    "track-count": 2,
+                    "position": 1,
+                    "format": "CD",
+                    "title": ""
+                },
+                {
+                    "track-count": 3,
+                    "position": 2,
+                    "format": "CD",
+                    "title": ""
+                },
+                {
+                    "track-count": 4,
+                    "position": 3,
+                    "format": "CD",
+                    "title": ""
+                }
+            ],
+            "label-info": [
+                {
+                    "label": {
+                        "name": "label A"
+                    },
+                    "catalog-number": "cat 123"
+                }
+            ]
+        }
+    ],
+    "release-count": 1
+}
