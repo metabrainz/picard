@@ -101,7 +101,7 @@ class ReleaseGroup(DataObject):
         self.metadata = Metadata()
         self.loaded = False
         self.versions = []
-        self.version_headings = ''
+        self.version_headings = " / ".join(_(VERSIONS_HEADINGS[k]) for k in VERSIONS_NAME_KEYS)
         self.loaded_albums = set()
         self.refcount = 0
 
@@ -149,7 +149,6 @@ class ReleaseGroup(DataObject):
                     'formats': release['formats'],
                 }
                 self.versions.append(version)
-        self.version_headings = " / ".join(_(VERSIONS_HEADINGS[k]) for k in VERSIONS_NAME_KEYS)
 
     def _request_finished(self, callback, document, http, error):
         try:
