@@ -45,7 +45,6 @@ from picard.util import (
 
 
 def releases_to_versions(releases):
-    data = []
     max_tracks = 10
     for node in releases:
         labels, catnums = label_info_from_node(node['label-info'])
@@ -64,7 +63,7 @@ def releases_to_versions(releases):
         for medium in node['media']:
             if 'format' in medium:
                 formats.append(medium['format'])
-        release = {
+        yield {
             'id':      node['id'],
             'year':    node['date'][:4] if 'date' in node else '????',
             'country': country_label,
@@ -80,8 +79,6 @@ def releases_to_versions(releases):
             'countries': countries,
             'formats': formats,
         }
-        data.append(release)
-    return data
 
 
 class ReleaseGroup(DataObject):
