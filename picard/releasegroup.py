@@ -116,7 +116,7 @@ class ReleaseGroup(DataObject):
         try:
             releases = document['releases']
         except (TypeError, KeyError):
-            releases = []
+            return
 
         versions = defaultdict(list)
 
