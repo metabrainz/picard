@@ -128,8 +128,8 @@ class ReleaseGroup(DataObject):
             versions[name].append(release)
 
         # de-duplicate names if possible
-        for name, releases in versions.items():
-            for a, b in combinations(releases, 2):
+        for name in versions:
+            for a, b in combinations(versions[name], 2):
                 for key in VERSIONS_EXTRA_KEYS:
                     (value1, value2) = (a[key], b[key])
                     if value1 != value2:
@@ -137,8 +137,8 @@ class ReleaseGroup(DataObject):
                         b['_disambiguate_name'].append(value2)
 
         # build the final list of versions, using the disambiguation if needed
-        for name, releases in versions.items():
-            for release in releases:
+        for name in versions:
+            for release in versions[name]:
                 dis = " / ".join(filter(None, uniqify(release['_disambiguate_name'])))
                 disname = name if not dis else name + ' / ' + dis
                 version = {
