@@ -45,6 +45,17 @@ from picard.util import (
 
 
 VERSIONS_MAX_TRACKS = 10
+VERSIONS_NAME_KEYS = ('tracks', 'year', 'country', 'format', 'label', 'catnum')
+VERSIONS_HEADINGS = {
+    'tracks':   N_("Tracks"),
+    'year':     N_("Year"),
+    'country':  N_("Country"),
+    'format':   N_("Format"),
+    'label':    N_("Label"),
+    'catnum':   N_("Cat No"),
+}
+# additional keys displayed only for disambiguation
+VERSIONS_EXTRA_KEYS = ('packaging', 'barcode', 'disambiguation')
 
 
 def prepare_releases_for_versions(releases):
@@ -81,19 +92,6 @@ def prepare_releases_for_versions(releases):
             'countries': countries,
             'formats': formats,
         }
-
-
-VERSIONS_NAME_KEYS = ('tracks', 'year', 'country', 'format', 'label', 'catnum')
-VERSIONS_HEADINGS = {
-    'tracks':   N_("Tracks"),
-    'year':     N_("Year"),
-    'country':  N_("Country"),
-    'format':   N_("Format"),
-    'label':    N_("Label"),
-    'catnum':   N_("Cat No"),
-}
-# additional keys displayed only for disambiguation
-VERSIONS_EXTRA_KEYS = ('packaging', 'barcode', 'disambiguation')
 
 
 class ReleaseGroup(DataObject):
