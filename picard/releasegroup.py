@@ -44,7 +44,7 @@ from picard.util import (
 )
 
 
-def releases_to_versions(releases):
+def prepare_releases_for_versions(releases):
     max_tracks = 10
     for node in releases:
         labels, catnums = label_info_from_node(node['label-info'])
@@ -120,7 +120,7 @@ class ReleaseGroup(DataObject):
         versions = defaultdict(list)
 
         # Group versions by same display name
-        for release in releases_to_versions(releases):
+        for release in prepare_releases_for_versions(releases):
             name = " / ".join(release[k] for k in namekeys)
             if name == release['tracks']:
                 name = "%s / %s" % (_('[no release info]'), name)
