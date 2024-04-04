@@ -69,35 +69,48 @@ class Collection(QtCore.QObject):
 
     def _finished(self, kind, ids, callback, document, reply, error):
         self.pending -= ids
-        statusbar = self.tagger.window.set_statusbar_message
         if not error:
-            count = len(ids)
             if kind == self.COLLECTION_ADD:
-                self.releases |= ids
-                self.size += count
-                status_msg = ngettext(
-                    'Added %(count)i release to collection "%(name)s"',
-                    'Added %(count)i releases to collection "%(name)s"',
-                    count)
-                debug_msg = 'Added %(count)i releases to collection "%(name)s"'
+                self._success_add(ids, callback)
             else:
-                self.releases -= ids
-                self.size -= count
-                status_msg = ngettext(
-                    'Removed %(count)i release from collection "%(name)s"',
-                    'Removed %(count)i releases from collection "%(name)s"',
-                    count)
-                debug_msg = 'Removed %(count)i releases from collection "%(name)s"'
-            callback()
-            mparms = {'count': count, 'name': self.name}
-            log.debug(debug_msg % mparms)
-            statusbar(status_msg, mparms, translate=None, echo=None)
+                self._success_remove(ids, callback)
         else:
-            statusbar(
-                N_("Error while modifying collections: %(error)s"),
-                {'error': reply.errorString()},
-                echo=log.error
-            )
+            self._error(reply)
+
+    def _error(self, reply):
+        self.tagger.window.set_statusbar_message(
+            N_("Error while modifying collections: %(error)s"),
+            {'error': reply.errorString()},
+            echo=log.error
+        )
+
+    def _success_add(self, ids, callback):
+        count = len(ids)
+        self.releases |= ids
+        self.size += count
+        status_msg = ngettext(
+            'Added %(count)i release to collection "%(name)s"',
+            'Added %(count)i releases to collection "%(name)s"',
+            count)
+        debug_msg = 'Added %(count)i releases to collection "%(name)s"'
+        self._success(count, callback, status_msg, debug_msg)
+
+    def _success_remove(self, ids, callback):
+        count = len(ids)
+        self.releases -= ids
+        self.size -= count
+        status_msg = ngettext(
+            'Removed %(count)i release from collection "%(name)s"',
+            'Removed %(count)i releases from collection "%(name)s"',
+            count)
+        debug_msg = 'Removed %(count)i releases from collection "%(name)s"'
+        self._success(count, callback, status_msg, debug_msg)
+
+    def _success(self, count, callback, status_msg, debug_msg):
+        callback()
+        mparms = {'count': count, 'name': self.name}
+        log.debug(debug_msg % mparms)
+        self.tagger.window.set_statusbar_message(status_msg, mparms, translate=None, echo=None)
 
 
 def get_user_collection(collection_id, name, size, refresh=False):
