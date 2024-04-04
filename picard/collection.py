@@ -40,32 +40,32 @@ class Collection(QtCore.QObject):
     def __init__(self, collection_id, name, size):
         self.id = collection_id
         self.name = name
-        self.pending = set()
         self.size = int(size)
+        self.pending = set()
         self.releases = set()
 
     def __repr__(self):
         return '<Collection %s (%s)>' % (self.name, self.id)
 
-    def _modify(self, api_method, success_handler, ids, callback):
-        ids -= self.pending
-        if ids:
-            self.pending |= ids
-            when_done = partial(self._finished, success_handler, ids, callback)
-            api_method(self.id, list(ids), when_done)
+    def _modify(self, api_method, success_handler, releases, callback):
+        releases -= self.pending
+        if releases:
+            self.pending |= releases
+            when_done = partial(self._finished, success_handler, releases, callback)
+            api_method(self.id, list(releases), when_done)
 
-    def add_releases(self, ids, callback):
+    def add_releases(self, releases, callback):
         api_method = self.tagger.mb_api.put_to_collection
-        self._modify(api_method, self._success_add, ids, callback)
+        self._modify(api_method, self._success_add, releases, callback)
 
-    def remove_releases(self, ids, callback):
+    def remove_releases(self, releases, callback):
         api_method = self.tagger.mb_api.delete_from_collection
-        self._modify(api_method, self._success_remove, ids, callback)
+        self._modify(api_method, self._success_remove, releases, callback)
 
-    def _finished(self, success_handler, ids, callback, document, reply, error):
-        self.pending -= ids
+    def _finished(self, success_handler, releases, callback, document, reply, error):
+        self.pending -= releases
         if not error:
-            success_handler(ids, callback)
+            success_handler(releases, callback)
         else:
             self._error(reply)
 
@@ -76,9 +76,9 @@ class Collection(QtCore.QObject):
             echo=log.error
         )
 
-    def _success_add(self, ids, callback):
-        count = len(ids)
-        self.releases |= ids
+    def _success_add(self, releases, callback):
+        count = len(releases)
+        self.releases |= releases
         self.size += count
         status_msg = ngettext(
             'Added %(count)i release to collection "%(name)s"',
@@ -87,9 +87,9 @@ class Collection(QtCore.QObject):
         debug_msg = 'Added %(count)i release(s) to collection "%(name)s"'
         self._success(count, callback, status_msg, debug_msg)
 
-    def _success_remove(self, ids, callback):
-        count = len(ids)
-        self.releases -= ids
+    def _success_remove(self, releases, callback):
+        count = len(releases)
+        self.releases -= releases
         self.size -= count
         status_msg = ngettext(
             'Removed %(count)i release from collection "%(name)s"',

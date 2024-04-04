@@ -40,7 +40,7 @@ class CollectionMenu(QtWidgets.QMenu):
 
     def __init__(self, albums, *args):
         super().__init__(*args)
-        self.ids = set(a.id for a in albums)
+        self.releases = set(a.id for a in albums)
         self._ignore_update = False
         self.update_collections()
 
@@ -145,8 +145,8 @@ class CollectionCheckBox(QtWidgets.QCheckBox):
         self.collection = collection
         super().__init__(self.label(), parent)
 
-        releases = collection.releases & menu.ids
-        if len(releases) == len(menu.ids):
+        releases = collection.releases & menu.releases
+        if len(releases) == len(menu.releases):
             self.setCheckState(QtCore.Qt.CheckState.Checked)
         elif not releases:
             self.setCheckState(QtCore.Qt.CheckState.Unchecked)
@@ -154,15 +154,15 @@ class CollectionCheckBox(QtWidgets.QCheckBox):
             self.setCheckState(QtCore.Qt.CheckState.PartiallyChecked)
 
     def nextCheckState(self):
-        ids = self.menu.ids
-        if ids & self.collection.pending:
+        releases = self.menu.releases
+        if releases & self.collection.pending:
             return
-        diff = ids - self.collection.releases
+        diff = releases - self.collection.releases
         if diff:
             self.collection.add_releases(diff, self.updateText)
             self.setCheckState(QtCore.Qt.CheckState.Checked)
         else:
-            self.collection.remove_releases(ids & self.collection.releases, self.updateText)
+            self.collection.remove_releases(releases & self.collection.releases, self.updateText)
             self.setCheckState(QtCore.Qt.CheckState.Unchecked)
 
     def updateText(self):
