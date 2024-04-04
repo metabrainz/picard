@@ -155,7 +155,7 @@ class CollectionCheckBox(QtWidgets.QCheckBox):
 
     def nextCheckState(self):
         releases = self.menu.releases
-        if releases & self.collection.pending:
+        if releases & self.collection.pending_releases:
             return
         diff = releases - self.collection.releases
         if diff:

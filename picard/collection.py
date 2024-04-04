@@ -41,16 +41,16 @@ class Collection(QtCore.QObject):
         self.id = collection_id
         self.name = name
         self.size = int(size)
-        self.pending = set()
+        self.pending_releases = set()
         self.releases = set()
 
     def __repr__(self):
         return '<Collection %s (%s)>' % (self.name, self.id)
 
     def _modify(self, api_method, success_handler, releases, callback):
-        releases -= self.pending
+        releases -= self.pending_releases
         if releases:
-            self.pending |= releases
+            self.pending_releases |= releases
             when_done = partial(self._finished, success_handler, releases, callback)
             api_method(self.id, list(releases), when_done)
 
@@ -63,7 +63,7 @@ class Collection(QtCore.QObject):
         self._modify(api_method, self._success_remove, releases, callback)
 
     def _finished(self, success_handler, releases, callback, document, reply, error):
-        self.pending -= releases
+        self.pending_releases -= releases
         if not error:
             success_handler(releases, callback)
         else:
