@@ -36,8 +36,6 @@ user_collections = {}
 
 
 class Collection(QtCore.QObject):
-    COLLECTION_ADD = 1
-    COLLECTION_REMOVE = 2
 
     def __init__(self, collection_id, name, size):
         self.id = collection_id
@@ -45,31 +43,24 @@ class Collection(QtCore.QObject):
         self.pending = set()
         self.size = int(size)
         self.releases = set()
-        mb_api = self.tagger.mb_api
-        self.api_action = {
-            self.COLLECTION_ADD: mb_api.put_to_collection,
-            self.COLLECTION_REMOVE: mb_api.delete_from_collection,
-        }
 
     def __repr__(self):
         return '<Collection %s (%s)>' % (self.name, self.id)
 
-    def _modify(self, kind, ids, callback):
+    def _modify(self, api_method, success_handler, ids, callback):
         ids -= self.pending
         if ids:
             self.pending |= ids
-            if kind == self.COLLECTION_ADD:
-                success_handler = self._success_add
-            else:
-                success_handler = self._success_remove
             when_done = partial(self._finished, success_handler, ids, callback)
-            self.api_action[kind](self.id, list(ids), when_done)
+            api_method(self.id, list(ids), when_done)
 
     def add_releases(self, ids, callback):
-        self._modify(self.COLLECTION_ADD, ids, callback)
+        api_method = self.tagger.mb_api.put_to_collection
+        self._modify(api_method, self._success_add, ids, callback)
 
     def remove_releases(self, ids, callback):
-        self._modify(self.COLLECTION_REMOVE, ids, callback)
+        api_method = self.tagger.mb_api.delete_from_collection
+        self._modify(api_method, self._success_remove, ids, callback)
 
     def _finished(self, success_handler, ids, callback, document, reply, error):
         self.pending -= ids
