@@ -37,12 +37,20 @@ user_collections = {}
 
 class Collection(QtCore.QObject):
 
-    def __init__(self, collection_id, name, size):
+    def __init__(self, collection_id):
         self.id = collection_id
-        self.name = name
-        self.size = int(size)
+        self.name = ''
+        self.size = 0
         self.pending_releases = set()
         self.releases = set()
+
+    @property
+    def size(self):
+        return self._size
+
+    @size.setter
+    def size(self, value):
+        self._size = int(value)
 
     def __repr__(self):
         return '<Collection %s (%s)>' % (self.name, self.id)
@@ -105,13 +113,10 @@ class Collection(QtCore.QObject):
         self.tagger.window.set_statusbar_message(status_msg, mparms, translate=None, echo=None)
 
 
-def get_user_collection(collection_id, name, size, refresh=False):
+def get_user_collection(collection_id):
     collection = user_collections.get(collection_id)
     if collection is None:
-        collection = user_collections[collection_id] = Collection(collection_id, name, size)
-    elif refresh:
-        collection.name = name
-        collection.size = size
+        collection = user_collections[collection_id] = Collection(collection_id)
     return collection
 
 
@@ -134,10 +139,10 @@ def load_user_collections(callback=None):
                 if node['entity-type'] != 'release':
                     continue
                 col_id = node['id']
-                col_name = node['name']
-                col_size = node['release-count']
                 new_collections.add(col_id)
-                get_user_collection(col_id, col_name, col_size, refresh=True)
+                collection = get_user_collection(col_id)
+                collection.name = node['name']
+                collection.size = node['release-count']
 
             # remove collections which aren't returned by the web service anymore
             old_collections = set(user_collections) - new_collections
@@ -163,9 +168,9 @@ def add_release_to_user_collections(release_node):
         username = config.persist['oauth_username'].lower()
         for node in release_node['collections']:
             if node['editor'].lower() == username:
-                col_id = node['id']
-                col_name = node['name']
-                col_size = node['release-count']
-                collection = get_user_collection(col_id, col_name, col_size)
+                collection = get_user_collection(node['id'])
+                collection.name = node['name']
+                collection.size = node['release-count']
+
                 collection.releases.add(release_id)
                 log.debug("Adding release %r to %r", release_id, collection)
