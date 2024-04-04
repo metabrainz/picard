@@ -84,7 +84,7 @@ class Collection(QtCore.QObject):
             'Added %(count)i release to collection "%(name)s"',
             'Added %(count)i releases to collection "%(name)s"',
             count)
-        debug_msg = 'Added %(count)i releases to collection "%(name)s"'
+        debug_msg = 'Added %(count)i release(s) to collection "%(name)s"'
         self._success(count, callback, status_msg, debug_msg)
 
     def _success_remove(self, ids, callback):
@@ -95,7 +95,7 @@ class Collection(QtCore.QObject):
             'Removed %(count)i release from collection "%(name)s"',
             'Removed %(count)i releases from collection "%(name)s"',
             count)
-        debug_msg = 'Removed %(count)i releases from collection "%(name)s"'
+        debug_msg = 'Removed %(count)i release(s) from collection "%(name)s"'
         self._success(count, callback, status_msg, debug_msg)
 
     def _success(self, count, callback, status_msg, debug_msg):
