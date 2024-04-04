@@ -58,7 +58,11 @@ class Collection(QtCore.QObject):
         ids -= self.pending
         if ids:
             self.pending |= ids
-            when_done = partial(self._finished, kind, ids, callback)
+            if kind == self.COLLECTION_ADD:
+                success_handler = self._success_add
+            else:
+                success_handler = self._success_remove
+            when_done = partial(self._finished, success_handler, ids, callback)
             self.api_action[kind](self.id, list(ids), when_done)
 
     def add_releases(self, ids, callback):
@@ -67,13 +71,10 @@ class Collection(QtCore.QObject):
     def remove_releases(self, ids, callback):
         self._modify(self.COLLECTION_REMOVE, ids, callback)
 
-    def _finished(self, kind, ids, callback, document, reply, error):
+    def _finished(self, success_handler, ids, callback, document, reply, error):
         self.pending -= ids
         if not error:
-            if kind == self.COLLECTION_ADD:
-                self._success_add(ids, callback)
-            else:
-                self._success_remove(ids, callback)
+            success_handler(ids, callback)
         else:
             self._error(reply)
 
