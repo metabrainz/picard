@@ -1,0 +1,42 @@
+{
+    "collection-offset": 0,
+    "collections": [
+        {
+            "name": "Attending",
+            "type-id": "de6aedf5-73c2-3f7c-88f8-e128c189a205",
+            "type": "Attending",
+            "entity-type": "event",
+            "event-count": 3,
+            "editor": "theuser",
+            "id": "03b87515-f926-3b85-aeaa-755f737bf569"
+        },
+        {
+            "id": "40734348-a970-491a-a160-722246cfadf4",
+            "editor": "theuser",
+            "entity-type": "release",
+            "type-id": "c26c6ec4-17f0-32de-95c5-fa724dbdb308",
+            "type": "Owned music",
+            "release-count": 402,
+            "name": "My Collection"
+        },
+        {
+            "name": "Digital Releases",
+            "release-count": 182,
+            "type-id": "c26c6ec4-17f0-32de-95c5-fa724dbdb308",
+            "type": "Owned music",
+            "entity-type": "release",
+            "editor": "theuser",
+            "id": "581e3ae8-15ac-4fd9-8837-a43ea3dd7d64"
+        },
+        {
+            "name": "Wishlist",
+            "release-count": 4,
+            "type-id": "5feda0f8-14cf-38fd-89d0-ac2d48ad3324",
+            "type": "Wishlist",
+            "entity-type": "release",
+            "editor": "theuser",
+            "id": "6c6ec0ca-4136-44c3-ac6e-30c4fc085ab7"
+        }
+    ],
+    "collection-count": 4
+}

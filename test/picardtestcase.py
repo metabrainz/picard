@@ -68,6 +68,7 @@ class FakeTagger(QtCore.QObject):
         self.thread_pool = FakeThreadPool()
         self.priority_thread_pool = FakeThreadPool()
         self.window = MagicMock()
+        self.webservice = MagicMock()
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)
