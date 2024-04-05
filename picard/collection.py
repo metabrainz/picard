@@ -7,7 +7,7 @@
 # Copyright (C) 2014, 2017 Sophist-UK
 # Copyright (C) 2014, 2017-2021, 2023-2024 Laurent Monin
 # Copyright (C) 2016-2017 Sambhav Kothari
-# Copyright (C) 2019, 2021-2022 Philipp Wolfer
+# Copyright (C) 2019, 2021-2022, 2024 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,6 +30,7 @@ from PyQt6 import QtCore
 
 from picard import log
 from picard.config import get_config
+from picard.webservice.api_helpers import MBAPIHelper
 
 
 user_collections = {}
@@ -37,12 +38,13 @@ user_collections = {}
 
 class Collection(QtCore.QObject):
 
-    def __init__(self, collection_id):
+    def __init__(self, collection_id: str, mb_api: MBAPIHelper):
         self.id = collection_id
         self.name = ''
         self.size = 0
         self.pending_releases = set()
         self.releases = set()
+        self._mb_api = mb_api
 
     @property
     def size(self):
@@ -63,12 +65,12 @@ class Collection(QtCore.QObject):
             api_method(self.id, list(releases), when_done)
 
     def add_releases(self, releases, callback):
-        api_method = self.tagger.mb_api.put_to_collection
-        self._modify(api_method, self._success_add, releases, callback)
+        api_method = self._mb_api.put_to_collection
+        self._modify(api_method, self._success_add, set(releases), callback)
 
     def remove_releases(self, releases, callback):
-        api_method = self.tagger.mb_api.delete_from_collection
-        self._modify(api_method, self._success_remove, releases, callback)
+        api_method = self._mb_api.delete_from_collection
+        self._modify(api_method, self._success_remove, set(releases), callback)
 
     def _finished(self, success_handler, releases, callback, document, reply, error):
         self.pending_releases -= releases
@@ -116,7 +118,7 @@ class Collection(QtCore.QObject):
 def get_user_collection(collection_id):
     collection = user_collections.get(collection_id)
     if collection is None:
-        collection = user_collections[collection_id] = Collection(collection_id)
+        collection = user_collections[collection_id] = Collection(collection_id, QtCore.QObject.tagger.mb_api)
     return collection
 
 
@@ -161,7 +163,7 @@ def load_user_collections(callback=None):
 
 def add_release_to_user_collections(release_node):
     """Add album to collections"""
-    # Check for empy collection list
+    # Check for empty collection list
     if 'collections' in release_node:
         release_id = release_node['id']
         config = get_config()

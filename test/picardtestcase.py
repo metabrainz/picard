@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2018 Wieland Hoffmann
-# Copyright (C) 2019-2023 Philipp Wolfer
+# Copyright (C) 2019-2024 Philipp Wolfer
 # Copyright (C) 2020-2021 Laurent Monin
 # Copyright (C) 2021 Bob Swift
 #
@@ -32,7 +32,10 @@ from tempfile import (
     mkstemp,
 )
 import unittest
-from unittest.mock import Mock
+from unittest.mock import (
+    MagicMock,
+    Mock,
+)
 
 from PyQt6 import QtCore
 
@@ -64,6 +67,7 @@ class FakeTagger(QtCore.QObject):
         self.stopping = False
         self.thread_pool = FakeThreadPool()
         self.priority_thread_pool = FakeThreadPool()
+        self.window = MagicMock()
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)
