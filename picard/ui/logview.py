@@ -43,6 +43,7 @@ from picard.config import (
     IntOption,
     get_config,
 )
+from picard.debug_opts import DebugOpt
 from picard.util import (
     reconnect,
     wildcards_to_regex_pattern,
@@ -159,6 +160,23 @@ class VerbosityMenu(QtWidgets.QMenu):
         self.actions[level].setChecked(True)
 
 
+class DebugOptsMenu(QtWidgets.QMenu):
+
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+
+        self.actions = {}
+        for debug_opt in DebugOpt:
+            action = QtGui.QAction(_(debug_opt.title), self, checkable=True, checked=debug_opt.enabled)
+            action.setToolTip(_(debug_opt.description))
+            action.triggered.connect(partial(self.debug_opt_changed, debug_opt))
+            self.addAction(action)
+            self.actions[debug_opt] = action
+
+    def debug_opt_changed(self, debug_opt, checked):
+        debug_opt.enabled = checked
+
+
 class LogView(LogViewCommon):
 
     options = [
@@ -181,9 +199,17 @@ class LogView(LogViewCommon):
         self.hbox.addWidget(self.verbosity_menu_button)
 
         self.verbosity_menu = VerbosityMenu()
-        self._set_verbosity(self.verbosity)
         self.verbosity_menu.verbosity_changed.connect(self._verbosity_changed)
         self.verbosity_menu_button.setMenu(self.verbosity_menu)
+
+        self.debug_opts_menu_button = QtWidgets.QPushButton(_("Debug Options"))
+        self.debug_opts_menu_button.setAccessibleName(_("Debug Options"))
+        self.hbox.addWidget(self.debug_opts_menu_button)
+
+        self.debug_opts_menu = DebugOptsMenu()
+        self.debug_opts_menu_button.setMenu(self.debug_opts_menu)
+
+        self._set_verbosity(self.verbosity)
 
         # highlight input
         self.highlight_text = QtWidgets.QLineEdit()
@@ -331,6 +357,7 @@ class LogView(LogViewCommon):
         feat = log.levels_features.get(self.verbosity)
         label = _(feat.name) if feat else _("Verbosity")
         self.verbosity_menu_button.setText(label)
+        self.debug_opts_menu_button.setEnabled(self.verbosity == logging.DEBUG)
 
 
 class HistoryView(LogViewCommon):

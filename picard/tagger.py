@@ -101,6 +101,7 @@ from picard.const.sys import (
     IS_WIN,
 )
 from picard.dataobj import DataObject
+from picard.debug_opts import DebugOpt
 from picard.disc import (
     Disc,
     dbpoweramplog,
@@ -258,6 +259,9 @@ class Tagger(QtWidgets.QApplication):
 
         if picard_args.audit:
             setup_audit(picard_args.audit)
+
+        if picard_args.debug_opts:
+            DebugOpt.from_string(picard_args.debug_opts)
 
         # Main thread pool used for most background tasks
         self.thread_pool = QtCore.QThreadPool(self)
@@ -1464,6 +1468,9 @@ If a new instance will not be spawned files/directories will be passed to the ex
                         help="do not load any plugins")
     parser.add_argument('--no-crash-dialog', action='store_true',
                         help="disable the crash dialog")
+    parser.add_argument('--debug-opts', action='store',
+                        default=None,
+                        help="comma-separated list of debug options to enable: %s" % DebugOpt.opt_names())
     parser.add_argument('-s', '--stand-alone-instance', action='store_true',
                         help="force Picard to create a new, stand-alone instance")
     parser.add_argument('-v', '--version', action='store_true',
