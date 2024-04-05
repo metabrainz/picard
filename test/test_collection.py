@@ -24,13 +24,17 @@ from unittest.mock import (
     patch,
 )
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    load_test_json,
+)
 
 import picard.collection
 from picard.collection import (
     Collection,
     add_release_to_user_collections,
     get_user_collection,
+    load_user_collections,
 )
 from picard.webservice.api_helpers import MBAPIHelper
 
@@ -39,9 +43,15 @@ def fake_request_handler(collection_id, releases, handler):
     handler(None, None, None)
 
 
+def fake_get_collection_list(handler):
+    document = load_test_json('collection_list.json')
+    handler(document, None, None)
+
+
 mb_api = MagicMock(auto_spec=MBAPIHelper)
 mb_api.put_to_collection.side_effect = fake_request_handler
 mb_api.delete_from_collection.side_effect = fake_request_handler
+mb_api.get_collection_list.side_effect = fake_get_collection_list
 
 
 class CollectionTest(PicardTestCase):
@@ -145,3 +155,25 @@ class CollectionTest(PicardTestCase):
         self.assertEqual('collection3', collection3.name)
         self.assertIn(release_node['id'], collection3.releases)
         self.assertEqual(0, collection3.size)
+
+    @patch('PyQt6.QtCore.QObject.tagger.mb_api', mb_api, create=True)
+    def test_load_user_collections(self):
+        self.tagger.webservice.oauth_manager.is_authorized.return_value = True
+        picard.collection.user_collections['old-collection'] = Collection('old-collection', mb_api)
+        callback = MagicMock()
+        load_user_collections(callback)
+        callback.assert_called_once_with()
+        self.assertEqual(3, len(picard.collection.user_collections))
+        self.assertNotIn('old-collection', picard.collection.user_collections)
+        collection1 = picard.collection.user_collections['40734348-a970-491a-a160-722246cfadf4']
+        self.assertEqual(collection1.name, 'My Collection')
+        self.assertEqual(collection1.size, 402)
+
+    @patch('PyQt6.QtCore.QObject.tagger.mb_api', mb_api, create=True)
+    def test_load_user_collections_not_authorized(self):
+        self.tagger.webservice.oauth_manager.is_authorized.return_value = False
+        picard.collection.user_collections['old-collection'] = Collection('old-collection', mb_api)
+        callback = MagicMock()
+        load_user_collections(callback)
+        callback.assert_not_called()
+        self.assertEqual(0, len(picard.collection.user_collections))
