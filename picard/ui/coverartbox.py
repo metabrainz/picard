@@ -393,6 +393,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.orig_cover_art = CoverArtThumbnail(False, False, self.pixmap_cache, parent)
         self.orig_cover_art_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter)
         self.show_details_button = QtWidgets.QPushButton(_('Show more details'), self)
+        self.show_details_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Ctrl+Shift+I")), self, self.show_cover_art_info)
         self.layout.addWidget(self.cover_art_label)
         self.layout.addWidget(self.cover_art)
         self.layout.addWidget(self.orig_cover_art_label)
