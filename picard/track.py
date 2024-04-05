@@ -155,6 +155,7 @@ class Track(DataObject, FileListItem):
         return self.files
 
     def add_file(self, file, new_album=True):
+        track_will_expand = False
         if file not in self.files:
             track_will_expand = self.num_linked_files == 1
             if not self.files:  # The track uses original metadata from the file only
@@ -276,10 +277,13 @@ class Track(DataObject, FileListItem):
 
     def ignored_for_completeness(self):
         config = get_config()
-        if (config.setting['completeness_ignore_videos'] and self.is_video()) \
-                or (config.setting['completeness_ignore_pregap'] and self.is_pregap()) \
-                or (config.setting['completeness_ignore_data'] and self.is_data()) \
-                or (config.setting['completeness_ignore_silence'] and self.is_silence()):
+        if self.is_video() and config.setting['completeness_ignore_videos']:
+            return True
+        if self.is_pregap() and config.setting['completeness_ignore_pregap']:
+            return True
+        if self.is_data() and config.setting['completeness_ignore_data']:
+            return True
+        if self.is_silence() and config.setting['completeness_ignore_silence']:
             return True
         return False
 
