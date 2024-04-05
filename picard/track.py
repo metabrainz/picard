@@ -276,10 +276,13 @@ class Track(DataObject, FileListItem):
 
     def ignored_for_completeness(self):
         config = get_config()
-        if (config.setting['completeness_ignore_videos'] and self.is_video()) \
-                or (config.setting['completeness_ignore_pregap'] and self.is_pregap()) \
-                or (config.setting['completeness_ignore_data'] and self.is_data()) \
-                or (config.setting['completeness_ignore_silence'] and self.is_silence()):
+        if self.is_video() and config.setting['completeness_ignore_videos']:
+            return True
+        if self.is_pregap() and config.setting['completeness_ignore_pregap']:
+            return True
+        if self.is_data() and config.setting['completeness_ignore_data']:
+            return True
+        if self.is_silence() and config.setting['completeness_ignore_silence']:
             return True
         return False
 
