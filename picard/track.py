@@ -155,6 +155,7 @@ class Track(DataObject, FileListItem):
         return self.files
 
     def add_file(self, file, new_album=True):
+        track_will_expand = False
         if file not in self.files:
             track_will_expand = self.num_linked_files == 1
             if not self.files:  # The track uses original metadata from the file only
