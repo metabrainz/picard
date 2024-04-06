@@ -12,18 +12,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-03-23 19:27+0100\n"
+"POT-Creation-Date: 2024-04-06 13:35+0200\n"
 "PO-Revision-Date: 2024-03-31 10:28+0000\n"
 "Last-Translator: \"salo.rock\" <salo.rock@users.noreply.translations."
 "metabrainz.org>\n"
-"Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
-"3/app/it/>\n"
+"Language-Team: Italian <https://translations.metabrainz.org/projects/"
+"picard/3/app/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
-" ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
+"0) ? 1 : 2);\n"
 "X-Generator: Weblate 5.4\n"
 "Generated-By: Babel 2.9.1\n"
 
@@ -50,26 +50,31 @@ msgstr "[caricamento informazioni album in corso]"
 msgid "[could not load album %s]"
 msgstr "[non è stato possibile caricare l'album %s]"
 
-#: picard/cluster.py:259
+#: picard/cluster.py:260
 #, python-format
 msgid "Cluster %(album)s identified!"
 msgstr "Il raggruppamento %(album)s è stato identificato!"
 
-#: picard/cluster.py:262
+#: picard/cluster.py:263
 #, python-format
 msgid "No matching releases for cluster %(album)s"
 msgstr "Nessuna pubblicazione corrispondente al raggruppamento %(album)s"
 
-#: picard/cluster.py:281
+#: picard/cluster.py:282
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s…"
 msgstr "Ricerca dei metadati del raggruppamento %(album)s in corso…"
 
-#: picard/cluster.py:330
+#: picard/cluster.py:331
 msgid "Unclustered Files"
 msgstr "File non raggruppati"
 
-#: picard/collection.py:78
+#: picard/collection.py:84
+#, python-format
+msgid "Error while modifying collections: %(error)s"
+msgstr "Errore nella modifica delle collezioni: %(error)s"
+
+#: picard/collection.py:93
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
@@ -77,7 +82,7 @@ msgstr[0] "%(count)i pubblicazione aggiunta alla collezione \"%(name)s\""
 msgstr[1] "%(count)i pubblicazioni aggiunte alla collezione \"%(name)s\""
 msgstr[2] "%(count)i pubblicazioni aggiunte alla collezione \"%(name)s\""
 
-#: picard/collection.py:86
+#: picard/collection.py:104
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
@@ -85,21 +90,16 @@ msgstr[0] "%(count)i pubblicazione rimossa dalla collezione \"%(name)s\""
 msgstr[1] "%(count)i pubblicazioni rimosse dalla collezione \"%(name)s\""
 msgstr[2] "%(count)i pubblicazioni rimosse dalla collezione \"%(name)s\""
 
-#: picard/collection.py:97
-#, python-format
-msgid "Error while modifying collections: %(error)s"
-msgstr "Errore nella modifica delle collezioni: %(error)s"
-
-#: picard/collection.py:119
+#: picard/collection.py:131
 #, python-format
 msgid "Error loading collections: %(error)s"
 msgstr "Errore nel caricamento delle collezioni: %(error)s"
 
-#: picard/config_upgrade.py:82 picard/config_upgrade.py:95
+#: picard/config_upgrade.py:110 picard/config_upgrade.py:123
 msgid "Various Artists file naming scheme removal"
 msgstr "Rimozione schema di rinominazione file di Artisti vari"
 
-#: picard/config_upgrade.py:83
+#: picard/config_upgrade.py:111
 msgid ""
 "The separate file naming scheme for various artists albums has been removed "
 "in this version of Picard.\n"
@@ -111,7 +111,7 @@ msgstr ""
 "Il tuo schema di rinominazione file è stato unito automaticamente a quello "
 "per album di artisti singoli."
 
-#: picard/config_upgrade.py:96
+#: picard/config_upgrade.py:124
 msgid ""
 "The separate file naming scheme for various artists albums has been removed "
 "in this version of Picard.\n"
@@ -127,17 +127,17 @@ msgstr ""
 "Vuoi eliminarlo o unirlo al tuo schema di rinominazione file per album di "
 "artisti singoli?"
 
-#: picard/config_upgrade.py:103
+#: picard/config_upgrade.py:131
 msgid "Merge"
 msgstr "Unisci"
 
-#: picard/config_upgrade.py:104 picard/ui/metadatabox.py:426
+#: picard/config_upgrade.py:132 picard/ui/metadatabox.py:426
 #: picard/ui/options/interface_toolbar.py:100
 #: picard/ui/ui_options_interface_toolbar.py:82
 msgid "Remove"
 msgstr "Elimina"
 
-#: picard/config_upgrade.py:422
+#: picard/config_upgrade.py:450
 msgid "Primary file naming script"
 msgstr "Script di rinominazione file principale"
 
@@ -170,8 +170,8 @@ msgid "Looking up the metadata for file %(filename)s …"
 msgstr "Ricerca dei metadati del file %(filename)s in corso…"
 
 #: picard/log.py:67 picard/ui/options/renaming.py:256
-#: picard/ui/scripteditor.py:857 picard/ui/scripteditor.py:860
-#: picard/ui/scripteditor.py:1166 picard/ui/scripteditor.py:1394
+#: picard/ui/scripteditor.py:888 picard/ui/scripteditor.py:891
+#: picard/ui/scripteditor.py:1197 picard/ui/scripteditor.py:1425
 msgid "Error"
 msgstr "Errore"
 
@@ -281,7 +281,7 @@ msgstr "Giorni di intervallo tra i controlli aggiornamenti"
 msgid "Updates to check"
 msgstr "Aggiornamenti da controllare"
 
-#: picard/profile.py:61 picard/ui/options/metadata.py:79
+#: picard/profile.py:61 picard/ui/options/metadata.py:80
 #: picard/ui/ui_options_metadata.py:131
 msgid "Metadata"
 msgstr "Metadati"
@@ -752,36 +752,36 @@ msgstr "Somiglianza minima per ricerca raggruppamento"
 msgid "Minimal similarity for matching files to tracks"
 msgstr "Somiglianza minima per associare i file alle tracce"
 
-#: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
+#: picard/releasegroup.py:50 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
 msgstr "Tracce"
 
-#: picard/releasegroup.py:70
+#: picard/releasegroup.py:51
 msgid "Year"
 msgstr "Anno"
 
-#: picard/releasegroup.py:71 picard/ui/cdlookup.py:72
+#: picard/releasegroup.py:52 picard/ui/cdlookup.py:72
 #: picard/ui/searchdialog/album.py:157 picard/ui/searchdialog/track.py:74
 msgid "Country"
 msgstr "Paese"
 
-#: picard/releasegroup.py:72 picard/ui/searchdialog/album.py:154
+#: picard/releasegroup.py:53 picard/ui/searchdialog/album.py:154
 msgid "Format"
 msgstr "Formato"
 
-#: picard/releasegroup.py:73
+#: picard/releasegroup.py:54
 msgid "Label"
 msgstr "Etichetta"
 
-#: picard/releasegroup.py:74
+#: picard/releasegroup.py:55
 msgid "Cat No"
 msgstr "Nº di cat."
 
-#: picard/releasegroup.py:110
+#: picard/releasegroup.py:87
 msgid "[no barcode]"
 msgstr "[nessun codice a barre]"
 
-#: picard/releasegroup.py:126
+#: picard/releasegroup.py:127
 msgid "[no release info]"
 msgstr "[nessuna informazione sulla pubblicazione]"
 
@@ -841,11 +841,11 @@ msgstr "Non è stato possibile analizzare il registro di ripping \"%s\""
 msgid "Error line %(lineno)d: %(error)s"
 msgstr "Riga dell'errore %(lineno)d: %(error)s"
 
-#: picard/track.py:390
+#: picard/track.py:394
 msgid "[loading recording information]"
 msgstr "[caricamento informazioni registrazione in corso]"
 
-#: picard/track.py:439
+#: picard/track.py:443
 #, python-format
 msgid "[could not load recording %s]"
 msgstr "[non è stato possibile caricare la registrazione %s]"
@@ -2016,10 +2016,17 @@ msgstr ""
 "_Da Picard 2.2_"
 
 #: picard/script/functions.py:1122
+#, fuzzy
+#| msgid ""
+#| "`$is_video()`\n"
+#| "\n"
+#| "Returns true, if the file processed is an video file.\n"
+#| "\n"
+#| "_Since Picard 2.2_"
 msgid ""
 "`$is_video()`\n"
 "\n"
-"Returns true, if the file processed is an video file.\n"
+"Returns true, if the file processed is a video file.\n"
 "\n"
 "_Since Picard 2.2_"
 msgstr ""
@@ -2988,11 +2995,11 @@ msgstr "Sostituisci copertina frontale"
 msgid "Append front cover art"
 msgstr "Aggiungi copertina frontale"
 
-#: picard/ui/edittagdialog.py:69
+#: picard/ui/edittagdialog.py:71
 msgid "YYYY-MM-DD"
 msgstr "AAAA-MM-GG"
 
-#: picard/ui/edittagdialog.py:71
+#: picard/ui/edittagdialog.py:73
 msgid "YYYY"
 msgstr "AAAA"
 
@@ -3526,7 +3533,7 @@ msgstr "&Taglia"
 msgid "&Paste"
 msgstr "&Incolla"
 
-#: picard/ui/mainwindow.py:532 picard/ui/scripteditor.py:617
+#: picard/ui/mainwindow.py:532 picard/ui/scripteditor.py:648
 msgid "&Help…"
 msgstr "&Guida…"
 
@@ -3857,7 +3864,7 @@ msgstr "Visualizza &cronologia dell'attività"
 msgid "Ctrl+Shift+H"
 msgstr "Ctrl+Shift+H"
 
-#: picard/ui/mainwindow.py:891 picard/ui/scripteditor.py:608
+#: picard/ui/mainwindow.py:891 picard/ui/scripteditor.py:639
 msgid "Ctrl+H"
 msgstr "Ctrl+H"
 
@@ -3885,7 +3892,7 @@ msgstr "&Controlla aggiornamenti…"
 msgid "From CD ripper &log file…"
 msgstr "Da file di &registro del CD ripper…"
 
-#: picard/ui/mainwindow.py:1006 picard/ui/scripteditor.py:533
+#: picard/ui/mainwindow.py:1006 picard/ui/scripteditor.py:564
 msgid "&File"
 msgstr "&File"
 
@@ -3893,7 +3900,7 @@ msgstr "&File"
 msgid "&Edit"
 msgstr "&Modifica"
 
-#: picard/ui/mainwindow.py:1025 picard/ui/scripteditor.py:593
+#: picard/ui/mainwindow.py:1025 picard/ui/scripteditor.py:624
 msgid "&View"
 msgstr "&Visualizza"
 
@@ -3913,7 +3920,7 @@ msgstr "&Abilita/disabilita profili"
 msgid "&Tools"
 msgstr "&Strumenti"
 
-#: picard/ui/mainwindow.py:1069 picard/ui/scripteditor.py:614
+#: picard/ui/mainwindow.py:1069 picard/ui/scripteditor.py:645
 #: picard/ui/util.py:52
 msgid "&Help"
 msgstr "&Aiuto"
@@ -4321,123 +4328,123 @@ msgstr ""
 "Ricarica fino a %u elementi scelti a caso tra i file selezionati nella "
 "finestra principale"
 
-#: picard/ui/scripteditor.py:319 picard/ui/scripteditor.py:1227
+#: picard/ui/scripteditor.py:350 picard/ui/scripteditor.py:1258
 msgid "Confirm"
 msgstr "Conferma"
 
-#: picard/ui/scripteditor.py:393
+#: picard/ui/scripteditor.py:424
 msgid "File naming script editor"
 msgstr "Editor di script di rinominazione file"
 
-#: picard/ui/scripteditor.py:459
+#: picard/ui/scripteditor.py:490
 msgid "Reset"
 msgstr "Reimposta"
 
-#: picard/ui/options/dialog.py:135 picard/ui/scripteditor.py:464
+#: picard/ui/options/dialog.py:135 picard/ui/scripteditor.py:495
 msgid "Make It So!"
 msgstr "Applica!"
 
-#: picard/ui/scripteditor.py:536
+#: picard/ui/scripteditor.py:567
 msgid "&Import a script file"
 msgstr "&Importa un file di script"
 
-#: picard/ui/scripteditor.py:537
+#: picard/ui/scripteditor.py:568
 msgid "Import a file as a new script"
 msgstr "Importa un file come un nuovo script"
 
-#: picard/ui/scripteditor.py:542
+#: picard/ui/scripteditor.py:573
 msgid "&Export a script file"
 msgstr "&Esporta un file di script"
 
-#: picard/ui/scripteditor.py:543
+#: picard/ui/scripteditor.py:574
 msgid "Export the script to a file"
 msgstr "Esporta lo script in un file"
 
-#: picard/ui/scripteditor.py:548
+#: picard/ui/scripteditor.py:579
 msgid "&Reset all scripts"
 msgstr "&Reimposta tutti gli script"
 
-#: picard/ui/scripteditor.py:549
+#: picard/ui/scripteditor.py:580
 msgid "Reset all scripts to the saved values"
 msgstr "Reimposta tutti gli script ai valori salvati"
 
-#: picard/ui/scripteditor.py:554
+#: picard/ui/scripteditor.py:585
 msgid "&Save and exit"
 msgstr "&Salva ed esci"
 
-#: picard/ui/scripteditor.py:555
+#: picard/ui/scripteditor.py:586
 msgid "Save changes to the script settings and exit"
 msgstr "Salva le modifiche alle impostazioni degli script ed esci"
 
-#: picard/ui/scripteditor.py:560
+#: picard/ui/scripteditor.py:591
 msgid "E&xit without saving"
 msgstr "&Esci senza salvare"
 
-#: picard/ui/scripteditor.py:561
+#: picard/ui/scripteditor.py:592
 msgid "Close the script editor without saving changes"
 msgstr "Chiudi l'editor di script senza salvare le modifiche"
 
-#: picard/ui/scripteditor.py:566
+#: picard/ui/scripteditor.py:597
 msgid "&Script"
 msgstr "&Script"
 
-#: picard/ui/scripteditor.py:569
+#: picard/ui/scripteditor.py:600
 msgid "View/Edit Script &Metadata"
 msgstr "Visualizza/Modifica i &metadati dello script"
 
-#: picard/ui/scripteditor.py:570
+#: picard/ui/scripteditor.py:601
 msgid "Display the details for the script"
 msgstr "Visualizza i dettagli sullo script"
 
-#: picard/ui/scripteditor.py:572
+#: picard/ui/scripteditor.py:603
 msgid "Ctrl+M"
 msgstr "Ctrl+M"
 
-#: picard/ui/scripteditor.py:575
+#: picard/ui/scripteditor.py:606
 msgid "Add a &new script"
 msgstr "Aggiungi un &nuovo script"
 
-#: picard/ui/scripteditor.py:580
+#: picard/ui/scripteditor.py:611
 msgid "&Copy the current script"
 msgstr "&Copia lo script attuale"
 
-#: picard/ui/scripteditor.py:581
+#: picard/ui/scripteditor.py:612
 msgid "Save a copy of the script as a new script"
 msgstr "Salva una copia dello script come un nuovo script"
 
-#: picard/ui/scripteditor.py:586
+#: picard/ui/scripteditor.py:617
 msgid "&Delete the current script"
 msgstr "&Rimuovi lo script attuale"
 
-#: picard/ui/scripteditor.py:587
+#: picard/ui/scripteditor.py:618
 msgid "Delete the script"
 msgstr "Rimuovi lo script"
 
-#: picard/ui/scripteditor.py:596
+#: picard/ui/scripteditor.py:627
 msgid "&Reload random example files"
 msgstr "&Ricarica file di esempio casuali"
 
-#: picard/ui/scripteditor.py:605
+#: picard/ui/scripteditor.py:636
 msgid "&Show documentation"
 msgstr "&Mostra documentazione"
 
-#: picard/ui/scripteditor.py:606
+#: picard/ui/scripteditor.py:637
 msgid "View the scripting documentation in a sidebar"
 msgstr "Visualizza la documentazione sullo scripting in una barra laterale"
 
-#: picard/ui/scripteditor.py:622
+#: picard/ui/scripteditor.py:653
 msgid "&Scripting documentation…"
 msgstr "Documentazione sullo &scripting…"
 
-#: picard/ui/scripteditor.py:623
+#: picard/ui/scripteditor.py:654
 msgid "Open the scripting documentation in your browser"
 msgstr "Apri la documentazione sullo scripting nel tuo browser"
 
-#: picard/ui/scripteditor.py:641
+#: picard/ui/scripteditor.py:672
 msgid "Empty / blank script"
 msgstr "Script vuoto"
 
-#: picard/ui/scripteditor.py:734
+#: picard/ui/scripteditor.py:765
 msgid ""
 "At least one unsaved script has been attached to an option profile.\n"
 "\n"
@@ -4461,20 +4468,20 @@ msgstr ""
 "\n"
 "Sei sicuro di voler continuare?"
 
-#: picard/ui/scripteditor.py:857
+#: picard/ui/scripteditor.py:888
 msgid "There is already a script with that title."
 msgstr "È già presente uno script con quel titolo."
 
-#: picard/ui/scripteditor.py:860 picard/ui/scripteditor.py:1166
-#: picard/ui/scripteditor.py:1395
+#: picard/ui/scripteditor.py:891 picard/ui/scripteditor.py:1197
+#: picard/ui/scripteditor.py:1426
 msgid "The script title must not be empty."
 msgstr "Il titolo dello script non può essere vuoto."
 
-#: picard/ui/scripteditor.py:1111
+#: picard/ui/scripteditor.py:1142
 msgid "Error Deleting Script"
 msgstr "Errore nell'eliminazione dello script"
 
-#: picard/ui/scripteditor.py:1112
+#: picard/ui/scripteditor.py:1143
 #, python-format
 msgid ""
 "The script could not be deleted because it is used in one of the user "
@@ -4487,15 +4494,15 @@ msgstr ""
 "\n"
 "Profilo: %s"
 
-#: picard/ui/scripteditor.py:1122
+#: picard/ui/scripteditor.py:1153
 msgid "Are you sure that you want to delete the script?"
 msgstr "Sei sicuro di voler rimuovere lo script?"
 
-#: picard/ui/options/scripting.py:164 picard/ui/scripteditor.py:1208
+#: picard/ui/options/scripting.py:164 picard/ui/scripteditor.py:1239
 msgid "File Error"
 msgstr "Errore file"
 
-#: picard/ui/scripteditor.py:1229
+#: picard/ui/scripteditor.py:1260
 msgid ""
 "A script named \"{script_name}\" already exists.\n"
 "\n"
@@ -4505,23 +4512,23 @@ msgstr ""
 "\n"
 "Vuoi sovrascriverlo, aggiungere una copia o annullare?"
 
-#: picard/ui/scripteditor.py:1236
+#: picard/ui/scripteditor.py:1267
 msgid "Overwrite"
 msgstr "Sovrascrivi"
 
-#: picard/ui/options/profiles.py:120 picard/ui/scripteditor.py:1238
+#: picard/ui/options/profiles.py:120 picard/ui/scripteditor.py:1269
 msgid "Copy"
 msgstr "Copia"
 
-#: picard/ui/options/renaming.py:266 picard/ui/scripteditor.py:1284
+#: picard/ui/options/renaming.py:266 picard/ui/scripteditor.py:1315
 msgid "The file naming format must not be empty."
 msgstr "Il formato di rinominazione dei file non può essere vuoto."
 
-#: picard/ui/scripteditor.py:1321
+#: picard/ui/scripteditor.py:1352
 msgid "Script Details"
 msgstr "Dettagli sullo script"
 
-#: picard/ui/scripteditor.py:1374
+#: picard/ui/scripteditor.py:1405
 msgid ""
 "There are unsaved changes to the current metadata.\n"
 "\n"
@@ -5991,11 +5998,11 @@ msgstr "Sei sicuro di voler rimuovere le impostazioni di opzioni selezionate?"
 msgid "Matching"
 msgstr "Associazioni"
 
-#: picard/ui/options/metadata.py:216
+#: picard/ui/options/metadata.py:217
 msgid "{indent}{locale}"
 msgstr "{indent}{locale}"
 
-#: picard/ui/options/metadata.py:278
+#: picard/ui/options/metadata.py:279
 msgid ""
 "Each selected script includes a matching threshold value used to determine "
 "if that script should be used. When an artist name is evaluated to determine "
