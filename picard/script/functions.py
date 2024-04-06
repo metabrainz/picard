@@ -1122,7 +1122,7 @@ def func_is_audio(parser):
 @script_function(documentation=N_(
     """`$is_video()`
 
-Returns true, if the file processed is an video file.
+Returns true, if the file processed is a video file.
 
 _Since Picard 2.2_"""
 ))
