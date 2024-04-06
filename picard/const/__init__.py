@@ -34,6 +34,7 @@
 
 import builtins
 from collections import OrderedDict
+import os
 
 from picard import PICARD_VERSION
 from picard.const import appdirs
@@ -49,7 +50,11 @@ USER_DIR = appdirs.config_folder()
 USER_PLUGIN_DIR = appdirs.plugin_folder()
 
 # Network Cache default settings
-CACHE_SIZE_IN_BYTES = 100*1000*1000
+CACHE_SIZE_IN_BYTES = os.environ.get('PICARD_CACHE_SIZE', '').strip()
+if CACHE_SIZE_IN_BYTES.isdigit():
+    CACHE_SIZE_IN_BYTES = int(CACHE_SIZE_IN_BYTES)
+else:
+    CACHE_SIZE_IN_BYTES = 100*1000*1000
 
 # AcoustID client API key
 ACOUSTID_KEY = 'v8pQ6oyB'
