@@ -129,6 +129,7 @@ class VCommentFile(File):
         'waveformatextensible_channel_mask': '~waveformatextensible_channel_mask',
     }
     __rtranslate = {v: k for k, v in __translate.items()}
+    sanitize_date = sanitize_date
 
     def _load(self, filename):
         log.debug("Loading file %r", filename)
@@ -136,13 +137,16 @@ class VCommentFile(File):
         file = self._File(encode_filename(filename))
         file.tags = file.tags or {}
         metadata = Metadata()
+        config = get_config()
+        date_sanitize = self.NAME not in config.setting['formats_to_disable_date_sanitize']
         for origname, values in file.tags.items():
             for value in values:
                 value = value.rstrip('\0')
                 name = origname
                 if name in {'date', 'originaldate', 'releasedate'}:
                     # YYYY-00-00 => YYYY
-                    value = sanitize_date(value)
+                    if date_sanitize:
+                        value = sanitize_date(value)
                 elif name == 'performer' or name == 'comment':
                     # transform "performer=Joe Barr (Piano)" to "performer:Piano=Joe Barr"
                     name += ':'
@@ -280,7 +284,8 @@ class VCommentFile(File):
                 name = 'lyrics'
             elif name in {'date', 'originaldate', 'releasedate'}:
                 # YYYY-00-00 => YYYY
-                value = sanitize_date(value)
+                if self.NAME not in config.setting['formats_to_disable_date_sanitize']:
+                    value = sanitize_date(value)
             elif name.startswith('performer:') or name.startswith('comment:'):
                 # transform "performer:Piano=Joe Barr" to "performer=Joe Barr (Piano)"
                 name, desc = name.split(':', 1)

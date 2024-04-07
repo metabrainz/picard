@@ -130,6 +130,17 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QLabel" name="selected_formats_label">
+        <property name="text">
+         <string>Disable date sanitization for:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="selected_formats">
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -225,6 +236,7 @@
   <tabstop>release_ars</tabstop>
   <tabstop>track_ars</tabstop>
   <tabstop>guess_tracknumber_and_title</tabstop>
+  <tabstop>selected_formats</tabstop>
   <tabstop>va_name</tabstop>
   <tabstop>va_name_default</tabstop>
   <tabstop>nat_name</tabstop>

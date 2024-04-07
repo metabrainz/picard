@@ -248,6 +248,7 @@ class ID3File(File):
     __lrc_line_re_parse = re.compile(r'(\[\d\d:\d\d\.\d\d\d\])')
     __lrc_syllable_re_parse = re.compile(r'(<\d\d:\d\d\.\d\d\d>)')
     __lrc_both_re_parse = re.compile(r'(\[\d\d:\d\d\.\d\d\d\]|<\d\d:\d\d\.\d\d\d>)')
+    sanitize_date = sanitize_date
 
     def __init__(self, filename):
         super().__init__(filename)
@@ -278,6 +279,7 @@ class ID3File(File):
                 f = tags.pop(old)
                 tags.add(getattr(id3, new)(encoding=f.encoding, text=f.text))
         metadata = Metadata()
+        date_sanitize = self.NAME not in config.setting['formats_to_disable_date_sanitize']
         for frame in tags.values():
             frameid = frame.FrameID
             if frameid in self.__translate:
@@ -395,9 +397,12 @@ class ID3File(File):
                     metadata.add('~rating', rating)
 
         if 'date' in metadata:
-            sanitized = sanitize_date(metadata.getall('date')[0])
-            if sanitized:
-                metadata['date'] = sanitized
+            if date_sanitize:
+                sanitized = sanitize_date(metadata.getall('date')[0])
+                if sanitized:
+                    metadata['date'] = sanitized
+                else:
+                    metadata['date'] = metadata.getall('date')[0]
 
         self._info(metadata, file)
         return metadata

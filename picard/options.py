@@ -263,6 +263,7 @@ ListOption('setting', 'script_exceptions', [], title=N_("Translation script exce
 BoolOption('setting', 'standardize_artists', False, title=N_("Use standardized artist names"))
 BoolOption('setting', 'standardize_instruments', True, title=N_("Use standardized instrument and vocal credits"))
 BoolOption('setting', 'track_ars', False, title=N_("Use track and release relationships"))
+Option('setting', 'formats_to_disable_date_sanitize', set(), title=N_("Formats to disable date sanitize"))
 BoolOption('setting', 'translate_artist_names', False, title=N_("Translate artist names"))
 BoolOption('setting', 'translate_artist_names_script_exception', False, title=N_("Translate artist names exception"))
 TextOption('setting', 'va_name', "Various Artists", title=N_("Various Artists name"))

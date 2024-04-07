@@ -125,6 +125,7 @@ class APEv2File(File):
         'replaygain_reference_loudness': 'REPLAYGAIN_REFERENCE_LOUDNESS',
     }
     __rtranslate = {v.lower(): k for k, v in __translate.items()}
+    sanitize_date = sanitize_date
 
     def __init__(self, filename):
         super().__init__(filename)
@@ -136,6 +137,8 @@ class APEv2File(File):
         file = self._File(encode_filename(filename))
         metadata = Metadata()
         if file.tags:
+            config = get_config()
+            date_sanitize = self.NAME not in config.setting['formats_to_disable_date_sanitize']
             for origname, values in file.tags.items():
                 name_lower = origname.lower()
                 if (values.kind == mutagen.apev2.BINARY
@@ -160,7 +163,8 @@ class APEv2File(File):
                     name = name_lower
                     if name == 'year':
                         name = 'date'
-                        value = sanitize_date(value)
+                        if date_sanitize:
+                            value = sanitize_date(value)
                     elif name == 'track':
                         name = 'tracknumber'
                         track = value.split('/')

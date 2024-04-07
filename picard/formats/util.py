@@ -45,6 +45,12 @@ def supported_formats():
     return [(file_format.EXTENSIONS, file_format.NAME) for file_format in _formats]
 
 
+def formats_with_sanitize_date():
+    for fmt in _formats:
+        if hasattr(fmt, 'sanitize_date'):
+            yield fmt
+
+
 def supported_extensions():
     """Returns list of supported extensions."""
     return [ext for exts, name in supported_formats() for ext in exts]
