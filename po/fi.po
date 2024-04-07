@@ -8,7 +8,7 @@
 # Juhana Uuttu <rexroom@sci.fi>, 2023
 # Timo Martikainen <musicbrainz@listmycds.com>, 2012
 # Mika Heiska <kilualmighty@gmail.com>, 2006
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021,2023
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021,2023, 2024.
 # phonebox, 2019
 # phonebox, 2019
 # Sami Korkalainen, 2017
@@ -21,16 +21,16 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-04-06 13:35+0200\n"
-"PO-Revision-Date: 2023-12-20 14:28+0000\n"
+"PO-Revision-Date: 2024-04-07 12:28+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
-"Language-Team: Finnish <https://translations.metabrainz.org/projects/"
-"picard/3/app/fi/>\n"
+"Language-Team: Finnish <https://translations.metabrainz.org/projects/picard/"
+"3/app/fi/>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3\n"
+"X-Generator: Weblate 5.4\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -2020,13 +2020,6 @@ msgstr ""
 "_Picardin versiosta 2.2_"
 
 #: picard/script/functions.py:1122
-#, fuzzy
-#| msgid ""
-#| "`$is_video()`\n"
-#| "\n"
-#| "Returns true, if the file processed is an video file.\n"
-#| "\n"
-#| "_Since Picard 2.2_"
 msgid ""
 "`$is_video()`\n"
 "\n"

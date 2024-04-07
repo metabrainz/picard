@@ -32,7 +32,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-04-06 13:35+0200\n"
-"PO-Revision-Date: 2024-02-01 08:28+0000\n"
+"PO-Revision-Date: 2024-04-07 12:28+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
@@ -41,7 +41,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3.1\n"
+"X-Generator: Weblate 5.4\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -2014,13 +2014,6 @@ msgstr ""
 "_Ab Picard 2.2_"
 
 #: picard/script/functions.py:1122
-#, fuzzy
-#| msgid ""
-#| "`$is_video()`\n"
-#| "\n"
-#| "Returns true, if the file processed is an video file.\n"
-#| "\n"
-#| "_Since Picard 2.2_"
 msgid ""
 "`$is_video()`\n"
 "\n"
@@ -6785,10 +6778,8 @@ msgid "Subtitle"
 msgstr "Untertitel"
 
 #: picard/util/tags.py:123
-#, fuzzy
-#| msgid "Lyrics"
 msgid "Synced Lyrics"
-msgstr "Liedtext"
+msgstr "Synchronisierter Liedtext"
 
 #: picard/util/tags.py:125
 msgid "Title Sort Order"

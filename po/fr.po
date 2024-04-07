@@ -25,7 +25,7 @@
 # Matthieu Martin, 2006
 # Matthieu Martin, 2006
 # Nicolas ANCEAU <n.anceau@gmail.com>, 2019
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021,2023
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021,2023, 2024.
 # Pierre Slamich <pierre.slamich@gmail.com>, 2006
 # Raphaël Fery <pask@kodu.fr>, 2017
 # AO <ao@localizationlab.org>, 2015
@@ -40,7 +40,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-04-06 13:35+0200\n"
-"PO-Revision-Date: 2023-12-20 14:28+0000\n"
+"PO-Revision-Date: 2024-04-07 12:28+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/3/"
 "app/fr/>\n"
@@ -50,7 +50,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % "
 "1000000 == 0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.3\n"
+"X-Generator: Weblate 5.4\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -2036,13 +2036,6 @@ msgstr ""
 "_Depuis Picard 2.2_"
 
 #: picard/script/functions.py:1122
-#, fuzzy
-#| msgid ""
-#| "`$is_video()`\n"
-#| "\n"
-#| "Returns true, if the file processed is an video file.\n"
-#| "\n"
-#| "_Since Picard 2.2_"
 msgid ""
 "`$is_video()`\n"
 "\n"

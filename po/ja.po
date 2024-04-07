@@ -14,7 +14,7 @@
 # Mitsuharu Kurita, 2016
 # Nozomu KURASAWA <nabetaro@caldron.jp>, 2012
 # ffff23 <open_ffff23@protonmail.ch>, 2021
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2023
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2023, 2024.
 # Shunsuke Shimizu <grafi@grafi.jp>, 2016
 # th1rtyf0ur, 2013
 # 和田篤 <entry@wa2c.com>, 2018-2019
@@ -26,16 +26,16 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-04-06 13:35+0200\n"
-"PO-Revision-Date: 2023-12-22 09:28+0000\n"
-"Last-Translator: shuuji3 <shuuji3@gmail.com>\n"
-"Language-Team: Japanese <https://translations.metabrainz.org/projects/"
-"picard/3/app/ja/>\n"
+"PO-Revision-Date: 2024-04-07 12:29+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"Language-Team: Japanese <https://translations.metabrainz.org/projects/picard/"
+"3/app/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.3\n"
+"X-Generator: Weblate 5.4\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -1938,13 +1938,6 @@ msgstr ""
 "_Picard 2.2 以降でサポート_"
 
 #: picard/script/functions.py:1122
-#, fuzzy
-#| msgid ""
-#| "`$is_video()`\n"
-#| "\n"
-#| "Returns true, if the file processed is an video file.\n"
-#| "\n"
-#| "_Since Picard 2.2_"
 msgid ""
 "`$is_video()`\n"
 "\n"
