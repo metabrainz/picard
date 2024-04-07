@@ -6,14 +6,14 @@
 # 6 0, 2022
 # Hyeon-ho Shin <crossxp64@gmail.com>, 2017
 # Nikki, 2006
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2023
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2023-12-15 17:38+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2024-04-07 12:28+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Korean <https://translations.metabrainz.org/projects/picard/2/"
 "app/ko/>\n"
 "Language: ko\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.3\n"
+"X-Generator: Weblate 5.4\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -2396,7 +2396,7 @@ msgstr "아티스트:"
 #: picard/ui/infodialog.py:347
 #, fuzzy, python-format
 msgid "Disc %d"
-msgstr "디스크 ID"
+msgstr "디스크 %d"
 
 #: picard/ui/infodialog.py:349
 msgid "Tracklist:"

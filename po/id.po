@@ -5,15 +5,15 @@
 # Translators:
 # Bayu Dwi Riyanto <bayuss1@gmail.com>, 2014
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2021-2022, 2023.
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2021-2022, 2023, 2024.
 # Reza Septyan <funifura@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2023-12-15 17:38+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2024-04-07 12:28+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Indonesian <https://translations.metabrainz.org/projects/"
 "picard/2/app/id/>\n"
 "Language: id\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.3\n"
+"X-Generator: Weblate 5.4\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -2375,7 +2375,7 @@ msgstr "Artis:"
 #: picard/ui/infodialog.py:347
 #, fuzzy, python-format
 msgid "Disc %d"
-msgstr "Id Cakram"
+msgstr "Cakram %d"
 
 #: picard/ui/infodialog.py:349
 msgid "Tracklist:"
