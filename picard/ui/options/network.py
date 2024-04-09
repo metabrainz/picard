@@ -28,6 +28,10 @@ from picard.config import (
     TextOption,
     get_config,
 )
+from picard.const import (
+    CACHE_SIZE_DISPLAY_UNIT,
+    CACHE_SIZE_IN_BYTES,
+)
 
 from picard.ui.options import (
     OptionsPage,
@@ -56,6 +60,7 @@ class NetworkOptionsPage(OptionsPage):
         IntOption('setting', 'browser_integration_port', 8000),
         BoolOption('setting', 'browser_integration_localhost_only', True),
         IntOption('setting', 'network_transfer_timeout_seconds', 30),
+        IntOption('setting', 'network_cache_size_bytes', CACHE_SIZE_IN_BYTES),
     ]
 
     def __init__(self, parent=None):
@@ -79,6 +84,7 @@ class NetworkOptionsPage(OptionsPage):
         self.ui.browser_integration_port.setValue(config.setting['browser_integration_port'])
         self.ui.browser_integration_localhost_only.setChecked(
             config.setting['browser_integration_localhost_only'])
+        self.cachesize2display(config)
 
     def save(self):
         config = get_config()
@@ -100,6 +106,26 @@ class NetworkOptionsPage(OptionsPage):
         config.setting['browser_integration_localhost_only'] = \
             self.ui.browser_integration_localhost_only.isChecked()
         self.tagger.update_browser_integration()
+        self.display2cachesize(config)
+
+    def display2cachesize(self, config):
+        try:
+            cache_size = int(self.ui.network_cache_size.text())
+        except ValueError:
+            return
+        if cache_size > 0:
+            config.setting['network_cache_size_bytes'] = int(cache_size * CACHE_SIZE_DISPLAY_UNIT)
+
+    def cachesize2display(self, config):
+        try:
+            cache_size = int(config.setting['network_cache_size_bytes'])
+        except ValueError:
+            cache_size = -1
+
+        value = int(cache_size / CACHE_SIZE_DISPLAY_UNIT)
+        if cache_size <= 0:
+            value = CACHE_SIZE_IN_BYTES
+        self.ui.network_cache_size.setText(str(value))
 
 
 register_options_page(NetworkOptionsPage)

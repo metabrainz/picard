@@ -335,9 +335,9 @@ class WebService(QtCore.QObject):
         self.manager = QtNetwork.QNetworkAccessManager()
         self.manager.sslErrors.connect(self.ssl_errors)
         self.oauth_manager = OAuthManager(self)
-        self.set_cache()
-        self.setup_proxy()
         config = get_config()
+        self.set_cache(cache_size_in_bytes=config.setting['network_cache_size_bytes'])
+        self.setup_proxy()
         self.set_transfer_timeout(config.setting['network_transfer_timeout_seconds'])
         self.manager.finished.connect(self._process_reply)
         self._request_methods = {

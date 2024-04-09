@@ -49,7 +49,8 @@ USER_DIR = appdirs.config_folder()
 USER_PLUGIN_DIR = appdirs.plugin_folder()
 
 # Network Cache default settings
-CACHE_SIZE_IN_BYTES = 100*1000*1000
+CACHE_SIZE_DISPLAY_UNIT = 1000*1000
+CACHE_SIZE_IN_BYTES = 100*CACHE_SIZE_DISPLAY_UNIT
 
 # AcoustID client API key
 ACOUSTID_KEY = 'v8pQ6oyB'
