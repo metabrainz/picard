@@ -24,10 +24,12 @@
 from collections import deque
 from dataclasses import dataclass
 from pathlib import PurePosixPath
+import unittest
 from unittest.mock import patch
 
 from test.picardtestcase import PicardTestCase
 
+from picard.const.sys import IS_WIN
 from picard.log import (
     _calculate_bounds,
     name_filter,
@@ -127,6 +129,7 @@ class FakeRecord:
     name: str
 
 
+@unittest.skipIf(IS_WIN, "Posix test")
 @patch('picard.log.picard_module_path', PurePosixPath('/path1/path2'))
 class NameFilterTestRel(PicardTestCase):
 
@@ -151,6 +154,7 @@ class NameFilterTestRel(PicardTestCase):
             name_filter(record)
 
 
+@unittest.skipIf(IS_WIN, "Posix test")
 @patch('picard.log.picard_module_path', PurePosixPath('/picard'))
 class NameFilterTestAbs(PicardTestCase):
 
@@ -175,6 +179,7 @@ class NameFilterTestAbs(PicardTestCase):
             name_filter(record)
 
 
+@unittest.skipIf(IS_WIN, "Posix test")
 @patch('picard.log.picard_module_path', PurePosixPath('/path1/path2/'))  # incorrect, but testing anyway
 class NameFilterTestEndingSlash(PicardTestCase):
 
