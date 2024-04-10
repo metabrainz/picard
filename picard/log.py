@@ -170,7 +170,10 @@ def name_filter(record):
             path = path.resolve().relative_to(picard_module_path.parent)
         except ValueError:
             pass
-    record.name = str(Path(*(p for p in path.parts if p != '__init__')))
+    parts = list(path.parts)
+    if parts[-1] == '__init__':
+        del parts[-1]
+    record.name = str(Path(*parts))
     return True
 
 

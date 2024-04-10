@@ -153,6 +153,11 @@ class NameFilterTestRel(PicardTestCase):
         with self.assertRaises(ValueError):
             name_filter(record)
 
+    def test_5(self):
+        record = FakeRecord(name=None, pathname='/path1/path2/__init__/module/__init__.py')
+        self.assertTrue(name_filter(record))
+        self.assertEqual(record.name, 'path2/__init__/module')
+
 
 @unittest.skipIf(IS_WIN, "Posix test")
 @patch('picard.log.picard_module_path', PurePosixPath('/picard'))
