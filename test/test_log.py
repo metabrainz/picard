@@ -175,10 +175,10 @@ class NameFilterTestAbs(PicardTestCase):
             name_filter(record)
 
 
-@patch('picard.log.picard_module_path', PurePosixPath('/path1/path2/'))
+@patch('picard.log.picard_module_path', PurePosixPath('/path1/path2/'))  # incorrect, but testing anyway
 class NameFilterTestEndingSlash(PicardTestCase):
 
     def test_1(self):
         record = FakeRecord(name=None, pathname='/path3/module/file.py')
         self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '//path3/module/file')  # FIXME: incorrect picard_module_path, but this shouldn't happen
+        self.assertEqual(record.name, '/path3/module/file')
