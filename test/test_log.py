@@ -22,10 +22,16 @@
 
 
 from collections import deque
+from dataclasses import dataclass
+from pathlib import PosixPath
+from unittest.mock import patch
 
 from test.picardtestcase import PicardTestCase
 
-from picard.log import _calculate_bounds
+from picard.log import (
+    _calculate_bounds,
+    name_filter,
+)
 
 
 class MockLogItem:
@@ -113,3 +119,66 @@ class LogQueueBoundsTestCase(LogQueueCommonTest):
         self.item_queue.push(MockLogItem(11))
         content_list = self.item_queue.contents(3)
         self.assertListEqual([x.pos for x in content_list], [4, 5, 11])
+
+
+@dataclass
+class FakeRecord:
+    pathname: str
+    name: str
+
+
+@patch('picard.log.picard_module_path', PosixPath('/path1/path2'))
+class NameFilterTestRel(PicardTestCase):
+
+    def test_1(self):
+        record = FakeRecord(name=None, pathname='/path1/path2/module/file.py')
+        self.assertTrue(name_filter(record))
+        self.assertEqual(record.name, 'path2/module/file')
+
+    def test_2(self):
+        record = FakeRecord(name=None, pathname='/path1/path2/module/__init__.py')
+        self.assertTrue(name_filter(record))
+        self.assertEqual(record.name, 'path2/module')
+
+    def test_3(self):
+        record = FakeRecord(name=None, pathname='/path1/path2/module/subpath/file.py')
+        self.assertTrue(name_filter(record))
+        self.assertEqual(record.name, 'path2/module/subpath/file')
+
+    def test_4(self):
+        record = FakeRecord(name=None, pathname='')
+        with self.assertRaises(ValueError):
+            name_filter(record)
+
+
+@patch('picard.log.picard_module_path', PosixPath('/picard'))
+class NameFilterTestAbs(PicardTestCase):
+
+    def test_1(self):
+        record = FakeRecord(name=None, pathname='/path/module/file.py')
+        self.assertTrue(name_filter(record))
+        self.assertEqual(record.name, 'path/module/file')
+
+    def test_2(self):
+        record = FakeRecord(name=None, pathname='/path/module/__init__.py')
+        self.assertTrue(name_filter(record))
+        self.assertEqual(record.name, 'path/module')
+
+    def test_3(self):
+        record = FakeRecord(name=None, pathname='/path/module/subpath/file.py')
+        self.assertTrue(name_filter(record))
+        self.assertEqual(record.name, 'path/module/subpath/file')
+
+    def test_4(self):
+        record = FakeRecord(name=None, pathname='')
+        with self.assertRaises(ValueError):
+            name_filter(record)
+
+
+@patch('picard.log.picard_module_path', PosixPath('/path1/path2/'))
+class NameFilterTestEndingSlash(PicardTestCase):
+
+    def test_1(self):
+        record = FakeRecord(name=None, pathname='/path3/module/file.py')
+        self.assertTrue(name_filter(record))
+        self.assertEqual(record.name, '//path3/module/file')  # FIXME: incorrect picard_module_path, but this shouldn't happen
