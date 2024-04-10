@@ -23,7 +23,10 @@
 
 from collections import deque
 from dataclasses import dataclass
-from pathlib import PurePosixPath
+from pathlib import (
+    PurePosixPath,
+    PureWindowsPath,
+)
 import unittest
 from unittest.mock import patch
 
@@ -190,5 +193,70 @@ class NameFilterTestEndingSlash(PicardTestCase):
 
     def test_1(self):
         record = FakeRecord(name=None, pathname='/path3/module/file.py')
+        self.assertTrue(name_filter(record))
+        self.assertEqual(record.name, '/path3/module/file')
+
+
+@unittest.skipUnless(IS_WIN, "Windows test")
+@patch('picard.log.picard_module_path', PureWindowsPath('C:/path1/path2'))
+class NameFilterTestRelWin(PicardTestCase):
+
+    def test_1(self):
+        record = FakeRecord(name=None, pathname='C:/path1/path2/module/file.py')
+        self.assertTrue(name_filter(record))
+        self.assertEqual(record.name, 'path2/module/file')
+
+    def test_2(self):
+        record = FakeRecord(name=None, pathname='C:/path1/path2/module/__init__.py')
+        self.assertTrue(name_filter(record))
+        self.assertEqual(record.name, 'path2/module')
+
+    def test_3(self):
+        record = FakeRecord(name=None, pathname='C:/path1/path2/module/subpath/file.py')
+        self.assertTrue(name_filter(record))
+        self.assertEqual(record.name, 'path2/module/subpath/file')
+
+    def test_4(self):
+        record = FakeRecord(name=None, pathname='')
+        with self.assertRaises(ValueError):
+            name_filter(record)
+
+    def test_5(self):
+        record = FakeRecord(name=None, pathname='C:/path1/path2/__init__/module/__init__.py')
+        self.assertTrue(name_filter(record))
+        self.assertEqual(record.name, 'path2/__init__/module')
+
+
+@unittest.skipUnless(IS_WIN, "Windows test")
+@patch('picard.log.picard_module_path', PureWindowsPath('C:/picard'))
+class NameFilterTestAbsWin(PicardTestCase):
+
+    def test_1(self):
+        record = FakeRecord(name=None, pathname='C:/path/module/file.py')
+        self.assertTrue(name_filter(record))
+        self.assertEqual(record.name, 'path/module/file')
+
+    def test_2(self):
+        record = FakeRecord(name=None, pathname='C:/path/module/__init__.py')
+        self.assertTrue(name_filter(record))
+        self.assertEqual(record.name, 'path/module')
+
+    def test_3(self):
+        record = FakeRecord(name=None, pathname='C:/path/module/subpath/file.py')
+        self.assertTrue(name_filter(record))
+        self.assertEqual(record.name, 'path/module/subpath/file')
+
+    def test_4(self):
+        record = FakeRecord(name=None, pathname='')
+        with self.assertRaises(ValueError):
+            name_filter(record)
+
+
+@unittest.skipUnless(IS_WIN, "Windows test")
+@patch('picard.log.picard_module_path', PureWindowsPath('C:/path1/path2/'))  # incorrect, but testing anyway
+class NameFilterTestEndingSlashWin(PicardTestCase):
+
+    def test_1(self):
+        record = FakeRecord(name=None, pathname='C:/path3/module/file.py')
         self.assertTrue(name_filter(record))
         self.assertEqual(record.name, '/path3/module/file')
