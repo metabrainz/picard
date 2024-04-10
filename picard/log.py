@@ -33,7 +33,10 @@ from collections import (
 )
 from importlib.machinery import PathFinder
 import logging
-from pathlib import Path
+from pathlib import (
+    Path,
+    PurePosixPath,
+)
 from threading import Lock
 
 from PyQt6 import QtCore
@@ -173,7 +176,9 @@ def name_filter(record):
     parts = list(path.parts)
     if parts[-1] == '__init__':
         del parts[-1]
-    record.name = str(Path(*parts))
+    if parts[0] == path.anchor:
+        del parts[0]
+    record.name = str(PurePosixPath(*parts))
     return True
 
 

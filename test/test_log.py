@@ -194,7 +194,7 @@ class NameFilterTestEndingSlash(PicardTestCase):
     def test_1(self):
         record = FakeRecord(name=None, pathname='/path3/module/file.py')
         self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '/path3/module/file')
+        self.assertEqual(record.name, 'path3/module/file')
 
 
 @unittest.skipUnless(IS_WIN, "Windows test")
@@ -259,4 +259,4 @@ class NameFilterTestEndingSlashWin(PicardTestCase):
     def test_1(self):
         record = FakeRecord(name=None, pathname='C:/path3/module/file.py')
         self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '/path3/module/file')
+        self.assertEqual(record.name, 'path3/module/file')
