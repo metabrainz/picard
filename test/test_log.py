@@ -23,7 +23,7 @@
 
 from collections import deque
 from dataclasses import dataclass
-from pathlib import PosixPath
+from pathlib import PurePosixPath
 from unittest.mock import patch
 
 from test.picardtestcase import PicardTestCase
@@ -127,7 +127,7 @@ class FakeRecord:
     name: str
 
 
-@patch('picard.log.picard_module_path', PosixPath('/path1/path2'))
+@patch('picard.log.picard_module_path', PurePosixPath('/path1/path2'))
 class NameFilterTestRel(PicardTestCase):
 
     def test_1(self):
@@ -151,7 +151,7 @@ class NameFilterTestRel(PicardTestCase):
             name_filter(record)
 
 
-@patch('picard.log.picard_module_path', PosixPath('/picard'))
+@patch('picard.log.picard_module_path', PurePosixPath('/picard'))
 class NameFilterTestAbs(PicardTestCase):
 
     def test_1(self):
@@ -175,7 +175,7 @@ class NameFilterTestAbs(PicardTestCase):
             name_filter(record)
 
 
-@patch('picard.log.picard_module_path', PosixPath('/path1/path2/'))
+@patch('picard.log.picard_module_path', PurePosixPath('/path1/path2/'))
 class NameFilterTestEndingSlash(PicardTestCase):
 
     def test_1(self):
