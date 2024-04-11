@@ -33,7 +33,10 @@ from collections import (
 )
 from importlib.machinery import PathFinder
 import logging
-from pathlib import Path
+from pathlib import (
+    Path,
+    PurePosixPath,
+)
 from threading import Lock
 
 from PyQt6 import QtCore
@@ -170,7 +173,12 @@ def name_filter(record):
             path = path.resolve().relative_to(picard_module_path.parent)
         except ValueError:
             pass
-    record.name = '/'.join(p for p in path.parts if p != '__init__')
+    parts = list(path.parts)
+    if parts[-1] == '__init__':
+        del parts[-1]
+    if parts[0] == path.anchor:
+        del parts[0]
+    record.name = str(PurePosixPath(*parts))
     return True
 
 
