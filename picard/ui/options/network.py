@@ -113,7 +113,7 @@ class NetworkOptionsPage(OptionsPage):
             cache_size = int(self.ui.network_cache_size.text())
         except ValueError:
             return
-        if cache_size > 0:
+        if cache_size >= 0:
             config.setting['network_cache_size_bytes'] = int(cache_size * CACHE_SIZE_DISPLAY_UNIT)
 
     def cachesize2display(self, config):
@@ -123,7 +123,7 @@ class NetworkOptionsPage(OptionsPage):
             cache_size = -1
 
         value = int(cache_size / CACHE_SIZE_DISPLAY_UNIT)
-        if cache_size <= 0:
+        if cache_size < 0:
             value = CACHE_SIZE_IN_BYTES
         self.ui.network_cache_size.setText(str(value))
 

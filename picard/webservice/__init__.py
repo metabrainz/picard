@@ -392,6 +392,9 @@ class WebService(QtCore.QObject):
     def set_cache(self, cache_size_in_bytes=None):
         if cache_size_in_bytes is None:
             cache_size_in_bytes = CACHE_SIZE_IN_BYTES
+        if cache_size_in_bytes <= 0:
+            log.debug("NetworkDiskCache disabled")
+            return
         cache = QtNetwork.QNetworkDiskCache()
         cache.setCacheDirectory(os.path.join(appdirs.cache_folder(), 'network'))
         cache.setMaximumCacheSize(cache_size_in_bytes)
