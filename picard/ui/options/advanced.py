@@ -48,16 +48,16 @@ class AdvancedOptionsPage(OptionsPage):
     HELP_URL = "/config/options_advanced.html"
 
     options = [
-        TextOption('setting', 'ignore_regex', ''),
-        BoolOption('setting', 'ignore_hidden_files', False),
-        BoolOption('setting', 'recursively_add_files', True),
-        IntOption('setting', 'ignore_track_duration_difference_under', 2),
-        IntOption('setting', 'query_limit', QUERY_LIMIT),
-        BoolOption('setting', 'completeness_ignore_videos', False),
-        BoolOption('setting', 'completeness_ignore_pregap', False),
-        BoolOption('setting', 'completeness_ignore_data', False),
-        BoolOption('setting', 'completeness_ignore_silence', False),
-        ListOption('setting', 'compare_ignore_tags', []),
+        TextOption('setting', 'ignore_regex', '', title=N_("Ignore file paths matching a regular expression")),
+        BoolOption('setting', 'ignore_hidden_files', False, title=N_("Ignore hidden files")),
+        BoolOption('setting', 'recursively_add_files', True, title=N_("Include sub-folders when adding files from folder")),
+        IntOption('setting', 'ignore_track_duration_difference_under', 2, title=N_("Ignore track duration difference under x seconds")),
+        IntOption('setting', 'query_limit', QUERY_LIMIT, title=N_("Maximum number of entities to return per MusicBrainz query")),
+        BoolOption('setting', 'completeness_ignore_videos', False, title=N_("Completeness check ignore: Video tracks")),
+        BoolOption('setting', 'completeness_ignore_pregap', False, title=N_("Completeness check ignore: Pregap tracks")),
+        BoolOption('setting', 'completeness_ignore_data', False, title=N_("Completeness check ignore: Data tracks")),
+        BoolOption('setting', 'completeness_ignore_silence', False, title=N_("Completeness check ignore: Silent tracks")),
+        ListOption('setting', 'compare_ignore_tags', [], title=N_("Tags to ignore for comparison")),
     ]
 
     def __init__(self, parent=None):

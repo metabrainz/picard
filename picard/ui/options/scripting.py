@@ -104,8 +104,8 @@ class ScriptingOptionsPage(OptionsPage):
     HELP_URL = "/config/options_scripting.html"
 
     options = [
-        BoolOption('setting', 'enable_tagger_scripts', False),
-        ListOption('setting', 'list_of_scripts', []),
+        BoolOption('setting', 'enable_tagger_scripts', False, title=N_("Enable tagger scripts")),
+        ListOption('setting', 'list_of_scripts', [], title=N_("Tagger scripts")),
         IntOption('persist', 'last_selected_script_pos', 0),
     ]
 

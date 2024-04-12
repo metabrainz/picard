@@ -77,12 +77,12 @@ class RenamingOptionsPage(OptionsPage):
     HELP_URL = "/config/options_filerenaming.html"
 
     options = [
-        BoolOption('setting', 'rename_files', False),
-        BoolOption('setting', 'move_files', False),
-        TextOption('setting', 'move_files_to', _default_music_dir),
-        BoolOption('setting', 'move_additional_files', False),
-        TextOption('setting', 'move_additional_files_pattern', "*.jpg *.png"),
-        BoolOption('setting', 'delete_empty_dirs', True),
+        BoolOption('setting', 'rename_files', False, title=N_("Rename files")),
+        BoolOption('setting', 'move_files', False, title=N_("Move files")),
+        TextOption('setting', 'move_files_to', _default_music_dir, title=N_("Destination directory")),
+        BoolOption('setting', 'move_additional_files', False, title=N_("Move additional files")),
+        TextOption('setting', 'move_additional_files_pattern', "*.jpg *.png", title=N_("Additional file patterns")),
+        BoolOption('setting', 'delete_empty_dirs', True, title=N_("Delete empty directories")),
     ]
 
     def __init__(self, parent=None):

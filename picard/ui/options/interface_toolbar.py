@@ -144,7 +144,7 @@ class InterfaceToolbarOptionsPage(OptionsPage):
             'cd_lookup_action',
             'separator',
             'submit_acoustid_action',
-        ]),
+        ], title=N_("Layout of the tool bar")),
     ]
 
     def __init__(self, parent=None):

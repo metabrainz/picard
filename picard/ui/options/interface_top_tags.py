@@ -51,7 +51,7 @@ class InterfaceTopTagsOptionsPage(OptionsPage):
             'tracknumber',
             '~length',
             'date',
-        ]),
+        ], title=N_("Tags to show at the top")),
     ]
 
     def __init__(self, parent=None):

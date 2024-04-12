@@ -45,8 +45,8 @@ class TagsCompatibilityAACOptionsPage(OptionsPage):
     HELP_URL = "/config/options_tags_compatibility_aac.html"
 
     options = [
-        BoolOption('setting', 'aac_save_ape', True),
-        BoolOption('setting', 'remove_ape_from_aac', False),
+        BoolOption('setting', 'aac_save_ape', True, title=N_("Save APEv2 tags to AAC")),
+        BoolOption('setting', 'remove_ape_from_aac', False, title=N_("Remove APEv2 tags from AAC files")),
     ]
 
     def __init__(self, parent=None):

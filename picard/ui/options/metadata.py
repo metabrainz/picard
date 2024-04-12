@@ -84,18 +84,18 @@ class MetadataOptionsPage(OptionsPage):
     HELP_URL = "/config/options_metadata.html"
 
     options = [
-        TextOption('setting', 'va_name', "Various Artists"),
-        TextOption('setting', 'nat_name', '[standalone recordings]'),
-        ListOption('setting', 'artist_locales', ['en']),
-        BoolOption('setting', 'translate_artist_names', False),
-        BoolOption('setting', 'translate_artist_names_script_exception', False),
-        ListOption('setting', 'script_exceptions', []),
-        BoolOption('setting', 'release_ars', True),
-        BoolOption('setting', 'track_ars', False),
-        BoolOption('setting', 'convert_punctuation', False),
-        BoolOption('setting', 'standardize_artists', False),
-        BoolOption('setting', 'standardize_instruments', True),
-        BoolOption('setting', 'guess_tracknumber_and_title', True),
+        TextOption('setting', 'va_name', "Various Artists", title=N_("Various Artists name")),
+        TextOption('setting', 'nat_name', '[standalone recordings]', title=N_("Standalone recordings name")),
+        ListOption('setting', 'artist_locales', ['en'], title=N_("Translation locales")),
+        BoolOption('setting', 'translate_artist_names', False, title=N_("Translate artist names")),
+        BoolOption('setting', 'translate_artist_names_script_exception', False, title=N_("Translate artist names exception")),
+        ListOption('setting', 'script_exceptions', [], title=N_("Translation script exceptions")),
+        BoolOption('setting', 'release_ars', True, title=N_("Use release relationships")),
+        BoolOption('setting', 'track_ars', False, title=N_("Use track and release relationships")),
+        BoolOption('setting', 'convert_punctuation', False, title=N_("Convert Unicode punctuation characters to ASCII")),
+        BoolOption('setting', 'standardize_artists', False, title=N_("Use standardized artist names")),
+        BoolOption('setting', 'standardize_instruments', True, title=N_("Use standardized instrument and vocal credits")),
+        BoolOption('setting', 'guess_tracknumber_and_title', True, title=N_("Guess track number and title from filename if empty")),
     ]
 
     def __init__(self, parent=None):

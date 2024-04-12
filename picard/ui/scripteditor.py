@@ -434,7 +434,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     options = [
         BoolOption('persist', 'script_editor_show_documentation', False),
         Option('setting', SCRIPTS_LIST_KEY, {}),
-        TextOption('setting', SELECTED_SCRIPT_KEY, ''),
+        TextOption('setting', SELECTED_SCRIPT_KEY, '', title=N_("Selected file naming script")),
     ]
 
     signal_save = QtCore.pyqtSignal()
