@@ -139,17 +139,17 @@ class NameFilterTestRel(PicardTestCase):
     def test_1(self):
         record = FakeRecord(name=None, pathname='/path1/path2/module/file.py')
         self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'path2/module/file')
+        self.assertEqual(record.name, 'module/file')
 
     def test_2(self):
         record = FakeRecord(name=None, pathname='/path1/path2/module/__init__.py')
         self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'path2/module')
+        self.assertEqual(record.name, 'module')
 
     def test_3(self):
         record = FakeRecord(name=None, pathname='/path1/path2/module/subpath/file.py')
         self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'path2/module/subpath/file')
+        self.assertEqual(record.name, 'module/subpath/file')
 
     def test_4(self):
         record = FakeRecord(name=None, pathname='')
@@ -159,7 +159,7 @@ class NameFilterTestRel(PicardTestCase):
     def test_5(self):
         record = FakeRecord(name=None, pathname='/path1/path2/__init__/module/__init__.py')
         self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'path2/__init__/module')
+        self.assertEqual(record.name, '__init__/module')
 
 
 @unittest.skipIf(IS_WIN, "Posix test")
@@ -204,17 +204,17 @@ class NameFilterTestRelWin(PicardTestCase):
     def test_1(self):
         record = FakeRecord(name=None, pathname='C:/path1/path2/module/file.py')
         self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'path2/module/file')
+        self.assertEqual(record.name, 'module/file')
 
     def test_2(self):
         record = FakeRecord(name=None, pathname='C:/path1/path2/module/__init__.py')
         self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'path2/module')
+        self.assertEqual(record.name, 'module')
 
     def test_3(self):
         record = FakeRecord(name=None, pathname='C:/path1/path2/module/subpath/file.py')
         self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'path2/module/subpath/file')
+        self.assertEqual(record.name, 'module/subpath/file')
 
     def test_4(self):
         record = FakeRecord(name=None, pathname='')
@@ -224,7 +224,7 @@ class NameFilterTestRelWin(PicardTestCase):
     def test_5(self):
         record = FakeRecord(name=None, pathname='C:/path1/path2/__init__/module/__init__.py')
         self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'path2/__init__/module')
+        self.assertEqual(record.name, '__init__/module')
 
 
 @unittest.skipUnless(IS_WIN, "Windows test")

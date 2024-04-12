@@ -53,6 +53,9 @@ if IS_FROZEN:
 else:
     picard_module_path = Path(PathFinder().find_spec('picard').origin).resolve()
 
+if not picard_module_path.is_dir():
+    picard_module_path = picard_module_path.parent
+
 _MAX_TAIL_LEN = 10**6
 
 
@@ -170,7 +173,7 @@ def name_filter(record):
     # to avoid the exception handling.
     if path.is_absolute():
         try:
-            path = path.resolve().relative_to(picard_module_path.parent)
+            path = path.resolve().relative_to(picard_module_path)
         except ValueError:
             pass
     parts = list(path.parts)
