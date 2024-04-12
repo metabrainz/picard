@@ -124,6 +124,12 @@ class TestPicardConfigOption(TestPicardConfigCommon):
         with self.assertRaisesRegex(OptionError, "^Option setting/unknown_option: No such option"):
             Option.get_default("setting", "unknown_option")
 
+    def test_get_title(self):
+        Option("setting", "option", "abc", title="Title")
+        self.assertEqual(Option.get_title("setting", "option"), "Title")
+        with self.assertRaisesRegex(OptionError, "^Option setting/unknown_option: No such option"):
+            Option.get_title("setting", "unknown_option")
+
 
 class TestPicardConfigSection(TestPicardConfigCommon):
 

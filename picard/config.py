@@ -394,6 +394,13 @@ class Option(QtCore.QObject):
         return opt.default
 
     @classmethod
+    def get_title(cls, section, name):
+        opt = cls.get(section, name)
+        if opt is None:
+            raise OptionError("No such option", section, name)
+        return opt.title
+
+    @classmethod
     def add_if_missing(cls, section, name, default):
         if not cls.exists(section, name):
             cls(section, name, default)
