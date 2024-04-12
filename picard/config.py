@@ -371,7 +371,7 @@ class Option(QtCore.QObject):
     registry = {}
     qtype = None
 
-    def __init__(self, section, name, default):
+    def __init__(self, section, name, default, title=None):
         key = (section, name)
         if key in self.registry:
             raise OptionError("Already declared", section, name)
@@ -379,6 +379,7 @@ class Option(QtCore.QObject):
         self.section = section
         self.name = name
         self.default = default
+        self.title = title
         self.registry[key] = self
 
     @classmethod

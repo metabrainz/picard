@@ -90,6 +90,16 @@ class TestPicardConfigOption(TestPicardConfigCommon):
         self.assertEqual(opt.default, "abc")
         self.assertIsNone(Option.get("setting", "not_existing_option"))
 
+    def test_option_without_title(self):
+        Option("setting", "option", "abc")
+        opt = Option.get("setting", "option")
+        self.assertIsNone(opt.title)
+
+    def test_option_with_title(self):
+        Option("setting", "option", "abc", title="Title")
+        opt = Option.get("setting", "option")
+        self.assertEqual(opt.title, "Title")
+
     def test_option_exists(self):
         Option("setting", "option", "abc")
         self.assertTrue(Option.exists("setting", "option"))
