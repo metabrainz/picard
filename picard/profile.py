@@ -242,6 +242,7 @@ class UserProfileGroups():
             SettingDesc('proxy_username', N_("Proxy username"), ['username']),
             SettingDesc('proxy_password', N_("Proxy password"), ['password']),
             SettingDesc('network_transfer_timeout_seconds', N_("Request timeout in seconds"), ['transfer_timeout']),
+            SettingDesc('network_cache_size_bytes', N_("Network cache size in bytes"), ['network_cache_size']),
             SettingDesc('browser_integration', N_("Browser integration"), []),  # No highlight specified because the 'browser_integration'
                                                                                 # object is a QGroupBox and it highlights all sub options,
                                                                                 # even if the sub options are not selected.

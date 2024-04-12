@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>316</width>
-    <height>371</height>
+    <height>491</height>
    </rect>
   </property>
   <layout class="QVBoxLayout">
@@ -150,32 +150,71 @@
      </layout>
     </widget>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QLabel" name="label_3">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Request timeout in seconds:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QSpinBox" name="transfer_timeout">
-       <property name="maximum">
-        <number>900</number>
-       </property>
-       <property name="value">
-        <number>30</number>
-       </property>
-      </widget>
-     </item>
-    </layout>
+   <item alignment="Qt::AlignVCenter">
+    <widget class="QGroupBox" name="networkopts">
+     <property name="title">
+      <string>Network options</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Request timeout in seconds:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="transfer_timeout">
+          <property name="maximum">
+           <number>900</number>
+          </property>
+          <property name="value">
+           <number>30</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item alignment="Qt::AlignLeft|Qt::AlignVCenter">
+         <widget class="QLabel" name="label_cache_size">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Cache size (MB):</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="network_cache_size">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <widget class="QGroupBox" name="browser_integration">
@@ -255,7 +294,7 @@
   <tabstop>server_port</tabstop>
   <tabstop>username</tabstop>
   <tabstop>password</tabstop>
-  <tabstop>transfer_timeout</tabstop>
+  <tabstop>network_cache_size</tabstop>
   <tabstop>browser_integration</tabstop>
   <tabstop>browser_integration_port</tabstop>
   <tabstop>browser_integration_localhost_only</tabstop>

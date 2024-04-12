@@ -61,6 +61,7 @@ PROXY_SETTINGS = {
     "proxy_username": 'user',
     "proxy_password": 'password',
     "network_transfer_timeout_seconds": 30,
+    "network_cache_size_bytes": 100*1000*1000,
 }
 
 
@@ -76,6 +77,7 @@ class WebServiceTest(PicardTestCase):
             'use_proxy': False,
             'server_host': '',
             'network_transfer_timeout_seconds': 30,
+            'network_cache_size_bytes': 100*1000*1000,
         })
         self.ws = WebService()
 
@@ -137,6 +139,7 @@ class WebServiceTaskTest(PicardTestCase):
         self.set_config_values({
             'use_proxy': False,
             'network_transfer_timeout_seconds': 30,
+            'network_cache_size_bytes': 100*1000*1000,
         })
         self.ws = WebService()
         self.queue = self.ws._queue = MagicMock()
