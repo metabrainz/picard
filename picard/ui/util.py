@@ -24,6 +24,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from html import escape as html_escape
+
 from PyQt6 import (
     QtCore,
     QtGui,
@@ -115,3 +117,22 @@ def qlistwidget_items(qlistwidget):
     """Yield all items from a QListWidget"""
     for i in range(qlistwidget.count()):
         yield qlistwidget.item(i)
+
+
+def changes_require_restart_warning(parent, warnings=None, notes=None):
+    """Display a warning dialog about modified options requiring a restart"""
+    if not warnings:
+        return
+    text = '<p><ul>'
+    for warning in warnings:
+        text += '<li>' + html_escape(warning) + '</li>'
+    text += "</ul></p>"
+    if notes:
+        for note in notes:
+            text += "<p><em>" + html_escape(note) + "</em></p>"
+    text += "<p><strong>" + _("You have to restart Picard for the changes to take effect.") + "</strong></p>"
+    QtWidgets.QMessageBox.warning(
+        parent,
+        _("Changes only applied on restart"),
+        text
+    )
