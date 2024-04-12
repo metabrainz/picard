@@ -29,9 +29,12 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import log
 from picard.config import (
     IntOption,
     ListOption,
+    Option,
+    OptionError,
     SettingConfigSection,
     get_config,
 )
@@ -226,7 +229,15 @@ class ProfilesOptionsPage(OptionsPage):
             widget_item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsAutoTristate)
             widget_item.setCheckState(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.CheckState.Unchecked)
             for setting in group_settings:
-                child_item = QtWidgets.QTreeWidgetItem([_(setting.title)])
+                try:
+                    opt_title = Option.get_title('setting', setting.name)
+                except OptionError as e:
+                    log.debug(e)
+                    continue
+                if opt_title is None:
+                    opt_title = setting.name
+                    log.debug("Missing title for option: %s", setting.name)
+                child_item = QtWidgets.QTreeWidgetItem([_(opt_title)])
                 child_item.setData(0, QtCore.Qt.ItemDataRole.UserRole, setting.name)
                 child_item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
                 state = QtCore.Qt.CheckState.Checked if settings and setting.name in settings else QtCore.Qt.CheckState.Unchecked
