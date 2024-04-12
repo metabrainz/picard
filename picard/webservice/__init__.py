@@ -60,6 +60,7 @@ from picard.const import (
     CACHE_SIZE_IN_BYTES,
     appdirs,
 )
+from picard.debug_opts import DebugOpt
 from picard.oauth import OAuthManager
 from picard.util import (
     build_qurl,
@@ -546,7 +547,8 @@ class WebService(QtCore.QObject):
                 elif request.response_parser:
                     try:
                         document = request.response_parser(reply)
-                        log.debug("Response received: %s", document)
+                        if DebugOpt.WS_REPLIES.enabled:
+                            log.debug("Response received: %s", document)
                     except Exception as e:
                         log.error("Unable to parse the response for %s -> %s", display_reply_url, e)
                         document = reply.readAll()
