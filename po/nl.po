@@ -13,13 +13,14 @@
 # mfmeulenbelt <mfmeulenbelt@gmail.com>, 2023.
 # RandomMushroom128 <RandomMushroom128@users.noreply.translations.metabrainz.org>, 2023.
 # mfmeulenbelt <mfmeulenbelt@users.noreply.translations.metabrainz.org>, 2024.
+# toineenzo <toinerademacher@hotmail.com>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-04-06 13:35+0200\n"
-"PO-Revision-Date: 2024-04-07 12:29+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2024-04-12 01:28+0000\n"
+"Last-Translator: toineenzo <toinerademacher@hotmail.com>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/3/"
 "app/nl/>\n"
 "Language: nl\n"
@@ -27,7 +28,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.4\n"
+"X-Generator: Weblate 5.4.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -124,8 +125,9 @@ msgstr ""
 "Het aparte stelsel om uitgaven van diverse artiesten te hernoemen, is in "
 "deze versie van Picard verwijderd.\n"
 "Je gebruikt deze optie nu niet, maar je hebt wel een apart stelsel "
-"gedefinieerd. Wil je het verwijderen of samenvoegen met je stelsel voor het "
-"hernoemen van uitgaven van één artiest?"
+"gedefinieerd.\n"
+"Wil je het verwijderen of samenvoegen met je stelsel voor het hernoemen van "
+"uitgaven van één artiest?"
 
 #: picard/config_upgrade.py:131
 msgid "Merge"
@@ -2693,9 +2695,7 @@ msgstr ""
 #: picard/ui/aboutdialog.py:77
 #, python-format
 msgid "<br/>Translated to LANG by %s"
-msgstr ""
-"<br/>Nederlandse vertaling door:\n"
-" %s"
+msgstr "<br/>Nederlandse vertaling door: %s"
 
 #: picard/ui/aboutdialog.py:80
 msgid ""
