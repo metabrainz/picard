@@ -336,7 +336,8 @@ class WebService(QtCore.QObject):
         self.manager.sslErrors.connect(self.ssl_errors)
         self.oauth_manager = OAuthManager(self)
         config = get_config()
-        self.set_cache(cache_size_in_bytes=config.setting['network_cache_size_bytes'])
+        self._init_cache()
+        self.set_cache_size()
         self.setup_proxy()
         self.set_transfer_timeout(config.setting['network_transfer_timeout_seconds'])
         self.manager.finished.connect(self._process_reply)
@@ -389,20 +390,32 @@ class WebService(QtCore.QObject):
         self._timer_count_pending_requests.setSingleShot(True)
         self._timer_count_pending_requests.timeout.connect(self._count_pending_requests)
 
-    def set_cache(self, cache_size_in_bytes=None):
-        if cache_size_in_bytes is None:
-            cache_size_in_bytes = CACHE_SIZE_IN_BYTES
-        if cache_size_in_bytes <= 0:
-            log.debug("NetworkDiskCache disabled")
-            return
+    def _init_cache(self, cache_size_in_bytes=None):
         cache = QtNetwork.QNetworkDiskCache()
         cache.setCacheDirectory(os.path.join(appdirs.cache_folder(), 'network'))
-        cache.setMaximumCacheSize(cache_size_in_bytes)
         self.manager.setCache(cache)
-        log.debug("NetworkDiskCache dir: %r current size: %s max size: %s",
-                  cache.cacheDirectory(),
-                  bytes2human.decimal(cache.cacheSize(), l10n=False),
-                  bytes2human.decimal(cache.maximumCacheSize(), l10n=False))
+        log.debug("NetworkDiskCache dir: %r", cache.cacheDirectory())
+
+    def get_valid_cache_size(self):
+        try:
+            config = get_config()
+            cache_size = int(config.setting['network_cache_size_bytes'])
+            if cache_size >= 0:
+                return cache_size
+        except ValueError:
+            pass
+        return CACHE_SIZE_IN_BYTES
+
+    def set_cache_size(self):
+        cache_size_in_bytes = self.get_valid_cache_size()
+        cache = self.manager.cache()
+        if cache.maximumCacheSize() != cache_size_in_bytes:
+            cache.setMaximumCacheSize(cache_size_in_bytes)
+            log.debug(
+                "NetworkDiskCache size: %s maxsize: %s",
+                bytes2human.decimal(cache.cacheSize(), l10n=False),
+                bytes2human.decimal(cache.maximumCacheSize(), l10n=False)
+            )
 
     def setup_proxy(self):
         proxy = QtNetwork.QNetworkProxy()

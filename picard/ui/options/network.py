@@ -113,18 +113,12 @@ class NetworkOptionsPage(OptionsPage):
             cache_size = int(self.ui.network_cache_size.text())
         except ValueError:
             return
-        if cache_size >= 0:
-            config.setting['network_cache_size_bytes'] = int(cache_size * CACHE_SIZE_DISPLAY_UNIT)
+        config.setting['network_cache_size_bytes'] = int(cache_size * CACHE_SIZE_DISPLAY_UNIT)
+        self.tagger.webservice.set_cache_size()
 
     def cachesize2display(self, config):
-        try:
-            cache_size = int(config.setting['network_cache_size_bytes'])
-        except ValueError:
-            cache_size = -1
-
+        cache_size = self.tagger.webservice.get_valid_cache_size()
         value = int(cache_size / CACHE_SIZE_DISPLAY_UNIT)
-        if cache_size < 0:
-            value = CACHE_SIZE_IN_BYTES
         self.ui.network_cache_size.setText(str(value))
 
 
