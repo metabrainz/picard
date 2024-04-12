@@ -56,6 +56,7 @@ from picard.ui.theme import (
     UiTheme,
 )
 from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
+from picard.ui.util import changes_require_restart_warning
 
 
 _default_starting_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.HomeLocation)
@@ -184,28 +185,21 @@ class InterfaceOptionsPage(OptionsPage):
         self.tagger.window.update_toolbar_style()
         new_theme_setting = str(self.ui.ui_theme.itemData(self.ui.ui_theme.currentIndex()))
         new_language = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
-        restart_warning = None
+        warnings = []
+        notes = []
         if new_theme_setting != config.setting['ui_theme']:
-            restart_warning_title = _("Theme changed")
-            restart_warning = _("You have changed the application theme. You have to restart Picard in order for the change to take effect.")
+            warnings.append(_("You have changed the application theme."))
             if new_theme_setting == str(UiTheme.SYSTEM):
-                restart_warning += '\n\n' + _(
+                notes.append(_(
                     'Please note that using the system theme might cause the user interface to be not shown correctly. '
                     'If this is the case select the "Default" theme option to use Picard\'s default theme again.'
-                )
-        elif new_language != config.setting['ui_language']:
-            restart_warning_title = _("Language changed")
-            restart_warning = _("You have changed the interface language. You have to restart Picard in order for the change to take effect.")
-        if restart_warning:
-            dialog = QtWidgets.QMessageBox(
-                QtWidgets.QMessageBox.Icon.Information,
-                restart_warning_title,
-                restart_warning,
-                QtWidgets.QMessageBox.StandardButton.Ok,
-                self)
-            dialog.exec()
-        config.setting['ui_theme'] = new_theme_setting
-        config.setting['ui_language'] = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
+                ))
+            config.setting['ui_theme'] = new_theme_setting
+        if new_language != config.setting['ui_language']:
+            config.setting['ui_language'] = new_language
+            warnings.append(_("You have changed the interface language."))
+        changes_require_restart_warning(self, warnings=warnings, notes=notes)
+
         config.setting['filebrowser_horizontal_autoscroll'] = self.ui.filebrowser_horizontal_autoscroll.isChecked()
         config.setting['starting_directory'] = self.ui.starting_directory.isChecked()
         config.setting['starting_directory_path'] = os.path.normpath(self.ui.starting_directory_path.text())
