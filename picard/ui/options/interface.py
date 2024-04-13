@@ -61,6 +61,9 @@ from picard.ui.util import changes_require_restart_warning
 
 _default_starting_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.HomeLocation)
 
+# On macOS it is not common that the global menu shows icons
+DEFAULT_SHOW_MENU_ICONS = not IS_MACOS
+
 
 class InterfaceOptionsPage(OptionsPage):
 
@@ -74,7 +77,7 @@ class InterfaceOptionsPage(OptionsPage):
     options = [
         BoolOption('setting', 'toolbar_show_labels', True, title=N_("Show text labels under icons")),
         BoolOption('setting', 'allow_multi_dirs_selection', False, title=N_("Allow selection of multiple directories")),
-        BoolOption('setting', 'show_menu_icons', True if not IS_MACOS else False, title=N_("Show icons in menus")),  # On macOS it is not common that the global menu shows icons
+        BoolOption('setting', 'show_menu_icons', DEFAULT_SHOW_MENU_ICONS, title=N_("Show icons in menus")),
         BoolOption('setting', 'builtin_search', True, title=N_("Use builtin search rather than looking in browser")),
         BoolOption('setting', 'use_adv_search_syntax', False, title=N_("Use advanced search syntax")),
         BoolOption('setting', 'show_new_user_dialog', True, title=N_("Show a usage warning dialog when Picard starts")),

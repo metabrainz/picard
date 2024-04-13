@@ -60,6 +60,15 @@ from picard.ui.ui_win_compat_dialog import Ui_WinCompatDialog
 
 
 DEFAULT_REPLACEMENT = '_'
+DEFAULT_WIN_COMPAT_REPLACEMENTS = {
+    '*': DEFAULT_REPLACEMENT,
+    ':': DEFAULT_REPLACEMENT,
+    '<': DEFAULT_REPLACEMENT,
+    '>': DEFAULT_REPLACEMENT,
+    '?': DEFAULT_REPLACEMENT,
+    '|': DEFAULT_REPLACEMENT,
+    '"': DEFAULT_REPLACEMENT,
+}
 
 
 class RenamingCompatOptionsPage(OptionsPage):
@@ -76,15 +85,7 @@ class RenamingCompatOptionsPage(OptionsPage):
         BoolOption('setting', 'ascii_filenames', False, title=N_("Replace non-ASCII characters")),
         BoolOption('setting', 'replace_spaces_with_underscores', False, title=N_("Replace spaces with underscores")),
         TextOption('setting', 'replace_dir_separator', DEFAULT_REPLACEMENT, title=N_("Replacement character to use for directory separators")),
-        Option('setting', 'win_compat_replacements', {
-            '*': DEFAULT_REPLACEMENT,
-            ':': DEFAULT_REPLACEMENT,
-            '<': DEFAULT_REPLACEMENT,
-            '>': DEFAULT_REPLACEMENT,
-            '?': DEFAULT_REPLACEMENT,
-            '|': DEFAULT_REPLACEMENT,
-            '"': DEFAULT_REPLACEMENT,
-        }, title=N_("Replacement characters used for Windows compatibility"))
+        Option('setting', 'win_compat_replacements', DEFAULT_WIN_COMPAT_REPLACEMENTS, title=N_("Replacement characters used for Windows compatibility"))
     ]
 
     options_changed = QtCore.pyqtSignal(dict)
