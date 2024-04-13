@@ -41,9 +41,9 @@ from PyQt6.QtNetwork import (
 
 from picard import log
 from picard.config import (
-    BoolOption,
-    IntOption,
-    ListOption,
+    BoolSetting,
+    IntSetting,
+    ListSetting,
     get_config,
 )
 from picard.const import CAA_URL
@@ -121,11 +121,11 @@ class ProviderOptionsCaa(ProviderOptions):
     HELP_URL = "/config/options_cover_art_archive.html"
 
     options = [
-        BoolOption('setting', 'caa_approved_only', False),
-        IntOption('setting', 'caa_image_size', _CAA_IMAGE_SIZE_DEFAULT),
-        ListOption('setting', 'caa_image_types', _CAA_IMAGE_TYPE_DEFAULT_INCLUDE),
-        BoolOption('setting', 'caa_restrict_image_types', True),
-        ListOption('setting', 'caa_image_types_to_omit', _CAA_IMAGE_TYPE_DEFAULT_EXCLUDE),
+        BoolSetting('caa_approved_only', False),
+        IntSetting('caa_image_size', _CAA_IMAGE_SIZE_DEFAULT),
+        ListSetting('caa_image_types', _CAA_IMAGE_TYPE_DEFAULT_INCLUDE),
+        BoolSetting('caa_restrict_image_types', True),
+        ListSetting('caa_image_types_to_omit', _CAA_IMAGE_TYPE_DEFAULT_EXCLUDE),
     ]
 
     _options_ui = Ui_CaaOptions

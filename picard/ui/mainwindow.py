@@ -69,12 +69,12 @@ from picard.cluster import (
     FileList,
 )
 from picard.config import (
-    BoolOption,
-    FloatOption,
-    IntOption,
-    Option,
+    BoolPersist,
+    FloatPersist,
+    IntPersist,
+    Persist,
     SettingConfigSection,
-    TextOption,
+    TextPersist,
     get_config,
 )
 from picard.const import PROGRAM_UPDATE_LEVELS
@@ -177,15 +177,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     ready_for_display = QtCore.pyqtSignal()
 
     options = [
-        Option('persist', 'window_state', QtCore.QByteArray()),
-        BoolOption('persist', 'window_maximized', False),
-        BoolOption('persist', 'view_metadata_view', True),
-        BoolOption('persist', 'view_cover_art', True),
-        BoolOption('persist', 'view_toolbar', True),
-        BoolOption('persist', 'view_file_browser', False),
-        TextOption('persist', 'current_directory', ""),
-        FloatOption('persist', 'mediaplayer_playback_rate', 1.0),
-        IntOption('persist', 'mediaplayer_volume', 50),
+        Persist('window_state', QtCore.QByteArray()),
+        BoolPersist('window_maximized', False),
+        BoolPersist('view_metadata_view', True),
+        BoolPersist('view_cover_art', True),
+        BoolPersist('view_toolbar', True),
+        BoolPersist('view_file_browser', False),
+        TextPersist('current_directory', ""),
+        FloatPersist('mediaplayer_playback_rate', 1.0),
+        IntPersist('mediaplayer_volume', 50),
     ]
 
     def __init__(self, parent=None, disable_player=False):

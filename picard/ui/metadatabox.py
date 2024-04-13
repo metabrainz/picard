@@ -47,8 +47,8 @@ from picard.album import Album
 from picard.browser.filelookup import FileLookup
 from picard.cluster import Cluster
 from picard.config import (
-    BoolOption,
-    Option,
+    BoolPersist,
+    Persist,
     get_config,
 )
 from picard.file import File
@@ -204,8 +204,8 @@ class TableTagEditorDelegate(TagEditorDelegate):
 class MetadataBox(QtWidgets.QTableWidget):
 
     options = (
-        Option('persist', 'metadatabox_header_state', QtCore.QByteArray()),
-        BoolOption('persist', 'show_changes_first', False)
+        Persist('metadatabox_header_state', QtCore.QByteArray()),
+        BoolPersist('show_changes_first', False)
     )
 
     COLUMN_ORIG = 1

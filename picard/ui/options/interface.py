@@ -38,8 +38,8 @@ from PyQt6 import (
 from PyQt6.QtCore import QStandardPaths
 
 from picard.config import (
-    BoolOption,
-    TextOption,
+    BoolSetting,
+    TextSetting,
     get_config,
 )
 from picard.const.languages import UI_LANGUAGES
@@ -75,20 +75,20 @@ class InterfaceOptionsPage(OptionsPage):
     HELP_URL = "/config/options_interface.html"
 
     options = [
-        BoolOption('setting', 'toolbar_show_labels', True, title=N_("Show text labels under icons")),
-        BoolOption('setting', 'allow_multi_dirs_selection', False, title=N_("Allow selection of multiple directories")),
-        BoolOption('setting', 'show_menu_icons', DEFAULT_SHOW_MENU_ICONS, title=N_("Show icons in menus")),
-        BoolOption('setting', 'builtin_search', True, title=N_("Use builtin search rather than looking in browser")),
-        BoolOption('setting', 'use_adv_search_syntax', False, title=N_("Use advanced search syntax")),
-        BoolOption('setting', 'show_new_user_dialog', True, title=N_("Show a usage warning dialog when Picard starts")),
-        BoolOption('setting', 'quit_confirmation', True, title=N_("Show a quit confirmation dialog for unsaved changes")),
-        BoolOption('setting', 'file_save_warning', True, title=N_("Show a confirmation dialog when saving files")),
-        TextOption('setting', 'ui_language', '', title=N_("User interface language")),
-        TextOption('setting', 'ui_theme', str(UiTheme.DEFAULT), title=N_("User interface color theme")),
-        BoolOption('setting', 'filebrowser_horizontal_autoscroll', True, title=N_("Adjust horizontal position in file browser automatically")),
-        BoolOption('setting', 'starting_directory', False, title=N_("Begin browsing in a specific directory")),
-        TextOption('setting', 'starting_directory_path', _default_starting_dir, title=N_("Directory to begin browsing")),
-        TextOption('setting', 'load_image_behavior', 'append'),
+        BoolSetting('toolbar_show_labels', True, title=N_("Show text labels under icons")),
+        BoolSetting('allow_multi_dirs_selection', False, title=N_("Allow selection of multiple directories")),
+        BoolSetting('show_menu_icons', DEFAULT_SHOW_MENU_ICONS, title=N_("Show icons in menus")),
+        BoolSetting('builtin_search', True, title=N_("Use builtin search rather than looking in browser")),
+        BoolSetting('use_adv_search_syntax', False, title=N_("Use advanced search syntax")),
+        BoolSetting('show_new_user_dialog', True, title=N_("Show a usage warning dialog when Picard starts")),
+        BoolSetting('quit_confirmation', True, title=N_("Show a quit confirmation dialog for unsaved changes")),
+        BoolSetting('file_save_warning', True, title=N_("Show a confirmation dialog when saving files")),
+        TextSetting('ui_language', '', title=N_("User interface language")),
+        TextSetting('ui_theme', str(UiTheme.DEFAULT), title=N_("User interface color theme")),
+        BoolSetting('filebrowser_horizontal_autoscroll', True, title=N_("Adjust horizontal position in file browser automatically")),
+        BoolSetting('starting_directory', False, title=N_("Begin browsing in a specific directory")),
+        TextSetting('starting_directory_path', _default_starting_dir, title=N_("Directory to begin browsing")),
+        TextSetting('load_image_behavior', 'append'),
     ]
 
     # Those are labels for theme display

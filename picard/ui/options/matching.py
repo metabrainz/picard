@@ -23,7 +23,7 @@
 
 
 from picard.config import (
-    FloatOption,
+    FloatSetting,
     get_config,
 )
 
@@ -44,9 +44,9 @@ class MatchingOptionsPage(OptionsPage):
     HELP_URL = "/config/options_matching.html"
 
     options = [
-        FloatOption('setting', 'file_lookup_threshold', 0.7, title=N_("Minimal similarity for file lookups")),
-        FloatOption('setting', 'cluster_lookup_threshold', 0.7, title=N_("Minimal similarity for cluster lookups")),
-        FloatOption('setting', 'track_matching_threshold', 0.4, title=N_("Minimal similarity for matching files to tracks")),
+        FloatSetting('file_lookup_threshold', 0.7, title=N_("Minimal similarity for file lookups")),
+        FloatSetting('cluster_lookup_threshold', 0.7, title=N_("Minimal similarity for cluster lookups")),
+        FloatSetting('track_matching_threshold', 0.4, title=N_("Minimal similarity for matching files to tracks")),
     ]
 
     _release_type_sliders = {}

@@ -27,10 +27,10 @@
 
 
 from picard.config import (
-    BoolOption,
-    ListOption,
-    Option,
-    TextOption,
+    BoolSetting,
+    ListSetting,
+    Setting,
+    TextSetting,
     get_config,
 )
 from picard.const import DEFAULT_COVER_IMAGE_FILENAME
@@ -64,21 +64,21 @@ class CoverOptionsPage(OptionsPage):
     HELP_URL = "/config/options_cover.html"
 
     options = [
-        BoolOption('setting', 'save_images_to_tags', True, title=N_("Embed cover images into tags")),
-        BoolOption('setting', 'embed_only_one_front_image', True, title=N_("Embed only a single front image")),
-        BoolOption('setting', 'save_images_to_files', False, title=N_("Save cover images as separate files")),
-        TextOption('setting', 'cover_image_filename', DEFAULT_COVER_IMAGE_FILENAME, title=N_("File name for images")),
-        BoolOption('setting', 'save_images_overwrite', False, title=N_("Overwrite existing image files")),
-        BoolOption('setting', 'save_only_one_front_image', False, title=N_("Save only a single front image as separate file")),
-        BoolOption('setting', 'image_type_as_filename', False, title=N_("Always use the primary image type as the file name for non-front images")),
-        ListOption('setting', 'ca_providers', DEFAULT_CA_PROVIDERS, title=N_("Cover art providers")),
+        BoolSetting('save_images_to_tags', True, title=N_("Embed cover images into tags")),
+        BoolSetting('embed_only_one_front_image', True, title=N_("Embed only a single front image")),
+        BoolSetting('save_images_to_files', False, title=N_("Save cover images as separate files")),
+        TextSetting('cover_image_filename', DEFAULT_COVER_IMAGE_FILENAME, title=N_("File name for images")),
+        BoolSetting('save_images_overwrite', False, title=N_("Overwrite existing image files")),
+        BoolSetting('save_only_one_front_image', False, title=N_("Save only a single front image as separate file")),
+        BoolSetting('image_type_as_filename', False, title=N_("Always use the primary image type as the file name for non-front images")),
+        ListSetting('ca_providers', DEFAULT_CA_PROVIDERS, title=N_("Cover art providers")),
     ]
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_CoverOptionsPage()
         self.ui.setupUi(self)
-        self.ui.cover_image_filename.setPlaceholderText(Option.get('setting', 'cover_image_filename').default)
+        self.ui.cover_image_filename.setPlaceholderText(Setting.get_default('cover_image_filename'))
         self.ui.save_images_to_files.clicked.connect(self.update_ca_providers_groupbox_state)
         self.ui.save_images_to_tags.clicked.connect(self.update_ca_providers_groupbox_state)
         self.ui.save_only_one_front_image.toggled.connect(self.ui.image_type_as_filename.setDisabled)

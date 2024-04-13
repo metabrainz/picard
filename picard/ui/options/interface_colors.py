@@ -28,7 +28,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard.config import Option
+from picard.config import Setting
 from picard.const.sys import IS_MACOS
 
 from picard.ui.colors import (
@@ -97,8 +97,8 @@ class InterfaceColorsOptionsPage(OptionsPage):
     HELP_URL = "/config/options_interface_colors.html"
 
     options = [
-        Option('setting', 'interface_colors', InterfaceColors(dark_theme=False).get_colors(), title=N_("Colors to use for light theme")),
-        Option('setting', 'interface_colors_dark', InterfaceColors(dark_theme=True).get_colors(), title=N_("Colors to use for dark theme")),
+        Setting('interface_colors', InterfaceColors(dark_theme=False).get_colors(), title=N_("Colors to use for light theme")),
+        Setting('interface_colors_dark', InterfaceColors(dark_theme=True).get_colors(), title=N_("Colors to use for dark theme")),
     ]
 
     def __init__(self, parent=None):

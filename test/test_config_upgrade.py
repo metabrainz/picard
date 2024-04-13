@@ -28,11 +28,11 @@ from test.picardtestcase import PicardTestCase
 from test.test_config import TestPicardConfigCommon
 
 from picard.config import (
-    BoolOption,
-    IntOption,
-    ListOption,
-    Option,
-    TextOption,
+    BoolSetting,
+    IntSetting,
+    ListSetting,
+    Persist,
+    TextSetting,
 )
 import picard.config_upgrade
 from picard.config_upgrade import (
@@ -148,7 +148,7 @@ class TestPicardConfigUpgradesAutodetect(PicardTestCase):
 class TestPicardConfigUpgrades(TestPicardConfigCommon):
 
     def test_upgrade_to_v1_0_0final0_A(self):
-        TextOption('setting', 'file_naming_format', '')
+        TextSetting('file_naming_format', '')
 
         self.config.setting['va_file_naming_format'] = 'abc'
         self.config.setting['use_va_format'] = True
@@ -162,7 +162,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertIn('file_naming_format', self.config.setting)
 
     def test_upgrade_to_v1_0_0final0_B(self):
-        TextOption('setting', 'file_naming_format', '')
+        TextSetting('file_naming_format', '')
 
         self.config.setting['va_file_naming_format'] = 'abc'
         self.config.setting['use_va_format'] = ""
@@ -176,7 +176,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertNotIn('file_naming_format', self.config.setting)
 
     def test_upgrade_to_v1_3_0dev1(self):
-        BoolOption('setting', 'windows_compatibility', False)
+        BoolSetting('windows_compatibility', False)
 
         self.config.setting['windows_compatible_filenames'] = True
         upgrade_to_v1_3_0dev1(self.config)
@@ -184,23 +184,23 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertTrue(self.config.setting['windows_compatibility'])
 
     def test_upgrade_to_v1_3_0dev2(self):
-        TextOption('setting', 'preserved_tags', '')
+        TextSetting('preserved_tags', '')
         self.config.setting['preserved_tags'] = "a b  c  "
         upgrade_to_v1_3_0dev2(self.config)
         self.assertEqual("a,b,c", self.config.setting['preserved_tags'])
 
     def test_upgrade_to_v1_3_0dev2_skip_list(self):
-        ListOption('setting', 'preserved_tags', [])
+        ListSetting('preserved_tags', [])
         self.config.setting['preserved_tags'] = ['foo']
         upgrade_to_v1_3_0dev2(self.config)
         self.assertEqual(['foo'], self.config.setting['preserved_tags'])
 
     def test_upgrade_to_v1_3_0dev3(self):
-        ListOption("setting", "preferred_release_countries", [])
-        ListOption("setting", "preferred_release_formats", [])
-        ListOption("setting", "enabled_plugins", [])
-        ListOption("setting", "caa_image_types", [])
-        ListOption("setting", "metadata_box_sizes", [])
+        ListSetting("preferred_release_countries", [])
+        ListSetting("preferred_release_formats", [])
+        ListSetting("enabled_plugins", [])
+        ListSetting("caa_image_types", [])
+        ListSetting("metadata_box_sizes", [])
 
         self.config.setting['preferred_release_countries'] = "a  b  c"
         self.config.setting['preferred_release_formats'] = "a  b  c"
@@ -216,7 +216,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual(["a", "b", "c"], self.config.setting['metadata_box_sizes'])
 
     def test_upgrade_to_v1_3_0dev4(self):
-        ListOption("setting", "release_type_scores", [])
+        ListSetting("release_type_scores", [])
 
         self.config.setting['release_type_scores'] = "a 0.1 b 0.2 c 1"
         upgrade_to_v1_3_0dev4(self.config)
@@ -232,7 +232,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertNotIn('password', self.config.setting)
 
     def test_upgrade_to_v1_4_0dev3(self):
-        ListOption("setting", "ca_providers", [])
+        ListSetting("ca_providers", [])
 
         self.config.setting['ca_provider_use_amazon'] = True
         self.config.setting['ca_provider_use_caa'] = True
@@ -248,7 +248,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual(len(self.config.setting['ca_providers']), 4)
 
     def test_upgrade_to_v1_4_0dev4(self):
-        TextOption("setting", "file_naming_format", "")
+        TextSetting("file_naming_format", "")
 
         self.config.setting['file_naming_format'] = 'xxx'
         upgrade_to_v1_4_0dev4(self.config)
@@ -259,8 +259,8 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual(DEFAULT_FILE_NAMING_FORMAT, self.config.setting['file_naming_format'])
 
     def test_upgrade_to_v1_4_0dev6(self):
-        BoolOption('setting', 'enable_tagger_scripts', False)
-        ListOption('setting', 'list_of_scripts', [])
+        BoolSetting('enable_tagger_scripts', False)
+        ListSetting('list_of_scripts', [])
 
         self.config.setting['enable_tagger_script'] = True
         self.config.setting['tagger_script'] = "abc"
@@ -273,7 +273,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual([(0, unique_numbered_title(DEFAULT_SCRIPT_NAME, []), True, 'abc')], self.config.setting['list_of_scripts'])
 
     def test_upgrade_to_v1_4_0dev7(self):
-        BoolOption('setting', 'embed_only_one_front_image', False)
+        BoolSetting('embed_only_one_front_image', False)
 
         self.config.setting['save_only_front_images_to_tags'] = True
         upgrade_to_v1_4_0dev7(self.config)
@@ -281,7 +281,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertTrue(self.config.setting['embed_only_one_front_image'])
 
     def test_upgrade_to_v2_0_0dev3(self):
-        IntOption("setting", "caa_image_size", 500)
+        IntSetting("caa_image_size", 500)
 
         self.config.setting['caa_image_size'] = 0
         upgrade_to_v2_0_0dev3(self.config)
@@ -292,14 +292,14 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual(501, self.config.setting['caa_image_size'])
 
     def test_upgrade_to_v2_1_0dev1(self):
-        BoolOption("setting", "use_genres", False)
-        IntOption("setting", "max_genres", 5)
-        IntOption("setting", "min_genre_usage", 90)
-        TextOption("setting", "ignore_genres", "seen live, favorites, fixme, owned")
-        TextOption("setting", "join_genres", "")
-        BoolOption("setting", "only_my_genres", False)
-        BoolOption("setting", "artists_genres", False)
-        BoolOption("setting", "folksonomy_tags", False)
+        BoolSetting("use_genres", False)
+        IntSetting("max_genres", 5)
+        IntSetting("min_genre_usage", 90)
+        TextSetting("ignore_genres", "seen live, favorites, fixme, owned")
+        TextSetting("join_genres", "")
+        BoolSetting("only_my_genres", False)
+        BoolSetting("artists_genres", False)
+        BoolSetting("folksonomy_tags", False)
 
         self.config.setting['folksonomy_tags'] = True
         self.config.setting['max_tags'] = 6
@@ -328,8 +328,8 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertNotIn('artists_tags', self.config.setting)
 
     def test_upgrade_to_v2_2_0dev3(self):
-        TextOption("setting", "ignore_genres", "")
-        TextOption("setting", "genres_filter", "")
+        TextSetting("ignore_genres", "")
+        TextSetting("genres_filter", "")
 
         self.config.setting['ignore_genres'] = "a, b,c"
         upgrade_to_v2_2_0dev3(self.config)
@@ -337,7 +337,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual(self.config.setting['genres_filter'], "-a\n-b\n-c")
 
     def test_upgrade_to_v2_2_0dev4(self):
-        TextOption("setting", "file_naming_format", "")
+        TextSetting("file_naming_format", "")
 
         self.config.setting['file_naming_format'] = 'xxx'
         upgrade_to_v2_2_0dev4(self.config)
@@ -348,19 +348,19 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual(DEFAULT_FILE_NAMING_FORMAT, self.config.setting['file_naming_format'])
 
     def test_upgrade_to_v2_4_0beta3(self):
-        ListOption("setting", "preserved_tags", [])
+        ListSetting("preserved_tags", [])
         self.config.setting['preserved_tags'] = 'foo,bar'
         upgrade_to_v2_4_0beta3(self.config)
         self.assertEqual(['foo', 'bar'], self.config.setting['preserved_tags'])
 
     def test_upgrade_to_v2_4_0beta3_already_done(self):
-        ListOption("setting", "preserved_tags", [])
+        ListSetting("preserved_tags", [])
         self.config.setting['preserved_tags'] = ['foo', 'bar']
         upgrade_to_v2_4_0beta3(self.config)
         self.assertEqual(['foo', 'bar'], self.config.setting['preserved_tags'])
 
     def test_upgrade_to_v2_5_0dev1(self):
-        ListOption("setting", "ca_providers", [])
+        ListSetting("ca_providers", [])
 
         self.config.setting['ca_providers'] = [
             ('Cover Art Archive', True),
@@ -376,8 +376,8 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual(expected, self.config.setting['ca_providers'])
 
     def test_upgrade_to_v2_5_0dev2(self):
-        Option("persist", "splitter_state", QByteArray())
-        Option("persist", "bottom_splitter_state", QByteArray())
+        Persist("splitter_state", QByteArray())
+        Persist("bottom_splitter_state", QByteArray())
         self.config.persist["splitter_state"] = b'foo'
         self.config.persist["bottom_splitter_state"] = b'bar'
         upgrade_to_v2_5_0dev2(self.config)
@@ -385,25 +385,25 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual(b'', self.config.persist['bottom_splitter_state'])
 
     def test_upgrade_to_v2_6_0dev1(self):
-        TextOption("setting", "acoustid_fpcalc", "")
+        TextSetting("acoustid_fpcalc", "")
         self.config.setting["acoustid_fpcalc"] = "/usr/bin/fpcalc"
         upgrade_to_v2_6_0dev1(self.config)
         self.assertEqual("/usr/bin/fpcalc", self.config.setting["acoustid_fpcalc"])
 
     def test_upgrade_to_v2_6_0dev1_empty(self):
-        TextOption("setting", "acoustid_fpcalc", "")
+        TextSetting("acoustid_fpcalc", "")
         self.config.setting["acoustid_fpcalc"] = None
         upgrade_to_v2_6_0dev1(self.config)
         self.assertEqual("", self.config.setting["acoustid_fpcalc"])
 
     def test_upgrade_to_v2_6_0dev1_snap(self):
-        TextOption("setting", "acoustid_fpcalc", "")
+        TextSetting("acoustid_fpcalc", "")
         self.config.setting["acoustid_fpcalc"] = "/snap/picard/221/usr/bin/fpcalc"
         upgrade_to_v2_6_0dev1(self.config)
         self.assertEqual("", self.config.setting["acoustid_fpcalc"])
 
     def test_upgrade_to_v2_6_0dev1_frozen(self):
-        TextOption("setting", "acoustid_fpcalc", "")
+        TextSetting("acoustid_fpcalc", "")
         self.config.setting["acoustid_fpcalc"] = r"C:\Program Files\MusicBrainz Picard\fpcalc.exe"
         picard.config_upgrade.IS_FROZEN = True
         upgrade_to_v2_6_0dev1(self.config)
@@ -411,8 +411,8 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual("", self.config.setting["acoustid_fpcalc"])
 
     def test_upgrade_to_v2_6_0beta2(self):
-        BoolOption('setting', 'image_type_as_filename', False)
-        BoolOption('setting', 'save_only_one_front_image', False)
+        BoolSetting('image_type_as_filename', False)
+        BoolSetting('save_only_one_front_image', False)
 
         self.config.setting['caa_image_type_as_filename'] = True
         self.config.setting['caa_save_single_front_image'] = True
@@ -424,7 +424,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
 
     def test_upgrade_to_v2_6_0beta3(self):
         from picard.ui.theme import UiTheme
-        BoolOption('setting', 'use_system_theme', False)
+        BoolSetting('use_system_theme', False)
         self.config.setting['use_system_theme'] = True
         upgrade_to_v2_6_0beta3(self.config)
         self.assertNotIn('use_system_theme', self.config.setting)
@@ -432,7 +432,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual(str(UiTheme.SYSTEM), self.config.setting['ui_theme'])
 
     def test_upgrade_to_v2_8_0dev2(self):
-        ListOption('setting', 'toolbar_layout', [])
+        ListSetting('toolbar_layout', [])
         self.config.setting['toolbar_layout'] = [
             'add_directory_action',
             'extract_and_submit_acousticbrainz_features_action',
@@ -445,7 +445,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual(expected, self.config.setting['toolbar_layout'])
 
     def test_upgrade_to_v3_0_0dev3(self):
-        BoolOption('setting', 'allow_multi_dirs_selection', False)
+        BoolSetting('allow_multi_dirs_selection', False)
 
         self.config.setting['toolbar_multiselect'] = True
         upgrade_to_v3_0_0dev3(self.config)

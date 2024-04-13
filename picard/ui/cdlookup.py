@@ -34,7 +34,7 @@ from PyQt6 import (
 
 from picard import log
 from picard.config import (
-    Option,
+    Persist,
     get_config,
 )
 from picard.mbjson import (
@@ -56,7 +56,7 @@ class CDLookupDialog(PicardDialog):
     dialog_header_state = 'cdlookupdialog_header_state'
 
     options = [
-        Option('persist', dialog_header_state, QtCore.QByteArray())
+        Persist(dialog_header_state, QtCore.QByteArray())
     ]
 
     def __init__(self, releases, disc, parent=None):

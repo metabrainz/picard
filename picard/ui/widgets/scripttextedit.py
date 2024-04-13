@@ -44,7 +44,7 @@ from PyQt6.QtWidgets import (
 )
 
 from picard.config import (
-    BoolOption,
+    BoolPersist,
     get_config,
 )
 from picard.const.sys import IS_MACOS
@@ -314,8 +314,8 @@ class ScriptTextEdit(QTextEdit):
     autocomplete_trigger_chars = re.compile('[$%A-Za-z0-9_]')
 
     options = [
-        BoolOption('persist', 'script_editor_wordwrap', False),
-        BoolOption('persist', 'script_editor_tooltips', True),
+        BoolPersist('script_editor_wordwrap', False),
+        BoolPersist('script_editor_tooltips', True),
     ]
 
     def __init__(self, parent):

@@ -22,7 +22,7 @@
 
 
 from picard.config import (
-    BoolOption,
+    BoolSetting,
     get_config,
 )
 
@@ -45,8 +45,8 @@ class TagsCompatibilityAC3OptionsPage(OptionsPage):
     HELP_URL = "/config/options_tags_compatibility_ac3.html"
 
     options = [
-        BoolOption('setting', 'ac3_save_ape', True, title=N_("Save APEv2 tags to AC3")),
-        BoolOption('setting', 'remove_ape_from_ac3', False, title=N_("Remove APEv2 tags from AC3 files")),
+        BoolSetting('ac3_save_ape', True, title=N_("Save APEv2 tags to AC3")),
+        BoolSetting('remove_ape_from_ac3', False, title=N_("Remove APEv2 tags from AC3 files")),
     ]
 
     def __init__(self, parent=None):

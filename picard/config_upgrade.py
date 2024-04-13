@@ -43,9 +43,11 @@ from picard import (
 from picard.config import (
     BoolOption,
     IntOption,
-    ListOption,
-    Option,
+    ListSetting,
+    Persist,
+    Setting,
     TextOption,
+    TextSetting,
 )
 from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -375,7 +377,7 @@ def upgrade_to_v2_6_0beta3(config):
     """Replace use_system_theme with ui_theme options"""
     from picard.ui.theme import UiTheme
     _s = config.setting
-    TextOption('setting', 'ui_theme', str(UiTheme.DEFAULT))
+    TextSetting('ui_theme', str(UiTheme.DEFAULT))
     if _s['use_system_theme']:
         _s['ui_theme'] = str(UiTheme.SYSTEM)
     _s.remove('use_system_theme')
@@ -392,7 +394,7 @@ def upgrade_to_v2_7_0dev2(config):
                 if _p[old_splitter_key] is not None:
                     splitter_dict[new_splitter_key] = bytearray(_p[old_splitter_key])
                 _p.remove(old_splitter_key)
-        Option('persist', new_persist_key, {})
+        Persist(new_persist_key, {})
         _p[new_persist_key] = splitter_dict
 
     # MainWindow splitters
@@ -432,10 +434,10 @@ def upgrade_to_v2_7_0dev3(config):
         FileNamingScript,
         ScriptImportError,
     )
-    Option('setting', 'file_renaming_scripts', {})
-    ListOption('setting', 'file_naming_scripts', [])
-    TextOption('setting', 'file_naming_format', DEFAULT_FILE_NAMING_FORMAT)
-    TextOption('setting', 'selected_file_naming_script_id', '')
+    Setting('file_renaming_scripts', {})
+    ListSetting('file_naming_scripts', [])
+    TextSetting('file_naming_format', DEFAULT_FILE_NAMING_FORMAT)
+    TextSetting('selected_file_naming_script_id', '')
     scripts = {}
     for item in config.setting['file_naming_scripts']:
         try:
@@ -461,11 +463,11 @@ def upgrade_to_v2_7_0dev3(config):
 def upgrade_to_v2_7_0dev4(config):
     """Replace artist_script_exception with artist_script_exceptions"""
     _s = config.setting
-    ListOption('setting', 'artist_script_exceptions', [])
+    ListSetting('artist_script_exceptions', [])
     if _s['artist_script_exception']:
         _s['artist_script_exceptions'] = [_s['artist_script_exception']]
     _s.remove('artist_script_exception')
-    ListOption('setting', 'artist_locales', ['en'])
+    ListSetting('artist_locales', ['en'])
     if _s['artist_locale']:
         _s['artist_locales'] = [_s['artist_locale']]
     _s.remove('artist_locale')
@@ -474,7 +476,7 @@ def upgrade_to_v2_7_0dev4(config):
 def upgrade_to_v2_7_0dev5(config):
     """Replace artist_script_exceptions with script_exceptions and remove artist_script_exception_weighting"""
     _s = config.setting
-    ListOption('setting', 'script_exceptions', [])
+    ListSetting('script_exceptions', [])
     weighting = _s['artist_script_exception_weighting'] or 0
     artist_script_exceptions = _s['artist_script_exceptions'] or []
     _s['script_exceptions'] = [(script_exception, weighting) for script_exception in artist_script_exceptions]

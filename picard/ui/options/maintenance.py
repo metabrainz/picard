@@ -32,7 +32,7 @@ from PyQt6 import (
 
 from picard import log
 from picard.config import (
-    Option,
+    Setting,
     get_config,
     load_new_config,
 )
@@ -297,7 +297,7 @@ class MaintenanceOptionsPage(OptionsPage):
         ) == QtWidgets.QMessageBox.StandardButton.Yes:
             config = get_config()
             for item in to_remove:
-                Option.add_if_missing('setting', item, None)
+                Setting.add_if_missing(item, None)
                 log.warning("Removing option setting '%s' from the INI file.", item)
                 config.setting.remove(item)
 

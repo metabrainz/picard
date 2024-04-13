@@ -29,9 +29,9 @@ from PyQt6.QtGui import (
 )
 
 from picard.config import (
-    BoolOption,
-    IntOption,
-    TextOption,
+    BoolSetting,
+    IntSetting,
+    TextSetting,
     get_config,
 )
 from picard.track import TagGenreFilter
@@ -91,14 +91,14 @@ class GenresOptionsPage(OptionsPage):
     HELP_URL = "/config/options_genres.html"
 
     options = [
-        BoolOption('setting', 'use_genres', False, title=N_("Use genres from MusicBrainz")),
-        IntOption('setting', 'max_genres', 5, title=N_("Maximum number of genres")),
-        IntOption('setting', 'min_genre_usage', 90, title=N_("Minimal genre usage")),
-        TextOption('setting', 'genres_filter', '-seen live\n-favorites\n-fixme\n-owned', title=N_("Genres to include or exclude")),
-        TextOption('setting', 'join_genres', '', title=N_("Join multiple genres with")),
-        BoolOption('setting', 'only_my_genres', False, title=N_("Use only my genres")),
-        BoolOption('setting', 'artists_genres', False, title=N_("Use album artist genres")),
-        BoolOption('setting', 'folksonomy_tags', False, title=N_("Use folksonomy tags as genre")),
+        BoolSetting('use_genres', False, title=N_("Use genres from MusicBrainz")),
+        IntSetting('max_genres', 5, title=N_("Maximum number of genres")),
+        IntSetting('min_genre_usage', 90, title=N_("Minimal genre usage")),
+        TextSetting('genres_filter', '-seen live\n-favorites\n-fixme\n-owned', title=N_("Genres to include or exclude")),
+        TextSetting('join_genres', '', title=N_("Join multiple genres with")),
+        BoolSetting('only_my_genres', False, title=N_("Use only my genres")),
+        BoolSetting('artists_genres', False, title=N_("Use album artist genres")),
+        BoolSetting('folksonomy_tags', False, title=N_("Use folksonomy tags as genre")),
     ]
 
     def __init__(self, parent=None):

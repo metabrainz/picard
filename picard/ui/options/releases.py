@@ -33,7 +33,7 @@ from PyQt6 import (
 )
 
 from picard.config import (
-    ListOption,
+    ListSetting,
     get_config,
 )
 from picard.const import (
@@ -164,9 +164,9 @@ class ReleasesOptionsPage(OptionsPage):
     HELP_URL = "/config/options_releases.html"
 
     options = [
-        ListOption('setting', 'release_type_scores', _release_type_scores, title=N_("Preferred release types")),
-        ListOption('setting', 'preferred_release_countries', [], title=N_("Preferred release countries")),
-        ListOption('setting', 'preferred_release_formats', [], title=N_("Preferred medium formats")),
+        ListSetting('release_type_scores', _release_type_scores, title=N_("Preferred release types")),
+        ListSetting('preferred_release_countries', [], title=N_("Preferred release countries")),
+        ListSetting('preferred_release_formats', [], title=N_("Preferred medium formats")),
     ]
 
     def __init__(self, parent=None):

@@ -35,7 +35,7 @@ from PyQt6 import (
 
 from picard import log
 from picard.config import (
-    Option,
+    Persist,
     get_config,
 )
 from picard.const import DOCS_BASE_URL
@@ -65,8 +65,8 @@ class PreserveGeometry:
     defaultsize = None
 
     def __init__(self):
-        Option.add_if_missing('persist', self.opt_name(), QtCore.QByteArray())
-        Option.add_if_missing('persist', self.splitters_name(), {})
+        Persist.add_if_missing(self.opt_name(), QtCore.QByteArray())
+        Persist.add_if_missing(self.splitters_name(), {})
         if getattr(self, 'finished', None):
             self.finished.connect(self.save_geometry)
 

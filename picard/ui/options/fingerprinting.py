@@ -34,9 +34,9 @@ from PyQt6 import (
 
 from picard.acoustid import find_fpcalc
 from picard.config import (
-    BoolOption,
-    IntOption,
-    TextOption,
+    BoolSetting,
+    IntSetting,
+    TextSetting,
     get_config,
 )
 from picard.const import DEFAULT_FPCALC_THREADS
@@ -67,12 +67,12 @@ class FingerprintingOptionsPage(OptionsPage):
     HELP_URL = "/config/options_fingerprinting.html"
 
     options = [
-        BoolOption('setting', 'ignore_existing_acoustid_fingerprints', False),
-        BoolOption('setting', 'save_acoustid_fingerprints', False),
-        TextOption('setting', 'fingerprinting_system', 'acoustid'),
-        TextOption('setting', 'acoustid_fpcalc', ''),
-        TextOption('setting', 'acoustid_apikey', ''),
-        IntOption('setting', 'fpcalc_threads', DEFAULT_FPCALC_THREADS),
+        BoolSetting('ignore_existing_acoustid_fingerprints', False),
+        BoolSetting('save_acoustid_fingerprints', False),
+        TextSetting('fingerprinting_system', 'acoustid'),
+        TextSetting('acoustid_fpcalc', ''),
+        TextSetting('acoustid_apikey', ''),
+        IntSetting('fpcalc_threads', DEFAULT_FPCALC_THREADS),
     ]
 
     def __init__(self, parent=None):

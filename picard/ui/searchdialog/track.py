@@ -25,7 +25,7 @@
 from PyQt6 import QtCore
 
 from picard.config import (
-    Option,
+    Persist,
     get_config,
 )
 from picard.file import FILE_COMPARISON_WEIGHTS
@@ -54,7 +54,7 @@ class TrackSearchDialog(SearchDialog):
     dialog_header_state = 'tracksearchdialog_header_state'
 
     options = [
-        Option('persist', dialog_header_state, QtCore.QByteArray())
+        Persist(dialog_header_state, QtCore.QByteArray())
     ]
 
     def __init__(self, parent, force_advanced_search=None):

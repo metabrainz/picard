@@ -40,7 +40,7 @@ from PyQt6 import (
 
 from picard import log
 from picard.config import (
-    IntOption,
+    IntSetting,
     get_config,
 )
 from picard.debug_opts import DebugOpt
@@ -180,7 +180,7 @@ class DebugOptsMenu(QtWidgets.QMenu):
 class LogView(LogViewCommon):
 
     options = [
-        IntOption('setting', 'log_verbosity', logging.WARNING),
+        IntSetting('log_verbosity', logging.WARNING),
     ]
 
     def __init__(self, parent=None):

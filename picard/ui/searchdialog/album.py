@@ -32,7 +32,7 @@ from PyQt6.QtCore import pyqtSignal
 
 from picard import log
 from picard.config import (
-    Option,
+    Persist,
     get_config,
 )
 from picard.const import CAA_URL
@@ -136,7 +136,7 @@ class AlbumSearchDialog(SearchDialog):
     dialog_header_state = 'albumsearchdialog_header_state'
 
     options = [
-        Option('persist', dialog_header_state, QtCore.QByteArray())
+        Persist(dialog_header_state, QtCore.QByteArray())
     ]
 
     def __init__(self, parent, force_advanced_search=None, existing_album=None):

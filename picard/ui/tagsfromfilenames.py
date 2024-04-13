@@ -33,7 +33,7 @@ import re
 from PyQt6 import QtWidgets
 
 from picard.config import (
-    TextOption,
+    TextPersist,
     get_config,
 )
 from picard.script.parser import normalize_tagname
@@ -101,7 +101,7 @@ class TagsFromFileNamesDialog(PicardDialog):
     help_url = 'doc_tags_from_filenames'
 
     options = [
-        TextOption('persist', 'tags_from_filenames_format', ''),
+        TextPersist('tags_from_filenames_format', ''),
     ]
 
     def __init__(self, files, parent=None):

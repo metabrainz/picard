@@ -24,8 +24,8 @@
 from functools import partial
 
 from picard.config import (
-    BoolOption,
-    TextOption,
+    BoolSetting,
+    TextSetting,
     get_config,
 )
 
@@ -48,11 +48,11 @@ class TagsCompatibilityID3OptionsPage(OptionsPage):
     HELP_URL = "/config/options_tags_compatibility_id3.html"
 
     options = [
-        BoolOption('setting', 'write_id3v1', True, title=N_("Write ID3v1 tags")),
-        BoolOption('setting', 'write_id3v23', False, title=N_("ID3v2 version to write")),
-        TextOption('setting', 'id3v2_encoding', 'utf-8', title=N_("ID3v2 text encoding")),
-        TextOption('setting', 'id3v23_join_with', '/', title=N_("ID3v2.3 join character")),
-        BoolOption('setting', 'itunes_compatible_grouping', False, title=N_("Save iTunes compatible grouping and work")),
+        BoolSetting('write_id3v1', True, title=N_("Write ID3v1 tags")),
+        BoolSetting('write_id3v23', False, title=N_("ID3v2 version to write")),
+        TextSetting('id3v2_encoding', 'utf-8', title=N_("ID3v2 text encoding")),
+        TextSetting('id3v23_join_with', '/', title=N_("ID3v2.3 join character")),
+        BoolSetting('itunes_compatible_grouping', False, title=N_("Save iTunes compatible grouping and work")),
     ]
 
     def __init__(self, parent=None):

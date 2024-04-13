@@ -23,10 +23,10 @@
 
 
 from picard.config import (
-    BoolOption,
-    IntOption,
-    ListOption,
-    TextOption,
+    BoolSetting,
+    IntSetting,
+    ListSetting,
+    TextSetting,
     get_config,
 )
 from picard.const import QUERY_LIMIT
@@ -48,16 +48,16 @@ class AdvancedOptionsPage(OptionsPage):
     HELP_URL = "/config/options_advanced.html"
 
     options = [
-        TextOption('setting', 'ignore_regex', '', title=N_("Ignore file paths matching a regular expression")),
-        BoolOption('setting', 'ignore_hidden_files', False, title=N_("Ignore hidden files")),
-        BoolOption('setting', 'recursively_add_files', True, title=N_("Include sub-folders when adding files from folder")),
-        IntOption('setting', 'ignore_track_duration_difference_under', 2, title=N_("Ignore track duration difference under x seconds")),
-        IntOption('setting', 'query_limit', QUERY_LIMIT, title=N_("Maximum number of entities to return per MusicBrainz query")),
-        BoolOption('setting', 'completeness_ignore_videos', False, title=N_("Completeness check ignore: Video tracks")),
-        BoolOption('setting', 'completeness_ignore_pregap', False, title=N_("Completeness check ignore: Pregap tracks")),
-        BoolOption('setting', 'completeness_ignore_data', False, title=N_("Completeness check ignore: Data tracks")),
-        BoolOption('setting', 'completeness_ignore_silence', False, title=N_("Completeness check ignore: Silent tracks")),
-        ListOption('setting', 'compare_ignore_tags', [], title=N_("Tags to ignore for comparison")),
+        TextSetting('ignore_regex', '', title=N_("Ignore file paths matching a regular expression")),
+        BoolSetting('ignore_hidden_files', False, title=N_("Ignore hidden files")),
+        BoolSetting('recursively_add_files', True, title=N_("Include sub-folders when adding files from folder")),
+        IntSetting('ignore_track_duration_difference_under', 2, title=N_("Ignore track duration difference under x seconds")),
+        IntSetting('query_limit', QUERY_LIMIT, title=N_("Maximum number of entities to return per MusicBrainz query")),
+        BoolSetting('completeness_ignore_videos', False, title=N_("Completeness check ignore: Video tracks")),
+        BoolSetting('completeness_ignore_pregap', False, title=N_("Completeness check ignore: Pregap tracks")),
+        BoolSetting('completeness_ignore_data', False, title=N_("Completeness check ignore: Data tracks")),
+        BoolSetting('completeness_ignore_silence', False, title=N_("Completeness check ignore: Silent tracks")),
+        ListSetting('compare_ignore_tags', [], title=N_("Tags to ignore for comparison")),
     ]
 
     def __init__(self, parent=None):

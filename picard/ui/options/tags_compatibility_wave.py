@@ -22,8 +22,8 @@
 
 
 from picard.config import (
-    BoolOption,
-    TextOption,
+    BoolSetting,
+    TextSetting,
     get_config,
 )
 from picard.formats.wav import WAVFile
@@ -47,9 +47,9 @@ class TagsCompatibilityWaveOptionsPage(OptionsPage):
     HELP_URL = "/config/options_tags_compatibility_wave.html"
 
     options = [
-        BoolOption('setting', 'write_wave_riff_info', True, title=N_("Write RIFF INFO tags to WAVE files")),
-        BoolOption('setting', 'remove_wave_riff_info', False, title=N_("Remove existing RIFF INFO tags from WAVE files")),
-        TextOption('setting', 'wave_riff_info_encoding', 'windows-1252', title=N_("RIFF INFO text encoding")),
+        BoolSetting('write_wave_riff_info', True, title=N_("Write RIFF INFO tags to WAVE files")),
+        BoolSetting('remove_wave_riff_info', False, title=N_("Remove existing RIFF INFO tags from WAVE files")),
+        TextSetting('wave_riff_info_encoding', 'windows-1252', title=N_("RIFF INFO text encoding")),
     ]
 
     def __init__(self, parent=None):

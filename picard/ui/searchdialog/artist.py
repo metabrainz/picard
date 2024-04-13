@@ -24,7 +24,7 @@
 from PyQt6 import QtCore
 
 from picard.config import (
-    Option,
+    Persist,
     get_config,
 )
 from picard.mbjson import artist_to_metadata
@@ -41,7 +41,7 @@ class ArtistSearchDialog(SearchDialog):
     dialog_header_state = 'artistsearchdialog_header_state'
 
     options = [
-        Option('persist', dialog_header_state, QtCore.QByteArray())
+        Persist(dialog_header_state, QtCore.QByteArray())
     ]
 
     def __init__(self, parent):

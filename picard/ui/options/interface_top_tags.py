@@ -21,7 +21,7 @@
 
 
 from picard.config import (
-    ListOption,
+    ListSetting,
     get_config,
 )
 
@@ -54,7 +54,7 @@ class InterfaceTopTagsOptionsPage(OptionsPage):
     HELP_URL = "/config/options_interface_top_tags.html"
 
     options = [
-        ListOption('setting', 'metadatabox_top_tags', DEFAULT_TOP_TAGS, title=N_("Tags to show at the top")),
+        ListSetting('metadatabox_top_tags', DEFAULT_TOP_TAGS, title=N_("Tags to show at the top")),
     ]
 
     def __init__(self, parent=None):

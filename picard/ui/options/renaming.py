@@ -40,8 +40,8 @@ from PyQt6.QtCore import QStandardPaths
 from PyQt6.QtGui import QPalette
 
 from picard.config import (
-    BoolOption,
-    TextOption,
+    BoolSetting,
+    TextSetting,
     get_config,
 )
 from picard.script import ScriptParser
@@ -77,12 +77,12 @@ class RenamingOptionsPage(OptionsPage):
     HELP_URL = "/config/options_filerenaming.html"
 
     options = [
-        BoolOption('setting', 'rename_files', False, title=N_("Rename files")),
-        BoolOption('setting', 'move_files', False, title=N_("Move files")),
-        TextOption('setting', 'move_files_to', _default_music_dir, title=N_("Destination directory")),
-        BoolOption('setting', 'move_additional_files', False, title=N_("Move additional files")),
-        TextOption('setting', 'move_additional_files_pattern', "*.jpg *.png", title=N_("Additional file patterns")),
-        BoolOption('setting', 'delete_empty_dirs', True, title=N_("Delete empty directories")),
+        BoolSetting('rename_files', False, title=N_("Rename files")),
+        BoolSetting('move_files', False, title=N_("Move files")),
+        TextSetting('move_files_to', _default_music_dir, title=N_("Destination directory")),
+        BoolSetting('move_additional_files', False, title=N_("Move additional files")),
+        TextSetting('move_additional_files_pattern', "*.jpg *.png", title=N_("Additional file patterns")),
+        BoolSetting('delete_empty_dirs', True, title=N_("Delete empty directories")),
     ]
 
     def __init__(self, parent=None):

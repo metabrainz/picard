@@ -25,7 +25,7 @@
 
 
 from picard.config import (
-    TextOption,
+    TextSetting,
     get_config,
 )
 from picard.util.cdrom import (
@@ -56,7 +56,7 @@ class CDLookupOptionsPage(OptionsPage):
     HELP_URL = "/config/options_cdlookup.html"
 
     options = [
-        TextOption('setting', 'cd_lookup_device', ','.join(DEFAULT_DRIVES)),
+        TextSetting('cd_lookup_device', ','.join(DEFAULT_DRIVES)),
     ]
 
     def __init__(self, parent=None):

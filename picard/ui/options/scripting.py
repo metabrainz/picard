@@ -34,9 +34,9 @@ from PyQt6 import QtCore
 
 from picard import log
 from picard.config import (
-    BoolOption,
-    IntOption,
-    ListOption,
+    BoolSetting,
+    IntPersist,
+    ListSetting,
     get_config,
 )
 from picard.const.sys import IS_MACOS
@@ -104,9 +104,9 @@ class ScriptingOptionsPage(OptionsPage):
     HELP_URL = "/config/options_scripting.html"
 
     options = [
-        BoolOption('setting', 'enable_tagger_scripts', False, title=N_("Enable tagger scripts")),
-        ListOption('setting', 'list_of_scripts', [], title=N_("Tagger scripts")),
-        IntOption('persist', 'last_selected_script_pos', 0),
+        BoolSetting('enable_tagger_scripts', False, title=N_("Enable tagger scripts")),
+        ListSetting('list_of_scripts', [], title=N_("Tagger scripts")),
+        IntPersist('last_selected_script_pos', 0),
     ]
 
     default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))

@@ -37,7 +37,7 @@ from PyQt6 import (
 )
 
 from picard.config import (
-    ListOption,
+    ListSetting,
     get_config,
 )
 from picard.util import icontheme
@@ -147,7 +147,7 @@ class InterfaceToolbarOptionsPage(OptionsPage):
     }
     ACTION_NAMES = set(TOOLBAR_BUTTONS.keys())
     options = [
-        ListOption('setting', 'toolbar_layout', DEFAULT_TOOLBAR_LAYOUT, title=N_("Layout of the tool bar")),
+        ListSetting('toolbar_layout', DEFAULT_TOOLBAR_LAYOUT, title=N_("Layout of the tool bar")),
     ]
 
     def __init__(self, parent=None):

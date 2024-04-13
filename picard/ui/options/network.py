@@ -23,9 +23,9 @@
 
 
 from picard.config import (
-    BoolOption,
-    IntOption,
-    TextOption,
+    BoolSetting,
+    IntSetting,
+    TextSetting,
     get_config,
 )
 from picard.const import (
@@ -50,17 +50,17 @@ class NetworkOptionsPage(OptionsPage):
     HELP_URL = "/config/options_network.html"
 
     options = [
-        BoolOption('setting', 'use_proxy', False, title=N_("Use a web proxy server")),
-        TextOption('setting', 'proxy_type', 'http', title=N_("Type of proxy server")),
-        TextOption('setting', 'proxy_server_host', '', title=N_("Proxy server address")),
-        IntOption('setting', 'proxy_server_port', 80, title=N_("Proxy server port")),
-        TextOption('setting', 'proxy_username', '', title=N_("Proxy username")),
-        TextOption('setting', 'proxy_password', '', title=N_("Proxy password")),
-        BoolOption('setting', 'browser_integration', True, title=N_("Browser integration")),
-        IntOption('setting', 'browser_integration_port', 8000, title=N_("Default listening port")),
-        BoolOption('setting', 'browser_integration_localhost_only', True, title=N_("Listen only on localhost")),
-        IntOption('setting', 'network_transfer_timeout_seconds', 30, title=N_("Request timeout in seconds")),
-        IntOption('setting', 'network_cache_size_bytes', CACHE_SIZE_IN_BYTES, title=N_("Network cache size in bytes")),
+        BoolSetting('use_proxy', False, title=N_("Use a web proxy server")),
+        TextSetting('proxy_type', 'http', title=N_("Type of proxy server")),
+        TextSetting('proxy_server_host', '', title=N_("Proxy server address")),
+        IntSetting('proxy_server_port', 80, title=N_("Proxy server port")),
+        TextSetting('proxy_username', '', title=N_("Proxy username")),
+        TextSetting('proxy_password', '', title=N_("Proxy password")),
+        BoolSetting('browser_integration', True, title=N_("Browser integration")),
+        IntSetting('browser_integration_port', 8000, title=N_("Default listening port")),
+        BoolSetting('browser_integration_localhost_only', True, title=N_("Listen only on localhost")),
+        IntSetting('network_transfer_timeout_seconds', 30, title=N_("Request timeout in seconds")),
+        IntSetting('network_cache_size_bytes', CACHE_SIZE_IN_BYTES, title=N_("Network cache size in bytes")),
     ]
 
     def __init__(self, parent=None):

@@ -26,7 +26,7 @@ import os
 import re
 
 from picard.config import (
-    TextOption,
+    TextSetting,
     get_config,
 )
 from picard.coverart.image import LocalFileCoverArtImage
@@ -48,7 +48,7 @@ class ProviderOptionsLocal(ProviderOptions):
     _DEFAULT_LOCAL_COVER_ART_REGEX = r'^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|gif|tiff?|webp)$'
 
     options = [
-        TextOption('setting', 'local_cover_regex', _DEFAULT_LOCAL_COVER_ART_REGEX),
+        TextSetting('local_cover_regex', _DEFAULT_LOCAL_COVER_ART_REGEX),
     ]
 
     _options_ui = Ui_LocalOptions

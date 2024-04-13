@@ -31,9 +31,11 @@
 from PyQt6 import QtCore
 
 from picard.config import (
-    BoolOption,
-    IntOption,
-    TextOption,
+    BoolSetting,
+    IntPersist,
+    IntSetting,
+    TextPersist,
+    TextSetting,
     get_config,
 )
 from picard.const import (
@@ -60,22 +62,22 @@ class GeneralOptionsPage(OptionsPage):
     HELP_URL = "/config/options_general.html"
 
     options = [
-        TextOption('setting', 'server_host', MUSICBRAINZ_SERVERS[0], title=N_("Server address")),
-        IntOption('setting', 'server_port', 443, title=N_("Port")),
-        BoolOption('setting', 'use_server_for_submission', False),
-        BoolOption('setting', 'analyze_new_files', False, title=N_("Automatically scan all new files")),
-        BoolOption('setting', 'cluster_new_files', False, title=N_("Automatically cluster all new files")),
-        BoolOption('setting', 'ignore_file_mbids', False, title=N_("Ignore MBIDs when loading new files")),
-        TextOption('persist', 'oauth_refresh_token', ''),
-        TextOption('persist', 'oauth_refresh_token_scopes', ''),
-        TextOption('persist', 'oauth_access_token', ''),
-        IntOption('persist', 'oauth_access_token_expires', 0),
-        TextOption('persist', 'oauth_username', ''),
-        BoolOption('setting', 'check_for_updates', True, title=N_("Check for program updates during startup")),
-        IntOption('setting', 'update_check_days', 7, title=N_("Days between update checks")),
-        IntOption('setting', 'update_level', DEFAULT_PROGRAM_UPDATE_LEVEL, title=N_("Updates to check")),
-        IntOption('persist', 'last_update_check', 0),
-        BoolOption('setting', 'check_for_plugin_updates', False, title=N_("Check for plugin updates during startup")),
+        TextSetting('server_host', MUSICBRAINZ_SERVERS[0], title=N_("Server address")),
+        IntSetting('server_port', 443, title=N_("Port")),
+        BoolSetting('use_server_for_submission', False),
+        BoolSetting('analyze_new_files', False, title=N_("Automatically scan all new files")),
+        BoolSetting('cluster_new_files', False, title=N_("Automatically cluster all new files")),
+        BoolSetting('ignore_file_mbids', False, title=N_("Ignore MBIDs when loading new files")),
+        BoolSetting('check_for_updates', True, title=N_("Check for program updates during startup")),
+        IntSetting('update_check_days', 7, title=N_("Days between update checks")),
+        IntSetting('update_level', DEFAULT_PROGRAM_UPDATE_LEVEL, title=N_("Updates to check")),
+        BoolSetting('check_for_plugin_updates', False, title=N_("Check for plugin updates during startup")),
+        TextPersist('oauth_refresh_token', ''),
+        TextPersist('oauth_refresh_token_scopes', ''),
+        TextPersist('oauth_access_token', ''),
+        IntPersist('oauth_access_token_expires', 0),
+        TextPersist('oauth_username', ''),
+        IntPersist('last_update_check', 0),
     ]
 
     def __init__(self, parent=None):

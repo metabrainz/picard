@@ -40,8 +40,8 @@ from PyQt6.QtCore import QStandardPaths
 
 from picard import log
 from picard.config import (
-    BoolOption,
-    TextOption,
+    BoolPersist,
+    TextPersist,
     get_config,
 )
 from picard.const.sys import IS_MACOS
@@ -78,8 +78,8 @@ if IS_MACOS:
 class FileBrowser(QtWidgets.QTreeView):
 
     options = [
-        TextOption('persist', 'current_browser_path', _default_current_browser_path),
-        BoolOption('persist', 'show_hidden_files', False),
+        TextPersist('current_browser_path', _default_current_browser_path),
+        BoolPersist('show_hidden_files', False),
     ]
 
     def __init__(self, parent):

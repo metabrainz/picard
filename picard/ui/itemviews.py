@@ -67,8 +67,8 @@ from picard.cluster import (
     UnclusteredFiles,
 )
 from picard.config import (
-    BoolOption,
-    Option,
+    BoolPersist,
+    Persist,
     get_config,
 )
 from picard.file import (
@@ -846,8 +846,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
 class FileTreeView(BaseTreeView):
 
-    header_state = Option('persist', 'file_view_header_state', QtCore.QByteArray())
-    header_locked = BoolOption('persist', 'file_view_header_locked', False)
+    header_state = Persist('file_view_header_state', QtCore.QByteArray())
+    header_locked = BoolPersist('file_view_header_locked', False)
 
     def __init__(self, window, parent=None):
         super().__init__(window, parent)
@@ -877,8 +877,8 @@ class FileTreeView(BaseTreeView):
 
 class AlbumTreeView(BaseTreeView):
 
-    header_state = Option('persist', 'album_view_header_state', QtCore.QByteArray())
-    header_locked = BoolOption('persist', 'album_view_header_locked', False)
+    header_state = Persist('album_view_header_state', QtCore.QByteArray())
+    header_locked = BoolPersist('album_view_header_locked', False)
 
     def __init__(self, window, parent=None):
         super().__init__(window, parent)

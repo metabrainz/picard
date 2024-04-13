@@ -31,10 +31,10 @@ from PyQt6 import (
 
 from picard import log
 from picard.config import (
-    IntOption,
-    ListOption,
-    Option,
+    IntPersist,
+    ListPersist,
     OptionError,
+    Setting,
     SettingConfigSection,
     get_config,
 )
@@ -70,8 +70,8 @@ class ProfilesOptionsPage(OptionsPage):
     TREEWIDGETITEM_COLUMN = 0
 
     options = [
-        IntOption('persist', POSITION_KEY, 0),
-        ListOption('persist', EXPANDED_KEY, [])
+        IntPersist(POSITION_KEY, 0),
+        ListPersist(EXPANDED_KEY, [])
     ]
 
     signal_refresh = QtCore.pyqtSignal()
@@ -230,7 +230,7 @@ class ProfilesOptionsPage(OptionsPage):
             widget_item.setCheckState(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.CheckState.Unchecked)
             for setting in group_settings:
                 try:
-                    opt_title = Option.get_title('setting', setting.name)
+                    opt_title = Setting.get_title(setting.name)
                 except OptionError as e:
                     log.debug(e)
                     continue
