@@ -401,9 +401,9 @@ class Option(QtCore.QObject):
         return opt.title
 
     @classmethod
-    def add_if_missing(cls, section, name, default):
+    def add_if_missing(cls, section, name, default, *args, **kwargs):
         if not cls.exists(section, name):
-            cls(section, name, default)
+            cls(section, name, default, *args, **kwargs)
 
     @classmethod
     def exists(cls, section, name):

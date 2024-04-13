@@ -110,8 +110,9 @@ class TestPicardConfigOption(TestPicardConfigCommon):
         Option.add_if_missing("setting", "option", "def")
         self.assertEqual(self.config.setting["option"], "abc")
 
-        Option.add_if_missing("setting", "missing_option", "def")
+        Option.add_if_missing("setting", "missing_option", "def", title="TITLE")
         self.assertEqual(self.config.setting["missing_option"], "def")
+        self.assertEqual(Option.get_title('setting', 'missing_option'), 'TITLE')
 
     def test_double_declaration(self):
         Option("setting", "option", "abc")
