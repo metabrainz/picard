@@ -413,36 +413,128 @@ class Option(QtCore.QObject):
         return type(self.default)(value)
 
 
-class TextOption(Option):
+class OptSect(Option):
+    section = None
 
+    def __init__(self, name, default, title=None):
+        if self.section is None:
+            raise OptionError("No section defined")
+        super().__init__(self.section, name, default, title=title)
+
+    @classmethod
+    def get(cls, name):
+        return Option.get(cls.section, name)
+
+    @classmethod
+    def get_default(cls, name):
+        return Option.get_default(cls.section, name)
+
+    @classmethod
+    def get_title(cls, name):
+        return Option.get_title(cls.section, name)
+
+    @classmethod
+    def add_if_missing(cls, name, default):
+        Option.add_if_missing(cls.section, name, default)
+
+    @classmethod
+    def exists(cls, name):
+        return Option.exists(cls.section, name)
+
+
+class Setting(OptSect):
+    section = 'setting'
+
+
+class Persist(OptSect):
+    section = 'persist'
+
+
+class TextDef:
     convert = str
     qtype = 'QString'
 
 
-class BoolOption(Option):
+class TextOption(TextDef, Option):
+    pass
 
+
+class TextSetting(TextDef, Setting):
+    pass
+
+
+class TextPersist(TextDef, Persist):
+    pass
+
+
+class BoolDef:
     convert = bool
     qtype = bool
 
 
-class IntOption(Option):
+class BoolOption(BoolDef, Option):
+    pass
 
+
+class BoolSetting(BoolDef, Setting):
+    pass
+
+
+class BoolPersist(BoolDef, Persist):
+    pass
+
+
+class IntDef:
     convert = int
 
 
-class FloatOption(Option):
+class IntOption(IntDef, Option):
+    pass
 
+
+class IntSetting(IntDef, Setting):
+    pass
+
+
+class IntPersist(IntDef, Persist):
+    pass
+
+
+class FloatDef:
     convert = float
 
 
-class ListOption(Option):
+class FloatOption(FloatDef, Option):
+    pass
 
+
+class FloatSetting(FloatDef, Setting):
+    pass
+
+
+class FloatPersist(FloatDef, Persist):
+    pass
+
+
+class ListDef:
     def convert(self, value):
         if value is None:
             return []
         elif isinstance(value, str):
             raise ValueError('Expected list or list like object, got "%r"' % value)
         return list(value)
+
+
+class ListOption(ListDef, Option):
+    pass
+
+
+class ListSetting(ListDef, Setting):
+    pass
+
+
+class ListPersist(ListDef, Persist):
+    pass
 
 
 config = None

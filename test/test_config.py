@@ -28,13 +28,26 @@ from test.picardtestcase import PicardTestCase
 
 from picard.config import (
     BoolOption,
+    BoolPersist,
+    BoolSetting,
     Config,
     FloatOption,
+    FloatPersist,
+    FloatSetting,
     IntOption,
+    IntPersist,
+    IntSetting,
     ListOption,
+    ListPersist,
+    ListSetting,
     Option,
     OptionError,
+    OptSect,
+    Persist,
+    Setting,
     TextOption,
+    TextPersist,
+    TextSetting,
 )
 
 
@@ -446,3 +459,75 @@ class TestPicardConfigVarOption(TestPicardConfigCommon):
         # store invalid value in config file directly
         self.config.setValue('setting/var_option', object)
         self.assertEqual(self.config.setting["var_option"], {"a", "b"})
+
+
+class TestPicardConfigSetting(TestPicardConfigCommon):
+
+    def test_basic_setting(self):
+        Setting("option", "abc", title="ABC")
+        self.assertEqual(self.config.setting["option"], "abc")
+        opt = Setting.get('option')
+        self.assertEqual(opt.section, 'setting')
+        default = Setting.get_default('option')
+        self.assertEqual(default, 'abc')
+        title = Setting.get_title('option')
+        self.assertEqual(title, 'ABC')
+
+    def test_exists_setting(self):
+        self.assertFalse(Setting.exists('option'))
+        Setting.add_if_missing('option', 'abc')
+        self.assertEqual(Setting.get_default('option'), 'abc')
+
+    def test_subtypes(self):
+        types = (
+            ('text', TextSetting, 'abc'),
+            ('bool', BoolSetting, True),
+            ('int', IntSetting, 123),
+            ('float', FloatSetting, 1.23),
+            ('list', ListSetting, [1, 2, 3]),
+        )
+        for name, cls, value in types:
+            opt_name = 'option_' + name
+            cls(opt_name, value)
+            self.assertEqual(self.config.setting[opt_name], value)
+            opt = Option.get('setting', opt_name)
+            self.assertIsInstance(opt, cls)
+            self.assertIsInstance(opt, Setting)
+            self.assertIsInstance(opt, OptSect)
+            self.assertIsInstance(opt, Option)
+
+
+class TestPicardConfigPersist(TestPicardConfigCommon):
+
+    def test_basic_persist(self):
+        Persist("option", "abc", title="ABC")
+        self.assertEqual(self.config.persist["option"], "abc")
+        opt = Persist.get('option')
+        self.assertEqual(opt.section, 'persist')
+        default = Persist.get_default('option')
+        self.assertEqual(default, 'abc')
+        title = Persist.get_title('option')
+        self.assertEqual(title, 'ABC')
+
+    def test_exists_persist(self):
+        self.assertFalse(Persist.exists('option'))
+        Persist.add_if_missing('option', 'abc')
+        self.assertEqual(Persist.get_default('option'), 'abc')
+
+    def test_subtypes(self):
+        types = (
+            ('text', TextPersist, 'abc'),
+            ('bool', BoolPersist, True),
+            ('int', IntPersist, 123),
+            ('float', FloatPersist, 1.23),
+            ('list', ListPersist, [1, 2, 3]),
+        )
+        for name, cls, value in types:
+            opt_name = 'option_' + name
+            cls(opt_name, value)
+            self.assertEqual(self.config.persist[opt_name], value)
+            opt = Option.get('persist', opt_name)
+            self.assertIsInstance(opt, cls)
+            self.assertIsInstance(opt, Persist)
+            self.assertIsInstance(opt, OptSect)
+            self.assertIsInstance(opt, Option)
