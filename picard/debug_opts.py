@@ -78,3 +78,4 @@ class DebugOptEnum(int, Enum):
 
 class DebugOpt(DebugOptEnum):
     WS_REPLIES = 1, N_('Web Service Replies'), N_('Log content of web service replies')
+    PLUGIN_FULLPATH = 2, N_('Plugin Fullpath'), N_('Log plugin full paths')

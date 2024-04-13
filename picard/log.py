@@ -45,6 +45,7 @@ from picard.const.sys import (
     FROZEN_TEMP_PATH,
     IS_FROZEN,
 )
+from picard.debug_opts import DebugOpt
 
 
 # Get the absolute path for the picard module
@@ -176,6 +177,12 @@ def name_filter(record):
             path = path.resolve().relative_to(picard_module_path)
         except ValueError:
             pass
+        else:
+            if not DebugOpt.PLUGIN_FULLPATH.enabled and 'plugins' in path.parts:
+                parts = list(reversed(path.parts))
+                parts = parts[:parts.index('plugins') + 1]
+                path = Path(*reversed(parts))
+
     parts = list(path.parts)
     if parts[-1] == '__init__':
         del parts[-1]
