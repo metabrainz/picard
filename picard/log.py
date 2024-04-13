@@ -10,6 +10,7 @@
 # Copyright (C) 2017 Sophist-UK
 # Copyright (C) 2018 Wieland Hoffmann
 # Copyright (C) 2021 Gabriel Ferreira
+# Copyright (C) 2024 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -41,6 +42,7 @@ from threading import Lock
 
 from PyQt6 import QtCore
 
+from picard.const import USER_PLUGIN_DIR
 from picard.const.sys import (
     FROZEN_TEMP_PATH,
     IS_FROZEN,
@@ -177,11 +179,15 @@ def name_filter(record):
             path = path.resolve().relative_to(picard_module_path)
         except ValueError:
             pass
-        else:
-            if not DebugOpt.PLUGIN_FULLPATH.enabled and 'plugins' in path.parts:
-                parts = list(reversed(path.parts))
-                parts = parts[:parts.index('plugins') + 1]
-                path = Path(*reversed(parts))
+
+    if path.is_absolute() and not DebugOpt.PLUGIN_FULLPATH.enabled:
+        try:
+            path = path.resolve().relative_to(USER_PLUGIN_DIR)
+            parts = list(p for p in path.parts if not p.endswith('.zip'))
+            parts.insert(0, 'plugins')
+            path = Path(*parts)
+        except ValueError:
+            pass
 
     parts = list(path.parts)
     if parts[-1] == '__init__':
