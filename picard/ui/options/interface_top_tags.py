@@ -34,6 +34,16 @@ from picard.ui.ui_options_interface_top_tags import (
 )
 
 
+DEFAULT_TOP_TAGS = [
+    'title',
+    'artist',
+    'album',
+    'tracknumber',
+    '~length',
+    'date',
+]
+
+
 class InterfaceTopTagsOptionsPage(OptionsPage):
 
     NAME = 'interface_top_tags'
@@ -44,14 +54,7 @@ class InterfaceTopTagsOptionsPage(OptionsPage):
     HELP_URL = "/config/options_interface_top_tags.html"
 
     options = [
-        ListOption('setting', 'metadatabox_top_tags', [
-            'title',
-            'artist',
-            'album',
-            'tracknumber',
-            '~length',
-            'date',
-        ]),
+        ListOption('setting', 'metadatabox_top_tags', DEFAULT_TOP_TAGS, title=N_("Tags to show at the top")),
     ]
 
     def __init__(self, parent=None):

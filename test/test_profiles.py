@@ -116,15 +116,8 @@ class TestUserProfileGroups(PicardTestCase):
     def test_settings_have_no_blank_keys(self):
         for key in UserProfileGroups.get_setting_groups_list():
             settings = UserProfileGroups.SETTINGS_GROUPS[key]["settings"]
-            for key, title, fields in settings:
+            for key, fields in settings:
                 self.assertNotEqual(key.strip(), "")
-
-    def test_settings_have_titles(self):
-        for key in UserProfileGroups.get_setting_groups_list():
-            settings = UserProfileGroups.SETTINGS_GROUPS[key]["settings"]
-            self.assertNotEqual(settings, {})
-            for key, title, fields in settings:
-                self.assertNotEqual(title.strip(), "")
 
 
 class TestUserProfiles(TestPicardProfilesCommon):

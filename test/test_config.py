@@ -90,6 +90,16 @@ class TestPicardConfigOption(TestPicardConfigCommon):
         self.assertEqual(opt.default, "abc")
         self.assertIsNone(Option.get("setting", "not_existing_option"))
 
+    def test_option_without_title(self):
+        Option("setting", "option", "abc")
+        opt = Option.get("setting", "option")
+        self.assertIsNone(opt.title)
+
+    def test_option_with_title(self):
+        Option("setting", "option", "abc", title="Title")
+        opt = Option.get("setting", "option")
+        self.assertEqual(opt.title, "Title")
+
     def test_option_exists(self):
         Option("setting", "option", "abc")
         self.assertTrue(Option.exists("setting", "option"))
@@ -100,8 +110,9 @@ class TestPicardConfigOption(TestPicardConfigCommon):
         Option.add_if_missing("setting", "option", "def")
         self.assertEqual(self.config.setting["option"], "abc")
 
-        Option.add_if_missing("setting", "missing_option", "def")
+        Option.add_if_missing("setting", "missing_option", "def", title="TITLE")
         self.assertEqual(self.config.setting["missing_option"], "def")
+        self.assertEqual(Option.get_title('setting', 'missing_option'), 'TITLE')
 
     def test_double_declaration(self):
         Option("setting", "option", "abc")
@@ -113,6 +124,12 @@ class TestPicardConfigOption(TestPicardConfigCommon):
         self.assertEqual(Option.get_default("setting", "option"), "abc")
         with self.assertRaisesRegex(OptionError, "^Option setting/unknown_option: No such option"):
             Option.get_default("setting", "unknown_option")
+
+    def test_get_title(self):
+        Option("setting", "option", "abc", title="Title")
+        self.assertEqual(Option.get_title("setting", "option"), "Title")
+        with self.assertRaisesRegex(OptionError, "^Option setting/unknown_option: No such option"):
+            Option.get_title("setting", "unknown_option")
 
 
 class TestPicardConfigSection(TestPicardConfigCommon):

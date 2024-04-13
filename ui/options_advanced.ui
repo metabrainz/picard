@@ -202,7 +202,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="groupBox_ignore_tags">
      <property name="title">
       <string>Tags to ignore for comparison:</string>
      </property>
