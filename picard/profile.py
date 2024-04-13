@@ -228,7 +228,7 @@ class UserProfileGroups():
             SettingDesc('completeness_ignore_pregap', ['completeness_ignore_pregap']),
             SettingDesc('completeness_ignore_data', ['completeness_ignore_data']),
             SettingDesc('completeness_ignore_silence', ['completeness_ignore_silence']),
-            SettingDesc('compare_ignore_tags', ['groupBox_2']),
+            SettingDesc('compare_ignore_tags', ['groupBox_ignore_tags']),
 
             # Network Options Page
             SettingDesc('use_proxy', []),   # No highlight specified because the 'use_proxy'
