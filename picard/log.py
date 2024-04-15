@@ -184,6 +184,7 @@ def name_filter(record):
         try:
             path = path.resolve().relative_to(USER_PLUGIN_DIR)
             parts = list(p for p in path.parts if not p.endswith('.zip'))
+            parts.insert(0, 'plugins')
             path = Path(*parts)
         except ValueError:
             pass

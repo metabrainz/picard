@@ -180,13 +180,13 @@ class NameFilterTestRel(PicardTestCase):
         DebugOpt.PLUGIN_FULLPATH.enabled = False
         record = FakeRecord(name=None, pathname='/user/picard/plugins/plugin.zip')
         self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'plugin')
+        self.assertEqual(record.name, 'plugins/plugin')
 
     def test_plugin_path_short_2(self):
         DebugOpt.PLUGIN_FULLPATH.enabled = False
         record = FakeRecord(name=None, pathname='/user/picard/plugins/plugin.zip/xxx')
         self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'xxx')
+        self.assertEqual(record.name, 'plugins/xxx')
 
 
 @unittest.skipIf(IS_WIN, "Posix test")
@@ -230,13 +230,13 @@ class NameFilterTestAbs(PicardTestCase):
         DebugOpt.PLUGIN_FULLPATH.enabled = False
         record = FakeRecord(name=None, pathname='/user/picard/plugins/path2/plugins/plugin.zip')
         self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'path2/plugins/plugin')
+        self.assertEqual(record.name, 'plugins/path2/plugins/plugin')
 
     def test_plugin_path_short_2(self):
         DebugOpt.PLUGIN_FULLPATH.enabled = False
         record = FakeRecord(name=None, pathname='/user/picard/plugins/path2/plugins/plugin.zip/xxx')
         self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'path2/plugins/xxx')
+        self.assertEqual(record.name, 'plugins/path2/plugins/xxx')
 
 
 @unittest.skipIf(IS_WIN, "Posix test")
@@ -296,13 +296,13 @@ class NameFilterTestRelWin(PicardTestCase):
         DebugOpt.PLUGIN_FULLPATH.enabled = False
         record = FakeRecord(name=None, pathname='C:/user/picard/plugins/path3/plugins/plugin.zip')
         self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'path3/plugins/plugin')
+        self.assertEqual(record.name, 'plugins/path3/plugins/plugin')
 
     def test_plugin_path_short_2(self):
         DebugOpt.PLUGIN_FULLPATH.enabled = False
         record = FakeRecord(name=None, pathname='C:/user/picard/plugins/path3/plugins/plugin.zip/xxx')
         self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'path3/plugins/xxx')
+        self.assertEqual(record.name, 'plugins/path3/plugins/xxx')
 
 
 @unittest.skipUnless(IS_WIN, "Windows test")
@@ -346,13 +346,13 @@ class NameFilterTestAbsWin(PicardTestCase):
         DebugOpt.PLUGIN_FULLPATH.enabled = False
         record = FakeRecord(name=None, pathname='C:/user/picard/plugins/path2/plugins/plugin.zip')
         self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'path2/plugins/plugin')
+        self.assertEqual(record.name, 'plugins/path2/plugins/plugin')
 
     def test_plugin_path_short_2(self):
         DebugOpt.PLUGIN_FULLPATH.enabled = False
         record = FakeRecord(name=None, pathname='C:/user/picard/plugins/path2/plugins/plugin.zip/xxx')
         self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'path2/plugins/xxx')
+        self.assertEqual(record.name, 'plugins/path2/plugins/xxx')
 
 
 @unittest.skipUnless(IS_WIN, "Windows test")
