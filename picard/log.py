@@ -184,7 +184,6 @@ def name_filter(record):
         try:
             path = path.resolve().relative_to(USER_PLUGIN_DIR)
             parts = list(p for p in path.parts if not p.endswith('.zip'))
-            parts.insert(0, 'plugins')
             path = Path(*parts)
         except ValueError:
             pass
@@ -193,7 +192,7 @@ def name_filter(record):
     if parts[-1] == '__init__':
         del parts[-1]
     if parts[0] == path.anchor:
-        del parts[0]
+        parts[0] = '/'
     record.name = str(PurePosixPath(*parts))
     return True
 
