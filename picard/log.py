@@ -183,7 +183,7 @@ def name_filter(record):
     if path.is_absolute() and not DebugOpt.PLUGIN_FULLPATH.enabled:
         try:
             path = path.resolve().relative_to(USER_PLUGIN_DIR)
-            parts = list(p for p in path.parts if not p.endswith('.zip'))
+            parts = list(path.parts)
             parts.insert(0, 'plugins')
             path = Path(*parts)
         except ValueError:
@@ -194,6 +194,11 @@ def name_filter(record):
         del parts[-1]
     if parts[0] == path.anchor:
         parts[0] = '/'
+    # Remove the plugin module file if the file name is the same as
+    # the immediately preceeding plugin zip file name, similar to the
+    # way that the final `__init__.py` file is removed.
+    if len(parts) > 1 and parts[-1] + '.zip' == parts[-2]:
+        del parts[-1]
     record.name = str(PurePosixPath(*parts))
     return True
 
