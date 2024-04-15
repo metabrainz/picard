@@ -75,19 +75,19 @@ class InterfaceOptionsPage(OptionsPage):
     HELP_URL = "/config/options_interface.html"
 
     options = [
-        BoolOption('setting', 'toolbar_show_labels', True, title=N_("Show text labels under icons")),
-        BoolOption('setting', 'allow_multi_dirs_selection', False, title=N_("Allow selection of multiple directories")),
-        BoolOption('setting', 'show_menu_icons', DEFAULT_SHOW_MENU_ICONS, title=N_("Show icons in menus")),
-        BoolOption('setting', 'builtin_search', True, title=N_("Use builtin search rather than looking in browser")),
-        BoolOption('setting', 'use_adv_search_syntax', False, title=N_("Use advanced search syntax")),
-        BoolOption('setting', 'show_new_user_dialog', True, title=N_("Show a usage warning dialog when Picard starts")),
-        BoolOption('setting', 'quit_confirmation', True, title=N_("Show a quit confirmation dialog for unsaved changes")),
-        BoolOption('setting', 'file_save_warning', True, title=N_("Show a confirmation dialog when saving files")),
-        TextOption('setting', 'ui_language', '', title=N_("User interface language")),
-        TextOption('setting', 'ui_theme', str(UiTheme.DEFAULT), title=N_("User interface color theme")),
-        BoolOption('setting', 'filebrowser_horizontal_autoscroll', True, title=N_("Adjust horizontal position in file browser automatically")),
-        BoolOption('setting', 'starting_directory', False, title=N_("Begin browsing in a specific directory")),
-        TextOption('setting', 'starting_directory_path', _default_starting_dir, title=N_("Directory to begin browsing")),
+        BoolOption('setting', 'toolbar_show_labels', True, title=N_("Show text labels under icons"), highlight=['toolbar_show_labels']),
+        BoolOption('setting', 'allow_multi_dirs_selection', False, title=N_("Allow selection of multiple directories"), highlight=['allow_multi_dirs_selection']),
+        BoolOption('setting', 'show_menu_icons', DEFAULT_SHOW_MENU_ICONS, title=N_("Show icons in menus"), highlight=['show_menu_icons']),
+        BoolOption('setting', 'builtin_search', True, title=N_("Use builtin search rather than looking in browser"), highlight=['builtin_search']),
+        BoolOption('setting', 'use_adv_search_syntax', False, title=N_("Use advanced search syntax"), highlight=['use_adv_search_syntax']),
+        BoolOption('setting', 'show_new_user_dialog', True, title=N_("Show a usage warning dialog when Picard starts"), highlight=['new_user_dialog']),
+        BoolOption('setting', 'quit_confirmation', True, title=N_("Show a quit confirmation dialog for unsaved changes"), highlight=['quit_confirmation']),
+        BoolOption('setting', 'file_save_warning', True, title=N_("Show a confirmation dialog when saving files"), highlight=['file_save_warning']),
+        TextOption('setting', 'ui_language', '', title=N_("User interface language"), highlight=['ui_language', 'label']),
+        TextOption('setting', 'ui_theme', str(UiTheme.DEFAULT), title=N_("User interface color theme"), highlight=['ui_theme', 'label_theme']),
+        BoolOption('setting', 'filebrowser_horizontal_autoscroll', True, title=N_("Adjust horizontal position in file browser automatically"), highlight=['filebrowser_horizontal_autoscroll']),
+        BoolOption('setting', 'starting_directory', False, title=N_("Begin browsing in a specific directory"), highlight=['starting_directory']),
+        TextOption('setting', 'starting_directory_path', _default_starting_dir, title=N_("Directory to begin browsing"), highlight=['starting_directory_path']),
         TextOption('setting', 'load_image_behavior', 'append'),
     ]
 

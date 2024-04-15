@@ -84,18 +84,18 @@ class MetadataOptionsPage(OptionsPage):
     HELP_URL = "/config/options_metadata.html"
 
     options = [
-        TextOption('setting', 'va_name', "Various Artists", title=N_("Various Artists name")),
-        TextOption('setting', 'nat_name', '[standalone recordings]', title=N_("Standalone recordings name")),
-        ListOption('setting', 'artist_locales', ['en'], title=N_("Translation locales")),
-        BoolOption('setting', 'translate_artist_names', False, title=N_("Translate artist names")),
-        BoolOption('setting', 'translate_artist_names_script_exception', False, title=N_("Translate artist names exception")),
-        ListOption('setting', 'script_exceptions', [], title=N_("Translation script exceptions")),
-        BoolOption('setting', 'release_ars', True, title=N_("Use release relationships")),
-        BoolOption('setting', 'track_ars', False, title=N_("Use track and release relationships")),
-        BoolOption('setting', 'convert_punctuation', False, title=N_("Convert Unicode punctuation characters to ASCII")),
-        BoolOption('setting', 'standardize_artists', False, title=N_("Use standardized artist names")),
-        BoolOption('setting', 'standardize_instruments', True, title=N_("Use standardized instrument and vocal credits")),
-        BoolOption('setting', 'guess_tracknumber_and_title', True, title=N_("Guess track number and title from filename if empty")),
+        TextOption('setting', 'va_name', "Various Artists", title=N_("Various Artists name"), highlight=['va_name']),
+        TextOption('setting', 'nat_name', '[standalone recordings]', title=N_("Standalone recordings name"), highlight=['nat_name']),
+        ListOption('setting', 'artist_locales', ['en'], title=N_("Translation locales"), highlight=['selected_locales']),
+        BoolOption('setting', 'translate_artist_names', False, title=N_("Translate artist names"), highlight=['translate_artist_names']),
+        BoolOption('setting', 'translate_artist_names_script_exception', False, title=N_("Translate artist names exception"), highlight=['translate_artist_names_script_exception']),
+        ListOption('setting', 'script_exceptions', [], title=N_("Translation script exceptions"), highlight=['selected_scripts']),
+        BoolOption('setting', 'release_ars', True, title=N_("Use release relationships"), highlight=['release_ars']),
+        BoolOption('setting', 'track_ars', False, title=N_("Use track and release relationships"), highlight=['track_ars']),
+        BoolOption('setting', 'convert_punctuation', False, title=N_("Convert Unicode punctuation characters to ASCII"), highlight=['convert_punctuation']),
+        BoolOption('setting', 'standardize_artists', False, title=N_("Use standardized artist names"), highlight=['standardize_artists']),
+        BoolOption('setting', 'standardize_instruments', True, title=N_("Use standardized instrument and vocal credits"), highlight=['standardize_instruments']),
+        BoolOption('setting', 'guess_tracknumber_and_title', True, title=N_("Guess track number and title from filename if empty"), highlight=['guess_tracknumber_and_title']),
     ]
 
     def __init__(self, parent=None):

@@ -97,8 +97,8 @@ class InterfaceColorsOptionsPage(OptionsPage):
     HELP_URL = "/config/options_interface_colors.html"
 
     options = [
-        Option('setting', 'interface_colors', InterfaceColors(dark_theme=False).get_colors(), title=N_("Colors to use for light theme")),
-        Option('setting', 'interface_colors_dark', InterfaceColors(dark_theme=True).get_colors(), title=N_("Colors to use for dark theme")),
+        Option('setting', 'interface_colors', InterfaceColors(dark_theme=False).get_colors(), title=N_("Colors to use for light theme"), highlight=['colors']),
+        Option('setting', 'interface_colors_dark', InterfaceColors(dark_theme=True).get_colors(), title=N_("Colors to use for dark theme"), highlight=['colors']),
     ]
 
     def __init__(self, parent=None):

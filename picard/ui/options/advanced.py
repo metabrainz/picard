@@ -48,16 +48,16 @@ class AdvancedOptionsPage(OptionsPage):
     HELP_URL = "/config/options_advanced.html"
 
     options = [
-        TextOption('setting', 'ignore_regex', '', title=N_("Ignore file paths matching a regular expression")),
-        BoolOption('setting', 'ignore_hidden_files', False, title=N_("Ignore hidden files")),
-        BoolOption('setting', 'recursively_add_files', True, title=N_("Include sub-folders when adding files from folder")),
-        IntOption('setting', 'ignore_track_duration_difference_under', 2, title=N_("Ignore track duration difference under x seconds")),
-        IntOption('setting', 'query_limit', QUERY_LIMIT, title=N_("Maximum number of entities to return per MusicBrainz query")),
-        BoolOption('setting', 'completeness_ignore_videos', False, title=N_("Completeness check ignore: Video tracks")),
-        BoolOption('setting', 'completeness_ignore_pregap', False, title=N_("Completeness check ignore: Pregap tracks")),
-        BoolOption('setting', 'completeness_ignore_data', False, title=N_("Completeness check ignore: Data tracks")),
-        BoolOption('setting', 'completeness_ignore_silence', False, title=N_("Completeness check ignore: Silent tracks")),
-        ListOption('setting', 'compare_ignore_tags', [], title=N_("Tags to ignore for comparison")),
+        TextOption('setting', 'ignore_regex', '', title=N_("Ignore file paths matching a regular expression"), highlight=['ignore_regex']),
+        BoolOption('setting', 'ignore_hidden_files', False, title=N_("Ignore hidden files"), highlight=['ignore_hidden_files']),
+        BoolOption('setting', 'recursively_add_files', True, title=N_("Include sub-folders when adding files from folder"), highlight=['recursively_add_files']),
+        IntOption('setting', 'ignore_track_duration_difference_under', 2, title=N_("Ignore track duration difference under x seconds"), highlight=['ignore_track_duration_difference_under', 'label_track_duration_diff']),
+        IntOption('setting', 'query_limit', QUERY_LIMIT, title=N_("Maximum number of entities to return per MusicBrainz query"), highlight=['query_limit', 'label_query_limit']),
+        BoolOption('setting', 'completeness_ignore_videos', False, title=N_("Completeness check ignore: Video tracks"), highlight=['completeness_ignore_videos']),
+        BoolOption('setting', 'completeness_ignore_pregap', False, title=N_("Completeness check ignore: Pregap tracks"), highlight=['completeness_ignore_pregap']),
+        BoolOption('setting', 'completeness_ignore_data', False, title=N_("Completeness check ignore: Data tracks"), highlight=['completeness_ignore_data']),
+        BoolOption('setting', 'completeness_ignore_silence', False, title=N_("Completeness check ignore: Silent tracks"), highlight=['completeness_ignore_silence']),
+        ListOption('setting', 'compare_ignore_tags', [], title=N_("Tags to ignore for comparison"), highlight=['groupBox_ignore_tags']),
     ]
 
     def __init__(self, parent=None):

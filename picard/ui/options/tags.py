@@ -51,14 +51,14 @@ class TagsOptionsPage(OptionsPage):
     HELP_URL = "/config/options_tags.html"
 
     options = [
-        BoolOption('setting', 'dont_write_tags', False, title=N_("Don't write tags")),
-        BoolOption('setting', 'preserve_timestamps', False, title=N_("Preserve timestamps of tagged files")),
-        BoolOption('setting', 'clear_existing_tags', False, title=N_("Clear existing tags")),
-        BoolOption('setting', 'preserve_images', False, title=N_("Keep embedded images when clearing tags")),
-        BoolOption('setting', 'remove_id3_from_flac', False, title=N_("Remove ID3 tags from FLAC files")),
-        BoolOption('setting', 'remove_ape_from_mp3', False, title=N_("Remove APEv2 tags from MP3 files")),
-        BoolOption('setting', 'fix_missing_seekpoints_flac', False, title=N_("Fix missing seekpoints for FLAC files")),
-        ListOption('setting', 'preserved_tags', [], title=N_("Preserved tags list")),
+        BoolOption('setting', 'dont_write_tags', False, title=N_("Don't write tags"), highlight=['write_tags']),
+        BoolOption('setting', 'preserve_timestamps', False, title=N_("Preserve timestamps of tagged files"), highlight=['preserve_timestamps']),
+        BoolOption('setting', 'clear_existing_tags', False, title=N_("Clear existing tags"), highlight=['clear_existing_tags']),
+        BoolOption('setting', 'preserve_images', False, title=N_("Keep embedded images when clearing tags"), highlight=['preserve_images']),
+        BoolOption('setting', 'remove_id3_from_flac', False, title=N_("Remove ID3 tags from FLAC files"), highlight=['remove_id3_from_flac']),
+        BoolOption('setting', 'remove_ape_from_mp3', False, title=N_("Remove APEv2 tags from MP3 files"), highlight=['remove_ape_from_mp3']),
+        BoolOption('setting', 'fix_missing_seekpoints_flac', False, title=N_("Fix missing seekpoints for FLAC files"), highlight=['fix_missing_seekpoints_flac']),
+        ListOption('setting', 'preserved_tags', [], title=N_("Preserved tags list"), highlight=['preserved_tags']),
     ]
 
     def __init__(self, parent=None):

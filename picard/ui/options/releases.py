@@ -164,9 +164,9 @@ class ReleasesOptionsPage(OptionsPage):
     HELP_URL = "/config/options_releases.html"
 
     options = [
-        ListOption('setting', 'release_type_scores', _release_type_scores, title=N_("Preferred release types")),
-        ListOption('setting', 'preferred_release_countries', [], title=N_("Preferred release countries")),
-        ListOption('setting', 'preferred_release_formats', [], title=N_("Preferred medium formats")),
+        ListOption('setting', 'release_type_scores', _release_type_scores, title=N_("Preferred release types"), highlight=['type_group']),
+        ListOption('setting', 'preferred_release_countries', [], title=N_("Preferred release countries"), highlight=['country_group']),
+        ListOption('setting', 'preferred_release_formats', [], title=N_("Preferred medium formats"), highlight=['format_group']),
     ]
 
     def __init__(self, parent=None):

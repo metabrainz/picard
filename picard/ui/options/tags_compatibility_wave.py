@@ -47,9 +47,9 @@ class TagsCompatibilityWaveOptionsPage(OptionsPage):
     HELP_URL = "/config/options_tags_compatibility_wave.html"
 
     options = [
-        BoolOption('setting', 'write_wave_riff_info', True, title=N_("Write RIFF INFO tags to WAVE files")),
-        BoolOption('setting', 'remove_wave_riff_info', False, title=N_("Remove existing RIFF INFO tags from WAVE files")),
-        TextOption('setting', 'wave_riff_info_encoding', 'windows-1252', title=N_("RIFF INFO text encoding")),
+        BoolOption('setting', 'write_wave_riff_info', True, title=N_("Write RIFF INFO tags to WAVE files"), highlight=['write_wave_riff_info']),
+        BoolOption('setting', 'remove_wave_riff_info', False, title=N_("Remove existing RIFF INFO tags from WAVE files"), highlight=['remove_wave_riff_info']),
+        TextOption('setting', 'wave_riff_info_encoding', 'windows-1252', title=N_("RIFF INFO text encoding"), highlight=['wave_riff_info_enc_cp1252', 'wave_riff_info_enc_utf8']),
     ]
 
     def __init__(self, parent=None):

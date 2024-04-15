@@ -60,22 +60,22 @@ class GeneralOptionsPage(OptionsPage):
     HELP_URL = "/config/options_general.html"
 
     options = [
-        TextOption('setting', 'server_host', MUSICBRAINZ_SERVERS[0], title=N_("Server address")),
-        IntOption('setting', 'server_port', 443, title=N_("Port")),
+        TextOption('setting', 'server_host', MUSICBRAINZ_SERVERS[0], title=N_("Server address"), highlight=['server_host']),
+        IntOption('setting', 'server_port', 443, title=N_("Port"), highlight=['server_port']),
         BoolOption('setting', 'use_server_for_submission', False),
-        BoolOption('setting', 'analyze_new_files', False, title=N_("Automatically scan all new files")),
-        BoolOption('setting', 'cluster_new_files', False, title=N_("Automatically cluster all new files")),
-        BoolOption('setting', 'ignore_file_mbids', False, title=N_("Ignore MBIDs when loading new files")),
+        BoolOption('setting', 'analyze_new_files', False, title=N_("Automatically scan all new files"), highlight=['analyze_new_files']),
+        BoolOption('setting', 'cluster_new_files', False, title=N_("Automatically cluster all new files"), highlight=['cluster_new_files']),
+        BoolOption('setting', 'ignore_file_mbids', False, title=N_("Ignore MBIDs when loading new files"), highlight=['ignore_file_mbids']),
         TextOption('persist', 'oauth_refresh_token', ''),
         TextOption('persist', 'oauth_refresh_token_scopes', ''),
         TextOption('persist', 'oauth_access_token', ''),
         IntOption('persist', 'oauth_access_token_expires', 0),
         TextOption('persist', 'oauth_username', ''),
-        BoolOption('setting', 'check_for_updates', True, title=N_("Check for program updates during startup")),
-        IntOption('setting', 'update_check_days', 7, title=N_("Days between update checks")),
-        IntOption('setting', 'update_level', DEFAULT_PROGRAM_UPDATE_LEVEL, title=N_("Updates to check")),
+        BoolOption('setting', 'check_for_updates', True, title=N_("Check for program updates during startup"), highlight=['check_for_updates']),
+        IntOption('setting', 'update_check_days', 7, title=N_("Days between update checks"), highlight=['update_check_days']),
+        IntOption('setting', 'update_level', DEFAULT_PROGRAM_UPDATE_LEVEL, title=N_("Updates to check"), highlight=['update_level']),
         IntOption('persist', 'last_update_check', 0),
-        BoolOption('setting', 'check_for_plugin_updates', False, title=N_("Check for plugin updates during startup")),
+        BoolOption('setting', 'check_for_plugin_updates', False, title=N_("Check for plugin updates during startup"), highlight=['check_for_plugin_updates']),
     ]
 
     def __init__(self, parent=None):

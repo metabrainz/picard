@@ -80,12 +80,12 @@ class RenamingCompatOptionsPage(OptionsPage):
     HELP_URL = "/config/options_filerenaming_compat.html"
 
     options = [
-        BoolOption('setting', 'windows_compatibility', True, title=N_("Windows compatibility")),
-        BoolOption('setting', 'windows_long_paths', system_supports_long_paths() if IS_WIN else False, title=N_("Windows long path support")),
-        BoolOption('setting', 'ascii_filenames', False, title=N_("Replace non-ASCII characters")),
-        BoolOption('setting', 'replace_spaces_with_underscores', False, title=N_("Replace spaces with underscores")),
-        TextOption('setting', 'replace_dir_separator', DEFAULT_REPLACEMENT, title=N_("Replacement character to use for directory separators")),
-        Option('setting', 'win_compat_replacements', DEFAULT_WIN_COMPAT_REPLACEMENTS, title=N_("Replacement characters used for Windows compatibility"))
+        BoolOption('setting', 'windows_compatibility', True, title=N_("Windows compatibility"), highlight=['windows_compatibility']),
+        BoolOption('setting', 'windows_long_paths', system_supports_long_paths() if IS_WIN else False, title=N_("Windows long path support"), highlight=['windows_long_paths']),
+        BoolOption('setting', 'ascii_filenames', False, title=N_("Replace non-ASCII characters"), highlight=['ascii_filenames']),
+        BoolOption('setting', 'replace_spaces_with_underscores', False, title=N_("Replace spaces with underscores"), highlight=['replace_spaces_with_underscores']),
+        TextOption('setting', 'replace_dir_separator', DEFAULT_REPLACEMENT, title=N_("Replacement character to use for directory separators"), highlight=['replace_dir_separator']),
+        Option('setting', 'win_compat_replacements', DEFAULT_WIN_COMPAT_REPLACEMENTS, title=N_("Replacement characters used for Windows compatibility"), highlight=['win_compat_replacements']),
     ]
 
     options_changed = QtCore.pyqtSignal(dict)

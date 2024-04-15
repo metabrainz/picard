@@ -45,9 +45,9 @@ class RatingsOptionsPage(OptionsPage):
     HELP_URL = "/config/options_ratings.html"
 
     options = [
-        BoolOption('setting', 'enable_ratings', False, title=N_("Enable track ratings")),
-        TextOption('setting', 'rating_user_email', 'users@musicbrainz.org', title=N_("Email to use when saving ratings")),
-        BoolOption('setting', 'submit_ratings', True, title=N_("Submit ratings to MusicBrainz")),
+        BoolOption('setting', 'enable_ratings', False, title=N_("Enable track ratings"), highlight=[]),
+        TextOption('setting', 'rating_user_email', 'users@musicbrainz.org', title=N_("Email to use when saving ratings"), highlight=['rating_user_email']),
+        BoolOption('setting', 'submit_ratings', True, title=N_("Submit ratings to MusicBrainz"), highlight=['submit_ratings']),
         IntOption('setting', 'rating_steps', 6),
     ]
 

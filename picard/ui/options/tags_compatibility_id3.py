@@ -48,11 +48,11 @@ class TagsCompatibilityID3OptionsPage(OptionsPage):
     HELP_URL = "/config/options_tags_compatibility_id3.html"
 
     options = [
-        BoolOption('setting', 'write_id3v1', True, title=N_("Write ID3v1 tags")),
-        BoolOption('setting', 'write_id3v23', False, title=N_("ID3v2 version to write")),
-        TextOption('setting', 'id3v2_encoding', 'utf-8', title=N_("ID3v2 text encoding")),
-        TextOption('setting', 'id3v23_join_with', '/', title=N_("ID3v2.3 join character")),
-        BoolOption('setting', 'itunes_compatible_grouping', False, title=N_("Save iTunes compatible grouping and work")),
+        BoolOption('setting', 'write_id3v1', True, title=N_("Write ID3v1 tags"), highlight=['write_id3v1']),
+        BoolOption('setting', 'write_id3v23', False, title=N_("ID3v2 version to write"), highlight=['write_id3v23', 'write_id3v24']),
+        TextOption('setting', 'id3v2_encoding', 'utf-8', title=N_("ID3v2 text encoding"), highlight=['enc_utf8', 'enc_utf16', 'enc_iso88591']),
+        TextOption('setting', 'id3v23_join_with', '/', title=N_("ID3v2.3 join character"), highlight=['id3v23_join_with']),
+        BoolOption('setting', 'itunes_compatible_grouping', False, title=N_("Save iTunes compatible grouping and work"), highlight=['itunes_compatible_grouping']),
     ]
 
     def __init__(self, parent=None):

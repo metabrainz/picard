@@ -64,14 +64,14 @@ class CoverOptionsPage(OptionsPage):
     HELP_URL = "/config/options_cover.html"
 
     options = [
-        BoolOption('setting', 'save_images_to_tags', True, title=N_("Embed cover images into tags")),
-        BoolOption('setting', 'embed_only_one_front_image', True, title=N_("Embed only a single front image")),
-        BoolOption('setting', 'save_images_to_files', False, title=N_("Save cover images as separate files")),
-        TextOption('setting', 'cover_image_filename', DEFAULT_COVER_IMAGE_FILENAME, title=N_("File name for images")),
-        BoolOption('setting', 'save_images_overwrite', False, title=N_("Overwrite existing image files")),
-        BoolOption('setting', 'save_only_one_front_image', False, title=N_("Save only a single front image as separate file")),
-        BoolOption('setting', 'image_type_as_filename', False, title=N_("Always use the primary image type as the file name for non-front images")),
-        ListOption('setting', 'ca_providers', DEFAULT_CA_PROVIDERS, title=N_("Cover art providers")),
+        BoolOption('setting', 'save_images_to_tags', True, title=N_("Embed cover images into tags"), highlight=['save_images_to_tags']),
+        BoolOption('setting', 'embed_only_one_front_image', True, title=N_("Embed only a single front image"), highlight=['cb_embed_front_only']),
+        BoolOption('setting', 'save_images_to_files', False, title=N_("Save cover images as separate files"), highlight=['save_images_to_files']),
+        TextOption('setting', 'cover_image_filename', DEFAULT_COVER_IMAGE_FILENAME, title=N_("File name for images"), highlight=['cover_image_filename']),
+        BoolOption('setting', 'save_images_overwrite', False, title=N_("Overwrite existing image files"), highlight=['save_images_overwrite']),
+        BoolOption('setting', 'save_only_one_front_image', False, title=N_("Save only a single front image as separate file"), highlight=['save_only_one_front_image']),
+        BoolOption('setting', 'image_type_as_filename', False, title=N_("Always use the primary image type as the file name for non-front images"), highlight=['image_type_as_filename']),
+        ListOption('setting', 'ca_providers', DEFAULT_CA_PROVIDERS, title=N_("Cover art providers"), highlight=['ca_providers_list']),
     ]
 
     def __init__(self, parent=None):

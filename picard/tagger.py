@@ -115,6 +115,7 @@ from picard.pluginmanager import (
     PluginManager,
     plugin_dirs,
 )
+from picard.profile import init_settings_groups
 from picard.releasegroup import ReleaseGroup
 from picard.track import (
     NonAlbumTrack,
@@ -244,6 +245,7 @@ class Tagger(QtWidgets.QApplication):
         self.__class__.__instance = self
         setup_config(self, picard_args.config_file)
         config = get_config()
+        init_settings_groups()
         theme.setup(self)
 
         self._to_load = picard_args.processable

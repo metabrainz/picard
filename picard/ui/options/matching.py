@@ -44,9 +44,9 @@ class MatchingOptionsPage(OptionsPage):
     HELP_URL = "/config/options_matching.html"
 
     options = [
-        FloatOption('setting', 'file_lookup_threshold', 0.7, title=N_("Minimal similarity for file lookups")),
-        FloatOption('setting', 'cluster_lookup_threshold', 0.7, title=N_("Minimal similarity for cluster lookups")),
-        FloatOption('setting', 'track_matching_threshold', 0.4, title=N_("Minimal similarity for matching files to tracks")),
+        FloatOption('setting', 'file_lookup_threshold', 0.7, title=N_("Minimal similarity for file lookups"), highlight=['file_lookup_threshold']),
+        FloatOption('setting', 'cluster_lookup_threshold', 0.7, title=N_("Minimal similarity for cluster lookups"), highlight=['cluster_lookup_threshold']),
+        FloatOption('setting', 'track_matching_threshold', 0.4, title=N_("Minimal similarity for matching files to tracks"), highlight=['track_matching_threshold']),
     ]
 
     _release_type_sliders = {}

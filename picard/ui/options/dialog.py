@@ -269,19 +269,22 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         else:
             option_colors = HighlightColors('#000000', '#F9F906')
 
+        settings_groups = UserProfileGroups.SETTINGS_GROUPS
         for page in self.pages:
-            page_name = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
-            if page_name in UserProfileGroups.SETTINGS_GROUPS:
-                if load_settings:
-                    page.load()
-                for opt in UserProfileGroups.SETTINGS_GROUPS[page_name]['settings']:
-                    for opt_field in opt.fields:
-                        style = HIGHLIGHT_FMT % (opt_field, option_colors.fg, option_colors.bg)
-                        try:
-                            obj = getattr(page.ui, opt_field)
-                        except AttributeError:
-                            continue
-                        self._check_and_highlight_option(obj, opt.name, working_profiles, working_settings, style)
+            if page.NAME not in settings_groups:
+                continue
+            if 'settings' not in settings_groups[page.NAME]:
+                continue
+            if load_settings:
+                page.load()
+            for opt in settings_groups[page.NAME]['settings']:
+                for opt_field in opt.fields:
+                    style = HIGHLIGHT_FMT % (opt_field, option_colors.fg, option_colors.bg)
+                    try:
+                        obj = getattr(page.ui, opt_field)
+                    except AttributeError:
+                        continue
+                    self._check_and_highlight_option(obj, opt.name, working_profiles, working_settings, style)
 
     def _check_and_highlight_option(self, obj, option_name, working_profiles, working_settings, style):
         obj.setStyleSheet(None)

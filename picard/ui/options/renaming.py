@@ -77,12 +77,12 @@ class RenamingOptionsPage(OptionsPage):
     HELP_URL = "/config/options_filerenaming.html"
 
     options = [
-        BoolOption('setting', 'rename_files', False, title=N_("Rename files")),
-        BoolOption('setting', 'move_files', False, title=N_("Move files")),
-        TextOption('setting', 'move_files_to', _default_music_dir, title=N_("Destination directory")),
-        BoolOption('setting', 'move_additional_files', False, title=N_("Move additional files")),
-        TextOption('setting', 'move_additional_files_pattern', "*.jpg *.png", title=N_("Additional file patterns")),
-        BoolOption('setting', 'delete_empty_dirs', True, title=N_("Delete empty directories")),
+        BoolOption('setting', 'rename_files', False, title=N_("Rename files"), highlight=['rename_files']),
+        BoolOption('setting', 'move_files', False, title=N_("Move files"), highlight=['move_files']),
+        TextOption('setting', 'move_files_to', _default_music_dir, title=N_("Destination directory"), highlight=['move_files_to']),
+        BoolOption('setting', 'move_additional_files', False, title=N_("Move additional files"), highlight=['move_additional_files']),
+        TextOption('setting', 'move_additional_files_pattern', "*.jpg *.png", title=N_("Additional file patterns"), highlight=['move_additional_files_pattern']),
+        BoolOption('setting', 'delete_empty_dirs', True, title=N_("Delete empty directories"), highlight=['delete_empty_dirs']),
     ]
 
     def __init__(self, parent=None):
