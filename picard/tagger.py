@@ -1506,8 +1506,6 @@ If a new instance will not be spawned files/directories will be passed to the ex
 
 
 def main(localedir=None, autoupdate=True):
-    EXIT_NO_NEW_INSTANCE = 30403
-
     # Some libs (ie. Phonon) require those to be set
     QtWidgets.QApplication.setApplicationName(PICARD_APP_NAME)
     QtWidgets.QApplication.setOrganizationName(PICARD_ORG_NAME)
@@ -1561,8 +1559,7 @@ def main(localedir=None, autoupdate=True):
     # pipe has sent its args to existing one, doesn't need to start
     if not should_start:
         log.debug("No need for spawning a new instance, exiting...")
-        # just a custom exit code to show that picard instance wasn't created
-        sys.exit(EXIT_NO_NEW_INSTANCE)
+        sys.exit(0)
 
     try:
         from PyQt6.QtDBus import QDBusConnection
