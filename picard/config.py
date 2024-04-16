@@ -187,6 +187,8 @@ class SettingConfigSection(ConfigSection):
         opt = Option.get(self.__name, name)
         if opt is None:
             return None
+        if opt.title is not None and name not in UserProfileGroups.ALL_SETTINGS:
+            log.debug("Option %s has a title (%s), but it isn't in UserProfileGroups", opt.name, opt.title)
         return self.value(name, opt, opt.default)
 
     def __setitem__(self, name, value):
@@ -384,6 +386,12 @@ class Option(QtCore.QObject):
         self.registry[key] = self
 
     @classmethod
+    def getall(cls, section=None):
+        for opt in cls.registry.values():
+            if section is None or opt.section == section:
+                yield opt
+
+    @classmethod
     def get(cls, section, name):
         return cls.registry.get((section, name))
 
@@ -461,7 +469,7 @@ def setup_config(app, filename=None):
     setting = config.setting
     persist = config.persist
     profiles = config.profiles
-    UserProfileGroups.initialize()
+    UserProfileGroups.initialize(config)
 
 
 def get_config():

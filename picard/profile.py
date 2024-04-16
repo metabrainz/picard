@@ -53,7 +53,7 @@ class UserProfileGroups():
         yield from cls.SETTINGS_GROUPS
 
     @classmethod
-    def initialize(cls):
+    def initialize(cls, config):
         from picard.ui.options import _pages as page_classes
 
         def _all_pages(parent=None):
@@ -67,13 +67,27 @@ class UserProfileGroups():
             for opt in page.options:
                 if opt.title is not None:
                     settings.append(SettingDesc(opt.name, opt.highlight))
+                    cls.ALL_SETTINGS.add(opt.name)
             if settings:
                 cls.SETTINGS_GROUPS[page.NAME] = {
                     'title': page.TITLE,
                     'settings': settings,
                 }
 
-        cls.ALL_SETTINGS = set(
-            s.name for group in cls.SETTINGS_GROUPS.values()
-            for s in group['settings']
-        )
+        # handle options not under any OptionPage
+        from picard.config import Option
+        default_group = ('others', N_('Others'))
+        settings = []
+        for opt in Option.getall(section='setting'):
+            if opt.title is not None and opt.name not in cls.ALL_SETTINGS:
+                # FIXME: make group name & title configurable per option
+                group_name, group_title = default_group
+                if group_name not in cls.SETTINGS_GROUPS:
+                    cls.SETTINGS_GROUPS[group_name] = {
+                        'title': group_title,
+                        'settings': [],
+                    }
+                cls.SETTINGS_GROUPS[group_name]['settings'].append(
+                    SettingDesc(opt.name, opt.highlight)
+                )
+                cls.ALL_SETTINGS.add(opt.name)
