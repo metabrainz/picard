@@ -42,6 +42,8 @@ from PyQt6 import (
 from picard import log
 from picard.config import (
     ListOption,
+    Option,
+    OptionError,
     SettingConfigSection,
     TextOption,
     get_config,
@@ -484,14 +486,18 @@ class AttachedProfilesDialog(PicardDialog):
 
         window_title = _("Profiles Attached to Options in %s Section") % group_title
         self.setWindowTitle(window_title)
-
-        for name, title, object_name in group_options:
+        for setting in group_options:
+            try:
+                title = Option.get_title('setting', setting.name)
+            except OptionError as e:
+                log.debug(e)
+                continue
             option_item = QtGui.QStandardItem(_(title))
             option_item.setEditable(False)
             row = [option_item]
             attached = []
             for profile in self.profiles:
-                if name in self.settings[profile['id']]:
+                if setting.name in self.settings[profile['id']]:
                     attached.append("{0}{1}".format(profile['title'], _(" [Enabled]") if profile['enabled'] else "",))
             attached_profiles = "\n".join(attached) if attached else _("None")
             profile_item = QtGui.QStandardItem(attached_profiles)
