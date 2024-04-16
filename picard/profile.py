@@ -52,28 +52,28 @@ class UserProfileGroups():
         """
         yield from cls.SETTINGS_GROUPS
 
+    @classmethod
+    def initialize(cls):
+        from picard.ui.options import _pages as page_classes
 
-def init_settings_groups():
-    from picard.ui.options import _pages as page_classes
+        def _all_pages(parent=None):
+            pages = [p for p in page_classes if p.PARENT == parent]
+            for page in sorted(pages, key=lambda p: (p.SORT_ORDER, p.NAME)):
+                yield page
+                yield from _all_pages(page.NAME)
 
-    def _all_pages(parent=None):
-        pages = [p for p in page_classes if p.PARENT == parent]
-        for page in sorted(pages, key=lambda p: (p.SORT_ORDER, p.NAME)):
-            yield page
-            yield from _all_pages(page.NAME)
+        for page in _all_pages():
+            settings = []
+            for opt in page.options:
+                if opt.title is not None:
+                    settings.append(SettingDesc(opt.name, opt.highlight))
+            if settings:
+                cls.SETTINGS_GROUPS[page.NAME] = {
+                    'title': page.TITLE,
+                    'settings': settings,
+                }
 
-    for page in _all_pages():
-        settings = []
-        for opt in page.options:
-            if opt.title is not None:
-                settings.append(SettingDesc(opt.name, opt.highlight))
-        if settings:
-            UserProfileGroups.SETTINGS_GROUPS[page.NAME] = {
-                'title': page.TITLE,
-                'settings': settings,
-            }
-
-    UserProfileGroups.ALL_SETTINGS = set(
-        s.name for group in UserProfileGroups.SETTINGS_GROUPS.values()
-        for s in group['settings']
-    )
+        cls.ALL_SETTINGS = set(
+            s.name for group in cls.SETTINGS_GROUPS.values()
+            for s in group['settings']
+        )
