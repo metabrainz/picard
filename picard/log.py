@@ -10,6 +10,7 @@
 # Copyright (C) 2017 Sophist-UK
 # Copyright (C) 2018 Wieland Hoffmann
 # Copyright (C) 2021 Gabriel Ferreira
+# Copyright (C) 2024 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -41,6 +42,7 @@ from threading import Lock
 
 from PyQt6 import QtCore
 
+from picard.const import USER_PLUGIN_DIR
 from picard.const.sys import (
     FROZEN_TEMP_PATH,
     IS_FROZEN,
@@ -177,17 +179,26 @@ def name_filter(record):
             path = path.resolve().relative_to(picard_module_path)
         except ValueError:
             pass
-        else:
-            if not DebugOpt.PLUGIN_FULLPATH.enabled and 'plugins' in path.parts:
-                parts = list(reversed(path.parts))
-                parts = parts[:parts.index('plugins') + 1]
-                path = Path(*reversed(parts))
+
+    if path.is_absolute() and not DebugOpt.PLUGIN_FULLPATH.enabled:
+        try:
+            path = path.resolve().relative_to(USER_PLUGIN_DIR)
+            parts = list(path.parts)
+            parts.insert(0, 'plugins')
+            path = Path(*parts)
+        except ValueError:
+            pass
 
     parts = list(path.parts)
     if parts[-1] == '__init__':
         del parts[-1]
     if parts[0] == path.anchor:
-        del parts[0]
+        parts[0] = '/'
+    # Remove the plugin module file if the file name is the same as
+    # the immediately preceeding plugin zip file name, similar to the
+    # way that the final `__init__.py` file is removed.
+    if len(parts) > 1 and parts[-1] + '.zip' == parts[-2]:
+        del parts[-1]
     record.name = str(PurePosixPath(*parts))
     return True
 
