@@ -41,7 +41,10 @@ from picard import (
     PICARD_VERSION,
     log,
 )
-from picard.profile import UserProfileGroups
+from picard.profile import (
+    UserProfileGroups,
+    init_settings_groups,
+)
 from picard.version import Version
 
 
@@ -461,6 +464,7 @@ def setup_config(app, filename=None):
     setting = config.setting
     persist = config.persist
     profiles = config.profiles
+    init_settings_groups()
 
 
 def get_config():
