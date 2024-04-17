@@ -424,8 +424,6 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     TITLE = N_("File naming script editor")
     STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
 
-    PROFILES_KEY = SettingConfigSection.PROFILES_KEY
-    SETTINGS_KEY = SettingConfigSection.SETTINGS_KEY
     SELECTED_SCRIPT_KEY = 'selected_file_naming_script_id'
     SCRIPTS_LIST_KEY = 'file_renaming_scripts'
 
@@ -804,10 +802,11 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """
         config = get_config()
         profiles_with_scripts = self.scripts_in_profiles()
+        profiles_settings = config.profiles[SettingConfigSection.SETTINGS_KEY]
         for script_id in self.unsaved_scripts():
             profile = self.is_used_in_profile(script_id=script_id, profiles=profiles_with_scripts)
             if profile:
-                config.profiles[self.SETTINGS_KEY][profile.id][self.SELECTED_SCRIPT_KEY] = self.original_script_id
+                profiles_settings[profile.id][self.SELECTED_SCRIPT_KEY] = self.original_script_id
 
     def unsaved_scripts(self):
         """Generate ID codes of scripts that have not been saved.
@@ -830,8 +829,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """
         profiles_list = []
         config = get_config()
-        profiles = config.profiles[self.PROFILES_KEY]
-        profile_settings = config.profiles[self.SETTINGS_KEY]
+        profiles = config.profiles[SettingConfigSection.PROFILES_KEY]
+        profile_settings = config.profiles[SettingConfigSection.SETTINGS_KEY]
         for profile in profiles:
             settings = profile_settings[profile['id']]
             if self.SELECTED_SCRIPT_KEY in settings:
