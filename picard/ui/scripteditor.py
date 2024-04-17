@@ -794,7 +794,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             if self.last_selected_id in all_scripts:
                 self.selected_script_id = self.last_selected_id
             if self.selected_script_id not in all_scripts:
-                self.selected_script_id = list(all_scripts.keys())[0]
+                self.selected_script_id = next(iter(all_scripts))
         script_text = all_scripts[self.selected_script_id]['script']
         self.update_examples(script_text=script_text)
         self.signal_selection_changed.emit()
