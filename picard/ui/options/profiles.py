@@ -62,9 +62,6 @@ class ProfilesOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_profiles.html"
 
-    PROFILES_KEY = SettingConfigSection.PROFILES_KEY
-    SETTINGS_KEY = SettingConfigSection.SETTINGS_KEY
-
     TREEWIDGETITEM_COLUMN = 0
 
     options = [
@@ -144,10 +141,10 @@ class ProfilesOptionsPage(OptionsPage):
         config = get_config()
         # Use deepcopy() to avoid changes made locally from being cascaded into `config.profiles`
         # before the user clicks "Make It So!"
-        self.profile_settings = deepcopy(config.profiles[self.SETTINGS_KEY])
+        self.profile_settings = deepcopy(config.profiles[SettingConfigSection.SETTINGS_KEY])
 
         self.ui.profile_list.clear()
-        for profile in config.profiles[self.PROFILES_KEY]:
+        for profile in config.profiles[SettingConfigSection.PROFILES_KEY]:
             list_item = ProfileListWidgetItem(profile['title'], profile['enabled'], profile['id'])
             self.ui.profile_list.addItem(list_item)
 
@@ -473,8 +470,8 @@ class ProfilesOptionsPage(OptionsPage):
         profile information to the user settings.
         """
         config = get_config()
-        config.profiles[self.PROFILES_KEY] = self._clean_and_get_all_profiles()
-        config.profiles[self.SETTINGS_KEY] = self.profile_settings
+        config.profiles[SettingConfigSection.PROFILES_KEY] = self._clean_and_get_all_profiles()
+        config.profiles[SettingConfigSection.SETTINGS_KEY] = self.profile_settings
         config.persist['last_selected_profile_pos'] = self.ui.profile_list.currentRow()
         config.persist['profile_settings_tree_expanded_list'] = sorted(self.expanded_sections)
 
