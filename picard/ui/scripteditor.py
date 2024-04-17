@@ -424,9 +424,6 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     TITLE = N_("File naming script editor")
     STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
 
-    SELECTED_SCRIPT_KEY = 'selected_file_naming_script_id'
-    SCRIPTS_LIST_KEY = 'file_renaming_scripts'
-
     help_url = PICARD_URLS['doc_naming_script_edit']
 
     options = [
@@ -683,8 +680,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """Load initial configuration.
         """
         config = get_config()
-        self.naming_scripts = config.setting[self.SCRIPTS_LIST_KEY]
-        self.selected_script_id = config.setting[self.SELECTED_SCRIPT_KEY]
+        self.naming_scripts = config.setting['file_renaming_scripts']
+        self.selected_script_id = config.setting['selected_file_naming_script_id']
         if not self.selected_script_id or self.selected_script_id not in self.naming_scripts:
             self.selected_script_id = DEFAULT_NAMING_PRESET_ID
         self.last_selected_id = self.selected_script_id
@@ -784,9 +781,9 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """
         config = get_config()
         unsaved = set(self.unsaved_scripts())
-        if config.setting[self.SELECTED_SCRIPT_KEY] in unsaved:
-            config.setting[self.SELECTED_SCRIPT_KEY] = self.original_script_id
-        self.naming_scripts = config.setting[self.SCRIPTS_LIST_KEY]
+        if config.setting['selected_file_naming_script_id'] in unsaved:
+            config.setting['selected_file_naming_script_id'] = self.original_script_id
+        self.naming_scripts = config.setting['file_renaming_scripts']
         all_scripts = self.all_scripts()
         if self.selected_script_id not in all_scripts:
             if self.last_selected_id in all_scripts:
@@ -806,7 +803,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         for script_id in self.unsaved_scripts():
             profile = self.is_used_in_profile(script_id=script_id, profiles=profiles_with_scripts)
             if profile:
-                profiles_settings[profile.id][self.SELECTED_SCRIPT_KEY] = self.original_script_id
+                profiles_settings[profile.id]['selected_file_naming_script_id'] = self.original_script_id
 
     def unsaved_scripts(self):
         """Generate ID codes of scripts that have not been saved.
@@ -815,7 +812,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             str: ID code for the unsaved script
         """
         config = get_config()
-        cfg_naming_scripts = config.setting[self.SCRIPTS_LIST_KEY]
+        cfg_naming_scripts = config.setting['file_renaming_scripts']
         all_naming_scripts = self.all_scripts(scripts=cfg_naming_scripts)
         for script_id in self.naming_scripts.keys():
             if script_id not in all_naming_scripts:
@@ -833,12 +830,12 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         profile_settings = config.profiles[SettingConfigSection.SETTINGS_KEY]
         for profile in profiles:
             settings = profile_settings[profile['id']]
-            if self.SELECTED_SCRIPT_KEY in settings:
+            if 'selected_file_naming_script_id' in settings:
                 profiles_list.append(
                     self.Profile(
                         profile['id'],
                         profile['title'],
-                        settings[self.SELECTED_SCRIPT_KEY]
+                        settings['selected_file_naming_script_id']
                     )
                 )
         return profiles_list
@@ -991,8 +988,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         self.selected_script_id = script_item['id']
         self.naming_scripts = self.get_scripts_dict()
         config = get_config()
-        config.setting[self.SCRIPTS_LIST_KEY] = self.naming_scripts
-        config.setting[self.SELECTED_SCRIPT_KEY] = script_item['id']
+        config.setting['file_renaming_scripts'] = self.naming_scripts
+        config.setting['selected_file_naming_script_id'] = script_item['id']
         self.close()
 
     def get_scripts_dict(self):
