@@ -94,7 +94,7 @@ class ProfilesOptionsPage(OptionsPage):
         self.ui.settings_tree.itemCollapsed.connect(self.update_current_expanded_items_list)
 
         self.current_profile_id = None
-        self.expanded_sections = []
+        self.expanded_sections = set()
         self.building_tree = False
 
         self.loading = False
@@ -154,7 +154,7 @@ class ProfilesOptionsPage(OptionsPage):
             self.ui.profile_list.addItem(list_item)
 
         # Select the last selected profile item
-        self.expanded_sections = config.persist[self.EXPANDED_KEY]
+        self.expanded_sections = set(config.persist[self.EXPANDED_KEY])
         last_selected_profile_pos = config.persist[self.POSITION_KEY]
         self.make_setting_tree(settings=self._last_settings(last_selected_profile_pos))
         self.update_config_overrides()
@@ -308,11 +308,11 @@ class ProfilesOptionsPage(OptionsPage):
         """
         if self.building_tree:
             return
-        self.expanded_sections = []
+        self.expanded_sections = set()
         for i in range(self.ui.settings_tree.topLevelItemCount()):
             tl_item = self.ui.settings_tree.topLevelItem(i)
             if tl_item.isExpanded():
-                self.expanded_sections.append(tl_item.text(self.TREEWIDGETITEM_COLUMN))
+                self.expanded_sections.add(tl_item.text(self.TREEWIDGETITEM_COLUMN))
 
     def get_current_selected_item(self):
         """Gets the profile item currently selected in the profiles list.
@@ -478,7 +478,7 @@ class ProfilesOptionsPage(OptionsPage):
         config.profiles[self.PROFILES_KEY] = self._clean_and_get_all_profiles()
         config.profiles[self.SETTINGS_KEY] = self.profile_settings
         config.persist[self.POSITION_KEY] = self.ui.profile_list.currentRow()
-        config.persist[self.EXPANDED_KEY] = self.expanded_sections
+        config.persist[self.EXPANDED_KEY] = sorted(self.expanded_sections)
 
     def set_button_states(self):
         """Set the enabled / disabled states of the buttons.
