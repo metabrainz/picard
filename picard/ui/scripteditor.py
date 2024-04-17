@@ -785,7 +785,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """Reset the currently selected script if it was not saved and is no longer available.
         """
         config = get_config()
-        unsaved = set(id for id in self.unsaved_scripts())
+        unsaved = set(self.unsaved_scripts())
         if config.setting[self.SELECTED_SCRIPT_KEY] in unsaved:
             config.setting[self.SELECTED_SCRIPT_KEY] = self.original_script_id
         self.naming_scripts = config.setting[self.SCRIPTS_LIST_KEY]
