@@ -168,20 +168,13 @@ class ProfilesOptionsPage(OptionsPage):
         self.update_config_overrides()
         self.loading = False
 
-    def update_config_overrides(self, reset=False):
+    def update_config_overrides(self):
         """Update the profile overrides used in `config.settings` when retrieving or
         saving a setting.
-
-        Args:
-            reset (bool, optional): Remove the profile overrides. Defaults to False.
         """
         config = get_config()
-        if reset:
-            config.setting.set_profiles_override(None)
-            config.setting.set_settings_override(None)
-        else:
-            config.setting.set_profiles_override(self._clean_and_get_all_profiles())
-            config.setting.set_settings_override(self.profile_settings)
+        config.setting.set_profiles_override(self._clean_and_get_all_profiles())
+        config.setting.set_settings_override(self.profile_settings)
 
     def get_settings_for_profile(self, profile_id):
         """Get the settings for the specified profile ID.  Automatically adds an empty
