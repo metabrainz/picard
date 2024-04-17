@@ -64,14 +64,12 @@ class ProfilesOptionsPage(OptionsPage):
 
     PROFILES_KEY = SettingConfigSection.PROFILES_KEY
     SETTINGS_KEY = SettingConfigSection.SETTINGS_KEY
-    POSITION_KEY = 'last_selected_profile_pos'
-    EXPANDED_KEY = 'profile_settings_tree_expanded_list'
 
     TREEWIDGETITEM_COLUMN = 0
 
     options = [
-        IntOption('persist', POSITION_KEY, 0),
-        ListOption('persist', EXPANDED_KEY, [])
+        IntOption('persist', 'last_selected_profile_pos', 0),
+        ListOption('persist', 'profile_settings_tree_expanded_list', []),
     ]
 
     signal_refresh = QtCore.pyqtSignal()
@@ -154,8 +152,8 @@ class ProfilesOptionsPage(OptionsPage):
             self.ui.profile_list.addItem(list_item)
 
         # Select the last selected profile item
-        self.expanded_sections = set(config.persist[self.EXPANDED_KEY])
-        last_selected_profile_pos = config.persist[self.POSITION_KEY]
+        self.expanded_sections = set(config.persist['profile_settings_tree_expanded_list'])
+        last_selected_profile_pos = config.persist['last_selected_profile_pos']
         self.make_setting_tree(settings=self._last_settings(last_selected_profile_pos))
         self.update_config_overrides()
         self.loading = False
@@ -477,8 +475,8 @@ class ProfilesOptionsPage(OptionsPage):
         config = get_config()
         config.profiles[self.PROFILES_KEY] = self._clean_and_get_all_profiles()
         config.profiles[self.SETTINGS_KEY] = self.profile_settings
-        config.persist[self.POSITION_KEY] = self.ui.profile_list.currentRow()
-        config.persist[self.EXPANDED_KEY] = sorted(self.expanded_sections)
+        config.persist['last_selected_profile_pos'] = self.ui.profile_list.currentRow()
+        config.persist['profile_settings_tree_expanded_list'] = sorted(self.expanded_sections)
 
     def set_button_states(self):
         """Set the enabled / disabled states of the buttons.
