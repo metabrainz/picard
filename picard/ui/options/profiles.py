@@ -232,21 +232,22 @@ class ProfilesOptionsPage(OptionsPage):
                 if opt_title is None:
                     opt_title = setting.name
                     log.debug("Missing title for option: %s", setting.name)
-                child_item = QtWidgets.QTreeWidgetItem([_(opt_title)])
-                child_item.setData(0, QtCore.Qt.ItemDataRole.UserRole, setting.name)
-                child_item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
-                state = QtCore.Qt.CheckState.Checked if settings and setting.name in settings else QtCore.Qt.CheckState.Unchecked
-                child_item.setCheckState(self.TREEWIDGETITEM_COLUMN, state)
-                if setting.name in settings and settings[setting.name] is not None:
-                    value = settings[setting.name]
-                else:
-                    value = None
-                child_item.setToolTip(self.TREEWIDGETITEM_COLUMN, self.make_setting_value_text(setting.name, value))
-                widget_item.addChild(child_item)
+                widget_item.addChild(self._make_child_item(settings, setting.name, opt_title))
             self.ui.settings_tree.addTopLevelItem(widget_item)
             if title in self.expanded_sections:
                 widget_item.setExpanded(True)
         self.building_tree = False
+
+    def _make_child_item(self, settings, name, title):
+        in_settings = settings and name in settings
+        item = QtWidgets.QTreeWidgetItem([_(title)])
+        item.setData(0, QtCore.Qt.ItemDataRole.UserRole, name)
+        item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+        state = QtCore.Qt.CheckState.Checked if in_settings else QtCore.Qt.CheckState.Unchecked
+        item.setCheckState(self.TREEWIDGETITEM_COLUMN, state)
+        tooltip = self.make_setting_value_text(name, settings[name] if in_settings else None)
+        item.setToolTip(self.TREEWIDGETITEM_COLUMN, tooltip)
+        return item
 
     def _get_naming_script(self, config, value):
         if value in config.setting['file_renaming_scripts']:
