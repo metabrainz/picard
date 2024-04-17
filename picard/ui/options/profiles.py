@@ -62,16 +62,11 @@ class ProfilesOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_profiles.html"
 
-    PROFILES_KEY = SettingConfigSection.PROFILES_KEY
-    SETTINGS_KEY = SettingConfigSection.SETTINGS_KEY
-    POSITION_KEY = 'last_selected_profile_pos'
-    EXPANDED_KEY = 'profile_settings_tree_expanded_list'
-
     TREEWIDGETITEM_COLUMN = 0
 
     options = [
-        IntOption('persist', POSITION_KEY, 0),
-        ListOption('persist', EXPANDED_KEY, [])
+        IntOption('persist', 'last_selected_profile_pos', 0),
+        ListOption('persist', 'profile_settings_tree_expanded_list', []),
     ]
 
     signal_refresh = QtCore.pyqtSignal()
@@ -94,7 +89,7 @@ class ProfilesOptionsPage(OptionsPage):
         self.ui.settings_tree.itemCollapsed.connect(self.update_current_expanded_items_list)
 
         self.current_profile_id = None
-        self.expanded_sections = []
+        self.expanded_sections = set()
         self.building_tree = False
 
         self.loading = False
@@ -146,42 +141,37 @@ class ProfilesOptionsPage(OptionsPage):
         config = get_config()
         # Use deepcopy() to avoid changes made locally from being cascaded into `config.profiles`
         # before the user clicks "Make It So!"
-        self.profile_settings = deepcopy(config.profiles[self.SETTINGS_KEY])
+        self.profile_settings = deepcopy(config.profiles[SettingConfigSection.SETTINGS_KEY])
 
         self.ui.profile_list.clear()
-        for profile in config.profiles[self.PROFILES_KEY]:
+        for profile in config.profiles[SettingConfigSection.PROFILES_KEY]:
             list_item = ProfileListWidgetItem(profile['title'], profile['enabled'], profile['id'])
             self.ui.profile_list.addItem(list_item)
 
         # Select the last selected profile item
-        last_selected_profile_pos = config.persist[self.POSITION_KEY]
-        self.expanded_sections = config.persist[self.EXPANDED_KEY]
-        last_selected_profile = self.ui.profile_list.item(last_selected_profile_pos)
-        settings = None
-        if last_selected_profile:
-            self.ui.profile_list.setCurrentItem(last_selected_profile)
-            last_selected_profile.setSelected(True)
-            profile_id = last_selected_profile.profile_id
-            self.current_profile_id = profile_id
-            settings = self.get_settings_for_profile(profile_id)
-        self.make_setting_tree(settings=settings)
+        self.expanded_sections = set(config.persist['profile_settings_tree_expanded_list'])
+        last_selected_profile_pos = config.persist['last_selected_profile_pos']
+        self.make_setting_tree(settings=self._last_settings(last_selected_profile_pos))
         self.update_config_overrides()
         self.loading = False
 
-    def update_config_overrides(self, reset=False):
+    def _last_settings(self, last_selected_profile_pos):
+        """Select last profile item and returns associated settings or None"""
+        last = self.ui.profile_list.item(last_selected_profile_pos)
+        if not last:
+            return None
+        self.ui.profile_list.setCurrentItem(last)
+        last.setSelected(True)
+        self.current_profile_id = last.profile_id
+        return self.get_settings_for_profile(last.profile_id)
+
+    def update_config_overrides(self):
         """Update the profile overrides used in `config.settings` when retrieving or
         saving a setting.
-
-        Args:
-            reset (bool, optional): Remove the profile overrides. Defaults to False.
         """
         config = get_config()
-        if reset:
-            config.setting.set_profiles_override(None)
-            config.setting.set_settings_override(None)
-        else:
-            config.setting.set_profiles_override(self._clean_and_get_all_profiles())
-            config.setting.set_settings_override(self.profile_settings)
+        config.setting.set_profiles_override(self._clean_and_get_all_profiles())
+        config.setting.set_settings_override(self.profile_settings)
 
     def get_settings_for_profile(self, profile_id):
         """Get the settings for the specified profile ID.  Automatically adds an empty
@@ -237,21 +227,22 @@ class ProfilesOptionsPage(OptionsPage):
                 if opt_title is None:
                     opt_title = setting.name
                     log.debug("Missing title for option: %s", setting.name)
-                child_item = QtWidgets.QTreeWidgetItem([_(opt_title)])
-                child_item.setData(0, QtCore.Qt.ItemDataRole.UserRole, setting.name)
-                child_item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
-                state = QtCore.Qt.CheckState.Checked if settings and setting.name in settings else QtCore.Qt.CheckState.Unchecked
-                child_item.setCheckState(self.TREEWIDGETITEM_COLUMN, state)
-                if setting.name in settings and settings[setting.name] is not None:
-                    value = settings[setting.name]
-                else:
-                    value = None
-                child_item.setToolTip(self.TREEWIDGETITEM_COLUMN, self.make_setting_value_text(setting.name, value))
-                widget_item.addChild(child_item)
+                widget_item.addChild(self._make_child_item(settings, setting.name, opt_title))
             self.ui.settings_tree.addTopLevelItem(widget_item)
             if title in self.expanded_sections:
                 widget_item.setExpanded(True)
         self.building_tree = False
+
+    def _make_child_item(self, settings, name, title):
+        in_settings = settings and name in settings
+        item = QtWidgets.QTreeWidgetItem([_(title)])
+        item.setData(0, QtCore.Qt.ItemDataRole.UserRole, name)
+        item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+        state = QtCore.Qt.CheckState.Checked if in_settings else QtCore.Qt.CheckState.Unchecked
+        item.setCheckState(self.TREEWIDGETITEM_COLUMN, state)
+        tooltip = self.make_setting_value_text(name, settings[name] if in_settings else None)
+        item.setToolTip(self.TREEWIDGETITEM_COLUMN, tooltip)
+        return item
 
     def _get_naming_script(self, config, value):
         if value in config.setting['file_renaming_scripts']:
@@ -261,44 +252,28 @@ class ProfilesOptionsPage(OptionsPage):
             return presets[value]
         return _("Unknown script")
 
-    def _get_scripts_list(self, config, key, template, none_text):
-        if not config.setting[key]:
-            return _("No scripts in list")
-        flag = False
-        scripts = config.setting[key]
-        value_text = _("Enabled tagging scripts of %i found:") % len(scripts)
-        for (pos, name, enabled, script) in scripts:
-            if enabled:
-                flag = True
-                value_text += template % name
-        if not flag:
-            value_text += " %s" % none_text
-        return value_text
+    def _get_scripts_list(self, scripts):
+        enabled_scripts = ['<li>%s</li>' % name for (pos, name, enabled, script) in scripts if enabled]
+        if not enabled_scripts:
+            return _("No enabled scripts")
+        return _("Enabled scripts:") + '<ul>' + "".join(enabled_scripts) + '</ul>'
 
-    def _get_ca_providers_list(self, config, key, template, none_text):
-        flag = False
-        providers = config.setting[key]
-        value_text = _("Enabled providers of %i listed:") % len(providers)
-        for (name, enabled) in providers:
-            if enabled:
-                flag = True
-                value_text += template % name
-        if not flag:
-            value_text += " %s" % none_text
-        return value_text
+    def _get_ca_providers_list(self, providers):
+        enabled_providers = ['<li>%s</li>' % name for (name, enabled) in providers if enabled]
+        if not enabled_providers:
+            return _("No enabled providers")
+        return _("Enabled providers:") + '<ul>' + "".join(enabled_providers) + '</ul>'
 
     def make_setting_value_text(self, key, value):
-        ITEMS_TEMPLATE = "\n  - %s"
-        NONE_TEXT = _("None")
         config = get_config()
         if value is None:
-            return NONE_TEXT
+            return _("None")
         if key == 'selected_file_naming_script_id':
             return self._get_naming_script(config, value)
         if key == 'list_of_scripts':
-            return self._get_scripts_list(config, key, ITEMS_TEMPLATE, NONE_TEXT)
+            return self._get_scripts_list(config.setting[key])
         if key == 'ca_providers':
-            return self._get_ca_providers_list(config, key, ITEMS_TEMPLATE, NONE_TEXT)
+            return self._get_ca_providers_list(config.setting[key])
         if isinstance(value, str):
             return '"%s"' % value
         if type(value) in {bool, int, float}:
@@ -312,11 +287,11 @@ class ProfilesOptionsPage(OptionsPage):
         """
         if self.building_tree:
             return
-        self.expanded_sections = []
+        self.expanded_sections = set()
         for i in range(self.ui.settings_tree.topLevelItemCount()):
             tl_item = self.ui.settings_tree.topLevelItem(i)
             if tl_item.isExpanded():
-                self.expanded_sections.append(tl_item.text(self.TREEWIDGETITEM_COLUMN))
+                self.expanded_sections.add(tl_item.text(self.TREEWIDGETITEM_COLUMN))
 
     def get_current_selected_item(self):
         """Gets the profile item currently selected in the profiles list.
@@ -479,10 +454,10 @@ class ProfilesOptionsPage(OptionsPage):
         profile information to the user settings.
         """
         config = get_config()
-        config.profiles[self.PROFILES_KEY] = self._clean_and_get_all_profiles()
-        config.profiles[self.SETTINGS_KEY] = self.profile_settings
-        config.persist[self.POSITION_KEY] = self.ui.profile_list.currentRow()
-        config.persist[self.EXPANDED_KEY] = self.expanded_sections
+        config.profiles[SettingConfigSection.PROFILES_KEY] = self._clean_and_get_all_profiles()
+        config.profiles[SettingConfigSection.SETTINGS_KEY] = self.profile_settings
+        config.persist['last_selected_profile_pos'] = self.ui.profile_list.currentRow()
+        config.persist['profile_settings_tree_expanded_list'] = sorted(self.expanded_sections)
 
     def set_button_states(self):
         """Set the enabled / disabled states of the buttons.
