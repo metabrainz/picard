@@ -154,19 +154,21 @@ class ProfilesOptionsPage(OptionsPage):
             self.ui.profile_list.addItem(list_item)
 
         # Select the last selected profile item
-        last_selected_profile_pos = config.persist[self.POSITION_KEY]
         self.expanded_sections = config.persist[self.EXPANDED_KEY]
-        last_selected_profile = self.ui.profile_list.item(last_selected_profile_pos)
-        settings = None
-        if last_selected_profile:
-            self.ui.profile_list.setCurrentItem(last_selected_profile)
-            last_selected_profile.setSelected(True)
-            profile_id = last_selected_profile.profile_id
-            self.current_profile_id = profile_id
-            settings = self.get_settings_for_profile(profile_id)
-        self.make_setting_tree(settings=settings)
+        last_selected_profile_pos = config.persist[self.POSITION_KEY]
+        self.make_setting_tree(settings=self._last_settings(last_selected_profile_pos))
         self.update_config_overrides()
         self.loading = False
+
+    def _last_settings(self, last_selected_profile_pos):
+        """Select last profile item and returns associated settings or None"""
+        last = self.ui.profile_list.item(last_selected_profile_pos)
+        if not last:
+            return None
+        self.ui.profile_list.setCurrentItem(last)
+        last.setSelected(True)
+        self.current_profile_id = last.profile_id
+        return self.get_settings_for_profile(last.profile_id)
 
     def update_config_overrides(self):
         """Update the profile overrides used in `config.settings` when retrieving or
