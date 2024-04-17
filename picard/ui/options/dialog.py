@@ -31,8 +31,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import namedtuple
-
 from PyQt6 import (
     QtCore,
     QtGui,
@@ -260,13 +258,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def highlight_enabled_profile_options(self, load_settings=False):
         working_profiles, working_settings = self.get_working_profile_data()
-
-        HighlightColors = namedtuple('HighlightColors', ('fg', 'bg'))
-        HIGHLIGHT_FMT = "#%s { color: %s; background-color: %s; }"
-        if theme.is_dark_theme:
-            option_colors = HighlightColors('#FFFFFF', '#000080')
-        else:
-            option_colors = HighlightColors('#000000', '#F9F906')
+        from picard.ui.colors import interface_colors as colors
+        fg_color = colors.get_color('profile_hl_fg')
+        bg_color = colors.get_color('profile_hl_bg')
 
         for page in self.pages:
             page_name = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
@@ -275,11 +269,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                     page.load()
                 for opt in UserProfileGroups.SETTINGS_GROUPS[page_name]['settings']:
                     for opt_field in opt.fields:
-                        style = HIGHLIGHT_FMT % (opt_field, option_colors.fg, option_colors.bg)
                         try:
                             obj = getattr(page.ui, opt_field)
                         except AttributeError:
                             continue
+                        style = "#%s { color: %s; background-color: %s; }" % (opt_field, fg_color, bg_color)
                         self._check_and_highlight_option(obj, opt.name, working_profiles, working_settings, style)
 
     def _check_and_highlight_option(self, obj, option_name, working_profiles, working_settings, style):
