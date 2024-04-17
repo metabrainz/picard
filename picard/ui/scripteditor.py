@@ -424,11 +424,6 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     TITLE = N_("File naming script editor")
     STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
 
-    PROFILES_KEY = SettingConfigSection.PROFILES_KEY
-    SETTINGS_KEY = SettingConfigSection.SETTINGS_KEY
-    SELECTED_SCRIPT_KEY = 'selected_file_naming_script_id'
-    SCRIPTS_LIST_KEY = 'file_renaming_scripts'
-
     help_url = PICARD_URLS['doc_naming_script_edit']
 
     options = [
@@ -685,8 +680,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """Load initial configuration.
         """
         config = get_config()
-        self.naming_scripts = config.setting[self.SCRIPTS_LIST_KEY]
-        self.selected_script_id = config.setting[self.SELECTED_SCRIPT_KEY]
+        self.naming_scripts = config.setting['file_renaming_scripts']
+        self.selected_script_id = config.setting['selected_file_naming_script_id']
         if not self.selected_script_id or self.selected_script_id not in self.naming_scripts:
             self.selected_script_id = DEFAULT_NAMING_PRESET_ID
         self.last_selected_id = self.selected_script_id
@@ -785,16 +780,16 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """Reset the currently selected script if it was not saved and is no longer available.
         """
         config = get_config()
-        unsaved = set(id for id in self.unsaved_scripts())
-        if config.setting[self.SELECTED_SCRIPT_KEY] in unsaved:
-            config.setting[self.SELECTED_SCRIPT_KEY] = self.original_script_id
-        self.naming_scripts = config.setting[self.SCRIPTS_LIST_KEY]
+        unsaved = set(self.unsaved_scripts())
+        if config.setting['selected_file_naming_script_id'] in unsaved:
+            config.setting['selected_file_naming_script_id'] = self.original_script_id
+        self.naming_scripts = config.setting['file_renaming_scripts']
         all_scripts = self.all_scripts()
         if self.selected_script_id not in all_scripts:
             if self.last_selected_id in all_scripts:
                 self.selected_script_id = self.last_selected_id
             if self.selected_script_id not in all_scripts:
-                self.selected_script_id = list(all_scripts.keys())[0]
+                self.selected_script_id = next(iter(all_scripts))
         script_text = all_scripts[self.selected_script_id]['script']
         self.update_examples(script_text=script_text)
         self.signal_selection_changed.emit()
@@ -804,10 +799,11 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """
         config = get_config()
         profiles_with_scripts = self.scripts_in_profiles()
+        profiles_settings = config.profiles[SettingConfigSection.SETTINGS_KEY]
         for script_id in self.unsaved_scripts():
             profile = self.is_used_in_profile(script_id=script_id, profiles=profiles_with_scripts)
             if profile:
-                config.profiles[self.SETTINGS_KEY][profile.id][self.SELECTED_SCRIPT_KEY] = self.original_script_id
+                profiles_settings[profile.id]['selected_file_naming_script_id'] = self.original_script_id
 
     def unsaved_scripts(self):
         """Generate ID codes of scripts that have not been saved.
@@ -816,7 +812,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             str: ID code for the unsaved script
         """
         config = get_config()
-        cfg_naming_scripts = config.setting[self.SCRIPTS_LIST_KEY]
+        cfg_naming_scripts = config.setting['file_renaming_scripts']
         all_naming_scripts = self.all_scripts(scripts=cfg_naming_scripts)
         for script_id in self.naming_scripts.keys():
             if script_id not in all_naming_scripts:
@@ -830,16 +826,16 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """
         profiles_list = []
         config = get_config()
-        profiles = config.profiles[self.PROFILES_KEY]
-        profile_settings = config.profiles[self.SETTINGS_KEY]
+        profiles = config.profiles[SettingConfigSection.PROFILES_KEY]
+        profile_settings = config.profiles[SettingConfigSection.SETTINGS_KEY]
         for profile in profiles:
             settings = profile_settings[profile['id']]
-            if self.SELECTED_SCRIPT_KEY in settings:
+            if 'selected_file_naming_script_id' in settings:
                 profiles_list.append(
                     self.Profile(
                         profile['id'],
                         profile['title'],
-                        settings[self.SELECTED_SCRIPT_KEY]
+                        settings['selected_file_naming_script_id']
                     )
                 )
         return profiles_list
@@ -847,8 +843,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     def update_script_text(self):
         """Updates the combo box item with changes to the current script.
         """
-        selected = self.ui.preset_naming_scripts.currentIndex()
-        script_item = self.ui.preset_naming_scripts.itemData(selected)
+        selected, script_item = self.get_selected_index_and_item()
         script_item['script'] = self.get_script()
         self.update_combo_box_item(selected, script_item)
 
@@ -863,8 +858,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         Returns:
             bool: True if the title is unique, otherwise False.
         """
-        selected = self.ui.preset_naming_scripts.currentIndex()
-        title = self.ui.preset_naming_scripts.itemData(selected)['title'] if new_title is None else new_title
+        selected, script_item = self.get_selected_index_and_item()
+        title = script_item['title'] if new_title is None else new_title
         for i in range(self.ui.preset_naming_scripts.count()):
             if i == selected:
                 continue
@@ -875,9 +870,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     def update_script_title(self):
         """Update the script selection combo box after updating the script title.
         """
-        selected = self.ui.preset_naming_scripts.currentIndex()
+        selected, script_item = self.get_selected_index_and_item()
         title = str(self.ui.script_title.text()).strip()
-        script_item = self.ui.preset_naming_scripts.itemData(selected)
         if title:
             if self.check_duplicate_script_title(new_title=title):
                 script_item['title'] = title
@@ -919,9 +913,9 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     def update_from_details(self):
         """Update the script selection combo box and script list after updates from the script details dialog.
         """
-        selected = self.ui.preset_naming_scripts.currentIndex()
+        selected, script_item = self.get_selected_index_and_item()
         new_title = self.current_item_dict['title']
-        old_title = self.ui.preset_naming_scripts.itemData(selected)['title']
+        old_title = script_item['title']
         if not self.check_duplicate_script_title(new_title=new_title):
             self.current_item_dict['title'] = old_title
         self.update_combo_box_item(selected, self.current_item_dict)
@@ -976,8 +970,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     def copy_script(self):
         """Add a copy of the script as a new editable script to the script selection combo box.
         """
-        selected = self.ui.preset_naming_scripts.currentIndex()
-        script_item = self.ui.preset_naming_scripts.itemData(selected)
+        selected, script_item = self.get_selected_index_and_item()
         new_item = FileNamingScript.create_from_dict(script_dict=script_item).copy()
 
         base_title = "%s %s" % (get_base_title(script_item['title']), gettext_constants(DEFAULT_COPY_TEXT))
@@ -992,8 +985,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         self.selected_script_id = script_item['id']
         self.naming_scripts = self.get_scripts_dict()
         config = get_config()
-        config.setting[self.SCRIPTS_LIST_KEY] = self.naming_scripts
-        config.setting[self.SELECTED_SCRIPT_KEY] = script_item['id']
+        config.setting['file_renaming_scripts'] = self.naming_scripts
+        config.setting['selected_file_naming_script_id'] = script_item['id']
         self.close()
 
     def get_scripts_dict(self):
@@ -1008,18 +1001,20 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             naming_scripts[script_item['id']] = script_item
         return naming_scripts
 
-    def get_selected_item(self, idx=None):
-        """Get the specified item from the script selection combo box.
+    def get_script_item(self, idx):
+        return self.ui.preset_naming_scripts.itemData(idx)
 
-        Args:
-            idx (int, optional): Index of the combo box item to retrieve. Defaults to None.
+    def get_selected_index_and_item(self):
+        idx = self.ui.preset_naming_scripts.currentIndex()
+        return idx, self.get_script_item(idx)
+
+    def get_selected_item(self):
+        """Get the specified item from the script selection combo box.
 
         Returns:
             dict: File naming script dictionary as produced by FileNamingScript().to_dict()
         """
-        if idx is None:
-            idx = self.ui.preset_naming_scripts.currentIndex()
-        return self.ui.preset_naming_scripts.itemData(idx)
+        return self.get_script_item(self.ui.preset_naming_scripts.currentIndex())
 
     def set_selected_script_id(self, id):
         """Select the script with the specified ID.
@@ -1029,7 +1024,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """
         idx = 0
         for i in range(self.ui.preset_naming_scripts.count()):
-            script_item = self.ui.preset_naming_scripts.itemData(i)
+            script_item = self.get_script_item(i)
             if script_item['id'] == id:
                 idx = i
                 break
@@ -1047,8 +1042,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     def select_script(self, update_last_selected=True):
         """Load the current script from the combo box into the editor.
         """
-        self.selected_script_index = self.ui.preset_naming_scripts.currentIndex()
-        script_item = self.get_selected_item()
+        self.selected_script_index, script_item = self.get_selected_index_and_item()
         self.ui.script_title.setText(script_item['title'])
         self.ui.file_naming_format.setPlainText(str(script_item['script']).strip())
         self.selected_script_id = script_item['id']
@@ -1185,10 +1179,9 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     def save_script(self):
         """Saves changes to the current script to the script list and combo box item.
         """
-        selected = self.ui.preset_naming_scripts.currentIndex()
         title = str(self.ui.script_title.text()).strip()
         if title:
-            script_item = self.ui.preset_naming_scripts.itemData(selected)
+            selected, script_item = self.get_selected_index_and_item()
             if self.check_duplicate_script_title(new_title=title):
                 script_item['title'] = title
             script_item['script'] = self.get_script()
