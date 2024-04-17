@@ -1004,17 +1004,13 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             naming_scripts[script_item['id']] = script_item
         return naming_scripts
 
-    def get_selected_item(self, idx=None):
+    def get_selected_item(self):
         """Get the specified item from the script selection combo box.
-
-        Args:
-            idx (int, optional): Index of the combo box item to retrieve. Defaults to None.
 
         Returns:
             dict: File naming script dictionary as produced by FileNamingScript().to_dict()
         """
-        if idx is None:
-            idx = self.ui.preset_naming_scripts.currentIndex()
+        idx = self.ui.preset_naming_scripts.currentIndex()
         return self.ui.preset_naming_scripts.itemData(idx)
 
     def set_selected_script_id(self, id):
