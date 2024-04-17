@@ -843,8 +843,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     def update_script_text(self):
         """Updates the combo box item with changes to the current script.
         """
-        selected = self.ui.preset_naming_scripts.currentIndex()
-        script_item = self.ui.preset_naming_scripts.itemData(selected)
+        selected, script_item = self.get_selected_index_and_item()
         script_item['script'] = self.get_script()
         self.update_combo_box_item(selected, script_item)
 
@@ -859,8 +858,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         Returns:
             bool: True if the title is unique, otherwise False.
         """
-        selected = self.ui.preset_naming_scripts.currentIndex()
-        title = self.ui.preset_naming_scripts.itemData(selected)['title'] if new_title is None else new_title
+        selected, script_item = self.get_selected_index_and_item()
+        title = script_item['title'] if new_title is None else new_title
         for i in range(self.ui.preset_naming_scripts.count()):
             if i == selected:
                 continue
@@ -871,9 +870,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     def update_script_title(self):
         """Update the script selection combo box after updating the script title.
         """
-        selected = self.ui.preset_naming_scripts.currentIndex()
+        selected, script_item = self.get_selected_index_and_item()
         title = str(self.ui.script_title.text()).strip()
-        script_item = self.ui.preset_naming_scripts.itemData(selected)
         if title:
             if self.check_duplicate_script_title(new_title=title):
                 script_item['title'] = title
@@ -915,9 +913,9 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     def update_from_details(self):
         """Update the script selection combo box and script list after updates from the script details dialog.
         """
-        selected = self.ui.preset_naming_scripts.currentIndex()
+        selected, script_item = self.get_selected_index_and_item()
         new_title = self.current_item_dict['title']
-        old_title = self.ui.preset_naming_scripts.itemData(selected)['title']
+        old_title = script_item['title']
         if not self.check_duplicate_script_title(new_title=new_title):
             self.current_item_dict['title'] = old_title
         self.update_combo_box_item(selected, self.current_item_dict)
@@ -972,8 +970,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     def copy_script(self):
         """Add a copy of the script as a new editable script to the script selection combo box.
         """
-        selected = self.ui.preset_naming_scripts.currentIndex()
-        script_item = self.ui.preset_naming_scripts.itemData(selected)
+        selected, script_item = self.get_selected_index_and_item()
         new_item = FileNamingScript.create_from_dict(script_dict=script_item).copy()
 
         base_title = "%s %s" % (get_base_title(script_item['title']), gettext_constants(DEFAULT_COPY_TEXT))
@@ -1004,14 +1001,20 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             naming_scripts[script_item['id']] = script_item
         return naming_scripts
 
+    def get_script_item(self, idx):
+        return self.ui.preset_naming_scripts.itemData(idx)
+
+    def get_selected_index_and_item(self):
+        idx = self.ui.preset_naming_scripts.currentIndex()
+        return idx, self.get_script_item(idx)
+
     def get_selected_item(self):
         """Get the specified item from the script selection combo box.
 
         Returns:
             dict: File naming script dictionary as produced by FileNamingScript().to_dict()
         """
-        idx = self.ui.preset_naming_scripts.currentIndex()
-        return self.ui.preset_naming_scripts.itemData(idx)
+        return self.get_script_item(self.ui.preset_naming_scripts.currentIndex())
 
     def set_selected_script_id(self, id):
         """Select the script with the specified ID.
@@ -1021,7 +1024,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """
         idx = 0
         for i in range(self.ui.preset_naming_scripts.count()):
-            script_item = self.ui.preset_naming_scripts.itemData(i)
+            script_item = self.get_script_item(i)
             if script_item['id'] == id:
                 idx = i
                 break
@@ -1039,8 +1042,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     def select_script(self, update_last_selected=True):
         """Load the current script from the combo box into the editor.
         """
-        self.selected_script_index = self.ui.preset_naming_scripts.currentIndex()
-        script_item = self.get_selected_item()
+        self.selected_script_index, script_item = self.get_selected_index_and_item()
         self.ui.script_title.setText(script_item['title'])
         self.ui.file_naming_format.setPlainText(str(script_item['script']).strip())
         self.selected_script_id = script_item['id']
@@ -1177,10 +1179,9 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     def save_script(self):
         """Saves changes to the current script to the script list and combo box item.
         """
-        selected = self.ui.preset_naming_scripts.currentIndex()
         title = str(self.ui.script_title.text()).strip()
         if title:
-            script_item = self.ui.preset_naming_scripts.itemData(selected)
+            selected, script_item = self.get_selected_index_and_item()
             if self.check_duplicate_script_title(new_title=title):
                 script_item['title'] = title
             script_item['script'] = self.get_script()
