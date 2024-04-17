@@ -252,44 +252,28 @@ class ProfilesOptionsPage(OptionsPage):
             return presets[value]
         return _("Unknown script")
 
-    def _get_scripts_list(self, config, key, template, none_text):
-        if not config.setting[key]:
-            return _("No scripts in list")
-        flag = False
-        scripts = config.setting[key]
-        value_text = _("Enabled tagging scripts of %i found:") % len(scripts)
-        for (pos, name, enabled, script) in scripts:
-            if enabled:
-                flag = True
-                value_text += template % name
-        if not flag:
-            value_text += " %s" % none_text
-        return value_text
+    def _get_scripts_list(self, scripts):
+        enabled_scripts = ['<li>%s</li>' % name for (pos, name, enabled, script) in scripts if enabled]
+        if not enabled_scripts:
+            return _("No enabled scripts")
+        return _("Enabled scripts:") + '<ul>' + "".join(enabled_scripts) + '</ul>'
 
-    def _get_ca_providers_list(self, config, key, template, none_text):
-        flag = False
-        providers = config.setting[key]
-        value_text = _("Enabled providers of %i listed:") % len(providers)
-        for (name, enabled) in providers:
-            if enabled:
-                flag = True
-                value_text += template % name
-        if not flag:
-            value_text += " %s" % none_text
-        return value_text
+    def _get_ca_providers_list(self, providers):
+        enabled_providers = ['<li>%s</li>' % name for (name, enabled) in providers if enabled]
+        if not enabled_providers:
+            return _("No enabled providers")
+        return _("Enabled providers:") + '<ul>' + "".join(enabled_providers) + '</ul>'
 
     def make_setting_value_text(self, key, value):
-        ITEMS_TEMPLATE = "\n  - %s"
-        NONE_TEXT = _("None")
         config = get_config()
         if value is None:
-            return NONE_TEXT
+            return _("None")
         if key == 'selected_file_naming_script_id':
             return self._get_naming_script(config, value)
         if key == 'list_of_scripts':
-            return self._get_scripts_list(config, key, ITEMS_TEMPLATE, NONE_TEXT)
+            return self._get_scripts_list(config.setting[key])
         if key == 'ca_providers':
-            return self._get_ca_providers_list(config, key, ITEMS_TEMPLATE, NONE_TEXT)
+            return self._get_ca_providers_list(config.setting[key])
         if isinstance(value, str):
             return '"%s"' % value
         if type(value) in {bool, int, float}:
