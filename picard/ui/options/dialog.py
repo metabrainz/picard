@@ -202,12 +202,13 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 log.exception("Failed loading options page %r", page)
                 self.disable_page(page.NAME)
 
-    def page_has_profile_options(self, page):
+    def page_option_group(self, page):
         try:
             name = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
-        except AttributeError:
-            return False
-        return name in UserProfileGroups.get_setting_groups_list()
+            return UserProfileGroups.SETTINGS_GROUPS[name]
+        except (AttributeError, KeyError):
+            pass
+        return None
 
     def show_attached_profiles_dialog(self):
         window_title = _("Profiles Attached to Options")
@@ -215,7 +216,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         if not items:
             return
         page = self.item_to_page[items[0]]
-        if not self.page_has_profile_options(page):
+        option_group = self.page_option_group(page)
+        if not option_group:
             message_box = QtWidgets.QMessageBox(self)
             message_box.setIcon(QtWidgets.QMessageBox.Icon.Information)
             message_box.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
@@ -224,25 +226,17 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             message_box.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
             return message_box.exec()
 
-        option_group = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
         override_profiles = self.profile_page._clean_and_get_all_profiles()
         override_settings = self.profile_page.profile_settings
         profile_dialog = AttachedProfilesDialog(
+            option_group,
             parent=self,
-            option_group=option_group,
             override_profiles=override_profiles,
             override_settings=override_settings
         )
         profile_dialog.show()
         profile_dialog.raise_()
         profile_dialog.activateWindow()
-
-    def _get_profile_title_from_id(self, profile_id):
-        config = get_config()
-        for item in config.profiles[SettingConfigSection.PROFILES_KEY]:
-            if item['id'] == profile_id:
-                return item['title']
-        return _('Unknown profile')
 
     def update_from_profile_changes(self):
         if not self.suspend_signals:
@@ -263,11 +257,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         bg_color = colors.get_color('profile_hl_bg')
 
         for page in self.pages:
-            page_name = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
-            if page_name in UserProfileGroups.SETTINGS_GROUPS:
+            option_group = self.page_option_group(page)
+            if option_group:
                 if load_settings:
                     page.load()
-                for opt in UserProfileGroups.SETTINGS_GROUPS[page_name]['settings']:
+                for opt in option_group['settings']:
                     for opt_field in opt.fields:
                         try:
                             obj = getattr(page.ui, opt_field)
@@ -312,13 +306,13 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         return self.item_to_page[self.page_to_item[name]]
 
     def page_has_attached_profiles(self, page, enabled_profiles_only=False):
-        if not self.page_has_profile_options(page):
+        option_group = self.page_option_group(page)
+        if not option_group:
             return False
         working_profiles, working_settings = self.get_working_profile_data()
-        page_name = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
-        for opt in UserProfileGroups.SETTINGS_GROUPS[page_name]['settings']:
+        for opt in option_group['settings']:
             for item in working_profiles:
-                if enabled_profiles_only and not item["enabled"]:
+                if enabled_profiles_only and not item['enabled']:
                     continue
                 profile_id = item['id']
                 if opt.name in working_settings[profile_id]:
@@ -446,7 +440,7 @@ class AttachedProfilesDialog(PicardDialog):
     NAME = 'attachedprofiles'
     TITLE = N_("Attached Profiles")
 
-    def __init__(self, parent=None, option_group=None, override_profiles=None, override_settings=None):
+    def __init__(self, option_group, parent=None, override_profiles=None, override_settings=None):
         super().__init__(parent=parent)
         self.option_group = option_group
         self.ui = Ui_AttachedProfilesDialog()
@@ -470,16 +464,13 @@ class AttachedProfilesDialog(PicardDialog):
     def populate_table(self):
         model = QtGui.QStandardItemModel()
         model.setColumnCount(2)
-        header_names = [_("Option"), _("Attached Profiles")]
+        header_names = (_("Option"), _("Attached Profiles"))
         model.setHorizontalHeaderLabels(header_names)
 
-        group = UserProfileGroups.SETTINGS_GROUPS[self.option_group]
-        group_title = group['title']
-        group_options = group['settings']
-
-        window_title = _("Profiles Attached to Options in %s Section") % group_title
+        window_title = _("Profiles Attached to Options in %s Section") % self.option_group['title']
         self.setWindowTitle(window_title)
-        for setting in group_options:
+
+        for setting in self.option_group['settings']:
             try:
                 title = Option.get_title('setting', setting.name)
             except OptionError as e:
@@ -487,16 +478,14 @@ class AttachedProfilesDialog(PicardDialog):
                 continue
             option_item = QtGui.QStandardItem(_(title))
             option_item.setEditable(False)
-            row = [option_item]
             attached = []
             for profile in self.profiles:
                 if setting.name in self.settings[profile['id']]:
                     attached.append("{0}{1}".format(profile['title'], _(" [Enabled]") if profile['enabled'] else "",))
-            attached_profiles = "\n".join(attached) if attached else _("None")
+            attached_profiles = "\n".join(attached) or _("None")
             profile_item = QtGui.QStandardItem(attached_profiles)
             profile_item.setEditable(False)
-            row.append(profile_item)
-            model.appendRow(row)
+            model.appendRow((option_item, profile_item))
 
         self.ui.options_list.setModel(model)
         self.ui.options_list.resizeColumnsToContents()
