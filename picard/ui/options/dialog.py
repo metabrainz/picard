@@ -470,16 +470,15 @@ class AttachedProfilesDialog(PicardDialog):
     def populate_table(self):
         model = QtGui.QStandardItemModel()
         model.setColumnCount(2)
-        header_names = [_("Option"), _("Attached Profiles")]
+        header_names = (_("Option"), _("Attached Profiles"))
         model.setHorizontalHeaderLabels(header_names)
 
         group = UserProfileGroups.SETTINGS_GROUPS[self.option_group]
-        group_title = group['title']
-        group_options = group['settings']
 
-        window_title = _("Profiles Attached to Options in %s Section") % group_title
+        window_title = _("Profiles Attached to Options in %s Section") % group['title']
         self.setWindowTitle(window_title)
-        for setting in group_options:
+
+        for setting in group['settings']:
             try:
                 title = Option.get_title('setting', setting.name)
             except OptionError as e:
@@ -487,16 +486,14 @@ class AttachedProfilesDialog(PicardDialog):
                 continue
             option_item = QtGui.QStandardItem(_(title))
             option_item.setEditable(False)
-            row = [option_item]
             attached = []
             for profile in self.profiles:
                 if setting.name in self.settings[profile['id']]:
                     attached.append("{0}{1}".format(profile['title'], _(" [Enabled]") if profile['enabled'] else "",))
-            attached_profiles = "\n".join(attached) if attached else _("None")
+            attached_profiles = "\n".join(attached) or _("None")
             profile_item = QtGui.QStandardItem(attached_profiles)
             profile_item.setEditable(False)
-            row.append(profile_item)
-            model.appendRow(row)
+            model.appendRow((option_item, profile_item))
 
         self.ui.options_list.setModel(model)
         self.ui.options_list.resizeColumnsToContents()
