@@ -52,7 +52,7 @@
 # Action
 
 Additional actions required:
-* [x] Update Picard [documentation](https://github.com/metabrainz/picard-docs) (please include a reference to this PR)
+* [ ] Update Picard [documentation](https://github.com/metabrainz/picard-docs) (please include a reference to this PR)
 * [ ] Other (please specify below)
 
 <!--
