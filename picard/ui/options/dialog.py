@@ -237,13 +237,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         profile_dialog.raise_()
         profile_dialog.activateWindow()
 
-    def _get_profile_title_from_id(self, profile_id):
-        config = get_config()
-        for item in config.profiles[SettingConfigSection.PROFILES_KEY]:
-            if item['id'] == profile_id:
-                return item['title']
-        return _('Unknown profile')
-
     def update_from_profile_changes(self):
         if not self.suspend_signals:
             self.highlight_enabled_profile_options(load_settings=True)
