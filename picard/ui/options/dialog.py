@@ -229,8 +229,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         override_profiles = self.profile_page._clean_and_get_all_profiles()
         override_settings = self.profile_page.profile_settings
         profile_dialog = AttachedProfilesDialog(
+            option_group,
             parent=self,
-            option_group=option_group,
             override_profiles=override_profiles,
             override_settings=override_settings
         )
@@ -440,7 +440,7 @@ class AttachedProfilesDialog(PicardDialog):
     NAME = 'attachedprofiles'
     TITLE = N_("Attached Profiles")
 
-    def __init__(self, parent=None, option_group=None, override_profiles=None, override_settings=None):
+    def __init__(self, option_group, parent=None, override_profiles=None, override_settings=None):
         super().__init__(parent=parent)
         self.option_group = option_group
         self.ui = Ui_AttachedProfilesDialog()
