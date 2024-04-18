@@ -202,12 +202,13 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 log.exception("Failed loading options page %r", page)
                 self.disable_page(page.NAME)
 
-    def page_has_profile_options(self, page):
+    def page_option_group(self, page):
         try:
             name = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
-        except AttributeError:
-            return False
-        return name in UserProfileGroups.get_setting_groups_list()
+            return UserProfileGroups.SETTINGS_GROUPS[name]
+        except (AttributeError, KeyError):
+            pass
+        return None
 
     def show_attached_profiles_dialog(self):
         window_title = _("Profiles Attached to Options")
@@ -215,7 +216,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         if not items:
             return
         page = self.item_to_page[items[0]]
-        if not self.page_has_profile_options(page):
+        option_group = self.page_option_group(page)
+        if not option_group:
             message_box = QtWidgets.QMessageBox(self)
             message_box.setIcon(QtWidgets.QMessageBox.Icon.Information)
             message_box.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
@@ -224,7 +226,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             message_box.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
             return message_box.exec()
 
-        option_group = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
         override_profiles = self.profile_page._clean_and_get_all_profiles()
         override_settings = self.profile_page.profile_settings
         profile_dialog = AttachedProfilesDialog(
@@ -256,11 +257,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         bg_color = colors.get_color('profile_hl_bg')
 
         for page in self.pages:
-            page_name = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
-            if page_name in UserProfileGroups.SETTINGS_GROUPS:
+            option_group = self.page_option_group(page)
+            if option_group:
                 if load_settings:
                     page.load()
-                for opt in UserProfileGroups.SETTINGS_GROUPS[page_name]['settings']:
+                for opt in option_group['settings']:
                     for opt_field in opt.fields:
                         try:
                             obj = getattr(page.ui, opt_field)
@@ -305,11 +306,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         return self.item_to_page[self.page_to_item[name]]
 
     def page_has_attached_profiles(self, page, enabled_profiles_only=False):
-        if not self.page_has_profile_options(page):
+        option_group = self.page_option_group(page)
+        if not option_group:
             return False
         working_profiles, working_settings = self.get_working_profile_data()
-        page_name = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
-        for opt in UserProfileGroups.SETTINGS_GROUPS[page_name]['settings']:
+        for opt in option_group['settings']:
             for item in working_profiles:
                 if enabled_profiles_only and not item['enabled']:
                     continue
@@ -466,12 +467,10 @@ class AttachedProfilesDialog(PicardDialog):
         header_names = (_("Option"), _("Attached Profiles"))
         model.setHorizontalHeaderLabels(header_names)
 
-        group = UserProfileGroups.SETTINGS_GROUPS[self.option_group]
-
-        window_title = _("Profiles Attached to Options in %s Section") % group['title']
+        window_title = _("Profiles Attached to Options in %s Section") % self.option_group['title']
         self.setWindowTitle(window_title)
 
-        for setting in group['settings']:
+        for setting in self.option_group['settings']:
             try:
                 title = Option.get_title('setting', setting.name)
             except OptionError as e:
