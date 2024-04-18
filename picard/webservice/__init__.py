@@ -193,6 +193,9 @@ class WSRequest(QNetworkRequest):
             self._high_prio_no_cache = self.refresh
             self.setAttribute(QNetworkRequest.Attribute.HttpPipeliningAllowedAttribute, True)
 
+        # use HTTP/2 if possible
+        self.setAttribute(QNetworkRequest.Attribute.Http2AllowedAttribute, True)
+
         self.setHeader(QNetworkRequest.KnownHeaders.UserAgentHeader, USER_AGENT_STRING)
 
         if self.mblogin or self._high_prio_no_cache:
@@ -508,10 +511,14 @@ class WebService(QtCore.QObject):
         handler = request.handler
         response_code = self.http_response_code(reply)
         display_reply_url = self.display_url(reply.request().url())
+        if reply.attribute(QNetworkRequest.Attribute.Http2WasUsedAttribute):
+            proto = 'HTTP2'
+        else:
+            proto = 'HTTP'
         if error != QNetworkReply.NetworkError.NoError:
             errstr = reply.errorString()
-            log.error("Network request error for %s -> %s (QT code %r, HTTP code %d)",
-                      display_reply_url, errstr, error, response_code)
+            log.error("Network request error for %s -> %s (QT code %r, %s code %d)",
+                      display_reply_url, errstr, error, proto, response_code)
             if (not request.max_retries_reached()
                 and (response_code == 503
                      or response_code == 429
@@ -534,8 +541,9 @@ class WebService(QtCore.QObject):
             redirect = reply.attribute(QNetworkRequest.Attribute.RedirectionTargetAttribute)
             from_cache = reply.attribute(QNetworkRequest.Attribute.SourceIsFromCacheAttribute)
             cached = ' (CACHED)' if from_cache else ''
-            log.debug("Received reply for %s -> HTTP %d (%s) %s",
+            log.debug("Received reply for %s -> %s %d (%s) %s",
                       display_reply_url,
+                      proto,
                       response_code,
                       self.http_response_phrase(reply),
                       cached
