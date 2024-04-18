@@ -311,7 +311,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         page_name = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
         for opt in UserProfileGroups.SETTINGS_GROUPS[page_name]['settings']:
             for item in working_profiles:
-                if enabled_profiles_only and not item["enabled"]:
+                if enabled_profiles_only and not item['enabled']:
                     continue
                 profile_id = item['id']
                 if opt.name in working_settings[profile_id]:
