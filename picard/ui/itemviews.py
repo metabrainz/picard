@@ -544,6 +544,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         if isinstance(obj, Album) and not isinstance(obj, NatAlbum) and obj.loaded:
             releases_menu = QtWidgets.QMenu(_("&Other versions"), menu)
+            releases_menu.setToolTipsVisible(True)
             menu.addSeparator()
             menu.addMenu(releases_menu)
             loading = releases_menu.addAction(_("Loading…"))
@@ -584,17 +585,19 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                                 formatmatch = ORDER_AFTER
                         group = (trackmatch, countrymatch, formatmatch)
                         # order by group, name, and id on push
-                        heappush(alternatives, (group, version['name'], version['id']))
+                        heappush(alternatives, (group, version['name'], version['id'], version['extra']))
 
                     prev_group = None
                     while alternatives:
-                        group, action_text, release_id = heappop(alternatives)
+                        group, action_text, release_id, extra = heappop(alternatives)
                         if group != prev_group:
                             if prev_group is not None:
                                 releases_menu.addSeparator()
                             prev_group = group
                         action = releases_menu.addAction(action_text)
                         action.setCheckable(True)
+                        if extra:
+                            action.setToolTip(extra)
                         if obj.id == release_id:
                             action.setChecked(True)
                         action.triggered.connect(partial(obj.switch_release_version, release_id))

@@ -55,6 +55,11 @@ VERSIONS_HEADINGS = {
     'catnum':   N_("Cat No"),
 }
 # additional keys displayed only for disambiguation
+VERSIONS_EXTRA_HEADINGS = {
+    'packaging': N_("Packaging"),
+    'barcode': N_("Barcode"),
+    'disambiguation': N_("Disambiguation"),
+}
 VERSIONS_EXTRA_KEYS = ('packaging', 'barcode', 'disambiguation')
 
 
@@ -85,7 +90,7 @@ def prepare_releases_for_versions(releases):
             'catnum': ', '.join(set(catnums)),
             'tracks': tracks,
             'barcode': node.get('barcode', '') or _('[no barcode]'),
-            'packaging': node.get('packaging', '') or '??',
+            'packaging': pgettext_attributes('release_packaging', node.get('packaging', '') or '??'),
             'disambiguation': node.get('disambiguation', ''),
             '_disambiguate_name': list(),
             'totaltracks': sum(m['track-count'] for m in node['media']),
@@ -141,12 +146,17 @@ class ReleaseGroup(DataObject):
             for release in versions[name]:
                 dis = " / ".join(filter(None, uniqify(release['_disambiguate_name'])))
                 disname = name if not dis else name + ' / ' + dis
+                extra = "\n".join(
+                    "%s: %s" % (_(VERSIONS_EXTRA_HEADINGS[k]), release[k])
+                    for k in VERSIONS_EXTRA_KEYS if release[k]
+                )
                 version = {
                     'id': release['id'],
                     'name': disname.replace("&", "&&"),
                     'totaltracks': release['totaltracks'],
                     'countries': release['countries'],
                     'formats': release['formats'],
+                    'extra': extra,
                 }
                 self.versions.append(version)
 
