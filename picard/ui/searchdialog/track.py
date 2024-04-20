@@ -182,9 +182,9 @@ class TrackSearchDialog(SearchDialog):
     def _load_selection_non_nat(self, track, node):
         recording_id = track['musicbrainz_recordingid']
         album_id = track['musicbrainz_albumid']
+        releasegroup_id = track['musicbrainz_releasegroupid']
 
-        self.tagger.get_release_group_by_id(track['musicbrainz_releasegroupid']).loaded_albums.add(
-            album_id)
+        self.tagger.get_release_group_by_id(releasegroup_id).loaded_albums.add(album_id)
         if self.file_:
             # Search is performed for a file.
             if isinstance(self.file_.parent, Track):
