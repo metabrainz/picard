@@ -198,6 +198,22 @@ class TrackSearchDialog(SearchDialog):
             # No files associated. Just a normal search.
             self.tagger.load_album(track['musicbrainz_albumid'])
 
+    def _load_selection_nat(self, track, node):
+        if self.file_:
+            # Search is performed for a file.
+            if getattr(self.file_.parent, 'album', None):
+                # Have to move that file from its existing album to NAT.
+                album = self.file_.parent.album
+                self.tagger.move_file_to_nat(self.file_, track['musicbrainz_recordingid'], node)
+                if album.get_num_total_files() == 0:
+                    self.tagger.remove_album(album)
+            else:
+                # No parent album
+                self.tagger.move_file_to_nat(self.file_, track['musicbrainz_recordingid'], node)
+        else:
+            # No files associated. Just a normal search
+            self.tagger.load_nat(track['musicbrainz_recordingid'], node)
+
     def load_selection(self, row):
         """Load the album corresponding to the selected track.
         If the search is performed for a file, also associate the file to
@@ -210,17 +226,4 @@ class TrackSearchDialog(SearchDialog):
             self._load_selection_non_nat(track, node)
         else:
             # Track is a Non Album Track (NAT)
-            if self.file_:
-                # Search is performed for a file.
-                if getattr(self.file_.parent, 'album', None):
-                    # Have to move that file from its existing album to NAT.
-                    album = self.file_.parent.album
-                    self.tagger.move_file_to_nat(self.file_, track['musicbrainz_recordingid'], node)
-                    if album.get_num_total_files() == 0:
-                        self.tagger.remove_album(album)
-                else:
-                    # No parent album
-                    self.tagger.move_file_to_nat(self.file_, track['musicbrainz_recordingid'], node)
-            else:
-                # No files associated. Just a normal search
-                self.tagger.load_nat(track['musicbrainz_recordingid'], node)
+            self._load_selection_nat(track, node)
