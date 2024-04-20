@@ -23,6 +23,8 @@
 
 from collections import namedtuple
 
+from picard.i18n import _
+
 
 SECS_IN_DAY = 86400
 SECS_IN_HOUR = 3600

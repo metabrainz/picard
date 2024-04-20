@@ -37,6 +37,11 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard.i18n import (
+    N_,
+    _,
+)
+
 from picard.ui import PicardDialog
 from picard.ui.util import (
     StandardButton,

@@ -32,6 +32,11 @@ import traceback
 
 from picard import log
 from picard.dataobj import DataObject
+from picard.i18n import (
+    N_,
+    _,
+    pgettext_attributes,
+)
 from picard.mbjson import (
     countries_from_node,
     label_info_from_node,

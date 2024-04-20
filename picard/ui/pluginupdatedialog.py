@@ -27,6 +27,11 @@ from PyQt6.QtWidgets import (
     QMessageBox,
 )
 
+from picard.i18n import (
+    _,
+    ngettext,
+)
+
 
 UPDATE_LINES_TO_SHOW = 3
 

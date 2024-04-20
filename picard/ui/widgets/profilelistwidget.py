@@ -31,6 +31,10 @@ from PyQt6 import (
 )
 
 from picard.const import DEFAULT_PROFILE_NAME
+from picard.i18n import (
+    _,
+    gettext_constants,
+)
 from picard.util import unique_numbered_title
 
 from picard.ui import HashableListWidgetItem

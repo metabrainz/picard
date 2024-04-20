@@ -30,6 +30,10 @@ from PyQt6 import (
 
 from picard.config import Option
 from picard.const.sys import IS_MACOS
+from picard.i18n import (
+    N_,
+    _,
+)
 
 from picard.ui.colors import (
     InterfaceColors,

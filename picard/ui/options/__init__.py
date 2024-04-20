@@ -29,6 +29,7 @@ from PyQt6 import QtWidgets
 
 from picard import log
 from picard.config import get_config
+from picard.i18n import _
 from picard.plugin import ExtensionPoint
 
 

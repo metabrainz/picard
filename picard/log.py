@@ -48,6 +48,7 @@ from picard.const.sys import (
     IS_FROZEN,
 )
 from picard.debug_opts import DebugOpt
+from picard.i18n import N_
 
 
 # Get the absolute path for the picard module

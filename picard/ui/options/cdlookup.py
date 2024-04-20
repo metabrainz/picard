@@ -28,6 +28,7 @@ from picard.config import (
     TextOption,
     get_config,
 )
+from picard.i18n import N_
 from picard.util.cdrom import (
     AUTO_DETECT_DRIVES,
     DEFAULT_DRIVES,

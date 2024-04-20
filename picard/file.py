@@ -71,6 +71,10 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
+from picard.i18n import (
+    N_,
+    _,
+)
 from picard.metadata import (
     Metadata,
     SimMatchTrack,

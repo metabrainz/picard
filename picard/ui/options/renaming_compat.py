@@ -48,6 +48,10 @@ from picard.config import (
     get_config,
 )
 from picard.const.sys import IS_WIN
+from picard.i18n import (
+    N_,
+    _,
+)
 from picard.util import system_supports_long_paths
 
 from picard.ui import PicardDialog

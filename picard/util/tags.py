@@ -31,6 +31,11 @@
 
 import re
 
+from picard.i18n import (
+    N_,
+    _,
+)
+
 
 TAG_NAMES = {
     'acoustid_fingerprint': N_('AcoustID Fingerprint'),

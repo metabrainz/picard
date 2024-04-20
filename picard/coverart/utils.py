@@ -25,6 +25,11 @@
 from enum import IntEnum
 
 from picard.const import MB_ATTRIBUTES
+from picard.i18n import (
+    N_,
+    _,
+    pgettext_attributes,
+)
 
 
 # list of types from http://musicbrainz.org/doc/Cover_Art/Types

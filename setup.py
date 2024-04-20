@@ -382,9 +382,10 @@ class picard_build_ui(Command):
             tmp = StringIO()
             uic.compileUi(uifile, tmp)
             source = tmp.getvalue()
-            rc = re.compile(r'\n\n#.*?(?=\n\n)', re.MULTILINE | re.DOTALL)
-            comment = ("\n\n# Automatically generated - don't edit.\n"
-                       "# Use `python setup.py %s` to update it."
+            rc = re.compile(r'\n# WARNING.*?(?=\n\n)', re.MULTILINE | re.DOTALL)
+            comment = ("\n# Automatically generated - do not edit.\n"
+                       "# Use `python setup.py %s` to update it.\n\n"
+                       "from picard.i18n import _"
                        % _get_option_name(self))
             for r in list(_translate_re):
                 source = r.sub(r'_(\1)', source)

@@ -49,6 +49,11 @@ from picard.const import (
     PICARD_URLS,
 )
 from picard.file import File
+from picard.i18n import (
+    N_,
+    _,
+    gettext_constants,
+)
 from picard.metadata import Metadata
 from picard.script import (
     ScriptError,

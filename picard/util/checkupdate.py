@@ -35,6 +35,11 @@ from picard.const import (
     PLUGINS_API,
     PROGRAM_UPDATE_LEVELS,
 )
+from picard.i18n import (
+    N_,
+    _,
+    gettext_constants,
+)
 from picard.util import webbrowser2
 from picard.version import (
     Version,

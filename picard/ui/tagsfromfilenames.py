@@ -36,6 +36,7 @@ from picard.config import (
     TextOption,
     get_config,
 )
+from picard.i18n import _
 from picard.script.parser import normalize_tagname
 from picard.util.tags import display_tag_name
 

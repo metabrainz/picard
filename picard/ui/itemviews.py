@@ -75,6 +75,10 @@ from picard.file import (
     File,
     FileErrorType,
 )
+from picard.i18n import (
+    N_,
+    _,
+)
 from picard.plugin import ExtensionPoint
 from picard.track import (
     NonAlbumTrack,

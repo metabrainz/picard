@@ -43,6 +43,10 @@ from picard.const import (
     DEFAULT_SCRIPT_NAME,
     SCRIPT_LANGUAGE_VERSION,
 )
+from picard.i18n import (
+    N_,
+    _,
+)
 from picard.util import make_filename_from_title
 
 

@@ -55,6 +55,7 @@ from picard.coverart.image import (
     CoverArtImageIOError,
 )
 from picard.file import File
+from picard.i18n import _
 from picard.track import Track
 from picard.util import (
     imageinfo,

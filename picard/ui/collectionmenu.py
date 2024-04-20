@@ -33,6 +33,10 @@ from picard.collection import (
     load_user_collections,
     user_collections,
 )
+from picard.i18n import (
+    _,
+    ngettext,
+)
 from picard.util import strxfrm
 
 

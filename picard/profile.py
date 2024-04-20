@@ -28,8 +28,7 @@ from collections import (
     namedtuple,
 )
 
-# Imported to trigger inclusion of N_() in builtins
-from picard import i18n  # noqa: F401,E402 # pylint: disable=unused-import
+from picard.i18n import N_
 
 
 SettingDesc = namedtuple('SettingDesc', ('name', 'fields'))

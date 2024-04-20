@@ -32,6 +32,7 @@ from PyQt6 import (
 )
 
 from picard.config import get_config
+from picard.i18n import _
 from picard.util import (
     icontheme,
     restore_method,

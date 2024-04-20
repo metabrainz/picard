@@ -35,6 +35,10 @@ from PyQt6.QtNetwork import QSslSocket
 
 from picard import PICARD_FANCY_VERSION_STR
 from picard.disc import discid_version
+from picard.i18n import (
+    N_,
+    _,
+)
 from picard.util.astrcmp import astrcmp_implementation
 
 

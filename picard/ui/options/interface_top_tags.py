@@ -24,6 +24,7 @@ from picard.config import (
     ListOption,
     get_config,
 )
+from picard.i18n import N_
 
 from picard.ui.options import (
     OptionsPage,

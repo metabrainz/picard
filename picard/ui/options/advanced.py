@@ -30,6 +30,7 @@ from picard.config import (
     get_config,
 )
 from picard.const import QUERY_LIMIT
+from picard.i18n import N_
 
 from picard.ui.options import (
     OptionsPage,

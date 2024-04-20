@@ -32,16 +32,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-import builtins
 from collections import OrderedDict
 
 from picard import PICARD_VERSION
 from picard.const import appdirs
 from picard.const.attributes import MB_ATTRIBUTES
-
-
-# Install gettext "noop" function in case const.py gets imported directly.
-builtins.__dict__['N_'] = lambda a: a
+from picard.i18n import N_
 
 
 # Config directory

@@ -39,6 +39,11 @@ from picard.config import (
     get_config,
 )
 from picard.const import DEFAULT_COPY_TEXT
+from picard.i18n import (
+    N_,
+    _,
+    gettext_constants,
+)
 from picard.profile import UserProfileGroups
 from picard.script import get_file_naming_script_presets
 from picard.util import get_base_title

@@ -84,6 +84,11 @@ from picard.const.sys import (
 )
 from picard.file import File
 from picard.formats import supported_formats
+from picard.i18n import (
+    N_,
+    _,
+    ngettext,
+)
 from picard.plugin import ExtensionPoint
 from picard.script import get_file_naming_script_presets
 from picard.track import Track

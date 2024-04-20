@@ -40,6 +40,10 @@ from picard.config import (
     ListOption,
     get_config,
 )
+from picard.i18n import (
+    N_,
+    _,
+)
 from picard.util import icontheme
 
 from picard.ui import PicardDialog

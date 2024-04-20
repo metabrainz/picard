@@ -29,6 +29,7 @@ from picard.config import (
     get_config,
 )
 from picard.file import FILE_COMPARISON_WEIGHTS
+from picard.i18n import _
 from picard.mbjson import (
     countries_from_node,
     recording_to_metadata,

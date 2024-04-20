@@ -31,6 +31,7 @@ from PyQt6 import QtCore
 
 from picard.const import PICARD_URLS
 from picard.formats import supported_extensions
+from picard.i18n import _
 from picard.util import versions
 
 from picard.ui import (

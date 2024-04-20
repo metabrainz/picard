@@ -31,6 +31,7 @@ from picard.cluster import (
     Cluster,
     ClusterList,
 )
+from picard.i18n import N_
 from picard.script import (
     ScriptError,
     ScriptParser,

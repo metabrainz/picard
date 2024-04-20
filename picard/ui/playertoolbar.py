@@ -34,6 +34,10 @@ from PyQt6 import (
 from picard import log
 from picard.config import get_config
 from picard.const.sys import IS_MACOS
+from picard.i18n import (
+    N_,
+    _,
+)
 from picard.util import (
     format_time,
     icontheme,

@@ -46,6 +46,7 @@ from picard.config import (
 )
 from picard.const.sys import IS_MACOS
 from picard.formats import supported_formats
+from picard.i18n import _
 from picard.util import find_existing_path
 
 

@@ -43,6 +43,7 @@ from picard.const import (
 )
 from picard.const.sys import IS_WIN
 from picard.file import File
+from picard.i18n import N_
 from picard.util import (
     find_executable,
     win_prefix_longpath,

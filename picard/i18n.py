@@ -21,8 +21,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
-import builtins
 import gettext
 import locale
 import os
@@ -35,10 +33,8 @@ from picard.const.sys import (
 )
 
 
-builtins.__dict__['N_'] = lambda a: a
-
-
 _logger = None
+_translation = dict()
 
 
 def set_locale_from_env():
@@ -171,20 +167,53 @@ def setup_gettext(localedir, ui_language=None, logger=None):
     _logger("Using locale: %r", current_locale)
     QLocale.setDefault(QLocale(current_locale))
 
-    trans = _load_translation('picard', localedir, language=current_locale)
-    trans_attributes = _load_translation('picard-attributes', localedir, language=current_locale)
-    trans_constants = _load_translation('picard-constants', localedir, language=current_locale)
-    trans_countries = _load_translation('picard-countries', localedir, language=current_locale)
+    global _translation
+    _translation = {
+        'main': _load_translation('picard', localedir, language=current_locale),
+        'attributes': _load_translation('picard-attributes', localedir, language=current_locale),
+        'constants': _load_translation('picard-constants', localedir, language=current_locale),
+        'countries': _load_translation('picard-countries', localedir, language=current_locale),
+    }
+    _logger(_translation)
 
-    trans.install(['ngettext'])
-    builtins.__dict__['gettext_attributes'] = trans_attributes.gettext
-    builtins.__dict__['gettext_constants'] = trans_constants.gettext
-    builtins.__dict__['gettext_countries'] = trans_countries.gettext
-    builtins.__dict__['pgettext_attributes'] = trans_attributes.pgettext
 
-    _logger("_ = %r", _)
-    _logger("N_ = %r", N_)
-    _logger("ngettext = %r", ngettext)
-    _logger("gettext_countries = %r", gettext_countries)
-    _logger("gettext_attributes = %r", gettext_attributes)
-    _logger("pgettext_attributes = %r", pgettext_attributes)
+def _get_translation(key: str) -> gettext.NullTranslations:
+    try:
+        return _translation[key]
+    except KeyError:
+        return gettext.NullTranslations()
+
+
+def _gettext(message: str) -> str:
+    """Translate the messsage using the current translator."""
+    return _get_translation('main').gettext(message)
+
+
+def _(message: str) -> str:
+    """Alias for gettext"""
+    return _gettext(message)
+
+
+def N_(message: str) -> str:
+    """No-op marker for translatable strings"""
+    return message
+
+
+def ngettext(singular: str, plural: str, n: int) -> str:
+    return _get_translation('main').ngettext(singular, plural, n)
+
+
+def pgettext_attributes(context: str, message: str) -> str:
+    return _get_translation('attributes').pgettext(context, message)
+
+
+def gettext_attributes(message: str) -> str:
+    return _get_translation('attributes').gettext(message)
+
+
+def gettext_countries(message: str) -> str:
+    return _get_translation('countries').gettext(message)
+
+
+def gettext_constants(message: str) -> str:
+    return _get_translation('constants').gettext(message)

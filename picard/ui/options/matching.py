@@ -26,6 +26,7 @@ from picard.config import (
     FloatOption,
     get_config,
 )
+from picard.i18n import N_
 
 from picard.ui.options import (
     OptionsPage,
