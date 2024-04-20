@@ -179,6 +179,48 @@ class TrackSearchDialog(SearchDialog):
         for row in rows:
             self.load_selection(row)
 
+    def _load_selection_non_nat(self, track, node):
+        recording_id = track['musicbrainz_recordingid']
+        album_id = track['musicbrainz_albumid']
+        releasegroup_id = track['musicbrainz_releasegroupid']
+        file = self.file_
+
+        self.tagger.get_release_group_by_id(releasegroup_id).loaded_albums.add(album_id)
+        if file:
+            # Search is performed for a file.
+            if isinstance(file.parent, Track):
+                # Have to move that file from its existing album to the new one.
+                album = file.parent.album
+                self.tagger.move_file_to_track(file, album_id, recording_id)
+                if album.get_num_total_files() == 0:
+                    # Remove album if it has no more files associated
+                    self.tagger.remove_album(album)
+            else:
+                # No parent album
+                self.tagger.move_file_to_track(file, album_id, recording_id)
+        else:
+            # No files associated. Just a normal search.
+            self.tagger.load_album(album_id)
+
+    def _load_selection_nat(self, track, node):
+        recording_id = track['musicbrainz_recordingid']
+        file = self.file_
+
+        if file:
+            # Search is performed for a file.
+            if getattr(file.parent, 'album', None):
+                # Have to move that file from its existing album to NAT.
+                album = file.parent.album
+                self.tagger.move_file_to_nat(file, recording_id, node)
+                if album.get_num_total_files() == 0:
+                    self.tagger.remove_album(album)
+            else:
+                # No parent album
+                self.tagger.move_file_to_nat(file, recording_id, node)
+        else:
+            # No files associated. Just a normal search
+            self.tagger.load_nat(recording_id, node)
+
     def load_selection(self, row):
         """Load the album corresponding to the selected track.
         If the search is performed for a file, also associate the file to
@@ -188,29 +230,7 @@ class TrackSearchDialog(SearchDialog):
         track, node = self.search_results[row]
         if track.get('musicbrainz_albumid'):
             # The track is not an NAT
-            self.tagger.get_release_group_by_id(track['musicbrainz_releasegroupid']).loaded_albums.add(
-                track['musicbrainz_albumid'])
-            if self.file_:
-                # Search is performed for a file.
-                # Have to move that file from its existing album to the new one.
-                if isinstance(self.file_.parent, Track):
-                    album = self.file_.parent.album
-                    self.tagger.move_file_to_track(self.file_, track['musicbrainz_albumid'], track['musicbrainz_recordingid'])
-                    if album.get_num_total_files() == 0:
-                        # Remove album if it has no more files associated
-                        self.tagger.remove_album(album)
-                else:
-                    self.tagger.move_file_to_track(self.file_, track['musicbrainz_albumid'], track['musicbrainz_recordingid'])
-            else:
-                # No files associated. Just a normal search.
-                self.tagger.load_album(track['musicbrainz_albumid'])
+            self._load_selection_non_nat(track, node)
         else:
-            if self.file_ and getattr(self.file_.parent, 'album', None):
-                album = self.file_.parent.album
-                self.tagger.move_file_to_nat(self.file_, track['musicbrainz_recordingid'], node)
-                if album.get_num_total_files() == 0:
-                    self.tagger.remove_album(album)
-            else:
-                self.tagger.load_nat(track['musicbrainz_recordingid'], node)
-                if self.file_:
-                    self.tagger.move_file_to_nat(self.file_, track['musicbrainz_recordingid'], node)
+            # Track is a Non Album Track (NAT)
+            self._load_selection_nat(track, node)
