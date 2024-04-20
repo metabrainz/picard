@@ -183,38 +183,40 @@ class TrackSearchDialog(SearchDialog):
         recording_id = track['musicbrainz_recordingid']
         album_id = track['musicbrainz_albumid']
         releasegroup_id = track['musicbrainz_releasegroupid']
+        file = self.file_
 
         self.tagger.get_release_group_by_id(releasegroup_id).loaded_albums.add(album_id)
-        if self.file_:
+        if file:
             # Search is performed for a file.
-            if isinstance(self.file_.parent, Track):
+            if isinstance(file.parent, Track):
                 # Have to move that file from its existing album to the new one.
-                album = self.file_.parent.album
-                self.tagger.move_file_to_track(self.file_, album_id, recording_id)
+                album = file.parent.album
+                self.tagger.move_file_to_track(file, album_id, recording_id)
                 if album.get_num_total_files() == 0:
                     # Remove album if it has no more files associated
                     self.tagger.remove_album(album)
             else:
                 # No parent album
-                self.tagger.move_file_to_track(self.file_, album_id, recording_id)
+                self.tagger.move_file_to_track(file, album_id, recording_id)
         else:
             # No files associated. Just a normal search.
             self.tagger.load_album(album_id)
 
     def _load_selection_nat(self, track, node):
         recording_id = track['musicbrainz_recordingid']
+        file = self.file_
 
-        if self.file_:
+        if file:
             # Search is performed for a file.
-            if getattr(self.file_.parent, 'album', None):
+            if getattr(file.parent, 'album', None):
                 # Have to move that file from its existing album to NAT.
-                album = self.file_.parent.album
-                self.tagger.move_file_to_nat(self.file_, recording_id, node)
+                album = file.parent.album
+                self.tagger.move_file_to_nat(file, recording_id, node)
                 if album.get_num_total_files() == 0:
                     self.tagger.remove_album(album)
             else:
                 # No parent album
-                self.tagger.move_file_to_nat(self.file_, recording_id, node)
+                self.tagger.move_file_to_nat(file, recording_id, node)
         else:
             # No files associated. Just a normal search
             self.tagger.load_nat(recording_id, node)
