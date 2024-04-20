@@ -387,6 +387,7 @@ class NonAlbumTrack(Track):
 
     def load(self, priority=False, refresh=False):
         self.metadata.copy(self.album.metadata, copy_images=False)
+        self.genres.clear()
         self.status = _("[loading recording information]")
         self.clear_errors()
         self.loaded = False
