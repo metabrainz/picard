@@ -181,24 +181,25 @@ class TrackSearchDialog(SearchDialog):
 
     def _load_selection_non_nat(self, track, node):
         recording_id = track['musicbrainz_recordingid']
+        album_id = track['musicbrainz_albumid']
 
         self.tagger.get_release_group_by_id(track['musicbrainz_releasegroupid']).loaded_albums.add(
-            track['musicbrainz_albumid'])
+            album_id)
         if self.file_:
             # Search is performed for a file.
             if isinstance(self.file_.parent, Track):
                 # Have to move that file from its existing album to the new one.
                 album = self.file_.parent.album
-                self.tagger.move_file_to_track(self.file_, track['musicbrainz_albumid'], recording_id)
+                self.tagger.move_file_to_track(self.file_, album_id, recording_id)
                 if album.get_num_total_files() == 0:
                     # Remove album if it has no more files associated
                     self.tagger.remove_album(album)
             else:
                 # No parent album
-                self.tagger.move_file_to_track(self.file_, track['musicbrainz_albumid'], recording_id)
+                self.tagger.move_file_to_track(self.file_, album_id, recording_id)
         else:
             # No files associated. Just a normal search.
-            self.tagger.load_album(track['musicbrainz_albumid'])
+            self.tagger.load_album(album_id)
 
     def _load_selection_nat(self, track, node):
         recording_id = track['musicbrainz_recordingid']
