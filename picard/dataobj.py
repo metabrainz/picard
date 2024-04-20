@@ -37,12 +37,16 @@ class DataObject(LockableObject):
     def __init__(self, obj_id):
         super().__init__()
         self.id = obj_id
-        self.genres = Counter()
         self.item = None
+        self._genres = Counter()
+
+    @property
+    def genres(self):
+        return self._genres
 
     def add_genre(self, name, count):
         if name:
-            self.genres[name] += count
+            self._genres[name] += count
 
     @staticmethod
     def set_genre_inc_params(inc, config=None):
