@@ -212,4 +212,5 @@ class TrackSearchDialog(SearchDialog):
                     self.tagger.remove_album(album)
             else:
                 self.tagger.load_nat(track['musicbrainz_recordingid'], node)
-                self.tagger.move_file_to_nat(self.file_, track['musicbrainz_recordingid'], node)
+                if self.file_:
+                    self.tagger.move_file_to_nat(self.file_, track['musicbrainz_recordingid'], node)
