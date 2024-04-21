@@ -50,8 +50,7 @@ jobs:
         PYINSTALLER_COMPILE_BOOTLOADER: "1"
     - name: Run tests
       timeout-minutes: 30
-      run: |
-        python3 setup.py test
+      run: pytest --verbose
     - name: Prepare code signing certificate
       run: |
         if [ -n "$CODESIGN_MACOS_P12_URL" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then

@@ -60,7 +60,7 @@ jobs:
         python setup.py patch_version --platform=$Env:BUILD_NUMBER.$(git rev-parse --short HEAD)
     - name: Run tests
       timeout-minutes: 30
-      run: python setup.py test
+      run: pytest --verbose
     - name: Prepare code signing certificate
       if: matrix.type != 'store-app'
       run: |
