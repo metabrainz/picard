@@ -21,7 +21,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import gettext
+import gettext as module_gettext
 import locale
 import os
 
@@ -112,10 +112,10 @@ def _try_locales(language):
 def _load_translation(domain, localedir, language):
     try:
         _logger("Loading gettext translation for %s, localedir=%r, language=%r", domain, localedir, language)
-        return gettext.translation(domain, localedir, languages=[language])
+        return module_gettext.translation(domain, localedir, languages=[language])
     except OSError as e:
         _logger(e)
-        return gettext.NullTranslations()
+        return module_gettext.NullTranslations()
 
 
 def _log_lang_env_vars():
@@ -177,21 +177,21 @@ def setup_gettext(localedir, ui_language=None, logger=None):
     _logger(_translation)
 
 
-def _get_translation(key: str) -> gettext.NullTranslations:
+def _get_translation(key: str) -> module_gettext.NullTranslations:
     try:
         return _translation[key]
     except KeyError:
-        return gettext.NullTranslations()
+        return module_gettext.NullTranslations()
 
 
-def _gettext(message: str) -> str:
+def gettext(message: str) -> str:
     """Translate the messsage using the current translator."""
     return _get_translation('main').gettext(message)
 
 
 def _(message: str) -> str:
     """Alias for gettext"""
-    return _gettext(message)
+    return gettext(message)
 
 
 def N_(message: str) -> str:
