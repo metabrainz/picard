@@ -58,7 +58,6 @@ class TestPicardProfilesCommon(PicardTestCase):
 
         self.configpath = os.path.join(self.tmp_directory, 'test.ini')
         shutil.copy(os.path.join('test', 'data', 'test.ini'), self.configpath)
-        self.addCleanup(os.remove, self.configpath)
 
         self.config = Config.from_file(None, self.configpath)
         self.addCleanup(self.cleanup_config_obj)
@@ -94,6 +93,7 @@ class TestPicardProfilesCommon(PicardTestCase):
         self.config.sync()
         del self.config
         self.config = None
+        os.remove(self.configpath)
 
     def get_profiles(self, enabled=True):
         profiles = []
