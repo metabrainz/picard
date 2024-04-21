@@ -132,7 +132,7 @@ else:
             'CFBundleVersion': '%d.%d.%d' % PICARD_VERSION[:3],
             'CFBundleShortVersionString': PICARD_VERSION.short_str(),
             'LSApplicationCategoryType': 'public.app-category.music',
-            'LSMinimumSystemVersion': os.environ.get('MACOSX_DEPLOYMENT_TARGET', '10.14'),
+            'LSMinimumSystemVersion': os.environ.get('MACOSX_DEPLOYMENT_TARGET', '11.0'),
             'NSHighResolutionCapable': True,
             'NSPrincipalClass': 'NSApplication',
             'NSRequiresAquaSystemAppearance': False,
