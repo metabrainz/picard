@@ -83,8 +83,11 @@ def crash_handler(exc: Exception = None):
     from tempfile import NamedTemporaryFile
     import traceback
     if exc:
-        # Since Python 3.10 calling only traceback.format_exception(exc) is possible
-        trace = "\n".join(traceback.format_exception(type(exc), exc, exc.__traceback__))
+        if sys.version_info < (3, 10):
+            trace_list = traceback.format_exception(None, exc, exc.__traceback__)
+        else:
+            trace_list = traceback.format_exception(exc)  # pylint: disable=no-value-for-parameter
+        trace = "".join(trace_list)
     else:
         trace = traceback.format_exc()
     logfile = None
