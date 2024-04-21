@@ -50,8 +50,6 @@ cd dist
 
 echo "Create and sign app bundle..."
 APP_BUNDLE="MusicBrainz Picard.app"
-rm -r "$APP_BUNDLE"
-mv "$APP_BUNDLE.tmp" "$APP_BUNDLE"
 
 if [ "$CODESIGN" = '1' ]; then
     echo "Code signing app bundle ${APP_BUNDLE}..."
