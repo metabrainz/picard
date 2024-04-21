@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2008, 2011-2014 Lukáš Lalinský
-# Copyright (C) 2009, 2018-2023 Philipp Wolfer
+# Copyright (C) 2009, 2018-2024 Philipp Wolfer
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2012-2013 Michael Wiencek
 # Copyright (C) 2013-2024 Laurent Monin
@@ -31,6 +31,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import sys
 
 from picard.version import Version
 
@@ -67,14 +68,12 @@ api_versions = [
 api_versions_tuple = [Version.from_string(v) for v in api_versions]
 
 
-def crash_handler():
+def crash_handler(exc: Exception = None):
     """Implements minimal handling of an exception crashing the application.
     This function tries to log the exception to a log file and display
     a minimal crash dialog to the user.
     This function is supposed to be called from inside an except blog.
     """
-    import sys
-
     # Allow disabling the graphical crash handler for debugging and CI purposes.
     if set(sys.argv) & {'--no-crash-dialog', '-v', '--version', '-V', '--long-version', '-h', '--help'}:
         return
@@ -83,7 +82,14 @@ def crash_handler():
     # with minimum chance to fail.
     from tempfile import NamedTemporaryFile
     import traceback
-    trace = traceback.format_exc()
+    if exc:
+        if sys.version_info < (3, 10):
+            trace_list = traceback.format_exception(None, exc, exc.__traceback__)
+        else:
+            trace_list = traceback.format_exception(exc)  # pylint: disable=no-value-for-parameter
+        trace = "".join(trace_list)
+    else:
+        trace = traceback.format_exc()
     logfile = None
     try:
         with NamedTemporaryFile(suffix='.log', prefix='picard-crash-', delete=False) as f:
@@ -124,3 +130,12 @@ def crash_handler():
     msgbox.setDefaultButton(QMessageBox.StandardButton.Close)
     msgbox.exec()
     app.quit()
+
+
+def _global_exception_handler(exctype, value, traceback):
+    from picard import crash_handler
+    crash_handler(exc=value)
+    sys.__excepthook__(exctype, value, traceback)
+
+
+sys.excepthook = _global_exception_handler
