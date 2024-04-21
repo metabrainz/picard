@@ -27,7 +27,7 @@ from enum import IntEnum
 from picard.const import MB_ATTRIBUTES
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
     pgettext_attributes,
 )
 

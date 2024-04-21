@@ -37,7 +37,7 @@ from picard.const import DEFAULT_COVER_IMAGE_FILENAME
 from picard.coverart.providers import cover_art_providers
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
 )
 
 from picard.ui.checkbox_list_item import CheckboxListItem

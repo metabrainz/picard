@@ -39,7 +39,7 @@ from picard.config import (
 from picard.config_upgrade import upgrade_config
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
 )
 from picard.util import open_local_path
 

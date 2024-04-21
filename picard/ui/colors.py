@@ -27,7 +27,7 @@ from PyQt6 import QtGui
 from picard.config import get_config
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
 )
 
 from picard.ui.theme import theme

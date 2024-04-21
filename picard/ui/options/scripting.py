@@ -42,7 +42,7 @@ from picard.config import (
 from picard.const.sys import IS_MACOS
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
 )
 from picard.script import ScriptParser
 from picard.script.serializer import (

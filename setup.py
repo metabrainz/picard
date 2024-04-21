@@ -385,7 +385,7 @@ class picard_build_ui(Command):
             rc = re.compile(r'\n# WARNING.*?(?=\n\n)', re.MULTILINE | re.DOTALL)
             comment = ("\n# Automatically generated - do not edit.\n"
                        "# Use `python setup.py %s` to update it.\n\n"
-                       "from picard.i18n import _"
+                       "from picard.i18n import gettext as _"
                        % _get_option_name(self))
             for r in list(_translate_re):
                 source = r.sub(r'_(\1)', source)

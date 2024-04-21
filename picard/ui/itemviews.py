@@ -77,7 +77,7 @@ from picard.file import (
 )
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
 )
 from picard.plugin import ExtensionPoint
 from picard.track import (

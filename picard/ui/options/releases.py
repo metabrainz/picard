@@ -45,7 +45,7 @@ from picard.const.countries import RELEASE_COUNTRIES
 from picard.const.sys import IS_WIN
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
     gettext_countries,
     pgettext_attributes,
 )

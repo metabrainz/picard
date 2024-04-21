@@ -28,7 +28,7 @@ from secrets import token_bytes
 from PyQt6.QtCore import QCoreApplication
 
 from picard import log
-from picard.i18n import _
+from picard.i18n import gettext as _
 from picard.util import format_time
 from picard.util.mbserver import build_submission_url
 from picard.util.webbrowser2 import open

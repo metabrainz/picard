@@ -45,7 +45,7 @@ from picard.const import (
 )
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
 )
 from picard.util import make_filename_from_title
 

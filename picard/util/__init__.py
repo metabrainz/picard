@@ -83,7 +83,7 @@ from picard.const.sys import (
     IS_WIN,
 )
 from picard.i18n import (
-    _,
+    gettext as _,
     gettext_constants,
 )
 

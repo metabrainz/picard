@@ -48,7 +48,7 @@ from picard.config import (
 )
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
 )
 from picard.profile import UserProfileGroups
 from picard.util import restore_method

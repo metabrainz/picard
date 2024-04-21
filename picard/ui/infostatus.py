@@ -30,7 +30,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard.i18n import _
+from picard.i18n import gettext as _
 from picard.util import icontheme
 from picard.util.time import get_timestamp
 

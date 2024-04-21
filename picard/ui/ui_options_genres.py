@@ -5,7 +5,7 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
-from picard.i18n import _
+from picard.i18n import gettext as _
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets

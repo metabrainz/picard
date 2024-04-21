@@ -23,7 +23,7 @@
 
 from collections import namedtuple
 
-from picard.i18n import _
+from picard.i18n import gettext as _
 
 
 SECS_IN_DAY = 86400

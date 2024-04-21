@@ -44,7 +44,7 @@ from picard.config import (
     get_config,
 )
 from picard.debug_opts import DebugOpt
-from picard.i18n import _
+from picard.i18n import gettext as _
 from picard.util import (
     reconnect,
     wildcards_to_regex_pattern,

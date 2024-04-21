@@ -27,7 +27,7 @@ from PyQt6 import (
 )
 
 from picard.const import PICARD_URLS
-from picard.i18n import _
+from picard.i18n import gettext as _
 from picard.script import script_function_documentation_all
 
 from picard.ui import FONT_FAMILY_MONOSPACE

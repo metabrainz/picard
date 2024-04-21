@@ -37,7 +37,7 @@ from picard.const import (
 )
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
     gettext_constants,
 )
 from picard.util import webbrowser2

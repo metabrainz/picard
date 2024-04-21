@@ -48,7 +48,7 @@ from picard.album import Album
 from picard.coverart.image import CoverArtImageIOError
 from picard.file import File
 from picard.i18n import (
-    _,
+    gettext as _,
     ngettext,
 )
 from picard.track import Track

@@ -34,7 +34,7 @@ from picard.collection import (
     user_collections,
 )
 from picard.i18n import (
-    _,
+    gettext as _,
     ngettext,
 )
 from picard.util import strxfrm

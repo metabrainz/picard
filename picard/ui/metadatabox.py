@@ -53,7 +53,7 @@ from picard.config import (
 )
 from picard.file import File
 from picard.i18n import (
-    _,
+    gettext as _,
     ngettext,
 )
 from picard.metadata import MULTI_VALUED_JOINER

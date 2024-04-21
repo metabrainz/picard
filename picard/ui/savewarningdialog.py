@@ -28,7 +28,7 @@ from PyQt6 import (
 
 from picard.config import get_config
 from picard.i18n import (
-    _,
+    gettext as _,
     ngettext,
 )
 

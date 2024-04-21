@@ -54,7 +54,7 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
-from picard.i18n import _
+from picard.i18n import gettext as _
 from picard.util import (
     IgnoreUpdatesContext,
     album_artist_from_path,

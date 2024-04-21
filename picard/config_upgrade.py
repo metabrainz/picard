@@ -53,7 +53,7 @@ from picard.const import (
 )
 from picard.const.sys import IS_FROZEN
 from picard.i18n import (
-    _,
+    gettext as _,
     gettext_constants,
 )
 from picard.util import unique_numbered_title

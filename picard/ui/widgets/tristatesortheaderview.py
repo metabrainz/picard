@@ -25,7 +25,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard.i18n import _
+from picard.i18n import gettext as _
 
 
 class TristateSortHeaderView(QtWidgets.QHeaderView):

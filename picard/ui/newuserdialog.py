@@ -27,7 +27,7 @@ from PyQt6 import (
 )
 
 from picard.const import PICARD_URLS
-from picard.i18n import _
+from picard.i18n import gettext as _
 
 
 class NewUserDialog():

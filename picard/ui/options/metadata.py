@@ -46,7 +46,7 @@ from picard.const.scripts import (
 )
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
     gettext_constants,
 )
 

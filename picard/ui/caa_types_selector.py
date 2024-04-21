@@ -39,7 +39,7 @@ from PyQt6 import (
 
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
 )
 
 from picard.ui import PicardDialog

@@ -46,7 +46,7 @@ from picard.const.languages import UI_LANGUAGES
 from picard.const.sys import IS_MACOS
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
     gettext_constants,
 )
 from picard.util import strxfrm

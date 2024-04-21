@@ -43,7 +43,7 @@ from picard.const import (
 )
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
 )
 from picard.script.functions import (  # noqa: F401 # pylint: disable=unused-import
     register_script_function,

@@ -34,7 +34,7 @@ from picard import log
 from picard.dataobj import DataObject
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
     pgettext_attributes,
 )
 from picard.mbjson import (

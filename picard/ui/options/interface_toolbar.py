@@ -42,7 +42,7 @@ from picard.config import (
 )
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
 )
 from picard.util import icontheme
 

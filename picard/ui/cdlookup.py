@@ -37,7 +37,7 @@ from picard.config import (
     Option,
     get_config,
 )
-from picard.i18n import _
+from picard.i18n import gettext as _
 from picard.mbjson import (
     artist_credit_from_node,
     label_info_from_node,

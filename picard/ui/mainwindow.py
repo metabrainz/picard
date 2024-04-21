@@ -86,7 +86,7 @@ from picard.file import File
 from picard.formats import supported_formats
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
     ngettext,
 )
 from picard.plugin import ExtensionPoint

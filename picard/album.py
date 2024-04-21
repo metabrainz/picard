@@ -61,7 +61,7 @@ from picard.dataobj import DataObject
 from picard.file import File
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
 )
 from picard.mbjson import (
     medium_to_metadata,

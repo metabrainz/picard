@@ -32,9 +32,9 @@ from test.picardtestcase import PicardTestCase
 
 from picard.i18n import (
     N_,
-    _,
     _try_encodings,
     _try_locales,
+    gettext as _,
     gettext_constants,
     gettext_countries,
     ngettext,

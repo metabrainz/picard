@@ -41,7 +41,7 @@ from picard.config import (
 from picard.const import DEFAULT_COPY_TEXT
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
     gettext_constants,
 )
 from picard.profile import UserProfileGroups

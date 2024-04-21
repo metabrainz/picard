@@ -40,7 +40,7 @@ from picard.const.sys import (
 )
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
 )
 from picard.util import find_existing_path
 

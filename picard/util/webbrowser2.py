@@ -34,7 +34,7 @@ import webbrowser
 from PyQt6 import QtWidgets
 
 from picard.const import PICARD_URLS
-from picard.i18n import _
+from picard.i18n import gettext as _
 
 
 def open(url):

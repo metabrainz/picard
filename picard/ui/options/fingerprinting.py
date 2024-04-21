@@ -42,7 +42,7 @@ from picard.config import (
 from picard.const import DEFAULT_FPCALC_THREADS
 from picard.i18n import (
     N_,
-    _,
+    gettext as _,
 )
 from picard.util import webbrowser2
 
