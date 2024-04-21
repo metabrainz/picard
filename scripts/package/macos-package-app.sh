@@ -50,7 +50,6 @@ cd dist
 
 echo "Create and sign app bundle..."
 APP_BUNDLE="MusicBrainz Picard.app"
-ditto -rsrc --arch x86_64 "$APP_BUNDLE" "$APP_BUNDLE.tmp"
 rm -r "$APP_BUNDLE"
 mv "$APP_BUNDLE.tmp" "$APP_BUNDLE"
 
