@@ -461,8 +461,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             return hasattr(obj, 'keys') and hasattr(obj, '__getitem__')
 
         echo = kwargs.get('echo', log.debug)
-        # _ is defined using builtins.__dict__, so setting it as default named argument
-        # value doesn't work as expected
         translate = kwargs.get('translate', _)
         timeout = kwargs.get('timeout', 0)
         history = kwargs.get('history', log.history_info)
