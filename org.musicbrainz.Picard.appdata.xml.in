@@ -76,7 +76,7 @@
   <recommends>
     <control>keyboard</control>
     <control>pointing</control>
-    <display_length compare="ge">medium</display_length>
+    <display_length compare="ge">768</display_length>
     <internet>always</internet>
   </recommends>
 
