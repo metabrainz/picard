@@ -34,7 +34,14 @@ from picard.const.sys import (
 
 
 _logger = None
-_translation = dict()
+
+_null_translations = module_gettext.NullTranslations()
+_translation = {
+    'main':  _null_translations,
+    'attributes': _null_translations,
+    'constants': _null_translations,
+    'countries': _null_translations,
+}
 
 
 def set_locale_from_env():
@@ -177,16 +184,9 @@ def setup_gettext(localedir, ui_language=None, logger=None):
     _logger(_translation)
 
 
-def _get_translation(key: str) -> module_gettext.NullTranslations:
-    try:
-        return _translation[key]
-    except KeyError:
-        return module_gettext.NullTranslations()
-
-
 def gettext(message: str) -> str:
     """Translate the messsage using the current translator."""
-    return _get_translation('main').gettext(message)
+    return _translation['main'].gettext(message)
 
 
 def _(message: str) -> str:
@@ -200,20 +200,20 @@ def N_(message: str) -> str:
 
 
 def ngettext(singular: str, plural: str, n: int) -> str:
-    return _get_translation('main').ngettext(singular, plural, n)
+    return _translation['main'].ngettext(singular, plural, n)
 
 
 def pgettext_attributes(context: str, message: str) -> str:
-    return _get_translation('attributes').pgettext(context, message)
+    return _translation['attributes'].pgettext(context, message)
 
 
 def gettext_attributes(message: str) -> str:
-    return _get_translation('attributes').gettext(message)
+    return _translation['attributes'].gettext(message)
 
 
 def gettext_countries(message: str) -> str:
-    return _get_translation('countries').gettext(message)
+    return _translation['countries'].gettext(message)
 
 
 def gettext_constants(message: str) -> str:
-    return _get_translation('constants').gettext(message)
+    return _translation['constants'].gettext(message)
