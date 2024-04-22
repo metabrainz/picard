@@ -65,7 +65,8 @@ except ImportError:
 # required for PEP 517
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 
-from picard import (
+
+from picard import (  # noqa: E402
     PICARD_APP_ID,
     PICARD_APP_NAME,
     PICARD_DESKTOP_NAME,
@@ -369,30 +370,47 @@ class picard_build_ui(Command):
 
     def run(self):
         from PyQt6 import uic
+
         _translate_re = (
-            re.compile(
+            (re.compile(r'(\s+_translate = QtCore\.QCoreApplication\.translate)'), r''),
+            (re.compile(
                 r'QtGui\.QApplication.translate\(.*?, (.*?), None, '
-                r'QtGui\.QApplication\.UnicodeUTF8\)'),
-            re.compile(
-                r'\b_translate\(.*?, (.*?)(?:, None)?\)')
+                r'QtGui\.QApplication\.UnicodeUTF8\)'), r'_(\1)'),
+            (re.compile(r'\b_translate\(.*?, (.*?)(?:, None)?\)'), r'_(\1)'),
         )
 
         def compile_ui(uifile, pyfile):
-            log.info("compiling %s -> %s", uifile, pyfile)
             tmp = StringIO()
+            log.info("compiling %s -> %s", uifile, pyfile)
             uic.compileUi(uifile, tmp)
             source = tmp.getvalue()
-            rc = re.compile(r'\n# WARNING.*?(?=\n\n)', re.MULTILINE | re.DOTALL)
-            comment = ("\n# Automatically generated - do not edit.\n"
-                       "# Use `python setup.py %s` to update it.\n\n"
-                       "from picard.i18n import gettext as _"
-                       % _get_option_name(self))
-            for r in list(_translate_re):
-                source = r.sub(r'_(\1)', source)
-                source = rc.sub(comment, source)
-            f = open(pyfile, "w")
-            f.write(source)
-            f.close()
+
+            # replace QT translations stuff by ours
+            for matcher, replacement in _translate_re:
+                source = matcher.sub(replacement, source)
+
+            # replace headers
+            rc = re.compile(r'\n# WARNING.*?(?=\nclass )', re.MULTILINE | re.DOTALL)
+
+            command = _get_option_name(self)
+            new_header = f"""
+# Automatically generated - do not edit.
+# Use `python setup.py {command}` to update it.
+
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
+from picard.i18n import gettext as _
+
+"""
+            source = rc.sub(new_header, source)
+
+            # save to final file
+            with open(pyfile, "w") as f:
+                f.write(source)
 
         if self.files:
             for uifile, pyfile in self.files:
