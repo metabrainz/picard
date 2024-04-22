@@ -21,7 +21,6 @@
 from unittest.mock import (
     ANY,
     MagicMock,
-    patch,
 )
 
 from test.picardtestcase import (
@@ -58,6 +57,7 @@ class CollectionTest(PicardTestCase):
 
     def setUp(self):
         super().setUp()
+        self.tagger.mb_api = mb_api
         picard.collection.user_collections = {}
 
     def test_collection_init(self):
@@ -109,7 +109,6 @@ class CollectionTest(PicardTestCase):
         self.assertEqual({releases[2]}, collection.releases)
         collection.tagger.window.set_statusbar_message.assert_called_once()
 
-    @patch('PyQt6.QtCore.QObject.tagger.mb_api', mb_api, create=True)
     def test_get_user_collection(self):
         self.assertEqual({}, picard.collection.user_collections)
         collection1 = get_user_collection('foo')
@@ -123,7 +122,6 @@ class CollectionTest(PicardTestCase):
             picard.collection.user_collections,
         )
 
-    @patch('PyQt6.QtCore.QObject.tagger.mb_api', mb_api, create=True)
     def test_add_release_to_user_collections(self):
         self.set_config_values(persist={'oauth_username': 'theuser'})
         release_node = {
@@ -156,7 +154,6 @@ class CollectionTest(PicardTestCase):
         self.assertIn(release_node['id'], collection3.releases)
         self.assertEqual(0, collection3.size)
 
-    @patch('PyQt6.QtCore.QObject.tagger.mb_api', mb_api, create=True)
     def test_load_user_collections(self):
         self.tagger.webservice.oauth_manager.is_authorized.return_value = True
         picard.collection.user_collections['old-collection'] = Collection('old-collection', mb_api)
@@ -169,7 +166,6 @@ class CollectionTest(PicardTestCase):
         self.assertEqual(collection1.name, 'My Collection')
         self.assertEqual(collection1.size, 402)
 
-    @patch('PyQt6.QtCore.QObject.tagger.mb_api', mb_api, create=True)
     def test_load_user_collections_not_authorized(self):
         self.tagger.webservice.oauth_manager.is_authorized.return_value = False
         picard.collection.user_collections['old-collection'] = Collection('old-collection', mb_api)

@@ -5,7 +5,7 @@
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2018 Wieland Hoffmann
 # Copyright (C) 2018, 2020-2021 Laurent Monin
-# Copyright (C) 2019, 2022 Philipp Wolfer
+# Copyright (C) 2019, 2022, 2024 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@
 
 
 from unittest.mock import (
+    MagicMock,
     Mock,
     patch,
 )
@@ -122,23 +123,22 @@ class BrowserLookupTest(PicardTestCase):
         url = mock_open.call_args[0][0]
         self.assert_mb_entity_url_matches(url, 'area', 'f03d09b3-39dc-4083-afd6-159e3f0d462f')
 
-    @patch('PyQt6.QtCore.QObject.tagger')
-    def test_mbid_lookup_release(self, mock_tagger):
+    def test_mbid_lookup_release(self):
+        self.tagger.load_album = MagicMock()
         url = 'https://musicbrainz.org/release/60dbf818-3058-41b9-bb53-25dbdb9d9bad'
         result = self.lookup.mbid_lookup(url)
         self.assertTrue(result)
-        mock_tagger.load_album.assert_called_once_with('60dbf818-3058-41b9-bb53-25dbdb9d9bad')
+        self.tagger.load_album.assert_called_once_with('60dbf818-3058-41b9-bb53-25dbdb9d9bad')
 
-    @patch('PyQt6.QtCore.QObject.tagger')
-    def test_mbid_lookup_recording(self, mock_tagger):
+    def test_mbid_lookup_recording(self):
+        self.tagger.load_nat = MagicMock()
         url = 'https://musicbrainz.org/recording/511f3a33-ded8-4dc7-92d2-b913ec420dfc'
         result = self.lookup.mbid_lookup(url)
         self.assertTrue(result)
-        mock_tagger.load_nat.assert_called_once_with('511f3a33-ded8-4dc7-92d2-b913ec420dfc')
+        self.tagger.load_nat.assert_called_once_with('511f3a33-ded8-4dc7-92d2-b913ec420dfc')
 
-    @patch('PyQt6.QtCore.QObject.tagger')
     @patch('picard.browser.filelookup.AlbumSearchDialog')
-    def test_mbid_lookup_release_group(self, mock_dialog, mock_tagger):
+    def test_mbid_lookup_release_group(self, mock_dialog):
         url = 'https://musicbrainz.org/release-group/168615bf-f841-49f7-ac98-36a4eb25479c'
         result = self.lookup.mbid_lookup(url)
         self.assertTrue(result)
