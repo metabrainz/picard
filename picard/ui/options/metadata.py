@@ -44,6 +44,11 @@ from picard.const.scripts import (
     SCRIPTS,
     scripts_sorted_by_localized_name,
 )
+from picard.i18n import (
+    N_,
+    gettext as _,
+    gettext_constants,
+)
 
 from picard.ui import PicardDialog
 from picard.ui.moveable_list_view import MoveableListView

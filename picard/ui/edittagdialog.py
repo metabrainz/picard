@@ -39,6 +39,7 @@ from picard.const import (
     RELEASE_STATUS,
 )
 from picard.const.countries import RELEASE_COUNTRIES
+from picard.i18n import gettext as _
 from picard.util.tags import TAG_NAMES
 
 from picard.ui import PicardDialog

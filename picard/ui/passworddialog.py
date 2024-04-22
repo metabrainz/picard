@@ -27,6 +27,7 @@
 
 
 from picard.config import get_config
+from picard.i18n import gettext as _
 
 from picard.ui import PicardDialog
 from picard.ui.ui_passworddialog import Ui_PasswordDialog

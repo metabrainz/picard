@@ -32,6 +32,11 @@ It supports l10n through gettext, decimal and binary units.
 
 import locale
 
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
+
 
 # used to force gettextization
 _BYTES_STRINGS_I18N = (

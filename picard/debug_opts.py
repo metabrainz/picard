@@ -20,6 +20,8 @@
 
 from enum import Enum
 
+from picard.i18n import N_
+
 
 class DebugOptEnum(int, Enum):
     __registry__ = set()

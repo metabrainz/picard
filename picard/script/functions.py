@@ -45,6 +45,11 @@ import re
 import unicodedata
 
 from picard.const.countries import RELEASE_COUNTRIES
+from picard.i18n import (
+    N_,
+    gettext as _,
+    gettext_countries,
+)
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.script.parser import (
     MultiValue,

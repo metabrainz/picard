@@ -35,6 +35,7 @@ from picard.coverart.providers.provider import (
     ProviderOptions,
 )
 from picard.coverart.utils import CAA_TYPES
+from picard.i18n import N_
 
 from picard.ui.ui_provider_options_local import Ui_LocalOptions
 

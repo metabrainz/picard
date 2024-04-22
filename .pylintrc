@@ -283,8 +283,7 @@ min-similarity-lines=4
 
 # List of additional names supposed to be defined in builtins. Remember that
 # you should avoid defining new builtins when possible.
-additional-builtins=_, N_, ngettext, gettext_attributes, pgettext_attributes,
-                    gettext_constants, gettext_countries
+additional-builtins=
 
 # Tells whether unused global variables should be treated as a violation.
 allow-global-unused-variables=yes

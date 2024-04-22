@@ -28,6 +28,7 @@ from picard.config import (
     TextOption,
     get_config,
 )
+from picard.i18n import N_
 
 from picard.ui.options import (
     OptionsPage,

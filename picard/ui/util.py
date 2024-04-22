@@ -38,6 +38,10 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.util import find_existing_path
 
 

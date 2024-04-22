@@ -59,6 +59,10 @@ from picard.config import get_config
 from picard.const import VARIOUS_ARTISTS_ID
 from picard.dataobj import DataObject
 from picard.file import File
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.mbjson import (
     medium_to_metadata,
     release_group_to_metadata,

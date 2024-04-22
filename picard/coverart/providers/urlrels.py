@@ -28,6 +28,7 @@
 from picard import log
 from picard.coverart.image import CoverArtImage
 from picard.coverart.providers.provider import CoverArtProvider
+from picard.i18n import N_
 
 
 class CoverArtProviderUrlRelationships(CoverArtProvider):

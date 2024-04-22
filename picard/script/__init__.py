@@ -41,6 +41,10 @@ from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
     DEFAULT_NAMING_PRESET_ID,
 )
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.script.functions import (  # noqa: F401 # pylint: disable=unused-import
     register_script_function,
     script_function,

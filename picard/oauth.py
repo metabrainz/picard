@@ -36,6 +36,7 @@ from picard.const import (
     MUSICBRAINZ_OAUTH_CLIENT_ID,
     MUSICBRAINZ_OAUTH_CLIENT_SECRET,
 )
+from picard.i18n import gettext as _
 from picard.util import (
     build_qurl,
     load_json,

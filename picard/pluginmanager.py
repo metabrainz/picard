@@ -44,6 +44,10 @@ from picard.const import (
     USER_PLUGIN_DIR,
 )
 from picard.const.sys import IS_FROZEN
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.plugin import (
     _PLUGIN_MODULE_PREFIX,
     PluginData,

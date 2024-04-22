@@ -30,7 +30,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-import builtins
 import copy
 import datetime
 import re
@@ -1970,12 +1969,6 @@ class ScriptParserTest(PicardTestCase):
         context["bar"] = ""
         context["baz"] = "INVALID"
 
-        # Ensure that `builtins` contains a `gettext_countries` attribute to avoid an `AttributeError`
-        # exception when mocking the function, in case the `picard.i18n` module has not been loaded.
-        # This is required by the $countryname() function in order to translate the country names.
-        if not hasattr(builtins, 'gettext_countries'):
-            builtins.__dict__['gettext_countries'] = None
-
         # Mock function to simulate English locale.
         def mock_gettext_countries_en(arg):
             return arg
@@ -1985,7 +1978,7 @@ class ScriptParserTest(PicardTestCase):
             return "Канада" if arg == 'Canada' else arg
 
         # Test with Russian locale
-        with mock.patch('builtins.gettext_countries', mock_gettext_countries_ru):
+        with mock.patch('picard.script.functions.gettext_countries', mock_gettext_countries_ru):
             self.assertScriptResultEquals("$countryname(ca)", "Canada", context)
             self.assertScriptResultEquals("$countryname(ca,)", "Canada", context)
             self.assertScriptResultEquals("$countryname(ca, )", "Канада", context)
@@ -1995,7 +1988,7 @@ class ScriptParserTest(PicardTestCase):
             self.assertScriptResultEquals("$countryname(fr,yes)", "France", context)
 
         # Reset locale to English for remaining tests
-        with mock.patch('builtins.gettext_countries', mock_gettext_countries_en):
+        with mock.patch('picard.script.functions.gettext_countries', mock_gettext_countries_en):
             self.assertScriptResultEquals("$countryname(ca,)", "Canada", context)
             self.assertScriptResultEquals("$countryname(ca,yes)", "Canada", context)
             self.assertScriptResultEquals("$countryname(ca)", "Canada", context)

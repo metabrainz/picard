@@ -37,6 +37,10 @@ from picard.config import (
     load_new_config,
 )
 from picard.config_upgrade import upgrade_config
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.util import open_local_path
 
 from picard.ui.options import (

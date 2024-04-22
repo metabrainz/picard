@@ -29,6 +29,7 @@ from functools import partial
 from PyQt6 import QtCore
 
 from picard import log
+from picard.i18n import N_
 from picard.util import load_json
 
 

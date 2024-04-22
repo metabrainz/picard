@@ -26,6 +26,7 @@ from picard.coverart.image import (
     CaaThumbnailCoverArtImage,
 )
 from picard.coverart.providers.caa import CoverArtProviderCaa
+from picard.i18n import N_
 
 
 class CaaCoverArtImageRg(CaaCoverArtImage):

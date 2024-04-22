@@ -25,6 +25,7 @@ from picard.config import (
     BoolOption,
     get_config,
 )
+from picard.i18n import N_
 
 from picard.ui.options import (
     OptionsPage,

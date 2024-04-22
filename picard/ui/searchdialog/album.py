@@ -36,6 +36,7 @@ from picard.config import (
     get_config,
 )
 from picard.const import CAA_URL
+from picard.i18n import gettext as _
 from picard.mbjson import (
     countries_from_node,
     media_formats_from_node,

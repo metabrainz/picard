@@ -30,7 +30,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-import builtins
 from collections import namedtuple
 from collections.abc import Iterator
 from locale import strxfrm as system_strxfrm
@@ -55,6 +54,7 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
+from picard.i18n import gettext as _
 from picard.util import (
     IgnoreUpdatesContext,
     album_artist_from_path,
@@ -82,11 +82,6 @@ from picard.util import (
     wildcards_to_regex_pattern,
     win_prefix_longpath,
 )
-
-
-# ensure _() is defined
-if '_' not in builtins.__dict__:
-    builtins.__dict__['_'] = lambda a: a
 
 
 class ReplaceWin32IncompatTest(PicardTestCase):

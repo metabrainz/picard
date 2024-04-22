@@ -52,6 +52,10 @@ from picard.config import (
     get_config,
 )
 from picard.file import File
+from picard.i18n import (
+    gettext as _,
+    ngettext,
+)
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.track import Track
 from picard.util import (

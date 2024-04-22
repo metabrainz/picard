@@ -41,6 +41,11 @@ from picard.const import (
     MUSICBRAINZ_SERVERS,
     PROGRAM_UPDATE_LEVELS,
 )
+from picard.i18n import (
+    N_,
+    gettext as _,
+    gettext_constants,
+)
 from picard.util.mbserver import is_official_server
 
 from picard.ui.options import (

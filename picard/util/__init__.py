@@ -82,6 +82,10 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
+from picard.i18n import (
+    gettext as _,
+    gettext_constants,
+)
 
 
 if IS_WIN:

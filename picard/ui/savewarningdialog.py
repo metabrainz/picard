@@ -27,6 +27,10 @@ from PyQt6 import (
 )
 
 from picard.config import get_config
+from picard.i18n import (
+    gettext as _,
+    ngettext,
+)
 
 
 class SaveWarningDialog():

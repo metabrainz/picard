@@ -27,6 +27,7 @@ from picard.config import (
     get_config,
 )
 from picard.formats.wav import WAVFile
+from picard.i18n import N_
 
 from picard.ui.options import (
     OptionsPage,

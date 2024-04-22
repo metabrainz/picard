@@ -25,6 +25,8 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard.i18n import gettext as _
+
 
 class TristateSortHeaderView(QtWidgets.QHeaderView):
     """A QHeaderView implementation supporting tristate sorting.

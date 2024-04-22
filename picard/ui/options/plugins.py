@@ -54,6 +54,10 @@ from picard.const import (
     PLUGINS_API,
     USER_PLUGIN_DIR,
 )
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.util import (
     icontheme,
     open_local_path,

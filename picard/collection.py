@@ -30,6 +30,10 @@ from PyQt6 import QtCore
 
 from picard import log
 from picard.config import get_config
+from picard.i18n import (
+    N_,
+    ngettext,
+)
 from picard.webservice.api_helpers import MBAPIHelper
 
 

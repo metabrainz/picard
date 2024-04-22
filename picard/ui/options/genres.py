@@ -34,6 +34,10 @@ from picard.config import (
     TextOption,
     get_config,
 )
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.track import TagGenreFilter
 
 from picard.ui.options import (

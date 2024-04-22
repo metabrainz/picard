@@ -46,6 +46,10 @@ from picard.config import (
     TextOption,
     get_config,
 )
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.profile import UserProfileGroups
 from picard.util import restore_method
 

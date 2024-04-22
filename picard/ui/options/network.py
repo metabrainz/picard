@@ -32,6 +32,7 @@ from picard.const import (
     CACHE_SIZE_DISPLAY_UNIT,
     CACHE_SIZE_IN_BYTES,
 )
+from picard.i18n import N_
 
 from picard.ui.options import (
     OptionsPage,

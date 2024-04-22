@@ -59,6 +59,10 @@ from picard.coverart.utils import (
     CAA_TYPES,
     translate_caa_type,
 )
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.webservice import ratecontrol
 
 from picard.ui.caa_types_selector import display_caa_types_selector

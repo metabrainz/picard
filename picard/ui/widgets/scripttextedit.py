@@ -48,6 +48,7 @@ from picard.config import (
     get_config,
 )
 from picard.const.sys import IS_MACOS
+from picard.i18n import gettext as _
 from picard.script import (
     ScriptFunctionDocError,
     script_function_documentation,

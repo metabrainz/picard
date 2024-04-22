@@ -40,6 +40,10 @@ from picard.config import (
     get_config,
 )
 from picard.const.sys import IS_MACOS
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.script import ScriptParser
 from picard.script.serializer import (
     ScriptImportExportError,

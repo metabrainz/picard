@@ -40,6 +40,10 @@ from picard.config import (
     get_config,
 )
 from picard.const import DEFAULT_FPCALC_THREADS
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.util import webbrowser2
 
 from picard.ui.options import (

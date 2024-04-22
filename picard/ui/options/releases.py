@@ -43,6 +43,12 @@ from picard.const import (
 )
 from picard.const.countries import RELEASE_COUNTRIES
 from picard.const.sys import IS_WIN
+from picard.i18n import (
+    N_,
+    gettext as _,
+    gettext_countries,
+    pgettext_attributes,
+)
 from picard.util import strxfrm
 
 from picard.ui.options import (
