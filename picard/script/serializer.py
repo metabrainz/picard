@@ -212,8 +212,7 @@ class PicardScript():
 
         dialog_title = _("Export Script File")
         dialog_file_types = self._get_dialog_filetypes()
-        options = QtWidgets.QFileDialog.Options()
-        filename, file_type = QtWidgets.QFileDialog.getSaveFileName(parent, dialog_title, default_path, dialog_file_types, options=options)
+        filename, file_type = QtWidgets.QFileDialog.getSaveFileName(parent, dialog_title, default_path, dialog_file_types)
         if not filename:
             return False
         # Fix issue where Qt may set the extension twice
@@ -250,8 +249,7 @@ class PicardScript():
         dialog_title = _("Import Script File")
         dialog_file_types = cls._get_dialog_filetypes()
         default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
-        options = QtWidgets.QFileDialog.Options()
-        filename, file_type = QtWidgets.QFileDialog.getOpenFileName(parent, dialog_title, default_script_directory, dialog_file_types, options=options)
+        filename, file_type = QtWidgets.QFileDialog.getOpenFileName(parent, dialog_title, default_script_directory, dialog_file_types)
         if not filename:
             return None
         log.debug("Importing script file: %s", filename)
