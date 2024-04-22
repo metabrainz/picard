@@ -204,8 +204,7 @@ class MaintenanceOptionsPage(OptionsPage):
 
         dialog_title = _("Backup Configuration File")
         dialog_file_types = self._get_dialog_filetypes(ext)
-        options = QtWidgets.QFileDialog.Options()
-        filename, file_type = QtWidgets.QFileDialog.getSaveFileName(self, dialog_title, default_path, dialog_file_types, options=options)
+        filename, file_type = QtWidgets.QFileDialog.getSaveFileName(self, dialog_title, default_path, dialog_file_types)
         if not filename:
             return
         # Fix issue where Qt may set the extension twice
@@ -249,8 +248,7 @@ class MaintenanceOptionsPage(OptionsPage):
         ext = path.splitext(filename)[1]
         dialog_file_types = self._get_dialog_filetypes(ext)
         directory = path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
-        options = QtWidgets.QFileDialog.Options()
-        filename, file_type = QtWidgets.QFileDialog.getOpenFileName(self, dialog_title, directory, dialog_file_types, options=options)
+        filename, file_type = QtWidgets.QFileDialog.getOpenFileName(self, dialog_title, directory, dialog_file_types)
         if not filename:
             return
         log.warning("Loading configuration from %s", filename)
