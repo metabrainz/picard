@@ -246,7 +246,7 @@ class Tagger(QtWidgets.QApplication):
 
         super().__init__(sys.argv)
         self.__class__.__instance = self
-        setup_config(self, picard_args.config_file)
+        setup_config(picard_args.config_file)
         config = get_config()
         theme.setup(self)
 
@@ -332,7 +332,6 @@ class Tagger(QtWidgets.QApplication):
         log.debug("Qt Env.: %s", " ".join("%s=%r" % (k, v) for k, v in os.environ.items() if k.startswith('QT_')))
 
         # for compatibility with pre-1.3 plugins
-        QtCore.QObject.tagger = self
         QtCore.QObject.config = config
         QtCore.QObject.log = log
 

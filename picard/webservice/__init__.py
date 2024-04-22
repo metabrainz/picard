@@ -336,6 +336,7 @@ class WebService(QtCore.QObject):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.tagger = QtCore.QCoreApplication.instance()
         self.manager = QtNetwork.QNetworkAccessManager()
         self.manager.sslErrors.connect(self.ssl_errors)
         self.oauth_manager = OAuthManager(self)

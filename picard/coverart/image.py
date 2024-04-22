@@ -33,9 +33,9 @@ import os
 import shutil
 import tempfile
 
+from PyQt6 import QtCore
 from PyQt6.QtCore import (
     QMutex,
-    QObject,
     QUrl,
 )
 
@@ -80,7 +80,8 @@ class DataHash:
             self._hash = blake2b(data).hexdigest()
             if self._hash not in _datafiles:
                 (fd, self._filename) = tempfile.mkstemp(prefix=prefix, suffix=suffix)
-                QObject.tagger.register_cleanup(self.delete_file)
+                tagger = QtCore.QCoreApplication.instance()
+                tagger.register_cleanup(self.delete_file)
                 with os.fdopen(fd, 'wb') as imagefile:
                     imagefile.write(data)
                 _datafiles[self._hash] = self._filename

@@ -28,7 +28,7 @@
 from functools import partial
 import traceback
 
-from PyQt6.QtCore import QObject
+from PyQt6 import QtCore
 
 from picard import log
 from picard.config import get_config
@@ -220,7 +220,8 @@ class CoverArt:
 
     def _message(self, *args, **kwargs):
         """Display message to status bar"""
-        QObject.tagger.window.set_statusbar_message(*args, **kwargs)
+        tagger = QtCore.QCoreApplication.instance()
+        tagger.window.set_statusbar_message(*args, **kwargs)
 
 
 def _retrieve_coverart(album, metadata, release):

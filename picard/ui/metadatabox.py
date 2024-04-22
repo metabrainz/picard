@@ -217,6 +217,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     def __init__(self, parent):
         super().__init__(parent)
+        self.tagger = QtCore.QCoreApplication.instance()
         config = get_config()
         self.parent = parent
         self.setAccessibleName(_("metadata view"))

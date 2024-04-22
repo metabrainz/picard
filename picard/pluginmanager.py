@@ -204,6 +204,7 @@ class PluginManager(QtCore.QObject):
 
     def __init__(self, plugins_directory=None):
         super().__init__()
+        self.tagger = QtCore.QCoreApplication.instance()
         self.plugins = []
         self._available_plugins = None  # None=never loaded, [] = empty
         if plugins_directory is None:

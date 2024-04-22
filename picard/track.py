@@ -374,6 +374,7 @@ class Track(DataObject, FileListItem):
 class NonAlbumTrack(Track):
 
     def __init__(self, nat_id):
+        self.tagger = QtCore.QCoreApplication.instance()
         super().__init__(nat_id, self.tagger.nats)
         self.callback = None
         self.loaded = False

@@ -844,7 +844,8 @@ def parse_json(reply):
 
 def restore_method(func):
     def func_wrapper(*args, **kwargs):
-        if not QtCore.QObject.tagger._no_restore:
+        tagger = QtCore.QCoreApplication.instance()
+        if not tagger._no_restore:
             return func(*args, **kwargs)
     return func_wrapper
 

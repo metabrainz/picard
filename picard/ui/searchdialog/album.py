@@ -171,8 +171,9 @@ class AlbumSearchDialog(SearchDialog):
 
     @staticmethod
     def show_releasegroup_search(releasegroup_id, existing_album=None):
+        tagger = QtCore.QCoreApplication.instance()
         dialog = AlbumSearchDialog(
-            QtCore.QObject.tagger.window,
+            tagger.window,
             force_advanced_search=True,
             existing_album=existing_album)
         dialog.search("rgid:{0}".format(releasegroup_id))

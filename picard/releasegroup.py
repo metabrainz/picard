@@ -30,6 +30,8 @@ from functools import partial
 from itertools import combinations
 import traceback
 
+from PyQt6 import QtCore
+
 from picard import log
 from picard.dataobj import DataObject
 from picard.i18n import (
@@ -108,6 +110,7 @@ class ReleaseGroup(DataObject):
 
     def __init__(self, rg_id):
         super().__init__(rg_id)
+        self.tagger = QtCore.QCoreApplication.instance()
         self.metadata = Metadata()
         self.loaded = False
         self.versions = []

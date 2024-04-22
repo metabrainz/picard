@@ -197,8 +197,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         super().__init__(parent)
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_NativeWindow)
         self.__shown = False
-        app = QtCore.QCoreApplication.instance()
-        self._is_wayland = app.is_wayland
+        self.tagger = QtCore.QCoreApplication.instance()
+        self._is_wayland = self.tagger.is_wayland
         self.selected_objects = []
         self.ignore_selection_changes = IgnoreUpdatesContext(self.update_selection)
         self.toolbar = None

@@ -62,6 +62,7 @@ class FileLookup(object):
         self.server = server
         self.local_port = int(local_port)
         self.port = port
+        self.tagger = QtCore.QCoreApplication.instance()
 
     def _url(self, path, params=None):
         if params is None:
@@ -137,10 +138,10 @@ class FileLookup(object):
         if mbid_matched_callback:
             mbid_matched_callback(entity, id)
         if entity == 'release':
-            QtCore.QObject.tagger.load_album(id)
+            self.tagger.load_album(id)
             return True
         elif entity == 'recording':
-            QtCore.QObject.tagger.load_nat(id)
+            self.tagger.load_nat(id)
             return True
         elif entity == 'release-group':
             AlbumSearchDialog.show_releasegroup_search(id)
