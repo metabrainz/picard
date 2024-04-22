@@ -451,7 +451,9 @@ persist = None
 profiles = None
 
 
-def setup_config(app, filename=None):
+def setup_config(app=None, filename=None):
+    if app is None:
+        app = QtCore.QCoreApplication.instance()
     global config, setting, persist, profiles
     if filename is None:
         config = Config.from_app(app)
@@ -477,5 +479,5 @@ def load_new_config(filename=None):
     except OSError:
         log.error("Failed restoring config file from %s", filename)
         return False
-    setup_config(QtCore.QObject.tagger, config_file)
+    setup_config(filename=config_file)
     return True

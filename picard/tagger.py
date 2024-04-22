@@ -246,7 +246,7 @@ class Tagger(QtWidgets.QApplication):
 
         super().__init__(sys.argv)
         self.__class__.__instance = self
-        setup_config(picard_args.config_file)
+        setup_config(app=self, filename=picard_args.config_file)
         config = get_config()
         theme.setup(self)
 
