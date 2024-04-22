@@ -1,70 +1,99 @@
-# Form implementation generated from reading ui file 'ui/passworddialog.ui'
-#
-# Created by: PyQt6 UI code generator 6.6.1
-#
-# Automatically generated - do not edit.
-# Use `python setup.py build_ui` to update it.
+# -*- coding: utf-8 -*-
 
-from PySide6 import (
-    QtCore,
-    QtGui,
-    QtWidgets,
-)
+################################################################################
+## Form generated from reading UI file 'passworddialog.ui'
+##
+## Created by: Qt User Interface Compiler version 6.6.3
+##
+## Use `python setup.py build_ui` to update it.
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
+
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QAbstractButton, QApplication, QDialog, QDialogButtonBox,
+    QLabel, QLineEdit, QSizePolicy, QSpacerItem,
+    QVBoxLayout, QWidget)
 
 from picard.i18n import gettext as _
 
-
 class Ui_PasswordDialog(object):
     def setupUi(self, PasswordDialog):
-        PasswordDialog.setObjectName("PasswordDialog")
-        PasswordDialog.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+        if not PasswordDialog.objectName():
+            PasswordDialog.setObjectName(u"PasswordDialog")
+        PasswordDialog.setWindowModality(Qt.WindowModal)
         PasswordDialog.resize(378, 246)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(PasswordDialog.sizePolicy().hasHeightForWidth())
         PasswordDialog.setSizePolicy(sizePolicy)
-        self.verticalLayout = QtWidgets.QVBoxLayout(PasswordDialog)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.info_text = QtWidgets.QLabel(parent=PasswordDialog)
-        self.info_text.setText("")
+        self.verticalLayout = QVBoxLayout(PasswordDialog)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.info_text = QLabel(PasswordDialog)
+        self.info_text.setObjectName(u"info_text")
         self.info_text.setWordWrap(True)
-        self.info_text.setObjectName("info_text")
+
         self.verticalLayout.addWidget(self.info_text)
-        spacerItem = QtWidgets.QSpacerItem(20, 60, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
-        self.verticalLayout.addItem(spacerItem)
-        self.label = QtWidgets.QLabel(parent=PasswordDialog)
-        self.label.setObjectName("label")
+
+        self.verticalSpacer = QSpacerItem(20, 60, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout.addItem(self.verticalSpacer)
+
+        self.label = QLabel(PasswordDialog)
+        self.label.setObjectName(u"label")
+
         self.verticalLayout.addWidget(self.label)
-        self.username = QtWidgets.QLineEdit(parent=PasswordDialog)
-        self.username.setWindowModality(QtCore.Qt.WindowModality.NonModal)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.username.sizePolicy().hasHeightForWidth())
-        self.username.setSizePolicy(sizePolicy)
-        self.username.setObjectName("username")
+
+        self.username = QLineEdit(PasswordDialog)
+        self.username.setObjectName(u"username")
+        self.username.setWindowModality(Qt.NonModal)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.username.sizePolicy().hasHeightForWidth())
+        self.username.setSizePolicy(sizePolicy1)
+
         self.verticalLayout.addWidget(self.username)
-        self.label_2 = QtWidgets.QLabel(parent=PasswordDialog)
-        self.label_2.setObjectName("label_2")
+
+        self.label_2 = QLabel(PasswordDialog)
+        self.label_2.setObjectName(u"label_2")
+
         self.verticalLayout.addWidget(self.label_2)
-        self.password = QtWidgets.QLineEdit(parent=PasswordDialog)
-        self.password.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
-        self.password.setObjectName("password")
+
+        self.password = QLineEdit(PasswordDialog)
+        self.password.setObjectName(u"password")
+        self.password.setEchoMode(QLineEdit.Password)
+
         self.verticalLayout.addWidget(self.password)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
-        self.verticalLayout.addItem(spacerItem1)
-        self.buttonbox = QtWidgets.QDialogButtonBox(parent=PasswordDialog)
-        self.buttonbox.setOrientation(QtCore.Qt.Orientation.Horizontal)
-        self.buttonbox.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Cancel|QtWidgets.QDialogButtonBox.StandardButton.Ok)
-        self.buttonbox.setObjectName("buttonbox")
+
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout.addItem(self.verticalSpacer_2)
+
+        self.buttonbox = QDialogButtonBox(PasswordDialog)
+        self.buttonbox.setObjectName(u"buttonbox")
+        self.buttonbox.setOrientation(Qt.Horizontal)
+        self.buttonbox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Ok)
+
         self.verticalLayout.addWidget(self.buttonbox)
 
+
         self.retranslateUi(PasswordDialog)
-        self.buttonbox.rejected.connect(PasswordDialog.reject) # type: ignore
-        QtCore.QMetaObject.connectSlotsByName(PasswordDialog)
+        self.buttonbox.rejected.connect(PasswordDialog.reject)
+
+        QMetaObject.connectSlotsByName(PasswordDialog)
+    # setupUi
 
     def retranslateUi(self, PasswordDialog):
-        PasswordDialog.setWindowTitle(_("Authentication required"))
-        self.label.setText(_("Username:"))
-        self.label_2.setText(_("Password:"))
+        PasswordDialog.setWindowTitle(_(u"Authentication required"))
+        self.info_text.setText("")
+        self.label.setText(_(u"Username:"))
+        self.label_2.setText(_(u"Password:"))
+    # retranslateUi
+

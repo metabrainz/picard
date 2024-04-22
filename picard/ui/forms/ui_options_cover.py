@@ -1,111 +1,174 @@
-# Form implementation generated from reading ui file 'ui/options_cover.ui'
-#
-# Created by: PyQt6 UI code generator 6.6.1
-#
-# Automatically generated - do not edit.
-# Use `python setup.py build_ui` to update it.
+# -*- coding: utf-8 -*-
 
-from PySide6 import (
-    QtCore,
-    QtGui,
-    QtWidgets,
-)
+################################################################################
+## Form generated from reading UI file 'options_cover.ui'
+##
+## Created by: Qt User Interface Compiler version 6.6.3
+##
+## Use `python setup.py build_ui` to update it.
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
+
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QGroupBox, QHBoxLayout,
+    QLabel, QLineEdit, QListWidget, QListWidgetItem,
+    QSizePolicy, QSpacerItem, QToolButton, QVBoxLayout,
+    QWidget)
 
 from picard.i18n import gettext as _
 
-
 class Ui_CoverOptionsPage(object):
     def setupUi(self, CoverOptionsPage):
-        CoverOptionsPage.setObjectName("CoverOptionsPage")
+        if not CoverOptionsPage.objectName():
+            CoverOptionsPage.setObjectName(u"CoverOptionsPage")
         CoverOptionsPage.resize(632, 560)
-        self.verticalLayout = QtWidgets.QVBoxLayout(CoverOptionsPage)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.save_images_to_tags = QtWidgets.QGroupBox(parent=CoverOptionsPage)
+        self.verticalLayout = QVBoxLayout(CoverOptionsPage)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.save_images_to_tags = QGroupBox(CoverOptionsPage)
+        self.save_images_to_tags.setObjectName(u"save_images_to_tags")
         self.save_images_to_tags.setCheckable(True)
         self.save_images_to_tags.setChecked(False)
-        self.save_images_to_tags.setObjectName("save_images_to_tags")
-        self.vboxlayout = QtWidgets.QVBoxLayout(self.save_images_to_tags)
-        self.vboxlayout.setContentsMargins(9, 9, 9, 9)
-        self.vboxlayout.setSpacing(2)
-        self.vboxlayout.setObjectName("vboxlayout")
-        self.cb_embed_front_only = QtWidgets.QCheckBox(parent=self.save_images_to_tags)
-        self.cb_embed_front_only.setObjectName("cb_embed_front_only")
-        self.vboxlayout.addWidget(self.cb_embed_front_only)
+        self.vboxLayout = QVBoxLayout(self.save_images_to_tags)
+        self.vboxLayout.setSpacing(2)
+        self.vboxLayout.setObjectName(u"vboxLayout")
+        self.vboxLayout.setContentsMargins(9, 9, 9, 9)
+        self.cb_embed_front_only = QCheckBox(self.save_images_to_tags)
+        self.cb_embed_front_only.setObjectName(u"cb_embed_front_only")
+
+        self.vboxLayout.addWidget(self.cb_embed_front_only)
+
+
         self.verticalLayout.addWidget(self.save_images_to_tags)
-        self.save_images_to_files = QtWidgets.QGroupBox(parent=CoverOptionsPage)
+
+        self.save_images_to_files = QGroupBox(CoverOptionsPage)
+        self.save_images_to_files.setObjectName(u"save_images_to_files")
         self.save_images_to_files.setCheckable(True)
         self.save_images_to_files.setChecked(False)
-        self.save_images_to_files.setObjectName("save_images_to_files")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.save_images_to_files)
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.label_use_filename = QtWidgets.QLabel(parent=self.save_images_to_files)
-        self.label_use_filename.setObjectName("label_use_filename")
+        self.verticalLayout_2 = QVBoxLayout(self.save_images_to_files)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.label_use_filename = QLabel(self.save_images_to_files)
+        self.label_use_filename.setObjectName(u"label_use_filename")
+
         self.verticalLayout_2.addWidget(self.label_use_filename)
-        self.cover_image_filename = QtWidgets.QLineEdit(parent=self.save_images_to_files)
-        self.cover_image_filename.setObjectName("cover_image_filename")
+
+        self.cover_image_filename = QLineEdit(self.save_images_to_files)
+        self.cover_image_filename.setObjectName(u"cover_image_filename")
+
         self.verticalLayout_2.addWidget(self.cover_image_filename)
-        self.save_images_overwrite = QtWidgets.QCheckBox(parent=self.save_images_to_files)
-        self.save_images_overwrite.setObjectName("save_images_overwrite")
+
+        self.save_images_overwrite = QCheckBox(self.save_images_to_files)
+        self.save_images_overwrite.setObjectName(u"save_images_overwrite")
+
         self.verticalLayout_2.addWidget(self.save_images_overwrite)
-        self.save_only_one_front_image = QtWidgets.QCheckBox(parent=self.save_images_to_files)
-        self.save_only_one_front_image.setObjectName("save_only_one_front_image")
+
+        self.save_only_one_front_image = QCheckBox(self.save_images_to_files)
+        self.save_only_one_front_image.setObjectName(u"save_only_one_front_image")
+
         self.verticalLayout_2.addWidget(self.save_only_one_front_image)
-        self.image_type_as_filename = QtWidgets.QCheckBox(parent=self.save_images_to_files)
-        self.image_type_as_filename.setObjectName("image_type_as_filename")
+
+        self.image_type_as_filename = QCheckBox(self.save_images_to_files)
+        self.image_type_as_filename.setObjectName(u"image_type_as_filename")
+
         self.verticalLayout_2.addWidget(self.image_type_as_filename)
+
+
         self.verticalLayout.addWidget(self.save_images_to_files)
-        self.ca_providers_groupbox = QtWidgets.QGroupBox(parent=CoverOptionsPage)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+
+        self.ca_providers_groupbox = QGroupBox(CoverOptionsPage)
+        self.ca_providers_groupbox.setObjectName(u"ca_providers_groupbox")
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.ca_providers_groupbox.sizePolicy().hasHeightForWidth())
         self.ca_providers_groupbox.setSizePolicy(sizePolicy)
-        self.ca_providers_groupbox.setObjectName("ca_providers_groupbox")
-        self.ca_providers_layout = QtWidgets.QVBoxLayout(self.ca_providers_groupbox)
-        self.ca_providers_layout.setObjectName("ca_providers_layout")
-        self.ca_providers_list = QtWidgets.QListWidget(parent=self.ca_providers_groupbox)
-        self.ca_providers_list.setObjectName("ca_providers_list")
+        self.ca_providers_layout = QVBoxLayout(self.ca_providers_groupbox)
+        self.ca_providers_layout.setObjectName(u"ca_providers_layout")
+        self.ca_providers_list = QListWidget(self.ca_providers_groupbox)
+        self.ca_providers_list.setObjectName(u"ca_providers_list")
+
         self.ca_providers_layout.addWidget(self.ca_providers_list)
-        self.ca_layout = QtWidgets.QHBoxLayout()
-        self.ca_layout.setObjectName("ca_layout")
-        self.move_label = QtWidgets.QLabel(parent=self.ca_providers_groupbox)
-        self.move_label.setObjectName("move_label")
+
+        self.ca_layout = QHBoxLayout()
+        self.ca_layout.setObjectName(u"ca_layout")
+        self.move_label = QLabel(self.ca_providers_groupbox)
+        self.move_label.setObjectName(u"move_label")
+
         self.ca_layout.addWidget(self.move_label)
-        self.up_button = QtWidgets.QToolButton(parent=self.ca_providers_groupbox)
-        self.up_button.setLayoutDirection(QtCore.Qt.LayoutDirection.LeftToRight)
-        self.up_button.setText("")
-        icon = QtGui.QIcon.fromTheme(":/images/16x16/go-up.png")
+
+        self.up_button = QToolButton(self.ca_providers_groupbox)
+        self.up_button.setObjectName(u"up_button")
+        self.up_button.setLayoutDirection(Qt.LeftToRight)
+        icon = QIcon()
+        iconThemeName = u":/images/16x16/go-up.png"
+        if QIcon.hasThemeIcon(iconThemeName):
+            icon = QIcon.fromTheme(iconThemeName)
+        else:
+            icon.addFile(u".", QSize(), QIcon.Normal, QIcon.Off)
+
         self.up_button.setIcon(icon)
-        self.up_button.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonIconOnly)
+        self.up_button.setToolButtonStyle(Qt.ToolButtonIconOnly)
         self.up_button.setAutoRaise(False)
-        self.up_button.setObjectName("up_button")
+
         self.ca_layout.addWidget(self.up_button)
-        self.down_button = QtWidgets.QToolButton(parent=self.ca_providers_groupbox)
-        self.down_button.setText("")
-        icon = QtGui.QIcon.fromTheme(":/images/16x16/go-down.png")
-        self.down_button.setIcon(icon)
-        self.down_button.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonIconOnly)
-        self.down_button.setObjectName("down_button")
+
+        self.down_button = QToolButton(self.ca_providers_groupbox)
+        self.down_button.setObjectName(u"down_button")
+        icon1 = QIcon()
+        iconThemeName = u":/images/16x16/go-down.png"
+        if QIcon.hasThemeIcon(iconThemeName):
+            icon1 = QIcon.fromTheme(iconThemeName)
+        else:
+            icon1.addFile(u".", QSize(), QIcon.Normal, QIcon.Off)
+
+        self.down_button.setIcon(icon1)
+        self.down_button.setToolButtonStyle(Qt.ToolButtonIconOnly)
+
         self.ca_layout.addWidget(self.down_button)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.ca_layout.addItem(spacerItem)
+
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.ca_layout.addItem(self.horizontalSpacer)
+
+
         self.ca_providers_layout.addLayout(self.ca_layout)
-        self.verticalLayout.addWidget(self.ca_providers_groupbox, 0, QtCore.Qt.AlignmentFlag.AlignTop)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
-        self.verticalLayout.addItem(spacerItem1)
+
+
+        self.verticalLayout.addWidget(self.ca_providers_groupbox, 0, Qt.AlignTop)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout.addItem(self.verticalSpacer)
+
 
         self.retranslateUi(CoverOptionsPage)
-        QtCore.QMetaObject.connectSlotsByName(CoverOptionsPage)
+
+        QMetaObject.connectSlotsByName(CoverOptionsPage)
+    # setupUi
 
     def retranslateUi(self, CoverOptionsPage):
-        self.save_images_to_tags.setTitle(_("Embed cover images into tags"))
-        self.cb_embed_front_only.setText(_("Embed only a single front image"))
-        self.save_images_to_files.setTitle(_("Save cover images as separate files"))
-        self.label_use_filename.setText(_("Use the following file name for images:"))
-        self.save_images_overwrite.setText(_("Overwrite the file if it already exists"))
-        self.save_only_one_front_image.setText(_("Save only a single front image as separate file"))
-        self.image_type_as_filename.setText(_("Always use the primary image type as the file name for non-front images"))
-        self.ca_providers_groupbox.setTitle(_("Cover Art Providers"))
-        self.move_label.setText(_("Reorder Priority:"))
-        self.up_button.setToolTip(_("Move selected item up"))
-        self.down_button.setToolTip(_("Move selected item down"))
+        self.save_images_to_tags.setTitle(_(u"Embed cover images into tags"))
+        self.cb_embed_front_only.setText(_(u"Embed only a single front image"))
+        self.save_images_to_files.setTitle(_(u"Save cover images as separate files"))
+        self.label_use_filename.setText(_(u"Use the following file name for images:"))
+        self.save_images_overwrite.setText(_(u"Overwrite the file if it already exists"))
+        self.save_only_one_front_image.setText(_(u"Save only a single front image as separate file"))
+        self.image_type_as_filename.setText(_(u"Always use the primary image type as the file name for non-front images"))
+        self.ca_providers_groupbox.setTitle(_(u"Cover Art Providers"))
+        self.move_label.setText(_(u"Reorder Priority:"))
+#if QT_CONFIG(tooltip)
+        self.up_button.setToolTip(_(u"Move selected item up"))
+#endif // QT_CONFIG(tooltip)
+        self.up_button.setText("")
+#if QT_CONFIG(tooltip)
+        self.down_button.setToolTip(_(u"Move selected item down"))
+#endif // QT_CONFIG(tooltip)
+        self.down_button.setText("")
+        pass
+    # retranslateUi
+

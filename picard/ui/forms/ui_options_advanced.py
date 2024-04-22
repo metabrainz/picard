@@ -1,156 +1,206 @@
-# Form implementation generated from reading ui file 'ui/options_advanced.ui'
-#
-# Created by: PyQt6 UI code generator 6.6.1
-#
-# Automatically generated - do not edit.
-# Use `python setup.py build_ui` to update it.
+# -*- coding: utf-8 -*-
 
-from PySide6 import (
-    QtCore,
-    QtGui,
-    QtWidgets,
-)
+################################################################################
+## Form generated from reading UI file 'options_advanced.ui'
+##
+## Created by: Qt User Interface Compiler version 6.6.3
+##
+## Use `python setup.py build_ui` to update it.
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
+
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QAbstractSpinBox, QApplication, QCheckBox, QComboBox,
+    QGridLayout, QGroupBox, QHBoxLayout, QLabel,
+    QLayout, QLineEdit, QSizePolicy, QSpinBox,
+    QVBoxLayout, QWidget)
+
+from picard.ui.widgets.taglisteditor import TagListEditor
 
 from picard.i18n import gettext as _
 
-
 class Ui_AdvancedOptionsPage(object):
     def setupUi(self, AdvancedOptionsPage):
-        AdvancedOptionsPage.setObjectName("AdvancedOptionsPage")
+        if not AdvancedOptionsPage.objectName():
+            AdvancedOptionsPage.setObjectName(u"AdvancedOptionsPage")
         AdvancedOptionsPage.resize(570, 455)
-        self.vboxlayout = QtWidgets.QVBoxLayout(AdvancedOptionsPage)
-        self.vboxlayout.setObjectName("vboxlayout")
-        self.groupBox = QtWidgets.QGroupBox(parent=AdvancedOptionsPage)
-        self.groupBox.setObjectName("groupBox")
-        self.gridlayout = QtWidgets.QGridLayout(self.groupBox)
-        self.gridlayout.setSpacing(2)
-        self.gridlayout.setObjectName("gridlayout")
-        self.label_ignore_regex = QtWidgets.QLabel(parent=self.groupBox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        self.vboxLayout = QVBoxLayout(AdvancedOptionsPage)
+        self.vboxLayout.setObjectName(u"vboxLayout")
+        self.groupBox = QGroupBox(AdvancedOptionsPage)
+        self.groupBox.setObjectName(u"groupBox")
+        self.gridLayout = QGridLayout(self.groupBox)
+        self.gridLayout.setSpacing(2)
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.label_ignore_regex = QLabel(self.groupBox)
+        self.label_ignore_regex.setObjectName(u"label_ignore_regex")
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_ignore_regex.sizePolicy().hasHeightForWidth())
         self.label_ignore_regex.setSizePolicy(sizePolicy)
         self.label_ignore_regex.setWordWrap(True)
-        self.label_ignore_regex.setObjectName("label_ignore_regex")
-        self.gridlayout.addWidget(self.label_ignore_regex, 1, 0, 1, 1)
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.label_query_limit = QtWidgets.QLabel(parent=self.groupBox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_query_limit.sizePolicy().hasHeightForWidth())
-        self.label_query_limit.setSizePolicy(sizePolicy)
-        self.label_query_limit.setObjectName("label_query_limit")
+
+        self.gridLayout.addWidget(self.label_ignore_regex, 1, 0, 1, 1)
+
+        self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.label_query_limit = QLabel(self.groupBox)
+        self.label_query_limit.setObjectName(u"label_query_limit")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.label_query_limit.sizePolicy().hasHeightForWidth())
+        self.label_query_limit.setSizePolicy(sizePolicy1)
+
         self.horizontalLayout_2.addWidget(self.label_query_limit)
-        self.query_limit = QtWidgets.QComboBox(parent=self.groupBox)
-        self.query_limit.setCurrentText("50")
-        self.query_limit.setObjectName("query_limit")
-        self.query_limit.addItem("")
-        self.query_limit.setItemText(0, "25")
-        self.query_limit.addItem("")
-        self.query_limit.setItemText(1, "50")
-        self.query_limit.addItem("")
-        self.query_limit.setItemText(2, "75")
-        self.query_limit.addItem("")
-        self.query_limit.setItemText(3, "100")
+
+        self.query_limit = QComboBox(self.groupBox)
+        self.query_limit.addItem(u"25")
+        self.query_limit.addItem(u"50")
+        self.query_limit.addItem(u"75")
+        self.query_limit.addItem(u"100")
+        self.query_limit.setObjectName(u"query_limit")
+        self.query_limit.setCurrentText(u"50")
+
         self.horizontalLayout_2.addWidget(self.query_limit)
-        self.gridlayout.addLayout(self.horizontalLayout_2, 8, 0, 1, 1)
-        self.regex_error = QtWidgets.QLabel(parent=self.groupBox)
-        self.regex_error.setText("")
-        self.regex_error.setObjectName("regex_error")
-        self.gridlayout.addWidget(self.regex_error, 3, 0, 1, 1)
-        self.ignore_regex = QtWidgets.QLineEdit(parent=self.groupBox)
-        self.ignore_regex.setObjectName("ignore_regex")
-        self.gridlayout.addWidget(self.ignore_regex, 2, 0, 1, 1)
-        self.horizontalLayout = QtWidgets.QHBoxLayout()
-        self.horizontalLayout.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetDefaultConstraint)
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.label_track_duration_diff = QtWidgets.QLabel(parent=self.groupBox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_track_duration_diff.sizePolicy().hasHeightForWidth())
-        self.label_track_duration_diff.setSizePolicy(sizePolicy)
-        self.label_track_duration_diff.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
-        self.label_track_duration_diff.setObjectName("label_track_duration_diff")
+
+
+        self.gridLayout.addLayout(self.horizontalLayout_2, 8, 0, 1, 1)
+
+        self.regex_error = QLabel(self.groupBox)
+        self.regex_error.setObjectName(u"regex_error")
+
+        self.gridLayout.addWidget(self.regex_error, 3, 0, 1, 1)
+
+        self.ignore_regex = QLineEdit(self.groupBox)
+        self.ignore_regex.setObjectName(u"ignore_regex")
+
+        self.gridLayout.addWidget(self.ignore_regex, 2, 0, 1, 1)
+
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setSizeConstraint(QLayout.SetDefaultConstraint)
+        self.label_track_duration_diff = QLabel(self.groupBox)
+        self.label_track_duration_diff.setObjectName(u"label_track_duration_diff")
+        sizePolicy1.setHeightForWidth(self.label_track_duration_diff.sizePolicy().hasHeightForWidth())
+        self.label_track_duration_diff.setSizePolicy(sizePolicy1)
+        self.label_track_duration_diff.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
         self.horizontalLayout.addWidget(self.label_track_duration_diff)
-        self.ignore_track_duration_difference_under = QtWidgets.QSpinBox(parent=self.groupBox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.ignore_track_duration_difference_under.sizePolicy().hasHeightForWidth())
-        self.ignore_track_duration_difference_under.setSizePolicy(sizePolicy)
-        self.ignore_track_duration_difference_under.setButtonSymbols(QtWidgets.QAbstractSpinBox.ButtonSymbols.UpDownArrows)
+
+        self.ignore_track_duration_difference_under = QSpinBox(self.groupBox)
+        self.ignore_track_duration_difference_under.setObjectName(u"ignore_track_duration_difference_under")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.ignore_track_duration_difference_under.sizePolicy().hasHeightForWidth())
+        self.ignore_track_duration_difference_under.setSizePolicy(sizePolicy2)
+        self.ignore_track_duration_difference_under.setButtonSymbols(QAbstractSpinBox.UpDownArrows)
         self.ignore_track_duration_difference_under.setAccelerated(True)
-        self.ignore_track_duration_difference_under.setSuffix("")
         self.ignore_track_duration_difference_under.setMinimum(1)
         self.ignore_track_duration_difference_under.setMaximum(7200)
-        self.ignore_track_duration_difference_under.setProperty("value", 2)
-        self.ignore_track_duration_difference_under.setObjectName("ignore_track_duration_difference_under")
+        self.ignore_track_duration_difference_under.setValue(2)
+
         self.horizontalLayout.addWidget(self.ignore_track_duration_difference_under)
-        self.gridlayout.addLayout(self.horizontalLayout, 6, 0, 2, 1)
-        self.recursively_add_files = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.recursively_add_files.setObjectName("recursively_add_files")
-        self.gridlayout.addWidget(self.recursively_add_files, 5, 0, 1, 1)
-        self.ignore_hidden_files = QtWidgets.QCheckBox(parent=self.groupBox)
-        self.ignore_hidden_files.setObjectName("ignore_hidden_files")
-        self.gridlayout.addWidget(self.ignore_hidden_files, 4, 0, 1, 1)
-        self.vboxlayout.addWidget(self.groupBox)
-        self.groupBox_completeness = QtWidgets.QGroupBox(parent=AdvancedOptionsPage)
-        self.groupBox_completeness.setObjectName("groupBox_completeness")
-        self.gridLayout = QtWidgets.QGridLayout(self.groupBox_completeness)
-        self.gridLayout.setObjectName("gridLayout")
-        self.completeness_ignore_videos = QtWidgets.QCheckBox(parent=self.groupBox_completeness)
-        self.completeness_ignore_videos.setObjectName("completeness_ignore_videos")
-        self.gridLayout.addWidget(self.completeness_ignore_videos, 0, 0, 1, 1)
-        self.completeness_ignore_data = QtWidgets.QCheckBox(parent=self.groupBox_completeness)
+
+
+        self.gridLayout.addLayout(self.horizontalLayout, 6, 0, 2, 1)
+
+        self.recursively_add_files = QCheckBox(self.groupBox)
+        self.recursively_add_files.setObjectName(u"recursively_add_files")
+
+        self.gridLayout.addWidget(self.recursively_add_files, 5, 0, 1, 1)
+
+        self.ignore_hidden_files = QCheckBox(self.groupBox)
+        self.ignore_hidden_files.setObjectName(u"ignore_hidden_files")
+
+        self.gridLayout.addWidget(self.ignore_hidden_files, 4, 0, 1, 1)
+
+
+        self.vboxLayout.addWidget(self.groupBox)
+
+        self.groupBox_completeness = QGroupBox(AdvancedOptionsPage)
+        self.groupBox_completeness.setObjectName(u"groupBox_completeness")
+        self.gridLayout1 = QGridLayout(self.groupBox_completeness)
+        self.gridLayout1.setObjectName(u"gridLayout1")
+        self.completeness_ignore_videos = QCheckBox(self.groupBox_completeness)
+        self.completeness_ignore_videos.setObjectName(u"completeness_ignore_videos")
+
+        self.gridLayout1.addWidget(self.completeness_ignore_videos, 0, 0, 1, 1)
+
+        self.completeness_ignore_data = QCheckBox(self.groupBox_completeness)
+        self.completeness_ignore_data.setObjectName(u"completeness_ignore_data")
         self.completeness_ignore_data.setCheckable(True)
-        self.completeness_ignore_data.setObjectName("completeness_ignore_data")
-        self.gridLayout.addWidget(self.completeness_ignore_data, 3, 0, 1, 1)
-        self.completeness_ignore_pregap = QtWidgets.QCheckBox(parent=self.groupBox_completeness)
-        self.completeness_ignore_pregap.setObjectName("completeness_ignore_pregap")
-        self.gridLayout.addWidget(self.completeness_ignore_pregap, 0, 1, 1, 1)
-        self.completeness_ignore_silence = QtWidgets.QCheckBox(parent=self.groupBox_completeness)
-        self.completeness_ignore_silence.setObjectName("completeness_ignore_silence")
-        self.gridLayout.addWidget(self.completeness_ignore_silence, 3, 1, 1, 1)
-        self.vboxlayout.addWidget(self.groupBox_completeness)
-        self.groupBox_ignore_tags = QtWidgets.QGroupBox(parent=AdvancedOptionsPage)
-        self.groupBox_ignore_tags.setObjectName("groupBox_ignore_tags")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.groupBox_ignore_tags)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.compare_ignore_tags = TagListEditor(parent=self.groupBox_ignore_tags)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.compare_ignore_tags.sizePolicy().hasHeightForWidth())
-        self.compare_ignore_tags.setSizePolicy(sizePolicy)
-        self.compare_ignore_tags.setObjectName("compare_ignore_tags")
+
+        self.gridLayout1.addWidget(self.completeness_ignore_data, 3, 0, 1, 1)
+
+        self.completeness_ignore_pregap = QCheckBox(self.groupBox_completeness)
+        self.completeness_ignore_pregap.setObjectName(u"completeness_ignore_pregap")
+
+        self.gridLayout1.addWidget(self.completeness_ignore_pregap, 0, 1, 1, 1)
+
+        self.completeness_ignore_silence = QCheckBox(self.groupBox_completeness)
+        self.completeness_ignore_silence.setObjectName(u"completeness_ignore_silence")
+
+        self.gridLayout1.addWidget(self.completeness_ignore_silence, 3, 1, 1, 1)
+
+
+        self.vboxLayout.addWidget(self.groupBox_completeness)
+
+        self.groupBox_ignore_tags = QGroupBox(AdvancedOptionsPage)
+        self.groupBox_ignore_tags.setObjectName(u"groupBox_ignore_tags")
+        self.verticalLayout = QVBoxLayout(self.groupBox_ignore_tags)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.compare_ignore_tags = TagListEditor(self.groupBox_ignore_tags)
+        self.compare_ignore_tags.setObjectName(u"compare_ignore_tags")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.compare_ignore_tags.sizePolicy().hasHeightForWidth())
+        self.compare_ignore_tags.setSizePolicy(sizePolicy3)
+
         self.verticalLayout.addWidget(self.compare_ignore_tags)
-        self.vboxlayout.addWidget(self.groupBox_ignore_tags)
+
+
+        self.vboxLayout.addWidget(self.groupBox_ignore_tags)
+
+        QWidget.setTabOrder(self.ignore_regex, self.ignore_hidden_files)
+        QWidget.setTabOrder(self.ignore_hidden_files, self.recursively_add_files)
+        QWidget.setTabOrder(self.recursively_add_files, self.ignore_track_duration_difference_under)
+        QWidget.setTabOrder(self.ignore_track_duration_difference_under, self.query_limit)
+        QWidget.setTabOrder(self.query_limit, self.completeness_ignore_videos)
+        QWidget.setTabOrder(self.completeness_ignore_videos, self.completeness_ignore_data)
 
         self.retranslateUi(AdvancedOptionsPage)
+
         self.query_limit.setCurrentIndex(1)
-        QtCore.QMetaObject.connectSlotsByName(AdvancedOptionsPage)
-        AdvancedOptionsPage.setTabOrder(self.ignore_regex, self.ignore_hidden_files)
-        AdvancedOptionsPage.setTabOrder(self.ignore_hidden_files, self.recursively_add_files)
-        AdvancedOptionsPage.setTabOrder(self.recursively_add_files, self.ignore_track_duration_difference_under)
-        AdvancedOptionsPage.setTabOrder(self.ignore_track_duration_difference_under, self.query_limit)
-        AdvancedOptionsPage.setTabOrder(self.query_limit, self.completeness_ignore_videos)
-        AdvancedOptionsPage.setTabOrder(self.completeness_ignore_videos, self.completeness_ignore_data)
+
+
+        QMetaObject.connectSlotsByName(AdvancedOptionsPage)
+    # setupUi
 
     def retranslateUi(self, AdvancedOptionsPage):
-        self.groupBox.setTitle(_("Advanced options"))
-        self.label_ignore_regex.setText(_("Ignore file paths matching the following regular expression:"))
-        self.label_query_limit.setText(_("Maximum number of entities to return per MusicBrainz query"))
-        self.label_track_duration_diff.setText(_("Ignore track duration difference under this number of seconds"))
-        self.recursively_add_files.setText(_("Include sub-folders when adding files from folder"))
-        self.ignore_hidden_files.setText(_("Ignore hidden files"))
-        self.groupBox_completeness.setTitle(_("Ignore the following tracks when determining whether a release is complete"))
-        self.completeness_ignore_videos.setText(_("Video tracks"))
-        self.completeness_ignore_data.setText(_("Data tracks"))
-        self.completeness_ignore_pregap.setText(_("Pregap tracks"))
-        self.completeness_ignore_silence.setText(_("Silent tracks"))
-        self.groupBox_ignore_tags.setTitle(_("Tags to ignore for comparison:"))
-from picard.ui.widgets.taglisteditor import TagListEditor
+        self.groupBox.setTitle(_(u"Advanced options"))
+        self.label_ignore_regex.setText(_(u"Ignore file paths matching the following regular expression:"))
+        self.label_query_limit.setText(_(u"Maximum number of entities to return per MusicBrainz query"))
+
+        self.regex_error.setText("")
+        self.label_track_duration_diff.setText(_(u"Ignore track duration difference under this number of seconds"))
+        self.ignore_track_duration_difference_under.setSuffix("")
+        self.recursively_add_files.setText(_(u"Include sub-folders when adding files from folder"))
+        self.ignore_hidden_files.setText(_(u"Ignore hidden files"))
+        self.groupBox_completeness.setTitle(_(u"Ignore the following tracks when determining whether a release is complete"))
+        self.completeness_ignore_videos.setText(_(u"Video tracks"))
+        self.completeness_ignore_data.setText(_(u"Data tracks"))
+        self.completeness_ignore_pregap.setText(_(u"Pregap tracks"))
+        self.completeness_ignore_silence.setText(_(u"Silent tracks"))
+        self.groupBox_ignore_tags.setTitle(_(u"Tags to ignore for comparison:"))
+        pass
+    # retranslateUi
+

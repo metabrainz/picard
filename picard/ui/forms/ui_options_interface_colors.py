@@ -1,55 +1,72 @@
-# Form implementation generated from reading ui file 'ui/options_interface_colors.ui'
-#
-# Created by: PyQt6 UI code generator 6.6.1
-#
-# Automatically generated - do not edit.
-# Use `python setup.py build_ui` to update it.
+# -*- coding: utf-8 -*-
 
-from PySide6 import (
-    QtCore,
-    QtGui,
-    QtWidgets,
-)
+################################################################################
+## Form generated from reading UI file 'options_interface_colors.ui'
+##
+## Created by: Qt User Interface Compiler version 6.6.3
+##
+## Use `python setup.py build_ui` to update it.
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
+
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QFrame, QGroupBox, QScrollArea,
+    QSizePolicy, QVBoxLayout, QWidget)
 
 from picard.i18n import gettext as _
 
-
 class Ui_InterfaceColorsOptionsPage(object):
     def setupUi(self, InterfaceColorsOptionsPage):
-        InterfaceColorsOptionsPage.setObjectName("InterfaceColorsOptionsPage")
+        if not InterfaceColorsOptionsPage.objectName():
+            InterfaceColorsOptionsPage.setObjectName(u"InterfaceColorsOptionsPage")
         InterfaceColorsOptionsPage.resize(171, 137)
-        self.vboxlayout = QtWidgets.QVBoxLayout(InterfaceColorsOptionsPage)
-        self.vboxlayout.setContentsMargins(0, 0, 0, 0)
-        self.vboxlayout.setSpacing(6)
-        self.vboxlayout.setObjectName("vboxlayout")
-        self.scrollArea = QtWidgets.QScrollArea(parent=InterfaceColorsOptionsPage)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        self.vboxLayout = QVBoxLayout(InterfaceColorsOptionsPage)
+        self.vboxLayout.setSpacing(6)
+        self.vboxLayout.setObjectName(u"vboxLayout")
+        self.vboxLayout.setContentsMargins(0, 0, 0, 0)
+        self.scrollArea = QScrollArea(InterfaceColorsOptionsPage)
+        self.scrollArea.setObjectName(u"scrollArea")
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.scrollArea.sizePolicy().hasHeightForWidth())
         self.scrollArea.setSizePolicy(sizePolicy)
-        self.scrollArea.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
-        self.scrollArea.setFrameShadow(QtWidgets.QFrame.Shadow.Plain)
+        self.scrollArea.setFrameShape(QFrame.NoFrame)
+        self.scrollArea.setFrameShadow(QFrame.Plain)
         self.scrollArea.setLineWidth(0)
-        self.scrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.scrollArea.setWidgetResizable(True)
-        self.scrollArea.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
-        self.scrollArea.setObjectName("scrollArea")
-        self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 199, 137))
-        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
-        self.verticalLayout.setContentsMargins(9, 9, 9, 9)
+        self.scrollArea.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
+        self.scrollAreaWidgetContents = QWidget()
+        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 199, 137))
+        self.verticalLayout = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout.setSpacing(6)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.colors = QtWidgets.QGroupBox(parent=self.scrollAreaWidgetContents)
-        self.colors.setObjectName("colors")
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setContentsMargins(9, 9, 9, 9)
+        self.colors = QGroupBox(self.scrollAreaWidgetContents)
+        self.colors.setObjectName(u"colors")
+
         self.verticalLayout.addWidget(self.colors)
+
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        self.vboxlayout.addWidget(self.scrollArea)
+
+        self.vboxLayout.addWidget(self.scrollArea)
+
 
         self.retranslateUi(InterfaceColorsOptionsPage)
-        QtCore.QMetaObject.connectSlotsByName(InterfaceColorsOptionsPage)
+
+        QMetaObject.connectSlotsByName(InterfaceColorsOptionsPage)
+    # setupUi
 
     def retranslateUi(self, InterfaceColorsOptionsPage):
-        self.colors.setTitle(_("Colors"))
+        self.colors.setTitle(_(u"Colors"))
+        pass
+    # retranslateUi
+

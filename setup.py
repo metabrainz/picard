@@ -369,44 +369,41 @@ class picard_build_ui(Command):
             self.files = files
 
     def run(self):
-        from PySide6 import uic
+        from distutils.spawn import (
+            DistutilsExecError,
+            spawn,
+        )
 
-        _translate_re = (
-            (re.compile(r'(\s+_translate = QtCore\.QCoreApplication\.translate)'), r''),
-            (re.compile(
-                r'QtGui\.QApplication.translate\(.*?, (.*?), None, '
-                r'QtGui\.QApplication\.UnicodeUTF8\)'), r'_(\1)'),
-            (re.compile(r'\b_translate\(.*?, (.*?)(?:, None)?\)'), r'_(\1)'),
+        command = _get_option_name(self)
+        replacements_re = (
+            # Extend the header with instructions how to build the file
+            (
+                re.compile(r'(## WARNING!)'),
+                f'## Use `python setup.py {command}` to update it.\n\\1'
+            ),
+            # replace QT translations stuff by ours
+            (
+                re.compile(r'(class Ui_)'),
+                r'from picard.i18n import gettext as _\n\n\1'
+            ),
+            (
+                re.compile(r'QCoreApplication\.translate\(.*?, (.*?), None\)'),
+                r'_(\1)'
+            ),
         )
 
         def compile_ui(uifile, pyfile):
-            tmp = StringIO()
             log.info("compiling %s -> %s", uifile, pyfile)
-            uic.compileUi(uifile, tmp)
-            source = tmp.getvalue()
+            try:
+                spawn(['pyside6-uic', uifile, '-o', pyfile])
+            except DistutilsExecError as e:
+                log.error(e)
+            with open(pyfile, 'r') as f:
+                source = f.read()
 
             # replace QT translations stuff by ours
-            for matcher, replacement in _translate_re:
+            for matcher, replacement in replacements_re:
                 source = matcher.sub(replacement, source)
-
-            # replace headers
-            rc = re.compile(r'\n# WARNING.*?(?=\nclass )', re.MULTILINE | re.DOTALL)
-
-            command = _get_option_name(self)
-            new_header = f"""
-# Automatically generated - do not edit.
-# Use `python setup.py {command}` to update it.
-
-from PySide6 import (
-    QtCore,
-    QtGui,
-    QtWidgets,
-)
-
-from picard.i18n import gettext as _
-
-"""
-            source = rc.sub(new_header, source)
 
             # save to final file
             with open(pyfile, "w") as f:
