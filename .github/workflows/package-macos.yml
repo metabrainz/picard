@@ -45,7 +45,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip3 install -r requirements-build.txt
-        pip3 install -r requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt
+        pip3 install --no-binary "charset-normalizer,PyYAML" -r requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt
       env:
         PYINSTALLER_COMPILE_BOOTLOADER: "1"
     - name: Run tests
