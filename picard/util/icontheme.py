@@ -24,7 +24,7 @@
 
 import os.path
 
-from PyQt6 import QtGui
+from PySide6 import QtGui
 
 from picard.const.sys import IS_WIN
 

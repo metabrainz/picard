@@ -27,7 +27,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtWidgets,
 )

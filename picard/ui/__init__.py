@@ -27,7 +27,7 @@
 
 import uuid
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -179,7 +179,7 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
 
     help_url = None
     flags = QtCore.Qt.WindowType.WindowSystemMenuHint | QtCore.Qt.WindowType.WindowTitleHint | QtCore.Qt.WindowType.WindowCloseButtonHint
-    ready_for_display = QtCore.pyqtSignal()
+    ready_for_display = QtCore.Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent=parent, f=self.flags)

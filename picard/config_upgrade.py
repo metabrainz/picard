@@ -34,7 +34,7 @@ from inspect import (
 import re
 import sys
 
-from PyQt6 import QtWidgets
+from PySide6 import QtWidgets
 
 from picard import (
     PICARD_VERSION,

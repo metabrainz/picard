@@ -33,7 +33,7 @@
 
 import os
 
-from PyQt6.QtCore import QStandardPaths
+from PySide6.QtCore import QStandardPaths
 
 from picard.const import (
     CACHE_SIZE_DISPLAY_UNIT,

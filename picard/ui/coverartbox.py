@@ -37,7 +37,7 @@ from functools import partial
 import os
 import re
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtNetwork,
@@ -74,7 +74,7 @@ COVERART_WIDTH = THUMBNAIL_WIDTH - 7
 
 
 class CoverArtThumbnail(ActiveLabel):
-    image_dropped = QtCore.pyqtSignal(QtCore.QUrl, bytes)
+    image_dropped = QtCore.Signal(QtCore.QUrl, bytes)
 
     def __init__(self, active=False, drops=False, pixmap_cache=None, parent=None):
         super().__init__(active=active, parent=parent)

@@ -36,7 +36,7 @@ from urllib.parse import (
     urlparse,
 )
 
-from PyQt6 import QtCore
+from PySide6 import QtCore
 
 from picard import (
     PICARD_APP_NAME,
@@ -80,7 +80,7 @@ def _is_valid_origin(origin):
 
 class BrowserIntegration(QtCore.QObject):
 
-    listen_port_changed = QtCore.pyqtSignal(int)
+    listen_port_changed = QtCore.Signal(int)
 
     def __init__(self, parent=None):
         super().__init__(parent)

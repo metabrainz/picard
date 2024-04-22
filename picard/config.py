@@ -33,7 +33,7 @@ from collections import defaultdict
 import os
 import shutil
 
-from PyQt6 import QtCore
+from PySide6 import QtCore
 
 from picard import (
     PICARD_APP_NAME,

@@ -43,7 +43,7 @@ from collections.abc import (
 )
 from functools import partial
 
-from PyQt6 import QtCore
+from PySide6 import QtCore
 
 from picard.config import get_config
 from picard.mbjson import (

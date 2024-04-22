@@ -23,7 +23,7 @@
 import os
 import os.path
 
-from PyQt6.QtCore import (
+from PySide6.QtCore import (
     QCoreApplication,
     QStandardPaths,
 )

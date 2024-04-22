@@ -32,7 +32,7 @@ import sys
 import time
 import traceback
 
-from PyQt6.QtCore import (
+from PySide6.QtCore import (
     QCoreApplication,
     QEvent,
     QRunnable,

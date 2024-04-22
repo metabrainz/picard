@@ -67,8 +67,8 @@ import unicodedata
 
 from dateutil.parser import parse
 
-from PyQt6 import QtCore
-from PyQt6.QtGui import QDesktopServices
+from PySide6 import QtCore
+from PySide6.QtGui import QDesktopServices
 
 from picard import log
 from picard.const import MUSICBRAINZ_SERVERS

@@ -21,8 +21,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt6 import QtCore
-from PyQt6.QtWidgets import (
+from PySide6 import QtCore
+from PySide6.QtWidgets import (
     QCheckBox,
     QMessageBox,
 )

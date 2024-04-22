@@ -47,7 +47,7 @@ from collections import (
 from enum import IntEnum
 import traceback
 
-from PyQt6 import QtNetwork
+from PySide6 import QtNetwork
 
 from picard import log
 from picard.cluster import Cluster

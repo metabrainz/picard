@@ -20,7 +20,7 @@
 
 import time
 
-from PyQt6.QtCore import Qt
+from PySide6.QtCore import Qt
 
 from picard import log
 from picard.config import get_config

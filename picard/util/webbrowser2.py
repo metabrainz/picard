@@ -26,12 +26,12 @@
 
 """A webbrowser extension for Picard.
 
-It handles and displays errors in PyQt and also adds a utility function for opening Picard URLS.
+It handles and displays errors in PySide and also adds a utility function for opening Picard URLS.
 """
 
 import webbrowser
 
-from PyQt6 import QtWidgets
+from PySide6 import QtWidgets
 
 from picard.const import PICARD_URLS
 from picard.i18n import gettext as _

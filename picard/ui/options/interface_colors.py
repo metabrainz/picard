@@ -22,7 +22,7 @@
 
 from functools import partial
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -49,7 +49,7 @@ from picard.ui.util import changes_require_restart_warning
 
 class ColorButton(QtWidgets.QPushButton):
 
-    color_changed = QtCore.pyqtSignal(str)
+    color_changed = QtCore.Signal(str)
 
     def __init__(self, initial_color=None, parent=None):
         super().__init__('    ', parent=parent)

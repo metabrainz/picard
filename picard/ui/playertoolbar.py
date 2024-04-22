@@ -25,7 +25,7 @@ from collections import deque
 import locale
 import os
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -52,7 +52,7 @@ from picard.ui.widgets import (
 
 
 try:
-    from PyQt6 import QtMultimedia
+    from PySide6 import QtMultimedia
 except ImportError as e:
     qt_multimedia_available = False
     qt_multimedia_errmsg = e.msg
@@ -84,7 +84,7 @@ def get_text_width(font, text):
 
 
 class Player(QtCore.QObject):
-    error = QtCore.pyqtSignal(object, str)
+    error = QtCore.Signal(object, str)
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -364,7 +364,7 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
 
 
 class PlaybackRateButton(QtWidgets.QToolButton):
-    playback_rate_changed = QtCore.pyqtSignal(float)
+    playback_rate_changed = QtCore.Signal(float)
 
     multiplier = 10.0
 
@@ -421,7 +421,7 @@ class PlaybackRateButton(QtWidgets.QToolButton):
 
 
 class VolumeControlButton(QtWidgets.QToolButton):
-    volume_changed = QtCore.pyqtSignal(int)
+    volume_changed = QtCore.Signal(int)
 
     def __init__(self, volume, parent=None):
         super().__init__(parent=parent)

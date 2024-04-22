@@ -24,7 +24,7 @@
 
 from unittest.mock import MagicMock
 
-from PyQt6.QtCore import QUrl
+from PySide6.QtCore import QUrl
 
 from test.picardtestcase import PicardTestCase
 

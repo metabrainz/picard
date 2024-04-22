@@ -46,7 +46,7 @@
 
 from functools import partial
 
-from PyQt6 import QtGui
+from PySide6 import QtGui
 
 from picard.browser import addrelease
 from picard.config import get_config

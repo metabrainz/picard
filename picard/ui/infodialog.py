@@ -37,7 +37,7 @@ from html import escape
 import re
 import traceback
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,

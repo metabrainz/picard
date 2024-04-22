@@ -29,12 +29,11 @@ This can be used for basic dialogs that mostly contain a table as its core featu
 from abc import abstractmethod
 from collections import OrderedDict
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,
 )
-from PyQt6.QtCore import pyqtSignal
 
 from picard import log
 from picard.config import get_config
@@ -99,8 +98,8 @@ class SortableTableWidgetItem(QtWidgets.QTableWidgetItem):
 class TableBasedDialog(PicardDialog):
 
     defaultsize = QtCore.QSize(720, 360)
-    scrolled = pyqtSignal()
-    resized = pyqtSignal()
+    scrolled = QtCore.Signal()
+    resized = QtCore.Signal()
 
     def __init__(self, parent):
         super().__init__(parent=parent)

@@ -27,12 +27,12 @@ from functools import partial
 import os.path
 import random
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,
 )
-from PyQt6.QtGui import QPalette
+from PySide6.QtGui import QPalette
 
 from picard import log
 from picard.config import (
@@ -429,10 +429,10 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
 
     help_url = PICARD_URLS['doc_naming_script_edit']
 
-    signal_save = QtCore.pyqtSignal()
-    signal_update = QtCore.pyqtSignal()
-    signal_selection_changed = QtCore.pyqtSignal()
-    signal_index_changed = QtCore.pyqtSignal()
+    signal_save = QtCore.Signal()
+    signal_update = QtCore.Signal()
+    signal_selection_changed = QtCore.Signal()
+    signal_index_changed = QtCore.Signal()
 
     default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
     default_script_filename = "picard_naming_script.ptsp"
@@ -1341,7 +1341,7 @@ class ScriptDetailsEditor(PicardDialog):
     NAME = 'scriptdetails'
     TITLE = N_("Script Details")
 
-    signal_save = QtCore.pyqtSignal()
+    signal_save = QtCore.Signal()
 
     def __init__(self, script_item, parent=None):
         """Script metadata viewer / editor.

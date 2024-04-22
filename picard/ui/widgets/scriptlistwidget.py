@@ -24,7 +24,7 @@
 from functools import partial
 import threading
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -43,7 +43,7 @@ from picard.ui import HashableListWidgetItem
 
 class ScriptListWidget(QtWidgets.QListWidget):
 
-    signal_reset_selected_item = QtCore.pyqtSignal()
+    signal_reset_selected_item = QtCore.Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

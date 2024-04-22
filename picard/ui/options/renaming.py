@@ -35,7 +35,7 @@
 
 import os.path
 
-from PyQt6.QtGui import QPalette
+from PySide6.QtGui import QPalette
 
 from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page

@@ -51,7 +51,7 @@ from functools import partial
 import itertools
 import os.path
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -155,8 +155,8 @@ from picard.ui.util import (
 class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     defaultsize = QtCore.QSize(780, 560)
-    selection_updated = QtCore.pyqtSignal(object)
-    ready_for_display = QtCore.pyqtSignal()
+    selection_updated = QtCore.Signal(object)
+    ready_for_display = QtCore.Signal()
 
     def __init__(self, parent=None, disable_player=False):
         super().__init__(parent=parent)

@@ -25,7 +25,7 @@
 from html import escape
 from secrets import token_bytes
 
-from PyQt6.QtCore import QCoreApplication
+from PySide6.QtCore import QCoreApplication
 
 from picard import log
 from picard.i18n import gettext as _

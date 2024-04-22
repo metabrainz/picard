@@ -21,7 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -60,7 +60,7 @@ class ElidedLabel(QtWidgets.QLabel):
 class ActiveLabel(QtWidgets.QLabel):
     """Clickable QLabel."""
 
-    clicked = QtCore.pyqtSignal()
+    clicked = QtCore.Signal()
 
     def __init__(self, active=True, parent=None):
         super().__init__(parent=parent)
@@ -153,7 +153,7 @@ class Popover(QtWidgets.QFrame):
 class SliderPopover(Popover):
     """A popover containing a single slider."""
 
-    value_changed = QtCore.pyqtSignal(int)
+    value_changed = QtCore.Signal(int)
 
     def __init__(self, parent, position, label, value):
         super().__init__(position=position, parent=parent)

@@ -23,7 +23,7 @@
 
 from functools import partial
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtWidgets,
 )

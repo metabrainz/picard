@@ -40,7 +40,7 @@ from pathlib import (
 )
 from threading import Lock
 
-from PyQt6 import QtCore
+from PySide6 import QtCore
 
 from picard.const import USER_PLUGIN_DIR
 from picard.const.sys import (
@@ -131,7 +131,7 @@ def _calculate_bounds(previous_position, first_position, last_position, queue_le
 
 
 class TailLogger(QtCore.QObject):
-    updated = QtCore.pyqtSignal()
+    updated = QtCore.Signal()
 
     def __init__(self, maxlen):
         super().__init__()

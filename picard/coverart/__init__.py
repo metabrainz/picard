@@ -28,7 +28,7 @@
 from functools import partial
 import traceback
 
-from PyQt6 import QtCore
+from PySide6 import QtCore
 
 from picard import log
 from picard.config import get_config

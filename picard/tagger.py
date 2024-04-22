@@ -60,7 +60,7 @@ import time
 from urllib.parse import urlparse
 from uuid import uuid4
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -221,12 +221,12 @@ class ParseItemsToLoad:
 
 class Tagger(QtWidgets.QApplication):
 
-    tagger_stats_changed = QtCore.pyqtSignal()
-    listen_port_changed = QtCore.pyqtSignal(int)
-    cluster_added = QtCore.pyqtSignal(Cluster)
-    cluster_removed = QtCore.pyqtSignal(Cluster)
-    album_added = QtCore.pyqtSignal(Album)
-    album_removed = QtCore.pyqtSignal(Album)
+    tagger_stats_changed = QtCore.Signal()
+    listen_port_changed = QtCore.Signal(int)
+    cluster_added = QtCore.Signal(Cluster)
+    cluster_removed = QtCore.Signal(Cluster)
+    album_added = QtCore.Signal(Album)
+    album_removed = QtCore.Signal(Album)
 
     __instance = None
 
@@ -1588,7 +1588,7 @@ def main(localedir=None, autoupdate=True):
         sys.exit(0)
 
     try:
-        from PyQt6.QtDBus import QDBusConnection
+        from PySide6.QtDBus import QDBusConnection
         dbus = QDBusConnection.sessionBus()
         dbus.registerService(PICARD_APP_ID)
     except ImportError:

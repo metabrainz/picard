@@ -46,7 +46,7 @@
 from collections.abc import MutableSequence
 from enum import IntEnum
 
-from PyQt6 import QtCore
+from PySide6 import QtCore
 
 from picard.i18n import N_
 from picard.util import icontheme

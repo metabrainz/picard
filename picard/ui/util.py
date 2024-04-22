@@ -26,7 +26,7 @@
 
 from html import escape as html_escape
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,

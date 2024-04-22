@@ -26,18 +26,18 @@
 import re
 import unicodedata
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
 )
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import (
+from PySide6.QtCore import Qt
+from PySide6.QtGui import (
     QAction,
     QCursor,
     QKeySequence,
     QTextCursor,
 )
-from PyQt6.QtWidgets import (
+from PySide6.QtWidgets import (
     QCompleter,
     QTextEdit,
     QToolTip,

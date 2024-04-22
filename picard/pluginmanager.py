@@ -36,7 +36,7 @@ import tempfile
 import zipfile
 import zipimport
 
-from PyQt6 import QtCore
+from PySide6 import QtCore
 
 from picard import log
 from picard.const import (
@@ -196,11 +196,11 @@ def plugin_dir_for_path(path):
 
 class PluginManager(QtCore.QObject):
 
-    plugin_installed = QtCore.pyqtSignal(PluginWrapper, bool)
-    plugin_updated = QtCore.pyqtSignal(str, bool)
-    plugin_removed = QtCore.pyqtSignal(str, bool)
-    plugin_errored = QtCore.pyqtSignal(str, str, bool)
-    updates_available = QtCore.pyqtSignal(list)
+    plugin_installed = QtCore.Signal(PluginWrapper, bool)
+    plugin_updated = QtCore.Signal(str, bool)
+    plugin_removed = QtCore.Signal(str, bool)
+    plugin_errored = QtCore.Signal(str, str, bool)
+    updates_available = QtCore.Signal(list)
 
     def __init__(self, plugins_directory=None):
         super().__init__()

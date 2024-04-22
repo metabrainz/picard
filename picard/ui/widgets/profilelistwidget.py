@@ -24,7 +24,7 @@
 from functools import partial
 import uuid
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,

@@ -38,12 +38,12 @@ import os.path
 import platform
 import sys
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtNetwork,
 )
-from PyQt6.QtCore import QUrl
-from PyQt6.QtNetwork import (
+from PySide6.QtCore import QUrl
+from PySide6.QtNetwork import (
     QNetworkReply,
     QNetworkRequest,
     QSslError,

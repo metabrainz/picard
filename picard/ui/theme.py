@@ -23,7 +23,7 @@
 
 from enum import Enum
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -95,7 +95,7 @@ class BaseTheme:
         config = get_config()
         self._loaded_config_theme = UiTheme(config.setting['ui_theme'])
 
-        # Use the new fusion style from PyQt6 for a modern and consistent look
+        # Use the new fusion style from PySide6 for a modern and consistent look
         # across all OSes.
         if not IS_MACOS and not IS_HAIKU and self._loaded_config_theme != UiTheme.SYSTEM:
             app.setStyle('Fusion')

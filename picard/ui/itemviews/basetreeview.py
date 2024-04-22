@@ -49,7 +49,7 @@ from heapq import (
     heappush,
 )
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,

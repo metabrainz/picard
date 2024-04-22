@@ -24,7 +24,7 @@
 from copy import deepcopy
 import uuid
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtWidgets,
 )
@@ -68,7 +68,7 @@ class ProfilesOptionsPage(OptionsPage):
 
     TREEWIDGETITEM_COLUMN = 0
 
-    signal_refresh = QtCore.pyqtSignal()
+    signal_refresh = QtCore.Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

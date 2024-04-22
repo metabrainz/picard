@@ -5,7 +5,7 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,

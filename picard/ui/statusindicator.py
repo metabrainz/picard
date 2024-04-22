@@ -83,7 +83,7 @@ class AbstractProgressStatusIndicator:
 #      https://bugreports.qt.io/browse/QTBUG-89564
 #      https://bugreports.qt.io/browse/QTBUG-94008
 # if IS_WIN:
-#     from PyQt6.QtWinExtras import QWinTaskbarButton
+#     from PySide6.QtWinExtras import QWinTaskbarButton
 
 #     class WindowsTaskbarStatusIndicator(AbstractProgressStatusIndicator):
 #         def __init__(self, window):
@@ -109,18 +109,18 @@ if not (IS_WIN or IS_MACOS or IS_HAIKU):
     QDBusConnection = None
 
     try:
-        from PyQt6.QtCore import (
+        from PySide6.QtCore import (
             QObject,
-            pyqtSlot,
+            Slot,
         )
-        from PyQt6.QtDBus import (
+        from PySide6.QtDBus import (
             QDBusAbstractAdaptor,
             QDBusConnection,
             QDBusMessage,
         )
 
     except ImportError as err:
-        log.warning('Failed importing PyQt6.QtDBus: %r', err)
+        log.warning('Failed importing PySide6.QtDBus: %r', err)
 
     else:
 
@@ -184,7 +184,7 @@ if not (IS_WIN or IS_MACOS or IS_HAIKU):
             def __init__(self, parent):
                 super().__init__(parent)
 
-            @pyqtSlot(name="Query", result=list)
+            @Slot(name="Query", result=list)
             def query(self):
                 return self.parent().query()
 

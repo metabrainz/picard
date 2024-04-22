@@ -139,7 +139,7 @@ def parse_file(path, encoding='utf-8'):
     authors_from_file = {}
 
     fix_header_pattern = re.compile(r'^(?:#|/\*|//)\s+(fix-header:)\s*(.*)$', re.IGNORECASE)
-    skip_pattern = re.compile(r'^(?:#|/\*|//)\s+(Automatically\s+generated|Created\s+by:\s+The\s+Resource\s+Compiler\s+for\s+PyQt6)', re.IGNORECASE)
+    skip_pattern = re.compile(r'^(?:#|/\*|//)\s+(Automatically\s+generated|Created\s+by:\s+The\s+Resource\s+Compiler\s+for\s+PySide6)', re.IGNORECASE)
     with open(path, encoding=encoding) as f:
         lines = f.readlines()
         found = defaultdict(lambda: None)

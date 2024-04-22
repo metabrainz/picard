@@ -22,7 +22,7 @@
 
 from pathlib import Path
 
-from PyQt6.QtCore import QTimer
+from PySide6.QtCore import QTimer
 
 from picard import log
 

@@ -37,12 +37,12 @@ from operator import attrgetter
 import os.path
 import re
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,
 )
-from PyQt6.QtWidgets import QTreeWidgetItemIterator
+from PySide6.QtWidgets import QTreeWidgetItemIterator
 
 from picard import log
 from picard.config import get_config

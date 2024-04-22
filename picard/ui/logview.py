@@ -32,7 +32,7 @@ import logging
 import os
 import re
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -140,7 +140,7 @@ class Highlighter(QtGui.QSyntaxHighlighter):
 
 
 class VerbosityMenu(QtWidgets.QMenu):
-    verbosity_changed = QtCore.pyqtSignal(int)
+    verbosity_changed = QtCore.Signal(int)
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

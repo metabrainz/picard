@@ -23,12 +23,12 @@
 
 from functools import partial
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,
 )
-from PyQt6.QtCore import pyqtSignal
+from PySide6.QtCore import Signal
 
 from picard import log
 from picard.config import get_config
@@ -52,7 +52,7 @@ from picard.ui.searchdialog import (
 
 class CoverWidget(QtWidgets.QWidget):
 
-    shown = pyqtSignal()
+    shown = Signal()
 
     def __init__(self, width=100, height=100, parent=None):
         super().__init__(parent=parent)

@@ -24,7 +24,7 @@
 import re
 from xml.sax.saxutils import quoteattr  # nosec: B404
 
-from PyQt6.QtCore import QUrl
+from PySide6.QtCore import QUrl
 
 from picard import PICARD_VERSION_STR
 from picard.config import get_config

@@ -32,7 +32,7 @@ from enum import IntEnum
 from functools import partial
 import json
 
-from PyQt6 import QtCore
+from PySide6 import QtCore
 
 from picard import log
 from picard.acoustid.recordings import RecordingResolver

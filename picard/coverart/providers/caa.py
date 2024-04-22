@@ -34,7 +34,7 @@ from collections import (
     namedtuple,
 )
 
-from PyQt6.QtNetwork import (
+from PySide6.QtNetwork import (
     QNetworkReply,
     QNetworkRequest,
 )

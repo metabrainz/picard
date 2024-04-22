@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt6 import QtWidgets
+from PySide6 import QtWidgets
 
 from picard.util.tags import TAG_NAMES
 

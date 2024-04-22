@@ -33,7 +33,7 @@ import uuid
 
 import yaml
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtWidgets,
 )

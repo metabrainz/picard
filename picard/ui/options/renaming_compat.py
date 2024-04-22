@@ -35,7 +35,7 @@
 
 import re
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -67,7 +67,7 @@ class RenamingCompatOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_filerenaming_compat.html"
 
-    options_changed = QtCore.pyqtSignal(dict)
+    options_changed = QtCore.Signal(dict)
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

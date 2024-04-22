@@ -27,7 +27,7 @@
 
 from collections import Counter
 
-from PyQt6 import QtCore
+from PySide6 import QtCore
 
 from picard import log
 from picard.config import get_config
@@ -183,7 +183,7 @@ class ImageListState:
 
 
 class MetadataItem(QtCore.QObject, Item):
-    metadata_images_changed = QtCore.pyqtSignal()
+    metadata_images_changed = QtCore.Signal()
 
     def __init__(self, obj_id=None):
         super().__init__()

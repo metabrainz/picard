@@ -101,12 +101,12 @@ def crash_handler(exc: Exception = None):
 
     # Display the crash information to the user as a dialog. This requires
     # importing Qt6 and has some potential to fail if things are broken.
-    from PyQt6.QtCore import (
+    from PySide6.QtCore import (
         QCoreApplication,
         Qt,
         QUrl,
     )
-    from PyQt6.QtWidgets import (
+    from PySide6.QtWidgets import (
         QApplication,
         QMessageBox,
     )

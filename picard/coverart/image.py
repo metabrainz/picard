@@ -33,7 +33,7 @@ import os
 import shutil
 import tempfile
 
-from PyQt6.QtCore import (
+from PySide6.QtCore import (
     QCoreApplication,
     QMutex,
     QUrl,

@@ -369,7 +369,7 @@ class picard_build_ui(Command):
             self.files = files
 
     def run(self):
-        from PyQt6 import uic
+        from PySide6 import uic
 
         _translate_re = (
             (re.compile(r'(\s+_translate = QtCore\.QCoreApplication\.translate)'), r''),
@@ -397,7 +397,7 @@ class picard_build_ui(Command):
 # Automatically generated - do not edit.
 # Use `python setup.py {command}` to update it.
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,

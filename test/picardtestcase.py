@@ -37,7 +37,7 @@ from unittest.mock import (
     Mock,
 )
 
-from PyQt6 import QtCore
+from PySide6 import QtCore
 
 from picard import (
     config,
@@ -55,7 +55,7 @@ class FakeThreadPool(QtCore.QObject):
 
 class FakeTagger(QtCore.QObject):
 
-    tagger_stats_changed = QtCore.pyqtSignal()
+    tagger_stats_changed = QtCore.Signal()
 
     def __init__(self):
         super().__init__()

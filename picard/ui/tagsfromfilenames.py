@@ -30,7 +30,7 @@ from collections import OrderedDict
 import os.path
 import re
 
-from PyQt6 import QtWidgets
+from PySide6 import QtWidgets
 
 from picard.config import get_config
 from picard.i18n import gettext as _

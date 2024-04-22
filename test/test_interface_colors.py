@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt6.QtGui import QColor
+from PySide6.QtGui import QColor
 
 from test.picardtestcase import PicardTestCase
 

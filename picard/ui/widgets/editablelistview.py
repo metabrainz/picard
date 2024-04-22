@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -183,7 +183,7 @@ class UniqueEditableListView(EditableListView):
 
 
 class EditableListModel(QtCore.QAbstractListModel):
-    user_sortable_changed = QtCore.pyqtSignal(bool)
+    user_sortable_changed = QtCore.Signal(bool)
 
     def __init__(self, items=None, parent=None):
         super().__init__(parent)

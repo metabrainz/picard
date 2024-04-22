@@ -23,7 +23,7 @@
 
 from functools import partial
 
-from PyQt6 import QtWidgets
+from PySide6 import QtWidgets
 
 from picard import log
 from picard.album import Album

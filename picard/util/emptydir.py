@@ -25,7 +25,7 @@ import os
 import os.path
 import shutil
 
-from PyQt6.QtCore import QStandardPaths
+from PySide6.QtCore import QStandardPaths
 
 
 # Files not considered relevant for a directory. If a directory has only

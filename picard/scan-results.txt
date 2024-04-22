@@ -1,0 +1,92 @@
+# 2.10
+
+5057 files
+6 standalone recordings
+33 unmatched (davon 6 too short / silent)
+
+
+## Standalone recordings
+
+Poison Door        Sisters of Mercy (AcoustID with merged recording as only linked recording)
+Delete War         Jonny Fallout    (AcoustID with merged recording as only linked recording)
+Shoot to Thrill    AC/DC
+Adjust Me          Hawkwind
+Your River         My Dying Bride
+Sad But True       Metallica
+
+
+## Unmatched
+
+Varyags of Miklagaard           Amon Amarth
+Flight of the Rat               Deep Purple
+Today (Watch Me Shine)          Everlast
+Favourite Song                  Haight Ashbury
+Waiting on the Western World    Karma to Burn
+Yeah                            Kyuss
+Tempus Fugit                    Machinae Supremacy
+Vodoo Queen                     Me and That Man
+Nothing Else Matters            Metallica
+Of Wolf and Man                 Metallica
+Narrenschiff                    Ratsbane
+C'mon Girl                      Red Hot Chilli Peppers
+Beyond the Doors of the Dark    Savatage
+Strong Arm of the Law           Saxon
+The Golden Stream of Lapland    Sentenced
+Antipunk (11 songs vom Album)   Die kleinen Götter
+
+
+## Unmatched (too short / silent)
+
+Intro: Tod im Freibad           WIZO
+[silence] x 5                   Guano Apes
+[silence]                       Sentenced
+
+
+# 2.10 with preferred release types configured (no compilation)
+## Standalone recordings (19)
+
+Poison Door        Sisters of Mercy (AcoustID with merged recording as only linked recording)
+Delete War         Jonny Fallout    (AcoustID with merged recording as only linked recording)
+Shoot to Thrill    AC/DC
+Adjust Me          Hawkwind
+Your River         My Dying Bride
+Sad But True       Metallica
+
+
+Jerusalem               Alphaville       (compilation only)
+The Jet Set             Alphaville       (compilation only)
+Burning Angel           Mercenary        (compilation only)
+Hallelujah              Deep Purple      (compilation only)
+9x album Arcade         Machinae Supremacy (majority recording is compilation only, target recording deleted)
+
+## Unmatched (35)
+
+
+
+# 2.10.1dev2
+
+## Standalone recordings (2)
+
+Poison Door        Sisters of Mercy (AcoustID with merged recording as only linked recording)
+Delete War         Jonny Fallout    (AcoustID with merged recording as only linked recording)
+
+## Unmatched
+
+*same*
+
+
+# 2.10.1dev2 with preferred release types configured (no compilation)
+
+## Standalone recordings (19)
+
+Poison Door             Sisters of Mercy (AcoustID with merged recording as only linked recording)
+Delete War              Jonny Fallout    (AcoustID with merged recording as only linked recording)
+Jerusalem               Alphaville       (compilation only)
+The Jet Set             Alphaville       (compilation only)
+Burning Angel           Mercenary        (compilation only)
+Hallelujah              Deep Purple      (compilation only)
+Coronarias Redig        Deep Purple      (majority recording is compilation only, not in 2.10)
+Negative Creep          Nirvana          (majority recording is compilation only, not in 2.10)
+Scentless Apprentice    Nirvana          (majority recording is compilation only, not in 2.10)
+Good Rockin' Mama       John Lee Hooker  (majority recording is compilation only, target recording deleted, not in 2.10)
+9x album Arcade         Machinae Supremacy (majority recording is compilation only, target recording deleted, not in 2.10)

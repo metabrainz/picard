@@ -34,14 +34,6 @@ from distutils.spawn import (
 import os.path
 
 
-def fix_qtcore_import(path):
-    with open(path, 'r') as f:
-        data = f.read()
-    data = data.replace('PySide6', 'PyQt6')
-    with open(path, 'w') as f:
-        f.write(data)
-
-
 def main():
     scriptdir = os.path.dirname(os.path.abspath(__file__))
     topdir = os.path.abspath(os.path.join(scriptdir, ".."))
@@ -56,7 +48,6 @@ def main():
             cmd = [rcc_path, '-g', 'python', '-o', pyfile, qrcfile]
             try:
                 spawn(cmd, search_path=0)
-                fix_qtcore_import(pyfile)
             except DistutilsExecError as e:
                 log.error(e)
 

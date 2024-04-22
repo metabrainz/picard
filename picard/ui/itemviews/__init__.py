@@ -46,7 +46,7 @@
 from collections import defaultdict
 from functools import partial
 
-from PyQt6 import (
+from PySide6 import (
     QtCore,
     QtGui,
     QtWidgets,

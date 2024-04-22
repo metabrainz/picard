@@ -31,7 +31,7 @@ from typing import (
     List,
 )
 
-from PyQt6.QtNetwork import QNetworkReply
+from PySide6.QtNetwork import QNetworkReply
 
 from picard.acoustid.json_helpers import (
     parse_recording,

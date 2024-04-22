@@ -31,7 +31,7 @@
 
 import traceback
 
-from PyQt6 import QtCore
+from PySide6 import QtCore
 
 from picard import log
 from picard.util.mbserver import build_submission_url

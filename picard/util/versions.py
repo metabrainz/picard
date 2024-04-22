@@ -27,11 +27,9 @@ from platform import python_version
 
 from mutagen import version_string as mutagen_version
 
-from PyQt6.QtCore import (
-    PYQT_VERSION_STR as pyqt_version,
-    qVersion,
-)
-from PyQt6.QtNetwork import QSslSocket
+from PySide6 import __version__ as pyside_version
+from PySide6.QtCore import __version__ as qt_version
+from PySide6.QtNetwork import QSslSocket
 
 from picard import PICARD_FANCY_VERSION_STR
 from picard.disc import discid_version
@@ -47,7 +45,7 @@ _versions = None
 _names = {
     'version': "Picard",
     'python-version': "Python",
-    'pyqt-version': "PyQt",
+    'pyside-version': "PySide",
     'qt-version': "Qt",
     'mutagen-version': "Mutagen",
     'discid-version': "Discid",
@@ -61,8 +59,8 @@ def _load_versions():
     _versions = OrderedDict((
         ('version', PICARD_FANCY_VERSION_STR),
         ('python-version', python_version()),
-        ('pyqt-version', pyqt_version),
-        ('qt-version', qVersion()),
+        ('pyside-version', pyside_version),
+        ('qt-version', qt_version),
         ('mutagen-version', mutagen_version),
         ('discid-version', discid_version),
         ('astrcmp', astrcmp_implementation),

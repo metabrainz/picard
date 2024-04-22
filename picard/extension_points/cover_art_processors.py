@@ -21,8 +21,8 @@
 from copy import copy
 from enum import IntEnum
 
-from PyQt6.QtCore import QBuffer
-from PyQt6.QtGui import QImage
+from PySide6.QtCore import QBuffer
+from PySide6.QtGui import QImage
 
 from picard.plugin import ExtensionPoint
 from picard.util import imageinfo
