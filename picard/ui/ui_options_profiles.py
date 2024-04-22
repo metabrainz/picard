@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_ProfileEditorDialog(object):
@@ -75,7 +78,6 @@ class Ui_ProfileEditorDialog(object):
         QtCore.QMetaObject.connectSlotsByName(ProfileEditorDialog)
 
     def retranslateUi(self, ProfileEditorDialog):
-        _translate = QtCore.QCoreApplication.translate
         self.option_profiles_groupbox.setTitle(_("Option Profile(s)"))
         self.move_up_button.setToolTip(_("Move profile up"))
         self.move_down_button.setToolTip(_("Move profile down"))

@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_AttachedProfilesDialog(object):
@@ -34,5 +37,4 @@ class Ui_AttachedProfilesDialog(object):
         QtCore.QMetaObject.connectSlotsByName(AttachedProfilesDialog)
 
     def retranslateUi(self, AttachedProfilesDialog):
-        _translate = QtCore.QCoreApplication.translate
         AttachedProfilesDialog.setWindowTitle(_("Profiles Attached to Options"))

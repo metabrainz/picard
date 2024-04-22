@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_InterfaceToolbarOptionsPage(object):
@@ -72,7 +75,6 @@ class Ui_InterfaceToolbarOptionsPage(object):
         InterfaceToolbarOptionsPage.setTabOrder(self.down_button, self.remove_button)
 
     def retranslateUi(self, InterfaceToolbarOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.customize_toolbar_box.setTitle(_("Customize Action Toolbar"))
         self.add_button.setToolTip(_("Add a new button to Toolbar"))
         self.add_button.setText(_("Add Action"))

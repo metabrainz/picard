@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_TagsOptionsPage(object):
@@ -71,7 +74,6 @@ class Ui_TagsOptionsPage(object):
         TagsOptionsPage.setTabOrder(self.remove_ape_from_mp3, self.fix_missing_seekpoints_flac)
 
     def retranslateUi(self, TagsOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.write_tags.setText(_("Write tags to files"))
         self.preserve_timestamps.setText(_("Preserve timestamps of tagged files"))
         self.before_tagging.setTitle(_("Before Tagging"))

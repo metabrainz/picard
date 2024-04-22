@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_InfoDialog(object):
@@ -81,7 +84,6 @@ class Ui_InfoDialog(object):
         InfoDialog.setTabOrder(self.tabWidget, self.buttonBox)
 
     def retranslateUi(self, InfoDialog):
-        _translate = QtCore.QCoreApplication.translate
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.info_tab), _("&Info"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.error_tab), _("&Error"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.artwork_tab), _("A&rtwork"))

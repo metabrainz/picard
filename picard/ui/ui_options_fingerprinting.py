@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_FingerprintingOptionsPage(object):
@@ -97,7 +100,6 @@ class Ui_FingerprintingOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(FingerprintingOptionsPage)
 
     def retranslateUi(self, FingerprintingOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.fingerprinting.setTitle(_("Audio Fingerprinting"))
         self.disable_fingerprinting.setText(_("Do not use audio fingerprinting"))
         self.use_acoustid.setText(_("Use AcoustID"))

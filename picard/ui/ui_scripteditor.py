@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_ScriptEditor(object):
@@ -208,7 +211,6 @@ class Ui_ScriptEditor(object):
         QtCore.QMetaObject.connectSlotsByName(ScriptEditor)
 
     def retranslateUi(self, ScriptEditor):
-        _translate = QtCore.QCoreApplication.translate
         self.label.setText(_("Selected file naming script:"))
         self.preset_naming_scripts.setToolTip(_("Select the file naming script to load into the editor"))
         self.label_2.setText(_("Title:"))

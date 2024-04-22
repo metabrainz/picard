@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_AboutDialog(object):
@@ -83,6 +86,5 @@ class Ui_AboutDialog(object):
         QtCore.QMetaObject.connectSlotsByName(AboutDialog)
 
     def retranslateUi(self, AboutDialog):
-        _translate = QtCore.QCoreApplication.translate
         AboutDialog.setWindowTitle(_("About Picard"))
         self.app_name.setText(_("MusicBrainz Picard"))

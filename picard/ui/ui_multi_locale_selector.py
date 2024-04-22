@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MultiLocaleSelector(object):
@@ -85,7 +88,6 @@ class Ui_MultiLocaleSelector(object):
         QtCore.QMetaObject.connectSlotsByName(MultiLocaleSelector)
 
     def retranslateUi(self, MultiLocaleSelector):
-        _translate = QtCore.QCoreApplication.translate
         MultiLocaleSelector.setWindowTitle(_("Locale Selector"))
         self.label.setText(_("Selected Locales"))
         self.move_up.setToolTip(_("Move selected locale up"))

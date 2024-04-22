@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_RenamingCompatOptionsPage(object):
@@ -89,7 +92,6 @@ class Ui_RenamingCompatOptionsPage(object):
         RenamingCompatOptionsPage.setTabOrder(self.replace_spaces_with_underscores, self.replace_dir_separator)
 
     def retranslateUi(self, RenamingCompatOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.ascii_filenames.setText(_("Replace non-ASCII characters"))
         self.windows_compatibility.setText(_("Windows compatibility"))
         self.btn_windows_compatibility_change.setText(_("Customize…"))

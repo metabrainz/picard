@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_InterfaceColorsOptionsPage(object):
@@ -49,5 +52,4 @@ class Ui_InterfaceColorsOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(InterfaceColorsOptionsPage)
 
     def retranslateUi(self, InterfaceColorsOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.colors.setTitle(_("Colors"))

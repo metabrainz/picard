@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_ScriptingDocumentationDialog(object):
@@ -36,5 +39,4 @@ class Ui_ScriptingDocumentationDialog(object):
         QtCore.QMetaObject.connectSlotsByName(ScriptingDocumentationDialog)
 
     def retranslateUi(self, ScriptingDocumentationDialog):
-        _translate = QtCore.QCoreApplication.translate
         ScriptingDocumentationDialog.setWindowTitle(_("Scripting Documentation"))

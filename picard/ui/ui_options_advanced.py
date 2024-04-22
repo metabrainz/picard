@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_AdvancedOptionsPage(object):
@@ -138,7 +141,6 @@ class Ui_AdvancedOptionsPage(object):
         AdvancedOptionsPage.setTabOrder(self.completeness_ignore_videos, self.completeness_ignore_data)
 
     def retranslateUi(self, AdvancedOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.groupBox.setTitle(_("Advanced options"))
         self.label_ignore_regex.setText(_("Ignore file paths matching the following regular expression:"))
         self.label_query_limit.setText(_("Maximum number of entities to return per MusicBrainz query"))

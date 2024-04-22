@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_InfoStatus(object):
@@ -106,5 +109,4 @@ class Ui_InfoStatus(object):
         QtCore.QMetaObject.connectSlotsByName(InfoStatus)
 
     def retranslateUi(self, InfoStatus):
-        _translate = QtCore.QCoreApplication.translate
         InfoStatus.setWindowTitle(_("Form"))

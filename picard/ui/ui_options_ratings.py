@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_RatingsOptionsPage(object):
@@ -47,7 +50,6 @@ class Ui_RatingsOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(RatingsOptionsPage)
 
     def retranslateUi(self, RatingsOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.enable_ratings.setTitle(_("Enable track ratings"))
         self.label.setText(_("Picard saves the ratings together with an e-mail address identifying the user who did the rating. That way different ratings for different users can be stored in the files. Please specify the e-mail you want to use to save your ratings."))
         self.ignore_tags_2.setText(_("E-mail:"))

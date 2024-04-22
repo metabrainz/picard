@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_TagsCompatibilityOptionsPage(object):
@@ -56,7 +59,6 @@ class Ui_TagsCompatibilityOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(TagsCompatibilityOptionsPage)
 
     def retranslateUi(self, TagsCompatibilityOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.wave_files.setTitle(_("WAVE files"))
         self.label.setText(_("Picard will tag WAVE files using ID3v2 tags. This is not supported by all software. For compatibility with software which does not support ID3v2 tags in WAVE files additional RIFF INFO tags can be written to the files. RIFF INFO has only limited support for tags and character encodings."))
         self.write_wave_riff_info.setText(_("Also include RIFF INFO tags in the files"))

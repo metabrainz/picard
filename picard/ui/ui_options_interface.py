@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_InterfaceOptionsPage(object):
@@ -118,7 +121,6 @@ class Ui_InterfaceOptionsPage(object):
         InterfaceOptionsPage.setTabOrder(self.starting_directory_path, self.starting_directory_browse)
 
     def retranslateUi(self, InterfaceOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.groupBox.setTitle(_("Appearance"))
         self.toolbar_show_labels.setText(_("Show text labels under icons"))
         self.show_menu_icons.setText(_("Show icons in menus"))

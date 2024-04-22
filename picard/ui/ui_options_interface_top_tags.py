@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_InterfaceTopTagsOptionsPage(object):
@@ -37,6 +40,5 @@ class Ui_InterfaceTopTagsOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(InterfaceTopTagsOptionsPage)
 
     def retranslateUi(self, InterfaceTopTagsOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.top_tags_groupBox.setTitle(_("Show the below tags above all other tags in the metadata view"))
 from picard.ui.widgets.taglisteditor import TagListEditor

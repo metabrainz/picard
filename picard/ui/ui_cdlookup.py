@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_Dialog(object):
@@ -85,7 +88,6 @@ class Ui_Dialog(object):
         Dialog.setTabOrder(self.lookup_button, self.cancel_button)
 
     def retranslateUi(self, Dialog):
-        _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_("CD Lookup"))
         self.label.setText(_("The following releases on MusicBrainz match the CD:"))
         self.no_results_label.setText(_("No matching releases found for this disc."))

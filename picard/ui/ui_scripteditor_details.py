@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_ScriptDetails(object):
@@ -91,7 +94,6 @@ class Ui_ScriptDetails(object):
         QtCore.QMetaObject.connectSlotsByName(ScriptDetails)
 
     def retranslateUi(self, ScriptDetails):
-        _translate = QtCore.QCoreApplication.translate
         ScriptDetails.setWindowTitle(_("File Naming Script Metadata"))
         self.script_version.setToolTip(_("Version number of the file naming script."))
         self.label_4.setText(_("Last Updated:"))

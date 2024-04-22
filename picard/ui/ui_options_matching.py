@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MatchingOptionsPage(object):
@@ -71,7 +74,6 @@ class Ui_MatchingOptionsPage(object):
         MatchingOptionsPage.setTabOrder(self.cluster_lookup_threshold, self.track_matching_threshold)
 
     def retranslateUi(self, MatchingOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.rename_files.setTitle(_("Thresholds"))
         self.label_6.setText(_("Minimal similarity for matching files to tracks:"))
         self.track_matching_threshold.setSuffix(_(" %"))

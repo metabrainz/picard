@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_ReleasesOptionsPage(object):
@@ -110,7 +113,6 @@ class Ui_ReleasesOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(ReleasesOptionsPage)
 
     def retranslateUi(self, ReleasesOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.type_group.setTitle(_("Preferred release types"))
         self.country_group.setTitle(_("Preferred release countries"))
         self.add_countries.setToolTip(_("Add to preferred release countries"))

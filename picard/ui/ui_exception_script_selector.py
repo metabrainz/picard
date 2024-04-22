@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_ExceptionScriptSelector(object):
@@ -105,7 +108,6 @@ class Ui_ExceptionScriptSelector(object):
         QtCore.QMetaObject.connectSlotsByName(ExceptionScriptSelector)
 
     def retranslateUi(self, ExceptionScriptSelector):
-        _translate = QtCore.QCoreApplication.translate
         ExceptionScriptSelector.setWindowTitle(_("Exception Language Script Selector"))
         self.label.setText(_("Selected Scripts"))
         self.threshold_label.setText(_("Selected language script match threshold:"))

@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_NetworkOptionsPage(object):
@@ -156,7 +159,6 @@ class Ui_NetworkOptionsPage(object):
         NetworkOptionsPage.setTabOrder(self.browser_integration_port, self.browser_integration_localhost_only)
 
     def retranslateUi(self, NetworkOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.web_proxy.setTitle(_("Web Proxy"))
         self.proxy_type_http.setText(_("HTTP"))
         self.proxy_type_socks.setText(_("SOCKS"))

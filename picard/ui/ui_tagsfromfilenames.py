@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_TagsFromFileNamesDialog(object):
@@ -53,7 +56,6 @@ class Ui_TagsFromFileNamesDialog(object):
         TagsFromFileNamesDialog.setTabOrder(self.replace_underscores, self.buttonbox)
 
     def retranslateUi(self, TagsFromFileNamesDialog):
-        _translate = QtCore.QCoreApplication.translate
         TagsFromFileNamesDialog.setWindowTitle(_("Convert File Names to Tags"))
         self.replace_underscores.setText(_("Replace underscores with spaces"))
         self.preview.setText(_("&Preview"))

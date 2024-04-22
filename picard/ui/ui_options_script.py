@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_ScriptingOptionsPage(object):
@@ -119,7 +122,6 @@ class Ui_ScriptingOptionsPage(object):
         ScriptingOptionsPage.setTabOrder(self.move_down_button, self.remove_button)
 
     def retranslateUi(self, ScriptingOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.enable_tagger_scripts.setTitle(_("Enable Tagger Script(s)"))
         self.label.setText(_("Tagger scripts that have been activated below will be executed automatically for each track of a release loaded from MusicBrainz."))
         self.tagger_script.setPlaceholderText(_("Enter your tagger script here."))

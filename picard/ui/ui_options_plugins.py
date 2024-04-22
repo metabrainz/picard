@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_PluginsOptionsPage(object):
@@ -131,7 +134,6 @@ class Ui_PluginsOptionsPage(object):
         PluginsOptionsPage.setTabOrder(self.reload_list_of_plugins, self.scrollArea)
 
     def retranslateUi(self, PluginsOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.groupBox_2.setTitle(_("Plugins"))
         self.plugins.headerItem().setText(0, _("Name"))
         self.plugins.headerItem().setText(1, _("Version"))

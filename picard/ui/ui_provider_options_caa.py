@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_CaaOptions(object):
@@ -68,7 +71,6 @@ class Ui_CaaOptions(object):
         CaaOptions.setTabOrder(self.cb_image_size, self.cb_approved_only)
 
     def retranslateUi(self, CaaOptions):
-        _translate = QtCore.QCoreApplication.translate
         CaaOptions.setWindowTitle(_("Form"))
         self.restrict_images_types.setText(_("Download only cover art images matching selected types"))
         self.select_caa_types.setText(_("Select types…"))

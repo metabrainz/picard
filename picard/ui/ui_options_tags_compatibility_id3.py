@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_TagsCompatibilityOptionsPage(object):
@@ -115,7 +118,6 @@ class Ui_TagsCompatibilityOptionsPage(object):
         TagsCompatibilityOptionsPage.setTabOrder(self.itunes_compatible_grouping, self.write_id3v1)
 
     def retranslateUi(self, TagsCompatibilityOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.tag_compatibility.setTitle(_("ID3"))
         self.id3v2_version.setTitle(_("ID3v2 Version"))
         self.write_id3v24.setText(_("2.4"))

@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_CDLookupOptionsPage(object):
@@ -40,6 +43,5 @@ class Ui_CDLookupOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(CDLookupOptionsPage)
 
     def retranslateUi(self, CDLookupOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.rename_files.setTitle(_("CD Lookup"))
         self.label_3.setText(_("CD-ROM device to use for lookups:"))

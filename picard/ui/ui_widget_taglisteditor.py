@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_TagListEditor(object):
@@ -68,7 +71,6 @@ class Ui_TagListEditor(object):
         QtCore.QMetaObject.connectSlotsByName(TagListEditor)
 
     def retranslateUi(self, TagListEditor):
-        _translate = QtCore.QCoreApplication.translate
         TagListEditor.setWindowTitle(_("Form"))
         self.tags_add_btn.setText(_("Add new tag"))
         self.tags_move_up_btn.setToolTip(_("Move tag up"))

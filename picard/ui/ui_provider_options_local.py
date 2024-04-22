@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_LocalOptions(object):
@@ -52,7 +55,6 @@ class Ui_LocalOptions(object):
         QtCore.QMetaObject.connectSlotsByName(LocalOptions)
 
     def retranslateUi(self, LocalOptions):
-        _translate = QtCore.QCoreApplication.translate
         LocalOptions.setWindowTitle(_("Form"))
         self.local_cover_regex_label.setText(_("Local cover art files match the following regular expression:"))
         self.local_cover_regex_default.setText(_("Default"))

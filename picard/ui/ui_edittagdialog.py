@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_EditTagDialog(object):
@@ -115,7 +118,6 @@ class Ui_EditTagDialog(object):
         EditTagDialog.setTabOrder(self.remove_value, self.buttonbox)
 
     def retranslateUi(self, EditTagDialog):
-        _translate = QtCore.QCoreApplication.translate
         EditTagDialog.setWindowTitle(_("Edit Tag"))
         self.edit_value.setText(_("Edit value"))
         self.add_value.setText(_("Add value"))

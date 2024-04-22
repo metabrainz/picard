@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_RenamingOptionsPage(object):
@@ -150,7 +153,6 @@ class Ui_RenamingOptionsPage(object):
         RenamingOptionsPage.setTabOrder(self.example_filename_after, self.example_filename_sample_files_button)
 
     def retranslateUi(self, RenamingOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.move_files.setTitle(_("Move files when saving"))
         self.label.setText(_("Destination directory:"))
         self.move_files_to_browse.setText(_("Browse…"))

@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_GeneralOptionsPage(object):
@@ -199,7 +202,6 @@ class Ui_GeneralOptionsPage(object):
         GeneralOptionsPage.setTabOrder(self.update_check_days, self.update_level)
 
     def retranslateUi(self, GeneralOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.groupBox.setTitle(_("MusicBrainz Server"))
         self.label_4.setText(_("You have configured an unofficial MusicBrainz server. By default submissions of releases, recordings and disc IDs will go to the primary database on musicbrainz.org."))
         self.use_server_for_submission.setText(_("Submit data to the configured server"))

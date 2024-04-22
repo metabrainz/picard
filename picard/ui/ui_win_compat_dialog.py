@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_WinCompatDialog(object):
@@ -191,7 +194,6 @@ class Ui_WinCompatDialog(object):
         WinCompatDialog.setTabOrder(self.replace_pipe, self.replace_quotationmark)
 
     def retranslateUi(self, WinCompatDialog):
-        _translate = QtCore.QCoreApplication.translate
         WinCompatDialog.setWindowTitle(_("Windows compatibility"))
         self.label_header_character.setText(_("Character"))
         self.label_header_replace.setText(_("Replacement"))

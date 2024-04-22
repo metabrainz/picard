@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MetadataOptionsPage(object):
@@ -129,7 +132,6 @@ class Ui_MetadataOptionsPage(object):
         MetadataOptionsPage.setTabOrder(self.nat_name, self.nat_name_default)
 
     def retranslateUi(self, MetadataOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.metadata_groupbox.setTitle(_("Metadata"))
         self.translate_artist_names.setText(_("Translate artist names to these locales where possible:"))
         self.select_locales.setText(_("Select…"))

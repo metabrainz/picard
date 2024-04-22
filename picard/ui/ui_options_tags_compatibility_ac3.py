@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_TagsCompatibilityOptionsPage(object):
@@ -45,7 +48,6 @@ class Ui_TagsCompatibilityOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(TagsCompatibilityOptionsPage)
 
     def retranslateUi(self, TagsCompatibilityOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.ac3_files.setTitle(_("AC3 files"))
         self.info_label.setText(_("Picard can save APEv2 tags to pure AC3 files, which by default do not support tagging. APEv2 tags in AC3 are supported by some players, but players not supporting AC3 files with APEv2 tags can have issues loading and playing those files. To deal with this you can choose whether to save tags to those files."))
         self.ac3_save_ape.setText(_("Save APEv2 tags"))

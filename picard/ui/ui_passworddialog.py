@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_PasswordDialog(object):
@@ -62,7 +65,6 @@ class Ui_PasswordDialog(object):
         QtCore.QMetaObject.connectSlotsByName(PasswordDialog)
 
     def retranslateUi(self, PasswordDialog):
-        _translate = QtCore.QCoreApplication.translate
         PasswordDialog.setWindowTitle(_("Authentication required"))
         self.label.setText(_("Username:"))
         self.label_2.setText(_("Password:"))

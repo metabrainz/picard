@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MaintenanceOptionsPage(object):
@@ -86,7 +89,6 @@ class Ui_MaintenanceOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(MaintenanceOptionsPage)
 
     def retranslateUi(self, MaintenanceOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.label.setText(_("Configuration File:"))
         self.open_folder_button.setText(_("Open folder"))
         self.load_backup_button.setText(_("Load Backup"))

@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_CoverOptionsPage(object):
@@ -95,7 +98,6 @@ class Ui_CoverOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(CoverOptionsPage)
 
     def retranslateUi(self, CoverOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.save_images_to_tags.setTitle(_("Embed cover images into tags"))
         self.cb_embed_front_only.setText(_("Embed only a single front image"))
         self.save_images_to_files.setTitle(_("Save cover images as separate files"))

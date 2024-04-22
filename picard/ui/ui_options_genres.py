@@ -5,10 +5,13 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard.i18n import gettext as _
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_GenresOptionsPage(object):
@@ -119,7 +122,6 @@ class Ui_GenresOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(GenresOptionsPage)
 
     def retranslateUi(self, GenresOptionsPage):
-        _translate = QtCore.QCoreApplication.translate
         self.use_genres.setTitle(_("Use genres from MusicBrainz"))
         self.only_my_genres.setText(_("Use only my genres"))
         self.artists_genres.setText(_("Fall back on album\'s artists genres if no genres are found for the release or release group"))
