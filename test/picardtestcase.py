@@ -58,9 +58,7 @@ class FakeTagger(QtCore.QObject):
     tagger_stats_changed = QtCore.pyqtSignal()
 
     def __init__(self):
-        QtCore.QObject.__init__(self)
-        QtCore.QObject.config = config
-        QtCore.QObject.log = log
+        super().__init__()
         self.tagger_stats_changed.connect(self.emit)
         self.exit_cleanup = []
         self.files = {}
