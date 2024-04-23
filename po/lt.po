@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-04-22 12:02+0200\n"
-"PO-Revision-Date: 2024-04-07 12:29+0000\n"
+"PO-Revision-Date: 2024-04-23 16:42+0000\n"
 "Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -22,9 +22,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
-"1 : n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.4\n"
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
+" n % 1 != 0 ? 2: 3);\n"
+"X-Generator: Weblate 5.4.3\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:154
@@ -145,19 +145,19 @@ msgstr "Pagrindinis failų pavadinimų skriptas"
 
 #: picard/debug_opts.py:82
 msgid "Web Service Replies"
-msgstr ""
+msgstr "Žiniatinklio paslaugos atsakymai"
 
 #: picard/debug_opts.py:82
 msgid "Log content of web service replies"
-msgstr ""
+msgstr "Žurnalo žiniatinklio paslaugos atsakymų turinys"
 
 #: picard/debug_opts.py:83
 msgid "Plugin Fullpath"
-msgstr ""
+msgstr "Įskiepio pilnas kelias"
 
 #: picard/debug_opts.py:83
 msgid "Log plugin full paths"
-msgstr ""
+msgstr "Žurnalo įskiepių pilni keliai"
 
 #: picard/file.py:223
 msgid ""
@@ -307,7 +307,7 @@ msgstr "Formatas"
 
 #: picard/releasegroup.py:59
 msgid "Label"
-msgstr "Leidykla"
+msgstr "Įrašų kompanija"
 
 #: picard/releasegroup.py:60
 msgid "Cat No"
@@ -315,7 +315,7 @@ msgstr "Kat. nr."
 
 #: picard/releasegroup.py:64
 msgid "Packaging"
-msgstr ""
+msgstr "Pakuotė"
 
 #: picard/releasegroup.py:65 picard/ui/cdlookup.py:74
 #: picard/ui/itemviews.py:176 picard/ui/searchdialog/album.py:161
@@ -1966,11 +1966,11 @@ msgstr "Žurnalo peržiūros tekstas (įspėjimas)"
 
 #: picard/ui/colors.py:48
 msgid "Profile highlight background"
-msgstr ""
+msgstr "Profilio paryškinimo fonas"
 
 #: picard/ui/colors.py:49
 msgid "Profile highlight foreground"
-msgstr ""
+msgstr "Profilio paryškinimo priekinis planas"
 
 #: picard/ui/colors.py:50
 msgid "Tag added"
@@ -2001,10 +2001,8 @@ msgid "Show more details"
 msgstr "Rodyti daugiau informacijos"
 
 #: picard/ui/coverartbox.py:397
-#, fuzzy
-#| msgid "Ctrl+Shift+S"
 msgid "Ctrl+Shift+I"
-msgstr "Ctrl+Shift+S"
+msgstr "Ctrl+Shift+I"
 
 #: picard/ui/coverartbox.py:434
 msgid "New Cover Art"
@@ -2443,10 +2441,8 @@ msgid "Verbosity"
 msgstr ""
 
 #: picard/ui/logview.py:206 picard/ui/logview.py:207
-#, fuzzy
-#| msgid "Options"
 msgid "Debug Options"
-msgstr "Parinktys"
+msgstr "Derinimo parinktys"
 
 #: picard/ui/logview.py:217
 msgid "String to highlight"
@@ -4206,10 +4202,8 @@ msgid "Password:"
 msgstr ""
 
 #: picard/ui/ui_options_network.py:169
-#, fuzzy
-#| msgid "Network"
 msgid "Network options"
-msgstr "Tinklas"
+msgstr "Tinklo parinktys"
 
 #: picard/ui/ui_options_network.py:170
 msgid "Request timeout in seconds:"
@@ -4217,61 +4211,61 @@ msgstr ""
 
 #: picard/ui/ui_options_network.py:171
 msgid "Cache size (MB):"
-msgstr ""
+msgstr "Podėlio dydis (MB):"
 
 #: picard/ui/ui_options_network.py:172
 msgid "Browser Integration"
-msgstr ""
+msgstr "Naršyklės integracija"
 
 #: picard/ui/ui_options_network.py:173
 msgid "Default listening port:"
-msgstr ""
+msgstr "Numatytas klausymo prievadas:"
 
 #: picard/ui/options/network.py:62 picard/ui/ui_options_network.py:174
 msgid "Listen only on localhost"
-msgstr "Klausyti tik vietinėje serverę"
+msgstr "Klausyti tik vietinėje serveryje"
 
 #: picard/ui/options/plugins.py:230 picard/ui/ui_options_plugins.py:137
 msgid "Plugins"
-msgstr ""
+msgstr "Įskiepiai"
 
 #: picard/ui/options/plugins.py:633 picard/ui/searchdialog/album.py:153
 #: picard/ui/searchdialog/artist.py:55 picard/ui/searchdialog/track.py:70
 #: picard/ui/ui_options_plugins.py:138
 msgid "Name"
-msgstr "Vardas"
+msgstr "Pavadinimas"
 
 #: picard/ui/ui_options_plugins.py:139
 msgid "Version"
-msgstr ""
+msgstr "Versija"
 
 #: picard/ui/ui_options_plugins.py:141
 msgid "Install plugin…"
-msgstr ""
+msgstr "Diegti įskiepį…"
 
 #: picard/ui/ui_options_plugins.py:142
 msgid "Open plugin folder"
-msgstr ""
+msgstr "Atidaryti įskiepio aplanką"
 
 #: picard/ui/ui_options_plugins.py:143
 msgid "Reload List of Plugins"
-msgstr ""
+msgstr "Perkrauti įskiepių sąrašą"
 
 #: picard/ui/ui_options_plugins.py:144
 msgid "Details"
-msgstr ""
+msgstr "Išsami informacija"
 
 #: picard/ui/ui_options_profiles.py:81
 msgid "Option Profile(s)"
-msgstr ""
+msgstr "Parinkio profilis (-iai)"
 
 #: picard/ui/ui_options_profiles.py:82
 msgid "Move profile up"
-msgstr ""
+msgstr "Pakelti profilį"
 
 #: picard/ui/ui_options_profiles.py:83
 msgid "Move profile down"
-msgstr ""
+msgstr "Nuleisti profilį"
 
 #: picard/ui/options/ratings.py:49 picard/ui/ui_options_ratings.py:53
 msgid "Enable track ratings"
@@ -4771,26 +4765,20 @@ msgid "Clos&e"
 msgstr "Uždary&ti"
 
 #: picard/ui/util.py:137
-#, fuzzy
-#| msgid ""
-#| "You have changed the application theme. You have to restart Picard in "
-#| "order for the change to take effect."
 msgid "You have to restart Picard for the changes to take effect."
-msgstr ""
-"Pakeitei programos temą. Kad pakeitimas veiktų, turi iš naujo paleisti "
-"Picard."
+msgstr "Kad pakeitimai veiktų, turi iš naujo paleisti Picard."
 
 #: picard/ui/util.py:140
 msgid "Changes only applied on restart"
-msgstr ""
+msgstr "Pakeitimai taikomi tik iš naujo paleidus"
 
 #: picard/ui/options/__init__.py:111
 msgid "Regex Error"
-msgstr ""
+msgstr "Reguliaraus reiškinio klaida"
 
 #: picard/ui/options/advanced.py:52
 msgid "Ignore file paths matching a regular expression"
-msgstr "Ignoruoti failo adresus, atitinkančius reguliariąją išraišką"
+msgstr "Ignoruoti failo adresus, atitinkantį reguliariąją reiškinį"
 
 #: picard/ui/options/advanced.py:55
 msgid "Ignore track duration difference under x seconds"
@@ -5070,7 +5058,7 @@ msgstr "Sistemos numatytoji"
 
 #: picard/ui/options/interface.py:199
 msgid "You have changed the application theme."
-msgstr ""
+msgstr "Pakeitei programos temą."
 
 #: picard/ui/options/interface.py:201
 msgid ""
@@ -5114,7 +5102,7 @@ msgstr "Spalvas naudoti tamsios temai"
 
 #: picard/ui/options/interface_colors.py:149
 msgid "You have changed the interface colors."
-msgstr ""
+msgstr "Pakeitei sąsajos spalvas."
 
 #: picard/ui/options/interface_toolbar.py:84
 msgid "Action Toolbar"
@@ -5126,7 +5114,7 @@ msgstr "Pridėti aplanką"
 
 #: picard/ui/options/interface_toolbar.py:96
 msgid "Add Files"
-msgstr ""
+msgstr "Pridėti failus"
 
 #: picard/ui/options/interface_toolbar.py:100
 msgid "Cluster"
@@ -5360,10 +5348,8 @@ msgid "Use a web proxy server"
 msgstr "Naudoti žiniatinklio tarpinį serverį"
 
 #: picard/ui/options/network.py:55
-#, fuzzy
-#| msgid "type of proxy server"
 msgid "Type of proxy server"
-msgstr "tarpinio serverio tipas"
+msgstr "Tarpinio serverio tipas"
 
 #: picard/ui/options/network.py:56
 msgid "Proxy server address"
@@ -5387,24 +5373,24 @@ msgstr "Naršyklės integracija"
 
 #: picard/ui/options/network.py:61
 msgid "Default listening port"
-msgstr "Numatytasis klausymo prievadas"
+msgstr "Numatytas klausymo prievadas"
 
 #: picard/ui/options/network.py:63
 msgid "Request timeout in seconds"
-msgstr "Užklausos laiko limitas sekundėmis"
+msgstr "Užklausos laiko ribojimas sekundėmis"
 
 #: picard/ui/options/network.py:64
 msgid "Network cache size in bytes"
-msgstr ""
+msgstr "Tinklo podėlio dydis baitais"
 
 #: picard/ui/options/plugins.py:149
 msgid "Download and install plugin"
-msgstr "Atsisiųsti ir įdiegti įskiepį"
+msgstr "Atsisiųsti ir diegti įskiepį"
 
 #: picard/ui/options/plugins.py:157
 #, python-format
 msgid "Download and upgrade plugin to version %s"
-msgstr ""
+msgstr "Atsisiųsti ir atnaujinti įskiepį į versiją %s"
 
 #: picard/ui/options/plugins.py:163
 msgid "Enabled"
@@ -5520,26 +5506,20 @@ msgid "Unknown script"
 msgstr "Nežinomas skriptas"
 
 #: picard/ui/options/profiles.py:263
-#, fuzzy
-#| msgid "Rename script"
 msgid "No enabled scripts"
-msgstr "Pervardinti skriptą"
+msgstr "Nėra įjungtų skriptų"
 
 #: picard/ui/options/profiles.py:264
-#, fuzzy
-#| msgid "Enable tagger scripts"
 msgid "Enabled scripts:"
-msgstr "Įjungti žymeklio skriptus"
+msgstr "Įjungti skriptai:"
 
 #: picard/ui/options/profiles.py:269
-#, fuzzy
-#| msgid "Cover art providers"
 msgid "No enabled providers"
-msgstr "Viršelio apipavidalinimo paslaugų teikėjai"
+msgstr "Nėra įjungtų paslaugų teikėjų"
 
 #: picard/ui/options/profiles.py:270
 msgid "Enabled providers:"
-msgstr ""
+msgstr "Įjungti paslaugų teikėjai:"
 
 #: picard/ui/options/profiles.py:287
 #, python-format
