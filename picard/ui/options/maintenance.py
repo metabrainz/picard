@@ -33,6 +33,7 @@ from PyQt6 import (
 from picard import log
 from picard.config import (
     Option,
+    TextOption,
     get_config,
     load_new_config,
 )
@@ -61,6 +62,8 @@ OPTIONS_NOT_IN_PAGES = {
     'write_wave_riff_info',
 }
 
+_default_autobackup_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
+
 
 class MaintenanceOptionsPage(OptionsPage):
 
@@ -71,7 +74,9 @@ class MaintenanceOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_maintenance.html"
 
-    options = []
+    options = [
+        TextOption('setting', 'autobackup_directory', _default_autobackup_directory, title=N_("Automatic backup destination directory")),
+    ]
 
     signal_reload = QtCore.pyqtSignal()
 
@@ -100,6 +105,7 @@ class MaintenanceOptionsPage(OptionsPage):
         self.ui.open_folder_button.clicked.connect(self.open_config_dir)
         self.ui.save_backup_button.clicked.connect(self.save_backup)
         self.ui.load_backup_button.clicked.connect(self.load_backup)
+        self.ui.browse_autobackup_dir.clicked.connect(self._dialog_autobackup_dir_browse)
 
         # Set the palette of the config file QLineEdit widget to inactive.
         palette_normal = self.ui.config_file.palette()
@@ -108,8 +114,26 @@ class MaintenanceOptionsPage(OptionsPage):
         palette_readonly.setColor(QtGui.QPalette.ColorRole.Base, disabled_color)
         self.ui.config_file.setPalette(palette_readonly)
 
+    def get_current_autobackup_dir(self):
+        path = self.ui.autobackup_dir.text()
+        if not path or not os.path.isdir(path):
+            path = _default_autobackup_directory
+        return os.path.normpath(path)
+
+    def set_current_autobackup_dir(self, path):
+        if not path or not os.path.isdir(path):
+            path = _default_autobackup_directory
+        self.ui.autobackup_dir.setText(os.path.normpath(path))
+
+    def _dialog_autobackup_dir_browse(self):
+        path = QtWidgets.QFileDialog.getExistingDirectory(self, "", self.get_current_autobackup_dir())
+        if path:
+            self.set_current_autobackup_dir(path)
+
     def load(self):
         config = get_config()
+
+        self.set_current_autobackup_dir(config.setting['autobackup_directory'])
 
         # Show the path and file name of the currently used configuration file.
         self.ui.config_file.setText(config.fileName())
@@ -197,7 +221,7 @@ class MaintenanceOptionsPage(OptionsPage):
 
     def save_backup(self):
         config = get_config()
-        directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
+        directory = self.get_current_autobackup_dir()
         filename = self._make_backup_filename()
         ext = os.path.splitext(filename)[1]
         default_path = os.path.normpath(os.path.join(directory, filename))
@@ -238,8 +262,8 @@ class MaintenanceOptionsPage(OptionsPage):
         if not dialog.exec() == QtWidgets.QMessageBox.StandardButton.Ok:
             return
 
+        directory = self.get_current_autobackup_dir()
         config = get_config()
-        directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
         filename = os.path.join(directory, self._make_backup_filename(auto=True))
         if not config.save_user_backup(filename):
             self._backup_error()
@@ -247,7 +271,6 @@ class MaintenanceOptionsPage(OptionsPage):
 
         ext = os.path.splitext(filename)[1]
         dialog_file_types = self._get_dialog_filetypes(ext)
-        directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
         filename, file_type = QtWidgets.QFileDialog.getOpenFileName(self, dialog_title, directory, dialog_file_types)
         if not filename:
             return
@@ -288,6 +311,10 @@ class MaintenanceOptionsPage(OptionsPage):
             item.setCheckState(state)
 
     def save(self):
+        config = get_config()
+
+        config.setting['autobackup_directory'] = self.get_current_autobackup_dir()
+
         if not self.ui.enable_cleanup.checkState() == QtCore.Qt.CheckState.Checked:
             return
         to_remove = set(self.selected_options())
@@ -296,7 +323,6 @@ class MaintenanceOptionsPage(OptionsPage):
             _("Confirm Remove"),
             _("Are you sure you want to remove the selected option settings?"),
         ) == QtWidgets.QMessageBox.StandardButton.Yes:
-            config = get_config()
             for item in to_remove:
                 Option.add_if_missing('setting', item, None)
                 log.warning("Removing option setting '%s' from the INI file.", item)
