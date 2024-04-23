@@ -132,10 +132,10 @@ def crash_handler(exc: Exception = None):
     app.quit()
 
 
-def _global_exception_handler(exctype, value, traceback):
-    from picard import crash_handler
-    crash_handler(exc=value)
-    sys.__excepthook__(exctype, value, traceback)
+def register_excepthook():
+    def _global_exception_handler(exctype, value, traceback):
+        from picard import crash_handler
+        crash_handler(exc=value)
+        sys.__excepthook__(exctype, value, traceback)
 
-
-sys.excepthook = _global_exception_handler
+    sys.excepthook = _global_exception_handler

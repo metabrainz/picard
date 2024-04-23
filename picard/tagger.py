@@ -73,6 +73,7 @@ from picard import (
     PICARD_ORG_NAME,
     acoustid,
     log,
+    register_excepthook,
 )
 from picard.acoustid.manager import AcoustIDManager
 from picard.album import (
@@ -1505,6 +1506,8 @@ If a new instance will not be spawned files/directories will be passed to the ex
 
 
 def main(localedir=None, autoupdate=True):
+    register_excepthook()
+
     # Some libs (ie. Phonon) require those to be set
     QtWidgets.QApplication.setApplicationName(PICARD_APP_NAME)
     QtWidgets.QApplication.setOrganizationName(PICARD_ORG_NAME)
