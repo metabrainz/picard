@@ -43,7 +43,7 @@ from collections.abc import (
 )
 from functools import partial
 
-from PyQt6.QtCore import QObject
+from PyQt6 import QtCore
 
 from picard.config import get_config
 from picard.mbjson import (
@@ -346,7 +346,8 @@ class Metadata(MutableMapping):
                                              weights['releasetype'])
 
         if 'release-group' in release:
-            rg = QObject.tagger.get_release_group_by_id(release['release-group']['id'])
+            tagger = QtCore.QCoreApplication.instance()
+            rg = tagger.get_release_group_by_id(release['release-group']['id'])
             if release['id'] in rg.loaded_albums:
                 parts.append((1.0, 6))
 

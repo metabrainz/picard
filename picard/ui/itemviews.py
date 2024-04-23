@@ -444,6 +444,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     def __init__(self, window, parent=None):
         super().__init__(parent)
+        self.tagger = QtCore.QCoreApplication.instance()
         self.setHeader(ConfigurableColumnsHeader(self))
         self.window = window
         self.panel = parent
@@ -760,7 +761,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     def drop_urls(urls, target, move_to_multi_tracks=True):
         files = []
         new_paths = []
-        tagger = QtCore.QObject.tagger
+        tagger = QtCore.QCoreApplication.instance()
         for url in urls:
             log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo))
             if url.scheme() == 'file' or not url.scheme():
@@ -1208,7 +1209,8 @@ class FileItem(TreeItem):
     @staticmethod
     def decide_fingerprint_icon_info(file):
         if getattr(file, 'acoustid_fingerprint', None):
-            if QtCore.QObject.tagger.acoustidmanager.is_submitted(file):
+            tagger = QtCore.QCoreApplication.instance()
+            if tagger.acoustidmanager.is_submitted(file):
                 icon = FileItem.icon_fingerprint_gray
                 tooltip = _("Fingerprint has already been submitted")
             else:

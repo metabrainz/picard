@@ -43,6 +43,7 @@ user_collections = {}
 class Collection(QtCore.QObject):
 
     def __init__(self, collection_id: str, mb_api: MBAPIHelper):
+        self.tagger = QtCore.QCoreApplication.instance()
         self.id = collection_id
         self.name = ''
         self.size = 0
@@ -122,12 +123,13 @@ class Collection(QtCore.QObject):
 def get_user_collection(collection_id):
     collection = user_collections.get(collection_id)
     if collection is None:
-        collection = user_collections[collection_id] = Collection(collection_id, QtCore.QObject.tagger.mb_api)
+        tagger = QtCore.QCoreApplication.instance()
+        collection = user_collections[collection_id] = Collection(collection_id, tagger.mb_api)
     return collection
 
 
 def load_user_collections(callback=None):
-    tagger = QtCore.QObject.tagger
+    tagger = QtCore.QCoreApplication.instance()
 
     def request_finished(document, reply, error):
         if error:

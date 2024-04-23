@@ -182,6 +182,7 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
     ready_for_display = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):
+        self.tagger = QtCore.QCoreApplication.instance()
         super().__init__(parent, self.flags)
         self.__shown = False
         self.ready_for_display.connect(self.restore_geometry)

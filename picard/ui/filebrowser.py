@@ -85,6 +85,7 @@ class FileBrowser(QtWidgets.QTreeView):
 
     def __init__(self, parent):
         super().__init__(parent)
+        self.tagger = QtCore.QCoreApplication.instance()
         self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
         self.setDragEnabled(True)
         self.load_selected_files_action = QtGui.QAction(_("&Load selected files"), self)
@@ -226,7 +227,7 @@ class FileBrowser(QtWidgets.QTreeView):
     def load_file_for_item(self, index):
         model = self.model()
         if not model.isDir(index):
-            QtCore.QObject.tagger.add_paths([
+            self.tagger.add_paths([
                 model.filePath(index)
             ])
 
@@ -235,7 +236,7 @@ class FileBrowser(QtWidgets.QTreeView):
         if not indexes:
             return
         paths = set(self.model().filePath(index) for index in indexes)
-        QtCore.QObject.tagger.add_paths(paths)
+        self.tagger.add_paths(paths)
 
     def move_files_here(self):
         indexes = self.selectedIndexes()

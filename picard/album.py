@@ -137,6 +137,7 @@ class Album(DataObject, Item):
 
     def __init__(self, album_id, discid=None):
         DataObject.__init__(self, album_id)
+        self.tagger = QtCore.QCoreApplication.instance()
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
         self.tracks = []

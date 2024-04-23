@@ -111,6 +111,7 @@ class AcoustIDManager(QtCore.QObject):
 
     def __init__(self, acoustid_api):
         super().__init__()
+        self.tagger = QtCore.QCoreApplication.instance()
         self._submissions = {}
         self._acoustid_api = acoustid_api
 

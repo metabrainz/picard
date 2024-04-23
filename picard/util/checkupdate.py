@@ -51,6 +51,7 @@ class UpdateCheckManager(QtCore.QObject):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
+        self.tagger = QtCore.QCoreApplication.instance()
         self._parent = parent
         self._available_versions = {}
         self._show_always = False

@@ -65,7 +65,7 @@ class StandardButton(QtWidgets.QPushButton):
         if not IS_WIN and not IS_MACOS:
             iconname = self.__types[btntype][1]
             if hasattr(QtWidgets.QStyle, iconname):
-                icon = self.tagger.style().standardIcon(getattr(QtWidgets.QStyle, iconname))
+                icon = QtCore.QCoreApplication.instance().style().standardIcon(getattr(QtWidgets.QStyle, iconname))
                 args = [icon, label]
         super().__init__(*args)
 

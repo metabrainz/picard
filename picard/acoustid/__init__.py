@@ -85,6 +85,7 @@ class AcoustIDClient(QtCore.QObject):
 
     def __init__(self, acoustid_api: AcoustIdAPIHelper):
         super().__init__()
+        self.tagger = QtCore.QCoreApplication.instance()
         self._queue = deque()
         self._running = 0
         self._acoustid_api = acoustid_api

@@ -351,7 +351,8 @@ class LogView(LogViewCommon):
             config.setting['log_verbosity'] = level
             self.verbosity = level
             self._update_verbosity_label()
-            QtCore.QObject.tagger.set_log_level(level)
+            tagger = QtCore.QCoreApplication.instance()
+            tagger.set_log_level(level)
             self.display(clear=True)
 
     def _update_verbosity_label(self):
