@@ -65,6 +65,12 @@ OPTIONS_NOT_IN_PAGES = {
 _default_autobackup_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
 
 
+def _safe_autobackup_dir(path):
+    if not path or not os.path.isdir(path):
+        return _default_autobackup_directory
+    return os.path.normpath(path)
+
+
 class MaintenanceOptionsPage(OptionsPage):
 
     NAME = 'maintenance'
@@ -115,15 +121,10 @@ class MaintenanceOptionsPage(OptionsPage):
         self.ui.config_file.setPalette(palette_readonly)
 
     def get_current_autobackup_dir(self):
-        path = self.ui.autobackup_dir.text()
-        if not path or not os.path.isdir(path):
-            path = _default_autobackup_directory
-        return os.path.normpath(path)
+        return _safe_autobackup_dir(self.ui.autobackup_dir.text())
 
     def set_current_autobackup_dir(self, path):
-        if not path or not os.path.isdir(path):
-            path = _default_autobackup_directory
-        self.ui.autobackup_dir.setText(os.path.normpath(path))
+        self.ui.autobackup_dir.setText(_safe_autobackup_dir(path))
 
     def _dialog_autobackup_dir_browse(self):
         path = QtWidgets.QFileDialog.getExistingDirectory(self, "", self.get_current_autobackup_dir())
