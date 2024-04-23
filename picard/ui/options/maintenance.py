@@ -207,15 +207,36 @@ class MaintenanceOptionsPage(OptionsPage):
             _ext,
         )
 
-    def _dialog_backup_error(self, dialog_title=None):
-        if not dialog_title:
-            dialog_title = _("Backup Configuration File")
+    def _dialog_save_backup_error(self, filename):
         dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Icon.Critical,
-            dialog_title,
-            _("There was a problem backing up the configuration file. Please see the logs for more details."),
+            _("Backup Configuration File Save Error"),
+            _("Failed to save the configuration file to:\n"
+              "%s\n"
+              "\n"
+              "Please see the logs for more details." % filename),
             QtWidgets.QMessageBox.StandardButton.Ok,
-            self
+            self,
+        )
+        dialog.exec()
+
+    def _dialog_ask_backup_filename(self, default_path, ext):
+        filename, file_type = QtWidgets.QFileDialog.getSaveFileName(
+            self,
+            _("Backup Configuration File"),
+            default_path,
+            self._get_dialog_filetypes(ext),
+        )
+        return filename
+
+    def _dialog_save_backup_success(self, filename):
+        dialog = QtWidgets.QMessageBox(
+            QtWidgets.QMessageBox.Icon.Information,
+            _("Backup Configuration File"),
+            _("Configuration successfully backed up to:\n"
+              "%s") % filename,
+            QtWidgets.QMessageBox.StandardButton.Ok,
+            self,
         )
         dialog.exec()
 
@@ -226,9 +247,7 @@ class MaintenanceOptionsPage(OptionsPage):
         ext = os.path.splitext(filename)[1]
         default_path = os.path.normpath(os.path.join(directory, filename))
 
-        dialog_title = _("Backup Configuration File")
-        dialog_file_types = self._get_dialog_filetypes(ext)
-        filename, file_type = QtWidgets.QFileDialog.getSaveFileName(self, dialog_title, default_path, dialog_file_types)
+        filename = self._dialog_ask_backup_filename(default_path, ext)
         if not filename:
             return
         # Fix issue where Qt may set the extension twice
@@ -237,64 +256,83 @@ class MaintenanceOptionsPage(OptionsPage):
             filename = name
 
         if config.save_user_backup(filename):
-            dialog = QtWidgets.QMessageBox(
-                QtWidgets.QMessageBox.Icon.Information,
-                dialog_title,
-                _("Configuration successfully backed up to %s") % filename,
-                QtWidgets.QMessageBox.StandardButton.Ok,
-                self
-            )
-            dialog.exec()
+            self._dialog_save_backup_success(filename)
         else:
-            self._dialog_backup_error(dialog_title)
+            self._dialog_save_backup_error(filename)
 
-    def load_backup(self):
-        dialog_title = _("Load Backup Configuration File")
+    def _dialog_load_backup_confirmation(self, filename):
         dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Icon.Warning,
-            dialog_title,
-            _("Loading a backup configuration file will replace the current configuration settings. "
-            "A backup copy of the current file will be saved automatically.\n\nDo you want to continue?"),
+            _("Load Backup Configuration File"),
+            _("Loading a backup configuration file will replace the current configuration settings.\n"
+              "Before any change, current configuration will be automatically saved to:\n"
+              "%s\n"
+              "\n"
+              "Do you want to continue?") % filename,
             QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.Cancel,
-            self
+            self,
         )
         dialog.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Cancel)
-        if not dialog.exec() == QtWidgets.QMessageBox.StandardButton.Ok:
+        return dialog.exec() == QtWidgets.QMessageBox.StandardButton.Ok
+
+    def _dialog_load_backup_success(self, filename):
+        dialog = QtWidgets.QMessageBox(
+            QtWidgets.QMessageBox.Icon.Information,
+            _("Load Backup Configuration File"),
+            _("Configuration successfully loaded from:\n"
+              "%s") % filename,
+            QtWidgets.QMessageBox.StandardButton.Ok,
+            self,
+        )
+        dialog.exec()
+
+    def _dialog_load_backup_error(self, filename):
+        dialog = QtWidgets.QMessageBox(
+            QtWidgets.QMessageBox.Icon.Information,
+            _("Load Backup Configuration File"),
+            _("There was a problem restoring the configuration file from:\n"
+              "%s\n"
+              "\n"
+              "Please see the logs for more details.") % filename,
+            QtWidgets.QMessageBox.StandardButton.Ok,
+            self,
+        )
+        dialog.exec()
+
+    def _dialog_load_backup_select_filename(self, directory, ext):
+        filename, file_type = QtWidgets.QFileDialog.getOpenFileName(
+            self,
+            _("Select Configuration File to Load"),
+            directory,
+            self._get_dialog_filetypes(ext),
+        )
+        return filename
+
+    def load_backup(self):
+        directory = self.get_current_autobackup_dir()
+        filename = os.path.join(directory, self._make_backup_filename(auto=True))
+
+        if not self._dialog_load_backup_confirmation(filename):
             return
 
-        directory = self.get_current_autobackup_dir()
         config = get_config()
-        filename = os.path.join(directory, self._make_backup_filename(auto=True))
         if not config.save_user_backup(filename):
-            self._dialog_backup_error()
+            self._dialog_save_backup_error(filename)
             return
 
         ext = os.path.splitext(filename)[1]
-        dialog_file_types = self._get_dialog_filetypes(ext)
-        filename, file_type = QtWidgets.QFileDialog.getOpenFileName(self, dialog_title, directory, dialog_file_types)
+        filename = self._dialog_load_backup_select_filename(directory, ext)
         if not filename:
             return
+
         log.warning("Loading configuration from %s", filename)
         if load_new_config(filename):
             config = get_config()
             upgrade_config(config)
             self.signal_reload.emit()
-            dialog = QtWidgets.QMessageBox(
-                QtWidgets.QMessageBox.Icon.Information,
-                dialog_title,
-                _("Configuration successfully loaded from %s") % filename,
-                QtWidgets.QMessageBox.StandardButton.Ok,
-                self
-            )
+            self._dialog_load_backup_success(filename)
         else:
-            dialog = QtWidgets.QMessageBox(
-                QtWidgets.QMessageBox.Icon.Critical,
-                dialog_title,
-                _("There was a problem restoring the configuration file. Please see the logs for more details."),
-                QtWidgets.QMessageBox.StandardButton.Ok,
-                self
-            )
-        dialog.exec()
+            self._dialog_load_backup_error(filename)
 
     def column_items(self, column):
         for idx in range(self.ui.tableWidget.rowCount()):
@@ -310,6 +348,13 @@ class MaintenanceOptionsPage(OptionsPage):
         for item in self.column_items(0):
             item.setCheckState(state)
 
+    def _dialog_ask_remove_confirmation(self):
+        return QtWidgets.QMessageBox.question(
+            self,
+            _("Confirm Remove"),
+            _("Are you sure you want to remove the selected option settings?"),
+        ) == QtWidgets.QMessageBox.StandardButton.Yes
+
     def save(self):
         config = get_config()
 
@@ -318,11 +363,7 @@ class MaintenanceOptionsPage(OptionsPage):
         if not self.ui.enable_cleanup.checkState() == QtCore.Qt.CheckState.Checked:
             return
         to_remove = set(self.selected_options())
-        if to_remove and QtWidgets.QMessageBox.question(
-            self,
-            _("Confirm Remove"),
-            _("Are you sure you want to remove the selected option settings?"),
-        ) == QtWidgets.QMessageBox.StandardButton.Yes:
+        if to_remove and self._dialog_ask_remove_confirmation():
             for item in to_remove:
                 Option.add_if_missing('setting', item, None)
                 log.warning("Removing option setting '%s' from the INI file.", item)
