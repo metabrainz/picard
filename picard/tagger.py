@@ -331,10 +331,6 @@ class Tagger(QtWidgets.QApplication):
         # log interesting environment variables
         log.debug("Qt Env.: %s", " ".join("%s=%r" % (k, v) for k, v in os.environ.items() if k.startswith('QT_')))
 
-        # for compatibility with pre-1.3 plugins
-        QtCore.QObject.config = config
-        QtCore.QObject.log = log
-
         check_io_encoding()
 
         # Must be before config upgrade because upgrade dialogs need to be

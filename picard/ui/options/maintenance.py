@@ -255,7 +255,6 @@ class MaintenanceOptionsPage(OptionsPage):
         if load_new_config(filename):
             config = get_config()
             upgrade_config(config)
-            QtCore.QObject.config = get_config()
             self.signal_reload.emit()
             dialog = QtWidgets.QMessageBox(
                 QtWidgets.QMessageBox.Icon.Information,
