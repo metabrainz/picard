@@ -22,7 +22,7 @@
 
 
 import datetime
-from os import path
+import os
 
 from PyQt6 import (
     QtCore,
@@ -163,7 +163,7 @@ class MaintenanceOptionsPage(OptionsPage):
 
     def open_config_dir(self):
         config = get_config()
-        config_dir = path.split(config.fileName())[0]
+        config_dir = os.path.split(config.fileName())[0]
         open_local_path(config_dir)
 
     def _get_dialog_filetypes(self, _ext='.ini'):
@@ -174,8 +174,8 @@ class MaintenanceOptionsPage(OptionsPage):
 
     def _make_backup_filename(self, auto=False):
         config = get_config()
-        _filename = path.split(config.fileName())[1]
-        _root, _ext = path.splitext(_filename)
+        _filename = os.path.split(config.fileName())[1]
+        _root, _ext = os.path.splitext(_filename)
         return "{0}_{1}_Backup_{2}{3}".format(
             _root,
             'Auto' if auto else 'User',
@@ -197,10 +197,10 @@ class MaintenanceOptionsPage(OptionsPage):
 
     def save_backup(self):
         config = get_config()
-        directory = path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
+        directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
         filename = self._make_backup_filename()
-        ext = path.splitext(filename)[1]
-        default_path = path.normpath(path.join(directory, filename))
+        ext = os.path.splitext(filename)[1]
+        default_path = os.path.normpath(os.path.join(directory, filename))
 
         dialog_title = _("Backup Configuration File")
         dialog_file_types = self._get_dialog_filetypes(ext)
@@ -208,7 +208,7 @@ class MaintenanceOptionsPage(OptionsPage):
         if not filename:
             return
         # Fix issue where Qt may set the extension twice
-        (name, ext) = path.splitext(filename)
+        (name, ext) = os.path.splitext(filename)
         if ext and str(name).endswith('.' + ext):
             filename = name
 
@@ -239,15 +239,15 @@ class MaintenanceOptionsPage(OptionsPage):
             return
 
         config = get_config()
-        directory = path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
-        filename = path.join(directory, self._make_backup_filename(auto=True))
+        directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
+        filename = os.path.join(directory, self._make_backup_filename(auto=True))
         if not config.save_user_backup(filename):
             self._backup_error()
             return
 
-        ext = path.splitext(filename)[1]
+        ext = os.path.splitext(filename)[1]
         dialog_file_types = self._get_dialog_filetypes(ext)
-        directory = path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
+        directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
         filename, file_type = QtWidgets.QFileDialog.getOpenFileName(self, dialog_title, directory, dialog_file_types)
         if not filename:
             return
