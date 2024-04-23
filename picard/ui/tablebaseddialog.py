@@ -52,6 +52,7 @@ class ResultTable(QtWidgets.QTableWidget):
 
     def __init__(self, parent):
         super().__init__(parent)
+        self._parent_dialog = parent
         self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
         self.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
         self.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
@@ -73,6 +74,14 @@ class ResultTable(QtWidgets.QTableWidget):
         self.setRowCount(0)
         self.setSortingEnabled(False)
 
+    @throttle(1000)  # only emit resized signal once per second
+    def emit_resized(self):
+        self._parent_dialog.resized.emit()
+
+    def resizeEvent(self, event):
+        self.emit_resized()
+        super().resizeEvent(event)
+
 
 class SortableTableWidgetItem(QtWidgets.QTableWidgetItem):
 
@@ -88,6 +97,7 @@ class TableBasedDialog(PicardDialog):
 
     defaultsize = QtCore.QSize(720, 360)
     scrolled = pyqtSignal()
+    resized = pyqtSignal()
 
     def __init__(self, parent):
         super().__init__(parent)

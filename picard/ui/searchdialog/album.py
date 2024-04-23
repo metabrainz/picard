@@ -168,6 +168,7 @@ class AlbumSearchDialog(SearchDialog):
         self.cover_cells = []
         self.fetching = False
         self.scrolled.connect(self.fetch_coverarts)
+        self.resized.connect(self.fetch_coverarts)
 
     @staticmethod
     def show_releasegroup_search(releasegroup_id, existing_album=None):
