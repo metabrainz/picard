@@ -207,7 +207,7 @@ class MaintenanceOptionsPage(OptionsPage):
             _ext,
         )
 
-    def _backup_error(self, dialog_title=None):
+    def _dialog_backup_error(self, dialog_title=None):
         if not dialog_title:
             dialog_title = _("Backup Configuration File")
         dialog = QtWidgets.QMessageBox(
@@ -246,7 +246,7 @@ class MaintenanceOptionsPage(OptionsPage):
             )
             dialog.exec()
         else:
-            self._backup_error(dialog_title)
+            self._dialog_backup_error(dialog_title)
 
     def load_backup(self):
         dialog_title = _("Load Backup Configuration File")
@@ -266,7 +266,7 @@ class MaintenanceOptionsPage(OptionsPage):
         config = get_config()
         filename = os.path.join(directory, self._make_backup_filename(auto=True))
         if not config.save_user_backup(filename):
-            self._backup_error()
+            self._dialog_backup_error()
             return
 
         ext = os.path.splitext(filename)[1]
