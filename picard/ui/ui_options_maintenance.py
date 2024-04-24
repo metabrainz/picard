@@ -125,7 +125,7 @@ class Ui_MaintenanceOptionsPage(object):
         self.open_folder_button.setText(_("Open folder"))
         self.load_backup_button.setText(_("Load Backup"))
         self.save_backup_button.setText(_("Save Backup"))
-        self.label_2.setText(_("Automatic backups directory"))
+        self.label_2.setText(_("Configuration file backups directory:"))
         self.browse_autobackup_dir.setText(_("Browse…"))
         self.enable_cleanup.setText(_("Remove selected options"))
         self.select_all.setText(_("Select all"))
