@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-2019]
+        os: [macos-12, ubuntu-latest, windows-2019]
         python-version: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12']
         include:
         - os: macos-11
@@ -102,7 +102,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-12, ubuntu-latest, windows-latest]
         python-version: ['3.8', '3.11']
 
     steps:
