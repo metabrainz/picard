@@ -14,7 +14,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Configuration File:</string>
+      <string>Configuration file:</string>
      </property>
     </widget>
    </item>
@@ -39,7 +39,34 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Open folder</string>
+        <string>Open folder…</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Automatic configuration backups directory:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <item>
+      <widget class="QLineEdit" name="autobackup_dir"/>
+     </item>
+     <item>
+      <widget class="QToolButton" name="browse_autobackup_dir">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Browse…</string>
        </property>
       </widget>
      </item>
@@ -72,7 +99,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Load Backup</string>
+        <string>Load backup…</string>
        </property>
       </widget>
      </item>
@@ -85,38 +112,18 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Save Backup</string>
+        <string>Save backup…</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Automatic backups directory</string>
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_6">
-     <item>
-      <widget class="QLineEdit" name="autobackup_dir"/>
-     </item>
-     <item>
-      <widget class="QToolButton" name="browse_autobackup_dir">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Browse…</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
    <item>
     <widget class="QLabel" name="option_counts">
