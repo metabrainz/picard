@@ -266,7 +266,7 @@ class MaintenanceOptionsPage(OptionsPage):
             QtWidgets.QMessageBox.Icon.Warning,
             _("Load Backup Configuration File"),
             _("Loading a backup configuration file will replace the current configuration settings.\n"
-              "Before any change, current configuration will be automatically saved to:\n"
+              "Before any change, the current configuration will be automatically saved to:\n"
               "%s\n"
               "\n"
               "Do you want to continue?") % filename,
