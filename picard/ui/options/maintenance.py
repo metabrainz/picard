@@ -112,6 +112,7 @@ class MaintenanceOptionsPage(OptionsPage):
         self.ui.save_backup_button.clicked.connect(self.save_backup)
         self.ui.load_backup_button.clicked.connect(self.load_backup)
         self.ui.browse_autobackup_dir.clicked.connect(self._dialog_autobackup_dir_browse)
+        self.ui.autobackup_dir.editingFinished.connect(self._check_autobackup_dir)
 
         # Set the palette of the config file QLineEdit widget to inactive.
         palette_normal = self.ui.config_file.palette()
@@ -119,12 +120,33 @@ class MaintenanceOptionsPage(OptionsPage):
         disabled_color = palette_normal.color(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Window)
         palette_readonly.setColor(QtGui.QPalette.ColorRole.Base, disabled_color)
         self.ui.config_file.setPalette(palette_readonly)
+        self.last_valid_path = _safe_autobackup_dir('')
 
     def get_current_autobackup_dir(self):
         return _safe_autobackup_dir(self.ui.autobackup_dir.text())
 
     def set_current_autobackup_dir(self, path):
-        self.ui.autobackup_dir.setText(_safe_autobackup_dir(path))
+        self.last_valid_path = _safe_autobackup_dir(path)
+        self.ui.autobackup_dir.setText(self.last_valid_path)
+
+    def _check_autobackup_dir(self):
+        path = self.ui.autobackup_dir.text()
+        if not path or not os.path.isdir(path):
+            self._dialog_invalid_backup_dir(path)
+        else:
+            self.last_valid_path = _safe_autobackup_dir(path)
+        self.ui.autobackup_dir.setText(self.last_valid_path)
+
+    def _dialog_invalid_backup_dir(self, path):
+        dialog = QtWidgets.QMessageBox(
+            QtWidgets.QMessageBox.Icon.Critical,
+            _("Configuration File Backup Directory Error"),
+            _("The path provided isn't a valid directory, reverting to:\n"
+              "%s\n") % self.last_valid_path,
+            QtWidgets.QMessageBox.StandardButton.Ok,
+            self,
+        )
+        dialog.exec()
 
     def _dialog_autobackup_dir_browse(self):
         path = QtWidgets.QFileDialog.getExistingDirectory(self, "", self.get_current_autobackup_dir())
