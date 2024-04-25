@@ -35,7 +35,10 @@ from picard.config import (
     SettingConfigSection,
     TextOption,
 )
-from picard.profile import UserProfileGroups
+from picard.profile import (
+    UserProfileGroups,
+    register_profile_highlights,
+)
 
 
 class TestPicardProfilesCommon(PicardTestCase):
@@ -63,7 +66,10 @@ class TestPicardProfilesCommon(PicardTestCase):
         Option('profiles', self.SETTINGS_KEY, {})
 
         # Get valid profile option settings for testing
-        option_settings = list(UserProfileGroups.ALL_SETTINGS)
+        first_group = next(iter(UserProfileGroups.keys()))
+        for n in range(0, 4):
+            register_profile_highlights(first_group, 'opt%d' % n, [])
+        option_settings = list(UserProfileGroups.all_settings())
         self.test_setting_0 = option_settings[0]
         self.test_setting_1 = option_settings[1]
         self.test_setting_2 = option_settings[2]
@@ -97,25 +103,25 @@ class TestPicardProfilesCommon(PicardTestCase):
 class TestUserProfileGroups(PicardTestCase):
 
     def test_has_groups(self):
-        keys = list(UserProfileGroups.get_setting_groups_list())
+        keys = list(UserProfileGroups.keys())
         self.assertNotEqual(keys, [])
 
     def test_groups_have_items(self):
-        for key in UserProfileGroups.get_setting_groups_list():
-            settings = UserProfileGroups.SETTINGS_GROUPS[key]["settings"]
+        for key in UserProfileGroups.keys():
+            settings = UserProfileGroups.settings(key)
             self.assertNotEqual(settings, {})
 
     def test_no_duplicate_settings(self):
         count1 = 0
-        for key in UserProfileGroups.get_setting_groups_list():
-            settings = UserProfileGroups.SETTINGS_GROUPS[key]["settings"]
-            count1 += len(settings)
-        count2 = len(UserProfileGroups.ALL_SETTINGS)
+        for key in UserProfileGroups.keys():
+            settings = UserProfileGroups.settings(key)
+            count1 += len(list(settings))
+        count2 = len(list(UserProfileGroups.all_settings()))
         self.assertEqual(count1, count2)
 
     def test_settings_have_no_blank_keys(self):
-        for key in UserProfileGroups.get_setting_groups_list():
-            settings = UserProfileGroups.SETTINGS_GROUPS[key]["settings"]
+        for key in UserProfileGroups.keys():
+            settings = UserProfileGroups.settings(key)
             for key, fields in settings:
                 self.assertNotEqual(key.strip(), "")
 

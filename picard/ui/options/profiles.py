@@ -213,7 +213,7 @@ class ProfilesOptionsPage(OptionsPage):
         if settings is None:
             return
         self.building_tree = True
-        for group in UserProfileGroups.SETTINGS_GROUPS.values():
+        for group in UserProfileGroups.values():
             title = group['title']
             group_settings = group['settings']
             widget_item = QtWidgets.QTreeWidgetItem([title])

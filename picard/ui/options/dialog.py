@@ -202,21 +202,13 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 log.exception("Failed loading options page %r", page)
                 self.disable_page(page.NAME)
 
-    def page_option_group(self, page):
-        try:
-            name = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
-            return UserProfileGroups.SETTINGS_GROUPS[name]
-        except (AttributeError, KeyError):
-            pass
-        return None
-
     def show_attached_profiles_dialog(self):
         window_title = _("Profiles Attached to Options")
         items = self.ui.pages_tree.selectedItems()
         if not items:
             return
         page = self.item_to_page[items[0]]
-        option_group = self.page_option_group(page)
+        option_group = UserProfileGroups.group_from_page(page)
         if not option_group:
             message_box = QtWidgets.QMessageBox(self)
             message_box.setIcon(QtWidgets.QMessageBox.Icon.Information)
@@ -257,7 +249,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         bg_color = colors.get_color('profile_hl_bg')
 
         for page in self.pages:
-            option_group = self.page_option_group(page)
+            option_group = UserProfileGroups.group_from_page(page)
             if option_group:
                 if load_settings:
                     page.load()
@@ -306,7 +298,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         return self.item_to_page[self.page_to_item[name]]
 
     def page_has_attached_profiles(self, page, enabled_profiles_only=False):
-        option_group = self.page_option_group(page)
+        option_group = UserProfileGroups.group_from_page(page)
         if not option_group:
             return False
         working_profiles, working_settings = self.get_working_profile_data()

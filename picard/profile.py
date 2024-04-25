@@ -23,10 +23,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import (
-    OrderedDict,
-    namedtuple,
-)
+from collections import namedtuple
 
 from picard.i18n import N_
 
@@ -38,63 +35,58 @@ class UserProfileGroups():
     """Provides information about the profile groups available for selecting in a user profile,
     and the title and settings that apply to each profile group.
     """
-    SETTINGS_GROUPS = OrderedDict()  # Add groups in the order they should be displayed
-
-    # Each item in "settings" is a tuple of the setting key, the display title, and a list of the names of the widgets to highlight
-    SETTINGS_GROUPS['general'] = {
-        'title': N_("General"),
-        'settings': [],
+    _settings_groups = {
+        'general': {'title': N_("General")},
+        'metadata': {'title': N_("Metadata")},
+        'tags': {'title': N_("Tags")},
+        'cover': {'title': N_("Cover Art")},
+        'filerenaming': {'title': N_("File Naming")},
+        'scripting': {'title': N_("Scripting")},
+        'interface': {'title': N_("User Interface")},
+        'advanced': {'title': N_("Advanced")},
     }
-
-    SETTINGS_GROUPS['metadata'] = {
-        'title': N_("Metadata"),
-        'settings': [],
-    }
-
-    SETTINGS_GROUPS['tags'] = {
-        'title': N_("Tags"),
-        'settings': [],
-    }
-
-    SETTINGS_GROUPS['cover'] = {
-        'title': N_("Cover Art"),
-        'settings': [],
-    }
-
-    SETTINGS_GROUPS['filerenaming'] = {
-        'title': N_("File Naming"),
-        'settings': [],
-    }
-
-    SETTINGS_GROUPS['scripting'] = {
-        'title': N_("Scripting"),
-        'settings': [],
-    }
-
-    SETTINGS_GROUPS['interface'] = {
-        'title': N_("User Interface"),
-        'settings': [],
-    }
-
-    SETTINGS_GROUPS['advanced'] = {
-        'title': N_("Advanced"),
-        'settings': [],
-    }
-
-    ALL_SETTINGS = set(
-        s.name for group in SETTINGS_GROUPS.values()
-        for s in group['settings']
-    )
 
     @classmethod
-    def get_setting_groups_list(cls):
+    def append_to_group(cls, group, option, highlights):
+        if 'settings' not in cls._settings_groups[group]:
+            cls._settings_groups[group]['settings'] = []
+        cls._settings_groups[group]['settings'].append(SettingDesc(option, highlights))
+
+    @classmethod
+    def all_settings(cls):
+        for value in cls._settings_groups.values():
+            if 'settings' in value:
+                for s in value['settings']:
+                    yield s.name
+
+    @classmethod
+    def settings(cls, group):
+        if group in cls._settings_groups:
+            if 'settings' in cls._settings_groups[group]:
+                yield from cls._settings_groups[group]['settings']
+
+    @classmethod
+    def keys(cls):
         """Iterable of all setting groups keys.
 
         Yields:
             str: Key
         """
-        yield from cls.SETTINGS_GROUPS
+        yield from cls._settings_groups.keys()
+
+    @classmethod
+    def group_from_page(cls, page):
+        try:
+            name = page.PARENT if page.PARENT in cls._settings_groups else page.NAME
+            return cls._settings_groups[name]
+        except (AttributeError, KeyError):
+            pass
+        return None
+
+    @classmethod
+    def values(cls):
+        yield from cls._settings_groups.values()
 
 
 def register_profile_highlights(group, option, higlights):
-    UserProfileGroups.SETTINGS_GROUPS[group]['settings'].append(SettingDesc(option, higlights))
+    UserProfileGroups.append_to_group(group, option, higlights)
