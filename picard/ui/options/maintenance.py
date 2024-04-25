@@ -22,7 +22,7 @@
 
 
 import datetime
-from os import path
+import os
 
 from PyQt6 import (
     QtCore,
@@ -33,6 +33,7 @@ from PyQt6 import (
 from picard import log
 from picard.config import (
     Option,
+    TextOption,
     get_config,
     load_new_config,
 )
@@ -61,6 +62,14 @@ OPTIONS_NOT_IN_PAGES = {
     'write_wave_riff_info',
 }
 
+_default_autobackup_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
+
+
+def _safe_autobackup_dir(path):
+    if not path or not os.path.isdir(path):
+        return _default_autobackup_directory
+    return os.path.normpath(path)
+
 
 class MaintenanceOptionsPage(OptionsPage):
 
@@ -71,7 +80,9 @@ class MaintenanceOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_maintenance.html"
 
-    options = []
+    options = [
+        TextOption('setting', 'autobackup_directory', _default_autobackup_directory, title=N_("Automatic backup destination directory")),
+    ]
 
     signal_reload = QtCore.pyqtSignal()
 
@@ -100,6 +111,8 @@ class MaintenanceOptionsPage(OptionsPage):
         self.ui.open_folder_button.clicked.connect(self.open_config_dir)
         self.ui.save_backup_button.clicked.connect(self.save_backup)
         self.ui.load_backup_button.clicked.connect(self.load_backup)
+        self.ui.browse_autobackup_dir.clicked.connect(self._dialog_autobackup_dir_browse)
+        self.ui.autobackup_dir.editingFinished.connect(self._check_autobackup_dir)
 
         # Set the palette of the config file QLineEdit widget to inactive.
         palette_normal = self.ui.config_file.palette()
@@ -107,9 +120,43 @@ class MaintenanceOptionsPage(OptionsPage):
         disabled_color = palette_normal.color(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Window)
         palette_readonly.setColor(QtGui.QPalette.ColorRole.Base, disabled_color)
         self.ui.config_file.setPalette(palette_readonly)
+        self.last_valid_path = _safe_autobackup_dir('')
+
+    def get_current_autobackup_dir(self):
+        return _safe_autobackup_dir(self.ui.autobackup_dir.text())
+
+    def set_current_autobackup_dir(self, path):
+        self.last_valid_path = _safe_autobackup_dir(path)
+        self.ui.autobackup_dir.setText(self.last_valid_path)
+
+    def _check_autobackup_dir(self):
+        path = self.ui.autobackup_dir.text()
+        if not path or not os.path.isdir(path):
+            self._dialog_invalid_backup_dir(path)
+        else:
+            self.last_valid_path = _safe_autobackup_dir(path)
+        self.ui.autobackup_dir.setText(self.last_valid_path)
+
+    def _dialog_invalid_backup_dir(self, path):
+        dialog = QtWidgets.QMessageBox(
+            QtWidgets.QMessageBox.Icon.Critical,
+            _("Configuration File Backup Directory Error"),
+            _("The path provided isn't a valid directory, reverting to:\n"
+              "%s\n") % self.last_valid_path,
+            QtWidgets.QMessageBox.StandardButton.Ok,
+            self,
+        )
+        dialog.exec()
+
+    def _dialog_autobackup_dir_browse(self):
+        path = QtWidgets.QFileDialog.getExistingDirectory(self, "", self.get_current_autobackup_dir())
+        if path:
+            self.set_current_autobackup_dir(path)
 
     def load(self):
         config = get_config()
+
+        self.set_current_autobackup_dir(config.setting['autobackup_directory'])
 
         # Show the path and file name of the currently used configuration file.
         self.ui.config_file.setText(config.fileName())
@@ -163,7 +210,7 @@ class MaintenanceOptionsPage(OptionsPage):
 
     def open_config_dir(self):
         config = get_config()
-        config_dir = path.split(config.fileName())[0]
+        config_dir = os.path.split(config.fileName())[0]
         open_local_path(config_dir)
 
     def _get_dialog_filetypes(self, _ext='.ini'):
@@ -174,8 +221,8 @@ class MaintenanceOptionsPage(OptionsPage):
 
     def _make_backup_filename(self, auto=False):
         config = get_config()
-        _filename = path.split(config.fileName())[1]
-        _root, _ext = path.splitext(_filename)
+        _filename = os.path.split(config.fileName())[1]
+        _root, _ext = os.path.splitext(_filename)
         return "{0}_{1}_Backup_{2}{3}".format(
             _root,
             'Auto' if auto else 'User',
@@ -183,95 +230,132 @@ class MaintenanceOptionsPage(OptionsPage):
             _ext,
         )
 
-    def _backup_error(self, dialog_title=None):
-        if not dialog_title:
-            dialog_title = _("Backup Configuration File")
+    def _dialog_save_backup_error(self, filename):
         dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Icon.Critical,
-            dialog_title,
-            _("There was a problem backing up the configuration file. Please see the logs for more details."),
+            _("Backup Configuration File Save Error"),
+            _("Failed to save the configuration file to:\n"
+              "%s\n"
+              "\n"
+              "Please see the logs for more details." % filename),
             QtWidgets.QMessageBox.StandardButton.Ok,
-            self
+            self,
+        )
+        dialog.exec()
+
+    def _dialog_ask_backup_filename(self, default_path, ext):
+        filename, file_type = QtWidgets.QFileDialog.getSaveFileName(
+            self,
+            _("Backup Configuration File"),
+            default_path,
+            self._get_dialog_filetypes(ext),
+        )
+        return filename
+
+    def _dialog_save_backup_success(self, filename):
+        dialog = QtWidgets.QMessageBox(
+            QtWidgets.QMessageBox.Icon.Information,
+            _("Backup Configuration File"),
+            _("Configuration successfully backed up to:\n"
+              "%s") % filename,
+            QtWidgets.QMessageBox.StandardButton.Ok,
+            self,
         )
         dialog.exec()
 
     def save_backup(self):
         config = get_config()
-        directory = path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
+        directory = self.get_current_autobackup_dir()
         filename = self._make_backup_filename()
-        ext = path.splitext(filename)[1]
-        default_path = path.normpath(path.join(directory, filename))
+        ext = os.path.splitext(filename)[1]
+        default_path = os.path.normpath(os.path.join(directory, filename))
 
-        dialog_title = _("Backup Configuration File")
-        dialog_file_types = self._get_dialog_filetypes(ext)
-        filename, file_type = QtWidgets.QFileDialog.getSaveFileName(self, dialog_title, default_path, dialog_file_types)
+        filename = self._dialog_ask_backup_filename(default_path, ext)
         if not filename:
             return
         # Fix issue where Qt may set the extension twice
-        (name, ext) = path.splitext(filename)
+        (name, ext) = os.path.splitext(filename)
         if ext and str(name).endswith('.' + ext):
             filename = name
 
         if config.save_user_backup(filename):
-            dialog = QtWidgets.QMessageBox(
-                QtWidgets.QMessageBox.Icon.Information,
-                dialog_title,
-                _("Configuration successfully backed up to %s") % filename,
-                QtWidgets.QMessageBox.StandardButton.Ok,
-                self
-            )
-            dialog.exec()
+            self._dialog_save_backup_success(filename)
         else:
-            self._backup_error(dialog_title)
+            self._dialog_save_backup_error(filename)
 
-    def load_backup(self):
-        dialog_title = _("Load Backup Configuration File")
+    def _dialog_load_backup_confirmation(self, filename):
         dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Icon.Warning,
-            dialog_title,
-            _("Loading a backup configuration file will replace the current configuration settings. "
-            "A backup copy of the current file will be saved automatically.\n\nDo you want to continue?"),
+            _("Load Backup Configuration File"),
+            _("Loading a backup configuration file will replace the current configuration settings.\n"
+              "Before any change, the current configuration will be automatically saved to:\n"
+              "%s\n"
+              "\n"
+              "Do you want to continue?") % filename,
             QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.Cancel,
-            self
+            self,
         )
         dialog.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Cancel)
-        if not dialog.exec() == QtWidgets.QMessageBox.StandardButton.Ok:
+        return dialog.exec() == QtWidgets.QMessageBox.StandardButton.Ok
+
+    def _dialog_load_backup_success(self, filename):
+        dialog = QtWidgets.QMessageBox(
+            QtWidgets.QMessageBox.Icon.Information,
+            _("Load Backup Configuration File"),
+            _("Configuration successfully loaded from:\n"
+              "%s") % filename,
+            QtWidgets.QMessageBox.StandardButton.Ok,
+            self,
+        )
+        dialog.exec()
+
+    def _dialog_load_backup_error(self, filename):
+        dialog = QtWidgets.QMessageBox(
+            QtWidgets.QMessageBox.Icon.Information,
+            _("Load Backup Configuration File"),
+            _("There was a problem restoring the configuration file from:\n"
+              "%s\n"
+              "\n"
+              "Please see the logs for more details.") % filename,
+            QtWidgets.QMessageBox.StandardButton.Ok,
+            self,
+        )
+        dialog.exec()
+
+    def _dialog_load_backup_select_filename(self, directory, ext):
+        filename, file_type = QtWidgets.QFileDialog.getOpenFileName(
+            self,
+            _("Select Configuration File to Load"),
+            directory,
+            self._get_dialog_filetypes(ext),
+        )
+        return filename
+
+    def load_backup(self):
+        directory = self.get_current_autobackup_dir()
+        filename = os.path.join(directory, self._make_backup_filename(auto=True))
+
+        if not self._dialog_load_backup_confirmation(filename):
             return
 
         config = get_config()
-        directory = path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
-        filename = path.join(directory, self._make_backup_filename(auto=True))
         if not config.save_user_backup(filename):
-            self._backup_error()
+            self._dialog_save_backup_error(filename)
             return
 
-        ext = path.splitext(filename)[1]
-        dialog_file_types = self._get_dialog_filetypes(ext)
-        directory = path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
-        filename, file_type = QtWidgets.QFileDialog.getOpenFileName(self, dialog_title, directory, dialog_file_types)
+        ext = os.path.splitext(filename)[1]
+        filename = self._dialog_load_backup_select_filename(directory, ext)
         if not filename:
             return
+
         log.warning("Loading configuration from %s", filename)
         if load_new_config(filename):
             config = get_config()
             upgrade_config(config)
             self.signal_reload.emit()
-            dialog = QtWidgets.QMessageBox(
-                QtWidgets.QMessageBox.Icon.Information,
-                dialog_title,
-                _("Configuration successfully loaded from %s") % filename,
-                QtWidgets.QMessageBox.StandardButton.Ok,
-                self
-            )
+            self._dialog_load_backup_success(filename)
         else:
-            dialog = QtWidgets.QMessageBox(
-                QtWidgets.QMessageBox.Icon.Critical,
-                dialog_title,
-                _("There was a problem restoring the configuration file. Please see the logs for more details."),
-                QtWidgets.QMessageBox.StandardButton.Ok,
-                self
-            )
-        dialog.exec()
+            self._dialog_load_backup_error(filename)
 
     def column_items(self, column):
         for idx in range(self.ui.tableWidget.rowCount()):
@@ -287,16 +371,22 @@ class MaintenanceOptionsPage(OptionsPage):
         for item in self.column_items(0):
             item.setCheckState(state)
 
-    def save(self):
-        if not self.ui.enable_cleanup.checkState() == QtCore.Qt.CheckState.Checked:
-            return
-        to_remove = set(self.selected_options())
-        if to_remove and QtWidgets.QMessageBox.question(
+    def _dialog_ask_remove_confirmation(self):
+        return QtWidgets.QMessageBox.question(
             self,
             _("Confirm Remove"),
             _("Are you sure you want to remove the selected option settings?"),
-        ) == QtWidgets.QMessageBox.StandardButton.Yes:
-            config = get_config()
+        ) == QtWidgets.QMessageBox.StandardButton.Yes
+
+    def save(self):
+        config = get_config()
+
+        config.setting['autobackup_directory'] = self.get_current_autobackup_dir()
+
+        if not self.ui.enable_cleanup.checkState() == QtCore.Qt.CheckState.Checked:
+            return
+        to_remove = set(self.selected_options())
+        if to_remove and self._dialog_ask_remove_confirmation():
             for item in to_remove:
                 Option.add_if_missing('setting', item, None)
                 log.warning("Removing option setting '%s' from the INI file.", item)

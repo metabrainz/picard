@@ -250,6 +250,9 @@ class UserProfileGroups():
             SettingDesc('file_lookup_threshold', ['file_lookup_threshold']),
             SettingDesc('cluster_lookup_threshold', ['cluster_lookup_threshold']),
             SettingDesc('track_matching_threshold', ['track_matching_threshold']),
+
+            # Maintenance Options Page
+            SettingDesc('autobackup_directory', ['autobackup_dir']),
         ],
     }
 
