@@ -48,6 +48,7 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
+from picard.profile import register_profile_highlights
 from picard.util import system_supports_long_paths
 
 from picard.ui import PicardDialog
@@ -84,6 +85,13 @@ class RenamingCompatOptionsPage(OptionsPage):
         self.ui.replace_spaces_with_underscores.toggled.connect(self.on_options_changed)
         self.ui.replace_dir_separator.textChanged.connect(self.on_options_changed)
         self.ui.btn_windows_compatibility_change.clicked.connect(self.open_win_compat_dialog)
+
+        register_profile_highlights('filerenaming', 'ascii_filenames', ['ascii_filenames'])
+        register_profile_highlights('filerenaming', 'windows_compatibility', ['windows_compatibility'])
+        register_profile_highlights('filerenaming', 'win_compat_replacements', ['win_compat_replacements'])
+        register_profile_highlights('filerenaming', 'windows_long_paths', ['windows_long_paths'])
+        register_profile_highlights('filerenaming', 'replace_spaces_with_underscores', ['replace_spaces_with_underscores'])
+        register_profile_highlights('filerenaming', 'replace_dir_separator', ['replace_dir_separator'])
 
     def load(self):
         config = get_config()

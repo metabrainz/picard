@@ -58,38 +58,12 @@ class UserProfileGroups():
 
     SETTINGS_GROUPS['cover'] = {
         'title': N_("Cover Art"),
-        'settings': [
-            SettingDesc('save_images_to_tags', ['save_images_to_tags']),
-            SettingDesc('embed_only_one_front_image', ['cb_embed_front_only']),
-            SettingDesc('save_images_to_files', ['save_images_to_files']),
-            SettingDesc('cover_image_filename', ['cover_image_filename']),
-            SettingDesc('save_images_overwrite', ['save_images_overwrite']),
-            SettingDesc('save_only_one_front_image', ['save_only_one_front_image']),
-            SettingDesc('image_type_as_filename', ['image_type_as_filename']),
-            SettingDesc('ca_providers', ['ca_providers_list']),
-        ],
+        'settings': [],
     }
 
     SETTINGS_GROUPS['filerenaming'] = {
         'title': N_("File Naming"),
-        'settings': [
-            # Main File Naming Page
-            SettingDesc('move_files', ['move_files']),
-            SettingDesc('move_files_to', ['move_files_to']),
-            SettingDesc('move_additional_files', ['move_additional_files']),
-            SettingDesc('move_additional_files_pattern', ['move_additional_files_pattern']),
-            SettingDesc('delete_empty_dirs', ['delete_empty_dirs']),
-            SettingDesc('rename_files', ['rename_files']),
-            SettingDesc('selected_file_naming_script_id', ['naming_script_selector']),
-
-            # File Naming Compatibility Page
-            SettingDesc('ascii_filenames', ['ascii_filenames']),
-            SettingDesc('windows_compatibility', ['windows_compatibility']),
-            SettingDesc('win_compat_replacements', ['win_compat_replacements']),
-            SettingDesc('windows_long_paths', ['windows_long_paths']),
-            SettingDesc('replace_spaces_with_underscores', ['replace_spaces_with_underscores']),
-            SettingDesc('replace_dir_separator', ['replace_dir_separator']),
-        ],
+        'settings': [],
     }
 
     SETTINGS_GROUPS['scripting'] = {

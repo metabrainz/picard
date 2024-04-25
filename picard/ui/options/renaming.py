@@ -43,6 +43,7 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
+from picard.profile import register_profile_highlights
 from picard.script import ScriptParser
 
 from picard.ui.options import (
@@ -116,6 +117,14 @@ class RenamingOptionsPage(OptionsPage):
         synchronize_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
 
         self.current_row = -1
+
+        register_profile_highlights('filerenaming', 'move_files', ['move_files'])
+        register_profile_highlights('filerenaming', 'move_files_to', ['move_files_to'])
+        register_profile_highlights('filerenaming', 'move_additional_files', ['move_additional_files'])
+        register_profile_highlights('filerenaming', 'move_additional_files_pattern', ['move_additional_files_pattern'])
+        register_profile_highlights('filerenaming', 'delete_empty_dirs', ['delete_empty_dirs'])
+        register_profile_highlights('filerenaming', 'rename_files', ['rename_files'])
+        register_profile_highlights('filerenaming', 'selected_file_naming_script_id', ['naming_script_selector'])
 
     def update_selector_from_editor(self):
         """Update the script selector combo box from the script editor page.
