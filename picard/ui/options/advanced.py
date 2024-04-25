@@ -24,6 +24,7 @@
 
 from picard.config import get_config
 from picard.i18n import N_
+from picard.profile import register_profile_highlights
 
 from picard.ui.options import (
     OptionsPage,
@@ -49,6 +50,17 @@ class AdvancedOptionsPage(OptionsPage):
         self.ui = Ui_AdvancedOptionsPage()
         self.ui.setupUi(self)
         self.init_regex_checker(self.ui.ignore_regex, self.ui.regex_error)
+
+        register_profile_highlights('advanced', 'ignore_regex', ['ignore_regex'])
+        register_profile_highlights('advanced', 'ignore_hidden_files', ['ignore_hidden_files'])
+        register_profile_highlights('advanced', 'recursively_add_files', ['recursively_add_files'])
+        register_profile_highlights('advanced', 'ignore_track_duration_difference_under', ['ignore_track_duration_difference_under', 'label_track_duration_diff'])
+        register_profile_highlights('advanced', 'query_limit', ['query_limit', 'label_query_limit'])
+        register_profile_highlights('advanced', 'completeness_ignore_videos', ['completeness_ignore_videos'])
+        register_profile_highlights('advanced', 'completeness_ignore_pregap', ['completeness_ignore_pregap'])
+        register_profile_highlights('advanced', 'completeness_ignore_data', ['completeness_ignore_data'])
+        register_profile_highlights('advanced', 'completeness_ignore_silence', ['completeness_ignore_silence'])
+        register_profile_highlights('advanced', 'compare_ignore_tags', ['groupBox_ignore_tags'])
 
     def load(self):
         config = get_config()

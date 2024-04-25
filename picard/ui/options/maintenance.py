@@ -42,6 +42,7 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
+from picard.profile import register_profile_highlights
 from picard.util import open_local_path
 
 from picard.ui.options import (
@@ -118,6 +119,8 @@ class MaintenanceOptionsPage(OptionsPage):
         palette_readonly.setColor(QtGui.QPalette.ColorRole.Base, disabled_color)
         self.ui.config_file.setPalette(palette_readonly)
         self.last_valid_path = _safe_autobackup_dir('')
+
+        register_profile_highlights('advanced', 'autobackup_directory', ['autobackup_dir'])
 
     def get_current_autobackup_dir(self):
         return _safe_autobackup_dir(self.ui.autobackup_dir.text())

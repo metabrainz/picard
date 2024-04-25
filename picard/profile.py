@@ -78,50 +78,7 @@ class UserProfileGroups():
 
     SETTINGS_GROUPS['advanced'] = {
         'title': N_("Advanced"),
-        'settings': [
-            # Main Advanced Options Page
-            SettingDesc('ignore_regex', ['ignore_regex']),
-            SettingDesc('ignore_hidden_files', ['ignore_hidden_files']),
-            SettingDesc('recursively_add_files', ['recursively_add_files']),
-            SettingDesc(
-                'ignore_track_duration_difference_under',
-                ['ignore_track_duration_difference_under', 'label_track_duration_diff']
-            ),
-            SettingDesc(
-                'query_limit',
-                ['query_limit', 'label_query_limit']
-            ),
-            SettingDesc('completeness_ignore_videos', ['completeness_ignore_videos']),
-            SettingDesc('completeness_ignore_pregap', ['completeness_ignore_pregap']),
-            SettingDesc('completeness_ignore_data', ['completeness_ignore_data']),
-            SettingDesc('completeness_ignore_silence', ['completeness_ignore_silence']),
-            SettingDesc('compare_ignore_tags', ['groupBox_ignore_tags']),
-
-            # Network Options Page
-            SettingDesc('use_proxy', []),   # No highlight specified because the 'use_proxy'
-                                            # object is a QGroupBox and it highlights all sub
-                                            # options, even if the sub options are not selected.
-            SettingDesc('proxy_type', ['proxy_type_socks', 'proxy_type_http']),
-            SettingDesc('proxy_server_host', ['server_host']),
-            SettingDesc('proxy_server_port', ['server_port']),
-            SettingDesc('proxy_username', ['username']),
-            SettingDesc('proxy_password', ['password']),
-            SettingDesc('network_transfer_timeout_seconds', ['transfer_timeout']),
-            SettingDesc('network_cache_size_bytes', ['network_cache_size']),
-            SettingDesc('browser_integration', []),  # No highlight specified because the 'browser_integration'
-                                                     # object is a QGroupBox and it highlights all sub options,
-                                                     # even if the sub options are not selected.
-            SettingDesc('browser_integration_port', ['browser_integration_port']),
-            SettingDesc('browser_integration_localhost_only', ['browser_integration_localhost_only']),
-
-            # Matching Options Page
-            SettingDesc('file_lookup_threshold', ['file_lookup_threshold']),
-            SettingDesc('cluster_lookup_threshold', ['cluster_lookup_threshold']),
-            SettingDesc('track_matching_threshold', ['track_matching_threshold']),
-
-            # Maintenance Options Page
-            SettingDesc('autobackup_directory', ['autobackup_dir']),
-        ],
+        'settings': [],
     }
 
     ALL_SETTINGS = set(

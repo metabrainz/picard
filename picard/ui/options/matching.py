@@ -24,6 +24,7 @@
 
 from picard.config import get_config
 from picard.i18n import N_
+from picard.profile import register_profile_highlights
 
 from picard.ui.options import (
     OptionsPage,
@@ -50,6 +51,10 @@ class MatchingOptionsPage(OptionsPage):
         super().__init__(parent)
         self.ui = Ui_MatchingOptionsPage()
         self.ui.setupUi(self)
+
+        register_profile_highlights('advanced', 'file_lookup_threshold', ['file_lookup_threshold'])
+        register_profile_highlights('advanced', 'cluster_lookup_threshold', ['cluster_lookup_threshold'])
+        register_profile_highlights('advanced', 'track_matching_threshold', ['track_matching_threshold'])
 
     def load(self):
         config = get_config()

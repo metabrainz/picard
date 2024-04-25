@@ -25,6 +25,7 @@
 from picard.config import get_config
 from picard.const import CACHE_SIZE_DISPLAY_UNIT
 from picard.i18n import N_
+from picard.profile import register_profile_highlights
 
 from picard.ui.options import (
     OptionsPage,
@@ -49,6 +50,18 @@ class NetworkOptionsPage(OptionsPage):
         super().__init__(parent)
         self.ui = Ui_NetworkOptionsPage()
         self.ui.setupUi(self)
+
+        register_profile_highlights('advanced', 'use_proxy', [])
+        register_profile_highlights('advanced', 'proxy_type', ['proxy_type_socks', 'proxy_type_http'])
+        register_profile_highlights('advanced', 'proxy_server_host', ['server_host'])
+        register_profile_highlights('advanced', 'proxy_server_port', ['server_port'])
+        register_profile_highlights('advanced', 'proxy_username', ['username'])
+        register_profile_highlights('advanced', 'proxy_password', ['password'])
+        register_profile_highlights('advanced', 'network_transfer_timeout_seconds', ['transfer_timeout'])
+        register_profile_highlights('advanced', 'network_cache_size_bytes', ['network_cache_size'])
+        register_profile_highlights('advanced', 'browser_integration', [])
+        register_profile_highlights('advanced', 'browser_integration_port', ['browser_integration_port'])
+        register_profile_highlights('advanced', 'browser_integration_localhost_only', ['browser_integration_localhost_only'])
 
     def load(self):
         config = get_config()
