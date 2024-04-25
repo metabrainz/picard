@@ -416,7 +416,7 @@ class Option(QtCore.QObject):
 class TextOption(Option):
 
     convert = str
-    qtype = 'QString'
+    qtype = str
 
 
 class BoolOption(Option):
@@ -428,6 +428,7 @@ class BoolOption(Option):
 class IntOption(Option):
 
     convert = int
+    qtype = int
 
 
 class FloatOption(Option):
