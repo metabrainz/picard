@@ -395,9 +395,13 @@ class WebService(QtCore.QObject):
         self._timer_count_pending_requests.setSingleShot(True)
         self._timer_count_pending_requests.timeout.connect(self._count_pending_requests)
 
-    def _init_cache(self, cache_size_in_bytes=None):
+    def _init_cache(self):
         cache = QtNetwork.QNetworkDiskCache()
         cache.setCacheDirectory(os.path.join(appdirs.cache_folder(), 'network'))
+        # FIXME: Keeping a reference to the cache object is needed to prevent
+        # the cleanup of the cache object in PySide < 6.7.2.
+        # See the issue https://bugreports.qt.io/browse/PYSIDE-2759
+        self._cache = cache
         self.manager.setCache(cache)
         log.debug("NetworkDiskCache dir: %r", cache.cacheDirectory())
 
