@@ -34,10 +34,7 @@ from inspect import (
 import re
 import sys
 
-from PyQt6 import (
-    QtCore,
-    QtWidgets,
-)
+from PyQt6 import QtWidgets
 
 from picard import (
     PICARD_VERSION,
@@ -393,7 +390,7 @@ def upgrade_to_v2_7_0dev2(config):
         splitter_dict = {}
         for (old_splitter_key, new_splitter_key) in key_map:
             if old_splitter_key in _p:
-                if v := _p.raw_value(old_splitter_key, qtype=QtCore.QByteArray):
+                if v := _p.raw_value(old_splitter_key):
                     splitter_dict[new_splitter_key] = v
                 _p.remove(old_splitter_key)
         _p[new_persist_key] = splitter_dict
