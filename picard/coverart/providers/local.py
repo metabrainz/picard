@@ -45,9 +45,6 @@ class ProviderOptionsLocal(ProviderOptions):
 
     HELP_URL = '/config/options_local_files.html'
 
-    options = [
-    ]
-
     _options_ui = Ui_LocalOptions
 
     def __init__(self, parent=None):

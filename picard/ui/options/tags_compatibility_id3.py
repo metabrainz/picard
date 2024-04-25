@@ -45,9 +45,6 @@ class TagsCompatibilityID3OptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_tags_compatibility_id3.html"
 
-    options = [
-    ]
-
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_TagsCompatibilityOptionsPage()

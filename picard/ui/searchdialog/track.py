@@ -49,9 +49,6 @@ class TrackSearchDialog(SearchDialog):
 
     dialog_header_state = 'tracksearchdialog_header_state'
 
-    options = [
-    ]
-
     def __init__(self, parent, force_advanced_search=None):
         super().__init__(
             parent,

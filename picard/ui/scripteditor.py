@@ -428,9 +428,6 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
 
     help_url = PICARD_URLS['doc_naming_script_edit']
 
-    options = [
-    ]
-
     signal_save = QtCore.pyqtSignal()
     signal_update = QtCore.pyqtSignal()
     signal_selection_changed = QtCore.pyqtSignal()

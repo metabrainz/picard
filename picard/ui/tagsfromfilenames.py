@@ -98,9 +98,6 @@ class TagsFromFileNamesDialog(PicardDialog):
 
     help_url = 'doc_tags_from_filenames'
 
-    options = [
-    ]
-
     def __init__(self, files, parent=None):
         super().__init__(parent)
         self.ui = Ui_TagsFromFileNamesDialog()

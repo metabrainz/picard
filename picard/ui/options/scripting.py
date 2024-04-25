@@ -103,9 +103,6 @@ class ScriptingOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_scripting.html"
 
-    options = [
-    ]
-
     default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
     default_script_extension = "ptsp"
 

@@ -79,9 +79,6 @@ class MaintenanceOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_maintenance.html"
 
-    options = [
-    ]
-
     signal_reload = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):

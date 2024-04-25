@@ -311,9 +311,6 @@ def _replace_control_chars(text):
 class ScriptTextEdit(QTextEdit):
     autocomplete_trigger_chars = re.compile('[$%A-Za-z0-9_]')
 
-    options = [
-    ]
-
     def __init__(self, parent):
         super().__init__(parent)
         config = get_config()

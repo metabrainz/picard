@@ -176,9 +176,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     selection_updated = QtCore.pyqtSignal(object)
     ready_for_display = QtCore.pyqtSignal()
 
-    options = [
-    ]
-
     def __init__(self, parent=None, disable_player=False):
         super().__init__(parent)
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_NativeWindow)

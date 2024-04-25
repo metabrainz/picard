@@ -120,9 +120,6 @@ class ProviderOptionsCaa(ProviderOptions):
     TITLE = N_("Cover Art Archive")
     HELP_URL = "/config/options_cover_art_archive.html"
 
-    options = [
-    ]
-
     _options_ui = Ui_CaaOptions
 
     def __init__(self, parent=None):

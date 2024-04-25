@@ -67,9 +67,6 @@ class ProfilesOptionsPage(OptionsPage):
 
     TREEWIDGETITEM_COLUMN = 0
 
-    options = [
-    ]
-
     signal_refresh = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):

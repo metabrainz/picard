@@ -41,9 +41,6 @@ class RatingsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_ratings.html"
 
-    options = [
-    ]
-
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_RatingsOptionsPage()

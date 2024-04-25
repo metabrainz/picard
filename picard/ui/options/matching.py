@@ -42,9 +42,6 @@ class MatchingOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_matching.html"
 
-    options = [
-    ]
-
     _release_type_sliders = {}
 
     def __init__(self, parent=None):

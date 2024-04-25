@@ -36,9 +36,6 @@ class ArtistSearchDialog(SearchDialog):
 
     dialog_header_state = 'artistsearchdialog_header_state'
 
-    options = [
-    ]
-
     def __init__(self, parent):
         super().__init__(
             parent,

@@ -68,9 +68,6 @@ class RenamingCompatOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_filerenaming_compat.html"
 
-    options = [
-    ]
-
     options_changed = QtCore.pyqtSignal(dict)
 
     def __init__(self, parent=None):

@@ -92,9 +92,6 @@ from picard.ui.util import StandardButton
 
 class OptionsDialog(PicardDialog, SingletonDialog):
 
-    options = [
-    ]
-
     suspend_signals = False
 
     def add_pages(self, parent, default_page, parent_item):

@@ -177,9 +177,6 @@ class DebugOptsMenu(QtWidgets.QMenu):
 
 class LogView(LogViewCommon):
 
-    options = [
-    ]
-
     def __init__(self, parent=None):
         super().__init__(log.main_tail, _("Log"), parent=parent)
         self.verbosity = log.get_effective_level()

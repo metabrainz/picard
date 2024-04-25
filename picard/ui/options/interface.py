@@ -68,9 +68,6 @@ class InterfaceOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface.html"
 
-    options = [
-    ]
-
     # Those are labels for theme display
     _UI_THEME_LABELS = {
         UiTheme.DEFAULT: {

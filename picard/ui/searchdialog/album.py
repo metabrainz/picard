@@ -133,9 +133,6 @@ class AlbumSearchDialog(SearchDialog):
 
     dialog_header_state = 'albumsearchdialog_header_state'
 
-    options = [
-    ]
-
     def __init__(self, parent, force_advanced_search=None, existing_album=None):
         super().__init__(
             parent,

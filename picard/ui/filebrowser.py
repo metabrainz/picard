@@ -46,9 +46,6 @@ from picard.util import find_existing_path
 
 class FileBrowser(QtWidgets.QTreeView):
 
-    options = [
-    ]
-
     def __init__(self, parent):
         super().__init__(parent)
         self.tagger = QtCore.QCoreApplication.instance()

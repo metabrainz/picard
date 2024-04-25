@@ -128,8 +128,6 @@ class InterfaceToolbarOptionsPage(OptionsPage):
         },
     }
     ACTION_NAMES = set(TOOLBAR_BUTTONS.keys())
-    options = [
-    ]
 
     def __init__(self, parent=None):
         super().__init__(parent)
