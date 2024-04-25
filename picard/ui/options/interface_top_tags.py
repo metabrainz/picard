@@ -20,10 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard.config import (
-    ListOption,
-    get_config,
-)
+from picard.config import get_config
 from picard.i18n import N_
 
 from picard.ui.options import (
@@ -33,16 +30,6 @@ from picard.ui.options import (
 from picard.ui.ui_options_interface_top_tags import (
     Ui_InterfaceTopTagsOptionsPage,
 )
-
-
-DEFAULT_TOP_TAGS = [
-    'title',
-    'artist',
-    'album',
-    'tracknumber',
-    '~length',
-    'date',
-]
 
 
 class InterfaceTopTagsOptionsPage(OptionsPage):
@@ -55,7 +42,6 @@ class InterfaceTopTagsOptionsPage(OptionsPage):
     HELP_URL = "/config/options_interface_top_tags.html"
 
     options = [
-        ListOption('setting', 'metadatabox_top_tags', DEFAULT_TOP_TAGS, title=N_("Tags to show at the top")),
     ]
 
     def __init__(self, parent=None):

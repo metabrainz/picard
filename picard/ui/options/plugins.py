@@ -45,11 +45,7 @@ from PyQt6 import (
 from PyQt6.QtWidgets import QTreeWidgetItemIterator
 
 from picard import log
-from picard.config import (
-    ListOption,
-    Option,
-    get_config,
-)
+from picard.config import get_config
 from picard.const import (
     PLUGINS_API,
     USER_PLUGIN_DIR,
@@ -234,10 +230,6 @@ class PluginsOptionsPage(OptionsPage):
     HELP_URL = "/config/options_plugins.html"
 
     options = [
-        ListOption('setting', 'enabled_plugins', []),
-        Option('persist', 'plugins_list_state', QtCore.QByteArray()),
-        Option('persist', 'plugins_list_sort_section', 0),
-        Option('persist', 'plugins_list_sort_order', QtCore.Qt.SortOrder.AscendingOrder),
     ]
 
     def __init__(self, parent=None):

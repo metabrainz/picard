@@ -22,12 +22,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt6 import QtCore
-
-from picard.config import (
-    Option,
-    get_config,
-)
+from picard.config import get_config
 from picard.file import FILE_COMPARISON_WEIGHTS
 from picard.i18n import gettext as _
 from picard.mbjson import (
@@ -55,7 +50,6 @@ class TrackSearchDialog(SearchDialog):
     dialog_header_state = 'tracksearchdialog_header_state'
 
     options = [
-        Option('persist', dialog_header_state, QtCore.QByteArray())
     ]
 
     def __init__(self, parent, force_advanced_search=None):

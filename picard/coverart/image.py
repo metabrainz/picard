@@ -41,7 +41,7 @@ from PyQt6.QtCore import (
 
 from picard import log
 from picard.config import get_config
-from picard.const import DEFAULT_COVER_IMAGE_FILENAME
+from picard.const.defaults import DEFAULT_COVER_IMAGE_FILENAME
 from picard.const.sys import (
     IS_MACOS,
     IS_WIN,

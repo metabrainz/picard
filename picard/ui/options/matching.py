@@ -22,10 +22,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard.config import (
-    FloatOption,
-    get_config,
-)
+from picard.config import get_config
 from picard.i18n import N_
 
 from picard.ui.options import (
@@ -45,9 +42,6 @@ class MatchingOptionsPage(OptionsPage):
     HELP_URL = "/config/options_matching.html"
 
     options = [
-        FloatOption('setting', 'file_lookup_threshold', 0.7, title=N_("Minimal similarity for file lookups")),
-        FloatOption('setting', 'cluster_lookup_threshold', 0.7, title=N_("Minimal similarity for cluster lookups")),
-        FloatOption('setting', 'track_matching_threshold', 0.4, title=N_("Minimal similarity for matching files to tracks")),
     ]
 
     _release_type_sliders = {}

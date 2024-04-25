@@ -24,14 +24,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard.config import (
-    TextOption,
-    get_config,
-)
+from picard.config import get_config
 from picard.i18n import N_
 from picard.util.cdrom import (
     AUTO_DETECT_DRIVES,
-    DEFAULT_DRIVES,
     get_cdrom_drives,
 )
 
@@ -57,7 +53,6 @@ class CDLookupOptionsPage(OptionsPage):
     HELP_URL = "/config/options_cdlookup.html"
 
     options = [
-        TextOption('setting', 'cd_lookup_device', ','.join(DEFAULT_DRIVES)),
     ]
 
     def __init__(self, parent=None):

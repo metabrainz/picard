@@ -36,51 +36,17 @@ from PyQt6 import (
     QtGui,
     QtWidgets,
 )
-from PyQt6.QtCore import QStandardPaths
 
-from picard import log
-from picard.config import (
-    BoolOption,
-    TextOption,
-    get_config,
-)
+from picard.config import get_config
 from picard.const.sys import IS_MACOS
 from picard.formats import supported_formats
 from picard.i18n import gettext as _
 from picard.util import find_existing_path
 
 
-def _macos_find_root_volume():
-    try:
-        for entry in os.scandir("/Volumes/"):
-            if entry.is_symlink() and os.path.realpath(entry.path) == "/":
-                return entry.path
-    except OSError:
-        log.warning("Could not detect macOS boot volume", exc_info=True)
-    return None
-
-
-def _macos_extend_root_volume_path(path):
-    if not path.startswith("/Volumes/"):
-        root_volume = _macos_find_root_volume()
-        if root_volume:
-            if path.startswith("/"):
-                path = path[1:]
-            path = os.path.join(root_volume, path)
-    return path
-
-
-_default_current_browser_path = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.HomeLocation)
-
-if IS_MACOS:
-    _default_current_browser_path = _macos_extend_root_volume_path(_default_current_browser_path)
-
-
 class FileBrowser(QtWidgets.QTreeView):
 
     options = [
-        TextOption('persist', 'current_browser_path', _default_current_browser_path),
-        BoolOption('persist', 'show_hidden_files', False),
     ]
 
     def __init__(self, parent):

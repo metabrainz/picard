@@ -32,16 +32,14 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard.config import (
-    ListOption,
-    get_config,
-)
+from picard.config import get_config
 from picard.const import (
     RELEASE_FORMATS,
     RELEASE_PRIMARY_GROUPS,
     RELEASE_SECONDARY_GROUPS,
 )
 from picard.const.countries import RELEASE_COUNTRIES
+from picard.const.defaults import DEFAULT_RELEASE_SCORE
 from picard.const.sys import IS_WIN
 from picard.i18n import (
     N_,
@@ -58,10 +56,6 @@ from picard.ui.options import (
 from picard.ui.ui_options_releases import Ui_ReleasesOptionsPage
 from picard.ui.util import qlistwidget_items
 from picard.ui.widgets import ClickableSlider
-
-
-_DEFAULT_SCORE = 0.5
-_release_type_scores = [(g, _DEFAULT_SCORE) for g in list(RELEASE_PRIMARY_GROUPS.keys()) + list(RELEASE_SECONDARY_GROUPS.keys())]
 
 
 class TipSlider(ClickableSlider):
@@ -135,7 +129,7 @@ class ReleaseTypeScore:
         return float(self.slider.value()) / 100.0
 
     def reset(self):
-        self.setValue(_DEFAULT_SCORE)
+        self.setValue(DEFAULT_RELEASE_SCORE)
 
 
 class RowColIter:
@@ -170,9 +164,6 @@ class ReleasesOptionsPage(OptionsPage):
     HELP_URL = "/config/options_releases.html"
 
     options = [
-        ListOption('setting', 'release_type_scores', _release_type_scores, title=N_("Preferred release types")),
-        ListOption('setting', 'preferred_release_countries', [], title=N_("Preferred release countries")),
-        ListOption('setting', 'preferred_release_formats', [], title=N_("Preferred medium formats")),
     ]
 
     def __init__(self, parent=None):
@@ -241,7 +232,7 @@ class ReleasesOptionsPage(OptionsPage):
         scores = dict(config.setting['release_type_scores'])
         for (release_type, release_type_slider) in self._release_type_sliders.items():
             release_type_slider.setValue(scores.get(release_type,
-                                                    _DEFAULT_SCORE))
+                                                    DEFAULT_RELEASE_SCORE))
 
         self._load_list_items('preferred_release_countries', RELEASE_COUNTRIES,
                               self.ui.country_list, self.ui.preferred_country_list)

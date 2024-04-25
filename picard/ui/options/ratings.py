@@ -21,12 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard.config import (
-    BoolOption,
-    IntOption,
-    TextOption,
-    get_config,
-)
+from picard.config import get_config
 from picard.i18n import N_
 
 from picard.ui.options import (
@@ -46,10 +41,6 @@ class RatingsOptionsPage(OptionsPage):
     HELP_URL = "/config/options_ratings.html"
 
     options = [
-        BoolOption('setting', 'enable_ratings', False, title=N_("Enable track ratings")),
-        TextOption('setting', 'rating_user_email', 'users@musicbrainz.org', title=N_("Email to use when saving ratings")),
-        BoolOption('setting', 'submit_ratings', True, title=N_("Submit ratings to MusicBrainz")),
-        IntOption('setting', 'rating_steps', 6),
     ]
 
     def __init__(self, parent=None):

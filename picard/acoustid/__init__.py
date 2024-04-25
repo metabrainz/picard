@@ -37,10 +37,8 @@ from PyQt6 import QtCore
 from picard import log
 from picard.acoustid.recordings import RecordingResolver
 from picard.config import get_config
-from picard.const import (
-    DEFAULT_FPCALC_THREADS,
-    FPCALC_NAMES,
-)
+from picard.const import FPCALC_NAMES
+from picard.const.defaults import DEFAULT_FPCALC_THREADS
 from picard.const.sys import IS_WIN
 from picard.file import File
 from picard.i18n import N_

@@ -116,6 +116,7 @@ from picard.i18n import (
     gettext as _,
     setup_gettext,
 )
+from picard.options import PicardOptions
 from picard.pluginmanager import (
     PluginManager,
     plugin_dirs,
@@ -231,6 +232,8 @@ class Tagger(QtWidgets.QApplication):
 
     _debug = False
     _no_restore = False
+
+    options = PicardOptions.options
 
     def __init__(self, picard_args, localedir, autoupdate, pipe_handler=None):
         # Initialize these variables early as they are needed for a clean

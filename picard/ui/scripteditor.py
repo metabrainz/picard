@@ -36,10 +36,7 @@ from PyQt6.QtGui import QPalette
 
 from picard import log
 from picard.config import (
-    BoolOption,
-    Option,
     SettingConfigSection,
-    TextOption,
     get_config,
 )
 from picard.const import (
@@ -432,9 +429,6 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     help_url = PICARD_URLS['doc_naming_script_edit']
 
     options = [
-        BoolOption('persist', 'script_editor_show_documentation', False),
-        Option('setting', 'file_renaming_scripts', {}),
-        TextOption('setting', 'selected_file_naming_script_id', '', title=N_("Selected file naming script")),
     ]
 
     signal_save = QtCore.pyqtSignal()

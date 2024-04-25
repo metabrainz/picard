@@ -46,11 +46,7 @@ from PyQt6 import (
 from picard.album import Album
 from picard.browser.filelookup import FileLookup
 from picard.cluster import Cluster
-from picard.config import (
-    BoolOption,
-    Option,
-    get_config,
-)
+from picard.config import get_config
 from picard.file import File
 from picard.i18n import (
     gettext as _,
@@ -208,8 +204,6 @@ class TableTagEditorDelegate(TagEditorDelegate):
 class MetadataBox(QtWidgets.QTableWidget):
 
     options = (
-        Option('persist', 'metadatabox_header_state', QtCore.QByteArray()),
-        BoolOption('persist', 'show_changes_first', False)
     )
 
     COLUMN_ORIG = 1

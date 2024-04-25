@@ -30,17 +30,12 @@
 
 from PyQt6 import QtCore
 
-from picard.config import (
-    BoolOption,
-    IntOption,
-    TextOption,
-    get_config,
-)
+from picard.config import get_config
 from picard.const import (
-    DEFAULT_PROGRAM_UPDATE_LEVEL,
     MUSICBRAINZ_SERVERS,
     PROGRAM_UPDATE_LEVELS,
 )
+from picard.const.defaults import DEFAULT_PROGRAM_UPDATE_LEVEL
 from picard.i18n import (
     N_,
     gettext as _,
@@ -65,22 +60,6 @@ class GeneralOptionsPage(OptionsPage):
     HELP_URL = "/config/options_general.html"
 
     options = [
-        TextOption('setting', 'server_host', MUSICBRAINZ_SERVERS[0], title=N_("Server address")),
-        IntOption('setting', 'server_port', 443, title=N_("Port")),
-        BoolOption('setting', 'use_server_for_submission', False),
-        BoolOption('setting', 'analyze_new_files', False, title=N_("Automatically scan all new files")),
-        BoolOption('setting', 'cluster_new_files', False, title=N_("Automatically cluster all new files")),
-        BoolOption('setting', 'ignore_file_mbids', False, title=N_("Ignore MBIDs when loading new files")),
-        TextOption('persist', 'oauth_refresh_token', ''),
-        TextOption('persist', 'oauth_refresh_token_scopes', ''),
-        TextOption('persist', 'oauth_access_token', ''),
-        IntOption('persist', 'oauth_access_token_expires', 0),
-        TextOption('persist', 'oauth_username', ''),
-        BoolOption('setting', 'check_for_updates', True, title=N_("Check for program updates during startup")),
-        IntOption('setting', 'update_check_days', 7, title=N_("Days between update checks")),
-        IntOption('setting', 'update_level', DEFAULT_PROGRAM_UPDATE_LEVEL, title=N_("Updates to check")),
-        IntOption('persist', 'last_update_check', 0),
-        BoolOption('setting', 'check_for_plugin_updates', False, title=N_("Check for plugin updates during startup")),
     ]
 
     def __init__(self, parent=None):

@@ -48,14 +48,8 @@ except ImportError:
     except (ImportError, OSError):
         discid = None
 
+
 DISCID_NOT_LOADED_MESSAGE = "CDROM: discid library not found - Lookup CD functionality disabled"
-
-DEFAULT_DRIVES = []
-if discid is not None:
-    device = discid.get_default_device()
-    if device:
-        DEFAULT_DRIVES.append(device)
-
 LINUX_CDROM_INFO = '/proc/sys/dev/cdrom/info'
 
 
@@ -125,6 +119,7 @@ def get_cdrom_drives():
     """List available disc drives on the machine
     """
     # add default drive from libdiscid to the list
+    from picard.const.defaults import DEFAULT_DRIVES
     drives = set(DEFAULT_DRIVES)
     try:
         drives |= set(_iter_drives())

@@ -41,12 +41,8 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard.config import (
-    BoolOption,
-    Option,
-    TextOption,
-    get_config,
-)
+from picard.config import get_config
+from picard.const.defaults import DEFAULT_REPLACEMENT
 from picard.const.sys import IS_WIN
 from picard.i18n import (
     N_,
@@ -63,18 +59,6 @@ from picard.ui.ui_options_renaming_compat import Ui_RenamingCompatOptionsPage
 from picard.ui.ui_win_compat_dialog import Ui_WinCompatDialog
 
 
-DEFAULT_REPLACEMENT = '_'
-DEFAULT_WIN_COMPAT_REPLACEMENTS = {
-    '*': DEFAULT_REPLACEMENT,
-    ':': DEFAULT_REPLACEMENT,
-    '<': DEFAULT_REPLACEMENT,
-    '>': DEFAULT_REPLACEMENT,
-    '?': DEFAULT_REPLACEMENT,
-    '|': DEFAULT_REPLACEMENT,
-    '"': DEFAULT_REPLACEMENT,
-}
-
-
 class RenamingCompatOptionsPage(OptionsPage):
 
     NAME = 'filerenaming_compat'
@@ -84,12 +68,6 @@ class RenamingCompatOptionsPage(OptionsPage):
     HELP_URL = "/config/options_filerenaming_compat.html"
 
     options = [
-        BoolOption('setting', 'windows_compatibility', True, title=N_("Windows compatibility")),
-        BoolOption('setting', 'windows_long_paths', system_supports_long_paths() if IS_WIN else False, title=N_("Windows long path support")),
-        BoolOption('setting', 'ascii_filenames', False, title=N_("Replace non-ASCII characters")),
-        BoolOption('setting', 'replace_spaces_with_underscores', False, title=N_("Replace spaces with underscores")),
-        TextOption('setting', 'replace_dir_separator', DEFAULT_REPLACEMENT, title=N_("Replacement character to use for directory separators")),
-        Option('setting', 'win_compat_replacements', DEFAULT_WIN_COMPAT_REPLACEMENTS, title=N_("Replacement characters used for Windows compatibility"))
     ]
 
     options_changed = QtCore.pyqtSignal(dict)

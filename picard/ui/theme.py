@@ -32,6 +32,7 @@ from PyQt6 import (
 
 from picard import log
 from picard.config import get_config
+from picard.const.defaults import DEFAULT_THEME_NAME
 from picard.const.sys import (
     IS_HAIKU,
     IS_MACOS,
@@ -54,7 +55,7 @@ elif IS_HAIKU:
 
 # Those are values stored in config file:
 class UiTheme(Enum):
-    DEFAULT = 'default'
+    DEFAULT = DEFAULT_THEME_NAME
     DARK = 'dark'
     LIGHT = 'light'
     SYSTEM = 'system'

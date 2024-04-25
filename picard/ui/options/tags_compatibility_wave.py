@@ -21,11 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard.config import (
-    BoolOption,
-    TextOption,
-    get_config,
-)
+from picard.config import get_config
 from picard.formats.wav import WAVFile
 from picard.i18n import N_
 
@@ -48,9 +44,6 @@ class TagsCompatibilityWaveOptionsPage(OptionsPage):
     HELP_URL = "/config/options_tags_compatibility_wave.html"
 
     options = [
-        BoolOption('setting', 'write_wave_riff_info', True, title=N_("Write RIFF INFO tags to WAVE files")),
-        BoolOption('setting', 'remove_wave_riff_info', False, title=N_("Remove existing RIFF INFO tags from WAVE files")),
-        TextOption('setting', 'wave_riff_info_encoding', 'windows-1252', title=N_("RIFF INFO text encoding")),
     ]
 
     def __init__(self, parent=None):

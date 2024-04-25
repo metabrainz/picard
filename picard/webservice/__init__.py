@@ -56,10 +56,8 @@ from picard import (
     log,
 )
 from picard.config import get_config
-from picard.const import (
-    CACHE_SIZE_IN_BYTES,
-    appdirs,
-)
+from picard.const import appdirs
+from picard.const.defaults import DEFAULT_CACHE_SIZE_IN_BYTES
 from picard.debug_opts import DebugOpt
 from picard.oauth import OAuthManager
 from picard.util import (
@@ -409,7 +407,7 @@ class WebService(QtCore.QObject):
                 return cache_size
         except ValueError:
             pass
-        return CACHE_SIZE_IN_BYTES
+        return DEFAULT_CACHE_SIZE_IN_BYTES
 
     def set_cache_size(self):
         cache_size_in_bytes = self.get_valid_cache_size()

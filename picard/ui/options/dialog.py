@@ -39,11 +39,9 @@ from PyQt6 import (
 
 from picard import log
 from picard.config import (
-    ListOption,
     Option,
     OptionError,
     SettingConfigSection,
-    TextOption,
     get_config,
 )
 from picard.i18n import (
@@ -95,8 +93,6 @@ from picard.ui.util import StandardButton
 class OptionsDialog(PicardDialog, SingletonDialog):
 
     options = [
-        TextOption('persist', 'options_last_active_page', ''),
-        ListOption('persist', 'options_pages_tree_state', []),
     ]
 
     suspend_signals = False

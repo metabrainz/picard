@@ -21,10 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard.config import (
-    BoolOption,
-    get_config,
-)
+from picard.config import get_config
 from picard.i18n import N_
 
 from picard.ui.options import (
@@ -46,8 +43,6 @@ class TagsCompatibilityAC3OptionsPage(OptionsPage):
     HELP_URL = "/config/options_tags_compatibility_ac3.html"
 
     options = [
-        BoolOption('setting', 'ac3_save_ape', True, title=N_("Save APEv2 tags to AC3")),
-        BoolOption('setting', 'remove_ape_from_ac3', False, title=N_("Remove APEv2 tags from AC3 files")),
     ]
 
     def __init__(self, parent=None):

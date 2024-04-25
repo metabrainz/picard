@@ -31,8 +31,6 @@ from PyQt6 import (
 
 from picard import log
 from picard.config import (
-    IntOption,
-    ListOption,
     Option,
     OptionError,
     SettingConfigSection,
@@ -70,8 +68,6 @@ class ProfilesOptionsPage(OptionsPage):
     TREEWIDGETITEM_COLUMN = 0
 
     options = [
-        IntOption('persist', 'last_selected_profile_pos', 0),
-        ListOption('persist', 'profile_settings_tree_expanded_list', []),
     ]
 
     signal_refresh = QtCore.pyqtSignal()

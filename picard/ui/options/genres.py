@@ -28,12 +28,7 @@ from PyQt6.QtGui import (
     QTextCursor,
 )
 
-from picard.config import (
-    BoolOption,
-    IntOption,
-    TextOption,
-    get_config,
-)
+from picard.config import get_config
 from picard.i18n import (
     N_,
     gettext as _,
@@ -95,14 +90,6 @@ class GenresOptionsPage(OptionsPage):
     HELP_URL = "/config/options_genres.html"
 
     options = [
-        BoolOption('setting', 'use_genres', False, title=N_("Use genres from MusicBrainz")),
-        IntOption('setting', 'max_genres', 5, title=N_("Maximum number of genres")),
-        IntOption('setting', 'min_genre_usage', 90, title=N_("Minimal genre usage")),
-        TextOption('setting', 'genres_filter', '-seen live\n-favorites\n-fixme\n-owned', title=N_("Genres to include or exclude")),
-        TextOption('setting', 'join_genres', '', title=N_("Join multiple genres with")),
-        BoolOption('setting', 'only_my_genres', False, title=N_("Use only my genres")),
-        BoolOption('setting', 'artists_genres', False, title=N_("Use album artist genres")),
-        BoolOption('setting', 'folksonomy_tags', False, title=N_("Use folksonomy tags as genre")),
     ]
 
     def __init__(self, parent=None):
