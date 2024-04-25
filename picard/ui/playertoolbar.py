@@ -53,6 +53,12 @@ from picard.ui.widgets import (
 
 try:
     from PySide6 import QtMultimedia
+    try:
+        from PySide6.QtMultimedia import QAudio
+    except ImportError:
+        # In Qt 6.7.0 the class is called QtAudio.
+        # This change got reverted again in Qt 6.7.1.
+        from PySide6.QtMultimedia import QtAudio as QAudio
 except ImportError as e:
     qt_multimedia_available = False
     qt_multimedia_errmsg = e.msg
@@ -63,18 +69,18 @@ else:
 
 def get_logarithmic_volume(player_value):
     """Return logarithmic scale volume to set slider position"""
-    return QtMultimedia.QAudio.convertVolume(
+    return QAudio.convertVolume(
         player_value,
-        QtMultimedia.QAudio.VolumeScale.LinearVolumeScale,
-        QtMultimedia.QAudio.VolumeScale.LogarithmicVolumeScale)
+        QAudio.VolumeScale.LinearVolumeScale,
+        QAudio.VolumeScale.LogarithmicVolumeScale)
 
 
 def get_linear_volume(slider_value):
     """Return linear scale volume from slider position"""
-    return QtMultimedia.QAudio.convertVolume(
+    return QAudio.convertVolume(
         slider_value,
-        QtMultimedia.QAudio.VolumeScale.LogarithmicVolumeScale,
-        QtMultimedia.QAudio.VolumeScale.LinearVolumeScale)
+        QAudio.VolumeScale.LogarithmicVolumeScale,
+        QAudio.VolumeScale.LinearVolumeScale)
 
 
 def get_text_width(font, text):
