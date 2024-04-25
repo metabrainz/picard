@@ -43,17 +43,7 @@ class UserProfileGroups():
     # Each item in "settings" is a tuple of the setting key, the display title, and a list of the names of the widgets to highlight
     SETTINGS_GROUPS['general'] = {
         'title': N_("General"),
-        'settings': [
-            SettingDesc('server_host', ['server_host']),
-            SettingDesc('server_port', ['server_port']),
-            SettingDesc('analyze_new_files', ['analyze_new_files']),
-            SettingDesc('cluster_new_files', ['cluster_new_files']),
-            SettingDesc('ignore_file_mbids', ['ignore_file_mbids']),
-            SettingDesc('check_for_plugin_updates', ['check_for_plugin_updates']),
-            SettingDesc('check_for_updates', ['check_for_updates']),
-            SettingDesc('update_check_days', ['update_check_days']),
-            SettingDesc('update_level', ['update_level']),
-        ],
+        'settings': [],
     }
 
     SETTINGS_GROUPS['metadata'] = {
@@ -269,3 +259,7 @@ class UserProfileGroups():
             str: Key
         """
         yield from cls.SETTINGS_GROUPS
+
+
+def register_profile_highlights(group, option, higlights):
+    UserProfileGroups.SETTINGS_GROUPS[group]['settings'].append(SettingDesc(option, higlights))
