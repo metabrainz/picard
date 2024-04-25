@@ -43,6 +43,7 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
 )
+from picard.profile import register_profile_highlights
 from picard.util import strxfrm
 
 from picard.ui.options import (
@@ -127,6 +128,20 @@ class InterfaceOptionsPage(OptionsPage):
             self.ui.ui_theme_container.hide()
 
         self.ui.allow_multi_dirs_selection.stateChanged.connect(self.multi_selection_warning)
+
+        register_profile_highlights('interface', 'toolbar_show_labels', ['toolbar_show_labels'])
+        register_profile_highlights('interface', 'show_menu_icons', ['show_menu_icons'])
+        register_profile_highlights('interface', 'ui_language', ['ui_language', 'label'])
+        register_profile_highlights('interface', 'ui_theme', ['ui_theme', 'label_theme'])
+        register_profile_highlights('interface', 'allow_multi_dirs_selection', ['allow_multi_dirs_selection'])
+        register_profile_highlights('interface', 'builtin_search', ['builtin_search'])
+        register_profile_highlights('interface', 'use_adv_search_syntax', ['use_adv_search_syntax'])
+        register_profile_highlights('interface', 'show_new_user_dialog', ['new_user_dialog'])
+        register_profile_highlights('interface', 'quit_confirmation', ['quit_confirmation'])
+        register_profile_highlights('interface', 'file_save_warning', ['file_save_warning'])
+        register_profile_highlights('interface', 'filebrowser_horizontal_autoscroll', ['filebrowser_horizontal_autoscroll'])
+        register_profile_highlights('interface', 'starting_directory', ['starting_directory'])
+        register_profile_highlights('interface', 'starting_directory_path', ['starting_directory_path'])
 
     def load(self):
         # Don't display the multi-selection warning when loading values.

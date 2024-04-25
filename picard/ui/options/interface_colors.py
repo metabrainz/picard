@@ -33,6 +33,7 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
+from picard.profile import register_profile_highlights
 
 from picard.ui.colors import interface_colors
 from picard.ui.options import (
@@ -106,6 +107,9 @@ class InterfaceColorsOptionsPage(OptionsPage):
         self.new_colors = {}
         self.colors_list = QtWidgets.QVBoxLayout()
         self.ui.colors.setLayout(self.colors_list)
+
+        register_profile_highlights('interface', 'interface_colors', ['colors'])
+        register_profile_highlights('interface', 'interface_colors_dark', ['colors'])
 
     def update_color_selectors(self):
         if self.colors_list:

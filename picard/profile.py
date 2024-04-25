@@ -68,40 +68,12 @@ class UserProfileGroups():
 
     SETTINGS_GROUPS['scripting'] = {
         'title': N_("Scripting"),
-        'settings': [
-            SettingDesc('enable_tagger_scripts', ['enable_tagger_scripts']),
-            SettingDesc('list_of_scripts', ['script_list']),
-        ],
+        'settings': [],
     }
 
     SETTINGS_GROUPS['interface'] = {
         'title': N_("User Interface"),
-        'settings': [
-            # Main User Interface Page
-            SettingDesc('toolbar_show_labels', ['toolbar_show_labels']),
-            SettingDesc('show_menu_icons', ['show_menu_icons']),
-            SettingDesc('ui_language', ['ui_language', 'label']),
-            SettingDesc('ui_theme', ['ui_theme', 'label_theme']),
-            SettingDesc('allow_multi_dirs_selection', ['allow_multi_dirs_selection']),
-            SettingDesc('builtin_search', ['builtin_search']),
-            SettingDesc('use_adv_search_syntax', ['use_adv_search_syntax']),
-            SettingDesc('show_new_user_dialog', ['new_user_dialog']),
-            SettingDesc('quit_confirmation', ['quit_confirmation']),
-            SettingDesc('file_save_warning', ['file_save_warning']),
-            SettingDesc('filebrowser_horizontal_autoscroll', ['filebrowser_horizontal_autoscroll']),
-            SettingDesc('starting_directory', ['starting_directory']),
-            SettingDesc('starting_directory_path', ['starting_directory_path']),
-
-            # User Interface Colors Page
-            SettingDesc('interface_colors', ['colors']),
-            SettingDesc('interface_colors_dark', ['colors']),
-
-            # User Interface Top Tags Page
-            SettingDesc('metadatabox_top_tags', ['top_tags_groupBox']),
-
-            # User Interface Action Toolbar Page
-            SettingDesc('toolbar_layout', ['toolbar_layout_list']),
-        ],
+        'settings': [],
     }
 
     SETTINGS_GROUPS['advanced'] = {

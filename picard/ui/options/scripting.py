@@ -39,6 +39,7 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
+from picard.profile import register_profile_highlights
 from picard.script import ScriptParser
 from picard.script.serializer import (
     ScriptImportExportError,
@@ -130,6 +131,9 @@ class ScriptingOptionsPage(OptionsPage):
         self.FILE_TYPE_PACKAGE = _("Picard tagging script package") + " (*.ptsp *.yaml)"
 
         self.ui.script_list.signal_reset_selected_item.connect(self.reset_selected_item)
+
+        register_profile_highlights('scripting', 'enable_tagger_scripts', ['enable_tagger_scripts'])
+        register_profile_highlights('scripting', 'list_of_scripts', ['script_list'])
 
     def show_scripting_documentation(self):
         ScriptingDocumentationDialog.show_instance(parent=self)
