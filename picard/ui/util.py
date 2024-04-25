@@ -28,7 +28,6 @@ from html import escape as html_escape
 
 from PySide6 import (
     QtCore,
-    QtGui,
     QtWidgets,
 )
 
@@ -158,7 +157,7 @@ class FileDialog(QtWidgets.QFileDialog):
         # The native dialog doesn't allow selecting >1 directory
         file_dialog.setOption(QtWidgets.QFileDialog.Option.DontUseNativeDialog)
         for view in file_dialog.findChildren((QtWidgets.QListView, QtWidgets.QTreeView)):
-            if isinstance(view.model(), QtGui.QFileSystemModel):
+            if isinstance(view.model(), QtWidgets.QFileSystemModel):
                 view.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
 
         # Allow access to all mounted drives in the sidebar

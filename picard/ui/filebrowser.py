@@ -88,7 +88,7 @@ class FileBrowser(QtWidgets.QTreeView):
         event.accept()
 
     def _set_model(self):
-        model = QtGui.QFileSystemModel()
+        model = QtWidgets.QFileSystemModel()
         self.setModel(model)
         model.layoutChanged.connect(self._layout_changed)
         model.setRootPath("")
