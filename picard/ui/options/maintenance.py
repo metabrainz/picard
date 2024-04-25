@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2021-2022 Bob Swift
+# Copyright (C) 2021-2022, 2024 Bob Swift
 # Copyright (C) 2021-2023 Philipp Wolfer
 # Copyright (C) 2021-2024 Laurent Monin
 #
@@ -85,23 +85,21 @@ class MaintenanceOptionsPage(OptionsPage):
         self.ui = Ui_MaintenanceOptionsPage()
         self.ui.setupUi(self)
         self.ui.description.setText(_(
-            "This allows you to remove unused option settings from the configuration INI file.\n\n"
             "Settings that are found in the configuration file that do not appear on any option "
-            "settings page will be listed below. If your configuration file does not contain any "
+            "settings page are listed below. If your configuration file does not contain any "
             "unused option settings, then the list will be empty and the removal checkbox will be "
             "disabled.\n\n"
             "Note that unused option settings could come from plugins that have been uninstalled, "
             "so please be careful to not remove settings that you may want to use later when "
             "the plugin is reinstalled. Options belonging to plugins that are installed but "
-            "currently disabled will not be listed for possible removal.\n\n"
-            "To remove one or more settings, first enable the removal by checking the \"Remove "
-            "selected options\" box. You can then select the settings to remove by checking the "
-            "box next to the setting. When you choose \"Make It So!\" to save your option "
+            "currently disabled are not listed for possible removal.\n\n"
+            "To remove one or more settings, select the settings that you want to remove by "
+            "checking the box next to the setting, and enable the removal by checking the \"Remove "
+            "selected options\" box. When you choose \"Make It So!\" to save your option "
             "settings, the selected items will be removed."
         ))
         self.ui.tableWidget.setHorizontalHeaderLabels([_("Option"), _("Value")])
         self.ui.select_all.stateChanged.connect(self.select_all_changed)
-        self.ui.enable_cleanup.stateChanged.connect(self.enable_cleanup_changed)
         self.ui.open_folder_button.clicked.connect(self.open_config_dir)
         self.ui.save_backup_button.clicked.connect(self.save_backup)
         self.ui.load_backup_button.clicked.connect(self.load_backup)
@@ -172,7 +170,7 @@ class MaintenanceOptionsPage(OptionsPage):
 
         self.ui.option_counts.setText(
             _("The configuration file currently contains %(totalcount)d option "
-              "settings, %(unusedcount)d which are unused.") % {
+              "settings (%(unusedcount)d unused).") % {
                 'totalcount': len(file_options),
                 'unusedcount': len(orphan_options),
             })
@@ -200,9 +198,7 @@ class MaintenanceOptionsPage(OptionsPage):
             self.ui.tableWidget.setCellWidget(row, 1, tableitem)
         self.ui.tableWidget.resizeColumnsToContents()
         self.ui.select_all.setCheckState(QtCore.Qt.CheckState.Unchecked)
-        if not len(orphan_options):
-            self.ui.select_all.setEnabled(False)
-        self.enable_cleanup_changed()
+        self._set_cleanup_state()
 
     def open_config_dir(self):
         config = get_config()
@@ -393,10 +389,11 @@ class MaintenanceOptionsPage(OptionsPage):
         value = config.setting.raw_value(key)
         return repr(value)
 
-    def enable_cleanup_changed(self):
-        state = self.ui.enable_cleanup.checkState() == QtCore.Qt.CheckState.Checked
+    def _set_cleanup_state(self):
+        state = self.ui.tableWidget.rowCount() > 0
         self.ui.select_all.setEnabled(state)
-        self.ui.tableWidget.setEnabled(state)
+        self.ui.enable_cleanup.setChecked(False)
+        self.ui.enable_cleanup.setEnabled(state)
 
 
 register_options_page(MaintenanceOptionsPage)

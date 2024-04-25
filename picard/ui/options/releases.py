@@ -77,6 +77,7 @@ class TipSlider(ClickableSlider):
         self.setSingleStep(self._step)
         self.setTickInterval(self._step)
         self.setPageStep(self._pagestep)
+        self.tagger = QtCore.QCoreApplication.instance()
 
     def showEvent(self, event):
         super().showEvent(event)
