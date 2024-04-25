@@ -87,10 +87,9 @@ class OptionsPage(QtWidgets.QWidget):
     def restore_defaults(self):
         config = get_config()
         old_options = {}
-        for name in self._registered_settings:
-            if not Option.exists('setting', name):
-                continue
-            default_value = Option.get_default('setting', name)
+        for option in self._registered_settings:
+            default_value = option.default
+            name = option.name
             current_value = config.setting[name]
             if current_value != default_value:
                 log.debug("Option %s %s: %r -> %r" % (self.NAME, name, current_value, default_value))
@@ -133,7 +132,10 @@ class OptionsPage(QtWidgets.QWidget):
     def register_setting(self, name, highlights=None):
         """Register a setting edited in the page, used to restore defaults
            and to highlight when profiles are used"""
-        self._registered_settings.append(name)
+        option = Option.get('setting', name)
+        if option is None:
+            raise Exception(f"Cannot register setting for non-existing option {name}")
+        self._registered_settings.append(option)
         if highlights is not None:
             page_name = self.PARENT if self.PARENT else self.NAME
             register_profile_highlights(page_name, name, tuple(highlights))
