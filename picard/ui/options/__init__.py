@@ -22,7 +22,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
 import re
 
 from PyQt6 import (
@@ -31,9 +30,13 @@ from PyQt6 import (
 )
 
 from picard import log
-from picard.config import get_config
+from picard.config import (
+    Option,
+    get_config,
+)
 from picard.i18n import gettext as _
 from picard.plugin import ExtensionPoint
+from picard.profile import register_profile_highlights
 
 
 class OptionsCheckError(Exception):
@@ -67,6 +70,8 @@ class OptionsPage(QtWidgets.QWidget):
             self.deleted = True
         self.destroyed.connect(on_destroyed)
 
+        self._registered_settings = []
+
     def set_dialog(self, dialog):
         self.dialog = dialog
 
@@ -80,17 +85,17 @@ class OptionsPage(QtWidgets.QWidget):
         pass
 
     def restore_defaults(self):
-        try:
-            options = self.options
-        except AttributeError:
-            return
         config = get_config()
         old_options = {}
-        for option in options:
-            if option.section == 'setting' and config.setting[option.name] != option.default:
-                log.debug("Option %s %s: %r -> %r" % (self.NAME, option.name, config.setting[option.name], option.default))
-                old_options[option.name] = config.setting[option.name]
-                config.setting[option.name] = option.default
+        for name in self._registered_settings:
+            if not Option.exists('setting', name):
+                continue
+            default_value = Option.get_default('setting', name)
+            current_value = config.setting[name]
+            if current_value != default_value:
+                log.debug("Option %s %s: %r -> %r" % (self.NAME, name, current_value, default_value))
+                old_options[name] = current_value
+                config.setting[name] = default_value
         self.load()
         # Restore the config values incase the user doesn't save after restoring defaults
         for key in old_options:
@@ -124,6 +129,14 @@ class OptionsPage(QtWidgets.QWidget):
                 regex_error.setText(e.info)
 
         regex_edit.textChanged.connect(live_checker)
+
+    def register_setting(self, name, highlights=None):
+        """Register a setting edited in the page, used to restore defaults
+           and to highlight when profiles are used"""
+        self._registered_settings.append(name)
+        if highlights is not None:
+            page_name = self.PARENT if self.PARENT else self.NAME
+            register_profile_highlights(page_name, name, tuple(highlights))
 
 
 _pages = ExtensionPoint(label='pages')

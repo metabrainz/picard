@@ -33,7 +33,6 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.profile import register_profile_highlights
 from picard.track import TagGenreFilter
 
 from picard.ui.options import (
@@ -111,14 +110,14 @@ class GenresOptionsPage(OptionsPage):
         self.fmt_clear = QTextBlockFormat()
         self.fmt_clear.clearBackground()
 
-        register_profile_highlights('metadata', 'use_genres', [])
-        register_profile_highlights('metadata', 'only_my_genres', ['only_my_genres'])
-        register_profile_highlights('metadata', 'artists_genres', ['artists_genres'])
-        register_profile_highlights('metadata', 'folksonomy_tags', ['folksonomy_tags'])
-        register_profile_highlights('metadata', 'min_genre_usage', ['min_genre_usage'])
-        register_profile_highlights('metadata', 'max_genres', ['max_genres'])
-        register_profile_highlights('metadata', 'join_genres', ['join_genres'])
-        register_profile_highlights('metadata', 'genres_filter', ['genres_filter'])
+        self.register_setting('use_genres', [])
+        self.register_setting('only_my_genres', ['only_my_genres'])
+        self.register_setting('artists_genres', ['artists_genres'])
+        self.register_setting('folksonomy_tags', ['folksonomy_tags'])
+        self.register_setting('min_genre_usage', ['min_genre_usage'])
+        self.register_setting('max_genres', ['max_genres'])
+        self.register_setting('join_genres', ['join_genres'])
+        self.register_setting('genres_filter', ['genres_filter'])
 
     def load(self):
         config = get_config()

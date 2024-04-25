@@ -23,7 +23,6 @@
 
 from picard.config import get_config
 from picard.i18n import N_
-from picard.profile import register_profile_highlights
 
 from picard.ui.options import (
     OptionsPage,
@@ -49,8 +48,8 @@ class TagsCompatibilityAACOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.aac_no_tags.toggled.connect(self.ui.remove_ape_from_aac.setEnabled)
 
-        register_profile_highlights('tags', 'aac_save_ape', ['aac_save_ape', 'aac_no_tags'])
-        register_profile_highlights('tags', 'remove_ape_from_aac', ['remove_ape_from_aac'])
+        self.register_setting('aac_save_ape', ['aac_save_ape', 'aac_no_tags'])
+        self.register_setting('remove_ape_from_aac', ['remove_ape_from_aac'])
 
     def load(self):
         config = get_config()

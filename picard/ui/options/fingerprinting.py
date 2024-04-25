@@ -77,6 +77,13 @@ class FingerprintingOptionsPage(OptionsPage):
         self.ui.acoustid_apikey_get.clicked.connect(self.acoustid_apikey_get)
         self.ui.acoustid_apikey.setValidator(ApiKeyValidator())
 
+        self.register_setting('fingerprinting_system')
+        self.register_setting('acoustid_fpcalc')
+        self.register_setting('acoustid_apikey')
+        self.register_setting('ignore_existing_acoustid_fingerprints')
+        self.register_setting('save_acoustid_fingerprints')
+        self.register_setting('fpcalc_threads')
+
     def load(self):
         config = get_config()
         if config.setting['fingerprinting_system'] == 'acoustid':

@@ -41,7 +41,6 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
 )
-from picard.profile import register_profile_highlights
 from picard.util.mbserver import is_official_server
 
 from picard.ui.options import (
@@ -73,15 +72,17 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.login_error.setStyleSheet(self.STYLESHEET_ERROR)
         self.ui.login_error.hide()
         self.update_login_logout()
-        register_profile_highlights('general', 'server_host', ['server_host'])
-        register_profile_highlights('general', 'server_port', ['server_port'])
-        register_profile_highlights('general', 'analyze_new_files', ['analyze_new_files'])
-        register_profile_highlights('general', 'cluster_new_files', ['cluster_new_files'])
-        register_profile_highlights('general', 'ignore_file_mbids', ['ignore_file_mbids'])
-        register_profile_highlights('general', 'check_for_plugin_updates', ['check_for_plugin_updates'])
-        register_profile_highlights('general', 'check_for_updates', ['check_for_updates'])
-        register_profile_highlights('general', 'update_check_days', ['update_check_days'])
-        register_profile_highlights('general', 'update_level', ['update_level'])
+
+        self.register_setting('server_host', ['server_host'])
+        self.register_setting('server_port', ['server_port'])
+        self.register_setting('analyze_new_files', ['analyze_new_files'])
+        self.register_setting('cluster_new_files', ['cluster_new_files'])
+        self.register_setting('ignore_file_mbids', ['ignore_file_mbids'])
+        self.register_setting('check_for_plugin_updates', ['check_for_plugin_updates'])
+        self.register_setting('check_for_updates', ['check_for_updates'])
+        self.register_setting('update_check_days', ['update_check_days'])
+        self.register_setting('update_level', ['update_level'])
+        self.register_setting('use_server_for_submission')
 
     def load(self):
         config = get_config()

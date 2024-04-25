@@ -22,7 +22,6 @@
 
 from picard.config import get_config
 from picard.i18n import N_
-from picard.profile import register_profile_highlights
 
 from picard.ui.options import (
     OptionsPage,
@@ -47,7 +46,7 @@ class InterfaceTopTagsOptionsPage(OptionsPage):
         self.ui = Ui_InterfaceTopTagsOptionsPage()
         self.ui.setupUi(self)
 
-        register_profile_highlights('interface', 'metadatabox_top_tags', ['top_tags_groupBox'])
+        self.register_setting('metadatabox_top_tags', ['top_tags_groupBox'])
 
     def load(self):
         config = get_config()

@@ -46,7 +46,6 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
 )
-from picard.profile import register_profile_highlights
 
 from picard.ui import PicardDialog
 from picard.ui.moveable_list_view import MoveableListView
@@ -97,18 +96,18 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.translate_artist_names.stateChanged.connect(self.set_enabled_states)
         self.ui.translate_artist_names_script_exception.stateChanged.connect(self.set_enabled_states)
 
-        register_profile_highlights('metadata', 'translate_artist_names', ['translate_artist_names'])
-        register_profile_highlights('metadata', 'artist_locales', ['selected_locales'])
-        register_profile_highlights('metadata', 'translate_artist_names_script_exception', ['translate_artist_names_script_exception'])
-        register_profile_highlights('metadata', 'script_exceptions', ['selected_scripts'])
-        register_profile_highlights('metadata', 'standardize_artists', ['standardize_artists'])
-        register_profile_highlights('metadata', 'standardize_instruments', ['standardize_instruments'])
-        register_profile_highlights('metadata', 'convert_punctuation', ['convert_punctuation'])
-        register_profile_highlights('metadata', 'release_ars', ['release_ars'])
-        register_profile_highlights('metadata', 'track_ars', ['track_ars'])
-        register_profile_highlights('metadata', 'guess_tracknumber_and_title', ['guess_tracknumber_and_title'])
-        register_profile_highlights('metadata', 'va_name', ['va_name'])
-        register_profile_highlights('metadata', 'nat_name', ['nat_name'])
+        self.register_setting('translate_artist_names', ['translate_artist_names'])
+        self.register_setting('artist_locales', ['selected_locales'])
+        self.register_setting('translate_artist_names_script_exception', ['translate_artist_names_script_exception'])
+        self.register_setting('script_exceptions', ['selected_scripts'])
+        self.register_setting('standardize_artists', ['standardize_artists'])
+        self.register_setting('standardize_instruments', ['standardize_instruments'])
+        self.register_setting('convert_punctuation', ['convert_punctuation'])
+        self.register_setting('release_ars', ['release_ars'])
+        self.register_setting('track_ars', ['track_ars'])
+        self.register_setting('guess_tracknumber_and_title', ['guess_tracknumber_and_title'])
+        self.register_setting('va_name', ['va_name'])
+        self.register_setting('nat_name', ['nat_name'])
 
     def load(self):
         config = get_config()

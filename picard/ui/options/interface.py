@@ -43,7 +43,6 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
 )
-from picard.profile import register_profile_highlights
 from picard.util import strxfrm
 
 from picard.ui.options import (
@@ -126,19 +125,19 @@ class InterfaceOptionsPage(OptionsPage):
 
         self.ui.allow_multi_dirs_selection.stateChanged.connect(self.multi_selection_warning)
 
-        register_profile_highlights('interface', 'toolbar_show_labels', ['toolbar_show_labels'])
-        register_profile_highlights('interface', 'show_menu_icons', ['show_menu_icons'])
-        register_profile_highlights('interface', 'ui_language', ['ui_language', 'label'])
-        register_profile_highlights('interface', 'ui_theme', ['ui_theme', 'label_theme'])
-        register_profile_highlights('interface', 'allow_multi_dirs_selection', ['allow_multi_dirs_selection'])
-        register_profile_highlights('interface', 'builtin_search', ['builtin_search'])
-        register_profile_highlights('interface', 'use_adv_search_syntax', ['use_adv_search_syntax'])
-        register_profile_highlights('interface', 'show_new_user_dialog', ['new_user_dialog'])
-        register_profile_highlights('interface', 'quit_confirmation', ['quit_confirmation'])
-        register_profile_highlights('interface', 'file_save_warning', ['file_save_warning'])
-        register_profile_highlights('interface', 'filebrowser_horizontal_autoscroll', ['filebrowser_horizontal_autoscroll'])
-        register_profile_highlights('interface', 'starting_directory', ['starting_directory'])
-        register_profile_highlights('interface', 'starting_directory_path', ['starting_directory_path'])
+        self.register_setting('toolbar_show_labels', ['toolbar_show_labels'])
+        self.register_setting('show_menu_icons', ['show_menu_icons'])
+        self.register_setting('ui_language', ['ui_language', 'label'])
+        self.register_setting('ui_theme', ['ui_theme', 'label_theme'])
+        self.register_setting('allow_multi_dirs_selection', ['allow_multi_dirs_selection'])
+        self.register_setting('builtin_search', ['builtin_search'])
+        self.register_setting('use_adv_search_syntax', ['use_adv_search_syntax'])
+        self.register_setting('show_new_user_dialog', ['new_user_dialog'])
+        self.register_setting('quit_confirmation', ['quit_confirmation'])
+        self.register_setting('file_save_warning', ['file_save_warning'])
+        self.register_setting('filebrowser_horizontal_autoscroll', ['filebrowser_horizontal_autoscroll'])
+        self.register_setting('starting_directory', ['starting_directory'])
+        self.register_setting('starting_directory_path', ['starting_directory_path'])
 
     def load(self):
         # Don't display the multi-selection warning when loading values.

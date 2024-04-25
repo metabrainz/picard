@@ -41,7 +41,6 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.profile import register_profile_highlights
 from picard.util import icontheme
 
 from picard.ui import PicardDialog
@@ -141,7 +140,7 @@ class InterfaceToolbarOptionsPage(OptionsPage):
                                           self.ui.down_button, self.update_action_buttons)
         self.update_buttons = self.move_view.update_buttons
 
-        register_profile_highlights('interface', 'toolbar_layout', ['toolbar_layout_list'])
+        self.register_setting('toolbar_layout', ['toolbar_layout_list'])
 
     def load(self):
         self.populate_action_list()

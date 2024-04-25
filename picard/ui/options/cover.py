@@ -35,7 +35,6 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.profile import register_profile_highlights
 
 from picard.ui.checkbox_list_item import CheckboxListItem
 from picard.ui.moveable_list_view import MoveableListView
@@ -67,14 +66,14 @@ class CoverOptionsPage(OptionsPage):
         self.move_view = MoveableListView(self.ui.ca_providers_list, self.ui.up_button,
                                           self.ui.down_button)
 
-        register_profile_highlights('cover', 'save_images_to_tags', ['save_images_to_tags'])
-        register_profile_highlights('cover', 'embed_only_one_front_image', ['cb_embed_front_only'])
-        register_profile_highlights('cover', 'save_images_to_files', ['save_images_to_files'])
-        register_profile_highlights('cover', 'cover_image_filename', ['cover_image_filename'])
-        register_profile_highlights('cover', 'save_images_overwrite', ['save_images_overwrite'])
-        register_profile_highlights('cover', 'save_only_one_front_image', ['save_only_one_front_image'])
-        register_profile_highlights('cover', 'image_type_as_filename', ['image_type_as_filename'])
-        register_profile_highlights('cover', 'ca_providers', ['ca_providers_list'])
+        self.register_setting('save_images_to_tags', ['save_images_to_tags'])
+        self.register_setting('embed_only_one_front_image', ['cb_embed_front_only'])
+        self.register_setting('save_images_to_files', ['save_images_to_files'])
+        self.register_setting('cover_image_filename', ['cover_image_filename'])
+        self.register_setting('save_images_overwrite', ['save_images_overwrite'])
+        self.register_setting('save_only_one_front_image', ['save_only_one_front_image'])
+        self.register_setting('image_type_as_filename', ['image_type_as_filename'])
+        self.register_setting('ca_providers', ['ca_providers_list'])
 
     def restore_defaults(self):
         # Remove previous entries

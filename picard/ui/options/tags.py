@@ -30,7 +30,6 @@
 
 from picard.config import get_config
 from picard.i18n import N_
-from picard.profile import register_profile_highlights
 
 from picard.ui.options import (
     OptionsPage,
@@ -53,14 +52,14 @@ class TagsOptionsPage(OptionsPage):
         self.ui = Ui_TagsOptionsPage()
         self.ui.setupUi(self)
 
-        register_profile_highlights('tags', 'dont_write_tags', ['write_tags'])
-        register_profile_highlights('tags', 'preserve_timestamps', ['preserve_timestamps'])
-        register_profile_highlights('tags', 'clear_existing_tags', ['clear_existing_tags'])
-        register_profile_highlights('tags', 'preserve_images', ['preserve_images'])
-        register_profile_highlights('tags', 'remove_id3_from_flac', ['remove_id3_from_flac'])
-        register_profile_highlights('tags', 'remove_ape_from_mp3', ['remove_ape_from_mp3'])
-        register_profile_highlights('tags', 'fix_missing_seekpoints_flac', ['fix_missing_seekpoints_flac'])
-        register_profile_highlights('tags', 'preserved_tags', ['preserved_tags'])
+        self.register_setting('dont_write_tags', ['write_tags'])
+        self.register_setting('preserve_timestamps', ['preserve_timestamps'])
+        self.register_setting('clear_existing_tags', ['clear_existing_tags'])
+        self.register_setting('preserve_images', ['preserve_images'])
+        self.register_setting('remove_id3_from_flac', ['remove_id3_from_flac'])
+        self.register_setting('remove_ape_from_mp3', ['remove_ape_from_mp3'])
+        self.register_setting('fix_missing_seekpoints_flac', ['fix_missing_seekpoints_flac'])
+        self.register_setting('preserved_tags', ['preserved_tags'])
 
     def load(self):
         config = get_config()

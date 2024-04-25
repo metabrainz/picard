@@ -60,6 +60,8 @@ class CDLookupOptionsPage(OptionsPage):
             self._device_list = get_cdrom_drives()
             self.ui.cd_lookup_device.addItems(self._device_list)
 
+        self.register_setting('cd_lookup_device')
+
     def load(self):
         config = get_config()
         device = config.setting['cd_lookup_device']

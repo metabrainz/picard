@@ -43,7 +43,6 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.profile import register_profile_highlights
 from picard.script import ScriptParser
 
 from picard.ui.options import (
@@ -115,13 +114,13 @@ class RenamingOptionsPage(OptionsPage):
 
         self.current_row = -1
 
-        register_profile_highlights('filerenaming', 'move_files', ['move_files'])
-        register_profile_highlights('filerenaming', 'move_files_to', ['move_files_to'])
-        register_profile_highlights('filerenaming', 'move_additional_files', ['move_additional_files'])
-        register_profile_highlights('filerenaming', 'move_additional_files_pattern', ['move_additional_files_pattern'])
-        register_profile_highlights('filerenaming', 'delete_empty_dirs', ['delete_empty_dirs'])
-        register_profile_highlights('filerenaming', 'rename_files', ['rename_files'])
-        register_profile_highlights('filerenaming', 'selected_file_naming_script_id', ['naming_script_selector'])
+        self.register_setting('move_files', ['move_files'])
+        self.register_setting('move_files_to', ['move_files_to'])
+        self.register_setting('move_additional_files', ['move_additional_files'])
+        self.register_setting('move_additional_files_pattern', ['move_additional_files_pattern'])
+        self.register_setting('delete_empty_dirs', ['delete_empty_dirs'])
+        self.register_setting('rename_files', ['rename_files'])
+        self.register_setting('selected_file_naming_script_id', ['naming_script_selector'])
 
     def update_selector_from_editor(self):
         """Update the script selector combo box from the script editor page.

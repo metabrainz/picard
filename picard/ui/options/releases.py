@@ -47,7 +47,6 @@ from picard.i18n import (
     gettext_countries,
     pgettext_attributes,
 )
-from picard.profile import register_profile_highlights
 from picard.util import strxfrm
 
 from picard.ui.options import (
@@ -217,9 +216,9 @@ class ReleasesOptionsPage(OptionsPage):
         self.ui.format_list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
         self.ui.preferred_format_list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
 
-        register_profile_highlights('metadata', 'release_type_scores', ['type_group'])
-        register_profile_highlights('metadata', 'preferred_release_countries', ['country_group'])
-        register_profile_highlights('metadata', 'preferred_release_formats', ['format_group'])
+        self.register_setting('release_type_scores', ['type_group'])
+        self.register_setting('preferred_release_countries', ['country_group'])
+        self.register_setting('preferred_release_formats', ['format_group'])
 
     def restore_defaults(self):
         # Clear lists
