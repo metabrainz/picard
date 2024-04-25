@@ -251,7 +251,8 @@ class SearchDialog(TableBasedDialog):
 
     def network_error(self, reply, error):
         params = {
-            'url': reply.request().url().toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo),
+            'url': reply.request().url().toString(
+                QtCore.QUrl.FormattingOptions(QtCore.QUrl.RemoveUserInfo)),
             'error': reply.errorString(),
             'qtcode': error,
             'statuscode': reply.attribute(

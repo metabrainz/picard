@@ -510,12 +510,12 @@ class CoverArtBox(QtWidgets.QGroupBox):
                 pass
         if url_query.hasQueryItem("imgurl"):
             # This may be a google images result, try to get the URL which is encoded in the query
-            url = QtCore.QUrl(url_query.queryItemValue("imgurl", QtCore.QUrl.ComponentFormattingOption.FullyDecoded))
+            url = QtCore.QUrl(url_query.queryItemValue("imgurl", QtCore.QUrl.FormattingOptions(QtCore.QUrl.FullyDecoded)))
             log.debug('Possible Google images result, trying to fetch imgurl=%s', url.toString())
             self.fetch_remote_image(url)
         elif url_query.hasQueryItem("mediaurl"):
             # Bing uses mediaurl
-            url = QtCore.QUrl(url_query.queryItemValue("mediaurl", QtCore.QUrl.ComponentFormattingOption.FullyDecoded))
+            url = QtCore.QUrl(url_query.queryItemValue("mediaurl", QtCore.QUrl.FormattingOptions(QtCore.QUrl.FullyDecoded)))
             log.debug('Possible Bing images result, trying to fetch imgurl=%s', url.toString())
             self.fetch_remote_image(url)
         else:

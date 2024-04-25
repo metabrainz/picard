@@ -558,7 +558,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         new_paths = []
         tagger = QtCore.QCoreApplication.instance()
         for url in urls:
-            log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo))
+            log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.FormattingOptions(QtCore.QUrl.RemoveUserInfo)))
             if url.scheme() == 'file' or not url.scheme():
                 filename = normpath(url.toLocalFile().rstrip('\0'))
                 file = tagger.files.get(filename)

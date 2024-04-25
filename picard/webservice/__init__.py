@@ -378,7 +378,9 @@ class WebService(QtCore.QObject):
 
     @staticmethod
     def display_url(url):
-        return url.toDisplayString(QUrl.UrlFormattingOption.RemoveUserInfo | QUrl.ComponentFormattingOption.EncodeSpaces)
+        return url.toDisplayString(
+            QUrl.FormattingOptions(QUrl.RemoveUserInfo | QUrl.EncodeSpaces)
+        )
 
     def _init_queues(self):
         self._active_requests = {}
@@ -463,8 +465,9 @@ class WebService(QtCore.QObject):
             that they are port 80 - in absence of a URL normalization function in QUrl or ability to use qHash
             from QT 4.7
         """
+        opt = QUrl.FormattingOptions(QUrl.RemovePort)
         return leftUrl.port(80) == rightUrl.port(80) and \
-            leftUrl.toString(QUrl.UrlFormattingOption.RemovePort) == rightUrl.toString(QUrl.UrlFormattingOption.RemovePort)
+            leftUrl.toString(opt) == rightUrl.toString(opt)
 
     def _handle_redirect(self, reply, request, redirect):
         error = int(reply.error())
