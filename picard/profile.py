@@ -48,80 +48,12 @@ class UserProfileGroups():
 
     SETTINGS_GROUPS['metadata'] = {
         'title': N_("Metadata"),
-        'settings': [
-            # Main Metadata Page
-            SettingDesc('translate_artist_names', ['translate_artist_names']),
-            SettingDesc('artist_locales', ['selected_locales']),
-            SettingDesc('translate_artist_names_script_exception', ['translate_artist_names_script_exception']),
-            SettingDesc('script_exceptions', ['selected_scripts']),
-            SettingDesc('standardize_artists', ['standardize_artists']),
-            SettingDesc('standardize_instruments', ['standardize_instruments']),
-            SettingDesc('convert_punctuation', ['convert_punctuation']),
-            SettingDesc('release_ars', ['release_ars']),
-            SettingDesc('track_ars', ['track_ars']),
-            SettingDesc('guess_tracknumber_and_title', ['guess_tracknumber_and_title']),
-            SettingDesc('va_name', ['va_name']),
-            SettingDesc('nat_name', ['nat_name']),
-
-            # Preferred Releases Page
-            SettingDesc('release_type_scores', ['type_group']),
-            SettingDesc('preferred_release_countries', ['country_group']),
-            SettingDesc('preferred_release_formats', ['format_group']),
-
-            # Genres Page
-            SettingDesc('use_genres', []),  # No highlight specified because the 'use_genres'
-                                            # object is a QGroupBox and it highlights all sub
-                                            # options, even if the sub options are not selected.
-            SettingDesc('only_my_genres', ['only_my_genres']),
-            SettingDesc('artists_genres', ['artists_genres']),
-            SettingDesc('folksonomy_tags', ['folksonomy_tags']),
-            SettingDesc('min_genre_usage', ['min_genre_usage']),
-            SettingDesc('max_genres', ['max_genres']),
-            SettingDesc('join_genres', ['join_genres']),
-            SettingDesc('genres_filter', ['genres_filter']),
-
-            # Ratings Page
-            SettingDesc('enable_ratings', []),  # No highlight specified because the 'enable_ratings'
-                                                # object is a QGroupBox and it highlights all sub options,
-                                                # even if the sub options are not selected.
-            SettingDesc('rating_user_email', ['rating_user_email']),
-            SettingDesc('submit_ratings', ['submit_ratings']),
-        ],
+        'settings': [],
     }
 
     SETTINGS_GROUPS['tags'] = {
         'title': N_("Tags"),
-        'settings': [
-            # Main Tags Page
-            SettingDesc('dont_write_tags', ['write_tags']),
-            SettingDesc('preserve_timestamps', ['preserve_timestamps']),
-            SettingDesc('clear_existing_tags', ['clear_existing_tags']),
-            SettingDesc('preserve_images', ['preserve_images']),
-            SettingDesc('remove_id3_from_flac', ['remove_id3_from_flac']),
-            SettingDesc('remove_ape_from_mp3', ['remove_ape_from_mp3']),
-            SettingDesc('fix_missing_seekpoints_flac', ['fix_missing_seekpoints_flac']),
-            SettingDesc('preserved_tags', ['preserved_tags']),
-
-            # ID3 Tags Page
-            SettingDesc('write_id3v23', ['write_id3v23', 'write_id3v24']),
-            SettingDesc('id3v2_encoding', ['enc_utf8', 'enc_utf16', 'enc_iso88591']),
-            SettingDesc('id3v23_join_with', ['id3v23_join_with']),
-            SettingDesc('itunes_compatible_grouping', ['itunes_compatible_grouping']),
-            SettingDesc('write_id3v1', ['write_id3v1']),
-
-            # AAC Tags Page
-            SettingDesc('aac_save_ape', ['aac_save_ape', 'aac_no_tags']),
-            SettingDesc('remove_ape_from_aac', ['remove_ape_from_aac']),
-
-            # AC3 Tags Page
-            SettingDesc('ac3_save_ape', ['ac3_save_ape', 'ac3_no_tags']),
-            SettingDesc('remove_ape_from_ac3', ['remove_ape_from_ac3']),
-
-            # WAVE Tags Page
-            SettingDesc('write_wave_riff_info', ['write_wave_riff_info']),
-            SettingDesc('remove_wave_riff_info', ['remove_wave_riff_info']),
-            SettingDesc('wave_riff_info_encoding', ['wave_riff_info_enc_cp1252', 'wave_riff_info_enc_utf8']),
-        ],
+        'settings': [],
     }
 
     SETTINGS_GROUPS['cover'] = {

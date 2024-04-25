@@ -25,6 +25,7 @@ from functools import partial
 
 from picard.config import get_config
 from picard.i18n import N_
+from picard.profile import register_profile_highlights
 
 from picard.ui.options import (
     OptionsPage,
@@ -53,6 +54,12 @@ class TagsCompatibilityID3OptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.write_id3v23.clicked.connect(self.update_encodings)
         self.ui.write_id3v24.clicked.connect(partial(self.update_encodings, force_utf8=True))
+
+        register_profile_highlights('tags', 'write_id3v23', ['write_id3v23', 'write_id3v24'])
+        register_profile_highlights('tags', 'id3v2_encoding', ['enc_utf8', 'enc_utf16', 'enc_iso88591'])
+        register_profile_highlights('tags', 'id3v23_join_with', ['id3v23_join_with'])
+        register_profile_highlights('tags', 'itunes_compatible_grouping', ['itunes_compatible_grouping'])
+        register_profile_highlights('tags', 'write_id3v1', ['write_id3v1'])
 
     def load(self):
         config = get_config()

@@ -23,6 +23,7 @@
 
 from picard.config import get_config
 from picard.i18n import N_
+from picard.profile import register_profile_highlights
 
 from picard.ui.options import (
     OptionsPage,
@@ -50,6 +51,9 @@ class TagsCompatibilityAC3OptionsPage(OptionsPage):
         self.ui = Ui_TagsCompatibilityOptionsPage()
         self.ui.setupUi(self)
         self.ui.ac3_no_tags.toggled.connect(self.ui.remove_ape_from_ac3.setEnabled)
+
+        register_profile_highlights('tags', 'ac3_save_ape', ['ac3_save_ape', 'ac3_no_tags'])
+        register_profile_highlights('tags', 'remove_ape_from_ac3', ['remove_ape_from_ac3'])
 
     def load(self):
         config = get_config()

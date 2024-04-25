@@ -23,6 +23,7 @@
 
 from picard.config import get_config
 from picard.i18n import N_
+from picard.profile import register_profile_highlights
 
 from picard.ui.options import (
     OptionsPage,
@@ -47,6 +48,10 @@ class RatingsOptionsPage(OptionsPage):
         super().__init__(parent)
         self.ui = Ui_RatingsOptionsPage()
         self.ui.setupUi(self)
+
+        register_profile_highlights('metadata', 'enable_ratings', [])
+        register_profile_highlights('metadata', 'rating_user_email', ['rating_user_email'])
+        register_profile_highlights('metadata', 'submit_ratings', ['submit_ratings'])
 
     def load(self):
         config = get_config()

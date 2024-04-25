@@ -24,6 +24,7 @@
 from picard.config import get_config
 from picard.formats.wav import WAVFile
 from picard.i18n import N_
+from picard.profile import register_profile_highlights
 
 from picard.ui.options import (
     OptionsPage,
@@ -50,6 +51,10 @@ class TagsCompatibilityWaveOptionsPage(OptionsPage):
         super().__init__(parent)
         self.ui = Ui_TagsCompatibilityOptionsPage()
         self.ui.setupUi(self)
+
+        register_profile_highlights('tags', 'write_wave_riff_info', ['write_wave_riff_info'])
+        register_profile_highlights('tags', 'remove_wave_riff_info', ['remove_wave_riff_info'])
+        register_profile_highlights('tags', 'wave_riff_info_encoding', ['wave_riff_info_enc_cp1252', 'wave_riff_info_enc_utf8'])
 
     def load(self):
         config = get_config()
