@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2019-2021 Laurent Monin
-# Copyright (C) 2019-2023 Philipp Wolfer
+# Copyright (C) 2019-2024 Philipp Wolfer
 # Copyright (C) 2021 Bob Swift
 # Copyright (C) 2021 Gabriel Ferreira
 #
@@ -60,6 +60,9 @@ from picard.config_upgrade import (
     upgrade_to_v2_6_0beta2,
     upgrade_to_v2_6_0beta3,
     upgrade_to_v2_6_0dev1,
+    upgrade_to_v2_7_0dev3,
+    upgrade_to_v2_7_0dev4,
+    upgrade_to_v2_7_0dev5,
     upgrade_to_v2_8_0dev2,
     upgrade_to_v3_0_0dev3,
 )
@@ -69,6 +72,8 @@ from picard.const import (
 )
 from picard.util import unique_numbered_title
 from picard.version import Version
+
+from picard.ui.theme import UiTheme
 
 
 def _upgrade_hook_ok_1_2_3_dev_1(config):
@@ -423,13 +428,76 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertTrue(self.config.setting['save_only_one_front_image'])
 
     def test_upgrade_to_v2_6_0beta3(self):
-        from picard.ui.theme import UiTheme
+        # Legacy setting
         BoolOption('setting', 'use_system_theme', False)
         self.config.setting['use_system_theme'] = True
+        del Option.registry['setting', 'use_system_theme']
+        # New setting
+        TextOption('setting', 'ui_theme', str(UiTheme.DEFAULT))
         upgrade_to_v2_6_0beta3(self.config)
         self.assertNotIn('use_system_theme', self.config.setting)
         self.assertIn('ui_theme', self.config.setting)
         self.assertEqual(str(UiTheme.SYSTEM), self.config.setting['ui_theme'])
+
+    def test_upgrade_to_v2_7_0dev3(self):
+        # Legacy settings
+        ListOption('setting', 'file_naming_scripts', [])
+        self.config.setting['file_naming_scripts'] = [
+            '{"id": "766bb2ce-5170-45f1-900c-02e7f9bd41cb", "title": "Script 1", "script": "$noop(1)"}',
+            '{"id": "ab0abb63-797c-4a20-95a8-df1b9109f883", "title": "Script 2", "script": "$noop(2)"}',
+        ]
+        TextOption('setting', 'file_naming_format', DEFAULT_FILE_NAMING_FORMAT)
+        self.config.setting['file_naming_format'] = "%title%"
+        del Option.registry[('setting', 'file_naming_scripts')]
+        del Option.registry[('setting', 'file_naming_format')]
+        # New settings
+        Option('setting', 'file_renaming_scripts', {})
+        TextOption('setting', 'selected_file_naming_script_id', '')
+        upgrade_to_v2_7_0dev3(self.config)
+        new_scripts = self.config.setting['file_renaming_scripts']
+        selected_script_id = self.config.setting['selected_file_naming_script_id']
+        self.assertEqual(3, len(new_scripts))
+        self.assertIn(selected_script_id, new_scripts)
+        script1 = new_scripts['766bb2ce-5170-45f1-900c-02e7f9bd41cb']
+        self.assertEqual('Script 1', script1['title'])
+        self.assertEqual('$noop(1)', script1['script'])
+        script2 = new_scripts['ab0abb63-797c-4a20-95a8-df1b9109f883']
+        self.assertEqual('Script 2', script2['title'])
+        self.assertEqual('$noop(2)', script2['script'])
+        default_script = new_scripts[selected_script_id]
+        self.assertEqual('Primary file naming script', default_script['title'])
+        self.assertEqual('%title%', default_script['script'])
+
+    def test_upgrade_to_v2_7_0dev4(self):
+        # Legacy settings
+        TextOption('setting', 'artist_script_exception', '')
+        TextOption('setting', 'artist_locale', '')
+        self.config.setting['artist_script_exception'] = 'LATIN'
+        self.config.setting['artist_locale'] = 'en'
+        del Option.registry[('setting', 'artist_script_exception')]
+        del Option.registry[('setting', 'artist_locale')]
+        # New settings
+        ListOption('setting', 'artist_script_exceptions', [])
+        ListOption('setting', 'artist_locales', ['en'])
+        upgrade_to_v2_7_0dev4(self.config)
+        self.assertEqual(['LATIN'], self.config.setting['artist_script_exceptions'])
+        self.assertEqual(['en'], self.config.setting['artist_locales'])
+
+    def test_upgrade_to_v2_7_0dev5(self):
+        # Legacy settings
+        ListOption('setting', 'artist_script_exceptions', [])
+        IntOption('setting', 'artist_script_exception_weighting', 0)
+        self.config.setting['artist_script_exceptions'] = ['LATIN', 'HEBREW']
+        self.config.setting['artist_script_exception_weighting'] = 20
+        del Option.registry[('setting', 'artist_script_exceptions')]
+        del Option.registry[('setting', 'artist_script_exception_weighting')]
+        # New settings
+        ListOption('setting', 'script_exceptions', [])
+        upgrade_to_v2_7_0dev5(self.config)
+        self.assertEqual(self.config.setting['script_exceptions'], [
+            ('LATIN', 20),
+            ('HEBREW', 20),
+        ])
 
     def test_upgrade_to_v2_8_0dev2(self):
         ListOption('setting', 'toolbar_layout', [])

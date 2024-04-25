@@ -5,7 +5,7 @@
 # Copyright (C) 2013-2014 Michael Wiencek
 # Copyright (C) 2013-2016, 2018-2024 Laurent Monin
 # Copyright (C) 2014, 2017 Lukáš Lalinský
-# Copyright (C) 2014, 2018-2023 Philipp Wolfer
+# Copyright (C) 2014, 2018-2024 Philipp Wolfer
 # Copyright (C) 2015 Ohm Patel
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2017 Sambhav Kothari
@@ -34,7 +34,10 @@ from inspect import (
 import re
 import sys
 
-from PyQt6 import QtWidgets
+from PyQt6 import (
+    QtCore,
+    QtWidgets,
+)
 
 from picard import (
     PICARD_VERSION,
@@ -43,8 +46,6 @@ from picard import (
 from picard.config import (
     BoolOption,
     IntOption,
-    ListOption,
-    Option,
     TextOption,
 )
 from picard.const import (
@@ -379,8 +380,7 @@ def upgrade_to_v2_6_0beta3(config):
     """Replace use_system_theme with ui_theme options"""
     from picard.ui.theme import UiTheme
     _s = config.setting
-    TextOption('setting', 'ui_theme', str(UiTheme.DEFAULT))
-    if _s['use_system_theme']:
+    if _s.value('use_system_theme', BoolOption):
         _s['ui_theme'] = str(UiTheme.SYSTEM)
     _s.remove('use_system_theme')
 
@@ -392,11 +392,10 @@ def upgrade_to_v2_7_0dev2(config):
         _p = config.persist
         splitter_dict = {}
         for (old_splitter_key, new_splitter_key) in key_map:
-            if _p.__contains__(old_splitter_key):
-                if _p[old_splitter_key] is not None:
-                    splitter_dict[new_splitter_key] = bytearray(_p[old_splitter_key])
+            if old_splitter_key in _p:
+                if v := _p.raw_value(old_splitter_key, qtype=QtCore.QByteArray):
+                    splitter_dict[new_splitter_key] = v
                 _p.remove(old_splitter_key)
-        Option('persist', new_persist_key, {})
         _p[new_persist_key] = splitter_dict
 
     # MainWindow splitters
@@ -436,12 +435,8 @@ def upgrade_to_v2_7_0dev3(config):
         FileNamingScript,
         ScriptImportError,
     )
-    Option('setting', 'file_renaming_scripts', {})
-    ListOption('setting', 'file_naming_scripts', [])
-    TextOption('setting', 'file_naming_format', DEFAULT_FILE_NAMING_FORMAT)
-    TextOption('setting', 'selected_file_naming_script_id', '')
     scripts = {}
-    for item in config.setting['file_naming_scripts']:
+    for item in config.setting.raw_value('file_naming_scripts') or []:
         try:
             script_item = FileNamingScript().create_from_yaml(item, create_new_id=False)
             scripts[script_item['id']] = script_item.to_dict()
@@ -450,7 +445,7 @@ def upgrade_to_v2_7_0dev3(config):
     script_list = set(scripts.keys()) | set(map(lambda item: item['id'], get_file_naming_script_presets()))
     if config.setting['selected_file_naming_script_id'] not in script_list:
         script_item = FileNamingScript(
-            script=config.setting['file_naming_format'],
+            script=config.setting.value('file_naming_format', TextOption),
             title=_("Primary file naming script"),
             readonly=False,
             deletable=True,
@@ -465,22 +460,22 @@ def upgrade_to_v2_7_0dev3(config):
 def upgrade_to_v2_7_0dev4(config):
     """Replace artist_script_exception with artist_script_exceptions"""
     _s = config.setting
-    ListOption('setting', 'artist_script_exceptions', [])
-    if _s['artist_script_exception']:
-        _s['artist_script_exceptions'] = [_s['artist_script_exception']]
+    if script := _s.value('artist_script_exception', TextOption):
+        _s['artist_script_exceptions'] = [script]
     _s.remove('artist_script_exception')
-    ListOption('setting', 'artist_locales', ['en'])
-    if _s['artist_locale']:
-        _s['artist_locales'] = [_s['artist_locale']]
+    if locale := _s.value('artist_locale', TextOption):
+        _s['artist_locales'] = [locale]
     _s.remove('artist_locale')
 
 
 def upgrade_to_v2_7_0dev5(config):
     """Replace artist_script_exceptions with script_exceptions and remove artist_script_exception_weighting"""
     _s = config.setting
-    ListOption('setting', 'script_exceptions', [])
-    weighting = _s['artist_script_exception_weighting'] or 0
-    artist_script_exceptions = _s['artist_script_exceptions'] or []
+    weighting = _s.value('artist_script_exception_weighting', IntOption) or 0
+    if 'artist_script_exceptions' in _s:
+        artist_script_exceptions = _s.raw_value('artist_script_exceptions') or []
+    else:
+        artist_script_exceptions = []
     _s['script_exceptions'] = [(script_exception, weighting) for script_exception in artist_script_exceptions]
     _s.remove('artist_script_exceptions')
     _s.remove('artist_script_exception_weighting')
