@@ -82,8 +82,7 @@ class UserProfileGroups():
         try:
             return cls._settings_groups[page.NAME]
         except (AttributeError, KeyError):
-            pass
-        return None
+            return None
 
     @classmethod
     def values(cls):
