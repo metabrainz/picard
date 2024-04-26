@@ -178,21 +178,4 @@ PROGRAM_UPDATE_LEVELS = OrderedDict(
     ]
 )
 
-
-DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/\n" \
-    "$if(%albumartist%,%album%/,)\n" \
-    "$if($gt(%totaldiscs%,1),$if($gt(%totaldiscs%,9),$num(%discnumber%,2),%discnumber%)-,)" \
-    "$if($and(%albumartist%,%tracknumber%),$num(%tracknumber%,2) ,)" \
-    "$if(%_multiartist%,%artist% - ,)" \
-    "%title%"
-
-
-DEFAULT_SCRIPT_NAME = N_("My script")
-DEFAULT_PROFILE_NAME = N_("My profile")
-DEFAULT_COPY_TEXT = N_("(copy)")
-DEFAULT_NUMBERED_TITLE_FORMAT = N_("{title} ({count})")
-DEFAULT_NAMING_PRESET_ID = "Preset 1"
-
 SCRIPT_LANGUAGE_VERSION = '1.1'
-
-DEFAULT_TIME_FORMAT = '%Y-%m-%d %H:%M:%S'

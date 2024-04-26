@@ -66,7 +66,7 @@ from picard.config_upgrade import (
     upgrade_to_v2_8_0dev2,
     upgrade_to_v3_0_0dev3,
 )
-from picard.const import (
+from picard.const.defaults import (
     DEFAULT_FILE_NAMING_FORMAT,
     DEFAULT_SCRIPT_NAME,
 )

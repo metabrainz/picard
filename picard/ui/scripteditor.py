@@ -39,11 +39,11 @@ from picard.config import (
     SettingConfigSection,
     get_config,
 )
-from picard.const import (
+from picard.const import PICARD_URLS
+from picard.const.defaults import (
     DEFAULT_COPY_TEXT,
     DEFAULT_NAMING_PRESET_ID,
     DEFAULT_SCRIPT_NAME,
-    PICARD_URLS,
 )
 from picard.file import File
 from picard.i18n import (

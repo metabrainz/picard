@@ -36,7 +36,7 @@ from picard.config import (
     SettingConfigSection,
     get_config,
 )
-from picard.const import DEFAULT_COPY_TEXT
+from picard.const.defaults import DEFAULT_COPY_TEXT
 from picard.i18n import (
     N_,
     gettext as _,

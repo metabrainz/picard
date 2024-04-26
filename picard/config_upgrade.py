@@ -45,7 +45,7 @@ from picard.config import (
     IntOption,
     TextOption,
 )
-from picard.const import (
+from picard.const.defaults import (
     DEFAULT_FILE_NAMING_FORMAT,
     DEFAULT_SCRIPT_NAME,
 )

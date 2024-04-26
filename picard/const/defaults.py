@@ -13,6 +13,7 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
+from picard.i18n import N_
 from picard.util import system_supports_long_paths
 from picard.util.cdrom import discid
 
@@ -127,3 +128,19 @@ DEFAULT_AUTOBACKUP_DIRECTORY = os.path.normpath(QtCore.QStandardPaths.writableLo
 DEFAULT_CACHE_SIZE_IN_BYTES = 100*CACHE_SIZE_DISPLAY_UNIT
 
 DEFAULT_LONG_PATHS = system_supports_long_paths() if IS_WIN else False
+
+DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/\n" \
+    "$if(%albumartist%,%album%/,)\n" \
+    "$if($gt(%totaldiscs%,1),$if($gt(%totaldiscs%,9),$num(%discnumber%,2),%discnumber%)-,)" \
+    "$if($and(%albumartist%,%tracknumber%),$num(%tracknumber%,2) ,)" \
+    "$if(%_multiartist%,%artist% - ,)" \
+    "%title%"
+
+
+DEFAULT_SCRIPT_NAME = N_("My script")
+DEFAULT_PROFILE_NAME = N_("My profile")
+DEFAULT_COPY_TEXT = N_("(copy)")
+DEFAULT_NUMBERED_TITLE_FORMAT = N_("{title} ({count})")
+DEFAULT_NAMING_PRESET_ID = "Preset 1"
+
+DEFAULT_TIME_FORMAT = '%Y-%m-%d %H:%M:%S'

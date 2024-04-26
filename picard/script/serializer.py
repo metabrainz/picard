@@ -39,10 +39,8 @@ from PyQt6 import (
 )
 
 from picard import log
-from picard.const import (
-    DEFAULT_SCRIPT_NAME,
-    SCRIPT_LANGUAGE_VERSION,
-)
+from picard.const import SCRIPT_LANGUAGE_VERSION
+from picard.const.defaults import DEFAULT_SCRIPT_NAME
 from picard.i18n import (
     N_,
     gettext as _,
