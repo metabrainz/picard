@@ -36,7 +36,7 @@ from picard.config import (
 )
 from picard.i18n import gettext as _
 from picard.plugin import ExtensionPoint
-from picard.profile import UserProfileGroups
+from picard.profile import profile_groups_add_setting
 
 
 class OptionsCheckError(Exception):
@@ -137,7 +137,7 @@ class OptionsPage(QtWidgets.QWidget):
             raise Exception(f"Cannot register setting for non-existing option {name}")
         self._registered_settings.append(option)
         if highlights is not None:
-            UserProfileGroups.append_to_group(self.NAME, name, tuple(highlights), title=self.TITLE)
+            profile_groups_add_setting(self.NAME, name, tuple(highlights), title=self.TITLE)
 
 
 _pages = ExtensionPoint(label='pages')

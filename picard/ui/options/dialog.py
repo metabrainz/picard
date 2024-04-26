@@ -48,7 +48,10 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.profile import UserProfileGroups
+from picard.profile import (
+    profile_groups_group_from_page,
+    profile_groups_order,
+)
 from picard.util import restore_method
 
 from picard.ui import (
@@ -104,7 +107,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 self.item_to_page[item] = page
                 self.page_to_item[page.NAME] = item
                 self.ui.pages_stack.addWidget(page)
-                UserProfileGroups.order(page.NAME)
+                profile_groups_order(page.NAME)
             else:
                 item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
             self.add_pages(page.NAME, default_page, item)
@@ -206,7 +209,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         if not items:
             return
         page = self.item_to_page[items[0]]
-        option_group = UserProfileGroups.group_from_page(page)
+        option_group = profile_groups_group_from_page(page)
         if not option_group:
             message_box = QtWidgets.QMessageBox(self)
             message_box.setIcon(QtWidgets.QMessageBox.Icon.Information)
@@ -247,7 +250,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         bg_color = colors.get_color('profile_hl_bg')
 
         for page in self.pages:
-            option_group = UserProfileGroups.group_from_page(page)
+            option_group = profile_groups_group_from_page(page)
             if option_group:
                 if load_settings:
                     page.load()
@@ -296,7 +299,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         return self.item_to_page[self.page_to_item[name]]
 
     def page_has_attached_profiles(self, page, enabled_profiles_only=False):
-        option_group = UserProfileGroups.group_from_page(page)
+        option_group = profile_groups_group_from_page(page)
         if not option_group:
             return False
         working_profiles, working_settings = self.get_working_profile_data()

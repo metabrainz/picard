@@ -35,7 +35,15 @@ from picard.config import (
     SettingConfigSection,
     TextOption,
 )
-from picard.profile import UserProfileGroups
+from picard.profile import (
+    profile_groups_add_setting,
+    profile_groups_all_settings,
+    profile_groups_keys,
+    profile_groups_order,
+    profile_groups_reset,
+    profile_groups_settings,
+    profile_groups_values,
+)
 
 
 class TestPicardProfilesCommon(PicardTestCase):
@@ -63,14 +71,14 @@ class TestPicardProfilesCommon(PicardTestCase):
         Option('profiles', self.SETTINGS_KEY, {})
 
         # Get valid profile option settings for testing
-        UserProfileGroups.reset()
+        profile_groups_reset()
         for n in range(0, 4):
             group = 'group%d' % (n % 2)
             title = 'title_' + group
             name = 'opt%d' % n
             highlights = ('obj%d' % i for i in range(0, n))
-            UserProfileGroups.append_to_group(group, name, highlights, title=title)
-        option_settings = list(UserProfileGroups.all_settings())
+            profile_groups_add_setting(group, name, highlights, title=title)
+        option_settings = list(profile_groups_all_settings())
         self.test_setting_0 = option_settings[0]
         self.test_setting_1 = option_settings[1]
         self.test_setting_2 = option_settings[2]
@@ -104,48 +112,48 @@ class TestPicardProfilesCommon(PicardTestCase):
 class TestUserProfileGroups(TestPicardProfilesCommon):
 
     def test_has_groups(self):
-        groups = list(UserProfileGroups.keys())
+        groups = list(profile_groups_keys())
         self.assertEqual(groups, ['group0', 'group1'])
 
     def test_groups_have_items(self):
-        for group in UserProfileGroups.keys():
-            settings = UserProfileGroups.settings(group)
+        for group in profile_groups_keys():
+            settings = profile_groups_settings(group)
             self.assertNotEqual(settings, {})
 
     def test_no_duplicate_settings(self):
         count1 = 0
-        for group in UserProfileGroups.keys():
-            settings = UserProfileGroups.settings(group)
+        for group in profile_groups_keys():
+            settings = profile_groups_settings(group)
             count1 += len(list(settings))
-        count2 = len(list(UserProfileGroups.all_settings()))
+        count2 = len(list(profile_groups_all_settings()))
         self.assertEqual(count1, count2)
 
     def test_settings_have_no_blank_keys(self):
-        for group in UserProfileGroups.keys():
-            settings = UserProfileGroups.settings(group)
+        for group in profile_groups_keys():
+            settings = profile_groups_settings(group)
             for name, highlights in settings:
                 self.assertNotEqual(name.strip(), "")
 
     def test_groups_have_title(self):
-        for value in UserProfileGroups.values():
+        for value in profile_groups_values():
             self.assertTrue(value['title'].startswith('title_'))
 
     def test_groups_have_highlights(self):
-        for group in UserProfileGroups.keys():
-            for setting in UserProfileGroups.settings(group):
+        for group in profile_groups_keys():
+            for setting in profile_groups_settings(group):
                 self.assertIsNotNone(setting.highlights)
 
     def test_order(self):
-        result_before = [value['title'] for value in UserProfileGroups.values()]
+        result_before = [value['title'] for value in profile_groups_values()]
         self.assertEqual(
             result_before,
             ['title_group0', 'title_group1']
         )
 
-        UserProfileGroups.order('group1')
-        UserProfileGroups.order('group0')
+        profile_groups_order('group1')
+        profile_groups_order('group0')
 
-        result_after = [value['title'] for value in UserProfileGroups.values()]
+        result_after = [value['title'] for value in profile_groups_values()]
         self.assertEqual(
             result_after,
             ['title_group1', 'title_group0']

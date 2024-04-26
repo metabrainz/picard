@@ -42,7 +42,7 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
 )
-from picard.profile import UserProfileGroups
+from picard.profile import profile_groups_values
 from picard.script import get_file_naming_script_presets
 from picard.util import get_base_title
 
@@ -210,7 +210,7 @@ class ProfilesOptionsPage(OptionsPage):
         if settings is None:
             return
         self.building_tree = True
-        for group in UserProfileGroups.values():
+        for group in profile_groups_values():
             title = _(group['title'])
             group_settings = group['settings']
             widget_item = QtWidgets.QTreeWidgetItem([title])
