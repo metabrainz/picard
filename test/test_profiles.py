@@ -104,25 +104,25 @@ class TestPicardProfilesCommon(PicardTestCase):
 class TestUserProfileGroups(TestPicardProfilesCommon):
 
     def test_has_groups(self):
-        keys = list(UserProfileGroups.keys())
-        self.assertEqual(keys, ['group0', 'group1'])
+        groups = list(UserProfileGroups.keys())
+        self.assertEqual(groups, ['group0', 'group1'])
 
     def test_groups_have_items(self):
-        for key in UserProfileGroups.keys():
-            settings = UserProfileGroups.settings(key)
+        for group in UserProfileGroups.keys():
+            settings = UserProfileGroups.settings(group)
             self.assertNotEqual(settings, {})
 
     def test_no_duplicate_settings(self):
         count1 = 0
-        for key in UserProfileGroups.keys():
-            settings = UserProfileGroups.settings(key)
+        for group in UserProfileGroups.keys():
+            settings = UserProfileGroups.settings(group)
             count1 += len(list(settings))
         count2 = len(list(UserProfileGroups.all_settings()))
         self.assertEqual(count1, count2)
 
     def test_settings_have_no_blank_keys(self):
-        for key in UserProfileGroups.keys():
-            settings = UserProfileGroups.settings(key)
+        for group in UserProfileGroups.keys():
+            settings = UserProfileGroups.settings(group)
             for name, highlights in settings:
                 self.assertNotEqual(name.strip(), "")
 
