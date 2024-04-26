@@ -87,4 +87,6 @@ class UserProfileGroups():
 
     @classmethod
     def values(cls):
-        yield from cls._settings_groups.values()
+        """Returns values sorted by (groups_order, group name)"""
+        for k in sorted(cls._settings_groups, key=lambda k: (cls._groups_order[k], k)):
+            yield cls._settings_groups[k]
