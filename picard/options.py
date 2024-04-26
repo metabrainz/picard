@@ -1,3 +1,24 @@
+# -*- coding: utf-8 -*-
+#
+# Picard, the next-generation MusicBrainz tagger
+#
+# Copyright (C) 2024 Laurent Monin
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+
 import logging
 
 from PyQt6 import QtCore
@@ -39,6 +60,32 @@ from picard.const.defaults import (
 from picard.i18n import N_
 
 from picard.ui.colors import InterfaceColors
+
+
+# Note: There are two steps to adding an option to an option page:
+#
+#   1. The option is added to the appropriate section below.
+#      If it's using a default value that may be used elsewhere,
+#      a constant starting with `DEFAULT_` can be added to `const/defaults.py`
+#      and imported here.
+#
+#      The `title` parameter of `Option` is required for options that may be
+#      used in user profiles.
+#      The translated title will be displayed in Profiles option page.
+#
+#   2. If the option is a 'setting' which is edited in one of the option pages,
+#      then the option can be registered in the `__init__()` method of the
+#      matching `OptionPage` declaration with a call to the page's
+#      `register_setting()` method.
+#
+#      Registering a setting allows it to be reset to the default when the user
+#      asks for it on the corresponding option page.
+#
+#      If the setting can be overriden in profiles, the `highlights` parameter
+#      has to be set a list of widget names associated with the option.
+#
+#
+# Please, try to keep options ordered by section and name in their own group.
 
 
 # picard/coverart/providers/caa.py
