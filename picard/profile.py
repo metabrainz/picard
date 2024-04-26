@@ -34,6 +34,7 @@ SettingDesc = namedtuple('SettingDesc', ('name', 'highlights'))
 _settings_groups = {}
 _groups_order = defaultdict(lambda: -1)
 _groups_count = 0
+_known_settings = set()
 
 
 def profile_groups_order(group):
@@ -49,13 +50,11 @@ def profile_groups_add_setting(group, option_name, highlights, title=None):
     if 'settings' not in _settings_groups[group]:
         _settings_groups[group]['settings'] = []
     _settings_groups[group]['settings'].append(SettingDesc(option_name, highlights))
+    _known_settings.add(option_name)
 
 
 def profile_groups_all_settings():
-    for value in _settings_groups.values():
-        if 'settings' in value:
-            for s in value['settings']:
-                yield s.name
+    return _known_settings
 
 
 def profile_groups_settings(group):
@@ -88,7 +87,8 @@ def profile_groups_values():
 
 def profile_groups_reset():
     """Used when testing"""
-    global _settings_groups, _groups_order, _groups_count
+    global _settings_groups, _groups_order, _groups_count, _known_settings
     _settings_groups = {}
     _groups_order = defaultdict(lambda: -1)
     _groups_count = 0
+    _known_settings = set()
