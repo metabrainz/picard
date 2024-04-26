@@ -137,8 +137,7 @@ class OptionsPage(QtWidgets.QWidget):
             raise Exception(f"Cannot register setting for non-existing option {name}")
         self._registered_settings.append(option)
         if highlights is not None:
-            page_name = self.PARENT if self.PARENT else self.NAME
-            UserProfileGroups.append_to_group(page_name, name, tuple(highlights))
+            UserProfileGroups.append_to_group(self.NAME, name, tuple(highlights), title=self.TITLE)
 
 
 _pages = ExtensionPoint(label='pages')

@@ -211,7 +211,7 @@ class ProfilesOptionsPage(OptionsPage):
             return
         self.building_tree = True
         for group in UserProfileGroups.values():
-            title = group['title']
+            title = _(group['title'])
             group_settings = group['settings']
             widget_item = QtWidgets.QTreeWidgetItem([title])
             widget_item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsAutoTristate)

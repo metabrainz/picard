@@ -25,8 +25,6 @@
 
 from collections import namedtuple
 
-from picard.i18n import N_
-
 
 SettingDesc = namedtuple('SettingDesc', ('name', 'fields'))
 
@@ -35,19 +33,12 @@ class UserProfileGroups():
     """Provides information about the profile groups available for selecting in a user profile,
     and the title and settings that apply to each profile group.
     """
-    _settings_groups = {
-        'general': {'title': N_("General")},
-        'metadata': {'title': N_("Metadata")},
-        'tags': {'title': N_("Tags")},
-        'cover': {'title': N_("Cover Art")},
-        'filerenaming': {'title': N_("File Naming")},
-        'scripting': {'title': N_("Scripting")},
-        'interface': {'title': N_("User Interface")},
-        'advanced': {'title': N_("Advanced")},
-    }
+    _settings_groups = {}
 
     @classmethod
-    def append_to_group(cls, group, option, highlights):
+    def append_to_group(cls, group, option, highlights, title=None):
+        if group not in cls._settings_groups:
+            cls._settings_groups[group] = {'title': title or group}
         if 'settings' not in cls._settings_groups[group]:
             cls._settings_groups[group]['settings'] = []
         cls._settings_groups[group]['settings'].append(SettingDesc(option, highlights))
@@ -77,8 +68,7 @@ class UserProfileGroups():
     @classmethod
     def group_from_page(cls, page):
         try:
-            name = page.PARENT if page.PARENT in cls._settings_groups else page.NAME
-            return cls._settings_groups[name]
+            return cls._settings_groups[page.NAME]
         except (AttributeError, KeyError):
             pass
         return None
