@@ -90,3 +90,10 @@ class UserProfileGroups():
         """Returns values sorted by (groups_order, group name)"""
         for k in sorted(cls._settings_groups, key=lambda k: (cls._groups_order[k], k)):
             yield cls._settings_groups[k]
+
+    @classmethod
+    def reset(cls):
+        """Used when testing"""
+        cls._settings_groups = {}
+        cls._groups_order = defaultdict(lambda: -1)
+        cls._groups_count = 0

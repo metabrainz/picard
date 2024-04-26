@@ -63,9 +63,12 @@ class TestPicardProfilesCommon(PicardTestCase):
         Option('profiles', self.SETTINGS_KEY, {})
 
         # Get valid profile option settings for testing
-        first_group = next(iter(UserProfileGroups.keys()))
+        UserProfileGroups.reset()
         for n in range(0, 4):
-            UserProfileGroups.append_to_group(first_group, 'opt%d' % n, [])
+            group = 'group%d' % (n % 2)
+            title = 'title_' + group
+            name = 'opt%d' % n
+            UserProfileGroups.append_to_group(group, name, tuple(range(0, n)), title=title)
         option_settings = list(UserProfileGroups.all_settings())
         self.test_setting_0 = option_settings[0]
         self.test_setting_1 = option_settings[1]
@@ -97,11 +100,11 @@ class TestPicardProfilesCommon(PicardTestCase):
         return profiles
 
 
-class TestUserProfileGroups(PicardTestCase):
+class TestUserProfileGroups(TestPicardProfilesCommon):
 
     def test_has_groups(self):
         keys = list(UserProfileGroups.keys())
-        self.assertNotEqual(keys, [])
+        self.assertEqual(keys, ['group0', 'group1'])
 
     def test_groups_have_items(self):
         for key in UserProfileGroups.keys():
@@ -121,6 +124,31 @@ class TestUserProfileGroups(PicardTestCase):
             settings = UserProfileGroups.settings(key)
             for key, fields in settings:
                 self.assertNotEqual(key.strip(), "")
+
+    def test_groups_have_title(self):
+        for value in UserProfileGroups.values():
+            self.assertTrue(value['title'].startswith('title_'))
+
+    def test_groups_have_highlights(self):
+        for key in UserProfileGroups.keys():
+            for setting in UserProfileGroups.settings(key):
+                self.assertIsNotNone(setting.fields)
+
+    def test_order(self):
+        result_before = [value['title'] for value in UserProfileGroups.values()]
+        self.assertEqual(
+            result_before,
+            ['title_group0', 'title_group1']
+        )
+
+        UserProfileGroups.order('group1')
+        UserProfileGroups.order('group0')
+
+        result_after = [value['title'] for value in UserProfileGroups.values()]
+        self.assertEqual(
+            result_after,
+            ['title_group1', 'title_group0']
+        )
 
 
 class TestUserProfiles(TestPicardProfilesCommon):
