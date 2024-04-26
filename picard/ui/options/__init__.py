@@ -36,7 +36,7 @@ from picard.config import (
 )
 from picard.i18n import gettext as _
 from picard.plugin import ExtensionPoint
-from picard.profile import register_profile_highlights
+from picard.profile import UserProfileGroups
 
 
 class OptionsCheckError(Exception):
@@ -138,7 +138,7 @@ class OptionsPage(QtWidgets.QWidget):
         self._registered_settings.append(option)
         if highlights is not None:
             page_name = self.PARENT if self.PARENT else self.NAME
-            register_profile_highlights(page_name, name, tuple(highlights))
+            UserProfileGroups.append_to_group(page_name, name, tuple(highlights))
 
 
 _pages = ExtensionPoint(label='pages')

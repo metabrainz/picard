@@ -86,7 +86,3 @@ class UserProfileGroups():
     @classmethod
     def values(cls):
         yield from cls._settings_groups.values()
-
-
-def register_profile_highlights(group, option, higlights):
-    UserProfileGroups.append_to_group(group, option, higlights)

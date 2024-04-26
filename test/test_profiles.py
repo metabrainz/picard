@@ -35,10 +35,7 @@ from picard.config import (
     SettingConfigSection,
     TextOption,
 )
-from picard.profile import (
-    UserProfileGroups,
-    register_profile_highlights,
-)
+from picard.profile import UserProfileGroups
 
 
 class TestPicardProfilesCommon(PicardTestCase):
@@ -68,7 +65,7 @@ class TestPicardProfilesCommon(PicardTestCase):
         # Get valid profile option settings for testing
         first_group = next(iter(UserProfileGroups.keys()))
         for n in range(0, 4):
-            register_profile_highlights(first_group, 'opt%d' % n, [])
+            UserProfileGroups.append_to_group(first_group, 'opt%d' % n, [])
         option_settings = list(UserProfileGroups.all_settings())
         self.test_setting_0 = option_settings[0]
         self.test_setting_1 = option_settings[1]
