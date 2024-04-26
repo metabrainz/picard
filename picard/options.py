@@ -78,7 +78,7 @@ from picard.ui.colors import InterfaceColors
 #      matching `OptionPage` declaration with a call to the page's
 #      `register_setting()` method.
 #
-#      Registering a setting allows it to be resetted to default when the user
+#      Registering a setting allows it to be reset to the default when the user
 #      asks for it on the corresponding option page.
 #
 #      If the setting can be overriden in profiles, the `highlights` parameter
