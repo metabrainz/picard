@@ -16,6 +16,8 @@ from picard.const.sys import (
 from picard.util import system_supports_long_paths
 from picard.util.cdrom import discid
 
+from picard.ui.theme import UiTheme
+
 
 DEFAULT_REPLACEMENT = '_'
 DEFAULT_WIN_COMPAT_REPLACEMENTS = {
@@ -90,7 +92,7 @@ DEFAULT_SHOW_MENU_ICONS = not IS_MACOS
 
 DEFAULT_STARTING_DIR = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.HomeLocation)
 
-DEFAULT_THEME_NAME = 'default'
+DEFAULT_THEME_NAME = str(UiTheme.DEFAULT)
 
 DEFAULT_TOOLBAR_LAYOUT = [
     'add_directory_action',
