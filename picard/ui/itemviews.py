@@ -66,11 +66,7 @@ from picard.cluster import (
     ClusterList,
     UnclusteredFiles,
 )
-from picard.config import (
-    BoolOption,
-    Option,
-    get_config,
-)
+from picard.config import get_config
 from picard.file import (
     File,
     FileErrorType,
@@ -673,13 +669,13 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     @restore_method
     def restore_state(self):
         config = get_config()
-        self._restore_state(config.persist[self.header_state.name])
-        self.header().lock(config.persist[self.header_locked.name])
+        self._restore_state(config.persist[self.header_state])
+        self.header().lock(config.persist[self.header_locked])
 
     def save_state(self):
         config = get_config()
-        config.persist[self.header_state.name] = self.header().saveState()
-        config.persist[self.header_locked.name] = self.header().is_locked
+        config.persist[self.header_state] = self.header().saveState()
+        config.persist[self.header_locked] = self.header().is_locked
 
     def restore_default_columns(self):
         self._restore_state(None)
@@ -852,8 +848,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
 class FileTreeView(BaseTreeView):
 
-    header_state = Option('persist', 'file_view_header_state', QtCore.QByteArray())
-    header_locked = BoolOption('persist', 'file_view_header_locked', False)
+    header_state = 'file_view_header_state'
+    header_locked = 'file_view_header_locked'
 
     def __init__(self, window, parent=None):
         super().__init__(window, parent)
@@ -883,8 +879,8 @@ class FileTreeView(BaseTreeView):
 
 class AlbumTreeView(BaseTreeView):
 
-    header_state = Option('persist', 'album_view_header_state', QtCore.QByteArray())
-    header_locked = BoolOption('persist', 'album_view_header_locked', False)
+    header_state = 'album_view_header_state'
+    header_locked = 'album_view_header_locked'
 
     def __init__(self, window, parent=None):
         super().__init__(window, parent)

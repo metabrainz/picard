@@ -62,6 +62,16 @@ Option('persist', 'cdlookupdialog_header_state', QtCore.QByteArray())
 TextOption('persist', 'current_browser_path', DEFAULT_CURRENT_BROWSER_PATH)
 BoolOption('persist', 'show_hidden_files', False)
 
+# Store Album View Header State
+#
+Option('persist', 'album_view_header_state', QtCore.QByteArray())
+BoolOption('persist', 'album_view_header_locked', False)
+
+# Store File View Header State
+#
+Option('persist', 'file_view_header_state', QtCore.QByteArray())
+BoolOption('persist', 'file_view_header_locked', False)
+
 # picard/ui/logview.py
 #
 IntOption('setting', 'log_verbosity', logging.WARNING)
