@@ -252,12 +252,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 if load_settings:
                     page.load()
                 for opt in option_group['settings']:
-                    for opt_field in opt.fields:
+                    for objname in opt.highlights:
                         try:
-                            obj = getattr(page.ui, opt_field)
+                            obj = getattr(page.ui, objname)
                         except AttributeError:
                             continue
-                        style = "#%s { color: %s; background-color: %s; }" % (opt_field, fg_color, bg_color)
+                        style = "#%s { color: %s; background-color: %s; }" % (objname, fg_color, bg_color)
                         self._check_and_highlight_option(obj, opt.name, working_profiles, working_settings, style)
 
     def _check_and_highlight_option(self, obj, option_name, working_profiles, working_settings, style):

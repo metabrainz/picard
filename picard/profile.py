@@ -29,7 +29,7 @@ from collections import (
 )
 
 
-SettingDesc = namedtuple('SettingDesc', ('name', 'fields'))
+SettingDesc = namedtuple('SettingDesc', ('name', 'highlights'))
 
 
 class UserProfileGroups():

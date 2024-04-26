@@ -68,7 +68,8 @@ class TestPicardProfilesCommon(PicardTestCase):
             group = 'group%d' % (n % 2)
             title = 'title_' + group
             name = 'opt%d' % n
-            UserProfileGroups.append_to_group(group, name, tuple(range(0, n)), title=title)
+            highlights = ('obj%d' % i for i in range(0, n))
+            UserProfileGroups.append_to_group(group, name, highlights, title=title)
         option_settings = list(UserProfileGroups.all_settings())
         self.test_setting_0 = option_settings[0]
         self.test_setting_1 = option_settings[1]
@@ -122,17 +123,17 @@ class TestUserProfileGroups(TestPicardProfilesCommon):
     def test_settings_have_no_blank_keys(self):
         for key in UserProfileGroups.keys():
             settings = UserProfileGroups.settings(key)
-            for key, fields in settings:
-                self.assertNotEqual(key.strip(), "")
+            for name, highlights in settings:
+                self.assertNotEqual(name.strip(), "")
 
     def test_groups_have_title(self):
         for value in UserProfileGroups.values():
             self.assertTrue(value['title'].startswith('title_'))
 
     def test_groups_have_highlights(self):
-        for key in UserProfileGroups.keys():
-            for setting in UserProfileGroups.settings(key):
-                self.assertIsNotNone(setting.fields)
+        for group in UserProfileGroups.keys():
+            for setting in UserProfileGroups.settings(group):
+                self.assertIsNotNone(setting.highlights)
 
     def test_order(self):
         result_before = [value['title'] for value in UserProfileGroups.values()]
