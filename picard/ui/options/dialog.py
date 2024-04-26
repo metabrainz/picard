@@ -104,6 +104,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 self.item_to_page[item] = page
                 self.page_to_item[page.NAME] = item
                 self.ui.pages_stack.addWidget(page)
+                UserProfileGroups.order(page.NAME)
             else:
                 item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
             self.add_pages(page.NAME, default_page, item)

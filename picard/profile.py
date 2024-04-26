@@ -23,7 +23,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import namedtuple
+from collections import (
+    defaultdict,
+    namedtuple,
+)
 
 
 SettingDesc = namedtuple('SettingDesc', ('name', 'fields'))
@@ -34,6 +37,15 @@ class UserProfileGroups():
     and the title and settings that apply to each profile group.
     """
     _settings_groups = {}
+
+    _groups_order = defaultdict(lambda: -1)
+    _groups_count = 0
+
+    @classmethod
+    def order(cls, group):
+        if cls._groups_order[group] == -1:
+            cls._groups_order[group] = cls._groups_count
+            cls._groups_count += 1
 
     @classmethod
     def append_to_group(cls, group, option, highlights, title=None):
