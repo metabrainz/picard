@@ -160,8 +160,6 @@ def get_match_color(similarity, basecolor):
 
 class MainPanel(QtWidgets.QSplitter):
 
-    options = []
-
     columns = [
         (N_("Title"), 'title'),
         (N_("Length"), '~length'),

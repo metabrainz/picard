@@ -203,9 +203,6 @@ class TableTagEditorDelegate(TagEditorDelegate):
 
 class MetadataBox(QtWidgets.QTableWidget):
 
-    options = (
-    )
-
     COLUMN_ORIG = 1
     COLUMN_NEW = 2
 
