@@ -36,10 +36,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard.config import (
-    ListOption,
-    get_config,
-)
+from picard.config import get_config
 from picard.i18n import (
     N_,
     gettext as _,
@@ -56,26 +53,6 @@ from picard.ui.ui_options_interface_toolbar import (
     Ui_InterfaceToolbarOptionsPage,
 )
 from picard.ui.util import qlistwidget_items
-
-
-DEFAULT_TOOLBAR_LAYOUT = [
-    'add_directory_action',
-    'add_files_action',
-    'separator',
-    'cluster_action',
-    'separator',
-    'autotag_action',
-    'analyze_action',
-    'browser_lookup_action',
-    'separator',
-    'save_action',
-    'view_info_action',
-    'remove_action',
-    'separator',
-    'cd_lookup_action',
-    'separator',
-    'submit_acoustid_action',
-]
 
 
 class InterfaceToolbarOptionsPage(OptionsPage):
@@ -150,9 +127,6 @@ class InterfaceToolbarOptionsPage(OptionsPage):
         },
     }
     ACTION_NAMES = set(TOOLBAR_BUTTONS.keys())
-    options = [
-        ListOption('setting', 'toolbar_layout', DEFAULT_TOOLBAR_LAYOUT, title=N_("Layout of the tool bar")),
-    ]
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -165,6 +139,8 @@ class InterfaceToolbarOptionsPage(OptionsPage):
         self.move_view = MoveableListView(self.ui.toolbar_layout_list, self.ui.up_button,
                                           self.ui.down_button, self.update_action_buttons)
         self.update_buttons = self.move_view.update_buttons
+
+        self.register_setting('toolbar_layout', ['toolbar_layout_list'])
 
     def load(self):
         self.populate_action_list()

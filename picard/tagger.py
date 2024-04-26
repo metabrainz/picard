@@ -116,6 +116,7 @@ from picard.i18n import (
     gettext as _,
     setup_gettext,
 )
+from picard.options import init_options
 from picard.pluginmanager import (
     PluginManager,
     plugin_dirs,
@@ -247,6 +248,7 @@ class Tagger(QtWidgets.QApplication):
 
         super().__init__(sys.argv)
         self.__class__.__instance = self
+        init_options()
         setup_config(app=self, filename=picard_args.config_file)
         config = get_config()
         theme.setup(self)

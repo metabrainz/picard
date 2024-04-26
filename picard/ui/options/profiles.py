@@ -31,20 +31,18 @@ from PyQt6 import (
 
 from picard import log
 from picard.config import (
-    IntOption,
-    ListOption,
     Option,
     OptionError,
     SettingConfigSection,
     get_config,
 )
-from picard.const import DEFAULT_COPY_TEXT
+from picard.const.defaults import DEFAULT_COPY_TEXT
 from picard.i18n import (
     N_,
     gettext as _,
     gettext_constants,
 )
-from picard.profile import UserProfileGroups
+from picard.profile import profile_groups_values
 from picard.script import get_file_naming_script_presets
 from picard.util import get_base_title
 
@@ -68,11 +66,6 @@ class ProfilesOptionsPage(OptionsPage):
     HELP_URL = "/config/options_profiles.html"
 
     TREEWIDGETITEM_COLUMN = 0
-
-    options = [
-        IntOption('persist', 'last_selected_profile_pos', 0),
-        ListOption('persist', 'profile_settings_tree_expanded_list', []),
-    ]
 
     signal_refresh = QtCore.pyqtSignal()
 
@@ -217,8 +210,8 @@ class ProfilesOptionsPage(OptionsPage):
         if settings is None:
             return
         self.building_tree = True
-        for group in UserProfileGroups.SETTINGS_GROUPS.values():
-            title = group['title']
+        for group in profile_groups_values():
+            title = _(group['title'])
             group_settings = group['settings']
             widget_item = QtWidgets.QTreeWidgetItem([title])
             widget_item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsAutoTristate)

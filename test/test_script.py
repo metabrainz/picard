@@ -40,7 +40,7 @@ from unittest.mock import MagicMock
 from test.picardtestcase import PicardTestCase
 
 from picard.cluster import Cluster
-from picard.const import DEFAULT_FILE_NAMING_FORMAT
+from picard.const.defaults import DEFAULT_FILE_NAMING_FORMAT
 from picard.metadata import (
     MULTI_VALUED_JOINER,
     Metadata,

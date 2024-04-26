@@ -33,12 +33,7 @@ import os
 from PyQt6 import QtCore
 
 from picard import log
-from picard.config import (
-    BoolOption,
-    IntOption,
-    ListOption,
-    get_config,
-)
+from picard.config import get_config
 from picard.const.sys import IS_MACOS
 from picard.i18n import (
     N_,
@@ -107,12 +102,6 @@ class ScriptingOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_scripting.html"
 
-    options = [
-        BoolOption('setting', 'enable_tagger_scripts', False, title=N_("Enable tagger scripts")),
-        ListOption('setting', 'list_of_scripts', [], title=N_("Tagger scripts")),
-        IntOption('persist', 'last_selected_script_pos', 0),
-    ]
-
     default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
     default_script_extension = "ptsp"
 
@@ -138,6 +127,9 @@ class ScriptingOptionsPage(OptionsPage):
         self.FILE_TYPE_PACKAGE = _("Picard tagging script package") + " (*.ptsp *.yaml)"
 
         self.ui.script_list.signal_reset_selected_item.connect(self.reset_selected_item)
+
+        self.register_setting('enable_tagger_scripts', ['enable_tagger_scripts'])
+        self.register_setting('list_of_scripts', ['script_list'])
 
     def show_scripting_documentation(self):
         ScriptingDocumentationDialog.show_instance(parent=self)

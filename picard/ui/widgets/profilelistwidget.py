@@ -30,7 +30,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard.const import DEFAULT_PROFILE_NAME
+from picard.const.defaults import DEFAULT_PROFILE_NAME
 from picard.i18n import (
     gettext as _,
     gettext_constants,

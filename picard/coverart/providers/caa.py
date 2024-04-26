@@ -40,13 +40,13 @@ from PyQt6.QtNetwork import (
 )
 
 from picard import log
-from picard.config import (
-    BoolOption,
-    IntOption,
-    ListOption,
-    get_config,
-)
+from picard.config import get_config
 from picard.const import CAA_URL
+from picard.const.defaults import (
+    DEFAULT_CAA_IMAGE_SIZE,
+    DEFAULT_CAA_IMAGE_TYPE_EXCLUDE,
+    DEFAULT_CAA_IMAGE_TYPE_INCLUDE,
+)
 from picard.coverart.image import (
     CaaCoverArtImage,
     CaaThumbnailCoverArtImage,
@@ -81,10 +81,6 @@ _CAA_THUMBNAIL_SIZE_ALIASES = {
     '500': 'large',
     '250': 'small',
 }
-_CAA_IMAGE_SIZE_DEFAULT = 500
-
-_CAA_IMAGE_TYPE_DEFAULT_INCLUDE = ['front']
-_CAA_IMAGE_TYPE_DEFAULT_EXCLUDE = ['matrix/runout', 'raw/unedited', 'watermark']
 
 ratecontrol.set_minimum_delay_for_url(CAA_URL, 0)
 ratecontrol.set_minimum_delay_for_url("https://archive.org", 0)
@@ -124,14 +120,6 @@ class ProviderOptionsCaa(ProviderOptions):
     TITLE = N_("Cover Art Archive")
     HELP_URL = "/config/options_cover_art_archive.html"
 
-    options = [
-        BoolOption('setting', 'caa_approved_only', False),
-        IntOption('setting', 'caa_image_size', _CAA_IMAGE_SIZE_DEFAULT),
-        ListOption('setting', 'caa_image_types', _CAA_IMAGE_TYPE_DEFAULT_INCLUDE),
-        BoolOption('setting', 'caa_restrict_image_types', True),
-        ListOption('setting', 'caa_image_types_to_omit', _CAA_IMAGE_TYPE_DEFAULT_EXCLUDE),
-    ]
-
     _options_ui = Ui_CaaOptions
 
     def __init__(self, parent=None):
@@ -140,8 +128,8 @@ class ProviderOptionsCaa(ProviderOptions):
         self.ui.select_caa_types.clicked.connect(self.select_caa_types)
 
     def restore_defaults(self):
-        self.caa_image_types = _CAA_IMAGE_TYPE_DEFAULT_INCLUDE
-        self.caa_image_types_to_omit = _CAA_IMAGE_TYPE_DEFAULT_EXCLUDE
+        self.caa_image_types = DEFAULT_CAA_IMAGE_TYPE_INCLUDE
+        self.caa_image_types_to_omit = DEFAULT_CAA_IMAGE_TYPE_EXCLUDE
         super().restore_defaults()
 
     def load(self):
@@ -153,7 +141,7 @@ class ProviderOptionsCaa(ProviderOptions):
         size = config.setting['caa_image_size']
         index = self.ui.cb_image_size.findData(size)
         if index < 0:
-            index = self.ui.cb_image_size.findData(_CAA_IMAGE_SIZE_DEFAULT)
+            index = self.ui.cb_image_size.findData(DEFAULT_CAA_IMAGE_SIZE)
         self.ui.cb_image_size.setCurrentIndex(index)
 
         self.ui.cb_approved_only.setChecked(config.setting['caa_approved_only'])
@@ -184,8 +172,8 @@ class ProviderOptionsCaa(ProviderOptions):
             parent=self,
             types_include=self.caa_image_types,
             types_exclude=self.caa_image_types_to_omit,
-            default_include=_CAA_IMAGE_TYPE_DEFAULT_INCLUDE,
-            default_exclude=_CAA_IMAGE_TYPE_DEFAULT_EXCLUDE,
+            default_include=DEFAULT_CAA_IMAGE_TYPE_INCLUDE,
+            default_exclude=DEFAULT_CAA_IMAGE_TYPE_EXCLUDE,
             known_types=known_types,
         )
         if ok:

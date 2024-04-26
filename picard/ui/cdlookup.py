@@ -33,10 +33,7 @@ from PyQt6 import (
 )
 
 from picard import log
-from picard.config import (
-    Option,
-    get_config,
-)
+from picard.config import get_config
 from picard.i18n import gettext as _
 from picard.mbjson import (
     artist_credit_from_node,
@@ -55,10 +52,6 @@ from picard.ui.ui_cdlookup import Ui_Dialog
 class CDLookupDialog(PicardDialog):
 
     dialog_header_state = 'cdlookupdialog_header_state'
-
-    options = [
-        Option('persist', dialog_header_state, QtCore.QByteArray())
-    ]
 
     def __init__(self, releases, disc, parent=None):
         super().__init__(parent)

@@ -30,17 +30,12 @@
 
 from PyQt6 import QtCore
 
-from picard.config import (
-    BoolOption,
-    IntOption,
-    TextOption,
-    get_config,
-)
+from picard.config import get_config
 from picard.const import (
-    DEFAULT_PROGRAM_UPDATE_LEVEL,
     MUSICBRAINZ_SERVERS,
     PROGRAM_UPDATE_LEVELS,
 )
+from picard.const.defaults import DEFAULT_PROGRAM_UPDATE_LEVEL
 from picard.i18n import (
     N_,
     gettext as _,
@@ -64,25 +59,6 @@ class GeneralOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_general.html"
 
-    options = [
-        TextOption('setting', 'server_host', MUSICBRAINZ_SERVERS[0], title=N_("Server address")),
-        IntOption('setting', 'server_port', 443, title=N_("Port")),
-        BoolOption('setting', 'use_server_for_submission', False),
-        BoolOption('setting', 'analyze_new_files', False, title=N_("Automatically scan all new files")),
-        BoolOption('setting', 'cluster_new_files', False, title=N_("Automatically cluster all new files")),
-        BoolOption('setting', 'ignore_file_mbids', False, title=N_("Ignore MBIDs when loading new files")),
-        TextOption('persist', 'oauth_refresh_token', ''),
-        TextOption('persist', 'oauth_refresh_token_scopes', ''),
-        TextOption('persist', 'oauth_access_token', ''),
-        IntOption('persist', 'oauth_access_token_expires', 0),
-        TextOption('persist', 'oauth_username', ''),
-        BoolOption('setting', 'check_for_updates', True, title=N_("Check for program updates during startup")),
-        IntOption('setting', 'update_check_days', 7, title=N_("Days between update checks")),
-        IntOption('setting', 'update_level', DEFAULT_PROGRAM_UPDATE_LEVEL, title=N_("Updates to check")),
-        IntOption('persist', 'last_update_check', 0),
-        BoolOption('setting', 'check_for_plugin_updates', False, title=N_("Check for plugin updates during startup")),
-    ]
-
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_GeneralOptionsPage()
@@ -96,6 +72,17 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.login_error.setStyleSheet(self.STYLESHEET_ERROR)
         self.ui.login_error.hide()
         self.update_login_logout()
+
+        self.register_setting('server_host', ['server_host'])
+        self.register_setting('server_port', ['server_port'])
+        self.register_setting('analyze_new_files', ['analyze_new_files'])
+        self.register_setting('cluster_new_files', ['cluster_new_files'])
+        self.register_setting('ignore_file_mbids', ['ignore_file_mbids'])
+        self.register_setting('check_for_plugin_updates', ['check_for_plugin_updates'])
+        self.register_setting('check_for_updates', ['check_for_updates'])
+        self.register_setting('update_check_days', ['update_check_days'])
+        self.register_setting('update_level', ['update_level'])
+        self.register_setting('use_server_for_submission')
 
     def load(self):
         config = get_config()

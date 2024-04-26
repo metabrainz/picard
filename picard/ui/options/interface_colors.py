@@ -28,17 +28,13 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard.config import Option
 from picard.const.sys import IS_MACOS
 from picard.i18n import (
     N_,
     gettext as _,
 )
 
-from picard.ui.colors import (
-    InterfaceColors,
-    interface_colors,
-)
+from picard.ui.colors import interface_colors
 from picard.ui.options import (
     OptionsPage,
     register_options_page,
@@ -100,11 +96,6 @@ class InterfaceColorsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface_colors.html"
 
-    options = [
-        Option('setting', 'interface_colors', InterfaceColors(dark_theme=False).get_colors(), title=N_("Colors to use for light theme")),
-        Option('setting', 'interface_colors_dark', InterfaceColors(dark_theme=True).get_colors(), title=N_("Colors to use for dark theme")),
-    ]
-
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_InterfaceColorsOptionsPage()
@@ -112,6 +103,9 @@ class InterfaceColorsOptionsPage(OptionsPage):
         self.new_colors = {}
         self.colors_list = QtWidgets.QVBoxLayout()
         self.ui.colors.setLayout(self.colors_list)
+
+        self.register_setting('interface_colors', ['colors'])
+        self.register_setting('interface_colors_dark', ['colors'])
 
     def update_color_selectors(self):
         if self.colors_list:

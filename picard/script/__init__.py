@@ -37,7 +37,7 @@
 
 from picard import log
 from picard.config import get_config
-from picard.const import (
+from picard.const.defaults import (
     DEFAULT_FILE_NAMING_FORMAT,
     DEFAULT_NAMING_PRESET_ID,
 )

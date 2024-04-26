@@ -43,10 +43,7 @@ from PyQt6.QtWidgets import (
     QToolTip,
 )
 
-from picard.config import (
-    BoolOption,
-    get_config,
-)
+from picard.config import get_config
 from picard.const.sys import IS_MACOS
 from picard.i18n import gettext as _
 from picard.script import (
@@ -313,11 +310,6 @@ def _replace_control_chars(text):
 
 class ScriptTextEdit(QTextEdit):
     autocomplete_trigger_chars = re.compile('[$%A-Za-z0-9_]')
-
-    options = [
-        BoolOption('persist', 'script_editor_wordwrap', False),
-        BoolOption('persist', 'script_editor_tooltips', True),
-    ]
 
     def __init__(self, parent):
         super().__init__(parent)

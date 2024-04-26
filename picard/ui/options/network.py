@@ -22,16 +22,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard.config import (
-    BoolOption,
-    IntOption,
-    TextOption,
-    get_config,
-)
-from picard.const import (
-    CACHE_SIZE_DISPLAY_UNIT,
-    CACHE_SIZE_IN_BYTES,
-)
+from picard.config import get_config
+from picard.const import CACHE_SIZE_DISPLAY_UNIT
 from picard.i18n import N_
 
 from picard.ui.options import (
@@ -50,24 +42,22 @@ class NetworkOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_network.html"
 
-    options = [
-        BoolOption('setting', 'use_proxy', False, title=N_("Use a web proxy server")),
-        TextOption('setting', 'proxy_type', 'http', title=N_("Type of proxy server")),
-        TextOption('setting', 'proxy_server_host', '', title=N_("Proxy server address")),
-        IntOption('setting', 'proxy_server_port', 80, title=N_("Proxy server port")),
-        TextOption('setting', 'proxy_username', '', title=N_("Proxy username")),
-        TextOption('setting', 'proxy_password', '', title=N_("Proxy password")),
-        BoolOption('setting', 'browser_integration', True, title=N_("Browser integration")),
-        IntOption('setting', 'browser_integration_port', 8000, title=N_("Default listening port")),
-        BoolOption('setting', 'browser_integration_localhost_only', True, title=N_("Listen only on localhost")),
-        IntOption('setting', 'network_transfer_timeout_seconds', 30, title=N_("Request timeout in seconds")),
-        IntOption('setting', 'network_cache_size_bytes', CACHE_SIZE_IN_BYTES, title=N_("Network cache size in bytes")),
-    ]
-
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_NetworkOptionsPage()
         self.ui.setupUi(self)
+
+        self.register_setting('use_proxy', [])
+        self.register_setting('proxy_type', ['proxy_type_socks', 'proxy_type_http'])
+        self.register_setting('proxy_server_host', ['server_host'])
+        self.register_setting('proxy_server_port', ['server_port'])
+        self.register_setting('proxy_username', ['username'])
+        self.register_setting('proxy_password', ['password'])
+        self.register_setting('network_transfer_timeout_seconds', ['transfer_timeout'])
+        self.register_setting('network_cache_size_bytes', ['network_cache_size'])
+        self.register_setting('browser_integration', [])
+        self.register_setting('browser_integration_port', ['browser_integration_port'])
+        self.register_setting('browser_integration_localhost_only', ['browser_integration_localhost_only'])
 
     def load(self):
         config = get_config()

@@ -23,11 +23,7 @@
 
 from functools import partial
 
-from picard.config import (
-    BoolOption,
-    TextOption,
-    get_config,
-)
+from picard.config import get_config
 from picard.i18n import N_
 
 from picard.ui.options import (
@@ -48,20 +44,18 @@ class TagsCompatibilityID3OptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_tags_compatibility_id3.html"
 
-    options = [
-        BoolOption('setting', 'write_id3v1', True, title=N_("Write ID3v1 tags")),
-        BoolOption('setting', 'write_id3v23', False, title=N_("ID3v2 version to write")),
-        TextOption('setting', 'id3v2_encoding', 'utf-8', title=N_("ID3v2 text encoding")),
-        TextOption('setting', 'id3v23_join_with', '/', title=N_("ID3v2.3 join character")),
-        BoolOption('setting', 'itunes_compatible_grouping', False, title=N_("Save iTunes compatible grouping and work")),
-    ]
-
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_TagsCompatibilityOptionsPage()
         self.ui.setupUi(self)
         self.ui.write_id3v23.clicked.connect(self.update_encodings)
         self.ui.write_id3v24.clicked.connect(partial(self.update_encodings, force_utf8=True))
+
+        self.register_setting('write_id3v23', ['write_id3v23', 'write_id3v24'])
+        self.register_setting('id3v2_encoding', ['enc_utf8', 'enc_utf16', 'enc_iso88591'])
+        self.register_setting('id3v23_join_with', ['id3v23_join_with'])
+        self.register_setting('itunes_compatible_grouping', ['itunes_compatible_grouping'])
+        self.register_setting('write_id3v1', ['write_id3v1'])
 
     def load(self):
         config = get_config()

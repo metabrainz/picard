@@ -41,7 +41,7 @@ from picard import (
     PICARD_VERSION,
     log,
 )
-from picard.profile import UserProfileGroups
+from picard.profile import profile_groups_all_settings
 from picard.version import Version
 
 
@@ -180,7 +180,7 @@ class SettingConfigSection(ConfigSection):
 
     def __getitem__(self, name):
         # Don't process settings that are not profile-specific
-        if name in UserProfileGroups.ALL_SETTINGS:
+        if name in profile_groups_all_settings():
             for profile_id, settings in self._get_active_profile_settings():
                 if name in settings and settings[name] is not None:
                     return settings[name]
@@ -191,7 +191,7 @@ class SettingConfigSection(ConfigSection):
 
     def __setitem__(self, name, value):
         # Don't process settings that are not profile-specific
-        if name in UserProfileGroups.ALL_SETTINGS:
+        if name in profile_groups_all_settings():
             for profile_id, settings in self._get_active_profile_settings():
                 if name in settings:
                     self._save_profile_setting(profile_id, name, value)

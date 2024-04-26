@@ -27,13 +27,9 @@
 
 
 from picard.config import (
-    BoolOption,
-    ListOption,
     Option,
-    TextOption,
     get_config,
 )
-from picard.const import DEFAULT_COVER_IMAGE_FILENAME
 from picard.coverart.providers import cover_art_providers
 from picard.i18n import (
     N_,
@@ -50,14 +46,6 @@ from picard.ui.ui_options_cover import Ui_CoverOptionsPage
 from picard.ui.util import qlistwidget_items
 
 
-DEFAULT_CA_PROVIDERS = [
-    ('Cover Art Archive', True),
-    ('UrlRelationships', True),
-    ('CaaReleaseGroup', True),
-    ('Local', False),
-]
-
-
 class CoverOptionsPage(OptionsPage):
 
     NAME = 'cover'
@@ -66,17 +54,6 @@ class CoverOptionsPage(OptionsPage):
     SORT_ORDER = 35
     ACTIVE = True
     HELP_URL = "/config/options_cover.html"
-
-    options = [
-        BoolOption('setting', 'save_images_to_tags', True, title=N_("Embed cover images into tags")),
-        BoolOption('setting', 'embed_only_one_front_image', True, title=N_("Embed only a single front image")),
-        BoolOption('setting', 'save_images_to_files', False, title=N_("Save cover images as separate files")),
-        TextOption('setting', 'cover_image_filename', DEFAULT_COVER_IMAGE_FILENAME, title=N_("File name for images")),
-        BoolOption('setting', 'save_images_overwrite', False, title=N_("Overwrite existing image files")),
-        BoolOption('setting', 'save_only_one_front_image', False, title=N_("Save only a single front image as separate file")),
-        BoolOption('setting', 'image_type_as_filename', False, title=N_("Always use the primary image type as the file name for non-front images")),
-        ListOption('setting', 'ca_providers', DEFAULT_CA_PROVIDERS, title=N_("Cover art providers")),
-    ]
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -88,6 +65,15 @@ class CoverOptionsPage(OptionsPage):
         self.ui.save_only_one_front_image.toggled.connect(self.ui.image_type_as_filename.setDisabled)
         self.move_view = MoveableListView(self.ui.ca_providers_list, self.ui.up_button,
                                           self.ui.down_button)
+
+        self.register_setting('save_images_to_tags', ['save_images_to_tags'])
+        self.register_setting('embed_only_one_front_image', ['cb_embed_front_only'])
+        self.register_setting('save_images_to_files', ['save_images_to_files'])
+        self.register_setting('cover_image_filename', ['cover_image_filename'])
+        self.register_setting('save_images_overwrite', ['save_images_overwrite'])
+        self.register_setting('save_only_one_front_image', ['save_only_one_front_image'])
+        self.register_setting('image_type_as_filename', ['image_type_as_filename'])
+        self.register_setting('ca_providers', ['ca_providers_list'])
 
     def restore_defaults(self):
         # Remove previous entries

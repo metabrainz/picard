@@ -30,7 +30,7 @@ from test.picardtestcase import (
     create_fake_png,
 )
 
-from picard.const import DEFAULT_COVER_IMAGE_FILENAME
+from picard.const.defaults import DEFAULT_COVER_IMAGE_FILENAME
 from picard.const.sys import IS_WIN
 from picard.coverart.image import (
     CoverArtImage,

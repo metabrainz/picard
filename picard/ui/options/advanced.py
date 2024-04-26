@@ -22,14 +22,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard.config import (
-    BoolOption,
-    IntOption,
-    ListOption,
-    TextOption,
-    get_config,
-)
-from picard.const import QUERY_LIMIT
+from picard.config import get_config
 from picard.i18n import N_
 
 from picard.ui.options import (
@@ -48,24 +41,22 @@ class AdvancedOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_advanced.html"
 
-    options = [
-        TextOption('setting', 'ignore_regex', '', title=N_("Ignore file paths matching a regular expression")),
-        BoolOption('setting', 'ignore_hidden_files', False, title=N_("Ignore hidden files")),
-        BoolOption('setting', 'recursively_add_files', True, title=N_("Include sub-folders when adding files from folder")),
-        IntOption('setting', 'ignore_track_duration_difference_under', 2, title=N_("Ignore track duration difference under x seconds")),
-        IntOption('setting', 'query_limit', QUERY_LIMIT, title=N_("Maximum number of entities to return per MusicBrainz query")),
-        BoolOption('setting', 'completeness_ignore_videos', False, title=N_("Completeness check ignore: Video tracks")),
-        BoolOption('setting', 'completeness_ignore_pregap', False, title=N_("Completeness check ignore: Pregap tracks")),
-        BoolOption('setting', 'completeness_ignore_data', False, title=N_("Completeness check ignore: Data tracks")),
-        BoolOption('setting', 'completeness_ignore_silence', False, title=N_("Completeness check ignore: Silent tracks")),
-        ListOption('setting', 'compare_ignore_tags', [], title=N_("Tags to ignore for comparison")),
-    ]
-
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_AdvancedOptionsPage()
         self.ui.setupUi(self)
         self.init_regex_checker(self.ui.ignore_regex, self.ui.regex_error)
+
+        self.register_setting('ignore_regex', ['ignore_regex'])
+        self.register_setting('ignore_hidden_files', ['ignore_hidden_files'])
+        self.register_setting('recursively_add_files', ['recursively_add_files'])
+        self.register_setting('ignore_track_duration_difference_under', ['ignore_track_duration_difference_under', 'label_track_duration_diff'])
+        self.register_setting('query_limit', ['query_limit', 'label_query_limit'])
+        self.register_setting('completeness_ignore_videos', ['completeness_ignore_videos'])
+        self.register_setting('completeness_ignore_pregap', ['completeness_ignore_pregap'])
+        self.register_setting('completeness_ignore_data', ['completeness_ignore_data'])
+        self.register_setting('completeness_ignore_silence', ['completeness_ignore_silence'])
+        self.register_setting('compare_ignore_tags', ['groupBox_ignore_tags'])
 
     def load(self):
         config = get_config()

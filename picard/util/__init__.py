@@ -71,11 +71,7 @@ from PyQt6 import QtCore
 from PyQt6.QtGui import QDesktopServices
 
 from picard import log
-from picard.const import (
-    DEFAULT_COPY_TEXT,
-    DEFAULT_NUMBERED_TITLE_FORMAT,
-    MUSICBRAINZ_SERVERS,
-)
+from picard.const import MUSICBRAINZ_SERVERS
 from picard.const.sys import (
     FROZEN_TEMP_PATH,
     IS_FROZEN,
@@ -1090,12 +1086,17 @@ def _regex_numbered_title_fmt(fmt, title_repl, count_repl):
     )
 
 
+def _get_default_numbered_title_format():
+    from picard.const.defaults import DEFAULT_NUMBERED_TITLE_FORMAT
+    return gettext_constants(DEFAULT_NUMBERED_TITLE_FORMAT)
+
+
 def unique_numbered_title(default_title, existing_titles, fmt=None):
     """Generate a new unique and numbered title
        based on given default title and existing titles
     """
     if fmt is None:
-        fmt = gettext_constants(DEFAULT_NUMBERED_TITLE_FORMAT)
+        fmt = _get_default_numbered_title_format()
 
     escaped_title = re.escape(default_title)
     reg_count = r'(\d+)'
@@ -1118,7 +1119,7 @@ def get_base_title_with_suffix(title, suffix, fmt=None):
        removing the suffix and number portion from the end.
     """
     if fmt is None:
-        fmt = gettext_constants(DEFAULT_NUMBERED_TITLE_FORMAT)
+        fmt = _get_default_numbered_title_format()
 
     escaped_suffix = re.escape(suffix)
     reg_title = r'(?P<title>.*?)(?:\s*' + escaped_suffix + ')?'
@@ -1133,6 +1134,7 @@ def get_base_title_with_suffix(title, suffix, fmt=None):
 def get_base_title(title):
     """Extract the base portion of a title, using the standard suffix.
     """
+    from picard.const.defaults import DEFAULT_COPY_TEXT
     suffix = gettext_constants(DEFAULT_COPY_TEXT)
     return get_base_title_with_suffix(title, suffix)
 

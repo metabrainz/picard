@@ -25,6 +25,7 @@ import unittest
 
 from test.picardtestcase import PicardTestCase
 
+from picard.const.defaults import DEFAULT_DRIVES
 from picard.const.sys import IS_WIN
 from picard.util import cdrom
 
@@ -104,7 +105,7 @@ class GetCdromDrivesTest(PicardTestCase):
         # and return an Iterable.
         drives = cdrom.get_cdrom_drives()
         self.assertIsInstance(drives, Iterable)
-        self.assertTrue(set(cdrom.DEFAULT_DRIVES).issubset(drives))
+        self.assertTrue(set(DEFAULT_DRIVES).issubset(drives))
 
     def test_generic_iter_drives(self):
         self.set_config_values({"cd_lookup_device": "/dev/cdrom"})

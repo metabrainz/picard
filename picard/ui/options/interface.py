@@ -35,15 +35,9 @@ from PyQt6 import (
     QtCore,
     QtWidgets,
 )
-from PyQt6.QtCore import QStandardPaths
 
-from picard.config import (
-    BoolOption,
-    TextOption,
-    get_config,
-)
+from picard.config import get_config
 from picard.const.languages import UI_LANGUAGES
-from picard.const.sys import IS_MACOS
 from picard.i18n import (
     N_,
     gettext as _,
@@ -64,12 +58,6 @@ from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.util import changes_require_restart_warning
 
 
-_default_starting_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.HomeLocation)
-
-# On macOS it is not common that the global menu shows icons
-DEFAULT_SHOW_MENU_ICONS = not IS_MACOS
-
-
 class InterfaceOptionsPage(OptionsPage):
 
     NAME = 'interface'
@@ -78,23 +66,6 @@ class InterfaceOptionsPage(OptionsPage):
     SORT_ORDER = 80
     ACTIVE = True
     HELP_URL = "/config/options_interface.html"
-
-    options = [
-        BoolOption('setting', 'toolbar_show_labels', True, title=N_("Show text labels under icons")),
-        BoolOption('setting', 'allow_multi_dirs_selection', False, title=N_("Allow selection of multiple directories")),
-        BoolOption('setting', 'show_menu_icons', DEFAULT_SHOW_MENU_ICONS, title=N_("Show icons in menus")),
-        BoolOption('setting', 'builtin_search', True, title=N_("Use builtin search rather than looking in browser")),
-        BoolOption('setting', 'use_adv_search_syntax', False, title=N_("Use advanced search syntax")),
-        BoolOption('setting', 'show_new_user_dialog', True, title=N_("Show a usage warning dialog when Picard starts")),
-        BoolOption('setting', 'quit_confirmation', True, title=N_("Show a quit confirmation dialog for unsaved changes")),
-        BoolOption('setting', 'file_save_warning', True, title=N_("Show a confirmation dialog when saving files")),
-        TextOption('setting', 'ui_language', '', title=N_("User interface language")),
-        TextOption('setting', 'ui_theme', str(UiTheme.DEFAULT), title=N_("User interface color theme")),
-        BoolOption('setting', 'filebrowser_horizontal_autoscroll', True, title=N_("Adjust horizontal position in file browser automatically")),
-        BoolOption('setting', 'starting_directory', False, title=N_("Begin browsing in a specific directory")),
-        TextOption('setting', 'starting_directory_path', _default_starting_dir, title=N_("Directory to begin browsing")),
-        TextOption('setting', 'load_image_behavior', 'append'),
-    ]
 
     # Those are labels for theme display
     _UI_THEME_LABELS = {
@@ -153,6 +124,20 @@ class InterfaceOptionsPage(OptionsPage):
             self.ui.ui_theme_container.hide()
 
         self.ui.allow_multi_dirs_selection.stateChanged.connect(self.multi_selection_warning)
+
+        self.register_setting('toolbar_show_labels', ['toolbar_show_labels'])
+        self.register_setting('show_menu_icons', ['show_menu_icons'])
+        self.register_setting('ui_language', ['ui_language', 'label'])
+        self.register_setting('ui_theme', ['ui_theme', 'label_theme'])
+        self.register_setting('allow_multi_dirs_selection', ['allow_multi_dirs_selection'])
+        self.register_setting('builtin_search', ['builtin_search'])
+        self.register_setting('use_adv_search_syntax', ['use_adv_search_syntax'])
+        self.register_setting('show_new_user_dialog', ['new_user_dialog'])
+        self.register_setting('quit_confirmation', ['quit_confirmation'])
+        self.register_setting('file_save_warning', ['file_save_warning'])
+        self.register_setting('filebrowser_horizontal_autoscroll', ['filebrowser_horizontal_autoscroll'])
+        self.register_setting('starting_directory', ['starting_directory'])
+        self.register_setting('starting_directory_path', ['starting_directory_path'])
 
     def load(self):
         # Don't display the multi-selection warning when loading values.

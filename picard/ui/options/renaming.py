@@ -36,14 +36,9 @@
 import os.path
 
 from PyQt6 import QtWidgets
-from PyQt6.QtCore import QStandardPaths
 from PyQt6.QtGui import QPalette
 
-from picard.config import (
-    BoolOption,
-    TextOption,
-    get_config,
-)
+from picard.config import get_config
 from picard.i18n import (
     N_,
     gettext as _,
@@ -68,9 +63,6 @@ from picard.ui.scripteditor import (
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 
 
-_default_music_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.MusicLocation)
-
-
 class RenamingOptionsPage(OptionsPage):
 
     NAME = 'filerenaming'
@@ -79,15 +71,6 @@ class RenamingOptionsPage(OptionsPage):
     SORT_ORDER = 40
     ACTIVE = True
     HELP_URL = "/config/options_filerenaming.html"
-
-    options = [
-        BoolOption('setting', 'rename_files', False, title=N_("Rename files")),
-        BoolOption('setting', 'move_files', False, title=N_("Move files")),
-        TextOption('setting', 'move_files_to', _default_music_dir, title=N_("Destination directory")),
-        BoolOption('setting', 'move_additional_files', False, title=N_("Move additional files")),
-        TextOption('setting', 'move_additional_files_pattern', "*.jpg *.png", title=N_("Additional file patterns")),
-        BoolOption('setting', 'delete_empty_dirs', True, title=N_("Delete empty directories")),
-    ]
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -130,6 +113,14 @@ class RenamingOptionsPage(OptionsPage):
         synchronize_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
 
         self.current_row = -1
+
+        self.register_setting('move_files', ['move_files'])
+        self.register_setting('move_files_to', ['move_files_to'])
+        self.register_setting('move_additional_files', ['move_additional_files'])
+        self.register_setting('move_additional_files_pattern', ['move_additional_files_pattern'])
+        self.register_setting('delete_empty_dirs', ['delete_empty_dirs'])
+        self.register_setting('rename_files', ['rename_files'])
+        self.register_setting('selected_file_naming_script_id', ['naming_script_selector'])
 
     def update_selector_from_editor(self):
         """Update the script selector combo box from the script editor page.

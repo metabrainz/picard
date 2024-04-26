@@ -33,11 +33,11 @@ from PyQt6 import (
 from picard import log
 from picard.config import (
     Option,
-    TextOption,
     get_config,
     load_new_config,
 )
 from picard.config_upgrade import upgrade_config
+from picard.const.defaults import DEFAULT_AUTOBACKUP_DIRECTORY
 from picard.i18n import (
     N_,
     gettext as _,
@@ -62,12 +62,10 @@ OPTIONS_NOT_IN_PAGES = {
     'write_wave_riff_info',
 }
 
-_default_autobackup_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
-
 
 def _safe_autobackup_dir(path):
     if not path or not os.path.isdir(path):
-        return _default_autobackup_directory
+        return DEFAULT_AUTOBACKUP_DIRECTORY
     return os.path.normpath(path)
 
 
@@ -79,10 +77,6 @@ class MaintenanceOptionsPage(OptionsPage):
     SORT_ORDER = 99
     ACTIVE = True
     HELP_URL = "/config/options_maintenance.html"
-
-    options = [
-        TextOption('setting', 'autobackup_directory', _default_autobackup_directory, title=N_("Automatic backup destination directory")),
-    ]
 
     signal_reload = QtCore.pyqtSignal()
 
@@ -119,6 +113,8 @@ class MaintenanceOptionsPage(OptionsPage):
         palette_readonly.setColor(QtGui.QPalette.ColorRole.Base, disabled_color)
         self.ui.config_file.setPalette(palette_readonly)
         self.last_valid_path = _safe_autobackup_dir('')
+
+        self.register_setting('autobackup_directory', ['autobackup_dir'])
 
     def get_current_autobackup_dir(self):
         return _safe_autobackup_dir(self.ui.autobackup_dir.text())

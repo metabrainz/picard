@@ -33,10 +33,7 @@ from PyQt6 import (
 )
 
 from picard.config import (
-    BoolOption,
-    ListOption,
     Option,
-    TextOption,
     get_config,
 )
 from picard.const.locales import ALIAS_LOCALES
@@ -88,21 +85,6 @@ class MetadataOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_metadata.html"
 
-    options = [
-        TextOption('setting', 'va_name', "Various Artists", title=N_("Various Artists name")),
-        TextOption('setting', 'nat_name', '[standalone recordings]', title=N_("Standalone recordings name")),
-        ListOption('setting', 'artist_locales', ['en'], title=N_("Translation locales")),
-        BoolOption('setting', 'translate_artist_names', False, title=N_("Translate artist names")),
-        BoolOption('setting', 'translate_artist_names_script_exception', False, title=N_("Translate artist names exception")),
-        ListOption('setting', 'script_exceptions', [], title=N_("Translation script exceptions")),
-        BoolOption('setting', 'release_ars', True, title=N_("Use release relationships")),
-        BoolOption('setting', 'track_ars', False, title=N_("Use track and release relationships")),
-        BoolOption('setting', 'convert_punctuation', False, title=N_("Convert Unicode punctuation characters to ASCII")),
-        BoolOption('setting', 'standardize_artists', False, title=N_("Use standardized artist names")),
-        BoolOption('setting', 'standardize_instruments', True, title=N_("Use standardized instrument and vocal credits")),
-        BoolOption('setting', 'guess_tracknumber_and_title', True, title=N_("Guess track number and title from filename if empty")),
-    ]
-
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_MetadataOptionsPage()
@@ -113,6 +95,19 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.select_scripts.clicked.connect(self.open_script_selector)
         self.ui.translate_artist_names.stateChanged.connect(self.set_enabled_states)
         self.ui.translate_artist_names_script_exception.stateChanged.connect(self.set_enabled_states)
+
+        self.register_setting('translate_artist_names', ['translate_artist_names'])
+        self.register_setting('artist_locales', ['selected_locales'])
+        self.register_setting('translate_artist_names_script_exception', ['translate_artist_names_script_exception'])
+        self.register_setting('script_exceptions', ['selected_scripts'])
+        self.register_setting('standardize_artists', ['standardize_artists'])
+        self.register_setting('standardize_instruments', ['standardize_instruments'])
+        self.register_setting('convert_punctuation', ['convert_punctuation'])
+        self.register_setting('release_ars', ['release_ars'])
+        self.register_setting('track_ars', ['track_ars'])
+        self.register_setting('guess_tracknumber_and_title', ['guess_tracknumber_and_title'])
+        self.register_setting('va_name', ['va_name'])
+        self.register_setting('nat_name', ['nat_name'])
 
     def load(self):
         config = get_config()

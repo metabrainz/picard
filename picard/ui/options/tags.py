@@ -28,11 +28,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard.config import (
-    BoolOption,
-    ListOption,
-    get_config,
-)
+from picard.config import get_config
 from picard.i18n import N_
 
 from picard.ui.options import (
@@ -51,21 +47,19 @@ class TagsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_tags.html"
 
-    options = [
-        BoolOption('setting', 'dont_write_tags', False, title=N_("Don't write tags")),
-        BoolOption('setting', 'preserve_timestamps', False, title=N_("Preserve timestamps of tagged files")),
-        BoolOption('setting', 'clear_existing_tags', False, title=N_("Clear existing tags")),
-        BoolOption('setting', 'preserve_images', False, title=N_("Keep embedded images when clearing tags")),
-        BoolOption('setting', 'remove_id3_from_flac', False, title=N_("Remove ID3 tags from FLAC files")),
-        BoolOption('setting', 'remove_ape_from_mp3', False, title=N_("Remove APEv2 tags from MP3 files")),
-        BoolOption('setting', 'fix_missing_seekpoints_flac', False, title=N_("Fix missing seekpoints for FLAC files")),
-        ListOption('setting', 'preserved_tags', [], title=N_("Preserved tags list")),
-    ]
-
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_TagsOptionsPage()
         self.ui.setupUi(self)
+
+        self.register_setting('dont_write_tags', ['write_tags'])
+        self.register_setting('preserve_timestamps', ['preserve_timestamps'])
+        self.register_setting('clear_existing_tags', ['clear_existing_tags'])
+        self.register_setting('preserve_images', ['preserve_images'])
+        self.register_setting('remove_id3_from_flac', ['remove_id3_from_flac'])
+        self.register_setting('remove_ape_from_mp3', ['remove_ape_from_mp3'])
+        self.register_setting('fix_missing_seekpoints_flac', ['fix_missing_seekpoints_flac'])
+        self.register_setting('preserved_tags', ['preserved_tags'])
 
     def load(self):
         config = get_config()

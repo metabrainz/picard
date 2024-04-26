@@ -36,17 +36,14 @@ from PyQt6.QtGui import QPalette
 
 from picard import log
 from picard.config import (
-    BoolOption,
-    Option,
     SettingConfigSection,
-    TextOption,
     get_config,
 )
-from picard.const import (
+from picard.const import PICARD_URLS
+from picard.const.defaults import (
     DEFAULT_COPY_TEXT,
     DEFAULT_NAMING_PRESET_ID,
     DEFAULT_SCRIPT_NAME,
-    PICARD_URLS,
 )
 from picard.file import File
 from picard.i18n import (
@@ -430,12 +427,6 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
 
     help_url = PICARD_URLS['doc_naming_script_edit']
-
-    options = [
-        BoolOption('persist', 'script_editor_show_documentation', False),
-        Option('setting', 'file_renaming_scripts', {}),
-        TextOption('setting', 'selected_file_naming_script_id', '', title=N_("Selected file naming script")),
-    ]
 
     signal_save = QtCore.pyqtSignal()
     signal_update = QtCore.pyqtSignal()

@@ -46,13 +46,11 @@ USER_PLUGIN_DIR = appdirs.plugin_folder()
 
 # Network Cache default settings
 CACHE_SIZE_DISPLAY_UNIT = 1000*1000
-CACHE_SIZE_IN_BYTES = 100*CACHE_SIZE_DISPLAY_UNIT
 
 # AcoustID client API key
 ACOUSTID_KEY = 'v8pQ6oyB'
 ACOUSTID_URL = 'https://api.acoustid.org/v2'
 FPCALC_NAMES = ['fpcalc', 'pyfpcalc']
-DEFAULT_FPCALC_THREADS = 2
 
 # MB OAuth client credentials
 MUSICBRAINZ_OAUTH_CLIENT_ID = 'ACa9wsDX19cLp-AeEP-vVw'
@@ -153,9 +151,6 @@ PLUGINS_API = {
     },
 }
 
-# Default query limit
-QUERY_LIMIT = 50
-
 # Maximum number of covers to draw in a stack in CoverArtThumbnail
 MAX_COVERS_TO_STACK = 4
 
@@ -183,25 +178,4 @@ PROGRAM_UPDATE_LEVELS = OrderedDict(
     ]
 )
 
-
-DEFAULT_PROGRAM_UPDATE_LEVEL = 0
-
-
-DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/\n" \
-    "$if(%albumartist%,%album%/,)\n" \
-    "$if($gt(%totaldiscs%,1),$if($gt(%totaldiscs%,9),$num(%discnumber%,2),%discnumber%)-,)" \
-    "$if($and(%albumartist%,%tracknumber%),$num(%tracknumber%,2) ,)" \
-    "$if(%_multiartist%,%artist% - ,)" \
-    "%title%"
-
-
-DEFAULT_SCRIPT_NAME = N_("My script")
-DEFAULT_COVER_IMAGE_FILENAME = 'cover'
-DEFAULT_PROFILE_NAME = N_("My profile")
-DEFAULT_COPY_TEXT = N_("(copy)")
-DEFAULT_NUMBERED_TITLE_FORMAT = N_("{title} ({count})")
-DEFAULT_NAMING_PRESET_ID = "Preset 1"
-
 SCRIPT_LANGUAGE_VERSION = '1.1'
-
-DEFAULT_TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
