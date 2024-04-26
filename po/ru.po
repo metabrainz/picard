@@ -34,19 +34,19 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-04-22 12:02+0200\n"
-"PO-Revision-Date: 2024-03-25 12:28+0000\n"
-"Last-Translator: wileyfoxyx <wileyfoxyx@users.noreply.translations."
-"metabrainz.org>\n"
-"Language-Team: Russian <https://translations.metabrainz.org/projects/"
-"picard/3/app/ru/>\n"
+"PO-Revision-Date: 2024-04-26 09:42+0000\n"
+"Last-Translator: Dimlbur <Dimlbur@users.noreply.translations.metabrainz.org>"
+"\n"
+"Language-Team: Russian <https://translations.metabrainz.org/projects/picard/"
+"3/app/ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
-"(n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.4\n"
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
+"n%100>=11 && n%100<=14)? 2 : 3);\n"
+"X-Generator: Weblate 5.4.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:154
@@ -144,12 +144,12 @@ msgid ""
 "Do you want to remove it or merge it with your file naming scheme for single "
 "artist albums?"
 msgstr ""
-"Отдельная схема именования файлов для различных художников, альбомы, был "
-"удален в этой версии Picard.\n"
-"В настоящее время Вы не используете этот параметр, но есть отдельная схема "
-"именования файлов определены.\n"
-"Вы действительно хотите удалить или объединить его с вашей схема именования "
-"файлов для одного художника альбомы?"
+"Отдельная схема именования файлов для альбомов различных исполнителей была "
+"удалена в этой версии Picard.\n"
+"В настоящее время Вы не используете этот параметр, но у вас определена "
+"отдельная схема именования файлов.\n"
+"Вы хотите удалить или объединить её с вашей схемой именования файлов для "
+"альбомов одного исполнителя?"
 
 #: picard/config_upgrade.py:135
 msgid "Merge"
@@ -224,7 +224,7 @@ msgstr "Информация"
 
 #: picard/log.py:80
 msgid "Debug"
-msgstr ""
+msgstr "Отладка"
 
 #: picard/oauth.py:250 picard/oauth.py:277
 msgid "Unexpected authentication error"
@@ -346,7 +346,7 @@ msgstr "Штрих-код"
 
 #: picard/releasegroup.py:66 picard/ui/cdlookup.py:75
 msgid "Disambiguation"
-msgstr "Дезамбигурация"
+msgstr "Разъяснение"
 
 #: picard/releasegroup.py:97
 msgid "[no barcode]"
@@ -442,13 +442,14 @@ msgid "Looking up the fingerprint for file '%(filename)s' …"
 msgstr "Поиск отпечатка для файла '%(filename)s' …"
 
 #: picard/acoustid/manager.py:185
+#, fuzzy
 msgid ""
 "AcoustID submission finished, but not all fingerprints have been submitted"
-msgstr ""
+msgstr "Отправка AcoustID завершена, но были отправлены не все отпечатки"
 
 #: picard/acoustid/manager.py:187
 msgid "AcoustID submission finished successfully"
-msgstr ""
+msgstr "Отправка AcoustID успешно завершена"
 
 #: picard/acoustid/manager.py:198
 msgid ""
@@ -456,8 +457,11 @@ msgid ""
 msgstr ""
 
 #: picard/acoustid/manager.py:200
+#, fuzzy
 msgid "AcoustID submission failed permanently, probably too many retries"
 msgstr ""
+"Отправка AcoustID постоянно терпит неудачу, вероятно, было предпринято "
+"слишком много попыток"
 
 #: picard/acoustid/manager.py:210
 msgid "Submitting AcoustIDs …"
@@ -529,11 +533,11 @@ msgstr "Архив обложек"
 
 #: picard/coverart/providers/caa.py:201
 msgid "Cover Art Archive: Release"
-msgstr ""
+msgstr "Cover Art Archive: Релиз"
 
 #: picard/coverart/providers/caa_release_group.py:45
 msgid "Cover Art Archive: Release Group"
-msgstr ""
+msgstr "Cover Art Archive: Группа релизов"
 
 #: picard/coverart/providers/local.py:79
 msgid "Local Files"
@@ -559,12 +563,15 @@ msgid "Default file naming script"
 msgstr "Скрипт именования файла по умолчанию"
 
 #: picard/script/__init__.py:168
+#, fuzzy
 msgid "[album artist]/[album]/[track #]. [title]"
-msgstr ""
+msgstr "[исполнитель альбома]/[альбом]/[№ трека]. [название]"
 
 #: picard/script/__init__.py:182
+#, fuzzy
 msgid "[album artist]/[album]/[disc and track #] [artist] - [title]"
 msgstr ""
+"[исполнитель альбома]/[альбом]/[№ диска и трека] [исполнитель] - [название]"
 
 #: picard/script/functions.py:191
 msgid ""
@@ -1556,10 +1563,9 @@ msgid ""
 msgstr ""
 
 #: picard/script/serializer.py:206
-#, fuzzy, python-format
-#| msgid "Error loading collections: %(error)s"
+#, python-format
 msgid "Error exporting file \"%(filename)s\": %(error)s."
-msgstr "Ошибка при загрузке коллекции: %(error)s"
+msgstr "Ошибка при экспорте файла \"%(filename)s\": %(error)s."
 
 #: picard/script/serializer.py:213
 msgid "Export Script File"
@@ -2487,7 +2493,7 @@ msgstr "Предложить AcoustID"
 
 #: picard/ui/mainwindow.py:606
 msgid "Submit acoustic fingerprints"
-msgstr "Представить акустические отпечатки"
+msgstr "Предоставить акустические отпечатки"
 
 #: picard/ui/mainwindow.py:613
 msgid "E&xit"
