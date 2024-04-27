@@ -44,6 +44,7 @@ from picard.config import (
     SettingConfigSection,
     get_config,
 )
+from picard.const import PICARD_URLS
 from picard.i18n import (
     N_,
     gettext as _,
@@ -110,12 +111,26 @@ class ErrorOptionsPage(OptionsPage):
         msg = _(
             "Error while loading option page '%s':\n"
             "\n"
-            "%s\n"
-            "\n"
-            "Please report this issue."
+            "%s"
         ) % (_(from_cls.TITLE), errmsg)
         self.error = _("This page failed to load")
-        self.ui = QtWidgets.QLabel(msg, self)
+
+        layout = QtWidgets.QVBoxLayout(self)
+        widget = QtWidgets.QLabel()
+        widget.setTextFormat(QtCore.Qt.TextFormat.PlainText)
+        widget.setText(msg)
+        widget.setWordWrap(True)
+        layout.addWidget(widget)
+
+        widget = QtWidgets.QLabel(
+            _('Please report this issue on the <a href="%s">Picard bug tracker</a>.')
+            % PICARD_URLS['bug_tracker']
+        )
+        widget.setOpenExternalLinks(True)
+        layout.addWidget(widget)
+
+        layout.addStretch()
+        self.ui = layout
 
 
 class OptionsDialog(PicardDialog, SingletonDialog):
