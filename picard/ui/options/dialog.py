@@ -226,8 +226,14 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.installEventFilter(self)
 
         self.highlight_enabled_profile_options()
-        current_page = self.item_to_page[self.ui.pages_tree.currentItem()]
-        self.set_profiles_button_and_highlight(current_page)
+
+        try:
+            current_item = self.ui.pages_tree.currentItem()
+            current_page = self.item_to_page[current_item]
+            self.set_profiles_button_and_highlight(current_page)
+        except KeyError:
+            # selected page became inactive, not available
+            pass
 
     def load_all_pages(self):
         for page in self.pages:
