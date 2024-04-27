@@ -227,38 +227,43 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
         self.restoreWindowState()
         self.finished.connect(self.saveWindowState)
-
-        self.load_all_pages()
         self.ui.pages_tree.setCurrentItem(self.default_item)
 
-        self.profile_page = self.get_page('profiles')
-        self.profile_page.signal_refresh.connect(self.update_from_profile_changes)
+        self.load_all_pages()
 
         self.maintenance_page = self.get_page('maintenance')
-        self.maintenance_page.signal_reload.connect(self.load_all_pages)
+        if self.maintenance_page.loaded:
+            self.maintenance_page.signal_reload.connect(self.load_all_pages)
 
         self.first_enter = True
         self.installEventFilter(self)
 
-        self.highlight_enabled_profile_options()
-
-        try:
-            current_item = self.ui.pages_tree.currentItem()
-            current_page = self.item_to_page[current_item]
-            self.set_profiles_button_and_highlight(current_page)
-        except KeyError:
-            # selected page became inactive, not available
-            pass
+        self.profile_page = self.get_page('profiles')
+        if self.profile_page.loaded:
+            self.profile_page.signal_refresh.connect(self.update_from_profile_changes)
+            self.highlight_enabled_profile_options()
+            try:
+                current_item = self.ui.pages_tree.currentItem()
+                current_page = self.item_to_page[current_item]
+                self.set_profiles_button_and_highlight(current_page)
+            except KeyError:
+                # selected page became inactive, not available
+                pass
 
     def load_all_pages(self):
         for page in self.pages:
+            if page.error:
+                continue
             try:
                 page.load()
+                page.loaded = True
             except Exception:
                 log.exception("Failed loading options page %r", page)
                 self.disable_page(page.NAME)
 
     def show_attached_profiles_dialog(self):
+        if not self.profile_page.loaded:
+            return
         window_title = _("Profiles Attached to Options")
         items = self.ui.pages_tree.selectedItems()
         if not items:
@@ -292,6 +297,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def get_working_profile_data(self):
         profile_page = self.get_page('profiles')
+        if not profile_page.loaded:
+            return
         working_profiles = profile_page._clean_and_get_all_profiles()
         if working_profiles is None:
             working_profiles = []
@@ -354,6 +361,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         return self.item_to_page[self.page_to_item[name]]
 
     def page_has_attached_profiles(self, page, enabled_profiles_only=False):
+        if not page.loaded:
+            return False
         option_group = profile_groups_group_from_page(page)
         if not option_group:
             return False
@@ -409,15 +418,16 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 log.exception("Failed checking options page %r", page)
                 self._show_page_error(page, e)
                 return
-        self.profile_page.save()
-        for page in self.pages:
-            try:
-                if page != self.profile_page:
-                    page.save()
-            except Exception as e:
-                log.exception("Failed saving options page %r", page)
-                self._show_page_error(page, e)
-                return
+        if self.profile_page.loaded:
+            self.profile_page.save()
+            for page in self.pages:
+                try:
+                    if page != self.profile_page:
+                        page.save()
+                except Exception as e:
+                    log.exception("Failed saving options page %r", page)
+                    self._show_page_error(page, e)
+                    return
         super().accept()
 
     def _show_page_error(self, page, error):
