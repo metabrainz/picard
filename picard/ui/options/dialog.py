@@ -113,7 +113,8 @@ class ErrorOptionsPage(OptionsPage):
             "%s\n"
             "\n"
             "Please report this issue."
-        ) % (_(self.TITLE), errmsg)
+        ) % (_(from_cls.TITLE), errmsg)
+        self.error = _("This page failed to load")
         self.ui = QtWidgets.QLabel(msg, self)
 
 
@@ -126,7 +127,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         items = []
         for foo, bar, page in sorted(pages):
             item = HashableTreeWidgetItem(parent_item)
-            item.setText(0, _(page.TITLE))
+            if page.error:
+                title = _("%s (error)") % _(page.TITLE)
+                item.setToolTip(0, page.error)
+            else:
+                title = _(page.TITLE)
+            item.setText(0, title)
             if page.ACTIVE:
                 self.item_to_page[item] = page
                 self.page_to_item[page.NAME] = item
