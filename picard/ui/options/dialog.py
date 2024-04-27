@@ -61,6 +61,7 @@ from picard.ui import (
 )
 from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     OptionsCheckError,
+    OptionsPage,
     _pages as page_classes,
     advanced,
     cdlookup,
@@ -91,6 +92,29 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
 )
 from picard.ui.ui_options_attached_profiles import Ui_AttachedProfilesDialog
 from picard.ui.util import StandardButton
+
+
+class ErrorOptionsPage(OptionsPage):
+
+    def __init__(self, parent=None, errmsg='', from_cls=None):
+        # copy properties from failing page
+        self.NAME = from_cls.NAME
+        self.TITLE = from_cls.TITLE
+        self.PARENT = from_cls.PARENT
+        self.SORT_ORDER = from_cls.SORT_ORDER
+        self.ACTIVE = from_cls.ACTIVE
+        self.HELP_URL = from_cls.HELP_URL
+
+        super().__init__(parent)
+
+        msg = _(
+            "Error while loading option page '%s':\n"
+            "\n"
+            "%s\n"
+            "\n"
+            "Please report this issue."
+        ) % (_(self.TITLE), errmsg)
+        self.ui = QtWidgets.QLabel(msg, self)
 
 
 class OptionsDialog(PicardDialog, SingletonDialog):
@@ -155,11 +179,16 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.pages = []
         for Page in page_classes:
             try:
-                page = Page(self.ui.pages_stack)
-                page.set_dialog(self)
-                self.pages.append(page)
-            except Exception:
+                page = Page()
+            except Exception as e:
                 log.exception("Failed initializing options page %r", Page)
+                # create an empty page with the error message in place of the failing page
+                # this approach still allows subpages of the failing page to load
+                page = ErrorOptionsPage(from_cls=Page, errmsg=str(e))
+            self.ui.pages_stack.addWidget(page)
+            page.set_dialog(self)
+            self.pages.append(page)
+
         self.item_to_page = {}
         self.page_to_item = {}
         self.default_item = None
