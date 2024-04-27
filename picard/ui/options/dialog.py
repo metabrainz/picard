@@ -130,7 +130,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             if page.ACTIVE:
                 self.item_to_page[item] = page
                 self.page_to_item[page.NAME] = item
-                self.ui.pages_stack.addWidget(page)
                 profile_groups_order(page.NAME)
             else:
                 item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
