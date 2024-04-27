@@ -34,7 +34,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-04-22 12:02+0200\n"
-"PO-Revision-Date: 2024-04-26 09:42+0000\n"
+"PO-Revision-Date: 2024-04-27 10:42+0000\n"
 "Last-Translator: Dimlbur <Dimlbur@users.noreply.translations.metabrainz.org>"
 "\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/picard/"
@@ -186,6 +186,8 @@ msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
 msgstr ""
+"Файл не удалось проанализировать, либо он поврежден, либо формат файла не "
+"поддерживается."
 
 #: picard/file.py:868
 #, python-format
@@ -424,17 +426,17 @@ msgstr "[не удается загрузить запись %s]"
 #: picard/acoustid/__init__.py:113
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
-msgstr "AcoustID поиск ошибок в сети для '%(filename)s'!"
+msgstr "Ошибка сети при поиске AcoustID для '%(filename)s'!"
 
 #: picard/acoustid/__init__.py:136
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
-msgstr "AcoustID ошибка при поиске для '%(filename)s'!"
+msgstr "Поиск AcoustID не удался для '%(filename)s'!"
 
 #: picard/acoustid/__init__.py:180
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
-msgstr "AcoustID поиск вернулся без результатов для файла '%(filename)s\""
+msgstr "Поиск AcoustID не вернул результатов для файла '%(filename)s'"
 
 #: picard/acoustid/__init__.py:191
 #, python-format
@@ -1568,44 +1570,48 @@ msgid "Error exporting file \"%(filename)s\": %(error)s."
 msgstr "Ошибка при экспорте файла \"%(filename)s\": %(error)s."
 
 #: picard/script/serializer.py:213
+#, fuzzy
 msgid "Export Script File"
-msgstr ""
+msgstr "Экспортировать файл скрипта"
 
 #: picard/script/serializer.py:235
 msgid "Export Script"
-msgstr ""
+msgstr "Экспортировать скрипт"
 
 #: picard/script/serializer.py:236
 #, python-format
 msgid "Script successfully exported to %s"
-msgstr ""
+msgstr "Скрипт успешно экспортирован в %s"
 
 #: picard/script/serializer.py:247
 #, python-format
 msgid "Error importing \"%(filename)s\": %(error)s"
-msgstr ""
+msgstr "Ошибка при импорте \"%(filename)s\": %(error)s"
 
 #: picard/script/serializer.py:248
 #, python-format
 msgid "Error decoding \"%(filename)s\": %(error)s"
-msgstr ""
+msgstr "Ошибка декодирования \"%(filename)s\": %(error)s"
 
 #: picard/script/serializer.py:250
+#, fuzzy
 msgid "Import Script File"
-msgstr ""
+msgstr "Импортировать файл скрипта"
 
 #: picard/script/serializer.py:264
+#, fuzzy
 msgid "The file was empty"
-msgstr ""
+msgstr "Файл был пуст"
 
 #: picard/script/serializer.py:272
 #, python-format
 msgid "Imported from %s"
-msgstr ""
+msgstr "Импортировано из %s"
 
 #: picard/script/serializer.py:290
+#, fuzzy
 msgid "Argument is not a dictionary"
-msgstr ""
+msgstr "Аргумент не является словарём"
 
 #: picard/script/serializer.py:292 picard/script/serializer.py:336
 msgid "Invalid script package"
@@ -1673,15 +1679,16 @@ msgstr ""
 #: picard/ui/aboutdialog.py:102
 #, python-format
 msgid "Version %(version)s"
-msgstr ""
+msgstr "Версия %(version)s"
 
 #: picard/ui/aboutdialog.py:104
 msgid "Supported formats"
-msgstr ""
+msgstr "Поддерживаемые форматы"
 
 #: picard/ui/aboutdialog.py:106
+#, fuzzy
 msgid "Please donate"
-msgstr ""
+msgstr "Пожалуйста, сделайте пожертвование"
 
 #: picard/ui/aboutdialog.py:107
 msgid ""
