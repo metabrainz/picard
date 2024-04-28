@@ -164,7 +164,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             item.setText(0, title)
             if page.ACTIVE:
                 self.item_to_page[item] = page
-                self.page_to_item[page.NAME] = item
+                self.pagename_to_item[page.NAME] = item
                 profile_groups_order(page.NAME)
             else:
                 item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
@@ -225,7 +225,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             self.pages.append(page)
 
         self.item_to_page = {}
-        self.page_to_item = {}
+        self.pagename_to_item = {}
         self.default_item = None
         if not default_page:
             default_page = config.persist['options_last_active_page']
@@ -378,7 +378,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         return False
 
     def get_page(self, name):
-        return self.item_to_page[self.page_to_item[name]]
+        return self.item_to_page[self.pagename_to_item[name]]
 
     def page_has_attached_profiles(self, page, enabled_profiles_only=False):
         if not page.loaded or not self.profile_page.loaded:
@@ -413,7 +413,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             config.persist['options_last_active_page'] = page.NAME
 
     def disable_page(self, name):
-        item = self.page_to_item[name]
+        item = self.pagename_to_item[name]
         item.setDisabled(True)
 
     @property
@@ -422,7 +422,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         url = current_page.HELP_URL
         # If URL is empty, use the first non empty parent help URL.
         while current_page.PARENT and not url:
-            current_page = self.item_to_page[self.page_to_item[current_page.PARENT]]
+            current_page = self.item_to_page[self.pagename_to_item[current_page.PARENT]]
             url = current_page.HELP_URL
         if not url:
             url = 'doc_options'  # key in PICARD_URLS
@@ -453,12 +453,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     def _show_page_error(self, page, error):
         if not isinstance(error, OptionsCheckError):
             error = OptionsCheckError(_("Unexpected error"), str(error))
-        self.ui.pages_tree.setCurrentItem(self.page_to_item[page.NAME])
+        self.ui.pages_tree.setCurrentItem(self.pagename_to_item[page.NAME])
         page.display_error(error)
 
     def saveWindowState(self):
         expanded_pages = []
-        for page, item in self.page_to_item.items():
+        for page, item in self.pagename_to_item.items():
             index = self.ui.pages_tree.indexFromItem(item)
             is_expanded = self.ui.pages_tree.isExpanded(index)
             expanded_pages.append((page, is_expanded))
@@ -476,7 +476,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         else:
             for page, is_expanded in pages_tree_state:
                 try:
-                    item = self.page_to_item[page]
+                    item = self.pagename_to_item[page]
                 except KeyError:
                     continue
                 item.setExpanded(is_expanded)
