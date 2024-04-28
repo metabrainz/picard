@@ -250,10 +250,16 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 # selected page became inactive, not available
                 pass
 
+    @property
+    def initialized_pages(self):
+        yield from (page for page in self.pages if not page.error)
+
+    @property
+    def loaded_pages(self):
+        yield from (page for page in self.pages if page.loaded)
+
     def load_all_pages(self):
-        for page in self.pages:
-            if page.error:
-                continue
+        for page in self.initialized_pages:
             try:
                 page.load()
                 page.loaded = True
@@ -310,7 +316,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         fg_color = colors.get_color('profile_hl_fg')
         bg_color = colors.get_color('profile_hl_bg')
 
-        for page in self.pages:
+        for page in self.loaded_pages:
             option_group = profile_groups_group_from_page(page)
             if option_group:
                 if load_settings:
@@ -408,7 +414,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         return url
 
     def accept(self):
-        for page in self.pages:
+        for page in self.loaded_pages:
             try:
                 page.check()
             except OptionsCheckError as e:
@@ -418,16 +424,19 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 log.exception("Failed checking options page %r", page)
                 self._show_page_error(page, e)
                 return
+
         if self.profile_page.loaded:
             self.profile_page.save()
-            for page in self.pages:
-                try:
-                    if page != self.profile_page:
-                        page.save()
-                except Exception as e:
-                    log.exception("Failed saving options page %r", page)
-                    self._show_page_error(page, e)
-                    return
+
+        for page in self.loaded_pages:
+            try:
+                if page != self.profile_page:
+                    page.save()
+            except Exception as e:
+                log.exception("Failed saving options page %r", page)
+                self._show_page_error(page, e)
+                return
+
         super().accept()
 
     def _show_page_error(self, page, error):
@@ -463,10 +472,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def restore_all_defaults(self):
         self.suspend_signals = True
-        for page in self.pages:
+        for page in self.loaded_pages:
             try:
-                if page.loaded:
-                    page.restore_defaults()
+                page.restore_defaults()
             except Exception as e:
                 log.error("Failed restoring all defaults for page %r: %s", page, e)
         self.highlight_enabled_profile_options(load_settings=False)
