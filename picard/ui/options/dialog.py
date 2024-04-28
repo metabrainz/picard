@@ -97,7 +97,7 @@ from picard.ui.util import StandardButton
 
 class ErrorOptionsPage(OptionsPage):
 
-    def __init__(self, parent=None, errmsg='', from_cls=None):
+    def __init__(self, parent=None, errmsg='', from_cls=None, dialog=None):
         # copy properties from failing page
         self.NAME = from_cls.NAME
         self.TITLE = from_cls.TITLE
@@ -131,6 +131,8 @@ class ErrorOptionsPage(OptionsPage):
 
         layout.addStretch()
         self.ui = layout
+
+        self.dialog = dialog
 
 
 class OptionsDialog(PicardDialog, SingletonDialog):
@@ -200,13 +202,13 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         for Page in page_classes:
             try:
                 page = Page()
+                page.set_dialog(self)
             except Exception as e:
                 log.exception("Failed initializing options page %r", Page)
                 # create an empty page with the error message in place of the failing page
                 # this approach still allows subpages of the failing page to load
-                page = ErrorOptionsPage(from_cls=Page, errmsg=str(e))
+                page = ErrorOptionsPage(from_cls=Page, errmsg=str(e), dialog=self)
             self.ui.pages_stack.addWidget(page)
-            page.set_dialog(self)
             self.pages.append(page)
 
         self.item_to_page = {}
