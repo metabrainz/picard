@@ -242,9 +242,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.first_enter = True
         self.installEventFilter(self)
 
-        self.maintenance_page = self.get_page('maintenance')
-        if self.maintenance_page.loaded:
-            self.maintenance_page.signal_reload.connect(self.load_all_pages)
+        maintenance_page = self.get_page('maintenance')
+        if maintenance_page.loaded:
+            maintenance_page.signal_reload.connect(self.load_all_pages)
 
         self.profile_page = self.get_page('profiles')
         if self.profile_page.loaded:
