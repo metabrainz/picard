@@ -13,17 +13,18 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-04-22 12:02+0200\n"
-"PO-Revision-Date: 2024-04-07 12:29+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
-"Language-Team: Italian <https://translations.metabrainz.org/projects/"
-"picard/3/app/it/>\n"
+"PO-Revision-Date: 2024-04-28 11:42+0000\n"
+"Last-Translator: \"salo.rock\" <salo.rock@users.noreply.translations."
+"metabrainz.org>\n"
+"Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
+"3/app/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
-"0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.4\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
+" ? 1 : 2);\n"
+"X-Generator: Weblate 5.5.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:154
@@ -142,19 +143,19 @@ msgstr "Script di rinominazione file principale"
 
 #: picard/debug_opts.py:82
 msgid "Web Service Replies"
-msgstr ""
+msgstr "Risposte del web service"
 
 #: picard/debug_opts.py:82
 msgid "Log content of web service replies"
-msgstr ""
+msgstr "Registra il contenuto delle risposte del web service"
 
 #: picard/debug_opts.py:83
 msgid "Plugin Fullpath"
-msgstr ""
+msgstr "Percorso completo del plugin"
 
 #: picard/debug_opts.py:83
 msgid "Log plugin full paths"
-msgstr ""
+msgstr "Registra i percorsi completi dei plugin"
 
 #: picard/file.py:223
 msgid ""
@@ -316,7 +317,7 @@ msgstr "Nº di cat."
 
 #: picard/releasegroup.py:64
 msgid "Packaging"
-msgstr ""
+msgstr "Confezione"
 
 #: picard/releasegroup.py:65 picard/ui/cdlookup.py:74
 #: picard/ui/itemviews.py:176 picard/ui/searchdialog/album.py:161
@@ -2472,11 +2473,11 @@ msgstr "Testo visualizzazione registro (avvertenza)"
 
 #: picard/ui/colors.py:48
 msgid "Profile highlight background"
-msgstr ""
+msgstr "Evidenziazione del profilo (sfondo)"
 
 #: picard/ui/colors.py:49
 msgid "Profile highlight foreground"
-msgstr ""
+msgstr "Evidenziazione del profilo (primo piano)"
 
 #: picard/ui/colors.py:50
 msgid "Tag added"
@@ -2507,10 +2508,8 @@ msgid "Show more details"
 msgstr "Mostra più dettagli"
 
 #: picard/ui/coverartbox.py:397
-#, fuzzy
-#| msgid "Ctrl+Shift+S"
 msgid "Ctrl+Shift+I"
-msgstr "Ctrl+Shift+S"
+msgstr "Ctrl+Shift+I"
 
 #: picard/ui/coverartbox.py:434
 msgid "New Cover Art"
@@ -2951,10 +2950,8 @@ msgid "Verbosity"
 msgstr "Verbosità"
 
 #: picard/ui/logview.py:206 picard/ui/logview.py:207
-#, fuzzy
-#| msgid "Options"
 msgid "Debug Options"
-msgstr "Opzioni"
+msgstr "Opzioni di debug"
 
 #: picard/ui/logview.py:217
 msgid "String to highlight"
@@ -4735,10 +4732,8 @@ msgid "Password:"
 msgstr "Password:"
 
 #: picard/ui/ui_options_network.py:169
-#, fuzzy
-#| msgid "Network"
 msgid "Network options"
-msgstr "Rete"
+msgstr "Opzioni di rete"
 
 #: picard/ui/ui_options_network.py:170
 msgid "Request timeout in seconds:"
@@ -4746,7 +4741,7 @@ msgstr "Scadenza richieste in secondi:"
 
 #: picard/ui/ui_options_network.py:171
 msgid "Cache size (MB):"
-msgstr ""
+msgstr "Dimensione cache (MB):"
 
 #: picard/ui/ui_options_network.py:172
 msgid "Browser Integration"
@@ -5315,18 +5310,12 @@ msgid "Clos&e"
 msgstr "&Chiudi"
 
 #: picard/ui/util.py:137
-#, fuzzy
-#| msgid ""
-#| "You have changed the application theme. You have to restart Picard in "
-#| "order for the change to take effect."
 msgid "You have to restart Picard for the changes to take effect."
-msgstr ""
-"Hai cambiato il tema dell'applicazione. Devi riavviare Picard per applicare "
-"il cambiamento."
+msgstr "Devi riavviare Picard per applicare i cambiamenti."
 
 #: picard/ui/util.py:140
 msgid "Changes only applied on restart"
-msgstr ""
+msgstr "Cambiamenti applicati dopo il riavvio"
 
 #: picard/ui/options/__init__.py:111
 msgid "Regex Error"
@@ -5650,7 +5639,7 @@ msgstr "Predefinita del sistema"
 
 #: picard/ui/options/interface.py:199
 msgid "You have changed the application theme."
-msgstr ""
+msgstr "Hai cambiato il tema dell'applicazione."
 
 #: picard/ui/options/interface.py:201
 msgid ""
@@ -5663,10 +5652,8 @@ msgstr ""
 "\"Predefinito\" per usare di nuovo il tema predefinito di Picard."
 
 #: picard/ui/options/interface.py:208
-#, fuzzy
-#| msgid "User interface language"
 msgid "You have changed the interface language."
-msgstr "Lingua dell'interfaccia utente"
+msgstr "Hai cambiato la lingua dell'interfaccia."
 
 #: picard/ui/options/interface.py:228
 msgid "Option Setting Warning"
@@ -5700,7 +5687,7 @@ msgstr "Colori da utilizzare per il tema scuro"
 
 #: picard/ui/options/interface_colors.py:149
 msgid "You have changed the interface colors."
-msgstr ""
+msgstr "Hai cambiato i colori dell'interfaccia."
 
 #: picard/ui/options/interface_toolbar.py:84
 msgid "Action Toolbar"
@@ -5962,10 +5949,8 @@ msgid "Use a web proxy server"
 msgstr "Utilizza un server proxy web"
 
 #: picard/ui/options/network.py:55
-#, fuzzy
-#| msgid "type of proxy server"
 msgid "Type of proxy server"
-msgstr "tipo di server proxy"
+msgstr "Tipo di server proxy"
 
 #: picard/ui/options/network.py:56
 msgid "Proxy server address"
@@ -5997,7 +5982,7 @@ msgstr "Scadenza richieste in secondi"
 
 #: picard/ui/options/network.py:64
 msgid "Network cache size in bytes"
-msgstr ""
+msgstr "Dimensione cache di rete in byte"
 
 #: picard/ui/options/plugins.py:149
 msgid "Download and install plugin"
@@ -6123,28 +6108,20 @@ msgid "Unknown script"
 msgstr "Script sconosciuto"
 
 #: picard/ui/options/profiles.py:263
-#, fuzzy
-#| msgid "Rename script"
 msgid "No enabled scripts"
-msgstr "Rinomina script"
+msgstr "Nessuno script abilitato"
 
 #: picard/ui/options/profiles.py:264
-#, fuzzy
-#| msgid "Enable tagger scripts"
 msgid "Enabled scripts:"
-msgstr "Abilita script del tagger"
+msgstr "Script abilitati:"
 
 #: picard/ui/options/profiles.py:269
-#, fuzzy
-#| msgid "Cover art providers"
 msgid "No enabled providers"
-msgstr "Fornitori di copertine"
+msgstr "Nessun fornitore abilitato"
 
 #: picard/ui/options/profiles.py:270
-#, fuzzy
-#| msgid "Enabled providers of %i listed:"
 msgid "Enabled providers:"
-msgstr "Fornitori abilitati di %i elencati:"
+msgstr "Fornitori abilitati:"
 
 #: picard/ui/options/profiles.py:287
 #, python-format
