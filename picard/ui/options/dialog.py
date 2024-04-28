@@ -246,9 +246,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         if maintenance_page.loaded:
             maintenance_page.signal_reload.connect(self.load_all_pages)
 
-        self.profile_page = self.get_page('profiles')
-        if self.profile_page.loaded:
-            self.profile_page.signal_refresh.connect(self.update_from_profile_changes)
+        profile_page = self.get_page('profiles')
+        if profile_page.loaded:
+            profile_page.signal_refresh.connect(self.update_from_profile_changes)
             self.highlight_enabled_profile_options()
 
         self.ui.pages_tree.itemSelectionChanged.connect(self.switch_page)
@@ -272,7 +272,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 self.disable_page(page.NAME)
 
     def show_attached_profiles_dialog(self):
-        if not self.profile_page.loaded:
+        profile_page = self.get_page('profiles')
+        if not profile_page.loaded:
             return
         window_title = _("Profiles Attached to Options")
         items = self.ui.pages_tree.selectedItems()
@@ -289,8 +290,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             message_box.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
             return message_box.exec()
 
-        override_profiles = self.profile_page._clean_and_get_all_profiles()
-        override_settings = self.profile_page.profile_settings
+        override_profiles = profile_page._clean_and_get_all_profiles()
+        override_settings = profile_page.profile_settings
         profile_dialog = AttachedProfilesDialog(
             option_group,
             parent=self,
@@ -306,14 +307,16 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             self.highlight_enabled_profile_options(load_settings=True)
 
     def get_working_profile_data(self):
-        working_profiles = self.profile_page._clean_and_get_all_profiles()
+        profile_page = self.get_page('profiles')
+        working_profiles = profile_page._clean_and_get_all_profiles()
         if working_profiles is None:
             working_profiles = []
-        working_settings = self.profile_page.profile_settings
+        working_settings = profile_page.profile_settings
         return working_profiles, working_settings
 
     def highlight_enabled_profile_options(self, load_settings=False):
-        if not self.profile_page.loaded:
+        profile_page = self.get_page('profiles')
+        if not profile_page.loaded:
             return
         working_profiles, working_settings = self.get_working_profile_data()
         from picard.ui.colors import interface_colors as colors
@@ -370,7 +373,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         return self.item_to_page[self.pagename_to_item[pagename]]
 
     def page_has_attached_profiles(self, page, enabled_profiles_only=False):
-        if not page.loaded or not self.profile_page.loaded:
+        profile_page = self.get_page('profiles')
+        if not page.loaded or not profile_page.loaded:
             return False
         option_group = profile_groups_group_from_page(page)
         if not option_group:
