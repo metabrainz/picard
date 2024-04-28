@@ -384,11 +384,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     def switch_page(self):
         items = self.ui.pages_tree.selectedItems()
         if items:
-            config = get_config()
             page = self.item_to_page[items[0]]
-            config.persist['options_last_active_page'] = page.NAME
             self.set_profiles_button_and_highlight(page)
+            self.ui.reset_button.setDisabled(not page.loaded)
             self.ui.pages_stack.setCurrentWidget(page)
+            config = get_config()
+            config.persist['options_last_active_page'] = page.NAME
 
     def disable_page(self, name):
         item = self.page_to_item[name]
@@ -464,15 +465,18 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.suspend_signals = True
         for page in self.pages:
             try:
-                page.restore_defaults()
+                if page.loaded:
+                    page.restore_defaults()
             except Exception as e:
                 log.error("Failed restoring all defaults for page %r: %s", page, e)
         self.highlight_enabled_profile_options(load_settings=False)
         self.suspend_signals = False
 
     def restore_page_defaults(self):
-        self.ui.pages_stack.currentWidget().restore_defaults()
-        self.highlight_enabled_profile_options(load_settings=False)
+        current_page = self.ui.pages_stack.currentWidget()
+        if current_page.loaded:
+            current_page.restore_defaults()
+            self.highlight_enabled_profile_options(load_settings=False)
 
     def confirm_reset(self):
         msg = _("You are about to reset your options for this page.")
