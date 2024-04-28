@@ -108,10 +108,10 @@ class ErrorOptionsPage(OptionsPage):
 
         super().__init__(parent)
 
-        self.error = _("This page failed to load")
+        self.error = _("This page failed to initialize")
 
         title_widget = QtWidgets.QLabel(
-            _("Error while loading option page '%s':")
+            _("Error while initializing option page '%s':")
             % _(from_cls.TITLE)
         )
 
@@ -153,9 +153,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         items = []
         for foo, bar, page in sorted(pages):
             item = HashableTreeWidgetItem(parent_item)
-            if page.error:
+            if not page.initialized:
                 title = _("%s (error)") % _(page.TITLE)
-                item.setToolTip(0, page.error)
             else:
                 title = _(page.TITLE)
             item.setText(0, title)
@@ -212,6 +211,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             try:
                 page = Page()
                 page.set_dialog(self)
+                page.initialized = True
             except Exception as e:
                 log.exception("Failed initializing options page %r", Page)
                 # create an empty page with the error message in place of the failing page
@@ -263,7 +263,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     @property
     def initialized_pages(self):
-        yield from (page for page in self.pages if not page.error)
+        yield from (page for page in self.pages if page.initialized)
 
     @property
     def loaded_pages(self):
