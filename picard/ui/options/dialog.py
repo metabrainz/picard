@@ -272,24 +272,30 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 self.disable_page(page.NAME)
 
     def show_attached_profiles_dialog(self):
-        profile_page = self.get_page('profiles')
-        if not profile_page.loaded:
-            return
-        window_title = _("Profiles Attached to Options")
         items = self.ui.pages_tree.selectedItems()
         if not items:
             return
         page = self.item_to_page[items[0]]
         option_group = profile_groups_group_from_page(page)
-        if not option_group:
-            message_box = QtWidgets.QMessageBox(self)
-            message_box.setIcon(QtWidgets.QMessageBox.Icon.Information)
-            message_box.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
-            message_box.setWindowTitle(window_title)
-            message_box.setText(_("The options on this page are not currently available to be managed using profiles."))
-            message_box.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
-            return message_box.exec()
+        if option_group:
+            self.display_attached_profiles(option_group)
+        else:
+            self.display_simple_message_box(
+                _("Profiles Attached to Options"),
+                _("The options on this page are not currently available to be managed using profiles."),
+            )
 
+    def display_simple_message_box(self, window_title, message):
+        message_box = QtWidgets.QMessageBox(self)
+        message_box.setIcon(QtWidgets.QMessageBox.Icon.Information)
+        message_box.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+        message_box.setWindowTitle(window_title)
+        message_box.setText(message)
+        message_box.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+        message_box.exec()
+
+    def display_attached_profiles(self, option_group):
+        profile_page = self.get_page('profiles')
         override_profiles = profile_page._clean_and_get_all_profiles()
         override_settings = profile_page.profile_settings
         profile_dialog = AttachedProfilesDialog(
