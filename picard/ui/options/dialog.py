@@ -148,10 +148,10 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     suspend_signals = False
 
-    def add_pages(self, parent, default_page, parent_item):
+    def add_pages(self, parent_pagename, default_pagename, parent_item):
         def pages():
             for p in self.pages:
-                if p.PARENT == parent:
+                if p.PARENT == parent_pagename:
                     yield p
 
         items = []
@@ -168,11 +168,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 profile_groups_order(page.NAME)
             else:
                 item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
-            self.add_pages(page.NAME, default_page, item)
-            if page.NAME == default_page:
+            self.add_pages(page.NAME, default_pagename, item)
+            if page.NAME == default_pagename:
                 self.default_item = item
             items.append(item)
-        if not self.default_item and not parent:
+        if not self.default_item and not parent_pagename:
             self.default_item = items[0]
 
     def __init__(self, default_page=None, parent=None):
@@ -228,8 +228,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.pagename_to_item = {}
         self.default_item = None
         if not default_page:
-            default_page = config.persist['options_last_active_page']
-        self.add_pages(None, default_page, self.ui.pages_tree)
+            default_pagename = config.persist['options_last_active_page']
+        self.add_pages(None, default_pagename, self.ui.pages_tree)
 
         # work-around to set optimal option pane width
         self.ui.pages_tree.expandAll()
@@ -377,8 +377,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                     self.activateWindow()
         return False
 
-    def get_page(self, name):
-        return self.item_to_page[self.pagename_to_item[name]]
+    def get_page(self, pagename):
+        return self.item_to_page[self.pagename_to_item[pagename]]
 
     def page_has_attached_profiles(self, page, enabled_profiles_only=False):
         if not page.loaded or not self.profile_page.loaded:
@@ -412,8 +412,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             config = get_config()
             config.persist['options_last_active_page'] = page.NAME
 
-    def disable_page(self, name):
-        item = self.pagename_to_item[name]
+    def disable_page(self, pagename):
+        item = self.pagename_to_item[pagename]
         item.setDisabled(True)
 
     @property
@@ -458,10 +458,10 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def saveWindowState(self):
         expanded_pages = []
-        for page, item in self.pagename_to_item.items():
+        for pagename, item in self.pagename_to_item.items():
             index = self.ui.pages_tree.indexFromItem(item)
             is_expanded = self.ui.pages_tree.isExpanded(index)
-            expanded_pages.append((page, is_expanded))
+            expanded_pages.append((pagename, is_expanded))
         config = get_config()
         config.persist['options_pages_tree_state'] = expanded_pages
         config.setting.set_profiles_override()
@@ -474,9 +474,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         if not pages_tree_state:
             self.ui.pages_tree.expandAll()
         else:
-            for page, is_expanded in pages_tree_state:
+            for pagename, is_expanded in pages_tree_state:
                 try:
-                    item = self.pagename_to_item[page]
+                    item = self.pagename_to_item[pagename]
                 except KeyError:
                     continue
                 item.setExpanded(is_expanded)
