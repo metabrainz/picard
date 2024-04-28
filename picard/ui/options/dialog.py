@@ -381,7 +381,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             self.ui.attached_profiles_button.setDisabled(False)
         else:
             self.ui.attached_profiles_button.setDisabled(True)
-        self.ui.pages_stack.setCurrentWidget(page)
 
     def switch_page(self):
         items = self.ui.pages_tree.selectedItems()
@@ -390,6 +389,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             page = self.item_to_page[items[0]]
             config.persist['options_last_active_page'] = page.NAME
             self.set_profiles_button_and_highlight(page)
+            self.ui.pages_stack.setCurrentWidget(page)
 
     def disable_page(self, name):
         item = self.page_to_item[name]
