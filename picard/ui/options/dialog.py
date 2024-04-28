@@ -149,13 +149,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     suspend_signals = False
 
     def add_pages(self, parent_pagename, default_pagename, parent_item):
-        def pages():
-            for p in self.pages:
-                if p.PARENT == parent_pagename:
-                    yield p
-
+        pages = (p for p in self.pages if p.PARENT == parent_pagename)
         items = []
-        for page in sorted(pages(), key=lambda p: (p.SORT_ORDER, p.NAME)):
+        for page in sorted(pages, key=lambda p: (p.SORT_ORDER, p.NAME)):
             item = HashableTreeWidgetItem(parent_item)
             if not page.initialized:
                 title = _("%s (error)") % _(page.TITLE)
