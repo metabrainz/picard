@@ -86,7 +86,6 @@ PICARD_URLS = {
     'chromaprint':             "https://acoustid.org/chromaprint#download",
     'acoustid_apikey':         "https://acoustid.org/api-key",
     'acoustid_track':          "https://acoustid.org/track/",
-    'bug_tracker':             "https://tickets.metabrainz.org/projects/PICARD",
 }
 
 # Various Artists MBID

@@ -123,8 +123,8 @@ class ErrorOptionsPage(OptionsPage):
         layout.addWidget(widget)
 
         widget = QtWidgets.QLabel(
-            _('Please report this issue on the <a href="%s">Picard bug tracker</a>.')
-            % PICARD_URLS['bug_tracker']
+            _('Please see <a href="%s">Troubleshooting documentation</a> and eventually report a bug.')
+            % PICARD_URLS['troubleshooting']
         )
         widget.setOpenExternalLinks(True)
         layout.addWidget(widget)
