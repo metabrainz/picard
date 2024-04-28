@@ -108,27 +108,36 @@ class ErrorOptionsPage(OptionsPage):
 
         super().__init__(parent)
 
-        msg = _(
-            "Error while loading option page '%s':\n"
-            "\n"
-            "%s"
-        ) % (_(from_cls.TITLE), errmsg)
         self.error = _("This page failed to load")
 
-        layout = QtWidgets.QVBoxLayout(self)
-        widget = QtWidgets.QLabel()
-        widget.setTextFormat(QtCore.Qt.TextFormat.PlainText)
-        widget.setText(msg)
-        widget.setWordWrap(True)
-        layout.addWidget(widget)
+        title_widget = QtWidgets.QLabel(
+            _("Error while loading option page '%s':")
+            % _(from_cls.TITLE)
+        )
 
-        widget = QtWidgets.QLabel(
-            _('Please see <a href="%s">Troubleshooting documentation</a> and eventually report a bug.')
+        error_widget = QtWidgets.QLabel()
+        error_widget.setTextFormat(QtCore.Qt.TextFormat.PlainText)
+        error_widget.setText(errmsg)
+        error_widget.setWordWrap(True)
+        error_widget.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        error_widget.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
+        error_widget.setLineWidth(1)
+        error_widget.setTextInteractionFlags(
+            QtCore.Qt.TextInteractionFlag.TextSelectableByKeyboard
+            | QtCore.Qt.TextInteractionFlag.TextSelectableByMouse
+        )
+
+        report_bug_widget = QtWidgets.QLabel(
+            _('Please see <a href="%s">Troubleshooting documentation</a>'
+              ' and eventually report a bug.')
             % PICARD_URLS['troubleshooting']
         )
-        widget.setOpenExternalLinks(True)
-        layout.addWidget(widget)
+        report_bug_widget.setOpenExternalLinks(True)
 
+        layout = QtWidgets.QVBoxLayout(self)
+        layout.addWidget(title_widget)
+        layout.addWidget(error_widget)
+        layout.addWidget(report_bug_widget)
         layout.addStretch()
         self.ui = layout
 
