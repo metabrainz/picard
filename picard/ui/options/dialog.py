@@ -466,9 +466,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             for pagename, is_expanded in pages_tree_state:
                 try:
                     item = self.pagename_to_item[pagename]
-                except KeyError:
-                    continue
-                item.setExpanded(is_expanded)
+                    item.setExpanded(is_expanded)
+                except KeyError as e:
+                    log.debug("Failed restoring expanded state: %s", e)
 
     def restore_all_defaults(self):
         self.suspend_signals = True
