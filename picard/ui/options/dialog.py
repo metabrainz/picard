@@ -379,8 +379,10 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         return self.item_to_page[self.pagename_to_item[pagename]]
 
     def page_has_attached_profiles(self, page, enabled_profiles_only=False):
+        if not page.loaded:
+            return False
         profile_page = self.get_page('profiles')
-        if not page.loaded or not profile_page.loaded:
+        if not profile_page.loaded:
             return False
         option_group = profile_groups_group_from_page(page)
         if not option_group:
