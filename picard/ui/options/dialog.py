@@ -296,16 +296,15 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             self.highlight_enabled_profile_options(load_settings=True)
 
     def get_working_profile_data(self):
-        profile_page = self.get_page('profiles')
-        if not profile_page.loaded:
-            return
-        working_profiles = profile_page._clean_and_get_all_profiles()
+        working_profiles = self.profile_page._clean_and_get_all_profiles()
         if working_profiles is None:
             working_profiles = []
-        working_settings = profile_page.profile_settings
+        working_settings = self.profile_page.profile_settings
         return working_profiles, working_settings
 
     def highlight_enabled_profile_options(self, load_settings=False):
+        if not self.profile_page.loaded:
+            return
         working_profiles, working_settings = self.get_working_profile_data()
         from picard.ui.colors import interface_colors as colors
         fg_color = colors.get_color('profile_hl_fg')
@@ -361,7 +360,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         return self.item_to_page[self.page_to_item[name]]
 
     def page_has_attached_profiles(self, page, enabled_profiles_only=False):
-        if not page.loaded:
+        if not page.loaded or not self.profile_page.loaded:
             return False
         option_group = profile_groups_group_from_page(page)
         if not option_group:
