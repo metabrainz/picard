@@ -238,32 +238,25 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
         self.ui.pages_tree.setHeaderLabels([""])
         self.ui.pages_tree.header().hide()
-        self.ui.pages_tree.itemSelectionChanged.connect(self.switch_page)
 
         self.restoreWindowState()
         self.finished.connect(self.saveWindowState)
-        self.ui.pages_tree.setCurrentItem(self.default_item)
 
         self.load_all_pages()
+        self.first_enter = True
+        self.installEventFilter(self)
 
         self.maintenance_page = self.get_page('maintenance')
         if self.maintenance_page.loaded:
             self.maintenance_page.signal_reload.connect(self.load_all_pages)
 
-        self.first_enter = True
-        self.installEventFilter(self)
-
         self.profile_page = self.get_page('profiles')
         if self.profile_page.loaded:
             self.profile_page.signal_refresh.connect(self.update_from_profile_changes)
             self.highlight_enabled_profile_options()
-            try:
-                current_item = self.ui.pages_tree.currentItem()
-                current_page = self.item_to_page[current_item]
-                self.set_profiles_button_and_highlight(current_page)
-            except KeyError:
-                # selected page became inactive, not available
-                pass
+
+        self.ui.pages_tree.itemSelectionChanged.connect(self.switch_page)
+        self.ui.pages_tree.setCurrentItem(self.default_item)  # this will call switch_page
 
     @property
     def initialized_pages(self):
