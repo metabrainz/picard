@@ -34,7 +34,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-04-22 12:02+0200\n"
-"PO-Revision-Date: 2024-04-27 10:42+0000\n"
+"PO-Revision-Date: 2024-04-28 11:42+0000\n"
 "Last-Translator: Dimlbur <Dimlbur@users.noreply.translations.metabrainz.org>"
 "\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/picard/"
@@ -46,7 +46,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
 "n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.4.3\n"
+"X-Generator: Weblate 5.5.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:154
@@ -1691,12 +1691,17 @@ msgid "Please donate"
 msgstr "Пожалуйста, сделайте пожертвование"
 
 #: picard/ui/aboutdialog.py:107
+#, fuzzy
 msgid ""
 "Thank you for using Picard. Picard relies on the MusicBrainz database, which "
 "is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running."
 msgstr ""
+"Благодарим вас за использование Picard. Picard использует базу данных "
+"MusicBrainz, которая обслуживается Фондом MetaBrainz при поддержке тысяч "
+"добровольцев. Если вам понравилось это приложение, пожалуйста, рассмотрите "
+"возможность пожертвования в Фонд MetaBrainz, чтобы поддержать работу сервиса."
 
 #: picard/ui/aboutdialog.py:110
 msgid "Donate now!"
