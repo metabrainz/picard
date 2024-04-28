@@ -321,9 +321,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         return working_profiles, working_settings
 
     def highlight_enabled_profile_options(self, load_settings=False):
-        profile_page = self.get_page('profiles')
-        if not profile_page.loaded:
-            return
         working_profiles, working_settings = self.get_working_profile_data()
         from picard.ui.colors import interface_colors as colors
         fg_color = colors.get_color('profile_hl_fg')
