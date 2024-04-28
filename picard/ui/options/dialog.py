@@ -422,7 +422,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         url = current_page.HELP_URL
         # If URL is empty, use the first non empty parent help URL.
         while current_page.PARENT and not url:
-            current_page = self.item_to_page[self.pagename_to_item[current_page.PARENT]]
+            current_page = self.get_page(current_page.PARENT)
             url = current_page.HELP_URL
         if not url:
             url = 'doc_options'  # key in PICARD_URLS
