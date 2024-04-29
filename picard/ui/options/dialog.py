@@ -44,6 +44,7 @@ from picard.config import (
     SettingConfigSection,
     get_config,
 )
+from picard.const import PICARD_URLS
 from picard.i18n import (
     N_,
     gettext as _,
@@ -61,6 +62,7 @@ from picard.ui import (
 )
 from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     OptionsCheckError,
+    OptionsPage,
     _pages as page_classes,
     advanced,
     cdlookup,
@@ -93,28 +95,80 @@ from picard.ui.ui_options_attached_profiles import Ui_AttachedProfilesDialog
 from picard.ui.util import StandardButton
 
 
+class ErrorOptionsPage(OptionsPage):
+
+    def __init__(self, parent=None, errmsg='', from_cls=None, dialog=None):
+        # copy properties from failing page
+        self.NAME = from_cls.NAME
+        self.TITLE = from_cls.TITLE
+        self.PARENT = from_cls.PARENT
+        self.SORT_ORDER = from_cls.SORT_ORDER
+        self.ACTIVE = from_cls.ACTIVE
+        self.HELP_URL = from_cls.HELP_URL
+
+        super().__init__(parent)
+
+        self.error = _("This page failed to initialize")
+
+        title_widget = QtWidgets.QLabel(
+            _("Error while initializing option page '%s':")
+            % _(from_cls.TITLE)
+        )
+
+        error_widget = QtWidgets.QLabel()
+        error_widget.setTextFormat(QtCore.Qt.TextFormat.PlainText)
+        error_widget.setText(errmsg)
+        error_widget.setWordWrap(True)
+        error_widget.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        error_widget.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
+        error_widget.setLineWidth(1)
+        error_widget.setTextInteractionFlags(
+            QtCore.Qt.TextInteractionFlag.TextSelectableByKeyboard
+            | QtCore.Qt.TextInteractionFlag.TextSelectableByMouse
+        )
+
+        report_bug_widget = QtWidgets.QLabel(
+            _('Please see <a href="%s">Troubleshooting documentation</a>'
+              ' and eventually report a bug.')
+            % PICARD_URLS['troubleshooting']
+        )
+        report_bug_widget.setOpenExternalLinks(True)
+
+        layout = QtWidgets.QVBoxLayout(self)
+        layout.addWidget(title_widget)
+        layout.addWidget(error_widget)
+        layout.addWidget(report_bug_widget)
+        layout.addStretch()
+        self.ui = layout
+
+        self.dialog = dialog
+
+
 class OptionsDialog(PicardDialog, SingletonDialog):
 
     suspend_signals = False
 
-    def add_pages(self, parent, default_page, parent_item):
-        pages = [(p.SORT_ORDER, p.NAME, p) for p in self.pages if p.PARENT == parent]
+    def add_pages(self, parent_pagename, default_pagename, parent_item):
+        pages = (p for p in self.pages if p.PARENT == parent_pagename)
         items = []
-        for foo, bar, page in sorted(pages):
+        for page in sorted(pages, key=lambda p: (p.SORT_ORDER, p.NAME)):
             item = HashableTreeWidgetItem(parent_item)
-            item.setText(0, _(page.TITLE))
+            if not page.initialized:
+                title = _("%s (error)") % _(page.TITLE)
+            else:
+                title = _(page.TITLE)
+            item.setText(0, title)
             if page.ACTIVE:
                 self.item_to_page[item] = page
-                self.page_to_item[page.NAME] = item
-                self.ui.pages_stack.addWidget(page)
+                self.pagename_to_item[page.NAME] = item
                 profile_groups_order(page.NAME)
             else:
                 item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
-            self.add_pages(page.NAME, default_page, item)
-            if page.NAME == default_page:
+            self.add_pages(page.NAME, default_pagename, item)
+            if page.NAME == default_pagename:
                 self.default_item = item
             items.append(item)
-        if not self.default_item and not parent:
+        if not self.default_item and not parent_pagename:
             self.default_item = items[0]
 
     def __init__(self, default_page=None, parent=None):
@@ -155,17 +209,23 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.pages = []
         for Page in page_classes:
             try:
-                page = Page(self.ui.pages_stack)
+                page = Page()
                 page.set_dialog(self)
-                self.pages.append(page)
-            except Exception:
+                page.initialized = True
+            except Exception as e:
                 log.exception("Failed initializing options page %r", Page)
+                # create an empty page with the error message in place of the failing page
+                # this approach still allows subpages of the failing page to load
+                page = ErrorOptionsPage(from_cls=Page, errmsg=str(e), dialog=self)
+            self.ui.pages_stack.addWidget(page)
+            self.pages.append(page)
+
         self.item_to_page = {}
-        self.page_to_item = {}
+        self.pagename_to_item = {}
         self.default_item = None
         if not default_page:
-            default_page = config.persist['options_last_active_page']
-        self.add_pages(None, default_page, self.ui.pages_tree)
+            default_pagename = config.persist['options_last_active_page']
+        self.add_pages(None, default_pagename, self.ui.pages_tree)
 
         # work-around to set optimal option pane width
         self.ui.pages_tree.expandAll()
@@ -174,53 +234,70 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
         self.ui.pages_tree.setHeaderLabels([""])
         self.ui.pages_tree.header().hide()
-        self.ui.pages_tree.itemSelectionChanged.connect(self.switch_page)
 
         self.restoreWindowState()
         self.finished.connect(self.saveWindowState)
 
         self.load_all_pages()
-        self.ui.pages_tree.setCurrentItem(self.default_item)
-
-        self.profile_page = self.get_page('profiles')
-        self.profile_page.signal_refresh.connect(self.update_from_profile_changes)
-
-        self.maintenance_page = self.get_page('maintenance')
-        self.maintenance_page.signal_reload.connect(self.load_all_pages)
-
         self.first_enter = True
         self.installEventFilter(self)
 
-        self.highlight_enabled_profile_options()
-        current_page = self.item_to_page[self.ui.pages_tree.currentItem()]
-        self.set_profiles_button_and_highlight(current_page)
+        maintenance_page = self.get_page('maintenance')
+        if maintenance_page.loaded:
+            maintenance_page.signal_reload.connect(self.load_all_pages)
+
+        profile_page = self.get_page('profiles')
+        if profile_page.loaded:
+            profile_page.signal_refresh.connect(self.update_from_profile_changes)
+            self.highlight_enabled_profile_options()
+
+        self.ui.pages_tree.itemSelectionChanged.connect(self.switch_page)
+        self.ui.pages_tree.setCurrentItem(self.default_item)  # this will call switch_page
+
+    @property
+    def initialized_pages(self):
+        yield from (page for page in self.pages if page.initialized)
+
+    @property
+    def loaded_pages(self):
+        yield from (page for page in self.pages if page.loaded)
 
     def load_all_pages(self):
-        for page in self.pages:
+        for page in self.initialized_pages:
             try:
                 page.load()
+                page.loaded = True
             except Exception:
                 log.exception("Failed loading options page %r", page)
                 self.disable_page(page.NAME)
 
     def show_attached_profiles_dialog(self):
-        window_title = _("Profiles Attached to Options")
         items = self.ui.pages_tree.selectedItems()
         if not items:
             return
         page = self.item_to_page[items[0]]
         option_group = profile_groups_group_from_page(page)
-        if not option_group:
-            message_box = QtWidgets.QMessageBox(self)
-            message_box.setIcon(QtWidgets.QMessageBox.Icon.Information)
-            message_box.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
-            message_box.setWindowTitle(window_title)
-            message_box.setText(_("The options on this page are not currently available to be managed using profiles."))
-            message_box.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
-            return message_box.exec()
+        if option_group:
+            self.display_attached_profiles(option_group)
+        else:
+            self.display_simple_message_box(
+                _("Profiles Attached to Options"),
+                _("The options on this page are not currently available to be managed using profiles."),
+            )
 
-        override_profiles = self.profile_page._clean_and_get_all_profiles()
-        override_settings = self.profile_page.profile_settings
+    def display_simple_message_box(self, window_title, message):
+        message_box = QtWidgets.QMessageBox(self)
+        message_box.setIcon(QtWidgets.QMessageBox.Icon.Information)
+        message_box.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+        message_box.setWindowTitle(window_title)
+        message_box.setText(message)
+        message_box.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+        message_box.exec()
+
+    def display_attached_profiles(self, option_group):
+        profile_page = self.get_page('profiles')
+        override_profiles = profile_page._clean_and_get_all_profiles()
+        override_settings = profile_page.profile_settings
         profile_dialog = AttachedProfilesDialog(
             option_group,
             parent=self,
@@ -249,7 +326,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         fg_color = colors.get_color('profile_hl_fg')
         bg_color = colors.get_color('profile_hl_bg')
 
-        for page in self.pages:
+        for page in self.loaded_pages:
             option_group = profile_groups_group_from_page(page)
             if option_group:
                 if load_settings:
@@ -295,10 +372,15 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                     self.activateWindow()
         return False
 
-    def get_page(self, name):
-        return self.item_to_page[self.page_to_item[name]]
+    def get_page(self, pagename):
+        return self.item_to_page[self.pagename_to_item[pagename]]
 
     def page_has_attached_profiles(self, page, enabled_profiles_only=False):
+        if not page.loaded:
+            return False
+        profile_page = self.get_page('profiles')
+        if not profile_page.loaded:
+            return False
         option_group = profile_groups_group_from_page(page)
         if not option_group:
             return False
@@ -317,18 +399,19 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             self.ui.attached_profiles_button.setDisabled(False)
         else:
             self.ui.attached_profiles_button.setDisabled(True)
-        self.ui.pages_stack.setCurrentWidget(page)
 
     def switch_page(self):
         items = self.ui.pages_tree.selectedItems()
         if items:
-            config = get_config()
             page = self.item_to_page[items[0]]
-            config.persist['options_last_active_page'] = page.NAME
             self.set_profiles_button_and_highlight(page)
+            self.ui.reset_button.setDisabled(not page.loaded)
+            self.ui.pages_stack.setCurrentWidget(page)
+            config = get_config()
+            config.persist['options_last_active_page'] = page.NAME
 
-    def disable_page(self, name):
-        item = self.page_to_item[name]
+    def disable_page(self, pagename):
+        item = self.pagename_to_item[pagename]
         item.setDisabled(True)
 
     @property
@@ -337,14 +420,14 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         url = current_page.HELP_URL
         # If URL is empty, use the first non empty parent help URL.
         while current_page.PARENT and not url:
-            current_page = self.item_to_page[self.page_to_item[current_page.PARENT]]
+            current_page = self.get_page(current_page.PARENT)
             url = current_page.HELP_URL
         if not url:
             url = 'doc_options'  # key in PICARD_URLS
         return url
 
     def accept(self):
-        for page in self.pages:
+        for page in self.loaded_pages:
             try:
                 page.check()
             except OptionsCheckError as e:
@@ -354,29 +437,29 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 log.exception("Failed checking options page %r", page)
                 self._show_page_error(page, e)
                 return
-        self.profile_page.save()
-        for page in self.pages:
+
+        for page in self.loaded_pages:
             try:
-                if page != self.profile_page:
-                    page.save()
+                page.save()
             except Exception as e:
                 log.exception("Failed saving options page %r", page)
                 self._show_page_error(page, e)
                 return
+
         super().accept()
 
     def _show_page_error(self, page, error):
         if not isinstance(error, OptionsCheckError):
             error = OptionsCheckError(_("Unexpected error"), str(error))
-        self.ui.pages_tree.setCurrentItem(self.page_to_item[page.NAME])
+        self.ui.pages_tree.setCurrentItem(self.pagename_to_item[page.NAME])
         page.display_error(error)
 
     def saveWindowState(self):
         expanded_pages = []
-        for page, item in self.page_to_item.items():
+        for pagename, item in self.pagename_to_item.items():
             index = self.ui.pages_tree.indexFromItem(item)
             is_expanded = self.ui.pages_tree.isExpanded(index)
-            expanded_pages.append((page, is_expanded))
+            expanded_pages.append((pagename, is_expanded))
         config = get_config()
         config.persist['options_pages_tree_state'] = expanded_pages
         config.setting.set_profiles_override()
@@ -389,16 +472,16 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         if not pages_tree_state:
             self.ui.pages_tree.expandAll()
         else:
-            for page, is_expanded in pages_tree_state:
+            for pagename, is_expanded in pages_tree_state:
                 try:
-                    item = self.page_to_item[page]
-                except KeyError:
-                    continue
-                item.setExpanded(is_expanded)
+                    item = self.pagename_to_item[pagename]
+                    item.setExpanded(is_expanded)
+                except KeyError as e:
+                    log.debug("Failed restoring expanded state: %s", e)
 
     def restore_all_defaults(self):
         self.suspend_signals = True
-        for page in self.pages:
+        for page in self.loaded_pages:
             try:
                 page.restore_defaults()
             except Exception as e:
@@ -407,8 +490,10 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.suspend_signals = False
 
     def restore_page_defaults(self):
-        self.ui.pages_stack.currentWidget().restore_defaults()
-        self.highlight_enabled_profile_options(load_settings=False)
+        current_page = self.ui.pages_stack.currentWidget()
+        if current_page.loaded:
+            current_page.restore_defaults()
+            self.highlight_enabled_profile_options(load_settings=False)
 
     def confirm_reset(self):
         msg = _("You are about to reset your options for this page.")

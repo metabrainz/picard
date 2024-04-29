@@ -55,6 +55,9 @@ class OptionsPage(QtWidgets.QWidget):
     STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold; padding: 2px; }"
     STYLESHEET = "QLabel { qproperty-wordWrap: true; }"
 
+    initialized = False
+    loaded = False
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.tagger = QtCore.QCoreApplication.instance()
