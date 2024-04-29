@@ -36,7 +36,6 @@ import os
 from PyQt6 import QtCore
 from PyQt6.QtCore import QStandardPaths
 
-from picard import log
 from picard.const import (
     CACHE_SIZE_DISPLAY_UNIT,
     RELEASE_PRIMARY_GROUPS,
@@ -79,26 +78,8 @@ DEFAULT_LOCAL_COVER_ART_REGEX = r'^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|g
 
 DEFAULT_CURRENT_BROWSER_PATH = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.HomeLocation)
 if IS_MACOS:
-    def _macos_extend_root_volume_path(path):
-
-        def _macos_find_root_volume():
-            try:
-                for entry in os.scandir("/Volumes/"):
-                    if entry.is_symlink() and os.path.realpath(entry.path) == "/":
-                        return entry.path
-            except OSError:
-                log.warning("Could not detect macOS boot volume", exc_info=True)
-            return None
-
-        if not path.startswith("/Volumes/"):
-            root_volume = _macos_find_root_volume()
-            if root_volume:
-                if path.startswith("/"):
-                    path = path[1:]
-                path = os.path.join(root_volume, path)
-        return path
-
-    DEFAULT_CURRENT_BROWSER_PATH = _macos_extend_root_volume_path(DEFAULT_CURRENT_BROWSER_PATH)
+    from picard.util.macos import extend_root_volume_path
+    DEFAULT_CURRENT_BROWSER_PATH = extend_root_volume_path(DEFAULT_CURRENT_BROWSER_PATH)
 
 # Default query limit
 DEFAULT_QUERY_LIMIT = 50
