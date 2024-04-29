@@ -1,11 +1,7 @@
 #!/usr/bin/env python3
 
-try:
-    from picard.tagger import main
-    main('%(localedir)s', %(autoupdate)s)
-except SystemExit:
-    raise  # Just continue with a normal application exit
-except:  # noqa: E722,F722 # pylint: disable=bare-except
-    from picard import crash_handler
-    crash_handler()
-    raise
+from picard import register_excepthook
+register_excepthook()
+
+from picard.tagger import main
+main('%(localedir)s', %(autoupdate)s)
