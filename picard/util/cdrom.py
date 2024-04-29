@@ -53,6 +53,15 @@ DISCID_NOT_LOADED_MESSAGE = "CDROM: discid library not found - Lookup CD functio
 LINUX_CDROM_INFO = '/proc/sys/dev/cdrom/info'
 
 
+def get_default_cdrom_drives():
+    default_drives = []
+    if discid is not None:
+        device = discid.get_default_device()
+        if device:
+            default_drives.append(device)
+    return default_drives
+
+
 def _generic_iter_drives():
     config = get_config()
     yield from (

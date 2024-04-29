@@ -47,7 +47,7 @@ from picard.const.sys import (
 )
 from picard.i18n import N_
 from picard.util import system_supports_long_paths
-from picard.util.cdrom import discid
+from picard.util.cdrom import get_default_cdrom_drives
 
 from picard.ui.theme import UiTheme
 
@@ -84,12 +84,7 @@ if IS_MACOS:
 # Default query limit
 DEFAULT_QUERY_LIMIT = 50
 
-DEFAULT_DRIVES = []
-if discid is not None:
-    device = discid.get_default_device()
-    if device:
-        DEFAULT_DRIVES.append(device)
-
+DEFAULT_DRIVES = get_default_cdrom_drives()
 
 DEFAULT_CA_PROVIDERS = [
     ('Cover Art Archive', True),
