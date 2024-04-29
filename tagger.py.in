@@ -12,12 +12,8 @@ if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
 else:
     basedir = os.path.dirname(os.path.abspath(__file__))
 
-try:
-    from picard.tagger import main
-    main(os.path.join(basedir, 'locale'), %(autoupdate)s)
-except SystemExit:
-    raise  # Just continue with a normal application exit
-except:  # noqa: E722,F722 # pylint: disable=bare-except
-    from picard import crash_handler
-    crash_handler()
-    raise
+from picard import register_excepthook
+register_excepthook()
+
+from picard.tagger import main
+main(os.path.join(basedir, 'locale'), %(autoupdate)s)
