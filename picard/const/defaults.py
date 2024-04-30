@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2007, 2014, 2016 Lukáš Lalinský
-# Copyright (C) 2014, 2019-2022 Philipp Wolfer
+# Copyright (C) 2014, 2019-2022, 2024 Philipp Wolfer
 # Copyright (C) 2014-2016, 2018-2021, 2024 Laurent Monin
 # Copyright (C) 2015 Ohm Patel
 # Copyright (C) 2016 Rahul Raturi
@@ -77,9 +77,6 @@ DEFAULT_LOCAL_COVER_ART_REGEX = r'^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|g
 
 
 DEFAULT_CURRENT_BROWSER_PATH = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.HomeLocation)
-if IS_MACOS:
-    from picard.util.macos import extend_root_volume_path
-    DEFAULT_CURRENT_BROWSER_PATH = extend_root_volume_path(DEFAULT_CURRENT_BROWSER_PATH)
 
 # Default query limit
 DEFAULT_QUERY_LIMIT = 50

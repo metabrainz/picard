@@ -24,7 +24,10 @@ from unittest.mock import patch
 from test.picardtestcase import PicardTestCase
 
 from picard.const.sys import IS_MACOS
-from picard.util.macos import extend_root_volume_path
+from picard.util.macos import (
+    extend_root_volume_path,
+    strip_root_volume_path,
+)
 
 
 def fake_os_scandir(path):
@@ -58,3 +61,24 @@ class UtilMacosExtendRootVolumeTest(PicardTestCase):
             result = extend_root_volume_path(path)
             self.assertEqual(result, path)
             self.assertTrue(mock.called)
+
+
+@unittest.skipUnless(IS_MACOS, "macOS test")
+class UtilMacosStripRootVolumeTest(PicardTestCase):
+
+    def test_path_starts_not_with_volumes(self):
+        path = '/Users/sandra'
+        result = strip_root_volume_path(path)
+        self.assertEqual(result, path)
+
+    @patch('picard.util.macos._find_root_volume', lambda: '/Volumes/root_volume')
+    def test_path_starts_not_with_root_volume(self):
+        path = '/Volumes/other_volume/foo/bar'
+        result = strip_root_volume_path(path)
+        self.assertEqual(result, path)
+
+    @patch('picard.util.macos._find_root_volume', lambda: '/Volumes/root_volume')
+    def test_path_starts_with_root_volume(self):
+        path = '/Volumes/root_volume/foo/bar'
+        result = strip_root_volume_path(path)
+        self.assertEqual(result, '/foo/bar')
