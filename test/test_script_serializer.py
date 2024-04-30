@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2021 Bob Swift
-# Copyright (C) 2021 Philipp Wolfer
+# Copyright (C) 2021, 2024 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@
 
 
 import datetime
+from unittest.mock import patch
 
 import yaml
 
@@ -33,25 +34,16 @@ from picard.script.serializer import (
 )
 
 
-class _DateTime(datetime.datetime):
+class MockDateTime(datetime.datetime):
     @classmethod
-    def utcnow(cls):
-        return cls(year=2020, month=1, day=2, hour=12, minute=34, second=56, microsecond=789, tzinfo=None)
+    def now(cls, tz=None):
+        if tz == datetime.timezone.utc:
+            return cls(year=2020, month=1, day=2, hour=12, minute=34, second=56, microsecond=789, tzinfo=None)
+        else:
+            raise Exception("Unexpected parameter tz=%r" % tz)
 
 
 class PicardScriptTest(PicardTestCase):
-
-    original_datetime = datetime.datetime
-
-    def setUp(self):
-        super().setUp()
-        # Save original datetime object and substitute one returning
-        # a fixed utcnow() value for testing.
-        datetime.datetime = _DateTime
-
-    def tearDown(self):
-        # Restore original datetime object
-        datetime.datetime = self.original_datetime
 
     def assertYamlEquals(self, yaml_str, obj, msg=None):
         self.assertEqual(obj, yaml.safe_load(yaml_str), msg)
@@ -88,6 +80,7 @@ class PicardScriptTest(PicardTestCase):
         self.assertEqual(test_script.last_updated, '2021-04-26')
         self.assertEqual(test_script['last_updated'], '2021-04-26')
 
+    @patch('datetime.datetime', MockDateTime)
     def test_script_object_4(self):
         # Check updating values that modify `last_updated`.
         test_script = PicardScript(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26')
@@ -97,6 +90,7 @@ class PicardScriptTest(PicardTestCase):
         self.assertEqual(test_script.last_updated, '2020-01-02 12:34:56 UTC')
         self.assertEqual(test_script['last_updated'], '2020-01-02 12:34:56 UTC')
 
+    @patch('datetime.datetime', MockDateTime)
     def test_script_object_5(self):
         # Check updating values from dict that modify `last_updated`.
         test_script = PicardScript(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26')

@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2021, 2023 Bob Swift
-# Copyright (C) 2021-2023 Philipp Wolfer
+# Copyright (C) 2021-2024 Philipp Wolfer
 # Copyright (C) 2021-2024 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -152,7 +152,7 @@ class PicardScript():
         Returns:
             str: Last updated string from current date and time
         """
-        return datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')
+        return datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')
 
     def update_last_updated(self):
         """Update the last updated attribute to the current UTC date and time.

@@ -6,7 +6,7 @@
 # Copyright (C) 2006-2008, 2011-2014, 2017 Lukáš Lalinský
 # Copyright (C) 2007 Santiago M. Mola
 # Copyright (C) 2008 Robert Kaye
-# Copyright (C) 2008-2009, 2018-2022 Philipp Wolfer
+# Copyright (C) 2008-2009, 2018-2024 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2011-2012, 2014, 2016-2018 Wieland Hoffmann
 # Copyright (C) 2011-2014 Michael Wiencek
@@ -716,7 +716,7 @@ class picard_patch_version(Command):
         regex = re.compile(r'^PICARD_BUILD_VERSION_STR\s*=.*$', re.MULTILINE)
         with open(filename, 'r+b') as f:
             source = (f.read()).decode()
-            build = self.platform + '.' + datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')
+            build = self.platform + '.' + datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%d%H%M%S')
             patched_source = regex.sub('PICARD_BUILD_VERSION_STR = "%s"' % build, source).encode()
             f.seek(0)
             f.write(patched_source)
