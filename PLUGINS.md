@@ -327,10 +327,12 @@ class PluginApi:
 
 
 ### Localization (l10n) and internationalization (i18n)
+
 TBD
 
 
 ### Plugin life cycle
+
 TBD
 
 
