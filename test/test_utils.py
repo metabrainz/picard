@@ -941,6 +941,7 @@ class IgnoreUpdatesContextTest(PicardTestCase):
 
 class DetectUnicodeEncodingTest(PicardTestCase):
 
+    @unittest.skipUnless(charset_detect, "test requires charset_normalizer or chardet package")
     def test_detect_file_encoding_bom(self):
         boms = {
             b'\xff\xfe': 'utf-16-le',
@@ -950,6 +951,7 @@ class DetectUnicodeEncodingTest(PicardTestCase):
             b'\xef\xbb\xbf': 'utf-8-sig',
             b'': 'utf-8',
             b'\00': 'utf-8',
+            b'no BOM, only ASCII': 'utf-8',
         }
         for bom, expected_encoding in boms.items():
             try:
@@ -973,7 +975,7 @@ class DetectUnicodeEncodingTest(PicardTestCase):
         file_path = get_test_data_path('eac-utf32le.log')
         self.assertEqual(expected_encoding, detect_file_encoding(file_path))
 
-    @unittest.skipUnless(charset_detect, "test requires charset-normalizer or chardet package")
+    @unittest.skipUnless(charset_detect, "test requires charset_normalizer or chardet package")
     def test_detect_file_encoding_eac_windows_1251(self):
         expected_encoding = 'windows-1251'
         file_path = get_test_data_path('eac-windows1251.log')

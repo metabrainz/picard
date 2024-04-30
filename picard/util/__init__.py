@@ -1208,6 +1208,11 @@ def detect_file_encoding(path, max_bytes_to_read=1024*256):
         result = detect(f.read(max_bytes_to_read))
         if result['encoding'] is None:
             log.warning("Couldn't detect encoding for file %r", path)
-            result['encoding'] = 'UTF-8'
+            encoding = 'utf-8'
+        elif result['encoding'].lower() == 'ascii':
+            # Treat ASCII as UTF-8 (an ASCII document is also valid UTF-8)
+            encoding = 'utf-8'
+        else:
+            encoding = result['encoding'].lower()
 
-        return result['encoding'].lower()
+        return encoding
