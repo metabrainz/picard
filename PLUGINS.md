@@ -84,7 +84,7 @@ The package directory MAY contain additional files, such as Python modules to lo
 A basic plugin `example` could have the following structure:
 
 
-```
+```text
 example/
   __init__.py
   MANIFEST.toml
@@ -326,7 +326,7 @@ class PluginApi:
 ```
 
 
-### Localization
+### Localization (l10n) and internationalization (i18n)
 TBD
 
 
