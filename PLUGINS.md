@@ -84,7 +84,7 @@ The package directory MAY contain additional files, such as Python modules to lo
 A basic plugin `example` could have the following structure:
 
 
-```
+```text
 example/
   __init__.py
   MANIFEST.toml
@@ -144,6 +144,7 @@ the `enable` and `disable` functions and any plugin hooks registered in `enable`
 
 
 ### Manifest format
+
 The plugin's package directory MUST contain a file `MANIFEST.toml`.
 
 > ***Discussion:** Is TOML the proper format, or should something like JSON or YAML be preferred?*
@@ -326,11 +327,13 @@ class PluginApi:
 ```
 
 
-### Localization
+### Localization (l10n) and internationalization (i18n)
+
 TBD
 
 
 ### Plugin life cycle
+
 TBD
 
 
@@ -416,10 +419,10 @@ configuration from JSON files.
 Which additional extension points should be supported?
 
 
-### Support for ZIP compressed plugins:
+### Support for ZIP compressed plugins
 
 As before plugins in a single ZIP archive could also be supported. The "Format"
-section above could be extended with:
+section above could be extended with following paragraph.
 
 > The plugin package MAY be put into a ZIP archive. In this case the filename
 > must be the same as the plugin package name followed by `.picard.zip`, e.g.
