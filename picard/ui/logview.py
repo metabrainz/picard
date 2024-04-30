@@ -267,7 +267,7 @@ class LogView(LogViewCommon):
         self.formats = {}
         for level, feat in log.levels_features.items():
             text_fmt = QtGui.QTextCharFormat()
-            text_fmt.setFontFamily(FONT_FAMILY_MONOSPACE)
+            text_fmt.setFontFamilies([FONT_FAMILY_MONOSPACE])
             text_fmt.setForeground(interface_colors.get_qcolor(feat.color_key))
             self.formats[level] = text_fmt
 
