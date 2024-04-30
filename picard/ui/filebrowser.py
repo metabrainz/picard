@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008 Lukáš Lalinský
 # Copyright (C) 2008 Hendrik van Antwerpen
-# Copyright (C) 2008-2009, 2019-2022 Philipp Wolfer
+# Copyright (C) 2008-2009, 2019-2022, 2024 Philipp Wolfer
 # Copyright (C) 2011 Andrew Barnert
 # Copyright (C) 2012-2013 Michael Wiencek
 # Copyright (C) 2013 Wieland Hoffmann
@@ -42,6 +42,10 @@ from picard.const.sys import IS_MACOS
 from picard.formats import supported_formats
 from picard.i18n import gettext as _
 from picard.util import find_existing_path
+from picard.util.macos import (
+    extend_root_volume_path,
+    strip_root_volume_path,
+)
 
 
 class FileBrowser(QtWidgets.QTreeView):
@@ -176,6 +180,8 @@ class FileBrowser(QtWidgets.QTreeView):
             path = config.persist['current_browser_path']
             scrolltype = QtWidgets.QAbstractItemView.ScrollHint.PositionAtCenter
         if path:
+            if IS_MACOS:
+                path = extend_root_volume_path(path)
             index = self.model().index(find_existing_path(path))
             self.setCurrentIndex(index)
             self.expand(index)
@@ -185,6 +191,8 @@ class FileBrowser(QtWidgets.QTreeView):
         destination = os.path.normpath(path)
         if not os.path.isdir(destination):
             destination = os.path.dirname(destination)
+        if IS_MACOS:
+            destination = strip_root_volume_path(destination)
         return destination
 
     def load_file_for_item(self, index):

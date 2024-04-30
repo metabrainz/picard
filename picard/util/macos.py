@@ -41,3 +41,14 @@ def extend_root_volume_path(path):
                 path = path[1:]
             path = os.path.join(root_volume, path)
     return path
+
+
+def strip_root_volume_path(path):
+    if not path.startswith("/Volumes/"):
+        return path
+    root_volume = _find_root_volume()
+    if root_volume:
+        norm_path = os.path.normpath(path)
+        if norm_path.startswith(root_volume):
+            path = os.path.join('/', norm_path[len(root_volume):])
+    return path
