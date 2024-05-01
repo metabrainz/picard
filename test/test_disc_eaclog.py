@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2022 Laurent Monin
-# Copyright (C) 2022 Philipp Wolfer
+# Copyright (C) 2022, 2024 Philipp Wolfer
 # Copyright (C) 2022 Jeffrey Bosboom
 #
 # This program is free software; you can redistribute it and/or
@@ -22,6 +22,7 @@
 
 
 from typing import Iterator
+import unittest
 
 from test.picardtestcase import (
     PicardTestCase,
@@ -36,6 +37,7 @@ from picard.disc.utils import (
     NotSupportedTOCError,
     TocEntry,
 )
+from picard.util import detect as charset_detect
 
 
 test_log = (
@@ -72,6 +74,7 @@ class TestTocFromFile(PicardTestCase):
         toc = toc_from_file(test_log)
         self.assertEqual((1, 8, 149323, 150, 25064, 43611, 60890, 83090, 100000, 115057, 135558), toc)
 
+    @unittest.skipUnless(charset_detect, "test requires charset_normalizer or chardet package")
     def test_toc_from_file_eac_windows1251(self):
         self._test_toc_from_file('eac-windows1251.log')
 
