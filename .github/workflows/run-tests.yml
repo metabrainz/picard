@@ -55,16 +55,6 @@ jobs:
         python setup.py build_locales -i
         pip install pytest pytest-randomly pytest-cov
         pytest --verbose --cov=picard --cov-report xml:coverage.xml test
-    - name: Test python-libdiscid (Linux)
-      if: runner.os == 'Linux'
-      run: |
-        sudo apt-get update
-        sudo apt-get install libdiscid-dev
-        python -c "from picard.disc import discid_version; print(discid_version)"
-        pytest --verbose test/test_disc.py
-        pip install python-libdiscid
-        python -c "from picard.disc import discid_version; print(discid_version)"
-        pytest --verbose test/test_disc.py
     - name: Submit code coverage to Codacy
       if: env.CODACY_PROJECT_TOKEN
       run: |
@@ -78,7 +68,11 @@ jobs:
         os: [ubuntu-latest]
         python-version: ['3.9']
         dependencies: [
-          "PyQt6==6.2.3 mutagen==1.37",
+          "PyQt6==6.5.3 PyQt6-Qt6==6.5.3 mutagen==1.37 python-dateutil==2.7 PyYAML==5.1",  # minimal versions, minimum dependencies
+          "PyQt6>=6.5.3 mutagen~=1.37 python-dateutil~=2.7 PyYAML~=6.0 discid==1.0",
+          "PyQt6>=6.5.3 mutagen~=1.37 python-dateutil~=2.7 PyYAML~=6.0 python-libdiscid",
+          "PyQt6>=6.5.3 mutagen~=1.37 python-dateutil~=2.7 PyYAML~=6.0 charset-normalizer==2.0.6",
+          "PyQt6>=6.5.3 mutagen~=1.37 python-dateutil~=2.7 PyYAML~=6.0 chardet==3.0.4",
         ]
 
     steps:
@@ -91,12 +85,11 @@ jobs:
       if: runner.os == 'linux'
       run: |
         sudo apt-get update
-        sudo apt-get install libegl1
+        sudo apt-get install libdiscid-dev libegl1
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install $DEPENDENCIES
-        pip install -r requirements.txt
       env:
         DEPENDENCIES: ${{ matrix.dependencies }}
     - name: Test with pytest
