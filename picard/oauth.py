@@ -130,10 +130,48 @@ class OAuthManager(object):
     def is_logged_in(self):
         return self.is_authorized() and bool(self.username)
 
-    def revoke_tokens(self):
-        # TODO actually revoke the tokens on MB (I think it's not implemented there)
-        self.forget_refresh_token()
-        self.forget_access_token()
+    def revoke_tokens(self, callback):
+        # Actually revoke the tokens on MB.
+        # From https://musicbrainz.org/doc/Development/OAuth2#Revoking_a_token :
+        # "If your application is installed or offline and token is a
+        # refresh token, we'll revoke the entire authorization grant associated
+        # with that token."
+        log.debug("OAuth: Revoking authorization grant")
+        self._revoke_token(self.refresh_token, callback)
+
+    def _revoke_token(self, token, callback):
+        params = {
+            'token': token,
+            'client_id': MUSICBRAINZ_OAUTH_CLIENT_ID,
+            'client_secret': MUSICBRAINZ_OAUTH_CLIENT_SECRET,
+        }
+        self.webservice.post_url(
+            url=self.url(path="/oauth2/revoke"),
+            data=self._query_data(params),
+            handler=partial(self._on_revoke_token_finished, callback),
+            mblogin=True,
+            priority=True,
+            important=True,
+            request_mimetype='application/x-www-form-urlencoded',
+            parse_response_type=False,
+        )
+
+    def _on_revoke_token_finished(self, callback, data, http, error):
+        successful = False
+        error_msg = None
+        try:
+            if error:
+                log.error("OAuth: revoking token failed: %s", error)
+                error_msg = self._extract_error_description(http, data)
+            else:
+                self.forget_refresh_token()
+                self.forget_access_token()
+                successful = True
+        except Exception as e:
+            log.error("OAuth: Unexpected error handling token revocation response: %r", e)
+            error_msg = _("Unexpected token revocation error")
+        finally:
+            callback(successful=successful, error_msg=error_msg)
 
     def forget_refresh_token(self):
         del self.refresh_token

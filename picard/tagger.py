@@ -6,7 +6,7 @@
 # Copyright (C) 2006-2009, 2011-2014, 2017 Lukáš Lalinský
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008 amckinle
-# Copyright (C) 2008-2010, 2014-2015, 2018-2023 Philipp Wolfer
+# Copyright (C) 2008-2010, 2014-2015, 2018-2024 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2010 Andrew Barnert
 # Copyright (C) 2011-2014 Michael Wiencek
@@ -674,15 +674,20 @@ class Tagger(QtWidgets.QApplication):
         else:
             callback(False, error_msg)
 
-    @classmethod
     def on_mb_login_finished(self, callback, successful, error_msg):
         if successful:
             load_user_collections()
         callback(successful, error_msg)
 
-    def mb_logout(self):
-        self.webservice.oauth_manager.revoke_tokens()
-        load_user_collections()
+    def mb_logout(self, callback):
+        self.webservice.oauth_manager.revoke_tokens(
+            partial(self.on_mb_logout_finished, callback)
+        )
+
+    def on_mb_logout_finished(self, callback, successful, error_msg):
+        if successful:
+            load_user_collections()
+        callback(successful, error_msg)
 
     def move_files_to_album(self, files, albumid=None, album=None):
         """Move `files` to tracks on album `albumid`."""
