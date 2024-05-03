@@ -302,10 +302,37 @@ class OAuthManager(object):
             return _("Unexpected request error (HTTP code %s)") % self._http_code(http)
 
 
-def s256_encode(token):
-    return base64url_encode(sha256(token).digest())
+def s256_encode(input: bytes) -> bytes:
+    """Implements the S256 code challenge encoding as defined for PKCE in RFC 7636.
+
+    The input data gets hashed by SHA256 and Base64url encoded.
+
+    See also https://datatracker.ietf.org/doc/html/rfc7636#section-4.2
+
+    Args:
+        input (bytes): Input bytes to encode. Is expected to consist only of ASCII characters.
+
+    Returns:
+        bytes: encoded data
+    """
+    return base64url_encode(sha256(input).digest())
 
 
-def base64url_encode(s):
-    # see https://datatracker.ietf.org/doc/html/rfc7636#appendix-A
-    return urlsafe_b64encode(s).rstrip(b'=')
+def base64url_encode(input: bytes) -> bytes:
+    """Implements the Base64url Encoding as defined for PKCE in RFC 7636.
+
+    Base64 encoding using the URL- and filename-safe character set
+    defined in Section 5 of [RFC4648], with all trailing '='
+    characters omitted (as permitted by Section 3.2 of [RFC4648]) and
+    without the inclusion of any line breaks, whitespace, or other
+    additional characters.
+
+    See also https://datatracker.ietf.org/doc/html/rfc7636#appendix-A
+
+    Args:
+        s (bytes): Input bytes to encode.
+
+    Returns:
+        bytes: Base64url encoded data
+    """
+    return urlsafe_b64encode(input).rstrip(b'=')
