@@ -28,7 +28,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt5 import QtCore
+from PyQt5 import (
+    QtCore,
+    QtWidgets,
+)
 
 from picard.config import (
     BoolOption,
@@ -173,7 +176,27 @@ class GeneralOptionsPage(OptionsPage):
         self.tagger.mb_logout(self.on_logout_finished)
 
     def on_logout_finished(self, successful, error_msg=None):
-        self.update_login_logout(error_msg)
+        if not successful:
+            msg = QtWidgets.QMessageBox(self)
+            msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+            msg.setWindowTitle(_("Logout error"))
+            msg.setText(_(
+                "A server error occurred while revoking access to the MusicBrainz server: %s\n"
+                "\n"
+                "Remove locally stored credentials anyway?"
+            ) % error_msg)
+            msg.setStandardButtons(
+                QtWidgets.QMessageBox.StandardButton.Yes
+                | QtWidgets.QMessageBox.StandardButton.No
+                | QtWidgets.QMessageBox.StandardButton.Retry)
+            result = msg.exec()
+            if result == QtWidgets.QMessageBox.StandardButton.Yes:
+                oauth_manager = self.tagger.webservice.oauth_manager
+                oauth_manager.forget_access_token()
+                oauth_manager.forget_refresh_token()
+            elif result == QtWidgets.QMessageBox.StandardButton.Retry:
+                self.logout()
+        self.update_login_logout()
 
     def restore_defaults(self):
         super().restore_defaults()
