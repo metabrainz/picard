@@ -86,7 +86,7 @@ class TagsOptionsPage(OptionsPage):
         config.setting['remove_id3_from_flac'] = self.ui.remove_id3_from_flac.isChecked()
         config.setting['fix_missing_seekpoints_flac'] = self.ui.fix_missing_seekpoints_flac.isChecked()
         config.setting['preserved_tags'] = list(self.ui.preserved_tags.tags)
-        self.tagger.window.enable_tag_saving_action.setChecked(not config.setting['dont_write_tags'])
+        self.tagger.window.actions['enable_tag_saving_action'].setChecked(not config.setting['dont_write_tags'])
 
 
 register_options_page(TagsOptionsPage)

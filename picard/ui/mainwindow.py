@@ -124,6 +124,7 @@ from picard.ui.logview import (
     HistoryView,
     LogView,
 )
+from picard.ui.mainwindow_actions import create_actions
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.newuserdialog import NewUserDialog
 from picard.ui.options.dialog import OptionsDialog
@@ -154,22 +155,6 @@ def register_ui_init(function):
     ui_init.register(function.__module__, function)
 
 
-class MainWindowActions:
-    _create_actions = []
-
-    @classmethod
-    def add(cls):
-        def decorator(fn):
-            cls._create_actions.append(fn)
-            return fn
-        return decorator
-
-    @classmethod
-    def create(cls, parent):
-        for create_action in cls._create_actions:
-            create_action(parent)
-
-
 class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     defaultsize = QtCore.QSize(780, 560)
@@ -178,6 +163,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def __init__(self, parent=None, disable_player=False):
         super().__init__(parent)
+        self.actions = {}
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_NativeWindow)
         self.__shown = False
         self.tagger = QtCore.QCoreApplication.instance()
@@ -235,7 +221,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.panel = MainPanel(self, main_layout)
         self.panel.setObjectName('main_panel_splitter')
         self.file_browser = FileBrowser(self.panel)
-        if not self.show_file_browser_action.isChecked():
+        if not self.actions['show_file_browser_action'].isChecked():
             self.file_browser.hide()
         self.panel.insertWidget(0, self.file_browser)
 
@@ -359,10 +345,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         is_maximized = bool(self.windowState() & QtCore.Qt.WindowState.WindowMaximized)
         self.save_geometry()
         config.persist['window_maximized'] = is_maximized
-        config.persist['view_metadata_view'] = self.show_metadata_view_action.isChecked()
-        config.persist['view_cover_art'] = self.show_cover_art_action.isChecked()
-        config.persist['view_toolbar'] = self.show_toolbar_action.isChecked()
-        config.persist['view_file_browser'] = self.show_file_browser_action.isChecked()
+        config.persist['view_metadata_view'] = self.actions['show_metadata_view_action'].isChecked()
+        config.persist['view_cover_art'] = self.actions['show_cover_art_action'].isChecked()
+        config.persist['view_toolbar'] = self.actions['show_toolbar_action'].isChecked()
+        config.persist['view_file_browser'] = self.actions['show_file_browser_action'].isChecked()
         self.file_browser.save_state()
         self.panel.save_state()
         self.metadata_box.save_state()
@@ -483,433 +469,26 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             else:
                 self.tagger.acoustidmanager.submit()
 
-    @MainWindowActions.add()
-    def _create_options_action(self):
-        action = QtGui.QAction(icontheme.lookup('preferences-desktop'), _("&Options…"), self)
-        action.setMenuRole(QtGui.QAction.MenuRole.PreferencesRole)
-        action.triggered.connect(self.show_options)
-        self.options_action = action
+    def create_actions(self):
+        create_actions(self, self.actions)
 
-    @MainWindowActions.add()
-    def _create_show_script_editor_action(self):
-        action = QtGui.QAction(_("Open &file naming script editor…"))
-        action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+S")))
-        action.triggered.connect(self.open_file_naming_script_editor)
-        self.show_script_editor_action = action
+        self._create_cd_lookup_menu()
 
-    @MainWindowActions.add()
-    def _create_cut_action(self):
-        action = QtGui.QAction(icontheme.lookup('edit-cut', icontheme.ICON_SIZE_MENU), _("&Cut"), self)
-        action.setShortcut(QtGui.QKeySequence.StandardKey.Cut)
-        action.setEnabled(False)
-        action.triggered.connect(self.cut)
-        self.cut_action = action
+        webservice_manager = self.tagger.webservice.manager
+        webservice_manager.authenticationRequired.connect(self.show_password_dialog)
+        webservice_manager.proxyAuthenticationRequired.connect(self.show_proxy_dialog)
 
-    @MainWindowActions.add()
-    def _create_paste_action(self):
-        action = QtGui.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _("&Paste"), self)
-        action.setShortcut(QtGui.QKeySequence.StandardKey.Paste)
-        action.setEnabled(False)
-        action.triggered.connect(self.paste)
-        self.paste_action = action
-
-    @MainWindowActions.add()
-    def _create_help_action(self):
-        action = QtGui.QAction(_("&Help…"), self)
-        action.setShortcut(QtGui.QKeySequence.StandardKey.HelpContents)
-        action.triggered.connect(self.show_help)
-        self.help_action = action
-
-    @MainWindowActions.add()
-    def _create_about_action(self):
-        action = QtGui.QAction(_("&About…"), self)
-        action.setMenuRole(QtGui.QAction.MenuRole.AboutRole)
-        action.triggered.connect(self.show_about)
-        self.about_action = action
-
-    @MainWindowActions.add()
-    def _create_donate_action(self):
-        action = QtGui.QAction(_("&Donate…"), self)
-        action.triggered.connect(self.open_donation_page)
-        self.donate_action = action
-
-    @MainWindowActions.add()
-    def _create_report_bug_action(self):
-        action = QtGui.QAction(_("&Report a Bug…"), self)
-        action.triggered.connect(self.open_bug_report)
-        self.report_bug_action = action
-
-    @MainWindowActions.add()
-    def _create_support_forum_action(self):
-        action = QtGui.QAction(_("&Support Forum…"), self)
-        action.triggered.connect(self.open_support_forum)
-        self.support_forum_action = action
-
-    @MainWindowActions.add()
-    def _create_add_files_action(self):
-        action = QtGui.QAction(icontheme.lookup('document-open'), _("&Add Files…"), self)
-        action.setStatusTip(_("Add files to the tagger"))
-        # TR: Keyboard shortcut for "Add Files…"
-        action.setShortcut(QtGui.QKeySequence.StandardKey.Open)
-        action.triggered.connect(self.add_files)
-        self.add_files_action = action
-
-    @MainWindowActions.add()
-    def _create_add_directory_action(self):
-        action = QtGui.QAction(icontheme.lookup('folder'), _("Add Fold&er…"), self)
-        action.setStatusTip(_("Add a folder to the tagger"))
-        # TR: Keyboard shortcut for "Add Directory…"
-        action.setShortcut(QtGui.QKeySequence(_("Ctrl+E")))
-        action.triggered.connect(self.add_directory)
-        self.add_directory_action = action
-
-    @MainWindowActions.add()
-    def _create_close_window_action(self):
-        if self.show_close_window:
-            action = QtGui.QAction(_("Close Window"), self)
-            action.setShortcut(QtGui.QKeySequence(_("Ctrl+W")))
-            action.triggered.connect(self.close_active_window)
-        else:
-            action = None
-        self.close_window_action = action
-
-    @MainWindowActions.add()
-    def _create_save_action(self):
-        action = QtGui.QAction(icontheme.lookup('document-save'), _("&Save"), self)
-        action.setStatusTip(_("Save selected files"))
-        # TR: Keyboard shortcut for "Save"
-        action.setShortcut(QtGui.QKeySequence.StandardKey.Save)
-        action.setEnabled(False)
-        action.triggered.connect(self.save)
-        self.save_action = action
-
-    @MainWindowActions.add()
-    def _create_submit_acoustid_action(self):
-        action = QtGui.QAction(icontheme.lookup('acoustid-fingerprinter'), _("S&ubmit AcoustIDs"), self)
-        action.setStatusTip(_("Submit acoustic fingerprints"))
-        action.setEnabled(False)
-        action.triggered.connect(self._on_submit_acoustid)
-        self.submit_acoustid_action = action
-
-    @MainWindowActions.add()
-    def _create_exit_action(self):
-        action = QtGui.QAction(_("E&xit"), self)
-        action.setMenuRole(QtGui.QAction.MenuRole.QuitRole)
-        # TR: Keyboard shortcut for "Exit"
-        action.setShortcut(QtGui.QKeySequence(_("Ctrl+Q")))
-        action.triggered.connect(self.close)
-        self.exit_action = action
-
-    @MainWindowActions.add()
-    def _create_remove_action(self):
-        action = QtGui.QAction(icontheme.lookup('list-remove'), _("&Remove"), self)
-        action.setStatusTip(_("Remove selected files/albums"))
-        action.setEnabled(False)
-        action.triggered.connect(self.remove)
-        self.remove_action = action
-
-    @MainWindowActions.add()
-    def _create_browser_lookup_action(self):
-        action = QtGui.QAction(icontheme.lookup('lookup-musicbrainz'), _("Lookup in &Browser"), self)
-        action.setStatusTip(_("Lookup selected item on MusicBrainz website"))
-        action.setEnabled(False)
-        # TR: Keyboard shortcut for "Lookup in Browser"
-        action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+L")))
-        action.triggered.connect(self.browser_lookup)
-        self.browser_lookup_action = action
-
-    @MainWindowActions.add()
-    def _create_submit_cluster_action(self):
-        if addrelease.is_available():
-            action = QtGui.QAction(_("Submit cluster as release…"), self)
-            action.setStatusTip(_("Submit cluster as a new release to MusicBrainz"))
-            action.setEnabled(False)
-            action.triggered.connect(self.submit_cluster)
-        else:
-            action = None
-        self.submit_cluster_action = action
-
-    @MainWindowActions.add()
-    def _create_submit_file_as_recording_action(self):
-        if addrelease.is_available():
-            action = QtGui.QAction(_("Submit file as standalone recording…"), self)
-            action.setStatusTip(_("Submit file as a new recording to MusicBrainz"))
-            action.setEnabled(False)
-            action.triggered.connect(self.submit_file)
-        else:
-            action = None
-        self.submit_file_as_recording_action = action
-
-    @MainWindowActions.add()
-    def _create_submit_file_as_release_action(self):
-        if addrelease.is_available():
-            action = QtGui.QAction(_("Submit file as release…"), self)
-            action.setStatusTip(_("Submit file as a new release to MusicBrainz"))
-            action.setEnabled(False)
-            action.triggered.connect(partial(self.submit_file, as_release=True))
-        else:
-            action = None
-        self.submit_file_as_release_action = action
-
-    @MainWindowActions.add()
-    def _create_similar_items_search_action(self):
-        action = QtGui.QAction(icontheme.lookup('system-search'), _("Search for similar items…"), self)
-        action.setIconText(_("Similar items"))
-        action.setStatusTip(_("View similar releases or recordings and optionally choose a different one"))
-        action.setEnabled(False)
-        action.setShortcut(QtGui.QKeySequence(_("Ctrl+T")))
-        action.triggered.connect(self.show_similar_items_search)
-        self.similar_items_search_action = action
-
-    @MainWindowActions.add()
-    def _create_album_search_action(self):
-        action = QtGui.QAction(icontheme.lookup('system-search'), _("Search for similar albums…"), self)
-        action.setStatusTip(_("View similar releases and optionally choose a different release"))
-        action.setEnabled(False)
-        action.setShortcut(QtGui.QKeySequence(_("Ctrl+T")))
-        action.triggered.connect(self.show_more_albums)
-        self.album_search_action = action
-
-    @MainWindowActions.add()
-    def _create_track_search_action(self):
-        action = QtGui.QAction(icontheme.lookup('system-search'), _("Search for similar tracks…"), self)
-        action.setStatusTip(_("View similar tracks and optionally choose a different release"))
-        action.setEnabled(False)
-        action.setShortcut(QtGui.QKeySequence(_("Ctrl+T")))
-        action.triggered.connect(self.show_more_tracks)
-        self.track_search_action = action
-
-    @MainWindowActions.add()
-    def _create_album_other_versions_action(self):
-        action = QtGui.QAction(_("Show &other album versions…"), self)
-        action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+O")))
-        action.triggered.connect(self.show_album_other_versions)
-        self.album_other_versions_action = action
-
-    @MainWindowActions.add()
-    def _create_show_file_browser_action(self):
-        config = get_config()
-        action = QtGui.QAction(_("File &Browser"), self)
-        action.setCheckable(True)
-        if config.persist['view_file_browser']:
-            action.setChecked(True)
-        action.setShortcut(QtGui.QKeySequence(_("Ctrl+B")))
-        action.triggered.connect(self.show_file_browser)
-        self.show_file_browser_action = action
-
-    @MainWindowActions.add()
-    def _create_show_metadata_view_action(self):
-        config = get_config()
-        action = QtGui.QAction(_("&Metadata"), self)
-        action.setCheckable(True)
-        if config.persist['view_metadata_view']:
-            action.setChecked(True)
-        action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+M")))
-        action.triggered.connect(self.show_metadata_view)
-        self.show_metadata_view_action = action
-
-    @MainWindowActions.add()
-    def _create_show_cover_art_action(self):
-        config = get_config()
-        action = QtGui.QAction(_("&Cover Art"), self)
-        action.setCheckable(True)
-        if config.persist['view_cover_art']:
-            action.setChecked(True)
-        action.setEnabled(self.show_metadata_view_action.isChecked())
-        action.triggered.connect(self.show_cover_art)
-        self.show_cover_art_action = action
-
-    @MainWindowActions.add()
-    def _create_show_toolbar_action(self):
-        config = get_config()
-        action = QtGui.QAction(_("&Actions"), self)
-        action.setCheckable(True)
-        if config.persist['view_toolbar']:
-            action.setChecked(True)
-        action.triggered.connect(self.show_toolbar)
-        self.show_toolbar_action = action
-
-    @MainWindowActions.add()
-    def _create_search_action(self):
-        action = QtGui.QAction(icontheme.lookup('system-search'), _("Search"), self)
-        action.setEnabled(False)
-        action.triggered.connect(self.search)
-        self.search_action = action
-
-    @MainWindowActions.add()
-    def _create_cd_lookup_action(self):
-        action = QtGui.QAction(icontheme.lookup('media-optical'), _("Lookup &CD…"), self)
-        action.setStatusTip(_("Lookup the details of the CD in your drive"))
-        # TR: Keyboard shortcut for "Lookup CD"
-        action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
-        action.triggered.connect(self.tagger.lookup_cd)
-        self.cd_lookup_action = action
-
+    def _create_cd_lookup_menu(self):
         menu = QtWidgets.QMenu(_("Lookup &CD…"))
         menu.setIcon(icontheme.lookup('media-optical'))
         menu.triggered.connect(self.tagger.lookup_cd)
         self.cd_lookup_menu = menu
         if discid is None:
             log.warning("CDROM: discid library not found - Lookup CD functionality disabled")
-            self.cd_lookup_action.setEnabled(False)
+            self.actions['cd_lookup_action'].setEnabled(False)
             self.cd_lookup_menu.setEnabled(False)
         else:
             thread.run_task(get_cdrom_drives, self._update_cd_lookup_actions)
-
-    @MainWindowActions.add()
-    def _create_analyze_action(self):
-        action = QtGui.QAction(icontheme.lookup('picard-analyze'), _("&Scan"), self)
-        action.setStatusTip(_("Use AcoustID audio fingerprint to identify the files by the actual music, even if they have no metadata"))
-        action.setEnabled(False)
-        action.setToolTip(_("Identify the file using its AcoustID audio fingerprint"))
-        # TR: Keyboard shortcut for "Analyze"
-        action.setShortcut(QtGui.QKeySequence(_("Ctrl+Y")))
-        action.triggered.connect(self.analyze)
-        self.analyze_action = action
-
-    @MainWindowActions.add()
-    def _create_generate_fingerprints_action(self):
-        action = QtGui.QAction(icontheme.lookup('fingerprint'), _("&Generate AcoustID Fingerprints"), self)
-        action.setIconText(_("Generate Fingerprints"))
-        action.setStatusTip(_("Generate the AcoustID audio fingerprints for the selected files without doing a lookup"))
-        action.setEnabled(False)
-        action.setToolTip(_("Generate the AcoustID audio fingerprints for the selected files"))
-        action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+Y")))
-        action.triggered.connect(self.generate_fingerprints)
-        self.generate_fingerprints_action = action
-
-    @MainWindowActions.add()
-    def _create_cluster_action(self):
-        action = QtGui.QAction(icontheme.lookup('picard-cluster'), _("Cl&uster"), self)
-        action.setStatusTip(_("Cluster files into album clusters"))
-        action.setEnabled(False)
-        # TR: Keyboard shortcut for "Cluster"
-        action.setShortcut(QtGui.QKeySequence(_("Ctrl+U")))
-        action.triggered.connect(self.cluster)
-        self.cluster_action = action
-
-    @MainWindowActions.add()
-    def _create_autotag_action(self):
-        action = QtGui.QAction(icontheme.lookup('picard-auto-tag'), _("&Lookup"), self)
-        tip = _("Lookup selected items in MusicBrainz")
-        action.setToolTip(tip)
-        action.setStatusTip(tip)
-        action.setEnabled(False)
-        # TR: Keyboard shortcut for "Lookup"
-        action.setShortcut(QtGui.QKeySequence(_("Ctrl+L")))
-        action.triggered.connect(self.autotag)
-        self.autotag_action = action
-
-    @MainWindowActions.add()
-    def _create_view_info_action(self):
-        action = QtGui.QAction(icontheme.lookup('picard-edit-tags'), _("&Info…"), self)
-        action.setEnabled(False)
-        # TR: Keyboard shortcut for "Info"
-        action.setShortcut(QtGui.QKeySequence(_("Ctrl+I")))
-        action.triggered.connect(self.view_info)
-        self.view_info_action = action
-
-    @MainWindowActions.add()
-    def _create_refresh_action(self):
-        action = QtGui.QAction(icontheme.lookup('view-refresh', icontheme.ICON_SIZE_MENU), _("&Refresh"), self)
-        action.setShortcut(QtGui.QKeySequence(_("Ctrl+R")))
-        action.triggered.connect(self.refresh)
-        self.refresh_action = action
-
-    @MainWindowActions.add()
-    def _create_enable_renaming_action(self):
-        config = get_config()
-        action = QtGui.QAction(_("&Rename Files"), self)
-        action.setCheckable(True)
-        action.setChecked(config.setting['rename_files'])
-        action.triggered.connect(self.toggle_rename_files)
-        self.enable_renaming_action = action
-
-    @MainWindowActions.add()
-    def _create_enable_moving_action(self):
-        config = get_config()
-        action = QtGui.QAction(_("&Move Files"), self)
-        action.setCheckable(True)
-        action.setChecked(config.setting['move_files'])
-        action.triggered.connect(self.toggle_move_files)
-        self.enable_moving_action = action
-
-    @MainWindowActions.add()
-    def _create_enable_tag_saving_action(self):
-        config = get_config()
-        action = QtGui.QAction(_("Save &Tags"), self)
-        action.setCheckable(True)
-        action.setChecked(not config.setting['dont_write_tags'])
-        action.triggered.connect(self.toggle_tag_saving)
-        self.enable_tag_saving_action = action
-
-    @MainWindowActions.add()
-    def _create_tags_from_filenames_action(self):
-        action = QtGui.QAction(icontheme.lookup('picard-tags-from-filename'), _("Tags From &File Names…"), self)
-        action.setIconText(_("Parse File Names…"))
-        action.setToolTip(_("Set tags based on the file names"))
-        action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+T")))
-        action.setEnabled(False)
-        action.triggered.connect(self.open_tags_from_filenames)
-        self.tags_from_filenames_action = action
-
-    @MainWindowActions.add()
-    def _create_open_collection_in_browser_action(self):
-        config = get_config()
-        action = QtGui.QAction(_("&Open My Collections in Browser"), self)
-        action.setEnabled(config.setting['username'] != '')
-        action.triggered.connect(self.open_collection_in_browser)
-        self.open_collection_in_browser_action = action
-
-    @MainWindowActions.add()
-    def _create_view_log_action(self):
-        action = QtGui.QAction(_("View &Error/Debug Log"), self)
-        # TR: Keyboard shortcut for "View Error/Debug Log"
-        action.setShortcut(QtGui.QKeySequence(_("Ctrl+G")))
-        action.triggered.connect(self.show_log)
-        self.view_log_action = action
-
-    @MainWindowActions.add()
-    def _create_view_history_action(self):
-        action = QtGui.QAction(_("View Activity &History"), self)
-        # TR: Keyboard shortcut for "View Activity History"
-        # On macOS ⌘+H is a system shortcut to hide the window. Use ⌘+Shift+H instead.
-        action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+H") if IS_MACOS else _("Ctrl+H")))
-        action.triggered.connect(self.show_history)
-        self.view_history_action = action
-
-    @MainWindowActions.add()
-    def _create_play_file_action(self):
-        action = QtGui.QAction(icontheme.lookup('play-music'), _("Open in &Player"), self)
-        action.setStatusTip(_("Play the file in your default media player"))
-        action.setEnabled(False)
-        action.triggered.connect(self.play_file)
-        self.play_file_action = action
-
-    @MainWindowActions.add()
-    def _create_open_folder_action(self):
-        action = QtGui.QAction(icontheme.lookup('folder', icontheme.ICON_SIZE_MENU), _("Open Containing &Folder"), self)
-        action.setStatusTip(_("Open the containing folder in your file explorer"))
-        action.setEnabled(False)
-        action.triggered.connect(self.open_folder)
-        self.open_folder_action = action
-
-    @MainWindowActions.add()
-    def _create_check_update_action(self):
-        if self.tagger.autoupdate_enabled:
-            action = QtGui.QAction(_("&Check for Update…"), self)
-            action.setMenuRole(QtGui.QAction.MenuRole.ApplicationSpecificRole)
-            action.triggered.connect(self.do_update_check)
-        else:
-            action = None
-        self.check_update_action = action
-
-    def create_actions(self):
-        MainWindowActions.create(self)
-
-        webservice_manager = self.tagger.webservice.manager
-        webservice_manager.authenticationRequired.connect(self.show_password_dialog)
-        webservice_manager.proxyAuthenticationRequired.connect(self.show_proxy_dialog)
 
     def _update_cd_lookup_actions(self, result=None, error=None):
         if error:
@@ -919,7 +498,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def update_cd_lookup_drives(self, drives):
         self.cd_lookup_menu.clear()
-        self.cd_lookup_action.setEnabled(discid is not None)
+        self.actions['cd_lookup_action'].setEnabled(discid is not None)
         if not drives:
             log.warning(DISCID_NOT_LOADED_MESSAGE)
         else:
@@ -943,12 +522,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _update_cd_lookup_default_action(self, action):
         if action:
-            reconnect(self.cd_lookup_action.triggered, action.trigger)
+            reconnect(self.actions['cd_lookup_action'].triggered, action.trigger)
         else:
-            reconnect(self.cd_lookup_action.triggered, self.tagger.lookup_cd)
+            reconnect(self.actions['cd_lookup_action'].triggered, self.tagger.lookup_cd)
 
     def _update_cd_lookup_button(self):
-        button = self.toolbar.widgetForAction(self.cd_lookup_action)
+        button = self.toolbar.widgetForAction(self.actions['cd_lookup_action'])
         enabled = bool(self.cd_lookup_menu.actions() and discid)
         self.cd_lookup_menu.setEnabled(enabled)
         if button:
@@ -989,38 +568,41 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.tagger.collection_lookup()
 
     def create_menus(self):
+        def add_action(menu, action_name):
+            menu.addAction(self.actions[action_name])
+
         menu = self.menuBar().addMenu(_("&File"))
-        menu.addAction(self.add_directory_action)
-        menu.addAction(self.add_files_action)
+        add_action(menu, 'add_directory_action')
+        add_action(menu, 'add_files_action')
         if self.show_close_window:
-            menu.addAction(self.close_window_action)
+            add_action(menu, 'close_window_action')
         menu.addSeparator()
-        menu.addAction(self.play_file_action)
-        menu.addAction(self.open_folder_action)
+        add_action(menu, 'play_file_action')
+        add_action(menu, 'open_folder_action')
         menu.addSeparator()
-        menu.addAction(self.save_action)
-        menu.addAction(self.submit_acoustid_action)
+        add_action(menu, 'save_action')
+        add_action(menu, 'submit_acoustid_action')
         menu.addSeparator()
-        menu.addAction(self.exit_action)
+        add_action(menu, 'exit_action')
         menu = self.menuBar().addMenu(_("&Edit"))
-        menu.addAction(self.cut_action)
-        menu.addAction(self.paste_action)
+        add_action(menu, 'cut_action')
+        add_action(menu, 'paste_action')
         menu.addSeparator()
-        menu.addAction(self.view_info_action)
-        menu.addAction(self.remove_action)
+        add_action(menu, 'view_info_action')
+        add_action(menu, 'remove_action')
         menu = self.menuBar().addMenu(_("&View"))
-        menu.addAction(self.show_file_browser_action)
-        menu.addAction(self.show_metadata_view_action)
-        menu.addAction(self.show_cover_art_action)
+        add_action(menu, 'show_file_browser_action')
+        add_action(menu, 'show_metadata_view_action')
+        add_action(menu, 'show_cover_art_action')
         menu.addSeparator()
-        menu.addAction(self.show_toolbar_action)
-        menu.addAction(self.search_toolbar_toggle_action)
+        add_action(menu, 'show_toolbar_action')
+        add_action(menu, 'search_toolbar_toggle_action')
         if self.player:
-            menu.addAction(self.player_toolbar_toggle_action)
+            add_action(menu, 'player_toolbar_toggle_action')
         menu = self.menuBar().addMenu(_("&Options"))
-        menu.addAction(self.enable_renaming_action)
-        menu.addAction(self.enable_moving_action)
-        menu.addAction(self.enable_tag_saving_action)
+        add_action(menu, 'enable_renaming_action')
+        add_action(menu, 'enable_moving_action')
+        add_action(menu, 'enable_tag_saving_action')
         menu.addSeparator()
 
         self.script_quick_selector_menu = QtWidgets.QMenu(_("&Select file naming script"))
@@ -1028,7 +610,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.make_script_selector_menu()
 
         menu.addMenu(self.script_quick_selector_menu)
-        menu.addAction(self.show_script_editor_action)
+        add_action(menu, 'show_script_editor_action')
         menu.addSeparator()
 
         self.profile_quick_selector_menu = QtWidgets.QMenu(_("&Enable/disable profiles"))
@@ -1037,35 +619,35 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         menu.addMenu(self.profile_quick_selector_menu)
         menu.addSeparator()
-        menu.addAction(self.options_action)
+        add_action(menu, 'options_action')
         menu = self.menuBar().addMenu(_("&Tools"))
-        menu.addAction(self.refresh_action)
+        add_action(menu, 'refresh_action')
         menu.addMenu(self.cd_lookup_menu)
-        menu.addAction(self.autotag_action)
-        menu.addAction(self.analyze_action)
-        menu.addAction(self.cluster_action)
-        menu.addAction(self.browser_lookup_action)
-        menu.addAction(self.similar_items_search_action)
-        menu.addAction(self.album_other_versions_action)
+        add_action(menu, 'autotag_action')
+        add_action(menu, 'analyze_action')
+        add_action(menu, 'cluster_action')
+        add_action(menu, 'browser_lookup_action')
+        add_action(menu, 'similar_items_search_action')
+        add_action(menu, 'album_other_versions_action')
         menu.addSeparator()
-        menu.addAction(self.generate_fingerprints_action)
-        menu.addAction(self.tags_from_filenames_action)
-        menu.addAction(self.open_collection_in_browser_action)
+        add_action(menu, 'generate_fingerprints_action')
+        add_action(menu, 'tags_from_filenames_action')
+        add_action(menu, 'open_collection_in_browser_action')
         self.menuBar().addSeparator()
         menu = self.menuBar().addMenu(_("&Help"))
-        menu.addAction(self.help_action)
+        add_action(menu, 'help_action')
         menu.addSeparator()
-        menu.addAction(self.view_history_action)
+        add_action(menu, 'view_history_action')
         menu.addSeparator()
         if self.tagger.autoupdate_enabled:
-            menu.addAction(self.check_update_action)
+            add_action(menu, 'check_update_action')
             menu.addSeparator()
-        menu.addAction(self.support_forum_action)
-        menu.addAction(self.report_bug_action)
-        menu.addAction(self.view_log_action)
+        add_action(menu, 'support_forum_action')
+        add_action(menu, 'report_bug_action')
+        add_action(menu, 'view_log_action')
         menu.addSeparator()
-        menu.addAction(self.donate_action)
-        menu.addAction(self.about_action)
+        add_action(menu, 'donate_action')
+        add_action(menu, 'about_action')
 
     def update_toolbar_style(self):
         config = get_config()
@@ -1104,14 +686,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         for action in config.setting['toolbar_layout']:
             if action == 'cd_lookup_action':
-                add_toolbar_action(self.cd_lookup_action)
+                add_toolbar_action(self.actions['cd_lookup_action'])
                 self._update_cd_lookup_button()
             elif action == 'separator':
                 toolbar.addSeparator()
             else:
                 try:
-                    add_toolbar_action(getattr(self, action))
-                except AttributeError:
+                    add_toolbar_action(self.actions[action])
+                except KeyError:
                     log.warning("Warning: Unknown action name '%r' found in config. Ignored.", action)
         self.show_toolbar()
 
@@ -1121,13 +703,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.addToolBar(QtCore.Qt.ToolBarArea.BottomToolBarArea, toolbar)
         if self._is_wayland:
             toolbar.setFloatable(False)  # https://bugreports.qt.io/browse/QTBUG-92191
-        self.player_toolbar_toggle_action = toolbar.toggleViewAction()
+        self.actions['player_toolbar_toggle_action'] = toolbar.toggleViewAction()
         toolbar.hide()  # Hide by default
 
     def create_search_toolbar(self):
         config = get_config()
         self.search_toolbar = toolbar = self.addToolBar(_("Search"))
-        self.search_toolbar_toggle_action = self.search_toolbar.toggleViewAction()
+        self.actions['search_toolbar_toggle_action'] = self.search_toolbar.toggleViewAction()
         toolbar.setObjectName('search_toolbar')
         if self._is_wayland:
             toolbar.setFloatable(False)  # https://bugreports.qt.io/browse/QTBUG-92191
@@ -1148,7 +730,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         hbox.addWidget(self.search_edit, 0)
         self.search_button = QtWidgets.QToolButton(search_panel)
         self.search_button.setAutoRaise(True)
-        self.search_button.setDefaultAction(self.search_action)
+        self.search_button.setDefaultAction(self.actions['search_action'])
         self.search_button.setIconSize(QtCore.QSize(22, 22))
         self.search_button.setAttribute(QtCore.Qt.WidgetAttribute.WA_MacShowFocusRect)
 
@@ -1178,16 +760,16 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def set_tab_order(self):
         tab_order = self.setTabOrder
-        tw = self.toolbar.widgetForAction
         prev_action = None
         current_action = None
         # Setting toolbar widget tab-orders for accessibility
         config = get_config()
-        for action in config.setting['toolbar_layout']:
-            if action != 'separator':
+        for action_name in config.setting['toolbar_layout']:
+            if action_name != 'separator':
                 try:
-                    current_action = tw(getattr(self, action))
-                except AttributeError:
+                    action = self.actions[action_name]
+                    current_action = self.toolbar.widgetForAction(action)
+                except KeyError:
                     # No need to log warnings since we have already
                     # done it once in create_toolbar
                     pass
@@ -1206,19 +788,19 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def enable_submit(self, enabled):
         """Enable/disable the 'Submit fingerprints' action."""
-        self.submit_acoustid_action.setEnabled(enabled)
+        self.actions['submit_acoustid_action'].setEnabled(enabled)
 
     def enable_cluster(self, enabled):
         """Enable/disable the 'Cluster' action."""
-        self.cluster_action.setEnabled(enabled)
+        self.actions['cluster_action'].setEnabled(enabled)
 
     def enable_search(self):
         """Enable/disable the 'Search' action."""
-        self.search_action.setEnabled(bool(self.search_edit.text()))
+        self.actions['search_action'].setEnabled(bool(self.search_edit.text()))
 
     def trigger_search_action(self):
-        if self.search_action.isEnabled():
-            self.search_action.trigger()
+        if self.actions['search_action'].isEnabled():
+            self.actions['search_action'].trigger()
 
     def search_mbid_found(self, entity, mbid):
         self.search_edit.setText('%s:%s' % (entity, mbid))
@@ -1313,7 +895,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.open_file_naming_script_editor()
             self.script_editor_dialog.show()
         else:
-            self.show_script_editor_action.setEnabled(True)
+            self.actions['show_script_editor_action'].setEnabled(True)
         self.make_profile_selector_menu()
         self.make_script_selector_menu()
 
@@ -1574,29 +1156,29 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                     and can_submit
                 ):
                     break
-        self.remove_action.setEnabled(can_remove)
-        self.save_action.setEnabled(can_save)
-        self.view_info_action.setEnabled(can_view_info)
-        self.analyze_action.setEnabled(can_analyze)
-        self.generate_fingerprints_action.setEnabled(have_files)
-        self.refresh_action.setEnabled(can_refresh)
-        self.autotag_action.setEnabled(can_autotag)
-        self.browser_lookup_action.setEnabled(can_browser_lookup)
-        self.play_file_action.setEnabled(have_files)
-        self.open_folder_action.setEnabled(have_files)
-        self.cut_action.setEnabled(have_objects)
-        if self.submit_cluster_action:
-            self.submit_cluster_action.setEnabled(can_submit)
-        if self.submit_file_as_recording_action:
-            self.submit_file_as_recording_action.setEnabled(have_files)
-        if self.submit_file_as_release_action:
-            self.submit_file_as_release_action.setEnabled(have_files)
+        self.actions['remove_action'].setEnabled(can_remove)
+        self.actions['save_action'].setEnabled(can_save)
+        self.actions['view_info_action'].setEnabled(can_view_info)
+        self.actions['analyze_action'].setEnabled(can_analyze)
+        self.actions['generate_fingerprints_action'].setEnabled(have_files)
+        self.actions['refresh_action'].setEnabled(can_refresh)
+        self.actions['autotag_action'].setEnabled(can_autotag)
+        self.actions['browser_lookup_action'].setEnabled(can_browser_lookup)
+        self.actions['play_file_action'].setEnabled(have_files)
+        self.actions['open_folder_action'].setEnabled(have_files)
+        self.actions['cut_action'].setEnabled(have_objects)
+        if 'submit_cluster_action' in self.actions:
+            self.actions['submit_cluster_action'].setEnabled(can_submit)
+        if 'submit_file_as_recording_action' in self.actions:
+            self.actions['submit_file_as_recording_action'].setEnabled(have_files)
+        if 'submit_file_as_release_action' in self.actions:
+            self.actions['submit_file_as_release_action'].setEnabled(have_files)
         files = self.get_selected_or_unmatched_files()
-        self.tags_from_filenames_action.setEnabled(bool(files))
-        self.similar_items_search_action.setEnabled(is_file or is_cluster)
-        self.track_search_action.setEnabled(is_file)
-        self.album_search_action.setEnabled(is_cluster)
-        self.album_other_versions_action.setEnabled(is_album)
+        self.actions['tags_from_filenames_action'].setEnabled(bool(files))
+        self.actions['similar_items_search_action'].setEnabled(is_file or is_cluster)
+        self.actions['track_search_action'].setEnabled(is_file)
+        self.actions['album_search_action'].setEnabled(is_cluster)
+        self.actions['album_other_versions_action'].setEnabled(is_album)
 
     def update_selection(self, objects=None, new_selection=True, drop_album_caches=False):
         if self.ignore_selection_changes:
@@ -1674,29 +1256,29 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def show_metadata_view(self):
         """Show/hide the metadata view (including the cover art box)."""
-        show = self.show_metadata_view_action.isChecked()
+        show = self.actions['show_metadata_view_action'].isChecked()
         self.metadata_view.setVisible(show)
-        self.show_cover_art_action.setEnabled(show)
+        self.actions['show_cover_art_action'].setEnabled(show)
         if show:
             self.update_selection()
 
     def show_cover_art(self):
         """Show/hide the cover art box."""
-        show = self.show_cover_art_action.isChecked()
+        show = self.actions['show_cover_art_action'].isChecked()
         self.cover_art_box.setVisible(show)
         if show:
             self.update_selection()
 
     def show_toolbar(self):
         """Show/hide the Action toolbar."""
-        if self.show_toolbar_action.isChecked():
+        if self.actions['show_toolbar_action'].isChecked():
             self.toolbar.show()
         else:
             self.toolbar.hide()
 
     def show_file_browser(self):
         """Show/hide the file browser."""
-        if self.show_file_browser_action.isChecked():
+        if self.actions['show_file_browser_action'].isChecked():
             sizes = self.panel.sizes()
             if sizes[0] == 0:
                 sizes[0] = sum(sizes) // 4
@@ -1747,7 +1329,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def cut(self):
         self.copy_files(self.selected_objects)
-        self.paste_action.setEnabled(bool(self.selected_objects))
+        self.actions['paste_action'].setEnabled(bool(self.selected_objects))
 
     def paste(self):
         selected_objects = self.selected_objects
@@ -1756,7 +1338,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         else:
             target = selected_objects[0]
         self.paste_files(target)
-        self.paste_action.setEnabled(False)
+        self.actions['paste_action'].setEnabled(False)
 
     def do_update_check(self):
         self.check_for_update(True)
@@ -1894,7 +1476,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.script_editor_dialog.signal_selection_changed,
             self.script_editor_dialog.signal_index_changed,
         ]
-        self.show_script_editor_action.setEnabled(False)
+        self.actions['show_script_editor_action'].setEnabled(False)
 
     def script_editor_save(self):
         """Process "signal_save" signal from the script editor.
@@ -1904,7 +1486,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def script_editor_closed(self):
         """Process "finished" signal from the script editor.
         """
-        self.show_script_editor_action.setEnabled(True)
+        self.actions['show_script_editor_action'].setEnabled(True)
         self.script_editor_dialog = None
         self.make_script_selector_menu()
 
