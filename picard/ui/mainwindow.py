@@ -793,7 +793,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if self.actions['search_action'].isEnabled():
             self.actions['search_action'].trigger()
 
-    def search_mbid_found(self, entity, mbid):
+    def _search_mbid_found(self, entity, mbid):
         self.search_edit.setText('%s:%s' % (entity, mbid))
 
     def search(self):
@@ -803,7 +803,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         self.tagger.search(text, entity,
                            config.setting['use_adv_search_syntax'],
-                           mbid_matched_callback=self.search_mbid_found)
+                           mbid_matched_callback=self._search_mbid_found)
 
     def add_files(self):
         """Add files to the tagger."""
