@@ -1088,8 +1088,8 @@ class TrackItem(TreeItem):
             file.item = self
             color = TrackItem.track_colors[file.state]
             bgcolor = get_match_color(file.similarity, TreeItem.base_color)
-            icon = FileItem.decide_file_icon(file)
-            self.setToolTip(MainPanel.TITLE_COLUMN, _(FileItem.decide_file_icon_info(file)))
+            icon, icon_tooltip = FileItem.decide_file_icon_info(file)
+            self.setToolTip(MainPanel.TITLE_COLUMN, icon_tooltip)
             self.takeChildren()
             self.setExpanded(False)
             fingerprint_icon, fingerprint_tooltip = FileItem.decide_fingerprint_icon_info(file)
@@ -1150,8 +1150,9 @@ class FileItem(TreeItem):
 
     def update(self, update_track=True, update_selection=True):
         file = self.obj
-        self.setIcon(MainPanel.TITLE_COLUMN, FileItem.decide_file_icon(file))
-        self.setToolTip(MainPanel.TITLE_COLUMN, _(FileItem.decide_file_icon_info(file)))
+        icon, icon_tooltip = FileItem.decide_file_icon_info(file)
+        self.setIcon(MainPanel.TITLE_COLUMN, icon)
+        self.setToolTip(MainPanel.TITLE_COLUMN, icon_tooltip)
         fingerprint_icon, fingerprint_tooltip = FileItem.decide_fingerprint_icon_info(file)
         self.setToolTip(MainPanel.FINGERPRINT_COLUMN, fingerprint_tooltip)
         self.setIcon(MainPanel.FINGERPRINT_COLUMN, fingerprint_icon)
@@ -1170,38 +1171,31 @@ class FileItem(TreeItem):
             parent.update(update_files=False, update_selection=update_selection)
 
     @staticmethod
-    def decide_file_icon(file):
+    def decide_file_icon_info(file):
+        tooltip = ""
         if file.state == File.ERROR:
             if file.error_type == FileErrorType.NOTFOUND:
-                return FileItem.icon_error_not_found
+                icon = FileItem.icon_error_not_found
             elif file.error_type == FileErrorType.NOACCESS:
-                return FileItem.icon_error_no_access
+                icon = FileItem.icon_error_no_access
             else:
-                return FileItem.icon_error
+                icon = FileItem.icon_error
         elif isinstance(file.parent, Track):
             if file.state == File.NORMAL:
-                return FileItem.icon_saved
+                icon = FileItem.icon_saved
+                tooltip = N_("Track saved")
             elif file.state == File.PENDING:
-                return FileItem.match_pending_icons[int(file.similarity * 5 + 0.5)]
+                icon = FileItem.match_pending_icons[int(file.similarity * 5 + 0.5)]
+                tooltip = N_("Pending")
             else:
-                return FileItem.match_icons[int(file.similarity * 5 + 0.5)]
+                icon = FileItem.match_icons[int(file.similarity * 5 + 0.5)]
+                tooltip = FileItem.match_icons_info[int(file.similarity * 5 + 0.5)]
         elif file.state == File.PENDING:
-            return FileItem.icon_file_pending
+            icon = FileItem.icon_file_pending
+            tooltip = N_("Pending")
         else:
-            return FileItem.icon_file
-
-    @staticmethod
-    def decide_file_icon_info(file):
-        # Note error state info is already handled
-        if isinstance(file.parent, Track):
-            if file.state == File.NORMAL:
-                return N_("Track saved")
-            elif file.state == File.PENDING:   # unsure how to use int(file.similarity * 5 + 0.5)
-                return N_("Pending")
-            else:   # returns description of the match ranging from bad to excellent
-                return FileItem.match_icons_info[int(file.similarity * 5 + 0.5)]
-        elif file.state == File.PENDING:
-            return N_("Pending")
+            icon = FileItem.icon_file
+        return (icon, _(tooltip))
 
     @staticmethod
     def decide_fingerprint_icon_info(file):
