@@ -45,7 +45,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import OrderedDict
 from copy import deepcopy
 import datetime
 from functools import partial
@@ -737,10 +736,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         # search button contextual menu, shortcut to toggle search options
         def search_button_menu(position):
             menu = QtWidgets.QMenu()
-            opts = OrderedDict([
-                ('use_adv_search_syntax', N_("&Advanced search")),
-                ('builtin_search', N_("&Builtin search"))
-            ])
+            opts = {
+                'use_adv_search_syntax': N_("&Advanced search"),
+                'builtin_search': N_("&Builtin search"),
+            }
 
             def toggle_opt(opt, checked):
                 config.setting[opt] = checked
