@@ -1192,17 +1192,22 @@ class FileItem(TreeItem):
                 icon = FileItem.icon_saved
                 tooltip = _("Track saved")
             elif file.state == File.PENDING:
-                icon = FileItem.match_pending_icons[int(file.similarity * 5 + 0.5)]
+                index = FileItem._match_icon_index(file.similarity)
+                icon = FileItem.match_pending_icons[index]
                 tooltip = _("Pending")
             else:
-                icon = FileItem.match_icons[int(file.similarity * 5 + 0.5)]
-                tooltip = _(FileItem.match_icons_info[int(file.similarity * 5 + 0.5)])
+                index = FileItem._match_icon_index(file.similarity)
+                icon = FileItem.match_icons[index]
+                tooltip = _(FileItem.match_icons_info[index])
         elif file.state == File.PENDING:
             icon = FileItem.icon_file_pending
             tooltip = _("Pending")
         else:
             icon = FileItem.icon_file
         return (icon, tooltip)
+
+    def _match_icon_index(similarity):
+        return int(similarity * 5 + 0.5)
 
     @staticmethod
     def decide_fingerprint_icon_info(file):
