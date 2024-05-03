@@ -211,13 +211,13 @@ class File(QtCore.QObject, Item):
 
     def _set_error(self, error):
         self.state = File.ERROR
-        if any_exception_isinstance(error, MutagenError):
-            self.error_type = FileErrorType.PARSER
-            self.error_append(_("The file failed to parse, either the file is damaged or has an unsupported file format."))
-        elif any_exception_isinstance(error, FileNotFoundError):
+        if any_exception_isinstance(error, FileNotFoundError):
             self.error_type = FileErrorType.NOTFOUND
         elif any_exception_isinstance(error, PermissionError):
             self.error_type = FileErrorType.NOACCESS
+        elif any_exception_isinstance(error, MutagenError):
+            self.error_type = FileErrorType.PARSER
+            self.error_append(_("The file failed to parse, either the file is damaged or has an unsupported file format."))
         else:
             self.error_type = FileErrorType.UNKNOWN
         self.error_append(str(error))
