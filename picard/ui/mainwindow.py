@@ -220,7 +220,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.panel = MainPanel(self, main_layout)
         self.panel.setObjectName('main_panel_splitter')
         self.file_browser = FileBrowser(self.panel)
-        if not self.actions['show_file_browser_action'].isChecked():
+        if not self.action_is_checked('show_file_browser_action'):
             self.file_browser.hide()
         self.panel.insertWidget(0, self.file_browser)
 
@@ -344,10 +344,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         is_maximized = bool(self.windowState() & QtCore.Qt.WindowState.WindowMaximized)
         self.save_geometry()
         config.persist['window_maximized'] = is_maximized
-        config.persist['view_metadata_view'] = self.actions['show_metadata_view_action'].isChecked()
-        config.persist['view_cover_art'] = self.actions['show_cover_art_action'].isChecked()
-        config.persist['view_toolbar'] = self.actions['show_toolbar_action'].isChecked()
-        config.persist['view_file_browser'] = self.actions['show_file_browser_action'].isChecked()
+        config.persist['view_metadata_view'] = self.action_is_checked('show_metadata_view_action')
+        config.persist['view_cover_art'] = self.action_is_checked('show_cover_art_action')
+        config.persist['view_toolbar'] = self.action_is_checked('show_toolbar_action')
+        config.persist['view_file_browser'] = self.action_is_checked('show_file_browser_action')
         self.file_browser.save_state()
         self.panel.save_state()
         self.metadata_box.save_state()
@@ -484,7 +484,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.cd_lookup_menu = menu
         if discid is None:
             log.warning("CDROM: discid library not found - Lookup CD functionality disabled")
-            self.actions['cd_lookup_action'].setEnabled(False)
+            self.action_enabled('cd_lookup_action', False)
             self.cd_lookup_menu.setEnabled(False)
         else:
             thread.run_task(get_cdrom_drives, self._update_cd_lookup_actions)
@@ -497,7 +497,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def update_cd_lookup_drives(self, drives):
         self.cd_lookup_menu.clear()
-        self.actions['cd_lookup_action'].setEnabled(discid is not None)
+        self.action_enabled('cd_lookup_action', discid is not None)
         if not drives:
             log.warning(DISCID_NOT_LOADED_MESSAGE)
         else:
@@ -787,15 +787,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def enable_submit(self, enabled):
         """Enable/disable the 'Submit fingerprints' action."""
-        self.actions['submit_acoustid_action'].setEnabled(enabled)
+        self.action_enabled('submit_acoustid_action', enabled)
 
     def enable_cluster(self, enabled):
         """Enable/disable the 'Cluster' action."""
-        self.actions['cluster_action'].setEnabled(enabled)
+        self.action_enabled('cluster_action', enabled)
 
     def enable_search(self):
         """Enable/disable the 'Search' action."""
-        self.actions['search_action'].setEnabled(bool(self.search_edit.text()))
+        self.action_enabled('search_action', bool(self.search_edit.text()))
 
     def trigger_search_action(self):
         if self.actions['search_action'].isEnabled():
@@ -894,7 +894,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.open_file_naming_script_editor()
             self.script_editor_dialog.show()
         else:
-            self.actions['show_script_editor_action'].setEnabled(True)
+            self.action_enabled('show_script_editor_action', True)
         self.make_profile_selector_menu()
         self.make_script_selector_menu()
 
@@ -1155,29 +1155,33 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                     and can_submit
                 ):
                     break
-        self.actions['remove_action'].setEnabled(can_remove)
-        self.actions['save_action'].setEnabled(can_save)
-        self.actions['view_info_action'].setEnabled(can_view_info)
-        self.actions['analyze_action'].setEnabled(can_analyze)
-        self.actions['generate_fingerprints_action'].setEnabled(have_files)
-        self.actions['refresh_action'].setEnabled(can_refresh)
-        self.actions['autotag_action'].setEnabled(can_autotag)
-        self.actions['browser_lookup_action'].setEnabled(can_browser_lookup)
-        self.actions['play_file_action'].setEnabled(have_files)
-        self.actions['open_folder_action'].setEnabled(have_files)
-        self.actions['cut_action'].setEnabled(have_objects)
+
+        self.action_enabled('remove_action', can_remove)
+        self.action_enabled('save_action', can_save)
+        self.action_enabled('view_info_action', can_view_info)
+        self.action_enabled('analyze_action', can_analyze)
+        self.action_enabled('generate_fingerprints_action', have_files)
+        self.action_enabled('refresh_action', can_refresh)
+        self.action_enabled('autotag_action', can_autotag)
+        self.action_enabled('browser_lookup_action', can_browser_lookup)
+        self.action_enabled('play_file_action', have_files)
+        self.action_enabled('open_folder_action', have_files)
+        self.action_enabled('cut_action', have_objects)
         if 'submit_cluster_action' in self.actions:
-            self.actions['submit_cluster_action'].setEnabled(can_submit)
+            self.action_enabled('submit_cluster_action', can_submit)
         if 'submit_file_as_recording_action' in self.actions:
-            self.actions['submit_file_as_recording_action'].setEnabled(have_files)
+            self.action_enabled('submit_file_as_recording_action', have_files)
         if 'submit_file_as_release_action' in self.actions:
-            self.actions['submit_file_as_release_action'].setEnabled(have_files)
+            self.action_enabled('submit_file_as_release_action', have_files)
         files = self.get_selected_or_unmatched_files()
-        self.actions['tags_from_filenames_action'].setEnabled(bool(files))
-        self.actions['similar_items_search_action'].setEnabled(is_file or is_cluster)
-        self.actions['track_search_action'].setEnabled(is_file)
-        self.actions['album_search_action'].setEnabled(is_cluster)
-        self.actions['album_other_versions_action'].setEnabled(is_album)
+        self.action_enabled('tags_from_filenames_action', bool(files))
+        self.action_enabled('similar_items_search_action', is_file or is_cluster)
+        self.action_enabled('track_search_action', is_file)
+        self.action_enabled('album_search_action', is_cluster)
+        self.action_enabled('album_other_versions_action', is_album)
+
+    def action_enabled(self, action_name, enabled):
+        self.actions[action_name].setEnabled(enabled)
 
     def update_selection(self, objects=None, new_selection=True, drop_album_caches=False):
         if self.ignore_selection_changes:
@@ -1253,31 +1257,34 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.tagger.window.metadata_box.selection_dirty = True
         self.tagger.window.metadata_box.update()
 
+    def action_is_checked(self, action_name):
+        return self.actions[action_name].isChecked()
+
     def show_metadata_view(self):
         """Show/hide the metadata view (including the cover art box)."""
-        show = self.actions['show_metadata_view_action'].isChecked()
+        show = self.action_is_checked('show_metadata_view_action')
         self.metadata_view.setVisible(show)
-        self.actions['show_cover_art_action'].setEnabled(show)
+        self.action_enabled('show_cover_art_action', show)
         if show:
             self.update_selection()
 
     def show_cover_art(self):
         """Show/hide the cover art box."""
-        show = self.actions['show_cover_art_action'].isChecked()
+        show = self.action_is_checked('show_cover_art_action')
         self.cover_art_box.setVisible(show)
         if show:
             self.update_selection()
 
     def show_toolbar(self):
         """Show/hide the Action toolbar."""
-        if self.actions['show_toolbar_action'].isChecked():
+        if self.action_is_checked('show_toolbar_action'):
             self.toolbar.show()
         else:
             self.toolbar.hide()
 
     def show_file_browser(self):
         """Show/hide the file browser."""
-        if self.actions['show_file_browser_action'].isChecked():
+        if self.action_is_checked('show_file_browser_action'):
             sizes = self.panel.sizes()
             if sizes[0] == 0:
                 sizes[0] = sum(sizes) // 4
@@ -1328,7 +1335,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def cut(self):
         self.copy_files(self.selected_objects)
-        self.actions['paste_action'].setEnabled(bool(self.selected_objects))
+        self.action_enabled('paste_action', bool(self.selected_objects))
 
     def paste(self):
         selected_objects = self.selected_objects
@@ -1337,7 +1344,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         else:
             target = selected_objects[0]
         self.paste_files(target)
-        self.actions['paste_action'].setEnabled(False)
+        self.action_enabled('paste_action', False)
 
     def do_update_check(self):
         self.check_for_update(True)
@@ -1475,7 +1482,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.script_editor_dialog.signal_selection_changed,
             self.script_editor_dialog.signal_index_changed,
         ]
-        self.actions['show_script_editor_action'].setEnabled(False)
+        self.action_enabled('show_script_editor_action', False)
 
     def script_editor_save(self):
         """Process "signal_save" signal from the script editor.
@@ -1485,7 +1492,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def script_editor_closed(self):
         """Process "finished" signal from the script editor.
         """
-        self.actions['show_script_editor_action'].setEnabled(True)
+        self.action_enabled('show_script_editor_action', True)
         self.script_editor_dialog = None
         self.make_script_selector_menu()
 
