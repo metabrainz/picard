@@ -136,6 +136,7 @@ class Track(DataObject, FileListItem):
     def __init__(self, track_id, album=None):
         DataObject.__init__(self, track_id)
         FileListItem.__init__(self)
+        self.tagger = QtCore.QCoreApplication.instance()
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
         self.album = album
@@ -374,8 +375,8 @@ class Track(DataObject, FileListItem):
 class NonAlbumTrack(Track):
 
     def __init__(self, nat_id):
-        self.tagger = QtCore.QCoreApplication.instance()
-        super().__init__(nat_id, self.tagger.nats)
+        tagger = QtCore.QCoreApplication.instance()
+        super().__init__(nat_id, tagger.nats)
         self.callback = None
         self.loaded = False
         self.status = None
