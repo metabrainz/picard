@@ -108,6 +108,7 @@ class BaseAction(QtGui.QAction):
 
     def __init__(self):
         super().__init__(self.NAME, None)
+        self.tagger = QtCore.QCoreApplication.instance()
         self.triggered.connect(self.__callback)
 
     def __callback(self):
@@ -198,6 +199,7 @@ class MainPanel(QtWidgets.QSplitter):
 
     def __init__(self, window, parent=None):
         super().__init__(parent)
+        self.tagger = QtCore.QCoreApplication.instance()
         self.setChildrenCollapsible(False)
         self.window = window
         self.create_icons()
