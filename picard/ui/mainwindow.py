@@ -204,10 +204,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.show_close_window = IS_MACOS
 
-        self.create_actions()
-        self.create_statusbar()
-        self.create_toolbar()
-        self.create_menus()
+        self._create_actions()
+        self._create_statusbar()
+        self._create_toolbar()
+        self._create_menus()
 
         if IS_MACOS:
             self.setUnifiedTitleAndToolBarOnMac(True)
@@ -308,9 +308,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _setup_desktop_status_indicator(self):
         if DesktopStatusIndicator:
-            self.register_status_indicator(DesktopStatusIndicator(self.windowHandle()))
+            self._register_status_indicator(DesktopStatusIndicator(self.windowHandle()))
 
-    def register_status_indicator(self, indicator):
+    def _register_status_indicator(self, indicator):
         self.status_indicators.append(indicator)
 
     def show_quit_confirmation(self):
@@ -364,7 +364,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.centralWidget().setSizes([366, 194])
         self.file_browser.restore_state()
 
-    def create_statusbar(self):
+    def _create_statusbar(self):
         """Creates a new status bar."""
         self.statusBar().showMessage(_("Ready"))
         infostatus = InfoStatus(self)
@@ -381,7 +381,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.statusBar().addPermanentWidget(self.listening_label)
         self.tagger.tagger_stats_changed.connect(self._update_statusbar_stats)
         self.tagger.listen_port_changed.connect(self._update_statusbar_listen_port)
-        self.register_status_indicator(infostatus)
+        self._register_status_indicator(infostatus)
         self._update_statusbar_stats()
 
     @throttle(100)
@@ -468,7 +468,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             else:
                 self.tagger.acoustidmanager.submit()
 
-    def create_actions(self):
+    def _create_actions(self):
         create_actions(self, self.actions)
 
         self._create_cd_lookup_menu()
@@ -566,7 +566,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def open_collection_in_browser(self):
         self.tagger.collection_lookup()
 
-    def create_menus(self):
+    def _create_menus(self):
         def add_action(menu, action_name):
             menu.addAction(self.actions[action_name])
 
@@ -657,10 +657,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if self.player:
             self.player.toolbar.setToolButtonStyle(style)
 
-    def create_toolbar(self):
-        self.create_search_toolbar()
+    def _create_toolbar(self):
+        self._create_search_toolbar()
         if self.player:
-            self.create_player_toolbar()
+            self._create_player_toolbar()
         self.create_action_toolbar()
         self.update_toolbar_style()
 
@@ -696,7 +696,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                     log.warning("Warning: Unknown action name '%s' found in config. Ignored.", action_name)
         self.show_toolbar()
 
-    def create_player_toolbar(self):
+    def _create_player_toolbar(self):
         """"Create a toolbar with internal player control elements"""
         toolbar = self.player.create_toolbar()
         self.addToolBar(QtCore.Qt.ToolBarArea.BottomToolBarArea, toolbar)
@@ -705,7 +705,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.actions['player_toolbar_toggle_action'] = toolbar.toggleViewAction()
         toolbar.hide()  # Hide by default
 
-    def create_search_toolbar(self):
+    def _create_search_toolbar(self):
         config = get_config()
         self.search_toolbar = toolbar = self.addToolBar(_("Search"))
         self.actions['search_toolbar_toggle_action'] = self.search_toolbar.toggleViewAction()
@@ -873,7 +873,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def show_options(self, page=None):
         options_dialog = OptionsDialog.show_instance(page, self)
-        options_dialog.finished.connect(self.options_closed)
+        options_dialog.finished.connect(self._options_closed)
         if self.script_editor_dialog is not None:
             # Disable signal processing to avoid saving changes not processed with "Make It So!"
             for signal in self.script_editor_signals:
@@ -881,7 +881,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         return options_dialog
 
-    def options_closed(self):
+    def _options_closed(self):
         if self.script_editor_dialog is not None:
             self.open_file_naming_script_editor()
             self.script_editor_dialog.show()
@@ -977,14 +977,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             QtWidgets.QMessageBox.StandardButton.Yes)
         return ret == QtWidgets.QMessageBox.StandardButton.Yes
 
-    def get_first_obj_with_type(self, type):
+    def _get_first_obj_with_type(self, type):
         for obj in self.selected_objects:
             if isinstance(obj, type):
                 return obj
         return None
 
     def show_similar_items_search(self):
-        obj = self.get_first_obj_with_type(Cluster)
+        obj = self._get_first_obj_with_type(Cluster)
         if obj:
             self.show_more_albums()
         else:
@@ -1004,7 +1004,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         dialog.exec()
 
     def show_more_albums(self):
-        obj = self.get_first_obj_with_type(Cluster)
+        obj = self._get_first_obj_with_type(Cluster)
         if not obj:
             log.debug("show_more_albums expected a Cluster, got %r", obj)
             return
@@ -1013,7 +1013,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         dialog.exec()
 
     def show_album_other_versions(self):
-        obj = self.get_first_obj_with_type(Album)
+        obj = self._get_first_obj_with_type(Album)
         if obj and obj.release_group:
             AlbumSearchDialog.show_releasegroup_search(obj.release_group.id, obj)
 
@@ -1060,7 +1060,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 and self.tagger.unclustered_files in self.selected_objects
                 and not self.tagger.unclustered_files.files):
             self.panel.select_object(self.tagger.clusters)
-        self.update_actions()
+        self._update_actions()
 
     def refresh(self):
         self.tagger.refresh(self.selected_objects)
@@ -1103,7 +1103,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             return False
 
     @throttle(100)
-    def update_actions(self):
+    def _update_actions(self):
         can_remove = False
         can_save = False
         can_analyze = False
@@ -1184,7 +1184,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         else:
             objects = self.selected_objects
 
-        self.update_actions()
+        self._update_actions()
 
         obj = None
 
@@ -1294,12 +1294,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
                 QtWidgets.QMessageBox.StandardButton.Yes)
             if ret == QtWidgets.QMessageBox.StandardButton.Yes:
-                self.tagger.mb_login(self.on_mb_login_finished)
+                self.tagger.mb_login(self._on_mb_login_finished)
         else:
             dialog = PasswordDialog(authenticator, reply, parent=self)
             dialog.exec()
 
-    def on_mb_login_finished(self, successful, error_msg):
+    def _on_mb_login_finished(self, successful, error_msg):
         if successful:
             log.debug("MusicBrainz authentication finished successfully")
         else:
@@ -1534,7 +1534,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         def _add_menu_item(title, enabled, profile_id):
             profile_action = QtGui.QAction(title, self.profile_quick_selector_menu)
-            profile_action.triggered.connect(partial(self.update_profile_selection, profile_id))
+            profile_action.triggered.connect(partial(self._update_profile_selection, profile_id))
             profile_action.setCheckable(True)
             profile_action.setChecked(enabled)
             self.profile_quick_selector_menu.addAction(profile_action)
@@ -1543,7 +1543,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         for profile in option_profiles:
             _add_menu_item(profile['title'], profile['enabled'], profile['id'])
 
-    def update_profile_selection(self, profile_id):
+    def _update_profile_selection(self, profile_id):
         """Toggle the enabled state of the selected profile.
 
         Args:
