@@ -724,7 +724,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         hbox.addWidget(self.search_combo, 0)
         self.search_edit = QtWidgets.QLineEdit(search_panel)
         self.search_edit.setClearButtonEnabled(True)
-        self.search_edit.returnPressed.connect(self.trigger_search_action)
+        self.search_edit.returnPressed.connect(self._trigger_search_action)
         self.search_edit.textChanged.connect(self._toggle_search)
         hbox.addWidget(self.search_edit, 0)
         self.search_button = QtWidgets.QToolButton(search_panel)
@@ -789,7 +789,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """Enable/disable the 'Search' action."""
         self.action_enabled('search_action', bool(self.search_edit.text()))
 
-    def trigger_search_action(self):
+    def _trigger_search_action(self):
         if self.actions['search_action'].isEnabled():
             self.actions['search_action'].trigger()
 
