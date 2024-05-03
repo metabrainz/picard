@@ -74,6 +74,7 @@ from picard.file import (
 from picard.i18n import (
     N_,
     gettext as _,
+    ngettext,
 )
 from picard.plugin import ExtensionPoint
 from picard.track import (
@@ -1083,20 +1084,24 @@ class TrackItem(TreeItem):
 
     def update(self, update_album=True, update_files=True, update_selection=True):
         track = self.obj
-        if track.num_linked_files == 1:
+        num_linked_files = track.num_linked_files
+        if num_linked_files == 1:
             file = track.files[0]
             file.item = self
             color = TrackItem.track_colors[file.state]
             bgcolor = get_match_color(file.similarity, TreeItem.base_color)
             icon, icon_tooltip = FileItem.decide_file_icon_info(file)
-            self.setToolTip(MainPanel.TITLE_COLUMN, icon_tooltip)
             self.takeChildren()
             self.setExpanded(False)
             fingerprint_icon, fingerprint_tooltip = FileItem.decide_fingerprint_icon_info(file)
             self.setToolTip(MainPanel.FINGERPRINT_COLUMN, fingerprint_tooltip)
             self.setIcon(MainPanel.FINGERPRINT_COLUMN, fingerprint_icon)
         else:
-            self.setToolTip(MainPanel.TITLE_COLUMN, "")
+            if num_linked_files == 0:
+                icon_tooltip = _("There are no files matched to this track")
+            else:
+                icon_tooltip = ngettext('%i matched file', '%i matched files',
+                    num_linked_files) % num_linked_files
             self.setToolTip(MainPanel.FINGERPRINT_COLUMN, "")
             self.setIcon(MainPanel.FINGERPRINT_COLUMN, QtGui.QIcon())
             if track.ignored_for_completeness():
@@ -1136,6 +1141,7 @@ class TrackItem(TreeItem):
             self.setToolTip(MainPanel.TITLE_COLUMN, _("Processing error(s): See the Errors tab in the Track Info dialog"))
         else:
             self.setIcon(MainPanel.TITLE_COLUMN, icon)
+            self.setToolTip(MainPanel.TITLE_COLUMN, icon_tooltip)
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, track.column(column[1]))
             self.setForeground(i, color)
@@ -1162,8 +1168,6 @@ class FileItem(TreeItem):
             self.setText(i, file.column(column[1]))
             self.setForeground(i, color)
             self.setBackground(i, bgcolor)
-        if file.errors:
-            self.setToolTip(MainPanel.TITLE_COLUMN, _("Processing error(s): See the Errors tab in the File Info dialog"))
         if update_selection and self.isSelected():
             TreeItem.window.update_selection(new_selection=False)
         parent = self.parent()
@@ -1176,26 +1180,29 @@ class FileItem(TreeItem):
         if file.state == File.ERROR:
             if file.error_type == FileErrorType.NOTFOUND:
                 icon = FileItem.icon_error_not_found
+                tooltip = _("File not found")
             elif file.error_type == FileErrorType.NOACCESS:
                 icon = FileItem.icon_error_no_access
+                tooltip = _("File permission error")
             else:
                 icon = FileItem.icon_error
+                tooltip = _("Processing error(s): See the Errors tab in the File Info dialog")
         elif isinstance(file.parent, Track):
             if file.state == File.NORMAL:
                 icon = FileItem.icon_saved
-                tooltip = N_("Track saved")
+                tooltip = _("Track saved")
             elif file.state == File.PENDING:
                 icon = FileItem.match_pending_icons[int(file.similarity * 5 + 0.5)]
-                tooltip = N_("Pending")
+                tooltip = _("Pending")
             else:
                 icon = FileItem.match_icons[int(file.similarity * 5 + 0.5)]
-                tooltip = FileItem.match_icons_info[int(file.similarity * 5 + 0.5)]
+                tooltip = _(FileItem.match_icons_info[int(file.similarity * 5 + 0.5)])
         elif file.state == File.PENDING:
             icon = FileItem.icon_file_pending
-            tooltip = N_("Pending")
+            tooltip = _("Pending")
         else:
             icon = FileItem.icon_file
-        return (icon, _(tooltip))
+        return (icon, tooltip)
 
     @staticmethod
     def decide_fingerprint_icon_info(file):
