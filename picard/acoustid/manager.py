@@ -151,7 +151,7 @@ class AcoustIDManager(QtCore.QObject):
 
     def _check_unsubmitted(self):
         enabled = next(self._unsubmitted(), None) is not None
-        self.tagger.window.enable_submit(enabled)
+        self.tagger.window.action_enabled('submit_acoustid_action', enabled)
 
     def submit(self):
         self.max_batch_size = self.MAX_PAYLOAD
