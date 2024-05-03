@@ -725,7 +725,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.search_edit = QtWidgets.QLineEdit(search_panel)
         self.search_edit.setClearButtonEnabled(True)
         self.search_edit.returnPressed.connect(self.trigger_search_action)
-        self.search_edit.textChanged.connect(self.enable_search)
+        self.search_edit.textChanged.connect(self._toggle_search)
         hbox.addWidget(self.search_edit, 0)
         self.search_button = QtWidgets.QToolButton(search_panel)
         self.search_button.setAutoRaise(True)
@@ -785,7 +785,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         tab_order(self.search_button, self.file_browser)
         self.panel.tab_order(tab_order, self.file_browser, self.metadata_box)
 
-    def enable_search(self):
+    def _toggle_search(self):
         """Enable/disable the 'Search' action."""
         self.action_enabled('search_action', bool(self.search_edit.text()))
 
