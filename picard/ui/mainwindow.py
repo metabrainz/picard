@@ -785,10 +785,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         tab_order(self.search_button, self.file_browser)
         self.panel.tab_order(tab_order, self.file_browser, self.metadata_box)
 
-    def enable_cluster(self, enabled):
-        """Enable/disable the 'Cluster' action."""
-        self.action_enabled('cluster_action', enabled)
-
     def enable_search(self):
         """Enable/disable the 'Search' action."""
         self.action_enabled('search_action', bool(self.search_edit.text()))
