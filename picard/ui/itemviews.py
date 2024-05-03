@@ -1151,6 +1151,7 @@ class FileItem(TreeItem):
     def update(self, update_track=True, update_selection=True):
         file = self.obj
         self.setIcon(MainPanel.TITLE_COLUMN, FileItem.decide_file_icon(file))
+        self.setToolTip(MainPanel.TITLE_COLUMN, _(FileItem.decide_file_icon_info(file)))
         fingerprint_icon, fingerprint_tooltip = FileItem.decide_fingerprint_icon_info(file)
         self.setToolTip(MainPanel.FINGERPRINT_COLUMN, fingerprint_tooltip)
         self.setIcon(MainPanel.FINGERPRINT_COLUMN, fingerprint_icon)
