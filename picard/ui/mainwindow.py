@@ -677,24 +677,24 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if IS_MACOS:
             toolbar.setMovable(False)
 
-        def add_toolbar_action(action):
+        def add_toolbar_action(action_name):
+            action = self.actions[action_name]
             toolbar.addAction(action)
             widget = toolbar.widgetForAction(action)
             widget.setFocusPolicy(QtCore.Qt.FocusPolicy.TabFocus)
             widget.setAttribute(QtCore.Qt.WidgetAttribute.WA_MacShowFocusRect)
 
         config = get_config()
-        for action in config.setting['toolbar_layout']:
-            if action == 'cd_lookup_action':
-                add_toolbar_action(self.actions['cd_lookup_action'])
-                self._update_cd_lookup_button()
-            elif action == 'separator':
+        for action_name in config.setting['toolbar_layout']:
+            if action_name == 'separator':
                 toolbar.addSeparator()
             else:
                 try:
-                    add_toolbar_action(self.actions[action])
+                    add_toolbar_action(action_name)
+                    if action_name == 'cd_lookup_action':
+                        self._update_cd_lookup_button()
                 except KeyError:
-                    log.warning("Warning: Unknown action name '%r' found in config. Ignored.", action)
+                    log.warning("Warning: Unknown action name '%s' found in config. Ignored.", action_name)
         self.show_toolbar()
 
     def create_player_toolbar(self):
