@@ -1167,11 +1167,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.action_enabled('play_file_action', have_files)
         self.action_enabled('open_folder_action', have_files)
         self.action_enabled('cut_action', have_objects)
-        if 'submit_cluster_action' in self.actions:
+        if self.actions['submit_cluster_action']:
             self.action_enabled('submit_cluster_action', can_submit)
-        if 'submit_file_as_recording_action' in self.actions:
+        if self.actions['submit_file_as_recording_action']:
             self.action_enabled('submit_file_as_recording_action', have_files)
-        if 'submit_file_as_release_action' in self.actions:
+        if self.actions['submit_file_as_release_action']:
             self.action_enabled('submit_file_as_release_action', have_files)
         files = self.get_selected_or_unmatched_files()
         self.action_enabled('tags_from_filenames_action', bool(files))
