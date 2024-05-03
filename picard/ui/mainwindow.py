@@ -186,8 +186,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.tagger.pluginmanager.updates_available.connect(self.show_plugin_update_dialog)
 
-        self.check_and_repair_naming_scripts()
-        self.check_and_repair_profiles()
+        self._check_and_repair_naming_scripts()
+        self._check_and_repair_profiles()
 
         self.setupUi()
 
@@ -379,13 +379,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         ))
         self.statusBar().addPermanentWidget(infostatus)
         self.statusBar().addPermanentWidget(self.listening_label)
-        self.tagger.tagger_stats_changed.connect(self.update_statusbar_stats)
-        self.tagger.listen_port_changed.connect(self.update_statusbar_listen_port)
+        self.tagger.tagger_stats_changed.connect(self._update_statusbar_stats)
+        self.tagger.listen_port_changed.connect(self._update_statusbar_listen_port)
         self.register_status_indicator(infostatus)
-        self.update_statusbar_stats()
+        self._update_statusbar_stats()
 
     @throttle(100)
-    def update_statusbar_stats(self):
+    def _update_statusbar_stats(self):
         """Updates the status bar information."""
         total_files = len(self.tagger.files)
         total_albums = len(self.tagger.albums)
@@ -395,7 +395,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             indicator.update(files=total_files, albums=total_albums,
                 pending_files=pending_files, pending_requests=pending_requests, progress=self._progress())
 
-    def update_statusbar_listen_port(self, listen_port):
+    def _update_statusbar_listen_port(self, listen_port):
         if listen_port:
             self.listening_label.setVisible(True)
             self.listening_label.setText(_("Listening on port %(port)d") % {"port": listen_port})
@@ -614,7 +614,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.profile_quick_selector_menu = QtWidgets.QMenu(_("&Enable/disable profiles"))
         # self.profile_quick_selector_menu.setIcon(icontheme.lookup('document-open'))
-        self.make_profile_selector_menu()
+        self._make_profile_selector_menu()
 
         menu.addMenu(self.profile_quick_selector_menu)
         menu.addSeparator()
@@ -887,7 +887,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.script_editor_dialog.show()
         else:
             self.action_enabled('show_script_editor_action', True)
-        self.make_profile_selector_menu()
+        self._make_profile_selector_menu()
         self.make_script_selector_menu()
 
     def show_help(self):
@@ -1243,7 +1243,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 self.metadata_box.selection_dirty = True
             self.metadata_box.update(drop_album_caches=drop_album_caches)
         self.selection_updated.emit(objects)
-        self.update_script_editor_example_files()
+        self._update_script_editor_example_files()
 
     def refresh_metadatabox(self):
         self.tagger.window.metadata_box.selection_dirty = True
@@ -1339,7 +1339,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.action_enabled('paste_action', False)
 
     def do_update_check(self):
-        self.check_for_update(True)
+        self._check_for_update(True)
 
     def auto_update_check(self):
         config = get_config()
@@ -1358,9 +1358,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             'update_level_name': PROGRAM_UPDATE_LEVELS[update_level]['name'] if update_level in PROGRAM_UPDATE_LEVELS else 'unknown',
         })
         if do_auto_update_check:
-            self.check_for_update(False)
+            self._check_for_update(False)
 
-    def check_for_update(self, show_always):
+    def _check_for_update(self, show_always):
         config = get_config()
         self.tagger.updatecheckmanager.check_update(
             show_always=show_always,
@@ -1368,7 +1368,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             callback=update_last_check_date
         )
 
-    def check_and_repair_naming_scripts(self):
+    def _check_and_repair_naming_scripts(self):
         """Check the 'file_renaming_scripts' config setting to ensure that the list of scripts
         is not empty.  Check that the 'selected_file_naming_script_id' config setting points to
         a valid file naming script.
@@ -1385,7 +1385,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if config.setting[script_id_key] not in naming_script_ids:
             config.setting[script_id_key] = naming_script_ids[0]
 
-    def check_and_repair_profiles(self):
+    def _check_and_repair_profiles(self):
         """Check the profiles and profile settings and repair the values if required.
         Checks that there is a settings dictionary for each profile, and that no profiles
         reference a non-existant file naming script.
@@ -1435,7 +1435,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         def _add_menu_item(title, id):
             script_action = QtGui.QAction(title, self.script_quick_selector_menu)
-            script_action.triggered.connect(partial(self.select_new_naming_script, id))
+            script_action.triggered.connect(partial(self._select_new_naming_script, id))
             script_action.setCheckable(True)
             script_action.setChecked(id == selected_script_id)
             self.script_quick_selector_menu.addAction(script_action)
@@ -1444,7 +1444,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         for (id, naming_script) in sorted(naming_scripts.items(), key=lambda item: item[1]['title']):
             _add_menu_item(naming_script['title'], id)
 
-    def select_new_naming_script(self, id):
+    def _select_new_naming_script(self, id):
         """Update the currently selected naming script ID in the settings.
 
         Args:
@@ -1462,10 +1462,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """
         self.examples = ScriptEditorExamples(tagger=self.tagger)
         self.script_editor_dialog = ScriptEditorDialog.show_instance(parent=self, examples=self.examples)
-        self.script_editor_dialog.signal_save.connect(self.script_editor_save)
-        self.script_editor_dialog.signal_selection_changed.connect(self.update_selector_from_script_editor)
-        self.script_editor_dialog.signal_index_changed.connect(self.script_editor_index_changed)
-        self.script_editor_dialog.finished.connect(self.script_editor_closed)
+        self.script_editor_dialog.signal_save.connect(self._script_editor_save)
+        self.script_editor_dialog.signal_selection_changed.connect(self._update_selector_from_script_editor)
+        self.script_editor_dialog.signal_index_changed.connect(self._script_editor_index_changed)
+        self.script_editor_dialog.finished.connect(self._script_editor_closed)
         # Create list of signals to disconnect when opening Options dialog.
         # Do not include `finished` because that is still used to clean up
         # locally when the editor is closed from the Options dialog.
@@ -1476,19 +1476,19 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         ]
         self.action_enabled('show_script_editor_action', False)
 
-    def script_editor_save(self):
+    def _script_editor_save(self):
         """Process "signal_save" signal from the script editor.
         """
         self.make_script_selector_menu()
 
-    def script_editor_closed(self):
+    def _script_editor_closed(self):
         """Process "finished" signal from the script editor.
         """
         self.action_enabled('show_script_editor_action', True)
         self.script_editor_dialog = None
         self.make_script_selector_menu()
 
-    def update_script_editor_example_files(self):
+    def _update_script_editor_example_files(self):
         """Update the list of example files for the file naming script editor.
         """
         if self.examples:
@@ -1508,17 +1508,17 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             if self.script_editor_dialog:
                 self.script_editor_dialog.display_examples()
 
-    def script_editor_index_changed(self):
+    def _script_editor_index_changed(self):
         """Process "signal_index_changed" signal from the script editor.
         """
         self.script_editor_save()
 
-    def update_selector_from_script_editor(self):
+    def _update_selector_from_script_editor(self):
         """Process "signal_selection_changed" signal from the script editor.
         """
         self.script_editor_save()
 
-    def make_profile_selector_menu(self):
+    def _make_profile_selector_menu(self):
         """Update the sub-menu of available option profiles.
         """
         config = get_config()
