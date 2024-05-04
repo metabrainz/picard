@@ -791,8 +791,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.action_enabled('search_action', self.search_edit.text())
 
     def _trigger_search_action(self):
-        if self.actions['search_action'].isEnabled():
-            self.actions['search_action'].trigger()
+        action = self.actions['search_action']
+        if action.isEnabled():
+            action.trigger()
 
     def _search_mbid_found(self, entity, mbid):
         self.search_edit.setText('%s:%s' % (entity, mbid))
