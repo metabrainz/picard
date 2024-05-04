@@ -569,86 +569,105 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.tagger.collection_lookup()
 
     def _create_menus(self):
-        def add_action(menu, action_id):
-            menu.addAction(self.actions[action_id])
+        def add_menu(menu_title, *args):
+            menu = self.menuBar().addMenu(menu_title)
+            for arg in args:
+                if arg == '-':
+                    menu.addSeparator()
+                elif isinstance(arg, QtWidgets.QMenu):
+                    menu.addMenu(arg)
+                elif isinstance(arg, MainAction):
+                    menu.addAction(self.actions[arg])
 
-        menu = self.menuBar().addMenu(_("&File"))
-        add_action(menu, MainAction.ADD_DIRECTORY)
-        add_action(menu, MainAction.ADD_FILES)
-        if self.show_close_window:
-            add_action(menu, MainAction.CLOSE_WINDOW)
-        menu.addSeparator()
-        add_action(menu, MainAction.PLAY_FILE)
-        add_action(menu, MainAction.OPEN_FOLDER)
-        menu.addSeparator()
-        add_action(menu, MainAction.SAVE)
-        add_action(menu, MainAction.SUBMIT_ACOUSTID)
-        menu.addSeparator()
-        add_action(menu, MainAction.EXIT)
-        menu = self.menuBar().addMenu(_("&Edit"))
-        add_action(menu, MainAction.CUT)
-        add_action(menu, MainAction.PASTE)
-        menu.addSeparator()
-        add_action(menu, MainAction.VIEW_INFO)
-        add_action(menu, MainAction.REMOVE)
-        menu = self.menuBar().addMenu(_("&View"))
-        add_action(menu, MainAction.SHOW_FILE_BROWSER)
-        add_action(menu, MainAction.SHOW_METADATA_VIEW)
-        add_action(menu, MainAction.SHOW_COVER_ART)
-        menu.addSeparator()
-        add_action(menu, MainAction.SHOW_TOOLBAR)
-        add_action(menu, MainAction.SEARCH_TOOLBAR_TOGGLE)
-        if self.player:
-            add_action(menu, MainAction.PLAYER_TOOLBAR_TOGGLE)
-        menu = self.menuBar().addMenu(_("&Options"))
-        add_action(menu, MainAction.ENABLE_RENAMING)
-        add_action(menu, MainAction.ENABLE_MOVING)
-        add_action(menu, MainAction.ENABLE_TAG_SAVING)
-        menu.addSeparator()
+        add_menu(
+            _("&File"),
+            MainAction.ADD_DIRECTORY,
+            MainAction.ADD_FILES,
+            MainAction.CLOSE_WINDOW if self.show_close_window else None,
+            '-',
+            MainAction.PLAY_FILE,
+            MainAction.OPEN_FOLDER,
+            '-',
+            MainAction.SAVE,
+            MainAction.SUBMIT_ACOUSTID,
+            '-',
+            MainAction.EXIT,
+        )
+
+        add_menu(
+            _("&Edit"),
+            MainAction.CUT,
+            MainAction.PASTE,
+            '-',
+            MainAction.VIEW_INFO,
+            MainAction.REMOVE,
+        )
+
+        add_menu(
+            _("&View"),
+            MainAction.SHOW_FILE_BROWSER,
+            MainAction.SHOW_METADATA_VIEW,
+            MainAction.SHOW_COVER_ART,
+            '-',
+            MainAction.SHOW_TOOLBAR,
+            MainAction.SEARCH_TOOLBAR_TOGGLE,
+            MainAction.PLAYER_TOOLBAR_TOGGLE if self.player else None,
+        )
 
         self.script_quick_selector_menu = QtWidgets.QMenu(_("&Select file naming script"))
         self.script_quick_selector_menu.setIcon(icontheme.lookup('document-open'))
         self.make_script_selector_menu()
 
-        menu.addMenu(self.script_quick_selector_menu)
-        add_action(menu, MainAction.SHOW_SCRIPT_EDITOR)
-        menu.addSeparator()
-
         self.profile_quick_selector_menu = QtWidgets.QMenu(_("&Enable/disable profiles"))
-        # self.profile_quick_selector_menu.setIcon(icontheme.lookup('document-open'))
         self._make_profile_selector_menu()
 
-        menu.addMenu(self.profile_quick_selector_menu)
-        menu.addSeparator()
-        add_action(menu, MainAction.OPTIONS)
-        menu = self.menuBar().addMenu(_("&Tools"))
-        add_action(menu, MainAction.REFRESH)
-        menu.addMenu(self.cd_lookup_menu)
-        add_action(menu, MainAction.AUTOTAG)
-        add_action(menu, MainAction.ANALYZE)
-        add_action(menu, MainAction.CLUSTER)
-        add_action(menu, MainAction.BROWSER_LOOKUP)
-        add_action(menu, MainAction.SIMILAR_ITEMS_SEARCH)
-        add_action(menu, MainAction.ALBUM_OTHER_VERSIONS)
-        menu.addSeparator()
-        add_action(menu, MainAction.GENERATE_FINGERPRINTS)
-        add_action(menu, MainAction.TAGS_FROM_FILENAMES)
-        add_action(menu, MainAction.OPEN_COLLECTION_IN_BROWSER)
+        add_menu(
+            _("&Options"),
+            MainAction.ENABLE_RENAMING,
+            MainAction.ENABLE_MOVING,
+            MainAction.ENABLE_TAG_SAVING,
+            '-',
+            self.script_quick_selector_menu,
+            MainAction.SHOW_SCRIPT_EDITOR,
+            '-',
+            self.profile_quick_selector_menu,
+            '-',
+            MainAction.OPTIONS,
+        )
+
+        add_menu(
+            _("&Tools"),
+            MainAction.REFRESH,
+            self.cd_lookup_menu,
+            MainAction.AUTOTAG,
+            MainAction.ANALYZE,
+            MainAction.CLUSTER,
+            MainAction.BROWSER_LOOKUP,
+            MainAction.SIMILAR_ITEMS_SEARCH,
+            MainAction.ALBUM_OTHER_VERSIONS,
+            '-',
+            MainAction.GENERATE_FINGERPRINTS,
+            MainAction.TAGS_FROM_FILENAMES,
+            MainAction.OPEN_COLLECTION_IN_BROWSER,
+        )
+
         self.menuBar().addSeparator()
-        menu = self.menuBar().addMenu(_("&Help"))
-        add_action(menu, MainAction.HELP)
-        menu.addSeparator()
-        add_action(menu, MainAction.VIEW_HISTORY)
-        menu.addSeparator()
-        if self.tagger.autoupdate_enabled:
-            add_action(menu, MainAction.CHECK_UPDATE)
-            menu.addSeparator()
-        add_action(menu, MainAction.SUPPORT_FORUM)
-        add_action(menu, MainAction.REPORT_BUG)
-        add_action(menu, MainAction.VIEW_LOG)
-        menu.addSeparator()
-        add_action(menu, MainAction.DONATE)
-        add_action(menu, MainAction.ABOUT)
+
+        add_menu(
+            _("&Help"),
+            MainAction.HELP,
+            '-',
+            MainAction.VIEW_HISTORY,
+            '-',
+            MainAction.CHECK_UPDATE if self.tagger.autoupdate_enabled else None,
+            '-' if self.tagger.autoupdate_enabled else None,
+            MainAction.SUPPORT_FORUM,
+            MainAction.REPORT_BUG,
+            MainAction.VIEW_LOG,
+            '-',
+            MainAction.DONATE,
+            MainAction.ABOUT,
+        )
 
     def update_toolbar_style(self):
         config = get_config()
