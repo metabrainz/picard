@@ -208,7 +208,7 @@ def _create_remove_action(parent):
     action = QtGui.QAction(icontheme.lookup('list-remove'), _("&Remove"), parent)
     action.setStatusTip(_("Remove selected files/albums"))
     action.setEnabled(False)
-    action.triggered.connect(parent.remove)
+    action.triggered.connect(parent.remove_selected_objects)
     return action
 
 

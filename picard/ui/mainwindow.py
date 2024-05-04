@@ -928,7 +928,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if proceed_with_save:
             self.tagger.save(self.selected_objects)
 
-    def remove(self):
+    def remove_selected_objects(self):
         """Tell the tagger to remove the selected objects."""
         self.panel.remove(self.selected_objects)
 
