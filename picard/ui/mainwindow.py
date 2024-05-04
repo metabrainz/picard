@@ -1159,12 +1159,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.action_enabled('play_file_action', have_files)
         self.action_enabled('open_folder_action', have_files)
         self.action_enabled('cut_action', have_objects)
-        if self.actions['submit_cluster_action']:
-            self.action_enabled('submit_cluster_action', can_submit)
-        if self.actions['submit_file_as_recording_action']:
-            self.action_enabled('submit_file_as_recording_action', have_files)
-        if self.actions['submit_file_as_release_action']:
-            self.action_enabled('submit_file_as_release_action', have_files)
+        self.action_enabled('submit_cluster_action', can_submit)
+        self.action_enabled('submit_file_as_recording_action', have_files)
+        self.action_enabled('submit_file_as_release_action', have_files)
         files = self.get_selected_or_unmatched_files()
         self.action_enabled('tags_from_filenames_action', bool(files))
         self.action_enabled('similar_items_search_action', is_file or is_cluster)
@@ -1173,7 +1170,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.action_enabled('album_other_versions_action', is_album)
 
     def action_enabled(self, action_name, enabled):
-        self.actions[action_name].setEnabled(enabled)
+        if self.actions[action_name]:
+            self.actions[action_name].setEnabled(enabled)
 
     def update_selection(self, objects=None, new_selection=True, drop_album_caches=False):
         if self.ignore_selection_changes:
