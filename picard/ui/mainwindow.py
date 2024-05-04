@@ -551,7 +551,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         config.setting['dont_write_tags'] = not checked
 
-    def get_selected_or_unmatched_files(self):
+    def _get_selected_or_unmatched_files(self):
         if self.selected_objects:
             files = list(iter_files_from_objects(self.selected_objects))
             if files:
@@ -559,7 +559,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         return self.tagger.unclustered_files.files
 
     def open_tags_from_filenames(self):
-        files = self.get_selected_or_unmatched_files()
+        files = self._get_selected_or_unmatched_files()
         if files:
             dialog = TagsFromFileNamesDialog(files, self)
             dialog.exec()
@@ -1164,7 +1164,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.action_enabled('submit_cluster_action', can_submit)
         self.action_enabled('submit_file_as_recording_action', have_files)
         self.action_enabled('submit_file_as_release_action', have_files)
-        self.action_enabled('tags_from_filenames_action', self.get_selected_or_unmatched_files())
+        self.action_enabled('tags_from_filenames_action', self._get_selected_or_unmatched_files())
         self.action_enabled('similar_items_search_action', is_file or is_cluster)
         self.action_enabled('track_search_action', is_file)
         self.action_enabled('album_search_action', is_cluster)
