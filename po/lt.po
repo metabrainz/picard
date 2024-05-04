@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-04-22 12:02+0200\n"
-"PO-Revision-Date: 2024-04-26 09:42+0000\n"
+"PO-Revision-Date: 2024-05-04 12:42+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
 " n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.4.3\n"
+"X-Generator: Weblate 5.5.3\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:154
@@ -2263,10 +2263,8 @@ msgid "Media"
 msgstr "Medija"
 
 #: picard/ui/itemviews.py:178
-#, fuzzy
-#| msgid "Size:"
 msgid "Size"
-msgstr "Dydis:"
+msgstr "Dydis"
 
 #: picard/ui/itemviews.py:179 picard/util/tags.py:71
 msgid "Genre"
@@ -2274,31 +2272,31 @@ msgstr "Žanras"
 
 #: picard/ui/itemviews.py:180
 msgid "Fingerprint status"
-msgstr ""
+msgstr "Atspaudo būsena"
 
 #: picard/ui/itemviews.py:182 picard/util/tags.py:101
 msgid "Original Release Date"
-msgstr ""
+msgstr "Originali leidinio data"
 
 #: picard/ui/itemviews.py:183 picard/util/tags.py:112
 msgid "Release Date"
-msgstr ""
+msgstr "Leidinio data"
 
 #: picard/ui/itemviews.py:287
 msgid "Bad match"
-msgstr ""
+msgstr "Labai blogas atitikimas"
 
 #: picard/ui/itemviews.py:288
 msgid "Poor match"
-msgstr ""
+msgstr "Blogas atitikimas"
 
 #: picard/ui/itemviews.py:289
 msgid "Ok match"
-msgstr "Geras atitikimas"
+msgstr "Tinkamas atitikimas"
 
 #: picard/ui/itemviews.py:290
 msgid "Good match"
-msgstr ""
+msgstr "Geras atitikimas"
 
 #: picard/ui/itemviews.py:291
 msgid "Great match"
@@ -2306,7 +2304,7 @@ msgstr "Puikus atitikimas"
 
 #: picard/ui/itemviews.py:292
 msgid "Excellent match"
-msgstr ""
+msgstr "Nuostabus atitikimas"
 
 #: picard/ui/itemviews.py:406
 msgid "Restore default columns"
@@ -2318,15 +2316,15 @@ msgstr "Užrakinti stulpelius"
 
 #: picard/ui/itemviews.py:463
 msgid "&Expand all"
-msgstr ""
+msgstr "&Išskleisti viską"
 
 #: picard/ui/itemviews.py:465
 msgid "&Collapse all"
-msgstr ""
+msgstr "&Suskleisti viską"
 
 #: picard/ui/itemviews.py:467
 msgid "Select &all"
-msgstr ""
+msgstr "Pasirinkti &viską"
 
 #: picard/ui/itemviews.py:469
 msgid "Ctrl+A"
@@ -2334,7 +2332,7 @@ msgstr "Ctrl+A"
 
 #: picard/ui/itemviews.py:550
 msgid "&Other versions"
-msgstr ""
+msgstr "&Kitos versijos"
 
 #: picard/ui/itemviews.py:554
 msgid "Loading…"
@@ -4671,11 +4669,13 @@ msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:99
 msgid "Last Updated:"
-msgstr ""
+msgstr "Paskutinį kartą atnaujinta:"
 
 #: picard/ui/ui_scripteditor_details.py:100
 msgid "Date and time the file naming script was last updated (UTC)."
 msgstr ""
+"Data ir laikas, kada failų pavadinimų skriptas buvo paskutinį kartą "
+"atnaujintas (UTC)."
 
 #: picard/ui/ui_scripteditor_details.py:101
 msgid "Now"
