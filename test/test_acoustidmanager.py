@@ -35,6 +35,8 @@ from picard.acoustid.manager import (
 from picard.file import File
 from picard.metadata import Metadata
 
+from picard.ui.mainwindow_actions import MainAction
+
 
 def mock_succeed_submission(*args, **kwargs):
     # Run the callback
@@ -90,20 +92,20 @@ class AcoustIDManagerTest(PicardTestCase):
     def test_add_and_update(self):
         file = dummy_file(0)
         self.acoustidmanager.add(file, '00000000-0000-0000-0000-000000000001')
-        self.tagger.window.action_enabled.assert_called_with('submit_acoustid_action', False)
+        self.tagger.window.action_enabled.assert_called_with(MainAction.SUBMIT_ACOUSTID, False)
         self.acoustidmanager.update(file, '00000000-0000-0000-0000-000000000002')
-        self.tagger.window.action_enabled.assert_called_with('submit_acoustid_action', True)
+        self.tagger.window.action_enabled.assert_called_with(MainAction.SUBMIT_ACOUSTID, True)
         self.acoustidmanager.update(file, '00000000-0000-0000-0000-000000000001')
-        self.tagger.window.action_enabled.assert_called_with('submit_acoustid_action', False)
+        self.tagger.window.action_enabled.assert_called_with(MainAction.SUBMIT_ACOUSTID, False)
 
     def test_add_and_remove(self):
         file = dummy_file(0)
         self.acoustidmanager.add(file, '00000000-0000-0000-0000-000000000001')
-        self.tagger.window.action_enabled.assert_called_with('submit_acoustid_action', False)
+        self.tagger.window.action_enabled.assert_called_with(MainAction.SUBMIT_ACOUSTID, False)
         self.acoustidmanager.update(file, '00000000-0000-0000-0000-000000000002')
-        self.tagger.window.action_enabled.assert_called_with('submit_acoustid_action', True)
+        self.tagger.window.action_enabled.assert_called_with(MainAction.SUBMIT_ACOUSTID, True)
         self.acoustidmanager.remove(file)
-        self.tagger.window.action_enabled.assert_called_with('submit_acoustid_action', False)
+        self.tagger.window.action_enabled.assert_called_with(MainAction.SUBMIT_ACOUSTID, False)
 
     def test_is_submitted(self):
         file = dummy_file(0)
