@@ -66,9 +66,9 @@ def action_add(action_name):
     return decorator
 
 
-def create_actions(parent, target_property):
+def create_actions(parent):
     for action_name, action in _actions_functions.items():
-        target_property[action_name] = action(parent)
+        yield (action_name, action(parent))
 
 
 @action_add('options_action')

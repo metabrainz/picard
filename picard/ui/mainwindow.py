@@ -469,7 +469,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 self.tagger.acoustidmanager.submit()
 
     def _create_actions(self):
-        create_actions(self, self.actions)
+        self.actions = dict(create_actions(self))
 
         self._create_cd_lookup_menu()
 
