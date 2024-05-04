@@ -191,6 +191,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.setupUi()
 
+        webservice_manager = self.tagger.webservice.manager
+        webservice_manager.authenticationRequired.connect(self._show_password_dialog)
+        webservice_manager.proxyAuthenticationRequired.connect(self._show_proxy_dialog)
+
     def setupUi(self):
         self.setWindowTitle(_("MusicBrainz Picard"))
         icon = QtGui.QIcon()
@@ -472,10 +476,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.actions = dict(create_actions(self))
 
         self._create_cd_lookup_menu()
-
-        webservice_manager = self.tagger.webservice.manager
-        webservice_manager.authenticationRequired.connect(self._show_password_dialog)
-        webservice_manager.proxyAuthenticationRequired.connect(self._show_proxy_dialog)
 
     def _create_cd_lookup_menu(self):
         menu = QtWidgets.QMenu(_("Lookup &CD…"))
