@@ -571,17 +571,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _create_menus(self):
         def add_menu(menu_title, *args):
             menu = self.menuBar().addMenu(menu_title)
-            prev_was_sep = False
+            menu.setSeparatorsCollapsible(True)
             for arg in args:
-                if arg == '-' and not prev_was_sep:
+                if arg == '-':
                     menu.addSeparator()
-                    prev_was_sep = True
                 elif isinstance(arg, QtWidgets.QMenu):
                     menu.addMenu(arg)
-                    prev_was_sep = False
                 elif isinstance(arg, MainAction) and self.actions[arg]:
                     menu.addAction(self.actions[arg])
-                    prev_was_sep = False
 
         add_menu(
             _("&File"),

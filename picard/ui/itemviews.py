@@ -478,23 +478,18 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         plugin_actions = None
         can_view_info = self.window.actions[MainAction.VIEW_INFO].isEnabled()
         menu = QtWidgets.QMenu(self)
-        prev_was_sep = False
+        menu.setSeparatorsCollapsible(True)
 
         def add_actions(*args):
-            nonlocal prev_was_sep
             for arg in args:
-                if arg == '-' and not prev_was_sep:
+                if arg == '-':
                     menu.addSeparator()
-                    prev_was_sep = True
                 elif isinstance(arg, QtWidgets.QMenu):
                     menu.addMenu(arg)
-                    prev_was_sep = False
                 elif isinstance(arg, MainAction) and self.window.actions[arg]:
                     menu.addAction(self.window.actions[arg])
-                    prev_was_sep = False
                 elif isinstance(arg, QtWidgets.QWidgetAction):
                     menu.addAction(arg)
-                    prev_was_sep = False
 
         if isinstance(obj, Track):
             if can_view_info:
