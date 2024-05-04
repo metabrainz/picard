@@ -123,7 +123,7 @@ from picard.ui.logview import (
     HistoryView,
     LogView,
 )
-from picard.ui.mainwindow_actions import (
+from picard.ui.mainwindow.actions import (
     MainAction,
     create_actions,
 )

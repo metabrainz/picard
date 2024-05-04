@@ -69,7 +69,7 @@ from picard.ui.item import (
     FileListItem,
     Item,
 )
-from picard.ui.mainwindow_actions import MainAction
+from picard.ui.mainwindow.actions import MainAction
 
 
 # Weights for different elements when comparing a cluster to a release

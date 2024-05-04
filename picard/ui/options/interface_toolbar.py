@@ -45,7 +45,7 @@ from picard.i18n import (
 from picard.util import icontheme
 
 from picard.ui import PicardDialog
-from picard.ui.mainwindow_actions import MainAction
+from picard.ui.mainwindow.actions import MainAction
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import (
     OptionsPage,

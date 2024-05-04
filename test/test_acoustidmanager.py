@@ -35,7 +35,7 @@ from picard.acoustid.manager import (
 from picard.file import File
 from picard.metadata import Metadata
 
-from picard.ui.mainwindow_actions import MainAction
+from picard.ui.mainwindow.actions import MainAction
 
 
 def mock_succeed_submission(*args, **kwargs):

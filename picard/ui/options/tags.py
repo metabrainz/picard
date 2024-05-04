@@ -31,7 +31,7 @@
 from picard.config import get_config
 from picard.i18n import N_
 
-from picard.ui.mainwindow_actions import MainAction
+from picard.ui.mainwindow.actions import MainAction
 from picard.ui.options import (
     OptionsPage,
     register_options_page,
