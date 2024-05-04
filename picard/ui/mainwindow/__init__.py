@@ -123,10 +123,8 @@ from picard.ui.logview import (
     HistoryView,
     LogView,
 )
-from picard.ui.mainwindow.actions import (
-    MainAction,
-    create_actions,
-)
+from picard.ui.mainwindow.actions import MainAction
+from picard.ui.mainwindow.create import create_actions
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.newuserdialog import NewUserDialog
 from picard.ui.options.dialog import OptionsDialog
