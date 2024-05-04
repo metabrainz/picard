@@ -281,7 +281,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         super().show()
         self.show_new_user_dialog()
         if self.tagger.autoupdate_enabled:
-            self.auto_update_check()
+            self._auto_update_check()
         self.check_for_plugin_update()
         self.metadata_box.restore_state()
 
@@ -1340,7 +1340,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def do_update_check(self):
         self._check_for_update(True)
 
-    def auto_update_check(self):
+    def _auto_update_check(self):
         config = get_config()
         check_for_updates = config.setting['check_for_updates']
         update_check_days = config.setting['update_check_days']
