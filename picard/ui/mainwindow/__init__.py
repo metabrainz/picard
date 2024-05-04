@@ -579,7 +579,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 elif isinstance(arg, QtWidgets.QMenu):
                     menu.addMenu(arg)
                     prev_was_sep = False
-                elif isinstance(arg, MainAction):
+                elif isinstance(arg, MainAction) and self.actions[arg]:
                     menu.addAction(self.actions[arg])
                     prev_was_sep = False
 

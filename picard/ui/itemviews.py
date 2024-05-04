@@ -489,7 +489,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 elif isinstance(arg, QtWidgets.QMenu):
                     menu.addMenu(arg)
                     prev_was_sep = False
-                elif isinstance(arg, MainAction):
+                elif isinstance(arg, MainAction) and self.window.actions[arg]:
                     menu.addAction(self.window.actions[arg])
                     prev_was_sep = False
                 elif isinstance(arg, QtWidgets.QWidgetAction):
@@ -514,11 +514,10 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 MainAction.REFRESH if isinstance(obj, NonAlbumTrack) else None,
             )
         elif isinstance(obj, Cluster):
-            submit_cluster = self.window.actions[MainAction.SUBMIT_CLUSTER]
             add_actions(
                 MainAction.VIEW_INFO if can_view_info else None,
                 MainAction.BROWSER_LOOKUP,
-                MainAction.SUBMIT_CLUSTER if submit_cluster else None,
+                MainAction.SUBMIT_CLUSTER,
                 '-',
                 MainAction.AUTOTAG,
                 MainAction.ANALYZE,
@@ -534,15 +533,13 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             )
             plugin_actions = list(_clusterlist_actions)
         elif isinstance(obj, File):
-            submit_file_as_recording = self.window.actions[MainAction.SUBMIT_FILE_AS_RECORDING]
-            submit_file_as_release = self.window.actions[MainAction.SUBMIT_FILE_AS_RELEASE]
             add_actions(
                 MainAction.VIEW_INFO if can_view_info else None,
                 MainAction.PLAY_FILE,
                 MainAction.OPEN_FOLDER,
                 MainAction.BROWSER_LOOKUP,
-                MainAction.SUBMIT_FILE_AS_RECORDING if submit_file_as_recording else None,
-                MainAction.SUBMIT_FILE_AS_RELEASE if submit_file_as_release else None,
+                MainAction.SUBMIT_FILE_AS_RECORDING,
+                MainAction.SUBMIT_FILE_AS_RELEASE,
                 '-',
                 MainAction.AUTOTAG,
                 MainAction.ANALYZE,
