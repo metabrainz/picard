@@ -553,6 +553,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             plugin_actions = list(_album_actions)
 
         add_actions(
+            '-',
             MainAction.SAVE,
             MainAction.REMOVE,
         )
