@@ -92,6 +92,7 @@ from picard.util import (
 
 from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.colors import interface_colors
+from picard.ui.mainwindow_actions import MainAction
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
 from picard.ui.widgets.tristatesortheaderview import TristateSortHeaderView
@@ -475,72 +476,72 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         config = get_config()
         obj = item.obj
         plugin_actions = None
-        can_view_info = self.window.actions['view_info_action'].isEnabled()
+        can_view_info = self.window.actions[MainAction.VIEW_INFO].isEnabled()
         menu = QtWidgets.QMenu(self)
 
         if isinstance(obj, Track):
             if can_view_info:
-                menu.addAction(self.window.actions['view_info_action'])
+                menu.addAction(self.window.actions[MainAction.VIEW_INFO])
             plugin_actions = list(_track_actions)
             if obj.num_linked_files == 1:
-                menu.addAction(self.window.actions['play_file_action'])
-                menu.addAction(self.window.actions['open_folder_action'])
-                menu.addAction(self.window.actions['track_search_action'])
+                menu.addAction(self.window.actions[MainAction.PLAY_FILE])
+                menu.addAction(self.window.actions[MainAction.OPEN_FOLDER])
+                menu.addAction(self.window.actions[MainAction.TRACK_SEARCH])
                 plugin_actions.extend(_file_actions)
-            menu.addAction(self.window.actions['browser_lookup_action'])
+            menu.addAction(self.window.actions[MainAction.BROWSER_LOOKUP])
             if obj.num_linked_files > 0:
-                menu.addAction(self.window.actions['generate_fingerprints_action'])
+                menu.addAction(self.window.actions[MainAction.GENERATE_FINGERPRINTS])
             menu.addSeparator()
             if isinstance(obj, NonAlbumTrack):
-                menu.addAction(self.window.actions['refresh_action'])
+                menu.addAction(self.window.actions[MainAction.REFRESH])
         elif isinstance(obj, Cluster):
             if can_view_info:
-                menu.addAction(self.window.actions['view_info_action'])
-            menu.addAction(self.window.actions['browser_lookup_action'])
-            if self.window.actions['submit_cluster_action']:
-                menu.addAction(self.window.actions['submit_cluster_action'])
+                menu.addAction(self.window.actions[MainAction.VIEW_INFO])
+            menu.addAction(self.window.actions[MainAction.BROWSER_LOOKUP])
+            if self.window.actions[MainAction.SUBMIT_CLUSTER]:
+                menu.addAction(self.window.actions[MainAction.SUBMIT_CLUSTER])
             menu.addSeparator()
-            menu.addAction(self.window.actions['autotag_action'])
-            menu.addAction(self.window.actions['analyze_action'])
+            menu.addAction(self.window.actions[MainAction.AUTOTAG])
+            menu.addAction(self.window.actions[MainAction.ANALYZE])
             if isinstance(obj, UnclusteredFiles):
-                menu.addAction(self.window.actions['cluster_action'])
+                menu.addAction(self.window.actions[MainAction.CLUSTER])
             else:
-                menu.addAction(self.window.actions['album_search_action'])
-            menu.addAction(self.window.actions['generate_fingerprints_action'])
+                menu.addAction(self.window.actions[MainAction.ALBUM_SEARCH])
+            menu.addAction(self.window.actions[MainAction.GENERATE_FINGERPRINTS])
             plugin_actions = list(_cluster_actions)
         elif isinstance(obj, ClusterList):
-            menu.addAction(self.window.actions['autotag_action'])
-            menu.addAction(self.window.actions['analyze_action'])
-            menu.addAction(self.window.actions['generate_fingerprints_action'])
+            menu.addAction(self.window.actions[MainAction.AUTOTAG])
+            menu.addAction(self.window.actions[MainAction.ANALYZE])
+            menu.addAction(self.window.actions[MainAction.GENERATE_FINGERPRINTS])
             plugin_actions = list(_clusterlist_actions)
         elif isinstance(obj, File):
             if can_view_info:
-                menu.addAction(self.window.actions['view_info_action'])
-            menu.addAction(self.window.actions['play_file_action'])
-            menu.addAction(self.window.actions['open_folder_action'])
-            menu.addAction(self.window.actions['browser_lookup_action'])
-            if self.window.actions['submit_file_as_recording_action']:
-                menu.addAction(self.window.actions['submit_file_as_recording_action'])
-            if self.window.actions['submit_file_as_release_action']:
-                menu.addAction(self.window.actions['submit_file_as_release_action'])
+                menu.addAction(self.window.actions[MainAction.VIEW_INFO])
+            menu.addAction(self.window.actions[MainAction.PLAY_FILE])
+            menu.addAction(self.window.actions[MainAction.OPEN_FOLDER])
+            menu.addAction(self.window.actions[MainAction.BROWSER_LOOKUP])
+            if self.window.actions[MainAction.SUBMIT_FILE_AS_RECORDING]:
+                menu.addAction(self.window.actions[MainAction.SUBMIT_FILE_AS_RECORDING])
+            if self.window.actions[MainAction.SUBMIT_FILE_AS_RELEASE]:
+                menu.addAction(self.window.actions[MainAction.SUBMIT_FILE_AS_RELEASE])
             menu.addSeparator()
-            menu.addAction(self.window.actions['autotag_action'])
-            menu.addAction(self.window.actions['analyze_action'])
-            menu.addAction(self.window.actions['track_search_action'])
-            menu.addAction(self.window.actions['generate_fingerprints_action'])
+            menu.addAction(self.window.actions[MainAction.AUTOTAG])
+            menu.addAction(self.window.actions[MainAction.ANALYZE])
+            menu.addAction(self.window.actions[MainAction.TRACK_SEARCH])
+            menu.addAction(self.window.actions[MainAction.GENERATE_FINGERPRINTS])
             plugin_actions = list(_file_actions)
         elif isinstance(obj, Album):
             if can_view_info:
-                menu.addAction(self.window.actions['view_info_action'])
-            menu.addAction(self.window.actions['browser_lookup_action'])
+                menu.addAction(self.window.actions[MainAction.VIEW_INFO])
+            menu.addAction(self.window.actions[MainAction.BROWSER_LOOKUP])
             if obj.get_num_total_files() > 0:
-                menu.addAction(self.window.actions['generate_fingerprints_action'])
+                menu.addAction(self.window.actions[MainAction.GENERATE_FINGERPRINTS])
             menu.addSeparator()
-            menu.addAction(self.window.actions['refresh_action'])
+            menu.addAction(self.window.actions[MainAction.REFRESH])
             plugin_actions = list(_album_actions)
 
-        menu.addAction(self.window.actions['save_action'])
-        menu.addAction(self.window.actions['remove_action'])
+        menu.addAction(self.window.actions[MainAction.SAVE])
+        menu.addAction(self.window.actions[MainAction.REMOVE])
 
         bottom_separator = False
 
@@ -552,7 +553,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             loading = releases_menu.addAction(_("Loading…"))
             loading.setDisabled(True)
             action_more = releases_menu.addAction(_("Show &more details…"))
-            action_more.triggered.connect(self.window.actions['album_other_versions_action'].trigger)
+            action_more.triggered.connect(self.window.actions[MainAction.ALBUM_OTHER_VERSIONS].trigger)
             bottom_separator = True
 
             if len(self.selectedItems()) == 1 and obj.release_group:
